@@ -1,29 +1,29 @@
 @interface SBHWidgetDisplayConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (SBHWidgetDisplayConfiguration)init;
-- (SBHWidgetDisplayConfiguration)initWithRenderScheme:(id)a3 colorScheme:(unint64_t)a4 tintParameters:(id)a5;
+- (SBHWidgetDisplayConfiguration)initWithRenderScheme:(id)scheme colorScheme:(unint64_t)colorScheme tintParameters:(id)parameters;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation SBHWidgetDisplayConfiguration
 
-- (SBHWidgetDisplayConfiguration)initWithRenderScheme:(id)a3 colorScheme:(unint64_t)a4 tintParameters:(id)a5
+- (SBHWidgetDisplayConfiguration)initWithRenderScheme:(id)scheme colorScheme:(unint64_t)colorScheme tintParameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a5;
+  schemeCopy = scheme;
+  parametersCopy = parameters;
   v16.receiver = self;
   v16.super_class = SBHWidgetDisplayConfiguration;
   v10 = [(SBHWidgetDisplayConfiguration *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [schemeCopy copy];
     renderScheme = v10->_renderScheme;
     v10->_renderScheme = v11;
 
-    v10->_colorScheme = a4;
-    v13 = [v9 copy];
+    v10->_colorScheme = colorScheme;
+    v13 = [parametersCopy copy];
     tintParameters = v10->_tintParameters;
     v10->_tintParameters = v13;
   }
@@ -39,10 +39,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -54,7 +54,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       if (BSEqualObjects() && self->_colorScheme == v7->_colorScheme)
       {
         v8 = BSEqualObjects();
@@ -77,11 +77,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SBHWidgetDisplayConfiguration *)self renderScheme];
-  v4 = [v3 hash];
+  renderScheme = [(SBHWidgetDisplayConfiguration *)self renderScheme];
+  v4 = [renderScheme hash];
   v5 = [(SBHWidgetDisplayConfiguration *)self colorScheme]^ v4;
-  v6 = [(SBHWidgetDisplayConfiguration *)self tintParameters];
-  v7 = [v6 hash];
+  tintParameters = [(SBHWidgetDisplayConfiguration *)self tintParameters];
+  v7 = [tintParameters hash];
 
   return v5 ^ v7;
 }
@@ -95,16 +95,16 @@
   return v4;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__SBHWidgetDisplayConfiguration_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_1E8088F18;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:self block:v6];
 }
 

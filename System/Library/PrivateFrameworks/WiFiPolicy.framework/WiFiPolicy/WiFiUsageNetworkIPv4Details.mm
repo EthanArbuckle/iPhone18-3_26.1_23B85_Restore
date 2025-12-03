@@ -1,20 +1,20 @@
 @interface WiFiUsageNetworkIPv4Details
-- (BOOL)isEqual:(id)a3;
-- (WiFiUsageNetworkIPv4Details)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WiFiUsageNetworkIPv4Details)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation WiFiUsageNetworkIPv4Details
 
-- (WiFiUsageNetworkIPv4Details)initWithDictionary:(id)a3
+- (WiFiUsageNetworkIPv4Details)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = WiFiUsageNetworkIPv4Details;
   v5 = [(WiFiUsageNetworkIPv4Details *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:*MEMORY[0x277CE1728]];
+    v6 = [dictionaryCopy objectForKey:*MEMORY[0x277CE1728]];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count])
     {
@@ -30,7 +30,7 @@
     }
 
     [(WiFiUsageNetworkIPv4Details *)v5 setIsValid:v8];
-    v9 = [v4 objectForKey:*MEMORY[0x277CE1750]];
+    v9 = [dictionaryCopy objectForKey:*MEMORY[0x277CE1750]];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 count])
@@ -39,7 +39,7 @@
       [(WiFiUsageNetworkIPv4Details *)v5 setIpv4Subnet:v10];
     }
 
-    v11 = [v4 objectForKey:*MEMORY[0x277CE1720]];
+    v11 = [dictionaryCopy objectForKey:*MEMORY[0x277CE1720]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -47,7 +47,7 @@
       [(WiFiUsageNetworkIPv4Details *)v5 setIpv4RouterAddress:v11];
     }
 
-    v12 = [v4 objectForKey:*MEMORY[0x277CE1748]];
+    v12 = [dictionaryCopy objectForKey:*MEMORY[0x277CE1748]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -55,7 +55,7 @@
       [(WiFiUsageNetworkIPv4Details *)v5 setIpv4DefGwAddress:v12];
     }
 
-    v13 = [v4 objectForKey:*MEMORY[0x277CE1718]];
+    v13 = [dictionaryCopy objectForKey:*MEMORY[0x277CE1718]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -69,56 +69,56 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
-  v5 = [(WiFiUsageNetworkIPv4Details *)self isValid];
-  if (v5 != [v4 isValid])
+  isValid = [(WiFiUsageNetworkIPv4Details *)self isValid];
+  if (isValid != [equalCopy isValid])
   {
     goto LABEL_8;
   }
 
-  v6 = [(WiFiUsageNetworkIPv4Details *)self ipv4Address];
-  v7 = [v4 ipv4Address];
-  v8 = [v6 isEqualToString:v7];
+  ipv4Address = [(WiFiUsageNetworkIPv4Details *)self ipv4Address];
+  ipv4Address2 = [equalCopy ipv4Address];
+  v8 = [ipv4Address isEqualToString:ipv4Address2];
 
   if (!v8)
   {
     goto LABEL_8;
   }
 
-  v9 = [(WiFiUsageNetworkIPv4Details *)self ipv4RouterAddress];
-  v10 = [v4 ipv4RouterAddress];
-  v11 = [v9 isEqualToString:v10];
+  ipv4RouterAddress = [(WiFiUsageNetworkIPv4Details *)self ipv4RouterAddress];
+  ipv4RouterAddress2 = [equalCopy ipv4RouterAddress];
+  v11 = [ipv4RouterAddress isEqualToString:ipv4RouterAddress2];
 
   if (!v11)
   {
     goto LABEL_8;
   }
 
-  v12 = [(WiFiUsageNetworkIPv4Details *)self ipv4RouterMacAddress];
-  v13 = [v4 ipv4RouterMacAddress];
-  v14 = [v12 isEqualToString:v13];
+  ipv4RouterMacAddress = [(WiFiUsageNetworkIPv4Details *)self ipv4RouterMacAddress];
+  ipv4RouterMacAddress2 = [equalCopy ipv4RouterMacAddress];
+  v14 = [ipv4RouterMacAddress isEqualToString:ipv4RouterMacAddress2];
 
   if (!v14)
   {
     goto LABEL_8;
   }
 
-  v15 = [(WiFiUsageNetworkIPv4Details *)self ipv4DefGwAddress];
-  v16 = [v4 ipv4DefGwAddress];
-  v17 = [v15 isEqualToString:v16];
+  ipv4DefGwAddress = [(WiFiUsageNetworkIPv4Details *)self ipv4DefGwAddress];
+  ipv4DefGwAddress2 = [equalCopy ipv4DefGwAddress];
+  v17 = [ipv4DefGwAddress isEqualToString:ipv4DefGwAddress2];
 
   if (v17)
   {
-    v18 = [(WiFiUsageNetworkIPv4Details *)self ipv4Subnet];
-    v19 = [v4 ipv4Subnet];
-    v20 = [v18 isEqualToString:v19];
+    ipv4Subnet = [(WiFiUsageNetworkIPv4Details *)self ipv4Subnet];
+    ipv4Subnet2 = [equalCopy ipv4Subnet];
+    v20 = [ipv4Subnet isEqualToString:ipv4Subnet2];
   }
 
   else

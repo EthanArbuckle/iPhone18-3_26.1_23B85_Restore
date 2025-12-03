@@ -1,17 +1,17 @@
 @interface ADDensifiedLiDARFocusAssistPipelineParameters
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 @end
 
 @implementation ADDensifiedLiDARFocusAssistPipelineParameters
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 length])
+  deviceCopy = device;
+  if ([deviceCopy length])
   {
     v12.receiver = self;
     v12.super_class = ADDensifiedLiDARFocusAssistPipelineParameters;
-    v5 = [(ADPipelineParameters *)&v12 initForDevice:v4];
+    v5 = [(ADPipelineParameters *)&v12 initForDevice:deviceCopy];
   }
 
   else

@@ -1,5 +1,5 @@
 @interface IKJSAccountInfo
-- (IKJSAccountInfo)initWithAppContext:(id)a3;
+- (IKJSAccountInfo)initWithAppContext:(id)context;
 - (NSString)DSID;
 - (NSString)storefrontCountryCode;
 - (NSString)storefrontLanguage;
@@ -7,19 +7,19 @@
 
 @implementation IKJSAccountInfo
 
-- (IKJSAccountInfo)initWithAppContext:(id)a3
+- (IKJSAccountInfo)initWithAppContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = IKJSAccountInfo;
-  return [(VUIJSObject *)&v4 initWithAppContext:a3];
+  return [(VUIJSObject *)&v4 initWithAppContext:context];
 }
 
 - (NSString)DSID
 {
   v2 = +[VUIAuthenticationManager DSID];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (NSString)storefrontLanguage

@@ -1,26 +1,26 @@
 @interface SPIFrameSynthesizer
-- (SPIFrameSynthesizer)initWithUsage:(int64_t)a3;
-- (SPIFrameSynthesizer)initWithUsage:(int64_t)a3 qualityMode:(int64_t)a4;
-- (SPIFrameSynthesizer)initWithUsage:(int64_t)a3 qualityMode:(int64_t)a4 useLegacyNormalization:(BOOL)a5;
-- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 numberOfFrames:(unint64_t)a7 withError:(id *)a8;
-- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 timeScales:(id)a7 withError:(id *)a8;
+- (SPIFrameSynthesizer)initWithUsage:(int64_t)usage;
+- (SPIFrameSynthesizer)initWithUsage:(int64_t)usage qualityMode:(int64_t)mode;
+- (SPIFrameSynthesizer)initWithUsage:(int64_t)usage qualityMode:(int64_t)mode useLegacyNormalization:(BOOL)normalization;
+- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow numberOfFrames:(unint64_t)frames withError:(id *)error;
+- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow timeScales:(id)scales withError:(id *)error;
 - (void)allocateResources;
 - (void)releaseResources;
-- (void)setFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6;
-- (void)synthesizeFrameForTimeScale:(float)a3 destination:(__CVBuffer *)a4;
-- (void)synthesizeFrameFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 timeScale:(float)a7 destination:(__CVBuffer *)a8;
+- (void)setFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow;
+- (void)synthesizeFrameForTimeScale:(float)scale destination:(__CVBuffer *)destination;
+- (void)synthesizeFrameFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow timeScale:(float)scale destination:(__CVBuffer *)destination;
 @end
 
 @implementation SPIFrameSynthesizer
 
-- (SPIFrameSynthesizer)initWithUsage:(int64_t)a3
+- (SPIFrameSynthesizer)initWithUsage:(int64_t)usage
 {
   v10.receiver = self;
   v10.super_class = SPIFrameSynthesizer;
   v4 = [(SPIFrameSynthesizer *)&v10 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277D07D20]) initWithUsage:a3];
+    v5 = [objc_alloc(MEMORY[0x277D07D20]) initWithUsage:usage];
     spiInstance = v4->_spiInstance;
     v4->_spiInstance = v5;
 
@@ -42,14 +42,14 @@ LABEL_6:
   return v8;
 }
 
-- (SPIFrameSynthesizer)initWithUsage:(int64_t)a3 qualityMode:(int64_t)a4
+- (SPIFrameSynthesizer)initWithUsage:(int64_t)usage qualityMode:(int64_t)mode
 {
   v12.receiver = self;
   v12.super_class = SPIFrameSynthesizer;
   v6 = [(SPIFrameSynthesizer *)&v12 init];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x277D07D20]) initWithUsage:a3 qualityMode:a4];
+    v7 = [objc_alloc(MEMORY[0x277D07D20]) initWithUsage:usage qualityMode:mode];
     spiInstance = v6->_spiInstance;
     v6->_spiInstance = v7;
 
@@ -71,15 +71,15 @@ LABEL_6:
   return v10;
 }
 
-- (SPIFrameSynthesizer)initWithUsage:(int64_t)a3 qualityMode:(int64_t)a4 useLegacyNormalization:(BOOL)a5
+- (SPIFrameSynthesizer)initWithUsage:(int64_t)usage qualityMode:(int64_t)mode useLegacyNormalization:(BOOL)normalization
 {
-  v5 = a5;
+  normalizationCopy = normalization;
   v14.receiver = self;
   v14.super_class = SPIFrameSynthesizer;
   v8 = [(SPIFrameSynthesizer *)&v14 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x277D07D20]) initWithUsage:a3 qualityMode:a4 useLegacyNormalization:v5];
+    v9 = [objc_alloc(MEMORY[0x277D07D20]) initWithUsage:usage qualityMode:mode useLegacyNormalization:normalizationCopy];
     spiInstance = v8->_spiInstance;
     v8->_spiInstance = v9;
 
@@ -103,49 +103,49 @@ LABEL_6:
 
 - (void)allocateResources
 {
-  v2 = [(SPIFrameSynthesizer *)self spiInstance];
-  [v2 allocateResources];
+  spiInstance = [(SPIFrameSynthesizer *)self spiInstance];
+  [spiInstance allocateResources];
 }
 
 - (void)releaseResources
 {
-  v2 = [(SPIFrameSynthesizer *)self spiInstance];
-  [v2 releaseResources];
+  spiInstance = [(SPIFrameSynthesizer *)self spiInstance];
+  [spiInstance releaseResources];
 }
 
-- (void)synthesizeFrameFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 timeScale:(float)a7 destination:(__CVBuffer *)a8
+- (void)synthesizeFrameFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow timeScale:(float)scale destination:(__CVBuffer *)destination
 {
-  v15 = [(SPIFrameSynthesizer *)self spiInstance];
-  *&v14 = a7;
-  [v15 synthesizeFrameFromFirstFrame:a3 secondFrame:a4 forwardFlow:a5 backwardFlow:a6 timeScale:a8 destination:v14];
+  spiInstance = [(SPIFrameSynthesizer *)self spiInstance];
+  *&v14 = scale;
+  [spiInstance synthesizeFrameFromFirstFrame:frame secondFrame:secondFrame forwardFlow:flow backwardFlow:backwardFlow timeScale:destination destination:v14];
 }
 
-- (void)setFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6
+- (void)setFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow
 {
-  v10 = [(SPIFrameSynthesizer *)self spiInstance];
-  [v10 setFirstFrame:a3 secondFrame:a4 forwardFlow:a5 backwardFlow:a6];
+  spiInstance = [(SPIFrameSynthesizer *)self spiInstance];
+  [spiInstance setFirstFrame:frame secondFrame:secondFrame forwardFlow:flow backwardFlow:backwardFlow];
 }
 
-- (void)synthesizeFrameForTimeScale:(float)a3 destination:(__CVBuffer *)a4
+- (void)synthesizeFrameForTimeScale:(float)scale destination:(__CVBuffer *)destination
 {
-  v7 = [(SPIFrameSynthesizer *)self spiInstance];
-  *&v6 = a3;
-  [v7 synthesizeFrameForTimeScale:a4 destination:v6];
+  spiInstance = [(SPIFrameSynthesizer *)self spiInstance];
+  *&v6 = scale;
+  [spiInstance synthesizeFrameForTimeScale:destination destination:v6];
 }
 
-- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 numberOfFrames:(unint64_t)a7 withError:(id *)a8
+- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow numberOfFrames:(unint64_t)frames withError:(id *)error
 {
-  v14 = [(SPIFrameSynthesizer *)self spiInstance];
-  v15 = [v14 synthesizeFramesFromFirstFrame:a3 secondFrame:a4 forwardFlow:a5 backwardFlow:a6 numberOfFrames:a7 withError:a8];
+  spiInstance = [(SPIFrameSynthesizer *)self spiInstance];
+  v15 = [spiInstance synthesizeFramesFromFirstFrame:frame secondFrame:secondFrame forwardFlow:flow backwardFlow:backwardFlow numberOfFrames:frames withError:error];
 
   return v15;
 }
 
-- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 forwardFlow:(__CVBuffer *)a5 backwardFlow:(__CVBuffer *)a6 timeScales:(id)a7 withError:(id *)a8
+- (id)synthesizeFramesFromFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame forwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow timeScales:(id)scales withError:(id *)error
 {
-  v14 = a7;
-  v15 = [(SPIFrameSynthesizer *)self spiInstance];
-  v16 = [v15 synthesizeFramesFromFirstFrame:a3 secondFrame:a4 forwardFlow:a5 backwardFlow:a6 timeScales:v14 withError:a8];
+  scalesCopy = scales;
+  spiInstance = [(SPIFrameSynthesizer *)self spiInstance];
+  v16 = [spiInstance synthesizeFramesFromFirstFrame:frame secondFrame:secondFrame forwardFlow:flow backwardFlow:backwardFlow timeScales:scalesCopy withError:error];
 
   return v16;
 }

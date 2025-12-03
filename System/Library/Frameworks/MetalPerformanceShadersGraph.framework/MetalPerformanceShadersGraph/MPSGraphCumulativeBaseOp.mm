@@ -1,20 +1,20 @@
 @interface MPSGraphCumulativeBaseOp
-- (MPSGraphCumulativeBaseOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 exclusive:(BOOL)a6 reverse:(BOOL)a7 name:(id)a8;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphCumulativeBaseOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies exclusive:(BOOL)exclusive reverse:(BOOL)reverse name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphCumulativeBaseOp
 
-- (MPSGraphCumulativeBaseOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 exclusive:(BOOL)a6 reverse:(BOOL)a7 name:(id)a8
+- (MPSGraphCumulativeBaseOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies exclusive:(BOOL)exclusive reverse:(BOOL)reverse name:(id)name
 {
-  self->_exclusive = a6;
-  self->_reverse = a7;
-  return [(MPSGraphOperation *)self initWithGraph:a3 inputTensors:a4 controlDependencies:a5 name:a8];
+  self->_exclusive = exclusive;
+  self->_reverse = reverse;
+  return [(MPSGraphOperation *)self initWithGraph:graph inputTensors:tensors controlDependencies:dependencies name:name];
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
-  result = a7;
+  result = name;
   __break(1u);
   return result;
 }

@@ -1,26 +1,26 @@
 @interface MapsSuggestionsNoAddressFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsNoAddressFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (entryCopy)
   {
-    v5 = [v3 type];
+    type = [entryCopy type];
     v6 = 1;
-    if ((v5 - 5) < 0x13)
+    if ((type - 5) < 0x13)
     {
       goto LABEL_9;
     }
 
-    if (v5 <= 3)
+    if (type <= 3)
     {
-      if (v5 < 4)
+      if (type < 4)
       {
         goto LABEL_9;
       }
@@ -28,23 +28,23 @@
       goto LABEL_19;
     }
 
-    switch(v5)
+    switch(type)
     {
       case 4:
-        v9 = [v4 geoMapItem];
-        v13 = MapsSuggestionsMapItemStreetName(v9);
+        geoMapItem = [v4 geoMapItem];
+        v13 = MapsSuggestionsMapItemStreetName(geoMapItem);
         break;
       case 25:
-        v9 = [v4 geoMapItem];
-        v13 = MapsSuggestionsMapItemStreetWithNumber(v9);
+        geoMapItem = [v4 geoMapItem];
+        v13 = MapsSuggestionsMapItemStreetWithNumber(geoMapItem);
         break;
       case 24:
-        v9 = [v4 geoMapItem];
-        v10 = MapsSuggestionsMapItemStreetWithNumber(v9);
+        geoMapItem = [v4 geoMapItem];
+        v10 = MapsSuggestionsMapItemStreetWithNumber(geoMapItem);
         if (![v10 length])
         {
-          v11 = [v4 geoMapItem];
-          v12 = MapsSuggestionsMapItemAreaOfInterest(v11);
+          geoMapItem2 = [v4 geoMapItem];
+          v12 = MapsSuggestionsMapItemAreaOfInterest(geoMapItem2);
           v6 = [v12 length] != 0;
         }
 

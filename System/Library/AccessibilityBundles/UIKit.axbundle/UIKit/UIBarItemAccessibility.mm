@@ -1,5 +1,5 @@
 @interface UIBarItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityLocalizationBundleID;
 - (id)accessibilityLocalizationBundlePath;
@@ -9,28 +9,28 @@
 
 @implementation UIBarItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIBarButtonItem" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (id)accessibilityLabel
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v6.receiver = self;
   v6.super_class = UIBarItemAccessibility;
   v7[0] = [(UIBarItemAccessibility *)&v6 accessibilityLabel];
   if (!v7[0])
   {
-    v2 = [(UIBarItemAccessibility *)v8 safeValueForKey:@"title"];
+    v2 = [(UIBarItemAccessibility *)selfCopy safeValueForKey:@"title"];
     v3 = v7[0];
     v7[0] = v2;
     MEMORY[0x29EDC9740](v3);
@@ -47,11 +47,11 @@
   v6[2] = self;
   v6[1] = a2;
   v6[0] = [(UIBarItemAccessibility *)self safeValueForKey:@"title"];
-  v5 = [v6[0] _accessibilityAttributedLocalizedString];
-  v4 = [v5 safeValueForKey:@"UIAccessibilityTokenLocalizedStringKey"];
+  _accessibilityAttributedLocalizedString = [v6[0] _accessibilityAttributedLocalizedString];
+  v4 = [_accessibilityAttributedLocalizedString safeValueForKey:@"UIAccessibilityTokenLocalizedStringKey"];
   v3 = MEMORY[0x29EDC9748](v4);
   objc_storeStrong(&v4, 0);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&_accessibilityAttributedLocalizedString, 0);
   objc_storeStrong(v6, 0);
 
   return v3;
@@ -62,11 +62,11 @@
   v6[2] = self;
   v6[1] = a2;
   v6[0] = [(UIBarItemAccessibility *)self safeValueForKey:@"title"];
-  v5 = [v6[0] _accessibilityAttributedLocalizedString];
-  v4 = [v5 safeValueForKey:@"UIAccessibilityTokenLocalizedStringBundleID"];
+  _accessibilityAttributedLocalizedString = [v6[0] _accessibilityAttributedLocalizedString];
+  v4 = [_accessibilityAttributedLocalizedString safeValueForKey:@"UIAccessibilityTokenLocalizedStringBundleID"];
   v3 = MEMORY[0x29EDC9748](v4);
   objc_storeStrong(&v4, 0);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&_accessibilityAttributedLocalizedString, 0);
   objc_storeStrong(v6, 0);
 
   return v3;
@@ -77,11 +77,11 @@
   v6[2] = self;
   v6[1] = a2;
   v6[0] = [(UIBarItemAccessibility *)self safeValueForKey:@"title"];
-  v5 = [v6[0] _accessibilityAttributedLocalizedString];
-  v4 = [v5 safeValueForKey:@"UIAccessibilityTokenLocalizationBundlePath"];
+  _accessibilityAttributedLocalizedString = [v6[0] _accessibilityAttributedLocalizedString];
+  v4 = [_accessibilityAttributedLocalizedString safeValueForKey:@"UIAccessibilityTokenLocalizationBundlePath"];
   v3 = MEMORY[0x29EDC9748](v4);
   objc_storeStrong(&v4, 0);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&_accessibilityAttributedLocalizedString, 0);
   objc_storeStrong(v6, 0);
 
   return v3;
@@ -92,11 +92,11 @@
   v6[2] = self;
   v6[1] = a2;
   v6[0] = [(UIBarItemAccessibility *)self safeValueForKey:@"title"];
-  v5 = [v6[0] _accessibilityAttributedLocalizedString];
-  v4 = [v5 safeValueForKey:@"UIAccessibilityTokenLocalizedStringTableName"];
+  _accessibilityAttributedLocalizedString = [v6[0] _accessibilityAttributedLocalizedString];
+  v4 = [_accessibilityAttributedLocalizedString safeValueForKey:@"UIAccessibilityTokenLocalizedStringTableName"];
   v3 = MEMORY[0x29EDC9748](v4);
   objc_storeStrong(&v4, 0);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&_accessibilityAttributedLocalizedString, 0);
   objc_storeStrong(v6, 0);
 
   return v3;

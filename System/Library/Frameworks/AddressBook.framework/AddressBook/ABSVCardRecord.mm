@@ -1,22 +1,22 @@
 @interface ABSVCardRecord
-- (ABSVCardRecord)initWithRecord:(void *)a3;
-- (ABSVCardRecord)initWithVCardRepresentation:(id)a3;
+- (ABSVCardRecord)initWithRecord:(void *)record;
+- (ABSVCardRecord)initWithVCardRepresentation:(id)representation;
 - (void)dealloc;
 @end
 
 @implementation ABSVCardRecord
 
-- (ABSVCardRecord)initWithVCardRepresentation:(id)a3
+- (ABSVCardRecord)initWithVCardRepresentation:(id)representation
 {
   v10 = 0;
-  v4 = [MEMORY[0x277CBDAC8] contactsWithData:a3 error:&v10];
+  v4 = [MEMORY[0x277CBDAC8] contactsWithData:representation error:&v10];
   v5 = v10;
   if (!v4)
   {
-    v6 = +[ABSLog log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    firstObject = +[ABSLog log];
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
-      [(ABSVCardRecord *)v5 initWithVCardRepresentation:v6];
+      [(ABSVCardRecord *)v5 initWithVCardRepresentation:firstObject];
     }
 
     goto LABEL_8;
@@ -24,10 +24,10 @@
 
   if ([v4 count] != 1)
   {
-    v6 = +[ABSLog log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    firstObject = +[ABSLog log];
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
-      [ABSVCardRecord initWithVCardRepresentation:v6];
+      [ABSVCardRecord initWithVCardRepresentation:firstObject];
     }
 
 LABEL_8:
@@ -35,24 +35,24 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [v4 firstObject];
-  v7 = [ABSPublicABCNCompatibility publicABPersonFromContact:v6 contactStore:0 publicAddressBook:0];
+  firstObject = [v4 firstObject];
+  v7 = [ABSPublicABCNCompatibility publicABPersonFromContact:firstObject contactStore:0 publicAddressBook:0];
 LABEL_9:
 
   v8 = [(ABSVCardRecord *)self initWithRecord:v7];
   return v8;
 }
 
-- (ABSVCardRecord)initWithRecord:(void *)a3
+- (ABSVCardRecord)initWithRecord:(void *)record
 {
   v8.receiver = self;
   v8.super_class = ABSVCardRecord;
   v4 = [(ABSVCardRecord *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (record)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(record);
     }
 
     else

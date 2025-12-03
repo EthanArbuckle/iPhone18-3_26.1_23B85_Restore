@@ -3,7 +3,7 @@
 - (BOOL)isPrepared;
 - (BOOL)preparedForAirPlay;
 - (MRAVEndpoint)endpoint;
-- (MRMigrationDevice)initWithUID:(id)a3;
+- (MRMigrationDevice)initWithUID:(id)d;
 - (MRMigrationDeviceDelegate)delegate;
 - (MRNowPlayingPlayerResponse)playerState;
 - (NSString)description;
@@ -13,12 +13,12 @@
 - (void)_checkIfAirPlayPossible;
 - (void)_notifyDelegateOfPlayerStateChange;
 - (void)_notifyDelegateOfStateChange;
-- (void)controller:(id)a3 didFailWithError:(id)a4;
-- (void)controller:(id)a3 didLoadResponse:(id)a4;
-- (void)controllerWillReloadForInvalidation:(id)a3;
+- (void)controller:(id)controller didFailWithError:(id)error;
+- (void)controller:(id)controller didLoadResponse:(id)response;
+- (void)controllerWillReloadForInvalidation:(id)invalidation;
 - (void)dealloc;
 - (void)prepare;
-- (void)setDeviceState:(unint64_t)a3;
+- (void)setDeviceState:(unint64_t)state;
 @end
 
 @implementation MRMigrationDevice
@@ -32,33 +32,33 @@
 
 - (void)prepare
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(MRMigrationDevice *)v2 deviceState])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(MRMigrationDevice *)selfCopy deviceState])
   {
-    [(MRMigrationDevice *)v2 setDeviceState:1];
-    v3 = [(MRMigrationDevice *)v2 controller];
-    [v3 beginLoadingUpdates];
+    [(MRMigrationDevice *)selfCopy setDeviceState:1];
+    controller = [(MRMigrationDevice *)selfCopy controller];
+    [controller beginLoadingUpdates];
 
     v4 = dispatch_time(0, 2000000000);
-    v5 = [(MRMigrationDevice *)v2 queue];
+    queue = [(MRMigrationDevice *)selfCopy queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __28__MRMigrationDevice_prepare__block_invoke;
     block[3] = &unk_1E769A228;
-    block[4] = v2;
-    dispatch_after(v4, v5, block);
+    block[4] = selfCopy;
+    dispatch_after(v4, queue, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (unint64_t)deviceState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  deviceState = v2->_deviceState;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceState = selfCopy->_deviceState;
+  objc_sync_exit(selfCopy);
 
   return deviceState;
 }
@@ -82,28 +82,28 @@
 
 - (BOOL)preparedForAirPlay
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  preparedForAirPlay = v2->_preparedForAirPlay;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  preparedForAirPlay = selfCopy->_preparedForAirPlay;
+  objc_sync_exit(selfCopy);
 
   return preparedForAirPlay;
 }
 
 - (void)_notifyDelegateOfStateChange
 {
-  v3 = [(MRMigrationDevice *)self delegate];
+  delegate = [(MRMigrationDevice *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MRMigrationDevice *)self queue];
+    queue = [(MRMigrationDevice *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__MRMigrationDevice__notifyDelegateOfStateChange__block_invoke;
     block[3] = &unk_1E769A228;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
   }
 }
 
@@ -115,47 +115,47 @@ void __49__MRMigrationDevice__notifyDelegateOfStateChange__block_invoke(uint64_t
 
 - (NSString)uid
 {
-  v2 = [(MRMigrationDevice *)self controller];
-  v3 = [v2 uid];
+  controller = [(MRMigrationDevice *)self controller];
+  v3 = [controller uid];
 
   return v3;
 }
 
 - (MRAVEndpoint)endpoint
 {
-  v2 = [(MRMigrationDevice *)self controller];
-  v3 = [v2 endpoint];
+  controller = [(MRMigrationDevice *)self controller];
+  endpoint = [controller endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 - (MRNowPlayingPlayerResponse)playerState
 {
-  v2 = [(MRMigrationDevice *)self controller];
-  v3 = [v2 response];
+  controller = [(MRMigrationDevice *)self controller];
+  response = [controller response];
 
-  return v3;
+  return response;
 }
 
-- (MRMigrationDevice)initWithUID:(id)a3
+- (MRMigrationDevice)initWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = MRMigrationDevice;
   v5 = [(MRMigrationDevice *)&v14 init];
   if (v5)
   {
-    v6 = [[MRQHONowPlayingController alloc] initWithUID:v4];
+    v6 = [[MRQHONowPlayingController alloc] initWithUID:dCopy];
     controller = v5->_controller;
     v5->_controller = v6;
 
     [(MRQHONowPlayingController *)v5->_controller setDelegate:v5];
     v5->_preparedForAirPlay = 0;
     v5->_deviceState = 0;
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.MediaRemote.MRMigrationDevice:%@|queue", v4];
-    v9 = [v8 UTF8String];
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.MediaRemote.MRMigrationDevice:%@|queue", dCopy];
+    uTF8String = [dCopy UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     queue = v5->_queue;
     v5->_queue = v11;
   }
@@ -169,15 +169,15 @@ void __49__MRMigrationDevice__notifyDelegateOfStateChange__block_invoke(uint64_t
   v4 = [(MRMigrationDevice *)self uid];
   [v3 setObject:v4 forKeyedSubscript:@"uid"];
 
-  v5 = [(MRMigrationDevice *)self endpoint];
-  [v3 setObject:v5 forKeyedSubscript:@"endpoint"];
+  endpoint = [(MRMigrationDevice *)self endpoint];
+  [v3 setObject:endpoint forKeyedSubscript:@"endpoint"];
 
-  v6 = [(MRMigrationDevice *)self playerState];
-  v7 = MRMediaRemoteCopyPlaybackStateDescription([v6 playbackState]);
+  playerState = [(MRMigrationDevice *)self playerState];
+  v7 = MRMediaRemoteCopyPlaybackStateDescription([playerState playbackState]);
   [v3 setObject:v7 forKeyedSubscript:@"playbackState"];
 
-  v8 = [(MRMigrationDevice *)self playerState];
-  if ([v8 playerHasPlayedRecently])
+  playerState2 = [(MRMigrationDevice *)self playerState];
+  if ([playerState2 playerHasPlayedRecently])
   {
     v9 = @"YES";
   }
@@ -212,8 +212,8 @@ void __49__MRMigrationDevice__notifyDelegateOfStateChange__block_invoke(uint64_t
   }
 
   [v3 setObject:v12 forKeyedSubscript:@"preparedForAirPlay"];
-  v13 = [(MRMigrationDevice *)self prepareError];
-  [v3 setObject:v13 forKeyedSubscript:@"prepareError"];
+  prepareError = [(MRMigrationDevice *)self prepareError];
+  [v3 setObject:prepareError forKeyedSubscript:@"prepareError"];
 
   return v3;
 }
@@ -240,13 +240,13 @@ void __49__MRMigrationDevice__notifyDelegateOfStateChange__block_invoke(uint64_t
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRMigrationDevice *)self dictionaryRepresentation];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictionaryRepresentation = [(MRMigrationDevice *)self dictionaryRepresentation];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setDeviceState:(unint64_t)a3
+- (void)setDeviceState:(unint64_t)state
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = _MRLogForCategory(7uLL);
@@ -265,14 +265,14 @@ void __49__MRMigrationDevice__notifyDelegateOfStateChange__block_invoke(uint64_t
       v9 = off_1E769E128[v8];
     }
 
-    if (a3 - 1 > 2)
+    if (state - 1 > 2)
     {
       v10 = @"NotPrepared";
     }
 
     else
     {
-      v10 = off_1E769E128[a3 - 1];
+      v10 = off_1E769E128[state - 1];
     }
 
     v12 = 138543874;
@@ -284,7 +284,7 @@ void __49__MRMigrationDevice__notifyDelegateOfStateChange__block_invoke(uint64_t
     _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEFAULT, "[MRMigrationDevice] <%{public}@> changing state from %@ to %@.", &v12, 0x20u);
   }
 
-  self->_deviceState = a3;
+  self->_deviceState = state;
   v11 = *MEMORY[0x1E69E9840];
 }
 
@@ -312,15 +312,15 @@ void __28__MRMigrationDevice_prepare__block_invoke(uint64_t a1)
     {
       v5 = objc_alloc_init(MRAVLightweightReconnaissanceSession);
       v6 = [(MRMigrationDevice *)self uid];
-      v7 = [(MRMigrationDevice *)self queue];
+      queue = [(MRMigrationDevice *)self queue];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __44__MRMigrationDevice__checkIfAirPlayPossible__block_invoke;
       v9[3] = &unk_1E769E108;
       v10 = v5;
-      v11 = self;
+      selfCopy = self;
       v8 = v5;
-      [(MRAVLightweightReconnaissanceSession *)v8 searchForOutputDeviceUID:v6 timeout:@"MRProximityProvider AVOD fallback" reason:v7 queue:v9 completion:7.0];
+      [(MRAVLightweightReconnaissanceSession *)v8 searchForOutputDeviceUID:v6 timeout:@"MRProximityProvider AVOD fallback" reason:queue queue:v9 completion:7.0];
     }
   }
 }
@@ -350,70 +350,70 @@ void __44__MRMigrationDevice__checkIfAirPlayPossible__block_invoke(uint64_t a1, 
   [*(a1 + 40) _notifyDelegateOfStateChange];
 }
 
-- (void)controller:(id)a3 didLoadResponse:(id)a4
+- (void)controller:(id)controller didLoadResponse:(id)response
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(MRMigrationDevice *)v7 setDeviceState:2];
-  [(MRMigrationDevice *)v7 setPrepareError:0];
-  objc_sync_exit(v7);
+  controllerCopy = controller;
+  responseCopy = response;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRMigrationDevice *)selfCopy setDeviceState:2];
+  [(MRMigrationDevice *)selfCopy setPrepareError:0];
+  objc_sync_exit(selfCopy);
 
-  [(MRMigrationDevice *)v7 _notifyDelegateOfStateChange];
-  [(MRMigrationDevice *)v7 _notifyDelegateOfPlayerStateChange];
+  [(MRMigrationDevice *)selfCopy _notifyDelegateOfStateChange];
+  [(MRMigrationDevice *)selfCopy _notifyDelegateOfPlayerStateChange];
 }
 
-- (void)controller:(id)a3 didFailWithError:(id)a4
+- (void)controller:(id)controller didFailWithError:(id)error
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if ([v6 code] == 42)
+  controllerCopy = controller;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([errorCopy code] == 42)
   {
-    [(MRMigrationDevice *)v7 setDeviceState:2];
+    [(MRMigrationDevice *)selfCopy setDeviceState:2];
   }
 
-  else if (![(MRMigrationDevice *)v7 preparedForAirPlay])
+  else if (![(MRMigrationDevice *)selfCopy preparedForAirPlay])
   {
-    [(MRMigrationDevice *)v7 _checkIfAirPlayPossible];
+    [(MRMigrationDevice *)selfCopy _checkIfAirPlayPossible];
   }
 
-  [(MRMigrationDevice *)v7 setPrepareError:v6];
-  objc_sync_exit(v7);
+  [(MRMigrationDevice *)selfCopy setPrepareError:errorCopy];
+  objc_sync_exit(selfCopy);
 
-  [(MRMigrationDevice *)v7 _notifyDelegateOfStateChange];
+  [(MRMigrationDevice *)selfCopy _notifyDelegateOfStateChange];
 }
 
-- (void)controllerWillReloadForInvalidation:(id)a3
+- (void)controllerWillReloadForInvalidation:(id)invalidation
 {
-  v5 = a3;
+  invalidationCopy = invalidation;
   if (![(MRMigrationDevice *)self preparedForAirPlay])
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    [(MRMigrationDevice *)v4 setDeviceState:1];
-    objc_sync_exit(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(MRMigrationDevice *)selfCopy setDeviceState:1];
+    objc_sync_exit(selfCopy);
 
-    [(MRMigrationDevice *)v4 _notifyDelegateOfStateChange];
+    [(MRMigrationDevice *)selfCopy _notifyDelegateOfStateChange];
   }
 }
 
 - (void)_notifyDelegateOfPlayerStateChange
 {
-  v3 = [(MRMigrationDevice *)self delegate];
+  delegate = [(MRMigrationDevice *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MRMigrationDevice *)self queue];
+    queue = [(MRMigrationDevice *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__MRMigrationDevice__notifyDelegateOfPlayerStateChange__block_invoke;
     block[3] = &unk_1E769A228;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
   }
 }
 

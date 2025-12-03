@@ -1,41 +1,41 @@
 @interface IXSRemoteInstaller
-+ (BOOL)_configurePlaceholderPromiseForCoordinator:(id)a3 remoteInstallOptions:(id)a4;
-+ (BOOL)_setInstallOptions:(id)a3 forCoordinator:(id)a4;
++ (BOOL)_configurePlaceholderPromiseForCoordinator:(id)coordinator remoteInstallOptions:(id)options;
++ (BOOL)_setInstallOptions:(id)options forCoordinator:(id)coordinator;
 + (BOOL)isInstallProhibited;
-+ (id)_coordinatorForEmbeddedAppWithRemoteInstallConfiguration:(id)a3 error:(id *)a4;
-+ (id)_coordinatorWithIdentity:(id)a3 forUpdate:(BOOL)a4 created:(BOOL *)a5 error:(id *)a6;
-+ (int)_readAssetFromXPCAssetStream:(id)a3 error:(id *)a4;
-+ (unint64_t)_autoInstallOverrideForRemoteOverride:(unsigned __int8)a3;
-+ (unint64_t)_importanceFromRemoteInstallImportance:(unsigned __int8)a3;
-+ (unint64_t)_stashModeForRemoteStashMode:(unsigned __int8)a3;
-+ (unsigned)_remoteProgressPhaseForPhase:(unint64_t)a3;
-+ (void)_cancelAppAssetPromise:(id)a3 withUnderlyingError:(id)a4;
-+ (void)_completeStreamingForExtractor:(id)a3 forReadFD:(int)a4 isMultiUser:(BOOL)a5 completion:(id)a6;
-- (IXSRemoteInstaller)initWithRemoteInstallOptions:(id)a3 xpcAssetStream:(id)a4 assetSize:(unint64_t)a5 error:(id *)a6;
++ (id)_coordinatorForEmbeddedAppWithRemoteInstallConfiguration:(id)configuration error:(id *)error;
++ (id)_coordinatorWithIdentity:(id)identity forUpdate:(BOOL)update created:(BOOL *)created error:(id *)error;
++ (int)_readAssetFromXPCAssetStream:(id)stream error:(id *)error;
++ (unint64_t)_autoInstallOverrideForRemoteOverride:(unsigned __int8)override;
++ (unint64_t)_importanceFromRemoteInstallImportance:(unsigned __int8)importance;
++ (unint64_t)_stashModeForRemoteStashMode:(unsigned __int8)mode;
++ (unsigned)_remoteProgressPhaseForPhase:(unint64_t)phase;
++ (void)_cancelAppAssetPromise:(id)promise withUnderlyingError:(id)error;
++ (void)_completeStreamingForExtractor:(id)extractor forReadFD:(int)d isMultiUser:(BOOL)user completion:(id)completion;
+- (IXSRemoteInstaller)initWithRemoteInstallOptions:(id)options xpcAssetStream:(id)stream assetSize:(unint64_t)size error:(id *)error;
 - (IXSRemoteInstallerDelegate)delegate;
 - (void)_beginTransferAndInstallEmbeddedApp;
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)coordinator:(id)a3 didUpdateProgress:(double)a4 forPhase:(unint64_t)a5 overallProgress:(double)a6;
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4;
-- (void)coordinatorDidInstallPlaceholder:(id)a3 forApplicationRecord:(id)a4;
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)coordinator:(id)coordinator didUpdateProgress:(double)progress forPhase:(unint64_t)phase overallProgress:(double)overallProgress;
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record;
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder forApplicationRecord:(id)record;
 @end
 
 @implementation IXSRemoteInstaller
 
-+ (id)_coordinatorWithIdentity:(id)a3 forUpdate:(BOOL)a4 created:(BOOL *)a5 error:(id *)a6
++ (id)_coordinatorWithIdentity:(id)identity forUpdate:(BOOL)update created:(BOOL *)created error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  updateCopy = update;
+  identityCopy = identity;
   v10 = sub_10000C504(off_100026A70);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (updateCopy)
   {
     if (v11)
     {
       v15 = 136315394;
       v16 = "+[IXSRemoteInstaller _coordinatorWithIdentity:forUpdate:created:error:]";
       v17 = 2112;
-      v18 = v9;
+      v18 = identityCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Found an existing app with %@, creating an updating coordinator", &v15, 0x16u);
     }
 
@@ -49,24 +49,24 @@
       v15 = 136315394;
       v16 = "+[IXSRemoteInstaller _coordinatorWithIdentity:forUpdate:created:error:]";
       v17 = 2112;
-      v18 = v9;
+      v18 = identityCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Could not find an existing app with %@, creating an initiating coordinator", &v15, 0x16u);
     }
 
     v12 = IXInitiatingAppInstallCoordinator_ptr;
   }
 
-  v13 = [*v12 processScopedCoordinatorForAppWithIdentity:v9 withClientID:20 createIfNotExisting:1 created:a5 error:a6];
+  v13 = [*v12 processScopedCoordinatorForAppWithIdentity:identityCopy withClientID:20 createIfNotExisting:1 created:created error:error];
 
   return v13;
 }
 
-+ (id)_coordinatorForEmbeddedAppWithRemoteInstallConfiguration:(id)a3 error:(id *)a4
++ (id)_coordinatorForEmbeddedAppWithRemoteInstallConfiguration:(id)configuration error:(id *)error
 {
   v26 = 0;
-  v5 = [a3 bundleID];
-  v6 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v5 allowPlaceholder:0 error:0];
-  v7 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:v5 personaUniqueString:@"PersonalPersonaPlaceholderString" location:0];
+  bundleID = [configuration bundleID];
+  v6 = [[LSApplicationRecord alloc] initWithBundleIdentifier:bundleID allowPlaceholder:0 error:0];
+  v7 = [[IXApplicationIdentity alloc] initWithBundleIdentifier:bundleID personaUniqueString:@"PersonalPersonaPlaceholderString" location:0];
   v25 = 0;
   v8 = [objc_opt_class() _coordinatorWithIdentity:v7 forUpdate:v6 != 0 created:&v26 error:&v25];
   v9 = v25;
@@ -111,11 +111,11 @@ LABEL_9:
     v9 = v18;
 LABEL_14:
 
-    if (a4)
+    if (error)
     {
       v19 = v9;
       v8 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -154,10 +154,10 @@ LABEL_17:
   return v8;
 }
 
-- (IXSRemoteInstaller)initWithRemoteInstallOptions:(id)a3 xpcAssetStream:(id)a4 assetSize:(unint64_t)a5 error:(id *)a6
+- (IXSRemoteInstaller)initWithRemoteInstallOptions:(id)options xpcAssetStream:(id)stream assetSize:(unint64_t)size error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  optionsCopy = options;
+  streamCopy = stream;
   v35.receiver = self;
   v35.super_class = IXSRemoteInstaller;
   v12 = [(IXSRemoteInstaller *)&v35 init];
@@ -170,11 +170,11 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  [(IXSRemoteInstaller *)v12 setRemoteInstallOptions:v10];
-  [(IXSRemoteInstaller *)v13 setXpcAssetStream:v11];
-  [(IXSRemoteInstaller *)v13 setAssetSize:a5];
-  v14 = [v10 bundleID];
-  [(IXSRemoteInstaller *)v13 setBundleID:v14];
+  [(IXSRemoteInstaller *)v12 setRemoteInstallOptions:optionsCopy];
+  [(IXSRemoteInstaller *)v13 setXpcAssetStream:streamCopy];
+  [(IXSRemoteInstaller *)v13 setAssetSize:size];
+  bundleID = [optionsCopy bundleID];
+  [(IXSRemoteInstaller *)v13 setBundleID:bundleID];
 
   if ([objc_opt_class() isInstallProhibited])
   {
@@ -188,7 +188,7 @@ LABEL_19:
     goto LABEL_6;
   }
 
-  if ([v10 installableType])
+  if ([optionsCopy installableType])
   {
     v24 = 0;
 LABEL_18:
@@ -199,14 +199,14 @@ LABEL_18:
   }
 
   v34 = 0;
-  v27 = [objc_opt_class() _coordinatorForEmbeddedAppWithRemoteInstallConfiguration:v10 error:&v34];
+  v27 = [objc_opt_class() _coordinatorForEmbeddedAppWithRemoteInstallConfiguration:optionsCopy error:&v34];
   v24 = v34;
   if (v27)
   {
     [v27 setObserver:v13];
     [(IXSRemoteInstaller *)v13 setCoordinator:v27];
     v33 = 0;
-    v28 = [v27 setImportance:objc_msgSend(objc_opt_class() error:{"_importanceFromRemoteInstallImportance:", objc_msgSend(v10, "importance")), &v33}];
+    v28 = [v27 setImportance:objc_msgSend(objc_opt_class() error:{"_importanceFromRemoteInstallImportance:", objc_msgSend(optionsCopy, "importance")), &v33}];
     v29 = v33;
     if ((v28 & 1) == 0)
     {
@@ -221,11 +221,11 @@ LABEL_18:
   }
 
 LABEL_6:
-  if (a6)
+  if (error)
   {
     v25 = v24;
     v26 = 0;
-    *a6 = v24;
+    *error = v24;
   }
 
   else
@@ -238,15 +238,15 @@ LABEL_20:
   return v26;
 }
 
-+ (unint64_t)_importanceFromRemoteInstallImportance:(unsigned __int8)a3
++ (unint64_t)_importanceFromRemoteInstallImportance:(unsigned __int8)importance
 {
   v3 = 1;
-  if (a3 == 1)
+  if (importance == 1)
   {
     v3 = 2;
   }
 
-  if (a3 == 2)
+  if (importance == 2)
   {
     return 3;
   }
@@ -257,11 +257,11 @@ LABEL_20:
   }
 }
 
-+ (unsigned)_remoteProgressPhaseForPhase:(unint64_t)a3
++ (unsigned)_remoteProgressPhaseForPhase:(unint64_t)phase
 {
-  if (a3)
+  if (phase)
   {
-    return 2 * (a3 == 1);
+    return 2 * (phase == 1);
   }
 
   else
@@ -270,46 +270,46 @@ LABEL_20:
   }
 }
 
-+ (unint64_t)_autoInstallOverrideForRemoteOverride:(unsigned __int8)a3
++ (unint64_t)_autoInstallOverrideForRemoteOverride:(unsigned __int8)override
 {
-  if (a3 == 1)
+  if (override == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (override == 2);
   }
 }
 
-+ (unint64_t)_stashModeForRemoteStashMode:(unsigned __int8)a3
++ (unint64_t)_stashModeForRemoteStashMode:(unsigned __int8)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (mode == 2);
   }
 }
 
-+ (BOOL)_configurePlaceholderPromiseForCoordinator:(id)a3 remoteInstallOptions:(id)a4
++ (BOOL)_configurePlaceholderPromiseForCoordinator:(id)coordinator remoteInstallOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identity];
-  v8 = [v7 bundleID];
+  coordinatorCopy = coordinator;
+  optionsCopy = options;
+  identity = [coordinatorCopy identity];
+  bundleID = [identity bundleID];
 
   v9 = +[IXFileManager defaultManager];
-  v10 = [v5 identity];
-  v11 = [v10 location];
+  identity2 = [coordinatorCopy identity];
+  location = [identity2 location];
 
   v12 = [IXPlaceholderSpecification alloc];
-  v13 = [v6 localizedName];
-  v14 = [v12 initWithLocalizedBundleName:v13 bundleID:v8 type:1 client:20 location:v11];
+  localizedName = [optionsCopy localizedName];
+  v14 = [v12 initWithLocalizedBundleName:localizedName bundleID:bundleID type:1 client:20 location:location];
 
   [v14 setInstallType:1];
   v68 = 0;
@@ -324,13 +324,13 @@ LABEL_20:
       sub_100012B9C();
     }
 
-    [v5 cancelForReason:v17 client:20 error:0];
+    [coordinatorCopy cancelForReason:v17 client:20 error:0];
     goto LABEL_10;
   }
 
   v60 = v9;
   v67 = v16;
-  v18 = [v5 setPlaceholderPromise:v15 error:&v67];
+  v18 = [coordinatorCopy setPlaceholderPromise:v15 error:&v67];
   v19 = v67;
 
   if ((v18 & 1) == 0)
@@ -341,20 +341,20 @@ LABEL_20:
       sub_1000126A0();
     }
 
-    [v5 cancelForReason:v19 client:20 error:0];
+    [coordinatorCopy cancelForReason:v19 client:20 error:0];
     v26 = 0;
     v27 = 0;
     v17 = v19;
     goto LABEL_50;
   }
 
-  v20 = [v6 iconData];
+  iconData = [optionsCopy iconData];
 
-  if (v20)
+  if (iconData)
   {
     v21 = [IXPromisedInMemoryData alloc];
-    v22 = [v6 iconData];
-    v23 = [v21 initWithName:@"Placeholder icon data" client:20 data:v22 location:v11];
+    iconData2 = [optionsCopy iconData];
+    v23 = [v21 initWithName:@"Placeholder icon data" client:20 data:iconData2 location:location];
 
     if (v23)
     {
@@ -381,27 +381,27 @@ LABEL_20:
       v29 = sub_10000C504(off_100026A70);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        sub_10001278C(v6);
+        sub_10001278C(optionsCopy);
       }
     }
   }
 
-  v30 = [v6 storeMetadata];
+  storeMetadata = [optionsCopy storeMetadata];
 
-  if (!v30)
+  if (!storeMetadata)
   {
     goto LABEL_29;
   }
 
-  v31 = [v6 storeMetadata];
-  v23 = [MIStoreMetadata metadataFromDictionary:v31];
+  storeMetadata2 = [optionsCopy storeMetadata];
+  v23 = [MIStoreMetadata metadataFromDictionary:storeMetadata2];
 
   if (!v23)
   {
     v34 = sub_10000C504(off_100026A70);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      sub_100012898(v6);
+      sub_100012898(optionsCopy);
     }
 
     goto LABEL_28;
@@ -435,16 +435,16 @@ LABEL_50:
 LABEL_28:
 
 LABEL_29:
-  v35 = [v6 sinfData];
+  sinfData = [optionsCopy sinfData];
 
-  if (!v35)
+  if (!sinfData)
   {
     goto LABEL_32;
   }
 
-  v36 = [v6 sinfData];
+  sinfData2 = [optionsCopy sinfData];
   v64 = v19;
-  v37 = [v15 setSinfData:v36 error:&v64];
+  v37 = [v15 setSinfData:sinfData2 error:&v64];
   v17 = v64;
 
   if ((v37 & 1) == 0)
@@ -461,23 +461,23 @@ LABEL_29:
 
   v19 = v17;
 LABEL_32:
-  v38 = [v6 bundleVersion];
+  bundleVersion = [optionsCopy bundleVersion];
 
-  if (!v38)
+  if (!bundleVersion)
   {
     v17 = v19;
     goto LABEL_39;
   }
 
   v39 = objc_opt_new();
-  v40 = [v6 bundleVersion];
-  [v39 setBundleVersion:v40];
+  bundleVersion2 = [optionsCopy bundleVersion];
+  [v39 setBundleVersion:bundleVersion2];
 
   v63 = v19;
-  LODWORD(v40) = [v15 setPlaceholderAttributes:v39 error:&v63];
+  LODWORD(bundleVersion2) = [v15 setPlaceholderAttributes:v39 error:&v63];
   v17 = v63;
 
-  if (!v40)
+  if (!bundleVersion2)
   {
     v52 = sub_10000C504(off_100026A70);
     v9 = v60;
@@ -493,7 +493,7 @@ LABEL_10:
   }
 
 LABEL_39:
-  v42 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:v8 error:0];
+  v42 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:bundleID error:0];
   v26 = v42;
   if (!v42 || ![v42 isPlaceholder])
   {
@@ -517,7 +517,7 @@ LABEL_39:
 
   [v60 diskUsageForURL:v44];
   v46 = [IXPromisedTransferToPath alloc];
-  v47 = [NSString stringWithFormat:@"Entitlements Promise for %@", v8];
+  v47 = [NSString stringWithFormat:@"Entitlements Promise for %@", bundleID];
   v48 = v45;
   v49 = v47;
   v62[1] = v17;
@@ -581,21 +581,21 @@ LABEL_51:
   return v27;
 }
 
-+ (void)_cancelAppAssetPromise:(id)a3 withUnderlyingError:(id)a4
++ (void)_cancelAppAssetPromise:(id)promise withUnderlyingError:(id)error
 {
   v5 = off_100026A70;
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  promiseCopy = promise;
   v8 = sub_10000C504(v5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     sub_100012C14(v8, v9, v10, v11, v12, v13, v14, v15);
   }
 
-  v17 = sub_100006524("+[IXSRemoteInstaller _cancelAppAssetPromise:withUnderlyingError:]", 452, @"IXRemoteErrorDomain", 7, v6, 0, @"Failed to stream the app asset from remote device", v16, v21);
+  v17 = sub_100006524("+[IXSRemoteInstaller _cancelAppAssetPromise:withUnderlyingError:]", 452, @"IXRemoteErrorDomain", 7, errorCopy, 0, @"Failed to stream the app asset from remote device", v16, v21);
 
   v22 = 0;
-  v18 = [v7 cancelForReason:v17 client:20 error:&v22];
+  v18 = [promiseCopy cancelForReason:v17 client:20 error:&v22];
 
   v19 = v22;
   if ((v18 & 1) == 0)
@@ -608,49 +608,49 @@ LABEL_51:
   }
 }
 
-+ (BOOL)_setInstallOptions:(id)a3 forCoordinator:(id)a4
++ (BOOL)_setInstallOptions:(id)options forCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
+  coordinatorCopy = coordinator;
+  optionsCopy = options;
   v8 = objc_alloc_init(MIInstallOptions);
   [v8 setInstallTargetType:1];
   [v8 setLsInstallType:1];
-  v9 = [v7 provisioningProfileDatas];
-  [v8 setProvisioningProfiles:v9];
+  provisioningProfileDatas = [optionsCopy provisioningProfileDatas];
+  [v8 setProvisioningProfiles:provisioningProfileDatas];
 
-  [v8 setAutoInstallOverride:{objc_msgSend(a1, "_autoInstallOverrideForRemoteOverride:", objc_msgSend(v7, "pairedAutoInstallOverride"))}];
-  [v8 setProvisioningProfileInstallFailureIsFatal:{objc_msgSend(v7, "provisioningProfileInstallFailureIsFatal")}];
-  [v8 setStashMode:{objc_msgSend(a1, "_stashModeForRemoteStashMode:", objc_msgSend(v7, "stashMode"))}];
+  [v8 setAutoInstallOverride:{objc_msgSend(self, "_autoInstallOverrideForRemoteOverride:", objc_msgSend(optionsCopy, "pairedAutoInstallOverride"))}];
+  [v8 setProvisioningProfileInstallFailureIsFatal:{objc_msgSend(optionsCopy, "provisioningProfileInstallFailureIsFatal")}];
+  [v8 setStashMode:{objc_msgSend(self, "_stashModeForRemoteStashMode:", objc_msgSend(optionsCopy, "stashMode"))}];
   [v8 setAllowLocalProvisioned:1];
-  v10 = [v7 geoJSONData];
-  [v8 setGeoJSONData:v10];
+  geoJSONData = [optionsCopy geoJSONData];
+  [v8 setGeoJSONData:geoJSONData];
 
-  LODWORD(v10) = [v7 installMode];
-  if (v10 == 1)
+  LODWORD(geoJSONData) = [optionsCopy installMode];
+  if (geoJSONData == 1)
   {
     [v8 setDeveloperInstall:1];
   }
 
   v14 = 0;
-  v11 = [v6 setInstallOptions:v8 error:&v14];
+  v11 = [coordinatorCopy setInstallOptions:v8 error:&v14];
   v12 = v14;
   if ((v11 & 1) == 0)
   {
-    [v6 cancelForReason:v12 client:20 error:0];
+    [coordinatorCopy cancelForReason:v12 client:20 error:0];
   }
 
   return v11;
 }
 
-+ (void)_completeStreamingForExtractor:(id)a3 forReadFD:(int)a4 isMultiUser:(BOOL)a5 completion:(id)a6
++ (void)_completeStreamingForExtractor:(id)extractor forReadFD:(int)d isMultiUser:(BOOL)user completion:(id)completion
 {
-  v9 = a3;
+  extractorCopy = extractor;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
   v18[3] = sub_10000DD30;
   v18[4] = sub_10000DD5C;
-  v19 = objc_retainBlock(a6);
+  v19 = objc_retainBlock(completion);
   v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v11 = dispatch_queue_create("com.apple.RemoteInstallerAssetStreamingWrite", v10);
 
@@ -658,19 +658,19 @@ LABEL_51:
   block[1] = 3221225472;
   block[2] = sub_10000DD64;
   block[3] = &unk_1000209C8;
-  v16 = a4;
-  v14 = v9;
+  dCopy = d;
+  v14 = extractorCopy;
   v15 = v18;
-  v17 = a5;
-  v12 = v9;
+  userCopy = user;
+  v12 = extractorCopy;
   dispatch_async(v11, block);
 
   _Block_object_dispose(v18, 8);
 }
 
-+ (int)_readAssetFromXPCAssetStream:(id)a3 error:(id *)a4
++ (int)_readAssetFromXPCAssetStream:(id)stream error:(id *)error
 {
-  v5 = a3;
+  streamCopy = stream;
   *v29 = -1;
   if (pipe(v29))
   {
@@ -699,7 +699,7 @@ LABEL_51:
       block[1] = 3221225472;
       block[2] = sub_10000E8A8;
       block[3] = &unk_100020A30;
-      v27 = v5;
+      v27 = streamCopy;
       v28 = v13;
       dispatch_async(v15, block);
 
@@ -718,10 +718,10 @@ LABEL_51:
   }
 
   v11 = sub_100006524("+[IXSRemoteInstaller _readAssetFromXPCAssetStream:error:]", v10, @"IXRemoteErrorDomain", 5, 0, 0, v9, v8, v25);
-  if (a4)
+  if (error)
   {
     v11 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   v12 = -1;
@@ -732,25 +732,25 @@ LABEL_10:
 
 - (void)_beginTransferAndInstallEmbeddedApp
 {
-  v3 = [(IXSRemoteInstaller *)self remoteInstallOptions];
-  v4 = [v3 localizedName];
+  remoteInstallOptions = [(IXSRemoteInstaller *)self remoteInstallOptions];
+  localizedName = [remoteInstallOptions localizedName];
   v33[0] = SZExtractorOptionsDenyInvalidSymlinks;
   v33[1] = SZExtractorOptionsPerformCachedWrites;
   v34[0] = &__kCFBooleanTrue;
   v34[1] = &__kCFBooleanTrue;
   v5 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
-  v6 = [(IXSRemoteInstaller *)self coordinator];
-  if (![objc_opt_class() _configurePlaceholderPromiseForCoordinator:v6 remoteInstallOptions:v3])
+  coordinator = [(IXSRemoteInstaller *)self coordinator];
+  if (![objc_opt_class() _configurePlaceholderPromiseForCoordinator:coordinator remoteInstallOptions:remoteInstallOptions])
   {
     v17 = 0;
     v8 = 0;
 LABEL_15:
-    v18 = 0;
+    targetLastPathComponent = 0;
     goto LABEL_16;
   }
 
   v32 = 0;
-  v7 = [v6 setInitialODRAssetPromises:&__NSArray0__struct error:&v32];
+  v7 = [coordinator setInitialODRAssetPromises:&__NSArray0__struct error:&v32];
   v8 = v32;
   if ((v7 & 1) == 0)
   {
@@ -763,7 +763,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  if (![objc_opt_class() _setInstallOptions:v3 forCoordinator:v6])
+  if (![objc_opt_class() _setInstallOptions:remoteInstallOptions forCoordinator:coordinator])
   {
 LABEL_14:
     v17 = 0;
@@ -771,35 +771,35 @@ LABEL_14:
   }
 
   v9 = objc_opt_class();
-  v10 = [(IXSRemoteInstaller *)self xpcAssetStream];
+  xpcAssetStream = [(IXSRemoteInstaller *)self xpcAssetStream];
   v31 = v8;
-  v11 = [v9 _readAssetFromXPCAssetStream:v10 error:&v31];
+  v11 = [v9 _readAssetFromXPCAssetStream:xpcAssetStream error:&v31];
   v12 = v31;
 
   if ((v11 & 0x80000000) != 0)
   {
-    [v6 cancelForReason:v12 client:20 error:0];
+    [coordinator cancelForReason:v12 client:20 error:0];
     v17 = 0;
-    v18 = 0;
+    targetLastPathComponent = 0;
     v8 = v12;
     goto LABEL_16;
   }
 
   v25 = v11;
   v13 = [IXPromisedStreamingZipTransfer alloc];
-  v14 = [(IXSRemoteInstaller *)self assetSize];
-  v15 = [v6 identity];
-  v16 = [v15 location];
-  v17 = [v13 initWithName:v4 client:20 streamingZipOptions:v5 archiveSize:0 diskSpaceNeeded:v14 location:v16];
+  assetSize = [(IXSRemoteInstaller *)self assetSize];
+  identity = [coordinator identity];
+  location = [identity location];
+  v17 = [v13 initWithName:localizedName client:20 streamingZipOptions:v5 archiveSize:0 diskSpaceNeeded:assetSize location:location];
 
-  v18 = [v3 targetLastPathComponent];
-  if (!v18)
+  targetLastPathComponent = [remoteInstallOptions targetLastPathComponent];
+  if (!targetLastPathComponent)
   {
     v8 = v12;
 LABEL_19:
     v22 = v8;
     v29 = v8;
-    v23 = [v6 setAppAssetPromise:v17 error:&v29];
+    v23 = [coordinator setAppAssetPromise:v17 error:&v29];
     v8 = v29;
 
     if (v23)
@@ -834,7 +834,7 @@ LABEL_19:
   }
 
   v30 = v12;
-  v20 = [v17 setTargetLastPathComponent:v18 error:&v30];
+  v20 = [v17 setTargetLastPathComponent:targetLastPathComponent error:&v30];
   v8 = v30;
 
   if (v20)
@@ -845,9 +845,9 @@ LABEL_19:
 LABEL_16:
 }
 
-- (void)coordinatorDidInstallPlaceholder:(id)a3 forApplicationRecord:(id)a4
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder forApplicationRecord:(id)record
 {
-  v4 = a3;
+  placeholderCopy = placeholder;
   v5 = sub_10000C504(off_100026A70);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -855,28 +855,28 @@ LABEL_16:
   }
 }
 
-- (void)coordinator:(id)a3 didUpdateProgress:(double)a4 forPhase:(unint64_t)a5 overallProgress:(double)a6
+- (void)coordinator:(id)coordinator didUpdateProgress:(double)progress forPhase:(unint64_t)phase overallProgress:(double)overallProgress
 {
-  v10 = [(IXSRemoteInstaller *)self delegate];
-  if (v10)
+  delegate = [(IXSRemoteInstaller *)self delegate];
+  if (delegate)
   {
-    v11 = v10;
-    [v10 remoteInstaller:self didUpdateProgress:objc_msgSend(objc_opt_class() forPhase:"_remoteProgressPhaseForPhase:" overallProgress:{a5), a4, a6}];
-    v10 = v11;
+    v11 = delegate;
+    [delegate remoteInstaller:self didUpdateProgress:objc_msgSend(objc_opt_class() forPhase:"_remoteProgressPhaseForPhase:" overallProgress:{phase), progress, overallProgress}];
+    delegate = v11;
   }
 }
 
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forApplicationRecord:(id)a4
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forApplicationRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  successfullyCopy = successfully;
+  recordCopy = record;
   v8 = sub_10000C504(off_100026A70);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v28 = "[IXSRemoteInstaller coordinatorDidCompleteSuccessfully:forApplicationRecord:]";
     v29 = 2112;
-    v30 = v6;
+    v30 = successfullyCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Coordinator completed successfully %@", buf, 0x16u);
   }
 
@@ -885,11 +885,11 @@ LABEL_16:
     v9 = sub_10000C504(off_100026A70);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 bundleID];
+      bundleID = [successfullyCopy bundleID];
       *buf = 136315394;
       v28 = "[IXSRemoteInstaller coordinatorDidCompleteSuccessfully:forApplicationRecord:]";
       v29 = 2112;
-      v30 = v10;
+      v30 = bundleID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Resuming sync bubble because the coordinator for %@ completed successfully", buf, 0x16u);
     }
 
@@ -897,10 +897,10 @@ LABEL_16:
     [v11 resumeSync];
   }
 
-  v12 = [(IXSRemoteInstaller *)self delegate];
-  if (v12)
+  delegate = [(IXSRemoteInstaller *)self delegate];
+  if (delegate)
   {
-    if (v7)
+    if (recordCopy)
     {
       v13 = 0;
     }
@@ -908,55 +908,55 @@ LABEL_16:
     else
     {
       v14 = [LSApplicationRecord alloc];
-      v15 = [v6 bundleID];
+      bundleID2 = [successfullyCopy bundleID];
       v26 = 0;
-      v7 = [v14 initWithBundleIdentifier:v15 allowPlaceholder:0 error:&v26];
+      recordCopy = [v14 initWithBundleIdentifier:bundleID2 allowPlaceholder:0 error:&v26];
       v13 = v26;
 
-      if (!v7)
+      if (!recordCopy)
       {
         v22 = sub_10000C504(off_100026A70);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          sub_1000132F0(v6);
+          sub_1000132F0(successfullyCopy);
         }
 
-        v23 = [v6 bundleID];
-        v25 = sub_100006524("[IXSRemoteInstaller coordinatorDidCompleteSuccessfully:forApplicationRecord:]", 926, @"IXRemoteErrorDomain", 5, v13, 0, @"Install for %@ completed successfully, but LaunchServices did not have a record for it", v24, v23);
+        bundleID3 = [successfullyCopy bundleID];
+        v25 = sub_100006524("[IXSRemoteInstaller coordinatorDidCompleteSuccessfully:forApplicationRecord:]", 926, @"IXRemoteErrorDomain", 5, v13, 0, @"Install for %@ completed successfully, but LaunchServices did not have a record for it", v24, bundleID3);
 
-        [v12 remoteInstaller:self canceledWithReason:v25];
-        v7 = 0;
+        [delegate remoteInstaller:self canceledWithReason:v25];
+        recordCopy = 0;
         v13 = v25;
         goto LABEL_12;
       }
     }
 
     v16 = [IXRemoteInstallResult alloc];
-    v17 = [v7 databaseUUID];
-    v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v7 sequenceNumber]);
-    v19 = [v7 URL];
-    v20 = [v7 persistentIdentifier];
-    v21 = [(IXRemoteInstallResult *)v16 initWithDBUUID:v17 dbSequenceNumber:v18 URLOfInstalledApp:v19 persistentIdentifier:v20];
+    databaseUUID = [recordCopy databaseUUID];
+    v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [recordCopy sequenceNumber]);
+    v19 = [recordCopy URL];
+    persistentIdentifier = [recordCopy persistentIdentifier];
+    v21 = [(IXRemoteInstallResult *)v16 initWithDBUUID:databaseUUID dbSequenceNumber:v18 URLOfInstalledApp:v19 persistentIdentifier:persistentIdentifier];
 
-    [v12 remoteInstaller:self completedWithInstallResult:v21];
+    [delegate remoteInstaller:self completedWithInstallResult:v21];
 LABEL_12:
   }
 }
 
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  reasonCopy = reason;
   if ([(IXSRemoteInstaller *)self isMultiUser])
   {
     v9 = sub_10000C504(off_100026A70);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 bundleID];
+      bundleID = [coordinatorCopy bundleID];
       v13 = 136315394;
       v14 = "[IXSRemoteInstaller coordinator:canceledWithReason:client:]";
       v15 = 2112;
-      v16 = v10;
+      v16 = bundleID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Resuming sync bubble because the coordinator for %@ was canceled", &v13, 0x16u);
     }
 
@@ -964,8 +964,8 @@ LABEL_12:
     [v11 resumeSync];
   }
 
-  v12 = [(IXSRemoteInstaller *)self delegate];
-  [v12 remoteInstaller:self canceledWithReason:v8];
+  delegate = [(IXSRemoteInstaller *)self delegate];
+  [delegate remoteInstaller:self canceledWithReason:reasonCopy];
 }
 
 + (BOOL)isInstallProhibited

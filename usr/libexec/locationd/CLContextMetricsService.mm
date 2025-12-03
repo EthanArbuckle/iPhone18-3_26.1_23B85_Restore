@@ -1,15 +1,15 @@
 @interface CLContextMetricsService
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLContextMetricsService)init;
 - (id).cxx_construct;
 - (void)beginService;
 - (void)endService;
 - (void)getInitialTransitionStates;
-- (void)onMotionStateNotification:(int)a3 data:(NotificationData *)a4;
-- (void)onStatusNotification:(const int *)a3 data:(const NotificationData *)a4;
-- (void)onVisit:(id)a3;
-- (void)onWifiNotification:(const int *)a3 data:(const void *)a4;
+- (void)onMotionStateNotification:(int)notification data:(NotificationData *)data;
+- (void)onStatusNotification:(const int *)notification data:(const NotificationData *)data;
+- (void)onVisit:(id)visit;
+- (void)onWifiNotification:(const int *)notification data:(const void *)data;
 - (void)queryForTransitionEvents;
 @end
 
@@ -68,12 +68,12 @@
   }
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -174,15 +174,15 @@
   [(CLRoutineMonitorServiceProtocol *)self->_routineMonitor stopLeechingVisitsForClient:self];
 }
 
-- (void)onWifiNotification:(const int *)a3 data:(const void *)a4
+- (void)onWifiNotification:(const int *)notification data:(const void *)data
 {
   [-[CLContextMetricsService universe](self "universe")];
-  v7 = *a3;
-  if (*a3 == 12 && *(a4 + 35) == 2)
+  v7 = *notification;
+  if (*notification == 12 && *(data + 35) == 2)
   {
     v9 = objc_alloc_init(NSMutableArray);
-    v10 = *(a4 + 14);
-    v11 = *(a4 + 15);
+    v10 = *(data + 14);
+    v11 = *(data + 15);
     if (v10 != v11)
     {
       v12 = *(v10 + 56) + -5.0;
@@ -203,15 +203,15 @@
 
     [(CLContextMetricsService *)self queryForTransitionEvents];
     [(CLContextScanMetrics *)self->_scanMetrics scanEvents:v9 atTime:CFAbsoluteTimeGetCurrent()];
-    v7 = *a3;
+    v7 = *notification;
   }
 
   if (v7 == 6)
   {
     scanMetrics = self->_scanMetrics;
-    if (*(a4 + 12) > 0)
+    if (*(data + 12) > 0)
     {
-      v15 = *(a4 + 96);
+      v15 = *(data + 96);
     }
 
     else
@@ -225,10 +225,10 @@
   }
 }
 
-- (void)onStatusNotification:(const int *)a3 data:(const NotificationData *)a4
+- (void)onStatusNotification:(const int *)notification data:(const NotificationData *)data
 {
   [-[CLContextMetricsService universe](self universe];
-  if (*a3 == 16)
+  if (*notification == 16)
   {
     [(CLContextMetricsService *)self queryForTransitionEvents];
     scanMetrics = self->_scanMetrics;
@@ -238,36 +238,36 @@
   }
 }
 
-- (void)onMotionStateNotification:(int)a3 data:(NotificationData *)a4
+- (void)onMotionStateNotification:(int)notification data:(NotificationData *)data
 {
   [-[CLContextMetricsService universe](self universe];
-  if (a3 == 3)
+  if (notification == 3)
   {
     scanMetrics = self->_scanMetrics;
-    v11 = *(a4 + 7);
-    v15[6] = *(a4 + 6);
+    v11 = *(data + 7);
+    v15[6] = *(data + 6);
     v15[7] = v11;
-    v16 = *(a4 + 16);
-    v12 = *(a4 + 3);
-    v15[2] = *(a4 + 2);
+    v16 = *(data + 16);
+    v12 = *(data + 3);
+    v15[2] = *(data + 2);
     v15[3] = v12;
-    v13 = *(a4 + 5);
-    v15[4] = *(a4 + 4);
+    v13 = *(data + 5);
+    v15[4] = *(data + 4);
     v15[5] = v13;
-    v14 = *(a4 + 1);
-    v15[0] = *a4;
+    v14 = *(data + 1);
+    v15[0] = *data;
     v15[1] = v14;
     [(CLContextScanMetrics *)scanMetrics motionEvent:v15];
   }
 }
 
-- (void)onVisit:(id)a3
+- (void)onVisit:(id)visit
 {
-  if ([a3 hasDepartureDate])
+  if ([visit hasDepartureDate])
   {
     scanMetrics = self->_scanMetrics;
 
-    [(CLContextScanMetrics *)scanMetrics visitEvent:a3 withFamiliarityIndex:0];
+    [(CLContextScanMetrics *)scanMetrics visitEvent:visit withFamiliarityIndex:0];
   }
 
   else
@@ -278,8 +278,8 @@
     v7[2] = sub_100535CB0;
     v7[3] = &unk_10245C918;
     v7[4] = self;
-    v7[5] = a3;
-    [(CLRoutineMonitorServiceProtocol *)routineMonitor getFamiliarityIndexForVisit:a3 withReply:v7];
+    v7[5] = visit;
+    [(CLRoutineMonitorServiceProtocol *)routineMonitor getFamiliarityIndexForVisit:visit withReply:v7];
   }
 }
 

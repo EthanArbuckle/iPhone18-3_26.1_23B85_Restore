@@ -1,14 +1,14 @@
 @interface CNLaunchServicesProxyServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CNLaunchServicesProxyServiceDelegate)init;
-- (CNLaunchServicesProxyServiceDelegate)initWithLaunchServices:(id)a3;
-- (void)applicationForBundleIdentifier:(id)a3 withReply:(id)a4;
-- (void)applicationsAvailableForDefaultAppCategory:(id)a3 withReply:(id)a4;
-- (void)applicationsAvailableForHandlingURLScheme:(id)a3 withReply:(id)a4;
-- (void)applicationsForUserActivityType:(id)a3 withReply:(id)a4;
-- (void)defaultApplicationForDefaultAppCategory:(id)a3 withReply:(id)a4;
-- (void)openSensitiveURLInBackground:(id)a3 withOptions:(id)a4 withReply:(id)a5;
-- (void)openUserActivityData:(id)a3 inApplication:(id)a4 withReply:(id)a5;
+- (CNLaunchServicesProxyServiceDelegate)initWithLaunchServices:(id)services;
+- (void)applicationForBundleIdentifier:(id)identifier withReply:(id)reply;
+- (void)applicationsAvailableForDefaultAppCategory:(id)category withReply:(id)reply;
+- (void)applicationsAvailableForHandlingURLScheme:(id)scheme withReply:(id)reply;
+- (void)applicationsForUserActivityType:(id)type withReply:(id)reply;
+- (void)defaultApplicationForDefaultAppCategory:(id)category withReply:(id)reply;
+- (void)openSensitiveURLInBackground:(id)background withOptions:(id)options withReply:(id)reply;
+- (void)openUserActivityData:(id)data inApplication:(id)application withReply:(id)reply;
 @end
 
 @implementation CNLaunchServicesProxyServiceDelegate
@@ -21,30 +21,30 @@
   return v4;
 }
 
-- (CNLaunchServicesProxyServiceDelegate)initWithLaunchServices:(id)a3
+- (CNLaunchServicesProxyServiceDelegate)initWithLaunchServices:(id)services
 {
-  v5 = a3;
+  servicesCopy = services;
   v10.receiver = self;
   v10.super_class = CNLaunchServicesProxyServiceDelegate;
   v6 = [(CNLaunchServicesProxyServiceDelegate *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_launchServices, a3);
+    objc_storeStrong(&v6->_launchServices, services);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[CNEnvironment currentEnvironment];
-  v7 = [v6 entitlementVerifier];
-  if (v5)
+  entitlementVerifier = [v6 entitlementVerifier];
+  if (connectionCopy)
   {
-    [v5 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -53,86 +53,86 @@
   }
 
   v11 = 0;
-  v8 = [v7 auditToken:v12 hasBooleanEntitlement:CNEntitlementNameContactsUIFrameworkSPI error:&v11];
+  v8 = [entitlementVerifier auditToken:v12 hasBooleanEntitlement:CNEntitlementNameContactsUIFrameworkSPI error:&v11];
 
   if (v8)
   {
     v9 = +[CNLaunchServicesRemoteAdapter launchServicesAdapterInterface];
-    [v5 setExportedInterface:v9];
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedInterface:v9];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
   }
 
   return v8;
 }
 
-- (void)applicationsForUserActivityType:(id)a3 withReply:(id)a4
+- (void)applicationsForUserActivityType:(id)type withReply:(id)reply
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
-  v9 = [v10 applicationsForUserActivityType:v8];
+  replyCopy = reply;
+  typeCopy = type;
+  launchServices = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
+  v9 = [launchServices applicationsForUserActivityType:typeCopy];
 
-  (*(a4 + 2))(v7, v9, 0);
+  (*(reply + 2))(replyCopy, v9, 0);
 }
 
-- (void)applicationsAvailableForHandlingURLScheme:(id)a3 withReply:(id)a4
+- (void)applicationsAvailableForHandlingURLScheme:(id)scheme withReply:(id)reply
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
-  v9 = [v10 applicationsAvailableForHandlingURLScheme:v8];
+  replyCopy = reply;
+  schemeCopy = scheme;
+  launchServices = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
+  v9 = [launchServices applicationsAvailableForHandlingURLScheme:schemeCopy];
 
-  (*(a4 + 2))(v7, v9, 0);
+  (*(reply + 2))(replyCopy, v9, 0);
 }
 
-- (void)applicationsAvailableForDefaultAppCategory:(id)a3 withReply:(id)a4
+- (void)applicationsAvailableForDefaultAppCategory:(id)category withReply:(id)reply
 {
-  v6 = a4;
-  v7 = [a3 integerValue];
-  v9 = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
-  v8 = [v9 applicationsAvailableForDefaultAppCategory:v7];
-  v6[2](v6, v8, 0);
+  replyCopy = reply;
+  integerValue = [category integerValue];
+  launchServices = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
+  v8 = [launchServices applicationsAvailableForDefaultAppCategory:integerValue];
+  replyCopy[2](replyCopy, v8, 0);
 }
 
-- (void)defaultApplicationForDefaultAppCategory:(id)a3 withReply:(id)a4
+- (void)defaultApplicationForDefaultAppCategory:(id)category withReply:(id)reply
 {
-  v6 = a4;
-  v7 = [a3 integerValue];
+  replyCopy = reply;
+  integerValue = [category integerValue];
   v8 = CNNilToNull;
-  v9 = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
-  v10 = [v9 defaultApplicationForDefaultAppCategory:v7];
+  launchServices = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
+  v10 = [launchServices defaultApplicationForDefaultAppCategory:integerValue];
   v11 = (*(v8 + 16))(v8, v10);
 
-  v6[2](v6, v11, 0);
+  replyCopy[2](replyCopy, v11, 0);
 }
 
-- (void)applicationForBundleIdentifier:(id)a3 withReply:(id)a4
+- (void)applicationForBundleIdentifier:(id)identifier withReply:(id)reply
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
-  v9 = [v10 applicationForBundleIdentifier:v8];
+  replyCopy = reply;
+  identifierCopy = identifier;
+  launchServices = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
+  v9 = [launchServices applicationForBundleIdentifier:identifierCopy];
 
-  (*(a4 + 2))(v7, v9, 0);
+  (*(reply + 2))(replyCopy, v9, 0);
 }
 
-- (void)openUserActivityData:(id)a3 inApplication:(id)a4 withReply:(id)a5
+- (void)openUserActivityData:(id)data inApplication:(id)application withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
-  [v11 openUserActivityData:v10 inApplication:v9 completionHandler:v8];
+  replyCopy = reply;
+  applicationCopy = application;
+  dataCopy = data;
+  launchServices = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
+  [launchServices openUserActivityData:dataCopy inApplication:applicationCopy completionHandler:replyCopy];
 }
 
-- (void)openSensitiveURLInBackground:(id)a3 withOptions:(id)a4 withReply:(id)a5
+- (void)openSensitiveURLInBackground:(id)background withOptions:(id)options withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
-  [v11 openSensitiveURLInBackground:v10 withOptions:v9 completionHandler:v8];
+  replyCopy = reply;
+  optionsCopy = options;
+  backgroundCopy = background;
+  launchServices = [(CNLaunchServicesProxyServiceDelegate *)self launchServices];
+  [launchServices openSensitiveURLInBackground:backgroundCopy withOptions:optionsCopy completionHandler:replyCopy];
 }
 
 @end

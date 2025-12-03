@@ -1,34 +1,34 @@
 @interface AFVoiceCommandGrammarParsePackage
-- (AFVoiceCommandGrammarParsePackage)initWithCoder:(id)a3;
-- (AFVoiceCommandGrammarParsePackage)initWithNBestParses:(id)a3 preITNNBestParses:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (AFVoiceCommandGrammarParsePackage)initWithCoder:(id)coder;
+- (AFVoiceCommandGrammarParsePackage)initWithNBestParses:(id)parses preITNNBestParses:(id)bestParses;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFVoiceCommandGrammarParsePackage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nBestParses = self->_nBestParses;
-  v5 = a3;
-  [v5 encodeObject:nBestParses forKey:@"AFVoiceCommandGrammarParsePackage::nBestParses"];
-  [v5 encodeObject:self->_preITNNBestParses forKey:@"AFVoiceCommandGrammarParsePackage::preITNNBestParses"];
+  coderCopy = coder;
+  [coderCopy encodeObject:nBestParses forKey:@"AFVoiceCommandGrammarParsePackage::nBestParses"];
+  [coderCopy encodeObject:self->_preITNNBestParses forKey:@"AFVoiceCommandGrammarParsePackage::preITNNBestParses"];
 }
 
-- (AFVoiceCommandGrammarParsePackage)initWithCoder:(id)a3
+- (AFVoiceCommandGrammarParsePackage)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"AFVoiceCommandGrammarParsePackage::nBestParses"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"AFVoiceCommandGrammarParsePackage::nBestParses"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"AFVoiceCommandGrammarParsePackage::preITNNBestParses"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"AFVoiceCommandGrammarParsePackage::preITNNBestParses"];
 
   v13 = [(AFVoiceCommandGrammarParsePackage *)self initWithNBestParses:v8 preITNNBestParses:v12];
   return v13;
@@ -53,8 +53,8 @@
 
   else
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
-    [v3 setObject:v7 forKey:@"nBestParses"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v3 setObject:null forKey:@"nBestParses"];
   }
 
   if ([(NSArray *)self->_preITNNBestParses count])
@@ -66,15 +66,15 @@
     v14 = __61__AFVoiceCommandGrammarParsePackage_dictionaryRepresentation__block_invoke_2;
     v15 = &unk_1E73446A8;
     v16 = v8;
-    v10 = v8;
+    null2 = v8;
     [(NSArray *)preITNNBestParses enumerateObjectsUsingBlock:&v12];
-    [v3 setObject:v10 forKey:{@"preITNNBestParses", v12, v13, v14, v15}];
+    [v3 setObject:null2 forKey:{@"preITNNBestParses", v12, v13, v14, v15}];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
-    [v3 setObject:v10 forKey:@"preITNNBestParses"];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [v3 setObject:null2 forKey:@"preITNNBestParses"];
   }
 
   return v3;
@@ -96,14 +96,14 @@ void __61__AFVoiceCommandGrammarParsePackage_dictionaryRepresentation__block_inv
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendString:@"--nBestParses--"];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendString:@"--nBestParses--"];
   nBestParses = self->_nBestParses;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __48__AFVoiceCommandGrammarParsePackage_description__block_invoke;
   v13[3] = &unk_1E73446A8;
-  v5 = v3;
+  v5 = string;
   v14 = v5;
   [(NSArray *)nBestParses enumerateObjectsUsingBlock:v13];
   [v5 appendString:@"\n--preITNNBestParses--"];
@@ -147,10 +147,10 @@ void __48__AFVoiceCommandGrammarParsePackage_description__block_invoke_2(uint64_
   [v7 appendFormat:@"%@", v8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -160,14 +160,14 @@ void __48__AFVoiceCommandGrammarParsePackage_description__block_invoke_2(uint64_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFVoiceCommandGrammarParsePackage *)v5 nBestParses];
+      v5 = equalCopy;
+      nBestParses = [(AFVoiceCommandGrammarParsePackage *)v5 nBestParses];
       nBestParses = self->_nBestParses;
-      if (nBestParses == v6 || [(NSArray *)nBestParses isEqual:v6])
+      if (nBestParses == nBestParses || [(NSArray *)nBestParses isEqual:nBestParses])
       {
-        v8 = [(AFVoiceCommandGrammarParsePackage *)v5 preITNNBestParses];
+        preITNNBestParses = [(AFVoiceCommandGrammarParsePackage *)v5 preITNNBestParses];
         preITNNBestParses = self->_preITNNBestParses;
-        v10 = preITNNBestParses == v8 || [(NSArray *)preITNNBestParses isEqual:v8];
+        v10 = preITNNBestParses == preITNNBestParses || [(NSArray *)preITNNBestParses isEqual:preITNNBestParses];
       }
 
       else
@@ -185,20 +185,20 @@ void __48__AFVoiceCommandGrammarParsePackage_description__block_invoke_2(uint64_
   return v10;
 }
 
-- (AFVoiceCommandGrammarParsePackage)initWithNBestParses:(id)a3 preITNNBestParses:(id)a4
+- (AFVoiceCommandGrammarParsePackage)initWithNBestParses:(id)parses preITNNBestParses:(id)bestParses
 {
-  v6 = a3;
-  v7 = a4;
+  parsesCopy = parses;
+  bestParsesCopy = bestParses;
   v14.receiver = self;
   v14.super_class = AFVoiceCommandGrammarParsePackage;
   v8 = [(AFVoiceCommandGrammarParsePackage *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [parsesCopy copy];
     nBestParses = v8->_nBestParses;
     v8->_nBestParses = v9;
 
-    v11 = [v7 copy];
+    v11 = [bestParsesCopy copy];
     preITNNBestParses = v8->_preITNNBestParses;
     v8->_preITNNBestParses = v11;
   }

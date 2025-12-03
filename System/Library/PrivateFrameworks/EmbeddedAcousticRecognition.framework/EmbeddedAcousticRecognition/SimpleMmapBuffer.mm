@@ -1,11 +1,11 @@
 @interface SimpleMmapBuffer
-- (SimpleMmapBuffer)initWithData:(const void *)a3 ofSize:(unint64_t)a4;
+- (SimpleMmapBuffer)initWithData:(const void *)data ofSize:(unint64_t)size;
 - (void)dealloc;
 @end
 
 @implementation SimpleMmapBuffer
 
-- (SimpleMmapBuffer)initWithData:(const void *)a3 ofSize:(unint64_t)a4
+- (SimpleMmapBuffer)initWithData:(const void *)data ofSize:(unint64_t)size
 {
   v32 = *MEMORY[0x1E69E9840];
   v6 = [(SimpleMmapBuffer *)self init];
@@ -19,11 +19,11 @@ LABEL_26:
 
   v22 = v6;
   v8 = NSTemporaryDirectory();
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
-  v11 = [v8 stringByAppendingPathComponent:v10];
-  v12 = [v11 UTF8String];
-  v13 = strlen(v12);
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = [v8 stringByAppendingPathComponent:uUIDString];
+  uTF8String = [v11 UTF8String];
+  v13 = strlen(uTF8String);
   if (v13 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -38,14 +38,14 @@ LABEL_26:
   v24 = v13;
   if (v13)
   {
-    memmove(&__dst, v12, v13);
+    memmove(&__dst, uTF8String, v13);
   }
 
   *(&__dst + v14) = 0;
 
   std::ofstream::basic_ofstream(&v26);
   v7 = v22;
-  if (a3)
+  if (data)
   {
     std::ostream::write();
   }
@@ -58,7 +58,7 @@ LABEL_26:
     {
       v16 = *(v15 + 5);
       memset(v30, 0, sizeof(v30));
-      v31 = a4;
+      sizeCopy = size;
       (*(*v16 + 40))(v29);
       if (v29[16] == -1)
       {
@@ -89,13 +89,13 @@ LABEL_26:
   v18 = open(p_dst, 514, 384);
   if ((v18 & 0x80000000) == 0)
   {
-    [(SimpleMmapBuffer *)v22 setDataPointer:mmap(0, a4, 3, 1, v18, 0)];
+    [(SimpleMmapBuffer *)v22 setDataPointer:mmap(0, size, 3, 1, v18, 0)];
     close(v18);
     v19 = v24 >= 0 ? &__dst : __dst;
     unlink(v19);
     if ([(SimpleMmapBuffer *)v22 dataPointer]!= -1)
     {
-      [(SimpleMmapBuffer *)v22 setSize:a4];
+      [(SimpleMmapBuffer *)v22 setSize:size];
       v26 = *MEMORY[0x1E69E54D0];
       *&v27[*(v26 - 24) - 8] = *(MEMORY[0x1E69E54D0] + 24);
       MEMORY[0x1B8C84A00](v27);

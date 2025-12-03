@@ -1,7 +1,7 @@
 @interface RTAonWiFiLeechProvider
 + (_TtC14libcoreroutine22RTAonWiFiLeechProvider)shared;
 - (_TtC14libcoreroutine22RTAonWiFiLeechProvider)init;
-- (void)registerWithQueue:(id)a3 callback:(id)a4;
+- (void)registerWithQueue:(id)queue callback:(id)callback;
 @end
 
 @implementation RTAonWiFiLeechProvider
@@ -18,14 +18,14 @@
   return v3;
 }
 
-- (void)registerWithQueue:(id)a3 callback:(id)a4
+- (void)registerWithQueue:(id)queue callback:(id)callback
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(callback);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  RTAonWiFiLeechProvider.register(queue:callback:)(v8, sub_2304BF418, v7);
+  queueCopy = queue;
+  selfCopy = self;
+  RTAonWiFiLeechProvider.register(queue:callback:)(queueCopy, sub_2304BF418, v7);
 }
 
 - (_TtC14libcoreroutine22RTAonWiFiLeechProvider)init

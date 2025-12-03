@@ -1,23 +1,23 @@
 @interface PKShapeView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (PKShapeView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (PKShapeView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PKShapeView
 
-- (PKShapeView)initWithFrame:(CGRect)a3
+- (PKShapeView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PKShapeView;
-  v3 = [(PKShapeView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKShapeView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
-    v5 = CGColorRetain([v4 CGColor]);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v5 = CGColorRetain([blackColor CGColor]);
 
-    v6 = [(PKShapeView *)v3 layer];
+    layer = [(PKShapeView *)v3 layer];
     shapeLayer = v3->_shapeLayer;
-    v3->_shapeLayer = v6;
+    v3->_shapeLayer = layer;
 
     [(CAShapeLayer *)v3->_shapeLayer setFillColor:v5];
     [(CAShapeLayer *)v3->_shapeLayer setStrokeColor:v5];
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"path"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"path"])
   {
     v5 = 1;
   }
@@ -39,7 +39,7 @@
   {
     v7.receiver = self;
     v7.super_class = PKShapeView;
-    v5 = [(PKShapeView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(PKShapeView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

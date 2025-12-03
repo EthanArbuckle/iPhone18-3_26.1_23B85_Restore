@@ -1,19 +1,19 @@
 @interface _MKTicket
 - (MKMapItemIdentifier)mapItemIdentifierForSpotlight;
 - (NSString)description;
-- (_MKTicket)initWithTicket:(id)a3;
-- (void)submitWithHandler:(id)a3 timeout:(int64_t)a4 queue:(id)a5 networkActivity:(id)a6;
-- (void)submitWithRefinedHandler:(id)a3 timeout:(int64_t)a4 networkActivity:(id)a5;
+- (_MKTicket)initWithTicket:(id)ticket;
+- (void)submitWithHandler:(id)handler timeout:(int64_t)timeout queue:(id)queue networkActivity:(id)activity;
+- (void)submitWithRefinedHandler:(id)handler timeout:(int64_t)timeout networkActivity:(id)activity;
 @end
 
 @implementation _MKTicket
 
 - (MKMapItemIdentifier)mapItemIdentifierForSpotlight
 {
-  v2 = [(GEOMapServiceTicket *)self->_ticket geoMapItemIdentifierForSpotlight];
-  if (v2)
+  geoMapItemIdentifierForSpotlight = [(GEOMapServiceTicket *)self->_ticket geoMapItemIdentifierForSpotlight];
+  if (geoMapItemIdentifierForSpotlight)
   {
-    v3 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:v2];
+    v3 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:geoMapItemIdentifierForSpotlight];
   }
 
   else
@@ -24,12 +24,12 @@
   return v3;
 }
 
-- (void)submitWithHandler:(id)a3 timeout:(int64_t)a4 queue:(id)a5 networkActivity:(id)a6
+- (void)submitWithHandler:(id)handler timeout:(int64_t)timeout queue:(id)queue networkActivity:(id)activity
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  handlerCopy = handler;
+  queueCopy = queue;
+  v12 = queueCopy;
+  if (handlerCopy)
   {
     ticket = self->_ticket;
     v14[0] = MEMORY[0x1E69E9820];
@@ -37,17 +37,17 @@
     v14[2] = __61___MKTicket_submitWithHandler_timeout_queue_networkActivity___block_invoke;
     v14[3] = &unk_1E76CAA98;
     v14[4] = self;
-    v15 = v11;
-    v16 = v10;
-    [(GEOMapServiceTicket *)ticket submitWithHandler:v14 timeout:a4 networkActivity:a6];
+    v15 = queueCopy;
+    v16 = handlerCopy;
+    [(GEOMapServiceTicket *)ticket submitWithHandler:v14 timeout:timeout networkActivity:activity];
   }
 }
 
-- (void)submitWithRefinedHandler:(id)a3 timeout:(int64_t)a4 networkActivity:(id)a5
+- (void)submitWithRefinedHandler:(id)handler timeout:(int64_t)timeout networkActivity:(id)activity
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (handlerCopy)
   {
     ticket = self->_ticket;
     v11[0] = MEMORY[0x1E69E9820];
@@ -55,8 +55,8 @@
     v11[2] = __62___MKTicket_submitWithRefinedHandler_timeout_networkActivity___block_invoke;
     v11[3] = &unk_1E76C8440;
     v11[4] = self;
-    v12 = v8;
-    [(GEOMapServiceTicket *)ticket submitWithRefinedHandler:v11 timeout:a4 networkActivity:a5];
+    v12 = handlerCopy;
+    [(GEOMapServiceTicket *)ticket submitWithRefinedHandler:v11 timeout:timeout networkActivity:activity];
   }
 }
 
@@ -71,16 +71,16 @@
   return v5;
 }
 
-- (_MKTicket)initWithTicket:(id)a3
+- (_MKTicket)initWithTicket:(id)ticket
 {
-  v5 = a3;
+  ticketCopy = ticket;
   v10.receiver = self;
   v10.super_class = _MKTicket;
   v6 = [(_MKTicket *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ticket, a3);
+    objc_storeStrong(&v6->_ticket, ticket);
     v8 = v7;
   }
 

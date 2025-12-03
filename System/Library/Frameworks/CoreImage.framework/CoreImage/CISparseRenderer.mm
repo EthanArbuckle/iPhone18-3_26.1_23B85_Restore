@@ -1,13 +1,13 @@
 @interface CISparseRenderer
 + (id)customAttributes;
 - (BOOL)_useD2XRenderer;
-- (id)_kernel:(BOOL)a3 alpha:(BOOL)a4;
-- (id)_lutKernel:(BOOL)a3 alpha:(BOOL)a4;
-- (id)_packageParams:(BOOL)a3 extent:(CGRect)a4 image:(id)a5 haveAlpha:(BOOL)a6;
-- (id)baseVecsLUT:(unsigned int)a3;
+- (id)_kernel:(BOOL)_kernel alpha:(BOOL)alpha;
+- (id)_lutKernel:(BOOL)kernel alpha:(BOOL)alpha;
+- (id)_packageParams:(BOOL)params extent:(CGRect)extent image:(id)image haveAlpha:(BOOL)alpha;
+- (id)baseVecsLUT:(unsigned int)t;
 - (id)baseVecsLUTGenerator;
 - (id)outputImage;
-- (id)stepsLUT:(unsigned int)a3;
+- (id)stepsLUT:(unsigned int)t;
 - (id)stepsLUTGenerator;
 @end
 
@@ -40,14 +40,14 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 }
 
-- (id)_packageParams:(BOOL)a3 extent:(CGRect)a4 image:(id)a5 haveAlpha:(BOOL)a6
+- (id)_packageParams:(BOOL)params extent:(CGRect)extent image:(id)image haveAlpha:(BOOL)alpha
 {
-  v73 = a3;
-  v74 = a6;
-  width = a4.size.width;
-  height = a4.size.height;
+  paramsCopy = params;
+  alphaCopy = alpha;
+  width = extent.size.width;
+  height = extent.size.height;
   v77[6] = *MEMORY[0x1E69E9840];
-  [(NSNumber *)self->inputApertureScaling floatValue:a4.origin.x];
+  [(NSNumber *)self->inputApertureScaling floatValue:extent.origin.x];
   v9 = v8;
   v10 = v8;
   SDOFRenderingValue(&cfstr_Ringamplitude.isa, self->inputTuningParameters);
@@ -114,9 +114,9 @@
   }
 
   v70 = [CIVector vectorWithX:v52 Y:v44 Z:v46 W:v48];
-  v53 = [CIVector vectorWithX:width Y:height Z:v74];
+  v53 = [CIVector vectorWithX:width Y:height Z:alphaCopy];
   v54 = MEMORY[0x1E695DF70];
-  v77[0] = a5;
+  v77[0] = image;
   v77[1] = v49;
   v77[2] = v68;
   v77[3] = v50;
@@ -124,12 +124,12 @@
   v77[5] = [CIVector vectorWithX:width Y:height];
   v55 = [v54 arrayWithArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v77, 6)}];
   v56 = v55;
-  if (v74)
+  if (alphaCopy)
   {
     [v55 insertObject:self->inputMatteImage atIndex:1];
   }
 
-  v76[0] = a5;
+  v76[0] = image;
   v76[1] = v49;
   v76[2] = v68;
   v76[3] = v50;
@@ -137,10 +137,10 @@
   v76[5] = v70;
   v76[6] = v53;
   result = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:7];
-  if (v74)
+  if (alphaCopy)
   {
     inputMatteImage = self->inputMatteImage;
-    v75[0] = a5;
+    v75[0] = image;
     v75[1] = inputMatteImage;
     v75[2] = v49;
     v75[3] = v68;
@@ -151,7 +151,7 @@
     result = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:8];
   }
 
-  if (v73)
+  if (paramsCopy)
   {
     return v56;
   }
@@ -214,47 +214,47 @@
   return [(CIKernel *)CIColorKernel cachedKernelWithFunctionName:@"_sparserendering_baseVecLUT" fromMetalLibrary:v2 error:0];
 }
 
-- (id)stepsLUT:(unsigned int)a3
+- (id)stepsLUT:(unsigned int)t
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = 3 * a3 * a3;
-  v4 = [(CISparseRenderer *)self stepsLUTGenerator];
+  v3 = 3 * t * t;
+  stepsLUTGenerator = [(CISparseRenderer *)self stepsLUTGenerator];
   v5 = v3;
   v10[0] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v3];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{2056, @"kCIKernelOutputFormat"}];
-  return [v4 applyWithExtent:v6 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v9, &v8, 1), 0.0, 0.0, v5, 1.0}];
+  return [stepsLUTGenerator applyWithExtent:v6 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v9, &v8, 1), 0.0, 0.0, v5, 1.0}];
 }
 
-- (id)baseVecsLUT:(unsigned int)a3
+- (id)baseVecsLUT:(unsigned int)t
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = 3 * a3 * a3;
-  v4 = [(CISparseRenderer *)self baseVecsLUTGenerator];
+  v3 = 3 * t * t;
+  baseVecsLUTGenerator = [(CISparseRenderer *)self baseVecsLUTGenerator];
   v7 = @"kCIKernelOutputFormat";
   v8[0] = [MEMORY[0x1E696AD98] numberWithInt:2054];
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  return [v4 applyWithExtent:MEMORY[0x1E695E0F0] arguments:v5 options:{0.0, 0.0, v3, 1.0}];
+  return [baseVecsLUTGenerator applyWithExtent:MEMORY[0x1E695E0F0] arguments:v5 options:{0.0, 0.0, v3, 1.0}];
 }
 
-- (id)_lutKernel:(BOOL)a3 alpha:(BOOL)a4
+- (id)_lutKernel:(BOOL)kernel alpha:(BOOL)alpha
 {
-  v4 = a4;
-  v5 = a3;
+  alphaCopy = alpha;
+  kernelCopy = kernel;
   v6 = SDOFV2MetalLibURL();
   v7 = @"_sparserendering_opt2x_sample_noAlphaLUT";
-  if (v4)
+  if (alphaCopy)
   {
     v7 = @"_sparserendering_opt2x_sample_withAlphaLUT";
   }
 
   v8 = @"_sparserendering_sample_withAlphaLUT";
-  if (!v4)
+  if (!alphaCopy)
   {
     v8 = @"_sparserendering_sample_noAlphaLUT";
   }
 
-  if (v5)
+  if (kernelCopy)
   {
     v9 = v7;
   }
@@ -267,24 +267,24 @@
   return [CIKernel cachedKernelWithFunctionName:v9 fromMetalLibrary:v6 error:0];
 }
 
-- (id)_kernel:(BOOL)a3 alpha:(BOOL)a4
+- (id)_kernel:(BOOL)_kernel alpha:(BOOL)alpha
 {
-  v4 = a4;
-  v5 = a3;
+  alphaCopy = alpha;
+  _kernelCopy = _kernel;
   v6 = SDOFV2MetalLibURL();
   v7 = @"_sparserendering_opt2x_sample";
-  if (v4)
+  if (alphaCopy)
   {
     v7 = @"_sparserendering_opt2x_sampleWithAlpha";
   }
 
   v8 = @"_sparserendering_sample_h";
-  if (!v4)
+  if (!alphaCopy)
   {
     v8 = @"_sparserendering_opt_sample_h";
   }
 
-  if (v5)
+  if (_kernelCopy)
   {
     v9 = v7;
   }
@@ -300,7 +300,7 @@
 - (id)outputImage
 {
   v70 = *MEMORY[0x1E69E9840];
-  v3 = [(CISparseRenderer *)self _useD2XRenderer];
+  _useD2XRenderer = [(CISparseRenderer *)self _useD2XRenderer];
   SDOFRenderingValue(&cfstr_Alphaepsilon.isa, self->inputTuningParameters);
   v4 = &off_19CF22000;
   if (v5 == 1.0)
@@ -344,12 +344,12 @@
     v15 = v13;
     v16 = [(CISparseRenderer *)self stepsLUT:v13];
     v17 = [(CISparseRenderer *)self baseVecsLUT:v15];
-    v18 = [(CISparseRenderer *)self _lutKernel:v3 alpha:*(v64 + 24)];
+    v18 = [(CISparseRenderer *)self _lutKernel:_useD2XRenderer alpha:*(v64 + 24)];
   }
 
   else
   {
-    v18 = [(CISparseRenderer *)self _kernel:v3 alpha:*(v64 + 24)];
+    v18 = [(CISparseRenderer *)self _kernel:_useD2XRenderer alpha:*(v64 + 24)];
     v17 = 0;
     v16 = 0;
   }
@@ -359,8 +359,8 @@
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(CIImage *)self->inputImage imageByClampingToExtent];
-  v28 = [(CISparseRenderer *)self _packageParams:v3 extent:v27 image:*(v64 + 24) haveAlpha:v20, v22, v24, v26];
+  imageByClampingToExtent = [(CIImage *)self->inputImage imageByClampingToExtent];
+  v28 = [(CISparseRenderer *)self _packageParams:_useD2XRenderer extent:imageByClampingToExtent image:*(v64 + 24) haveAlpha:v20, v22, v24, v26];
   v29 = v28;
   if ([CISparseRenderer outputImage]::useLUTBasedImages == 1)
   {

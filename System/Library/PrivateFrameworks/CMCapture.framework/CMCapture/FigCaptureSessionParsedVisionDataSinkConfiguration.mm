@@ -1,6 +1,6 @@
 @interface FigCaptureSessionParsedVisionDataSinkConfiguration
 - (void)dealloc;
-- (void)initWithVisionDataConnectionConfiguration:(void *)a3 videoDataConnectionConfiguration:;
+- (void)initWithVisionDataConnectionConfiguration:(void *)configuration videoDataConnectionConfiguration:;
 @end
 
 @implementation FigCaptureSessionParsedVisionDataSinkConfiguration
@@ -12,20 +12,20 @@
   [(FigCaptureSessionParsedVisionDataSinkConfiguration *)&v3 dealloc];
 }
 
-- (void)initWithVisionDataConnectionConfiguration:(void *)a3 videoDataConnectionConfiguration:
+- (void)initWithVisionDataConnectionConfiguration:(void *)configuration videoDataConnectionConfiguration:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = FigCaptureSessionParsedVisionDataSinkConfiguration;
   v5 = objc_msgSendSuper2(&v7, sel_init);
   if (v5)
   {
     v5[1] = a2;
-    v5[2] = a3;
+    v5[2] = configuration;
   }
 
   return v5;

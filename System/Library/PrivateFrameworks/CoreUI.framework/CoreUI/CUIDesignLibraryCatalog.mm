@@ -1,31 +1,31 @@
 @interface CUIDesignLibraryCatalog
-+ (id)_bundleNameForResolvedDesignSystem:(int64_t)a3;
-+ (id)_catalogPathComponentForDesignSystem:(int64_t)a3 colorScheme:(int64_t)a4 contrast:(int64_t)a5 styling:(int64_t)a6 error:(id *)a7;
-+ (id)catalogForDesignSystem:(int64_t)a3 colorScheme:(int64_t)a4 contrast:(int64_t)a5 styling:(int64_t)a6 error:(id *)a7;
-- (CUIDesignLibraryCatalog)initWithURL:(id)a3 error:(id *)a4;
-- (id)_colorNameStringFromNameEnum:(int64_t)a3 palette:(int64_t)a4;
-- (id)colorWithName:(int64_t)a3 palette:(int64_t)a4 displayGamut:(int64_t)a5 hierarchyLevel:(int64_t)a6 error:(id *)a7;
-- (id)shapeEffectPresetWithName:(id)a3 error:(id *)a4;
++ (id)_bundleNameForResolvedDesignSystem:(int64_t)system;
++ (id)_catalogPathComponentForDesignSystem:(int64_t)system colorScheme:(int64_t)scheme contrast:(int64_t)contrast styling:(int64_t)styling error:(id *)error;
++ (id)catalogForDesignSystem:(int64_t)system colorScheme:(int64_t)scheme contrast:(int64_t)contrast styling:(int64_t)styling error:(id *)error;
+- (CUIDesignLibraryCatalog)initWithURL:(id)l error:(id *)error;
+- (id)_colorNameStringFromNameEnum:(int64_t)enum palette:(int64_t)palette;
+- (id)colorWithName:(int64_t)name palette:(int64_t)palette displayGamut:(int64_t)gamut hierarchyLevel:(int64_t)level error:(id *)error;
+- (id)shapeEffectPresetWithName:(id)name error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CUIDesignLibraryCatalog
 
-- (CUIDesignLibraryCatalog)initWithURL:(id)a3 error:(id *)a4
+- (CUIDesignLibraryCatalog)initWithURL:(id)l error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = CUIDesignLibraryCatalog;
   v6 = [(CUIDesignLibraryCatalog *)&v9 init];
   if (v6)
   {
-    if (![a3 checkResourceIsReachableAndReturnError:a4])
+    if (![l checkResourceIsReachableAndReturnError:error])
     {
       v6->_storageRef = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_6;
     }
 
-    v6->_assetStoreName = [objc_msgSend(objc_msgSend(a3 "URLByDeletingPathExtension")];
-    v7 = [CUIThemeFacet themeWithContentsOfURL:a3 error:a4];
+    v6->_assetStoreName = [objc_msgSend(objc_msgSend(l "URLByDeletingPathExtension")];
+    v7 = [CUIThemeFacet themeWithContentsOfURL:l error:error];
     v6->_storageRef = v7;
     if (!v7)
     {
@@ -75,14 +75,14 @@ LABEL_6:
   [(CUIDesignLibraryCatalog *)&v9 dealloc];
 }
 
-+ (id)_catalogPathComponentForDesignSystem:(int64_t)a3 colorScheme:(int64_t)a4 contrast:(int64_t)a5 styling:(int64_t)a6 error:(id *)a7
++ (id)_catalogPathComponentForDesignSystem:(int64_t)system colorScheme:(int64_t)scheme contrast:(int64_t)contrast styling:(int64_t)styling error:(id *)error
 {
   v7 = &stru_1F00D74D0;
-  if (a3 > 3)
+  if (system > 3)
   {
-    if (a3 <= 5)
+    if (system <= 5)
     {
-      if (a3 == 4)
+      if (system == 4)
       {
         v8 = 0;
         v10 = &stru_1F00D74D0;
@@ -101,7 +101,7 @@ LABEL_6:
       goto LABEL_18;
     }
 
-    if (a3 == 6)
+    if (system == 6)
     {
       v9 = 0;
       v8 = 0;
@@ -110,7 +110,7 @@ LABEL_6:
       goto LABEL_18;
     }
 
-    if (a3 == 7)
+    if (system == 7)
     {
       v8 = 0;
       v10 = &stru_1F00D74D0;
@@ -122,12 +122,12 @@ LABEL_6:
     goto LABEL_34;
   }
 
-  if (a3 > 1)
+  if (system > 1)
   {
     v8 = 0;
     v10 = &stru_1F00D74D0;
     v9 = 1;
-    if (a3 == 2)
+    if (system == 2)
     {
       v11 = @"tvOSRepositories/";
     }
@@ -140,18 +140,18 @@ LABEL_6:
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!system)
   {
-    [+[NSAssertionHandler handleFailureInMethod:0]description:"handleFailureInMethod:object:file:lineNumber:description:", a2, a1, @"CUIDesignLibraryCatalog.m", 127, @"Can't use CUIDesignSystemAutomatic with _catalogPathComponentForDesignSystem. Must resolve before calling based on OS."];
+    [+[NSAssertionHandler handleFailureInMethod:0]description:"handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"CUIDesignLibraryCatalog.m", 127, @"Can't use CUIDesignSystemAutomatic with _catalogPathComponentForDesignSystem. Must resolve before calling based on OS."];
     return 0;
   }
 
-  if (a3 != 1)
+  if (system != 1)
   {
 LABEL_34:
-    if (a7)
+    if (error)
     {
-      *a7 = [NSError errorWithDomain:NSCocoaErrorDomain code:260 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"CUIDesignLibraryCatalog does not recognize the requested design system.", a4, a5, a6, NSLocalizedDescriptionKey, 0]];
+      *error = [NSError errorWithDomain:NSCocoaErrorDomain code:260 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"CUIDesignLibraryCatalog does not recognize the requested design system.", scheme, contrast, styling, NSLocalizedDescriptionKey, 0]];
     }
 
     return 0;
@@ -163,40 +163,40 @@ LABEL_34:
   v11 = @"iOSRepositories/";
 LABEL_18:
   v12 = @"Dark";
-  if (((a4 != 1) & v9) != 0)
+  if (((scheme != 1) & v9) != 0)
   {
     v12 = @"Light";
   }
 
-  if (a6 == 1)
+  if (styling == 1)
   {
-    a6 = v8;
+    styling = v8;
   }
 
-  else if (a6 == 2)
+  else if (styling == 2)
   {
     if (v8)
     {
-      a6 = 2;
+      styling = 2;
     }
 
     else
     {
-      a6 = 0;
+      styling = 0;
     }
   }
 
-  if (a6 == 2)
+  if (styling == 2)
   {
     v7 = @"FauxVibrant";
   }
 
-  if (a6 == 1)
+  if (styling == 1)
   {
     v7 = @"Vibrant";
   }
 
-  if (((a5 == 1) & v9) != 0)
+  if (((contrast == 1) & v9) != 0)
   {
     v13 = @"IncreasedContrast";
   }
@@ -209,19 +209,19 @@ LABEL_18:
   return [NSString stringWithFormat:@"%@%@%@%@%@.car", v10, v11, v12, v7, v13];
 }
 
-+ (id)_bundleNameForResolvedDesignSystem:(int64_t)a3
++ (id)_bundleNameForResolvedDesignSystem:(int64_t)system
 {
   result = @"DesignLibrary-iOS.bundle";
-  if ((a3 - 1) >= 4 && a3 != 7)
+  if ((system - 1) >= 4 && system != 7)
   {
-    if (a3)
+    if (system)
     {
       return @"DesignLibrary-macOS.bundle";
     }
 
     else
     {
-      [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:a1 lineNumber:@"CUIDesignLibraryCatalog.m" description:235, @"Can't use CUIDesignSystemAutomatic to find the bundle. Must resolve first by calling __resolvedDesignSystemForInputSystem."];
+      [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"CUIDesignLibraryCatalog.m" description:235, @"Can't use CUIDesignSystemAutomatic to find the bundle. Must resolve first by calling __resolvedDesignSystemForInputSystem."];
       return 0;
     }
   }
@@ -229,9 +229,9 @@ LABEL_18:
   return result;
 }
 
-+ (id)catalogForDesignSystem:(int64_t)a3 colorScheme:(int64_t)a4 contrast:(int64_t)a5 styling:(int64_t)a6 error:(id *)a7
++ (id)catalogForDesignSystem:(int64_t)system colorScheme:(int64_t)scheme contrast:(int64_t)contrast styling:(int64_t)styling error:(id *)error
 {
-  result = [a1 _catalogPathComponentForDesignSystem:__resolvedDesignSystemForInputSystem(a3) colorScheme:a4 contrast:a5 styling:a6 error:a7];
+  result = [self _catalogPathComponentForDesignSystem:__resolvedDesignSystemForInputSystem(system) colorScheme:scheme contrast:contrast styling:styling error:error];
   if (!result)
   {
     return result;
@@ -247,18 +247,18 @@ LABEL_18:
   v14 = [__catalogCache objectForKey:v13];
   if (!v14)
   {
-    v15 = [__coreUIBundleResoucePath stringByAppendingPathComponent:{objc_msgSend(objc_opt_class(), "_bundleNameForResolvedDesignSystem:", a3)}];
+    v15 = [__coreUIBundleResoucePath stringByAppendingPathComponent:{objc_msgSend(objc_opt_class(), "_bundleNameForResolvedDesignSystem:", system)}];
     if ([+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
     {
       v22 = [v15 stringByAppendingPathComponent:v13];
-      v23 = [[CUIDesignLibraryCatalog alloc] initWithURL:[NSURL error:"fileURLWithPath:" fileURLWithPath:v22], a7];
-      if (v23)
+      error = [[CUIDesignLibraryCatalog alloc] initWithURL:[NSURL error:"fileURLWithPath:" fileURLWithPath:v22], error];
+      if (error)
       {
-        v14 = v23;
-        [(CUIDesignLibraryCatalog *)v23 setDesignSystem:a3];
-        [(CUIDesignLibraryCatalog *)v14 setColorScheme:a4];
-        [(CUIDesignLibraryCatalog *)v14 setContrast:a5];
-        [(CUIDesignLibraryCatalog *)v14 setStyling:a6];
+        v14 = error;
+        [(CUIDesignLibraryCatalog *)error setDesignSystem:system];
+        [(CUIDesignLibraryCatalog *)v14 setColorScheme:scheme];
+        [(CUIDesignLibraryCatalog *)v14 setContrast:contrast];
+        [(CUIDesignLibraryCatalog *)v14 setStyling:styling];
         [__catalogCache setObject:v14 forKey:v13];
         goto LABEL_13;
       }
@@ -271,9 +271,9 @@ LABEL_18:
 
     else
     {
-      if (a7)
+      if (error)
       {
-        *a7 = [NSError errorWithDomain:NSCocoaErrorDomain code:260 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Error: Couldn't find CUIDesignLibraryCatalog bundle at path %@. Check to make sure that the DesignLibrary .uicatalog files have been distilled and installed in the correct resource location. This may involve building the correct DesignLibrary bundle target as a separate step.", v15], NSLocalizedDescriptionKey, 0]];
+        *error = [NSError errorWithDomain:NSCocoaErrorDomain code:260 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Error: Couldn't find CUIDesignLibraryCatalog bundle at path %@. Check to make sure that the DesignLibrary .uicatalog files have been distilled and installed in the correct resource location. This may involve building the correct DesignLibrary bundle target as a separate step.", v15], NSLocalizedDescriptionKey, 0]];
       }
 
       _CUILog(4, "CoreUI: [CUIDesignLibraryCatalog catalogForDesignSystem:colorScheme:contrast:styling:] Couldn't locate catalog at path '%@'.", v16, v17, v18, v19, v20, v21, v15);
@@ -299,20 +299,20 @@ void __85__CUIDesignLibraryCatalog_catalogForDesignSystem_colorScheme_contrast_s
   }
 }
 
-- (id)_colorNameStringFromNameEnum:(int64_t)a3 palette:(int64_t)a4
+- (id)_colorNameStringFromNameEnum:(int64_t)enum palette:(int64_t)palette
 {
-  if ((a4 - 1) > 3)
+  if ((palette - 1) > 3)
   {
     v4 = @"system";
   }
 
   else
   {
-    v4 = off_1E724A788[a4 - 1];
+    v4 = off_1E724A788[palette - 1];
   }
 
   result = @"systemWhiteColor";
-  switch(a3)
+  switch(enum)
   {
     case 0:
       v6 = @"RedColor";
@@ -405,11 +405,11 @@ LABEL_28:
   return result;
 }
 
-- (id)colorWithName:(int64_t)a3 palette:(int64_t)a4 displayGamut:(int64_t)a5 hierarchyLevel:(int64_t)a6 error:(id *)a7
+- (id)colorWithName:(int64_t)name palette:(int64_t)palette displayGamut:(int64_t)gamut hierarchyLevel:(int64_t)level error:(id *)error
 {
   kdebug_trace();
   os_unfair_lock_lock(&self->_lock);
-  v12 = self + 896 * a4 + 32 * a3 + 8 * a6;
+  v12 = self + 896 * palette + 32 * name + 8 * level;
   v15 = *(v12 + 3);
   v14 = (v12 + 24);
   v13 = v15;
@@ -428,10 +428,10 @@ LABEL_54:
     return v16;
   }
 
-  v17 = [(CUIDesignLibraryCatalog *)self _colorNameStringFromNameEnum:a3 palette:a4];
+  v17 = [(CUIDesignLibraryCatalog *)self _colorNameStringFromNameEnum:name palette:palette];
   v37 = 0;
   v36 = 0;
-  if (a3 == 11)
+  if (name == 11)
   {
     v19 = &kCGColorWhite;
     v20 = -1;
@@ -447,7 +447,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (a3 == 12)
+  if (name == 12)
   {
     v19 = &kCGColorBlack;
     v20 = -16777216;
@@ -477,12 +477,12 @@ LABEL_12:
 
     ConstantColor = CGColorCreate(GrayGamma2_2, &components);
 LABEL_17:
-    v24 = [(CUIDesignLibraryCatalog *)self colorScheme];
-    v25 = [(CUIDesignLibraryCatalog *)self styling];
+    colorScheme = [(CUIDesignLibraryCatalog *)self colorScheme];
+    styling = [(CUIDesignLibraryCatalog *)self styling];
     v26 = 0;
-    if ((a3 - 13) <= 0xFFFFFFFFFFFFFFFDLL && v25 == 1)
+    if ((name - 13) <= 0xFFFFFFFFFFFFFFFDLL && styling == 1)
     {
-      if (v24 == 1)
+      if (colorScheme == 1)
       {
         v27 = 27;
       }
@@ -492,7 +492,7 @@ LABEL_17:
         v27 = 0;
       }
 
-      if (!v24)
+      if (!colorScheme)
       {
         v27 = 26;
       }
@@ -523,21 +523,21 @@ LABEL_17:
       }
     }
 
-    if ((a6 - 1) > 2 || !ConstantColor)
+    if ((level - 1) > 2 || !ConstantColor)
     {
       goto LABEL_53;
     }
 
-    v29 = colorWithName_palette_displayGamut_hierarchyLevel_error__CUIHierarchicalColorOpacities[a6];
-    if (v24 == 1)
+    v29 = colorWithName_palette_displayGamut_hierarchyLevel_error__CUIHierarchicalColorOpacities[level];
+    if (colorScheme == 1)
     {
-      v30 = (a3 == 10 || a3 == 0) && a6 == 2;
+      v30 = (name == 10 || name == 0) && level == 2;
       v31 = 0.2;
     }
 
     else
     {
-      if (v24)
+      if (colorScheme)
       {
 LABEL_52:
         Alpha = CGColorGetAlpha(ConstantColor);
@@ -551,7 +551,7 @@ LABEL_53:
         goto LABEL_54;
       }
 
-      v30 = a6 == 1 && a3 == 2;
+      v30 = level == 1 && name == 2;
       v31 = 0.3;
     }
 
@@ -563,9 +563,9 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = [NSError errorWithDomain:NSCocoaErrorDomain code:260 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"The requested color, %@, could not be found in the %@ CUIDesignLibrary catalog.", v22, self->_assetStoreName], NSLocalizedDescriptionKey, 0]];
+    *error = [NSError errorWithDomain:NSCocoaErrorDomain code:260 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"The requested color, %@, could not be found in the %@ CUIDesignLibrary catalog.", v22, self->_assetStoreName], NSLocalizedDescriptionKey, 0]];
   }
 
   *v14 = kCFNull;
@@ -574,11 +574,11 @@ LABEL_53:
   return 0;
 }
 
-- (id)shapeEffectPresetWithName:(id)a3 error:(id *)a4
+- (id)shapeEffectPresetWithName:(id)name error:(id *)error
 {
   v7 = _LookupStructuredThemeProvider(self->_storageRef, a2);
-  v8 = [v7 renditionKeyForName:a3];
-  _CUILog(3, "[CUIDesignLibraryCatalog shapeEffectPresetWithName:%@]", v9, v10, v11, v12, v13, v14, a3);
+  v8 = [v7 renditionKeyForName:name];
+  _CUILog(3, "[CUIDesignLibraryCatalog shapeEffectPresetWithName:%@]", v9, v10, v11, v12, v13, v14, name);
   CUIRenditionKeyValueForAttribute(v8, 17);
   kdebug_trace();
   if (!v8)
@@ -594,27 +594,27 @@ LABEL_53:
   [(CUIRenditionKey *)v15 setThemeDimension1:0];
   [(CUIRenditionKey *)v15 setThemeAppearance:0];
   v16 = [v7 renditionWithKey:{-[CUIRenditionKey keyList](v15, "keyList")}];
-  v17 = v16;
+  effectPreset = v16;
   if (v16)
   {
     if ([v16 type] == 7)
     {
-      v17 = [v17 effectPreset];
+      effectPreset = [effectPreset effectPreset];
       goto LABEL_6;
     }
 
 LABEL_5:
-    v17 = 0;
+    effectPreset = 0;
   }
 
 LABEL_6:
-  if (a4 && !v17)
+  if (error && !effectPreset)
   {
-    *a4 = [NSError errorWithDomain:NSCocoaErrorDomain code:260 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"The requested effect preset, %@, could not be found in the %@ CUIDesignLibrary catalog.", a3, self->_assetStoreName], NSLocalizedDescriptionKey, 0]];
+    *error = [NSError errorWithDomain:NSCocoaErrorDomain code:260 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"The requested effect preset, %@, could not be found in the %@ CUIDesignLibrary catalog.", name, self->_assetStoreName], NSLocalizedDescriptionKey, 0]];
   }
 
   kdebug_trace();
-  return v17;
+  return effectPreset;
 }
 
 @end

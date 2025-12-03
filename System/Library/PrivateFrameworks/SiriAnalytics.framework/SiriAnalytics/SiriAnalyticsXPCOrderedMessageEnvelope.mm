@@ -1,32 +1,32 @@
 @interface SiriAnalyticsXPCOrderedMessageEnvelope
-- (SiriAnalyticsXPCOrderedMessageEnvelope)initWithCoder:(id)a3;
-- (SiriAnalyticsXPCOrderedMessageEnvelope)initWithTimestamp:(unint64_t)a3 streamUUID:(id)a4 messageType:(int64_t)a5 messageUUID:(id)a6 messageBody:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (SiriAnalyticsXPCOrderedMessageEnvelope)initWithCoder:(id)coder;
+- (SiriAnalyticsXPCOrderedMessageEnvelope)initWithTimestamp:(unint64_t)timestamp streamUUID:(id)d messageType:(int64_t)type messageUUID:(id)iD messageBody:(id)body;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriAnalyticsXPCOrderedMessageEnvelope
 
-- (SiriAnalyticsXPCOrderedMessageEnvelope)initWithCoder:(id)a3
+- (SiriAnalyticsXPCOrderedMessageEnvelope)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SiriAnalyticsXPCOrderedMessageEnvelope;
   v5 = [(SiriAnalyticsXPCOrderedMessageEnvelope *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     v5->_timestamp = [v6 unsignedLongLongValue];
 
-    v7 = [v4 decodeObjectForKey:@"streamUUID"];
+    v7 = [coderCopy decodeObjectForKey:@"streamUUID"];
     streamUUID = v5->_streamUUID;
     v5->_streamUUID = v7;
 
-    v5->_messageType = [v4 decodeIntegerForKey:@"messageType"];
-    v9 = [v4 decodeObjectForKey:@"messageUUID"];
+    v5->_messageType = [coderCopy decodeIntegerForKey:@"messageType"];
+    v9 = [coderCopy decodeObjectForKey:@"messageUUID"];
     messageUUID = v5->_messageUUID;
     v5->_messageUUID = v9;
 
-    v11 = [v4 decodeObjectForKey:@"messageBody"];
+    v11 = [coderCopy decodeObjectForKey:@"messageBody"];
     messageBody = v5->_messageBody;
     v5->_messageBody = v11;
   }
@@ -34,42 +34,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   timestamp = self->_timestamp;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedLongLong:timestamp];
-  [v7 encodeObject:v6 forKey:@"timestamp"];
+  [coderCopy encodeObject:v6 forKey:@"timestamp"];
 
-  [v7 encodeObject:self->_streamUUID forKey:@"streamUUID"];
-  [v7 encodeInteger:self->_messageType forKey:@"messageType"];
-  [v7 encodeObject:self->_messageUUID forKey:@"messageUUID"];
-  [v7 encodeObject:self->_messageBody forKey:@"messageBody"];
+  [coderCopy encodeObject:self->_streamUUID forKey:@"streamUUID"];
+  [coderCopy encodeInteger:self->_messageType forKey:@"messageType"];
+  [coderCopy encodeObject:self->_messageUUID forKey:@"messageUUID"];
+  [coderCopy encodeObject:self->_messageBody forKey:@"messageBody"];
 }
 
-- (SiriAnalyticsXPCOrderedMessageEnvelope)initWithTimestamp:(unint64_t)a3 streamUUID:(id)a4 messageType:(int64_t)a5 messageUUID:(id)a6 messageBody:(id)a7
+- (SiriAnalyticsXPCOrderedMessageEnvelope)initWithTimestamp:(unint64_t)timestamp streamUUID:(id)d messageType:(int64_t)type messageUUID:(id)iD messageBody:(id)body
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  bodyCopy = body;
   v24.receiver = self;
   v24.super_class = SiriAnalyticsXPCOrderedMessageEnvelope;
   v15 = [(SiriAnalyticsXPCOrderedMessageEnvelope *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    v15->_timestamp = a3;
-    v17 = [v12 copy];
+    v15->_timestamp = timestamp;
+    v17 = [dCopy copy];
     streamUUID = v16->_streamUUID;
     v16->_streamUUID = v17;
 
-    v19 = [v13 copy];
+    v19 = [iDCopy copy];
     messageUUID = v16->_messageUUID;
     v16->_messageUUID = v19;
 
-    v16->_messageType = a5;
-    v21 = [v14 copy];
+    v16->_messageType = type;
+    v21 = [bodyCopy copy];
     messageBody = v16->_messageBody;
     v16->_messageBody = v21;
   }

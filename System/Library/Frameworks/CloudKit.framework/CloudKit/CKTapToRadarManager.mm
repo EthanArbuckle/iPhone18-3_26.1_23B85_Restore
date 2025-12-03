@@ -1,13 +1,13 @@
 @interface CKTapToRadarManager
 + (id)sharedManager;
 - (CKTapToRadarManager)init;
-- (id)_hashForMessage:(id)a3;
-- (id)_lastPromptDateForMessage:(id)a3;
+- (id)_hashForMessage:(id)message;
+- (id)_lastPromptDateForMessage:(id)message;
 - (id)initInternal;
-- (void)_launchTTRWithRequest:(id)a3;
-- (void)_lockedTriggerTapToRadarWithRequest:(id)a3;
-- (void)_notePromptAttemptForMessage:(id)a3;
-- (void)triggerTapToRadarWithRequest:(id)a3;
+- (void)_launchTTRWithRequest:(id)request;
+- (void)_lockedTriggerTapToRadarWithRequest:(id)request;
+- (void)_notePromptAttemptForMessage:(id)message;
+- (void)triggerTapToRadarWithRequest:(id)request;
 @end
 
 @implementation CKTapToRadarManager
@@ -107,21 +107,21 @@
   return v3;
 }
 
-- (id)_hashForMessage:(id)a3
+- (id)_hashForMessage:(id)message
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = objc_msgSend_hash(a3, a2, a3);
+  v4 = objc_msgSend_hash(message, a2, message);
   return objc_msgSend_stringWithFormat_(v3, v5, @"%lu", v4);
 }
 
-- (id)_lastPromptDateForMessage:(id)a3
+- (id)_lastPromptDateForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v7 = objc_msgSend_alertQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
   v10 = objc_msgSend_lastPromptDateByMessageHash(self, v8, v9);
-  v12 = objc_msgSend__hashForMessage_(self, v11, v4);
+  v12 = objc_msgSend__hashForMessage_(self, v11, messageCopy);
 
   v14 = objc_msgSend_objectForKeyedSubscript_(v10, v13, v12);
 
@@ -133,15 +133,15 @@
   return v14;
 }
 
-- (void)_notePromptAttemptForMessage:(id)a3
+- (void)_notePromptAttemptForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v7 = objc_msgSend_alertQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
   v10 = objc_msgSend_date(MEMORY[0x1E695DF00], v8, v9);
   v13 = objc_msgSend_lastPromptDateByMessageHash(self, v11, v12);
-  v15 = objc_msgSend__hashForMessage_(self, v14, v4);
+  v15 = objc_msgSend__hashForMessage_(self, v14, messageCopy);
 
   objc_msgSend_setObject_forKeyedSubscript_(v13, v16, v10, v15);
   v23 = objc_msgSend_userDefaults(self, v17, v18);
@@ -149,12 +149,12 @@
   objc_msgSend_setObject_forKey_(v23, v22, v21, @"LastTTRPromptDates");
 }
 
-- (void)_launchTTRWithRequest:(id)a3
+- (void)_launchTTRWithRequest:(id)request
 {
-  v61 = a3;
+  requestCopy = request;
   v3 = MEMORY[0x1E696AEC0];
   v4 = CKBuildVersion();
-  v7 = objc_msgSend_title(v61, v5, v6);
+  v7 = objc_msgSend_title(requestCopy, v5, v6);
   v9 = objc_msgSend_stringWithFormat_(v3, v8, @"%@: Tap-To-Radar: %@", v4, v7);
 
   if (objc_msgSend_length(v9, v10, v11) >= 0xF0)
@@ -164,41 +164,41 @@
     v9 = v14;
   }
 
-  v15 = objc_msgSend_componentID(v61, v12, v13);
+  v15 = objc_msgSend_componentID(requestCopy, v12, v13);
 
   if (!v15)
   {
-    objc_msgSend_setComponentID_(v61, v16, @"552485");
+    objc_msgSend_setComponentID_(requestCopy, v16, @"552485");
   }
 
-  v18 = objc_msgSend_componentName(v61, v16, v17);
+  v18 = objc_msgSend_componentName(requestCopy, v16, v17);
 
   if (!v18)
   {
-    objc_msgSend_setComponentName_(v61, v19, @"CloudKit");
+    objc_msgSend_setComponentName_(requestCopy, v19, @"CloudKit");
   }
 
-  v21 = objc_msgSend_componentVersion(v61, v19, v20);
+  v21 = objc_msgSend_componentVersion(requestCopy, v19, v20);
 
   if (!v21)
   {
-    objc_msgSend_setComponentVersion_(v61, v22, @"All");
+    objc_msgSend_setComponentVersion_(requestCopy, v22, @"All");
   }
 
-  v24 = objc_msgSend_radarDescription(v61, v22, v23);
+  v24 = objc_msgSend_radarDescription(requestCopy, v22, v23);
 
   if (!v24)
   {
-    v27 = objc_msgSend_title(v61, v25, v26);
-    objc_msgSend_setRadarDescription_(v61, v28, v27);
+    v27 = objc_msgSend_title(requestCopy, v25, v26);
+    objc_msgSend_setRadarDescription_(requestCopy, v28, v27);
   }
 
   v29 = MEMORY[0x1E696AEC0];
-  v30 = objc_msgSend_componentID(v61, v25, v26);
-  v33 = objc_msgSend_componentName(v61, v31, v32);
-  v36 = objc_msgSend_componentVersion(v61, v34, v35);
-  v39 = objc_msgSend_radarDescription(v61, v37, v38);
-  v44 = objc_msgSend_relatedRadar(v61, v40, v41);
+  v30 = objc_msgSend_componentID(requestCopy, v25, v26);
+  v33 = objc_msgSend_componentName(requestCopy, v31, v32);
+  v36 = objc_msgSend_componentVersion(requestCopy, v34, v35);
+  v39 = objc_msgSend_radarDescription(requestCopy, v37, v38);
+  v44 = objc_msgSend_relatedRadar(requestCopy, v40, v41);
   if (v44)
   {
     v45 = @"\n";
@@ -209,7 +209,7 @@
     v45 = &stru_1EFA32970;
   }
 
-  v46 = objc_msgSend_relatedRadar(v61, v42, v43);
+  v46 = objc_msgSend_relatedRadar(requestCopy, v42, v43);
   v48 = v46;
   if (v46)
   {
@@ -230,14 +230,14 @@
   objc_msgSend_openURL_configuration_completionHandler_(v59, v60, v56, 0, 0);
 }
 
-- (void)_lockedTriggerTapToRadarWithRequest:(id)a3
+- (void)_lockedTriggerTapToRadarWithRequest:(id)request
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v7 = objc_msgSend_alertQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
-  v10 = objc_msgSend_title(v4, v8, v9);
+  v10 = objc_msgSend_title(requestCopy, v8, v9);
 
   if (v10)
   {
@@ -246,7 +246,7 @@
 
     if (isAppleInternalInstall)
     {
-      v19 = objc_msgSend_title(v4, v17, v18);
+      v19 = objc_msgSend_title(requestCopy, v17, v18);
       v21 = objc_msgSend__lastPromptDateForMessage_(self, v20, v19);
       objc_msgSend_timeIntervalSinceNow(v21, v22, v23);
       v25 = fabs(v24);
@@ -266,13 +266,13 @@
         if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
         {
           v61 = v38;
-          v64 = objc_msgSend_title(v4, v62, v63);
+          v64 = objc_msgSend_title(requestCopy, v62, v63);
           *buf = 138412290;
           *&buf[4] = v64;
           _os_log_debug_impl(&dword_1883EA000, v61, OS_LOG_TYPE_DEBUG, "Creating a TTR prompt for %@", buf, 0xCu);
         }
 
-        v41 = objc_msgSend_title(v4, v39, v40);
+        v41 = objc_msgSend_title(requestCopy, v39, v40);
         objc_msgSend__notePromptAttemptForMessage_(self, v42, v41);
 
         v43 = *MEMORY[0x1E695EE58];
@@ -282,7 +282,7 @@
         v65[1] = v44;
         v45 = MEMORY[0x1E696AEC0];
         v48 = objc_msgSend_matterhornName(CKContainer, v46, v47);
-        v51 = objc_msgSend_title(v4, v49, v50);
+        v51 = objc_msgSend_title(requestCopy, v49, v50);
         v53 = objc_msgSend_stringWithFormat_(v45, v52, @"A problem has been detected with your %@ account:\n\n%@\n\nWould you mind filing a Radar?", v48, v51);
         v54 = *MEMORY[0x1E695EE78];
         v66[1] = v53;
@@ -298,7 +298,7 @@
         CFUserNotificationReceiveResponse(v58, 86400.0, buf);
         if ((buf[0] & 3) == 0)
         {
-          objc_msgSend__launchTTRWithRequest_(self, v59, v4);
+          objc_msgSend__launchTTRWithRequest_(self, v59, requestCopy);
         }
 
         if (v58)
@@ -318,7 +318,7 @@
         if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
         {
           v34 = v33;
-          v37 = objc_msgSend_title(v4, v35, v36);
+          v37 = objc_msgSend_title(requestCopy, v35, v36);
           *buf = 134218242;
           *&buf[4] = v25;
           v68 = 2112;
@@ -332,9 +332,9 @@
   v60 = *MEMORY[0x1E69E9840];
 }
 
-- (void)triggerTapToRadarWithRequest:(id)a3
+- (void)triggerTapToRadarWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   v7 = objc_msgSend_alertQueue(self, v5, v6);
   block[0] = MEMORY[0x1E69E9820];
@@ -342,8 +342,8 @@
   block[2] = sub_1886C6FF0;
   block[3] = &unk_1E70BF2E0;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v8 = v4;
+  v10 = requestCopy;
+  v8 = requestCopy;
   dispatch_async(v7, block);
 
   objc_destroyWeak(&v11);

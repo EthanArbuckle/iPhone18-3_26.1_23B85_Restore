@@ -1,8 +1,8 @@
 @interface MailboxConfiguration
 - (BOOL)isInboxMailbox;
 - (NSString)bucketBarConfigurationIdentifier;
-- (void)setBucketBarConfigurationIdentifier:(id)a3;
-- (void)setIsInboxMailbox:(BOOL)a3;
+- (void)setBucketBarConfigurationIdentifier:(id)identifier;
+- (void)setIsInboxMailbox:(BOOL)mailbox;
 @end
 
 @implementation MailboxConfiguration
@@ -15,7 +15,7 @@
   return sub_10007CEB8() & 1;
 }
 
-- (void)setIsInboxMailbox:(BOOL)a3
+- (void)setIsInboxMailbox:(BOOL)mailbox
 {
   _objc_retain(self);
   v3 = sub_10007CEC8();
@@ -33,13 +33,13 @@
   return v4;
 }
 
-- (void)setBucketBarConfigurationIdentifier:(id)a3
+- (void)setBucketBarConfigurationIdentifier:(id)identifier
 {
-  _objc_retain(a3);
+  _objc_retain(identifier);
   _objc_retain(self);
   v4 = sub_10007D868();
   sub_10001BA24(v4, v5);
-  _objc_release(a3);
+  _objc_release(identifier);
   _objc_release(self);
 }
 

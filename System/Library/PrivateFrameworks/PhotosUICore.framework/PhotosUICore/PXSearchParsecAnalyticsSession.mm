@@ -2,30 +2,30 @@
 + (id)sharedSession;
 - (PARSession)session;
 - (PXSearchParsecAnalyticsSession)init;
-- (id)_rankingInfoForQueryResult:(id)a3 featureAvailability:(id)a4;
-- (int)_libraryBucketForCount:(unint64_t)a3;
-- (int)_retrievalBucketForCount:(unint64_t)a3;
-- (void)_reportFeedback:(id)a3;
-- (void)_reportPhotosAppLaunchedOrEnteredForegroundEventWithFeedback:(id)a3;
-- (void)reportAllResultsShown:(id)a3 retrievalTypeMap:(id)a4;
+- (id)_rankingInfoForQueryResult:(id)result featureAvailability:(id)availability;
+- (int)_libraryBucketForCount:(unint64_t)count;
+- (int)_retrievalBucketForCount:(unint64_t)count;
+- (void)_reportFeedback:(id)feedback;
+- (void)_reportPhotosAppLaunchedOrEnteredForegroundEventWithFeedback:(id)feedback;
+- (void)reportAllResultsShown:(id)shown retrievalTypeMap:(id)map;
 - (void)reportInitialSuggestionSelected;
-- (void)reportInitialSuggestions:(id)a3;
+- (void)reportInitialSuggestions:(id)suggestions;
 - (void)reportPhotosAppEnteredBackground;
-- (void)reportPhotosAppLaunchedOrEnteredForegroundWithPreviousSearchText:(id)a3 previousSearchTokens:(id)a4;
+- (void)reportPhotosAppLaunchedOrEnteredForegroundWithPreviousSearchText:(id)text previousSearchTokens:(id)tokens;
 - (void)reportPhotosAppLaunchedOrEnteredForegroundWithSpotlightSearchActivity;
 - (void)reportPhotosAppQuit;
-- (void)reportSearchAssetResultSelected:(id)a3 isTopResult:(BOOL)a4 retrievalType:(unint64_t)a5;
-- (void)reportSearchButtonTappedWhenScoped:(BOOL)a3;
-- (void)reportSearchCollectionResultSelected:(id)a3 type:(unint64_t)a4;
+- (void)reportSearchAssetResultSelected:(id)selected isTopResult:(BOOL)result retrievalType:(unint64_t)type;
+- (void)reportSearchButtonTappedWhenScoped:(BOOL)scoped;
+- (void)reportSearchCollectionResultSelected:(id)selected type:(unint64_t)type;
 - (void)reportSearchFieldBackButtonSelected;
-- (void)reportSearchFieldContentChanged:(id)a3 isScoped:(BOOL)a4 isSemanticSearchEnabled:(BOOL)a5;
+- (void)reportSearchFieldContentChanged:(id)changed isScoped:(BOOL)scoped isSemanticSearchEnabled:(BOOL)enabled;
 - (void)reportSearchFieldContentCleared;
-- (void)reportSearchQueryExecutionCompleted:(id)a3 forLibrary:(id)a4;
-- (void)reportSearchSuggestionSelected:(id)a3;
+- (void)reportSearchQueryExecutionCompleted:(id)completed forLibrary:(id)library;
+- (void)reportSearchSuggestionSelected:(id)selected;
 - (void)reportSearchTabDeselected;
-- (void)reportToBiomeResults:(id)a3 forSearchQuery:(id)a4 forLibrary:(id)a5;
-- (void)reportTopCollectionsShown:(id)a3;
-- (void)reportTopResultsShown:(id)a3 retrievalTypeMap:(id)a4;
+- (void)reportToBiomeResults:(id)results forSearchQuery:(id)query forLibrary:(id)library;
+- (void)reportTopCollectionsShown:(id)shown;
+- (void)reportTopResultsShown:(id)shown retrievalTypeMap:(id)map;
 @end
 
 @implementation PXSearchParsecAnalyticsSession
@@ -69,13 +69,13 @@ void __47__PXSearchParsecAnalyticsSession_sharedSession__block_invoke()
   return v3;
 }
 
-- (void)reportToBiomeResults:(id)a3 forSearchQuery:(id)a4 forLibrary:(id)a5
+- (void)reportToBiomeResults:(id)results forSearchQuery:(id)query forLibrary:(id)library
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 count];
+  queryCopy = query;
+  libraryCopy = library;
+  resultsCopy = results;
+  v10 = [resultsCopy count];
   if (v10 >= 0x32)
   {
     v11 = 50;
@@ -86,11 +86,11 @@ void __47__PXSearchParsecAnalyticsSession_sharedSession__block_invoke()
     v11 = v10;
   }
 
-  v12 = [v9 subarrayWithRange:{0, v11}];
+  v12 = [resultsCopy subarrayWithRange:{0, v11}];
 
   v13 = objc_alloc_init(MEMORY[0x1E6978828]);
   v27 = 0;
-  v14 = [v8 featureAvailabilityForFeature:3 readOptions:v13 error:&v27];
+  v14 = [libraryCopy featureAvailabilityForFeature:3 readOptions:v13 error:&v27];
 
   v15 = v27;
   if (v14)
@@ -105,7 +105,7 @@ void __47__PXSearchParsecAnalyticsSession_sharedSession__block_invoke()
     v28[0] = *MEMORY[0x1E6991E78];
     v28[1] = v22;
     v29[0] = v12;
-    v29[1] = v7;
+    v29[1] = queryCopy;
     v23 = *MEMORY[0x1E6991E70];
     v28[2] = *MEMORY[0x1E6991E68];
     v28[3] = v23;
@@ -121,12 +121,12 @@ LABEL_10:
   v16 = PLSearchUIParsecAnalyticsGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    v25 = [v15 localizedDescription];
-    v19 = v25;
+    localizedDescription = [v15 localizedDescription];
+    v19 = localizedDescription;
     v26 = @"nil featureAvailability. No error returned.";
-    if (v25)
+    if (localizedDescription)
     {
-      v26 = v25;
+      v26 = localizedDescription;
     }
 
     *buf = 138412290;
@@ -138,39 +138,39 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_reportFeedback:(id)a3
+- (void)_reportFeedback:(id)feedback
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXSearchParsecAnalyticsSession *)self session];
-  [v5 reportFeedback:v4 queryId:{-[PXSearchParsecAnalyticsSession currentQueryId](self, "currentQueryId")}];
+  feedbackCopy = feedback;
+  session = [(PXSearchParsecAnalyticsSession *)self session];
+  [session reportFeedback:feedbackCopy queryId:{-[PXSearchParsecAnalyticsSession currentQueryId](self, "currentQueryId")}];
 
   v6 = PLSearchUIParsecAnalyticsGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218242;
-    v8 = [(PXSearchParsecAnalyticsSession *)self currentQueryId];
+    currentQueryId = [(PXSearchParsecAnalyticsSession *)self currentQueryId];
     v9 = 2112;
-    v10 = v4;
+    v10 = feedbackCopy;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "Reporting queryID: %lld feedback: %@", &v7, 0x16u);
   }
 }
 
-- (void)_reportPhotosAppLaunchedOrEnteredForegroundEventWithFeedback:(id)a3
+- (void)_reportPhotosAppLaunchedOrEnteredForegroundEventWithFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
-  dispatch_suspend(v5);
+  feedbackCopy = feedback;
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  dispatch_suspend(reportingQueue);
 
   objc_initWeak(&location, self);
-  v6 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue2 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__PXSearchParsecAnalyticsSession__reportPhotosAppLaunchedOrEnteredForegroundEventWithFeedback___block_invoke;
   block[3] = &unk_1E774B248;
   objc_copyWeak(&v8, &location);
-  block[4] = v4;
-  dispatch_async(v6, block);
+  block[4] = feedbackCopy;
+  dispatch_async(reportingQueue2, block);
 
   px_dispatch_on_main_queue_when_idle_after_delay();
 }
@@ -197,13 +197,13 @@ void __95__PXSearchParsecAnalyticsSession__reportPhotosAppLaunchedOrEnteredForeg
 - (void)reportInitialSuggestionSelected
 {
   v3 = objc_initWeak(&location, self);
-  v4 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __65__PXSearchParsecAnalyticsSession_reportInitialSuggestionSelected__block_invoke;
   v5[3] = &unk_1E774C318;
   objc_copyWeak(&v6, &location);
-  dispatch_async(v4, v5);
+  dispatch_async(reportingQueue, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -226,19 +226,19 @@ void __65__PXSearchParsecAnalyticsSession_reportInitialSuggestionSelected__block
   }
 }
 
-- (void)reportInitialSuggestions:(id)a3
+- (void)reportInitialSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = objc_initWeak(&location, self);
-  v6 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__PXSearchParsecAnalyticsSession_reportInitialSuggestions___block_invoke;
   block[3] = &unk_1E774B248;
-  v9 = v4;
-  v7 = v4;
+  v9 = suggestionsCopy;
+  v7 = suggestionsCopy;
   objc_copyWeak(&v10, &location);
-  dispatch_async(v6, block);
+  dispatch_async(reportingQueue, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -267,19 +267,19 @@ void __59__PXSearchParsecAnalyticsSession_reportInitialSuggestions___block_invok
   }
 }
 
-- (void)reportTopCollectionsShown:(id)a3
+- (void)reportTopCollectionsShown:(id)shown
 {
-  v4 = a3;
+  shownCopy = shown;
   objc_initWeak(&location, self);
-  v5 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__PXSearchParsecAnalyticsSession_reportTopCollectionsShown___block_invoke;
   block[3] = &unk_1E774B248;
-  v8 = v4;
-  v6 = v4;
+  v8 = shownCopy;
+  v6 = shownCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(reportingQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -365,22 +365,22 @@ void __60__PXSearchParsecAnalyticsSession_reportTopCollectionsShown___block_invo
   }
 }
 
-- (void)reportAllResultsShown:(id)a3 retrievalTypeMap:(id)a4
+- (void)reportAllResultsShown:(id)shown retrievalTypeMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
+  shownCopy = shown;
+  mapCopy = map;
   objc_initWeak(&location, self);
-  v8 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__PXSearchParsecAnalyticsSession_reportAllResultsShown_retrievalTypeMap___block_invoke;
   v11[3] = &unk_1E774B708;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = shownCopy;
+  v13 = mapCopy;
+  v9 = mapCopy;
+  v10 = shownCopy;
   objc_copyWeak(&v14, &location);
-  dispatch_async(v8, v11);
+  dispatch_async(reportingQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -452,22 +452,22 @@ LABEL_3:
   }
 }
 
-- (void)reportTopResultsShown:(id)a3 retrievalTypeMap:(id)a4
+- (void)reportTopResultsShown:(id)shown retrievalTypeMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
+  shownCopy = shown;
+  mapCopy = map;
   objc_initWeak(&location, self);
-  v8 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__PXSearchParsecAnalyticsSession_reportTopResultsShown_retrievalTypeMap___block_invoke;
   v11[3] = &unk_1E774B708;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = shownCopy;
+  v13 = mapCopy;
+  v9 = mapCopy;
+  v10 = shownCopy;
   objc_copyWeak(&v14, &location);
-  dispatch_async(v8, v11);
+  dispatch_async(reportingQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -524,21 +524,21 @@ void __73__PXSearchParsecAnalyticsSession_reportTopResultsShown_retrievalTypeMap
   }
 }
 
-- (void)reportSearchCollectionResultSelected:(id)a3 type:(unint64_t)a4
+- (void)reportSearchCollectionResultSelected:(id)selected type:(unint64_t)type
 {
-  v6 = a3;
+  selectedCopy = selected;
   v7 = objc_initWeak(&location, self);
-  v8 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__PXSearchParsecAnalyticsSession_reportSearchCollectionResultSelected_type___block_invoke;
   block[3] = &unk_1E77422A8;
-  v13[1] = a4;
-  v11 = v6;
-  v12 = self;
-  v9 = v6;
+  v13[1] = type;
+  v11 = selectedCopy;
+  selfCopy = self;
+  v9 = selectedCopy;
   objc_copyWeak(v13, &location);
-  dispatch_async(v8, block);
+  dispatch_async(reportingQueue, block);
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
@@ -563,21 +563,21 @@ void __76__PXSearchParsecAnalyticsSession_reportSearchCollectionResultSelected_t
   }
 }
 
-- (void)reportSearchAssetResultSelected:(id)a3 isTopResult:(BOOL)a4 retrievalType:(unint64_t)a5
+- (void)reportSearchAssetResultSelected:(id)selected isTopResult:(BOOL)result retrievalType:(unint64_t)type
 {
-  v8 = a3;
+  selectedCopy = selected;
   v9 = objc_initWeak(&location, self);
-  v10 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__PXSearchParsecAnalyticsSession_reportSearchAssetResultSelected_isTopResult_retrievalType___block_invoke;
   block[3] = &unk_1E7741648;
-  v15 = a4;
-  v13 = v8;
-  v14[1] = a5;
-  v11 = v8;
+  resultCopy = result;
+  v13 = selectedCopy;
+  v14[1] = type;
+  v11 = selectedCopy;
   objc_copyWeak(v14, &location);
-  dispatch_async(v10, block);
+  dispatch_async(reportingQueue, block);
 
   objc_destroyWeak(v14);
   objc_destroyWeak(&location);
@@ -607,22 +607,22 @@ void __92__PXSearchParsecAnalyticsSession_reportSearchAssetResultSelected_isTopR
   }
 }
 
-- (void)reportSearchSuggestionSelected:(id)a3
+- (void)reportSearchSuggestionSelected:(id)selected
 {
-  v4 = a3;
-  if (v4)
+  selectedCopy = selected;
+  if (selectedCopy)
   {
-    v5 = [(PXSearchParsecAnalyticsSession *)self currentQueryId];
+    currentQueryId = [(PXSearchParsecAnalyticsSession *)self currentQueryId];
     objc_initWeak(location, self);
-    v6 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+    reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__PXSearchParsecAnalyticsSession_reportSearchSuggestionSelected___block_invoke;
     block[3] = &unk_1E7746600;
-    v9 = v4;
-    v10[1] = v5;
+    v9 = selectedCopy;
+    v10[1] = currentQueryId;
     objc_copyWeak(v10, location);
-    dispatch_async(v6, block);
+    dispatch_async(reportingQueue, block);
 
     objc_destroyWeak(v10);
     objc_destroyWeak(location);
@@ -657,13 +657,13 @@ void __65__PXSearchParsecAnalyticsSession_reportSearchSuggestionSelected___block
 - (void)reportSearchFieldBackButtonSelected
 {
   v3 = objc_initWeak(&location, self);
-  v4 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __69__PXSearchParsecAnalyticsSession_reportSearchFieldBackButtonSelected__block_invoke;
   v5[3] = &unk_1E774C318;
   objc_copyWeak(&v6, &location);
-  dispatch_async(v4, v5);
+  dispatch_async(reportingQueue, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -688,16 +688,16 @@ void __69__PXSearchParsecAnalyticsSession_reportSearchFieldBackButtonSelected__b
 
 - (void)reportSearchFieldContentCleared
 {
-  v3 = [(PXSearchParsecAnalyticsSession *)self currentQueryId];
+  currentQueryId = [(PXSearchParsecAnalyticsSession *)self currentQueryId];
   v4 = objc_initWeak(&location, self);
-  v5 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PXSearchParsecAnalyticsSession_reportSearchFieldContentCleared__block_invoke;
   block[3] = &unk_1E7749808;
-  v7[1] = v3;
+  v7[1] = currentQueryId;
   objc_copyWeak(v7, &location);
-  dispatch_async(v5, block);
+  dispatch_async(reportingQueue, block);
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -721,23 +721,23 @@ void __65__PXSearchParsecAnalyticsSession_reportSearchFieldContentCleared__block
   }
 }
 
-- (void)reportSearchQueryExecutionCompleted:(id)a3 forLibrary:(id)a4
+- (void)reportSearchQueryExecutionCompleted:(id)completed forLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  libraryCopy = library;
   objc_initWeak(&location, self);
-  v8 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81__PXSearchParsecAnalyticsSession_reportSearchQueryExecutionCompleted_forLibrary___block_invoke;
   block[3] = &unk_1E7748228;
   objc_copyWeak(&v15, &location);
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = libraryCopy;
+  selfCopy = self;
+  v14 = completedCopy;
+  v9 = completedCopy;
+  v10 = libraryCopy;
+  dispatch_async(reportingQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -808,16 +808,16 @@ void __81__PXSearchParsecAnalyticsSession_reportSearchQueryExecutionCompleted_fo
   }
 }
 
-- (id)_rankingInfoForQueryResult:(id)a3 featureAvailability:(id)a4
+- (id)_rankingInfoForQueryResult:(id)result featureAvailability:(id)availability
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  availabilityCopy = availability;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [a3 searchResults];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  searchResults = [result searchResults];
+  v8 = [searchResults countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -830,11 +830,11 @@ void __81__PXSearchParsecAnalyticsSession_reportSearchQueryExecutionCompleted_fo
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(searchResults);
         }
 
-        v14 = [*(*(&v24 + 1) + 8 * i) retrievalType];
-        switch(v14)
+        retrievalType = [*(*(&v24 + 1) + 8 * i) retrievalType];
+        switch(retrievalType)
         {
           case 3:
             ++v11;
@@ -849,7 +849,7 @@ LABEL_11:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v9 = [searchResults countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (!v9)
       {
         goto LABEL_16;
@@ -863,12 +863,12 @@ LABEL_16:
 
   v15 = [(PXSearchParsecAnalyticsSession *)self _retrievalBucketForCount:v11];
   v16 = [(PXSearchParsecAnalyticsSession *)self _retrievalBucketForCount:v10];
-  if (v6 && [v6 wasComputed])
+  if (availabilityCopy && [availabilityCopy wasComputed])
   {
-    v17 = [v6 numberOfAssets];
-    [v6 fractionOfAllAssetsWithMediaAnalysisInSearchIndex];
-    v19 = (v18 * v17);
-    v20 = [(PXSearchParsecAnalyticsSession *)self _libraryBucketForCount:v17];
+    numberOfAssets = [availabilityCopy numberOfAssets];
+    [availabilityCopy fractionOfAllAssetsWithMediaAnalysisInSearchIndex];
+    v19 = (v18 * numberOfAssets);
+    v20 = [(PXSearchParsecAnalyticsSession *)self _libraryBucketForCount:numberOfAssets];
     v21 = [(PXSearchParsecAnalyticsSession *)self _libraryBucketForCount:v19];
   }
 
@@ -887,49 +887,49 @@ LABEL_16:
   return v22;
 }
 
-- (int)_libraryBucketForCount:(unint64_t)a3
+- (int)_libraryBucketForCount:(unint64_t)count
 {
-  if (a3 < 0x1F5)
+  if (count < 0x1F5)
   {
     return 1;
   }
 
-  if (a3 < 0x7D1)
+  if (count < 0x7D1)
   {
     return 2;
   }
 
-  if (a3 < 0x1389)
+  if (count < 0x1389)
   {
     return 3;
   }
 
-  if (a3 < 0x2711)
+  if (count < 0x2711)
   {
     return 4;
   }
 
-  if (a3 < 0x4E21)
+  if (count < 0x4E21)
   {
     return 5;
   }
 
-  if (a3 < 0x7531)
+  if (count < 0x7531)
   {
     return 6;
   }
 
-  if (a3 < 0x9C41)
+  if (count < 0x9C41)
   {
     return 7;
   }
 
-  if (a3 < 0xC351)
+  if (count < 0xC351)
   {
     return 8;
   }
 
-  if (a3 < 0x186A1)
+  if (count < 0x186A1)
   {
     return 9;
   }
@@ -937,69 +937,69 @@ LABEL_16:
   return 10;
 }
 
-- (int)_retrievalBucketForCount:(unint64_t)a3
+- (int)_retrievalBucketForCount:(unint64_t)count
 {
-  if (a3 < 0xB)
+  if (count < 0xB)
   {
     return 1;
   }
 
-  if (a3 < 0x33)
+  if (count < 0x33)
   {
     return 2;
   }
 
-  if (a3 < 0x65)
+  if (count < 0x65)
   {
     return 3;
   }
 
-  if (a3 < 0xFB)
+  if (count < 0xFB)
   {
     return 4;
   }
 
-  if (a3 < 0x1F5)
+  if (count < 0x1F5)
   {
     return 5;
   }
 
-  if (a3 < 0x7D1)
+  if (count < 0x7D1)
   {
     return 6;
   }
 
-  if (a3 < 0x1389)
+  if (count < 0x1389)
   {
     return 7;
   }
 
-  if (a3 < 0x2711)
+  if (count < 0x2711)
   {
     return 8;
   }
 
-  if (a3 < 0x4E21)
+  if (count < 0x4E21)
   {
     return 9;
   }
 
-  if (a3 < 0x7531)
+  if (count < 0x7531)
   {
     return 10;
   }
 
-  if (a3 < 0x9C41)
+  if (count < 0x9C41)
   {
     return 11;
   }
 
-  if (a3 < 0xC351)
+  if (count < 0xC351)
   {
     return 12;
   }
 
-  if (a3 < 0x186A1)
+  if (count < 0x186A1)
   {
     return 13;
   }
@@ -1007,21 +1007,21 @@ LABEL_16:
   return 14;
 }
 
-- (void)reportSearchFieldContentChanged:(id)a3 isScoped:(BOOL)a4 isSemanticSearchEnabled:(BOOL)a5
+- (void)reportSearchFieldContentChanged:(id)changed isScoped:(BOOL)scoped isSemanticSearchEnabled:(BOOL)enabled
 {
-  v8 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
-  v9 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __99__PXSearchParsecAnalyticsSession_reportSearchFieldContentChanged_isScoped_isSemanticSearchEnabled___block_invoke;
   v11[3] = &unk_1E772DB80;
   objc_copyWeak(&v13, &location);
-  v12 = v8;
-  v14 = a4;
-  v15 = a5;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v12 = changedCopy;
+  scopedCopy = scoped;
+  enabledCopy = enabled;
+  v10 = changedCopy;
+  dispatch_async(reportingQueue, v11);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -1107,13 +1107,13 @@ void __99__PXSearchParsecAnalyticsSession_reportSearchFieldContentChanged_isScop
 - (void)reportSearchTabDeselected
 {
   objc_initWeak(&location, self);
-  v3 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __59__PXSearchParsecAnalyticsSession_reportSearchTabDeselected__block_invoke;
   v4[3] = &unk_1E774C318;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(reportingQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1133,17 +1133,17 @@ void __59__PXSearchParsecAnalyticsSession_reportSearchTabDeselected__block_invok
   }
 }
 
-- (void)reportSearchButtonTappedWhenScoped:(BOOL)a3
+- (void)reportSearchButtonTappedWhenScoped:(BOOL)scoped
 {
   objc_initWeak(&location, self);
-  v5 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__PXSearchParsecAnalyticsSession_reportSearchButtonTappedWhenScoped___block_invoke;
   block[3] = &unk_1E774A170;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
-  dispatch_async(v5, block);
+  scopedCopy = scoped;
+  dispatch_async(reportingQueue, block);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1174,13 +1174,13 @@ void __69__PXSearchParsecAnalyticsSession_reportSearchButtonTappedWhenScoped___b
 - (void)reportPhotosAppQuit
 {
   objc_initWeak(&location, self);
-  v3 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __53__PXSearchParsecAnalyticsSession_reportPhotosAppQuit__block_invoke;
   v4[3] = &unk_1E774C318;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(reportingQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1203,13 +1203,13 @@ void __53__PXSearchParsecAnalyticsSession_reportPhotosAppQuit__block_invoke(uint
 - (void)reportPhotosAppEnteredBackground
 {
   objc_initWeak(&location, self);
-  v3 = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
+  reportingQueue = [(PXSearchParsecAnalyticsSession *)self reportingQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __66__PXSearchParsecAnalyticsSession_reportPhotosAppEnteredBackground__block_invoke;
   v4[3] = &unk_1E774C318;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(reportingQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1236,12 +1236,12 @@ void __66__PXSearchParsecAnalyticsSession_reportPhotosAppEnteredBackground__bloc
   [(PXSearchParsecAnalyticsSession *)self _reportPhotosAppLaunchedOrEnteredForegroundEventWithFeedback:v3];
 }
 
-- (void)reportPhotosAppLaunchedOrEnteredForegroundWithPreviousSearchText:(id)a3 previousSearchTokens:(id)a4
+- (void)reportPhotosAppLaunchedOrEnteredForegroundWithPreviousSearchText:(id)text previousSearchTokens:(id)tokens
 {
   v5 = MEMORY[0x1E69CA3F8];
-  v6 = a3;
+  textCopy = text;
   v8 = [[v5 alloc] initWithEvent:7];
-  v7 = [PXSearchParsecAnalyticsUtilities descriptionForSearchString:v6 searchTokens:0];
+  v7 = [PXSearchParsecAnalyticsUtilities descriptionForSearchString:textCopy searchTokens:0];
 
   [v8 setPreexistingInput:v7];
   [(PXSearchParsecAnalyticsSession *)self _reportPhotosAppLaunchedOrEnteredForegroundEventWithFeedback:v8];
@@ -1250,21 +1250,21 @@ void __66__PXSearchParsecAnalyticsSession_reportPhotosAppEnteredBackground__bloc
 - (PARSession)session
 {
   dispatch_assert_queue_not_V2(MEMORY[0x1E69E96A0]);
-  v3 = self;
-  objc_sync_enter(v3);
-  session = v3->_session;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  session = selfCopy->_session;
   if (!session)
   {
     v5 = [objc_alloc(MEMORY[0x1E6998678]) initWithId:@"com.apple.photos" userAgent:@"Photos/1"];
     v6 = [MEMORY[0x1E6998670] sharedPARSessionWithConfiguration:v5];
-    v7 = v3->_session;
-    v3->_session = v6;
+    v7 = selfCopy->_session;
+    selfCopy->_session = v6;
 
-    session = v3->_session;
+    session = selfCopy->_session;
   }
 
   v8 = session;
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }

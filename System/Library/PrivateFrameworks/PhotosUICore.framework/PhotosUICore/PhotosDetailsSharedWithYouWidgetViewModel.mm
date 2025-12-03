@@ -1,14 +1,14 @@
 @interface PhotosDetailsSharedWithYouWidgetViewModel
-- (void)syndicationAttributionInfoDidChange:(id)a3;
+- (void)syndicationAttributionInfoDidChange:(id)change;
 @end
 
 @implementation PhotosDetailsSharedWithYouWidgetViewModel
 
-- (void)syndicationAttributionInfoDidChange:(id)a3
+- (void)syndicationAttributionInfoDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A418D074(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1A418D074(changeCopy);
 }
 
 @end

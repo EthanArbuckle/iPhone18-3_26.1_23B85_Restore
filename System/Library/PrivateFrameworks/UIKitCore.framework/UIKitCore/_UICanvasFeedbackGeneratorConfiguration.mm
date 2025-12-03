@@ -1,6 +1,6 @@
 @interface _UICanvasFeedbackGeneratorConfiguration
 + (id)defaultConfiguration;
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5;
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d;
 @end
 
 @implementation _UICanvasFeedbackGeneratorConfiguration
@@ -13,11 +13,11 @@
   return v2;
 }
 
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d
 {
-  v8 = a3;
-  v9 = self;
-  v10 = sub_189079250(v8, a4, a5);
+  feedbackCopy = feedback;
+  selfCopy = self;
+  v10 = sub_189079250(feedbackCopy, device, d);
 
   return v10;
 }

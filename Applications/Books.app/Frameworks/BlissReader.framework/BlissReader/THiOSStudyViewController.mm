@@ -1,56 +1,56 @@
 @interface THiOSStudyViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (THiOSStudyViewController)initWithDocumentRoot:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (THiOSStudyViewController)initWithDocumentRoot:(id)root;
 - (UIEdgeInsets)p_cardEdgeInsets;
-- (UIEdgeInsets)p_scaledInsetsFromInsets:(UIEdgeInsets)a3 referenceSize:(CGSize)a4;
-- (id)presentationController:(id)a3 viewControllerForAdaptivePresentationStyle:(int64_t)a4;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (UIEdgeInsets)p_scaledInsetsFromInsets:(UIEdgeInsets)insets referenceSize:(CGSize)size;
+- (id)presentationController:(id)controller viewControllerForAdaptivePresentationStyle:(int64_t)style;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (int64_t)interfaceOrientation;
 - (int64_t)overrideUserInterfaceStyle;
-- (int64_t)p_styleForPresentation:(id)a3;
+- (int64_t)p_styleForPresentation:(id)presentation;
 - (void)dealloc;
-- (void)dismissStudyOptionsMenu:(BOOL)a3 completion:(id)a4;
-- (void)done:(id)a3;
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4;
-- (void)p_animateTransitionInWithCompletion:(id)a3;
-- (void)p_animateTransitionOutWithCompletion:(id)a3;
-- (void)p_handleFlickGesture:(id)a3;
-- (void)p_handlePanGesture:(id)a3;
-- (void)p_handleTapGesture:(id)a3;
-- (void)p_layoutViewsWithDuration:(double)a3;
+- (void)dismissStudyOptionsMenu:(BOOL)menu completion:(id)completion;
+- (void)done:(id)done;
+- (void)motionEnded:(int64_t)ended withEvent:(id)event;
+- (void)p_animateTransitionInWithCompletion:(id)completion;
+- (void)p_animateTransitionOutWithCompletion:(id)completion;
+- (void)p_handleFlickGesture:(id)gesture;
+- (void)p_handlePanGesture:(id)gesture;
+- (void)p_handleTapGesture:(id)gesture;
+- (void)p_layoutViewsWithDuration:(double)duration;
 - (void)p_setupGestureRecognizers;
-- (void)p_stageTransitionAnimationIn:(BOOL)a3;
+- (void)p_stageTransitionAnimationIn:(BOOL)in;
 - (void)p_updateDarkMode;
-- (void)p_updateFlipGlyphWithTouches:(id)a3;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setTheme:(id)a3;
-- (void)showOptions:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)transitionInWithCompletion:(id)a3;
-- (void)transitionOutWithCompletion:(id)a3;
-- (void)updateWithNavigationUnit:(id)a3 title:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)p_updateFlipGlyphWithTouches:(id)touches;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setTheme:(id)theme;
+- (void)showOptions:(id)options;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)transitionInWithCompletion:(id)completion;
+- (void)transitionOutWithCompletion:(id)completion;
+- (void)updateWithNavigationUnit:(id)unit title:(id)title;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation THiOSStudyViewController
 
-- (THiOSStudyViewController)initWithDocumentRoot:(id)a3
+- (THiOSStudyViewController)initWithDocumentRoot:(id)root
 {
   v4 = [(THiOSStudyViewController *)self initWithNibName:0 bundle:THBundle()];
   if (v4)
   {
-    v5 = [[THNoteCardsController alloc] initWithDocumentRoot:a3];
+    v5 = [[THNoteCardsController alloc] initWithDocumentRoot:root];
     v4->_noteCardsController = v5;
     [(THNoteCardsController *)v5 setDelegate:v4];
     [(THiOSStudyViewController *)v4 p_setupGestureRecognizers];
@@ -90,14 +90,14 @@
   [(THiOSStudyViewController *)&v3 dealloc];
 }
 
-- (UIEdgeInsets)p_scaledInsetsFromInsets:(UIEdgeInsets)a3 referenceSize:(CGSize)a4
+- (UIEdgeInsets)p_scaledInsetsFromInsets:(UIEdgeInsets)insets referenceSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  height = size.height;
+  width = size.width;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [-[THiOSStudyViewController view](self "view")];
   v11 = round(left / width * v10);
   v12 = round(right / width * v10);
@@ -113,19 +113,19 @@
 
 - (UIEdgeInsets)p_cardEdgeInsets
 {
-  v3 = [(THiOSStudyViewController *)self im_isCompactWidth];
-  v4 = [(THiOSStudyViewController *)self im_isCompactHeight];
+  im_isCompactWidth = [(THiOSStudyViewController *)self im_isCompactWidth];
+  im_isCompactHeight = [(THiOSStudyViewController *)self im_isCompactHeight];
   if ([(THNoteCardsController *)self->_noteCardsController noteCardCount]<= 1)
   {
     goto LABEL_2;
   }
 
-  v12 = v4 ^ 1;
-  if ((v3 ^ 1) & 1) != 0 || (v12)
+  v12 = im_isCompactHeight ^ 1;
+  if ((im_isCompactWidth ^ 1) & 1) != 0 || (v12)
   {
-    if ((v3 ^ 1 | v4))
+    if ((im_isCompactWidth ^ 1 | im_isCompactHeight))
     {
-      if (((v3 | v12) & 1) == 0)
+      if (((im_isCompactWidth | v12) & 1) == 0)
       {
         v5 = 38.0;
         v6 = 64.0;
@@ -142,7 +142,7 @@ LABEL_2:
       v8 = 768.0;
       v9 = 30.0;
 LABEL_3:
-      v10 = self;
+      selfCopy2 = self;
       v11 = 64.0;
       goto LABEL_12;
     }
@@ -165,10 +165,10 @@ LABEL_3:
     v11 = 20.0;
   }
 
-  v10 = self;
+  selfCopy2 = self;
 LABEL_12:
 
-  [(THiOSStudyViewController *)v10 p_scaledInsetsFromInsets:v5 referenceSize:v6, v9, v11, v7, v8];
+  [(THiOSStudyViewController *)selfCopy2 p_scaledInsetsFromInsets:v5 referenceSize:v6, v9, v11, v7, v8];
   result.right = v16;
   result.bottom = v15;
   result.left = v14;
@@ -201,11 +201,11 @@ LABEL_12:
   [-[THiOSStudyViewController view](self "view")];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = THiOSStudyViewController;
-  [(THiOSStudyViewController *)&v4 viewWillAppear:a3];
+  [(THiOSStudyViewController *)&v4 viewWillAppear:appear];
   [(THiOSStudyViewController *)self p_updateDarkMode];
 }
 
@@ -217,22 +217,22 @@ LABEL_12:
   [(THiOSStudyViewController *)self p_layoutViewsWithDuration:0.0];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = THiOSStudyViewController;
-  [(THiOSStudyViewController *)&v8 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(THiOSStudyViewController *)&v8 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   noteCardsController = self->_noteCardsController;
-  v7 = [(THiOSStudyViewController *)self view];
-  if (a3)
+  view = [(THiOSStudyViewController *)self view];
+  if (window)
   {
-    [(THNoteCardsController *)noteCardsController attachToView:v7];
+    [(THNoteCardsController *)noteCardsController attachToView:view];
     [-[THiOSStudyViewController view](self "view")];
   }
 
   else
   {
-    [(THNoteCardsController *)noteCardsController detachFromView:v7];
+    [(THNoteCardsController *)noteCardsController detachFromView:view];
   }
 }
 
@@ -255,12 +255,12 @@ LABEL_12:
   return result;
 }
 
-- (void)p_updateFlipGlyphWithTouches:(id)a3
+- (void)p_updateFlipGlyphWithTouches:(id)touches
 {
-  if ([a3 count] == &dword_0 + 1)
+  if ([touches count] == &dword_0 + 1)
   {
     noteCardsController = self->_noteCardsController;
-    [objc_msgSend(a3 "anyObject")];
+    [objc_msgSend(touches "anyObject")];
     v6 = [(THNoteCardsController *)noteCardsController isPointInsideTopCardFlipGlyph:?];
     v7 = self->_noteCardsController;
 
@@ -268,36 +268,36 @@ LABEL_12:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   [(THiOSStudyViewController *)self p_updateFlipGlyphWithTouches:?];
   v7.receiver = self;
   v7.super_class = THiOSStudyViewController;
-  [(THiOSStudyViewController *)&v7 touchesBegan:a3 withEvent:a4];
+  [(THiOSStudyViewController *)&v7 touchesBegan:began withEvent:event];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   [(THiOSStudyViewController *)self p_updateFlipGlyphWithTouches:?];
   v7.receiver = self;
   v7.super_class = THiOSStudyViewController;
-  [(THiOSStudyViewController *)&v7 touchesMoved:a3 withEvent:a4];
+  [(THiOSStudyViewController *)&v7 touchesMoved:moved withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   [(THNoteCardsController *)self->_noteCardsController handleTopCardFlipAffordancePressed:0];
   v7.receiver = self;
   v7.super_class = THiOSStudyViewController;
-  [(THiOSStudyViewController *)&v7 touchesEnded:a3 withEvent:a4];
+  [(THiOSStudyViewController *)&v7 touchesEnded:ended withEvent:event];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   [(THNoteCardsController *)self->_noteCardsController handleTopCardFlipAffordancePressed:0];
   v7.receiver = self;
   v7.super_class = THiOSStudyViewController;
-  [(THiOSStudyViewController *)&v7 touchesCancelled:a3 withEvent:a4];
+  [(THiOSStudyViewController *)&v7 touchesCancelled:cancelled withEvent:event];
 }
 
 - (int64_t)interfaceOrientation
@@ -307,14 +307,14 @@ LABEL_12:
   return [v2 interfaceOrientation];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v13.receiver = self;
   v13.super_class = THiOSStudyViewController;
-  [(THiOSStudyViewController *)&v13 viewWillTransitionToSize:a3.width withTransitionCoordinator:a3.height];
-  if (a4)
+  [(THiOSStudyViewController *)&v13 viewWillTransitionToSize:size.width withTransitionCoordinator:size.height];
+  if (coordinator)
   {
-    [a4 targetTransform];
+    [coordinator targetTransform];
     IsIdentity = CGAffineTransformIsIdentity(&v12);
     v12.a = 0.0;
     *&v12.b = &v12;
@@ -334,7 +334,7 @@ LABEL_12:
     v9 = !IsIdentity;
     v8[4] = self;
     v8[5] = &v12;
-    v7 = [a4 animateAlongsideTransition:v10 completion:v8];
+    v7 = [coordinator animateAlongsideTransition:v10 completion:v8];
     *(*&v12.b + 24) = v7;
     _Block_object_dispose(&v12, 8);
   }
@@ -354,7 +354,7 @@ LABEL_12:
   [(THNoteCardsController *)noteCardsController setDarkMode:v3];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   theme = self->_theme;
   if (theme)
@@ -363,18 +363,18 @@ LABEL_12:
     self->_theme = 0;
   }
 
-  self->_theme = a3;
+  self->_theme = theme;
 
   [(THiOSStudyViewController *)self p_updateDarkMode];
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v5 = sub_DE294;
   v6 = &unk_45AE00;
-  v7 = self;
+  selfCopy = self;
   if ([(THiOSStudyViewController *)self optionsPopoverController])
   {
     [(THiOSStudyViewController *)self dismissStudyOptionsMenu:0 completion:v4];
@@ -386,7 +386,7 @@ LABEL_12:
   }
 }
 
-- (void)showOptions:(id)a3
+- (void)showOptions:(id)options
 {
   if ([(THiOSStudyViewController *)self optionsPopoverController])
   {
@@ -409,46 +409,46 @@ LABEL_12:
     [v9 setToolbarHidden:1];
     [v9 setDelegate:{-[THiOSStudyViewController optionsPopoverController](self, "optionsPopoverController")}];
     [v9 setModalPresentationStyle:7];
-    v6 = [v9 popoverPresentationController];
+    popoverPresentationController = [v9 popoverPresentationController];
     objc_opt_class();
     v7 = TSUDynamicCast();
     if (v7)
     {
-      [v6 setBarButtonItem:v7];
+      [popoverPresentationController setBarButtonItem:v7];
     }
 
     else
     {
-      [v6 setSourceView:{objc_msgSend(a3, "superview")}];
-      [a3 frame];
-      [v6 setSourceRect:?];
+      [popoverPresentationController setSourceView:{objc_msgSend(options, "superview")}];
+      [options frame];
+      [popoverPresentationController setSourceRect:?];
     }
 
-    [v6 setPermittedArrowDirections:15];
-    [v6 setDelegate:self];
+    [popoverPresentationController setPermittedArrowDirections:15];
+    [popoverPresentationController setDelegate:self];
     v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"doneButtonPressed:"];
     [-[THStudyOptionsPopoverController navigationItem](-[THiOSStudyViewController optionsPopoverController](self "optionsPopoverController")];
-    [v6 setPassthroughViews:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", -[THiOSStudyViewController optionsButton](self, "optionsButton"), -[THiOSStudyViewController doneButton](self, "doneButton"), 0)}];
-    [v6 bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:v5];
+    [popoverPresentationController setPassthroughViews:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", -[THiOSStudyViewController optionsButton](self, "optionsButton"), -[THiOSStudyViewController doneButton](self, "doneButton"), 0)}];
+    [popoverPresentationController bc_applyTraitOverridesWithOverrideUserInterfaceStyleFromViewController:v5];
     [(THiOSStudyViewController *)self presentViewController:v9 animated:1 completion:0];
   }
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
-  v4 = [a3 presentedViewController];
-  if (v4 == [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationController])
+  presentedViewController = [presentation presentedViewController];
+  if (presentedViewController == [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationController])
   {
-    v5 = [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationItem];
+    navigationItem = [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationItem];
 
-    [v5 setRightBarButtonItem:0 animated:0];
+    [navigationItem setRightBarButtonItem:0 animated:0];
   }
 }
 
-- (id)presentationController:(id)a3 viewControllerForAdaptivePresentationStyle:(int64_t)a4
+- (id)presentationController:(id)controller viewControllerForAdaptivePresentationStyle:(int64_t)style
 {
-  v5 = [a3 presentedViewController];
-  if (v5 == [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationController])
+  presentedViewController = [controller presentedViewController];
+  if (presentedViewController == [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationController])
   {
     v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"doneButtonPressed:"];
     [-[THStudyOptionsPopoverController navigationItem](-[THiOSStudyViewController optionsPopoverController](self "optionsPopoverController")];
@@ -457,37 +457,37 @@ LABEL_12:
   return 0;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [a3 presentedViewController];
-  if (v4 == [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationController])
+  presentedViewController = [dismiss presentedViewController];
+  if (presentedViewController == [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationController])
   {
 
     [(THiOSStudyViewController *)self dismissStudyOptionsMenu:1 completion:0];
   }
 }
 
-- (int64_t)p_styleForPresentation:(id)a3
+- (int64_t)p_styleForPresentation:(id)presentation
 {
-  if (a3)
+  if (presentation)
   {
-    v4 = [a3 horizontalSizeClass] == &dword_0 + 1;
-    v5 = [a3 verticalSizeClass] == &dword_0 + 1;
+    im_isCompactWidth = [presentation horizontalSizeClass] == &dword_0 + 1;
+    im_isCompactHeight = [presentation verticalSizeClass] == &dword_0 + 1;
   }
 
   else
   {
-    v4 = [(THiOSStudyViewController *)self im_isCompactWidth];
-    v5 = [(THiOSStudyViewController *)self im_isCompactHeight];
+    im_isCompactWidth = [(THiOSStudyViewController *)self im_isCompactWidth];
+    im_isCompactHeight = [(THiOSStudyViewController *)self im_isCompactHeight];
   }
 
   v7 = 7;
-  if (v5)
+  if (im_isCompactHeight)
   {
     v7 = 1;
   }
 
-  if (v4)
+  if (im_isCompactWidth)
   {
     return 0;
   }
@@ -498,10 +498,10 @@ LABEL_12:
   }
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller
 {
-  v4 = [a3 presentedViewController];
-  if (v4 != [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationController])
+  presentedViewController = [controller presentedViewController];
+  if (presentedViewController != [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationController])
   {
     return 7;
   }
@@ -509,36 +509,36 @@ LABEL_12:
   return [(THiOSStudyViewController *)self p_styleForPresentation:0];
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v6 = [a3 presentedViewController];
-  if (v6 != [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationController])
+  presentedViewController = [controller presentedViewController];
+  if (presentedViewController != [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] navigationController])
   {
     return 7;
   }
 
-  return [(THiOSStudyViewController *)self p_styleForPresentation:a4];
+  return [(THiOSStudyViewController *)self p_styleForPresentation:collection];
 }
 
-- (void)dismissStudyOptionsMenu:(BOOL)a3 completion:(id)a4
+- (void)dismissStudyOptionsMenu:(BOOL)menu completion:(id)completion
 {
-  [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] dismissViewControllerAnimated:a3 completion:a4];
+  [(THStudyOptionsPopoverController *)[(THiOSStudyViewController *)self optionsPopoverController] dismissViewControllerAnimated:menu completion:completion];
 
   [(THiOSStudyViewController *)self setOptionsPopoverController:0];
 }
 
-- (void)updateWithNavigationUnit:(id)a3 title:(id)a4
+- (void)updateWithNavigationUnit:(id)unit title:(id)title
 {
-  [(THNoteCardsController *)self->_noteCardsController updateWithNavigationUnit:a3 contentNode:0];
+  [(THNoteCardsController *)self->_noteCardsController updateWithNavigationUnit:unit contentNode:0];
   titleLabel = self->_titleLabel;
 
-  [(UILabel *)titleLabel setText:a4];
+  [(UILabel *)titleLabel setText:title];
 }
 
-- (void)p_stageTransitionAnimationIn:(BOOL)a3
+- (void)p_stageTransitionAnimationIn:(BOOL)in
 {
-  v3 = a3;
-  if (a3)
+  inCopy = in;
+  if (in)
   {
     v5 = 0.0;
   }
@@ -556,12 +556,12 @@ LABEL_12:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(THNoteCardsController *)self->_noteCardsController noteCards];
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  noteCards = [(THNoteCardsController *)self->_noteCardsController noteCards];
+  v7 = [(NSArray *)noteCards countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
-    if (v3)
+    if (inCopy)
     {
       v9 = 1.0;
     }
@@ -578,15 +578,15 @@ LABEL_12:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(noteCards);
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        [v12 setFlownOut:v3 direction:{v9, 0.0}];
+        [v12 setFlownOut:inCopy direction:{v9, 0.0}];
         [v12 updateTransformAnimated:0 duration:0.0];
       }
 
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [(NSArray *)noteCards countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -595,14 +595,14 @@ LABEL_12:
   self->_isTransitioningInOut = 1;
 }
 
-- (void)transitionInWithCompletion:(id)a3
+- (void)transitionInWithCompletion:(id)completion
 {
   [(THiOSStudyViewController *)self p_stageTransitionAnimationIn:1];
 
-  [(THiOSStudyViewController *)self p_animateTransitionInWithCompletion:a3];
+  [(THiOSStudyViewController *)self p_animateTransitionInWithCompletion:completion];
 }
 
-- (void)p_animateTransitionInWithCompletion:(id)a3
+- (void)p_animateTransitionInWithCompletion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -610,7 +610,7 @@ LABEL_12:
   v9[3] = &unk_45AE00;
   v9[4] = self;
   [UIView animateWithDuration:0x10000 delay:v9 options:0 animations:0.67 completion:0.0];
-  v7[5] = a3;
+  v7[5] = completion;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_DEC7C;
@@ -631,21 +631,21 @@ LABEL_12:
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)transitionOutWithCompletion:(id)a3
+- (void)transitionOutWithCompletion:(id)completion
 {
   [(THiOSStudyViewController *)self p_stageTransitionAnimationIn:0];
 
-  [(THiOSStudyViewController *)self p_animateTransitionOutWithCompletion:a3];
+  [(THiOSStudyViewController *)self p_animateTransitionOutWithCompletion:completion];
 }
 
-- (void)p_animateTransitionOutWithCompletion:(id)a3
+- (void)p_animateTransitionOutWithCompletion:(id)completion
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(THNoteCardsController *)self->_noteCardsController noteCards];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  noteCards = [(THNoteCardsController *)self->_noteCardsController noteCards];
+  v6 = [(NSArray *)noteCards countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -657,7 +657,7 @@ LABEL_12:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(noteCards);
         }
 
         [*(*(&v13 + 1) + 8 * v9) setFlownOut:1 direction:1 animated:-2.0 duration:{0.0, 0.670000017}];
@@ -665,7 +665,7 @@ LABEL_12:
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [(NSArray *)noteCards countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -677,7 +677,7 @@ LABEL_12:
   v12[3] = &unk_45AE00;
   v12[4] = self;
   [UIView animateWithDuration:0x10000 delay:v12 options:0 animations:0.33 completion:0.0];
-  v10[5] = a3;
+  v10[5] = completion;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_DF120;
@@ -691,17 +691,17 @@ LABEL_12:
   [UIView animateWithDuration:0x20000 delay:v11 options:v10 animations:0.67 completion:0.33];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = THiOSStudyViewController;
-  [(THiOSStudyViewController *)&v4 viewDidAppear:a3];
+  [(THiOSStudyViewController *)&v4 viewDidAppear:appear];
   [(THiOSStudyViewController *)self becomeFirstResponder];
 }
 
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4
+- (void)motionEnded:(int64_t)ended withEvent:(id)event
 {
-  if (a3 == 1 && [(THStudyOptions *)[(THNoteCardsController *)self->_noteCardsController studyOptions:1] shuffle])
+  if (ended == 1 && [(THStudyOptions *)[(THNoteCardsController *)self->_noteCardsController studyOptions:1] shuffle])
   {
     noteCardsController = self->_noteCardsController;
 
@@ -709,33 +709,33 @@ LABEL_12:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  [a4 locationInView:{-[THiOSStudyViewController view](self, "view")}];
+  [touch locationInView:{-[THiOSStudyViewController view](self, "view")}];
   v7 = v6;
   v9 = v8;
   v10 = [(THNoteCardsController *)self->_noteCardsController isTopCardAtPoint:?];
   v11 = [(THNoteCardsController *)self->_noteCardsController isBottomCardAtPoint:v7, v9];
   v12 = v11;
-  if (self->_tapGR != a3)
+  if (self->_tapGR != recognizer)
   {
-    if (self->_panGR == a3 || self->_flickGR == a3)
+    if (self->_panGR == recognizer || self->_flickGR == recognizer)
     {
-      v13 = v10 | v11;
-      return v13 & 1;
+      canFlipTopCard = v10 | v11;
+      return canFlipTopCard & 1;
     }
 
 LABEL_13:
-    v13 = 0;
-    return v13 & 1;
+    canFlipTopCard = 0;
+    return canFlipTopCard & 1;
   }
 
   if (v10)
   {
-    v13 = [(THNoteCardsController *)self->_noteCardsController canFlipTopCard];
-    if (v13 & 1) != 0 || ((v12 ^ 1))
+    canFlipTopCard = [(THNoteCardsController *)self->_noteCardsController canFlipTopCard];
+    if (canFlipTopCard & 1) != 0 || ((v12 ^ 1))
     {
-      return v13 & 1;
+      return canFlipTopCard & 1;
     }
   }
 
@@ -749,11 +749,11 @@ LABEL_13:
   return [(THNoteCardsController *)noteCardsController showingMultipleCards];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_panGR == a3)
+  if (self->_panGR == recognizer)
   {
-    [a4 view];
+    [gestureRecognizer view];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -775,12 +775,12 @@ LABEL_13:
   return isKindOfClass & 1;
 }
 
-- (void)p_layoutViewsWithDuration:(double)a3
+- (void)p_layoutViewsWithDuration:(double)duration
 {
   [(THiOSStudyViewController *)self p_cardEdgeInsets];
   noteCardsController = self->_noteCardsController;
   [-[THiOSStudyViewController view](self "view")];
-  [THNoteCardsController updateFrame:"updateFrame:insets:animated:duration:" insets:a3 != 0.0 animated:*&a3 duration:?];
+  [THNoteCardsController updateFrame:"updateFrame:insets:animated:duration:" insets:duration != 0.0 animated:*&duration duration:?];
   [-[THiOSStudyViewController view](self "view")];
   TSDRectGetMaxPoint();
   TSDPointLength();
@@ -839,17 +839,17 @@ LABEL_13:
   [(UIPanGestureRecognizer *)self->_indirectPanGR setAllowedScrollTypesMask:3];
   [(UIPanGestureRecognizer *)self->_indirectPanGR setDelegate:self];
   [(UIPanGestureRecognizer *)self->_indirectPanGR setCancelsTouchesInView:0];
-  v7 = [(THiOSStudyViewController *)self view];
+  view = [(THiOSStudyViewController *)self view];
   indirectPanGR = self->_indirectPanGR;
 
-  [v7 addGestureRecognizer:indirectPanGR];
+  [view addGestureRecognizer:indirectPanGR];
 }
 
-- (void)p_handleTapGesture:(id)a3
+- (void)p_handleTapGesture:(id)gesture
 {
-  if ([a3 state] == &dword_0 + 3)
+  if ([gesture state] == &dword_0 + 3)
   {
-    [a3 locationInView:{-[THiOSStudyViewController view](self, "view")}];
+    [gesture locationInView:{-[THiOSStudyViewController view](self, "view")}];
     v6 = v5;
     v8 = v7;
     v9 = [(THNoteCardsController *)self->_noteCardsController isTopCardAtPoint:?];
@@ -869,24 +869,24 @@ LABEL_13:
   }
 }
 
-- (void)p_handlePanGesture:(id)a3
+- (void)p_handlePanGesture:(id)gesture
 {
-  v5 = [a3 state];
-  if (v5 == &dword_0 + 1)
+  state = [gesture state];
+  if (state == &dword_0 + 1)
   {
-    [a3 locationInView:{-[THiOSStudyViewController view](self, "view")}];
+    [gesture locationInView:{-[THiOSStudyViewController view](self, "view")}];
     self->_dragStartLocation.x = v6;
     self->_dragStartLocation.y = v7;
   }
 
-  else if ((v5 - 1) > 1)
+  else if ((state - 1) > 1)
   {
-    if ((v5 - 3) <= 1)
+    if ((state - 3) <= 1)
     {
       if (self->_dragging)
       {
         noteCardsController = self->_noteCardsController;
-        [a3 direction];
+        [gesture direction];
         [(THNoteCardsController *)noteCardsController endDragInDirection:?];
       }
 
@@ -896,24 +896,24 @@ LABEL_13:
     return;
   }
 
-  [a3 translationInView:{-[THiOSStudyViewController view](self, "view")}];
+  [gesture translationInView:{-[THiOSStudyViewController view](self, "view")}];
   v9 = v8;
   v11 = v10;
   if ([(THNoteCardsController *)self->_noteCardsController isTopCardAtPoint:self->_dragStartLocation.x, self->_dragStartLocation.y])
   {
-    v12 = [(THNoteCardsController *)self->_noteCardsController topScrollView];
-    if ([v12 canScroll])
+    topScrollView = [(THNoteCardsController *)self->_noteCardsController topScrollView];
+    if ([topScrollView canScroll])
     {
       if (fabs(v9) <= 50.0)
       {
         return;
       }
 
-      [v12 contentOffset];
+      [topScrollView contentOffset];
       v14 = v13;
       v16 = v15;
-      [v12 setScrollEnabled:0];
-      [v12 setContentOffset:{v14, v16}];
+      [topScrollView setScrollEnabled:0];
+      [topScrollView setContentOffset:{v14, v16}];
     }
   }
 
@@ -933,14 +933,14 @@ LABEL_13:
   [(THNoteCardsController *)v18 setDragOffset:?];
 }
 
-- (void)p_handleFlickGesture:(id)a3
+- (void)p_handleFlickGesture:(id)gesture
 {
-  if ([a3 state] == &dword_0 + 3)
+  if ([gesture state] == &dword_0 + 3)
   {
-    [a3 translationInView:{-[THiOSStudyViewController view](self, "view")}];
+    [gesture translationInView:{-[THiOSStudyViewController view](self, "view")}];
     v6 = v5;
     v8 = v7;
-    [a3 initialLocationInView:{-[THiOSStudyViewController view](self, "view")}];
+    [gesture initialLocationInView:{-[THiOSStudyViewController view](self, "view")}];
     v10 = v9;
     v12 = v11;
     v13 = [(THNoteCardsController *)self->_noteCardsController isTopCardAtPoint:?];

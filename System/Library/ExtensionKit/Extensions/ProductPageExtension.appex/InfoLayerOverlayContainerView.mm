@@ -1,12 +1,12 @@
 @interface InfoLayerOverlayContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension29InfoLayerOverlayContainerView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension29InfoLayerOverlayContainerView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation InfoLayerOverlayContainerView
 
-- (_TtC20ProductPageExtension29InfoLayerOverlayContainerView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension29InfoLayerOverlayContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension29InfoLayerOverlayContainerView_overlayView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension29InfoLayerOverlayContainerView_sizeCategory) = 5;
@@ -21,13 +21,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005BA000();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_1005BA30C();
   v5 = v4;
   v7 = v6;

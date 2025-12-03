@@ -1,99 +1,99 @@
 @interface TSWPMergeSmartField
-- (TSWPMergeSmartField)initWithContext:(id)a3 category:(int64_t)a4;
-- (id)copyWithContext:(id)a3;
+- (TSWPMergeSmartField)initWithContext:(id)context category:(int64_t)category;
+- (id)copyWithContext:(id)context;
 - (id)scriptTag;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setCategory:(int64_t)a3;
-- (void)setFieldType:(id)a3;
-- (void)setGuid:(id)a3;
-- (void)setHasCustomText:(BOOL)a3;
-- (void)setRequiresFollowingWhitespace:(BOOL)a3;
-- (void)setWhitespace:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setCategory:(int64_t)category;
+- (void)setFieldType:(id)type;
+- (void)setGuid:(id)guid;
+- (void)setHasCustomText:(BOOL)text;
+- (void)setRequiresFollowingWhitespace:(BOOL)whitespace;
+- (void)setWhitespace:(id)whitespace;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
 @end
 
 @implementation TSWPMergeSmartField
 
-- (void)setFieldType:(id)a3
+- (void)setFieldType:(id)type
 {
-  v4 = a3;
-  if (self->_fieldType != v4)
+  typeCopy = type;
+  if (self->_fieldType != typeCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = typeCopy;
+    objc_msgSend_willModify(self, typeCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_fieldType, v8);
-    v4 = v8;
+    typeCopy = v8;
   }
 }
 
-- (void)setCategory:(int64_t)a3
+- (void)setCategory:(int64_t)category
 {
-  if (self->_category != a3)
+  if (self->_category != category)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_category = a3;
+    objc_msgSend_willModify(self, a2, category);
+    self->_category = category;
   }
 }
 
-- (void)setRequiresFollowingWhitespace:(BOOL)a3
+- (void)setRequiresFollowingWhitespace:(BOOL)whitespace
 {
-  if (self->_requiresFollowingWhitespace != a3)
+  if (self->_requiresFollowingWhitespace != whitespace)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_requiresFollowingWhitespace = a3;
+    objc_msgSend_willModify(self, a2, whitespace);
+    self->_requiresFollowingWhitespace = whitespace;
   }
 }
 
-- (void)setHasCustomText:(BOOL)a3
+- (void)setHasCustomText:(BOOL)text
 {
-  if (self->_hasCustomText != a3)
+  if (self->_hasCustomText != text)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_hasCustomText = a3;
+    objc_msgSend_willModify(self, a2, text);
+    self->_hasCustomText = text;
   }
 }
 
-- (void)setWhitespace:(id)a3
+- (void)setWhitespace:(id)whitespace
 {
-  v4 = a3;
-  if (self->_whitespace != v4)
+  whitespaceCopy = whitespace;
+  if (self->_whitespace != whitespaceCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = whitespaceCopy;
+    objc_msgSend_willModify(self, whitespaceCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_whitespace, v8);
-    v4 = v8;
+    whitespaceCopy = v8;
   }
 }
 
-- (void)setGuid:(id)a3
+- (void)setGuid:(id)guid
 {
-  v4 = a3;
-  if (self->_guid != v4)
+  guidCopy = guid;
+  if (self->_guid != guidCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = guidCopy;
+    objc_msgSend_willModify(self, guidCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_guid, v8);
-    v4 = v8;
+    guidCopy = v8;
   }
 }
 
-- (TSWPMergeSmartField)initWithContext:(id)a3 category:(int64_t)a4
+- (TSWPMergeSmartField)initWithContext:(id)context category:(int64_t)category
 {
-  v6 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = TSWPMergeSmartField;
-  v7 = [(TSWPPlaceholderSmartField *)&v17 initWithContext:v6];
+  v7 = [(TSWPPlaceholderSmartField *)&v17 initWithContext:contextCopy];
   v10 = v7;
   if (v7)
   {
-    v7->_category = a4;
+    v7->_category = category;
     v11 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v8, v9);
     v14 = objc_msgSend_UUIDString(v11, v12, v13);
     guid = v10->_guid;
@@ -103,11 +103,11 @@
   return v10;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DC408[158]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DC408[158]);
 
   if (*(v6 + 72))
   {
@@ -121,7 +121,7 @@
 
   v44.receiver = self;
   v44.super_class = TSWPMergeSmartField;
-  [(TSWPPlaceholderSmartField *)&v44 loadFromArchive:v7 unarchiver:v4];
+  [(TSWPPlaceholderSmartField *)&v44 loadFromArchive:v7 unarchiver:unarchiverCopy];
   v8 = *(v6 + 16);
   if ((v8 & 0x80) != 0)
   {
@@ -231,11 +231,11 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276DF4B2C, off_2812DC408[158]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276DF4B2C, off_2812DC408[158]);
 
   *(v6 + 16) |= 0x40u;
   v7 = *(v6 + 72);
@@ -253,7 +253,7 @@
 
   v49.receiver = self;
   v49.super_class = TSWPMergeSmartField;
-  [(TSWPPlaceholderSmartField *)&v49 saveToArchive:v7 archiver:v4];
+  [(TSWPPlaceholderSmartField *)&v49 saveToArchive:v7 archiver:archiverCopy];
   fieldType = self->_fieldType;
   if (fieldType)
   {
@@ -349,17 +349,17 @@
   requiresFollowingWhitespace = self->_requiresFollowingWhitespace;
   *(v6 + 16) = v46 | 0x300;
   *(v6 + 92) = requiresFollowingWhitespace;
-  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v4, v9, 11, v6);
+  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v9, 11, v6);
   hasCustomText = self->_hasCustomText;
   *(v6 + 16) |= 0x400u;
   *(v6 + 93) = hasCustomText;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v15.receiver = self;
   v15.super_class = TSWPMergeSmartField;
-  v4 = [(TSWPPlaceholderSmartField *)&v15 copyWithContext:a3];
+  v4 = [(TSWPPlaceholderSmartField *)&v15 copyWithContext:context];
   v7 = objc_msgSend_copy(self->_fieldType, v5, v6);
   objc_msgSend_setFieldType_(v4, v8, v7);
 
@@ -375,20 +375,20 @@
 {
   v10.receiver = self;
   v10.super_class = TSWPMergeSmartField;
-  v5 = [(TSWPPlaceholderSmartField *)&v10 scriptTag];
-  if (!v5)
+  scriptTag = [(TSWPPlaceholderSmartField *)&v10 scriptTag];
+  if (!scriptTag)
   {
     v6 = objc_msgSend_fieldType(self, v3, v4);
-    v5 = objc_msgSend_contactsProperty(v6, v7, v8);
+    scriptTag = objc_msgSend_contactsProperty(v6, v7, v8);
   }
 
-  return v5;
+  return scriptTag;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v16 = a4;
-  if (objc_msgSend_uniqueSmartFields(v16, v5, v6))
+  contextCopy = context;
+  if (objc_msgSend_uniqueSmartFields(contextCopy, v5, v6))
   {
     objc_msgSend_willModify(self, v7, v8);
     v11 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v9, v10);

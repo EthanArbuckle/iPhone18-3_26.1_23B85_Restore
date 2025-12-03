@@ -1,41 +1,41 @@
 @interface SSFuzzyMatchScoring
-+ (BOOL)patternCanMatch:(id)a3 pattern:(id)a4;
-+ (id)fuzzymatch:(id)a3 pattern:(id)a4;
-+ (id)stringToUint32Array:(id)a3;
-+ (int)bonusFor:(int)a3 charClass:(int)a4;
-+ (int)charClass:(unsigned int)a3;
++ (BOOL)patternCanMatch:(id)match pattern:(id)pattern;
++ (id)fuzzymatch:(id)fuzzymatch pattern:(id)pattern;
++ (id)stringToUint32Array:(id)array;
++ (int)bonusFor:(int)for charClass:(int)class;
++ (int)charClass:(unsigned int)class;
 @end
 
 @implementation SSFuzzyMatchScoring
 
-+ (int)charClass:(unsigned int)a3
++ (int)charClass:(unsigned int)class
 {
-  if (a3 == 9608)
+  if (class == 9608)
   {
     return 3;
   }
 
-  if (u_islower(a3))
+  if (u_islower(class))
   {
     return 3;
   }
 
-  if (u_isupper(a3))
+  if (u_isupper(class))
   {
     return 4;
   }
 
-  if (u_isspace(a3))
+  if (u_isspace(class))
   {
     return 0;
   }
 
-  if (u_ispunct(a3))
+  if (u_ispunct(class))
   {
     return 2;
   }
 
-  if (u_isdigit(a3))
+  if (u_isdigit(class))
   {
     return 5;
   }
@@ -43,25 +43,25 @@
   return 1;
 }
 
-+ (int)bonusFor:(int)a3 charClass:(int)a4
++ (int)bonusFor:(int)for charClass:(int)class
 {
-  if (a4 < 2)
+  if (class < 2)
   {
     goto LABEL_9;
   }
 
-  if (a3 < 3)
+  if (for < 3)
   {
-    return dword_1DA0D5404[a3];
+    return dword_1DA0D5404[for];
   }
 
-  if (a3 == 3 && a4 == 4 || a3 != 5 && a4 == 5)
+  if (for == 3 && class == 4 || for != 5 && class == 5)
   {
     return 7;
   }
 
 LABEL_9:
-  if (a4)
+  if (class)
   {
     v5 = 0;
   }
@@ -71,7 +71,7 @@ LABEL_9:
     v5 = 10;
   }
 
-  if (a4 == 1)
+  if (class == 1)
   {
     return 8;
   }
@@ -82,13 +82,13 @@ LABEL_9:
   }
 }
 
-+ (BOOL)patternCanMatch:(id)a3 pattern:(id)a4
++ (BOOL)patternCanMatch:(id)match pattern:(id)pattern
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  matchCopy = match;
+  patternCopy = pattern;
+  if ([matchCopy count] && objc_msgSend(patternCopy, "count"))
   {
-    if (![v6 count])
+    if (![patternCopy count])
     {
       v13 = 1;
       goto LABEL_11;
@@ -96,20 +96,20 @@ LABEL_9:
 
     v7 = 0;
     v8 = 0;
-    while (v8 < [v5 count])
+    while (v8 < [matchCopy count])
     {
-      v9 = [v5 objectAtIndexedSubscript:v8];
-      v10 = [v9 unsignedIntValue];
+      v9 = [matchCopy objectAtIndexedSubscript:v8];
+      unsignedIntValue = [v9 unsignedIntValue];
 
-      v11 = [v6 objectAtIndexedSubscript:v7];
-      v12 = [v11 unsignedIntValue];
+      v11 = [patternCopy objectAtIndexedSubscript:v7];
+      unsignedIntValue2 = [v11 unsignedIntValue];
 
       ++v8;
-      if (v10 != -1 && v10 == v12)
+      if (unsignedIntValue != -1 && unsignedIntValue == unsignedIntValue2)
       {
         ++v7;
         v13 = 1;
-        if (v7 >= [v6 count])
+        if (v7 >= [patternCopy count])
         {
           goto LABEL_11;
         }
@@ -123,19 +123,19 @@ LABEL_11:
   return v13;
 }
 
-+ (id)stringToUint32Array:(id)a3
++ (id)stringToUint32Array:(id)array
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 length];
+  v6 = [arrayCopy length];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __43__SSFuzzyMatchScoring_stringToUint32Array___block_invoke;
   v10[3] = &unk_1E8595BE8;
   v11 = v5;
   v7 = v5;
-  [v4 enumerateSubstringsInRange:0 options:v6 usingBlock:{2, v10}];
+  [arrayCopy enumerateSubstringsInRange:0 options:v6 usingBlock:{2, v10}];
 
   v8 = [v7 copy];
 
@@ -159,20 +159,20 @@ void __43__SSFuzzyMatchScoring_stringToUint32Array___block_invoke(uint64_t a1, v
   }
 }
 
-+ (id)fuzzymatch:(id)a3 pattern:(id)a4
++ (id)fuzzymatch:(id)fuzzymatch pattern:(id)pattern
 {
   v140[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  fuzzymatchCopy = fuzzymatch;
+  patternCopy = pattern;
+  v8 = patternCopy;
+  if (!fuzzymatchCopy || !patternCopy)
   {
-    v19 = [[SSTermMatchResult alloc] initWithoutMatch:v7];
+    v19 = [[SSTermMatchResult alloc] initWithoutMatch:patternCopy];
     goto LABEL_18;
   }
 
-  v9 = [a1 stringToUint32Array:v6];
-  v10 = [a1 stringToUint32Array:v8];
+  v9 = [self stringToUint32Array:fuzzymatchCopy];
+  v10 = [self stringToUint32Array:v8];
   v11 = [v9 count];
   v12 = [v10 count];
   if (!v12)
@@ -181,10 +181,10 @@ void __43__SSFuzzyMatchScoring_stringToUint32Array___block_invoke(uint64_t a1, v
   }
 
   v136 = v12;
-  v137 = a1;
+  selfCopy = self;
   v129 = v10;
   v13 = [v10 objectAtIndexedSubscript:0];
-  v14 = [v13 unsignedIntValue];
+  unsignedIntValue = [v13 unsignedIntValue];
 
   if ([v9 count])
   {
@@ -193,9 +193,9 @@ void __43__SSFuzzyMatchScoring_stringToUint32Array___block_invoke(uint64_t a1, v
     while (1)
     {
       v17 = [v9 objectAtIndexedSubscript:v16];
-      v18 = [v17 unsignedIntValue];
+      unsignedIntValue2 = [v17 unsignedIntValue];
 
-      if (v18 == v14)
+      if (unsignedIntValue2 == unsignedIntValue)
       {
         break;
       }
@@ -210,9 +210,9 @@ void __43__SSFuzzyMatchScoring_stringToUint32Array___block_invoke(uint64_t a1, v
 
     if (v16 != -1)
     {
-      v20 = v137;
+      v20 = selfCopy;
       v10 = v129;
-      if ([v137 patternCanMatch:v9 pattern:v129])
+      if ([selfCopy patternCanMatch:v9 pattern:v129])
       {
         v115 = v113;
         v21 = (4 * v11 + 15) & 0x7FFFFFFF0;
@@ -244,7 +244,7 @@ void __43__SSFuzzyMatchScoring_stringToUint32Array___block_invoke(uint64_t a1, v
         }
 
         v116 = v8;
-        v117 = v6;
+        v117 = fuzzymatchCopy;
         v139 = v9;
         if (v16 < [v9 count])
         {
@@ -262,13 +262,13 @@ void __43__SSFuzzyMatchScoring_stringToUint32Array___block_invoke(uint64_t a1, v
           {
             v36 = v138;
             v37 = [v35 objectAtIndexedSubscript:v34];
-            v38 = [v37 unsignedIntValue];
+            unsignedIntValue3 = [v37 unsignedIntValue];
 
-            v39 = v137;
-            LODWORD(v138) = [v137 charClass:v38];
+            v39 = selfCopy;
+            LODWORD(v138) = [selfCopy charClass:unsignedIntValue3];
             v40 = [v39 bonusFor:v36 charClass:?];
             *&v128[4 * v34] = v40;
-            if (v38 == v135)
+            if (unsignedIntValue3 == v135)
             {
               v41 = v131;
               if (v131 >= v136)
@@ -298,8 +298,8 @@ void __43__SSFuzzyMatchScoring_stringToUint32Array___block_invoke(uint64_t a1, v
               }
             }
 
-            v45 = v38 != v133;
-            if (v38 == v133)
+            v45 = unsignedIntValue3 != v133;
+            if (unsignedIntValue3 == v133)
             {
               v32 = (v40 + 16);
               *&v134[4 * v34] = v32;
@@ -448,7 +448,7 @@ LABEL_49:
                   v72 = 0;
                   v73 = 0;
                   v136 = &v71[4 * v70 + 4 * v64];
-                  v137 = v70;
+                  selfCopy = v70;
                   v131 = &v71[4 * v70 + 4 * v65];
                   v132 = &v128[4 * v70];
                   v135 = (v114 - v70);
@@ -459,7 +459,7 @@ LABEL_49:
                   {
                     v75 = v70;
                     v76 = [v139 objectAtIndexedSubscript:v70 + v72];
-                    v77 = [v76 unsignedIntValue];
+                    unsignedIntValue4 = [v76 unsignedIntValue];
 
                     if (v73)
                     {
@@ -472,7 +472,7 @@ LABEL_49:
                     }
 
                     v79 = *(v136 + 4 * v72) + v78;
-                    if (v138 == v77)
+                    if (v138 == unsignedIntValue4)
                     {
                       v80 = *&v132[4 * v72];
                       v81 = *&v130[4 * v72];
@@ -546,7 +546,7 @@ LABEL_49:
                     *&v134[4 * v72] = v82;
                     if (v90)
                     {
-                      v31 = (v137 + v72);
+                      v31 = (selfCopy + v72);
                     }
 
                     else
@@ -581,9 +581,9 @@ LABEL_49:
               while (v66 != v118);
             }
 
-            v91 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v92 = v125;
-            v137 = v91;
+            selfCopy = array;
             v138 = v125 - 4;
             v93 = v123;
             v94 = v124 - 2 * v119 + 2;
@@ -632,14 +632,14 @@ LABEL_49:
                 if (v105 > v104 || v106 != 0)
                 {
                   v108 = [MEMORY[0x1E696AD98] numberWithInt:i];
-                  [v137 addObject:v108];
+                  [selfCopy addObject:v108];
 
                   if (!v62)
                   {
                     v110 = [SSTermMatchResult alloc];
                     v8 = v116;
-                    v111 = v137;
-                    v19 = [(SSTermMatchResult *)v110 initWithMatch:v116 start:i end:(v31 + 1) score:v30 pos:v137];
+                    v111 = selfCopy;
+                    v19 = [(SSTermMatchResult *)v110 initWithMatch:v116 start:i end:(v31 + 1) score:v30 pos:selfCopy];
 
                     goto LABEL_120;
                   }
@@ -674,7 +674,7 @@ LABEL_119:
         v8 = v116;
         v19 = [(SSTermMatchResult *)v112 initWithoutMatch:v116];
 LABEL_120:
-        v6 = v117;
+        fuzzymatchCopy = v117;
         v9 = v139;
         goto LABEL_15;
       }

@@ -1,37 +1,37 @@
 @interface EDBuildableFormula
-- (BOOL)addArrayWithCol:(int)a3 andRow:(int)a4;
-- (BOOL)addInfixOperator:(int)a3 atIndex:(unsigned int)a4 factor:(double)a5;
-- (BOOL)argTokenIsDurationAtIndex:(unsigned int)a3;
+- (BOOL)addArrayWithCol:(int)col andRow:(int)row;
+- (BOOL)addInfixOperator:(int)operator atIndex:(unsigned int)index factor:(double)factor;
+- (BOOL)argTokenIsDurationAtIndex:(unsigned int)index;
 - (BOOL)convertLastRefsToArea;
-- (BOOL)convertRefs:(unsigned int)a3 toType:(int)a4;
-- (BOOL)convertRefs:(unsigned int)a3 toTypes:(int *)a4;
-- (BOOL)convertToIntersect:(unsigned int)a3;
-- (BOOL)convertToList:(unsigned int)a3 withFinalParen:(BOOL)a4;
-- (BOOL)copyToken:(unsigned int)a3 from:(id)a4;
-- (BOOL)fixTableOfConstantsRef:(EDBuildablePtg *)a3;
-- (BOOL)insertName:(unint64_t)a3 link:(unint64_t)a4 external:(BOOL)a5 atIndex:(unsigned int)a6;
-- (BOOL)isConstantList:(unsigned int)a3;
-- (BOOL)makeArrayForLastToken:(unint64_t)a3;
-- (BOOL)replaceArgPtgAtIndex:(unsigned int)a3 withFormula:(id)a4;
-- (BOOL)shrinkSpanningRef:(EDBuildablePtg *)a3;
-- (BOOL)shrinkSpanningRefAtArgIndex:(unsigned int)a3;
-- (BOOL)uppercaseArgAtIndex:(unsigned int)a3;
-- (BOOL)wrapArgumentsWithOperator:(int)a3 argumentCount:(unsigned int)a4 atIndex:(unsigned int)a5;
-- (EDBuildablePtg)tokenAtIndex:(unint64_t)a3 previousToken:(EDBuildablePtg *)a4;
-- (char)addToken:(int)a3 extendedDataLength:(unsigned int)a4 numArgs:(int)a5;
+- (BOOL)convertRefs:(unsigned int)refs toType:(int)type;
+- (BOOL)convertRefs:(unsigned int)refs toTypes:(int *)types;
+- (BOOL)convertToIntersect:(unsigned int)intersect;
+- (BOOL)convertToList:(unsigned int)list withFinalParen:(BOOL)paren;
+- (BOOL)copyToken:(unsigned int)token from:(id)from;
+- (BOOL)fixTableOfConstantsRef:(EDBuildablePtg *)ref;
+- (BOOL)insertName:(unint64_t)name link:(unint64_t)link external:(BOOL)external atIndex:(unsigned int)index;
+- (BOOL)isConstantList:(unsigned int)list;
+- (BOOL)makeArrayForLastToken:(unint64_t)token;
+- (BOOL)replaceArgPtgAtIndex:(unsigned int)index withFormula:(id)formula;
+- (BOOL)shrinkSpanningRef:(EDBuildablePtg *)ref;
+- (BOOL)shrinkSpanningRefAtArgIndex:(unsigned int)index;
+- (BOOL)uppercaseArgAtIndex:(unsigned int)index;
+- (BOOL)wrapArgumentsWithOperator:(int)operator argumentCount:(unsigned int)count atIndex:(unsigned int)index;
+- (EDBuildablePtg)tokenAtIndex:(unint64_t)index previousToken:(EDBuildablePtg *)token;
+- (char)addToken:(int)token extendedDataLength:(unsigned int)length numArgs:(int)args;
 - (id)formula;
-- (id)lastTokenRefOrArea3dLinkRefIsValid:(BOOL *)a3 withEDLinks:(id)a4;
-- (id)stringFromStringTokenAtIndex:(unint64_t)a3;
-- (int)argTokenTypeAtIndex:(unsigned int)a3;
-- (int)tokenTypeAtIndex:(unint64_t)a3;
-- (unsigned)removeOptionalPtgArgs:(unsigned int)a3 minArgs:(unsigned int)a4;
-- (void)convertRefsInList:(EDBuildablePtg *)a3 toType:(int)a4;
-- (void)copyToFormula:(id)a3;
+- (id)lastTokenRefOrArea3dLinkRefIsValid:(BOOL *)valid withEDLinks:(id)links;
+- (id)stringFromStringTokenAtIndex:(unint64_t)index;
+- (int)argTokenTypeAtIndex:(unsigned int)index;
+- (int)tokenTypeAtIndex:(unint64_t)index;
+- (unsigned)removeOptionalPtgArgs:(unsigned int)args minArgs:(unsigned int)minArgs;
+- (void)convertRefsInList:(EDBuildablePtg *)list toType:(int)type;
+- (void)copyToFormula:(id)formula;
 - (void)dealloc;
 - (void)markLastTokenAsDuration;
-- (void)markLastTokenAsSpanningRefVertically:(BOOL)a3 withMin:(unsigned __int16)a4 andMax:(unsigned __int16)a5;
-- (void)removeTokenAtIndex:(unint64_t)a3;
-- (void)replaceStringInStringTokenAtIndex:(unint64_t)a3 content:(id)a4;
+- (void)markLastTokenAsSpanningRefVertically:(BOOL)vertically withMin:(unsigned __int16)min andMax:(unsigned __int16)max;
+- (void)removeTokenAtIndex:(unint64_t)index;
+- (void)replaceStringInStringTokenAtIndex:(unint64_t)index content:(id)content;
 @end
 
 @implementation EDBuildableFormula
@@ -49,9 +49,9 @@
   [(EDBuildableFormula *)&v4 dealloc];
 }
 
-- (int)tokenTypeAtIndex:(unint64_t)a3
+- (int)tokenTypeAtIndex:(unint64_t)index
 {
-  v3 = [(EDBuildableFormula *)self tokenAtIndex:a3];
+  v3 = [(EDBuildableFormula *)self tokenAtIndex:index];
   if (v3)
   {
     LODWORD(v3) = v3->var2;
@@ -60,9 +60,9 @@
   return v3;
 }
 
-- (id)stringFromStringTokenAtIndex:(unint64_t)a3
+- (id)stringFromStringTokenAtIndex:(unint64_t)index
 {
-  v3 = [(EDBuildableFormula *)self tokenAtIndex:a3];
+  v3 = [(EDBuildableFormula *)self tokenAtIndex:index];
   if (v3 && v3->var2 == 23)
   {
     OcTextFromPtgStr = extractOcTextFromPtgStr(&v3->var1);
@@ -81,16 +81,16 @@
   return v5;
 }
 
-- (void)replaceStringInStringTokenAtIndex:(unint64_t)a3 content:(id)a4
+- (void)replaceStringInStringTokenAtIndex:(unint64_t)index content:(id)content
 {
-  v11 = a4;
-  v6 = [(EDBuildableFormula *)self tokenAtIndex:a3];
+  contentCopy = content;
+  v6 = [(EDBuildableFormula *)self tokenAtIndex:index];
   v7 = v6;
   if (v6)
   {
     if (v6->var2 == 23)
     {
-      v8 = [v11 length];
+      v8 = [contentCopy length];
       v9 = v8;
       if (v8)
       {
@@ -98,17 +98,17 @@
         v10 = XlPtg::addDataItem(&v7->var1, 2 * v9 + 8);
         if (v10)
         {
-          copyStringToExtendedData([v11 cStringUsingEncoding:10], v10, v9);
+          copyStringToExtendedData([contentCopy cStringUsingEncoding:10], v10, v9);
         }
       }
     }
   }
 }
 
-- (void)removeTokenAtIndex:(unint64_t)a3
+- (void)removeTokenAtIndex:(unint64_t)index
 {
   v7 = 0;
-  v4 = [(EDBuildableFormula *)self tokenAtIndex:a3 previousToken:&v7];
+  v4 = [(EDBuildableFormula *)self tokenAtIndex:index previousToken:&v7];
   if (v4)
   {
     v5 = v4;
@@ -128,9 +128,9 @@
   }
 }
 
-- (char)addToken:(int)a3 extendedDataLength:(unsigned int)a4 numArgs:(int)a5
+- (char)addToken:(int)token extendedDataLength:(unsigned int)length numArgs:(int)args
 {
-  if (a3 == 64)
+  if (token == 64)
   {
     operator new();
   }
@@ -138,12 +138,12 @@
   operator new();
 }
 
-- (BOOL)makeArrayForLastToken:(unint64_t)a3
+- (BOOL)makeArrayForLastToken:(unint64_t)token
 {
   mTree = self->mTree;
   if (mTree)
   {
-    v4 = a3 == 0;
+    v4 = token == 0;
   }
 
   else
@@ -153,7 +153,7 @@
 
   if (!v4)
   {
-    v5 = a3;
+    tokenCopy = token;
     while (1)
     {
       v7 = EDBuildablePtg::sibling(mTree);
@@ -175,7 +175,7 @@
       v12 = EDBuildableArrayPtg::elements(mTree);
       EDBuildablePtg::setSibling(v8, v12);
       EDBuildableArrayPtg::setElements(mTree, v8);
-      if (!--v5)
+      if (!--tokenCopy)
       {
         return mTree != 0;
       }
@@ -187,12 +187,12 @@
   return mTree != 0;
 }
 
-- (BOOL)insertName:(unint64_t)a3 link:(unint64_t)a4 external:(BOOL)a5 atIndex:(unsigned int)a6
+- (BOOL)insertName:(unint64_t)name link:(unint64_t)link external:(BOOL)external atIndex:(unsigned int)index
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  if (a5)
+  externalCopy = external;
+  linkCopy = link;
+  nameCopy = name;
+  if (external)
   {
     v9 = 57;
   }
@@ -202,7 +202,7 @@
     v9 = 35;
   }
 
-  if (a5)
+  if (external)
   {
     v10 = 6;
   }
@@ -212,11 +212,11 @@
     v10 = 4;
   }
 
-  if (a6)
+  if (index)
   {
     mTree = self->mTree;
-    v12 = a6 - 1;
-    if (a6 == 1)
+    v12 = index - 1;
+    if (index == 1)
     {
 LABEL_11:
       if (mTree)
@@ -248,26 +248,26 @@ LABEL_11:
     return 0;
   }
 
-  if (v6)
+  if (externalCopy)
   {
-    *v14 = v7;
-    *(v14 + 1) = v8;
+    *v14 = linkCopy;
+    *(v14 + 1) = nameCopy;
     v13 = 1;
     *(v14 + 2) = 0;
   }
 
   else
   {
-    *v14 = v8;
+    *v14 = nameCopy;
     return 1;
   }
 
   return v13;
 }
 
-- (BOOL)addArrayWithCol:(int)a3 andRow:(int)a4
+- (BOOL)addArrayWithCol:(int)col andRow:(int)row
 {
-  v7 = (a3 + 1 + (a3 + 1) * a4);
+  v7 = (col + 1 + (col + 1) * row);
   [(EDBuildableFormula *)self addToken:64 extendedDataLength:0 numArgs:v7];
   mTree = self->mTree;
   if (!mTree)
@@ -280,20 +280,20 @@ LABEL_11:
     return 0;
   }
 
-  EDBuildableArrayPtg::setColRow(v9, a3, a4);
+  EDBuildableArrayPtg::setColRow(v9, col, row);
 
   return [(EDBuildableFormula *)self makeArrayForLastToken:v7];
 }
 
-- (BOOL)isConstantList:(unsigned int)a3
+- (BOOL)isConstantList:(unsigned int)list
 {
   v3 = 0;
-  if (a3)
+  if (list)
   {
     mTree = self->mTree;
     if (mTree)
     {
-      LODWORD(v5) = a3;
+      LODWORD(v5) = list;
       if (EDBuildablePtg::isConstant(self->mTree))
       {
         v5 = v5;
@@ -326,22 +326,22 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)convertToList:(unsigned int)a3 withFinalParen:(BOOL)a4
+- (BOOL)convertToList:(unsigned int)list withFinalParen:(BOOL)paren
 {
-  if (!a3)
+  if (!list)
   {
     return 0;
   }
 
-  v4 = a4;
-  v8 = a3;
-  EDBuildablePtg::unionize(self->mTree, &v8);
-  if (a3 != 1)
+  parenCopy = paren;
+  listCopy = list;
+  EDBuildablePtg::unionize(self->mTree, &listCopy);
+  if (list != 1)
   {
     addOperator(self, 16);
   }
 
-  if (v4)
+  if (parenCopy)
   {
     return addOperator(self, 21);
   }
@@ -352,11 +352,11 @@ LABEL_11:
   }
 }
 
-- (BOOL)convertToIntersect:(unsigned int)a3
+- (BOOL)convertToIntersect:(unsigned int)intersect
 {
-  v6 = a3;
-  EDBuildablePtg::intersect(self->mTree, &v6);
-  if (a3 >= 2)
+  intersectCopy = intersect;
+  EDBuildablePtg::intersect(self->mTree, &intersectCopy);
+  if (intersect >= 2)
   {
     addOperator(self, 15);
   }
@@ -455,12 +455,12 @@ LABEL_11:
   return v16;
 }
 
-- (void)convertRefsInList:(EDBuildablePtg *)a3 toType:(int)a4
+- (void)convertRefsInList:(EDBuildablePtg *)list toType:(int)type
 {
-  if (a3)
+  if (list)
   {
-    v4 = *&a4;
-    Segments = EshGeometryProperties::getSegments(a3);
+    v4 = *&type;
+    Segments = EshGeometryProperties::getSegments(list);
     if (Segments)
     {
       v7 = Segments;
@@ -488,9 +488,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)convertRefs:(unsigned int)a3 toType:(int)a4
+- (BOOL)convertRefs:(unsigned int)refs toType:(int)type
 {
-  if (a3)
+  if (refs)
   {
     operator new[]();
   }
@@ -498,9 +498,9 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)convertRefs:(unsigned int)a3 toTypes:(int *)a4
+- (BOOL)convertRefs:(unsigned int)refs toTypes:(int *)types
 {
-  if (!a3)
+  if (!refs)
   {
     return 1;
   }
@@ -511,18 +511,18 @@ LABEL_11:
     return 0;
   }
 
-  v7 = a3 - 1;
+  v7 = refs - 1;
   do
   {
     var2 = mTree->var2;
     if (var2 == 21)
     {
-      [(EDBuildableFormula *)self convertRefsInList:mTree toType:a4[v7]];
+      [(EDBuildableFormula *)self convertRefsInList:mTree toType:types[v7]];
     }
 
     else
     {
-      mTree->var2 = convertValueReference(var2, a4[v7]);
+      mTree->var2 = convertValueReference(var2, types[v7]);
       mTree = EDBuildablePtg::sibling(mTree);
       if (!mTree)
       {
@@ -535,9 +535,9 @@ LABEL_11:
   return 1;
 }
 
-- (id)lastTokenRefOrArea3dLinkRefIsValid:(BOOL *)a3 withEDLinks:(id)a4
+- (id)lastTokenRefOrArea3dLinkRefIsValid:(BOOL *)valid withEDLinks:(id)links
 {
-  v6 = a4;
+  linksCopy = links;
   mTree = self->mTree;
   if (!mTree)
   {
@@ -553,7 +553,7 @@ LABEL_11:
     if (((1 << v10) & 0xC0000000C001) != 0)
     {
 LABEL_9:
-      if (!a3)
+      if (!valid)
       {
         goto LABEL_12;
       }
@@ -565,7 +565,7 @@ LABEL_9:
     if (((1 << v10) & 0x3000000000) != 0)
     {
 LABEL_7:
-      v8 = [v6 referenceAtIndex:*XlPtg::getLastExtendedData(&mTree->var1)];
+      v8 = [linksCopy referenceAtIndex:*XlPtg::getLastExtendedData(&mTree->var1)];
       goto LABEL_9;
     }
   }
@@ -585,11 +585,11 @@ LABEL_7:
   }
 
   v8 = 0;
-  if (a3)
+  if (valid)
   {
     v12 = 0;
 LABEL_11:
-    *a3 = v12;
+    *valid = v12;
   }
 
 LABEL_12:
@@ -606,12 +606,12 @@ LABEL_12:
   }
 }
 
-- (void)markLastTokenAsSpanningRefVertically:(BOOL)a3 withMin:(unsigned __int16)a4 andMax:(unsigned __int16)a5
+- (void)markLastTokenAsSpanningRefVertically:(BOOL)vertically withMin:(unsigned __int16)min andMax:(unsigned __int16)max
 {
   mTree = self->mTree;
   if (mTree)
   {
-    if (a3)
+    if (vertically)
     {
       v6 = 1;
     }
@@ -621,18 +621,18 @@ LABEL_12:
       v6 = 2;
     }
 
-    EDBuildablePtg::setIsSpanningRef(mTree, v6, a4, a5);
+    EDBuildablePtg::setIsSpanningRef(mTree, v6, min, max);
   }
 }
 
-- (BOOL)uppercaseArgAtIndex:(unsigned int)a3
+- (BOOL)uppercaseArgAtIndex:(unsigned int)index
 {
   if (!self->mTree)
   {
     return 0;
   }
 
-  v3 = [(EDBuildableFormula *)self tokenAtIndex:a3];
+  v3 = [(EDBuildableFormula *)self tokenAtIndex:index];
   if (v3)
   {
     if (v3->var2 != 65 || (LastExtendedData = XlPtg::getLastExtendedData(&v3->var1)) == 0 || *LastExtendedData != 113)
@@ -646,9 +646,9 @@ LABEL_12:
   return 1;
 }
 
-- (BOOL)shrinkSpanningRefAtArgIndex:(unsigned int)a3
+- (BOOL)shrinkSpanningRefAtArgIndex:(unsigned int)index
 {
-  v4 = [(EDBuildableFormula *)self tokenAtIndex:a3];
+  v4 = [(EDBuildableFormula *)self tokenAtIndex:index];
   if (v4)
   {
 
@@ -658,16 +658,16 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)wrapArgumentsWithOperator:(int)a3 argumentCount:(unsigned int)a4 atIndex:(unsigned int)a5
+- (BOOL)wrapArgumentsWithOperator:(int)operator argumentCount:(unsigned int)count atIndex:(unsigned int)index
 {
-  if (a4 - 1 >= a5 + 1 || self->mTree == 0)
+  if (count - 1 >= index + 1 || self->mTree == 0)
   {
     return 0;
   }
 
   v13 = 0;
-  v9 = [(EDBuildableFormula *)self tokenAtIndex:a5 - a4 + 1 previousToken:&v13];
-  v10 = [(EDBuildableFormula *)self tokenAtIndex:a5];
+  v9 = [(EDBuildableFormula *)self tokenAtIndex:index - count + 1 previousToken:&v13];
+  v10 = [(EDBuildableFormula *)self tokenAtIndex:index];
   if (v9)
   {
     v11 = v10 == 0;
@@ -687,10 +687,10 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)addInfixOperator:(int)a3 atIndex:(unsigned int)a4 factor:(double)a5
+- (BOOL)addInfixOperator:(int)operator atIndex:(unsigned int)index factor:(double)factor
 {
-  v5 = a3 - 5;
-  if ((a3 - 5) <= 1 && a5 == 1.0)
+  v5 = operator - 5;
+  if ((operator - 5) <= 1 && factor == 1.0)
   {
 LABEL_8:
     LOBYTE(v7) = 1;
@@ -698,7 +698,7 @@ LABEL_8:
   }
 
   v9 = 0;
-  v7 = [(EDBuildableFormula *)self tokenAtIndex:a4 previousToken:&v9];
+  v7 = [(EDBuildableFormula *)self tokenAtIndex:index previousToken:&v9];
   if (v7)
   {
     if (v5 > 1 || v7->var2 != 22)
@@ -724,13 +724,13 @@ LABEL_8:
   return v3;
 }
 
-- (void)copyToFormula:(id)a3
+- (void)copyToFormula:(id)formula
 {
-  v4 = a3;
-  v6 = v4;
+  formulaCopy = formula;
+  v6 = formulaCopy;
   if (self->mWarning)
   {
-    [(EDFormula *)v4 setWarning:?];
+    [(EDFormula *)formulaCopy setWarning:?];
   }
 
   else
@@ -743,9 +743,9 @@ LABEL_8:
   }
 }
 
-- (BOOL)copyToken:(unsigned int)a3 from:(id)a4
+- (BOOL)copyToken:(unsigned int)token from:(id)from
 {
-  if (a4)
+  if (from)
   {
     operator new();
   }
@@ -753,9 +753,9 @@ LABEL_8:
   return 0;
 }
 
-- (BOOL)argTokenIsDurationAtIndex:(unsigned int)a3
+- (BOOL)argTokenIsDurationAtIndex:(unsigned int)index
 {
-  v3 = [(EDBuildableFormula *)self tokenAtIndex:a3];
+  v3 = [(EDBuildableFormula *)self tokenAtIndex:index];
   if (v3)
   {
 
@@ -765,9 +765,9 @@ LABEL_8:
   return v3;
 }
 
-- (int)argTokenTypeAtIndex:(unsigned int)a3
+- (int)argTokenTypeAtIndex:(unsigned int)index
 {
-  v3 = [(EDBuildableFormula *)self tokenAtIndex:a3];
+  v3 = [(EDBuildableFormula *)self tokenAtIndex:index];
   if (v3)
   {
     LODWORD(v3) = v3->var2;
@@ -776,26 +776,26 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)replaceArgPtgAtIndex:(unsigned int)a3 withFormula:(id)a4
+- (BOOL)replaceArgPtgAtIndex:(unsigned int)index withFormula:(id)formula
 {
-  v6 = a4;
-  if (EDBuildablePtg::sibling(v6[1]))
+  formulaCopy = formula;
+  if (EDBuildablePtg::sibling(formulaCopy[1]))
   {
     goto LABEL_2;
   }
 
   mTree = self->mTree;
-  if (a3 && mTree)
+  if (index && mTree)
   {
     v10 = 1;
-    v11 = a3;
+    indexCopy = index;
     do
     {
       v12 = mTree;
       v13 = EDBuildablePtg::sibling(mTree);
       mTree = v13;
-      --v11;
-      if (v10 >= a3)
+      --indexCopy;
+      if (v10 >= index)
       {
         break;
       }
@@ -804,16 +804,16 @@ LABEL_8:
     }
 
     while (v13);
-    if (v11)
+    if (indexCopy)
     {
       goto LABEL_2;
     }
 
-    EDBuildablePtg::setSibling(v12, v6[1]);
+    EDBuildablePtg::setSibling(v12, formulaCopy[1]);
     if (!mTree)
     {
 LABEL_15:
-      v6[1] = 0;
+      formulaCopy[1] = 0;
       v7 = 1;
       goto LABEL_3;
     }
@@ -821,14 +821,14 @@ LABEL_15:
 LABEL_14:
     v14 = EDBuildablePtg::sibling(mTree);
     EDBuildablePtg::setSibling(mTree, 0);
-    EDBuildablePtg::setSibling(v6[1], v14);
+    EDBuildablePtg::setSibling(formulaCopy[1], v14);
     (*(mTree->var0 + 1))(mTree);
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!index)
   {
-    self->mTree = v6[1];
+    self->mTree = formulaCopy[1];
     if (!mTree)
     {
       goto LABEL_15;
@@ -844,16 +844,16 @@ LABEL_3:
   return v7;
 }
 
-- (unsigned)removeOptionalPtgArgs:(unsigned int)a3 minArgs:(unsigned int)a4
+- (unsigned)removeOptionalPtgArgs:(unsigned int)args minArgs:(unsigned int)minArgs
 {
   result = 0;
-  if (a3)
+  if (args)
   {
-    v7 = a3 - a4;
-    if (a3 >= a4)
+    v7 = args - minArgs;
+    if (args >= minArgs)
     {
       v8 = 0;
-      if (a3 != a4)
+      if (args != minArgs)
       {
         while (1)
         {
@@ -869,30 +869,30 @@ LABEL_3:
           if (v7 == ++v8)
           {
             v8 = v7;
-            return a3 - v8;
+            return args - v8;
           }
         }
       }
 
-      return a3 - v8;
+      return args - v8;
     }
   }
 
   return result;
 }
 
-- (EDBuildablePtg)tokenAtIndex:(unint64_t)a3 previousToken:(EDBuildablePtg *)a4
+- (EDBuildablePtg)tokenAtIndex:(unint64_t)index previousToken:(EDBuildablePtg *)token
 {
   v5 = 0;
   result = self->mTree;
-  if (a3 && result)
+  if (index && result)
   {
     v8 = 1;
     do
     {
       v5 = result;
       result = EDBuildablePtg::sibling(result);
-      if (v8 >= a3)
+      if (v8 >= index)
       {
         break;
       }
@@ -903,25 +903,25 @@ LABEL_3:
     while (result);
   }
 
-  *a4 = v5;
+  *token = v5;
   return result;
 }
 
-- (BOOL)fixTableOfConstantsRef:(EDBuildablePtg *)a3
+- (BOOL)fixTableOfConstantsRef:(EDBuildablePtg *)ref
 {
-  if (!a3)
+  if (!ref)
   {
-    return a3 != 0;
+    return ref != 0;
   }
 
-  if (isArea(&a3->var1) && EDBuildablePtg::isSpanningRef(a3) && (v5 = EDBuildablePtg::minSpan(a3), v5 == EDBuildablePtg::maxSpan(a3)))
+  if (isArea(&ref->var1) && EDBuildablePtg::isSpanningRef(ref) && (v5 = EDBuildablePtg::minSpan(ref), v5 == EDBuildablePtg::maxSpan(ref)))
   {
-    [(EDBuildableFormula *)self shrinkSpanningRef:a3];
+    [(EDBuildableFormula *)self shrinkSpanningRef:ref];
   }
 
-  else if (a3->var2 == 66)
+  else if (ref->var2 == 66)
   {
-    LastExtendedData = XlPtg::getLastExtendedData(&a3->var1);
+    LastExtendedData = XlPtg::getLastExtendedData(&ref->var1);
     if (LastExtendedData)
     {
       v7 = *(LastExtendedData + 2) - 101 < 2;
@@ -931,26 +931,26 @@ LABEL_3:
 
   v7 = 0;
 LABEL_10:
-  if (EshGeometryProperties::getSegments(a3) && !v7)
+  if (EshGeometryProperties::getSegments(ref) && !v7)
   {
-    [(EDBuildableFormula *)self fixTableOfConstantsRef:EshGeometryProperties::getSegments(a3)];
+    [(EDBuildableFormula *)self fixTableOfConstantsRef:EshGeometryProperties::getSegments(ref)];
   }
 
-  if (EDBuildablePtg::sibling(a3))
+  if (EDBuildablePtg::sibling(ref))
   {
-    [(EDBuildableFormula *)self fixTableOfConstantsRef:EDBuildablePtg::sibling(a3)];
+    [(EDBuildableFormula *)self fixTableOfConstantsRef:EDBuildablePtg::sibling(ref)];
   }
 
-  return a3 != 0;
+  return ref != 0;
 }
 
-- (BOOL)shrinkSpanningRef:(EDBuildablePtg *)a3
+- (BOOL)shrinkSpanningRef:(EDBuildablePtg *)ref
 {
-  if (a3 && isArea(&a3->var1) && EDBuildablePtg::isSpanningRef(a3))
+  if (ref && isArea(&ref->var1) && EDBuildablePtg::isSpanningRef(ref))
   {
-    LastExtendedData = XlPtg::getLastExtendedData(&a3->var1);
-    v5 = EDBuildablePtg::spanningRef(a3);
-    v6 = isArea3D(&a3->var1);
+    LastExtendedData = XlPtg::getLastExtendedData(&ref->var1);
+    v5 = EDBuildablePtg::spanningRef(ref);
+    v6 = isArea3D(&ref->var1);
     v7 = v6;
     if (v5 == 2)
     {
@@ -962,15 +962,15 @@ LABEL_10:
 
       v9 = &LastExtendedData[v8];
       v10 = *v9 & 0xC000;
-      *v9 = EDBuildablePtg::minSpan(a3) | v10;
+      *v9 = EDBuildablePtg::minSpan(ref) | v10;
       v11 = *(v9 + 1) & 0xC000;
-      *(v9 + 1) = EDBuildablePtg::maxSpan(a3) | v11;
+      *(v9 + 1) = EDBuildablePtg::maxSpan(ref) | v11;
     }
 
     else
     {
-      *&LastExtendedData[2 * v6] = EDBuildablePtg::minSpan(a3);
-      v12 = EDBuildablePtg::maxSpan(a3);
+      *&LastExtendedData[2 * v6] = EDBuildablePtg::minSpan(ref);
+      v12 = EDBuildablePtg::maxSpan(ref);
       v13 = 2;
       if (v7)
       {

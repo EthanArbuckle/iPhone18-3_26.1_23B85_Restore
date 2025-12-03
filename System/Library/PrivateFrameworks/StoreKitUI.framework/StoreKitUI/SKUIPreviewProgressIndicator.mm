@@ -1,23 +1,23 @@
 @interface SKUIPreviewProgressIndicator
-- (SKUIPreviewProgressIndicator)initWithFrame:(CGRect)a3;
-- (id)_newShapeViewWithBounds:(CGRect)a3 lineWidth:(double)a4;
+- (SKUIPreviewProgressIndicator)initWithFrame:(CGRect)frame;
+- (id)_newShapeViewWithBounds:(CGRect)bounds lineWidth:(double)width;
 - (void)_beginIndeterminateAnimation;
 - (void)beginIndeterminateAnimation;
 - (void)endIndeterminateAnimation;
-- (void)reloadWithPlayerStatus:(id)a3 animated:(BOOL)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setProgress:(float)a3 animated:(BOOL)a4;
+- (void)reloadWithPlayerStatus:(id)status animated:(BOOL)animated;
+- (void)setBackgroundColor:(id)color;
+- (void)setProgress:(float)progress animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
 @implementation SKUIPreviewProgressIndicator
 
-- (SKUIPreviewProgressIndicator)initWithFrame:(CGRect)a3
+- (SKUIPreviewProgressIndicator)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPreviewProgressIndicator initWithFrame:];
@@ -25,11 +25,11 @@
 
   v33.receiver = self;
   v33.super_class = SKUIPreviewProgressIndicator;
-  v8 = [(SKUIPreviewProgressIndicator *)&v33 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIPreviewProgressIndicator *)&v33 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    [(SKUIPreviewProgressIndicator *)v8 bounds];
+    [(SKUIPreviewProgressIndicator *)height bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -45,15 +45,15 @@
     v9->_foregroundView = v20;
 
     v22 = v9->_foregroundView;
-    v23 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIShapeView *)v22 setBackgroundColor:v23];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIShapeView *)v22 setBackgroundColor:clearColor];
 
     [(SKUIShapeView *)v9->_foregroundView setUserInteractionEnabled:0];
-    v24 = [(SKUIShapeView *)v9->_foregroundView layer];
-    v25 = [MEMORY[0x277D75348] clearColor];
-    [v24 setFillColor:{objc_msgSend(v25, "CGColor")}];
+    layer = [(SKUIShapeView *)v9->_foregroundView layer];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [layer setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
-    [v24 setStrokeEnd:0.0];
+    [layer setStrokeEnd:0.0];
     [(SKUIPreviewProgressIndicator *)v9 addSubview:v9->_foregroundView];
     v26 = MEMORY[0x277D755B8];
     v27 = SKUIBundle();
@@ -76,12 +76,12 @@
 - (void)beginIndeterminateAnimation
 {
   isIndeterminate = self->_isIndeterminate;
-  v4 = [(SKUIShapeView *)self->_backgroundView layer];
-  v5 = v4;
+  layer = [(SKUIShapeView *)self->_backgroundView layer];
+  v5 = layer;
   if (isIndeterminate)
   {
-    v6 = [v4 animationKeys];
-    v7 = [v6 count];
+    animationKeys = [layer animationKeys];
+    v7 = [animationKeys count];
 
     if (v7)
     {
@@ -91,13 +91,13 @@
 
   else
   {
-    [v4 setStrokeStart:0.119999997];
+    [layer setStrokeStart:0.119999997];
     self->_isIndeterminate = 1;
   }
 
-  v8 = [(SKUIPreviewProgressIndicator *)self window];
+  window = [(SKUIPreviewProgressIndicator *)self window];
 
-  if (v8)
+  if (window)
   {
 
     [(SKUIPreviewProgressIndicator *)self _beginIndeterminateAnimation];
@@ -108,9 +108,9 @@
 {
   if (self->_isIndeterminate)
   {
-    v3 = [(SKUIShapeView *)self->_backgroundView layer];
-    [v3 setStrokeStart:0.0];
-    [v3 removeAllAnimations];
+    layer = [(SKUIShapeView *)self->_backgroundView layer];
+    [layer setStrokeStart:0.0];
+    [layer removeAllAnimations];
     backgroundView = self->_backgroundView;
     CGAffineTransformMakeRotation(&v5, -1.57079633);
     [(SKUIShapeView *)backgroundView setTransform:&v5];
@@ -118,22 +118,22 @@
   }
 }
 
-- (void)reloadWithPlayerStatus:(id)a3 animated:(BOOL)a4
+- (void)reloadWithPlayerStatus:(id)status animated:(BOOL)animated
 {
-  v4 = a4;
-  v10 = a3;
-  if ([v10 playerState] == 1)
+  animatedCopy = animated;
+  statusCopy = status;
+  if ([statusCopy playerState] == 1)
   {
     [(SKUIPreviewProgressIndicator *)self beginIndeterminateAnimation];
   }
 
   else
   {
-    [v10 duration];
+    [statusCopy duration];
     v7 = v6;
     if (v6 >= 2.22044605e-16)
     {
-      [v10 currentTime];
+      [statusCopy currentTime];
       v8 = v9 / v7;
       *&v8 = v8;
     }
@@ -143,23 +143,23 @@
       v8 = 0.0;
     }
 
-    [(SKUIPreviewProgressIndicator *)self setProgress:v4 animated:v8];
+    [(SKUIPreviewProgressIndicator *)self setProgress:animatedCopy animated:v8];
   }
 }
 
-- (void)setProgress:(float)a3 animated:(BOOL)a4
+- (void)setProgress:(float)progress animated:(BOOL)animated
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    if (a3 > 0.00000011921)
+    if (progress > 0.00000011921)
     {
       [(SKUIPreviewProgressIndicator *)self endIndeterminateAnimation];
     }
 
-    v7 = fmax(fmin(a3, 1.0), 0.0);
+    v7 = fmax(fmin(progress, 1.0), 0.0);
     self->_progress = v7;
-    v11 = [(SKUIShapeView *)self->_foregroundView layer];
-    if (a4)
+    layer = [(SKUIShapeView *)self->_foregroundView layer];
+    if (animated)
     {
       v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
       [v8 setDuration:0.2];
@@ -169,40 +169,40 @@
       v10 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
       [v8 setToValue:v10];
 
-      [v11 addAnimation:v8 forKey:0];
+      [layer addAnimation:v8 forKey:0];
     }
 
     else
     {
-      [v11 removeAllAnimations];
-      [v11 setStrokeEnd:self->_progress];
+      [layer removeAllAnimations];
+      [layer setStrokeEnd:self->_progress];
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   backgroundView = self->_backgroundView;
-  v5 = a3;
-  [(SKUIShapeView *)backgroundView setBackgroundColor:v5];
-  v6 = [(SKUIShapeView *)self->_backgroundView layer];
-  [v6 setFillColor:{objc_msgSend(v5, "CGColor")}];
+  colorCopy = color;
+  [(SKUIShapeView *)backgroundView setBackgroundColor:colorCopy];
+  layer = [(SKUIShapeView *)self->_backgroundView layer];
+  [layer setFillColor:{objc_msgSend(colorCopy, "CGColor")}];
 
   v7.receiver = self;
   v7.super_class = SKUIPreviewProgressIndicator;
-  [(SKUIPreviewProgressIndicator *)&v7 setBackgroundColor:v5];
+  [(SKUIPreviewProgressIndicator *)&v7 setBackgroundColor:colorCopy];
 }
 
 - (void)tintColorDidChange
 {
-  v3 = [(SKUIPreviewProgressIndicator *)self tintColor];
-  v4 = [v3 CGColor];
+  tintColor = [(SKUIPreviewProgressIndicator *)self tintColor];
+  cGColor = [tintColor CGColor];
 
-  v5 = [(SKUIShapeView *)self->_backgroundView layer];
-  [v5 setStrokeColor:v4];
+  layer = [(SKUIShapeView *)self->_backgroundView layer];
+  [layer setStrokeColor:cGColor];
 
-  v6 = [(SKUIShapeView *)self->_foregroundView layer];
-  [v6 setStrokeColor:v4];
+  layer2 = [(SKUIShapeView *)self->_foregroundView layer];
+  [layer2 setStrokeColor:cGColor];
 
   v7.receiver = self;
   v7.super_class = SKUIPreviewProgressIndicator;
@@ -211,8 +211,8 @@
 
 - (void)_beginIndeterminateAnimation
 {
-  v3 = [(SKUIShapeView *)self->_backgroundView layer];
-  [v3 removeAllAnimations];
+  layer = [(SKUIShapeView *)self->_backgroundView layer];
+  [layer removeAllAnimations];
 
   backgroundView = self->_backgroundView;
   CGAffineTransformMakeRotation(&v6, -1.57079633);
@@ -251,29 +251,29 @@ uint64_t __60__SKUIPreviewProgressIndicator__beginIndeterminateAnimation__block_
   return [v1 setTransform:&v3];
 }
 
-- (id)_newShapeViewWithBounds:(CGRect)a3 lineWidth:(double)a4
+- (id)_newShapeViewWithBounds:(CGRect)bounds lineWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10 = [SKUIShapeView alloc];
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
   v17.size.height = height;
-  v18 = CGRectInset(v17, a4 * 0.5, a4 * 0.5);
+  v18 = CGRectInset(v17, width * 0.5, width * 0.5);
   v11 = [(SKUIShapeView *)v10 initWithFrame:v18.origin.x, v18.origin.y, v18.size.width, v18.size.height];
   CGAffineTransformMakeRotation(&v16, -1.57079633);
   [(SKUIShapeView *)v11 setTransform:&v16];
-  v12 = [(SKUIShapeView *)v11 layer];
-  [v12 setLineWidth:a4];
-  v13 = [(SKUIPreviewProgressIndicator *)self tintColor];
-  [v12 setStrokeColor:{objc_msgSend(v13, "CGColor")}];
+  layer = [(SKUIShapeView *)v11 layer];
+  [layer setLineWidth:width];
+  tintColor = [(SKUIPreviewProgressIndicator *)self tintColor];
+  [layer setStrokeColor:{objc_msgSend(tintColor, "CGColor")}];
 
   [(SKUIShapeView *)v11 bounds];
   v14 = CGPathCreateWithEllipseInRect(v19, 0);
-  [v12 setPath:v14];
+  [layer setPath:v14];
   CGPathRelease(v14);
 
   return v11;

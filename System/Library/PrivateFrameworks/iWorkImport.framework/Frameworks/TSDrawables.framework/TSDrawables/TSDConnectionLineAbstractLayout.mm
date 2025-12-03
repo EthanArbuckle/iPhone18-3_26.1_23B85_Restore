@@ -1,13 +1,13 @@
 @interface TSDConnectionLineAbstractLayout
 - (BOOL)isDraggable;
 - (BOOL)isStraightLine;
-- (BOOL)p_connectedInfoInDocument:(id)a3;
+- (BOOL)p_connectedInfoInDocument:(id)document;
 - (BOOL)p_isConnectedToLockedObjects;
-- (BOOL)p_isInfoAKeynoteTemplateObject:(id)a3;
+- (BOOL)p_isInfoAKeynoteTemplateObject:(id)object;
 - (BOOL)shouldDisplayGuides;
 - (BOOL)supportsFlipping;
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
 - (CGPoint)unclippedHeadPoint;
 - (CGPoint)unclippedTailPoint;
 - (CGRect)boundsForStandardKnobs;
@@ -20,16 +20,16 @@
 - (double)outsetFrom;
 - (double)outsetTo;
 - (id)additionalLayoutsForRepCreation;
-- (id)clipPath:(id)a3 onLayout:(id)a4 outset:(double)a5 reversed:(BOOL)a6 isValid:(BOOL *)a7;
+- (id)clipPath:(id)path onLayout:(id)layout outset:(double)outset reversed:(BOOL)reversed isValid:(BOOL *)valid;
 - (id)layoutInfoGeometry;
-- (id)p_infoForConnectingToInfo:(id)a3;
+- (id)p_infoForConnectingToInfo:(id)info;
 - (id)path;
 - (id)pathSource;
 - (id)reliedOnLayouts;
 - (int)wrapType;
 - (void)checkConnections;
-- (void)connectedLayoutDisconnected:(id)a3;
-- (void)connectedLayoutInvalidated:(id)a3;
+- (void)connectedLayoutDisconnected:(id)disconnected;
+- (void)connectedLayoutInvalidated:(id)invalidated;
 - (void)dealloc;
 - (void)i_willValidateLayout;
 - (void)invalidateAndCleanupConnectedLayouts;
@@ -38,10 +38,10 @@
 - (void)invalidatePosition;
 - (void)invalidateSize;
 - (void)parentDidChange;
-- (void)processChangedProperty:(int)a3;
+- (void)processChangedProperty:(int)property;
 - (void)removeConnections;
-- (void)setConnectedFrom:(id)a3;
-- (void)setConnectedTo:(id)a3;
+- (void)setConnectedFrom:(id)from;
+- (void)setConnectedTo:(id)to;
 - (void)updateConnectedPath;
 @end
 
@@ -110,40 +110,40 @@
   return v11;
 }
 
-- (void)setConnectedFrom:(id)a3
+- (void)setConnectedFrom:(id)from
 {
-  v4 = a3;
-  obj = v4;
-  if (v4 == self)
+  fromCopy = from;
+  obj = fromCopy;
+  if (fromCopy == self)
   {
     v5 = MEMORY[0x277D81150];
-    v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSDConnectionLineAbstractLayout setConnectedFrom:]");
+    v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], fromCopy, "[TSDConnectionLineAbstractLayout setConnectedFrom:]");
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDConnectionLineAbstractLayout.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 123, 0, "trying to connect a c-line to itself");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
-    v4 = obj;
+    fromCopy = obj;
   }
 
-  objc_storeWeak(&self->mConnectedFrom, v4);
+  objc_storeWeak(&self->mConnectedFrom, fromCopy);
 }
 
-- (void)setConnectedTo:(id)a3
+- (void)setConnectedTo:(id)to
 {
-  v4 = a3;
-  obj = v4;
-  if (v4 == self)
+  toCopy = to;
+  obj = toCopy;
+  if (toCopy == self)
   {
     v5 = MEMORY[0x277D81150];
-    v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSDConnectionLineAbstractLayout setConnectedTo:]");
+    v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], toCopy, "[TSDConnectionLineAbstractLayout setConnectedTo:]");
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDConnectionLineAbstractLayout.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 128, 0, "trying to connect a c-line to itself");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
-    v4 = obj;
+    toCopy = obj;
   }
 
-  objc_storeWeak(&self->mConnectedTo, v4);
+  objc_storeWeak(&self->mConnectedTo, toCopy);
 }
 
 - (void)i_willValidateLayout
@@ -189,13 +189,13 @@
 {
   v7.receiver = self;
   v7.super_class = TSDConnectionLineAbstractLayout;
-  v3 = [(TSDLayout *)&v7 isDraggable];
-  if (v3)
+  isDraggable = [(TSDLayout *)&v7 isDraggable];
+  if (isDraggable)
   {
-    LOBYTE(v3) = objc_msgSend_p_isConnectedToLockedObjects(self, v4, v5) ^ 1;
+    LOBYTE(isDraggable) = objc_msgSend_p_isConnectedToLockedObjects(self, v4, v5) ^ 1;
   }
 
-  return v3;
+  return isDraggable;
 }
 
 - (BOOL)p_isConnectedToLockedObjects
@@ -256,12 +256,12 @@
   [(TSDDrawableLayout *)&v7 parentDidChange];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
-  v3 = *&a3;
-  if ((a3 - 541) > 1)
+  v3 = *&property;
+  if ((property - 541) > 1)
   {
-    if (a3 == 527)
+    if (property == 527)
     {
       v5 = objc_opt_class();
       v8 = objc_msgSend_info(self, v6, v7);
@@ -277,7 +277,7 @@
 
   else
   {
-    objc_msgSend_invalidateAndCleanupConnectedLayouts(self, a2, *&a3);
+    objc_msgSend_invalidateAndCleanupConnectedLayouts(self, a2, *&property);
   }
 
   v16.receiver = self;
@@ -285,12 +285,12 @@
   [(TSDShapeLayout *)&v16 processChangedProperty:v3];
 }
 
-- (void)connectedLayoutInvalidated:(id)a3
+- (void)connectedLayoutInvalidated:(id)invalidated
 {
   v45 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_layoutState(self, a2, a3) != 2 || (objc_msgSend_isBeingTransformed(self, v5, v6) & 1) == 0)
+  if (objc_msgSend_layoutState(self, a2, invalidated) != 2 || (objc_msgSend_isBeingTransformed(self, v5, v6) & 1) == 0)
   {
-    if (a3)
+    if (invalidated)
     {
       v41 = 0u;
       v42 = 0u;
@@ -374,17 +374,17 @@
   }
 }
 
-- (void)connectedLayoutDisconnected:(id)a3
+- (void)connectedLayoutDisconnected:(id)disconnected
 {
-  v10 = a3;
+  disconnectedCopy = disconnected;
   p_mConnectedFrom = &self->mConnectedFrom;
   WeakRetained = objc_loadWeakRetained(&self->mConnectedFrom);
 
-  if (WeakRetained == v10 || (p_mConnectedFrom = &self->mConnectedTo, v6 = objc_loadWeakRetained(&self->mConnectedTo), v6, v7 = v10, v6 == v10))
+  if (WeakRetained == disconnectedCopy || (p_mConnectedFrom = &self->mConnectedTo, v6 = objc_loadWeakRetained(&self->mConnectedTo), v6, v7 = disconnectedCopy, v6 == disconnectedCopy))
   {
     objc_storeWeak(p_mConnectedFrom, 0);
     objc_msgSend_invalidateConnections(self, v8, v9);
-    v7 = v10;
+    v7 = disconnectedCopy;
   }
 }
 
@@ -479,9 +479,9 @@
   objc_msgSend_invalidatePath(self, v3, v4);
 }
 
-- (BOOL)p_connectedInfoInDocument:(id)a3
+- (BOOL)p_connectedInfoInDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   objc_opt_class();
   v4 = TSUClassAndProtocolCast();
 
@@ -677,7 +677,7 @@ LABEL_25:
 LABEL_29:
 }
 
-- (CGPoint)controlPointForPointA:(CGPoint)a3 pointB:(CGPoint)a4 andOriginalA:(CGPoint)a5 originalB:(CGPoint)a6
+- (CGPoint)controlPointForPointA:(CGPoint)a pointB:(CGPoint)b andOriginalA:(CGPoint)originalA originalB:(CGPoint)originalB
 {
   v6 = *MEMORY[0x277CBF348];
   v7 = *(MEMORY[0x277CBF348] + 8);
@@ -686,15 +686,15 @@ LABEL_29:
   return result;
 }
 
-- (id)clipPath:(id)a3 onLayout:(id)a4 outset:(double)a5 reversed:(BOOL)a6 isValid:(BOOL *)a7
+- (id)clipPath:(id)path onLayout:(id)layout outset:(double)outset reversed:(BOOL)reversed isValid:(BOOL *)valid
 {
-  v8 = a6;
+  reversedCopy = reversed;
   v119[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  objc_msgSend_length(v12, v14, v15);
+  pathCopy = path;
+  layoutCopy = layout;
+  objc_msgSend_length(pathCopy, v14, v15);
   v17 = v16;
-  v20 = objc_msgSend_pathForClippingConnectionLines(v13, v18, v19);
+  v20 = objc_msgSend_pathForClippingConnectionLines(layoutCopy, v18, v19);
   v23 = v20;
   if (!v20 || (objc_msgSend_isEmpty(v20, v21, v22) & 1) != 0)
   {
@@ -702,15 +702,15 @@ LABEL_29:
     goto LABEL_54;
   }
 
-  v115 = a7;
-  if (a5 > 0.0)
+  validCopy = valid;
+  if (outset > 0.0)
   {
     WeakRetained = objc_loadWeakRetained(&self->mCachedFromWrapPath);
     if (WeakRetained == v23)
     {
       mCachedFromOutset = self->mCachedFromOutset;
 
-      if (mCachedFromOutset == a5)
+      if (mCachedFromOutset == outset)
       {
         v47 = 1216;
 LABEL_16:
@@ -728,7 +728,7 @@ LABEL_16:
     {
 
 LABEL_9:
-      objc_msgSend_setLineWidth_(v23, v27, v28, a5 + a5);
+      objc_msgSend_setLineWidth_(v23, v27, v28, outset + outset);
       objc_msgSend_setLineJoinStyle_(v23, v29, 1);
       objc_msgSend_setLineCapStyle_(v23, v30, 1);
       v33 = objc_msgSend_strokedCopyAttemptingUsingLivarotFirst(v23, v31, v32);
@@ -739,7 +739,7 @@ LABEL_9:
       v38 = objc_msgSend_uniteBezierPaths_(v34, v37, v36);
 
       v39 = objc_loadWeakRetained(&self->mConnectedFrom);
-      if (v39 == v13)
+      if (v39 == layoutCopy)
       {
         objc_storeStrong(&self->mCachedFromOutsetWrapPath, v38);
         objc_storeWeak(&self->mCachedFromWrapPath, v23);
@@ -753,14 +753,14 @@ LABEL_9:
         v42 = 1208;
       }
 
-      *(&self->super.super.super.super.super.super.isa + v42) = a5;
+      *(&self->super.super.super.super.super.super.isa + v42) = outset;
       v49 = objc_msgSend_copy(v38, v40, v41);
       goto LABEL_20;
     }
 
     mCachedToOutset = self->mCachedToOutset;
 
-    if (mCachedToOutset != a5)
+    if (mCachedToOutset != outset)
     {
       goto LABEL_9;
     }
@@ -776,10 +776,10 @@ LABEL_17:
 LABEL_20:
   v50 = v49;
 
-  v53 = objc_msgSend_geometry(v13, v51, v52);
+  v53 = objc_msgSend_geometry(layoutCopy, v51, v52);
   v56 = v53;
   v116 = v23;
-  v117 = v13;
+  v117 = layoutCopy;
   if (v53)
   {
     objc_msgSend_transform(v53, v54, v55);
@@ -793,7 +793,7 @@ LABEL_20:
   objc_msgSend_transformUsingAffineTransform_(v50, v54, v118);
 
   v59 = objc_msgSend_array(MEMORY[0x277CBEB18], v57, v58);
-  objc_msgSend_addIntersectionsWithPath_to_allIntersections_reversed_(v12, v60, v50, v59, 1, 0);
+  objc_msgSend_addIntersectionsWithPath_to_allIntersections_reversed_(pathCopy, v60, v50, v59, 1, 0);
   if (!objc_msgSend_count(v59, v61, v62))
   {
     goto LABEL_45;
@@ -808,8 +808,8 @@ LABEL_20:
     v68 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v69 = v8 ? v68 - 1 : 0;
-  v70 = v8 ? -1 : 1;
+  v69 = reversedCopy ? v68 - 1 : 0;
+  v70 = reversedCopy ? -1 : 1;
   if (v69 < v68)
   {
     v71 = 1.0 / v17;
@@ -820,7 +820,7 @@ LABEL_20:
       v69 += v70;
       if (v69 >= v68)
       {
-        if (v8)
+        if (reversedCopy)
         {
           v78 = 0;
           v82 = 0.0;
@@ -828,7 +828,7 @@ LABEL_20:
 
         else
         {
-          v78 = objc_msgSend_elementCount(v12, v73, v74) - 1;
+          v78 = objc_msgSend_elementCount(pathCopy, v73, v74) - 1;
           v82 = 1.0;
         }
       }
@@ -844,14 +844,14 @@ LABEL_20:
       v85 = vcvtd_n_f64_s64(objc_msgSend_segment(v24, v73, v74) + v78, 1uLL);
       v86 = ceil(v85);
       v87 = floor(v85);
-      if (v8)
+      if (reversedCopy)
       {
         v87 = v86;
       }
 
       v88 = v87;
       objc_msgSend_t(v24, v83, v84);
-      objc_msgSend_pointAt_fromElement_(v12, v90, v88, (v82 + v89) * 0.5);
+      objc_msgSend_pointAt_fromElement_(pathCopy, v90, v88, (v82 + v89) * 0.5);
       if ((objc_msgSend_containsPoint_(v50, v91, v92) & 1) == 0)
       {
         objc_msgSend_t(v24, v93, v94);
@@ -871,10 +871,10 @@ LABEL_20:
       }
     }
 
-    v99 = v115;
+    v99 = validCopy;
     v23 = v116;
-    *v115 = 1;
-    v13 = v117;
+    *validCopy = 1;
+    layoutCopy = v117;
     if (v24)
     {
       goto LABEL_53;
@@ -884,19 +884,19 @@ LABEL_20:
   else
   {
 LABEL_45:
-    v99 = v115;
+    v99 = validCopy;
     v23 = v116;
-    *v115 = 1;
-    v13 = v117;
+    *validCopy = 1;
+    layoutCopy = v117;
   }
 
-  if (!v8)
+  if (!reversedCopy)
   {
-    objc_msgSend_pointAt_fromElement_(v12, v63, 1, 0.01);
+    objc_msgSend_pointAt_fromElement_(pathCopy, v63, 1, 0.01);
     if (objc_msgSend_containsPoint_(v50, v107, v108))
     {
       v109 = [TSDPathIntersection alloc];
-      v112 = objc_msgSend_elementCount(v12, v110, v111) - 1;
+      v112 = objc_msgSend_elementCount(pathCopy, v110, v111) - 1;
       v106 = objc_msgSend_initWithSegment_atT_atPoint_(v109, v113, v112, 1.0, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
       goto LABEL_51;
     }
@@ -906,8 +906,8 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v100 = objc_msgSend_elementCount(v12, v63, v64);
-  objc_msgSend_pointAt_fromElement_(v12, v101, v100 - 1, 0.99);
+  v100 = objc_msgSend_elementCount(pathCopy, v63, v64);
+  objc_msgSend_pointAt_fromElement_(pathCopy, v101, v100 - 1, 0.99);
   if (!objc_msgSend_containsPoint_(v50, v102, v103))
   {
     goto LABEL_52;
@@ -1415,10 +1415,10 @@ LABEL_54:
   return v11;
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v4 = objc_msgSend_connectedPathSource(self, a2, a3);
-  objc_msgSend_getControlKnobPosition_(v4, v5, a3);
+  v4 = objc_msgSend_connectedPathSource(self, a2, position);
+  objc_msgSend_getControlKnobPosition_(v4, v5, position);
   v7 = v6;
   v9 = v8;
 
@@ -1429,9 +1429,9 @@ LABEL_54:
   return result;
 }
 
-- (BOOL)p_isInfoAKeynoteTemplateObject:(id)a3
+- (BOOL)p_isInfoAKeynoteTemplateObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_layoutController(self, v5, v6);
   v10 = objc_msgSend_canvas(v7, v8, v9);
 
@@ -1440,7 +1440,7 @@ LABEL_54:
 
   if (v14)
   {
-    isInfoAKeynoteTemplateObject = objc_msgSend_isInfoAKeynoteTemplateObject_(v14, v15, v4, &unk_2885CECF8);
+    isInfoAKeynoteTemplateObject = objc_msgSend_isInfoAKeynoteTemplateObject_(v14, v15, objectCopy, &unk_2885CECF8);
   }
 
   else
@@ -1451,19 +1451,19 @@ LABEL_54:
   return isInfoAKeynoteTemplateObject;
 }
 
-- (id)p_infoForConnectingToInfo:(id)a3
+- (id)p_infoForConnectingToInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_layoutController(self, v5, v6);
   v10 = objc_msgSend_canvas(v7, v8, v9);
 
   v13 = objc_msgSend_delegate(v10, v11, v12);
   v14 = TSUProtocolCast();
 
-  v16 = v4;
+  v16 = infoCopy;
   if (v14)
   {
-    v16 = objc_msgSend_infoToConnectToForConnectionLineConnectedToInfo_(v14, v15, v4, &unk_2885CECF8);
+    v16 = objc_msgSend_infoToConnectToForConnectionLineConnectedToInfo_(v14, v15, infoCopy, &unk_2885CECF8);
   }
 
   return v16;

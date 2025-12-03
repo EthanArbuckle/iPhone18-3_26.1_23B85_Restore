@@ -1,8 +1,8 @@
 @interface VFXMTLSkinDeformer
-- (id)makeReadOnlyBuffersWithBaseGeometry:(__CFXGeometry *)a3 baseMesh:(__CFXMesh *)a4 blitEncoder:(id)a5;
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4;
+- (id)makeReadOnlyBuffersWithBaseGeometry:(__CFXGeometry *)geometry baseMesh:(__CFXMesh *)mesh blitEncoder:(id)encoder;
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers;
 - (void)dealloc;
-- (void)setupWithComputeContext:(id)a3;
+- (void)setupWithComputeContext:(id)context;
 @end
 
 @implementation VFXMTLSkinDeformer
@@ -21,7 +21,7 @@
   [(VFXMTLSkinDeformer *)&v4 dealloc];
 }
 
-- (void)setupWithComputeContext:(id)a3
+- (void)setupWithComputeContext:(id)context
 {
   v5 = sub_1AF170740(self->_baseGeometry);
   if (!v5)
@@ -51,7 +51,7 @@
   v56[1] = 3221225472;
   v56[2] = sub_1AF1EA6A4;
   v56[3] = &unk_1E7A7C380;
-  v56[4] = a3;
+  v56[4] = context;
   v56[5] = self;
   v56[6] = v5;
   v27 = objc_msgSend_renderResourceForSkinner_baseMesh_dataKind_provider_(resourceManager, v26, skinner, v5, dataKind, v56);
@@ -130,11 +130,11 @@
   }
 
   v49 = self->_resourceManager;
-  v50 = objc_msgSend_stageInputDescriptor(a3, v42, v43, v44);
+  v50 = objc_msgSend_stageInputDescriptor(context, v42, v43, v44);
   self->_computePipeline = objc_msgSend_computePipelineStateForKernel_withStageDescriptor_stageDescriptorUpdateBlock_constants_constantsHash_(v49, v51, v46, v50, 0, v30, v45);
 }
 
-- (id)makeReadOnlyBuffersWithBaseGeometry:(__CFXGeometry *)a3 baseMesh:(__CFXMesh *)a4 blitEncoder:(id)a5
+- (id)makeReadOnlyBuffersWithBaseGeometry:(__CFXGeometry *)geometry baseMesh:(__CFXMesh *)mesh blitEncoder:(id)encoder
 {
   v138 = *MEMORY[0x1E69E9840];
   v8 = sub_1AF15B294(self->_skinner);
@@ -153,7 +153,7 @@
   v131 = 0;
   sub_1AF1C78C4(v8, &v133, &v132, &v131);
   v130 = 0;
-  v18 = sub_1AF1A4F94(a4, &v130);
+  v18 = sub_1AF1A4F94(mesh, &v130);
   v19 = sub_1AF1C7940(v8);
   v20 = v19;
   v21 = v19 - 129;
@@ -206,7 +206,7 @@
       v46 = v43 - 1;
       if (v43 - 1 < 0x8000)
       {
-        v127 = a5;
+        encoderCopy = encoder;
         v50 = (*p_baseVertexCount + 1) << (v46 > 0x7F);
         v51 = malloc_type_malloc(v50, 0xBFABE935uLL);
         v52 = v51;
@@ -261,8 +261,8 @@
         }
 
         v94 = v50;
-        a5 = v127;
-        v95 = sub_1AFDE847C(self->_resourceManager, v51, v94, v127);
+        encoder = encoderCopy;
+        v95 = sub_1AFDE847C(self->_resourceManager, v51, v94, encoderCopy);
         if (v17)
         {
           objc_setProperty_nonatomic(v17, v96, v95, 24);
@@ -273,7 +273,7 @@
 
       else
       {
-        v47 = sub_1AFDE847C(self->_resourceManager, v133, (4 * (self->_baseVertexCount + 1)), a5);
+        v47 = sub_1AFDE847C(self->_resourceManager, v133, (4 * (self->_baseVertexCount + 1)), encoder);
         if (v17)
         {
           objc_setProperty_nonatomic(v17, v48, v47, 24);
@@ -344,7 +344,7 @@ LABEL_101:
             while (v106);
           }
 
-          v109 = sub_1AFDE847C(self->_resourceManager, v100, (v128 * baseVertexCount), a5);
+          v109 = sub_1AFDE847C(self->_resourceManager, v100, (v128 * baseVertexCount), encoder);
           if (v17)
           {
             objc_setProperty_nonatomic(v17, v110, v109, 32);
@@ -355,7 +355,7 @@ LABEL_101:
 
         else
         {
-          v98 = sub_1AFDE847C(self->_resourceManager, v132, (v128 * baseVertexCount), a5);
+          v98 = sub_1AFDE847C(self->_resourceManager, v132, (v128 * baseVertexCount), encoder);
           if (v17)
           {
             objc_setProperty_nonatomic(v17, v99, v98, 32);
@@ -365,13 +365,13 @@ LABEL_101:
 
       else
       {
-        sub_1AFDE39C4((v128 * baseVertexCount), self, a5, v17);
+        sub_1AFDE39C4((v128 * baseVertexCount), self, encoder, v17);
       }
 
       v111 = v49;
       if (v131)
       {
-        v112 = sub_1AFDE847C(self->_resourceManager, v131, (4 * baseVertexCount), a5);
+        v112 = sub_1AFDE847C(self->_resourceManager, v131, (4 * baseVertexCount), encoder);
         v114 = v128;
         if (!v17)
         {
@@ -391,7 +391,7 @@ LABEL_101:
           memset_pattern16(v115, &xmmword_1AFE21160, 4 * baseVertexCount);
         }
 
-        v116 = sub_1AFDE847C(self->_resourceManager, v60, (4 * baseVertexCount), a5);
+        v116 = sub_1AFDE847C(self->_resourceManager, v60, (4 * baseVertexCount), encoder);
         if (!v17)
         {
           goto LABEL_88;
@@ -433,7 +433,7 @@ LABEL_112:
   v27 = malloc_type_malloc(4 * (v25 + 1), 0x100004052888210uLL);
   v28 = v27;
   *v27 = 0;
-  v126 = a5;
+  encoderCopy2 = encoder;
   if (*v26)
   {
     v29 = 0;
@@ -631,19 +631,19 @@ LABEL_52:
     v17->_boneIndexSize = v129;
   }
 
-  v87 = sub_1AFDE847C(self->_resourceManager, v37, v62, v126);
+  v87 = sub_1AFDE847C(self->_resourceManager, v37, v62, encoderCopy2);
   if (v17)
   {
     objc_setProperty_nonatomic(v17, v88, v87, 24);
   }
 
-  v89 = sub_1AFDE847C(self->_resourceManager, v58, v122, v126);
+  v89 = sub_1AFDE847C(self->_resourceManager, v58, v122, encoderCopy2);
   if (v17)
   {
     objc_setProperty_nonatomic(v17, v90, v89, 32);
   }
 
-  v91 = sub_1AFDE847C(self->_resourceManager, v60, v123, v126);
+  v91 = sub_1AFDE847C(self->_resourceManager, v60, v123, encoderCopy2);
   if (v17)
   {
     objc_setProperty_nonatomic(v17, v92, v91, 40);
@@ -661,16 +661,16 @@ LABEL_88:
   return v17;
 }
 
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers
 {
-  v7 = objc_msgSend_currentFrameHash(a3, a2, a3, a4);
+  v7 = objc_msgSend_currentFrameHash(context, a2, context, buffers);
   if (self->_currentFrameHash == v7)
   {
     return 0;
   }
 
   self->_currentFrameHash = v7;
-  v12 = objc_msgSend_currentComputeEncoder(a3, v8, v9, v10);
+  v12 = objc_msgSend_currentComputeEncoder(context, v8, v9, v10);
   objc_msgSend_resetCache(v12, v13, v14, v15);
   if (self->_useFallbackCopyKernel)
   {
@@ -682,7 +682,7 @@ LABEL_88:
     objc_msgSend_setBuffer_offset_atIndex_(v12, v16, self->_influenceOffsetsBuffer, 0, 1);
     objc_msgSend_setBuffer_offset_atIndex_(v12, v20, self->_boneIndicesBuffer, 0, 2);
     objc_msgSend_setBuffer_offset_atIndex_(v12, v21, self->_boneWeightsBuffer, 0, 3);
-    v25 = objc_msgSend_currentBufferAllocatorPerFrame(a3, v22, v23, v24);
+    v25 = objc_msgSend_currentBufferAllocatorPerFrame(context, v22, v23, v24);
     v67[0] = 0;
     v26 = sub_1AF1C9DCC(self->_skinner, v67);
     v27 = CFXBufferAllocatorPerFrameAllocateWithBytes(v25, v26, 16 * v67[0]);
@@ -690,9 +690,9 @@ LABEL_88:
     v19 = 5;
   }
 
-  var1 = a4->var1;
-  var3 = a4->var3;
-  var5 = a4->var5;
+  var1 = buffers->var1;
+  var3 = buffers->var3;
+  var5 = buffers->var5;
   v69 = objc_msgSend_length(var1, v16, v17, v18) / 0xCuLL;
   if (self->_baseVertexCount != v69)
   {
@@ -735,7 +735,7 @@ LABEL_88:
     objc_msgSend_setBuffer_offset_atIndex_(v12, v54, var5, 0, v19 | 2);
   }
 
-  objc_msgSend_setStageInputOutputBuffersToEncoder_(a3, v41, v12, v43);
+  objc_msgSend_setStageInputOutputBuffersToEncoder_(context, v41, v12, v43);
   memset(v67, 0, 24);
   v67[3] = v69;
   v11 = 1;

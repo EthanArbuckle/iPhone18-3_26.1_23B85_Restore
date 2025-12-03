@@ -6,71 +6,71 @@
 - (NSString)parentId;
 - (NSString)securityOrigin;
 - (NSString)url;
-- (RWIProtocolPageFrame)initWithIdentifier:(id)a3 loaderId:(id)a4 url:(id)a5 securityOrigin:(id)a6 mimeType:(id)a7;
-- (void)setIdentifier:(id)a3;
-- (void)setLoaderId:(id)a3;
-- (void)setMimeType:(id)a3;
-- (void)setName:(id)a3;
-- (void)setParentId:(id)a3;
-- (void)setSecurityOrigin:(id)a3;
-- (void)setUrl:(id)a3;
+- (RWIProtocolPageFrame)initWithIdentifier:(id)identifier loaderId:(id)id url:(id)url securityOrigin:(id)origin mimeType:(id)type;
+- (void)setIdentifier:(id)identifier;
+- (void)setLoaderId:(id)id;
+- (void)setMimeType:(id)type;
+- (void)setName:(id)name;
+- (void)setParentId:(id)id;
+- (void)setSecurityOrigin:(id)origin;
+- (void)setUrl:(id)url;
 @end
 
 @implementation RWIProtocolPageFrame
 
-- (RWIProtocolPageFrame)initWithIdentifier:(id)a3 loaderId:(id)a4 url:(id)a5 securityOrigin:(id)a6 mimeType:(id)a7
+- (RWIProtocolPageFrame)initWithIdentifier:(id)identifier loaderId:(id)id url:(id)url securityOrigin:(id)origin mimeType:(id)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  idCopy = id;
+  urlCopy = url;
+  originCopy = origin;
+  typeCopy = type;
   v20.receiver = self;
   v20.super_class = RWIProtocolPageFrame;
   v17 = [(RWIProtocolJSONObject *)&v20 init];
   if (v17)
   {
-    if (!v12)
+    if (!identifierCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"identifier"}];
     }
 
-    if (!v13)
+    if (!idCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"loaderId"}];
     }
 
-    if (!v14)
+    if (!urlCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"url"}];
     }
 
-    if (!v15)
+    if (!originCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"securityOrigin"}];
     }
 
-    if (!v16)
+    if (!typeCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"mimeType"}];
     }
 
-    [(RWIProtocolPageFrame *)v17 setIdentifier:v12];
-    [(RWIProtocolPageFrame *)v17 setLoaderId:v13];
-    [(RWIProtocolPageFrame *)v17 setUrl:v14];
-    [(RWIProtocolPageFrame *)v17 setSecurityOrigin:v15];
-    [(RWIProtocolPageFrame *)v17 setMimeType:v16];
+    [(RWIProtocolPageFrame *)v17 setIdentifier:identifierCopy];
+    [(RWIProtocolPageFrame *)v17 setLoaderId:idCopy];
+    [(RWIProtocolPageFrame *)v17 setUrl:urlCopy];
+    [(RWIProtocolPageFrame *)v17 setSecurityOrigin:originCopy];
+    [(RWIProtocolPageFrame *)v17 setMimeType:typeCopy];
     v18 = v17;
   }
 
   return v17;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"id"];
+  [(RWIProtocolJSONObject *)&v3 setString:identifier forKey:@"id"];
 }
 
 - (NSString)identifier
@@ -82,11 +82,11 @@
   return v2;
 }
 
-- (void)setParentId:(id)a3
+- (void)setParentId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"parentId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"parentId"];
 }
 
 - (NSString)parentId
@@ -98,11 +98,11 @@
   return v2;
 }
 
-- (void)setLoaderId:(id)a3
+- (void)setLoaderId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"loaderId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"loaderId"];
 }
 
 - (NSString)loaderId
@@ -114,11 +114,11 @@
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -130,11 +130,11 @@
   return v2;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"url"];
+  [(RWIProtocolJSONObject *)&v3 setString:url forKey:@"url"];
 }
 
 - (NSString)url
@@ -146,11 +146,11 @@
   return v2;
 }
 
-- (void)setSecurityOrigin:(id)a3
+- (void)setSecurityOrigin:(id)origin
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"securityOrigin"];
+  [(RWIProtocolJSONObject *)&v3 setString:origin forKey:@"securityOrigin"];
 }
 
 - (NSString)securityOrigin
@@ -162,11 +162,11 @@
   return v2;
 }
 
-- (void)setMimeType:(id)a3
+- (void)setMimeType:(id)type
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolPageFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"mimeType"];
+  [(RWIProtocolJSONObject *)&v3 setString:type forKey:@"mimeType"];
 }
 
 - (NSString)mimeType

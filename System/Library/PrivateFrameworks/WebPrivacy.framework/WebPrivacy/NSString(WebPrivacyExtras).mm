@@ -7,20 +7,20 @@
 
 - (NSString)_wp_stringByRemovingTrackingInformationFromURLs
 {
-  checkForURLUsingFastPath(a1, v7);
+  checkForURLUsingFastPath(self, v7);
   if (v7[0])
   {
     v2 = v8;
     if (v8)
     {
-      v3 = [v8 _wp_urlByRemovingTrackingInformation];
-      v4 = [v3 absoluteString];
+      _wp_urlByRemovingTrackingInformation = [v8 _wp_urlByRemovingTrackingInformation];
+      selfCopy = [_wp_urlByRemovingTrackingInformation absoluteString];
     }
 
     else
     {
-      WebPrivacy::findOrderedReplacementRanges(a1, v6);
-      v4 = WebPrivacy::applyOrderedReplacements<NSString>(a1, v6);
+      WebPrivacy::findOrderedReplacementRanges(self, v6);
+      selfCopy = WebPrivacy::applyOrderedReplacements<NSString>(self, v6);
       v9 = v6;
       std::vector<std::pair<_NSRange,NSString * {__strong}>>::__destroy_vector::operator()[abi:nn200100](&v9);
       v2 = 0;
@@ -29,17 +29,17 @@
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
     v2 = v8;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)_wp_removeTrackingInformationFromURLs:()WebPrivacyExtras
 {
   v4 = a3;
-  checkForURLUsingFastPath(a1, v11);
+  checkForURLUsingFastPath(self, v11);
   if (v11[0])
   {
     v5 = v12;
@@ -50,10 +50,10 @@
       v8[2] = __68__NSString_WebPrivacyExtras___wp_removeTrackingInformationFromURLs___block_invoke_2;
       v8[3] = &__block_descriptor_48_ea8_32c81_ZTSKZ68__NSString_WebPrivacyExtras___wp_removeTrackingInformationFromURLs__E3__3_e9_v16__0_v8l;
       v6 = MEMORY[0x2743DC460](v4);
-      v7 = [(NSString *)a1 copy];
+      v7 = [(NSString *)self copy];
       v8[4] = MEMORY[0x2743DC460](v6);
       v8[5] = v7;
-      WebPrivacy::findOrderedReplacementRanges(a1, v8);
+      WebPrivacy::findOrderedReplacementRanges(self, v8);
     }
 
     v9[0] = MEMORY[0x277D85DD0];
@@ -66,7 +66,7 @@
 
   else
   {
-    (*(v4 + 2))(v4, a1);
+    (*(v4 + 2))(v4, self);
     v5 = v12;
   }
 }

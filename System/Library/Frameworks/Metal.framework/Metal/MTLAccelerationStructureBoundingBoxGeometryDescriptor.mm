@@ -1,8 +1,8 @@
 @interface MTLAccelerationStructureBoundingBoxGeometryDescriptor
 + (MTLAccelerationStructureBoundingBoxGeometryDescriptor)descriptor;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLAccelerationStructureBoundingBoxGeometryDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -36,11 +36,11 @@
   [(MTLAccelerationStructureGeometryDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTLAccelerationStructureBoundingBoxGeometryDescriptor;
-  v4 = [(MTLAccelerationStructureGeometryDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MTLAccelerationStructureGeometryDescriptor *)&v6 copyWithZone:zone];
   [v4 setBoundingBoxBuffer:self->_boundingBoxBuffer];
   [v4 setBoundingBoxBufferOffset:self->_boundingBoxBufferOffset];
   [v4 setBoundingBoxStride:self->_boundingBoxStride];
@@ -48,9 +48,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -60,24 +60,24 @@
     v15 = v3;
     v16 = v4;
     Class = object_getClass(self);
-    if (Class != object_getClass(a3))
+    if (Class != object_getClass(equal))
     {
       goto LABEL_3;
     }
 
     v14.receiver = self;
     v14.super_class = MTLAccelerationStructureBoundingBoxGeometryDescriptor;
-    v8 = [(MTLAccelerationStructureGeometryDescriptor *)&v14 isEqual:a3];
+    v8 = [(MTLAccelerationStructureGeometryDescriptor *)&v14 isEqual:equal];
     if (!v8)
     {
       return v8;
     }
 
-    v9 = [(MTLAccelerationStructureBoundingBoxGeometryDescriptor *)self boundingBoxBuffer];
-    if (v9 == [a3 boundingBoxBuffer] && (v10 = -[MTLAccelerationStructureBoundingBoxGeometryDescriptor boundingBoxBufferOffset](self, "boundingBoxBufferOffset"), v10 == objc_msgSend(a3, "boundingBoxBufferOffset")) && (v11 = -[MTLAccelerationStructureBoundingBoxGeometryDescriptor boundingBoxStride](self, "boundingBoxStride"), v11 == objc_msgSend(a3, "boundingBoxStride")))
+    boundingBoxBuffer = [(MTLAccelerationStructureBoundingBoxGeometryDescriptor *)self boundingBoxBuffer];
+    if (boundingBoxBuffer == [equal boundingBoxBuffer] && (v10 = -[MTLAccelerationStructureBoundingBoxGeometryDescriptor boundingBoxBufferOffset](self, "boundingBoxBufferOffset"), v10 == objc_msgSend(equal, "boundingBoxBufferOffset")) && (v11 = -[MTLAccelerationStructureBoundingBoxGeometryDescriptor boundingBoxStride](self, "boundingBoxStride"), v11 == objc_msgSend(equal, "boundingBoxStride")))
     {
-      v12 = [(MTLAccelerationStructureBoundingBoxGeometryDescriptor *)self boundingBoxCount];
-      LOBYTE(v8) = v12 == [a3 boundingBoxCount];
+      boundingBoxCount = [(MTLAccelerationStructureBoundingBoxGeometryDescriptor *)self boundingBoxCount];
+      LOBYTE(v8) = boundingBoxCount == [equal boundingBoxCount];
     }
 
     else

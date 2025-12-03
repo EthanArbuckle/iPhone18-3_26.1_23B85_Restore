@@ -3,17 +3,17 @@
 - (GEORPPoiEnrichmentUpdate)poiEnrichment;
 - (NSArray)photoList;
 - (UGCSubmissionFields)init;
-- (void)addPhoto:(id)a3;
+- (void)addPhoto:(id)photo;
 @end
 
 @implementation UGCSubmissionFields
 
-- (void)addPhoto:(id)a3
+- (void)addPhoto:(id)photo
 {
-  v4 = a3;
+  photoCopy = photo;
   if (([(NSMutableArray *)self->_photos containsObject:?]& 1) == 0)
   {
-    [(NSMutableArray *)self->_photos addObject:v4];
+    [(NSMutableArray *)self->_photos addObject:photoCopy];
   }
 }
 

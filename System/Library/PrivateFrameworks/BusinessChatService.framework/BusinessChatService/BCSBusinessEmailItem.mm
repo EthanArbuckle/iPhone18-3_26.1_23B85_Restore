@@ -1,32 +1,32 @@
 @interface BCSBusinessEmailItem
-+ (id)itemFromStatement:(sqlite3_stmt *)a3;
-- (BCSBusinessEmailItem)initWithCoder:(id)a3;
-- (BCSBusinessEmailItem)initWithEmail:(id)a3 localizedNames:(id)a4;
-- (BCSBusinessEmailItem)initWithEmail:(id)a3 localizedNames:(id)a4 localizedDisplayNames:(id)a5 businessId:(id)a6 companyId:(id)a7;
-- (BCSBusinessEmailItem)initWithEmailMessage:(id)a3;
-- (BCSBusinessEmailItem)initWithIdentifier:(id)a3 defaultsDictionary:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesItemIdentifying:(id)a3;
++ (id)itemFromStatement:(sqlite3_stmt *)statement;
+- (BCSBusinessEmailItem)initWithCoder:(id)coder;
+- (BCSBusinessEmailItem)initWithEmail:(id)email localizedNames:(id)names;
+- (BCSBusinessEmailItem)initWithEmail:(id)email localizedNames:(id)names localizedDisplayNames:(id)displayNames businessId:(id)id companyId:(id)companyId;
+- (BCSBusinessEmailItem)initWithEmailMessage:(id)message;
+- (BCSBusinessEmailItem)initWithIdentifier:(id)identifier defaultsDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesItemIdentifying:(id)identifying;
 - (NSDictionary)localizedDisplayNames;
 - (NSDictionary)localizedNames;
 - (NSString)name;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)displayName;
 - (id)itemIdentifier;
 - (int64_t)truncatedHash;
 - (int64_t)type;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateStatementValues:(sqlite3_stmt *)a3 withItemIdentifier:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateStatementValues:(sqlite3_stmt *)values withItemIdentifier:(id)identifier;
 @end
 
 @implementation BCSBusinessEmailItem
 
-- (BCSBusinessEmailItem)initWithEmail:(id)a3 localizedNames:(id)a4
+- (BCSBusinessEmailItem)initWithEmail:(id)email localizedNames:(id)names
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  emailCopy = email;
+  namesCopy = names;
   v26.receiver = self;
   v26.super_class = BCSBusinessEmailItem;
   v8 = [(BCSItem *)&v26 init];
@@ -36,12 +36,12 @@
     message = v8->_message;
     v8->_message = v9;
 
-    [(BCSEmailMetadataParquetMessage *)v8->_message setKey:v6];
+    [(BCSEmailMetadataParquetMessage *)v8->_message setKey:emailCopy];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = v7;
+    v11 = namesCopy;
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v12)
     {
@@ -78,14 +78,14 @@
   return v8;
 }
 
-- (BCSBusinessEmailItem)initWithEmail:(id)a3 localizedNames:(id)a4 localizedDisplayNames:(id)a5 businessId:(id)a6 companyId:(id)a7
+- (BCSBusinessEmailItem)initWithEmail:(id)email localizedNames:(id)names localizedDisplayNames:(id)displayNames businessId:(id)id companyId:(id)companyId
 {
   v48 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  emailCopy = email;
+  namesCopy = names;
+  displayNamesCopy = displayNames;
+  idCopy = id;
+  companyIdCopy = companyId;
   v45.receiver = self;
   v45.super_class = BCSBusinessEmailItem;
   v17 = [(BCSItem *)&v45 init];
@@ -95,13 +95,13 @@
     message = v17->_message;
     v17->_message = v18;
 
-    v36 = v12;
-    [(BCSEmailMetadataParquetMessage *)v17->_message setKey:v12];
+    v36 = emailCopy;
+    [(BCSEmailMetadataParquetMessage *)v17->_message setKey:emailCopy];
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v20 = v13;
+    v20 = namesCopy;
     v21 = [v20 countByEnumeratingWithState:&v41 objects:v47 count:16];
     if (v21)
     {
@@ -131,7 +131,7 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v25 = v14;
+    v25 = displayNamesCopy;
     v26 = [v25 countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v26)
     {
@@ -157,30 +157,30 @@
       while (v27);
     }
 
-    [(BCSEmailMetadataParquetMessage *)v17->_message setBusinessId:v15];
-    [(BCSEmailMetadataParquetMessage *)v17->_message setCompanyId:v16];
+    [(BCSEmailMetadataParquetMessage *)v17->_message setBusinessId:idCopy];
+    [(BCSEmailMetadataParquetMessage *)v17->_message setCompanyId:companyIdCopy];
     v30 = [BCSBusinessEmailItemIdentifier alloc];
     v31 = [(BCSEmailMetadataParquetMessage *)v17->_message key];
     v32 = [(BCSBusinessEmailItemIdentifier *)v30 initWithEmail:v31];
     identifier = v17->_identifier;
     v17->_identifier = v32;
 
-    v12 = v36;
+    emailCopy = v36;
   }
 
   v34 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (BCSBusinessEmailItem)initWithEmailMessage:(id)a3
+- (BCSBusinessEmailItem)initWithEmailMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v13.receiver = self;
   v13.super_class = BCSBusinessEmailItem;
   v5 = [(BCSItem *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [messageCopy copy];
     message = v5->_message;
     v5->_message = v6;
 
@@ -194,131 +194,131 @@
   return v5;
 }
 
-- (BCSBusinessEmailItem)initWithIdentifier:(id)a3 defaultsDictionary:(id)a4
+- (BCSBusinessEmailItem)initWithIdentifier:(id)identifier defaultsDictionary:(id)dictionary
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
   v8 = objc_alloc_init(BCSEmailLocalizedString);
   [(BCSEmailLocalizedString *)v8 setLocale:@"en-US"];
-  v9 = [v6 objectForKeyedSubscript:@"name"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   [(BCSEmailLocalizedString *)v8 setText:v9];
 
   [(BCSEmailLocalizedString *)v8 setIsDefault:1];
-  v10 = [v7 email];
+  email = [identifierCopy email];
 
   v19[0] = v8;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   v18 = v8;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
-  v13 = [v6 objectForKeyedSubscript:@"businessId"];
-  v14 = [v6 objectForKeyedSubscript:@"companyId"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"businessId"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"companyId"];
 
-  v15 = [(BCSBusinessEmailItem *)self initWithEmail:v10 localizedNames:v11 localizedDisplayNames:v12 businessId:v13 companyId:v14];
+  v15 = [(BCSBusinessEmailItem *)self initWithEmail:email localizedNames:v11 localizedDisplayNames:v12 businessId:v13 companyId:v14];
   v16 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
 - (NSString)name
 {
-  v2 = [(BCSEmailMetadataParquetMessage *)self->_message names];
-  v3 = [v2 defaultLocalizedStringsValue];
+  names = [(BCSEmailMetadataParquetMessage *)self->_message names];
+  defaultLocalizedStringsValue = [names defaultLocalizedStringsValue];
 
-  return v3;
+  return defaultLocalizedStringsValue;
 }
 
 - (id)displayName
 {
-  v2 = [(BCSEmailMetadataParquetMessage *)self->_message displayNames];
-  v3 = [v2 defaultLocalizedStringsValue];
+  displayNames = [(BCSEmailMetadataParquetMessage *)self->_message displayNames];
+  defaultLocalizedStringsValue = [displayNames defaultLocalizedStringsValue];
 
-  return v3;
+  return defaultLocalizedStringsValue;
 }
 
 - (NSDictionary)localizedNames
 {
-  v2 = [(BCSEmailMetadataParquetMessage *)self->_message names];
-  v3 = [v2 localizedStringsToDictionary];
+  names = [(BCSEmailMetadataParquetMessage *)self->_message names];
+  localizedStringsToDictionary = [names localizedStringsToDictionary];
 
-  return v3;
+  return localizedStringsToDictionary;
 }
 
 - (NSDictionary)localizedDisplayNames
 {
-  v2 = [(BCSEmailMetadataParquetMessage *)self->_message displayNames];
-  v3 = [v2 localizedStringsToDictionary];
+  displayNames = [(BCSEmailMetadataParquetMessage *)self->_message displayNames];
+  localizedStringsToDictionary = [displayNames localizedStringsToDictionary];
 
-  return v3;
+  return localizedStringsToDictionary;
 }
 
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [(BCSBusinessEmailItem *)self description];
-  v5 = [(BCSBusinessEmailItem *)self email];
-  v6 = [(BCSBusinessEmailItem *)self name];
-  v7 = [(BCSBusinessEmailItem *)self displayName];
-  v8 = [(BCSBusinessEmailItem *)self businessId];
-  v9 = [(BCSBusinessEmailItem *)self companyId];
-  v10 = [v3 stringWithFormat:@"<%@ { email: %@, name: %@, displayName: %@, businessId: %@, companyId: %@>", v4, v5, v6, v7, v8, v9];
+  email = [(BCSBusinessEmailItem *)self email];
+  name = [(BCSBusinessEmailItem *)self name];
+  displayName = [(BCSBusinessEmailItem *)self displayName];
+  businessId = [(BCSBusinessEmailItem *)self businessId];
+  companyId = [(BCSBusinessEmailItem *)self companyId];
+  v10 = [v3 stringWithFormat:@"<%@ { email: %@, name: %@, displayName: %@, businessId: %@, companyId: %@>", v4, email, name, displayName, businessId, companyId];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BCSBusinessEmailItem *)self matchesItemIdentifying:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BCSBusinessEmailItem *)self matchesItemIdentifying:equalCopy];
 
   return v5;
 }
 
 - (id)itemIdentifier
 {
-  v2 = [(BCSBusinessEmailItem *)self identifier];
-  v3 = [v2 itemIdentifier];
+  identifier = [(BCSBusinessEmailItem *)self identifier];
+  itemIdentifier = [identifier itemIdentifier];
 
-  return v3;
+  return itemIdentifier;
 }
 
 - (int64_t)truncatedHash
 {
-  v2 = [(BCSBusinessEmailItem *)self identifier];
-  v3 = [v2 truncatedHash];
+  identifier = [(BCSBusinessEmailItem *)self identifier];
+  truncatedHash = [identifier truncatedHash];
 
-  return v3;
+  return truncatedHash;
 }
 
 - (int64_t)type
 {
-  v2 = [(BCSBusinessEmailItem *)self identifier];
-  v3 = [v2 type];
+  identifier = [(BCSBusinessEmailItem *)self identifier];
+  type = [identifier type];
 
-  return v3;
+  return type;
 }
 
-- (BOOL)matchesItemIdentifying:(id)a3
+- (BOOL)matchesItemIdentifying:(id)identifying
 {
-  v4 = a3;
-  v5 = [(BCSBusinessEmailItem *)self identifier];
-  v6 = [v5 matchesItemIdentifying:v4];
+  identifyingCopy = identifying;
+  identifier = [(BCSBusinessEmailItem *)self identifier];
+  v6 = [identifier matchesItemIdentifying:identifyingCopy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(BCSBusinessEmailItem *)self message];
-    v7 = [v6 copyWithZone:a3];
+    message = [(BCSBusinessEmailItem *)self message];
+    v7 = [message copyWithZone:zone];
     v8 = v5[3];
     v5[3] = v7;
 
-    v9 = [(BCSBusinessEmailItem *)self identifier];
-    v10 = [v9 copyWithZone:a3];
+    identifier = [(BCSBusinessEmailItem *)self identifier];
+    v10 = [identifier copyWithZone:zone];
     v11 = v5[2];
     v5[2] = v10;
   }
@@ -326,40 +326,40 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(BCSBusinessEmailItem *)self message];
-  v5 = [v6 data];
-  [v4 encodeObject:v5 forKey:@"Message"];
+  coderCopy = coder;
+  message = [(BCSBusinessEmailItem *)self message];
+  data = [message data];
+  [coderCopy encodeObject:data forKey:@"Message"];
 }
 
-- (BCSBusinessEmailItem)initWithCoder:(id)a3
+- (BCSBusinessEmailItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Message"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Message"];
 
   v6 = [[BCSEmailMetadataParquetMessage alloc] initWithData:v5];
   if (v6)
   {
     self = [(BCSBusinessEmailItem *)self initWithEmailMessage:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (id)itemFromStatement:(sqlite3_stmt *)a3
++ (id)itemFromStatement:(sqlite3_stmt *)statement
 {
-  sqlite3_column_int64(a3, 0);
-  v4 = BCSWebPresentmentStoreDataFromStatement(a3);
-  v5 = sqlite3_column_int64(a3, 2);
-  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{sqlite3_column_double(a3, 3)}];
+  sqlite3_column_int64(statement, 0);
+  v4 = BCSWebPresentmentStoreDataFromStatement(statement);
+  v5 = sqlite3_column_int64(statement, 2);
+  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{sqlite3_column_double(statement, 3)}];
   v7 = 0;
   if (v4 && v5 == 1)
   {
@@ -384,18 +384,18 @@
   return v7;
 }
 
-- (void)updateStatementValues:(sqlite3_stmt *)a3 withItemIdentifier:(id)a4
+- (void)updateStatementValues:(sqlite3_stmt *)values withItemIdentifier:(id)identifier
 {
-  sqlite3_bind_int64(a3, 1, [a4 truncatedHash]);
-  v6 = [(BCSBusinessEmailItem *)self message];
-  v10 = [v6 data];
+  sqlite3_bind_int64(values, 1, [identifier truncatedHash]);
+  message = [(BCSBusinessEmailItem *)self message];
+  data = [message data];
 
-  v7 = v10;
-  sqlite3_bind_blob(a3, 2, [v10 bytes], objc_msgSend(v10, "length"), 0);
-  sqlite3_bind_int64(a3, 3, 1);
-  v8 = [(BCSItem *)self expirationDate];
-  [v8 timeIntervalSince1970];
-  sqlite3_bind_double(a3, 4, v9);
+  v7 = data;
+  sqlite3_bind_blob(values, 2, [data bytes], objc_msgSend(data, "length"), 0);
+  sqlite3_bind_int64(values, 3, 1);
+  expirationDate = [(BCSItem *)self expirationDate];
+  [expirationDate timeIntervalSince1970];
+  sqlite3_bind_double(values, 4, v9);
 }
 
 @end

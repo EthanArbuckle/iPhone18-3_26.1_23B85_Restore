@@ -1,18 +1,18 @@
 @interface SUUITomatoRatingView
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForRating:(id)a3 context:(id)a4;
-+ (id)_tomatoImageForFreshness:(int64_t)a3;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForRating:(id)rating context:(id)context;
++ (id)_tomatoImageForFreshness:(int64_t)freshness;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setBackgroundColor:(id)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SUUITomatoRatingView
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -21,27 +21,27 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v11 = [a1 _attributedStringForRating:v9 context:v8];
-  v10 = [v8 labelLayoutCache];
+  contextCopy = context;
+  elementCopy = element;
+  v11 = [self _attributedStringForRating:elementCopy context:contextCopy];
+  labelLayoutCache = [contextCopy labelLayoutCache];
 
-  [v10 requestLayoutForViewElement:v9 attributedString:v11 width:a4];
+  [labelLayoutCache requestLayoutForViewElement:elementCopy attributedString:v11 width:width];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 _tomatoImageForFreshness:{objc_msgSend(v9, "freshness")}];
+  contextCopy = context;
+  elementCopy = element;
+  v10 = [self _tomatoImageForFreshness:{objc_msgSend(elementCopy, "freshness")}];
   [v10 size];
   v12 = v11;
   v14 = v13;
-  v15 = [v8 labelLayoutCache];
+  labelLayoutCache = [contextCopy labelLayoutCache];
 
-  v16 = [v15 layoutForWidth:a3 viewElement:v9];
+  v16 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
 
   if (v16)
   {
@@ -61,10 +61,10 @@
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v22 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   imageView = self->_imageView;
   if (!imageView)
   {
@@ -73,14 +73,14 @@
     self->_imageView = v10;
 
     v12 = self->_imageView;
-    v13 = [(SUUITomatoRatingView *)self backgroundColor];
-    [(UIImageView *)v12 setBackgroundColor:v13];
+    backgroundColor = [(SUUITomatoRatingView *)self backgroundColor];
+    [(UIImageView *)v12 setBackgroundColor:backgroundColor];
 
     [(SUUITomatoRatingView *)self addSubview:self->_imageView];
     imageView = self->_imageView;
   }
 
-  v14 = [objc_opt_class() _tomatoImageForFreshness:{objc_msgSend(v22, "freshness")}];
+  v14 = [objc_opt_class() _tomatoImageForFreshness:{objc_msgSend(elementCopy, "freshness")}];
   [(UIImageView *)imageView setImage:v14];
 
   labelView = self->_labelView;
@@ -91,16 +91,16 @@
     self->_labelView = v16;
 
     v18 = self->_labelView;
-    v19 = [(SUUITomatoRatingView *)self backgroundColor];
-    [(SUUIAttributedStringView *)v18 setBackgroundColor:v19];
+    backgroundColor2 = [(SUUITomatoRatingView *)self backgroundColor];
+    [(SUUIAttributedStringView *)v18 setBackgroundColor:backgroundColor2];
 
     [(SUUIAttributedStringView *)self->_labelView setUserInteractionEnabled:0];
     [(SUUITomatoRatingView *)self addSubview:self->_labelView];
     labelView = self->_labelView;
   }
 
-  v20 = [v8 labelLayoutCache];
-  v21 = [v20 layoutForWidth:a4 viewElement:v22];
+  labelLayoutCache = [contextCopy labelLayoutCache];
+  v21 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
   [(SUUIAttributedStringView *)labelView setLayout:v21];
 
   [(SUUITomatoRatingView *)self setNeedsLayout];
@@ -129,21 +129,21 @@
   [(SUUIAttributedStringView *)labelView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   imageView = self->_imageView;
-  v5 = a3;
-  [(UIImageView *)imageView setBackgroundColor:v5];
-  [(SUUIAttributedStringView *)self->_labelView setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIImageView *)imageView setBackgroundColor:colorCopy];
+  [(SUUIAttributedStringView *)self->_labelView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUITomatoRatingView;
-  [(SUUITomatoRatingView *)&v6 setBackgroundColor:v5];
+  [(SUUITomatoRatingView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIImageView *)self->_imageView sizeThatFits:?];
   v7 = v6;
   v9 = v8;
@@ -159,37 +159,37 @@
   return result;
 }
 
-+ (id)_attributedStringForRating:(id)a3 context:(id)a4
++ (id)_attributedStringForRating:(id)rating context:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 ratingText];
-  v8 = [v6 style];
+  contextCopy = context;
+  ratingCopy = rating;
+  ratingText = [ratingCopy ratingText];
+  style = [ratingCopy style];
 
-  v9 = SUUIViewElementFontWithStyle(v8);
+  v9 = SUUIViewElementFontWithStyle(style);
   if (!v9)
   {
     v9 = SUUIFontForTextStyle(10);
   }
 
-  v10 = [v5 tintColor];
-  v11 = SUUIViewElementPlainColorWithStyle(v8, v10);
+  tintColor = [contextCopy tintColor];
+  v11 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v11)
   {
     v11 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
   }
 
-  v12 = [v7 attributedStringWithDefaultFont:v9 foregroundColor:v11 style:v8];
+  v12 = [ratingText attributedStringWithDefaultFont:v9 foregroundColor:v11 style:style];
 
   return v12;
 }
 
-+ (id)_tomatoImageForFreshness:(int64_t)a3
++ (id)_tomatoImageForFreshness:(int64_t)freshness
 {
-  if (a3 <= 2)
+  if (freshness <= 2)
   {
-    v4 = off_2798FC140[a3];
+    v4 = off_2798FC140[freshness];
     v5 = MEMORY[0x277D755B8];
     v6 = SUUIBundle();
     v3 = [v5 imageNamed:v4 inBundle:v6];

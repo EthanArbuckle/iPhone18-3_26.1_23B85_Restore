@@ -1,39 +1,39 @@
 @interface MTStopwatch
-+ (id)descriptionForState:(int64_t)a3;
-- (BOOL)_isEqualToStopwatch:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)descriptionForState:(int64_t)state;
+- (BOOL)_isEqualToStopwatch:(id)stopwatch;
+- (BOOL)isEqual:(id)equal;
 - (MTStopwatch)init;
-- (MTStopwatch)initWithCoder:(id)a3;
-- (MTStopwatch)initWithId:(id)a3;
+- (MTStopwatch)initWithCoder:(id)coder;
+- (MTStopwatch)initWithId:(id)id;
 - (NSString)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_copyStateOntoStopwatch:(id)a3;
+- (void)_copyStateOntoStopwatch:(id)stopwatch;
 - (void)commonInit;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTStopwatch
 
 - (MTStopwatch)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [(MTStopwatch *)self initWithId:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [(MTStopwatch *)self initWithId:uUIDString];
 
   return v5;
 }
 
-- (MTStopwatch)initWithId:(id)a3
+- (MTStopwatch)initWithId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v8.receiver = self;
   v8.super_class = MTStopwatch;
   v5 = [(MTStopwatch *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MTStopwatch *)v5 setIdentifier:v4];
+    [(MTStopwatch *)v5 setIdentifier:idCopy];
     [(MTStopwatch *)v6 commonInit];
   }
 
@@ -51,101 +51,101 @@
   [(MTStopwatch *)self setState:0];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(MTStopwatch *)self identifier];
-  [v8 encodeObject:v4 forKey:@"MTStopwatchIdentifier"];
+  coderCopy = coder;
+  identifier = [(MTStopwatch *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"MTStopwatchIdentifier"];
 
-  v5 = [(MTStopwatch *)self title];
-  [v8 encodeObject:v5 forKey:@"MTStopwatchTitle"];
+  title = [(MTStopwatch *)self title];
+  [coderCopy encodeObject:title forKey:@"MTStopwatchTitle"];
 
-  v6 = [(MTStopwatch *)self startDate];
-  [v8 encodeObject:v6 forKey:@"MTStopwatchStartDate"];
+  startDate = [(MTStopwatch *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"MTStopwatchStartDate"];
 
   [(MTStopwatch *)self offset];
-  [v8 encodeDouble:@"MTStopwatchOffset" forKey:?];
+  [coderCopy encodeDouble:@"MTStopwatchOffset" forKey:?];
   [(MTStopwatch *)self currentInterval];
-  [v8 encodeDouble:@"MTStopwatchCurrentInterval" forKey:?];
+  [coderCopy encodeDouble:@"MTStopwatchCurrentInterval" forKey:?];
   [(MTStopwatch *)self previousLapsTotalInterval];
-  [v8 encodeDouble:@"MTStopwatchPreviousLapsTotalInterval" forKey:?];
-  v7 = [(MTStopwatch *)self laps];
-  [v8 encodeObject:v7 forKey:@"MTStopwatchLaps"];
+  [coderCopy encodeDouble:@"MTStopwatchPreviousLapsTotalInterval" forKey:?];
+  laps = [(MTStopwatch *)self laps];
+  [coderCopy encodeObject:laps forKey:@"MTStopwatchLaps"];
 
-  [v8 encodeInteger:-[MTStopwatch state](self forKey:{"state"), @"MTStopwatchState"}];
+  [coderCopy encodeInteger:-[MTStopwatch state](self forKey:{"state"), @"MTStopwatchState"}];
 }
 
-- (MTStopwatch)initWithCoder:(id)a3
+- (MTStopwatch)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MTStopwatch;
   v5 = [(MTStopwatch *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTStopwatchIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTStopwatchIdentifier"];
     [(MTStopwatch *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTStopwatchTitle"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTStopwatchTitle"];
     [(MTStopwatch *)v5 setTitle:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTStopwatchStartDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTStopwatchStartDate"];
     [(MTStopwatch *)v5 setStartDate:v8];
 
-    [v4 decodeDoubleForKey:@"MTStopwatchOffset"];
+    [coderCopy decodeDoubleForKey:@"MTStopwatchOffset"];
     [(MTStopwatch *)v5 setOffset:?];
-    [v4 decodeDoubleForKey:@"MTStopwatchCurrentInterval"];
+    [coderCopy decodeDoubleForKey:@"MTStopwatchCurrentInterval"];
     [(MTStopwatch *)v5 setCurrentInterval:?];
-    [v4 decodeDoubleForKey:@"MTStopwatchPreviousLapsTotalInterval"];
+    [coderCopy decodeDoubleForKey:@"MTStopwatchPreviousLapsTotalInterval"];
     [(MTStopwatch *)v5 setPreviousLapsTotalInterval:?];
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"MTStopwatchLaps"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"MTStopwatchLaps"];
     [(MTStopwatch *)v5 setLaps:v12];
 
-    -[MTStopwatch setState:](v5, "setState:", [v4 decodeIntegerForKey:@"MTStopwatchState"]);
+    -[MTStopwatch setState:](v5, "setState:", [coderCopy decodeIntegerForKey:@"MTStopwatchState"]);
   }
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(MTStopwatch *)[MTMutableStopwatch allocWithZone:?]];
-  v5 = [(MTStopwatch *)self identifier];
-  [(MTStopwatch *)v4 setIdentifier:v5];
+  identifier = [(MTStopwatch *)self identifier];
+  [(MTStopwatch *)v4 setIdentifier:identifier];
 
   [(MTStopwatch *)self _copyStateOntoStopwatch:v4];
   return v4;
 }
 
-- (void)_copyStateOntoStopwatch:(id)a3
+- (void)_copyStateOntoStopwatch:(id)stopwatch
 {
-  v7 = a3;
-  v4 = [(MTStopwatch *)self title];
-  [v7 setTitle:v4];
+  stopwatchCopy = stopwatch;
+  title = [(MTStopwatch *)self title];
+  [stopwatchCopy setTitle:title];
 
-  v5 = [(MTStopwatch *)self startDate];
-  [v7 setStartDate:v5];
+  startDate = [(MTStopwatch *)self startDate];
+  [stopwatchCopy setStartDate:startDate];
 
   [(MTStopwatch *)self offset];
-  [v7 setOffset:?];
+  [stopwatchCopy setOffset:?];
   [(MTStopwatch *)self currentInterval];
-  [v7 setCurrentInterval:?];
+  [stopwatchCopy setCurrentInterval:?];
   [(MTStopwatch *)self previousLapsTotalInterval];
-  [v7 setPreviousLapsTotalInterval:?];
-  v6 = [(MTStopwatch *)self laps];
-  [v7 setLaps:v6];
+  [stopwatchCopy setPreviousLapsTotalInterval:?];
+  laps = [(MTStopwatch *)self laps];
+  [stopwatchCopy setLaps:laps];
 
-  [v7 setState:{-[MTStopwatch state](self, "state")}];
+  [stopwatchCopy setState:{-[MTStopwatch state](self, "state")}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -171,16 +171,16 @@
   return v8;
 }
 
-- (BOOL)_isEqualToStopwatch:(id)a3
+- (BOOL)_isEqualToStopwatch:(id)stopwatch
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(MTStopwatch *)self identifier];
-  if (v5 != v6)
+  stopwatchCopy = stopwatch;
+  identifier = [stopwatchCopy identifier];
+  identifier2 = [(MTStopwatch *)self identifier];
+  if (identifier != identifier2)
   {
-    v7 = [v4 identifier];
-    v8 = [(MTStopwatch *)self identifier];
-    if (![v7 isEqual:v8])
+    identifier3 = [stopwatchCopy identifier];
+    identifier4 = [(MTStopwatch *)self identifier];
+    if (![identifier3 isEqual:identifier4])
     {
       v13 = 0;
 LABEL_30:
@@ -188,35 +188,35 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v39 = v8;
-    v40 = v7;
+    v39 = identifier4;
+    v40 = identifier3;
   }
 
-  v9 = [v4 title];
-  v10 = [(MTStopwatch *)self title];
-  if (v9 == v10)
+  title = [stopwatchCopy title];
+  title2 = [(MTStopwatch *)self title];
+  if (title == title2)
   {
 LABEL_8:
-    v14 = [v4 laps];
-    v15 = [(MTStopwatch *)self laps];
-    if (v14 == v15)
+    laps = [stopwatchCopy laps];
+    laps2 = [(MTStopwatch *)self laps];
+    if (laps == laps2)
     {
-      v36 = v14;
+      v36 = laps;
     }
 
     else
     {
-      v16 = [v4 laps];
-      v35 = [(MTStopwatch *)self laps];
-      if (![v16 isEqual:?])
+      laps3 = [stopwatchCopy laps];
+      laps4 = [(MTStopwatch *)self laps];
+      if (![laps3 isEqual:?])
       {
         v13 = 0;
 LABEL_26:
 
 LABEL_27:
-        v12 = v37;
-        v11 = v38;
-        if (v9 == v10)
+        title4 = v37;
+        title3 = v38;
+        if (title == title2)
         {
           goto LABEL_29;
         }
@@ -224,21 +224,21 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v34 = v16;
-      v36 = v14;
+      v34 = laps3;
+      v36 = laps;
     }
 
-    v17 = [v4 startDate];
-    v18 = [(MTStopwatch *)self startDate];
-    if (v17 == v18 || ([v4 startDate], v19 = objc_claimAutoreleasedReturnValue(), -[MTStopwatch startDate](self, "startDate"), v32 = objc_claimAutoreleasedReturnValue(), v33 = v19, objc_msgSend(v19, "isEqual:")))
+    startDate = [stopwatchCopy startDate];
+    startDate2 = [(MTStopwatch *)self startDate];
+    if (startDate == startDate2 || ([stopwatchCopy startDate], v19 = objc_claimAutoreleasedReturnValue(), -[MTStopwatch startDate](self, "startDate"), v32 = objc_claimAutoreleasedReturnValue(), v33 = v19, objc_msgSend(v19, "isEqual:")))
     {
-      [v4 offset];
+      [stopwatchCopy offset];
       v21 = v20;
       [(MTStopwatch *)self offset];
-      if (v21 == v22 && ([v4 currentInterval], v24 = v23, -[MTStopwatch currentInterval](self, "currentInterval"), v24 == v25) && (objc_msgSend(v4, "previousLapsTotalInterval"), v27 = v26, -[MTStopwatch previousLapsTotalInterval](self, "previousLapsTotalInterval"), v27 == v28))
+      if (v21 == v22 && ([stopwatchCopy currentInterval], v24 = v23, -[MTStopwatch currentInterval](self, "currentInterval"), v24 == v25) && (objc_msgSend(stopwatchCopy, "previousLapsTotalInterval"), v27 = v26, -[MTStopwatch previousLapsTotalInterval](self, "previousLapsTotalInterval"), v27 == v28))
       {
-        v29 = [v4 state];
-        v13 = v29 == [(MTStopwatch *)self state];
+        state = [stopwatchCopy state];
+        v13 = state == [(MTStopwatch *)self state];
         v30 = v13;
       }
 
@@ -248,14 +248,14 @@ LABEL_27:
         v30 = 0;
       }
 
-      if (v17 == v18)
+      if (startDate == startDate2)
       {
 
         v13 = v30;
 LABEL_25:
-        v14 = v36;
-        v16 = v34;
-        if (v36 == v15)
+        laps = v36;
+        laps3 = v34;
+        if (v36 == laps2)
         {
           goto LABEL_27;
         }
@@ -272,12 +272,12 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v11 = [v4 title];
-  v12 = [(MTStopwatch *)self title];
-  if ([v11 isEqual:v12])
+  title3 = [stopwatchCopy title];
+  title4 = [(MTStopwatch *)self title];
+  if ([title3 isEqual:title4])
   {
-    v37 = v12;
-    v38 = v11;
+    v37 = title4;
+    v38 = title3;
     goto LABEL_8;
   }
 
@@ -285,9 +285,9 @@ LABEL_25:
 LABEL_28:
 
 LABEL_29:
-  v8 = v39;
-  v7 = v40;
-  if (v5 != v6)
+  identifier4 = v39;
+  identifier3 = v40;
+  if (identifier != identifier2)
   {
     goto LABEL_30;
   }
@@ -299,8 +299,8 @@ LABEL_31:
 
 - (unint64_t)hash
 {
-  v2 = [(MTStopwatch *)self hashString];
-  v3 = [v2 hash];
+  hashString = [(MTStopwatch *)self hashString];
+  v3 = [hashString hash];
 
   return v3;
 }
@@ -309,32 +309,32 @@ LABEL_31:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTStopwatch *)self identifier];
+  identifier = [(MTStopwatch *)self identifier];
   v6 = [objc_opt_class() descriptionForState:{-[MTStopwatch state](self, "state")}];
-  v7 = [(MTStopwatch *)self startDate];
+  startDate = [(MTStopwatch *)self startDate];
   [(MTStopwatch *)self offset];
   v9 = v8;
   [(MTStopwatch *)self currentInterval];
   v11 = v10;
   [(MTStopwatch *)self previousLapsTotalInterval];
   v13 = v12;
-  v14 = [(MTStopwatch *)self laps];
-  v15 = [(MTStopwatch *)self title];
-  v16 = [v3 stringWithFormat:@"<%@:%p, id:%@, state:%@, startDate:%@, offset:%f, currentInterval:%f, previousLapsTotalInterval:%f, laps:%@, title:%@>", v4, self, v5, v6, v7, v9, v11, v13, v14, v15];
+  laps = [(MTStopwatch *)self laps];
+  title = [(MTStopwatch *)self title];
+  v16 = [v3 stringWithFormat:@"<%@:%p, id:%@, state:%@, startDate:%@, offset:%f, currentInterval:%f, previousLapsTotalInterval:%f, laps:%@, title:%@>", v4, self, identifier, v6, startDate, v9, v11, v13, laps, title];
 
   return v16;
 }
 
-+ (id)descriptionForState:(int64_t)a3
++ (id)descriptionForState:(int64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return @"Invalid State";
   }
 
   else
   {
-    return off_1E7B0EBA8[a3];
+    return off_1E7B0EBA8[state];
   }
 }
 

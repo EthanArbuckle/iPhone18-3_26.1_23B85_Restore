@@ -1,13 +1,13 @@
 @interface ExportViewController
-- (_TtC11FTMInternal20ExportViewController)initWithCoder:(id)a3;
-- (_TtC11FTMInternal20ExportViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapDismissWithSender:(id)a3;
+- (_TtC11FTMInternal20ExportViewController)initWithCoder:(id)coder;
+- (_TtC11FTMInternal20ExportViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapDismissWithSender:(id)sender;
 - (void)viewDidLoad;
 @end
 
 @implementation ExportViewController
 
-- (_TtC11FTMInternal20ExportViewController)initWithCoder:(id)a3
+- (_TtC11FTMInternal20ExportViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11FTMInternal20ExportViewController____lazy_storage___exportOptionsLabel) = 0;
   v4 = OBJC_IVAR____TtC11FTMInternal20ExportViewController_dismissButton;
@@ -22,20 +22,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10026CC58();
 }
 
-- (void)didTapDismissWithSender:(id)a3
+- (void)didTapDismissWithSender:(id)sender
 {
   v4 = objc_allocWithZone(UIImpactFeedbackGenerator);
-  v6 = self;
+  selfCopy = self;
   v5 = [v4 initWithStyle:1];
   [v5 impactOccurred];
-  [(ExportViewController *)v6 dismissViewControllerAnimated:1 completion:0];
+  [(ExportViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (_TtC11FTMInternal20ExportViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11FTMInternal20ExportViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,24 +1,24 @@
 @interface CRLMediaPlayerTimeController
-- (CRLMediaPlayerTimeController)initWithPlayerController:(id)a3;
+- (CRLMediaPlayerTimeController)initWithPlayerController:(id)controller;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)p_beginScrubbingIfNeeded;
 - (void)p_createTimeObserver;
 - (void)p_setTimeValuesWithoutScrubbing;
 - (void)p_teardownTimeObserver;
-- (void)setAbsoluteCurrentTime:(double)a3;
-- (void)setCurrentTime:(double)a3;
-- (void)setUpdateInterval:(double)a3;
+- (void)setAbsoluteCurrentTime:(double)time;
+- (void)setCurrentTime:(double)time;
+- (void)setUpdateInterval:(double)interval;
 - (void)startObservingTime;
 - (void)stopObservingTime;
 @end
 
 @implementation CRLMediaPlayerTimeController
 
-- (CRLMediaPlayerTimeController)initWithPlayerController:(id)a3
+- (CRLMediaPlayerTimeController)initWithPlayerController:(id)controller
 {
-  v5 = a3;
-  if (!v5)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -53,7 +53,7 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mPlayerController, a3);
+    objc_storeStrong(&v9->mPlayerController, controller);
     [(CRLMediaPlayerTimeController *)v10 setUpdateInterval:1.0];
     [(CRLMediaPlayerController *)v10->mPlayerController addObserver:v10 forKeyPath:@"hasCurrentTime" options:4 context:off_1019EE030];
     v10->mObservingPlayerControllerHasCurrentTime = 1;
@@ -188,19 +188,19 @@
     *buf = 134218240;
     v23 = mUpdateInterval;
     v24 = 2048;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Creating time observer with interval %f for %p", buf, 0x16u);
   }
 
   objc_initWeak(&location, self);
-  v9 = [(CRLMediaPlayerTimeController *)self playerController];
+  playerController = [(CRLMediaPlayerTimeController *)self playerController];
   v10 = self->mUpdateInterval;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1001BBE50;
   v19[3] = &unk_10183AF10;
   objc_copyWeak(&v20, &location);
-  v11 = [v9 addPeriodicTimeObserverForInterval:v19 block:v10];
+  v11 = [playerController addPeriodicTimeObserverForInterval:v19 block:v10];
   mTimeObserver = self->mTimeObserver;
   p_mTimeObserver = &self->mTimeObserver;
   *p_mTimeObserver = v11;
@@ -284,12 +284,12 @@ LABEL_11:
     if (os_log_type_enabled(off_1019EFDC0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Tear down time observer for %p", buf, 0xCu);
     }
 
-    v7 = [(CRLMediaPlayerTimeController *)self playerController];
-    [v7 removePeriodicTimeObserver:self->mTimeObserver];
+    playerController = [(CRLMediaPlayerTimeController *)self playerController];
+    [playerController removePeriodicTimeObserver:self->mTimeObserver];
 
     mTimeObserver = self->mTimeObserver;
     self->mTimeObserver = 0;
@@ -299,35 +299,35 @@ LABEL_11:
 - (void)p_setTimeValuesWithoutScrubbing
 {
   [(CRLMediaPlayerTimeController *)self willChangeValueForKey:@"absoluteCurrentTime"];
-  v3 = [(CRLMediaPlayerTimeController *)self playerController];
-  [v3 absoluteCurrentTime];
+  playerController = [(CRLMediaPlayerTimeController *)self playerController];
+  [playerController absoluteCurrentTime];
   self->mAbsoluteCurrentTime = v4;
 
   [(CRLMediaPlayerTimeController *)self didChangeValueForKey:@"absoluteCurrentTime"];
   [(CRLMediaPlayerTimeController *)self willChangeValueForKey:@"currentTime"];
-  v5 = [(CRLMediaPlayerTimeController *)self playerController];
-  [v5 currentTime];
+  playerController2 = [(CRLMediaPlayerTimeController *)self playerController];
+  [playerController2 currentTime];
   self->mCurrentTime = v6;
 
   [(CRLMediaPlayerTimeController *)self didChangeValueForKey:@"currentTime"];
   [(CRLMediaPlayerTimeController *)self willChangeValueForKey:@"remainingTime"];
-  v7 = [(CRLMediaPlayerTimeController *)self playerController];
-  [v7 remainingTime];
+  playerController3 = [(CRLMediaPlayerTimeController *)self playerController];
+  [playerController3 remainingTime];
   self->mRemainingTime = v8;
 
   [(CRLMediaPlayerTimeController *)self didChangeValueForKey:@"remainingTime"];
 }
 
-- (void)setUpdateInterval:(double)a3
+- (void)setUpdateInterval:(double)interval
 {
-  if (self->mUpdateInterval != a3)
+  if (self->mUpdateInterval != interval)
   {
-    if (a3 < 0.0166666667)
+    if (interval < 0.0166666667)
     {
-      a3 = 0.0166666667;
+      interval = 0.0166666667;
     }
 
-    self->mUpdateInterval = a3;
+    self->mUpdateInterval = interval;
     if (self->mTimeObserver)
     {
       [(CRLMediaPlayerTimeController *)self p_teardownTimeObserver];
@@ -338,9 +338,9 @@ LABEL_11:
   }
 }
 
-- (void)setAbsoluteCurrentTime:(double)a3
+- (void)setAbsoluteCurrentTime:(double)time
 {
-  self->mAbsoluteCurrentTime = a3;
+  self->mAbsoluteCurrentTime = time;
   [(CRLMediaPlayerTimeController *)self p_beginScrubbingIfNeeded];
   mUpdateInterval = self->mUpdateInterval;
   mPlayerController = self->mPlayerController;
@@ -349,13 +349,13 @@ LABEL_11:
   [(CRLMediaPlayerController *)mPlayerController scrubToTime:mAbsoluteCurrentTime withTolerance:mUpdateInterval];
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  self->mCurrentTime = a3;
+  self->mCurrentTime = time;
   [(CRLMediaPlayerTimeController *)self p_beginScrubbingIfNeeded];
   mUpdateInterval = self->mUpdateInterval;
   [(CRLMediaPlayerController *)self->mPlayerController startTime];
-  v7 = v6 + a3;
+  v7 = v6 + time;
   mPlayerController = self->mPlayerController;
 
   [(CRLMediaPlayerController *)mPlayerController scrubToTime:v7 withTolerance:mUpdateInterval];
@@ -363,21 +363,21 @@ LABEL_11:
 
 - (void)p_beginScrubbingIfNeeded
 {
-  v3 = [(CRLMediaPlayerTimeController *)self playerController];
-  if (([v3 isScrubbing] & 1) == 0)
+  playerController = [(CRLMediaPlayerTimeController *)self playerController];
+  if (([playerController isScrubbing] & 1) == 0)
   {
-    [v3 beginScrubbing];
+    [playerController beginScrubbing];
     v5 = NSDefaultRunLoopMode;
     v4 = [NSArray arrayWithObjects:&v5 count:1];
     [(CRLMediaPlayerTimeController *)self performSelector:"p_endScrubbing" withObject:0 afterDelay:v4 inModes:0.0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_1019EE030 == a6)
+  if (off_1019EE030 == context)
   {
-    v9 = sub_10030361C(a4, 1, a3, a4, a5, a6, v6, v7, &OBJC_PROTOCOL___CRLMediaPlayerController);
+    v9 = sub_10030361C(object, 1, path, object, change, context, v6, v7, &OBJC_PROTOCOL___CRLMediaPlayerController);
     if ([v9 hasCurrentTime])
     {
       [(CRLMediaPlayerTimeController *)self p_setTimeValuesWithoutScrubbing];
@@ -388,7 +388,7 @@ LABEL_11:
   {
     v10.receiver = self;
     v10.super_class = CRLMediaPlayerTimeController;
-    [(CRLMediaPlayerTimeController *)&v10 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(CRLMediaPlayerTimeController *)&v10 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

@@ -1,11 +1,11 @@
 @interface _UILegacyEffectConverter
 + (id)sharedConverter;
-- (id)backdropSettingsForBlurStyle:(int64_t)a3;
-- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)a3;
-- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)a3;
-- (id)vibrancyConfigForReducedTransperancyVibrancyStyle:(int64_t)a3;
-- (void)applyBackdropSettings:(id)a3 toEffectDescriptor:(id)a4 environment:(id)a5;
-- (void)applyVibrancyConfig:(id)a3 toEffectDescriptor:(id)a4;
+- (id)backdropSettingsForBlurStyle:(int64_t)style;
+- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)style;
+- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)style;
+- (id)vibrancyConfigForReducedTransperancyVibrancyStyle:(int64_t)style;
+- (void)applyBackdropSettings:(id)settings toEffectDescriptor:(id)descriptor environment:(id)environment;
+- (void)applyVibrancyConfig:(id)config toEffectDescriptor:(id)descriptor;
 @end
 
 @implementation _UILegacyEffectConverter
@@ -22,152 +22,152 @@
   return v3;
 }
 
-- (id)backdropSettingsForBlurStyle:(int64_t)a3
+- (id)backdropSettingsForBlurStyle:(int64_t)style
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)a3
+- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)style
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)a3
+- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)style
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)vibrancyConfigForReducedTransperancyVibrancyStyle:(int64_t)a3
+- (id)vibrancyConfigForReducedTransperancyVibrancyStyle:(int64_t)style
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (void)applyBackdropSettings:(id)a3 toEffectDescriptor:(id)a4 environment:(id)a5
+- (void)applyBackdropSettings:(id)settings toEffectDescriptor:(id)descriptor environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v7 blurRadius];
+  settingsCopy = settings;
+  descriptorCopy = descriptor;
+  environmentCopy = environment;
+  [settingsCopy blurRadius];
   v11 = v10;
-  [v7 scale];
+  [settingsCopy scale];
   if (v11 > 0.0 || v12 > 0.0)
   {
-    _UIBlurEffectAddBlurFilterEntry(v8, v9, v11, v12);
+    _UIBlurEffectAddBlurFilterEntry(descriptorCopy, environmentCopy, v11, v12);
   }
 
-  if ([v7 usesGrayscaleTintView])
+  if ([settingsCopy usesGrayscaleTintView])
   {
-    if (([v7 lightenGrayscaleWithSourceOver] & 1) != 0 || (objc_msgSend(v7, "grayscaleTintAlpha"), v13 > 0.0))
+    if (([settingsCopy lightenGrayscaleWithSourceOver] & 1) != 0 || (objc_msgSend(settingsCopy, "grayscaleTintAlpha"), v13 > 0.0))
     {
-      if ([v7 lightenGrayscaleWithSourceOver])
+      if ([settingsCopy lightenGrayscaleWithSourceOver])
       {
         v14 = *MEMORY[0x1E6979C38];
-        [v7 grayscaleTintLevel];
+        [settingsCopy grayscaleTintLevel];
         v15 = [UIColor colorWithWhite:"colorWithWhite:alpha:" alpha:?];
-        [v7 grayscaleTintAlpha];
+        [settingsCopy grayscaleTintAlpha];
       }
 
       else
       {
         v14 = *MEMORY[0x1E6979D40];
-        [v7 grayscaleTintLevel];
+        [settingsCopy grayscaleTintLevel];
         v18 = v17;
-        [v7 grayscaleTintAlpha];
+        [settingsCopy grayscaleTintAlpha];
         v15 = [UIColor colorWithWhite:v18 alpha:v19];
         v16 = 1.0;
       }
 
       v20 = [_UIOverlayEffectViewEntry newEntryWithFilterType:v14 color:v15 alpha:v16];
 
-      [v8 addOverlay:v20];
+      [descriptorCopy addOverlay:v20];
     }
   }
 
-  if ([v7 usesColorTintView])
+  if ([settingsCopy usesColorTintView])
   {
-    v21 = [v7 colorTint];
-    if (v21)
+    colorTint = [settingsCopy colorTint];
+    if (colorTint)
     {
-      v22 = v21;
-      [v7 colorTintAlpha];
+      v22 = colorTint;
+      [settingsCopy colorTintAlpha];
       v24 = v23;
 
       if (v24 > 0.0)
       {
         v25 = *MEMORY[0x1E6979D40];
-        v26 = [v7 colorTint];
-        [v7 colorTintAlpha];
-        v27 = [_UIOverlayEffectViewEntry newEntryWithFilterType:v25 color:v26 alpha:?];
-        [v8 addOverlay:v27];
+        colorTint2 = [settingsCopy colorTint];
+        [settingsCopy colorTintAlpha];
+        v27 = [_UIOverlayEffectViewEntry newEntryWithFilterType:v25 color:colorTint2 alpha:?];
+        [descriptorCopy addOverlay:v27];
       }
     }
   }
 
-  if ([v7 usesColorBurnTintView])
+  if ([settingsCopy usesColorBurnTintView])
   {
-    [v7 colorBurnTintAlpha];
+    [settingsCopy colorBurnTintAlpha];
     if (v28 > 0.0)
     {
       v29 = *MEMORY[0x1E6979850];
-      [v7 colorBurnTintLevel];
+      [settingsCopy colorBurnTintLevel];
       v30 = [UIColor colorWithWhite:"colorWithWhite:alpha:" alpha:?];
-      [v7 colorBurnTintAlpha];
+      [settingsCopy colorBurnTintAlpha];
       v31 = [_UIOverlayEffectViewEntry newEntryWithFilterType:v29 color:v30 alpha:?];
-      [v8 addOverlay:v31];
+      [descriptorCopy addOverlay:v31];
     }
   }
 
-  if ([v7 usesDarkeningTintView])
+  if ([settingsCopy usesDarkeningTintView])
   {
-    [v7 darkeningTintAlpha];
+    [settingsCopy darkeningTintAlpha];
     if (v32 > 0.0)
     {
-      v33 = [v7 darkenWithSourceOver];
+      darkenWithSourceOver = [settingsCopy darkenWithSourceOver];
       v34 = MEMORY[0x1E69798C8];
-      if (!v33)
+      if (!darkenWithSourceOver)
       {
         v34 = MEMORY[0x1E69798C0];
       }
 
       v35 = *v34;
-      [v7 darkeningTintHue];
+      [settingsCopy darkeningTintHue];
       v37 = v36;
-      [v7 darkeningTintSaturation];
+      [settingsCopy darkeningTintSaturation];
       v39 = v38;
-      [v7 darkeningTintBrightness];
+      [settingsCopy darkeningTintBrightness];
       v41 = [UIColor colorWithHue:v37 saturation:v39 brightness:v40 alpha:1.0];
-      [v7 darkeningTintAlpha];
+      [settingsCopy darkeningTintAlpha];
       v42 = [_UIOverlayEffectViewEntry newEntryWithFilterType:v35 color:v41 alpha:?];
-      [v8 addOverlay:v42];
+      [descriptorCopy addOverlay:v42];
     }
   }
 
-  [v7 saturationDeltaFactor];
+  [settingsCopy saturationDeltaFactor];
   if (v43 != 1.0)
   {
-    [v7 saturationDeltaFactor];
+    [settingsCopy saturationDeltaFactor];
     v44 = [UIColorEffect colorEffectSaturate:?];
-    v45 = [v44 _filterEntry];
-    [v8 addFilterEntry:v45];
+    _filterEntry = [v44 _filterEntry];
+    [descriptorCopy addFilterEntry:_filterEntry];
   }
 
-  v46 = [v7 colorOffsetMatrix];
+  colorOffsetMatrix = [settingsCopy colorOffsetMatrix];
 
-  if (v46)
+  if (colorOffsetMatrix)
   {
-    v47 = [v7 colorOffsetMatrix];
-    v48 = v47;
-    if (v47)
+    colorOffsetMatrix2 = [settingsCopy colorOffsetMatrix];
+    v48 = colorOffsetMatrix2;
+    if (colorOffsetMatrix2)
     {
-      [v47 CAColorMatrixValue];
+      [colorOffsetMatrix2 CAColorMatrixValue];
       v83 = v101;
       v85 = v102;
       v50 = v104;
@@ -228,7 +228,7 @@
 
   else
   {
-    [v7 colorOffsetAlpha];
+    [settingsCopy colorOffsetAlpha];
     v58 = v57 * 0.8 + 1.0 - v57;
     v59 = (1.0 - v57) * 0.0;
     v50 = v59 - v57 * 0.5;
@@ -306,55 +306,55 @@
     v117 = *&v93;
     v118 = HIDWORD(v90);
     v78 = [UIColorEffect _colorEffectCAMatrix:&v100];
-    v79 = [v78 _filterEntry];
-    [v8 addFilterEntry:v79];
+    _filterEntry2 = [v78 _filterEntry];
+    [descriptorCopy addFilterEntry:_filterEntry2];
   }
 
-  [v7 zoom];
+  [settingsCopy zoom];
   if (v80 > 0.0)
   {
-    [v7 zoom];
+    [settingsCopy zoom];
     v81 = [_UIZoomEffect zoomEffectWithMagnitude:?];
-    v82 = [v81 _viewEntry];
-    [v8 addViewEffect:v82];
+    _viewEntry = [v81 _viewEntry];
+    [descriptorCopy addViewEffect:_viewEntry];
   }
 }
 
-- (void)applyVibrancyConfig:(id)a3 toEffectDescriptor:(id)a4
+- (void)applyVibrancyConfig:(id)config toEffectDescriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 contentConfig];
-  if (v9)
+  configCopy = config;
+  descriptorCopy = descriptor;
+  contentConfig = [configCopy contentConfig];
+  if (contentConfig)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      [v8 setTextShouldRenderWithTintColor:1];
+      [descriptorCopy setTextShouldRenderWithTintColor:1];
     }
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __67___UILegacyEffectConverter_applyVibrancyConfig_toEffectDescriptor___block_invoke;
     v16[3] = &unk_1E70F6D48;
-    v17 = v8;
+    v17 = descriptorCopy;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __67___UILegacyEffectConverter_applyVibrancyConfig_toEffectDescriptor___block_invoke_2;
     v14[3] = &unk_1E70F6D70;
     v15 = v17;
-    _UILegacyEffectConvertLayerConfig(v9, v16, v14);
+    _UILegacyEffectConvertLayerConfig(contentConfig, v16, v14);
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67___UILegacyEffectConverter_applyVibrancyConfig_toEffectDescriptor___block_invoke_3;
   v11[3] = &unk_1E70F6DC0;
-  v12 = v8;
+  v12 = descriptorCopy;
   v13 = a2;
   v11[4] = self;
-  v10 = v8;
-  [v7 enumerateLayerConfigs:v11];
+  v10 = descriptorCopy;
+  [configCopy enumerateLayerConfigs:v11];
 }
 
 @end

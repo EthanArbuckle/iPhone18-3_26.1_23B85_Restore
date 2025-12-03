@@ -1,6 +1,6 @@
 @interface MCMXPCMessageUpdateInfo
 - (BOOL)fullReplace;
-- (MCMXPCMessageUpdateInfo)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageUpdateInfo)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (NSDictionary)infoDict;
 - (NSSet)deleteKeys;
 @end
@@ -31,18 +31,18 @@
   return result;
 }
 
-- (MCMXPCMessageUpdateInfo)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageUpdateInfo)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  objectCopy = object;
   v35 = 1;
   v34.receiver = self;
   v34.super_class = MCMXPCMessageUpdateInfo;
-  v9 = [(MCMXPCMessageWithConcreteContainerBase *)&v34 initWithXPCObject:v8 context:a4 error:&v35];
+  v9 = [(MCMXPCMessageWithConcreteContainerBase *)&v34 initWithXPCObject:objectCopy context:context error:&v35];
   v10 = v9;
   if (v9)
   {
-    v11 = [(MCMXPCMessageBase *)v9 nsObjectFromXPCObject:v8 key:"Value" error:&v35];
+    v11 = [(MCMXPCMessageBase *)v9 nsObjectFromXPCObject:objectCopy key:"Value" error:&v35];
     if (v11)
     {
       v12 = 1;
@@ -58,7 +58,7 @@
       goto LABEL_32;
     }
 
-    uint64 = xpc_dictionary_get_uint64(v8, "PrivateFlags");
+    uint64 = xpc_dictionary_get_uint64(objectCopy, "PrivateFlags");
     v14 = ~uint64;
     v10->_fullReplace = uint64 & 1;
     deleteKeys = v10->_deleteKeys;
@@ -163,9 +163,9 @@ LABEL_31:
 LABEL_33:
   if (v35 != 1)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v35;
+      *error = v35;
     }
 
     v10 = 0;

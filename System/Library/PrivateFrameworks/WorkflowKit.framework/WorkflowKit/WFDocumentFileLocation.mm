@@ -1,35 +1,35 @@
 @interface WFDocumentFileLocation
-+ (BOOL)canRepresentURL:(id)a3 item:(id)a4 parentItems:(id)a5;
-+ (id)subpathFromURL:(id)a3 item:(id)a4;
-- (BOOL)shouldShowUsersDuringDisplay:(id)a3;
-- (id)resolveLocationWithError:(id *)a3;
++ (BOOL)canRepresentURL:(id)l item:(id)item parentItems:(id)items;
++ (id)subpathFromURL:(id)l item:(id)item;
+- (BOOL)shouldShowUsersDuringDisplay:(id)display;
+- (id)resolveLocationWithError:(id *)error;
 @end
 
 @implementation WFDocumentFileLocation
 
-+ (id)subpathFromURL:(id)a3 item:(id)a4
++ (id)subpathFromURL:(id)l item:(id)item
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[WFFileLocationUtilities documentsDirectory];
-  v6 = [v4 wf_relativePathFromURL:v5];
+  v6 = [lCopy wf_relativePathFromURL:v5];
 
   return v6;
 }
 
-+ (BOOL)canRepresentURL:(id)a3 item:(id)a4 parentItems:(id)a5
++ (BOOL)canRepresentURL:(id)l item:(id)item parentItems:(id)items
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (item)
   {
-    v16 = a4;
+    itemCopy = item;
     v7 = MEMORY[0x1E695DEC8];
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    v11 = [v7 arrayWithObjects:&v16 count:1];
-    v12 = [v11 arrayByAddingObjectsFromArray:{v8, v16, v17}];
+    itemsCopy = items;
+    itemCopy2 = item;
+    lCopy = l;
+    v11 = [v7 arrayWithObjects:&itemCopy count:1];
+    v12 = [v11 arrayByAddingObjectsFromArray:{itemsCopy, itemCopy, v17}];
 
-    v13 = [WFFileLocationUtilities isFileURL:v10 withParentItems:v12 insideFolderType:1];
+    v13 = [WFFileLocationUtilities isFileURL:lCopy withParentItems:v12 insideFolderType:1];
   }
 
   else
@@ -41,19 +41,19 @@
   return v13;
 }
 
-- (BOOL)shouldShowUsersDuringDisplay:(id)a3
+- (BOOL)shouldShowUsersDuringDisplay:(id)display
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 isUbiquitousItemAtURL:v4];
+  displayCopy = display;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager isUbiquitousItemAtURL:displayCopy];
 
   return v6 ^ 1;
 }
 
-- (id)resolveLocationWithError:(id *)a3
+- (id)resolveLocationWithError:(id *)error
 {
-  v4 = [(WFFileProviderLocation *)self resolveCrossDeviceItemIDWithError:a3];
+  v4 = [(WFFileProviderLocation *)self resolveCrossDeviceItemIDWithError:error];
   if ([v4 wf_fileExists])
   {
     v5 = v4;
@@ -62,8 +62,8 @@
   else
   {
     v6 = +[WFFileLocationUtilities documentsDirectory];
-    v7 = [(WFFileLocation *)self relativeSubpath];
-    v8 = [v6 URLByAppendingPathComponent:v7];
+    relativeSubpath = [(WFFileLocation *)self relativeSubpath];
+    v8 = [v6 URLByAppendingPathComponent:relativeSubpath];
 
     if (v8)
     {
@@ -72,9 +72,9 @@
 
     else
     {
-      v9 = [(WFFileProviderLocation *)self fileProviderDomainID];
-      v10 = [(WFFileLocation *)self relativeSubpath];
-      v5 = [WFiCloudFileLocation resolveLocationFromPossibleProviderDomainIDsWithSerializedProviderDomainID:v9 relativeSubpath:v10];
+      fileProviderDomainID = [(WFFileProviderLocation *)self fileProviderDomainID];
+      relativeSubpath2 = [(WFFileLocation *)self relativeSubpath];
+      v5 = [WFiCloudFileLocation resolveLocationFromPossibleProviderDomainIDsWithSerializedProviderDomainID:fileProviderDomainID relativeSubpath:relativeSubpath2];
     }
   }
 

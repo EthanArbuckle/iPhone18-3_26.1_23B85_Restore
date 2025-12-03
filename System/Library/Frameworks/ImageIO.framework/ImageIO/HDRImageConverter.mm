@@ -1,24 +1,24 @@
 @interface HDRImageConverter
-+ (__CFUUID)createUUIDFromLumaGainHistogram:(id *)a3;
-+ (id)computeToneMappingCurveFromLumaGainHistogram:(id *)a3;
-+ (id)flexGTCTableDataFromCurveArray:(id)a3 min:(float)a4 max:(float)a5;
-+ (id)imageConverterWithOptions:(id)a3;
-- (BOOL)canProcessPixelBufferWithAttributes:(id)a3;
-- (BOOL)convertImage:(id)a3 toImage:(id)a4;
-- (BOOL)isYCCMatrixSupported:(id)a3;
-- (id)computeHDRStatisticsForImage:(id)a3 targetSpace:(CGColorSpace *)a4;
-- (id)generateToneMappingCurveForImage:(id)a3 targetHeadroom:(double)a4;
++ (__CFUUID)createUUIDFromLumaGainHistogram:(id *)histogram;
++ (id)computeToneMappingCurveFromLumaGainHistogram:(id *)histogram;
++ (id)flexGTCTableDataFromCurveArray:(id)array min:(float)min max:(float)max;
++ (id)imageConverterWithOptions:(id)options;
+- (BOOL)canProcessPixelBufferWithAttributes:(id)attributes;
+- (BOOL)convertImage:(id)image toImage:(id)toImage;
+- (BOOL)isYCCMatrixSupported:(id)supported;
+- (id)computeHDRStatisticsForImage:(id)image targetSpace:(CGColorSpace *)space;
+- (id)generateToneMappingCurveForImage:(id)image targetHeadroom:(double)headroom;
 @end
 
 @implementation HDRImageConverter
 
-+ (id)imageConverterWithOptions:(id)a3
++ (id)imageConverterWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"kCGDisableMetal"];
-  v5 = [v4 BOOLValue];
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKeyedSubscript:@"kCGDisableMetal"];
+  bOOLValue = [v4 BOOLValue];
 
-  if ((v5 & 1) != 0 || IIORestrictedDecodingEnabledFlag())
+  if ((bOOLValue & 1) != 0 || IIORestrictedDecodingEnabledFlag())
   {
     LogWarning("+[HDRImageConverter imageConverterWithOptions:]", 35, "☀️ Metal disabled, will use SIMD for image conversion");
 LABEL_4:
@@ -43,20 +43,20 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)convertImage:(id)a3 toImage:(id)a4
+- (BOOL)convertImage:(id)image toImage:(id)toImage
 {
-  v36 = a3;
-  v6 = a4;
-  [v6 headroom];
+  imageCopy = image;
+  toImageCopy = toImage;
+  [toImageCopy headroom];
   v8 = v7;
-  v9 = [v6 outputTransformFromEDR:?];
+  v9 = [toImageCopy outputTransformFromEDR:?];
   v10 = v9;
   if (v9)
   {
-    v35 = self;
+    selfCopy = self;
     if ([v9 flags])
     {
-      v20 = [v10 flags];
+      flags = [v10 flags];
       if (([v10 flags] & 2) != 0)
       {
         v22 = 1.0;
@@ -67,14 +67,14 @@ LABEL_5:
         v22 = v8;
       }
 
-      if ((v20 & 8) != 0)
+      if ((flags & 8) != 0)
       {
-        v23 = v6;
+        v23 = toImageCopy;
       }
 
       else
       {
-        v23 = v36;
+        v23 = imageCopy;
       }
 
       *&v21 = v22;
@@ -90,7 +90,7 @@ LABEL_5:
       }
 
       *&v24 = v25;
-      v26 = [v36 inputTransformToEDR:v24];
+      v26 = [imageCopy inputTransformToEDR:v24];
       v18 = v26;
       if (v13)
       {
@@ -106,11 +106,11 @@ LABEL_5:
       if ((gIIODebugFlags & 0x300000) != 0)
       {
         v28 = [v13 description];
-        v29 = [v28 UTF8String];
+        uTF8String = [v28 UTF8String];
         v30 = [v18 description];
-        v31 = [v30 UTF8String];
+        uTF8String2 = [v30 UTF8String];
         v32 = [v10 description];
-        ImageIOLog("☀️ HDRImageConverter::convertImageToImage SRC x ALT => DST\nSRC[EDR=%g] => %s\nALT[EDR=%g] => %s\nDST[EDR=%g] => %s", v22, v29, v25, v31, v8, [v32 UTF8String]);
+        ImageIOLog("☀️ HDRImageConverter::convertImageToImage SRC x ALT => DST\nSRC[EDR=%g] => %s\nALT[EDR=%g] => %s\nDST[EDR=%g] => %s", v22, uTF8String, v25, uTF8String2, v8, [v32 UTF8String]);
 
         if (v14)
         {
@@ -126,15 +126,15 @@ LABEL_24:
     else
     {
       *&v11 = v8;
-      v12 = [v36 inputTransformToEDR:v11];
+      v12 = [imageCopy inputTransformToEDR:v11];
       v13 = v12;
       v14 = v12 != 0;
       if ((gIIODebugFlags & 0x300000) != 0)
       {
         v15 = [v12 description];
-        v16 = [v15 UTF8String];
+        uTF8String3 = [v15 UTF8String];
         v17 = [v10 description];
-        ImageIOLog("☀️ HDRImageConverter::convertImageToImage SRC => DST\nSRC[EDR=%g] => %s\nDST[EDR=%g] => %s", v8, v16, v8, [v17 UTF8String]);
+        ImageIOLog("☀️ HDRImageConverter::convertImageToImage SRC => DST\nSRC[EDR=%g] => %s\nDST[EDR=%g] => %s", v8, uTF8String3, v8, [v17 UTF8String]);
 
         v18 = 0;
         if (!v13)
@@ -151,36 +151,36 @@ LABEL_27:
         {
           if ([v13 flags] & 1) != 0 || (objc_msgSend(v18, "flags"))
           {
-            v33 = -[HDRImageConverter convertImage:transform:alternate:gainMap:transform:alternate:toImage:transform:gainMap:transform:](v35, "convertImage:transform:alternate:gainMap:transform:alternate:toImage:transform:gainMap:transform:", [v36 imageBuffer], objc_msgSend(v13, "image"), objc_msgSend(v18, "image"), objc_msgSend(v36, "gainMapBuffer"), objc_msgSend(v13, "gainMap"), objc_msgSend(v18, "gainMap"), objc_msgSend(v6, "imageBuffer"), objc_msgSend(v10, "image"), objc_msgSend(v6, "gainMapBuffer"), objc_msgSend(v10, "gainMap"));
+            v33 = -[HDRImageConverter convertImage:transform:alternate:gainMap:transform:alternate:toImage:transform:gainMap:transform:](selfCopy, "convertImage:transform:alternate:gainMap:transform:alternate:toImage:transform:gainMap:transform:", [imageCopy imageBuffer], objc_msgSend(v13, "image"), objc_msgSend(v18, "image"), objc_msgSend(imageCopy, "gainMapBuffer"), objc_msgSend(v13, "gainMap"), objc_msgSend(v18, "gainMap"), objc_msgSend(toImageCopy, "imageBuffer"), objc_msgSend(v10, "image"), objc_msgSend(toImageCopy, "gainMapBuffer"), objc_msgSend(v10, "gainMap"));
           }
 
           else if (([v13 flags] & 4) != 0 || (objc_msgSend(v18, "flags") & 4) != 0)
           {
             if (([v10 flags] & 8) != 0)
             {
-              v33 = -[HDRImageConverter computeGainMap:transform:fromBaseImage:transform:alternateImage:transform:](v35, "computeGainMap:transform:fromBaseImage:transform:alternateImage:transform:", [v6 gainMapBuffer], objc_msgSend(v10, "gainMap"), objc_msgSend(v36, "imageBuffer"), objc_msgSend(v13, "image"), objc_msgSend(v36, "alternateBuffer"), objc_msgSend(v18, "image"));
+              v33 = -[HDRImageConverter computeGainMap:transform:fromBaseImage:transform:alternateImage:transform:](selfCopy, "computeGainMap:transform:fromBaseImage:transform:alternateImage:transform:", [toImageCopy gainMapBuffer], objc_msgSend(v10, "gainMap"), objc_msgSend(imageCopy, "imageBuffer"), objc_msgSend(v13, "image"), objc_msgSend(imageCopy, "alternateBuffer"), objc_msgSend(v18, "image"));
             }
 
             else
             {
-              v33 = -[HDRImageConverter computeGainMap:transform:outputImage:transform:fromBaseImage:transform:alternateImage:transform:](v35, "computeGainMap:transform:outputImage:transform:fromBaseImage:transform:alternateImage:transform:", [v6 gainMapBuffer], objc_msgSend(v10, "gainMap"), objc_msgSend(v6, "imageBuffer"), objc_msgSend(v10, "image"), objc_msgSend(v36, "imageBuffer"), objc_msgSend(v13, "image"), objc_msgSend(v36, "alternateBuffer"), objc_msgSend(v18, "image"));
+              v33 = -[HDRImageConverter computeGainMap:transform:outputImage:transform:fromBaseImage:transform:alternateImage:transform:](selfCopy, "computeGainMap:transform:outputImage:transform:fromBaseImage:transform:alternateImage:transform:", [toImageCopy gainMapBuffer], objc_msgSend(v10, "gainMap"), objc_msgSend(toImageCopy, "imageBuffer"), objc_msgSend(v10, "image"), objc_msgSend(imageCopy, "imageBuffer"), objc_msgSend(v13, "image"), objc_msgSend(imageCopy, "alternateBuffer"), objc_msgSend(v18, "image"));
             }
           }
 
           else
           {
-            v33 = -[HDRImageConverter convertImage:transform:alternate:toImage:transform:gainMap:transform:](v35, "convertImage:transform:alternate:toImage:transform:gainMap:transform:", [v36 imageBuffer], objc_msgSend(v13, "image"), objc_msgSend(v18, "image"), objc_msgSend(v6, "imageBuffer"), objc_msgSend(v10, "image"), objc_msgSend(v6, "gainMapBuffer"), objc_msgSend(v10, "gainMap"));
+            v33 = -[HDRImageConverter convertImage:transform:alternate:toImage:transform:gainMap:transform:](selfCopy, "convertImage:transform:alternate:toImage:transform:gainMap:transform:", [imageCopy imageBuffer], objc_msgSend(v13, "image"), objc_msgSend(v18, "image"), objc_msgSend(toImageCopy, "imageBuffer"), objc_msgSend(v10, "image"), objc_msgSend(toImageCopy, "gainMapBuffer"), objc_msgSend(v10, "gainMap"));
           }
         }
 
         else if ([v13 flags])
         {
-          v33 = -[HDRImageConverter convertImage:transform:gainMap:transform:toImage:transform:](v35, "convertImage:transform:gainMap:transform:toImage:transform:", [v36 imageBuffer], objc_msgSend(v13, "image"), objc_msgSend(v36, "gainMapBuffer"), objc_msgSend(v13, "gainMap"), objc_msgSend(v6, "imageBuffer"), objc_msgSend(v10, "image"));
+          v33 = -[HDRImageConverter convertImage:transform:gainMap:transform:toImage:transform:](selfCopy, "convertImage:transform:gainMap:transform:toImage:transform:", [imageCopy imageBuffer], objc_msgSend(v13, "image"), objc_msgSend(imageCopy, "gainMapBuffer"), objc_msgSend(v13, "gainMap"), objc_msgSend(toImageCopy, "imageBuffer"), objc_msgSend(v10, "image"));
         }
 
         else
         {
-          v33 = -[HDRImageConverter convertImage:transform:toImage:transform:](v35, "convertImage:transform:toImage:transform:", [v36 imageBuffer], objc_msgSend(v13, "image"), objc_msgSend(v6, "imageBuffer"), objc_msgSend(v10, "image"));
+          v33 = -[HDRImageConverter convertImage:transform:toImage:transform:](selfCopy, "convertImage:transform:toImage:transform:", [imageCopy imageBuffer], objc_msgSend(v13, "image"), objc_msgSend(toImageCopy, "imageBuffer"), objc_msgSend(v10, "image"));
         }
 
         v19 = v33;
@@ -204,7 +204,7 @@ LABEL_39:
   return v19;
 }
 
-- (id)generateToneMappingCurveForImage:(id)a3 targetHeadroom:(double)a4
+- (id)generateToneMappingCurveForImage:(id)image targetHeadroom:(double)headroom
 {
   v4 = MEMORY[0x1EEE9AC00](self, a2);
   v6 = v5;
@@ -237,14 +237,14 @@ LABEL_20:
   }
 
   bzero(v43, 0x1000uLL);
-  v15 = [v9 imageBuffer];
-  v16 = [v42 image];
-  v17 = [v9 gainMapBuffer];
-  v18 = [v42 gainMap];
+  imageBuffer = [v9 imageBuffer];
+  image = [v42 image];
+  gainMapBuffer = [v9 gainMapBuffer];
+  gainMap = [v42 gainMap];
   __asm { FMOV            V0.2S, #1.0 }
 
   *&_D0 = 1.0 / v12;
-  if (([v7 computeLumaGainHistogram:v43 scale:v15 image:v16 transform:v17 gainMap:v18 transform:_D0] & 1) == 0)
+  if (([v7 computeLumaGainHistogram:v43 scale:imageBuffer image:image transform:gainMapBuffer gainMap:gainMap transform:_D0] & 1) == 0)
   {
     LogError("[HDRImageConverter generateToneMappingCurveForImage:targetHeadroom:]", 147, "Failed to compute luma-gain histogram");
     goto LABEL_20;
@@ -329,14 +329,14 @@ LABEL_21:
   return v38;
 }
 
-- (id)computeHDRStatisticsForImage:(id)a3 targetSpace:(CGColorSpace *)a4
+- (id)computeHDRStatisticsForImage:(id)image targetSpace:(CGColorSpace *)space
 {
-  v6 = a3;
-  [v6 headroom];
-  v7 = [v6 inputTransformToEDR:a4 space:?];
+  imageCopy = image;
+  [imageCopy headroom];
+  v7 = [imageCopy inputTransformToEDR:space space:?];
   if ((gIIODebugFlags & 0x300000) != 0)
   {
-    [v6 headroom];
+    [imageCopy headroom];
     v9 = v8;
     v10 = [v7 description];
     ImageIOLog("☀️ HDRImageConverter::computeHDRStatistics SRC => STATS\nSRC[EDR=%g] => %s", v9, [v10 UTF8String]);
@@ -348,12 +348,12 @@ LABEL_21:
     v19 = 0;
     if ([v7 flags])
     {
-      v11 = -[HDRImageConverter computeStatistics:image:transform:gainMap:transform:](self, "computeStatistics:image:transform:gainMap:transform:", &v19, [v6 imageBuffer], objc_msgSend(v7, "image"), objc_msgSend(v6, "gainMapBuffer"), objc_msgSend(v7, "gainMap"));
+      v11 = -[HDRImageConverter computeStatistics:image:transform:gainMap:transform:](self, "computeStatistics:image:transform:gainMap:transform:", &v19, [imageCopy imageBuffer], objc_msgSend(v7, "image"), objc_msgSend(imageCopy, "gainMapBuffer"), objc_msgSend(v7, "gainMap"));
     }
 
     else
     {
-      v11 = -[HDRImageConverter computeStatistics:image:transform:](self, "computeStatistics:image:transform:", &v19, [v6 imageBuffer], objc_msgSend(v7, "image"));
+      v11 = -[HDRImageConverter computeStatistics:image:transform:](self, "computeStatistics:image:transform:", &v19, [imageCopy imageBuffer], objc_msgSend(v7, "image"));
     }
 
     if (v11)
@@ -380,14 +380,14 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)canProcessPixelBufferWithAttributes:(id)a3
+- (BOOL)canProcessPixelBufferWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*gIIO_kCVImageBufferCGColorSpaceKey];
+  attributesCopy = attributes;
+  v5 = [attributesCopy objectForKeyedSubscript:*gIIO_kCVImageBufferCGColorSpaceKey];
 
   if (!v5)
   {
-    v6 = [v4 description];
+    v6 = [attributesCopy description];
     LogError("-[HDRImageConverter canProcessPixelBufferWithAttributes:]", 229, "Missing color space attribute: %s", [v6 UTF8String]);
     goto LABEL_38;
   }
@@ -411,28 +411,28 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v7 = [v4 objectForKeyedSubscript:*gIIO_kCVPixelBufferPixelFormatTypeKey];
+  v7 = [attributesCopy objectForKeyedSubscript:*gIIO_kCVPixelBufferPixelFormatTypeKey];
   v6 = v7;
   if (!v7)
   {
-    v10 = [v4 description];
+    v10 = [attributesCopy description];
     LogError("-[HDRImageConverter canProcessPixelBufferWithAttributes:]", 250, "Missing pixel format attribute: %s", [v10 UTF8String]);
 
     goto LABEL_38;
   }
 
-  v8 = [v7 unsignedIntValue];
-  if (![(HDRImageConverter *)self isPixelFormatSupported:v8])
+  unsignedIntValue = [v7 unsignedIntValue];
+  if (![(HDRImageConverter *)self isPixelFormatSupported:unsignedIntValue])
   {
-    v11 = v8 >> 24;
-    if ((v8 >> 24) <= 0x7F)
+    v11 = unsignedIntValue >> 24;
+    if ((unsignedIntValue >> 24) <= 0x7F)
     {
       v12 = *(MEMORY[0x1E69E9830] + 4 * v11 + 60) & 0x40000;
     }
 
     else
     {
-      v12 = __maskrune(v8 >> 24, 0x40000uLL);
+      v12 = __maskrune(unsignedIntValue >> 24, 0x40000uLL);
     }
 
     if (v12)
@@ -445,7 +445,7 @@ LABEL_38:
       v13 = 46;
     }
 
-    v14 = (v8 << 8) >> 24;
+    v14 = (unsignedIntValue << 8) >> 24;
     if (v14 <= 0x7F)
     {
       v15 = *(MEMORY[0x1E69E9830] + 4 * v14 + 60) & 0x40000;
@@ -453,7 +453,7 @@ LABEL_38:
 
     else
     {
-      v15 = __maskrune((v8 << 8) >> 24, 0x40000uLL);
+      v15 = __maskrune((unsignedIntValue << 8) >> 24, 0x40000uLL);
     }
 
     if (v15)
@@ -466,7 +466,7 @@ LABEL_38:
       v16 = 46;
     }
 
-    v17 = v8 >> 8;
+    v17 = unsignedIntValue >> 8;
     if (v17 <= 0x7F)
     {
       v18 = *(MEMORY[0x1E69E9830] + 4 * v17 + 60) & 0x40000;
@@ -474,18 +474,18 @@ LABEL_38:
 
     else
     {
-      v18 = __maskrune(v8 >> 8, 0x40000uLL);
+      v18 = __maskrune(unsignedIntValue >> 8, 0x40000uLL);
     }
 
-    LODWORD(v8) = v8;
-    if (v8 <= 0x7F)
+    LODWORD(unsignedIntValue) = unsignedIntValue;
+    if (unsignedIntValue <= 0x7F)
     {
-      v19 = *(MEMORY[0x1E69E9830] + 4 * v8 + 60) & 0x40000;
+      v19 = *(MEMORY[0x1E69E9830] + 4 * unsignedIntValue + 60) & 0x40000;
     }
 
     else
     {
-      v19 = __maskrune(v8, 0x40000uLL);
+      v19 = __maskrune(unsignedIntValue, 0x40000uLL);
     }
 
     if (v18)
@@ -500,7 +500,7 @@ LABEL_38:
 
     if (v19)
     {
-      v21 = v8;
+      v21 = unsignedIntValue;
     }
 
     else
@@ -518,23 +518,23 @@ LABEL_39:
   return v9;
 }
 
-- (BOOL)isYCCMatrixSupported:(id)a3
+- (BOOL)isYCCMatrixSupported:(id)supported
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*gIIO_kCVImageBufferYCbCrMatrix_ITU_R_601_4] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *gIIO_kCVImageBufferYCbCrMatrix_ITU_R_709_2))
+  supportedCopy = supported;
+  if ([supportedCopy isEqualToString:*gIIO_kCVImageBufferYCbCrMatrix_ITU_R_601_4] & 1) != 0 || (objc_msgSend(supportedCopy, "isEqualToString:", *gIIO_kCVImageBufferYCbCrMatrix_ITU_R_709_2))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*gIIO_kCVImageBufferYCbCrMatrix_ITU_R_2020];
+    v4 = [supportedCopy isEqualToString:*gIIO_kCVImageBufferYCbCrMatrix_ITU_R_2020];
   }
 
   return v4;
 }
 
-+ (id)computeToneMappingCurveFromLumaGainHistogram:(id *)a3
++ (id)computeToneMappingCurveFromLumaGainHistogram:(id *)histogram
 {
   v53[559] = *MEMORY[0x1E69E9840];
   bzero(v52, 0x1180uLL);
@@ -545,14 +545,14 @@ LABEL_39:
   v6.i64[1] = 0x3D0000003D000000;
   v7.i64[0] = 0x400000004;
   v7.i64[1] = 0x400000004;
-  v8 = a3;
+  histogramCopy = histogram;
   do
   {
     v9 = 0;
     v10 = 0uLL;
     do
     {
-      v10 = vaddq_s32(*&v8->var0[0][v9], v10);
+      v10 = vaddq_s32(*&histogramCopy->var0[0][v9], v10);
       v9 += 4;
     }
 
@@ -566,7 +566,7 @@ LABEL_39:
     v16 = xmmword_186205980;
     do
     {
-      v17 = vmulq_f32(vmulq_f32(vaddq_f32(vcvtq_f32_u32(v16), v5), v6), vcvtq_f32_u32(*&v8->var0[0][v11]));
+      v17 = vmulq_f32(vmulq_f32(vaddq_f32(vcvtq_f32_u32(v16), v5), v6), vcvtq_f32_u32(*&histogramCopy->var0[0][v11]));
       *v15.i32 = (((*v15.i32 + v17.f32[0]) + v17.f32[1]) + v17.f32[2]) + v17.f32[3];
       v16 = vaddq_s32(v16, v7);
       v11 += 4;
@@ -582,7 +582,7 @@ LABEL_39:
     do
     {
       v22 = vsubq_f32(vmulq_f32(vaddq_f32(vcvtq_f32_u32(v21), v5), v6), v19);
-      v23 = vmulq_f32(vmulq_f32(v22, vcvtq_f32_u32(*&v8->var0[0][v18])), v22);
+      v23 = vmulq_f32(vmulq_f32(v22, vcvtq_f32_u32(*&histogramCopy->var0[0][v18])), v22);
       v20 = (((v20 + v23.f32[0]) + v23.f32[1]) + v23.f32[2]) + v23.f32[3];
       v21 = vaddq_s32(v21, v7);
       v18 += 4;
@@ -590,7 +590,7 @@ LABEL_39:
 
     while (v18 != 32);
     *(v13 + 2) = sqrtf(v20 / v14);
-    v24 = a3->var0[v4];
+    v24 = histogram->var0[v4];
     v25 = *(v24 + 5);
     *(v13 + 19) = *(v24 + 4);
     *(v13 + 23) = v25;
@@ -604,7 +604,7 @@ LABEL_39:
     *(v13 + 11) = *(v24 + 2);
     *(v13 + 15) = v28;
     ++v4;
-    v8 = (v8 + 128);
+    histogramCopy = (histogramCopy + 128);
   }
 
   while (v4 != 32);
@@ -694,7 +694,7 @@ LABEL_27:
   return v37;
 }
 
-+ (__CFUUID)createUUIDFromLumaGainHistogram:(id *)a3
++ (__CFUUID)createUUIDFromLumaGainHistogram:(id *)histogram
 {
   CGGetMD5DigestOfBytes();
   *&v4.byte0 = 0;
@@ -702,28 +702,28 @@ LABEL_27:
   return CFUUIDCreateFromUUIDBytes(0, v4);
 }
 
-+ (id)flexGTCTableDataFromCurveArray:(id)a3 min:(float)a4 max:(float)a5
++ (id)flexGTCTableDataFromCurveArray:(id)array min:(float)min max:(float)max
 {
-  v7 = a3;
-  if ([v7 count] >= 2 && objc_msgSend(v7, "count") < 0x21)
+  arrayCopy = array;
+  if ([arrayCopy count] >= 2 && objc_msgSend(arrayCopy, "count") < 0x21)
   {
-    v10 = [v7 count];
+    v10 = [arrayCopy count];
     v11 = malloc_type_calloc(v10, 0x1CuLL, 0x100004027586B93uLL);
     v12 = v11;
     if (v10 < 1)
     {
 LABEL_17:
       v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:2048];
-      v27 = [v9 mutableBytes];
+      mutableBytes = [v9 mutableBytes];
       v28 = malloc_type_malloc(0x1000uLL, 0x100004052888210uLL);
       HDRFlexGTC_fillTable(v12, v10, v28, 1024, v29);
-      v30 = exp2f(a5);
+      v30 = exp2f(max);
       v31 = 0;
-      v32 = a5 - a4;
+      v32 = max - min;
       v33 = -1.0;
       do
       {
-        _S0 = exp2f(a4 + (v32 * v28[v31]));
+        _S0 = exp2f(min + (v32 * v28[v31]));
         v35 = v31 / 1023.0;
         v36 = (v35 * _S0) / v30;
         if (v36 < v33)
@@ -734,7 +734,7 @@ LABEL_17:
 
         __asm { FCVT            H0, S0 }
 
-        *(v27 + 2 * v31++) = _H0;
+        *(mutableBytes + 2 * v31++) = _H0;
         v33 = v36 + 0.00035;
       }
 
@@ -752,7 +752,7 @@ LABEL_17:
       v16 = 1;
       do
       {
-        v17 = [v7 objectAtIndexedSubscript:v13];
+        v17 = [arrayCopy objectAtIndexedSubscript:v13];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || [v17 count] != 3)
         {
@@ -812,7 +812,7 @@ LABEL_23:
 
   else
   {
-    v8 = [v7 description];
+    v8 = [arrayCopy description];
     LogError("+[HDRImageConverter flexGTCTableDataFromCurveArray:min:max:]", 440, "Invalid GTC data: %s", [v8 UTF8String]);
 
     v9 = 0;

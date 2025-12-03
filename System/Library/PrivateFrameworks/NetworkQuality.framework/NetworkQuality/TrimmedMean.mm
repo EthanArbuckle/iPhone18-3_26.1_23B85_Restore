@@ -1,12 +1,12 @@
 @interface TrimmedMean
-- (TrimmedMean)initWithSize:(unint64_t)a3 withTrimAt:(float)a4;
+- (TrimmedMean)initWithSize:(unint64_t)size withTrimAt:(float)at;
 - (float)getTrimmedMean;
-- (void)add:(id)a3;
+- (void)add:(id)add;
 @end
 
 @implementation TrimmedMean
 
-- (TrimmedMean)initWithSize:(unint64_t)a3 withTrimAt:(float)a4
+- (TrimmedMean)initWithSize:(unint64_t)size withTrimAt:(float)at
 {
   v11.receiver = self;
   v11.super_class = TrimmedMean;
@@ -14,27 +14,27 @@
   v7 = v6;
   if (v6)
   {
-    v6->_arraySize = a3;
+    v6->_arraySize = size;
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     values = v7->_values;
     v7->_values = v8;
 
     v7->_currentAverage = 0.0;
-    v7->_trimAt = a4;
+    v7->_trimAt = at;
   }
 
   return v7;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v4 = a3;
+  addCopy = add;
   if ([(NSMutableArray *)self->_values count]== self->_arraySize)
   {
     [(NSMutableArray *)self->_values removeLastObject];
   }
 
-  [(NSMutableArray *)self->_values insertObject:v4 atIndex:0];
+  [(NSMutableArray *)self->_values insertObject:addCopy atIndex:0];
 }
 
 - (float)getTrimmedMean

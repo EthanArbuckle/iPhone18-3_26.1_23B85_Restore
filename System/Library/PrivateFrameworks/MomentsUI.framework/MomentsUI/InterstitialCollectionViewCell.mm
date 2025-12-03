@@ -1,11 +1,11 @@
 @interface InterstitialCollectionViewCell
-- (_TtC9MomentsUI30InterstitialCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI30InterstitialCollectionViewCell)initWithCoder:(id)coder;
 - (void)prepareForReuse;
 @end
 
 @implementation InterstitialCollectionViewCell
 
-- (_TtC9MomentsUI30InterstitialCollectionViewCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI30InterstitialCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9MomentsUI30InterstitialCollectionViewCell_assetView) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -15,7 +15,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   InterstitialCollectionViewCell.prepareForReuse()();
 }
 

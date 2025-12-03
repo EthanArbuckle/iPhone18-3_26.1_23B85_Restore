@@ -1,7 +1,7 @@
 @interface SafariLockdownModePerSitePreferenceSettingsController
 - (id)_lockdownModeStatusExplainerSpecifier;
-- (id)confirmationPromptStringsForSpecifierChangeIfNeeded:(id)a3 fromValue:(id)a4 toValue:(id)a5;
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5;
+- (id)confirmationPromptStringsForSpecifierChangeIfNeeded:(id)needed fromValue:(id)value toValue:(id)toValue;
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle;
 - (id)preference;
 - (id)preferenceManager;
 @end
@@ -27,24 +27,24 @@
 
 - (id)preference
 {
-  v2 = [(SafariLockdownModePerSitePreferenceSettingsController *)self preferenceManager];
-  v3 = [v2 lockdownPreference];
+  preferenceManager = [(SafariLockdownModePerSitePreferenceSettingsController *)self preferenceManager];
+  lockdownPreference = [preferenceManager lockdownPreference];
 
-  return v3;
+  return lockdownPreference;
 }
 
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  bundleCopy = bundle;
+  targetCopy = target;
+  nameCopy = name;
   v11 = +[NSMutableArray array];
   v15.receiver = self;
   v15.super_class = SafariLockdownModePerSitePreferenceSettingsController;
-  v12 = [(SafariPerSitePreferenceSettingsController *)&v15 loadSpecifiersFromPlistName:v10 target:v9 bundle:v8];
+  v12 = [(SafariPerSitePreferenceSettingsController *)&v15 loadSpecifiersFromPlistName:nameCopy target:targetCopy bundle:bundleCopy];
 
-  v13 = [(SafariLockdownModePerSitePreferenceSettingsController *)self _lockdownModeStatusExplainerSpecifier];
-  [v11 addObject:v13];
+  _lockdownModeStatusExplainerSpecifier = [(SafariLockdownModePerSitePreferenceSettingsController *)self _lockdownModeStatusExplainerSpecifier];
+  [v11 addObject:_lockdownModeStatusExplainerSpecifier];
 
   [v11 addObjectsFromArray:v12];
 
@@ -80,12 +80,12 @@
   return v2;
 }
 
-- (id)confirmationPromptStringsForSpecifierChangeIfNeeded:(id)a3 fromValue:(id)a4 toValue:(id)a5
+- (id)confirmationPromptStringsForSpecifierChangeIfNeeded:(id)needed fromValue:(id)value toValue:(id)toValue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 BOOLValue] & 1) != 0 || (WBSIsEqual())
+  neededCopy = needed;
+  valueCopy = value;
+  toValueCopy = toValue;
+  if ([toValueCopy BOOLValue] & 1) != 0 || (WBSIsEqual())
   {
     v10 = 0;
   }
@@ -94,8 +94,8 @@
   {
     v18[0] = PSConfirmationTitleKey;
     v11 = SafariSettingsLocalizedString(@"Turn Off Lockdown Mode Prompt Title %@", @"SafariLockdownMode");
-    v12 = [v7 name];
-    v13 = [NSString stringWithFormat:v11, v12, v18[0]];
+    name = [neededCopy name];
+    v13 = [NSString stringWithFormat:v11, name, v18[0]];
     v19[0] = v13;
     v18[1] = PSConfirmationPromptKey;
     v14 = SafariSettingsLocalizedString(@"Turn Off Lockdown Mode Prompt Detail", @"SafariLockdownMode");

@@ -1,9 +1,9 @@
 @interface JournalAppSettingsUtilities
-+ (BOOL)BOOLForKey:(id)a3;
-+ (id)objectForKey:(id)a3;
++ (BOOL)BOOLForKey:(id)key;
++ (id)objectForKey:(id)key;
 + (id)settingsBundle;
 + (id)settingsDefaults;
-+ (void)setObject:(id)a3 forKey:(id)a4;
++ (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation JournalAppSettingsUtilities
@@ -22,29 +22,29 @@
   return v2;
 }
 
-+ (BOOL)BOOLForKey:(id)a3
++ (BOOL)BOOLForKey:(id)key
 {
-  v3 = [a1 objectForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [self objectForKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)objectForKey:(id)a3
++ (id)objectForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.apple.Journal"];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   return v5;
 }
 
-+ (void)setObject:(id)a3 forKey:(id)a4
++ (void)setObject:(id)object forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  objectCopy = object;
   v7 = [[NSUserDefaults alloc] initWithSuiteName:@"group.com.apple.Journal"];
-  [v7 setObject:v6 forKey:v5];
+  [v7 setObject:objectCopy forKey:keyCopy];
 }
 
 @end

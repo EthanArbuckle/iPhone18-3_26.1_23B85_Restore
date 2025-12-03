@@ -1,32 +1,32 @@
 @interface BKAlternateSystemApp
 + (id)_bundleInfoOverrides;
-- (BKAlternateSystemApp)initWithBundleId:(id)a3 options:(id)a4 queue:(id)a5;
-- (BOOL)launchWithResultBlock:(id)a3 exitBlock:(id)a4;
+- (BKAlternateSystemApp)initWithBundleId:(id)id options:(id)options queue:(id)queue;
+- (BOOL)launchWithResultBlock:(id)block exitBlock:(id)exitBlock;
 - (BOOL)terminate;
-- (void)_noteExitedWithContext:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)_noteExitedWithContext:(id)context;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BKAlternateSystemApp
 
-- (void)_noteExitedWithContext:(id)a3
+- (void)_noteExitedWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_queue);
   v5 = BKLogAlternateSystemApp();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = contextCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_noteExitedWithContext: app:%{public}@ exitContext:%{public}@", &v10, 0x16u);
   }
 
   pendingExitBlock = self->_pendingExitBlock;
   if (pendingExitBlock)
   {
-    pendingExitBlock[2](pendingExitBlock, v4);
+    pendingExitBlock[2](pendingExitBlock, contextCopy);
     v7 = self->_pendingExitBlock;
     self->_pendingExitBlock = 0;
   }
@@ -85,10 +85,10 @@
   return 1;
 }
 
-- (BOOL)launchWithResultBlock:(id)a3 exitBlock:(id)a4
+- (BOOL)launchWithResultBlock:(id)block exitBlock:(id)exitBlock
 {
-  v7 = a3;
-  v81 = a4;
+  blockCopy = block;
+  exitBlockCopy = exitBlock;
   dispatch_assert_queue_V2(self->_queue);
   val = self;
   location = &self->_processHandle;
@@ -101,11 +101,11 @@
       v63 = objc_opt_class();
       v64 = NSStringFromClass(v63);
       *buf = 138544642;
-      v110 = v62;
+      selfCopy5 = v62;
       v111 = 2114;
       v112 = v64;
       v113 = 2048;
-      v114 = self;
+      selfCopy = self;
       v115 = 2114;
       v116 = @"BKAlternateSystemApp.m";
       v117 = 1024;
@@ -126,7 +126,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v110 = self;
+    selfCopy5 = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "launchWithResultBlock: %{public}@", buf, 0xCu);
   }
 
@@ -135,34 +135,34 @@
   v104[2] = sub_100031390;
   v104[3] = &unk_1000FC300;
   v104[4] = self;
-  v76 = v7;
+  v76 = blockCopy;
   v105 = v76;
   v77 = objc_retainBlock(v104);
-  v9 = [v81 copy];
+  v9 = [exitBlockCopy copy];
   pendingExitBlock = self->_pendingExitBlock;
   self->_pendingExitBlock = v9;
 
-  v80 = [objc_opt_class() _bundleInfoOverrides];
-  v11 = [v80 objectForKey:self->_bundleID];
+  _bundleInfoOverrides = [objc_opt_class() _bundleInfoOverrides];
+  v11 = [_bundleInfoOverrides objectForKey:self->_bundleID];
   v83 = v11;
   if (v11)
   {
     v12 = [v11 objectForKey:@"OverrideURL"];
     v82 = [NSURL URLWithString:v12];
 
-    v84 = [v83 objectForKey:@"OverrideAppType"];
+    path = [v83 objectForKey:@"OverrideAppType"];
     v13 = BKLogAlternateSystemApp();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       bundleID = self->_bundleID;
       *buf = 134218754;
-      v110 = self;
+      selfCopy5 = self;
       v111 = 2114;
       v112 = bundleID;
       v113 = 2114;
-      v114 = v82;
+      selfCopy = v82;
       v115 = 2114;
-      v116 = v84;
+      v116 = path;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "launchWithResultBlock %p: Using built-in information for bundle ID %{public}@: URL=%{public}@ appType=%{public}@", buf, 0x2Au);
     }
 
@@ -171,17 +171,17 @@
 
   v15 = self->_bundleID;
   v103 = 0;
-  v84 = [LSBundleRecord bundleRecordWithBundleIdentifier:v15 allowPlaceholder:0 error:&v103];
+  path = [LSBundleRecord bundleRecordWithBundleIdentifier:v15 allowPlaceholder:0 error:&v103];
   v16 = v103;
-  if (v84 && !v16)
+  if (path && !v16)
   {
-    v82 = [(__CFString *)v84 URL];
+    v82 = [(__CFString *)path URL];
 LABEL_11:
 
-    v84 = [(BKAlternateSystemApp *)v82 path];
-    v79 = [[BSCFBundle alloc] initWithPath:v84];
-    v78 = [v79 executablePath];
-    if (v78)
+    path = [(BKAlternateSystemApp *)v82 path];
+    v79 = [[BSCFBundle alloc] initWithPath:path];
+    executablePath = [v79 executablePath];
+    if (executablePath)
     {
       v17 = +[NSMutableDictionary dictionary];
       v87 = +[BSMutableMachServiceAliases new];
@@ -192,8 +192,8 @@ LABEL_11:
       [v17 setObject:&__kCFBooleanTrue forKey:v73];
       [(BSMutableMachServiceAliases *)v87 setService:v74 forAlias:@"com.apple.frontboard.systemappservices"];
       [(BSMutableMachServiceAliases *)v87 setService:v73 forAlias:@"com.apple.frontboard.workspace"];
-      v71 = [v79 infoDictionary];
-      v72 = [v71 bs_safeDictionaryForKey:@"BKSLaunchdPlist"];
+      infoDictionary = [v79 infoDictionary];
+      v72 = [infoDictionary bs_safeDictionaryForKey:@"BKSLaunchdPlist"];
       [v72 bs_safeDictionaryForKey:@"MachServices"];
       v101 = 0u;
       v102 = 0u;
@@ -260,11 +260,11 @@ LABEL_11:
                   {
                     v33 = val->_bundleID;
                     *buf = 134218754;
-                    v110 = val;
+                    selfCopy5 = val;
                     v111 = 2114;
                     v112 = v33;
                     v113 = 2114;
-                    v114 = v26;
+                    selfCopy = v26;
                     v115 = 2114;
                     v116 = v27;
                     _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "launchWithResultBlock %p: [%{public}@] Ignoring alternate mach service for %{public}@ because mapped service %{public}@ does not exist.", buf, 0x2Au);
@@ -277,11 +277,11 @@ LABEL_11:
                   {
                     v32 = val->_bundleID;
                     *buf = 134218754;
-                    v110 = val;
+                    selfCopy5 = val;
                     v111 = 2114;
                     v112 = v32;
                     v113 = 2112;
-                    v114 = v27;
+                    selfCopy = v27;
                     v115 = 2112;
                     v116 = v26;
                     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "launchWithResultBlock %p: [%{public}@] Registering alternate mach service %@ in place of %@.", buf, 0x2Au);
@@ -302,12 +302,12 @@ LABEL_11:
       v70 = [RBSProcessIdentity identityForEmbeddedApplicationIdentifier:val->_bundleID];
       v34 = [RBSLaunchContext contextWithIdentity:v70];
       [v34 setSpawnType:1];
-      [v34 _setOverrideExecutablePath:v78];
-      v35 = [(BSMutableMachServiceAliases *)v87 environmentRepresentation];
-      [v34 _setAdditionalEnvironment:v35];
+      [v34 _setOverrideExecutablePath:executablePath];
+      environmentRepresentation = [(BSMutableMachServiceAliases *)v87 environmentRepresentation];
+      [v34 _setAdditionalEnvironment:environmentRepresentation];
 
-      v36 = [v17 allKeys];
-      [v34 _setAdditionalMachServices:v36];
+      allKeys = [v17 allKeys];
+      [v34 _setAdditionalMachServices:allKeys];
 
       v69 = [[RBSLaunchRequest alloc] initWithContext:v34];
       v93 = 0;
@@ -355,7 +355,7 @@ LABEL_11:
           if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218242;
-            v110 = val;
+            selfCopy5 = val;
             v111 = 2114;
             v112 = val;
             _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "launchSucceeded %p: %{public}@", buf, 0x16u);
@@ -371,7 +371,7 @@ LABEL_11:
           {
             v60 = [v51 descriptionWithMultilinePrefix:0];
             *buf = 134218242;
-            v110 = val;
+            selfCopy5 = val;
             v111 = 2114;
             v112 = v60;
             _os_log_error_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, "launchWithResultBlock %p: launch succeeded but app was not made visible: %{public}@", buf, 0x16u);
@@ -393,7 +393,7 @@ LABEL_11:
         {
           v58 = [v85 descriptionWithMultilinePrefix:0];
           *buf = 134218242;
-          v110 = val;
+          selfCopy5 = val;
           v111 = 2114;
           v112 = v58;
           _os_log_error_impl(&_mh_execute_header, v54, OS_LOG_TYPE_ERROR, "launchWithResultBlock %p: launch failed: %{public}@", buf, 0x16u);
@@ -410,9 +410,9 @@ LABEL_11:
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218242;
-        v110 = self;
+        selfCopy5 = self;
         v111 = 2114;
-        v112 = v84;
+        v112 = path;
         _os_log_error_impl(&_mh_execute_header, v53, OS_LOG_TYPE_ERROR, "launchWithResultBlock %p: launch failed: no executable path for bundle at path %{public}@", buf, 0x16u);
       }
 
@@ -429,11 +429,11 @@ LABEL_11:
   {
     v59 = self->_bundleID;
     *buf = 134218498;
-    v110 = self;
+    selfCopy5 = self;
     v111 = 2114;
     v112 = v59;
     v113 = 2114;
-    v114 = v82;
+    selfCopy = v82;
     _os_log_error_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "launchWithResultBlock %p: launch failed: error from LS %{public}@ -- %{public}@", buf, 0x20u);
   }
 
@@ -444,32 +444,32 @@ LABEL_58:
   return v50;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000315D4;
   v5[3] = &unk_1000FD128;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  formatterCopy = formatter;
+  selfCopy = self;
+  v4 = formatterCopy;
   [v4 appendProem:self block:v5];
 }
 
-- (BKAlternateSystemApp)initWithBundleId:(id)a3 options:(id)a4 queue:(id)a5
+- (BKAlternateSystemApp)initWithBundleId:(id)id options:(id)options queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  optionsCopy = options;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = BKAlternateSystemApp;
   v11 = [(BKAlternateSystemApp *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(BKAlternateSystemApp *)v11 setBundleID:v8];
-    [(BKAlternateSystemApp *)v12 setOptions:v9];
-    [(BKAlternateSystemApp *)v12 setQueue:v10];
+    [(BKAlternateSystemApp *)v11 setBundleID:idCopy];
+    [(BKAlternateSystemApp *)v12 setOptions:optionsCopy];
+    [(BKAlternateSystemApp *)v12 setQueue:queueCopy];
   }
 
   return v12;

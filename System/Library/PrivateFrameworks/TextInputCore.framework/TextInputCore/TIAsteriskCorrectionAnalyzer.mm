@@ -1,6 +1,6 @@
 @interface TIAsteriskCorrectionAnalyzer
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5;
-- (BOOL)checkIfSession:(id)a3 isFromAllowedApp:(id)a4;
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence;
+- (BOOL)checkIfSession:(id)session isFromAllowedApp:(id)app;
 - (TIAsteriskCorrectionAnalyzer)init;
 - (void)registerEventSpec;
 @end
@@ -84,33 +84,33 @@
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:17];
   v32 = [v49 eventSpecWithName:@"asteriskCorrection" inputModeRequired:0 fieldSpecs:v31];
 
-  v33 = [MEMORY[0x277D6F318] sharedInstance];
-  [v33 registerEventSpec:v32];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318] registerEventSpec:v32];
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  sessionCopy = session;
+  alignedSessionCopy = alignedSession;
+  if (confidence)
   {
     v10 = &unk_28400B8F8;
-    v11 = [(TIAsteriskCorrectionAnalyzer *)self checkIfSession:v8 isFromAllowedApp:&unk_28400B8F8];
+    v11 = [(TIAsteriskCorrectionAnalyzer *)self checkIfSession:sessionCopy isFromAllowedApp:&unk_28400B8F8];
 
     if (v11)
     {
-      v38 = v9;
-      v12 = [MEMORY[0x277CBEB18] array];
+      v38 = alignedSessionCopy;
+      array = [MEMORY[0x277CBEB18] array];
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v40 = v8;
-      v13 = [v8 userActionHistory];
-      v14 = [v13 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      v40 = sessionCopy;
+      userActionHistory = [sessionCopy userActionHistory];
+      v14 = [userActionHistory countByEnumeratingWithState:&v43 objects:v47 count:16];
       if (!v14)
       {
         v16 = 0;
@@ -122,21 +122,21 @@
       v16 = 0;
       v17 = 1;
       v18 = *v44;
-      v39 = v13;
+      v39 = userActionHistory;
       while (1)
       {
         for (i = 0; i != v15; ++i)
         {
           if (*v44 != v18)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(userActionHistory);
           }
 
           v20 = *(*(&v43 + 1) + 8 * i);
           if ([v20 actionType])
           {
-            v21 = [v20 documentState];
-            if (![v21 documentIsEmpty] || !objc_msgSend(v12, "count"))
+            documentState = [v20 documentState];
+            if (![documentState documentIsEmpty] || !objc_msgSend(array, "count"))
             {
 
               goto LABEL_21;
@@ -148,26 +148,26 @@
 
             else
             {
-              v24 = [v20 actionType];
+              actionType = [v20 actionType];
 
-              if (v24 != 11)
+              if (actionType != 11)
               {
                 goto LABEL_21;
               }
             }
 
             v25 = [TITypingSession alloc];
-            v26 = [v40 locale];
-            v27 = [(TITypingSession *)v25 initWithLocale:v26 keyboardLayout:0];
+            locale = [v40 locale];
+            v27 = [(TITypingSession *)v25 initWithLocale:locale keyboardLayout:0];
 
-            v28 = [v40 sessionParams];
-            [(TITypingSession *)v27 setSessionParams:v28];
+            sessionParams = [v40 sessionParams];
+            [(TITypingSession *)v27 setSessionParams:sessionParams];
 
-            v29 = [v40 featureUsageMetricsCache];
-            [(TITypingSession *)v27 setFeatureUsageMetricsCache:v29];
+            featureUsageMetricsCache = [v40 featureUsageMetricsCache];
+            [(TITypingSession *)v27 setFeatureUsageMetricsCache:featureUsageMetricsCache];
 
-            [(TITypingSession *)v27 setUserActionHistory:v12];
-            v41 = [MEMORY[0x277CBEB18] array];
+            [(TITypingSession *)v27 setUserActionHistory:array];
+            array2 = [MEMORY[0x277CBEB18] array];
 
             v30 = [TIAsteriskCorrectionMessageEvent alloc];
             [v40 applicationID];
@@ -182,21 +182,21 @@
             [(TIAsteriskCorrectionMessageEvent *)v35 analyzeEvent];
             v42 = v17;
             v17 = 1;
-            v12 = v41;
+            array = array2;
             v16 = v35;
-            v13 = v39;
+            userActionHistory = v39;
           }
 
           else
           {
-            v22 = [v20 wordEntryType];
+            wordEntryType = [v20 wordEntryType];
             v23 = 2;
             if (v17 != 3)
             {
               v23 = v17;
             }
 
-            if (v22)
+            if (wordEntryType)
             {
               v17 = 3;
             }
@@ -208,17 +208,17 @@
           }
 
 LABEL_21:
-          [v12 addObject:v20];
+          [array addObject:v20];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v43 objects:v47 count:16];
+        v15 = [userActionHistory countByEnumeratingWithState:&v43 objects:v47 count:16];
         if (!v15)
         {
 LABEL_26:
 
           LOBYTE(v11) = 1;
-          v8 = v40;
-          v9 = v38;
+          sessionCopy = v40;
+          alignedSessionCopy = v38;
           break;
         }
       }
@@ -234,16 +234,16 @@ LABEL_26:
   return v11;
 }
 
-- (BOOL)checkIfSession:(id)a3 isFromAllowedApp:(id)a4
+- (BOOL)checkIfSession:(id)session isFromAllowedApp:(id)app
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  sessionCopy = session;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  appCopy = app;
+  v7 = [appCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -253,12 +253,12 @@ LABEL_26:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(appCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v5 applicationID];
-        LOBYTE(v10) = [v11 isEqualToString:v10];
+        applicationID = [sessionCopy applicationID];
+        LOBYTE(v10) = [applicationID isEqualToString:v10];
 
         if (v10)
         {
@@ -267,7 +267,7 @@ LABEL_26:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [appCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;

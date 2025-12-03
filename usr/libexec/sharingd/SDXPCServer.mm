@@ -1,14 +1,14 @@
 @interface SDXPCServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (SDXPCServer)initWithAirDropService:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (SDXPCServer)initWithAirDropService:(id)service;
 - (id)_stateDumpString;
 - (os_state_data_s)_stateDump;
 - (void)_activate;
-- (void)_connectionInvalidated:(id)a3;
+- (void)_connectionInvalidated:(id)invalidated;
 - (void)_invalidate;
 - (void)activate;
 - (void)invalidate;
-- (void)stateAppendXPCConnections:(id *)a3;
+- (void)stateAppendXPCConnections:(id *)connections;
 @end
 
 @implementation SDXPCServer
@@ -20,10 +20,10 @@
     LogPrintF();
   }
 
-  v3 = [(SDXPCServer *)self _stateDumpString];
-  if (v3)
+  _stateDumpString = [(SDXPCServer *)self _stateDumpString];
+  if (_stateDumpString)
   {
-    v4 = [NSPropertyListSerialization dataWithPropertyList:v3 format:200 options:0 error:0];
+    v4 = [NSPropertyListSerialization dataWithPropertyList:_stateDumpString format:200 options:0 error:0];
     v5 = v4;
     if (v4)
     {
@@ -139,11 +139,11 @@
   NSAppendPrintF();
   v19 = v18;
 
-  v20 = [(SDAppleIDAgent *)self->_appleIDAgent detailedDescription];
+  detailedDescription = [(SDAppleIDAgent *)self->_appleIDAgent detailedDescription];
 
-  if (v20)
+  if (detailedDescription)
   {
-    v32 = v20;
+    v32 = detailedDescription;
     NSAppendPrintF();
     v21 = v19;
 
@@ -167,9 +167,9 @@
   return v19;
 }
 
-- (SDXPCServer)initWithAirDropService:(id)a3
+- (SDXPCServer)initWithAirDropService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v10.receiver = self;
   v10.super_class = SDXPCServer;
   v6 = [(SDXPCServer *)&v10 init];
@@ -180,7 +180,7 @@
     v6->_dispatchQueue = v7;
 
     v6->_prefNotifyToken = -1;
-    objc_storeStrong(&v6->_airDropService, a3);
+    objc_storeStrong(&v6->_airDropService, service);
   }
 
   return v6;
@@ -474,13 +474,13 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   dispatchQueue = self->_dispatchQueue;
-  v8 = a3;
+  listenerCopy = listener;
   dispatch_assert_queue_V2(dispatchQueue);
-  v9 = [[SDXPCConnection alloc] initWithServer:self xpcConnection:v6];
+  v9 = [[SDXPCConnection alloc] initWithServer:self xpcConnection:connectionCopy];
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
   {
@@ -494,7 +494,7 @@
   [(NSMutableSet *)xpcConnections addObject:v9];
   xpcListener = self->_xpcListener;
 
-  if (xpcListener == v8)
+  if (xpcListener == listenerCopy)
   {
     v14 = self->_xpcInterfaceClient;
     if (!v14)
@@ -526,21 +526,21 @@
       objc_storeStrong(&self->_xpcInterfaceServer, v19);
     }
 
-    [v6 _setQueue:self->_dispatchQueue];
-    [v6 setExportedInterface:v19];
-    [v6 setExportedObject:v9];
+    [connectionCopy _setQueue:self->_dispatchQueue];
+    [connectionCopy setExportedInterface:v19];
+    [connectionCopy setExportedObject:v9];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_100185E5C;
     v30[3] = &unk_1008CE028;
     v30[4] = self;
     v31 = v9;
-    [v6 setInvalidationHandler:v30];
-    [v6 setRemoteObjectInterface:v14];
-    [v6 resume];
+    [connectionCopy setInvalidationHandler:v30];
+    [connectionCopy setRemoteObjectInterface:v14];
+    [connectionCopy resume];
     if (dword_100971A10 <= 20 && (dword_100971A10 != -1 || _LogCategory_Initialize()))
     {
-      sub_100192A40(v6);
+      sub_100192A40(connectionCopy);
     }
   }
 
@@ -554,19 +554,19 @@
     [(NSMutableSet *)self->_xpcConnections removeObject:v9];
   }
 
-  return xpcListener == v8;
+  return xpcListener == listenerCopy;
 }
 
-- (void)_connectionInvalidated:(id)a3
+- (void)_connectionInvalidated:(id)invalidated
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(dispatchQueue);
-  [v5 connectionInvalidated];
-  [(NSMutableSet *)self->_xpcConnections removeObject:v5];
+  [invalidatedCopy connectionInvalidated];
+  [(NSMutableSet *)self->_xpcConnections removeObject:invalidatedCopy];
 }
 
-- (void)stateAppendXPCConnections:(id *)a3
+- (void)stateAppendXPCConnections:(id *)connections
 {
   NSAppendPrintF();
   v30 = 0u;
@@ -588,7 +588,7 @@
         }
 
         v5 = *(*(&v28 + 1) + 8 * i);
-        v16 = [*(v5 + 136) processIdentifier];
+        processIdentifier = [*(v5 + 136) processIdentifier];
         NSAppendPrintF();
         if ([*(v5 + 16) count])
         {

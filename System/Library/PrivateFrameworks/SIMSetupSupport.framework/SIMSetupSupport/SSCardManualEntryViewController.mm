@@ -1,17 +1,17 @@
 @interface SSCardManualEntryViewController
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (SSCardManualEntryViewController)init;
 - (TSSIMSetupFlowDelegate)delegate;
 - (double)_heightAnchorConstant;
-- (id)findFirstResponderInView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)findFirstResponderInView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)addNewPlanWithUserInfo;
-- (void)keyboardDidHide:(id)a3;
-- (void)keyboardWasShown:(id)a3;
+- (void)keyboardDidHide:(id)hide;
+- (void)keyboardWasShown:(id)shown;
 - (void)onError;
 - (void)resetFirstResponder;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)updateTableHeightAnchor;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -45,9 +45,9 @@
   v26.receiver = self;
   v26.super_class = SSCardManualEntryViewController;
   [(TSOBTableWelcomeController *)&v26 viewDidLoad];
-  v3 = [(SSCardManualEntryViewController *)self navigationController];
-  v4 = [v3 navigationItem];
-  [v4 setHidesBackButton:1];
+  navigationController = [(SSCardManualEntryViewController *)self navigationController];
+  navigationItem = [navigationController navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   v5 = objc_alloc(MEMORY[0x277D751E0]);
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -56,60 +56,60 @@
   nextButton = self->_nextButton;
   self->_nextButton = v8;
 
-  v10 = [(OBBaseWelcomeController *)self navigationItem];
-  [v10 setRightBarButtonItem:self->_nextButton animated:0];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:self->_nextButton animated:0];
 
   [(UIBarButtonItem *)self->_nextButton setEnabled:0];
   v11 = objc_alloc(MEMORY[0x277D75B40]);
   v12 = [v11 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v12];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 registerClass:objc_opt_class() forCellReuseIdentifier:@"CardManualEntry"];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"CardManualEntry"];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  v17 = [MEMORY[0x277D75348] clearColor];
-  [v16 setBackgroundColor:v17];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView4 setBackgroundColor:clearColor];
 
-  v18 = [(OBTableWelcomeController *)self tableView];
-  [v18 setDataSource:self];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setDataSource:self];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  [v19 setDelegate:self];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setDelegate:self];
 
-  v20 = [(OBTableWelcomeController *)self tableView];
-  [v20 setScrollEnabled:1];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setScrollEnabled:1];
 
-  v21 = [(OBTableWelcomeController *)self tableView];
-  [v21 setAllowsSelection:0];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 setAllowsSelection:0];
 
-  v22 = [(OBTableWelcomeController *)self tableView];
-  [v22 setDataSource:self];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 setDataSource:self];
 
-  v23 = [(OBTableWelcomeController *)self tableView];
-  [v23 setDelegate:self];
+  tableView10 = [(OBTableWelcomeController *)self tableView];
+  [tableView10 setDelegate:self];
 
-  v24 = [(OBTableWelcomeController *)self tableView];
-  [v24 reloadData];
+  tableView11 = [(OBTableWelcomeController *)self tableView];
+  [tableView11 reloadData];
 
-  v25 = [(OBTableWelcomeController *)self tableView];
-  [v25 layoutIfNeeded];
+  tableView12 = [(OBTableWelcomeController *)self tableView];
+  [tableView12 layoutIfNeeded];
 
   [(SSCardManualEntryViewController *)self updateTableHeightAnchor];
 }
 
 - (void)updateTableHeightAnchor
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 heightAnchor];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  heightAnchor = [tableView heightAnchor];
   [(SSCardManualEntryViewController *)self _heightAnchorConstant];
-  v5 = [v4 constraintEqualToConstant:?];
+  v5 = [heightAnchor constraintEqualToConstant:?];
   tableHeightAnchor = self->_tableHeightAnchor;
   self->_tableHeightAnchor = v5;
 
@@ -120,8 +120,8 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(SSCardManualEntryViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(SSCardManualEntryViewController *)self view];
+  [view layoutIfNeeded];
 
   v5.receiver = self;
   v5.super_class = SSCardManualEntryViewController;
@@ -134,20 +134,20 @@
 - (void)resetFirstResponder
 {
   v6 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-  v3 = [(OBTableWelcomeController *)self tableView];
-  v4 = [v3 cellForRowAtIndexPath:v6];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v4 = [tableView cellForRowAtIndexPath:v6];
 
-  v5 = [v4 editableTextField];
-  [v5 becomeFirstResponder];
+  editableTextField = [v4 editableTextField];
+  [editableTextField becomeFirstResponder];
 }
 
-- (id)findFirstResponderInView:(id)a3
+- (id)findFirstResponderInView:(id)view
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isFirstResponder])
+  viewCopy = view;
+  if ([viewCopy isFirstResponder])
   {
-    v5 = v4;
+    v5 = viewCopy;
   }
 
   else
@@ -156,8 +156,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v4 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    subviews = [viewCopy subviews];
+    v7 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -168,7 +168,7 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = [(SSCardManualEntryViewController *)self findFirstResponderInView:*(*(&v14 + 1) + 8 * i)];
@@ -180,7 +180,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -200,72 +200,72 @@ LABEL_13:
   return v5;
 }
 
-- (void)keyboardWasShown:(id)a3
+- (void)keyboardWasShown:(id)shown
 {
-  v24 = [a3 userInfo];
-  v4 = [v24 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [shown userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v4 CGRectValue];
   v6 = v5;
   v8 = v7;
 
   self->_keyboardSize.width = v6;
   self->_keyboardSize.height = v8;
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 setContentInset:{0.0, 0.0, v8, 0.0}];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setContentInset:{0.0, 0.0, v8, 0.0}];
 
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 setScrollIndicatorInsets:{0.0, 0.0, v8, 0.0}];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setScrollIndicatorInsets:{0.0, 0.0, v8, 0.0}];
 
-  v11 = [(SSCardManualEntryViewController *)self view];
-  v12 = [(SSCardManualEntryViewController *)self findFirstResponderInView:v11];
+  view = [(SSCardManualEntryViewController *)self view];
+  v12 = [(SSCardManualEntryViewController *)self findFirstResponderInView:view];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
-    v14 = [(OBTableWelcomeController *)self tableView];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
     [v13 bounds];
-    [v14 convertRect:v13 fromView:?];
+    [tableView3 convertRect:v13 fromView:?];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    v23 = [(OBTableWelcomeController *)self tableView];
-    [v23 scrollRectToVisible:1 animated:{v16, v18, v20, v22}];
+    tableView4 = [(OBTableWelcomeController *)self tableView];
+    [tableView4 scrollRectToVisible:1 animated:{v16, v18, v20, v22}];
   }
 }
 
-- (void)keyboardDidHide:(id)a3
+- (void)keyboardDidHide:(id)hide
 {
   v4 = *MEMORY[0x277D768C8];
   v5 = *(MEMORY[0x277D768C8] + 8);
   v6 = *(MEMORY[0x277D768C8] + 16);
   v7 = *(MEMORY[0x277D768C8] + 24);
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setContentInset:{v4, v5, v6, v7}];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setContentInset:{v4, v5, v6, v7}];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 setScrollIndicatorInsets:{v4, v5, v6, v7}];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setScrollIndicatorInsets:{v4, v5, v6, v7}];
 
-  v10 = [(SSCardManualEntryViewController *)self view];
-  [v10 endEditing:1];
+  view = [(SSCardManualEntryViewController *)self view];
+  [view endEditing:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CardManualEntry" forIndexPath:v6];
-  [v7 setupWithDelegate:self indexPath:v6];
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CardManualEntry" forIndexPath:pathCopy];
+  [v7 setupWithDelegate:self indexPath:pathCopy];
+  v8 = [pathCopy row];
   v9 = v8;
   if (v8 < 3)
   {
     v10 = off_279B45558[v8];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:v10 value:&stru_28753DF48 table:@"Localizable"];
-    v13 = [v7 editableTextField];
-    [v13 setPlaceholder:v12];
+    editableTextField = [v7 editableTextField];
+    [editableTextField setPlaceholder:v12];
 
     [v7 setTag:v9];
 LABEL_6:
@@ -274,8 +274,8 @@ LABEL_6:
       v15 = [(NSMutableArray *)self->_values objectAtIndex:v9];
       if ([v15 length])
       {
-        v16 = [v7 editableTextField];
-        [v16 setText:v15];
+        editableTextField2 = [v7 editableTextField];
+        [editableTextField2 setText:v15];
       }
     }
 
@@ -285,7 +285,7 @@ LABEL_6:
   v14 = _TSLogDomain();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    [SSCardManualEntryViewController tableView:v6 cellForRowAtIndexPath:v14];
+    [SSCardManualEntryViewController tableView:pathCopy cellForRowAtIndexPath:v14];
   }
 
   [v7 setTag:v9];
@@ -299,38 +299,38 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [v4 tag] + 1;
-  v6 = [(OBTableWelcomeController *)self tableView];
-  v7 = [v6 numberOfRowsInSection:0];
+  returnCopy = return;
+  v5 = [returnCopy tag] + 1;
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v7 = [tableView numberOfRowsInSection:0];
 
   if (v5 >= v7)
   {
-    [v4 resignFirstResponder];
+    [returnCopy resignFirstResponder];
   }
 
   else
   {
     v8 = [MEMORY[0x277CCAA70] indexPathForRow:v5 inSection:0];
-    v9 = [(OBTableWelcomeController *)self tableView];
-    v10 = [v9 cellForRowAtIndexPath:v8];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    v10 = [tableView2 cellForRowAtIndexPath:v8];
 
     if (v10)
     {
-      v11 = [v10 editableTextField];
+      editableTextField = [v10 editableTextField];
 
-      if (v11)
+      if (editableTextField)
       {
-        v12 = [v10 contentView];
-        [v12 setUserInteractionEnabled:1];
+        contentView = [v10 contentView];
+        [contentView setUserInteractionEnabled:1];
 
-        v13 = [v10 editableTextField];
-        [v13 setUserInteractionEnabled:1];
+        editableTextField2 = [v10 editableTextField];
+        [editableTextField2 setUserInteractionEnabled:1];
 
-        v14 = [v10 editableTextField];
-        [v14 resignFirstResponder];
+        editableTextField3 = [v10 editableTextField];
+        [editableTextField3 resignFirstResponder];
 
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
@@ -372,13 +372,13 @@ void __57__SSCardManualEntryViewController_textFieldShouldReturn___block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v7 = a3;
-  v4 = [(OBTableWelcomeController *)self tableView];
-  v5 = [v4 numberOfRowsInSection:0];
+  editingCopy = editing;
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v5 = [tableView numberOfRowsInSection:0];
 
-  if ([v7 tag] == v5 - 1)
+  if ([editingCopy tag] == v5 - 1)
   {
     v6 = 11;
   }
@@ -388,17 +388,17 @@ void __57__SSCardManualEntryViewController_textFieldShouldReturn___block_invoke(
     v6 = 4;
   }
 
-  [v7 setReturnKeyType:v6];
+  [editingCopy setReturnKeyType:v6];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   values = self->_values;
-  v5 = a3;
-  v6 = [v5 tag];
-  v7 = [v5 text];
+  editingCopy = editing;
+  v6 = [editingCopy tag];
+  text = [editingCopy text];
 
-  [(NSMutableArray *)values replaceObjectAtIndex:v6 withObject:v7];
+  [(NSMutableArray *)values replaceObjectAtIndex:v6 withObject:text];
   v8 = [(NSMutableArray *)self->_values objectAtIndexedSubscript:0];
   v9 = [v8 length];
 
@@ -416,14 +416,14 @@ void __57__SSCardManualEntryViewController_textFieldShouldReturn___block_invoke(
   [WeakRetained receivedResponseWithVC:self];
 
   [(SSCardManualEntryViewController *)self resetFirstResponder];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setHidesBackButton:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:0];
 }
 
 - (double)_heightAnchorConstant
 {
-  v2 = [(SSCardManualEntryViewController *)self view];
-  [v2 bounds];
+  view = [(SSCardManualEntryViewController *)self view];
+  [view bounds];
   v4 = v3 * 0.42;
 
   return v4;
@@ -432,8 +432,8 @@ void __57__SSCardManualEntryViewController_textFieldShouldReturn___block_invoke(
 - (void)addNewPlanWithUserInfo
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(SSCardManualEntryViewController *)self view];
-  [v3 endEditing:1];
+  view = [(SSCardManualEntryViewController *)self view];
+  [view endEditing:1];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained waitForResponse:self];

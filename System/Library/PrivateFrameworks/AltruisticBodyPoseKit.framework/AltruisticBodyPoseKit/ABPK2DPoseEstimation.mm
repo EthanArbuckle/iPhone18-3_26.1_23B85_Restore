@@ -1,17 +1,17 @@
 @interface ABPK2DPoseEstimation
-- (int)runWithMLImageData:(id)a3 rotationOfResultTensor:(int64_t)a4;
+- (int)runWithMLImageData:(id)data rotationOfResultTensor:(int64_t)tensor;
 @end
 
 @implementation ABPK2DPoseEstimation
 
-- (int)runWithMLImageData:(id)a3 rotationOfResultTensor:(int64_t)a4
+- (int)runWithMLImageData:(id)data rotationOfResultTensor:(int64_t)tensor
 {
-  v6 = a3;
+  dataCopy = data;
   detection2dAlgorithm = self->_detection2dAlgorithm;
-  v8 = [v6 pixelBuffer];
-  v9 = [v6 abpkDeviceOrientation];
-  [v6 timestamp];
-  v10 = [(ABPK2DDetection *)detection2dAlgorithm runWithImage:v8 abpkOrientation:v9 atTimestamp:a4 rotationOfResultTensor:?];
+  pixelBuffer = [dataCopy pixelBuffer];
+  abpkDeviceOrientation = [dataCopy abpkDeviceOrientation];
+  [dataCopy timestamp];
+  v10 = [(ABPK2DDetection *)detection2dAlgorithm runWithImage:pixelBuffer abpkOrientation:abpkDeviceOrientation atTimestamp:tensor rotationOfResultTensor:?];
   if (v10)
   {
     v11 = __ABPKLogSharedInstance();
@@ -22,9 +22,9 @@
     }
 
     postprocess2d = self->_postprocess2d;
-    v13 = [v6 preprocessingParams];
-    [v6 timestamp];
-    LODWORD(postprocess2d) = [(ABPK2DDetectionPostprocess *)postprocess2d extract2DSkeletonfromBuffers:v10 withImagePreProcessingParams:v13 atTimestamp:0 previousSkeleton3D:?];
+    preprocessingParams = [dataCopy preprocessingParams];
+    [dataCopy timestamp];
+    LODWORD(postprocess2d) = [(ABPK2DDetectionPostprocess *)postprocess2d extract2DSkeletonfromBuffers:v10 withImagePreProcessingParams:preprocessingParams atTimestamp:0 previousSkeleton3D:?];
 
     if (postprocess2d)
     {

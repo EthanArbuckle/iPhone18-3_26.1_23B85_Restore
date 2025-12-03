@@ -1,22 +1,22 @@
 @interface PXCuratedLibraryZoomLevelControl
 + (id)_allPotentialZoomLevelIdentifiers;
-+ (id)_enabledZoomLevelIdentifiersForViewModel:(id)a3;
-+ (id)_zoomLevelIdentifiersForViewModel:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXCuratedLibraryZoomLevelControl)initWithCoder:(id)a3;
-- (PXCuratedLibraryZoomLevelControl)initWithFrame:(CGRect)a3;
-- (PXCuratedLibraryZoomLevelControl)initWithViewModel:(id)a3 styleGuide:(id)a4;
++ (id)_enabledZoomLevelIdentifiersForViewModel:(id)model;
++ (id)_zoomLevelIdentifiersForViewModel:(id)model;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXCuratedLibraryZoomLevelControl)initWithCoder:(id)coder;
+- (PXCuratedLibraryZoomLevelControl)initWithFrame:(CGRect)frame;
+- (PXCuratedLibraryZoomLevelControl)initWithViewModel:(id)model styleGuide:(id)guide;
 - (PXCuratedLibraryZoomLevelControlDelegate)delegate;
-- (int64_t)zoomLevelDisplayedBeforeZoomLevel:(int64_t)a3;
-- (void)_handleSegmentedControlAction:(id)a3;
+- (int64_t)zoomLevelDisplayedBeforeZoomLevel:(int64_t)level;
+- (void)_handleSegmentedControlAction:(id)action;
 - (void)_updateSegmentedControl;
 - (void)_updateSegmentedControlEnabled;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setEnabledZoomLevelIdentifiers:(id)a3;
-- (void)setSelectedZoomLevel:(int64_t)a3;
-- (void)setShrinkLevel:(int64_t)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setEnabledZoomLevelIdentifiers:(id)identifiers;
+- (void)setSelectedZoomLevel:(int64_t)level;
+- (void)setShrinkLevel:(int64_t)level;
 @end
 
 @implementation PXCuratedLibraryZoomLevelControl
@@ -24,9 +24,9 @@
 + (id)_allPotentialZoomLevelIdentifiers
 {
   v2 = +[PXCuratedLibrarySettings sharedInstance];
-  v3 = [v2 enableTabBarAccessoryControls];
+  enableTabBarAccessoryControls = [v2 enableTabBarAccessoryControls];
 
-  if (v3)
+  if (enableTabBarAccessoryControls)
   {
     return &unk_1F190FC28;
   }
@@ -44,14 +44,14 @@
   [(PXCuratedLibraryZoomLevelControl *)&v15 layoutSubviews];
   [(PXUpdater *)self->_updater updateIfNeeded];
   v3 = +[PXCuratedLibrarySettings sharedInstance];
-  v4 = [v3 enableTabBarAccessoryControls];
+  enableTabBarAccessoryControls = [v3 enableTabBarAccessoryControls];
 
   [(PXCuratedLibraryZoomLevelControl *)self bounds];
   v9 = v5;
   v10 = v6;
   v11 = v7;
   v12 = v8;
-  if (v4)
+  if (enableTabBarAccessoryControls)
   {
     [(PXCuratedLibraryZoomLevelSegmentedControl *)self->_segmentedControl setBounds:v5, v6, v7, v8];
     [(PXCuratedLibraryZoomLevelControl *)self bounds];
@@ -77,20 +77,20 @@
 {
   v58 = *MEMORY[0x1E69E9840];
   v3 = +[PXCuratedLibrarySettings sharedInstance];
-  v4 = [v3 enableTabBarAccessoryControls];
+  enableTabBarAccessoryControls = [v3 enableTabBarAccessoryControls];
 
-  if (v4)
+  if (enableTabBarAccessoryControls)
   {
-    v5 = [(PXCuratedLibraryZoomLevelControl *)self zoomLevelIdentifiers];
+    zoomLevelIdentifiers = [(PXCuratedLibraryZoomLevelControl *)self zoomLevelIdentifiers];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invoke;
     v51[3] = &unk_1E773F4C8;
     v51[4] = self;
-    [v5 enumerateObjectsUsingBlock:v51];
+    [zoomLevelIdentifiers enumerateObjectsUsingBlock:v51];
     [(PXCuratedLibraryZoomLevelSegmentedControl *)self->_segmentedControl setAdjustsForContentSizeCategory:1];
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PXCuratedLibraryZoomLevelControl selectedZoomLevel](self, "selectedZoomLevel")}];
-    v7 = [v5 indexOfObject:v6];
+    v7 = [zoomLevelIdentifiers indexOfObject:v6];
 
     if ((v7 & 0x8000000000000000) != 0 || v7 >= [(PXCuratedLibraryZoomLevelSegmentedControl *)self->_segmentedControl numberOfSegments])
     {
@@ -101,17 +101,17 @@
     goto LABEL_27;
   }
 
-  v8 = [(PXCuratedLibraryZoomLevelControl *)self shrinkLevel];
-  v9 = v8;
-  if (v8 > 1)
+  shrinkLevel = [(PXCuratedLibraryZoomLevelControl *)self shrinkLevel];
+  v9 = shrinkLevel;
+  if (shrinkLevel > 1)
   {
-    if (v8 == 2 || v8 == 3)
+    if (shrinkLevel == 2 || shrinkLevel == 3)
     {
       v10 = MEMORY[0x1E69DDD78];
       goto LABEL_14;
     }
 
-    if (v8 == 4)
+    if (shrinkLevel == 4)
     {
       v10 = MEMORY[0x1E69DDD28];
 LABEL_14:
@@ -127,7 +127,7 @@ LABEL_28:
     goto LABEL_16;
   }
 
-  if (v8 > 1)
+  if (shrinkLevel > 1)
   {
     goto LABEL_28;
   }
@@ -137,11 +137,11 @@ LABEL_28:
 LABEL_15:
   v13 = -1.0;
 LABEL_16:
-  v14 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
-  v15 = [v14 configuration];
-  v16 = [v15 secondaryToolbarStyle];
+  viewModel = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
+  configuration = [viewModel configuration];
+  secondaryToolbarStyle = [configuration secondaryToolbarStyle];
 
-  if (v16 == 1)
+  if (secondaryToolbarStyle == 1)
   {
     v17 = 1;
   }
@@ -162,11 +162,11 @@ LABEL_16:
     v19 = v20;
   }
 
-  v21 = [(PXCuratedLibraryZoomLevelControl *)self styleGuide];
-  v22 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
-  v23 = [v21 zoomLevelControlTextColorOverLegibilityGradient:{objc_msgSend(v22, "secondaryToolbarLegibilityGradientIsVisible")}];
+  styleGuide = [(PXCuratedLibraryZoomLevelControl *)self styleGuide];
+  viewModel2 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
+  v23 = [styleGuide zoomLevelControlTextColorOverLegibilityGradient:{objc_msgSend(viewModel2, "secondaryToolbarLegibilityGradientIsVisible")}];
 
-  v24 = [MEMORY[0x1E69DC888] systemWhiteColor];
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
   v25 = [v23 colorWithAlphaComponent:0.3];
   segmentedControl = self->_segmentedControl;
   v28 = *MEMORY[0x1E69DB650];
@@ -183,8 +183,8 @@ LABEL_16:
   v54[0] = v27;
   v54[1] = v28;
   v55[0] = v19;
-  v55[1] = v24;
-  v47 = v24;
+  v55[1] = systemWhiteColor;
+  v47 = systemWhiteColor;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:2];
   [(PXCuratedLibraryZoomLevelSegmentedControl *)v30 setTitleTextAttributes:v31 forState:4];
 
@@ -199,8 +199,8 @@ LABEL_16:
   v34 = *(MEMORY[0x1E69DDCE0] + 16);
   *&self->_padding.top = *MEMORY[0x1E69DDCE0];
   *&self->_padding.bottom = v34;
-  v35 = [(PXCuratedLibraryZoomLevelControl *)self styleGuide];
-  [v35 lateralMargin];
+  styleGuide2 = [(PXCuratedLibraryZoomLevelControl *)self styleGuide];
+  [styleGuide2 lateralMargin];
   v37 = v36 < 20.0;
   v38 = 14.0;
   if (!v37)
@@ -213,7 +213,7 @@ LABEL_16:
 
   self->_minimumInterTextSpacing = 16.0;
   self->_intrinsicSize = *MEMORY[0x1E695F060];
-  v39 = [(PXCuratedLibraryZoomLevelControl *)self zoomLevelIdentifiers];
+  zoomLevelIdentifiers2 = [(PXCuratedLibraryZoomLevelControl *)self zoomLevelIdentifiers];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invoke_219;
@@ -222,12 +222,12 @@ LABEL_16:
   v48[4] = self;
   v40 = v19;
   v49 = v40;
-  [v39 enumerateObjectsUsingBlock:v48];
+  [zoomLevelIdentifiers2 enumerateObjectsUsingBlock:v48];
   v41.f64[0] = self->_padding.left + self->_padding.right - self->_minimumInterTextSpacing;
   v41.f64[1] = self->_padding.top + self->_padding.bottom;
   self->_intrinsicSize = vaddq_f64(self->_intrinsicSize, v41);
   v42 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PXCuratedLibraryZoomLevelControl selectedZoomLevel](self, "selectedZoomLevel")}];
-  v43 = [v39 indexOfObject:v42];
+  v43 = [zoomLevelIdentifiers2 indexOfObject:v42];
 
   if ((v43 & 0x8000000000000000) != 0 || v43 >= [(PXCuratedLibraryZoomLevelSegmentedControl *)self->_segmentedControl numberOfSegments])
   {
@@ -235,7 +235,7 @@ LABEL_16:
   }
 
   [(PXCuratedLibraryZoomLevelSegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:v43];
-  v5 = v46;
+  zoomLevelIdentifiers = v46;
 
 LABEL_27:
 }
@@ -253,36 +253,36 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (PXViewModelObservationContext_37550 == a5)
+  observableCopy = observable;
+  if (PXViewModelObservationContext_37550 == context)
   {
-    v19 = v9;
-    if ((a4 & 0x2004) == 0)
+    v19 = observableCopy;
+    if ((change & 0x2004) == 0)
     {
       goto LABEL_14;
     }
 
-    v10 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
-    if ([v10 zoomLevelTransitionPhase])
+    viewModel = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
+    if ([viewModel zoomLevelTransitionPhase])
     {
-      v11 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
-      v12 = [v11 zoomLevelTransitionPhase];
+      viewModel2 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
+      zoomLevelTransitionPhase = [viewModel2 zoomLevelTransitionPhase];
 
-      if (v12 != 2)
+      if (zoomLevelTransitionPhase != 2)
       {
 LABEL_14:
-        if ((a4 & 0x10000) != 0)
+        if ((change & 0x10000) != 0)
         {
           v14 = objc_opt_class();
-          v15 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
-          v16 = [v14 _enabledZoomLevelIdentifiersForViewModel:v15];
+          viewModel3 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
+          v16 = [v14 _enabledZoomLevelIdentifiersForViewModel:viewModel3];
           [(PXCuratedLibraryZoomLevelControl *)self setEnabledZoomLevelIdentifiers:v16];
         }
 
-        v9 = v19;
-        if ((a4 & 0x400000000) != 0)
+        observableCopy = v19;
+        if ((change & 0x400000000) != 0)
         {
           goto LABEL_4;
         }
@@ -295,76 +295,76 @@ LABEL_14:
     {
     }
 
-    v13 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
-    -[PXCuratedLibraryZoomLevelControl setSelectedZoomLevel:](self, "setSelectedZoomLevel:", [v13 zoomLevel]);
+    viewModel4 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
+    -[PXCuratedLibraryZoomLevelControl setSelectedZoomLevel:](self, "setSelectedZoomLevel:", [viewModel4 zoomLevel]);
 
     goto LABEL_14;
   }
 
-  if (PXCuratedLibraryStyleGuideObservationContext != a5)
+  if (PXCuratedLibraryStyleGuideObservationContext != context)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryZoomLevelControl.m" lineNumber:390 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryZoomLevelControl.m" lineNumber:390 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((a4 & 4) != 0)
+  if ((change & 4) != 0)
   {
 LABEL_4:
-    v18 = v9;
+    v18 = observableCopy;
     [(PXCuratedLibraryZoomLevelControl *)self _invalidateSegmentedControl];
-    v9 = v18;
+    observableCopy = v18;
   }
 
 LABEL_5:
 }
 
-- (void)_handleSegmentedControlAction:(id)a3
+- (void)_handleSegmentedControlAction:(id)action
 {
-  v4 = [(PXCuratedLibraryZoomLevelControl *)self zoomLevelIdentifiers];
-  v5 = [v4 objectAtIndexedSubscript:{-[PXCuratedLibraryZoomLevelSegmentedControl selectedSegmentIndex](self->_segmentedControl, "selectedSegmentIndex")}];
-  v6 = [v5 integerValue];
+  zoomLevelIdentifiers = [(PXCuratedLibraryZoomLevelControl *)self zoomLevelIdentifiers];
+  v5 = [zoomLevelIdentifiers objectAtIndexedSubscript:{-[PXCuratedLibraryZoomLevelSegmentedControl selectedSegmentIndex](self->_segmentedControl, "selectedSegmentIndex")}];
+  integerValue = [v5 integerValue];
 
-  if (v6 == [(PXCuratedLibraryZoomLevelControl *)self selectedZoomLevel])
+  if (integerValue == [(PXCuratedLibraryZoomLevelControl *)self selectedZoomLevel])
   {
     if ([(PXCuratedLibraryZoomLevelSegmentedControl *)self->_segmentedControl lastTouchRemainedOnSelectedSegment])
     {
-      v7 = [(PXCuratedLibraryZoomLevelControl *)self delegate];
+      delegate = [(PXCuratedLibraryZoomLevelControl *)self delegate];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
       {
-        v10 = [(PXCuratedLibraryZoomLevelControl *)self delegate];
-        [v10 zoomLevelControl:self didTapOnAlreadySelectedZoomLevel:v6];
+        delegate2 = [(PXCuratedLibraryZoomLevelControl *)self delegate];
+        [delegate2 zoomLevelControl:self didTapOnAlreadySelectedZoomLevel:integerValue];
       }
     }
   }
 
   else
   {
-    v9 = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
+    viewModel = [(PXCuratedLibraryZoomLevelControl *)self viewModel];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __66__PXCuratedLibraryZoomLevelControl__handleSegmentedControlAction___block_invoke;
     v11[3] = &__block_descriptor_40_e43_v16__0___PXMutablePhotosLibraryViewModel__8l;
-    v11[4] = v6;
-    [v9 performChanges:v11];
+    v11[4] = integerValue;
+    [viewModel performChanges:v11];
   }
 }
 
 - (void)_updateSegmentedControlEnabled
 {
-  v9 = [(PXCuratedLibraryZoomLevelControl *)self zoomLevelIdentifiers];
-  v3 = [(PXCuratedLibraryZoomLevelControl *)self enabledZoomLevelIdentifiers];
-  v4 = [v9 count];
+  zoomLevelIdentifiers = [(PXCuratedLibraryZoomLevelControl *)self zoomLevelIdentifiers];
+  enabledZoomLevelIdentifiers = [(PXCuratedLibraryZoomLevelControl *)self enabledZoomLevelIdentifiers];
+  v4 = [zoomLevelIdentifiers count];
   if (v4 >= 1)
   {
     v5 = v4;
     for (i = 0; i != v5; ++i)
     {
-      v7 = [v9 objectAtIndexedSubscript:i];
-      v8 = [v3 containsObject:v7];
+      v7 = [zoomLevelIdentifiers objectAtIndexedSubscript:i];
+      v8 = [enabledZoomLevelIdentifiers containsObject:v7];
 
       [(PXCuratedLibraryZoomLevelSegmentedControl *)self->_segmentedControl setEnabled:v8 forSegmentAtIndex:i];
     }
@@ -398,43 +398,43 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
   *(*(a1 + 32) + 472) = v14;
 }
 
-- (int64_t)zoomLevelDisplayedBeforeZoomLevel:(int64_t)a3
+- (int64_t)zoomLevelDisplayedBeforeZoomLevel:(int64_t)level
 {
-  v4 = [(PXCuratedLibraryZoomLevelControl *)self zoomLevelIdentifiers];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 indexOfObject:v5];
+  zoomLevelIdentifiers = [(PXCuratedLibraryZoomLevelControl *)self zoomLevelIdentifiers];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:level];
+  v6 = [zoomLevelIdentifiers indexOfObject:v5];
 
   if ((v6 - 1) > 0x7FFFFFFFFFFFFFFDLL)
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
   else
   {
-    v7 = [v4 objectAtIndexedSubscript:?];
-    v8 = [v7 integerValue];
+    v7 = [zoomLevelIdentifiers objectAtIndexedSubscript:?];
+    integerValue = [v7 integerValue];
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (void)setSelectedZoomLevel:(int64_t)a3
+- (void)setSelectedZoomLevel:(int64_t)level
 {
-  if (self->_selectedZoomLevel != a3)
+  if (self->_selectedZoomLevel != level)
   {
-    self->_selectedZoomLevel = a3;
+    self->_selectedZoomLevel = level;
     [(PXCuratedLibraryZoomLevelControl *)self _invalidateSegmentedControl];
   }
 }
 
-- (void)setEnabledZoomLevelIdentifiers:(id)a3
+- (void)setEnabledZoomLevelIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_enabledZoomLevelIdentifiers != v4)
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
+  if (self->_enabledZoomLevelIdentifiers != identifiersCopy)
   {
-    v11 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v11 = identifiersCopy;
+    v6 = [(NSArray *)identifiersCopy isEqual:?];
     v5 = v11;
     if ((v6 & 1) == 0)
     {
@@ -443,9 +443,9 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
       self->_enabledZoomLevelIdentifiers = v7;
 
       v9 = +[PXCuratedLibrarySettings sharedInstance];
-      v10 = [v9 enableTabBarAccessoryControls];
+      enableTabBarAccessoryControls = [v9 enableTabBarAccessoryControls];
 
-      if (v10)
+      if (enableTabBarAccessoryControls)
       {
         [(PXCuratedLibraryZoomLevelControl *)self _updateSegmentedControlEnabled];
       }
@@ -460,27 +460,27 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
   }
 }
 
-- (void)setShrinkLevel:(int64_t)a3
+- (void)setShrinkLevel:(int64_t)level
 {
   v5 = +[PXCuratedLibrarySettings sharedInstance];
-  v6 = [v5 enableTabBarAccessoryControls];
+  enableTabBarAccessoryControls = [v5 enableTabBarAccessoryControls];
 
-  if ((v6 & 1) == 0 && self->_shrinkLevel != a3)
+  if ((enableTabBarAccessoryControls & 1) == 0 && self->_shrinkLevel != level)
   {
-    self->_shrinkLevel = a3;
+    self->_shrinkLevel = level;
 
     [(PXCuratedLibraryZoomLevelControl *)self _updateSegmentedControl];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = +[PXCuratedLibrarySettings sharedInstance];
-  v7 = [v6 enableTabBarAccessoryControls];
+  enableTabBarAccessoryControls = [v6 enableTabBarAccessoryControls];
 
-  if (v7)
+  if (enableTabBarAccessoryControls)
   {
     [(PXCuratedLibraryZoomLevelSegmentedControl *)self->_segmentedControl sizeThatFits:width, height];
   }
@@ -500,9 +500,9 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
 - (void)dealloc
 {
   v3 = +[PXCuratedLibrarySettings sharedInstance];
-  v4 = [v3 enableTabBarAccessoryControls];
+  enableTabBarAccessoryControls = [v3 enableTabBarAccessoryControls];
 
-  if ((v4 & 1) == 0)
+  if ((enableTabBarAccessoryControls & 1) == 0)
   {
     free(self->_textSizes);
   }
@@ -512,19 +512,19 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
   [(PXCuratedLibraryZoomLevelControl *)&v5 dealloc];
 }
 
-- (PXCuratedLibraryZoomLevelControl)initWithViewModel:(id)a3 styleGuide:(id)a4
+- (PXCuratedLibraryZoomLevelControl)initWithViewModel:(id)model styleGuide:(id)guide
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  guideCopy = guide;
   v41.receiver = self;
   v41.super_class = PXCuratedLibraryZoomLevelControl;
   v9 = [(PXCuratedLibraryZoomLevelControl *)&v41 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v9)
   {
     v10 = +[PXCuratedLibrarySettings sharedInstance];
-    v11 = [v10 enableTabBarAccessoryControls];
+    enableTabBarAccessoryControls = [v10 enableTabBarAccessoryControls];
 
-    if ((v11 & 1) == 0)
+    if ((enableTabBarAccessoryControls & 1) == 0)
     {
       v12 = objc_alloc(MEMORY[0x1E69DD298]);
       v13 = [MEMORY[0x1E69DC730] effectWithStyle:1202];
@@ -532,21 +532,21 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
       backgroundEffectView = v9->_backgroundEffectView;
       v9->_backgroundEffectView = v14;
 
-      v16 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-      v17 = [(UIVisualEffectView *)v9->_backgroundEffectView contentView];
-      [v17 setBackgroundColor:v16];
+      tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+      contentView = [(UIVisualEffectView *)v9->_backgroundEffectView contentView];
+      [contentView setBackgroundColor:tertiarySystemFillColor];
 
       [(PXCuratedLibraryZoomLevelControl *)v9 addSubview:v9->_backgroundEffectView];
-      v18 = [objc_opt_class() _allPotentialZoomLevelIdentifiers];
-      v9->_textSizes = malloc_type_calloc([v18 count], 0x10uLL, 0x1000040451B5BE8uLL);
+      _allPotentialZoomLevelIdentifiers = [objc_opt_class() _allPotentialZoomLevelIdentifiers];
+      v9->_textSizes = malloc_type_calloc([_allPotentialZoomLevelIdentifiers count], 0x10uLL, 0x1000040451B5BE8uLL);
     }
 
-    v9->_selectedZoomLevel = [v7 zoomLevel];
-    v19 = [objc_opt_class() _zoomLevelIdentifiersForViewModel:v7];
+    v9->_selectedZoomLevel = [modelCopy zoomLevel];
+    v19 = [objc_opt_class() _zoomLevelIdentifiersForViewModel:modelCopy];
     zoomLevelIdentifiers = v9->_zoomLevelIdentifiers;
     v9->_zoomLevelIdentifiers = v19;
 
-    v21 = [objc_opt_class() _enabledZoomLevelIdentifiersForViewModel:v7];
+    v21 = [objc_opt_class() _enabledZoomLevelIdentifiersForViewModel:modelCopy];
     enabledZoomLevelIdentifiers = v9->_enabledZoomLevelIdentifiers;
     v9->_enabledZoomLevelIdentifiers = v21;
 
@@ -566,22 +566,22 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
     }
 
     v28 = +[PXCuratedLibrarySettings sharedInstance];
-    v29 = [v28 enableTabBarAccessoryControls];
+    enableTabBarAccessoryControls2 = [v28 enableTabBarAccessoryControls];
 
-    if (v29)
+    if (enableTabBarAccessoryControls2)
     {
       [(PXCuratedLibraryZoomLevelSegmentedControl *)v9->_segmentedControl _setUseGlass:1];
     }
 
     [(PXCuratedLibraryZoomLevelControl *)v9 addSubview:v9->_segmentedControl];
-    objc_storeStrong(&v9->_viewModel, a3);
+    objc_storeStrong(&v9->_viewModel, model);
     [(PXCuratedLibraryViewModel *)v9->_viewModel registerChangeObserver:v9 context:PXViewModelObservationContext_37550];
     v30 = +[PXCuratedLibrarySettings sharedInstance];
-    v31 = [v30 enableTabBarAccessoryControls];
+    enableTabBarAccessoryControls3 = [v30 enableTabBarAccessoryControls];
 
-    if ((v31 & 1) == 0)
+    if ((enableTabBarAccessoryControls3 & 1) == 0)
     {
-      objc_storeStrong(&v9->_styleGuide, a4);
+      objc_storeStrong(&v9->_styleGuide, guide);
       [(PXCuratedLibraryStyleGuide *)v9->_styleGuide registerChangeObserver:v9 context:PXCuratedLibraryStyleGuideObservationContext];
     }
 
@@ -590,22 +590,22 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
     v9->_updater = v32;
 
     [(PXUpdater *)v9->_updater addUpdateSelector:sel__updateSegmentedControl needsUpdate:1];
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v34 addObserver:v9 selector:sel__handleContentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__handleContentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
     v35 = +[PXCuratedLibrarySettings sharedInstance];
-    v36 = [v35 enableTabBarAccessoryControls];
+    enableTabBarAccessoryControls4 = [v35 enableTabBarAccessoryControls];
 
-    if ((v36 & 1) == 0)
+    if ((enableTabBarAccessoryControls4 & 1) == 0)
     {
-      v37 = [(PXCuratedLibraryZoomLevelControl *)v9 layer];
-      [v37 setAllowsGroupOpacity:0];
+      layer = [(PXCuratedLibraryZoomLevelControl *)v9 layer];
+      [layer setAllowsGroupOpacity:0];
     }
 
     v38 = +[PXCuratedLibrarySettings sharedInstance];
-    v39 = [v38 enableTabBarAccessoryControls];
+    enableTabBarAccessoryControls5 = [v38 enableTabBarAccessoryControls];
 
-    if (v39)
+    if (enableTabBarAccessoryControls5)
     {
       [(PXCuratedLibraryZoomLevelControl *)v9 _updateSegmentedControlEnabled];
     }
@@ -614,39 +614,39 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
   return v9;
 }
 
-- (PXCuratedLibraryZoomLevelControl)initWithFrame:(CGRect)a3
+- (PXCuratedLibraryZoomLevelControl)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryZoomLevelControl.m" lineNumber:60 description:{@"%s is not available as initializer", "-[PXCuratedLibraryZoomLevelControl initWithFrame:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryZoomLevelControl.m" lineNumber:60 description:{@"%s is not available as initializer", "-[PXCuratedLibraryZoomLevelControl initWithFrame:]"}];
 
   abort();
 }
 
-- (PXCuratedLibraryZoomLevelControl)initWithCoder:(id)a3
+- (PXCuratedLibraryZoomLevelControl)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryZoomLevelControl.m" lineNumber:56 description:{@"%s is not available as initializer", "-[PXCuratedLibraryZoomLevelControl initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryZoomLevelControl.m" lineNumber:56 description:{@"%s is not available as initializer", "-[PXCuratedLibraryZoomLevelControl initWithCoder:]"}];
 
   abort();
 }
 
-+ (id)_enabledZoomLevelIdentifiersForViewModel:(id)a3
++ (id)_enabledZoomLevelIdentifiersForViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 allowedActions];
-  v6 = [v5 containsObject:@"PXCuratedLibraryActionNavigateToYearsMonthsOrDays"];
+  modelCopy = model;
+  allowedActions = [modelCopy allowedActions];
+  v6 = [allowedActions containsObject:@"PXCuratedLibraryActionNavigateToYearsMonthsOrDays"];
 
   if (v6)
   {
-    v7 = [a1 _zoomLevelIdentifiersForViewModel:v4];
+    v7 = [self _zoomLevelIdentifiersForViewModel:modelCopy];
   }
 
   else
   {
-    v8 = [v4 configuration];
+    configuration = [modelCopy configuration];
 
-    v9 = [v8 isZoomLevelEnabled:4];
+    v9 = [configuration isZoomLevelEnabled:4];
     v10 = MEMORY[0x1E695E0F0];
     if (v9)
     {
@@ -654,18 +654,18 @@ void __59__PXCuratedLibraryZoomLevelControl__updateSegmentedControl__block_invok
     }
 
     v7 = v10;
-    v4 = v8;
+    modelCopy = configuration;
   }
 
   return v7;
 }
 
-+ (id)_zoomLevelIdentifiersForViewModel:(id)a3
++ (id)_zoomLevelIdentifiersForViewModel:(id)model
 {
-  v4 = [a3 configuration];
-  [a1 _allPotentialZoomLevelIdentifiers];
+  configuration = [model configuration];
+  [self _allPotentialZoomLevelIdentifiers];
   objc_claimAutoreleasedReturnValue();
-  v5 = v4;
+  v5 = configuration;
   PXFilter();
 }
 

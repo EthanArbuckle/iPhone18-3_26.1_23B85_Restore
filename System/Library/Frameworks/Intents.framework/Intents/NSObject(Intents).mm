@@ -11,16 +11,16 @@
   v2 = NSSelectorFromString(@"_dictionaryRepresentation");
   if (objc_opt_respondsToSelector())
   {
-    v3 = ([a1 methodForSelector:v2])(a1, v2);
-    v4 = [v3 _intents_indexingRepresentation];
+    v3 = ([self methodForSelector:v2])(self, v2);
+    selfCopy = [v3 _intents_indexingRepresentation];
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (SEL)_intents_setterForPropertyWithName:()Intents
@@ -65,7 +65,7 @@
     [i appendString:@"    "];
   }
 
-  v6 = [a1 description];
+  v6 = [self description];
   v7 = [v6 stringByReplacingOccurrencesOfString:@"\n" withString:i];
 
   return v7;

@@ -1,11 +1,11 @@
 @interface BinaryConfirmationSelectTableViewCell
-- (_TtC13HearingTestUI37BinaryConfirmationSelectTableViewCell)initWithCoder:(id)a3;
-- (_TtC13HearingTestUI37BinaryConfirmationSelectTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC13HearingTestUI37BinaryConfirmationSelectTableViewCell)initWithCoder:(id)coder;
+- (_TtC13HearingTestUI37BinaryConfirmationSelectTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation BinaryConfirmationSelectTableViewCell
 
-- (_TtC13HearingTestUI37BinaryConfirmationSelectTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC13HearingTestUI37BinaryConfirmationSelectTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -15,7 +15,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (identifier)
   {
     v5 = sub_20CE13954();
   }
@@ -32,7 +32,7 @@
   return v8;
 }
 
-- (_TtC13HearingTestUI37BinaryConfirmationSelectTableViewCell)initWithCoder:(id)a3
+- (_TtC13HearingTestUI37BinaryConfirmationSelectTableViewCell)initWithCoder:(id)coder
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -42,7 +42,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_20CDAAB14();
 }
 

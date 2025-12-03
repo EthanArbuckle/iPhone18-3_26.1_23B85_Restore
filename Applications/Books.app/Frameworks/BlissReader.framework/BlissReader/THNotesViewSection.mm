@@ -1,5 +1,5 @@
 @interface THNotesViewSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
   [(THNotesViewSection *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -34,9 +34,9 @@
         else
         {
           v9 = self->mNotes;
-          v10 = [v5 notes];
+          notes = [v5 notes];
 
-          LOBYTE(v4) = [(NSArray *)v9 isEqualToArray:v10];
+          LOBYTE(v4) = [(NSArray *)v9 isEqualToArray:notes];
         }
       }
     }

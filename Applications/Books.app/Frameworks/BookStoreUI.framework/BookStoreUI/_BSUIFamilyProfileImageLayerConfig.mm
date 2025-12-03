@@ -1,18 +1,18 @@
 @interface _BSUIFamilyProfileImageLayerConfig
-- (_BSUIFamilyProfileImageLayerConfig)initWithSize:(CGSize)a3 contentsScale:(double)a4 cornerRadius:(double)a5 urlString:(id)a6;
+- (_BSUIFamilyProfileImageLayerConfig)initWithSize:(CGSize)size contentsScale:(double)scale cornerRadius:(double)radius urlString:(id)string;
 - (id)_generateImage;
-- (void)_profilePictureStoreChanged:(id)a3;
-- (void)configureLayer:(id)a3;
+- (void)_profilePictureStoreChanged:(id)changed;
+- (void)configureLayer:(id)layer;
 - (void)dealloc;
 @end
 
 @implementation _BSUIFamilyProfileImageLayerConfig
 
-- (_BSUIFamilyProfileImageLayerConfig)initWithSize:(CGSize)a3 contentsScale:(double)a4 cornerRadius:(double)a5 urlString:(id)a6
+- (_BSUIFamilyProfileImageLayerConfig)initWithSize:(CGSize)size contentsScale:(double)scale cornerRadius:(double)radius urlString:(id)string
 {
-  height = a3.height;
-  width = a3.width;
-  v12 = a6;
+  height = size.height;
+  width = size.width;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = _BSUIFamilyProfileImageLayerConfig;
   v13 = [(_BSUIFamilyProfileImageLayerConfig *)&v17 init];
@@ -21,9 +21,9 @@
   {
     v13->_size.width = width;
     v13->_size.height = height;
-    v13->_contentsScale = a4;
-    v13->_cornerRadius = a5;
-    objc_storeStrong(&v13->_urlString, a6);
+    v13->_contentsScale = scale;
+    v13->_cornerRadius = radius;
+    objc_storeStrong(&v13->_urlString, string);
     v15 = +[NSNotificationCenter defaultCenter];
     [v15 addObserver:v14 selector:"_profilePictureStoreChanged:" name:AAUIProfilePictureStoreDidChangeNotification object:0];
   }
@@ -41,9 +41,9 @@
   [(_BSUIFamilyProfileImageLayerConfig *)&v4 dealloc];
 }
 
-- (void)_profilePictureStoreChanged:(id)a3
+- (void)_profilePictureStoreChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -75,26 +75,26 @@
 
 - (id)_generateImage
 {
-  v2 = [(_BSUIFamilyProfileImageLayerConfig *)self urlString];
-  v3 = [NSURL URLWithString:v2];
+  urlString = [(_BSUIFamilyProfileImageLayerConfig *)self urlString];
+  v3 = [NSURL URLWithString:urlString];
 
   v4 = BSUIGetFamilyMemberImage(v3);
 
   return v4;
 }
 
-- (void)configureLayer:(id)a3
+- (void)configureLayer:(id)layer
 {
-  objc_storeStrong(&self->_layer, a3);
-  v5 = a3;
-  [v5 setRasterizationScale:self->_contentsScale];
-  [v5 setContentsGravity:kCAGravityResizeAspectFill];
-  v7 = [(_BSUIFamilyProfileImageLayerConfig *)self _generateImage];
-  v6 = v7;
-  [v5 setContents:{objc_msgSend(v7, "CGImage")}];
-  [v5 setContentsScale:self->_contentsScale];
-  [v5 setCornerRadius:self->_cornerRadius];
-  [v5 setMasksToBounds:1];
+  objc_storeStrong(&self->_layer, layer);
+  layerCopy = layer;
+  [layerCopy setRasterizationScale:self->_contentsScale];
+  [layerCopy setContentsGravity:kCAGravityResizeAspectFill];
+  _generateImage = [(_BSUIFamilyProfileImageLayerConfig *)self _generateImage];
+  v6 = _generateImage;
+  [layerCopy setContents:{objc_msgSend(_generateImage, "CGImage")}];
+  [layerCopy setContentsScale:self->_contentsScale];
+  [layerCopy setCornerRadius:self->_cornerRadius];
+  [layerCopy setMasksToBounds:1];
 }
 
 @end

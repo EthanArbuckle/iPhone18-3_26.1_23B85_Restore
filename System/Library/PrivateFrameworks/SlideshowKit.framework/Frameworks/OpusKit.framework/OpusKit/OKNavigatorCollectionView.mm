@@ -1,17 +1,17 @@
 @interface OKNavigatorCollectionView
-- (OKNavigatorCollectionView)initWithFrame:(CGRect)a3;
+- (OKNavigatorCollectionView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation OKNavigatorCollectionView
 
-- (OKNavigatorCollectionView)initWithFrame:(CGRect)a3
+- (OKNavigatorCollectionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = OKNavigatorCollectionView;
-  v3 = [(OKNavigatorCollectionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(OKNavigatorCollectionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,12 +29,12 @@
   [(OKNavigatorCollectionView *)&v3 dealloc];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(OKNavigatorCollectionView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -47,12 +47,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(OKNavigatorCollectionView *)self frame];
   v9 = v8;
   v11 = v10;

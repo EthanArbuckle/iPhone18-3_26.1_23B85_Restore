@@ -1,23 +1,23 @@
 @interface PlaylistModelResponse
-- (_TtC16MusicApplication21PlaylistModelResponse)initWithRequest:(id)a3;
-- (id)navigationHandlerForItemAt:(id)a3 sourceViewController:(id)a4;
-- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)a3 responseHandler:(id)a4;
+- (_TtC16MusicApplication21PlaylistModelResponse)initWithRequest:(id)request;
+- (id)navigationHandlerForItemAt:(id)at sourceViewController:(id)controller;
+- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)index responseHandler:(id)handler;
 - (id)results;
-- (void)getChangeDetailsFromPreviousResponse:(id)a3 completion:(id)a4;
+- (void)getChangeDetailsFromPreviousResponse:(id)response completion:(id)completion;
 @end
 
 @implementation PlaylistModelResponse
 
 - (id)results
 {
-  v2 = [*&self->MPModelResponse_opaque[OBJC_IVAR____TtC16MusicApplication21PlaylistModelResponse_underlyingModelResponse] results];
+  results = [*&self->MPModelResponse_opaque[OBJC_IVAR____TtC16MusicApplication21PlaylistModelResponse_underlyingModelResponse] results];
 
-  return v2;
+  return results;
 }
 
-- (void)getChangeDetailsFromPreviousResponse:(id)a3 completion:(id)a4
+- (void)getChangeDetailsFromPreviousResponse:(id)response completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -30,31 +30,31 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_B5160(a3, v6, v7);
+  responseCopy = response;
+  selfCopy = self;
+  sub_B5160(response, v6, v7);
   sub_17654(v6);
 }
 
-- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)a3 responseHandler:(id)a4
+- (id)newOperationForDetailedKeepLocalStatusConfigurationForSectionAtIndex:(int64_t)index responseHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  v9 = sub_B5614(a3, sub_AACD4, v7);
+  selfCopy = self;
+  v9 = sub_B5614(index, sub_AACD4, v7);
 
   return v9;
 }
 
-- (_TtC16MusicApplication21PlaylistModelResponse)initWithRequest:(id)a3
+- (_TtC16MusicApplication21PlaylistModelResponse)initWithRequest:(id)request
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)navigationHandlerForItemAt:(id)a3 sourceViewController:(id)a4
+- (id)navigationHandlerForItemAt:(id)at sourceViewController:(id)controller
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
@@ -66,11 +66,11 @@
   if (v11)
   {
     v12 = v11;
-    v13 = a3;
-    v14 = a4;
-    v15 = self;
+    atCopy = at;
+    controllerCopy = controller;
+    selfCopy = self;
     isa = sub_AB3770().super.isa;
-    v17 = [v12 navigationHandlerForItemAt:isa sourceViewController:v14];
+    v17 = [v12 navigationHandlerForItemAt:isa sourceViewController:controllerCopy];
     (*(v8 + 8))(v10, v7);
 
     if (v17)

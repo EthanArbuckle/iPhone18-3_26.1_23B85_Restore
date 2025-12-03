@@ -1,6 +1,6 @@
 @interface MTRDataTypeTestGlobalStruct
 - (MTRDataTypeTestGlobalStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDataTypeTestGlobalStruct);
-  v5 = [(MTRDataTypeTestGlobalStruct *)self name];
-  [(MTRDataTypeTestGlobalStruct *)v4 setName:v5];
+  name = [(MTRDataTypeTestGlobalStruct *)self name];
+  [(MTRDataTypeTestGlobalStruct *)v4 setName:name];
 
-  v6 = [(MTRDataTypeTestGlobalStruct *)self myBitmap];
-  [(MTRDataTypeTestGlobalStruct *)v4 setMyBitmap:v6];
+  myBitmap = [(MTRDataTypeTestGlobalStruct *)self myBitmap];
+  [(MTRDataTypeTestGlobalStruct *)v4 setMyBitmap:myBitmap];
 
-  v7 = [(MTRDataTypeTestGlobalStruct *)self myEnum];
-  [(MTRDataTypeTestGlobalStruct *)v4 setMyEnum:v7];
+  myEnum = [(MTRDataTypeTestGlobalStruct *)self myEnum];
+  [(MTRDataTypeTestGlobalStruct *)v4 setMyEnum:myEnum];
 
   return v4;
 }

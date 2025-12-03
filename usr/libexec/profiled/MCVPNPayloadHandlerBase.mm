@@ -1,14 +1,14 @@
 @interface MCVPNPayloadHandlerBase
 + (id)managedServiceIDs;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (BOOL)isInstalled;
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4;
-- (MCVPNPayloadHandlerBase)initWithPayload:(id)a3 profileHandler:(id)a4;
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error;
+- (MCVPNPayloadHandlerBase)initWithPayload:(id)payload profileHandler:(id)handler;
 - (id)PPTPDeprecatedError;
-- (id)_copyCertificateWithPayloadUUID:(id)a3 intoKeychainAccessGroup:(id)a4 personaID:(id)a5;
-- (id)cannotInstallErrorWithUnderlyingError:(id)a3;
+- (id)_copyCertificateWithPayloadUUID:(id)d intoKeychainAccessGroup:(id)group personaID:(id)iD;
+- (id)cannotInstallErrorWithUnderlyingError:(id)error;
 - (id)userInputFields;
-- (void)didInstallOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4;
+- (void)didInstallOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions;
 - (void)remove;
 - (void)setAside;
 - (void)unsetAside;
@@ -16,19 +16,19 @@
 
 @implementation MCVPNPayloadHandlerBase
 
-- (MCVPNPayloadHandlerBase)initWithPayload:(id)a3 profileHandler:(id)a4
+- (MCVPNPayloadHandlerBase)initWithPayload:(id)payload profileHandler:(id)handler
 {
-  v6 = a3;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = MCVPNPayloadHandlerBase;
-  v7 = [(MCNewPayloadHandler *)&v17 initWithPayload:v6 profileHandler:a4];
+  v7 = [(MCNewPayloadHandler *)&v17 initWithPayload:payloadCopy profileHandler:handler];
   if (!v7)
   {
     goto LABEL_6;
   }
 
-  v8 = [v6 vpnType];
-  v9 = [v8 isEqualToString:kMCVPNPayloadBaseVPNTypeAlwaysOn];
+  vpnType = [payloadCopy vpnType];
+  v9 = [vpnType isEqualToString:kMCVPNPayloadBaseVPNTypeAlwaysOn];
 
   if (v9)
   {
@@ -40,7 +40,7 @@
   else
   {
     neProfileIngestionHandler = [(MCNewPayloadHandler *)v7 payload];
-    v12 = [neProfileIngestionHandler type];
+    type = [neProfileIngestionHandler type];
     v13 = MCNEProfileIngestionHandlerClassForPayload();
     v14 = v7->_neProfileIngestionHandler;
     v7->_neProfileIngestionHandler = v13;
@@ -63,13 +63,13 @@ LABEL_6:
 - (id)userInputFields
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MCNewPayloadHandler *)self payload];
-  v5 = [v4 nePayloadBase];
-  v6 = [v5 getPreprocessedPayloadContents];
-  v7 = [v6 objectForKeyedSubscript:@"AuthName"];
+  payload = [(MCNewPayloadHandler *)self payload];
+  nePayloadBase = [payload nePayloadBase];
+  getPreprocessedPayloadContents = [nePayloadBase getPreprocessedPayloadContents];
+  v7 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"AuthName"];
   if (!v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"AuthNameRequired"];
+    v8 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"AuthNameRequired"];
 
     if (!v8)
     {
@@ -77,33 +77,33 @@ LABEL_6:
     }
 
     v7 = MCLocalizedString();
-    v9 = [v4 displayName];
+    displayName = [payload displayName];
     v10 = MCLocalizedFormat();
     v11 = [MCNewPayloadHandler promptDictionaryForKey:@"kVPNUserInputUserName" title:v7 description:v10 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:&_mh_execute_header flags:?];
     [v3 addObject:v11];
   }
 
 LABEL_5:
-  v12 = [v6 objectForKeyedSubscript:@"AuthPassword"];
+  v12 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"AuthPassword"];
   if (!v12)
   {
-    v13 = [v6 objectForKeyedSubscript:@"AuthPasswordRequired"];
+    v13 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"AuthPasswordRequired"];
 
     if (!v13)
     {
       goto LABEL_12;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"AuthName"];
+    v14 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"AuthName"];
 
     if (v14)
     {
-      [v6 objectForKeyedSubscript:@"AuthName"];
+      [getPreprocessedPayloadContents objectForKeyedSubscript:@"AuthName"];
     }
 
     else
     {
-      [v4 displayName];
+      [payload displayName];
     }
     v15 = ;
     v12 = MCLocalizedFormat();
@@ -114,10 +114,10 @@ LABEL_5:
   }
 
 LABEL_12:
-  v18 = [v6 objectForKeyedSubscript:@"HTTPProxyUsername"];
+  v18 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"HTTPProxyUsername"];
   if (!v18)
   {
-    v19 = [v6 objectForKeyedSubscript:@"HTTPProxyUsernameRequired"];
+    v19 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"HTTPProxyUsernameRequired"];
 
     if (!v19)
     {
@@ -125,33 +125,33 @@ LABEL_12:
     }
 
     v18 = MCLocalizedString();
-    v20 = [v4 displayName];
+    displayName2 = [payload displayName];
     v21 = MCLocalizedFormat();
     v22 = [MCNewPayloadHandler promptDictionaryForKey:@"kVPNUserInputProxyUserName" title:v18 description:v21 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:&_mh_execute_header flags:?];
     [v3 addObject:v22];
   }
 
 LABEL_16:
-  v23 = [v6 objectForKeyedSubscript:@"HTTPProxyPassword"];
+  v23 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"HTTPProxyPassword"];
   if (!v23)
   {
-    v24 = [v6 objectForKeyedSubscript:@"HTTPProxyPassword"];
+    v24 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"HTTPProxyPassword"];
 
     if (!v24)
     {
       goto LABEL_23;
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"HTTPProxyPassword"];
+    v25 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"HTTPProxyPassword"];
 
     if (v25)
     {
-      [v6 objectForKeyedSubscript:@"AuthName"];
+      [getPreprocessedPayloadContents objectForKeyedSubscript:@"AuthName"];
     }
 
     else
     {
-      [v4 displayName];
+      [payload displayName];
     }
     v26 = ;
     v23 = MCLocalizedFormat();
@@ -162,10 +162,10 @@ LABEL_16:
   }
 
 LABEL_23:
-  v29 = [v6 objectForKeyedSubscript:@"SharedSecret"];
+  v29 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"SharedSecret"];
   if (!v29)
   {
-    v30 = [v6 objectForKeyedSubscript:@"SharedSecretRequired"];
+    v30 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"SharedSecretRequired"];
 
     if (!v30)
     {
@@ -173,17 +173,17 @@ LABEL_23:
     }
 
     v29 = MCLocalizedString();
-    v31 = [v4 displayName];
+    displayName3 = [payload displayName];
     v32 = MCLocalizedFormat();
     v33 = [MCNewPayloadHandler promptDictionaryForKey:@"kVPNUserInputSharedSecret" title:v29 description:v32 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:0x100000003 flags:?];
     [v3 addObject:v33];
   }
 
 LABEL_27:
-  v34 = [v6 objectForKeyedSubscript:@"PromptForVPNPIN"];
+  v34 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"PromptForVPNPIN"];
   if (!v34)
   {
-    v35 = [v6 objectForKeyedSubscript:@"PromptForVPNPINRequired"];
+    v35 = [getPreprocessedPayloadContents objectForKeyedSubscript:@"PromptForVPNPINRequired"];
 
     if (!v35)
     {
@@ -191,7 +191,7 @@ LABEL_27:
     }
 
     v34 = MCLocalizedString();
-    v36 = [v4 displayName];
+    displayName4 = [payload displayName];
     v37 = MCLocalizedFormat();
     v38 = [MCNewPayloadHandler promptDictionaryForKey:@"kVPNUserInputPIN" title:v34 description:v37 retypeDescription:0 finePrint:0 defaultValue:0 placeholderValue:0 minimumLength:0 fieldType:0x100000003 flags:?];
     [v3 addObject:v38];
@@ -202,18 +202,18 @@ LABEL_31:
   return v3;
 }
 
-- (BOOL)preflightUserInputResponses:(id)a3 outError:(id *)a4
+- (BOOL)preflightUserInputResponses:(id)responses outError:(id *)error
 {
-  v5 = a3;
-  v6 = [(MCNewPayloadHandler *)self payload];
+  responsesCopy = responses;
+  payload = [(MCNewPayloadHandler *)self payload];
   v7 = objc_alloc_init(NSMutableDictionary);
-  v25 = v6;
-  v24 = [v6 nePayloadBase];
+  v25 = payload;
+  nePayloadBase = [payload nePayloadBase];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = v5;
+  v8 = responsesCopy;
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v9)
   {
@@ -232,7 +232,7 @@ LABEL_31:
         }
 
         v15 = *(*(&v29 + 1) + 8 * v14);
-        v16 = [v15 objectForKey:{v12, v24}];
+        v16 = [v15 objectForKey:{v12, nePayloadBase}];
         v17 = [v15 objectForKey:v13];
         if ([v16 isEqualToString:@"kVPNUserInputUserName"])
         {
@@ -310,7 +310,7 @@ LABEL_19:
     while (v22);
   }
 
-  [v24 setPostprocessedPayloadContents:v7];
+  [nePayloadBase setPostprocessedPayloadContents:v7];
   return 1;
 }
 
@@ -323,33 +323,33 @@ LABEL_19:
   return v4;
 }
 
-- (id)cannotInstallErrorWithUnderlyingError:(id)a3
+- (id)cannotInstallErrorWithUnderlyingError:(id)error
 {
   v4 = MCVPNErrorDomain;
-  v5 = a3;
-  v6 = [(MCNewPayloadHandler *)self payload];
-  v7 = [v6 displayName];
+  errorCopy = error;
+  payload = [(MCNewPayloadHandler *)self payload];
+  displayName = [payload displayName];
   v8 = MCErrorArray();
-  v9 = [NSError MCErrorWithDomain:v4 code:15000 descriptionArray:v8 underlyingError:v5 errorType:MCErrorTypeFatal, v7, 0];
+  v9 = [NSError MCErrorWithDomain:v4 code:15000 descriptionArray:v8 underlyingError:errorCopy errorType:MCErrorTypeFatal, displayName, 0];
 
   return v9;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v79 = a3;
-  v83 = a4;
-  v80 = a5;
-  v9 = [(MCNewPayloadHandler *)self payload];
-  v81 = [v9 nePayloadBase];
+  installerCopy = installer;
+  optionsCopy = options;
+  clientCopy = client;
+  payload = [(MCNewPayloadHandler *)self payload];
+  nePayloadBase = [payload nePayloadBase];
   v84 = objc_alloc_init(NSMutableArray);
-  v10 = [v83 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledInteractively];
-  LOBYTE(a4) = [v10 BOOLValue];
+  v10 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledInteractively];
+  LOBYTE(options) = [v10 BOOLValue];
 
-  if ((a4 & 1) == 0)
+  if ((options & 1) == 0)
   {
-    v11 = [v9 vpnType];
-    v12 = [v11 isEqualToString:kMCVPNPayloadBaseVPNTypePPTP];
+    vpnType = [payload vpnType];
+    v12 = [vpnType isEqualToString:kMCVPNPayloadBaseVPNTypePPTP];
 
     if (v12)
     {
@@ -360,8 +360,8 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "PPTP is deprecated starting from iOS 10 and valid configurations can not be created.", &buf, 2u);
       }
 
-      v14 = [(MCVPNPayloadHandlerBase *)self PPTPDeprecatedError];
-      v82 = 0;
+      pPTPDeprecatedError = [(MCVPNPayloadHandlerBase *)self PPTPDeprecatedError];
+      ingestedConfiguration = 0;
       goto LABEL_49;
     }
   }
@@ -379,13 +379,13 @@ LABEL_19:
   }
 
   [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler loadConfigurationsForceReloadFromDisk];
-  v15 = [v9 vpnType];
-  v16 = [v15 isEqualToString:kMCVPNPayloadBaseVPNTypeAlwaysOn];
+  vpnType2 = [payload vpnType];
+  v16 = [vpnType2 isEqualToString:kMCVPNPayloadBaseVPNTypeAlwaysOn];
 
   neProfileIngestionHandler = self->_neProfileIngestionHandler;
   if (v16)
   {
-    if (([(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler createConfigurationFromPayload:v81 payloadType:@"com.apple.vpn.managed.alwayson"]& 1) != 0)
+    if (([(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler createConfigurationFromPayload:nePayloadBase payloadType:@"com.apple.vpn.managed.alwayson"]& 1) != 0)
     {
       goto LABEL_9;
     }
@@ -393,9 +393,9 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  v24 = [(MCNewPayloadHandler *)self payload];
-  v25 = [v24 type];
-  v26 = [(NEProfileIngestionDelegate *)neProfileIngestionHandler createConfigurationFromPayload:v81 payloadType:v25];
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  type = [payload2 type];
+  v26 = [(NEProfileIngestionDelegate *)neProfileIngestionHandler createConfigurationFromPayload:nePayloadBase payloadType:type];
 
   if ((v26 & 1) == 0)
   {
@@ -404,56 +404,56 @@ LABEL_18:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v28 = v27;
-      v29 = [(MCNewPayloadHandler *)self payload];
-      v30 = [v29 UUID];
+      payload3 = [(MCNewPayloadHandler *)self payload];
+      uUID = [payload3 UUID];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v30;
+      *(&buf + 4) = uUID;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "NetworkExtension did not create configuration from payload UUID %{public}@", &buf, 0xCu);
     }
 
 LABEL_16:
-    v14 = [(MCVPNPayloadHandlerBase *)self cannotInstallError];
-    v82 = 0;
+    pPTPDeprecatedError = [(MCVPNPayloadHandlerBase *)self cannotInstallError];
+    ingestedConfiguration = 0;
     goto LABEL_49;
   }
 
 LABEL_9:
-  v82 = [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler ingestedConfiguration];
-  if (!v82)
+  ingestedConfiguration = [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler ingestedConfiguration];
+  if (!ingestedConfiguration)
   {
     v31 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
     {
       v32 = v31;
-      v33 = [(MCNewPayloadHandler *)self payload];
-      v34 = [v33 UUID];
+      payload4 = [(MCNewPayloadHandler *)self payload];
+      uUID2 = [payload4 UUID];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v34;
+      *(&buf + 4) = uUID2;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "NetworkExtension decided to skip installation of payload UUID %{public}@", &buf, 0xCu);
     }
 
     [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler unlockConfigurations];
-    v14 = 0;
-    v82 = 0;
+    pPTPDeprecatedError = 0;
+    ingestedConfiguration = 0;
     goto LABEL_60;
   }
 
-  v18 = [v9 nePayloadBase];
-  v88 = [v82 getPendingCertificateInfo:v18];
+  nePayloadBase2 = [payload nePayloadBase];
+  v88 = [ingestedConfiguration getPendingCertificateInfo:nePayloadBase2];
 
   if (v88)
   {
-    v19 = [v83 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
-    v20 = [v19 BOOLValue];
+    v19 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
+    bOOLValue = [v19 BOOLValue];
 
-    if (v20)
+    if (bOOLValue)
     {
       v21 = kMDMPersonaKey;
-      v22 = [v83 objectForKeyedSubscript:kMDMPersonaKey];
+      v22 = [optionsCopy objectForKeyedSubscript:kMDMPersonaKey];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v89 = [v83 objectForKeyedSubscript:v21];
+        v89 = [optionsCopy objectForKeyedSubscript:v21];
       }
 
       else
@@ -522,8 +522,8 @@ LABEL_9:
             v47 = *(*(&buf + 1) + 40);
             if (v47)
             {
-              v48 = [v9 UUID];
-              [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v47 andUUID:v48 forSystem:1 user:0 personaID:v89];
+              uUID3 = [payload UUID];
+              [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v47 andUUID:uUID3 forSystem:1 user:0 personaID:v89];
 
               [v84 addObject:*(*(&buf + 1) + 40)];
             }
@@ -531,8 +531,8 @@ LABEL_9:
 
           else
           {
-            v42 = [(MCNewPayloadHandler *)self profileHandler];
-            v43 = [v42 persistentIDForCertificateUUID:v39];
+            profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+            v43 = [profileHandler persistentIDForCertificateUUID:v39];
             v44 = *(*(&buf + 1) + 40);
             *(*(&buf + 1) + 40) = v43;
           }
@@ -553,75 +553,75 @@ LABEL_9:
     }
 
     v50 = [v88 count];
-    if (v50 != [v86 count] || !objc_msgSend(v82, "setCertificates:", v86))
+    if (v50 != [v86 count] || !objc_msgSend(ingestedConfiguration, "setCertificates:", v86))
     {
-      v51 = [(MCNewPayloadHandler *)self payload];
-      v52 = [v51 displayName];
+      payload5 = [(MCNewPayloadHandler *)self payload];
+      displayName = [payload5 displayName];
       v53 = MCErrorArray();
-      v14 = [NSError MCErrorWithDomain:MCVPNErrorDomain code:15003 descriptionArray:v53 errorType:MCErrorTypeFatal, v52, 0];
+      pPTPDeprecatedError = [NSError MCErrorWithDomain:MCVPNErrorDomain code:15003 descriptionArray:v53 errorType:MCErrorTypeFatal, displayName, 0];
 
       goto LABEL_49;
     }
   }
 
-  v14 = [(MCVPNPayloadHandlerBase *)self installService:v82];
-  if (!v14)
+  pPTPDeprecatedError = [(MCVPNPayloadHandlerBase *)self installService:ingestedConfiguration];
+  if (!pPTPDeprecatedError)
   {
-    [v82 setPayloadInfoIdentity:v81];
-    v63 = [v9 UUID];
-    v64 = [v9 organization];
-    [v82 setPayloadInfoCommon:v63 payloadOrganization:v64];
+    [ingestedConfiguration setPayloadInfoIdentity:nePayloadBase];
+    uUID4 = [payload UUID];
+    organization = [payload organization];
+    [ingestedConfiguration setPayloadInfoCommon:uUID4 payloadOrganization:organization];
 
-    v65 = [(MCNewPayloadHandler *)self profileHandler];
-    v66 = [v65 profile];
+    profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+    profile = [profileHandler2 profile];
 
-    if (v66)
+    if (profile)
     {
       v67 = objc_alloc_init(NSMutableDictionary);
-      v68 = [v66 UUID];
-      v69 = v68 == 0;
+      uUID5 = [profile UUID];
+      v69 = uUID5 == 0;
 
       if (!v69)
       {
-        v70 = [v66 UUID];
-        [v67 setObject:v70 forKeyedSubscript:kMCPayloadUUIDKey];
+        uUID6 = [profile UUID];
+        [v67 setObject:uUID6 forKeyedSubscript:kMCPayloadUUIDKey];
       }
 
-      v71 = [v66 identifier];
-      v72 = v71 == 0;
+      identifier = [profile identifier];
+      v72 = identifier == 0;
 
       if (!v72)
       {
-        v73 = [v66 identifier];
-        [v67 setObject:v73 forKeyedSubscript:kMCPayloadIdentifierKey];
+        identifier2 = [profile identifier];
+        [v67 setObject:identifier2 forKeyedSubscript:kMCPayloadIdentifierKey];
       }
 
-      if (v83)
+      if (optionsCopy)
       {
-        [v67 addEntriesFromDictionary:v83];
+        [v67 addEntriesFromDictionary:optionsCopy];
       }
 
-      [v82 setProfileInfo:v67];
+      [ingestedConfiguration setProfileInfo:v67];
     }
 
     [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler updateDefaultAfterAddingConfiguration];
-    v74 = [v82 getConfigurationIdentifier];
-    [v9 setPersistentResourceID:v74];
+    getConfigurationIdentifier = [ingestedConfiguration getConfigurationIdentifier];
+    [payload setPersistentResourceID:getConfigurationIdentifier];
 
     v75 = self->_neProfileIngestionHandler;
     v94 = 0;
     v76 = [(NEProfileIngestionDelegate *)v75 saveIngestedConfiguration:&v94];
-    v14 = v94;
+    pPTPDeprecatedError = v94;
     if ((v76 & 1) == 0)
     {
-      v77 = [(MCVPNPayloadHandlerBase *)self cannotInstallErrorWithUnderlyingError:v14];
+      v77 = [(MCVPNPayloadHandlerBase *)self cannotInstallErrorWithUnderlyingError:pPTPDeprecatedError];
 
-      v14 = v77;
+      pPTPDeprecatedError = v77;
     }
 
 LABEL_49:
     [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler unlockConfigurations];
-    if (v14)
+    if (pPTPDeprecatedError)
     {
       goto LABEL_50;
     }
@@ -633,10 +633,10 @@ LABEL_60:
 
   [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler unlockConfigurations];
 LABEL_50:
-  if (a6)
+  if (error)
   {
-    v54 = v14;
-    *a6 = v14;
+    v54 = pPTPDeprecatedError;
+    *error = pPTPDeprecatedError;
   }
 
   v92 = 0u;
@@ -658,8 +658,8 @@ LABEL_50:
         }
 
         v59 = *(*(&v90 + 1) + 8 * j);
-        v60 = [v9 UUID];
-        [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v59 andUUID:v60];
+        uUID7 = [payload UUID];
+        [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v59 andUUID:uUID7];
       }
 
       v56 = [v55 countByEnumeratingWithState:&v90 objects:v104 count:16];
@@ -677,10 +677,10 @@ LABEL_61:
 - (BOOL)isInstalled
 {
   [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler loadConfigurationsForceReloadFromDisk];
-  v3 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   neProfileIngestionHandler = self->_neProfileIngestionHandler;
-  v5 = [v3 UUID];
-  LOBYTE(neProfileIngestionHandler) = [(NEProfileIngestionDelegate *)neProfileIngestionHandler isInstalled:v5];
+  uUID = [payload UUID];
+  LOBYTE(neProfileIngestionHandler) = [(NEProfileIngestionDelegate *)neProfileIngestionHandler isInstalled:uUID];
 
   return neProfileIngestionHandler;
 }
@@ -691,31 +691,31 @@ LABEL_61:
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
     v4 = v3;
-    v5 = [(MCNewPayloadHandler *)self payload];
-    v6 = [v5 UUID];
-    v7 = [(MCNewPayloadHandler *)self payload];
-    v8 = [v7 persistentResourceID];
-    v9 = [(MCNewPayloadHandler *)self payload];
+    payload = [(MCNewPayloadHandler *)self payload];
+    uUID = [payload UUID];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    persistentResourceID = [payload2 persistentResourceID];
+    payload3 = [(MCNewPayloadHandler *)self payload];
     *buf = 138543874;
-    v31 = v6;
+    v31 = uUID;
     v32 = 2114;
-    v33 = v8;
+    v33 = persistentResourceID;
     v34 = 2114;
-    v35 = v9;
+    v35 = payload3;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Attempting to remove VPN payload (%{public}@, %{public}@): %{public}@", buf, 0x20u);
   }
 
-  v10 = [(MCNewPayloadHandler *)self payload];
+  payload4 = [(MCNewPayloadHandler *)self payload];
   if (([(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler lockConfigurations]& 1) != 0)
   {
     [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler loadConfigurationsForceReloadFromDisk];
-    v11 = [v10 persistentResourceID];
+    persistentResourceID2 = [payload4 persistentResourceID];
 
-    if (v11)
+    if (persistentResourceID2)
     {
       neProfileIngestionHandler = self->_neProfileIngestionHandler;
-      v13 = [v10 persistentResourceID];
-      v14 = [(NEProfileIngestionDelegate *)neProfileIngestionHandler getCertificatesForConfigurationWithIdentifier:v13];
+      persistentResourceID3 = [payload4 persistentResourceID];
+      v14 = [(NEProfileIngestionDelegate *)neProfileIngestionHandler getCertificatesForConfigurationWithIdentifier:persistentResourceID3];
 
       v27 = 0u;
       v28 = 0u;
@@ -738,8 +738,8 @@ LABEL_61:
             }
 
             v20 = *(*(&v25 + 1) + 8 * v19);
-            v21 = [v10 UUID];
-            [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v20 andUUID:v21];
+            uUID2 = [payload4 UUID];
+            [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v20 andUUID:uUID2];
 
             v19 = v19 + 1;
           }
@@ -752,8 +752,8 @@ LABEL_61:
       }
 
       v22 = self->_neProfileIngestionHandler;
-      v23 = [v10 persistentResourceID];
-      [(NEProfileIngestionDelegate *)v22 removeConfigurationWithIdentifier:v23];
+      persistentResourceID4 = [payload4 persistentResourceID];
+      [(NEProfileIngestionDelegate *)v22 removeConfigurationWithIdentifier:persistentResourceID4];
     }
 
     [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler updateDefaultAfterDeletingConfiguration];
@@ -777,27 +777,27 @@ LABEL_61:
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
     v4 = v3;
-    v5 = [(MCNewPayloadHandler *)self payload];
-    v6 = [v5 UUID];
-    v7 = [(MCNewPayloadHandler *)self payload];
-    v8 = [v7 persistentResourceID];
-    v9 = [(MCNewPayloadHandler *)self payload];
+    payload = [(MCNewPayloadHandler *)self payload];
+    uUID = [payload UUID];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    persistentResourceID = [payload2 persistentResourceID];
+    payload3 = [(MCNewPayloadHandler *)self payload];
     v15 = 138543874;
-    v16 = v6;
+    v16 = uUID;
     v17 = 2114;
-    v18 = v8;
+    v18 = persistentResourceID;
     v19 = 2114;
-    v20 = v9;
+    v20 = payload3;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Setting aside VPN payload (%{public}@, %{public}@): %{public}@", &v15, 0x20u);
   }
 
-  v10 = [(MCNewPayloadHandler *)self payload];
+  payload4 = [(MCNewPayloadHandler *)self payload];
   if (([(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler lockConfigurations]& 1) != 0)
   {
     [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler loadConfigurationsForceReloadFromDisk];
     neProfileIngestionHandler = self->_neProfileIngestionHandler;
-    v12 = [v10 persistentResourceID];
-    v13 = [(NEProfileIngestionDelegate *)neProfileIngestionHandler setAsideConfigurationName:v12 unsetAside:0];
+    persistentResourceID2 = [payload4 persistentResourceID];
+    v13 = [(NEProfileIngestionDelegate *)neProfileIngestionHandler setAsideConfigurationName:persistentResourceID2 unsetAside:0];
 
     [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler unlockConfigurations];
   }
@@ -819,27 +819,27 @@ LABEL_61:
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
     v4 = v3;
-    v5 = [(MCNewPayloadHandler *)self payload];
-    v6 = [v5 UUID];
-    v7 = [(MCNewPayloadHandler *)self payload];
-    v8 = [v7 persistentResourceID];
-    v9 = [(MCNewPayloadHandler *)self payload];
+    payload = [(MCNewPayloadHandler *)self payload];
+    uUID = [payload UUID];
+    payload2 = [(MCNewPayloadHandler *)self payload];
+    persistentResourceID = [payload2 persistentResourceID];
+    payload3 = [(MCNewPayloadHandler *)self payload];
     v15 = 138543874;
-    v16 = v6;
+    v16 = uUID;
     v17 = 2114;
-    v18 = v8;
+    v18 = persistentResourceID;
     v19 = 2114;
-    v20 = v9;
+    v20 = payload3;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Unsetting aside VPN payload (%{public}@, %{public}@): %{public}@", &v15, 0x20u);
   }
 
-  v10 = [(MCNewPayloadHandler *)self payload];
+  payload4 = [(MCNewPayloadHandler *)self payload];
   if (([(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler lockConfigurations]& 1) != 0)
   {
     [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler loadConfigurationsForceReloadFromDisk];
     neProfileIngestionHandler = self->_neProfileIngestionHandler;
-    v12 = [v10 persistentResourceID];
-    v13 = [(NEProfileIngestionDelegate *)neProfileIngestionHandler setAsideConfigurationName:v12 unsetAside:1];
+    persistentResourceID2 = [payload4 persistentResourceID];
+    v13 = [(NEProfileIngestionDelegate *)neProfileIngestionHandler setAsideConfigurationName:persistentResourceID2 unsetAside:1];
 
     [(NEProfileIngestionDelegate *)self->_neProfileIngestionHandler unlockConfigurations];
   }
@@ -855,16 +855,16 @@ LABEL_61:
   }
 }
 
-- (void)didInstallOldGlobalRestrictions:(id)a3 newGlobalRestrictions:(id)a4
+- (void)didInstallOldGlobalRestrictions:(id)restrictions newGlobalRestrictions:(id)globalRestrictions
 {
-  v5 = [(MCNewPayloadHandler *)self payload:a3];
-  v6 = [v5 vpnType];
-  v7 = [v6 isEqualToString:kMCVPNPayloadBaseVPNTypeAlwaysOn];
+  v5 = [(MCNewPayloadHandler *)self payload:restrictions];
+  vpnType = [v5 vpnType];
+  v7 = [vpnType isEqualToString:kMCVPNPayloadBaseVPNTypeAlwaysOn];
 
   if (v7)
   {
-    v8 = [(MCVPNPayloadHandlerBase *)self neProfileIngestionHandler];
-    [v8 enableAlwaysOnVpn];
+    neProfileIngestionHandler = [(MCVPNPayloadHandlerBase *)self neProfileIngestionHandler];
+    [neProfileIngestionHandler enableAlwaysOnVpn];
   }
 }
 
@@ -875,24 +875,24 @@ LABEL_61:
   if (v2)
   {
     [v2 loadConfigurationsForceReloadFromDisk];
-    v4 = [v3 copyManagedConfigurationIDs];
+    copyManagedConfigurationIDs = [v3 copyManagedConfigurationIDs];
   }
 
   else
   {
-    v4 = &__NSArray0__struct;
+    copyManagedConfigurationIDs = &__NSArray0__struct;
   }
 
-  return v4;
+  return copyManagedConfigurationIDs;
 }
 
-- (id)_copyCertificateWithPayloadUUID:(id)a3 intoKeychainAccessGroup:(id)a4 personaID:(id)a5
+- (id)_copyCertificateWithPayloadUUID:(id)d intoKeychainAccessGroup:(id)group personaID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MCNewPayloadHandler *)self profileHandler];
-  v12 = [v11 payloadHandlerWithUUID:v8];
+  dCopy = d;
+  groupCopy = group;
+  iDCopy = iD;
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  v12 = [profileHandler payloadHandlerWithUUID:dCopy];
 
   if (v12)
   {
@@ -908,7 +908,7 @@ LABEL_61:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v29 = v8;
+      v29 = dCopy;
       v30 = 2114;
       v31 = v14;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "VPN: Failed to get the identity for UUID %{public}@: %{public}@", buf, 0x16u);
@@ -918,8 +918,8 @@ LABEL_61:
     {
 LABEL_7:
       v25 = v14;
-      v26 = v10;
-      v16 = v9;
+      v26 = iDCopy;
+      v16 = groupCopy;
       v17 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
       {
@@ -928,18 +928,18 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Storing VPN identity, storing with accessibility %@", buf, 0xCu);
       }
 
-      v18 = [@"NE:" stringByAppendingString:v8];
-      v19 = [(MCNewPayloadHandler *)self profileHandler];
-      v20 = [v19 profile];
-      v9 = v16;
-      v21 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:enforcePersonalPersona:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:enforcePersonalPersona:accessibility:", v13, v18, v16, [v20 isInstalledForSystem], 0, kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly);
+      v18 = [@"NE:" stringByAppendingString:dCopy];
+      profileHandler2 = [(MCNewPayloadHandler *)self profileHandler];
+      profile = [profileHandler2 profile];
+      groupCopy = v16;
+      v21 = +[MCKeychain saveItem:withLabel:group:useSystemKeychain:enforcePersonalPersona:accessibility:](MCKeychain, "saveItem:withLabel:group:useSystemKeychain:enforcePersonalPersona:accessibility:", v13, v18, v16, [profile isInstalledForSystem], 0, kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly);
 
-      v10 = v26;
+      iDCopy = v26;
       if (v21)
       {
-        v22 = [(MCNewPayloadHandler *)self payload];
-        v23 = [v22 UUID];
-        [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v21 andUUID:v23 personaID:v26];
+        payload = [(MCNewPayloadHandler *)self payload];
+        uUID = [payload UUID];
+        [(MCNewPayloadHandler *)self _touchDependencyBetweenPersistentID:v21 andUUID:uUID personaID:v26];
       }
 
       CFRelease(v13);

@@ -1,7 +1,7 @@
 @interface VSTrie
 - (VSTrie)init;
-- (id)objectsMatchingPrefix:(id)a3;
-- (void)insertString:(id)a3 withAssociatedObject:(id)a4;
+- (id)objectsMatchingPrefix:(id)prefix;
+- (void)insertString:(id)string withAssociatedObject:(id)object;
 @end
 
 @implementation VSTrie
@@ -21,25 +21,25 @@
   return v2;
 }
 
-- (void)insertString:(id)a3 withAssociatedObject:(id)a4
+- (void)insertString:(id)string withAssociatedObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
-  v16 = [(VSTrie *)self root];
-  v8 = [v6 length];
+  root = [(VSTrie *)self root];
+  v8 = [stringCopy length];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__VSTrie_insertString_withAssociatedObject___block_invoke;
   v10[3] = &unk_278B73C20;
   v10[4] = &v11;
-  [v6 enumerateSubstringsInRange:0 options:v8 usingBlock:{2, v10}];
-  v9 = [v12[5] objects];
-  [v9 addObject:v7];
+  [stringCopy enumerateSubstringsInRange:0 options:v8 usingBlock:{2, v10}];
+  objects = [v12[5] objects];
+  [objects addObject:objectCopy];
 
   _Block_object_dispose(&v11, 8);
 }
@@ -73,22 +73,22 @@ void __44__VSTrie_insertString_withAssociatedObject___block_invoke(uint64_t a1, 
   *(v7 + 40) = v5;
 }
 
-- (id)objectsMatchingPrefix:(id)a3
+- (id)objectsMatchingPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
-  v15 = [(VSTrie *)self root];
-  v5 = [v4 length];
+  root = [(VSTrie *)self root];
+  v5 = [prefixCopy length];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __32__VSTrie_objectsMatchingPrefix___block_invoke;
   v9[3] = &unk_278B73C20;
   v9[4] = &v10;
-  [v4 enumerateSubstringsInRange:0 options:v5 usingBlock:{2, v9}];
+  [prefixCopy enumerateSubstringsInRange:0 options:v5 usingBlock:{2, v9}];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = v11[5];
   if (v7)

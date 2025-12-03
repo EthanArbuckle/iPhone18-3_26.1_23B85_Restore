@@ -6,16 +6,16 @@
 
 - (id)analyticsDict
 {
-  v3 = [(NSPIPAddressLocationPreferenceStats *)self tierType];
+  tierType = [(NSPIPAddressLocationPreferenceStats *)self tierType];
 
-  if (v3)
+  if (tierType)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
     v5 = [NSNumber numberWithUnsignedInteger:[(NSPIPAddressLocationPreferenceStats *)self locationPreference]];
     [v4 setObject:v5 forKeyedSubscript:@"LocationSharingPreference"];
 
-    v6 = [(NSPIPAddressLocationPreferenceStats *)self tierType];
-    [v4 setObject:v6 forKeyedSubscript:@"TierType"];
+    tierType2 = [(NSPIPAddressLocationPreferenceStats *)self tierType];
+    [v4 setObject:tierType2 forKeyedSubscript:@"TierType"];
   }
 
   else

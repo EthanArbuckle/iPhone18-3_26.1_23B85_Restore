@@ -6,7 +6,7 @@
 
 - (id)all
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D98F0AF8();
 
   if (v3)

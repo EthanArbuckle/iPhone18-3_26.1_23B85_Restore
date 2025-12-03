@@ -1,17 +1,17 @@
 @interface APUIAppClipView
-- (void)layoutSuggestion:(id)a3;
+- (void)layoutSuggestion:(id)suggestion;
 - (void)openPredictionAction;
 @end
 
 @implementation APUIAppClipView
 
-- (void)layoutSuggestion:(id)a3
+- (void)layoutSuggestion:(id)suggestion
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  suggestionCopy = suggestion;
+  if (suggestionCopy)
   {
-    [(APUISuggestionView *)self setSuggestion:v4];
+    [(APUISuggestionView *)self setSuggestion:suggestionCopy];
     [(APUISuggestionView *)self createViewsIfNeeded];
     v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__tapRecognized_];
     tapRecognizer = self->_tapRecognizer;
@@ -20,19 +20,19 @@
     [(UITapGestureRecognizer *)self->_tapRecognizer setNumberOfTapsRequired:1];
     [(UITapGestureRecognizer *)self->_tapRecognizer setNumberOfTouchesRequired:1];
     [(APUIAppClipView *)self addGestureRecognizer:self->_tapRecognizer];
-    v7 = [(APUISuggestionView *)self titleLabel];
-    v8 = [v4 uiSpecification];
-    v9 = [v8 title];
-    [v7 setText:v9];
+    titleLabel = [(APUISuggestionView *)self titleLabel];
+    uiSpecification = [suggestionCopy uiSpecification];
+    title = [uiSpecification title];
+    [titleLabel setText:title];
 
     v10 = MEMORY[0x277CCAAC8];
-    v11 = [v4 executableSpecification];
-    v12 = [v11 executableClassString];
-    v13 = NSClassFromString(v12);
-    v14 = [v4 executableSpecification];
-    v15 = [v14 executable];
+    executableSpecification = [suggestionCopy executableSpecification];
+    executableClassString = [executableSpecification executableClassString];
+    v13 = NSClassFromString(executableClassString);
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executable = [executableSpecification2 executable];
     v50 = 0;
-    v16 = [v10 unarchivedObjectOfClass:v13 fromData:v15 error:&v50];
+    v16 = [v10 unarchivedObjectOfClass:v13 fromData:executable error:&v50];
     v17 = v50;
 
     if (v16 || !v17)
@@ -41,9 +41,9 @@
       if (objc_opt_isKindOfClass())
       {
         objc_storeStrong(&self->_prediction, v16);
-        v19 = [(ATXHeroData *)self->_prediction clipMetadata];
-        v20 = [v19 fullAppCachedIconFilePath];
-        v21 = [v20 copy];
+        clipMetadata = [(ATXHeroData *)self->_prediction clipMetadata];
+        fullAppCachedIconFilePath = [clipMetadata fullAppCachedIconFilePath];
+        v21 = [fullAppCachedIconFilePath copy];
 
         if (v21)
         {
@@ -53,19 +53,19 @@
           v46 = __36__APUIAppClipView_layoutSuggestion___block_invoke;
           v47 = &unk_278C909F0;
           v48 = v21;
-          v49 = self;
+          selfCopy = self;
           dispatch_async(v22, &v44);
         }
 
         v23 = [(APUISuggestionView *)self titleLabel:v44];
-        v24 = [(ATXHeroData *)self->_prediction clipMetadata];
-        v25 = [v24 localizedTitleForClipSuggestion];
-        [v23 setText:v25];
+        clipMetadata2 = [(ATXHeroData *)self->_prediction clipMetadata];
+        localizedTitleForClipSuggestion = [clipMetadata2 localizedTitleForClipSuggestion];
+        [v23 setText:localizedTitleForClipSuggestion];
 
-        v26 = [(APUISuggestionView *)self subtitleLabel];
-        v27 = [(ATXHeroData *)self->_prediction clipMetadata];
-        v28 = [v27 localizedSubtitleForClipSuggestion];
-        [v26 setText:v28];
+        subtitleLabel = [(APUISuggestionView *)self subtitleLabel];
+        clipMetadata3 = [(ATXHeroData *)self->_prediction clipMetadata];
+        localizedSubtitleForClipSuggestion = [clipMetadata3 localizedSubtitleForClipSuggestion];
+        [subtitleLabel setText:localizedSubtitleForClipSuggestion];
       }
 
       else
@@ -85,9 +85,9 @@
 
       v33 = objc_opt_new();
       v34 = objc_alloc(MEMORY[0x277CCA898]);
-      v35 = [v4 uiSpecification];
-      v36 = [v35 reason];
-      v37 = [v34 initWithString:v36];
+      uiSpecification2 = [suggestionCopy uiSpecification];
+      reason = [uiSpecification2 reason];
+      v37 = [v34 initWithString:reason];
       [v33 appendAttributedString:v37];
 
       v38 = objc_alloc(MEMORY[0x277CCA898]);
@@ -100,8 +100,8 @@
       v41 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v18];
       [v33 appendAttributedString:v41];
 
-      v42 = [(APUISuggestionView *)self reasonLabel];
-      [v42 setAttributedText:v33];
+      reasonLabel = [(APUISuggestionView *)self reasonLabel];
+      [reasonLabel setAttributedText:v33];
 
       [(APUISuggestionView *)self installReasonLabelIfNecessary];
     }

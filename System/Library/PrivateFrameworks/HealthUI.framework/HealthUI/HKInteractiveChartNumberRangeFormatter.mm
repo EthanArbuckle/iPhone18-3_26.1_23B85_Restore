@@ -1,52 +1,52 @@
 @interface HKInteractiveChartNumberRangeFormatter
-- (BOOL)_shouldRemoveUnit:(id)a3 fromMaximumFormattedValue:(id)a4;
-- (BOOL)_shouldRemoveUnit:(id)a3 fromMinimumFormattedValue:(id)a4;
-- (id)_attributedStringFromValue:(id)a3 withValueFormatter:(id)a4 displayType:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9;
-- (id)attributedStringForMinimumString:(id)a3 maximumString:(id)a4 minimumUnitString:(id)a5 maximumUnitString:(id)a6 valueFont:(id)a7 formatForChart:(BOOL)a8 resultIsASingleValue:(BOOL *)a9;
-- (id)attributedStringForMinimumValue:(id)a3 maximumValue:(id)a4 displayType:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9 resultIsSingleValue:(BOOL *)a10;
-- (id)stringForMinimumValue:(id)a3 maximumValue:(id)a4 displayType:(id)a5 unitPreferenceController:(id)a6;
+- (BOOL)_shouldRemoveUnit:(id)unit fromMaximumFormattedValue:(id)value;
+- (BOOL)_shouldRemoveUnit:(id)unit fromMinimumFormattedValue:(id)value;
+- (id)_attributedStringFromValue:(id)value withValueFormatter:(id)formatter displayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart;
+- (id)attributedStringForMinimumString:(id)string maximumString:(id)maximumString minimumUnitString:(id)unitString maximumUnitString:(id)maximumUnitString valueFont:(id)font formatForChart:(BOOL)chart resultIsASingleValue:(BOOL *)value;
+- (id)attributedStringForMinimumValue:(id)value maximumValue:(id)maximumValue displayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart resultIsSingleValue:(BOOL *)self0;
+- (id)stringForMinimumValue:(id)value maximumValue:(id)maximumValue displayType:(id)type unitPreferenceController:(id)controller;
 @end
 
 @implementation HKInteractiveChartNumberRangeFormatter
 
-- (id)stringForMinimumValue:(id)a3 maximumValue:(id)a4 displayType:(id)a5 unitPreferenceController:(id)a6
+- (id)stringForMinimumValue:(id)value maximumValue:(id)maximumValue displayType:(id)type unitPreferenceController:(id)controller
 {
   v10 = MEMORY[0x1E69DB878];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  controllerCopy = controller;
+  typeCopy = type;
+  maximumValueCopy = maximumValue;
+  valueCopy = value;
   v15 = [v10 systemFontOfSize:12.0];
   LOBYTE(v19) = 0;
-  v16 = [(HKInteractiveChartNumberRangeFormatter *)self attributedStringForMinimumValue:v14 maximumValue:v13 displayType:v12 unitController:v11 valueFont:v15 unitFont:v15 formatForChart:v19];
+  v16 = [(HKInteractiveChartNumberRangeFormatter *)self attributedStringForMinimumValue:valueCopy maximumValue:maximumValueCopy displayType:typeCopy unitController:controllerCopy valueFont:v15 unitFont:v15 formatForChart:v19];
 
-  v17 = [v16 string];
+  string = [v16 string];
 
-  return v17;
+  return string;
 }
 
-- (id)attributedStringForMinimumValue:(id)a3 maximumValue:(id)a4 displayType:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9 resultIsSingleValue:(BOOL *)a10
+- (id)attributedStringForMinimumValue:(id)value maximumValue:(id)maximumValue displayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart resultIsSingleValue:(BOOL *)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  if (!v19)
+  valueCopy = value;
+  maximumValueCopy = maximumValue;
+  typeCopy = type;
+  controllerCopy = controller;
+  fontCopy = font;
+  unitFontCopy = unitFont;
+  if (!typeCopy)
   {
     [HKInteractiveChartNumberRangeFormatter attributedStringForMinimumValue:a2 maximumValue:self displayType:? unitController:? valueFont:? unitFont:? formatForChart:? resultIsSingleValue:?];
   }
 
-  if (v17 | v18)
+  if (valueCopy | maximumValueCopy)
   {
-    v34 = [v20 unitForDisplayType:v19];
-    v23 = [v19 hk_valueFormatterForUnit:?];
-    if (v17)
+    v34 = [controllerCopy unitForDisplayType:typeCopy];
+    v23 = [typeCopy hk_valueFormatterForUnit:?];
+    if (valueCopy)
     {
-      LOBYTE(v31) = a9;
-      v33 = [(HKInteractiveChartNumberRangeFormatter *)self _attributedStringFromValue:v17 withValueFormatter:v23 displayType:v19 unitController:v20 valueFont:v21 unitFont:v22 formatForChart:v31];
-      v24 = [v20 localizedDisplayNameForDisplayType:v19 value:v17];
+      LOBYTE(v31) = chart;
+      v33 = [(HKInteractiveChartNumberRangeFormatter *)self _attributedStringFromValue:valueCopy withValueFormatter:v23 displayType:typeCopy unitController:controllerCopy valueFont:fontCopy unitFont:unitFontCopy formatForChart:v31];
+      v24 = [controllerCopy localizedDisplayNameForDisplayType:typeCopy value:valueCopy];
     }
 
     else
@@ -56,23 +56,23 @@
     }
 
     v32 = v23;
-    if (v18)
+    if (maximumValueCopy)
     {
-      LOBYTE(v31) = a9;
-      v26 = [(HKInteractiveChartNumberRangeFormatter *)self _attributedStringFromValue:v18 withValueFormatter:v23 displayType:v19 unitController:v20 valueFont:v21 unitFont:v22 formatForChart:v31, v23];
-      v27 = [v20 localizedDisplayNameForDisplayType:v19 value:v18];
-      v28 = a9;
+      LOBYTE(v31) = chart;
+      v26 = [(HKInteractiveChartNumberRangeFormatter *)self _attributedStringFromValue:maximumValueCopy withValueFormatter:v23 displayType:typeCopy unitController:controllerCopy valueFont:fontCopy unitFont:unitFontCopy formatForChart:v31, v23];
+      v27 = [controllerCopy localizedDisplayNameForDisplayType:typeCopy value:maximumValueCopy];
+      chartCopy2 = chart;
       v29 = v27;
     }
 
     else
     {
       v26 = 0;
-      v28 = a9;
+      chartCopy2 = chart;
       v29 = 0;
     }
 
-    v25 = [(HKInteractiveChartNumberRangeFormatter *)self attributedStringForMinimumString:v33 maximumString:v26 minimumUnitString:v24 maximumUnitString:v29 valueFont:v21 formatForChart:v28 resultIsASingleValue:a10];
+    v25 = [(HKInteractiveChartNumberRangeFormatter *)self attributedStringForMinimumString:v33 maximumString:v26 minimumUnitString:v24 maximumUnitString:v29 valueFont:fontCopy formatForChart:chartCopy2 resultIsASingleValue:singleValue];
   }
 
   else
@@ -83,35 +83,35 @@
   return v25;
 }
 
-- (id)attributedStringForMinimumString:(id)a3 maximumString:(id)a4 minimumUnitString:(id)a5 maximumUnitString:(id)a6 valueFont:(id)a7 formatForChart:(BOOL)a8 resultIsASingleValue:(BOOL *)a9
+- (id)attributedStringForMinimumString:(id)string maximumString:(id)maximumString minimumUnitString:(id)unitString maximumUnitString:(id)maximumUnitString valueFont:(id)font formatForChart:(BOOL)chart resultIsASingleValue:(BOOL *)value
 {
-  v9 = a8;
-  v15 = a9;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  if (!v16 || !v17)
+  chartCopy = chart;
+  valueCopy2 = value;
+  stringCopy = string;
+  maximumStringCopy = maximumString;
+  unitStringCopy = unitString;
+  maximumUnitStringCopy = maximumUnitString;
+  fontCopy = font;
+  if (!stringCopy || !maximumStringCopy)
   {
-    if (v16)
+    if (stringCopy)
     {
-      v24 = v16;
+      maximumStringCopy = stringCopy;
       v25 = 1;
-      v16 = v24;
-      if (!a9)
+      stringCopy = maximumStringCopy;
+      if (!value)
       {
         goto LABEL_21;
       }
     }
 
-    else if (v17)
+    else if (maximumStringCopy)
     {
-      v24 = v17;
-      v16 = 0;
+      maximumStringCopy = maximumStringCopy;
+      stringCopy = 0;
       v25 = 1;
-      v17 = v24;
-      if (!a9)
+      maximumStringCopy = maximumStringCopy;
+      if (!value)
       {
         goto LABEL_21;
       }
@@ -119,105 +119,105 @@
 
     else
     {
-      v24 = 0;
-      v16 = 0;
+      maximumStringCopy = 0;
+      stringCopy = 0;
       v25 = 1;
-      if (!a9)
+      if (!value)
       {
         goto LABEL_21;
       }
     }
 
 LABEL_20:
-    *v15 = v25;
+    *valueCopy2 = v25;
     goto LABEL_21;
   }
 
-  v21 = [v16 string];
-  v22 = [v17 string];
-  v23 = [v21 isEqualToString:v22];
+  string = [stringCopy string];
+  string2 = [maximumStringCopy string];
+  v23 = [string isEqualToString:string2];
 
   if (v23)
   {
-    v24 = v16;
+    maximumStringCopy = stringCopy;
     v25 = 1;
-    v16 = v24;
+    stringCopy = maximumStringCopy;
   }
 
   else
   {
-    v47 = v20;
-    v26 = [v16 string];
-    v27 = [(HKInteractiveChartNumberRangeFormatter *)self _shouldRemoveUnit:v18 fromMinimumFormattedValue:v26];
+    v47 = fontCopy;
+    string3 = [stringCopy string];
+    v27 = [(HKInteractiveChartNumberRangeFormatter *)self _shouldRemoveUnit:unitStringCopy fromMinimumFormattedValue:string3];
 
     if (v27)
     {
-      v28 = [v16 mutableCopy];
-      v29 = [v28 mutableString];
-      [v29 _hk_trimString:v18];
+      v28 = [stringCopy mutableCopy];
+      mutableString = [v28 mutableString];
+      [mutableString _hk_trimString:unitStringCopy];
 
-      v30 = [v28 mutableString];
-      v31 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      [v30 _hk_trimCharactersInSet:v31];
+      mutableString2 = [v28 mutableString];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      [mutableString2 _hk_trimCharactersInSet:whitespaceCharacterSet];
 
       v32 = [v28 copy];
-      v16 = v32;
+      stringCopy = v32;
     }
 
-    v33 = [v17 string];
-    v34 = [(HKInteractiveChartNumberRangeFormatter *)self _shouldRemoveUnit:v19 fromMaximumFormattedValue:v33];
+    string4 = [maximumStringCopy string];
+    v34 = [(HKInteractiveChartNumberRangeFormatter *)self _shouldRemoveUnit:maximumUnitStringCopy fromMaximumFormattedValue:string4];
 
     if (v34)
     {
-      v35 = [v17 mutableCopy];
-      v36 = [v35 mutableString];
-      [v36 _hk_trimString:v19];
+      v35 = [maximumStringCopy mutableCopy];
+      mutableString3 = [v35 mutableString];
+      [mutableString3 _hk_trimString:maximumUnitStringCopy];
 
-      v37 = [v35 mutableString];
-      v38 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      [v37 _hk_trimCharactersInSet:v38];
+      mutableString4 = [v35 mutableString];
+      whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      [mutableString4 _hk_trimCharactersInSet:whitespaceCharacterSet2];
 
       v39 = [v35 copy];
-      v17 = v39;
+      maximumStringCopy = v39;
     }
 
-    if (v9)
+    if (chartCopy)
     {
-      v40 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+      hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
     }
 
     else
     {
-      v40 = 0;
+      hk_chartLollipopValueColor = 0;
     }
 
     v41 = objc_alloc(MEMORY[0x1E696AAB0]);
     v42 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v43 = [v42 localizedStringForKey:@"OVERLAY_RANGE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v44 = HKAttributedStringAttributesForFont(v20, v40);
+    v44 = HKAttributedStringAttributesForFont(fontCopy, hk_chartLollipopValueColor);
     v45 = [v41 initWithString:v43 attributes:v44];
 
-    v24 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithFormat:v45 options:1 locale:0, v16, v17];
-    v20 = v47;
+    maximumStringCopy = [objc_alloc(MEMORY[0x1E696AAB0]) initWithFormat:v45 options:1 locale:0, stringCopy, maximumStringCopy];
+    fontCopy = v47;
 
     v25 = 0;
   }
 
-  v15 = a9;
-  if (a9)
+  valueCopy2 = value;
+  if (value)
   {
     goto LABEL_20;
   }
 
 LABEL_21:
 
-  return v24;
+  return maximumStringCopy;
 }
 
-- (BOOL)_shouldRemoveUnit:(id)a3 fromMinimumFormattedValue:(id)a4
+- (BOOL)_shouldRemoveUnit:(id)unit fromMinimumFormattedValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  unitCopy = unit;
+  valueCopy = value;
   if ([MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:0] == 1)
   {
     v7 = 1;
@@ -225,57 +225,57 @@ LABEL_21:
 
   else
   {
-    v8 = [v6 rangeOfString:v5 options:4];
-    v7 = v8 != 0x7FFFFFFFFFFFFFFFLL && [v6 length] == v8 + v9;
+    v8 = [valueCopy rangeOfString:unitCopy options:4];
+    v7 = v8 != 0x7FFFFFFFFFFFFFFFLL && [valueCopy length] == v8 + v9;
   }
 
   return v7;
 }
 
-- (BOOL)_shouldRemoveUnit:(id)a3 fromMaximumFormattedValue:(id)a4
+- (BOOL)_shouldRemoveUnit:(id)unit fromMaximumFormattedValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:0] != 1 && objc_msgSend(v6, "rangeOfString:", v5) == 0;
+  unitCopy = unit;
+  valueCopy = value;
+  v7 = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:0] != 1 && objc_msgSend(valueCopy, "rangeOfString:", unitCopy) == 0;
 
   return v7;
 }
 
-- (id)_attributedStringFromValue:(id)a3 withValueFormatter:(id)a4 displayType:(id)a5 unitController:(id)a6 valueFont:(id)a7 unitFont:(id)a8 formatForChart:(BOOL)a9
+- (id)_attributedStringFromValue:(id)value withValueFormatter:(id)formatter displayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont formatForChart:(BOOL)chart
 {
-  v29 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a3;
-  v18 = [a4 stringFromValue:v17 displayType:v16 unitController:v15];
-  if (a9)
+  unitFontCopy = unitFont;
+  fontCopy = font;
+  controllerCopy = controller;
+  typeCopy = type;
+  valueCopy = value;
+  v18 = [formatter stringFromValue:valueCopy displayType:typeCopy unitController:controllerCopy];
+  if (chart)
   {
-    v19 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+    hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
   }
 
   else
   {
-    v19 = 0;
+    hk_chartLollipopValueColor = 0;
   }
 
   v20 = objc_alloc(MEMORY[0x1E696AD40]);
-  v21 = HKAttributedStringAttributesForFont(v14, v19);
+  v21 = HKAttributedStringAttributesForFont(fontCopy, hk_chartLollipopValueColor);
 
   v22 = [v20 initWithString:v18 attributes:v21];
-  v23 = [v15 localizedDisplayNameForDisplayType:v16 value:v17];
+  v23 = [controllerCopy localizedDisplayNameForDisplayType:typeCopy value:valueCopy];
 
-  if (a9)
+  if (chart)
   {
-    v24 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+    hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
   }
 
   else
   {
-    v24 = 0;
+    hk_chartLollipopLabelColor = 0;
   }
 
-  v25 = HKAttributedStringAttributesForFont(v29, v24);
+  v25 = HKAttributedStringAttributesForFont(unitFontCopy, hk_chartLollipopLabelColor);
   v26 = [v18 rangeOfString:v23];
   [v22 addAttributes:v25 range:{v26, v27}];
 

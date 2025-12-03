@@ -2,11 +2,11 @@
 - (CGRect)frameOfPresentedViewInContainerView;
 - (UIView)dimmingView;
 - (void)containerViewWillLayoutSubviews;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)setDimmingViewBackgroundColor:(id)a3;
+- (void)setDimmingViewBackgroundColor:(id)color;
 @end
 
 @implementation BSUIDimmingPresentationController
@@ -17,8 +17,8 @@
   if (!qword_3CA6A0)
   {
     v4 = [UIView alloc];
-    v5 = [(BSUIDimmingPresentationController *)self containerView];
-    [v5 bounds];
+    containerView = [(BSUIDimmingPresentationController *)self containerView];
+    [containerView bounds];
     v6 = [v4 initWithFrame:?];
     v7 = qword_3CA6A0;
     qword_3CA6A0 = v6;
@@ -30,88 +30,88 @@
   return v3;
 }
 
-- (void)setDimmingViewBackgroundColor:(id)a3
+- (void)setDimmingViewBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_dimmingViewBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_dimmingViewBackgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_dimmingViewBackgroundColor, a3);
-    v6 = [(BSUIDimmingPresentationController *)self dimmingView];
-    [v6 setBackgroundColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_dimmingViewBackgroundColor, color);
+    dimmingView = [(BSUIDimmingPresentationController *)self dimmingView];
+    [dimmingView setBackgroundColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v3 = [(BSUIDimmingPresentationController *)self presentedViewController];
-  v4 = [v3 view];
+  presentedViewController = [(BSUIDimmingPresentationController *)self presentedViewController];
+  view = [presentedViewController view];
 
-  v5 = [v4 layer];
-  [v5 setCornerRadius:20.0];
+  layer = [view layer];
+  [layer setCornerRadius:20.0];
 
-  v6 = [(BSUIDimmingPresentationController *)self containerView];
-  [v6 bounds];
+  containerView = [(BSUIDimmingPresentationController *)self containerView];
+  [containerView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(BSUIDimmingPresentationController *)self dimmingView];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  dimmingView = [(BSUIDimmingPresentationController *)self dimmingView];
+  [dimmingView setFrame:{v8, v10, v12, v14}];
 
-  v16 = [(BSUIDimmingPresentationController *)self dimmingView];
-  [v16 setAlpha:0.0];
+  dimmingView2 = [(BSUIDimmingPresentationController *)self dimmingView];
+  [dimmingView2 setAlpha:0.0];
 
-  v17 = [(BSUIDimmingPresentationController *)self containerView];
-  v18 = [(BSUIDimmingPresentationController *)self dimmingView];
-  [v17 addSubview:v18];
+  containerView2 = [(BSUIDimmingPresentationController *)self containerView];
+  dimmingView3 = [(BSUIDimmingPresentationController *)self dimmingView];
+  [containerView2 addSubview:dimmingView3];
 
-  v19 = [(BSUIDimmingPresentationController *)self presentedViewController];
-  v20 = [v19 transitionCoordinator];
+  presentedViewController2 = [(BSUIDimmingPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController2 transitionCoordinator];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_6B28;
   v21[3] = &unk_386C80;
   v21[4] = self;
-  [v20 animateAlongsideTransition:v21 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v21 completion:0];
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  if (!a3)
+  if (!end)
   {
-    v4 = [(BSUIDimmingPresentationController *)self dimmingView];
-    [v4 removeFromSuperview];
+    dimmingView = [(BSUIDimmingPresentationController *)self dimmingView];
+    [dimmingView removeFromSuperview];
   }
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v3 = [(BSUIDimmingPresentationController *)self presentedViewController];
-  v4 = [v3 transitionCoordinator];
+  presentedViewController = [(BSUIDimmingPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_6C5C;
   v5[3] = &unk_386C80;
   v5[4] = self;
-  [v4 animateAlongsideTransition:v5 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v5 completion:0];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
-    v3 = [(BSUIDimmingPresentationController *)self dimmingView];
-    [v3 removeFromSuperview];
+    dimmingView = [(BSUIDimmingPresentationController *)self dimmingView];
+    [dimmingView removeFromSuperview];
   }
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = [(BSUIDimmingPresentationController *)self containerView];
-  [v2 frame];
+  containerView = [(BSUIDimmingPresentationController *)self containerView];
+  [containerView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -130,22 +130,22 @@
 
 - (void)containerViewWillLayoutSubviews
 {
-  v3 = [(BSUIDimmingPresentationController *)self containerView];
-  [v3 bounds];
+  containerView = [(BSUIDimmingPresentationController *)self containerView];
+  [containerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(BSUIDimmingPresentationController *)self dimmingView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  dimmingView = [(BSUIDimmingPresentationController *)self dimmingView];
+  [dimmingView setFrame:{v5, v7, v9, v11}];
 
   [(BSUIDimmingPresentationController *)self frameOfPresentedViewInContainerView];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(BSUIDimmingPresentationController *)self presentedView];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  presentedView = [(BSUIDimmingPresentationController *)self presentedView];
+  [presentedView setFrame:{v14, v16, v18, v20}];
 }
 
 @end

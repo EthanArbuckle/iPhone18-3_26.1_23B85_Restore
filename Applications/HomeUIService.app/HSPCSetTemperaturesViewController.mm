@@ -1,27 +1,27 @@
 @interface HSPCSetTemperaturesViewController
-- (HSPCSetTemperaturesViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCSetTemperaturesViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (UIViewController)temperaturePreferencesHostingController;
 - (id)_hasOnboardedForAdaptiveTemperature;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCSetTemperaturesViewController
 
-- (HSPCSetTemperaturesViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSetTemperaturesViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v12.receiver = self;
   v12.super_class = HSPCSetTemperaturesViewController;
   v9 = [(HSPCSetTemperaturesViewController *)&v12 initWithContentView:0];
-  v10 = [v8 addedAccessory];
-  [(HSPCSetTemperaturesViewController *)v9 setAddedAccessory:v10];
+  addedAccessory = [configCopy addedAccessory];
+  [(HSPCSetTemperaturesViewController *)v9 setAddedAccessory:addedAccessory];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a4);
-    objc_storeStrong(&v9->_coordinator, a3);
+    objc_storeStrong(&v9->_config, config);
+    objc_storeStrong(&v9->_coordinator, coordinator);
   }
 
   return v9;
@@ -41,41 +41,41 @@
   v5 = sub_100063A44(@"HSThermostatContinue");
   v6 = [(HSPCSetTemperaturesViewController *)self addProminentButtonWithTitleKey:v5 target:self futureSelector:"commitConfiguration"];
 
-  v7 = [(HSPCSetTemperaturesViewController *)self temperaturePreferencesHostingController];
-  v8 = [v7 view];
+  temperaturePreferencesHostingController = [(HSPCSetTemperaturesViewController *)self temperaturePreferencesHostingController];
+  view = [temperaturePreferencesHostingController view];
 
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(HSPCSetTemperaturesViewController *)self contentView];
-  [v9 addSubview:v8];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(HSPCSetTemperaturesViewController *)self contentView];
+  [contentView addSubview:view];
 
-  v10 = [(HSPCSetTemperaturesViewController *)self contentView];
-  v11 = [v10 mainContentGuide];
+  contentView2 = [(HSPCSetTemperaturesViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
-  v24 = [v8 topAnchor];
-  v23 = [v11 topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[0] = v22;
-  v21 = [v8 bottomAnchor];
-  v20 = [v11 bottomAnchor];
-  v12 = [v21 constraintEqualToAnchor:v20];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[1] = v12;
-  v13 = [v8 trailingAnchor];
-  v14 = [v11 trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [mainContentGuide trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[2] = v15;
-  v16 = [v8 leadingAnchor];
-  v17 = [v11 leadingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [mainContentGuide leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[3] = v18;
   v19 = [NSArray arrayWithObjects:v26 count:4];
   [NSLayoutConstraint activateConstraints:v19];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v3.receiver = self;
   v3.super_class = HSPCSetTemperaturesViewController;
-  [(HSPCSetTemperaturesViewController *)&v3 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(HSPCSetTemperaturesViewController *)&v3 preferredContentSizeDidChangeForChildContentContainer:container];
 }
 
 - (id)_hasOnboardedForAdaptiveTemperature
@@ -95,7 +95,7 @@
 
 - (UIViewController)temperaturePreferencesHostingController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HSPCSetTemperaturesViewController.temperaturePreferencesHostingController.getter();
 
   return v3;

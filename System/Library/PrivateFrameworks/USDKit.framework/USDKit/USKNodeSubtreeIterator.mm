@@ -1,24 +1,24 @@
 @interface USKNodeSubtreeIterator
-- (USKNodeSubtreeIterator)initWithPrim:(const void *)a3;
-- (USKNodeSubtreeIterator)initWithPrim:(const void *)a3 withPredicate:(Usd_PrimFlagsPredicate *)a4;
-- (USKNodeSubtreeIterator)initWithScene:(const void *)a3;
-- (USKNodeSubtreeIterator)initWithScene:(const void *)a3 withPredicate:(Usd_PrimFlagsPredicate *)a4;
-- (USKNodeSubtreeIterator)initWithSubtreeRange:(const void *)a3;
+- (USKNodeSubtreeIterator)initWithPrim:(const void *)prim;
+- (USKNodeSubtreeIterator)initWithPrim:(const void *)prim withPredicate:(Usd_PrimFlagsPredicate *)predicate;
+- (USKNodeSubtreeIterator)initWithScene:(const void *)scene;
+- (USKNodeSubtreeIterator)initWithScene:(const void *)scene withPredicate:(Usd_PrimFlagsPredicate *)predicate;
+- (USKNodeSubtreeIterator)initWithSubtreeRange:(const void *)range;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)nextObject;
 @end
 
 @implementation USKNodeSubtreeIterator
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [USKNodeSubtreeIterator alloc];
 
   return objc_msgSend_initWithSubtreeRange_(v4, v5, &self->_range, v6);
 }
 
-- (USKNodeSubtreeIterator)initWithSubtreeRange:(const void *)a3
+- (USKNodeSubtreeIterator)initWithSubtreeRange:(const void *)range
 {
   v13.receiver = self;
   v13.super_class = USKNodeSubtreeIterator;
@@ -26,11 +26,11 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 8) = *a3;
-    sub_27032787C((v4 + 24), a3 + 4);
-    sub_2703278D4((v5 + 28), a3 + 5);
-    v6 = *(a3 + 37);
-    *(v5 + 2) = *(a3 + 24);
+    *(v4 + 8) = *range;
+    sub_27032787C((v4 + 24), range + 4);
+    sub_2703278D4((v5 + 28), range + 5);
+    v6 = *(range + 37);
+    *(v5 + 2) = *(range + 24);
     *(v5 + 45) = v6;
     sub_2703649F0(v5 + 1, &v9);
     *(v5 + 4) = v9;
@@ -46,9 +46,9 @@
   return v5;
 }
 
-- (USKNodeSubtreeIterator)initWithScene:(const void *)a3
+- (USKNodeSubtreeIterator)initWithScene:(const void *)scene
 {
-  v4 = sub_270351FC8(a3);
+  v4 = sub_270351FC8(scene);
   UsdPrimDefaultPredicate = pxrInternal__aapl__pxrReserved__::GetUsdPrimDefaultPredicate(v4);
   v6 = UsdPrimDefaultPredicate[1].i64[0];
   v7.i64[0] = -8193;
@@ -64,7 +64,7 @@
   return v10;
 }
 
-- (USKNodeSubtreeIterator)initWithPrim:(const void *)a3
+- (USKNodeSubtreeIterator)initWithPrim:(const void *)prim
 {
   UsdPrimDefaultPredicate = pxrInternal__aapl__pxrReserved__::GetUsdPrimDefaultPredicate(self);
   v6 = UsdPrimDefaultPredicate[1].i64[0];
@@ -73,7 +73,7 @@
   v7.i64[1] = vorrq_s8(*UsdPrimDefaultPredicate, vdupq_n_s64(0x2000uLL)).i64[1];
   v12 = v7;
   v13 = v6;
-  sub_2703663D8(v14, a3, &v12);
+  sub_2703663D8(v14, prim, &v12);
   v10 = objc_msgSend_initWithSubtreeRange_(self, v8, v14, v9);
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPropTag,24u,8u,16384u>::Handle::operator BOOL();
   sub_2703143D8(&v15);
@@ -81,13 +81,13 @@
   return v10;
 }
 
-- (USKNodeSubtreeIterator)initWithScene:(const void *)a3 withPredicate:(Usd_PrimFlagsPredicate *)a4
+- (USKNodeSubtreeIterator)initWithScene:(const void *)scene withPredicate:(Usd_PrimFlagsPredicate *)predicate
 {
-  v6 = sub_270351FC8(a3);
-  v7 = *&a4->_negate;
+  v6 = sub_270351FC8(scene);
+  v7 = *&predicate->_negate;
   v8.i64[0] = -8193;
-  v8.i64[0] = vandq_s8(*&a4->_mask.__first_, v8).u64[0];
-  v8.i64[1] = vorrq_s8(*a4, vdupq_n_s64(0x2000uLL)).i64[1];
+  v8.i64[0] = vandq_s8(*&predicate->_mask.__first_, v8).u64[0];
+  v8.i64[1] = vorrq_s8(*predicate, vdupq_n_s64(0x2000uLL)).i64[1];
   *&v13._mask.__first_ = v8;
   *&v13._negate = v7;
   pxrInternal__aapl__pxrReserved__::UsdStage::Traverse(v14, v6, &v13);
@@ -98,15 +98,15 @@
   return v11;
 }
 
-- (USKNodeSubtreeIterator)initWithPrim:(const void *)a3 withPredicate:(Usd_PrimFlagsPredicate *)a4
+- (USKNodeSubtreeIterator)initWithPrim:(const void *)prim withPredicate:(Usd_PrimFlagsPredicate *)predicate
 {
-  v6 = *&a4->_negate;
+  v6 = *&predicate->_negate;
   v4.i64[0] = -8193;
-  *&v7 = vandq_s8(*&a4->_mask.__first_, v4).u64[0];
-  *(&v7 + 1) = vorrq_s8(*a4, vdupq_n_s64(0x2000uLL)).i64[1];
+  *&v7 = vandq_s8(*&predicate->_mask.__first_, v4).u64[0];
+  *(&v7 + 1) = vorrq_s8(*predicate, vdupq_n_s64(0x2000uLL)).i64[1];
   v12 = v7;
   v13 = v6;
-  sub_2703663D8(v14, a3, &v12);
+  sub_2703663D8(v14, prim, &v12);
   v10 = objc_msgSend_initWithSubtreeRange_(self, v8, v14, v9);
   pxrInternal__aapl__pxrReserved__::Sdf_Pool<pxrInternal__aapl__pxrReserved__::Sdf_PathPropTag,24u,8u,16384u>::Handle::operator BOOL();
   sub_2703143D8(&v15);

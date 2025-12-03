@@ -1,13 +1,13 @@
 @interface HKHealthPrivacyHeadphoneLevelsViewController
 - (HKHealthPrivacyHeadphoneLevelsViewController)init;
-- (id)appleAndCalibratedPairedDevicesInverted:(BOOL)a3;
+- (id)appleAndCalibratedPairedDevicesInverted:(BOOL)inverted;
 - (id)measureLevelsFooterText;
 - (id)otherHeadphonesFooterText;
 - (id)specifiers;
-- (void)_setInterruptionBehaviorSettingForSpecifier:(id)a3;
-- (void)_setMeasureLevelsValue:(id)a3 specifier:(id)a4;
-- (void)_updateSpecifiersForPruningPreference:(BOOL)a3;
-- (void)setShouldShowOtherSection:(BOOL)a3;
+- (void)_setInterruptionBehaviorSettingForSpecifier:(id)specifier;
+- (void)_setMeasureLevelsValue:(id)value specifier:(id)specifier;
+- (void)_updateSpecifiersForPruningPreference:(BOOL)preference;
+- (void)setShouldShowOtherSection:(BOOL)section;
 - (void)viewDidLoad;
 @end
 
@@ -86,9 +86,9 @@
       self->_measureLevelsGroup = v19;
 
       v21 = self->_measureLevelsGroup;
-      v22 = [(HKHealthPrivacyHeadphoneLevelsViewController *)self measureLevelsFooterText];
+      measureLevelsFooterText = [(HKHealthPrivacyHeadphoneLevelsViewController *)self measureLevelsFooterText];
       v23 = PSFooterTextGroupKey;
-      [(PSSpecifier *)v21 setProperty:v22 forKey:PSFooterTextGroupKey];
+      [(PSSpecifier *)v21 setProperty:measureLevelsFooterText forKey:PSFooterTextGroupKey];
 
       [v5 addObject:self->_measureLevelsGroup];
       v24 = [NSBundle bundleForClass:objc_opt_class()];
@@ -104,8 +104,8 @@
       self->_otherHeadphonesGroup = v28;
 
       v30 = self->_otherHeadphonesGroup;
-      v31 = [(HKHealthPrivacyHeadphoneLevelsViewController *)self otherHeadphonesFooterText];
-      [(PSSpecifier *)v30 setProperty:v31 forKey:v23];
+      otherHeadphonesFooterText = [(HKHealthPrivacyHeadphoneLevelsViewController *)self otherHeadphonesFooterText];
+      [(PSSpecifier *)v30 setProperty:otherHeadphonesFooterText forKey:v23];
 
       v32 = [NSBundle bundleForClass:objc_opt_class()];
       v33 = [v32 localizedStringForKey:@"INCLUDE_OTHER_HEADPHONES" value:&stru_8350 table:0];
@@ -170,8 +170,8 @@
 
         v15 = [NSBundle bundleForClass:objc_opt_class()];
         v16 = [v15 localizedStringForKey:@"INCLUDE_OTHER_HEADPHONE_HEADPHONE_LIST_%@" value:&stru_8350 table:0];
-        v17 = [v13 name];
-        v8 = [v14 stringByAppendingFormat:v16, v17];
+        name = [v13 name];
+        v8 = [v14 stringByAppendingFormat:v16, name];
       }
 
       v10 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -221,8 +221,8 @@
 
         v17 = [NSBundle bundleForClass:objc_opt_class()];
         v18 = [v17 localizedStringForKey:@"INCLUDE_OTHER_HEADPHONE_HEADPHONE_LIST_%@" value:&stru_8350 table:0];
-        v19 = [v15 name];
-        v10 = [v16 stringByAppendingFormat:v18, v19];
+        name = [v15 name];
+        v10 = [v16 stringByAppendingFormat:v18, name];
       }
 
       v12 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -234,11 +234,11 @@
   return v10;
 }
 
-- (void)_updateSpecifiersForPruningPreference:(BOOL)a3
+- (void)_updateSpecifiersForPruningPreference:(BOOL)preference
 {
   saveInHealthGroup = self->_saveInHealthGroup;
   v5 = &OBJC_IVAR___HKHealthPrivacyHeadphoneLevelsViewController__untilIDeleteCell;
-  if (a3)
+  if (preference)
   {
     v5 = &OBJC_IVAR___HKHealthPrivacyHeadphoneLevelsViewController__forEightDaysCell;
     v6 = @"SAVE_IN_HEALTH_FOR_8_DAYS_FOOTER_TEXT";
@@ -260,11 +260,11 @@
   [(HKHealthPrivacyHeadphoneLevelsViewController *)self reloadSpecifier:v10];
 }
 
-- (void)_setInterruptionBehaviorSettingForSpecifier:(id)a3
+- (void)_setInterruptionBehaviorSettingForSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  v5 = [(PSSpecifier *)self->_forEightDaysCell identifier];
-  v6 = [v4 isEqualToString:v5];
+  identifier = [specifier identifier];
+  identifier2 = [(PSSpecifier *)self->_forEightDaysCell identifier];
+  v6 = [identifier isEqualToString:identifier2];
 
   manager = self->_manager;
   v8 = ADAFPreferenceKeyHAESampleTransient;
@@ -274,25 +274,25 @@
   [(HKHealthPrivacyHeadphoneLevelsViewController *)self _updateSpecifiersForPruningPreference:v6];
 }
 
-- (void)_setMeasureLevelsValue:(id)a3 specifier:(id)a4
+- (void)_setMeasureLevelsValue:(id)value specifier:(id)specifier
 {
   manager = self->_manager;
   v6 = ADAFPreferenceKeyHAEEnableHKWrite;
-  v7 = a3;
-  v8 = [(ADASManager *)manager setPreferenceFor:v6 value:v7];
-  v9 = [v7 BOOLValue];
+  valueCopy = value;
+  v8 = [(ADASManager *)manager setPreferenceFor:v6 value:valueCopy];
+  bOOLValue = [valueCopy BOOLValue];
 
-  [(HKHealthPrivacyHeadphoneLevelsViewController *)self setShouldShowOtherSection:v9];
+  [(HKHealthPrivacyHeadphoneLevelsViewController *)self setShouldShowOtherSection:bOOLValue];
 }
 
-- (void)setShouldShowOtherSection:(BOOL)a3
+- (void)setShouldShowOtherSection:(BOOL)section
 {
-  if (self->_shouldShowOtherSection != a3)
+  if (self->_shouldShowOtherSection != section)
   {
-    self->_shouldShowOtherSection = a3;
+    self->_shouldShowOtherSection = section;
     otherHeadphonesGroup = self->_otherHeadphonesGroup;
     otherHeadphonesSwitch = self->_otherHeadphonesSwitch;
-    if (a3)
+    if (section)
     {
       v8[0] = self->_otherHeadphonesGroup;
       v8[1] = otherHeadphonesSwitch;
@@ -310,7 +310,7 @@
   }
 }
 
-- (id)appleAndCalibratedPairedDevicesInverted:(BOOL)a3
+- (id)appleAndCalibratedPairedDevicesInverted:(BOOL)inverted
 {
   v4 = objc_opt_new();
   v33 = 0u;
@@ -318,9 +318,9 @@
   v35 = 0u;
   v36 = 0u;
   v5 = +[BluetoothManager sharedInstance];
-  v6 = [v5 pairedDevices];
+  pairedDevices = [v5 pairedDevices];
 
-  v7 = [v6 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  v7 = [pairedDevices countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v7)
   {
     v8 = v7;
@@ -331,7 +331,7 @@
       {
         if (*v34 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(pairedDevices);
         }
 
         v11 = *(*(&v33 + 1) + 8 * i);
@@ -341,7 +341,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v8 = [pairedDevices countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v8);
@@ -353,9 +353,9 @@
   v31 = 0u;
   v32 = 0u;
   v13 = +[BluetoothManager sharedInstance];
-  v14 = [v13 pairedNonAppleHAEDevices];
+  pairedNonAppleHAEDevices = [v13 pairedNonAppleHAEDevices];
 
-  v15 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  v15 = [pairedNonAppleHAEDevices countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v15)
   {
     v16 = v15;
@@ -366,13 +366,13 @@
       {
         if (*v30 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(pairedNonAppleHAEDevices);
         }
 
         [v12 addObject:*(*(&v29 + 1) + 8 * j)];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v16 = [pairedNonAppleHAEDevices countByEnumeratingWithState:&v29 objects:v37 count:16];
     }
 
     while (v16);
@@ -383,7 +383,7 @@
   v25 = sub_2E7C;
   v26 = &unk_82C8;
   v27 = v12;
-  v28 = a3;
+  invertedCopy = inverted;
   v19 = v12;
   v20 = [NSPredicate predicateWithBlock:&v23];
   v21 = [v4 filteredArrayUsingPredicate:{v20, v23, v24, v25, v26}];

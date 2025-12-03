@@ -1,17 +1,17 @@
 @interface STNotificationUsageCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation STNotificationUsageCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STNotificationUsageCell" isKindOfClass:@"STUsageCell"];
-  [v3 validateClass:@"STNotificationUsageCell" isKindOfClass:@"PSTableCell"];
-  [v3 validateClass:@"PSTableCell" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUsageCell" hasInstanceVariable:@"_itemNameLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STNotificationUsageCell" isKindOfClass:@"STUsageCell"];
+  [validationsCopy validateClass:@"STNotificationUsageCell" isKindOfClass:@"PSTableCell"];
+  [validationsCopy validateClass:@"PSTableCell" hasInstanceMethod:@"value" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUsageCell" hasInstanceVariable:@"_itemNameLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel
@@ -28,7 +28,7 @@
   v9 = [v5 stringWithFormat:v6, objc_msgSend(v8, "integerValue")];
 
   v10 = [(STNotificationUsageCellAccessibility *)self safeUIViewForKey:@"_itemNameLabel"];
-  v11 = [v10 accessibilityLabel];
+  accessibilityLabel = [v10 accessibilityLabel];
   v12 = __UIAXStringForVariables();
 
   return v12;

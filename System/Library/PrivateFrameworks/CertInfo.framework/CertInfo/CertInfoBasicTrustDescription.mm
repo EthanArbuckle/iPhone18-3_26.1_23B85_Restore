@@ -1,11 +1,11 @@
 @interface CertInfoBasicTrustDescription
 - (BOOL)isRootCertificate;
-- (CertInfoBasicTrustDescription)initWithTrust:(__SecTrust *)a3 action:(int)a4;
+- (CertInfoBasicTrustDescription)initWithTrust:(__SecTrust *)trust action:(int)action;
 - (id)_expirationDate;
-- (id)certificateExpirationDateAtIndex:(unint64_t)a3;
-- (id)certificateIssuerSummaryAtIndex:(unint64_t)a3;
-- (id)certificatePropertiesAtIndex:(unint64_t)a3;
-- (id)certificateSubjectSummaryAtIndex:(unint64_t)a3;
+- (id)certificateExpirationDateAtIndex:(unint64_t)index;
+- (id)certificateIssuerSummaryAtIndex:(unint64_t)index;
+- (id)certificatePropertiesAtIndex:(unint64_t)index;
+- (id)certificateSubjectSummaryAtIndex:(unint64_t)index;
 - (id)summaryDescriptionItems;
 - (id)summarySubtitle;
 - (id)summaryTitle;
@@ -15,9 +15,9 @@
 
 @implementation CertInfoBasicTrustDescription
 
-- (CertInfoBasicTrustDescription)initWithTrust:(__SecTrust *)a3 action:(int)a4
+- (CertInfoBasicTrustDescription)initWithTrust:(__SecTrust *)trust action:(int)action
 {
-  if (!a3)
+  if (!trust)
   {
     [CertInfoBasicTrustDescription initWithTrust:action:];
   }
@@ -27,8 +27,8 @@
   v6 = [(CertInfoBasicTrustDescription *)&v8 init];
   if (v6)
   {
-    v6->_trust = CFRetain(a3);
-    v6->_action = a4;
+    v6->_trust = CFRetain(trust);
+    v6->_action = action;
   }
 
   return v6;
@@ -82,14 +82,14 @@
 
 - (id)summaryDescriptionItems
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(CertInfoBasicTrustDescription *)self _expirationDate];
-  if (v4)
+  array = [MEMORY[0x277CBEB18] array];
+  _expirationDate = [(CertInfoBasicTrustDescription *)self _expirationDate];
+  if (_expirationDate)
   {
-    v5 = [MEMORY[0x277CCA968] localizedStringFromDate:v4 dateStyle:2 timeStyle:2];
+    v5 = [MEMORY[0x277CCA968] localizedStringFromDate:_expirationDate dateStyle:2 timeStyle:2];
     if (v5)
     {
-      [v4 timeIntervalSinceNow];
+      [_expirationDate timeIntervalSinceNow];
       v7 = v6;
       v8 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CertInfo"];
       v9 = v8;
@@ -104,13 +104,13 @@
       }
 
       v11 = [v8 localizedStringForKey:v10 value:&stru_28561D260 table:@"CertInfo"];
-      [v3 addObject:v11];
+      [array addObject:v11];
 
-      [v3 addObject:v5];
+      [array addObject:v5];
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)isRootCertificate
@@ -136,9 +136,9 @@
   return result;
 }
 
-- (id)certificateSubjectSummaryAtIndex:(unint64_t)a3
+- (id)certificateSubjectSummaryAtIndex:(unint64_t)index
 {
-  CertificateAtIndex = SecTrustGetCertificateAtIndex(self->_trust, a3);
+  CertificateAtIndex = SecTrustGetCertificateAtIndex(self->_trust, index);
   if (CertificateAtIndex)
   {
     CertificateAtIndex = SecCertificateCopySubjectSummary(CertificateAtIndex);
@@ -147,9 +147,9 @@
   return CertificateAtIndex;
 }
 
-- (id)certificateIssuerSummaryAtIndex:(unint64_t)a3
+- (id)certificateIssuerSummaryAtIndex:(unint64_t)index
 {
-  CertificateAtIndex = SecTrustGetCertificateAtIndex(self->_trust, a3);
+  CertificateAtIndex = SecTrustGetCertificateAtIndex(self->_trust, index);
   if (CertificateAtIndex)
   {
     CertificateAtIndex = SecCertificateCopyIssuerSummary();
@@ -158,9 +158,9 @@
   return CertificateAtIndex;
 }
 
-- (id)certificateExpirationDateAtIndex:(unint64_t)a3
+- (id)certificateExpirationDateAtIndex:(unint64_t)index
 {
-  CertificateAtIndex = SecTrustGetCertificateAtIndex(self->_trust, a3);
+  CertificateAtIndex = SecTrustGetCertificateAtIndex(self->_trust, index);
   if (CertificateAtIndex)
   {
     SecCertificateNotValidAfter();
@@ -170,7 +170,7 @@
   return CertificateAtIndex;
 }
 
-- (id)certificatePropertiesAtIndex:(unint64_t)a3
+- (id)certificatePropertiesAtIndex:(unint64_t)index
 {
   trust = self->_trust;
   v4 = SecTrustCopyDetailedPropertiesAtIndex();

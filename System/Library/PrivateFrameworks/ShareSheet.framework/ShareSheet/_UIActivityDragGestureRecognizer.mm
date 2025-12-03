@@ -1,22 +1,22 @@
 @interface _UIActivityDragGestureRecognizer
 - (UIEdgeInsets)draggingInsets;
-- (_UIActivityDragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (int)autoscrollDirectionsForPoint:(CGPoint)a3 inView:(id)a4;
+- (_UIActivityDragGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (int)autoscrollDirectionsForPoint:(CGPoint)point inView:(id)view;
 - (void)beginAutoscrollAndUpdateDirectionIfNeeded;
 - (void)cancelAutoscroll;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)updateAutoscroll:(id)a3;
+- (void)setState:(int64_t)state;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)updateAutoscroll:(id)autoscroll;
 @end
 
 @implementation _UIActivityDragGestureRecognizer
 
-- (_UIActivityDragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIActivityDragGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIActivityDragGestureRecognizer;
-  v4 = [(_UIActivityDragGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(_UIActivityDragGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -26,28 +26,28 @@
   return v5;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v7.receiver = self;
   v7.super_class = _UIActivityDragGestureRecognizer;
   [(_UIActivityDragGestureRecognizer *)&v7 setState:?];
-  if (a3 == 2)
+  if (state == 2)
   {
     [(_UIActivityDragGestureRecognizer *)self beginAutoscrollAndUpdateDirectionIfNeeded];
-    v5 = [(_UIActivityDragGestureRecognizer *)self autoscroll];
-    [(_UIActivityDragGestureRecognizer *)self updateAutoscroll:v5];
+    autoscroll = [(_UIActivityDragGestureRecognizer *)self autoscroll];
+    [(_UIActivityDragGestureRecognizer *)self updateAutoscroll:autoscroll];
   }
 
   else
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
 
-    v5 = [(_UIActivityDragGestureRecognizer *)self view];
-    v6 = [v5 _enclosingScrollableScrollerIncludingSelf];
-    [(_UIActivityDragGestureRecognizer *)self setTargetScrollView:v6];
+    autoscroll = [(_UIActivityDragGestureRecognizer *)self view];
+    _enclosingScrollableScrollerIncludingSelf = [autoscroll _enclosingScrollableScrollerIncludingSelf];
+    [(_UIActivityDragGestureRecognizer *)self setTargetScrollView:_enclosingScrollableScrollerIncludingSelf];
   }
 }
 
@@ -61,28 +61,28 @@
   [(_UIActivityDragGestureRecognizer *)self setTargetScrollView:0];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UIActivityDragGestureRecognizer;
-  [(_UIActivityDragGestureRecognizer *)&v5 touchesMoved:a3 withEvent:a4];
+  [(_UIActivityDragGestureRecognizer *)&v5 touchesMoved:moved withEvent:event];
   if ([(_UIActivityDragGestureRecognizer *)self state]== 2)
   {
     [(_UIActivityDragGestureRecognizer *)self setState:2];
   }
 }
 
-- (void)updateAutoscroll:(id)a3
+- (void)updateAutoscroll:(id)autoscroll
 {
-  v31 = a3;
-  v4 = [(_UIActivityDragGestureRecognizer *)self targetScrollView];
-  v5 = v4;
-  if (!v4)
+  autoscrollCopy = autoscroll;
+  targetScrollView = [(_UIActivityDragGestureRecognizer *)self targetScrollView];
+  v5 = targetScrollView;
+  if (!targetScrollView)
   {
     goto LABEL_18;
   }
 
-  [v4 bounds];
+  [targetScrollView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -90,14 +90,14 @@
   [v5 contentOffset];
   v15 = v14;
   v17 = v16;
-  v18 = [(_UIActivityDragGestureRecognizer *)self autoscroll];
-  v19 = [v18 directions];
+  autoscroll = [(_UIActivityDragGestureRecognizer *)self autoscroll];
+  directions = [autoscroll directions];
 
   Width = 0.0;
-  v21 = v19 & 0xFFFFFFFE;
+  v21 = directions & 0xFFFFFFFE;
   if (v15 > 0.0)
   {
-    v21 = v19;
+    v21 = directions;
   }
 
   else
@@ -105,7 +105,7 @@
     Width = v15;
   }
 
-  if (v19)
+  if (directions)
   {
     v22 = Width;
   }
@@ -115,14 +115,14 @@
     v22 = v15;
   }
 
-  if (v19)
+  if (directions)
   {
     v23 = v21;
   }
 
   else
   {
-    v23 = v19;
+    v23 = directions;
   }
 
   if ((v23 & 2) == 0)
@@ -150,7 +150,7 @@ LABEL_14:
     }
   }
 
-  if ([v31 count] <= 1)
+  if ([autoscrollCopy count] <= 1)
   {
     UIDistanceBetweenPoints();
     v28 = v27 / 333.333333;
@@ -166,47 +166,47 @@ LABEL_18:
 
 - (void)beginAutoscrollAndUpdateDirectionIfNeeded
 {
-  v6 = [(_UIActivityDragGestureRecognizer *)self autoscroll];
-  if (!v6)
+  autoscroll = [(_UIActivityDragGestureRecognizer *)self autoscroll];
+  if (!autoscroll)
   {
-    v6 = objc_alloc_init(MEMORY[0x1E69DC6E0]);
+    autoscroll = objc_alloc_init(MEMORY[0x1E69DC6E0]);
     [(_UIActivityDragGestureRecognizer *)self setAutoscroll:?];
   }
 
-  v3 = [(_UIActivityDragGestureRecognizer *)self targetScrollView];
-  if (v3)
+  targetScrollView = [(_UIActivityDragGestureRecognizer *)self targetScrollView];
+  if (targetScrollView)
   {
-    [(_UIActivityDragGestureRecognizer *)self locationInView:v3];
-    [v3 _setAutoscrolling:{objc_msgSend(v6, "startAutoscroll:scrollContainer:point:directions:repeatInterval:", self, v3, -[_UIActivityDragGestureRecognizer autoscrollDirectionsForPoint:inView:](self, "autoscrollDirectionsForPoint:inView:", v3), v4, v5, 0.2)}];
-    if ([v3 _isAutoscrolling])
+    [(_UIActivityDragGestureRecognizer *)self locationInView:targetScrollView];
+    [targetScrollView _setAutoscrolling:{objc_msgSend(autoscroll, "startAutoscroll:scrollContainer:point:directions:repeatInterval:", self, targetScrollView, -[_UIActivityDragGestureRecognizer autoscrollDirectionsForPoint:inView:](self, "autoscrollDirectionsForPoint:inView:", targetScrollView), v4, v5, 0.2)}];
+    if ([targetScrollView _isAutoscrolling])
     {
-      [v3 _addScrollViewScrollObserver:self];
+      [targetScrollView _addScrollViewScrollObserver:self];
     }
   }
 }
 
 - (void)cancelAutoscroll
 {
-  v3 = [(_UIActivityDragGestureRecognizer *)self targetScrollView];
-  [v3 _removeScrollViewScrollObserver:self];
+  targetScrollView = [(_UIActivityDragGestureRecognizer *)self targetScrollView];
+  [targetScrollView _removeScrollViewScrollObserver:self];
 
-  v4 = [(_UIActivityDragGestureRecognizer *)self targetScrollView];
-  [v4 _setAutoscrolling:0];
+  targetScrollView2 = [(_UIActivityDragGestureRecognizer *)self targetScrollView];
+  [targetScrollView2 _setAutoscrolling:0];
 
-  v5 = [(_UIActivityDragGestureRecognizer *)self autoscroll];
-  [v5 invalidate];
+  autoscroll = [(_UIActivityDragGestureRecognizer *)self autoscroll];
+  [autoscroll invalidate];
 }
 
-- (int)autoscrollDirectionsForPoint:(CGPoint)a3 inView:(id)a4
+- (int)autoscrollDirectionsForPoint:(CGPoint)point inView:(id)view
 {
-  if (!a4)
+  if (!view)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
-  [a4 bounds];
+  y = point.y;
+  x = point.x;
+  [view bounds];
   v7 = v23.origin.x;
   v8 = v23.origin.y;
   width = v23.size.width;

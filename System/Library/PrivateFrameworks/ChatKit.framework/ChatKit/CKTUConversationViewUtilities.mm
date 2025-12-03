@@ -1,27 +1,27 @@
 @interface CKTUConversationViewUtilities
-+ (BOOL)activityHasImageForTUConversation:(id)a3;
++ (BOOL)activityHasImageForTUConversation:(id)conversation;
 + (CGSize)faceTimeIconSize;
-+ (id)activityAppNameForTUConversation:(id)a3;
-+ (id)activityBundleIdentifierForTUConversation:(id)a3;
-+ (id)activityDescriptionStringForTUConversation:(id)a3;
-+ (id)activityIconForTUConversation:(id)a3 iconSize:(double)a4;
-+ (id)activityImageForTUConversation:(id)a3;
-+ (id)activityTextForTUConversation:(id)a3;
-+ (id)activityTitleForTUConversation:(id)a3;
-+ (id)faceTimeIconForTUConversation:(id)a3;
-+ (id)joinStateStatusStringForTUConversation:(id)a3;
++ (id)activityAppNameForTUConversation:(id)conversation;
++ (id)activityBundleIdentifierForTUConversation:(id)conversation;
++ (id)activityDescriptionStringForTUConversation:(id)conversation;
++ (id)activityIconForTUConversation:(id)conversation iconSize:(double)size;
++ (id)activityImageForTUConversation:(id)conversation;
++ (id)activityTextForTUConversation:(id)conversation;
++ (id)activityTitleForTUConversation:(id)conversation;
++ (id)faceTimeIconForTUConversation:(id)conversation;
++ (id)joinStateStatusStringForTUConversation:(id)conversation;
 + (id)sharePlayIcon;
-+ (id)titleForAVMode:(unint64_t)a3;
-+ (unint64_t)ckTUConversationStateForTUConversation:(id)a3;
-+ (void)formatLPImageForScreenShare:(id)a3 conversation:(id)a4;
++ (id)titleForAVMode:(unint64_t)mode;
++ (unint64_t)ckTUConversationStateForTUConversation:(id)conversation;
++ (void)formatLPImageForScreenShare:(id)share conversation:(id)conversation;
 @end
 
 @implementation CKTUConversationViewUtilities
 
-+ (id)faceTimeIconForTUConversation:(id)a3
++ (id)faceTimeIconForTUConversation:(id)conversation
 {
   v3 = @"video.fill";
-  if (a3 && ![MEMORY[0x1E69A5B78] conversationIsVideoCall:?])
+  if (conversation && ![MEMORY[0x1E69A5B78] conversationIsVideoCall:?])
   {
     v3 = @"phone.fill";
   }
@@ -29,8 +29,8 @@
   v4 = MEMORY[0x1E69DCAB8];
   v5 = v3;
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 tuConversationBalloonIconConfiguration];
-  v8 = [v4 systemImageNamed:v5 withConfiguration:v7];
+  tuConversationBalloonIconConfiguration = [v6 tuConversationBalloonIconConfiguration];
+  v8 = [v4 systemImageNamed:v5 withConfiguration:tuConversationBalloonIconConfiguration];
 
   return v8;
 }
@@ -44,31 +44,31 @@
   return v4;
 }
 
-+ (id)activityBundleIdentifierForTUConversation:(id)a3
++ (id)activityBundleIdentifierForTUConversation:(id)conversation
 {
-  v3 = [MEMORY[0x1E69A5B78] activitySessionForTUConversation:a3];
-  v4 = [v3 activity];
-  v5 = [v4 bundleIdentifier];
+  v3 = [MEMORY[0x1E69A5B78] activitySessionForTUConversation:conversation];
+  activity = [v3 activity];
+  bundleIdentifier = [activity bundleIdentifier];
 
-  return v5;
+  return bundleIdentifier;
 }
 
-+ (id)activityIconForTUConversation:(id)a3 iconSize:(double)a4
++ (id)activityIconForTUConversation:(id)conversation iconSize:(double)size
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69DCEB0];
-  v6 = a3;
-  v7 = [v5 mainScreen];
-  [v7 scale];
+  conversationCopy = conversation;
+  mainScreen = [v5 mainScreen];
+  [mainScreen scale];
   v9 = v8;
 
-  v10 = [CKTUConversationViewUtilities activityBundleIdentifierForTUConversation:v6];
+  v10 = [CKTUConversationViewUtilities activityBundleIdentifierForTUConversation:conversationCopy];
 
   v11 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v10 allowPlaceholder:1 error:0];
   if (v11)
   {
     v12 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:v10];
-    v13 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:a4 scale:{a4, v9}];
+    v13 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:size scale:{size, v9}];
     v18[0] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     [v12 prepareImagesForImageDescriptors:v14];
@@ -85,29 +85,29 @@
   return v16;
 }
 
-+ (id)activityImageForTUConversation:(id)a3
++ (id)activityImageForTUConversation:(id)conversation
 {
-  v3 = a3;
-  if ([MEMORY[0x1E69A5B78] isScreenShareActivityForTUConversation:v3])
+  conversationCopy = conversation;
+  if ([MEMORY[0x1E69A5B78] isScreenShareActivityForTUConversation:conversationCopy])
   {
     v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"rectangle.inset.filled.and.person.filled"];
-    v5 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
-    v6 = [v4 imageWithConfiguration:v5];
+    imageData = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
+    v6 = [v4 imageWithConfiguration:imageData];
     v7 = MEMORY[0x1E69DCAD8];
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    v9 = [v7 configurationWithHierarchicalColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v9 = [v7 configurationWithHierarchicalColor:whiteColor];
     v10 = [v6 imageByApplyingSymbolConfiguration:v9];
 
 LABEL_5:
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x1E69A5B78] activityMetadataForTUConversation:v3];
+  v4 = [MEMORY[0x1E69A5B78] activityMetadataForTUConversation:conversationCopy];
   if (objc_opt_respondsToSelector())
   {
     v11 = MEMORY[0x1E69DCAB8];
-    v5 = [v4 imageData];
-    v10 = [v11 imageWithData:v5];
+    imageData = [v4 imageData];
+    v10 = [v11 imageWithData:imageData];
     goto LABEL_5;
   }
 
@@ -117,23 +117,23 @@ LABEL_7:
   return v10;
 }
 
-+ (BOOL)activityHasImageForTUConversation:(id)a3
++ (BOOL)activityHasImageForTUConversation:(id)conversation
 {
-  v3 = a3;
-  if ([MEMORY[0x1E69A5B78] activeTUConversationHasActivitySession:v3])
+  conversationCopy = conversation;
+  if ([MEMORY[0x1E69A5B78] activeTUConversationHasActivitySession:conversationCopy])
   {
-    if ([MEMORY[0x1E69A5B78] isScreenShareActivityForTUConversation:v3])
+    if ([MEMORY[0x1E69A5B78] isScreenShareActivityForTUConversation:conversationCopy])
     {
       v4 = 1;
     }
 
     else
     {
-      v5 = [MEMORY[0x1E69A5B78] activityMetadataForTUConversation:v3];
+      v5 = [MEMORY[0x1E69A5B78] activityMetadataForTUConversation:conversationCopy];
       if (objc_opt_respondsToSelector())
       {
-        v6 = [v5 imageData];
-        v4 = v6 != 0;
+        imageData = [v5 imageData];
+        v4 = imageData != 0;
       }
 
       else
@@ -164,16 +164,16 @@ LABEL_7:
   return result;
 }
 
-+ (id)titleForAVMode:(unint64_t)a3
++ (id)titleForAVMode:(unint64_t)mode
 {
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isAVLessSharePlayEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isAVLessSharePlayEnabled = [mEMORY[0x1E69A8070] isAVLessSharePlayEnabled];
 
-  if (v5)
+  if (isAVLessSharePlayEnabled)
   {
     v6 = CKFrameworkBundle();
     v7 = v6;
-    if (a3)
+    if (mode)
     {
       v8 = @"FACE_TIME_DEFAULT";
     }
@@ -196,14 +196,14 @@ LABEL_7:
   return v9;
 }
 
-+ (id)activityTitleForTUConversation:(id)a3
++ (id)activityTitleForTUConversation:(id)conversation
 {
-  v3 = a3;
-  if ([MEMORY[0x1E69A5B78] activeTUConversationHasActivitySession:v3])
+  conversationCopy = conversation;
+  if ([MEMORY[0x1E69A5B78] activeTUConversationHasActivitySession:conversationCopy])
   {
-    if ([MEMORY[0x1E69A5B78] isScreenShareActivityForTUConversation:v3])
+    if ([MEMORY[0x1E69A5B78] isScreenShareActivityForTUConversation:conversationCopy])
     {
-      v4 = [MEMORY[0x1E69A5B78] remoteParticipantHandleSharingScreenForTUConversation:v3];
+      v4 = [MEMORY[0x1E69A5B78] remoteParticipantHandleSharingScreenForTUConversation:conversationCopy];
       if (v4)
       {
         v5 = [CKEntity entityForAddress:v4];
@@ -215,17 +215,17 @@ LABEL_7:
         v5 = CKFrameworkBundle();
         [v5 localizedStringForKey:@"EXPANSE_LOCAL_SCREENSHARE" value:&stru_1F04268F8 table:@"ChatKit"];
       }
-      v6 = ;
+      title = ;
       goto LABEL_12;
     }
 
-    v4 = [MEMORY[0x1E69A5B78] activityMetadataForTUConversation:v3];
-    v5 = [CKTUConversationViewUtilities activityAppNameForTUConversation:v3];
+    v4 = [MEMORY[0x1E69A5B78] activityMetadataForTUConversation:conversationCopy];
+    v5 = [CKTUConversationViewUtilities activityAppNameForTUConversation:conversationCopy];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 title];
+      title = [v4 title];
 LABEL_12:
-      v7 = v6;
+      v7 = title;
 
       v5 = v7;
     }
@@ -233,9 +233,9 @@ LABEL_12:
 
   else
   {
-    if (v3)
+    if (conversationCopy)
     {
-      v5 = +[CKTUConversationViewUtilities titleForAVMode:](CKTUConversationViewUtilities, "titleForAVMode:", [v3 avMode]);
+      v5 = +[CKTUConversationViewUtilities titleForAVMode:](CKTUConversationViewUtilities, "titleForAVMode:", [conversationCopy avMode]);
       goto LABEL_14;
     }
 
@@ -248,74 +248,74 @@ LABEL_14:
   return v5;
 }
 
-+ (id)activityTextForTUConversation:(id)a3
++ (id)activityTextForTUConversation:(id)conversation
 {
-  v3 = a3;
-  if ([MEMORY[0x1E69A5B78] isScreenShareActivityForTUConversation:v3])
+  conversationCopy = conversation;
+  if ([MEMORY[0x1E69A5B78] isScreenShareActivityForTUConversation:conversationCopy])
   {
-    v4 = 0;
+    subTitle = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69A5B78] activityMetadataForTUConversation:v3];
+    v5 = [MEMORY[0x1E69A5B78] activityMetadataForTUConversation:conversationCopy];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v5 subTitle];
+      subTitle = [v5 subTitle];
     }
 
     else
     {
-      v4 = 0;
+      subTitle = 0;
     }
   }
 
-  return v4;
+  return subTitle;
 }
 
-+ (id)activityAppNameForTUConversation:(id)a3
++ (id)activityAppNameForTUConversation:(id)conversation
 {
-  v3 = [MEMORY[0x1E69A5B78] activitySessionForTUConversation:a3];
-  v4 = [v3 activity];
-  v5 = [v4 localizedApplicationName];
-  v6 = v5;
-  if (v5)
+  v3 = [MEMORY[0x1E69A5B78] activitySessionForTUConversation:conversation];
+  activity = [v3 activity];
+  localizedApplicationName = [activity localizedApplicationName];
+  v6 = localizedApplicationName;
+  if (localizedApplicationName)
   {
-    v7 = v5;
+    fallbackApplicationName = localizedApplicationName;
   }
 
   else
   {
-    v7 = [v4 fallbackApplicationName];
+    fallbackApplicationName = [activity fallbackApplicationName];
   }
 
-  v8 = v7;
+  v8 = fallbackApplicationName;
 
   return v8;
 }
 
-+ (void)formatLPImageForScreenShare:(id)a3 conversation:(id)a4
++ (void)formatLPImageForScreenShare:(id)share conversation:(id)conversation
 {
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v7 = [v4 systemWhiteColor];
-  v6 = [v5 properties];
+  shareCopy = share;
+  systemWhiteColor = [v4 systemWhiteColor];
+  properties = [shareCopy properties];
 
-  [v6 setOverlaidTextColor:v7];
+  [properties setOverlaidTextColor:systemWhiteColor];
 }
 
-+ (id)joinStateStatusStringForTUConversation:(id)a3
++ (id)joinStateStatusStringForTUConversation:(id)conversation
 {
-  v3 = [a3 mergedActiveRemoteParticipants];
-  v4 = [v3 count];
+  mergedActiveRemoteParticipants = [conversation mergedActiveRemoteParticipants];
+  v4 = [mergedActiveRemoteParticipants count];
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 objectForKey:@"MultiwayOverrideActiveParticipants"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"MultiwayOverrideActiveParticipants"];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v7 integerForKey:@"MultiwayOverrideActiveParticipants"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults2 integerForKey:@"MultiwayOverrideActiveParticipants"];
   }
 
   if (v4)
@@ -335,11 +335,11 @@ LABEL_14:
   return v11;
 }
 
-+ (unint64_t)ckTUConversationStateForTUConversation:(id)a3
++ (unint64_t)ckTUConversationStateForTUConversation:(id)conversation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  conversationCopy = conversation;
+  if (!conversationCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -358,9 +358,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v4 = [MEMORY[0x1E69A5B78] activeTUConversationHasActivitySession:v3];
-  v5 = [v3 state];
-  if (v5 > 4)
+  v4 = [MEMORY[0x1E69A5B78] activeTUConversationHasActivitySession:conversationCopy];
+  state = [conversationCopy state];
+  if (state > 4)
   {
     if (IMOSLoggingEnabled())
     {
@@ -368,7 +368,7 @@ LABEL_18:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = conversationCopy;
         _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "TUConversationState is TUConversationStateCallEnded. Setting state to CKTUConversationStateCallEnded for TUConversation %@", &v11, 0xCu);
       }
 
@@ -392,7 +392,7 @@ LABEL_17:
     v7 = 4;
   }
 
-  if (((1 << v5) & 0x13) != 0)
+  if (((1 << state) & 0x13) != 0)
   {
     v8 = v6;
   }
@@ -407,30 +407,30 @@ LABEL_19:
   return v8;
 }
 
-+ (id)activityDescriptionStringForTUConversation:(id)a3
++ (id)activityDescriptionStringForTUConversation:(id)conversation
 {
-  v3 = [MEMORY[0x1E69A5B78] activitySessionForTUConversation:a3];
-  v4 = [v3 activity];
-  v5 = [v4 metadata];
-  v6 = [v5 context];
-  v7 = [v6 identifier];
+  v3 = [MEMORY[0x1E69A5B78] activitySessionForTUConversation:conversation];
+  activity = [v3 activity];
+  metadata = [activity metadata];
+  context = [metadata context];
+  identifier = [context identifier];
 
-  if (([v7 isEqualToString:@"CPGroupActivityGenericContext"] & 1) == 0 && !objc_msgSend(v7, "isEqualToString:", @"CPGroupActivityWorkoutTogetherContext"))
+  if (([identifier isEqualToString:@"CPGroupActivityGenericContext"] & 1) == 0 && !objc_msgSend(identifier, "isEqualToString:", @"CPGroupActivityWorkoutTogetherContext"))
   {
-    if (([v7 isEqualToString:@"CPGroupActivityListenTogetherContext"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"CPGroupActivityWatchTogetherContext"))
+    if (([identifier isEqualToString:@"CPGroupActivityListenTogetherContext"] & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", @"CPGroupActivityWatchTogetherContext"))
     {
       v8 = CKFrameworkBundle();
-      v9 = v8;
+      originator = v8;
       v10 = @"EXPANSE_ACTIVITY_DESCRIPTION_PLAYING";
       goto LABEL_4;
     }
 
-    if ([v7 isEqualToString:@"CPGroupActivityScreenSharingContext"])
+    if ([identifier isEqualToString:@"CPGroupActivityScreenSharingContext"])
     {
-      v9 = [v4 originator];
+      originator = [activity originator];
       v14 = CKFrameworkBundle();
       v15 = v14;
-      if (v9)
+      if (originator)
       {
         v16 = @"EXPANSE_ACTIVITY_DESCRIPTIONE_VIEWING";
       }
@@ -447,15 +447,15 @@ LABEL_19:
   }
 
   v8 = CKFrameworkBundle();
-  v9 = v8;
+  originator = v8;
   v10 = @"EXPANSE_ACTIVITY_DESCRIPTION_DEFAULT";
 LABEL_4:
   v11 = [v8 localizedStringForKey:v10 value:&stru_1F04268F8 table:@"ChatKit"];
 LABEL_5:
 
-  v12 = [v11 uppercaseString];
+  uppercaseString = [v11 uppercaseString];
 
-  return v12;
+  return uppercaseString;
 }
 
 @end

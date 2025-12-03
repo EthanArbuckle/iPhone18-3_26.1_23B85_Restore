@@ -1,18 +1,18 @@
 @interface WeatherLocation
-- (WeatherLocation)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (WeatherLocation)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation WeatherLocation
 
-- (WeatherLocation)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (WeatherLocation)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     sub_10000FCB4();
   }
 
   sub_10000FCB4();
-  if (a5)
+  if (hint)
   {
     sub_10000FCB4();
   }

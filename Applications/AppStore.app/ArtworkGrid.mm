@@ -1,10 +1,10 @@
 @interface ArtworkGrid
 - (CGRect)frame;
-- (_TtC8AppStore11ArtworkGrid)initWithFrame:(CGRect)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (_TtC8AppStore11ArtworkGrid)initWithFrame:(CGRect)frame;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ArtworkGrid
@@ -21,12 +21,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v7 = v8.receiver;
@@ -35,12 +35,12 @@
   [v7 setNeedsLayout];
 }
 
-- (_TtC8AppStore11ArtworkGrid)initWithFrame:(CGRect)a3
+- (_TtC8AppStore11ArtworkGrid)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = objc_allocWithZone(swift_getObjectType());
   v8 = sub_1006B52EC(0, x, y, width, height);
   swift_getObjectType();
@@ -50,28 +50,28 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006B56C8();
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_1006B701C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  v5 = a3;
-  [(ArtworkGrid *)&v8 traitCollectionDidChange:v5];
-  v6 = [v4 traitCollection];
-  v7 = [v6 layoutDirection];
+  changeCopy = change;
+  [(ArtworkGrid *)&v8 traitCollectionDidChange:changeCopy];
+  traitCollection = [v4 traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (!v5 || v7 != [v5 layoutDirection])
+  if (!changeCopy || layoutDirection != [changeCopy layoutDirection])
   {
     [v4 setNeedsLayout];
   }

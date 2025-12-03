@@ -1,20 +1,20 @@
 @interface AKFastLayerSnapshotHelper
-+ (CGImage)newFastSnapshotFromLayer:(id)a3 withSourceRect:(CGRect)a4 acutalSnapshotRect:(CGRect *)a5;
++ (CGImage)newFastSnapshotFromLayer:(id)layer withSourceRect:(CGRect)rect acutalSnapshotRect:(CGRect *)snapshotRect;
 @end
 
 @implementation AKFastLayerSnapshotHelper
 
-+ (CGImage)newFastSnapshotFromLayer:(id)a3 withSourceRect:(CGRect)a4 acutalSnapshotRect:(CGRect *)a5
++ (CGImage)newFastSnapshotFromLayer:(id)layer withSourceRect:(CGRect)rect acutalSnapshotRect:(CGRect *)snapshotRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v49 = a3;
-  v48 = [v49 context];
-  [v48 contextId];
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 nativeScale];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layerCopy = layer;
+  context = [layerCopy context];
+  [context contextId];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen nativeScale];
   v11 = v10;
 
   memset(&v53, 0, sizeof(v53));
@@ -73,9 +73,9 @@
   if (!v31)
   {
     v34 = 0;
-    v32 = v49;
-    v35 = a5;
-    if (!a5)
+    v32 = layerCopy;
+    snapshotRectCopy2 = snapshotRect;
+    if (!snapshotRect)
     {
       goto LABEL_17;
     }
@@ -85,7 +85,7 @@
 
   memset(&v51, 0, sizeof(v51));
   CATransform3DMakeScale(&v51, v11, v11, 1.0);
-  v32 = v49;
+  v32 = layerCopy;
   CARenderServerRenderLayerWithTransform();
   v33 = CFGetTypeID(v31);
   if (v33 == CGImageGetTypeID())
@@ -116,9 +116,9 @@
     CGColorSpaceRelease(DeviceRGB);
   }
 
-  v35 = a5;
+  snapshotRectCopy2 = snapshotRect;
   CFRelease(v31);
-  if (a5)
+  if (snapshotRect)
   {
 LABEL_16:
     *&v51.m11 = *&v52.a;
@@ -128,7 +128,7 @@ LABEL_16:
     v57.origin.y = v13;
     v57.size.width = v14;
     v57.size.height = v15;
-    *v35 = CGRectApplyAffineTransform(v57, &v51);
+    *snapshotRectCopy2 = CGRectApplyAffineTransform(v57, &v51);
   }
 
 LABEL_17:

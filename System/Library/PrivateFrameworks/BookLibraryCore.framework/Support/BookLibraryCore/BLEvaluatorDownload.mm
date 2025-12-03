@@ -1,40 +1,40 @@
 @interface BLEvaluatorDownload
-+ (id)copyEvaluatorDownloadForDownloadMetadataArray:(id)a3 logKey:(id)a4;
-+ (id)copyEvaluatorDownloadForPurchaseResponse:(id)a3 storeIdentifiersToDownload:(id)a4;
-+ (id)copyEvaluatorDownloadWithParameters:(id)a3;
-+ (id)formatSize:(unint64_t)a3;
++ (id)copyEvaluatorDownloadForDownloadMetadataArray:(id)array logKey:(id)key;
++ (id)copyEvaluatorDownloadForPurchaseResponse:(id)response storeIdentifiersToDownload:(id)download;
++ (id)copyEvaluatorDownloadWithParameters:(id)parameters;
++ (id)formatSize:(unint64_t)size;
 @end
 
 @implementation BLEvaluatorDownload
 
-+ (id)formatSize:(unint64_t)a3
++ (id)formatSize:(unint64_t)size
 {
-  if (a3 - 1000001 <= 0x3B8B87BE)
+  if (size - 1000001 <= 0x3B8B87BE)
   {
-    a3 = (round(a3 / 1000000.0) * 1000000.0);
+    size = (round(size / 1000000.0) * 1000000.0);
   }
 
-  if (a3 >= 0x3B9ACA01)
+  if (size >= 0x3B9ACA01)
   {
-    a3 = (round(a3 / 100000000.0) * 100000000.0);
+    size = (round(size / 100000000.0) * 100000000.0);
   }
 
-  return [NSByteCountFormatter stringFromByteCount:a3 countStyle:2];
+  return [NSByteCountFormatter stringFromByteCount:size countStyle:2];
 }
 
-+ (id)copyEvaluatorDownloadForPurchaseResponse:(id)a3 storeIdentifiersToDownload:(id)a4
++ (id)copyEvaluatorDownloadForPurchaseResponse:(id)response storeIdentifiersToDownload:(id)download
 {
-  v22 = a1;
-  v5 = a3;
-  v6 = a4;
+  selfCopy = self;
+  responseCopy = response;
+  downloadCopy = download;
   v7 = objc_alloc_init(NSMutableArray);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v23 = v5;
-  v8 = [v5 purchaseResponseItems];
-  v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v23 = responseCopy;
+  purchaseResponseItems = [responseCopy purchaseResponseItems];
+  v9 = [purchaseResponseItems countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -46,61 +46,61 @@
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(purchaseResponseItems);
         }
 
         v13 = *(*(&v24 + 1) + 8 * v12);
         v14 = [BLDownloadMetadata alloc];
-        v15 = [v13 item];
-        v16 = [v14 initWithDictionary:v15];
+        item = [v13 item];
+        v16 = [v14 initWithDictionary:item];
 
-        if (!v6 || (+[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v16 itemIdentifier]), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v6, "containsObject:", v17), v17, v18))
+        if (!downloadCopy || (+[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v16 itemIdentifier]), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(downloadCopy, "containsObject:", v17), v17, v18))
         {
-          [v7 addObject:{v16, v22}];
+          [v7 addObject:{v16, selfCopy}];
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v10 = [purchaseResponseItems countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v10);
   }
 
-  v19 = [v23 logUUID];
-  v20 = [v22 copyEvaluatorDownloadForDownloadMetadataArray:v7 logKey:v19];
+  logUUID = [v23 logUUID];
+  v20 = [selfCopy copyEvaluatorDownloadForDownloadMetadataArray:v7 logKey:logUUID];
 
   return v20;
 }
 
-+ (id)copyEvaluatorDownloadForDownloadMetadataArray:(id)a3 logKey:(id)a4
++ (id)copyEvaluatorDownloadForDownloadMetadataArray:(id)array logKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 firstObject];
-  v22 = [v7 isAutomaticDownload];
-  v8 = [v7 kind];
-  v9 = [v7 collectionName];
-  v10 = v9;
-  if (v9)
+  arrayCopy = array;
+  keyCopy = key;
+  firstObject = [arrayCopy firstObject];
+  isAutomaticDownload = [firstObject isAutomaticDownload];
+  kind = [firstObject kind];
+  collectionName = [firstObject collectionName];
+  v10 = collectionName;
+  if (collectionName)
   {
-    v11 = v9;
+    title = collectionName;
   }
 
   else
   {
-    v11 = [v7 title];
+    title = [firstObject title];
   }
 
-  v12 = v11;
+  v12 = title;
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = v5;
+  v13 = arrayCopy;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
@@ -116,8 +116,8 @@
           objc_enumerationMutation(v13);
         }
 
-        v19 = [*(*(&v23 + 1) + 8 * i) bl_assetFileSize];
-        v16 += [v19 unsignedLongValue];
+        bl_assetFileSize = [*(*(&v23 + 1) + 8 * i) bl_assetFileSize];
+        v16 += [bl_assetFileSize unsignedLongValue];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -132,42 +132,42 @@
   }
 
   v20 = objc_alloc_init(BLEvaluatorDownload);
-  [(BLEvaluatorDownload *)v20 setAutomatic:v22];
+  [(BLEvaluatorDownload *)v20 setAutomatic:isAutomaticDownload];
   [(BLEvaluatorDownload *)v20 setBytes:v16];
-  [(BLEvaluatorDownload *)v20 setKind:v8];
-  [(BLEvaluatorDownload *)v20 setLogKey:v6];
+  [(BLEvaluatorDownload *)v20 setKind:kind];
+  [(BLEvaluatorDownload *)v20 setLogKey:keyCopy];
   [(BLEvaluatorDownload *)v20 setName:v12];
   [(BLEvaluatorDownload *)v20 setRemaining:0];
 
   return v20;
 }
 
-+ (id)copyEvaluatorDownloadWithParameters:(id)a3
++ (id)copyEvaluatorDownloadWithParameters:(id)parameters
 {
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v3 fileSize];
+  parametersCopy = parameters;
+  title = [parametersCopy title];
+  fileSize = [parametersCopy fileSize];
   v6 = objc_alloc_init(BLEvaluatorDownload);
-  v7 = [v3 isAutomaticDownload];
-  if ([v7 BOOLValue])
+  isAutomaticDownload = [parametersCopy isAutomaticDownload];
+  if ([isAutomaticDownload BOOLValue])
   {
     [(BLEvaluatorDownload *)v6 setAutomatic:1];
   }
 
   else
   {
-    v8 = [v3 isRestore];
-    -[BLEvaluatorDownload setAutomatic:](v6, "setAutomatic:", [v8 BOOLValue]);
+    isRestore = [parametersCopy isRestore];
+    -[BLEvaluatorDownload setAutomatic:](v6, "setAutomatic:", [isRestore BOOLValue]);
   }
 
-  [(BLEvaluatorDownload *)v6 setBytes:v5];
-  v9 = [v3 kind];
-  [(BLEvaluatorDownload *)v6 setKind:v9];
+  [(BLEvaluatorDownload *)v6 setBytes:fileSize];
+  kind = [parametersCopy kind];
+  [(BLEvaluatorDownload *)v6 setKind:kind];
 
-  v10 = [v3 downloadID];
-  [(BLEvaluatorDownload *)v6 setLogKey:v10];
+  downloadID = [parametersCopy downloadID];
+  [(BLEvaluatorDownload *)v6 setLogKey:downloadID];
 
-  [(BLEvaluatorDownload *)v6 setName:v4];
+  [(BLEvaluatorDownload *)v6 setName:title];
   [(BLEvaluatorDownload *)v6 setRemaining:0];
 
   return v6;

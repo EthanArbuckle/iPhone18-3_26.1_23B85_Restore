@@ -1,28 +1,28 @@
 @interface TUCallRecordingRequest
-- (TUCallRecordingRequest)initWithCall:(id)a3;
-- (TUCallRecordingRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUCallRecordingRequest)initWithCall:(id)call;
+- (TUCallRecordingRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUCallRecordingRequest
 
-- (TUCallRecordingRequest)initWithCall:(id)a3
+- (TUCallRecordingRequest)initWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v13.receiver = self;
   v13.super_class = TUCallRecordingRequest;
   v5 = [(TUCallRecordingRequest *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v5->_UUID;
-    v5->_UUID = v6;
+    v5->_UUID = uUID;
 
     v8 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v9 = [v4 uniqueProxyIdentifier];
-    v10 = [v8 initWithUUIDString:v9];
+    uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+    v10 = [v8 initWithUUIDString:uniqueProxyIdentifier];
     callUUID = v5->_callUUID;
     v5->_callUUID = v10;
   }
@@ -33,36 +33,36 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUCallRecordingRequest *)self UUID];
-  [v3 appendFormat:@" UUID=%@", v4];
+  uUID = [(TUCallRecordingRequest *)self UUID];
+  [v3 appendFormat:@" UUID=%@", uUID];
 
-  v5 = [(TUCallRecordingRequest *)self callUUID];
-  [v3 appendFormat:@" callUUID=%@", v5];
+  callUUID = [(TUCallRecordingRequest *)self callUUID];
+  [v3 appendFormat:@" callUUID=%@", callUUID];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_callUUID forKey:@"callUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_callUUID forKey:@"callUUID"];
 }
 
-- (TUCallRecordingRequest)initWithCoder:(id)a3
+- (TUCallRecordingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TUCallRecordingRequest *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
     callUUID = v5->_callUUID;
     v5->_callUUID = v8;
   }
@@ -70,14 +70,14 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(TUCallRecordingRequest *)self UUID];
-  [v4 setUUID:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  uUID = [(TUCallRecordingRequest *)self UUID];
+  [v4 setUUID:uUID];
 
-  v6 = [(TUCallRecordingRequest *)self callUUID];
-  [v4 setCallUUID:v6];
+  callUUID = [(TUCallRecordingRequest *)self callUUID];
+  [v4 setCallUUID:callUUID];
 
   return v4;
 }

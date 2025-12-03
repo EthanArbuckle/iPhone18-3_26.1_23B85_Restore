@@ -1,10 +1,10 @@
 @interface SKCustomAction
-+ (id)customActionWithDuration:(double)a3 actionBlock:(id)a4;
++ (id)customActionWithDuration:(double)duration actionBlock:(id)block;
 - (SKCustomAction)init;
-- (SKCustomAction)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKCustomAction)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKCustomAction
@@ -21,21 +21,21 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = SKCustomAction;
-  [(SKAction *)&v5 encodeWithCoder:v4];
+  [(SKAction *)&v5 encodeWithCoder:coderCopy];
   NSLog(&cfstr_SkactionCustom.isa);
 }
 
-- (SKCustomAction)initWithCoder:(id)a3
+- (SKCustomAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKCustomAction;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -45,25 +45,25 @@
   return 0;
 }
 
-+ (id)customActionWithDuration:(double)a3 actionBlock:(id)a4
++ (id)customActionWithDuration:(double)duration actionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = objc_alloc_init(SKCustomAction);
-  v7 = MEMORY[0x21CF0AB10](v5);
+  v7 = MEMORY[0x21CF0AB10](blockCopy);
   mycaction = v6->_mycaction;
   var19 = mycaction->var19;
   mycaction->var19 = v7;
 
-  [(SKAction *)v6 setDuration:a3];
+  [(SKAction *)v6 setDuration:duration];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = SKCustomAction;
-  v4 = [(SKAction *)&v9 copyWithZone:a3];
+  v4 = [(SKAction *)&v9 copyWithZone:zone];
   v5 = MEMORY[0x21CF0AB10](self->_mycaction->var19);
   v6 = v4[2];
   v7 = *(v6 + 112);

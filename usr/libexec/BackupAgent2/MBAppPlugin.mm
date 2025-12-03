@@ -31,8 +31,8 @@
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [MBAppGroup alloc];
-        v11 = [(MBContainer *)self volumeMountPoint];
-        v12 = [(MBContainer *)v10 initWithPropertyList:v9 volumeMountPoint:v11];
+        volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+        v12 = [(MBContainer *)v10 initWithPropertyList:v9 volumeMountPoint:volumeMountPoint];
         [v3 addObject:v12];
       }
 
@@ -47,10 +47,10 @@
 
 - (id)domain
 {
-  v3 = [(MBContainer *)self identifier];
-  v4 = [(MBContainer *)self volumeMountPoint];
-  v5 = [(MBContainer *)self containerDir];
-  v6 = [MBDomain appPluginDomainWithIdentifier:v3 volumeMountPoint:v4 rootPath:v5];
+  identifier = [(MBContainer *)self identifier];
+  volumeMountPoint = [(MBContainer *)self volumeMountPoint];
+  containerDir = [(MBContainer *)self containerDir];
+  v6 = [MBDomain appPluginDomainWithIdentifier:identifier volumeMountPoint:volumeMountPoint rootPath:containerDir];
 
   v7 = sub_100039D50();
   [v6 setRelativePathsToBackupAndRestore:v7];
@@ -68,8 +68,8 @@
 
 - (NSString)entitlementsRelativePath
 {
-  v2 = [(MBAppPlugin *)self bundleDir];
-  v3 = sub_10003949C(v2);
+  bundleDir = [(MBAppPlugin *)self bundleDir];
+  v3 = sub_10003949C(bundleDir);
 
   return v3;
 }
@@ -81,8 +81,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(MBAppPlugin *)self groups];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  groups = [(MBAppPlugin *)self groups];
+  v5 = [groups countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -93,12 +93,12 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(groups);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 length];
+        identifier = [v9 identifier];
+        v11 = [identifier length];
 
         if (v11)
         {
@@ -110,11 +110,11 @@
           v12 = MBGetDefaultLog();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [(MBContainer *)self identifier];
+            identifier2 = [(MBContainer *)self identifier];
             *buf = 138412546;
             v22 = v9;
             v23 = 2112;
-            v24 = v13;
+            v24 = identifier2;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Found empty app group container identifier for %@ (%@)", buf, 0x16u);
 
             [(MBContainer *)self identifier];
@@ -124,7 +124,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v6 = [groups countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v6);

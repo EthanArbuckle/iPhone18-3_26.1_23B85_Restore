@@ -2,7 +2,7 @@
 - (NMSIncomingRequest)request;
 - (NMSOutgoingResponse)init;
 - (void)send;
-- (void)setPbResponse:(id)a3;
+- (void)setPbResponse:(id)response;
 @end
 
 @implementation NMSOutgoingResponse
@@ -25,17 +25,17 @@
 - (void)send
 {
   WeakRetained = objc_loadWeakRetained(&self->_request);
-  v4 = [WeakRetained messageCenter];
+  messageCenter = [WeakRetained messageCenter];
 
-  [v4 _sendResponse:self];
+  [messageCenter _sendResponse:self];
 }
 
-- (void)setPbResponse:(id)a3
+- (void)setPbResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_request);
-  v6 = [WeakRetained messageCenter];
-  v7 = [v6 _pbMappingForMessageID:{objc_msgSend(WeakRetained, "messageID")}];
+  messageCenter = [WeakRetained messageCenter];
+  v7 = [messageCenter _pbMappingForMessageID:{objc_msgSend(WeakRetained, "messageID")}];
   [v7 responseClass];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -56,12 +56,12 @@
   }
 
   pbResponse = self->_pbResponse;
-  self->_pbResponse = v4;
-  v11 = v4;
+  self->_pbResponse = responseCopy;
+  v11 = responseCopy;
 
-  v12 = [self->_pbResponse data];
+  data = [self->_pbResponse data];
   data = self->_data;
-  self->_data = v12;
+  self->_data = data;
 }
 
 - (NMSIncomingRequest)request

@@ -1,5 +1,5 @@
 @interface ICAttachmentLocation
-+ (id)newAttachmentLocationForAttachment:(id)a3;
++ (id)newAttachmentLocationForAttachment:(id)attachment;
 - (NSString)formattedAddressWithoutAttachmentTitle;
 @end
 
@@ -7,43 +7,43 @@
 
 - (NSString)formattedAddressWithoutAttachmentTitle
 {
-  v3 = [(ICLocation *)self formattedAddress];
-  v4 = [(ICAttachmentLocation *)self attachment];
-  v5 = [v4 title];
-  if (v5)
+  formattedAddress = [(ICLocation *)self formattedAddress];
+  attachment = [(ICAttachmentLocation *)self attachment];
+  title = [attachment title];
+  if (title)
   {
-    v6 = v5;
-    v7 = [(ICAttachmentLocation *)self attachment];
-    v8 = [v7 title];
-    v9 = [v3 hasPrefix:v8];
+    v6 = title;
+    attachment2 = [(ICAttachmentLocation *)self attachment];
+    title2 = [attachment2 title];
+    v9 = [formattedAddress hasPrefix:title2];
 
     if (!v9)
     {
       goto LABEL_5;
     }
 
-    v4 = [(ICAttachmentLocation *)self attachment];
-    v10 = [v4 title];
-    v11 = [v3 substringFromIndex:{objc_msgSend(v10, "length")}];
+    attachment = [(ICAttachmentLocation *)self attachment];
+    title3 = [attachment title];
+    v11 = [formattedAddress substringFromIndex:{objc_msgSend(title3, "length")}];
 
-    v3 = v11;
+    formattedAddress = v11;
   }
 
 LABEL_5:
-  v12 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v13 = [v3 stringByTrimmingCharactersInSet:v12];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v13 = [formattedAddress stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v13;
 }
 
-+ (id)newAttachmentLocationForAttachment:(id)a3
++ (id)newAttachmentLocationForAttachment:(id)attachment
 {
   v3 = MEMORY[0x277CBE408];
-  v4 = a3;
-  v5 = [v4 managedObjectContext];
-  v6 = [v3 insertNewObjectForEntityForName:@"ICAttachmentLocation" inManagedObjectContext:v5];
+  attachmentCopy = attachment;
+  managedObjectContext = [attachmentCopy managedObjectContext];
+  v6 = [v3 insertNewObjectForEntityForName:@"ICAttachmentLocation" inManagedObjectContext:managedObjectContext];
 
-  [v6 setAttachment:v4];
+  [v6 setAttachment:attachmentCopy];
   return v6;
 }
 

@@ -1,15 +1,15 @@
 @interface BWSISNode
-- (id)_initWithCameraTuningDictionary:(id)a3 sensorIDDictionary:(id)a4 sbpCreationFunction:(void *)a5 fusionScheme:(int)a6 allowExperimentalOverrides:(BOOL)a7;
+- (id)_initWithCameraTuningDictionary:(id)dictionary sensorIDDictionary:(id)dDictionary sbpCreationFunction:(void *)function fusionScheme:(int)scheme allowExperimentalOverrides:(BOOL)overrides;
 - (uint64_t)_setupSampleBufferProcessor;
 - (uint64_t)_unpackSISOptions;
 - (uint64_t)prepareForCurrentConfigurationToBecomeLive;
 - (void)_clearCaptureRequestState;
-- (void)_sampleBufferProcessorOutputReady:(const void *)a3 sampleBuffer:;
+- (void)_sampleBufferProcessorOutputReady:(const void *)ready sampleBuffer:;
 - (void)dealloc;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWSISNode
@@ -51,9 +51,9 @@
   [(BWNode *)&v9 dealloc];
 }
 
-- (id)_initWithCameraTuningDictionary:(id)a3 sensorIDDictionary:(id)a4 sbpCreationFunction:(void *)a5 fusionScheme:(int)a6 allowExperimentalOverrides:(BOOL)a7
+- (id)_initWithCameraTuningDictionary:(id)dictionary sensorIDDictionary:(id)dDictionary sbpCreationFunction:(void *)function fusionScheme:(int)scheme allowExperimentalOverrides:(BOOL)overrides
 {
-  if (a6 >= 2)
+  if (scheme >= 2)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"StillImageStabilization node supports only SeparateFusionAndNoiseReduction and TemporalMultiBandNoiseReduction fusion schemes!" userInfo:0]);
   }
@@ -63,9 +63,9 @@
   v11 = [(BWNode *)&v20 init];
   if (v11)
   {
-    v11->_cameraTuningDictionary = a3;
-    v11->_sensorIDDictionary = a4;
-    v11->_fusionScheme = a6;
+    v11->_cameraTuningDictionary = dictionary;
+    v11->_sensorIDDictionary = dDictionary;
+    v11->_fusionScheme = scheme;
     v11->_allowExperimentalOverrides = 0;
     if ([(BWSISNode *)v11 _unpackSISOptions])
     {
@@ -75,7 +75,7 @@
 
     else
     {
-      v11->_createSampleBufferProcessorFunction = a5;
+      v11->_createSampleBufferProcessorFunction = function;
       v13 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v11];
       v14 = objc_alloc_init(BWVideoFormatRequirements);
       [(BWVideoFormatRequirements *)v14 setSupportedPixelFormats:&unk_1F2248D48];
@@ -109,17 +109,17 @@
   return v11;
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   v6 = objc_alloc_init(BWVideoFormatRequirements);
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "pixelFormat")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(format, "pixelFormat")}];
   -[BWVideoFormatRequirements setSupportedPixelFormats:](v6, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1]);
-  -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", [a3 width]);
-  -[BWVideoFormatRequirements setHeight:](v6, "setHeight:", [a3 height]);
+  -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", [format width]);
+  -[BWVideoFormatRequirements setHeight:](v6, "setHeight:", [format height]);
   [(BWVideoFormatRequirements *)v6 setSupportedCacheModes:+[BWVideoFormatRequirements cacheModesForOptimizedHWAccess]];
-  if ([a3 colorSpaceProperties])
+  if ([format colorSpaceProperties])
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "colorSpaceProperties")}];
+    v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(format, "colorSpaceProperties")}];
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1];
   }
 
@@ -163,24 +163,24 @@
       v6(FigBaseObject, *off_1E798D3B0, v4);
     }
 
-    v7 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] pixelBufferAttributes];
+    pixelBufferAttributes = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] pixelBufferAttributes];
     v8 = FigSampleBufferProcessorGetFigBaseObject();
     v9 = *(*(CMBaseObjectGetVTable() + 8) + 56);
     if (v9)
     {
-      v9(v8, *off_1E798A9E8, v7);
+      v9(v8, *off_1E798A9E8, pixelBufferAttributes);
     }
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (!a3 || !self->_sampleBufferProcessor)
+  if (!buffer || !self->_sampleBufferProcessor)
   {
     return;
   }
 
-  v6 = CMGetAttachment(a3, @"StillImageSettings", 0);
+  v6 = CMGetAttachment(buffer, @"StillImageSettings", 0);
   if (!v6)
   {
     [BWSISNode renderSampleBuffer:forInput:];
@@ -192,7 +192,7 @@
     self->_currentCaptureSettings = v6;
   }
 
-  v7 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v7 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v7)
   {
     fig_log_get_emitter();
@@ -211,7 +211,7 @@ LABEL_40:
   v8 = v7;
   v9 = [objc_msgSend(v7 objectForKeyedSubscript:{*off_1E798B1B8), "intValue"}];
   v10 = [objc_msgSend(v8 objectForKeyedSubscript:{*off_1E798B558), "BOOLValue"}];
-  v11 = [objc_msgSend(CMGetAttachment(a3 @"BWStillImageCaptureSettings"];
+  v11 = [objc_msgSend(CMGetAttachment(buffer @"BWStillImageCaptureSettings"];
   if (!v11)
   {
     fig_log_get_emitter();
@@ -226,9 +226,9 @@ LABEL_40:
   }
 
   v12 = v11;
-  v13 = [v11 providePreBracketedEV0];
-  v14 = [v12 bracketFrameCount];
-  v15 = [CMGetAttachment(a3 @"StillImageCaptureType"];
+  providePreBracketedEV0 = [v11 providePreBracketedEV0];
+  bracketFrameCount = [v12 bracketFrameCount];
+  v15 = [CMGetAttachment(buffer @"StillImageCaptureType"];
   if (v15 == 4)
   {
     v16 = 1;
@@ -241,7 +241,7 @@ LABEL_40:
 
   if (v15 == 5)
   {
-    v13 &= !self->_alwaysRequestsPreBracketedEV0;
+    providePreBracketedEV0 &= !self->_alwaysRequestsPreBracketedEV0;
   }
 
   if ((self->_lastFusionTypeUsed & ~v16) != 0)
@@ -263,12 +263,12 @@ LABEL_40:
 
   if (v10)
   {
-    if (v13 & 1 | !self->_alwaysRequestsPreBracketedEV0)
+    if (providePreBracketedEV0 & 1 | !self->_alwaysRequestsPreBracketedEV0)
     {
       self->_preBracketedFrameReceived = 1;
       sampleBufferProcessor = self->_sampleBufferProcessor;
       v18 = *(*(CMBaseObjectGetVTable() + 16) + 16);
-      if (!v18 || v18(sampleBufferProcessor, a3))
+      if (!v18 || v18(sampleBufferProcessor, buffer))
       {
         [BWSISNode renderSampleBuffer:forInput:];
       }
@@ -277,16 +277,16 @@ LABEL_40:
     return;
   }
 
-  if (v9 < 1 || v9 > v14)
+  if (v9 < 1 || v9 > bracketFrameCount)
   {
     return;
   }
 
   v19 = self->_numberFramesReceived + 1;
   self->_numberFramesReceived = v19;
-  if (v9 == v14)
+  if (v9 == bracketFrameCount)
   {
-    v20 = (v13 & 1) == 0 || self->_preBracketedFrameReceived;
+    v20 = (providePreBracketedEV0 & 1) == 0 || self->_preBracketedFrameReceived;
     if (v19 != v9 || !v20)
     {
       [BWSISNode renderSampleBuffer:forInput:];
@@ -296,43 +296,43 @@ LABEL_42:
       return;
     }
 
-    CMSetAttachment(a3, *off_1E798A3A0, *MEMORY[0x1E695E4D0], 0);
+    CMSetAttachment(buffer, *off_1E798A3A0, *MEMORY[0x1E695E4D0], 0);
   }
 
   v24 = self->_sampleBufferProcessor;
   v25 = *(*(CMBaseObjectGetVTable() + 16) + 16);
-  if (!v25 || v25(v24, a3))
+  if (!v25 || v25(v24, buffer))
   {
     [BWSISNode renderSampleBuffer:forInput:];
   }
 
-  if (v9 == v14)
+  if (v9 == bracketFrameCount)
   {
     goto LABEL_42;
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   currentCaptureSettings = self->_currentCaptureSettings;
-  if (currentCaptureSettings && currentCaptureSettings == [objc_msgSend(a3 stillImageSettings])
+  if (currentCaptureSettings && currentCaptureSettings == [objc_msgSend(error stillImageSettings])
   {
     [BWSISNode handleNodeError:? forInput:?];
   }
 
   output = self->super._output;
 
-  [(BWNodeOutput *)output emitNodeError:a3, a4];
+  [(BWNodeOutput *)output emitNodeError:error, input];
 }
 
 - (void)_clearCaptureRequestState
 {
-  if (a1)
+  if (self)
   {
 
-    *(a1 + 240) = 0;
-    *(a1 + 248) = 0;
-    *(a1 + 252) = 0;
+    *(self + 240) = 0;
+    *(self + 248) = 0;
+    *(self + 252) = 0;
   }
 }
 
@@ -372,7 +372,7 @@ LABEL_42:
         goto LABEL_21;
       }
 
-      v7 = [v6 intValue];
+      intValue = [v6 intValue];
       v8 = [v3 objectForKeyedSubscript:*off_1E798D388];
       if (!v8)
       {
@@ -388,7 +388,7 @@ LABEL_42:
       }
 
       *(v1 + 168) = [*(v1 + 152) objectForKeyedSubscript:*off_1E798D380];
-      *(v1 + 192) = vcvts_n_f32_s32(v7, 8uLL);
+      *(v1 + 192) = vcvts_n_f32_s32(intValue, 8uLL);
       *(v1 + 188) = 67;
       if (*(v1 + 200))
       {
@@ -450,7 +450,7 @@ LABEL_21:
 
 - (uint64_t)_setupSampleBufferProcessor
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -458,7 +458,7 @@ LABEL_21:
   v15 = 0;
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v3 = v2;
-  if (!*(a1 + 144))
+  if (!*(self + 144))
   {
     fig_log_get_emitter();
     FigDebugAssert3();
@@ -467,7 +467,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v4 = *(a1 + 176);
+  v4 = *(self + 176);
   if (v4 == 1)
   {
     [v2 setObject:? forKeyedSubscript:?];
@@ -485,20 +485,20 @@ LABEL_21:
 
     [v2 setObject:&unk_1F2244ED8 forKeyedSubscript:*off_1E798D398];
     [v3 setObject:&unk_1F2244EF0 forKeyedSubscript:*off_1E798D3A0];
-    [v3 setObject:*(a1 + 160) forKeyedSubscript:*off_1E798D390];
-    v5 = *(a1 + 168);
+    [v3 setObject:*(self + 160) forKeyedSubscript:*off_1E798D390];
+    v5 = *(self + 168);
     if (v5)
     {
       [v3 setObject:v5 forKeyedSubscript:*off_1E798D380];
     }
 
-    v6 = [MEMORY[0x1E696AD98] numberWithInt:*(a1 + 184)];
+    v6 = [MEMORY[0x1E696AD98] numberWithInt:*(self + 184)];
     v7 = *off_1E798D388;
   }
 
   [v3 setObject:v6 forKeyedSubscript:v7];
 LABEL_10:
-  v8 = *(a1 + 128);
+  v8 = *(self + 128);
   if (!v8)
   {
     fig_log_get_emitter();
@@ -508,7 +508,7 @@ LABEL_10:
     goto LABEL_21;
   }
 
-  if (*(a1 + 176))
+  if (*(self + 176))
   {
     v9 = @"TMBNR";
   }
@@ -528,7 +528,7 @@ LABEL_10:
   }
 
   v11 = v15;
-  *(a1 + 136) = v15;
+  *(self + 136) = v15;
   v12 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (!v12)
   {
@@ -541,7 +541,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v13 = v12(v11, sisn_processorOutputReadyCallback, a1);
+  v13 = v12(v11, sisn_processorOutputReadyCallback, self);
   if (v13)
   {
     goto LABEL_19;
@@ -552,9 +552,9 @@ LABEL_21:
   return v13;
 }
 
-- (void)_sampleBufferProcessorOutputReady:(const void *)a3 sampleBuffer:
+- (void)_sampleBufferProcessorOutputReady:(const void *)ready sampleBuffer:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -570,7 +570,7 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  if (!*(a1 + 176) && [*(a1 + 240) noiseReductionEnabled])
+  if (!*(self + 176) && [*(self + 240) noiseReductionEnabled])
   {
     v6 = *MEMORY[0x1E695E480];
     FigBaseObject = FigSampleBufferProcessorGetFigBaseObject();
@@ -581,7 +581,7 @@ LABEL_21:
       v8(FigBaseObject, *off_1E798D3A8, v6, &value);
       if (value)
       {
-        CMSetAttachment(a3, v9, value, 0);
+        CMSetAttachment(ready, v9, value, 0);
       }
     }
 
@@ -592,7 +592,7 @@ LABEL_21:
       v4 = v11(v10, *off_1E798D3B8, v6, &cf);
       if (cf)
       {
-        CMSetAttachment(a3, @"NoiseReductionAlternateMetadata", cf, 0);
+        CMSetAttachment(ready, @"NoiseReductionAlternateMetadata", cf, 0);
       }
 
       if (!v4)
@@ -607,15 +607,15 @@ LABEL_21:
     }
 
 LABEL_19:
-    v12 = CMGetAttachment(a3, @"StillSettings", 0);
-    v13 = [BWNodeError newError:v4 sourceNode:a1 stillImageSettings:v12 metadata:CMGetAttachment(a3, *off_1E798A3C8, 0)];
-    [*(a1 + 16) emitNodeError:v13];
+    v12 = CMGetAttachment(ready, @"StillSettings", 0);
+    v13 = [BWNodeError newError:v4 sourceNode:self stillImageSettings:v12 metadata:CMGetAttachment(ready, *off_1E798A3C8, 0)];
+    [*(self + 16) emitNodeError:v13];
 
     goto LABEL_13;
   }
 
 LABEL_12:
-  [*(a1 + 16) emitSampleBuffer:a3];
+  [*(self + 16) emitSampleBuffer:ready];
 LABEL_13:
   if (value)
   {

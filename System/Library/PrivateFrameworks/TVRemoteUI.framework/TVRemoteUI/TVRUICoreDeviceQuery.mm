@@ -1,27 +1,27 @@
 @interface TVRUICoreDeviceQuery
 - (BOOL)hasStarted;
 - (TVRUIDeviceSearchDelegate)delegate;
-- (void)deviceQueryDidUpdateDevices:(id)a3;
-- (void)didUpdateSuggestedDevices:(id)a3;
-- (void)startQuery:(id)a3 completionHandler:(id)a4;
+- (void)deviceQueryDidUpdateDevices:(id)devices;
+- (void)didUpdateSuggestedDevices:(id)devices;
+- (void)startQuery:(id)query completionHandler:(id)handler;
 - (void)stop;
 @end
 
 @implementation TVRUICoreDeviceQuery
 
-- (void)startQuery:(id)a3 completionHandler:(id)a4
+- (void)startQuery:(id)query completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  [(TVRUICoreDeviceQuery *)self setDelegate:v6];
+  queryCopy = query;
+  handlerCopy = handler;
+  [(TVRUICoreDeviceQuery *)self setDelegate:queryCopy];
   v8 = objc_alloc_init(MEMORY[0x277D6C4E0]);
   [(TVRUICoreDeviceQuery *)self setQuery:v8];
 
-  v9 = [(TVRUICoreDeviceQuery *)self query];
-  [v9 setDelegate:self];
+  query = [(TVRUICoreDeviceQuery *)self query];
+  [query setDelegate:self];
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  [(TVRUICoreDeviceQuery *)self setDeviceList:v10];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(TVRUICoreDeviceQuery *)self setDeviceList:dictionary];
 
   v11 = _TVRUIDeviceQueryLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -31,15 +31,15 @@
   }
 
   objc_initWeak(buf, self);
-  v12 = [(TVRUICoreDeviceQuery *)self query];
+  query2 = [(TVRUICoreDeviceQuery *)self query];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __53__TVRUICoreDeviceQuery_startQuery_completionHandler___block_invoke;
   v14[3] = &unk_279D88678;
   objc_copyWeak(&v16, buf);
-  v13 = v7;
+  v13 = handlerCopy;
   v15 = v13;
-  [v12 startWithCompletionHandler:v14];
+  [query2 startWithCompletionHandler:v14];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -62,16 +62,16 @@ void __53__TVRUICoreDeviceQuery_startQuery_completionHandler___block_invoke(uint
 
 - (BOOL)hasStarted
 {
-  v2 = [(TVRUICoreDeviceQuery *)self query];
+  query = [(TVRUICoreDeviceQuery *)self query];
 
-  return v2 != 0;
+  return query != 0;
 }
 
 - (void)stop
 {
-  v3 = [(TVRUICoreDeviceQuery *)self query];
+  query = [(TVRUICoreDeviceQuery *)self query];
 
-  if (v3)
+  if (query)
   {
     v4 = _TVRUIDeviceQueryLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -80,33 +80,33 @@ void __53__TVRUICoreDeviceQuery_startQuery_completionHandler___block_invoke(uint
       _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "UI requesting device query to stop", v6, 2u);
     }
 
-    v5 = [(TVRUICoreDeviceQuery *)self query];
-    [v5 stop];
+    query2 = [(TVRUICoreDeviceQuery *)self query];
+    [query2 stop];
 
     [(TVRUICoreDeviceQuery *)self setQuery:0];
   }
 }
 
-- (void)deviceQueryDidUpdateDevices:(id)a3
+- (void)deviceQueryDidUpdateDevices:(id)devices
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = _TVRUIDeviceQueryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 devices];
+    devices = [devicesCopy devices];
     *buf = 134217984;
-    v34 = [v6 count];
+    v34 = [devices count];
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Device query did update. Num devices %ld ", buf, 0xCu);
   }
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8 = _TVRUIDeviceQueryLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(TVRUICoreDeviceQuery *)self deviceList];
+    deviceList = [(TVRUICoreDeviceQuery *)self deviceList];
     *buf = 138543362;
-    v34 = v9;
+    v34 = deviceList;
     _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "Old device list: %{public}@", buf, 0xCu);
   }
 
@@ -114,9 +114,9 @@ void __53__TVRUICoreDeviceQuery_startQuery_completionHandler___block_invoke(uint
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v28 = v4;
-  v10 = [v4 devices];
-  v11 = [v10 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  v28 = devicesCopy;
+  devices2 = [devicesCopy devices];
+  v11 = [devices2 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v11)
   {
     v12 = v11;
@@ -127,13 +127,13 @@ void __53__TVRUICoreDeviceQuery_startQuery_completionHandler___block_invoke(uint
       {
         if (*v30 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(devices2);
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        v16 = [(TVRUICoreDeviceQuery *)self deviceList];
-        v17 = [v15 identifier];
-        v18 = [v16 objectForKeyedSubscript:v17];
+        deviceList2 = [(TVRUICoreDeviceQuery *)self deviceList];
+        identifier = [v15 identifier];
+        v18 = [deviceList2 objectForKeyedSubscript:identifier];
 
         if (!v18)
         {
@@ -149,53 +149,53 @@ void __53__TVRUICoreDeviceQuery_startQuery_completionHandler___block_invoke(uint
           }
         }
 
-        v20 = [v15 identifier];
-        [v7 setObject:v18 forKeyedSubscript:v20];
+        identifier2 = [v15 identifier];
+        [dictionary setObject:v18 forKeyedSubscript:identifier2];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v12 = [devices2 countByEnumeratingWithState:&v29 objects:v37 count:16];
     }
 
     while (v12);
   }
 
-  v21 = [(TVRUICoreDeviceQuery *)self deviceList];
-  [v21 removeAllObjects];
+  deviceList3 = [(TVRUICoreDeviceQuery *)self deviceList];
+  [deviceList3 removeAllObjects];
 
-  [(TVRUICoreDeviceQuery *)self setDeviceList:v7];
+  [(TVRUICoreDeviceQuery *)self setDeviceList:dictionary];
   v22 = _TVRUIDeviceQueryLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [(TVRUICoreDeviceQuery *)self deviceList];
+    deviceList4 = [(TVRUICoreDeviceQuery *)self deviceList];
     *buf = 138543362;
-    v34 = v23;
+    v34 = deviceList4;
     _os_log_impl(&dword_26CFEB000, v22, OS_LOG_TYPE_DEFAULT, "New device list: %{public}@", buf, 0xCu);
   }
 
-  v24 = [(TVRUICoreDeviceQuery *)self delegate];
+  delegate = [(TVRUICoreDeviceQuery *)self delegate];
 
-  if (v24)
+  if (delegate)
   {
-    v25 = [(TVRUICoreDeviceQuery *)self delegate];
-    v26 = [(TVRUICoreDeviceQuery *)self deviceList];
-    v27 = [v26 allValues];
-    [v25 deviceListUpdated:v27];
+    delegate2 = [(TVRUICoreDeviceQuery *)self delegate];
+    deviceList5 = [(TVRUICoreDeviceQuery *)self deviceList];
+    allValues = [deviceList5 allValues];
+    [delegate2 deviceListUpdated:allValues];
   }
 }
 
-- (void)didUpdateSuggestedDevices:(id)a3
+- (void)didUpdateSuggestedDevices:(id)devices
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   if (+[TVRUIFeatures corianderEnabled])
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v20 = v4;
-    v6 = v4;
+    v20 = devicesCopy;
+    v6 = devicesCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v7)
     {
@@ -212,9 +212,9 @@ void __53__TVRUICoreDeviceQuery_startQuery_completionHandler___block_invoke(uint
           }
 
           v11 = *(*(&v21 + 1) + 8 * v10);
-          v12 = [(TVRUICoreDeviceQuery *)self deviceList];
-          v13 = [v11 identifier];
-          v14 = [v12 objectForKeyedSubscript:v13];
+          deviceList = [(TVRUICoreDeviceQuery *)self deviceList];
+          identifier = [v11 identifier];
+          v14 = [deviceList objectForKeyedSubscript:identifier];
 
           v15 = _TVRUIDeviceQueryLog();
           v16 = v15;
@@ -229,7 +229,7 @@ void __53__TVRUICoreDeviceQuery_startQuery_completionHandler___block_invoke(uint
               _os_log_impl(&dword_26CFEB000, v16, OS_LOG_TYPE_DEFAULT, "Found coreUIDevice:%{public}@ for device:%{public}@", buf, 0x16u);
             }
 
-            [v5 addObject:v14];
+            [array addObject:v14];
           }
 
           else
@@ -252,16 +252,16 @@ void __53__TVRUICoreDeviceQuery_startQuery_completionHandler___block_invoke(uint
       while (v8);
     }
 
-    v17 = [(TVRUICoreDeviceQuery *)self delegate];
+    delegate = [(TVRUICoreDeviceQuery *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(TVRUICoreDeviceQuery *)self delegate];
-      [v19 suggestedDevices:v5];
+      delegate2 = [(TVRUICoreDeviceQuery *)self delegate];
+      [delegate2 suggestedDevices:array];
     }
 
-    v4 = v20;
+    devicesCopy = v20;
   }
 }
 

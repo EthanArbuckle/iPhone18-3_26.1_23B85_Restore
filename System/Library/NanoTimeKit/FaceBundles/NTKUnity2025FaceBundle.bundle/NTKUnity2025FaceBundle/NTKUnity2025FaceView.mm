@@ -1,38 +1,38 @@
 @interface NTKUnity2025FaceView
-- (NTKUnity2025FaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKUnity2025FaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (id)createFaceColorPalette;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_forceUpdateComplicationColor;
 - (void)_loadSnapshotContentViews;
 - (void)_reorderSwitcherSnapshotView;
 - (void)_setUpMetalView;
 - (void)_tearDownMetalView;
 - (void)_unloadSnapshotContentViews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKUnity2025FaceView
 
-- (NTKUnity2025FaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKUnity2025FaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v9 = a4;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = NTKUnity2025FaceView;
-  v10 = [(NTKAnalogFaceView *)&v15 initWithFaceStyle:a3 forDevice:v9 clientIdentifier:a5];
+  v10 = [(NTKAnalogFaceView *)&v15 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a4);
+    objc_storeStrong(&v10->_device, device);
     v11->_isPaused = 1;
-    v12 = [[NTKUnity2025FaceViewComplicationFactory alloc] initForDevice:v9];
+    v12 = [[NTKUnity2025FaceViewComplicationFactory alloc] initForDevice:deviceCopy];
     complicationFactory = v11->_complicationFactory;
     v11->_complicationFactory = v12;
 
@@ -67,23 +67,23 @@
   [(NTKUnity2025FaceView *)&v2 _applyFrozen];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKUnity2025FaceView;
-  v6 = a3;
-  [(NTKUnity2025FaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKUnity2025Quad *)self->_quad setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKUnity2025FaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKUnity2025Quad *)self->_quad setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
 - (void)_reorderSwitcherSnapshotView
 {
-  v3 = [(NTKUnity2025FaceView *)self switcherSnapshotView];
+  switcherSnapshotView = [(NTKUnity2025FaceView *)self switcherSnapshotView];
 
-  if (v3)
+  if (switcherSnapshotView)
   {
-    v4 = [(NTKUnity2025FaceView *)self switcherSnapshotView];
-    [(NTKUnity2025FaceView *)self bringSubviewToFront:v4];
+    switcherSnapshotView2 = [(NTKUnity2025FaceView *)self switcherSnapshotView];
+    [(NTKUnity2025FaceView *)self bringSubviewToFront:switcherSnapshotView2];
   }
 }
 
@@ -102,8 +102,8 @@
   self->_quad = v6;
 
   [(CLKUIMetalQuadView *)self->_quadView addQuad:self->_quad];
-  v8 = [(NTKUnity2025FaceView *)self contentView];
-  [v8 addSubview:self->_quadView];
+  contentView = [(NTKUnity2025FaceView *)self contentView];
+  [contentView addSubview:self->_quadView];
 
   [(NTKUnity2025FaceView *)self bounds];
   [(CLKUIMetalQuadView *)self->_quadView setFrame:?];
@@ -127,19 +127,19 @@
   self->_quadView = 0;
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = NTKUnity2025FaceView;
   [(NTKAnalogFaceView *)&v6 _configureForEditMode:?];
-  if (a3 == 10)
+  if (mode == 10)
   {
     v5 = 4;
   }
 
   else
   {
-    if (a3)
+    if (mode)
     {
       return;
     }
@@ -157,13 +157,13 @@
   return v2;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v12.receiver = self;
   v12.super_class = NTKUnity2025FaceView;
   [NTKAnalogFaceView _configureForTransitionFraction:sel__configureForTransitionFraction_fromEditMode_toEditMode_ fromEditMode:? toEditMode:?];
   v9 = *MEMORY[0x277D2BF18];
-  if (a4 == 1)
+  if (mode == 1)
   {
     v10 = *MEMORY[0x277D2BF18];
   }
@@ -173,13 +173,13 @@
     v10 = 1.0;
   }
 
-  if (a5 != 1)
+  if (editMode != 1)
   {
     v9 = 1.0;
   }
 
-  v11 = a3;
-  [(CLKUIMetalQuadView *)self->_quadView setAlpha:fminf(fmaxf(v10, v9), v10 + ((v9 - v10) * v11))];
+  fractionCopy = fraction;
+  [(CLKUIMetalQuadView *)self->_quadView setAlpha:fminf(fmaxf(v10, v9), v10 + ((v9 - v10) * fractionCopy))];
 }
 
 - (void)_forceUpdateComplicationColor
@@ -193,22 +193,22 @@
   [(NTKUnity2025FaceView *)self enumerateComplicationDisplayWrappersWithBlock:&unk_284EDCAC0];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 10)
+  if (mode == 10)
   {
     v25 = v13;
     v26 = v10;
     v27 = v9;
     v28 = v8;
     v29 = v7;
-    v18 = a5;
-    v19 = [a4 effectiveOptionName];
-    v20 = NTKUnity2025SettingIndexFromColorwayName(v19);
+    toOptionCopy = toOption;
+    effectiveOptionName = [option effectiveOptionName];
+    v20 = NTKUnity2025SettingIndexFromColorwayName(effectiveOptionName);
 
-    v21 = [v18 effectiveOptionName];
+    effectiveOptionName2 = [toOptionCopy effectiveOptionName];
 
-    v22 = NTKUnity2025SettingIndexFromColorwayName(v21);
+    v22 = NTKUnity2025SettingIndexFromColorwayName(effectiveOptionName2);
     if (v20 == v22)
     {
       v23 = 0;
@@ -220,37 +220,37 @@
     }
 
     [(NTKUnity2025Quad *)self->_quad setState:v23, v14, v25, v26, v27, v28, v29, v11];
-    *&v24 = a3;
+    *&v24 = fraction;
     [(NTKUnity2025Quad *)self->_quad morphBetweenColorways:v20 index1:v22 index2:v24];
 
     [(NTKUnity2025FaceView *)self _forceUpdateComplicationColor];
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
+  optionCopy = option;
   v12.receiver = self;
   v12.super_class = NTKUnity2025FaceView;
-  [(NTKUnity2025FaceView *)&v12 _applyOption:v8 forCustomEditMode:a4 slot:a5];
-  if (a4 == 10)
+  [(NTKUnity2025FaceView *)&v12 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
+  if (mode == 10)
   {
-    v9 = [v8 effectiveOptionName];
-    v10 = NTKUnity2025SettingIndexFromColorwayName(v9);
+    effectiveOptionName = [optionCopy effectiveOptionName];
+    v10 = NTKUnity2025SettingIndexFromColorwayName(effectiveOptionName);
 
-    v11 = [(NTKUnity2025Quad *)self->_quad state];
+    state = [(NTKUnity2025Quad *)self->_quad state];
     [(NTKUnity2025Quad *)self->_quad morphBetweenColorways:v10 index1:v10 index2:0.0];
-    [(NTKUnity2025Quad *)self->_quad setState:v11];
+    [(NTKUnity2025Quad *)self->_quad setState:state];
     [(NTKUnity2025FaceView *)self _forceUpdateComplicationColor];
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v10.receiver = self;
   v10.super_class = NTKUnity2025FaceView;
-  [(NTKUnity2025FaceView *)&v10 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKUnity2025FaceView *)&v10 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v9, 0, sizeof(v9));
@@ -260,24 +260,24 @@
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v15.receiver = self;
   v15.super_class = NTKUnity2025FaceView;
-  [(NTKUnity2025FaceView *)&v15 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKUnity2025FaceView *)&v15 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKScaleForRubberBandingFraction();
     v8 = v7;
     NTKAlphaForRubberBandingFraction();
     v10 = v9;
-    v11 = [(NTKUnity2025FaceView *)self rootContainerView];
+    rootContainerView = [(NTKUnity2025FaceView *)self rootContainerView];
     CGAffineTransformMakeScale(&v13, v8, v8);
     CGAffineTransformTranslate(&v14, &v13, 0.0, 1.0);
-    [v11 setTransform:&v14];
+    [rootContainerView setTransform:&v14];
 
-    v12 = [(NTKUnity2025FaceView *)self rootContainerView];
-    [v12 setAlpha:v10];
+    rootContainerView2 = [(NTKUnity2025FaceView *)self rootContainerView];
+    [rootContainerView2 setAlpha:v10];
   }
 }
 
@@ -286,21 +286,21 @@
   v4.receiver = self;
   v4.super_class = NTKUnity2025FaceView;
   [(NTKAnalogFaceView *)&v4 _cleanupAfterEditing];
-  v3 = [(NTKUnity2025FaceView *)self complicationContainerView];
-  [v3 setAlpha:1.0];
+  complicationContainerView = [(NTKUnity2025FaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:1.0];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = NTKUnity2025FaceView;
-  [(NTKUnity2025FaceView *)&v10 _configureComplicationView:v6 forSlot:a4];
-  if ([v6 conformsToProtocol:&unk_284EFC1E0])
+  [(NTKUnity2025FaceView *)&v10 _configureComplicationView:viewCopy forSlot:slot];
+  if ([viewCopy conformsToProtocol:&unk_284EFC1E0])
   {
-    v7 = v6;
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [v7 setPlatterColor:v8];
+    v7 = viewCopy;
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v7 setPlatterColor:clearColor];
 
     if (objc_opt_respondsToSelector())
     {
@@ -312,7 +312,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 transitionToMonochromeWithFraction:1.0];
+    [viewCopy transitionToMonochromeWithFraction:1.0];
   }
 }
 

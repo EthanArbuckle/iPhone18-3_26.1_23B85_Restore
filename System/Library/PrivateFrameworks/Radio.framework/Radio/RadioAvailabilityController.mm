@@ -5,13 +5,13 @@
 - (RadioAvailabilityController)init;
 - (id)_currentStoreFrontIdentifier;
 - (id)_userDefaultsDomain;
-- (void)_currentStoreFrontIdentifierWithCompletion:(id)a3;
-- (void)_reloadRadioBagAvailabilityWithCompletionHandler:(id)a3;
+- (void)_currentStoreFrontIdentifierWithCompletion:(id)completion;
+- (void)_reloadRadioBagAvailabilityWithCompletionHandler:(id)handler;
 - (void)_reloadRadioRestriction;
-- (void)_updateRadioAvailabilityWithStoreURLBag:(id)a3 error:(id)a4 completionHandler:(id)a5;
+- (void)_updateRadioAvailabilityWithStoreURLBag:(id)bag error:(id)error completionHandler:(id)handler;
 - (void)dealloc;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)getRadioAvailabilityWithCompletionHandler:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)getRadioAvailabilityWithCompletionHandler:(id)handler;
 @end
 
 @implementation RadioAvailabilityController
@@ -35,9 +35,9 @@
     restrictionLoadQueue = v2->_restrictionLoadQueue;
     v2->_restrictionLoadQueue = v7;
 
-    v9 = [(RadioAvailabilityController *)v2 _currentStoreFrontIdentifier];
+    _currentStoreFrontIdentifier = [(RadioAvailabilityController *)v2 _currentStoreFrontIdentifier];
     v10 = CFPreferencesCopyAppValue(@"RadioLastKnownAvailableStoreFrontIdentifier", [(RadioAvailabilityController *)v2 _userDefaultsDomain]);
-    if ([v10 isNSString] && objc_msgSend(v10, "isEqualToString:", v9))
+    if ([v10 isNSString] && objc_msgSend(v10, "isEqualToString:", _currentStoreFrontIdentifier))
     {
       isRadioAvailableFromBag = v2->_isRadioAvailableFromBag;
       v2->_isRadioAvailableFromBag = MEMORY[0x277CBEC38];
@@ -50,10 +50,10 @@
       if (!keyExistsAndHasValidFormat)
       {
 LABEL_8:
-        v15 = [MEMORY[0x277D262A0] sharedConnection];
-        [v15 registerObserver:v2];
-        v16 = [MEMORY[0x277D7FA90] sharedMonitor];
-        [v16 registerObserver:v2];
+        mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+        [mEMORY[0x277D262A0] registerObserver:v2];
+        mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+        [mEMORY[0x277D7FA90] registerObserver:v2];
 
         v2->_isRadioRestricted = [(RadioAvailabilityController *)v2 _calculateRadioRestricted];
         [(RadioAvailabilityController *)v2 _updateRadioAvailabilityAllowingNotifications:0];
@@ -77,33 +77,33 @@ LABEL_8:
 
 - (id)_currentStoreFrontIdentifier
 {
-  v2 = [MEMORY[0x277D7FCA8] defaultIdentityStore];
-  v3 = [MEMORY[0x277D7FCA0] activeAccount];
-  v4 = [v2 getPropertiesForUserIdentity:v3 error:0];
+  defaultIdentityStore = [MEMORY[0x277D7FCA8] defaultIdentityStore];
+  activeAccount = [MEMORY[0x277D7FCA0] activeAccount];
+  v4 = [defaultIdentityStore getPropertiesForUserIdentity:activeAccount error:0];
 
-  v5 = [v4 storefrontIdentifier];
-  if (!v5)
+  storefrontIdentifier = [v4 storefrontIdentifier];
+  if (!storefrontIdentifier)
   {
-    v6 = [MEMORY[0x277D7FCA8] defaultIdentityStore];
-    v7 = [v6 localStoreAccountProperties];
-    v5 = [v7 storefrontIdentifier];
+    defaultIdentityStore2 = [MEMORY[0x277D7FCA8] defaultIdentityStore];
+    localStoreAccountProperties = [defaultIdentityStore2 localStoreAccountProperties];
+    storefrontIdentifier = [localStoreAccountProperties storefrontIdentifier];
   }
 
-  return v5;
+  return storefrontIdentifier;
 }
 
 - (id)_userDefaultsDomain
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (BOOL)_calculateRadioRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D26010]] == 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D26010]] == 2;
 
   return v3;
 }
@@ -133,22 +133,22 @@ void __77__RadioAvailabilityController__updateRadioAvailabilityAllowingNotificat
   [v2 postNotificationName:@"RadioAvailabilityControllerRadioAvailableDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_updateRadioAvailabilityWithStoreURLBag:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)_updateRadioAvailabilityWithStoreURLBag:(id)bag error:(id)error completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  bagCopy = bag;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (!bagCopy)
   {
     v11 = 0;
-    if (v9)
+    if (errorCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v15 = [v11 radioConfigurationDictionary];
-    v16 = v15 != 0;
+    radioConfigurationDictionary = [v11 radioConfigurationDictionary];
+    v16 = radioConfigurationDictionary != 0;
 
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -156,17 +156,17 @@ LABEL_5:
     v21[3] = &unk_279AEA728;
     v24 = v16;
     v22 = 0;
-    v23 = v10;
+    v23 = handlerCopy;
     v21[4] = self;
-    v17 = v10;
+    v17 = handlerCopy;
     [(RadioAvailabilityController *)self _currentStoreFrontIdentifierWithCompletion:v21];
 
     v14 = v23;
     goto LABEL_6;
   }
 
-  v11 = [[RadioStoreBag alloc] _initWithURLBag:v8];
-  if (!v9)
+  v11 = [[RadioStoreBag alloc] _initWithURLBag:bagCopy];
+  if (!errorCopy)
   {
     goto LABEL_5;
   }
@@ -177,9 +177,9 @@ LABEL_3:
   v18[1] = 3221225472;
   v18[2] = __95__RadioAvailabilityController__updateRadioAvailabilityWithStoreURLBag_error_completionHandler___block_invoke_4;
   v18[3] = &unk_279AEACF0;
-  v20 = v10;
-  v19 = v9;
-  v13 = v10;
+  v20 = handlerCopy;
+  v19 = errorCopy;
+  v13 = handlerCopy;
   dispatch_async(calloutSerialQueue, v18);
 
   v14 = v20;
@@ -302,19 +302,19 @@ uint64_t __54__RadioAvailabilityController__reloadRadioRestriction__block_invoke
   return result;
 }
 
-- (void)_reloadRadioBagAvailabilityWithCompletionHandler:(id)a3
+- (void)_reloadRadioBagAvailabilityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [objc_alloc(MEMORY[0x277D7FC30]) initWithBlock:&__block_literal_global_59];
-  v6 = [MEMORY[0x277D7FC68] sharedBagProvider];
+  mEMORY[0x277D7FC68] = [MEMORY[0x277D7FC68] sharedBagProvider];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__RadioAvailabilityController__reloadRadioBagAvailabilityWithCompletionHandler___block_invoke_2;
   v8[3] = &unk_279AEA6D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 getBagForRequestContext:v5 withCompletionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [mEMORY[0x277D7FC68] getBagForRequestContext:v5 withCompletionHandler:v8];
 }
 
 void __80__RadioAvailabilityController__reloadRadioBagAvailabilityWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -325,18 +325,18 @@ void __80__RadioAvailabilityController__reloadRadioBagAvailabilityWithCompletion
   [v2 setIdentity:v3];
 }
 
-- (void)_currentStoreFrontIdentifierWithCompletion:(id)a3
+- (void)_currentStoreFrontIdentifierWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D7FCA8] defaultIdentityStore];
-  v5 = [MEMORY[0x277D7FCA0] activeAccount];
+  completionCopy = completion;
+  defaultIdentityStore = [MEMORY[0x277D7FCA8] defaultIdentityStore];
+  activeAccount = [MEMORY[0x277D7FCA0] activeAccount];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__RadioAvailabilityController__currentStoreFrontIdentifierWithCompletion___block_invoke;
   v7[3] = &unk_279AEA690;
-  v8 = v3;
-  v6 = v3;
-  [v4 getPropertiesForUserIdentity:v5 completionHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [defaultIdentityStore getPropertiesForUserIdentity:activeAccount completionHandler:v7];
 }
 
 void __74__RadioAvailabilityController__currentStoreFrontIdentifierWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -353,17 +353,17 @@ void __74__RadioAvailabilityController__currentStoreFrontIdentifierWithCompletio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getRadioAvailabilityWithCompletionHandler:(id)a3
+- (void)getRadioAvailabilityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__RadioAvailabilityController_getRadioAvailabilityWithCompletionHandler___block_invoke;
   v7[3] = &unk_279AEACF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -413,9 +413,9 @@ void __73__RadioAvailabilityController_getRadioAvailabilityWithCompletionHandler
   return v3;
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  if ([a3 isRemoteServerLikelyReachable])
+  if ([reachability isRemoteServerLikelyReachable])
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -440,10 +440,10 @@ _BYTE *__78__RadioAvailabilityController_environmentMonitorDidChangeNetworkReach
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
-  v4 = [MEMORY[0x277D7FA90] sharedMonitor];
-  [v4 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
+  mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+  [mEMORY[0x277D7FA90] unregisterObserver:self];
 
   v5.receiver = self;
   v5.super_class = RadioAvailabilityController;

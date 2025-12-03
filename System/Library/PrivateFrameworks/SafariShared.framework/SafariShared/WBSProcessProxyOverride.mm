@@ -1,77 +1,77 @@
 @interface WBSProcessProxyOverride
-+ (void)overrideSystemHTTPProxy:(id)a3 HTTPSProxy:(id)a4;
-+ (void)overrideSystemProxiesIfNeeded:(id)a3;
++ (void)overrideSystemHTTPProxy:(id)proxy HTTPSProxy:(id)sProxy;
++ (void)overrideSystemProxiesIfNeeded:(id)needed;
 @end
 
 @implementation WBSProcessProxyOverride
 
-+ (void)overrideSystemHTTPProxy:(id)a3 HTTPSProxy:(id)a4
++ (void)overrideSystemHTTPProxy:(id)proxy HTTPSProxy:(id)sProxy
 {
-  v13 = a3;
-  v5 = a4;
-  if (v13 | v5)
+  proxyCopy = proxy;
+  sProxyCopy = sProxy;
+  if (proxyCopy | sProxyCopy)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    if (v13)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if (proxyCopy)
     {
-      v7 = [MEMORY[0x1E695DFF8] safari_URLWithDataAsString:v13];
-      v8 = [v7 host];
-      if (v8)
+      v7 = [MEMORY[0x1E695DFF8] safari_URLWithDataAsString:proxyCopy];
+      host = [v7 host];
+      if (host)
       {
-        [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x1E695AE50]];
-        v9 = [v7 port];
-        if (v9)
+        [dictionary setObject:host forKeyedSubscript:*MEMORY[0x1E695AE50]];
+        port = [v7 port];
+        if (port)
         {
-          [v6 setObject:v9 forKeyedSubscript:*MEMORY[0x1E695AE58]];
+          [dictionary setObject:port forKeyedSubscript:*MEMORY[0x1E695AE58]];
         }
       }
 
       else
       {
-        NSLog(&cfstr_MalformedHttpP.isa, v13);
+        NSLog(&cfstr_MalformedHttpP.isa, proxyCopy);
       }
     }
 
-    if (v5)
+    if (sProxyCopy)
     {
-      v10 = [MEMORY[0x1E695DFF8] safari_URLWithDataAsString:v5];
-      v11 = [v10 host];
-      if (v11)
+      v10 = [MEMORY[0x1E695DFF8] safari_URLWithDataAsString:sProxyCopy];
+      host2 = [v10 host];
+      if (host2)
       {
-        [v6 setObject:v11 forKeyedSubscript:*MEMORY[0x1E695AE60]];
-        v12 = [v10 port];
-        if (v12)
+        [dictionary setObject:host2 forKeyedSubscript:*MEMORY[0x1E695AE60]];
+        port2 = [v10 port];
+        if (port2)
         {
-          [v6 setObject:v12 forKeyedSubscript:*MEMORY[0x1E695AE68]];
+          [dictionary setObject:port2 forKeyedSubscript:*MEMORY[0x1E695AE68]];
         }
       }
 
       else
       {
-        NSLog(&cfstr_MalformedHttps.isa, v5);
+        NSLog(&cfstr_MalformedHttps.isa, sProxyCopy);
       }
     }
 
-    if ([v6 count])
+    if ([dictionary count])
     {
       _CFNetworkSetOverrideSystemProxySettings();
     }
   }
 }
 
-+ (void)overrideSystemProxiesIfNeeded:(id)a3
++ (void)overrideSystemProxiesIfNeeded:(id)needed
 {
-  v5 = a3;
-  v3 = [v5 stringForKey:@"DebugHTTPProxy"];
+  neededCopy = needed;
+  v3 = [neededCopy stringForKey:@"DebugHTTPProxy"];
   if (!v3)
   {
-    v3 = [v5 stringForKey:@"WebKit2HTTPProxy"];
+    v3 = [neededCopy stringForKey:@"WebKit2HTTPProxy"];
   }
 
-  v4 = [v5 stringForKey:@"DebugHTTPSProxy"];
+  v4 = [neededCopy stringForKey:@"DebugHTTPSProxy"];
   if (!v4)
   {
-    v4 = [v5 stringForKey:@"WebKit2HTTPSProxy"];
+    v4 = [neededCopy stringForKey:@"WebKit2HTTPSProxy"];
   }
 
   [WBSProcessProxyOverride overrideSystemHTTPProxy:v3 HTTPSProxy:v4];

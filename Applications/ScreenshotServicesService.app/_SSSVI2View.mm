@@ -14,9 +14,9 @@
 
   else
   {
-    v4 = [(_SSSVI2View *)self window];
+    window = [(_SSSVI2View *)self window];
 
-    if (v4)
+    if (window)
     {
       v5.receiver = self;
       v5.super_class = _SSSVI2View;

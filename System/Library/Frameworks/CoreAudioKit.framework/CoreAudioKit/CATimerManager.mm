@@ -1,8 +1,8 @@
 @interface CATimerManager
-+ (id)getWeakReferenceOfObject:(id)a3;
++ (id)getWeakReferenceOfObject:(id)object;
 - (CATimerManager)init;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation CATimerManager
@@ -14,27 +14,27 @@
   return [(CATimerManager *)&v3 init];
 }
 
-+ (id)getWeakReferenceOfObject:(id)a3
++ (id)getWeakReferenceOfObject:(id)object
 {
   v4 = objc_opt_new();
-  [v4 setTimerSource:a3];
+  [v4 setTimerSource:object];
 
   return v4;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   [(CATimerManager *)self timerSource];
   v4 = objc_opt_class();
 
-  return [v4 instanceMethodSignatureForSelector:a3];
+  return [v4 instanceMethodSignatureForSelector:selector];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = [(CATimerManager *)self timerSource];
+  timerSource = [(CATimerManager *)self timerSource];
 
-  [a3 invokeWithTarget:v4];
+  [invocation invokeWithTarget:timerSource];
 }
 
 @end

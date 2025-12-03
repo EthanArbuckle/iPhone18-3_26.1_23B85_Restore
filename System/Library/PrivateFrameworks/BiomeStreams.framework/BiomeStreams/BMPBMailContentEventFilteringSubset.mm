@@ -1,12 +1,12 @@
 @interface BMPBMailContentEventFilteringSubset
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBMailContentEventFilteringSubset
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = BMPBMailContentEventFilteringSubset;
   v4 = [(BMPBMailContentEventFilteringSubset *)&v8 description];
-  v5 = [(BMPBMailContentEventFilteringSubset *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBMailContentEventFilteringSubset *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uniqueId = self->_uniqueId;
   if (uniqueId)
   {
-    [v3 setObject:uniqueId forKey:@"uniqueId"];
+    [dictionary setObject:uniqueId forKey:@"uniqueId"];
   }
 
   domainId = self->_domainId;
@@ -48,77 +48,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uniqueId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_domainId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personaId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uniqueId)
   {
-    [v4 setUniqueId:?];
-    v4 = v5;
+    [toCopy setUniqueId:?];
+    toCopy = v5;
   }
 
   if (self->_domainId)
   {
     [v5 setDomainId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personaId)
   {
     [v5 setPersonaId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_domainId copyWithZone:a3];
+  v8 = [(NSString *)self->_domainId copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_personaId copyWithZone:a3];
+  v10 = [(NSString *)self->_personaId copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((uniqueId = self->_uniqueId, !(uniqueId | v4[3])) || -[NSString isEqual:](uniqueId, "isEqual:")) && ((domainId = self->_domainId, !(domainId | v4[1])) || -[NSString isEqual:](domainId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((uniqueId = self->_uniqueId, !(uniqueId | equalCopy[3])) || -[NSString isEqual:](uniqueId, "isEqual:")) && ((domainId = self->_domainId, !(domainId | equalCopy[1])) || -[NSString isEqual:](domainId, "isEqual:")))
   {
     personaId = self->_personaId;
-    if (personaId | v4[2])
+    if (personaId | equalCopy[2])
     {
       v8 = [(NSString *)personaId isEqual:?];
     }
@@ -144,26 +144,26 @@
   return v4 ^ [(NSString *)self->_personaId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[3])
   {
     [(BMPBMailContentEventFilteringSubset *)self setUniqueId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(BMPBMailContentEventFilteringSubset *)self setDomainId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(BMPBMailContentEventFilteringSubset *)self setPersonaId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

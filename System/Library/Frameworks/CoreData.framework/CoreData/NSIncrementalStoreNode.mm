@@ -1,6 +1,6 @@
 @interface NSIncrementalStoreNode
 - (NSIncrementalStoreNode)initWithObjectID:(NSManagedObjectID *)objectID withValues:(NSDictionary *)values version:(uint64_t)version;
-- (NSIncrementalStoreNode)initWithObjectID:(id)a3 fromSQLRow:(id)a4;
+- (NSIncrementalStoreNode)initWithObjectID:(id)d fromSQLRow:(id)row;
 - (id)valueForPropertyDescription:(NSPropertyDescription *)prop;
 - (void)dealloc;
 - (void)updateWithValues:(NSDictionary *)values version:(uint64_t)version;
@@ -18,21 +18,21 @@
   [(NSIncrementalStoreNode *)&v3 dealloc];
 }
 
-- (NSIncrementalStoreNode)initWithObjectID:(id)a3 fromSQLRow:(id)a4
+- (NSIncrementalStoreNode)initWithObjectID:(id)d fromSQLRow:(id)row
 {
   v27.receiver = self;
   v27.super_class = NSIncrementalStoreNode;
   v6 = [(NSIncrementalStoreNode *)&v27 init];
   if (v6)
   {
-    v6->_objectID = a3;
+    v6->_objectID = d;
     v6->_reserved1 = 0;
-    v6->_versionNumber = [a4 _versionNumber];
-    v7 = [a3 entity];
-    v8 = v7;
-    if (v7)
+    v6->_versionNumber = [row _versionNumber];
+    entity = [d entity];
+    v8 = entity;
+    if (entity)
     {
-      v9 = *(v7 + 104);
+      v9 = *(entity + 104);
     }
 
     else
@@ -41,19 +41,19 @@
     }
 
     v10 = [[NSKnownKeysDictionary alloc] initWithSearchStrategy:v9];
-    v11 = [(NSKnownKeysDictionary *)v10 values];
-    v12 = [v9 keys];
-    v13 = v12;
+    values = [(NSKnownKeysDictionary *)v10 values];
+    keys = [v9 keys];
+    v13 = keys;
     v14 = *(v8 + 112);
     v15 = v14[6];
     v16 = v14[7];
     if (v15 < v16 + v15)
     {
-      v17 = (v11 + 8 * v15);
-      v18 = (v12 + 8 * v15);
+      v17 = (values + 8 * v15);
+      v18 = (keys + 8 * v15);
       do
       {
-        v19 = [a4 valueForKey:*v18];
+        v19 = [row valueForKey:*v18];
         if (v19)
         {
           *v17 = v19;
@@ -71,11 +71,11 @@
     v21 = v14[13];
     if (v20 < v21 + v20)
     {
-      v22 = (v11 + 8 * v20);
+      v22 = (values + 8 * v20);
       v23 = (v13 + 8 * v20);
       do
       {
-        v24 = [a4 valueForKey:*v23];
+        v24 = [row valueForKey:*v23];
         if (v24)
         {
           v25 = v24;
@@ -112,11 +112,11 @@
     v8->_reserved1 = 0;
     v8->_objectID = v9;
     v8->_versionNumber = version;
-    v10 = [(NSManagedObjectID *)objectID entity];
-    v11 = v10;
-    if (v10)
+    entity = [(NSManagedObjectID *)objectID entity];
+    v11 = entity;
+    if (entity)
     {
-      propertyMapping = v10->_propertyMapping;
+      propertyMapping = entity->_propertyMapping;
     }
 
     else
@@ -126,9 +126,9 @@
 
     v13 = [[NSKnownKeysDictionary alloc] initWithSearchStrategy:propertyMapping];
     v14 = [(NSDictionary *)values count];
-    v15 = [(NSKnownKeysDictionary *)v13 values];
+    values = [(NSKnownKeysDictionary *)v13 values];
     v39 = &v37;
-    MEMORY[0x1EEE9AC00](v15);
+    MEMORY[0x1EEE9AC00](values);
     v18 = &v37 - v17;
     v19 = 8 * v16;
     if (v14 > 0x200)
@@ -154,7 +154,7 @@
       v25 = 0;
       v26 = NSKeyValueCoding_NullValue;
       v27 = vdupq_n_s64(length - 1);
-      v28 = v15 + 8 * location;
+      v28 = values + 8 * location;
       do
       {
         v29 = vmovn_s64(vcgeq_u64(v27, vorrq_s8(vdupq_n_s64(v25), xmmword_18592E480)));
@@ -189,7 +189,7 @@
             v32 = 0;
           }
 
-          *(v15 + 8 * v31) = v32;
+          *(values + 8 * v31) = v32;
         }
       }
 
@@ -212,11 +212,11 @@
 - (void)updateWithValues:(NSDictionary *)values version:(uint64_t)version
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = [(NSManagedObjectID *)self->_objectID entity];
-  v8 = v7;
-  if (v7)
+  entity = [(NSManagedObjectID *)self->_objectID entity];
+  v8 = entity;
+  if (entity)
   {
-    propertyMapping = v7->_propertyMapping;
+    propertyMapping = entity->_propertyMapping;
   }
 
   else
@@ -229,7 +229,7 @@
   v12 = MEMORY[0x1EEE9AC00](v11);
   v15 = &v30 - v14;
   v16 = 8 * v13;
-  v31 = self;
+  selfCopy = self;
   v32 = version;
   if (v12 > 0x200)
   {
@@ -291,49 +291,49 @@
     }
   }
 
-  v31->_versionNumber = v32;
+  selfCopy->_versionNumber = v32;
   v29 = *MEMORY[0x1E69E9840];
 }
 
 - (id)valueForPropertyDescription:(NSPropertyDescription *)prop
 {
-  v5 = [(NSPropertyDescription *)prop entity];
-  v6 = [(NSManagedObjectID *)self->_objectID entity];
-  v7 = v6;
-  if (prop && v5 == v6)
+  entity = [(NSPropertyDescription *)prop entity];
+  entity2 = [(NSManagedObjectID *)self->_objectID entity];
+  v7 = entity2;
+  if (prop && entity == entity2)
   {
     goto LABEL_3;
   }
 
-  if (!prop || ![(NSEntityDescription *)v6 isKindOfEntity:[(NSPropertyDescription *)prop entity]])
+  if (!prop || ![(NSEntityDescription *)entity2 isKindOfEntity:[(NSPropertyDescription *)prop entity]])
   {
     return 0;
   }
 
-  v16 = [(NSPropertyDescription *)prop _propertyType];
+  _propertyType = [(NSPropertyDescription *)prop _propertyType];
   if ([(NSPropertyDescription *)prop _isAttribute])
   {
 LABEL_3:
-    v8 = [(NSPropertyDescription *)prop _entitysReferenceID];
+    _entitysReferenceID = [(NSPropertyDescription *)prop _entitysReferenceID];
   }
 
   else
   {
-    if (v16 != 4)
+    if (_propertyType != 4)
     {
       return 0;
     }
 
-    v8 = [(NSEntityDescription *)v7 _offsetRelationshipIndex:[(NSPropertyDescription *)prop _entitysReferenceID] fromSuperEntity:v5 andIsToMany:[(NSPropertyDescription *)prop isToMany]];
+    _entitysReferenceID = [(NSEntityDescription *)v7 _offsetRelationshipIndex:[(NSPropertyDescription *)prop _entitysReferenceID] fromSuperEntity:entity andIsToMany:[(NSPropertyDescription *)prop isToMany]];
   }
 
-  v9 = v8;
-  if (v8 < 0)
+  v9 = _entitysReferenceID;
+  if (_entitysReferenceID < 0)
   {
     return 0;
   }
 
-  result = [self->_propertyCache valueAtIndex:v8];
+  result = [self->_propertyCache valueAtIndex:_entitysReferenceID];
   propertyRanges = v7->_propertyRanges;
   location = propertyRanges[6].location;
   length = propertyRanges[6].length;

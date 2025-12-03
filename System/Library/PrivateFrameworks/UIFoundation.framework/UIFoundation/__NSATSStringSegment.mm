@@ -1,16 +1,16 @@
 @interface __NSATSStringSegment
-+ (id)allocWithZone:(_NSZone *)a3;
-- (const)_setOriginalString:(uint64_t)a3 range:(char *)a4;
-- (const)initWithOriginalString:(uint64_t)a3 range:(char *)a4;
-- (unsigned)characterAtIndex:(unint64_t)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (const)_setOriginalString:(uint64_t)string range:(char *)range;
+- (const)initWithOriginalString:(uint64_t)string range:(char *)range;
+- (unsigned)characterAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 - (void)release;
 @end
 
 @implementation __NSATSStringSegment
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
   v5 = __NSATSStringSegmentCacheNextIndex;
@@ -18,9 +18,9 @@
   {
     os_unfair_lock_unlock(&__NSATSStringSegmentLock);
 LABEL_5:
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS_____NSATSStringSegment;
-    return objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
   }
 
   --__NSATSStringSegmentCacheNextIndex;
@@ -73,10 +73,10 @@ LABEL_5:
   [(__NSATSStringSegment *)&v4 dealloc];
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   p_range = &self->_range;
-  if (self->_range.length <= a3)
+  if (self->_range.length <= index)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: Range or index out of bounds", objc_opt_class()}];
   }
@@ -110,7 +110,7 @@ LABEL_5:
     characters = self->_characters;
     if (characters)
     {
-      return characters[a3];
+      return characters[index];
     }
   }
 
@@ -119,22 +119,22 @@ LABEL_5:
     characters = self->_buffer;
     if (self != -48)
     {
-      return characters[a3];
+      return characters[index];
     }
   }
 
   originalString = self->_originalString;
-  v11 = p_range->location + a3;
+  v11 = p_range->location + index;
 
   return CFStringGetCharacterAtIndex(originalString, v11);
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   p_range = &self->_range;
-  if (a4.location + a4.length > self->_range.length)
+  if (range.location + range.length > self->_range.length)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: Range or index out of bounds", objc_opt_class()}];
   }
@@ -170,7 +170,7 @@ LABEL_5:
     {
 LABEL_12:
 
-      memcpy(a3, &characters[2 * location], 2 * length);
+      memcpy(characters, &characters[2 * location], 2 * length);
       return;
     }
   }
@@ -188,10 +188,10 @@ LABEL_12:
   v13.location = p_range->location + location;
   v13.length = length;
 
-  CFStringGetCharacters(originalString, v13, a3);
+  CFStringGetCharacters(originalString, v13, characters);
 }
 
-- (const)_setOriginalString:(uint64_t)a3 range:(char *)a4
+- (const)_setOriginalString:(uint64_t)string range:(char *)range
 {
   if (!result)
   {
@@ -227,30 +227,30 @@ LABEL_7:
   result = 0;
 LABEL_10:
   v7->data = result;
-  if (&a4[a3] > result)
+  if (&range[string] > result)
   {
-    result = [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: Requested range {%ld, %ld} is out of bounds for %@", objc_opt_class(), a3, a4, cf}];
+    result = [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%@: Requested range {%ld, %ld} is out of bounds for %@", objc_opt_class(), string, range, cf}];
   }
 
-  v7->length = a3;
-  v7[1].isa = a4;
+  v7->length = string;
+  v7[1].isa = range;
   return result;
 }
 
-- (const)initWithOriginalString:(uint64_t)a3 range:(char *)a4
+- (const)initWithOriginalString:(uint64_t)string range:(char *)range
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = __NSATSStringSegment;
   v7 = objc_msgSendSuper2(&v10, sel_init);
   v8 = v7;
   if (v7)
   {
-    [(__NSATSStringSegment *)v7 _setOriginalString:a2 range:a3, a4];
+    [(__NSATSStringSegment *)v7 _setOriginalString:a2 range:string, range];
   }
 
   return v8;

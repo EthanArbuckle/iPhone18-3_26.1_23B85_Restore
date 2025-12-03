@@ -1,27 +1,27 @@
 @interface HMMTagDispatcher
-- (HMMTagDispatcher)initWithWorkQueue:(id)a3;
-- (HMMTagDispatcher)initWithWorkQueue:(id)a3 startTime:(int64_t)a4;
-- (void)registerTagObserver:(id)a3 forTags:(id)a4;
-- (void)submitTaggedEvent:(id)a3 processorList:(id)a4;
-- (void)unregisterTagObserver:(id)a3 forTags:(id)a4;
+- (HMMTagDispatcher)initWithWorkQueue:(id)queue;
+- (HMMTagDispatcher)initWithWorkQueue:(id)queue startTime:(int64_t)time;
+- (void)registerTagObserver:(id)observer forTags:(id)tags;
+- (void)submitTaggedEvent:(id)event processorList:(id)list;
+- (void)unregisterTagObserver:(id)observer forTags:(id)tags;
 @end
 
 @implementation HMMTagDispatcher
 
-- (void)submitTaggedEvent:(id)a3 processorList:(id)a4
+- (void)submitTaggedEvent:(id)event processorList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  listCopy = list;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HMMTagDispatcher_submitTaggedEvent_processorList___block_invoke;
   block[3] = &unk_2786F9060;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  selfCopy = self;
+  v14 = listCopy;
+  v9 = listCopy;
+  v10 = eventCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -185,20 +185,20 @@ void __52__HMMTagDispatcher_submitTaggedEvent_processorList___block_invoke_2(uin
   [v5 hmf_addObject:v4];
 }
 
-- (void)unregisterTagObserver:(id)a3 forTags:(id)a4
+- (void)unregisterTagObserver:(id)observer forTags:(id)tags
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  tagsCopy = tags;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__HMMTagDispatcher_unregisterTagObserver_forTags___block_invoke;
   block[3] = &unk_2786F9060;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = tagsCopy;
+  selfCopy = self;
+  v14 = observerCopy;
+  v9 = observerCopy;
+  v10 = tagsCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -243,20 +243,20 @@ void __50__HMMTagDispatcher_unregisterTagObserver_forTags___block_invoke(uint64_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerTagObserver:(id)a3 forTags:(id)a4
+- (void)registerTagObserver:(id)observer forTags:(id)tags
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  tagsCopy = tags;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HMMTagDispatcher_registerTagObserver_forTags___block_invoke;
   block[3] = &unk_2786F9060;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = tagsCopy;
+  selfCopy = self;
+  v14 = observerCopy;
+  v9 = observerCopy;
+  v10 = tagsCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -309,35 +309,35 @@ void __48__HMMTagDispatcher_registerTagObserver_forTags___block_invoke(uint64_t 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTagDispatcher)initWithWorkQueue:(id)a3 startTime:(int64_t)a4
+- (HMMTagDispatcher)initWithWorkQueue:(id)queue startTime:(int64_t)time
 {
-  v7 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = HMMTagDispatcher;
   v8 = [(HMMTagDispatcher *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     tagObservers = v8->_tagObservers;
-    v8->_tagObservers = v9;
+    v8->_tagObservers = dictionary;
 
-    v11 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     allTagProcessors = v8->_allTagProcessors;
-    v8->_allTagProcessors = v11;
+    v8->_allTagProcessors = weakObjectsPointerArray;
 
-    objc_storeStrong(&v8->_workQueue, a3);
-    v8->_nextStaleCheckTime = a4 + 3600000;
+    objc_storeStrong(&v8->_workQueue, queue);
+    v8->_nextStaleCheckTime = time + 3600000;
   }
 
   return v8;
 }
 
-- (HMMTagDispatcher)initWithWorkQueue:(id)a3
+- (HMMTagDispatcher)initWithWorkQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(HMMTagDispatcher *)self initWithWorkQueue:v4 startTime:clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) / 0xF4240];
+  queueCopy = queue;
+  0xF4240 = [(HMMTagDispatcher *)self initWithWorkQueue:queueCopy startTime:clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) / 0xF4240];
 
-  return v5;
+  return 0xF4240;
 }
 
 @end

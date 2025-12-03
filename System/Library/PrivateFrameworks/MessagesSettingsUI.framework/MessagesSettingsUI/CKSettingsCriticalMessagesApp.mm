@@ -1,15 +1,15 @@
 @interface CKSettingsCriticalMessagesApp
-- (CKSettingsCriticalMessagesApp)initWithBundleID:(id)a3 recipients:(id)a4;
+- (CKSettingsCriticalMessagesApp)initWithBundleID:(id)d recipients:(id)recipients;
 - (NSString)activeNumberCountLocalizedString;
 - (int64_t)_activeNumberCount;
 @end
 
 @implementation CKSettingsCriticalMessagesApp
 
-- (CKSettingsCriticalMessagesApp)initWithBundleID:(id)a3 recipients:(id)a4
+- (CKSettingsCriticalMessagesApp)initWithBundleID:(id)d recipients:(id)recipients
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  recipientsCopy = recipients;
   v21.receiver = self;
   v21.super_class = CKSettingsCriticalMessagesApp;
   v8 = [(CKSettingsCriticalMessagesApp *)&v21 init];
@@ -21,31 +21,31 @@ LABEL_8:
   }
 
   v20 = 0;
-  v9 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v20];
+  v9 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v20];
   v10 = v20;
   v11 = v10;
   if (v9)
   {
-    v12 = [v9 bundleIdentifier];
+    bundleIdentifier = [v9 bundleIdentifier];
     bundleID = v8->_bundleID;
-    v8->_bundleID = v12;
+    v8->_bundleID = bundleIdentifier;
 
-    v14 = [v9 localizedName];
-    v15 = v14;
-    if (v14)
+    localizedName = [v9 localizedName];
+    v15 = localizedName;
+    if (localizedName)
     {
-      v16 = v14;
+      localizedShortName = localizedName;
     }
 
     else
     {
-      v16 = [v9 localizedShortName];
+      localizedShortName = [v9 localizedShortName];
     }
 
     displayName = v8->_displayName;
-    v8->_displayName = v16;
+    v8->_displayName = localizedShortName;
 
-    objc_storeStrong(&v8->_recipients, a4);
+    objc_storeStrong(&v8->_recipients, recipients);
     goto LABEL_8;
   }
 
@@ -98,11 +98,11 @@ LABEL_9:
 
 - (NSString)activeNumberCountLocalizedString
 {
-  v2 = [(CKSettingsCriticalMessagesApp *)self _activeNumberCount];
+  _activeNumberCount = [(CKSettingsCriticalMessagesApp *)self _activeNumberCount];
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CRITICAL_MESSAGES_PHONE_NUMBER_COUNT" value:&stru_286A13F00 table:@"CriticalMessagesSettings"];
-  v6 = [v3 stringWithFormat:v5, v2];
+  v6 = [v3 stringWithFormat:v5, _activeNumberCount];
 
   return v6;
 }

@@ -1,23 +1,23 @@
 @interface _TVCarouselViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation _TVCarouselViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVCarouselViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"UIPageControl" hasInstanceMethod:@"currentPage" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"_TVCarouselViewController" hasInstanceVariable:@"_carouselView" withType:"_TVCarouselView"];
-  [v3 validateClass:@"_TVCarouselViewController" hasInstanceVariable:@"_collectionElement" withType:"IKCollectionElement"];
-  [v3 validateClass:@"_TVCarouselView" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVCarouselView" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IKCollectionElement" hasInstanceMethod:@"sections" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IKDataSourceElement" hasInstanceMethod:@"elementForItemAtIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"IKViewElement" hasInstanceVariable:@"_dataDictionary" withType:"NSDictionary"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVCarouselViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"UIPageControl" hasInstanceMethod:@"currentPage" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"_TVCarouselViewController" hasInstanceVariable:@"_carouselView" withType:"_TVCarouselView"];
+  [validationsCopy validateClass:@"_TVCarouselViewController" hasInstanceVariable:@"_collectionElement" withType:"IKCollectionElement"];
+  [validationsCopy validateClass:@"_TVCarouselView" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVCarouselView" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IKCollectionElement" hasInstanceMethod:@"sections" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IKDataSourceElement" hasInstanceMethod:@"elementForItemAtIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"IKViewElement" hasInstanceVariable:@"_dataDictionary" withType:"NSDictionary"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

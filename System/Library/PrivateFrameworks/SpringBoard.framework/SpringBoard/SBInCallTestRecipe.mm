@@ -21,8 +21,8 @@
   {
     self->_isPresentationActive = 0;
     v4 = +[SBWorkspace mainWorkspace];
-    v3 = [v4 inCallPresentationManager];
-    [v3 _dismissAllPresentations];
+    inCallPresentationManager = [v4 inCallPresentationManager];
+    [inCallPresentationManager _dismissAllPresentations];
   }
 }
 

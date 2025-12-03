@@ -1,40 +1,40 @@
 @interface AWDMETRICSKCellularRfTunerHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTunerStateDuration:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsDataPreferred:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addTunerStateDuration:(id)duration;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsDataPreferred:(BOOL)preferred;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularRfTunerHist
 
-- (void)addTunerStateDuration:(id)a3
+- (void)addTunerStateDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   tunerStateDurations = self->_tunerStateDurations;
-  v8 = v4;
+  v8 = durationCopy;
   if (!tunerStateDurations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_tunerStateDurations;
     self->_tunerStateDurations = v6;
 
-    v4 = v8;
+    durationCopy = v8;
     tunerStateDurations = self->_tunerStateDurations;
   }
 
-  [(NSMutableArray *)tunerStateDurations addObject:v4];
+  [(NSMutableArray *)tunerStateDurations addObject:durationCopy];
 }
 
-- (void)setHasIsDataPreferred:(BOOL)a3
+- (void)setHasIsDataPreferred:(BOOL)preferred
 {
-  if (a3)
+  if (preferred)
   {
     v3 = 4;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularRfTunerHist;
   v4 = [(AWDMETRICSKCellularRfTunerHist *)&v8 description];
-  v5 = [(AWDMETRICSKCellularRfTunerHist *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularRfTunerHist *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -77,11 +77,11 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   if ([(NSMutableArray *)self->_tunerStateDurations count])
@@ -106,8 +106,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -116,20 +116,20 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"tuner_state_duration"];
+    [dictionary setObject:v5 forKey:@"tuner_state_duration"];
   }
 
   plmn = self->_plmn;
   if (plmn)
   {
-    [v3 setObject:plmn forKey:@"plmn"];
+    [dictionary setObject:plmn forKey:@"plmn"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDataPreferred];
-    [v3 setObject:v14 forKey:@"is_data_preferred"];
+    [dictionary setObject:v14 forKey:@"is_data_preferred"];
 
     has = self->_has;
   }
@@ -137,18 +137,18 @@
   if ((has & 2) != 0)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v15 forKey:@"subs_id"];
+    [dictionary setObject:v15 forKey:@"subs_id"];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -206,23 +206,23 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 44) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 44) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(AWDMETRICSKCellularRfTunerHist *)self tunerStateDurationsCount])
   {
     [v10 clearTunerStateDurations];
-    v5 = [(AWDMETRICSKCellularRfTunerHist *)self tunerStateDurationsCount];
-    if (v5)
+    tunerStateDurationsCount = [(AWDMETRICSKCellularRfTunerHist *)self tunerStateDurationsCount];
+    if (tunerStateDurationsCount)
     {
-      v6 = v5;
+      v6 = tunerStateDurationsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(AWDMETRICSKCellularRfTunerHist *)self tunerStateDurationAtIndex:i];
@@ -251,10 +251,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -281,7 +281,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{a3, v18}];
+        v12 = [*(*(&v18 + 1) + 8 * i) copyWithZone:{zone, v18}];
         [v6 addTunerStateDuration:v12];
       }
 
@@ -291,7 +291,7 @@
     while (v9);
   }
 
-  v13 = [(NSData *)self->_plmn copyWithZone:a3];
+  v13 = [(NSData *)self->_plmn copyWithZone:zone];
   v14 = *(v6 + 16);
   *(v6 + 16) = v13;
 
@@ -313,36 +313,36 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_18;
   }
 
   tunerStateDurations = self->_tunerStateDurations;
-  if (tunerStateDurations | *(v4 + 4) && ![(NSMutableArray *)tunerStateDurations isEqual:?])
+  if (tunerStateDurations | *(equalCopy + 4) && ![(NSMutableArray *)tunerStateDurations isEqual:?])
   {
     goto LABEL_18;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 2))
+  if (plmn | *(equalCopy + 2))
   {
     if (![(NSData *)plmn isEqual:?])
     {
@@ -352,7 +352,7 @@
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 44) & 4) == 0)
+    if ((*(equalCopy + 44) & 4) == 0)
     {
       goto LABEL_13;
     }
@@ -362,30 +362,30 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ((*(v4 + 44) & 4) == 0)
+  if ((*(equalCopy + 44) & 4) == 0)
   {
     goto LABEL_18;
   }
 
-  v10 = *(v4 + 40);
+  v10 = *(equalCopy + 40);
   if (self->_isDataPreferred)
   {
-    if ((*(v4 + 40) & 1) == 0)
+    if ((*(equalCopy + 40) & 1) == 0)
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_18;
   }
 
 LABEL_13:
-  v8 = (*(v4 + 44) & 2) == 0;
+  v8 = (*(equalCopy + 44) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_subsId != *(v4 + 6))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_subsId != *(equalCopy + 6))
     {
       goto LABEL_18;
     }
@@ -436,14 +436,14 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 44))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 44))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -451,7 +451,7 @@ LABEL_6:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {

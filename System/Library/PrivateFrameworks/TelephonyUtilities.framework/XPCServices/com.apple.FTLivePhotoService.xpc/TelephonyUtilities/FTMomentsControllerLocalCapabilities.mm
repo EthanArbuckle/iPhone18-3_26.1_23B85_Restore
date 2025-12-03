@@ -7,7 +7,7 @@
 
 - (BOOL)isEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100037784();
 
   return v3 & 1;
@@ -15,7 +15,7 @@
 
 - (BOOL)isRegionBlocked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000377E4();
 
   return v3 & 1;

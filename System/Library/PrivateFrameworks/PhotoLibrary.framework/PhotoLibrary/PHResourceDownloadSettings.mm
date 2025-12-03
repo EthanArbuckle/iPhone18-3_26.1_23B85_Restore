@@ -47,9 +47,9 @@
 + (id)sharedSettings
 {
   v2 = +[PHRootSettings sharedSettings];
-  v3 = [v2 resourceDownloadSettings];
+  resourceDownloadSettings = [v2 resourceDownloadSettings];
 
-  return v3;
+  return resourceDownloadSettings;
 }
 
 @end

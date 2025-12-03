@@ -1,27 +1,27 @@
 @interface MOPerformanceMetric
-- (MOPerformanceMetric)initWithDisplayName:(id)a3 pcMetricID:(unint64_t)a4 unit:(id)a5 denominator:(double)a6;
+- (MOPerformanceMetric)initWithDisplayName:(id)name pcMetricID:(unint64_t)d unit:(id)unit denominator:(double)denominator;
 - (double)value;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionary;
 @end
 
 @implementation MOPerformanceMetric
 
-- (MOPerformanceMetric)initWithDisplayName:(id)a3 pcMetricID:(unint64_t)a4 unit:(id)a5 denominator:(double)a6
+- (MOPerformanceMetric)initWithDisplayName:(id)name pcMetricID:(unint64_t)d unit:(id)unit denominator:(double)denominator
 {
-  v11 = a3;
-  v12 = a5;
+  nameCopy = name;
+  unitCopy = unit;
   v16.receiver = self;
   v16.super_class = MOPerformanceMetric;
   v13 = [(MOPerformanceMetric *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_displayName, a3);
-    objc_storeStrong(&v14->_unit, a5);
-    v14->_denominator = a6;
-    v14->_pcMetricID = a4;
+    objc_storeStrong(&v13->_displayName, name);
+    objc_storeStrong(&v14->_unit, unit);
+    v14->_denominator = denominator;
+    v14->_pcMetricID = d;
     v14->_initializedWithValue = 0;
     v14->_rawValue = 0.0;
   }
@@ -32,11 +32,11 @@
 - (id)dictionary
 {
   v8[0] = @"MOPerformanceMetricName";
-  v3 = [(MOPerformanceMetric *)self displayName];
-  v9[0] = v3;
+  displayName = [(MOPerformanceMetric *)self displayName];
+  v9[0] = displayName;
   v8[1] = @"MOPerformanceMetricUnit";
-  v4 = [(MOPerformanceMetric *)self unit];
-  v9[1] = v4;
+  unit = [(MOPerformanceMetric *)self unit];
+  v9[1] = unit;
   v8[2] = @"MOPerformanceMetricValue";
   [(MOPerformanceMetric *)self value];
   v5 = [NSNumber numberWithDouble:?];
@@ -48,22 +48,22 @@
 
 - (id)description
 {
-  v3 = [(MOPerformanceMetric *)self displayName];
-  v4 = [(MOPerformanceMetric *)self unit];
+  displayName = [(MOPerformanceMetric *)self displayName];
+  unit = [(MOPerformanceMetric *)self unit];
   [(MOPerformanceMetric *)self value];
-  v6 = [NSString stringWithFormat:@" Metric Name: %@, Metric Unit: %@, Value: %.2f", v3, v4, v5];
+  v6 = [NSString stringWithFormat:@" Metric Name: %@, Metric Unit: %@, Value: %.2f", displayName, unit, v5];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOPerformanceMetric alloc];
-  v5 = [(MOPerformanceMetric *)self displayName];
-  v6 = [(MOPerformanceMetric *)self pcMetricID];
-  v7 = [(MOPerformanceMetric *)self unit];
+  displayName = [(MOPerformanceMetric *)self displayName];
+  pcMetricID = [(MOPerformanceMetric *)self pcMetricID];
+  unit = [(MOPerformanceMetric *)self unit];
   [(MOPerformanceMetric *)self denominator];
-  v8 = [(MOPerformanceMetric *)v4 initWithDisplayName:v5 pcMetricID:v6 unit:v7 denominator:?];
+  v8 = [(MOPerformanceMetric *)v4 initWithDisplayName:displayName pcMetricID:pcMetricID unit:unit denominator:?];
 
   return v8;
 }

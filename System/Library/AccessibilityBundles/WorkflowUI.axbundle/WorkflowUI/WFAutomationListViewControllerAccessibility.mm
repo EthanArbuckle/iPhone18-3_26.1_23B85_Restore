@@ -11,10 +11,10 @@
   [(WFAutomationListViewControllerAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 navigationItem];
-  v4 = [v3 rightBarButtonItem];
+  navigationItem = [v2 navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
   v5 = accessibilityLocalizedString(@"create.automation");
-  [v4 setAccessibilityLabel:v5];
+  [rightBarButtonItem setAccessibilityLabel:v5];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface FMDistanceCalculator
-- (FMDistanceCalculator)initWithDefaultsSuiteName:(id)a3 locale:(id)a4 measurementSystemLocale:(id)a5;
+- (FMDistanceCalculator)initWithDefaultsSuiteName:(id)name locale:(id)locale measurementSystemLocale:(id)systemLocale;
 - (FMDistanceCalculatorLocalizationDelegate)localizationDelegate;
 - (NSNumberFormatter)formatter;
-- (double)averageDistanceFromLocation:(id)a3 toLocation:(id)a4;
-- (id)_localizedDistanceFromLocation:(id)a3 toLocation:(id)a4;
-- (id)_localizedStringFromNumber:(id)a3 numberStyle:(unint64_t)a4 fractionDigits:(unint64_t)a5;
-- (id)_scaledAndConvertedMin:(double)a3 andMax:(double)a4;
-- (id)futureLocalizedDistanceFromLocation:(id)a3 toLocation:(id)a4;
-- (id)localizedDistanceFromLocation:(id)a3 toLocation:(id)a4;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5;
+- (double)averageDistanceFromLocation:(id)location toLocation:(id)toLocation;
+- (id)_localizedDistanceFromLocation:(id)location toLocation:(id)toLocation;
+- (id)_localizedStringFromNumber:(id)number numberStyle:(unint64_t)style fractionDigits:(unint64_t)digits;
+- (id)_scaledAndConvertedMin:(double)min andMax:(double)max;
+- (id)futureLocalizedDistanceFromLocation:(id)location toLocation:(id)toLocation;
+- (id)localizedDistanceFromLocation:(id)location toLocation:(id)toLocation;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table;
 - (int64_t)measurementSystem;
 - (void)measurementSystem;
-- (void)setMeasurementSystem:(int64_t)a3;
+- (void)setMeasurementSystem:(int64_t)system;
 @end
 
 @implementation FMDistanceCalculator
 
-- (FMDistanceCalculator)initWithDefaultsSuiteName:(id)a3 locale:(id)a4 measurementSystemLocale:(id)a5
+- (FMDistanceCalculator)initWithDefaultsSuiteName:(id)name locale:(id)locale measurementSystemLocale:(id)systemLocale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  localeCopy = locale;
+  systemLocaleCopy = systemLocale;
   v19.receiver = self;
   v19.super_class = FMDistanceCalculator;
   v11 = [(FMDistanceCalculator *)&v19 init];
@@ -30,39 +30,39 @@
     calculationQueue = v11->_calculationQueue;
     v11->_calculationQueue = v12;
 
-    if (v9)
+    if (localeCopy)
     {
-      [(FMDistanceCalculator *)v11 setLocale:v9];
+      [(FMDistanceCalculator *)v11 setLocale:localeCopy];
     }
 
     else
     {
-      v14 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-      [(FMDistanceCalculator *)v11 setLocale:v14];
+      autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+      [(FMDistanceCalculator *)v11 setLocale:autoupdatingCurrentLocale];
     }
 
-    if (v8)
+    if (nameCopy)
     {
-      v15 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v8];
-    }
-
-    else
-    {
-      v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    }
-
-    v16 = v15;
-    [(FMDistanceCalculator *)v11 setUserDefaults:v15];
-
-    if (v10)
-    {
-      [(FMDistanceCalculator *)v11 setMeasurementSystemLocale:v10];
+      standardUserDefaults = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:nameCopy];
     }
 
     else
     {
-      v17 = [(FMDistanceCalculator *)v11 locale];
-      [(FMDistanceCalculator *)v11 setMeasurementSystemLocale:v17];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    }
+
+    v16 = standardUserDefaults;
+    [(FMDistanceCalculator *)v11 setUserDefaults:standardUserDefaults];
+
+    if (systemLocaleCopy)
+    {
+      [(FMDistanceCalculator *)v11 setMeasurementSystemLocale:systemLocaleCopy];
+    }
+
+    else
+    {
+      locale = [(FMDistanceCalculator *)v11 locale];
+      [(FMDistanceCalculator *)v11 setMeasurementSystemLocale:locale];
     }
   }
 
@@ -71,11 +71,11 @@
 
 - (int64_t)measurementSystem
 {
-  v3 = [(FMDistanceCalculator *)self measurementSystemLocale];
-  v4 = [v3 objectForKey:*MEMORY[0x277CBE6D0]];
+  measurementSystemLocale = [(FMDistanceCalculator *)self measurementSystemLocale];
+  v4 = [measurementSystemLocale objectForKey:*MEMORY[0x277CBE6D0]];
 
-  v5 = [(FMDistanceCalculator *)self userDefaults];
-  v6 = [v5 stringForKey:@"distanceUnitPref"];
+  userDefaults = [(FMDistanceCalculator *)self userDefaults];
+  v6 = [userDefaults stringForKey:@"distanceUnitPref"];
 
   if (v6)
   {
@@ -112,60 +112,60 @@
   return v7;
 }
 
-- (void)setMeasurementSystem:(int64_t)a3
+- (void)setMeasurementSystem:(int64_t)system
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v5 = [(FMDistanceCalculator *)self userDefaults];
-  v20 = [(FMDistanceCalculator *)self measurementSystem];
-  if (a3 >= 2)
+  userDefaults = [(FMDistanceCalculator *)self userDefaults];
+  measurementSystem = [(FMDistanceCalculator *)self measurementSystem];
+  if (system >= 2)
   {
-    if (a3 == 2)
+    if (system == 2)
     {
       v6 = @"km";
       goto LABEL_6;
     }
 
-    if (a3 == 3)
+    if (system == 3)
     {
       v6 = @"mi";
 LABEL_6:
-      [v5 setObject:v6 forKey:@"distanceUnitPref"];
+      [userDefaults setObject:v6 forKey:@"distanceUnitPref"];
       goto LABEL_11;
     }
 
     v7 = LogCategory_Unspecified();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(FMDistanceCalculator *)a3 setMeasurementSystem:v7];
+      [(FMDistanceCalculator *)system setMeasurementSystem:v7];
     }
   }
 
-  [v5 removeObjectForKey:@"distanceUnitPref"];
+  [userDefaults removeObjectForKey:@"distanceUnitPref"];
 LABEL_11:
   v8 = objc_opt_new();
   v9 = MEMORY[0x277CBEB98];
   v27[0] = @"distanceUnitPref";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   v11 = [v9 setWithArray:v10];
-  v12 = [MEMORY[0x277CCA8D8] mainBundle];
-  v13 = [v12 bundleIdentifier];
-  [v8 synchronizeUserDefaultsDomain:@"group.com.apple.icloud.fm" keys:v11 container:v13 appGroupContainer:@"group.com.apple.icloud.fm"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [v8 synchronizeUserDefaultsDomain:@"group.com.apple.icloud.fm" keys:v11 container:bundleIdentifier appGroupContainer:@"group.com.apple.icloud.fm"];
 
   v14 = LogCategory_Unspecified();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
     *buf = 138412802;
     v22 = @"distanceUnitPref";
     v23 = 2112;
-    v24 = v16;
+    v24 = bundleIdentifier2;
     v25 = 2112;
     v26 = @"group.com.apple.icloud.fm";
     _os_log_impl(&dword_24A2EE000, v14, OS_LOG_TYPE_INFO, "Syncronizing pref key: %@ for bundle: %@ container:%@", buf, 0x20u);
   }
 
-  if (v20 != a3)
+  if (measurementSystem != system)
   {
     v17 = LogCategory_Unspecified();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -174,24 +174,24 @@ LABEL_11:
       _os_log_impl(&dword_24A2EE000, v17, OS_LOG_TYPE_INFO, "Posting FMDistanceCalculatorMeasurementSystemChangedNotification", buf, 2u);
     }
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 postNotificationName:@"FMDistanceCalculatorMeasurementSystemChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"FMDistanceCalculatorMeasurementSystemChangedNotification" object:self];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (double)averageDistanceFromLocation:(id)a3 toLocation:(id)a4
+- (double)averageDistanceFromLocation:(id)location toLocation:(id)toLocation
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  locationCopy = location;
+  toLocationCopy = toLocation;
+  v7 = toLocationCopy;
   v8 = 1000000000.0;
-  if (v5 && v6)
+  if (locationCopy && toLocationCopy)
   {
-    [v5 distanceFromLocation:v6];
+    [locationCopy distanceFromLocation:toLocationCopy];
     v10 = v9;
-    [v5 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v12 = v11;
     [v7 horizontalAccuracy];
     if (v12 >= v13)
@@ -202,11 +202,11 @@ LABEL_11:
     v14 = 0.0;
     if (v10 > v13)
     {
-      [v5 horizontalAccuracy];
+      [locationCopy horizontalAccuracy];
       v16 = v10 - v15;
       [v7 horizontalAccuracy];
       v18 = v16 - v17;
-      [v5 horizontalAccuracy];
+      [locationCopy horizontalAccuracy];
       v20 = v10 + v19;
       [v7 horizontalAccuracy];
       v13 = v20 + v21;
@@ -222,28 +222,28 @@ LABEL_11:
   return v8;
 }
 
-- (id)localizedDistanceFromLocation:(id)a3 toLocation:(id)a4
+- (id)localizedDistanceFromLocation:(id)location toLocation:(id)toLocation
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  toLocationCopy = toLocation;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = &stru_285D714C0;
-  v8 = [(FMDistanceCalculator *)self calculationQueue];
+  calculationQueue = [(FMDistanceCalculator *)self calculationQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__FMDistanceCalculator_localizedDistanceFromLocation_toLocation___block_invoke;
   v13[3] = &unk_278FD9668;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = locationCopy;
+  v15 = toLocationCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = toLocationCopy;
+  v10 = locationCopy;
+  dispatch_sync(calculationQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -261,24 +261,24 @@ uint64_t __65__FMDistanceCalculator_localizedDistanceFromLocation_toLocation___b
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)futureLocalizedDistanceFromLocation:(id)a3 toLocation:(id)a4
+- (id)futureLocalizedDistanceFromLocation:(id)location toLocation:(id)toLocation
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  toLocationCopy = toLocation;
   v8 = objc_alloc_init(MEMORY[0x277D07B68]);
-  v9 = [(FMDistanceCalculator *)self calculationQueue];
+  calculationQueue = [(FMDistanceCalculator *)self calculationQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__FMDistanceCalculator_futureLocalizedDistanceFromLocation_toLocation___block_invoke;
   v16[3] = &unk_278FD96B8;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
+  v17 = locationCopy;
+  v18 = toLocationCopy;
   v10 = v8;
   v19 = v10;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v9, v16);
+  v11 = toLocationCopy;
+  v12 = locationCopy;
+  dispatch_async(calculationQueue, v16);
 
   v13 = v19;
   v14 = v10;
@@ -299,79 +299,79 @@ void __71__FMDistanceCalculator_futureLocalizedDistanceFromLocation_toLocation__
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
-- (id)_scaledAndConvertedMin:(double)a3 andMax:(double)a4
+- (id)_scaledAndConvertedMin:(double)min andMax:(double)max
 {
-  v7 = [(FMDistanceCalculator *)self measurementSystem];
-  if (v7 == 3)
+  measurementSystem = [(FMDistanceCalculator *)self measurementSystem];
+  if (measurementSystem == 3)
   {
     v8 = [(FMDistanceCalculator *)self localizedStringForKey:@"MILES" value:@"Miles"];
-    v9 = a3 * 3.2808399 / 5280.0;
-    v10 = a4 * 3.2808399 / 5280.0;
+    minCopy = min * 3.2808399 / 5280.0;
+    maxCopy = max * 3.2808399 / 5280.0;
   }
 
-  else if (v7 == 2)
+  else if (measurementSystem == 2)
   {
     v8 = [(FMDistanceCalculator *)self localizedStringForKey:@"KILOMETERS" value:@"Kilometers"];
-    v9 = a3 / 1000.0;
-    v10 = a4 / 1000.0;
+    minCopy = min / 1000.0;
+    maxCopy = max / 1000.0;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"Unhandled measurementSystem: %ld", -[FMDistanceCalculator measurementSystem](self, "measurementSystem")}];
     v8 = 0;
-    v10 = a4;
-    v9 = a3;
+    maxCopy = max;
+    minCopy = min;
   }
 
-  v11 = 0;
-  if (v10 > 0.0 && v9 >= 0.0)
+  dictionary = 0;
+  if (maxCopy > 0.0 && minCopy >= 0.0)
   {
-    v12 = a4 - a3;
-    v13 = (a4 - a3) / a3;
-    v14 = v12 / a4;
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v15 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-    [v11 setObject:v15 forKeyedSubscript:@"min"];
+    v12 = max - min;
+    v13 = (max - min) / min;
+    v14 = v12 / max;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v15 = [MEMORY[0x277CCABB0] numberWithDouble:minCopy];
+    [dictionary setObject:v15 forKeyedSubscript:@"min"];
 
-    v16 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
-    [v11 setObject:v16 forKeyedSubscript:@"max"];
+    v16 = [MEMORY[0x277CCABB0] numberWithDouble:maxCopy];
+    [dictionary setObject:v16 forKeyedSubscript:@"max"];
 
     v17 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
-    [v11 setObject:v17 forKeyedSubscript:@"minRatio"];
+    [dictionary setObject:v17 forKeyedSubscript:@"minRatio"];
 
     v18 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
-    [v11 setObject:v18 forKeyedSubscript:@"maxRatio"];
+    [dictionary setObject:v18 forKeyedSubscript:@"maxRatio"];
 
-    [v11 setObject:v8 forKeyedSubscript:@"units"];
+    [dictionary setObject:v8 forKeyedSubscript:@"units"];
   }
 
-  return v11;
+  return dictionary;
 }
 
-- (id)_localizedStringFromNumber:(id)a3 numberStyle:(unint64_t)a4 fractionDigits:(unint64_t)a5
+- (id)_localizedStringFromNumber:(id)number numberStyle:(unint64_t)style fractionDigits:(unint64_t)digits
 {
-  v8 = a3;
-  v9 = [(FMDistanceCalculator *)self formatter];
-  [v9 setNumberStyle:a4];
-  [v9 setMaximumFractionDigits:a5];
-  v10 = [v9 stringForObjectValue:v8];
+  numberCopy = number;
+  formatter = [(FMDistanceCalculator *)self formatter];
+  [formatter setNumberStyle:style];
+  [formatter setMaximumFractionDigits:digits];
+  v10 = [formatter stringForObjectValue:numberCopy];
 
   return v10;
 }
 
-- (id)_localizedDistanceFromLocation:(id)a3 toLocation:(id)a4
+- (id)_localizedDistanceFromLocation:(id)location toLocation:(id)toLocation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDistanceCalculator *)self calculationQueue];
-  dispatch_assert_queue_V2(v8);
+  locationCopy = location;
+  toLocationCopy = toLocation;
+  calculationQueue = [(FMDistanceCalculator *)self calculationQueue];
+  dispatch_assert_queue_V2(calculationQueue);
 
-  [v6 distanceFromLocation:v7];
+  [locationCopy distanceFromLocation:toLocationCopy];
   v10 = v9;
-  [v6 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v12 = v11;
-  [v6 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   if (v12 >= v13)
   {
     v14 = v12;
@@ -385,13 +385,13 @@ void __71__FMDistanceCalculator_futureLocalizedDistanceFromLocation_toLocation__
   v15 = 0.0;
   if (v10 > v14)
   {
-    [v6 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v17 = v10 - v16;
-    [v7 horizontalAccuracy];
+    [toLocationCopy horizontalAccuracy];
     v19 = v17 - v18;
-    [v6 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v21 = v10 + v20;
-    [v7 horizontalAccuracy];
+    [toLocationCopy horizontalAccuracy];
     v14 = v21 + v22;
     if (v19 >= 0.0)
     {
@@ -447,34 +447,34 @@ void __71__FMDistanceCalculator_futureLocalizedDistanceFromLocation_toLocation__
   return v43;
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  tableCopy = table;
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v12 = [(FMDistanceCalculator *)self localizationDelegate];
-  if (!v12)
+  localizationDelegate = [(FMDistanceCalculator *)self localizationDelegate];
+  if (!localizationDelegate)
   {
     goto LABEL_3;
   }
 
-  v13 = [(FMDistanceCalculator *)self locale];
-  v14 = [v13 languageCode];
-  v15 = [v12 localizedStringForKey:v8 table:v10 bundle:v11 languageCode:v14];
+  locale = [(FMDistanceCalculator *)self locale];
+  languageCode = [locale languageCode];
+  v15 = [localizationDelegate localizedStringForKey:keyCopy table:tableCopy bundle:v11 languageCode:languageCode];
 
-  v16 = v10;
+  v16 = tableCopy;
   if (!v15)
   {
 LABEL_3:
-    v16 = v10;
-    if ([v10 isEqualToString:&stru_285D714C0])
+    v16 = tableCopy;
+    if ([tableCopy isEqualToString:&stru_285D714C0])
     {
 
       v16 = 0;
     }
 
-    v15 = [v11 localizedStringForKey:v8 value:v9 table:v16];
+    v15 = [v11 localizedStringForKey:keyCopy value:valueCopy table:v16];
   }
 
   return v15;
@@ -486,8 +486,8 @@ LABEL_3:
   if (!formatter)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCABB8]);
-    v5 = [(FMDistanceCalculator *)self locale];
-    [(NSNumberFormatter *)v4 setLocale:v5];
+    locale = [(FMDistanceCalculator *)self locale];
+    [(NSNumberFormatter *)v4 setLocale:locale];
 
     [(NSNumberFormatter *)v4 setRoundingMode:5];
     v6 = self->_formatter;
@@ -512,7 +512,7 @@ LABEL_3:
   v3 = 138412546;
   v4 = @"distanceUnitPref";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24A2EE000, a2, OS_LOG_TYPE_ERROR, "Unknown value for %@ default key: %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

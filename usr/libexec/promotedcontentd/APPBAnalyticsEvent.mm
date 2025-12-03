@@ -1,13 +1,13 @@
 @interface APPBAnalyticsEvent
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)eventAsString:(int)a3;
-- (int)StringAsEvent:(id)a3;
+- (id)eventAsString:(int)string;
+- (int)StringAsEvent:(id)event;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAnalyticsEvent
@@ -24,65 +24,65 @@
   return v3;
 }
 
-- (id)eventAsString:(int)a3
+- (id)eventAsString:(int)string
 {
-  if (a3 >= 9)
+  if (string >= 9)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047D590 + a3);
+    v4 = *(&off_10047D590 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsEvent:(id)a3
+- (int)StringAsEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PrerollRequested"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"PrerollRequested"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyUserTransparencyDidAppear"])
+  else if ([eventCopy isEqualToString:@"PrivacyUserTransparencyDidAppear"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyUserTransparencyDidRenderTransparency"])
+  else if ([eventCopy isEqualToString:@"PrivacyUserTransparencyDidRenderTransparency"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyUserTransparencyDidDisappear"])
+  else if ([eventCopy isEqualToString:@"PrivacyUserTransparencyDidDisappear"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyUserTransparencyDidLinkOut"])
+  else if ([eventCopy isEqualToString:@"PrivacyUserTransparencyDidLinkOut"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyAdTransparencyDidAppear"])
+  else if ([eventCopy isEqualToString:@"PrivacyAdTransparencyDidAppear"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyAdTransparencyDidRenderTransparency"])
+  else if ([eventCopy isEqualToString:@"PrivacyAdTransparencyDidRenderTransparency"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyAdTransparencyDidDisappear"])
+  else if ([eventCopy isEqualToString:@"PrivacyAdTransparencyDidDisappear"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyAdTransparencyDidLinkOut"])
+  else if ([eventCopy isEqualToString:@"PrivacyAdTransparencyDidLinkOut"])
   {
     v4 = 8;
   }
@@ -100,8 +100,8 @@
   v7.receiver = self;
   v7.super_class = APPBAnalyticsEvent;
   v3 = [(APPBAnalyticsEvent *)&v7 description];
-  v4 = [(APPBAnalyticsEvent *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAnalyticsEvent *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -128,25 +128,25 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteDoubleField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 4) = self->_event;
   *(result + 1) = *&self->_timestamp;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_event == *(v4 + 4) && self->_timestamp == *(v4 + 1);
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_event == *(equalCopy + 4) && self->_timestamp == *(equalCopy + 1);
 
   return v5;
 }

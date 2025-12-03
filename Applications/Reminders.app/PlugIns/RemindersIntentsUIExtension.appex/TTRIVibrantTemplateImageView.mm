@@ -1,6 +1,6 @@
 @interface TTRIVibrantTemplateImageView
 - (CGSize)intrinsicContentSize;
-- (_TtC27RemindersIntentsUIExtension28TTRIVibrantTemplateImageView)initWithEffect:(id)a3;
+- (_TtC27RemindersIntentsUIExtension28TTRIVibrantTemplateImageView)initWithEffect:(id)effect;
 @end
 
 @implementation TTRIVibrantTemplateImageView
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (_TtC27RemindersIntentsUIExtension28TTRIVibrantTemplateImageView)initWithEffect:(id)a3
+- (_TtC27RemindersIntentsUIExtension28TTRIVibrantTemplateImageView)initWithEffect:(id)effect
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

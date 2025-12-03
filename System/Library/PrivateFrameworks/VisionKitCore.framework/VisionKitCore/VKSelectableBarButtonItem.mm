@@ -7,18 +7,18 @@
 - (double)width;
 - (id)image;
 - (id)menu;
-- (void)setAction:(SEL)a3;
-- (void)setAlpha:(double)a3;
-- (void)setCompactPadding:(double)a3;
-- (void)setCornerRadiusRatio:(double)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setMenu:(id)a3;
-- (void)setPadding:(double)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowsMenuAsPrimaryAction:(BOOL)a3;
-- (void)setTarget:(id)a3;
-- (void)setWidth:(double)a3;
+- (void)setAction:(SEL)action;
+- (void)setAlpha:(double)alpha;
+- (void)setCompactPadding:(double)padding;
+- (void)setCornerRadiusRatio:(double)ratio;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImage:(id)image;
+- (void)setMenu:(id)menu;
+- (void)setPadding:(double)padding;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowsMenuAsPrimaryAction:(BOOL)action;
+- (void)setTarget:(id)target;
+- (void)setWidth:(double)width;
 @end
 
 @implementation VKSelectableBarButtonItem
@@ -40,162 +40,162 @@
   return v2;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
   v7.receiver = self;
   v7.super_class = VKSelectableBarButtonItem;
-  [(VKSelectableBarButtonItem *)&v7 setTarget:a3];
-  v4 = [(VKSelectableBarButtonItem *)self toggleView];
-  v5 = [v4 button];
+  [(VKSelectableBarButtonItem *)&v7 setTarget:target];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  button = [toggleView button];
 
-  [v5 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
-  v6 = [(VKSelectableBarButtonItem *)self target];
-  [v5 addTarget:v6 action:-[VKSelectableBarButtonItem action](self forControlEvents:{"action"), 64}];
+  [button removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  target = [(VKSelectableBarButtonItem *)self target];
+  [button addTarget:target action:-[VKSelectableBarButtonItem action](self forControlEvents:{"action"), 64}];
 }
 
 - (id)menu
 {
-  v2 = [(VKSelectableBarButtonItem *)self toggleView];
-  v3 = [v2 button];
-  v4 = [v3 menu];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  button = [toggleView button];
+  menu = [button menu];
 
-  return v4;
+  return menu;
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
-  v4 = a3;
-  v6 = [(VKSelectableBarButtonItem *)self toggleView];
-  v5 = [v6 button];
-  [v5 setMenu:v4];
+  menuCopy = menu;
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  button = [toggleView button];
+  [button setMenu:menuCopy];
 }
 
 - (BOOL)showsMenuAsPrimaryAction
 {
-  v2 = [(VKSelectableBarButtonItem *)self toggleView];
-  v3 = [v2 button];
-  v4 = [v3 showsMenuAsPrimaryAction];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  button = [toggleView button];
+  showsMenuAsPrimaryAction = [button showsMenuAsPrimaryAction];
 
-  return v4;
+  return showsMenuAsPrimaryAction;
 }
 
-- (void)setShowsMenuAsPrimaryAction:(BOOL)a3
+- (void)setShowsMenuAsPrimaryAction:(BOOL)action
 {
-  v3 = a3;
-  v5 = [(VKSelectableBarButtonItem *)self toggleView];
-  v4 = [v5 button];
-  [v4 setShowsMenuAsPrimaryAction:v3];
+  actionCopy = action;
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  button = [toggleView button];
+  [button setShowsMenuAsPrimaryAction:actionCopy];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView setImage:imageCopy];
 }
 
 - (id)image
 {
-  v2 = [(VKSelectableBarButtonItem *)self toggleView];
-  v3 = [v2 image];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  image = [toggleView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = VKSelectableBarButtonItem;
-  [(VKSelectableBarButtonItem *)&v7 setAction:a3];
-  v4 = [(VKSelectableBarButtonItem *)self toggleView];
-  v5 = [v4 button];
+  [(VKSelectableBarButtonItem *)&v7 setAction:action];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  button = [toggleView button];
 
-  [v5 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
-  v6 = [(VKSelectableBarButtonItem *)self target];
-  [v5 addTarget:v6 action:-[VKSelectableBarButtonItem action](self forControlEvents:{"action"), 64}];
+  [button removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  target = [(VKSelectableBarButtonItem *)self target];
+  [button addTarget:target action:-[VKSelectableBarButtonItem action](self forControlEvents:{"action"), 64}];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v5.receiver = self;
   v5.super_class = VKSelectableBarButtonItem;
-  [(VKSelectableBarButtonItem *)&v5 setSelected:a3];
-  v4 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v4 setSelected:{-[VKSelectableBarButtonItem isSelected](self, "isSelected")}];
+  [(VKSelectableBarButtonItem *)&v5 setSelected:selected];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView setSelected:{-[VKSelectableBarButtonItem isSelected](self, "isSelected")}];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = VKSelectableBarButtonItem;
   [(VKSelectableBarButtonItem *)&v7 setEnabled:?];
-  v5 = [(VKSelectableBarButtonItem *)self toggleView];
-  v6 = [v5 button];
-  [v6 setEnabled:v3];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  button = [toggleView button];
+  [button setEnabled:enabledCopy];
 }
 
 - (double)padding
 {
-  v2 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v2 padding];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView padding];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPadding:(double)a3
+- (void)setPadding:(double)padding
 {
-  v4 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v4 setPadding:a3];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView setPadding:padding];
 }
 
 - (double)compactPadding
 {
-  v2 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v2 compactPadding];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView compactPadding];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCompactPadding:(double)a3
+- (void)setCompactPadding:(double)padding
 {
-  v4 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v4 setCompactPadding:a3];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView setCompactPadding:padding];
 }
 
-- (void)setCornerRadiusRatio:(double)a3
+- (void)setCornerRadiusRatio:(double)ratio
 {
-  v4 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v4 setCornerRadiusRatio:a3];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView setCornerRadiusRatio:ratio];
 }
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
-  v4 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v4 setWidth:a3];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView setWidth:width];
 }
 
 - (double)width
 {
-  v2 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v2 width];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView width];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v4 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v4 setAlpha:a3];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView setAlpha:alpha];
 }
 
 - (double)alpha
 {
-  v2 = [(VKSelectableBarButtonItem *)self toggleView];
-  [v2 alpha];
+  toggleView = [(VKSelectableBarButtonItem *)self toggleView];
+  [toggleView alpha];
   v4 = v3;
 
   return v4;

@@ -1,6 +1,6 @@
 @interface QueuedSessionViewController
-- (_TtC9SeymourUI27QueuedSessionViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI27QueuedSessionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI27QueuedSessionViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI27QueuedSessionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)viewDidLoad;
 @end
@@ -20,7 +20,7 @@
   }
 }
 
-- (_TtC9SeymourUI27QueuedSessionViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI27QueuedSessionViewController)initWithCoder:(id)coder
 {
   result = sub_20C13DE24();
   __break(1u);
@@ -36,7 +36,7 @@
   sub_20BC782A8();
 }
 
-- (_TtC9SeymourUI27QueuedSessionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI27QueuedSessionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

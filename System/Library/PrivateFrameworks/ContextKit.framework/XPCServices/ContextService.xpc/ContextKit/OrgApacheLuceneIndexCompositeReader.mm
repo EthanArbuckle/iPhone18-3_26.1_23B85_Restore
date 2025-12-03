@@ -16,33 +16,33 @@
 - (id)description
 {
   v3 = new_JavaLangStringBuilder_init();
-  v4 = [(OrgApacheLuceneIndexCompositeReader *)self getClass];
-  if (v4)
+  getClass = [(OrgApacheLuceneIndexCompositeReader *)self getClass];
+  if (getClass)
   {
-    v5 = v4;
-    while (([v5 isAnonymousClass] & 1) != 0)
+    getSuperclass = getClass;
+    while (([getSuperclass isAnonymousClass] & 1) != 0)
     {
-      v5 = [v5 getSuperclass];
-      if (!v5)
+      getSuperclass = [getSuperclass getSuperclass];
+      if (!getSuperclass)
       {
         goto LABEL_7;
       }
     }
 
-    -[JavaLangStringBuilder appendWithNSString:](v3, "appendWithNSString:", [v5 getSimpleName]);
+    -[JavaLangStringBuilder appendWithNSString:](v3, "appendWithNSString:", [getSuperclass getSimpleName]);
   }
 
 LABEL_7:
   [(JavaLangStringBuilder *)v3 appendWithChar:40];
-  v6 = [(OrgApacheLuceneIndexCompositeReader *)self getSequentialSubReaders];
-  if (!v6)
+  getSequentialSubReaders = [(OrgApacheLuceneIndexCompositeReader *)self getSequentialSubReaders];
+  if (!getSequentialSubReaders)
   {
 LABEL_16:
     JreThrowNullPointerException();
   }
 
-  v7 = v6;
-  if (([v6 isEmpty] & 1) == 0)
+  v7 = getSequentialSubReaders;
+  if (([getSequentialSubReaders isEmpty] & 1) == 0)
   {
     -[JavaLangStringBuilder appendWithId:](v3, "appendWithId:", [v7 getWithInt:0]);
     v8 = [v7 size];

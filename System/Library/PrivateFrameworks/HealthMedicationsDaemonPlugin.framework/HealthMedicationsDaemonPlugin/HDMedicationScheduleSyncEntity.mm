@@ -1,23 +1,23 @@
 @interface HDMedicationScheduleSyncEntity
-+ (BOOL)_insertCodableMedicationSchedules:(int)a3 version:(void *)a4 syncStore:(void *)a5 profile:(uint64_t)a6 error:;
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
++ (BOOL)_insertCodableMedicationSchedules:(int)schedules version:(void *)version syncStore:(void *)store profile:(uint64_t)profile error:;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
 + (id)_syncPredicate;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)syncEntityDependenciesForSyncProtocolVersion:(int)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)syncEntityDependenciesForSyncProtocolVersion:(int)version;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDMedicationScheduleSyncEntity
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v41 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v27 = a6;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
   _HKInitializeLogging();
   v15 = HKLogMedication();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543874;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       *&buf[12] = 2050;
       *&buf[14] = var0;
       *&buf[22] = 2050;
@@ -46,16 +46,16 @@
   v38[1] = v38;
   v38[2] = 0x2020000000;
   v38[3] = 0;
-  v19 = [v13 maxEncodedBytesPerCodableChangeForSyncEntityClass:a1];
-  v20 = [v14 database];
+  v19 = [sessionCopy maxEncodedBytesPerCodableChangeForSyncEntityClass:self];
+  database = [profileCopy database];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __109__HDMedicationScheduleSyncEntity_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error___block_invoke;
   v28[3] = &unk_2796CD250;
-  v21 = v14;
+  v21 = profileCopy;
   v29 = v21;
-  v34 = a1;
-  v22 = v13;
+  selfCopy = self;
+  v22 = sessionCopy;
   v35 = var0;
   v36 = var1;
   v30 = v22;
@@ -64,11 +64,11 @@
   v31 = v23;
   v33 = v38;
   v37 = v19;
-  LOBYTE(v19) = [(HDHealthEntity *)HDMedicationScheduleEntity performReadTransactionWithHealthDatabase:v20 error:a7 block:v28];
+  LOBYTE(v19) = [(HDHealthEntity *)HDMedicationScheduleEntity performReadTransactionWithHealthDatabase:database error:error block:v28];
 
   if (v19)
   {
-    v24 = [v27 sendCodableChange:v23 version:0x200000000 resultAnchor:*(*&buf[8] + 24) sequence:0 done:1 error:a7];
+    v24 = [handlerCopy sendCodableChange:v23 version:0x200000000 resultAnchor:*(*&buf[8] + 24) sequence:0 done:1 error:error];
   }
 
   else
@@ -150,31 +150,31 @@ BOOL __109__HDMedicationScheduleSyncEntity_generateSyncObjectsForSession_syncAnc
   return v10 != 0;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v9 = a5;
-  v10 = a3;
+  profileCopy = profile;
+  sessionCopy = session;
   v11 = +[HDMedicationScheduleSyncEntity _syncPredicate];
-  v12 = [v9 database];
+  database = [profileCopy database];
 
-  v13 = [(HDHealthEntity *)HDMedicationScheduleEntity nextSyncAnchorWithStartAnchor:a4 predicate:v11 session:v10 healthDatabase:v12 error:a6];
+  v13 = [(HDHealthEntity *)HDMedicationScheduleEntity nextSyncAnchorWithStartAnchor:anchor predicate:v11 session:sessionCopy healthDatabase:database error:error];
   return v13;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableMedicationSchedule alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableMedicationSchedule alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  objectsCopy = objects;
+  storeCopy = store;
+  profileCopy = profile;
   _HKInitializeLogging();
   v15 = HKLogMedication();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
@@ -184,49 +184,49 @@ BOOL __109__HDMedicationScheduleSyncEntity_generateSyncObjectsForSession_syncAnc
     v17 = HKLogMedication();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
+      v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(objectsCopy, "count")}];
       v22 = 138544130;
-      v23 = a1;
+      selfCopy = self;
       v24 = 2114;
       v25 = v21;
       v26 = 1026;
-      var0 = a4.var0;
+      var0 = version.var0;
       v28 = 1026;
-      var1 = a4.var1;
+      var1 = version.var1;
       _os_log_debug_impl(&dword_25181C000, v17, OS_LOG_TYPE_DEBUG, "[%{public}@] Received %{public}@ sync objects, for version: minimum=%{public}d, current=%{public}d", &v22, 0x22u);
     }
   }
 
-  v18 = [(HDMedicationScheduleSyncEntity *)a1 _insertCodableMedicationSchedules:v12 version:a4.var0 syncStore:v13 profile:v14 error:a7];
+  v18 = [(HDMedicationScheduleSyncEntity *)self _insertCodableMedicationSchedules:objectsCopy version:version.var0 syncStore:storeCopy profile:profileCopy error:error];
 
   v19 = *MEMORY[0x277D85DE8];
   return !v18;
 }
 
-+ (BOOL)_insertCodableMedicationSchedules:(int)a3 version:(void *)a4 syncStore:(void *)a5 profile:(uint64_t)a6 error:
++ (BOOL)_insertCodableMedicationSchedules:(int)schedules version:(void *)version syncStore:(void *)store profile:(uint64_t)profile error:
 {
   v47 = *MEMORY[0x277D85DE8];
   v10 = a2;
-  v11 = a4;
-  v12 = a5;
+  versionCopy = version;
+  storeCopy = store;
   v13 = objc_opt_self();
-  if (a3 < 3)
+  if (schedules < 3)
   {
-    v20 = [MEMORY[0x277D11570] hd_medicationSchedulesFromCodables:v10 profile:v12 ignoreDuplicates:1];
-    v21 = [v12 healthMedicationsProfileExtension];
-    v22 = [v21 medicationScheduleManager];
+    v20 = [MEMORY[0x277D11570] hd_medicationSchedulesFromCodables:v10 profile:storeCopy ignoreDuplicates:1];
+    healthMedicationsProfileExtension = [storeCopy healthMedicationsProfileExtension];
+    medicationScheduleManager = [healthMedicationsProfileExtension medicationScheduleManager];
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __100__HDMedicationScheduleSyncEntity__insertCodableMedicationSchedules_version_syncStore_profile_error___block_invoke;
     v33[3] = &unk_2796CE618;
     v34 = v20;
-    v35 = v22;
-    v36 = v11;
-    v23 = v22;
+    v35 = medicationScheduleManager;
+    v36 = versionCopy;
+    v23 = medicationScheduleManager;
     v15 = v20;
     v24 = MEMORY[0x253084B70](v33);
-    v25 = [v12 database];
+    database = [storeCopy database];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __100__HDMedicationScheduleSyncEntity__insertCodableMedicationSchedules_version_syncStore_profile_error___block_invoke_2;
@@ -238,7 +238,7 @@ BOOL __109__HDMedicationScheduleSyncEntity_generateSyncObjectsForSession_syncAnc
     v29[3] = &unk_2796CD2F0;
     v30 = v32;
     v26 = v32;
-    v19 = [(HDHealthEntity *)HDMedicationScheduleEntity performWriteTransactionWithHealthDatabase:v25 error:a6 block:v31 inaccessibilityHandler:v29];
+    v19 = [(HDHealthEntity *)HDMedicationScheduleEntity performWriteTransactionWithHealthDatabase:database error:profile block:v31 inaccessibilityHandler:v29];
   }
 
   else
@@ -256,7 +256,7 @@ BOOL __109__HDMedicationScheduleSyncEntity_generateSyncObjectsForSession_syncAnc
       v39 = 2048;
       v40 = v16;
       v41 = 2114;
-      v42 = v11;
+      v42 = versionCopy;
       v43 = 2114;
       v44 = v17;
       v45 = 2114;
@@ -271,7 +271,7 @@ BOOL __109__HDMedicationScheduleSyncEntity_generateSyncObjectsForSession_syncAnc
   return v19;
 }
 
-+ (id)syncEntityDependenciesForSyncProtocolVersion:(int)a3
++ (id)syncEntityDependenciesForSyncProtocolVersion:(int)version
 {
   v3 = MEMORY[0x277CBEB98];
   v4 = objc_opt_class();

@@ -1,63 +1,63 @@
 @interface CKDReplaceMergeableDeltasURLRequest
-+ (id)requestOperationsForRequest:(id)a3 replaceDeltasRequests:(id)a4 ignoreMissingDeltas:(BOOL)a5 error:(id *)a6;
-- (CKDReplaceMergeableDeltasURLRequest)initWithOperation:(id)a3 replaceDeltasRequests:(id)a4 ignoreMissingDeltas:(BOOL)a5;
++ (id)requestOperationsForRequest:(id)request replaceDeltasRequests:(id)requests ignoreMissingDeltas:(BOOL)deltas error:(id *)error;
+- (CKDReplaceMergeableDeltasURLRequest)initWithOperation:(id)operation replaceDeltasRequests:(id)requests ignoreMissingDeltas:(BOOL)deltas;
 - (id)anonymousUserIDForHTTPHeader;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDReplaceMergeableDeltasURLRequest
 
-- (CKDReplaceMergeableDeltasURLRequest)initWithOperation:(id)a3 replaceDeltasRequests:(id)a4 ignoreMissingDeltas:(BOOL)a5
+- (CKDReplaceMergeableDeltasURLRequest)initWithOperation:(id)operation replaceDeltasRequests:(id)requests ignoreMissingDeltas:(BOOL)deltas
 {
-  v9 = a4;
+  requestsCopy = requests;
   v17.receiver = self;
   v17.super_class = CKDReplaceMergeableDeltasURLRequest;
-  v10 = [(CKDURLRequest *)&v17 initWithOperation:a3];
+  v10 = [(CKDURLRequest *)&v17 initWithOperation:operation];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_replaceDeltasRequests, a4);
+    objc_storeStrong(&v10->_replaceDeltasRequests, requests);
     v14 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v12, v13);
     replacementRequestsByRequestID = v11->_replacementRequestsByRequestID;
     v11->_replacementRequestsByRequestID = v14;
 
-    v11->_ignoreMissingDeltas = a5;
+    v11->_ignoreMissingDeltas = deltas;
   }
 
   return v11;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v15.receiver = self;
   v15.super_class = CKDReplaceMergeableDeltasURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_replaceDeltasRequests(self, v6, v7, v15.receiver, v15.super_class);
   v11 = objc_msgSend_ckEquivalencyProperties(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"requests");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"requests");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_replaceDeltasRequests(self, v5, v6);
   v9 = objc_msgSend_CKCompactMap_(v7, v8, &unk_28385E460);
 
-  objc_msgSend_setModifyMergeableValueIDs_(v4, v10, v9);
-  objc_msgSend_setDeleteMergeableValueIDs_(v4, v11, v9);
+  objc_msgSend_setModifyMergeableValueIDs_(propertiesCopy, v10, v9);
+  objc_msgSend_setDeleteMergeableValueIDs_(propertiesCopy, v11, v9);
   v12.receiver = self;
   v12.super_class = CKDReplaceMergeableDeltasURLRequest;
-  [(CKDURLRequest *)&v12 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v12 fillOutRequestProperties:propertiesCopy];
 }
 
 - (id)zoneIDsToLock
@@ -128,18 +128,18 @@
   return v11;
 }
 
-+ (id)requestOperationsForRequest:(id)a3 replaceDeltasRequests:(id)a4 ignoreMissingDeltas:(BOOL)a5 error:(id *)a6
++ (id)requestOperationsForRequest:(id)request replaceDeltasRequests:(id)requests ignoreMissingDeltas:(BOOL)deltas error:(id *)error
 {
-  v107 = a5;
+  deltasCopy = deltas;
   v124 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  requestsCopy = requests;
   v12 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11);
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = v9;
+  obj = requestsCopy;
   v108 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v13, &v116, v123, 16);
   if (!v108)
   {
@@ -147,7 +147,7 @@
     goto LABEL_32;
   }
 
-  v103 = a6;
+  errorCopy = error;
   v105 = v12;
   v106 = *v117;
   while (2)
@@ -162,9 +162,9 @@
 
       v109 = v15;
       v16 = *(*(&v116 + 1) + 8 * v15);
-      v17 = objc_msgSend_operationRequestWithType_(v8, v14, 313);
+      v17 = objc_msgSend_operationRequestWithType_(requestCopy, v14, 313);
       v110 = v17;
-      if (objc_msgSend_requiresCKAnonymousUserIDs(v8, v18, v19))
+      if (objc_msgSend_requiresCKAnonymousUserIDs(requestCopy, v18, v19))
       {
         v22 = objc_msgSend_valueID(v16, v20, v21);
         v25 = objc_msgSend_zoneID(v22, v23, v24);
@@ -175,7 +175,7 @@
           v45 = objc_opt_new();
           v88 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v87, @"An anonymousCKUserID is required to replace deltas for %@ when using anonymous to server share participants", v16);
           objc_msgSend_setObject_forKeyedSubscript_(v45, v89, v88, *MEMORY[0x277CCA450]);
-          v92 = objc_msgSend_operation(v8, v90, v91);
+          v92 = objc_msgSend_operation(requestCopy, v90, v91);
           v95 = objc_msgSend_topmostParentOperation(v92, v93, v94);
           v98 = objc_msgSend_operationID(v95, v96, v97);
 
@@ -203,7 +203,7 @@ LABEL_30:
       }
 
       v45 = objc_opt_new();
-      v48 = objc_msgSend_translator(v8, v46, v47);
+      v48 = objc_msgSend_translator(requestCopy, v46, v47);
       v51 = objc_msgSend_valueID(v16, v49, v50);
       v53 = objc_msgSend_pMergeableValueIdentifierFromMergeableValueID_(v48, v52, v51);
       objc_msgSend_setIdentifier_(v45, v54, v53);
@@ -212,7 +212,7 @@ LABEL_30:
       v60 = objc_msgSend_mutableCopy(v57, v58, v59);
       objc_msgSend_setDeltaIdentifiers_(v45, v61, v60);
 
-      objc_msgSend_setIgnoreMissingDeltas_(v45, v62, v107);
+      objc_msgSend_setIgnoreMissingDeltas_(v45, v62, deltasCopy);
       v65 = objc_msgSend_replacementDeltasContainNewData(v16, v63, v64);
       objc_msgSend_setContainsNewData_(v45, v66, v65);
       v114 = 0u;
@@ -235,7 +235,7 @@ LABEL_11:
           }
 
           v77 = *(*(&v112 + 1) + 8 * v76);
-          v78 = objc_msgSend_translator(v8, v72, v73);
+          v78 = objc_msgSend_translator(requestCopy, v72, v73);
           v111 = 0;
           v80 = objc_msgSend_pMergeableDeltaFromDelta_error_(v78, v79, v77, &v111);
           v81 = v111;
@@ -305,13 +305,13 @@ LABEL_19:
 
   v81 = 0;
 LABEL_31:
-  a6 = v103;
+  error = errorCopy;
 LABEL_32:
 
-  if (a6)
+  if (error)
   {
     v100 = v81;
-    *a6 = v81;
+    *error = v81;
   }
 
   v101 = *MEMORY[0x277D85DE8];
@@ -319,22 +319,22 @@ LABEL_32:
   return v12;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectCopy = object;
   v8 = objc_msgSend_replacementRequestsByRequestID(self, v6, v7);
-  v11 = objc_msgSend_response(v5, v9, v10);
+  v11 = objc_msgSend_response(objectCopy, v9, v10);
   v14 = objc_msgSend_operationUUID(v11, v12, v13);
   v16 = objc_msgSend_objectForKeyedSubscript_(v8, v15, v14);
 
   if (!v16)
   {
     v43 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v17, v18);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v43, v44, a2, self, @"CKDReplaceMergeableDeltasURLRequest.m", 176, @"Expected non-nil replacement request for response: %@", v5);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v43, v44, a2, self, @"CKDReplaceMergeableDeltasURLRequest.m", 176, @"Expected non-nil replacement request for response: %@", objectCopy);
   }
 
-  hasMergeableDeltaReplaceResponse = objc_msgSend_hasMergeableDeltaReplaceResponse(v5, v17, v18);
+  hasMergeableDeltaReplaceResponse = objc_msgSend_hasMergeableDeltaReplaceResponse(objectCopy, v17, v18);
   v20 = *MEMORY[0x277CBC878];
   v21 = *MEMORY[0x277CBC880];
   if (hasMergeableDeltaReplaceResponse)
@@ -361,7 +361,7 @@ LABEL_32:
     if (v25)
     {
       v28 = objc_msgSend_perReplacementCompletionBlock(self, v26, v27);
-      v31 = objc_msgSend_result(v5, v29, v30);
+      v31 = objc_msgSend_result(objectCopy, v29, v30);
       (v28)[2](v28, v16, v31);
     }
   }
@@ -388,10 +388,10 @@ LABEL_32:
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  failureCopy = failure;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -405,19 +405,19 @@ LABEL_32:
     *buf = 138543618;
     v35 = v31;
     v36 = 2112;
-    v37 = v5;
+    v37 = failureCopy;
     _os_log_error_impl(&dword_22506F000, v28, OS_LOG_TYPE_ERROR, "req: %{public}@, Node failure in replace deltas request: %@", buf, 0x16u);
   }
 
   v9 = objc_msgSend_replacementRequestsByRequestID(self, v7, v8);
-  v12 = objc_msgSend_response(v5, v10, v11);
+  v12 = objc_msgSend_response(failureCopy, v10, v11);
   v15 = objc_msgSend_operationUUID(v12, v13, v14);
   v17 = objc_msgSend_objectForKeyedSubscript_(v9, v16, v15);
 
   if (!v17)
   {
     v32 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v18, v19);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v32, v33, a2, self, @"CKDReplaceMergeableDeltasURLRequest.m", 194, @"Expected non-nil replacement request for response: %@", v5);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v32, v33, a2, self, @"CKDReplaceMergeableDeltasURLRequest.m", 194, @"Expected non-nil replacement request for response: %@", failureCopy);
   }
 
   v20 = objc_msgSend_perReplacementCompletionBlock(self, v18, v19);
@@ -425,7 +425,7 @@ LABEL_32:
   if (v20)
   {
     v23 = objc_msgSend_perReplacementCompletionBlock(self, v21, v22);
-    v26 = objc_msgSend_result(v5, v24, v25);
+    v26 = objc_msgSend_result(failureCopy, v24, v25);
     (v23)[2](v23, v17, v26);
   }
 

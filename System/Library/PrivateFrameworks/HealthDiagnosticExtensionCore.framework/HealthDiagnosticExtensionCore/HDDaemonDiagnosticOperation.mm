@@ -1,5 +1,5 @@
 @interface HDDaemonDiagnosticOperation
-- (id)_daemonUserDefaultValueForKey:(id)a3;
+- (id)_daemonUserDefaultValueForKey:(id)key;
 - (void)run;
 @end
 
@@ -25,8 +25,8 @@
   v6 = v5;
   v24 = v6;
   [v4 fetchDiagnosticsForKeys:MEMORY[0x277CBEBF8] completion:v23];
-  v7 = [MEMORY[0x277CCDD30] sharedBehavior];
-  if ([v7 isAppleInternalInstall])
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  if ([mEMORY[0x277CCDD30] isAppleInternalInstall])
   {
     v8 = "YES";
   }
@@ -37,15 +37,15 @@
   }
 
   [(HDDiagnosticOperation *)self appendFormat:@"Apple Internal: %s", v8];
-  v9 = [v7 futureMigrationsEnabled];
+  futureMigrationsEnabled = [mEMORY[0x277CCDD30] futureMigrationsEnabled];
   v10 = "disabled";
-  if (v9)
+  if (futureMigrationsEnabled)
   {
     v10 = "ENABLED";
   }
 
   [(HDDiagnosticOperation *)self appendFormat:@"Future Migrations: %s", v10];
-  if ([v7 isRunningStoreDemoMode])
+  if ([mEMORY[0x277CCDD30] isRunningStoreDemoMode])
   {
     v11 = "YES";
   }
@@ -56,7 +56,7 @@
   }
 
   [(HDDiagnosticOperation *)self appendFormat:@"Store Demo Mode: %s", v11];
-  if ([v7 isTestingDevice])
+  if ([mEMORY[0x277CCDD30] isTestingDevice])
   {
     v12 = "YES";
   }
@@ -79,8 +79,8 @@
 
   [(HDDiagnosticOperation *)self appendFormat:@"Using Demo Data Database: %s", v13];
   [(HDDiagnosticOperation *)self appendNewline];
-  v14 = [MEMORY[0x277D105C0] backupInfoUserDefaultsKey];
-  v15 = [(HDDaemonDiagnosticOperation *)self _daemonUserDefaultValueForKey:v14];
+  backupInfoUserDefaultsKey = [MEMORY[0x277D105C0] backupInfoUserDefaultsKey];
+  v15 = [(HDDaemonDiagnosticOperation *)self _daemonUserDefaultValueForKey:backupInfoUserDefaultsKey];
 
   if (v15)
   {
@@ -89,7 +89,7 @@
 
   [(HDDiagnosticOperation *)self appendNewline];
   [(HDDiagnosticOperation *)self appendFormat:@"HKBehavior:"];
-  [(HDDiagnosticOperation *)self appendFormat:@"%@", v7];
+  [(HDDiagnosticOperation *)self appendFormat:@"%@", mEMORY[0x277CCDD30]];
   v16 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v6, v16))
   {
@@ -98,8 +98,8 @@
 
   if (v27[5])
   {
-    v17 = [(HDDiagnosticOperation *)self attachmentDirectoryURL];
-    v18 = [v17 URLByAppendingPathComponent:@"healthd-diagnostics.txt"];
+    attachmentDirectoryURL = [(HDDiagnosticOperation *)self attachmentDirectoryURL];
+    v18 = [attachmentDirectoryURL URLByAppendingPathComponent:@"healthd-diagnostics.txt"];
 
     v19 = v27[5];
     v22 = 0;
@@ -135,9 +135,9 @@ void __34__HDDaemonDiagnosticOperation_run__block_invoke(uint64_t a1, void *a2, 
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)_daemonUserDefaultValueForKey:(id)a3
+- (id)_daemonUserDefaultValueForKey:(id)key
 {
-  v3 = CFPreferencesCopyValue(a3, *MEMORY[0x277CCE408], *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
+  v3 = CFPreferencesCopyValue(key, *MEMORY[0x277CCE408], *MEMORY[0x277CBF020], *MEMORY[0x277CBF010]);
 
   return v3;
 }

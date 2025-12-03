@@ -1,6 +1,6 @@
 @interface MUWebViewMessageHandlerProxy
 - (WKScriptMessageHandler)target;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 @end
 
 @implementation MUWebViewMessageHandlerProxy
@@ -12,12 +12,12 @@
   return WeakRetained;
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MUWebViewMessageHandlerProxy *)self target];
-  [v8 userContentController:v7 didReceiveScriptMessage:v6];
+  messageCopy = message;
+  controllerCopy = controller;
+  target = [(MUWebViewMessageHandlerProxy *)self target];
+  [target userContentController:controllerCopy didReceiveScriptMessage:messageCopy];
 }
 
 @end

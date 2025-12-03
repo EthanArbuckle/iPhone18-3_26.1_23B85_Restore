@@ -1,39 +1,39 @@
 @interface UARPControllerXPC
-- (BOOL)addAccessory:(id)a3 assetID:(id)a4;
-- (BOOL)changeAssetLocation:(id)a3 assetID:(id)a4;
-- (BOOL)checkForUpdate:(id)a3;
-- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)a3;
-- (BOOL)downloadAvailableFirmwareUpdate:(id)a3 assetID:(id)a4 withUserIntent:(BOOL)a5;
-- (BOOL)downloadReleaseNotes:(id)a3 assetID:(id)a4;
-- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)a3;
-- (BOOL)getAttestationCertificates:(id)a3 assetID:(id)a4;
-- (BOOL)getSupportedAccessories:(id)a3 forProductGroup:(id)a4;
-- (BOOL)performSynchronousProviderInvocation:(id)a3 accessory:(id)a4 requireKnown:(BOOL)a5 description:(const char *)a6;
-- (BOOL)removeAccessory:(id)a3;
-- (BOOL)requestConsent:(id)a3;
-- (BOOL)revokeConsentRequest:(id)a3;
-- (BOOL)updateProperty:(unint64_t)a3 value:(id)a4 forAccessory:(id)a5;
+- (BOOL)addAccessory:(id)accessory assetID:(id)d;
+- (BOOL)changeAssetLocation:(id)location assetID:(id)d;
+- (BOOL)checkForUpdate:(id)update;
+- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)d;
+- (BOOL)downloadAvailableFirmwareUpdate:(id)update assetID:(id)d withUserIntent:(BOOL)intent;
+- (BOOL)downloadReleaseNotes:(id)notes assetID:(id)d;
+- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)d;
+- (BOOL)getAttestationCertificates:(id)certificates assetID:(id)d;
+- (BOOL)getSupportedAccessories:(id)accessories forProductGroup:(id)group;
+- (BOOL)performSynchronousProviderInvocation:(id)invocation accessory:(id)accessory requireKnown:(BOOL)known description:(const char *)description;
+- (BOOL)removeAccessory:(id)accessory;
+- (BOOL)requestConsent:(id)consent;
+- (BOOL)revokeConsentRequest:(id)request;
+- (BOOL)updateProperty:(unint64_t)property value:(id)value forAccessory:(id)accessory;
 - (NSXPCConnection)xpcConnection;
-- (UARPControllerXPC)initWithController:(id)a3;
-- (id)getAssetIDForAccessoryID:(id)a3;
-- (id)getAttestationCertificates:(id)a3;
-- (id)getSandboxExtensionTokenForAssetID:(id)a3;
-- (id)getSupplementalAssetNameForAccessoryID:(id)a3;
-- (id)invocationForProviderSelector:(SEL)a3;
+- (UARPControllerXPC)initWithController:(id)controller;
+- (id)getAssetIDForAccessoryID:(id)d;
+- (id)getAttestationCertificates:(id)certificates;
+- (id)getSandboxExtensionTokenForAssetID:(id)d;
+- (id)getSupplementalAssetNameForAccessoryID:(id)d;
+- (id)invocationForProviderSelector:(SEL)selector;
 - (void)dealloc;
-- (void)progressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5;
-- (void)progressForUARPConsentInPostLogout:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5;
-- (void)sendFirmwareUpdateProgressForAccessory:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6;
-- (void)sendFirmwareUpdateProgressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5;
-- (void)sendUpdateFirmwareAnalyticsEventForAccessoryID:(id)a3 assetID:(id)a4 params:(id)a5;
-- (void)stagingCompleteForAccessoryID:(id)a3 assetID:(id)a4 status:(unint64_t)a5;
+- (void)progressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)progressForUARPConsentInPostLogout:(id)logout bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)sendFirmwareUpdateProgressForAccessory:(id)accessory assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)sendFirmwareUpdateProgressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)sendUpdateFirmwareAnalyticsEventForAccessoryID:(id)d assetID:(id)iD params:(id)params;
+- (void)stagingCompleteForAccessoryID:(id)d assetID:(id)iD status:(unint64_t)status;
 @end
 
 @implementation UARPControllerXPC
 
-- (UARPControllerXPC)initWithController:(id)a3
+- (UARPControllerXPC)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = UARPControllerXPC;
   v5 = [(UARPControllerXPC *)&v16 init];
@@ -53,7 +53,7 @@
     xpcLog = v5->_xpcLog;
     v5->_xpcLog = v8;
 
-    objc_storeWeak(&v5->_controller, v4);
+    objc_storeWeak(&v5->_controller, controllerCopy);
     v10 = dispatch_queue_create("uarpController.xpcConnection", 0);
     xpcConnectionQueue = v5->_xpcConnectionQueue;
     v5->_xpcConnectionQueue = v10;
@@ -197,14 +197,14 @@ void __34__UARPControllerXPC_xpcConnection__block_invoke_116(uint64_t a1)
   *(v1 + 8) = 0;
 }
 
-- (id)invocationForProviderSelector:(SEL)a3
+- (id)invocationForProviderSelector:(SEL)selector
 {
-  MethodDescription = protocol_getMethodDescription(&unk_2859D97D8, a3, 1, 1);
+  MethodDescription = protocol_getMethodDescription(&unk_2859D97D8, selector, 1, 1);
   if (MethodDescription.types)
   {
     v5 = [MEMORY[0x277CBEB08] signatureWithObjCTypes:MethodDescription.types];
     v6 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v5];
-    [v6 setSelector:a3];
+    [v6 setSelector:selector];
   }
 
   else
@@ -215,34 +215,34 @@ void __34__UARPControllerXPC_xpcConnection__block_invoke_116(uint64_t a1)
   return v6;
 }
 
-- (BOOL)performSynchronousProviderInvocation:(id)a3 accessory:(id)a4 requireKnown:(BOOL)a5 description:(const char *)a6
+- (BOOL)performSynchronousProviderInvocation:(id)invocation accessory:(id)accessory requireKnown:(BOOL)known description:(const char *)description
 {
-  v7 = a5;
+  knownCopy = known;
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  invocationCopy = invocation;
+  accessoryCopy = accessory;
+  v12 = accessoryCopy;
+  if (invocationCopy)
   {
-    v27 = [v11 getID];
-    [v10 setArgument:&v27 atIndex:2];
+    getID = [accessoryCopy getID];
+    [invocationCopy setArgument:&getID atIndex:2];
     WeakRetained = objc_loadWeakRetained(&self->_controller);
     v14 = [WeakRetained accessoryKnown:v12];
 
-    if (v14 == v7)
+    if (v14 == knownCopy)
     {
       lastProviderError = self->_lastProviderError;
       self->_lastProviderError = 0;
 
-      v18 = [(UARPControllerXPC *)self xpcConnection];
+      xpcConnection = [(UARPControllerXPC *)self xpcConnection];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __93__UARPControllerXPC_performSynchronousProviderInvocation_accessory_requireKnown_description___block_invoke;
       v26[3] = &unk_278EC25E0;
       v26[4] = self;
-      v19 = [v18 synchronousRemoteObjectProxyWithErrorHandler:v26];
+      v19 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v26];
 
-      [v10 invokeWithTarget:v19];
+      [invocationCopy invokeWithTarget:v19];
       v20 = self->_lastProviderError;
       v16 = v20 == 0;
       if (v20)
@@ -252,7 +252,7 @@ void __34__UARPControllerXPC_xpcConnection__block_invoke_116(uint64_t a1)
         {
           v25 = self->_lastProviderError;
           *buf = 136446722;
-          v29 = a6;
+          descriptionCopy2 = description;
           v30 = 2114;
           v31 = v25;
           v32 = 2112;
@@ -269,8 +269,8 @@ void __34__UARPControllerXPC_xpcConnection__block_invoke_116(uint64_t a1)
       {
         v24 = "known";
         *buf = 136446722;
-        v29 = a6;
-        if (v7)
+        descriptionCopy2 = description;
+        if (knownCopy)
         {
           v24 = "unknown";
         }
@@ -295,134 +295,134 @@ void __34__UARPControllerXPC_xpcConnection__block_invoke_116(uint64_t a1)
   return v16;
 }
 
-- (BOOL)addAccessory:(id)a3 assetID:(id)a4
+- (BOOL)addAccessory:(id)accessory assetID:(id)d
 {
-  v6 = a4;
-  v13 = v6;
-  v7 = a3;
+  dCopy = d;
+  v13 = dCopy;
+  accessoryCopy = accessory;
   v8 = [(UARPControllerXPC *)self invocationForProviderSelector:sel_addAccessoryID_assetID_sandboxExtensionToken_reply_];
   v12 = 0;
-  if (v6 && ![v6 type])
+  if (dCopy && ![dCopy type])
   {
-    v9 = [v6 remoteURL];
-    v12 = [UARPSandboxExtension readWriteTokenStringWithURL:v9];
+    remoteURL = [dCopy remoteURL];
+    v12 = [UARPSandboxExtension readWriteTokenStringWithURL:remoteURL];
   }
 
   [v8 setArgument:&v13 atIndex:{3, v12}];
   [v8 setArgument:&v12 atIndex:4];
   [v8 setArgument:&self->_providerErrorReply atIndex:5];
-  v10 = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v8 accessory:v7 requireKnown:0 description:"Add accessory"];
+  v10 = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v8 accessory:accessoryCopy requireKnown:0 description:"Add accessory"];
 
   return v10;
 }
 
-- (BOOL)removeAccessory:(id)a3
+- (BOOL)removeAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = [(UARPControllerXPC *)self invocationForProviderSelector:sel_removeAccessoryID_reply_];
   [v5 setArgument:&self->_providerErrorReply atIndex:3];
-  LOBYTE(self) = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v5 accessory:v4 requireKnown:1 description:"Remove accessory"];
+  LOBYTE(self) = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v5 accessory:accessoryCopy requireKnown:1 description:"Remove accessory"];
 
   return self;
 }
 
-- (BOOL)changeAssetLocation:(id)a3 assetID:(id)a4
+- (BOOL)changeAssetLocation:(id)location assetID:(id)d
 {
-  v6 = a4;
-  v13 = v6;
-  v7 = a3;
+  dCopy = d;
+  v13 = dCopy;
+  locationCopy = location;
   v8 = [(UARPControllerXPC *)self invocationForProviderSelector:sel_changeAssetLocation_assetID_sandboxExtensionToken_reply_];
   v12 = 0;
-  if (v6 && ![v6 type])
+  if (dCopy && ![dCopy type])
   {
-    v9 = [v6 remoteURL];
-    v12 = [UARPSandboxExtension readWriteTokenStringWithURL:v9];
+    remoteURL = [dCopy remoteURL];
+    v12 = [UARPSandboxExtension readWriteTokenStringWithURL:remoteURL];
   }
 
   [v8 setArgument:&v13 atIndex:{3, v12}];
   [v8 setArgument:&v12 atIndex:4];
   [v8 setArgument:&self->_providerErrorReply atIndex:5];
-  v10 = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v8 accessory:v7 requireKnown:1 description:"Change asset location"];
+  v10 = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v8 accessory:locationCopy requireKnown:1 description:"Change asset location"];
 
   return v10;
 }
 
-- (BOOL)downloadAvailableFirmwareUpdate:(id)a3 assetID:(id)a4 withUserIntent:(BOOL)a5
+- (BOOL)downloadAvailableFirmwareUpdate:(id)update assetID:(id)d withUserIntent:(BOOL)intent
 {
-  v12 = a4;
-  v11 = a5;
-  v8 = a3;
+  dCopy = d;
+  intentCopy = intent;
+  updateCopy = update;
   v9 = [(UARPControllerXPC *)self invocationForProviderSelector:sel_downloadFirmwareForAccessoryID_assetID_userIntent_reply_];
-  [v9 setArgument:&v12 atIndex:3];
-  [v9 setArgument:&v11 atIndex:4];
+  [v9 setArgument:&dCopy atIndex:3];
+  [v9 setArgument:&intentCopy atIndex:4];
   [v9 setArgument:&self->_providerErrorReply atIndex:5];
-  LOBYTE(self) = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v9 accessory:v8 requireKnown:1 description:"Download asset"];
+  LOBYTE(self) = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v9 accessory:updateCopy requireKnown:1 description:"Download asset"];
 
   return self;
 }
 
-- (BOOL)downloadReleaseNotes:(id)a3 assetID:(id)a4
+- (BOOL)downloadReleaseNotes:(id)notes assetID:(id)d
 {
-  v9 = a4;
-  v6 = a3;
+  dCopy = d;
+  notesCopy = notes;
   v7 = [(UARPControllerXPC *)self invocationForProviderSelector:sel_downloadReleaseNotesForAccessoryID_assetID_reply_];
-  [v7 setArgument:&v9 atIndex:3];
+  [v7 setArgument:&dCopy atIndex:3];
   [v7 setArgument:&self->_providerErrorReply atIndex:4];
-  LOBYTE(self) = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v7 accessory:v6 requireKnown:1 description:"Download release notes"];
+  LOBYTE(self) = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v7 accessory:notesCopy requireKnown:1 description:"Download release notes"];
 
   return self;
 }
 
-- (void)sendFirmwareUpdateProgressForAccessory:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6
+- (void)sendFirmwareUpdateProgressForAccessory:(id)accessory assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v10 = a4;
-  v11 = a3;
-  v14 = [(UARPControllerXPC *)self xpcConnection];
-  v12 = [v14 remoteObjectProxy];
-  v13 = [v11 getID];
+  dCopy = d;
+  accessoryCopy = accessory;
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  getID = [accessoryCopy getID];
 
-  [v12 firmwareUpdateProgressForAccessoryID:v13 assetID:v10 bytesSent:a5 bytesTotal:a6];
+  [remoteObjectProxy firmwareUpdateProgressForAccessoryID:getID assetID:dCopy bytesSent:sent bytesTotal:total];
 }
 
-- (void)stagingCompleteForAccessoryID:(id)a3 assetID:(id)a4 status:(unint64_t)a5
+- (void)stagingCompleteForAccessoryID:(id)d assetID:(id)iD status:(unint64_t)status
 {
-  v8 = a4;
-  v9 = a3;
-  v11 = [(UARPControllerXPC *)self xpcConnection];
-  v10 = [v11 remoteObjectProxy];
-  [v10 stagingCompleteForAccessoryID:v9 assetID:v8 status:a5];
+  iDCopy = iD;
+  dCopy = d;
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy stagingCompleteForAccessoryID:dCopy assetID:iDCopy status:status];
 }
 
-- (void)sendFirmwareUpdateProgressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5
+- (void)sendFirmwareUpdateProgressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v8 = a3;
-  v10 = [(UARPControllerXPC *)self xpcConnection];
-  v9 = [v10 remoteObjectProxy];
-  [v9 firmwareUpdateProgressForUARPConsent:v8 bytesSent:a4 bytesTotal:a5];
+  consentCopy = consent;
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy firmwareUpdateProgressForUARPConsent:consentCopy bytesSent:sent bytesTotal:total];
 }
 
-- (void)progressForUARPConsent:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5
+- (void)progressForUARPConsent:(id)consent bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v8 = a3;
-  v10 = [(UARPControllerXPC *)self xpcConnection];
-  v9 = [v10 remoteObjectProxy];
-  [v9 progressForUARPConsent:v8 bytesSent:a4 bytesTotal:a5];
+  consentCopy = consent;
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy progressForUARPConsent:consentCopy bytesSent:sent bytesTotal:total];
 }
 
-- (void)progressForUARPConsentInPostLogout:(id)a3 bytesSent:(unint64_t)a4 bytesTotal:(unint64_t)a5
+- (void)progressForUARPConsentInPostLogout:(id)logout bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v8 = a3;
-  v10 = [(UARPControllerXPC *)self xpcConnection];
-  v9 = [v10 remoteObjectProxy];
-  [v9 progressForUARPConsentInPostLogout:v8 bytesSent:a4 bytesTotal:a5];
+  logoutCopy = logout;
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
+  [remoteObjectProxy progressForUARPConsentInPostLogout:logoutCopy bytesSent:sent bytesTotal:total];
 }
 
-- (BOOL)checkForUpdate:(id)a3
+- (BOOL)checkForUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = [(UARPControllerXPC *)self invocationForProviderSelector:sel_checkForUpdate_reply_];
   [v5 setArgument:&self->_providerErrorReply atIndex:3];
-  LOBYTE(self) = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v5 accessory:v4 requireKnown:1 description:"Check for update"];
+  LOBYTE(self) = [(UARPControllerXPC *)self performSynchronousProviderInvocation:v5 accessory:updateCopy requireKnown:1 description:"Check for update"];
 
   return self;
 }
@@ -443,22 +443,22 @@ void __74__UARPControllerXPC_personalizationVectorForAccessory_assetTag_outVecto
   }
 }
 
-- (id)getAssetIDForAccessoryID:(id)a3
+- (id)getAssetIDForAccessoryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v17 = 0;
   v18[0] = &v17;
   v18[1] = 0x3032000000;
   v18[2] = __Block_byref_object_copy__3;
   v18[3] = __Block_byref_object_dispose__3;
   v19 = 0;
-  v5 = [(UARPControllerXPC *)self xpcConnection];
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __46__UARPControllerXPC_getAssetIDForAccessoryID___block_invoke;
   v16[3] = &unk_278EC2608;
   v16[4] = &v17;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
   if (*(v18[0] + 40))
   {
@@ -483,7 +483,7 @@ void __74__UARPControllerXPC_personalizationVectorForAccessory_assetTag_outVecto
     v9[2] = __46__UARPControllerXPC_getAssetIDForAccessoryID___block_invoke_136;
     v9[3] = &unk_278EC2658;
     v9[4] = &v10;
-    [v6 getAssetIDForAccessoryID:v4 reply:v9];
+    [v6 getAssetIDForAccessoryID:dCopy reply:v9];
     v7 = v11[5];
     _Block_object_dispose(&v10, 8);
   }
@@ -493,22 +493,22 @@ void __74__UARPControllerXPC_personalizationVectorForAccessory_assetTag_outVecto
   return v7;
 }
 
-- (id)getSupplementalAssetNameForAccessoryID:(id)a3
+- (id)getSupplementalAssetNameForAccessoryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v17 = 0;
   v18[0] = &v17;
   v18[1] = 0x3032000000;
   v18[2] = __Block_byref_object_copy__3;
   v18[3] = __Block_byref_object_dispose__3;
   v19 = 0;
-  v5 = [(UARPControllerXPC *)self xpcConnection];
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __60__UARPControllerXPC_getSupplementalAssetNameForAccessoryID___block_invoke;
   v16[3] = &unk_278EC2608;
   v16[4] = &v17;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
   if (*(v18[0] + 40))
   {
@@ -533,7 +533,7 @@ void __74__UARPControllerXPC_personalizationVectorForAccessory_assetTag_outVecto
     v9[2] = __60__UARPControllerXPC_getSupplementalAssetNameForAccessoryID___block_invoke_138;
     v9[3] = &unk_278EC2680;
     v9[4] = &v10;
-    [v6 getSupplementalAssetNameForAccessoryID:v4 reply:v9];
+    [v6 getSupplementalAssetNameForAccessoryID:dCopy reply:v9];
     v7 = v11[5];
     _Block_object_dispose(&v10, 8);
   }
@@ -543,19 +543,19 @@ void __74__UARPControllerXPC_personalizationVectorForAccessory_assetTag_outVecto
   return v7;
 }
 
-- (void)sendUpdateFirmwareAnalyticsEventForAccessoryID:(id)a3 assetID:(id)a4 params:(id)a5
+- (void)sendUpdateFirmwareAnalyticsEventForAccessoryID:(id)d assetID:(id)iD params:(id)params
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  paramsCopy = params;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v12 = [WeakRetained accessoryIDKnown:v8];
+  v12 = [WeakRetained accessoryIDKnown:dCopy];
 
   if (v12)
   {
-    v13 = [(UARPControllerXPC *)self xpcConnection];
-    v14 = [v13 remoteObjectProxy];
-    [v14 sendUpdateFirmwareAnalyticsEventForAccessoryID:v8 assetID:v9 params:v10];
+    xpcConnection = [(UARPControllerXPC *)self xpcConnection];
+    remoteObjectProxy = [xpcConnection remoteObjectProxy];
+    [remoteObjectProxy sendUpdateFirmwareAnalyticsEventForAccessoryID:dCopy assetID:iDCopy params:paramsCopy];
   }
 
   else if (os_log_type_enabled(self->_xpcLog, OS_LOG_TYPE_ERROR))
@@ -564,12 +564,12 @@ void __74__UARPControllerXPC_personalizationVectorForAccessory_assetTag_outVecto
   }
 }
 
-- (BOOL)updateProperty:(unint64_t)a3 value:(id)a4 forAccessory:(id)a5
+- (BOOL)updateProperty:(unint64_t)property value:(id)value forAccessory:(id)accessory
 {
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  accessoryCopy = accessory;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  v11 = [WeakRetained accessoryKnown:v9];
+  v11 = [WeakRetained accessoryKnown:accessoryCopy];
 
   if (v11)
   {
@@ -579,21 +579,21 @@ void __74__UARPControllerXPC_personalizationVectorForAccessory_assetTag_outVecto
     v22 = __Block_byref_object_copy__3;
     v23 = __Block_byref_object_dispose__3;
     v24 = 0;
-    v12 = [(UARPControllerXPC *)self xpcConnection];
+    xpcConnection = [(UARPControllerXPC *)self xpcConnection];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __55__UARPControllerXPC_updateProperty_value_forAccessory___block_invoke;
     v18[3] = &unk_278EC2608;
     v18[4] = &v19;
-    v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v18];
+    v13 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v18];
 
-    v14 = [v9 getID];
+    getID = [accessoryCopy getID];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __55__UARPControllerXPC_updateProperty_value_forAccessory___block_invoke_2;
     v17[3] = &unk_278EC2608;
     v17[4] = &v19;
-    [v13 updateProperty:a3 value:v8 forAccessory:v14 reply:v17];
+    [v13 updateProperty:property value:valueCopy forAccessory:getID reply:v17];
 
     v15 = v20[5] == 0;
     _Block_object_dispose(&v19, 8);
@@ -612,11 +612,11 @@ void __74__UARPControllerXPC_personalizationVectorForAccessory_assetTag_outVecto
   return v15;
 }
 
-- (BOOL)getSupportedAccessories:(id)a3 forProductGroup:(id)a4
+- (BOOL)getSupportedAccessories:(id)accessories forProductGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  accessoriesCopy = accessories;
+  groupCopy = group;
+  if (accessoriesCopy)
   {
     v26 = 0;
     v27[0] = &v26;
@@ -624,13 +624,13 @@ void __74__UARPControllerXPC_personalizationVectorForAccessory_assetTag_outVecto
     v27[2] = __Block_byref_object_copy__3;
     v27[3] = __Block_byref_object_dispose__3;
     v28 = 0;
-    v8 = [(UARPControllerXPC *)self xpcConnection];
+    xpcConnection = [(UARPControllerXPC *)self xpcConnection];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __61__UARPControllerXPC_getSupportedAccessories_forProductGroup___block_invoke;
     v25[3] = &unk_278EC2608;
     v25[4] = &v26;
-    v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v25];
+    v9 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v25];
 
     if (*(v27[0] + 40))
     {
@@ -660,9 +660,9 @@ void __74__UARPControllerXPC_personalizationVectorForAccessory_assetTag_outVecto
       v14[3] = &unk_278EC26A8;
       v14[4] = &v19;
       v14[5] = &v15;
-      [v9 getSupportedAccessories:v7 reply:v14];
-      v12 = [v20[5] allObjects];
-      [v6 addObjectsFromArray:v12];
+      [v9 getSupportedAccessories:groupCopy reply:v14];
+      allObjects = [v20[5] allObjects];
+      [accessoriesCopy addObjectsFromArray:allObjects];
 
       v10 = *(v16 + 24);
       _Block_object_dispose(&v15, 8);
@@ -693,22 +693,22 @@ void __61__UARPControllerXPC_getSupportedAccessories_forProductGroup___block_inv
   *(*(*(a1 + 40) + 8) + 24) = a3;
 }
 
-- (id)getAttestationCertificates:(id)a3
+- (id)getAttestationCertificates:(id)certificates
 {
-  v4 = a3;
+  certificatesCopy = certificates;
   v17 = 0;
   v18[0] = &v17;
   v18[1] = 0x3032000000;
   v18[2] = __Block_byref_object_copy__3;
   v18[3] = __Block_byref_object_dispose__3;
   v19 = 0;
-  v5 = [(UARPControllerXPC *)self xpcConnection];
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __48__UARPControllerXPC_getAttestationCertificates___block_invoke;
   v16[3] = &unk_278EC2608;
   v16[4] = &v17;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
   if (*(v18[0] + 40))
   {
@@ -733,7 +733,7 @@ void __61__UARPControllerXPC_getSupportedAccessories_forProductGroup___block_inv
     v9[2] = __48__UARPControllerXPC_getAttestationCertificates___block_invoke_142;
     v9[3] = &unk_278EC26D0;
     v9[4] = &v10;
-    [v6 getAttestationCertificates:v4 reply:v9];
+    [v6 getAttestationCertificates:certificatesCopy reply:v9];
     v7 = v11[5];
     _Block_object_dispose(&v10, 8);
   }
@@ -743,168 +743,168 @@ void __61__UARPControllerXPC_getSupportedAccessories_forProductGroup___block_inv
   return v7;
 }
 
-- (BOOL)getAttestationCertificates:(id)a3 assetID:(id)a4
+- (BOOL)getAttestationCertificates:(id)certificates assetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  certificatesCopy = certificates;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v8 = [(UARPControllerXPC *)self xpcConnection];
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__UARPControllerXPC_getAttestationCertificates_assetID___block_invoke;
   v12[3] = &unk_278EC2608;
   v12[4] = &v13;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v12];
+  v9 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v12];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__UARPControllerXPC_getAttestationCertificates_assetID___block_invoke_2;
   v11[3] = &unk_278EC2608;
   v11[4] = &v13;
-  [v9 getAttestationCertificates:v6 assetID:v7 reply:v11];
-  LOBYTE(v8) = v14[5] == 0;
+  [v9 getAttestationCertificates:certificatesCopy assetID:dCopy reply:v11];
+  LOBYTE(xpcConnection) = v14[5] == 0;
 
   _Block_object_dispose(&v13, 8);
-  return v8;
+  return xpcConnection;
 }
 
-- (BOOL)requestConsent:(id)a3
+- (BOOL)requestConsent:(id)consent
 {
-  v4 = a3;
+  consentCopy = consent;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v5 = [(UARPControllerXPC *)self xpcConnection];
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __36__UARPControllerXPC_requestConsent___block_invoke;
   v9[3] = &unk_278EC2608;
   v9[4] = &v10;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __36__UARPControllerXPC_requestConsent___block_invoke_2;
   v8[3] = &unk_278EC2608;
   v8[4] = &v10;
-  [v6 requestConsent:v4 reply:v8];
-  LOBYTE(v5) = v11[5] == 0;
+  [v6 requestConsent:consentCopy reply:v8];
+  LOBYTE(xpcConnection) = v11[5] == 0;
 
   _Block_object_dispose(&v10, 8);
-  return v5;
+  return xpcConnection;
 }
 
-- (BOOL)revokeConsentRequest:(id)a3
+- (BOOL)revokeConsentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v5 = [(UARPControllerXPC *)self xpcConnection];
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__UARPControllerXPC_revokeConsentRequest___block_invoke;
   v9[3] = &unk_278EC2608;
   v9[4] = &v10;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__UARPControllerXPC_revokeConsentRequest___block_invoke_2;
   v8[3] = &unk_278EC2608;
   v8[4] = &v10;
-  [v6 revokeConsentRequest:v4 reply:v8];
-  LOBYTE(v5) = v11[5] == 0;
+  [v6 revokeConsentRequest:requestCopy reply:v8];
+  LOBYTE(xpcConnection) = v11[5] == 0;
 
   _Block_object_dispose(&v10, 8);
-  return v5;
+  return xpcConnection;
 }
 
-- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)a3
+- (BOOL)enableTRMSystemAuthenticationForRegistryEntryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v5 = [(UARPControllerXPC *)self xpcConnection];
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__UARPControllerXPC_enableTRMSystemAuthenticationForRegistryEntryID___block_invoke;
   v9[3] = &unk_278EC2608;
   v9[4] = &v10;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__UARPControllerXPC_enableTRMSystemAuthenticationForRegistryEntryID___block_invoke_2;
   v8[3] = &unk_278EC2608;
   v8[4] = &v10;
-  [v6 enableTRMSystemAuthenticationForRegistryEntryID:v4 reply:v8];
-  LOBYTE(v5) = v11[5] == 0;
+  [v6 enableTRMSystemAuthenticationForRegistryEntryID:dCopy reply:v8];
+  LOBYTE(xpcConnection) = v11[5] == 0;
 
   _Block_object_dispose(&v10, 8);
-  return v5;
+  return xpcConnection;
 }
 
-- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)a3
+- (BOOL)disableTRMSystemAuthenticationForRegistryEntryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__3;
   v14 = __Block_byref_object_dispose__3;
   v15 = 0;
-  v5 = [(UARPControllerXPC *)self xpcConnection];
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__UARPControllerXPC_disableTRMSystemAuthenticationForRegistryEntryID___block_invoke;
   v9[3] = &unk_278EC2608;
   v9[4] = &v10;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__UARPControllerXPC_disableTRMSystemAuthenticationForRegistryEntryID___block_invoke_2;
   v8[3] = &unk_278EC2608;
   v8[4] = &v10;
-  [v6 disableTRMSystemAuthenticationForRegistryEntryID:v4 reply:v8];
-  LOBYTE(v5) = v11[5] == 0;
+  [v6 disableTRMSystemAuthenticationForRegistryEntryID:dCopy reply:v8];
+  LOBYTE(xpcConnection) = v11[5] == 0;
 
   _Block_object_dispose(&v10, 8);
-  return v5;
+  return xpcConnection;
 }
 
-- (id)getSandboxExtensionTokenForAssetID:(id)a3
+- (id)getSandboxExtensionTokenForAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v17 = 0;
   v18[0] = &v17;
   v18[1] = 0x3032000000;
   v18[2] = __Block_byref_object_copy__3;
   v18[3] = __Block_byref_object_dispose__3;
   v19 = 0;
-  v5 = [(UARPControllerXPC *)self xpcConnection];
+  xpcConnection = [(UARPControllerXPC *)self xpcConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __56__UARPControllerXPC_getSandboxExtensionTokenForAssetID___block_invoke;
   v16[3] = &unk_278EC2608;
   v16[4] = &v17;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
   if (*(v18[0] + 40))
   {
@@ -929,7 +929,7 @@ void __61__UARPControllerXPC_getSupportedAccessories_forProductGroup___block_inv
     v9[2] = __56__UARPControllerXPC_getSandboxExtensionTokenForAssetID___block_invoke_144;
     v9[3] = &unk_278EC2680;
     v9[4] = &v10;
-    [v6 getSandboxExtensionTokenForAssetID:v4 reply:v9];
+    [v6 getSandboxExtensionTokenForAssetID:dCopy reply:v9];
     v7 = v11[5];
     _Block_object_dispose(&v10, 8);
   }

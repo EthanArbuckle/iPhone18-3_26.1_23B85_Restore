@@ -1,6 +1,6 @@
 @interface AVLayoutViewRowHead
 - (AVLayoutItemAttributes)firstAttributesInPriorityOrder;
-- (AVLayoutViewRowHead)initWithFirstAttributesInLayoutOrder:(id)a3 firstAttributesInPriorityOrder:(id)a4;
+- (AVLayoutViewRowHead)initWithFirstAttributesInLayoutOrder:(id)order firstAttributesInPriorityOrder:(id)priorityOrder;
 @end
 
 @implementation AVLayoutViewRowHead
@@ -12,18 +12,18 @@
   return WeakRetained;
 }
 
-- (AVLayoutViewRowHead)initWithFirstAttributesInLayoutOrder:(id)a3 firstAttributesInPriorityOrder:(id)a4
+- (AVLayoutViewRowHead)initWithFirstAttributesInLayoutOrder:(id)order firstAttributesInPriorityOrder:(id)priorityOrder
 {
-  v7 = a3;
-  v8 = a4;
+  orderCopy = order;
+  priorityOrderCopy = priorityOrder;
   v12.receiver = self;
   v12.super_class = AVLayoutViewRowHead;
   v9 = [(AVLayoutViewRowHead *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_firstAttributesInLayoutOrder, a3);
-    objc_storeWeak(&v10->_firstAttributesInPriorityOrder, v8);
+    objc_storeStrong(&v9->_firstAttributesInLayoutOrder, order);
+    objc_storeWeak(&v10->_firstAttributesInPriorityOrder, priorityOrderCopy);
   }
 
   return v10;

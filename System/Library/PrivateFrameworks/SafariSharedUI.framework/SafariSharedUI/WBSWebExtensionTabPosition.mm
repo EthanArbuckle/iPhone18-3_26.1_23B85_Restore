@@ -1,25 +1,25 @@
 @interface WBSWebExtensionTabPosition
-- (WBSWebExtensionTabPosition)initWithTab:(id)a3;
+- (WBSWebExtensionTabPosition)initWithTab:(id)tab;
 @end
 
 @implementation WBSWebExtensionTabPosition
 
-- (WBSWebExtensionTabPosition)initWithTab:(id)a3
+- (WBSWebExtensionTabPosition)initWithTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   v12.receiver = self;
   v12.super_class = WBSWebExtensionTabPosition;
   v5 = [(WBSWebExtensionTabPosition *)&v12 init];
   if (v5)
   {
-    v6 = [v4 webExtensionWindow];
-    v7 = v6;
-    if (v6)
+    webExtensionWindow = [tabCopy webExtensionWindow];
+    v7 = webExtensionWindow;
+    if (webExtensionWindow)
     {
-      [v6 idForWebExtensions];
+      [webExtensionWindow idForWebExtensions];
       v5->_windowID = v8;
-      v9 = [v7 webExtensionTabs];
-      v5->_index = [v9 indexOfObject:v4];
+      webExtensionTabs = [v7 webExtensionTabs];
+      v5->_index = [webExtensionTabs indexOfObject:tabCopy];
     }
 
     else

@@ -1,15 +1,15 @@
 @interface CMFileInterface
-+ (BOOL)writeContainerToFileURL:(id)a3 container:(id)a4;
-- (id)initReaderWithFileURL:(id)a3;
++ (BOOL)writeContainerToFileURL:(id)l container:(id)container;
+- (id)initReaderWithFileURL:(id)l;
 - (id)initWriter;
-- (void)processCMData:(id)a3;
+- (void)processCMData:(id)data;
 @end
 
 @implementation CMFileInterface
 
-- (id)initReaderWithFileURL:(id)a3
+- (id)initReaderWithFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = CMFileInterface;
   v5 = [(CMFileInterface *)&v11 init];
@@ -18,7 +18,7 @@
     goto LABEL_4;
   }
 
-  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4];
+  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy];
   if (v6)
   {
     v7 = +[CMDataContainer classes];
@@ -52,21 +52,21 @@ LABEL_4:
   return v2;
 }
 
-- (void)processCMData:(id)a3
+- (void)processCMData:(id)data
 {
   cmDataContainer = self->_cmDataContainer;
-  v4 = a3;
-  -[CMDataContainer appendCMData:sending:](cmDataContainer, "appendCMData:sending:", v4, [v4 isSent]);
+  dataCopy = data;
+  -[CMDataContainer appendCMData:sending:](cmDataContainer, "appendCMData:sending:", dataCopy, [dataCopy isSent]);
 }
 
-+ (BOOL)writeContainerToFileURL:(id)a3 container:(id)a4
++ (BOOL)writeContainerToFileURL:(id)l container:(id)container
 {
-  v5 = a3;
-  v6 = [CVAMetadataWrapper encodeNSCoderObject:a4];
+  lCopy = l;
+  v6 = [CVAMetadataWrapper encodeNSCoderObject:container];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 writeToURL:v5 atomically:1];
+    v8 = [v6 writeToURL:lCopy atomically:1];
   }
 
   else

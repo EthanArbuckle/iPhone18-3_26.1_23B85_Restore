@@ -1,6 +1,6 @@
 @interface DeviceBadgeView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI15DeviceBadgeView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI15DeviceBadgeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C088740();
 }
 
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI15DeviceBadgeView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI15DeviceBadgeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,16 +1,16 @@
 @interface GTMTLReplayActivityDebugFuncStop
-- (GTMTLReplayActivityDebugFuncStop)initWithCurrentIndex:(id)a3 targetIndex:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GTMTLReplayActivityDebugFuncStop)initWithCurrentIndex:(id)index targetIndex:(id)targetIndex;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonObject;
-- (void)outputToLog:(id)a3;
+- (void)outputToLog:(id)log;
 @end
 
 @implementation GTMTLReplayActivityDebugFuncStop
 
-- (void)outputToLog:(id)a3
+- (void)outputToLog:(id)log
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (os_log_type_enabled(a3, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     activityType = self->super._activityType;
     function = self->_currentIndex.function;
@@ -27,7 +27,7 @@
     v18 = v9;
     v19 = 1024;
     v20 = v8;
-    _os_log_impl(&dword_24D764000, a3, OS_LOG_TYPE_INFO, "%{public}@:\t%u:%u -> %u:%u", &v11, 0x24u);
+    _os_log_impl(&dword_24D764000, log, OS_LOG_TYPE_INFO, "%{public}@:\t%u:%u -> %u:%u", &v11, 0x24u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -63,11 +63,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = GTMTLReplayActivityDebugFuncStop;
-  result = [(GTMTLReplayActivity *)&v5 copyWithZone:a3];
+  result = [(GTMTLReplayActivity *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 5) = self->_currentIndex;
@@ -77,15 +77,15 @@
   return result;
 }
 
-- (GTMTLReplayActivityDebugFuncStop)initWithCurrentIndex:(id)a3 targetIndex:(id)a4
+- (GTMTLReplayActivityDebugFuncStop)initWithCurrentIndex:(id)index targetIndex:(id)targetIndex
 {
   v7.receiver = self;
   v7.super_class = GTMTLReplayActivityDebugFuncStop;
   result = [(GTMTLReplayActivity *)&v7 initWithType:@"debugFuncStop"];
   if (result)
   {
-    result->_currentIndex = a3;
-    result->_targetIndex = a4;
+    result->_currentIndex = index;
+    result->_targetIndex = targetIndex;
   }
 
   return result;

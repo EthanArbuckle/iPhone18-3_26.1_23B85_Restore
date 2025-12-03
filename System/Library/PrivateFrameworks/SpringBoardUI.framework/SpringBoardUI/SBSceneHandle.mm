@@ -1,41 +1,41 @@
 @interface SBSceneHandle
-- (BOOL)_handleSceneAction:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_handleSceneAction:(id)action;
+- (BOOL)isEqual:(id)equal;
 - (FBSDisplayIdentity)displayIdentity;
 - (FBScene)scene;
 - (NSString)sceneIdentifier;
 - (SBSceneHandle)init;
 - (SBSceneManager)sceneManager;
-- (id)_initWithDefinition:(id)a3 scene:(id)a4 displayIdentity:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithDefinition:(id)definition scene:(id)scene displayIdentity:(id)identity;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)contentState;
 - (unint64_t)hash;
-- (void)_didCreateScene:(id)a3;
-- (void)_didDestroyScene:(id)a3;
-- (void)_didUpdateClientSettings:(id)a3;
-- (void)_didUpdateContentState:(int64_t)a3;
-- (void)_didUpdateSettingsWithDiff:(id)a3 previousSettings:(id)a4;
-- (void)_enumerateObserversWithBlock:(id)a3;
-- (void)_noteDidMoveFromSceneManager:(id)a3;
-- (void)_noteReplacedWithSceneHandle:(id)a3;
-- (void)_noteSceneCreated:(id)a3;
-- (void)_noteSceneDestroyed:(id)a3;
-- (void)_setScene:(id)a3;
-- (void)addActionConsumer:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_didCreateScene:(id)scene;
+- (void)_didDestroyScene:(id)scene;
+- (void)_didUpdateClientSettings:(id)settings;
+- (void)_didUpdateContentState:(int64_t)state;
+- (void)_didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings;
+- (void)_enumerateObserversWithBlock:(id)block;
+- (void)_noteDidMoveFromSceneManager:(id)manager;
+- (void)_noteReplacedWithSceneHandle:(id)handle;
+- (void)_noteSceneCreated:(id)created;
+- (void)_noteSceneDestroyed:(id)destroyed;
+- (void)_setScene:(id)scene;
+- (void)addActionConsumer:(id)consumer;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeActionConsumer:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)removeActionConsumer:(id)consumer;
+- (void)removeObserver:(id)observer;
 - (void)scene;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)sceneManager:(id)a3 didAddScene:(id)a4;
-- (void)setSceneManager:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)sceneManager:(id)manager didAddScene:(id)scene;
+- (void)setSceneManager:(id)manager;
 @end
 
 @implementation SBSceneHandle
@@ -45,8 +45,8 @@
   result = self->_hash;
   if (!result)
   {
-    v4 = [(SBSceneHandle *)self sceneIdentifier];
-    self->_hash = [v4 hash];
+    sceneIdentifier = [(SBSceneHandle *)self sceneIdentifier];
+    self->_hash = [sceneIdentifier hash];
 
     return self->_hash;
   }
@@ -56,21 +56,21 @@
 
 - (FBSDisplayIdentity)displayIdentity
 {
-  v3 = [(SBSceneHandle *)self sceneManager];
-  v4 = [v3 displayIdentity];
-  v5 = v4;
-  if (v4)
+  sceneManager = [(SBSceneHandle *)self sceneManager];
+  displayIdentity = [sceneManager displayIdentity];
+  v5 = displayIdentity;
+  if (displayIdentity)
   {
-    v6 = v4;
+    v6 = displayIdentity;
   }
 
   else
   {
-    v7 = [(SBSceneHandle *)self sceneIfExists];
-    v8 = [v7 settings];
-    v9 = [v8 sb_displayIdentityForSceneManagers];
-    displayIdentity = v9;
-    if (!v9)
+    sceneIfExists = [(SBSceneHandle *)self sceneIfExists];
+    settings = [sceneIfExists settings];
+    sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
+    displayIdentity = sb_displayIdentityForSceneManagers;
+    if (!sb_displayIdentityForSceneManagers)
     {
       displayIdentity = self->_displayIdentity;
     }
@@ -90,25 +90,25 @@
 
 - (NSString)sceneIdentifier
 {
-  v2 = [(FBSSceneDefinition *)self->_definition identity];
-  v3 = [v2 identifier];
+  identity = [(FBSSceneDefinition *)self->_definition identity];
+  identifier = [identity identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBSceneHandle *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSceneHandle *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBSceneHandle *)self sceneIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"sceneID"];
+  sceneIdentifier = [(SBSceneHandle *)self sceneIdentifier];
+  v5 = [v3 appendObject:sceneIdentifier withName:@"sceneID"];
 
   v6 = [v3 appendPointer:self->_scene withName:@"scenePointer"];
 
@@ -117,19 +117,19 @@
 
 - (int64_t)contentState
 {
-  v2 = [(SBSceneHandle *)self sceneIfExists];
-  v3 = v2;
-  if (v2)
+  sceneIfExists = [(SBSceneHandle *)self sceneIfExists];
+  v3 = sceneIfExists;
+  if (sceneIfExists)
   {
-    v4 = [v2 contentState];
+    contentState = [sceneIfExists contentState];
   }
 
   else
   {
-    v4 = 0;
+    contentState = 0;
   }
 
-  return v4;
+  return contentState;
 }
 
 - (FBScene)scene
@@ -154,8 +154,8 @@
 - (void)dealloc
 {
   [(FBScene *)self->_scene removeObserver:self];
-  v3 = [MEMORY[0x277D0AAD8] sharedInstance];
-  [v3 removeObserver:self];
+  mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+  [mEMORY[0x277D0AAD8] removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBSceneHandle;
@@ -164,18 +164,18 @@
 
 - (SBSceneHandle)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBSceneHandle.m" lineNumber:59 description:@"init is unavailable for SBSceneHandle."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSceneHandle.m" lineNumber:59 description:@"init is unavailable for SBSceneHandle."];
 
   return 0;
 }
 
-- (id)_initWithDefinition:(id)a3 scene:(id)a4 displayIdentity:(id)a5
+- (id)_initWithDefinition:(id)definition scene:(id)scene displayIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!(v8 | v9))
+  definitionCopy = definition;
+  sceneCopy = scene;
+  identityCopy = identity;
+  if (!(definitionCopy | sceneCopy))
   {
     [SBSceneHandle _initWithDefinition:scene:displayIdentity:];
   }
@@ -186,35 +186,35 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_displayIdentity, a5);
-    if (v9)
+    objc_storeStrong(&v11->_displayIdentity, identity);
+    if (sceneCopy)
     {
-      v13 = [v9 definition];
+      definition = [sceneCopy definition];
     }
 
     else
     {
-      v13 = v8;
+      definition = definitionCopy;
     }
 
     definition = v12->_definition;
-    v12->_definition = v13;
+    v12->_definition = definition;
 
-    v15 = [MEMORY[0x277D0AAD8] sharedInstance];
-    [v15 addObserver:v12];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    [mEMORY[0x277D0AAD8] addObserver:v12];
     [(SBSceneHandle *)v12 _commonInit];
-    if (v9 || (-[SBSceneHandle sceneIdentifier](v12, "sceneIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), [v15 sceneWithIdentifier:v16], v9 = objc_claimAutoreleasedReturnValue(), v16, v9))
+    if (sceneCopy || (-[SBSceneHandle sceneIdentifier](v12, "sceneIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), [mEMORY[0x277D0AAD8] sceneWithIdentifier:v16], sceneCopy = objc_claimAutoreleasedReturnValue(), v16, sceneCopy))
     {
-      [(SBSceneHandle *)v12 _setScene:v9];
+      [(SBSceneHandle *)v12 _setScene:sceneCopy];
     }
   }
 
   return v12;
 }
 
-- (void)setSceneManager:(id)a3
+- (void)setSceneManager:(id)manager
 {
-  obj = a3;
+  obj = manager;
   WeakRetained = objc_loadWeakRetained(&self->_sceneManager);
 
   if (WeakRetained != obj)
@@ -228,16 +228,16 @@
   }
 }
 
-- (void)_noteDidMoveFromSceneManager:(id)a3
+- (void)_noteDidMoveFromSceneManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__SBSceneHandle__noteDidMoveFromSceneManager___block_invoke;
   v6[3] = &unk_27836B078;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = managerCopy;
+  v5 = managerCopy;
   [(SBSceneHandle *)self _enumerateObserversWithBlock:v6];
 }
 
@@ -250,19 +250,19 @@ void __46__SBSceneHandle__noteDidMoveFromSceneManager___block_invoke(uint64_t a1
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     observers = self->_observers;
     v13 = v5;
     if (!observers)
     {
-      v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v8 = self->_observers;
-      self->_observers = v7;
+      self->_observers = weakObjectsHashTable;
 
       v9 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:517 valueOptions:0];
       observersToObserverBehaviors = self->_observersToObserverBehaviors;
@@ -279,55 +279,55 @@ void __46__SBSceneHandle__noteDidMoveFromSceneManager___block_invoke(uint64_t a1
     v5 = v13;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](observerCopy, v5);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     observersToObserverBehaviors = self->_observersToObserverBehaviors;
-    v5 = a3;
-    [(NSMapTable *)observersToObserverBehaviors removeObjectForKey:v5];
-    [(NSHashTable *)self->_observers removeObject:v5];
+    observerCopy = observer;
+    [(NSMapTable *)observersToObserverBehaviors removeObjectForKey:observerCopy];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
   }
 }
 
-- (void)addActionConsumer:(id)a3
+- (void)addActionConsumer:(id)consumer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  consumerCopy = consumer;
+  v5 = consumerCopy;
+  if (consumerCopy)
   {
     actionConsumers = self->_actionConsumers;
     v9 = v5;
     if (!actionConsumers)
     {
-      v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v8 = self->_actionConsumers;
-      self->_actionConsumers = v7;
+      self->_actionConsumers = weakObjectsHashTable;
 
       actionConsumers = self->_actionConsumers;
     }
 
-    v4 = [(NSHashTable *)actionConsumers addObject:v9];
+    consumerCopy = [(NSHashTable *)actionConsumers addObject:v9];
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](consumerCopy, v5);
 }
 
-- (void)removeActionConsumer:(id)a3
+- (void)removeActionConsumer:(id)consumer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  consumerCopy = consumer;
+  v5 = consumerCopy;
+  if (consumerCopy)
   {
-    v7 = v4;
-    [(NSHashTable *)self->_actionConsumers removeObject:v4];
-    v4 = [(NSHashTable *)self->_actionConsumers count];
+    v7 = consumerCopy;
+    [(NSHashTable *)self->_actionConsumers removeObject:consumerCopy];
+    consumerCopy = [(NSHashTable *)self->_actionConsumers count];
     v5 = v7;
-    if (!v4)
+    if (!consumerCopy)
     {
       actionConsumers = self->_actionConsumers;
       self->_actionConsumers = 0;
@@ -336,20 +336,20 @@ void __46__SBSceneHandle__noteDidMoveFromSceneManager___block_invoke(uint64_t a1
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](consumerCopy, v5);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SBSceneHandle *)self sceneIdentifier];
-    v7 = [v5 sceneIdentifier];
+    v5 = equalCopy;
+    sceneIdentifier = [(SBSceneHandle *)self sceneIdentifier];
+    sceneIdentifier2 = [v5 sceneIdentifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [sceneIdentifier isEqualToString:sceneIdentifier2];
   }
 
   else
@@ -360,16 +360,16 @@ void __46__SBSceneHandle__noteDidMoveFromSceneManager___block_invoke(uint64_t a1
   return v8;
 }
 
-- (void)_enumerateObserversWithBlock:(id)a3
+- (void)_enumerateObserversWithBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSHashTable *)self->_observers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -383,7 +383,7 @@ void __46__SBSceneHandle__noteDidMoveFromSceneManager___block_invoke(uint64_t a1
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v10);
@@ -391,7 +391,7 @@ void __46__SBSceneHandle__noteDidMoveFromSceneManager___block_invoke(uint64_t a1
 
         if (v8)
         {
-          v4[2](v4, v12, v8);
+          blockCopy[2](blockCopy, v12, v8);
         }
 
         ++v10;
@@ -399,7 +399,7 @@ void __46__SBSceneHandle__noteDidMoveFromSceneManager___block_invoke(uint64_t a1
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -408,7 +408,7 @@ void __46__SBSceneHandle__noteDidMoveFromSceneManager___block_invoke(uint64_t a1
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didCreateScene:(id)a3
+- (void)_didCreateScene:(id)scene
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -427,16 +427,16 @@ void __33__SBSceneHandle__didCreateScene___block_invoke(uint64_t a1, void *a2, v
   }
 }
 
-- (void)_didDestroyScene:(id)a3
+- (void)_didDestroyScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__SBSceneHandle__didDestroyScene___block_invoke;
   v6[3] = &unk_27836B078;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sceneCopy;
+  v5 = sceneCopy;
   [(SBSceneHandle *)self _enumerateObserversWithBlock:v6];
 }
 
@@ -449,14 +449,14 @@ void __34__SBSceneHandle__didDestroyScene___block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-- (void)_didUpdateContentState:(int64_t)a3
+- (void)_didUpdateContentState:(int64_t)state
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __40__SBSceneHandle__didUpdateContentState___block_invoke;
   v3[3] = &unk_27836B0C8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   [(SBSceneHandle *)self _enumerateObserversWithBlock:v3];
 }
 
@@ -469,19 +469,19 @@ void __40__SBSceneHandle__didUpdateContentState___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_didUpdateSettingsWithDiff:(id)a3 previousSettings:(id)a4
+- (void)_didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  diffCopy = diff;
+  settingsCopy = settings;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__SBSceneHandle__didUpdateSettingsWithDiff_previousSettings___block_invoke;
   v10[3] = &unk_27836B0F0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = diffCopy;
+  v12 = settingsCopy;
+  v8 = settingsCopy;
+  v9 = diffCopy;
   [(SBSceneHandle *)self _enumerateObserversWithBlock:v10];
 }
 
@@ -494,16 +494,16 @@ void __61__SBSceneHandle__didUpdateSettingsWithDiff_previousSettings___block_inv
   }
 }
 
-- (void)_didUpdateClientSettings:(id)a3
+- (void)_didUpdateClientSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__SBSceneHandle__didUpdateClientSettings___block_invoke;
   v6[3] = &unk_27836B078;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = settingsCopy;
+  v5 = settingsCopy;
   [(SBSceneHandle *)self _enumerateObserversWithBlock:v6];
 }
 
@@ -516,22 +516,22 @@ void __42__SBSceneHandle__didUpdateClientSettings___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_noteSceneCreated:(id)a3
+- (void)_noteSceneCreated:(id)created
 {
-  v4 = a3;
-  v5 = v4;
+  createdCopy = created;
+  v5 = createdCopy;
   if (!self->_manuallyControlsLifecycle)
   {
     [SBSceneHandle _noteSceneCreated:];
-    v4 = v5;
+    createdCopy = v5;
   }
 
-  [(SBSceneHandle *)self _setScene:v4];
+  [(SBSceneHandle *)self _setScene:createdCopy];
 }
 
-- (void)_noteSceneDestroyed:(id)a3
+- (void)_noteSceneDestroyed:(id)destroyed
 {
-  v4 = a3;
+  destroyedCopy = destroyed;
   if (!self->_manuallyControlsLifecycle)
   {
     [SBSceneHandle _noteSceneDestroyed:];
@@ -540,7 +540,7 @@ void __42__SBSceneHandle__didUpdateClientSettings___block_invoke(uint64_t a1, vo
   scene = self->_scene;
   if (scene)
   {
-    v6 = scene == v4;
+    v6 = scene == destroyedCopy;
   }
 
   else
@@ -553,13 +553,13 @@ void __42__SBSceneHandle__didUpdateClientSettings___block_invoke(uint64_t a1, vo
     v7 = SBLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(SBSceneHandle *)&self->_scene _noteSceneDestroyed:v4, v7];
+      [(SBSceneHandle *)&self->_scene _noteSceneDestroyed:destroyedCopy, v7];
     }
 
     scene = self->_scene;
   }
 
-  if (scene && scene != v4)
+  if (scene && scene != destroyedCopy)
   {
     [SBSceneHandle _noteSceneDestroyed:];
   }
@@ -567,16 +567,16 @@ void __42__SBSceneHandle__didUpdateClientSettings___block_invoke(uint64_t a1, vo
   [(SBSceneHandle *)self _setScene:0];
 }
 
-- (void)_noteReplacedWithSceneHandle:(id)a3
+- (void)_noteReplacedWithSceneHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__SBSceneHandle__noteReplacedWithSceneHandle___block_invoke;
   v6[3] = &unk_27836B078;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handleCopy;
+  v5 = handleCopy;
   [(SBSceneHandle *)self _enumerateObserversWithBlock:v6];
 }
 
@@ -589,10 +589,10 @@ void __46__SBSceneHandle__noteReplacedWithSceneHandle___block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)_handleSceneAction:(id)a3
+- (BOOL)_handleSceneAction:(id)action
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   [(NSHashTable *)self->_actionConsumers allObjects];
   v13 = 0u;
   v14 = 0u;
@@ -612,7 +612,7 @@ void __46__SBSceneHandle__noteReplacedWithSceneHandle___block_invoke(uint64_t a1
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) sceneHandle:self didReceiveAction:{v4, v13}])
+        if ([*(*(&v13 + 1) + 8 * i) sceneHandle:self didReceiveAction:{actionCopy, v13}])
         {
           v10 = 1;
           goto LABEL_11;
@@ -636,32 +636,32 @@ LABEL_11:
   return v10;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSceneHandle *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSceneHandle *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSceneHandle *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_scene withName:@"scene"];
+  succinctDescriptionBuilder = [(SBSceneHandle *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_scene withName:@"scene"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)sceneManager:(id)a3 didAddScene:(id)a4
+- (void)sceneManager:(id)manager didAddScene:(id)scene
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = v6;
+  managerCopy = manager;
+  sceneCopy = scene;
+  v7 = sceneCopy;
   if (!self->_manuallyControlsLifecycle)
   {
-    v8 = [v6 identifier];
-    v9 = [(SBSceneHandle *)self sceneIdentifier];
-    v10 = [v8 isEqualToString:v9];
+    identifier = [sceneCopy identifier];
+    sceneIdentifier = [(SBSceneHandle *)self sceneIdentifier];
+    v10 = [identifier isEqualToString:sceneIdentifier];
 
     if (v10)
     {
@@ -670,60 +670,60 @@ LABEL_11:
   }
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
+  changeCopy = change;
+  v5 = changeCopy;
   if (!self->_scene)
   {
     [SBSceneHandle sceneContentStateDidChange:];
-    v4 = v5;
+    changeCopy = v5;
   }
 
-  -[SBSceneHandle _didUpdateContentState:](self, "_didUpdateContentState:", [v4 contentState]);
+  -[SBSceneHandle _didUpdateContentState:](self, "_didUpdateContentState:", [changeCopy contentState]);
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = v6;
+  sceneCopy = scene;
+  settingsCopy = settings;
+  v7 = settingsCopy;
   if (self->_scene)
   {
-    v8 = [v6 settingsDiff];
+    settingsDiff = [settingsCopy settingsDiff];
 
-    if (v8)
+    if (settingsDiff)
     {
-      v9 = [v7 settingsDiff];
-      v10 = [v7 previousSettings];
-      [(SBSceneHandle *)self _didUpdateSettingsWithDiff:v9 previousSettings:v10];
+      settingsDiff2 = [v7 settingsDiff];
+      previousSettings = [v7 previousSettings];
+      [(SBSceneHandle *)self _didUpdateSettingsWithDiff:settingsDiff2 previousSettings:previousSettings];
     }
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = v6;
+  sceneCopy = scene;
+  settingsCopy = settings;
+  v7 = settingsCopy;
   if (self->_scene)
   {
-    v8 = [v6 settingsDiff];
+    settingsDiff = [settingsCopy settingsDiff];
 
-    if (v8)
+    if (settingsDiff)
     {
       [(SBSceneHandle *)self _didUpdateClientSettings:v7];
     }
   }
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
-  v7 = a3;
-  v6 = a4;
+  invalidateCopy = invalidate;
+  contextCopy = context;
   if (!self->_manuallyControlsLifecycle)
   {
-    if (self->_scene != v7)
+    if (self->_scene != invalidateCopy)
     {
       [SBSceneHandle sceneDidInvalidate:withContext:];
     }
@@ -732,17 +732,17 @@ LABEL_11:
   }
 }
 
-- (void)_setScene:(id)a3
+- (void)_setScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   scene = self->_scene;
-  if (scene != v4)
+  if (scene != sceneCopy)
   {
-    v10 = v4;
-    v6 = v4;
+    v10 = sceneCopy;
+    v6 = sceneCopy;
     v7 = self->_scene;
     self->_scene = v6;
-    v8 = scene;
+    sceneCopy2 = scene;
 
     v9 = self->_scene;
     if (v9)
@@ -753,11 +753,11 @@ LABEL_11:
 
     else
     {
-      [(FBScene *)v8 removeObserver:self];
-      [(SBSceneHandle *)self _didDestroyScene:v8];
+      [(FBScene *)sceneCopy2 removeObserver:self];
+      [(SBSceneHandle *)self _didDestroyScene:sceneCopy2];
     }
 
-    v4 = v10;
+    sceneCopy = v10;
   }
 }
 
@@ -771,8 +771,8 @@ LABEL_11:
 
 - (void)scene
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"SBSceneHandle.m" lineNumber:129 description:{@"Required scene wasn't found from scene handle: %@", a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBSceneHandle.m" lineNumber:129 description:{@"Required scene wasn't found from scene handle: %@", a2}];
 
   *a4 = *a3;
 }

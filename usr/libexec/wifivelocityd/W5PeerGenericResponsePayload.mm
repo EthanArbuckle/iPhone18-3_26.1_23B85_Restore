@@ -1,16 +1,16 @@
 @interface W5PeerGenericResponsePayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerGenericResponsePayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerGenericResponsePayload)initWithRequest:(id)request;
 - (id)__allowedClasses;
 - (id)encode;
 @end
 
 @implementation W5PeerGenericResponsePayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (W5PeerGenericResponsePayload)initWithRequest:(id)a3
+- (W5PeerGenericResponsePayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v16.receiver = self;
   v16.super_class = W5PeerGenericResponsePayload;
   v5 = [(W5PeerGenericResponsePayload *)&v16 init];
@@ -60,15 +60,15 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v6 = [v4 objectForKey:@"payload"];
+  v6 = [requestCopy objectForKey:@"payload"];
   if (!v6)
   {
     v10 = 0;
     goto LABEL_8;
   }
 
-  v7 = [(W5PeerGenericResponsePayload *)v5 __allowedClasses];
-  v8 = [NSSet setWithArray:v7];
+  __allowedClasses = [(W5PeerGenericResponsePayload *)v5 __allowedClasses];
+  v8 = [NSSet setWithArray:__allowedClasses];
   v15 = 0;
   v9 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v8 fromData:v6 error:&v15];
   v10 = v15;
@@ -102,13 +102,13 @@ LABEL_8:
 - (id)encode
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(W5PeerGenericResponsePayload *)self info];
+  info = [(W5PeerGenericResponsePayload *)self info];
 
-  if (v4)
+  if (info)
   {
-    v5 = [(W5PeerGenericResponsePayload *)self info];
+    info2 = [(W5PeerGenericResponsePayload *)self info];
     v9 = 0;
-    v6 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v9];
+    v6 = [NSKeyedArchiver archivedDataWithRootObject:info2 requiringSecureCoding:1 error:&v9];
     v7 = v9;
 
     if (v6)

@@ -1,121 +1,121 @@
 @interface STScreenTimeOrganizationController
 + (id)keyPathsForValuesAffectingScreenTimeEnabled;
 + (id)keyPathsForValuesAffectingScreenTimeSyncingEnabled;
-+ (void)isCommunicationSafetyEnabledForUserDSID:(id)a3 persistenceController:(id)a4 completionHandler:(id)a5;
-+ (void)postDiagnosticsServiceMessage:(id)a3;
-+ (void)restrictionsForUserDSID:(id)a3 persistenceController:(id)a4 completionHandler:(id)a5;
-- (BOOL)_writePlistForUser:(id)a3 url:(id)a4 error:(id *)a5;
-- (BOOL)authenticateRestrictionsPasscode:(id)a3 error:(id *)a4;
-- (BOOL)clearRestrictionsPasscodeWithError:(id *)a3;
++ (void)isCommunicationSafetyEnabledForUserDSID:(id)d persistenceController:(id)controller completionHandler:(id)handler;
++ (void)postDiagnosticsServiceMessage:(id)message;
++ (void)restrictionsForUserDSID:(id)d persistenceController:(id)controller completionHandler:(id)handler;
+- (BOOL)_writePlistForUser:(id)user url:(id)url error:(id *)error;
+- (BOOL)authenticateRestrictionsPasscode:(id)passcode error:(id *)error;
+- (BOOL)clearRestrictionsPasscodeWithError:(id *)error;
 - (BOOL)createMandatoryEntitiesIfNeeded;
-- (BOOL)exportDatabaseToURL:(id)a3 error:(id *)a4;
+- (BOOL)exportDatabaseToURL:(id)l error:(id *)error;
 - (BOOL)isLocalUserRemotelyManaged;
 - (BOOL)isScreenTimeEnabled;
 - (BOOL)isScreenTimeSyncingEnabled;
 - (BOOL)performAppExceptionsMigration;
 - (STAppMonitorStatus)appMonitorStatus;
-- (STScreenTimeOrganizationController)initWithPersistenceController:(id)a3 askForTimeManager:(id)a4 mirroringMonitor:(id)a5 accountNotifier:(id)a6 capabilities:(id)a7;
-- (id)fetchUnexpiredOneMoreMinuteBlueprintsWithMoc:(id)a3 error:(id *)a4;
-- (id)getIsExplicitContentRestrictedAndReturnError:(id *)a3;
-- (id)getIsRestrictionsPasscodeSetAndReturnError:(id *)a3;
-- (id)getIsWebContentRestrictedAndReturnError:(id *)a3;
-- (id)getNeedsToSetRestrictionsPasscodeAndReturnError:(id *)a3;
-- (id)getPrimaryiCloudCardDAVAccountIdentifierWithError:(id *)a3;
-- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 error:(id *)a4;
-- (id)shouldAllowOneMoreMinuteForWebDomain:(id)a3 error:(id *)a4;
-- (void)_applyDefaultUserPoliciesWithCompletionHandler:(id)a3;
+- (STScreenTimeOrganizationController)initWithPersistenceController:(id)controller askForTimeManager:(id)manager mirroringMonitor:(id)monitor accountNotifier:(id)notifier capabilities:(id)capabilities;
+- (id)fetchUnexpiredOneMoreMinuteBlueprintsWithMoc:(id)moc error:(id *)error;
+- (id)getIsExplicitContentRestrictedAndReturnError:(id *)error;
+- (id)getIsRestrictionsPasscodeSetAndReturnError:(id *)error;
+- (id)getIsWebContentRestrictedAndReturnError:(id *)error;
+- (id)getNeedsToSetRestrictionsPasscodeAndReturnError:(id *)error;
+- (id)getPrimaryiCloudCardDAVAccountIdentifierWithError:(id *)error;
+- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier error:(id *)error;
+- (id)shouldAllowOneMoreMinuteForWebDomain:(id)domain error:(id *)error;
+- (void)_applyDefaultUserPoliciesWithCompletionHandler:(id)handler;
 - (void)_applyImageGenerationRestrictionIfNeeded;
 - (void)_applyManagedSettingsIfNeeded;
-- (void)_didFailDMRegistration:(id)a3;
+- (void)_didFailDMRegistration:(id)registration;
 - (void)_removeProtoAccountManagedSettingsIfNeeded;
 - (void)_startObservingManagedConfigurationEffectiveSettings;
-- (void)_updateScreenTimeSettingsFromManagedConfigurationEffectiveSettingsWithScreenTimeSettings:(id)a3;
-- (void)accountDidUpdateToState:(id)a3 initializing:(BOOL)a4;
-- (void)applyIntroductionModel:(id)a3 forDSID:(id)a4 completionHandler:(id)a5;
+- (void)_updateScreenTimeSettingsFromManagedConfigurationEffectiveSettingsWithScreenTimeSettings:(id)settings;
+- (void)accountDidUpdateToState:(id)state initializing:(BOOL)initializing;
+- (void)applyIntroductionModel:(id)model forDSID:(id)d completionHandler:(id)handler;
 - (void)attemptToAutomaticallyEnableScreenTimeSyncing;
 - (void)cleanOrphanedDatabaseEntities;
 - (void)clearNeedsUpdatePasscode;
-- (void)communicationPoliciesForDSID:(id)a3 withCompletionHandler:(id)a4;
-- (void)communicationPoliciesWithCompletionHandler:(id)a3;
-- (void)contactManagementStateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)debouncer:(id)a3 didDebounce:(id)a4;
+- (void)communicationPoliciesForDSID:(id)d withCompletionHandler:(id)handler;
+- (void)communicationPoliciesWithCompletionHandler:(id)handler;
+- (void)contactManagementStateForDSID:(id)d completionHandler:(id)handler;
+- (void)controllerDidChangeContent:(id)content;
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce;
 - (void)deleteAllLocalScreenTimeSettings;
 - (void)deleteLocalUserBlueprintsFromManagedConfigurationEffectiveSettings;
 - (void)didDisableCloudSync;
 - (void)didDisableScreenTime;
 - (void)didEnableCloudSync;
 - (void)didEnableManagement;
-- (void)didJoinFamily:(id)a3;
+- (void)didJoinFamily:(id)family;
 - (void)didLeaveFamily;
-- (void)didReceiveBlueprintPayload:(id)a3;
-- (void)didSignInToCloud:(id)a3;
-- (void)didSignOutOfCloud:(id)a3;
-- (void)didUpdateFamily:(id)a3;
-- (void)enableRemoteManagementForDSID:(id)a3 completionHandler:(id)a4;
-- (void)enableScreenTimeForDSID:(id)a3 completionHandler:(id)a4;
-- (void)enableWebContentFilterWithCompletionHandler:(id)a3;
-- (void)fetchMirroringMonitorStatusWithCompletionHandler:(id)a3;
-- (void)isCommunicationSafetyEnabledForUserDSID:(id)a3 completionHandler:(id)a4;
-- (void)isContentPrivacyEnabledForDSID:(id)a3 completionHandler:(id)a4;
-- (void)isLocationSharingModificationAllowedForDSID:(id)a3 completionHandler:(id)a4;
-- (void)lastCommunicationLimitsModifcationDateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)lastModifcationDateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)a3;
-- (void)migrateLegacyRestrictionsIfNeededWithMCXSettings:(id)a3 completionHandler:(id)a4;
+- (void)didReceiveBlueprintPayload:(id)payload;
+- (void)didSignInToCloud:(id)cloud;
+- (void)didSignOutOfCloud:(id)cloud;
+- (void)didUpdateFamily:(id)family;
+- (void)enableRemoteManagementForDSID:(id)d completionHandler:(id)handler;
+- (void)enableScreenTimeForDSID:(id)d completionHandler:(id)handler;
+- (void)enableWebContentFilterWithCompletionHandler:(id)handler;
+- (void)fetchMirroringMonitorStatusWithCompletionHandler:(id)handler;
+- (void)isCommunicationSafetyEnabledForUserDSID:(id)d completionHandler:(id)handler;
+- (void)isContentPrivacyEnabledForDSID:(id)d completionHandler:(id)handler;
+- (void)isLocationSharingModificationAllowedForDSID:(id)d completionHandler:(id)handler;
+- (void)lastCommunicationLimitsModifcationDateForDSID:(id)d completionHandler:(id)handler;
+- (void)lastModifcationDateForDSID:(id)d completionHandler:(id)handler;
+- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)handler;
+- (void)migrateLegacyRestrictionsIfNeededWithMCXSettings:(id)settings completionHandler:(id)handler;
 - (void)migrateOldDefaultsIfNeeded;
-- (void)performCloudSync:(id)a3;
-- (void)performWeeklyRollupWithCompletionHandler:(id)a3;
-- (void)permitWebFilterURL:(id)a3 pageTitle:(id)a4 completionHandler:(id)a5;
-- (void)postOrRemoveAppAndWebsiteActivityEnabledNotification:(BOOL)a3;
+- (void)performCloudSync:(id)sync;
+- (void)performWeeklyRollupWithCompletionHandler:(id)handler;
+- (void)permitWebFilterURL:(id)l pageTitle:(id)title completionHandler:(id)handler;
+- (void)postOrRemoveAppAndWebsiteActivityEnabledNotification:(BOOL)notification;
 - (void)processBlueprintChanges;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)requestManager:(id)a3 didPrepareBlueprintPayloads:(id)a4;
-- (void)requestManager:(id)a3 didPrepareRequestPayloads:(id)a4 reason:(id)a5;
-- (void)restrictionsForUserDSID:(id)a3 completionHandler:(id)a4;
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)requestManager:(id)manager didPrepareBlueprintPayloads:(id)payloads;
+- (void)requestManager:(id)manager didPrepareRequestPayloads:(id)payloads reason:(id)reason;
+- (void)restrictionsForUserDSID:(id)d completionHandler:(id)handler;
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler;
 - (void)resume;
-- (void)rollupUsageDataWithCompletionHandler:(id)a3;
+- (void)rollupUsageDataWithCompletionHandler:(id)handler;
 - (void)scheduleAppMonitorAppDiscovery;
-- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)a3;
-- (void)setAppAndWebsiteActivityEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)setContactManagementState:(int64_t)a3 forDSID:(id)a4 completionHandler:(id)a5;
-- (void)setLocationSharingModificationAllowed:(BOOL)a3 forDSID:(id)a4 completionHandler:(id)a5;
+- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)handler;
+- (void)setAppAndWebsiteActivityEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setContactManagementState:(int64_t)state forDSID:(id)d completionHandler:(id)handler;
+- (void)setLocationSharingModificationAllowed:(BOOL)allowed forDSID:(id)d completionHandler:(id)handler;
 - (void)setNeedsUpdatePasscode;
-- (void)setRestrictionsPasscode:(id)a3 error:(id *)a4;
-- (void)setScreenTimeEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)setScreenTimeSyncingEnabled:(BOOL)a3 completionHandler:(id)a4;
+- (void)setRestrictionsPasscode:(id)passcode error:(id *)error;
+- (void)setScreenTimeEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)setScreenTimeSyncingEnabled:(BOOL)enabled completionHandler:(id)handler;
 - (void)startMonitoringAccountChanges;
 - (void)startObservingBlueprints;
 - (void)startObservingOrganizationSettings;
 - (void)startObservingScreenTimeSettings;
 - (void)startupCloud;
 - (void)startupCloudSync;
-- (void)startupFamily:(id)a3;
-- (void)startupScreenTime:(BOOL)a3;
+- (void)startupFamily:(id)family;
+- (void)startupScreenTime:(BOOL)time;
 - (void)stopObservingBlueprints;
-- (void)triggerDowngradeMigrationWithCompletionHandler:(id)a3;
+- (void)triggerDowngradeMigrationWithCompletionHandler:(id)handler;
 - (void)updateDeviceName;
-- (void)updateEffectiveDeviceState:(BOOL)a3;
+- (void)updateEffectiveDeviceState:(BOOL)state;
 @end
 
 @implementation STScreenTimeOrganizationController
 
-- (STScreenTimeOrganizationController)initWithPersistenceController:(id)a3 askForTimeManager:(id)a4 mirroringMonitor:(id)a5 accountNotifier:(id)a6 capabilities:(id)a7
+- (STScreenTimeOrganizationController)initWithPersistenceController:(id)controller askForTimeManager:(id)manager mirroringMonitor:(id)monitor accountNotifier:(id)notifier capabilities:(id)capabilities
 {
-  v51 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  managerCopy = manager;
+  monitorCopy = monitor;
+  notifierCopy = notifier;
+  capabilitiesCopy = capabilities;
   v57.receiver = self;
   v57.super_class = STScreenTimeOrganizationController;
   v17 = [(STScreenTimeOrganizationController *)&v57 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_persistenceController, a3);
+    objc_storeStrong(&v17->_persistenceController, controller);
     v19 = +[NSOperationQueue mainQueue];
     operationQueue = v18->_operationQueue;
     v18->_operationQueue = v19;
@@ -124,10 +124,10 @@
     accessLock = v18->_accessLock;
     v18->_accessLock = v21;
 
-    objc_storeStrong(&v18->_askForTimeManager, a4);
-    objc_storeStrong(&v18->_mirroringMonitor, a5);
-    objc_storeStrong(&v18->_accountNotifier, a6);
-    objc_storeStrong(&v18->_capabilities, a7);
+    objc_storeStrong(&v18->_askForTimeManager, manager);
+    objc_storeStrong(&v18->_mirroringMonitor, monitor);
+    objc_storeStrong(&v18->_accountNotifier, notifier);
+    objc_storeStrong(&v18->_capabilities, capabilities);
     if (_os_feature_enabled_impl())
     {
       v23 = 0.1;
@@ -150,21 +150,21 @@
     [(STDebouncer *)v18->_deviceStateDebouncer setDelegate:v18];
     v28 = [STRequestManager alloc];
     v29 = STOrganizationIdentifierScreenTime;
-    v30 = [(STScreenTimeOrganizationController *)v18 persistenceController];
-    v31 = [(STRequestManager *)v28 initWithOrganizationIdentifier:v29 persistenceController:v30];
+    persistenceController = [(STScreenTimeOrganizationController *)v18 persistenceController];
+    v31 = [(STRequestManager *)v28 initWithOrganizationIdentifier:v29 persistenceController:persistenceController];
     requestManager = v18->_requestManager;
     v18->_requestManager = v31;
 
     [(STRequestManager *)v18->_requestManager setDelegate:v18];
     v33 = [STFamilySettingsManager alloc];
     capabilities = v18->_capabilities;
-    v35 = [(STScreenTimeOrganizationController *)v18 persistenceController];
-    v36 = [(STFamilySettingsManager *)v33 initWithCapabilities:capabilities persistenceController:v35];
+    persistenceController2 = [(STScreenTimeOrganizationController *)v18 persistenceController];
+    v36 = [(STFamilySettingsManager *)v33 initWithCapabilities:capabilities persistenceController:persistenceController2];
 
     v37 = [STConcreteOrganizationControllerConfigurationAdapter alloc];
     v38 = v18->_requestManager;
-    v39 = [(STPersistenceControllerProtocol *)v18->_persistenceController persistentContainer];
-    v40 = [(STConcreteOrganizationControllerConfigurationAdapter *)v37 initWithFamilySettingsManager:v36 requestManager:v38 persistentContainer:v39];
+    persistentContainer = [(STPersistenceControllerProtocol *)v18->_persistenceController persistentContainer];
+    v40 = [(STConcreteOrganizationControllerConfigurationAdapter *)v37 initWithFamilySettingsManager:v36 requestManager:v38 persistentContainer:persistentContainer];
     configurationAdapter = v18->_configurationAdapter;
     v18->_configurationAdapter = v40;
 
@@ -223,11 +223,11 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "AppExceptions Migration", "", buf, 2u);
   }
 
-  v8 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v9 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v10 = [v8 viewContext];
-  v11 = [v10 persistentStoreCoordinator];
-  [v9 setPersistentStoreCoordinator:v11];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v9 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v9 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   *buf = 0;
@@ -268,9 +268,9 @@
   v3 = +[STLog checkpoint];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(STScreenTimeOrganizationController *)self capabilities];
+    capabilities = [(STScreenTimeOrganizationController *)self capabilities];
     LODWORD(buf.opaque[0]) = 138543362;
-    *(buf.opaque + 4) = v4;
+    *(buf.opaque + 4) = capabilities;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "ScreenTimeOrganizationController resuming with capabilities: %{public}@", &buf, 0xCu);
   }
 
@@ -291,19 +291,19 @@
     v15 = 3221225472;
     v16 = sub_100078D3C;
     v17 = &unk_1001A58E0;
-    v18 = self;
+    selfCopy = self;
     v19 = v6;
     [v8 performRequest:v7 completion:&v14];
 
     v9 = [(STScreenTimeOrganizationController *)self capabilities:v14];
-    v10 = [v9 supportedInfrastructure];
+    supportedInfrastructure = [v9 supportedInfrastructure];
 
-    if (v10)
+    if (supportedInfrastructure)
     {
       [(STScreenTimeOrganizationController *)self startMonitoringAccountChanges];
     }
 
-    else if ((v10 & 2) != 0)
+    else if ((supportedInfrastructure & 2) != 0)
     {
       [(STScreenTimeOrganizationController *)self applyDefaultUserPoliciesWithCompletionHandler:&stru_1001A5900];
     }
@@ -334,9 +334,9 @@
   os_activity_scope_leave(&buf);
 }
 
-- (void)startupScreenTime:(BOOL)a3
+- (void)startupScreenTime:(BOOL)time
 {
-  v3 = a3;
+  timeCopy = time;
   v5 = +[STLog checkpoint];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -346,21 +346,21 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting Screen Time", buf, 0xCu);
   }
 
-  v7 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v7);
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   v8 = [STAppMonitor alloc];
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [(STAppMonitor *)v8 initWithPersistenceController:v9];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  v10 = [(STAppMonitor *)v8 initWithPersistenceController:persistenceController];
   [(STScreenTimeOrganizationController *)self setAppMonitor:v10];
 
-  v11 = [(STScreenTimeOrganizationController *)self appMonitor];
-  [v11 resume];
+  appMonitor = [(STScreenTimeOrganizationController *)self appMonitor];
+  [appMonitor resume];
 
   v12 = +[NSUserDefaults standardUserDefaults];
   if (_os_feature_enabled_impl())
   {
     v13 = +[STLog screenTimeOrganizationController];
-    v14 = !v3;
+    v14 = !timeCopy;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
@@ -398,23 +398,23 @@ LABEL_11:
 
 LABEL_12:
   v18 = [STUsageManager alloc];
-  v19 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v20 = [(STUsageManager *)v18 initWithPersistenceController:v19];
+  persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+  v20 = [(STUsageManager *)v18 initWithPersistenceController:persistenceController2];
   [(STScreenTimeOrganizationController *)self setUsageManager:v20];
 
-  v21 = [(STScreenTimeOrganizationController *)self usageManager];
-  [v21 resume];
+  usageManager = [(STScreenTimeOrganizationController *)self usageManager];
+  [usageManager resume];
 
-  v22 = [(STScreenTimeOrganizationController *)self usageManager];
-  [v22 setScreenTimeEnabled:1];
+  usageManager2 = [(STScreenTimeOrganizationController *)self usageManager];
+  [usageManager2 setScreenTimeEnabled:1];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(accessLock);
 }
 
 - (void)didDisableScreenTime
 {
-  v3 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v3);
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   v4 = +[STLog checkpoint];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -440,22 +440,22 @@ LABEL_12:
     [v8 revokeInternalAuthorizationWithCompletionHandler:&stru_1001A5988];
   }
 
-  v9 = [(STScreenTimeOrganizationController *)self usageManager];
-  if (!v9)
+  usageManager = [(STScreenTimeOrganizationController *)self usageManager];
+  if (!usageManager)
   {
     v10 = [STUsageManager alloc];
-    v11 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v9 = [(STUsageManager *)v10 initWithPersistenceController:v11];
+    persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+    usageManager = [(STUsageManager *)v10 initWithPersistenceController:persistenceController];
   }
 
-  [(STUsageManager *)v9 setScreenTimeEnabled:0];
+  [(STUsageManager *)usageManager setScreenTimeEnabled:0];
   [(STScreenTimeOrganizationController *)self setUsageManager:0];
   [(STScreenTimeOrganizationController *)self setAppMonitor:0];
-  v12 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
   v13 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v14 = [v12 viewContext];
-  v15 = [v14 persistentStoreCoordinator];
-  [v13 setPersistentStoreCoordinator:v15];
+  viewContext = [persistenceController2 viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v13 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v13 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v17[0] = _NSConcreteStackBlock;
@@ -466,13 +466,13 @@ LABEL_12:
   v18 = v16;
   [v16 performBlock:v17];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(accessLock);
 }
 
 - (void)attemptToAutomaticallyEnableScreenTimeSyncing
 {
-  v3 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v3);
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   v4 = +[STLog checkpoint];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -480,11 +480,11 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Attempting to automatically enable Screen Time syncing", buf, 2u);
   }
 
-  v5 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v6 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v7 = [v5 viewContext];
-  v8 = [v7 persistentStoreCoordinator];
-  [v6 setPersistentStoreCoordinator:v8];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v6 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v6 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v10[0] = _NSConcreteStackBlock;
@@ -495,13 +495,13 @@ LABEL_12:
   v11 = v9;
   [v9 performBlockAndWait:v10];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(accessLock);
 }
 
 - (void)startupCloud
 {
-  v3 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v3);
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   v4 = +[STLog checkpoint];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -511,11 +511,11 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting Screen Time Cloud", buf, 0xCu);
   }
 
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v7 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v8 = [v6 viewContext];
-  v9 = [v8 persistentStoreCoordinator];
-  [v7 setPersistentStoreCoordinator:v9];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v7 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v7 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v11[0] = _NSConcreteStackBlock;
@@ -527,23 +527,23 @@ LABEL_12:
   [v10 performBlockAndWait:v11];
   [(STScreenTimeOrganizationController *)self applyDefaultUserPoliciesWithCompletionHandler:&stru_1001A59D0];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(accessLock);
 }
 
-- (void)didSignInToCloud:(id)a3
+- (void)didSignInToCloud:(id)cloud
 {
-  v5 = a3;
-  v4 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v4);
+  cloudCopy = cloud;
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   [(STScreenTimeOrganizationController *)self startupCloud];
-  objc_sync_exit(v4);
+  objc_sync_exit(accessLock);
 }
 
-- (void)didSignOutOfCloud:(id)a3
+- (void)didSignOutOfCloud:(id)cloud
 {
-  v4 = a3;
-  v5 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v5);
+  cloudCopy = cloud;
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   v6 = +[STLog checkpoint];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -553,11 +553,11 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopping Screen Time Cloud", buf, 0xCu);
   }
 
-  v8 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v9 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v10 = [v8 viewContext];
-  v11 = [v10 persistentStoreCoordinator];
-  [v9 setPersistentStoreCoordinator:v11];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v9 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v9 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v13[0] = _NSConcreteStackBlock;
@@ -568,13 +568,13 @@ LABEL_12:
   v14 = v12;
   [v12 performBlock:v13];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(accessLock);
 }
 
 - (void)startupCloudSync
 {
-  v3 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v3);
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   v4 = +[STLog checkpoint];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -584,11 +584,11 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting Screen Time Cloud Sync", buf, 0xCu);
   }
 
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v7 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v8 = [v6 viewContext];
-  v9 = [v8 persistentStoreCoordinator];
-  [v7 setPersistentStoreCoordinator:v9];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v7 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v7 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v11[0] = _NSConcreteStackBlock;
@@ -597,16 +597,16 @@ LABEL_12:
   v11[3] = &unk_1001A3020;
   v10 = v7;
   v12 = v10;
-  v13 = self;
+  selfCopy = self;
   [v10 performBlockAndWait:v11];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(accessLock);
 }
 
 - (void)didEnableCloudSync
 {
-  v3 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v3);
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   [(STScreenTimeOrganizationController *)self startupCloudSync];
   v4 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -617,16 +617,16 @@ LABEL_12:
 
   v5 = [MOLocalSettingsStore alloc];
   v6 = [v5 initWithSharedContainer:STManagedSettingsContainer];
-  v7 = [v6 deviceActivity];
-  [v7 setShareAcrossDevices:&__kCFBooleanTrue];
+  deviceActivity = [v6 deviceActivity];
+  [deviceActivity setShareAcrossDevices:&__kCFBooleanTrue];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(accessLock);
 }
 
 - (void)didDisableCloudSync
 {
-  v3 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v3);
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   v4 = +[STLog checkpoint];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -636,18 +636,18 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopping Screen Time Cloud Sync", buf, 0xCu);
   }
 
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v7 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v8 = [v6 viewContext];
-  v9 = [v8 persistentStoreCoordinator];
-  [v7 setPersistentStoreCoordinator:v9];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v7 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v7 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10007B3CC;
   v18 = &unk_1001A3020;
-  v19 = self;
+  selfCopy = self;
   v10 = v7;
   v20 = v10;
   [v10 performBlock:&v15];
@@ -660,17 +660,17 @@ LABEL_12:
 
   v12 = [MOLocalSettingsStore alloc];
   v13 = [v12 initWithSharedContainer:STManagedSettingsContainer];
-  v14 = [v13 deviceActivity];
-  [v14 setShareAcrossDevices:&__kCFBooleanFalse];
+  deviceActivity = [v13 deviceActivity];
+  [deviceActivity setShareAcrossDevices:&__kCFBooleanFalse];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(accessLock);
 }
 
-- (void)startupFamily:(id)a3
+- (void)startupFamily:(id)family
 {
-  v4 = a3;
-  v5 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v5);
+  familyCopy = family;
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   v6 = +[STLog checkpoint];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -680,34 +680,34 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting Screen Time family", buf, 0xCu);
   }
 
-  v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v9 = [v8 viewContext];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  viewContext = [persistenceController viewContext];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10007B748;
   v12[3] = &unk_1001A42E0;
-  v10 = v9;
+  v10 = viewContext;
   v13 = v10;
-  v14 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = familyCopy;
   v15 = v11;
   [v10 performBlockAndWait:v12];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(accessLock);
 }
 
-- (void)didJoinFamily:(id)a3
+- (void)didJoinFamily:(id)family
 {
-  v6 = a3;
-  v4 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v4);
-  [(STScreenTimeOrganizationController *)self startupFamily:v6];
-  v5 = [(STScreenTimeOrganizationController *)self familyOrganizationController];
-  [v5 sendCheckinRequest];
+  familyCopy = family;
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
+  [(STScreenTimeOrganizationController *)self startupFamily:familyCopy];
+  familyOrganizationController = [(STScreenTimeOrganizationController *)self familyOrganizationController];
+  [familyOrganizationController sendCheckinRequest];
 
   [(STScreenTimeOrganizationController *)self _removeProtoAccountManagedSettingsIfNeeded];
-  objc_sync_exit(v4);
+  objc_sync_exit(accessLock);
 }
 
 - (void)_removeProtoAccountManagedSettingsIfNeeded
@@ -724,8 +724,8 @@ LABEL_12:
 
 - (void)didLeaveFamily
 {
-  v3 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v3);
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   v4 = +[STLog checkpoint];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -735,34 +735,34 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopping Screen Time family", buf, 0xCu);
   }
 
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v7 = [v6 viewContext];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  viewContext = [persistenceController viewContext];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10007BDE0;
   v9[3] = &unk_1001A3020;
   v9[4] = self;
-  v8 = v7;
+  v8 = viewContext;
   v10 = v8;
   [v8 performBlockAndWait:v9];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(accessLock);
 }
 
-- (void)didUpdateFamily:(id)a3
+- (void)didUpdateFamily:(id)family
 {
-  v5 = a3;
-  v4 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v4);
-  [(STScreenTimeOrganizationController *)self startupFamily:v5];
-  objc_sync_exit(v4);
+  familyCopy = family;
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
+  [(STScreenTimeOrganizationController *)self startupFamily:familyCopy];
+  objc_sync_exit(accessLock);
 }
 
 - (void)didEnableManagement
 {
-  v3 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v3);
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   if (_os_feature_enabled_impl())
   {
     v4 = +[STLog screenTimeOrganizationController];
@@ -780,20 +780,20 @@ LABEL_12:
   [v6 removeObjectForKey:@"AutomaticSyncEnableOccurred"];
 
   [(STScreenTimeOrganizationController *)self attemptToAutomaticallyEnableScreenTimeSyncing];
-  objc_sync_exit(v3);
+  objc_sync_exit(accessLock);
 }
 
 - (void)updateDeviceName
 {
-  v3 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v3);
-  v4 = [(STScreenTimeOrganizationController *)self persistenceController];
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v5 = STGetDeviceUUID();
   v6 = STGetDeviceName();
   v7 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v8 = [v4 viewContext];
-  v9 = [v8 persistentStoreCoordinator];
-  [v7 setPersistentStoreCoordinator:v9];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v7 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v7 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v13[0] = _NSConcreteStackBlock;
@@ -808,7 +808,7 @@ LABEL_12:
   v16 = v12;
   [v11 performBlock:v13];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(accessLock);
 }
 
 - (void)startMonitoringAccountChanges
@@ -822,8 +822,8 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting account change observation", &v6, 0xCu);
   }
 
-  v5 = [(STScreenTimeOrganizationController *)self accountNotifier];
-  [v5 registerObserver:self];
+  accountNotifier = [(STScreenTimeOrganizationController *)self accountNotifier];
+  [accountNotifier registerObserver:self];
 }
 
 - (void)startObservingScreenTimeSettings
@@ -844,20 +844,20 @@ LABEL_12:
   [v5 setSortDescriptors:v7];
 
   v8 = [NSFetchedResultsController alloc];
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 viewContext];
-  v11 = [v8 initWithFetchRequest:v5 managedObjectContext:v10 sectionNameKeyPath:0 cacheName:0];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  viewContext = [persistenceController viewContext];
+  v11 = [v8 initWithFetchRequest:v5 managedObjectContext:viewContext sectionNameKeyPath:0 cacheName:0];
   [(STScreenTimeOrganizationController *)self setSettingsResultsController:v11];
 
-  v12 = [(STScreenTimeOrganizationController *)self settingsResultsController];
-  [v12 setDelegate:self];
+  settingsResultsController = [(STScreenTimeOrganizationController *)self settingsResultsController];
+  [settingsResultsController setDelegate:self];
 
-  v13 = [(STScreenTimeOrganizationController *)self settingsResultsController];
+  settingsResultsController2 = [(STScreenTimeOrganizationController *)self settingsResultsController];
   v16 = 0;
-  LOBYTE(v9) = [v13 performFetch:&v16];
+  LOBYTE(persistenceController) = [settingsResultsController2 performFetch:&v16];
   v14 = v16;
 
-  if ((v9 & 1) == 0)
+  if ((persistenceController & 1) == 0)
   {
     v15 = +[STLog screenTimeOrganizationController];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -885,20 +885,20 @@ LABEL_12:
   [v5 setSortDescriptors:v7];
 
   v8 = [NSFetchedResultsController alloc];
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 viewContext];
-  v11 = [v8 initWithFetchRequest:v5 managedObjectContext:v10 sectionNameKeyPath:0 cacheName:0];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  viewContext = [persistenceController viewContext];
+  v11 = [v8 initWithFetchRequest:v5 managedObjectContext:viewContext sectionNameKeyPath:0 cacheName:0];
   [(STScreenTimeOrganizationController *)self setOrganizationSettingsResultsController:v11];
 
-  v12 = [(STScreenTimeOrganizationController *)self organizationSettingsResultsController];
-  [v12 setDelegate:self];
+  organizationSettingsResultsController = [(STScreenTimeOrganizationController *)self organizationSettingsResultsController];
+  [organizationSettingsResultsController setDelegate:self];
 
-  v13 = [(STScreenTimeOrganizationController *)self organizationSettingsResultsController];
+  organizationSettingsResultsController2 = [(STScreenTimeOrganizationController *)self organizationSettingsResultsController];
   v16 = 0;
-  LOBYTE(v9) = [v13 performFetch:&v16];
+  LOBYTE(persistenceController) = [organizationSettingsResultsController2 performFetch:&v16];
   v14 = v16;
 
-  if ((v9 & 1) == 0)
+  if ((persistenceController & 1) == 0)
   {
     v15 = +[STLog screenTimeOrganizationController];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -926,20 +926,20 @@ LABEL_12:
   [v5 setSortDescriptors:v7];
 
   v8 = [NSFetchedResultsController alloc];
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 viewContext];
-  v11 = [v8 initWithFetchRequest:v5 managedObjectContext:v10 sectionNameKeyPath:0 cacheName:0];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  viewContext = [persistenceController viewContext];
+  v11 = [v8 initWithFetchRequest:v5 managedObjectContext:viewContext sectionNameKeyPath:0 cacheName:0];
   [(STScreenTimeOrganizationController *)self setBlueprintsResultsController:v11];
 
-  v12 = [(STScreenTimeOrganizationController *)self blueprintsResultsController];
-  [v12 setDelegate:self];
+  blueprintsResultsController = [(STScreenTimeOrganizationController *)self blueprintsResultsController];
+  [blueprintsResultsController setDelegate:self];
 
-  v13 = [(STScreenTimeOrganizationController *)self blueprintsResultsController];
+  blueprintsResultsController2 = [(STScreenTimeOrganizationController *)self blueprintsResultsController];
   v64 = 0;
-  LOBYTE(v10) = [v13 performFetch:&v64];
+  LOBYTE(viewContext) = [blueprintsResultsController2 performFetch:&v64];
   v14 = v64;
 
-  if ((v10 & 1) == 0)
+  if ((viewContext & 1) == 0)
   {
     v15 = +[STLog screenTimeOrganizationController];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -956,20 +956,20 @@ LABEL_12:
   [v16 setSortDescriptors:v18];
 
   v19 = [NSFetchedResultsController alloc];
-  v20 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v21 = [v20 viewContext];
-  v22 = [v19 initWithFetchRequest:v16 managedObjectContext:v21 sectionNameKeyPath:0 cacheName:0];
+  persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+  viewContext2 = [persistenceController2 viewContext];
+  v22 = [v19 initWithFetchRequest:v16 managedObjectContext:viewContext2 sectionNameKeyPath:0 cacheName:0];
   [(STScreenTimeOrganizationController *)self setDowntimeOverridesResultsController:v22];
 
-  v23 = [(STScreenTimeOrganizationController *)self downtimeOverridesResultsController];
-  [v23 setDelegate:self];
+  downtimeOverridesResultsController = [(STScreenTimeOrganizationController *)self downtimeOverridesResultsController];
+  [downtimeOverridesResultsController setDelegate:self];
 
-  v24 = [(STScreenTimeOrganizationController *)self downtimeOverridesResultsController];
+  downtimeOverridesResultsController2 = [(STScreenTimeOrganizationController *)self downtimeOverridesResultsController];
   v63 = v14;
-  LOBYTE(v21) = [v24 performFetch:&v63];
+  LOBYTE(viewContext2) = [downtimeOverridesResultsController2 performFetch:&v63];
   v25 = v63;
 
-  if ((v21 & 1) == 0)
+  if ((viewContext2 & 1) == 0)
   {
     v26 = +[STLog screenTimeOrganizationController];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
@@ -986,20 +986,20 @@ LABEL_12:
   [v27 setSortDescriptors:v29];
 
   v30 = [NSFetchedResultsController alloc];
-  v31 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v32 = [v31 viewContext];
-  v33 = [v30 initWithFetchRequest:v27 managedObjectContext:v32 sectionNameKeyPath:0 cacheName:0];
+  persistenceController3 = [(STScreenTimeOrganizationController *)self persistenceController];
+  viewContext3 = [persistenceController3 viewContext];
+  v33 = [v30 initWithFetchRequest:v27 managedObjectContext:viewContext3 sectionNameKeyPath:0 cacheName:0];
   [(STScreenTimeOrganizationController *)self setSchedulesResultsController:v33];
 
-  v34 = [(STScreenTimeOrganizationController *)self schedulesResultsController];
-  [v34 setDelegate:self];
+  schedulesResultsController = [(STScreenTimeOrganizationController *)self schedulesResultsController];
+  [schedulesResultsController setDelegate:self];
 
-  v35 = [(STScreenTimeOrganizationController *)self schedulesResultsController];
+  schedulesResultsController2 = [(STScreenTimeOrganizationController *)self schedulesResultsController];
   v62 = v25;
-  LOBYTE(v32) = [v35 performFetch:&v62];
+  LOBYTE(viewContext3) = [schedulesResultsController2 performFetch:&v62];
   v36 = v62;
 
-  if ((v32 & 1) == 0)
+  if ((viewContext3 & 1) == 0)
   {
     v37 = +[STLog screenTimeOrganizationController];
     if (os_log_type_enabled(v37, OS_LOG_TYPE_FAULT))
@@ -1016,20 +1016,20 @@ LABEL_12:
   [v38 setSortDescriptors:v40];
 
   v41 = [NSFetchedResultsController alloc];
-  v42 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v43 = [v42 viewContext];
-  v44 = [v41 initWithFetchRequest:v38 managedObjectContext:v43 sectionNameKeyPath:0 cacheName:0];
+  persistenceController4 = [(STScreenTimeOrganizationController *)self persistenceController];
+  viewContext4 = [persistenceController4 viewContext];
+  v44 = [v41 initWithFetchRequest:v38 managedObjectContext:viewContext4 sectionNameKeyPath:0 cacheName:0];
   [(STScreenTimeOrganizationController *)self setUsageLimitsResultsController:v44];
 
-  v45 = [(STScreenTimeOrganizationController *)self usageLimitsResultsController];
-  [v45 setDelegate:self];
+  usageLimitsResultsController = [(STScreenTimeOrganizationController *)self usageLimitsResultsController];
+  [usageLimitsResultsController setDelegate:self];
 
-  v46 = [(STScreenTimeOrganizationController *)self usageLimitsResultsController];
+  usageLimitsResultsController2 = [(STScreenTimeOrganizationController *)self usageLimitsResultsController];
   v61 = v36;
-  LOBYTE(v43) = [v46 performFetch:&v61];
+  LOBYTE(viewContext4) = [usageLimitsResultsController2 performFetch:&v61];
   v47 = v61;
 
-  if ((v43 & 1) == 0)
+  if ((viewContext4 & 1) == 0)
   {
     v48 = +[STLog screenTimeOrganizationController];
     if (os_log_type_enabled(v48, OS_LOG_TYPE_FAULT))
@@ -1046,20 +1046,20 @@ LABEL_12:
   [v49 setSortDescriptors:v51];
 
   v52 = [NSFetchedResultsController alloc];
-  v53 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v54 = [v53 viewContext];
-  v55 = [v52 initWithFetchRequest:v49 managedObjectContext:v54 sectionNameKeyPath:0 cacheName:0];
+  persistenceController5 = [(STScreenTimeOrganizationController *)self persistenceController];
+  viewContext5 = [persistenceController5 viewContext];
+  v55 = [v52 initWithFetchRequest:v49 managedObjectContext:viewContext5 sectionNameKeyPath:0 cacheName:0];
   [(STScreenTimeOrganizationController *)self setConfigurationsResultsController:v55];
 
-  v56 = [(STScreenTimeOrganizationController *)self configurationsResultsController];
-  [v56 setDelegate:self];
+  configurationsResultsController = [(STScreenTimeOrganizationController *)self configurationsResultsController];
+  [configurationsResultsController setDelegate:self];
 
-  v57 = [(STScreenTimeOrganizationController *)self configurationsResultsController];
+  configurationsResultsController2 = [(STScreenTimeOrganizationController *)self configurationsResultsController];
   v60 = v47;
-  LOBYTE(v53) = [v57 performFetch:&v60];
+  LOBYTE(persistenceController5) = [configurationsResultsController2 performFetch:&v60];
   v58 = v60;
 
-  if ((v53 & 1) == 0)
+  if ((persistenceController5 & 1) == 0)
   {
     v59 = +[STLog screenTimeOrganizationController];
     if (os_log_type_enabled(v59, OS_LOG_TYPE_FAULT))
@@ -1085,20 +1085,20 @@ LABEL_12:
   [v3 registerObserver:self];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [STLog screentime:a3];
+  v5 = [STLog screentime:notification];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Detected Managed Configuration effective settings change", buf, 2u);
   }
 
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v7 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v8 = [v6 viewContext];
-  v9 = [v8 persistentStoreCoordinator];
-  [v7 setPersistentStoreCoordinator:v9];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v7 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v7 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v11[0] = _NSConcreteStackBlock;
@@ -1106,23 +1106,23 @@ LABEL_12:
   v11[2] = sub_10007D20C;
   v11[3] = &unk_1001A3020;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v10 = v7;
   [v10 performBlock:v11];
 }
 
-- (void)_updateScreenTimeSettingsFromManagedConfigurationEffectiveSettingsWithScreenTimeSettings:(id)a3
+- (void)_updateScreenTimeSettingsFromManagedConfigurationEffectiveSettingsWithScreenTimeSettings:(id)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   v4 = +[MCProfileConnection sharedConnection];
   v5 = [v4 effectiveBoolValueForSetting:MCFeatureEnablingRestrictionsAllowed];
 
   if (v5 == 2)
   {
-    v6 = [v3 screenTimeEnabled];
-    v7 = [v3 cloudSyncEnabled];
-    v8 = v7;
-    if ((v6 & 1) != 0 || v7)
+    screenTimeEnabled = [settingsCopy screenTimeEnabled];
+    cloudSyncEnabled = [settingsCopy cloudSyncEnabled];
+    v8 = cloudSyncEnabled;
+    if ((screenTimeEnabled & 1) != 0 || cloudSyncEnabled)
     {
       v9 = +[STLog screentime];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1131,14 +1131,14 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Turning off Screen Time, restrictions now forbidden from being enabled due to MCFeatureEnablingRestrictionsAllowed", v10, 2u);
       }
 
-      if (v6)
+      if (screenTimeEnabled)
       {
-        [v3 setScreenTimeEnabled:0];
+        [settingsCopy setScreenTimeEnabled:0];
       }
 
       if (v8)
       {
-        [v3 setCloudSyncEnabled:0];
+        [settingsCopy setCloudSyncEnabled:0];
       }
     }
   }
@@ -1151,8 +1151,8 @@ LABEL_12:
 
   if (v4 == 2)
   {
-    v5 = [(STScreenTimeOrganizationController *)self accessLock];
-    objc_sync_enter(v5);
+    accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+    objc_sync_enter(accessLock);
     v6 = +[STLog screentime];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -1160,11 +1160,11 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Deleting local user blueprints. Restrictions now forbidden from being enabled due to MCFeatureEnablingRestrictionsAllowed.", buf, 2u);
     }
 
-    v7 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
     v8 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-    v9 = [v7 viewContext];
-    v10 = [v9 persistentStoreCoordinator];
-    [v8 setPersistentStoreCoordinator:v10];
+    viewContext = [persistenceController viewContext];
+    persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+    [v8 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
     [v8 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     v12[0] = _NSConcreteStackBlock;
@@ -1175,16 +1175,16 @@ LABEL_12:
     v13 = v11;
     [v11 performBlock:v12];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(accessLock);
   }
 }
 
-- (void)updateEffectiveDeviceState:(BOOL)a3
+- (void)updateEffectiveDeviceState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = +[STLog checkpoint];
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (stateCopy)
   {
     if (v6)
     {
@@ -1207,11 +1207,11 @@ LABEL_6:
   }
 
   v9 = os_transaction_create();
-  v10 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v11 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v12 = [v10 viewContext];
-  v13 = [v12 persistentStoreCoordinator];
-  [v11 setPersistentStoreCoordinator:v13];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v11 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v11 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v16[0] = _NSConcreteStackBlock;
@@ -1220,8 +1220,8 @@ LABEL_6:
   v16[3] = &unk_1001A4358;
   v17 = v9;
   v18 = v11;
-  v19 = self;
-  v20 = v3;
+  selfCopy = self;
+  v20 = stateCopy;
   v14 = v11;
   v15 = v9;
   [v14 performBlockAndWait:v16];
@@ -1229,8 +1229,8 @@ LABEL_6:
 
 - (void)_applyImageGenerationRestrictionIfNeeded
 {
-  v3 = [(STScreenTimeOrganizationController *)self userDefaults];
-  v4 = [v3 BOOLForKey:@"InitialImageGenerationRestrictionApplied"];
+  userDefaults = [(STScreenTimeOrganizationController *)self userDefaults];
+  v4 = [userDefaults BOOLForKey:@"InitialImageGenerationRestrictionApplied"];
 
   if ((v4 & 1) == 0)
   {
@@ -1242,15 +1242,15 @@ LABEL_6:
     }
 
     [(STScreenTimeOrganizationController *)self processBlueprintChanges];
-    v6 = [(STScreenTimeOrganizationController *)self userDefaults];
-    [v6 setBool:1 forKey:@"InitialImageGenerationRestrictionApplied"];
+    userDefaults2 = [(STScreenTimeOrganizationController *)self userDefaults];
+    [userDefaults2 setBool:1 forKey:@"InitialImageGenerationRestrictionApplied"];
   }
 }
 
 - (void)_applyManagedSettingsIfNeeded
 {
-  v3 = [(STScreenTimeOrganizationController *)self userDefaults];
-  v4 = [v3 BOOLForKey:@"InitialManagedSettingsApplied"];
+  userDefaults = [(STScreenTimeOrganizationController *)self userDefaults];
+  v4 = [userDefaults BOOLForKey:@"InitialManagedSettingsApplied"];
 
   if ((v4 & 1) == 0)
   {
@@ -1262,21 +1262,21 @@ LABEL_6:
     }
 
     [(STScreenTimeOrganizationController *)self processBlueprintChanges];
-    v6 = [(STScreenTimeOrganizationController *)self userDefaults];
-    [v6 setBool:1 forKey:@"InitialManagedSettingsApplied"];
+    userDefaults2 = [(STScreenTimeOrganizationController *)self userDefaults];
+    [userDefaults2 setBool:1 forKey:@"InitialManagedSettingsApplied"];
   }
 }
 
 - (void)processBlueprintChanges
 {
-  v3 = [(STScreenTimeOrganizationController *)self requestManager];
-  [v3 processBlueprintChanges];
+  requestManager = [(STScreenTimeOrganizationController *)self requestManager];
+  [requestManager processBlueprintChanges];
 
-  v4 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v5 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v6 = [v4 viewContext];
-  v7 = [v6 persistentStoreCoordinator];
-  [v5 setPersistentStoreCoordinator:v7];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v5 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v5 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v9[0] = _NSConcreteStackBlock;
@@ -1290,8 +1290,8 @@ LABEL_6:
 
 - (void)deleteAllLocalScreenTimeSettings
 {
-  v3 = [(STScreenTimeOrganizationController *)self accessLock];
-  objc_sync_enter(v3);
+  accessLock = [(STScreenTimeOrganizationController *)self accessLock];
+  objc_sync_enter(accessLock);
   v4 = +[STLog screentime];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1299,11 +1299,11 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Deleting local organization, local organization settings, and blueprints.", buf, 2u);
   }
 
-  v5 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v6 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v7 = [v5 viewContext];
-  v8 = [v7 persistentStoreCoordinator];
-  [v6 setPersistentStoreCoordinator:v8];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v6 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v6 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v10[0] = _NSConcreteStackBlock;
@@ -1314,35 +1314,35 @@ LABEL_6:
   v11 = v9;
   [v9 performBlock:v10];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(accessLock);
 }
 
-- (void)fetchMirroringMonitorStatusWithCompletionHandler:(id)a3
+- (void)fetchMirroringMonitorStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STScreenTimeOrganizationController *)self mirroringMonitor];
-  v6 = [v5 fetchCurrentCloudKitSyncingStatus];
-  v7 = [v6 then];
+  handlerCopy = handler;
+  mirroringMonitor = [(STScreenTimeOrganizationController *)self mirroringMonitor];
+  fetchCurrentCloudKitSyncingStatus = [mirroringMonitor fetchCurrentCloudKitSyncingStatus];
+  then = [fetchCurrentCloudKitSyncingStatus then];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10007EEBC;
   v12[3] = &unk_1001A5A18;
-  v13 = v5;
-  v14 = v4;
-  v8 = v7[2];
-  v9 = v5;
-  v10 = v4;
-  v11 = v8(v7, v12);
+  v13 = mirroringMonitor;
+  v14 = handlerCopy;
+  v8 = then[2];
+  v9 = mirroringMonitor;
+  v10 = handlerCopy;
+  v11 = v8(then, v12);
 }
 
-- (void)performCloudSync:(id)a3
+- (void)performCloudSync:(id)sync
 {
-  v4 = a3;
-  v5 = [(STScreenTimeOrganizationController *)self mirroringMonitor];
-  v6 = v5;
-  if (v5)
+  syncCopy = sync;
+  mirroringMonitor = [(STScreenTimeOrganizationController *)self mirroringMonitor];
+  v6 = mirroringMonitor;
+  if (mirroringMonitor)
   {
-    v7 = [v5 forceMirroringSync];
+    forceMirroringSync = [mirroringMonitor forceMirroringSync];
     v8 = 0;
   }
 
@@ -1356,17 +1356,17 @@ LABEL_6:
     v8 = [v9 initWithDomain:v10 code:1 userInfo:v11];
   }
 
-  v4[2](v4, v8);
+  syncCopy[2](syncCopy, v8);
 }
 
-- (void)postOrRemoveAppAndWebsiteActivityEnabledNotification:(BOOL)a3
+- (void)postOrRemoveAppAndWebsiteActivityEnabledNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = @"Removing";
-    if (v3)
+    if (notificationCopy)
     {
       v5 = @"Posting";
     }
@@ -1379,7 +1379,7 @@ LABEL_6:
   v6 = objc_opt_new();
   v7 = [NSNotification alloc];
   v8 = off_1001A6310;
-  if (!v3)
+  if (!notificationCopy)
   {
     v8 = off_1001A6318;
   }
@@ -1389,13 +1389,13 @@ LABEL_6:
   [v10 postNotification:v9];
 }
 
-- (void)_didFailDMRegistration:(id)a3
+- (void)_didFailDMRegistration:(id)registration
 {
-  v3 = a3;
+  registrationCopy = registration;
   v4 = +[STLog checkpoint];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    sub_10011E378(v3);
+    sub_10011E378(registrationCopy);
   }
 
   xpc_transaction_exit_clean();
@@ -1421,16 +1421,16 @@ LABEL_6:
 
 - (BOOL)createMandatoryEntitiesIfNeeded
 {
-  v2 = self;
-  v3 = [(STScreenTimeOrganizationController *)self persistenceController];
+  selfCopy = self;
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   v4 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v5 = [v3 viewContext];
-  v6 = [v5 persistentStoreCoordinator];
-  [v4 setPersistentStoreCoordinator:v6];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v4 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v4 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v9[0] = _NSConcreteStackBlock;
@@ -1439,37 +1439,37 @@ LABEL_6:
   v9[3] = &unk_1001A5A40;
   v7 = v4;
   v10 = v7;
-  v11 = v2;
+  v11 = selfCopy;
   v12 = &v13;
   [v7 performBlockAndWait:v9];
-  LOBYTE(v2) = *(v14 + 24);
+  LOBYTE(selfCopy) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)cleanOrphanedDatabaseEntities
 {
-  v2 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v3 = [v2 newBackgroundContext];
-  [v3 setName:@"cleanOrphanedDatabaseEntities"];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  newBackgroundContext = [persistenceController newBackgroundContext];
+  [newBackgroundContext setName:@"cleanOrphanedDatabaseEntities"];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10007F7A0;
   v5[3] = &unk_1001A3180;
-  v6 = v3;
-  v4 = v3;
+  v6 = newBackgroundContext;
+  v4 = newBackgroundContext;
   [v4 performBlockAndWait:v5];
 }
 
-- (void)accountDidUpdateToState:(id)a3 initializing:(BOOL)a4
+- (void)accountDidUpdateToState:(id)state initializing:(BOOL)initializing
 {
-  v6 = a3;
-  v7 = [(STScreenTimeOrganizationController *)self persistenceController];
+  stateCopy = state;
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v8 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-  v9 = [v7 viewContext];
-  v10 = [v9 persistentStoreCoordinator];
-  [v8 setPersistentStoreCoordinator:v10];
+  viewContext = [persistenceController viewContext];
+  persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+  [v8 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v8 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v13[0] = _NSConcreteStackBlock;
@@ -1477,118 +1477,118 @@ LABEL_6:
   v13[2] = sub_10008000C;
   v13[3] = &unk_1001A4358;
   v14 = v8;
-  v15 = v6;
-  v16 = self;
-  v17 = a4;
-  v11 = v6;
+  v15 = stateCopy;
+  selfCopy = self;
+  initializingCopy = initializing;
+  v11 = stateCopy;
   v12 = v8;
   [v12 performBlockAndWait:v13];
 }
 
-- (void)performWeeklyRollupWithCompletionHandler:(id)a3
+- (void)performWeeklyRollupWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(STScreenTimeOrganizationController *)self usageManager];
+  handlerCopy = handler;
+  usageManager = [(STScreenTimeOrganizationController *)self usageManager];
 
-  if (v4)
+  if (usageManager)
   {
-    v5 = [(STScreenTimeOrganizationController *)self usageManager];
-    [v5 performWeeklyRollupWithCompletionHandler:v7];
+    usageManager2 = [(STScreenTimeOrganizationController *)self usageManager];
+    [usageManager2 performWeeklyRollupWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v6 = v7;
-    if (!v7)
+    v6 = handlerCopy;
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
-    v5 = [NSError errorWithDomain:STErrorDomain code:7 userInfo:0];
-    (*(v7 + 2))(v7, v5);
+    usageManager2 = [NSError errorWithDomain:STErrorDomain code:7 userInfo:0];
+    (*(handlerCopy + 2))(handlerCopy, usageManager2);
   }
 
-  v6 = v7;
+  v6 = handlerCopy;
 LABEL_6:
 }
 
-- (void)rollupUsageDataWithCompletionHandler:(id)a3
+- (void)rollupUsageDataWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(STScreenTimeOrganizationController *)self usageManager];
+  handlerCopy = handler;
+  usageManager = [(STScreenTimeOrganizationController *)self usageManager];
 
-  if (v4)
+  if (usageManager)
   {
-    v5 = [(STScreenTimeOrganizationController *)self usageManager];
-    [v5 rollupUsageForDuration:60 isBackgroundTask:0 isRecomputingUsage:0 completionHandler:v7];
+    usageManager2 = [(STScreenTimeOrganizationController *)self usageManager];
+    [usageManager2 rollupUsageForDuration:60 isBackgroundTask:0 isRecomputingUsage:0 completionHandler:handlerCopy];
   }
 
   else
   {
-    v6 = v7;
-    if (!v7)
+    v6 = handlerCopy;
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
-    v5 = [NSError errorWithDomain:STErrorDomain code:7 userInfo:0];
-    (*(v7 + 2))(v7, v5);
+    usageManager2 = [NSError errorWithDomain:STErrorDomain code:7 userInfo:0];
+    (*(handlerCopy + 2))(handlerCopy, usageManager2);
   }
 
-  v6 = v7;
+  v6 = handlerCopy;
 LABEL_6:
 }
 
 - (STAppMonitorStatus)appMonitorStatus
 {
-  v2 = [(STScreenTimeOrganizationController *)self appMonitor];
+  appMonitor = [(STScreenTimeOrganizationController *)self appMonitor];
   v3 = [STAppMonitorStatus alloc];
-  v4 = [v2 running];
-  if (v2)
+  running = [appMonitor running];
+  if (appMonitor)
   {
-    v5 = [v2 cachedAppBundleIdentifiers];
+    cachedAppBundleIdentifiers = [appMonitor cachedAppBundleIdentifiers];
     v6 = v3;
     v7 = 1;
   }
 
   else
   {
-    v5 = objc_opt_new();
+    cachedAppBundleIdentifiers = objc_opt_new();
     v6 = v3;
     v7 = 0;
   }
 
-  v8 = [(STAppMonitorStatus *)v6 initWithInstanceExists:v7 instanceRunning:v4 cachedAppBundleIdentifiers:v5];
+  v8 = [(STAppMonitorStatus *)v6 initWithInstanceExists:v7 instanceRunning:running cachedAppBundleIdentifiers:cachedAppBundleIdentifiers];
 
   return v8;
 }
 
 - (void)scheduleAppMonitorAppDiscovery
 {
-  v2 = [(STScreenTimeOrganizationController *)self appMonitor];
-  [v2 _scheduleAppDiscoveryBackgroundActivity];
+  appMonitor = [(STScreenTimeOrganizationController *)self appMonitor];
+  [appMonitor _scheduleAppDiscoveryBackgroundActivity];
 }
 
-- (void)migrateLegacyRestrictionsIfNeededWithMCXSettings:(id)a3 completionHandler:(id)a4
+- (void)migrateLegacyRestrictionsIfNeededWithMCXSettings:(id)settings completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  settingsCopy = settings;
   v8 = objc_opt_new();
-  [v8 setMcxSettings:v7];
+  [v8 setMcxSettings:settingsCopy];
 
-  LOBYTE(v7) = [v8 hasMigratorRun];
+  LOBYTE(settingsCopy) = [v8 hasMigratorRun];
   v9 = +[STLog screenTimeOrganizationController];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
-  if (v7)
+  if (settingsCopy)
   {
     if (v10)
     {
       sub_10011E7C4();
     }
 
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -1599,11 +1599,11 @@ LABEL_6:
       sub_10011E788();
     }
 
-    v11 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
     v12 = [[NSManagedObjectContext alloc] initWithConcurrencyType:2];
-    v13 = [v11 viewContext];
-    v14 = [v13 persistentStoreCoordinator];
-    [v12 setPersistentStoreCoordinator:v14];
+    viewContext = [persistenceController viewContext];
+    persistentStoreCoordinator = [viewContext persistentStoreCoordinator];
+    [v12 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
     [v12 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     v16[0] = _NSConcreteStackBlock;
@@ -1612,15 +1612,15 @@ LABEL_6:
     v16[3] = &unk_1001A5A90;
     v17 = v8;
     v18 = v12;
-    v19 = v6;
+    v19 = handlerCopy;
     v15 = v12;
     [v15 performBlockAndWait:v16];
   }
 }
 
-- (void)_applyDefaultUserPoliciesWithCompletionHandler:(id)a3
+- (void)_applyDefaultUserPoliciesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1628,26 +1628,26 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Default user policy applicator triggered", buf, 2u);
   }
 
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100080CF8;
   v8[3] = &unk_1001A5AB8;
-  v9 = v4;
-  v7 = v4;
-  [v6 performBackgroundTaskAndWait:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [persistenceController performBackgroundTaskAndWait:v8];
 }
 
 - (void)setNeedsUpdatePasscode
 {
-  v2 = [(STScreenTimeOrganizationController *)self keychainUnlockEventObserver];
-  [v2 setConfiguration:&off_1001B25B0];
+  keychainUnlockEventObserver = [(STScreenTimeOrganizationController *)self keychainUnlockEventObserver];
+  [keychainUnlockEventObserver setConfiguration:&off_1001B25B0];
 }
 
 - (void)clearNeedsUpdatePasscode
 {
-  v2 = [(STScreenTimeOrganizationController *)self keychainUnlockEventObserver];
-  [v2 setConfiguration:0];
+  keychainUnlockEventObserver = [(STScreenTimeOrganizationController *)self keychainUnlockEventObserver];
+  [keychainUnlockEventObserver setConfiguration:0];
 }
 
 + (id)keyPathsForValuesAffectingScreenTimeEnabled
@@ -1666,74 +1666,74 @@ LABEL_6:
   return v3;
 }
 
-- (void)setScreenTimeEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setScreenTimeEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  handlerCopy = handler;
   v7 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = v4;
+    v16 = enabledCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting Screen Time enabled: %d", buf, 8u);
   }
 
-  if (v4)
+  if (enabledCopy)
   {
-    [(STScreenTimeOrganizationController *)self setAppAndWebsiteActivityEnabled:1 completionHandler:v6];
+    [(STScreenTimeOrganizationController *)self setAppAndWebsiteActivityEnabled:1 completionHandler:handlerCopy];
   }
 
   else
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v9 = [v8 hasStoreLoaded];
+    persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+    hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-    if (v9)
+    if (hasStoreLoaded)
     {
-      v10 = [(STScreenTimeOrganizationController *)self persistenceController];
+      persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100081138;
       v12[3] = &unk_1001A5AE0;
       v14 = 0;
       v12[4] = self;
-      v13 = v6;
-      [v10 performBackgroundTaskAndWait:v12];
+      v13 = handlerCopy;
+      [persistenceController2 performBackgroundTaskAndWait:v12];
     }
 
     else
     {
       v11 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-      (*(v6 + 2))(v6, v11);
+      (*(handlerCopy + 2))(handlerCopy, v11);
     }
   }
 }
 
-- (void)setAppAndWebsiteActivityEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setAppAndWebsiteActivityEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  handlerCopy = handler;
   v7 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = v4;
+    v16 = enabledCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting App & Website Activity enabled: %d", buf, 8u);
   }
 
-  v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v9 = [v8 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v9)
+  if (hasStoreLoaded)
   {
-    v10 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000815AC;
     v12[3] = &unk_1001A5B08;
-    v13 = v6;
-    v14 = v4;
-    [v10 performBackgroundTaskAndWait:v12];
+    v13 = handlerCopy;
+    v14 = enabledCopy;
+    [persistenceController2 performBackgroundTaskAndWait:v12];
 
     v11 = v13;
   }
@@ -1741,33 +1741,33 @@ LABEL_6:
   else
   {
     v11 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v6 + 2))(v6, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 }
 
-- (void)enableScreenTimeForDSID:(id)a3 completionHandler:(id)a4
+- (void)enableScreenTimeForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_10011EA44();
   }
 
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v10)
+  if (hasStoreLoaded)
   {
-    v11 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000819D4;
     v13[3] = &unk_1001A3EE0;
-    v14 = v6;
-    v15 = v7;
-    [v11 performBackgroundTaskAndWait:v13];
+    v14 = dCopy;
+    v15 = handlerCopy;
+    [persistenceController2 performBackgroundTaskAndWait:v13];
 
     v12 = v14;
   }
@@ -1775,33 +1775,33 @@ LABEL_6:
   else
   {
     v12 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v7 + 2))(v7, v12);
+    (*(handlerCopy + 2))(handlerCopy, v12);
   }
 }
 
-- (void)enableRemoteManagementForDSID:(id)a3 completionHandler:(id)a4
+- (void)enableRemoteManagementForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_10011EAB4();
   }
 
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v10)
+  if (hasStoreLoaded)
   {
-    v11 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100081CE0;
     v13[3] = &unk_1001A3EE0;
-    v14 = v6;
-    v15 = v7;
-    [v11 performBackgroundTaskAndWait:v13];
+    v14 = dCopy;
+    v15 = handlerCopy;
+    [persistenceController2 performBackgroundTaskAndWait:v13];
 
     v12 = v14;
   }
@@ -1809,7 +1809,7 @@ LABEL_6:
   else
   {
     v12 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v7 + 2))(v7, v12);
+    (*(handlerCopy + 2))(handlerCopy, v12);
   }
 }
 
@@ -1829,28 +1829,28 @@ LABEL_6:
   return v3;
 }
 
-- (void)setScreenTimeSyncingEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)setScreenTimeSyncingEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_10011EB8C();
   }
 
-  v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v9 = [v8 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v9)
+  if (hasStoreLoaded)
   {
-    v10 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10008209C;
     v12[3] = &unk_1001A5B08;
-    v14 = a3;
-    v13 = v6;
-    [v10 performBackgroundTaskAndWait:v12];
+    enabledCopy = enabled;
+    v13 = handlerCopy;
+    [persistenceController2 performBackgroundTaskAndWait:v12];
 
     v11 = v13;
   }
@@ -1858,47 +1858,47 @@ LABEL_6:
   else
   {
     v11 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v6 + 2))(v6, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 }
 
-- (void)isContentPrivacyEnabledForDSID:(id)a3 completionHandler:(id)a4
+- (void)isContentPrivacyEnabledForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_10011EC6C();
   }
 
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v10)
+  if (hasStoreLoaded)
   {
-    v11 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v12 = [v11 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100082378;
     v14[3] = &unk_1001A5A90;
-    v15 = v6;
-    v16 = v12;
-    v17 = v7;
-    v13 = v12;
+    v15 = dCopy;
+    v16 = newBackgroundContext;
+    v17 = handlerCopy;
+    v13 = newBackgroundContext;
     [v13 performBlockAndWait:v14];
   }
 
   else
   {
     v13 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
-- (BOOL)clearRestrictionsPasscodeWithError:(id *)a3
+- (BOOL)clearRestrictionsPasscodeWithError:(id *)error
 {
   v5 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1913,12 +1913,12 @@ LABEL_6:
   v17 = sub_10008281C;
   v18 = sub_10008282C;
   v19 = 0;
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v7 = [v6 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if ((v7 & 1) == 0)
+  if ((hasStoreLoaded & 1) == 0)
   {
-    if (!a3)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_11;
@@ -1929,22 +1929,22 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v8 = [(STScreenTimeOrganizationController *)self persistenceController];
+  persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100082834;
   v13[3] = &unk_1001A5B30;
   v13[4] = self;
   v13[5] = buf;
-  [v8 performBackgroundTaskAndWait:v13];
+  [persistenceController2 performBackgroundTaskAndWait:v13];
 
   v9 = *(v15 + 5);
   v10 = v9 == 0;
-  if (a3 && v9)
+  if (error && v9)
   {
     v11 = v9;
 LABEL_9:
-    *a3 = v11;
+    *error = v11;
   }
 
 LABEL_11:
@@ -1953,7 +1953,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)getIsRestrictionsPasscodeSetAndReturnError:(id *)a3
+- (id)getIsRestrictionsPasscodeSetAndReturnError:(id *)error
 {
   v5 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1974,19 +1974,19 @@ LABEL_11:
   v22 = sub_10008281C;
   v23 = sub_10008282C;
   v24 = 0;
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v7 = [v6 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v7)
+  if (hasStoreLoaded)
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v9 = [v8 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000830D4;
     v15[3] = &unk_1001A5B58;
-    v10 = v9;
+    v10 = newBackgroundContext;
     v16 = v10;
     v17 = &v19;
     v18 = buf;
@@ -2001,9 +2001,9 @@ LABEL_11:
   }
 
   v12 = *(v26 + 5);
-  if (a3 && !v12)
+  if (error && !v12)
   {
-    *a3 = v20[5];
+    *error = v20[5];
     v12 = *(v26 + 5);
   }
 
@@ -2015,7 +2015,7 @@ LABEL_11:
   return v13;
 }
 
-- (id)getNeedsToSetRestrictionsPasscodeAndReturnError:(id *)a3
+- (id)getNeedsToSetRestrictionsPasscodeAndReturnError:(id *)error
 {
   v5 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2036,19 +2036,19 @@ LABEL_11:
   v22 = sub_10008281C;
   v23 = sub_10008282C;
   v24 = 0;
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v7 = [v6 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v7)
+  if (hasStoreLoaded)
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v9 = [v8 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000833EC;
     v15[3] = &unk_1001A5B58;
-    v10 = v9;
+    v10 = newBackgroundContext;
     v16 = v10;
     v17 = &v19;
     v18 = buf;
@@ -2063,9 +2063,9 @@ LABEL_11:
   }
 
   v12 = *(v26 + 5);
-  if (a3 && !v12)
+  if (error && !v12)
   {
-    *a3 = v20[5];
+    *error = v20[5];
     v12 = *(v26 + 5);
   }
 
@@ -2077,9 +2077,9 @@ LABEL_11:
   return v13;
 }
 
-- (void)setRestrictionsPasscode:(id)a3 error:(id *)a4
+- (void)setRestrictionsPasscode:(id)passcode error:(id *)error
 {
-  v6 = a3;
+  passcodeCopy = passcode;
   v7 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2093,22 +2093,22 @@ LABEL_11:
   v21 = sub_10008281C;
   v22 = sub_10008282C;
   v23 = 0;
-  v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v9 = [v8 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v9)
+  if (hasStoreLoaded)
   {
-    v10 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v11 = [v10 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100083690;
     v14[3] = &unk_1001A37C0;
-    v12 = v11;
+    v12 = newBackgroundContext;
     v15 = v12;
     v17 = buf;
-    v16 = v6;
+    v16 = passcodeCopy;
     [v12 performBlockAndWait:v14];
   }
 
@@ -2119,17 +2119,17 @@ LABEL_11:
     *(v19 + 5) = v13;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(v19 + 5);
+    *error = *(v19 + 5);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2155,38 +2155,38 @@ LABEL_11:
   v17 = sub_10008281C;
   v18 = sub_10008282C;
   v19 = 0;
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  if ([v6 hasStoreLoaded])
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  if ([persistenceController hasStoreLoaded])
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100083A10;
     v9[3] = &unk_1001A5B80;
-    v7 = [v6 newBackgroundContext];
-    v10 = v7;
+    newBackgroundContext = [persistenceController newBackgroundContext];
+    v10 = newBackgroundContext;
     v11 = &v14;
     v12 = buf;
     v13 = &v20;
-    [v7 performBlockAndWait:v9];
+    [newBackgroundContext performBlockAndWait:v9];
   }
 
   else
   {
     v8 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    v7 = v15[5];
+    newBackgroundContext = v15[5];
     v15[5] = v8;
   }
 
-  v4[2](v4, *(v27 + 5), v21[5], v15[5]);
+  handlerCopy[2](handlerCopy, *(v27 + 5), v21[5], v15[5]);
   _Block_object_dispose(&v14, 8);
 
   _Block_object_dispose(&v20, 8);
   _Block_object_dispose(buf, 8);
 }
 
-- (BOOL)authenticateRestrictionsPasscode:(id)a3 error:(id *)a4
+- (BOOL)authenticateRestrictionsPasscode:(id)passcode error:(id *)error
 {
-  v6 = a3;
+  passcodeCopy = passcode;
   v7 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2204,32 +2204,32 @@ LABEL_11:
   v22 = sub_10008281C;
   v23 = sub_10008282C;
   v24 = 0;
-  v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-  if ([v8 hasStoreLoaded])
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  if ([persistenceController hasStoreLoaded])
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100083D34;
     v13[3] = &unk_1001A5BC8;
-    v9 = [v8 newBackgroundContext];
-    v14 = v9;
+    newBackgroundContext = [persistenceController newBackgroundContext];
+    v14 = newBackgroundContext;
     v17 = buf;
     v18 = &v25;
-    v15 = v6;
-    v16 = self;
-    [v9 performBlockAndWait:v13];
+    v15 = passcodeCopy;
+    selfCopy = self;
+    [newBackgroundContext performBlockAndWait:v13];
   }
 
   else
   {
     v10 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    v9 = *(v20 + 5);
+    newBackgroundContext = *(v20 + 5);
     *(v20 + 5) = v10;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(v20 + 5);
+    *error = *(v20 + 5);
   }
 
   v11 = *(v26 + 24);
@@ -2240,11 +2240,11 @@ LABEL_11:
   return v11;
 }
 
-- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)a3
+- (void)sendPasscodeActivityToParentsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STScreenTimeOrganizationController *)self familyOrganizationController];
-  [v5 sendPasscodeActivityToParentsWithCompletionHandler:v4];
+  handlerCopy = handler;
+  familyOrganizationController = [(STScreenTimeOrganizationController *)self familyOrganizationController];
+  [familyOrganizationController sendPasscodeActivityToParentsWithCompletionHandler:handlerCopy];
 }
 
 - (BOOL)isLocalUserRemotelyManaged
@@ -2253,101 +2253,101 @@ LABEL_11:
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v2 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v3 = [v2 newBackgroundContext];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  newBackgroundContext = [persistenceController newBackgroundContext];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100084090;
   v6[3] = &unk_1001A3C98;
-  v4 = v3;
+  v4 = newBackgroundContext;
   v7 = v4;
   v8 = &v9;
   [v4 performBlockAndWait:v6];
-  LOBYTE(v2) = *(v10 + 24);
+  LOBYTE(persistenceController) = *(v10 + 24);
 
   _Block_object_dispose(&v9, 8);
-  return v2;
+  return persistenceController;
 }
 
-- (void)communicationPoliciesWithCompletionHandler:(id)a3
+- (void)communicationPoliciesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10011F0A8();
   }
 
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v7 = [v6 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v7)
+  if (hasStoreLoaded)
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v9 = [v8 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100084280;
     v11[3] = &unk_1001A4308;
-    v12 = v9;
-    v13 = v4;
-    v10 = v9;
+    v12 = newBackgroundContext;
+    v13 = handlerCopy;
+    v10 = newBackgroundContext;
     [v10 performBlockAndWait:v11];
   }
 
   else
   {
     v10 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v4 + 2))(v4, 0, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v10);
   }
 }
 
-- (void)communicationPoliciesForDSID:(id)a3 withCompletionHandler:(id)a4
+- (void)communicationPoliciesForDSID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_10011F0E4();
   }
 
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v10)
+  if (hasStoreLoaded)
   {
-    v11 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v12 = [v11 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000844E4;
     v14[3] = &unk_1001A5A90;
-    v15 = v6;
-    v16 = v12;
-    v17 = v7;
-    v13 = v12;
+    v15 = dCopy;
+    v16 = newBackgroundContext;
+    v17 = handlerCopy;
+    v13 = newBackgroundContext;
     [v13 performBlockAndWait:v14];
   }
 
   else
   {
     v13 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v13);
   }
 }
 
-- (id)getPrimaryiCloudCardDAVAccountIdentifierWithError:(id *)a3
+- (id)getPrimaryiCloudCardDAVAccountIdentifierWithError:(id *)error
 {
   v3 = objc_opt_new();
-  v4 = [v3 aa_primaryAppleAccount];
-  v5 = v4;
-  if (v4)
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
+  v5 = aa_primaryAppleAccount;
+  if (aa_primaryAppleAccount)
   {
-    v6 = [v4 childCardDAVAccountIdentifier];
+    childCardDAVAccountIdentifier = [aa_primaryAppleAccount childCardDAVAccountIdentifier];
   }
 
   else
@@ -2358,36 +2358,36 @@ LABEL_11:
       sub_10011F154();
     }
 
-    v6 = 0;
+    childCardDAVAccountIdentifier = 0;
   }
 
-  return v6;
+  return childCardDAVAccountIdentifier;
 }
 
-- (void)setContactManagementState:(int64_t)a3 forDSID:(id)a4 completionHandler:(id)a5
+- (void)setContactManagementState:(int64_t)state forDSID:(id)d completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v10 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     sub_10011F194();
   }
 
-  v11 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v12 = [v11 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v12)
+  if (hasStoreLoaded)
   {
-    v13 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000847DC;
     v15[3] = &unk_1001A5BF0;
-    v16 = v8;
-    v18 = a3;
-    v17 = v9;
-    [v13 performBackgroundTaskAndWait:v15];
+    v16 = dCopy;
+    stateCopy = state;
+    v17 = handlerCopy;
+    [persistenceController2 performBackgroundTaskAndWait:v15];
 
     v14 = v16;
   }
@@ -2395,73 +2395,73 @@ LABEL_11:
   else
   {
     v14 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v9 + 2))(v9, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 }
 
-- (void)contactManagementStateForDSID:(id)a3 completionHandler:(id)a4
+- (void)contactManagementStateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_10011F280();
   }
 
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v10)
+  if (hasStoreLoaded)
   {
-    v11 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v12 = [v11 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100084ABC;
     v14[3] = &unk_1001A5A90;
-    v15 = v6;
-    v16 = v12;
-    v17 = v7;
-    v13 = v12;
+    v15 = dCopy;
+    v16 = newBackgroundContext;
+    v17 = handlerCopy;
+    v13 = newBackgroundContext;
     [v13 performBlockAndWait:v14];
   }
 
   else
   {
     v13 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
-- (void)permitWebFilterURL:(id)a3 pageTitle:(id)a4 completionHandler:(id)a5
+- (void)permitWebFilterURL:(id)l pageTitle:(id)title completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  titleCopy = title;
+  handlerCopy = handler;
   v11 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v8;
+    v21 = lCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Adding URL to web filter whitelist: %@", buf, 0xCu);
   }
 
-  v12 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v13 = [v12 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v13)
+  if (hasStoreLoaded)
   {
-    v14 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100084D84;
     v16[3] = &unk_1001A5C18;
-    v19 = v10;
-    v17 = v8;
-    v18 = v9;
-    [v14 performBackgroundTaskAndWait:v16];
+    v19 = handlerCopy;
+    v17 = lCopy;
+    v18 = titleCopy;
+    [persistenceController2 performBackgroundTaskAndWait:v16];
 
     v15 = v19;
   }
@@ -2469,11 +2469,11 @@ LABEL_11:
   else
   {
     v15 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v10 + 2))(v10, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 }
 
-- (id)fetchUnexpiredOneMoreMinuteBlueprintsWithMoc:(id)a3 error:(id *)a4
+- (id)fetchUnexpiredOneMoreMinuteBlueprintsWithMoc:(id)moc error:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -2491,17 +2491,17 @@ LABEL_11:
   v11[1] = 3221225472;
   v11[2] = sub_10008521C;
   v11[3] = &unk_1001A5B58;
-  v5 = a3;
-  v12 = v5;
+  mocCopy = moc;
+  v12 = mocCopy;
   v13 = &v21;
   v14 = &v15;
-  [v5 performBlockAndWait:v11];
+  [mocCopy performBlockAndWait:v11];
   v6 = v16[5];
   if (!v6)
   {
     v7 = v22[5];
     v8 = STSafeErrorFromCoreDataError();
-    *a4 = v8;
+    *error = v8;
 
     v6 = v16[5];
   }
@@ -2514,16 +2514,16 @@ LABEL_11:
   return v9;
 }
 
-- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(STScreenTimeOrganizationController *)self persistenceController];
-  if ([v7 hasStoreLoaded])
+  identifierCopy = identifier;
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  if ([persistenceController hasStoreLoaded])
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v9 = [v8 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
-    v10 = [(STScreenTimeOrganizationController *)self fetchUnexpiredOneMoreMinuteBlueprintsWithMoc:v9 error:a4];
+    v10 = [(STScreenTimeOrganizationController *)self fetchUnexpiredOneMoreMinuteBlueprintsWithMoc:newBackgroundContext error:error];
     if (v10)
     {
       v18 = 0;
@@ -2535,9 +2535,9 @@ LABEL_11:
       v14[2] = sub_100085524;
       v14[3] = &unk_1001A5C40;
       v17 = &v18;
-      v15 = v6;
+      v15 = identifierCopy;
       v16 = v10;
-      [v9 performBlockAndWait:v14];
+      [newBackgroundContext performBlockAndWait:v14];
       v11 = [NSNumber numberWithBool:*(v19 + 24)];
 
       _Block_object_dispose(&v18, 8);
@@ -2545,16 +2545,16 @@ LABEL_11:
 
     else
     {
-      v12 = *a4;
+      v12 = *error;
       STSafeErrorFromCoreDataError();
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -2565,16 +2565,16 @@ LABEL_11:
   return v11;
 }
 
-- (id)shouldAllowOneMoreMinuteForWebDomain:(id)a3 error:(id *)a4
+- (id)shouldAllowOneMoreMinuteForWebDomain:(id)domain error:(id *)error
 {
-  v6 = a3;
-  v7 = [(STScreenTimeOrganizationController *)self persistenceController];
-  if ([v7 hasStoreLoaded])
+  domainCopy = domain;
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  if ([persistenceController hasStoreLoaded])
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v9 = [v8 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
-    v10 = [(STScreenTimeOrganizationController *)self fetchUnexpiredOneMoreMinuteBlueprintsWithMoc:v9 error:a4];
+    v10 = [(STScreenTimeOrganizationController *)self fetchUnexpiredOneMoreMinuteBlueprintsWithMoc:newBackgroundContext error:error];
     if (v10)
     {
       v18 = 0;
@@ -2586,9 +2586,9 @@ LABEL_11:
       v14[2] = sub_1000857E8;
       v14[3] = &unk_1001A5C40;
       v17 = &v18;
-      v15 = v6;
+      v15 = domainCopy;
       v16 = v10;
-      [v9 performBlockAndWait:v14];
+      [newBackgroundContext performBlockAndWait:v14];
       v11 = [NSNumber numberWithBool:*(v19 + 24)];
 
       _Block_object_dispose(&v18, 8);
@@ -2596,16 +2596,16 @@ LABEL_11:
 
     else
     {
-      v12 = *a4;
+      v12 = *error;
       STSafeErrorFromCoreDataError();
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -2616,16 +2616,16 @@ LABEL_11:
   return v11;
 }
 
-- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 error:(id *)a4
+- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(STScreenTimeOrganizationController *)self persistenceController];
-  if ([v7 hasStoreLoaded])
+  identifierCopy = identifier;
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  if ([persistenceController hasStoreLoaded])
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v9 = [v8 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
-    v10 = [(STScreenTimeOrganizationController *)self fetchUnexpiredOneMoreMinuteBlueprintsWithMoc:v9 error:a4];
+    v10 = [(STScreenTimeOrganizationController *)self fetchUnexpiredOneMoreMinuteBlueprintsWithMoc:newBackgroundContext error:error];
     if (v10)
     {
       v18 = 0;
@@ -2637,9 +2637,9 @@ LABEL_11:
       v14[2] = sub_100085AAC;
       v14[3] = &unk_1001A5C40;
       v17 = &v18;
-      v15 = v6;
+      v15 = identifierCopy;
       v16 = v10;
-      [v9 performBlockAndWait:v14];
+      [newBackgroundContext performBlockAndWait:v14];
       v11 = [NSNumber numberWithBool:*(v19 + 24)];
 
       _Block_object_dispose(&v18, 8);
@@ -2647,16 +2647,16 @@ LABEL_11:
 
     else
     {
-      v12 = *a4;
+      v12 = *error;
       STSafeErrorFromCoreDataError();
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -2667,7 +2667,7 @@ LABEL_11:
   return v11;
 }
 
-- (id)getIsExplicitContentRestrictedAndReturnError:(id *)a3
+- (id)getIsExplicitContentRestrictedAndReturnError:(id *)error
 {
   v5 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -2687,19 +2687,19 @@ LABEL_11:
   v22 = sub_10008281C;
   v23 = sub_10008282C;
   v24 = 0;
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v7 = [v6 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v7)
+  if (hasStoreLoaded)
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v9 = [v8 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100085DD8;
     v15[3] = &unk_1001A5B58;
-    v10 = v9;
+    v10 = newBackgroundContext;
     v16 = v10;
     v17 = &v19;
     v18 = &v25;
@@ -2714,9 +2714,9 @@ LABEL_11:
   }
 
   v12 = v26[5];
-  if (a3 && !v12)
+  if (error && !v12)
   {
-    *a3 = v20[5];
+    *error = v20[5];
     v12 = v26[5];
   }
 
@@ -2728,7 +2728,7 @@ LABEL_11:
   return v13;
 }
 
-- (id)getIsWebContentRestrictedAndReturnError:(id *)a3
+- (id)getIsWebContentRestrictedAndReturnError:(id *)error
 {
   v5 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -2748,19 +2748,19 @@ LABEL_11:
   v22 = sub_10008281C;
   v23 = sub_10008282C;
   v24 = 0;
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v7 = [v6 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v7)
+  if (hasStoreLoaded)
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v9 = [v8 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000864B0;
     v15[3] = &unk_1001A5B58;
-    v10 = v9;
+    v10 = newBackgroundContext;
     v16 = v10;
     v17 = &v19;
     v18 = &v25;
@@ -2775,9 +2775,9 @@ LABEL_11:
   }
 
   v12 = v26[5];
-  if (a3 && !v12)
+  if (error && !v12)
   {
-    *a3 = v20[5];
+    *error = v20[5];
     v12 = v26[5];
   }
 
@@ -2789,9 +2789,9 @@ LABEL_11:
   return v13;
 }
 
-- (void)enableWebContentFilterWithCompletionHandler:(id)a3
+- (void)enableWebContentFilterWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2799,18 +2799,18 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Enabling web content filter for local user", buf, 2u);
   }
 
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v7 = [v6 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v7)
+  if (hasStoreLoaded)
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100086A9C;
     v10[3] = &unk_1001A5AB8;
-    v11 = v4;
-    [v8 performBackgroundTaskAndWait:v10];
+    v11 = handlerCopy;
+    [persistenceController2 performBackgroundTaskAndWait:v10];
 
     v9 = v11;
   }
@@ -2818,37 +2818,37 @@ LABEL_11:
   else
   {
     v9 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v4 + 2))(v4, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 }
 
-- (void)applyIntroductionModel:(id)a3 forDSID:(id)a4 completionHandler:(id)a5
+- (void)applyIntroductionModel:(id)model forDSID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v9;
+    v21 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Applying introduction model for dsid: %@", buf, 0xCu);
   }
 
-  v12 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v13 = [v12 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v13)
+  if (hasStoreLoaded)
   {
-    v14 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100086DB8;
     v16[3] = &unk_1001A2D58;
-    v17 = v9;
-    v18 = v8;
-    v19 = v10;
-    [v14 performBackgroundTaskAndWait:v16];
+    v17 = dCopy;
+    v18 = modelCopy;
+    v19 = handlerCopy;
+    [persistenceController2 performBackgroundTaskAndWait:v16];
 
     v15 = v17;
   }
@@ -2856,70 +2856,70 @@ LABEL_11:
   else
   {
     v15 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v10 + 2))(v10, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 }
 
-- (void)isLocationSharingModificationAllowedForDSID:(id)a3 completionHandler:(id)a4
+- (void)isLocationSharingModificationAllowedForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_10011F858();
   }
 
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v10)
+  if (hasStoreLoaded)
   {
-    v11 = [(STScreenTimeOrganizationController *)self persistenceController];
-    v12 = [v11 newBackgroundContext];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
+    newBackgroundContext = [persistenceController2 newBackgroundContext];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100087530;
     v14[3] = &unk_1001A5A90;
-    v15 = v6;
-    v16 = v12;
-    v17 = v7;
-    v13 = v12;
+    v15 = dCopy;
+    v16 = newBackgroundContext;
+    v17 = handlerCopy;
+    v13 = newBackgroundContext;
     [v13 performBlockAndWait:v14];
   }
 
   else
   {
     v13 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
-- (void)setLocationSharingModificationAllowed:(BOOL)a3 forDSID:(id)a4 completionHandler:(id)a5
+- (void)setLocationSharingModificationAllowed:(BOOL)allowed forDSID:(id)d completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v10 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     sub_10011FA54();
   }
 
-  v11 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v12 = [v11 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v12)
+  if (hasStoreLoaded)
   {
-    v13 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100087C10;
     v15[3] = &unk_1001A5C68;
-    v16 = v8;
-    v17 = v9;
-    v18 = a3;
-    [v13 performBackgroundTaskAndWait:v15];
+    v16 = dCopy;
+    v17 = handlerCopy;
+    allowedCopy = allowed;
+    [persistenceController2 performBackgroundTaskAndWait:v15];
 
     v14 = v16;
   }
@@ -2927,37 +2927,37 @@ LABEL_11:
   else
   {
     v14 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v9 + 2))(v9, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 }
 
-- (void)triggerDowngradeMigrationWithCompletionHandler:(id)a3
+- (void)triggerDowngradeMigrationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_new();
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v7 = [(STScreenTimeOrganizationController *)self requestManager];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  requestManager = [(STScreenTimeOrganizationController *)self requestManager];
   v9 = 0;
-  [v5 triggerMigrationWithPersistenceController:v6 andRequestManager:v7 outError:&v9];
+  [v5 triggerMigrationWithPersistenceController:persistenceController andRequestManager:requestManager outError:&v9];
   v8 = v9;
 
-  v4[2](v4, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
-- (void)restrictionsForUserDSID:(id)a3 completionHandler:(id)a4
+- (void)restrictionsForUserDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   v8 = objc_opt_class();
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  [v8 restrictionsForUserDSID:v7 persistenceController:v9 completionHandler:v6];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  [v8 restrictionsForUserDSID:dCopy persistenceController:persistenceController completionHandler:handlerCopy];
 }
 
-+ (void)restrictionsForUserDSID:(id)a3 persistenceController:(id)a4 completionHandler:(id)a5
++ (void)restrictionsForUserDSID:(id)d persistenceController:(id)controller completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v11 = +[STLog screenTimeOrganizationController];
   v12 = os_signpost_id_generate(v11);
 
@@ -2981,9 +2981,9 @@ LABEL_11:
   v31[2] = sub_10008281C;
   v31[3] = sub_10008282C;
   v32 = 0;
-  if ([v8 intValue])
+  if ([dCopy intValue])
   {
-    objc_storeStrong(v34 + 5, a3);
+    objc_storeStrong(v34 + 5, d);
   }
 
   else
@@ -2994,7 +2994,7 @@ LABEL_11:
     v29[3] = &unk_1001A5C90;
     v29[4] = buf;
     v29[5] = &v30;
-    [v9 performBackgroundTaskAndWait:v29];
+    [controllerCopy performBackgroundTaskAndWait:v29];
   }
 
   v15 = +[STLog screenTimeOrganizationController];
@@ -3023,11 +3023,11 @@ LABEL_11:
     v23[1] = 3221225472;
     v23[2] = sub_100088820;
     v23[3] = &unk_1001A5CB8;
-    v24 = v8;
+    v24 = dCopy;
     v26 = buf;
     v27 = v18;
-    v25 = v10;
-    [STRestrictionsFetcher fetchRestrictionsForUserDSID:v21 persistenceController:v9 completionHandler:v23];
+    v25 = handlerCopy;
+    [STRestrictionsFetcher fetchRestrictionsForUserDSID:v21 persistenceController:controllerCopy completionHandler:v23];
   }
 
   else
@@ -3038,7 +3038,7 @@ LABEL_11:
       sub_10011FBB0(v31);
     }
 
-    (*(v10 + 2))(v10, 0, *(v31[0] + 40));
+    (*(handlerCopy + 2))(handlerCopy, 0, *(v31[0] + 40));
   }
 
   _Block_object_dispose(&v30, 8);
@@ -3046,20 +3046,20 @@ LABEL_11:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)isCommunicationSafetyEnabledForUserDSID:(id)a3 completionHandler:(id)a4
+- (void)isCommunicationSafetyEnabledForUserDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   v8 = objc_opt_class();
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  [v8 isCommunicationSafetyEnabledForUserDSID:v7 persistenceController:v9 completionHandler:v6];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  [v8 isCommunicationSafetyEnabledForUserDSID:dCopy persistenceController:persistenceController completionHandler:handlerCopy];
 }
 
-+ (void)isCommunicationSafetyEnabledForUserDSID:(id)a3 persistenceController:(id)a4 completionHandler:(id)a5
++ (void)isCommunicationSafetyEnabledForUserDSID:(id)d persistenceController:(id)controller completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v10 = +[STLog screenTimeOrganizationController];
   v11 = os_signpost_id_generate(v10);
 
@@ -3094,15 +3094,15 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "Fetch Communication Safety CoreData Setup", "", v29, 2u);
   }
 
-  v18 = [v8 newBackgroundContext];
+  newBackgroundContext = [controllerCopy newBackgroundContext];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100088D70;
   v23[3] = &unk_1001A5CE0;
   v28 = v15;
-  v19 = v7;
+  v19 = dCopy;
   v24 = v19;
-  v20 = v18;
+  v20 = newBackgroundContext;
   v25 = v20;
   v26 = &v30;
   v27 = buf;
@@ -3115,25 +3115,25 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v22, OS_SIGNPOST_INTERVAL_END, v11, "Fetch Communication Safety", "", v29, 2u);
   }
 
-  v9[2](v9, *(v37 + 5), v31[5]);
+  handlerCopy[2](handlerCopy, *(v37 + 5), v31[5]);
   _Block_object_dispose(&v30, 8);
 
   _Block_object_dispose(buf, 8);
 }
 
-- (BOOL)exportDatabaseToURL:(id)a3 error:(id *)a4
+- (BOOL)exportDatabaseToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = +[STLog diagnostics];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_10011FC84();
   }
 
-  v8 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v9 = [v8 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v9)
+  if (hasStoreLoaded)
   {
     v24 = 0;
     v25 = &v24;
@@ -3145,21 +3145,21 @@ LABEL_11:
     v21 = sub_10008281C;
     v22 = sub_10008282C;
     v23 = 0;
-    v10 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000891CC;
     v13[3] = &unk_1001A5D08;
     v16 = &v18;
     v17 = &v24;
-    v14 = v6;
-    v15 = self;
-    [v10 performBackgroundTaskAndWait:v13];
+    v14 = lCopy;
+    selfCopy = self;
+    [persistenceController2 performBackgroundTaskAndWait:v13];
 
     v11 = *(v25 + 24);
-    if (a4 && (v25[3] & 1) == 0)
+    if (error && (v25[3] & 1) == 0)
     {
-      *a4 = v19[5];
+      *error = v19[5];
       v11 = *(v25 + 24);
     }
 
@@ -3167,10 +3167,10 @@ LABEL_11:
     _Block_object_dispose(&v24, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -3181,128 +3181,128 @@ LABEL_11:
   return v11 & 1;
 }
 
-- (BOOL)_writePlistForUser:(id)a3 url:(id)a4 error:(id *)a5
+- (BOOL)_writePlistForUser:(id)user url:(id)url error:(id *)error
 {
-  v6 = a3;
-  v74 = a4;
+  userCopy = user;
+  urlCopy = url;
   v7 = objc_opt_new();
-  v8 = [v6 dsid];
-  [v7 setObject:v8 forKeyedSubscript:@"dsid"];
+  dsid = [userCopy dsid];
+  [v7 setObject:dsid forKeyedSubscript:@"dsid"];
 
-  v9 = [v6 altDSID];
-  [v7 setObject:v9 forKeyedSubscript:@"altDSID"];
+  altDSID = [userCopy altDSID];
+  [v7 setObject:altDSID forKeyedSubscript:@"altDSID"];
 
-  v10 = [v6 appleID];
-  [v7 setObject:v10 forKeyedSubscript:@"appleID"];
+  appleID = [userCopy appleID];
+  [v7 setObject:appleID forKeyedSubscript:@"appleID"];
 
-  v11 = [v6 givenName];
-  [v7 setObject:v11 forKeyedSubscript:@"givenName"];
+  givenName = [userCopy givenName];
+  [v7 setObject:givenName forKeyedSubscript:@"givenName"];
 
-  v12 = [v6 familyName];
-  [v7 setObject:v12 forKeyedSubscript:@"familyName"];
+  familyName = [userCopy familyName];
+  [v7 setObject:familyName forKeyedSubscript:@"familyName"];
 
-  v13 = [v6 familyMemberType];
-  [v7 setObject:v13 forKeyedSubscript:@"familyMemberType"];
+  familyMemberType = [userCopy familyMemberType];
+  [v7 setObject:familyMemberType forKeyedSubscript:@"familyMemberType"];
 
-  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isParent]);
+  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userCopy isParent]);
   [v7 setObject:v14 forKeyedSubscript:@"isParent"];
 
-  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isFamilyOrganizer]);
+  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userCopy isFamilyOrganizer]);
   [v7 setObject:v15 forKeyedSubscript:@"isFamilyOrganizer"];
 
-  v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isManaged]);
+  v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userCopy isManaged]);
   [v7 setObject:v16 forKeyedSubscript:@"isManaged"];
 
-  v17 = [v6 isAppAndWebsiteActivityEnabled];
-  [v7 setObject:v17 forKeyedSubscript:@"isAppAndWebsiteActivityEnabled"];
+  isAppAndWebsiteActivityEnabled = [userCopy isAppAndWebsiteActivityEnabled];
+  [v7 setObject:isAppAndWebsiteActivityEnabled forKeyedSubscript:@"isAppAndWebsiteActivityEnabled"];
 
-  v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 syncingEnabled]);
+  v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userCopy syncingEnabled]);
   [v7 setObject:v18 forKeyedSubscript:@"syncingEnabled"];
 
-  v19 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 communicationPolicy]);
+  v19 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [userCopy communicationPolicy]);
   [v7 setObject:v19 forKeyedSubscript:@"communicationPolicy"];
 
-  v20 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 communicationWhileLimitedPolicy]);
+  v20 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [userCopy communicationWhileLimitedPolicy]);
   [v7 setObject:v20 forKeyedSubscript:@"communicationWhileLimitedPolicy"];
 
-  v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isCommunicationSafetyReceivingRestricted]);
+  v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userCopy isCommunicationSafetyReceivingRestricted]);
   [v7 setObject:v21 forKeyedSubscript:@"isCommunicationSafetyReceivingRestricted"];
 
-  v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isCommunicationSafetySendingRestricted]);
+  v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userCopy isCommunicationSafetySendingRestricted]);
   [v7 setObject:v22 forKeyedSubscript:@"isCommunicationSafetySendingRestricted"];
 
-  v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isCommunicationSafetyNotificationEnabled]);
+  v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userCopy isCommunicationSafetyNotificationEnabled]);
   [v7 setObject:v23 forKeyedSubscript:@"isCommunicationSafetyNotificationEnabled"];
 
-  v24 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isCommunicationSafetyAnalyticsEnabled]);
+  v24 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userCopy isCommunicationSafetyAnalyticsEnabled]);
   [v7 setObject:v24 forKeyedSubscript:@"isCommunicationSafetyAnalyticsEnabled"];
 
-  v25 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isEyeReliefEnabled]);
+  v25 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [userCopy isEyeReliefEnabled]);
   [v7 setObject:v25 forKeyedSubscript:@"isEyeReliefEnabled"];
 
-  v26 = [v6 localSettings];
-  v27 = [v26 dictionaryRepresentation];
+  localSettings = [userCopy localSettings];
+  dictionaryRepresentation = [localSettings dictionaryRepresentation];
   v85 = _NSConcreteStackBlock;
   v86 = 3221225472;
   v87 = sub_10008B7B8;
   v88 = &unk_1001A5D80;
-  v89 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v27, "count")}];
+  v89 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(dictionaryRepresentation, "count")}];
   v28 = v89;
-  [v27 enumerateKeysAndObjectsUsingBlock:&v85];
+  [dictionaryRepresentation enumerateKeysAndObjectsUsingBlock:&v85];
   v29 = [v28 copy];
 
   [v7 setObject:v29 forKeyedSubscript:@"localSettings"];
-  v30 = [v6 cloudSettings];
-  v31 = [v30 dictionaryRepresentation];
-  v32 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v31, "count")}];
+  cloudSettings = [userCopy cloudSettings];
+  dictionaryRepresentation2 = [cloudSettings dictionaryRepresentation];
+  v32 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(dictionaryRepresentation2, "count")}];
   v85 = _NSConcreteStackBlock;
   v86 = 3221225472;
   v87 = sub_10008B7B8;
   v88 = &unk_1001A5D80;
   v89 = v32;
   v33 = v32;
-  [v31 enumerateKeysAndObjectsUsingBlock:&v85];
+  [dictionaryRepresentation2 enumerateKeysAndObjectsUsingBlock:&v85];
   v34 = [v33 copy];
 
   [v7 setObject:v34 forKeyedSubscript:@"cloudSettings"];
-  v35 = [v6 familySettings];
-  v36 = [v35 dictionaryRepresentation];
-  v37 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v36, "count")}];
+  familySettings = [userCopy familySettings];
+  dictionaryRepresentation3 = [familySettings dictionaryRepresentation];
+  v37 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(dictionaryRepresentation3, "count")}];
   v85 = _NSConcreteStackBlock;
   v86 = 3221225472;
   v87 = sub_10008B7B8;
   v88 = &unk_1001A5D80;
   v89 = v37;
   v38 = v37;
-  [v36 enumerateKeysAndObjectsUsingBlock:&v85];
+  [dictionaryRepresentation3 enumerateKeysAndObjectsUsingBlock:&v85];
   v39 = [v38 copy];
 
   [v7 setObject:v39 forKeyedSubscript:@"familySettings"];
-  v40 = [v6 unmodeledManagingOrganizationSettings];
-  v41 = [v40 dictionaryRepresentation];
-  v42 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v41, "count")}];
+  unmodeledManagingOrganizationSettings = [userCopy unmodeledManagingOrganizationSettings];
+  dictionaryRepresentation4 = [unmodeledManagingOrganizationSettings dictionaryRepresentation];
+  v42 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(dictionaryRepresentation4, "count")}];
   v85 = _NSConcreteStackBlock;
   v86 = 3221225472;
   v87 = sub_10008B7B8;
   v88 = &unk_1001A5D80;
   v89 = v42;
   v43 = v42;
-  [v41 enumerateKeysAndObjectsUsingBlock:&v85];
+  [dictionaryRepresentation4 enumerateKeysAndObjectsUsingBlock:&v85];
   v44 = [v43 copy];
 
   v75 = v7;
   [v7 setObject:v44 forKeyedSubscript:@"unmodeledManagingOrganizationSettings"];
 
   v45 = [NSMutableArray alloc];
-  v46 = [v6 userDeviceStates];
-  v76 = [v45 initWithCapacity:{objc_msgSend(v46, "count")}];
+  userDeviceStates = [userCopy userDeviceStates];
+  v76 = [v45 initWithCapacity:{objc_msgSend(userDeviceStates, "count")}];
 
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v47 = [v6 userDeviceStates];
-  v48 = [v47 countByEnumeratingWithState:&v81 objects:v91 count:16];
+  userDeviceStates2 = [userCopy userDeviceStates];
+  v48 = [userDeviceStates2 countByEnumeratingWithState:&v81 objects:v91 count:16];
   if (v48)
   {
     v49 = v48;
@@ -3313,30 +3313,30 @@ LABEL_11:
       {
         if (*v82 != v50)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(userDeviceStates2);
         }
 
         v52 = *(*(&v81 + 1) + 8 * i);
-        v53 = [v52 device];
+        device = [v52 device];
 
-        if (v53)
+        if (device)
         {
-          v54 = [v52 dictionaryRepresentation];
-          v55 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v54, "count")}];
+          dictionaryRepresentation5 = [v52 dictionaryRepresentation];
+          v55 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(dictionaryRepresentation5, "count")}];
           v85 = _NSConcreteStackBlock;
           v86 = 3221225472;
           v87 = sub_10008B7B8;
           v88 = &unk_1001A5D80;
           v89 = v55;
           v56 = v55;
-          [v54 enumerateKeysAndObjectsUsingBlock:&v85];
+          [dictionaryRepresentation5 enumerateKeysAndObjectsUsingBlock:&v85];
           v57 = [v56 copy];
 
           [v76 addObject:v57];
         }
       }
 
-      v49 = [v47 countByEnumeratingWithState:&v81 objects:v91 count:16];
+      v49 = [userDeviceStates2 countByEnumeratingWithState:&v81 objects:v91 count:16];
     }
 
     while (v49);
@@ -3346,15 +3346,15 @@ LABEL_11:
   [v75 setObject:v58 forKeyedSubscript:@"userDeviceStates"];
 
   v59 = [NSMutableArray alloc];
-  v60 = [v6 blueprints];
-  v61 = [v59 initWithCapacity:{objc_msgSend(v60, "count")}];
+  blueprints = [userCopy blueprints];
+  v61 = [v59 initWithCapacity:{objc_msgSend(blueprints, "count")}];
 
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v62 = [v6 blueprints];
-  v63 = [v62 countByEnumeratingWithState:&v77 objects:v90 count:16];
+  blueprints2 = [userCopy blueprints];
+  v63 = [blueprints2 countByEnumeratingWithState:&v77 objects:v90 count:16];
   if (v63)
   {
     v64 = v63;
@@ -3365,24 +3365,24 @@ LABEL_11:
       {
         if (*v78 != v65)
         {
-          objc_enumerationMutation(v62);
+          objc_enumerationMutation(blueprints2);
         }
 
-        v67 = [*(*(&v77 + 1) + 8 * j) dictionaryRepresentation];
-        v68 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v67, "count")}];
+        dictionaryRepresentation6 = [*(*(&v77 + 1) + 8 * j) dictionaryRepresentation];
+        v68 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(dictionaryRepresentation6, "count")}];
         v85 = _NSConcreteStackBlock;
         v86 = 3221225472;
         v87 = sub_10008B7B8;
         v88 = &unk_1001A5D80;
         v89 = v68;
         v69 = v68;
-        [v67 enumerateKeysAndObjectsUsingBlock:&v85];
+        [dictionaryRepresentation6 enumerateKeysAndObjectsUsingBlock:&v85];
         v70 = [v69 copy];
 
         [v61 addObject:v70];
       }
 
-      v64 = [v62 countByEnumeratingWithState:&v77 objects:v90 count:16];
+      v64 = [blueprints2 countByEnumeratingWithState:&v77 objects:v90 count:16];
     }
 
     while (v64);
@@ -3391,35 +3391,35 @@ LABEL_11:
   v71 = [v61 copy];
   [v75 setObject:v71 forKeyedSubscript:@"blueprints"];
 
-  LOBYTE(v71) = [v75 writeToURL:v74 error:a5];
+  LOBYTE(v71) = [v75 writeToURL:urlCopy error:error];
   return v71;
 }
 
-- (void)lastCommunicationLimitsModifcationDateForDSID:(id)a3 completionHandler:(id)a4
+- (void)lastCommunicationLimitsModifcationDateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetching last comm limits modification date for dsid: %{public}@", buf, 0xCu);
   }
 
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v10)
+  if (hasStoreLoaded)
   {
-    v11 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10008A100;
     v13[3] = &unk_1001A3EE0;
-    v14 = v6;
-    v15 = v7;
-    [v11 performBackgroundTask:v13];
+    v14 = dCopy;
+    v15 = handlerCopy;
+    [persistenceController2 performBackgroundTask:v13];
 
     v12 = v14;
   }
@@ -3427,35 +3427,35 @@ LABEL_11:
   else
   {
     v12 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 }
 
-- (void)lastModifcationDateForDSID:(id)a3 completionHandler:(id)a4
+- (void)lastModifcationDateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetching last modification date for dsid: %{public}@", buf, 0xCu);
   }
 
-  v9 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v10 = [v9 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v10)
+  if (hasStoreLoaded)
   {
-    v11 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10008A4E4;
     v13[3] = &unk_1001A3EE0;
-    v14 = v6;
-    v15 = v7;
-    [v11 performBackgroundTask:v13];
+    v14 = dCopy;
+    v15 = handlerCopy;
+    [persistenceController2 performBackgroundTask:v13];
 
     v12 = v14;
   }
@@ -3463,13 +3463,13 @@ LABEL_11:
   else
   {
     v12 = [NSError errorWithDomain:STErrorDomain code:22 userInfo:0];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 }
 
-- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)a3
+- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -3477,18 +3477,18 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Fetching managing guardian Apple IDs for the local user.", buf, 2u);
   }
 
-  v6 = [(STScreenTimeOrganizationController *)self persistenceController];
-  v7 = [v6 hasStoreLoaded];
+  persistenceController = [(STScreenTimeOrganizationController *)self persistenceController];
+  hasStoreLoaded = [persistenceController hasStoreLoaded];
 
-  if (v7)
+  if (hasStoreLoaded)
   {
-    v8 = [(STScreenTimeOrganizationController *)self persistenceController];
+    persistenceController2 = [(STScreenTimeOrganizationController *)self persistenceController];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10008A958;
     v11[3] = &unk_1001A5AB8;
-    v12 = v4;
-    [v8 performBackgroundTaskAndWait:v11];
+    v12 = handlerCopy;
+    [persistenceController2 performBackgroundTaskAndWait:v11];
 
     v9 = v12;
   }
@@ -3502,30 +3502,30 @@ LABEL_11:
       sub_10011FDC4();
     }
 
-    (*(v4 + 2))(v4, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 }
 
-- (void)didReceiveBlueprintPayload:(id)a3
+- (void)didReceiveBlueprintPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(STScreenTimeOrganizationController *)self requestManager];
+  payloadCopy = payload;
+  requestManager = [(STScreenTimeOrganizationController *)self requestManager];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10008ADC0;
   v6[3] = &unk_1001A3A08;
   v6[4] = self;
-  [v5 persistBlueprintsFromBlueprintPayload:v4 withCompletion:v6];
+  [requestManager persistBlueprintsFromBlueprintPayload:payloadCopy withCompletion:v6];
 }
 
-- (void)requestManager:(id)a3 didPrepareRequestPayloads:(id)a4 reason:(id)a5
+- (void)requestManager:(id)manager didPrepareRequestPayloads:(id)payloads reason:(id)reason
 {
-  v6 = a4;
+  payloadsCopy = payloads;
   v7 = +[STLog screenTimeOrganizationController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v21 = v6;
+    v21 = payloadsCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Declaration manager did prepare declaration request payloads: %@", buf, 0xCu);
   }
 
@@ -3533,7 +3533,7 @@ LABEL_11:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v6;
+  v8 = payloadsCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -3550,8 +3550,8 @@ LABEL_11:
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
-        v14 = [(STScreenTimeOrganizationController *)self requestManager];
-        [v14 installFromRequest:v13];
+        requestManager = [(STScreenTimeOrganizationController *)self requestManager];
+        [requestManager installFromRequest:v13];
 
         v12 = v12 + 1;
       }
@@ -3564,31 +3564,31 @@ LABEL_11:
   }
 }
 
-- (void)requestManager:(id)a3 didPrepareBlueprintPayloads:(id)a4
+- (void)requestManager:(id)manager didPrepareBlueprintPayloads:(id)payloads
 {
-  v5 = a4;
-  v6 = [(STScreenTimeOrganizationController *)self familyOrganizationController];
-  [v6 sendPayloads:v5];
+  payloadsCopy = payloads;
+  familyOrganizationController = [(STScreenTimeOrganizationController *)self familyOrganizationController];
+  [familyOrganizationController sendPayloads:payloadsCopy];
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v9 = a3;
-  v4 = [(STScreenTimeOrganizationController *)self settingsResultsController];
+  contentCopy = content;
+  settingsResultsController = [(STScreenTimeOrganizationController *)self settingsResultsController];
 
-  if (v4 == v9)
+  if (settingsResultsController == contentCopy)
   {
-    v6 = [(STScreenTimeOrganizationController *)self deviceStateDebouncer];
+    deviceStateDebouncer = [(STScreenTimeOrganizationController *)self deviceStateDebouncer];
   }
 
   else
   {
-    v5 = [(STScreenTimeOrganizationController *)self organizationSettingsResultsController];
+    organizationSettingsResultsController = [(STScreenTimeOrganizationController *)self organizationSettingsResultsController];
 
-    if (v5 == v9)
+    if (organizationSettingsResultsController == contentCopy)
     {
-      v7 = [(STScreenTimeOrganizationController *)self deviceStateDebouncer];
-      [v7 bounce:0];
+      deviceStateDebouncer2 = [(STScreenTimeOrganizationController *)self deviceStateDebouncer];
+      [deviceStateDebouncer2 bounce:0];
     }
 
     else
@@ -3596,19 +3596,19 @@ LABEL_11:
       [(STScreenTimeOrganizationController *)self downtimeOverridesResultsController];
     }
 
-    v6 = [(STScreenTimeOrganizationController *)self blueprintDebouncer];
+    deviceStateDebouncer = [(STScreenTimeOrganizationController *)self blueprintDebouncer];
   }
 
-  v8 = v6;
-  [v6 bounce:0];
+  v8 = deviceStateDebouncer;
+  [deviceStateDebouncer bounce:0];
 }
 
-- (void)debouncer:(id)a3 didDebounce:(id)a4
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce
 {
-  v8 = a3;
-  v5 = [(STScreenTimeOrganizationController *)self deviceStateDebouncer];
+  debouncerCopy = debouncer;
+  deviceStateDebouncer = [(STScreenTimeOrganizationController *)self deviceStateDebouncer];
 
-  if (v5 == v8)
+  if (deviceStateDebouncer == debouncerCopy)
   {
     if (os_variant_has_internal_content())
     {
@@ -3621,10 +3621,10 @@ LABEL_11:
 
   else
   {
-    v6 = [(STScreenTimeOrganizationController *)self blueprintDebouncer];
+    blueprintDebouncer = [(STScreenTimeOrganizationController *)self blueprintDebouncer];
 
-    v7 = v8;
-    if (v6 != v8)
+    v7 = debouncerCopy;
+    if (blueprintDebouncer != debouncerCopy)
     {
       goto LABEL_12;
     }
@@ -3645,16 +3645,16 @@ LABEL_11:
     }
   }
 
-  v7 = v8;
+  v7 = debouncerCopy;
 LABEL_12:
 }
 
-+ (void)postDiagnosticsServiceMessage:(id)a3
++ (void)postDiagnosticsServiceMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[NSNotificationCenter defaultCenter];
   v6 = @"type";
-  v7 = v3;
+  v7 = messageCopy;
   v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 
   [v4 postNotificationName:@"DiagnosticsService-Generic" object:0 userInfo:v5];

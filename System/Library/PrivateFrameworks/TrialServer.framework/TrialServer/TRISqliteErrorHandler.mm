@@ -1,31 +1,31 @@
 @interface TRISqliteErrorHandler
-- (TRISqliteErrorHandler)initWithStorageManagement:(id)a3;
-- (TRISqliteErrorHandler)initWithStorageManagement:(id)a3 defaultErrorHandler:(id)a4;
+- (TRISqliteErrorHandler)initWithStorageManagement:(id)management;
+- (TRISqliteErrorHandler)initWithStorageManagement:(id)management defaultErrorHandler:(id)handler;
 @end
 
 @implementation TRISqliteErrorHandler
 
-- (TRISqliteErrorHandler)initWithStorageManagement:(id)a3
+- (TRISqliteErrorHandler)initWithStorageManagement:(id)management
 {
-  v4 = a3;
+  managementCopy = management;
   v5 = objc_opt_new();
-  v6 = [(TRISqliteErrorHandler *)self initWithStorageManagement:v4 defaultErrorHandler:v5];
+  v6 = [(TRISqliteErrorHandler *)self initWithStorageManagement:managementCopy defaultErrorHandler:v5];
 
   return v6;
 }
 
-- (TRISqliteErrorHandler)initWithStorageManagement:(id)a3 defaultErrorHandler:(id)a4
+- (TRISqliteErrorHandler)initWithStorageManagement:(id)management defaultErrorHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  managementCopy = management;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = TRISqliteErrorHandler;
   v9 = [(TRISqliteErrorHandler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_defaultErrorHandler, a4);
-    objc_storeStrong(&v10->_storageManagement, a3);
+    objc_storeStrong(&v9->_defaultErrorHandler, handler);
+    objc_storeStrong(&v10->_storageManagement, management);
     if (!v10->_storageManagement)
     {
       v11 = TRILogCategory_Server();

@@ -1,11 +1,11 @@
 @interface SCNSceneDatabase
-+ (id)lookUpKeyForObjectNamed:(id)a3 class:(Class)a4;
++ (id)lookUpKeyForObjectNamed:(id)named class:(Class)class;
 + (id)sceneDatabase;
 - (SCNSceneDatabase)init;
-- (SCNSceneDatabase)initWithCoder:(id)a3;
-- (void)addInstance:(id)a3 withName:(id)a4 class:(Class)a5;
+- (SCNSceneDatabase)initWithCoder:(id)coder;
+- (void)addInstance:(id)instance withName:(id)name class:(Class)class;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNSceneDatabase
@@ -37,22 +37,22 @@
   [(SCNSceneDatabase *)&v3 dealloc];
 }
 
-+ (id)lookUpKeyForObjectNamed:(id)a3 class:(Class)a4
++ (id)lookUpKeyForObjectNamed:(id)named class:(Class)class
 {
-  v5 = [NSStringFromClass(a4) stringByAppendingString:@"."];
+  v5 = [NSStringFromClass(class) stringByAppendingString:@"."];
 
-  return [(NSString *)v5 stringByAppendingString:a3];
+  return [(NSString *)v5 stringByAppendingString:named];
 }
 
-- (void)addInstance:(id)a3 withName:(id)a4 class:(Class)a5
+- (void)addInstance:(id)instance withName:(id)name class:(Class)class
 {
-  v7 = [objc_opt_class() lookUpKeyForObjectNamed:a4 class:a5];
+  v7 = [objc_opt_class() lookUpKeyForObjectNamed:name class:class];
   db = self->_db;
 
-  [(NSMutableDictionary *)db setValue:a3 forKey:v7];
+  [(NSMutableDictionary *)db setValue:instance forKey:v7];
 }
 
-- (SCNSceneDatabase)initWithCoder:(id)a3
+- (SCNSceneDatabase)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNSceneDatabase;
@@ -60,9 +60,9 @@
   if (v4)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 lookUpKey])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [coder lookUpKey])
     {
-      [a3 setLookUpFoundInstance:{objc_msgSend(a3, "decodeObjectOfClasses:forKey:", SCNUserInfoClasses(), objc_msgSend(a3, "lookUpKey"))}];
+      [coder setLookUpFoundInstance:{objc_msgSend(coder, "decodeObjectOfClasses:forKey:", SCNUserInfoClasses(), objc_msgSend(coder, "lookUpKey"))}];
     }
 
     else
@@ -78,7 +78,7 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -100,7 +100,7 @@
           objc_enumerationMutation(db);
         }
 
-        [a3 encodeObject:-[NSMutableDictionary valueForKey:](self->_db forKey:{"valueForKey:", *(*(&v10 + 1) + 8 * i)), *(*(&v10 + 1) + 8 * i)}];
+        [coder encodeObject:-[NSMutableDictionary valueForKey:](self->_db forKey:{"valueForKey:", *(*(&v10 + 1) + 8 * i)), *(*(&v10 + 1) + 8 * i)}];
       }
 
       v7 = [(NSMutableDictionary *)db countByEnumeratingWithState:&v10 objects:v14 count:16];

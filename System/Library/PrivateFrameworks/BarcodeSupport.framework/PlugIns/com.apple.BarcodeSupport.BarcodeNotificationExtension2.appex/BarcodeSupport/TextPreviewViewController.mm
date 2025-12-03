@@ -1,19 +1,19 @@
 @interface TextPreviewViewController
 - (CGSize)preferredContentSize;
-- (TextPreviewViewController)initWithPreviewText:(id)a3 footerTitle:(id)a4 footerSubtitle:(id)a5;
-- (id)_createPreviewControllerWithText:(id)a3;
+- (TextPreviewViewController)initWithPreviewText:(id)text footerTitle:(id)title footerSubtitle:(id)subtitle;
+- (id)_createPreviewControllerWithText:(id)text;
 @end
 
 @implementation TextPreviewViewController
 
-- (TextPreviewViewController)initWithPreviewText:(id)a3 footerTitle:(id)a4 footerSubtitle:(id)a5
+- (TextPreviewViewController)initWithPreviewText:(id)text footerTitle:(id)title footerSubtitle:(id)subtitle
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(TextPreviewViewController *)self _createPreviewControllerWithText:a3];
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  v10 = [(TextPreviewViewController *)self _createPreviewControllerWithText:text];
   v14.receiver = self;
   v14.super_class = TextPreviewViewController;
-  v11 = [(PreviewWithFooterViewController *)&v14 initWithPreviewViewController:v10 footerTitle:v9 footerSubtitle:v8];
+  v11 = [(PreviewWithFooterViewController *)&v14 initWithPreviewViewController:v10 footerTitle:titleCopy footerSubtitle:subtitleCopy];
 
   if (v11)
   {
@@ -23,26 +23,26 @@
   return v11;
 }
 
-- (id)_createPreviewControllerWithText:(id)a3
+- (id)_createPreviewControllerWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(UITextView);
   textView = self->_textView;
   self->_textView = v5;
 
-  [(UITextView *)self->_textView setText:v4];
+  [(UITextView *)self->_textView setText:textCopy];
   v7 = [UIFont systemFontOfSize:18.0];
   [(UITextView *)self->_textView setFont:v7];
 
   [(UITextView *)self->_textView setDataDetectorTypes:-1];
   [(UITextView *)self->_textView setEditable:0];
   [(UITextView *)self->_textView setScrollEnabled:0];
-  v8 = [(UITextView *)self->_textView textContainer];
-  [v8 setLineBreakMode:4];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  [textContainer setLineBreakMode:4];
 
   [(UITextView *)self->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(UITextView *)self->_textView linkTextAttributes];
-  v10 = [NSMutableDictionary dictionaryWithDictionary:v9];
+  linkTextAttributes = [(UITextView *)self->_textView linkTextAttributes];
+  v10 = [NSMutableDictionary dictionaryWithDictionary:linkTextAttributes];
 
   v11 = +[UIColor blueColor];
   v32 = v10;
@@ -53,27 +53,27 @@
   [(UITextView *)self->_textView setLinkTextAttributes:v12];
 
   v24 = objc_alloc_init(UIViewController);
-  v13 = [v24 view];
-  [v13 addSubview:self->_textView];
-  v31 = [(UITextView *)self->_textView centerXAnchor];
-  v30 = [v13 centerXAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  view = [v24 view];
+  [view addSubview:self->_textView];
+  centerXAnchor = [(UITextView *)self->_textView centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v33[0] = v29;
-  v28 = [(UITextView *)self->_textView leadingAnchor];
-  v27 = [v13 leadingAnchor];
-  v26 = [v28 constraintGreaterThanOrEqualToAnchor:v27 constant:40.0];
+  leadingAnchor = [(UITextView *)self->_textView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v26 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:40.0];
   v33[1] = v26;
-  v25 = [(UITextView *)self->_textView trailingAnchor];
-  v14 = [v13 trailingAnchor];
-  v15 = [v25 constraintLessThanOrEqualToAnchor:v14 constant:-40.0];
+  trailingAnchor = [(UITextView *)self->_textView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v15 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-40.0];
   v33[2] = v15;
-  v16 = [(UITextView *)self->_textView topAnchor];
-  v17 = [v13 topAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:20.0];
+  topAnchor = [(UITextView *)self->_textView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v33[3] = v18;
-  v19 = [(UITextView *)self->_textView bottomAnchor];
-  v20 = [v13 bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:-20.0];
+  bottomAnchor = [(UITextView *)self->_textView bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
   v33[4] = v21;
   v22 = [NSArray arrayWithObjects:v33 count:5];
   [NSLayoutConstraint activateConstraints:v22];
@@ -83,8 +83,8 @@
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(TextPreviewViewController *)self view];
-  [v3 bounds];
+  view = [(TextPreviewViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -95,8 +95,8 @@
   v21.size.width = v9;
   v21.size.height = v11;
   Width = CGRectGetWidth(v21);
-  v13 = [(PreviewWithFooterViewController *)self footerView];
-  [v13 sizeThatFits:{Width, 1.79769313e308}];
+  footerView = [(PreviewWithFooterViewController *)self footerView];
+  [footerView sizeThatFits:{Width, 1.79769313e308}];
   v15 = v14;
 
   [(UITextView *)self->_textView sizeThatFits:Width + -80.0, 1.79769313e308];

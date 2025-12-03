@@ -1,24 +1,24 @@
 @interface AllCollectionsSection
 - ($39B11F04546F9E5B2C1D7F3BC68BA281)configuration;
-- (AllCollectionsSection)initWithSectionIndex:(int64_t)a3 usingMaxWidth:(double)a4 usingTraitEnvironment:(id)a5;
-- (id)layoutForSectionUsingTraitsEnvironment:(id)a3 usingWidth:(double)a4;
-- (id)layoutSectionForCollectionsUsingTraitsEnvironment:(id)a3 usingWidth:(double)a4;
-- (id)layoutSectionForLoadingUsingTraitEnvironment:(id)a3;
-- (void)setConfiguration:(id *)a3;
+- (AllCollectionsSection)initWithSectionIndex:(int64_t)index usingMaxWidth:(double)width usingTraitEnvironment:(id)environment;
+- (id)layoutForSectionUsingTraitsEnvironment:(id)environment usingWidth:(double)width;
+- (id)layoutSectionForCollectionsUsingTraitsEnvironment:(id)environment usingWidth:(double)width;
+- (id)layoutSectionForLoadingUsingTraitEnvironment:(id)environment;
+- (void)setConfiguration:(id *)configuration;
 - (void)setupConfiguration;
 @end
 
 @implementation AllCollectionsSection
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
-  self->_configuration.columnCount = a3->var0;
-  var1 = a3->var1;
-  a3->var1 = 0;
+  self->_configuration.columnCount = configuration->var0;
+  var1 = configuration->var1;
+  configuration->var1 = 0;
   sectionIdentifier = self->_configuration.sectionIdentifier;
   self->_configuration.sectionIdentifier = var1;
 
-  *&self->_configuration.cellKind = *&a3->var2;
+  *&self->_configuration.cellKind = *&configuration->var2;
 }
 
 - ($39B11F04546F9E5B2C1D7F3BC68BA281)configuration
@@ -31,9 +31,9 @@
   return result;
 }
 
-- (id)layoutSectionForLoadingUsingTraitEnvironment:(id)a3
+- (id)layoutSectionForLoadingUsingTraitEnvironment:(id)environment
 {
-  v3 = [NSCollectionLayoutSize layoutSizeWithFractionalWidth:a3 fractionalHeight:1.0, 1.0];
+  v3 = [NSCollectionLayoutSize layoutSizeWithFractionalWidth:environment fractionalHeight:1.0, 1.0];
   v4 = [NSCollectionLayoutItem itemWithLayoutSize:v3];
   [v4 setContentInsets:{NSDirectionalEdgeInsetsZero.top, NSDirectionalEdgeInsetsZero.leading, NSDirectionalEdgeInsetsZero.bottom, NSDirectionalEdgeInsetsZero.trailing}];
   v5 = [NSCollectionLayoutDimension estimatedDimension:100.0];
@@ -49,16 +49,16 @@
   return v10;
 }
 
-- (id)layoutSectionForCollectionsUsingTraitsEnvironment:(id)a3 usingWidth:(double)a4
+- (id)layoutSectionForCollectionsUsingTraitsEnvironment:(id)environment usingWidth:(double)width
 {
-  v6 = a3;
-  v7 = [(AllCollectionsSection *)self collectionsSizeController];
-  [v7 sizeForCollectionWithMaxCollectionsWidth:a4];
+  environmentCopy = environment;
+  collectionsSizeController = [(AllCollectionsSection *)self collectionsSizeController];
+  [collectionsSizeController sizeForCollectionWithMaxCollectionsWidth:width];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AllCollectionsSection *)self collectionsSizeController];
-  [v12 sectionInsets];
+  collectionsSizeController2 = [(AllCollectionsSection *)self collectionsSizeController];
+  [collectionsSizeController2 sectionInsets];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -80,12 +80,12 @@
   v29 = [NSCollectionLayoutGroup verticalGroupWithLayoutSize:v27 subitems:v28];
 
   v30 = [NSCollectionLayoutSection sectionWithGroup:v29];
-  v31 = [(AllCollectionsSection *)self collectionsSizeController];
-  [v31 minimumInterItemSpacing];
+  collectionsSizeController3 = [(AllCollectionsSection *)self collectionsSizeController];
+  [collectionsSizeController3 minimumInterItemSpacing];
   [v30 setInterGroupSpacing:?];
 
   [v30 setContentInsets:{v14, v16, v18, v20}];
-  v32 = sub_10000FA08(v6);
+  v32 = sub_10000FA08(environmentCopy);
 
   v33 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
   if (v32 == 5)
@@ -104,8 +104,8 @@
 
   else
   {
-    v39 = [(AllCollectionsSection *)self filtersSizeController];
-    [v39 defaultHeight];
+    filtersSizeController = [(AllCollectionsSection *)self filtersSizeController];
+    [filtersSizeController defaultHeight];
     v40 = [NSCollectionLayoutDimension absoluteDimension:?];
     v35 = [NSCollectionLayoutSize sizeWithWidthDimension:v33 heightDimension:v40];
 
@@ -122,23 +122,23 @@
   return v30;
 }
 
-- (id)layoutForSectionUsingTraitsEnvironment:(id)a3 usingWidth:(double)a4
+- (id)layoutForSectionUsingTraitsEnvironment:(id)environment usingWidth:(double)width
 {
-  v7 = a3;
-  v8 = [(AllCollectionsSection *)self kind];
-  if (v8 == 1)
+  environmentCopy = environment;
+  kind = [(AllCollectionsSection *)self kind];
+  if (kind == 1)
   {
-    v9 = [(AllCollectionsSection *)self layoutSectionForLoadingUsingTraitEnvironment:v7];
+    v9 = [(AllCollectionsSection *)self layoutSectionForLoadingUsingTraitEnvironment:environmentCopy];
   }
 
   else
   {
-    if (v8)
+    if (kind)
     {
       goto LABEL_6;
     }
 
-    v9 = [(AllCollectionsSection *)self layoutSectionForCollectionsUsingTraitsEnvironment:v7 usingWidth:a4];
+    v9 = [(AllCollectionsSection *)self layoutSectionForCollectionsUsingTraitsEnvironment:environmentCopy usingWidth:width];
   }
 
   v4 = v9;
@@ -181,24 +181,24 @@ LABEL_6:
   [(AllCollectionsSection *)self setConfiguration:v7];
 }
 
-- (AllCollectionsSection)initWithSectionIndex:(int64_t)a3 usingMaxWidth:(double)a4 usingTraitEnvironment:(id)a5
+- (AllCollectionsSection)initWithSectionIndex:(int64_t)index usingMaxWidth:(double)width usingTraitEnvironment:(id)environment
 {
-  v7 = a5;
+  environmentCopy = environment;
   v16.receiver = self;
   v16.super_class = AllCollectionsSection;
   v8 = [(AllCollectionsSection *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    if (a3 > 1)
+    if (index > 1)
     {
       v14 = 0;
       goto LABEL_6;
     }
 
-    v8->_kind = a3;
+    v8->_kind = index;
     [(AllCollectionsSection *)v8 setupConfiguration];
-    v10 = [[MKPlaceCollectionsSizeController alloc] initWithDefaultCollectionsConfigurationUsingTraitCollections:v7 inContext:5];
+    v10 = [[MKPlaceCollectionsSizeController alloc] initWithDefaultCollectionsConfigurationUsingTraitCollections:environmentCopy inContext:5];
     collectionsSizeController = v9->_collectionsSizeController;
     v9->_collectionsSizeController = v10;
 

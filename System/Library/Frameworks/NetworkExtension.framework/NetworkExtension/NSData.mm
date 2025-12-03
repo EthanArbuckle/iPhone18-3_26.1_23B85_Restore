@@ -1,12 +1,12 @@
 @interface NSData
-+ (BOOL)isSensitiveDataInstance:(uint64_t)a1;
-+ (CFDataRef)sensitiveDataWithBytes:(CFIndex)a3 length:;
-+ (CFDataRef)sensitiveDataWithData:(uint64_t)a1;
++ (BOOL)isSensitiveDataInstance:(uint64_t)instance;
++ (CFDataRef)sensitiveDataWithBytes:(CFIndex)bytes length:;
++ (CFDataRef)sensitiveDataWithData:(uint64_t)data;
 @end
 
 @implementation NSData
 
-+ (BOOL)isSensitiveDataInstance:(uint64_t)a1
++ (BOOL)isSensitiveDataInstance:(uint64_t)instance
 {
   v2 = a2;
   objc_opt_self();
@@ -24,7 +24,7 @@
   return v4;
 }
 
-+ (CFDataRef)sensitiveDataWithData:(uint64_t)a1
++ (CFDataRef)sensitiveDataWithData:(uint64_t)data
 {
   v2 = a2;
   objc_opt_self();
@@ -42,7 +42,7 @@
   return Copy;
 }
 
-+ (CFDataRef)sensitiveDataWithBytes:(CFIndex)a3 length:
++ (CFDataRef)sensitiveDataWithBytes:(CFIndex)bytes length:
 {
   objc_opt_self();
   if (!a2)
@@ -52,7 +52,7 @@
 
   v5 = SecCFAllocatorZeroize();
 
-  return CFDataCreate(v5, a2, a3);
+  return CFDataCreate(v5, a2, bytes);
 }
 
 @end

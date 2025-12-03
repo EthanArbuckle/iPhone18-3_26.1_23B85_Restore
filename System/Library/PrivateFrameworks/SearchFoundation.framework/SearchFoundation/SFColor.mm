@@ -1,12 +1,12 @@
 @interface SFColor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFColor)initWithCoder:(id)a3;
-- (SFColor)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFColor)initWithCoder:(id)coder;
+- (SFColor)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFColor
@@ -40,26 +40,26 @@
   v21 = vdupq_n_s64(0x41E3C6EF36200000uLL);
   v30 = vaddq_s64(vcvtq_u64_f64(vmulq_f64(v19, v21)), vcvtq_n_u64_f64(v15, 0x40uLL));
   v32 = vaddq_s64(vcvtq_u64_f64(vmulq_f64(v20, v21)), vcvtq_n_u64_f64(v14, 0x40uLL));
-  v22 = [(SFColor *)self colorTintStyle];
-  v23 = [(SFColor *)self darkModeColor];
-  v24 = [v23 hash];
+  colorTintStyle = [(SFColor *)self colorTintStyle];
+  darkModeColor = [(SFColor *)self darkModeColor];
+  v24 = [darkModeColor hash];
   v25 = veorq_s8(v32, v30);
   v26 = *&veor_s8(*v25.i8, *&vextq_s8(v25, v25, 8uLL)) ^ v24;
 
-  return v26 ^ v22;
+  return v26 ^ colorTintStyle;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v24 = 1;
   }
 
-  else if ([(SFColor *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFColor *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(SFColor *)self redComponent];
     v7 = v6;
     [(SFColor *)v5 redComponent];
@@ -81,21 +81,21 @@
     [(SFColor *)v5 blueComponent];
     if (vabdd_f64(v13, v14) < 2.22044605e-16 && ([(SFColor *)self alphaComponent], v16 = v15, [(SFColor *)v5 alphaComponent], vabdd_f64(v16, v17) < 2.22044605e-16) && (v18 = [(SFColor *)self colorTintStyle], v18 == [(SFColor *)v5 colorTintStyle]))
     {
-      v19 = [(SFColor *)self darkModeColor];
-      v20 = [(SFColor *)v5 darkModeColor];
-      if ((v19 != 0) == (v20 == 0))
+      darkModeColor = [(SFColor *)self darkModeColor];
+      darkModeColor2 = [(SFColor *)v5 darkModeColor];
+      if ((darkModeColor != 0) == (darkModeColor2 == 0))
       {
         v24 = 0;
       }
 
       else
       {
-        v21 = [(SFColor *)self darkModeColor];
-        if (v21)
+        darkModeColor3 = [(SFColor *)self darkModeColor];
+        if (darkModeColor3)
         {
-          v22 = [(SFColor *)self darkModeColor];
-          v23 = [(SFColor *)v5 darkModeColor];
-          v24 = [v22 isEqual:v23];
+          darkModeColor4 = [(SFColor *)self darkModeColor];
+          darkModeColor5 = [(SFColor *)v5 darkModeColor];
+          v24 = [darkModeColor4 isEqual:darkModeColor5];
         }
 
         else
@@ -120,9 +120,9 @@ LABEL_13:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(SFColor *)self redComponent];
   [v4 setRedComponent:?];
   [(SFColor *)self greenComponent];
@@ -132,8 +132,8 @@ LABEL_13:
   [(SFColor *)self alphaComponent];
   [v4 setAlphaComponent:?];
   [v4 setColorTintStyle:{-[SFColor colorTintStyle](self, "colorTintStyle")}];
-  v5 = [(SFColor *)self darkModeColor];
-  v6 = [v5 copy];
+  darkModeColor = [(SFColor *)self darkModeColor];
+  v6 = [darkModeColor copy];
   [v4 setDarkModeColor:v6];
 
   return v4;
@@ -142,31 +142,31 @@ LABEL_13:
 - (NSData)jsonData
 {
   v2 = [[_SFPBColor alloc] initWithFacade:self];
-  v3 = [(_SFPBColor *)v2 jsonData];
+  jsonData = [(_SFPBColor *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBColor alloc] initWithFacade:self];
-  v3 = [(_SFPBColor *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBColor *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBColor alloc] initWithFacade:self];
-  v5 = [(_SFPBColor *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBColor *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFColor)initWithCoder:(id)a3
+- (SFColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [SFColor alloc];
   v7 = [[_SFPBColor alloc] initWithData:v5];
@@ -175,171 +175,171 @@ LABEL_13:
   return v8;
 }
 
-- (SFColor)initWithProtobuf:(id)a3
+- (SFColor)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v40.receiver = self;
   v40.super_class = SFColor;
   v5 = [(SFColor *)&v40 init];
   if (v5)
   {
-    v6 = [v4 redComponent];
+    redComponent = [protobufCopy redComponent];
 
-    if (v6)
+    if (redComponent)
     {
-      v7 = [v4 redComponent];
-      [v7 doubleValue];
+      redComponent2 = [protobufCopy redComponent];
+      [redComponent2 doubleValue];
       [(SFColor *)v5 setRedComponent:?];
     }
 
-    v8 = [v4 greenComponent];
+    greenComponent = [protobufCopy greenComponent];
 
-    if (v8)
+    if (greenComponent)
     {
-      v9 = [v4 greenComponent];
-      [v9 doubleValue];
+      greenComponent2 = [protobufCopy greenComponent];
+      [greenComponent2 doubleValue];
       [(SFColor *)v5 setGreenComponent:?];
     }
 
-    v10 = [v4 blueComponent];
+    blueComponent = [protobufCopy blueComponent];
 
-    if (v10)
+    if (blueComponent)
     {
-      v11 = [v4 blueComponent];
-      [v11 doubleValue];
+      blueComponent2 = [protobufCopy blueComponent];
+      [blueComponent2 doubleValue];
       [(SFColor *)v5 setBlueComponent:?];
     }
 
-    v12 = [v4 alphaComponent];
+    alphaComponent = [protobufCopy alphaComponent];
 
-    if (v12)
+    if (alphaComponent)
     {
-      v13 = [v4 alphaComponent];
-      [v13 doubleValue];
+      alphaComponent2 = [protobufCopy alphaComponent];
+      [alphaComponent2 doubleValue];
       [(SFColor *)v5 setAlphaComponent:?];
     }
 
-    if ([v4 colorTintStyle])
+    if ([protobufCopy colorTintStyle])
     {
-      -[SFColor setColorTintStyle:](v5, "setColorTintStyle:", [v4 colorTintStyle]);
+      -[SFColor setColorTintStyle:](v5, "setColorTintStyle:", [protobufCopy colorTintStyle]);
     }
 
-    v14 = [v4 darkModeColor];
+    darkModeColor = [protobufCopy darkModeColor];
 
-    if (v14)
+    if (darkModeColor)
     {
       v15 = [SFColor alloc];
-      v16 = [v4 darkModeColor];
-      v17 = [(SFColor *)v15 initWithProtobuf:v16];
+      darkModeColor2 = [protobufCopy darkModeColor];
+      v17 = [(SFColor *)v15 initWithProtobuf:darkModeColor2];
       [(SFColor *)v5 setDarkModeColor:v17];
     }
 
-    v18 = [v4 calendarColor];
+    calendarColor = [protobufCopy calendarColor];
 
-    if (v18)
+    if (calendarColor)
     {
       v19 = [SFCalendarColor alloc];
-      v20 = [v4 calendarColor];
+      calendarColor2 = [protobufCopy calendarColor];
     }
 
     else
     {
-      v22 = [v4 appColor];
+      appColor = [protobufCopy appColor];
 
-      if (v22)
+      if (appColor)
       {
         v19 = [SFAppColor alloc];
-        v20 = [v4 appColor];
+        calendarColor2 = [protobufCopy appColor];
       }
 
       else
       {
-        v23 = [v4 imageDerivedColor];
+        imageDerivedColor = [protobufCopy imageDerivedColor];
 
-        if (v23)
+        if (imageDerivedColor)
         {
           v19 = [SFImageDerivedColor alloc];
-          v20 = [v4 imageDerivedColor];
+          calendarColor2 = [protobufCopy imageDerivedColor];
         }
 
         else
         {
-          v24 = [v4 gradientColor];
+          gradientColor = [protobufCopy gradientColor];
 
-          if (v24)
+          if (gradientColor)
           {
             v19 = [SFGradientColor alloc];
-            v20 = [v4 gradientColor];
+            calendarColor2 = [protobufCopy gradientColor];
           }
 
           else
           {
-            v25 = [v4 weatherColor];
+            weatherColor = [protobufCopy weatherColor];
 
-            if (!v25)
+            if (!weatherColor)
             {
               v21 = v5;
               goto LABEL_37;
             }
 
             v19 = [SFWeatherColor alloc];
-            v20 = [v4 weatherColor];
+            calendarColor2 = [protobufCopy weatherColor];
           }
         }
       }
     }
 
-    v26 = v20;
-    v21 = [(SFCalendarColor *)v19 initWithProtobuf:v20];
+    v26 = calendarColor2;
+    v21 = [(SFCalendarColor *)v19 initWithProtobuf:calendarColor2];
 
-    v27 = [v4 redComponent];
+    redComponent3 = [protobufCopy redComponent];
 
-    if (v27)
+    if (redComponent3)
     {
-      v28 = [v4 redComponent];
-      [v28 doubleValue];
+      redComponent4 = [protobufCopy redComponent];
+      [redComponent4 doubleValue];
       [(SFColor *)v21 setRedComponent:?];
     }
 
-    v29 = [v4 greenComponent];
+    greenComponent3 = [protobufCopy greenComponent];
 
-    if (v29)
+    if (greenComponent3)
     {
-      v30 = [v4 greenComponent];
-      [v30 doubleValue];
+      greenComponent4 = [protobufCopy greenComponent];
+      [greenComponent4 doubleValue];
       [(SFColor *)v21 setGreenComponent:?];
     }
 
-    v31 = [v4 blueComponent];
+    blueComponent3 = [protobufCopy blueComponent];
 
-    if (v31)
+    if (blueComponent3)
     {
-      v32 = [v4 blueComponent];
-      [v32 doubleValue];
+      blueComponent4 = [protobufCopy blueComponent];
+      [blueComponent4 doubleValue];
       [(SFColor *)v21 setBlueComponent:?];
     }
 
-    v33 = [v4 alphaComponent];
+    alphaComponent3 = [protobufCopy alphaComponent];
 
-    if (v33)
+    if (alphaComponent3)
     {
-      v34 = [v4 alphaComponent];
-      [v34 doubleValue];
+      alphaComponent4 = [protobufCopy alphaComponent];
+      [alphaComponent4 doubleValue];
       [(SFColor *)v21 setAlphaComponent:?];
     }
 
-    if ([v4 colorTintStyle])
+    if ([protobufCopy colorTintStyle])
     {
-      -[SFColor setColorTintStyle:](v21, "setColorTintStyle:", [v4 colorTintStyle]);
+      -[SFColor setColorTintStyle:](v21, "setColorTintStyle:", [protobufCopy colorTintStyle]);
     }
 
-    v35 = [v4 darkModeColor];
+    darkModeColor3 = [protobufCopy darkModeColor];
 
-    if (v35)
+    if (darkModeColor3)
     {
       v36 = [SFColor alloc];
-      v37 = [v4 darkModeColor];
-      v38 = [(SFColor *)v36 initWithProtobuf:v37];
+      darkModeColor4 = [protobufCopy darkModeColor];
+      v38 = [(SFColor *)v36 initWithProtobuf:darkModeColor4];
       [(SFColor *)v21 setDarkModeColor:v38];
     }
   }

@@ -1,64 +1,64 @@
 @interface IMTextIndex
-+ (id)textIndexWithName:(id)a3;
-+ (void)_lowMemoryWarning:(id)a3;
-+ (void)addTextIndex:(id)a3 withName:(id)a4;
++ (id)textIndexWithName:(id)name;
++ (void)_lowMemoryWarning:(id)warning;
++ (void)addTextIndex:(id)index withName:(id)name;
 + (void)initialize;
-+ (void)removeTextIndexWithName:(id)a3;
-- (BOOL)containsTextUnitWithIdentifier:(id)a3;
++ (void)removeTextIndexWithName:(id)name;
+- (BOOL)containsTextUnitWithIdentifier:(id)identifier;
 - (BOOL)isEmpty;
-- (IMTextIndex)initWithCaseRule:(int)a3;
-- (IMTextIndex)initWithCoder:(id)a3;
-- (id)_candidateIdentifiersForStringQueries:(id)a3;
+- (IMTextIndex)initWithCaseRule:(int)rule;
+- (IMTextIndex)initWithCoder:(id)coder;
+- (id)_candidateIdentifiersForStringQueries:(id)queries;
 - (id)_indexingDispatchGroup;
 - (id)allIdentifiers;
-- (id)candidateIdentifiersForStringQuery:(id)a3;
+- (id)candidateIdentifiersForStringQuery:(id)query;
 - (unint64_t)textUnitCount;
-- (void)_indexDispatchGroupDispatchToQueue:(id)a3 block:(id)a4;
+- (void)_indexDispatchGroupDispatchToQueue:(id)queue block:(id)block;
 - (void)_waitAndCleanupDispatchGroup;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)indexTextUnit:(id)a3 withIdentifier:(id)a4 indexSynchronously:(BOOL)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)indexTextUnit:(id)unit withIdentifier:(id)identifier indexSynchronously:(BOOL)synchronously;
 @end
 
 @implementation IMTextIndex
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = +[NSNotificationCenter defaultCenter];
-    [v3 addObserver:a1 selector:"_lowMemoryWarning:" name:UIApplicationDidReceiveMemoryWarningNotification object:0];
+    [v3 addObserver:self selector:"_lowMemoryWarning:" name:UIApplicationDidReceiveMemoryWarningNotification object:0];
   }
 }
 
-+ (void)_lowMemoryWarning:(id)a3
++ (void)_lowMemoryWarning:(id)warning
 {
-  v5 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
+  warningCopy = warning;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   [qword_345E30 removeAllObjects];
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-+ (id)textIndexWithName:(id)a3
++ (id)textIndexWithName:(id)name
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  v6 = [qword_345E30 objectForKey:v4];
-  objc_sync_exit(v5);
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [qword_345E30 objectForKey:nameCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (void)addTextIndex:(id)a3 withName:(id)a4
++ (void)addTextIndex:(id)index withName:(id)name
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11 && v6)
+  indexCopy = index;
+  nameCopy = name;
+  if (indexCopy && nameCopy)
   {
-    v7 = a1;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v8 = qword_345E30;
     if (!qword_345E30)
     {
@@ -69,32 +69,32 @@
       v8 = qword_345E30;
     }
 
-    [v8 setObject:v11 forKey:v6];
-    objc_sync_exit(v7);
+    [v8 setObject:indexCopy forKey:nameCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    NSLog(@"Warning : Missing parameters in %s (%@, %@)", "+[IMTextIndex addTextIndex:withName:]", v11, v6);
+    NSLog(@"Warning : Missing parameters in %s (%@, %@)", "+[IMTextIndex addTextIndex:withName:]", indexCopy, nameCopy);
   }
 }
 
-+ (void)removeTextIndexWithName:(id)a3
++ (void)removeTextIndexWithName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v6 = v4;
-    v5 = a1;
-    objc_sync_enter(v5);
+    v6 = nameCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     [qword_345E30 removeObjectForKey:v6];
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    nameCopy = v6;
   }
 }
 
-- (IMTextIndex)initWithCaseRule:(int)a3
+- (IMTextIndex)initWithCaseRule:(int)rule
 {
   v13.receiver = self;
   v13.super_class = IMTextIndex;
@@ -102,7 +102,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_caseRule = a3;
+    v4->_caseRule = rule;
     v11 = xmmword_2A4038;
     v12 = 4;
     v6 = [[IMLibraryFragmentFilter alloc] initWithFilterSpecification:&v11];
@@ -117,26 +117,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [v5 encodeInt:v4->_caseRule forKey:@"caseRule"];
-  [v5 encodeObject:v4->_library forKey:@"library"];
-  objc_sync_exit(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeInt:selfCopy->_caseRule forKey:@"caseRule"];
+  [coderCopy encodeObject:selfCopy->_library forKey:@"library"];
+  objc_sync_exit(selfCopy);
 }
 
-- (IMTextIndex)initWithCoder:(id)a3
+- (IMTextIndex)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = IMTextIndex;
   v5 = [(IMTextIndex *)&v11 init];
   if (v5)
   {
-    v5->_caseRule = [v4 decodeIntForKey:@"caseRule"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"library"];
+    v5->_caseRule = [coderCopy decodeIntForKey:@"caseRule"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"library"];
     library = v5->_library;
     v5->_library = v6;
 
@@ -183,97 +183,97 @@
   return v6;
 }
 
-- (void)_indexDispatchGroupDispatchToQueue:(id)a3 block:(id)a4
+- (void)_indexDispatchGroupDispatchToQueue:(id)queue block:(id)block
 {
-  queue = a3;
-  v6 = a4;
+  queue = queue;
+  blockCopy = block;
   [(NSRecursiveLock *)self->_indexingDispatchGroupLock lock];
-  v7 = [(IMTextIndex *)self _indexingDispatchGroup];
-  dispatch_group_async(v7, queue, v6);
+  _indexingDispatchGroup = [(IMTextIndex *)self _indexingDispatchGroup];
+  dispatch_group_async(_indexingDispatchGroup, queue, blockCopy);
 
   [(NSRecursiveLock *)self->_indexingDispatchGroupLock unlock];
 }
 
-- (void)indexTextUnit:(id)a3 withIdentifier:(id)a4 indexSynchronously:(BOOL)a5
+- (void)indexTextUnit:(id)unit withIdentifier:(id)identifier indexSynchronously:(BOOL)synchronously
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v5)
+  synchronouslyCopy = synchronously;
+  unitCopy = unit;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (synchronouslyCopy)
   {
-    v11 = v8;
-    v12 = [v11 stringByConvertingNewlineCharacterSetToSpace];
+    v11 = unitCopy;
+    stringByConvertingNewlineCharacterSetToSpace = [v11 stringByConvertingNewlineCharacterSetToSpace];
 
-    if (v10->_caseRule == 1)
+    if (selfCopy->_caseRule == 1)
     {
-      v13 = [v12 lowercaseString];
+      lowercaseString = [stringByConvertingNewlineCharacterSetToSpace lowercaseString];
 
-      v12 = v13;
+      stringByConvertingNewlineCharacterSetToSpace = lowercaseString;
     }
 
-    [(IMLibraryFragmentFilter *)v10->_library addDocument:v12 withIdentifier:v9];
+    [(IMLibraryFragmentFilter *)selfCopy->_library addDocument:stringByConvertingNewlineCharacterSetToSpace withIdentifier:identifierCopy];
   }
 
   else
   {
-    v12 = dispatch_get_global_queue(0, 0);
+    stringByConvertingNewlineCharacterSetToSpace = dispatch_get_global_queue(0, 0);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_11C2DC;
     v14[3] = &unk_2C89F8;
-    v14[4] = v10;
-    v15 = v8;
-    v16 = v9;
-    [(IMTextIndex *)v10 _indexDispatchGroupDispatchToQueue:v12 block:v14];
+    v14[4] = selfCopy;
+    v15 = unitCopy;
+    v16 = identifierCopy;
+    [(IMTextIndex *)selfCopy _indexDispatchGroupDispatchToQueue:stringByConvertingNewlineCharacterSetToSpace block:v14];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)containsTextUnitWithIdentifier:(id)a3
+- (BOOL)containsTextUnitWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(IMLibraryFragmentFilter *)v5->_library containsDocumentWithIdentifier:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(IMLibraryFragmentFilter *)selfCopy->_library containsDocumentWithIdentifier:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (unint64_t)textUnitCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(IMLibraryFragmentFilter *)v2->_library documentCount];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  documentCount = [(IMLibraryFragmentFilter *)selfCopy->_library documentCount];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return documentCount;
 }
 
 - (id)allIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(IMLibraryFragmentFilter *)v2->_library allIdentifiers];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allIdentifiers = [(IMLibraryFragmentFilter *)selfCopy->_library allIdentifiers];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allIdentifiers;
 }
 
-- (id)_candidateIdentifiersForStringQueries:(id)a3
+- (id)_candidateIdentifiersForStringQueries:(id)queries
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  queriesCopy = queries;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = objc_alloc_init(NSMutableSet);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v4;
+  v7 = queriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -287,7 +287,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [(IMLibraryFragmentFilter *)v5->_library candidateIdentifiersForQuery:*(*(&v13 + 1) + 8 * i), v13];
+        v11 = [(IMLibraryFragmentFilter *)selfCopy->_library candidateIdentifiersForQuery:*(*(&v13 + 1) + 8 * i), v13];
         [v6 unionSet:v11];
       }
 
@@ -297,55 +297,55 @@
     while (v8);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)candidateIdentifiersForStringQuery:(id)a3
+- (id)candidateIdentifiersForStringQuery:(id)query
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  caseRule = v5->_caseRule;
+  queryCopy = query;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  caseRule = selfCopy->_caseRule;
   if (caseRule)
   {
     if (caseRule == 1)
     {
-      v7 = [v4 lowercaseString];
-      v8 = [NSArray arrayWithObject:v7];
-      v9 = [(IMTextIndex *)v5 _candidateIdentifiersForStringQueries:v8];
+      lowercaseString = [queryCopy lowercaseString];
+      uppercaseString = [NSArray arrayWithObject:lowercaseString];
+      v9 = [(IMTextIndex *)selfCopy _candidateIdentifiersForStringQueries:uppercaseString];
     }
 
     else
     {
-      v7 = [v4 lowercaseString];
-      v8 = [v4 uppercaseString];
-      v10 = [v4 capitalizedString];
-      v11 = [NSArray arrayWithObjects:v7, v8, v10, v4, 0];
-      v9 = [(IMTextIndex *)v5 _candidateIdentifiersForStringQueries:v11];
+      lowercaseString = [queryCopy lowercaseString];
+      uppercaseString = [queryCopy uppercaseString];
+      capitalizedString = [queryCopy capitalizedString];
+      v11 = [NSArray arrayWithObjects:lowercaseString, uppercaseString, capitalizedString, queryCopy, 0];
+      v9 = [(IMTextIndex *)selfCopy _candidateIdentifiersForStringQueries:v11];
     }
   }
 
   else
   {
-    v7 = [NSArray arrayWithObject:v4];
-    v9 = [(IMTextIndex *)v5 _candidateIdentifiersForStringQueries:v7];
+    lowercaseString = [NSArray arrayWithObject:queryCopy];
+    v9 = [(IMTextIndex *)selfCopy _candidateIdentifiersForStringQueries:lowercaseString];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
 - (BOOL)isEmpty
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(IMLibraryFragmentFilter *)v2->_library allIdentifiers];
-  v4 = [v3 count] == 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allIdentifiers = [(IMLibraryFragmentFilter *)selfCopy->_library allIdentifiers];
+  v4 = [allIdentifiers count] == 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 

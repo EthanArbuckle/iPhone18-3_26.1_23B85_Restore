@@ -1,19 +1,19 @@
 @interface WFCNContactGroup
 + (id)allContactGroups;
-+ (id)contactGroupWithCNGroup:(id)a3;
-- (BOOL)containsContact:(id)a3;
++ (id)contactGroupWithCNGroup:(id)group;
+- (BOOL)containsContact:(id)contact;
 - (NSArray)cachedMembers;
 - (NSArray)contacts;
-- (WFCNContactGroup)initWithCNGroup:(id)a3;
+- (WFCNContactGroup)initWithCNGroup:(id)group;
 - (id)name;
 @end
 
 @implementation WFCNContactGroup
 
-- (BOOL)containsContact:(id)a3
+- (BOOL)containsContact:(id)contact
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contactCopy = contact;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -21,8 +21,8 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v5 = [(WFCNContactGroup *)self cachedMembers];
-    v6 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    cachedMembers = [(WFCNContactGroup *)self cachedMembers];
+    v6 = [cachedMembers countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v6)
     {
       v7 = v6;
@@ -33,13 +33,13 @@
         {
           if (*v26 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(cachedMembers);
           }
 
-          v10 = [*(*(&v25 + 1) + 8 * i) identifier];
-          v11 = [v4 contact];
-          v12 = [v11 identifier];
-          v13 = [v10 isEqualToString:v12];
+          identifier = [*(*(&v25 + 1) + 8 * i) identifier];
+          contact = [contactCopy contact];
+          identifier2 = [contact identifier];
+          v13 = [identifier isEqualToString:identifier2];
 
           if (v13)
           {
@@ -48,7 +48,7 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v7 = [cachedMembers countByEnumeratingWithState:&v25 objects:v30 count:16];
         if (v7)
         {
           continue;
@@ -63,13 +63,13 @@
 
   else
   {
-    v5 = [v4 formattedName];
+    cachedMembers = [contactCopy formattedName];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v15 = [(WFCNContactGroup *)self cachedMembers];
-    v14 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    cachedMembers2 = [(WFCNContactGroup *)self cachedMembers];
+    v14 = [cachedMembers2 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v14)
     {
       v16 = *v22;
@@ -79,11 +79,11 @@
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(cachedMembers2);
           }
 
           v18 = [getCNContactFormatterClass() stringFromContact:*(*(&v21 + 1) + 8 * j) style:0];
-          v19 = [v18 isEqualToString:v5];
+          v19 = [v18 isEqualToString:cachedMembers];
 
           if (v19)
           {
@@ -92,7 +92,7 @@
           }
         }
 
-        v14 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v14 = [cachedMembers2 countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v14)
         {
           continue;
@@ -117,9 +117,9 @@ LABEL_23:
   if (!cachedMembers)
   {
     CNContactClass = getCNContactClass();
-    v5 = [(WFCNContactGroup *)self group];
-    v6 = [v5 identifier];
-    v7 = [CNContactClass predicateForContactsInGroupWithIdentifier:v6];
+    group = [(WFCNContactGroup *)self group];
+    identifier = [group identifier];
+    v7 = [CNContactClass predicateForContactsInGroupWithIdentifier:identifier];
 
     getCNContactStoreClass();
     v8 = objc_opt_new();
@@ -139,9 +139,9 @@ LABEL_23:
 - (NSArray)contacts
 {
   CNContactClass = getCNContactClass();
-  v4 = [(WFCNContactGroup *)self group];
-  v5 = [v4 identifier];
-  v6 = [CNContactClass predicateForContactsInGroupWithIdentifier:v5];
+  group = [(WFCNContactGroup *)self group];
+  identifier = [group identifier];
+  v6 = [CNContactClass predicateForContactsInGroupWithIdentifier:identifier];
 
   getCNContactStoreClass();
   v7 = objc_opt_new();
@@ -154,19 +154,19 @@ LABEL_23:
 
 - (id)name
 {
-  v2 = [(WFCNContactGroup *)self group];
-  v3 = [v2 name];
+  group = [(WFCNContactGroup *)self group];
+  name = [group name];
 
-  return v3;
+  return name;
 }
 
-- (WFCNContactGroup)initWithCNGroup:(id)a3
+- (WFCNContactGroup)initWithCNGroup:(id)group
 {
-  v6 = a3;
-  if (!v6)
+  groupCopy = group;
+  if (!groupCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFCNContact.m" lineNumber:1000 description:{@"Invalid parameter not satisfying: %@", @"group"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCNContact.m" lineNumber:1000 description:{@"Invalid parameter not satisfying: %@", @"group"}];
   }
 
   v12.receiver = self;
@@ -175,17 +175,17 @@ LABEL_23:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_group, a3);
+    objc_storeStrong(&v7->_group, group);
     v9 = v8;
   }
 
   return v8;
 }
 
-+ (id)contactGroupWithCNGroup:(id)a3
++ (id)contactGroupWithCNGroup:(id)group
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCNGroup:v4];
+  groupCopy = group;
+  v5 = [[self alloc] initWithCNGroup:groupCopy];
 
   return v5;
 }
@@ -201,7 +201,7 @@ LABEL_23:
     v7[1] = 3221225472;
     v7[2] = __36__WFCNContactGroup_allContactGroups__block_invoke;
     v7[3] = &__block_descriptor_40_e20__24__0__CNGroup_8Q16l;
-    v7[4] = a1;
+    v7[4] = self;
     v5 = [v4 if_map:v7];
   }
 

@@ -1,84 +1,84 @@
 @interface VLFCalloutVisibilityHelper
-+ (void)updateVLFBannerVisibilityWithChromeViewController:(id)a3 floatingControlsViewController:(id)a4;
++ (void)updateVLFBannerVisibilityWithChromeViewController:(id)controller floatingControlsViewController:(id)viewController;
 @end
 
 @implementation VLFCalloutVisibilityHelper
 
-+ (void)updateVLFBannerVisibilityWithChromeViewController:(id)a3 floatingControlsViewController:(id)a4
++ (void)updateVLFBannerVisibilityWithChromeViewController:(id)controller floatingControlsViewController:(id)viewController
 {
-  v95 = a3;
-  v5 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v6 = +[VLFSessionTask isVLFModeSupported];
-  if (v5)
+  if (viewControllerCopy)
   {
-    if (v95)
+    if (controllerCopy)
     {
       if (v6)
       {
-        v7 = [v95 userLocationView];
-        v8 = [v7 vlfMode];
+        userLocationView = [controllerCopy userLocationView];
+        vlfMode = [userLocationView vlfMode];
 
-        if (v8)
+        if (vlfMode)
         {
-          v9 = [v95 userLocationView];
-          v10 = [v9 vlfPuckModeCircleView];
-          v11 = [v95 userLocationView];
-          v12 = [v11 vlfPuckModeCircleView];
-          [v12 bounds];
+          userLocationView2 = [controllerCopy userLocationView];
+          vlfPuckModeCircleView = [userLocationView2 vlfPuckModeCircleView];
+          userLocationView3 = [controllerCopy userLocationView];
+          vlfPuckModeCircleView2 = [userLocationView3 vlfPuckModeCircleView];
+          [vlfPuckModeCircleView2 bounds];
           v14 = v13;
           v16 = v15;
           v18 = v17;
           v20 = v19;
-          v21 = [v95 view];
-          [v10 convertRect:v21 toView:{v14, v16, v18, v20}];
+          view = [controllerCopy view];
+          [vlfPuckModeCircleView convertRect:view toView:{v14, v16, v18, v20}];
           v93 = v23;
           v94 = v22;
           v91 = v25;
           v92 = v24;
 
-          v26 = [v95 userLocationView];
-          v27 = [v26 _calloutView];
-          v28 = [v95 userLocationView];
-          v29 = [v28 _calloutView];
-          [v29 bounds];
+          userLocationView4 = [controllerCopy userLocationView];
+          _calloutView = [userLocationView4 _calloutView];
+          userLocationView5 = [controllerCopy userLocationView];
+          _calloutView2 = [userLocationView5 _calloutView];
+          [_calloutView2 bounds];
           v31 = v30;
           v33 = v32;
           v35 = v34;
           v37 = v36;
-          v38 = [v95 view];
-          [v27 convertRect:v38 toView:{v31, v33, v35, v37}];
+          view2 = [controllerCopy view];
+          [_calloutView convertRect:view2 toView:{v31, v33, v35, v37}];
           v89 = v40;
           v90 = v39;
           v87 = v42;
           v88 = v41;
 
-          v43 = [v5 view];
-          [v5 floatingButtonsFrame];
+          view3 = [viewControllerCopy view];
+          [viewControllerCopy floatingButtonsFrame];
           v45 = v44;
           v47 = v46;
           v49 = v48;
           v51 = v50;
-          v52 = [v95 view];
-          [v43 convertRect:v52 toView:{v45, v47, v49, v51}];
+          view4 = [controllerCopy view];
+          [view3 convertRect:view4 toView:{v45, v47, v49, v51}];
           v54 = v53;
           v56 = v55;
           v58 = v57;
           v60 = v59;
 
-          v61 = [v95 _currentContainerViewController];
-          v62 = [v61 currentViewController];
-          v63 = v62;
-          if (v62)
+          _currentContainerViewController = [controllerCopy _currentContainerViewController];
+          currentViewController = [_currentContainerViewController currentViewController];
+          v63 = currentViewController;
+          if (currentViewController)
           {
-            v64 = [v62 view];
-            v65 = [v63 view];
-            [v65 bounds];
+            view5 = [currentViewController view];
+            view6 = [v63 view];
+            [view6 bounds];
             v67 = v66;
             v69 = v68;
             v71 = v70;
             v73 = v72;
-            v74 = [v95 view];
-            [v64 convertRect:v74 toView:{v67, v69, v71, v73}];
+            view7 = [controllerCopy view];
+            [view5 convertRect:view7 toView:{v67, v69, v71, v73}];
             x = v75;
             y = v77;
             width = v79;
@@ -170,8 +170,8 @@
           }
 
           v85 = v83 || v84;
-          v86 = [v95 userLocationView];
-          [v86 setVlfOverlappingFloatingControls:v85];
+          userLocationView6 = [controllerCopy userLocationView];
+          [userLocationView6 setVlfOverlappingFloatingControls:v85];
         }
       }
     }

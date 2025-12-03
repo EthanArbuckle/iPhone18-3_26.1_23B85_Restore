@@ -1,32 +1,32 @@
 @interface DMCProfileDetailsViewController
-- (DMCProfileDetailsViewController)initWithProfileViewModel:(id)a3 mode:(int)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_profileChanged:(id)a3;
-- (void)_reloadTable:(id)a3;
+- (DMCProfileDetailsViewController)initWithProfileViewModel:(id)model mode:(int)mode;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_profileChanged:(id)changed;
+- (void)_reloadTable:(id)table;
 - (void)_setup;
 - (void)_updateStateForCurrentMode;
 - (void)dealloc;
 - (void)reloadSectionArray;
-- (void)setProfileDetailsMode:(int)a3;
-- (void)setProfileViewModel:(id)a3;
-- (void)setProfileViewModel:(id)a3 mode:(int)a4;
-- (void)setTableViewBottomInset:(double)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setProfileDetailsMode:(int)mode;
+- (void)setProfileViewModel:(id)model;
+- (void)setProfileViewModel:(id)model mode:(int)mode;
+- (void)setTableViewBottomInset:(double)inset;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation DMCProfileDetailsViewController
 
-- (DMCProfileDetailsViewController)initWithProfileViewModel:(id)a3 mode:(int)a4
+- (DMCProfileDetailsViewController)initWithProfileViewModel:(id)model mode:(int)mode
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&mode;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = DMCProfileDetailsViewController;
   v7 = [(DMCProfileTableViewController *)&v10 initWithStyle:2];
@@ -34,7 +34,7 @@
   if (v7)
   {
     [(DMCProfileDetailsViewController *)v7 _setup];
-    [(DMCProfileDetailsViewController *)v8 setProfileViewModel:v6 mode:v4];
+    [(DMCProfileDetailsViewController *)v8 setProfileViewModel:modelCopy mode:v4];
   }
 
   return v8;
@@ -43,20 +43,20 @@
 - (void)_setup
 {
   self->_showTitleIfOnlyOneSection = 1;
-  v3 = [(DMCProfileDetailsViewController *)self tableView];
+  tableView = [(DMCProfileDetailsViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = +[DMCProfileDetailsCell cellIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [tableView registerClass:v4 forCellReuseIdentifier:v5];
 
-  v6 = [(DMCProfileDetailsViewController *)self tableView];
+  tableView2 = [(DMCProfileDetailsViewController *)self tableView];
   v7 = objc_opt_class();
   v8 = +[DMCProfileInfoTextCell cellIdentifier];
-  [v6 registerClass:v7 forCellReuseIdentifier:v8];
+  [tableView2 registerClass:v7 forCellReuseIdentifier:v8];
 
-  v9 = [(DMCProfileDetailsViewController *)self tableView];
+  tableView3 = [(DMCProfileDetailsViewController *)self tableView];
   v10 = objc_opt_class();
   v11 = +[DMCProfileTitleTextCell cellIdentifier];
-  [v9 registerClass:v10 forCellReuseIdentifier:v11];
+  [tableView3 registerClass:v10 forCellReuseIdentifier:v11];
 
   v15.receiver = self;
   v15.super_class = DMCProfileDetailsViewController;
@@ -64,33 +64,33 @@
   v14.receiver = self;
   v14.super_class = DMCProfileDetailsViewController;
   [(DMCProfileTableViewController *)&v14 reloadTableOnContentSizeCategoryChange];
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel__profileChanged_ name:@"kMCUIProfileDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__profileChanged_ name:@"kMCUIProfileDidChangeNotification" object:0];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 addObserver:self selector:sel__reloadTable_ name:@"kMCUIBridgeIconLoadedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__reloadTable_ name:@"kMCUIBridgeIconLoadedNotification" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = DMCProfileDetailsViewController;
-  [(DMCProfileDetailsViewController *)&v6 viewWillAppear:a3];
-  v4 = [(DMCProfileDetailsViewController *)self tableView];
-  [v4 layoutIfNeeded];
+  [(DMCProfileDetailsViewController *)&v6 viewWillAppear:appear];
+  tableView = [(DMCProfileDetailsViewController *)self tableView];
+  [tableView layoutIfNeeded];
 
-  v5 = [(DMCProfileDetailsViewController *)self tableView];
-  [v5 reloadData];
+  tableView2 = [(DMCProfileDetailsViewController *)self tableView];
+  [tableView2 reloadData];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = DMCProfileDetailsViewController;
-  [(DMCProfileDetailsViewController *)&v9 viewDidAppear:a3];
+  [(DMCProfileDetailsViewController *)&v9 viewDidAppear:appear];
   [(DMCProfileDetailsViewController *)self setViewControllerCanPop:1];
-  v4 = [(DMCProfileDetailsViewController *)self sections];
-  v5 = [v4 count];
+  sections = [(DMCProfileDetailsViewController *)self sections];
+  v5 = [sections count];
 
   if (!v5)
   {
@@ -117,25 +117,25 @@ void __49__DMCProfileDetailsViewController_viewDidAppear___block_invoke(uint64_t
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = DMCProfileDetailsViewController;
-  [(DMCProfileDetailsViewController *)&v4 viewWillDisappear:a3];
+  [(DMCProfileDetailsViewController *)&v4 viewWillDisappear:disappear];
   [(DMCProfileDetailsViewController *)self setViewControllerCanPop:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DMCProfileDetailsViewController;
   [(DMCProfileTableViewController *)&v4 dealloc];
 }
 
-- (void)_profileChanged:(id)a3
+- (void)_profileChanged:(id)changed
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];
@@ -173,7 +173,7 @@ uint64_t __51__DMCProfileDetailsViewController__profileChanged___block_invoke(ui
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_reloadTable:(id)a3
+- (void)_reloadTable:(id)table
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];
@@ -199,49 +199,49 @@ void __48__DMCProfileDetailsViewController__reloadTable___block_invoke(uint64_t 
   }
 }
 
-- (void)setProfileDetailsMode:(int)a3
+- (void)setProfileDetailsMode:(int)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(DMCProfileDetailsViewController *)self _updateStateForCurrentMode];
   }
 }
 
-- (void)setProfileViewModel:(id)a3
+- (void)setProfileViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_profileViewModel != v5)
+  modelCopy = model;
+  if (self->_profileViewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_profileViewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_profileViewModel, model);
     [(DMCProfileDetailsViewController *)self _updateStateForCurrentMode];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
-- (void)setProfileViewModel:(id)a3 mode:(int)a4
+- (void)setProfileViewModel:(id)model mode:(int)mode
 {
-  v4 = *&a4;
-  [(DMCProfileDetailsViewController *)self setProfileViewModel:a3];
+  v4 = *&mode;
+  [(DMCProfileDetailsViewController *)self setProfileViewModel:model];
 
   [(DMCProfileDetailsViewController *)self setProfileDetailsMode:v4];
 }
 
-- (void)setTableViewBottomInset:(double)a3
+- (void)setTableViewBottomInset:(double)inset
 {
-  if (self->_tableViewBottomInset != a3)
+  if (self->_tableViewBottomInset != inset)
   {
-    self->_tableViewBottomInset = a3;
-    v4 = [(DMCProfileDetailsViewController *)self tableView];
-    [v4 contentInset];
+    self->_tableViewBottomInset = inset;
+    tableView = [(DMCProfileDetailsViewController *)self tableView];
+    [tableView contentInset];
     v6 = v5;
     v8 = v7;
     v10 = v9;
 
     tableViewBottomInset = self->_tableViewBottomInset;
-    v12 = [(DMCProfileDetailsViewController *)self tableView];
-    [v12 setContentInset:{v6, v8, tableViewBottomInset, v10}];
+    tableView2 = [(DMCProfileDetailsViewController *)self tableView];
+    [tableView2 setContentInset:{v6, v8, tableViewBottomInset, v10}];
   }
 }
 
@@ -256,13 +256,13 @@ void __48__DMCProfileDetailsViewController__reloadTable___block_invoke(uint64_t 
       {
         if (mode == 1)
         {
-          v4 = [(DMCProfileDetailsViewController *)self profileViewModel];
-          v5 = [v4 byodInfoSections];
-          v6 = [v5 mutableCopy];
+          profileViewModel = [(DMCProfileDetailsViewController *)self profileViewModel];
+          byodInfoSections = [profileViewModel byodInfoSections];
+          v6 = [byodInfoSections mutableCopy];
 
-          v7 = [(DMCProfileDetailsViewController *)self profileViewModel];
-          v8 = [v7 moreDetailsSections];
-          [v6 addObjectsFromArray:v8];
+          profileViewModel2 = [(DMCProfileDetailsViewController *)self profileViewModel];
+          moreDetailsSections = [profileViewModel2 moreDetailsSections];
+          [v6 addObjectsFromArray:moreDetailsSections];
 
           v9 = [v6 copy];
           sections = self->_sections;
@@ -272,28 +272,28 @@ void __48__DMCProfileDetailsViewController__reloadTable___block_invoke(uint64_t 
         goto LABEL_21;
       }
 
-      v11 = [(DMCProfileDetailsViewController *)self profileViewModel];
-      v12 = [v11 moreDetailsSections];
+      profileViewModel3 = [(DMCProfileDetailsViewController *)self profileViewModel];
+      moreDetailsSections2 = [profileViewModel3 moreDetailsSections];
 LABEL_18:
       v14 = self->_sections;
-      self->_sections = v12;
+      self->_sections = moreDetailsSections2;
 
       goto LABEL_21;
     }
 
     if (mode == 2)
     {
-      v11 = [(DMCProfileDetailsViewController *)self profileViewModel];
-      [v11 accountSections];
+      profileViewModel3 = [(DMCProfileDetailsViewController *)self profileViewModel];
+      [profileViewModel3 accountSections];
     }
 
     else
     {
-      v11 = [(DMCProfileDetailsViewController *)self profileViewModel];
-      [v11 managedAppSections];
+      profileViewModel3 = [(DMCProfileDetailsViewController *)self profileViewModel];
+      [profileViewModel3 managedAppSections];
     }
 
-    v12 = LABEL_9:;
+    moreDetailsSections2 = LABEL_9:;
     goto LABEL_18;
   }
 
@@ -301,14 +301,14 @@ LABEL_18:
   {
     if (mode == 4)
     {
-      v11 = [(DMCProfileDetailsViewController *)self profileViewModel];
-      [v11 managedBookSections];
+      profileViewModel3 = [(DMCProfileDetailsViewController *)self profileViewModel];
+      [profileViewModel3 managedBookSections];
     }
 
     else
     {
-      v11 = [(DMCProfileDetailsViewController *)self profileViewModel];
-      [v11 restrictionSections];
+      profileViewModel3 = [(DMCProfileDetailsViewController *)self profileViewModel];
+      [profileViewModel3 restrictionSections];
     }
 
     goto LABEL_9;
@@ -331,8 +331,8 @@ LABEL_18:
 
   NSLog(&cfstr_Dmcprofiledeta_0.isa, a2, v13);
 LABEL_21:
-  v15 = [(DMCProfileDetailsViewController *)self tableView];
-  [v15 reloadData];
+  tableView = [(DMCProfileDetailsViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_updateStateForCurrentMode
@@ -346,17 +346,17 @@ LABEL_21:
       {
         if (mode == 1)
         {
-          v4 = [(DMCProfileDetailsViewController *)self navigationItem];
-          [v4 setTitle:0];
+          navigationItem = [(DMCProfileDetailsViewController *)self navigationItem];
+          [navigationItem setTitle:0];
 
           v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonTapped_];
-          v6 = [(DMCProfileDetailsViewController *)self navigationItem];
-          [v6 setRightBarButtonItem:v5];
+          navigationItem2 = [(DMCProfileDetailsViewController *)self navigationItem];
+          [navigationItem2 setRightBarButtonItem:v5];
 
-          v7 = [(DMCProfileDetailsViewController *)self profileViewModel];
-          v8 = [v7 moreDetailsSections];
+          profileViewModel = [(DMCProfileDetailsViewController *)self profileViewModel];
+          moreDetailsSections = [profileViewModel moreDetailsSections];
           sections = self->_sections;
-          self->_sections = v8;
+          self->_sections = moreDetailsSections;
 
           self->_showTitleIfOnlyOneSection = 1;
           self->_shouldShowWarningText = 1;
@@ -365,16 +365,16 @@ LABEL_21:
 
       else
       {
-        v17 = [(DMCProfileDetailsViewController *)self profileViewModel];
-        v18 = [v17 profile];
-        v19 = [v18 friendlyName];
-        v20 = [(DMCProfileDetailsViewController *)self navigationItem];
-        [v20 setTitle:v19];
+        profileViewModel2 = [(DMCProfileDetailsViewController *)self profileViewModel];
+        profile = [profileViewModel2 profile];
+        friendlyName = [profile friendlyName];
+        navigationItem3 = [(DMCProfileDetailsViewController *)self navigationItem];
+        [navigationItem3 setTitle:friendlyName];
 
-        v21 = [(DMCProfileDetailsViewController *)self profileViewModel];
-        v22 = [v21 moreDetailsSections];
+        profileViewModel3 = [(DMCProfileDetailsViewController *)self profileViewModel];
+        moreDetailsSections2 = [profileViewModel3 moreDetailsSections];
         v23 = self->_sections;
-        self->_sections = v22;
+        self->_sections = moreDetailsSections2;
 
         self->_showTitleIfOnlyOneSection = 1;
       }
@@ -385,21 +385,21 @@ LABEL_21:
     if (mode == 2)
     {
       v26 = DMCEnrollmentLocalizedString(@"DMC_PROFILE_DETAILS_ACCOUNTS");
-      v27 = [(DMCProfileDetailsViewController *)self navigationItem];
-      [v27 setTitle:v26];
+      navigationItem4 = [(DMCProfileDetailsViewController *)self navigationItem];
+      [navigationItem4 setTitle:v26];
 
-      v12 = [(DMCProfileDetailsViewController *)self profileViewModel];
-      [v12 accountSections];
+      profileViewModel4 = [(DMCProfileDetailsViewController *)self profileViewModel];
+      [profileViewModel4 accountSections];
     }
 
     else
     {
       v14 = DMCEnrollmentLocalizedString(@"DMC_PROFILE_DETAILS_APPS");
-      v15 = [(DMCProfileDetailsViewController *)self navigationItem];
-      [v15 setTitle:v14];
+      navigationItem5 = [(DMCProfileDetailsViewController *)self navigationItem];
+      [navigationItem5 setTitle:v14];
 
-      v12 = [(DMCProfileDetailsViewController *)self profileViewModel];
-      [v12 managedAppSections];
+      profileViewModel4 = [(DMCProfileDetailsViewController *)self profileViewModel];
+      [profileViewModel4 managedAppSections];
     }
 
     v13 = LABEL_9:;
@@ -415,21 +415,21 @@ LABEL_21:
     if (mode == 4)
     {
       v24 = DMCEnrollmentLocalizedString(@"DMC_PROFILE_DETAILS_BOOKS");
-      v25 = [(DMCProfileDetailsViewController *)self navigationItem];
-      [v25 setTitle:v24];
+      navigationItem6 = [(DMCProfileDetailsViewController *)self navigationItem];
+      [navigationItem6 setTitle:v24];
 
-      v12 = [(DMCProfileDetailsViewController *)self profileViewModel];
-      [v12 managedBookSections];
+      profileViewModel4 = [(DMCProfileDetailsViewController *)self profileViewModel];
+      [profileViewModel4 managedBookSections];
     }
 
     else
     {
       v10 = DMCEnrollmentLocalizedString(@"DMC_PROFILE_DETAILS_RESTRICTIONS");
-      v11 = [(DMCProfileDetailsViewController *)self navigationItem];
-      [v11 setTitle:v10];
+      navigationItem7 = [(DMCProfileDetailsViewController *)self navigationItem];
+      [navigationItem7 setTitle:v10];
 
-      v12 = [(DMCProfileDetailsViewController *)self profileViewModel];
-      [v12 restrictionSections];
+      profileViewModel4 = [(DMCProfileDetailsViewController *)self profileViewModel];
+      [profileViewModel4 restrictionSections];
     }
 
     goto LABEL_9;
@@ -452,19 +452,19 @@ LABEL_21:
 
   NSLog(&cfstr_Dmcprofiledeta_1.isa, a2, v16);
 LABEL_20:
-  v29 = [(DMCProfileDetailsViewController *)self tableView];
-  [v29 reloadData];
+  tableView = [(DMCProfileDetailsViewController *)self tableView];
+  [tableView reloadData];
 
-  v30 = [(DMCProfileDetailsViewController *)self navigationItem];
-  DMCSendNavUIUpdatedNotification(v30);
+  navigationItem8 = [(DMCProfileDetailsViewController *)self navigationItem];
+  DMCSendNavUIUpdatedNotification(navigationItem8);
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(DMCProfileDetailsViewController *)self sections];
-  v5 = [v4 count];
-  v6 = [(DMCProfileDetailsViewController *)self tableTitle];
-  if ([v6 length])
+  sections = [(DMCProfileDetailsViewController *)self sections];
+  v5 = [sections count];
+  tableTitle = [(DMCProfileDetailsViewController *)self tableTitle];
+  if ([tableTitle length])
   {
     ++v5;
   }
@@ -472,23 +472,23 @@ LABEL_20:
   return v5;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(DMCProfileDetailsViewController *)self tableTitle];
-  v7 = [v6 length];
+  tableTitle = [(DMCProfileDetailsViewController *)self tableTitle];
+  v7 = [tableTitle length];
 
   if (v7)
   {
-    if (!a4)
+    if (!section)
     {
       goto LABEL_13;
     }
 
-    --a4;
+    --section;
   }
 
-  v8 = [(DMCProfileDetailsViewController *)self sections];
-  if (a4 >= [v8 count])
+  sections = [(DMCProfileDetailsViewController *)self sections];
+  if (section >= [sections count])
   {
     goto LABEL_11;
   }
@@ -497,116 +497,116 @@ LABEL_20:
   {
 
 LABEL_8:
-    v11 = [(DMCProfileDetailsViewController *)self sections];
-    v8 = [v11 objectAtIndex:a4];
+    sections2 = [(DMCProfileDetailsViewController *)self sections];
+    sections = [sections2 objectAtIndex:section];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      a4 = [v8 sectionTitle];
+      section = [sections sectionTitle];
 LABEL_12:
 
       goto LABEL_13;
     }
 
 LABEL_11:
-    a4 = 0;
+    section = 0;
     goto LABEL_12;
   }
 
-  v9 = [(DMCProfileDetailsViewController *)self sections];
-  v10 = [v9 count];
+  sections3 = [(DMCProfileDetailsViewController *)self sections];
+  v10 = [sections3 count];
 
   if (v10 >= 2)
   {
     goto LABEL_8;
   }
 
-  a4 = 0;
+  section = 0;
 LABEL_13:
 
-  return a4;
+  return section;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = [(DMCProfileDetailsViewController *)self tableTitle];
-  v7 = [v6 length];
+  tableTitle = [(DMCProfileDetailsViewController *)self tableTitle];
+  v7 = [tableTitle length];
 
   if (v7)
   {
-    if (!a4)
+    if (!section)
     {
       goto LABEL_12;
     }
 
-    --a4;
+    --section;
   }
 
-  v8 = [(DMCProfileDetailsViewController *)self sections];
-  if (a4 >= [v8 count])
+  sections = [(DMCProfileDetailsViewController *)self sections];
+  if (section >= [sections count])
   {
     goto LABEL_9;
   }
 
-  v9 = [(DMCProfileDetailsViewController *)self shouldShowWarningText];
+  shouldShowWarningText = [(DMCProfileDetailsViewController *)self shouldShowWarningText];
 
-  if (v9)
+  if (shouldShowWarningText)
   {
-    v10 = [(DMCProfileDetailsViewController *)self sections];
-    v8 = [v10 objectAtIndex:a4];
+    sections2 = [(DMCProfileDetailsViewController *)self sections];
+    sections = [sections2 objectAtIndex:section];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      a4 = [v8 sectionFooter];
+      section = [sections sectionFooter];
 LABEL_10:
 
       goto LABEL_12;
     }
 
 LABEL_9:
-    a4 = 0;
+    section = 0;
     goto LABEL_10;
   }
 
-  a4 = 0;
+  section = 0;
 LABEL_12:
 
-  return a4;
+  return section;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(DMCProfileDetailsViewController *)self tableTitle];
-  v7 = [v6 length];
+  tableTitle = [(DMCProfileDetailsViewController *)self tableTitle];
+  v7 = [tableTitle length];
 
   if (v7)
   {
-    if (!a4)
+    if (!section)
     {
       return 1;
     }
 
-    --a4;
+    --section;
   }
 
-  v8 = [(DMCProfileDetailsViewController *)self sections];
-  v9 = [v8 count];
+  sections = [(DMCProfileDetailsViewController *)self sections];
+  v9 = [sections count];
 
-  if (a4 >= v9)
+  if (section >= v9)
   {
     return 0;
   }
 
-  v10 = [(DMCProfileDetailsViewController *)self sections];
-  v11 = [v10 objectAtIndex:a4];
+  sections2 = [(DMCProfileDetailsViewController *)self sections];
+  v11 = [sections2 objectAtIndex:section];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 payloadViewModels];
-    v13 = [v12 count];
+    payloadViewModels = [v11 payloadViewModels];
+    v13 = [payloadViewModels count];
   }
 
   else
@@ -618,34 +618,34 @@ LABEL_12:
   return v13;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMCProfileDetailsViewController *)self tableTitle];
-  v9 = [v8 length];
+  viewCopy = view;
+  pathCopy = path;
+  tableTitle = [(DMCProfileDetailsViewController *)self tableTitle];
+  v9 = [tableTitle length];
 
   if (!v9)
   {
 LABEL_4:
-    v11 = [v7 section];
-    v12 = [(DMCProfileDetailsViewController *)self sections];
-    v13 = [v12 count];
+    section = [pathCopy section];
+    sections = [(DMCProfileDetailsViewController *)self sections];
+    v13 = [sections count];
 
-    if (v11 < v13)
+    if (section < v13)
     {
-      v14 = [(DMCProfileDetailsViewController *)self sections];
-      v15 = [v14 objectAtIndex:v11];
+      sections2 = [(DMCProfileDetailsViewController *)self sections];
+      tableTitle2 = [sections2 objectAtIndex:section];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v16 = +[DMCProfileDetailsCell cellIdentifier];
-        v17 = [v6 dequeueReusableCellWithIdentifier:v16 forIndexPath:v7];
+        v17 = [viewCopy dequeueReusableCellWithIdentifier:v16 forIndexPath:pathCopy];
 
-        v18 = [v15 payloadViewModels];
-        v19 = [v18 objectAtIndex:{objc_msgSend(v7, "row")}];
-        [v17 setDetails:v19];
+        payloadViewModels = [tableTitle2 payloadViewModels];
+        backgroundColor = [payloadViewModels objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+        [v17 setDetails:backgroundColor];
 LABEL_15:
 
         goto LABEL_16;
@@ -655,50 +655,50 @@ LABEL_15:
       if (objc_opt_isKindOfClass())
       {
         v21 = +[DMCProfileInfoTextCell cellIdentifier];
-        v17 = [v6 dequeueReusableCellWithIdentifier:v21 forIndexPath:v7];
+        v17 = [viewCopy dequeueReusableCellWithIdentifier:v21 forIndexPath:pathCopy];
 
-        v18 = v15;
-        v22 = [v18 sectionAttributedText];
-        v23 = [v22 length];
+        payloadViewModels = tableTitle2;
+        sectionAttributedText = [payloadViewModels sectionAttributedText];
+        v23 = [sectionAttributedText length];
 
         if (v23)
         {
-          v24 = [v18 sectionAttributedText];
-          [v17 setAttributedText:v24];
+          sectionAttributedText2 = [payloadViewModels sectionAttributedText];
+          [v17 setAttributedText:sectionAttributedText2];
         }
 
         else
         {
-          v24 = [v18 sectionText];
-          [v17 setText:v24];
+          sectionAttributedText2 = [payloadViewModels sectionText];
+          [v17 setText:sectionAttributedText2];
         }
 
         [v17 setUserInteractionEnabled:0];
-        v19 = [v6 backgroundColor];
-        [v17 setBackgroundColor:v19];
+        backgroundColor = [viewCopy backgroundColor];
+        [v17 setBackgroundColor:backgroundColor];
         goto LABEL_15;
       }
     }
 
     v26.receiver = self;
     v26.super_class = DMCProfileDetailsViewController;
-    v17 = [(DMCProfileDetailsViewController *)&v26 tableView:v6 cellForRowAtIndexPath:v7];
+    v17 = [(DMCProfileDetailsViewController *)&v26 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
     goto LABEL_17;
   }
 
-  if ([v7 section])
+  if ([pathCopy section])
   {
-    v10 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v7 inSection:{"row"), objc_msgSend(v7, "section") - 1}];
+    v10 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(pathCopy inSection:{"row"), objc_msgSend(pathCopy, "section") - 1}];
 
-    v7 = v10;
+    pathCopy = v10;
     goto LABEL_4;
   }
 
   v20 = +[DMCProfileTitleTextCell cellIdentifier];
-  v17 = [v6 dequeueReusableCellWithIdentifier:v20 forIndexPath:v7];
+  v17 = [viewCopy dequeueReusableCellWithIdentifier:v20 forIndexPath:pathCopy];
 
-  v15 = [(DMCProfileDetailsViewController *)self tableTitle];
-  [v17 setText:v15];
+  tableTitle2 = [(DMCProfileDetailsViewController *)self tableTitle];
+  [v17 setText:tableTitle2];
 LABEL_16:
 
 LABEL_17:
@@ -706,38 +706,38 @@ LABEL_17:
   return v17;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v38 = a4;
-  v5 = [(DMCProfileDetailsViewController *)self tableTitle];
-  v6 = [v5 length];
+  pathCopy = path;
+  tableTitle = [(DMCProfileDetailsViewController *)self tableTitle];
+  v6 = [tableTitle length];
 
   if (v6)
   {
-    if (![v38 section])
+    if (![pathCopy section])
     {
       goto LABEL_27;
     }
 
-    v7 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(v38 inSection:{"row"), objc_msgSend(v38, "section") - 1}];
+    v7 = [MEMORY[0x277CCAA70] indexPathForRow:objc_msgSend(pathCopy inSection:{"row"), objc_msgSend(pathCopy, "section") - 1}];
 
     v8 = v7;
   }
 
   else
   {
-    v8 = v38;
+    v8 = pathCopy;
   }
 
-  v38 = v8;
-  v9 = [v8 section];
-  v10 = [(DMCProfileDetailsViewController *)self sections];
-  v11 = [v10 count];
+  pathCopy = v8;
+  section = [v8 section];
+  sections = [(DMCProfileDetailsViewController *)self sections];
+  v11 = [sections count];
 
-  if (v9 < v11)
+  if (section < v11)
   {
-    v12 = [(DMCProfileDetailsViewController *)self sections];
-    v13 = [v12 objectAtIndex:{objc_msgSend(v38, "section")}];
+    sections2 = [(DMCProfileDetailsViewController *)self sections];
+    v13 = [sections2 objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -747,8 +747,8 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v14 = [v13 payloadViewModels];
-    v15 = [v14 objectAtIndex:{objc_msgSend(v38, "row")}];
+    payloadViewModels = [v13 payloadViewModels];
+    v15 = [payloadViewModels objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -762,12 +762,12 @@ LABEL_26:
       if ([(__CFString *)v16 isCertificate]&& ([(__CFString *)v17 certificateProperties], v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
       {
         v19 = [DMCCertificateDetailsViewController alloc];
-        v20 = [(__CFString *)v17 certificateProperties];
-        v21 = [(DMCCertificateDetailsViewController *)v19 initWithCertificateProperties:v20];
+        certificateProperties = [(__CFString *)v17 certificateProperties];
+        v21 = [(DMCCertificateDetailsViewController *)v19 initWithCertificateProperties:certificateProperties];
 
-        v22 = [(__CFString *)v17 friendlyName];
-        v23 = [(DMCPayloadDetailsViewController *)v21 navigationItem];
-        [v23 setTitle:v22];
+        friendlyName = [(__CFString *)v17 friendlyName];
+        navigationItem = [(DMCPayloadDetailsViewController *)v21 navigationItem];
+        [navigationItem setTitle:friendlyName];
       }
 
       else
@@ -775,9 +775,9 @@ LABEL_26:
         if ([(__CFString *)v17 isManagedAppPayload])
         {
           v25 = [DMCManagedMediaViewController alloc];
-          v22 = [(DMCProfileDetailsViewController *)self profileViewModel];
-          v23 = [(__CFString *)v17 managedApp];
-          v26 = [(DMCManagedMediaViewController *)v25 initWithProfileViewModel:v22 managedApp:v23];
+          friendlyName = [(DMCProfileDetailsViewController *)self profileViewModel];
+          navigationItem = [(__CFString *)v17 managedApp];
+          v26 = [(DMCManagedMediaViewController *)v25 initWithProfileViewModel:friendlyName managedApp:navigationItem];
         }
 
         else
@@ -799,9 +799,9 @@ LABEL_26:
           }
 
           v27 = [DMCManagedMediaViewController alloc];
-          v22 = [(DMCProfileDetailsViewController *)self profileViewModel];
-          v23 = [(__CFString *)v17 managedBook];
-          v26 = [(DMCManagedMediaViewController *)v27 initWithProfileViewModel:v22 managedBook:v23];
+          friendlyName = [(DMCProfileDetailsViewController *)self profileViewModel];
+          navigationItem = [(__CFString *)v17 managedBook];
+          v26 = [(DMCManagedMediaViewController *)v27 initWithProfileViewModel:friendlyName managedBook:navigationItem];
         }
 
         v21 = v26;
@@ -820,8 +820,8 @@ LABEL_26:
       v17 = SecCertificateCopySubjectSummary(v15);
       if (v17)
       {
-        v24 = [(DMCPayloadDetailsViewController *)v21 navigationItem];
-        [v24 setTitle:v17];
+        navigationItem2 = [(DMCPayloadDetailsViewController *)v21 navigationItem];
+        [navigationItem2 setTitle:v17];
 
         CFRelease(v17);
         v17 = 0;
@@ -837,16 +837,16 @@ LABEL_26:
     if (v21)
     {
 LABEL_24:
-      v28 = [(DMCPayloadDetailsViewController *)v21 tableView];
-      [v28 contentInset];
+      tableView = [(DMCPayloadDetailsViewController *)v21 tableView];
+      [tableView contentInset];
       v30 = v29;
       v32 = v31;
       v34 = v33;
 
       [(DMCProfileDetailsViewController *)self tableViewBottomInset];
       v36 = v35;
-      v37 = [(DMCPayloadDetailsViewController *)v21 tableView];
-      [v37 setContentInset:{v30, v32, v36, v34}];
+      tableView2 = [(DMCPayloadDetailsViewController *)v21 tableView];
+      [tableView2 setContentInset:{v30, v32, v36, v34}];
 
       [(UIViewController *)self dmc_pushViewController:v21 animated:1];
     }

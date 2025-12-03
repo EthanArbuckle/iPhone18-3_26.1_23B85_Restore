@@ -1,17 +1,17 @@
 @interface BMAppIntentInvocationActionOutput
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAppIntentInvocationActionOutput)initWithIdentifier:(id)a3 showOutputAction:(id)a4 showOutputActionHint:(int)a5 dialog:(id)a6 value:(id)a7 nextAction:(id)a8 confirmationActionName:(id)a9 showPrompt:(id)a10 suggestedFollowUpActions:(id)a11;
-- (BMAppIntentInvocationActionOutput)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMAppIntentInvocationActionOutput)initWithIdentifier:(id)identifier showOutputAction:(id)action showOutputActionHint:(int)hint dialog:(id)dialog value:(id)value nextAction:(id)nextAction confirmationActionName:(id)name showPrompt:(id)self0 suggestedFollowUpActions:(id)self1;
+- (BMAppIntentInvocationActionOutput)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSUUID)identifier;
 - (id)_suggestedFollowUpActionsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAppIntentInvocationActionOutput
@@ -43,25 +43,25 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAppIntentInvocationActionOutput *)self identifier];
-    v7 = [v5 identifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    identifier = [(BMAppIntentInvocationActionOutput *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v9 = [(BMAppIntentInvocationActionOutput *)self identifier];
-      v10 = [v5 identifier];
-      v11 = [v9 isEqual:v10];
+      identifier3 = [(BMAppIntentInvocationActionOutput *)self identifier];
+      identifier4 = [v5 identifier];
+      v11 = [identifier3 isEqual:identifier4];
 
       if (!v11)
       {
@@ -69,18 +69,18 @@
       }
     }
 
-    v13 = [(BMAppIntentInvocationActionOutput *)self showOutputAction];
-    v14 = [v5 showOutputAction];
-    v15 = v14;
-    if (v13 == v14)
+    showOutputAction = [(BMAppIntentInvocationActionOutput *)self showOutputAction];
+    showOutputAction2 = [v5 showOutputAction];
+    v15 = showOutputAction2;
+    if (showOutputAction == showOutputAction2)
     {
     }
 
     else
     {
-      v16 = [(BMAppIntentInvocationActionOutput *)self showOutputAction];
-      v17 = [v5 showOutputAction];
-      v18 = [v16 isEqual:v17];
+      showOutputAction3 = [(BMAppIntentInvocationActionOutput *)self showOutputAction];
+      showOutputAction4 = [v5 showOutputAction];
+      v18 = [showOutputAction3 isEqual:showOutputAction4];
 
       if (!v18)
       {
@@ -88,21 +88,21 @@
       }
     }
 
-    v19 = [(BMAppIntentInvocationActionOutput *)self showOutputActionHint];
-    if (v19 == [v5 showOutputActionHint])
+    showOutputActionHint = [(BMAppIntentInvocationActionOutput *)self showOutputActionHint];
+    if (showOutputActionHint == [v5 showOutputActionHint])
     {
-      v20 = [(BMAppIntentInvocationActionOutput *)self dialog];
-      v21 = [v5 dialog];
-      v22 = v21;
-      if (v20 == v21)
+      dialog = [(BMAppIntentInvocationActionOutput *)self dialog];
+      dialog2 = [v5 dialog];
+      v22 = dialog2;
+      if (dialog == dialog2)
       {
       }
 
       else
       {
-        v23 = [(BMAppIntentInvocationActionOutput *)self dialog];
-        v24 = [v5 dialog];
-        v25 = [v23 isEqual:v24];
+        dialog3 = [(BMAppIntentInvocationActionOutput *)self dialog];
+        dialog4 = [v5 dialog];
+        v25 = [dialog3 isEqual:dialog4];
 
         if (!v25)
         {
@@ -110,18 +110,18 @@
         }
       }
 
-      v26 = [(BMAppIntentInvocationActionOutput *)self value];
-      v27 = [v5 value];
-      v28 = v27;
-      if (v26 == v27)
+      value = [(BMAppIntentInvocationActionOutput *)self value];
+      value2 = [v5 value];
+      v28 = value2;
+      if (value == value2)
       {
       }
 
       else
       {
-        v29 = [(BMAppIntentInvocationActionOutput *)self value];
-        v30 = [v5 value];
-        v31 = [v29 isEqual:v30];
+        value3 = [(BMAppIntentInvocationActionOutput *)self value];
+        value4 = [v5 value];
+        v31 = [value3 isEqual:value4];
 
         if (!v31)
         {
@@ -129,18 +129,18 @@
         }
       }
 
-      v32 = [(BMAppIntentInvocationActionOutput *)self nextAction];
-      v33 = [v5 nextAction];
-      v34 = v33;
-      if (v32 == v33)
+      nextAction = [(BMAppIntentInvocationActionOutput *)self nextAction];
+      nextAction2 = [v5 nextAction];
+      v34 = nextAction2;
+      if (nextAction == nextAction2)
       {
       }
 
       else
       {
-        v35 = [(BMAppIntentInvocationActionOutput *)self nextAction];
-        v36 = [v5 nextAction];
-        v37 = [v35 isEqual:v36];
+        nextAction3 = [(BMAppIntentInvocationActionOutput *)self nextAction];
+        nextAction4 = [v5 nextAction];
+        v37 = [nextAction3 isEqual:nextAction4];
 
         if (!v37)
         {
@@ -148,18 +148,18 @@
         }
       }
 
-      v38 = [(BMAppIntentInvocationActionOutput *)self confirmationActionName];
-      v39 = [v5 confirmationActionName];
-      v40 = v39;
-      if (v38 == v39)
+      confirmationActionName = [(BMAppIntentInvocationActionOutput *)self confirmationActionName];
+      confirmationActionName2 = [v5 confirmationActionName];
+      v40 = confirmationActionName2;
+      if (confirmationActionName == confirmationActionName2)
       {
       }
 
       else
       {
-        v41 = [(BMAppIntentInvocationActionOutput *)self confirmationActionName];
-        v42 = [v5 confirmationActionName];
-        v43 = [v41 isEqual:v42];
+        confirmationActionName3 = [(BMAppIntentInvocationActionOutput *)self confirmationActionName];
+        confirmationActionName4 = [v5 confirmationActionName];
+        v43 = [confirmationActionName3 isEqual:confirmationActionName4];
 
         if (!v43)
         {
@@ -169,18 +169,18 @@
 
       if (!-[BMAppIntentInvocationActionOutput hasShowPrompt](self, "hasShowPrompt") && ![v5 hasShowPrompt] || -[BMAppIntentInvocationActionOutput hasShowPrompt](self, "hasShowPrompt") && objc_msgSend(v5, "hasShowPrompt") && (v44 = -[BMAppIntentInvocationActionOutput showPrompt](self, "showPrompt"), v44 == objc_msgSend(v5, "showPrompt")))
       {
-        v46 = [(BMAppIntentInvocationActionOutput *)self suggestedFollowUpActions];
-        v47 = [v5 suggestedFollowUpActions];
-        if (v46 == v47)
+        suggestedFollowUpActions = [(BMAppIntentInvocationActionOutput *)self suggestedFollowUpActions];
+        suggestedFollowUpActions2 = [v5 suggestedFollowUpActions];
+        if (suggestedFollowUpActions == suggestedFollowUpActions2)
         {
           v12 = 1;
         }
 
         else
         {
-          v48 = [(BMAppIntentInvocationActionOutput *)self suggestedFollowUpActions];
-          v49 = [v5 suggestedFollowUpActions];
-          v12 = [v48 isEqual:v49];
+          suggestedFollowUpActions3 = [(BMAppIntentInvocationActionOutput *)self suggestedFollowUpActions];
+          suggestedFollowUpActions4 = [v5 suggestedFollowUpActions];
+          v12 = [suggestedFollowUpActions3 isEqual:suggestedFollowUpActions4];
         }
 
         goto LABEL_34;
@@ -219,24 +219,24 @@ LABEL_35:
 - (id)jsonDictionary
 {
   v40[9] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAppIntentInvocationActionOutput *)self identifier];
-  v4 = [v3 UUIDString];
+  identifier = [(BMAppIntentInvocationActionOutput *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  v5 = [(BMAppIntentInvocationActionOutput *)self showOutputAction];
-  v6 = [v5 jsonDictionary];
+  showOutputAction = [(BMAppIntentInvocationActionOutput *)self showOutputAction];
+  jsonDictionary = [showOutputAction jsonDictionary];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAppIntentInvocationActionOutput showOutputActionHint](self, "showOutputActionHint")}];
-  v8 = [(BMAppIntentInvocationActionOutput *)self dialog];
-  v9 = [v8 jsonDictionary];
+  dialog = [(BMAppIntentInvocationActionOutput *)self dialog];
+  jsonDictionary2 = [dialog jsonDictionary];
 
-  v10 = [(BMAppIntentInvocationActionOutput *)self value];
-  v11 = [v10 jsonDictionary];
+  value = [(BMAppIntentInvocationActionOutput *)self value];
+  jsonDictionary3 = [value jsonDictionary];
 
-  v12 = [(BMAppIntentInvocationActionOutput *)self nextAction];
-  v38 = [v12 jsonDictionary];
+  nextAction = [(BMAppIntentInvocationActionOutput *)self nextAction];
+  jsonDictionary4 = [nextAction jsonDictionary];
 
-  v13 = [(BMAppIntentInvocationActionOutput *)self confirmationActionName];
-  v37 = [v13 jsonDictionary];
+  confirmationActionName = [(BMAppIntentInvocationActionOutput *)self confirmationActionName];
+  jsonDictionary5 = [confirmationActionName jsonDictionary];
 
   if ([(BMAppIntentInvocationActionOutput *)self hasShowPrompt])
   {
@@ -248,90 +248,90 @@ LABEL_35:
     v14 = 0;
   }
 
-  v15 = [(BMAppIntentInvocationActionOutput *)self _suggestedFollowUpActionsJSONArray];
+  _suggestedFollowUpActionsJSONArray = [(BMAppIntentInvocationActionOutput *)self _suggestedFollowUpActionsJSONArray];
   v39[0] = @"identifier";
-  v16 = v4;
-  if (!v4)
+  null = uUIDString;
+  if (!uUIDString)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v16;
-  v40[0] = v16;
+  v33 = null;
+  v40[0] = null;
   v39[1] = @"showOutputAction";
-  v17 = v6;
-  if (!v6)
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v17;
-  v40[1] = v17;
+  v32 = null2;
+  v40[1] = null2;
   v39[2] = @"showOutputActionHint";
-  v18 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v4;
-  v31 = v18;
-  v40[2] = v18;
+  v36 = uUIDString;
+  v31 = null3;
+  v40[2] = null3;
   v39[3] = @"dialog";
-  v19 = v9;
-  if (!v9)
+  null4 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v6;
-  v30 = v19;
-  v40[3] = v19;
+  v35 = jsonDictionary;
+  v30 = null4;
+  v40[3] = null4;
   v39[4] = @"value";
-  v20 = v11;
-  if (!v11)
+  null5 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v34 = v7;
-  v40[4] = v20;
+  v40[4] = null5;
   v39[5] = @"nextAction";
-  v21 = v38;
-  if (!v38)
+  null6 = jsonDictionary4;
+  if (!jsonDictionary4)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v9;
-  v40[5] = v21;
+  v22 = jsonDictionary2;
+  v40[5] = null6;
   v39[6] = @"confirmationActionName";
-  v23 = v37;
-  if (!v37)
+  null7 = jsonDictionary5;
+  if (!jsonDictionary5)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v11;
-  v40[6] = v23;
+  v24 = jsonDictionary3;
+  v40[6] = null7;
   v39[7] = @"showPrompt";
-  v25 = v14;
+  null8 = v14;
   if (!v14)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[7] = v25;
+  v40[7] = null8;
   v39[8] = @"suggestedFollowUpActions";
-  v26 = v15;
-  if (!v15)
+  null9 = _suggestedFollowUpActionsJSONArray;
+  if (!_suggestedFollowUpActionsJSONArray)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[8] = v26;
+  v40[8] = null9;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:9];
-  if (v15)
+  if (_suggestedFollowUpActionsJSONArray)
   {
     if (v14)
     {
@@ -349,11 +349,11 @@ LABEL_35:
   }
 
 LABEL_24:
-  if (!v37)
+  if (!jsonDictionary5)
   {
   }
 
-  if (!v38)
+  if (!jsonDictionary4)
   {
   }
 
@@ -409,8 +409,8 @@ LABEL_35:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMAppIntentInvocationActionOutput *)self suggestedFollowUpActions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  suggestedFollowUpActions = [(BMAppIntentInvocationActionOutput *)self suggestedFollowUpActions];
+  v5 = [suggestedFollowUpActions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -421,14 +421,14 @@ LABEL_35:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(suggestedFollowUpActions);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [suggestedFollowUpActions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -439,21 +439,21 @@ LABEL_35:
   return v3;
 }
 
-- (BMAppIntentInvocationActionOutput)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAppIntentInvocationActionOutput)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v190[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"identifier"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v20 = v6;
         v21 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v22 = a4;
+        errorCopy = error;
         v23 = *MEMORY[0x1E698F240];
         v187 = *MEMORY[0x1E696A578];
         v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"identifier"];
@@ -463,22 +463,22 @@ LABEL_35:
         v6 = v20;
         v7 = v24;
         v26 = [v25 initWithDomain:v23 code:2 userInfo:v8];
-        a4 = 0;
-        *v22 = v26;
+        error = 0;
+        *errorCopy = v26;
         goto LABEL_130;
       }
 
       goto LABEL_132;
     }
 
-    v12 = a4;
+    errorCopy2 = error;
     v13 = v6;
     v14 = v6;
     v15 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v14];
     if (!v15)
     {
       v84 = v14;
-      if (v12)
+      if (errorCopy2)
       {
         v85 = objc_alloc(MEMORY[0x1E696ABC0]);
         v86 = *MEMORY[0x1E698F240];
@@ -486,15 +486,15 @@ LABEL_35:
         v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"identifier"];
         v190[0] = v8;
         v87 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v190 forKeys:&v189 count:1];
-        *v12 = [v85 initWithDomain:v86 code:2 userInfo:v87];
+        *errorCopy2 = [v85 initWithDomain:v86 code:2 userInfo:v87];
 
-        a4 = 0;
+        error = 0;
         v6 = v13;
         v7 = v84;
         goto LABEL_130;
       }
 
-      a4 = 0;
+      error = 0;
       v7 = v84;
       goto LABEL_131;
     }
@@ -502,7 +502,7 @@ LABEL_35:
     v16 = v15;
 
     v17 = v16;
-    a4 = v12;
+    error = errorCopy2;
     v6 = v13;
     v7 = v17;
   }
@@ -512,18 +512,18 @@ LABEL_35:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"showOutputAction"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"showOutputAction"];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v27 = v7;
         v28 = v6;
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v30 = a4;
+        errorCopy3 = error;
         v31 = *MEMORY[0x1E698F240];
         v185 = *MEMORY[0x1E696A578];
         v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"showOutputAction"];
@@ -534,8 +534,8 @@ LABEL_35:
         v7 = v27;
         v9 = v32;
         v34 = [v33 initWithDomain:v31 code:2 userInfo:v11];
-        a4 = 0;
-        *v30 = v34;
+        error = 0;
+        *errorCopy3 = v34;
         goto LABEL_129;
       }
 
@@ -548,13 +548,13 @@ LABEL_35:
     v18 = v165;
     if (v18)
     {
-      if (a4)
+      if (error)
       {
         v18 = v18;
-        *a4 = v18;
+        *error = v18;
       }
 
-      a4 = 0;
+      error = 0;
       goto LABEL_129;
     }
   }
@@ -564,7 +564,7 @@ LABEL_35:
     v9 = 0;
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"showOutputActionHint"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"showOutputActionHint"];
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -578,12 +578,12 @@ LABEL_35:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v95 = v7;
           v96 = v6;
           v97 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v134 = a4;
+          errorCopy4 = error;
           v98 = *MEMORY[0x1E698F240];
           v183 = *MEMORY[0x1E696A578];
           v50 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"showOutputActionHint"];
@@ -594,8 +594,8 @@ LABEL_35:
           v7 = v95;
           v100 = [v99 initWithDomain:v98 code:2 userInfo:v62];
           v11 = 0;
-          a4 = 0;
-          *v134 = v100;
+          error = 0;
+          *errorCopy4 = v100;
           goto LABEL_126;
         }
 
@@ -614,21 +614,21 @@ LABEL_35:
     v11 = 0;
   }
 
-  v35 = [v5 objectForKeyedSubscript:@"dialog"];
+  v35 = [dictionaryCopy objectForKeyedSubscript:@"dialog"];
   v153 = v11;
   if (v35 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v138 = v10;
         v143 = v9;
         v57 = v7;
         v58 = v6;
         v59 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v133 = a4;
+        errorCopy5 = error;
         v60 = *MEMORY[0x1E698F240];
         v181 = *MEMORY[0x1E696A578];
         v61 = v35;
@@ -639,9 +639,9 @@ LABEL_35:
         v6 = v58;
         v7 = v57;
         v10 = v138;
-        *v133 = [v64 initWithDomain:v60 code:2 userInfo:v63];
+        *errorCopy5 = [v64 initWithDomain:v60 code:2 userInfo:v63];
 
-        a4 = 0;
+        error = 0;
         v50 = v61;
         v9 = v143;
         goto LABEL_126;
@@ -656,18 +656,18 @@ LABEL_35:
     v51 = v164;
     if (v51)
     {
-      if (a4)
+      if (error)
       {
         v51 = v51;
-        *a4 = v51;
+        *error = v51;
       }
 
-      a4 = 0;
+      error = 0;
       goto LABEL_125;
     }
 
     v151 = v7;
-    v36 = v5;
+    v36 = dictionaryCopy;
     v37 = v9;
   }
 
@@ -675,7 +675,7 @@ LABEL_35:
   {
     v151 = v7;
     v152 = 0;
-    v36 = v5;
+    v36 = dictionaryCopy;
     v37 = v9;
   }
 
@@ -687,17 +687,17 @@ LABEL_35:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v9 = v37;
-        v5 = v36;
+        dictionaryCopy = v36;
         goto LABEL_124;
       }
 
       v144 = v37;
       v78 = objc_alloc(MEMORY[0x1E696ABC0]);
       v139 = v10;
-      v79 = a4;
+      errorCopy6 = error;
       v80 = *MEMORY[0x1E698F240];
       v179 = *MEMORY[0x1E696A578];
       v81 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -709,11 +709,11 @@ LABEL_35:
       [MEMORY[0x1E695DF20] dictionaryWithObjects:&v180 forKeys:&v179 count:1];
       v149 = v9 = v144;
       v83 = [v78 initWithDomain:v80 code:2 userInfo:?];
-      a4 = 0;
-      *v79 = v83;
+      error = 0;
+      *errorCopy6 = v83;
       v10 = v139;
 LABEL_122:
-      v5 = v36;
+      dictionaryCopy = v36;
       goto LABEL_123;
     }
 
@@ -725,13 +725,13 @@ LABEL_122:
     {
       v149 = v52;
       v11 = v153;
-      if (a4)
+      if (error)
       {
         v54 = v54;
-        *a4 = v54;
+        *error = v54;
       }
 
-      a4 = 0;
+      error = 0;
 LABEL_121:
       v9 = v37;
       goto LABEL_122;
@@ -772,26 +772,26 @@ LABEL_121:
         v146 = v55;
         v11 = v153;
         v53 = v147;
-        if (a4)
+        if (error)
         {
           v56 = v56;
-          *a4 = v56;
+          *error = v56;
         }
 
-        a4 = 0;
+        error = 0;
         v9 = v37;
 LABEL_88:
-        v5 = v36;
+        dictionaryCopy = v36;
         goto LABEL_113;
       }
 
-      if (a4)
+      if (error)
       {
         v145 = v37;
         v88 = v6;
         v89 = objc_alloc(MEMORY[0x1E696ABC0]);
         v140 = v10;
-        v90 = a4;
+        errorCopy7 = error;
         v91 = *MEMORY[0x1E698F240];
         v177 = *MEMORY[0x1E696A578];
         v148 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"nextAction"];
@@ -802,8 +802,8 @@ LABEL_88:
         v9 = v145;
         v146 = v92;
         v94 = [v93 initWithDomain:v91 code:2 userInfo:?];
-        a4 = 0;
-        *v90 = v94;
+        error = 0;
+        *errorCopy7 = v94;
         v10 = v140;
         v11 = v153;
         v53 = v147;
@@ -826,13 +826,13 @@ LABEL_36:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v5 = v36;
-      if (a4)
+      dictionaryCopy = v36;
+      if (error)
       {
         v101 = v6;
         v102 = objc_alloc(MEMORY[0x1E696ABC0]);
         v141 = v10;
-        v103 = a4;
+        errorCopy8 = error;
         v104 = *MEMORY[0x1E698F240];
         v175 = *MEMORY[0x1E696A578];
         v105 = objc_alloc(MEMORY[0x1E696AEC0]);
@@ -846,8 +846,8 @@ LABEL_36:
         v6 = v101;
         v135 = v107;
         v109 = [v108 initWithDomain:v104 code:2 userInfo:?];
-        a4 = 0;
-        *v103 = v109;
+        error = 0;
+        *errorCopy8 = v109;
         v10 = v141;
         v11 = v153;
         v53 = v147;
@@ -863,19 +863,19 @@ LABEL_36:
     v161 = 0;
     v136 = [[BMAppIntentInvocationActionOutputConfirmationActionName alloc] initWithJSONDictionary:v76 error:&v161];
     v77 = v161;
-    v5 = v36;
+    dictionaryCopy = v36;
     if (v77)
     {
       v135 = v76;
       v11 = v153;
       v53 = v147;
-      if (a4)
+      if (error)
       {
         v77 = v77;
-        *a4 = v77;
+        *error = v77;
       }
 
-      a4 = 0;
+      error = 0;
       goto LABEL_112;
     }
 
@@ -885,19 +885,19 @@ LABEL_36:
   else
   {
     v136 = 0;
-    v5 = v36;
+    dictionaryCopy = v36;
   }
 
-  v44 = [v5 objectForKeyedSubscript:@"showPrompt"];
+  v44 = [dictionaryCopy objectForKeyedSubscript:@"showPrompt"];
   v131 = v6;
-  v132 = a4;
+  errorCopy9 = error;
   v130 = v44;
   if (v44 && (v45 = v44, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v135 = 0;
         v53 = v147;
@@ -914,8 +914,8 @@ LABEL_36:
       v35 = v154;
       v113 = [v110 initWithDomain:v112 code:2 userInfo:v65];
       v135 = 0;
-      a4 = 0;
-      *v132 = v113;
+      error = 0;
+      *errorCopy9 = v113;
       goto LABEL_108;
     }
 
@@ -927,24 +927,24 @@ LABEL_36:
     v46 = 0;
   }
 
-  v47 = [v5 objectForKeyedSubscript:@"suggestedFollowUpActions"];
-  v48 = [MEMORY[0x1E695DFB0] null];
-  v49 = [v47 isEqual:v48];
+  v47 = [dictionaryCopy objectForKeyedSubscript:@"suggestedFollowUpActions"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v49 = [v47 isEqual:null];
 
   v135 = v46;
   if (!v49)
   {
     if (!v47 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v129 = v5;
+      v129 = dictionaryCopy;
       v137 = v10;
       v142 = v9;
       goto LABEL_64;
     }
 
-    if (!v132)
+    if (!errorCopy9)
     {
-      a4 = 0;
+      error = 0;
       v11 = v153;
       v53 = v147;
       goto LABEL_110;
@@ -956,17 +956,17 @@ LABEL_36:
     v65 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"suggestedFollowUpActions"];
     v172 = v65;
     v124 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v172 forKeys:&v171 count:1];
-    *v132 = [v122 initWithDomain:v123 code:2 userInfo:v124];
+    *errorCopy9 = [v122 initWithDomain:v123 code:2 userInfo:v124];
 
     v35 = v154;
-    a4 = 0;
+    error = 0;
 LABEL_108:
     v11 = v153;
     v53 = v147;
     goto LABEL_109;
   }
 
-  v129 = v5;
+  v129 = dictionaryCopy;
   v137 = v10;
   v142 = v9;
 
@@ -1000,10 +1000,10 @@ LABEL_64:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v114 = v132;
+        v114 = errorCopy9;
         v10 = v137;
-        v5 = v129;
-        if (v132)
+        dictionaryCopy = v129;
+        if (errorCopy9)
         {
           v115 = objc_alloc(MEMORY[0x1E696ABC0]);
           v116 = *MEMORY[0x1E698F240];
@@ -1024,7 +1024,7 @@ LABEL_106:
 
 LABEL_107:
 
-        a4 = 0;
+        error = 0;
         v9 = v142;
         goto LABEL_108;
       }
@@ -1032,10 +1032,10 @@ LABEL_107:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v114 = v132;
+        v114 = errorCopy9;
         v10 = v137;
-        v5 = v129;
-        if (v132)
+        dictionaryCopy = v129;
+        if (errorCopy9)
         {
           v115 = objc_alloc(MEMORY[0x1E696ABC0]);
           v116 = *MEMORY[0x1E698F240];
@@ -1059,14 +1059,14 @@ LABEL_107:
       if (v75)
       {
         v120 = v75;
-        if (v132)
+        if (errorCopy9)
         {
           v121 = v75;
-          *v132 = v120;
+          *errorCopy9 = v120;
         }
 
         v10 = v137;
-        v5 = v129;
+        dictionaryCopy = v129;
         goto LABEL_106;
       }
 
@@ -1090,10 +1090,10 @@ LABEL_74:
   v11 = v153;
   v9 = v142;
   v53 = v147;
-  a4 = -[BMAppIntentInvocationActionOutput initWithIdentifier:showOutputAction:showOutputActionHint:dialog:value:nextAction:confirmationActionName:showPrompt:suggestedFollowUpActions:](self, "initWithIdentifier:showOutputAction:showOutputActionHint:dialog:value:nextAction:confirmationActionName:showPrompt:suggestedFollowUpActions:", v151, v142, [v153 intValue], v152, v147, v148, v136, v135, v65);
-  self = a4;
+  error = -[BMAppIntentInvocationActionOutput initWithIdentifier:showOutputAction:showOutputActionHint:dialog:value:nextAction:confirmationActionName:showPrompt:suggestedFollowUpActions:](self, "initWithIdentifier:showOutputAction:showOutputActionHint:dialog:value:nextAction:confirmationActionName:showPrompt:suggestedFollowUpActions:", v151, v142, [v153 intValue], v152, v147, v148, v136, v135, v65);
+  self = error;
   v10 = v137;
-  v5 = v129;
+  dictionaryCopy = v129;
 LABEL_109:
 
 LABEL_110:
@@ -1124,22 +1124,22 @@ LABEL_131:
 
 LABEL_132:
   v125 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMAppIntentInvocationActionOutput *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_raw_identifier)
   {
     PBDataWriterWriteDataField();
@@ -1149,7 +1149,7 @@ LABEL_132:
   {
     v18 = 0;
     PBDataWriterPlaceMark();
-    [(BMAppIntentInvocationAction *)self->_showOutputAction writeTo:v4];
+    [(BMAppIntentInvocationAction *)self->_showOutputAction writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1159,7 +1159,7 @@ LABEL_132:
   {
     v18 = 0;
     PBDataWriterPlaceMark();
-    [(BMAppIntentInvocationActionOutputDialog *)self->_dialog writeTo:v4];
+    [(BMAppIntentInvocationActionOutputDialog *)self->_dialog writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1167,7 +1167,7 @@ LABEL_132:
   {
     v18 = 0;
     PBDataWriterPlaceMark();
-    [(BMAppIntentInvocationValue *)self->_value writeTo:v4];
+    [(BMAppIntentInvocationValue *)self->_value writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1175,7 +1175,7 @@ LABEL_132:
   {
     v18 = 0;
     PBDataWriterPlaceMark();
-    [(BMAppIntentInvocationAction *)self->_nextAction writeTo:v4];
+    [(BMAppIntentInvocationAction *)self->_nextAction writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1183,7 +1183,7 @@ LABEL_132:
   {
     v18 = 0;
     PBDataWriterPlaceMark();
-    [(BMAppIntentInvocationActionOutputConfirmationActionName *)self->_confirmationActionName writeTo:v4];
+    [(BMAppIntentInvocationActionOutputConfirmationActionName *)self->_confirmationActionName writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -1216,7 +1216,7 @@ LABEL_132:
         v12 = *(*(&v14 + 1) + 8 * v11);
         v18 = 0;
         PBDataWriterPlaceMark();
-        [v12 writeTo:{v4, v14}];
+        [v12 writeTo:{toCopy, v14}];
         PBDataWriterRecallMark();
         ++v11;
       }
@@ -1231,9 +1231,9 @@ LABEL_132:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v44.receiver = self;
   v44.super_class = BMAppIntentInvocationActionOutput;
   v5 = [(BMEventBase *)&v44 init];
@@ -1243,12 +1243,12 @@ LABEL_132:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1259,18 +1259,18 @@ LABEL_132:
       while (1)
       {
         LOBYTE(v45) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v45 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v45 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v45 & 0x7F) << v8;
@@ -1288,9 +1288,9 @@ LABEL_132:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -1308,18 +1308,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v45) = 0;
-              v26 = [v4 position] + 1;
-              if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+              v26 = [fromCopy position] + 1;
+              if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
               {
-                v28 = [v4 data];
-                [v28 getBytes:&v45 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v45 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v25 |= (v45 & 0x7F) << v23;
@@ -1335,7 +1335,7 @@ LABEL_16:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v25 > 3)
+            if (([fromCopy hasError] & 1) != 0 || v25 > 3)
             {
 LABEL_75:
               LODWORD(v25) = 0;
@@ -1354,7 +1354,7 @@ LABEL_75:
               goto LABEL_82;
             }
 
-            v19 = [[BMAppIntentInvocationActionOutputDialog alloc] initByReadFrom:v4];
+            v19 = [[BMAppIntentInvocationActionOutputDialog alloc] initByReadFrom:fromCopy];
             if (!v19)
             {
               goto LABEL_82;
@@ -1384,7 +1384,7 @@ LABEL_71:
               goto LABEL_82;
             }
 
-            v19 = [[BMAppIntentInvocationAction alloc] initByReadFrom:v4];
+            v19 = [[BMAppIntentInvocationAction alloc] initByReadFrom:fromCopy];
             if (!v19)
             {
               goto LABEL_82;
@@ -1422,7 +1422,7 @@ LABEL_82:
               goto LABEL_82;
             }
 
-            v19 = [[BMAppIntentInvocationValue alloc] initByReadFrom:v4];
+            v19 = [[BMAppIntentInvocationValue alloc] initByReadFrom:fromCopy];
             if (!v19)
             {
               goto LABEL_82;
@@ -1441,7 +1441,7 @@ LABEL_82:
               goto LABEL_82;
             }
 
-            v19 = [[BMAppIntentInvocationAction alloc] initByReadFrom:v4];
+            v19 = [[BMAppIntentInvocationAction alloc] initByReadFrom:fromCopy];
             if (!v19)
             {
               goto LABEL_82;
@@ -1463,7 +1463,7 @@ LABEL_82:
             goto LABEL_82;
           }
 
-          v19 = [[BMAppIntentInvocationActionOutputConfirmationActionName alloc] initByReadFrom:v4];
+          v19 = [[BMAppIntentInvocationActionOutputConfirmationActionName alloc] initByReadFrom:fromCopy];
           if (!v19)
           {
             goto LABEL_82;
@@ -1487,18 +1487,18 @@ LABEL_59:
           while (1)
           {
             LOBYTE(v45) = 0;
-            v35 = [v4 position] + 1;
-            if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+            v35 = [fromCopy position] + 1;
+            if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
             {
-              v37 = [v4 data];
-              [v37 getBytes:&v45 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v45 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v34 |= (v45 & 0x7F) << v32;
@@ -1516,7 +1516,7 @@ LABEL_59:
             }
           }
 
-          v38 = (v34 != 0) & ~[v4 hasError];
+          v38 = (v34 != 0) & ~[fromCopy hasError];
 LABEL_78:
           v5->_showPrompt = v38;
           goto LABEL_60;
@@ -1534,7 +1534,7 @@ LABEL_78:
           goto LABEL_82;
         }
 
-        v17 = [[BMAppIntentInvocationAction alloc] initByReadFrom:v4];
+        v17 = [[BMAppIntentInvocationAction alloc] initByReadFrom:fromCopy];
         if (!v17)
         {
           goto LABEL_82;
@@ -1546,18 +1546,18 @@ LABEL_78:
       }
 
 LABEL_60:
-      v31 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v31 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v39 = [v6 copy];
   suggestedFollowUpActions = v5->_suggestedFollowUpActions;
   v5->_suggestedFollowUpActions = v39;
 
-  v41 = [v4 hasError];
-  if (v41)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_83:
     v42 = 0;
@@ -1575,42 +1575,42 @@ LABEL_80:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAppIntentInvocationActionOutput *)self identifier];
-  v5 = [(BMAppIntentInvocationActionOutput *)self showOutputAction];
+  identifier = [(BMAppIntentInvocationActionOutput *)self identifier];
+  showOutputAction = [(BMAppIntentInvocationActionOutput *)self showOutputAction];
   v6 = BMAppIntentInvocationActionOutputHintAsString([(BMAppIntentInvocationActionOutput *)self showOutputActionHint]);
-  v7 = [(BMAppIntentInvocationActionOutput *)self dialog];
-  v8 = [(BMAppIntentInvocationActionOutput *)self value];
-  v9 = [(BMAppIntentInvocationActionOutput *)self nextAction];
-  v10 = [(BMAppIntentInvocationActionOutput *)self confirmationActionName];
+  dialog = [(BMAppIntentInvocationActionOutput *)self dialog];
+  value = [(BMAppIntentInvocationActionOutput *)self value];
+  nextAction = [(BMAppIntentInvocationActionOutput *)self nextAction];
+  confirmationActionName = [(BMAppIntentInvocationActionOutput *)self confirmationActionName];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMAppIntentInvocationActionOutput showPrompt](self, "showPrompt")}];
-  v12 = [(BMAppIntentInvocationActionOutput *)self suggestedFollowUpActions];
-  v13 = [v3 initWithFormat:@"BMAppIntentInvocationActionOutput with identifier: %@, showOutputAction: %@, showOutputActionHint: %@, dialog: %@, value: %@, nextAction: %@, confirmationActionName: %@, showPrompt: %@, suggestedFollowUpActions: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  suggestedFollowUpActions = [(BMAppIntentInvocationActionOutput *)self suggestedFollowUpActions];
+  v13 = [v3 initWithFormat:@"BMAppIntentInvocationActionOutput with identifier: %@, showOutputAction: %@, showOutputActionHint: %@, dialog: %@, value: %@, nextAction: %@, confirmationActionName: %@, showPrompt: %@, suggestedFollowUpActions: %@", identifier, showOutputAction, v6, dialog, value, nextAction, confirmationActionName, v11, suggestedFollowUpActions];
 
   return v13;
 }
 
-- (BMAppIntentInvocationActionOutput)initWithIdentifier:(id)a3 showOutputAction:(id)a4 showOutputActionHint:(int)a5 dialog:(id)a6 value:(id)a7 nextAction:(id)a8 confirmationActionName:(id)a9 showPrompt:(id)a10 suggestedFollowUpActions:(id)a11
+- (BMAppIntentInvocationActionOutput)initWithIdentifier:(id)identifier showOutputAction:(id)action showOutputActionHint:(int)hint dialog:(id)dialog value:(id)value nextAction:(id)nextAction confirmationActionName:(id)name showPrompt:(id)self0 suggestedFollowUpActions:(id)self1
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v29 = a4;
-  v28 = a6;
-  v27 = a7;
-  v26 = a8;
-  v25 = a9;
-  v17 = a10;
-  v18 = a11;
+  identifierCopy = identifier;
+  actionCopy = action;
+  dialogCopy = dialog;
+  valueCopy = value;
+  nextActionCopy = nextAction;
+  nameCopy = name;
+  promptCopy = prompt;
+  actionsCopy = actions;
   v30.receiver = self;
   v30.super_class = BMAppIntentInvocationActionOutput;
   v19 = [(BMEventBase *)&v30 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v16)
+    if (identifierCopy)
     {
       v31[0] = 0;
       v31[1] = 0;
-      [v16 getUUIDBytes:v31];
+      [identifierCopy getUUIDBytes:v31];
       v20 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v31 length:16];
       raw_identifier = v19->_raw_identifier;
       v19->_raw_identifier = v20;
@@ -1622,16 +1622,16 @@ LABEL_80:
       v19->_raw_identifier = 0;
     }
 
-    objc_storeStrong(&v19->_showOutputAction, a4);
-    v19->_showOutputActionHint = a5;
-    objc_storeStrong(&v19->_dialog, a6);
-    objc_storeStrong(&v19->_value, a7);
-    objc_storeStrong(&v19->_nextAction, a8);
-    objc_storeStrong(&v19->_confirmationActionName, a9);
-    if (v17)
+    objc_storeStrong(&v19->_showOutputAction, action);
+    v19->_showOutputActionHint = hint;
+    objc_storeStrong(&v19->_dialog, dialog);
+    objc_storeStrong(&v19->_value, value);
+    objc_storeStrong(&v19->_nextAction, nextAction);
+    objc_storeStrong(&v19->_confirmationActionName, name);
+    if (promptCopy)
     {
       v19->_hasShowPrompt = 1;
-      v19->_showPrompt = [v17 BOOLValue];
+      v19->_showPrompt = [promptCopy BOOLValue];
     }
 
     else
@@ -1640,7 +1640,7 @@ LABEL_80:
       v19->_showPrompt = 0;
     }
 
-    objc_storeStrong(&v19->_suggestedFollowUpActions, a11);
+    objc_storeStrong(&v19->_suggestedFollowUpActions, actions);
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1734,9 +1734,9 @@ id __44__BMAppIntentInvocationActionOutput_columns__block_invoke(uint64_t a1, vo
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1744,8 +1744,8 @@ id __44__BMAppIntentInvocationActionOutput_columns__block_invoke(uint64_t a1, vo
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAppIntentInvocationActionOutput alloc] initByReadFrom:v7];
     v4 = v8;

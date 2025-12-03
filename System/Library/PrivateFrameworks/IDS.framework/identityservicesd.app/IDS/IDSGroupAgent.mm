@@ -1,15 +1,15 @@
 @interface IDSGroupAgent
 + (id)sharedInstance;
-- (BOOL)isAirDropSession:(id)a3;
-- (BOOL)isAppleEndpointForExistingSession:(id)a3;
-- (IDSGroupAgent)initWithQueue:(id)a3 isSessionControlEnabled:(BOOL)a4;
-- (id)generateSessionIDFromMemberArray:(id)a3;
-- (id)resolveAppleEndpoint:(id)a3;
-- (void)_injectPortTopicMappingForSession:(id)a3 topic:(id)a4 portSignature:(id)a5;
-- (void)createNewSessionForClientRequest:(id)a3 isClient:(BOOL)a4 registrationCompletionBlock:(id)a5;
+- (BOOL)isAirDropSession:(id)session;
+- (BOOL)isAppleEndpointForExistingSession:(id)session;
+- (IDSGroupAgent)initWithQueue:(id)queue isSessionControlEnabled:(BOOL)enabled;
+- (id)generateSessionIDFromMemberArray:(id)array;
+- (id)resolveAppleEndpoint:(id)endpoint;
+- (void)_injectPortTopicMappingForSession:(id)session topic:(id)topic portSignature:(id)signature;
+- (void)createNewSessionForClientRequest:(id)request isClient:(BOOL)client registrationCompletionBlock:(id)block;
 - (void)registerAgent;
 - (void)registerEntitledAgent;
-- (void)resolveAirDropProEndpointWithParams:(id)a3 options:(id)a4 agentResolveResponse:(id)a5;
+- (void)resolveAirDropProEndpointWithParams:(id)params options:(id)options agentResolveResponse:(id)response;
 - (void)unregisterAgent;
 - (void)unregisterEntitledAgent;
 @end
@@ -28,16 +28,16 @@
   return v3;
 }
 
-- (IDSGroupAgent)initWithQueue:(id)a3 isSessionControlEnabled:(BOOL)a4
+- (IDSGroupAgent)initWithQueue:(id)queue isSessionControlEnabled:(BOOL)enabled
 {
-  v6 = a3;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = IDSGroupAgent;
   v7 = [(IDSGroupAgent *)&v24 init];
   v8 = v7;
   if (v7)
   {
-    v7->_queue = v6;
+    v7->_queue = queueCopy;
     v9 = objc_alloc_init(NSMutableDictionary);
     endpointToResolvedParameters = v8->_endpointToResolvedParameters;
     v8->_endpointToResolvedParameters = v9;
@@ -66,7 +66,7 @@
     sessionIDToEvaluators = v8->_sessionIDToEvaluators;
     v8->_sessionIDToEvaluators = v21;
 
-    v8->_isSessionControlEnabled = a4;
+    v8->_isSessionControlEnabled = enabled;
   }
 
   return v8;
@@ -74,38 +74,38 @@
 
 - (void)registerAgent
 {
-  v3 = [(IDSGroupAgent *)self agent];
+  agent = [(IDSGroupAgent *)self agent];
 
-  if (!v3)
+  if (!agent)
   {
     v4 = [NSString stringWithFormat:@"Agent with domain:%@, class:%@", @"com.apple.ids", @"IDSGroupAgent"];
     [v4 UTF8String];
-    v5 = [(IDSGroupAgent *)self queue];
+    queue = [(IDSGroupAgent *)self queue];
     v6 = nw_agent_create();
     [(IDSGroupAgent *)self setAgent:v6];
 
     v7 = objc_alloc_init(NSMutableDictionary);
     [(IDSGroupAgent *)self setMembersArrayDict:v7];
 
-    v8 = [(IDSGroupAgent *)self agent];
+    agent2 = [(IDSGroupAgent *)self agent];
     nw_agent_set_group_handlers();
 
-    v9 = [(IDSGroupAgent *)self agent];
+    agent3 = [(IDSGroupAgent *)self agent];
     nw_agent_set_flow_handlers();
 
-    v10 = [(IDSGroupAgent *)self agent];
+    agent4 = [(IDSGroupAgent *)self agent];
     nw_agent_add_resolve_handlers();
 
-    v11 = [(IDSGroupAgent *)self agent];
+    agent5 = [(IDSGroupAgent *)self agent];
     v12 = IDSRealTimeContext();
     nw_agent_set_flow_context();
 
-    v13 = [(IDSGroupAgent *)self agent];
+    agent6 = [(IDSGroupAgent *)self agent];
     nw_agent_change_state();
 
     v27[0] = 0;
     v27[1] = 0;
-    v14 = [(IDSGroupAgent *)self agent];
+    agent7 = [(IDSGroupAgent *)self agent];
     nw_agent_get_uuid();
 
     v15 = [[NSUUID alloc] initWithUUIDBytes:v27];
@@ -123,39 +123,39 @@
     v22 = [NSArray arrayWithObjects:v26 count:3];
     v23 = [v17 initWithOrder:0 result:v18 conditions:v22];
 
-    v24 = [(IDSGroupAgent *)self policySession];
-    [v24 addPolicy:v23];
+    policySession = [(IDSGroupAgent *)self policySession];
+    [policySession addPolicy:v23];
 
-    v25 = [(IDSGroupAgent *)self policySession];
-    [v25 apply];
+    policySession2 = [(IDSGroupAgent *)self policySession];
+    [policySession2 apply];
   }
 }
 
 - (void)registerEntitledAgent
 {
-  v3 = [(IDSGroupAgent *)self entitledAgent];
+  entitledAgent = [(IDSGroupAgent *)self entitledAgent];
 
-  if (!v3)
+  if (!entitledAgent)
   {
     v23 = [NSString stringWithFormat:@"Agent with domain:%@, class:%@", @"com.apple.ids", @"IDSGroupEntitledAgent"];
     [v23 UTF8String];
-    v4 = [(IDSGroupAgent *)self queue];
+    queue = [(IDSGroupAgent *)self queue];
     v5 = nw_agent_create();
     [(IDSGroupAgent *)self setEntitledAgent:v5];
 
-    v6 = [(IDSGroupAgent *)self entitledAgent];
+    entitledAgent2 = [(IDSGroupAgent *)self entitledAgent];
     nw_agent_add_resolve_handlers();
 
-    v7 = [(IDSGroupAgent *)self entitledAgent];
+    entitledAgent3 = [(IDSGroupAgent *)self entitledAgent];
     v8 = IDSRealTimeContext();
     nw_agent_set_flow_context();
 
-    v9 = [(IDSGroupAgent *)self entitledAgent];
+    entitledAgent4 = [(IDSGroupAgent *)self entitledAgent];
     nw_agent_change_state();
 
     v25[0] = 0;
     v25[1] = 0;
-    v10 = [(IDSGroupAgent *)self entitledAgent];
+    entitledAgent5 = [(IDSGroupAgent *)self entitledAgent];
     nw_agent_get_uuid();
 
     v11 = [[NSUUID alloc] initWithUUIDBytes:v25];
@@ -175,21 +175,21 @@
     v19 = [NSArray arrayWithObjects:v24 count:4];
     v20 = [v13 initWithOrder:0 result:v14 conditions:v19];
 
-    v21 = [(IDSGroupAgent *)self policySessionWithEntitlment];
-    [v21 addPolicy:v20];
+    policySessionWithEntitlment = [(IDSGroupAgent *)self policySessionWithEntitlment];
+    [policySessionWithEntitlment addPolicy:v20];
 
-    v22 = [(IDSGroupAgent *)self policySessionWithEntitlment];
-    [v22 apply];
+    policySessionWithEntitlment2 = [(IDSGroupAgent *)self policySessionWithEntitlment];
+    [policySessionWithEntitlment2 apply];
   }
 }
 
-- (void)createNewSessionForClientRequest:(id)a3 isClient:(BOOL)a4 registrationCompletionBlock:(id)a5
+- (void)createNewSessionForClientRequest:(id)request isClient:(BOOL)client registrationCompletionBlock:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  clientCopy = client;
+  requestCopy = request;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (requestCopy)
   {
     v11 = +[IDSDServiceController sharedInstance];
     v12 = IDSServiceNameAirDropWalkAway;
@@ -212,15 +212,15 @@
       goto LABEL_68;
     }
 
-    v75 = v6;
+    v75 = clientCopy;
     v16 = objc_alloc_init(NSMutableDictionary);
-    v17 = [v15 unprefixedURIStringsFromRegistration];
+    unprefixedURIStringsFromRegistration = [v15 unprefixedURIStringsFromRegistration];
     v78 = _IDSCopyCallerIDWithSelfMessagingHint();
 
-    if ([(IDSGroupAgent *)self isAirDropSession:v8])
+    if ([(IDSGroupAgent *)self isAirDropSession:requestCopy])
     {
-      v67 = self;
-      v18 = [NSString stringWithFormat:@"%@", v8];
+      selfCopy2 = self;
+      requestCopy = [NSString stringWithFormat:@"%@", requestCopy];
       v19 = v12;
       v20 = +[IDSFoundationLog TransportLevelAgent];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -256,16 +256,16 @@
         v74 = IDSCopyIDForTokenWithID();
 
         v15 = v70;
-        v30 = [v70 primaryRegistration];
-        v31 = [v30 pushToken];
+        primaryRegistration = [v70 primaryRegistration];
+        pushToken = [primaryRegistration pushToken];
 
         v32 = IDSCopyBestGuessIDForID();
         v33 = IDSCopyIDForTokenWithID();
 
         v34 = [v24 objectAtIndexedSubscript:3];
-        v35 = [v31 __imHexString];
-        v36 = v35;
-        if (v35 && v34)
+        __imHexString = [pushToken __imHexString];
+        v36 = __imHexString;
+        if (__imHexString && v34)
         {
 
           if (v33 && v74)
@@ -321,7 +321,7 @@
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v93 = v8;
+          v93 = requestCopy;
           _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "Unexpected format for endpoint: %@", buf, 0xCu);
         }
 
@@ -332,14 +332,14 @@
       goto LABEL_67;
     }
 
-    v18 = [NSString stringWithFormat:@"%s", nw_endpoint_get_application_service_name()];
-    if (([v18 containsString:@"com.apple.airdrop_pro"] & 1) == 0)
+    requestCopy = [NSString stringWithFormat:@"%s", nw_endpoint_get_application_service_name()];
+    if (([requestCopy containsString:@"com.apple.airdrop_pro"] & 1) == 0)
     {
       v53 = +[IDSFoundationLog TransportLevelAgent];
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v93 = v8;
+        v93 = requestCopy;
         _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "Unexpected format for endpoint: %@", buf, 0xCu);
       }
 
@@ -358,7 +358,7 @@
     v37 = [NSArray arrayWithObjects:v90 count:2];
 
     v16 = v41;
-    v67 = self;
+    selfCopy2 = self;
     v38 = [(IDSGroupAgent *)self generateSessionIDFromMemberArray:v37];
     v19 = 0;
 LABEL_19:
@@ -403,10 +403,10 @@ LABEL_19:
       CFDictionarySetValue(theDicta, IDSSessionUniqueIDKey, valuea);
       CFDictionarySetValue(theDicta, IDSGroupSessionMessagesGroupIDKey, valuea);
       v15 = v71;
-      v52 = [v71 uniqueID];
-      if (v52)
+      uniqueID = [v71 uniqueID];
+      if (uniqueID)
       {
-        CFDictionarySetValue(theDicta, IDSSessionAccountIDKey, v52);
+        CFDictionarySetValue(theDicta, IDSSessionAccountIDKey, uniqueID);
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -458,13 +458,13 @@ LABEL_19:
       {
         CFDictionarySetValue(theDicta, IDSSessionIsInitiatorKey, v59);
         v60 = v19;
-        v61 = v67;
+        v61 = selfCopy2;
       }
 
       else
       {
         v60 = v19;
-        v61 = v67;
+        v61 = selfCopy2;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
           sub_1009358E4();
@@ -501,7 +501,7 @@ LABEL_19:
       v84 = v10;
       v19 = v60;
       v83 = v19;
-      v18 = valuea;
+      requestCopy = valuea;
       dispatch_async(v63, block);
     }
 
@@ -509,7 +509,7 @@ LABEL_19:
     {
       v10[2](v10, 0, 0);
 
-      v18 = v74;
+      requestCopy = v74;
     }
 
 LABEL_62:
@@ -520,16 +520,16 @@ LABEL_68:
     goto LABEL_69;
   }
 
-  (*(v9 + 2))(v9, 0, 0);
+  (*(blockCopy + 2))(blockCopy, 0, 0);
 LABEL_69:
 }
 
-- (id)generateSessionIDFromMemberArray:(id)a3
+- (id)generateSessionIDFromMemberArray:(id)array
 {
-  v3 = a3;
-  if ([v3 count] == 2)
+  arrayCopy = array;
+  if ([arrayCopy count] == 2)
   {
-    v4 = [v3 sortedArrayUsingComparator:&stru_100BE62D0];
+    v4 = [arrayCopy sortedArrayUsingComparator:&stru_100BE62D0];
     v5 = [v4 componentsJoinedByString:@", "];
     v6 = [v5 dataUsingEncoding:4];
 
@@ -543,7 +543,7 @@ LABEL_69:
 
     v11 = *[v7 bytes];
     v8 = [[NSUUID alloc] initWithUUIDBytes:&v11];
-    v9 = [v8 UUIDString];
+    uUIDString = [v8 UUIDString];
   }
 
   else
@@ -555,21 +555,21 @@ LABEL_69:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "generateStringFromMembers received unexpected input", md, 2u);
     }
 
-    v9 = 0;
+    uUIDString = 0;
   }
 
-  return v9;
+  return uUIDString;
 }
 
-- (BOOL)isAppleEndpointForExistingSession:(id)a3
+- (BOOL)isAppleEndpointForExistingSession:(id)session
 {
   v3 = [NSString stringWithFormat:@"%s", nw_endpoint_get_application_service_alias()];
   v4 = [[IDSGroupSessionConnectionParameters alloc] initWithStringRepresentation:v3];
-  v5 = [v4 sessionID];
-  if (v5)
+  sessionID = [v4 sessionID];
+  if (sessionID)
   {
-    v6 = [v4 multiplexer];
-    v7 = [v6 isEqualToString:@"groupsession"];
+    multiplexer = [v4 multiplexer];
+    v7 = [multiplexer isEqualToString:@"groupsession"];
   }
 
   else
@@ -580,14 +580,14 @@ LABEL_69:
   return v7;
 }
 
-- (BOOL)isAirDropSession:(id)a3
+- (BOOL)isAirDropSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v4 = [NSString stringWithFormat:@"%s", nw_endpoint_get_application_service_name()];
   application_service_alias = nw_endpoint_get_application_service_alias();
 
-  v6 = [NSString stringWithFormat:@"%s", application_service_alias];
-  v7 = [v6 componentsSeparatedByString:@":"];
+  application_service_alias = [NSString stringWithFormat:@"%s", application_service_alias];
+  v7 = [application_service_alias componentsSeparatedByString:@":"];
   if ([v7 count] >= 4)
   {
     v9 = [v7 objectAtIndexedSubscript:0];
@@ -610,31 +610,31 @@ LABEL_69:
   return v8;
 }
 
-- (void)resolveAirDropProEndpointWithParams:(id)a3 options:(id)a4 agentResolveResponse:(id)a5
+- (void)resolveAirDropProEndpointWithParams:(id)params options:(id)options agentResolveResponse:(id)response
 {
-  v7 = a4;
-  v8 = a5;
+  optionsCopy = options;
+  responseCopy = response;
   v9 = IDSSessionUniqueIDKey;
-  v25 = a3;
-  v10 = [v7 objectForKeyedSubscript:v9];
-  v11 = [v7 objectForKeyedSubscript:IDSGlobalLinkReliableUnicastLocalConnectionID];
-  v12 = [v7 objectForKeyedSubscript:IDSGlobalLinkReliableUnicastRemoteConnectionID];
-  v13 = [v7 objectForKeyedSubscript:IDSGlobalLinkReliableUnicastParentConnection];
+  paramsCopy = params;
+  v10 = [optionsCopy objectForKeyedSubscript:v9];
+  v11 = [optionsCopy objectForKeyedSubscript:IDSGlobalLinkReliableUnicastLocalConnectionID];
+  v12 = [optionsCopy objectForKeyedSubscript:IDSGlobalLinkReliableUnicastRemoteConnectionID];
+  v13 = [optionsCopy objectForKeyedSubscript:IDSGlobalLinkReliableUnicastParentConnection];
   v14 = IDSGlobalLinkReliableUnicastRemoteType;
-  v15 = [v7 objectForKeyedSubscript:IDSGlobalLinkReliableUnicastRemoteType];
+  v15 = [optionsCopy objectForKeyedSubscript:IDSGlobalLinkReliableUnicastRemoteType];
 
   if (v15)
   {
-    v16 = [v7 objectForKeyedSubscript:v14];
-    v17 = [v16 unsignedCharValue];
+    v16 = [optionsCopy objectForKeyedSubscript:v14];
+    unsignedCharValue = [v16 unsignedCharValue];
 
-    v18 = 2 * (v17 < 9);
-    if (v17 == 9)
+    v18 = 2 * (unsignedCharValue < 9);
+    if (unsignedCharValue == 9)
     {
       v18 = 3;
     }
 
-    if (v17)
+    if (unsignedCharValue)
     {
       v19 = v18;
     }
@@ -666,15 +666,15 @@ LABEL_69:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "resolve_handler: encode_ids_connection with connection %@, lcid:%@, rcid:%@, remote nw_interface_type:%d", buf, 0x26u);
   }
 
-  v26 = v8;
-  v23 = v8;
+  v26 = responseCopy;
+  v23 = responseCopy;
   v24 = v10;
   nw_candidate_endpoint_for_ids_connection();
 }
 
-- (id)resolveAppleEndpoint:(id)a3
+- (id)resolveAppleEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = [NSString stringWithFormat:@"%s", nw_endpoint_get_application_service_name()];
   v6 = sub_1007064CC(v5);
   memset(__str, 170, 6);
@@ -685,9 +685,9 @@ LABEL_69:
   v36 = host;
   v10 = [NSString stringWithFormat:@"%s", nw_endpoint_get_description()];
   v11 = [[IDSGroupSessionConnectionParameters alloc] initWithStringRepresentation:v9];
-  v12 = [v11 sessionID];
+  sessionID = [v11 sessionID];
 
-  if (!v12)
+  if (!sessionID)
   {
     v28 = 0;
     v27 = v36;
@@ -698,15 +698,15 @@ LABEL_69:
   v34 = &v32;
   v35 = v5;
   portCollisionDetection = self->_portCollisionDetection;
-  v14 = [v11 sessionID];
-  v15 = [(NSMutableDictionary *)portCollisionDetection objectForKeyedSubscript:v14];
+  sessionID2 = [v11 sessionID];
+  v15 = [(NSMutableDictionary *)portCollisionDetection objectForKeyedSubscript:sessionID2];
 
   if (!v15)
   {
     v15 = objc_alloc_init(NSMutableDictionary);
     v16 = self->_portCollisionDetection;
-    v17 = [v11 sessionID];
-    [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:v17];
+    sessionID3 = [v11 sessionID];
+    [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:sessionID3];
   }
 
   v18 = [NSNumber numberWithUnsignedInt:v6];
@@ -772,25 +772,25 @@ LABEL_15:
 
 - (void)unregisterAgent
 {
-  v3 = [(IDSGroupAgent *)self agent];
+  agent = [(IDSGroupAgent *)self agent];
 
-  if (v3)
+  if (agent)
   {
-    v4 = [(IDSGroupAgent *)self agent];
+    agent2 = [(IDSGroupAgent *)self agent];
     nw_agent_change_state();
 
     [(IDSGroupAgent *)self setAgent:0];
   }
 
-  v5 = [(IDSGroupAgent *)self policySession];
+  policySession = [(IDSGroupAgent *)self policySession];
 
-  if (v5)
+  if (policySession)
   {
-    v6 = [(IDSGroupAgent *)self policySession];
-    [v6 removeAllPolicies];
+    policySession2 = [(IDSGroupAgent *)self policySession];
+    [policySession2 removeAllPolicies];
 
-    v7 = [(IDSGroupAgent *)self policySession];
-    [v7 apply];
+    policySession3 = [(IDSGroupAgent *)self policySession];
+    [policySession3 apply];
 
     [(IDSGroupAgent *)self setPolicySession:0];
   }
@@ -798,43 +798,43 @@ LABEL_15:
 
 - (void)unregisterEntitledAgent
 {
-  v3 = [(IDSGroupAgent *)self entitledAgent];
+  entitledAgent = [(IDSGroupAgent *)self entitledAgent];
 
-  if (v3)
+  if (entitledAgent)
   {
-    v4 = [(IDSGroupAgent *)self entitledAgent];
+    entitledAgent2 = [(IDSGroupAgent *)self entitledAgent];
     nw_agent_change_state();
 
     [(IDSGroupAgent *)self setEntitledAgent:0];
   }
 
-  v5 = [(IDSGroupAgent *)self policySessionWithEntitlment];
+  policySessionWithEntitlment = [(IDSGroupAgent *)self policySessionWithEntitlment];
 
-  if (v5)
+  if (policySessionWithEntitlment)
   {
-    v6 = [(IDSGroupAgent *)self policySessionWithEntitlment];
-    [v6 removeAllPolicies];
+    policySessionWithEntitlment2 = [(IDSGroupAgent *)self policySessionWithEntitlment];
+    [policySessionWithEntitlment2 removeAllPolicies];
 
-    v7 = [(IDSGroupAgent *)self policySessionWithEntitlment];
-    [v7 apply];
+    policySessionWithEntitlment3 = [(IDSGroupAgent *)self policySessionWithEntitlment];
+    [policySessionWithEntitlment3 apply];
 
     [(IDSGroupAgent *)self setPolicySessionWithEntitlment:0];
   }
 }
 
-- (void)_injectPortTopicMappingForSession:(id)a3 topic:(id)a4 portSignature:(id)a5
+- (void)_injectPortTopicMappingForSession:(id)session topic:(id)topic portSignature:(id)signature
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_portCollisionDetection objectForKeyedSubscript:v11];
+  sessionCopy = session;
+  topicCopy = topic;
+  signatureCopy = signature;
+  v10 = [(NSMutableDictionary *)self->_portCollisionDetection objectForKeyedSubscript:sessionCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(NSMutableDictionary);
-    [(NSMutableDictionary *)self->_portCollisionDetection setObject:v10 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)self->_portCollisionDetection setObject:v10 forKeyedSubscript:sessionCopy];
   }
 
-  [v10 setObject:v8 forKeyedSubscript:v9];
+  [v10 setObject:topicCopy forKeyedSubscript:signatureCopy];
 }
 
 @end

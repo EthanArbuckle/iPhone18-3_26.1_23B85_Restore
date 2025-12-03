@@ -1,39 +1,39 @@
 @interface IDSStunMessage
-- (BOOL)addAttribute:(IDSStunAttribute *)a3;
-- (BOOL)dataIndicationToBuffer:(char *)a3 outputLength:(int *)a4 data:(char *)a5 dataLen:(int)a6 keyData:(id)a7 remainingLength:(unint64_t)a8;
-- (BOOL)decryptAES128CTRStunAttributes:(id)a3;
-- (BOOL)getAttribute:(int64_t)a3 attribute:(IDSStunAttribute *)a4;
-- (BOOL)hasAttribute:(int64_t)a3;
-- (BOOL)initAES128CTR:(id)a3;
-- (BOOL)read:(char *)a3 inputLength:(unint64_t)a4 internal:(BOOL)a5;
-- (BOOL)stunRequestToBuffer:(char *)a3 outputLength:(int *)a4 transactionID:(char *)a5 reqCount:(int)a6 userName:(char *)a7 usernameLen:(int)a8 sendTime:(unsigned __int16)a9 keyData:(id)a10 remainingLength:(unint64_t)a11;
-- (BOOL)stunResponseToBuffer:(char *)a3 outputLength:(int *)a4 transactionID:(id)a5 reqCount:(int)a6 echoTime:(unsigned __int16)a7 delay:(unsigned __int16)a8 keyData:(id)a9 remainingLength:(unint64_t)a10;
-- (BOOL)verifyMessageIntegrityWithKey:(id)a3 inputBuffer:(char *)a4 inputLength:(int)a5;
-- (BOOL)write:(char *)a3 outputLength:(int *)a4 remainingLength:(unint64_t)a5 internal:(BOOL)a6;
-- (IDSStunMessage)initWithType:(int64_t)a3;
-- (void)_addBinaryDataAttribute:(int64_t)a3 value:(id)a4;
-- (void)_addUInt16Attribute:(int64_t)a3 value:(unsigned __int16)a4;
-- (void)_addUInt32Attribute:(int64_t)a3 value:(unsigned int)a4;
-- (void)_addUInt64Attribute:(int64_t)a3 value:(unint64_t)a4;
-- (void)_addUInt8Attribute:(int64_t)a3 value:(unsigned __int8)a4;
-- (void)_addUUIDAttribute:(int64_t)a3 value:(id)a4;
-- (void)_addXORAddressAttribute:(int64_t)a3 value:(sockaddr *)a4;
+- (BOOL)addAttribute:(IDSStunAttribute *)attribute;
+- (BOOL)dataIndicationToBuffer:(char *)buffer outputLength:(int *)length data:(char *)data dataLen:(int)len keyData:(id)keyData remainingLength:(unint64_t)remainingLength;
+- (BOOL)decryptAES128CTRStunAttributes:(id)attributes;
+- (BOOL)getAttribute:(int64_t)attribute attribute:(IDSStunAttribute *)a4;
+- (BOOL)hasAttribute:(int64_t)attribute;
+- (BOOL)initAES128CTR:(id)r;
+- (BOOL)read:(char *)read inputLength:(unint64_t)length internal:(BOOL)internal;
+- (BOOL)stunRequestToBuffer:(char *)buffer outputLength:(int *)length transactionID:(char *)d reqCount:(int)count userName:(char *)name usernameLen:(int)len sendTime:(unsigned __int16)time keyData:(id)self0 remainingLength:(unint64_t)self1;
+- (BOOL)stunResponseToBuffer:(char *)buffer outputLength:(int *)length transactionID:(id)d reqCount:(int)count echoTime:(unsigned __int16)time delay:(unsigned __int16)delay keyData:(id)data remainingLength:(unint64_t)self0;
+- (BOOL)verifyMessageIntegrityWithKey:(id)key inputBuffer:(char *)buffer inputLength:(int)length;
+- (BOOL)write:(char *)write outputLength:(int *)length remainingLength:(unint64_t)remainingLength internal:(BOOL)internal;
+- (IDSStunMessage)initWithType:(int64_t)type;
+- (void)_addBinaryDataAttribute:(int64_t)attribute value:(id)value;
+- (void)_addUInt16Attribute:(int64_t)attribute value:(unsigned __int16)value;
+- (void)_addUInt32Attribute:(int64_t)attribute value:(unsigned int)value;
+- (void)_addUInt64Attribute:(int64_t)attribute value:(unint64_t)value;
+- (void)_addUInt8Attribute:(int64_t)attribute value:(unsigned __int8)value;
+- (void)_addUUIDAttribute:(int64_t)attribute value:(id)value;
+- (void)_addXORAddressAttribute:(int64_t)attribute value:(sockaddr *)value;
 - (void)dealloc;
-- (void)setAttributes:(id)a3;
-- (void)setTransactionID:(id)a3;
-- (void)setTransactionID:(id)a3 attributes:(id)a4;
+- (void)setAttributes:(id)attributes;
+- (void)setTransactionID:(id)d;
+- (void)setTransactionID:(id)d attributes:(id)attributes;
 @end
 
 @implementation IDSStunMessage
 
-- (IDSStunMessage)initWithType:(int64_t)a3
+- (IDSStunMessage)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = IDSStunMessage;
   result = [(IDSStunMessage *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -52,9 +52,9 @@
   [(IDSStunMessage *)&v4 dealloc];
 }
 
-- (BOOL)addAttribute:(IDSStunAttribute *)a3
+- (BOOL)addAttribute:(IDSStunAttribute *)attribute
 {
-  if (!a3)
+  if (!attribute)
   {
     return 0;
   }
@@ -62,7 +62,7 @@
   numAttribute = self->_numAttribute;
   if (numAttribute < 19)
   {
-    memcpy(&self->_attributes[numAttribute], a3, sizeof(self->_attributes[numAttribute]));
+    memcpy(&self->_attributes[numAttribute], attribute, sizeof(self->_attributes[numAttribute]));
     ++self->_numAttribute;
     return 1;
   }
@@ -79,7 +79,7 @@
   }
 }
 
-- (BOOL)hasAttribute:(int64_t)a3
+- (BOOL)hasAttribute:(int64_t)attribute
 {
   numAttribute = self->_numAttribute;
   if (numAttribute < 1)
@@ -87,7 +87,7 @@
     return 0;
   }
 
-  if (self->_attributes[0].type == a3)
+  if (self->_attributes[0].type == attribute)
   {
     return 1;
   }
@@ -107,11 +107,11 @@
     ++v5;
   }
 
-  while (type != a3);
+  while (type != attribute);
   return v7 < numAttribute;
 }
 
-- (BOOL)getAttribute:(int64_t)a3 attribute:(IDSStunAttribute *)a4
+- (BOOL)getAttribute:(int64_t)attribute attribute:(IDSStunAttribute *)a4
 {
   numAttribute = self->_numAttribute;
   if (numAttribute < 1)
@@ -120,7 +120,7 @@
   }
 
   attributes = self->_attributes;
-  if (self->_attributes[0].type != a3)
+  if (self->_attributes[0].type != attribute)
   {
     v7 = 0;
     v8 = &self->_attributes[1];
@@ -129,7 +129,7 @@
       type = v8->type;
       ++v8;
       ++v7;
-      if (type == a3)
+      if (type == attribute)
       {
         v6 = v7 < numAttribute;
         attributes = v8 - 1;
@@ -146,13 +146,13 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)stunRequestToBuffer:(char *)a3 outputLength:(int *)a4 transactionID:(char *)a5 reqCount:(int)a6 userName:(char *)a7 usernameLen:(int)a8 sendTime:(unsigned __int16)a9 keyData:(id)a10 remainingLength:(unint64_t)a11
+- (BOOL)stunRequestToBuffer:(char *)buffer outputLength:(int *)length transactionID:(char *)d reqCount:(int)count userName:(char *)name usernameLen:(int)len sendTime:(unsigned __int16)time keyData:(id)self0 remainingLength:(unint64_t)self1
 {
   v25[186] = *MEMORY[0x1E69E9840];
-  v18 = a10;
-  if (a3)
+  dataCopy = data;
+  if (buffer)
   {
-    v19 = a4 == 0;
+    v19 = length == 0;
   }
 
   else
@@ -160,7 +160,7 @@ LABEL_8:
     v19 = 1;
   }
 
-  v20 = v19 || a11 == 0;
+  v20 = v19 || remainingLength == 0;
   v21 = !v20;
   if (v20)
   {
@@ -168,20 +168,20 @@ LABEL_8:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       LODWORD(v25[0]) = 134218496;
-      *(v25 + 4) = a3;
+      *(v25 + 4) = buffer;
       WORD2(v25[1]) = 2048;
-      *(&v25[1] + 6) = a4;
+      *(&v25[1] + 6) = length;
       HIWORD(v25[2]) = 2048;
-      v25[3] = a11;
+      v25[3] = remainingLength;
       _os_log_error_impl(&dword_1A7AD9000, v23, OS_LOG_TYPE_ERROR, "refreshRequestToBuffer - invalid parameter outputBuffer: %p, outputLength: %p, remainingLength: %zd", v25, 0x20u);
     }
   }
 
   else
   {
-    if (a5)
+    if (d)
     {
-      v22 = [MEMORY[0x1E695DEF0] dataWithBytes:a5 length:12];
+      v22 = [MEMORY[0x1E695DEF0] dataWithBytes:d length:12];
       [(IDSStunMessage *)self setTransactionID:v22];
     }
 
@@ -190,58 +190,58 @@ LABEL_8:
       [(IDSStunMessage *)self setTransactionID:0];
     }
 
-    if (a6 >= 1)
+    if (count >= 1)
     {
       memset(v25, 170, 0x5D0uLL);
       LODWORD(v25[0]) = 262181;
-      LODWORD(v25[1]) = a6;
+      LODWORD(v25[1]) = count;
       [(IDSStunMessage *)self addAttribute:v25];
     }
 
-    if (a7 && a8 >= 1)
+    if (name && len >= 1)
     {
       memset(v25, 170, 0x5D0uLL);
       LOWORD(v25[0]) = 6;
-      WORD1(v25[0]) = a8;
-      LODWORD(v25[1]) = a8;
+      WORD1(v25[0]) = len;
+      LODWORD(v25[1]) = len;
       __memcpy_chk();
       [(IDSStunMessage *)self addAttribute:v25];
     }
 
-    if (a9)
+    if (time)
     {
       memset(v25, 170, 0x5D0uLL);
       LODWORD(v25[0]) = 294917;
       LODWORD(v25[1]) = 4;
-      BYTE4(v25[1]) = HIBYTE(a9);
-      BYTE5(v25[1]) = a9;
+      BYTE4(v25[1]) = HIBYTE(time);
+      BYTE5(v25[1]) = time;
       HIWORD(v25[1]) = 0;
       [(IDSStunMessage *)self addAttribute:v25];
     }
 
-    if (v18)
+    if (dataCopy)
     {
-      [(IDSStunMessage *)self setKey:v18];
+      [(IDSStunMessage *)self setKey:dataCopy];
       memset(v25, 170, 0x5D0uLL);
       LODWORD(v25[0]) = 1310728;
       LODWORD(v25[1]) = 20;
       [(IDSStunMessage *)self addAttribute:v25];
     }
 
-    [(IDSStunMessage *)self write:a3 outputLength:a4 remainingLength:a11];
+    [(IDSStunMessage *)self write:buffer outputLength:length remainingLength:remainingLength];
   }
 
   return v21;
 }
 
-- (BOOL)stunResponseToBuffer:(char *)a3 outputLength:(int *)a4 transactionID:(id)a5 reqCount:(int)a6 echoTime:(unsigned __int16)a7 delay:(unsigned __int16)a8 keyData:(id)a9 remainingLength:(unint64_t)a10
+- (BOOL)stunResponseToBuffer:(char *)buffer outputLength:(int *)length transactionID:(id)d reqCount:(int)count echoTime:(unsigned __int16)time delay:(unsigned __int16)delay keyData:(id)data remainingLength:(unint64_t)self0
 {
-  v11 = a7;
+  timeCopy = time;
   v23[186] = *MEMORY[0x1E69E9840];
-  v17 = a9;
-  if (a3)
+  dataCopy = data;
+  if (buffer)
   {
-    v18 = a4 == 0;
+    v18 = length == 0;
   }
 
   else
@@ -249,7 +249,7 @@ LABEL_8:
     v18 = 1;
   }
 
-  v19 = v18 || a10 == 0;
+  v19 = v18 || remainingLength == 0;
   v20 = !v19;
   if (v19)
   {
@@ -257,60 +257,60 @@ LABEL_8:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       LODWORD(v23[0]) = 134218496;
-      *(v23 + 4) = a3;
+      *(v23 + 4) = buffer;
       WORD2(v23[1]) = 2048;
-      *(&v23[1] + 6) = a4;
+      *(&v23[1] + 6) = length;
       HIWORD(v23[2]) = 2048;
-      v23[3] = a10;
+      v23[3] = remainingLength;
       _os_log_error_impl(&dword_1A7AD9000, v21, OS_LOG_TYPE_ERROR, "refreshRequestToBuffer - invalid parameter: outputBuffer: %p, outputLength: %p, remainingLength: %zd", v23, 0x20u);
     }
   }
 
   else
   {
-    [(IDSStunMessage *)self setTransactionID:a5];
-    if (a6 >= 1)
+    [(IDSStunMessage *)self setTransactionID:d];
+    if (count >= 1)
     {
       memset(v23, 170, 0x5D0uLL);
       LODWORD(v23[0]) = 262181;
-      LODWORD(v23[1]) = a6;
+      LODWORD(v23[1]) = count;
       [(IDSStunMessage *)self addAttribute:v23];
     }
 
-    if (v11)
+    if (timeCopy)
     {
       memset(v23, 170, 0x5D0uLL);
       LODWORD(v23[0]) = 294917;
       LODWORD(v23[1]) = 4;
-      BYTE4(v23[1]) = BYTE1(v11);
-      BYTE5(v23[1]) = v11;
-      BYTE6(v23[1]) = HIBYTE(a8);
-      HIBYTE(v23[1]) = a8;
+      BYTE4(v23[1]) = BYTE1(timeCopy);
+      BYTE5(v23[1]) = timeCopy;
+      BYTE6(v23[1]) = HIBYTE(delay);
+      HIBYTE(v23[1]) = delay;
       [(IDSStunMessage *)self addAttribute:v23];
     }
 
-    if (v17)
+    if (dataCopy)
     {
-      [(IDSStunMessage *)self setKey:v17];
+      [(IDSStunMessage *)self setKey:dataCopy];
       memset(v23, 170, 0x5D0uLL);
       LODWORD(v23[0]) = 1310728;
       LODWORD(v23[1]) = 20;
       [(IDSStunMessage *)self addAttribute:v23];
     }
 
-    [(IDSStunMessage *)self write:a3 outputLength:a4 remainingLength:a10];
+    [(IDSStunMessage *)self write:buffer outputLength:length remainingLength:remainingLength];
   }
 
   return v20;
 }
 
-- (BOOL)dataIndicationToBuffer:(char *)a3 outputLength:(int *)a4 data:(char *)a5 dataLen:(int)a6 keyData:(id)a7 remainingLength:(unint64_t)a8
+- (BOOL)dataIndicationToBuffer:(char *)buffer outputLength:(int *)length data:(char *)data dataLen:(int)len keyData:(id)keyData remainingLength:(unint64_t)remainingLength
 {
   __b[187] = *MEMORY[0x1E69E9840];
-  v14 = a7;
-  if (a3)
+  keyDataCopy = keyData;
+  if (buffer)
   {
-    v15 = a4 == 0;
+    v15 = length == 0;
   }
 
   else
@@ -318,7 +318,7 @@ LABEL_8:
     v15 = 1;
   }
 
-  v17 = v15 || a5 == 0 || a6 <= 0;
+  v17 = v15 || data == 0 || len <= 0;
   v18 = !v17;
   if (v17)
   {
@@ -326,11 +326,11 @@ LABEL_8:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       LODWORD(__b[0]) = 134218496;
-      *(__b + 4) = a3;
+      *(__b + 4) = buffer;
       WORD2(__b[1]) = 2048;
-      *(&__b[1] + 6) = a4;
+      *(&__b[1] + 6) = length;
       HIWORD(__b[2]) = 2048;
-      __b[3] = a8;
+      __b[3] = remainingLength;
       _os_log_error_impl(&dword_1A7AD9000, v19, OS_LOG_TYPE_ERROR, "failed to create data indication with invalid parameter, outputBuffer: %p, outputLength: %p, remainingLength: %zd", __b, 0x20u);
     }
   }
@@ -340,89 +340,89 @@ LABEL_8:
     [(IDSStunMessage *)self setTransactionID:0];
     memset(__b, 170, 0x5D0uLL);
     LOWORD(__b[0]) = 19;
-    WORD1(__b[0]) = a6;
-    LODWORD(__b[1]) = a6;
+    WORD1(__b[0]) = len;
+    LODWORD(__b[1]) = len;
     __memcpy_chk();
     [(IDSStunMessage *)self addAttribute:__b];
-    if (v14)
+    if (keyDataCopy)
     {
-      [(IDSStunMessage *)self setKey:v14];
+      [(IDSStunMessage *)self setKey:keyDataCopy];
       memset(v21, 170, sizeof(v21));
       v21[0] = 1310728;
       v21[2] = 20;
       [(IDSStunMessage *)self addAttribute:v21];
     }
 
-    [(IDSStunMessage *)self write:a3 outputLength:a4 remainingLength:a8];
+    [(IDSStunMessage *)self write:buffer outputLength:length remainingLength:remainingLength];
   }
 
   return v18;
 }
 
-- (void)_addUInt8Attribute:(int64_t)a3 value:(unsigned __int8)a4
+- (void)_addUInt8Attribute:(int64_t)attribute value:(unsigned __int8)value
 {
-  v5 = a3;
+  attributeCopy = attribute;
   v8 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
-  __b[0] = v5;
+  __b[0] = attributeCopy;
   __b[1] = 1;
-  LOBYTE(__b[4]) = a4;
+  LOBYTE(__b[4]) = value;
   [(IDSStunMessage *)self addAttribute:__b];
 }
 
-- (void)_addUInt16Attribute:(int64_t)a3 value:(unsigned __int16)a4
+- (void)_addUInt16Attribute:(int64_t)attribute value:(unsigned __int16)value
 {
-  v5 = a3;
+  attributeCopy = attribute;
   v8 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
-  __b[0] = v5;
+  __b[0] = attributeCopy;
   __b[1] = 2;
-  __b[4] = a4;
+  __b[4] = value;
   [(IDSStunMessage *)self addAttribute:__b];
 }
 
-- (void)_addUInt32Attribute:(int64_t)a3 value:(unsigned int)a4
+- (void)_addUInt32Attribute:(int64_t)attribute value:(unsigned int)value
 {
-  v5 = a3;
+  attributeCopy = attribute;
   v8 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
-  LOWORD(__b[0]) = v5;
+  LOWORD(__b[0]) = attributeCopy;
   HIWORD(__b[0]) = 4;
-  __b[2] = a4;
+  __b[2] = value;
   [(IDSStunMessage *)self addAttribute:__b];
 }
 
-- (void)_addUInt64Attribute:(int64_t)a3 value:(unint64_t)a4
+- (void)_addUInt64Attribute:(int64_t)attribute value:(unint64_t)value
 {
-  v5 = a3;
+  attributeCopy = attribute;
   __b[186] = *MEMORY[0x1E69E9840];
   memset(__b, 170, 0x5D0uLL);
-  LOWORD(__b[0]) = v5;
+  LOWORD(__b[0]) = attributeCopy;
   WORD1(__b[0]) = 8;
-  __b[1] = a4;
+  __b[1] = value;
   [(IDSStunMessage *)self addAttribute:__b];
 }
 
-- (void)_addBinaryDataAttribute:(int64_t)a3 value:(id)a4
+- (void)_addBinaryDataAttribute:(int64_t)attribute value:(id)value
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       memset(__b, 170, sizeof(__b));
-      v7 = [v6 length];
+      v7 = [valueCopy length];
       v8 = v7;
       if (v7 < 0x5C1)
       {
-        LOWORD(__b[0]) = v4;
+        LOWORD(__b[0]) = attributeCopy;
         HIWORD(__b[0]) = v7;
         BYTE2(__b[1]) = 0;
         __b[2] = v7;
-        [v6 bytes];
+        [valueCopy bytes];
         __memcpy_chk();
         [(IDSStunMessage *)self addAttribute:__b];
       }
@@ -443,22 +443,22 @@ LABEL_8:
   }
 }
 
-- (void)_addUUIDAttribute:(int64_t)a3 value:(id)a4
+- (void)_addUUIDAttribute:(int64_t)attribute value:(id)value
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       memset(__b, 170, sizeof(__b));
-      v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v6];
+      v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:valueCopy];
       *&v8 = 0xAAAAAAAAAAAAAAAALL;
       *(&v8 + 1) = 0xAAAAAAAAAAAAAAAALL;
       [v7 getUUIDBytes:&v8];
-      LOWORD(__b[0]) = v4;
+      LOWORD(__b[0]) = attributeCopy;
       HIWORD(__b[0]) = 16;
       __b[2] = 16;
       *&__b[3] = v8;
@@ -467,17 +467,17 @@ LABEL_8:
   }
 }
 
-- (void)_addXORAddressAttribute:(int64_t)a3 value:(sockaddr *)a4
+- (void)_addXORAddressAttribute:(int64_t)attribute value:(sockaddr *)value
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (value)
   {
-    sa_family = a4->sa_family;
+    sa_family = value->sa_family;
     if (sa_family == 30 || sa_family == 2)
     {
-      v6 = a3;
+      attributeCopy = attribute;
       memset(__b, 170, sizeof(__b));
-      __b[0] = v6;
+      __b[0] = attributeCopy;
       __b[1] = 128;
       __memcpy_chk();
       [(IDSStunMessage *)self addAttribute:__b];
@@ -485,11 +485,11 @@ LABEL_8:
   }
 }
 
-- (void)setTransactionID:(id)a3
+- (void)setTransactionID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     memset(bytes, 170, sizeof(bytes));
     v5 = CCRandomGenerateBytes(bytes, 0xCuLL);
@@ -507,18 +507,18 @@ LABEL_8:
       arc4random_buf(bytes, 0xCuLL);
     }
 
-    v4 = [MEMORY[0x1E695DEF0] dataWithBytes:bytes length:12];
+    dCopy = [MEMORY[0x1E695DEF0] dataWithBytes:bytes length:12];
   }
 
-  objc_storeStrong(&self->_transactionID, v4);
-  v8 = [(NSData *)self->_transactionID bytes];
+  objc_storeStrong(&self->_transactionID, dCopy);
+  bytes = [(NSData *)self->_transactionID bytes];
   if ([(NSData *)self->_transactionID length]== 12)
   {
     v9 = [MEMORY[0x1E696AD60] stringWithCapacity:24];
     v10 = 0;
     do
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02X", v8[v10]];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%02X", bytes[v10]];
       [v9 appendString:v11];
 
       ++v10;
@@ -545,23 +545,23 @@ LABEL_8:
   }
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:?];
+  attributesCopy = attributes;
+  v5 = [attributesCopy objectForKey:?];
 
   if (v5)
   {
-    v6 = [v4 objectForKey:@"ids-stun-attribute-channelnumber"];
+    v6 = [attributesCopy objectForKey:@"ids-stun-attribute-channelnumber"];
     -[IDSStunMessage _addUInt32Attribute:value:](self, "_addUInt32Attribute:value:", 12, [v6 unsignedIntegerValue] << 16);
   }
 
-  v7 = [v4 objectForKey:@"ids-stun-attribute-qr-sessiontokenkey"];
+  v7 = [attributesCopy objectForKey:@"ids-stun-attribute-qr-sessiontokenkey"];
 
   if (v7)
   {
-    v8 = [v4 objectForKey:@"ids-stun-attribute-qr-sessiontokenkey"];
+    v8 = [attributesCopy objectForKey:@"ids-stun-attribute-qr-sessiontokenkey"];
     v9 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -573,11 +573,11 @@ LABEL_8:
     [(IDSStunMessage *)self _addBinaryDataAttribute:65522 value:v8];
   }
 
-  v10 = [v4 objectForKey:?];
+  v10 = [attributesCopy objectForKey:?];
 
   if (v10)
   {
-    v11 = [v4 objectForKey:@"ids-stun-attribute-qr-realloctoken"];
+    v11 = [attributesCopy objectForKey:@"ids-stun-attribute-qr-realloctoken"];
     v12 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -589,7 +589,7 @@ LABEL_8:
     [(IDSStunMessage *)self _addBinaryDataAttribute:65520 value:v11];
   }
 
-  [v4 allKeys];
+  [attributesCopy allKeys];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -614,7 +614,7 @@ LABEL_8:
       }
 
       v17 = *(*(&v25 + 1) + 8 * i);
-      v18 = [v4 objectForKey:{v17, v21}];
+      v18 = [attributesCopy objectForKey:{v17, v21}];
       if ([v17 isEqualToString:@"ids-stun-attribute-requestedtransport"])
       {
         -[IDSStunMessage _addUInt32Attribute:value:](self, "_addUInt32Attribute:value:", 25, [v18 unsignedCharValue] << 24);
@@ -892,18 +892,18 @@ LABEL_114:
 LABEL_116:
 }
 
-- (void)setTransactionID:(id)a3 attributes:(id)a4
+- (void)setTransactionID:(id)d attributes:(id)attributes
 {
-  v6 = a4;
-  [(IDSStunMessage *)self setTransactionID:a3];
-  [(IDSStunMessage *)self setAttributes:v6];
+  attributesCopy = attributes;
+  [(IDSStunMessage *)self setTransactionID:d];
+  [(IDSStunMessage *)self setAttributes:attributesCopy];
 }
 
-- (BOOL)write:(char *)a3 outputLength:(int *)a4 remainingLength:(unint64_t)a5 internal:(BOOL)a6
+- (BOOL)write:(char *)write outputLength:(int *)length remainingLength:(unint64_t)remainingLength internal:(BOOL)internal
 {
   v45 = *MEMORY[0x1E69E9840];
   v41 = -1431655766;
-  if (!a3 || !a4)
+  if (!write || !length)
   {
     v12 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -914,8 +914,8 @@ LABEL_116:
     return 0;
   }
 
-  v8 = a5;
-  if (!a5)
+  remainingLengthCopy = remainingLength;
+  if (!remainingLength)
   {
     v13 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -928,20 +928,20 @@ LABEL_92:
     return 0;
   }
 
-  v9 = a6;
-  if (a6)
+  internalCopy = internal;
+  if (internal)
   {
-    v8 = a5 - 1;
-    *a3 = 15;
-    v11 = a3 + 1;
+    remainingLengthCopy = remainingLength - 1;
+    *write = 15;
+    writeCopy = write + 1;
   }
 
   else
   {
-    v11 = a3;
+    writeCopy = write;
   }
 
-  if (v8 <= 3)
+  if (remainingLengthCopy <= 3)
   {
     v13 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -952,8 +952,8 @@ LABEL_92:
     goto LABEL_92;
   }
 
-  *v11 = bswap32(LOWORD(self->_type)) >> 16;
-  if (v8 - 4 <= 3)
+  *writeCopy = bswap32(LOWORD(self->_type)) >> 16;
+  if (remainingLengthCopy - 4 <= 3)
   {
     v13 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -964,8 +964,8 @@ LABEL_92:
     goto LABEL_92;
   }
 
-  *(v11 + 1) = 1118048801;
-  if (v8 - 8 <= 0xB)
+  *(writeCopy + 1) = 1118048801;
+  if (remainingLengthCopy - 8 <= 0xB)
   {
     v13 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -976,16 +976,16 @@ LABEL_92:
     goto LABEL_92;
   }
 
-  v14 = [(NSData *)self->_transactionID bytes];
-  v15 = *v14;
-  *(v11 + 4) = v14[2];
-  *(v11 + 1) = v15;
-  v16 = v11 + 20;
+  bytes = [(NSData *)self->_transactionID bytes];
+  v15 = *bytes;
+  *(writeCopy + 4) = bytes[2];
+  *(writeCopy + 1) = v15;
+  v16 = writeCopy + 20;
   if (self->_numAttribute >= 1)
   {
     v17 = 0;
     v18 = 0;
-    v19 = v8 - 20;
+    v19 = remainingLengthCopy - 20;
     do
     {
       v41 = 0;
@@ -1176,13 +1176,13 @@ LABEL_67:
           }
 
 LABEL_79:
-          v29 = +[IDSFoundationLog Stun];
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+          transactionID = +[IDSFoundationLog Stun];
+          if (os_log_type_enabled(transactionID, OS_LOG_TYPE_DEFAULT))
           {
             v30 = v21->type;
             *buf = 67109120;
             *&buf[4] = v30;
-            _os_log_impl(&dword_1A7AD9000, v29, OS_LOG_TYPE_DEFAULT, "write: unknown attribute %04X", buf, 8u);
+            _os_log_impl(&dword_1A7AD9000, transactionID, OS_LOG_TYPE_DEFAULT, "write: unknown attribute %04X", buf, 8u);
           }
 
           goto LABEL_66;
@@ -1224,8 +1224,8 @@ LABEL_79:
           }
 
 LABEL_65:
-          v29 = [(IDSStunMessage *)self transactionID];
-          writeStunXORAddressAttribute(&self->_attributes[v17].type, v29, v16, &v41, v19);
+          transactionID = [(IDSStunMessage *)self transactionID];
+          writeStunXORAddressAttribute(&self->_attributes[v17].type, transactionID, v16, &v41, v19);
 LABEL_66:
 
           goto LABEL_73;
@@ -1256,7 +1256,7 @@ LABEL_75:
     while (v18 < self->_numAttribute);
   }
 
-  v33 = v16 - a3;
+  v33 = v16 - write;
   if (v33 <= 19)
   {
     v13 = +[IDSFoundationLog Stun];
@@ -1270,7 +1270,7 @@ LABEL_75:
 
   v34 = v33 - 20;
   self->_len = v33 - 20;
-  if (v9)
+  if (internalCopy)
   {
     if (v33 == 20)
     {
@@ -1293,39 +1293,39 @@ LABEL_75:
     v35 = 2;
   }
 
-  *&a3[v35] = bswap32(v34) >> 16;
-  *a4 = v33;
+  *&write[v35] = bswap32(v34) >> 16;
+  *length = v33;
   key = self->_key;
   if (key)
   {
-    CCHmac(0, [(NSData *)key bytes], [(NSData *)self->_key length], a3, v33 - 24, &a3[v33 - 20]);
+    CCHmac(0, [(NSData *)key bytes], [(NSData *)self->_key length], write, v33 - 24, &write[v33 - 20]);
   }
 
   return 1;
 }
 
-- (BOOL)verifyMessageIntegrityWithKey:(id)a3 inputBuffer:(char *)a4 inputLength:(int)a5
+- (BOOL)verifyMessageIntegrityWithKey:(id)key inputBuffer:(char *)buffer inputLength:(int)length
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a5 < 44)
+  if (length < 44)
   {
     return 0;
   }
 
-  v7 = (a5 - 24);
+  v7 = (length - 24);
   memset(v12, 170, 20);
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  keyCopy = key;
+  bytes = [keyCopy bytes];
+  v10 = [keyCopy length];
 
-  CCHmac(0, v9, v10, a4, v7, v12);
-  return timingsafe_bcmp(v12, &a4[a5 - 20], 0x14uLL) == 0;
+  CCHmac(0, bytes, v10, buffer, v7, v12);
+  return timingsafe_bcmp(v12, &buffer[length - 20], 0x14uLL) == 0;
 }
 
-- (BOOL)read:(char *)a3 inputLength:(unint64_t)a4 internal:(BOOL)a5
+- (BOOL)read:(char *)read inputLength:(unint64_t)length internal:(BOOL)internal
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!read)
   {
     v7 = [IDSFoundationLog Stun:0];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1344,7 +1344,7 @@ LABEL_12:
     return v11;
   }
 
-  if (a5)
+  if (internal)
   {
     v6 = 21;
   }
@@ -1354,13 +1354,13 @@ LABEL_12:
     v6 = 20;
   }
 
-  if (v6 > a4)
+  if (v6 > length)
   {
     v7 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      *v49 = a4;
+      *v49 = length;
       *&v49[8] = 2048;
       v50 = v6;
       v8 = "read: short packet (%zd < %zd)";
@@ -1374,18 +1374,18 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v14 = &a3[a5];
+  v14 = &read[internal];
   self->_type = bswap32(*v14) >> 16;
   v15 = bswap32(*(v14 + 1)) >> 16;
   self->_len = v15;
-  if (v15 + 20 > a4)
+  if (v15 + 20 > length)
   {
     v16 = +[IDSFoundationLog Stun];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = self->_len + 20;
       *buf = 134218240;
-      *v49 = a4;
+      *v49 = length;
       *&v49[8] = 1024;
       LODWORD(v50) = v17;
       _os_log_impl(&dword_1A7AD9000, v16, OS_LOG_TYPE_DEFAULT, "read: short packet (%zd < %d)", buf, 0x12u);
@@ -1412,7 +1412,7 @@ LABEL_10:
   }
 
   v19 = &self->_attributes[19].value.unknownAttribute + 8;
-  v20 = &a3[a4];
+  v20 = &read[length];
   v46 = *(v14 + 1);
   v47 = *(v14 + 4);
   v21 = [MEMORY[0x1E695DEF0] dataWithBytes:&v46 length:12];
@@ -1735,14 +1735,14 @@ LABEL_100:
   return v11;
 }
 
-- (BOOL)initAES128CTR:(id)a3
+- (BOOL)initAES128CTR:(id)r
 {
   *&v16[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  rCopy = r;
+  v5 = rCopy;
   if (self->_requiresAES128CTR)
   {
-    if (v4)
+    if (rCopy)
     {
       if (self->_cryptorRef)
       {
@@ -1801,12 +1801,12 @@ LABEL_100:
   return inited;
 }
 
-- (BOOL)decryptAES128CTRStunAttributes:(id)a3
+- (BOOL)decryptAES128CTRStunAttributes:(id)attributes
 {
   v25 = *MEMORY[0x1E69E9840];
   memset(__b, 170, sizeof(__b));
   __n = 0;
-  [(IDSStunMessage *)self initAES128CTR:a3];
+  [(IDSStunMessage *)self initAES128CTR:attributes];
   v5 = 1;
   if (self->_numAttribute >= 1)
   {

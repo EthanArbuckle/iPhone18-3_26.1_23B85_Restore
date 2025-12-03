@@ -1,10 +1,10 @@
 @interface MCPOIBusynessLocationOfInterestManager
 + (MCPOIBusynessLocationOfInterestManager)sharedLocationOfInterestManagerInstance;
-- (BOOL)isUserAtSuppressedLocationsOfInterest:(id)a3;
+- (BOOL)isUserAtSuppressedLocationsOfInterest:(id)interest;
 - (MCPOIBusynessLocationOfInterestManager)init;
 - (id)suppressedLocationsOfInterestUUIDs;
-- (void)_fetchLocationsOfInterest:(int64_t)a3 completionBlock:(id)a4;
-- (void)fetchSuppressedLocationsOfInterestWithCompletionBlock:(id)a3;
+- (void)_fetchLocationsOfInterest:(int64_t)interest completionBlock:(id)block;
+- (void)fetchSuppressedLocationsOfInterestWithCompletionBlock:(id)block;
 @end
 
 @implementation MCPOIBusynessLocationOfInterestManager
@@ -37,14 +37,14 @@
   return v2;
 }
 
-- (void)_fetchLocationsOfInterest:(int64_t)a3 completionBlock:(id)a4
+- (void)_fetchLocationsOfInterest:(int64_t)interest completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = GEOGetPOIBusynessLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v14 = a3;
+    interestCopy = interest;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "MCPOIBusynessLOIManager: fetching lois of type %d", buf, 8u);
   }
 
@@ -53,15 +53,15 @@
   v10[1] = 3221225472;
   v10[2] = sub_100005050;
   v10[3] = &unk_10001C948;
-  v11 = v6;
-  v12 = a3;
-  v9 = v6;
+  v11 = blockCopy;
+  interestCopy2 = interest;
+  v9 = blockCopy;
   dispatch_async(dispatchQueue, v10);
 }
 
-- (void)fetchSuppressedLocationsOfInterestWithCompletionBlock:(id)a3
+- (void)fetchSuppressedLocationsOfInterestWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = geo_isolater_create();
   v6 = +[NSMutableArray array];
   v7 = dispatch_group_create();
@@ -88,9 +88,9 @@
   v16[2] = sub_100005474;
   v16[3] = &unk_10001C8D8;
   v17 = v9;
-  v18 = self;
-  v19 = v4;
-  v14 = v4;
+  selfCopy = self;
+  v19 = blockCopy;
+  v14 = blockCopy;
   v15 = v9;
   dispatch_group_notify(v10, dispatchQueue, v16);
 }
@@ -117,8 +117,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) identifier];
-        [v3 addObject:v9];
+        identifier = [*(*(&v11 + 1) + 8 * i) identifier];
+        [v3 addObject:identifier];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -130,9 +130,9 @@
   return v3;
 }
 
-- (BOOL)isUserAtSuppressedLocationsOfInterest:(id)a3
+- (BOOL)isUserAtSuppressedLocationsOfInterest:(id)interest
 {
-  v4 = a3;
+  interestCopy = interest;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -154,33 +154,33 @@
         }
 
         v7 = *(*(&v43 + 1) + 8 * i);
-        v8 = [v7 location];
-        [v8 latitude];
+        location = [v7 location];
+        [location latitude];
         v10 = v9;
-        v11 = [v7 location];
-        [v11 longitude];
+        location2 = [v7 location];
+        [location2 longitude];
         v13 = CLLocationCoordinate2DMake(v10, v12);
 
         v14 = [CLLocation alloc];
-        v15 = [v7 location];
-        [v15 altitude];
+        location3 = [v7 location];
+        [location3 altitude];
         v17 = v16;
-        v18 = [v7 location];
-        [v18 horizontalUncertainty];
+        location4 = [v7 location];
+        [location4 horizontalUncertainty];
         v20 = v19;
-        v21 = [v7 location];
-        [v21 verticalUncertainty];
+        location5 = [v7 location];
+        [location5 verticalUncertainty];
         v23 = v22;
-        v24 = [v7 location];
-        v25 = [v24 date];
-        v26 = [v7 location];
-        v27 = [v14 initWithCoordinate:v25 altitude:objc_msgSend(v26 horizontalAccuracy:"referenceFrame") verticalAccuracy:v13.latitude timestamp:v13.longitude referenceFrame:{v17, v20, v23}];
+        location6 = [v7 location];
+        date = [location6 date];
+        location7 = [v7 location];
+        v27 = [v14 initWithCoordinate:date altitude:objc_msgSend(location7 horizontalAccuracy:"referenceFrame") verticalAccuracy:v13.latitude timestamp:v13.longitude referenceFrame:{v17, v20, v23}];
 
-        [v27 distanceFromLocation:v4];
+        [v27 distanceFromLocation:interestCopy];
         v29 = v28;
         [v27 horizontalAccuracy];
         v31 = v30;
-        [v4 horizontalAccuracy];
+        [interestCopy horizontalAccuracy];
         v33 = v31 + v32;
         v34 = GEOGetPOIBusynessLog();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))

@@ -1,29 +1,29 @@
 @interface KmlSession
-- (KmlSession)initWithRemoteObject:(id)a3 connection:(id)a4 andQueue:(id)a5;
+- (KmlSession)initWithRemoteObject:(id)object connection:(id)connection andQueue:(id)queue;
 - (id)clientName;
 - (void)cancelBackGroundTimer;
 - (void)dealloc;
-- (void)endSessionWithCompletion:(id)a3;
+- (void)endSessionWithCompletion:(id)completion;
 - (void)start;
-- (void)stopWithError:(id)a3;
+- (void)stopWithError:(id)error;
 @end
 
 @implementation KmlSession
 
-- (KmlSession)initWithRemoteObject:(id)a3 connection:(id)a4 andQueue:(id)a5
+- (KmlSession)initWithRemoteObject:(id)object connection:(id)connection andQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  connectionCopy = connection;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = KmlSession;
   v12 = [(KmlSession *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_remoteObject, a3);
-    objc_storeStrong(&v13->_connection, a4);
-    objc_storeStrong(&v13->_workQueue, a5);
+    objc_storeStrong(&v12->_remoteObject, object);
+    objc_storeStrong(&v13->_connection, connection);
+    objc_storeStrong(&v13->_workQueue, queue);
     v13->_isStarted = 0;
     backgroundTimer = v13->_backgroundTimer;
     v13->_backgroundTimer = 0;
@@ -34,8 +34,8 @@
 
 - (id)clientName
 {
-  v2 = [(NSXPCConnection *)self->_connection userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"ClientName"];
+  userInfo = [(NSXPCConnection *)self->_connection userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"ClientName"];
 
   return v3;
 }
@@ -75,19 +75,19 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s : %i : ", &v16, 0x12u);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v8->_isStarted = 1;
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_isStarted = 1;
+  objc_sync_exit(selfCopy);
 
-  [objc_getProperty(v8 v9];
-  v10 = [(NSXPCConnection *)v8->_connection userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"BackGroundClient"];
-  v12 = [v11 BOOLValue];
+  [objc_getProperty(selfCopy v9];
+  userInfo = [(NSXPCConnection *)selfCopy->_connection userInfo];
+  v11 = [userInfo objectForKeyedSubscript:@"BackGroundClient"];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
-    v13 = [v10 objectForKeyedSubscript:@"ClientIsDaemon"];
+    v13 = [userInfo objectForKeyedSubscript:@"ClientIsDaemon"];
     if ([v13 BOOLValue])
     {
       v14 = 600.0;
@@ -110,7 +110,7 @@
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s : %i : Kill this session started by background client after %f seconds", &v16, 0x1Cu);
     }
 
-    sub_1003CD7C4(v8, v14);
+    sub_1003CD7C4(selfCopy, v14);
   }
 }
 
@@ -125,9 +125,9 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)endSessionWithCompletion:(id)a3
+- (void)endSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
@@ -135,17 +135,17 @@
   block[2] = sub_100382658;
   block[3] = &unk_1004D1FF0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)stopWithError:(id)a3
+- (void)stopWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = KmlLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -154,7 +154,7 @@
     v11 = 1024;
     v12 = 79;
     v13 = 2112;
-    v14 = v4;
+    v14 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s : %i : %@", &v9, 0x1Cu);
   }
 
@@ -168,11 +168,11 @@
     Property = 0;
   }
 
-  [Property didEnd:v4];
-  v8 = self;
-  objc_sync_enter(v8);
-  v8->_isStarted = 0;
-  objc_sync_exit(v8);
+  [Property didEnd:errorCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_isStarted = 0;
+  objc_sync_exit(selfCopy);
 }
 
 @end

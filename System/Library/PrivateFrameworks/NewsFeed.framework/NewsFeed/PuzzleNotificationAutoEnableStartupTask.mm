@@ -1,6 +1,6 @@
 @interface PuzzleNotificationAutoEnableStartupTask
 - (_TtC8NewsFeed39PuzzleNotificationAutoEnableStartupTask)init;
-- (void)bundleSubscriptionDidExpire:(id)a3;
+- (void)bundleSubscriptionDidExpire:(id)expire;
 @end
 
 @implementation PuzzleNotificationAutoEnableStartupTask
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidExpire:(id)a3
+- (void)bundleSubscriptionDidExpire:(id)expire
 {
-  v4 = a3;
-  v5 = self;
+  expireCopy = expire;
+  selfCopy = self;
   sub_1D69412C8();
 }
 

@@ -1,19 +1,19 @@
 @interface CSLocalAttendingHintProvider
-- (CSLocalAttendingHintProvider)initWithAttendingIniting:(id)a3;
+- (CSLocalAttendingHintProvider)initWithAttendingIniting:(id)initing;
 @end
 
 @implementation CSLocalAttendingHintProvider
 
-- (CSLocalAttendingHintProvider)initWithAttendingIniting:(id)a3
+- (CSLocalAttendingHintProvider)initWithAttendingIniting:(id)initing
 {
-  v5 = a3;
+  initingCopy = initing;
   v9.receiver = self;
   v9.super_class = CSLocalAttendingHintProvider;
   v6 = [(CSLocalAttendingHintProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_initiator, a3);
+    objc_storeStrong(&v6->_initiator, initing);
   }
 
   return v7;

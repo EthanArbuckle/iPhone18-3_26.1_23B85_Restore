@@ -1,35 +1,35 @@
 @interface PKPaymentOfferDynamicContentCustomLayoutItemTextDetails
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferDynamicContentCustomLayoutItemTextDetails)initWithCoder:(id)a3;
-- (PKPaymentOfferDynamicContentCustomLayoutItemTextDetails)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferDynamicContentCustomLayoutItemTextDetails)initWithCoder:(id)coder;
+- (PKPaymentOfferDynamicContentCustomLayoutItemTextDetails)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)textLinkContent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferDynamicContentCustomLayoutItemTextDetails
 
-- (PKPaymentOfferDynamicContentCustomLayoutItemTextDetails)initWithDictionary:(id)a3
+- (PKPaymentOfferDynamicContentCustomLayoutItemTextDetails)initWithDictionary:(id)dictionary
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
-    v5 = [v4 PKStringForKey:@"text"];
-    v6 = [v4 PKSetContaining:objc_opt_class() forKey:@"textLinks"];
-    v7 = [v4 PKStringForKey:@"altText"];
+    v5 = [dictionaryCopy PKStringForKey:@"text"];
+    v6 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"textLinks"];
+    v7 = [dictionaryCopy PKStringForKey:@"altText"];
     if (![v5 length])
     {
-      v12 = 0;
+      selfCopy = 0;
 LABEL_61:
 
       goto LABEL_62;
     }
 
-    v8 = [v4 PKStringForKey:@"font"];
+    v8 = [dictionaryCopy PKStringForKey:@"font"];
     v9 = v8;
     if (v8 == @"title")
     {
@@ -46,7 +46,7 @@ LABEL_6:
         v11 = 1;
 LABEL_37:
 
-        v40 = [v4 PKStringForKey:@"textColor"];
+        v40 = [dictionaryCopy PKStringForKey:@"textColor"];
         v41 = v40;
         if (v40 == @"primary")
         {
@@ -88,7 +88,7 @@ LABEL_47:
 
 LABEL_48:
 
-        v50 = [v4 PKBoolForKey:@"bold"];
+        v50 = [dictionaryCopy PKBoolForKey:@"bold"];
         v68.receiver = self;
         v68.super_class = PKPaymentOfferDynamicContentCustomLayoutItemTextDetails;
         v51 = [(PKPaymentOfferDynamicContentCustomLayoutItemTextDetails *)&v68 init];
@@ -147,7 +147,7 @@ LABEL_48:
         }
 
         self = v52;
-        v12 = self;
+        selfCopy = self;
         goto LABEL_61;
       }
 
@@ -219,10 +219,10 @@ LABEL_48:
     goto LABEL_37;
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_62:
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -248,8 +248,8 @@ LABEL_62:
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_bold];
   [v3 setObject:v7 forKeyedSubscript:@"bold"];
 
-  v8 = [(NSSet *)self->_textLinks allObjects];
-  v9 = [v8 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_479];
+  allObjects = [(NSSet *)self->_textLinks allObjects];
+  v9 = [allObjects pk_createArrayBySafelyApplyingBlock:&__block_literal_global_479];
   [v3 setObject:v9 forKeyedSubscript:@"textLinks"];
 
   v10 = [v3 copy];
@@ -266,18 +266,18 @@ LABEL_62:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -454,29 +454,29 @@ LABEL_17:
   return v3;
 }
 
-- (PKPaymentOfferDynamicContentCustomLayoutItemTextDetails)initWithCoder:(id)a3
+- (PKPaymentOfferDynamicContentCustomLayoutItemTextDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKPaymentOfferDynamicContentCustomLayoutItemTextDetails;
   v5 = [(PKPaymentOfferDynamicContentCustomLayoutItemTextDetails *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altText"];
     altText = v5->_altText;
     v5->_altText = v8;
 
-    v5->_font = [v4 decodeIntegerForKey:@"font"];
-    v5->_textColor = [v4 decodeIntegerForKey:@"textColor"];
-    v5->_bold = [v4 decodeBoolForKey:@"bold"];
+    v5->_font = [coderCopy decodeIntegerForKey:@"font"];
+    v5->_textColor = [coderCopy decodeIntegerForKey:@"textColor"];
+    v5->_bold = [coderCopy decodeBoolForKey:@"bold"];
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"textLinks"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"textLinks"];
     textLinks = v5->_textLinks;
     v5->_textLinks = v13;
   }
@@ -484,33 +484,33 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"text"];
-  [v5 encodeObject:self->_altText forKey:@"altText"];
-  [v5 encodeInteger:self->_font forKey:@"font"];
-  [v5 encodeInteger:self->_textColor forKey:@"textColor"];
-  [v5 encodeBool:self->_bold forKey:@"bold"];
-  [v5 encodeObject:self->_textLinks forKey:@"textLinks"];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"text"];
+  [coderCopy encodeObject:self->_altText forKey:@"altText"];
+  [coderCopy encodeInteger:self->_font forKey:@"font"];
+  [coderCopy encodeInteger:self->_textColor forKey:@"textColor"];
+  [coderCopy encodeBool:self->_bold forKey:@"bold"];
+  [coderCopy encodeObject:self->_textLinks forKey:@"textLinks"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferDynamicContentCustomLayoutItemTextDetails allocWithZone:](PKPaymentOfferDynamicContentCustomLayoutItemTextDetails init];
-  v6 = [(NSString *)self->_text copyWithZone:a3];
+  v6 = [(NSString *)self->_text copyWithZone:zone];
   text = v5->_text;
   v5->_text = v6;
 
-  v8 = [(NSString *)self->_altText copyWithZone:a3];
+  v8 = [(NSString *)self->_altText copyWithZone:zone];
   altText = v5->_altText;
   v5->_altText = v8;
 
   v5->_font = self->_font;
   v5->_textColor = self->_textColor;
   v5->_bold = self->_bold;
-  v10 = [(NSSet *)self->_textLinks copyWithZone:a3];
+  v10 = [(NSSet *)self->_textLinks copyWithZone:zone];
   textLinks = v5->_textLinks;
   v5->_textLinks = v10;
 

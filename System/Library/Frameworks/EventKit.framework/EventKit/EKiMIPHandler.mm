@@ -1,8 +1,8 @@
 @interface EKiMIPHandler
-+ (BOOL)shouldSendEmailForEvent:(id)a3 withDiff:(id)a4;
-+ (id)emailsFromAttendees:(id)a3;
++ (BOOL)shouldSendEmailForEvent:(id)event withDiff:(id)diff;
++ (id)emailsFromAttendees:(id)attendees;
 - (BOOL)sendEmail;
-- (EKiMIPHandler)initWithEvent:(id)a3;
+- (EKiMIPHandler)initWithEvent:(id)event;
 - (id)attachmentData;
 - (id)attendees;
 - (id)emailAttachmentName;
@@ -14,16 +14,16 @@
 
 @implementation EKiMIPHandler
 
-- (EKiMIPHandler)initWithEvent:(id)a3
+- (EKiMIPHandler)initWithEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = EKiMIPHandler;
   v6 = [(EKiMIPHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_event, a3);
+    objc_storeStrong(&v6->_event, event);
   }
 
   return v7;
@@ -39,13 +39,13 @@
 
 - (BOOL)sendEmail
 {
-  v3 = [(EKiMIPHandler *)self attendees];
-  v4 = [EKiMIPHandler emailsFromAttendees:v3];
+  attendees = [(EKiMIPHandler *)self attendees];
+  v4 = [EKiMIPHandler emailsFromAttendees:attendees];
 
   if ([v4 count])
   {
-    v5 = [(EKiMIPHandler *)self emailSubject];
-    if (!v5)
+    emailSubject = [(EKiMIPHandler *)self emailSubject];
+    if (!emailSubject)
     {
       v6 = EKLogHandle;
       if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
@@ -67,16 +67,16 @@
   return 0;
 }
 
-+ (id)emailsFromAttendees:(id)a3
++ (id)emailsFromAttendees:(id)attendees
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  attendeesCopy = attendees;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = attendeesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -92,12 +92,12 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 emailAddress];
+        emailAddress = [v10 emailAddress];
 
-        if (v11)
+        if (emailAddress)
         {
-          v12 = [v10 emailAddress];
-          [v4 addObject:v12];
+          emailAddress2 = [v10 emailAddress];
+          [v4 addObject:emailAddress2];
         }
       }
 
@@ -112,7 +112,7 @@
   return v4;
 }
 
-+ (BOOL)shouldSendEmailForEvent:(id)a3 withDiff:(id)a4
++ (BOOL)shouldSendEmailForEvent:(id)event withDiff:(id)diff
 {
   OUTLINED_FUNCTION_2_5();
   OUTLINED_FUNCTION_0_12();
@@ -157,7 +157,7 @@
 - (void)sendEmail
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = HIDWORD(*(a1 + 8));
+  v9 = HIDWORD(*(self + 8));
   OUTLINED_FUNCTION_0_4(&dword_1A805E000, a2, a3, "No email recipients for iMIP event: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }

@@ -11,8 +11,8 @@
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v1 = [a1 subviews];
-  v2 = [v1 countByEnumeratingWithState:&v44 objects:v51 count:16];
+  subviews = [self subviews];
+  v2 = [subviews countByEnumeratingWithState:&v44 objects:v51 count:16];
   if (v2)
   {
     v3 = *v45;
@@ -22,7 +22,7 @@
       {
         if (*v45 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(subviews);
         }
 
         v5 = *(*(&v44 + 1) + 8 * i);
@@ -34,7 +34,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v44 objects:v51 count:16];
+      v2 = [subviews countByEnumeratingWithState:&v44 objects:v51 count:16];
       if (v2)
       {
         continue;
@@ -50,8 +50,8 @@ LABEL_11:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v6 = [v2 subviews];
-  v7 = [v6 countByEnumeratingWithState:&v40 objects:v50 count:16];
+  subviews2 = [v2 subviews];
+  v7 = [subviews2 countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v7)
   {
     v8 = v7;
@@ -62,7 +62,7 @@ LABEL_11:
       {
         if (*v41 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews2);
         }
 
         v11 = *(*(&v40 + 1) + 8 * j);
@@ -75,7 +75,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v40 objects:v50 count:16];
+      v8 = [subviews2 countByEnumeratingWithState:&v40 objects:v50 count:16];
       if (v8)
       {
         continue;
@@ -91,8 +91,8 @@ LABEL_21:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = [v2 subviews];
-  v14 = [v13 countByEnumeratingWithState:&v36 objects:v49 count:16];
+  subviews3 = [v2 subviews];
+  v14 = [subviews3 countByEnumeratingWithState:&v36 objects:v49 count:16];
   if (v14)
   {
     v15 = v14;
@@ -103,7 +103,7 @@ LABEL_21:
       {
         if (*v37 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(subviews3);
         }
 
         v18 = *(*(&v36 + 1) + 8 * k);
@@ -120,7 +120,7 @@ LABEL_21:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v36 objects:v49 count:16];
+      v15 = [subviews3 countByEnumeratingWithState:&v36 objects:v49 count:16];
       if (v15)
       {
         continue;
@@ -136,8 +136,8 @@ LABEL_31:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v23 = [v2 subviews];
-  v24 = [v23 countByEnumeratingWithState:&v32 objects:v48 count:16];
+  subviews4 = [v2 subviews];
+  v24 = [subviews4 countByEnumeratingWithState:&v32 objects:v48 count:16];
   if (v24)
   {
     v25 = v24;
@@ -148,7 +148,7 @@ LABEL_31:
       {
         if (*v33 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(subviews4);
         }
 
         v28 = *(*(&v32 + 1) + 8 * m);
@@ -162,7 +162,7 @@ LABEL_31:
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v32 objects:v48 count:16];
+      v25 = [subviews4 countByEnumeratingWithState:&v32 objects:v48 count:16];
       if (v25)
       {
         continue;

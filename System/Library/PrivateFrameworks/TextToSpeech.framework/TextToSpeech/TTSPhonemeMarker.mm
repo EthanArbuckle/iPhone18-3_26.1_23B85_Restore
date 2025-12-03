@@ -1,15 +1,15 @@
 @interface TTSPhonemeMarker
 - (AVSpeechSynthesisMarker)avMark;
-- (id)toAVMarkAtOffset:(int64_t)a3;
+- (id)toAVMarkAtOffset:(int64_t)offset;
 @end
 
 @implementation TTSPhonemeMarker
 
-- (id)toAVMarkAtOffset:(int64_t)a3
+- (id)toAVMarkAtOffset:(int64_t)offset
 {
   v5 = objc_alloc(MEMORY[0x1E69584E0]);
   v10 = objc_msgSend_phoneme(self, v6, v7, v8, v9);
-  v13 = objc_msgSend_initWithPhonemeString_atByteSampleOffset_(v5, v11, v10, a3, v12);
+  v13 = objc_msgSend_initWithPhonemeString_atByteSampleOffset_(v5, v11, v10, offset, v12);
 
   return v13;
 }

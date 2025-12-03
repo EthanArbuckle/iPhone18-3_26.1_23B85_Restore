@@ -1,22 +1,22 @@
 @interface PCDistributedLock
-- (BOOL)_lockBlocking:(BOOL)a3;
-- (PCDistributedLock)initWithName:(id)a3;
-- (PCDistributedLock)initWithPath:(id)a3;
+- (BOOL)_lockBlocking:(BOOL)blocking;
+- (PCDistributedLock)initWithName:(id)name;
+- (PCDistributedLock)initWithPath:(id)path;
 - (void)dealloc;
 - (void)unlock;
 @end
 
 @implementation PCDistributedLock
 
-- (PCDistributedLock)initWithPath:(id)a3
+- (PCDistributedLock)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = PCDistributedLock;
   v5 = [(PCDistributedLock *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
 
@@ -26,14 +26,14 @@
   return v5;
 }
 
-- (PCDistributedLock)initWithName:(id)a3
+- (PCDistributedLock)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
   v6 = [v5 objectAtIndex:0];
 
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@".%@.lock", v4];
-  v8 = [v6 stringByAppendingPathComponent:v7];
+  nameCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@".%@.lock", nameCopy];
+  v8 = [v6 stringByAppendingPathComponent:nameCopy];
   v9 = [(PCDistributedLock *)self initWithPath:v8];
 
   return v9;
@@ -51,15 +51,15 @@
   [(PCDistributedLock *)&v3 dealloc];
 }
 
-- (BOOL)_lockBlocking:(BOOL)a3
+- (BOOL)_lockBlocking:(BOOL)blocking
 {
-  v3 = a3;
+  blockingCopy = blocking;
   if (self->_fd != -1)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"%@ at path '%@' is already locked", objc_opt_class(), self->_path}];
   }
 
-  if (v3)
+  if (blockingCopy)
   {
     v5 = 544;
   }
@@ -85,7 +85,7 @@
       fd = self->_fd;
     }
 
-    if (fd == -1 && (v3 || *__error() != 35))
+    if (fd == -1 && (blockingCopy || *__error() != 35))
     {
       v8 = MEMORY[0x277CBEAD8];
       v9 = *MEMORY[0x277CBE658];

@@ -1,54 +1,54 @@
 @interface SiriUIDetailLabelComponentView
-+ (id)viewForComponent:(id)a3;
-- (void)addSubviewsForComponentModel:(id)a3;
++ (id)viewForComponent:(id)component;
+- (void)addSubviewsForComponentModel:(id)model;
 @end
 
 @implementation SiriUIDetailLabelComponentView
 
-+ (id)viewForComponent:(id)a3
++ (id)viewForComponent:(id)component
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  componentCopy = component;
+  v5 = [self alloc];
   v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 addSubviewsForComponentModel:v4];
+  [v6 addSubviewsForComponentModel:componentCopy];
 
   return v6;
 }
 
-- (void)addSubviewsForComponentModel:(id)a3
+- (void)addSubviewsForComponentModel:(id)model
 {
-  v20 = a3;
-  v4 = [v20 style];
-  if (v4 > 1)
+  modelCopy = model;
+  style = [modelCopy style];
+  if (style > 1)
   {
-    if (v4 == 2)
+    if (style == 2)
     {
-      v5 = [MEMORY[0x277D756B8] siriui_configuredSubheadLabel];
+      siriui_configuredSubheadLabel = [MEMORY[0x277D756B8] siriui_configuredSubheadLabel];
       goto LABEL_11;
     }
 
-    if (v4 == 3)
+    if (style == 3)
     {
-      v5 = [MEMORY[0x277D756B8] siriui_configuredCaptionLabel];
+      siriui_configuredSubheadLabel = [MEMORY[0x277D756B8] siriui_configuredCaptionLabel];
       goto LABEL_11;
     }
   }
 
   else
   {
-    if (!v4)
+    if (!style)
     {
-      v5 = [MEMORY[0x277D756B8] siriui_configuredHeadlineLabel];
+      siriui_configuredSubheadLabel = [MEMORY[0x277D756B8] siriui_configuredHeadlineLabel];
       goto LABEL_11;
     }
 
-    if (v4 == 1)
+    if (style == 1)
     {
-      v5 = [MEMORY[0x277D756B8] siriui_configuredBodyLabel];
+      siriui_configuredSubheadLabel = [MEMORY[0x277D756B8] siriui_configuredBodyLabel];
 LABEL_11:
       mainLabel = self->_mainLabel;
-      self->_mainLabel = v5;
+      self->_mainLabel = siriui_configuredSubheadLabel;
     }
   }
 
@@ -57,23 +57,23 @@ LABEL_11:
   {
     [(UILabel *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
     v8 = self->_mainLabel;
-    v9 = [v20 text];
-    [(UILabel *)v8 setText:v9];
+    text = [modelCopy text];
+    [(UILabel *)v8 setText:text];
 
     [(SiriUIDetailLabelComponentView *)self addSubview:self->_mainLabel];
   }
 
-  v10 = [MEMORY[0x277D756B8] siriui_configuredBodyLabel];
+  siriui_configuredBodyLabel = [MEMORY[0x277D756B8] siriui_configuredBodyLabel];
   detailLabel = self->_detailLabel;
-  self->_detailLabel = v10;
+  self->_detailLabel = siriui_configuredBodyLabel;
 
   [(UILabel *)self->_detailLabel setUseSecondaryTextColor];
   [(SiriUIDetailLabelComponentView *)self addSubview:self->_detailLabel];
   LODWORD(v12) = 1132068864;
   [(UILabel *)self->_mainLabel setContentCompressionResistancePriority:0 forAxis:v12];
   v13 = self->_detailLabel;
-  v14 = [v20 detailText];
-  [(UILabel *)v13 setText:v14];
+  detailText = [modelCopy detailText];
+  [(UILabel *)v13 setText:detailText];
 
   if (self->_detailLabel)
   {

@@ -11,34 +11,34 @@
   if (objc_opt_respondsToSelector())
   {
     v8 = objc_alloc_init(MEMORY[0x277CF9400]);
-    v9 = [v6 card];
-    v10 = [a1 nextCard];
-    [v8 setBaseCard:v9];
-    [v8 setRequestedCard:v10];
-    [v7 controllerForCard:v9 didRequestAsyncCard:v10 withAsyncCardRequestFeedback:v8];
+    card = [v6 card];
+    nextCard = [self nextCard];
+    [v8 setBaseCard:card];
+    [v8 setRequestedCard:nextCard];
+    [v7 controllerForCard:card didRequestAsyncCard:nextCard withAsyncCardRequestFeedback:v8];
   }
 
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = &off_2876CD500;
   v11 = objc_msgSendSuper2(&v17, sel_handleForCardViewController_cardViewControllerDelegate_, v6, v7);
-  v12 = [a1 nextCard];
+  nextCard2 = [self nextCard];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [a1 nextCard];
-    v14 = [v13 asynchronous];
+    nextCard3 = [self nextCard];
+    asynchronous = [nextCard3 asynchronous];
   }
 
   else
   {
-    v14 = 0;
+    asynchronous = 0;
   }
 
-  v15 = v14 & v11;
-  if ((v14 & 1) == 0 && ((v11 ^ 1) & 1) == 0)
+  v15 = asynchronous & v11;
+  if ((asynchronous & 1) == 0 && ((v11 ^ 1) & 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v7 performNextCardCommand:a1 forCardViewController:v6];
+      v15 = [v7 performNextCardCommand:self forCardViewController:v6];
     }
 
     else

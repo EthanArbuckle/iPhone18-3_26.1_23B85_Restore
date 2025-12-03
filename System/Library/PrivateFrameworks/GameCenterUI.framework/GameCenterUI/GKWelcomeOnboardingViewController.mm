@@ -1,33 +1,33 @@
 @interface GKWelcomeOnboardingViewController
-- (GKWelcomeOnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (GKWelcomeOnboardingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation GKWelcomeOnboardingViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WelcomeOnboardingViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  WelcomeOnboardingViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  WelcomeOnboardingViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  WelcomeOnboardingViewController.viewIsAppearing(_:)(a3);
+  selfCopy = self;
+  WelcomeOnboardingViewController.viewIsAppearing(_:)(appearing);
 }
 
-- (GKWelcomeOnboardingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (GKWelcomeOnboardingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_24E347CF8();
     v7 = v6;
@@ -39,8 +39,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return WelcomeOnboardingViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return WelcomeOnboardingViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

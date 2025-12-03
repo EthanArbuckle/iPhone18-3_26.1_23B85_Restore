@@ -1,27 +1,27 @@
 @interface PaymentTerminalService
 - (_TtC21ProximityReaderDaemon22PaymentTerminalService)init;
-- (void)closeSessionWithDelete:(BOOL)a3 backgrounded:(BOOL)a4;
-- (void)declineTransaction:(NSUUID *)a3 completionHandler:(id)a4;
-- (void)isAccountLinked:(id)a3 completion:(id)a4;
-- (void)linkAccount:(id)a3 relink:(BOOL)a4 completion:(id)a5;
-- (void)startIssuerPINEntry:(id)a3 transactionId:(id)a4 completion:(id)a5;
-- (void)startSession:(id)a3 completion:(id)a4;
-- (void)startTransaction:(id)a3 completion:(id)a4;
-- (void)status:(id)a3 completion:(id)a4;
-- (void)storeAndForwardStatusWithCompletionHandler:(id)a3;
+- (void)closeSessionWithDelete:(BOOL)delete backgrounded:(BOOL)backgrounded;
+- (void)declineTransaction:(NSUUID *)transaction completionHandler:(id)handler;
+- (void)isAccountLinked:(id)linked completion:(id)completion;
+- (void)linkAccount:(id)account relink:(BOOL)relink completion:(id)completion;
+- (void)startIssuerPINEntry:(id)entry transactionId:(id)id completion:(id)completion;
+- (void)startSession:(id)session completion:(id)completion;
+- (void)startTransaction:(id)transaction completion:(id)completion;
+- (void)status:(id)status completion:(id)completion;
+- (void)storeAndForwardStatusWithCompletionHandler:(id)handler;
 @end
 
 @implementation PaymentTerminalService
 
-- (void)declineTransaction:(NSUUID *)a3 completionHandler:(id)a4
+- (void)declineTransaction:(NSUUID *)transaction completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE9F580, &qword_2613A5480);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = transaction;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_2613A1C1C();
@@ -36,18 +36,18 @@
   v15[3] = 0;
   v15[4] = &unk_2613AC830;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  transactionCopy = transaction;
+  selfCopy = self;
   sub_261262B98(0, 0, v10, &unk_2613AC838, v15);
 }
 
-- (void)storeAndForwardStatusWithCompletionHandler:(id)a3
+- (void)storeAndForwardStatusWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE9F580, &qword_2613A5480);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -63,7 +63,7 @@
   v13[3] = 0;
   v13[4] = &unk_2613AC810;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_261262B98(0, 0, v8, &unk_2613AC818, v13);
 }
 
@@ -74,36 +74,36 @@
   return result;
 }
 
-- (void)isAccountLinked:(id)a3 completion:(id)a4
+- (void)isAccountLinked:(id)linked completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_2613A18CC();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   sub_26130DF80(v6, v8, sub_261324930, v9);
 }
 
-- (void)linkAccount:(id)a3 relink:(BOOL)a4 completion:(id)a5
+- (void)linkAccount:(id)account relink:(BOOL)relink completion:(id)completion
 {
-  v5 = a4;
-  v7 = _Block_copy(a5);
+  relinkCopy = relink;
+  v7 = _Block_copy(completion);
   v8 = sub_2613A18CC();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v7;
-  v12 = self;
-  sub_26130E754(v8, v10, v5, sub_2613241B4, v11);
+  selfCopy = self;
+  sub_26130E754(v8, v10, relinkCopy, sub_2613241B4, v11);
 }
 
-- (void)status:(id)a3 completion:(id)a4
+- (void)status:(id)status completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(completion);
+  if (status)
   {
     v7 = sub_2613A18CC();
-    a3 = v8;
+    status = v8;
   }
 
   else
@@ -112,37 +112,37 @@
   }
 
   _Block_copy(v6);
-  v9 = self;
-  sub_261320744(v7, a3, v9, v6);
+  selfCopy = self;
+  sub_261320744(v7, status, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)startSession:(id)a3 completion:(id)a4
+- (void)startSession:(id)session completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_261320F84(v7, v8, v6);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_261320F84(sessionCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)closeSessionWithDelete:(BOOL)a3 backgrounded:(BOOL)a4
+- (void)closeSessionWithDelete:(BOOL)delete backgrounded:(BOOL)backgrounded
 {
-  v5 = a3;
-  v6 = self;
-  sub_2613113B4(v5, a4);
+  deleteCopy = delete;
+  selfCopy = self;
+  sub_2613113B4(deleteCopy, backgrounded);
 }
 
-- (void)startTransaction:(id)a3 completion:(id)a4
+- (void)startTransaction:(id)transaction completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FE9F580, &qword_2613A5480);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v19 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   v13 = sub_2613A1C1C();
@@ -151,30 +151,30 @@
   v14[2] = 0;
   v14[3] = 0;
   v14[4] = self;
-  v14[5] = a3;
+  v14[5] = transaction;
   v14[6] = sub_261324924;
   v14[7] = v12;
-  v15 = self;
-  v16 = a3;
+  selfCopy = self;
+  transactionCopy = transaction;
   v17 = sub_261266800(0, 0, v10, &unk_2613ACA80, v14);
-  v18 = *(&v15->super.isa + OBJC_IVAR____TtC21ProximityReaderDaemon22PaymentTerminalService_startTransactionTask);
-  *(&v15->super.isa + OBJC_IVAR____TtC21ProximityReaderDaemon22PaymentTerminalService_startTransactionTask) = v17;
+  v18 = *(&selfCopy->super.isa + OBJC_IVAR____TtC21ProximityReaderDaemon22PaymentTerminalService_startTransactionTask);
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC21ProximityReaderDaemon22PaymentTerminalService_startTransactionTask) = v17;
 }
 
-- (void)startIssuerPINEntry:(id)a3 transactionId:(id)a4 completion:(id)a5
+- (void)startIssuerPINEntry:(id)entry transactionId:(id)id completion:(id)completion
 {
   v7 = sub_26139F13C();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
   MEMORY[0x28223BE20](v7);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = sub_2613A18CC();
   v15 = v14;
   sub_26139F11C();
   _Block_copy(v12);
-  v16 = self;
-  sub_26132276C(v13, v15, v11, v16, v12);
+  selfCopy = self;
+  sub_26132276C(v13, v15, v11, selfCopy, v12);
   _Block_release(v12);
   _Block_release(v12);
 

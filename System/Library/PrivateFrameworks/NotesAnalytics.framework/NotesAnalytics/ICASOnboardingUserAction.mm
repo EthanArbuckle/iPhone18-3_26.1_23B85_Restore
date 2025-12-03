@@ -1,33 +1,33 @@
 @interface ICASOnboardingUserAction
-- (ICASOnboardingUserAction)initWithOnboardingUserAction:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASOnboardingUserAction)initWithOnboardingUserAction:(int64_t)action;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASOnboardingUserAction
 
-- (ICASOnboardingUserAction)initWithOnboardingUserAction:(int64_t)a3
+- (ICASOnboardingUserAction)initWithOnboardingUserAction:(int64_t)action
 {
   v5.receiver = self;
   v5.super_class = ICASOnboardingUserAction;
   result = [(ICASOnboardingUserAction *)&v5 init];
   if (result)
   {
-    result->_onboardingUserAction = a3;
+    result->_onboardingUserAction = action;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASOnboardingUserAction *)self onboardingUserAction];
+  onboardingUserAction = [(ICASOnboardingUserAction *)self onboardingUserAction];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (onboardingUserAction == 1)
   {
     v4 = @"continue";
   }
 
-  if (v3 == 2)
+  if (onboardingUserAction == 2)
   {
     return @"viewFeaturesLinkTap";
   }

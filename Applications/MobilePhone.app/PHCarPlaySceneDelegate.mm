@@ -1,33 +1,33 @@
 @interface PHCarPlaySceneDelegate
 - (id)instantiateRootViewController;
-- (void)attachCarPlayToWindowScene:(id)a3;
+- (void)attachCarPlayToWindowScene:(id)scene;
 - (void)detachCarPlay;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation PHCarPlaySceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v11 = PHDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v9;
+    v17 = sessionCopy;
     v18 = 2112;
-    v19 = v10;
+    v19 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CarPlay scene did connect to session: %@ options: %@", &v16, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PHCarPlaySceneDelegate *)self attachCarPlayToWindowScene:v8];
+    [(PHCarPlaySceneDelegate *)self attachCarPlayToWindowScene:sceneCopy];
   }
 
   else
@@ -35,21 +35,21 @@
     v12 = PHDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [PHCarPlaySceneDelegate scene:v8 willConnectToSession:v12 options:?];
+      [PHCarPlaySceneDelegate scene:sceneCopy willConnectToSession:v12 options:?];
     }
   }
 
-  v13 = [v10 URLContexts];
-  v14 = [v13 count];
+  uRLContexts = [optionsCopy URLContexts];
+  v14 = [uRLContexts count];
 
   if (v14)
   {
-    v15 = [v10 URLContexts];
-    [(PHCarPlaySceneDelegate *)self scene:v8 openURLContexts:v15];
+    uRLContexts2 = [optionsCopy URLContexts];
+    [(PHCarPlaySceneDelegate *)self scene:sceneCopy openURLContexts:uRLContexts2];
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -61,51 +61,51 @@
   [(PHCarPlaySceneDelegate *)self detachCarPlay];
 }
 
-- (void)attachCarPlayToWindowScene:(id)a3
+- (void)attachCarPlayToWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = sceneCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Asked to attach CarPlay to scene %@", &v13, 0xCu);
   }
 
-  v6 = [(PHCarPlaySceneDelegate *)self carPlayWindow];
+  carPlayWindow = [(PHCarPlaySceneDelegate *)self carPlayWindow];
 
-  if (!v6)
+  if (!carPlayWindow)
   {
-    v7 = [[UIWindow alloc] initWithWindowScene:v4];
+    v7 = [[UIWindow alloc] initWithWindowScene:sceneCopy];
     if (_os_feature_enabled_impl())
     {
       v8 = +[UIColor clearColor];
       [v7 setBackgroundColor:v8];
     }
 
-    v9 = [(PHCarPlaySceneDelegate *)self instantiateRootViewController];
-    [(PHCarPlaySceneDelegate *)self setRootViewController:v9];
+    instantiateRootViewController = [(PHCarPlaySceneDelegate *)self instantiateRootViewController];
+    [(PHCarPlaySceneDelegate *)self setRootViewController:instantiateRootViewController];
 
-    v10 = [(PHCarPlaySceneDelegate *)self rootViewController];
-    [v7 setRootViewController:v10];
+    rootViewController = [(PHCarPlaySceneDelegate *)self rootViewController];
+    [v7 setRootViewController:rootViewController];
 
     [(PHCarPlaySceneDelegate *)self setCarPlayWindow:v7];
     v11 = objc_alloc_init(TUHardwareControlsBroadcaster);
     [(PHCarPlaySceneDelegate *)self setHardwareControlsBroadcaster:v11];
   }
 
-  v12 = [(PHCarPlaySceneDelegate *)self carPlayWindow];
-  [v12 makeKeyAndVisible];
+  carPlayWindow2 = [(PHCarPlaySceneDelegate *)self carPlayWindow];
+  [carPlayWindow2 makeKeyAndVisible];
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v5 = a4;
+  contextsCopy = contexts;
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v5;
+    v22 = contextsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PHCarPlaySceneDelegate openURLContexts: %@", buf, 0xCu);
   }
 
@@ -113,7 +113,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = contextsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -130,10 +130,10 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * v11);
-        v13 = [(PHCarPlaySceneDelegate *)self rootViewController];
-        v14 = [v13 mainMenuContainerViewController];
+        rootViewController = [(PHCarPlaySceneDelegate *)self rootViewController];
+        mainMenuContainerViewController = [rootViewController mainMenuContainerViewController];
         v15 = [v12 URL];
-        [v14 handleURL:v15];
+        [mainMenuContainerViewController handleURL:v15];
 
         v11 = v11 + 1;
       }
@@ -151,9 +151,9 @@
   v3 = PHDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PHCarPlaySceneDelegate *)self carPlayWindow];
+    carPlayWindow = [(PHCarPlaySceneDelegate *)self carPlayWindow];
     v5 = 138412290;
-    v6 = v4;
+    v6 = carPlayWindow;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Detaching CarPlay window %@", &v5, 0xCu);
   }
 

@@ -39,7 +39,7 @@
   v2 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   v8[0] = v2;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  v4 = [a1 rc_errorWithCode:7 description:0 additionalUserInfo:v3];
+  v4 = [self rc_errorWithCode:7 description:0 additionalUserInfo:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -51,10 +51,10 @@
   v3 = a3;
   if (v3 && ([MEMORY[0x277CBEB68] null], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v3, "isEqual:", v4), v4, (v5 & 1) == 0))
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    [v7 setObject:@"Failed to load the configuration." forKeyedSubscript:*MEMORY[0x277CCA450]];
-    [v7 setObject:v3 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
-    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RCErrorDomain" code:10 userInfo:v7];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:@"Failed to load the configuration." forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [dictionary setObject:v3 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RCErrorDomain" code:10 userInfo:dictionary];
   }
 
   else
@@ -101,10 +101,10 @@
       while (v7);
     }
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    [v11 setObject:@"The endpoint returned one or more errors." forKeyedSubscript:*MEMORY[0x277CCA450]];
-    [v11 setObject:v4 forKeyedSubscript:@"RCErrorEndpointErrorsKey"];
-    v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RCErrorDomain" code:14 userInfo:v11];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:@"The endpoint returned one or more errors." forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [dictionary setObject:v4 forKeyedSubscript:@"RCErrorEndpointErrorsKey"];
+    v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"RCErrorDomain" code:14 userInfo:dictionary];
   }
 
   else

@@ -6,9 +6,9 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (id)description;
-- (void)_setKey:(id)a3;
-- (void)_setStatus:(id)a3;
-- (void)_setType:(id)a3;
+- (void)_setKey:(id)key;
+- (void)_setStatus:(id)status;
+- (void)_setType:(id)type;
 @end
 
 @implementation ASPolicy
@@ -22,7 +22,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_34 = v2;
     acceptsTopLevelLeaves___haveChecked_34 = 1;
   }
@@ -39,7 +39,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_34 = v2;
     parsingLeafNode___haveChecked_34 = 1;
   }
@@ -56,7 +56,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_34 = v2;
     parsingWithSubItems___haveChecked_34 = 1;
   }
@@ -73,7 +73,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_34 = v2;
     frontingBasicTypes___haveChecked_34 = 1;
   }
@@ -90,7 +90,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_34 = v2;
     notifyOfUnknownTokens___haveChecked_34 = 1;
   }
@@ -98,11 +98,11 @@
   return v2 & 1;
 }
 
-- (void)_setType:(id)a3
+- (void)_setType:(id)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
-    v4 = [a3 copy];
+    v4 = [type copy];
     type = self->_type;
     self->_type = v4;
 
@@ -110,11 +110,11 @@
   }
 }
 
-- (void)_setKey:(id)a3
+- (void)_setKey:(id)key
 {
-  if (self->_key != a3)
+  if (self->_key != key)
   {
-    v4 = [a3 copy];
+    v4 = [key copy];
     key = self->_key;
     self->_key = v4;
 
@@ -122,11 +122,11 @@
   }
 }
 
-- (void)_setStatus:(id)a3
+- (void)_setStatus:(id)status
 {
-  if (self->_status != a3)
+  if (self->_status != status)
   {
-    v4 = [a3 copy];
+    v4 = [status copy];
     status = self->_status;
     self->_status = v4;
 
@@ -141,8 +141,8 @@
   type = self->_type;
   key = self->_key;
   status = self->_status;
-  v8 = [(ASPolicy *)self perDomainDictsForPolicy];
-  v9 = [v3 stringWithFormat:@"<%@: %p> { Type: %@, Key: %@, Status: %@, Processed: %@ }", v4, self, type, key, status, v8];
+  perDomainDictsForPolicy = [(ASPolicy *)self perDomainDictsForPolicy];
+  v9 = [v3 stringWithFormat:@"<%@: %p> { Type: %@, Key: %@, Status: %@, Processed: %@ }", v4, self, type, key, status, perDomainDictsForPolicy];
 
   return v9;
 }
@@ -150,7 +150,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -165,7 +165,7 @@
     v5 = [v6 dictionaryWithObjectsAndKeys:{v7, v8, v9, v10, v11, v12, 0}];
 
     v13 = +[ASItem parseRuleCache];
-    v14 = NSStringFromClass(a1);
+    v14 = NSStringFromClass(self);
     [v13 setObject:v5 forKey:v14];
   }
 

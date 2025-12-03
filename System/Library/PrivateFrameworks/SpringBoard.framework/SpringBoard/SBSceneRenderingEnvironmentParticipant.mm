@@ -1,22 +1,22 @@
 @interface SBSceneRenderingEnvironmentParticipant
-- (SBSceneRenderingEnvironmentParticipant)initWithRenderingEnvironmentIdentifier:(id)a3 assertion:(id)a4;
+- (SBSceneRenderingEnvironmentParticipant)initWithRenderingEnvironmentIdentifier:(id)identifier assertion:(id)assertion;
 - (void)invalidate;
 @end
 
 @implementation SBSceneRenderingEnvironmentParticipant
 
-- (SBSceneRenderingEnvironmentParticipant)initWithRenderingEnvironmentIdentifier:(id)a3 assertion:(id)a4
+- (SBSceneRenderingEnvironmentParticipant)initWithRenderingEnvironmentIdentifier:(id)identifier assertion:(id)assertion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  assertionCopy = assertion;
   v13.receiver = self;
   v13.super_class = SBSceneRenderingEnvironmentParticipant;
   v8 = [(SBSceneRenderingEnvironmentParticipant *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_assertion, a4);
-    v10 = [v6 copy];
+    objc_storeStrong(&v8->_assertion, assertion);
+    v10 = [identifierCopy copy];
     renderingEnvironmentIdentifier = v9->_renderingEnvironmentIdentifier;
     v9->_renderingEnvironmentIdentifier = v10;
   }

@@ -1,20 +1,20 @@
 @interface PPConnectionsFoundInAppsSource
 + (id)sharedInstance;
 - (PPConnectionsFoundInAppsSource)init;
-- (PPConnectionsFoundInAppsSource)initWithFoundInAppsService:(id)a3;
-- (id)locationItemsWithCriteria:(id)a3 earliest:(id)a4 latest:(id)a5 limit:(unint64_t)a6 consumer:(unint64_t)a7 explanationSet:(id)a8;
+- (PPConnectionsFoundInAppsSource)initWithFoundInAppsService:(id)service;
+- (id)locationItemsWithCriteria:(id)criteria earliest:(id)earliest latest:(id)latest limit:(unint64_t)limit consumer:(unint64_t)consumer explanationSet:(id)set;
 @end
 
 @implementation PPConnectionsFoundInAppsSource
 
-- (id)locationItemsWithCriteria:(id)a3 earliest:(id)a4 latest:(id)a5 limit:(unint64_t)a6 consumer:(unint64_t)a7 explanationSet:(id)a8
+- (id)locationItemsWithCriteria:(id)criteria earliest:(id)earliest latest:(id)latest limit:(unint64_t)limit consumer:(unint64_t)consumer explanationSet:(id)set
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  criteriaCopy = criteria;
+  earliestCopy = earliest;
+  latestCopy = latest;
   v15 = objc_opt_new();
-  if (a7 == 4 || a7 == 2)
+  if (consumer == 4 || consumer == 2)
   {
     v16 = dispatch_semaphore_create(0);
     fiaURLService = self->_fiaURLService;
@@ -24,9 +24,9 @@
     v25[3] = &unk_278973288;
     v18 = v16;
     v26 = v18;
-    v27 = v13;
-    v28 = v14;
-    v29 = v12;
+    v27 = earliestCopy;
+    v28 = latestCopy;
+    v29 = criteriaCopy;
     v19 = v15;
     v30 = v19;
     [(SGSuggestionsServiceURLsProtocol *)fiaURLService recentURLsWithLimit:32 withCompletion:v25];
@@ -283,16 +283,16 @@ LABEL_30:
   return v4;
 }
 
-- (PPConnectionsFoundInAppsSource)initWithFoundInAppsService:(id)a3
+- (PPConnectionsFoundInAppsSource)initWithFoundInAppsService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = PPConnectionsFoundInAppsSource;
   v6 = [(PPConnectionsFoundInAppsSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fiaURLService, a3);
+    objc_storeStrong(&v6->_fiaURLService, service);
   }
 
   return v7;

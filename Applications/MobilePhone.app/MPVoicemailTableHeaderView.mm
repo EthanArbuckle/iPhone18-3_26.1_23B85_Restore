@@ -1,5 +1,5 @@
 @interface MPVoicemailTableHeaderView
-- (MPVoicemailTableHeaderView)initWithCoder:(id)a3;
+- (MPVoicemailTableHeaderView)initWithCoder:(id)coder;
 - (double)messageLabelFirstBaselineLayoutConstraintConstant;
 - (double)messageLabelLastBaselineLayoutConstraintConstant;
 - (double)titleLabelFirstBaselineLayoutConstraintConstant;
@@ -13,7 +13,7 @@
 
 @implementation MPVoicemailTableHeaderView
 
-- (MPVoicemailTableHeaderView)initWithCoder:(id)a3
+- (MPVoicemailTableHeaderView)initWithCoder:(id)coder
 {
   [(MPVoicemailTableHeaderView *)self doesNotRecognizeSelector:a2];
 
@@ -73,21 +73,21 @@
 
 - (void)loadConstraints
 {
-  v3 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v4 = [v3 centerXAnchor];
-  v5 = [(MPVoicemailTableHeaderView *)self centerXAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  titleLabel = [(MPVoicemailTableHeaderView *)self titleLabel];
+  centerXAnchor = [titleLabel centerXAnchor];
+  centerXAnchor2 = [(MPVoicemailTableHeaderView *)self centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
   v7 = NSStringFromSelector("titleLabelCenterXAnchorLayoutConstraint");
   [v6 setIdentifier:v7];
 
   [v6 setActive:1];
   [(MPVoicemailTableHeaderView *)self setTitleLabelCenterXAnchorLayoutConstraint:v6];
-  v8 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v9 = [v8 leadingAnchor];
-  v10 = [(MPVoicemailTableHeaderView *)self leadingAnchor];
+  titleLabel2 = [(MPVoicemailTableHeaderView *)self titleLabel];
+  leadingAnchor = [titleLabel2 leadingAnchor];
+  leadingAnchor2 = [(MPVoicemailTableHeaderView *)self leadingAnchor];
   [(MPVoicemailTableHeaderView *)self titleLabelLeadingLayoutConstraintConstant];
-  v11 = [v9 constraintGreaterThanOrEqualToAnchor:v10 constant:?];
+  v11 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:?];
 
   v12 = NSStringFromSelector("titleLabelLeadingLayoutConstraint");
   [v11 setIdentifier:v12];
@@ -96,11 +96,11 @@
   [v11 setPriority:v13];
   [v11 setActive:1];
   [(MPVoicemailTableHeaderView *)self setTitleLabelLeadingLayoutConstraint:v11];
-  v14 = [(MPVoicemailTableHeaderView *)self trailingAnchor];
-  v15 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v16 = [v15 trailingAnchor];
+  trailingAnchor = [(MPVoicemailTableHeaderView *)self trailingAnchor];
+  titleLabel3 = [(MPVoicemailTableHeaderView *)self titleLabel];
+  trailingAnchor2 = [titleLabel3 trailingAnchor];
   [(MPVoicemailTableHeaderView *)self titleLabelTrailingLayoutConstraintConstant];
-  v17 = [v14 constraintGreaterThanOrEqualToAnchor:v16 constant:?];
+  v17 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:?];
 
   v18 = NSStringFromSelector("titleLabelTrailingLayoutConstraint");
   [v17 setIdentifier:v18];
@@ -109,36 +109,36 @@
   [v17 setPriority:v19];
   [v17 setActive:1];
   [(MPVoicemailTableHeaderView *)self setTitleLabelTrailingLayoutConstraint:v17];
-  v20 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v21 = [v20 firstBaselineAnchor];
-  v22 = [(MPVoicemailTableHeaderView *)self topAnchor];
+  titleLabel4 = [(MPVoicemailTableHeaderView *)self titleLabel];
+  firstBaselineAnchor = [titleLabel4 firstBaselineAnchor];
+  topAnchor = [(MPVoicemailTableHeaderView *)self topAnchor];
   [(MPVoicemailTableHeaderView *)self titleLabelFirstBaselineLayoutConstraintConstant];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:?];
+  v23 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
 
   v24 = NSStringFromSelector("titleLabelLeadingLayoutConstraint");
   [v23 setIdentifier:v24];
 
   [v23 setActive:1];
   [(MPVoicemailTableHeaderView *)self setTitleLabelFirstBaselineLayoutConstraint:v23];
-  v25 = [(MPVoicemailTableHeaderView *)self messageLabelFirstBaselineLayoutConstraint];
-  [(MPVoicemailTableHeaderView *)self setTitleLabelLastBaselineLayoutConstraint:v25];
+  messageLabelFirstBaselineLayoutConstraint = [(MPVoicemailTableHeaderView *)self messageLabelFirstBaselineLayoutConstraint];
+  [(MPVoicemailTableHeaderView *)self setTitleLabelLastBaselineLayoutConstraint:messageLabelFirstBaselineLayoutConstraint];
 
-  v26 = [(MPVoicemailTableHeaderView *)self messageLabel];
-  v27 = [v26 centerXAnchor];
-  v28 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v29 = [v28 centerXAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  messageLabel = [(MPVoicemailTableHeaderView *)self messageLabel];
+  centerXAnchor3 = [messageLabel centerXAnchor];
+  titleLabel5 = [(MPVoicemailTableHeaderView *)self titleLabel];
+  centerXAnchor4 = [titleLabel5 centerXAnchor];
+  v30 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
   v31 = NSStringFromSelector("messageLabelCenterXAnchorLayoutConstraint");
   [v30 setIdentifier:v31];
 
   [v30 setActive:1];
   [(MPVoicemailTableHeaderView *)self setMessageLabelCenterXAnchorLayoutConstraint:v30];
-  v32 = [(MPVoicemailTableHeaderView *)self messageLabel];
-  v33 = [v32 leadingAnchor];
-  v34 = [(MPVoicemailTableHeaderView *)self leadingAnchor];
+  messageLabel2 = [(MPVoicemailTableHeaderView *)self messageLabel];
+  leadingAnchor3 = [messageLabel2 leadingAnchor];
+  leadingAnchor4 = [(MPVoicemailTableHeaderView *)self leadingAnchor];
   [(MPVoicemailTableHeaderView *)self messageLabelLeadingLayoutConstraintConstant];
-  v35 = [v33 constraintGreaterThanOrEqualToAnchor:v34 constant:?];
+  v35 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:?];
 
   v36 = NSStringFromSelector("messageLabelLeadingLayoutConstraint");
   [v35 setIdentifier:v36];
@@ -147,11 +147,11 @@
   [v35 setPriority:v37];
   [v35 setActive:1];
   [(MPVoicemailTableHeaderView *)self setMessageLabelLeadingLayoutConstraint:v35];
-  v38 = [(MPVoicemailTableHeaderView *)self trailingAnchor];
-  v39 = [(MPVoicemailTableHeaderView *)self messageLabel];
-  v40 = [v39 trailingAnchor];
+  trailingAnchor3 = [(MPVoicemailTableHeaderView *)self trailingAnchor];
+  messageLabel3 = [(MPVoicemailTableHeaderView *)self messageLabel];
+  trailingAnchor4 = [messageLabel3 trailingAnchor];
   [(MPVoicemailTableHeaderView *)self messageLabelTrailingLayoutConstraintConstant];
-  v41 = [v38 constraintGreaterThanOrEqualToAnchor:v40 constant:?];
+  v41 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:?];
 
   v42 = NSStringFromSelector("messageLabelTrailingLayoutConstraint");
   [v41 setIdentifier:v42];
@@ -160,23 +160,23 @@
   [v41 setPriority:v43];
   [v41 setActive:1];
   [(MPVoicemailTableHeaderView *)self setMessageLabelTrailingLayoutConstraint:v41];
-  v44 = [(MPVoicemailTableHeaderView *)self messageLabel];
-  v45 = [v44 firstBaselineAnchor];
-  v46 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  v47 = [v46 lastBaselineAnchor];
+  messageLabel4 = [(MPVoicemailTableHeaderView *)self messageLabel];
+  firstBaselineAnchor2 = [messageLabel4 firstBaselineAnchor];
+  titleLabel6 = [(MPVoicemailTableHeaderView *)self titleLabel];
+  lastBaselineAnchor = [titleLabel6 lastBaselineAnchor];
   [(MPVoicemailTableHeaderView *)self messageLabelFirstBaselineLayoutConstraintConstant];
-  v48 = [v45 constraintEqualToAnchor:v47 constant:?];
+  v48 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
 
   v49 = NSStringFromSelector("messageLabelFirstBaselineLayoutConstraint");
   [v48 setIdentifier:v49];
 
   [v48 setActive:1];
   [(MPVoicemailTableHeaderView *)self setMessageLabelFirstBaselineLayoutConstraint:v48];
-  v50 = [(MPVoicemailTableHeaderView *)self bottomAnchor];
-  v51 = [(MPVoicemailTableHeaderView *)self messageLabel];
-  v52 = [v51 lastBaselineAnchor];
+  bottomAnchor = [(MPVoicemailTableHeaderView *)self bottomAnchor];
+  messageLabel5 = [(MPVoicemailTableHeaderView *)self messageLabel];
+  lastBaselineAnchor2 = [messageLabel5 lastBaselineAnchor];
   [(MPVoicemailTableHeaderView *)self messageLabelLastBaselineLayoutConstraintConstant];
-  v53 = [v50 constraintEqualToAnchor:v52 constant:?];
+  v53 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:?];
 
   v54 = NSStringFromSelector("messageLabelLastBaselineLayoutConstraint");
   [v53 setIdentifier:v54];
@@ -196,43 +196,43 @@
   [(MPVoicemailTableHeaderView *)&v27 updateConstraintsConstants];
   [(MPVoicemailTableHeaderView *)self messageLabelFirstBaselineLayoutConstraintConstant];
   v4 = v3;
-  v5 = [(MPVoicemailTableHeaderView *)self messageLabelFirstBaselineLayoutConstraint];
-  [v5 setConstant:v4];
+  messageLabelFirstBaselineLayoutConstraint = [(MPVoicemailTableHeaderView *)self messageLabelFirstBaselineLayoutConstraint];
+  [messageLabelFirstBaselineLayoutConstraint setConstant:v4];
 
   [(MPVoicemailTableHeaderView *)self messageLabelLastBaselineLayoutConstraintConstant];
   v7 = v6;
-  v8 = [(MPVoicemailTableHeaderView *)self messageLabelLastBaselineLayoutConstraint];
-  [v8 setConstant:v7];
+  messageLabelLastBaselineLayoutConstraint = [(MPVoicemailTableHeaderView *)self messageLabelLastBaselineLayoutConstraint];
+  [messageLabelLastBaselineLayoutConstraint setConstant:v7];
 
   [(MPVoicemailTableHeaderView *)self messageLabelLeadingLayoutConstraintConstant];
   v10 = v9;
-  v11 = [(MPVoicemailTableHeaderView *)self messageLabelLeadingLayoutConstraint];
-  [v11 setConstant:v10];
+  messageLabelLeadingLayoutConstraint = [(MPVoicemailTableHeaderView *)self messageLabelLeadingLayoutConstraint];
+  [messageLabelLeadingLayoutConstraint setConstant:v10];
 
   [(MPVoicemailTableHeaderView *)self messageLabelTrailingLayoutConstraintConstant];
   v13 = v12;
-  v14 = [(MPVoicemailTableHeaderView *)self messageLabelTrailingLayoutConstraint];
-  [v14 setConstant:v13];
+  messageLabelTrailingLayoutConstraint = [(MPVoicemailTableHeaderView *)self messageLabelTrailingLayoutConstraint];
+  [messageLabelTrailingLayoutConstraint setConstant:v13];
 
   [(MPVoicemailTableHeaderView *)self titleLabelFirstBaselineLayoutConstraintConstant];
   v16 = v15;
-  v17 = [(MPVoicemailTableHeaderView *)self titleLabelFirstBaselineLayoutConstraint];
-  [v17 setConstant:v16];
+  titleLabelFirstBaselineLayoutConstraint = [(MPVoicemailTableHeaderView *)self titleLabelFirstBaselineLayoutConstraint];
+  [titleLabelFirstBaselineLayoutConstraint setConstant:v16];
 
   [(MPVoicemailTableHeaderView *)self titleLabelLastBaselineLayoutConstraintConstant];
   v19 = v18;
-  v20 = [(MPVoicemailTableHeaderView *)self titleLabelLastBaselineLayoutConstraint];
-  [v20 setConstant:v19];
+  titleLabelLastBaselineLayoutConstraint = [(MPVoicemailTableHeaderView *)self titleLabelLastBaselineLayoutConstraint];
+  [titleLabelLastBaselineLayoutConstraint setConstant:v19];
 
   [(MPVoicemailTableHeaderView *)self titleLabelLeadingLayoutConstraintConstant];
   v22 = v21;
-  v23 = [(MPVoicemailTableHeaderView *)self titleLabelLeadingLayoutConstraint];
-  [v23 setConstant:v22];
+  titleLabelLeadingLayoutConstraint = [(MPVoicemailTableHeaderView *)self titleLabelLeadingLayoutConstraint];
+  [titleLabelLeadingLayoutConstraint setConstant:v22];
 
   [(MPVoicemailTableHeaderView *)self titleLabelTrailingLayoutConstraintConstant];
   v25 = v24;
-  v26 = [(MPVoicemailTableHeaderView *)self titleLabelTrailingLayoutConstraint];
-  [v26 setConstant:v25];
+  titleLabelTrailingLayoutConstraint = [(MPVoicemailTableHeaderView *)self titleLabelTrailingLayoutConstraint];
+  [titleLabelTrailingLayoutConstraint setConstant:v25];
 
   [(MPVoicemailTableHeaderView *)self updateLabels];
 }
@@ -257,8 +257,8 @@
   v5 = Width - v4;
   [(MPVoicemailTableHeaderView *)self messageLabelTrailingLayoutConstraintConstant];
   v7 = v5 - v6;
-  v8 = [(MPVoicemailTableHeaderView *)self messageLabel];
-  [v8 setPreferredMaxLayoutWidth:v7];
+  messageLabel = [(MPVoicemailTableHeaderView *)self messageLabel];
+  [messageLabel setPreferredMaxLayoutWidth:v7];
 
   [(MPVoicemailTableHeaderView *)self bounds];
   v9 = CGRectGetWidth(v17);
@@ -266,15 +266,15 @@
   v11 = v9 - v10;
   [(MPVoicemailTableHeaderView *)self titleLabelTrailingLayoutConstraintConstant];
   v13 = v11 - v12;
-  v14 = [(MPVoicemailTableHeaderView *)self titleLabel];
-  [v14 setPreferredMaxLayoutWidth:v13];
+  titleLabel = [(MPVoicemailTableHeaderView *)self titleLabel];
+  [titleLabel setPreferredMaxLayoutWidth:v13];
 }
 
 - (double)messageLabelFirstBaselineLayoutConstraintConstant
 {
   v2 = +[UIFont telephonyUISubheadlineShortFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {
@@ -294,8 +294,8 @@
 - (double)messageLabelLastBaselineLayoutConstraintConstant
 {
   v2 = +[UIFont telephonyUIBodyShortFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {
@@ -315,8 +315,8 @@
 - (double)titleLabelFirstBaselineLayoutConstraintConstant
 {
   v2 = +[UIFont telephonyUIBodyShortEmphasizedFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {

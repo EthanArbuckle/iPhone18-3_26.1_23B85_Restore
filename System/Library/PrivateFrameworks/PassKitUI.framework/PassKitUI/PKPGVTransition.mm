@@ -1,27 +1,27 @@
 @interface PKPGVTransition
-- (id)_isState:(uint64_t)a1;
-- (void)_endTrackingTransition:(uint64_t)a1;
+- (id)_isState:(uint64_t)state;
+- (void)_endTrackingTransition:(uint64_t)transition;
 - (void)_state;
 - (void)dealloc;
 @end
 
 @implementation PKPGVTransition
 
-- (void)_endTrackingTransition:(uint64_t)a1
+- (void)_endTrackingTransition:(uint64_t)transition
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (transition)
   {
-    if ((*(a1 + 19) & 1) == 0 || *(a1 + 20) == 1)
+    if ((*(transition + 19) & 1) == 0 || *(transition + 20) == 1)
     {
       __break(1u);
     }
 
-    *(a1 + 18) = 0;
-    *(a1 + 20) = 1;
-    v2 = *(a1 + 24);
-    v3 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    *(transition + 18) = 0;
+    *(transition + 20) = 1;
+    v2 = *(transition + 24);
+    v3 = *(transition + 24);
+    *(transition + 24) = 0;
 
     if (v2)
     {
@@ -77,23 +77,23 @@
   return result;
 }
 
-- (id)_isState:(uint64_t)a1
+- (id)_isState:(uint64_t)state
 {
   result = a2;
-  if (!a1)
+  if (!state)
   {
     goto LABEL_5;
   }
 
   if (result)
   {
-    v4 = *(a1 + 8);
+    v4 = *(state + 8);
     if (v4)
     {
-      a1 = v4 == result;
+      state = v4 == result;
 LABEL_5:
 
-      return a1;
+      return state;
     }
   }
 

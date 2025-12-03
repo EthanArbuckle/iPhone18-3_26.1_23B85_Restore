@@ -1,5 +1,5 @@
 @interface FCPaidBundleConfiguration
-+ (id)defaultConfigurationForStorefrontID:(id)a3;
++ (id)defaultConfigurationForStorefrontID:(id)d;
 + (id)defaultEndOfPurchaseFamilySharingSetupArticleIDByLocalizedStorefrontID;
 + (id)defaultEndOfPurchaseNoFamilySharingSetupArticleIDByLocalizedStorefrontID;
 + (id)defaultFamilySharingLandingPageByLocalizedStorefrontID;
@@ -12,12 +12,12 @@
 - (BOOL)appLaunchUpsellLastSeenDateSyncEnabled;
 - (BOOL)appLaunchUpsellLastShownCampaignIDSyncEnabled;
 - (BOOL)areMagazinesEnabled;
-- (BOOL)arePaywallConfigsEqualToOtherPaidBundleConfig:(id)a3;
+- (BOOL)arePaywallConfigsEqualToOtherPaidBundleConfig:(id)config;
 - (BOOL)audioRefreshForceWakeEnabled;
 - (BOOL)forYouIncludePaidSectionFeedsForFreeUsers;
 - (BOOL)forYouIncludePaidSectionFeedsForPaidUsers;
 - (BOOL)isCategoriesDownloadButtonEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFamilySharingSetupEnabled;
 - (BOOL)isFreeBadgeEnabledForNonSubscribers;
 - (BOOL)isFreeBadgeEnabledForSubscribers;
@@ -27,9 +27,9 @@
 - (BOOL)requiresHardPaywallForIssuesToC;
 - (BOOL)widgetUpsellFeaturesEnabled;
 - (FCPaidBundleConfiguration)init;
-- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)a3;
-- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)a3 storefrontID:(id)a4;
-- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)a3 storefrontID:(id)a4 localizedStorefrontID:(id)a5 defaultSupportedStoreFronts:(id)a6;
+- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)dictionary;
+- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)dictionary storefrontID:(id)d;
+- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)dictionary storefrontID:(id)d localizedStorefrontID:(id)iD defaultSupportedStoreFronts:(id)fronts;
 - (NSArray)audioChannelPaywallOverrideAllowedTagIDs;
 - (NSArray)audioFeedPaywallPositions;
 - (NSArray)groupWhitelistedTagIds;
@@ -82,9 +82,9 @@
 - (id)defaultPaywallConfigs;
 - (id)defaultServicesBundleSubscriptionButtonConfigs;
 - (id)defaultSubscriptionButtonConfigs;
-- (id)paywallConfigurationsByTypeForKey:(id)a3;
-- (id)postPurchaseOnboardingConfigurationsByTypeForKey:(id)a3;
-- (id)subscriptionButtonConfigurationsByTypeForKey:(id)a3;
+- (id)paywallConfigurationsByTypeForKey:(id)key;
+- (id)postPurchaseOnboardingConfigurationsByTypeForKey:(id)key;
+- (id)subscriptionButtonConfigurationsByTypeForKey:(id)key;
 - (int64_t)appLaunchUpsellBehaviorFlags;
 - (int64_t)appLaunchUpsellNewSessionBackgroundTimeInterval;
 - (int64_t)appLaunchUpsellPresentationDelay;
@@ -153,8 +153,8 @@
 
   if (!v4)
   {
-    v5 = [(FCPaidBundleConfiguration *)self configDict];
-    v4 = FCAppConfigurationIntegerValue(v5, @"paywallConfigsOfferType", 0);
+    configDict = [(FCPaidBundleConfiguration *)self configDict];
+    v4 = FCAppConfigurationIntegerValue(configDict, @"paywallConfigsOfferType", 0);
   }
 
   return v4;
@@ -162,24 +162,24 @@
 
 - (NSString)appLaunchUpsellArticleID
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"appLaunchUpsellArticleID", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"appLaunchUpsellArticleID", 0);
 
   return v3;
 }
 
 - (BOOL)isFreeBadgeEnabledForNonSubscribers
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"freeBadgeEnabled", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"freeBadgeEnabled", 0);
 
   return v3;
 }
 
 - (BOOL)isPaidBadgeEnabledForNonSubscribers
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"paidBadgeEnabled", 1);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"paidBadgeEnabled", 1);
 
   return v3;
 }
@@ -197,16 +197,16 @@
   }
 
   v4 = +[FCAppleAccount sharedAccount];
-  v5 = [v4 isContentStoreFrontSupported];
+  isContentStoreFrontSupported = [v4 isContentStoreFrontSupported];
 
-  if (!v5)
+  if (!isContentStoreFrontSupported)
   {
     return 0;
   }
 
-  v6 = [(FCPaidBundleConfiguration *)self defaultSupportedStoreFronts];
-  v7 = [(FCPaidBundleConfiguration *)self storefrontID];
-  if ([v6 containsObject:v7])
+  defaultSupportedStoreFronts = [(FCPaidBundleConfiguration *)self defaultSupportedStoreFronts];
+  storefrontID = [(FCPaidBundleConfiguration *)self storefrontID];
+  if ([defaultSupportedStoreFronts containsObject:storefrontID])
   {
     v8 = 7;
   }
@@ -216,8 +216,8 @@
     v8 = 0;
   }
 
-  v9 = [(FCPaidBundleConfiguration *)self configDict];
-  v10 = FCAppConfigurationIntegerValueWithDefaultValueIfMissing(v9, @"enabledLevel", v8, 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v10 = FCAppConfigurationIntegerValueWithDefaultValueIfMissing(configDict, @"enabledLevel", v8, 0);
 
   return v10 & 1;
 }
@@ -240,8 +240,8 @@ void __48__FCPaidBundleConfiguration_areMagazinesEnabled__block_invoke()
 
 - (BOOL)isNarrativeAudioEnabled
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 stringForKey:@"news.features.audio"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults stringForKey:@"news.features.audio"];
 
   if ([MEMORY[0x1E696AEC0] fc_string:v4 isEqualToString:@"enabled"])
   {
@@ -271,8 +271,8 @@ void __48__FCPaidBundleConfiguration_areMagazinesEnabled__block_invoke()
     }
 
     v9 = [MEMORY[0x1E695DFD8] setWithObjects:{@"143441", @"143444", @"143460", @"143455", 0}];
-    v10 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-    v11 = [v9 containsObject:v10];
+    localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+    v11 = [v9 containsObject:localizedStorefrontID];
 
     if (v11)
     {
@@ -284,8 +284,8 @@ void __48__FCPaidBundleConfiguration_areMagazinesEnabled__block_invoke()
       v12 = 0;
     }
 
-    v13 = [(FCPaidBundleConfiguration *)self configDict];
-    v14 = FCAppConfigurationIntegerValue(v13, @"audioEnabledLevel", v12);
+    configDict = [(FCPaidBundleConfiguration *)self configDict];
+    v14 = FCAppConfigurationIntegerValue(configDict, @"audioEnabledLevel", v12);
 
     v5 = (v14 & v8) != 0;
   }
@@ -300,12 +300,12 @@ void __48__FCPaidBundleConfiguration_areMagazinesEnabled__block_invoke()
 
   if (v4)
   {
-    v5 = [v4 firstObject];
-    if (v5)
+    firstObject = [v4 firstObject];
+    if (firstObject)
     {
-      v6 = v5;
-      v7 = [v4 firstObject];
-      if ([v7 length])
+      v6 = firstObject;
+      firstObject2 = [v4 firstObject];
+      if ([firstObject2 length])
       {
         v8 = NFInternalBuild();
 
@@ -322,8 +322,8 @@ void __48__FCPaidBundleConfiguration_areMagazinesEnabled__block_invoke()
     }
   }
 
-  v10 = [(FCPaidBundleConfiguration *)self configDict];
-  v9 = FCAppConfigurationArrayValueWithDefaultValue(v10, @"offeredPurchaseIds", &unk_1F2E6FA68);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v9 = FCAppConfigurationArrayValueWithDefaultValue(configDict, @"offeredPurchaseIds", &unk_1F2E6FA68);
 
 LABEL_8:
 
@@ -332,24 +332,24 @@ LABEL_8:
 
 - (int64_t)bundleSubscriptionsGlobalMeteredCount
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"bundleSubscriptionsGlobalMeteredCount2", 15);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"bundleSubscriptionsGlobalMeteredCount2", 15);
 
   return v3;
 }
 
 - (int64_t)minimumArticlesBeforeArticleSoftPaywall
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minimumArticlesBeforeArticleSoftPaywall", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"minimumArticlesBeforeArticleSoftPaywall", 0);
 
   return v3;
 }
 
 - (int64_t)maximumArticlesWithSoftPaywallPerSession
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maximumArticlesWithSoftPaywallPerSession", 10000);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"maximumArticlesWithSoftPaywallPerSession", 10000);
 
   return v3;
 }
@@ -357,11 +357,11 @@ LABEL_8:
 - (NSString)vanityURLMappingResourceID
 {
   v3 = +[FCPaidBundleConfiguration defaultVanityURLMappingResourceIDByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"vanityUrlMappingResourceId", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"vanityUrlMappingResourceId", v5);
 
   return v7;
 }
@@ -405,8 +405,8 @@ void __85__FCPaidBundleConfiguration_defaultVanityURLMappingResourceIDByLocalize
 
 - (int64_t)vanityURLMappingRefreshRate
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"vanityUrlMappingRefreshRate", 3600);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"vanityUrlMappingRefreshRate", 3600);
 
   return v3;
 }
@@ -437,37 +437,37 @@ void __85__FCPaidBundleConfiguration_defaultVanityURLMappingResourceIDByLocalize
   objc_exception_throw(v6);
 }
 
-- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)a3
+- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[FCAppleAccount sharedAccount];
-  v6 = [v5 supportedContentStoreFrontID];
+  supportedContentStoreFrontID = [v5 supportedContentStoreFrontID];
   v7 = +[FCAppleAccount sharedAccount];
-  v8 = [v7 supportedLocalizedContentStoreFrontID];
+  supportedLocalizedContentStoreFrontID = [v7 supportedLocalizedContentStoreFrontID];
   v9 = FCSupportedStoreFrontIDs();
-  v10 = [v9 allObjects];
-  v11 = [(FCPaidBundleConfiguration *)self initWithConfigDictionary:v4 storefrontID:v6 localizedStorefrontID:v8 defaultSupportedStoreFronts:v10];
+  allObjects = [v9 allObjects];
+  v11 = [(FCPaidBundleConfiguration *)self initWithConfigDictionary:dictionaryCopy storefrontID:supportedContentStoreFrontID localizedStorefrontID:supportedLocalizedContentStoreFrontID defaultSupportedStoreFronts:allObjects];
 
   return v11;
 }
 
-- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)a3 storefrontID:(id)a4
+- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)dictionary storefrontID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v8 = FCSupportedStoreFrontIDs();
-  v9 = [v8 allObjects];
-  v10 = [(FCPaidBundleConfiguration *)self initWithConfigDictionary:v7 storefrontID:v6 localizedStorefrontID:v6 defaultSupportedStoreFronts:v9];
+  allObjects = [v8 allObjects];
+  v10 = [(FCPaidBundleConfiguration *)self initWithConfigDictionary:dictionaryCopy storefrontID:dCopy localizedStorefrontID:dCopy defaultSupportedStoreFronts:allObjects];
 
   return v10;
 }
 
-- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)a3 storefrontID:(id)a4 localizedStorefrontID:(id)a5 defaultSupportedStoreFronts:(id)a6
+- (FCPaidBundleConfiguration)initWithConfigDictionary:(id)dictionary storefrontID:(id)d localizedStorefrontID:(id)iD defaultSupportedStoreFronts:(id)fronts
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  iDCopy = iD;
+  frontsCopy = fronts;
   v34.receiver = self;
   v34.super_class = FCPaidBundleConfiguration;
   v14 = [(FCPaidBundleConfiguration *)&v34 init];
@@ -476,36 +476,36 @@ void __85__FCPaidBundleConfiguration_defaultVanityURLMappingResourceIDByLocalize
     goto LABEL_17;
   }
 
-  v15 = [v10 copy];
+  v15 = [dictionaryCopy copy];
   configDict = v14->_configDict;
   v14->_configDict = v15;
 
-  v17 = [v11 copy];
+  v17 = [dCopy copy];
   storefrontID = v14->_storefrontID;
   v14->_storefrontID = v17;
 
-  v19 = [v12 copy];
+  v19 = [iDCopy copy];
   localizedStorefrontID = v14->_localizedStorefrontID;
   v14->_localizedStorefrontID = v19;
 
-  objc_storeStrong(&v14->_defaultSupportedStoreFronts, a6);
-  v21 = [MEMORY[0x1E695DF90] dictionary];
+  objc_storeStrong(&v14->_defaultSupportedStoreFronts, fronts);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   keyedPaywallConfigurationsByType = v14->_keyedPaywallConfigurationsByType;
-  v14->_keyedPaywallConfigurationsByType = v21;
+  v14->_keyedPaywallConfigurationsByType = dictionary;
 
-  v23 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   keyedSubscriptionButtonConfigurationsByType = v14->_keyedSubscriptionButtonConfigurationsByType;
-  v14->_keyedSubscriptionButtonConfigurationsByType = v23;
+  v14->_keyedSubscriptionButtonConfigurationsByType = dictionary2;
 
-  v25 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   keyedPostPurchaseOnboardingConfigurationsByType = v14->_keyedPostPurchaseOnboardingConfigurationsByType;
-  v14->_keyedPostPurchaseOnboardingConfigurationsByType = v25;
+  v14->_keyedPostPurchaseOnboardingConfigurationsByType = dictionary3;
 
   v27 = [objc_alloc(MEMORY[0x1E69B6920]) initWithOptions:1];
   lock = v14->_lock;
   v14->_lock = v27;
 
-  v29 = FCAppConfigurationStringValue(v10, @"articleSoftPaywallPosition", @"top");
+  v29 = FCAppConfigurationStringValue(dictionaryCopy, @"articleSoftPaywallPosition", @"top");
   if (![v29 isEqualToString:@"top"])
   {
     if ([v29 isEqualToString:@"both"])
@@ -530,7 +530,7 @@ void __85__FCPaidBundleConfiguration_defaultVanityURLMappingResourceIDByLocalize
   v30 = 3;
 LABEL_10:
   v14->_articleSoftPaywallPosition = v30;
-  v31 = FCAppConfigurationStringValue(v10, @"aLaCarteArticleSoftPaywallPosition", @"bottom");
+  v31 = FCAppConfigurationStringValue(dictionaryCopy, @"aLaCarteArticleSoftPaywallPosition", @"bottom");
   if ([v31 isEqualToString:@"top"])
   {
     v32 = 2;
@@ -552,15 +552,15 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -579,19 +579,19 @@ LABEL_17:
   if (v6)
   {
     v7 = MEMORY[0x1E69E58C0];
-    v8 = [(FCPaidBundleConfiguration *)self configDict];
-    v9 = [v6 configDict];
-    if ([v7 nf_object:v8 isEqualToObject:v9])
+    configDict = [(FCPaidBundleConfiguration *)self configDict];
+    configDict2 = [v6 configDict];
+    if ([v7 nf_object:configDict isEqualToObject:configDict2])
     {
       v10 = MEMORY[0x1E69E58C0];
-      v11 = [(FCPaidBundleConfiguration *)self storefrontID];
-      v12 = [v6 storefrontID];
-      if ([v10 nf_object:v11 isEqualToObject:v12])
+      storefrontID = [(FCPaidBundleConfiguration *)self storefrontID];
+      storefrontID2 = [v6 storefrontID];
+      if ([v10 nf_object:storefrontID isEqualToObject:storefrontID2])
       {
         v13 = MEMORY[0x1E69E58C0];
-        v14 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-        v15 = [v6 localizedStorefrontID];
-        v16 = [v13 nf_object:v14 isEqualToObject:v15];
+        localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+        localizedStorefrontID2 = [v6 localizedStorefrontID];
+        v16 = [v13 nf_object:localizedStorefrontID isEqualToObject:localizedStorefrontID2];
       }
 
       else
@@ -616,29 +616,29 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(FCPaidBundleConfiguration *)self configDict];
-  v4 = [v3 hash];
-  v5 = [(FCPaidBundleConfiguration *)self storefrontID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v8 = [v7 hash];
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v4 = [configDict hash];
+  storefrontID = [(FCPaidBundleConfiguration *)self storefrontID];
+  v6 = [storefrontID hash] ^ v4;
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v8 = [localizedStorefrontID hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)arePaywallConfigsEqualToOtherPaidBundleConfig:(id)a3
+- (BOOL)arePaywallConfigsEqualToOtherPaidBundleConfig:(id)config
 {
-  v4 = a3;
-  if (v4)
+  configCopy = config;
+  if (configCopy)
   {
-    v5 = [(FCPaidBundleConfiguration *)self paywallConfigsOfferType];
-    if (v5 == [v4 paywallConfigsOfferType])
+    paywallConfigsOfferType = [(FCPaidBundleConfiguration *)self paywallConfigsOfferType];
+    if (paywallConfigsOfferType == [configCopy paywallConfigsOfferType])
     {
-      v6 = [(FCPaidBundleConfiguration *)self configDict];
-      v7 = FCAppConfigurationArrayValueWithDefaultValue(v6, @"paywallConfigs", 0);
+      configDict = [(FCPaidBundleConfiguration *)self configDict];
+      v7 = FCAppConfigurationArrayValueWithDefaultValue(configDict, @"paywallConfigs", 0);
 
-      v8 = [v4 configDict];
-      v9 = FCAppConfigurationArrayValueWithDefaultValue(v8, @"paywallConfigs", 0);
+      configDict2 = [configCopy configDict];
+      v9 = FCAppConfigurationArrayValueWithDefaultValue(configDict2, @"paywallConfigs", 0);
 
       if (([MEMORY[0x1E69E58C0] nf_object:v7 isEqualToObject:v9] & 1) == 0)
       {
@@ -654,11 +654,11 @@ LABEL_17:
         goto LABEL_31;
       }
 
-      v10 = [(FCPaidBundleConfiguration *)self configDict];
-      v11 = FCAppConfigurationArrayValueWithDefaultValue(v10, @"audioPaywallConfigs", 0);
+      configDict3 = [(FCPaidBundleConfiguration *)self configDict];
+      v11 = FCAppConfigurationArrayValueWithDefaultValue(configDict3, @"audioPaywallConfigs", 0);
 
-      v12 = [v4 configDict];
-      v13 = FCAppConfigurationArrayValueWithDefaultValue(v12, @"audioPaywallConfigs", 0);
+      configDict4 = [configCopy configDict];
+      v13 = FCAppConfigurationArrayValueWithDefaultValue(configDict4, @"audioPaywallConfigs", 0);
 
       if (([MEMORY[0x1E69E58C0] nf_object:v11 isEqualToObject:v13] & 1) == 0)
       {
@@ -675,11 +675,11 @@ LABEL_17:
       }
 
       v41 = v11;
-      v14 = [(FCPaidBundleConfiguration *)self configDict];
-      v15 = FCAppConfigurationArrayValueWithDefaultValue(v14, @"sbPaywallConfigs", 0);
+      configDict5 = [(FCPaidBundleConfiguration *)self configDict];
+      v15 = FCAppConfigurationArrayValueWithDefaultValue(configDict5, @"sbPaywallConfigs", 0);
 
-      v16 = [v4 configDict];
-      v17 = FCAppConfigurationArrayValueWithDefaultValue(v16, @"sbPaywallConfigs", 0);
+      configDict6 = [configCopy configDict];
+      v17 = FCAppConfigurationArrayValueWithDefaultValue(configDict6, @"sbPaywallConfigs", 0);
 
       if (([MEMORY[0x1E69E58C0] nf_object:v15 isEqualToObject:v17] & 1) == 0)
       {
@@ -696,11 +696,11 @@ LABEL_17:
       }
 
       v39 = v15;
-      v18 = [(FCPaidBundleConfiguration *)self configDict];
-      v19 = FCAppConfigurationArrayValueWithDefaultValue(v18, @"audioSbPaywallConfigs", 0);
+      configDict7 = [(FCPaidBundleConfiguration *)self configDict];
+      v19 = FCAppConfigurationArrayValueWithDefaultValue(configDict7, @"audioSbPaywallConfigs", 0);
 
-      v20 = [v4 configDict];
-      v21 = FCAppConfigurationArrayValueWithDefaultValue(v20, @"audioSbPaywallConfigs", 0);
+      configDict8 = [configCopy configDict];
+      v21 = FCAppConfigurationArrayValueWithDefaultValue(configDict8, @"audioSbPaywallConfigs", 0);
 
       v40 = v19;
       if (([MEMORY[0x1E69E58C0] nf_object:v19 isEqualToObject:v21] & 1) == 0)
@@ -718,11 +718,11 @@ LABEL_17:
         goto LABEL_28;
       }
 
-      v22 = [(FCPaidBundleConfiguration *)self configDict];
-      v23 = FCAppConfigurationArrayValueWithDefaultValue(v22, @"flexiblePaywallConfig", 0);
+      configDict9 = [(FCPaidBundleConfiguration *)self configDict];
+      v23 = FCAppConfigurationArrayValueWithDefaultValue(configDict9, @"flexiblePaywallConfig", 0);
 
-      v24 = [v4 configDict];
-      v25 = FCAppConfigurationArrayValueWithDefaultValue(v24, @"flexiblePaywallConfig", 0);
+      configDict10 = [configCopy configDict];
+      v25 = FCAppConfigurationArrayValueWithDefaultValue(configDict10, @"flexiblePaywallConfig", 0);
 
       v26 = v23;
       v38 = v25;
@@ -789,30 +789,30 @@ LABEL_32:
   return v27;
 }
 
-- (id)paywallConfigurationsByTypeForKey:(id)a3
+- (id)paywallConfigurationsByTypeForKey:(id)key
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCPaidBundleConfiguration *)self lock];
-  [v5 lock];
+  keyCopy = key;
+  lock = [(FCPaidBundleConfiguration *)self lock];
+  [lock lock];
 
-  v6 = [(NSMutableDictionary *)self->_keyedPaywallConfigurationsByType objectForKeyedSubscript:v4];
-  v7 = [(FCPaidBundleConfiguration *)self lock];
-  [v7 unlock];
+  v6 = [(NSMutableDictionary *)self->_keyedPaywallConfigurationsByType objectForKeyedSubscript:keyCopy];
+  lock2 = [(FCPaidBundleConfiguration *)self lock];
+  [lock2 unlock];
 
   if (v6)
   {
-    v8 = v6;
+    dictionary = v6;
   }
 
   else
   {
-    v9 = [(FCPaidBundleConfiguration *)self configDict];
-    v10 = FCAppConfigurationArrayValueWithDefaultValue(v9, v4, 0);
+    configDict = [(FCPaidBundleConfiguration *)self configDict];
+    v10 = FCAppConfigurationArrayValueWithDefaultValue(configDict, keyCopy, 0);
 
     if (v10)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -833,10 +833,10 @@ LABEL_32:
             }
 
             v16 = [[FCPaywallConfiguration alloc] initWithConfigDictionary:*(*(&v24 + 1) + 8 * i)];
-            v17 = [(FCPaywallConfiguration *)v16 paywallType];
+            paywallType = [(FCPaywallConfiguration *)v16 paywallType];
             if (v16)
             {
-              v18 = v17 == 0;
+              v18 = paywallType == 0;
             }
 
             else
@@ -846,8 +846,8 @@ LABEL_32:
 
             if (!v18)
             {
-              v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17];
-              [v8 fc_safelySetObject:v16 forKey:v19];
+              v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:paywallType];
+              [dictionary fc_safelySetObject:v16 forKey:v19];
             }
           }
 
@@ -857,51 +857,51 @@ LABEL_32:
         while (v13);
       }
 
-      v20 = [(FCPaidBundleConfiguration *)self lock];
-      [v20 lock];
+      lock3 = [(FCPaidBundleConfiguration *)self lock];
+      [lock3 lock];
 
-      [(NSMutableDictionary *)self->_keyedPaywallConfigurationsByType fc_safelySetObject:v8 forKey:v4];
-      v21 = [(FCPaidBundleConfiguration *)self lock];
-      [v21 unlock];
+      [(NSMutableDictionary *)self->_keyedPaywallConfigurationsByType fc_safelySetObject:dictionary forKey:keyCopy];
+      lock4 = [(FCPaidBundleConfiguration *)self lock];
+      [lock4 unlock];
 
       v6 = 0;
     }
 
     else
     {
-      v8 = 0;
+      dictionary = 0;
     }
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return dictionary;
 }
 
-- (id)subscriptionButtonConfigurationsByTypeForKey:(id)a3
+- (id)subscriptionButtonConfigurationsByTypeForKey:(id)key
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCPaidBundleConfiguration *)self lock];
-  [v5 lock];
+  keyCopy = key;
+  lock = [(FCPaidBundleConfiguration *)self lock];
+  [lock lock];
 
-  v6 = [(NSMutableDictionary *)self->_keyedSubscriptionButtonConfigurationsByType objectForKeyedSubscript:v4];
-  v7 = [(FCPaidBundleConfiguration *)self lock];
-  [v7 unlock];
+  v6 = [(NSMutableDictionary *)self->_keyedSubscriptionButtonConfigurationsByType objectForKeyedSubscript:keyCopy];
+  lock2 = [(FCPaidBundleConfiguration *)self lock];
+  [lock2 unlock];
 
   if (v6)
   {
-    v8 = v6;
+    dictionary = v6;
   }
 
   else
   {
-    v9 = [(FCPaidBundleConfiguration *)self configDict];
-    v10 = FCAppConfigurationArrayValueWithDefaultValue(v9, v4, 0);
+    configDict = [(FCPaidBundleConfiguration *)self configDict];
+    v10 = FCAppConfigurationArrayValueWithDefaultValue(configDict, keyCopy, 0);
 
     if (v10)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -922,10 +922,10 @@ LABEL_32:
             }
 
             v16 = [[FCSubscriptionButtonConfiguration alloc] initWithConfigDictionary:*(*(&v24 + 1) + 8 * i)];
-            v17 = [(FCSubscriptionButtonConfiguration *)v16 subscriptionButtonType];
+            subscriptionButtonType = [(FCSubscriptionButtonConfiguration *)v16 subscriptionButtonType];
             if (v16)
             {
-              v18 = v17 == 0;
+              v18 = subscriptionButtonType == 0;
             }
 
             else
@@ -935,8 +935,8 @@ LABEL_32:
 
             if (!v18)
             {
-              v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v17];
-              [v8 fc_safelySetObject:v16 forKey:v19];
+              v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:subscriptionButtonType];
+              [dictionary fc_safelySetObject:v16 forKey:v19];
             }
           }
 
@@ -946,36 +946,36 @@ LABEL_32:
         while (v13);
       }
 
-      v20 = [(FCPaidBundleConfiguration *)self lock];
-      [v20 lock];
+      lock3 = [(FCPaidBundleConfiguration *)self lock];
+      [lock3 lock];
 
-      [(NSMutableDictionary *)self->_keyedSubscriptionButtonConfigurationsByType fc_safelySetObject:v8 forKey:v4];
-      v21 = [(FCPaidBundleConfiguration *)self lock];
-      [v21 unlock];
+      [(NSMutableDictionary *)self->_keyedSubscriptionButtonConfigurationsByType fc_safelySetObject:dictionary forKey:keyCopy];
+      lock4 = [(FCPaidBundleConfiguration *)self lock];
+      [lock4 unlock];
 
       v6 = 0;
     }
 
     else
     {
-      v8 = 0;
+      dictionary = 0;
     }
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return dictionary;
 }
 
-- (id)postPurchaseOnboardingConfigurationsByTypeForKey:(id)a3
+- (id)postPurchaseOnboardingConfigurationsByTypeForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FCPaidBundleConfiguration *)self lock];
-  [v5 lock];
+  keyCopy = key;
+  lock = [(FCPaidBundleConfiguration *)self lock];
+  [lock lock];
 
-  v6 = [(NSMutableDictionary *)self->_keyedPostPurchaseOnboardingConfigurationsByType objectForKeyedSubscript:v4];
-  v7 = [(FCPaidBundleConfiguration *)self lock];
-  [v7 unlock];
+  v6 = [(NSMutableDictionary *)self->_keyedPostPurchaseOnboardingConfigurationsByType objectForKeyedSubscript:keyCopy];
+  lock2 = [(FCPaidBundleConfiguration *)self lock];
+  [lock2 unlock];
 
   if (v6)
   {
@@ -984,25 +984,25 @@ LABEL_32:
 
   else
   {
-    v9 = [(FCPaidBundleConfiguration *)self configDict];
-    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v9, v4, 0);
+    configDict = [(FCPaidBundleConfiguration *)self configDict];
+    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(configDict, keyCopy, 0);
 
     if (v10)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByTypeForKey___block_invoke;
       v17[3] = &unk_1E7C3F720;
-      v12 = v11;
+      v12 = dictionary;
       v18 = v12;
       [v10 enumerateKeysAndObjectsUsingBlock:v17];
-      v13 = [(FCPaidBundleConfiguration *)self lock];
-      [v13 lock];
+      lock3 = [(FCPaidBundleConfiguration *)self lock];
+      [lock3 lock];
 
-      [(NSMutableDictionary *)self->_keyedPostPurchaseOnboardingConfigurationsByType fc_safelySetObject:v12 forKey:v4];
-      v14 = [(FCPaidBundleConfiguration *)self lock];
-      [v14 unlock];
+      [(NSMutableDictionary *)self->_keyedPostPurchaseOnboardingConfigurationsByType fc_safelySetObject:v12 forKey:keyCopy];
+      lock4 = [(FCPaidBundleConfiguration *)self lock];
+      [lock4 unlock];
 
       v15 = v18;
       v8 = v12;
@@ -1077,8 +1077,8 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
 
 - (NSDictionary)flexiblePaywallConfig
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"flexiblePaywallConfig", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(configDict, @"flexiblePaywallConfig", 0);
 
   return v3;
 }
@@ -1090,8 +1090,8 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
 
   if (!v4)
   {
-    v5 = [(FCPaidBundleConfiguration *)self configDict];
-    v4 = FCAppConfigurationIntegerValue(v5, @"subscriptionLinkTargetType", 0);
+    configDict = [(FCPaidBundleConfiguration *)self configDict];
+    v4 = FCAppConfigurationIntegerValue(configDict, @"subscriptionLinkTargetType", 0);
   }
 
   return v4;
@@ -1099,8 +1099,8 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
 
 - (double)maxPriceDeltaThreshold
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationDoubleValue(v2, @"maxDeltaThreshold", 0.0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationDoubleValue(configDict, @"maxDeltaThreshold", 0.0);
 
   return v3;
 }
@@ -1111,15 +1111,15 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    defaultPaywallConfigs = v3;
   }
 
   else
   {
-    v5 = [(FCPaidBundleConfiguration *)self defaultPaywallConfigs];
+    defaultPaywallConfigs = [(FCPaidBundleConfiguration *)self defaultPaywallConfigs];
   }
 
-  v6 = v5;
+  v6 = defaultPaywallConfigs;
 
   return v6;
 }
@@ -1130,15 +1130,15 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    defaultPaywallConfigs = v3;
   }
 
   else
   {
-    v5 = [(FCPaidBundleConfiguration *)self defaultPaywallConfigs];
+    defaultPaywallConfigs = [(FCPaidBundleConfiguration *)self defaultPaywallConfigs];
   }
 
-  v6 = v5;
+  v6 = defaultPaywallConfigs;
 
   return v6;
 }
@@ -1149,15 +1149,15 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    defaultAudioPaywallConfigs = v3;
   }
 
   else
   {
-    v5 = [(FCPaidBundleConfiguration *)self defaultAudioPaywallConfigs];
+    defaultAudioPaywallConfigs = [(FCPaidBundleConfiguration *)self defaultAudioPaywallConfigs];
   }
 
-  v6 = v5;
+  v6 = defaultAudioPaywallConfigs;
 
   return v6;
 }
@@ -1168,15 +1168,15 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    defaultAudioPaywallConfigs = v3;
   }
 
   else
   {
-    v5 = [(FCPaidBundleConfiguration *)self defaultAudioPaywallConfigs];
+    defaultAudioPaywallConfigs = [(FCPaidBundleConfiguration *)self defaultAudioPaywallConfigs];
   }
 
-  v6 = v5;
+  v6 = defaultAudioPaywallConfigs;
 
   return v6;
 }
@@ -1187,15 +1187,15 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    defaultSubscriptionButtonConfigs = v3;
   }
 
   else
   {
-    v5 = [(FCPaidBundleConfiguration *)self defaultSubscriptionButtonConfigs];
+    defaultSubscriptionButtonConfigs = [(FCPaidBundleConfiguration *)self defaultSubscriptionButtonConfigs];
   }
 
-  v6 = v5;
+  v6 = defaultSubscriptionButtonConfigs;
 
   return v6;
 }
@@ -1206,15 +1206,15 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    defaultServicesBundleSubscriptionButtonConfigs = v3;
   }
 
   else
   {
-    v5 = [(FCPaidBundleConfiguration *)self defaultServicesBundleSubscriptionButtonConfigs];
+    defaultServicesBundleSubscriptionButtonConfigs = [(FCPaidBundleConfiguration *)self defaultServicesBundleSubscriptionButtonConfigs];
   }
 
-  v6 = v5;
+  v6 = defaultServicesBundleSubscriptionButtonConfigs;
 
   return v6;
 }
@@ -1225,15 +1225,15 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    defaultServicesBundleSubscriptionButtonConfigs = v3;
   }
 
   else
   {
-    v5 = [(FCPaidBundleConfiguration *)self defaultServicesBundleSubscriptionButtonConfigs];
+    defaultServicesBundleSubscriptionButtonConfigs = [(FCPaidBundleConfiguration *)self defaultServicesBundleSubscriptionButtonConfigs];
   }
 
-  v6 = v5;
+  v6 = defaultServicesBundleSubscriptionButtonConfigs;
 
   return v6;
 }
@@ -1244,43 +1244,43 @@ uint64_t __78__FCPaidBundleConfiguration_postPurchaseOnboardingConfigurationsByT
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    defaultServicesBundleSubscriptionButtonConfigs = v3;
   }
 
   else
   {
-    v5 = [(FCPaidBundleConfiguration *)self defaultServicesBundleSubscriptionButtonConfigs];
+    defaultServicesBundleSubscriptionButtonConfigs = [(FCPaidBundleConfiguration *)self defaultServicesBundleSubscriptionButtonConfigs];
   }
 
-  v6 = v5;
+  v6 = defaultServicesBundleSubscriptionButtonConfigs;
 
   return v6;
 }
 
 - (unint64_t)articleHardPaywallType
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"articleHardPaywallType", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"articleHardPaywallType", 0);
 
   return v3;
 }
 
 - (unint64_t)audioFeedPaywallSubtype
 {
-  v3 = [(FCPaidBundleConfiguration *)self configDict];
-  v4 = FCAppConfigurationIntegerValue(v3, @"audioFeedPaywallType", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v4 = FCAppConfigurationIntegerValue(configDict, @"audioFeedPaywallType", 0);
 
   if (v4 == 2)
   {
-    v5 = [(FCPaidBundleConfiguration *)self audioPaywallConfigurationsByType];
+    audioPaywallConfigurationsByType = [(FCPaidBundleConfiguration *)self audioPaywallConfigurationsByType];
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:14];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v7 = [audioPaywallConfigurationsByType objectForKeyedSubscript:v6];
 
     if (v7)
     {
-      v8 = [(FCPaidBundleConfiguration *)self audioPaywallConfigurationsByType];
+      audioPaywallConfigurationsByType2 = [(FCPaidBundleConfiguration *)self audioPaywallConfigurationsByType];
       v9 = [MEMORY[0x1E696AD98] numberWithInteger:15];
-      v10 = [v8 objectForKeyedSubscript:v9];
+      v10 = [audioPaywallConfigurationsByType2 objectForKeyedSubscript:v9];
 
       if (v10)
       {
@@ -1318,20 +1318,20 @@ LABEL_9:
 
 - (unint64_t)magazineFeedPaywallSubtype
 {
-  v3 = [(FCPaidBundleConfiguration *)self configDict];
-  v4 = FCAppConfigurationIntegerValue(v3, @"magazineFeedPaywallType", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v4 = FCAppConfigurationIntegerValue(configDict, @"magazineFeedPaywallType", 0);
 
   if (v4 == 2)
   {
-    v5 = [(FCPaidBundleConfiguration *)self paywallConfigurationsByType];
+    paywallConfigurationsByType = [(FCPaidBundleConfiguration *)self paywallConfigurationsByType];
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:9];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v7 = [paywallConfigurationsByType objectForKeyedSubscript:v6];
 
     if (v7)
     {
-      v8 = [(FCPaidBundleConfiguration *)self paywallConfigurationsByType];
+      paywallConfigurationsByType2 = [(FCPaidBundleConfiguration *)self paywallConfigurationsByType];
       v9 = [MEMORY[0x1E696AD98] numberWithInteger:10];
-      v10 = [v8 objectForKeyedSubscript:v9];
+      v10 = [paywallConfigurationsByType2 objectForKeyedSubscript:v9];
 
       if (v10)
       {
@@ -1373,12 +1373,12 @@ LABEL_9:
   magazineGenresByGenre = self->_magazineGenresByGenre;
   if (!magazineGenresByGenre)
   {
-    v4 = [(FCPaidBundleConfiguration *)self configDict];
-    v5 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"magazineGenres", 0);
+    configDict = [(FCPaidBundleConfiguration *)self configDict];
+    v5 = FCAppConfigurationArrayValueWithDefaultValue(configDict, @"magazineGenres", 0);
 
     if (v5)
     {
-      v6 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
@@ -1402,12 +1402,12 @@ LABEL_9:
             v12 = *(*(&v21 + 1) + 8 * v11);
             v13 = [FCMagazineGenre alloc];
             v14 = [(FCMagazineGenre *)v13 initWithConfigDictionary:v12, v21];
-            v15 = [(FCMagazineGenre *)v14 genre];
+            genre = [(FCMagazineGenre *)v14 genre];
 
-            if (v15)
+            if (genre)
             {
-              v16 = [(FCMagazineGenre *)v14 genre];
-              [(NSDictionary *)v6 fc_safelySetObject:v14 forKey:v16];
+              genre2 = [(FCMagazineGenre *)v14 genre];
+              [(NSDictionary *)dictionary fc_safelySetObject:v14 forKey:genre2];
             }
 
             ++v11;
@@ -1421,14 +1421,14 @@ LABEL_9:
       }
 
       v17 = self->_magazineGenresByGenre;
-      self->_magazineGenresByGenre = v6;
+      self->_magazineGenresByGenre = dictionary;
     }
 
     else
     {
-      v18 = [(FCPaidBundleConfiguration *)self defaultMagazineGenres];
+      defaultMagazineGenres = [(FCPaidBundleConfiguration *)self defaultMagazineGenres];
       v17 = self->_magazineGenresByGenre;
-      self->_magazineGenresByGenre = v18;
+      self->_magazineGenresByGenre = defaultMagazineGenres;
     }
 
     magazineGenresByGenre = self->_magazineGenresByGenre;
@@ -1441,16 +1441,16 @@ LABEL_9:
 
 - (BOOL)isFamilySharingSetupEnabled
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"familySharingSetupEnabled", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"familySharingSetupEnabled", 0);
 
   return v3;
 }
 
 - (NSString)servicesBundleMetricsTopicName
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"sbFigaroTopic", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"sbFigaroTopic", 0);
 
   return v3;
 }
@@ -1458,11 +1458,11 @@ LABEL_9:
 - (NSString)defaultLandingPageArticleID
 {
   v3 = +[FCPaidBundleConfiguration defaultLandingPageByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"deArticleID", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"deArticleID", v5);
 
   return v7;
 }
@@ -1470,11 +1470,11 @@ LABEL_9:
 - (NSString)defaultServicesBundleLandingPageArticleID
 {
   v3 = +[FCPaidBundleConfiguration defaultServicesBundleLandingPageByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"sbArticleID", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"sbArticleID", v5);
 
   return v7;
 }
@@ -1482,11 +1482,11 @@ LABEL_9:
 - (NSString)familySharingLandingPageArticleID
 {
   v3 = +[FCPaidBundleConfiguration defaultFamilySharingLandingPageByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"shArticleID", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"shArticleID", v5);
 
   return v7;
 }
@@ -1494,11 +1494,11 @@ LABEL_9:
 - (NSString)endOfPurchaseFamilySharingSetupArticleID
 {
   v3 = +[FCPaidBundleConfiguration defaultEndOfPurchaseFamilySharingSetupArticleIDByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"endOfPurchaseFamilySharingSetupArticleID", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"endOfPurchaseFamilySharingSetupArticleID", v5);
 
   return v7;
 }
@@ -1506,11 +1506,11 @@ LABEL_9:
 - (NSString)endOfPurchaseNoFamilySharingSetupArticleID
 {
   v3 = +[FCPaidBundleConfiguration defaultEndOfPurchaseNoFamilySharingSetupArticleIDByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"endOfPurchaseNoFamilySharingSetupArticleID", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"endOfPurchaseNoFamilySharingSetupArticleID", v5);
 
   return v7;
 }
@@ -1518,11 +1518,11 @@ LABEL_9:
 - (NSString)endOfPurchaseServicesBundleFamilySharingSetupArticleID
 {
   v3 = +[FCPaidBundleConfiguration defaultEndOfPurchaseFamilySharingSetupArticleIDByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"endOfPurchaseServicesBundleFamilySharingSetupArticleID", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"endOfPurchaseServicesBundleFamilySharingSetupArticleID", v5);
 
   return v7;
 }
@@ -1530,11 +1530,11 @@ LABEL_9:
 - (NSString)endOfPurchaseServicesBundleNoFamilySharingSetupArticleID
 {
   v3 = +[FCPaidBundleConfiguration defaultEndOfPurchaseNoFamilySharingSetupArticleIDByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"endOfPurchaseServicesBundleNoFamilySharingSetupArticleID", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"endOfPurchaseServicesBundleNoFamilySharingSetupArticleID", v5);
 
   return v7;
 }
@@ -1542,11 +1542,11 @@ LABEL_9:
 - (NSString)renewalLandingPageArticleID
 {
   v3 = +[FCPaidBundleConfiguration renewalLandingPageByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"reArticleID", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"reArticleID", v5);
 
   return v7;
 }
@@ -1558,12 +1558,12 @@ LABEL_9:
 
   if (v4)
   {
-    v5 = [v4 firstObject];
-    if (v5)
+    firstObject = [v4 firstObject];
+    if (firstObject)
     {
-      v6 = v5;
-      v7 = [v4 firstObject];
-      if ([v7 length])
+      v6 = firstObject;
+      firstObject2 = [v4 firstObject];
+      if ([firstObject2 length])
       {
         v8 = NFInternalBuild();
 
@@ -1580,8 +1580,8 @@ LABEL_9:
     }
   }
 
-  v10 = [(FCPaidBundleConfiguration *)self configDict];
-  v9 = FCAppConfigurationArrayValueWithDefaultValue(v10, @"restorablePurchaseIds", &unk_1F2E6FA50);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v9 = FCAppConfigurationArrayValueWithDefaultValue(configDict, @"restorablePurchaseIds", &unk_1F2E6FA50);
 
 LABEL_8:
 
@@ -1590,32 +1590,32 @@ LABEL_8:
 
 - (NSDictionary)offeredBundlePurchaseIDsMap
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"offeredBundlePurchaseIDsMap", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(configDict, @"offeredBundlePurchaseIDsMap", 0);
 
   return v3;
 }
 
 - (int64_t)newIssuesCheckLocalTime
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"newIssuesCheckLocalTime", 10800);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"newIssuesCheckLocalTime", 10800);
 
   return v3;
 }
 
 - (int64_t)newIssuesNotificationDeliveryLocalTime
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"newIssuesNotificationDeliveryLocalTime", 68400);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"newIssuesNotificationDeliveryLocalTime", 68400);
 
   return v3;
 }
 
 - (int64_t)maxAllowedSubscriptionDetectionTime
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxAllowedSubscriptionDetectionTime", 2592000);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"maxAllowedSubscriptionDetectionTime", 2592000);
 
   return v3;
 }
@@ -1623,19 +1623,19 @@ LABEL_8:
 - (NSString)featuredArticlesTagList
 {
   v3 = +[FCPaidBundleConfiguration defaultTagListIDByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"featuredArticlesTagList", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"featuredArticlesTagList", v5);
 
   return v7;
 }
 
 - (int64_t)featuredArticlesFetchLimit
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"featuredArticlesFetchLimit", 250);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"featuredArticlesFetchLimit", 250);
 
   return v3;
 }
@@ -1643,19 +1643,19 @@ LABEL_8:
 - (NSString)recommendableIssuesTagList
 {
   v3 = +[FCPaidBundleConfiguration defaultTagListIDByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"recommendableIssuesTagList", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"recommendableIssuesTagList", v5);
 
   return v7;
 }
 
 - (NSString)globalFeedIDForFreeUsers
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"paidFeedIdForFreeUsers", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"paidFeedIdForFreeUsers", 0);
 
   return v3;
 }
@@ -1663,86 +1663,86 @@ LABEL_8:
 - (NSString)globalFeedIDForPaidUsers
 {
   v3 = +[FCPaidBundleConfiguration defaultPaidFeedIDByLocalizedStorefrontID];
-  v4 = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  localizedStorefrontID = [(FCPaidBundleConfiguration *)self localizedStorefrontID];
+  v5 = [v3 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCPaidBundleConfiguration *)self configDict];
-  v7 = FCAppConfigurationStringValue(v6, @"paidFeedId", v5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v7 = FCAppConfigurationStringValue(configDict, @"paidFeedId", v5);
 
   return v7;
 }
 
 - (BOOL)forYouIncludePaidSectionFeedsForFreeUsers
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"forYouIncludePaidSectionFeedsForFreeUsers", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"forYouIncludePaidSectionFeedsForFreeUsers", 0);
 
   return v3;
 }
 
 - (BOOL)forYouIncludePaidSectionFeedsForPaidUsers
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"forYouIncludePaidSectionFeedsForPaidUsers", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"forYouIncludePaidSectionFeedsForPaidUsers", 0);
 
   return v3;
 }
 
 - (NSString)expirationAlertDescription
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"expirationAlertDescription", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"expirationAlertDescription", 0);
 
   return v3;
 }
 
 - (int64_t)forYouMaxDailyPaidArticlesForFreeUsers
 {
-  v3 = [(FCPaidBundleConfiguration *)self configDict];
-  v4 = FCAppConfigurationIntegerValue(v3, @"forYouMaxDailyPaidArticlesForFreeUsers", 10);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v4 = FCAppConfigurationIntegerValue(configDict, @"forYouMaxDailyPaidArticlesForFreeUsers", 10);
 
-  v5 = [(FCPaidBundleConfiguration *)self configDict];
-  v6 = FCAppConfigurationIntegerValue(v5, @"forYouMaxDailyPaidArticlesForFreeUsers2", v4);
+  configDict2 = [(FCPaidBundleConfiguration *)self configDict];
+  v6 = FCAppConfigurationIntegerValue(configDict2, @"forYouMaxDailyPaidArticlesForFreeUsers2", v4);
 
   return v6;
 }
 
 - (int64_t)forYouMaxMagazineGroupsForFreeUsers
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"forYouMaxMagazineGroupsForAUsers", 1);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"forYouMaxMagazineGroupsForAUsers", 1);
 
   return v3;
 }
 
 - (int64_t)forYouMaxMagazineGroupsForTrialUsers
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"forYouMaxMagazineGroupsForBUsers", 3);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"forYouMaxMagazineGroupsForBUsers", 3);
 
   return v3;
 }
 
 - (int64_t)forYouMaxMagazineGroupsForPaidUsers
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"forYouMaxMagazineGroupsForCUsers", 3);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"forYouMaxMagazineGroupsForCUsers", 3);
 
   return v3;
 }
 
 - (BOOL)isFreeBadgeEnabledForSubscribers
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"freeBadgeEnabledForPaidUsers", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"freeBadgeEnabledForPaidUsers", 0);
 
   return v3;
 }
 
 - (BOOL)isPaidBadgeEnabledForSubscribers
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"paidBadgeEnabledForPaidUsers", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"paidBadgeEnabledForPaidUsers", 0);
 
   return v3;
 }
@@ -1752,8 +1752,8 @@ LABEL_8:
   v3 = FCBundle();
   v4 = [v3 localizedStringForKey:@"Free" value:&stru_1F2DC7DC0 table:0];
 
-  v5 = [(FCPaidBundleConfiguration *)self configDict];
-  v6 = FCAppConfigurationStringValue(v5, @"freeBadgeTitle", v4);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v6 = FCAppConfigurationStringValue(configDict, @"freeBadgeTitle", v4);
 
   return v6;
 }
@@ -1763,184 +1763,184 @@ LABEL_8:
   v3 = FCBundle();
   v4 = [v3 localizedStringForKey:@" News+" value:&stru_1F2DC7DC0 table:0];
 
-  v5 = [(FCPaidBundleConfiguration *)self configDict];
-  v6 = FCAppConfigurationStringValue(v5, @"paidBadgeTitle", v4);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v6 = FCAppConfigurationStringValue(configDict, @"paidBadgeTitle", v4);
 
   return v6;
 }
 
 - (int64_t)feedAutoRefreshMinimumInterval
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"feedAutoRefreshMinimumInterval", 43200);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"feedAutoRefreshMinimumInterval", 43200);
 
   return v3;
 }
 
 - (int64_t)normalStorageManualIssueDownloadTTL
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v4 = FCAppConfigurationIntegerValue(v2, @"normalStorageManualIssueDownloadTTL", v3);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v4 = FCAppConfigurationIntegerValue(configDict, @"normalStorageManualIssueDownloadTTL", v3);
 
   return v4;
 }
 
 - (int64_t)normalStorageAutomaticIssueDownloadTTL
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"normalStorageAutomaticIssueDownloadTTL", 2592000);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"normalStorageAutomaticIssueDownloadTTL", 2592000);
 
   return v3;
 }
 
 - (int64_t)lowStorageManualIssueDownloadTTL
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"lowStorageManualIssueDownloadTTL", 2592000);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"lowStorageManualIssueDownloadTTL", 2592000);
 
   return v3;
 }
 
 - (int64_t)lowStorageAutomaticIssueDownloadTTL
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"lowStorageAutomaticIssueDownloadTTL", 2592000);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"lowStorageAutomaticIssueDownloadTTL", 2592000);
 
   return v3;
 }
 
 - (int64_t)criticalStorageManualIssueDownloadTTL
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"criticalStorageManualIssueDownloadTTL", 2592000);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"criticalStorageManualIssueDownloadTTL", 2592000);
 
   return v3;
 }
 
 - (int64_t)criticalStorageAutomaticIssueDownloadTTL
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"criticalStorageAutomaticIssueDownloadTTL", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"criticalStorageAutomaticIssueDownloadTTL", 0);
 
   return v3;
 }
 
 - (NSArray)groupWhitelistedTagIds
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"groupWhitelistedTagIds", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDict, @"groupWhitelistedTagIds", 0);
 
   return v3;
 }
 
 - (int64_t)entitlementsGracePeriodInSeconds
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"entitlementsGracePeriodInSeconds", 604800);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"entitlementsGracePeriodInSeconds", 604800);
 
   return v3;
 }
 
 - (int64_t)entitlementsCacheExpiredGracePeriodInSeconds
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"entitlementsCacheExpiredGracePeriodInSeconds", 172800);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"entitlementsCacheExpiredGracePeriodInSeconds", 172800);
 
   return v3;
 }
 
 - (BOOL)isCategoriesDownloadButtonEnabled
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"categoriesDownloadButtonEnabled", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"categoriesDownloadButtonEnabled", 0);
 
   return v3;
 }
 
 - (int64_t)recentIssuesMaxAge
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"recentIssuesMaxAge", 604800);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"recentIssuesMaxAge", 604800);
 
   return v3;
 }
 
 - (int64_t)minimumReadIssuesInMyMagazines
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minimumReadIssuesInMyMagazines", 3);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"minimumReadIssuesInMyMagazines", 3);
 
   return v3;
 }
 
 - (int64_t)minimumArticlesInANFIssueBeforeRead
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minimumArticlesInANFIssueBeforeRead", 1);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"minimumArticlesInANFIssueBeforeRead", 1);
 
   return v3;
 }
 
 - (int64_t)minimumPagesInPDFIssueBeforeRead
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minimumPagesInPDFIssueBeforeRead", 4);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"minimumPagesInPDFIssueBeforeRead", 4);
 
   return v3;
 }
 
 - (NSString)todayMastheadPaywallConfiguration
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"todayMastheadPaywallConfiguration", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"todayMastheadPaywallConfiguration", 0);
 
   return v3;
 }
 
 - (int64_t)minFollowedMagazinesToHideSuggestionsCompact
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minFollowedMagazinesToHideSuggestionsCompact", 5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"minFollowedMagazinesToHideSuggestionsCompact", 5);
 
   return v3;
 }
 
 - (int64_t)minFollowedMagazinesToHideSuggestionsRegular
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minFollowedMagazinesToHideSuggestionsRegular", 8);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"minFollowedMagazinesToHideSuggestionsRegular", 8);
 
   return v3;
 }
 
 - (unint64_t)appLaunchUpsellPaidVisibility
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"appLaunchUpsellPaidVisibility", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"appLaunchUpsellPaidVisibility", 0);
 
   return v3;
 }
 
 - (unint64_t)appLaunchUpsellBundleTrialVisibility
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"appLaunchUpsellBundleTrialVisibility", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"appLaunchUpsellBundleTrialVisibility", 0);
 
   return v3;
 }
 
 - (NSString)appLaunchUpsellInstanceID
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"appLaunchUpsellInstanceID", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"appLaunchUpsellInstanceID", 0);
 
   return v3;
 }
 
 - (NSString)appLaunchUpsellCampaignID
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"appLaunchUpsellCampaignID", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"appLaunchUpsellCampaignID", 0);
 
   return v3;
 }
@@ -1948,16 +1948,16 @@ LABEL_8:
 - (NSDate)appLaunchUpsellCampaignStartDate
 {
   v2 = MEMORY[0x1E695DF00];
-  v3 = [(FCPaidBundleConfiguration *)self configDict];
-  v4 = [v2 dateWithTimeIntervalSince1970:{FCAppConfigurationIntegerValue(v3, @"appLaunchUpsellCampaignStartDate", 0)}];
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v4 = [v2 dateWithTimeIntervalSince1970:{FCAppConfigurationIntegerValue(configDict, @"appLaunchUpsellCampaignStartDate", 0)}];
 
   return v4;
 }
 
 - (NSDate)appLaunchUpsellCampaignEndDate
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValueWithDefaultValueIfMissing(v2, @"appLaunchUpsellCampaignEndDate", -1, -1);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValueWithDefaultValueIfMissing(configDict, @"appLaunchUpsellCampaignEndDate", -1, -1);
 
   if (v3 == -1)
   {
@@ -1974,202 +1974,202 @@ LABEL_8:
 
 - (int64_t)appLaunchUpsellRequiredAppLaunchCount
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"appLaunchUpsellRequiredAppLaunchCount", 4);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"appLaunchUpsellRequiredAppLaunchCount", 4);
 
   return v3;
 }
 
 - (int64_t)appLaunchUpsellQuiescenceInterval
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"appLaunchUpsellQuiescenceInterval", 172800);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"appLaunchUpsellQuiescenceInterval", 172800);
 
   return v3;
 }
 
 - (int64_t)appLaunchUpsellNewSessionBackgroundTimeInterval
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"appLaunchUpsellNewSessionBackgroundTimeInterval", 600);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"appLaunchUpsellNewSessionBackgroundTimeInterval", 600);
 
   return v3;
 }
 
 - (BOOL)appLaunchUpsellLastSeenDateSyncEnabled
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"appLaunchUpsellLastSeenDateSyncEnabled", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"appLaunchUpsellLastSeenDateSyncEnabled", 0);
 
   return v3;
 }
 
 - (BOOL)appLaunchUpsellLastShownCampaignIDSyncEnabled
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"appLaunchUpsellLastShownCampaignIDSyncEnabled", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"appLaunchUpsellLastShownCampaignIDSyncEnabled", 0);
 
   return v3;
 }
 
 - (int64_t)appLaunchUpsellBehaviorFlags
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"appLaunchUpsellBehaviorFlags", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"appLaunchUpsellBehaviorFlags", 0);
 
   return v3;
 }
 
 - (int64_t)audioSuggestionsMaxCount
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioSuggestionsMaxCount", 6);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioSuggestionsMaxCount", 6);
 
   return v3;
 }
 
 - (int64_t)audioSuggestionsHighlyPersonalizedCount
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioSuggestionsHighlyPersonalizedCount", 5);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioSuggestionsHighlyPersonalizedCount", 5);
 
   return v3;
 }
 
 - (int64_t)audioSuggestionsMaxAge
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioSuggestionsMaxAge", 604800);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioSuggestionsMaxAge", 604800);
 
   return v3;
 }
 
 - (int64_t)audioSuggestionsRecycleAfterTime
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioSuggestionsRecycleAfterTime", 345600);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioSuggestionsRecycleAfterTime", 345600);
 
   return v3;
 }
 
 - (int64_t)audioSuggestionsMaxIgnoreCount
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioSuggestionsMaxIgnoreCount", 2);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioSuggestionsMaxIgnoreCount", 2);
 
   return v3;
 }
 
 - (int64_t)audioOfflineArticlesMaxCountNormalStorage
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioOfflineArticlesMaxCountNormalStorage", 25);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioOfflineArticlesMaxCountNormalStorage", 25);
 
   return v3;
 }
 
 - (int64_t)audioOfflineArticlesMaxCountLowStorage
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioOfflineArticlesMaxCountLowStorage", 2);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioOfflineArticlesMaxCountLowStorage", 2);
 
   return v3;
 }
 
 - (int64_t)audioOfflineArticlesMaxCountCriticalStorage
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioOfflineArticlesMaxCountCriticalStorage", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioOfflineArticlesMaxCountCriticalStorage", 0);
 
   return v3;
 }
 
 - (NSString)audioUpsellArticleID
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"audioUpsellArticleID", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"audioUpsellArticleID", 0);
 
   return v3;
 }
 
 - (int64_t)audioUpsellMaxDisplayCount
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioUpsellMaxDisplayCount", -1);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioUpsellMaxDisplayCount", -1);
 
   return v3;
 }
 
 - (NSString)audioUpsellInstanceID
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"audioUpsellInstanceID", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"audioUpsellInstanceID", 0);
 
   return v3;
 }
 
 - (int64_t)audioRecentlyPlayedMaxCount
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioRecentlyPlayedMaxCount", 100);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioRecentlyPlayedMaxCount", 100);
 
   return v3;
 }
 
 - (int64_t)audioFinishedAtTimeFromEnd
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioFinishedAtTimeFromEnd", 10);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioFinishedAtTimeFromEnd", 10);
 
   return v3;
 }
 
 - (NSString)audioDailyBriefingFeatureName
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
   v3 = FCBundle();
   v4 = [v3 localizedStringForKey:@"Apple News Today" value:&stru_1F2DC7DC0 table:0];
-  v5 = FCAppConfigurationStringValue(v2, @"audioDailyBriefingFeatureName", v4);
+  v5 = FCAppConfigurationStringValue(configDict, @"audioDailyBriefingFeatureName", v4);
 
   return v5;
 }
 
 - (int64_t)audioRefreshTimeGMT
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioRefreshTimeGMT", 39600);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioRefreshTimeGMT", 39600);
 
   return v3;
 }
 
 - (BOOL)audioRefreshForceWakeEnabled
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"audioRefreshShouldForceWake", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"audioRefreshShouldForceWake", 0);
 
   return v3;
 }
 
 - (int64_t)audioRefreshForceWakeRandomizationWindow
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioRefreshForceWakeRandomizationWindow", 600);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioRefreshForceWakeRandomizationWindow", 600);
 
   return v3;
 }
 
 - (int64_t)audioRewindToParagraphStartAfterTime
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioRewindToParagraphStartAfterTime", 180);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioRewindToParagraphStartAfterTime", 180);
 
   return v3;
 }
 
 - (int64_t)audioCloseIdlePlayerAfterTime
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioCloseIdlePlayerAfterTime", 300);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"audioCloseIdlePlayerAfterTime", 300);
 
   return v3;
 }
@@ -2177,8 +2177,8 @@ LABEL_8:
 - (NSArray)audioFeedPaywallPositions
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"audioFeedPaywallPositions", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDict, @"audioFeedPaywallPositions", 0);
 
   if (v3)
   {
@@ -2199,16 +2199,16 @@ LABEL_8:
 
 - (NSArray)audioChannelPaywallOverrideAllowedTagIDs
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"audioChannelPaywallOverrideAllowedTagIDs", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDict, @"audioChannelPaywallOverrideAllowedTagIDs", 0);
 
   return v3;
 }
 
 - (NSString)audioArticlesChannelId
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"audioArticlesChannelId", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"audioArticlesChannelId", 0);
 
   return v3;
 }
@@ -2219,12 +2219,12 @@ LABEL_8:
   audioUpsellConfigurationsByID = self->_audioUpsellConfigurationsByID;
   if (!audioUpsellConfigurationsByID)
   {
-    v4 = [(FCPaidBundleConfiguration *)self configDict];
-    v5 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"audioUpsellConfigs", 0);
+    configDict = [(FCPaidBundleConfiguration *)self configDict];
+    v5 = FCAppConfigurationArrayValueWithDefaultValue(configDict, @"audioUpsellConfigs", 0);
 
     if (v5)
     {
-      v6 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
@@ -2248,8 +2248,8 @@ LABEL_8:
             v12 = *(*(&v19 + 1) + 8 * v11);
             v13 = [FCAudioUpsellConfig alloc];
             v14 = [(FCAudioUpsellConfig *)v13 initWithConfigDictionary:v12, v19];
-            v15 = [(FCAudioUpsellConfig *)v14 identifier];
-            [(NSDictionary *)v6 fc_safelySetObject:v14 forKey:v15];
+            identifier = [(FCAudioUpsellConfig *)v14 identifier];
+            [(NSDictionary *)dictionary fc_safelySetObject:v14 forKey:identifier];
 
             ++v11;
           }
@@ -2262,7 +2262,7 @@ LABEL_8:
       }
 
       v16 = self->_audioUpsellConfigurationsByID;
-      self->_audioUpsellConfigurationsByID = v6;
+      self->_audioUpsellConfigurationsByID = dictionary;
     }
 
     audioUpsellConfigurationsByID = self->_audioUpsellConfigurationsByID;
@@ -2275,67 +2275,67 @@ LABEL_8:
 
 - (BOOL)requiresHardPaywallForIssuesToC
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationBoolValue(v2, @"requiresHardPaywallForIssuesToC", 1);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationBoolValue(configDict, @"requiresHardPaywallForIssuesToC", 1);
 
   return v3;
 }
 
 - (int64_t)appLaunchUpsellPresentationDelay
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"appLaunchUpsellPresentationDelay", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"appLaunchUpsellPresentationDelay", 0);
 
   return v3;
 }
 
 - (BOOL)widgetUpsellFeaturesEnabled
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = [FCFeatureEnablementChecker enabledInConfig:v2 forKey:@"widgetUpsellFeaturesEnabled" withDefaultLevel:0];
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = [FCFeatureEnablementChecker enabledInConfig:configDict forKey:@"widgetUpsellFeaturesEnabled" withDefaultLevel:0];
 
   return v3;
 }
 
 - (NSString)osloAbandonmentUpsellArticleID
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"osloAbandonmentUpsellArticleID", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"osloAbandonmentUpsellArticleID", 0);
 
   return v3;
 }
 
 - (int64_t)osloAbandonmentUpsellQuiescenceInterval
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"osloAbandonmentUpsellQuiescenceInterval", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"osloAbandonmentUpsellQuiescenceInterval", 0);
 
   return v3;
 }
 
 - (int64_t)osloAbandonmentUpsellMaxPresentationCount
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationIntegerValue(v2, @"osloAbandonmentUpsellMaxPresentationCount", 0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationIntegerValue(configDict, @"osloAbandonmentUpsellMaxPresentationCount", 0);
 
   return v3;
 }
 
 - (NSString)osloAbandonmentUpsellInstanceID
 {
-  v2 = [(FCPaidBundleConfiguration *)self configDict];
-  v3 = FCAppConfigurationStringValue(v2, @"osloAbandonmentUpsellInstanceID", &stru_1F2DC7DC0);
+  configDict = [(FCPaidBundleConfiguration *)self configDict];
+  v3 = FCAppConfigurationStringValue(configDict, @"osloAbandonmentUpsellInstanceID", &stru_1F2DC7DC0);
 
   return v3;
 }
 
-+ (id)defaultConfigurationForStorefrontID:(id)a3
++ (id)defaultConfigurationForStorefrontID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [FCPaidBundleConfiguration alloc];
   v5 = FCSupportedStoreFrontIDs();
-  v6 = [v5 allObjects];
-  v7 = [(FCPaidBundleConfiguration *)v4 initWithConfigDictionary:0 storefrontID:v3 localizedStorefrontID:v3 defaultSupportedStoreFronts:v6];
+  allObjects = [v5 allObjects];
+  v7 = [(FCPaidBundleConfiguration *)v4 initWithConfigDictionary:0 storefrontID:dCopy localizedStorefrontID:dCopy defaultSupportedStoreFronts:allObjects];
 
   return v7;
 }
@@ -2608,39 +2608,39 @@ void __69__FCPaidBundleConfiguration_defaultPaidFeedIDByLocalizedStorefrontID__b
 - (id)defaultPaywallConfigs
 {
   v18[11] = *MEMORY[0x1E69E9840];
-  v2 = [(FCPaidBundleConfiguration *)self defaultLandingPageArticleID];
+  defaultLandingPageArticleID = [(FCPaidBundleConfiguration *)self defaultLandingPageArticleID];
   v17[0] = &unk_1F2E70818;
-  v16 = [FCPaywallConfiguration defaultArticleHardPaywallWithLandingPageArticleID:v2];
+  v16 = [FCPaywallConfiguration defaultArticleHardPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[0] = v16;
   v17[1] = &unk_1F2E70830;
-  v15 = [FCPaywallConfiguration defaultArticleSharedHardPaywallWithLandingPageArticleID:v2];
+  v15 = [FCPaywallConfiguration defaultArticleSharedHardPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[1] = v15;
   v17[2] = &unk_1F2E70848;
-  v14 = [FCPaywallConfiguration defaultArticleSoftPaywallWithLandingPageArticleID:v2];
+  v14 = [FCPaywallConfiguration defaultArticleSoftPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[2] = v14;
   v17[3] = &unk_1F2E70860;
-  v3 = [FCPaywallConfiguration defaultArticleSharedSoftPaywallWithLandingPageArticleID:v2];
+  v3 = [FCPaywallConfiguration defaultArticleSharedSoftPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[3] = v3;
   v17[4] = &unk_1F2E70878;
-  v4 = [FCPaywallConfiguration defaultChannelSoftPaywallWithLandingPageArticleID:v2];
+  v4 = [FCPaywallConfiguration defaultChannelSoftPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[4] = v4;
   v17[5] = &unk_1F2E70890;
-  v5 = [FCPaywallConfiguration defaultMagazineFeedSoftPaywallSmallPaywallWithLandingPageArticleID:v2];
+  v5 = [FCPaywallConfiguration defaultMagazineFeedSoftPaywallSmallPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[5] = v5;
   v17[6] = &unk_1F2E708A8;
-  v6 = [FCPaywallConfiguration defaultMagazineFeedSoftPaywallMediumPaywallWithLandingPageArticleID:v2];
+  v6 = [FCPaywallConfiguration defaultMagazineFeedSoftPaywallMediumPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[6] = v6;
   v17[7] = &unk_1F2E708C0;
-  v7 = [FCPaywallConfiguration defaultMagazineFeedSoftPaywallLargePaywallWithLandingPageArticleID:v2];
+  v7 = [FCPaywallConfiguration defaultMagazineFeedSoftPaywallLargePaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[7] = v7;
   v17[8] = &unk_1F2E708D8;
-  v8 = [FCPaywallConfiguration defaultMagazineFeedVideoSoftPaywallSmallPaywallWithLandingPageArticleID:v2];
+  v8 = [FCPaywallConfiguration defaultMagazineFeedVideoSoftPaywallSmallPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[8] = v8;
   v17[9] = &unk_1F2E708F0;
-  v9 = [FCPaywallConfiguration defaultMagazineFeedVideoSoftPaywallLargePaywallWithLandingPageArticleID:v2];
+  v9 = [FCPaywallConfiguration defaultMagazineFeedVideoSoftPaywallLargePaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[9] = v9;
   v17[10] = &unk_1F2E70908;
-  v10 = [FCPaywallConfiguration defaultPDFHardPaywallWithLandingPageArticleID:v2];
+  v10 = [FCPaywallConfiguration defaultPDFHardPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v18[10] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:11];
 
@@ -2652,27 +2652,27 @@ void __69__FCPaidBundleConfiguration_defaultPaidFeedIDByLocalizedStorefrontID__b
 - (id)defaultAudioPaywallConfigs
 {
   v14[7] = *MEMORY[0x1E69E9840];
-  v2 = [(FCPaidBundleConfiguration *)self defaultLandingPageArticleID];
+  defaultLandingPageArticleID = [(FCPaidBundleConfiguration *)self defaultLandingPageArticleID];
   v13[0] = &unk_1F2E70818;
-  v3 = [FCPaywallConfiguration defaultAudioArticleHardPaywallWithLandingPageArticleID:v2];
+  v3 = [FCPaywallConfiguration defaultAudioArticleHardPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v14[0] = v3;
   v13[1] = &unk_1F2E70830;
-  v4 = [FCPaywallConfiguration defaultAudioArticleSharedHardPaywallWithLandingPageArticleID:v2];
+  v4 = [FCPaywallConfiguration defaultAudioArticleSharedHardPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v14[1] = v4;
   v13[2] = &unk_1F2E70848;
-  v5 = [FCPaywallConfiguration defaultAudioArticleSoftPaywallWithLandingPageArticleID:v2];
+  v5 = [FCPaywallConfiguration defaultAudioArticleSoftPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v14[2] = v5;
   v13[3] = &unk_1F2E70860;
-  v6 = [FCPaywallConfiguration defaultAudioArticleSharedSoftPaywallWithLandingPageArticleID:v2];
+  v6 = [FCPaywallConfiguration defaultAudioArticleSharedSoftPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v14[3] = v6;
   v13[4] = &unk_1F2E70920;
-  v7 = [FCPaywallConfiguration defaultAudioFeedSoftPaywallSmallPaywallWithLandingPageArticleID:v2];
+  v7 = [FCPaywallConfiguration defaultAudioFeedSoftPaywallSmallPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v14[4] = v7;
   v13[5] = &unk_1F2E70938;
-  v8 = [FCPaywallConfiguration defaultAudioFeedSoftPaywallLargePaywallWithLandingPageArticleID:v2];
+  v8 = [FCPaywallConfiguration defaultAudioFeedSoftPaywallLargePaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v14[5] = v8;
   v13[6] = &unk_1F2E70878;
-  v9 = [FCPaywallConfiguration defaultChannelSoftPaywallWithLandingPageArticleID:v2];
+  v9 = [FCPaywallConfiguration defaultChannelSoftPaywallWithLandingPageArticleID:defaultLandingPageArticleID];
   v14[6] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:7];
 
@@ -2684,15 +2684,15 @@ void __69__FCPaidBundleConfiguration_defaultPaidFeedIDByLocalizedStorefrontID__b
 - (id)defaultSubscriptionButtonConfigs
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v2 = [(FCPaidBundleConfiguration *)self defaultLandingPageArticleID];
+  defaultLandingPageArticleID = [(FCPaidBundleConfiguration *)self defaultLandingPageArticleID];
   v9[0] = &unk_1F2E70818;
-  v3 = [FCSubscriptionButtonConfiguration defaultArticleSubscriptionButtonWithLandingPageArticleID:v2];
+  v3 = [FCSubscriptionButtonConfiguration defaultArticleSubscriptionButtonWithLandingPageArticleID:defaultLandingPageArticleID];
   v10[0] = v3;
   v9[1] = &unk_1F2E70830;
   v4 = +[FCSubscriptionButtonConfiguration defaultOsloSheetTargetSubscriptionButton];
   v10[1] = v4;
   v9[2] = &unk_1F2E70848;
-  v5 = [FCSubscriptionButtonConfiguration defaultIssueCoverSubscriptionButtonWithLandingPageArticleID:v2];
+  v5 = [FCSubscriptionButtonConfiguration defaultIssueCoverSubscriptionButtonWithLandingPageArticleID:defaultLandingPageArticleID];
   v10[2] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
@@ -2704,15 +2704,15 @@ void __69__FCPaidBundleConfiguration_defaultPaidFeedIDByLocalizedStorefrontID__b
 - (id)defaultServicesBundleSubscriptionButtonConfigs
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v2 = [(FCPaidBundleConfiguration *)self defaultServicesBundleLandingPageArticleID];
+  defaultServicesBundleLandingPageArticleID = [(FCPaidBundleConfiguration *)self defaultServicesBundleLandingPageArticleID];
   v9[0] = &unk_1F2E70818;
-  v3 = [FCSubscriptionButtonConfiguration defaultArticleSubscriptionButtonWithLandingPageArticleID:v2];
+  v3 = [FCSubscriptionButtonConfiguration defaultArticleSubscriptionButtonWithLandingPageArticleID:defaultServicesBundleLandingPageArticleID];
   v10[0] = v3;
   v9[1] = &unk_1F2E70830;
   v4 = +[FCSubscriptionButtonConfiguration defaultAmsSheetTargetSubscriptionButton];
   v10[1] = v4;
   v9[2] = &unk_1F2E70848;
-  v5 = [FCSubscriptionButtonConfiguration defaultIssueCoverSubscriptionButtonWithLandingPageArticleID:v2];
+  v5 = [FCSubscriptionButtonConfiguration defaultIssueCoverSubscriptionButtonWithLandingPageArticleID:defaultServicesBundleLandingPageArticleID];
   v10[2] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
@@ -2785,54 +2785,54 @@ void __69__FCPaidBundleConfiguration_defaultPaidFeedIDByLocalizedStorefrontID__b
   v49 = [FCMagazineGenre magazineGenreWithGenre:@"women-lifestyle" localizedDescription:v36];
 
   v60 = v4;
-  v55 = [v4 genre];
-  v70[0] = v55;
+  genre = [v4 genre];
+  v70[0] = genre;
   v71[0] = v4;
   v59 = v7;
-  v54 = [v7 genre];
-  v70[1] = v54;
+  genre2 = [v7 genre];
+  v70[1] = genre2;
   v71[1] = v7;
   v58 = v10;
-  v53 = [v10 genre];
-  v70[2] = v53;
+  genre3 = [v10 genre];
+  v70[2] = genre3;
   v71[2] = v10;
   v57 = v13;
-  v52 = [v13 genre];
-  v70[3] = v52;
+  genre4 = [v13 genre];
+  v70[3] = genre4;
   v71[3] = v13;
   v56 = v16;
-  v51 = [v16 genre];
-  v70[4] = v51;
+  genre5 = [v16 genre];
+  v70[4] = genre5;
   v71[4] = v16;
-  v50 = [v69 genre];
-  v70[5] = v50;
+  genre6 = [v69 genre];
+  v70[5] = genre6;
   v71[5] = v69;
-  v37 = [v68 genre];
-  v70[6] = v37;
+  genre7 = [v68 genre];
+  v70[6] = genre7;
   v71[6] = v68;
-  v38 = [v67 genre];
-  v70[7] = v38;
+  genre8 = [v67 genre];
+  v70[7] = genre8;
   v71[7] = v67;
-  v39 = [v66 genre];
-  v70[8] = v39;
+  genre9 = [v66 genre];
+  v70[8] = genre9;
   v71[8] = v66;
-  v40 = [v65 genre];
-  v70[9] = v40;
+  genre10 = [v65 genre];
+  v70[9] = genre10;
   v71[9] = v65;
-  v41 = [v64 genre];
-  v70[10] = v41;
+  genre11 = [v64 genre];
+  v70[10] = genre11;
   v71[10] = v64;
-  v42 = [v63 genre];
-  v70[11] = v42;
+  genre12 = [v63 genre];
+  v70[11] = genre12;
   v71[11] = v63;
-  v43 = [v62 genre];
-  v70[12] = v43;
+  genre13 = [v62 genre];
+  v70[12] = genre13;
   v71[12] = v62;
-  v44 = [v61 genre];
-  v70[13] = v44;
+  genre14 = [v61 genre];
+  v70[13] = genre14;
   v71[13] = v61;
-  v45 = [v49 genre];
-  v70[14] = v45;
+  genre15 = [v49 genre];
+  v70[14] = genre15;
   v71[14] = v49;
   v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:v70 count:15];
 

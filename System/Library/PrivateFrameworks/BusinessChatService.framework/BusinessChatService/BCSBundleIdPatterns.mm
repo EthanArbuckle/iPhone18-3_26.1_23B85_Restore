@@ -1,32 +1,32 @@
 @interface BCSBundleIdPatterns
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addUrlPatterns:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUrlPatterns:(id)patterns;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BCSBundleIdPatterns
 
-- (void)addUrlPatterns:(id)a3
+- (void)addUrlPatterns:(id)patterns
 {
-  v4 = a3;
+  patternsCopy = patterns;
   urlPatterns = self->_urlPatterns;
-  v8 = v4;
+  v8 = patternsCopy;
   if (!urlPatterns)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_urlPatterns;
     self->_urlPatterns = v6;
 
-    v4 = v8;
+    patternsCopy = v8;
     urlPatterns = self->_urlPatterns;
   }
 
-  [(NSMutableArray *)urlPatterns addObject:v4];
+  [(NSMutableArray *)urlPatterns addObject:patternsCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = BCSBundleIdPatterns;
   v4 = [(BCSBundleIdPatterns *)&v8 description];
-  v5 = [(BCSBundleIdPatterns *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BCSBundleIdPatterns *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundle_id"];
+    [dictionary setObject:bundleId forKey:@"bundle_id"];
   }
 
   if ([(NSMutableArray *)self->_urlPatterns count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -92,10 +92,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
@@ -136,35 +136,35 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_bundleId)
   {
-    [v8 setBundleId:?];
+    [toCopy setBundleId:?];
   }
 
   if ([(BCSBundleIdPatterns *)self urlPatternsCount])
   {
-    [v8 clearUrlPatterns];
-    v4 = [(BCSBundleIdPatterns *)self urlPatternsCount];
-    if (v4)
+    [toCopy clearUrlPatterns];
+    urlPatternsCount = [(BCSBundleIdPatterns *)self urlPatternsCount];
+    if (urlPatternsCount)
     {
-      v5 = v4;
+      v5 = urlPatternsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BCSBundleIdPatterns *)self urlPatternsAtIndex:i];
-        [v8 addUrlPatterns:v7];
+        [toCopy addUrlPatterns:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -188,7 +188,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addUrlPatterns:v13];
 
         ++v12;
@@ -205,13 +205,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((bundleId = self->_bundleId, !(bundleId | v4[1])) || -[NSString isEqual:](bundleId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((bundleId = self->_bundleId, !(bundleId | equalCopy[1])) || -[NSString isEqual:](bundleId, "isEqual:")))
   {
     urlPatterns = self->_urlPatterns;
-    if (urlPatterns | v4[2])
+    if (urlPatterns | equalCopy[2])
     {
       v7 = [(NSMutableArray *)urlPatterns isEqual:?];
     }
@@ -230,11 +230,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(BCSBundleIdPatterns *)self setBundleId:?];
   }
@@ -243,7 +243,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

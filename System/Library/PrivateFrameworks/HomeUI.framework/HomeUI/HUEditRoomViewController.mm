@@ -1,42 +1,42 @@
 @interface HUEditRoomViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HUEditRoomItemManager)roomItemManager;
-- (HUEditRoomViewController)initWithRoomBuilder:(id)a3 presentationDelegate:(id)a4 addRoomDelegate:(id)a5;
+- (HUEditRoomViewController)initWithRoomBuilder:(id)builder presentationDelegate:(id)delegate addRoomDelegate:(id)roomDelegate;
 - (HUEditRoomViewControllerAddRoomDelegate)addRoomDelegate;
 - (HUEditRoomViewControllerPresentationDelegate)presentationDelegate;
 - (UITextField)editingTextField;
 - (id)itemModuleControllers;
-- (id)trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a3;
-- (unint64_t)automaticDisablingReasonsForItem:(id)a3;
-- (void)addButtonPressed:(id)a3;
-- (void)cancelButtonPressed:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)doneButtonPressed:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)nameFieldTextChanged:(id)a3;
-- (void)presentWallpaperEditingViewControllerWithImage:(id)a3 wallpaper:(id)a4;
+- (id)trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (unint64_t)automaticDisablingReasonsForItem:(id)item;
+- (void)addButtonPressed:(id)pressed;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)doneButtonPressed:(id)pressed;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)nameFieldTextChanged:(id)changed;
+- (void)presentWallpaperEditingViewControllerWithImage:(id)image wallpaper:(id)wallpaper;
 - (void)updateTitle;
-- (void)updateWallpaper:(id)a3 image:(id)a4;
+- (void)updateWallpaper:(id)wallpaper image:(id)image;
 - (void)viewDidLoad;
-- (void)wallpaperEditing:(id)a3 didFinishWithWallpaper:(id)a4 image:(id)a5;
-- (void)wallpaperPicker:(id)a3 didReceiveDroppedImage:(id)a4;
-- (void)wallpaperPicker:(id)a3 didSelectWallpaper:(id)a4 withImage:(id)a5;
-- (void)wallpaperPickerDidFinish:(id)a3 wallpaper:(id)a4 image:(id)a5;
-- (void)wallpaperPickerRequestOpenWallpaperEditor:(id)a3;
-- (void)wallpaperThumbnailCell:(id)a3 didReceiveDroppedImage:(id)a4;
+- (void)wallpaperEditing:(id)editing didFinishWithWallpaper:(id)wallpaper image:(id)image;
+- (void)wallpaperPicker:(id)picker didReceiveDroppedImage:(id)image;
+- (void)wallpaperPicker:(id)picker didSelectWallpaper:(id)wallpaper withImage:(id)image;
+- (void)wallpaperPickerDidFinish:(id)finish wallpaper:(id)wallpaper image:(id)image;
+- (void)wallpaperPickerRequestOpenWallpaperEditor:(id)editor;
+- (void)wallpaperThumbnailCell:(id)cell didReceiveDroppedImage:(id)image;
 @end
 
 @implementation HUEditRoomViewController
 
-- (HUEditRoomViewController)initWithRoomBuilder:(id)a3 presentationDelegate:(id)a4 addRoomDelegate:(id)a5
+- (HUEditRoomViewController)initWithRoomBuilder:(id)builder presentationDelegate:(id)delegate addRoomDelegate:(id)roomDelegate
 {
-  v9 = a3;
-  obj = a4;
-  v24 = a5;
-  v10 = [[HUEditRoomItemManager alloc] initWithRoomBuilder:v9 delegate:self];
+  builderCopy = builder;
+  obj = delegate;
+  roomDelegateCopy = roomDelegate;
+  v10 = [[HUEditRoomItemManager alloc] initWithRoomBuilder:builderCopy delegate:self];
   objc_initWeak(&location, self);
   v11 = [objc_alloc(MEMORY[0x277D75290]) initWithAppearance:2];
   [v11 setHeaderMode:1];
@@ -55,19 +55,19 @@
   if (v13)
   {
     objc_storeWeak(&v13->_presentationDelegate, obj);
-    objc_storeWeak(&v14->_addRoomDelegate, v24);
+    objc_storeWeak(&v14->_addRoomDelegate, roomDelegateCopy);
     objc_storeWeak(&v14->_roomItemManager, v10);
-    objc_storeStrong(&v14->_roomBuilder, a3);
+    objc_storeStrong(&v14->_roomBuilder, builder);
     WeakRetained = objc_loadWeakRetained(&v14->_roomItemManager);
-    v16 = [WeakRetained zoneModule];
+    zoneModule = [WeakRetained zoneModule];
 
-    if (v16)
+    if (zoneModule)
     {
       v17 = [HUZoneModuleController alloc];
       v18 = objc_loadWeakRetained(&v14->_roomItemManager);
-      v19 = [v18 zoneModule];
-      v20 = [(HFRoomBuilder *)v14->_roomBuilder room];
-      v21 = [(HUZoneModuleController *)v17 initWithModule:v19 room:v20];
+      zoneModule2 = [v18 zoneModule];
+      room = [(HFRoomBuilder *)v14->_roomBuilder room];
+      v21 = [(HUZoneModuleController *)v17 initWithModule:zoneModule2 room:room];
       zoneModuleController = v14->_zoneModuleController;
       v14->_zoneModuleController = v21;
     }
@@ -93,8 +93,8 @@ id __85__HUEditRoomViewController_initWithRoomBuilder_presentationDelegate_addRo
   v31.receiver = self;
   v31.super_class = HUEditRoomViewController;
   [(HUItemCollectionViewController *)&v31 viewDidLoad];
-  v3 = [(HUEditRoomViewController *)self collectionView];
-  [v3 setKeyboardDismissMode:1];
+  collectionView = [(HUEditRoomViewController *)self collectionView];
+  [collectionView setKeyboardDismissMode:1];
 
   if (+[HUWallpaperPickerInlineViewController useWallpaperPickerCell])
   {
@@ -103,66 +103,66 @@ id __85__HUEditRoomViewController_initWithRoomBuilder_presentationDelegate_addRo
     self->_wallpaperPickerController = v4;
   }
 
-  v6 = [(HUEditRoomViewController *)self roomBuilder];
-  v7 = [v6 room];
+  roomBuilder = [(HUEditRoomViewController *)self roomBuilder];
+  room = [roomBuilder room];
 
   v8 = objc_alloc(MEMORY[0x277D751E0]);
-  if (!v7)
+  if (!room)
   {
     v21 = [v8 initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonPressed_];
-    v22 = [(HUEditRoomViewController *)self navigationItem];
-    [v22 setLeftBarButtonItem:v21];
+    navigationItem = [(HUEditRoomViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v21];
 
-    v23 = [(HUEditRoomViewController *)self navigationItem];
-    v24 = [v23 leftBarButtonItem];
-    [v24 setAccessibilityIdentifier:@"Home.Room.Cancel"];
+    navigationItem2 = [(HUEditRoomViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+    [leftBarButtonItem setAccessibilityIdentifier:@"Home.Room.Cancel"];
 
     v25 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonPressed_];
-    v26 = [(HUEditRoomViewController *)self navigationItem];
-    [v26 setRightBarButtonItem:v25];
+    navigationItem3 = [(HUEditRoomViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:v25];
 
-    v27 = [(HUEditRoomViewController *)self navigationItem];
-    v28 = [v27 rightBarButtonItem];
-    [v28 setStyle:2];
+    navigationItem4 = [(HUEditRoomViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem4 rightBarButtonItem];
+    [rightBarButtonItem setStyle:2];
 
-    v29 = [(HUEditRoomViewController *)self navigationItem];
-    v30 = [v29 rightBarButtonItem];
-    [v30 setEnabled:0];
+    navigationItem5 = [(HUEditRoomViewController *)self navigationItem];
+    rightBarButtonItem2 = [navigationItem5 rightBarButtonItem];
+    [rightBarButtonItem2 setEnabled:0];
 
-    v18 = [(HUEditRoomViewController *)self navigationItem];
-    v19 = [v18 rightBarButtonItem];
-    [v19 setAccessibilityIdentifier:@"Home.Room.Save"];
+    navigationItem6 = [(HUEditRoomViewController *)self navigationItem];
+    rightBarButtonItem3 = [navigationItem6 rightBarButtonItem];
+    [rightBarButtonItem3 setAccessibilityIdentifier:@"Home.Room.Save"];
     goto LABEL_8;
   }
 
   v9 = [v8 initWithBarButtonSystemItem:0 target:self action:sel_doneButtonPressed_];
-  v10 = [(HUEditRoomViewController *)self navigationItem];
-  [v10 setRightBarButtonItem:v9];
+  navigationItem7 = [(HUEditRoomViewController *)self navigationItem];
+  [navigationItem7 setRightBarButtonItem:v9];
 
-  v11 = [(HUEditRoomViewController *)self navigationItem];
-  v12 = [v11 rightBarButtonItem];
-  [v12 setAccessibilityIdentifier:@"Home.Room.Done"];
+  navigationItem8 = [(HUEditRoomViewController *)self navigationItem];
+  rightBarButtonItem4 = [navigationItem8 rightBarButtonItem];
+  [rightBarButtonItem4 setAccessibilityIdentifier:@"Home.Room.Done"];
 
-  v13 = [(HUEditRoomViewController *)self addRoomDelegate];
+  addRoomDelegate = [(HUEditRoomViewController *)self addRoomDelegate];
 
-  if (v13)
+  if (addRoomDelegate)
   {
-    v14 = [(HUEditRoomViewController *)self roomBuilder];
-    v15 = [v14 home];
-    v16 = [v15 hf_currentUserIsAdministrator];
+    roomBuilder2 = [(HUEditRoomViewController *)self roomBuilder];
+    home = [roomBuilder2 home];
+    hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-    if (!v16)
+    if (!hf_currentUserIsAdministrator)
     {
-      v18 = [(HUEditRoomViewController *)self navigationItem];
-      [v18 setHidesBackButton:1];
+      navigationItem6 = [(HUEditRoomViewController *)self navigationItem];
+      [navigationItem6 setHidesBackButton:1];
       goto LABEL_10;
     }
 
     v17 = objc_alloc(MEMORY[0x277D751E0]);
-    v18 = _HULocalizedStringWithDefaultValue(@"HUEditRoomAddButtonTitle", @"HUEditRoomAddButtonTitle", 1);
-    v19 = [v17 initWithTitle:v18 style:0 target:self action:sel_addButtonPressed_];
-    v20 = [(HUEditRoomViewController *)self navigationItem];
-    [v20 setLeftBarButtonItem:v19];
+    navigationItem6 = _HULocalizedStringWithDefaultValue(@"HUEditRoomAddButtonTitle", @"HUEditRoomAddButtonTitle", 1);
+    rightBarButtonItem3 = [v17 initWithTitle:navigationItem6 style:0 target:self action:sel_addButtonPressed_];
+    navigationItem9 = [(HUEditRoomViewController *)self navigationItem];
+    [navigationItem9 setLeftBarButtonItem:rightBarButtonItem3];
 
 LABEL_8:
 LABEL_10:
@@ -173,23 +173,23 @@ LABEL_10:
 
 - (void)updateTitle
 {
-  v6 = [(HUEditRoomViewController *)self roomBuilder];
-  v3 = [v6 room];
-  if (v3)
+  roomBuilder = [(HUEditRoomViewController *)self roomBuilder];
+  room = [roomBuilder room];
+  if (room)
   {
-    v4 = [(HUEditRoomViewController *)self roomBuilder];
-    v5 = [v4 name];
-    [(HUEditRoomViewController *)self setTitle:v5];
+    roomBuilder2 = [(HUEditRoomViewController *)self roomBuilder];
+    name = [roomBuilder2 name];
+    [(HUEditRoomViewController *)self setTitle:name];
   }
 
   else
   {
-    v4 = _HULocalizedStringWithDefaultValue(@"HUAddRoomNameTitle", @"HUAddRoomNameTitle", 1);
-    [(HUEditRoomViewController *)self setTitle:v4];
+    roomBuilder2 = _HULocalizedStringWithDefaultValue(@"HUAddRoomNameTitle", @"HUAddRoomNameTitle", 1);
+    [(HUEditRoomViewController *)self setTitle:roomBuilder2];
   }
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -198,11 +198,11 @@ LABEL_10:
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "HUEditRoomViewController: cancel button pressed", v6, 2u);
   }
 
-  v5 = [(HUEditRoomViewController *)self presentationDelegate];
-  [v5 editRoomViewControllerDidFinish:self withNewRoom:0];
+  presentationDelegate = [(HUEditRoomViewController *)self presentationDelegate];
+  [presentationDelegate editRoomViewControllerDidFinish:self withNewRoom:0];
 }
 
-- (void)addButtonPressed:(id)a3
+- (void)addButtonPressed:(id)pressed
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -211,13 +211,13 @@ LABEL_10:
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "HUEditRoomViewController: add button pressed", v6, 2u);
   }
 
-  v5 = [(HUEditRoomViewController *)self addRoomDelegate];
-  [v5 presentAddRoomViewControllerForEditRoomViewController:self];
+  addRoomDelegate = [(HUEditRoomViewController *)self addRoomDelegate];
+  [addRoomDelegate presentAddRoomViewControllerForEditRoomViewController:self];
 }
 
-- (void)doneButtonPressed:(id)a3
+- (void)doneButtonPressed:(id)pressed
 {
-  v39 = a3;
+  pressedCopy = pressed;
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -225,80 +225,80 @@ LABEL_10:
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "HUEditRoomViewController: done button pressed", buf, 2u);
   }
 
-  v5 = [(HUEditRoomViewController *)self collectionView];
-  v6 = [(HUItemCollectionViewController *)self itemManager];
-  v7 = [(HUEditRoomViewController *)self roomItemManager];
-  v8 = [v7 nameItem];
-  v9 = [v6 indexPathForItem:v8];
-  v10 = [v5 cellForItemAtIndexPath:v9];
+  collectionView = [(HUEditRoomViewController *)self collectionView];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  roomItemManager = [(HUEditRoomViewController *)self roomItemManager];
+  nameItem = [roomItemManager nameItem];
+  v9 = [itemManager indexPathForItem:nameItem];
+  v10 = [collectionView cellForItemAtIndexPath:v9];
 
   if (objc_opt_respondsToSelector())
   {
     v11 = v10;
-    v12 = [v11 textField];
-    v13 = [v12 text];
+    textField = [v11 textField];
+    text = [textField text];
   }
 
   else
   {
     v11 = 0;
-    v13 = 0;
+    text = 0;
   }
 
-  v14 = [MEMORY[0x277D14CE8] sanitizeUserEnteredHomeKitName:{v13, v39}];
-  v15 = [(HUEditRoomViewController *)self roomBuilder];
-  v41 = [v15 room];
+  v14 = [MEMORY[0x277D14CE8] sanitizeUserEnteredHomeKitName:{text, pressedCopy}];
+  roomBuilder = [(HUEditRoomViewController *)self roomBuilder];
+  room = [roomBuilder room];
 
   if (![v14 length])
   {
-    v16 = [(HUEditRoomViewController *)self roomBuilder];
-    v17 = [v16 name];
+    roomBuilder2 = [(HUEditRoomViewController *)self roomBuilder];
+    name = [roomBuilder2 name];
 
-    v14 = v17;
+    v14 = name;
   }
 
-  v18 = [v11 textField];
-  [v18 setText:v14];
+  textField2 = [v11 textField];
+  [textField2 setText:v14];
 
-  v19 = [(HUEditRoomViewController *)self roomBuilder];
-  [v19 setName:v14];
+  roomBuilder3 = [(HUEditRoomViewController *)self roomBuilder];
+  [roomBuilder3 setName:v14];
 
-  v20 = [(HUEditRoomViewController *)self navigationItem];
-  v21 = [v20 rightBarButtonItem];
-  [(HUEditRoomViewController *)self setSavedButtonBarItem:v21];
+  navigationItem = [(HUEditRoomViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [(HUEditRoomViewController *)self setSavedButtonBarItem:rightBarButtonItem];
 
   v22 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v23 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v22];
-  v24 = [(HUEditRoomViewController *)self navigationItem];
-  [v24 setRightBarButtonItem:v23];
+  navigationItem2 = [(HUEditRoomViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v23];
 
   [v22 startAnimating];
-  v25 = [(HUEditRoomViewController *)self navigationItem];
-  v26 = [v25 rightBarButtonItem];
-  [v26 setEnabled:0];
+  navigationItem3 = [(HUEditRoomViewController *)self navigationItem];
+  rightBarButtonItem2 = [navigationItem3 rightBarButtonItem];
+  [rightBarButtonItem2 setEnabled:0];
 
-  v27 = [v11 textField];
-  LODWORD(v26) = [v27 canResignFirstResponder];
+  textField3 = [v11 textField];
+  LODWORD(rightBarButtonItem2) = [textField3 canResignFirstResponder];
 
-  if (v26)
+  if (rightBarButtonItem2)
   {
-    v28 = [v11 textField];
-    [v28 resignFirstResponder];
+    textField4 = [v11 textField];
+    [textField4 resignFirstResponder];
   }
 
   v29 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v22];
-  v30 = [(HUEditRoomViewController *)self navigationItem];
-  [v30 setRightBarButtonItem:v29];
+  navigationItem4 = [(HUEditRoomViewController *)self navigationItem];
+  [navigationItem4 setRightBarButtonItem:v29];
 
   objc_initWeak(buf, self);
-  v31 = [(HUEditRoomViewController *)self roomBuilder];
-  v32 = [v31 commitItem];
+  roomBuilder4 = [(HUEditRoomViewController *)self roomBuilder];
+  commitItem = [roomBuilder4 commitItem];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __46__HUEditRoomViewController_doneButtonPressed___block_invoke;
   v49[3] = &unk_277DC1068;
   objc_copyWeak(&v50, buf);
-  v33 = [v32 flatMap:v49];
+  v33 = [commitItem flatMap:v49];
 
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
@@ -323,7 +323,7 @@ LABEL_10:
   v42[2] = __46__HUEditRoomViewController_doneButtonPressed___block_invoke_7;
   v42[3] = &unk_277DC1090;
   v42[4] = self;
-  v37 = v41;
+  v37 = room;
   v43 = v37;
   v38 = [v33 addSuccessBlock:v42];
 
@@ -414,16 +414,16 @@ void __46__HUEditRoomViewController_doneButtonPressed___block_invoke_7(uint64_t 
   [v3 editRoomViewControllerDidFinish:v5 withNewRoom:v6];
 }
 
-- (void)nameFieldTextChanged:(id)a3
+- (void)nameFieldTextChanged:(id)changed
 {
   v4 = MEMORY[0x277D14CE8];
-  v5 = [a3 text];
-  v6 = [v4 sanitizeUserEnteredHomeKitName:v5];
+  text = [changed text];
+  v6 = [v4 sanitizeUserEnteredHomeKitName:text];
   v7 = [v6 length] != 0;
 
-  v8 = [(HUEditRoomViewController *)self navigationItem];
-  v9 = [v8 rightBarButtonItem];
-  [v9 setEnabled:v7];
+  navigationItem = [(HUEditRoomViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v7];
 
   [(HUEditRoomViewController *)self setModalInPresentation:v7];
 }
@@ -431,33 +431,33 @@ void __46__HUEditRoomViewController_doneButtonPressed___block_invoke_7(uint64_t 
 - (id)itemModuleControllers
 {
   v3 = objc_opt_new();
-  v4 = [(HUEditRoomViewController *)self zoneModuleController];
-  [v4 setHost:self];
+  zoneModuleController = [(HUEditRoomViewController *)self zoneModuleController];
+  [zoneModuleController setHost:self];
 
-  v5 = [(HUEditRoomViewController *)self zoneModuleController];
-  [v3 na_safeAddObject:v5];
+  zoneModuleController2 = [(HUEditRoomViewController *)self zoneModuleController];
+  [v3 na_safeAddObject:zoneModuleController2];
 
   return v3;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUEditRoomViewController *)self roomItemManager];
-  v7 = [v6 nameItem];
-  v8 = [v5 isEqual:v7];
+  itemCopy = item;
+  roomItemManager = [(HUEditRoomViewController *)self roomItemManager];
+  nameItem = [roomItemManager nameItem];
+  v8 = [itemCopy isEqual:nameItem];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(HUEditRoomViewController *)self roomItemManager];
-    v10 = [v9 wallpaperThumbnailItem];
-    v11 = [v5 isEqual:v10];
+    roomItemManager2 = [(HUEditRoomViewController *)self roomItemManager];
+    wallpaperThumbnailItem = [roomItemManager2 wallpaperThumbnailItem];
+    v11 = [itemCopy isEqual:wallpaperThumbnailItem];
 
     if ((v11 & 1) == 0)
     {
-      v12 = [(HUEditRoomViewController *)self roomItemManager];
-      v13 = [v12 wallpaperPickerItem];
-      [v5 isEqual:v13];
+      roomItemManager3 = [(HUEditRoomViewController *)self roomItemManager];
+      wallpaperPickerItem = [roomItemManager3 wallpaperPickerItem];
+      [itemCopy isEqual:wallpaperPickerItem];
     }
   }
 
@@ -466,155 +466,155 @@ void __46__HUEditRoomViewController_doneButtonPressed___block_invoke_7(uint64_t 
   return v14;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v70.receiver = self;
   v70.super_class = HUEditRoomViewController;
-  [(HUItemCollectionViewController *)&v70 configureCell:v6 forItem:v7];
-  v8 = [(HUEditRoomViewController *)self roomItemManager];
-  v9 = [v8 nameItem];
-  v10 = [v7 isEqual:v9];
+  [(HUItemCollectionViewController *)&v70 configureCell:cellCopy forItem:itemCopy];
+  roomItemManager = [(HUEditRoomViewController *)self roomItemManager];
+  nameItem = [roomItemManager nameItem];
+  v10 = [itemCopy isEqual:nameItem];
 
   if (!v10)
   {
-    v15 = [(HUEditRoomViewController *)self roomItemManager];
-    v16 = [v15 chooseWallpaperItem];
-    v17 = [v7 isEqual:v16];
+    roomItemManager2 = [(HUEditRoomViewController *)self roomItemManager];
+    chooseWallpaperItem = [roomItemManager2 chooseWallpaperItem];
+    v17 = [itemCopy isEqual:chooseWallpaperItem];
 
     if (v17)
     {
-      v11 = v6;
-      v18 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:v7];
-      [v11 setContentConfiguration:v18];
+      textField = cellCopy;
+      v18 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:itemCopy];
+      [textField setContentConfiguration:v18];
 
       v19 = objc_alloc_init(MEMORY[0x277D75258]);
       v71[0] = v19;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:1];
-      [v11 setAccessories:v20];
+      [textField setAccessories:v20];
 
       v14 = @"Home.Room.ChooseFromExisting";
       goto LABEL_5;
     }
 
-    v21 = [(HUEditRoomViewController *)self roomItemManager];
-    v22 = [v21 cameraItem];
-    if ([v7 isEqual:v22])
+    roomItemManager3 = [(HUEditRoomViewController *)self roomItemManager];
+    cameraItem = [roomItemManager3 cameraItem];
+    if ([itemCopy isEqual:cameraItem])
     {
     }
 
     else
     {
-      v23 = [(HUEditRoomViewController *)self roomItemManager];
-      v24 = [v23 removeItem];
-      v25 = [v7 isEqual:v24];
+      roomItemManager4 = [(HUEditRoomViewController *)self roomItemManager];
+      removeItem = [roomItemManager4 removeItem];
+      v25 = [itemCopy isEqual:removeItem];
 
       if (!v25)
       {
-        v36 = [(HUEditRoomViewController *)self roomItemManager];
-        v37 = [v36 wallpaperThumbnailItem];
-        v38 = [v7 isEqual:v37];
+        roomItemManager5 = [(HUEditRoomViewController *)self roomItemManager];
+        wallpaperThumbnailItem = [roomItemManager5 wallpaperThumbnailItem];
+        v38 = [itemCopy isEqual:wallpaperThumbnailItem];
 
         if (v38)
         {
-          v39 = v6;
+          v39 = cellCopy;
           [v39 setDelegate:self];
-          v40 = [MEMORY[0x277D759A0] mainScreen];
-          [v40 bounds];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen bounds];
           v42 = v41;
-          v43 = [MEMORY[0x277D759A0] mainScreen];
-          [v43 bounds];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen2 bounds];
           v45 = v42 / v44;
 
           [v39 setImageSize:round(v45 * 244.0)];
           [v39 setAccessibilityIdentifier:@"Home.Room.WallpaperThumbnail"];
-          v46 = [(HUEditRoomViewController *)self roomBuilder];
-          v47 = [v46 wallpaperBuilder];
-          v48 = [v47 wallpaperEditCollectionFuture];
+          roomBuilder = [(HUEditRoomViewController *)self roomBuilder];
+          wallpaperBuilder = [roomBuilder wallpaperBuilder];
+          wallpaperEditCollectionFuture = [wallpaperBuilder wallpaperEditCollectionFuture];
           v68[0] = MEMORY[0x277D85DD0];
           v68[1] = 3221225472;
           v68[2] = __50__HUEditRoomViewController_configureCell_forItem___block_invoke;
           v68[3] = &unk_277DBE118;
           v69 = v39;
-          v11 = v39;
-          v49 = [v48 addSuccessBlock:v68];
+          textField = v39;
+          v49 = [wallpaperEditCollectionFuture addSuccessBlock:v68];
 
           goto LABEL_14;
         }
 
-        v50 = [(HUEditRoomViewController *)self roomItemManager];
-        v51 = [v50 wallpaperPickerItem];
-        v52 = [v7 isEqual:v51];
+        roomItemManager6 = [(HUEditRoomViewController *)self roomItemManager];
+        wallpaperPickerItem = [roomItemManager6 wallpaperPickerItem];
+        v52 = [itemCopy isEqual:wallpaperPickerItem];
 
         if (!v52)
         {
           goto LABEL_15;
         }
 
-        v53 = [(HUEditRoomViewController *)self wallpaperPickerController];
-        [v53 setDelegate:self];
+        wallpaperPickerController = [(HUEditRoomViewController *)self wallpaperPickerController];
+        [wallpaperPickerController setDelegate:self];
 
-        v54 = [MEMORY[0x277D14D18] sharedInstance];
-        v55 = [v54 allNamedWallpapersForWallpaperCollectionType:1];
-        v56 = [(HUEditRoomViewController *)self wallpaperPickerController];
-        [v56 setNamedWallpapers:v55];
+        mEMORY[0x277D14D18] = [MEMORY[0x277D14D18] sharedInstance];
+        v55 = [mEMORY[0x277D14D18] allNamedWallpapersForWallpaperCollectionType:1];
+        wallpaperPickerController2 = [(HUEditRoomViewController *)self wallpaperPickerController];
+        [wallpaperPickerController2 setNamedWallpapers:v55];
 
-        v57 = [MEMORY[0x277D14D18] sharedInstance];
-        v58 = [v57 allNamedWallpaperThumbnailsForWallpaperCollectionType:1];
-        v59 = [(HUEditRoomViewController *)self wallpaperPickerController];
-        [v59 setNamedWallpaperThumbnails:v58];
+        mEMORY[0x277D14D18]2 = [MEMORY[0x277D14D18] sharedInstance];
+        v58 = [mEMORY[0x277D14D18]2 allNamedWallpaperThumbnailsForWallpaperCollectionType:1];
+        wallpaperPickerController3 = [(HUEditRoomViewController *)self wallpaperPickerController];
+        [wallpaperPickerController3 setNamedWallpaperThumbnails:v58];
 
-        v11 = v6;
-        [v11 setUseDefaultCellBackgroundColor:1];
-        v60 = [(HUEditRoomViewController *)self wallpaperPickerController];
-        [v11 setViewController:v60];
+        textField = cellCopy;
+        [textField setUseDefaultCellBackgroundColor:1];
+        wallpaperPickerController4 = [(HUEditRoomViewController *)self wallpaperPickerController];
+        [textField setViewController:wallpaperPickerController4];
 
-        [v11 setAllowSelfSizing:1];
-        v61 = [(HUEditRoomViewController *)self wallpaperPickerController];
-        v62 = [(HUEditRoomViewController *)self collectionView];
-        [v62 frame];
-        [v61 setImageSizeToFitWidth:3 forNumberOfWallpapers:v63];
+        [textField setAllowSelfSizing:1];
+        wallpaperPickerController5 = [(HUEditRoomViewController *)self wallpaperPickerController];
+        collectionView = [(HUEditRoomViewController *)self collectionView];
+        [collectionView frame];
+        [wallpaperPickerController5 setImageSizeToFitWidth:3 forNumberOfWallpapers:v63];
 
-        v29 = [(HUEditRoomViewController *)self roomBuilder];
-        v64 = [v29 wallpaperBuilder];
-        v65 = [v64 wallpaperEditCollectionFuture];
+        roomBuilder2 = [(HUEditRoomViewController *)self roomBuilder];
+        wallpaperBuilder2 = [roomBuilder2 wallpaperBuilder];
+        wallpaperEditCollectionFuture2 = [wallpaperBuilder2 wallpaperEditCollectionFuture];
         v67[0] = MEMORY[0x277D85DD0];
         v67[1] = 3221225472;
         v67[2] = __50__HUEditRoomViewController_configureCell_forItem___block_invoke_2;
         v67[3] = &unk_277DBE118;
         v67[4] = self;
-        v66 = [v65 addSuccessBlock:v67];
+        v66 = [wallpaperEditCollectionFuture2 addSuccessBlock:v67];
 
         goto LABEL_13;
       }
     }
 
-    v11 = v6;
-    v26 = [(HUEditRoomViewController *)self roomItemManager];
-    v27 = [v26 removeItem];
-    v28 = [v7 isEqual:v27];
+    textField = cellCopy;
+    roomItemManager7 = [(HUEditRoomViewController *)self roomItemManager];
+    removeItem2 = [roomItemManager7 removeItem];
+    v28 = [itemCopy isEqual:removeItem2];
 
-    v29 = [HUListContentConfigurationUtilities buttonStyleConfigurationForItem:v7 isDestructive:v28];
-    [v11 setContentConfiguration:v29];
-    [v11 setAccessories:MEMORY[0x277CBEBF8]];
-    v30 = [(HUEditRoomViewController *)self roomItemManager];
-    v31 = [v30 cameraItem];
-    v32 = [v7 isEqual:v31];
+    roomBuilder2 = [HUListContentConfigurationUtilities buttonStyleConfigurationForItem:itemCopy isDestructive:v28];
+    [textField setContentConfiguration:roomBuilder2];
+    [textField setAccessories:MEMORY[0x277CBEBF8]];
+    roomItemManager8 = [(HUEditRoomViewController *)self roomItemManager];
+    cameraItem2 = [roomItemManager8 cameraItem];
+    v32 = [itemCopy isEqual:cameraItem2];
 
     if (v32)
     {
-      [v11 setAccessibilityIdentifier:@"Home.Room.TakePhoto"];
+      [textField setAccessibilityIdentifier:@"Home.Room.TakePhoto"];
     }
 
-    v33 = [(HUEditRoomViewController *)self roomItemManager];
-    v34 = [v33 removeItem];
-    v35 = [v7 isEqual:v34];
+    roomItemManager9 = [(HUEditRoomViewController *)self roomItemManager];
+    removeItem3 = [roomItemManager9 removeItem];
+    v35 = [itemCopy isEqual:removeItem3];
 
     if (v35)
     {
-      [v11 setAccessibilityIdentifier:@"Home.Room.RemoveRoom"];
+      [textField setAccessibilityIdentifier:@"Home.Room.RemoveRoom"];
     }
 
 LABEL_13:
@@ -622,18 +622,18 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = [v6 textField];
-  v12 = [(HUEditRoomViewController *)self roomBuilder];
-  v13 = [v12 name];
-  [v11 setText:v13];
+  textField = [cellCopy textField];
+  roomBuilder3 = [(HUEditRoomViewController *)self roomBuilder];
+  name = [roomBuilder3 name];
+  [textField setText:name];
 
-  [v11 setAutocapitalizationType:1];
-  [v11 setDelegate:self];
-  [v11 setClearButtonMode:1];
-  [v11 addTarget:self action:sel_nameFieldTextChanged_ forControlEvents:917504];
+  [textField setAutocapitalizationType:1];
+  [textField setDelegate:self];
+  [textField setClearButtonMode:1];
+  [textField addTarget:self action:sel_nameFieldTextChanged_ forControlEvents:917504];
   v14 = @"Home.Room.RoomName";
 LABEL_5:
-  [v11 setAccessibilityIdentifier:v14];
+  [textField setAccessibilityIdentifier:v14];
 LABEL_14:
 
 LABEL_15:
@@ -669,28 +669,28 @@ void __50__HUEditRoomViewController_configureCell_forItem___block_invoke_2(uint6
   [v8 setSelectedWallpaper:v9 animated:0];
 }
 
-- (unint64_t)automaticDisablingReasonsForItem:(id)a3
+- (unint64_t)automaticDisablingReasonsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUEditRoomViewController *)self roomItemManager];
-  v6 = [v5 cameraItem];
-  if ([v4 isEqual:v6])
+  itemCopy = item;
+  roomItemManager = [(HUEditRoomViewController *)self roomItemManager];
+  cameraItem = [roomItemManager cameraItem];
+  if ([itemCopy isEqual:cameraItem])
   {
     goto LABEL_4;
   }
 
-  v7 = [(HUEditRoomViewController *)self roomItemManager];
-  v8 = [v7 chooseWallpaperItem];
-  if ([v4 isEqual:v8])
+  roomItemManager2 = [(HUEditRoomViewController *)self roomItemManager];
+  chooseWallpaperItem = [roomItemManager2 chooseWallpaperItem];
+  if ([itemCopy isEqual:chooseWallpaperItem])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v11 = [(HUEditRoomViewController *)self roomItemManager];
-  v12 = [v11 wallpaperThumbnailItem];
-  v13 = [v4 isEqual:v12];
+  roomItemManager3 = [(HUEditRoomViewController *)self roomItemManager];
+  wallpaperThumbnailItem = [roomItemManager3 wallpaperThumbnailItem];
+  v13 = [itemCopy isEqual:wallpaperThumbnailItem];
 
   if ((v13 & 1) == 0)
   {
@@ -705,22 +705,22 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUEditRoomViewController *)self roomItemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  roomItemManager = [(HUEditRoomViewController *)self roomItemManager];
+  v9 = [roomItemManager displayedItemAtIndexPath:pathCopy];
 
-  v10 = [(HUEditRoomViewController *)self roomItemManager];
-  v11 = [v10 cameraItem];
-  if ([v9 isEqual:v11])
+  roomItemManager2 = [(HUEditRoomViewController *)self roomItemManager];
+  cameraItem = [roomItemManager2 cameraItem];
+  if ([v9 isEqual:cameraItem])
   {
-    v12 = [v9 latestResults];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-    v14 = [v13 BOOLValue];
+    latestResults = [v9 latestResults];
+    v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    bOOLValue = [v13 BOOLValue];
 
-    if (!v14)
+    if (!bOOLValue)
     {
       goto LABEL_9;
     }
@@ -730,9 +730,9 @@ LABEL_6:
   {
   }
 
-  v15 = [(HUEditRoomViewController *)self roomItemManager];
-  v16 = [v15 chooseWallpaperItem];
-  if ([v9 isEqual:v16])
+  roomItemManager3 = [(HUEditRoomViewController *)self roomItemManager];
+  chooseWallpaperItem = [roomItemManager3 chooseWallpaperItem];
+  if ([v9 isEqual:chooseWallpaperItem])
   {
 LABEL_8:
 
@@ -741,18 +741,18 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v17 = [(HUEditRoomViewController *)self roomItemManager];
-  v18 = [v17 wallpaperThumbnailItem];
-  if ([v9 isEqual:v18])
+  roomItemManager4 = [(HUEditRoomViewController *)self roomItemManager];
+  wallpaperThumbnailItem = [roomItemManager4 wallpaperThumbnailItem];
+  if ([v9 isEqual:wallpaperThumbnailItem])
   {
 
     goto LABEL_8;
   }
 
-  v30 = v6;
-  v21 = [(HUEditRoomViewController *)self roomItemManager];
-  v22 = [v21 removeItem];
-  v23 = [v9 isEqual:v22];
+  v30 = viewCopy;
+  roomItemManager5 = [(HUEditRoomViewController *)self roomItemManager];
+  removeItem = [roomItemManager5 removeItem];
+  v23 = [v9 isEqual:removeItem];
 
   if (v23)
   {
@@ -761,22 +761,22 @@ LABEL_9:
 
   else
   {
-    v24 = [(HUEditRoomViewController *)self roomItemManager];
-    v25 = [v24 wallpaperPickerItem];
-    v26 = [v9 isEqual:v25];
+    roomItemManager6 = [(HUEditRoomViewController *)self roomItemManager];
+    wallpaperPickerItem = [roomItemManager6 wallpaperPickerItem];
+    v26 = [v9 isEqual:wallpaperPickerItem];
 
     if ((v26 & 1) == 0)
     {
-      v27 = [(HUEditRoomViewController *)self roomItemManager];
-      v28 = [v27 nameItem];
-      v29 = [v9 isEqual:v28];
+      roomItemManager7 = [(HUEditRoomViewController *)self roomItemManager];
+      nameItem = [roomItemManager7 nameItem];
+      v29 = [v9 isEqual:nameItem];
 
       if ((v29 & 1) == 0)
       {
         v31.receiver = self;
         v31.super_class = HUEditRoomViewController;
-        v6 = v30;
-        v19 = [(HUItemCollectionViewController *)&v31 collectionView:v30 shouldHighlightItemAtIndexPath:v7];
+        viewCopy = v30;
+        v19 = [(HUItemCollectionViewController *)&v31 collectionView:v30 shouldHighlightItemAtIndexPath:pathCopy];
         goto LABEL_10;
       }
     }
@@ -784,91 +784,91 @@ LABEL_9:
     v19 = 0;
   }
 
-  v6 = v30;
+  viewCopy = v30;
 LABEL_10:
 
   return v19;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v48.receiver = self;
   v48.super_class = HUEditRoomViewController;
-  v7 = a3;
-  [(HUItemCollectionViewController *)&v48 collectionView:v7 didSelectItemAtIndexPath:v6];
-  v8 = [(HUEditRoomViewController *)self roomItemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  viewCopy = view;
+  [(HUItemCollectionViewController *)&v48 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
+  roomItemManager = [(HUEditRoomViewController *)self roomItemManager];
+  v9 = [roomItemManager displayedItemAtIndexPath:pathCopy];
 
-  [v7 deselectItemAtIndexPath:v6 animated:1];
-  v10 = [(HUEditRoomViewController *)self roomItemManager];
-  v11 = [v10 cameraItem];
-  v12 = [v9 isEqual:v11];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
+  roomItemManager2 = [(HUEditRoomViewController *)self roomItemManager];
+  cameraItem = [roomItemManager2 cameraItem];
+  v12 = [v9 isEqual:cameraItem];
 
   if (v12)
   {
-    v13 = objc_alloc_init(MEMORY[0x277D755C8]);
-    [v13 setDelegate:self];
-    [v13 setSourceType:1];
-    [v13 setModalPresentationStyle:0];
-    [(HUEditRoomViewController *)self presentViewController:v13 animated:1 completion:0];
+    roomBuilder = objc_alloc_init(MEMORY[0x277D755C8]);
+    [roomBuilder setDelegate:self];
+    [roomBuilder setSourceType:1];
+    [roomBuilder setModalPresentationStyle:0];
+    [(HUEditRoomViewController *)self presentViewController:roomBuilder animated:1 completion:0];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v14 = [(HUEditRoomViewController *)self roomItemManager];
-  v15 = [v14 chooseWallpaperItem];
-  v16 = [v9 isEqual:v15];
+  roomItemManager3 = [(HUEditRoomViewController *)self roomItemManager];
+  chooseWallpaperItem = [roomItemManager3 chooseWallpaperItem];
+  v16 = [v9 isEqual:chooseWallpaperItem];
 
   if (!v16)
   {
-    v19 = [(HUEditRoomViewController *)self roomItemManager];
-    v20 = [v19 wallpaperThumbnailItem];
-    v21 = [v9 isEqual:v20];
+    roomItemManager4 = [(HUEditRoomViewController *)self roomItemManager];
+    wallpaperThumbnailItem = [roomItemManager4 wallpaperThumbnailItem];
+    v21 = [v9 isEqual:wallpaperThumbnailItem];
 
     if (v21)
     {
-      v13 = [(HUEditRoomViewController *)self roomBuilder];
-      v22 = [v13 wallpaperBuilder];
-      v23 = [v22 wallpaperEditCollectionFuture];
+      roomBuilder = [(HUEditRoomViewController *)self roomBuilder];
+      wallpaperBuilder = [roomBuilder wallpaperBuilder];
+      wallpaperEditCollectionFuture = [wallpaperBuilder wallpaperEditCollectionFuture];
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
       v47[2] = __68__HUEditRoomViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
       v47[3] = &unk_277DBE118;
       v47[4] = self;
-      v24 = [v23 addSuccessBlock:v47];
+      v24 = [wallpaperEditCollectionFuture addSuccessBlock:v47];
     }
 
     else
     {
-      v25 = [(HUEditRoomViewController *)self roomItemManager];
-      v26 = [v25 removeItem];
-      v27 = [v9 isEqual:v26];
+      roomItemManager5 = [(HUEditRoomViewController *)self roomItemManager];
+      removeItem = [roomItemManager5 removeItem];
+      v27 = [v9 isEqual:removeItem];
 
       if (!v27)
       {
         goto LABEL_13;
       }
 
-      v28 = [(HUEditRoomViewController *)self roomBuilder];
-      v29 = [v28 name];
-      v30 = v29;
+      roomBuilder2 = [(HUEditRoomViewController *)self roomBuilder];
+      name = [roomBuilder2 name];
+      v30 = name;
       v31 = &stru_2823E0EE8;
-      if (v29)
+      if (name)
       {
-        v31 = v29;
+        v31 = name;
       }
 
       v32 = v31;
 
-      v13 = HULocalizedStringWithFormat(@"HUEditRoomRemoveAlertTitle", @"%@", v33, v34, v35, v36, v37, v38, v32);
-      v22 = [(UICollectionViewController *)self hu_actionSheetWithTitle:0 message:v13 indexPath:v6];
+      roomBuilder = HULocalizedStringWithFormat(@"HUEditRoomRemoveAlertTitle", @"%@", v33, v34, v35, v36, v37, v38, v32);
+      wallpaperBuilder = [(UICollectionViewController *)self hu_actionSheetWithTitle:0 message:roomBuilder indexPath:pathCopy];
       v39 = MEMORY[0x277D750F8];
       v40 = _HULocalizedStringWithDefaultValue(@"HUCancelTitle", @"HUCancelTitle", 1);
-      v23 = [v39 actionWithTitle:v40 style:1 handler:0];
+      wallpaperEditCollectionFuture = [v39 actionWithTitle:v40 style:1 handler:0];
 
-      [v23 setAccessibilityIdentifier:@"Home.Room.RemoveRoom.Cancel"];
+      [wallpaperEditCollectionFuture setAccessibilityIdentifier:@"Home.Room.RemoveRoom.Cancel"];
       v41 = MEMORY[0x277D750F8];
       v42 = _HULocalizedStringWithDefaultValue(@"HURemoveTitle", @"HURemoveTitle", 1);
       v45[0] = MEMORY[0x277D85DD0];
@@ -881,17 +881,17 @@ LABEL_12:
       v44 = [v41 actionWithTitle:v42 style:2 handler:v45];
 
       [v44 setAccessibilityIdentifier:@"Home.Rome.RemoveRoom.Remove"];
-      [v22 addAction:v23];
-      [v22 addAction:v44];
-      [(HUEditRoomViewController *)self presentViewController:v22 animated:1 completion:0];
+      [wallpaperBuilder addAction:wallpaperEditCollectionFuture];
+      [wallpaperBuilder addAction:v44];
+      [(HUEditRoomViewController *)self presentViewController:wallpaperBuilder animated:1 completion:0];
     }
 
     goto LABEL_12;
   }
 
-  v17 = [(HUEditRoomViewController *)self navigationController];
+  navigationController = [(HUEditRoomViewController *)self navigationController];
   v18 = _HULocalizedStringWithDefaultValue(@"HUEditRoomNamedWallpaperSectionTitle", @"HUEditRoomNamedWallpaperSectionTitle", 1);
-  [HUWallpaperPickerViewController presentSecurePickerFromNavigationController:v17 collectionType:1 withTitle:v18 delegate:self];
+  [HUWallpaperPickerViewController presentSecurePickerFromNavigationController:navigationController collectionType:1 withTitle:v18 delegate:self];
 
 LABEL_13:
 }
@@ -979,12 +979,12 @@ void __68__HUEditRoomViewController_collectionView_didSelectItemAtIndexPath___bl
   [v5 handleError:v4 operationType:v6 options:v8 retryBlock:0 cancelBlock:0];
 }
 
-- (id)trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a3
+- (id)trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 displayedItemAtIndexPath:v4];
+  pathCopy = path;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v6 = [itemManager displayedItemAtIndexPath:pathCopy];
   v7 = &unk_2825BDA80;
   if ([v6 conformsToProtocol:v7])
   {
@@ -1002,7 +1002,7 @@ void __68__HUEditRoomViewController_collectionView_didSelectItemAtIndexPath___bl
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v9;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@: User swiped for trailing actions on item: %@", buf, 0x16u);
@@ -1075,138 +1075,138 @@ void __79__HUEditRoomViewController_trailingSwipeActionsConfigurationForRowAtInd
   [v4 logError:v3 operationDescription:*MEMORY[0x277D13C98]];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   v16.receiver = self;
   v16.super_class = HUEditRoomViewController;
-  v9 = a5;
-  [(HUItemCollectionViewController *)&v16 collectionView:a3 willDisplayCell:v8 forItemAtIndexPath:v9];
+  pathCopy = path;
+  [(HUItemCollectionViewController *)&v16 collectionView:view willDisplayCell:cellCopy forItemAtIndexPath:pathCopy];
   v10 = [(HUItemCollectionViewController *)self itemManager:v16.receiver];
-  v11 = [v10 displayedItemAtIndexPath:v9];
+  v11 = [v10 displayedItemAtIndexPath:pathCopy];
 
-  v12 = [(HUEditRoomViewController *)self roomItemManager];
-  v13 = [v12 nameItem];
-  if (([v11 isEqual:v13] & 1) == 0)
+  roomItemManager = [(HUEditRoomViewController *)self roomItemManager];
+  nameItem = [roomItemManager nameItem];
+  if (([v11 isEqual:nameItem] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v14 = [(HUEditRoomViewController *)self roomBuilder];
-  v15 = [v14 room];
+  roomBuilder = [(HUEditRoomViewController *)self roomBuilder];
+  room = [roomBuilder room];
 
-  if (!v15)
+  if (!room)
   {
-    v12 = [v8 textField];
-    [v12 becomeFirstResponder];
+    roomItemManager = [cellCopy textField];
+    [roomItemManager becomeFirstResponder];
 LABEL_5:
   }
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   [(HUEditRoomViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D76A80]];
+  v6 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D76A80]];
 
   UIImageWriteToSavedPhotosAlbum(v6, 0, 0, 0);
   v7 = objc_alloc(MEMORY[0x277D14D10]);
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v7 initWithType:1 assetIdentifier:v9 cropInfo:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = [v7 initWithType:1 assetIdentifier:uUIDString cropInfo:0];
 
-  v11 = [MEMORY[0x277D14D18] sharedInstance];
-  v12 = [v11 processOriginalImageFromWallpaper:v10 originalImage:v6];
+  mEMORY[0x277D14D18] = [MEMORY[0x277D14D18] sharedInstance];
+  v12 = [mEMORY[0x277D14D18] processOriginalImageFromWallpaper:v10 originalImage:v6];
 
   [(HUEditRoomViewController *)self presentWallpaperEditingViewControllerWithImage:v12 wallpaper:v10];
 }
 
-- (void)wallpaperPickerDidFinish:(id)a3 wallpaper:(id)a4 image:(id)a5
+- (void)wallpaperPickerDidFinish:(id)finish wallpaper:(id)wallpaper image:(id)image
 {
-  [(HUEditRoomViewController *)self updateWallpaper:a4 image:a5];
-  v7 = [(HUEditRoomViewController *)self navigationController];
-  v6 = [v7 popToViewController:self animated:1];
+  [(HUEditRoomViewController *)self updateWallpaper:wallpaper image:image];
+  navigationController = [(HUEditRoomViewController *)self navigationController];
+  v6 = [navigationController popToViewController:self animated:1];
 }
 
-- (void)wallpaperThumbnailCell:(id)a3 didReceiveDroppedImage:(id)a4
+- (void)wallpaperThumbnailCell:(id)cell didReceiveDroppedImage:(id)image
 {
   v5 = MEMORY[0x277D14D10];
   v6 = MEMORY[0x277CCAD78];
-  v7 = a4;
-  v10 = [v6 UUID];
-  v8 = [v10 UUIDString];
-  v9 = [v5 customWallpaperWithAssetIdentifier:v8];
-  [(HUEditRoomViewController *)self updateWallpaper:v9 image:v7];
+  imageCopy = image;
+  uUID = [v6 UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = [v5 customWallpaperWithAssetIdentifier:uUIDString];
+  [(HUEditRoomViewController *)self updateWallpaper:v9 image:imageCopy];
 }
 
-- (void)wallpaperPicker:(id)a3 didReceiveDroppedImage:(id)a4
+- (void)wallpaperPicker:(id)picker didReceiveDroppedImage:(id)image
 {
   v6 = MEMORY[0x277D14D10];
   v7 = MEMORY[0x277CCAD78];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 UUID];
-  v11 = [v10 UUIDString];
-  v26 = [v6 customWallpaperWithAssetIdentifier:v11];
+  imageCopy = image;
+  pickerCopy = picker;
+  uUID = [v7 UUID];
+  uUIDString = [uUID UUIDString];
+  v26 = [v6 customWallpaperWithAssetIdentifier:uUIDString];
 
-  [v9 setOriginalCustomImage:v8];
-  v12 = [(HUEditRoomViewController *)self roomBuilder];
-  v13 = [v12 wallpaperBuilder];
-  [v13 setWallpaper:v26 image:v8];
+  [pickerCopy setOriginalCustomImage:imageCopy];
+  roomBuilder = [(HUEditRoomViewController *)self roomBuilder];
+  wallpaperBuilder = [roomBuilder wallpaperBuilder];
+  [wallpaperBuilder setWallpaper:v26 image:imageCopy];
 
-  v14 = [(HUEditRoomViewController *)self roomItemManager];
-  v15 = [(HUEditRoomViewController *)self roomItemManager];
-  v16 = [v15 wallpaperPickerItem];
-  v17 = [v14 indexPathForItem:v16];
+  roomItemManager = [(HUEditRoomViewController *)self roomItemManager];
+  roomItemManager2 = [(HUEditRoomViewController *)self roomItemManager];
+  wallpaperPickerItem = [roomItemManager2 wallpaperPickerItem];
+  v17 = [roomItemManager indexPathForItem:wallpaperPickerItem];
 
-  v18 = [(HUItemCollectionViewController *)self itemManager];
-  v19 = [v18 displayedItemAtIndexPath:v17];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v19 = [itemManager displayedItemAtIndexPath:v17];
 
-  v20 = [(HUItemCollectionViewController *)self itemManager];
-  [(HUItemCollectionViewController *)self itemManager:v20 didUpdateResultsForItem:v19 atIndexPath:v17];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  [(HUItemCollectionViewController *)self itemManager:itemManager2 didUpdateResultsForItem:v19 atIndexPath:v17];
 
-  v21 = [(HUEditRoomViewController *)self roomBuilder];
-  v22 = [v21 room];
+  roomBuilder2 = [(HUEditRoomViewController *)self roomBuilder];
+  room = [roomBuilder2 room];
 
-  if (v22)
+  if (room)
   {
-    v23 = [(HUEditRoomViewController *)self roomBuilder];
-    v24 = [v23 wallpaperBuilder];
-    v25 = [v24 commitWallpaper];
+    roomBuilder3 = [(HUEditRoomViewController *)self roomBuilder];
+    wallpaperBuilder2 = [roomBuilder3 wallpaperBuilder];
+    commitWallpaper = [wallpaperBuilder2 commitWallpaper];
   }
 }
 
-- (void)wallpaperPicker:(id)a3 didSelectWallpaper:(id)a4 withImage:(id)a5
+- (void)wallpaperPicker:(id)picker didSelectWallpaper:(id)wallpaper withImage:(id)image
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HUEditRoomViewController *)self roomBuilder];
-  v10 = [v9 wallpaperBuilder];
-  [v10 setWallpaper:v8 image:v7];
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  roomBuilder = [(HUEditRoomViewController *)self roomBuilder];
+  wallpaperBuilder = [roomBuilder wallpaperBuilder];
+  [wallpaperBuilder setWallpaper:wallpaperCopy image:imageCopy];
 
-  v11 = [(HUEditRoomViewController *)self roomBuilder];
-  v12 = [v11 room];
+  roomBuilder2 = [(HUEditRoomViewController *)self roomBuilder];
+  room = [roomBuilder2 room];
 
-  if (v12)
+  if (room)
   {
-    v15 = [(HUEditRoomViewController *)self roomBuilder];
-    v13 = [v15 wallpaperBuilder];
-    v14 = [v13 commitWallpaper];
+    roomBuilder3 = [(HUEditRoomViewController *)self roomBuilder];
+    wallpaperBuilder2 = [roomBuilder3 wallpaperBuilder];
+    commitWallpaper = [wallpaperBuilder2 commitWallpaper];
   }
 }
 
-- (void)wallpaperPickerRequestOpenWallpaperEditor:(id)a3
+- (void)wallpaperPickerRequestOpenWallpaperEditor:(id)editor
 {
-  v4 = [(HUEditRoomViewController *)self roomBuilder];
-  v5 = [v4 wallpaperBuilder];
-  v6 = [v5 wallpaperEditCollectionFuture];
+  roomBuilder = [(HUEditRoomViewController *)self roomBuilder];
+  wallpaperBuilder = [roomBuilder wallpaperBuilder];
+  wallpaperEditCollectionFuture = [wallpaperBuilder wallpaperEditCollectionFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__HUEditRoomViewController_wallpaperPickerRequestOpenWallpaperEditor___block_invoke;
   v8[3] = &unk_277DBE118;
   v8[4] = self;
-  v7 = [v6 addSuccessBlock:v8];
+  v7 = [wallpaperEditCollectionFuture addSuccessBlock:v8];
 }
 
 void __70__HUEditRoomViewController_wallpaperPickerRequestOpenWallpaperEditor___block_invoke(uint64_t a1, void *a2)
@@ -1219,59 +1219,59 @@ void __70__HUEditRoomViewController_wallpaperPickerRequestOpenWallpaperEditor___
   [v4 presentWallpaperEditingViewControllerWithImage:v6 wallpaper:v5];
 }
 
-- (void)wallpaperEditing:(id)a3 didFinishWithWallpaper:(id)a4 image:(id)a5
+- (void)wallpaperEditing:(id)editing didFinishWithWallpaper:(id)wallpaper image:(id)image
 {
-  [(HUEditRoomViewController *)self updateWallpaper:a4 image:a5];
+  [(HUEditRoomViewController *)self updateWallpaper:wallpaper image:image];
 
   [(HUEditRoomViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentWallpaperEditingViewControllerWithImage:(id)a3 wallpaper:(id)a4
+- (void)presentWallpaperEditingViewControllerWithImage:(id)image wallpaper:(id)wallpaper
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HUWallpaperEditingViewController alloc] initWithWallpaper:v6 image:v7 delegate:self];
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  v8 = [[HUWallpaperEditingViewController alloc] initWithWallpaper:wallpaperCopy image:imageCopy delegate:self];
 
   [(HUEditRoomViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)updateWallpaper:(id)a3 image:(id)a4
+- (void)updateWallpaper:(id)wallpaper image:(id)image
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUEditRoomViewController *)self roomBuilder];
-  v9 = [v8 wallpaperBuilder];
-  [v9 setWallpaper:v7 image:v6];
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  roomBuilder = [(HUEditRoomViewController *)self roomBuilder];
+  wallpaperBuilder = [roomBuilder wallpaperBuilder];
+  [wallpaperBuilder setWallpaper:wallpaperCopy image:imageCopy];
 
-  v10 = [(HUEditRoomViewController *)self roomBuilder];
-  v11 = [v10 room];
+  roomBuilder2 = [(HUEditRoomViewController *)self roomBuilder];
+  room = [roomBuilder2 room];
 
-  if (v11)
+  if (room)
   {
-    v12 = [(HUEditRoomViewController *)self roomBuilder];
-    v13 = [v12 wallpaperBuilder];
-    v14 = [v13 commitWallpaper];
+    roomBuilder3 = [(HUEditRoomViewController *)self roomBuilder];
+    wallpaperBuilder2 = [roomBuilder3 wallpaperBuilder];
+    commitWallpaper = [wallpaperBuilder2 commitWallpaper];
   }
 
   v15 = +[HUWallpaperPickerInlineViewController useWallpaperPickerCell];
-  v16 = [(HUEditRoomViewController *)self roomItemManager];
-  v17 = v16;
+  roomItemManager = [(HUEditRoomViewController *)self roomItemManager];
+  v17 = roomItemManager;
   if (v15)
   {
-    [v16 wallpaperPickerItem];
+    [roomItemManager wallpaperPickerItem];
   }
 
   else
   {
-    [v16 wallpaperThumbnailItem];
+    [roomItemManager wallpaperThumbnailItem];
   }
   v21 = ;
 
-  v18 = [(HUEditRoomViewController *)self roomItemManager];
-  v19 = [v18 indexPathForItem:v21];
+  roomItemManager2 = [(HUEditRoomViewController *)self roomItemManager];
+  v19 = [roomItemManager2 indexPathForItem:v21];
 
-  v20 = [(HUItemCollectionViewController *)self itemManager];
-  [(HUItemCollectionViewController *)self itemManager:v20 didUpdateResultsForItem:v21 atIndexPath:v19];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  [(HUItemCollectionViewController *)self itemManager:itemManager didUpdateResultsForItem:v21 atIndexPath:v19];
 }
 
 - (HUEditRoomViewControllerPresentationDelegate)presentationDelegate

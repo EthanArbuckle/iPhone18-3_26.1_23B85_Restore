@@ -1,12 +1,12 @@
 @interface MSVisitRequest
 - (MSVisitRequest)init;
-- (MSVisitRequest)initWithStore:(id)a3;
-- (id)fetchSyncAndReturnError:(id *)a3;
-- (id)fetchSyncWithOptions:(id)a3 error:(id *)a4;
-- (void)countWithSearchTerm:(NSString *)a3 topLevelCategories:(NSArray *)a4 regions:(NSArray *)a5 dateRanges:(NSArray *)a6 sortDescriptors:(NSArray *)a7 range:(_TtC8MapsSync13MapsSyncRange *)a8 completionHandler:(id)a9;
-- (void)fetchWithCompletionHandler:(id)a3;
-- (void)fetchWithOptions:(_TtC8MapsSync20MapsSyncQueryOptions *)a3 completionHandler:(id)a4;
-- (void)fetchWithSearchTerm:(NSString *)a3 topLevelCategories:(NSArray *)a4 regions:(NSArray *)a5 dateRanges:(NSArray *)a6 sortDescriptors:(NSArray *)a7 range:(_TtC8MapsSync13MapsSyncRange *)a8 completionHandler:(id)a9;
+- (MSVisitRequest)initWithStore:(id)store;
+- (id)fetchSyncAndReturnError:(id *)error;
+- (id)fetchSyncWithOptions:(id)options error:(id *)error;
+- (void)countWithSearchTerm:(NSString *)term topLevelCategories:(NSArray *)categories regions:(NSArray *)regions dateRanges:(NSArray *)ranges sortDescriptors:(NSArray *)descriptors range:(_TtC8MapsSync13MapsSyncRange *)range completionHandler:(id)handler;
+- (void)fetchWithCompletionHandler:(id)handler;
+- (void)fetchWithOptions:(_TtC8MapsSync20MapsSyncQueryOptions *)options completionHandler:(id)handler;
+- (void)fetchWithSearchTerm:(NSString *)term topLevelCategories:(NSArray *)categories regions:(NSArray *)regions dateRanges:(NSArray *)ranges sortDescriptors:(NSArray *)descriptors range:(_TtC8MapsSync13MapsSyncRange *)range completionHandler:(id)handler;
 @end
 
 @implementation MSVisitRequest
@@ -15,9 +15,9 @@
 {
   if (qword_1EDB0F2A0 != -1)
   {
-    v5 = self;
+    selfCopy = self;
     swift_once();
-    self = v5;
+    self = selfCopy;
   }
 
   v3 = qword_1EDB0F2A8;
@@ -25,20 +25,20 @@
   return [(MSVisitRequest *)self initWithStore:v3];
 }
 
-- (MSVisitRequest)initWithStore:(id)a3
+- (MSVisitRequest)initWithStore:(id)store
 {
   v5 = type metadata accessor for Visit();
-  *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync15MapsSyncRequest__store) = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync15MapsSyncRequest__store) = store;
   *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync15MapsSyncRequest__type) = v5;
   v8.receiver = self;
   v8.super_class = type metadata accessor for MapsSyncRequest();
-  v6 = a3;
+  storeCopy = store;
   return [(MapsSyncRequest *)&v8 init];
 }
 
-- (id)fetchSyncAndReturnError:(id *)a3
+- (id)fetchSyncAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B637BEF8();
 
   type metadata accessor for Visit();
@@ -47,10 +47,10 @@
   return v4;
 }
 
-- (id)fetchSyncWithOptions:(id)a3 error:(id *)a4
+- (id)fetchSyncWithOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  optionsCopy = options;
+  selfCopy = self;
   sub_1B637BEF8();
 
   type metadata accessor for Visit();
@@ -59,13 +59,13 @@
   return v7;
 }
 
-- (void)fetchWithCompletionHandler:(id)a3
+- (void)fetchWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB943830, &qword_1B63C5100);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -81,19 +81,19 @@
   v13[3] = 0;
   v13[4] = &unk_1B63C5530;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1B63BBE9C(0, 0, v8, &unk_1B63C5320, v13);
 }
 
-- (void)fetchWithOptions:(_TtC8MapsSync20MapsSyncQueryOptions *)a3 completionHandler:(id)a4
+- (void)fetchWithOptions:(_TtC8MapsSync20MapsSyncQueryOptions *)options completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB943830, &qword_1B63C5100);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = options;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1B63BED34();
@@ -108,25 +108,25 @@
   v15[3] = 0;
   v15[4] = &unk_1B63C5510;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  optionsCopy = options;
+  selfCopy = self;
   sub_1B63BBE9C(0, 0, v10, &unk_1B63C5120, v15);
 }
 
-- (void)fetchWithSearchTerm:(NSString *)a3 topLevelCategories:(NSArray *)a4 regions:(NSArray *)a5 dateRanges:(NSArray *)a6 sortDescriptors:(NSArray *)a7 range:(_TtC8MapsSync13MapsSyncRange *)a8 completionHandler:(id)a9
+- (void)fetchWithSearchTerm:(NSString *)term topLevelCategories:(NSArray *)categories regions:(NSArray *)regions dateRanges:(NSArray *)ranges sortDescriptors:(NSArray *)descriptors range:(_TtC8MapsSync13MapsSyncRange *)range completionHandler:(id)handler
 {
   v16 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB943830, &qword_1B63C5100);
   v17 = *(*(v16 - 8) + 64);
   MEMORY[0x1EEE9AC00](v16 - 8);
   v19 = &v32 - v18;
-  v20 = _Block_copy(a9);
+  v20 = _Block_copy(handler);
   v21 = swift_allocObject();
-  v21[2] = a3;
-  v21[3] = a4;
-  v21[4] = a5;
-  v21[5] = a6;
-  v21[6] = a7;
-  v21[7] = a8;
+  v21[2] = term;
+  v21[3] = categories;
+  v21[4] = regions;
+  v21[5] = ranges;
+  v21[6] = descriptors;
+  v21[7] = range;
   v21[8] = v20;
   v21[9] = self;
   v22 = sub_1B63BED34();
@@ -141,30 +141,30 @@
   v24[3] = 0;
   v24[4] = &unk_1B63C3DD0;
   v24[5] = v23;
-  v25 = a3;
-  v26 = a4;
-  v27 = a5;
-  v28 = a6;
-  v29 = a7;
-  v30 = a8;
-  v31 = self;
+  termCopy = term;
+  categoriesCopy = categories;
+  regionsCopy = regions;
+  rangesCopy = ranges;
+  descriptorsCopy = descriptors;
+  rangeCopy = range;
+  selfCopy = self;
   sub_1B63BBE9C(0, 0, v19, &unk_1B63C3DD8, v24);
 }
 
-- (void)countWithSearchTerm:(NSString *)a3 topLevelCategories:(NSArray *)a4 regions:(NSArray *)a5 dateRanges:(NSArray *)a6 sortDescriptors:(NSArray *)a7 range:(_TtC8MapsSync13MapsSyncRange *)a8 completionHandler:(id)a9
+- (void)countWithSearchTerm:(NSString *)term topLevelCategories:(NSArray *)categories regions:(NSArray *)regions dateRanges:(NSArray *)ranges sortDescriptors:(NSArray *)descriptors range:(_TtC8MapsSync13MapsSyncRange *)range completionHandler:(id)handler
 {
   v16 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB943830, &qword_1B63C5100);
   v17 = *(*(v16 - 8) + 64);
   MEMORY[0x1EEE9AC00](v16 - 8);
   v19 = &v32 - v18;
-  v20 = _Block_copy(a9);
+  v20 = _Block_copy(handler);
   v21 = swift_allocObject();
-  v21[2] = a3;
-  v21[3] = a4;
-  v21[4] = a5;
-  v21[5] = a6;
-  v21[6] = a7;
-  v21[7] = a8;
+  v21[2] = term;
+  v21[3] = categories;
+  v21[4] = regions;
+  v21[5] = ranges;
+  v21[6] = descriptors;
+  v21[7] = range;
   v21[8] = v20;
   v21[9] = self;
   v22 = sub_1B63BED34();
@@ -179,13 +179,13 @@
   v24[3] = 0;
   v24[4] = &unk_1B63C5510;
   v24[5] = v23;
-  v25 = a3;
-  v26 = a4;
-  v27 = a5;
-  v28 = a6;
-  v29 = a7;
-  v30 = a8;
-  v31 = self;
+  termCopy = term;
+  categoriesCopy = categories;
+  regionsCopy = regions;
+  rangesCopy = ranges;
+  descriptorsCopy = descriptors;
+  rangeCopy = range;
+  selfCopy = self;
   sub_1B63BBE9C(0, 0, v19, &unk_1B63C5120, v24);
 }
 

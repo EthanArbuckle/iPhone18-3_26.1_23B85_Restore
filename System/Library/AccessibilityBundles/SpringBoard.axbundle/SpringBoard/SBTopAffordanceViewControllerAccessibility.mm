@@ -1,5 +1,5 @@
 @interface SBTopAffordanceViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axMainSwitcher;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axMarkupView;
@@ -8,15 +8,15 @@
 
 @implementation SBTopAffordanceViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBTopAffordanceViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBTopAffordanceViewController" hasInstanceMethod:@"dotsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSwitcherController" hasProperty:@"contentViewController" withType:"@"];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"visibleShelves" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSwitcherShelfViewController" hasInstanceVariable:@"_contentViewController" withType:"SBFluidSwitcherViewController"];
-  [v3 validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBTopAffordanceViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBTopAffordanceViewController" hasInstanceMethod:@"dotsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherController" hasProperty:@"contentViewController" withType:"@"];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"visibleShelves" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherShelfViewController" hasInstanceVariable:@"_contentViewController" withType:"SBFluidSwitcherViewController"];
+  [validationsCopy validateClass:@"SBFluidSwitcherViewController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -31,9 +31,9 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 view];
+  view = [v2 view];
 
-  [v3 _setAccessibilityCustomActionsBlock:&__block_literal_global_16];
+  [view _setAccessibilityCustomActionsBlock:&__block_literal_global_16];
 }
 
 id __59__SBTopAffordanceViewControllerAccessibility__axMarkupView__block_invoke()

@@ -8,20 +8,20 @@
 - (id)_idsDecompressData
 {
   v14 = *MEMORY[0x277D85DE8];
-  if ([a1 length] > 0xC800000)
+  if ([self length] > 0xC800000)
   {
-    v2 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
-  if (![a1 length])
+  if (![self length])
   {
-    v2 = a1;
+    selfCopy = self;
     goto LABEL_17;
   }
 
-  v3 = [a1 length];
-  v4 = [a1 length];
+  v3 = [self length];
+  v4 = [self length];
   v5 = [MEMORY[0x277CBEB28] dataWithLength:v3 + (v4 >> 1)];
   if (!v5)
   {
@@ -29,8 +29,8 @@
   }
 
   memset(&strm.avail_in, 0, 104);
-  strm.next_in = [a1 bytes];
-  strm.avail_in = [a1 length];
+  strm.next_in = [self bytes];
+  strm.avail_in = [self length];
   if (inflateInit2_(&strm, 47, "1.2.12", 112))
   {
     goto LABEL_15;
@@ -45,8 +45,8 @@
       [v5 increaseLengthBy:v6];
     }
 
-    v8 = [v5 mutableBytes];
-    strm.next_out = (v8 + strm.total_out);
+    mutableBytes = [v5 mutableBytes];
+    strm.next_out = (mutableBytes + strm.total_out);
     v9 = [v5 length];
     strm.avail_out = v9 - LODWORD(strm.total_out);
     v10 = inflate(&strm, 2);
@@ -62,35 +62,35 @@
   if (inflateEnd(&strm))
   {
 LABEL_15:
-    v2 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
   [v5 setLength:strm.total_out];
-  v2 = [MEMORY[0x277CBEA90] dataWithData:v5];
+  selfCopy = [MEMORY[0x277CBEA90] dataWithData:v5];
 LABEL_16:
 
 LABEL_17:
   v11 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)_idsOptionallyDecompressData
 {
-  v2 = [a1 _idsDecompressData];
-  v3 = v2;
-  if (v2)
+  _idsDecompressData = [self _idsDecompressData];
+  v3 = _idsDecompressData;
+  if (_idsDecompressData)
   {
-    v4 = v2;
+    selfCopy = _idsDecompressData;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }

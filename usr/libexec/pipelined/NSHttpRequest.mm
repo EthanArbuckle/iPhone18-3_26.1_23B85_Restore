@@ -1,35 +1,35 @@
 @interface NSHttpRequest
-+ (id)UrlFromUtf8String:(const void *)a3;
-+ (id)encodeFormValues:(id)a3;
-+ (id)getCookie:(id)a3 forUrl:(id)a4;
-+ (id)getCookiesForUrl:(id)a3;
-+ (id)header:(id)a3 valueForKey:(id)a4;
-+ (id)header:(id)a3 valuesForKey:(id)a4;
-+ (id)requestWithUrl:(id)a3;
++ (id)UrlFromUtf8String:(const void *)string;
++ (id)encodeFormValues:(id)values;
++ (id)getCookie:(id)cookie forUrl:(id)url;
++ (id)getCookiesForUrl:(id)url;
++ (id)header:(id)header valueForKey:(id)key;
++ (id)header:(id)header valuesForKey:(id)key;
++ (id)requestWithUrl:(id)url;
 - (NSHttpRequest)init;
-- (NSHttpRequest)initWithUrl:(id)a3;
+- (NSHttpRequest)initWithUrl:(id)url;
 - (NSString)description;
-- (void)addFormPart:(id)a3 withFilename:(id)a4 andDataStreams:(const void *)a5;
-- (void)addFormPart:(id)a3 withFilename:(id)a4 andPath:(const void *)a5;
-- (void)addValue:(id)a3 forHTTPHeaderField:(id)a4;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4;
-- (void)connection:(id)a3 didSendBodyData:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6;
-- (void)connectionDidFinishLoading:(id)a3;
-- (void)handleCancelled:(id)a3;
+- (void)addFormPart:(id)part withFilename:(id)filename andDataStreams:(const void *)streams;
+- (void)addFormPart:(id)part withFilename:(id)filename andPath:(const void *)path;
+- (void)addValue:(id)value forHTTPHeaderField:(id)field;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)connection:(id)connection didReceiveData:(id)data;
+- (void)connection:(id)connection didReceiveResponse:(id)response;
+- (void)connection:(id)connection didSendBodyData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)connectionDidFinishLoading:(id)loading;
+- (void)handleCancelled:(id)cancelled;
 - (void)handleCompleted;
 - (void)main;
-- (void)setCachePolicy:(unint64_t)a3;
-- (void)setContentLength:(unint64_t)a3;
-- (void)setContentType:(id)a3;
-- (void)setHttpBody:(id)a3;
+- (void)setCachePolicy:(unint64_t)policy;
+- (void)setContentLength:(unint64_t)length;
+- (void)setContentType:(id)type;
+- (void)setHttpBody:(id)body;
 - (void)setHttpBodyStream:(pair<NSInputStream *);
-- (void)setHttpHeaders:(id)a3;
-- (void)setHttpMethod:(int)a3;
-- (void)setMainDocumentUrl:(id)a3;
+- (void)setHttpHeaders:(id)headers;
+- (void)setHttpMethod:(int)method;
+- (void)setMainDocumentUrl:(id)url;
 - (void)setMultiPart;
-- (void)setRequestType:(unint64_t)a3;
+- (void)setRequestType:(unint64_t)type;
 - (void)start;
 - (void)startExecuting;
 - (void)stopExecuting;
@@ -37,23 +37,23 @@
 
 @implementation NSHttpRequest
 
-+ (id)UrlFromUtf8String:(const void *)a3
++ (id)UrlFromUtf8String:(const void *)string
 {
-  if (*(a3 + 23) < 0)
+  if (*(string + 23) < 0)
   {
-    a3 = *a3;
+    string = *string;
   }
 
-  v3 = [NSString stringWithUTF8String:a3];
+  v3 = [NSString stringWithUTF8String:string];
   v4 = [NSURL URLWithString:v3];
 
   return v4;
 }
 
-+ (id)header:(id)a3 valueForKey:(id)a4
++ (id)header:(id)header valueForKey:(id)key
 {
-  v5 = a4;
-  v6 = [a3 objectForKey:v5];
+  keyCopy = key;
+  v6 = [header objectForKey:keyCopy];
   if (v6)
   {
     objc_opt_class();
@@ -71,7 +71,7 @@
     }
 
     v8 = objc_opt_class();
-    NSLog(@"Bad object type %@ stored for header %@", v8, v5);
+    NSLog(@"Bad object type %@ stored for header %@", v8, keyCopy);
   }
 
   v7 = 0;
@@ -80,10 +80,10 @@ LABEL_8:
   return v7;
 }
 
-+ (id)header:(id)a3 valuesForKey:(id)a4
++ (id)header:(id)header valuesForKey:(id)key
 {
-  v5 = a4;
-  v6 = [a3 objectForKey:v5];
+  keyCopy = key;
+  v6 = [header objectForKey:keyCopy];
   if (v6)
   {
     objc_opt_class();
@@ -101,7 +101,7 @@ LABEL_8:
     }
 
     v8 = objc_opt_class();
-    NSLog(@"Bad object type %@ stored for header %@", v8, v5);
+    NSLog(@"Bad object type %@ stored for header %@", v8, keyCopy);
   }
 
   v7 = 0;
@@ -110,27 +110,27 @@ LABEL_8:
   return v7;
 }
 
-+ (id)requestWithUrl:(id)a3
++ (id)requestWithUrl:(id)url
 {
-  v3 = a3;
-  v4 = [[NSHttpRequest alloc] initWithUrl:v3];
+  urlCopy = url;
+  v4 = [[NSHttpRequest alloc] initWithUrl:urlCopy];
 
   return v4;
 }
 
-+ (id)getCookiesForUrl:(id)a3
++ (id)getCookiesForUrl:(id)url
 {
-  v3 = a3;
+  urlCopy = url;
   v4 = +[NSHTTPCookieStorage sharedHTTPCookieStorage];
-  v5 = [v4 cookiesForURL:v3];
+  v5 = [v4 cookiesForURL:urlCopy];
 
   return v5;
 }
 
-+ (id)getCookie:(id)a3 forUrl:(id)a4
++ (id)getCookie:(id)cookie forUrl:(id)url
 {
-  v5 = a3;
-  [NSHttpRequest getCookiesForUrl:a4];
+  cookieCopy = cookie;
+  [NSHttpRequest getCookiesForUrl:url];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -149,8 +149,8 @@ LABEL_8:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v5];
+        name = [v10 name];
+        v12 = [name isEqualToString:cookieCopy];
 
         if (v12)
         {
@@ -174,15 +174,15 @@ LABEL_11:
   return v7;
 }
 
-+ (id)encodeFormValues:(id)a3
++ (id)encodeFormValues:(id)values
 {
-  v15 = a3;
+  valuesCopy = values;
   v3 = objc_alloc_init(NSMutableData);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v15;
+  v4 = valuesCopy;
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -203,9 +203,9 @@ LABEL_11:
         }
 
         v9 = [v4 objectForKeyedSubscript:v8];
-        v10 = [v8 ps_urlEncode];
-        v11 = [v9 ps_urlEncode];
-        v12 = [NSString stringWithFormat:@"%@=%@", v10, v11];
+        ps_urlEncode = [v8 ps_urlEncode];
+        ps_urlEncode2 = [v9 ps_urlEncode];
+        v12 = [NSString stringWithFormat:@"%@=%@", ps_urlEncode, ps_urlEncode2];
 
         v13 = [v12 dataUsingEncoding:4];
         [v3 appendData:v13];
@@ -226,16 +226,16 @@ LABEL_11:
   objc_exception_throw(v2);
 }
 
-- (NSHttpRequest)initWithUrl:(id)a3
+- (NSHttpRequest)initWithUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   v15.receiver = self;
   v15.super_class = NSHttpRequest;
   v5 = [(NSHttpRequest *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    [(NSHttpRequest *)v5 setFUrl:v4];
+    [(NSHttpRequest *)v5 setFUrl:urlCopy];
     [(NSHttpRequest *)v6 setOnResponse:0];
     [(NSHttpRequest *)v6 setOnHeaders:0];
     [(NSHttpRequest *)v6 setOnError:0];
@@ -243,43 +243,43 @@ LABEL_11:
     [(NSHttpRequest *)v6 setFFinished:0];
     [(NSHttpRequest *)v6 setFExecuting:0];
     [(NSHttpRequest *)v6 setFHttpResponse:0];
-    v7 = [NSMutableURLRequest requestWithURL:v4];
+    v7 = [NSMutableURLRequest requestWithURL:urlCopy];
     [(NSHttpRequest *)v6 setFActiveRequest:v7];
 
-    v8 = [(NSHttpRequest *)v6 fActiveRequest];
-    [v8 setHTTPShouldUsePipelining:1];
+    fActiveRequest = [(NSHttpRequest *)v6 fActiveRequest];
+    [fActiveRequest setHTTPShouldUsePipelining:1];
 
     v9 = sub_1000DD46C();
     sub_100003AE8(v9);
-    LODWORD(v8) = v16;
+    LODWORD(fActiveRequest) = v16;
     sub_100005B18(&v16);
-    if (v8 != v8 >> 31)
+    if (fActiveRequest != fActiveRequest >> 31)
     {
       v16 = sub_1000DD46C();
       v17 = v10;
       v14 = 0;
       v11 = sub_1003307E4(&v16, &v14);
-      v12 = [(NSHttpRequest *)v6 fActiveRequest];
-      [v12 setTimeoutInterval:v11];
+      fActiveRequest2 = [(NSHttpRequest *)v6 fActiveRequest];
+      [fActiveRequest2 setTimeoutInterval:v11];
     }
   }
 
   return v6;
 }
 
-- (void)setMainDocumentUrl:(id)a3
+- (void)setMainDocumentUrl:(id)url
 {
-  v5 = a3;
-  v4 = [(NSHttpRequest *)self fActiveRequest];
-  [v4 setMainDocumentURL:v5];
+  urlCopy = url;
+  fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+  [fActiveRequest setMainDocumentURL:urlCopy];
 }
 
-- (void)handleCancelled:(id)a3
+- (void)handleCancelled:(id)cancelled
 {
-  v4 = a3;
-  if (v4)
+  cancelledCopy = cancelled;
+  if (cancelledCopy)
   {
-    [v4 cancel];
+    [cancelledCopy cancel];
   }
 
   [(NSHttpRequest *)self handleCompleted];
@@ -303,8 +303,8 @@ LABEL_11:
 
 - (NSString)description
 {
-  v2 = [(NSHttpRequest *)self fActiveRequest];
-  v3 = [v2 URL];
+  fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+  v3 = [fActiveRequest URL];
   v4 = [v3 description];
 
   return v4;
@@ -315,12 +315,12 @@ LABEL_11:
   [(NSHttpRequest *)self setFBody:0];
   [(NSHttpRequest *)self setFReceivedData:0];
   [(NSHttpRequest *)self setFHttpResponse:0];
-  v3 = [(NSHttpRequest *)self fOriginalThreadName];
+  fOriginalThreadName = [(NSHttpRequest *)self fOriginalThreadName];
   v4 = +[NSThread currentThread];
-  [v4 setName:v3];
+  [v4 setName:fOriginalThreadName];
 
-  v5 = [(NSHttpRequest *)self fUrl];
-  v6 = [NSMutableURLRequest requestWithURL:v5];
+  fUrl = [(NSHttpRequest *)self fUrl];
+  v6 = [NSMutableURLRequest requestWithURL:fUrl];
   [(NSHttpRequest *)self setFActiveRequest:v6];
 
   [(NSHttpRequest *)self willChangeValueForKey:@"isFinished"];
@@ -334,12 +334,12 @@ LABEL_11:
 
 - (void)start
 {
-  v3 = [(NSHttpRequest *)self fBody];
+  fBody = [(NSHttpRequest *)self fBody];
 
-  if (v3)
+  if (fBody)
   {
-    v4 = [(NSHttpRequest *)self fBody];
-    -[NSHttpRequest setContentLength:](self, "setContentLength:", [v4 length]);
+    fBody2 = [(NSHttpRequest *)self fBody];
+    -[NSHttpRequest setContentLength:](self, "setContentLength:", [fBody2 length]);
   }
 
   if ([(NSHttpRequest *)self isCancelled])
@@ -376,17 +376,17 @@ LABEL_11:
   {
     [(NSHttpRequest *)self setFHttpResponse:0];
     v11 = +[NSThread currentThread];
-    v3 = [v11 name];
-    [(NSHttpRequest *)self setFOriginalThreadName:v3];
+    name = [v11 name];
+    [(NSHttpRequest *)self setFOriginalThreadName:name];
 
-    v12 = [(NSHttpRequest *)self fUrl];
-    v4 = [NSString stringWithFormat:@"HttpRequest@%@", v12];
+    fUrl = [(NSHttpRequest *)self fUrl];
+    v4 = [NSString stringWithFormat:@"HttpRequest@%@", fUrl];
     v5 = +[NSThread currentThread];
     [v5 setName:v4];
 
     v6 = [NSURLConnection alloc];
-    v7 = [(NSHttpRequest *)self fActiveRequest];
-    v13 = [v6 initWithRequest:v7 delegate:self startImmediately:0];
+    fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+    v13 = [v6 initWithRequest:fActiveRequest delegate:self startImmediately:0];
 
     v8 = +[NSRunLoop currentRunLoop];
     [v13 scheduleInRunLoop:v8 forMode:NSRunLoopCommonModes];
@@ -407,23 +407,23 @@ LABEL_11:
   }
 }
 
-- (void)setRequestType:(unint64_t)a3
+- (void)setRequestType:(unint64_t)type
 {
-  v4 = [(NSHttpRequest *)self fActiveRequest];
-  [v4 setNetworkServiceType:a3];
+  fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+  [fActiveRequest setNetworkServiceType:type];
 }
 
-- (void)setCachePolicy:(unint64_t)a3
+- (void)setCachePolicy:(unint64_t)policy
 {
-  v4 = [(NSHttpRequest *)self fActiveRequest];
-  [v4 setCachePolicy:a3];
+  fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+  [fActiveRequest setCachePolicy:policy];
 }
 
-- (void)setHttpMethod:(int)a3
+- (void)setHttpMethod:(int)method
 {
-  if (a3)
+  if (method)
   {
-    if (a3 != 1)
+    if (method != 1)
     {
       __cxa_allocate_exception(0x40uLL);
       sub_1000474A4(&v5, "Unknown http method");
@@ -432,53 +432,53 @@ LABEL_11:
       sub_10010A984(v4);
     }
 
-    v3 = [(NSHttpRequest *)self fActiveRequest];
-    [v3 setHTTPMethod:@"GET"];
+    fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+    [fActiveRequest setHTTPMethod:@"GET"];
   }
 
   else
   {
-    v3 = [(NSHttpRequest *)self fActiveRequest];
-    [v3 setHTTPMethod:@"POST"];
+    fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+    [fActiveRequest setHTTPMethod:@"POST"];
   }
 }
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
-  v5 = a3;
-  v4 = [(NSHttpRequest *)self fActiveRequest];
-  [v4 setValue:v5 forHTTPHeaderField:@"Content-Type"];
+  typeCopy = type;
+  fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+  [fActiveRequest setValue:typeCopy forHTTPHeaderField:@"Content-Type"];
 }
 
-- (void)setContentLength:(unint64_t)a3
+- (void)setContentLength:(unint64_t)length
 {
-  v5 = [(NSHttpRequest *)self fActiveRequest];
-  v4 = [NSString stringWithFormat:@"%zu", a3];
-  [v5 setValue:v4 forHTTPHeaderField:@"Content-Length"];
+  fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+  v4 = [NSString stringWithFormat:@"%zu", length];
+  [fActiveRequest setValue:v4 forHTTPHeaderField:@"Content-Length"];
 }
 
-- (void)setHttpHeaders:(id)a3
+- (void)setHttpHeaders:(id)headers
 {
-  v5 = a3;
-  v4 = [(NSHttpRequest *)self fActiveRequest];
-  [v4 setAllHTTPHeaderFields:v5];
+  headersCopy = headers;
+  fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+  [fActiveRequest setAllHTTPHeaderFields:headersCopy];
 }
 
-- (void)addValue:(id)a3 forHTTPHeaderField:(id)a4
+- (void)addValue:(id)value forHTTPHeaderField:(id)field
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSHttpRequest *)self fActiveRequest];
-  [v7 addValue:v8 forHTTPHeaderField:v6];
+  valueCopy = value;
+  fieldCopy = field;
+  fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+  [fActiveRequest addValue:valueCopy forHTTPHeaderField:fieldCopy];
 }
 
-- (void)setHttpBody:(id)a3
+- (void)setHttpBody:(id)body
 {
-  v5 = a3;
-  v4 = [(NSHttpRequest *)self fActiveRequest];
-  [v4 setHTTPBody:v5];
+  bodyCopy = body;
+  fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+  [fActiveRequest setHTTPBody:bodyCopy];
 
-  -[NSHttpRequest setContentLength:](self, "setContentLength:", [v5 length]);
+  -[NSHttpRequest setContentLength:](self, "setContentLength:", [bodyCopy length]);
 }
 
 - (void)setHttpBodyStream:(pair<NSInputStream *)
@@ -494,50 +494,50 @@ LABEL_11:
 
 - (void)setMultiPart
 {
-  v3 = [(NSHttpRequest *)self fBody];
+  fBody = [(NSHttpRequest *)self fBody];
 
-  if (!v3)
+  if (!fBody)
   {
     v7 = objc_alloc_init(NSMultiPartInputStream);
     [(NSHttpRequest *)self setFBody:?];
 
-    v8 = [(NSHttpRequest *)self fActiveRequest];
-    v4 = [(NSHttpRequest *)self fBody];
-    [v8 setHTTPBodyStream:v4];
+    fActiveRequest = [(NSHttpRequest *)self fActiveRequest];
+    fBody2 = [(NSHttpRequest *)self fBody];
+    [fActiveRequest setHTTPBodyStream:fBody2];
 
-    v9 = [(NSHttpRequest *)self fBody];
-    v5 = [v9 boundary];
-    v6 = [NSString stringWithFormat:@"multipart/form-data boundary=%@", v5];;
+    fBody3 = [(NSHttpRequest *)self fBody];
+    boundary = [fBody3 boundary];
+    v6 = [NSString stringWithFormat:@"multipart/form-data boundary=%@", boundary];;
     [(NSHttpRequest *)self setContentType:v6];
   }
 }
 
-- (void)addFormPart:(id)a3 withFilename:(id)a4 andPath:(const void *)a5
+- (void)addFormPart:(id)part withFilename:(id)filename andPath:(const void *)path
 {
-  v10 = a3;
-  v8 = a4;
+  partCopy = part;
+  filenameCopy = filename;
   [(NSHttpRequest *)self setMultiPart];
-  v9 = [(NSHttpRequest *)self fBody];
-  [v9 addPart:v10 withPath:a5 andFilename:v8];
+  fBody = [(NSHttpRequest *)self fBody];
+  [fBody addPart:partCopy withPath:path andFilename:filenameCopy];
 }
 
-- (void)addFormPart:(id)a3 withFilename:(id)a4 andDataStreams:(const void *)a5
+- (void)addFormPart:(id)part withFilename:(id)filename andDataStreams:(const void *)streams
 {
-  v10 = a3;
-  v8 = a4;
+  partCopy = part;
+  filenameCopy = filename;
   [(NSHttpRequest *)self setMultiPart];
-  v9 = [(NSHttpRequest *)self fBody];
-  [v9 addPart:v10 withData:a5 andFilename:v8];
+  fBody = [(NSHttpRequest *)self fBody];
+  [fBody addPart:partCopy withData:streams andFilename:filenameCopy];
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4
+- (void)connection:(id)connection didReceiveResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  responseCopy = response;
   [(NSHttpRequest *)self startExecuting];
   if ([(NSHttpRequest *)self isCancelled])
   {
-    [(NSHttpRequest *)self handleCancelled:v6];
+    [(NSHttpRequest *)self handleCancelled:connectionCopy];
   }
 
   else
@@ -561,16 +561,16 @@ LABEL_11:
       sub_10003F5D0(&v18);
     }
 
-    [(NSHttpRequest *)self setFHttpResponse:v7];
-    v8 = [(NSHttpRequest *)self onHeaders];
-    v9 = v8 == 0;
+    [(NSHttpRequest *)self setFHttpResponse:responseCopy];
+    onHeaders = [(NSHttpRequest *)self onHeaders];
+    v9 = onHeaders == 0;
 
     if (!v9)
     {
       __p.__r_.__value_.__s.__data_[0] = 0;
-      v10 = [(NSHttpRequest *)self onHeaders];
-      v11 = [(NSHttpRequest *)self fHttpResponse];
-      (v10)[2](v10, v11, &__p);
+      onHeaders2 = [(NSHttpRequest *)self onHeaders];
+      fHttpResponse = [(NSHttpRequest *)self fHttpResponse];
+      (onHeaders2)[2](onHeaders2, fHttpResponse, &__p);
 
       if (__p.__r_.__value_.__s.__data_[0] == 1)
       {
@@ -581,8 +581,8 @@ LABEL_11:
     v12 = objc_alloc_init(NSMutableData);
     [(NSHttpRequest *)self setFReceivedData:v12];
 
-    v13 = [(NSHttpRequest *)self onProgress];
-    LOBYTE(v12) = v13 == 0;
+    onProgress = [(NSHttpRequest *)self onProgress];
+    LOBYTE(v12) = onProgress == 0;
 
     if (v12)
     {
@@ -590,17 +590,17 @@ LABEL_11:
     }
 
     __p.__r_.__value_.__s.__data_[0] = 0;
-    v14 = [(NSHttpRequest *)self onProgress];
-    v15 = [(NSHttpRequest *)self fReceivedData];
-    v16 = [v15 length];
-    v17 = [(NSHttpRequest *)self fHttpResponse];
-    (v14)[2](v14, v16, [v17 expectedContentLength], &__p);
+    onProgress2 = [(NSHttpRequest *)self onProgress];
+    fReceivedData = [(NSHttpRequest *)self fReceivedData];
+    v16 = [fReceivedData length];
+    fHttpResponse2 = [(NSHttpRequest *)self fHttpResponse];
+    (onProgress2)[2](onProgress2, v16, [fHttpResponse2 expectedContentLength], &__p);
 
     if (__p.__r_.__value_.__s.__data_[0] == 1)
     {
 LABEL_6:
       [(NSHttpRequest *)self cancel];
-      [(NSHttpRequest *)self handleCancelled:v6];
+      [(NSHttpRequest *)self handleCancelled:connectionCopy];
     }
 
     else
@@ -611,23 +611,23 @@ LABEL_9:
   }
 }
 
-- (void)connection:(id)a3 didSendBodyData:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6
+- (void)connection:(id)connection didSendBodyData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v9 = a3;
+  connectionCopy = connection;
   [(NSHttpRequest *)self startExecuting];
   if ([(NSHttpRequest *)self isCancelled])
   {
-    [(NSHttpRequest *)self handleCancelled:v9];
+    [(NSHttpRequest *)self handleCancelled:connectionCopy];
   }
 
   else
   {
-    v10 = [(NSHttpRequest *)self onUploadProgress];
+    onUploadProgress = [(NSHttpRequest *)self onUploadProgress];
 
-    if (v10 && (v12 = 0, [(NSHttpRequest *)self onUploadProgress], v11 = objc_claimAutoreleasedReturnValue(), (v11)[2](v11, a5, a6, &v12), v11, v12 == 1))
+    if (onUploadProgress && (v12 = 0, [(NSHttpRequest *)self onUploadProgress], v11 = objc_claimAutoreleasedReturnValue(), (v11)[2](v11, written, write, &v12), v11, v12 == 1))
     {
       [(NSHttpRequest *)self cancel];
-      [(NSHttpRequest *)self handleCancelled:v9];
+      [(NSHttpRequest *)self handleCancelled:connectionCopy];
     }
 
     else
@@ -637,39 +637,39 @@ LABEL_9:
   }
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  dataCopy = data;
   [(NSHttpRequest *)self startExecuting];
   if ([(NSHttpRequest *)self isCancelled])
   {
-    [(NSHttpRequest *)self handleCancelled:v6];
+    [(NSHttpRequest *)self handleCancelled:connectionCopy];
   }
 
   else
   {
-    v8 = [(NSHttpRequest *)self fReceivedData];
-    [v8 appendData:v7];
+    fReceivedData = [(NSHttpRequest *)self fReceivedData];
+    [fReceivedData appendData:dataCopy];
 
-    v9 = [(NSHttpRequest *)self onProgress];
+    onProgress = [(NSHttpRequest *)self onProgress];
 
-    if (!v9)
+    if (!onProgress)
     {
       goto LABEL_6;
     }
 
     v14 = 0;
-    v10 = [(NSHttpRequest *)self onProgress];
-    v11 = [(NSHttpRequest *)self fReceivedData];
-    v12 = [v11 length];
-    v13 = [(NSHttpRequest *)self fHttpResponse];
-    (v10)[2](v10, v12, [v13 expectedContentLength], &v14);
+    onProgress2 = [(NSHttpRequest *)self onProgress];
+    fReceivedData2 = [(NSHttpRequest *)self fReceivedData];
+    v12 = [fReceivedData2 length];
+    fHttpResponse = [(NSHttpRequest *)self fHttpResponse];
+    (onProgress2)[2](onProgress2, v12, [fHttpResponse expectedContentLength], &v14);
 
     if (v14 == 1)
     {
       [(NSHttpRequest *)self cancel];
-      [(NSHttpRequest *)self handleCancelled:v6];
+      [(NSHttpRequest *)self handleCancelled:connectionCopy];
     }
 
     else
@@ -680,49 +680,49 @@ LABEL_6:
   }
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
-  v10 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  errorCopy = error;
   [(NSHttpRequest *)self startExecuting];
   if ([(NSHttpRequest *)self isCancelled])
   {
-    [(NSHttpRequest *)self handleCancelled:v10];
+    [(NSHttpRequest *)self handleCancelled:connectionCopy];
   }
 
   else
   {
-    v7 = [(NSHttpRequest *)self onError];
+    onError = [(NSHttpRequest *)self onError];
 
-    if (v7)
+    if (onError)
     {
-      v8 = [(NSHttpRequest *)self onError];
-      v9 = [(NSHttpRequest *)self fHttpResponse];
-      (v8)[2](v8, v9, v6);
+      onError2 = [(NSHttpRequest *)self onError];
+      fHttpResponse = [(NSHttpRequest *)self fHttpResponse];
+      (onError2)[2](onError2, fHttpResponse, errorCopy);
     }
 
     [(NSHttpRequest *)self handleCompleted];
   }
 }
 
-- (void)connectionDidFinishLoading:(id)a3
+- (void)connectionDidFinishLoading:(id)loading
 {
-  v8 = a3;
+  loadingCopy = loading;
   if ([(NSHttpRequest *)self isCancelled])
   {
-    [(NSHttpRequest *)self handleCancelled:v8];
+    [(NSHttpRequest *)self handleCancelled:loadingCopy];
   }
 
   else
   {
-    v4 = [(NSHttpRequest *)self onResponse];
+    onResponse = [(NSHttpRequest *)self onResponse];
 
-    if (v4)
+    if (onResponse)
     {
-      v5 = [(NSHttpRequest *)self onResponse];
-      v6 = [(NSHttpRequest *)self fHttpResponse];
-      v7 = [(NSHttpRequest *)self fReceivedData];
-      (v5)[2](v5, v6, v7);
+      onResponse2 = [(NSHttpRequest *)self onResponse];
+      fHttpResponse = [(NSHttpRequest *)self fHttpResponse];
+      fReceivedData = [(NSHttpRequest *)self fReceivedData];
+      (onResponse2)[2](onResponse2, fHttpResponse, fReceivedData);
     }
 
     [(NSHttpRequest *)self handleCompleted];

@@ -1,37 +1,37 @@
 @interface _MPArtworkCatalogStaticDataSource
 + (id)sharedDataSource;
-- (BOOL)areRepresentationsOfKind:(int64_t)a3 availableForCatalog:(id)a4;
-- (BOOL)isRepresentation:(id)a3 bestRepresentationForArtworkCatalog:(id)a4;
-- (id)existingRepresentationOfKind:(int64_t)a3 forArtworkCatalog:(id)a4;
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3;
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4;
-- (void)loadRepresentationOfKind:(int64_t)a3 forArtworkCatalog:(id)a4 completionHandler:(id)a5;
+- (BOOL)areRepresentationsOfKind:(int64_t)kind availableForCatalog:(id)catalog;
+- (BOOL)isRepresentation:(id)representation bestRepresentationForArtworkCatalog:(id)catalog;
+- (id)existingRepresentationOfKind:(int64_t)kind forArtworkCatalog:(id)catalog;
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog;
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler;
+- (void)loadRepresentationOfKind:(int64_t)kind forArtworkCatalog:(id)catalog completionHandler:(id)handler;
 @end
 
 @implementation _MPArtworkCatalogStaticDataSource
 
-- (void)loadRepresentationOfKind:(int64_t)a3 forArtworkCatalog:(id)a4 completionHandler:(id)a5
+- (void)loadRepresentationOfKind:(int64_t)kind forArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = [(_MPArtworkCatalogStaticDataSource *)self existingRepresentationOfKind:a3 forArtworkCatalog:a4];
-  (*(a5 + 2))(v9, v10, 0);
+  handlerCopy = handler;
+  v10 = [(_MPArtworkCatalogStaticDataSource *)self existingRepresentationOfKind:kind forArtworkCatalog:catalog];
+  (*(handler + 2))(handlerCopy, v10, 0);
 }
 
-- (id)existingRepresentationOfKind:(int64_t)a3 forArtworkCatalog:(id)a4
+- (id)existingRepresentationOfKind:(int64_t)kind forArtworkCatalog:(id)catalog
 {
-  v5 = [a4 token];
-  v6 = v5;
-  if (a3 == 1)
+  token = [catalog token];
+  v6 = token;
+  if (kind == 1)
   {
-    v7 = [v5 videoRepresentation];
+    videoRepresentation = [token videoRepresentation];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!kind)
   {
-    v7 = [v5 imageRepresentation];
+    videoRepresentation = [token imageRepresentation];
 LABEL_5:
-    v8 = v7;
+    v8 = videoRepresentation;
     goto LABEL_7;
   }
 
@@ -41,56 +41,56 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)areRepresentationsOfKind:(int64_t)a3 availableForCatalog:(id)a4
+- (BOOL)areRepresentationsOfKind:(int64_t)kind availableForCatalog:(id)catalog
 {
-  v5 = [a4 token];
-  v6 = v5;
-  if (a3 == 1)
+  token = [catalog token];
+  v6 = token;
+  if (kind == 1)
   {
-    v7 = [v5 videoRepresentation];
+    videoRepresentation = [token videoRepresentation];
   }
 
   else
   {
-    if (a3)
+    if (kind)
     {
       v8 = 0;
       goto LABEL_7;
     }
 
-    v7 = [v5 imageRepresentation];
+    videoRepresentation = [token imageRepresentation];
   }
 
-  v8 = v7 != 0;
+  v8 = videoRepresentation != 0;
 
 LABEL_7:
   return v8;
 }
 
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog
 {
-  v3 = [a3 token];
+  token = [catalog token];
   v4 = objc_alloc_init(_MPStaticArtworkVisualIdenticalityIdentifier);
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [v3 imageRepresentation];
-  v7 = [v6 image];
-  v8 = [v5 stringWithFormat:@"%lx", v7];
+  imageRepresentation = [token imageRepresentation];
+  image = [imageRepresentation image];
+  v8 = [v5 stringWithFormat:@"%lx", image];
   [(_MPStaticArtworkVisualIdenticalityIdentifier *)v4 setImageArtworkIdentifier:v8];
 
-  v9 = [v3 videoRepresentation];
-  v10 = [v9 video];
+  videoRepresentation = [token videoRepresentation];
+  video = [videoRepresentation video];
 
   v11 = MEMORY[0x1E696AEC0];
-  if (v10)
+  if (video)
   {
-    v12 = [v10 URL];
-    [v12 absoluteString];
+    videoRepresentation2 = [video URL];
+    [videoRepresentation2 absoluteString];
   }
 
   else
   {
-    v12 = [v3 videoRepresentation];
-    [v12 video];
+    videoRepresentation2 = [token videoRepresentation];
+    [videoRepresentation2 video];
   }
   v13 = ;
   v14 = [v11 stringWithFormat:@"%@", v13];
@@ -99,39 +99,39 @@ LABEL_7:
   return v4;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [(_MPArtworkCatalogStaticDataSource *)self existingRepresentationForArtworkCatalog:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  handlerCopy = handler;
+  v8 = [(_MPArtworkCatalogStaticDataSource *)self existingRepresentationForArtworkCatalog:catalog];
+  (*(handler + 2))(handlerCopy, v8, 0);
 }
 
-- (BOOL)isRepresentation:(id)a3 bestRepresentationForArtworkCatalog:(id)a4
+- (BOOL)isRepresentation:(id)representation bestRepresentationForArtworkCatalog:(id)catalog
 {
-  v5 = a3;
-  v6 = [a4 token];
-  v7 = [v5 kind];
-  if (v7 == 1)
+  representationCopy = representation;
+  token = [catalog token];
+  kind = [representationCopy kind];
+  if (kind == 1)
   {
-    v8 = [v5 video];
-    v9 = [v6 videoRepresentation];
-    v10 = [v9 video];
+    video = [representationCopy video];
+    videoRepresentation = [token videoRepresentation];
+    video2 = [videoRepresentation video];
   }
 
   else
   {
-    if (v7)
+    if (kind)
     {
       v11 = 0;
       goto LABEL_7;
     }
 
-    v8 = [v5 image];
-    v9 = [v6 imageRepresentation];
-    v10 = [v9 image];
+    video = [representationCopy image];
+    videoRepresentation = [token imageRepresentation];
+    video2 = [videoRepresentation image];
   }
 
-  v11 = v8 == v10;
+  v11 = video == video2;
 
 LABEL_7:
   return v11;
@@ -143,7 +143,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __53___MPArtworkCatalogStaticDataSource_sharedDataSource__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDataSource_onceToken_495 != -1)
   {
     dispatch_once(&sharedDataSource_onceToken_495, block);

@@ -1,23 +1,23 @@
 @interface ICSETableViewHeaderView
-- (ICSETableViewHeaderView)initWithReuseIdentifier:(id)a3;
+- (ICSETableViewHeaderView)initWithReuseIdentifier:(id)identifier;
 - (NSArray)defaultConstraints;
 - (NSArray)largerTextSizeConstraints;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)prepareForReuse;
-- (void)setCountLabelText:(id)a3;
-- (void)setTypeLabelText:(id)a3;
+- (void)setCountLabelText:(id)text;
+- (void)setTypeLabelText:(id)text;
 - (void)setupUI;
 - (void)updateConstraints;
 @end
 
 @implementation ICSETableViewHeaderView
 
-- (ICSETableViewHeaderView)initWithReuseIdentifier:(id)a3
+- (ICSETableViewHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = ICSETableViewHeaderView;
-  v3 = [(ICSETableViewHeaderView *)&v6 initWithReuseIdentifier:a3];
+  v3 = [(ICSETableViewHeaderView *)&v6 initWithReuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -32,88 +32,88 @@
   v5.receiver = self;
   v5.super_class = ICSETableViewHeaderView;
   [(ICSETableViewHeaderView *)&v5 prepareForReuse];
-  v3 = [(ICSETableViewHeaderView *)self typeLabel];
-  [v3 setText:&stru_1000F6F48];
+  typeLabel = [(ICSETableViewHeaderView *)self typeLabel];
+  [typeLabel setText:&stru_1000F6F48];
 
-  v4 = [(ICSETableViewHeaderView *)self countLabel];
-  [v4 setText:&stru_1000F6F48];
+  countLabel = [(ICSETableViewHeaderView *)self countLabel];
+  [countLabel setText:&stru_1000F6F48];
 }
 
-- (void)setTypeLabelText:(id)a3
+- (void)setTypeLabelText:(id)text
 {
-  v4 = a3;
-  v5 = [(ICSETableViewHeaderView *)self typeLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  typeLabel = [(ICSETableViewHeaderView *)self typeLabel];
+  [typeLabel setText:textCopy];
 }
 
-- (void)setCountLabelText:(id)a3
+- (void)setCountLabelText:(id)text
 {
-  v4 = a3;
-  v5 = [(ICSETableViewHeaderView *)self countLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  countLabel = [(ICSETableViewHeaderView *)self countLabel];
+  [countLabel setText:textCopy];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(ICSETableViewHeaderView *)self typeLabel];
-  v3 = [v2 text];
+  typeLabel = [(ICSETableViewHeaderView *)self typeLabel];
+  text = [typeLabel text];
 
-  return v3;
+  return text;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(ICSETableViewHeaderView *)self countLabel];
-  v3 = [v2 text];
+  countLabel = [(ICSETableViewHeaderView *)self countLabel];
+  text = [countLabel text];
 
-  return v3;
+  return text;
 }
 
 - (void)setupUI
 {
-  v3 = [(ICSETableViewHeaderView *)self typeLabel];
-  if (!v3 || (v4 = v3, [(ICSETableViewHeaderView *)self countLabel], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
+  typeLabel = [(ICSETableViewHeaderView *)self typeLabel];
+  if (!typeLabel || (v4 = typeLabel, [(ICSETableViewHeaderView *)self countLabel], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, !v5))
   {
     v6 = objc_alloc_init(UILabel);
     [(ICSETableViewHeaderView *)self setTypeLabel:v6];
 
     v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    v8 = [v7 ic_fontWithSingleLineA];
-    v9 = [(ICSETableViewHeaderView *)self typeLabel];
-    [v9 setFont:v8];
+    ic_fontWithSingleLineA = [v7 ic_fontWithSingleLineA];
+    typeLabel2 = [(ICSETableViewHeaderView *)self typeLabel];
+    [typeLabel2 setFont:ic_fontWithSingleLineA];
 
     v10 = +[UIColor labelColor];
-    v11 = [(ICSETableViewHeaderView *)self countLabel];
-    [v11 setTextColor:v10];
+    countLabel = [(ICSETableViewHeaderView *)self countLabel];
+    [countLabel setTextColor:v10];
 
-    v12 = [(ICSETableViewHeaderView *)self typeLabel];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    typeLabel3 = [(ICSETableViewHeaderView *)self typeLabel];
+    [typeLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v13 = [(ICSETableViewHeaderView *)self typeLabel];
-    [(ICSETableViewHeaderView *)self addSubview:v13];
+    typeLabel4 = [(ICSETableViewHeaderView *)self typeLabel];
+    [(ICSETableViewHeaderView *)self addSubview:typeLabel4];
 
     v14 = objc_alloc_init(UILabel);
     [(ICSETableViewHeaderView *)self setCountLabel:v14];
 
     v15 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v16 = [v15 ic_fontWithSingleLineA];
-    v17 = [(ICSETableViewHeaderView *)self countLabel];
-    [v17 setFont:v16];
+    ic_fontWithSingleLineA2 = [v15 ic_fontWithSingleLineA];
+    countLabel2 = [(ICSETableViewHeaderView *)self countLabel];
+    [countLabel2 setFont:ic_fontWithSingleLineA2];
 
     v18 = +[UIColor secondaryLabelColor];
-    v19 = [(ICSETableViewHeaderView *)self countLabel];
-    [v19 setTextColor:v18];
+    countLabel3 = [(ICSETableViewHeaderView *)self countLabel];
+    [countLabel3 setTextColor:v18];
 
-    v20 = [(ICSETableViewHeaderView *)self countLabel];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    countLabel4 = [(ICSETableViewHeaderView *)self countLabel];
+    [countLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v21 = [(ICSETableViewHeaderView *)self countLabel];
-    [(ICSETableViewHeaderView *)self addSubview:v21];
+    countLabel5 = [(ICSETableViewHeaderView *)self countLabel];
+    [(ICSETableViewHeaderView *)self addSubview:countLabel5];
 
-    v22 = [(ICSETableViewHeaderView *)self accessibilityTraits];
-    [(ICSETableViewHeaderView *)self setAccessibilityTraits:UIAccessibilityTraitHeader | v22];
-    v23 = [(ICSETableViewHeaderView *)self defaultConstraints];
-    [NSLayoutConstraint activateConstraints:v23];
+    accessibilityTraits = [(ICSETableViewHeaderView *)self accessibilityTraits];
+    [(ICSETableViewHeaderView *)self setAccessibilityTraits:UIAccessibilityTraitHeader | accessibilityTraits];
+    defaultConstraints = [(ICSETableViewHeaderView *)self defaultConstraints];
+    [NSLayoutConstraint activateConstraints:defaultConstraints];
   }
 }
 
@@ -123,26 +123,26 @@
   {
     if (self->_defaultConstraints)
     {
-      v3 = [(ICSETableViewHeaderView *)self defaultConstraints];
-      [NSLayoutConstraint deactivateConstraints:v3];
+      defaultConstraints = [(ICSETableViewHeaderView *)self defaultConstraints];
+      [NSLayoutConstraint deactivateConstraints:defaultConstraints];
     }
 
-    v4 = [(ICSETableViewHeaderView *)self largerTextSizeConstraints];
+    largerTextSizeConstraints = [(ICSETableViewHeaderView *)self largerTextSizeConstraints];
   }
 
   else
   {
     if (self->_largerTextSizeConstraints)
     {
-      v5 = [(ICSETableViewHeaderView *)self largerTextSizeConstraints];
-      [NSLayoutConstraint deactivateConstraints:v5];
+      largerTextSizeConstraints2 = [(ICSETableViewHeaderView *)self largerTextSizeConstraints];
+      [NSLayoutConstraint deactivateConstraints:largerTextSizeConstraints2];
     }
 
-    v4 = [(ICSETableViewHeaderView *)self defaultConstraints];
+    largerTextSizeConstraints = [(ICSETableViewHeaderView *)self defaultConstraints];
   }
 
-  v6 = v4;
-  [NSLayoutConstraint activateConstraints:v4];
+  v6 = largerTextSizeConstraints;
+  [NSLayoutConstraint activateConstraints:largerTextSizeConstraints];
 
   v7.receiver = self;
   v7.super_class = ICSETableViewHeaderView;
@@ -154,33 +154,33 @@
   defaultConstraints = self->_defaultConstraints;
   if (!defaultConstraints)
   {
-    v4 = [(ICSETableViewHeaderView *)self countLabel];
-    v5 = [v4 trailingAnchor];
-    v6 = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
-    v7 = [v6 trailingAnchor];
-    v8 = [v5 constraintEqualToAnchor:v7];
+    countLabel = [(ICSETableViewHeaderView *)self countLabel];
+    trailingAnchor = [countLabel trailingAnchor];
+    layoutMarginsGuide = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-    v9 = [(ICSETableViewHeaderView *)self typeLabel];
-    v10 = [v9 leadingAnchor];
-    v11 = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
-    v12 = [v11 leadingAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    typeLabel = [(ICSETableViewHeaderView *)self typeLabel];
+    leadingAnchor = [typeLabel leadingAnchor];
+    layoutMarginsGuide2 = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-    v14 = [(ICSETableViewHeaderView *)self countLabel];
-    v15 = [v14 leadingAnchor];
-    v16 = [(ICSETableViewHeaderView *)self typeLabel];
-    v17 = [v16 trailingAnchor];
-    v18 = [v15 constraintGreaterThanOrEqualToAnchor:v17 constant:8.0];
+    countLabel2 = [(ICSETableViewHeaderView *)self countLabel];
+    leadingAnchor3 = [countLabel2 leadingAnchor];
+    typeLabel2 = [(ICSETableViewHeaderView *)self typeLabel];
+    trailingAnchor3 = [typeLabel2 trailingAnchor];
+    v18 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:8.0];
 
-    v19 = [(ICSETableViewHeaderView *)self typeLabel];
-    v20 = [v19 centerYAnchor];
-    v21 = [(ICSETableViewHeaderView *)self centerYAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    typeLabel3 = [(ICSETableViewHeaderView *)self typeLabel];
+    centerYAnchor = [typeLabel3 centerYAnchor];
+    centerYAnchor2 = [(ICSETableViewHeaderView *)self centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
-    v23 = [(ICSETableViewHeaderView *)self countLabel];
-    v24 = [v23 centerYAnchor];
-    v25 = [(ICSETableViewHeaderView *)self centerYAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    countLabel3 = [(ICSETableViewHeaderView *)self countLabel];
+    centerYAnchor3 = [countLabel3 centerYAnchor];
+    centerYAnchor4 = [(ICSETableViewHeaderView *)self centerYAnchor];
+    v26 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
 
     v30[0] = v8;
     v30[1] = v13;
@@ -202,45 +202,45 @@
   largerTextSizeConstraints = self->_largerTextSizeConstraints;
   if (!largerTextSizeConstraints)
   {
-    v4 = [(ICSETableViewHeaderView *)self typeLabel];
-    v5 = [v4 leadingAnchor];
-    v6 = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
-    v7 = [v6 leadingAnchor];
-    v39 = [v5 constraintEqualToAnchor:v7];
+    typeLabel = [(ICSETableViewHeaderView *)self typeLabel];
+    leadingAnchor = [typeLabel leadingAnchor];
+    layoutMarginsGuide = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-    v8 = [(ICSETableViewHeaderView *)self typeLabel];
-    v9 = [v8 topAnchor];
-    v10 = [(ICSETableViewHeaderView *)self topAnchor];
-    v38 = [v9 constraintEqualToAnchor:v10];
+    typeLabel2 = [(ICSETableViewHeaderView *)self typeLabel];
+    topAnchor = [typeLabel2 topAnchor];
+    topAnchor2 = [(ICSETableViewHeaderView *)self topAnchor];
+    v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-    v11 = [(ICSETableViewHeaderView *)self typeLabel];
-    v12 = [v11 trailingAnchor];
-    v13 = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
-    v14 = [v13 trailingAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    typeLabel3 = [(ICSETableViewHeaderView *)self typeLabel];
+    trailingAnchor = [typeLabel3 trailingAnchor];
+    layoutMarginsGuide2 = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-    v16 = [(ICSETableViewHeaderView *)self countLabel];
-    v17 = [v16 leadingAnchor];
-    v18 = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
-    v19 = [v18 leadingAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    countLabel = [(ICSETableViewHeaderView *)self countLabel];
+    leadingAnchor3 = [countLabel leadingAnchor];
+    layoutMarginsGuide3 = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+    v20 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-    v21 = [(ICSETableViewHeaderView *)self countLabel];
-    v22 = [v21 bottomAnchor];
-    v23 = [(ICSETableViewHeaderView *)self bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    countLabel2 = [(ICSETableViewHeaderView *)self countLabel];
+    bottomAnchor = [countLabel2 bottomAnchor];
+    bottomAnchor2 = [(ICSETableViewHeaderView *)self bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-    v25 = [(ICSETableViewHeaderView *)self countLabel];
-    v26 = [v25 trailingAnchor];
-    v27 = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
-    v28 = [v27 trailingAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
+    countLabel3 = [(ICSETableViewHeaderView *)self countLabel];
+    trailingAnchor3 = [countLabel3 trailingAnchor];
+    layoutMarginsGuide4 = [(ICSETableViewHeaderView *)self layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide4 trailingAnchor];
+    v29 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
-    v30 = [(ICSETableViewHeaderView *)self countLabel];
-    v31 = [v30 topAnchor];
-    v32 = [(ICSETableViewHeaderView *)self typeLabel];
-    v33 = [v32 bottomAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
+    countLabel4 = [(ICSETableViewHeaderView *)self countLabel];
+    topAnchor3 = [countLabel4 topAnchor];
+    typeLabel4 = [(ICSETableViewHeaderView *)self typeLabel];
+    bottomAnchor3 = [typeLabel4 bottomAnchor];
+    v34 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
 
     v40[0] = v39;
     v40[1] = v38;

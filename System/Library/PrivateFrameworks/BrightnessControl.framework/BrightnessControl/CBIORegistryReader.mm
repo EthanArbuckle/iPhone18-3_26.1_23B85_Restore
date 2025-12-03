@@ -1,21 +1,21 @@
 @interface CBIORegistryReader
-- (CBIORegistryReader)initWithService:(unsigned int)a3 andPlane:(char)a4[128] andOptions:(unsigned int)a5;
+- (CBIORegistryReader)initWithService:(unsigned int)service andPlane:(char)plane[128] andOptions:(unsigned int)options;
 - (void)dealloc;
 @end
 
 @implementation CBIORegistryReader
 
-- (CBIORegistryReader)initWithService:(unsigned int)a3 andPlane:(char)a4[128] andOptions:(unsigned int)a5
+- (CBIORegistryReader)initWithService:(unsigned int)service andPlane:(char)plane[128] andOptions:(unsigned int)options
 {
   v11.receiver = self;
   v11.super_class = CBIORegistryReader;
   v8 = [(CBIORegistryReader *)&v11 init];
-  if (strlcpy(v8->_plane, a4, 0x80uLL) < 0x80)
+  if (strlcpy(v8->_plane, plane, 0x80uLL) < 0x80)
   {
-    if (a3 && a4 && !IOObjectRetain(a3))
+    if (service && plane && !IOObjectRetain(service))
     {
-      v8->_options = a5;
-      v8->_service = a3;
+      v8->_options = options;
+      v8->_service = service;
       return v8;
     }
   }

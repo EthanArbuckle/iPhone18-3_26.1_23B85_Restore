@@ -1,21 +1,21 @@
 @interface HUForceInterpolatedPressGestureRecognizer
-- (HUForceInterpolatedPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (HUForceInterpolatedPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)_forceMultiplierIncludingCurrentSample;
 - (void)_logForceMultiplierSample;
 - (void)_resetForceSamples;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation HUForceInterpolatedPressGestureRecognizer
 
-- (HUForceInterpolatedPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (HUForceInterpolatedPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = HUForceInterpolatedPressGestureRecognizer;
-  v4 = [(HUForceInterpolatedPressGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(HUForceInterpolatedPressGestureRecognizer *)&v8 initWithTarget:target action:action];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -28,61 +28,61 @@
   return v4;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
-  v9 = [v8 count];
+  eventCopy = event;
+  beganCopy = began;
+  hu_activeTouches = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
+  v9 = [hu_activeTouches count];
 
   if (!v9)
   {
     [(HUForceInterpolatedPressGestureRecognizer *)self setTouchStartTime:CACurrentMediaTime()];
   }
 
-  v10 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
-  [v10 unionSet:v7];
+  hu_activeTouches2 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
+  [hu_activeTouches2 unionSet:beganCopy];
 
   [(HUForceInterpolatedPressGestureRecognizer *)self _logForceMultiplierSample];
   v11.receiver = self;
   v11.super_class = HUForceInterpolatedPressGestureRecognizer;
-  [(HUForceInterpolatedPressGestureRecognizer *)&v11 touchesBegan:v7 withEvent:v6];
+  [(HUForceInterpolatedPressGestureRecognizer *)&v11 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  movedCopy = moved;
   [(HUForceInterpolatedPressGestureRecognizer *)self _logForceMultiplierSample];
   v8.receiver = self;
   v8.super_class = HUForceInterpolatedPressGestureRecognizer;
-  [(HUForceInterpolatedPressGestureRecognizer *)&v8 touchesMoved:v7 withEvent:v6];
+  [(HUForceInterpolatedPressGestureRecognizer *)&v8 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
-  [v8 minusSet:v7];
+  eventCopy = event;
+  endedCopy = ended;
+  hu_activeTouches = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
+  [hu_activeTouches minusSet:endedCopy];
 
   [(HUForceInterpolatedPressGestureRecognizer *)self _logForceMultiplierSample];
   v9.receiver = self;
   v9.super_class = HUForceInterpolatedPressGestureRecognizer;
-  [(HUForceInterpolatedPressGestureRecognizer *)&v9 touchesEnded:v7 withEvent:v6];
+  [(HUForceInterpolatedPressGestureRecognizer *)&v9 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
-  [v8 minusSet:v7];
+  eventCopy = event;
+  cancelledCopy = cancelled;
+  hu_activeTouches = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
+  [hu_activeTouches minusSet:cancelledCopy];
 
   [(HUForceInterpolatedPressGestureRecognizer *)self _logForceMultiplierSample];
   v9.receiver = self;
   v9.super_class = HUForceInterpolatedPressGestureRecognizer;
-  [(HUForceInterpolatedPressGestureRecognizer *)&v9 touchesCancelled:v7 withEvent:v6];
+  [(HUForceInterpolatedPressGestureRecognizer *)&v9 touchesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
 - (double)_forceMultiplierIncludingCurrentSample
@@ -121,24 +121,24 @@
 - (void)_logForceMultiplierSample
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
-  v4 = [v3 count];
+  hu_activeTouches = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
+  v4 = [hu_activeTouches count];
 
   if (v4)
   {
     [(HUForceInterpolatedPressGestureRecognizer *)self _forceMultiplierIncludingCurrentSample];
     [(HUForceInterpolatedPressGestureRecognizer *)self setOverallForceMultiplierExcludingCurrentSample:?];
-    v5 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
-    v6 = [v5 na_filter:&__block_literal_global_34];
-    v7 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
-    [v7 setSet:v6];
+    hu_activeTouches2 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
+    v6 = [hu_activeTouches2 na_filter:&__block_literal_global_34];
+    hu_activeTouches3 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
+    [hu_activeTouches3 setSet:v6];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    hu_activeTouches4 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
+    v9 = [hu_activeTouches4 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -150,14 +150,14 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(hu_activeTouches4);
           }
 
           [*(*(&v17 + 1) + 8 * i) force];
           v12 = v12 + v14;
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [hu_activeTouches4 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -168,8 +168,8 @@
       v12 = 0.0;
     }
 
-    v15 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
-    v16 = v12 / [v15 count];
+    hu_activeTouches5 = [(HUForceInterpolatedPressGestureRecognizer *)self hu_activeTouches];
+    v16 = v12 / [hu_activeTouches5 count];
 
     [(HUForceInterpolatedPressGestureRecognizer *)self setCurrentSampleForceMultiplier:v16 / 6.667 * 3.0 + 1.0];
     [(HUForceInterpolatedPressGestureRecognizer *)self setCurrentSampleTimestamp:CACurrentMediaTime()];

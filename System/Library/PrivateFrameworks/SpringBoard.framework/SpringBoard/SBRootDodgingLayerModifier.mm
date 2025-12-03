@@ -1,21 +1,21 @@
 @interface SBRootDodgingLayerModifier
-- (id)handleInsertionEvent:(id)a3;
-- (id)handlePreferenceChangeEvent:(id)a3;
-- (id)handleRemovalEvent:(id)a3;
-- (id)handleRotationEvent:(id)a3;
+- (id)handleInsertionEvent:(id)event;
+- (id)handlePreferenceChangeEvent:(id)event;
+- (id)handleRemovalEvent:(id)event;
+- (id)handleRotationEvent:(id)event;
 - (void)_setup;
-- (void)didMoveToParentModifier:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SBRootDodgingLayerModifier
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = SBRootDodgingLayerModifier;
   [(SBChainableModifier *)&v5 setDelegate:?];
-  if (a3)
+  if (delegate)
   {
     if (!self->_hasPerformedInitialSetup)
     {
@@ -25,12 +25,12 @@
   }
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v5.receiver = self;
   v5.super_class = SBRootDodgingLayerModifier;
   [(SBChainableModifier *)&v5 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     if (!self->_hasPerformedInitialSetup)
     {
@@ -42,63 +42,63 @@
 
 - (void)_setup
 {
-  v3 = [(SBRootDodgingLayerModifier *)self _floorModifier];
-  if (!v3)
+  _floorModifier = [(SBRootDodgingLayerModifier *)self _floorModifier];
+  if (!_floorModifier)
   {
     v4 = objc_alloc_init(SBFloorDodgingLayerModifier);
     [(SBChainableModifier *)self addChildModifier:v4 atLevel:1 key:@"Floor Modifier"];
 
-    v3 = 0;
+    _floorModifier = 0;
   }
 }
 
-- (id)handleInsertionEvent:(id)a3
+- (id)handleInsertionEvent:(id)event
 {
   v18.receiver = self;
   v18.super_class = SBRootDodgingLayerModifier;
-  v4 = a3;
-  v5 = [(SBDodgingModifier *)&v18 handleInsertionEvent:v4];
+  eventCopy = event;
+  v5 = [(SBDodgingModifier *)&v18 handleInsertionEvent:eventCopy];
   v6 = [SBInsertionDodgingModifier alloc];
-  v7 = [v4 identifier];
-  [v4 center];
+  identifier = [eventCopy identifier];
+  [eventCopy center];
   v9 = v8;
   v11 = v10;
-  [v4 size];
+  [eventCopy size];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(SBInsertionDodgingModifier *)v6 initWithIdentifier:v7 initialCenter:v9 initialSize:v11, v13, v15];
+  v16 = [(SBInsertionDodgingModifier *)v6 initWithIdentifier:identifier initialCenter:v9 initialSize:v11, v13, v15];
   [(SBChainableModifier *)self addChildModifier:v16 atLevel:0 key:0];
 
   return v5;
 }
 
-- (id)handleRemovalEvent:(id)a3
+- (id)handleRemovalEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBRootDodgingLayerModifier;
-  v4 = a3;
-  v5 = [(SBDodgingModifier *)&v10 handleRemovalEvent:v4];
+  eventCopy = event;
+  v5 = [(SBDodgingModifier *)&v10 handleRemovalEvent:eventCopy];
   v6 = [SBRemovalDodgingModifier alloc];
-  v7 = [v4 identifier];
+  identifier = [eventCopy identifier];
 
-  v8 = [(SBRemovalDodgingModifier *)v6 initWithIdentifier:v7];
+  v8 = [(SBRemovalDodgingModifier *)v6 initWithIdentifier:identifier];
   [(SBChainableModifier *)self addChildModifier:v8 atLevel:0 key:0];
 
   return v5;
 }
 
-- (id)handleRotationEvent:(id)a3
+- (id)handleRotationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = SBRootDodgingLayerModifier;
-  v5 = [(SBDodgingModifier *)&v10 handleRotationEvent:v4];
-  if (![v4 phase])
+  v5 = [(SBDodgingModifier *)&v10 handleRotationEvent:eventCopy];
+  if (![eventCopy phase])
   {
     v6 = [SBRotationDodgingModifier alloc];
-    v7 = [v4 identifier];
-    v8 = -[SBRotationDodgingModifier initWithIdentifier:fromOrientation:toOrientation:](v6, "initWithIdentifier:fromOrientation:toOrientation:", v7, [v4 fromOrientation], objc_msgSend(v4, "toOrientation"));
+    identifier = [eventCopy identifier];
+    v8 = -[SBRotationDodgingModifier initWithIdentifier:fromOrientation:toOrientation:](v6, "initWithIdentifier:fromOrientation:toOrientation:", identifier, [eventCopy fromOrientation], objc_msgSend(eventCopy, "toOrientation"));
 
     [(SBChainableModifier *)self addChildModifier:v8 atLevel:0 key:0];
   }
@@ -106,28 +106,28 @@
   return v5;
 }
 
-- (id)handlePreferenceChangeEvent:(id)a3
+- (id)handlePreferenceChangeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = SBRootDodgingLayerModifier;
-  v5 = [(SBDodgingModifier *)&v14 handlePreferenceChangeEvent:v4];
-  v6 = [v4 style];
-  if (![v4 phase] && (objc_msgSend(v4, "isHandled") & 1) == 0)
+  v5 = [(SBDodgingModifier *)&v14 handlePreferenceChangeEvent:eventCopy];
+  style = [eventCopy style];
+  if (![eventCopy phase] && (objc_msgSend(eventCopy, "isHandled") & 1) == 0)
   {
-    if (v6 == 1)
+    if (style == 1)
     {
       v7 = [SBInteractivePreferenceChangeDodgingModifier alloc];
-      v8 = [v4 identifier];
-      v9 = [(SBInteractivePreferenceChangeDodgingModifier *)v7 initWithIdentifier:v8];
+      identifier = [eventCopy identifier];
+      v9 = [(SBInteractivePreferenceChangeDodgingModifier *)v7 initWithIdentifier:identifier];
     }
 
     else
     {
-      v10 = v6 == 2;
+      v10 = style == 2;
       v11 = [SBPreferenceChangeDodgingModifier alloc];
-      v8 = [v4 identifier];
-      v9 = [(SBPreferenceChangeDodgingModifier *)v11 initWithIdentifier:v8 animated:v10];
+      identifier = [eventCopy identifier];
+      v9 = [(SBPreferenceChangeDodgingModifier *)v11 initWithIdentifier:identifier animated:v10];
     }
 
     v12 = v9;

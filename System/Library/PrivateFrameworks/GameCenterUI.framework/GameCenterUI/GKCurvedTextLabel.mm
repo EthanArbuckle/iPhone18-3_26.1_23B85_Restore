@@ -1,35 +1,35 @@
 @interface GKCurvedTextLabel
-- (CGPoint)_offsetOfBoundingRect:(CGRect)a3 inRect:(CGRect)a4;
+- (CGPoint)_offsetOfBoundingRect:(CGRect)rect inRect:(CGRect)inRect;
 - (CGRect)_glyphsBoundingRect;
 - (CGRect)textBoundingRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (GKCurvedTextLabel)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (GKCurvedTextLabel)initWithFrame:(CGRect)frame;
 - (NSDictionary)textAttributes;
-- (_NSRange)_drawableCharacterRange:(_NSRange *)a3;
+- (_NSRange)_drawableCharacterRange:(_NSRange *)range;
 - (__CTLine)_newLineFromDrawableTextStorage;
 - (double)_distance;
-- (void)_enumerateTransformsForDrawableCharacters:(id)a3;
+- (void)_enumerateTransformsForDrawableCharacters:(id)characters;
 - (void)_updateMaxSize;
 - (void)_updateTextColor;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 - (void)invalidateCachedSize;
-- (void)setAttributedText:(id)a3;
-- (void)setCenterAngle:(double)a3;
-- (void)setCircleRadius:(double)a3;
-- (void)setFont:(id)a3;
-- (void)setInterior:(BOOL)a3;
-- (void)setMaxAngularWidth:(double)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setCenterAngle:(double)angle;
+- (void)setCircleRadius:(double)radius;
+- (void)setFont:(id)font;
+- (void)setInterior:(BOOL)interior;
+- (void)setMaxAngularWidth:(double)width;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation GKCurvedTextLabel
 
-- (GKCurvedTextLabel)initWithFrame:(CGRect)a3
+- (GKCurvedTextLabel)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = GKCurvedTextLabel;
-  v3 = [(GKCurvedTextLabel *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKCurvedTextLabel *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D74278]);
@@ -49,9 +49,9 @@
     v3->_textStorage = v8;
 
     [(NSTextStorage *)v3->_textStorage addLayoutManager:v3->_layoutManager];
-    v10 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     textColor = v3->_textColor;
-    v3->_textColor = v10;
+    v3->_textColor = labelColor;
   }
 
   return v3;
@@ -59,11 +59,11 @@
 
 - (NSDictionary)textAttributes
 {
-  v2 = [(GKCurvedTextLabel *)self attributedText];
-  v3 = [v2 length];
+  attributedText = [(GKCurvedTextLabel *)self attributedText];
+  v3 = [attributedText length];
   if (v3)
   {
-    v4 = [v2 attributesAtIndex:0 longestEffectiveRange:0 inRange:{0, v3}];
+    v4 = [attributedText attributesAtIndex:0 longestEffectiveRange:0 inRange:{0, v3}];
   }
 
   else
@@ -74,11 +74,11 @@
   return v4;
 }
 
-- (void)setInterior:(BOOL)a3
+- (void)setInterior:(BOOL)interior
 {
-  if (self->_interior != a3)
+  if (self->_interior != interior)
   {
-    self->_interior = a3;
+    self->_interior = interior;
     [(GKCurvedTextLabel *)self invalidateCachedSize];
     [(GKCurvedTextLabel *)self setNeedsLayout];
 
@@ -86,11 +86,11 @@
   }
 }
 
-- (void)setCircleRadius:(double)a3
+- (void)setCircleRadius:(double)radius
 {
-  if (self->_circleRadius != a3)
+  if (self->_circleRadius != radius)
   {
-    self->_circleRadius = a3;
+    self->_circleRadius = radius;
     [(GKCurvedTextLabel *)self invalidateCachedSize];
     [(GKCurvedTextLabel *)self _updateMaxSize];
     [(GKCurvedTextLabel *)self setNeedsLayout];
@@ -99,11 +99,11 @@
   }
 }
 
-- (void)setCenterAngle:(double)a3
+- (void)setCenterAngle:(double)angle
 {
-  if (self->_centerAngle != a3)
+  if (self->_centerAngle != angle)
   {
-    self->_centerAngle = a3;
+    self->_centerAngle = angle;
     [(GKCurvedTextLabel *)self invalidateCachedSize];
     [(GKCurvedTextLabel *)self setNeedsLayout];
 
@@ -111,17 +111,17 @@
   }
 }
 
-- (void)setMaxAngularWidth:(double)a3
+- (void)setMaxAngularWidth:(double)width
 {
-  v5 = fmod(a3, 6.28318531);
-  if (a3 <= 6.28318531)
+  widthCopy = fmod(width, 6.28318531);
+  if (width <= 6.28318531)
   {
-    v5 = a3;
+    widthCopy = width;
   }
 
-  if (self->_maxAngularWidth != v5)
+  if (self->_maxAngularWidth != widthCopy)
   {
-    self->_maxAngularWidth = v5;
+    self->_maxAngularWidth = widthCopy;
 
     [(GKCurvedTextLabel *)self _updateMaxSize];
   }
@@ -157,14 +157,14 @@
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   textColor = self->_textColor;
-  v7 = v5;
-  if (!v5 || !textColor)
+  v7 = colorCopy;
+  if (!colorCopy || !textColor)
   {
-    if (textColor == v5)
+    if (textColor == colorCopy)
     {
       goto LABEL_7;
     }
@@ -172,10 +172,10 @@
     goto LABEL_6;
   }
 
-  if (([(UIColor *)v5 isEqual:?]& 1) == 0)
+  if (([(UIColor *)colorCopy isEqual:?]& 1) == 0)
   {
 LABEL_6:
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
     [(GKCurvedTextLabel *)self _updateTextColor];
   }
 
@@ -193,24 +193,24 @@ LABEL_7:
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  if (([v4 isEqualToAttributedString:self->_textStorage] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToAttributedString:self->_textStorage] & 1) == 0)
   {
-    if (!v4)
+    if (!textCopy)
     {
       goto LABEL_11;
     }
 
-    v5 = [v4 length];
+    v5 = [textCopy length];
     v6 = 0;
     v7 = 0;
     while (1)
     {
-      v8 = [v4 string];
-      v9 = [MEMORY[0x277CCA900] newlineCharacterSet];
-      v10 = [v8 rangeOfCharacterFromSet:v9 options:0 range:{v6, v5}];
+      string = [textCopy string];
+      newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+      v10 = [string rangeOfCharacterFromSet:newlineCharacterSet options:0 range:{v6, v5}];
       v12 = v11;
 
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
@@ -226,14 +226,14 @@ LABEL_7:
 
       else
       {
-        v7 = [v4 mutableCopy];
+        v7 = [textCopy mutableCopy];
       }
 
-      v13 = [v7 mutableString];
-      [v13 replaceCharactersInRange:v10 withString:{v12, @" "}];
+      mutableString = [v7 mutableString];
+      [mutableString replaceCharactersInRange:v10 withString:{v12, @" "}];
 
       v6 = v10 + 1;
-      v5 = [v4 length] - v6;
+      v5 = [textCopy length] - v6;
     }
 
     if (v7)
@@ -245,7 +245,7 @@ LABEL_7:
     else
     {
 LABEL_11:
-      v16 = [v4 mutableCopy];
+      v16 = [textCopy mutableCopy];
       v17 = v16;
       if (v16)
       {
@@ -350,19 +350,19 @@ void __39__GKCurvedTextLabel_setAttributedText___block_invoke(uint64_t a1, void 
 LABEL_12:
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (text)
   {
     v4 = MEMORY[0x277CCA898];
-    v5 = a3;
+    textCopy = text;
     v6 = [v4 alloc];
     font = self->_font;
     v10 = *MEMORY[0x277D740A8];
     v11[0] = font;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v9 = [v6 initWithString:v5 attributes:v8];
+    v9 = [v6 initWithString:textCopy attributes:v8];
   }
 
   else
@@ -373,14 +373,14 @@ LABEL_12:
   [(GKCurvedTextLabel *)self setAttributedText:v9];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   font = self->_font;
-  v8 = v5;
-  if (!v5 || !font)
+  v8 = fontCopy;
+  if (!fontCopy || !font)
   {
-    if (font == v5)
+    if (font == fontCopy)
     {
       goto LABEL_7;
     }
@@ -388,12 +388,12 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  if (([(UIFont *)v5 isEqual:?]& 1) == 0)
+  if (([(UIFont *)fontCopy isEqual:?]& 1) == 0)
   {
 LABEL_6:
-    objc_storeStrong(&self->_font, a3);
-    v7 = [(GKCurvedTextLabel *)self text];
-    [(GKCurvedTextLabel *)self setText:v7];
+    objc_storeStrong(&self->_font, font);
+    text = [(GKCurvedTextLabel *)self text];
+    [(GKCurvedTextLabel *)self setText:text];
 
     [(GKCurvedTextLabel *)self invalidateCachedSize];
   }
@@ -416,7 +416,7 @@ LABEL_7:
   *&self->_cachedTrailingAngle = v2;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   p_cachedSize = &self->_cachedSize;
   if (self->_cachedSizeIsValid)
@@ -427,7 +427,7 @@ LABEL_7:
 
   else
   {
-    [(GKCurvedTextLabel *)self _glyphsBoundingRect:a3.width];
+    [(GKCurvedTextLabel *)self _glyphsBoundingRect:fits.width];
     width = v7;
     height = v8;
     p_cachedSize->width = v7;
@@ -440,17 +440,17 @@ LABEL_7:
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
   [(GKCurvedTextLabel *)self _glyphsBoundingRect];
   [GKCurvedTextLabel _offsetOfBoundingRect:"_offsetOfBoundingRect:inRect:" inRect:?];
   v5 = v4;
   v7 = v6;
-  v8 = [(GKCurvedTextLabel *)self _newLineFromDrawableTextStorage];
-  ImageBounds = CTLineGetImageBounds(v8, 0);
+  _newLineFromDrawableTextStorage = [(GKCurvedTextLabel *)self _newLineFromDrawableTextStorage];
+  ImageBounds = CTLineGetImageBounds(_newLineFromDrawableTextStorage, 0);
   x = ImageBounds.origin.x;
   y = ImageBounds.origin.y;
-  CFRelease(v8);
+  CFRelease(_newLineFromDrawableTextStorage);
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3010000000;
@@ -513,7 +513,7 @@ void __36__GKCurvedTextLabel_drawTextInRect___block_invoke(uint64_t a1, uint64_t
   return result;
 }
 
-- (_NSRange)_drawableCharacterRange:(_NSRange *)a3
+- (_NSRange)_drawableCharacterRange:(_NSRange *)range
 {
   v5 = [(NSLayoutManager *)self->_layoutManager glyphRangeForTextContainer:self->_textContainer];
   v7 = v6;
@@ -521,10 +521,10 @@ void __36__GKCurvedTextLabel_drawTextInRect___block_invoke(uint64_t a1, uint64_t
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v8 + 1;
-    if (a3)
+    if (range)
     {
-      a3->location = [(NSLayoutManager *)self->_layoutManager characterRangeForGlyphRange:v8 actualGlyphRange:v9, 0];
-      a3->length = v10;
+      range->location = [(NSLayoutManager *)self->_layoutManager characterRangeForGlyphRange:v8 actualGlyphRange:v9, 0];
+      range->length = v10;
     }
   }
 
@@ -571,18 +571,18 @@ void __36__GKCurvedTextLabel_drawTextInRect___block_invoke(uint64_t a1, uint64_t
   return v11;
 }
 
-- (CGPoint)_offsetOfBoundingRect:(CGRect)a3 inRect:(CGRect)a4
+- (CGPoint)_offsetOfBoundingRect:(CGRect)rect inRect:(CGRect)inRect
 {
-  rect = a4.size.height;
-  width = a3.size.width;
-  v4 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  height = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
-  v11 = CGRectGetWidth(a4);
+  rect = inRect.size.height;
+  width = rect.size.width;
+  v4 = inRect.size.width;
+  y = inRect.origin.y;
+  x = inRect.origin.x;
+  height = rect.size.height;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
+  v11 = CGRectGetWidth(inRect);
   v19.origin.x = v10;
   v19.origin.y = v9;
   v19.size.width = v8;
@@ -732,9 +732,9 @@ void __40__GKCurvedTextLabel__glyphsBoundingRect__block_invoke(void *a1, double 
   return result;
 }
 
-- (void)_enumerateTransformsForDrawableCharacters:(id)a3
+- (void)_enumerateTransformsForDrawableCharacters:(id)characters
 {
-  v73 = a3;
+  charactersCopy = characters;
   [(GKCurvedTextLabel *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -742,8 +742,8 @@ void __40__GKCurvedTextLabel__glyphsBoundingRect__block_invoke(void *a1, double 
   v11 = v10;
   [(GKCurvedTextLabel *)self _distance];
   v13 = v12;
-  v14 = [(GKCurvedTextLabel *)self _newLineFromDrawableTextStorage];
-  ImageBounds = CTLineGetImageBounds(v14, 0);
+  _newLineFromDrawableTextStorage = [(GKCurvedTextLabel *)self _newLineFromDrawableTextStorage];
+  ImageBounds = CTLineGetImageBounds(_newLineFromDrawableTextStorage, 0);
   width = ImageBounds.size.width;
   x = ImageBounds.origin.x;
   y = ImageBounds.origin.y;
@@ -752,10 +752,10 @@ void __40__GKCurvedTextLabel__glyphsBoundingRect__block_invoke(void *a1, double 
   TypographicBounds = 0.0;
   if (self->_hasMonospacedNumbers)
   {
-    TypographicBounds = CTLineGetTypographicBounds(v14, 0, 0, 0);
+    TypographicBounds = CTLineGetTypographicBounds(_newLineFromDrawableTextStorage, 0, 0, 0);
   }
 
-  CFRelease(v14);
+  CFRelease(_newLineFromDrawableTextStorage);
   v61 = y;
   if (self->_hasMonospacedNumbers)
   {
@@ -824,11 +824,11 @@ void __40__GKCurvedTextLabel__glyphsBoundingRect__block_invoke(void *a1, double 
     v102.size.width = rect;
     v13 = *&v70;
     v103 = CGRectOffset(v102, -MidX, -v34);
-    v35 = v73[2];
+    v35 = charactersCopy[2];
     v89 = v92;
     v90 = v93;
     v91 = v94;
-    v35(v73, 0x7FFFFFFFFFFFFFFFLL, 0, &v89, MidX, v34, v103.origin.x, v103.origin.y, v103.size.width, v103.size.height, v95);
+    v35(charactersCopy, 0x7FFFFFFFFFFFFFFFLL, 0, &v89, MidX, v34, v103.origin.x, v103.origin.y, v103.size.width, v103.size.height, v95);
   }
 
   v71 = v24 + v26;
@@ -893,7 +893,7 @@ void __40__GKCurvedTextLabel__glyphsBoundingRect__block_invoke(void *a1, double 
       v44 = &v92 + 8;
     }
 
-    v75 = v73;
+    v75 = charactersCopy;
     v86 = v37;
     v87 = v40;
     [v41 enumerateRangesUsingBlock:v74];
@@ -948,11 +948,11 @@ void __40__GKCurvedTextLabel__glyphsBoundingRect__block_invoke(void *a1, double 
     v108.size.width = v68;
     v108.size.height = v50;
     v109 = CGRectOffset(v108, -v54, -v52);
-    v55 = v73[2];
+    v55 = charactersCopy[2];
     v89 = v92;
     v90 = v93;
     v91 = v94;
-    v55(v73, 0x7FFFFFFFFFFFFFFFLL, 0, &v89, v54, v52, v109.origin.x, v109.origin.y, v109.size.width, v109.size.height, v95);
+    v55(charactersCopy, 0x7FFFFFFFFFFFFFFFLL, 0, &v89, v54, v52, v109.origin.x, v109.origin.y, v109.size.width, v109.size.height, v95);
   }
 }
 

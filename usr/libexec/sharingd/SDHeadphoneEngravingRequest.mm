@@ -1,19 +1,19 @@
 @interface SDHeadphoneEngravingRequest
-- (SDHeadphoneEngravingRequest)initWithBluetoothAddress:(id)a3;
-- (void)handleEngravingData:(id)a3;
+- (SDHeadphoneEngravingRequest)initWithBluetoothAddress:(id)address;
+- (void)handleEngravingData:(id)data;
 - (void)requestEngravingInfo;
 - (void)start;
 @end
 
 @implementation SDHeadphoneEngravingRequest
 
-- (SDHeadphoneEngravingRequest)initWithBluetoothAddress:(id)a3
+- (SDHeadphoneEngravingRequest)initWithBluetoothAddress:(id)address
 {
   v10.receiver = self;
   v10.super_class = SDHeadphoneEngravingRequest;
-  v3 = a3;
+  addressCopy = address;
   v4 = [(SDHeadphoneEngravingRequest *)&v10 init];
-  v5 = [v3 copy];
+  v5 = [addressCopy copy];
 
   bluetoothAddressString = v4->_bluetoothAddressString;
   v4->_bluetoothAddressString = v5;
@@ -32,14 +32,14 @@
     sub_100106CC8(self);
   }
 
-  v3 = self;
-  dispatchQueue = v3->_dispatchQueue;
+  selfCopy = self;
+  dispatchQueue = selfCopy->_dispatchQueue;
   if (BTSessionAttachWithQueue())
   {
-    CFRelease(v3);
+    CFRelease(selfCopy);
   }
 
-  btSession = v3->_btSession;
+  btSession = selfCopy->_btSession;
   BTAccessoryManagerGetDefault();
   if (BTAccessoryManagerRegisterCustomMessageClient() && dword_100970B50 <= 90 && (dword_100970B50 != -1 || _LogCategory_Initialize()))
   {
@@ -92,11 +92,11 @@ LABEL_18:
   }
 }
 
-- (void)handleEngravingData:(id)a3
+- (void)handleEngravingData:(id)data
 {
-  v4 = a3;
-  v5 = [(SDHeadphoneEngravingRequest *)self completion];
-  (v5)[2](v5, v4);
+  dataCopy = data;
+  completion = [(SDHeadphoneEngravingRequest *)self completion];
+  (completion)[2](completion, dataCopy);
 
   [(SDHeadphoneEngravingRequest *)self cancel];
 }

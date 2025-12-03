@@ -1,53 +1,53 @@
 @interface _UISplitViewControllerAdaptiveImplStyle
-- (BOOL)canDisplayAdjacentColumnBeneathColumn:(int64_t)a3;
+- (BOOL)canDisplayAdjacentColumnBeneathColumn:(int64_t)column;
 - (BOOL)prefersInsetSidebar;
-- (NSDirectionalEdgeInsets)frameInsetsForColumn:(int64_t)a3;
+- (NSDirectionalEdgeInsets)frameInsetsForColumn:(int64_t)column;
 - (UIColor)primaryBackgroundColor;
 - (_UISidebarPlatformMetrics)sidebarMetrics;
 - (_UISidebarWidths)sidebarWidthMetrics;
 - (_UISplitViewControllerAdaptiveImplStyle)init;
-- (_UISplitViewControllerAdaptiveImplStyle)initWithInstance:(id)a3;
-- (_UISplitViewControllerAdaptiveImplStyle)initWithSplitViewController:(id)a3;
-- (double)cornerRadiusForColumn:(int64_t)a3;
-- (double)maximumWidthForColumn:(int64_t)a3;
-- (double)minimumWidthForColumn:(int64_t)a3;
-- (double)preferredWidthForColumn:(int64_t)a3;
+- (_UISplitViewControllerAdaptiveImplStyle)initWithInstance:(id)instance;
+- (_UISplitViewControllerAdaptiveImplStyle)initWithSplitViewController:(id)controller;
+- (double)cornerRadiusForColumn:(int64_t)column;
+- (double)maximumWidthForColumn:(int64_t)column;
+- (double)minimumWidthForColumn:(int64_t)column;
+- (double)preferredWidthForColumn:(int64_t)column;
 - (double)separatorWidth;
-- (id)backgroundForBackgroundStyle:(int64_t)a3;
+- (id)backgroundForBackgroundStyle:(int64_t)style;
 - (int64_t)userInterfaceIdiom;
-- (unint64_t)edgesExtendingIntoUnsafeAreaForColumn:(int64_t)a3;
+- (unint64_t)edgesExtendingIntoUnsafeAreaForColumn:(int64_t)column;
 @end
 
 @implementation _UISplitViewControllerAdaptiveImplStyle
 
-- (_UISplitViewControllerAdaptiveImplStyle)initWithSplitViewController:(id)a3
+- (_UISplitViewControllerAdaptiveImplStyle)initWithSplitViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = _UISplitViewControllerAdaptiveImplStyle;
-  return [(_UISplitViewControllerStyle *)&v4 initWithSplitViewController:a3];
+  return [(_UISplitViewControllerStyle *)&v4 initWithSplitViewController:controller];
 }
 
-- (id)backgroundForBackgroundStyle:(int64_t)a3
+- (id)backgroundForBackgroundStyle:(int64_t)style
 {
-  v4 = self;
-  v5 = sub_188BB4230(a3);
+  selfCopy = self;
+  v5 = sub_188BB4230(style);
 
   return v5;
 }
 
 - (_UISidebarPlatformMetrics)sidebarMetrics
 {
-  v2 = self;
-  v3 = _UISidebarGetPlatformMetrics([(_UISplitViewControllerAdaptiveImplStyle *)v2 userInterfaceIdiom]);
+  selfCopy = self;
+  v3 = _UISidebarGetPlatformMetrics([(_UISplitViewControllerAdaptiveImplStyle *)selfCopy userInterfaceIdiom]);
 
   return v3;
 }
 
-- (double)cornerRadiusForColumn:(int64_t)a3
+- (double)cornerRadiusForColumn:(int64_t)column
 {
-  v3 = self;
-  v4 = [(_UISplitViewControllerAdaptiveImplStyle *)v3 sidebarMetrics];
-  [(_UISidebarPlatformMetrics *)v4 fallbackCornerRadius];
+  selfCopy = self;
+  sidebarMetrics = [(_UISplitViewControllerAdaptiveImplStyle *)selfCopy sidebarMetrics];
+  [(_UISidebarPlatformMetrics *)sidebarMetrics fallbackCornerRadius];
   v6 = v5;
 
   return v6;
@@ -55,9 +55,9 @@
 
 - (double)separatorWidth
 {
-  v2 = self;
-  v3 = [(_UISplitViewControllerStyle *)v2 splitViewController];
-  if (v3 && (v4 = v3, v5 = [(UIViewController *)v3 _lastNotifiedTraitCollection], v4, v5))
+  selfCopy = self;
+  splitViewController = [(_UISplitViewControllerStyle *)selfCopy splitViewController];
+  if (splitViewController && (v4 = splitViewController, v5 = [(UIViewController *)splitViewController _lastNotifiedTraitCollection], v4, v5))
   {
     [(UITraitCollection *)v5 displayScale];
     v7 = v6;
@@ -78,28 +78,28 @@
 
 - (UIColor)primaryBackgroundColor
 {
-  v2 = [objc_opt_self() systemBackgroundColor];
+  systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
 
-  return v2;
+  return systemBackgroundColor;
 }
 
-- (double)preferredWidthForColumn:(int64_t)a3
+- (double)preferredWidthForColumn:(int64_t)column
 {
-  v4 = self;
-  sub_1891EFA70(a3);
+  selfCopy = self;
+  sub_1891EFA70(column);
   v6 = v5;
 
   return v6;
 }
 
-- (double)minimumWidthForColumn:(int64_t)a3
+- (double)minimumWidthForColumn:(int64_t)column
 {
-  switch(a3)
+  switch(column)
   {
     case 4:
-      v5 = self;
-      v6 = [(_UISplitViewControllerAdaptiveImplStyle *)v5 sidebarMetrics];
-      [(_UISidebarPlatformMetrics *)v6 inspectorWidthMetrics];
+      selfCopy = self;
+      sidebarMetrics = [(_UISplitViewControllerAdaptiveImplStyle *)selfCopy sidebarMetrics];
+      [(_UISidebarPlatformMetrics *)sidebarMetrics inspectorWidthMetrics];
       v8 = v7;
 
       return v8;
@@ -113,19 +113,19 @@
   }
 }
 
-- (double)maximumWidthForColumn:(int64_t)a3
+- (double)maximumWidthForColumn:(int64_t)column
 {
-  if (a3 == 4)
+  if (column == 4)
   {
-    v5 = self;
-    v6 = [(_UISplitViewControllerAdaptiveImplStyle *)v5 sidebarMetrics];
-    [(_UISidebarPlatformMetrics *)v6 inspectorWidthMetrics];
+    selfCopy = self;
+    sidebarMetrics = [(_UISplitViewControllerAdaptiveImplStyle *)selfCopy sidebarMetrics];
+    [(_UISidebarPlatformMetrics *)sidebarMetrics inspectorWidthMetrics];
     v8 = v7;
 
     return v8;
   }
 
-  else if (a3)
+  else if (column)
   {
     return 1.79769313e308;
   }
@@ -137,9 +137,9 @@
   }
 }
 
-- (NSDirectionalEdgeInsets)frameInsetsForColumn:(int64_t)a3
+- (NSDirectionalEdgeInsets)frameInsetsForColumn:(int64_t)column
 {
-  if (a3)
+  if (column)
   {
     v3 = 0.0;
     v4 = 0.0;
@@ -149,11 +149,11 @@
 
   else
   {
-    v7 = self;
-    if ([(_UISplitViewControllerAdaptiveImplStyle *)v7 prefersInsetSidebar])
+    selfCopy = self;
+    if ([(_UISplitViewControllerAdaptiveImplStyle *)selfCopy prefersInsetSidebar])
     {
-      v8 = [(_UISplitViewControllerAdaptiveImplStyle *)v7 sidebarMetrics];
-      [(_UISidebarPlatformMetrics *)v8 platterInsets];
+      sidebarMetrics = [(_UISplitViewControllerAdaptiveImplStyle *)selfCopy sidebarMetrics];
+      [(_UISidebarPlatformMetrics *)sidebarMetrics platterInsets];
       v10 = v9;
       v12 = v11;
       v14 = v13;
@@ -181,15 +181,15 @@
   return result;
 }
 
-- (unint64_t)edgesExtendingIntoUnsafeAreaForColumn:(int64_t)a3
+- (unint64_t)edgesExtendingIntoUnsafeAreaForColumn:(int64_t)column
 {
-  if (a3)
+  if (column)
   {
     return 0;
   }
 
-  v4 = self;
-  if ([(_UISplitViewControllerAdaptiveImplStyle *)v4 userInterfaceIdiom]>= 2)
+  selfCopy = self;
+  if ([(_UISplitViewControllerAdaptiveImplStyle *)selfCopy userInterfaceIdiom]>= 2)
   {
 
     return 0;
@@ -197,9 +197,9 @@
 
   else
   {
-    v5 = [(_UISplitViewControllerAdaptiveImplStyle *)v4 prefersInsetSidebar];
+    prefersInsetSidebar = [(_UISplitViewControllerAdaptiveImplStyle *)selfCopy prefersInsetSidebar];
 
-    if (v5)
+    if (prefersInsetSidebar)
     {
       return 4;
     }
@@ -211,14 +211,14 @@
   }
 }
 
-- (BOOL)canDisplayAdjacentColumnBeneathColumn:(int64_t)a3
+- (BOOL)canDisplayAdjacentColumnBeneathColumn:(int64_t)column
 {
-  if (a3 == 4)
+  if (column == 4)
   {
     return 1;
   }
 
-  if (a3)
+  if (column)
   {
     return 0;
   }
@@ -228,13 +228,13 @@
 
 - (BOOL)prefersInsetSidebar
 {
-  v2 = self;
-  v3 = [(_UISplitViewControllerStyle *)v2 splitViewController];
-  if (v3)
+  selfCopy = self;
+  splitViewController = [(_UISplitViewControllerStyle *)selfCopy splitViewController];
+  if (splitViewController)
   {
-    v4 = v3;
-    v5 = [(UISplitViewController *)v3 primaryBackgroundStyle];
-    if (v5 == 1)
+    v4 = splitViewController;
+    primaryBackgroundStyle = [(UISplitViewController *)splitViewController primaryBackgroundStyle];
+    if (primaryBackgroundStyle == 1)
     {
 
       return 1;
@@ -242,7 +242,7 @@
 
     else
     {
-      v7 = v5;
+      v7 = primaryBackgroundStyle;
       if (qword_1EA930880 != -1)
       {
         swift_once();
@@ -263,7 +263,7 @@
 
 - (_UISidebarWidths)sidebarWidthMetrics
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1891EFF5C();
   v5 = v4;
   v7 = v6;
@@ -279,7 +279,7 @@
 
 - (int64_t)userInterfaceIdiom
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1891F0054();
 
   return v3;
@@ -292,7 +292,7 @@
   return [(_UISplitViewControllerAdaptiveImplStyle *)&v3 init];
 }
 
-- (_UISplitViewControllerAdaptiveImplStyle)initWithInstance:(id)a3
+- (_UISplitViewControllerAdaptiveImplStyle)initWithInstance:(id)instance
 {
   swift_unknownObjectRetain();
   sub_18A4A7DE8();

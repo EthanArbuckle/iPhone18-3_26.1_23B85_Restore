@@ -1,17 +1,17 @@
 @interface MapsSavedRoutesManager
-+ (BOOL)didThisDeviceCreateRouteData:(id)a3;
-+ (id)routeDataForMapsSyncUserRoute:(id)a3;
++ (BOOL)didThisDeviceCreateRouteData:(id)data;
++ (id)routeDataForMapsSyncUserRoute:(id)route;
 + (unint64_t)savedRoutesCount;
-+ (void)_deleteIDFromLocalListWithRoute:(id)a3;
-+ (void)_fetchSavedRoutesWithStorageID:(id)a3 handler:(id)a4;
-+ (void)_saveToLocalListWithRoute:(id)a3;
-+ (void)_updateLocalListWithKnownRoutes:(id)a3;
-+ (void)_updateUserRoute:(id)a3 withRouteData:(id)a4;
-+ (void)deleteRoute:(id)a3 completion:(id)a4;
-+ (void)deleteRouteStorageID:(id)a3 completion:(id)a4;
-+ (void)fetchSavedRoutesWithTourMuid:(unint64_t)a3 completion:(id)a4;
-+ (void)fetchSavedRoutesWithType:(int64_t)a3 matchingQuery:(id)a4 range:(id)a5 completion:(id)a6;
-+ (void)saveRouteData:(id)a3 completion:(id)a4;
++ (void)_deleteIDFromLocalListWithRoute:(id)route;
++ (void)_fetchSavedRoutesWithStorageID:(id)d handler:(id)handler;
++ (void)_saveToLocalListWithRoute:(id)route;
++ (void)_updateLocalListWithKnownRoutes:(id)routes;
++ (void)_updateUserRoute:(id)route withRouteData:(id)data;
++ (void)deleteRoute:(id)route completion:(id)completion;
++ (void)deleteRouteStorageID:(id)d completion:(id)completion;
++ (void)fetchSavedRoutesWithTourMuid:(unint64_t)muid completion:(id)completion;
++ (void)fetchSavedRoutesWithType:(int64_t)type matchingQuery:(id)query range:(id)range completion:(id)completion;
++ (void)saveRouteData:(id)data completion:(id)completion;
 @end
 
 @implementation MapsSavedRoutesManager
@@ -39,9 +39,9 @@
   return v6;
 }
 
-+ (void)_deleteIDFromLocalListWithRoute:(id)a3
++ (void)_deleteIDFromLocalListWithRoute:(id)route
 {
-  v3 = a3;
+  routeCopy = route;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v4 = GEOConfigGetArray();
   v5 = v4;
@@ -52,11 +52,11 @@
 
   v6 = [v4 mutableCopy];
 
-  v7 = [v3 UUIDString];
+  uUIDString = [routeCopy UUIDString];
 
-  if (v7)
+  if (uUIDString)
   {
-    [v6 removeObject:v7];
+    [v6 removeObject:uUIDString];
   }
 
   else
@@ -72,9 +72,9 @@
   GEOConfigSetArray();
 }
 
-+ (void)_saveToLocalListWithRoute:(id)a3
++ (void)_saveToLocalListWithRoute:(id)route
 {
-  v3 = a3;
+  routeCopy = route;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v4 = GEOConfigGetArray();
   v5 = v4;
@@ -90,13 +90,13 @@
 
   v7 = [NSMutableSet setWithArray:v6];
 
-  v8 = [v3 storageID];
+  storageID = [routeCopy storageID];
 
-  v9 = [v8 UUIDString];
+  uUIDString = [storageID UUIDString];
 
-  if (v9)
+  if (uUIDString)
   {
-    [v7 addObject:v9];
+    [v7 addObject:uUIDString];
   }
 
   else
@@ -110,9 +110,9 @@
   }
 }
 
-+ (void)_updateLocalListWithKnownRoutes:(id)a3
++ (void)_updateLocalListWithKnownRoutes:(id)routes
 {
-  v3 = a3;
+  routesCopy = routes;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v4 = GEOConfigGetArray();
   v5 = v4;
@@ -133,7 +133,7 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v3;
+  v9 = routesCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v10)
   {
@@ -148,13 +148,13 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v18 + 1) + 8 * i) storageID];
-        v15 = [v14 UUIDString];
+        storageID = [*(*(&v18 + 1) + 8 * i) storageID];
+        uUIDString = [storageID UUIDString];
 
-        if (v15 && [v7 containsObject:v15])
+        if (uUIDString && [v7 containsObject:uUIDString])
         {
-          [v7 removeObject:v15];
-          [v8 addObject:v15];
+          [v7 removeObject:uUIDString];
+          [v8 addObject:uUIDString];
         }
       }
 
@@ -175,13 +175,13 @@
     }
   }
 
-  v17 = [v8 allObjects];
+  allObjects = [v8 allObjects];
   GEOConfigSetArray();
 }
 
-+ (BOOL)didThisDeviceCreateRouteData:(id)a3
++ (BOOL)didThisDeviceCreateRouteData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   v4 = GEOConfigGetArray();
   v5 = v4;
@@ -212,9 +212,9 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v3 storageID];
-        v14 = [v13 UUIDString];
-        LOBYTE(v12) = [v14 isEqualToString:v12];
+        storageID = [dataCopy storageID];
+        uUIDString = [storageID UUIDString];
+        LOBYTE(v12) = [uUIDString isEqualToString:v12];
 
         if (v12)
         {
@@ -238,15 +238,15 @@ LABEL_13:
   return v9;
 }
 
-+ (id)routeDataForMapsSyncUserRoute:(id)a3
++ (id)routeDataForMapsSyncUserRoute:(id)route
 {
-  v3 = a3;
-  if (v3)
+  routeCopy = route;
+  if (routeCopy)
   {
     v4 = objc_opt_class();
-    v5 = [v3 routeGeometry];
+    routeGeometry = [routeCopy routeGeometry];
     v21 = 0;
-    v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:v4 fromData:v5 error:&v21];
+    v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:v4 fromData:routeGeometry error:&v21];
     v7 = v21;
 
     if (v7 || !v6)
@@ -264,34 +264,34 @@ LABEL_13:
 
     else
     {
-      v8 = [v6 version];
-      if (v8 != [v6 originalVersion])
+      version = [v6 version];
+      if (version != [v6 originalVersion])
       {
         v9 = sub_100C3CC40();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
-          v10 = [v6 originalVersion];
-          v11 = [v6 version];
+          originalVersion = [v6 originalVersion];
+          version2 = [v6 version];
           *buf = 134218240;
-          v23 = v10;
+          v23 = originalVersion;
           v24 = 2048;
-          v25 = v11;
+          v25 = version2;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Updated route data from version %llu to %llu.", buf, 0x16u);
         }
       }
 
-      v12 = [v3 identifier];
-      [v6 setStorageID:v12];
+      identifier = [routeCopy identifier];
+      [v6 setStorageID:identifier];
 
-      v13 = [v6 storageID];
+      storageID = [v6 storageID];
 
-      if (!v13)
+      if (!storageID)
       {
         v14 = sub_100C3CC40();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v23 = v3;
+          v23 = routeCopy;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "didn't get an identifier from %@", buf, 0xCu);
         }
 
@@ -301,9 +301,9 @@ LABEL_13:
 
       if (![v6 source])
       {
-        v16 = [v6 tourIdentifier];
+        tourIdentifier = [v6 tourIdentifier];
 
-        if (v16)
+        if (tourIdentifier)
         {
           v17 = 2;
         }
@@ -328,93 +328,93 @@ LABEL_13:
   return v18;
 }
 
-+ (void)_updateUserRoute:(id)a3 withRouteData:(id)a4
++ (void)_updateUserRoute:(id)route withRouteData:(id)data
 {
-  v31 = a3;
-  v5 = a4;
-  v6 = [v5 userProvidedName];
-  [v31 setCustomName:v6];
+  routeCopy = route;
+  dataCopy = data;
+  userProvidedName = [dataCopy userProvidedName];
+  [routeCopy setCustomName:userProvidedName];
 
-  v7 = [v5 userProvidedNotes];
-  [v31 setCustomNote:v7];
+  userProvidedNotes = [dataCopy userProvidedNotes];
+  [routeCopy setCustomNote:userProvidedNotes];
 
-  [v31 setTourIdentifier:{objc_msgSend(v5, "tourMuid")}];
-  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 transportType]);
-  [v31 setTransportType:v8];
+  [routeCopy setTourIdentifier:{objc_msgSend(dataCopy, "tourMuid")}];
+  v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [dataCopy transportType]);
+  [routeCopy setTransportType:v8];
 
-  [v5 distance];
+  [dataCopy distance];
   v9 = [NSNumber numberWithDouble:?];
-  [v31 setLength:v9];
+  [routeCopy setLength:v9];
 
-  v10 = [v5 address];
-  v11 = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
-  [v31 setAddressObject:v11];
+  address = [dataCopy address];
+  v11 = [NSKeyedArchiver archivedDataWithRootObject:address requiringSecureCoding:1 error:0];
+  [routeCopy setAddressObject:v11];
 
-  v12 = [v5 anchorPoints];
-  v13 = [v12 count];
+  anchorPoints = [dataCopy anchorPoints];
+  v13 = [anchorPoints count];
 
   if (v13)
   {
-    v14 = [v5 anchorPoints];
-    v15 = [v14 firstObject];
+    anchorPoints2 = [dataCopy anchorPoints];
+    firstObject = [anchorPoints2 firstObject];
 
-    [v15 coordinate];
+    [firstObject coordinate];
     v16 = [NSNumber numberWithDouble:?];
-    [v31 setOriginLatitude:v16];
+    [routeCopy setOriginLatitude:v16];
 
-    [v15 coordinate];
+    [firstObject coordinate];
     v18 = [NSNumber numberWithDouble:v17];
-    [v31 setOriginLongitude:v18];
+    [routeCopy setOriginLongitude:v18];
   }
 
-  v19 = [v5 elevationProfile];
+  elevationProfile = [dataCopy elevationProfile];
 
-  if (v19)
+  if (elevationProfile)
   {
-    v20 = [v5 elevationProfile];
-    v21 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [v20 sumElevationGainCm] * 0.01);
-    [v31 setTotalAscent:v21];
+    elevationProfile2 = [dataCopy elevationProfile];
+    v21 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [elevationProfile2 sumElevationGainCm] * 0.01);
+    [routeCopy setTotalAscent:v21];
 
-    v22 = [v5 elevationProfile];
-    v23 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [v22 sumElevationLossCm] * 0.01);
-    [v31 setTotalDescent:v23];
+    elevationProfile3 = [dataCopy elevationProfile];
+    v23 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", [elevationProfile3 sumElevationLossCm] * 0.01);
+    [routeCopy setTotalDescent:v23];
   }
 
-  v24 = [v5 boundingMapRegion];
-  v25 = v24;
-  if (v24)
+  boundingMapRegion = [dataCopy boundingMapRegion];
+  v25 = boundingMapRegion;
+  if (boundingMapRegion)
   {
-    [v24 northLat];
+    [boundingMapRegion northLat];
     v26 = [NSNumber numberWithDouble:?];
-    [v31 setNorthLatitude:v26];
+    [routeCopy setNorthLatitude:v26];
 
     [v25 southLat];
     v27 = [NSNumber numberWithDouble:?];
-    [v31 setSouthLatitude:v27];
+    [routeCopy setSouthLatitude:v27];
 
     [v25 eastLng];
     v28 = [NSNumber numberWithDouble:?];
-    [v31 setEastLongitude:v28];
+    [routeCopy setEastLongitude:v28];
 
     [v25 westLng];
     v29 = [NSNumber numberWithDouble:?];
-    [v31 setWestLongitude:v29];
+    [routeCopy setWestLongitude:v29];
   }
 
-  v30 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
-  [v31 setRouteGeometry:v30];
+  v30 = [NSKeyedArchiver archivedDataWithRootObject:dataCopy requiringSecureCoding:1 error:0];
+  [routeCopy setRouteGeometry:v30];
 }
 
-+ (void)_fetchSavedRoutesWithStorageID:(id)a3 handler:(id)a4
++ (void)_fetchSavedRoutesWithStorageID:(id)d handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v5)
+    if (dCopy)
     {
       v7 = objc_opt_new();
-      v18 = v5;
+      v18 = dCopy;
       v8 = [NSArray arrayWithObjects:&v18 count:1];
       v9 = [_TtC8MapsSync22MapsSyncQueryPredicate queryPredicateWithFormat:@"identifier == %@" argumentArray:v8];
 
@@ -423,8 +423,8 @@ LABEL_13:
       v15[1] = 3221225472;
       v15[2] = sub_100C3DC84;
       v15[3] = &unk_1016601F0;
-      v16 = v5;
-      v17 = v6;
+      v16 = dCopy;
+      v17 = handlerCopy;
       [v7 fetchWithOptions:v10 completionHandler:v15];
 
       goto LABEL_4;
@@ -456,7 +456,7 @@ LABEL_13:
       }
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
@@ -494,24 +494,24 @@ LABEL_5:
   }
 }
 
-+ (void)deleteRouteStorageID:(id)a3 completion:(id)a4
++ (void)deleteRouteStorageID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (dCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100C3DF24;
     v10[3] = &unk_101661318;
-    v12 = v7;
-    v13 = a1;
-    v11 = v6;
+    v12 = completionCopy;
+    selfCopy = self;
+    v11 = dCopy;
     [MapsSavedRoutesManager _fetchSavedRoutesWithStorageID:v11 handler:v10];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v9 = sub_100C3CC40();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -524,18 +524,18 @@ LABEL_5:
   }
 }
 
-+ (void)deleteRoute:(id)a3 completion:(id)a4
++ (void)deleteRoute:(id)route completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 storageID];
-  [a1 deleteRouteStorageID:v7 completion:v6];
+  completionCopy = completion;
+  storageID = [route storageID];
+  [self deleteRouteStorageID:storageID completion:completionCopy];
 }
 
-+ (void)saveRouteData:(id)a3 completion:(id)a4
++ (void)saveRouteData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dataCopy = data;
+  completionCopy = completion;
+  if (!dataCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
@@ -546,42 +546,42 @@ LABEL_5:
     __break(1u);
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v9 = sub_100C3CC40();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 routeName];
-    v11 = [v6 anchorPoints];
+    routeName = [dataCopy routeName];
+    anchorPoints = [dataCopy anchorPoints];
     *buf = 138478083;
-    v26 = v10;
+    v26 = routeName;
     v27 = 1024;
-    v28 = [v11 count];
+    v28 = [anchorPoints count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Saving route. Name: %{private}@, Anchors: %d", buf, 0x12u);
   }
 
-  [v6 prepareForSaving];
+  [dataCopy prepareForSaving];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100C3E6C4;
   v21[3] = &unk_10164E660;
-  v12 = v6;
+  v12 = dataCopy;
   v22 = v12;
-  v24 = a1;
+  selfCopy = self;
   v13 = v8;
   v23 = v13;
   v14 = objc_retainBlock(v21);
-  v15 = [v12 storageID];
+  storageID = [v12 storageID];
 
-  if (v15)
+  if (storageID)
   {
-    v16 = [v12 storageID];
+    storageID2 = [v12 storageID];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100C3E814;
     v18[3] = &unk_1016601F0;
     v19 = v12;
     v20 = v14;
-    [MapsSavedRoutesManager _fetchSavedRoutesWithStorageID:v16 handler:v18];
+    [MapsSavedRoutesManager _fetchSavedRoutesWithStorageID:storageID2 handler:v18];
 
     v17 = v19;
   }
@@ -593,15 +593,15 @@ LABEL_5:
   }
 }
 
-+ (void)fetchSavedRoutesWithTourMuid:(unint64_t)a3 completion:(id)a4
++ (void)fetchSavedRoutesWithTourMuid:(unint64_t)muid completion:(id)completion
 {
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (a3)
+    if (muid)
     {
       v6 = objc_opt_new();
-      v7 = [NSNumber numberWithUnsignedLongLong:a3];
+      v7 = [NSNumber numberWithUnsignedLongLong:muid];
       v19 = v7;
       v8 = [NSArray arrayWithObjects:&v19 count:1];
       v9 = [_TtC8MapsSync22MapsSyncQueryPredicate queryPredicateWithFormat:@"tourIdentifier == %@" argumentArray:v8];
@@ -611,8 +611,8 @@ LABEL_5:
       v16[1] = 3221225472;
       v16[2] = sub_100C3EDC4;
       v16[3] = &unk_10164F6B8;
-      v18 = a3;
-      v17 = v5;
+      muidCopy = muid;
+      v17 = completionCopy;
       [v6 fetchWithOptions:v10 completionHandler:v16];
     }
 
@@ -654,18 +654,18 @@ LABEL_5:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "tourMuid of 0 is not valid.", buf, 2u);
       }
 
-      (*(v5 + 2))(v5, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
 
-+ (void)fetchSavedRoutesWithType:(int64_t)a3 matchingQuery:(id)a4 range:(id)a5 completion:(id)a6
++ (void)fetchSavedRoutesWithType:(int64_t)type matchingQuery:(id)query range:(id)range completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
-  if (v11)
+  queryCopy = query;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v12 = a5;
+    rangeCopy = range;
     v13 = sub_100C3CC40();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -674,30 +674,30 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
     }
 
-    if ([v10 length])
+    if ([queryCopy length])
     {
-      v14 = [_TtC8MapsSync22MapsSyncQueryPredicate predicateWithFormat:@"customName CONTAINS[cd] %@", v10];
+      queryCopy = [_TtC8MapsSync22MapsSyncQueryPredicate predicateWithFormat:@"customName CONTAINS[cd] %@", queryCopy];
     }
 
     else
     {
-      v14 = 0;
+      queryCopy = 0;
     }
 
     v15 = [NSSortDescriptor sortDescriptorWithKey:@"createTime" ascending:0];
     v16 = [_TtC8MapsSync20MapsSyncQueryOptions alloc];
     v24 = v15;
     v17 = [NSArray arrayWithObjects:&v24 count:1];
-    v18 = [v16 initWithPredicate:v14 sortDescriptors:v17 range:v12];
+    v18 = [v16 initWithPredicate:queryCopy sortDescriptors:v17 range:rangeCopy];
 
     v19 = objc_opt_new();
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100C3F264;
     v20[3] = &unk_10164E5A8;
-    v21 = v11;
-    v22 = a1;
-    v23 = a3;
+    v21 = completionCopy;
+    selfCopy = self;
+    typeCopy = type;
     [v19 fetchWithOptions:v18 completionHandler:v20];
   }
 }

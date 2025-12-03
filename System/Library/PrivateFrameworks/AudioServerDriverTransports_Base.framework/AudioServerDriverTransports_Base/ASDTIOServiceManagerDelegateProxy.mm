@@ -1,18 +1,18 @@
 @interface ASDTIOServiceManagerDelegateProxy
-+ (id)forDelegate:(id)a3 andIDValues:(id)a4;
++ (id)forDelegate:(id)delegate andIDValues:(id)values;
 - (ASDTIOServiceManagerDelegate)delegate;
 @end
 
 @implementation ASDTIOServiceManagerDelegateProxy
 
-+ (id)forDelegate:(id)a3 andIDValues:(id)a4
++ (id)forDelegate:(id)delegate andIDValues:(id)values
 {
-  v5 = a4;
-  v6 = a3;
+  valuesCopy = values;
+  delegateCopy = delegate;
   v7 = objc_alloc_init(ASDTIOServiceManagerDelegateProxy);
-  [(ASDTIOServiceManagerDelegateProxy *)v7 setDelegate:v6];
+  [(ASDTIOServiceManagerDelegateProxy *)v7 setDelegate:delegateCopy];
 
-  v8 = [MEMORY[0x277CBEB98] setWithArray:v5];
+  v8 = [MEMORY[0x277CBEB98] setWithArray:valuesCopy];
 
   [(ASDTIOServiceManagerDelegateProxy *)v7 setIdValues:v8];
 

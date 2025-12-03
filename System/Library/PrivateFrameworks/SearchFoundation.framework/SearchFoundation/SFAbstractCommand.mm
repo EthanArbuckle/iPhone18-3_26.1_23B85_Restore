@@ -1,36 +1,36 @@
 @interface SFAbstractCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFAbstractCommand)initWithCoder:(id)a3;
-- (SFAbstractCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFAbstractCommand)initWithCoder:(id)coder;
+- (SFAbstractCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAbstractCommand
 
-- (SFAbstractCommand)initWithProtobuf:(id)a3
+- (SFAbstractCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFAbstractCommand;
   v5 = [(SFAbstractCommand *)&v12 init];
   if (v5)
   {
-    if ([v4 type])
+    if ([protobufCopy type])
     {
-      -[SFAbstractCommand setType:](v5, "setType:", [v4 type]);
+      -[SFAbstractCommand setType:](v5, "setType:", [protobufCopy type]);
     }
 
-    v6 = [v4 value];
+    value = [protobufCopy value];
 
-    if (v6)
+    if (value)
     {
       v7 = [SFCommandValue alloc];
-      v8 = [v4 value];
-      v9 = [(SFCommandValue *)v7 initWithProtobuf:v8];
+      value2 = [protobufCopy value];
+      v9 = [(SFCommandValue *)v7 initWithProtobuf:value2];
       [(SFAbstractCommand *)v5 setValue:v9];
     }
 
@@ -42,42 +42,42 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFAbstractCommand *)self type];
-  v4 = [(SFAbstractCommand *)self value];
-  v5 = [v4 hash];
+  type = [(SFAbstractCommand *)self type];
+  value = [(SFAbstractCommand *)self value];
+  v5 = [value hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
-  else if ([(SFAbstractCommand *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFAbstractCommand *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFAbstractCommand *)self type];
-    if (v6 == [(SFAbstractCommand *)v5 type])
+    v5 = equalCopy;
+    type = [(SFAbstractCommand *)self type];
+    if (type == [(SFAbstractCommand *)v5 type])
     {
-      v7 = [(SFAbstractCommand *)self value];
-      v8 = [(SFAbstractCommand *)v5 value];
-      if ((v7 != 0) == (v8 == 0))
+      value = [(SFAbstractCommand *)self value];
+      value2 = [(SFAbstractCommand *)v5 value];
+      if ((value != 0) == (value2 == 0))
       {
         v12 = 0;
       }
 
       else
       {
-        v9 = [(SFAbstractCommand *)self value];
-        if (v9)
+        value3 = [(SFAbstractCommand *)self value];
+        if (value3)
         {
-          v10 = [(SFAbstractCommand *)self value];
-          v11 = [(SFAbstractCommand *)v5 value];
-          v12 = [v10 isEqual:v11];
+          value4 = [(SFAbstractCommand *)self value];
+          value5 = [(SFAbstractCommand *)v5 value];
+          v12 = [value4 isEqual:value5];
         }
 
         else
@@ -101,12 +101,12 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setType:{-[SFAbstractCommand type](self, "type")}];
-  v5 = [(SFAbstractCommand *)self value];
-  v6 = [v5 copy];
+  value = [(SFAbstractCommand *)self value];
+  v6 = [value copy];
   [v4 setValue:v6];
 
   return v4;
@@ -115,31 +115,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBAbstractCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBAbstractCommand *)v2 jsonData];
+  jsonData = [(_SFPBAbstractCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBAbstractCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBAbstractCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBAbstractCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBAbstractCommand alloc] initWithFacade:self];
-  v5 = [(_SFPBAbstractCommand *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBAbstractCommand *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFAbstractCommand)initWithCoder:(id)a3
+- (SFAbstractCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBAbstractCommand alloc] initWithData:v5];
   v7 = [(SFAbstractCommand *)self initWithProtobuf:v6];

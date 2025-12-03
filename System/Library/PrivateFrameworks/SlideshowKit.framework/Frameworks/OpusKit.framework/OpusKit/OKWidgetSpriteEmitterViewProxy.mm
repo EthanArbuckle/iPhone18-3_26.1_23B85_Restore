@@ -1,29 +1,29 @@
 @interface OKWidgetSpriteEmitterViewProxy
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
-- (OKWidgetSpriteEmitterViewProxy)initWithWidget:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
+- (OKWidgetSpriteEmitterViewProxy)initWithWidget:(id)widget;
+- (id)valueForUndefinedKey:(id)key;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)loadEmitterIfNeeded;
-- (void)setAntialiasing:(BOOL)a3;
-- (void)setSettingBackgroundColor:(id)a3;
-- (void)setSettingEmitterResource:(id)a3;
-- (void)setSettingParticuleResource:(id)a3;
+- (void)setAntialiasing:(BOOL)antialiasing;
+- (void)setSettingBackgroundColor:(id)color;
+- (void)setSettingEmitterResource:(id)resource;
+- (void)setSettingParticuleResource:(id)resource;
 - (void)unloadEmitter;
 - (void)updateEmitter;
 @end
 
 @implementation OKWidgetSpriteEmitterViewProxy
 
-- (OKWidgetSpriteEmitterViewProxy)initWithWidget:(id)a3
+- (OKWidgetSpriteEmitterViewProxy)initWithWidget:(id)widget
 {
   v11.receiver = self;
   v11.super_class = OKWidgetSpriteEmitterViewProxy;
-  v3 = [(OKWidgetViewProxy *)&v11 initWithWidget:a3];
+  v3 = [(OKWidgetViewProxy *)&v11 initWithWidget:widget];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277CDCFA8]);
@@ -107,7 +107,7 @@
 + (id)supportedSettings
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetSpriteEmitterViewProxy;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v9[0] = @"emitterResource";
@@ -126,21 +126,21 @@
   return v2;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = OKWidgetSpriteEmitterViewProxy;
-  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:a3];
+  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:key];
 }
 
-- (void)setSettingBackgroundColor:(id)a3
+- (void)setSettingBackgroundColor:(id)color
 {
-  v4 = [(SKView *)self->_skView scene];
+  scene = [(SKView *)self->_skView scene];
 
-  [(SKScene *)v4 setBackgroundColor:a3];
+  [(SKScene *)scene setBackgroundColor:color];
 }
 
-- (void)setSettingParticuleResource:(id)a3
+- (void)setSettingParticuleResource:(id)resource
 {
   if (![(NSString *)self->_particuleResourceName isEqualToString:?])
   {
@@ -151,7 +151,7 @@
       self->_particuleTexture = 0;
     }
 
-    [(OKWidgetSpriteEmitterViewProxy *)self setParticuleResourceName:a3];
+    [(OKWidgetSpriteEmitterViewProxy *)self setParticuleResourceName:resource];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__OKWidgetSpriteEmitterViewProxy_setSettingParticuleResource___block_invoke;
@@ -169,7 +169,7 @@ uint64_t __62__OKWidgetSpriteEmitterViewProxy_setSettingParticuleResource___bloc
   return [v2 updateEmitter];
 }
 
-- (void)setSettingEmitterResource:(id)a3
+- (void)setSettingEmitterResource:(id)resource
 {
   if (![(NSString *)self->_emitterResourceName isEqualToString:?])
   {
@@ -180,7 +180,7 @@ uint64_t __62__OKWidgetSpriteEmitterViewProxy_setSettingParticuleResource___bloc
       self->_emitterNode = 0;
     }
 
-    [(OKWidgetSpriteEmitterViewProxy *)self setEmitterResourceName:a3];
+    [(OKWidgetSpriteEmitterViewProxy *)self setEmitterResourceName:resource];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __60__OKWidgetSpriteEmitterViewProxy_setSettingEmitterResource___block_invoke;
@@ -198,13 +198,13 @@ uint64_t __60__OKWidgetSpriteEmitterViewProxy_setSettingEmitterResource___block_
   return [v2 updateEmitter];
 }
 
-- (void)setAntialiasing:(BOOL)a3
+- (void)setAntialiasing:(BOOL)antialiasing
 {
-  v3 = a3;
+  antialiasingCopy = antialiasing;
   v6.receiver = self;
   v6.super_class = OKWidgetSpriteEmitterViewProxy;
   [(OKWidgetViewProxy *)&v6 setAntialiasing:?];
-  if (v3)
+  if (antialiasingCopy)
   {
     v5 = 15;
   }
@@ -295,11 +295,11 @@ uint64_t __60__OKWidgetSpriteEmitterViewProxy_setSettingEmitterResource___block_
       [(SKEmitterNode *)self->_emitterNode setHidden:0];
     }
 
-    v4 = [(SKView *)self->_skView scene];
+    scene = [(SKView *)self->_skView scene];
     v5 = 0;
 LABEL_9:
 
-    [(SKScene *)v4 setPaused:v5];
+    [(SKScene *)scene setPaused:v5];
     return;
   }
 
@@ -313,7 +313,7 @@ LABEL_9:
       [(SKEmitterNode *)self->_emitterNode setHidden:1];
     }
 
-    v4 = [(SKView *)self->_skView scene];
+    scene = [(SKView *)self->_skView scene];
     v5 = 1;
     goto LABEL_9;
   }
@@ -321,11 +321,11 @@ LABEL_9:
   [(OKWidgetSpriteEmitterViewProxy *)self unloadEmitter];
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v6.receiver = self;
   v6.super_class = OKWidgetSpriteEmitterViewProxy;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:display];
   if (v4)
   {
     [(OKWidgetSpriteEmitterViewProxy *)self updateEmitter];
@@ -334,11 +334,11 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v6.receiver = self;
   v6.super_class = OKWidgetSpriteEmitterViewProxy;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForWarmup:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForWarmup:warmup];
   if (v4)
   {
     [(OKWidgetSpriteEmitterViewProxy *)self updateEmitter];
@@ -347,11 +347,11 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v6.receiver = self;
   v6.super_class = OKWidgetSpriteEmitterViewProxy;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForUnload:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForUnload:unload];
   if (v4)
   {
     [(OKWidgetSpriteEmitterViewProxy *)self updateEmitter];
@@ -360,12 +360,12 @@ LABEL_9:
   return v4;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetSpriteEmitterView"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetSpriteEmitterView"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

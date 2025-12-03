@@ -19,38 +19,38 @@
     goto LABEL_6;
   }
 
-  v5 = [a1 attributes];
+  attributes = [self attributes];
   v6 = *MEMORY[0x277D288F8];
-  v7 = [v5 objectForKey:*MEMORY[0x277D288F8]];
-  v8 = [v7 integerValue];
+  v7 = [attributes objectForKey:*MEMORY[0x277D288F8]];
+  integerValue = [v7 integerValue];
 
-  v9 = [v4 attributes];
-  v10 = [v9 objectForKey:v6];
-  v11 = [v10 integerValue];
+  attributes2 = [v4 attributes];
+  v10 = [attributes2 objectForKey:v6];
+  integerValue2 = [v10 integerValue];
 
-  if (v8 >= v11)
+  if (integerValue >= integerValue2)
   {
-    if (v8 == v11)
+    if (integerValue == integerValue2)
     {
-      v12 = [a1 isPremium];
+      isPremium = [self isPremium];
       goto LABEL_7;
     }
 
 LABEL_6:
-    v12 = 1;
+    isPremium = 1;
     goto LABEL_7;
   }
 
-  v12 = 0;
+  isPremium = 0;
 LABEL_7:
 
-  return v12;
+  return isPremium;
 }
 
 - (BOOL)isPremium
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"Footprint"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"Footprint"];
 
   v3 = v2 && ([v2 isEqualToString:@"Premium"] & 1) != 0;
   return v3;
@@ -58,40 +58,40 @@ LABEL_7:
 
 - (id)path
 {
-  v1 = [a1 getLocalUrl];
-  v2 = [v1 path];
+  getLocalUrl = [self getLocalUrl];
+  path = [getLocalUrl path];
 
-  return v2;
+  return path;
 }
 
 - (id)compatibilityVersion
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:*MEMORY[0x277D288F0]];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:*MEMORY[0x277D288F0]];
 
   return v2;
 }
 
 - (id)version
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:*MEMORY[0x277D288F8]];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:*MEMORY[0x277D288F8]];
 
   return v2;
 }
 
 - (id)footprint
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"Footprint"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"Footprint"];
 
   return v2;
 }
 
 - (id)languages
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"Languages"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"Languages"];
 
   return v2;
 }
@@ -99,9 +99,9 @@ LABEL_7:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "hash")}];
-  v4 = [a1 version];
-  if ([a1 isVTAssetInstalled])
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "hash")}];
+  version = [self version];
+  if ([self isVTAssetInstalled])
   {
     v5 = @"YES";
   }
@@ -111,7 +111,7 @@ LABEL_7:
     v5 = @"NO";
   }
 
-  if ([a1 canBePurged])
+  if ([self canBePurged])
   {
     v6 = @"YES";
   }
@@ -121,9 +121,9 @@ LABEL_7:
     v6 = @"NO";
   }
 
-  v7 = [a1 languages];
-  v8 = [v7 componentsJoinedByString:{@", "}];
-  if ([a1 isPremium])
+  languages = [self languages];
+  v8 = [languages componentsJoinedByString:{@", "}];
+  if ([self isPremium])
   {
     v9 = @"YES";
   }
@@ -133,7 +133,7 @@ LABEL_7:
     v9 = @"NO";
   }
 
-  v10 = [v2 stringWithFormat:@"MAAsset<%@> version: %@ installed: %@; canBePurged: %@; languages: %@; premium: %@ ", v3, v4, v5, v6, v8, v9];;
+  v10 = [v2 stringWithFormat:@"MAAsset<%@> version: %@ installed: %@; canBePurged: %@; languages: %@; premium: %@ ", v3, version, v5, v6, v8, v9];;
 
   return v10;
 }

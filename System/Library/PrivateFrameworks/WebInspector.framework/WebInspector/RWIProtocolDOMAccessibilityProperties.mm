@@ -32,21 +32,21 @@
 - (int64_t)invalid;
 - (int64_t)liveRegionStatus;
 - (int64_t)switchState;
-- (void)setChecked:(int64_t)a3;
-- (void)setChildNodeIds:(id)a3;
-- (void)setControlledNodeIds:(id)a3;
-- (void)setCurrent:(int64_t)a3;
-- (void)setFlowedNodeIds:(id)a3;
-- (void)setHeadingLevel:(double)a3;
-- (void)setHierarchyLevel:(double)a3;
-- (void)setInvalid:(int64_t)a3;
-- (void)setLabel:(id)a3;
-- (void)setLiveRegionRelevant:(id)a3;
-- (void)setLiveRegionStatus:(int64_t)a3;
-- (void)setOwnedNodeIds:(id)a3;
-- (void)setRole:(id)a3;
-- (void)setSelectedChildNodeIds:(id)a3;
-- (void)setSwitchState:(int64_t)a3;
+- (void)setChecked:(int64_t)checked;
+- (void)setChildNodeIds:(id)ids;
+- (void)setControlledNodeIds:(id)ids;
+- (void)setCurrent:(int64_t)current;
+- (void)setFlowedNodeIds:(id)ids;
+- (void)setHeadingLevel:(double)level;
+- (void)setHierarchyLevel:(double)level;
+- (void)setInvalid:(int64_t)invalid;
+- (void)setLabel:(id)label;
+- (void)setLiveRegionRelevant:(id)relevant;
+- (void)setLiveRegionStatus:(int64_t)status;
+- (void)setOwnedNodeIds:(id)ids;
+- (void)setRole:(id)role;
+- (void)setSelectedChildNodeIds:(id)ids;
+- (void)setSwitchState:(int64_t)state;
 @end
 
 @implementation RWIProtocolDOMAccessibilityProperties
@@ -65,7 +65,7 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"busy"];
 }
 
-- (void)setChecked:(int64_t)a3
+- (void)setChecked:(int64_t)checked
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -133,9 +133,9 @@ LABEL_8:
   return v10;
 }
 
-- (void)setChildNodeIds:(id)a3
+- (void)setChildNodeIds:(id)ids
 {
-  Inspector::toJSONIntegerArray(a3, &v6);
+  Inspector::toJSONIntegerArray(ids, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolDOMAccessibilityProperties;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"childNodeIds"];
@@ -165,9 +165,9 @@ LABEL_8:
   return v2;
 }
 
-- (void)setControlledNodeIds:(id)a3
+- (void)setControlledNodeIds:(id)ids
 {
-  Inspector::toJSONIntegerArray(a3, &v6);
+  Inspector::toJSONIntegerArray(ids, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolDOMAccessibilityProperties;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"controlledNodeIds"];
@@ -197,7 +197,7 @@ LABEL_8:
   return v2;
 }
 
-- (void)setCurrent:(int64_t)a3
+- (void)setCurrent:(int64_t)current
 {
   Inspector::toProtocolString();
   if (v6)
@@ -272,11 +272,11 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"disabled"];
 }
 
-- (void)setHeadingLevel:(double)a3
+- (void)setHeadingLevel:(double)level
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMAccessibilityProperties;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"headingLevel" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"headingLevel" forKey:level];
 }
 
 - (double)headingLevel
@@ -287,11 +287,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setHierarchyLevel:(double)a3
+- (void)setHierarchyLevel:(double)level
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMAccessibilityProperties;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"hierarchyLevel" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"hierarchyLevel" forKey:level];
 }
 
 - (double)hierarchyLevel
@@ -323,9 +323,9 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"expanded"];
 }
 
-- (void)setFlowedNodeIds:(id)a3
+- (void)setFlowedNodeIds:(id)ids
 {
-  Inspector::toJSONIntegerArray(a3, &v6);
+  Inspector::toJSONIntegerArray(ids, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolDOMAccessibilityProperties;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"flowedNodeIds"];
@@ -376,7 +376,7 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"ignoredByDefault"];
 }
 
-- (void)setInvalid:(int64_t)a3
+- (void)setInvalid:(int64_t)invalid
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -451,11 +451,11 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"hidden"];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMAccessibilityProperties;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"label"];
+  [(RWIProtocolJSONObject *)&v3 setString:label forKey:@"label"];
 }
 
 - (NSString)label
@@ -474,9 +474,9 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"liveRegionAtomic"];
 }
 
-- (void)setLiveRegionRelevant:(id)a3
+- (void)setLiveRegionRelevant:(id)relevant
 {
-  Inspector::toJSONStringArray(a3, &v6);
+  Inspector::toJSONStringArray(relevant, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolDOMAccessibilityProperties;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"liveRegionRelevant"];
@@ -506,7 +506,7 @@ LABEL_8:
   return v2;
 }
 
-- (void)setLiveRegionStatus:(int64_t)a3
+- (void)setLiveRegionStatus:(int64_t)status
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -588,9 +588,9 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"nodeId"];
 }
 
-- (void)setOwnedNodeIds:(id)a3
+- (void)setOwnedNodeIds:(id)ids
 {
-  Inspector::toJSONIntegerArray(a3, &v6);
+  Inspector::toJSONIntegerArray(ids, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolDOMAccessibilityProperties;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"ownedNodeIds"];
@@ -648,11 +648,11 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"required"];
 }
 
-- (void)setRole:(id)a3
+- (void)setRole:(id)role
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMAccessibilityProperties;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"role"];
+  [(RWIProtocolJSONObject *)&v3 setString:role forKey:@"role"];
 }
 
 - (NSString)role
@@ -671,9 +671,9 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"selected"];
 }
 
-- (void)setSelectedChildNodeIds:(id)a3
+- (void)setSelectedChildNodeIds:(id)ids
 {
-  Inspector::toJSONIntegerArray(a3, &v6);
+  Inspector::toJSONIntegerArray(ids, &v6);
   v5.receiver = self;
   v5.super_class = RWIProtocolDOMAccessibilityProperties;
   [(RWIProtocolJSONObject *)&v5 setJSONArray:&v6 forKey:@"selectedChildNodeIds"];
@@ -703,7 +703,7 @@ LABEL_8:
   return v2;
 }
 
-- (void)setSwitchState:(int64_t)a3
+- (void)setSwitchState:(int64_t)state
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v4 = v7;

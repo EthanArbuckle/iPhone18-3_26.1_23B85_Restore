@@ -1,8 +1,8 @@
 @interface _SBAllDisplaysPredicate
-+ (id)fromDefaultsKey:(id)a3;
++ (id)fromDefaultsKey:(id)key;
 + (id)sharedInstance;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesDisplay:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesDisplay:(id)display;
 - (_SBAllDisplaysPredicate)init;
 @end
 
@@ -27,11 +27,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = equalCopy;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -48,33 +48,33 @@
   return v4 != 0;
 }
 
-- (BOOL)matchesDisplay:(id)a3
+- (BOOL)matchesDisplay:(id)display
 {
-  v3 = a3;
-  if (!v3)
+  displayCopy = display;
+  if (!displayCopy)
   {
     [_SBAllDisplaysPredicate matchesDisplay:];
   }
 
-  v4 = [v3 hardwareIdentifier];
-  v5 = v4 != 0;
+  hardwareIdentifier = [displayCopy hardwareIdentifier];
+  v5 = hardwareIdentifier != 0;
 
   return v5;
 }
 
-+ (id)fromDefaultsKey:(id)a3
++ (id)fromDefaultsKey:(id)key
 {
-  if ([a3 isEqualToString:@"(.allDisplays)"])
+  if ([key isEqualToString:@"(.allDisplays)"])
   {
-    v4 = [a1 sharedInstance];
+    sharedInstance = [self sharedInstance];
   }
 
   else
   {
-    v4 = 0;
+    sharedInstance = 0;
   }
 
-  return v4;
+  return sharedInstance;
 }
 
 - (void)matchesDisplay:.cold.1()

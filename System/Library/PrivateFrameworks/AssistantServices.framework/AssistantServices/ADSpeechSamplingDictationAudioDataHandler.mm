@@ -1,35 +1,35 @@
 @interface ADSpeechSamplingDictationAudioDataHandler
-- (ADSpeechSamplingDictationAudioDataHandler)initWithFilePaths:(id)a3 ignoreMinimumSampleAge:(BOOL)a4 permitMonitor:(id)a5 completionHandler:(id)a6;
-- (void)adSpeechRecognitionDidFail:(id)a3 sessionUUID:(id)a4;
-- (void)adSpeechRecognized:(id)a3 usingSpeechModel:(id)a4 sessionUUID:(id)a5;
-- (void)adSpeechRecognizedSynchronous:(id)a3 usingSpeechModel:(id)a4 sessionUUID:(id)a5;
-- (void)adSpeechRecordingDidFail:(id)a3 context:(id)a4;
-- (void)addAudioSamplesOnQueue:(id)a3;
+- (ADSpeechSamplingDictationAudioDataHandler)initWithFilePaths:(id)paths ignoreMinimumSampleAge:(BOOL)age permitMonitor:(id)monitor completionHandler:(id)handler;
+- (void)adSpeechRecognitionDidFail:(id)fail sessionUUID:(id)d;
+- (void)adSpeechRecognized:(id)recognized usingSpeechModel:(id)model sessionUUID:(id)d;
+- (void)adSpeechRecognizedSynchronous:(id)synchronous usingSpeechModel:(id)model sessionUUID:(id)d;
+- (void)adSpeechRecordingDidFail:(id)fail context:(id)context;
+- (void)addAudioSamplesOnQueue:(id)queue;
 - (void)dealloc;
 - (void)sendAudioDataToServer;
 @end
 
 @implementation ADSpeechSamplingDictationAudioDataHandler
 
-- (void)adSpeechRecordingDidFail:(id)a3 context:(id)a4
+- (void)adSpeechRecordingDidFail:(id)fail context:(id)context
 {
-  v5 = a3;
+  failCopy = fail;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10027101C;
   v8[3] = &unk_10051E010;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = failCopy;
+  v7 = failCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)adSpeechRecognizedSynchronous:(id)a3 usingSpeechModel:(id)a4 sessionUUID:(id)a5
+- (void)adSpeechRecognizedSynchronous:(id)synchronous usingSpeechModel:(id)model sessionUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  synchronousCopy = synchronous;
+  modelCopy = model;
+  dCopy = d;
   v11 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -56,53 +56,53 @@
   }
 
   folderPath = self->_folderPath;
-  v17 = [(NSString *)self->_audioFilePath lastPathComponent];
-  sub_10026FCAC(folderPath, v17, 0);
+  lastPathComponent = [(NSString *)self->_audioFilePath lastPathComponent];
+  sub_10026FCAC(folderPath, lastPathComponent, 0);
 
   [(NSMutableArray *)self->_filePaths removeObjectAtIndex:0];
   sub_1002714FC(self->_filePaths, 0, self->_ignoreMinimumSampleAge, self->_permitMonitor, self->_completionHandler);
 }
 
-- (void)adSpeechRecognized:(id)a3 usingSpeechModel:(id)a4 sessionUUID:(id)a5
+- (void)adSpeechRecognized:(id)recognized usingSpeechModel:(id)model sessionUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recognizedCopy = recognized;
+  modelCopy = model;
+  dCopy = d;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100271B2C;
   v15[3] = &unk_10051DB18;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = recognizedCopy;
+  v17 = modelCopy;
+  v18 = dCopy;
+  v12 = dCopy;
+  v13 = modelCopy;
+  v14 = recognizedCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)adSpeechRecognitionDidFail:(id)a3 sessionUUID:(id)a4
+- (void)adSpeechRecognitionDidFail:(id)fail sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  failCopy = fail;
+  dCopy = d;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100271C04;
   block[3] = &unk_10051DB68;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = dCopy;
+  v13 = failCopy;
+  v9 = failCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (void)addAudioSamplesOnQueue:(id)a3
+- (void)addAudioSamplesOnQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = 0;
   v6 = 0;
   *&v7 = 136315906;
@@ -111,7 +111,7 @@
   {
     v8 = v5;
     v25 = 0;
-    v5 = [v4 readDataUpToLength:0x8000 error:{&v25, v22}];
+    v5 = [queueCopy readDataUpToLength:0x8000 error:{&v25, v22}];
     v9 = v25;
 
     if (!v5 || v9)
@@ -138,7 +138,7 @@
 
       v9 = 0;
 LABEL_19:
-      [v4 closeFile];
+      [queueCopy closeFile];
       v18 = AFSiriLogContextSpeech;
       if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
       {
@@ -182,7 +182,7 @@ LABEL_19:
       block[2] = sub_100272224;
       block[3] = &unk_10051E010;
       block[4] = self;
-      v24 = v4;
+      v24 = queueCopy;
       dispatch_after(v20, v21, block);
 
       goto LABEL_22;
@@ -205,7 +205,7 @@ LABEL_19:
   }
 
 LABEL_13:
-  [v4 closeFile];
+  [queueCopy closeFile];
   v16 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -239,7 +239,7 @@ LABEL_22:
     *buf = 136315394;
     v6 = "[ADSpeechSamplingDictationAudioDataHandler dealloc]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s Dictation Sampling: Deallocating instance: %p", buf, 0x16u);
   }
 
@@ -248,12 +248,12 @@ LABEL_22:
   [(ADSpeechSamplingDictationAudioDataHandler *)&v4 dealloc];
 }
 
-- (ADSpeechSamplingDictationAudioDataHandler)initWithFilePaths:(id)a3 ignoreMinimumSampleAge:(BOOL)a4 permitMonitor:(id)a5 completionHandler:(id)a6
+- (ADSpeechSamplingDictationAudioDataHandler)initWithFilePaths:(id)paths ignoreMinimumSampleAge:(BOOL)age permitMonitor:(id)monitor completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (![v10 count])
+  pathsCopy = paths;
+  monitorCopy = monitor;
+  handlerCopy = handler;
+  if (![pathsCopy count])
   {
     v33 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
@@ -271,26 +271,26 @@ LABEL_22:
   self = [(ADSpeechSamplingDictationAudioDataHandler *)&v36 init];
   if (self)
   {
-    v13 = [v10 mutableCopy];
+    v13 = [pathsCopy mutableCopy];
     filePaths = self->_filePaths;
     self->_filePaths = v13;
 
-    v15 = [(NSMutableArray *)self->_filePaths firstObject];
-    v16 = [v15 stringByDeletingLastPathComponent];
+    firstObject = [(NSMutableArray *)self->_filePaths firstObject];
+    stringByDeletingLastPathComponent = [firstObject stringByDeletingLastPathComponent];
     folderPath = self->_folderPath;
-    self->_folderPath = v16;
+    self->_folderPath = stringByDeletingLastPathComponent;
 
-    v18 = [v15 stringByAppendingPathExtension:@"pcm"];
+    v18 = [firstObject stringByAppendingPathExtension:@"pcm"];
     audioFilePath = self->_audioFilePath;
     self->_audioFilePath = v18;
 
     if ([AFDictationSamplingUtilities fileExistsAndNotEmpty:self->_audioFilePath samplingComponent:@"Dictation"])
     {
-      self->_ignoreMinimumSampleAge = a4;
-      if (a4 || [AFDictationSamplingUtilities isFileOlderThanAgeInSeconds:self->_audioFilePath filePath:@"Dictation" samplingComponent:900.0])
+      self->_ignoreMinimumSampleAge = age;
+      if (age || [AFDictationSamplingUtilities isFileOlderThanAgeInSeconds:self->_audioFilePath filePath:@"Dictation" samplingComponent:900.0])
       {
-        v20 = [v15 lastPathComponent];
-        v21 = sub_100270550(self->_folderPath, v20, 0);
+        lastPathComponent = [firstObject lastPathComponent];
+        v21 = sub_100270550(self->_folderPath, lastPathComponent, 0);
         audioMetadataDict = self->_audioMetadataDict;
         self->_audioMetadataDict = v21;
 
@@ -304,8 +304,8 @@ LABEL_22:
           dictationOptions = self->_dictationOptions;
           self->_dictationOptions = v25;
 
-          objc_storeStrong(&self->_permitMonitor, a5);
-          v27 = [v12 copy];
+          objc_storeStrong(&self->_permitMonitor, monitor);
+          v27 = [handlerCopy copy];
           completionHandler = self->_completionHandler;
           self->_completionHandler = v27;
 
@@ -323,23 +323,23 @@ LABEL_22:
           *buf = 136315394;
           v38 = "[ADSpeechSamplingDictationAudioDataHandler initWithFilePaths:ignoreMinimumSampleAge:permitMonitor:completionHandler:]";
           v39 = 2112;
-          v40 = v20;
+          v40 = lastPathComponent;
           _os_log_error_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "%s Dictation Sampling: Failed to read metadata for audio sample: %@", buf, 0x16u);
         }
       }
     }
 
 LABEL_15:
-    v32 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
 LABEL_8:
   self = self;
-  v32 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v32;
+  return selfCopy;
 }
 
 @end

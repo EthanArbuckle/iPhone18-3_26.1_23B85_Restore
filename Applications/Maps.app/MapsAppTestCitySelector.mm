@@ -1,32 +1,32 @@
 @interface MapsAppTestCitySelector
 - (BOOL)runTest;
-- (MapsAppTestCitySelector)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
-- (void)_dispatchAfterShortDelay:(id)a3;
+- (MapsAppTestCitySelector)initWithApplication:(id)application testName:(id)name options:(id)options;
+- (void)_dispatchAfterShortDelay:(id)delay;
 - (void)continueAfterCollectingDataFromDataFetchers;
-- (void)didUpdateDataFetcher:(id)a3;
+- (void)didUpdateDataFetcher:(id)fetcher;
 - (void)runScrollTest;
 @end
 
 @implementation MapsAppTestCitySelector
 
-- (void)_dispatchAfterShortDelay:(id)a3
+- (void)_dispatchAfterShortDelay:(id)delay
 {
-  v3 = a3;
+  delayCopy = delay;
   v4 = dispatch_time(0, 1000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100C8997C;
   block[3] = &unk_101661760;
-  v7 = v3;
-  v5 = v3;
+  v7 = delayCopy;
+  v5 = delayCopy;
   dispatch_after(v4, &_dispatch_main_q, block);
 }
 
 - (void)runScrollTest
 {
   [(MapsAppTest *)self startedSubTest:@"scrollingCitySelector"];
-  v3 = [(MapsAppTest *)self testCoordinator];
-  v4 = [v3 pptTestScrollView];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestScrollView = [testCoordinator pptTestScrollView];
 
   RPTContentSizeInDirection();
   v6 = v5;
@@ -67,18 +67,18 @@
   objc_destroyWeak(&location);
 }
 
-- (void)didUpdateDataFetcher:(id)a3
+- (void)didUpdateDataFetcher:(id)fetcher
 {
-  v4 = a3;
-  v5 = [(MapsAppTestCitySelector *)self updatedDataFetchers];
-  v6 = [v4 object];
+  fetcherCopy = fetcher;
+  updatedDataFetchers = [(MapsAppTestCitySelector *)self updatedDataFetchers];
+  object = [fetcherCopy object];
 
-  [v5 addObject:v6];
-  v7 = [(MapsAppTestCitySelector *)self updatedDataFetchers];
-  v8 = [v7 count];
-  v9 = [(MapsAppTestCitySelector *)self numberOfDataFetchers];
+  [updatedDataFetchers addObject:object];
+  updatedDataFetchers2 = [(MapsAppTestCitySelector *)self updatedDataFetchers];
+  v8 = [updatedDataFetchers2 count];
+  numberOfDataFetchers = [(MapsAppTestCitySelector *)self numberOfDataFetchers];
 
-  if (v8 == v9)
+  if (v8 == numberOfDataFetchers)
   {
     [(MapsAppTest *)self finishedSubTest:@"searchHomeCollectData"];
     v10 = +[NSNotificationCenter defaultCenter];
@@ -95,18 +95,18 @@
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestResetForLaunchURL];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestResetForLaunchURL];
 
-  v4 = [(MapsAppTest *)self options];
-  v5 = [v4 _mapstest_mapType];
+  options = [(MapsAppTest *)self options];
+  _mapstest_mapType = [options _mapstest_mapType];
 
-  v6 = [(MapsAppTest *)self options];
-  v7 = [v6 _mapstest_mapRegion];
+  options2 = [(MapsAppTest *)self options];
+  _mapstest_mapRegion = [options2 _mapstest_mapRegion];
 
-  [(MapsAppTest *)self switchToMapType:v5];
-  v8 = [(MapsAppTest *)self mainVKMapView];
-  [v8 setMapRegion:v7 pitch:0.0 yaw:0.0];
+  [(MapsAppTest *)self switchToMapType:_mapstest_mapType];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView setMapRegion:_mapstest_mapRegion pitch:0.0 yaw:0.0];
 
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -121,11 +121,11 @@
   return 1;
 }
 
-- (MapsAppTestCitySelector)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTestCitySelector)initWithApplication:(id)application testName:(id)name options:(id)options
 {
   v9.receiver = self;
   v9.super_class = MapsAppTestCitySelector;
-  v5 = [(MapsAppTest *)&v9 initWithApplication:a3 testName:a4 options:a5];
+  v5 = [(MapsAppTest *)&v9 initWithApplication:application testName:name options:options];
   if (v5)
   {
     v6 = objc_alloc_init(NSMutableSet);

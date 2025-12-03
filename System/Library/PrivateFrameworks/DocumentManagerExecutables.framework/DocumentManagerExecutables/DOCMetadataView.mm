@@ -4,16 +4,16 @@
 - (BOOL)showsSeparators;
 - (NSArray)nodes;
 - (_TtC26DocumentManagerExecutables15DOCMetadataView)init;
-- (_TtC26DocumentManagerExecutables15DOCMetadataView)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables15DOCMetadataView)initWithFrame:(CGRect)frame;
 - (double)columnWidth;
 - (int64_t)levelOfDetail;
 - (void)didMoveToWindow;
-- (void)didTapWithLabel:(id)a3;
-- (void)setColumnWidth:(double)a3;
-- (void)setLevelOfDetail:(int64_t)a3;
-- (void)setNodes:(id)a3;
-- (void)setShowsItemLocation:(BOOL)a3;
-- (void)setShowsSeparators:(BOOL)a3;
+- (void)didTapWithLabel:(id)label;
+- (void)setColumnWidth:(double)width;
+- (void)setLevelOfDetail:(int64_t)detail;
+- (void)setNodes:(id)nodes;
+- (void)setShowsItemLocation:(BOOL)location;
+- (void)setShowsSeparators:(BOOL)separators;
 @end
 
 @implementation DOCMetadataView
@@ -28,16 +28,16 @@
   return v2.super.isa;
 }
 
-- (void)setNodes:(id)a3
+- (void)setNodes:(id)nodes
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7DOCNode_pMd);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables15DOCMetadataView_nodes;
   swift_beginAccess();
   *(self + v5) = v4;
-  v6 = self;
+  selfCopy = self;
 
-  (*((*MEMORY[0x277D85000] & *v6) + 0x1C0))(v7);
+  (*((*MEMORY[0x277D85000] & *selfCopy) + 0x1C0))(v7);
 }
 
 - (BOOL)showsItemLocation
@@ -47,17 +47,17 @@
   return *(self + v3);
 }
 
-- (void)setShowsItemLocation:(BOOL)a3
+- (void)setShowsItemLocation:(BOOL)location
 {
-  v3 = a3;
+  locationCopy = location;
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables15DOCMetadataView_showsItemLocation;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
-  if (v6 != v3)
+  *(self + v5) = locationCopy;
+  if (v6 != locationCopy)
   {
     v7 = *((*MEMORY[0x277D85000] & *self) + 0x1C0);
-    v8 = self;
+    selfCopy = self;
     v7();
   }
 }
@@ -69,17 +69,17 @@
   return *(self + v3);
 }
 
-- (void)setShowsSeparators:(BOOL)a3
+- (void)setShowsSeparators:(BOOL)separators
 {
-  v3 = a3;
+  separatorsCopy = separators;
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables15DOCMetadataView_showsSeparators;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
-  if (v6 != v3)
+  *(self + v5) = separatorsCopy;
+  if (v6 != separatorsCopy)
   {
     v7 = *((*MEMORY[0x277D85000] & *self) + 0x1C8);
-    v8 = self;
+    selfCopy = self;
     v7();
   }
 }
@@ -91,16 +91,16 @@
   return *(self + v3);
 }
 
-- (void)setColumnWidth:(double)a3
+- (void)setColumnWidth:(double)width
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables15DOCMetadataView_columnWidth;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  if (v6 != a3)
+  *(self + v5) = width;
+  if (v6 != width)
   {
     v7 = *((*MEMORY[0x277D85000] & *self) + 0x1C8);
-    v8 = self;
+    selfCopy = self;
     v7();
   }
 }
@@ -119,10 +119,10 @@
   return *(self + v3);
 }
 
-- (void)setLevelOfDetail:(int64_t)a3
+- (void)setLevelOfDetail:(int64_t)detail
 {
-  v4 = self;
-  DOCMetadataView.levelOfDetail.setter(a3);
+  selfCopy = self;
+  DOCMetadataView.levelOfDetail.setter(detail);
 }
 
 - (_TtC26DocumentManagerExecutables15DOCMetadataView)init
@@ -139,25 +139,25 @@
   v4.super_class = type metadata accessor for DOCMetadataView();
   v2 = v4.receiver;
   [(DOCMetadataView *)&v4 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
 
     (*((*MEMORY[0x277D85000] & *v2) + 0x1A8))();
   }
 }
 
-- (_TtC26DocumentManagerExecutables15DOCMetadataView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables15DOCMetadataView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)didTapWithLabel:(id)a3
+- (void)didTapWithLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
+  labelCopy = label;
+  selfCopy = self;
   specialized DOCMetadataView.didTap(label:)();
 }
 

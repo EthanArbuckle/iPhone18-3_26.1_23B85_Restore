@@ -1,19 +1,19 @@
 @interface ASDTIOPAudioLPMicDevice
-+ (id)enableListeningOnGesturePropertyForService:(id)a3;
-+ (id)enableListeningPropertyForService:(id)a3;
-+ (id)ioServiceDependenciesForConfig:(id)a3;
-- (ASDTIOPAudioLPMicDevice)initWithConfig:(id)a3 withDeviceManager:(id)a4 andPlugin:(id)a5;
++ (id)enableListeningOnGesturePropertyForService:(id)service;
++ (id)enableListeningPropertyForService:(id)service;
++ (id)ioServiceDependenciesForConfig:(id)config;
+- (ASDTIOPAudioLPMicDevice)initWithConfig:(id)config withDeviceManager:(id)manager andPlugin:(id)plugin;
 - (ASDTIOPAudioLPMicStream)inputStream;
-- (BOOL)getEnabledChannelMask:(unsigned int *)a3;
+- (BOOL)getEnabledChannelMask:(unsigned int *)mask;
 - (BOOL)nonSecureInputEnabled;
-- (BOOL)setEnabledChannelMask:(unsigned int)a3;
-- (BOOL)setupCustomProperties:(id)a3;
-- (BOOL)subclassInitWithConfig:(id)a3;
+- (BOOL)setEnabledChannelMask:(unsigned int)mask;
+- (BOOL)setupCustomProperties:(id)properties;
+- (BOOL)subclassInitWithConfig:(id)config;
 - (BOOL)updateFromStreamDescription;
 - (id).cxx_construct;
 - (id)getZeroTimestampBlock;
-- (int)performPowerStatePrewarm:(int)a3;
-- (int)teardownIsolatedIOForStream:(id)a3 useCase:(unint64_t)a4;
+- (int)performPowerStatePrewarm:(int)prewarm;
+- (int)teardownIsolatedIOForStream:(id)stream useCase:(unint64_t)case;
 - (unsigned)availablePastDataFrames;
 - (unsigned)ioBufferSizeFrames;
 - (unsigned)timestampPeriod;
@@ -23,17 +23,17 @@
 
 @implementation ASDTIOPAudioLPMicDevice
 
-+ (id)enableListeningPropertyForService:(id)a3
++ (id)enableListeningPropertyForService:(id)service
 {
   v12[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  serviceCopy = service;
   v4 = *MEMORY[0x277CEFC28];
   v11[0] = *MEMORY[0x277CEFC58];
   v11[1] = v4;
   v12[0] = @"ASDTIOPAudioCMEnableProperty";
   v12[1] = &unk_285359B20;
   v5 = *MEMORY[0x277CEFC38];
-  v12[2] = v3;
+  v12[2] = serviceCopy;
   v6 = *MEMORY[0x277CEFC30];
   v11[2] = v5;
   v11[3] = v6;
@@ -46,17 +46,17 @@
   return v8;
 }
 
-+ (id)enableListeningOnGesturePropertyForService:(id)a3
++ (id)enableListeningOnGesturePropertyForService:(id)service
 {
   v12[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  serviceCopy = service;
   v4 = *MEMORY[0x277CEFC28];
   v11[0] = *MEMORY[0x277CEFC58];
   v11[1] = v4;
   v12[0] = @"ASDTIOPAudioCMEnableProperty";
   v12[1] = &unk_285359B38;
   v5 = *MEMORY[0x277CEFC38];
-  v12[2] = v3;
+  v12[2] = serviceCopy;
   v6 = *MEMORY[0x277CEFC30];
   v11[2] = v5;
   v11[3] = v6;
@@ -69,12 +69,12 @@
   return v8;
 }
 
-+ (id)ioServiceDependenciesForConfig:(id)a3
++ (id)ioServiceDependenciesForConfig:(id)config
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 asdtServiceID];
-  v5 = [(ASDTIOServiceManager *)ASDTIOPAudioLPMicServiceManager dependencyForID:v4 andConfiguration:v3];
+  configCopy = config;
+  asdtServiceID = [configCopy asdtServiceID];
+  v5 = [(ASDTIOServiceManager *)ASDTIOPAudioLPMicServiceManager dependencyForID:asdtServiceID andConfiguration:configCopy];
 
   if (v5)
   {
@@ -92,14 +92,14 @@
   return v6;
 }
 
-- (ASDTIOPAudioLPMicDevice)initWithConfig:(id)a3 withDeviceManager:(id)a4 andPlugin:(id)a5
+- (ASDTIOPAudioLPMicDevice)initWithConfig:(id)config withDeviceManager:(id)manager andPlugin:(id)plugin
 {
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 asdtServiceID];
-  v11 = [(ASDTIOServiceManager *)ASDTIOPAudioLPMicServiceManager matchedIOServiceForID:v10];
+  configCopy = config;
+  managerCopy = manager;
+  pluginCopy = plugin;
+  asdtServiceID = [configCopy asdtServiceID];
+  v11 = [(ASDTIOServiceManager *)ASDTIOPAudioLPMicServiceManager matchedIOServiceForID:asdtServiceID];
 
   [v11 ioObject];
   [v11 idValue];
@@ -107,10 +107,10 @@
   operator new();
 }
 
-- (BOOL)subclassInitWithConfig:(id)a3
+- (BOOL)subclassInitWithConfig:(id)config
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configCopy = config;
   ASDT::IOUserClient::SetAlwaysLoadPropertiesFromRegistry(self->_lpMicUserClient.__ptr_);
   if ((ASDT::IOUserClient::OpenConnection(self->_lpMicUserClient.__ptr_) & 1) == 0)
   {
@@ -125,16 +125,16 @@
     goto LABEL_17;
   }
 
-  v5 = [(ASDAudioDevice *)self modelName];
-  v6 = [v5 isEqualToString:@"AOP Audio-1"];
+  modelName = [(ASDAudioDevice *)self modelName];
+  v6 = [modelName isEqualToString:@"AOP Audio-1"];
 
   if (v6)
   {
     [(ASDAudioDevice *)self setModelName:@"ASDTIOPAudioLPMicDevice"];
   }
 
-  v7 = [(ASDAudioDevice *)self deviceName];
-  v8 = [v7 isEqualToString:@"AOP Audio-1"];
+  deviceName = [(ASDAudioDevice *)self deviceName];
+  v8 = [deviceName isEqualToString:@"AOP Audio-1"];
 
   if (v8)
   {
@@ -147,15 +147,15 @@
   }
 
   [(ASDAudioDevice *)self setClockDomain:ASDT::IOPAudio::LPMic::UserClient::GetClockDomain(self->_lpMicUserClient.__ptr_)];
-  v9 = [(ASDAudioDevice *)self inputStreams];
-  v10 = [v9 firstObject];
-  [(ASDTIOPAudioLPMicDevice *)self setInputStream:v10];
+  inputStreams = [(ASDAudioDevice *)self inputStreams];
+  firstObject = [inputStreams firstObject];
+  [(ASDTIOPAudioLPMicDevice *)self setInputStream:firstObject];
 
-  v11 = [(ASDTIOPAudioLPMicDevice *)self inputStream];
+  inputStream = [(ASDTIOPAudioLPMicDevice *)self inputStream];
   objc_opt_class();
-  LOBYTE(v10) = objc_opt_isKindOfClass();
+  LOBYTE(firstObject) = objc_opt_isKindOfClass();
 
-  if ((v10 & 1) == 0)
+  if ((firstObject & 1) == 0)
   {
     v13 = ASDTIOPLogType();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -168,7 +168,7 @@
     goto LABEL_17;
   }
 
-  if (![(ASDTIOPAudioLPMicDevice *)self setupCustomProperties:v4])
+  if (![(ASDTIOPAudioLPMicDevice *)self setupCustomProperties:configCopy])
   {
     v13 = ASDTIOPLogType();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -180,53 +180,53 @@
 
 LABEL_17:
 
-    v12 = 0;
+    updateFromStreamDescription = 0;
     goto LABEL_18;
   }
 
-  v12 = [(ASDTIOPAudioLPMicDevice *)self updateFromStreamDescription];
+  updateFromStreamDescription = [(ASDTIOPAudioLPMicDevice *)self updateFromStreamDescription];
 LABEL_18:
 
   v14 = *MEMORY[0x277D85DE8];
-  return v12;
+  return updateFromStreamDescription;
 }
 
 - (BOOL)nonSecureInputEnabled
 {
-  v3 = [(ASDTIOPAudioLPMicDevice *)self nonSecureInputEnableProperty];
-  if (v3)
+  nonSecureInputEnableProperty = [(ASDTIOPAudioLPMicDevice *)self nonSecureInputEnableProperty];
+  if (nonSecureInputEnableProperty)
   {
-    v4 = [(ASDTIOPAudioLPMicDevice *)self nonSecureInputEnableProperty];
-    v5 = [v4 enabled];
+    nonSecureInputEnableProperty2 = [(ASDTIOPAudioLPMicDevice *)self nonSecureInputEnableProperty];
+    enabled = [nonSecureInputEnableProperty2 enabled];
   }
 
   else
   {
-    v5 = 1;
+    enabled = 1;
   }
 
-  return v5;
+  return enabled;
 }
 
-- (BOOL)setupCustomProperties:(id)a3
+- (BOOL)setupCustomProperties:(id)properties
 {
   v35[8] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   HistoricDataSupported = ASDT::IOPAudio::LPMic::UserClient::GetHistoricDataSupported(self->_lpMicUserClient.__ptr_);
-  if (![v4 asdtAddNonSecurePathEnable])
+  if (![propertiesCopy asdtAddNonSecurePathEnable])
   {
     goto LABEL_4;
   }
 
-  v5 = [MEMORY[0x277CEFBA0] createForInput];
-  [(ASDTIOPAudioLPMicDevice *)self setNonSecureInputEnableProperty:v5];
+  createForInput = [MEMORY[0x277CEFBA0] createForInput];
+  [(ASDTIOPAudioLPMicDevice *)self setNonSecureInputEnableProperty:createForInput];
 
-  v6 = [(ASDTIOPAudioLPMicDevice *)self nonSecureInputEnableProperty];
+  nonSecureInputEnableProperty = [(ASDTIOPAudioLPMicDevice *)self nonSecureInputEnableProperty];
 
-  if (v6)
+  if (nonSecureInputEnableProperty)
   {
-    v7 = [(ASDTIOPAudioLPMicDevice *)self nonSecureInputEnableProperty];
-    [(ASDTAudioDevice *)self addCustomProperty:v7];
+    nonSecureInputEnableProperty2 = [(ASDTIOPAudioLPMicDevice *)self nonSecureInputEnableProperty];
+    [(ASDTAudioDevice *)self addCustomProperty:nonSecureInputEnableProperty2];
 
 LABEL_4:
     v9 = *MEMORY[0x277CEFC28];
@@ -336,8 +336,8 @@ LABEL_5:
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
   [(ASDAudioDevice *)self setSamplingRates:v5];
 
-  v6 = [(ASDTIOPAudioLPMicDevice *)self inputStream];
-  LOBYTE(v5) = [v6 updateFromStreamDescription:&v11];
+  inputStream = [(ASDTIOPAudioLPMicDevice *)self inputStream];
+  LOBYTE(v5) = [inputStream updateFromStreamDescription:&v11];
 
   if ((v5 & 1) == 0)
   {
@@ -377,28 +377,28 @@ LABEL_12:
 
 - (unsigned)availablePastDataFrames
 {
-  v3 = [(ASDTIOPAudioLPMicDevice *)self lpMicEngineStatus];
-  if (v3)
+  lpMicEngineStatus = [(ASDTIOPAudioLPMicDevice *)self lpMicEngineStatus];
+  if (lpMicEngineStatus)
   {
-    v4 = v3;
-    LODWORD(v3) = [(ASDAudioDevice *)self isRunning];
-    if (v3)
+    v4 = lpMicEngineStatus;
+    LODWORD(lpMicEngineStatus) = [(ASDAudioDevice *)self isRunning];
+    if (lpMicEngineStatus)
     {
       ASDT::IOPAudio::LPMic::EngineStatus::Snapshot(v4, &v8);
       v5 = LODWORD(v8.var1) - LODWORD(v8.var0);
       v6 = v8.var1 - v8.var0 + 1;
-      LODWORD(v3) = [(ASDTIOPAudioLPMicDevice *)self maximumPastDataFrames];
-      if (v6 < v3)
+      LODWORD(lpMicEngineStatus) = [(ASDTIOPAudioLPMicDevice *)self maximumPastDataFrames];
+      if (v6 < lpMicEngineStatus)
       {
-        LODWORD(v3) = v5 + 1;
+        LODWORD(lpMicEngineStatus) = v5 + 1;
       }
     }
   }
 
-  return v3;
+  return lpMicEngineStatus;
 }
 
-- (BOOL)getEnabledChannelMask:(unsigned int *)a3
+- (BOOL)getEnabledChannelMask:(unsigned int *)mask
 {
   ptr = self->_lpMicUserClient.__ptr_;
   if (!ptr)
@@ -406,15 +406,15 @@ LABEL_12:
     [ASDTIOPAudioLPMicDevice getEnabledChannelMask:];
   }
 
-  if (!a3)
+  if (!mask)
   {
     [ASDTIOPAudioLPMicDevice getEnabledChannelMask:];
   }
 
-  return ASDT::IOPAudio::LPMic::UserClient::GetEnabledChannelMask(ptr, a3);
+  return ASDT::IOPAudio::LPMic::UserClient::GetEnabledChannelMask(ptr, mask);
 }
 
-- (BOOL)setEnabledChannelMask:(unsigned int)a3
+- (BOOL)setEnabledChannelMask:(unsigned int)mask
 {
   v18 = *MEMORY[0x277D85DE8];
   ptr = self->_lpMicUserClient.__ptr_;
@@ -427,9 +427,9 @@ LABEL_12:
   SupportedChannelMask = ASDT::IOPAudio::LPMic::UserClient::GetSupportedChannelMask(ptr, &v11);
   if (SupportedChannelMask)
   {
-    if ((v11 | a3) == v11)
+    if ((v11 | mask) == v11)
     {
-      LOBYTE(SupportedChannelMask) = ASDT::IOPAudio::LPMic::UserClient::SetEnabledChannelMask(self->_lpMicUserClient.__ptr_, a3);
+      LOBYTE(SupportedChannelMask) = ASDT::IOPAudio::LPMic::UserClient::SetEnabledChannelMask(self->_lpMicUserClient.__ptr_, mask);
     }
 
     else
@@ -437,11 +437,11 @@ LABEL_12:
       v7 = ASDTIOPLogType();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(ASDAudioDevice *)self deviceUID];
+        deviceUID = [(ASDAudioDevice *)self deviceUID];
         *buf = 138412802;
-        v13 = v9;
+        v13 = deviceUID;
         v14 = 1024;
-        v15 = a3;
+        maskCopy = mask;
         v16 = 1024;
         v17 = v11;
         _os_log_error_impl(&dword_2416E9000, v7, OS_LOG_TYPE_ERROR, "%@: Bad enabled channel mask value: %x; supported %x", buf, 0x18u);
@@ -455,7 +455,7 @@ LABEL_12:
   return SupportedChannelMask;
 }
 
-- (int)performPowerStatePrewarm:(int)a3
+- (int)performPowerStatePrewarm:(int)prewarm
 {
   v10 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -463,7 +463,7 @@ LABEL_12:
   result = [(ASDTAudioDevice *)&v9 performPowerStatePrewarm:?];
   if (!result)
   {
-    if (a3 != 1970304877)
+    if (prewarm != 1970304877)
     {
       goto LABEL_5;
     }
@@ -556,13 +556,13 @@ uint64_t __48__ASDTIOPAudioLPMicDevice_getZeroTimestampBlock__block_invoke(uint6
   return result;
 }
 
-- (int)teardownIsolatedIOForStream:(id)a3 useCase:(unint64_t)a4
+- (int)teardownIsolatedIOForStream:(id)stream useCase:(unint64_t)case
 {
-  v5 = a3;
+  streamCopy = stream;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 teardownIsolatedIOForUseCase:a4];
+    v6 = [streamCopy teardownIsolatedIOForUseCase:case];
   }
 
   else

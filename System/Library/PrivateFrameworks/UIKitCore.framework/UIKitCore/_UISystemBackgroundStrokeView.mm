@@ -1,37 +1,37 @@
 @interface _UISystemBackgroundStrokeView
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)drawRect:(CGRect)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setStrokeColor:(id)a3;
-- (void)setStrokeCornerRadius:(double)a3;
-- (void)setStrokeWidth:(double)a3;
-- (void)setUseContinuousCurve:(BOOL)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setStrokeColor:(id)color;
+- (void)setStrokeCornerRadius:(double)radius;
+- (void)setStrokeWidth:(double)width;
+- (void)setUseContinuousCurve:(BOOL)curve;
 - (void)updateLayerOrRedraw;
 @end
 
 @implementation _UISystemBackgroundStrokeView
 
-- (void)setStrokeWidth:(double)a3
+- (void)setStrokeWidth:(double)width
 {
-  if (self->_strokeWidth != a3)
+  if (self->_strokeWidth != width)
   {
-    self->_strokeWidth = a3;
+    self->_strokeWidth = width;
     [(_UISystemBackgroundStrokeView *)self updateLayerOrRedraw];
   }
 }
 
 - (void)updateLayerOrRedraw
 {
-  if (a1)
+  if (self)
   {
-    [a1 setOpaque:0];
-    v2 = [a1 layer];
-    v3 = v2;
-    if (*(a1 + 440) == 15)
+    [self setOpaque:0];
+    layer = [self layer];
+    v3 = layer;
+    if (*(self + 440) == 15)
     {
-      [v2 setMasksToBounds:1];
-      [v3 setBorderWidth:*(a1 + 416)];
-      if (*(a1 + 408))
+      [layer setMasksToBounds:1];
+      [v3 setBorderWidth:*(self + 416)];
+      if (*(self + 408))
       {
         v4 = MEMORY[0x1E69796E8];
       }
@@ -42,11 +42,11 @@
       }
 
       [v3 setCornerCurve:*v4];
-      v5 = *(a1 + 424);
-      v6 = *(a1 + 440);
+      v5 = *(self + 424);
+      v6 = *(self + 440);
       if (v6)
       {
-        v7 = *(a1 + 424);
+        v7 = *(self + 424);
       }
 
       else
@@ -56,7 +56,7 @@
 
       if ((v6 & 2) != 0)
       {
-        v8 = *(a1 + 424);
+        v8 = *(self + 424);
       }
 
       else
@@ -66,7 +66,7 @@
 
       if ((v6 & 4) != 0)
       {
-        v9 = *(a1 + 424);
+        v9 = *(self + 424);
       }
 
       else
@@ -88,15 +88,15 @@
       *&v18 = v7;
       *(&v18 + 1) = v7;
       [v3 setCornerRadii:&v15];
-      v10 = *(a1 + 432);
-      v11 = [a1 traitCollection];
-      v12 = [v10 resolvedColorWithTraitCollection:v11];
+      v10 = *(self + 432);
+      traitCollection = [self traitCollection];
+      v12 = [v10 resolvedColorWithTraitCollection:traitCollection];
       [v3 setBorderColor:{objc_msgSend(v12, "CGColor")}];
     }
 
     else
     {
-      [v2 setMasksToBounds:0];
+      [layer setMasksToBounds:0];
       [v3 setBorderWidth:0.0];
       v13 = *(MEMORY[0x1E6979288] + 16);
       v15 = *MEMORY[0x1E6979288];
@@ -105,41 +105,41 @@
       v17 = *(MEMORY[0x1E6979288] + 32);
       v18 = v14;
       [v3 setCornerRadii:&v15];
-      [a1 setNeedsDisplay];
+      [self setNeedsDisplay];
     }
   }
 }
 
-- (void)setStrokeCornerRadius:(double)a3
+- (void)setStrokeCornerRadius:(double)radius
 {
-  if (self->_strokeCornerRadius != a3)
+  if (self->_strokeCornerRadius != radius)
   {
-    self->_strokeCornerRadius = a3;
+    self->_strokeCornerRadius = radius;
     [(_UISystemBackgroundStrokeView *)self updateLayerOrRedraw];
   }
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  objc_storeStrong(&self->_strokeColor, a3);
+  objc_storeStrong(&self->_strokeColor, color);
 
   [(_UISystemBackgroundStrokeView *)self updateLayerOrRedraw];
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  if (self->_maskedCorners != a3)
+  if (self->_maskedCorners != corners)
   {
-    self->_maskedCorners = a3;
+    self->_maskedCorners = corners;
     [(_UISystemBackgroundStrokeView *)self updateLayerOrRedraw];
   }
 }
 
-- (void)setUseContinuousCurve:(BOOL)a3
+- (void)setUseContinuousCurve:(BOOL)curve
 {
-  if (self->_useContinuousCurve != a3)
+  if (self->_useContinuousCurve != curve)
   {
-    self->_useContinuousCurve = a3;
+    self->_useContinuousCurve = curve;
     [(_UISystemBackgroundStrokeView *)self updateLayerOrRedraw];
   }
 }
@@ -155,11 +155,11 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self && self->_maskedCorners != 15)
   {
-    [(UIView *)self bounds:a3.origin.x];
+    [(UIView *)self bounds:rect.origin.x];
     v8 = self->_strokeWidth * 0.5;
     maskedCorners = self->_maskedCorners;
     v10 = 0.0;

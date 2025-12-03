@@ -1,46 +1,46 @@
 @interface PKAutoRefineQueryItem
 - (id).cxx_construct;
-- (id)initWithQueryItem:(void *)a3 usingStrokeProvider:;
+- (id)initWithQueryItem:(void *)item usingStrokeProvider:;
 @end
 
 @implementation PKAutoRefineQueryItem
 
-- (id)initWithQueryItem:(void *)a3 usingStrokeProvider:
+- (id)initWithQueryItem:(void *)item usingStrokeProvider:
 {
   v117 = *MEMORY[0x1E69E9840];
   v99 = a2;
-  v5 = a3;
-  if (a1)
+  itemCopy = item;
+  if (self)
   {
-    v108.receiver = a1;
+    v108.receiver = self;
     v108.super_class = PKAutoRefineQueryItem;
-    a1 = objc_msgSendSuper2(&v108, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v108, sel_init);
+    if (self)
     {
-      v6 = [v99 textResult];
-      v7 = [v6 copy];
-      v8 = a1[10];
-      a1[10] = v7;
+      textResult = [v99 textResult];
+      v7 = [textResult copy];
+      v8 = self[10];
+      self[10] = v7;
 
-      v9 = [v99 strokeIdentifiers];
-      v10 = [v9 copy];
-      v11 = a1[12];
-      a1[12] = v10;
+      strokeIdentifiers = [v99 strokeIdentifiers];
+      v10 = [strokeIdentifiers copy];
+      v11 = self[12];
+      self[12] = v10;
 
-      v12 = [v99 locale];
-      v13 = [v12 copy];
-      v14 = a1[15];
-      a1[15] = v13;
+      locale = [v99 locale];
+      v13 = [locale copy];
+      v14 = self[15];
+      self[15] = v13;
 
       v15 = MEMORY[0x1E695DF70];
-      v16 = [v99 strokeIdentifiers];
-      v17 = [v15 arrayWithCapacity:{objc_msgSend(v16, "count")}];
+      strokeIdentifiers2 = [v99 strokeIdentifiers];
+      v17 = [v15 arrayWithCapacity:{objc_msgSend(strokeIdentifiers2, "count")}];
 
       v106 = 0u;
       v107 = 0u;
       v104 = 0u;
       v105 = 0u;
-      v18 = a1[12];
+      v18 = self[12];
       v19 = [v18 countByEnumeratingWithState:&v104 objects:v116 count:16];
       if (v19)
       {
@@ -55,11 +55,11 @@
             }
 
             v22 = *(*(&v104 + 1) + 8 * i);
-            if ([v5 isValidStrokeIdentifier:v22])
+            if ([itemCopy isValidStrokeIdentifier:v22])
             {
               v23 = v22;
-              v24 = [v23 strokeUUID];
-              [v17 addObject:v24];
+              strokeUUID = [v23 strokeUUID];
+              [v17 addObject:strokeUUID];
             }
           }
 
@@ -69,37 +69,37 @@
         while (v19);
       }
 
-      objc_storeStrong(a1 + 13, v17);
+      objc_storeStrong(self + 13, v17);
       v25 = os_log_create("com.apple.pencilkit", "AutoRefine");
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
-        v95 = [a1[10] topTranscription];
-        v96 = [a1[12] count];
-        v97 = [a1[10] tokenColumnCount];
+        topTranscription = [self[10] topTranscription];
+        v96 = [self[12] count];
+        tokenColumnCount = [self[10] tokenColumnCount];
         *buf = 138740483;
-        v111 = v95;
+        v111 = topTranscription;
         v112 = 2048;
         v113 = v96;
         v114 = 2048;
-        v115 = v97;
+        v115 = tokenColumnCount;
         _os_log_debug_impl(&dword_1C7CCA000, v25, OS_LOG_TYPE_DEBUG, "AutoRefine Creating PKAutoRefineQueryItem transcription _%{sensitive}@_, %ld strokes and %ld token columns", buf, 0x20u);
       }
 
-      std::vector<CGRect>::reserve(a1 + 1, [a1[10] tokenColumnCount]);
+      std::vector<CGRect>::reserve(self + 1, [self[10] tokenColumnCount]);
       v26 = 0;
       v27 = MEMORY[0x1E695F050];
       *&v28 = 138412290;
       v98 = v28;
       while (1)
       {
-        v29 = [a1[10] tokenColumnCount];
-        v30 = a1[10];
-        if (v26 >= v29)
+        tokenColumnCount2 = [self[10] tokenColumnCount];
+        v30 = self[10];
+        if (v26 >= tokenColumnCount2)
         {
           break;
         }
 
-        v31 = a1[12];
+        v31 = self[12];
         v32 = [v30 strokeIndexesForColumnsInRange:{v26, 1}];
         v33 = [v31 objectsAtIndexes:v32];
 
@@ -126,7 +126,7 @@
               }
 
               v42 = *(*(&v100 + 1) + 8 * j);
-              if (![v5 isValidStrokeIdentifier:v42])
+              if (![itemCopy isValidStrokeIdentifier:v42])
               {
                 v48 = os_log_create("com.apple.pencilkit", "AutoRefine");
                 if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
@@ -143,7 +143,7 @@
                 goto LABEL_28;
               }
 
-              v43 = [v5 strokeForIdentifier:v42];
+              v43 = [itemCopy strokeForIdentifier:v42];
               [v43 bounds];
               v121.origin.x = v44;
               v121.origin.y = v45;
@@ -187,11 +187,11 @@ LABEL_28:
           _os_log_debug_impl(&dword_1C7CCA000, v49, OS_LOG_TYPE_DEBUG, "AutoRefine PKAutoRefineQueryItem bounds for token column %ld = %@", buf, 0x16u);
         }
 
-        v50 = a1[2];
-        v51 = a1[3];
+        v50 = self[2];
+        v51 = self[3];
         if (v50 >= v51)
         {
-          v53 = a1[1];
+          v53 = self[1];
           v54 = v50 - v53;
           v55 = (v50 - v53) >> 5;
           v56 = v55 + 1;
@@ -213,7 +213,7 @@ LABEL_28:
 
           if (v56)
           {
-            std::__allocate_at_least[abi:ne200100]<std::allocator<CGRect>>((a1 + 1), v56);
+            std::__allocate_at_least[abi:ne200100]<std::allocator<CGRect>>((self + 1), v56);
           }
 
           v58 = v55;
@@ -225,10 +225,10 @@ LABEL_28:
           v52 = 32 * v55 + 32;
           v60 = &v59[-4 * v58];
           memcpy(v60, v53, v54);
-          v61 = a1[1];
-          a1[1] = v60;
-          a1[2] = v52;
-          a1[3] = 0;
+          v61 = self[1];
+          self[1] = v60;
+          self[2] = v52;
+          self[3] = 0;
           if (v61)
           {
             operator delete(v61);
@@ -244,31 +244,31 @@ LABEL_28:
           *(v50 + 3) = height;
         }
 
-        a1[2] = v52;
+        self[2] = v52;
 
         ++v26;
       }
 
-      std::vector<CGRect>::reserve(a1 + 4, [v30 tokenColumnCount]);
-      v63 = [a1[10] tokenColumnCount];
-      if (v63 > (a1[9] - a1[7]) >> 3)
+      std::vector<CGRect>::reserve(self + 4, [v30 tokenColumnCount]);
+      tokenColumnCount3 = [self[10] tokenColumnCount];
+      if (tokenColumnCount3 > (self[9] - self[7]) >> 3)
       {
-        if (!(v63 >> 61))
+        if (!(tokenColumnCount3 >> 61))
         {
-          std::__allocate_at_least[abi:ne200100]<std::allocator<double>>((a1 + 7), v63);
+          std::__allocate_at_least[abi:ne200100]<std::allocator<double>>((self + 7), tokenColumnCount3);
         }
 
         std::vector<CGPoint>::__throw_length_error[abi:ne200100]();
       }
 
-      for (k = 0; k < [a1[10] tokenColumnCount]; ++k)
+      for (k = 0; k < [self[10] tokenColumnCount]; ++k)
       {
         [v99 rotatedColumnBounds:k];
-        v69 = a1[5];
-        v70 = a1[6];
+        v69 = self[5];
+        v70 = self[6];
         if (v69 >= v70)
         {
-          v72 = a1[4];
+          v72 = self[4];
           v73 = v69 - v72;
           v74 = (v69 - v72) >> 5;
           v75 = v74 + 1;
@@ -290,7 +290,7 @@ LABEL_28:
 
           if (v75)
           {
-            std::__allocate_at_least[abi:ne200100]<std::allocator<CGRect>>((a1 + 4), v75);
+            std::__allocate_at_least[abi:ne200100]<std::allocator<CGRect>>((self + 4), v75);
           }
 
           v77 = (32 * v74);
@@ -300,10 +300,10 @@ LABEL_28:
           v77[3] = v68;
           v71 = 32 * v74 + 32;
           memcpy(0, v72, v73);
-          v78 = a1[4];
-          a1[4] = 0;
-          a1[5] = v71;
-          a1[6] = 0;
+          v78 = self[4];
+          self[4] = 0;
+          self[5] = v71;
+          self[6] = 0;
           if (v78)
           {
             operator delete(v78);
@@ -319,13 +319,13 @@ LABEL_28:
           *(v69 + 3) = v68;
         }
 
-        a1[5] = v71;
+        self[5] = v71;
         [v99 writingOrientationAngleAtColumn:k];
-        v81 = a1[8];
-        v80 = a1[9];
+        v81 = self[8];
+        v80 = self[9];
         if (v81 >= v80)
         {
-          v83 = a1[7];
+          v83 = self[7];
           v84 = v81 - v83;
           v85 = (v81 - v83) >> 3;
           v86 = v85 + 1;
@@ -352,7 +352,7 @@ LABEL_28:
 
           if (v88)
           {
-            std::__allocate_at_least[abi:ne200100]<std::allocator<double>>((a1 + 7), v88);
+            std::__allocate_at_least[abi:ne200100]<std::allocator<double>>((self + 7), v88);
           }
 
           v89 = (v81 - v83) >> 3;
@@ -361,10 +361,10 @@ LABEL_28:
           *v90 = v79;
           v82 = v90 + 1;
           memcpy(v91, v83, v84);
-          v92 = a1[7];
-          a1[7] = v91;
-          a1[8] = v82;
-          a1[9] = 0;
+          v92 = self[7];
+          self[7] = v91;
+          self[8] = v82;
+          self[9] = 0;
           if (v92)
           {
             operator delete(v92);
@@ -377,15 +377,15 @@ LABEL_28:
           v82 = v81 + 8;
         }
 
-        a1[8] = v82;
+        self[8] = v82;
       }
 
-      v93 = [v99 refinedTokenColumns];
-      [a1 setRefinedTokenColumns:v93];
+      refinedTokenColumns = [v99 refinedTokenColumns];
+      [self setRefinedTokenColumns:refinedTokenColumns];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id).cxx_construct

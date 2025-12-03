@@ -2,7 +2,7 @@
 + (id)_sharedInstance;
 + (id)defaultConnectionVendor;
 - (id)_init;
-- (id)connectionForMachService:(id)a3;
+- (id)connectionForMachService:(id)service;
 @end
 
 @implementation PDSXPCAdapter
@@ -11,11 +11,11 @@
 {
   if (_XPCDisabled == 1)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:a1 file:@"PDSXPCAdapter.m" lineNumber:41 description:@"XPC was disabled!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PDSXPCAdapter.m" lineNumber:41 description:@"XPC was disabled!"];
   }
 
-  return [a1 _sharedInstance];
+  return [self _sharedInstance];
 }
 
 + (id)_sharedInstance
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __32__PDSXPCAdapter__sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_sharedInstance_onceToken != -1)
   {
     dispatch_once(&_sharedInstance_onceToken, block);
@@ -49,11 +49,11 @@ uint64_t __32__PDSXPCAdapter__sharedInstance__block_invoke(uint64_t a1)
   return [(PDSXPCAdapter *)&v3 init];
 }
 
-- (id)connectionForMachService:(id)a3
+- (id)connectionForMachService:(id)service
 {
   v3 = MEMORY[0x277CCAE80];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithMachServiceName:v4 options:0];
+  serviceCopy = service;
+  v5 = [[v3 alloc] initWithMachServiceName:serviceCopy options:0];
 
   return v5;
 }

@@ -1,17 +1,17 @@
 @interface BuddyLongPressButtonConsumer
-- (void)consumeLongPressForButtonKind:(int64_t)a3;
+- (void)consumeLongPressForButtonKind:(int64_t)kind;
 @end
 
 @implementation BuddyLongPressButtonConsumer
 
-- (void)consumeLongPressForButtonKind:(int64_t)a3
+- (void)consumeLongPressForButtonKind:(int64_t)kind
 {
-  v3 = [(BuddyButtonConsumer *)self menuHandler];
+  menuHandler = [(BuddyButtonConsumer *)self menuHandler];
 
-  if (v3)
+  if (menuHandler)
   {
-    v4 = [(BuddyButtonConsumer *)self menuHandler];
-    v4[2](v4);
+    menuHandler2 = [(BuddyButtonConsumer *)self menuHandler];
+    menuHandler2[2](menuHandler2);
   }
 }
 

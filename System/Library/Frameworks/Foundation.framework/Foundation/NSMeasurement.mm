@@ -1,15 +1,15 @@
 @interface NSMeasurement
 - (BOOL)canBeConvertedToUnit:(NSUnit *)unit;
-- (BOOL)isEqual:(id)a3;
-- (NSMeasurement)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSMeasurement)initWithCoder:(id)coder;
 - (NSMeasurement)initWithDoubleValue:(double)doubleValue unit:(id)unit;
 - (NSMeasurement)measurementByConvertingToUnit:(NSUnit *)unit;
-- (id)_performOperation:(int64_t)a3 withMeasurement:(id)a4;
+- (id)_performOperation:(int64_t)operation withMeasurement:(id)measurement;
 - (id)description;
 - (id)unit;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSMeasurement
@@ -117,21 +117,21 @@ LABEL_9:
   return v10;
 }
 
-- (id)_performOperation:(int64_t)a3 withMeasurement:(id)a4
+- (id)_performOperation:(int64_t)operation withMeasurement:(id)measurement
 {
-  if (!-[NSMeasurement canBeConvertedToUnit:](self, "canBeConvertedToUnit:", [a4 unit]))
+  if (!-[NSMeasurement canBeConvertedToUnit:](self, "canBeConvertedToUnit:", [measurement unit]))
   {
     v13 = objc_opt_class();
-    [a4 unit];
+    [measurement unit];
     v14 = objc_opt_class();
-    if (a3 == 1)
+    if (operation == 1)
     {
       v15 = [NSString stringWithFormat:@"Cannot subtract measurements of differing unit types! lhs: %@ rhs: %@", v13, v14];
     }
 
     else
     {
-      if (a3)
+      if (operation)
       {
         goto LABEL_23;
       }
@@ -142,18 +142,18 @@ LABEL_9:
     goto LABEL_33;
   }
 
-  if (-[NSUnit isEqual:](self->_unit, "isEqual:", [a4 unit]))
+  if (-[NSUnit isEqual:](self->_unit, "isEqual:", [measurement unit]))
   {
     doubleValue = self->_doubleValue;
-    [a4 doubleValue];
+    [measurement doubleValue];
     v9 = doubleValue - v8;
     v10 = doubleValue + v8;
-    if (a3)
+    if (operation)
     {
       v10 = 0.0;
     }
 
-    if (a3 == 1)
+    if (operation == 1)
     {
       v11 = v9;
     }
@@ -167,20 +167,20 @@ LABEL_9:
     goto LABEL_24;
   }
 
-  [a4 unit];
+  [measurement unit];
   if (!isDimensional() || !isDimensional())
   {
     v23 = objc_opt_class();
-    [a4 unit];
+    [measurement unit];
     v24 = objc_opt_class();
-    if (a3 == 1)
+    if (operation == 1)
     {
       v15 = [NSString stringWithFormat:@"Cannot subtract differing units that are non-dimensional! lhs: %@ rhs: %@", v23, v24];
     }
 
     else
     {
-      if (a3)
+      if (operation)
       {
         goto LABEL_23;
       }
@@ -195,14 +195,14 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  [objc_msgSend(a4 "unit")];
+  [objc_msgSend(measurement "unit")];
   [(NSUnit *)self->_unit dimension];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a3 != 1)
+    if (operation != 1)
     {
-      if (!a3)
+      if (!operation)
       {
         v27 = MEMORY[0x1E695DF30];
         v28 = *MEMORY[0x1E695D940];
@@ -226,18 +226,18 @@ LABEL_34:
   [(NSUnit *)self->_unit dimension];
   v16 = -[NSMeasurement measurementByConvertingToUnit:](self, "measurementByConvertingToUnit:", [objc_opt_class() baseUnit]);
   [(NSUnit *)self->_unit dimension];
-  v17 = [a4 measurementByConvertingToUnit:{objc_msgSend(objc_opt_class(), "baseUnit")}];
+  v17 = [measurement measurementByConvertingToUnit:{objc_msgSend(objc_opt_class(), "baseUnit")}];
   [(NSMeasurement *)v16 doubleValue];
   v19 = v18;
   [v17 doubleValue];
   v21 = v19 - v20;
   v22 = v19 + v20;
-  if (a3)
+  if (operation)
   {
     v22 = 0.0;
   }
 
-  if (a3 == 1)
+  if (operation == 1)
   {
     v11 = v21;
   }
@@ -254,9 +254,9 @@ LABEL_24:
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -267,16 +267,16 @@ LABEL_24:
   }
 
   doubleValue = self->_doubleValue;
-  [a3 doubleValue];
+  [equal doubleValue];
   if (doubleValue != v6)
   {
     return 0;
   }
 
   unit = self->_unit;
-  v9 = [a3 unit];
+  unit = [equal unit];
 
-  return [(NSUnit *)unit isEqual:v9];
+  return [(NSUnit *)unit isEqual:unit];
 }
 
 - (unint64_t)hash
@@ -312,18 +312,18 @@ LABEL_24:
   }
 }
 
-- (NSMeasurement)initWithCoder:(id)a3
+- (NSMeasurement)initWithCoder:(id)coder
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSMeasurement cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
-  [a3 decodeDoubleForKey:@"NS.value"];
+  [coder decodeDoubleForKey:@"NS.value"];
   v6 = v5;
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.unit"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.unit"];
   if (v7)
   {
 
@@ -335,22 +335,22 @@ LABEL_24:
 
     v9 = @"NSLocalizedDescription";
     v10[0] = @"Unit class object has been corrupted!";
-    [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v10, &v9, 1))}];
+    [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v10, &v9, 1))}];
     return 0;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSMeasurement cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
-  [a3 encodeDouble:@"NS.value" forKey:self->_doubleValue];
+  [coder encodeDouble:@"NS.value" forKey:self->_doubleValue];
   unit = self->_unit;
 
-  [a3 encodeObject:unit forKey:@"NS.unit"];
+  [coder encodeObject:unit forKey:@"NS.unit"];
 }
 
 @end

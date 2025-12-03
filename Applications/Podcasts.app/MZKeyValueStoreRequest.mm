@@ -1,24 +1,24 @@
 @interface MZKeyValueStoreRequest
 - (MZKeyValueStoreOperationDelegate)delegate;
-- (MZKeyValueStoreRequest)initWithTransaction:(id)a3;
+- (MZKeyValueStoreRequest)initWithTransaction:(id)transaction;
 - (MZKeyValueStoreSerializer)serializer;
-- (void)postData:(id)a3;
-- (void)scheduleStoreURLRequest:(id)a3;
+- (void)postData:(id)data;
+- (void)scheduleStoreURLRequest:(id)request;
 - (void)start;
 @end
 
 @implementation MZKeyValueStoreRequest
 
-- (MZKeyValueStoreRequest)initWithTransaction:(id)a3
+- (MZKeyValueStoreRequest)initWithTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v9.receiver = self;
   v9.super_class = MZKeyValueStoreRequest;
   v6 = [(MZKeyValueStoreRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transaction, a3);
+    objc_storeStrong(&v6->_transaction, transaction);
   }
 
   return v7;
@@ -26,59 +26,59 @@
 
 - (void)start
 {
-  v3 = [(MZKeyValueStoreRequest *)self serializer];
-  v4 = [v3 payload];
+  serializer = [(MZKeyValueStoreRequest *)self serializer];
+  payload = [serializer payload];
 
-  [(MZKeyValueStoreRequest *)self postData:v4];
+  [(MZKeyValueStoreRequest *)self postData:payload];
 }
 
-- (void)postData:(id)a3
+- (void)postData:(id)data
 {
-  v10 = a3;
-  if ([v10 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v4 = [NSMutableURLRequest alloc];
-    v5 = [(MZKeyValueStoreRequest *)self transaction];
-    v6 = [v5 URL];
-    v7 = [v4 initWithURL:v6];
+    transaction = [(MZKeyValueStoreRequest *)self transaction];
+    v6 = [transaction URL];
+    delegate2 = [v4 initWithURL:v6];
 
-    [v7 setHTTPBody:v10];
-    [v7 setHTTPMethod:@"POST"];
-    [v7 setValue:kMZKeyValueStorePlistContentType forHTTPHeaderField:@"Content-Type"];
+    [delegate2 setHTTPBody:dataCopy];
+    [delegate2 setHTTPMethod:@"POST"];
+    [delegate2 setValue:kMZKeyValueStorePlistContentType forHTTPHeaderField:@"Content-Type"];
     if ([(MZKeyValueStoreRequest *)self shouldAuthenticate])
     {
       v8 = +[MTAccountController sharedInstance];
       [v8 promptAccountAuthenticationWithDebugReason:@"Podcasts Bookkeeper Sync" forced:0];
 
-      v9 = [(MZKeyValueStoreRequest *)self delegate];
-      [v9 keyValueStoreOperationOperationDidFinish:self];
+      delegate = [(MZKeyValueStoreRequest *)self delegate];
+      [delegate keyValueStoreOperationOperationDidFinish:self];
     }
 
     else
     {
-      [(MZKeyValueStoreRequest *)self scheduleStoreURLRequest:v7];
+      [(MZKeyValueStoreRequest *)self scheduleStoreURLRequest:delegate2];
     }
   }
 
   else
   {
-    v7 = [(MZKeyValueStoreRequest *)self delegate];
-    [v7 keyValueStoreOperationOperationDidFinish:self];
+    delegate2 = [(MZKeyValueStoreRequest *)self delegate];
+    [delegate2 keyValueStoreOperationOperationDidFinish:self];
   }
 }
 
-- (void)scheduleStoreURLRequest:(id)a3
+- (void)scheduleStoreURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(MZKeyValueStoreRequest *)self delegate];
-  [v5 keyValueStoreOperation:self scheduleURLRequest:v4];
+  requestCopy = request;
+  delegate = [(MZKeyValueStoreRequest *)self delegate];
+  [delegate keyValueStoreOperation:self scheduleURLRequest:requestCopy];
 }
 
 - (MZKeyValueStoreSerializer)serializer
 {
   if (!self->_serializer)
   {
-    v3 = [(MZKeyValueStoreRequest *)self transaction];
+    transaction = [(MZKeyValueStoreRequest *)self transaction];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -89,8 +89,8 @@
     }
 
     v6 = objc_alloc(*v5);
-    v7 = [(MZKeyValueStoreRequest *)self transaction];
-    v8 = [v6 initWithTransaction:v7];
+    transaction2 = [(MZKeyValueStoreRequest *)self transaction];
+    v8 = [v6 initWithTransaction:transaction2];
     serializer = self->_serializer;
     self->_serializer = v8;
   }

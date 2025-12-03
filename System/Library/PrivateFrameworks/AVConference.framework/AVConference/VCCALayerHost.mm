@@ -1,11 +1,11 @@
 @interface VCCALayerHost
-- (VCCALayerHost)initWithRemoteVideoClient:(id)a3;
+- (VCCALayerHost)initWithRemoteVideoClient:(id)client;
 - (void)layoutSublayers;
 @end
 
 @implementation VCCALayerHost
 
-- (VCCALayerHost)initWithRemoteVideoClient:(id)a3
+- (VCCALayerHost)initWithRemoteVideoClient:(id)client
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -13,7 +13,7 @@
   result = [(CALayerHost *)&v5 init];
   if (result)
   {
-    result->remoteVideoClient = a3;
+    result->remoteVideoClient = client;
   }
 
   return result;
@@ -97,7 +97,7 @@ LABEL_13:
         OUTLINED_FUNCTION_5_37();
         v32 = v8;
         v33 = 2048;
-        v34 = self;
+        selfCopy2 = self;
         v35 = v17;
         v36 = v18;
         v12 = " [%s] %s:%d %@(%p) superlayer bounds=%@";
@@ -161,7 +161,7 @@ LABEL_27:
         OUTLINED_FUNCTION_5_37();
         v32 = v20;
         v33 = 2048;
-        v34 = self;
+        selfCopy2 = self;
         v23 = " [%s] %s:%d %@(%p) Invalid AVCRemoteVideoClient instance for the host layer";
         v24 = v27;
         v25 = 48;

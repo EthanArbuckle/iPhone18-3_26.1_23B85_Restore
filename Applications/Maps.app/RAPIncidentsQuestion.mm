@@ -5,8 +5,8 @@
 - (CLLocationCoordinate2D)originalCoordinate;
 - (CLLocationCoordinate2D)selectedCoordinate;
 - (RAPCommentQuestion)commentQuestion;
-- (RAPIncidentsQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 incidentLayoutItem:(id)a5;
-- (void)_fillSubmissionParameters:(id)a3;
+- (RAPIncidentsQuestion)initWithReport:(id)report parentQuestion:(id)question incidentLayoutItem:(id)item;
+- (void)_fillSubmissionParameters:(id)parameters;
 @end
 
 @implementation RAPIncidentsQuestion
@@ -31,10 +31,10 @@
 
 - (BOOL)isComplete
 {
-  v2 = [(RAPIncidentsQuestion *)self commentQuestion];
-  v3 = [v2 isComplete];
+  commentQuestion = [(RAPIncidentsQuestion *)self commentQuestion];
+  isComplete = [commentQuestion isComplete];
 
-  return v3;
+  return isComplete;
 }
 
 - (RAPCommentQuestion)commentQuestion
@@ -43,11 +43,11 @@
   if (!commentQuestion)
   {
     v4 = [RAPCommentQuestion alloc];
-    v5 = [(RAPQuestion *)self report];
+    report = [(RAPQuestion *)self report];
     v6 = +[RAPCommentQuestion _localizedOptionalInformationTitle];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Add more information about the Incident" value:@"localized string not found" table:0];
-    v9 = [(RAPCommentQuestion *)v4 initWithReport:v5 parentQuestion:self title:v6 placeholderText:v8 emphasis:5];
+    v9 = [(RAPCommentQuestion *)v4 initWithReport:report parentQuestion:self title:v6 placeholderText:v8 emphasis:5];
     v10 = self->_commentQuestion;
     self->_commentQuestion = v9;
 
@@ -59,8 +59,8 @@
 
 - ($873BFAB23BBB6E2F0B0288ED2F935688)_initialCoordinatePickingMapRect
 {
-  v2 = [(RAPQuestion *)self _context];
-  v3 = sub_1007A39B4(v2);
+  _context = [(RAPQuestion *)self _context];
+  v3 = sub_1007A39B4(_context);
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -98,51 +98,51 @@
   return result;
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   Current = CFAbsoluteTimeGetCurrent();
-  v6 = [v4 commonContext];
-  [v6 setClientCreatedAt:Current];
+  commonContext = [parametersCopy commonContext];
+  [commonContext setClientCreatedAt:Current];
 
   v7 = objc_alloc_init(GEORPFeedbackDetails);
-  [v4 setDetails:v7];
+  [parametersCopy setDetails:v7];
 
   v8 = objc_alloc_init(GEORPIncidentFeedback);
-  v9 = [v4 details];
-  [v9 setIncidentFeedback:v8];
+  details = [parametersCopy details];
+  [details setIncidentFeedback:v8];
 
   v16 = objc_alloc_init(GEORPNewIncidentDetails);
   v10 = objc_alloc_init(GEORPIncidentLocation);
   [v16 setIncidentLocation:v10];
 
   v11 = [[GEOLatLng alloc] initWithLatitude:self->_selectedCoordinate.latitude longitude:self->_selectedCoordinate.longitude];
-  v12 = [v16 incidentLocation];
-  [v12 setLatLng:v11];
+  incidentLocation = [v16 incidentLocation];
+  [incidentLocation setLatLng:v11];
 
   [v16 setType:{-[TrafficIncidentLayoutItem incidentType](self->_incidentLayoutItem, "incidentType")}];
-  v13 = [v4 details];
-  v14 = [v13 incidentFeedback];
-  [v14 setNewIncidentDetails:v16];
+  details2 = [parametersCopy details];
+  incidentFeedback = [details2 incidentFeedback];
+  [incidentFeedback setNewIncidentDetails:v16];
 
-  v15 = [(RAPIncidentsQuestion *)self commentQuestion];
-  [v15 _fillSubmissionParameters:v4];
+  commentQuestion = [(RAPIncidentsQuestion *)self commentQuestion];
+  [commentQuestion _fillSubmissionParameters:parametersCopy];
 }
 
-- (RAPIncidentsQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 incidentLayoutItem:(id)a5
+- (RAPIncidentsQuestion)initWithReport:(id)report parentQuestion:(id)question incidentLayoutItem:(id)item
 {
-  v8 = a3;
-  v9 = a5;
+  reportCopy = report;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = RAPIncidentsQuestion;
-  v10 = [(RAPQuestion *)&v17 initWithReport:v8 parentQuestion:a4];
+  v10 = [(RAPQuestion *)&v17 initWithReport:reportCopy parentQuestion:question];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_incidentLayoutItem, a5);
-    v12 = [v8 _context];
-    v13 = [v12 mapCamera];
-    [v13 centerCoordinate];
+    objc_storeStrong(&v10->_incidentLayoutItem, item);
+    _context = [reportCopy _context];
+    mapCamera = [_context mapCamera];
+    [mapCamera centerCoordinate];
     v11->_selectedCoordinate.latitude = v14;
     v11->_selectedCoordinate.longitude = v15;
 

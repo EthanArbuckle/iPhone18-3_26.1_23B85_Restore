@@ -5,7 +5,7 @@
 - (id)scriptingGroupSpecifier;
 - (id)scriptingSwitchSpecifier;
 - (id)specifiers;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -17,19 +17,19 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(WFShortcutsAdvancedSettingsController *)self scriptingGroupSpecifier];
-    v6 = [(WFShortcutsAdvancedSettingsController *)self scriptingSwitchSpecifier];
-    v15[1] = v6;
-    v7 = [(WFShortcutsAdvancedSettingsController *)self defaultGroupSpecifier];
-    v15[2] = v7;
-    v8 = [(WFShortcutsAdvancedSettingsController *)self allowSharingLargeAmountOfDataSwitchSpecifier];
-    v15[3] = v8;
-    v9 = [(WFShortcutsAdvancedSettingsController *)self defaultGroupSpecifier];
-    v15[4] = v9;
-    v10 = [(WFShortcutsAdvancedSettingsController *)self allowDeletingWithoutConfirmationSwitchSpecifier];
-    v15[5] = v10;
-    v11 = [(WFShortcutsAdvancedSettingsController *)self allowDeletingLargeAmountOfDataSwitchSpecifier];
-    v15[6] = v11;
+    scriptingGroupSpecifier = [(WFShortcutsAdvancedSettingsController *)self scriptingGroupSpecifier];
+    scriptingSwitchSpecifier = [(WFShortcutsAdvancedSettingsController *)self scriptingSwitchSpecifier];
+    v15[1] = scriptingSwitchSpecifier;
+    defaultGroupSpecifier = [(WFShortcutsAdvancedSettingsController *)self defaultGroupSpecifier];
+    v15[2] = defaultGroupSpecifier;
+    allowSharingLargeAmountOfDataSwitchSpecifier = [(WFShortcutsAdvancedSettingsController *)self allowSharingLargeAmountOfDataSwitchSpecifier];
+    v15[3] = allowSharingLargeAmountOfDataSwitchSpecifier;
+    defaultGroupSpecifier2 = [(WFShortcutsAdvancedSettingsController *)self defaultGroupSpecifier];
+    v15[4] = defaultGroupSpecifier2;
+    allowDeletingWithoutConfirmationSwitchSpecifier = [(WFShortcutsAdvancedSettingsController *)self allowDeletingWithoutConfirmationSwitchSpecifier];
+    v15[5] = allowDeletingWithoutConfirmationSwitchSpecifier;
+    allowDeletingLargeAmountOfDataSwitchSpecifier = [(WFShortcutsAdvancedSettingsController *)self allowDeletingLargeAmountOfDataSwitchSpecifier];
+    v15[6] = allowDeletingLargeAmountOfDataSwitchSpecifier;
     v12 = [NSArray arrayWithObjects:v15 count:7];
     v13 = *&self->PSListController_opaque[v3];
     *&self->PSListController_opaque[v3] = v12;
@@ -101,13 +101,13 @@
   return v2;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = WFShortcutsAdvancedSettingsController;
-  v5 = a4;
-  [(WFShortcutsAdvancedSettingsController *)&v9 setPreferenceValue:a3 specifier:v5];
-  v6 = [v5 propertyForKey:{PSKeyNameKey, v9.receiver, v9.super_class}];
+  specifierCopy = specifier;
+  [(WFShortcutsAdvancedSettingsController *)&v9 setPreferenceValue:value specifier:specifierCopy];
+  v6 = [specifierCopy propertyForKey:{PSKeyNameKey, v9.receiver, v9.super_class}];
 
   v7 = objc_opt_new();
   v8 = [NSSet setWithObject:v6];

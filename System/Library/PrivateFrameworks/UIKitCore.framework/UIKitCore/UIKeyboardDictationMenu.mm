@@ -1,10 +1,10 @@
 @interface UIKeyboardDictationMenu
 + (id)sharedInstance;
 - (CGSize)preferredSize;
-- (UIKeyboardDictationMenu)initWithFrame:(CGRect)a3;
+- (UIKeyboardDictationMenu)initWithFrame:(CGRect)frame;
 - (void)cleanupForFadeOrHide;
 - (void)fade;
-- (void)fadeWithDelay:(double)a3;
+- (void)fadeWithDelay:(double)delay;
 - (void)hide;
 - (void)performShowAnimation;
 - (void)willShow;
@@ -12,11 +12,11 @@
 
 @implementation UIKeyboardDictationMenu
 
-- (UIKeyboardDictationMenu)initWithFrame:(CGRect)a3
+- (UIKeyboardDictationMenu)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = UIKeyboardDictationMenu;
-  v3 = [(UIKeyboardMenuView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIKeyboardMenuView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -190,12 +190,12 @@ uint64_t __47__UIKeyboardDictationMenu_performShowAnimation__block_invoke_5(uint
   [(UIKeyboardMenuView *)&v3 fade];
 }
 
-- (void)fadeWithDelay:(double)a3
+- (void)fadeWithDelay:(double)delay
 {
   [(UIKeyboardDictationMenu *)self cleanupForFadeOrHide];
   v5.receiver = self;
   v5.super_class = UIKeyboardDictationMenu;
-  [(UIKeyboardMenuView *)&v5 fadeWithDelay:a3];
+  [(UIKeyboardMenuView *)&v5 fadeWithDelay:delay];
 }
 
 - (void)hide

@@ -1,20 +1,20 @@
 @interface HDHRCardioFitnessBackgroundFeatureDeliverySettingsProvider
-- (HDHRCardioFitnessBackgroundFeatureDeliverySettingsProvider)initWithHeartRateSettingsDefaults:(id)a3;
+- (HDHRCardioFitnessBackgroundFeatureDeliverySettingsProvider)initWithHeartRateSettingsDefaults:(id)defaults;
 - (id)featureSettingsUponBackgroundDelivery;
 @end
 
 @implementation HDHRCardioFitnessBackgroundFeatureDeliverySettingsProvider
 
-- (HDHRCardioFitnessBackgroundFeatureDeliverySettingsProvider)initWithHeartRateSettingsDefaults:(id)a3
+- (HDHRCardioFitnessBackgroundFeatureDeliverySettingsProvider)initWithHeartRateSettingsDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = HDHRCardioFitnessBackgroundFeatureDeliverySettingsProvider;
   v6 = [(HDHRCardioFitnessBackgroundFeatureDeliverySettingsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_heartRateSettingsDefaults, a3);
+    objc_storeStrong(&v6->_heartRateSettingsDefaults, defaults);
   }
 
   return v7;

@@ -6,9 +6,9 @@
 
 - (uint64_t)CaptureController
 {
-  v1 = *a1;
+  v1 = *self;
 
-  return a1;
+  return self;
 }
 
 @end

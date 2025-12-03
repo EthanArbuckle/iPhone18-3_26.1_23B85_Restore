@@ -1,60 +1,60 @@
 @interface AKAppleIDRecoveryController
-- (id)_nextStepForResponse:(id)a3;
-- (void)_beginAccountRecoveryWithModel:(id)a3 completion:(id)a4;
-- (void)_logResponse:(id)a3;
-- (void)_processNextStep:(id)a3 response:(id)a4 model:(id)a5 completion:(id)a6;
-- (void)_processResponse:(id)a3 model:(id)a4 withCompletion:(id)a5;
-- (void)beginAccountRecoveryWithModel:(id)a3 completion:(id)a4;
+- (id)_nextStepForResponse:(id)response;
+- (void)_beginAccountRecoveryWithModel:(id)model completion:(id)completion;
+- (void)_logResponse:(id)response;
+- (void)_processNextStep:(id)step response:(id)response model:(id)model completion:(id)completion;
+- (void)_processResponse:(id)response model:(id)model withCompletion:(id)completion;
+- (void)beginAccountRecoveryWithModel:(id)model completion:(id)completion;
 @end
 
 @implementation AKAppleIDRecoveryController
 
-- (void)beginAccountRecoveryWithModel:(id)a3 completion:(id)a4
+- (void)beginAccountRecoveryWithModel:(id)model completion:(id)completion
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(AKAppleIDRecoveryController *)v7 _beginAccountRecoveryWithModel:location[0] completion:v5];
+  objc_storeStrong(&v5, completion);
+  [(AKAppleIDRecoveryController *)selfCopy _beginAccountRecoveryWithModel:location[0] completion:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_beginAccountRecoveryWithModel:(id)a3 completion:(id)a4
+- (void)_beginAccountRecoveryWithModel:(id)model completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
-  v27 = [location[0] configuration];
-  if (v27)
+  objc_storeStrong(&v28, completion);
+  configuration = [location[0] configuration];
+  if (configuration)
   {
-    v4 = [v27 request];
-    v22 = [v4 mutableCopy];
-    MEMORY[0x1E69E5920](v4);
+    request = [configuration request];
+    v22 = [request mutableCopy];
+    MEMORY[0x1E69E5920](request);
     [v22 setHTTPMethod:@"GET"];
-    v5 = [location[0] cliUtilities];
-    [v5 signXMLRequest:v22];
-    MEMORY[0x1E69E5920](v5);
-    v6 = [v27 resourceLoadDelegate];
-    [v6 signRequest:v22];
-    MEMORY[0x1E69E5920](v6);
-    v8 = [location[0] cliUtilities];
+    cliUtilities = [location[0] cliUtilities];
+    [cliUtilities signXMLRequest:v22];
+    MEMORY[0x1E69E5920](cliUtilities);
+    resourceLoadDelegate = [configuration resourceLoadDelegate];
+    [resourceLoadDelegate signRequest:v22];
+    MEMORY[0x1E69E5920](resourceLoadDelegate);
+    cliUtilities2 = [location[0] cliUtilities];
     v7 = v22;
     v14 = MEMORY[0x1E69E9820];
     v15 = -1073741824;
     v16 = 0;
     v17 = __73__AKAppleIDRecoveryController__beginAccountRecoveryWithModel_completion___block_invoke;
     v18 = &unk_1E73D4D78;
-    v19 = MEMORY[0x1E69E5928](v30);
+    v19 = MEMORY[0x1E69E5928](selfCopy);
     v20 = MEMORY[0x1E69E5928](location[0]);
     v21 = MEMORY[0x1E69E5928](v28);
-    [v8 beginDataTaskWithRequest:v7 completionHandler:&v14];
-    MEMORY[0x1E69E5920](v8);
+    [cliUtilities2 beginDataTaskWithRequest:v7 completionHandler:&v14];
+    MEMORY[0x1E69E5920](cliUtilities2);
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v20, 0);
     objc_storeStrong(&v19, 0);
@@ -86,7 +86,7 @@
     v23 = 1;
   }
 
-  objc_storeStrong(&v27, 0);
+  objc_storeStrong(&configuration, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(location, 0);
 }
@@ -110,21 +110,21 @@ void __73__AKAppleIDRecoveryController__beginAccountRecoveryWithModel_completion
   objc_storeStrong(location, 0);
 }
 
-- (void)_processResponse:(id)a3 model:(id)a4 withCompletion:(id)a5
+- (void)_processResponse:(id)response model:(id)model withCompletion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, model);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  [(AKAppleIDRecoveryController *)v18 _logResponse:location[0]];
-  v14 = [(AKAppleIDRecoveryController *)v18 _nextStepForResponse:location[0]];
+  objc_storeStrong(&v15, completion);
+  [(AKAppleIDRecoveryController *)selfCopy _logResponse:location[0]];
+  v14 = [(AKAppleIDRecoveryController *)selfCopy _nextStepForResponse:location[0]];
   if (v14)
   {
-    [(AKAppleIDRecoveryController *)v18 _processNextStep:v14 response:location[0] model:v16 completion:v15];
+    [(AKAppleIDRecoveryController *)selfCopy _processNextStep:v14 response:location[0] model:v16 completion:v15];
   }
 
   else
@@ -155,15 +155,15 @@ void __73__AKAppleIDRecoveryController__beginAccountRecoveryWithModel_completion
   objc_storeStrong(location, 0);
 }
 
-- (id)_nextStepForResponse:(id)a3
+- (id)_nextStepForResponse:(id)response
 {
   v20 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x1E69E5928](v17->_supportedRecoverySteps);
+  obj = MEMORY[0x1E69E5928](selfCopy->_supportedRecoverySteps);
   v12 = [obj countByEnumeratingWithState:__b objects:v19 count:16];
   if (v12)
   {
@@ -223,26 +223,26 @@ LABEL_9:
   return v4;
 }
 
-- (void)_processNextStep:(id)a3 response:(id)a4 model:(id)a5 completion:(id)a6
+- (void)_processNextStep:(id)step response:(id)response model:(id)model completion:(id)completion
 {
-  obj = a4;
-  v12 = a5;
-  v13 = a6;
-  v33 = self;
+  obj = response;
+  modelCopy = model;
+  completionCopy = completion;
+  selfCopy = self;
   location[1] = a2;
   v26 = location;
   v27 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, step);
   v25 = &v31;
   v31 = 0;
   objc_storeStrong(&v31, obj);
   v24 = &v30;
   v30 = 0;
-  objc_storeStrong(&v30, v12);
+  objc_storeStrong(&v30, modelCopy);
   v23 = &v29;
   v29 = 0;
-  objc_storeStrong(&v29, v13);
+  objc_storeStrong(&v29, completionCopy);
   v6 = objc_opt_class();
   v14 = NSStringFromClass(v6);
   AKPrintLine(@"Begin account recovery step: %@", v14);
@@ -261,7 +261,7 @@ LABEL_9:
   v8 = MEMORY[0x1E69E5928](location[0]);
   v21 = v17 + 4;
   v28[4] = v8;
-  v9 = MEMORY[0x1E69E5928](v33);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   v20 = v17 + 5;
   v28[5] = v9;
   v10 = MEMORY[0x1E69E5928](v30);
@@ -338,26 +338,26 @@ void __74__AKAppleIDRecoveryController__processNextStep_response_model_completio
   objc_storeStrong(&location, 0);
 }
 
-- (void)_logResponse:(id)a3
+- (void)_logResponse:(id)response
 {
   v17 = *MEMORY[0x1E69E9840];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v5 = [location[0] data];
+  data = [location[0] data];
   v13 = [v4 initWithData:? encoding:?];
-  MEMORY[0x1E69E5920](v5);
+  MEMORY[0x1E69E5920](data);
   v7 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v10 = NSStringFromClass(v3);
-  v6 = v15;
-  v9 = [location[0] httpResponse];
-  v8 = [v9 allHeaderFields];
-  v12 = [v7 stringWithFormat:@"<%@: %p {\n\theaderFields: %@, \n\tdata: %@, \n}>", v10, v6, v8, v13];
-  MEMORY[0x1E69E5920](v8);
-  MEMORY[0x1E69E5920](v9);
+  v6 = selfCopy;
+  httpResponse = [location[0] httpResponse];
+  allHeaderFields = [httpResponse allHeaderFields];
+  v12 = [v7 stringWithFormat:@"<%@: %p {\n\theaderFields: %@, \n\tdata: %@, \n}>", v10, v6, allHeaderFields, v13];
+  MEMORY[0x1E69E5920](allHeaderFields);
+  MEMORY[0x1E69E5920](httpResponse);
   MEMORY[0x1E69E5920](v10);
   v11 = _AKLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))

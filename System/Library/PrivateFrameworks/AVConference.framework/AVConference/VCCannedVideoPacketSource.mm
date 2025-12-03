@@ -1,9 +1,9 @@
 @interface VCCannedVideoPacketSource
-+ (BOOL)createFileAtPath:(id)a3;
-+ (BOOL)overwriteFileAtPath:(id)a3;
-+ (BOOL)removeFileAtPath:(id)a3;
-- (BOOL)setUpSourceFileWithMode:(unsigned __int8)a3;
-- (VCCannedVideoPacketSource)initWithMode:(unsigned __int8)a3 filePath:(id)a4;
++ (BOOL)createFileAtPath:(id)path;
++ (BOOL)overwriteFileAtPath:(id)path;
++ (BOOL)removeFileAtPath:(id)path;
+- (BOOL)setUpSourceFileWithMode:(unsigned __int8)mode;
+- (VCCannedVideoPacketSource)initWithMode:(unsigned __int8)mode filePath:(id)path;
 - (int)startCannedInjection;
 - (int)stopCannedInjection;
 - (void)dealloc;
@@ -12,9 +12,9 @@
 
 @implementation VCCannedVideoPacketSource
 
-- (VCCannedVideoPacketSource)initWithMode:(unsigned __int8)a3 filePath:(id)a4
+- (VCCannedVideoPacketSource)initWithMode:(unsigned __int8)mode filePath:(id)path
 {
-  v5 = a3;
+  modeCopy = mode;
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = VCCannedVideoPacketSource;
@@ -27,7 +27,7 @@ LABEL_19:
     return 0;
   }
 
-  v7 = [a4 copy];
+  v7 = [path copy];
   v6->_filePath = v7;
   if (!v7)
   {
@@ -73,7 +73,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (![(VCCannedVideoPacketSource *)v6 setUpSourceFileWithMode:v5])
+  if (![(VCCannedVideoPacketSource *)v6 setUpSourceFileWithMode:modeCopy])
   {
     [VCCannedVideoPacketSource initWithMode:filePath:];
     goto LABEL_19;
@@ -85,10 +85,10 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)setUpSourceFileWithMode:(unsigned __int8)a3
+- (BOOL)setUpSourceFileWithMode:(unsigned __int8)mode
 {
-  self->_mode = a3;
-  if (a3 == 2)
+  self->_mode = mode;
+  if (mode == 2)
   {
     if (![VCCannedVideoPacketSource overwriteFileAtPath:self->_filePath])
     {
@@ -105,7 +105,7 @@ LABEL_19:
     }
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
     if (([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] & 1) == 0)
     {
@@ -247,14 +247,14 @@ LABEL_6:
   return 0;
 }
 
-+ (BOOL)createFileAtPath:(id)a3
++ (BOOL)createFileAtPath:(id)path
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v4 fileExistsAtPath:a3] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:path] & 1) == 0)
   {
     v7[0] = 0;
-    if ([v4 createDirectoryAtPath:objc_msgSend(a3 withIntermediateDirectories:"stringByDeletingLastPathComponent") attributes:1 error:{0, v7}])
+    if ([defaultManager createDirectoryAtPath:objc_msgSend(path withIntermediateDirectories:"stringByDeletingLastPathComponent") attributes:1 error:{0, v7}])
     {
       v5 = v7[0] == 0;
     }
@@ -270,7 +270,7 @@ LABEL_6:
       return 0;
     }
 
-    if (([v4 createFileAtPath:a3 contents:0 attributes:0] & 1) == 0)
+    if (([defaultManager createFileAtPath:path contents:0 attributes:0] & 1) == 0)
     {
       +[VCCannedVideoPacketSource createFileAtPath:];
       return 0;
@@ -280,17 +280,17 @@ LABEL_6:
   return 1;
 }
 
-+ (BOOL)removeFileAtPath:(id)a3
++ (BOOL)removeFileAtPath:(id)path
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if (![v4 fileExistsAtPath:a3])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (![defaultManager fileExistsAtPath:path])
   {
     return 1;
   }
 
   v7[0] = 0;
-  if ([v4 removeItemAtPath:a3 error:v7] && v7[0] == 0)
+  if ([defaultManager removeItemAtPath:path error:v7] && v7[0] == 0)
   {
     return 1;
   }
@@ -400,13 +400,13 @@ void ___VCCannedVideoPacketSource_WriteBytes_block_invoke(uint64_t a1)
   }
 }
 
-+ (BOOL)overwriteFileAtPath:(id)a3
++ (BOOL)overwriteFileAtPath:(id)path
 {
   v4 = [VCCannedVideoPacketSource removeFileAtPath:?];
   if (v4)
   {
 
-    LOBYTE(v4) = [VCCannedVideoPacketSource createFileAtPath:a3];
+    LOBYTE(v4) = [VCCannedVideoPacketSource createFileAtPath:path];
   }
 
   return v4;

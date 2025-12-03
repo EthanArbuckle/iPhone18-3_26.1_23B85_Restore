@@ -1,18 +1,18 @@
 @interface PXGViewControllerItemPlacementInterpolator
 - (PXGViewControllerItemPlacementInterpolator)init;
-- (PXGViewControllerItemPlacementInterpolator)initWithSourcePlacement:(id)a3 targetPlacement:(id)a4 layering:(int64_t)a5 containerView:(id)a6 duration:(double)a7;
-- (id)adjustedPlacement:(id)a3;
+- (PXGViewControllerItemPlacementInterpolator)initWithSourcePlacement:(id)placement targetPlacement:(id)targetPlacement layering:(int64_t)layering containerView:(id)view duration:(double)duration;
+- (id)adjustedPlacement:(id)placement;
 @end
 
 @implementation PXGViewControllerItemPlacementInterpolator
 
-- (id)adjustedPlacement:(id)a3
+- (id)adjustedPlacement:(id)placement
 {
-  v4 = a3;
-  v5 = v4;
+  placementCopy = placement;
+  v5 = placementCopy;
   if (!self->_hasValidGeometry)
   {
-    v25 = v4;
+    v25 = placementCopy;
     goto LABEL_37;
   }
 
@@ -111,9 +111,9 @@
     v32 = v31;
     if (self->_allowsAdjustedTargetPlacement)
     {
-      v33 = [(PXGItemPlacement *)v31 adjustedPreferredPlacement];
+      adjustedPreferredPlacement = [(PXGItemPlacement *)v31 adjustedPreferredPlacement];
 
-      v32 = v33;
+      v32 = adjustedPreferredPlacement;
     }
 
     sourcePlacement = self->_sourcePlacement;
@@ -324,22 +324,22 @@ void __64__PXGViewControllerItemPlacementInterpolator_adjustedPlacement___block_
   [v3 setOtherItemsPlacement:*(a1 + 40)];
 }
 
-- (PXGViewControllerItemPlacementInterpolator)initWithSourcePlacement:(id)a3 targetPlacement:(id)a4 layering:(int64_t)a5 containerView:(id)a6 duration:(double)a7
+- (PXGViewControllerItemPlacementInterpolator)initWithSourcePlacement:(id)placement targetPlacement:(id)targetPlacement layering:(int64_t)layering containerView:(id)view duration:(double)duration
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  placementCopy = placement;
+  targetPlacementCopy = targetPlacement;
+  viewCopy = view;
   v71.receiver = self;
   v71.super_class = PXGViewControllerItemPlacementInterpolator;
   v16 = [(PXGViewControllerItemPlacementInterpolator *)&v71 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_sourcePlacement, a3);
-    objc_storeStrong(&v17->_targetPlacement, a4);
-    v17->_layering = a5;
-    objc_storeStrong(&v17->_containerView, a6);
-    v17->_duration = a7;
+    objc_storeStrong(&v16->_sourcePlacement, placement);
+    objc_storeStrong(&v17->_targetPlacement, targetPlacement);
+    v17->_layering = layering;
+    objc_storeStrong(&v17->_containerView, view);
+    v17->_duration = duration;
     LODWORD(v18) = 1043207291;
     LODWORD(v19) = 1045220557;
     LODWORD(v20) = 1.0;
@@ -386,18 +386,18 @@ void __64__PXGViewControllerItemPlacementInterpolator_adjustedPlacement___block_
     v17->_hasValidGeometry = IsValid;
     v40 = +[PXTungstenSettings sharedInstance];
     v17->_alwaysHideSource = [v40 hideSummaryContentDuringTransition];
-    v41 = [v40 hideDetailContentDuringTransition];
-    v17->_alwaysHideTarget = v41;
+    hideDetailContentDuringTransition = [v40 hideDetailContentDuringTransition];
+    v17->_alwaysHideTarget = hideDetailContentDuringTransition;
     if (v17->_layering == 1)
     {
       alwaysHideSource = v17->_alwaysHideSource;
-      v17->_alwaysHideSource = v41;
+      v17->_alwaysHideSource = hideDetailContentDuringTransition;
       v17->_alwaysHideTarget = alwaysHideSource;
     }
 
-    v43 = [(PXGItemPlacement *)v17->_sourcePlacement displayedAsset];
-    v44 = [(PXGItemPlacement *)v17->_targetPlacement displayedAsset];
-    v45 = [v43 isEqual:v44];
+    displayedAsset = [(PXGItemPlacement *)v17->_sourcePlacement displayedAsset];
+    displayedAsset2 = [(PXGItemPlacement *)v17->_targetPlacement displayedAsset];
+    v45 = [displayedAsset isEqual:displayedAsset2];
 
     if (!v45)
     {
@@ -542,8 +542,8 @@ LABEL_14:
 
 - (PXGViewControllerItemPlacementInterpolator)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGViewControllerItemPlacementInterpolator.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXGViewControllerItemPlacementInterpolator init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGViewControllerItemPlacementInterpolator.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXGViewControllerItemPlacementInterpolator init]"}];
 
   abort();
 }

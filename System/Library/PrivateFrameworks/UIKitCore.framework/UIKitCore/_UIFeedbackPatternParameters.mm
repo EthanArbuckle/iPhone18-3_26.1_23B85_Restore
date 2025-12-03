@@ -1,21 +1,21 @@
 @interface _UIFeedbackPatternParameters
-- (void)_updateParameterWithKey:(id)a3;
+- (void)_updateParameterWithKey:(id)key;
 @end
 
 @implementation _UIFeedbackPatternParameters
 
-- (void)_updateParameterWithKey:(id)a3
+- (void)_updateParameterWithKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(_UIFeedbackPatternParameters *)self pattern];
-  v6 = [v5 feedbacks];
+  pattern = [(_UIFeedbackPatternParameters *)self pattern];
+  feedbacks = [pattern feedbacks];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [feedbacks countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -27,17 +27,17 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(feedbacks);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) audioParameters];
-        [v11 _updateParameterWithKey:v4];
+        audioParameters = [*(*(&v12 + 1) + 8 * v10) audioParameters];
+        [audioParameters _updateParameterWithKey:keyCopy];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [feedbacks countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);

@@ -1,33 +1,33 @@
 @interface DMCDefaults
-+ (BOOL)BOOLForDefaultsKey:(id)a3;
-+ (id)dictForDefaultsKey:(id)a3;
-+ (id)numberForDefaultsKey:(id)a3;
-+ (id)objectForDefaultsKey:(id)a3;
-+ (id)stringForDefaultsKey:(id)a3;
++ (BOOL)BOOLForDefaultsKey:(id)key;
++ (id)dictForDefaultsKey:(id)key;
++ (id)numberForDefaultsKey:(id)key;
++ (id)objectForDefaultsKey:(id)key;
++ (id)stringForDefaultsKey:(id)key;
 @end
 
 @implementation DMCDefaults
 
-+ (id)stringForDefaultsKey:(id)a3
++ (id)stringForDefaultsKey:(id)key
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 stringForKey:v4];
+  keyCopy = key;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults stringForKey:keyCopy];
 
   return v6;
 }
 
-+ (id)numberForDefaultsKey:(id)a3
++ (id)numberForDefaultsKey:(id)key
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 objectForKey:v3];
+  keyCopy = key;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v7 = [v6 objectForKey:v3];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v7 = [standardUserDefaults2 objectForKey:keyCopy];
   }
 
   else
@@ -38,16 +38,16 @@
   return v7;
 }
 
-+ (id)dictForDefaultsKey:(id)a3
++ (id)dictForDefaultsKey:(id)key
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 objectForKey:v3];
+  keyCopy = key;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v7 = [v6 objectForKey:v3];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v7 = [standardUserDefaults2 objectForKey:keyCopy];
   }
 
   else
@@ -58,20 +58,20 @@
   return v7;
 }
 
-+ (BOOL)BOOLForDefaultsKey:(id)a3
++ (BOOL)BOOLForDefaultsKey:(id)key
 {
-  v3 = [a1 numberForDefaultsKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [self numberForDefaultsKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)objectForDefaultsKey:(id)a3
++ (id)objectForDefaultsKey:(id)key
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:keyCopy];
 
   return v6;
 }

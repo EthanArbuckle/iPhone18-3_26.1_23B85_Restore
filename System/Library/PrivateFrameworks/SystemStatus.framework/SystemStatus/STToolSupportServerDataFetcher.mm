@@ -1,15 +1,15 @@
 @interface STToolSupportServerDataFetcher
-- (id)serverDataForDomains:(id)a3 preferredLocalizations:(id)a4;
+- (id)serverDataForDomains:(id)domains preferredLocalizations:(id)localizations;
 @end
 
 @implementation STToolSupportServerDataFetcher
 
-- (id)serverDataForDomains:(id)a3 preferredLocalizations:(id)a4
+- (id)serverDataForDomains:(id)domains preferredLocalizations:(id)localizations
 {
-  v5 = a4;
-  v6 = a3;
+  localizationsCopy = localizations;
+  domainsCopy = domains;
   v7 = +[STStatusDomainXPCServerHandle sharedMachServiceServerHandle];
-  v8 = [v7 serverDataForDomains:v6 preferredLocalizations:v5];
+  v8 = [v7 serverDataForDomains:domainsCopy preferredLocalizations:localizationsCopy];
 
   return v8;
 }

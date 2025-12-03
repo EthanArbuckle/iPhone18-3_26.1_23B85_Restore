@@ -1,26 +1,26 @@
 @interface SUCoreDiag
 + (id)sharedDiag;
-- (SUCoreDiag)initWithAppendedDomain:(id)a3 appendingDumpFilename:(id)a4;
-- (id)_copyTrackedStatsClearingAfter:(BOOL)a3 droppingMatchedIndications:(int64_t)a4;
-- (id)_dumpMaskToString:(int64_t)a3;
-- (id)copyTrackedStatsClearingAfter:(BOOL)a3 droppingMatchedIndications:(int64_t)a4;
-- (id)loadDump:(id)a3;
+- (SUCoreDiag)initWithAppendedDomain:(id)domain appendingDumpFilename:(id)filename;
+- (id)_copyTrackedStatsClearingAfter:(BOOL)after droppingMatchedIndications:(int64_t)indications;
+- (id)_dumpMaskToString:(int64_t)string;
+- (id)copyTrackedStatsClearingAfter:(BOOL)after droppingMatchedIndications:(int64_t)indications;
+- (id)loadDump:(id)dump;
 - (int64_t)allIndications;
-- (void)_appendToHistory:(id)a3;
-- (void)_dumpEvent:(id)a3;
-- (void)_dumpToFile:(id)a3 dumpingDict:(id)a4 forReason:(id)a5;
-- (void)_dumpTracked:(id)a3 dumpingTo:(int64_t)a4 usingFilename:(id)a5 clearingStatistics:(BOOL)a6 clearingHistory:(BOOL)a7;
-- (void)_logTrackedError:(id)a3 fromLocation:(id)a4 forReason:(id)a5 withResult:(int64_t)a6 withError:(id)a7;
-- (void)collectTrackedStatsClearingAfter:(BOOL)a3 droppingMatchedIndications:(int64_t)a4 completion:(id)a5;
-- (void)dumpTracked:(id)a3 dumpingTo:(int64_t)a4 usingFilename:(id)a5 clearingStatistics:(BOOL)a6 clearingHistory:(BOOL)a7;
-- (void)trackAnomaly:(id)a3 forReason:(id)a4 withResult:(int64_t)a5 withError:(id)a6;
-- (void)trackBegin:(id)a3 atLevel:(int)a4 forModule:(id)a5 withIdentifier:(id)a6;
-- (void)trackEnd:(id)a3 atLevel:(int)a4 forModule:(id)a5 withIdentifier:(id)a6 withResult:(int64_t)a7 withError:(id)a8;
-- (void)trackError:(id)a3 forReason:(id)a4 withResult:(int64_t)a5 withError:(id)a6;
-- (void)trackFailure:(id)a3 forReason:(id)a4 withResult:(int64_t)a5 withError:(id)a6;
-- (void)trackFault:(id)a3 forReason:(id)a4 withResult:(int64_t)a5 withError:(id)a6;
-- (void)trackLastReportedUUID:(id)a3;
-- (void)trackStateEvent:(id)a3 previousState:(id)a4 handlingEvent:(id)a5 nextState:(id)a6 performingAction:(id)a7 withInfo:(id)a8;
+- (void)_appendToHistory:(id)history;
+- (void)_dumpEvent:(id)event;
+- (void)_dumpToFile:(id)file dumpingDict:(id)dict forReason:(id)reason;
+- (void)_dumpTracked:(id)tracked dumpingTo:(int64_t)to usingFilename:(id)filename clearingStatistics:(BOOL)statistics clearingHistory:(BOOL)history;
+- (void)_logTrackedError:(id)error fromLocation:(id)location forReason:(id)reason withResult:(int64_t)result withError:(id)withError;
+- (void)collectTrackedStatsClearingAfter:(BOOL)after droppingMatchedIndications:(int64_t)indications completion:(id)completion;
+- (void)dumpTracked:(id)tracked dumpingTo:(int64_t)to usingFilename:(id)filename clearingStatistics:(BOOL)statistics clearingHistory:(BOOL)history;
+- (void)trackAnomaly:(id)anomaly forReason:(id)reason withResult:(int64_t)result withError:(id)error;
+- (void)trackBegin:(id)begin atLevel:(int)level forModule:(id)module withIdentifier:(id)identifier;
+- (void)trackEnd:(id)end atLevel:(int)level forModule:(id)module withIdentifier:(id)identifier withResult:(int64_t)result withError:(id)error;
+- (void)trackError:(id)error forReason:(id)reason withResult:(int64_t)result withError:(id)withError;
+- (void)trackFailure:(id)failure forReason:(id)reason withResult:(int64_t)result withError:(id)error;
+- (void)trackFault:(id)fault forReason:(id)reason withResult:(int64_t)result withError:(id)error;
+- (void)trackLastReportedUUID:(id)d;
+- (void)trackStateEvent:(id)event previousState:(id)state handlingEvent:(id)handlingEvent nextState:(id)nextState performingAction:(id)action withInfo:(id)info;
 @end
 
 @implementation SUCoreDiag
@@ -48,46 +48,46 @@ uint64_t __24__SUCoreDiag_sharedDiag__block_invoke()
   return [v2 setIsSharedDiag:1];
 }
 
-- (SUCoreDiag)initWithAppendedDomain:(id)a3 appendingDumpFilename:(id)a4
+- (SUCoreDiag)initWithAppendedDomain:(id)domain appendingDumpFilename:(id)filename
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  domainCopy = domain;
+  filenameCopy = filename;
   v35.receiver = self;
   v35.super_class = SUCoreDiag;
   v9 = [(SUCoreDiag *)&v35 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uniqueInstanceName, a3);
+    objc_storeStrong(&v9->_uniqueInstanceName, domain);
     v11 = objc_alloc(MEMORY[0x1E696AEC0]);
     v12 = +[SUCore sharedCore];
-    v13 = [v12 commonDomain];
-    v14 = [v11 initWithFormat:@"%@.%@.%@", v13, @"core.diag.tracking", v7];
+    commonDomain = [v12 commonDomain];
+    domainCopy = [v11 initWithFormat:@"%@.%@.%@", commonDomain, @"core.diag.tracking", domainCopy];
 
-    v15 = [v14 UTF8String];
+    uTF8String = [domainCopy UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
+    v17 = dispatch_queue_create(uTF8String, v16);
     trackingQueue = v10->_trackingQueue;
     v10->_trackingQueue = v17;
 
     v19 = v10->_trackingQueue;
     v20 = +[SUCoreLog sharedLogger];
-    v21 = [v20 oslog];
+    oslog = [v20 oslog];
 
     if (v19)
     {
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v37 = v14;
-        _os_log_impl(&dword_1E0F71000, v21, OS_LOG_TYPE_DEFAULT, "[DIAG] DISPATCH: created dispatch queue domain(%{public}@)", buf, 0xCu);
+        v37 = domainCopy;
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[DIAG] DISPATCH: created dispatch queue domain(%{public}@)", buf, 0xCu);
       }
     }
 
-    else if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    else if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [(SUCoreDiag *)v14 initWithAppendedDomain:v21 appendingDumpFilename:v22, v23, v24, v25, v26, v27];
+      [(SUCoreDiag *)domainCopy initWithAppendedDomain:oslog appendingDumpFilename:v22, v23, v24, v25, v26, v27];
     }
 
     v28 = objc_opt_new();
@@ -98,7 +98,7 @@ uint64_t __24__SUCoreDiag_sharedDiag__block_invoke()
     trackStats = v10->_trackStats;
     v10->_trackStats = v30;
 
-    objc_storeStrong(&v10->_appendingDumpFilename, a4);
+    objc_storeStrong(&v10->_appendingDumpFilename, filename);
     lastReportedUUID = v10->_lastReportedUUID;
     v10->_lastReportedUUID = 0;
 
@@ -109,28 +109,28 @@ uint64_t __24__SUCoreDiag_sharedDiag__block_invoke()
   return v10;
 }
 
-- (void)trackBegin:(id)a3 atLevel:(int)a4 forModule:(id)a5 withIdentifier:(id)a6
+- (void)trackBegin:(id)begin atLevel:(int)level forModule:(id)module withIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(SUCoreDiag *)self trackingQueue];
-  dispatch_assert_queue_not_V2(v13);
+  beginCopy = begin;
+  moduleCopy = module;
+  identifierCopy = identifier;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
+  dispatch_assert_queue_not_V2(trackingQueue);
 
-  v14 = [(SUCoreDiag *)self trackingQueue];
+  trackingQueue2 = [(SUCoreDiag *)self trackingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__SUCoreDiag_trackBegin_atLevel_forModule_withIdentifier___block_invoke;
   block[3] = &unk_1E86FD258;
-  v19 = v10;
-  v20 = v12;
-  v23 = a4;
-  v21 = self;
-  v22 = v11;
-  v15 = v11;
-  v16 = v12;
-  v17 = v10;
-  dispatch_sync(v14, block);
+  v19 = beginCopy;
+  v20 = identifierCopy;
+  levelCopy = level;
+  selfCopy = self;
+  v22 = moduleCopy;
+  v15 = moduleCopy;
+  v16 = identifierCopy;
+  v17 = beginCopy;
+  dispatch_sync(trackingQueue2, block);
 }
 
 void __58__SUCoreDiag_trackBegin_atLevel_forModule_withIdentifier___block_invoke(uint64_t a1)
@@ -243,32 +243,32 @@ LABEL_16:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trackEnd:(id)a3 atLevel:(int)a4 forModule:(id)a5 withIdentifier:(id)a6 withResult:(int64_t)a7 withError:(id)a8
+- (void)trackEnd:(id)end atLevel:(int)level forModule:(id)module withIdentifier:(id)identifier withResult:(int64_t)result withError:(id)error
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = [(SUCoreDiag *)self trackingQueue];
-  dispatch_assert_queue_not_V2(v18);
+  endCopy = end;
+  moduleCopy = module;
+  identifierCopy = identifier;
+  errorCopy = error;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
+  dispatch_assert_queue_not_V2(trackingQueue);
 
-  v19 = [(SUCoreDiag *)self trackingQueue];
+  trackingQueue2 = [(SUCoreDiag *)self trackingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__SUCoreDiag_trackEnd_atLevel_forModule_withIdentifier_withResult_withError___block_invoke;
   block[3] = &unk_1E86FD280;
-  v25 = v14;
-  v26 = v16;
-  v27 = v17;
-  v28 = self;
-  v31 = a4;
-  v29 = v15;
-  v30 = a7;
-  v20 = v15;
-  v21 = v17;
-  v22 = v16;
-  v23 = v14;
-  dispatch_sync(v19, block);
+  v25 = endCopy;
+  v26 = identifierCopy;
+  v27 = errorCopy;
+  selfCopy = self;
+  levelCopy = level;
+  v29 = moduleCopy;
+  resultCopy = result;
+  v20 = moduleCopy;
+  v21 = errorCopy;
+  v22 = identifierCopy;
+  v23 = endCopy;
+  dispatch_sync(trackingQueue2, block);
 }
 
 void __77__SUCoreDiag_trackEnd_atLevel_forModule_withIdentifier_withResult_withError___block_invoke(uint64_t a1)
@@ -509,25 +509,25 @@ LABEL_34:
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trackError:(id)a3 forReason:(id)a4 withResult:(int64_t)a5 withError:(id)a6
+- (void)trackError:(id)error forReason:(id)reason withResult:(int64_t)result withError:(id)withError
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SUCoreDiag *)self trackingQueue];
+  errorCopy = error;
+  reasonCopy = reason;
+  withErrorCopy = withError;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__SUCoreDiag_trackError_forReason_withResult_withError___block_invoke;
   block[3] = &unk_1E86FD2A8;
-  v18 = v10;
-  v19 = v11;
-  v21 = self;
-  v22 = a5;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = errorCopy;
+  v19 = reasonCopy;
+  selfCopy = self;
+  resultCopy = result;
+  v20 = withErrorCopy;
+  v14 = withErrorCopy;
+  v15 = reasonCopy;
+  v16 = errorCopy;
+  dispatch_async(trackingQueue, block);
 }
 
 void __56__SUCoreDiag_trackError_forReason_withResult_withError___block_invoke(uint64_t a1)
@@ -558,25 +558,25 @@ void __56__SUCoreDiag_trackError_forReason_withResult_withError___block_invoke(u
   }
 }
 
-- (void)trackAnomaly:(id)a3 forReason:(id)a4 withResult:(int64_t)a5 withError:(id)a6
+- (void)trackAnomaly:(id)anomaly forReason:(id)reason withResult:(int64_t)result withError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SUCoreDiag *)self trackingQueue];
+  anomalyCopy = anomaly;
+  reasonCopy = reason;
+  errorCopy = error;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__SUCoreDiag_trackAnomaly_forReason_withResult_withError___block_invoke;
   block[3] = &unk_1E86FD2A8;
-  v18 = v10;
-  v19 = v11;
-  v21 = self;
-  v22 = a5;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = anomalyCopy;
+  v19 = reasonCopy;
+  selfCopy = self;
+  resultCopy = result;
+  v20 = errorCopy;
+  v14 = errorCopy;
+  v15 = reasonCopy;
+  v16 = anomalyCopy;
+  dispatch_async(trackingQueue, block);
 }
 
 void __58__SUCoreDiag_trackAnomaly_forReason_withResult_withError___block_invoke(uint64_t a1)
@@ -607,25 +607,25 @@ void __58__SUCoreDiag_trackAnomaly_forReason_withResult_withError___block_invoke
   }
 }
 
-- (void)trackFailure:(id)a3 forReason:(id)a4 withResult:(int64_t)a5 withError:(id)a6
+- (void)trackFailure:(id)failure forReason:(id)reason withResult:(int64_t)result withError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SUCoreDiag *)self trackingQueue];
+  failureCopy = failure;
+  reasonCopy = reason;
+  errorCopy = error;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__SUCoreDiag_trackFailure_forReason_withResult_withError___block_invoke;
   block[3] = &unk_1E86FD2A8;
-  v18 = v10;
-  v19 = v11;
-  v21 = self;
-  v22 = a5;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = failureCopy;
+  v19 = reasonCopy;
+  selfCopy = self;
+  resultCopy = result;
+  v20 = errorCopy;
+  v14 = errorCopy;
+  v15 = reasonCopy;
+  v16 = failureCopy;
+  dispatch_async(trackingQueue, block);
 }
 
 void __58__SUCoreDiag_trackFailure_forReason_withResult_withError___block_invoke(uint64_t a1)
@@ -657,25 +657,25 @@ void __58__SUCoreDiag_trackFailure_forReason_withResult_withError___block_invoke
   }
 }
 
-- (void)trackFault:(id)a3 forReason:(id)a4 withResult:(int64_t)a5 withError:(id)a6
+- (void)trackFault:(id)fault forReason:(id)reason withResult:(int64_t)result withError:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SUCoreDiag *)self trackingQueue];
+  faultCopy = fault;
+  reasonCopy = reason;
+  errorCopy = error;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__SUCoreDiag_trackFault_forReason_withResult_withError___block_invoke;
   block[3] = &unk_1E86FD2A8;
-  v18 = v10;
-  v19 = v11;
-  v21 = self;
-  v22 = a5;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = faultCopy;
+  v19 = reasonCopy;
+  selfCopy = self;
+  resultCopy = result;
+  v20 = errorCopy;
+  v14 = errorCopy;
+  v15 = reasonCopy;
+  v16 = faultCopy;
+  dispatch_async(trackingQueue, block);
 }
 
 void __56__SUCoreDiag_trackFault_forReason_withResult_withError___block_invoke(uint64_t a1)
@@ -780,33 +780,33 @@ LABEL_13:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trackStateEvent:(id)a3 previousState:(id)a4 handlingEvent:(id)a5 nextState:(id)a6 performingAction:(id)a7 withInfo:(id)a8
+- (void)trackStateEvent:(id)event previousState:(id)state handlingEvent:(id)handlingEvent nextState:(id)nextState performingAction:(id)action withInfo:(id)info
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(SUCoreDiag *)self trackingQueue];
+  eventCopy = event;
+  stateCopy = state;
+  handlingEventCopy = handlingEvent;
+  nextStateCopy = nextState;
+  actionCopy = action;
+  infoCopy = info;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__SUCoreDiag_trackStateEvent_previousState_handlingEvent_nextState_performingAction_withInfo___block_invoke;
   block[3] = &unk_1E86FD2D0;
-  v28 = v19;
-  v29 = v14;
-  v30 = v15;
-  v31 = v16;
-  v32 = v17;
-  v33 = v18;
-  v34 = self;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
-  v26 = v19;
-  dispatch_async(v20, block);
+  v28 = infoCopy;
+  v29 = eventCopy;
+  v30 = stateCopy;
+  v31 = handlingEventCopy;
+  v32 = nextStateCopy;
+  v33 = actionCopy;
+  selfCopy = self;
+  v21 = actionCopy;
+  v22 = nextStateCopy;
+  v23 = handlingEventCopy;
+  v24 = stateCopy;
+  v25 = eventCopy;
+  v26 = infoCopy;
+  dispatch_async(trackingQueue, block);
 }
 
 void __94__SUCoreDiag_trackStateEvent_previousState_handlingEvent_nextState_performingAction_withInfo___block_invoke(uint64_t a1)
@@ -854,18 +854,18 @@ void __94__SUCoreDiag_trackStateEvent_previousState_handlingEvent_nextState_perf
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)trackLastReportedUUID:(id)a3
+- (void)trackLastReportedUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(SUCoreDiag *)self trackingQueue];
+  dCopy = d;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__SUCoreDiag_trackLastReportedUUID___block_invoke;
   v7[3] = &unk_1E86FC150;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(trackingQueue, v7);
 }
 
 void __36__SUCoreDiag_trackLastReportedUUID___block_invoke(uint64_t a1)
@@ -880,16 +880,16 @@ void __36__SUCoreDiag_trackLastReportedUUID___block_invoke(uint64_t a1)
 
 - (int64_t)allIndications
 {
-  v2 = [(SUCoreDiag *)self trackStats];
-  v3 = [v2 allIndications];
+  trackStats = [(SUCoreDiag *)self trackStats];
+  allIndications = [trackStats allIndications];
 
-  return v3;
+  return allIndications;
 }
 
-- (id)copyTrackedStatsClearingAfter:(BOOL)a3 droppingMatchedIndications:(int64_t)a4
+- (id)copyTrackedStatsClearingAfter:(BOOL)after droppingMatchedIndications:(int64_t)indications
 {
-  v7 = [(SUCoreDiag *)self trackingQueue];
-  dispatch_assert_queue_not_V2(v7);
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
+  dispatch_assert_queue_not_V2(trackingQueue);
 
   v13 = 0;
   v14 = &v13;
@@ -897,16 +897,16 @@ void __36__SUCoreDiag_trackLastReportedUUID___block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy__5;
   v17 = __Block_byref_object_dispose__5;
   v18 = 0;
-  v8 = [(SUCoreDiag *)self trackingQueue];
+  trackingQueue2 = [(SUCoreDiag *)self trackingQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__SUCoreDiag_copyTrackedStatsClearingAfter_droppingMatchedIndications___block_invoke;
   v11[3] = &unk_1E86FD2F8;
   v11[4] = self;
   v11[5] = &v13;
-  v12 = a3;
-  v11[6] = a4;
-  dispatch_sync(v8, v11);
+  afterCopy = after;
+  v11[6] = indications;
+  dispatch_sync(trackingQueue2, v11);
 
   v9 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -924,20 +924,20 @@ uint64_t __71__SUCoreDiag_copyTrackedStatsClearingAfter_droppingMatchedIndicatio
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)collectTrackedStatsClearingAfter:(BOOL)a3 droppingMatchedIndications:(int64_t)a4 completion:(id)a5
+- (void)collectTrackedStatsClearingAfter:(BOOL)after droppingMatchedIndications:(int64_t)indications completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(SUCoreDiag *)self trackingQueue];
+  completionCopy = completion;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __85__SUCoreDiag_collectTrackedStatsClearingAfter_droppingMatchedIndications_completion___block_invoke;
   v11[3] = &unk_1E86FD320;
-  v14 = a3;
-  v12 = v8;
-  v13 = a4;
+  afterCopy = after;
+  v12 = completionCopy;
+  indicationsCopy = indications;
   v11[4] = self;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v10 = completionCopy;
+  dispatch_async(trackingQueue, v11);
 }
 
 void __85__SUCoreDiag_collectTrackedStatsClearingAfter_droppingMatchedIndications_completion___block_invoke(uint64_t a1)
@@ -956,50 +956,50 @@ void __85__SUCoreDiag_collectTrackedStatsClearingAfter_droppingMatchedIndication
   dispatch_async(v4, v7);
 }
 
-- (void)dumpTracked:(id)a3 dumpingTo:(int64_t)a4 usingFilename:(id)a5 clearingStatistics:(BOOL)a6 clearingHistory:(BOOL)a7
+- (void)dumpTracked:(id)tracked dumpingTo:(int64_t)to usingFilename:(id)filename clearingStatistics:(BOOL)statistics clearingHistory:(BOOL)history
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = [(SUCoreDiag *)self trackingQueue];
-  dispatch_assert_queue_not_V2(v14);
+  trackedCopy = tracked;
+  filenameCopy = filename;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
+  dispatch_assert_queue_not_V2(trackingQueue);
 
-  v15 = [(SUCoreDiag *)self trackingQueue];
+  trackingQueue2 = [(SUCoreDiag *)self trackingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__SUCoreDiag_dumpTracked_dumpingTo_usingFilename_clearingStatistics_clearingHistory___block_invoke;
   block[3] = &unk_1E86FD348;
   block[4] = self;
-  v19 = v12;
-  v20 = v13;
-  v21 = a4;
-  v22 = a6;
-  v23 = a7;
-  v16 = v13;
-  v17 = v12;
-  dispatch_sync(v15, block);
+  v19 = trackedCopy;
+  v20 = filenameCopy;
+  toCopy = to;
+  statisticsCopy = statistics;
+  historyCopy = history;
+  v16 = filenameCopy;
+  v17 = trackedCopy;
+  dispatch_sync(trackingQueue2, block);
 }
 
-- (id)loadDump:(id)a3
+- (id)loadDump:(id)dump
 {
-  v3 = a3;
-  if (!v3)
+  dumpCopy = dump;
+  if (!dumpCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
     v5 = +[SUCore sharedCore];
-    v6 = [v5 commonFilesystemBaseDir];
-    v3 = [v4 initWithFormat:@"%@%@/%@", v6, @"/DiagDump", @"SUDiagDump.plist"];
+    commonFilesystemBaseDir = [v5 commonFilesystemBaseDir];
+    dumpCopy = [v4 initWithFormat:@"%@%@/%@", commonFilesystemBaseDir, @"/DiagDump", @"SUDiagDump.plist"];
   }
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 contentsAtPath:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager contentsAtPath:dumpCopy];
   if (!v8)
   {
     v20 = +[SUCoreLog sharedLogger];
-    v19 = [v20 oslog];
+    oslog = [v20 oslog];
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [(SUCoreDiag *)v3 loadDump:v19, v21, v22, v23, v24, v25, v26];
+      [(SUCoreDiag *)dumpCopy loadDump:oslog, v21, v22, v23, v24, v25, v26];
     }
 
     v17 = 0;
@@ -1021,9 +1021,9 @@ void __85__SUCoreDiag_collectTrackedStatsClearingAfter_droppingMatchedIndication
   if (!v16 || v17)
   {
     v18 = +[SUCoreLog sharedLogger];
-    v19 = [v18 oslog];
+    oslog = [v18 oslog];
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       [SUCoreDiag loadDump:];
     }
@@ -1036,54 +1036,54 @@ LABEL_11:
   return v16;
 }
 
-- (void)_appendToHistory:(id)a3
+- (void)_appendToHistory:(id)history
 {
-  v12 = a3;
-  v4 = [(SUCoreDiag *)self trackingHistory];
+  historyCopy = history;
+  trackingHistory = [(SUCoreDiag *)self trackingHistory];
 
-  if (!v4)
+  if (!trackingHistory)
   {
     v5 = objc_opt_new();
     [(SUCoreDiag *)self setTrackingHistory:v5];
   }
 
-  v6 = [(SUCoreDiag *)self trackingHistory];
-  [v6 addObject:v12];
+  trackingHistory2 = [(SUCoreDiag *)self trackingHistory];
+  [trackingHistory2 addObject:historyCopy];
 
-  v7 = [(SUCoreDiag *)self trackingHistory];
-  v8 = [v7 count];
+  trackingHistory3 = [(SUCoreDiag *)self trackingHistory];
+  v8 = [trackingHistory3 count];
 
   if (v8 >= 0x81)
   {
     do
     {
-      v9 = [(SUCoreDiag *)self trackingHistory];
-      [v9 removeObjectAtIndex:0];
+      trackingHistory4 = [(SUCoreDiag *)self trackingHistory];
+      [trackingHistory4 removeObjectAtIndex:0];
 
-      v10 = [(SUCoreDiag *)self trackingHistory];
-      v11 = [v10 count];
+      trackingHistory5 = [(SUCoreDiag *)self trackingHistory];
+      v11 = [trackingHistory5 count];
     }
 
     while (v11 > 0x80);
   }
 }
 
-- (void)_logTrackedError:(id)a3 fromLocation:(id)a4 forReason:(id)a5 withResult:(int64_t)a6 withError:(id)a7
+- (void)_logTrackedError:(id)error fromLocation:(id)location forReason:(id)reason withResult:(int64_t)result withError:(id)withError
 {
   v36 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  errorCopy = error;
+  locationCopy = location;
+  reasonCopy = reason;
+  withErrorCopy = withError;
   v15 = +[SUCoreLog sharedLogger];
-  v16 = [v15 oslog];
+  oslog = [v15 oslog];
 
-  v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
-  if (v13 | v14)
+  v17 = os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR);
+  if (reasonCopy | withErrorCopy)
   {
-    if (v13)
+    if (reasonCopy)
     {
-      if (!v14)
+      if (!withErrorCopy)
       {
         if (!v17)
         {
@@ -1091,15 +1091,15 @@ LABEL_11:
         }
 
         v26 = 138544130;
-        v27 = v11;
+        v27 = errorCopy;
         v28 = 2114;
-        v29 = v12;
+        v29 = locationCopy;
         v30 = 2114;
-        v31 = v13;
+        resultCopy4 = reasonCopy;
         v32 = 2048;
-        v33 = a6;
+        resultCopy2 = result;
         v18 = "[DIAG_ERROR] %{public}@: %{public}@, reason=%{public}@ result=%ld";
-        v19 = v16;
+        v19 = oslog;
         v20 = 42;
         goto LABEL_4;
       }
@@ -1109,19 +1109,19 @@ LABEL_11:
         goto LABEL_13;
       }
 
-      v21 = [v14 checkedDescription];
+      checkedDescription = [withErrorCopy checkedDescription];
       v26 = 138544386;
-      v27 = v11;
+      v27 = errorCopy;
       v28 = 2114;
-      v29 = v12;
+      v29 = locationCopy;
       v30 = 2114;
-      v31 = v13;
+      resultCopy4 = reasonCopy;
       v32 = 2048;
-      v33 = a6;
+      resultCopy2 = result;
       v34 = 2114;
-      v35 = v21;
+      v35 = checkedDescription;
       v22 = "[DIAG_ERROR] %{public}@: %{public}@, reason=%{public}@ result=%ld error:%{public}@";
-      v23 = v16;
+      v23 = oslog;
       v24 = 52;
     }
 
@@ -1132,17 +1132,17 @@ LABEL_11:
         goto LABEL_13;
       }
 
-      v21 = [v14 checkedDescription];
+      checkedDescription = [withErrorCopy checkedDescription];
       v26 = 138544130;
-      v27 = v11;
+      v27 = errorCopy;
       v28 = 2114;
-      v29 = v12;
+      v29 = locationCopy;
       v30 = 2048;
-      v31 = a6;
+      resultCopy4 = result;
       v32 = 2114;
-      v33 = v21;
+      resultCopy2 = checkedDescription;
       v22 = "[DIAG_ERROR] %{public}@: %{public}@, result=%ld error:%{public}@";
-      v23 = v16;
+      v23 = oslog;
       v24 = 42;
     }
 
@@ -1154,13 +1154,13 @@ LABEL_11:
   if (v17)
   {
     v26 = 138543874;
-    v27 = v11;
+    v27 = errorCopy;
     v28 = 2114;
-    v29 = v12;
+    v29 = locationCopy;
     v30 = 2048;
-    v31 = a6;
+    resultCopy4 = result;
     v18 = "[DIAG_ERROR] %{public}@: %{public}@, result=%ld";
-    v19 = v16;
+    v19 = oslog;
     v20 = 32;
 LABEL_4:
     _os_log_error_impl(&dword_1E0F71000, v19, OS_LOG_TYPE_ERROR, v18, &v26, v20);
@@ -1171,23 +1171,23 @@ LABEL_13:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_dumpMaskToString:(int64_t)a3
+- (id)_dumpMaskToString:(int64_t)string
 {
-  v3 = a3;
-  if (a3)
+  stringCopy = string;
+  if (string)
   {
     v4 = @"LOG_ARCHIVE";
-    if ((a3 & 2) != 0)
+    if ((string & 2) != 0)
     {
       [@"LOG_ARCHIVE" stringByAppendingString:@"|STDOUT"];
 
-      if ((v3 & 4) != 0)
+      if ((stringCopy & 4) != 0)
       {
         goto LABEL_13;
       }
     }
 
-    else if ((a3 & 4) != 0)
+    else if ((string & 4) != 0)
     {
       goto LABEL_13;
     }
@@ -1195,15 +1195,15 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if ((a3 & 2) != 0)
+  if ((string & 2) != 0)
   {
     v4 = @"STDOUT";
-    if ((a3 & 4) != 0)
+    if ((string & 4) != 0)
     {
 LABEL_13:
       [(__CFString *)v4 stringByAppendingString:@"|FILE"];
 
-      if ((v3 & 8) == 0)
+      if ((stringCopy & 8) == 0)
       {
         return v4;
       }
@@ -1212,7 +1212,7 @@ LABEL_13:
     }
 
 LABEL_7:
-    if ((v3 & 8) == 0)
+    if ((stringCopy & 8) == 0)
     {
       return v4;
     }
@@ -1223,10 +1223,10 @@ LABEL_8:
     return v4;
   }
 
-  if ((a3 & 4) != 0)
+  if ((string & 4) != 0)
   {
     v4 = @"FILE";
-    if ((a3 & 8) == 0)
+    if ((string & 8) == 0)
     {
       return v4;
     }
@@ -1234,29 +1234,29 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  return (@"EVENT_REPORTER" & (a3 << 60 >> 63));
+  return (@"EVENT_REPORTER" & (string << 60 >> 63));
 }
 
-- (void)_dumpTracked:(id)a3 dumpingTo:(int64_t)a4 usingFilename:(id)a5 clearingStatistics:(BOOL)a6 clearingHistory:(BOOL)a7
+- (void)_dumpTracked:(id)tracked dumpingTo:(int64_t)to usingFilename:(id)filename clearingStatistics:(BOOL)statistics clearingHistory:(BOOL)history
 {
-  v7 = a7;
-  v8 = a6;
+  historyCopy = history;
+  statisticsCopy = statistics;
   v78 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = [(SUCoreDiag *)self trackingQueue];
-  dispatch_assert_queue_V2(v14);
+  trackedCopy = tracked;
+  filenameCopy = filename;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
+  dispatch_assert_queue_V2(trackingQueue);
 
-  v15 = [(SUCoreDiag *)self _dumpMaskToString:a4];
+  v15 = [(SUCoreDiag *)self _dumpMaskToString:to];
   v16 = +[SUCoreLog sharedLogger];
-  v17 = [v16 oslog];
+  oslog = [v16 oslog];
 
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v18 = @"NO";
     *buf = 138544386;
-    v69 = v12;
-    if (v8)
+    v69 = trackedCopy;
+    if (statisticsCopy)
     {
       v19 = @"YES";
     }
@@ -1266,7 +1266,7 @@ LABEL_8:
       v19 = @"NO";
     }
 
-    if (v7)
+    if (historyCopy)
     {
       v18 = @"YES";
     }
@@ -1274,18 +1274,18 @@ LABEL_8:
     v70 = 2114;
     v71 = v15;
     v72 = 2114;
-    v73 = v13;
+    v73 = filenameCopy;
     v74 = 2114;
     v75 = v19;
     v76 = 2114;
     v77 = v18;
-    _os_log_impl(&dword_1E0F71000, v17, OS_LOG_TYPE_DEFAULT, "[DIAG] dump tracked with reason=%{public}@ dumpToMask=%{public}@ filename=%{public}@ clearStatistics=%{public}@ clearHistory=%{public}@", buf, 0x34u);
+    _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[DIAG] dump tracked with reason=%{public}@ dumpToMask=%{public}@ filename=%{public}@ clearStatistics=%{public}@ clearHistory=%{public}@", buf, 0x34u);
   }
 
-  if ((a4 & 2) != 0)
+  if ((to & 2) != 0)
   {
     v20 = @"NO";
-    if (v8)
+    if (statisticsCopy)
     {
       v21 = @"YES";
     }
@@ -1295,25 +1295,25 @@ LABEL_8:
       v21 = @"NO";
     }
 
-    if (v7)
+    if (historyCopy)
     {
       v20 = @"YES";
     }
 
-    NSLog(@"[DIAG] dump tracked with reason=%@ dumpToMask=%@ filename=%@ clearStatistics=%@ clearHistory=%@", v12, v15, v13, v21, v20);
+    NSLog(@"[DIAG] dump tracked with reason=%@ dumpToMask=%@ filename=%@ clearStatistics=%@ clearHistory=%@", trackedCopy, v15, filenameCopy, v21, v20);
   }
 
-  if ((a4 & 4) != 0)
+  if ((to & 4) != 0)
   {
     v22 = objc_opt_new();
-    if ((a4 & 8) != 0)
+    if ((to & 8) != 0)
     {
       goto LABEL_17;
     }
 
 LABEL_19:
     v23 = 0;
-    if (!a4)
+    if (!to)
     {
       goto LABEL_55;
     }
@@ -1322,7 +1322,7 @@ LABEL_19:
   }
 
   v22 = 0;
-  if ((a4 & 8) == 0)
+  if ((to & 8) == 0)
   {
     goto LABEL_19;
   }
@@ -1330,111 +1330,111 @@ LABEL_19:
 LABEL_17:
   v23 = objc_opt_new();
 LABEL_20:
-  if (v12)
+  if (trackedCopy)
   {
-    [v22 setSafeObject:v12 forKey:@"reportReason"];
-    [v23 setSafeObject:v12 forKey:@"reportReason"];
+    [v22 setSafeObject:trackedCopy forKey:@"reportReason"];
+    [v23 setSafeObject:trackedCopy forKey:@"reportReason"];
   }
 
-  v66 = v7;
+  v66 = historyCopy;
   v67 = v23;
-  v24 = [(SUCoreDiag *)self lastReportedUUID];
+  lastReportedUUID = [(SUCoreDiag *)self lastReportedUUID];
 
-  if (v24)
+  if (lastReportedUUID)
   {
-    v25 = [(SUCoreDiag *)self lastReportedUUID];
-    [v22 setSafeObject:v25 forKey:@"UUID"];
+    lastReportedUUID2 = [(SUCoreDiag *)self lastReportedUUID];
+    [v22 setSafeObject:lastReportedUUID2 forKey:@"UUID"];
 
-    v26 = [(SUCoreDiag *)self lastReportedUUID];
-    [v23 setSafeObject:v26 forKey:@"UUID"];
+    lastReportedUUID3 = [(SUCoreDiag *)self lastReportedUUID];
+    [v23 setSafeObject:lastReportedUUID3 forKey:@"UUID"];
 
-    if (a4)
+    if (to)
     {
       v27 = +[SUCoreLog sharedLogger];
-      v28 = [v27 oslog];
+      oslog2 = [v27 oslog];
 
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [(SUCoreDiag *)self lastReportedUUID];
+        lastReportedUUID4 = [(SUCoreDiag *)self lastReportedUUID];
         *buf = 138543362;
-        v69 = v29;
-        _os_log_impl(&dword_1E0F71000, v28, OS_LOG_TYPE_DEFAULT, "[DIAG] DUMP_UUID: %{public}@", buf, 0xCu);
+        v69 = lastReportedUUID4;
+        _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[DIAG] DUMP_UUID: %{public}@", buf, 0xCu);
       }
     }
 
-    if ((a4 & 2) != 0)
+    if ((to & 2) != 0)
     {
-      v30 = [(SUCoreDiag *)self lastReportedUUID];
-      NSLog(@"[DIAG] DUMP_UUID: %@", v30);
+      lastReportedUUID5 = [(SUCoreDiag *)self lastReportedUUID];
+      NSLog(@"[DIAG] DUMP_UUID: %@", lastReportedUUID5);
     }
   }
 
-  v31 = [(SUCoreDiag *)self trackStats];
+  trackStats = [(SUCoreDiag *)self trackStats];
 
-  if (v31)
+  if (trackStats)
   {
-    v32 = [(SUCoreDiag *)self trackStats];
+    trackStats2 = [(SUCoreDiag *)self trackStats];
     v33 = v22;
-    [v22 setSafeObject:v32 forKey:@"reportStats"];
+    [v22 setSafeObject:trackStats2 forKey:@"reportStats"];
 
-    v34 = [(SUCoreDiag *)self trackStats];
-    v35 = [v34 summary];
-    [v67 setSafeObject:v35 forKey:@"reportStats"];
+    trackStats3 = [(SUCoreDiag *)self trackStats];
+    summary = [trackStats3 summary];
+    [v67 setSafeObject:summary forKey:@"reportStats"];
 
-    if (a4)
+    if (to)
     {
       v36 = +[SUCoreLog sharedLogger];
-      v37 = [v36 oslog];
+      oslog3 = [v36 oslog];
 
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [(SUCoreDiag *)self trackStats];
+        trackStats4 = [(SUCoreDiag *)self trackStats];
         *buf = 138543362;
-        v69 = v38;
-        _os_log_impl(&dword_1E0F71000, v37, OS_LOG_TYPE_DEFAULT, "[DIAG] DUMP_STATS:\n%{public}@", buf, 0xCu);
+        v69 = trackStats4;
+        _os_log_impl(&dword_1E0F71000, oslog3, OS_LOG_TYPE_DEFAULT, "[DIAG] DUMP_STATS:\n%{public}@", buf, 0xCu);
       }
     }
 
     v22 = v33;
-    if ((a4 & 2) != 0)
+    if ((to & 2) != 0)
     {
-      v39 = [(SUCoreDiag *)self trackStats];
-      NSLog(@"[DIAG] DUMP_STATS:\n%@", v39);
+      trackStats5 = [(SUCoreDiag *)self trackStats];
+      NSLog(@"[DIAG] DUMP_STATS:\n%@", trackStats5);
     }
   }
 
-  v65 = v8;
-  v40 = [(SUCoreDiag *)self trackingHistory];
-  v41 = [v40 count];
+  v65 = statisticsCopy;
+  trackingHistory = [(SUCoreDiag *)self trackingHistory];
+  v41 = [trackingHistory count];
 
-  v7 = v66;
+  historyCopy = v66;
   if (v41)
   {
-    v42 = [(SUCoreDiag *)self trackingHistory];
-    [v22 setSafeObject:v42 forKey:?];
+    trackingHistory2 = [(SUCoreDiag *)self trackingHistory];
+    [v22 setSafeObject:trackingHistory2 forKey:?];
 
-    v43 = [(SUCoreDiag *)self trackingHistory];
-    v44 = [v43 count];
+    trackingHistory3 = [(SUCoreDiag *)self trackingHistory];
+    v44 = [trackingHistory3 count];
 
     if (v44)
     {
       v61 = v22;
       v62 = v15;
-      v63 = v13;
-      v64 = v12;
+      v63 = filenameCopy;
+      v64 = trackedCopy;
       v45 = 0;
       v46 = 0;
       do
       {
-        v47 = [(SUCoreDiag *)self trackingHistory];
-        v48 = [v47 objectAtIndexedSubscript:v46];
+        trackingHistory4 = [(SUCoreDiag *)self trackingHistory];
+        v48 = [trackingHistory4 objectAtIndexedSubscript:v46];
 
         v49 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v50 = [v48 summary];
-        v51 = v50;
+        summary2 = [v48 summary];
+        v51 = summary2;
         if (v45)
         {
-          v52 = [v49 initWithFormat:@", [%04lu:%@]", v46, v50];
+          v52 = [v49 initWithFormat:@", [%04lu:%@]", v46, summary2];
 
           v53 = [v45 stringByAppendingString:v52];
 
@@ -1444,38 +1444,38 @@ LABEL_20:
 
         else
         {
-          v45 = [v49 initWithFormat:@"[%04lu:%@]", v46, v50];
+          v45 = [v49 initWithFormat:@"[%04lu:%@]", v46, summary2];
         }
 
-        if (a4)
+        if (to)
         {
           v54 = +[SUCoreLog sharedLogger];
-          v55 = [v54 oslog];
+          oslog4 = [v54 oslog];
 
-          if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218242;
             v69 = v46;
             v70 = 2114;
             v71 = v48;
-            _os_log_impl(&dword_1E0F71000, v55, OS_LOG_TYPE_DEFAULT, "[DIAG] DUMP_HISTORY[%04lu]: %{public}@", buf, 0x16u);
+            _os_log_impl(&dword_1E0F71000, oslog4, OS_LOG_TYPE_DEFAULT, "[DIAG] DUMP_HISTORY[%04lu]: %{public}@", buf, 0x16u);
           }
         }
 
-        if ((a4 & 2) != 0)
+        if ((to & 2) != 0)
         {
           NSLog(@"[DIAG] DUMP_HISTORY[%04lu]: %@", v46, v48);
         }
 
         ++v46;
-        v56 = [(SUCoreDiag *)self trackingHistory];
-        v57 = [v56 count];
+        trackingHistory5 = [(SUCoreDiag *)self trackingHistory];
+        v57 = [trackingHistory5 count];
       }
 
       while (v46 < v57);
-      v13 = v63;
-      v12 = v64;
-      v7 = v66;
+      filenameCopy = v63;
+      trackedCopy = v64;
+      historyCopy = v66;
       v22 = v61;
       v15 = v62;
       if (v45)
@@ -1485,99 +1485,99 @@ LABEL_20:
     }
   }
 
-  if ((a4 & 4) != 0)
+  if ((to & 4) != 0)
   {
-    [(SUCoreDiag *)self _dumpToFile:v13 dumpingDict:v22 forReason:v12];
+    [(SUCoreDiag *)self _dumpToFile:filenameCopy dumpingDict:v22 forReason:trackedCopy];
   }
 
-  v8 = v65;
+  statisticsCopy = v65;
   v23 = v67;
-  if ((a4 & 8) != 0)
+  if ((to & 8) != 0)
   {
     [(SUCoreDiag *)self _dumpEvent:v67];
   }
 
 LABEL_55:
-  if (v8)
+  if (statisticsCopy)
   {
     v58 = objc_alloc_init(SUCoreDiagStats);
     [(SUCoreDiag *)self setTrackStats:v58];
   }
 
-  if (v7)
+  if (historyCopy)
   {
-    v59 = [(SUCoreDiag *)self trackingHistory];
-    [v59 removeAllObjects];
+    trackingHistory6 = [(SUCoreDiag *)self trackingHistory];
+    [trackingHistory6 removeAllObjects];
   }
 
   v60 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dumpToFile:(id)a3 dumpingDict:(id)a4 forReason:(id)a5
+- (void)_dumpToFile:(id)file dumpingDict:(id)dict forReason:(id)reason
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(SUCoreDiag *)self trackingQueue];
-  dispatch_assert_queue_V2(v11);
+  fileCopy = file;
+  reasonCopy = reason;
+  dictCopy = dict;
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
+  dispatch_assert_queue_V2(trackingQueue);
 
   v44 = 0;
-  v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v44];
+  v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictCopy requiringSecureCoding:1 error:&v44];
 
   v13 = v44;
   v14 = v13;
   if (!v12 || v13)
   {
     v20 = +[SUCoreLog sharedLogger];
-    v21 = [v20 oslog];
+    oslog = [v20 oslog];
 
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [(SUCoreDiag *)v14 _dumpToFile:v21 dumpingDict:v22 forReason:v23, v24, v25, v26, v27];
+      [(SUCoreDiag *)v14 _dumpToFile:oslog dumpingDict:v22 forReason:v23, v24, v25, v26, v27];
     }
   }
 
   else
   {
-    if (!v8)
+    if (!fileCopy)
     {
       v15 = objc_alloc(MEMORY[0x1E696AEC0]);
       v16 = +[SUCore sharedCore];
-      v17 = [v16 commonFilesystemBaseDir];
-      v18 = [(SUCoreDiag *)self appendingDumpFilename];
-      if (v18)
+      commonFilesystemBaseDir = [v16 commonFilesystemBaseDir];
+      appendingDumpFilename = [(SUCoreDiag *)self appendingDumpFilename];
+      if (appendingDumpFilename)
       {
-        v19 = [(SUCoreDiag *)self appendingDumpFilename];
-        v8 = [v15 initWithFormat:@"%@%@/%@", v17, @"/DiagDump", v19];
+        appendingDumpFilename2 = [(SUCoreDiag *)self appendingDumpFilename];
+        fileCopy = [v15 initWithFormat:@"%@%@/%@", commonFilesystemBaseDir, @"/DiagDump", appendingDumpFilename2];
       }
 
       else
       {
-        v8 = [v15 initWithFormat:@"%@%@/%@", v17, @"/DiagDump", @"SUDiagDump.plist"];
+        fileCopy = [v15 initWithFormat:@"%@%@/%@", commonFilesystemBaseDir, @"/DiagDump", @"SUDiagDump.plist"];
       }
     }
 
-    v28 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v28 fileExistsAtPath:v8])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:fileCopy])
     {
       v43 = 0;
-      v29 = [v28 removeItemAtPath:v8 error:&v43];
+      v29 = [defaultManager removeItemAtPath:fileCopy error:&v43];
       v30 = v43;
       if ((v29 & 1) == 0)
       {
         v31 = +[SUCoreLog sharedLogger];
-        v32 = [v31 oslog];
+        oslog2 = [v31 oslog];
 
-        if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          v48 = v9;
+          v48 = reasonCopy;
           v49 = 2114;
-          v50 = v8;
+          v50 = fileCopy;
           v51 = 2114;
           v52 = v30;
-          _os_log_error_impl(&dword_1E0F71000, v32, OS_LOG_TYPE_ERROR, "[DIAG_ERROR] ANOMALY: [%@] could not remove pre-existing dump file: %{public}@, error: %{public}@", buf, 0x20u);
+          _os_log_error_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_ERROR, "[DIAG_ERROR] ANOMALY: [%@] could not remove pre-existing dump file: %{public}@, error: %{public}@", buf, 0x20u);
         }
       }
     }
@@ -1587,19 +1587,19 @@ LABEL_55:
       v30 = 0;
     }
 
-    v33 = [v8 stringByDeletingLastPathComponent];
-    if (v33)
+    stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
+    if (stringByDeletingLastPathComponent)
     {
       v42 = v30;
-      v34 = [v28 createDirectoryAtPath:v33 withIntermediateDirectories:1 attributes:0 error:&v42];
-      v21 = v42;
+      v34 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v42];
+      oslog = v42;
 
-      if ((v34 & 1) == 0 && (!v21 || [v21 code]!= 17))
+      if ((v34 & 1) == 0 && (!oslog || [oslog code]!= 17))
       {
         v35 = +[SUCoreLog sharedLogger];
-        v36 = [v35 oslog];
+        oslog3 = [v35 oslog];
 
-        if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
         {
           [SUCoreDiag _dumpToFile:dumpingDict:forReason:];
         }
@@ -1608,20 +1608,20 @@ LABEL_55:
 
     else
     {
-      v21 = v30;
+      oslog = v30;
     }
 
     v45 = *MEMORY[0x1E696A3A0];
     v46 = *MEMORY[0x1E696A3A8];
     v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-    v38 = [v28 createFileAtPath:v8 contents:v12 attributes:v37];
+    v38 = [defaultManager createFileAtPath:fileCopy contents:v12 attributes:v37];
 
     if ((v38 & 1) == 0)
     {
       v39 = +[SUCoreLog sharedLogger];
-      v40 = [v39 oslog];
+      oslog4 = [v39 oslog];
 
-      if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_ERROR))
       {
         [SUCoreDiag _dumpToFile:dumpingDict:forReason:];
       }
@@ -1631,79 +1631,79 @@ LABEL_55:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dumpEvent:(id)a3
+- (void)_dumpEvent:(id)event
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  eventCopy = event;
+  v4 = eventCopy;
+  if (eventCopy)
   {
-    [v3 setSafeObject:@"coreDiagReport" forKey:@"event"];
-    v5 = +[SUCoreEventReporter sharedReporter];
-    [v5 sendEvent:v4];
+    [eventCopy setSafeObject:@"coreDiagReport" forKey:@"event"];
+    oslog = +[SUCoreEventReporter sharedReporter];
+    [oslog sendEvent:v4];
   }
 
   else
   {
     v6 = +[SUCoreLog sharedLogger];
-    v5 = [v6 oslog];
+    oslog = [v6 oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [SUCoreDiag _dumpEvent:v5];
+      [SUCoreDiag _dumpEvent:oslog];
     }
   }
 }
 
-- (id)_copyTrackedStatsClearingAfter:(BOOL)a3 droppingMatchedIndications:(int64_t)a4
+- (id)_copyTrackedStatsClearingAfter:(BOOL)after droppingMatchedIndications:(int64_t)indications
 {
-  v5 = a3;
+  afterCopy = after;
   v65 = *MEMORY[0x1E69E9840];
-  v7 = [(SUCoreDiag *)self trackingQueue];
-  dispatch_assert_queue_V2(v7);
+  trackingQueue = [(SUCoreDiag *)self trackingQueue];
+  dispatch_assert_queue_V2(trackingQueue);
 
-  v8 = [(SUCoreDiag *)self trackStats];
-  v9 = [v8 copy];
+  trackStats = [(SUCoreDiag *)self trackStats];
+  v9 = [trackStats copy];
 
-  if (v5)
+  if (afterCopy)
   {
     v10 = objc_alloc_init(SUCoreDiagStats);
     [(SUCoreDiag *)self setTrackStats:v10];
   }
 
-  if (a4)
+  if (indications)
   {
-    v56 = [(SUCoreDiagStats *)v9 endFailCount];
-    v53 = [(SUCoreDiagStats *)v9 endFailIndicationsCount];
-    v52 = [(SUCoreDiagStats *)v9 endFailAllIndications];
-    v55 = [(SUCoreDiagStats *)v9 errorCount];
-    v51 = [(SUCoreDiagStats *)v9 errorIndicationsCount];
-    v50 = [(SUCoreDiagStats *)v9 errorAllIndications];
-    v54 = [(SUCoreDiagStats *)v9 anomalyCount];
-    v49 = [(SUCoreDiagStats *)v9 anomalyIndicationsCount];
-    v48 = [(SUCoreDiagStats *)v9 anomalyAllIndications];
-    v11 = [(SUCoreDiagStats *)v9 failureCount];
-    v47 = [(SUCoreDiagStats *)v9 failureIndicationsCount];
-    v46 = [(SUCoreDiagStats *)v9 failureAllIndications];
-    v12 = [(SUCoreDiagStats *)v9 faultCount];
-    v13 = [(SUCoreDiagStats *)v9 faultIndicationsCount];
-    v14 = [(SUCoreDiagStats *)v9 faultAllIndications];
-    v15 = [SUCoreErrorInformation summaryOfIndications:a4];
-    v16 = [(SUCoreDiagStats *)v9 endFailAllIndications];
-    v17 = v16 == a4;
-    if (v16 == a4)
+    endFailCount = [(SUCoreDiagStats *)v9 endFailCount];
+    endFailIndicationsCount = [(SUCoreDiagStats *)v9 endFailIndicationsCount];
+    endFailAllIndications = [(SUCoreDiagStats *)v9 endFailAllIndications];
+    errorCount = [(SUCoreDiagStats *)v9 errorCount];
+    errorIndicationsCount = [(SUCoreDiagStats *)v9 errorIndicationsCount];
+    errorAllIndications = [(SUCoreDiagStats *)v9 errorAllIndications];
+    anomalyCount = [(SUCoreDiagStats *)v9 anomalyCount];
+    anomalyIndicationsCount = [(SUCoreDiagStats *)v9 anomalyIndicationsCount];
+    anomalyAllIndications = [(SUCoreDiagStats *)v9 anomalyAllIndications];
+    failureCount = [(SUCoreDiagStats *)v9 failureCount];
+    failureIndicationsCount = [(SUCoreDiagStats *)v9 failureIndicationsCount];
+    failureAllIndications = [(SUCoreDiagStats *)v9 failureAllIndications];
+    faultCount = [(SUCoreDiagStats *)v9 faultCount];
+    faultIndicationsCount = [(SUCoreDiagStats *)v9 faultIndicationsCount];
+    faultAllIndications = [(SUCoreDiagStats *)v9 faultAllIndications];
+    v15 = [SUCoreErrorInformation summaryOfIndications:indications];
+    endFailAllIndications2 = [(SUCoreDiagStats *)v9 endFailAllIndications];
+    v17 = endFailAllIndications2 == indications;
+    if (endFailAllIndications2 == indications)
     {
       v18 = +[SUCoreLog sharedLogger];
-      v19 = [v18 oslog];
+      oslog = [v18 oslog];
 
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(SUCoreDiagStats *)v9 endFailIndicationsCount];
-        v21 = [(SUCoreDiagStats *)v9 endFailIndicationsCount];
+        endFailIndicationsCount2 = [(SUCoreDiagStats *)v9 endFailIndicationsCount];
+        endFailIndicationsCount3 = [(SUCoreDiagStats *)v9 endFailIndicationsCount];
         v22 = @"endFails";
         *buf = 134218498;
-        v58 = v20;
+        v58 = endFailIndicationsCount2;
         v59 = 2114;
-        if (v21 == 1)
+        if (endFailIndicationsCount3 == 1)
         {
           v22 = @"endFail";
         }
@@ -1711,28 +1711,28 @@ LABEL_55:
         v60 = v22;
         v61 = 2114;
         v62 = v15;
-        _os_log_impl(&dword_1E0F71000, v19, OS_LOG_TYPE_DEFAULT, "[DIAG_STATS] DROPPED: dropping tracked statistics [%lld %{public}@ matched %{public}@]", buf, 0x20u);
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[DIAG_STATS] DROPPED: dropping tracked statistics [%lld %{public}@ matched %{public}@]", buf, 0x20u);
       }
 
-      v52 = 0;
-      v53 = 0;
-      v56 -= [(SUCoreDiagStats *)v9 endFailIndicationsCount];
+      endFailAllIndications = 0;
+      endFailIndicationsCount = 0;
+      endFailCount -= [(SUCoreDiagStats *)v9 endFailIndicationsCount];
     }
 
-    if ([(SUCoreDiagStats *)v9 errorAllIndications]== a4)
+    if ([(SUCoreDiagStats *)v9 errorAllIndications]== indications)
     {
       v23 = +[SUCoreLog sharedLogger];
-      v24 = [v23 oslog];
+      oslog2 = [v23 oslog];
 
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(SUCoreDiagStats *)v9 errorIndicationsCount];
-        v26 = [(SUCoreDiagStats *)v9 errorIndicationsCount];
+        errorIndicationsCount2 = [(SUCoreDiagStats *)v9 errorIndicationsCount];
+        errorIndicationsCount3 = [(SUCoreDiagStats *)v9 errorIndicationsCount];
         v27 = @"errors";
         *buf = 134218754;
-        v58 = v25;
+        v58 = errorIndicationsCount2;
         v59 = 2114;
-        if (v26 == 1)
+        if (errorIndicationsCount3 == 1)
         {
           v27 = @"error";
         }
@@ -1742,29 +1742,29 @@ LABEL_55:
         v62 = v27;
         v63 = 2114;
         v64 = v15;
-        _os_log_impl(&dword_1E0F71000, v24, OS_LOG_TYPE_DEFAULT, "[DIAG_STATS] DROPPED: dropping tracked statistics [%lld %{public}@ %{public}@ matched %{public}@]", buf, 0x2Au);
+        _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[DIAG_STATS] DROPPED: dropping tracked statistics [%lld %{public}@ %{public}@ matched %{public}@]", buf, 0x2Au);
       }
 
-      v50 = 0;
-      v51 = 0;
-      v55 -= [(SUCoreDiagStats *)v9 errorIndicationsCount];
+      errorAllIndications = 0;
+      errorIndicationsCount = 0;
+      errorCount -= [(SUCoreDiagStats *)v9 errorIndicationsCount];
       v17 = 1;
     }
 
-    if ([(SUCoreDiagStats *)v9 anomalyAllIndications]== a4)
+    if ([(SUCoreDiagStats *)v9 anomalyAllIndications]== indications)
     {
       v28 = +[SUCoreLog sharedLogger];
-      v29 = [v28 oslog];
+      oslog3 = [v28 oslog];
 
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [(SUCoreDiagStats *)v9 anomalyIndicationsCount];
-        v31 = [(SUCoreDiagStats *)v9 anomalyIndicationsCount];
+        anomalyIndicationsCount2 = [(SUCoreDiagStats *)v9 anomalyIndicationsCount];
+        anomalyIndicationsCount3 = [(SUCoreDiagStats *)v9 anomalyIndicationsCount];
         v32 = @"anomalies";
         *buf = 134218754;
-        v58 = v30;
+        v58 = anomalyIndicationsCount2;
         v59 = 2114;
-        if (v31 == 1)
+        if (anomalyIndicationsCount3 == 1)
         {
           v32 = @"anomaly";
         }
@@ -1774,29 +1774,29 @@ LABEL_55:
         v62 = v32;
         v63 = 2114;
         v64 = v15;
-        _os_log_impl(&dword_1E0F71000, v29, OS_LOG_TYPE_DEFAULT, "[DIAG_STATS] DROPPED: dropping tracked statistics [%lld %{public}@ %{public}@ matched %{public}@]", buf, 0x2Au);
+        _os_log_impl(&dword_1E0F71000, oslog3, OS_LOG_TYPE_DEFAULT, "[DIAG_STATS] DROPPED: dropping tracked statistics [%lld %{public}@ %{public}@ matched %{public}@]", buf, 0x2Au);
       }
 
-      v48 = 0;
-      v49 = 0;
-      v54 -= [(SUCoreDiagStats *)v9 anomalyIndicationsCount];
+      anomalyAllIndications = 0;
+      anomalyIndicationsCount = 0;
+      anomalyCount -= [(SUCoreDiagStats *)v9 anomalyIndicationsCount];
       v17 = 1;
     }
 
-    if ([(SUCoreDiagStats *)v9 failureAllIndications]== a4)
+    if ([(SUCoreDiagStats *)v9 failureAllIndications]== indications)
     {
       v33 = +[SUCoreLog sharedLogger];
-      v34 = [v33 oslog];
+      oslog4 = [v33 oslog];
 
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [(SUCoreDiagStats *)v9 failureIndicationsCount];
-        v36 = [(SUCoreDiagStats *)v9 failureIndicationsCount];
+        failureIndicationsCount2 = [(SUCoreDiagStats *)v9 failureIndicationsCount];
+        failureIndicationsCount3 = [(SUCoreDiagStats *)v9 failureIndicationsCount];
         v37 = @"failures";
         *buf = 134218754;
-        v58 = v35;
+        v58 = failureIndicationsCount2;
         v59 = 2114;
-        if (v36 == 1)
+        if (failureIndicationsCount3 == 1)
         {
           v37 = @"failure";
         }
@@ -1806,19 +1806,19 @@ LABEL_55:
         v62 = v37;
         v63 = 2114;
         v64 = v15;
-        _os_log_impl(&dword_1E0F71000, v34, OS_LOG_TYPE_DEFAULT, "[DIAG_STATS] DROPPED: dropping tracked statistics [%lld %{public}@ %{public}@ matched %{public}@]", buf, 0x2Au);
+        _os_log_impl(&dword_1E0F71000, oslog4, OS_LOG_TYPE_DEFAULT, "[DIAG_STATS] DROPPED: dropping tracked statistics [%lld %{public}@ %{public}@ matched %{public}@]", buf, 0x2Au);
       }
 
-      v11 -= [(SUCoreDiagStats *)v9 failureIndicationsCount];
-      v46 = 0;
-      v47 = 0;
-      if ([(SUCoreDiagStats *)v9 faultAllIndications]!= a4)
+      failureCount -= [(SUCoreDiagStats *)v9 failureIndicationsCount];
+      failureAllIndications = 0;
+      failureIndicationsCount = 0;
+      if ([(SUCoreDiagStats *)v9 faultAllIndications]!= indications)
       {
         goto LABEL_35;
       }
     }
 
-    else if ([(SUCoreDiagStats *)v9 faultAllIndications]!= a4)
+    else if ([(SUCoreDiagStats *)v9 faultAllIndications]!= indications)
     {
       if (!v17)
       {
@@ -1829,17 +1829,17 @@ LABEL_55:
     }
 
     v38 = +[SUCoreLog sharedLogger];
-    v39 = [v38 oslog];
+    oslog5 = [v38 oslog];
 
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = [(SUCoreDiagStats *)v9 faultIndicationsCount];
-      v41 = [(SUCoreDiagStats *)v9 faultIndicationsCount];
+      faultIndicationsCount2 = [(SUCoreDiagStats *)v9 faultIndicationsCount];
+      faultIndicationsCount3 = [(SUCoreDiagStats *)v9 faultIndicationsCount];
       v42 = @"faults";
       *buf = 134218754;
-      v58 = v40;
+      v58 = faultIndicationsCount2;
       v59 = 2114;
-      if (v41 == 1)
+      if (faultIndicationsCount3 == 1)
       {
         v42 = @"fault";
       }
@@ -1849,14 +1849,14 @@ LABEL_55:
       v62 = v42;
       v63 = 2114;
       v64 = v15;
-      _os_log_impl(&dword_1E0F71000, v39, OS_LOG_TYPE_DEFAULT, "[DIAG_STATS] DROPPED: dropping tracked statistics [%lld %{public}@ %{public}@ matched %{public}@]", buf, 0x2Au);
+      _os_log_impl(&dword_1E0F71000, oslog5, OS_LOG_TYPE_DEFAULT, "[DIAG_STATS] DROPPED: dropping tracked statistics [%lld %{public}@ %{public}@ matched %{public}@]", buf, 0x2Au);
     }
 
-    v14 = 0;
-    v13 = 0;
-    v12 -= [(SUCoreDiagStats *)v9 faultIndicationsCount];
+    faultAllIndications = 0;
+    faultIndicationsCount = 0;
+    faultCount -= [(SUCoreDiagStats *)v9 faultIndicationsCount];
 LABEL_35:
-    v43 = [[SUCoreDiagStats alloc] initWithBeginCount:[(SUCoreDiagStats *)v9 beginCount] withEndSuccessCount:[(SUCoreDiagStats *)v9 endSuccessCount] withEndFailCount:v56 withEndFailIndicationsCount:v53 withEndFailAllIndications:v52 withErrorCount:v55 withErrorIndicationsCount:v51 withErrorAllIndications:v50 withAnomalyCount:v54 withAnomalyIndicationsCount:v49 withAnomalyAllIndications:v48 withFailureCount:v11 withFailureIndicationsCount:v47 withFailureAllIndications:v46 withFaultCount:v12 withFaultIndicationsCount:v13 withFaultAllIndications:v14 withStateEventCount:[(SUCoreDiagStats *)v9 stateEventCount]];
+    v43 = [[SUCoreDiagStats alloc] initWithBeginCount:[(SUCoreDiagStats *)v9 beginCount] withEndSuccessCount:[(SUCoreDiagStats *)v9 endSuccessCount] withEndFailCount:endFailCount withEndFailIndicationsCount:endFailIndicationsCount withEndFailAllIndications:endFailAllIndications withErrorCount:errorCount withErrorIndicationsCount:errorIndicationsCount withErrorAllIndications:errorAllIndications withAnomalyCount:anomalyCount withAnomalyIndicationsCount:anomalyIndicationsCount withAnomalyAllIndications:anomalyAllIndications withFailureCount:failureCount withFailureIndicationsCount:failureIndicationsCount withFailureAllIndications:failureAllIndications withFaultCount:faultCount withFaultIndicationsCount:faultIndicationsCount withFaultAllIndications:faultAllIndications withStateEventCount:[(SUCoreDiagStats *)v9 stateEventCount]];
 
     v9 = v43;
 LABEL_36:

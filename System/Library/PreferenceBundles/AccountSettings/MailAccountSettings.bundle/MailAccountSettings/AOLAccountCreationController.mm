@@ -7,9 +7,9 @@
 - (void)beginAccountCreation
 {
   v3 = [SLAOLWebAuthController alloc];
-  v4 = [(AccountCreationControllerBase *)self specifier];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:ACUIAccountKey];
+  specifier = [(AccountCreationControllerBase *)self specifier];
+  userInfo = [specifier userInfo];
+  v6 = [userInfo objectForKeyedSubscript:ACUIAccountKey];
   v7 = +[ACAccountStore defaultStore];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;

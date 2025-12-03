@@ -1,15 +1,15 @@
 @interface _BPSZip2Inner
-- (id)convertValues:(id)a3;
+- (id)convertValues:(id)values;
 @end
 
 @implementation _BPSZip2Inner
 
-- (id)convertValues:(id)a3
+- (id)convertValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v4 = [BPSTuple alloc];
-  v5 = [v3 objectAtIndexedSubscript:0];
-  v6 = [v3 objectAtIndexedSubscript:1];
+  v5 = [valuesCopy objectAtIndexedSubscript:0];
+  v6 = [valuesCopy objectAtIndexedSubscript:1];
 
   v7 = [(BPSTuple *)v4 initWithFirst:v5 second:v6];
 

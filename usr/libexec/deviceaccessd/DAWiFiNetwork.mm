@@ -1,27 +1,27 @@
 @interface DAWiFiNetwork
-- (BOOL)isEqual:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)descriptionWithLevel:(int)level;
 - (unint64_t)hash;
 @end
 
 @implementation DAWiFiNetwork
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if ([(DAWiFiNetwork *)v6 isMemberOfClass:objc_opt_class()])
     {
       if (self->_SSID)
       {
-        v7 = [(DAWiFiNetwork *)v6 SSID];
-        if ([v7 isEqualToString:self->_SSID])
+        sSID = [(DAWiFiNetwork *)v6 SSID];
+        if ([sSID isEqualToString:self->_SSID])
         {
-          v8 = [(DAWiFiNetwork *)v6 isUnsecured];
-          LODWORD(self) = v8 ^ [(DAWiFiNetwork *)self isUnsecured]^ 1;
+          isUnsecured = [(DAWiFiNetwork *)v6 isUnsecured];
+          LODWORD(self) = isUnsecured ^ [(DAWiFiNetwork *)self isUnsecured]^ 1;
         }
 
         else
@@ -36,13 +36,13 @@ LABEL_24:
 
       if (self->_wifiAwarePairedID && ([(DAWiFiNetwork *)v6 wifiAwarePairedID], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
       {
-        v10 = [(DAWiFiNetwork *)v6 wifiAwarePairedID];
-        v11 = [v10 UUIDString];
+        wifiAwarePairedID = [(DAWiFiNetwork *)v6 wifiAwarePairedID];
+        uUIDString = [wifiAwarePairedID UUIDString];
 
         self = [(DAWiFiNetwork *)self wifiAwarePairedID];
-        v12 = [(DAWiFiNetwork *)self UUIDString];
+        uUIDString2 = [(DAWiFiNetwork *)self UUIDString];
 
-        LOBYTE(self) = [v11 isEqualToString:v12];
+        LOBYTE(self) = [uUIDString isEqualToString:uUIDString2];
       }
 
       else
@@ -50,24 +50,24 @@ LABEL_24:
         signature = self->_signature;
         if (!signature)
         {
-          v7 = [(DAWiFiNetwork *)v6 serviceName];
-          v14 = [(DAWiFiNetwork *)self serviceName];
-          if ([v7 isEqualToString:v14])
+          sSID = [(DAWiFiNetwork *)v6 serviceName];
+          serviceName = [(DAWiFiNetwork *)self serviceName];
+          if ([sSID isEqualToString:serviceName])
           {
-            v15 = [(DAWiFiNetwork *)v6 wifiAwareVendorName];
-            v16 = [(DAWiFiNetwork *)self wifiAwareVendorName];
-            if ([v15 isEqualToString:v16])
+            wifiAwareVendorName = [(DAWiFiNetwork *)v6 wifiAwareVendorName];
+            wifiAwareVendorName2 = [(DAWiFiNetwork *)self wifiAwareVendorName];
+            if ([wifiAwareVendorName isEqualToString:wifiAwareVendorName2])
             {
-              v17 = [(DAWiFiNetwork *)v6 wifiAwareModelName];
-              v18 = [(DAWiFiNetwork *)self wifiAwareModelName];
-              if ([v17 isEqualToString:v18])
+              wifiAwareModelName = [(DAWiFiNetwork *)v6 wifiAwareModelName];
+              wifiAwareModelName2 = [(DAWiFiNetwork *)self wifiAwareModelName];
+              if ([wifiAwareModelName isEqualToString:wifiAwareModelName2])
               {
                 [(DAWiFiNetwork *)v6 wifiAwareOTAName];
-                v19 = v22 = v17;
-                v20 = [(DAWiFiNetwork *)self wifiAwareOTAName];
-                LOBYTE(self) = [v19 isEqualToString:v20];
+                v19 = v22 = wifiAwareModelName;
+                wifiAwareOTAName = [(DAWiFiNetwork *)self wifiAwareOTAName];
+                LOBYTE(self) = [v19 isEqualToString:wifiAwareOTAName];
 
-                v17 = v22;
+                wifiAwareModelName = v22;
               }
 
               else
@@ -121,9 +121,9 @@ LABEL_26:
   return [(NSString *)serviceName hash];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -139,7 +139,7 @@ LABEL_26:
   if (wifiAwarePairedID)
   {
     v6 = wifiAwarePairedID;
-    v18 = [(NSUUID *)v6 UUIDString];
+    uUIDString = [(NSUUID *)v6 UUIDString];
     CUAppendF();
     v7 = v4;
 

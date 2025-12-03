@@ -7,10 +7,10 @@
 - (id)identifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ATXCandidate *)self biomeStoreData];
-  v5 = [v4 actionKey];
-  v6 = [(ATXCandidate *)self biomeStoreData];
-  v7 = [v3 stringWithFormat:@"%@:%lu", v5, objc_msgSend(v6, "hash")];
+  biomeStoreData = [(ATXCandidate *)self biomeStoreData];
+  actionKey = [biomeStoreData actionKey];
+  biomeStoreData2 = [(ATXCandidate *)self biomeStoreData];
+  v7 = [v3 stringWithFormat:@"%@:%lu", actionKey, objc_msgSend(biomeStoreData2, "hash")];
 
   return v7;
 }

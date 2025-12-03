@@ -1,9 +1,9 @@
 @interface SUUIArtworkRequest
 - (SUUIArtworkRequestDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)newLoadOperation;
-- (void)finishWithResource:(id)a3;
+- (void)finishWithResource:(id)resource;
 @end
 
 @implementation SUUIArtworkRequest
@@ -19,9 +19,9 @@
   return v7;
 }
 
-- (void)finishWithResource:(id)a3
+- (void)finishWithResource:(id)resource
 {
-  image = a3;
+  image = resource;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -31,8 +31,8 @@
   else
   {
     v5 = [(SUUIArtworkRequest *)self URL];
-    v6 = [v5 scheme];
-    v7 = [v6 isEqualToString:@"x-apple-identity-image"];
+    scheme = [v5 scheme];
+    v7 = [scheme isEqualToString:@"x-apple-identity-image"];
 
     if (v7)
     {
@@ -47,8 +47,8 @@
     }
 
     v11 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v10, @"SUUIArtworkRequestImageKey", 0}];
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 postNotificationName:@"SUUIArtworkRequestDidLoadImageNotification" object:self userInfo:v11];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUUIArtworkRequestDidLoadImageNotification" object:self userInfo:v11];
   }
 }
 
@@ -59,7 +59,7 @@
   return [(SUUILoadArtworkResourceOperation *)v3 initWithResourceRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SUUIArtworkRequest;
@@ -68,11 +68,11 @@
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   objc_storeWeak(v5 + 4, WeakRetained);
 
-  v7 = [(NSString *)self->_imageName copyWithZone:a3];
+  v7 = [(NSString *)self->_imageName copyWithZone:zone];
   v8 = v5[5];
   v5[5] = v7;
 
-  v9 = [(NSURL *)self->_url copyWithZone:a3];
+  v9 = [(NSURL *)self->_url copyWithZone:zone];
   v10 = v5[6];
   v5[6] = v9;
 

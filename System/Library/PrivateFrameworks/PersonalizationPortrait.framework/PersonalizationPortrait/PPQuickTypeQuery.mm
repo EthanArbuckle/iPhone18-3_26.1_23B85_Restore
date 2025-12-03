@@ -1,22 +1,22 @@
 @interface PPQuickTypeQuery
-+ (id)_labelFromLMFieldString:(id)a3 qualifiers:(id)a4;
-+ (id)_peopleNamesFromLMQualifiers:(id)a3;
-+ (id)_subfieldsFromString:(id)a3;
-+ (id)quickTypeQueryFromLMTokens:(id)a3 localeIdentifier:(id)a4 recipients:(id)a5 bundleIdentifier:(id)a6;
-+ (unsigned)_fieldsFromStrings:(id)a3;
-+ (unsigned)_semanticTagFromString:(id)a3;
-+ (unsigned)_subtypeFromString:(id)a3;
-+ (unsigned)_timeFromString:(id)a3;
-+ (unsigned)_typeFromString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToQuickTypeQuery:(id)a3;
-- (BOOL)isResultEquivelentToQuickTypeQuery:(id)a3;
-- (PPQuickTypeQuery)initWithCoder:(id)a3;
-- (PPQuickTypeQuery)initWithType:(unsigned __int8)a3 subtype:(unsigned __int8)a4 semanticTag:(unsigned __int8)a5 fields:(unsigned int)a6 time:(unsigned __int8)a7 options:(unsigned __int8)a8 subFields:(id)a9 label:(id)a10 people:(id)a11 localeIdentifier:(id)a12 bundleIdentifier:(id)a13 recipients:(id)a14 timeoutSeconds:(id)a15;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_labelFromLMFieldString:(id)string qualifiers:(id)qualifiers;
++ (id)_peopleNamesFromLMQualifiers:(id)qualifiers;
++ (id)_subfieldsFromString:(id)string;
++ (id)quickTypeQueryFromLMTokens:(id)tokens localeIdentifier:(id)identifier recipients:(id)recipients bundleIdentifier:(id)bundleIdentifier;
++ (unsigned)_fieldsFromStrings:(id)strings;
++ (unsigned)_semanticTagFromString:(id)string;
++ (unsigned)_subtypeFromString:(id)string;
++ (unsigned)_timeFromString:(id)string;
++ (unsigned)_typeFromString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToQuickTypeQuery:(id)query;
+- (BOOL)isResultEquivelentToQuickTypeQuery:(id)query;
+- (PPQuickTypeQuery)initWithCoder:(id)coder;
+- (PPQuickTypeQuery)initWithType:(unsigned __int8)type subtype:(unsigned __int8)subtype semanticTag:(unsigned __int8)tag fields:(unsigned int)fields time:(unsigned __int8)time options:(unsigned __int8)options subFields:(id)subFields label:(id)self0 people:(id)self1 localeIdentifier:(id)self2 bundleIdentifier:(id)self3 recipients:(id)self4 timeoutSeconds:(id)self5;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPQuickTypeQuery
@@ -30,11 +30,11 @@
   return v5;
 }
 
-- (BOOL)isResultEquivelentToQuickTypeQuery:(id)a3
+- (BOOL)isResultEquivelentToQuickTypeQuery:(id)query
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_type != *(v4 + 8) || self->_subtype != *(v4 + 9) || self->_semanticTag != *(v4 + 10) || self->_fields != *(v4 + 4) || self->_time != *(v4 + 11))
+  queryCopy = query;
+  v5 = queryCopy;
+  if (!queryCopy || self->_type != *(queryCopy + 8) || self->_subtype != *(queryCopy + 9) || self->_semanticTag != *(queryCopy + 10) || self->_fields != *(queryCopy + 4) || self->_time != *(queryCopy + 11))
   {
     goto LABEL_21;
   }
@@ -121,17 +121,17 @@ LABEL_22:
   return v18;
 }
 
-- (BOOL)isEqualToQuickTypeQuery:(id)a3
+- (BOOL)isEqualToQuickTypeQuery:(id)query
 {
-  v4 = a3;
-  if (!v4 || ![(PPQuickTypeQuery *)self isResultEquivelentToQuickTypeQuery:v4]|| self->_options != *(v4 + 12))
+  queryCopy = query;
+  if (!queryCopy || ![(PPQuickTypeQuery *)self isResultEquivelentToQuickTypeQuery:queryCopy]|| self->_options != *(queryCopy + 12))
   {
     goto LABEL_6;
   }
 
   v5 = self->_bundleIdentifier;
   v6 = v5;
-  if (v5 == v4[7])
+  if (v5 == queryCopy[7])
   {
   }
 
@@ -149,7 +149,7 @@ LABEL_6:
 
   v10 = self->_timeoutSeconds;
   v11 = v10;
-  if (v10 == v4[9])
+  if (v10 == queryCopy[9])
   {
     v8 = 1;
   }
@@ -163,24 +163,24 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPQuickTypeQuery *)self isEqualToQuickTypeQuery:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPQuickTypeQuery *)self isEqualToQuickTypeQuery:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -205,52 +205,52 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInt32:type forKey:@"typ"];
-  [v5 encodeInt32:self->_subtype forKey:@"stp"];
-  [v5 encodeInt32:self->_semanticTag forKey:@"stg"];
-  [v5 encodeInt32:self->_fields forKey:@"fld"];
-  [v5 encodeInt32:self->_time forKey:@"tim"];
-  [v5 encodeInt32:self->_options forKey:@"opt"];
-  [v5 encodeObject:self->_subFields forKey:@"sfd"];
-  [v5 encodeObject:self->_label forKey:@"lab"];
-  [v5 encodeObject:self->_people forKey:@"pep"];
-  [v5 encodeObject:self->_localeIdentifier forKey:@"lid"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bid"];
-  [v5 encodeObject:self->_recipients forKey:@"rec"];
-  [v5 encodeObject:self->_timeoutSeconds forKey:@"tsc"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:type forKey:@"typ"];
+  [coderCopy encodeInt32:self->_subtype forKey:@"stp"];
+  [coderCopy encodeInt32:self->_semanticTag forKey:@"stg"];
+  [coderCopy encodeInt32:self->_fields forKey:@"fld"];
+  [coderCopy encodeInt32:self->_time forKey:@"tim"];
+  [coderCopy encodeInt32:self->_options forKey:@"opt"];
+  [coderCopy encodeObject:self->_subFields forKey:@"sfd"];
+  [coderCopy encodeObject:self->_label forKey:@"lab"];
+  [coderCopy encodeObject:self->_people forKey:@"pep"];
+  [coderCopy encodeObject:self->_localeIdentifier forKey:@"lid"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bid"];
+  [coderCopy encodeObject:self->_recipients forKey:@"rec"];
+  [coderCopy encodeObject:self->_timeoutSeconds forKey:@"tsc"];
 }
 
-- (PPQuickTypeQuery)initWithCoder:(id)a3
+- (PPQuickTypeQuery)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = objc_opt_class();
   v5 = objc_opt_class();
-  v26 = [v3 decodeInt32ForKey:@"typ"];
-  v25 = [v3 decodeInt32ForKey:@"stp"];
-  v24 = [v3 decodeInt32ForKey:@"stg"];
-  v23 = [v3 decodeInt32ForKey:@"fld"];
-  v21 = [v3 decodeInt32ForKey:@"tim"];
-  v20 = [v3 decodeInt32ForKey:@"opt"];
+  v26 = [coderCopy decodeInt32ForKey:@"typ"];
+  v25 = [coderCopy decodeInt32ForKey:@"stp"];
+  v24 = [coderCopy decodeInt32ForKey:@"stg"];
+  v23 = [coderCopy decodeInt32ForKey:@"fld"];
+  v21 = [coderCopy decodeInt32ForKey:@"tim"];
+  v20 = [coderCopy decodeInt32ForKey:@"opt"];
   v6 = objc_autoreleasePoolPush();
   v22 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v4, v5, 0}];
   objc_autoreleasePoolPop(v6);
-  v7 = [v3 decodeObjectOfClasses:v22 forKey:@"sfd"];
-  v8 = [v3 decodeObjectOfClass:v5 forKey:@"lab"];
+  v7 = [coderCopy decodeObjectOfClasses:v22 forKey:@"sfd"];
+  v8 = [coderCopy decodeObjectOfClass:v5 forKey:@"lab"];
   v9 = objc_autoreleasePoolPush();
   v19 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v4, v5, 0}];
   objc_autoreleasePoolPop(v9);
-  v10 = [v3 decodeObjectOfClasses:v19 forKey:@"pep"];
-  v11 = [v3 decodeObjectOfClass:v5 forKey:@"lid"];
-  v12 = [v3 decodeObjectOfClass:v5 forKey:@"bid"];
+  v10 = [coderCopy decodeObjectOfClasses:v19 forKey:@"pep"];
+  v11 = [coderCopy decodeObjectOfClass:v5 forKey:@"lid"];
+  v12 = [coderCopy decodeObjectOfClass:v5 forKey:@"bid"];
   v13 = objc_autoreleasePoolPush();
   v14 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v4, v5, 0}];
   objc_autoreleasePoolPop(v13);
-  v15 = [v3 decodeObjectOfClasses:v14 forKey:@"rec"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"tsc"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"rec"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tsc"];
   v17 = [(PPQuickTypeQuery *)self initWithType:v26 subtype:v25 semanticTag:v24 fields:v23 time:v21 options:v20 subFields:v7 label:v8 people:v10 localeIdentifier:v11 bundleIdentifier:v12 recipients:v15 timeoutSeconds:v16];
 
   return v17;
@@ -271,45 +271,45 @@ LABEL_7:
   return [(NSArray *)self->_recipients hash]- v12 + 32 * v12;
 }
 
-- (PPQuickTypeQuery)initWithType:(unsigned __int8)a3 subtype:(unsigned __int8)a4 semanticTag:(unsigned __int8)a5 fields:(unsigned int)a6 time:(unsigned __int8)a7 options:(unsigned __int8)a8 subFields:(id)a9 label:(id)a10 people:(id)a11 localeIdentifier:(id)a12 bundleIdentifier:(id)a13 recipients:(id)a14 timeoutSeconds:(id)a15
+- (PPQuickTypeQuery)initWithType:(unsigned __int8)type subtype:(unsigned __int8)subtype semanticTag:(unsigned __int8)tag fields:(unsigned int)fields time:(unsigned __int8)time options:(unsigned __int8)options subFields:(id)subFields label:(id)self0 people:(id)self1 localeIdentifier:(id)self2 bundleIdentifier:(id)self3 recipients:(id)self4 timeoutSeconds:(id)self5
 {
-  v31 = a9;
-  v30 = a10;
-  v29 = a11;
-  v28 = a12;
-  v27 = a13;
-  v16 = a14;
-  v17 = a15;
+  subFieldsCopy = subFields;
+  labelCopy = label;
+  peopleCopy = people;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  recipientsCopy = recipients;
+  secondsCopy = seconds;
   v32.receiver = self;
   v32.super_class = PPQuickTypeQuery;
   v18 = [(PPQuickTypeQuery *)&v32 init];
   v19 = v18;
   if (v18)
   {
-    v18->_type = a3;
-    v18->_subtype = a4;
-    v18->_semanticTag = a5;
-    v18->_fields = a6;
-    v18->_time = a7;
-    v18->_options = a8;
-    objc_storeStrong(&v18->_subFields, a9);
-    objc_storeStrong(&v19->_label, a10);
-    objc_storeStrong(&v19->_people, a11);
-    objc_storeStrong(&v19->_localeIdentifier, a12);
-    objc_storeStrong(&v19->_bundleIdentifier, a13);
-    objc_storeStrong(&v19->_recipients, a14);
-    objc_storeStrong(&v19->_timeoutSeconds, a15);
+    v18->_type = type;
+    v18->_subtype = subtype;
+    v18->_semanticTag = tag;
+    v18->_fields = fields;
+    v18->_time = time;
+    v18->_options = options;
+    objc_storeStrong(&v18->_subFields, subFields);
+    objc_storeStrong(&v19->_label, label);
+    objc_storeStrong(&v19->_people, people);
+    objc_storeStrong(&v19->_localeIdentifier, identifier);
+    objc_storeStrong(&v19->_bundleIdentifier, bundleIdentifier);
+    objc_storeStrong(&v19->_recipients, recipients);
+    objc_storeStrong(&v19->_timeoutSeconds, seconds);
   }
 
   return v19;
 }
 
-+ (id)_peopleNamesFromLMQualifiers:(id)a3
++ (id)_peopleNamesFromLMQualifiers:(id)qualifiers
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  qualifiersCopy = qualifiers;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69ABE38]];
+  v5 = [qualifiersCopy objectForKeyedSubscript:*MEMORY[0x1E69ABE38]];
   if (v5)
   {
     objc_opt_class();
@@ -328,7 +328,7 @@ LABEL_7:
     goto LABEL_32;
   }
 
-  v7 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69ABE48]];
+  v7 = [qualifiersCopy objectForKeyedSubscript:*MEMORY[0x1E69ABE48]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -348,7 +348,7 @@ LABEL_10:
 
   v10 = 0;
 LABEL_12:
-  v11 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69ABF10]];
+  v11 = [qualifiersCopy objectForKeyedSubscript:*MEMORY[0x1E69ABF10]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -360,7 +360,7 @@ LABEL_16:
     {
       v27 = v11;
       v28 = v7;
-      v29 = v3;
+      v29 = qualifiersCopy;
       v14 = [v12 count];
       v15 = [v10 count];
       if (v14 >= v15)
@@ -391,7 +391,7 @@ LABEL_16:
 
       v9 = v17;
       v5 = 0;
-      v3 = v29;
+      qualifiersCopy = v29;
       v4 = v17;
       v11 = v27;
       v7 = v28;
@@ -440,16 +440,16 @@ LABEL_32:
   return v9;
 }
 
-+ (id)_labelFromLMFieldString:(id)a3 qualifiers:(id)a4
++ (id)_labelFromLMFieldString:(id)string qualifiers:(id)qualifiers
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  qualifiersCopy = qualifiers;
   if (_labelFromLMFieldString_qualifiers__once != -1)
   {
     dispatch_once(&_labelFromLMFieldString_qualifiers__once, &__block_literal_global_208);
   }
 
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69ABE80]];
+  v7 = [qualifiersCopy objectForKeyedSubscript:*MEMORY[0x1E69ABE80]];
   v8 = v7;
   if (v7)
   {
@@ -458,7 +458,7 @@ LABEL_32:
 
   else
   {
-    v9 = [_labelFromLMFieldString_qualifiers__map objectForKeyedSubscript:v5];
+    v9 = [_labelFromLMFieldString_qualifiers__map objectForKeyedSubscript:stringCopy];
   }
 
   v10 = v9;
@@ -500,16 +500,16 @@ void __55__PPQuickTypeQuery__labelFromLMFieldString_qualifiers___block_invoke()
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_subfieldsFromString:(id)a3
++ (id)_subfieldsFromString:(id)string
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringCopy = string;
   if (_subfieldsFromString__once != -1)
   {
     dispatch_once(&_subfieldsFromString__once, &__block_literal_global_206);
   }
 
-  v4 = [_subfieldsFromString__map objectForKeyedSubscript:v3];
+  v4 = [_subfieldsFromString__map objectForKeyedSubscript:stringCopy];
   v5 = v4;
   if (v4)
   {
@@ -533,19 +533,19 @@ void __41__PPQuickTypeQuery__subfieldsFromString___block_invoke()
   _subfieldsFromString__map = MEMORY[0x1E695E0F8];
 }
 
-+ (unsigned)_timeFromString:(id)a3
++ (unsigned)_timeFromString:(id)string
 {
   v3 = _timeFromString__once;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&_timeFromString__once, &__block_literal_global_204);
   }
 
-  v5 = [_timeFromString__map objectForKeyedSubscript:v4];
+  v5 = [_timeFromString__map objectForKeyedSubscript:stringCopy];
 
-  v6 = [v5 unsignedIntValue];
-  return v6;
+  unsignedIntValue = [v5 unsignedIntValue];
+  return unsignedIntValue;
 }
 
 void __36__PPQuickTypeQuery__timeFromString___block_invoke()
@@ -573,10 +573,10 @@ void __36__PPQuickTypeQuery__timeFromString___block_invoke()
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (unsigned)_fieldsFromStrings:(id)a3
++ (unsigned)_fieldsFromStrings:(id)strings
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stringsCopy = strings;
   if (_fieldsFromStrings__once != -1)
   {
     dispatch_once(&_fieldsFromStrings__once, &__block_literal_global_163);
@@ -586,7 +586,7 @@ void __36__PPQuickTypeQuery__timeFromString___block_invoke()
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v3;
+  v4 = stringsCopy;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -701,19 +701,19 @@ void __39__PPQuickTypeQuery__fieldsFromStrings___block_invoke()
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (unsigned)_semanticTagFromString:(id)a3
++ (unsigned)_semanticTagFromString:(id)string
 {
   v3 = _semanticTagFromString__once;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&_semanticTagFromString__once, &__block_literal_global_147);
   }
 
-  v5 = [_semanticTagFromString__map objectForKeyedSubscript:v4];
+  v5 = [_semanticTagFromString__map objectForKeyedSubscript:stringCopy];
 
-  v6 = [v5 unsignedIntValue];
-  return v6;
+  unsignedIntValue = [v5 unsignedIntValue];
+  return unsignedIntValue;
 }
 
 void __43__PPQuickTypeQuery__semanticTagFromString___block_invoke()
@@ -770,19 +770,19 @@ void __43__PPQuickTypeQuery__semanticTagFromString___block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (unsigned)_subtypeFromString:(id)a3
++ (unsigned)_subtypeFromString:(id)string
 {
   v3 = _subtypeFromString__once;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&_subtypeFromString__once, &__block_literal_global_131);
   }
 
-  v5 = [_subtypeFromString__map objectForKeyedSubscript:v4];
+  v5 = [_subtypeFromString__map objectForKeyedSubscript:stringCopy];
 
-  v6 = [v5 unsignedIntValue];
-  return v6;
+  unsignedIntValue = [v5 unsignedIntValue];
+  return unsignedIntValue;
 }
 
 void __39__PPQuickTypeQuery__subtypeFromString___block_invoke()
@@ -840,19 +840,19 @@ void __39__PPQuickTypeQuery__subtypeFromString___block_invoke()
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (unsigned)_typeFromString:(id)a3
++ (unsigned)_typeFromString:(id)string
 {
   v3 = _typeFromString__once;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&_typeFromString__once, &__block_literal_global_159);
   }
 
-  v5 = [_typeFromString__map objectForKeyedSubscript:v4];
+  v5 = [_typeFromString__map objectForKeyedSubscript:stringCopy];
 
-  v6 = [v5 unsignedIntValue];
-  return v6;
+  unsignedIntValue = [v5 unsignedIntValue];
+  return unsignedIntValue;
 }
 
 void __36__PPQuickTypeQuery__typeFromString___block_invoke()
@@ -877,17 +877,17 @@ void __36__PPQuickTypeQuery__typeFromString___block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)quickTypeQueryFromLMTokens:(id)a3 localeIdentifier:(id)a4 recipients:(id)a5 bundleIdentifier:(id)a6
++ (id)quickTypeQueryFromLMTokens:(id)tokens localeIdentifier:(id)identifier recipients:(id)recipients bundleIdentifier:(id)bundleIdentifier
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  tokensCopy = tokens;
   v11 = *MEMORY[0x1E69ABEE8];
-  v39 = a6;
-  v12 = a5;
-  v38 = a4;
-  v13 = [v10 objectForKeyedSubscript:v11];
+  bundleIdentifierCopy = bundleIdentifier;
+  recipientsCopy = recipients;
+  identifierCopy = identifier;
+  v13 = [tokensCopy objectForKeyedSubscript:v11];
   v14 = MEMORY[0x1E69ABDD8];
-  v15 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69ABDD8]];
+  v15 = [tokensCopy objectForKeyedSubscript:*MEMORY[0x1E69ABDD8]];
   v16 = v15;
   if (v13)
   {
@@ -912,26 +912,26 @@ LABEL_3:
   }
 
 LABEL_4:
-  v19 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69ABED0]];
+  v19 = [tokensCopy objectForKeyedSubscript:*MEMORY[0x1E69ABED0]];
   v35 = [PPQuickTypeQuery alloc];
-  v36 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69ABF28]];
-  v34 = [a1 _typeFromString:?];
+  v36 = [tokensCopy objectForKeyedSubscript:*MEMORY[0x1E69ABF28]];
+  v34 = [self _typeFromString:?];
   v20 = v13;
   if (!v13)
   {
-    v20 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69ABF00]];
+    v20 = [tokensCopy objectForKeyedSubscript:*MEMORY[0x1E69ABF00]];
   }
 
   v40 = v16;
-  v33 = [a1 _subtypeFromString:v20];
-  v21 = [v10 objectForKeyedSubscript:@"textContentTypeTag"];
-  v31 = [a1 _semanticTagFromString:v21];
-  v30 = [a1 _fieldsFromStrings:v17];
+  v33 = [self _subtypeFromString:v20];
+  v21 = [tokensCopy objectForKeyedSubscript:@"textContentTypeTag"];
+  v31 = [self _semanticTagFromString:v21];
+  v30 = [self _fieldsFromStrings:v17];
   v37 = v17;
   if (v13)
   {
-    v29 = [a1 _timeFromString:v13];
-    v22 = [a1 _subfieldsFromString:v13];
+    v29 = [self _timeFromString:v13];
+    v22 = [self _subfieldsFromString:v13];
     v32 = v21;
     v21 = v22;
   }
@@ -943,10 +943,10 @@ LABEL_4:
     v32 = v20;
   }
 
-  v23 = [v10 objectForKeyedSubscript:*v14];
-  v24 = [a1 _labelFromLMFieldString:v23 qualifiers:v19];
-  v25 = [a1 _peopleNamesFromLMQualifiers:v19];
-  v26 = [(PPQuickTypeQuery *)v35 initWithType:v34 subtype:v33 semanticTag:v31 fields:v30 time:v29 options:0 subFields:v22 label:v24 people:v25 localeIdentifier:v38 bundleIdentifier:v39 recipients:v12 timeoutSeconds:&unk_1F1B45928];
+  v23 = [tokensCopy objectForKeyedSubscript:*v14];
+  v24 = [self _labelFromLMFieldString:v23 qualifiers:v19];
+  v25 = [self _peopleNamesFromLMQualifiers:v19];
+  v26 = [(PPQuickTypeQuery *)v35 initWithType:v34 subtype:v33 semanticTag:v31 fields:v30 time:v29 options:0 subFields:v22 label:v24 people:v25 localeIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy recipients:recipientsCopy timeoutSeconds:&unk_1F1B45928];
 
   v27 = *MEMORY[0x1E69E9840];
 

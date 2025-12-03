@@ -1,38 +1,38 @@
 @interface MOMotionManager
-- (MOMotionManager)initWithUniverse:(id)a3;
-- (id)createEventForMotionActivityWithStartDate:(id)a3 andEndDate:(id)a4;
-- (id)createEventsFromActivities:(id)a3 withMininumEventSize:(double)a4;
-- (void)_createNewEventsFromActivities:(id)a3 handler:(id)a4;
-- (void)_fetchMotionActivityBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_rehydrateEvents:(id)a3 andCreateNewEventsfromMotionActivity:(id)a4 handler:(id)a5;
-- (void)_rehydrateMotionActivity:(id)a3 forLocationSetting:(BOOL)a4 handler:(id)a5;
-- (void)_setMotionTypeAndDurationFor:(id)a3 fromMotionActivity:(id)a4;
-- (void)_updateDeviceLocationsForMotionEvents:(id)a3 forLocationSetting:(BOOL)a4 handler:(id)a5;
-- (void)_updateMetadataOfMotionEvents:(id)a3 withMotionActities:(id)a4 handler:(id)a5;
-- (void)fetchMotionActivityBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)fetchPedometerDataFor:(id)a3 toEndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)rehydrateMotionActivity:(id)a3 handler:(id)a4;
+- (MOMotionManager)initWithUniverse:(id)universe;
+- (id)createEventForMotionActivityWithStartDate:(id)date andEndDate:(id)endDate;
+- (id)createEventsFromActivities:(id)activities withMininumEventSize:(double)size;
+- (void)_createNewEventsFromActivities:(id)activities handler:(id)handler;
+- (void)_fetchMotionActivityBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)_rehydrateEvents:(id)events andCreateNewEventsfromMotionActivity:(id)activity handler:(id)handler;
+- (void)_rehydrateMotionActivity:(id)activity forLocationSetting:(BOOL)setting handler:(id)handler;
+- (void)_setMotionTypeAndDurationFor:(id)for fromMotionActivity:(id)activity;
+- (void)_updateDeviceLocationsForMotionEvents:(id)events forLocationSetting:(BOOL)setting handler:(id)handler;
+- (void)_updateMetadataOfMotionEvents:(id)events withMotionActities:(id)actities handler:(id)handler;
+- (void)fetchMotionActivityBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)fetchPedometerDataFor:(id)for toEndDate:(id)date CompletionHandler:(id)handler;
+- (void)rehydrateMotionActivity:(id)activity handler:(id)handler;
 @end
 
 @implementation MOMotionManager
 
-- (MOMotionManager)initWithUniverse:(id)a3
+- (MOMotionManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v6 = objc_alloc_init(CMMotionActivityManager);
   v7 = objc_alloc_init(CMPedometer);
   v8 = objc_alloc_init(HKHealthStore);
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v5 getService:v10];
+  v11 = [universeCopy getService:v10];
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [v5 getService:v13];
+  v14 = [universeCopy getService:v13];
 
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  v17 = [v5 getService:v16];
+  v17 = [universeCopy getService:v16];
 
   if (!v11)
   {
@@ -51,7 +51,7 @@
   if (!v6)
   {
 LABEL_9:
-    v25 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -69,8 +69,8 @@ LABEL_9:
     operationQueue = v18->_operationQueue;
     v18->_operationQueue = v22;
 
-    v24 = [(MOMotionManager *)v18 queue];
-    [(NSOperationQueue *)v18->_operationQueue setUnderlyingQueue:v24];
+    queue = [(MOMotionManager *)v18 queue];
+    [(NSOperationQueue *)v18->_operationQueue setUnderlyingQueue:queue];
 
     objc_storeStrong(&v18->_motionActivityManager, v6);
     objc_storeStrong(&v18->_pedometer, v7);
@@ -81,24 +81,24 @@ LABEL_9:
   }
 
   self = v18;
-  v25 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v25;
+  return selfCopy;
 }
 
-- (id)createEventsFromActivities:(id)a3 withMininumEventSize:(double)a4
+- (id)createEventsFromActivities:(id)activities withMininumEventSize:(double)size
 {
-  v6 = a3;
-  if ([v6 count])
+  activitiesCopy = activities;
+  if ([activitiesCopy count])
   {
     v7 = objc_opt_new();
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v6;
-    v8 = v6;
+    v21 = activitiesCopy;
+    v8 = activitiesCopy;
     v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v9)
     {
@@ -115,12 +115,12 @@ LABEL_10:
 
           v13 = *(*(&v22 + 1) + 8 * i);
           v14 = objc_autoreleasePoolPush();
-          v15 = [v13 startDate];
-          v16 = [v13 endDate];
-          [v16 timeIntervalSinceDate:v15];
-          if (v17 >= a4)
+          startDate = [v13 startDate];
+          endDate = [v13 endDate];
+          [endDate timeIntervalSinceDate:startDate];
+          if (v17 >= size)
           {
-            v18 = [(MOMotionManager *)self createEventForMotionActivityWithStartDate:v15 andEndDate:v16];
+            v18 = [(MOMotionManager *)self createEventForMotionActivityWithStartDate:startDate andEndDate:endDate];
             [v7 addObject:v18];
           }
 
@@ -143,7 +143,7 @@ LABEL_10:
       v19 = &__NSArray0__struct;
     }
 
-    v6 = v21;
+    activitiesCopy = v21;
   }
 
   else
@@ -154,35 +154,35 @@ LABEL_10:
   return v19;
 }
 
-- (id)createEventForMotionActivityWithStartDate:(id)a3 andEndDate:(id)a4
+- (id)createEventForMotionActivityWithStartDate:(id)date andEndDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v7 = [MOEvent alloc];
   v8 = +[NSUUID UUID];
   v9 = +[NSDate date];
-  v10 = [(MOEvent *)v7 initWithEventIdentifier:v8 startDate:v6 endDate:v5 creationDate:v9 provider:7 category:16];
+  v10 = [(MOEvent *)v7 initWithEventIdentifier:v8 startDate:dateCopy endDate:endDateCopy creationDate:v9 provider:7 category:16];
 
-  v11 = [v5 dateByAddingTimeInterval:604800.0];
+  v11 = [endDateCopy dateByAddingTimeInterval:604800.0];
 
   [(MOEvent *)v10 setExpirationDate:v11];
 
   return v10;
 }
 
-- (void)fetchPedometerDataFor:(id)a3 toEndDate:(id)a4 CompletionHandler:(id)a5
+- (void)fetchPedometerDataFor:(id)for toEndDate:(id)date CompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MOMotionManager *)self pedometer];
+  handlerCopy = handler;
+  dateCopy = date;
+  forCopy = for;
+  pedometer = [(MOMotionManager *)self pedometer];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __69__MOMotionManager_fetchPedometerDataFor_toEndDate_CompletionHandler___block_invoke;
   v13[3] = &unk_10033FD68;
-  v14 = v8;
-  v12 = v8;
-  [v11 queryPedometerDataFromDate:v10 toDate:v9 withHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [pedometer queryPedometerDataFromDate:forCopy toDate:dateCopy withHandler:v13];
 }
 
 void __69__MOMotionManager_fetchPedometerDataFor_toEndDate_CompletionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -207,85 +207,85 @@ void __69__MOMotionManager_fetchPedometerDataFor_toEndDate_CompletionHandler___b
   v6();
 }
 
-- (void)_setMotionTypeAndDurationFor:(id)a3 fromMotionActivity:(id)a4
+- (void)_setMotionTypeAndDurationFor:(id)for fromMotionActivity:(id)activity
 {
-  v19 = a3;
-  v5 = a4;
-  if ([v5 unknown])
+  forCopy = for;
+  activityCopy = activity;
+  if ([activityCopy unknown])
   {
-    v6 = [v19 motionActivityEvent];
-    [v6 setMotionType:0];
+    motionActivityEvent = [forCopy motionActivityEvent];
+    [motionActivityEvent setMotionType:0];
   }
 
-  if ([v5 stationary])
+  if ([activityCopy stationary])
   {
-    v7 = [v19 motionActivityEvent];
-    [v7 setMotionType:1];
+    motionActivityEvent2 = [forCopy motionActivityEvent];
+    [motionActivityEvent2 setMotionType:1];
   }
 
-  if ([v5 walking] && (objc_msgSend(v5, "running") & 1) == 0)
+  if ([activityCopy walking] && (objc_msgSend(activityCopy, "running") & 1) == 0)
   {
-    v8 = [v19 motionActivityEvent];
-    [v8 setMotionType:2];
+    motionActivityEvent3 = [forCopy motionActivityEvent];
+    [motionActivityEvent3 setMotionType:2];
 
-    v9 = [v19 workoutEvent];
-    [v9 setWorkoutType:@"MOMotionActivityTypeWalking"];
+    workoutEvent = [forCopy workoutEvent];
+    [workoutEvent setWorkoutType:@"MOMotionActivityTypeWalking"];
   }
 
-  if ([v5 running] && (objc_msgSend(v5, "walking") & 1) == 0)
+  if ([activityCopy running] && (objc_msgSend(activityCopy, "walking") & 1) == 0)
   {
-    v10 = [v19 motionActivityEvent];
-    [v10 setMotionType:3];
+    motionActivityEvent4 = [forCopy motionActivityEvent];
+    [motionActivityEvent4 setMotionType:3];
 
-    v11 = [v19 workoutEvent];
-    [v11 setWorkoutType:@"MOMotionActivityTypeRunning"];
+    workoutEvent2 = [forCopy workoutEvent];
+    [workoutEvent2 setWorkoutType:@"MOMotionActivityTypeRunning"];
   }
 
-  if ([v5 running] && objc_msgSend(v5, "walking"))
+  if ([activityCopy running] && objc_msgSend(activityCopy, "walking"))
   {
-    v12 = [v19 motionActivityEvent];
-    [v12 setMotionType:6];
+    motionActivityEvent5 = [forCopy motionActivityEvent];
+    [motionActivityEvent5 setMotionType:6];
 
-    v13 = [v19 workoutEvent];
-    [v13 setWorkoutType:@"MOMotionActivityTypeMixedRunningWalking"];
+    workoutEvent3 = [forCopy workoutEvent];
+    [workoutEvent3 setWorkoutType:@"MOMotionActivityTypeMixedRunningWalking"];
   }
 
-  if ([v5 automotive])
+  if ([activityCopy automotive])
   {
-    v14 = [v19 motionActivityEvent];
-    [v14 setMotionType:4];
+    motionActivityEvent6 = [forCopy motionActivityEvent];
+    [motionActivityEvent6 setMotionType:4];
   }
 
-  if ([v5 cycling])
+  if ([activityCopy cycling])
   {
-    v15 = [v19 motionActivityEvent];
-    [v15 setMotionType:5];
+    motionActivityEvent7 = [forCopy motionActivityEvent];
+    [motionActivityEvent7 setMotionType:5];
 
-    v16 = [v19 workoutEvent];
-    [v16 setWorkoutType:@"MOMotionActivityTypeCycling"];
+    workoutEvent4 = [forCopy workoutEvent];
+    [workoutEvent4 setWorkoutType:@"MOMotionActivityTypeCycling"];
   }
 
-  [v19 duration];
+  [forCopy duration];
   v17 = [NSNumber numberWithDouble:?];
-  v18 = [v19 workoutEvent];
-  [v18 setWorkoutDuration:v17];
+  workoutEvent5 = [forCopy workoutEvent];
+  [workoutEvent5 setWorkoutDuration:v17];
 }
 
-- (void)rehydrateMotionActivity:(id)a3 handler:(id)a4
+- (void)rehydrateMotionActivity:(id)activity handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOMotionManager *)self queue];
+  activityCopy = activity;
+  handlerCopy = handler;
+  queue = [(MOMotionManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __51__MOMotionManager_rehydrateMotionActivity_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = activityCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = activityCopy;
+  dispatch_async(queue, block);
 }
 
 id __51__MOMotionManager_rehydrateMotionActivity_handler___block_invoke(void *a1)
@@ -298,22 +298,22 @@ id __51__MOMotionManager_rehydrateMotionActivity_handler___block_invoke(void *a1
   return [v3 _rehydrateMotionActivity:v4 forLocationSetting:v2 handler:v5];
 }
 
-- (void)_rehydrateMotionActivity:(id)a3 forLocationSetting:(BOOL)a4 handler:(id)a5
+- (void)_rehydrateMotionActivity:(id)activity forLocationSetting:(BOOL)setting handler:(id)handler
 {
-  v43 = a3;
-  v33 = a5;
-  v7 = [(MOMotionManager *)self queue];
-  dispatch_assert_queue_V2(v7);
+  activityCopy = activity;
+  handlerCopy = handler;
+  queue = [(MOMotionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v38 = [v43 getDurationOfMOEventArray];
-  v39 = [v38 startDate];
-  v40 = [v38 endDate];
+  getDurationOfMOEventArray = [activityCopy getDurationOfMOEventArray];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v37 = +[NSCalendar currentCalendar];
   v8 = +[NSDate now];
   v9 = [v8 dateByAddingTimeInterval:-604800.0];
   v36 = [v37 startOfDayForDate:v9];
 
-  v35 = [v37 startOfDayForDate:v39];
+  v35 = [v37 startOfDayForDate:startDate];
   if ([v36 isAfterDate:v35])
   {
     v10 = v36;
@@ -324,34 +324,34 @@ id __51__MOMotionManager_rehydrateMotionActivity_handler___block_invoke(void *a1
     v10 = v35;
   }
 
-  v11 = v10;
+  startDate2 = v10;
   v12 = objc_opt_new();
-  v13 = 0;
-  if ([v11 isBeforeDate:v40])
+  endDate2 = 0;
+  if ([startDate2 isBeforeDate:endDate])
   {
     do
     {
-      v14 = [v11 dateByAddingTimeInterval:86400.0];
+      v14 = [startDate2 dateByAddingTimeInterval:86400.0];
 
-      if ([v11 isAfterDate:v39])
+      if ([startDate2 isAfterDate:startDate])
       {
-        v15 = v11;
+        v15 = startDate2;
       }
 
       else
       {
-        v15 = v39;
+        v15 = startDate;
       }
 
       v16 = v15;
-      if ([v14 isBeforeDate:v40])
+      if ([v14 isBeforeDate:endDate])
       {
         v17 = v14;
       }
 
       else
       {
-        v17 = v40;
+        v17 = endDate;
       }
 
       v18 = v17;
@@ -361,12 +361,12 @@ id __51__MOMotionManager_rehydrateMotionActivity_handler___block_invoke(void *a1
         [v12 addObject:v19];
       }
 
-      v13 = v14;
+      endDate2 = v14;
 
-      v11 = v13;
+      startDate2 = endDate2;
     }
 
-    while (([v13 isBeforeDate:v40] & 1) != 0);
+    while (([endDate2 isBeforeDate:endDate] & 1) != 0);
   }
 
   v20 = dispatch_group_create();
@@ -388,8 +388,8 @@ id __51__MOMotionManager_rehydrateMotionActivity_handler___block_invoke(void *a1
     do
     {
       v22 = 0;
-      v23 = v13;
-      v24 = v11;
+      v23 = endDate2;
+      v24 = startDate2;
       do
       {
         if (*v57 != v42)
@@ -400,26 +400,26 @@ id __51__MOMotionManager_rehydrateMotionActivity_handler___block_invoke(void *a1
         v25 = *(*(&v56 + 1) + 8 * v22);
         v26 = objc_autoreleasePoolPush();
         dispatch_group_enter(v20);
-        v11 = [v25 startDate];
+        startDate2 = [v25 startDate];
 
-        v13 = [v25 endDate];
+        endDate2 = [v25 endDate];
 
         motionActivityManager = self->_motionActivityManager;
-        v28 = [(MOMotionManager *)self operationQueue];
+        operationQueue = [(MOMotionManager *)self operationQueue];
         v51[0] = _NSConcreteStackBlock;
         v51[1] = 3221225472;
         v51[2] = __71__MOMotionManager__rehydrateMotionActivity_forLocationSetting_handler___block_invoke;
         v51[3] = &unk_10033FD90;
         v52 = v20;
-        v53 = v43;
-        v54 = self;
+        v53 = activityCopy;
+        selfCopy = self;
         v55 = v60;
-        [(CMMotionActivityManager *)motionActivityManager queryActivityWithAttribute:1 fromDate:v11 toDate:v13 toQueue:v28 withHandler:v51];
+        [(CMMotionActivityManager *)motionActivityManager queryActivityWithAttribute:1 fromDate:startDate2 toDate:endDate2 toQueue:operationQueue withHandler:v51];
 
         objc_autoreleasePoolPop(v26);
         v22 = v22 + 1;
-        v23 = v13;
-        v24 = v11;
+        v23 = endDate2;
+        v24 = startDate2;
       }
 
       while (v21 != v22);
@@ -429,21 +429,21 @@ id __51__MOMotionManager_rehydrateMotionActivity_handler___block_invoke(void *a1
     while (v21);
   }
 
-  v29 = [(MOMotionManager *)self queue];
+  queue2 = [(MOMotionManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __71__MOMotionManager__rehydrateMotionActivity_forLocationSetting_handler___block_invoke_161;
   block[3] = &unk_10033FDE0;
   v49 = v60;
-  v45 = v39;
-  v46 = v40;
-  v50 = a4;
-  v47 = self;
-  v48 = v33;
-  v30 = v33;
-  v31 = v40;
-  v32 = v39;
-  dispatch_group_notify(v20, v29, block);
+  v45 = startDate;
+  v46 = endDate;
+  settingCopy = setting;
+  selfCopy2 = self;
+  v48 = handlerCopy;
+  v30 = handlerCopy;
+  v31 = endDate;
+  v32 = startDate;
+  dispatch_group_notify(v20, queue2, block);
 
   _Block_object_dispose(v60, 8);
 }
@@ -583,13 +583,13 @@ void __71__MOMotionManager__rehydrateMotionActivity_forLocationSetting_handler__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_updateDeviceLocationsForMotionEvents:(id)a3 forLocationSetting:(BOOL)a4 handler:(id)a5
+- (void)_updateDeviceLocationsForMotionEvents:(id)events forLocationSetting:(BOOL)setting handler:(id)handler
 {
-  v23 = a3;
-  v24 = a5;
-  if ([v23 count])
+  eventsCopy = events;
+  handlerCopy = handler;
+  if ([eventsCopy count])
   {
-    if (a4)
+    if (setting)
     {
       v7 = objc_opt_new();
       v8 = dispatch_group_create();
@@ -603,7 +603,7 @@ void __71__MOMotionManager__rehydrateMotionActivity_forLocationSetting_handler__
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      obj = v23;
+      obj = eventsCopy;
       v9 = [obj countByEnumeratingWithState:&v35 objects:v51 count:16];
       if (v9)
       {
@@ -622,20 +622,20 @@ void __71__MOMotionManager__rehydrateMotionActivity_forLocationSetting_handler__
             v13 = _mo_log_facility_get_os_log(&MOLogFacilityMotionActivity);
             if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
             {
-              v14 = [v12 startDate];
-              v15 = [v12 endDate];
+              startDate = [v12 startDate];
+              endDate = [v12 endDate];
               *buf = 138412802;
               v46 = v12;
               v47 = 2112;
-              v48 = v14;
+              v48 = startDate;
               v49 = 2112;
-              v50 = v15;
+              v50 = endDate;
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "_updateDeviceLocationsForMotionEvents, event, %@, startDate, %@, endDate, %@", buf, 0x20u);
             }
 
-            v16 = [(MOMotionManager *)self routineServiceManager];
-            v17 = [v12 startDate];
-            v18 = [v12 endDate];
+            routineServiceManager = [(MOMotionManager *)self routineServiceManager];
+            startDate2 = [v12 startDate];
+            endDate2 = [v12 endDate];
             v31[0] = _NSConcreteStackBlock;
             v31[1] = 3221225472;
             v31[2] = __84__MOMotionManager__updateDeviceLocationsForMotionEvents_forLocationSetting_handler___block_invoke;
@@ -644,7 +644,7 @@ void __71__MOMotionManager__rehydrateMotionActivity_forLocationSetting_handler__
             v31[4] = v12;
             v32 = v7;
             v33 = v8;
-            [v16 fetchDeviceLocationsFromStartDate:v17 endDate:v18 handler:v31];
+            [routineServiceManager fetchDeviceLocationsFromStartDate:startDate2 endDate:endDate2 handler:v31];
           }
 
           v9 = [obj countByEnumeratingWithState:&v35 objects:v51 count:16];
@@ -653,16 +653,16 @@ void __71__MOMotionManager__rehydrateMotionActivity_forLocationSetting_handler__
         while (v9);
       }
 
-      v19 = [(MOMotionManager *)self queue];
+      queue = [(MOMotionManager *)self queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __84__MOMotionManager__updateDeviceLocationsForMotionEvents_forLocationSetting_handler___block_invoke_163;
       block[3] = &unk_10033FE30;
       v28 = v7;
-      v29 = v24;
+      v29 = handlerCopy;
       v30 = v39;
       v20 = v7;
-      dispatch_group_notify(v8, v19, block);
+      dispatch_group_notify(v8, queue, block);
 
       _Block_object_dispose(v39, 8);
     }
@@ -676,7 +676,7 @@ void __71__MOMotionManager__rehydrateMotionActivity_forLocationSetting_handler__
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "significant location disabled. return input events", v39, 2u);
       }
 
-      (*(v24 + 2))(v24, v23, 0);
+      (*(handlerCopy + 2))(handlerCopy, eventsCopy, 0);
     }
   }
 
@@ -689,7 +689,7 @@ void __71__MOMotionManager__rehydrateMotionActivity_forLocationSetting_handler__
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "motionEvents is empty.", v39, 2u);
     }
 
-    (*(v24 + 2))(v24, &__NSArray0__struct, 0);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, 0);
   }
 }
 
@@ -734,12 +734,12 @@ void __84__MOMotionManager__updateDeviceLocationsForMotionEvents_forLocationSett
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)_updateMetadataOfMotionEvents:(id)a3 withMotionActities:(id)a4 handler:(id)a5
+- (void)_updateMetadataOfMotionEvents:(id)events withMotionActities:(id)actities handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 count])
+  eventsCopy = events;
+  actitiesCopy = actities;
+  handlerCopy = handler;
+  if (![actitiesCopy count])
   {
     v35 = _mo_log_facility_get_os_log(&MOLogFacilityMotionActivity);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
@@ -752,11 +752,11 @@ LABEL_25:
 
 LABEL_26:
 
-    v10[2](v10, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
     goto LABEL_27;
   }
 
-  if (![v8 count])
+  if (![eventsCopy count])
   {
     v35 = _mo_log_facility_get_os_log(&MOLogFacilityMotionActivity);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
@@ -769,15 +769,15 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v37 = v10;
+  v37 = handlerCopy;
   v41 = objc_opt_new();
   v11 = objc_opt_new();
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v38 = v9;
-  v12 = v9;
+  v38 = actitiesCopy;
+  v12 = actitiesCopy;
   v13 = [v12 countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v13)
   {
@@ -793,8 +793,8 @@ LABEL_26:
         }
 
         v17 = *(*(&v52 + 1) + 8 * i);
-        v18 = [v17 startDate];
-        [v11 setObject:v17 forKey:v18];
+        startDate = [v17 startDate];
+        [v11 setObject:v17 forKey:startDate];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v52 objects:v58 count:16];
@@ -808,8 +808,8 @@ LABEL_26:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v39 = v8;
-  v19 = v8;
+  v39 = eventsCopy;
+  v19 = eventsCopy;
   v20 = [v19 countByEnumeratingWithState:&v48 objects:v57 count:16];
   if (v20)
   {
@@ -825,24 +825,24 @@ LABEL_26:
         }
 
         v24 = *(*(&v48 + 1) + 8 * j);
-        v25 = [v11 allKeys];
-        v26 = [v24 startDate];
-        v27 = [v25 containsObject:v26];
+        allKeys = [v11 allKeys];
+        startDate2 = [v24 startDate];
+        v27 = [allKeys containsObject:startDate2];
 
         if (v27)
         {
-          v28 = [v24 startDate];
-          v29 = [v11 objectForKey:v28];
+          startDate3 = [v24 startDate];
+          v29 = [v11 objectForKey:startDate3];
           [(MOMotionManager *)self _setMotionTypeAndDurationFor:v24 fromMotionActivity:v29];
 
-          v30 = [v24 motionActivityEvent];
-          LODWORD(v28) = +[MOMotionManager eligibleForBundling:](MOMotionManager, "eligibleForBundling:", [v30 motionType]);
+          motionActivityEvent = [v24 motionActivityEvent];
+          LODWORD(startDate3) = +[MOMotionManager eligibleForBundling:](MOMotionManager, "eligibleForBundling:", [motionActivityEvent motionType]);
 
-          if (v28)
+          if (startDate3)
           {
             dispatch_group_enter(group);
-            v31 = [v24 startDate];
-            v32 = [v24 endDate];
+            startDate4 = [v24 startDate];
+            endDate = [v24 endDate];
             v45[0] = _NSConcreteStackBlock;
             v45[1] = 3221225472;
             v45[2] = __76__MOMotionManager__updateMetadataOfMotionEvents_withMotionActities_handler___block_invoke;
@@ -850,7 +850,7 @@ LABEL_26:
             v45[4] = v24;
             v46 = v41;
             v47 = group;
-            [(MOMotionManager *)self fetchPedometerDataFor:v31 toEndDate:v32 CompletionHandler:v45];
+            [(MOMotionManager *)self fetchPedometerDataFor:startDate4 toEndDate:endDate CompletionHandler:v45];
           }
         }
       }
@@ -861,19 +861,19 @@ LABEL_26:
     while (v21);
   }
 
-  v33 = [(MOMotionManager *)self queue];
+  queue = [(MOMotionManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __76__MOMotionManager__updateMetadataOfMotionEvents_withMotionActities_handler___block_invoke_2;
   block[3] = &unk_10033B9D8;
-  v10 = v37;
+  handlerCopy = v37;
   v43 = v41;
   v44 = v37;
   v34 = v41;
-  dispatch_group_notify(group, v33, block);
+  dispatch_group_notify(group, queue, block);
 
-  v9 = v38;
-  v8 = v39;
+  actitiesCopy = v38;
+  eventsCopy = v39;
 LABEL_27:
 }
 
@@ -899,45 +899,45 @@ void __76__MOMotionManager__updateMetadataOfMotionEvents_withMotionActities_hand
   dispatch_group_leave(v9);
 }
 
-- (void)fetchMotionActivityBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchMotionActivityBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOMotionManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MOMotionManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __88__MOMotionManager_fetchMotionActivityBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchMotionActivityBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchMotionActivityBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v46 = a3;
-  v47 = a4;
-  v42 = a5;
-  v38 = a6;
-  v51 = self;
-  v10 = [(MOMotionManager *)self queue];
-  dispatch_assert_queue_V2(v10);
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  selfCopy = self;
+  queue = [(MOMotionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v45 = +[NSCalendar currentCalendar];
   v11 = +[NSDate now];
   v12 = [v11 dateByAddingTimeInterval:-604800.0];
   v44 = [v45 startOfDayForDate:v12];
 
-  v43 = [v45 startOfDayForDate:v46];
+  v43 = [v45 startOfDayForDate:dateCopy];
   if ([v44 isAfterDate:v43])
   {
     v13 = v44;
@@ -951,31 +951,31 @@ void __76__MOMotionManager__updateMetadataOfMotionEvents_withMotionActities_hand
   v14 = v13;
   v15 = objc_opt_new();
   v16 = 0;
-  if ([v14 isBeforeDate:v47])
+  if ([v14 isBeforeDate:endDateCopy])
   {
     do
     {
       v17 = [v14 dateByAddingTimeInterval:86400.0];
 
-      if ([v14 isAfterDate:v46])
+      if ([v14 isAfterDate:dateCopy])
       {
         v18 = v14;
       }
 
       else
       {
-        v18 = v46;
+        v18 = dateCopy;
       }
 
       v19 = v18;
-      if ([v17 isBeforeDate:v47])
+      if ([v17 isBeforeDate:endDateCopy])
       {
         v20 = v17;
       }
 
       else
       {
-        v20 = v47;
+        v20 = endDateCopy;
       }
 
       v21 = v20;
@@ -990,7 +990,7 @@ void __76__MOMotionManager__updateMetadataOfMotionEvents_withMotionActities_hand
       v14 = v16;
     }
 
-    while (([v16 isBeforeDate:v47] & 1) != 0);
+    while (([v16 isBeforeDate:endDateCopy] & 1) != 0);
   }
 
   v41 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 16];
@@ -1000,7 +1000,7 @@ void __76__MOMotionManager__updateMetadataOfMotionEvents_withMotionActities_hand
   v23 = [NSArray arrayWithObjects:v85 count:2];
   v39 = [NSCompoundPredicate andPredicateWithSubpredicates:v23];
 
-  v50 = [v42 filteredArrayUsingPredicate:v39];
+  v50 = [eventsCopy filteredArrayUsingPredicate:v39];
   group = dispatch_group_create();
   v78[0] = 0;
   v78[1] = v78;
@@ -1041,37 +1041,37 @@ void __76__MOMotionManager__updateMetadataOfMotionEvents_withMotionActities_hand
         v26 = *(*(&v70 + 1) + 8 * i);
         v27 = objc_autoreleasePoolPush();
         dispatch_group_enter(group);
-        v28 = [v26 startDate];
+        startDate = [v26 startDate];
 
-        v29 = [v26 endDate];
+        endDate = [v26 endDate];
 
         v30 = _mo_log_facility_get_os_log(&MOLogFacilityMotionActivity);
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v81 = v28;
+          v81 = startDate;
           v82 = 2112;
-          v83 = v29;
+          v83 = endDate;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "start fetching motion activity from start date, %@, end date, %@", buf, 0x16u);
         }
 
-        motionActivityManager = v51->_motionActivityManager;
-        v32 = [(MOMotionManager *)v51 operationQueue];
+        motionActivityManager = selfCopy->_motionActivityManager;
+        operationQueue = [(MOMotionManager *)selfCopy operationQueue];
         v61[0] = _NSConcreteStackBlock;
         v61[1] = 3221225472;
         v61[2] = __89__MOMotionManager__fetchMotionActivityBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
         v61[3] = &unk_10033FEA8;
-        v14 = v28;
+        v14 = startDate;
         v62 = v14;
-        v16 = v29;
+        v16 = endDate;
         v63 = v16;
         v67 = v74;
         v64 = v50;
         v65 = group;
-        v66 = v51;
+        v66 = selfCopy;
         v68 = v76;
         v69 = v78;
-        [(CMMotionActivityManager *)motionActivityManager queryActivityWithAttribute:1 fromDate:v14 toDate:v16 toQueue:v32 withHandler:v61];
+        [(CMMotionActivityManager *)motionActivityManager queryActivityWithAttribute:1 fromDate:v14 toDate:v16 toQueue:operationQueue withHandler:v61];
 
         objc_autoreleasePoolPop(v27);
       }
@@ -1082,7 +1082,7 @@ void __76__MOMotionManager__updateMetadataOfMotionEvents_withMotionActities_hand
     while (v24);
   }
 
-  v33 = [(MOMotionManager *)v51 queue];
+  queue2 = [(MOMotionManager *)selfCopy queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __89__MOMotionManager__fetchMotionActivityBetweenStartDate_endDate_withStoredEvents_handler___block_invoke_181;
@@ -1090,15 +1090,15 @@ void __76__MOMotionManager__updateMetadataOfMotionEvents_withMotionActities_hand
   v58 = v78;
   v59 = v76;
   v54 = v50;
-  v55 = v46;
+  v55 = dateCopy;
   v60 = v74;
-  v56 = v47;
-  v57 = v38;
-  v34 = v38;
-  v35 = v47;
-  v36 = v46;
+  v56 = endDateCopy;
+  v57 = handlerCopy;
+  v34 = handlerCopy;
+  v35 = endDateCopy;
+  v36 = dateCopy;
   v37 = v50;
-  dispatch_group_notify(group, v33, block);
+  dispatch_group_notify(group, queue2, block);
 
   _Block_object_dispose(v74, 8);
   _Block_object_dispose(v76, 8);
@@ -1298,18 +1298,18 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)_rehydrateEvents:(id)a3 andCreateNewEventsfromMotionActivity:(id)a4 handler:(id)a5
+- (void)_rehydrateEvents:(id)events andCreateNewEventsfromMotionActivity:(id)activity handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v29 = a5;
+  eventsCopy = events;
+  activityCopy = activity;
+  handlerCopy = handler;
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityMotionActivity);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    *&buf[4] = [v7 count];
+    *&buf[4] = [eventsCopy count];
     *&buf[12] = 2048;
-    *&buf[14] = [v8 count];
+    *&buf[14] = [activityCopy count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "stored events count, %ld, motion activity count, %ld", buf, 0x16u);
   }
 
@@ -1332,11 +1332,11 @@ LABEL_20:
   v49[2] = __81__MOMotionManager__rehydrateEvents_andCreateNewEventsfromMotionActivity_handler___block_invoke;
   v49[3] = &unk_100336CE8;
   v52 = v53;
-  v50 = v7;
+  v50 = eventsCopy;
   v11 = v10;
   v51 = v11;
   v30 = v50;
-  [(MOMotionManager *)self _updateMetadataOfMotionEvents:v50 withMotionActities:v8 handler:v49];
+  [(MOMotionManager *)self _updateMetadataOfMotionEvents:v50 withMotionActities:activityCopy handler:v49];
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x3032000000;
@@ -1354,7 +1354,7 @@ LABEL_20:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v8;
+  obj = activityCopy;
   v15 = [obj countByEnumeratingWithState:&v43 objects:v55 count:16];
   if (v15)
   {
@@ -1375,10 +1375,10 @@ LABEL_20:
           goto LABEL_10;
         }
 
-        v19 = [v18 startDate];
-        v20 = [v13 lastObject];
-        v21 = [v20 endDate];
-        v22 = [v19 isAfterDate:v21];
+        startDate = [v18 startDate];
+        lastObject = [v13 lastObject];
+        endDate = [lastObject endDate];
+        v22 = [startDate isAfterDate:endDate];
 
         if (v22)
         {
@@ -1408,7 +1408,7 @@ LABEL_10:
   v24 = group;
   v40 = v24;
   [(MOMotionManager *)self _createNewEventsFromActivities:v23 handler:v38];
-  v25 = [(MOMotionManager *)self queue];
+  queue = [(MOMotionManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __81__MOMotionManager__rehydrateEvents_andCreateNewEventsfromMotionActivity_handler___block_invoke_192;
@@ -1416,10 +1416,10 @@ LABEL_10:
   v35 = v53;
   v36 = buf;
   block[4] = self;
-  v34 = v29;
+  v34 = handlerCopy;
   v37 = v47;
-  v26 = v29;
-  dispatch_group_notify(v24, v25, block);
+  v26 = handlerCopy;
+  dispatch_group_notify(v24, queue, block);
 
   _Block_object_dispose(v47, 8);
   _Block_object_dispose(v53, 8);
@@ -1520,13 +1520,13 @@ void __81__MOMotionManager__rehydrateEvents_andCreateNewEventsfromMotionActivity
   (*(a1[4] + 16))();
 }
 
-- (void)_createNewEventsFromActivities:(id)a3 handler:(id)a4
+- (void)_createNewEventsFromActivities:(id)activities handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  activitiesCopy = activities;
+  handlerCopy = handler;
+  if ([activitiesCopy count])
   {
-    v52 = v7;
+    v52 = handlerCopy;
     v8 = objc_opt_new();
     v9 = [NSPredicate predicateWithFormat:@"walking==YES"];
     [NSPredicate predicateWithFormat:@"running==NO"];
@@ -1536,10 +1536,10 @@ void __81__MOMotionManager__rehydrateEvents_andCreateNewEventsfromMotionActivity
     v11 = [NSCompoundPredicate andPredicateWithSubpredicates:v10];
 
     v53 = v11;
-    v12 = [v6 filteredArrayUsingPredicate:v11];
-    v13 = [(MOMotionManager *)self configurationManager];
+    v12 = [activitiesCopy filteredArrayUsingPredicate:v11];
+    configurationManager = [(MOMotionManager *)self configurationManager];
     LODWORD(v14) = 1142292480;
-    [v13 getFloatSettingForKey:@"MOMotionWalkingMinimumEventSize" withFallback:v14];
+    [configurationManager getFloatSettingForKey:@"MOMotionWalkingMinimumEventSize" withFallback:v14];
     v51 = v12;
     v16 = [(MOMotionManager *)self createEventsFromActivities:v12 withMininumEventSize:v15];
 
@@ -1553,10 +1553,10 @@ void __81__MOMotionManager__rehydrateEvents_andCreateNewEventsfromMotionActivity
     v19 = [NSCompoundPredicate andPredicateWithSubpredicates:v18];
 
     v48 = v19;
-    v20 = [v6 filteredArrayUsingPredicate:v19];
-    v21 = [(MOMotionManager *)self configurationManager];
+    v20 = [activitiesCopy filteredArrayUsingPredicate:v19];
+    configurationManager2 = [(MOMotionManager *)self configurationManager];
     LODWORD(v22) = 1133903872;
-    [v21 getFloatSettingForKey:@"MOMotionRunningMinimumEventSize" withFallback:v22];
+    [configurationManager2 getFloatSettingForKey:@"MOMotionRunningMinimumEventSize" withFallback:v22];
     v24 = [(MOMotionManager *)self createEventsFromActivities:v20 withMininumEventSize:v23];
 
     [v8 addObjectsFromArray:v24];
@@ -1567,10 +1567,10 @@ void __81__MOMotionManager__rehydrateEvents_andCreateNewEventsfromMotionActivity
     v26 = [NSCompoundPredicate andPredicateWithSubpredicates:v25];
 
     v47 = v26;
-    v27 = [v6 filteredArrayUsingPredicate:v26];
-    v28 = [(MOMotionManager *)self configurationManager];
+    v27 = [activitiesCopy filteredArrayUsingPredicate:v26];
+    configurationManager3 = [(MOMotionManager *)self configurationManager];
     LODWORD(v29) = 1142292480;
-    [v28 getFloatSettingForKey:@"MOMotionMixedRunWalkMinimumEventSize" withFallback:v29];
+    [configurationManager3 getFloatSettingForKey:@"MOMotionMixedRunWalkMinimumEventSize" withFallback:v29];
     v31 = [(MOMotionManager *)self createEventsFromActivities:v27 withMininumEventSize:v30];
 
     [v8 addObjectsFromArray:v31];
@@ -1578,7 +1578,7 @@ void __81__MOMotionManager__rehydrateEvents_andCreateNewEventsfromMotionActivity
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v60 = [v6 count];
+      v60 = [activitiesCopy count];
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "Fetched %lu motion classifications", buf, 0xCu);
     }
 
@@ -1592,7 +1592,7 @@ void __81__MOMotionManager__rehydrateEvents_andCreateNewEventsfromMotionActivity
     }
 
     v35 = _mo_log_facility_get_os_log(&MOLogFacilityMotionActivity);
-    v7 = v52;
+    handlerCopy = v52;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
       v36 = [v20 count];
@@ -1645,7 +1645,7 @@ void __81__MOMotionManager__rehydrateEvents_andCreateNewEventsfromMotionActivity
     v56[4] = self;
     v58 = v45;
     v57 = v52;
-    [(MOMotionManager *)self _updateMetadataOfMotionEvents:v8 withMotionActities:v6 handler:v56];
+    [(MOMotionManager *)self _updateMetadataOfMotionEvents:v8 withMotionActities:activitiesCopy handler:v56];
   }
 
   else
@@ -1657,7 +1657,7 @@ void __81__MOMotionManager__rehydrateEvents_andCreateNewEventsfromMotionActivity
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "no new motion activity is fetched for creating events", buf, 2u);
     }
 
-    (*(v7 + 2))(v7, &__NSArray0__struct, 0);
+    (*(handlerCopy + 2))(handlerCopy, &__NSArray0__struct, 0);
   }
 }
 

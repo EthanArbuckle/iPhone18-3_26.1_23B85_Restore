@@ -8,15 +8,15 @@
 - (void)_enableMotionCuesIfNeeded;
 - (void)_registerNotifications;
 - (void)_restoreMotionCuesMode;
-- (void)_setMotionCuesIncreasedCountEnabled:(id)a3;
-- (void)_setMotionCuesIncreasedSizeEnabled:(id)a3;
+- (void)_setMotionCuesIncreasedCountEnabled:(id)enabled;
+- (void)_setMotionCuesIncreasedSizeEnabled:(id)enabled;
 - (void)_unregisterNotifications;
 - (void)_willResignActive;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)userDidSelectMotionCuesColor:(int)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)userDidSelectMotionCuesColor:(int)color;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -27,10 +27,10 @@
   v7.receiver = self;
   v7.super_class = AXMotionCuesAppearanceController;
   [(AXMotionCuesAppearanceController *)&v7 viewDidLoad];
-  v3 = [(AXMotionCuesAppearanceController *)self table];
+  table = [(AXMotionCuesAppearanceController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXMotionCuesColorCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
   v6 = settingsLocString(@"MotionCuesAppearanceTitle", @"Accessibility-MotionCues");
   [(AXMotionCuesAppearanceController *)self setTitle:v6];
@@ -74,9 +74,9 @@
   v3 = AXLogMotionCues();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(AXMotionCuesAppearanceController *)self previousMotionCuesMode];
+    previousMotionCuesMode = [(AXMotionCuesAppearanceController *)self previousMotionCuesMode];
     v5 = 138412290;
-    v6 = v4;
+    v6 = previousMotionCuesMode;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "willResignActive, restoring previous motion cues mode %@", &v5, 0xCu);
   }
 
@@ -100,20 +100,20 @@
   v3 = AXLogMotionCues();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(AXMotionCuesAppearanceController *)self previousMotionCuesMode];
+    previousMotionCuesMode = [(AXMotionCuesAppearanceController *)self previousMotionCuesMode];
     v5 = 138412290;
-    v6 = v4;
+    v6 = previousMotionCuesMode;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "didResignKey, restoring previous motion cues mode %@", &v5, 0xCu);
   }
 
   [(AXMotionCuesAppearanceController *)self _restoreMotionCuesMode];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = AXMotionCuesAppearanceController;
-  [(AXMotionCuesAppearanceController *)&v6 viewDidAppear:a3];
+  [(AXMotionCuesAppearanceController *)&v6 viewDidAppear:appear];
   v4 = AXLogMotionCues();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -125,18 +125,18 @@
   [(AXMotionCuesAppearanceController *)self _registerNotifications];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = AXMotionCuesAppearanceController;
-  [(AXMotionCuesAppearanceController *)&v6 viewDidDisappear:a3];
+  [(AXMotionCuesAppearanceController *)&v6 viewDidDisappear:disappear];
   [(AXMotionCuesAppearanceController *)self _unregisterNotifications];
   v4 = AXLogMotionCues();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(AXMotionCuesAppearanceController *)self previousMotionCuesMode];
+    previousMotionCuesMode = [(AXMotionCuesAppearanceController *)self previousMotionCuesMode];
     *buf = 138412290;
-    v8 = v5;
+    v8 = previousMotionCuesMode;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "viewDidDisappear, restoring previous motion cues mode %@", buf, 0xCu);
   }
 
@@ -156,12 +156,12 @@
 
 - (void)_restoreMotionCuesMode
 {
-  v3 = [(AXMotionCuesAppearanceController *)self previousMotionCuesMode];
+  previousMotionCuesMode = [(AXMotionCuesAppearanceController *)self previousMotionCuesMode];
 
-  if (v3)
+  if (previousMotionCuesMode)
   {
-    v4 = [(AXMotionCuesAppearanceController *)self previousMotionCuesMode];
-    [v4 intValue];
+    previousMotionCuesMode2 = [(AXMotionCuesAppearanceController *)self previousMotionCuesMode];
+    [previousMotionCuesMode2 intValue];
     _AXSSetMotionCuesModeAndShowBanner();
 
     [(AXMotionCuesAppearanceController *)self setPreviousMotionCuesMode:0];
@@ -242,9 +242,9 @@
   return v3;
 }
 
-- (void)userDidSelectMotionCuesColor:(int)a3
+- (void)userDidSelectMotionCuesColor:(int)color
 {
-  v3 = *&a3;
+  v3 = *&color;
   _AXSSetMotionCuesTintColor();
   v6 = [(AXMotionCuesAppearanceController *)self specifierForID:@"MotionCuesTintColorKey"];
   v5 = [NSNumber numberWithInt:v3];
@@ -261,13 +261,13 @@
   return v3;
 }
 
-- (void)_setMotionCuesIncreasedSizeEnabled:(id)a3
+- (void)_setMotionCuesIncreasedSizeEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = +[AXSettings sharedInstance];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v5 setMotionCuesIncreasedSizeEnabled:v4];
+  [v5 setMotionCuesIncreasedSizeEnabled:bOOLValue];
 }
 
 - (id)_motionCuesIncreasedCountEnabled
@@ -278,41 +278,41 @@
   return v3;
 }
 
-- (void)_setMotionCuesIncreasedCountEnabled:(id)a3
+- (void)_setMotionCuesIncreasedCountEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = +[AXSettings sharedInstance];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v5 setMotionCuesIncreasedDensityEnabled:v4];
+  [v5 setMotionCuesIncreasedDensityEnabled:bOOLValue];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = AXMotionCuesAppearanceController;
-  [(AXMotionCuesAppearanceController *)&v9 tableView:a3 didSelectRowAtIndexPath:v6];
-  if (![v6 section])
+  [(AXMotionCuesAppearanceController *)&v9 tableView:view didSelectRowAtIndexPath:pathCopy];
+  if (![pathCopy section])
   {
-    v7 = [(AXMotionCuesAppearanceController *)self specifierForIndexPath:v6];
+    v7 = [(AXMotionCuesAppearanceController *)self specifierForIndexPath:pathCopy];
     v8 = [v7 propertyForKey:@"MotionCuesPatternKey"];
     [v8 intValue];
 
     _AXSSetMotionCuesStyle();
-    [(AXMotionCuesAppearanceController *)self updateTableCheckedSelection:v6];
+    [(AXMotionCuesAppearanceController *)self updateTableCheckedSelection:pathCopy];
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  if (![a5 section])
+  cellCopy = cell;
+  if (![path section])
   {
     v6 = _AXSMotionCuesStyle();
-    v7 = v11;
-    v8 = [v7 specifier];
-    v9 = [v8 propertyForKey:@"MotionCuesPatternKey"];
+    v7 = cellCopy;
+    specifier = [v7 specifier];
+    v9 = [specifier propertyForKey:@"MotionCuesPatternKey"];
     v10 = [v9 intValue] == v6;
 
     [v7 setChecked:v10];

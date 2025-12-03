@@ -3,7 +3,7 @@
 - (BOOL)hasViewHierarchyForCurrentContext;
 - (SizeContext)init;
 - (id)viewHierarchyForCurrentContext;
-- (void)popContextFromViewHierarchy:(id)a3;
+- (void)popContextFromViewHierarchy:(id)hierarchy;
 @end
 
 @implementation SizeContext
@@ -46,7 +46,7 @@ void __29__SizeContext_sharedInstance__block_invoke()
 {
   if ([(NSMutableArray *)self->_windowContextStack count])
   {
-    v4 = [(NSMutableArray *)self->_windowContextStack lastObject];
+    lastObject = [(NSMutableArray *)self->_windowContextStack lastObject];
   }
 
   else
@@ -58,19 +58,19 @@ void __29__SizeContext_sharedInstance__block_invoke()
 
     if (_shouldAssertOnUnknownWindow_shouldAssert == 1)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"EKUIDeviceCapabilities.m" lineNumber:223 description:{@"Multiple windows exist, and we do not have a view hierarchy from which to derive the current sizing context."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EKUIDeviceCapabilities.m" lineNumber:223 description:{@"Multiple windows exist, and we do not have a view hierarchy from which to derive the current sizing context."}];
 
-      v4 = 0;
+      lastObject = 0;
     }
 
     else
     {
-      v4 = EKUIMainWindowForMultiwindowError();
+      lastObject = EKUIMainWindowForMultiwindowError();
     }
   }
 
-  return v4;
+  return lastObject;
 }
 
 - (BOOL)hasViewHierarchyForCurrentContext
@@ -83,9 +83,9 @@ void __29__SizeContext_sharedInstance__block_invoke()
   return _shouldAssertOnUnknownWindow_shouldAssert != 1 || [(NSMutableArray *)self->_windowContextStack count]!= 0;
 }
 
-- (void)popContextFromViewHierarchy:(id)a3
+- (void)popContextFromViewHierarchy:(id)hierarchy
 {
-  v6 = a3;
+  hierarchyCopy = hierarchy;
   if (_shouldAssertOnUnknownWindow_onceToken != -1)
   {
     [SizeContext popContextFromViewHierarchy:];
@@ -93,8 +93,8 @@ void __29__SizeContext_sharedInstance__block_invoke()
 
   if (_shouldAssertOnUnknownWindow_shouldAssert == 1)
   {
-    v5 = [(NSMutableArray *)self->_windowContextStack lastObject];
-    if (v5 != v6)
+    lastObject = [(NSMutableArray *)self->_windowContextStack lastObject];
+    if (lastObject != hierarchyCopy)
     {
       [(SizeContext *)a2 popContextFromViewHierarchy:?];
     }

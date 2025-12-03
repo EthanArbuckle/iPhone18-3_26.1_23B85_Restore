@@ -16,8 +16,8 @@
 {
   v3 = objc_opt_new();
   v4 = MEMORY[0x277D3FAD8];
-  v5 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
-  v6 = [v4 preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:4 edit:0];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  v6 = [v4 preferenceSpecifierNamed:userInfo target:self set:0 get:0 detail:0 cell:4 edit:0];
   [v3 addObject:v6];
 
   v7 = *MEMORY[0x277D3FC48];

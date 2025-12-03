@@ -1,10 +1,10 @@
 @interface PFMetadataLegacyMovieProperties
-- (BOOL)configureWithMetadataPlist:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)configureWithMetadataPlist:(id)plist;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSloMo;
 - (BOOL)isTimelapse;
-- (PFMetadataLegacyMovieProperties)initWithAVProxyData:(id)a3 timeZoneLookup:(id)a4;
-- (PFMetadataLegacyMovieProperties)initWithMetadataPlist:(id)a3 timeZoneLookup:(id)a4;
+- (PFMetadataLegacyMovieProperties)initWithAVProxyData:(id)data timeZoneLookup:(id)lookup;
+- (PFMetadataLegacyMovieProperties)initWithMetadataPlist:(id)plist timeZoneLookup:(id)lookup;
 - (id)_firstAudioTrack;
 - (id)_firstVideoTrack;
 - (id)_makeDateTimeProperties;
@@ -16,24 +16,24 @@
 - (id)audioTrackFormatFlags;
 - (id)cameraMake;
 - (id)cameraModel;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)nominalFrameRate;
 - (id)plistForEncoding;
 - (id)software;
 - (id)videoCodecName;
 - (id)videoDataRate;
 - (opaqueCMFormatDescription)_formatDescription;
-- (void)_enumerateTracksOfType:(unsigned int)a3 withBlock:(id)a4;
+- (void)_enumerateTracksOfType:(unsigned int)type withBlock:(id)block;
 @end
 
 @implementation PFMetadataLegacyMovieProperties
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = PFMetadataLegacyMovieProperties;
-  if (![(PFMetadata *)&v8 isEqual:v4]|| (audioVideoProperties = self->_audioVideoProperties, (audioVideoProperties != 0) == (v4[22] == 0)))
+  if (![(PFMetadata *)&v8 isEqual:equalCopy]|| (audioVideoProperties = self->_audioVideoProperties, (audioVideoProperties != 0) == (equalCopy[22] == 0)))
   {
     v6 = 0;
   }
@@ -46,11 +46,11 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PFMetadataLegacyMovieProperties;
-  v4 = [(PFMetadata *)&v6 copyWithZone:a3];
+  v4 = [(PFMetadata *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 22, self->_audioVideoProperties);
   return v4;
 }
@@ -59,8 +59,8 @@
 {
   v6.receiver = self;
   v6.super_class = PFMetadataLegacyMovieProperties;
-  v3 = [(PFMetadata *)&v6 plistForEncoding];
-  v4 = [v3 mutableCopy];
+  plistForEncoding = [(PFMetadata *)&v6 plistForEncoding];
+  v4 = [plistForEncoding mutableCopy];
 
   [v4 setObject:self->_audioVideoProperties forKeyedSubscript:PFMetadataPlistAudioVideoProperties];
 
@@ -100,28 +100,28 @@
 
 - (opaqueCMFormatDescription)_formatDescription
 {
-  v2 = [(PFMetadataLegacyMovieProperties *)self _firstVideoTrack];
-  v3 = [v2 formatDescriptions];
+  _firstVideoTrack = [(PFMetadataLegacyMovieProperties *)self _firstVideoTrack];
+  formatDescriptions = [_firstVideoTrack formatDescriptions];
 
-  if ([v3 count])
+  if ([formatDescriptions count])
   {
-    v4 = [v3 firstObject];
+    firstObject = [formatDescriptions firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (void)_enumerateTracksOfType:(unsigned int)a3 withBlock:(id)a4
+- (void)_enumerateTracksOfType:(unsigned int)type withBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v7 = MEMORY[0x1E6987608];
-  if (a3 != 1986618469)
+  if (type != 1986618469)
   {
     v7 = MEMORY[0x1E69875A0];
   }
@@ -148,7 +148,7 @@
 
         v14 = *(*(&v16 + 1) + 8 * i);
         v15 = [v14 objectForKeyedSubscript:@"mediaType"];
-        if ([v15 isEqualToString:v8] && (v6[2](v6, v14) & 1) == 0)
+        if ([v15 isEqualToString:v8] && (blockCopy[2](blockCopy, v14) & 1) == 0)
         {
 
           goto LABEL_14;
@@ -211,8 +211,8 @@ LABEL_14:
 - (id)_makeGeometryProperties
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v2 = [(PFMetadataLegacyMovieProperties *)self _firstVideoTrack];
-  v3 = [v2 objectForKeyedSubscript:@"naturalSize"];
+  _firstVideoTrack = [(PFMetadataLegacyMovieProperties *)self _firstVideoTrack];
+  v3 = [_firstVideoTrack objectForKeyedSubscript:@"naturalSize"];
 
   size.width = 0.0;
   size.height = 0.0;
@@ -260,16 +260,16 @@ LABEL_14:
 
 - (BOOL)isTimelapse
 {
-  v2 = [(PFMetadata *)self captureMode];
-  v3 = [v2 isEqualToString:@"Time-lapse"];
+  captureMode = [(PFMetadata *)self captureMode];
+  v3 = [captureMode isEqualToString:@"Time-lapse"];
 
   return v3;
 }
 
 - (BOOL)isSloMo
 {
-  v2 = [(PFMetadataLegacyMovieProperties *)self nominalFrameRate];
-  [v2 doubleValue];
+  nominalFrameRate = [(PFMetadataLegacyMovieProperties *)self nominalFrameRate];
+  [nominalFrameRate doubleValue];
   *&v3 = v3;
   [PFVideoAdjustments defaultSlowMotionRateForNominalFrameRate:v3];
   v5 = v4 < 1.0;
@@ -279,19 +279,19 @@ LABEL_14:
 
 - (id)videoCodecName
 {
-  v2 = [(PFMetadataLegacyMovieProperties *)self _firstVideoTrack];
-  v3 = [v2 objectForKeyedSubscript:@"formatDescriptions"];
-  v4 = [v3 firstObject];
+  _firstVideoTrack = [(PFMetadataLegacyMovieProperties *)self _firstVideoTrack];
+  v3 = [_firstVideoTrack objectForKeyedSubscript:@"formatDescriptions"];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 objectForKeyedSubscript:@"videoTrackFormatName"];
+  v5 = [firstObject objectForKeyedSubscript:@"videoTrackFormatName"];
 
   return v5;
 }
 
 - (id)audioTrackFormatFlags
 {
-  v2 = [(PFMetadataLegacyMovieProperties *)self _firstAudioTrack];
-  v3 = [v2 objectForKeyedSubscript:@"formatDescriptions"];
+  _firstAudioTrack = [(PFMetadataLegacyMovieProperties *)self _firstAudioTrack];
+  v3 = [_firstAudioTrack objectForKeyedSubscript:@"formatDescriptions"];
   v4 = [v3 objectAtIndex:0];
 
   v5 = [v4 objectForKeyedSubscript:@"audioTrackFormatFlags"];
@@ -301,8 +301,8 @@ LABEL_14:
 
 - (id)audioTrackFormat
 {
-  v2 = [(PFMetadataLegacyMovieProperties *)self _firstAudioTrack];
-  v3 = [v2 objectForKeyedSubscript:@"formatDescriptions"];
+  _firstAudioTrack = [(PFMetadataLegacyMovieProperties *)self _firstAudioTrack];
+  v3 = [_firstAudioTrack objectForKeyedSubscript:@"formatDescriptions"];
   v4 = [v3 objectAtIndex:0];
 
   v5 = [v4 objectForKeyedSubscript:@"audioTrackFormat"];
@@ -312,8 +312,8 @@ LABEL_14:
 
 - (id)audioSampleRate
 {
-  v2 = [(PFMetadataLegacyMovieProperties *)self _firstAudioTrack];
-  v3 = [v2 objectForKeyedSubscript:@"formatDescriptions"];
+  _firstAudioTrack = [(PFMetadataLegacyMovieProperties *)self _firstAudioTrack];
+  v3 = [_firstAudioTrack objectForKeyedSubscript:@"formatDescriptions"];
   v4 = [v3 objectAtIndex:0];
 
   v5 = [v4 objectForKeyedSubscript:@"audioTrackSampleRate"];
@@ -323,8 +323,8 @@ LABEL_14:
 
 - (id)audioDataRate
 {
-  v2 = [(PFMetadataLegacyMovieProperties *)self _firstAudioTrack];
-  v3 = [v2 objectForKeyedSubscript:@"estimatedDataRate"];
+  _firstAudioTrack = [(PFMetadataLegacyMovieProperties *)self _firstAudioTrack];
+  v3 = [_firstAudioTrack objectForKeyedSubscript:@"estimatedDataRate"];
 
   return v3;
 }
@@ -358,8 +358,8 @@ uint64_t __48__PFMetadataLegacyMovieProperties_videoDataRate__block_invoke(uint6
 
 - (id)nominalFrameRate
 {
-  v2 = [(PFMetadataLegacyMovieProperties *)self _firstVideoTrack];
-  v3 = [v2 objectForKeyedSubscript:@"nominalFrameRate"];
+  _firstVideoTrack = [(PFMetadataLegacyMovieProperties *)self _firstVideoTrack];
+  v3 = [_firstVideoTrack objectForKeyedSubscript:@"nominalFrameRate"];
 
   return v3;
 }
@@ -388,15 +388,15 @@ uint64_t __48__PFMetadataLegacyMovieProperties_videoDataRate__block_invoke(uint6
   return v3;
 }
 
-- (BOOL)configureWithMetadataPlist:(id)a3
+- (BOOL)configureWithMetadataPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v9.receiver = self;
   v9.super_class = PFMetadataLegacyMovieProperties;
-  v5 = [(PFMetadata *)&v9 configureWithMetadataPlist:v4];
+  v5 = [(PFMetadata *)&v9 configureWithMetadataPlist:plistCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:PFMetadataPlistAudioVideoProperties];
+    v6 = [plistCopy objectForKeyedSubscript:PFMetadataPlistAudioVideoProperties];
     audioVideoProperties = self->_audioVideoProperties;
     self->_audioVideoProperties = v6;
   }
@@ -404,18 +404,18 @@ uint64_t __48__PFMetadataLegacyMovieProperties_videoDataRate__block_invoke(uint6
   return v5;
 }
 
-- (PFMetadataLegacyMovieProperties)initWithMetadataPlist:(id)a3 timeZoneLookup:(id)a4
+- (PFMetadataLegacyMovieProperties)initWithMetadataPlist:(id)plist timeZoneLookup:(id)lookup
 {
-  v6 = a3;
+  plistCopy = plist;
   v7 = PFMetadataPlistContentTypeIdentifier;
-  v8 = a4;
-  v9 = [v6 objectForKeyedSubscript:v7];
+  lookupCopy = lookup;
+  v9 = [plistCopy objectForKeyedSubscript:v7];
   v10 = [PFUniformTypeUtilities typeWithIdentifier:v9];
 
-  v11 = [v6 objectForKeyedSubscript:PFMetadataPlistOptions];
-  v12 = -[PFMetadata initWithContentType:options:timeZoneLookup:](self, "initWithContentType:options:timeZoneLookup:", v10, [v11 integerValue], v8);
+  v11 = [plistCopy objectForKeyedSubscript:PFMetadataPlistOptions];
+  v12 = -[PFMetadata initWithContentType:options:timeZoneLookup:](self, "initWithContentType:options:timeZoneLookup:", v10, [v11 integerValue], lookupCopy);
 
-  if (v12 && ![(PFMetadataLegacyMovieProperties *)v12 configureWithMetadataPlist:v6])
+  if (v12 && ![(PFMetadataLegacyMovieProperties *)v12 configureWithMetadataPlist:plistCopy])
   {
 
     v12 = 0;
@@ -424,20 +424,20 @@ uint64_t __48__PFMetadataLegacyMovieProperties_videoDataRate__block_invoke(uint6
   return v12;
 }
 
-- (PFMetadataLegacyMovieProperties)initWithAVProxyData:(id)a3 timeZoneLookup:(id)a4
+- (PFMetadataLegacyMovieProperties)initWithAVProxyData:(id)data timeZoneLookup:(id)lookup
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 length])
+  dataCopy = data;
+  lookupCopy = lookup;
+  if (dataCopy && [dataCopy length])
   {
     v16.receiver = self;
     v16.super_class = PFMetadataLegacyMovieProperties;
-    v8 = [(PFMetadata *)&v16 initWithContentType:0 options:12 timeZoneLookup:v7];
+    v8 = [(PFMetadata *)&v16 initWithContentType:0 options:12 timeZoneLookup:lookupCopy];
     if (v8)
     {
       v15 = 0;
-      v9 = [PFMetadata propertyListObjectFromEncodedData:v6 expectedClass:objc_opt_class() options:0 error:&v15];
+      v9 = [PFMetadata propertyListObjectFromEncodedData:dataCopy expectedClass:objc_opt_class() options:0 error:&v15];
       v10 = v15;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -452,9 +452,9 @@ uint64_t __48__PFMetadataLegacyMovieProperties_videoDataRate__block_invoke(uint6
         if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
         {
           v13 = v11;
-          v14 = [v6 length];
+          v14 = [dataCopy length];
           *buf = 134218498;
-          v18 = v6;
+          v18 = dataCopy;
           v19 = 2048;
           v20 = v14;
           v21 = 2114;

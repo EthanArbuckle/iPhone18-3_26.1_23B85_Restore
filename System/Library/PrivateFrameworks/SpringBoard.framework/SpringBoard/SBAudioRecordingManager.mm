@@ -1,13 +1,13 @@
 @interface SBAudioRecordingManager
-- (BOOL)_callProviderAttributionExistsForAttribution:(id)a3 callDescriptors:(id)a4;
+- (BOOL)_callProviderAttributionExistsForAttribution:(id)attribution callDescriptors:(id)descriptors;
 - (SBAudioRecordingManager)init;
-- (double)_verificationDelayForApplication:(id)a3;
-- (int)_pidForAttribution:(id)a3;
-- (void)_coverSheetDidPresent:(id)a3;
+- (double)_verificationDelayForApplication:(id)application;
+- (int)_pidForAttribution:(id)attribution;
+- (void)_coverSheetDidPresent:(id)present;
 - (void)_removeBackgroundActivityAssertion;
-- (void)_verifyBackgroundAudioActivityForApplication:(id)a3 withDelay:(BOOL)a4;
+- (void)_verifyBackgroundAudioActivityForApplication:(id)application withDelay:(BOOL)delay;
 - (void)dealloc;
-- (void)setNowRecordingAppForActiveAudioRecordingAttributions:(id)a3 callDescriptors:(id)a4;
+- (void)setNowRecordingAppForActiveAudioRecordingAttributions:(id)attributions callDescriptors:(id)descriptors;
 @end
 
 @implementation SBAudioRecordingManager
@@ -30,8 +30,8 @@
   v2 = [(SBAudioRecordingManager *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__coverSheetDidPresent_ name:@"SBCoverSheetDidPresentNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__coverSheetDidPresent_ name:@"SBCoverSheetDidPresentNotification" object:0];
   }
 
   return v2;
@@ -39,24 +39,24 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBAudioRecordingManager;
   [(SBAudioRecordingManager *)&v4 dealloc];
 }
 
-- (void)setNowRecordingAppForActiveAudioRecordingAttributions:(id)a3 callDescriptors:(id)a4
+- (void)setNowRecordingAppForActiveAudioRecordingAttributions:(id)attributions callDescriptors:(id)descriptors
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  attributionsCopy = attributions;
+  descriptorsCopy = descriptors;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
+  obj = attributionsCopy;
   v8 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
@@ -73,10 +73,10 @@
 
         v11 = *(*(&v28 + 1) + 8 * v10);
         v12 = +[SBApplicationController sharedInstance];
-        v13 = [v11 bundleIdentifier];
-        v14 = [v12 applicationWithBundleIdentifier:v13];
+        bundleIdentifier = [v11 bundleIdentifier];
+        v14 = [v12 applicationWithBundleIdentifier:bundleIdentifier];
 
-        if ([(SBAudioRecordingManager *)self _callProviderAttributionExistsForAttribution:v11 callDescriptors:v7])
+        if ([(SBAudioRecordingManager *)self _callProviderAttributionExistsForAttribution:v11 callDescriptors:descriptorsCopy])
         {
         }
 
@@ -136,8 +136,8 @@ LABEL_12:
 
   if ((v15 & 1) == 0)
   {
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 postNotificationName:@"SBNowRecordingAppDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBNowRecordingAppDidChangeNotification" object:self];
   }
 }
 
@@ -186,20 +186,20 @@ void __97__SBAudioRecordingManager_setNowRecordingAppForActiveAudioRecordingAttr
 LABEL_11:
 }
 
-- (void)_verifyBackgroundAudioActivityForApplication:(id)a3 withDelay:(BOOL)a4
+- (void)_verifyBackgroundAudioActivityForApplication:(id)application withDelay:(BOOL)delay
 {
-  v4 = a4;
-  v6 = a3;
+  delayCopy = delay;
+  applicationCopy = application;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __82__SBAudioRecordingManager__verifyBackgroundAudioActivityForApplication_withDelay___block_invoke;
   v15 = &unk_2783A92D8;
-  v7 = v6;
+  v7 = applicationCopy;
   v16 = v7;
-  v17 = self;
+  selfCopy = self;
   v8 = MEMORY[0x223D6F7F0](&v12);
   v9 = v8;
-  if (v4)
+  if (delayCopy)
   {
     [(SBAudioRecordingManager *)self _verificationDelayForApplication:v7, v12, v13, v14, v15];
     v11 = dispatch_time(0, (v10 * 1000000000.0));
@@ -320,11 +320,11 @@ void __82__SBAudioRecordingManager__verifyBackgroundAudioActivityForApplication_
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (double)_verificationDelayForApplication:(id)a3
+- (double)_verificationDelayForApplication:(id)application
 {
-  v3 = [a3 isFaceTime];
+  isFaceTime = [application isFaceTime];
   result = 1.5;
-  if (v3)
+  if (isFaceTime)
   {
     return 2.0;
   }
@@ -332,16 +332,16 @@ void __82__SBAudioRecordingManager__verifyBackgroundAudioActivityForApplication_
   return result;
 }
 
-- (BOOL)_callProviderAttributionExistsForAttribution:(id)a3 callDescriptors:(id)a4
+- (BOOL)_callProviderAttributionExistsForAttribution:(id)attribution callDescriptors:(id)descriptors
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  attributionCopy = attribution;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  descriptorsCopy = descriptors;
+  v8 = [descriptorsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -352,17 +352,17 @@ void __82__SBAudioRecordingManager__verifyBackgroundAudioActivityForApplication_
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(descriptorsCopy);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
         v13 = [SBActivityAttribution alloc];
-        v14 = [v12 callProviderAttribution];
-        v15 = [(SBActivityAttribution *)v13 initWithSTActivityAttribution:v14];
+        callProviderAttribution = [v12 callProviderAttribution];
+        v15 = [(SBActivityAttribution *)v13 initWithSTActivityAttribution:callProviderAttribution];
 
         if (v15)
         {
-          v16 = [(SBAudioRecordingManager *)self _pidForAttribution:v6];
+          v16 = [(SBAudioRecordingManager *)self _pidForAttribution:attributionCopy];
           if (v16 == [(SBAudioRecordingManager *)self _pidForAttribution:v15])
           {
 
@@ -372,7 +372,7 @@ void __82__SBAudioRecordingManager__verifyBackgroundAudioActivityForApplication_
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [descriptorsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -388,17 +388,17 @@ LABEL_12:
   return v17;
 }
 
-- (int)_pidForAttribution:(id)a3
+- (int)_pidForAttribution:(id)attribution
 {
-  if (a3)
+  if (attribution)
   {
-    [a3 auditToken];
+    [attribution auditToken];
   }
 
   return BSPIDForAuditToken();
 }
 
-- (void)_coverSheetDidPresent:(id)a3
+- (void)_coverSheetDidPresent:(id)present
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -421,10 +421,10 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) application];
-        if (SBWorkspaceUnlockedEnvironmentLayoutStateHasMatchingApplication(v9))
+        application = [*(*(&v10 + 1) + 8 * v8) application];
+        if (SBWorkspaceUnlockedEnvironmentLayoutStateHasMatchingApplication(application))
         {
-          [(SBAudioRecordingManager *)self _verifyBackgroundAudioActivityForApplication:v9 withDelay:0];
+          [(SBAudioRecordingManager *)self _verifyBackgroundAudioActivityForApplication:application withDelay:0];
         }
 
         ++v8;

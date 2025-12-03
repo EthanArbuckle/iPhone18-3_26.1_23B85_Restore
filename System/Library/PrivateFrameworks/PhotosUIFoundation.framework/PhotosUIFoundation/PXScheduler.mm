@@ -1,16 +1,16 @@
 @interface PXScheduler
 + (PXScheduler)sharedScheduler;
 - (PXScheduler)init;
-- (id)startTrackedAnimationWithLabel:(id)a3;
-- (void)_performBlock:(id)a3;
+- (id)startTrackedAnimationWithLabel:(id)label;
+- (void)_performBlock:(id)block;
 - (void)_performPendingBlocks;
 - (void)_performPendingBlocksIfNeeded;
-- (void)dispatchGraduallyOnMainThreadWhenNotAnimating:(id)a3;
-- (void)dispatchInMainTransaction:(id)a3;
-- (void)dispatchInMainTransactionAfterDelay:(double)a3 block:(id)a4;
-- (void)dispatchOnMainThreadWhenNotScrolling:(id)a3;
-- (void)dispatchOnMainThreadWhenNotScrollingAfterDelay:(double)a3 block:(id)a4;
-- (void)endTrackedAnimation:(id)a3;
+- (void)dispatchGraduallyOnMainThreadWhenNotAnimating:(id)animating;
+- (void)dispatchInMainTransaction:(id)transaction;
+- (void)dispatchInMainTransactionAfterDelay:(double)delay block:(id)block;
+- (void)dispatchOnMainThreadWhenNotScrolling:(id)scrolling;
+- (void)dispatchOnMainThreadWhenNotScrollingAfterDelay:(double)delay block:(id)block;
+- (void)endTrackedAnimation:(id)animation;
 - (void)performPendingBlocksAfterAnimationIfPossible;
 - (void)schedulePerformPendingBlocksAfterAnimation;
 @end
@@ -51,9 +51,9 @@ uint64_t __30__PXScheduler_sharedScheduler__block_invoke()
     performWhenNotAnimatingPendingBlocks = v2->_performWhenNotAnimatingPendingBlocks;
     v2->_performWhenNotAnimatingPendingBlocks = v5;
 
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     activeAnimations = v2->_activeAnimations;
-    v2->_activeAnimations = v7;
+    v2->_activeAnimations = weakObjectsHashTable;
   }
 
   return v2;
@@ -98,14 +98,14 @@ uint64_t __57__PXScheduler_schedulePerformPendingBlocksAfterAnimation__block_inv
   v14 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_performWhenNotAnimatingPendingBlocks count])
   {
-    v3 = [(NSHashTable *)self->_activeAnimations allObjects];
-    v4 = [v3 count];
+    allObjects = [(NSHashTable *)self->_activeAnimations allObjects];
+    v4 = [allObjects count];
 
     if (!v4)
     {
-      v5 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      v6 = [v5 currentMode];
-      v7 = [v6 isEqualToString:*MEMORY[0x1E695D918]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      currentMode = [mainRunLoop currentMode];
+      v7 = [currentMode isEqualToString:*MEMORY[0x1E695D918]];
 
       if (v7)
       {
@@ -136,16 +136,16 @@ uint64_t __57__PXScheduler_schedulePerformPendingBlocksAfterAnimation__block_inv
   }
 }
 
-- (void)endTrackedAnimation:(id)a3
+- (void)endTrackedAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__PXScheduler_endTrackedAnimation___block_invoke;
   v6[3] = &unk_1E7BB7DD0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = animationCopy;
+  v5 = animationCopy;
   px_dispatch_on_main_queue(v6);
 }
 
@@ -157,26 +157,26 @@ uint64_t __35__PXScheduler_endTrackedAnimation___block_invoke(uint64_t a1)
   return [v2 schedulePerformPendingBlocksAfterAnimation];
 }
 
-- (id)startTrackedAnimationWithLabel:(id)a3
+- (id)startTrackedAnimationWithLabel:(id)label
 {
-  v4 = a3;
-  v5 = [[PXSchedulerTrackedAnimation alloc] initWithScheduler:self label:v4];
+  labelCopy = label;
+  v5 = [[PXSchedulerTrackedAnimation alloc] initWithScheduler:self label:labelCopy];
 
   [(NSHashTable *)self->_activeAnimations addObject:v5];
 
   return v5;
 }
 
-- (void)dispatchGraduallyOnMainThreadWhenNotAnimating:(id)a3
+- (void)dispatchGraduallyOnMainThreadWhenNotAnimating:(id)animating
 {
-  v4 = a3;
+  animatingCopy = animating;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__PXScheduler_dispatchGraduallyOnMainThreadWhenNotAnimating___block_invoke;
   v6[3] = &unk_1E7BB7DA8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = animatingCopy;
+  v5 = animatingCopy;
   px_dispatch_on_main_queue(v6);
 }
 
@@ -191,32 +191,32 @@ uint64_t __61__PXScheduler_dispatchGraduallyOnMainThreadWhenNotAnimating___block
   return [v4 schedulePerformPendingBlocksAfterAnimation];
 }
 
-- (void)_performBlock:(id)a3
+- (void)_performBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 }
 
-- (void)dispatchOnMainThreadWhenNotScrollingAfterDelay:(double)a3 block:(id)a4
+- (void)dispatchOnMainThreadWhenNotScrollingAfterDelay:(double)delay block:(id)block
 {
-  v6 = a4;
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
+  blockCopy = block;
+  v7 = dispatch_time(0, (delay * 1000000000.0));
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__PXScheduler_dispatchOnMainThreadWhenNotScrollingAfterDelay_block___block_invoke;
   v9[3] = &unk_1E7BB7DA8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   dispatch_after(v7, MEMORY[0x1E69E96A0], v9);
 }
 
-- (void)dispatchOnMainThreadWhenNotScrolling:(id)a3
+- (void)dispatchOnMainThreadWhenNotScrolling:(id)scrolling
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(scrolling);
   v6[0] = *MEMORY[0x1E695D918];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   [(PXScheduler *)self performSelectorOnMainThread:sel__performBlock_ withObject:v4 waitUntilDone:0 modes:v5];
@@ -262,30 +262,30 @@ uint64_t __61__PXScheduler_dispatchGraduallyOnMainThreadWhenNotAnimating___block
   self->_isPerformingPendingBlocks = isPerformingPendingBlocks;
 }
 
-- (void)dispatchInMainTransactionAfterDelay:(double)a3 block:(id)a4
+- (void)dispatchInMainTransactionAfterDelay:(double)delay block:(id)block
 {
-  v6 = a4;
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
+  blockCopy = block;
+  v7 = dispatch_time(0, (delay * 1000000000.0));
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__PXScheduler_dispatchInMainTransactionAfterDelay_block___block_invoke;
   v9[3] = &unk_1E7BB7DA8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   dispatch_after(v7, MEMORY[0x1E69E96A0], v9);
 }
 
-- (void)dispatchInMainTransaction:(id)a3
+- (void)dispatchInMainTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__PXScheduler_dispatchInMainTransaction___block_invoke;
   v6[3] = &unk_1E7BB7DA8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = transactionCopy;
+  v5 = transactionCopy;
   px_dispatch_on_main_queue(v6);
 }
 

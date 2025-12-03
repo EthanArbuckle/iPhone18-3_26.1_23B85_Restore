@@ -1,20 +1,20 @@
 @interface NUWebContentComponentDeveloperSettingsProvider
-- (NUWebContentComponentDeveloperSettingsProvider)initWithHeadline:(id)a3;
+- (NUWebContentComponentDeveloperSettingsProvider)initWithHeadline:(id)headline;
 - (id)developerSettings;
 @end
 
 @implementation NUWebContentComponentDeveloperSettingsProvider
 
-- (NUWebContentComponentDeveloperSettingsProvider)initWithHeadline:(id)a3
+- (NUWebContentComponentDeveloperSettingsProvider)initWithHeadline:(id)headline
 {
-  v5 = a3;
+  headlineCopy = headline;
   v9.receiver = self;
   v9.super_class = NUWebContentComponentDeveloperSettingsProvider;
   v6 = [(NUWebContentComponentDeveloperSettingsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_headline, a3);
+    objc_storeStrong(&v6->_headline, headline);
   }
 
   return v7;
@@ -22,20 +22,20 @@
 
 - (id)developerSettings
 {
-  v3 = [(NUWebContentComponentDeveloperSettingsProvider *)self headline];
-  if ([v3 isDraft])
+  headline = [(NUWebContentComponentDeveloperSettingsProvider *)self headline];
+  if ([headline isDraft])
   {
-    v4 = 1;
+    isLocalDraft = 1;
   }
 
   else
   {
-    v5 = [(NUWebContentComponentDeveloperSettingsProvider *)self headline];
-    v4 = [v5 isLocalDraft];
+    headline2 = [(NUWebContentComponentDeveloperSettingsProvider *)self headline];
+    isLocalDraft = [headline2 isLocalDraft];
   }
 
   v6 = objc_alloc(MEMORY[0x277D55120]);
-  if (v4)
+  if (isLocalDraft)
   {
     v7 = 1;
   }

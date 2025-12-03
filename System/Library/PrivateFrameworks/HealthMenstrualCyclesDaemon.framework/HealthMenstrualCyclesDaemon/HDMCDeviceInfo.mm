@@ -1,36 +1,36 @@
 @interface HDMCDeviceInfo
-+ (id)deviceInfoFromStorageGroup:(id)a3;
-+ (id)localDeviceInfoWithSettingsManager:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HDMCDeviceInfo)initWithDayStreamProcessorAlgorithmVersion:(int64_t)a3 menstruationNotificationsEnabled:(BOOL)a4 fertileWindowNotificationsEnabled:(BOOL)a5;
++ (id)deviceInfoFromStorageGroup:(id)group;
++ (id)localDeviceInfoWithSettingsManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
+- (HDMCDeviceInfo)initWithDayStreamProcessorAlgorithmVersion:(int64_t)version menstruationNotificationsEnabled:(BOOL)enabled fertileWindowNotificationsEnabled:(BOOL)notificationsEnabled;
 - (id)description;
 @end
 
 @implementation HDMCDeviceInfo
 
-+ (id)localDeviceInfoWithSettingsManager:(id)a3
++ (id)localDeviceInfoWithSettingsManager:(id)manager
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 dayStreamProcessorAlgorithmVersion];
-  v7 = [v4 menstruationNotificationsEnabled];
-  v8 = [v4 fertileWindowNotificationsEnabled];
+  managerCopy = manager;
+  v5 = [self alloc];
+  dayStreamProcessorAlgorithmVersion = [managerCopy dayStreamProcessorAlgorithmVersion];
+  menstruationNotificationsEnabled = [managerCopy menstruationNotificationsEnabled];
+  fertileWindowNotificationsEnabled = [managerCopy fertileWindowNotificationsEnabled];
 
-  v9 = [v5 initWithDayStreamProcessorAlgorithmVersion:v6 menstruationNotificationsEnabled:v7 fertileWindowNotificationsEnabled:v8];
+  v9 = [v5 initWithDayStreamProcessorAlgorithmVersion:dayStreamProcessorAlgorithmVersion menstruationNotificationsEnabled:menstruationNotificationsEnabled fertileWindowNotificationsEnabled:fertileWindowNotificationsEnabled];
 
   return v9;
 }
 
-+ (id)deviceInfoFromStorageGroup:(id)a3
++ (id)deviceInfoFromStorageGroup:(id)group
 {
   v32 = *MEMORY[0x277D85DE8];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v25 = a3;
-  v3 = [v25 storageEntries];
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  groupCopy = group;
+  storageEntries = [groupCopy storageEntries];
+  v4 = [storageEntries countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -50,7 +50,7 @@
     {
       if (*v28 != v8)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(storageEntries);
       }
 
       v10 = *(*(&v27 + 1) + 8 * i);
@@ -93,7 +93,7 @@
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    v5 = [storageEntries countByEnumeratingWithState:&v27 objects:v31 count:16];
   }
 
   while (v5);
@@ -119,25 +119,25 @@ LABEL_17:
   return v21;
 }
 
-- (HDMCDeviceInfo)initWithDayStreamProcessorAlgorithmVersion:(int64_t)a3 menstruationNotificationsEnabled:(BOOL)a4 fertileWindowNotificationsEnabled:(BOOL)a5
+- (HDMCDeviceInfo)initWithDayStreamProcessorAlgorithmVersion:(int64_t)version menstruationNotificationsEnabled:(BOOL)enabled fertileWindowNotificationsEnabled:(BOOL)notificationsEnabled
 {
   v9.receiver = self;
   v9.super_class = HDMCDeviceInfo;
   result = [(HDMCDeviceInfo *)&v9 init];
   if (result)
   {
-    result->_dayStreamProcessorAlgorithmVersion = a3;
-    result->_menstruationNotificationsEnabled = a4;
-    result->_fertileWindowNotificationsEnabled = a5;
+    result->_dayStreamProcessorAlgorithmVersion = version;
+    result->_menstruationNotificationsEnabled = enabled;
+    result->_fertileWindowNotificationsEnabled = notificationsEnabled;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -147,7 +147,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_dayStreamProcessorAlgorithmVersion == v5->_dayStreamProcessorAlgorithmVersion && self->_menstruationNotificationsEnabled == v5->_menstruationNotificationsEnabled && self->_fertileWindowNotificationsEnabled == v5->_fertileWindowNotificationsEnabled;
     }
 

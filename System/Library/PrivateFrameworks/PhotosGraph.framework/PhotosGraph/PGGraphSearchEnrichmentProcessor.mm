@@ -1,25 +1,25 @@
 @interface PGGraphSearchEnrichmentProcessor
-- (BOOL)_shouldProcessGraphUpdate:(id)a3;
-- (unint64_t)_processGraphUpdateInventory:(id)a3 onGraph:(id)a4 photoLibrary:(id)a5 curationManager:(id)a6 curationContext:(id)a7 searchComputationCache:(id)a8 progressBlock:(id)a9 loggingConnection:(id)a10 completionBlock:(id)a11;
-- (void)enrichDataModelWithManager:(id)a3 curationContext:(id)a4 graphUpdateInventory:(id)a5 progressReporter:(id)a6;
+- (BOOL)_shouldProcessGraphUpdate:(id)update;
+- (unint64_t)_processGraphUpdateInventory:(id)inventory onGraph:(id)graph photoLibrary:(id)library curationManager:(id)manager curationContext:(id)context searchComputationCache:(id)cache progressBlock:(id)block loggingConnection:(id)self0 completionBlock:(id)self1;
+- (void)enrichDataModelWithManager:(id)manager curationContext:(id)context graphUpdateInventory:(id)inventory progressReporter:(id)reporter;
 @end
 
 @implementation PGGraphSearchEnrichmentProcessor
 
-- (unint64_t)_processGraphUpdateInventory:(id)a3 onGraph:(id)a4 photoLibrary:(id)a5 curationManager:(id)a6 curationContext:(id)a7 searchComputationCache:(id)a8 progressBlock:(id)a9 loggingConnection:(id)a10 completionBlock:(id)a11
+- (unint64_t)_processGraphUpdateInventory:(id)inventory onGraph:(id)graph photoLibrary:(id)library curationManager:(id)manager curationContext:(id)context searchComputationCache:(id)cache progressBlock:(id)block loggingConnection:(id)self0 completionBlock:(id)self1
 {
   v100 = *MEMORY[0x277D85DE8];
-  v64 = a3;
-  v16 = a4;
-  v59 = a5;
-  v55 = a6;
-  v56 = a7;
-  v65 = a8;
-  v17 = a9;
-  oslog = a10;
-  v57 = v17;
-  v58 = a11;
-  v18 = _Block_copy(v17);
+  inventoryCopy = inventory;
+  graphCopy = graph;
+  libraryCopy = library;
+  managerCopy = manager;
+  contextCopy = context;
+  cacheCopy = cache;
+  blockCopy = block;
+  oslog = connection;
+  v57 = blockCopy;
+  completionBlockCopy = completionBlock;
+  v18 = _Block_copy(blockCopy);
   v93 = 0;
   v94 = &v93;
   v95 = 0x2020000000;
@@ -30,11 +30,11 @@
   v92 = 0;
   if (!v18 || (v19 = CFAbsoluteTimeGetCurrent(), v19 - v90[3] < 0.01) || (v90[3] = v19, v88 = 0, (*(v18 + 2))(v18, &v88, 0.0), v20 = *(v94 + 24) | v88, *(v94 + 24) = v20, (v20 & 1) == 0))
   {
-    v63 = [PGGraphSynonymSupportHelper synonymsByIndexCategoryMaskForGraph:v16];
-    v62 = [v16 localeIdentifier];
-    v66 = [[PGSearchEntityAccumulator alloc] initWithSynonymsByCategoryMask:v63 graphLocaleIdentifier:v62];
-    v61 = [[PGSearchKeywordComputer alloc] initWithGraph:v16 searchComputationCache:v65];
-    v22 = [v64 momentsToProcessForMomentUpdateTypes:31 includeMomentsToIngest:1];
+    v63 = [PGGraphSynonymSupportHelper synonymsByIndexCategoryMaskForGraph:graphCopy];
+    localeIdentifier = [graphCopy localeIdentifier];
+    v66 = [[PGSearchEntityAccumulator alloc] initWithSynonymsByCategoryMask:v63 graphLocaleIdentifier:localeIdentifier];
+    v61 = [[PGSearchKeywordComputer alloc] initWithGraph:graphCopy searchComputationCache:cacheCopy];
+    v22 = [inventoryCopy momentsToProcessForMomentUpdateTypes:31 includeMomentsToIngest:1];
     v21 = [v22 count];
     v23 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:v21];
     v86 = 0u;
@@ -55,8 +55,8 @@
             objc_enumerationMutation(v24);
           }
 
-          v28 = [*(*(&v84 + 1) + 8 * i) uuid];
-          [v23 addObject:v28];
+          uuid = [*(*(&v84 + 1) + 8 * i) uuid];
+          [v23 addObject:uuid];
         }
 
         v25 = [v24 countByEnumeratingWithState:&v84 objects:v97 count:16];
@@ -65,8 +65,8 @@
       while (v25);
     }
 
-    v53 = [PGGraphMomentNodeCollection momentNodesForUUIDs:v23 inGraph:v16];
-    v29 = [v53 uuids];
+    v53 = [PGGraphMomentNodeCollection momentNodesForUUIDs:v23 inGraph:graphCopy];
+    uuids = [v53 uuids];
     v79[0] = MEMORY[0x277D85DD0];
     v79[1] = 3221225472;
     v79[2] = __189__PGGraphSearchEnrichmentProcessor__processGraphUpdateInventory_onGraph_photoLibrary_curationManager_curationContext_searchComputationCache_progressBlock_loggingConnection_completionBlock___block_invoke;
@@ -76,8 +76,8 @@
     v81 = &v89;
     v82 = &v93;
     v83 = 0x3F847AE147AE147BLL;
-    v31 = [(PGSearchKeywordComputer *)v61 assetSearchKeywordsByMomentUUIDWithEventUUIDs:v29 ofType:0 searchEntityAccumulator:v66 progressBlock:v79];
-    v54 = v29;
+    v31 = [(PGSearchKeywordComputer *)v61 assetSearchKeywordsByMomentUUIDWithEventUUIDs:uuids ofType:0 searchEntityAccumulator:v66 progressBlock:v79];
+    v54 = uuids;
     if (*(v94 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -85,7 +85,7 @@
 LABEL_18:
         v21 = 0;
         v34 = v53;
-        v33 = v29;
+        v33 = uuids;
 LABEL_47:
 
         goto LABEL_48;
@@ -140,7 +140,7 @@ LABEL_17:
     v78 = 0x3F847AE147AE147BLL;
     [v37 progressReporterWithProgressBlock:v74];
     v51 = v73 = 0;
-    v39 = [PGSearchEntityAccumulator accumulatePersonAndPetRelationshipsFromGraph:v66 progressReporter:"accumulatePersonAndPetRelationshipsFromGraph:progressReporter:error:" error:v16];
+    v39 = [PGSearchEntityAccumulator accumulatePersonAndPetRelationshipsFromGraph:v66 progressReporter:"accumulatePersonAndPetRelationshipsFromGraph:progressReporter:error:" error:graphCopy];
     v52 = 0;
     if (v18)
     {
@@ -186,7 +186,7 @@ LABEL_46:
       v71 = &v93;
       v72 = 0x3F847AE147AE147BLL;
       v43 = [v42 progressReporterWithProgressBlock:v68];
-      v44 = [[PGSearchEntityPersister alloc] initWithPhotoLibrary:v59];
+      v44 = [[PGSearchEntityPersister alloc] initWithPhotoLibrary:libraryCopy];
       v67 = 0;
       v50 = v43;
       v34 = v53;
@@ -333,42 +333,42 @@ void __189__PGGraphSearchEnrichmentProcessor__processGraphUpdateInventory_onGrap
   }
 }
 
-- (BOOL)_shouldProcessGraphUpdate:(id)a3
+- (BOOL)_shouldProcessGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 hasHighlightsToInsert] & 1) != 0 || (objc_msgSend(v3, "hasHighlightsToDelete"))
+  updateCopy = update;
+  if ([updateCopy hasHighlightsToInsert] & 1) != 0 || (objc_msgSend(updateCopy, "hasHighlightsToDelete"))
   {
-    v4 = 1;
+    hasHighlightsToUpdate = 1;
   }
 
   else
   {
-    v4 = [v3 hasHighlightsToUpdate];
+    hasHighlightsToUpdate = [updateCopy hasHighlightsToUpdate];
   }
 
-  if (([v3 hasMomentsToInsert] & 1) != 0 || (objc_msgSend(v3, "hasMomentsToDelete") & 1) != 0 || ((v4 | objc_msgSend(v3, "hasMomentsToUpdate")) & 1) != 0 || (objc_msgSend(v3, "hasPersonsToDelete") & 1) != 0 || (objc_msgSend(v3, "identifiersForMomentRelatedToUpdatedPersons"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
+  if (([updateCopy hasMomentsToInsert] & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToDelete") & 1) != 0 || ((hasHighlightsToUpdate | objc_msgSend(updateCopy, "hasMomentsToUpdate")) & 1) != 0 || (objc_msgSend(updateCopy, "hasPersonsToDelete") & 1) != 0 || (objc_msgSend(updateCopy, "identifiersForMomentRelatedToUpdatedPersons"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
   {
-    v7 = 1;
+    isResumingFullAnalysis = 1;
   }
 
   else
   {
-    v7 = [v3 isResumingFullAnalysis];
+    isResumingFullAnalysis = [updateCopy isResumingFullAnalysis];
   }
 
-  return v7;
+  return isResumingFullAnalysis;
 }
 
-- (void)enrichDataModelWithManager:(id)a3 curationContext:(id)a4 graphUpdateInventory:(id)a5 progressReporter:(id)a6
+- (void)enrichDataModelWithManager:(id)manager curationContext:(id)context graphUpdateInventory:(id)inventory progressReporter:(id)reporter
 {
   v60 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 enrichmentLoggingConnection];
-  v15 = os_signpost_id_generate(v14);
-  v16 = v14;
+  managerCopy = manager;
+  contextCopy = context;
+  inventoryCopy = inventory;
+  reporterCopy = reporter;
+  enrichmentLoggingConnection = [managerCopy enrichmentLoggingConnection];
+  v15 = os_signpost_id_generate(enrichmentLoggingConnection);
+  v16 = enrichmentLoggingConnection;
   v17 = v16;
   spid = v15;
   v18 = v15 - 1;
@@ -381,7 +381,7 @@ void __189__PGGraphSearchEnrichmentProcessor__processGraphUpdateInventory_onGrap
   info = 0;
   mach_timebase_info(&info);
   v39 = mach_absolute_time();
-  v19 = v13;
+  v19 = reporterCopy;
   *buf = 0;
   v54 = buf;
   v55 = 0x2020000000;
@@ -404,7 +404,7 @@ LABEL_27:
 
   else
   {
-    v22 = [(PGGraphSearchEnrichmentProcessor *)self _shouldProcessGraphUpdate:v12];
+    v22 = [(PGGraphSearchEnrichmentProcessor *)self _shouldProcessGraphUpdate:inventoryCopy];
     v23 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
     if (v22)
     {
@@ -414,11 +414,11 @@ LABEL_27:
         _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_INFO, "[PGGraphSearchEnrichmentProcessor] Run search processor to donate graph data to Search enrichment", v58, 2u);
       }
 
-      v24 = [v10 photoLibrary];
-      v37 = [PGSearchComputationCache persistentStoreURLWithManager:v10];
-      v38 = v11;
-      v25 = [[PGSearchComputationCache alloc] initWithPersistentStoreURL:v37 photoLibrary:v24];
-      if ([v12 isResumingFullAnalysis])
+      photoLibrary = [managerCopy photoLibrary];
+      v37 = [PGSearchComputationCache persistentStoreURLWithManager:managerCopy];
+      v38 = contextCopy;
+      v25 = [[PGSearchComputationCache alloc] initWithPersistentStoreURL:v37 photoLibrary:photoLibrary];
+      if ([inventoryCopy isResumingFullAnalysis])
       {
         [(PGSearchComputationCache *)v25 invalidateCache];
       }
@@ -427,18 +427,18 @@ LABEL_27:
       *&v58[8] = v58;
       *&v58[16] = 0x2020000000;
       v59 = 1;
-      v26 = [v10 curationManager];
+      curationManager = [managerCopy curationManager];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __117__PGGraphSearchEnrichmentProcessor_enrichDataModelWithManager_curationContext_graphUpdateInventory_progressReporter___block_invoke;
       v41[3] = &unk_278883F68;
       v51 = v58;
       v42 = v17;
-      v43 = self;
-      v44 = v12;
-      v27 = v24;
+      selfCopy = self;
+      v44 = inventoryCopy;
+      v27 = photoLibrary;
       v45 = v27;
-      v28 = v26;
+      v28 = curationManager;
       v46 = v28;
       v47 = v38;
       v29 = v25;
@@ -446,13 +446,13 @@ LABEL_27:
       v52 = buf;
       v49 = v19;
       v50 = v49;
-      [v10 performSynchronousConcurrentGraphReadUsingBlock:v41];
+      [managerCopy performSynchronousConcurrentGraphReadUsingBlock:v41];
       if (*(*&v58[8] + 24) == 1)
       {
         [(PGSearchComputationCache *)v29 save];
       }
 
-      v11 = v38;
+      contextCopy = v38;
       _Block_object_dispose(v58, 8);
     }
 

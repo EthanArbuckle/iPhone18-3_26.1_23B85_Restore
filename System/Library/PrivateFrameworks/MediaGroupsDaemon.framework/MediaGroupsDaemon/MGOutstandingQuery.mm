@@ -1,12 +1,12 @@
 @interface MGOutstandingQuery
-- (MGOutstandingQuery)initWithPredicate:(id)a3;
+- (MGOutstandingQuery)initWithPredicate:(id)predicate;
 @end
 
 @implementation MGOutstandingQuery
 
-- (MGOutstandingQuery)initWithPredicate:(id)a3
+- (MGOutstandingQuery)initWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v11.receiver = self;
   v11.super_class = MGOutstandingQuery;
   v5 = [(MGOutstandingQuery *)&v11 init];
@@ -16,7 +16,7 @@
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 copy];
+    v8 = [predicateCopy copy];
     predicate = v5->_predicate;
     v5->_predicate = v8;
 

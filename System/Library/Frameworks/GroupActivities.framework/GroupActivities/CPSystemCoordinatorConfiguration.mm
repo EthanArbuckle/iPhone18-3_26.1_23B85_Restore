@@ -1,22 +1,22 @@
 @interface CPSystemCoordinatorConfiguration
 - (CPSystemCoordinatorConfiguration)init;
-- (CPSystemCoordinatorConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CPSystemCoordinatorConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSystemCoordinatorConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SystemCoordinatorConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SystemCoordinatorConfiguration.encode(with:)(coderCopy);
 }
 
-- (CPSystemCoordinatorConfiguration)initWithCoder:(id)a3
+- (CPSystemCoordinatorConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized SystemCoordinatorConfiguration.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized SystemCoordinatorConfiguration.init(coder:)(coderCopy);
 
   return v4;
 }

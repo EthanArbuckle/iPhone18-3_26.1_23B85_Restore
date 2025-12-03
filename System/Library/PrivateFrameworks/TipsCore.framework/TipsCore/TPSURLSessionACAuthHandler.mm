@@ -1,29 +1,29 @@
 @interface TPSURLSessionACAuthHandler
-+ (BOOL)canAuthenticateWithURLResponse:(id)a3;
-- (TPSURLSessionACAuthHandler)initWithAuthenticationContext:(id)a3;
-- (id)_authenticationTokenForHost:(id)a3 error:(id *)a4;
++ (BOOL)canAuthenticateWithURLResponse:(id)response;
+- (TPSURLSessionACAuthHandler)initWithAuthenticationContext:(id)context;
+- (id)_authenticationTokenForHost:(id)host error:(id *)error;
 - (id)customHeaderFields;
-- (void)_authenticateWithAppleConnect:(id)a3;
-- (void)authenticateForURLResponse:(id)a3 completion:(id)a4;
+- (void)_authenticateWithAppleConnect:(id)connect;
+- (void)authenticateForURLResponse:(id)response completion:(id)completion;
 @end
 
 @implementation TPSURLSessionACAuthHandler
 
-+ (BOOL)canAuthenticateWithURLResponse:(id)a3
++ (BOOL)canAuthenticateWithURLResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   if (+[TPSCommonDefines isInternalDevice])
   {
-    v4 = v3;
+    v4 = responseCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = +[TPSContentURLController defaultHost];
-      v6 = [v5 host];
+      host = [v5 host];
 
       v7 = [v4 URL];
-      v8 = [v7 host];
-      v9 = [v8 isEqualToString:v6];
+      host2 = [v7 host];
+      v9 = [host2 isEqualToString:host];
 
       if (v9)
       {
@@ -37,9 +37,9 @@
           +[TPSURLSessionACAuthHandler canAuthenticateWithURLResponse:];
         }
 
-        v11 = [v4 statusCode];
+        statusCode = [v4 statusCode];
         v12 = canAuthenticateWithURLResponse__supportedStatusCodes;
-        v13 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
+        v13 = [MEMORY[0x1E696AD98] numberWithInteger:statusCode];
         v10 = [v12 containsObject:v13];
       }
     }
@@ -67,16 +67,16 @@ uint64_t __61__TPSURLSessionACAuthHandler_canAuthenticateWithURLResponse___block
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (TPSURLSessionACAuthHandler)initWithAuthenticationContext:(id)a3
+- (TPSURLSessionACAuthHandler)initWithAuthenticationContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = TPSURLSessionACAuthHandler;
   v6 = [(TPSURLSessionACAuthHandler *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authContext, a3);
+    objc_storeStrong(&v6->_authContext, context);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.tips.ACAuthHandler.syncQueue", v8);
     syncQueue = v7->_syncQueue;
@@ -86,27 +86,27 @@ uint64_t __61__TPSURLSessionACAuthHandler_canAuthenticateWithURLResponse___block
   return v7;
 }
 
-- (void)authenticateForURLResponse:(id)a3 completion:(id)a4
+- (void)authenticateForURLResponse:(id)response completion:(id)completion
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 URL];
-  v8 = [v7 host];
+  completionCopy = completion;
+  v7 = [response URL];
+  host = [v7 host];
 
-  if (![v8 length])
+  if (![host length])
   {
     goto LABEL_5;
   }
 
   v15 = 0;
-  v9 = [(TPSURLSessionACAuthHandler *)self _authenticationTokenForHost:v8 error:&v15];
+  v9 = [(TPSURLSessionACAuthHandler *)self _authenticationTokenForHost:host error:&v15];
   v10 = v15;
   v11 = v10;
   if (!v9)
   {
 
 LABEL_5:
-    [(TPSURLSessionACAuthHandler *)self _authenticateWithAppleConnect:v6];
+    [(TPSURLSessionACAuthHandler *)self _authenticateWithAppleConnect:completionCopy];
     goto LABEL_6;
   }
 
@@ -114,7 +114,7 @@ LABEL_5:
   v16 = @"Authorization";
   v17[0] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  (*(v6 + 2))(v6, 0, 0, v13, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0, v13, 0);
 
 LABEL_6:
   v14 = *MEMORY[0x1E69E9840];
@@ -123,13 +123,13 @@ LABEL_6:
 - (id)customHeaderFields
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(TPSURLSessionACAuthHandler *)self authContext];
-  v3 = [v2 clientIdentifier];
+  authContext = [(TPSURLSessionACAuthHandler *)self authContext];
+  clientIdentifier = [authContext clientIdentifier];
 
-  if ([v3 length])
+  if ([clientIdentifier length])
   {
     v7 = @"X-Client-Id";
-    v8[0] = v3;
+    v8[0] = clientIdentifier;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 
@@ -143,35 +143,35 @@ LABEL_6:
   return v4;
 }
 
-- (void)_authenticateWithAppleConnect:(id)a3
+- (void)_authenticateWithAppleConnect:(id)connect
 {
-  v4 = a3;
-  v5 = [(TPSURLSessionACAuthHandler *)self syncQueue];
+  connectCopy = connect;
+  syncQueue = [(TPSURLSessionACAuthHandler *)self syncQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__TPSURLSessionACAuthHandler__authenticateWithAppleConnect___block_invoke;
   block[3] = &unk_1E8101340;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(syncQueue, block);
 
-  v6 = [(TPSURLSessionACAuthHandler *)self ssoAuthenticator];
+  ssoAuthenticator = [(TPSURLSessionACAuthHandler *)self ssoAuthenticator];
 
-  if (v6)
+  if (ssoAuthenticator)
   {
-    v7 = [(TPSURLSessionACAuthHandler *)self ssoAuthenticator];
+    ssoAuthenticator2 = [(TPSURLSessionACAuthHandler *)self ssoAuthenticator];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __60__TPSURLSessionACAuthHandler__authenticateWithAppleConnect___block_invoke_2;
     v9[3] = &unk_1E8102A10;
     v9[4] = self;
-    v10 = v4;
-    [v7 authenticateWithCompletion:v9];
+    v10 = connectCopy;
+    [ssoAuthenticator2 authenticateWithCompletion:v9];
   }
 
   else
   {
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:13 userInfo:0];
-    (*(v4 + 2))(v4, 0, 0, 0, v8);
+    (*(connectCopy + 2))(connectCopy, 0, 0, 0, v8);
   }
 }
 
@@ -310,10 +310,10 @@ LABEL_15:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_authenticationTokenForHost:(id)a3 error:(id *)a4
+- (id)_authenticationTokenForHost:(id)host error:(id *)error
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  hostCopy = host;
   v6 = *MEMORY[0x1E697B008];
   v7 = *MEMORY[0x1E697AE88];
   v17[0] = *MEMORY[0x1E697AFF8];
@@ -323,17 +323,17 @@ LABEL_15:
   v8 = *MEMORY[0x1E697B318];
   v17[2] = *MEMORY[0x1E697AC30];
   v17[3] = v8;
-  v18[2] = v5;
+  v18[2] = hostCopy;
   v18[3] = MEMORY[0x1E695E118];
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
   cf = 0;
   v10 = SecItemCopyMatching(v9, &cf);
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v10 userInfo:0];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_10;
     }
   }

@@ -1,36 +1,36 @@
 @interface DeviceObserverEnhancedLogging
-- (id)beginDiscoveringDevicesWithHandler:(id)a3;
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3;
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3;
+- (id)beginDiscoveringDevicesWithHandler:(id)handler;
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler;
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier;
 @end
 
 @implementation DeviceObserverEnhancedLogging
 
-- (id)beginDiscoveringDevicesWithHandler:(id)a3
+- (id)beginDiscoveringDevicesWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   v7 = sub_10013C6F4(sub_10013EB1C, v5);
 
   return v7;
 }
 
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_10013CA0C();
   swift_unknownObjectRelease();
 }
 
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler
 {
   v5 = sub_10003C49C(&unk_1001FFE20);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -46,7 +46,7 @@
   v12[3] = 0;
   v12[4] = &unk_100185E08;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10013DF78(0, 0, v7, &unk_100185E18, v12);
 }
 

@@ -1,32 +1,32 @@
 @interface SCNShadableHelper
-- (BOOL)_bindValueForSymbol:(id)a3 atLocation:(unsigned int)a4 programID:(unsigned int)a5 node:(id)a6 renderer:(id)a7;
+- (BOOL)_bindValueForSymbol:(id)symbol atLocation:(unsigned int)location programID:(unsigned int)d node:(id)node renderer:(id)renderer;
 - (NSArray)shaderModifiersArgumentsNames;
 - (NSDictionary)shaderModifiers;
 - (SCNProgram)program;
-- (SCNShadableHelper)initWithCoder:(id)a3;
-- (SCNShadableHelper)initWithOwner:(id)a3;
-- (__C3DFXGLSLProgram)_programFromPassAtIndex:(int64_t)a3;
+- (SCNShadableHelper)initWithCoder:(id)coder;
+- (SCNShadableHelper)initWithOwner:(id)owner;
+- (__C3DFXGLSLProgram)_programFromPassAtIndex:(int64_t)index;
 - (__C3DFXTechnique)_technique;
 - (void)_commonInit;
-- (void)_customEncodingOfSCNShadableHelper:(id)a3;
-- (void)_parseAndSetShaderModifier:(id)a3;
-- (void)_programDidChange:(id)a3;
+- (void)_customEncodingOfSCNShadableHelper:(id)helper;
+- (void)_parseAndSetShaderModifier:(id)modifier;
+- (void)_programDidChange:(id)change;
 - (void)_setC3DProgram;
 - (void)_setC3DProgramDelegate;
 - (void)_startObservingProgram;
 - (void)_stopObservingProgram;
-- (void)_unbindValueForSymbol:(id)a3 atLocation:(unsigned int)a4 programID:(unsigned int)a5 node:(id)a6 renderer:(id)a7;
+- (void)_unbindValueForSymbol:(id)symbol atLocation:(unsigned int)location programID:(unsigned int)d node:(id)node renderer:(id)renderer;
 - (void)_updateAllC3DProgramInputs;
-- (void)_updateC3DProgramInput:(__C3DFXGLSLProgram *)a3 forSymbol:(id)a4;
-- (void)_updateC3DProgramInputForSymbol:(id)a3;
-- (void)copyModifiersFrom:(id)a3;
+- (void)_updateC3DProgramInput:(__C3DFXGLSLProgram *)input forSymbol:(id)symbol;
+- (void)_updateC3DProgramInputForSymbol:(id)symbol;
+- (void)copyModifiersFrom:(id)from;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleBindingOfSymbol:(id)a3 usingBlock:(id)a4;
-- (void)handleUnbindingOfSymbol:(id)a3 usingBlock:(id)a4;
-- (void)setMinimumLanguageVersion:(id)a3;
-- (void)setProgram:(id)a3;
-- (void)setShaderModifiers:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleBindingOfSymbol:(id)symbol usingBlock:(id)block;
+- (void)handleUnbindingOfSymbol:(id)symbol usingBlock:(id)block;
+- (void)setMinimumLanguageVersion:(id)version;
+- (void)setProgram:(id)program;
+- (void)setShaderModifiers:(id)modifiers;
 @end
 
 @implementation SCNShadableHelper
@@ -38,7 +38,7 @@
   self->_argumentsNames = objc_alloc_init(MEMORY[0x277CBEB18]);
 }
 
-- (SCNShadableHelper)initWithOwner:(id)a3
+- (SCNShadableHelper)initWithOwner:(id)owner
 {
   v7.receiver = self;
   v7.super_class = SCNShadableHelper;
@@ -47,7 +47,7 @@
   if (v4)
   {
     [(SCNShadableHelper *)v4 _commonInit];
-    v5->_owner = a3;
+    v5->_owner = owner;
   }
 
   return v5;
@@ -72,10 +72,10 @@
 {
   if (self->_program)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     program = self->_program;
 
-    [v3 addObserver:self selector:sel__programDidChange_ name:@"SCNProgramDidChangeNotification" object:program];
+    [defaultCenter addObserver:self selector:sel__programDidChange_ name:@"SCNProgramDidChangeNotification" object:program];
   }
 }
 
@@ -83,16 +83,16 @@
 {
   if (self->_program)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     program = self->_program;
 
-    [v3 removeObserver:self name:@"SCNProgramDidChangeNotification" object:program];
+    [defaultCenter removeObserver:self name:@"SCNProgramDidChangeNotification" object:program];
   }
 }
 
-- (void)setProgram:(id)a3
+- (void)setProgram:(id)program
 {
-  if (a3 && [(NSDictionary *)self->_shaderModifiers count])
+  if (program && [(NSDictionary *)self->_shaderModifiers count])
   {
     v5 = scn_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -101,18 +101,18 @@
     }
   }
 
-  else if (self->_program != a3)
+  else if (self->_program != program)
   {
     [(SCNShadableHelper *)self _stopObservingProgram];
 
-    self->_program = a3;
-    v6 = [self->_owner sceneRef];
+    self->_program = program;
+    sceneRef = [self->_owner sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __32__SCNShadableHelper_setProgram___block_invoke;
     v7[3] = &unk_2782FB820;
     v7[4] = self;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -131,25 +131,25 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)_bindValueForSymbol:(id)a3 atLocation:(unsigned int)a4 programID:(unsigned int)a5 node:(id)a6 renderer:(id)a7
+- (BOOL)_bindValueForSymbol:(id)symbol atLocation:(unsigned int)location programID:(unsigned int)d node:(id)node renderer:(id)renderer
 {
-  v9 = *&a5;
-  v10 = *&a4;
-  v11 = [(NSDictionary *)self->_symbolToBinder objectForKey:a3];
+  v9 = *&d;
+  v10 = *&location;
+  v11 = [(NSDictionary *)self->_symbolToBinder objectForKey:symbol];
   v12 = v11;
   if (v11)
   {
-    (*(v11 + 2))(v11, v9, v10, a6, a7);
+    (*(v11 + 2))(v11, v9, v10, node, renderer);
   }
 
   return v12 != 0;
 }
 
-- (void)_unbindValueForSymbol:(id)a3 atLocation:(unsigned int)a4 programID:(unsigned int)a5 node:(id)a6 renderer:(id)a7
+- (void)_unbindValueForSymbol:(id)symbol atLocation:(unsigned int)location programID:(unsigned int)d node:(id)node renderer:(id)renderer
 {
   if ([(NSDictionary *)self->_symbolToBinder objectForKey:?])
   {
-    v9 = [(NSDictionary *)self->_symbolToUnbinder objectForKey:a3];
+    v9 = [(NSDictionary *)self->_symbolToUnbinder objectForKey:symbol];
     if (v9)
     {
       v10 = v9[2];
@@ -159,7 +159,7 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_parseAndSetShaderModifier:(id)a3
+- (void)_parseAndSetShaderModifier:(id)modifier
 {
   v20 = *MEMORY[0x277D85DE8];
   [(NSMutableArray *)self->_argumentsNames removeAllObjects];
@@ -167,7 +167,7 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [modifier countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -178,7 +178,7 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(modifier);
         }
 
         Arguments = C3DShaderModifierGetArguments(*(*(&v15 + 1) + 8 * i));
@@ -190,7 +190,7 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
         [Arguments enumerateKeysAndObjectsUsingBlock:v14];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [modifier countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -199,15 +199,15 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v10 = [self->_owner __CFObject];
-    v11 = [self->_owner sceneRef];
+    __CFObject = [self->_owner __CFObject];
+    sceneRef = [self->_owner sceneRef];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __48__SCNShadableHelper__parseAndSetShaderModifier___block_invoke_2;
     v13[3] = &unk_2782FB7D0;
-    v13[4] = a3;
-    v13[5] = v10;
-    [SCNTransaction postCommandWithContext:v11 object:self applyBlock:v13];
+    v13[4] = modifier;
+    v13[5] = __CFObject;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v13];
   }
 
   else
@@ -227,9 +227,9 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setShaderModifiers:(id)a3
+- (void)setShaderModifiers:(id)modifiers
 {
-  if (self->_program && [a3 count])
+  if (self->_program && [modifiers count])
   {
     v5 = scn_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -241,15 +241,15 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
   else
   {
     shaderModifiers = self->_shaderModifiers;
-    if (shaderModifiers != a3)
+    if (shaderModifiers != modifiers)
     {
 
-      if ([a3 count])
+      if ([modifiers count])
       {
-        v7 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:a3 copyItems:1];
+        v7 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:modifiers copyItems:1];
       }
 
-      else if (a3)
+      else if (modifiers)
       {
         v7 = MEMORY[0x277CBEC10];
       }
@@ -260,7 +260,7 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
       }
 
       self->_shaderModifiers = v7;
-      v8 = [(SCNShadableHelper *)self owner];
+      owner = [(SCNShadableHelper *)self owner];
       v9 = self->_shaderModifiers;
       v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSDictionary count](v9, "count")}];
       v12[0] = MEMORY[0x277D85DD0];
@@ -268,7 +268,7 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
       v12[2] = ____arrayOfC3DModifiersFromDictionary_block_invoke;
       v12[3] = &unk_2782FD200;
       v12[4] = v10;
-      v12[5] = v8;
+      v12[5] = owner;
       [(NSDictionary *)v9 enumerateKeysAndObjectsUsingBlock:v12];
 
       v11 = v10;
@@ -278,14 +278,14 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
   }
 }
 
-- (void)copyModifiersFrom:(id)a3
+- (void)copyModifiersFrom:(id)from
 {
-  v4 = *(a3 + 4);
-  v5 = [a3 shaderModifiers];
-  v6 = v5;
+  v4 = *(from + 4);
+  shaderModifiers = [from shaderModifiers];
+  v6 = shaderModifiers;
   if (v4)
   {
-    if (self->_program && [(NSDictionary *)v5 count])
+    if (self->_program && [(NSDictionary *)shaderModifiers count])
     {
       v7 = scn_default_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -327,27 +327,27 @@ uint64_t __32__SCNShadableHelper_setProgram___block_invoke(uint64_t a1)
   else
   {
 
-    [(SCNShadableHelper *)self setShaderModifiers:v5];
+    [(SCNShadableHelper *)self setShaderModifiers:shaderModifiers];
   }
 }
 
-- (void)setMinimumLanguageVersion:(id)a3
+- (void)setMinimumLanguageVersion:(id)version
 {
   minimumLanguageVersion = self->_minimumLanguageVersion;
-  if (minimumLanguageVersion != a3)
+  if (minimumLanguageVersion != version)
   {
     v9[10] = v3;
     v9[11] = v4;
 
-    self->_minimumLanguageVersion = a3;
-    v8 = [self->_owner sceneRef];
+    self->_minimumLanguageVersion = version;
+    sceneRef = [self->_owner sceneRef];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __47__SCNShadableHelper_setMinimumLanguageVersion___block_invoke;
     v9[3] = &unk_2782FC950;
     v9[4] = self;
-    v9[5] = a3;
-    [SCNTransaction postCommandWithContext:v8 object:self applyBlock:v9];
+    v9[5] = version;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v9];
   }
 }
 
@@ -373,40 +373,40 @@ void __47__SCNShadableHelper_setMinimumLanguageVersion___block_invoke(uint64_t a
   }
 }
 
-- (void)handleBindingOfSymbol:(id)a3 usingBlock:(id)a4
+- (void)handleBindingOfSymbol:(id)symbol usingBlock:(id)block
 {
-  v6 = [a4 copy];
+  v6 = [block copy];
   if (v6)
   {
     v7 = v6;
     symbolToBinder = self->_symbolToBinder;
 
-    [(NSDictionary *)symbolToBinder setValue:v7 forKey:a3];
+    [(NSDictionary *)symbolToBinder setValue:v7 forKey:symbol];
   }
 }
 
-- (void)handleUnbindingOfSymbol:(id)a3 usingBlock:(id)a4
+- (void)handleUnbindingOfSymbol:(id)symbol usingBlock:(id)block
 {
-  v6 = [a4 copy];
+  v6 = [block copy];
   if (v6)
   {
     v7 = v6;
     symbolToUnbinder = self->_symbolToUnbinder;
 
-    [(NSDictionary *)symbolToUnbinder setValue:v7 forKey:a3];
+    [(NSDictionary *)symbolToUnbinder setValue:v7 forKey:symbol];
   }
 }
 
-- (void)_programDidChange:(id)a3
+- (void)_programDidChange:(id)change
 {
-  v5 = [self->_owner sceneRef];
+  sceneRef = [self->_owner sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__SCNShadableHelper__programDidChange___block_invoke;
   v6[3] = &unk_2782FC950;
-  v6[4] = a3;
+  v6[4] = change;
   v6[5] = self;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 uint64_t __39__SCNShadableHelper__programDidChange___block_invoke(uint64_t a1)
@@ -444,7 +444,7 @@ uint64_t __39__SCNShadableHelper__programDidChange___block_invoke(uint64_t a1)
   return result;
 }
 
-- (__C3DFXGLSLProgram)_programFromPassAtIndex:(int64_t)a3
+- (__C3DFXGLSLProgram)_programFromPassAtIndex:(int64_t)index
 {
   result = [(SCNShadableHelper *)self _technique];
   if (result)
@@ -456,17 +456,17 @@ uint64_t __39__SCNShadableHelper__programDidChange___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_updateC3DProgramInput:(__C3DFXGLSLProgram *)a3 forSymbol:(id)a4
+- (void)_updateC3DProgramInput:(__C3DFXGLSLProgram *)input forSymbol:(id)symbol
 {
   v18 = *MEMORY[0x277D85DE8];
   PassAtIndex = C3DFXTechniqueGetPassAtIndex([(SCNShadableHelper *)self _technique], 0);
-  InputWithName = C3DFXPassGetInputWithName(PassAtIndex, a4);
+  InputWithName = C3DFXPassGetInputWithName(PassAtIndex, symbol);
   v9 = InputWithName;
-  if (InputWithName || (v9 = C3DFXPassAddInputWithName(PassAtIndex, a4), C3DFXPassInputSetSymbolName(v9, a4), v9))
+  if (InputWithName || (v9 = C3DFXPassAddInputWithName(PassAtIndex, symbol), C3DFXPassInputSetSymbolName(v9, symbol), v9))
   {
-    v10 = _fxSemanticFromSemanticString([(SCNProgram *)self->_program semanticForSymbol:a4]);
+    v10 = _fxSemanticFromSemanticString([(SCNProgram *)self->_program semanticForSymbol:symbol]);
     C3DFXPassInputSetSemantic(v9, v10);
-    v11 = [objc_msgSend(-[SCNProgram _optionsForSymbol:](self->_program _optionsForSymbol:{a4), "valueForKey:", @"mappingChannel", "intValue"}];
+    v11 = [objc_msgSend(-[SCNProgram _optionsForSymbol:](self->_program _optionsForSymbol:{symbol), "valueForKey:", @"mappingChannel", "intValue"}];
     if (v11 >= 7)
     {
       v12 = 7;
@@ -483,17 +483,17 @@ uint64_t __39__SCNShadableHelper__programDidChange___block_invoke(uint64_t a1)
     {
       if (!InputWithName)
       {
-        NextUniformIndex = C3DFXGLSLProgramGetNextUniformIndex(a3);
+        NextUniformIndex = C3DFXGLSLProgramGetNextUniformIndex(input);
         C3DFXPassInputSetUniformIndex(v9, NextUniformIndex);
 
-        C3DFXGLSLProgramSetUniformIndex(a3, a4, NextUniformIndex);
+        C3DFXGLSLProgramSetUniformIndex(input, symbol, NextUniformIndex);
       }
     }
 
     else
     {
 
-      C3DFXGLSLProgramSetAttributeIndex(a3, a4, v13);
+      C3DFXGLSLProgramSetAttributeIndex(input, symbol, v13);
     }
   }
 
@@ -503,19 +503,19 @@ uint64_t __39__SCNShadableHelper__programDidChange___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = a4;
+      symbolCopy = symbol;
       _os_log_impl(&dword_21BEF7000, v15, OS_LOG_TYPE_DEFAULT, "Warning: _updateC3DProgramInput can't find input named %@", &v16, 0xCu);
     }
   }
 }
 
-- (void)_updateC3DProgramInputForSymbol:(id)a3
+- (void)_updateC3DProgramInputForSymbol:(id)symbol
 {
   v5 = [(SCNShadableHelper *)self _programFromPassAtIndex:0];
   if (v5)
   {
 
-    [(SCNShadableHelper *)self _updateC3DProgramInput:v5 forSymbol:a3];
+    [(SCNShadableHelper *)self _updateC3DProgramInput:v5 forSymbol:symbol];
   }
 }
 
@@ -530,8 +530,8 @@ uint64_t __39__SCNShadableHelper__programDidChange___block_invoke(uint64_t a1)
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(SCNProgram *)self->_program _allSymbolsWithSceneKitSemantic];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _allSymbolsWithSceneKitSemantic = [(SCNProgram *)self->_program _allSymbolsWithSceneKitSemantic];
+    v6 = [_allSymbolsWithSceneKitSemantic countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -543,14 +543,14 @@ uint64_t __39__SCNShadableHelper__programDidChange___block_invoke(uint64_t a1)
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_allSymbolsWithSceneKitSemantic);
           }
 
           [(SCNShadableHelper *)self _updateC3DProgramInput:v4 forSymbol:*(*(&v10 + 1) + 8 * v9++)];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [_allSymbolsWithSceneKitSemantic countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -632,38 +632,38 @@ void __35__SCNShadableHelper__setC3DProgram__block_invoke_4(uint64_t a1, int a2,
   }
 }
 
-- (void)_customEncodingOfSCNShadableHelper:(id)a3
+- (void)_customEncodingOfSCNShadableHelper:(id)helper
 {
   owner = self->_owner;
   if (owner)
   {
-    [a3 encodeObject:owner forKey:@"owner"];
+    [helper encodeObject:owner forKey:@"owner"];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(SCNShadableHelper *)self _customEncodingOfSCNShadableHelper:?];
   program = self->_program;
   if (program)
   {
-    [a3 encodeObject:program forKey:@"program"];
+    [coder encodeObject:program forKey:@"program"];
   }
 
   shaderModifiers = self->_shaderModifiers;
   if (shaderModifiers)
   {
-    [a3 encodeObject:shaderModifiers forKey:@"shaderModifiers"];
+    [coder encodeObject:shaderModifiers forKey:@"shaderModifiers"];
   }
 
   if (self->_minimumLanguageVersion)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (SCNShadableHelper)initWithCoder:(id)a3
+- (SCNShadableHelper)initWithCoder:(id)coder
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -675,18 +675,18 @@ void __35__SCNShadableHelper__setC3DProgram__block_invoke_4(uint64_t a1, int a2,
     [(SCNShadableHelper *)v4 _commonInit];
     v6 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [(SCNShadableHelper *)v5 _customDecodingOfSCNShadableHelper:a3];
+    [(SCNShadableHelper *)v5 _customDecodingOfSCNShadableHelper:coder];
     if (v5->_owner)
     {
-      -[SCNShadableHelper setProgram:](v5, "setProgram:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"program"]);
+      -[SCNShadableHelper setProgram:](v5, "setProgram:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"program"]);
       v7 = MEMORY[0x277CBEB98];
       v10[0] = objc_opt_class();
       v10[1] = objc_opt_class();
-      -[SCNShadableHelper setShaderModifiers:](v5, "setShaderModifiers:", [a3 decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v10, 2)), @"shaderModifiers"}]);
-      -[SCNShadableHelper setMinimumLanguageVersion:](v5, "setMinimumLanguageVersion:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"minimumLanguageVersion"]);
+      -[SCNShadableHelper setShaderModifiers:](v5, "setShaderModifiers:", [coder decodeObjectOfClasses:objc_msgSend(v7 forKey:{"setWithArray:", objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v10, 2)), @"shaderModifiers"}]);
+      -[SCNShadableHelper setMinimumLanguageVersion:](v5, "setMinimumLanguageVersion:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"minimumLanguageVersion"]);
     }
 
-    [(SCNShadableHelper *)v5 _didDecodeSCNShadableHelper:a3];
+    [(SCNShadableHelper *)v5 _didDecodeSCNShadableHelper:coder];
     [SCNTransaction setImmediateMode:v6];
   }
 

@@ -1,17 +1,17 @@
 @interface MSMessageExtensionFallbackTranscoder
-- (id)fallbackInLPFromPayloadDictionary:(id)a3;
-- (void)fallbackForData:(id)a3 attachments:(id)a4 inFileURL:(id)a5 completionBlockWithText:(id)a6;
-- (void)fallbackForData:(id)a3 inFileURL:(id)a4 completionBlock:(id)a5;
+- (id)fallbackInLPFromPayloadDictionary:(id)dictionary;
+- (void)fallbackForData:(id)data attachments:(id)attachments inFileURL:(id)l completionBlockWithText:(id)text;
+- (void)fallbackForData:(id)data inFileURL:(id)l completionBlock:(id)block;
 @end
 
 @implementation MSMessageExtensionFallbackTranscoder
 
-- (id)fallbackInLPFromPayloadDictionary:(id)a3
+- (id)fallbackInLPFromPayloadDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:IMExtensionPayloadFallbackLinkMetadataKey];
+  v3 = [dictionary objectForKey:IMExtensionPayloadFallbackLinkMetadataKey];
   if (!v3)
   {
-    v8 = 0;
+    originalURL = 0;
     goto LABEL_13;
   }
 
@@ -23,27 +23,27 @@
   v7 = v6;
   if (v5 || !v6)
   {
-    v8 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    originalURL = IMLogHandleForCategory();
+    if (os_log_type_enabled(originalURL, OS_LOG_TYPE_ERROR))
     {
-      sub_2D7B0(v5, v8);
+      sub_2D7B0(v5, originalURL);
     }
 
 LABEL_10:
 
-    v8 = 0;
-    v9 = v7;
+    originalURL = 0;
+    scheme = v7;
     v7 = v4;
     v4 = v5;
     goto LABEL_11;
   }
 
-  v8 = [v6 originalURL];
-  v9 = [v8 scheme];
-  if (([v9 isEqualToIgnoringCase:@"http"] & 1) == 0)
+  originalURL = [v6 originalURL];
+  scheme = [originalURL scheme];
+  if (([scheme isEqualToIgnoringCase:@"http"] & 1) == 0)
   {
-    v10 = [v8 scheme];
-    v11 = [v10 isEqualToIgnoringCase:@"https"];
+    scheme2 = [originalURL scheme];
+    v11 = [scheme2 isEqualToIgnoringCase:@"https"];
 
     if (v11)
     {
@@ -58,29 +58,29 @@ LABEL_11:
 LABEL_12:
 LABEL_13:
 
-  return v8;
+  return originalURL;
 }
 
-- (void)fallbackForData:(id)a3 inFileURL:(id)a4 completionBlock:(id)a5
+- (void)fallbackForData:(id)data inFileURL:(id)l completionBlock:(id)block
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1E958;
   v9[3] = &unk_4D800;
-  v10 = a5;
-  v8 = v10;
-  [(MSMessageExtensionFallbackTranscoder *)self fallbackForData:a3 attachments:0 inFileURL:a4 completionBlockWithText:v9];
+  blockCopy = block;
+  v8 = blockCopy;
+  [(MSMessageExtensionFallbackTranscoder *)self fallbackForData:data attachments:0 inFileURL:l completionBlockWithText:v9];
 }
 
-- (void)fallbackForData:(id)a3 attachments:(id)a4 inFileURL:(id)a5 completionBlockWithText:(id)a6
+- (void)fallbackForData:(id)data attachments:(id)attachments inFileURL:(id)l completionBlockWithText:(id)text
 {
-  v10 = a3;
-  v11 = a4;
-  v54 = a5;
-  v12 = a6;
+  dataCopy = data;
+  attachmentsCopy = attachments;
+  lCopy = l;
+  textCopy = text;
   v13 = IMExtensionPayloadUnarchivingClasses();
   v60 = 0;
-  v14 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v13 fromData:v10 error:&v60];
+  v14 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v13 fromData:dataCopy error:&v60];
   v15 = v60;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -102,26 +102,26 @@ LABEL_13:
   }
 
   v51 = v17;
-  if (![v11 count] && !v17)
+  if (![attachmentsCopy count] && !v17)
   {
     if (v16)
     {
       [v16 absoluteString];
       v20 = v19 = v16;
-      (*(v12 + 2))(v12, 0, v20, 0, 1, 1);
+      (*(textCopy + 2))(textCopy, 0, v20, 0, 1, 1);
 
       v16 = v19;
     }
 
     else
     {
-      (*(v12 + 2))(v12, 0, 0, 0, 1, 0);
+      (*(textCopy + 2))(textCopy, 0, 0, 0, 1, 0);
     }
 
     goto LABEL_39;
   }
 
-  v49 = v10;
+  v49 = dataCopy;
   v50 = v16;
   v46 = v14;
   v47 = v13;
@@ -130,8 +130,8 @@ LABEL_13:
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v48 = v11;
-  obj = v11;
+  v48 = attachmentsCopy;
+  obj = attachmentsCopy;
   v21 = [obj countByEnumeratingWithState:&v56 objects:v63 count:16];
   if (v21)
   {
@@ -148,8 +148,8 @@ LABEL_13:
         }
 
         v26 = *(*(&v56 + 1) + 8 * i);
-        v27 = [v26 im_lastPathComponent];
-        v28 = [v54 URLByAppendingPathComponent:v27];
+        im_lastPathComponent = [v26 im_lastPathComponent];
+        v28 = [lCopy URLByAppendingPathComponent:im_lastPathComponent];
 
         v29 = +[NSFileManager defaultManager];
         v55 = 0;
@@ -163,17 +163,17 @@ LABEL_13:
 
         else if (v23)
         {
-          v32 = [v31 domain];
+          domain = [v31 domain];
           v33 = v24;
-          v34 = [v31 code];
+          code = [v31 code];
           v61 = NSUnderlyingErrorKey;
           v62 = v23;
           [NSDictionary dictionaryWithObjects:&v62 forKeys:&v61 count:1];
           v35 = v22;
           v37 = v36 = v23;
-          v38 = v34;
+          v38 = code;
           v24 = v33;
-          v39 = [NSError errorWithDomain:v32 code:v38 userInfo:v37];
+          v39 = [NSError errorWithDomain:domain code:v38 userInfo:v37];
 
           v22 = v35;
           v23 = v39;
@@ -198,45 +198,45 @@ LABEL_13:
 
   if (v51)
   {
-    v40 = [v51 absoluteString];
+    absoluteString = [v51 absoluteString];
   }
 
   else
   {
-    v40 = 0;
+    absoluteString = 0;
   }
 
   v15 = v45;
-  v41 = [v51 scheme];
-  if ([v41 isEqualToIgnoringCase:@"http"])
+  scheme = [v51 scheme];
+  if ([scheme isEqualToIgnoringCase:@"http"])
   {
     goto LABEL_34;
   }
 
-  v42 = [v51 scheme];
-  v43 = [v42 isEqualToIgnoringCase:@"https"];
+  scheme2 = [v51 scheme];
+  v43 = [scheme2 isEqualToIgnoringCase:@"https"];
 
   if ((v43 & 1) == 0)
   {
     if (v50)
     {
       [v50 absoluteString];
-      v40 = v41 = v40;
+      absoluteString = scheme = absoluteString;
     }
 
     else
     {
-      v41 = v40;
-      v40 = 0;
+      scheme = absoluteString;
+      absoluteString = 0;
     }
 
 LABEL_34:
-    v10 = v49;
+    dataCopy = v49;
 
     goto LABEL_35;
   }
 
-  v10 = v49;
+  dataCopy = v49;
 LABEL_35:
   if ([v52 count])
   {
@@ -248,9 +248,9 @@ LABEL_35:
     v44 = 0;
   }
 
-  (*(v12 + 2))(v12, v44, v40, v23, v23 == 0, 1);
+  (*(textCopy + 2))(textCopy, v44, absoluteString, v23, v23 == 0, 1);
 
-  v11 = v48;
+  attachmentsCopy = v48;
   v14 = v46;
   v13 = v47;
   v16 = v50;

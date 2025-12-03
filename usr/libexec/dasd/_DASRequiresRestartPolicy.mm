@@ -1,15 +1,15 @@
 @interface _DASRequiresRestartPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)cacheSleepPeriod:(id)a3 end:(id)a4 period1:(id *)a5 period2:(id *)a6;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)cacheSleepPeriod:(id)period end:(id)end period1:(id *)period1 period2:(id *)period2;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASRequiresRestartPolicy)init;
-- (id)blockReasons:(id)a3;
-- (id)defaultDeviceRestartDateRangeWithDate:(id)a3;
+- (id)blockReasons:(id)reasons;
+- (id)defaultDeviceRestartDateRangeWithDate:(id)date;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 - (void)getDeviceRestartForecast;
-- (void)reportAnalyticsWithStartDate:(id)a3 isDefaultTime:(BOOL)a4;
+- (void)reportAnalyticsWithStartDate:(id)date isDefaultTime:(BOOL)time;
 @end
 
 @implementation _DASRequiresRestartPolicy
@@ -96,9 +96,9 @@
     v3->_lastCacheDate = v11;
 
     [(_DASRequiresRestartPolicy *)v3 getDeviceRestartForecast];
-    v13 = [(_DASRequiresRestartPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASRequiresRestartPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v13;
+    v3->_triggers = initializeTriggers;
   }
 
   return v3;
@@ -116,96 +116,96 @@
   return v3;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.duetactivityscheduler.restartpolicy.assertionsheld"])
+  triggerCopy = trigger;
+  stateCopy = state;
+  if ([triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.restartpolicy.assertionsheld"])
   {
     deviceAssertionsHeld = self->_deviceAssertionsHeld;
   }
 
   else
   {
-    if (![v6 isEqualToString:@"com.apple.duetactivityscheduler.restartpolicy.inusestatus"])
+    if (![triggerCopy isEqualToString:@"com.apple.duetactivityscheduler.restartpolicy.inusestatus"])
     {
-      v10 = [v6 isEqualToString:@"com.apple.das.restartpolicy.backlightOn"];
+      bOOLValue = [triggerCopy isEqualToString:@"com.apple.das.restartpolicy.backlightOn"];
       goto LABEL_7;
     }
 
     deviceAssertionsHeld = self->_inUseStatus;
   }
 
-  v9 = [v7 objectForKeyedSubscript:deviceAssertionsHeld];
-  v10 = [v9 BOOLValue];
+  v9 = [stateCopy objectForKeyedSubscript:deviceAssertionsHeld];
+  bOOLValue = [v9 BOOLValue];
 
 LABEL_7:
-  return v10;
+  return bOOLValue;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 triggersRestart])
+  activityCopy = activity;
+  if ([activityCopy triggersRestart])
   {
-    v4 = 1;
+    requiresSignificantUserInactivity = 1;
   }
 
   else
   {
-    v4 = [v3 requiresSignificantUserInactivity];
+    requiresSignificantUserInactivity = [activityCopy requiresSignificantUserInactivity];
   }
 
-  return v4;
+  return requiresSignificantUserInactivity;
 }
 
-- (BOOL)cacheSleepPeriod:(id)a3 end:(id)a4 period1:(id *)a5 period2:(id *)a6
+- (BOOL)cacheSleepPeriod:(id)period end:(id)end period1:(id *)period1 period2:(id *)period2
 {
-  v9 = a3;
-  v10 = a4;
+  periodCopy = period;
+  endCopy = end;
   v11 = +[NSDate date];
   v12 = 0;
-  if (v9 && v10)
+  if (periodCopy && endCopy)
   {
-    if ([v9 compare:v10] == -1 && objc_msgSend(v9, "compare:", v10) == -1 && objc_msgSend(v11, "compare:", v10) == -1)
+    if ([periodCopy compare:endCopy] == -1 && objc_msgSend(periodCopy, "compare:", endCopy) == -1 && objc_msgSend(v11, "compare:", endCopy) == -1)
     {
-      if (*a6)
+      if (*period2)
       {
-        v14 = [*a6 endDate];
-        v15 = [v11 compare:v14];
+        endDate = [*period2 endDate];
+        v15 = [v11 compare:endDate];
 
         if (v15 == 1)
         {
-          v16 = *a6;
-          *a6 = 0;
+          v16 = *period2;
+          *period2 = 0;
         }
       }
 
-      if (!*a5 || ([*a5 endDate], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v11, "compare:", v17), v17, v18 == 1))
+      if (!*period1 || ([*period1 endDate], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v11, "compare:", v17), v17, v18 == 1))
       {
-        objc_storeStrong(a5, *a6);
-        v19 = *a6;
-        *a6 = 0;
+        objc_storeStrong(period1, *period2);
+        v19 = *period2;
+        *period2 = 0;
       }
 
-      if (!*a6)
+      if (!*period2)
       {
-        v20 = [_CDDateRange periodWithStart:v9 end:v10];
-        v21 = *a6;
-        *a6 = v20;
+        v20 = [_CDDateRange periodWithStart:periodCopy end:endCopy];
+        v21 = *period2;
+        *period2 = v20;
       }
 
-      if (!*a5)
+      if (!*period1)
       {
-        objc_storeStrong(a5, *a6);
-        v22 = *a6;
-        *a6 = 0;
+        objc_storeStrong(period1, *period2);
+        v22 = *period2;
+        *period2 = 0;
       }
 
       v23 = +[_DASDaemonLogger defaultCategory];
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = *a5;
+        v24 = *period1;
         v25 = 138412290;
         v26 = v24;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Using restart times of %@", &v25, 0xCu);
@@ -223,16 +223,16 @@ LABEL_7:
   return v12;
 }
 
-- (id)defaultDeviceRestartDateRangeWithDate:(id)a3
+- (id)defaultDeviceRestartDateRangeWithDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSCalendar currentCalendar];
-  v5 = [v4 components:30 fromDate:v3];
+  v5 = [v4 components:30 fromDate:dateCopy];
   [v5 setHour:4];
   [v5 setMinute:0];
   [v5 setSecond:0];
   v6 = [v4 dateFromComponents:v5];
-  [v6 timeIntervalSinceDate:v3];
+  [v6 timeIntervalSinceDate:dateCopy];
   v8 = v7;
 
   if (v8 < 0.0)
@@ -248,18 +248,18 @@ LABEL_7:
   return v11;
 }
 
-- (void)reportAnalyticsWithStartDate:(id)a3 isDefaultTime:(BOOL)a4
+- (void)reportAnalyticsWithStartDate:(id)date isDefaultTime:(BOOL)time
 {
-  v5 = a3;
-  v4 = v5;
+  dateCopy = date;
+  v4 = dateCopy;
   AnalyticsSendEventLazy();
 }
 
 - (void)getDeviceRestartForecast
 {
   v3 = +[NSDate date];
-  v4 = [(_DASRequiresRestartPolicy *)self lastCacheDate];
-  [v3 timeIntervalSinceDate:v4];
+  lastCacheDate = [(_DASRequiresRestartPolicy *)self lastCacheDate];
+  [v3 timeIntervalSinceDate:lastCacheDate];
   v6 = v5;
 
   if (v6 >= 14400.0)
@@ -267,17 +267,17 @@ LABEL_7:
     v7 = os_transaction_create();
     v8 = objc_autoreleasePoolPush();
     v9 = objc_alloc_init(_CDSleepForAutoSu);
-    v10 = [v9 getUnlockAndSoftwareUpdateTimes];
+    getUnlockAndSoftwareUpdateTimes = [v9 getUnlockAndSoftwareUpdateTimes];
 
     objc_autoreleasePoolPop(v8);
-    if (v10)
+    if (getUnlockAndSoftwareUpdateTimes)
     {
-      v11 = [v10 objectForKeyedSubscript:kCDSleepAutoSuSuStartKey];
-      v12 = [v11 dateByAddingTimeInterval:arc4random_uniform(0x384u)];
+      v11 = [getUnlockAndSoftwareUpdateTimes objectForKeyedSubscript:kCDSleepAutoSuSuStartKey];
+      startDate = [v11 dateByAddingTimeInterval:arc4random_uniform(0x384u)];
 
-      v13 = [v10 objectForKeyedSubscript:kCDSleepAutoSuExpirationTimeKey];
-      [(_DASRequiresRestartPolicy *)self reportAnalyticsWithStartDate:v12 isDefaultTime:0];
-      if ([(_DASRequiresRestartPolicy *)self cacheSleepPeriod:v12 end:v13 period1:&self->_deviceRestartPeriod1 period2:&self->_deviceRestartPeriod2])
+      v13 = [getUnlockAndSoftwareUpdateTimes objectForKeyedSubscript:kCDSleepAutoSuExpirationTimeKey];
+      [(_DASRequiresRestartPolicy *)self reportAnalyticsWithStartDate:startDate isDefaultTime:0];
+      if ([(_DASRequiresRestartPolicy *)self cacheSleepPeriod:startDate end:v13 period1:&self->_deviceRestartPeriod1 period2:&self->_deviceRestartPeriod2])
       {
         [(_DASRequiresRestartPolicy *)self setLastCacheDate:v3];
       }
@@ -305,26 +305,26 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Using restart times of %@", &v19, 0xCu);
       }
 
-      v12 = [(_CDDateRange *)self->_deviceRestartPeriod1 startDate];
-      [(_DASRequiresRestartPolicy *)self reportAnalyticsWithStartDate:v12 isDefaultTime:1];
+      startDate = [(_CDDateRange *)self->_deviceRestartPeriod1 startDate];
+      [(_DASRequiresRestartPolicy *)self reportAnalyticsWithStartDate:startDate isDefaultTime:1];
     }
   }
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   [(_DASRequiresRestartPolicy *)self getDeviceRestartForecast];
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
   v9 = +[NSDate date];
-  if ([v6 isSoftwareUpdateActivity])
+  if ([activityCopy isSoftwareUpdateActivity])
   {
     goto LABEL_3;
   }
 
-  v10 = [v6 name];
-  v11 = [v10 isEqualToString:@"com.apple.dasd.dataCollectiontask.dummyAutoSU"];
+  name = [activityCopy name];
+  v11 = [name isEqualToString:@"com.apple.dasd.dataCollectiontask.dummyAutoSU"];
 
   if (v11)
   {
@@ -334,13 +334,13 @@ LABEL_7:
   if (([(_CDDateRange *)self->_deviceRestartPeriod1 contains:v9]& 1) != 0)
   {
     v27 = +[_DASDaemon sharedInstance];
-    v28 = [v27 allPendingRestartTasks];
+    allPendingRestartTasks = [v27 allPendingRestartTasks];
 
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v29 = v28;
+    v29 = allPendingRestartTasks;
     v30 = [v29 countByEnumeratingWithState:&v54 objects:v58 count:16];
     if (v30)
     {
@@ -377,14 +377,14 @@ LABEL_7:
     }
 
 LABEL_3:
-    v12 = [v7 objectForKeyedSubscript:self->_nextWakeRequest];
+    v12 = [stateCopy objectForKeyedSubscript:self->_nextWakeRequest];
     v13 = +[_CDContextQueries keyPathForBacklightOnStatus];
-    v14 = [v7 objectForKeyedSubscript:v13];
+    v14 = [stateCopy objectForKeyedSubscript:v13];
 
-    v53 = [v7 objectForKeyedSubscript:self->_deviceAssertionsHeld];
-    v15 = [v7 objectForKeyedSubscript:self->_inUseStatus];
+    v53 = [stateCopy objectForKeyedSubscript:self->_deviceAssertionsHeld];
+    v15 = [stateCopy objectForKeyedSubscript:self->_inUseStatus];
     v16 = +[_CDContextQueries keyPathForLastUseDate];
-    v17 = [v7 objectForKeyedSubscript:v16];
+    v17 = [stateCopy objectForKeyedSubscript:v16];
 
     if (v12)
     {
@@ -393,7 +393,7 @@ LABEL_3:
       if (v14)
       {
 LABEL_5:
-        v19 = [v14 BOOLValue];
+        bOOLValue = [v14 BOOLValue];
         goto LABEL_8;
       }
     }
@@ -407,30 +407,30 @@ LABEL_5:
       }
     }
 
-    v19 = 0;
+    bOOLValue = 0;
 LABEL_8:
     v51 = v14;
     if (v53)
     {
-      v20 = [v53 BOOLValue];
+      bOOLValue2 = [v53 BOOLValue];
       if (v15)
       {
 LABEL_10:
-        v21 = [v15 BOOLValue];
+        bOOLValue3 = [v15 BOOLValue];
         goto LABEL_13;
       }
     }
 
     else
     {
-      v20 = 0;
+      bOOLValue2 = 0;
       if (v15)
       {
         goto LABEL_10;
       }
     }
 
-    v21 = 0;
+    bOOLValue3 = 0;
 LABEL_13:
     if (v17)
     {
@@ -444,7 +444,7 @@ LABEL_13:
     }
 
     v52 = v9;
-    if (([v6 triggersRestart] & v20) == 1)
+    if (([activityCopy triggersRestart] & bOOLValue2) == 1)
     {
       [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"Is any Assertion Held?" withRequiredValue:0.0 withCurrentValue:1.0];
       [(_DASPolicyResponseRationale *)v8 setResponseOptions:[(_DASPolicyResponseRationale *)v8 responseOptions]| 0x80];
@@ -456,15 +456,15 @@ LABEL_13:
       v24 = 0;
     }
 
-    v25 = [v15 unsignedLongLongValue];
-    if ((v25 & 0x40) != 0)
+    unsignedLongLongValue = [v15 unsignedLongLongValue];
+    if ((unsignedLongLongValue & 0x40) != 0)
     {
       v26 = 0;
     }
 
     else
     {
-      v26 = v19;
+      v26 = bOOLValue;
     }
 
     if (v26 == 1)
@@ -474,37 +474,37 @@ LABEL_13:
       v24 = 33;
     }
 
-    if (!v21)
+    if (!bOOLValue3)
     {
       goto LABEL_54;
     }
 
     [(_DASPolicyResponseRationale *)v8 addRationaleForCondition:@"Is User active?" withRequiredValue:0.0 withCurrentValue:1.0];
-    if (v25)
+    if (unsignedLongLongValue)
     {
       v24 = 33;
       v34 = 4;
     }
 
-    else if ((v25 & 4) != 0)
+    else if ((unsignedLongLongValue & 4) != 0)
     {
       v24 = 33;
       v34 = 8;
     }
 
-    else if ((v25 & 8) != 0)
+    else if ((unsignedLongLongValue & 8) != 0)
     {
       v24 = 33;
       v34 = 16;
     }
 
-    else if ((v25 & 0x10) != 0)
+    else if ((unsignedLongLongValue & 0x10) != 0)
     {
       v24 = 33;
       v34 = 32;
     }
 
-    else if ((v25 & 0x20) != 0)
+    else if ((unsignedLongLongValue & 0x20) != 0)
     {
       v24 = 33;
       v34 = 64;
@@ -512,7 +512,7 @@ LABEL_13:
 
     else
     {
-      if ((v25 & 0x40) == 0)
+      if ((unsignedLongLongValue & 0x40) == 0)
       {
         v24 = 33;
 LABEL_54:
@@ -531,14 +531,14 @@ LABEL_54:
           v24 = 33;
         }
 
-        if ([v6 triggersRestart])
+        if ([activityCopy triggersRestart])
         {
           if (+[_DASConfig requiresStrictDarkBoot])
           {
-            if (([v6 isSoftwareUpdateActivity] & 1) == 0)
+            if (([activityCopy isSoftwareUpdateActivity] & 1) == 0)
             {
-              v46 = [v6 name];
-              v47 = [v46 isEqualToString:@"com.apple.dasd.dataCollectiontask.dummyAutoSU"];
+              name2 = [activityCopy name];
+              v47 = [name2 isEqualToString:@"com.apple.dasd.dataCollectiontask.dummyAutoSU"];
 
               if ((v47 & 1) == 0)
               {
@@ -575,18 +575,18 @@ LABEL_54:
   deviceRestartPeriod1 = self->_deviceRestartPeriod1;
   if (deviceRestartPeriod1)
   {
-    v37 = [(_CDDateRange *)deviceRestartPeriod1 startDate];
-    [v6 setStartAfter:v37];
+    startDate = [(_CDDateRange *)deviceRestartPeriod1 startDate];
+    [activityCopy setStartAfter:startDate];
 
-    v38 = [v6 startBefore];
-    v39 = [v6 startAfter];
-    [v38 timeIntervalSinceDate:v39];
+    startBefore = [activityCopy startBefore];
+    startAfter = [activityCopy startAfter];
+    [startBefore timeIntervalSinceDate:startAfter];
     v41 = v40;
 
     if (v41 < 0.0)
     {
-      v42 = [(_CDDateRange *)self->_deviceRestartPeriod1 endDate];
-      [v6 setStartBefore:v42];
+      endDate = [(_CDDateRange *)self->_deviceRestartPeriod1 endDate];
+      [activityCopy setStartBefore:endDate];
     }
   }
 
@@ -596,86 +596,86 @@ LABEL_66:
   return v43;
 }
 
-- (id)blockReasons:(id)a3
+- (id)blockReasons:(id)reasons
 {
-  v4 = a3;
+  reasonsCopy = reasons;
   v5 = +[NSMutableArray array];
-  v6 = [v4 rationale];
-  v7 = [v6 responseOptions];
+  rationale = [reasonsCopy rationale];
+  responseOptions = [rationale responseOptions];
 
-  if (v7)
+  if (responseOptions)
   {
     v8 = [NSString stringWithFormat:@"%@::WakeScheduled", self->_policyName];
     [v5 addObject:v8];
   }
 
-  v9 = [v4 rationale];
-  v10 = [v9 responseOptions];
+  rationale2 = [reasonsCopy rationale];
+  responseOptions2 = [rationale2 responseOptions];
 
-  if ((v10 & 2) != 0)
+  if ((responseOptions2 & 2) != 0)
   {
     v11 = [NSString stringWithFormat:@"%@::BacklightOn", self->_policyName];
     [v5 addObject:v11];
   }
 
-  v12 = [v4 rationale];
-  v13 = [v12 responseOptions];
+  rationale3 = [reasonsCopy rationale];
+  responseOptions3 = [rationale3 responseOptions];
 
-  if ((v13 & 4) != 0)
+  if ((responseOptions3 & 4) != 0)
   {
     v14 = [NSString stringWithFormat:@"%@::UserPresentActive", self->_policyName];
     [v5 addObject:v14];
   }
 
-  v15 = [v4 rationale];
-  v16 = [v15 responseOptions];
+  rationale4 = [reasonsCopy rationale];
+  responseOptions4 = [rationale4 responseOptions];
 
-  if ((v16 & 8) != 0)
+  if ((responseOptions4 & 8) != 0)
   {
     v17 = [NSString stringWithFormat:@"%@::UserPresentPassiveWithDisplay", self->_policyName];
     [v5 addObject:v17];
   }
 
-  v18 = [v4 rationale];
-  v19 = [v18 responseOptions];
+  rationale5 = [reasonsCopy rationale];
+  responseOptions5 = [rationale5 responseOptions];
 
-  if ((v19 & 0x10) != 0)
+  if ((responseOptions5 & 0x10) != 0)
   {
     v20 = [NSString stringWithFormat:@"%@::UserPresentPassiveWithoutDisplay", self->_policyName];
     [v5 addObject:v20];
   }
 
-  v21 = [v4 rationale];
-  v22 = [v21 responseOptions];
+  rationale6 = [reasonsCopy rationale];
+  responseOptions6 = [rationale6 responseOptions];
 
-  if ((v22 & 0x20) != 0)
+  if ((responseOptions6 & 0x20) != 0)
   {
     v23 = [NSString stringWithFormat:@"%@::UserRemoteClientActive", self->_policyName];
     [v5 addObject:v23];
   }
 
-  v24 = [v4 rationale];
-  v25 = [v24 responseOptions];
+  rationale7 = [reasonsCopy rationale];
+  responseOptions7 = [rationale7 responseOptions];
 
-  if ((v25 & 0x40) != 0)
+  if ((responseOptions7 & 0x40) != 0)
   {
     v26 = [NSString stringWithFormat:@"%@::UserNotificationActive", self->_policyName];
     [v5 addObject:v26];
   }
 
-  v27 = [v4 rationale];
-  v28 = [v27 responseOptions];
+  rationale8 = [reasonsCopy rationale];
+  responseOptions8 = [rationale8 responseOptions];
 
-  if ((v28 & 0x80) != 0)
+  if ((responseOptions8 & 0x80) != 0)
   {
     v29 = [NSString stringWithFormat:@"%@::AssertionsHeld", self->_policyName];
     [v5 addObject:v29];
   }
 
-  v30 = [v4 rationale];
-  v31 = [v30 responseOptions];
+  rationale9 = [reasonsCopy rationale];
+  responseOptions9 = [rationale9 responseOptions];
 
-  if ((v31 & 0x100) != 0)
+  if ((responseOptions9 & 0x100) != 0)
   {
     v32 = [NSString stringWithFormat:@"%@::UserActiveRecently", self->_policyName];
     [v5 addObject:v32];

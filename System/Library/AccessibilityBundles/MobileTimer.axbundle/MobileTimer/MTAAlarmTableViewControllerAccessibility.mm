@@ -1,22 +1,22 @@
 @interface MTAAlarmTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetDetailLabelsForVisibleCells;
-- (void)_axSetHeaderLabelForSleepSection:(id)a3;
+- (void)_axSetHeaderLabelForSleepSection:(id)section;
 - (void)viewDidLoad;
 @end
 
 @implementation MTAAlarmTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTAAlarmTableViewController" isKindOfClass:@"UITableViewController"];
-  [v3 validateClass:@"MTAAlarmTableViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAAlarmTableViewController" hasInstanceMethod:@"_isAlarmsSection:" withFullSignature:{"B", "q", 0}];
-  [v3 validateClass:@"MTAAlarmTableViewController" hasInstanceMethod:@"_isWakeAlarmSection:" withFullSignature:{"B", "q", 0}];
-  [v3 validateClass:@"MTAAlarmTableViewController" hasInstanceMethod:@"tableView:viewForHeaderInSection:" withFullSignature:{"@", "@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTAAlarmTableViewController" isKindOfClass:@"UITableViewController"];
+  [validationsCopy validateClass:@"MTAAlarmTableViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAAlarmTableViewController" hasInstanceMethod:@"_isAlarmsSection:" withFullSignature:{"B", "q", 0}];
+  [validationsCopy validateClass:@"MTAAlarmTableViewController" hasInstanceMethod:@"_isWakeAlarmSection:" withFullSignature:{"B", "q", 0}];
+  [validationsCopy validateClass:@"MTAAlarmTableViewController" hasInstanceMethod:@"tableView:viewForHeaderInSection:" withFullSignature:{"@", "@", "q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -45,8 +45,8 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v3 = [v21 tableView];
-  obj = [v3 indexPathsForVisibleRows];
+  tableView = [v21 tableView];
+  obj = [tableView indexPathsForVisibleRows];
 
   v4 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v4)
@@ -72,7 +72,7 @@
         v31 = &unk_29F2DAB50;
         v33 = v6;
         v34 = &v22;
-        v32 = self;
+        selfCopy = self;
         AXPerformSafeBlock();
         v7 = *(v23 + 24);
         _Block_object_dispose(&v22, 8);
@@ -90,8 +90,8 @@
           v10 = v23[5];
 
           _Block_object_dispose(&v22, 8);
-          v11 = [v21 tableView];
-          v12 = [v11 cellForRowAtIndexPath:v6];
+          tableView2 = [v21 tableView];
+          v12 = [tableView2 cellForRowAtIndexPath:v6];
 
           LOBYTE(v22) = 0;
           objc_opt_class();
@@ -114,8 +114,8 @@
         _Block_object_dispose(&v22, 8);
         if (v15 == 1)
         {
-          v16 = [v21 tableView];
-          v17 = [v16 headerViewForSection:{objc_msgSend(v6, "section")}];
+          tableView3 = [v21 tableView];
+          v17 = [tableView3 headerViewForSection:{objc_msgSend(v6, "section")}];
 
           [(MTAAlarmTableViewControllerAccessibility *)self _axSetHeaderLabelForSleepSection:v17];
         }
@@ -154,34 +154,34 @@ uint64_t __77__MTAAlarmTableViewControllerAccessibility__axSetDetailLabelsForVis
   return result;
 }
 
-- (void)_axSetHeaderLabelForSleepSection:(id)a3
+- (void)_axSetHeaderLabelForSleepSection:(id)section
 {
-  v3 = a3;
-  v4 = [v3 _accessibilityDescendantOfType:objc_opt_class()];
+  sectionCopy = section;
+  v4 = [sectionCopy _accessibilityDescendantOfType:objc_opt_class()];
   objc_opt_class();
-  v5 = [v3 contentConfiguration];
+  contentConfiguration = [sectionCopy contentConfiguration];
   v6 = __UIAccessibilityCastAsClass();
 
   [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];
-  v7 = [v6 attributedText];
-  v8 = [v7 string];
-  [v4 setAccessibilityLabel:v8];
+  attributedText = [v6 attributedText];
+  string = [attributedText string];
+  [v4 setAccessibilityLabel:string];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = MTAAlarmTableViewControllerAccessibility;
-  v7 = [(MTAAlarmTableViewControllerAccessibility *)&v15 tableView:v6 viewForHeaderInSection:a4];
+  v7 = [(MTAAlarmTableViewControllerAccessibility *)&v15 tableView:viewCopy viewForHeaderInSection:section];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
   AXPerformSafeBlock();
-  LODWORD(a4) = *(v12 + 24);
+  LODWORD(section) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  if (a4 == 1)
+  if (section == 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())

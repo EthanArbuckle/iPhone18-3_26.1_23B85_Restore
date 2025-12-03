@@ -1,12 +1,12 @@
 @interface SpatialAudioProfileClientXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
-- (void)fetchSpatialAudioProfileRecordForClient:(id)a3 WithCompletion:(id)a4;
+- (BOOL)_entitledAndReturnError:(id *)error;
+- (void)fetchSpatialAudioProfileRecordForClient:(id)client WithCompletion:(id)completion;
 - (void)xpcConnectionInvalidated;
 @end
 
 @implementation SpatialAudioProfileClientXPCConnection
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -41,7 +41,7 @@
     if (dword_100008860 <= 90 && (dword_100008860 != -1 || _LogCategory_Initialize()))
     {
       sub_100001C98(p_xpcCnx);
-      if (a3)
+      if (error)
       {
         goto LABEL_12;
       }
@@ -50,13 +50,13 @@
     else
     {
 LABEL_11:
-      if (a3)
+      if (error)
       {
 LABEL_12:
         v11 = NSErrorF();
         v12 = v11;
         result = 0;
-        *a3 = v11;
+        *error = v11;
         return result;
       }
     }
@@ -84,9 +84,9 @@ LABEL_12:
   }
 }
 
-- (void)fetchSpatialAudioProfileRecordForClient:(id)a3 WithCompletion:(id)a4
+- (void)fetchSpatialAudioProfileRecordForClient:(id)client WithCompletion:(id)completion
 {
-  v7 = a3;
+  clientCopy = client;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -98,12 +98,12 @@ LABEL_12:
   v18[2] = sub_100001610;
   v18[3] = &unk_1000041D0;
   v20 = &v21;
-  v8 = a4;
-  v19 = v8;
+  completionCopy = completion;
+  v19 = completionCopy;
   v9 = objc_retainBlock(v18);
   if (dword_100008860 <= 30 && (dword_100008860 != -1 || _LogCategory_Initialize()))
   {
-    v14 = v7;
+    v14 = clientCopy;
     LogPrintF();
   }
 
@@ -113,8 +113,8 @@ LABEL_12:
   objc_storeStrong(v10, obj);
   if (v11)
   {
-    objc_storeStrong(&self->_spatialAudioProfileClient, a3);
-    if ((_os_feature_enabled_impl() & 1) != 0 && v8)
+    objc_storeStrong(&self->_spatialAudioProfileClient, client);
+    if ((_os_feature_enabled_impl() & 1) != 0 && completionCopy)
     {
       v12 = objc_alloc_init(BTCloudServicesClient);
       [v12 setDispatchQueue:self->_dispatchQueue];
@@ -122,7 +122,7 @@ LABEL_12:
       v15[1] = 3221225472;
       v15[2] = sub_1000016EC;
       v15[3] = &unk_1000041F8;
-      v16 = v8;
+      v16 = completionCopy;
       [v12 fetchSoundProfileRecordWithCompletion:v15];
     }
 

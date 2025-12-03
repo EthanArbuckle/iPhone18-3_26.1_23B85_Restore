@@ -1,23 +1,23 @@
 @interface WFResource
 + (id)sharedInstance;
 - (BOOL)isAvailable;
-- (BOOL)shouldNotifyResourcesAfterAvailabilityUpdateWithForcedNotification:(BOOL)a3;
+- (BOOL)shouldNotifyResourcesAfterAvailabilityUpdateWithForcedNotification:(BOOL)notification;
 - (NSDictionary)eventDictionary;
 - (NSError)availabilityError;
-- (WFResource)initWithDefinition:(id)a3;
+- (WFResource)initWithDefinition:(id)definition;
 - (void)dealloc;
 - (void)invalidateAvailability;
 - (void)notifyResourcesAboutAvailabilityChange;
 - (void)refreshAvailabilityIfNeeded;
-- (void)updateAvailability:(BOOL)a3 withError:(id)a4 completionHandler:(id)a5;
+- (void)updateAvailability:(BOOL)availability withError:(id)error completionHandler:(id)handler;
 @end
 
 @implementation WFResource
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E6996CA8] sharedContext];
-  [v3 removeApplicationStateObserver:self forEvent:3];
+  mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+  [mEMORY[0x1E6996CA8] removeApplicationStateObserver:self forEvent:3];
 
   v4.receiver = self;
   v4.super_class = WFResource;
@@ -35,21 +35,21 @@
   dispatch_async(stateAccessQueue, block);
 }
 
-- (void)updateAvailability:(BOOL)a3 withError:(id)a4 completionHandler:(id)a5
+- (void)updateAvailability:(BOOL)availability withError:(id)error completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  handlerCopy = handler;
   stateAccessQueue = self->_stateAccessQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__WFResource_updateAvailability_withError_completionHandler___block_invoke;
   v13[3] = &unk_1E837B300;
-  v16 = a3;
+  availabilityCopy = availability;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = errorCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = errorCopy;
   dispatch_async(stateAccessQueue, v13);
 }
 
@@ -94,7 +94,7 @@ void __52__WFResource_notifyResourcesAboutAvailabilityChange__block_invoke(uint6
   [v2 postNotificationName:@"WFResourceAvailabilityChangedNotification" object:*(a1 + 32)];
 }
 
-- (BOOL)shouldNotifyResourcesAfterAvailabilityUpdateWithForcedNotification:(BOOL)a3
+- (BOOL)shouldNotifyResourcesAfterAvailabilityUpdateWithForcedNotification:(BOOL)notification
 {
   v27 = 0;
   v28 = &v27;
@@ -135,7 +135,7 @@ void __52__WFResource_notifyResourcesAboutAvailabilityChange__block_invoke(uint6
   v9[5] = &v16;
   v9[6] = &v10;
   dispatch_sync(v6, v9);
-  v7 = a3 || *(v17 + 24) != *(v28 + 24) || ([v11[5] isEqual:v22[5]] & 1) == 0 && v11[5] != v22[5];
+  v7 = notification || *(v17 + 24) != *(v28 + 24) || ([v11[5] isEqual:v22[5]] & 1) == 0 && v11[5] != v22[5];
   _Block_object_dispose(&v10, 8);
 
   _Block_object_dispose(&v16, 8);
@@ -280,15 +280,15 @@ uint64_t __25__WFResource_isAvailable__block_invoke(uint64_t result)
   return v4;
 }
 
-- (WFResource)initWithDefinition:(id)a3
+- (WFResource)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v13.receiver = self;
   v13.super_class = WFResource;
   v5 = [(WFResource *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [definitionCopy copy];
     v7 = *(v5 + 3);
     *(v5 + 3) = v6;
 
@@ -300,8 +300,8 @@ uint64_t __25__WFResource_isAvailable__block_invoke(uint64_t result)
     dispatch_queue_set_specific(*(v5 + 4), &WFStateAccessQueueSpecificKey, *(v5 + 4), 0);
     if ([objc_opt_class() refreshesAvailabilityOnApplicationResume])
     {
-      v10 = [MEMORY[0x1E6996CA8] sharedContext];
-      [v10 addApplicationStateObserver:v5 forEvent:3];
+      mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+      [mEMORY[0x1E6996CA8] addApplicationStateObserver:v5 forEvent:3];
     }
 
     v11 = v5;

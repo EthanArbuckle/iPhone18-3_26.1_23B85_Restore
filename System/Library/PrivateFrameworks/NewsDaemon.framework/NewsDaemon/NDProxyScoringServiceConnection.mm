@@ -22,11 +22,11 @@
 {
   v3 = OBJC_IVAR___NDProxyScoringServiceConnection_xpcConnectionLock;
   v4 = *(&self->super.isa + OBJC_IVAR___NDProxyScoringServiceConnection_xpcConnectionLock);
-  v9 = self;
+  selfCopy = self;
 
   sub_25BE4B7AC();
 
-  v5 = *(&v9->super.isa + OBJC_IVAR___NDProxyScoringServiceConnection_xpcConnectionInterest);
+  v5 = *(&selfCopy->super.isa + OBJC_IVAR___NDProxyScoringServiceConnection_xpcConnectionInterest);
   v6 = __OFADD__(v5, 1);
   v7 = (v5 + 1);
   if (v6)
@@ -36,7 +36,7 @@
 
   else
   {
-    *(&v9->super.isa + OBJC_IVAR___NDProxyScoringServiceConnection_xpcConnectionInterest) = v7;
+    *(&selfCopy->super.isa + OBJC_IVAR___NDProxyScoringServiceConnection_xpcConnectionInterest) = v7;
     v8 = *(&self->super.isa + v3);
 
     sub_25BE4B7BC();
@@ -45,7 +45,7 @@
 
 - (void)popInterest
 {
-  v2 = self;
+  selfCopy = self;
   ProxyScoringServiceConnection.popInterest()();
 }
 

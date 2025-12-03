@@ -1,110 +1,110 @@
 @interface _UIFloatingTabBar
 - (BOOL)_isEffectivelyEmpty;
-- (BOOL)_isValidDropTargetIndexPath:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_isValidDropTargetIndexPath:(id)path;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)hasActiveDrag;
 - (BOOL)isSearchTabSelected;
 - (BOOL)scrubbingEnabled;
 - (BOOL)showsSidebarButton;
-- (BOOL)tabDragController:(id)a3 canHandleDropSessionForTab:(id)a4;
-- (BOOL)tabDragController:(id)a3 isDisplayingTab:(id)a4;
+- (BOOL)tabDragController:(id)controller canHandleDropSessionForTab:(id)tab;
+- (BOOL)tabDragController:(id)controller isDisplayingTab:(id)tab;
 - (CACornerRadii)contentCornerRadii;
 - (CGAffineTransform)additionalTransform;
 - (CGPoint)highlightAnchorPoint;
 - (CGPoint)selectionGestureInitialLocation;
 - (CGPoint)sidebarButtonOrigin;
-- (CGRect)_itemFrameForItemAtIndexPath:(id)a3 inCoordinateSpace:(id)a4;
+- (CGRect)_itemFrameForItemAtIndexPath:(id)path inCoordinateSpace:(id)space;
 - (CGRect)contentLayoutFrame;
 - (CGRect)frameForExpandedDropTarget;
 - (CGSize)_maximumContainerSizeForPagination;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIButton)sidebarButton;
-- (_UIFloatingTabBar)initWithCoder:(id)a3;
-- (_UIFloatingTabBar)initWithFrame:(CGRect)a3;
+- (_UIFloatingTabBar)initWithCoder:(id)coder;
+- (_UIFloatingTabBar)initWithFrame:(CGRect)frame;
 - (_UIGroupCompletion)selectionFrameGroupCompletion;
 - (_UIShadowProperties)shadowProperties;
 - (double)baselineOffsetFromTop;
-- (id)_contentTabForRecentTab:(id)a3;
+- (id)_contentTabForRecentTab:(id)tab;
 - (id)_currentPlatformMetrics;
-- (id)_destinationIndexPathForDropSession:(id)a3;
-- (id)_indexPathForGestureRecognizer:(id)a3;
-- (id)_indexPathForItemAtDataSourceIndex:(int64_t)a3;
+- (id)_destinationIndexPathForDropSession:(id)session;
+- (id)_indexPathForGestureRecognizer:(id)recognizer;
+- (id)_indexPathForItemAtDataSourceIndex:(int64_t)index;
 - (id)_indexPathForSelectedItem;
-- (id)_indexPathForTabItem:(id)a3;
+- (id)_indexPathForTabItem:(id)item;
 - (id)_tabBarController;
-- (id)_tabForItemAtIndexPath:(id)a3;
-- (id)_targetedPreviewForTab:(id)a3;
-- (id)_targetedPreviewForTabAtIndexPath:(id)a3;
-- (id)_viewForItemAtIndexPath:(id)a3;
+- (id)_tabForItemAtIndexPath:(id)path;
+- (id)_targetedPreviewForTab:(id)tab;
+- (id)_targetedPreviewForTabAtIndexPath:(id)path;
+- (id)_viewForItemAtIndexPath:(id)path;
 - (id)currentSelectionTitle;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)tab;
 - (id)tabCustomizationProxy;
-- (id)tabDragController:(id)a3 dropProposalForSession:(id)a4;
-- (id)tabDragController:(id)a3 tabForBeginningSession:(id)a4;
-- (int64_t)_indexInDataSourceForItemAtIndexPath:(id)a3;
-- (int64_t)_pageIndexForItemAtIndexPath:(id)a3;
+- (id)tabDragController:(id)controller dropProposalForSession:(id)session;
+- (id)tabDragController:(id)controller tabForBeginningSession:(id)session;
+- (int64_t)_indexInDataSourceForItemAtIndexPath:(id)path;
+- (int64_t)_pageIndexForItemAtIndexPath:(id)path;
 - (int64_t)effectiveUserInterfaceStyle;
-- (void)_animateSelection:(id)a3 completion:(id)a4;
-- (void)_animateSelectionBounds:(id)a3 completion:(id)a4;
+- (void)_animateSelection:(id)selection completion:(id)completion;
+- (void)_animateSelectionBounds:(id)bounds completion:(id)completion;
 - (void)_createDataSource;
 - (void)_createViewHierarchy;
-- (void)_didTapLeftArrowButton:(id)a3;
-- (void)_didTapRightArrowButton:(id)a3;
-- (void)_handleLongPressGestureRecognizer:(id)a3;
-- (void)_handleSelectionGesture:(id)a3;
-- (void)_invalidateDataSourceAnimated:(BOOL)a3;
-- (void)_invalidateFavoriteOrderAnimated:(BOOL)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (void)_didTapLeftArrowButton:(id)button;
+- (void)_didTapRightArrowButton:(id)button;
+- (void)_handleLongPressGestureRecognizer:(id)recognizer;
+- (void)_handleSelectionGesture:(id)gesture;
+- (void)_invalidateDataSourceAnimated:(BOOL)animated;
+- (void)_invalidateFavoriteOrderAnimated:(BOOL)animated;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)_refreshSelectedLeaf;
-- (void)_scrollToSelectedItemAnimated:(BOOL)a3;
+- (void)_scrollToSelectedItemAnimated:(BOOL)animated;
 - (void)_scrollToSelectedItemIfNeeded;
-- (void)_selectItemAtIndexPath:(id)a3;
-- (void)_setHasSelectionHighlight:(BOOL)a3 forItemAtIndexPath:(id)a4;
-- (void)_setHighlighted:(BOOL)a3 forItemAtIndexPath:(id)a4;
-- (void)_setSelectedItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_tabModel:(id)a3 favoriteOrderDidReset:(id)a4;
-- (void)_tabModel:(id)a3 tabContentDidChange:(id)a4;
-- (void)_tabModel:(id)a3 visibilityDidChangeForTab:(id)a4;
-- (void)_tabModelDidReload:(id)a3;
+- (void)_selectItemAtIndexPath:(id)path;
+- (void)_setHasSelectionHighlight:(BOOL)highlight forItemAtIndexPath:(id)path;
+- (void)_setHighlighted:(BOOL)highlighted forItemAtIndexPath:(id)path;
+- (void)_setSelectedItem:(id)item animated:(BOOL)animated completion:(id)completion;
+- (void)_tabModel:(id)model favoriteOrderDidReset:(id)reset;
+- (void)_tabModel:(id)model tabContentDidChange:(id)change;
+- (void)_tabModel:(id)model visibilityDidChangeForTab:(id)tab;
+- (void)_tabModelDidReload:(id)reload;
 - (void)_updateBackgroundProperties;
-- (void)_updateContentAlphaForItemAtIndexPath:(id)a3;
+- (void)_updateContentAlphaForItemAtIndexPath:(id)path;
 - (void)_updateContentAlphaForVisibleCells;
 - (void)_updateContentSizeCategory;
-- (void)_updateDataSourceFromParserAnimated:(BOOL)a3;
+- (void)_updateDataSourceFromParserAnimated:(BOOL)animated;
 - (void)_updateEditModeGestureRecognizer;
 - (void)_updatePaginationIfNeeded;
-- (void)_updateSelectedItemAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_updateSelectedLeaf:(id)a3 previousElement:(id)a4;
-- (void)_updateSelectionViewFrameAnimated:(BOOL)a3 completion:(id)a4;
+- (void)_updateSelectedItemAnimated:(BOOL)animated completion:(id)completion;
+- (void)_updateSelectedLeaf:(id)leaf previousElement:(id)element;
+- (void)_updateSelectionViewFrameAnimated:(BOOL)animated completion:(id)completion;
 - (void)_updateSelectionViewHighlightState;
-- (void)_updateSelectionViewVisibilityAnimated:(BOOL)a3;
-- (void)_updateTabBarPaginationAnimated:(BOOL)a3;
+- (void)_updateSelectionViewVisibilityAnimated:(BOOL)animated;
+- (void)_updateTabBarPaginationAnimated:(BOOL)animated;
 - (void)_updateTransform;
-- (void)_validateRecentItemForParser:(id)a3;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)_validateRecentItemForParser:(id)parser;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)layoutSubviews;
-- (void)prepareForTransitionToVisibility:(BOOL)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setAdditionalTransform:(CGAffineTransform *)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlightedIndexPath:(id)a3;
-- (void)setScrubbingEnabled:(BOOL)a3;
-- (void)setSelectionViewIndexPath:(id)a3;
-- (void)setShowRecentItem:(BOOL)a3;
-- (void)setSidebarButtonAction:(id)a3;
-- (void)setTabModel:(id)a3;
-- (void)tabDragController:(id)a3 acceptItemsIntoTabFromDropSession:(id)a4;
-- (void)tabDragController:(id)a3 hideDraggedTab:(id)a4;
-- (void)tabDragController:(id)a3 pendingDropTabDidChange:(id)a4;
+- (void)prepareForTransitionToVisibility:(BOOL)visibility;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setAdditionalTransform:(CGAffineTransform *)transform;
+- (void)setBounds:(CGRect)bounds;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlightedIndexPath:(id)path;
+- (void)setScrubbingEnabled:(BOOL)enabled;
+- (void)setSelectionViewIndexPath:(id)path;
+- (void)setShowRecentItem:(BOOL)item;
+- (void)setSidebarButtonAction:(id)action;
+- (void)setTabModel:(id)model;
+- (void)tabDragController:(id)controller acceptItemsIntoTabFromDropSession:(id)session;
+- (void)tabDragController:(id)controller hideDraggedTab:(id)tab;
+- (void)tabDragController:(id)controller pendingDropTabDidChange:(id)change;
 - (void)tabModelEditingStateDidChange;
 - (void)transitionDidEnd;
 - (void)updateBarForEditingState;
@@ -113,11 +113,11 @@
 
 @implementation _UIFloatingTabBar
 
-- (_UIFloatingTabBar)initWithFrame:(CGRect)a3
+- (_UIFloatingTabBar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIFloatingTabBar;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -128,11 +128,11 @@
   return v4;
 }
 
-- (_UIFloatingTabBar)initWithCoder:(id)a3
+- (_UIFloatingTabBar)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIFloatingTabBar;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -143,11 +143,11 @@
   return v4;
 }
 
-- (void)setTabModel:(id)a3
+- (void)setTabModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v6 = self->_tabModel;
-  v7 = v5;
+  v7 = modelCopy;
   v13 = v7;
   if (v6 == v7)
   {
@@ -169,11 +169,11 @@
   {
   }
 
-  v9 = [(_UITabModel *)self->_tabModel tabItems];
-  v10 = [v9 count];
+  tabItems = [(_UITabModel *)self->_tabModel tabItems];
+  v10 = [tabItems count];
 
   [(_UITabModel *)self->_tabModel removeObserver:self];
-  objc_storeStrong(&self->_tabModel, a3);
+  objc_storeStrong(&self->_tabModel, model);
   [(_UICollectionLayoutListAttributes *)self->_parser setSeparatorVisualEffect:v13];
   [(_UITabModel *)self->_tabModel addObserver:self];
   [(_UIFloatingTabBar *)self _updateEditModeGestureRecognizer];
@@ -188,10 +188,10 @@ LABEL_11:
 
 - (id)_tabBarController
 {
-  v2 = [(_UIFloatingTabBar *)self tabModel];
-  v3 = [v2 tabBarController];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  tabBarController = [tabModel tabBarController];
 
-  return v3;
+  return tabBarController;
 }
 
 - (BOOL)showsSidebarButton
@@ -201,31 +201,31 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(_UIFloatingTabBar *)self tabModel];
-  v5 = [v4 tabItems];
-  v3 = [v5 count] != 0;
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  tabItems = [tabModel tabItems];
+  v3 = [tabItems count] != 0;
 
   return v3;
 }
 
-- (void)setSidebarButtonAction:(id)a3
+- (void)setSidebarButtonAction:(id)action
 {
-  v9 = a3;
+  actionCopy = action;
   if (self->_sidebarButtonAction)
   {
-    v5 = [(_UIFloatingTabBar *)self sidebarButton];
-    [v5 removeAction:self->_sidebarButtonAction forControlEvents:0x2000];
+    sidebarButton = [(_UIFloatingTabBar *)self sidebarButton];
+    [sidebarButton removeAction:self->_sidebarButtonAction forControlEvents:0x2000];
   }
 
-  objc_storeStrong(&self->_sidebarButtonAction, a3);
+  objc_storeStrong(&self->_sidebarButtonAction, action);
   v6 = self->_sidebarButtonAction == 0;
-  v7 = [(_UIFloatingTabBar *)self sidebarButton];
-  [v7 setShowsMenuAsPrimaryAction:v6];
+  sidebarButton2 = [(_UIFloatingTabBar *)self sidebarButton];
+  [sidebarButton2 setShowsMenuAsPrimaryAction:v6];
 
-  if (v9)
+  if (actionCopy)
   {
-    v8 = [(_UIFloatingTabBar *)self sidebarButton];
-    [v8 addAction:v9 forControlEvents:0x2000];
+    sidebarButton3 = [(_UIFloatingTabBar *)self sidebarButton];
+    [sidebarButton3 addAction:actionCopy forControlEvents:0x2000];
   }
 
   [(_UIFloatingTabBar *)self _setNeedsPaginationUpdate];
@@ -237,18 +237,18 @@ LABEL_11:
   v20[1] = *MEMORY[0x1E69E9840];
   if (!self->_sidebarButton && [(_UIFloatingTabBar *)self showsSidebarButton])
   {
-    v3 = [(UIView *)self traitCollection];
-    v4 = _UIFloatingTabBarGetPlatformMetrics([v3 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v4 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-    v5 = [v4 sidebarButtonConfiguration];
-    v6 = [v4 contentPaletteProvider];
-    v7 = [(UIView *)self traitCollection];
-    v8 = v6[2](v6, [v7 userInterfaceStyle]);
-    v9 = [v8 inactiveColor];
-    [v5 setBaseForegroundColor:v9];
+    sidebarButtonConfiguration = [v4 sidebarButtonConfiguration];
+    contentPaletteProvider = [v4 contentPaletteProvider];
+    traitCollection2 = [(UIView *)self traitCollection];
+    v8 = contentPaletteProvider[2](contentPaletteProvider, [traitCollection2 userInterfaceStyle]);
+    inactiveColor = [v8 inactiveColor];
+    [sidebarButtonConfiguration setBaseForegroundColor:inactiveColor];
 
-    v10 = [(_UIFloatingTabBar *)self sidebarButtonAction];
-    v11 = [UIButton buttonWithConfiguration:v5 primaryAction:v10];
+    sidebarButtonAction = [(_UIFloatingTabBar *)self sidebarButtonAction];
+    v11 = [UIButton buttonWithConfiguration:sidebarButtonConfiguration primaryAction:sidebarButtonAction];
 
     [(UIView *)v11 _setContinuousCornerRadius:*MEMORY[0x1E6979E40]];
     [(UIButton *)v11 setSpringLoaded:1];
@@ -272,22 +272,22 @@ LABEL_11:
   return v18;
 }
 
-- (void)setAdditionalTransform:(CGAffineTransform *)a3
+- (void)setAdditionalTransform:(CGAffineTransform *)transform
 {
   p_additionalTransform = &self->_additionalTransform;
   v6 = *&self->_additionalTransform.c;
   *&t1.a = *&self->_additionalTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_additionalTransform.tx;
-  v7 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v7;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_additionalTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_additionalTransform->c = *&transform->c;
     *&p_additionalTransform->tx = v9;
     *&p_additionalTransform->a = v8;
     [(_UIFloatingTabBar *)self _updateTransform];
@@ -311,8 +311,8 @@ LABEL_11:
 - (CGPoint)sidebarButtonOrigin
 {
   sidebarButton = self->_sidebarButton;
-  v3 = [(_UIFloatingTabBar *)self contentView];
-  [(UIView *)sidebarButton convertPoint:v3 toView:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+  contentView = [(_UIFloatingTabBar *)self contentView];
+  [(UIView *)sidebarButton convertPoint:contentView toView:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   v5 = v4;
   v7 = v6;
 
@@ -328,10 +328,10 @@ LABEL_11:
   [(UIView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(_UIFloatingTabBar *)self contentView];
-  v8 = [(_UIFloatingTabBar *)self contentView];
-  [v8 bounds];
-  [v7 convertRect:self toView:?];
+  contentView = [(_UIFloatingTabBar *)self contentView];
+  contentView2 = [(_UIFloatingTabBar *)self contentView];
+  [contentView2 bounds];
+  [contentView convertRect:self toView:?];
   v10 = v9;
   v12 = v11;
 
@@ -348,62 +348,62 @@ LABEL_11:
 
 - (id)currentSelectionTitle
 {
-  v3 = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
-  v4 = [(_UIFloatingTabBar *)self dataSource];
-  v5 = [v4 itemIdentifierForIndexPath:v3];
+  _indexPathForSelectedItem = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
+  dataSource = [(_UIFloatingTabBar *)self dataSource];
+  v5 = [dataSource itemIdentifierForIndexPath:_indexPathForSelectedItem];
 
   if (v5)
   {
-    v6 = [v5 contentTab];
-    v7 = [v6 _compactRepresentation];
-    if (v7)
+    contentTab = [v5 contentTab];
+    _compactRepresentation = [contentTab _compactRepresentation];
+    if (_compactRepresentation)
     {
-      v8 = [v6 _compactRepresentation];
-      v9 = [v8 title];
+      _compactRepresentation2 = [contentTab _compactRepresentation];
+      title = [_compactRepresentation2 title];
     }
 
     else
     {
-      v9 = [v6 title];
+      title = [contentTab title];
     }
   }
 
   else
   {
-    v9 = 0;
+    title = 0;
   }
 
-  return v9;
+  return title;
 }
 
 - (BOOL)isSearchTabSelected
 {
-  v2 = [(_UIFloatingTabBar *)self tabModel];
-  v3 = [v2 selectedLeaf];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  selectedLeaf = [tabModel selectedLeaf];
 
-  LOBYTE(v2) = [v3 _isSearchTab];
-  return v2;
+  LOBYTE(tabModel) = [selectedLeaf _isSearchTab];
+  return tabModel;
 }
 
-- (void)prepareForTransitionToVisibility:(BOOL)a3
+- (void)prepareForTransitionToVisibility:(BOOL)visibility
 {
-  v3 = a3;
+  visibilityCopy = visibility;
   obj = self->_backdropCaptureView;
   if (!obj)
   {
     obj = objc_alloc_init(_UIVisualEffectBackdropView);
-    v5 = [(_UIFloatingTabBar *)self contentView];
-    [v5 bounds];
+    contentView = [(_UIFloatingTabBar *)self contentView];
+    [contentView bounds];
     [(UIView *)obj setFrame:?];
 
     [(UIView *)obj setAutoresizingMask:18];
     objc_storeStrong(&self->_backdropCaptureView, obj);
   }
 
-  v6 = [(_UIFloatingTabBar *)self contentView];
-  [v6 insertSubview:obj atIndex:0];
+  contentView2 = [(_UIFloatingTabBar *)self contentView];
+  [contentView2 insertSubview:obj atIndex:0];
 
-  if (v3 && (*&self->_needsUpdate & 0x20) != 0)
+  if (visibilityCopy && (*&self->_needsUpdate & 0x20) != 0)
   {
     if (![(_UIFloatingTabBar *)self isEditing])
     {
@@ -437,9 +437,9 @@ LABEL_11:
   v5 = *(MEMORY[0x1E695F050] + 16);
   self->_frameForExpandedDropTarget.origin = *MEMORY[0x1E695F050];
   self->_frameForExpandedDropTarget.size = v5;
-  v70 = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
-  v6 = [v70 shadowProperties];
-  [v6 opacity];
+  _currentPlatformMetrics = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
+  shadowProperties = [_currentPlatformMetrics shadowProperties];
+  [shadowProperties opacity];
   v8 = v7;
 
   if (v8 <= 0.0)
@@ -456,39 +456,39 @@ LABEL_11:
   }
 
   v10 = [[UIVisualEffectView alloc] initWithEffect:0];
-  v11 = [v70 background];
-  [(UIView *)v10 _setBackground:v11];
+  background = [_currentPlatformMetrics background];
+  [(UIView *)v10 _setBackground:background];
 
-  v12 = [v70 backgroundEffects];
-  [(UIVisualEffectView *)v10 setBackgroundEffects:v12];
+  backgroundEffects = [_currentPlatformMetrics backgroundEffects];
+  [(UIVisualEffectView *)v10 setBackgroundEffects:backgroundEffects];
 
   [(UIVisualEffectView *)v10 _setCaptureView:v63];
-  v13 = [(UIView *)v10 layer];
-  [v13 setShadowPathIsBounds:1];
+  layer = [(UIView *)v10 layer];
+  [layer setShadowPathIsBounds:1];
 
-  v14 = [(UIView *)v10 layer];
-  [v14 setPunchoutShadow:1];
+  layer2 = [(UIView *)v10 layer];
+  [layer2 setPunchoutShadow:1];
 
-  v15 = [(UIView *)v10 layer];
-  [v15 setCornerCurve:*MEMORY[0x1E69796E8]];
+  layer3 = [(UIView *)v10 layer];
+  [layer3 setCornerCurve:*MEMORY[0x1E69796E8]];
 
-  v16 = [(UIView *)v10 layer];
-  [v16 setCornerRadius:*MEMORY[0x1E6979E40]];
+  layer4 = [(UIView *)v10 layer];
+  [layer4 setCornerRadius:*MEMORY[0x1E6979E40]];
 
-  [v70 borderWidth];
+  [_currentPlatformMetrics borderWidth];
   v18 = v17;
-  v19 = [(UIView *)v10 layer];
-  [v19 setBorderWidth:v18];
+  layer5 = [(UIView *)v10 layer];
+  [layer5 setBorderWidth:v18];
 
-  v20 = [v70 borderColor];
-  v21 = [v20 CGColor];
-  v22 = [(UIView *)v10 layer];
-  [v22 setBorderColor:v21];
+  borderColor = [_currentPlatformMetrics borderColor];
+  cGColor = [borderColor CGColor];
+  layer6 = [(UIView *)v10 layer];
+  [layer6 setBorderColor:cGColor];
 
-  v23 = [(UIVisualEffectView *)v10 _backgroundHost];
-  v24 = [v23 contentView];
-  v25 = [v24 layer];
-  [v25 setAllowsEdgeAntialiasing:1];
+  _backgroundHost = [(UIVisualEffectView *)v10 _backgroundHost];
+  contentView = [_backgroundHost contentView];
+  layer7 = [contentView layer];
+  [layer7 setAllowsEdgeAntialiasing:1];
 
   [(UIView *)self addSubview:v10];
   objc_storeStrong(&self->_backgroundView, v10);
@@ -499,15 +499,15 @@ LABEL_11:
   v29 = *(MEMORY[0x1E695F058] + 16);
   v30 = *(MEMORY[0x1E695F058] + 24);
   v69 = [(_UIFloatingTabBarSelectionContainerView *)v26 initWithFrame:*MEMORY[0x1E695F058], v28, v29, v30];
-  v31 = [(UIVisualEffectView *)v10 contentView];
-  [v31 addSubview:v69];
+  contentView2 = [(UIVisualEffectView *)v10 contentView];
+  [contentView2 addSubview:v69];
 
   objc_storeStrong(&self->_selectionContainerView, v69);
-  v64 = [(_UIFloatingTabBarSelectionContainerView *)v69 targetPosition];
-  if (v64)
+  targetPosition = [(_UIFloatingTabBarSelectionContainerView *)v69 targetPosition];
+  if (targetPosition)
   {
     objc_initWeak(&location, self);
-    v81[0] = v64;
+    v81[0] = targetPosition;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:1];
     v75[0] = MEMORY[0x1E69E9820];
     v75[1] = 3221225472;
@@ -521,8 +521,8 @@ LABEL_11:
   }
 
   v33 = objc_opt_new();
-  v34 = [v70 backgroundEffects];
-  v35 = [v34 count] == 0;
+  backgroundEffects2 = [_currentPlatformMetrics backgroundEffects];
+  v35 = [backgroundEffects2 count] == 0;
 
   if (!v35)
   {
@@ -530,8 +530,8 @@ LABEL_11:
     [v33 _setOverrideUserInterfaceRenderingMode:2];
   }
 
-  v36 = [(UIVisualEffectView *)v10 contentView];
-  [v36 addSubview:v33];
+  contentView3 = [(UIVisualEffectView *)v10 contentView];
+  [contentView3 addSubview:v33];
 
   objc_storeStrong(&self->_contentView, v33);
   obj = [[UIView alloc] initWithFrame:v27, v28, v29, v30];
@@ -550,8 +550,8 @@ LABEL_11:
   [(UIView *)v37 setClipsToBounds:0];
   [(UIScrollView *)v37 _setAdjustsTargetsOnContentOffsetChanges:0];
   [(UIScrollView *)v37 _setAutoScrollEnabled:0];
-  v38 = [(UIView *)v37 layer];
-  [v38 setAllowsGroupOpacity:0];
+  layer8 = [(UIView *)v37 layer];
+  [layer8 setAllowsGroupOpacity:0];
 
   [(UICollectionView *)v37 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"UIFloatingTabBar.Cell"];
   [(UICollectionView *)v37 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"UIFloatingTabBar.PlaceholderCell"];
@@ -564,26 +564,26 @@ LABEL_11:
   [(_UIFloatingTabBarCollectionView *)v37 setLayoutSubviewHandler:v73];
   [(UIView *)obj addSubview:v37];
   objc_storeStrong(&self->_collectionView, v37);
-  v39 = [(UIScrollView *)v37 panGestureRecognizer];
-  [v33 addGestureRecognizer:v39];
+  panGestureRecognizer = [(UIScrollView *)v37 panGestureRecognizer];
+  [v33 addGestureRecognizer:panGestureRecognizer];
 
   v65 = [[_UIFloatingTabBarPinnedItemsView alloc] initWithFrame:v27, v28, v29, v30];
   [v33 addSubview:v65];
   objc_storeStrong(&self->_pinnedItemsView, v65);
   v67 = [[_UIFloatingTabBarPageButton alloc] initWithDirection:0];
-  v40 = [(_UIFloatingTabBarPageButton *)v67 button];
-  [v40 addTarget:self action:sel__didTapLeftArrowButton_ forControlEvents:0x2000];
+  button = [(_UIFloatingTabBarPageButton *)v67 button];
+  [button addTarget:self action:sel__didTapLeftArrowButton_ forControlEvents:0x2000];
 
   [v33 addSubview:v67];
   objc_storeStrong(&self->_leftArrowButton, v67);
   v66 = [[_UIFloatingTabBarPageButton alloc] initWithDirection:1];
-  v41 = [(_UIFloatingTabBarPageButton *)v66 button];
-  [v41 addTarget:self action:sel__didTapRightArrowButton_ forControlEvents:0x2000];
+  button2 = [(_UIFloatingTabBarPageButton *)v66 button];
+  [button2 addTarget:self action:sel__didTapRightArrowButton_ forControlEvents:0x2000];
 
   [v33 addSubview:v66];
   objc_storeStrong(&self->_rightArrowButton, v66);
-  v42 = [(_UIFloatingTabBar *)self collectionView];
-  [v42 _addScrollViewScrollObserver:self];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  [collectionView _addScrollViewScrollObserver:self];
 
   [(_UIFloatingTabBar *)self _setNeedsSelectionFrameUpdate];
   v43 = [(UIGestureRecognizer *)[_UIContinuousSelectionGestureRecognizer alloc] initWithTarget:self action:sel__handleSelectionGesture_];
@@ -614,13 +614,13 @@ LABEL_11:
   [v33 addInteraction:v51];
   _UIBarsSetAccessibilityLimits(self);
   [(UIView *)self setTintAdjustmentMode:1];
-  v52 = [(UIView *)self traitOverrides];
+  traitOverrides = [(UIView *)self traitOverrides];
   v53 = objc_opt_self();
-  [v52 setNSIntegerValue:2 forTrait:v53];
+  [traitOverrides setNSIntegerValue:2 forTrait:v53];
 
-  v54 = [(UIView *)self traitOverrides];
+  traitOverrides2 = [(UIView *)self traitOverrides];
   v55 = objc_opt_self();
-  [v54 setNSIntegerValue:1 forTrait:v55];
+  [traitOverrides2 setNSIntegerValue:1 forTrait:v55];
 
   v80 = 0x1EFE323C8;
   v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v80 count:1];
@@ -645,14 +645,14 @@ LABEL_11:
 {
   objc_initWeak(&location, self);
   v4 = [UICollectionViewDiffableDataSource alloc];
-  v5 = [(_UIFloatingTabBar *)self collectionView];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38___UIFloatingTabBar__createDataSource__block_invoke;
   v10[3] = &unk_1E712A468;
   objc_copyWeak(v11, &location);
   v11[1] = a2;
-  v6 = [(UICollectionViewDiffableDataSource *)v4 initWithCollectionView:v5 cellProvider:v10];
+  v6 = [(UICollectionViewDiffableDataSource *)v4 initWithCollectionView:collectionView cellProvider:v10];
   dataSource = self->_dataSource;
   self->_dataSource = v6;
 
@@ -664,77 +664,77 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)_invalidateDataSourceAnimated:(BOOL)a3
+- (void)_invalidateDataSourceAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v14 = [(_UIFloatingTabBar *)self parser];
-  v5 = [(_UIFloatingTabBar *)self dragController];
-  v6 = [v5 pendingDropTab];
-  [(UIBackgroundConfiguration *)v14 _setImage:v6];
+  animatedCopy = animated;
+  parser = [(_UIFloatingTabBar *)self parser];
+  dragController = [(_UIFloatingTabBar *)self dragController];
+  pendingDropTab = [dragController pendingDropTab];
+  [(UIBackgroundConfiguration *)parser _setImage:pendingDropTab];
 
-  v7 = [(_UIFloatingTabBar *)self dragController];
-  v8 = [v7 pendingFavoriteOrder];
-  [(_UIDocumentUnavailableConfiguration *)v14 set_tintColor:v8];
+  dragController2 = [(_UIFloatingTabBar *)self dragController];
+  pendingFavoriteOrder = [dragController2 pendingFavoriteOrder];
+  [(_UIDocumentUnavailableConfiguration *)parser set_tintColor:pendingFavoriteOrder];
 
   v9 = MEMORY[0x1E695DFD8];
-  v10 = [(_UIFloatingTabBar *)self dragController];
-  v11 = [v10 pendingDropTab];
-  v12 = [v11 identifier];
-  v13 = [v9 setWithObjects:{v12, 0}];
-  [(_UIFloatingTabBarParser *)v14 setIgnoredFavoriteOrderItems:v13];
+  dragController3 = [(_UIFloatingTabBar *)self dragController];
+  pendingDropTab2 = [dragController3 pendingDropTab];
+  identifier = [pendingDropTab2 identifier];
+  v13 = [v9 setWithObjects:{identifier, 0}];
+  [(_UIFloatingTabBarParser *)parser setIgnoredFavoriteOrderItems:v13];
 
-  [(_UIFloatingTabBarParser *)v14 reloadItems];
-  [(_UIFloatingTabBar *)self _updateDataSourceFromParserAnimated:v3];
+  [(_UIFloatingTabBarParser *)parser reloadItems];
+  [(_UIFloatingTabBar *)self _updateDataSourceFromParserAnimated:animatedCopy];
 }
 
-- (void)_invalidateFavoriteOrderAnimated:(BOOL)a3
+- (void)_invalidateFavoriteOrderAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v14 = [(_UIFloatingTabBar *)self parser];
-  v5 = [(_UIFloatingTabBar *)self dragController];
-  v6 = [v5 pendingDropTab];
-  [(UIBackgroundConfiguration *)v14 _setImage:v6];
+  animatedCopy = animated;
+  parser = [(_UIFloatingTabBar *)self parser];
+  dragController = [(_UIFloatingTabBar *)self dragController];
+  pendingDropTab = [dragController pendingDropTab];
+  [(UIBackgroundConfiguration *)parser _setImage:pendingDropTab];
 
-  v7 = [(_UIFloatingTabBar *)self dragController];
-  v8 = [v7 pendingFavoriteOrder];
-  [(_UIDocumentUnavailableConfiguration *)v14 set_tintColor:v8];
+  dragController2 = [(_UIFloatingTabBar *)self dragController];
+  pendingFavoriteOrder = [dragController2 pendingFavoriteOrder];
+  [(_UIDocumentUnavailableConfiguration *)parser set_tintColor:pendingFavoriteOrder];
 
   v9 = MEMORY[0x1E695DFD8];
-  v10 = [(_UIFloatingTabBar *)self dragController];
-  v11 = [v10 pendingDropTab];
-  v12 = [v11 identifier];
-  v13 = [v9 setWithObjects:{v12, 0}];
-  [(_UIFloatingTabBarParser *)v14 setIgnoredFavoriteOrderItems:v13];
+  dragController3 = [(_UIFloatingTabBar *)self dragController];
+  pendingDropTab2 = [dragController3 pendingDropTab];
+  identifier = [pendingDropTab2 identifier];
+  v13 = [v9 setWithObjects:{identifier, 0}];
+  [(_UIFloatingTabBarParser *)parser setIgnoredFavoriteOrderItems:v13];
 
-  [(_UIFloatingTabBarParser *)v14 invalidateFavorites];
-  [(_UIFloatingTabBar *)self _updateDataSourceFromParserAnimated:v3];
+  [(_UIFloatingTabBarParser *)parser invalidateFavorites];
+  [(_UIFloatingTabBar *)self _updateDataSourceFromParserAnimated:animatedCopy];
 }
 
-- (void)_updateDataSourceFromParserAnimated:(BOOL)a3
+- (void)_updateDataSourceFromParserAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = [(_UIFloatingTabBar *)self parser];
+  parser = [(_UIFloatingTabBar *)self parser];
   v6 = objc_alloc_init(off_1E70ECB58);
   [v6 appendSectionsWithIdentifiers:&unk_1EFE2DEA0];
-  v7 = [(_UIFloatingTabBarParser *)v5 fixedItems];
-  [v6 appendItemsWithIdentifiers:v7];
+  fixedItems = [(_UIFloatingTabBarParser *)parser fixedItems];
+  [v6 appendItemsWithIdentifiers:fixedItems];
 
   [v6 appendSectionsWithIdentifiers:&unk_1EFE2DEB8];
-  v8 = [(_UIFloatingTabBarParser *)v5 items];
-  [v6 appendItemsWithIdentifiers:v8];
+  items = [(_UIFloatingTabBarParser *)parser items];
+  [v6 appendItemsWithIdentifiers:items];
 
-  [(_UIFloatingTabBar *)self _validateRecentItemForParser:v5];
-  v9 = [(_UIFloatingTabBar *)self recentItem];
-  if (v9)
+  [(_UIFloatingTabBar *)self _validateRecentItemForParser:parser];
+  recentItem = [(_UIFloatingTabBar *)self recentItem];
+  if (recentItem)
   {
-    v10 = [(_UIFloatingTabBar *)self isEditing];
+    isEditing = [(_UIFloatingTabBar *)self isEditing];
 
-    if (!v10)
+    if (!isEditing)
     {
       [v6 appendSectionsWithIdentifiers:&unk_1EFE2DED0];
-      v11 = [(_UIFloatingTabBar *)self recentItem];
-      v20[0] = v11;
+      recentItem2 = [(_UIFloatingTabBar *)self recentItem];
+      v20[0] = recentItem2;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
       [v6 appendItemsWithIdentifiers:v12];
     }
@@ -748,14 +748,14 @@ LABEL_11:
   v16[2] = __57___UIFloatingTabBar__updateDataSourceFromParserAnimated___block_invoke;
   v16[3] = &unk_1E7101C60;
   objc_copyWeak(&v17, &location);
-  v18 = v3;
-  [(UICollectionViewDiffableDataSource *)dataSource applySnapshot:v6 animatingDifferences:v3 completion:v16];
-  v14 = [(_UIFloatingTabBar *)self pinnedItemsView];
-  v15 = [(_UIFloatingTabBarParser *)v5 pinnedItems];
-  [v14 setItems:v15 animated:v3];
+  v18 = animatedCopy;
+  [(UICollectionViewDiffableDataSource *)dataSource applySnapshot:v6 animatingDifferences:animatedCopy completion:v16];
+  pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+  pinnedItems = [(_UIFloatingTabBarParser *)parser pinnedItems];
+  [pinnedItemsView setItems:pinnedItems animated:animatedCopy];
 
-  [(_UIFloatingTabBar *)self _updateTabBarPaginationAnimated:v3];
-  [(_UIFloatingTabBar *)self _updateSelectionViewFrameAnimated:v3 completion:0];
+  [(_UIFloatingTabBar *)self _updateTabBarPaginationAnimated:animatedCopy];
+  [(_UIFloatingTabBar *)self _updateSelectionViewFrameAnimated:animatedCopy completion:0];
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
@@ -764,50 +764,50 @@ LABEL_11:
 {
   [(_UIFloatingTabBar *)self _setNeedsPaginationUpdate];
   [(_UIFloatingTabBar *)self _setNeedsSelectionFrameUpdate];
-  v4 = [(_UIFloatingTabBar *)self collectionView];
-  v3 = [v4 collectionViewLayout];
-  [v3 invalidateLayout];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (id)_viewForItemAtIndexPath:(id)a3
+- (id)_viewForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 section] == 3)
+  pathCopy = path;
+  if ([pathCopy section] == 3)
   {
-    v5 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    v6 = [v4 item];
+    pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+    item = [pathCopy item];
 
-    v7 = [v5 itemViewForItemAtIndex:v6];
+    contentView = [pinnedItemsView itemViewForItemAtIndex:item];
   }
 
   else
   {
-    v5 = [(_UIFloatingTabBar *)self collectionView];
-    v8 = [v5 cellForItemAtIndexPath:v4];
+    pinnedItemsView = [(_UIFloatingTabBar *)self collectionView];
+    v8 = [pinnedItemsView cellForItemAtIndexPath:pathCopy];
 
-    v7 = [v8 contentView];
+    contentView = [v8 contentView];
   }
 
-  return v7;
+  return contentView;
 }
 
-- (id)_tabForItemAtIndexPath:(id)a3
+- (id)_tabForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 section] == 3)
+  pathCopy = path;
+  if ([pathCopy section] == 3)
   {
-    v5 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    v6 = [v4 item];
+    pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+    item = [pathCopy item];
 
-    [v5 tabForSelectionAtItemIndex:v6];
+    [pinnedItemsView tabForSelectionAtItemIndex:item];
   }
 
   else
   {
-    v7 = [(_UIFloatingTabBar *)self dataSource];
-    v5 = [v7 itemIdentifierForIndexPath:v4];
+    dataSource = [(_UIFloatingTabBar *)self dataSource];
+    pinnedItemsView = [dataSource itemIdentifierForIndexPath:pathCopy];
 
-    [v5 tabForSelection];
+    [pinnedItemsView tabForSelection];
   }
   v8 = ;
 
@@ -816,14 +816,14 @@ LABEL_11:
 
 - (void)_updateTransform
 {
-  v3 = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
+  _currentPlatformMetrics = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
   memset(&v21, 0, sizeof(v21));
-  v4 = [(_UIFloatingTabBar *)self tabModel];
-  if ([v4 isEditing])
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  if ([tabModel isEditing])
   {
-    if (v3)
+    if (_currentPlatformMetrics)
     {
-      [v3 editModeTransform];
+      [_currentPlatformMetrics editModeTransform];
     }
 
     else
@@ -850,41 +850,41 @@ LABEL_11:
   {
     t2 = v20;
     [(UIView *)self setTransform:&t2];
-    v6 = [(_UIFloatingTabBar *)self contentFrameDidChangeBlock];
+    contentFrameDidChangeBlock = [(_UIFloatingTabBar *)self contentFrameDidChangeBlock];
 
-    if (v6)
+    if (contentFrameDidChangeBlock)
     {
-      v7 = [(_UIFloatingTabBar *)self contentView];
-      v8 = [(_UIFloatingTabBar *)self contentView];
-      [v8 bounds];
-      [v7 convertRect:self toView:?];
+      contentView = [(_UIFloatingTabBar *)self contentView];
+      contentView2 = [(_UIFloatingTabBar *)self contentView];
+      [contentView2 bounds];
+      [contentView convertRect:self toView:?];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
 
-      v17 = [(_UIFloatingTabBar *)self contentFrameDidChangeBlock];
-      v17[2](v10, v12, v14, v16);
+      contentFrameDidChangeBlock2 = [(_UIFloatingTabBar *)self contentFrameDidChangeBlock];
+      contentFrameDidChangeBlock2[2](v10, v12, v14, v16);
     }
   }
 }
 
 - (void)_updateBackgroundProperties
 {
-  v15 = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
+  _currentPlatformMetrics = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
   v3 = objc_opt_new();
-  v4 = [(_UIFloatingTabBar *)self tabModel];
-  if ([v4 isEditing])
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  if ([tabModel isEditing])
   {
-    v5 = [v15 editModeBackgroundShadowProvider];
+    editModeBackgroundShadowProvider = [_currentPlatformMetrics editModeBackgroundShadowProvider];
 
-    if (v5)
+    if (editModeBackgroundShadowProvider)
     {
-      v6 = [v15 editModeBackgroundShadowProvider];
-      v7 = [(UIView *)self traitCollection];
-      v8 = (*(v6 + 16))(v6, [v7 userInterfaceStyle]);
+      editModeBackgroundShadowProvider2 = [_currentPlatformMetrics editModeBackgroundShadowProvider];
+      traitCollection = [(UIView *)self traitCollection];
+      shadowProperties2 = (*(editModeBackgroundShadowProvider2 + 16))(editModeBackgroundShadowProvider2, [traitCollection userInterfaceStyle]);
 
-      v3 = v6;
+      v3 = editModeBackgroundShadowProvider2;
       goto LABEL_7;
     }
   }
@@ -893,50 +893,50 @@ LABEL_11:
   {
   }
 
-  v9 = [v15 shadowProperties];
+  shadowProperties = [_currentPlatformMetrics shadowProperties];
 
-  if (!v9)
+  if (!shadowProperties)
   {
     goto LABEL_8;
   }
 
-  v8 = [v15 shadowProperties];
+  shadowProperties2 = [_currentPlatformMetrics shadowProperties];
 LABEL_7:
 
-  v3 = v8;
+  v3 = shadowProperties2;
 LABEL_8:
-  v10 = [(_UIFloatingTabBar *)self backgroundView];
-  [v3 applyToView:v10];
+  backgroundView = [(_UIFloatingTabBar *)self backgroundView];
+  [v3 applyToView:backgroundView];
 
-  v11 = [v15 borderColor];
-  v12 = [v11 CGColor];
-  v13 = [(_UIFloatingTabBar *)self backgroundView];
-  v14 = [v13 layer];
-  [v14 setBorderColor:v12];
+  borderColor = [_currentPlatformMetrics borderColor];
+  cGColor = [borderColor CGColor];
+  backgroundView2 = [(_UIFloatingTabBar *)self backgroundView];
+  layer = [backgroundView2 layer];
+  [layer setBorderColor:cGColor];
 }
 
 - (_UIShadowProperties)shadowProperties
 {
-  v2 = [(_UIFloatingTabBar *)self backgroundView];
-  v3 = [_UIShadowProperties propertiesFromView:v2];
+  backgroundView = [(_UIFloatingTabBar *)self backgroundView];
+  v3 = [_UIShadowProperties propertiesFromView:backgroundView];
 
   return v3;
 }
 
 - (int64_t)effectiveUserInterfaceStyle
 {
-  v2 = [(UIView *)self->_backgroundView traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(UIView *)self->_backgroundView traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v3;
+  return userInterfaceStyle;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   if (v9 != width || v8 != height)
   {
@@ -948,12 +948,12 @@ LABEL_8:
   [(UIView *)&v11 setBounds:x, y, width, height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   if (v9 != width || v8 != height)
   {
@@ -965,17 +965,17 @@ LABEL_8:
   [(UIView *)&v11 setFrame:x, y, width, height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   if (self->_largestItemHeight == 0.0)
   {
-    height = a3.height;
+    height = fits.height;
     v6 = objc_alloc_init(_UIFloatingTabBarItemView);
     [(UIView *)v6 setHidden:1];
     [(_UIFloatingTabBarItemView *)v6 setEditing:0];
-    v7 = [(_UIFloatingTabBar *)self contentView];
-    [v7 addSubview:v6];
+    contentView = [(_UIFloatingTabBar *)self contentView];
+    [contentView addSubview:v6];
 
     [(_UIFloatingTabBarItemView *)v6 sizeThatFits:width, height];
     self->_largestItemHeight = v8;
@@ -984,8 +984,8 @@ LABEL_8:
     [(UIView *)v6 removeFromSuperview];
   }
 
-  v10 = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
-  [v10 backgroundInsets];
+  _currentPlatformMetrics = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
+  [_currentPlatformMetrics backgroundInsets];
   v12 = v11;
   v14 = v13;
 
@@ -1002,12 +1002,12 @@ LABEL_8:
   *&rect2.size.width = _UIFloatingTabBar;
   [(CGFloat *)&rect2.origin.y layoutSubviews];
   [(_UIFloatingTabBar *)self _updatePaginationIfNeeded];
-  v3 = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
-  v4 = [(UIView *)self _shouldReverseLayoutDirection];
+  _currentPlatformMetrics = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
   if ([(_UIFloatingTabBar *)self _isEffectivelyEmpty])
   {
-    v5 = [(_UIFloatingTabBar *)self recentItem];
-    v6 = v5 == 0;
+    recentItem = [(_UIFloatingTabBar *)self recentItem];
+    v6 = recentItem == 0;
   }
 
   else
@@ -1020,39 +1020,39 @@ LABEL_8:
   v109 = v8;
   v10 = v9;
   v12 = v11;
-  v13 = [(_UIFloatingTabBar *)self leftArrowButton];
-  [v13 sizeThatFits:{v10, v12}];
+  leftArrowButton = [(_UIFloatingTabBar *)self leftArrowButton];
+  [leftArrowButton sizeThatFits:{v10, v12}];
   v15 = v14;
 
-  v16 = [(_UIFloatingTabBar *)self sidebarButton];
-  [v16 sizeThatFits:{v10, v12}];
+  sidebarButton = [(_UIFloatingTabBar *)self sidebarButton];
+  [sidebarButton sizeThatFits:{v10, v12}];
   v18 = v17;
 
-  v19 = [(_UIFloatingTabBar *)self showsSidebarButton];
+  showsSidebarButton = [(_UIFloatingTabBar *)self showsSidebarButton];
   v20 = *MEMORY[0x1E695F060];
   v105 = v18;
-  if (v19)
+  if (showsSidebarButton)
   {
     v20 = v18;
   }
 
   rect2.origin.x = v20;
-  v21 = [(_UIFloatingTabBar *)self pinnedItemsView];
+  pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
   v106 = v10;
   v107 = v12;
-  [v21 sizeThatFits:{v10, v12}];
+  [pinnedItemsView sizeThatFits:{v10, v12}];
   v23 = v22;
 
-  v24 = [(_UIFloatingTabBar *)self collectionView];
-  [v24 currentPage];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  [collectionView currentPage];
   v26 = v25;
 
   v27 = fmax(fmin(v26, 1.0), 0.0);
-  v28 = [(_UIFloatingTabBar *)self collectionView];
-  v29 = [v28 pages];
-  v30 = fmax(fmin([v29 count] - v26 + -1.0, 1.0), 0.0);
+  collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+  pages = [collectionView2 pages];
+  v30 = fmax(fmin([pages count] - v26 + -1.0, 1.0), 0.0);
 
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v31 = v30;
   }
@@ -1062,7 +1062,7 @@ LABEL_8:
     v31 = v27;
   }
 
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v32 = v27;
   }
@@ -1077,7 +1077,7 @@ LABEL_8:
   v102 = v32;
   v103 = v15;
   v34 = v15 * v32;
-  [v3 backgroundInsets];
+  [_currentPlatformMetrics backgroundInsets];
   v36 = v35;
   v38 = v37;
   v40 = v39;
@@ -1087,31 +1087,31 @@ LABEL_8:
   v101 = v23;
   v44 = v23 + v34 + v43;
   largestPageWidth = self->_largestPageWidth;
-  v45 = [(_UIFloatingTabBar *)self collectionView];
-  [v45 viewWidthForPageProgress:v26];
+  collectionView3 = [(_UIFloatingTabBar *)self collectionView];
+  [collectionView3 viewWidthForPageProgress:v26];
   v47 = v42 + v38 + v46 + v44;
 
   v48 = v40 + v36 + self->_largestItemHeight;
-  v49 = [(_UIFloatingTabBar *)self collectionViewContainer];
-  [v49 setFrame:{0.0, 0.0, v47, v48}];
+  collectionViewContainer = [(_UIFloatingTabBar *)self collectionViewContainer];
+  [collectionViewContainer setFrame:{0.0, 0.0, v47, v48}];
 
-  v50 = [(_UIFloatingTabBar *)self collectionViewContainer];
-  [v50 _setContinuousCornerRadius:v48 * 0.5];
+  collectionViewContainer2 = [(_UIFloatingTabBar *)self collectionViewContainer];
+  [collectionViewContainer2 _setContinuousCornerRadius:v48 * 0.5];
 
-  v51 = [(_UIFloatingTabBar *)self selectionContainerView];
-  [v51 setFrame:{0.0, 0.0, v47, v48}];
+  selectionContainerView = [(_UIFloatingTabBar *)self selectionContainerView];
+  [selectionContainerView setFrame:{0.0, 0.0, v47, v48}];
 
-  v52 = [(_UIFloatingTabBar *)self selectionContainerView];
+  selectionContainerView2 = [(_UIFloatingTabBar *)self selectionContainerView];
   v104 = v48 * 0.5;
-  [v52 _setContinuousCornerRadius:v48 * 0.5];
+  [selectionContainerView2 _setContinuousCornerRadius:v48 * 0.5];
 
-  v53 = [(_UIFloatingTabBar *)self collectionView];
-  [v53 frame];
+  collectionView4 = [(_UIFloatingTabBar *)self collectionView];
+  [collectionView4 frame];
   v95 = v54;
 
   v93 = v42;
   v96 = v34;
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v55 = v47 - v42;
     v56 = largestPageWidth;
@@ -1125,22 +1125,22 @@ LABEL_8:
     v56 = largestPageWidth;
   }
 
-  v58 = [(_UIFloatingTabBar *)self collectionView];
+  collectionView5 = [(_UIFloatingTabBar *)self collectionView];
   v98 = v57;
-  [v58 setFrame:{v57, 0.0, v56, v48}];
+  [collectionView5 setFrame:{v57, 0.0, v56, v48}];
 
-  v59 = [(_UIFloatingTabBar *)self collectionView];
-  [v59 _setVisibleRectEdgeInsets:{0.0, -(rect2.origin.x + v103 + v44), 0.0, -(rect2.origin.x + v103 + v44)}];
+  collectionView6 = [(_UIFloatingTabBar *)self collectionView];
+  [collectionView6 _setVisibleRectEdgeInsets:{0.0, -(rect2.origin.x + v103 + v44), 0.0, -(rect2.origin.x + v103 + v44)}];
 
   v60 = rect2.origin.x + v55 - v38 - v44;
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v60 = 0.0;
   }
 
   v61 = v38 + v99 + v60;
-  v62 = [(_UIFloatingTabBar *)self pinnedItemsView];
-  [v62 setFrame:{v61, 0.0, v101, v48}];
+  pinnedItemsView2 = [(_UIFloatingTabBar *)self pinnedItemsView];
+  [pinnedItemsView2 setFrame:{v61, 0.0, v101, v48}];
 
   largestItemHeight = self->_largestItemHeight;
   if (v6)
@@ -1148,36 +1148,36 @@ LABEL_8:
     v47 = 0.0;
   }
 
-  v64 = [(_UIFloatingTabBar *)self leftArrowButton];
-  [v64 setFrame:{v99 - v103, v36, v103, largestItemHeight}];
+  leftArrowButton2 = [(_UIFloatingTabBar *)self leftArrowButton];
+  [leftArrowButton2 setFrame:{v99 - v103, v36, v103, largestItemHeight}];
 
-  v65 = [(_UIFloatingTabBar *)self leftArrowButton];
-  [v65 setContentOpacity:v100];
+  leftArrowButton3 = [(_UIFloatingTabBar *)self leftArrowButton];
+  [leftArrowButton3 setContentOpacity:v100];
 
-  v66 = [(_UIFloatingTabBar *)self rightArrowButton];
-  [v66 setFrame:{v47 - v96, v36, v103, largestItemHeight}];
+  rightArrowButton = [(_UIFloatingTabBar *)self rightArrowButton];
+  [rightArrowButton setFrame:{v47 - v96, v36, v103, largestItemHeight}];
 
-  v67 = [(_UIFloatingTabBar *)self rightArrowButton];
-  [v67 setContentOpacity:v102];
+  rightArrowButton2 = [(_UIFloatingTabBar *)self rightArrowButton];
+  [rightArrowButton2 setContentOpacity:v102];
 
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
-    v68 = [(_UIFloatingTabBar *)self rightArrowButton];
-    [v68 frame];
+    rightArrowButton3 = [(_UIFloatingTabBar *)self rightArrowButton];
+    [rightArrowButton3 frame];
     v69 = v105;
     v70 = CGRectGetMinX(v111) - v105 - v94;
   }
 
   else
   {
-    v68 = [(_UIFloatingTabBar *)self leftArrowButton];
-    [v68 frame];
+    rightArrowButton3 = [(_UIFloatingTabBar *)self leftArrowButton];
+    [rightArrowButton3 frame];
     v70 = v38 + CGRectGetMaxX(v112);
     v69 = v105;
   }
 
-  v71 = [(_UIFloatingTabBar *)self sidebarButton];
-  [v71 setFrame:{v70, v36, v69, largestItemHeight}];
+  sidebarButton2 = [(_UIFloatingTabBar *)self sidebarButton];
+  [sidebarButton2 setFrame:{v70, v36, v69, largestItemHeight}];
 
   if ([(_UIFloatingTabBar *)self showsSidebarButton])
   {
@@ -1189,37 +1189,37 @@ LABEL_8:
     v72 = 0.0;
   }
 
-  v73 = [(_UIFloatingTabBar *)self sidebarButton];
-  [v73 setAlpha:v72];
+  sidebarButton3 = [(_UIFloatingTabBar *)self sidebarButton];
+  [sidebarButton3 setAlpha:v72];
 
   v74 = v108 + (v106 - v47) * 0.5;
   v75 = v109 + (v107 - v48) * 0.5;
-  v76 = [(_UIFloatingTabBar *)self backgroundView];
-  [v76 frame];
+  backgroundView = [(_UIFloatingTabBar *)self backgroundView];
+  [backgroundView frame];
   rect2.origin.x = v77;
   v79 = v78;
   v81 = v80;
   v83 = v82;
 
-  v84 = [(_UIFloatingTabBar *)self contentView];
-  [v84 setFrame:{0.0, 0.0, v47, v48}];
+  contentView = [(_UIFloatingTabBar *)self contentView];
+  [contentView setFrame:{0.0, 0.0, v47, v48}];
 
-  v85 = [(_UIFloatingTabBar *)self backgroundCaptureView];
-  [v85 setFrame:{v74, v75, v47, v48}];
+  backgroundCaptureView = [(_UIFloatingTabBar *)self backgroundCaptureView];
+  [backgroundCaptureView setFrame:{v74, v75, v47, v48}];
 
-  v86 = [(_UIFloatingTabBar *)self backgroundView];
-  [v86 setFrame:{v74, v75, v47, v48}];
+  backgroundView2 = [(_UIFloatingTabBar *)self backgroundView];
+  [backgroundView2 setFrame:{v74, v75, v47, v48}];
 
-  v87 = [(_UIFloatingTabBar *)self contentView];
-  [v87 _setContinuousCornerRadius:v104];
+  contentView2 = [(_UIFloatingTabBar *)self contentView];
+  [contentView2 _setContinuousCornerRadius:v104];
 
-  v88 = [(_UIFloatingTabBar *)self backgroundView];
-  [v88 _setContinuousCornerRadius:v104];
+  backgroundView3 = [(_UIFloatingTabBar *)self backgroundView];
+  [backgroundView3 _setContinuousCornerRadius:v104];
 
-  v89 = [(_UIFloatingTabBar *)self contentFrameDidChangeBlock];
-  if (v89)
+  contentFrameDidChangeBlock = [(_UIFloatingTabBar *)self contentFrameDidChangeBlock];
+  if (contentFrameDidChangeBlock)
   {
-    v90 = v89;
+    v90 = contentFrameDidChangeBlock;
     v113.origin.x = v108 + (v106 - v47) * 0.5;
     v113.origin.y = v109 + (v107 - v48) * 0.5;
     v113.size.width = v47;
@@ -1232,8 +1232,8 @@ LABEL_8:
 
     if (!v91)
     {
-      v92 = [(_UIFloatingTabBar *)self contentFrameDidChangeBlock];
-      v92[2](v74, v75, v47, v48);
+      contentFrameDidChangeBlock2 = [(_UIFloatingTabBar *)self contentFrameDidChangeBlock];
+      contentFrameDidChangeBlock2[2](v74, v75, v47, v48);
     }
   }
 
@@ -1243,18 +1243,18 @@ LABEL_8:
   }
 }
 
-- (void)_updateTabBarPaginationAnimated:(BOOL)a3
+- (void)_updateTabBarPaginationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(_UIFloatingTabBar *)self _setNeedsPaginationUpdate];
-  if (v3)
+  if (animatedCopy)
   {
-    v5 = [(UIView *)self window];
-    if (v5)
+    window = [(UIView *)self window];
+    if (window)
     {
-      v6 = v5;
-      v7 = [(_UIFloatingTabBar *)self contentView];
-      [v7 frame];
+      v6 = window;
+      contentView = [(_UIFloatingTabBar *)self contentView];
+      [contentView frame];
       IsEmpty = CGRectIsEmpty(v10);
 
       if (!IsEmpty)
@@ -1272,18 +1272,18 @@ LABEL_8:
 
 - (CGSize)_maximumContainerSizeForPagination
 {
-  v3 = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
-  v4 = [(_UIFloatingTabBar *)self tabModel];
-  v5 = [v4 isEditing];
+  _currentPlatformMetrics = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  isEditing = [tabModel isEditing];
 
-  if (v5)
+  if (isEditing)
   {
-    [v3 maximumExpandedWidth];
+    [_currentPlatformMetrics maximumExpandedWidth];
   }
 
   else
   {
-    [v3 maximumWidth];
+    [_currentPlatformMetrics maximumWidth];
   }
 
   v7 = v6;
@@ -1292,19 +1292,19 @@ LABEL_8:
   [(UIView *)self bounds];
   v11 = v10;
   v13 = v12 - (v9 + v9);
-  v14 = [(_UIFloatingTabBar *)self pinnedItemsView];
-  [v14 sizeThatFits:{v13, v11}];
+  pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+  [pinnedItemsView sizeThatFits:{v13, v11}];
   v16 = v15;
 
   if ([(_UIFloatingTabBar *)self showsSidebarButton])
   {
-    v17 = [(_UIFloatingTabBar *)self sidebarButton];
-    [v17 sizeThatFits:{v13, v11}];
+    sidebarButton = [(_UIFloatingTabBar *)self sidebarButton];
+    [sidebarButton sizeThatFits:{v13, v11}];
     v16 = v16 + v18;
   }
 
   v19 = 0.65;
-  if (v5)
+  if (isEditing)
   {
     v19 = 0.95;
   }
@@ -1324,30 +1324,30 @@ LABEL_8:
   if (*&self->_needsUpdate)
   {
     v104 = 408;
-    v107 = [(_UIFloatingTabBar *)self collectionView];
-    v106 = [(UIView *)self traitCollection];
-    v3 = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
-    v4 = [(_UIFloatingTabBar *)self lastSnapshot];
-    v5 = [v4 itemIdentifiers];
+    collectionView = [(_UIFloatingTabBar *)self collectionView];
+    traitCollection = [(UIView *)self traitCollection];
+    _currentPlatformMetrics = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
+    lastSnapshot = [(_UIFloatingTabBar *)self lastSnapshot];
+    itemIdentifiers = [lastSnapshot itemIdentifiers];
 
     [(_UIFloatingTabBar *)self _maximumContainerSizeForPagination];
     v7 = v6;
     v9 = v8;
-    v10 = [(_UIFloatingTabBar *)self leftArrowButton];
+    leftArrowButton = [(_UIFloatingTabBar *)self leftArrowButton];
     v113 = v7;
-    [v10 sizeThatFits:{v7, v9}];
+    [leftArrowButton sizeThatFits:{v7, v9}];
     v12 = v11;
 
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v14 = [v5 count];
+    v14 = [itemIdentifiers count];
     v103[1] = v103;
     MEMORY[0x1EEE9AC00](v14);
     v16 = v103 - v15;
     v17 = [[_UIEditMenuListPage alloc] initWithStartIndex:0];
     [v13 addObject:v17];
-    v18 = [(_UIFloatingTabBar *)self isEditing];
-    v105 = v3;
-    [v3 editModeItemMargins];
+    isEditing = [(_UIFloatingTabBar *)self isEditing];
+    v105 = _currentPlatformMetrics;
+    [_currentPlatformMetrics editModeItemMargins];
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -1355,11 +1355,11 @@ LABEL_8:
     v27 = objc_alloc_init(_UIFloatingTabBarItemView);
     [(_UIFloatingTabBarItemView *)v27 setSuppressJiggleAnimation:1];
     [(UIView *)v27 setHidden:1];
-    [(_UIFloatingTabBarItemView *)v27 setEditing:v18];
-    v28 = [(_UIFloatingTabBar *)self contentView];
-    [v28 addSubview:v27];
+    [(_UIFloatingTabBarItemView *)v27 setEditing:isEditing];
+    contentView = [(_UIFloatingTabBar *)self contentView];
+    [contentView addSubview:v27];
 
-    v29 = [v5 count];
+    v29 = [itemIdentifiers count];
     v112 = v12;
     if (v29)
     {
@@ -1374,27 +1374,27 @@ LABEL_8:
       v34 = v9;
       do
       {
-        v35 = [v5 objectAtIndex:v30];
+        v35 = [itemIdentifiers objectAtIndex:v30];
         [v13 count];
-        [v5 count];
+        [itemIdentifiers count];
         v36 = v113;
         UIRoundToViewScale(self);
         v38 = v37;
-        v39 = [v35 contentTab];
+        contentTab = [v35 contentTab];
 
-        if (v39)
+        if (contentTab)
         {
-          v40 = [v35 contentTab];
-          [(_UIFloatingTabBarItemView *)v27 setItem:v40];
+          contentTab2 = [v35 contentTab];
+          [(_UIFloatingTabBarItemView *)v27 setItem:contentTab2];
 
           [(_UIFloatingTabBarItemView *)v27 sizeThatFits:v36, v9];
           v42 = v41;
           v44 = v43;
           [(_UIFloatingTabBarItemView *)v27 baselineOffsetFromTop];
           v46 = v45;
-          v47 = [(_UIFloatingTabBarItemView *)v27 isCustomizableItem];
+          isCustomizableItem = [(_UIFloatingTabBarItemView *)v27 isCustomizableItem];
           v48 = v111 + v42;
-          if (v47 && v18)
+          if (isCustomizableItem && isEditing)
           {
             v44 = v110 + v44;
           }
@@ -1407,8 +1407,8 @@ LABEL_8:
 
         else
         {
-          v49 = [v35 isPlaceholder];
-          if (v49)
+          isPlaceholder = [v35 isPlaceholder];
+          if (isPlaceholder)
           {
             v44 = 0.0;
           }
@@ -1419,7 +1419,7 @@ LABEL_8:
           }
 
           v48 = 80.0;
-          if (!v49)
+          if (!isPlaceholder)
           {
             v48 = v109;
           }
@@ -1447,7 +1447,7 @@ LABEL_8:
         v9 = v34;
       }
 
-      while (v30 < [v5 count]);
+      while (v30 < [itemIdentifiers count]);
     }
 
     else
@@ -1462,9 +1462,9 @@ LABEL_8:
     {
       UIRoundToViewScale(self);
       v56 = v55;
-      v57 = [(_UIEditMenuListPage *)v17 range];
-      v58 = v57 - 1;
-      if (v57 != 1)
+      range = [(_UIEditMenuListPage *)v17 range];
+      v58 = range - 1;
+      if (range != 1)
       {
         v59 = 0.0;
         do
@@ -1491,11 +1491,11 @@ LABEL_8:
       }
     }
 
-    if (v18 && ![v5 count])
+    if (isEditing && ![itemIdentifiers count])
     {
-      v63 = [(_UIFloatingTabBar *)self pinnedItemsView];
-      v64 = [v63 items];
-      v65 = [v64 count];
+      pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+      items = [pinnedItemsView items];
+      v65 = [items count];
 
       if (!v65)
       {
@@ -1539,17 +1539,17 @@ LABEL_8:
     }
 
     self->_largestPageWidth = v70;
-    v73 = [v5 count];
+    v73 = [itemIdentifiers count];
     if (v32 == 0.0 || !v73)
     {
-      v74 = [(_UIFloatingTabBar *)self pinnedItemsView];
-      v75 = [v74 items];
-      v76 = [v75 count];
+      pinnedItemsView2 = [(_UIFloatingTabBar *)self pinnedItemsView];
+      items2 = [pinnedItemsView2 items];
+      v76 = [items2 count];
 
       if (v76)
       {
-        v77 = [(_UIFloatingTabBar *)self pinnedItemsView];
-        [v77 sizeThatFits:{v54, v9}];
+        pinnedItemsView3 = [(_UIFloatingTabBar *)self pinnedItemsView];
+        [pinnedItemsView3 sizeThatFits:{v54, v9}];
         v32 = v78;
       }
 
@@ -1565,18 +1565,18 @@ LABEL_8:
 
     self->_largestItemHeight = v32;
     self->_minimumItemBaselineFromTop = v33;
-    v81 = [v107 pages];
+    pages = [collectionView pages];
     v82 = v66;
     v83 = v82;
-    if (v81 == v82)
+    if (pages == v82)
     {
     }
 
     else
     {
-      if (v82 && v81)
+      if (v82 && pages)
       {
-        v84 = [v81 isEqual:v82];
+        v84 = [pages isEqual:v82];
 
         if (v84)
         {
@@ -1588,12 +1588,12 @@ LABEL_8:
       {
       }
 
-      v81 = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
-      if (![(_UIFloatingTabBar *)self isEditing]&& v81)
+      pages = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
+      if (![(_UIFloatingTabBar *)self isEditing]&& pages)
       {
-        v85 = [(_UIFloatingTabBar *)self collectionView];
-        v86 = [v85 indexPathsForVisibleItems];
-        v87 = [v86 containsObject:v81];
+        collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+        indexPathsForVisibleItems = [collectionView2 indexPathsForVisibleItems];
+        v87 = [indexPathsForVisibleItems containsObject:pages];
 
         if (v87)
         {
@@ -1606,8 +1606,8 @@ LABEL_8:
     }
 
 LABEL_58:
-    v88 = v107;
-    [v107 contentInset];
+    v88 = collectionView;
+    [collectionView contentInset];
     v90 = v89;
     v92 = v91;
     v94 = v93;
@@ -1618,15 +1618,15 @@ LABEL_58:
     v97 = v96 < 2;
     v98 = v96 > 1;
     [v88 setScrollEnabled:v98];
-    v99 = v98 || v18;
-    v100 = [(_UIFloatingTabBar *)self collectionViewContainer];
-    [v100 setClipsToBounds:v99];
+    v99 = v98 || isEditing;
+    collectionViewContainer = [(_UIFloatingTabBar *)self collectionViewContainer];
+    [collectionViewContainer setClipsToBounds:v99];
 
-    v101 = [(_UIFloatingTabBar *)self contentView];
-    [v101 setClipsToBounds:v99];
+    contentView2 = [(_UIFloatingTabBar *)self contentView];
+    [contentView2 setClipsToBounds:v99];
 
-    v102 = [(_UIFloatingTabBar *)self selectionContainerView];
-    [v102 setClipsToBounds:v99];
+    selectionContainerView = [(_UIFloatingTabBar *)self selectionContainerView];
+    [selectionContainerView setClipsToBounds:v99];
 
     [(_UIFloatingTabBar *)self setScrubbingEnabled:v97];
     [(_UIFloatingTabBar *)self _setNeedsSelectionAlphaUpdate];
@@ -1635,37 +1635,37 @@ LABEL_58:
   }
 }
 
-- (void)_didTapLeftArrowButton:(id)a3
+- (void)_didTapLeftArrowButton:(id)button
 {
-  v4 = [(UIView *)self _shouldReverseLayoutDirection];
-  v5 = [(_UIFloatingTabBar *)self collectionView];
-  v6 = v5;
-  if (v4)
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  v6 = collectionView;
+  if (_shouldReverseLayoutDirection)
   {
-    [v5 incrementTargetPage];
+    [collectionView incrementTargetPage];
   }
 
   else
   {
-    [v5 decrementTargetPage];
+    [collectionView decrementTargetPage];
   }
 
   [(_UIFloatingTabBar *)self _updateSelectionViewVisibilityAnimated:1];
 }
 
-- (void)_didTapRightArrowButton:(id)a3
+- (void)_didTapRightArrowButton:(id)button
 {
-  v4 = [(UIView *)self _shouldReverseLayoutDirection];
-  v5 = [(_UIFloatingTabBar *)self collectionView];
-  v6 = v5;
-  if (v4)
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  v6 = collectionView;
+  if (_shouldReverseLayoutDirection)
   {
-    [v5 decrementTargetPage];
+    [collectionView decrementTargetPage];
   }
 
   else
   {
-    [v5 incrementTargetPage];
+    [collectionView incrementTargetPage];
   }
 
   [(_UIFloatingTabBar *)self _updateSelectionViewVisibilityAnimated:1];
@@ -1673,16 +1673,16 @@ LABEL_58:
 
 - (BOOL)scrubbingEnabled
 {
-  v2 = [(_UIFloatingTabBar *)self collectionView];
-  v3 = [v2 bounces];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  bounces = [collectionView bounces];
 
-  return v3 ^ 1;
+  return bounces ^ 1;
 }
 
-- (void)setScrubbingEnabled:(BOOL)a3
+- (void)setScrubbingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3)
+  enabledCopy = enabled;
+  if (enabled)
   {
     v5 = 0.0;
   }
@@ -1692,58 +1692,58 @@ LABEL_58:
     v5 = 10.0;
   }
 
-  v6 = [(_UIFloatingTabBar *)self collectionView];
-  [v6 setBounces:!v3];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  [collectionView setBounces:!enabledCopy];
 
-  v7 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
-  [v7 setAllowableMovement:{v5, v5}];
+  selectionGestureRecognizer = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
+  [selectionGestureRecognizer setAllowableMovement:{v5, v5}];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = _UIFloatingTabBar;
-  v8 = [(UIView *)&v13 hitTest:v7 withEvent:x, y];
+  v8 = [(UIView *)&v13 hitTest:eventCopy withEvent:x, y];
   v9 = v8;
   if (v8 == self || v8 == 0)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [(_UIFloatingTabBar *)self isEditing]&& !CGRectIsNull(self->_frameForExpandedDropTarget) && (v15.x = x, v15.y = y, CGRectContainsPoint(self->_frameForExpandedDropTarget, v15)))
     {
-      v11 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
 
-    v9 = v11;
+    v9 = selfCopy;
   }
 
   return v9;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
+  beginCopy = begin;
+  selectionGestureRecognizer = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
 
-  if (v5 == v4)
+  if (selectionGestureRecognizer == beginCopy)
   {
-    v8 = [(_UIFloatingTabBar *)self _indexPathForGestureRecognizer:v4];
-    if (v8)
+    tabModel2 = [(_UIFloatingTabBar *)self _indexPathForGestureRecognizer:beginCopy];
+    if (tabModel2)
     {
-      v9 = [(_UIFloatingTabBar *)self tabModel];
-      v10 = [v9 isEditing];
+      tabModel = [(_UIFloatingTabBar *)self tabModel];
+      isEditing = [tabModel isEditing];
 
-      if ((v10 & 1) == 0)
+      if ((isEditing & 1) == 0)
       {
-        v11 = [(_UIFloatingTabBar *)self _tabForItemAtIndexPath:v8];
-        v7 = [v11 isEnabled];
+        v11 = [(_UIFloatingTabBar *)self _tabForItemAtIndexPath:tabModel2];
+        isEnabled = [v11 isEnabled];
 
 LABEL_10:
         goto LABEL_11;
@@ -1751,49 +1751,49 @@ LABEL_10:
     }
 
 LABEL_9:
-    v7 = 0;
+    isEnabled = 0;
     goto LABEL_10;
   }
 
-  v6 = [(_UIFloatingTabBar *)self editModeGestureRecognizer];
+  editModeGestureRecognizer = [(_UIFloatingTabBar *)self editModeGestureRecognizer];
 
-  if (v6 == v4)
+  if (editModeGestureRecognizer == beginCopy)
   {
-    v8 = [(_UIFloatingTabBar *)self tabModel];
-    if ([v8 isEditable] && !-[_UIFloatingTabBar isEditing](self, "isEditing"))
+    tabModel2 = [(_UIFloatingTabBar *)self tabModel];
+    if ([tabModel2 isEditable] && !-[_UIFloatingTabBar isEditing](self, "isEditing"))
     {
-      v7 = !self->_isInTransitionAnimation;
+      isEnabled = !self->_isInTransitionAnimation;
       goto LABEL_10;
     }
 
     goto LABEL_9;
   }
 
-  v7 = 1;
+  isEnabled = 1;
 LABEL_11:
 
-  return v7 & 1;
+  return isEnabled & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  selectionGestureRecognizer = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
 
-  if (v8 == v7)
+  if (selectionGestureRecognizer == recognizerCopy)
   {
-    v10 = [(_UIFloatingTabBar *)self collectionView];
-    v11 = [v10 panGestureRecognizer];
-    if (v11 == v6)
+    collectionView = [(_UIFloatingTabBar *)self collectionView];
+    panGestureRecognizer = [collectionView panGestureRecognizer];
+    if (panGestureRecognizer == gestureRecognizerCopy)
     {
       v9 = 1;
     }
 
     else
     {
-      v12 = [(_UIFloatingTabBar *)self editModeGestureRecognizer];
-      v9 = v12 == v6;
+      editModeGestureRecognizer = [(_UIFloatingTabBar *)self editModeGestureRecognizer];
+      v9 = editModeGestureRecognizer == gestureRecognizerCopy;
     }
   }
 
@@ -1805,37 +1805,37 @@ LABEL_11:
   return v9;
 }
 
-- (id)_indexPathForGestureRecognizer:(id)a3
+- (id)_indexPathForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(_UIFloatingTabBar *)self pinnedItemsView];
-  [v4 locationInView:v5];
+  recognizerCopy = recognizer;
+  pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+  [recognizerCopy locationInView:pinnedItemsView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_UIFloatingTabBar *)self pinnedItemsView];
-  v11 = [v10 itemIndexForItemAtLocation:{v7, v9}];
+  pinnedItemsView2 = [(_UIFloatingTabBar *)self pinnedItemsView];
+  v11 = [pinnedItemsView2 itemIndexForItemAtLocation:{v7, v9}];
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [(_UIFloatingTabBar *)self collectionView];
-    [v4 locationInView:v12];
+    collectionView = [(_UIFloatingTabBar *)self collectionView];
+    [recognizerCopy locationInView:collectionView];
     v14 = v13;
 
-    v15 = [(_UIFloatingTabBar *)self collectionView];
-    [v15 bounds];
+    collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+    [collectionView2 bounds];
     MidY = CGRectGetMidY(v27);
 
-    v17 = [(_UIFloatingTabBar *)self collectionView];
-    [v17 bounds];
+    collectionView3 = [(_UIFloatingTabBar *)self collectionView];
+    [collectionView3 bounds];
     v26.x = v14;
     v26.y = MidY;
     v18 = CGRectContainsPoint(v28, v26);
 
     if (v18)
     {
-      v19 = [(_UIFloatingTabBar *)self collectionView];
-      v20 = [v19 indexPathForItemAtPoint:{v14, MidY}];
+      collectionView4 = [(_UIFloatingTabBar *)self collectionView];
+      v20 = [collectionView4 indexPathForItemAtPoint:{v14, MidY}];
     }
 
     else
@@ -1844,10 +1844,10 @@ LABEL_11:
     }
 
     v21 = [(_UIFloatingTabBar *)self _pageIndexForItemAtIndexPath:v20];
-    v22 = [(_UIFloatingTabBar *)self collectionView];
-    v23 = [v22 targetPage];
+    collectionView5 = [(_UIFloatingTabBar *)self collectionView];
+    targetPage = [collectionView5 targetPage];
 
-    if (v21 != v23)
+    if (v21 != targetPage)
     {
 
       v20 = 0;
@@ -1862,30 +1862,30 @@ LABEL_11:
   return v20;
 }
 
-- (void)_handleSelectionGesture:(id)a3
+- (void)_handleSelectionGesture:(id)gesture
 {
-  v45 = a3;
+  gestureCopy = gesture;
   v4 = [(_UIFloatingTabBar *)self _indexPathForGestureRecognizer:?];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    highlightedIndexPath = v4;
   }
 
   else
   {
-    v6 = [(_UIFloatingTabBar *)self highlightedIndexPath];
+    highlightedIndexPath = [(_UIFloatingTabBar *)self highlightedIndexPath];
   }
 
-  v7 = v6;
+  v7 = highlightedIndexPath;
 
   v8 = v7;
-  v9 = [(_UIFloatingTabBar *)self collectionView];
-  if ([v9 isDecelerating])
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  if ([collectionView isDecelerating])
   {
-    v10 = [(_UIFloatingTabBar *)self collectionView];
-    v11 = [v10 panGestureRecognizer];
-    v12 = [v11 state] == 5;
+    collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+    panGestureRecognizer = [collectionView2 panGestureRecognizer];
+    v12 = [panGestureRecognizer state] == 5;
   }
 
   else
@@ -1893,16 +1893,16 @@ LABEL_11:
     v12 = 1;
   }
 
-  v13 = [(_UIFloatingTabBar *)self contentView];
-  [v45 locationInView:v13];
+  contentView = [(_UIFloatingTabBar *)self contentView];
+  [gestureCopy locationInView:contentView];
   v15 = v14;
   v17 = v16;
 
-  v18 = [v45 state];
+  state = [gestureCopy state];
   v19 = 0;
-  if (v18 > 2)
+  if (state > 2)
   {
-    if (v18 == 3)
+    if (state == 3)
     {
 
       if (v8)
@@ -1917,23 +1917,23 @@ LABEL_11:
 
       if (v33)
       {
-        v34 = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
-        v35 = [v34 isEqual:v8];
+        _indexPathForSelectedItem = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
+        v35 = [_indexPathForSelectedItem isEqual:v8];
 
         if (!v35)
         {
           v20 = 0;
           v19 = 1;
-          v22 = 1;
+          shouldReselectHighlightedItemOnLift = 1;
           goto LABEL_39;
         }
 
-        v22 = [(_UIFloatingTabBar *)self shouldReselectHighlightedItemOnLift];
+        shouldReselectHighlightedItemOnLift = [(_UIFloatingTabBar *)self shouldReselectHighlightedItemOnLift];
       }
 
       else
       {
-        v22 = 0;
+        shouldReselectHighlightedItemOnLift = 0;
       }
 
       v20 = 0;
@@ -1941,19 +1941,19 @@ LABEL_11:
       goto LABEL_39;
     }
 
-    v19 = v18 == 4;
+    v19 = state == 4;
     goto LABEL_16;
   }
 
-  if (v18 == 1)
+  if (state == 1)
   {
     if ([(_UIFloatingTabBar *)self scrubbingEnabled])
     {
       v23 = 0.5;
       if (v8)
       {
-        v24 = [(_UIFloatingTabBar *)self contentView];
-        [(_UIFloatingTabBar *)self _itemFrameForItemAtIndexPath:v8 inCoordinateSpace:v24];
+        contentView2 = [(_UIFloatingTabBar *)self contentView];
+        [(_UIFloatingTabBar *)self _itemFrameForItemAtIndexPath:v8 inCoordinateSpace:contentView2];
         v26 = v25;
         v28 = v27;
         v30 = v29;
@@ -1977,8 +1977,8 @@ LABEL_11:
           v20 = v8;
           if (!CGRectIsEmpty(v48))
           {
-            v36 = [(_UIFloatingTabBar *)self contentView];
-            [v45 locationInView:v36];
+            contentView3 = [(_UIFloatingTabBar *)self contentView];
+            [gestureCopy locationInView:contentView3];
             v38 = v37;
 
             v49.origin.x = v26;
@@ -2010,18 +2010,18 @@ LABEL_11:
     }
 
     [(_UIFloatingTabBar *)self setHighlightAnchorPoint:v23, 0.5];
-    v40 = [(_UIFloatingTabBar *)self selectionFrameGroupCompletion];
-    [v40 increment];
+    selectionFrameGroupCompletion = [(_UIFloatingTabBar *)self selectionFrameGroupCompletion];
+    [selectionFrameGroupCompletion increment];
 
     if (_UIFlexiGlassEnabled())
     {
-      v41 = [(UIView *)self traitCollection];
-      v42 = [v41 valueForNSIntegerTrait:objc_opt_class()];
+      traitCollection = [(UIView *)self traitCollection];
+      v42 = [traitCollection valueForNSIntegerTrait:objc_opt_class()];
 
       if (!v42)
       {
-        v43 = [(UIView *)self traitOverrides];
-        [v43 setNSIntegerValue:1 forTrait:objc_opt_class()];
+        traitOverrides = [(UIView *)self traitOverrides];
+        [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
       }
     }
 
@@ -2030,11 +2030,11 @@ LABEL_11:
     goto LABEL_38;
   }
 
-  if (v18 != 2)
+  if (state != 2)
   {
 LABEL_16:
 
-    v22 = 0;
+    shouldReselectHighlightedItemOnLift = 0;
     v20 = 0;
     goto LABEL_39;
   }
@@ -2054,51 +2054,51 @@ LABEL_16:
 
 LABEL_38:
   v19 = 0;
-  v22 = 0;
+  shouldReselectHighlightedItemOnLift = 0;
 LABEL_39:
   [(_UIFloatingTabBar *)self setHighlightedIndexPath:v20];
   [(_UIFloatingTabBar *)self _updateSelectionViewFrameAnimated:1 completion:0];
-  if (v22)
+  if (shouldReselectHighlightedItemOnLift)
   {
     [(_UIFloatingTabBar *)self _selectItemAtIndexPath:v8];
   }
 
   if (v19)
   {
-    v44 = [(_UIFloatingTabBar *)self selectionFrameGroupCompletion];
-    [v44 complete];
+    selectionFrameGroupCompletion2 = [(_UIFloatingTabBar *)self selectionFrameGroupCompletion];
+    [selectionFrameGroupCompletion2 complete];
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 view];
-  [v8 location];
+  interactionCopy = interaction;
+  requestCopy = request;
+  view = [interactionCopy view];
+  [requestCopy location];
   v11 = v10;
   v13 = v12;
-  v14 = [(_UIFloatingTabBar *)self pinnedItemsView];
-  [v9 convertPoint:v14 toView:{v11, v13}];
+  pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+  [view convertPoint:pinnedItemsView toView:{v11, v13}];
   v16 = v15;
   v18 = v17;
 
-  v19 = [(_UIFloatingTabBar *)self pinnedItemsView];
-  v20 = [v19 itemIndexForItemAtLocation:{v16, v18}];
+  pinnedItemsView2 = [(_UIFloatingTabBar *)self pinnedItemsView];
+  v20 = [pinnedItemsView2 itemIndexForItemAtLocation:{v16, v18}];
 
   if (v20 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v33 = [MEMORY[0x1E696AC88] indexPathForItem:v20 inSection:3];
-    v57 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    [v57 itemFrameForItemAtIndex:v20];
+    pinnedItemsView3 = [(_UIFloatingTabBar *)self pinnedItemsView];
+    [pinnedItemsView3 itemFrameForItemAtIndex:v20];
     v59 = v58;
     v61 = v60;
     v63 = v62;
     v65 = v64;
 
-    v66 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    v67 = [v7 view];
-    [v66 convertRect:v67 toView:{v59, v61, v63, v65}];
+    pinnedItemsView4 = [(_UIFloatingTabBar *)self pinnedItemsView];
+    view2 = [interactionCopy view];
+    [pinnedItemsView4 convertRect:view2 toView:{v59, v61, v63, v65}];
     v69 = v68;
     v71 = v70;
     v73 = v72;
@@ -2108,34 +2108,34 @@ LABEL_39:
     goto LABEL_9;
   }
 
-  v21 = [v7 view];
-  [v8 location];
+  view3 = [interactionCopy view];
+  [requestCopy location];
   v23 = v22;
   v25 = v24;
-  v26 = [(_UIFloatingTabBar *)self collectionView];
-  [v21 convertPoint:v26 toView:{v23, v25}];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  [view3 convertPoint:collectionView toView:{v23, v25}];
   v28 = v27;
   v30 = v29;
 
-  v31 = [(_UIFloatingTabBar *)self collectionView];
-  [v31 bounds];
+  collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+  [collectionView2 bounds];
   v80.x = v28;
   v80.y = v30;
-  LODWORD(v26) = CGRectContainsPoint(v81, v80);
+  LODWORD(collectionView) = CGRectContainsPoint(v81, v80);
 
-  if (!v26)
+  if (!collectionView)
   {
     goto LABEL_8;
   }
 
-  v32 = [(_UIFloatingTabBar *)self collectionView];
-  v33 = [v32 indexPathForItemAtPoint:{v28, v30}];
+  collectionView3 = [(_UIFloatingTabBar *)self collectionView];
+  v33 = [collectionView3 indexPathForItemAtPoint:{v28, v30}];
 
   v34 = [(_UIFloatingTabBar *)self _pageIndexForItemAtIndexPath:v33];
-  v35 = [(_UIFloatingTabBar *)self collectionView];
-  v36 = [v35 targetPage];
+  collectionView4 = [(_UIFloatingTabBar *)self collectionView];
+  targetPage = [collectionView4 targetPage];
 
-  if (v34 != v36)
+  if (v34 != targetPage)
   {
 
 LABEL_8:
@@ -2146,16 +2146,16 @@ LABEL_8:
 
   if (v33)
   {
-    v37 = [(_UIFloatingTabBar *)self collectionView];
-    v38 = [v37 cellForItemAtIndexPath:v33];
+    collectionView5 = [(_UIFloatingTabBar *)self collectionView];
+    v38 = [collectionView5 cellForItemAtIndexPath:v33];
 
     [v38 bounds];
     v40 = v39;
     v42 = v41;
     v44 = v43;
     v46 = v45;
-    v47 = [v7 view];
-    [v38 convertRect:v47 toView:{v40, v42, v44, v46}];
+    view4 = [interactionCopy view];
+    [v38 convertRect:view4 toView:{v40, v42, v44, v46}];
     v49 = v48;
     v51 = v50;
     v53 = v52;
@@ -2170,17 +2170,17 @@ LABEL_8:
   }
 
 LABEL_9:
-  v76 = [(_UIFloatingTabBar *)self tabModel];
-  if ([v76 isEditing])
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  if ([tabModel isEditing])
   {
-    v77 = [v33 section];
+    section = [v33 section];
 
-    if (v77 == 1)
+    if (section == 1)
     {
       goto LABEL_13;
     }
 
-    v76 = v56;
+    tabModel = v56;
     v56 = 0;
   }
 
@@ -2189,29 +2189,29 @@ LABEL_13:
   return v56;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [a4 identifier];
-  v6 = self;
-  v7 = [(_UIFloatingTabBar *)v6 _viewForItemAtIndexPath:v5];
+  identifier = [region identifier];
+  selfCopy = self;
+  v7 = [(_UIFloatingTabBar *)selfCopy _viewForItemAtIndexPath:identifier];
   [v7 bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 superview];
+  superview = [v7 superview];
   [v7 center];
-  [v16 convertPoint:v6 toView:?];
+  [superview convertPoint:selfCopy toView:?];
   v18 = v17;
   v20 = v19;
 
-  v21 = [[UIPreviewTarget alloc] initWithContainer:v6 center:v18, v20];
-  v22 = [(_UIFloatingTabBar *)v6 tabModel];
-  v23 = [v22 isEditing];
+  v21 = [[UIPreviewTarget alloc] initWithContainer:selfCopy center:v18, v20];
+  tabModel = [(_UIFloatingTabBar *)selfCopy tabModel];
+  isEditing = [tabModel isEditing];
 
-  if (v23)
+  if (isEditing)
   {
-    v24 = [(_UIFloatingTabBar *)v6 _targetedPreviewForTabAtIndexPath:v5];
+    v24 = [(_UIFloatingTabBar *)selfCopy _targetedPreviewForTabAtIndexPath:identifier];
     v25 = [v24 retargetedPreviewWithTarget:v21];
 LABEL_10:
     v32 = v25;
@@ -2219,9 +2219,9 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v26 = [(_UIFloatingTabBar *)v6 _indexPathForSelectedItem];
-  v27 = v5;
-  v28 = v26;
+  _indexPathForSelectedItem = [(_UIFloatingTabBar *)selfCopy _indexPathForSelectedItem];
+  v27 = identifier;
+  v28 = _indexPathForSelectedItem;
   v29 = v28;
   if (v27 == v28)
   {
@@ -2253,13 +2253,13 @@ LABEL_12:
 LABEL_13:
 
   v35 = [(__objc2_class *)*v33 effectWithPreview:v32];
-  [v7 convertRect:v6 toView:{v9, v11, v13, v15}];
+  [v7 convertRect:selfCopy toView:{v9, v11, v13, v15}];
   v37 = v36;
   v39 = v38;
   v41 = v40;
   v43 = v42;
-  v44 = [(UITargetedPreview *)v32 view];
-  [v44 bounds];
+  view = [(UITargetedPreview *)v32 view];
+  [view bounds];
   v45 = [UIPointerShape shapeWithRoundedRect:v37 cornerRadius:v39, v41, v43, CGRectGetHeight(v49) * 0.5];
 
   v46 = [UIPointerStyle styleWithEffect:v35 shape:v45];
@@ -2267,15 +2267,15 @@ LABEL_13:
   return v46;
 }
 
-- (BOOL)_isValidDropTargetIndexPath:(id)a3
+- (BOOL)_isValidDropTargetIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 section])
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy && ![pathCopy section])
   {
-    v7 = [v5 item];
-    v8 = [(_UIFloatingTabBar *)self lastSnapshot];
-    v6 = v7 == [v8 numberOfItemsInSection:&unk_1EFE33DF0];
+    item = [v5 item];
+    lastSnapshot = [(_UIFloatingTabBar *)self lastSnapshot];
+    v6 = item == [lastSnapshot numberOfItemsInSection:&unk_1EFE33DF0];
   }
 
   else
@@ -2286,62 +2286,62 @@ LABEL_13:
   return v6;
 }
 
-- (id)tabDragController:(id)a3 tabForBeginningSession:(id)a4
+- (id)tabDragController:(id)controller tabForBeginningSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UIFloatingTabBar *)self collectionView];
-  [v5 locationInView:v6];
+  sessionCopy = session;
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  [sessionCopy locationInView:collectionView];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(_UIFloatingTabBar *)self collectionView];
-  v12 = [v11 indexPathForItemAtPoint:{v8, v10}];
+  collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+  v12 = [collectionView2 indexPathForItemAtPoint:{v8, v10}];
 
   if (v12)
   {
-    v13 = [(_UIFloatingTabBar *)self dataSource];
-    v14 = [v13 itemIdentifierForIndexPath:v12];
+    dataSource = [(_UIFloatingTabBar *)self dataSource];
+    v14 = [dataSource itemIdentifierForIndexPath:v12];
 
-    v15 = [v14 tabForSelection];
-    v16 = [(_UIFloatingTabBar *)self _canDragTab:v15];
+    tabForSelection = [v14 tabForSelection];
+    v16 = [(_UIFloatingTabBar *)self _canDragTab:tabForSelection];
 
     if (v16)
     {
-      v17 = [v14 tabForSelection];
+      tabForSelection2 = [v14 tabForSelection];
     }
 
     else
     {
-      v17 = 0;
+      tabForSelection2 = 0;
     }
   }
 
   else
   {
-    v17 = 0;
+    tabForSelection2 = 0;
   }
 
-  return v17;
+  return tabForSelection2;
 }
 
-- (void)tabDragController:(id)a3 hideDraggedTab:(id)a4
+- (void)tabDragController:(id)controller hideDraggedTab:(id)tab
 {
-  v8 = [(_UIFloatingTabBar *)self _indexPathForTabItem:a4];
-  v5 = [(_UIFloatingTabBar *)self collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v8];
+  v8 = [(_UIFloatingTabBar *)self _indexPathForTabItem:tab];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  v6 = [collectionView cellForItemAtIndexPath:v8];
 
-  v7 = [v6 contentView];
-  [v7 setHidden:1];
+  contentView = [v6 contentView];
+  [contentView setHidden:1];
 }
 
-- (BOOL)tabDragController:(id)a3 canHandleDropSessionForTab:(id)a4
+- (BOOL)tabDragController:(id)controller canHandleDropSessionForTab:(id)tab
 {
-  v5 = a4;
-  v6 = [v5 _tabModel];
-  v7 = [(_UIFloatingTabBar *)self tabModel];
-  if (v6 == v7)
+  tabCopy = tab;
+  _tabModel = [tabCopy _tabModel];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  if (_tabModel == tabModel)
   {
-    v8 = [v5 _isAction] ^ 1;
+    v8 = [tabCopy _isAction] ^ 1;
   }
 
   else
@@ -2352,34 +2352,34 @@ LABEL_13:
   return v8;
 }
 
-- (id)tabDragController:(id)a3 dropProposalForSession:(id)a4
+- (id)tabDragController:(id)controller dropProposalForSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UIFloatingTabBar *)self collectionView];
-  [v5 locationInView:v6];
+  sessionCopy = session;
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  [sessionCopy locationInView:collectionView];
 
-  v7 = [(_UIFloatingTabBar *)self collectionView];
-  [v7 bounds];
+  collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+  [collectionView2 bounds];
   CGRectGetMidY(v20);
 
-  v8 = [(_UIFloatingTabBar *)self _destinationIndexPathForDropSession:v5];
-  v9 = [(_UIFloatingTabBar *)self tabModel];
-  v10 = [v9 isEditing];
+  v8 = [(_UIFloatingTabBar *)self _destinationIndexPathForDropSession:sessionCopy];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  isEditing = [tabModel isEditing];
 
-  if (v10)
+  if (isEditing)
   {
-    v11 = [v5 items];
-    v12 = [v11 firstObject];
+    items = [sessionCopy items];
+    firstObject = [items firstObject];
 
-    v13 = [v12 localObject];
-    if ([v13 _tabPlacement] == 6)
+    localObject = [firstObject localObject];
+    if ([localObject _tabPlacement] == 6)
     {
       v14 = 1;
     }
 
-    else if (-[_UIFloatingTabBar _isValidDropTargetIndexPath:](self, "_isValidDropTargetIndexPath:", v8) && (-[_UIFloatingTabBar tabModel](self, "tabModel"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isTabHidden:v13], v15, (v16 & 1) == 0))
+    else if (-[_UIFloatingTabBar _isValidDropTargetIndexPath:](self, "_isValidDropTargetIndexPath:", v8) && (-[_UIFloatingTabBar tabModel](self, "tabModel"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isTabHidden:localObject], v15, (v16 & 1) == 0))
     {
-      if ([(_UIFloatingTabBar *)self _canDragTab:v13])
+      if ([(_UIFloatingTabBar *)self _canDragTab:localObject])
       {
         v14 = 3;
       }
@@ -2404,9 +2404,9 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v12 = [(_UIFloatingTabBar *)self _tabForItemAtIndexPath:v8];
-    v13 = [(_UIFloatingTabBar *)self _tabBarController];
-    v14 = [(UITabBarController *)v13 _tab:v12 operationForAcceptingItemsFromDropSession:v5];
+    firstObject = [(_UIFloatingTabBar *)self _tabForItemAtIndexPath:v8];
+    localObject = [(_UIFloatingTabBar *)self _tabBarController];
+    v14 = [(UITabBarController *)localObject _tab:firstObject operationForAcceptingItemsFromDropSession:sessionCopy];
   }
 
 LABEL_14:
@@ -2415,37 +2415,37 @@ LABEL_14:
   return v17;
 }
 
-- (BOOL)tabDragController:(id)a3 isDisplayingTab:(id)a4
+- (BOOL)tabDragController:(id)controller isDisplayingTab:(id)tab
 {
-  v5 = a4;
-  v6 = [(_UIFloatingTabBar *)self parser];
-  v7 = [(_UIFloatingTabBarParser *)v6 itemIdentifiers];
-  v8 = [v5 identifier];
+  tabCopy = tab;
+  parser = [(_UIFloatingTabBar *)self parser];
+  itemIdentifiers = [(_UIFloatingTabBarParser *)parser itemIdentifiers];
+  identifier = [tabCopy identifier];
 
-  LOBYTE(v5) = [v7 containsObject:v8];
-  return v5;
+  LOBYTE(tabCopy) = [itemIdentifiers containsObject:identifier];
+  return tabCopy;
 }
 
-- (void)tabDragController:(id)a3 acceptItemsIntoTabFromDropSession:(id)a4
+- (void)tabDragController:(id)controller acceptItemsIntoTabFromDropSession:(id)session
 {
-  v8 = a4;
+  sessionCopy = session;
   v5 = [(_UIFloatingTabBar *)self _destinationIndexPathForDropSession:?];
   if (v5)
   {
     v6 = [(_UIFloatingTabBar *)self _tabForItemAtIndexPath:v5];
-    v7 = [(_UIFloatingTabBar *)self _tabBarController];
-    [(UITabBarController *)v7 _tab:v6 acceptItemsFromDropSession:v8];
+    _tabBarController = [(_UIFloatingTabBar *)self _tabBarController];
+    [(UITabBarController *)_tabBarController _tab:v6 acceptItemsFromDropSession:sessionCopy];
   }
 }
 
-- (void)tabDragController:(id)a3 pendingDropTabDidChange:(id)a4
+- (void)tabDragController:(id)controller pendingDropTabDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(_UIFloatingTabBar *)self parser];
-  v7 = v6;
-  if (v6)
+  changeCopy = change;
+  parser = [(_UIFloatingTabBar *)self parser];
+  v7 = parser;
+  if (parser)
   {
-    v8 = *(v6 + 72);
+    v8 = *(parser + 72);
   }
 
   else
@@ -2455,16 +2455,16 @@ LABEL_14:
 
   v9 = v8;
 
-  if (v9 != v5)
+  if (v9 != changeCopy)
   {
 
     [(_UIFloatingTabBar *)self _invalidateFavoriteOrderAnimated:1];
   }
 }
 
-- (id)_targetedPreviewForTab:(id)a3
+- (id)_targetedPreviewForTab:(id)tab
 {
-  v4 = [(_UIFloatingTabBar *)self _indexPathForTabItem:a3];
+  v4 = [(_UIFloatingTabBar *)self _indexPathForTabItem:tab];
   if (v4)
   {
     v5 = [(_UIFloatingTabBar *)self _targetedPreviewForTabAtIndexPath:v4];
@@ -2478,20 +2478,20 @@ LABEL_14:
   return v5;
 }
 
-- (id)_targetedPreviewForTabAtIndexPath:(id)a3
+- (id)_targetedPreviewForTabAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UIFloatingTabBar *)self _pageIndexForItemAtIndexPath:v4];
-  v6 = [(_UIFloatingTabBar *)self _viewForItemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(_UIFloatingTabBar *)self _pageIndexForItemAtIndexPath:pathCopy];
+  v6 = [(_UIFloatingTabBar *)self _viewForItemAtIndexPath:pathCopy];
 
   if (v6 && (-[_UIFloatingTabBar collectionView](self, "collectionView"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 targetPage], v7, v5 == v8))
   {
-    v9 = [(_UIFloatingTabBar *)self contentView];
+    contentView = [(_UIFloatingTabBar *)self contentView];
     [v6 center];
     v11 = v10;
     v13 = v12;
-    v14 = [v6 superview];
-    [v9 convertPoint:v14 fromView:{v11, v13}];
+    superview = [v6 superview];
+    [contentView convertPoint:superview fromView:{v11, v13}];
     v16 = v15;
     v18 = v17;
 
@@ -2510,8 +2510,8 @@ LABEL_14:
     [v19 setVisiblePath:v29];
 
     v30 = [UIDragPreviewTarget alloc];
-    v31 = [(_UIFloatingTabBar *)self contentView];
-    v32 = [(UIPreviewTarget *)v30 initWithContainer:v31 center:v16, v18];
+    contentView2 = [(_UIFloatingTabBar *)self contentView];
+    v32 = [(UIPreviewTarget *)v30 initWithContainer:contentView2 center:v16, v18];
 
     v33 = [[UITargetedDragPreview alloc] initWithView:v6 parameters:v19 target:v32];
   }
@@ -2524,26 +2524,26 @@ LABEL_14:
   return v33;
 }
 
-- (id)_destinationIndexPathForDropSession:(id)a3
+- (id)_destinationIndexPathForDropSession:(id)session
 {
-  v4 = a3;
-  v5 = [(_UIFloatingTabBar *)self collectionView];
-  [v4 locationInView:v5];
+  sessionCopy = session;
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  [sessionCopy locationInView:collectionView];
   v7 = v6;
-  [v5 bounds];
+  [collectionView bounds];
   MidY = CGRectGetMidY(v89);
-  v9 = [(_UIFloatingTabBar *)self tabModel];
-  v10 = [v9 isEditing];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  isEditing = [tabModel isEditing];
 
-  if ((v10 & 1) == 0)
+  if ((isEditing & 1) == 0)
   {
-    v11 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    [v4 locationInView:v11];
+    pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+    [sessionCopy locationInView:pinnedItemsView];
     v13 = v12;
     v15 = v14;
 
-    v16 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    v17 = [v16 itemIndexForItemAtLocation:{v13, v15}];
+    pinnedItemsView2 = [(_UIFloatingTabBar *)self pinnedItemsView];
+    v17 = [pinnedItemsView2 itemIndexForItemAtLocation:{v13, v15}];
 
     if (v17 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -2555,16 +2555,16 @@ LABEL_14:
     }
   }
 
-  v19 = [(_UIFloatingTabBar *)self collectionView];
-  [v19 bounds];
+  collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+  [collectionView2 bounds];
   v88.x = v7;
   v88.y = MidY;
   v20 = CGRectContainsPoint(v90, v88);
 
   if (v20)
   {
-    v21 = [(_UIFloatingTabBar *)self collectionView];
-    v18 = [v21 indexPathForItemAtPoint:{v7, MidY}];
+    collectionView3 = [(_UIFloatingTabBar *)self collectionView];
+    v18 = [collectionView3 indexPathForItemAtPoint:{v7, MidY}];
   }
 
   else
@@ -2572,52 +2572,52 @@ LABEL_14:
     v18 = 0;
   }
 
-  v22 = [(_UIFloatingTabBar *)self tabModel];
-  v23 = [v22 isEditing];
+  tabModel2 = [(_UIFloatingTabBar *)self tabModel];
+  isEditing2 = [tabModel2 isEditing];
 
-  if (!v23)
+  if (!isEditing2)
   {
     goto LABEL_35;
   }
 
   if (!v18)
   {
-    v24 = [v5 pages];
-    v25 = [v24 objectAtIndex:{objc_msgSend(v5, "targetPage")}];
+    pages = [collectionView pages];
+    v25 = [pages objectAtIndex:{objc_msgSend(collectionView, "targetPage")}];
 
-    v26 = [(_UIFloatingTabBar *)self contentView];
-    [v4 locationInView:v26];
+    contentView = [(_UIFloatingTabBar *)self contentView];
+    [sessionCopy locationInView:contentView];
     v28 = v27;
 
-    v29 = [(_UIFloatingTabBar *)self contentView];
-    [v29 bounds];
+    contentView2 = [(_UIFloatingTabBar *)self contentView];
+    [contentView2 bounds];
     v30 = v28 < CGRectGetMidX(v91);
 
-    v31 = [(UIView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
     v86 = v25;
-    v33 = [v25 range];
-    if (v30 == v31)
+    range = [v25 range];
+    if (v30 == _shouldReverseLayoutDirection)
     {
       v35 = v32;
-      v36 = [(_UIFloatingTabBar *)self dragController];
-      v37 = [v36 pendingFavoriteOrder];
-      v38 = [v37 indexOfObject:0x1EFB191F0];
+      dragController = [(_UIFloatingTabBar *)self dragController];
+      pendingFavoriteOrder = [dragController pendingFavoriteOrder];
+      v38 = [pendingFavoriteOrder indexOfObject:0x1EFB191F0];
 
-      if (v38 == 0x7FFFFFFFFFFFFFFFLL || ([MEMORY[0x1E696AC88] indexPathForItem:v38 inSection:1], v65 = objc_claimAutoreleasedReturnValue(), v66 = -[_UIFloatingTabBar _indexInDataSourceForItemAtIndexPath:](self, "_indexInDataSourceForItemAtIndexPath:", v65), v65, v66 < v33) || v66 - v33 >= v35)
+      if (v38 == 0x7FFFFFFFFFFFFFFFLL || ([MEMORY[0x1E696AC88] indexPathForItem:v38 inSection:1], v65 = objc_claimAutoreleasedReturnValue(), v66 = -[_UIFloatingTabBar _indexInDataSourceForItemAtIndexPath:](self, "_indexInDataSourceForItemAtIndexPath:", v65), v65, v66 < range) || v66 - range >= v35)
       {
         v84 = v35;
-        v39 = [(UIView *)self traitCollection];
-        v40 = _UIFloatingTabBarGetPlatformMetrics([v39 userInterfaceIdiom]);
+        traitCollection = [(UIView *)self traitCollection];
+        v40 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
         [(_UIFloatingTabBar *)self _maximumContainerSizeForPagination];
         v42 = v41;
         v44 = v43;
-        v45 = [(_UIFloatingTabBar *)self leftArrowButton];
+        leftArrowButton = [(_UIFloatingTabBar *)self leftArrowButton];
         [(UIView *)self bounds];
-        [v45 sizeThatFits:{v46, v47}];
+        [leftArrowButton sizeThatFits:{v46, v47}];
 
-        v48 = [(_UIFloatingTabBar *)self lastSnapshot];
-        [v48 numberOfItems];
+        lastSnapshot = [(_UIFloatingTabBar *)self lastSnapshot];
+        [lastSnapshot numberOfItems];
 
         v85 = v40;
         [v40 editModeItemMargins];
@@ -2628,32 +2628,32 @@ LABEL_14:
         [(UIView *)v54 setHidden:1];
         [(_UIFloatingTabBarItemView *)v54 setSuppressJiggleAnimation:1];
         [(_UIFloatingTabBarItemView *)v54 setEditing:1];
-        v55 = [v4 items];
-        v56 = [v55 firstObject];
-        v57 = [v56 localObject];
-        [(_UIFloatingTabBarItemView *)v54 setItem:v57];
+        items = [sessionCopy items];
+        firstObject = [items firstObject];
+        localObject = [firstObject localObject];
+        [(_UIFloatingTabBarItemView *)v54 setItem:localObject];
 
-        v58 = [(_UIFloatingTabBar *)self contentView];
-        [v58 addSubview:v54];
+        contentView3 = [(_UIFloatingTabBar *)self contentView];
+        [contentView3 addSubview:v54];
 
         [(_UIFloatingTabBarItemView *)v54 sizeThatFits:v42, v44];
         v60 = v59;
-        if ([v5 targetPage] < 1)
+        if ([collectionView targetPage] < 1)
         {
           v64 = 0.0;
         }
 
         else
         {
-          v61 = [v5 pages];
-          v62 = [v61 objectAtIndex:{objc_msgSend(v5, "targetPage") - 1}];
+          pages2 = [collectionView pages];
+          v62 = [pages2 objectAtIndex:{objc_msgSend(collectionView, "targetPage") - 1}];
 
           [v62 overlapWidth];
           v64 = v63;
         }
 
-        v70 = v33 + v84 - 1;
-        if (v70 < v33)
+        v70 = range + v84 - 1;
+        if (v70 < range)
         {
 LABEL_24:
           v18 = 0;
@@ -2672,8 +2672,8 @@ LABEL_24:
               goto LABEL_27;
             }
 
-            v74 = [v5 pages];
-            [v74 count];
+            pages3 = [collectionView pages];
+            [pages3 count];
 
             v75 = v70 + 1;
             UIRoundToViewScale(self);
@@ -2684,12 +2684,12 @@ LABEL_24:
               break;
             }
 
-            v79 = [v5 cellForItemAtIndexPath:v73];
+            v79 = [collectionView cellForItemAtIndexPath:v73];
             [v79 bounds];
             v72 = v72 + v80;
 
             --v70;
-            if (v75 - 2 < v33)
+            if (v75 - 2 < range)
             {
               goto LABEL_24;
             }
@@ -2705,16 +2705,16 @@ LABEL_27:
 
       else
       {
-        v67 = [v86 range];
+        range2 = [v86 range];
         [v86 range];
-        v69 = [(_UIFloatingTabBar *)self _indexPathForItemAtDataSourceIndex:v67 + v68 - 1];
+        v69 = [(_UIFloatingTabBar *)self _indexPathForItemAtDataSourceIndex:range2 + v68 - 1];
         v18 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v69 inSection:{"item") + 1, 1}];
       }
 
       if (!v18)
       {
-        v81 = [(_UIFloatingTabBar *)self lastSnapshot];
-        v34 = [v81 numberOfItemsInSection:&unk_1EFE33DC0];
+        lastSnapshot2 = [(_UIFloatingTabBar *)self lastSnapshot];
+        v34 = [lastSnapshot2 numberOfItemsInSection:&unk_1EFE33DC0];
 
 LABEL_32:
         v18 = [MEMORY[0x1E696AC88] indexPathForItem:v34 inSection:1];
@@ -2730,7 +2730,7 @@ LABEL_32:
 
     else
     {
-      v18 = [(_UIFloatingTabBar *)self _indexPathForItemAtDataSourceIndex:v33];
+      v18 = [(_UIFloatingTabBar *)self _indexPathForItemAtDataSourceIndex:range];
       if (!v18)
       {
         v34 = 0;
@@ -2752,11 +2752,11 @@ LABEL_35:
   return v18;
 }
 
-- (void)setHighlightedIndexPath:(id)a3
+- (void)setHighlightedIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   highlightedIndexPath = self->_highlightedIndexPath;
-  v10 = v5;
+  v10 = pathCopy;
   v7 = highlightedIndexPath;
   if (v7 == v10)
   {
@@ -2786,7 +2786,7 @@ LABEL_12:
     [(_UIFloatingTabBar *)self _setHighlighted:0 forItemAtIndexPath:?];
   }
 
-  objc_storeStrong(&self->_highlightedIndexPath, a3);
+  objc_storeStrong(&self->_highlightedIndexPath, path);
   v9 = v10;
   if (v10)
   {
@@ -2797,79 +2797,79 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_setHasSelectionHighlight:(BOOL)a3 forItemAtIndexPath:(id)a4
+- (void)_setHasSelectionHighlight:(BOOL)highlight forItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v9 = a4;
-  if ([v9 section] == 3)
+  highlightCopy = highlight;
+  pathCopy = path;
+  if ([pathCopy section] == 3)
   {
-    if (v4)
+    if (highlightCopy)
     {
-      v6 = [v9 item];
+      item = [pathCopy item];
     }
 
     else
     {
-      v6 = 0x7FFFFFFFFFFFFFFFLL;
+      item = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v8 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    [v8 setSelectionViewIndex:v6];
+    pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+    [pinnedItemsView setSelectionViewIndex:item];
   }
 
   else
   {
-    v7 = [(_UIFloatingTabBar *)self collectionView];
-    v8 = [v7 cellForItemAtIndexPath:v9];
+    collectionView = [(_UIFloatingTabBar *)self collectionView];
+    pinnedItemsView = [collectionView cellForItemAtIndexPath:pathCopy];
 
-    [v8 setHasSelectionHighlight:v4];
+    [pinnedItemsView setHasSelectionHighlight:highlightCopy];
   }
 }
 
-- (void)_setHighlighted:(BOOL)a3 forItemAtIndexPath:(id)a4
+- (void)_setHighlighted:(BOOL)highlighted forItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v9 = a4;
-  if ([v9 section] == 3)
+  highlightedCopy = highlighted;
+  pathCopy = path;
+  if ([pathCopy section] == 3)
   {
-    if (v4)
+    if (highlightedCopy)
     {
-      v6 = [v9 item];
+      item = [pathCopy item];
     }
 
     else
     {
-      v6 = 0x7FFFFFFFFFFFFFFFLL;
+      item = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v8 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    [v8 setHighlightedIndex:v6];
+    pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+    [pinnedItemsView setHighlightedIndex:item];
   }
 
   else
   {
-    v7 = [(_UIFloatingTabBar *)self collectionView];
-    v8 = [v7 cellForItemAtIndexPath:v9];
+    collectionView = [(_UIFloatingTabBar *)self collectionView];
+    pinnedItemsView = [collectionView cellForItemAtIndexPath:pathCopy];
 
-    [v8 setHighlighted:v4];
+    [pinnedItemsView setHighlighted:highlightedCopy];
   }
 }
 
 - (void)tabModelEditingStateDidChange
 {
-  v3 = [(_UIFloatingTabBar *)self tabModel];
-  v4 = [v3 isEditing];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  isEditing = [tabModel isEditing];
 
-  v5 = [(_UIFloatingTabBar *)self tabModel];
-  v31 = [v5 customizationStore];
+  tabModel2 = [(_UIFloatingTabBar *)self tabModel];
+  customizationStore = [tabModel2 customizationStore];
 
-  if (v4)
+  if (isEditing)
   {
-    v6 = [v31 excludedItems];
-    v7 = v6;
-    if (v6)
+    excludedItems = [customizationStore excludedItems];
+    v7 = excludedItems;
+    if (excludedItems)
     {
-      v8 = v6;
+      v8 = excludedItems;
     }
 
     else
@@ -2879,52 +2879,52 @@ LABEL_13:
 
     v16 = v8;
 
-    v29 = [(_UIFloatingTabBar *)self parser];
-    v18 = [(_UIFloatingTabBarParser *)v29 currentFavoriteOrder];
+    parser = [(_UIFloatingTabBar *)self parser];
+    currentFavoriteOrder = [(_UIFloatingTabBarParser *)parser currentFavoriteOrder];
 
-    v14 = [(_UIFloatingTabBar *)self dragController];
-    [v14 beginEditingWithFavoriteOrder:v18 excludedItems:v16];
+    dragController = [(_UIFloatingTabBar *)self dragController];
+    [dragController beginEditingWithFavoriteOrder:currentFavoriteOrder excludedItems:v16];
   }
 
   else
   {
-    v9 = [(_UIFloatingTabBar *)self parser];
-    v10 = [(_UIFloatingTabBarParser *)v9 sourceTabIdentifiers];
+    parser2 = [(_UIFloatingTabBar *)self parser];
+    sourceTabIdentifiers = [(_UIFloatingTabBarParser *)parser2 sourceTabIdentifiers];
 
-    v11 = [(_UIFloatingTabBar *)self dragController];
-    v12 = [v11 pendingFavoriteOrder];
+    dragController2 = [(_UIFloatingTabBar *)self dragController];
+    pendingFavoriteOrder = [dragController2 pendingFavoriteOrder];
 
-    v13 = [(_UIFloatingTabBar *)self dragController];
-    v14 = [v13 excludedItems];
+    dragController3 = [(_UIFloatingTabBar *)self dragController];
+    dragController = [dragController3 excludedItems];
 
-    v15 = [(_UIFloatingTabBar *)self parser];
-    v16 = [(_UIFloatingTabBarParser *)v15 validateFavoriteOrder:v10];
+    parser3 = [(_UIFloatingTabBar *)self parser];
+    v16 = [(_UIFloatingTabBarParser *)parser3 validateFavoriteOrder:sourceTabIdentifiers];
 
-    v17 = [(_UIFloatingTabBar *)self parser];
-    v18 = [(_UIFloatingTabBarParser *)v17 validateFavoriteOrder:v12];
+    parser4 = [(_UIFloatingTabBar *)self parser];
+    currentFavoriteOrder = [(_UIFloatingTabBarParser *)parser4 validateFavoriteOrder:pendingFavoriteOrder];
 
-    [v31 saveFavoriteOrderCustomization:v18 defaultIdentifiers:v16 excludedIdentifiers:v14];
-    v19 = [(_UIFloatingTabBar *)self dragController];
-    [v19 endEditing];
+    [customizationStore saveFavoriteOrderCustomization:currentFavoriteOrder defaultIdentifiers:v16 excludedIdentifiers:dragController];
+    dragController4 = [(_UIFloatingTabBar *)self dragController];
+    [dragController4 endEditing];
 
-    if ([v31 hasFavoriteOrderCustomization])
+    if ([customizationStore hasFavoriteOrderCustomization])
     {
-      v30 = [v18 count];
-      v20 = [(_UIFloatingTabBar *)self parser];
-      v21 = [(_UIFloatingTabBarParser *)v20 fixedItems];
-      v22 = [v21 count];
-      v23 = [(_UIFloatingTabBar *)self parser];
-      v24 = [(_UIFloatingTabBarParser *)v23 pinnedItems];
-      v25 = [v24 count];
+      v30 = [currentFavoriteOrder count];
+      parser5 = [(_UIFloatingTabBar *)self parser];
+      fixedItems = [(_UIFloatingTabBarParser *)parser5 fixedItems];
+      v22 = [fixedItems count];
+      parser6 = [(_UIFloatingTabBar *)self parser];
+      pinnedItems = [(_UIFloatingTabBarParser *)parser6 pinnedItems];
+      v25 = [pinnedItems count];
 
       v26 = +[_UITabAnalytics sharedInstance];
-      v27 = [(_UIFloatingTabBar *)self tabModel];
-      v28 = [v27 tabBarController];
+      tabModel3 = [(_UIFloatingTabBar *)self tabModel];
+      tabBarController = [tabModel3 tabBarController];
       if (v26)
       {
         ++v26[2];
         v26[3] = v22 + v30 + v25;
-        [(_UITabAnalytics *)v26 _sendCustomizationEvent:v28];
+        [(_UITabAnalytics *)v26 _sendCustomizationEvent:tabBarController];
       }
     }
 
@@ -2936,46 +2936,46 @@ LABEL_13:
 {
   if ((*&self->_needsUpdate & 0x40) != 0)
   {
-    v4 = [(_UIFloatingTabBar *)self isEditing];
+    isEditing = [(_UIFloatingTabBar *)self isEditing];
 
-    [(_UIFloatingTabBar *)self setEditing:v4 animated:0];
+    [(_UIFloatingTabBar *)self setEditing:isEditing animated:0];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (self->_editing != a3 || (*&self->_needsUpdate & 0x40) != 0)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if (self->_editing != editing || (*&self->_needsUpdate & 0x40) != 0)
   {
-    self->_editing = a3;
-    v7 = [(UIView *)self window];
+    self->_editing = editing;
+    window = [(UIView *)self window];
 
     needsUpdate = self->_needsUpdate;
-    if (v7)
+    if (window)
     {
       *&self->_needsUpdate = needsUpdate & 0xBF;
       [(_UIFloatingTabBar *)self _setNeedsPaginationUpdate];
       [(_UIFloatingTabBar *)self _updatePaginationIfNeeded];
-      v9 = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
-      v10 = [(_UIFloatingTabBar *)self collectionView];
-      [v10 setEditing:v5];
+      _currentPlatformMetrics = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
+      collectionView = [(_UIFloatingTabBar *)self collectionView];
+      [collectionView setEditing:editingCopy];
 
-      v11 = [(_UIFloatingTabBar *)self pinnedItemsView];
-      [v11 setEditing:v5];
+      pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+      [pinnedItemsView setEditing:editingCopy];
 
-      v12 = [(_UIFloatingTabBar *)self recentItem];
+      recentItem = [(_UIFloatingTabBar *)self recentItem];
 
-      if (v12)
+      if (recentItem)
       {
-        [(_UIFloatingTabBar *)self _updateDataSourceFromParserAnimated:v4];
+        [(_UIFloatingTabBar *)self _updateDataSourceFromParserAnimated:animatedCopy];
       }
 
       else
       {
-        v13 = [(_UIFloatingTabBar *)self collectionView];
-        v14 = [v13 collectionViewLayout];
-        [v14 invalidateLayout];
+        collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+        collectionViewLayout = [collectionView2 collectionViewLayout];
+        [collectionViewLayout invalidateLayout];
 
         [(UIView *)self setNeedsLayout];
         [(_UIFloatingTabBar *)self _setNeedsSelectionFrameUpdate];
@@ -2986,11 +2986,11 @@ LABEL_13:
       v17[2] = __41___UIFloatingTabBar_setEditing_animated___block_invoke;
       v17[3] = &unk_1E70F8A10;
       v17[4] = self;
-      v18 = v5;
-      v19 = v4;
+      v18 = editingCopy;
+      v19 = animatedCopy;
       v15 = _Block_copy(v17);
       v16 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.5];
-      if (v4)
+      if (animatedCopy)
       {
         [UIView _animateUsingSpringBehavior:v16 tracking:0 animations:v15 completion:0];
       }
@@ -3000,7 +3000,7 @@ LABEL_13:
         [UIView performWithoutAnimation:v15];
       }
 
-      [(_UIFloatingTabBar *)self _updateSelectionViewFrameAnimated:v4 completion:0];
+      [(_UIFloatingTabBar *)self _updateSelectionViewFrameAnimated:animatedCopy completion:0];
     }
 
     else
@@ -3019,10 +3019,10 @@ LABEL_13:
 
 - (void)_updateEditModeGestureRecognizer
 {
-  v3 = [(_UIFloatingTabBar *)self tabModel];
-  v4 = [v3 isEditable];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  isEditable = [tabModel isEditable];
 
-  if (v4 && !self->_editModeGestureRecognizer)
+  if (isEditable && !self->_editModeGestureRecognizer)
   {
     v5 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:sel__handleLongPressGestureRecognizer_];
     editModeGestureRecognizer = self->_editModeGestureRecognizer;
@@ -3030,45 +3030,45 @@ LABEL_13:
 
     [(UILongPressGestureRecognizer *)self->_editModeGestureRecognizer setMinimumPressDuration:0.5];
     [(UIGestureRecognizer *)self->_editModeGestureRecognizer setDelegate:self];
-    v7 = [(_UIFloatingTabBar *)self contentView];
-    [v7 addGestureRecognizer:self->_editModeGestureRecognizer];
+    contentView = [(_UIFloatingTabBar *)self contentView];
+    [contentView addGestureRecognizer:self->_editModeGestureRecognizer];
   }
 
   v8 = self->_editModeGestureRecognizer;
 
-  [(UIGestureRecognizer *)v8 setEnabled:v4];
+  [(UIGestureRecognizer *)v8 setEnabled:isEditable];
 }
 
-- (void)_handleLongPressGestureRecognizer:(id)a3
+- (void)_handleLongPressGestureRecognizer:(id)recognizer
 {
-  v4 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
-  [v4 setEnabled:0];
+  selectionGestureRecognizer = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
+  [selectionGestureRecognizer setEnabled:0];
 
-  v5 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
-  [v5 setEnabled:1];
+  selectionGestureRecognizer2 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
+  [selectionGestureRecognizer2 setEnabled:1];
 
-  v6 = [(_UIFloatingTabBar *)self tabModel];
-  [v6 setEditing:1];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  [tabModel setEditing:1];
 }
 
-- (void)setShowRecentItem:(BOOL)a3
+- (void)setShowRecentItem:(BOOL)item
 {
-  if (self->_showRecentItem != a3)
+  if (self->_showRecentItem != item)
   {
-    self->_showRecentItem = a3;
+    self->_showRecentItem = item;
     [(_UIFloatingTabBar *)self _refreshSelectedLeaf];
   }
 }
 
-- (void)_validateRecentItemForParser:(id)a3
+- (void)_validateRecentItemForParser:(id)parser
 {
-  v10 = a3;
-  v4 = [(_UIFloatingTabBar *)self recentItem];
-  v5 = [v4 tabForSelection];
+  parserCopy = parser;
+  recentItem = [(_UIFloatingTabBar *)self recentItem];
+  tabForSelection = [recentItem tabForSelection];
 
-  v6 = [v5 _tabModel];
-  v7 = [(_UIFloatingTabBar *)self tabModel];
-  if (v6 != v7 || ([(_UIFloatingTabBarParser *)v10 containsTab:v5]& 1) != 0 || [(_UIFloatingTabBarParser *)v10 containsDescendantOfTab:v5])
+  _tabModel = [tabForSelection _tabModel];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  if (_tabModel != tabModel || ([(_UIFloatingTabBarParser *)parserCopy containsTab:tabForSelection]& 1) != 0 || [(_UIFloatingTabBarParser *)parserCopy containsDescendantOfTab:tabForSelection])
   {
 
 LABEL_5:
@@ -3078,9 +3078,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [v5 isHidden];
+  isHidden = [tabForSelection isHidden];
 
-  if (v9)
+  if (isHidden)
   {
     goto LABEL_5;
   }
@@ -3088,27 +3088,27 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)_contentTabForRecentTab:(id)a3
+- (id)_contentTabForRecentTab:(id)tab
 {
-  v3 = a3;
-  v4 = [v3 _parentGroup];
+  tabCopy = tab;
+  _parentGroup = [tabCopy _parentGroup];
 
-  if (v4)
+  if (_parentGroup)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = v3;
+    v6 = tabCopy;
     if (v6)
     {
       v7 = v6;
       do
       {
         [v5 addObject:v7];
-        v8 = [v7 _parentGroup];
+        _parentGroup2 = [v7 _parentGroup];
 
-        v7 = v8;
+        v7 = _parentGroup2;
       }
 
-      while (v8);
+      while (_parentGroup2);
     }
 
     v9 = [v5 indexOfObjectWithOptions:2 passingTest:&__block_literal_global_124_4];
@@ -3121,24 +3121,24 @@ LABEL_6:
   return 0;
 }
 
-- (void)_tabModelDidReload:(id)a3
+- (void)_tabModelDidReload:(id)reload
 {
-  v4 = a3;
-  v5 = [(_UIFloatingTabBar *)self _isEffectivelyEmpty];
-  v6 = [v4 tabItems];
+  reloadCopy = reload;
+  _isEffectivelyEmpty = [(_UIFloatingTabBar *)self _isEffectivelyEmpty];
+  tabItems = [reloadCopy tabItems];
 
-  v7 = [v6 count] != 0;
-  [(_UIFloatingTabBar *)self _invalidateDataSourceAnimated:v7 & ~v5];
+  v7 = [tabItems count] != 0;
+  [(_UIFloatingTabBar *)self _invalidateDataSourceAnimated:v7 & ~_isEffectivelyEmpty];
 
-  [(_UIFloatingTabBar *)self _updateSelectedItemAnimated:v7 & ~v5 completion:0];
+  [(_UIFloatingTabBar *)self _updateSelectedItemAnimated:v7 & ~_isEffectivelyEmpty completion:0];
 }
 
-- (void)_tabModel:(id)a3 tabContentDidChange:(id)a4
+- (void)_tabModel:(id)model tabContentDidChange:(id)change
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(_UIFloatingTabBar *)self _indexPathForTabItem:v5];
-  v7 = [v5 _tabPlacement] - 4;
+  changeCopy = change;
+  v6 = [(_UIFloatingTabBar *)self _indexPathForTabItem:changeCopy];
+  v7 = [changeCopy _tabPlacement] - 4;
   if (v7 > 2)
   {
     v8 = 1;
@@ -3162,8 +3162,8 @@ LABEL_6:
     [(_UIFloatingTabBar *)self _setNeedsPaginationUpdate];
     if ([v6 section] == 3)
     {
-      v9 = [(_UIFloatingTabBar *)self pinnedItemsView];
-      [v9 reloadItemViewForTab:v5];
+      pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+      [pinnedItemsView reloadItemViewForTab:changeCopy];
     }
 
     else
@@ -3178,47 +3178,47 @@ LABEL_12:
       }
 
       v11 = v10;
-      v12 = [(_UIFloatingTabBar *)self dataSource];
-      v13 = [v12 snapshot];
+      dataSource = [(_UIFloatingTabBar *)self dataSource];
+      snapshot = [dataSource snapshot];
 
-      v14 = [(NSDiffableDataSourceSnapshot *)v13 itemIdentifiers];
-      v9 = [v14 objectAtIndex:v11];
+      itemIdentifiers = [(NSDiffableDataSourceSnapshot *)snapshot itemIdentifiers];
+      pinnedItemsView = [itemIdentifiers objectAtIndex:v11];
 
-      v21[0] = v9;
+      v21[0] = pinnedItemsView;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-      [(NSDiffableDataSourceSnapshot *)v13 reconfigureItemsWithIdentifiers:v15];
+      [(NSDiffableDataSourceSnapshot *)snapshot reconfigureItemsWithIdentifiers:v15];
 
       lastSnapshot = self->_lastSnapshot;
-      self->_lastSnapshot = v13;
-      v17 = v13;
+      self->_lastSnapshot = snapshot;
+      v17 = snapshot;
 
-      v18 = [(_UIFloatingTabBar *)self dataSource];
-      [v18 applySnapshot:v17 animatingDifferences:1];
+      dataSource2 = [(_UIFloatingTabBar *)self dataSource];
+      [dataSource2 applySnapshot:v17 animatingDifferences:1];
     }
 
     goto LABEL_12;
   }
 
   [(_UIFloatingTabBar *)self _invalidateDataSourceAnimated:1];
-  v19 = [(_UIFloatingTabBar *)self tabModel];
-  v20 = [v19 selectedLeaf];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  selectedLeaf = [tabModel selectedLeaf];
 
-  if (v20 == v5)
+  if (selectedLeaf == changeCopy)
   {
-    [(_UIFloatingTabBar *)self _updateSelectedLeaf:v5 previousElement:v5];
+    [(_UIFloatingTabBar *)self _updateSelectedLeaf:changeCopy previousElement:changeCopy];
   }
 
 LABEL_13:
 }
 
-- (void)_tabModel:(id)a3 visibilityDidChangeForTab:(id)a4
+- (void)_tabModel:(id)model visibilityDidChangeForTab:(id)tab
 {
-  v5 = a4;
-  v6 = [(_UIFloatingTabBar *)self _indexPathForTabItem:v5];
+  tabCopy = tab;
+  v6 = [(_UIFloatingTabBar *)self _indexPathForTabItem:tabCopy];
   v7 = v6 != 0;
 
-  v8 = [(_UIFloatingTabBar *)self tabModel];
-  v9 = [v8 isTabHidden:v5];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  v9 = [tabModel isTabHidden:tabCopy];
 
   if (((v7 ^ v9) & 1) == 0)
   {
@@ -3231,31 +3231,31 @@ LABEL_13:
   }
 }
 
-- (void)_tabModel:(id)a3 favoriteOrderDidReset:(id)a4
+- (void)_tabModel:(id)model favoriteOrderDidReset:(id)reset
 {
-  v5 = [(_UIFloatingTabBar *)self parser:a3];
-  v7 = [(_UIFloatingTabBarParser *)v5 sourceTabIdentifiers];
+  v5 = [(_UIFloatingTabBar *)self parser:model];
+  sourceTabIdentifiers = [(_UIFloatingTabBarParser *)v5 sourceTabIdentifiers];
 
-  v6 = [(_UIFloatingTabBar *)self dragController];
-  [v6 resetFavoriteOrderWithDefaultOrder:v7];
+  dragController = [(_UIFloatingTabBar *)self dragController];
+  [dragController resetFavoriteOrderWithDefaultOrder:sourceTabIdentifiers];
 
   [(_UIFloatingTabBar *)self _invalidateFavoriteOrderAnimated:1];
 }
 
 - (void)_refreshSelectedLeaf
 {
-  v3 = [(_UIFloatingTabBar *)self tabModel];
-  v4 = [v3 selectedLeaf];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  selectedLeaf = [tabModel selectedLeaf];
 
-  [(_UIFloatingTabBar *)self _updateSelectedLeaf:v4 previousElement:v4];
+  [(_UIFloatingTabBar *)self _updateSelectedLeaf:selectedLeaf previousElement:selectedLeaf];
 }
 
-- (void)_updateSelectedLeaf:(id)a3 previousElement:(id)a4
+- (void)_updateSelectedLeaf:(id)leaf previousElement:(id)element
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [(UIView *)self window];
-  if (v7)
+  leafCopy = leaf;
+  elementCopy = element;
+  window = [(UIView *)self window];
+  if (window)
   {
     v8 = !self->_isInTransitionAnimation;
   }
@@ -3265,28 +3265,28 @@ LABEL_13:
     v8 = 0;
   }
 
-  v9 = [(_UIFloatingTabBar *)self showRecentItem];
-  v10 = [(_UIFloatingTabBar *)self recentItem];
-  v11 = [(_UIFloatingTabBar *)self _indexPathForTabItem:v22];
-  if (v9)
+  showRecentItem = [(_UIFloatingTabBar *)self showRecentItem];
+  recentItem = [(_UIFloatingTabBar *)self recentItem];
+  v11 = [(_UIFloatingTabBar *)self _indexPathForTabItem:leafCopy];
+  if (showRecentItem)
   {
-    v12 = [(_UIFloatingTabBar *)self parser];
-    v13 = [(_UIFloatingTabBarParser *)v12 itemIdentifiers];
-    v14 = [v22 identifier];
-    if (([v13 containsObject:v14] & 1) != 0 || v11 && !-[_UIFloatingTabBar _isRecentItemIndexPath:](self, "_isRecentItemIndexPath:", v11))
+    parser = [(_UIFloatingTabBar *)self parser];
+    itemIdentifiers = [(_UIFloatingTabBarParser *)parser itemIdentifiers];
+    identifier = [leafCopy identifier];
+    if (([itemIdentifiers containsObject:identifier] & 1) != 0 || v11 && !-[_UIFloatingTabBar _isRecentItemIndexPath:](self, "_isRecentItemIndexPath:", v11))
     {
     }
 
     else
     {
-      v15 = [v10 tabForSelection];
+      tabForSelection = [recentItem tabForSelection];
 
-      if (v15 != v22)
+      if (tabForSelection != leafCopy)
       {
-        if (v22 && ([v22 isHidden] & 1) == 0)
+        if (leafCopy && ([leafCopy isHidden] & 1) == 0)
         {
-          v16 = [[_UIFloatingTabBarListItem alloc] initWithTab:v22];
-          v21 = [(_UIFloatingTabBar *)self _contentTabForRecentTab:v22];
+          v16 = [[_UIFloatingTabBarListItem alloc] initWithTab:leafCopy];
+          v21 = [(_UIFloatingTabBar *)self _contentTabForRecentTab:leafCopy];
           [(_UIFloatingTabBarListItem *)v16 setContentTab:v21];
         }
 
@@ -3301,10 +3301,10 @@ LABEL_13:
       }
     }
 
-    if (v10)
+    if (recentItem)
     {
-      v17 = [v10 tabForSelection];
-      v18 = [v17 _isAncestorOfTab:v22];
+      tabForSelection2 = [recentItem tabForSelection];
+      v18 = [tabForSelection2 _isAncestorOfTab:leafCopy];
 
       if (v18)
       {
@@ -3320,54 +3320,54 @@ LABEL_18:
     }
   }
 
-  else if (v10)
+  else if (recentItem)
   {
     goto LABEL_17;
   }
 
-  if (v6 != v22)
+  if (elementCopy != leafCopy)
   {
     [(_UIFloatingTabBar *)self _scrollToSelectedItemAnimated:v8];
     [(_UIFloatingTabBar *)self _updateSelectedItemAnimated:v8 completion:0];
   }
 
 LABEL_21:
-  v20 = [(UIView *)self window];
+  window2 = [(UIView *)self window];
 
-  if (!v20)
+  if (!window2)
   {
     *&self->_needsUpdate |= 0x20u;
   }
 }
 
-- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)a3
+- (id)resolvedPopoverPresentationControllerSourceItemForTab:(id)tab
 {
-  v4 = [(_UIFloatingTabBar *)self _indexPathForTabItem:a3];
+  v4 = [(_UIFloatingTabBar *)self _indexPathForTabItem:tab];
   if (v4)
   {
     v5 = [(_UIFloatingTabBar *)self _pageIndexForItemAtIndexPath:v4];
-    v6 = [(_UIFloatingTabBar *)self collectionView];
-    v7 = [v6 targetPage];
+    collectionView = [(_UIFloatingTabBar *)self collectionView];
+    targetPage = [collectionView targetPage];
 
     if ([v4 section] == 3)
     {
-      v8 = [(_UIFloatingTabBar *)self pinnedItemsView];
-      v9 = [v8 itemViewForItemAtIndex:{objc_msgSend(v4, "item")}];
+      pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+      v9 = [pinnedItemsView itemViewForItemAtIndex:{objc_msgSend(v4, "item")}];
 
       goto LABEL_16;
     }
 
-    if (v5 == v7)
+    if (v5 == targetPage)
     {
       v10 = [(_UIFloatingTabBar *)self _viewForItemAtIndexPath:v4];
       goto LABEL_15;
     }
 
-    v11 = [(UIView *)self _shouldReverseLayoutDirection];
-    v12 = v5 > v7;
-    if (!v11)
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+    v12 = v5 > targetPage;
+    if (!_shouldReverseLayoutDirection)
     {
-      v12 = v5 < v7;
+      v12 = v5 < targetPage;
     }
 
     if (v12)
@@ -3398,34 +3398,34 @@ LABEL_16:
   return v9;
 }
 
-- (void)_updateSelectedItemAnimated:(BOOL)a3 completion:(id)a4
+- (void)_updateSelectedItemAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
-  if (v6)
+  animatedCopy = animated;
+  completionCopy = completion;
+  _indexPathForSelectedItem = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
+  if (_indexPathForSelectedItem)
   {
-    [(_UIFloatingTabBar *)self _updateSelectionViewFrameAnimated:v4 completion:v7];
-    [(_UIFloatingTabBar *)self _updateSelectionViewVisibilityAnimated:v4];
+    [(_UIFloatingTabBar *)self _updateSelectionViewFrameAnimated:animatedCopy completion:completionCopy];
+    [(_UIFloatingTabBar *)self _updateSelectionViewVisibilityAnimated:animatedCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)_setSelectedItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setSelectedItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v13 = a3;
-  v8 = a5;
-  if ([(_UITabModel *)self->_tabModel shouldSelectTab:v13])
+  animatedCopy = animated;
+  itemCopy = item;
+  completionCopy = completion;
+  if ([(_UITabModel *)self->_tabModel shouldSelectTab:itemCopy])
   {
-    v9 = [(_UITabModel *)self->_tabModel selectedItem];
-    v10 = v13;
+    selectedItem = [(_UITabModel *)self->_tabModel selectedItem];
+    v10 = itemCopy;
     v11 = v10;
-    if (v9 == v10)
+    if (selectedItem == v10)
     {
 
       [(_UITabModel *)self->_tabModel selectTab:v11 notifyOnReselection:1];
@@ -3433,16 +3433,16 @@ LABEL_16:
 
     else
     {
-      if (!v10 || !v9)
+      if (!v10 || !selectedItem)
       {
 
         [(_UITabModel *)self->_tabModel selectTab:v11 notifyOnReselection:1];
 LABEL_11:
-        [(_UIFloatingTabBar *)self _updateSelectedItemAnimated:v6 completion:v8];
+        [(_UIFloatingTabBar *)self _updateSelectedItemAnimated:animatedCopy completion:completionCopy];
         goto LABEL_12;
       }
 
-      v12 = [v9 isEqual:v10];
+      v12 = [selectedItem isEqual:v10];
 
       [(_UITabModel *)self->_tabModel selectTab:v11 notifyOnReselection:1];
       if ((v12 & 1) == 0)
@@ -3452,33 +3452,33 @@ LABEL_11:
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
 LABEL_12:
 }
 
-- (void)_selectItemAtIndexPath:(id)a3
+- (void)_selectItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIFloatingTabBar.m" lineNumber:2072 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingTabBar.m" lineNumber:2072 description:{@"Invalid parameter not satisfying: %@", @"indexPath"}];
   }
 
-  if ([v5 section] != 3)
+  if ([pathCopy section] != 3)
   {
-    v8 = [(_UIFloatingTabBar *)self dataSource];
-    v7 = [v8 itemIdentifierForIndexPath:v5];
+    dataSource = [(_UIFloatingTabBar *)self dataSource];
+    v7 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
-    v9 = [v7 tabForSelection];
-    v10 = [v7 tabForSelection];
-    v11 = [v10 _isElement];
+    tabForSelection = [v7 tabForSelection];
+    tabForSelection2 = [v7 tabForSelection];
+    _isElement = [tabForSelection2 _isElement];
 
-    if (v11)
+    if (_isElement)
     {
       objc_initWeak(&location, self);
       v14[0] = MEMORY[0x1E69E9820];
@@ -3486,27 +3486,27 @@ LABEL_12:
       v14[2] = __44___UIFloatingTabBar__selectItemAtIndexPath___block_invoke;
       v14[3] = &unk_1E7105398;
       objc_copyWeak(&v15, &location);
-      [(_UIFloatingTabBar *)self _setSelectedItem:v9 animated:1 completion:v14];
+      [(_UIFloatingTabBar *)self _setSelectedItem:tabForSelection animated:1 completion:v14];
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
     }
 
     else
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"_UIFloatingTabBar.m" lineNumber:2100 description:@"Non-UITabElement tabs are currently not supported"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFloatingTabBar.m" lineNumber:2100 description:@"Non-UITabElement tabs are currently not supported"];
     }
 
     goto LABEL_10;
   }
 
-  v6 = [(_UIFloatingTabBar *)self pinnedItemsView];
-  v7 = [v6 tabForSelectionAtItemIndex:{objc_msgSend(v5, "item")}];
+  pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+  v7 = [pinnedItemsView tabForSelectionAtItemIndex:{objc_msgSend(pathCopy, "item")}];
 
   if (![v7 _isElement])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIFloatingTabBar.m" lineNumber:2079 description:@"Non-UITabElement tabs are currently not supported"];
+    tabForSelection = [MEMORY[0x1E696AAA8] currentHandler];
+    [tabForSelection handleFailureInMethod:a2 object:self file:@"_UIFloatingTabBar.m" lineNumber:2079 description:@"Non-UITabElement tabs are currently not supported"];
 LABEL_10:
 
     goto LABEL_11;
@@ -3518,36 +3518,36 @@ LABEL_11:
 
 - (BOOL)_isEffectivelyEmpty
 {
-  v2 = [(_UIFloatingTabBar *)self parser];
-  v3 = [(_UIFloatingTabBarParser *)v2 itemIdentifiers];
-  v4 = [v3 count] == 0;
+  parser = [(_UIFloatingTabBar *)self parser];
+  itemIdentifiers = [(_UIFloatingTabBarParser *)parser itemIdentifiers];
+  v4 = [itemIdentifiers count] == 0;
 
   return v4;
 }
 
-- (id)_indexPathForTabItem:(id)a3
+- (id)_indexPathForTabItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     v12 = 0;
     goto LABEL_10;
   }
 
-  v5 = [(_UIFloatingTabBar *)self lastSnapshot];
-  v6 = [v5 itemIdentifiers];
+  lastSnapshot = [(_UIFloatingTabBar *)self lastSnapshot];
+  itemIdentifiers = [lastSnapshot itemIdentifiers];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __42___UIFloatingTabBar__indexPathForTabItem___block_invoke;
   v15[3] = &unk_1E70F8890;
-  v7 = v4;
+  v7 = itemCopy;
   v16 = v7;
-  v8 = [v6 indexOfObjectPassingTest:v15];
+  v8 = [itemIdentifiers indexOfObjectPassingTest:v15];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    v10 = [v9 itemIndexForTab:v7];
+    pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+    v10 = [pinnedItemsView itemIndexForTab:v7];
 
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -3555,15 +3555,15 @@ LABEL_11:
       goto LABEL_9;
     }
 
-    v11 = [v7 _parentGroup];
-    v12 = [(_UIFloatingTabBar *)self _indexPathForTabItem:v11];
+    _parentGroup = [v7 _parentGroup];
+    v12 = [(_UIFloatingTabBar *)self _indexPathForTabItem:_parentGroup];
   }
 
   else
   {
-    v11 = [v6 objectAtIndex:v8];
-    v13 = [(_UIFloatingTabBar *)self dataSource];
-    v12 = [v13 indexPathForItemIdentifier:v11];
+    _parentGroup = [itemIdentifiers objectAtIndex:v8];
+    dataSource = [(_UIFloatingTabBar *)self dataSource];
+    v12 = [dataSource indexPathForItemIdentifier:_parentGroup];
   }
 
 LABEL_9:
@@ -3574,39 +3574,39 @@ LABEL_10:
 
 - (id)_indexPathForSelectedItem
 {
-  v3 = [(_UIFloatingTabBar *)self tabModel];
-  v4 = [v3 selectedLeaf];
+  tabModel = [(_UIFloatingTabBar *)self tabModel];
+  selectedLeaf = [tabModel selectedLeaf];
 
-  if (!v4 || ([v4 _isMoreTab] & 1) != 0 || -[_UIFloatingTabBar _isEffectivelyEmpty](self, "_isEffectivelyEmpty") && (-[_UIFloatingTabBar recentItem](self, "recentItem"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  if (!selectedLeaf || ([selectedLeaf _isMoreTab] & 1) != 0 || -[_UIFloatingTabBar _isEffectivelyEmpty](self, "_isEffectivelyEmpty") && (-[_UIFloatingTabBar recentItem](self, "recentItem"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(_UIFloatingTabBar *)self _indexPathForTabItem:v4];
+    v5 = [(_UIFloatingTabBar *)self _indexPathForTabItem:selectedLeaf];
   }
 
   return v5;
 }
 
-- (CGRect)_itemFrameForItemAtIndexPath:(id)a3 inCoordinateSpace:(id)a4
+- (CGRect)_itemFrameForItemAtIndexPath:(id)path inCoordinateSpace:(id)space
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 section] == 3)
+  spaceCopy = space;
+  pathCopy = path;
+  if ([pathCopy section] == 3)
   {
-    v8 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    v9 = [v7 item];
+    pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+    item = [pathCopy item];
 
-    [v8 itemFrameForItemAtIndex:v9];
+    [pinnedItemsView itemFrameForItemAtIndex:item];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    v18 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    v19 = v18;
+    pinnedItemsView2 = [(_UIFloatingTabBar *)self pinnedItemsView];
+    v19 = pinnedItemsView2;
     v20 = v11;
     v21 = v13;
     v22 = v15;
@@ -3615,8 +3615,8 @@ LABEL_10:
 
   else
   {
-    v24 = [(_UIFloatingTabBar *)self collectionView];
-    v19 = [v24 cellForItemAtIndexPath:v7];
+    collectionView = [(_UIFloatingTabBar *)self collectionView];
+    v19 = [collectionView cellForItemAtIndexPath:pathCopy];
 
     if (!v19)
     {
@@ -3628,10 +3628,10 @@ LABEL_10:
     }
 
     [v19 bounds];
-    v18 = v19;
+    pinnedItemsView2 = v19;
   }
 
-  [v18 convertRect:v6 toCoordinateSpace:{v20, v21, v22, v23}];
+  [pinnedItemsView2 convertRect:spaceCopy toCoordinateSpace:{v20, v21, v22, v23}];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -3649,43 +3649,43 @@ LABEL_6:
   return result;
 }
 
-- (void)_updateSelectionViewFrameAnimated:(BOOL)a3 completion:(id)a4
+- (void)_updateSelectionViewFrameAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
-  if (v7)
+  animatedCopy = animated;
+  completionCopy = completion;
+  _indexPathForSelectedItem = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
+  if (_indexPathForSelectedItem)
   {
-    v8 = v7;
-    v9 = [(_UIFloatingTabBar *)self highlightedIndexPath];
+    v8 = _indexPathForSelectedItem;
+    highlightedIndexPath = [(_UIFloatingTabBar *)self highlightedIndexPath];
 
-    if (v9)
+    if (highlightedIndexPath)
     {
-      v10 = [(_UIFloatingTabBar *)self highlightedIndexPath];
+      highlightedIndexPath2 = [(_UIFloatingTabBar *)self highlightedIndexPath];
 
-      v8 = v10;
+      v8 = highlightedIndexPath2;
     }
 
     [(_UIFloatingTabBar *)self setSelectionViewIndexPath:v8];
-    v11 = [(_UIFloatingTabBar *)self selectionContainerView];
-    [(_UIFloatingTabBar *)self _itemFrameForItemAtIndexPath:v8 inCoordinateSpace:v11];
+    selectionContainerView = [(_UIFloatingTabBar *)self selectionContainerView];
+    [(_UIFloatingTabBar *)self _itemFrameForItemAtIndexPath:v8 inCoordinateSpace:selectionContainerView];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
 
-    if (v9)
+    if (highlightedIndexPath)
     {
-      v20 = [(_UIFloatingTabBar *)self selectionContainerView];
-      v21 = [v20 targetPosition];
+      selectionContainerView2 = [(_UIFloatingTabBar *)self selectionContainerView];
+      targetPosition = [selectionContainerView2 targetPosition];
 
-      if (v21)
+      if (targetPosition)
       {
-        v22 = [(_UIFloatingTabBar *)self contentView];
+        contentView = [(_UIFloatingTabBar *)self contentView];
         [(_UIFloatingTabBar *)self highlightAnchorPoint];
         v90 = v23;
-        v24 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
-        [v24 locationInView:v22];
+        selectionGestureRecognizer = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
+        [selectionGestureRecognizer locationInView:contentView];
         v91 = v25;
 
         v107.origin.x = v13;
@@ -3693,28 +3693,28 @@ LABEL_6:
         v107.size.width = v17;
         v107.size.height = v19;
         Width = CGRectGetWidth(v107);
-        v27 = [(_UIFloatingTabBar *)self collectionView];
-        [v27 bounds];
+        collectionView = [(_UIFloatingTabBar *)self collectionView];
+        [collectionView bounds];
         v92 = v17;
         v29 = v28;
         v31 = v30;
         v33 = v32;
         v35 = v34;
-        v36 = [(_UIFloatingTabBar *)self collectionView];
-        [v22 convertRect:v36 fromView:{v29, v31, v33, v35}];
+        collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+        [contentView convertRect:collectionView2 fromView:{v29, v31, v33, v35}];
         v88 = v38;
         v89 = v37;
         r1 = v39;
         v41 = v40;
 
-        v42 = [(_UIFloatingTabBar *)self pinnedItemsView];
-        [v42 bounds];
+        pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+        [pinnedItemsView bounds];
         v44 = v43;
         v46 = v45;
         v48 = v47;
         v50 = v49;
-        v51 = [(_UIFloatingTabBar *)self pinnedItemsView];
-        [v22 convertRect:v51 fromView:{v44, v46, v48, v50}];
+        pinnedItemsView2 = [(_UIFloatingTabBar *)self pinnedItemsView];
+        [contentView convertRect:pinnedItemsView2 fromView:{v44, v46, v48, v50}];
         v53 = v52;
         v55 = v54;
         v57 = v56;
@@ -3757,8 +3757,8 @@ LABEL_6:
       v112.size.width = v17;
       v112.size.height = v19;
       MidY = CGRectGetMidY(v112);
-      v66 = [(_UIFloatingTabBar *)self collectionView];
-      [v66 bounds];
+      collectionView3 = [(_UIFloatingTabBar *)self collectionView];
+      [collectionView3 bounds];
       v67 = CGRectGetMidY(v113);
 
       if (MidY != v67)
@@ -3771,17 +3771,17 @@ LABEL_24:
       }
     }
 
-    v68 = v9 != 0;
-    v69 = v4 & ~self->_isInTransitionAnimation;
-    v70 = [(UIView *)self traitCollection];
-    v71 = [v70 valueForNSIntegerTrait:objc_opt_class()];
+    v68 = highlightedIndexPath != 0;
+    v69 = animatedCopy & ~self->_isInTransitionAnimation;
+    traitCollection = [(UIView *)self traitCollection];
+    v71 = [traitCollection valueForNSIntegerTrait:objc_opt_class()];
 
-    v72 = [(UIView *)self traitCollection];
-    v73 = [v72 valueForNSIntegerTrait:objc_opt_class()] != 0;
+    traitCollection2 = [(UIView *)self traitCollection];
+    v73 = [traitCollection2 valueForNSIntegerTrait:objc_opt_class()] != 0;
 
-    v74 = [(_UIFloatingTabBar *)self selectionContainerView];
-    v75 = [v74 targetPosition];
-    v76 = v75 == 0;
+    selectionContainerView3 = [(_UIFloatingTabBar *)self selectionContainerView];
+    targetPosition2 = [selectionContainerView3 targetPosition];
+    v76 = targetPosition2 == 0;
 
     [(_UIFloatingTabBar *)self _updateSelectionViewHighlightState];
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -3809,8 +3809,8 @@ LABEL_24:
     v78 = _Block_copy(v102);
     if (v69 == 1 && !v71)
     {
-      v79 = [(_UIFloatingTabBar *)self selectionContainerView];
-      [v79 selectionViewFrame];
+      selectionContainerView4 = [(_UIFloatingTabBar *)self selectionContainerView];
+      [selectionContainerView4 selectionViewFrame];
       v116.origin.x = v13;
       v116.origin.y = v15;
       v116.size.width = v17;
@@ -3819,8 +3819,8 @@ LABEL_24:
 
       if (!v80)
       {
-        v81 = [(UIView *)self traitOverrides];
-        [v81 setNSIntegerValue:1 forTrait:objc_opt_class()];
+        traitOverrides = [(UIView *)self traitOverrides];
+        [traitOverrides setNSIntegerValue:1 forTrait:objc_opt_class()];
       }
     }
 
@@ -3832,7 +3832,7 @@ LABEL_24:
     v98[3] = &unk_1E711F7E0;
     v83 = v82;
     v99 = v83;
-    v100 = v6;
+    v100 = completionCopy;
     v84 = _Block_copy(v98);
     [v83 increment];
     if (v69)
@@ -3881,32 +3881,32 @@ LABEL_21:
   }
 
   [(_UIFloatingTabBar *)self setSelectionViewIndexPath:0];
-  [(_UIFloatingTabBar *)self _updateSelectionViewVisibilityAnimated:v4];
+  [(_UIFloatingTabBar *)self _updateSelectionViewVisibilityAnimated:animatedCopy];
 LABEL_25:
 }
 
 - (void)_updateSelectionViewHighlightState
 {
-  v3 = [(_UIFloatingTabBar *)self selectionContainerView];
-  v4 = [v3 targetPosition];
+  selectionContainerView = [(_UIFloatingTabBar *)self selectionContainerView];
+  targetPosition = [selectionContainerView targetPosition];
 
-  if (v4)
+  if (targetPosition)
   {
-    v5 = [(UIView *)self traitCollection];
+    traitCollection = [(UIView *)self traitCollection];
     v6 = objc_opt_self();
-    v7 = [v5 valueForNSIntegerTrait:v6];
+    v7 = [traitCollection valueForNSIntegerTrait:v6];
 
-    v8 = [(_UIFloatingTabBar *)self highlightedIndexPath];
+    highlightedIndexPath = [(_UIFloatingTabBar *)self highlightedIndexPath];
 
-    [v4 value];
+    [targetPosition value];
     v10 = v9;
-    [v4 presentationValue];
-    if (v7 == 1 && !v8 && vabdd_f64(v10, v11) < 8.0)
+    [targetPosition presentationValue];
+    if (v7 == 1 && !highlightedIndexPath && vabdd_f64(v10, v11) < 8.0)
     {
-      v12 = [(_UIFloatingTabBar *)self selectionFrameGroupCompletion];
-      [v12 increment];
+      selectionFrameGroupCompletion = [(_UIFloatingTabBar *)self selectionFrameGroupCompletion];
+      [selectionFrameGroupCompletion increment];
       v13 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.35];
-      v16 = v12;
+      v16 = selectionFrameGroupCompletion;
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __55___UIFloatingTabBar__updateSelectionViewHighlightState__block_invoke;
@@ -3916,7 +3916,7 @@ LABEL_25:
       v15[1] = 3221225472;
       v15[2] = __55___UIFloatingTabBar__updateSelectionViewHighlightState__block_invoke_2;
       v15[3] = &unk_1E70F3FD8;
-      v14 = v12;
+      v14 = selectionFrameGroupCompletion;
       [UIView _animateUsingSpringBehavior:v13 tracking:0 animations:v17 completion:v15];
     }
   }
@@ -3949,112 +3949,112 @@ LABEL_25:
 
 - (BOOL)hasActiveDrag
 {
-  v2 = [(_UIFloatingTabBar *)self dragController];
-  v3 = [v2 hasActiveDrag];
+  dragController = [(_UIFloatingTabBar *)self dragController];
+  hasActiveDrag = [dragController hasActiveDrag];
 
-  return v3;
+  return hasActiveDrag;
 }
 
 - (double)baselineOffsetFromTop
 {
-  v3 = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
-  [v3 backgroundInsets];
+  _currentPlatformMetrics = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
+  [_currentPlatformMetrics backgroundInsets];
   v5 = v4;
-  [v3 titleMargins];
+  [_currentPlatformMetrics titleMargins];
   v7 = v5 + v6 + self->_minimumItemBaselineFromTop;
 
   return v7;
 }
 
-- (int64_t)_indexInDataSourceForItemAtIndexPath:(id)a3
+- (int64_t)_indexInDataSourceForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  if ([v4 section] >= 1)
+  pathCopy = path;
+  item = [pathCopy item];
+  if ([pathCopy section] >= 1)
   {
-    v6 = [(_UIFloatingTabBar *)self lastSnapshot];
-    v5 += [v6 numberOfItemsInSection:&unk_1EFE33DA8];
+    lastSnapshot = [(_UIFloatingTabBar *)self lastSnapshot];
+    item += [lastSnapshot numberOfItemsInSection:&unk_1EFE33DA8];
   }
 
-  if ([v4 section] > 1)
+  if ([pathCopy section] > 1)
   {
-    v7 = [(_UIFloatingTabBar *)self lastSnapshot];
-    v5 += [v7 numberOfItemsInSection:&unk_1EFE33DC0];
+    lastSnapshot2 = [(_UIFloatingTabBar *)self lastSnapshot];
+    item += [lastSnapshot2 numberOfItemsInSection:&unk_1EFE33DC0];
   }
 
-  return v5;
+  return item;
 }
 
-- (id)_indexPathForItemAtDataSourceIndex:(int64_t)a3
+- (id)_indexPathForItemAtDataSourceIndex:(int64_t)index
 {
-  v5 = [(_UIFloatingTabBar *)self lastSnapshot];
-  v6 = [v5 itemIdentifiers];
-  v7 = [v6 count];
+  lastSnapshot = [(_UIFloatingTabBar *)self lastSnapshot];
+  itemIdentifiers = [lastSnapshot itemIdentifiers];
+  v7 = [itemIdentifiers count];
 
-  if (v7 <= a3)
+  if (v7 <= index)
   {
     v12 = 0;
   }
 
   else
   {
-    v8 = [(_UIFloatingTabBar *)self lastSnapshot];
-    v9 = [v8 itemIdentifiers];
-    v10 = [v9 objectAtIndex:a3];
+    lastSnapshot2 = [(_UIFloatingTabBar *)self lastSnapshot];
+    itemIdentifiers2 = [lastSnapshot2 itemIdentifiers];
+    v10 = [itemIdentifiers2 objectAtIndex:index];
 
-    v11 = [(_UIFloatingTabBar *)self dataSource];
-    v12 = [v11 indexPathForItemIdentifier:v10];
+    dataSource = [(_UIFloatingTabBar *)self dataSource];
+    v12 = [dataSource indexPathForItemIdentifier:v10];
   }
 
   return v12;
 }
 
-- (int64_t)_pageIndexForItemAtIndexPath:(id)a3
+- (int64_t)_pageIndexForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UIFloatingTabBar *)self _indexInDataSourceForItemAtIndexPath:v4];
-  v6 = [(_UIFloatingTabBar *)self collectionView];
-  v7 = [v6 pages];
-  v8 = [(_UIFloatingTabBar *)self collectionView];
-  v9 = [v7 objectAtIndexedSubscript:{objc_msgSend(v8, "targetPage")}];
-  v10 = [v9 range];
+  pathCopy = path;
+  v5 = [(_UIFloatingTabBar *)self _indexInDataSourceForItemAtIndexPath:pathCopy];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  pages = [collectionView pages];
+  collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+  v9 = [pages objectAtIndexedSubscript:{objc_msgSend(collectionView2, "targetPage")}];
+  range = [v9 range];
   v12 = v11;
 
-  if (v5 < v10 || v5 - v10 >= v12)
+  if (v5 < range || v5 - range >= v12)
   {
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0x7FFFFFFFFFFFFFFFLL;
-    v15 = [(_UIFloatingTabBar *)self collectionView];
-    v16 = [v15 pages];
+    collectionView3 = [(_UIFloatingTabBar *)self collectionView];
+    pages2 = [collectionView3 pages];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __50___UIFloatingTabBar__pageIndexForItemAtIndexPath___block_invoke;
     v18[3] = &unk_1E711B058;
     v18[4] = &v19;
     v18[5] = v5;
-    [v16 enumerateObjectsUsingBlock:v18];
+    [pages2 enumerateObjectsUsingBlock:v18];
 
-    v14 = v20[3];
+    targetPage = v20[3];
     _Block_object_dispose(&v19, 8);
   }
 
   else
   {
-    v13 = [(_UIFloatingTabBar *)self collectionView];
-    v14 = [v13 targetPage];
+    collectionView4 = [(_UIFloatingTabBar *)self collectionView];
+    targetPage = [collectionView4 targetPage];
   }
 
-  return v14;
+  return targetPage;
 }
 
-- (void)_scrollToSelectedItemAnimated:(BOOL)a3
+- (void)_scrollToSelectedItemAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v10 = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
-  v5 = [v10 section] == 3;
-  v6 = v10;
+  animatedCopy = animated;
+  _indexPathForSelectedItem = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
+  v5 = [_indexPathForSelectedItem section] == 3;
+  v6 = _indexPathForSelectedItem;
   if (!v5)
   {
     if (*&self->_needsUpdate)
@@ -4064,26 +4064,26 @@ LABEL_25:
 
     else
     {
-      if (v10)
+      if (_indexPathForSelectedItem)
       {
-        v7 = [(_UIFloatingTabBar *)self _pageIndexForItemAtIndexPath:v10];
-        v6 = v10;
+        v7 = [(_UIFloatingTabBar *)self _pageIndexForItemAtIndexPath:_indexPathForSelectedItem];
+        v6 = _indexPathForSelectedItem;
         if (v7 == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_9;
         }
 
-        v8 = [(_UIFloatingTabBar *)self collectionView];
-        [v8 setTargetPage:v7];
+        collectionView = [(_UIFloatingTabBar *)self collectionView];
+        [collectionView setTargetPage:v7];
 
-        v9 = [(_UIFloatingTabBar *)self collectionView];
-        [v9 scrollToTargetPageAnimated:v3];
+        collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+        [collectionView2 scrollToTargetPageAnimated:animatedCopy];
       }
 
-      [(_UIFloatingTabBar *)self _updateSelectionViewVisibilityAnimated:v3];
+      [(_UIFloatingTabBar *)self _updateSelectionViewVisibilityAnimated:animatedCopy];
     }
 
-    v6 = v10;
+    v6 = _indexPathForSelectedItem;
   }
 
 LABEL_9:
@@ -4101,36 +4101,36 @@ LABEL_9:
 
   if ((needsUpdate & 0x10) != 0)
   {
-    v4 = [(_UIFloatingTabBar *)self collectionView];
-    [v4 scrollToTargetPageAnimated:0];
+    collectionView = [(_UIFloatingTabBar *)self collectionView];
+    [collectionView scrollToTargetPageAnimated:0];
 
     *&self->_needsUpdate &= ~0x10u;
   }
 }
 
-- (void)_updateSelectionViewVisibilityAnimated:(BOOL)a3
+- (void)_updateSelectionViewVisibilityAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
-  v6 = [(_UIFloatingTabBar *)self _indexInDataSourceForItemAtIndexPath:v5];
-  if (v5)
+  animatedCopy = animated;
+  _indexPathForSelectedItem = [(_UIFloatingTabBar *)self _indexPathForSelectedItem];
+  v6 = [(_UIFloatingTabBar *)self _indexInDataSourceForItemAtIndexPath:_indexPathForSelectedItem];
+  if (_indexPathForSelectedItem)
   {
     v7 = v6;
-    if ([v5 section] == 3)
+    if ([_indexPathForSelectedItem section] == 3)
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [(_UIFloatingTabBar *)self collectionView];
-      v10 = [v9 pages];
-      v11 = [(_UIFloatingTabBar *)self collectionView];
-      v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(v11, "targetPage")}];
-      v13 = [v12 range];
+      collectionView = [(_UIFloatingTabBar *)self collectionView];
+      pages = [collectionView pages];
+      collectionView2 = [(_UIFloatingTabBar *)self collectionView];
+      v12 = [pages objectAtIndexedSubscript:{objc_msgSend(collectionView2, "targetPage")}];
+      range = [v12 range];
       v15 = v14;
 
-      v8 = v7 >= v13 && v7 - v13 < v15;
+      v8 = v7 >= range && v7 - range < v15;
     }
   }
 
@@ -4147,7 +4147,7 @@ LABEL_9:
   v20 = v8;
   v17 = _Block_copy(v19);
   v18 = v17;
-  if (v3)
+  if (animatedCopy)
   {
     [(_UIFloatingTabBar *)self _animateSelection:v17 completion:0];
   }
@@ -4160,11 +4160,11 @@ LABEL_9:
   *&self->_needsUpdate &= ~4u;
 }
 
-- (void)setSelectionViewIndexPath:(id)a3
+- (void)setSelectionViewIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = self->_selectionViewIndexPath;
-  v7 = v5;
+  v7 = pathCopy;
   v10 = v7;
   if (v6 == v7)
   {
@@ -4194,7 +4194,7 @@ LABEL_12:
     [(_UIFloatingTabBar *)self _setHasSelectionHighlight:0 forItemAtIndexPath:?];
   }
 
-  objc_storeStrong(&self->_selectionViewIndexPath, a3);
+  objc_storeStrong(&self->_selectionViewIndexPath, path);
   v9 = v10;
   if (v10)
   {
@@ -4205,16 +4205,16 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_animateSelection:(id)a3 completion:(id)a4
+- (void)_animateSelection:(id)selection completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  selectionCopy = selection;
   v8 = _UIFlexiGlassEnabled();
-  v9 = [(_UIFloatingTabBar *)self highlightedIndexPath];
+  highlightedIndexPath = [(_UIFloatingTabBar *)self highlightedIndexPath];
 
   if (v8)
   {
-    if (v9)
+    if (highlightedIndexPath)
     {
       v10 = 0.85;
       v11 = 0.2;
@@ -4227,7 +4227,7 @@ LABEL_13:
     }
   }
 
-  else if (v9)
+  else if (highlightedIndexPath)
   {
     v10 = 0.9;
     v11 = 0.3;
@@ -4240,20 +4240,20 @@ LABEL_13:
   }
 
   v12 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:v10 response:v11];
-  [UIView _animateUsingSpringBehavior:v12 tracking:0 animations:v7 completion:v6];
+  [UIView _animateUsingSpringBehavior:v12 tracking:0 animations:selectionCopy completion:completionCopy];
 }
 
-- (void)_animateSelectionBounds:(id)a3 completion:(id)a4
+- (void)_animateSelectionBounds:(id)bounds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  boundsCopy = bounds;
   v8 = _UIFlexiGlassEnabled();
-  v9 = [(_UIFloatingTabBar *)self highlightedIndexPath];
+  highlightedIndexPath = [(_UIFloatingTabBar *)self highlightedIndexPath];
 
   if (v8)
   {
     v10 = 0.85;
-    if (!v9)
+    if (!highlightedIndexPath)
     {
       v11 = 0.6;
       goto LABEL_8;
@@ -4262,7 +4262,7 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  if (v9)
+  if (highlightedIndexPath)
   {
     v10 = 0.9;
 LABEL_6:
@@ -4274,10 +4274,10 @@ LABEL_6:
   v10 = 1.0;
 LABEL_8:
   v12 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:v10 response:v11];
-  [UIView _animateUsingSpringBehavior:v12 tracking:0 animations:v7 completion:v6];
+  [UIView _animateUsingSpringBehavior:v12 tracking:0 animations:boundsCopy completion:completionCopy];
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   [(_UIFloatingTabBar *)self _setNeedsSelectionFrameUpdate];
 
@@ -4291,10 +4291,10 @@ LABEL_8:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(_UIFloatingTabBar *)self collectionView];
-  v4 = [v3 indexPathsForVisibleItems];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4306,44 +4306,44 @@ LABEL_8:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         [(_UIFloatingTabBar *)self _updateContentAlphaForItemAtIndexPath:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_updateContentAlphaForItemAtIndexPath:(id)a3
+- (void)_updateContentAlphaForItemAtIndexPath:(id)path
 {
-  v39 = a3;
-  v4 = [(_UIFloatingTabBar *)self collectionView];
-  v5 = [v4 layoutAttributesForItemAtIndexPath:v39];
+  pathCopy = path;
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  v5 = [collectionView layoutAttributesForItemAtIndexPath:pathCopy];
 
-  LOBYTE(v4) = [(UIView *)self _shouldReverseLayoutDirection];
-  v6 = [(_UIFloatingTabBar *)self collectionView];
+  LOBYTE(collectionView) = [(UIView *)self _shouldReverseLayoutDirection];
+  collectionView2 = [(_UIFloatingTabBar *)self collectionView];
   [v5 frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(_UIFloatingTabBar *)self collectionViewContainer];
-  [v6 convertRect:v15 toView:{v8, v10, v12, v14}];
+  collectionViewContainer = [(_UIFloatingTabBar *)self collectionViewContainer];
+  [collectionView2 convertRect:collectionViewContainer toView:{v8, v10, v12, v14}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  if (v4)
+  if (collectionView)
   {
-    v24 = [(_UIFloatingTabBar *)self pinnedItemsView];
-    [v24 frame];
+    pinnedItemsView = [(_UIFloatingTabBar *)self pinnedItemsView];
+    [pinnedItemsView frame];
     MaxX = CGRectGetMaxX(v41);
 
     if ([(_UIFloatingTabBar *)self showsSidebarButton])
@@ -4355,7 +4355,7 @@ LABEL_8:
     {
       [(_UIFloatingTabBar *)self rightArrowButton];
     }
-    v26 = ;
+    pinnedItemsView2 = ;
   }
 
   else
@@ -4373,11 +4373,11 @@ LABEL_8:
     [v27 frame];
     MaxX = CGRectGetMaxX(v42);
 
-    v26 = [(_UIFloatingTabBar *)self pinnedItemsView];
+    pinnedItemsView2 = [(_UIFloatingTabBar *)self pinnedItemsView];
   }
 
-  v28 = v26;
-  [v26 frame];
+  v28 = pinnedItemsView2;
+  [pinnedItemsView2 frame];
   MinX = CGRectGetMinX(v43);
 
   v44.origin.x = v17;
@@ -4390,8 +4390,8 @@ LABEL_8:
   v45.size.width = v21;
   v45.size.height = v23;
   v31 = CGRectGetMaxX(v45) - MinX;
-  v32 = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
-  [v32 contentAlphaDistanceThreshold];
+  _currentPlatformMetrics = [(_UIFloatingTabBar *)self _currentPlatformMetrics];
+  [_currentPlatformMetrics contentAlphaDistanceThreshold];
   v34 = v33;
 
   v46.origin.x = v17;
@@ -4399,29 +4399,29 @@ LABEL_8:
   v46.size.width = v21;
   v46.size.height = v23;
   v35 = fmax(fmin(1.0 - fmax(v30, v31) / fmin(v34, CGRectGetWidth(v46)), 1.0), 0.0);
-  v36 = [(_UIFloatingTabBar *)self collectionView];
-  v37 = [v36 cellForItemAtIndexPath:v39];
+  collectionView3 = [(_UIFloatingTabBar *)self collectionView];
+  v37 = [collectionView3 cellForItemAtIndexPath:pathCopy];
 
-  v38 = [v37 contentView];
-  [v38 setAlpha:v35];
+  contentView = [v37 contentView];
+  [contentView setAlpha:v35];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
-  v5 = [v4 state];
+  selectionGestureRecognizer = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
+  state = [selectionGestureRecognizer state];
 
-  if (v5)
+  if (state)
   {
-    v6 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
-    [v6 setEnabled:0];
+    selectionGestureRecognizer2 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
+    [selectionGestureRecognizer2 setEnabled:0];
 
-    v7 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
-    [v7 setEnabled:1];
+    selectionGestureRecognizer3 = [(_UIFloatingTabBar *)self selectionGestureRecognizer];
+    [selectionGestureRecognizer3 setEnabled:1];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -4431,41 +4431,41 @@ LABEL_8:
   [(_UIFloatingTabBar *)self _animateSelection:v3 completion:0];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v7 = [(_UIFloatingTabBar *)self collectionView:a3];
-  [v7 pageProgressForContentOffset:1 clamped:{a5->x, a5->y}];
+  v7 = [(_UIFloatingTabBar *)self collectionView:dragging];
+  [v7 pageProgressForContentOffset:1 clamped:{offset->x, offset->y}];
   v9 = v8;
 
-  v10 = [(_UIFloatingTabBar *)self collectionView];
-  [v10 setTargetPage:llround(v9)];
+  collectionView = [(_UIFloatingTabBar *)self collectionView];
+  [collectionView setTargetPage:llround(v9)];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(_UIFloatingTabBar *)self _updateSelectionViewVisibilityAnimated:1];
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(_UIFloatingTabBar *)self highlightedIndexPath];
-  [v8 setHighlighted:{objc_msgSend(v7, "isEqual:", v9)}];
+  pathCopy = path;
+  cellCopy = cell;
+  highlightedIndexPath = [(_UIFloatingTabBar *)self highlightedIndexPath];
+  [cellCopy setHighlighted:{objc_msgSend(pathCopy, "isEqual:", highlightedIndexPath)}];
 
-  v11 = [(_UIFloatingTabBar *)self selectionViewIndexPath];
-  v10 = [v7 isEqual:v11];
+  selectionViewIndexPath = [(_UIFloatingTabBar *)self selectionViewIndexPath];
+  v10 = [pathCopy isEqual:selectionViewIndexPath];
 
-  [v8 setHasSelectionHighlight:v10];
+  [cellCopy setHasSelectionHighlight:v10];
 }
 
 - (id)_currentPlatformMetrics
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIFloatingTabBarGetPlatformMetrics([v2 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   return v3;
 }
@@ -4515,7 +4515,7 @@ LABEL_8:
   if ([(_UIFloatingTabBar *)self isEditing])
   {
     v3 = [_UIFloatingTabBarCustomizationProxy alloc];
-    v4 = self;
+    selfCopy = self;
     if (v3)
     {
       v7.receiver = v3;
@@ -4524,7 +4524,7 @@ LABEL_8:
       v3 = v5;
       if (v5)
       {
-        objc_storeWeak(v5 + 1, v4);
+        objc_storeWeak(v5 + 1, selfCopy);
       }
     }
   }

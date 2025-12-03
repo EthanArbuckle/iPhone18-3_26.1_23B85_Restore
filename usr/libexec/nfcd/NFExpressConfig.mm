@@ -1,45 +1,45 @@
 @interface NFExpressConfig
-+ (unsigned)expressTypeForATLConfigKey:(id)a3;
++ (unsigned)expressTypeForATLConfigKey:(id)key;
 - (BOOL)hasExpressWithAutoSelection;
 - (BOOL)isSEOperational;
-- (BOOL)loadConfig:(id)a3 outError:(id *)a4;
-- (NFExpressConfig)initWithDriverWrapper:(id)a3;
-- (id)arrayConfigFromDictionary:(id)a3;
+- (BOOL)loadConfig:(id)config outError:(id *)error;
+- (NFExpressConfig)initWithDriverWrapper:(id)wrapper;
+- (id)arrayConfigFromDictionary:(id)dictionary;
 - (id)deactivateExpressConfig;
-- (id)expressTypesForPassIDs:(id)a3;
-- (id)getExpressAidsForType:(unsigned __int8)a3 onlyInExpress:(BOOL)a4;
-- (id)passForAid:(id)a3;
-- (id)passIDListForApplet:(id)a3 keyIdentifiers:(id)a4;
-- (id)restoreAuthForApplet:(id)a3;
-- (unsigned)expressTypeForApplet:(id)a3;
+- (id)expressTypesForPassIDs:(id)ds;
+- (id)getExpressAidsForType:(unsigned __int8)type onlyInExpress:(BOOL)express;
+- (id)passForAid:(id)aid;
+- (id)passIDListForApplet:(id)applet keyIdentifiers:(id)identifiers;
+- (id)restoreAuthForApplet:(id)applet;
+- (unsigned)expressTypeForApplet:(id)applet;
 - (void)activateExpressConfig;
-- (void)removeAppletsFromConfig:(id)a3;
+- (void)removeAppletsFromConfig:(id)config;
 - (void)updateExpressAppletNumbers;
 @end
 
 @implementation NFExpressConfig
 
-+ (unsigned)expressTypeForATLConfigKey:(id)a3
++ (unsigned)expressTypeForATLConfigKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (qword_10035DA38 != -1)
   {
     dispatch_once(&qword_10035DA38, &stru_100319710);
   }
 
-  v4 = [qword_10035DA30 objectForKeyedSubscript:v3];
+  v4 = [qword_10035DA30 objectForKeyedSubscript:keyCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 unsignedIntValue];
+    unsignedIntValue = [v4 unsignedIntValue];
   }
 
   else
   {
-    v6 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v6;
+  return unsignedIntValue;
 }
 
 - (void)updateExpressAppletNumbers
@@ -72,9 +72,9 @@
 
         v9 = *(*(&v55 + 1) + 8 * i);
         v10 = [v9 objectForKeyedSubscript:@"expressEnabled"];
-        v11 = [v10 BOOLValue];
+        bOOLValue = [v10 BOOLValue];
 
-        if (v11)
+        if (bOOLValue)
         {
           v12 = [v9 objectForKeyedSubscript:@"ExpressType"];
           v13 = [NFExpressConfig expressTypeForATLConfigKey:v12];
@@ -188,14 +188,14 @@ LABEL_30:
     v32 = class_isMetaClass(v31);
     v33 = object_getClassName(self);
     v34 = sel_getName(a2);
-    v35 = [(NFExpressConfig *)self seName];
+    seName = [(NFExpressConfig *)self seName];
     v36 = 43;
     if (!v32)
     {
       v36 = 45;
     }
 
-    v30(6, "%c[%{public}s %{public}s]:%i %{public}@: num suica = %d, num cathay = %d, num access = %d, num generic-A = %d, num ecp2 = %d, num single poll = %d", v36, v33, v34, 201, v35, *&self->_numberOfExpressFelicaTransitApplets, *&self->_numberOfExpressECPAccessApplets, self->_numberOfExpressECP2Applets, self->_numberOfExpressSinglePollApplets);
+    v30(6, "%c[%{public}s %{public}s]:%i %{public}@: num suica = %d, num cathay = %d, num access = %d, num generic-A = %d, num ecp2 = %d, num single poll = %d", v36, v33, v34, 201, seName, *&self->_numberOfExpressFelicaTransitApplets, *&self->_numberOfExpressECPAccessApplets, self->_numberOfExpressECP2Applets, self->_numberOfExpressSinglePollApplets);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -215,7 +215,7 @@ LABEL_30:
 
     v40 = object_getClassName(self);
     v41 = sel_getName(a2);
-    v42 = [(NFExpressConfig *)self seName];
+    seName2 = [(NFExpressConfig *)self seName];
     numberOfExpressFelicaTransitApplets = self->_numberOfExpressFelicaTransitApplets;
     numberOfExpressCathayTransitApplets = self->_numberOfExpressCathayTransitApplets;
     numberOfExpressECPAccessApplets = self->_numberOfExpressECPAccessApplets;
@@ -231,7 +231,7 @@ LABEL_30:
     v65 = 1024;
     v66 = 201;
     v67 = 2114;
-    v68 = v42;
+    v68 = seName2;
     v69 = 1024;
     v70 = numberOfExpressFelicaTransitApplets;
     v71 = 1024;
@@ -251,41 +251,41 @@ LABEL_30:
   self->_allAids = v4;
 }
 
-- (unsigned)expressTypeForApplet:(id)a3
+- (unsigned)expressTypeForApplet:(id)applet
 {
-  v4 = a3;
+  appletCopy = applet;
   v5 = sub_100148E24(&self->super.isa);
-  v6 = [v4 identifier];
+  identifier = [appletCopy identifier];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [v5 objectForKey:identifier];
 
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
-- (id)expressTypesForPassIDs:(id)a3
+- (id)expressTypesForPassIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v22 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v4;
+  obj = dsCopy;
   v26 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v26)
   {
     v24 = *v33;
-    v25 = self;
+    selfCopy = self;
     do
     {
       v5 = 0;
@@ -329,9 +329,9 @@ LABEL_30:
 
               v13 = *(*(&v28 + 1) + 8 * i);
               v14 = [v13 objectForKeyedSubscript:{@"expressEnabled", v22}];
-              v15 = [v14 BOOLValue];
+              bOOLValue = [v14 BOOLValue];
 
-              if (v15)
+              if (bOOLValue)
               {
                 v16 = [v13 objectForKeyedSubscript:@"passUniqueID"];
                 if ([v6 isEqualToString:v16])
@@ -363,7 +363,7 @@ LABEL_30:
 LABEL_22:
 
         v5 = v27 + 1;
-        self = v25;
+        self = selfCopy;
       }
 
       while ((v27 + 1) != v26);
@@ -377,14 +377,14 @@ LABEL_22:
   return v22;
 }
 
-- (id)passIDListForApplet:(id)a3 keyIdentifiers:(id)a4
+- (id)passIDListForApplet:(id)applet keyIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  appletCopy = applet;
+  identifiersCopy = identifiers;
+  v8 = identifiersCopy;
+  if (appletCopy)
   {
-    if (v7 && ![v7 count])
+    if (identifiersCopy && ![identifiersCopy count])
     {
       v41 = objc_opt_new();
     }
@@ -396,7 +396,7 @@ LABEL_22:
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v39 = self;
+      selfCopy = self;
       if (self)
       {
         passes = self->_passes;
@@ -428,25 +428,25 @@ LABEL_22:
 
             v15 = *(*(&v44 + 1) + 8 * v14);
             v16 = [v15 objectForKeyedSubscript:v13];
-            v17 = [v6 identifier];
-            v18 = [v16 isEqualToString:v17];
+            identifier = [appletCopy identifier];
+            v18 = [v16 isEqualToString:identifier];
 
             if (v18)
             {
-              v19 = v6;
+              v19 = appletCopy;
               v20 = v13;
               v21 = [v15 objectForKeyedSubscript:@"passUniqueID"];
               v22 = [v15 objectForKey:@"expressEnabled"];
-              v23 = [v22 BOOLValue];
+              bOOLValue = [v22 BOOLValue];
 
-              if (v23)
+              if (bOOLValue)
               {
                 if (!v8)
                 {
                   [v41 addObject:v21];
                   v13 = v20;
 LABEL_28:
-                  v6 = v19;
+                  appletCopy = v19;
 
                   v11 = v42;
                   goto LABEL_29;
@@ -460,9 +460,9 @@ LABEL_28:
                 if (Logger)
                 {
                   v25 = Logger;
-                  Class = object_getClass(v39);
+                  Class = object_getClass(selfCopy);
                   isMetaClass = class_isMetaClass(Class);
-                  ClassName = object_getClassName(v39);
+                  ClassName = object_getClassName(selfCopy);
                   Name = sel_getName(a2);
                   v28 = 45;
                   if (isMetaClass)
@@ -478,7 +478,7 @@ LABEL_28:
                 v29 = NFSharedLogGetLogger();
                 if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
                 {
-                  v30 = object_getClass(v39);
+                  v30 = object_getClass(selfCopy);
                   if (class_isMetaClass(v30))
                   {
                     v31 = 43;
@@ -489,7 +489,7 @@ LABEL_28:
                     v31 = 45;
                   }
 
-                  v32 = object_getClassName(v39);
+                  v32 = object_getClassName(selfCopy);
                   v33 = sel_getName(a2);
                   *buf = 67110146;
                   v49 = v31;
@@ -546,34 +546,34 @@ LABEL_29:
   return v3;
 }
 
-- (NFExpressConfig)initWithDriverWrapper:(id)a3
+- (NFExpressConfig)initWithDriverWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = NFExpressConfig;
   v6 = [(NFExpressConfig *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_driverWrapper, a3);
+    objc_storeStrong(&v6->_driverWrapper, wrapper);
   }
 
   return v7;
 }
 
-- (BOOL)loadConfig:(id)a3 outError:(id *)a4
+- (BOOL)loadConfig:(id)config outError:(id *)error
 {
-  v7 = a3;
-  if ([v7 count])
+  configCopy = config;
+  if ([configCopy count])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(NFExpressConfig *)self migrateFromDefaults];
-    v8 = v9 == 0;
-    if (!v9)
+    migrateFromDefaults = [(NFExpressConfig *)self migrateFromDefaults];
+    v8 = migrateFromDefaults == 0;
+    if (!migrateFromDefaults)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       Logger = NFLogGetLogger();
@@ -621,10 +621,10 @@ LABEL_29:
 
       v19 = +[NSMutableArray array];
 
-      v7 = v19;
+      configCopy = v19;
     }
 
-    v20 = [v9 count];
+    v20 = [migrateFromDefaults count];
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v21 = NFLogGetLogger();
     v22 = v21;
@@ -673,9 +673,9 @@ LABEL_29:
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Successfully migrated from defaults", buf, 0x22u);
       }
 
-      v32 = v7;
+      v32 = configCopy;
       v8 = 1;
-      v7 = v9;
+      configCopy = migrateFromDefaults;
     }
 
     else
@@ -725,9 +725,9 @@ LABEL_29:
     }
   }
 
-  [(NFExpressConfig *)self dumpConfig:v7 logLevel:6 prefix:@"init config"];
+  [(NFExpressConfig *)self dumpConfig:configCopy logLevel:6 prefix:@"init config"];
   v41 = 1;
-  v42 = [(NFExpressConfig *)self reconfigureWithArray:v7 updateStorage:v8 avoidChangingRouting:1 restoreAuthorization:0];
+  v42 = [(NFExpressConfig *)self reconfigureWithArray:configCopy updateStorage:v8 avoidChangingRouting:1 restoreAuthorization:0];
   if (v42)
   {
     v43 = v42;
@@ -924,23 +924,23 @@ LABEL_29:
         _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Express Mode is disabled", buf, 0x22u);
       }
 
-      if (a4)
+      if (error)
       {
         v87 = [NSError alloc];
         v88 = [NSString stringWithUTF8String:"nfcd"];
-        v89 = [v65 code];
+        code = [v65 code];
         v105[0] = NSLocalizedDescriptionKey;
         if ([v65 code] > 75)
         {
-          v90 = 76;
+          code2 = 76;
         }
 
         else
         {
-          v90 = [v65 code];
+          code2 = [v65 code];
         }
 
-        v91 = [NSString stringWithUTF8String:off_100319730[v90]];
+        v91 = [NSString stringWithUTF8String:off_100319730[code2]];
         v106[0] = v91;
         v106[1] = v65;
         v105[1] = NSUnderlyingErrorKey;
@@ -953,7 +953,7 @@ LABEL_29:
         v93 = [[NSString alloc] initWithFormat:@"%s:%d", sel_getName(a2), 358];
         v106[4] = v93;
         v94 = [NSDictionary dictionaryWithObjects:v106 forKeys:v105 count:5];
-        *a4 = [v87 initWithDomain:v88 code:v89 userInfo:v94];
+        *error = [v87 initWithDomain:v88 code:code userInfo:v94];
       }
 
       v41 = 0;
@@ -968,9 +968,9 @@ LABEL_29:
   return v41;
 }
 
-- (id)arrayConfigFromDictionary:(id)a3
+- (id)arrayConfigFromDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10014ADD4;
@@ -979,7 +979,7 @@ LABEL_29:
   v6 = objc_opt_new();
   v11 = v6;
   v12 = a2;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   v7 = v11;
   v8 = v6;
@@ -987,10 +987,10 @@ LABEL_29:
   return v6;
 }
 
-- (id)restoreAuthForApplet:(id)a3
+- (id)restoreAuthForApplet:(id)applet
 {
-  v5 = a3;
-  if ([v5 authTransientSupport])
+  appletCopy = applet;
+  if ([appletCopy authTransientSupport])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -1039,11 +1039,11 @@ LABEL_29:
     goto LABEL_37;
   }
 
-  v15 = [(NFExpressConfig *)self getSecureElementWrapperAndSetRouting];
-  if (v15)
+  getSecureElementWrapperAndSetRouting = [(NFExpressConfig *)self getSecureElementWrapperAndSetRouting];
+  if (getSecureElementWrapperAndSetRouting)
   {
-    v12 = v15;
-    v62 = v5;
+    v12 = getSecureElementWrapperAndSetRouting;
+    v62 = appletCopy;
     v16 = [NSArray arrayWithObjects:&v62 count:1];
     v17 = sub_1002040C4(v12, 1, 0xFFFFFFFF, v16, 0);
 
@@ -1149,7 +1149,7 @@ LABEL_37:
         v42 = 43;
       }
 
-      v39(3, "%c[%{public}s %{public}s]:%i Failed to load SE for applet: %{public}@", v42, v55, v58, 490, v5);
+      v39(3, "%c[%{public}s %{public}s]:%i Failed to load SE for applet: %{public}@", v42, v55, v58, 490, appletCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1176,7 +1176,7 @@ LABEL_37:
       v71 = 1024;
       v72 = 490;
       v73 = 2114;
-      v74 = v5;
+      v74 = appletCopy;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to load SE for applet: %{public}@", buf, 0x2Cu);
     }
 
@@ -1207,9 +1207,9 @@ LABEL_38:
   return v37;
 }
 
-- (id)passForAid:(id)a3
+- (id)passForAid:(id)aid
 {
-  v4 = a3;
+  aidCopy = aid;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1231,7 +1231,7 @@ LABEL_38:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:{@"appletIdentifier", v15}];
-        v12 = [v4 caseInsensitiveCompare:v11];
+        v12 = [aidCopy caseInsensitiveCompare:v11];
 
         if (!v12)
         {
@@ -1256,17 +1256,17 @@ LABEL_11:
   return v13;
 }
 
-- (void)removeAppletsFromConfig:(id)a3
+- (void)removeAppletsFromConfig:(id)config
 {
-  v5 = a3;
-  v6 = [(NFExpressConfig *)self getSecureElementWrapperAndSetRouting];
-  if (v6)
+  configCopy = config;
+  getSecureElementWrapperAndSetRouting = [(NFExpressConfig *)self getSecureElementWrapperAndSetRouting];
+  if (getSecureElementWrapperAndSetRouting)
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v7 = v5;
+    v7 = configCopy;
     v8 = [v7 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (!v8)
     {
@@ -1275,8 +1275,8 @@ LABEL_11:
     }
 
     v9 = v8;
-    v31 = v6;
-    v32 = v5;
+    v31 = getSecureElementWrapperAndSetRouting;
+    v32 = configCopy;
     v10 = 0;
     v11 = *v34;
     while (1)
@@ -1293,8 +1293,8 @@ LABEL_11:
         if (objc_opt_isKindOfClass())
         {
           v14 = v13;
-          v15 = [v14 identifier];
-          if (!v15)
+          identifier = [v14 identifier];
+          if (!identifier)
           {
             goto LABEL_16;
           }
@@ -1309,15 +1309,15 @@ LABEL_11:
             goto LABEL_16;
           }
 
-          v15 = v13;
+          identifier = v13;
           v14 = 0;
-          if (!v15)
+          if (!identifier)
           {
             goto LABEL_16;
           }
         }
 
-        v16 = [(NFExpressConfig *)self passForAid:v15];
+        v16 = [(NFExpressConfig *)self passForAid:identifier];
         if (v16)
         {
           [(NSMutableArray *)self->_passes removeObject:v16];
@@ -1331,8 +1331,8 @@ LABEL_16:
       if (!v9)
       {
 
-        v6 = v31;
-        v5 = v32;
+        getSecureElementWrapperAndSetRouting = v31;
+        configCopy = v32;
         if (v10)
         {
           [(NFExpressConfig *)self updateExpressAppletNumbers];
@@ -1353,14 +1353,14 @@ LABEL_16:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    v23 = [(NFExpressConfig *)self seName];
+    seName = [(NFExpressConfig *)self seName];
     v24 = 45;
     if (isMetaClass)
     {
       v24 = 43;
     }
 
-    v18(3, "%c[%{public}s %{public}s]:%i Failed to initialize %{public}@ wrapper", v24, ClassName, Name, 525, v23);
+    v18(3, "%c[%{public}s %{public}s]:%i Failed to initialize %{public}@ wrapper", v24, ClassName, Name, 525, seName);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1380,10 +1380,10 @@ LABEL_16:
 
     v28 = object_getClassName(self);
     v29 = sel_getName(a2);
-    v30 = [(NFExpressConfig *)self seName];
+    seName2 = [(NFExpressConfig *)self seName];
     *buf = 67110146;
     v39 = v27;
-    v6 = 0;
+    getSecureElementWrapperAndSetRouting = 0;
     v40 = 2082;
     v41 = v28;
     v42 = 2082;
@@ -1391,17 +1391,17 @@ LABEL_16:
     v44 = 1024;
     v45 = 525;
     v46 = 2114;
-    v47 = v30;
+    v47 = seName2;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to initialize %{public}@ wrapper", buf, 0x2Cu);
   }
 
 LABEL_31:
 }
 
-- (id)getExpressAidsForType:(unsigned __int8)a3 onlyInExpress:(BOOL)a4
+- (id)getExpressAidsForType:(unsigned __int8)type onlyInExpress:(BOOL)express
 {
-  v4 = a4;
-  v5 = a3;
+  expressCopy = express;
+  typeCopy = type;
   v19 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
@@ -1423,12 +1423,12 @@ LABEL_31:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        if (v4)
+        if (expressCopy)
         {
           v13 = [*(*(&v20 + 1) + 8 * i) objectForKeyedSubscript:@"expressEnabled"];
-          v14 = [v13 BOOLValue];
+          bOOLValue = [v13 BOOLValue];
 
-          if (!v14)
+          if (!bOOLValue)
           {
             continue;
           }
@@ -1438,7 +1438,7 @@ LABEL_31:
         v16 = [v12 objectForKeyedSubscript:@"ExpressType"];
         v17 = [NFExpressConfig expressTypeForATLConfigKey:v16];
 
-        if (v17 == v5)
+        if (v17 == typeCopy)
         {
           [v19 addObject:v15];
         }
@@ -1499,8 +1499,8 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
   }
 
-  v13 = [(NFExpressConfig *)self getSecureElementWrapperAndSetRouting];
-  v14 = sub_1002562FC(v13);
+  getSecureElementWrapperAndSetRouting = [(NFExpressConfig *)self getSecureElementWrapperAndSetRouting];
+  v14 = sub_1002562FC(getSecureElementWrapperAndSetRouting);
 
   return v14;
 }
@@ -1515,10 +1515,10 @@ LABEL_31:
 
 - (BOOL)isSEOperational
 {
-  v2 = [(NFExpressConfig *)self getSecureElementWrapper];
-  v3 = [v2 isOperational];
+  getSecureElementWrapper = [(NFExpressConfig *)self getSecureElementWrapper];
+  isOperational = [getSecureElementWrapper isOperational];
 
-  return v3;
+  return isOperational;
 }
 
 @end

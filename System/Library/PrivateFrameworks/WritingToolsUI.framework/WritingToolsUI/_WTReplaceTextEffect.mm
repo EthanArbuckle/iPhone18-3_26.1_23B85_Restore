@@ -1,21 +1,21 @@
 @interface _WTReplaceTextEffect
-- (_WTReplaceTextEffect)initWithChunk:(id)a3 effectView:(id)a4;
+- (_WTReplaceTextEffect)initWithChunk:(id)chunk effectView:(id)view;
 - (double)sweepDuration;
-- (void)RBLayer:(id)a3 draw:(id)a4;
+- (void)RBLayer:(id)layer draw:(id)draw;
 - (void)_alignFrames;
-- (void)invalidate:(BOOL)a3;
-- (void)prepareWithCoolPalette:(id)a3 warmPalette:(id)a4;
-- (void)update:(id)a3;
-- (void)updateEffectWith:(id)a3;
+- (void)invalidate:(BOOL)invalidate;
+- (void)prepareWithCoolPalette:(id)palette warmPalette:(id)warmPalette;
+- (void)update:(id)update;
+- (void)updateEffectWith:(id)with;
 @end
 
 @implementation _WTReplaceTextEffect
 
-- (_WTReplaceTextEffect)initWithChunk:(id)a3 effectView:(id)a4
+- (_WTReplaceTextEffect)initWithChunk:(id)chunk effectView:(id)view
 {
   v11.receiver = self;
   v11.super_class = _WTReplaceTextEffect;
-  v4 = [(_WTTextEffect *)&v11 initWithChunk:a3 effectView:a4];
+  v4 = [(_WTTextEffect *)&v11 initWithChunk:chunk effectView:view];
   if (v4)
   {
     v5 = +[_WTLightEffectPalette coolColors];
@@ -54,41 +54,41 @@
   }
 }
 
-- (void)prepareWithCoolPalette:(id)a3 warmPalette:(id)a4
+- (void)prepareWithCoolPalette:(id)palette warmPalette:(id)warmPalette
 {
-  v6 = a3;
-  v7 = a4;
+  paletteCopy = palette;
+  warmPaletteCopy = warmPalette;
   coolPalette = self->_coolPalette;
-  self->_coolPalette = v6;
-  v10 = v6;
+  self->_coolPalette = paletteCopy;
+  v10 = paletteCopy;
 
   warmPalette = self->_warmPalette;
-  self->_warmPalette = v7;
+  self->_warmPalette = warmPaletteCopy;
 }
 
-- (void)invalidate:(BOOL)a3
+- (void)invalidate:(BOOL)invalidate
 {
-  v3 = a3;
-  v5 = [(_WTReplaceTextEffect *)self displayLink];
-  [v5 invalidate];
+  invalidateCopy = invalidate;
+  displayLink = [(_WTReplaceTextEffect *)self displayLink];
+  [displayLink invalidate];
 
   [(_WTReplaceTextEffect *)self setDisplayLink:0];
-  v6 = [(_WTReplaceTextEffect *)self isDestination];
-  v7 = v6;
-  if (v6)
+  isDestination = [(_WTReplaceTextEffect *)self isDestination];
+  v7 = isDestination;
+  if (isDestination)
   {
-    v8 = [(_WTReplaceTextEffect *)self completion];
+    completion = [(_WTReplaceTextEffect *)self completion];
 
-    if (v8)
+    if (completion)
     {
-      v9 = [(_WTReplaceTextEffect *)self completion];
-      v9[2]();
+      completion2 = [(_WTReplaceTextEffect *)self completion];
+      completion2[2]();
     }
   }
 
   [MEMORY[0x1E6979518] begin];
   v10 = 0.0;
-  if (v3)
+  if (invalidateCopy)
   {
     v10 = 0.25;
   }
@@ -101,25 +101,25 @@
   v12[4] = self;
   v13 = v7;
   [MEMORY[0x1E6979518] setCompletionBlock:v12];
-  v11 = [(_WTTextEffect *)self rootLayer];
-  [v11 setOpacity:0.0];
+  rootLayer = [(_WTTextEffect *)self rootLayer];
+  [rootLayer setOpacity:0.0];
 
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)updateEffectWith:(id)a3
+- (void)updateEffectWith:(id)with
 {
   v131 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  withCopy = with;
   v128.receiver = self;
   v128.super_class = _WTReplaceTextEffect;
-  [(_WTTextEffect *)&v128 updateEffectWith:v4];
+  [(_WTTextEffect *)&v128 updateEffectWith:withCopy];
   v5 = 0.0;
   v6 = 0.0;
   if ([(_WTReplaceTextEffect *)self _isInClipView])
   {
-    v7 = [(_WTTextEffect *)self effectView];
-    [v7 platformGetVisibleRect];
+    effectView = [(_WTTextEffect *)self effectView];
+    [effectView platformGetVisibleRect];
     v6 = v8;
     v5 = v9;
   }
@@ -131,7 +131,7 @@
     v127[2] = __41___WTReplaceTextEffect_updateEffectWith___block_invoke;
     v127[3] = &unk_1E8481020;
     v127[4] = self;
-    [v4 enumerateObjectsUsingBlock:v127];
+    [withCopy enumerateObjectsUsingBlock:v127];
     [(_WTTextEffect *)self effectVisibilityFrame];
     v11 = v10;
     [(_WTReplaceTextEffect *)self sweepDuration];
@@ -156,16 +156,16 @@
       [(_WTReplaceTextEffect *)self setNonCandidateTextContent:v17];
 
       v18 = +[_WTColor grayColor];
-      v19 = [v18 CGColor];
-      v20 = [(_WTReplaceTextEffect *)self nonCandidateTextContent];
-      [v20 setBackgroundColor:v19];
+      cGColor = [v18 CGColor];
+      nonCandidateTextContent = [(_WTReplaceTextEffect *)self nonCandidateTextContent];
+      [nonCandidateTextContent setBackgroundColor:cGColor];
 
       v21 = [MEMORY[0x1E6979398] layerWithName:@"nonCandidateTextContentMask"];
       [(_WTReplaceTextEffect *)self setNonCandidateTextContentMask:v21];
 
-      v22 = [(_WTReplaceTextEffect *)self nonCandidateTextContentMask];
-      v23 = [(_WTReplaceTextEffect *)self nonCandidateTextContent];
-      [v23 setMask:v22];
+      nonCandidateTextContentMask = [(_WTReplaceTextEffect *)self nonCandidateTextContentMask];
+      nonCandidateTextContent2 = [(_WTReplaceTextEffect *)self nonCandidateTextContent];
+      [nonCandidateTextContent2 setMask:nonCandidateTextContentMask];
     }
 
     v24 = [MEMORY[0x1E6979398] layerWithName:@"textContentMask"];
@@ -176,8 +176,8 @@
     v124 = 0u;
     v125 = 0u;
     v126 = 0u;
-    v102 = v4;
-    obj = v4;
+    v102 = withCopy;
+    obj = withCopy;
     v25 = [obj countByEnumeratingWithState:&v123 objects:v130 count:16];
     if (v25)
     {
@@ -188,7 +188,7 @@
       v28 = *MEMORY[0x1E6979EB0];
       v29 = *MEMORY[0x1E69797E0];
       v105 = *v124;
-      v106 = self;
+      selfCopy = self;
       v103 = *MEMORY[0x1E69797E0];
       v104 = *MEMORY[0x1E6979EB0];
       do
@@ -204,26 +204,26 @@
 
           v114 = v30;
           v31 = *(*(&v123 + 1) + 8 * v30);
-          v32 = [v31 layerWithContents];
-          [v32 setName:@"textContentLayer"];
+          layerWithContents = [v31 layerWithContents];
+          [layerWithContents setName:@"textContentLayer"];
           v113 = v31;
           if ([(_WTReplaceTextEffect *)self highlightsCandidateRects])
           {
-            v109 = [v31 layerWithContents];
-            [v109 setName:@"nonCandidateTextContentLayer"];
+            layerWithContents2 = [v31 layerWithContents];
+            [layerWithContents2 setName:@"nonCandidateTextContentLayer"];
             v33 = [MEMORY[0x1E6979398] layerWithName:@"candidatesMask"];
-            [v32 bounds];
+            [layerWithContents bounds];
             [v33 setFrame:?];
             v34 = [MEMORY[0x1E6979398] layerWithName:@"nonCandidatesMask"];
-            v117 = v32;
-            [v32 bounds];
+            v117 = layerWithContents;
+            [layerWithContents bounds];
             [v34 setFrame:?];
             v121 = 0u;
             v122 = 0u;
             v119 = 0u;
             v120 = 0u;
-            v115 = [v31 candidateRects];
-            v35 = [v115 countByEnumeratingWithState:&v119 objects:v129 count:16];
+            candidateRects = [v31 candidateRects];
+            v35 = [candidateRects countByEnumeratingWithState:&v119 objects:v129 count:16];
             if (v35)
             {
               v36 = v35;
@@ -234,7 +234,7 @@
                 {
                   if (*v120 != v116)
                   {
-                    objc_enumerationMutation(v115);
+                    objc_enumerationMutation(candidateRects);
                   }
 
                   v38 = *(*(&v119 + 1) + 8 * i);
@@ -255,27 +255,27 @@
                   [v41 setBackgroundColor:{objc_msgSend(v42, "CGColor")}];
                 }
 
-                v36 = [v115 countByEnumeratingWithState:&v119 objects:v129 count:16];
+                v36 = [candidateRects countByEnumeratingWithState:&v119 objects:v129 count:16];
               }
 
               while (v36);
             }
 
             [v117 setMask:v33];
-            v32 = v117;
+            layerWithContents = v117;
             v43 = [MEMORY[0x1E6979398] layerWithName:@"inverter"];
-            v44 = v109;
-            [v109 bounds];
+            v44 = layerWithContents2;
+            [layerWithContents2 bounds];
             [v43 setFrame:?];
             v45 = +[_WTColor whiteColor];
             [v43 setBackgroundColor:{objc_msgSend(v45, "CGColor")}];
 
             [v34 setCompositingFilter:@"xor"];
             [v43 addSublayer:v34];
-            [v109 setMask:v43];
-            self = v106;
-            v46 = [(_WTReplaceTextEffect *)v106 nonCandidateTextContentMask];
-            [v46 addSublayer:v109];
+            [layerWithContents2 setMask:v43];
+            self = selfCopy;
+            nonCandidateTextContentMask2 = [(_WTReplaceTextEffect *)selfCopy nonCandidateTextContentMask];
+            [nonCandidateTextContentMask2 addSublayer:layerWithContents2];
 
             v26 = v107;
             v28 = v104;
@@ -288,20 +288,20 @@
             v44 = 0;
           }
 
-          v47 = [(_WTReplaceTextEffect *)self textContentMask];
-          [v47 addSublayer:v32];
+          textContentMask = [(_WTReplaceTextEffect *)self textContentMask];
+          [textContentMask addSublayer:layerWithContents];
 
-          [v32 position];
+          [layerWithContents position];
           v49 = v48 - v6;
-          [v32 position];
+          [layerWithContents position];
           v51 = v50 - v5;
-          [v32 position];
+          [layerWithContents position];
           v53 = v52 - v6;
-          [v32 position];
+          [layerWithContents position];
           v55 = v54 + 12.0 - v5;
           if ([(_WTReplaceTextEffect *)self isDestination])
           {
-            [v32 setPosition:{v53, v55}];
+            [layerWithContents setPosition:{v53, v55}];
             [v44 setPosition:{v53, v55}];
             v56 = v53;
             v57 = v55;
@@ -353,7 +353,7 @@
           [v58 setBeginTime:v64 + v112 + v111 * (MinY - CGRectGetMinY(v133))];
           [v58 setFillMode:v29];
           [v58 setRemovedOnCompletion:0];
-          [v32 addAnimation:v58 forKey:0];
+          [layerWithContents addAnimation:v58 forKey:0];
           [v44 addAnimation:v58 forKey:0];
 
           v30 = v114 + 1;
@@ -366,78 +366,78 @@
       while (v26);
     }
 
-    v66 = [(_WTTextEffect *)self effectView];
-    v67 = [v66 window];
-    [v67 platformBackingScale];
+    effectView2 = [(_WTTextEffect *)self effectView];
+    window = [effectView2 window];
+    [window platformBackingScale];
     v69 = v68;
 
-    v70 = [MEMORY[0x1E69C70E0] layer];
-    [(_WTReplaceTextEffect *)self setTextContent:v70];
+    layer = [MEMORY[0x1E69C70E0] layer];
+    [(_WTReplaceTextEffect *)self setTextContent:layer];
 
-    v71 = [(_WTReplaceTextEffect *)self textContent];
-    [v71 setName:@"textContent"];
+    textContent = [(_WTReplaceTextEffect *)self textContent];
+    [textContent setName:@"textContent"];
 
-    v72 = [(_WTReplaceTextEffect *)self textContent];
-    [v72 setOpaque:0];
+    textContent2 = [(_WTReplaceTextEffect *)self textContent];
+    [textContent2 setOpaque:0];
 
-    v73 = [(_WTReplaceTextEffect *)self textContent];
-    [v73 setColorMode:11];
+    textContent3 = [(_WTReplaceTextEffect *)self textContent];
+    [textContent3 setColorMode:11];
 
-    v74 = [(_WTReplaceTextEffect *)self textContent];
-    [v74 setWantsExtendedDynamicRangeContent:1];
+    textContent4 = [(_WTReplaceTextEffect *)self textContent];
+    [textContent4 setWantsExtendedDynamicRangeContent:1];
 
-    v75 = [(_WTReplaceTextEffect *)self textContent];
-    [v75 setValue:MEMORY[0x1E695E118] forKey:@"allowsLimitedHeadroom"];
+    textContent5 = [(_WTReplaceTextEffect *)self textContent];
+    [textContent5 setValue:MEMORY[0x1E695E118] forKey:@"allowsLimitedHeadroom"];
 
     [(_WTTextEffect *)self _maxRequestedEDR];
     v77 = v76;
-    v78 = [(_WTReplaceTextEffect *)self textContent];
-    [v78 setContentsMaximumDesiredEDR:v77];
+    textContent6 = [(_WTReplaceTextEffect *)self textContent];
+    [textContent6 setContentsMaximumDesiredEDR:v77];
 
-    v79 = [(_WTReplaceTextEffect *)self textContent];
-    [v79 setContentsScale:v69];
+    textContent7 = [(_WTReplaceTextEffect *)self textContent];
+    [textContent7 setContentsScale:v69];
 
-    v80 = [(_WTReplaceTextEffect *)self textContent];
-    [v80 setDelegate:self];
+    textContent8 = [(_WTReplaceTextEffect *)self textContent];
+    [textContent8 setDelegate:self];
 
-    v81 = [MEMORY[0x1E69C70E0] layer];
-    [(_WTReplaceTextEffect *)self setRootMask:v81];
+    layer2 = [MEMORY[0x1E69C70E0] layer];
+    [(_WTReplaceTextEffect *)self setRootMask:layer2];
 
-    v82 = [(_WTReplaceTextEffect *)self rootMask];
-    [v82 setName:@"rootMask"];
+    rootMask = [(_WTReplaceTextEffect *)self rootMask];
+    [rootMask setName:@"rootMask"];
 
-    v83 = [(_WTReplaceTextEffect *)self rootMask];
-    [v83 setOpaque:0];
+    rootMask2 = [(_WTReplaceTextEffect *)self rootMask];
+    [rootMask2 setOpaque:0];
 
-    v84 = [(_WTReplaceTextEffect *)self rootMask];
-    [v84 setContentsScale:v69];
+    rootMask3 = [(_WTReplaceTextEffect *)self rootMask];
+    [rootMask3 setContentsScale:v69];
 
-    v85 = [(_WTReplaceTextEffect *)self rootMask];
-    [v85 setDelegate:self];
+    rootMask4 = [(_WTReplaceTextEffect *)self rootMask];
+    [rootMask4 setDelegate:self];
 
-    v86 = [(_WTReplaceTextEffect *)self rootMask];
-    v87 = [(_WTTextEffect *)self rootLayer];
-    [v87 setMask:v86];
+    rootMask5 = [(_WTReplaceTextEffect *)self rootMask];
+    rootLayer = [(_WTTextEffect *)self rootLayer];
+    [rootLayer setMask:rootMask5];
 
-    v88 = [(_WTReplaceTextEffect *)self textContentMask];
-    v89 = [(_WTReplaceTextEffect *)self textContent];
-    [v89 setMask:v88];
+    textContentMask2 = [(_WTReplaceTextEffect *)self textContentMask];
+    textContent9 = [(_WTReplaceTextEffect *)self textContent];
+    [textContent9 setMask:textContentMask2];
 
-    v90 = [(_WTTextEffect *)self rootLayer];
-    v91 = [(_WTReplaceTextEffect *)self textContent];
-    [v90 addSublayer:v91];
+    rootLayer2 = [(_WTTextEffect *)self rootLayer];
+    textContent10 = [(_WTReplaceTextEffect *)self textContent];
+    [rootLayer2 addSublayer:textContent10];
 
-    v92 = [(_WTTextEffect *)self rootLayer];
-    v93 = [(_WTReplaceTextEffect *)self nonCandidateTextContent];
-    [v92 addSublayer:v93];
+    rootLayer3 = [(_WTTextEffect *)self rootLayer];
+    nonCandidateTextContent3 = [(_WTReplaceTextEffect *)self nonCandidateTextContent];
+    [rootLayer3 addSublayer:nonCandidateTextContent3];
 
-    v94 = [(_WTTextEffect *)self effectView];
-    v95 = [v94 layer];
-    v96 = [(_WTTextEffect *)self rootLayer];
-    [v95 addSublayer:v96];
+    effectView3 = [(_WTTextEffect *)self effectView];
+    layer3 = [effectView3 layer];
+    rootLayer4 = [(_WTTextEffect *)self rootLayer];
+    [layer3 addSublayer:rootLayer4];
 
-    v97 = [(_WTTextEffect *)self effectView];
-    v98 = [v97 platformInstalledDisplayLinkWithTarget:self selector:sel_update_];
+    effectView4 = [(_WTTextEffect *)self effectView];
+    v98 = [effectView4 platformInstalledDisplayLinkWithTarget:self selector:sel_update_];
     [(_WTReplaceTextEffect *)self setDisplayLink:v98];
 
     [(_WTTextEffect *)self invalidationDelay];
@@ -451,7 +451,7 @@
       [(_WTTextEffect *)self invalidationDelay];
     }
 
-    v4 = v102;
+    withCopy = v102;
     v101 = dispatch_time(0, (v100 * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -466,35 +466,35 @@
 
 - (void)_alignFrames
 {
-  v3 = [(_WTTextEffect *)self effectView];
-  [v3 bounds];
+  effectView = [(_WTTextEffect *)self effectView];
+  [effectView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_WTTextEffect *)self rootLayer];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  rootLayer = [(_WTTextEffect *)self rootLayer];
+  [rootLayer setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(_WTTextEffect *)self effectView];
-  [v13 bounds];
+  effectView2 = [(_WTTextEffect *)self effectView];
+  [effectView2 bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(_WTReplaceTextEffect *)self textContentMask];
-  [v22 setFrame:{v15, v17, v19, v21}];
+  textContentMask = [(_WTReplaceTextEffect *)self textContentMask];
+  [textContentMask setFrame:{v15, v17, v19, v21}];
 
-  LOBYTE(v22) = [(_WTReplaceTextEffect *)self _isInClipView];
-  v23 = [(_WTTextEffect *)self effectView];
-  v24 = v23;
-  if (v22)
+  LOBYTE(textContentMask) = [(_WTReplaceTextEffect *)self _isInClipView];
+  effectView3 = [(_WTTextEffect *)self effectView];
+  v24 = effectView3;
+  if (textContentMask)
   {
-    [v23 platformGetVisibleRect];
+    [effectView3 platformGetVisibleRect];
   }
 
   else
   {
-    [v23 bounds];
+    [effectView3 bounds];
   }
 
   v29 = v25;
@@ -502,36 +502,36 @@
   v31 = v27;
   v32 = v28;
 
-  v33 = [(_WTReplaceTextEffect *)self rootMask];
-  [v33 setFrame:{v29, v30, v31, v32}];
+  rootMask = [(_WTReplaceTextEffect *)self rootMask];
+  [rootMask setFrame:{v29, v30, v31, v32}];
 
-  v34 = [(_WTReplaceTextEffect *)self textContent];
-  [v34 setFrame:{v29, v30, v31, v32}];
+  textContent = [(_WTReplaceTextEffect *)self textContent];
+  [textContent setFrame:{v29, v30, v31, v32}];
 
-  v35 = [(_WTReplaceTextEffect *)self nonCandidateTextContent];
-  [v35 setFrame:{v29, v30, v31, v32}];
+  nonCandidateTextContent = [(_WTReplaceTextEffect *)self nonCandidateTextContent];
+  [nonCandidateTextContent setFrame:{v29, v30, v31, v32}];
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
-  v4 = [(_WTTextEffect *)self effectView];
+  effectView = [(_WTTextEffect *)self effectView];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __31___WTReplaceTextEffect_update___block_invoke;
   v17[3] = &unk_1E8480BF8;
   v17[4] = self;
-  [v4 platformPerformWithoutAnimation:v17];
+  [effectView platformPerformWithoutAnimation:v17];
 
   [(_WTReplaceTextEffect *)self startTime];
   if (v5 == 0.0)
   {
-    v6 = [(_WTReplaceTextEffect *)self displayLink];
-    [v6 timestamp];
+    displayLink = [(_WTReplaceTextEffect *)self displayLink];
+    [displayLink timestamp];
     [(_WTReplaceTextEffect *)self setStartTime:?];
   }
 
-  v7 = [(_WTReplaceTextEffect *)self displayLink];
-  [v7 timestamp];
+  displayLink2 = [(_WTReplaceTextEffect *)self displayLink];
+  [displayLink2 timestamp];
   v9 = v8;
   [(_WTReplaceTextEffect *)self startTime];
   v11 = v9 - v10;
@@ -549,21 +549,21 @@
 
   if (v11 > v13)
   {
-    v14 = [(_WTReplaceTextEffect *)self displayLink];
-    [v14 invalidate];
+    displayLink3 = [(_WTReplaceTextEffect *)self displayLink];
+    [displayLink3 invalidate];
   }
 
-  v15 = [(_WTReplaceTextEffect *)self rootMask];
-  [v15 setNeedsDisplay];
+  rootMask = [(_WTReplaceTextEffect *)self rootMask];
+  [rootMask setNeedsDisplay];
 
-  v16 = [(_WTReplaceTextEffect *)self textContent];
-  [v16 setNeedsDisplay];
+  textContent = [(_WTReplaceTextEffect *)self textContent];
+  [textContent setNeedsDisplay];
 }
 
-- (void)RBLayer:(id)a3 draw:(id)a4
+- (void)RBLayer:(id)layer draw:(id)draw
 {
-  v76 = a3;
-  v6 = a4;
+  layerCopy = layer;
+  drawCopy = draw;
   [(_WTTextEffect *)self defaultSweepRadius];
   v8 = v7;
   [(_WTTextEffect *)self effectVisibilityFrame];
@@ -571,8 +571,8 @@
   v11 = 0.0;
   if ([(_WTReplaceTextEffect *)self _isInClipView])
   {
-    v12 = [(_WTTextEffect *)self effectView];
-    [v12 platformGetVisibleRect];
+    effectView = [(_WTTextEffect *)self effectView];
+    [effectView platformGetVisibleRect];
     v11 = v13;
   }
 
@@ -583,29 +583,29 @@
   v16 = v8 - v10;
   v75 = v8 - v10 + v10 * 3.0;
   v17 = v8 + v10 * 3.0;
-  v18 = [(_WTReplaceTextEffect *)self displayLink];
-  [v18 timestamp];
+  displayLink = [(_WTReplaceTextEffect *)self displayLink];
+  [displayLink timestamp];
   v20 = v19;
   [(_WTReplaceTextEffect *)self startTime];
   v22 = v21;
   [(_WTReplaceTextEffect *)self sweepDuration];
   v24 = v23;
 
-  v25 = [(_WTReplaceTextEffect *)self textContent];
+  textContent = [(_WTReplaceTextEffect *)self textContent];
 
-  if (v25 == v76)
+  if (textContent == layerCopy)
   {
-    v32 = [(_WTReplaceTextEffect *)self colorFillInterpolator];
+    colorFillInterpolator = [(_WTReplaceTextEffect *)self colorFillInterpolator];
 
-    if (!v32)
+    if (!colorFillInterpolator)
     {
       v33 = objc_opt_new();
       v34 = objc_opt_new();
       v35 = objc_opt_new();
       [v35 setInfinite];
       v36 = objc_opt_new();
-      v37 = [(_WTTextEffect *)self effectView];
-      v38 = [v37 _WTIsDarkMode];
+      effectView2 = [(_WTTextEffect *)self effectView];
+      _WTIsDarkMode = [effectView2 _WTIsDarkMode];
 
       LODWORD(v39) = 0.5;
       LODWORD(v40) = 0.5;
@@ -614,17 +614,17 @@
       [v36 setColor:{v39, v40, v41, v42}];
       LODWORD(v43) = 1.0;
       [v33 drawShape:v35 fill:v36 alpha:0 blendMode:v43];
-      v44 = [(_WTReplaceTextEffect *)self destinationColor];
-      v45 = v44;
-      if (v44)
+      destinationColor = [(_WTReplaceTextEffect *)self destinationColor];
+      v45 = destinationColor;
+      if (destinationColor)
       {
-        v46 = v44;
+        v46 = destinationColor;
       }
 
       else
       {
         v47 = 0.0;
-        if (v38)
+        if (_WTIsDarkMode)
         {
           v47 = 1.0;
         }
@@ -671,7 +671,7 @@
         [(_WTTextEffect *)self _applyToFill:v54 colors:v60 center:MidX startRadius:v15 endRadius:v75, v17];
 
         v61 = 0.0;
-        if (v38)
+        if (_WTIsDarkMode)
         {
           *&v61 = 0.5;
         }
@@ -691,21 +691,21 @@
       [(_WTReplaceTextEffect *)self setColorFillInterpolator:v65];
     }
 
-    v66 = [(_WTReplaceTextEffect *)self colorFillInterpolator];
+    colorFillInterpolator2 = [(_WTReplaceTextEffect *)self colorFillInterpolator];
   }
 
   else
   {
-    v26 = [(_WTReplaceTextEffect *)self rootMask];
+    rootMask = [(_WTReplaceTextEffect *)self rootMask];
 
-    if (v26 != v76)
+    if (rootMask != layerCopy)
     {
       goto LABEL_27;
     }
 
-    v27 = [(_WTReplaceTextEffect *)self interpolator];
+    interpolator = [(_WTReplaceTextEffect *)self interpolator];
 
-    if (!v27)
+    if (!interpolator)
     {
       v28 = objc_opt_new();
       v29 = objc_opt_new();
@@ -732,10 +732,10 @@
       [(_WTReplaceTextEffect *)self setInterpolator:v70];
     }
 
-    v66 = [(_WTReplaceTextEffect *)self interpolator];
+    colorFillInterpolator2 = [(_WTReplaceTextEffect *)self interpolator];
   }
 
-  v71 = v66;
+  v71 = colorFillInterpolator2;
   v72 = (v20 - v22) / v24;
   State = RBDisplayListGetState();
   *&v74 = v72;

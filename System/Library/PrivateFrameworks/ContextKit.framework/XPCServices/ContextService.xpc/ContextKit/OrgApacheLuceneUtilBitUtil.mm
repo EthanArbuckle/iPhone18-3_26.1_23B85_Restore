@@ -1,56 +1,56 @@
 @interface OrgApacheLuceneUtilBitUtil
-+ (int)zigZagDecodeWithInt:(int)a3;
-+ (int)zigZagEncodeWithInt:(int)a3;
-+ (int64_t)zigZagDecodeWithLong:(int64_t)a3;
-+ (int64_t)zigZagEncodeWithLong:(int64_t)a3;
++ (int)zigZagDecodeWithInt:(int)int;
++ (int)zigZagEncodeWithInt:(int)int;
++ (int64_t)zigZagDecodeWithLong:(int64_t)long;
++ (int64_t)zigZagEncodeWithLong:(int64_t)long;
 + (void)initialize;
 @end
 
 @implementation OrgApacheLuceneUtilBitUtil
 
-+ (int)zigZagEncodeWithInt:(int)a3
++ (int)zigZagEncodeWithInt:(int)int
 {
   if ((atomic_load_explicit(OrgApacheLuceneUtilBitUtil__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100032370();
   }
 
-  return (a3 >> 31) ^ (2 * a3);
+  return (int >> 31) ^ (2 * int);
 }
 
-+ (int64_t)zigZagEncodeWithLong:(int64_t)a3
++ (int64_t)zigZagEncodeWithLong:(int64_t)long
 {
   if ((atomic_load_explicit(OrgApacheLuceneUtilBitUtil__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100032370();
   }
 
-  return (a3 >> 63) ^ (2 * a3);
+  return (long >> 63) ^ (2 * long);
 }
 
-+ (int)zigZagDecodeWithInt:(int)a3
++ (int)zigZagDecodeWithInt:(int)int
 {
   if ((atomic_load_explicit(OrgApacheLuceneUtilBitUtil__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100032370();
   }
 
-  return -(a3 & 1) ^ (a3 >> 1);
+  return -(int & 1) ^ (int >> 1);
 }
 
-+ (int64_t)zigZagDecodeWithLong:(int64_t)a3
++ (int64_t)zigZagDecodeWithLong:(int64_t)long
 {
   if ((atomic_load_explicit(OrgApacheLuceneUtilBitUtil__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100032370();
   }
 
-  return -(a3 & 1) ^ (a3 >> 1);
+  return -(long & 1) ^ (long >> 1);
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v7[12] = xmmword_100314208;
     v7[13] = unk_100314218;

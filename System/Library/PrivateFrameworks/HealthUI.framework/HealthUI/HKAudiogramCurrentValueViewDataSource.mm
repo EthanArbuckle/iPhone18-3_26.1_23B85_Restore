@@ -1,17 +1,17 @@
 @interface HKAudiogramCurrentValueViewDataSource
 - (BOOL)showSeparators;
 - (HKAudiogramCurrentValueViewDataSource)init;
-- (HKAudiogramCurrentValueViewDataSource)initWithApplicationItems:(id)a3;
-- (id)dateViewWithOrientation:(int64_t)a3;
-- (id)leftMarginViewWithOrientation:(int64_t)a3;
-- (id)valueViewForColumnAtIndex:(int64_t)a3 orientation:(int64_t)a4;
-- (int64_t)numberOfValuesForAnnotationView:(id)a3;
-- (void)updateWithAudiogram:(id)a3;
+- (HKAudiogramCurrentValueViewDataSource)initWithApplicationItems:(id)items;
+- (id)dateViewWithOrientation:(int64_t)orientation;
+- (id)leftMarginViewWithOrientation:(int64_t)orientation;
+- (id)valueViewForColumnAtIndex:(int64_t)index orientation:(int64_t)orientation;
+- (int64_t)numberOfValuesForAnnotationView:(id)view;
+- (void)updateWithAudiogram:(id)audiogram;
 @end
 
 @implementation HKAudiogramCurrentValueViewDataSource
 
-- (HKAudiogramCurrentValueViewDataSource)initWithApplicationItems:(id)a3
+- (HKAudiogramCurrentValueViewDataSource)initWithApplicationItems:(id)items
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -23,17 +23,17 @@
 
   *(&self->super.isa + OBJC_IVAR___HKAudiogramCurrentValueViewDataSource____lazy_storage___chartFormatter) = 0;
   *(&self->super.isa + OBJC_IVAR___HKAudiogramCurrentValueViewDataSource_audiogram) = 0;
-  *(&self->super.isa + OBJC_IVAR___HKAudiogramCurrentValueViewDataSource_applicationItems) = a3;
+  *(&self->super.isa + OBJC_IVAR___HKAudiogramCurrentValueViewDataSource_applicationItems) = items;
   *(&self->super.isa + OBJC_IVAR___HKAudiogramCurrentValueViewDataSource_keyValueLabels) = MEMORY[0x1E69E7CC0];
   v8.receiver = self;
   v8.super_class = type metadata accessor for AudiogramCurrentValueViewDataSource();
-  v5 = a3;
+  itemsCopy = items;
   v6 = [(HKAudiogramCurrentValueViewDataSource *)&v8 init];
 
   return v6;
 }
 
-- (void)updateWithAudiogram:(id)a3
+- (void)updateWithAudiogram:(id)audiogram
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -44,15 +44,15 @@
   }
 
   v5 = *(&self->super.isa + OBJC_IVAR___HKAudiogramCurrentValueViewDataSource_audiogram);
-  *(&self->super.isa + OBJC_IVAR___HKAudiogramCurrentValueViewDataSource_audiogram) = a3;
-  v6 = a3;
-  v8 = self;
+  *(&self->super.isa + OBJC_IVAR___HKAudiogramCurrentValueViewDataSource_audiogram) = audiogram;
+  audiogramCopy = audiogram;
+  selfCopy = self;
 
-  v7 = v6;
+  v7 = audiogramCopy;
   sub_1C3C507C8();
 }
 
-- (id)dateViewWithOrientation:(int64_t)a3
+- (id)dateViewWithOrientation:(int64_t)orientation
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -62,13 +62,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1C3C51E50();
 
   return v5;
 }
 
-- (id)leftMarginViewWithOrientation:(int64_t)a3
+- (id)leftMarginViewWithOrientation:(int64_t)orientation
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -81,7 +81,7 @@
   return 0;
 }
 
-- (int64_t)numberOfValuesForAnnotationView:(id)a3
+- (int64_t)numberOfValuesForAnnotationView:(id)view
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -107,7 +107,7 @@
   return v6;
 }
 
-- (id)valueViewForColumnAtIndex:(int64_t)a3 orientation:(int64_t)a4
+- (id)valueViewForColumnAtIndex:(int64_t)index orientation:(int64_t)orientation
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -122,32 +122,32 @@
   v9 = *(&self->super.isa + v7);
   if ((v9 & 0xC000000000000001) != 0)
   {
-    v15 = self;
+    selfCopy = self;
 
-    v16 = MEMORY[0x1C692FEB0](a3, v9);
+    v16 = MEMORY[0x1C692FEB0](index, v9);
 
     v12 = v16;
     goto LABEL_7;
   }
 
-  if (a3 < 0)
+  if (index < 0)
   {
     __break(1u);
     goto LABEL_12;
   }
 
-  if (*((v9 & 0xFFFFFFFFFFFFFF8) + 0x10) <= a3)
+  if (*((v9 & 0xFFFFFFFFFFFFFF8) + 0x10) <= index)
   {
 LABEL_12:
     __break(1u);
     return result;
   }
 
-  v10 = *(v9 + 8 * a3 + 32);
-  v11 = self;
+  v10 = *(v9 + 8 * index + 32);
+  selfCopy2 = self;
   v12 = v10;
 LABEL_7:
-  v13 = a4 == 0;
+  v13 = orientation == 0;
   v14 = v12;
   [v12 setOrientation_];
 

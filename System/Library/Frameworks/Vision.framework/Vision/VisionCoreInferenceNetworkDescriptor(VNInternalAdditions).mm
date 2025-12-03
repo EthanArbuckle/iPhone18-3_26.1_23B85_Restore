@@ -15,9 +15,9 @@
   v24 = 0;
   v25 = 0;
   v23 = 0;
-  LOBYTE(a1) = [a1 getVNEspressoModelImageprintData:&v23 elementType:&v25 elementCount:&v24 fromTensorData:v14 descriptor:v15 error:a8];
+  LOBYTE(self) = [self getVNEspressoModelImageprintData:&v23 elementType:&v25 elementCount:&v24 fromTensorData:v14 descriptor:v15 error:a8];
   v18 = v23;
-  if (a1)
+  if (self)
   {
     if (v17)
     {
@@ -47,20 +47,20 @@
 {
   v13 = a6;
   v14 = a7;
-  v15 = [v14 shape];
+  shape = [v14 shape];
   v43 = 0;
-  if (([v15 getOneDimensionalArrayDimensionIndex:&v43 error:a8] & 1) == 0)
+  if (([shape getOneDimensionalArrayDimensionIndex:&v43 error:a8] & 1) == 0)
   {
     goto LABEL_23;
   }
 
-  v16 = [v14 dataType];
-  v17 = v16;
+  dataType = [v14 dataType];
+  v17 = dataType;
   v40 = 1;
   v18 = 4;
-  if (v16 != 65552 && v16 != 65568)
+  if (dataType != 65552 && dataType != 65568)
   {
-    if (v16 == 65600)
+    if (dataType == 65600)
     {
       v40 = 2;
       v18 = 8;
@@ -82,25 +82,25 @@ LABEL_23:
   }
 
 LABEL_6:
-  v19 = [v15 elementCount];
+  elementCount = [shape elementCount];
   v39 = a3;
-  if (v18 * v19 != [v14 storageByteCount])
+  if (v18 * elementCount != [v14 storageByteCount])
   {
     v38 = v13;
-    v21 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v18 * v19];
-    v22 = [v21 mutableBytes];
-    if (v22)
+    v21 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v18 * elementCount];
+    mutableBytes = [v21 mutableBytes];
+    if (mutableBytes)
     {
       v36 = v21;
-      v23 = [v15 rank];
+      rank = [shape rank];
       v34 = a4;
       v35 = a5;
       src.data = 0;
-      std::vector<unsigned long>::vector[abi:ne200100](__p, v23);
-      v24 = [v38 bytes];
-      if (v19)
+      std::vector<unsigned long>::vector[abi:ne200100](__p, rank);
+      bytes = [v38 bytes];
+      if (elementCount)
       {
-        v25 = v24;
+        v25 = bytes;
         v20 = 0;
         v26 = 0;
         v37 = vdupq_n_s64(1uLL);
@@ -117,7 +117,7 @@ LABEL_6:
           v27 = (v25 + v41);
           if (v17 == 65600)
           {
-            *(v22 + 8 * v26) = *v27;
+            *(mutableBytes + 8 * v26) = *v27;
             goto LABEL_19;
           }
 
@@ -138,12 +138,12 @@ LABEL_6:
             vImageConvert_Planar16FtoPlanarF(&src, &dest, 0);
             v28 = v45;
 LABEL_17:
-            *(v22 + 4 * v26) = v28;
+            *(mutableBytes + 4 * v26) = v28;
           }
 
 LABEL_19:
-          v20 = ++v26 >= v19;
-          if (v19 == v26)
+          v20 = ++v26 >= elementCount;
+          if (elementCount == v26)
           {
             goto LABEL_20;
           }
@@ -159,7 +159,7 @@ LABEL_20:
       *v39 = v36;
       *v34 = v40;
       v20 = 1;
-      *v35 = v19;
+      *v35 = elementCount;
 LABEL_27:
       v13 = v38;
       if (__p[0])
@@ -191,7 +191,7 @@ LABEL_27:
   *a3 = [v13 copy];
   *a4 = v40;
   v20 = 1;
-  *a5 = v19;
+  *a5 = elementCount;
 LABEL_32:
 
   return v20;
@@ -200,7 +200,7 @@ LABEL_32:
 - (id)URLForComputeDevice:()VNInternalAdditions error:
 {
   v6 = a3;
-  v7 = [a1 URL];
+  v7 = [self URL];
   v8 = v7;
   if (v7)
   {

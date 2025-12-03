@@ -1,15 +1,15 @@
 @interface AppExtensionWrapper._Scene
 - (_TtCC12ExtensionKit19AppExtensionWrapper6_Scene)init;
-- (void)setViewController:(id)a3;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation AppExtensionWrapper._Scene
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtCC12ExtensionKit19AppExtensionWrapper6_Scene_viewController);
-  *(&self->super.isa + OBJC_IVAR____TtCC12ExtensionKit19AppExtensionWrapper6_Scene_viewController) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtCC12ExtensionKit19AppExtensionWrapper6_Scene_viewController) = controller;
+  controllerCopy = controller;
 }
 
 - (_TtCC12ExtensionKit19AppExtensionWrapper6_Scene)init

@@ -15,10 +15,10 @@
 
 - (void)invalidate
 {
-  v3 = [(TSWPAttachment *)self parentStorage];
-  v4 = [(TSWPAttachment *)self findCharIndex];
+  parentStorage = [(TSWPAttachment *)self parentStorage];
+  findCharIndex = [(TSWPAttachment *)self findCharIndex];
 
-  [(TSWPStorage *)v3 p_didChangeRange:v4 delta:1 broadcastKind:0, 1];
+  [(TSWPStorage *)parentStorage p_didChangeRange:findCharIndex delta:1 broadcastKind:0, 1];
 }
 
 - (CGSize)size

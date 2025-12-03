@@ -1,6 +1,6 @@
 @interface CAMetalLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
 - (BOOL)allowsDisplayCompositingWithCopy;
 - (BOOL)allowsNextDrawableTimeout;
 - (BOOL)disableFIFO;
@@ -12,7 +12,7 @@
 - (BOOL)nonDefaultColorspace;
 - (BOOL)presentsWithTransaction;
 - (BOOL)serverSyncEnabled;
-- (BOOL)shouldArchiveValueForKey:(id)a3;
+- (BOOL)shouldArchiveValueForKey:(id)key;
 - (CAMetalLayer)init;
 - (CGSize)drawableSize;
 - (NSDictionary)developerHUDProperties;
@@ -23,39 +23,39 @@
 - (id)newDrawable;
 - (id)nextDrawable;
 - (unint64_t)displayCompositingInternalStatus;
-- (void)_didCommitLayer:(void *)a3;
+- (void)_didCommitLayer:(void *)layer;
 - (void)_display;
 - (void)dealloc;
-- (void)didChangeValueForKey:(id)a3;
+- (void)didChangeValueForKey:(id)key;
 - (void)discardContents;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 - (void)removeBackBuffers;
-- (void)setAllowsDisplayCompositingWithCopy:(BOOL)a3;
+- (void)setAllowsDisplayCompositingWithCopy:(BOOL)copy;
 - (void)setAllowsNextDrawableTimeout:(BOOL)allowsNextDrawableTimeout;
-- (void)setColorspace:(CGColorSpace *)a3 nonDefault:(BOOL)a4;
-- (void)setContents:(id)a3;
+- (void)setColorspace:(CGColorSpace *)colorspace nonDefault:(BOOL)default;
+- (void)setContents:(id)contents;
 - (void)setDeveloperHUDProperties:(NSDictionary *)developerHUDProperties;
 - (void)setDevice:(id)device;
-- (void)setDisableFIFO:(BOOL)a3;
+- (void)setDisableFIFO:(BOOL)o;
 - (void)setDisplaySyncEnabled:(BOOL)displaySyncEnabled;
 - (void)setDrawableSize:(CGSize)drawableSize;
-- (void)setDrawableTimeoutSeconds:(double)a3;
+- (void)setDrawableTimeoutSeconds:(double)seconds;
 - (void)setEDRMetadata:(CAEDRMetadata *)EDRMetadata;
-- (void)setFenceEnabled:(BOOL)a3;
+- (void)setFenceEnabled:(BOOL)enabled;
 - (void)setFramebufferOnly:(BOOL)framebufferOnly;
-- (void)setInputTime:(double)a3;
-- (void)setLowLatency:(BOOL)a3;
-- (void)setLowWorkload:(BOOL)a3;
+- (void)setInputTime:(double)time;
+- (void)setLowLatency:(BOOL)latency;
+- (void)setLowWorkload:(BOOL)workload;
 - (void)setMaximumDrawableCount:(NSUInteger)maximumDrawableCount;
-- (void)setName:(id)a3;
-- (void)setNonDefaultColorspace:(BOOL)a3;
+- (void)setName:(id)name;
+- (void)setNonDefaultColorspace:(BOOL)colorspace;
 - (void)setPixelFormat:(MTLPixelFormat)pixelFormat;
-- (void)setPremultiplied:(BOOL)a3;
+- (void)setPremultiplied:(BOOL)premultiplied;
 - (void)setPresentsWithTransaction:(BOOL)presentsWithTransaction;
-- (void)setProtectionOptions:(unint64_t)a3;
-- (void)setServerSyncEnabled:(BOOL)a3;
-- (void)setTextureUsage:(unint64_t)a3;
-- (void)setWantsIOSurfaceCompression:(BOOL)a3;
+- (void)setProtectionOptions:(unint64_t)options;
+- (void)setServerSyncEnabled:(BOOL)enabled;
+- (void)setTextureUsage:(unint64_t)usage;
+- (void)setWantsIOSurfaceCompression:(BOOL)compression;
 @end
 
 @implementation CAMetalLayer
@@ -764,17 +764,17 @@ LABEL_11:
   }
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAMetalLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
 - (void)setDeveloperHUDProperties:(NSDictionary *)developerHUDProperties
@@ -924,7 +924,7 @@ LABEL_15:
   CAImageQueueSetFlagsInternal(v9, 0x40000000000000, v10);
 }
 
-- (void)_didCommitLayer:(void *)a3
+- (void)_didCommitLayer:(void *)layer
 {
   v14 = *MEMORY[0x1E69E9840];
   priv = self->_priv;
@@ -932,7 +932,7 @@ LABEL_15:
   {
     if ((*(priv + 1) & 2) != 0)
     {
-      v6 = *(a3 + 5);
+      v6 = *(layer + 5);
       if (v6)
       {
         v7 = *(priv + 2);
@@ -958,13 +958,13 @@ LABEL_15:
 
   v12.receiver = self;
   v12.super_class = CAMetalLayer;
-  [(CALayer *)&v12 _didCommitLayer:a3];
+  [(CALayer *)&v12 _didCommitLayer:layer];
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ([(CALayer *)self contents]!= a3)
+  if ([(CALayer *)self contents]!= contents)
   {
     if (x_log_get_api::once[0] != -1)
     {
@@ -980,7 +980,7 @@ LABEL_15:
 
   v6.receiver = self;
   v6.super_class = CAMetalLayer;
-  [(CALayer *)&v6 setContents:a3];
+  [(CALayer *)&v6 setContents:contents];
 }
 
 - (void)_display
@@ -991,12 +991,12 @@ LABEL_15:
   [(CALayer *)&v2 setContents:[(CALayer *)self contents]];
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
   priv = self->_priv;
   if (priv)
   {
-    if (a3)
+    if (visible)
     {
       v4 = 8;
     }
@@ -1007,7 +1007,7 @@ LABEL_15:
     }
 
     *(priv + 74) = *(priv + 74) & 0xFFFFFFF7 | v4;
-    if (a3)
+    if (visible)
     {
       CAImageQueueConsumeUnconsumed_(*(priv + 2), 0);
     }
@@ -1026,9 +1026,9 @@ LABEL_15:
     dispatch_once(&[CAMetalLayer newDrawable]::warn_once, &__block_literal_global_365);
   }
 
-  v3 = [(CAMetalLayer *)self nextDrawable];
+  nextDrawable = [(CAMetalLayer *)self nextDrawable];
 
-  return v3;
+  return nextDrawable;
 }
 
 void __27__CAMetalLayer_newDrawable__block_invoke()
@@ -1057,13 +1057,13 @@ void __27__CAMetalLayer_newDrawable__block_invoke()
   }
 }
 
-- (void)setColorspace:(CGColorSpace *)a3 nonDefault:(BOOL)a4
+- (void)setColorspace:(CGColorSpace *)colorspace nonDefault:(BOOL)default
 {
-  v4 = a4;
+  defaultCopy = default;
   priv = self->_priv;
-  if (priv && priv[32] != a3)
+  if (priv && priv[32] != colorspace)
   {
-    CGColorSpaceRetain(a3);
+    CGColorSpaceRetain(colorspace);
     v8 = self->_priv;
     v9 = *(v8 + 32);
     if (v9)
@@ -1072,10 +1072,10 @@ void __27__CAMetalLayer_newDrawable__block_invoke()
       v8 = self->_priv;
     }
 
-    *(v8 + 32) = a3;
+    *(v8 + 32) = colorspace;
   }
 
-  [(CAMetalLayer *)self setNonDefaultColorspace:v4];
+  [(CAMetalLayer *)self setNonDefaultColorspace:defaultCopy];
 }
 
 - (void)setFramebufferOnly:(BOOL)framebufferOnly
@@ -1286,7 +1286,7 @@ LABEL_30:
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = *MEMORY[0x1E69E9840];
   v3.receiver = self;
@@ -1331,16 +1331,16 @@ uint64_t __20__CAMetalLayer_init__block_invoke(uint64_t result)
   [(CALayer *)&v5 dealloc];
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
   if (self->_priv)
   {
-    if ([a3 isEqualToString:@"opaque"])
+    if ([key isEqualToString:@"opaque"])
     {
-      v5 = [(CALayer *)self isOpaque];
+      isOpaque = [(CALayer *)self isOpaque];
       priv = self->_priv;
-      if (v5)
+      if (isOpaque)
       {
         v7 = 4;
       }
@@ -1354,11 +1354,11 @@ uint64_t __20__CAMetalLayer_init__block_invoke(uint64_t result)
       goto LABEL_17;
     }
 
-    if ([a3 isEqualToString:@"presentsWithTransaction"])
+    if ([key isEqualToString:@"presentsWithTransaction"])
     {
-      v9 = [(CAMetalLayer *)self presentsWithTransaction];
+      presentsWithTransaction = [(CAMetalLayer *)self presentsWithTransaction];
       priv = self->_priv;
-      if (v9)
+      if (presentsWithTransaction)
       {
         v7 = 32;
       }
@@ -1372,11 +1372,11 @@ uint64_t __20__CAMetalLayer_init__block_invoke(uint64_t result)
       goto LABEL_17;
     }
 
-    if ([a3 isEqualToString:@"allowsNextDrawableTimeout"])
+    if ([key isEqualToString:@"allowsNextDrawableTimeout"])
     {
-      v10 = [(CAMetalLayer *)self allowsNextDrawableTimeout];
+      allowsNextDrawableTimeout = [(CAMetalLayer *)self allowsNextDrawableTimeout];
       priv = self->_priv;
-      if (v10)
+      if (allowsNextDrawableTimeout)
       {
         v7 = 256;
       }
@@ -1390,13 +1390,13 @@ uint64_t __20__CAMetalLayer_init__block_invoke(uint64_t result)
       goto LABEL_17;
     }
 
-    if (![a3 isEqualToString:@"fenceEnabled"])
+    if (![key isEqualToString:@"fenceEnabled"])
     {
-      if ([a3 isEqualToString:@"disableFIFO"])
+      if ([key isEqualToString:@"disableFIFO"])
       {
-        v14 = [(CAMetalLayer *)self disableFIFO];
+        disableFIFO = [(CAMetalLayer *)self disableFIFO];
         priv = self->_priv;
-        if (v14)
+        if (disableFIFO)
         {
           v7 = 0x2000;
         }
@@ -1409,11 +1409,11 @@ uint64_t __20__CAMetalLayer_init__block_invoke(uint64_t result)
         v8 = priv[74] & 0xFFFFDFFF;
       }
 
-      else if ([a3 isEqualToString:@"serverSyncEnabled"])
+      else if ([key isEqualToString:@"serverSyncEnabled"])
       {
-        v15 = [(CAMetalLayer *)self serverSyncEnabled];
+        serverSyncEnabled = [(CAMetalLayer *)self serverSyncEnabled];
         priv = self->_priv;
-        if (v15)
+        if (serverSyncEnabled)
         {
           v7 = 2048;
         }
@@ -1428,19 +1428,19 @@ uint64_t __20__CAMetalLayer_init__block_invoke(uint64_t result)
 
       else
       {
-        if ([a3 isEqualToString:@"lowLatency"])
+        if ([key isEqualToString:@"lowLatency"])
         {
-          v16 = [(CAMetalLayer *)self lowLatency];
+          lowLatency = [(CAMetalLayer *)self lowLatency];
           priv = self->_priv;
-          v11 = priv[74] & 0xFFFFFFFE | v16;
+          v11 = priv[74] & 0xFFFFFFFE | lowLatency;
           goto LABEL_18;
         }
 
-        if ([a3 isEqualToString:@"lowWorkload"])
+        if ([key isEqualToString:@"lowWorkload"])
         {
-          v17 = [(CAMetalLayer *)self lowWorkload];
+          lowWorkload = [(CAMetalLayer *)self lowWorkload];
           priv = self->_priv;
-          if (v17)
+          if (lowWorkload)
           {
             v7 = 2;
           }
@@ -1455,14 +1455,14 @@ uint64_t __20__CAMetalLayer_init__block_invoke(uint64_t result)
 
         else
         {
-          if (![a3 isEqualToString:@"allowsDisplayCompositingWithCopy"])
+          if (![key isEqualToString:@"allowsDisplayCompositingWithCopy"])
           {
             goto LABEL_19;
           }
 
-          v18 = [(CAMetalLayer *)self allowsDisplayCompositingWithCopy];
+          allowsDisplayCompositingWithCopy = [(CAMetalLayer *)self allowsDisplayCompositingWithCopy];
           priv = self->_priv;
-          if (v18)
+          if (allowsDisplayCompositingWithCopy)
           {
             v7 = 0x4000;
           }
@@ -1511,70 +1511,70 @@ LABEL_18:
 LABEL_19:
   v19.receiver = self;
   v19.super_class = CAMetalLayer;
-  [(CAMetalLayer *)&v19 didChangeValueForKey:a3];
+  [(CAMetalLayer *)&v19 didChangeValueForKey:key];
 }
 
-- (BOOL)shouldArchiveValueForKey:(id)a3
+- (BOOL)shouldArchiveValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"device"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"pixelFormat") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"framebufferOnly") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"drawableSize") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"maximumDrawableCount") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"presentsWithTransaction") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"colorspace") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"EDRMetadata") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"protectionOptions") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"textureUsage") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"premultiplied") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"wantsIOSurfaceCompression"))
+  if ([key isEqualToString:@"device"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"pixelFormat") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"framebufferOnly") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"drawableSize") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"maximumDrawableCount") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"presentsWithTransaction") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"colorspace") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"EDRMetadata") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"protectionOptions") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"textureUsage") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"premultiplied") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"wantsIOSurfaceCompression"))
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = CAMetalLayer;
-  return [(CALayer *)&v6 shouldArchiveValueForKey:a3];
+  return [(CALayer *)&v6 shouldArchiveValueForKey:key];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"opaque"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"allowsDisplayCompositing"))
+  if ([key isEqualToString:@"opaque"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"allowsDisplayCompositing"))
   {
     return MEMORY[0x1E695E118];
   }
 
-  if ([a3 isEqualToString:@"presentsWithTransaction"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"fenceEnabled") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"disableFIFO") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"serverSyncEnabled"))
+  if ([key isEqualToString:@"presentsWithTransaction"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"fenceEnabled") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"disableFIFO") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"serverSyncEnabled"))
   {
     return MEMORY[0x1E695E110];
   }
 
-  if ([a3 isEqualToString:@"displaySyncEnabled"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"allowsNextDrawableTimeout"))
+  if ([key isEqualToString:@"displaySyncEnabled"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"allowsNextDrawableTimeout"))
   {
     return MEMORY[0x1E695E118];
   }
 
-  if ([a3 isEqualToString:@"lowLatency"])
+  if ([key isEqualToString:@"lowLatency"])
   {
     return MEMORY[0x1E695E110];
   }
 
-  if ([a3 isEqualToString:@"allowsDisplayCompositingWithCopy"])
+  if ([key isEqualToString:@"allowsDisplayCompositingWithCopy"])
   {
     return MEMORY[0x1E695E118];
   }
 
-  if (([a3 isEqualToString:@"lowWorkload"] & 1) == 0)
+  if (([key isEqualToString:@"lowWorkload"] & 1) == 0)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___CAMetalLayer;
-    return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, a3);
+    return objc_msgSendSuper2(&v6, sel_defaultValueForKey_, key);
   }
 
   return MEMORY[0x1E695E110];
 }
 
-- (void)setWantsIOSurfaceCompression:(BOOL)a3
+- (void)setWantsIOSurfaceCompression:(BOOL)compression
 {
   priv = self->_priv;
   if (priv)
   {
-    v4 = a3;
+    compressionCopy = compression;
     os_unfair_lock_lock(priv + 2);
-    if (((((priv[74]._os_unfair_lock_opaque & 0x80) == 0) ^ v4) & 1) == 0)
+    if (((((priv[74]._os_unfair_lock_opaque & 0x80) == 0) ^ compressionCopy) & 1) == 0)
     {
-      if (v4)
+      if (compressionCopy)
       {
         v5 = 128;
       }
@@ -1592,12 +1592,12 @@ LABEL_19:
   }
 }
 
-- (void)setAllowsDisplayCompositingWithCopy:(BOOL)a3
+- (void)setAllowsDisplayCompositingWithCopy:(BOOL)copy
 {
   priv = self->_priv;
   if (priv)
   {
-    if (a3)
+    if (copy)
     {
       v4 = 0x4000;
     }
@@ -1611,17 +1611,17 @@ LABEL_19:
   }
 }
 
-- (void)setPremultiplied:(BOOL)a3
+- (void)setPremultiplied:(BOOL)premultiplied
 {
   priv = self->_priv;
   if (priv)
   {
-    v4 = a3;
+    premultipliedCopy = premultiplied;
     os_unfair_lock_lock(priv + 2);
     os_unfair_lock_opaque = priv[74]._os_unfair_lock_opaque;
-    if (((((os_unfair_lock_opaque & 0x20000) == 0) ^ v4) & 1) == 0)
+    if (((((os_unfair_lock_opaque & 0x20000) == 0) ^ premultipliedCopy) & 1) == 0)
     {
-      if (v4)
+      if (premultipliedCopy)
       {
         v6 = 0x20000;
       }
@@ -1639,15 +1639,15 @@ LABEL_19:
   }
 }
 
-- (void)setTextureUsage:(unint64_t)a3
+- (void)setTextureUsage:(unint64_t)usage
 {
   priv = self->_priv;
   if (priv)
   {
     os_unfair_lock_lock(priv + 2);
-    if (*&priv[72]._os_unfair_lock_opaque != a3)
+    if (*&priv[72]._os_unfair_lock_opaque != usage)
     {
-      *&priv[72]._os_unfair_lock_opaque = a3;
+      *&priv[72]._os_unfair_lock_opaque = usage;
       layer_private_flush_async(priv);
     }
 
@@ -1655,15 +1655,15 @@ LABEL_19:
   }
 }
 
-- (void)setProtectionOptions:(unint64_t)a3
+- (void)setProtectionOptions:(unint64_t)options
 {
   priv = self->_priv;
   if (priv)
   {
     os_unfair_lock_lock(priv + 2);
-    if (*&priv[70]._os_unfair_lock_opaque != a3)
+    if (*&priv[70]._os_unfair_lock_opaque != options)
     {
-      *&priv[70]._os_unfair_lock_opaque = a3;
+      *&priv[70]._os_unfair_lock_opaque = options;
       layer_private_flush_async(priv);
     }
 
@@ -1685,12 +1685,12 @@ LABEL_19:
   }
 }
 
-- (void)setDrawableTimeoutSeconds:(double)a3
+- (void)setDrawableTimeoutSeconds:(double)seconds
 {
   priv = self->_priv;
   if (priv)
   {
-    priv[6] = a3;
+    priv[6] = seconds;
   }
 }
 
@@ -1708,7 +1708,7 @@ LABEL_19:
   }
 }
 
-- (void)setInputTime:(double)a3
+- (void)setInputTime:(double)time
 {
   v7 = *MEMORY[0x1E69E9840];
   priv = self->_priv;
@@ -1729,11 +1729,11 @@ LABEL_19:
       }
     }
 
-    priv[5] = a3;
+    priv[5] = time;
   }
 }
 
-- (void)setLowWorkload:(BOOL)a3
+- (void)setLowWorkload:(BOOL)workload
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = lowWorkload_atom;
@@ -1743,11 +1743,11 @@ LABEL_19:
     lowWorkload_atom = v5;
   }
 
-  v6 = a3;
-  CA::Layer::setter(self->super._attr.layer, v5, 7, &v6);
+  workloadCopy = workload;
+  CA::Layer::setter(self->super._attr.layer, v5, 7, &workloadCopy);
 }
 
-- (void)setLowLatency:(BOOL)a3
+- (void)setLowLatency:(BOOL)latency
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = lowLatency_atom;
@@ -1757,11 +1757,11 @@ LABEL_19:
     lowLatency_atom = v5;
   }
 
-  v6 = a3;
-  CA::Layer::setter(self->super._attr.layer, v5, 7, &v6);
+  latencyCopy = latency;
+  CA::Layer::setter(self->super._attr.layer, v5, 7, &latencyCopy);
 }
 
-- (void)setServerSyncEnabled:(BOOL)a3
+- (void)setServerSyncEnabled:(BOOL)enabled
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = serverSyncEnabled_atom;
@@ -1771,11 +1771,11 @@ LABEL_19:
     serverSyncEnabled_atom = v5;
   }
 
-  v6 = a3;
-  CA::Layer::setter(self->super._attr.layer, v5, 7, &v6);
+  enabledCopy = enabled;
+  CA::Layer::setter(self->super._attr.layer, v5, 7, &enabledCopy);
 }
 
-- (void)setDisableFIFO:(BOOL)a3
+- (void)setDisableFIFO:(BOOL)o
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = disableFIFO_atom;
@@ -1785,11 +1785,11 @@ LABEL_19:
     disableFIFO_atom = v5;
   }
 
-  v6 = a3;
-  CA::Layer::setter(self->super._attr.layer, v5, 7, &v6);
+  oCopy = o;
+  CA::Layer::setter(self->super._attr.layer, v5, 7, &oCopy);
 }
 
-- (void)setFenceEnabled:(BOOL)a3
+- (void)setFenceEnabled:(BOOL)enabled
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = fenceEnabled_atom;
@@ -1799,11 +1799,11 @@ LABEL_19:
     fenceEnabled_atom = v5;
   }
 
-  v6 = a3;
-  CA::Layer::setter(self->super._attr.layer, v5, 7, &v6);
+  enabledCopy = enabled;
+  CA::Layer::setter(self->super._attr.layer, v5, 7, &enabledCopy);
 }
 
-- (void)setNonDefaultColorspace:(BOOL)a3
+- (void)setNonDefaultColorspace:(BOOL)colorspace
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = nonDefaultColorspace_atom;
@@ -1813,8 +1813,8 @@ LABEL_19:
     nonDefaultColorspace_atom = v5;
   }
 
-  v6 = a3;
-  CA::Layer::setter(self->super._attr.layer, v5, 7, &v6);
+  colorspaceCopy = colorspace;
+  CA::Layer::setter(self->super._attr.layer, v5, 7, &colorspaceCopy);
 }
 
 - (void)removeBackBuffers

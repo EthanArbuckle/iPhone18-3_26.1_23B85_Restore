@@ -1,25 +1,25 @@
 @interface ATXFallbackActions
-+ (id)dateWithoutMinutesAndSeconds:(id)a3;
++ (id)dateWithoutMinutesAndSeconds:(id)seconds;
 + (id)fallbackActionsBundle;
-+ (id)stringForFallbackActionType:(unint64_t)a3;
-+ (unint64_t)fallbackActionTypeForString:(id)a3;
++ (id)stringForFallbackActionType:(unint64_t)type;
++ (unint64_t)fallbackActionTypeForString:(id)string;
 + (void)fallbackActionsBundle;
-- (ATXFallbackActions)initWithClientModelSpec:(id)a3;
-- (id)createAnEventForCurrentDate:(id)a3;
-- (id)proactiveSuggestionForAction:(id)a3;
+- (ATXFallbackActions)initWithClientModelSpec:(id)spec;
+- (id)createAnEventForCurrentDate:(id)date;
+- (id)proactiveSuggestionForAction:(id)action;
 - (id)searchSafari;
 - (id)sendAMessage;
 - (id)startATimer;
-- (id)suggestionforSpecifiedFallbackActionType:(unint64_t)a3;
+- (id)suggestionforSpecifiedFallbackActionType:(unint64_t)type;
 - (id)suggestionsForAllFallbackActions;
 - (id)viewPhotos;
 @end
 
 @implementation ATXFallbackActions
 
-- (ATXFallbackActions)initWithClientModelSpec:(id)a3
+- (ATXFallbackActions)initWithClientModelSpec:(id)spec
 {
-  v5 = a3;
+  specCopy = spec;
   v10.receiver = self;
   v10.super_class = ATXFallbackActions;
   v6 = [(ATXFallbackActions *)&v10 init];
@@ -29,7 +29,7 @@
     bundle = v6->_bundle;
     v6->_bundle = v7;
 
-    objc_storeStrong(&v6->_clientModelSpec, a3);
+    objc_storeStrong(&v6->_clientModelSpec, spec);
   }
 
   return v6;
@@ -158,10 +158,10 @@
   return v10;
 }
 
-- (id)createAnEventForCurrentDate:(id)a3
+- (id)createAnEventForCurrentDate:(id)date
 {
-  v4 = a3;
-  v5 = [objc_opt_class() dateWithoutMinutesAndSeconds:v4];
+  dateCopy = date;
+  v5 = [objc_opt_class() dateWithoutMinutesAndSeconds:dateCopy];
 
   v6 = [v5 dateByAddingTimeInterval:3600.0];
   v7 = [MEMORY[0x1E696E880] atx_createEventIntentWithStartDate:v5 endDate:v6];
@@ -213,14 +213,14 @@ LABEL_13:
   return v15;
 }
 
-+ (id)dateWithoutMinutesAndSeconds:(id)a3
++ (id)dateWithoutMinutesAndSeconds:(id)seconds
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:62 fromDate:v4];
+  secondsCopy = seconds;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:62 fromDate:secondsCopy];
 
-  v7 = [v5 dateFromComponents:v6];
+  v7 = [currentCalendar dateFromComponents:v6];
 
   return v7;
 }
@@ -272,11 +272,11 @@ LABEL_13:
   return v6;
 }
 
-- (id)suggestionforSpecifiedFallbackActionType:(unint64_t)a3
+- (id)suggestionforSpecifiedFallbackActionType:(unint64_t)type
 {
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       v7 = objc_opt_new();
       v5 = [(ATXFallbackActions *)self createAnEventForCurrentDate:v7];
@@ -284,27 +284,27 @@ LABEL_13:
       goto LABEL_12;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
-      v4 = [(ATXFallbackActions *)self sendAMessage];
+      sendAMessage = [(ATXFallbackActions *)self sendAMessage];
       goto LABEL_11;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2uLL:
-        v4 = [(ATXFallbackActions *)self startATimer];
+        sendAMessage = [(ATXFallbackActions *)self startATimer];
         goto LABEL_11;
       case 4uLL:
-        v4 = [(ATXFallbackActions *)self viewPhotos];
+        sendAMessage = [(ATXFallbackActions *)self viewPhotos];
         goto LABEL_11;
       case 3uLL:
-        v4 = [(ATXFallbackActions *)self searchSafari];
+        sendAMessage = [(ATXFallbackActions *)self searchSafari];
 LABEL_11:
-        v5 = v4;
+        v5 = sendAMessage;
         goto LABEL_12;
     }
   }
@@ -321,30 +321,30 @@ LABEL_12:
   return v5;
 }
 
-- (id)proactiveSuggestionForAction:(id)a3
+- (id)proactiveSuggestionForAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
     v5 = [objc_alloc(MEMORY[0x1E69C5BD8]) initWithRawScore:2 suggestedConfidenceCategory:-1000.0];
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [v4 json];
-    v8 = [v6 initWithFormat:@"%@", v7];
+    json = [actionCopy json];
+    v8 = [v6 initWithFormat:@"%@", json];
 
     v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v10 = [v4 actionKey];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "paramHash")}];
-    v12 = [v9 initWithFormat:@"%@:%lld", v10, objc_msgSend(v11, "longLongValue")];
+    actionKey = [actionCopy actionKey];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(actionCopy, "paramHash")}];
+    v12 = [v9 initWithFormat:@"%@:%lld", actionKey, objc_msgSend(v11, "longLongValue")];
 
-    v13 = [objc_alloc(MEMORY[0x1E69C5BC8]) initWithExecutableObject:v4 executableDescription:v8 executableIdentifier:v12 suggestionExecutableType:2];
+    v13 = [objc_alloc(MEMORY[0x1E69C5BC8]) initWithExecutableObject:actionCopy executableDescription:v8 executableIdentifier:v12 suggestionExecutableType:2];
     if (v13)
     {
       v14 = [MEMORY[0x1E69C5BD0] layoutConfigurationsForLayoutOptions:44];
       v15 = objc_alloc(MEMORY[0x1E69C5BE0]);
-      v16 = [v4 actionTitle];
-      v17 = [v4 actionSubtitle];
+      actionTitle = [actionCopy actionTitle];
+      actionSubtitle = [actionCopy actionSubtitle];
       LOWORD(v21) = 0;
-      v18 = [v15 initWithTitle:v16 subtitle:v17 predictionReason:0 preferredLayoutConfigs:v14 allowedOnLockscreen:0 allowedOnHomeScreen:1 allowedOnSpotlight:v21 shouldClearOnEngagement:?];
+      v18 = [v15 initWithTitle:actionTitle subtitle:actionSubtitle predictionReason:0 preferredLayoutConfigs:v14 allowedOnLockscreen:0 allowedOnHomeScreen:1 allowedOnSpotlight:v21 shouldClearOnEngagement:?];
 
       v19 = [objc_alloc(MEMORY[0x1E69C5BB0]) initWithClientModelSpecification:self->_clientModelSpec executableSpecification:v13 uiSpecification:v18 scoreSpecification:v5];
     }
@@ -363,14 +363,14 @@ LABEL_12:
   return v19;
 }
 
-+ (unint64_t)fallbackActionTypeForString:(id)a3
++ (unint64_t)fallbackActionTypeForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = 0;
   while (1)
   {
-    v6 = [a1 stringForFallbackActionType:v5];
-    v7 = [v4 isEqualToString:v6];
+    v6 = [self stringForFallbackActionType:v5];
+    v7 = [stringCopy isEqualToString:v6];
 
     if (v7)
     {
@@ -393,20 +393,20 @@ LABEL_12:
   return v5;
 }
 
-+ (id)stringForFallbackActionType:(unint64_t)a3
++ (id)stringForFallbackActionType:(unint64_t)type
 {
-  if (a3 < 5)
+  if (type < 5)
   {
-    return off_1E80C4110[a3];
+    return off_1E80C4110[type];
   }
 
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(ATXFallbackActions *)a3 stringForFallbackActionType:v5];
+    [(ATXFallbackActions *)type stringForFallbackActionType:v5];
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"stringForFallbackActionType called with invalid ATXFallbackActionType value of %lu", a3}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"stringForFallbackActionType called with invalid ATXFallbackActionType value of %lu", type}];
   return @"Error";
 }
 

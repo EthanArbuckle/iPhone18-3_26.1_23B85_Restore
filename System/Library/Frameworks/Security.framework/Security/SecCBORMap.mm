@@ -1,35 +1,35 @@
 @interface SecCBORMap
 - (SecCBORMap)init;
 - (id)getSortedKeys;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation SecCBORMap
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v11 = a3;
-  v4 = [(SecCBORMap *)self getSortedKeys];
-  v5 = [v4 objectEnumerator];
-  [(SecCBORValue *)self encodeStartItems:[(NSMapTable *)self->m_data count] output:v11];
-  v6 = [v5 nextObject];
-  if (v6)
+  writeCopy = write;
+  getSortedKeys = [(SecCBORMap *)self getSortedKeys];
+  objectEnumerator = [getSortedKeys objectEnumerator];
+  [(SecCBORValue *)self encodeStartItems:[(NSMapTable *)self->m_data count] output:writeCopy];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    v7 = nextObject;
     v8 = 0;
     do
     {
       v9 = v8;
       v8 = [(NSMapTable *)self->m_data objectForKey:v7];
 
-      [v7 write:v11];
-      [v8 write:v11];
-      v10 = [v5 nextObject];
+      [v7 write:writeCopy];
+      [v8 write:writeCopy];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v7 = v10;
+      v7 = nextObject2;
     }
 
-    while (v10);
+    while (nextObject2);
   }
 }
 

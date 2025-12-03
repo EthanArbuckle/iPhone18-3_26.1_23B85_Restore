@@ -1,8 +1,8 @@
 @interface ICImportLegacyNotesOperation
 - (ICImportLegacyNotesOperation)init;
-- (ICImportLegacyNotesOperation)initWithLegacyNotes:(id)a3 destinationFolder:(id)a4 deleteLegacyNotesAfterImport:(BOOL)a5;
+- (ICImportLegacyNotesOperation)initWithLegacyNotes:(id)notes destinationFolder:(id)folder deleteLegacyNotesAfterImport:(BOOL)import;
 - (id)description;
-- (id)ensureLegacyNoteIsValid:(id)a3;
+- (id)ensureLegacyNoteIsValid:(id)valid;
 - (id)legacyManagedObjectContext;
 - (void)cancelIfNecessary;
 - (void)main;
@@ -17,22 +17,22 @@
   return 0;
 }
 
-- (ICImportLegacyNotesOperation)initWithLegacyNotes:(id)a3 destinationFolder:(id)a4 deleteLegacyNotesAfterImport:(BOOL)a5
+- (ICImportLegacyNotesOperation)initWithLegacyNotes:(id)notes destinationFolder:(id)folder deleteLegacyNotesAfterImport:(BOOL)import
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  importCopy = import;
+  notesCopy = notes;
+  folderCopy = folder;
   v14.receiver = self;
   v14.super_class = ICImportLegacyNotesOperation;
   v10 = [(ICImportLegacyNotesOperation *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    [(ICImportLegacyNotesOperation *)v10 setDestinationFolder:v9];
-    v12 = [NSArray arrayWithArray:v8];
+    [(ICImportLegacyNotesOperation *)v10 setDestinationFolder:folderCopy];
+    v12 = [NSArray arrayWithArray:notesCopy];
     [(ICImportLegacyNotesOperation *)v11 setLegacyNotes:v12];
 
-    [(ICImportLegacyNotesOperation *)v11 setDeleteLegacyNotesAfterImport:v5];
+    [(ICImportLegacyNotesOperation *)v11 setDeleteLegacyNotesAfterImport:importCopy];
   }
 
   return v11;
@@ -56,22 +56,22 @@
     v38[3] = sub_10013D500;
     v38[4] = sub_10013D510;
     v39 = 0;
-    v4 = [(ICImportLegacyNotesOperation *)self destinationFolder];
-    v5 = [v4 managedObjectContext];
+    destinationFolder = [(ICImportLegacyNotesOperation *)self destinationFolder];
+    managedObjectContext = [destinationFolder managedObjectContext];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_10013D518;
     v37[3] = &unk_1006463C8;
     v37[4] = self;
     v37[5] = v38;
-    [v5 performBlockAndWait:v37];
+    [managedObjectContext performBlockAndWait:v37];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v6 = [(ICImportLegacyNotesOperation *)self legacyNotes];
-    v7 = [v6 countByEnumeratingWithState:&v33 objects:v40 count:16];
+    legacyNotes = [(ICImportLegacyNotesOperation *)self legacyNotes];
+    v7 = [legacyNotes countByEnumeratingWithState:&v33 objects:v40 count:16];
     if (v7)
     {
       v8 = *v34;
@@ -82,7 +82,7 @@
         {
           if (*v34 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(legacyNotes);
           }
 
           v10 = *(*(&v33 + 1) + 8 * v9);
@@ -103,7 +103,7 @@
           v22 = 3221225472;
           v23 = sub_10013D580;
           v24 = &unk_1006463C8;
-          v25 = self;
+          selfCopy = self;
           v26 = &v27;
           performBlockOnMainThreadAndWait();
           _Block_object_dispose(&v27, 8);
@@ -112,7 +112,7 @@
         }
 
         while (v7 != v9);
-        v7 = [v6 countByEnumeratingWithState:&v33 objects:v40 count:16];
+        v7 = [legacyNotes countByEnumeratingWithState:&v33 objects:v40 count:16];
         if (v7)
         {
           continue;
@@ -143,13 +143,13 @@
       }
     }
 
-    v12 = [v13 managedObjectContext];
+    managedObjectContext2 = [v13 managedObjectContext];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10013D8DC;
     v14[3] = &unk_100645E30;
     v15 = v13;
-    [v12 performBlockAndWait:v14];
+    [managedObjectContext2 performBlockAndWait:v14];
 
     _Block_object_dispose(&v27, 8);
 LABEL_18:
@@ -159,23 +159,23 @@ LABEL_18:
 
 - (void)cancelIfNecessary
 {
-  v3 = [(ICImportLegacyNotesOperation *)self destinationFolder];
+  destinationFolder = [(ICImportLegacyNotesOperation *)self destinationFolder];
 
-  if (v3)
+  if (destinationFolder)
   {
-    v4 = [(ICImportLegacyNotesOperation *)self destinationFolder];
-    v5 = [v4 managedObjectContext];
+    destinationFolder2 = [(ICImportLegacyNotesOperation *)self destinationFolder];
+    managedObjectContext = [destinationFolder2 managedObjectContext];
 
-    if (v5)
+    if (managedObjectContext)
     {
-      v6 = [(ICImportLegacyNotesOperation *)self destinationFolder];
-      v7 = [v6 managedObjectContext];
+      destinationFolder3 = [(ICImportLegacyNotesOperation *)self destinationFolder];
+      managedObjectContext2 = [destinationFolder3 managedObjectContext];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_10013DAA0;
       v10[3] = &unk_100645E30;
       v10[4] = self;
-      [v7 performBlockAndWait:v10];
+      [managedObjectContext2 performBlockAndWait:v10];
 
       return;
     }
@@ -184,7 +184,7 @@ LABEL_18:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = self;
+      selfCopy2 = self;
       v9 = "Cancelling import operation because folder lost its managed object context: %@";
       goto LABEL_8;
     }
@@ -196,7 +196,7 @@ LABEL_18:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = self;
+      selfCopy2 = self;
       v9 = "Cancelling import operation because folder doesn't exist: %@";
 LABEL_8:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v9, buf, 0xCu);
@@ -206,14 +206,14 @@ LABEL_8:
   [(ICImportLegacyNotesOperation *)self cancel];
 }
 
-- (id)ensureLegacyNoteIsValid:(id)a3
+- (id)ensureLegacyNoteIsValid:(id)valid
 {
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
+  validCopy = valid;
+  managedObjectContext = [validCopy managedObjectContext];
 
-  if (v4)
+  if (managedObjectContext)
   {
-    v5 = v3;
+    v5 = validCopy;
   }
 
   else
@@ -224,7 +224,7 @@ LABEL_8:
     v11 = sub_10013D500;
     v12 = sub_10013D510;
     v13 = 0;
-    v7 = v3;
+    v7 = validCopy;
     performBlockOnMainThreadAndWait();
     v5 = v9[5];
 
@@ -257,20 +257,20 @@ LABEL_8:
   v15 = sub_10013D500;
   v16 = sub_10013D510;
   v17 = 0;
-  v3 = [(ICImportLegacyNotesOperation *)self destinationFolder];
-  v4 = [v3 managedObjectContext];
+  destinationFolder = [(ICImportLegacyNotesOperation *)self destinationFolder];
+  managedObjectContext = [destinationFolder managedObjectContext];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10013E0BC;
   v11[3] = &unk_1006463C8;
   v11[4] = self;
   v11[5] = &v12;
-  [v4 performBlockAndWait:v11];
+  [managedObjectContext performBlockAndWait:v11];
 
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(ICImportLegacyNotesOperation *)self legacyNotes];
-  v8 = [v7 count];
+  legacyNotes = [(ICImportLegacyNotesOperation *)self legacyNotes];
+  v8 = [legacyNotes count];
   v9 = [NSString stringWithFormat:@"<%@: %p legacyNoteCount=%d destionationFolder=%@>", v6, self, v8, v13[5]];;
 
   _Block_object_dispose(&v12, 8);

@@ -1,40 +1,40 @@
 @interface NTKUltraCubeFace
-+ (BOOL)_customEditMode:(int64_t)a3 hasActionForOption:(id)a4 forDevice:(id)a5;
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)_customEditMode:(int64_t)mode hasActionForOption:(id)option forDevice:(id)device;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-+ (id)sortableFaceWithAssets:(id)a3 forDevice:(id)a4;
-- (BOOL)_colorEffectsSupportedForEditMode:(int64_t)a3;
-- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)a3 error:(id *)a4;
-- (BOOL)_hasOptionsForCustomEditMode:(int64_t)a3;
-- (BOOL)_sanitizeFaceConfiguration:(id *)a3;
++ (id)sortableFaceWithAssets:(id)assets forDevice:(id)device;
+- (BOOL)_colorEffectsSupportedForEditMode:(int64_t)mode;
+- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)path error:(id *)error;
+- (BOOL)_hasOptionsForCustomEditMode:(int64_t)mode;
+- (BOOL)_sanitizeFaceConfiguration:(id *)configuration;
 - (BOOL)hasSampleResourceDirectory;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_customEditModes;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
 - (id)_faceDescriptionKey;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_resourceDirectorySnapshotKey;
 - (id)addFaceDetailViewController;
 - (id)copyFromGalleryFace;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)libraryDetailViewController;
 - (id)upgradeContext;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)companionEditorWithAssets:(id)a3 completion:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)companionEditorWithAssets:(id)assets completion:(id)completion;
 @end
 
 @implementation NTKUltraCubeFace
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = NTKUltraCubeFace;
-  v4 = [(NTKUltraCubeFace *)&v8 copyWithZone:a3];
+  v4 = [(NTKUltraCubeFace *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_cachedResourceDirectorySnapshotKey copy];
   v6 = v4[2];
   v4[2] = v5;
@@ -42,12 +42,12 @@
   return v4;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 supportsPDRCapability:4094027452])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:4094027452])
   {
-    v4 = [v3 deviceCategory] == &dword_0 + 1;
+    v4 = [deviceCopy deviceCategory] == &dword_0 + 1;
   }
 
   else
@@ -60,8 +60,8 @@
 
 - (id)_faceDescriptionKey
 {
-  v2 = [(NTKUltraCubeFace *)self device];
-  v3 = [NTKUltraCubeFace isColorEffectFeatureEnabledForDevice:v2];
+  device = [(NTKUltraCubeFace *)self device];
+  v3 = [NTKUltraCubeFace isColorEffectFeatureEnabledForDevice:device];
 
   if (v3)
   {
@@ -76,37 +76,37 @@
 
 - (id)_faceDescription
 {
-  v2 = [(NTKUltraCubeFace *)self _faceDescriptionKey];
-  v3 = [NTKUltraCubeFaceBundle localizedStringForKey:v2 comment:v2];
+  _faceDescriptionKey = [(NTKUltraCubeFace *)self _faceDescriptionKey];
+  v3 = [NTKUltraCubeFaceBundle localizedStringForKey:_faceDescriptionKey comment:_faceDescriptionKey];
 
   return v3;
 }
 
-- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)a3 error:(id *)a4
+- (BOOL)_createResourceDirectorySuitableForSharingAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = objc_opt_new();
   v12 = v7;
   v8 = [NSArray arrayWithObjects:&v12 count:1];
 
   v9 = [[NTKResourceDirectoryScrubber alloc] initWithOperations:v8];
-  v10 = [(NTKUltraCubeFace *)self resourceDirectory];
-  LOBYTE(a4) = [v9 scrubDirectoryAtPath:v10 toDestinationPath:v6 error:a4];
+  resourceDirectory = [(NTKUltraCubeFace *)self resourceDirectory];
+  LOBYTE(error) = [v9 scrubDirectoryAtPath:resourceDirectory toDestinationPath:pathCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_sanitizeFaceConfiguration:(id *)a3
+- (BOOL)_sanitizeFaceConfiguration:(id *)configuration
 {
-  v5 = [(NTKUltraCubeFace *)self resourceDirectory];
-  v6 = [NTKUltraCubeResourcesManifest manifestForResourceDirectory:v5];
+  resourceDirectory = [(NTKUltraCubeFace *)self resourceDirectory];
+  v6 = [NTKUltraCubeResourcesManifest manifestForResourceDirectory:resourceDirectory];
 
   if (!v6)
   {
-    if (a3)
+    if (configuration)
     {
       [NSError errorWithDomain:kNTKPhotosErrorDomain code:1006 userInfo:0];
-      *a3 = v12 = 0;
+      *configuration = v12 = 0;
       goto LABEL_10;
     }
 
@@ -115,22 +115,22 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![v6 validateManifestWithError:a3])
+  if (![v6 validateManifestWithError:configuration])
   {
     goto LABEL_9;
   }
 
-  v7 = [(NTKUltraCubeFace *)self resourceDirectory];
-  v8 = [NTKUltraCubePhotosReader readerForResourceDirectory:v7];
+  resourceDirectory2 = [(NTKUltraCubeFace *)self resourceDirectory];
+  v8 = [NTKUltraCubePhotosReader readerForResourceDirectory:resourceDirectory2];
 
   v9 = [v8 count];
-  v10 = [v6 imageList];
-  v11 = [v10 count];
+  imageList = [v6 imageList];
+  v11 = [imageList count];
   v12 = v9 == v11;
 
-  if (a3 && v9 != v11)
+  if (configuration && v9 != v11)
   {
-    *a3 = [NSError errorWithDomain:kNTKResourceDirectoryDomain code:2003 userInfo:0];
+    *configuration = [NSError errorWithDomain:kNTKResourceDirectoryDomain code:2003 userInfo:0];
   }
 
 LABEL_10:
@@ -139,28 +139,28 @@ LABEL_10:
 
 - (id)_resourceDirectorySnapshotKey
 {
-  v3 = [(NTKUltraCubeFace *)self resourceDirectory];
-  if (v3 && (v4 = v3, +[NSFileManager defaultManager](NSFileManager, "defaultManager"), v5 = objc_claimAutoreleasedReturnValue(), -[NTKUltraCubeFace resourceDirectory](self, "resourceDirectory"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 fileExistsAtPath:v6], v6, v5, v4, v7))
+  resourceDirectory = [(NTKUltraCubeFace *)self resourceDirectory];
+  if (resourceDirectory && (v4 = resourceDirectory, +[NSFileManager defaultManager](NSFileManager, "defaultManager"), v5 = objc_claimAutoreleasedReturnValue(), -[NTKUltraCubeFace resourceDirectory](self, "resourceDirectory"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 fileExistsAtPath:v6], v6, v5, v4, v7))
   {
     cachedResourceDirectorySnapshotKey = self->_cachedResourceDirectorySnapshotKey;
     if (!cachedResourceDirectorySnapshotKey)
     {
-      v9 = [(NTKUltraCubeFace *)self resourceDirectory];
-      v10 = [NTKUltraCubePhotosReader readerForResourceDirectory:v9];
+      resourceDirectory2 = [(NTKUltraCubeFace *)self resourceDirectory];
+      v10 = [NTKUltraCubePhotosReader readerForResourceDirectory:resourceDirectory2];
 
-      v11 = [v10 version];
-      if (v11 == &dword_0 + 2)
+      version = [v10 version];
+      if (version == &dword_0 + 2)
       {
-        v12 = [v10 firstObject];
-        v13 = [v12 uniqueIdentifier];
+        firstObject = [v10 firstObject];
+        uniqueIdentifier = [firstObject uniqueIdentifier];
         v14 = self->_cachedResourceDirectorySnapshotKey;
-        self->_cachedResourceDirectorySnapshotKey = v13;
+        self->_cachedResourceDirectorySnapshotKey = uniqueIdentifier;
       }
 
       else
       {
-        v17 = [NSString stringWithFormat:@"version-outdated-%ld", v11];
-        v12 = self->_cachedResourceDirectorySnapshotKey;
+        v17 = [NSString stringWithFormat:@"version-outdated-%ld", version];
+        firstObject = self->_cachedResourceDirectorySnapshotKey;
         self->_cachedResourceDirectorySnapshotKey = v17;
       }
 
@@ -185,9 +185,9 @@ LABEL_10:
 {
   v2 = [(NTKUltraCubeFace *)self copy];
   v3 = +[NTKUltraCubeUserState userState];
-  v4 = [v3 hasUserEverAddedFaceToLibrary];
+  hasUserEverAddedFaceToLibrary = [v3 hasUserEverAddedFaceToLibrary];
 
-  if (v4)
+  if (hasUserEverAddedFaceToLibrary)
   {
     [v2 setResourceDirectory:0];
   }
@@ -195,9 +195,9 @@ LABEL_10:
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v2 resourceDirectory];
+    resourceDirectory = [v2 resourceDirectory];
     v8 = 138412290;
-    v9 = v6;
+    v9 = resourceDirectory;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Transferring ultracube face from gallery to face library with resource directory %@", &v8, 0xCu);
   }
 
@@ -207,8 +207,8 @@ LABEL_10:
 - (id)_customEditModes
 {
   v3 = +[NSMutableArray array];
-  v4 = [(NTKUltraCubeFace *)self device];
-  v5 = [NTKUltraCubeFace isColorEffectFeatureEnabledForDevice:v4];
+  device = [(NTKUltraCubeFace *)self device];
+  v5 = [NTKUltraCubeFace isColorEffectFeatureEnabledForDevice:device];
 
   [v3 addObject:&off_4B7C8];
   if (v5)
@@ -223,46 +223,46 @@ LABEL_10:
   return v6;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v6 = 0;
-  if ([(NTKUltraCubeFace *)self _colorEffectsSupportedForEditMode:a3, a4])
+  if ([(NTKUltraCubeFace *)self _colorEffectsSupportedForEditMode:mode, slot])
   {
-    if (a3 > 12)
+    if (mode > 12)
     {
-      if (a3 == 13)
+      if (mode == 13)
       {
-        v7 = [(NTKUltraCubeFace *)self device];
-        v8 = [NTKUltraCubeTypefaceEditOption optionWithTypeface:1 forDevice:v7];
+        device = [(NTKUltraCubeFace *)self device];
+        v8 = [NTKUltraCubeTypefaceEditOption optionWithTypeface:1 forDevice:device];
       }
 
       else
       {
-        if (a3 != 15)
+        if (mode != 15)
         {
           goto LABEL_12;
         }
 
-        v7 = [(NTKUltraCubeFace *)self device];
-        v8 = [NTKUltraCubeColorEffectEditOption optionWithColorEffect:0 forDevice:v7];
+        device = [(NTKUltraCubeFace *)self device];
+        v8 = [NTKUltraCubeColorEffectEditOption optionWithColorEffect:0 forDevice:device];
       }
     }
 
-    else if (a3 == 10)
+    else if (mode == 10)
     {
-      v7 = [(NTKUltraCubeFace *)self device];
-      v8 = [NTKPhotosColorEditOption optionWithColor:3000 forDevice:v7];
+      device = [(NTKUltraCubeFace *)self device];
+      v8 = [NTKPhotosColorEditOption optionWithColor:3000 forDevice:device];
     }
 
     else
     {
-      if (a3 != 12)
+      if (mode != 12)
       {
         goto LABEL_12;
       }
 
-      v7 = [(NTKUltraCubeFace *)self device];
-      v8 = [NTKUltraCubeContentEditOption optionWithUltraCubeContent:0 forDevice:v7];
+      device = [(NTKUltraCubeFace *)self device];
+      v8 = [NTKUltraCubeContentEditOption optionWithUltraCubeContent:0 forDevice:device];
     }
 
     v6 = v8;
@@ -273,25 +273,25 @@ LABEL_12:
   return v6;
 }
 
-+ (BOOL)_customEditMode:(int64_t)a3 hasActionForOption:(id)a4 forDevice:(id)a5
++ (BOOL)_customEditMode:(int64_t)mode hasActionForOption:(id)option forDevice:(id)device
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = a3 == 12 && [v6 ultracubeContent] == 0;
+  optionCopy = option;
+  v7 = optionCopy;
+  v8 = mode == 12 && [optionCopy ultracubeContent] == 0;
 
   return v8;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  v6 = a4;
-  if (a3 == 12)
+  deviceCopy = device;
+  if (mode == 12)
   {
     v7 = @"EDIT_MODE_LABEL_CONTENT";
     goto LABEL_5;
   }
 
-  if (a3 == 13)
+  if (mode == 13)
   {
     v7 = @"EDIT_MODE_LABEL_TYPEFACE";
 LABEL_5:
@@ -301,48 +301,48 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___NTKUltraCubeFace;
-  v9 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, v6);
+  v9 = objc_msgSendSuper2(&v11, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, deviceCopy);
 LABEL_7:
 
   return v9;
 }
 
-- (BOOL)_hasOptionsForCustomEditMode:(int64_t)a3
+- (BOOL)_hasOptionsForCustomEditMode:(int64_t)mode
 {
   v4.receiver = self;
   v4.super_class = NTKUltraCubeFace;
-  return [(NTKUltraCubeFace *)&v4 _hasOptionsForCustomEditMode:a3];
+  return [(NTKUltraCubeFace *)&v4 _hasOptionsForCustomEditMode:mode];
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (![(NTKUltraCubeFace *)self _colorEffectsSupportedForEditMode:a3, a4])
+  if (![(NTKUltraCubeFace *)self _colorEffectsSupportedForEditMode:mode, slot])
   {
     return 0;
   }
 
-  v6 = a3 - 10;
-  if ((a3 - 10) > 5 || ((0x2Du >> v6) & 1) == 0)
+  v6 = mode - 10;
+  if ((mode - 10) > 5 || ((0x2Du >> v6) & 1) == 0)
   {
     return 0;
   }
 
   v7 = *(&off_490C8)[v6];
-  v8 = [(NTKUltraCubeFace *)self device];
-  v9 = [v7 numberOfOptionsForDevice:v8];
+  device = [(NTKUltraCubeFace *)self device];
+  v9 = [v7 numberOfOptionsForDevice:device];
 
   return v9;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if ([(NTKUltraCubeFace *)self _colorEffectsSupportedForEditMode:a4]&& (v8 = a4 - 10, (a4 - 10) <= 5) && ((0x2Du >> v8) & 1) != 0)
+  if ([(NTKUltraCubeFace *)self _colorEffectsSupportedForEditMode:mode]&& (v8 = mode - 10, (mode - 10) <= 5) && ((0x2Du >> v8) & 1) != 0)
   {
     v9 = *(&off_490C8)[v8];
-    v10 = [(NTKUltraCubeFace *)self device];
-    v11 = [v9 optionAtIndex:a3 forDevice:v10];
+    device = [(NTKUltraCubeFace *)self device];
+    v11 = [v9 optionAtIndex:index forDevice:device];
   }
 
   else
@@ -353,14 +353,14 @@ LABEL_7:
   return v11;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  if ([(NTKUltraCubeFace *)self _colorEffectsSupportedForEditMode:a4]&& (v8 = a4 - 10, (a4 - 10) <= 5) && ((0x2Du >> v8) & 1) != 0)
+  optionCopy = option;
+  if ([(NTKUltraCubeFace *)self _colorEffectsSupportedForEditMode:mode]&& (v8 = mode - 10, (mode - 10) <= 5) && ((0x2Du >> v8) & 1) != 0)
   {
     v9 = *(&off_490C8)[v8];
-    v10 = [(NTKUltraCubeFace *)self device];
-    v11 = [v9 indexOfOption:v7 forDevice:v10];
+    device = [(NTKUltraCubeFace *)self device];
+    v11 = [v9 indexOfOption:optionCopy forDevice:device];
   }
 
   else
@@ -371,9 +371,9 @@ LABEL_7:
   return v11;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if ([(NTKUltraCubeFace *)self _colorEffectsSupportedForEditMode:?]&& (a3 - 10) <= 5 && ((0x2Du >> (a3 - 10)) & 1) != 0)
+  if ([(NTKUltraCubeFace *)self _colorEffectsSupportedForEditMode:?]&& (mode - 10) <= 5 && ((0x2Du >> (mode - 10)) & 1) != 0)
   {
     v4 = objc_opt_class();
   }
@@ -411,10 +411,10 @@ LABEL_7:
   return v7;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotDate])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotDate])
   {
     v5 = NTKClockFaceLocalizedString();
   }
@@ -423,7 +423,7 @@ LABEL_7:
   {
     v8.receiver = self;
     v8.super_class = NTKUltraCubeFace;
-    v5 = [(NTKUltraCubeFace *)&v8 _localizedNameForComplicationSlot:v4];
+    v5 = [(NTKUltraCubeFace *)&v8 _localizedNameForComplicationSlot:slotCopy];
   }
 
   v6 = v5;
@@ -431,40 +431,40 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_colorEffectsSupportedForEditMode:(int64_t)a3
+- (BOOL)_colorEffectsSupportedForEditMode:(int64_t)mode
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
+  if ((mode & 0xFFFFFFFFFFFFFFFELL) == 0xC)
   {
     return 1;
   }
 
-  v4 = [(NTKUltraCubeFace *)self device];
-  v5 = [NTKUltraCubeFace isColorEffectFeatureEnabledForDevice:v4];
+  device = [(NTKUltraCubeFace *)self device];
+  v5 = [NTKUltraCubeFace isColorEffectFeatureEnabledForDevice:device];
 
   return v5;
 }
 
 - (id)upgradeContext
 {
-  v3 = [(NTKUltraCubeFace *)self resourceDirectory];
-  v4 = [NTKUltraCubePhotosReader readerForResourceDirectory:v3];
+  resourceDirectory = [(NTKUltraCubeFace *)self resourceDirectory];
+  v4 = [NTKUltraCubePhotosReader readerForResourceDirectory:resourceDirectory];
 
   v5 = [(NTKUltraCubeFace *)self complicationForSlot:NTKComplicationSlotDate];
   v6 = [(NTKUltraCubeFace *)self complicationForSlot:NTKComplicationSlotBottom];
-  v7 = [(NTKUltraCubeFace *)self selectedOptionsForCustomEditModes];
-  v8 = [v7 objectForKeyedSubscript:&off_4B7F8];
+  selectedOptionsForCustomEditModes = [(NTKUltraCubeFace *)self selectedOptionsForCustomEditModes];
+  v8 = [selectedOptionsForCustomEditModes objectForKeyedSubscript:&off_4B7F8];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(NTKUltraCubeFace *)self selectedOptionsForCustomEditModes];
-    v10 = [v9 objectForKeyedSubscript:&off_4B810];
+    selectedOptionsForCustomEditModes2 = [(NTKUltraCubeFace *)self selectedOptionsForCustomEditModes];
+    v10 = [selectedOptionsForCustomEditModes2 objectForKeyedSubscript:&off_4B810];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(NTKUltraCubeFace *)self selectedOptionsForCustomEditModes];
-      v12 = [v11 objectForKeyedSubscript:&off_4B7E0];
+      selectedOptionsForCustomEditModes3 = [(NTKUltraCubeFace *)self selectedOptionsForCustomEditModes];
+      v12 = [selectedOptionsForCustomEditModes3 objectForKeyedSubscript:&off_4B7E0];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -527,17 +527,17 @@ LABEL_7:
 - (id)addFaceDetailViewController
 {
   v3 = [NTKCUltraCubeFaceDetailViewController alloc];
-  v4 = [(NTKUltraCubeFace *)self externalAssets];
-  v5 = [(NTKCUltraCubeFaceDetailViewController *)v3 initWithCandidateFace:self externalAssets:v4];
+  externalAssets = [(NTKUltraCubeFace *)self externalAssets];
+  v5 = [(NTKCUltraCubeFaceDetailViewController *)v3 initWithCandidateFace:self externalAssets:externalAssets];
 
   return v5;
 }
 
-+ (id)sortableFaceWithAssets:(id)a3 forDevice:(id)a4
++ (id)sortableFaceWithAssets:(id)assets forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 supportsPDRCapability:4067975928])
+  assetsCopy = assets;
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:4067975928])
   {
 LABEL_13:
     v16 = 0;
@@ -549,7 +549,7 @@ LABEL_13:
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v6;
+    v8 = assetsCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -584,7 +584,7 @@ LABEL_13:
 
     v13 = +[NTKUltraCubeFaceBundle identifier];
     v14 = +[NTKUltraCubeFaceBundle analyticsIdentifier];
-    v15 = [a1 bundledFaceWithIdentifier:v13 analyticsIdentifier:v14 forDevice:v7 initCustomization:0];
+    v15 = [self bundledFaceWithIdentifier:v13 analyticsIdentifier:v14 forDevice:deviceCopy initCustomization:0];
     [v15 setExternalAssets:v8];
     if (v15)
     {
@@ -600,34 +600,34 @@ LABEL_13:
   return v16;
 }
 
-- (void)companionEditorWithAssets:(id)a3 completion:(id)a4
+- (void)companionEditorWithAssets:(id)assets completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v12 firstObject];
+  assetsCopy = assets;
+  completionCopy = completion;
+  firstObject = [assetsCopy firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v9 = [NTKCompanionUltraCubePhotosEditor alloc];
-    v10 = [(NTKUltraCubeFace *)self device];
-    v11 = [(NTKCompanionUltraCubePhotosEditor *)v9 initWithResourceDirectory:0 forDevice:v10];
+    device = [(NTKUltraCubeFace *)self device];
+    v11 = [(NTKCompanionUltraCubePhotosEditor *)v9 initWithResourceDirectory:0 forDevice:device];
 
-    [(NTKCompanionUltraCubePhotosEditor *)v11 addAssetsFromAssetList:v12];
-    v6[2](v6, v11);
+    [(NTKCompanionUltraCubePhotosEditor *)v11 addAssetsFromAssetList:assetsCopy];
+    completionCopy[2](completionCopy, v11);
   }
 
   else
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
 - (BOOL)hasSampleResourceDirectory
 {
-  v2 = [(NTKUltraCubeFace *)self _resourceDirectorySnapshotKey];
-  v3 = [v2 hasPrefix:@"GalleryImage-"];
+  _resourceDirectorySnapshotKey = [(NTKUltraCubeFace *)self _resourceDirectorySnapshotKey];
+  v3 = [_resourceDirectorySnapshotKey hasPrefix:@"GalleryImage-"];
 
   return v3;
 }

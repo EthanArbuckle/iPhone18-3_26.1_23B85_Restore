@@ -1,32 +1,32 @@
 @interface PUBufferingIndicatorTileViewController
-+ (BOOL)canShowBufferingIndicatorTileForAsset:(id)a3;
++ (BOOL)canShowBufferingIndicatorTileForAsset:(id)asset;
 + (CGSize)bufferingIndicatorTileSize;
-- (void)_handleErrorButton:(id)a3;
-- (void)_setIndicatorStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)_setVideoPlayer:(id)a3;
+- (void)_handleErrorButton:(id)button;
+- (void)_setIndicatorStyle:(int64_t)style animated:(BOOL)animated;
+- (void)_setVideoPlayer:(id)player;
 - (void)_updateIndicator;
 - (void)becomeReusable;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setAssetViewModel:(id)a3;
-- (void)setBrowsingViewModel:(id)a3;
-- (void)setMergedVideoProvider:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setAssetViewModel:(id)model;
+- (void)setBrowsingViewModel:(id)model;
+- (void)setMergedVideoProvider:(id)provider;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUBufferingIndicatorTileViewController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (MergedVideoProviderContext == a5)
+  if (MergedVideoProviderContext == context)
   {
-    v5 = a4;
-    v8 = a3;
+    changeCopy = change;
+    observableCopy = observable;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      if ((v5 & 1) == 0)
+      if ((changeCopy & 1) == 0)
       {
         return;
       }
@@ -34,10 +34,10 @@
 
     else
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PUBufferingIndicatorTileViewController.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"[observable isKindOfClass:[PUOneUpMergedVideoProvider class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUBufferingIndicatorTileViewController.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"[observable isKindOfClass:[PUOneUpMergedVideoProvider class]]"}];
 
-      if ((v5 & 1) == 0)
+      if ((changeCopy & 1) == 0)
       {
         return;
       }
@@ -47,16 +47,16 @@
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(PUBufferingIndicatorTileViewController *)self _videoPlayer];
+  modelCopy = model;
+  changeCopy = change;
+  _videoPlayer = [(PUBufferingIndicatorTileViewController *)self _videoPlayer];
 
-  if (v7 == v12)
+  if (_videoPlayer == modelCopy)
   {
-    v10 = v6;
-    if (([v10 playStateDidChange] & 1) != 0 || (objc_msgSend(v10, "isStalledDidChange") & 1) != 0 || (objc_msgSend(v10, "errorDidChange") & 1) != 0 || (objc_msgSend(v10, "isActivatedDidChange") & 1) != 0 || objc_msgSend(v10, "desiredPlayStateDidChange"))
+    assetViewModel2 = changeCopy;
+    if (([assetViewModel2 playStateDidChange] & 1) != 0 || (objc_msgSend(assetViewModel2, "isStalledDidChange") & 1) != 0 || (objc_msgSend(assetViewModel2, "errorDidChange") & 1) != 0 || (objc_msgSend(assetViewModel2, "isActivatedDidChange") & 1) != 0 || objc_msgSend(assetViewModel2, "desiredPlayStateDidChange"))
     {
       [(PUBufferingIndicatorTileViewController *)self _updateIndicator];
     }
@@ -64,11 +64,11 @@
     goto LABEL_12;
   }
 
-  v8 = [(PUBufferingIndicatorTileViewController *)self browsingViewModel];
+  browsingViewModel = [(PUBufferingIndicatorTileViewController *)self browsingViewModel];
 
-  if (v8 == v12)
+  if (browsingViewModel == modelCopy)
   {
-    if ([v6 isAttemptingToPlayVideoOverlayDidChange])
+    if ([changeCopy isAttemptingToPlayVideoOverlayDidChange])
     {
       [(PUBufferingIndicatorTileViewController *)self _updateIndicator];
     }
@@ -76,13 +76,13 @@
 
   else
   {
-    v9 = [(PUBufferingIndicatorTileViewController *)self assetViewModel];
+    assetViewModel = [(PUBufferingIndicatorTileViewController *)self assetViewModel];
 
-    if (v9 == v12 && [v6 videoPlayerDidChange])
+    if (assetViewModel == modelCopy && [changeCopy videoPlayerDidChange])
     {
-      v10 = [(PUBufferingIndicatorTileViewController *)self assetViewModel];
-      v11 = [v10 videoPlayer];
-      [(PUBufferingIndicatorTileViewController *)self _setVideoPlayer:v11];
+      assetViewModel2 = [(PUBufferingIndicatorTileViewController *)self assetViewModel];
+      videoPlayer = [assetViewModel2 videoPlayer];
+      [(PUBufferingIndicatorTileViewController *)self _setVideoPlayer:videoPlayer];
 
 LABEL_12:
     }
@@ -92,29 +92,29 @@ LABEL_12:
 - (void)_updateIndicator
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PUBufferingIndicatorTileViewController *)self _videoPlayer];
-  v4 = [v3 playState];
-  v5 = [(PUBufferingIndicatorTileViewController *)self browsingViewModel];
-  v6 = [v5 isAttemptingToPlayVideoOverlay];
+  _videoPlayer = [(PUBufferingIndicatorTileViewController *)self _videoPlayer];
+  playState = [_videoPlayer playState];
+  browsingViewModel = [(PUBufferingIndicatorTileViewController *)self browsingViewModel];
+  isAttemptingToPlayVideoOverlay = [browsingViewModel isAttemptingToPlayVideoOverlay];
 
-  v7 = [(PUBufferingIndicatorTileViewController *)self mergedVideoProvider];
-  v8 = [v7 state];
-  v9 = [(PUAssetViewModel *)self->_assetViewModel assetSharedViewModel];
-  if (v4 == 5)
+  mergedVideoProvider = [(PUBufferingIndicatorTileViewController *)self mergedVideoProvider];
+  state = [mergedVideoProvider state];
+  assetSharedViewModel = [(PUAssetViewModel *)self->_assetViewModel assetSharedViewModel];
+  if (playState == 5)
   {
     v10 = 0;
   }
 
-  else if ((([v3 isStalled] & 1) != 0 || v4 == 1 && objc_msgSend(v3, "isPlaybackDesired")) && !objc_msgSend(v9, "needsDeferredProcessing"))
+  else if ((([_videoPlayer isStalled] & 1) != 0 || playState == 1 && objc_msgSend(_videoPlayer, "isPlaybackDesired")) && !objc_msgSend(assetSharedViewModel, "needsDeferredProcessing"))
   {
     v10 = 1;
   }
 
   else
   {
-    if (v8 == 3)
+    if (state == 3)
     {
-      v11 = v6;
+      v11 = isAttemptingToPlayVideoOverlay;
     }
 
     else
@@ -127,18 +127,18 @@ LABEL_12:
       v12 = PLOneUpGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v7 error];
+        error = [mergedVideoProvider error];
         v17 = 138412290;
-        v18 = v13;
+        v18 = error;
         _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_ERROR, "Showing live photo playback error indicator: %@", &v17, 0xCu);
       }
 
       v10 = 2;
     }
 
-    else if (v8 == 1)
+    else if (state == 1)
     {
-      v10 = v6;
+      v10 = isAttemptingToPlayVideoOverlay;
     }
 
     else
@@ -148,9 +148,9 @@ LABEL_12:
   }
 
   v14 = +[PUOneUpSettings sharedInstance];
-  v15 = [v14 showBufferingIndicatorDuringPlay];
+  showBufferingIndicatorDuringPlay = [v14 showBufferingIndicatorDuringPlay];
 
-  if ((v15 & (v4 == 3)) != 0)
+  if ((showBufferingIndicatorDuringPlay & (playState == 3)) != 0)
   {
     v16 = 1;
   }
@@ -163,66 +163,66 @@ LABEL_12:
   [(PUBufferingIndicatorTileViewController *)self _setIndicatorStyle:v16 animated:1];
 }
 
-- (void)_handleErrorButton:(id)a3
+- (void)_handleErrorButton:(id)button
 {
-  v4 = [(PUBufferingIndicatorTileViewController *)self errorAlertControllerDisplayer];
+  errorAlertControllerDisplayer = [(PUBufferingIndicatorTileViewController *)self errorAlertControllerDisplayer];
 
-  if (!v4)
+  if (!errorAlertControllerDisplayer)
   {
     return;
   }
 
-  v5 = [(PUBufferingIndicatorTileViewController *)self _videoPlayer];
-  v6 = [(PUBufferingIndicatorTileViewController *)self mergedVideoProvider];
-  if ([v5 playState] == 5)
+  _videoPlayer = [(PUBufferingIndicatorTileViewController *)self _videoPlayer];
+  mergedVideoProvider = [(PUBufferingIndicatorTileViewController *)self mergedVideoProvider];
+  if ([_videoPlayer playState] == 5)
   {
     v7 = @"VIDEO_PLAYBACK_ERROR_TITLE";
-    v8 = v5;
+    v8 = _videoPlayer;
   }
 
   else
   {
-    if ([v6 state] != 3)
+    if ([mergedVideoProvider state] != 3)
     {
-      v10 = 0;
+      localizedDescription = 0;
 LABEL_13:
       v12 = PULocalizedString(@"GENERAL_PLAYBACK_ERROR_TITLE");
-      if (v10)
+      if (localizedDescription)
       {
         goto LABEL_9;
       }
 
 LABEL_14:
-      v10 = PULocalizedString(@"GENERAL_PLAYBACK_ERROR_MESSAGE");
+      localizedDescription = PULocalizedString(@"GENERAL_PLAYBACK_ERROR_MESSAGE");
       goto LABEL_9;
     }
 
     v7 = @"LIVE_PHOTO_PLAYBACK_ERROR_TITLE";
-    v8 = v6;
+    v8 = mergedVideoProvider;
   }
 
   v12 = PULocalizedString(v7);
-  v9 = [v8 error];
-  v10 = [v9 localizedDescription];
+  error = [v8 error];
+  localizedDescription = [error localizedDescription];
 
   if (!v12)
   {
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!localizedDescription)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  v11 = [(PUBufferingIndicatorTileViewController *)self errorAlertControllerDisplayer];
-  (v11)[2](v11, v12, v10);
+  errorAlertControllerDisplayer2 = [(PUBufferingIndicatorTileViewController *)self errorAlertControllerDisplayer];
+  (errorAlertControllerDisplayer2)[2](errorAlertControllerDisplayer2, v12, localizedDescription);
 }
 
-- (void)_setIndicatorStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)_setIndicatorStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->__indicatorStyle != a3)
+  if (self->__indicatorStyle != style)
   {
     v61 = v11;
     v62 = v10;
@@ -232,21 +232,21 @@ LABEL_9:
     v66 = v6;
     v67 = v4;
     v68 = v5;
-    v12 = a4;
-    self->__indicatorStyle = a3;
-    v15 = [(PUBufferingIndicatorTileViewController *)self _spinner];
-    v16 = v15;
-    v17 = a3 == 1;
-    if (a3 == 1 && !v15)
+    animatedCopy = animated;
+    self->__indicatorStyle = style;
+    _spinner = [(PUBufferingIndicatorTileViewController *)self _spinner];
+    v16 = _spinner;
+    v17 = style == 1;
+    if (style == 1 && !_spinner)
     {
       v16 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:101];
-      v18 = [MEMORY[0x1E69DC888] whiteColor];
-      [v16 setColor:v18];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [v16 setColor:whiteColor];
 
       [v16 setAlpha:0.0];
       [v16 setAutoresizingMask:45];
-      v19 = [(PUTileViewController *)self view];
-      [v19 bounds];
+      view = [(PUTileViewController *)self view];
+      [view bounds];
       x = v69.origin.x;
       y = v69.origin.y;
       width = v69.size.width;
@@ -257,7 +257,7 @@ LABEL_9:
       v70.size.width = width;
       v70.size.height = height;
       [v16 setCenter:{MidX, CGRectGetMidY(v70)}];
-      [v19 addSubview:v16];
+      [view addSubview:v16];
       [(PUBufferingIndicatorTileViewController *)self _setSpinner:v16];
     }
 
@@ -270,23 +270,23 @@ LABEL_9:
     v26 = v16;
     v58 = v26;
     v59 = v25;
-    v60 = a3 == 1;
+    v60 = style == 1;
     v27 = _Block_copy(aBlock);
-    v28 = [(PUBufferingIndicatorTileViewController *)self _errorButton];
-    v29 = v28;
-    if (a3 == 2 && !v28)
+    _errorButton = [(PUBufferingIndicatorTileViewController *)self _errorButton];
+    v29 = _errorButton;
+    if (style == 2 && !_errorButton)
     {
       v29 = [MEMORY[0x1E69DC738] buttonWithType:0];
       [v29 addTarget:self action:sel__handleErrorButton_ forControlEvents:0x2000];
       v30 = +[PUInterfaceManager currentTheme];
-      v31 = [v30 regularLoadErrorIcon];
-      [v29 setImage:v31 forState:0];
+      regularLoadErrorIcon = [v30 regularLoadErrorIcon];
+      [v29 setImage:regularLoadErrorIcon forState:0];
 
       [v29 sizeToFit];
       [v29 setAlpha:0.0];
       [v29 setAutoresizingMask:45];
-      v32 = [(PUTileViewController *)self view];
-      [v32 bounds];
+      view2 = [(PUTileViewController *)self view];
+      [view2 bounds];
       v33 = v71.origin.x;
       v34 = v71.origin.y;
       v35 = v71.size.width;
@@ -297,7 +297,7 @@ LABEL_9:
       v72.size.width = v35;
       v72.size.height = v36;
       [v29 setCenter:{v37, CGRectGetMidY(v72)}];
-      [v32 addSubview:v29];
+      [view2 addSubview:v29];
       [(PUBufferingIndicatorTileViewController *)self _setErrorButton:v29];
     }
 
@@ -307,18 +307,18 @@ LABEL_9:
     v52[3] = &unk_1E7B75FA8;
     v38 = v26;
     v53 = v38;
-    v55 = a3 == 1;
+    v55 = style == 1;
     v39 = v29;
     v54 = v39;
-    v56 = a3 == 2;
+    v56 = style == 2;
     v40 = _Block_copy(v52);
     v41 = v40;
-    if (v12)
+    if (animatedCopy)
     {
-      v42 = [(PUBufferingIndicatorTileViewController *)self browsingViewModel];
-      v43 = [v42 isAttemptingToPlayVideoOverlay];
+      browsingViewModel = [(PUBufferingIndicatorTileViewController *)self browsingViewModel];
+      isAttemptingToPlayVideoOverlay = [browsingViewModel isAttemptingToPlayVideoOverlay];
 
-      if (((a3 == 1) & (v43 ^ 1)) != 0)
+      if (((style == 1) & (isAttemptingToPlayVideoOverlay ^ 1)) != 0)
       {
         v44 = 1.0;
       }
@@ -328,8 +328,8 @@ LABEL_9:
         v44 = 0.0;
       }
 
-      v45 = dbl_1B3D0CE60[a3 == 1];
-      if (a3 == 1)
+      v45 = dbl_1B3D0CE60[style == 1];
+      if (style == 1)
       {
         v27[2](v27);
       }
@@ -417,73 +417,73 @@ uint64_t __70__PUBufferingIndicatorTileViewController__setIndicatorStyle_animate
   return result;
 }
 
-- (void)setMergedVideoProvider:(id)a3
+- (void)setMergedVideoProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   mergedVideoProvider = self->_mergedVideoProvider;
-  if (mergedVideoProvider != v5)
+  if (mergedVideoProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(PUOneUpMergedVideoProvider *)mergedVideoProvider unregisterChangeObserver:self context:MergedVideoProviderContext];
-    objc_storeStrong(&self->_mergedVideoProvider, a3);
+    objc_storeStrong(&self->_mergedVideoProvider, provider);
     [(PUOneUpMergedVideoProvider *)self->_mergedVideoProvider registerChangeObserver:self context:MergedVideoProviderContext];
     mergedVideoProvider = [(PUBufferingIndicatorTileViewController *)self _updateIndicator];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](mergedVideoProvider, v5);
+  MEMORY[0x1EEE66BB8](mergedVideoProvider, providerCopy);
 }
 
-- (void)setBrowsingViewModel:(id)a3
+- (void)setBrowsingViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   browsingViewModel = self->_browsingViewModel;
-  if (browsingViewModel != v5)
+  if (browsingViewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PUBrowsingViewModel *)browsingViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_browsingViewModel, a3);
+    objc_storeStrong(&self->_browsingViewModel, model);
     browsingViewModel = [(PUBrowsingViewModel *)self->_browsingViewModel registerChangeObserver:self];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](browsingViewModel, v5);
+  MEMORY[0x1EEE66BB8](browsingViewModel, modelCopy);
 }
 
-- (void)_setVideoPlayer:(id)a3
+- (void)_setVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   videoPlayer = self->__videoPlayer;
-  if (videoPlayer != v5)
+  if (videoPlayer != playerCopy)
   {
-    v7 = v5;
+    v7 = playerCopy;
     [(PUBrowsingVideoPlayer *)videoPlayer unregisterChangeObserver:self];
-    objc_storeStrong(&self->__videoPlayer, a3);
+    objc_storeStrong(&self->__videoPlayer, player);
     [(PUBrowsingVideoPlayer *)self->__videoPlayer registerChangeObserver:self];
     videoPlayer = [(PUBufferingIndicatorTileViewController *)self _updateIndicator];
-    v5 = v7;
+    playerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](videoPlayer, v5);
+  MEMORY[0x1EEE66BB8](videoPlayer, playerCopy);
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   assetViewModel = self->_assetViewModel;
-  if (assetViewModel != v5)
+  if (assetViewModel != modelCopy)
   {
-    v8 = v5;
+    v8 = modelCopy;
     [(PUAssetViewModel *)assetViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_assetViewModel, a3);
+    objc_storeStrong(&self->_assetViewModel, model);
     [(PUAssetViewModel *)self->_assetViewModel registerChangeObserver:self];
-    v7 = [(PUAssetViewModel *)v8 videoPlayer];
-    [(PUBufferingIndicatorTileViewController *)self _setVideoPlayer:v7];
+    videoPlayer = [(PUAssetViewModel *)v8 videoPlayer];
+    [(PUBufferingIndicatorTileViewController *)self _setVideoPlayer:videoPlayer];
 
-    v5 = v8;
+    modelCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](assetViewModel, v5);
+  MEMORY[0x1EEE66BB8](assetViewModel, modelCopy);
 }
 
 - (void)becomeReusable
@@ -507,10 +507,10 @@ uint64_t __70__PUBufferingIndicatorTileViewController__setIndicatorStyle_animate
   return result;
 }
 
-+ (BOOL)canShowBufferingIndicatorTileForAsset:(id)a3
++ (BOOL)canShowBufferingIndicatorTileForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 mediaType] == 2 || objc_msgSend(v3, "playbackStyle") == 3 || objc_msgSend(v3, "playbackStyle") == 5;
+  assetCopy = asset;
+  v4 = [assetCopy mediaType] == 2 || objc_msgSend(assetCopy, "playbackStyle") == 3 || objc_msgSend(assetCopy, "playbackStyle") == 5;
 
   return v4;
 }

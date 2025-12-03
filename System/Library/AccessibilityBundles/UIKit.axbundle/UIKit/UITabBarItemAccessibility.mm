@@ -1,26 +1,26 @@
 @interface UITabBarItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_createViewForTabBar:(id)a3 asProxyView:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_createViewForTabBar:(id)bar asProxyView:(BOOL)view;
 - (id)selectedImage;
 - (id)unselectedImage;
-- (void)setAccessibilityAttributedHint:(id)a3;
-- (void)setAccessibilityAttributedLabel:(id)a3;
-- (void)setAccessibilityAttributedValue:(id)a3;
-- (void)setAccessibilityHint:(id)a3;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityValue:(id)a3;
+- (void)setAccessibilityAttributedHint:(id)hint;
+- (void)setAccessibilityAttributedLabel:(id)label;
+- (void)setAccessibilityAttributedValue:(id)value;
+- (void)setAccessibilityHint:(id)hint;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityValue:(id)value;
 @end
 
 @implementation UITabBarItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UITabBarItem";
   v3 = "UIImage";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
@@ -34,171 +34,171 @@
 
 - (id)selectedImage
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   v2 = [(UITabBarItemAccessibility *)self safeValueForKey:@"_selectedImage"];
   v13 = v2 == 0;
   *&v3 = MEMORY[0x29EDC9740](v2).n128_u64[0];
   v16 = v13;
-  v14.receiver = v18;
+  v14.receiver = selfCopy;
   v14.super_class = UITabBarItemAccessibility;
-  v15 = [(UITabBarItemAccessibility *)&v14 selectedImage];
+  selectedImage = [(UITabBarItemAccessibility *)&v14 selectedImage];
   if (v16)
   {
-    v7 = v15;
-    v9 = [(UITabBarItemAccessibility *)v18 safeValueForKey:?];
-    v8 = [v9 accessibilityIdentification];
+    v7 = selectedImage;
+    v9 = [(UITabBarItemAccessibility *)selfCopy safeValueForKey:?];
+    accessibilityIdentification = [v9 accessibilityIdentification];
     [v7 accessibilitySetIdentification:?];
-    MEMORY[0x29EDC9740](v8);
+    MEMORY[0x29EDC9740](accessibilityIdentification);
     *&v4 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-    v10 = v15;
-    v12 = [(UITabBarItemAccessibility *)v18 safeValueForKey:@"_templateImage", v4];
-    v11 = [v12 accessibilityIdentifier];
+    v10 = selectedImage;
+    v12 = [(UITabBarItemAccessibility *)selfCopy safeValueForKey:@"_templateImage", v4];
+    accessibilityIdentifier = [v12 accessibilityIdentifier];
     [v10 setAccessibilityIdentifier:?];
-    MEMORY[0x29EDC9740](v11);
+    MEMORY[0x29EDC9740](accessibilityIdentifier);
     MEMORY[0x29EDC9740](v12);
   }
 
-  v6 = MEMORY[0x29EDC9748](v15);
-  objc_storeStrong(&v15, 0);
+  v6 = MEMORY[0x29EDC9748](selectedImage);
+  objc_storeStrong(&selectedImage, 0);
 
   return v6;
 }
 
 - (id)unselectedImage
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   v2 = [(UITabBarItemAccessibility *)self safeValueForKey:@"_unselectedImage"];
   v13 = v2 == 0;
   *&v3 = MEMORY[0x29EDC9740](v2).n128_u64[0];
   v16 = v13;
-  v14.receiver = v18;
+  v14.receiver = selfCopy;
   v14.super_class = UITabBarItemAccessibility;
-  v15 = [(UITabBarItemAccessibility *)&v14 unselectedImage];
+  unselectedImage = [(UITabBarItemAccessibility *)&v14 unselectedImage];
   if (v16)
   {
-    v7 = v15;
-    v9 = [(UITabBarItemAccessibility *)v18 safeValueForKey:?];
-    v8 = [v9 accessibilityIdentification];
+    v7 = unselectedImage;
+    v9 = [(UITabBarItemAccessibility *)selfCopy safeValueForKey:?];
+    accessibilityIdentification = [v9 accessibilityIdentification];
     [v7 accessibilitySetIdentification:?];
-    MEMORY[0x29EDC9740](v8);
+    MEMORY[0x29EDC9740](accessibilityIdentification);
     *&v4 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-    v10 = v15;
-    v12 = [(UITabBarItemAccessibility *)v18 safeValueForKey:@"_templateImage", v4];
-    v11 = [v12 accessibilityIdentifier];
+    v10 = unselectedImage;
+    v12 = [(UITabBarItemAccessibility *)selfCopy safeValueForKey:@"_templateImage", v4];
+    accessibilityIdentifier = [v12 accessibilityIdentifier];
     [v10 setAccessibilityIdentifier:?];
-    MEMORY[0x29EDC9740](v11);
+    MEMORY[0x29EDC9740](accessibilityIdentifier);
     MEMORY[0x29EDC9740](v12);
   }
 
-  v6 = MEMORY[0x29EDC9748](v15);
-  objc_storeStrong(&v15, 0);
+  v6 = MEMORY[0x29EDC9748](unselectedImage);
+  objc_storeStrong(&unselectedImage, 0);
 
   return v6;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4.receiver = v6;
+  objc_storeStrong(location, label);
+  v4.receiver = selfCopy;
   v4.super_class = UITabBarItemAccessibility;
   [(UITabBarItemAccessibility *)&v4 setAccessibilityLabel:location[0]];
-  v3 = [(UITabBarItemAccessibility *)v6 safeValueForKey:@"view"];
+  v3 = [(UITabBarItemAccessibility *)selfCopy safeValueForKey:@"view"];
   [v3 setAccessibilityLabel:location[0]];
   MEMORY[0x29EDC9740](v3);
   objc_storeStrong(location, 0);
 }
 
-- (void)setAccessibilityAttributedLabel:(id)a3
+- (void)setAccessibilityAttributedLabel:(id)label
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4.receiver = v6;
+  objc_storeStrong(location, label);
+  v4.receiver = selfCopy;
   v4.super_class = UITabBarItemAccessibility;
   [(UITabBarItemAccessibility *)&v4 setAccessibilityAttributedLabel:location[0]];
-  v3 = [(UITabBarItemAccessibility *)v6 safeValueForKey:@"view"];
+  v3 = [(UITabBarItemAccessibility *)selfCopy safeValueForKey:@"view"];
   [v3 setAccessibilityAttributedLabel:location[0]];
   MEMORY[0x29EDC9740](v3);
   objc_storeStrong(location, 0);
 }
 
-- (void)setAccessibilityValue:(id)a3
+- (void)setAccessibilityValue:(id)value
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4.receiver = v6;
+  objc_storeStrong(location, value);
+  v4.receiver = selfCopy;
   v4.super_class = UITabBarItemAccessibility;
   [(UITabBarItemAccessibility *)&v4 setAccessibilityValue:location[0]];
-  v3 = [(UITabBarItemAccessibility *)v6 safeValueForKey:@"view"];
+  v3 = [(UITabBarItemAccessibility *)selfCopy safeValueForKey:@"view"];
   [v3 setAccessibilityValue:location[0]];
   MEMORY[0x29EDC9740](v3);
   objc_storeStrong(location, 0);
 }
 
-- (void)setAccessibilityAttributedValue:(id)a3
+- (void)setAccessibilityAttributedValue:(id)value
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4.receiver = v6;
+  objc_storeStrong(location, value);
+  v4.receiver = selfCopy;
   v4.super_class = UITabBarItemAccessibility;
   [(UITabBarItemAccessibility *)&v4 setAccessibilityAttributedValue:location[0]];
-  v3 = [(UITabBarItemAccessibility *)v6 safeValueForKey:@"view"];
+  v3 = [(UITabBarItemAccessibility *)selfCopy safeValueForKey:@"view"];
   [v3 setAccessibilityAttributedValue:location[0]];
   MEMORY[0x29EDC9740](v3);
   objc_storeStrong(location, 0);
 }
 
-- (void)setAccessibilityHint:(id)a3
+- (void)setAccessibilityHint:(id)hint
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4.receiver = v6;
+  objc_storeStrong(location, hint);
+  v4.receiver = selfCopy;
   v4.super_class = UITabBarItemAccessibility;
   [(UITabBarItemAccessibility *)&v4 setAccessibilityHint:location[0]];
-  v3 = [(UITabBarItemAccessibility *)v6 safeValueForKey:@"view"];
+  v3 = [(UITabBarItemAccessibility *)selfCopy safeValueForKey:@"view"];
   [v3 setAccessibilityHint:location[0]];
   MEMORY[0x29EDC9740](v3);
   objc_storeStrong(location, 0);
 }
 
-- (void)setAccessibilityAttributedHint:(id)a3
+- (void)setAccessibilityAttributedHint:(id)hint
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4.receiver = v6;
+  objc_storeStrong(location, hint);
+  v4.receiver = selfCopy;
   v4.super_class = UITabBarItemAccessibility;
   [(UITabBarItemAccessibility *)&v4 setAccessibilityAttributedHint:location[0]];
-  v3 = [(UITabBarItemAccessibility *)v6 safeValueForKey:@"view"];
+  v3 = [(UITabBarItemAccessibility *)selfCopy safeValueForKey:@"view"];
   [v3 setAccessibilityAttributedHint:location[0]];
   MEMORY[0x29EDC9740](v3);
   objc_storeStrong(location, 0);
 }
 
-- (id)_createViewForTabBar:(id)a3 asProxyView:(BOOL)a4
+- (id)_createViewForTabBar:(id)bar asProxyView:(BOOL)view
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v7.receiver = v11;
+  objc_storeStrong(location, bar);
+  viewCopy = view;
+  v7.receiver = selfCopy;
   v7.super_class = UITabBarItemAccessibility;
-  v8 = [(UITabBarItemAccessibility *)&v7 _createViewForTabBar:location[0] asProxyView:a4];
-  AXApplyTabBarItemPropertiesToView(v11, v8);
+  v8 = [(UITabBarItemAccessibility *)&v7 _createViewForTabBar:location[0] asProxyView:view];
+  AXApplyTabBarItemPropertiesToView(selfCopy, v8);
   v6 = MEMORY[0x29EDC9748](v8);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);

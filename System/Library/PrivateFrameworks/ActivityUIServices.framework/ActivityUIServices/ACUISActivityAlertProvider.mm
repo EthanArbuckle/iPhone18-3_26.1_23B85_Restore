@@ -1,48 +1,48 @@
 @interface ACUISActivityAlertProvider
-- (ACUISActivityAlertProvider)initWithActivityAlertProviding:(id)a3;
+- (ACUISActivityAlertProvider)initWithActivityAlertProviding:(id)providing;
 @end
 
 @implementation ACUISActivityAlertProvider
 
-- (ACUISActivityAlertProvider)initWithActivityAlertProviding:(id)a3
+- (ACUISActivityAlertProvider)initWithActivityAlertProviding:(id)providing
 {
-  v4 = a3;
+  providingCopy = providing;
   v24.receiver = self;
   v24.super_class = ACUISActivityAlertProvider;
   v5 = [(ACUISActivityAlertProvider *)&v24 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [providingCopy identifier];
     activityIdentifier = v5->_activityIdentifier;
-    v5->_activityIdentifier = v6;
+    v5->_activityIdentifier = identifier;
 
-    v8 = [v4 bundleIdentifier];
+    bundleIdentifier = [providingCopy bundleIdentifier];
     bundleIdentifier = v5->_bundleIdentifier;
-    v5->_bundleIdentifier = v8;
+    v5->_bundleIdentifier = bundleIdentifier;
 
-    v10 = [v4 payloadIdentifier];
+    payloadIdentifier = [providingCopy payloadIdentifier];
     payloadIdentifier = v5->_payloadIdentifier;
-    v5->_payloadIdentifier = v10;
+    v5->_payloadIdentifier = payloadIdentifier;
 
-    v5->_action = -[ACUISActivityAlertProvider _activityAlertAction:](v5, "_activityAlertAction:", [v4 action]);
+    v5->_action = -[ACUISActivityAlertProvider _activityAlertAction:](v5, "_activityAlertAction:", [providingCopy action]);
     v12 = [ACUISActivityAlertOptions alloc];
-    v13 = [v4 configuration];
-    v14 = [v4 presentationOptions];
-    v15 = [(ACUISActivityAlertOptions *)v12 initWithAlertConfiguration:v13 presentationOptions:v14];
+    configuration = [providingCopy configuration];
+    presentationOptions = [providingCopy presentationOptions];
+    v15 = [(ACUISActivityAlertOptions *)v12 initWithAlertConfiguration:configuration presentationOptions:presentationOptions];
     options = v5->_options;
     v5->_options = v15;
 
-    v17 = [v4 title];
+    title = [providingCopy title];
     title = v5->_title;
-    v5->_title = v17;
+    v5->_title = title;
 
-    v19 = [v4 body];
+    body = [providingCopy body];
     body = v5->_body;
-    v5->_body = v19;
+    v5->_body = body;
 
-    v21 = [v4 deviceIdentifier];
+    deviceIdentifier = [providingCopy deviceIdentifier];
     deviceIdentifier = v5->_deviceIdentifier;
-    v5->_deviceIdentifier = v21;
+    v5->_deviceIdentifier = deviceIdentifier;
   }
 
   return v5;

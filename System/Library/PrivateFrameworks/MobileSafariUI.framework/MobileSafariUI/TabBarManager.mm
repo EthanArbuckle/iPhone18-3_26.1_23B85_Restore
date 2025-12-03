@@ -1,29 +1,29 @@
 @interface TabBarManager
-- (BOOL)_canAnimateInlineTabBarForTransitionToItemArrangement:(id)a3;
-- (BOOL)_canAnimateStandaloneTabBarForTransitionToItemArrangement:(id)a3;
+- (BOOL)_canAnimateInlineTabBarForTransitionToItemArrangement:(id)arrangement;
+- (BOOL)_canAnimateStandaloneTabBarForTransitionToItemArrangement:(id)arrangement;
 - (TabBarManager)init;
 - (UnifiedTabBar)effectiveTabBar;
-- (id)_inlineItemArrangementForItemArrangement:(id)a3 displayMode:(int64_t)a4;
+- (id)_inlineItemArrangementForItemArrangement:(id)arrangement displayMode:(int64_t)mode;
 - (id)createStandaloneTabBar;
-- (id)standaloneItemArrangementForItemArrangement:(id)a3 displayMode:(int64_t)a4;
+- (id)standaloneItemArrangementForItemArrangement:(id)arrangement displayMode:(int64_t)mode;
 - (void)_configureStandaloneTabBar;
-- (void)_notifyDidCreateTabBar:(id)a3;
+- (void)_notifyDidCreateTabBar:(id)bar;
 - (void)_notifyDidUpdateDisplayMode;
-- (void)_setItemArrangement:(id)a3 animated:(BOOL)a4 keepingItemVisible:(id)a5 completionHandler:(id)a6;
-- (void)_setUsesInlineTabBar:(BOOL)a3;
-- (void)_setUsesStandaloneTabBar:(BOOL)a3;
+- (void)_setItemArrangement:(id)arrangement animated:(BOOL)animated keepingItemVisible:(id)visible completionHandler:(id)handler;
+- (void)_setUsesInlineTabBar:(BOOL)bar;
+- (void)_setUsesStandaloneTabBar:(BOOL)bar;
 - (void)_updateSearchFieldIcon;
 - (void)_updateUnifiedBarContentArrangement;
-- (void)scrollToActiveItemAnimated:(BOOL)a3;
-- (void)setActiveFavicon:(id)a3;
-- (void)setActiveItem:(id)a3 animated:(BOOL)a4;
-- (void)setActiveItemIsExpanded:(BOOL)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)setBookmarksBar:(id)a3;
-- (void)setCompletionItemIcon:(id)a3;
-- (void)setDisplayMode:(int64_t)a3;
-- (void)setShowingLockdownStatusBar:(BOOL)a3;
-- (void)setSuppressesStandaloneTabBar:(BOOL)a3;
-- (void)setUnifiedBar:(id)a3;
+- (void)scrollToActiveItemAnimated:(BOOL)animated;
+- (void)setActiveFavicon:(id)favicon;
+- (void)setActiveItem:(id)item animated:(BOOL)animated;
+- (void)setActiveItemIsExpanded:(BOOL)expanded animated:(BOOL)animated completionHandler:(id)handler;
+- (void)setBookmarksBar:(id)bar;
+- (void)setCompletionItemIcon:(id)icon;
+- (void)setDisplayMode:(int64_t)mode;
+- (void)setShowingLockdownStatusBar:(BOOL)bar;
+- (void)setSuppressesStandaloneTabBar:(BOOL)bar;
+- (void)setUnifiedBar:(id)bar;
 @end
 
 @implementation TabBarManager
@@ -39,9 +39,9 @@
     itemArrangement = v2->_itemArrangement;
     v2->_itemArrangement = v3;
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     if (([MEMORY[0x277D49A08] isSolariumEnabled] & 1) == 0)
     {
@@ -79,17 +79,17 @@ LABEL_5:
   return v5;
 }
 
-- (void)setUnifiedBar:(id)a3
+- (void)setUnifiedBar:(id)bar
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_unifiedBar != v5)
+  barCopy = bar;
+  v6 = barCopy;
+  if (self->_unifiedBar != barCopy)
   {
-    v8 = v5;
+    v8 = barCopy;
     v7 = objc_alloc_init(MEMORY[0x277D28E90]);
     [(SFUnifiedBar *)self->_unifiedBar setContentArrangement:v7];
 
-    objc_storeStrong(&self->_unifiedBar, a3);
+    objc_storeStrong(&self->_unifiedBar, bar);
     [(SFUnifiedTabBar *)self->_inlineTabBar setNavigationDelegate:v8];
     [(SFUnifiedTabBar *)self->_standaloneTabBar setNavigationDelegate:v8];
     [(TabBarManager *)self _updateUnifiedBarContentArrangement];
@@ -97,24 +97,24 @@ LABEL_5:
   }
 }
 
-- (void)setBookmarksBar:(id)a3
+- (void)setBookmarksBar:(id)bar
 {
-  v5 = a3;
-  if (self->_bookmarksBar != v5)
+  barCopy = bar;
+  if (self->_bookmarksBar != barCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_bookmarksBar, a3);
+    v6 = barCopy;
+    objc_storeStrong(&self->_bookmarksBar, bar);
     [(TabBarManager *)self _updateUnifiedBarContentArrangement];
-    v5 = v6;
+    barCopy = v6;
   }
 }
 
-- (void)setShowingLockdownStatusBar:(BOOL)a3
+- (void)setShowingLockdownStatusBar:(BOOL)bar
 {
-  if (self->_showingLockdownStatusBar != a3)
+  if (self->_showingLockdownStatusBar != bar)
   {
-    self->_showingLockdownStatusBar = a3;
-    if (a3)
+    self->_showingLockdownStatusBar = bar;
+    if (bar)
     {
       v5 = objc_alloc_init(MEMORY[0x277D28CB0]);
     }
@@ -131,16 +131,16 @@ LABEL_5:
   }
 }
 
-- (void)setActiveFavicon:(id)a3
+- (void)setActiveFavicon:(id)favicon
 {
-  objc_storeStrong(&self->_activeFavicon, a3);
+  objc_storeStrong(&self->_activeFavicon, favicon);
 
   [(TabBarManager *)self _updateSearchFieldIcon];
 }
 
-- (void)setCompletionItemIcon:(id)a3
+- (void)setCompletionItemIcon:(id)icon
 {
-  objc_storeStrong(&self->_completionItemIcon, a3);
+  objc_storeStrong(&self->_completionItemIcon, icon);
 
   [(TabBarManager *)self _updateSearchFieldIcon];
 }
@@ -161,9 +161,9 @@ LABEL_5:
   }
 }
 
-- (void)setDisplayMode:(int64_t)a3
+- (void)setDisplayMode:(int64_t)mode
 {
-  if (self->_displayMode != a3)
+  if (self->_displayMode != mode)
   {
     v21 = v8;
     v22 = v7;
@@ -171,21 +171,21 @@ LABEL_5:
     v24 = v5;
     v25 = v4;
     v26 = v3;
-    self->_displayMode = a3;
+    self->_displayMode = mode;
     cachedInlineTabBar = self->_cachedInlineTabBar;
-    [(TabBarManager *)self _setUsesInlineTabBar:(a3 - 1) < 2];
+    [(TabBarManager *)self _setUsesInlineTabBar:(mode - 1) < 2];
     [(TabBarManager *)self _updateUsesStandaloneTabBar];
     [(TabBarManager *)self _updateUnifiedBarContentArrangement];
     if (self->_inlineTabBar)
     {
       if (cachedInlineTabBar)
       {
-        v14 = 0;
+        activeItem = 0;
       }
 
       else
       {
-        v14 = [(SFUnifiedTabBarItemArrangement *)self->_itemArrangement activeItem];
+        activeItem = [(SFUnifiedTabBarItemArrangement *)self->_itemArrangement activeItem];
       }
 
       v15 = [(UnifiedTabBar *)self->_inlineTabBar window:v8];
@@ -196,13 +196,13 @@ LABEL_5:
       }
 
       inlineTabBar = self->_inlineTabBar;
-      v17 = [(TabBarManager *)self _inlineItemArrangementForItemArrangement:self->_itemArrangement displayMode:a3];
-      [(SFUnifiedTabBar *)inlineTabBar setItemArrangement:v17 animated:0 keepingItemVisible:v14 completionHandler:0];
+      v17 = [(TabBarManager *)self _inlineItemArrangementForItemArrangement:self->_itemArrangement displayMode:mode];
+      [(SFUnifiedTabBar *)inlineTabBar setItemArrangement:v17 animated:0 keepingItemVisible:activeItem completionHandler:0];
 
-      [(SFUnifiedTabBar *)self->_inlineTabBar setRole:a3 == 2];
+      [(SFUnifiedTabBar *)self->_inlineTabBar setRole:mode == 2];
       [(SFUnifiedTabBar *)self->_inlineTabBar setNavigationDelegate:self->_unifiedBar];
-      v18 = [(SFUnifiedTabBar *)self->_inlineTabBar tabHoverPreviewController];
-      [v18 setEnabled:(a3 & 0xFFFFFFFFFFFFFFFDLL) != 0];
+      tabHoverPreviewController = [(SFUnifiedTabBar *)self->_inlineTabBar tabHoverPreviewController];
+      [tabHoverPreviewController setEnabled:(mode & 0xFFFFFFFFFFFFFFFDLL) != 0];
 
       [(SFUnifiedTabBar *)self->_inlineTabBar setSearchFieldShowsFormatMenuButtonAccessories:_SFDeviceIsPad() ^ 1];
       [(SFUnifiedTabBar *)self->_inlineTabBar setMinimizedProgressView:self->_minimizedProgressView];
@@ -210,7 +210,7 @@ LABEL_5:
 
     [(TabBarManager *)self _configureStandaloneTabBar:v21];
     v19 = [MEMORY[0x277D49A08] isSolariumEnabled] ^ 1;
-    if (a3 == 2)
+    if (mode == 2)
     {
       v20 = v19;
     }
@@ -228,10 +228,10 @@ LABEL_5:
 
 - (void)_updateUnifiedBarContentArrangement
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  [v5 safari_addObjectUnlessNil:self->_lockdownStatusBar];
-  [v5 safari_addObjectUnlessNil:self->_bookmarksBar];
-  [v5 safari_addObjectUnlessNil:self->_standaloneTabBar];
+  array = [MEMORY[0x277CBEB18] array];
+  [array safari_addObjectUnlessNil:self->_lockdownStatusBar];
+  [array safari_addObjectUnlessNil:self->_bookmarksBar];
+  [array safari_addObjectUnlessNil:self->_standaloneTabBar];
   if (([MEMORY[0x277D49A08] isSolariumEnabled] & 1) == 0)
   {
     if (self->_standaloneTabBar)
@@ -247,21 +247,21 @@ LABEL_5:
     [(SFUnifiedBar *)self->_unifiedBar setMarginLevel:v3];
   }
 
-  v4 = [objc_alloc(MEMORY[0x277D28E90]) initWithInlineContentView:self->_inlineTabBar standaloneContentViews:v5];
+  v4 = [objc_alloc(MEMORY[0x277D28E90]) initWithInlineContentView:self->_inlineTabBar standaloneContentViews:array];
   [(SFUnifiedBar *)self->_unifiedBar setContentArrangement:v4];
 }
 
-- (void)_setUsesInlineTabBar:(BOOL)a3
+- (void)_setUsesInlineTabBar:(BOOL)bar
 {
   p_inlineTabBar = &self->_inlineTabBar;
   inlineTabBar = self->_inlineTabBar;
-  if (((inlineTabBar == 0) ^ a3))
+  if (((inlineTabBar == 0) ^ bar))
   {
     return;
   }
 
   p_cachedInlineTabBar = &self->_cachedInlineTabBar;
-  if (a3)
+  if (bar)
   {
     if (*p_cachedInlineTabBar)
     {
@@ -298,16 +298,16 @@ LABEL_10:
   *p_cachedInlineTabBar = 0;
 }
 
-- (void)_setUsesStandaloneTabBar:(BOOL)a3
+- (void)_setUsesStandaloneTabBar:(BOOL)bar
 {
   standaloneTabBar = self->_standaloneTabBar;
-  if ((((standaloneTabBar == 0) ^ a3) & 1) == 0)
+  if ((((standaloneTabBar == 0) ^ bar) & 1) == 0)
   {
-    if (a3)
+    if (bar)
     {
-      v5 = [(TabBarManager *)self createStandaloneTabBar];
+      createStandaloneTabBar = [(TabBarManager *)self createStandaloneTabBar];
       v6 = self->_standaloneTabBar;
-      self->_standaloneTabBar = v5;
+      self->_standaloneTabBar = createStandaloneTabBar;
 
       v7 = self->_standaloneTabBar;
 
@@ -337,11 +337,11 @@ LABEL_10:
   return v2;
 }
 
-- (void)setSuppressesStandaloneTabBar:(BOOL)a3
+- (void)setSuppressesStandaloneTabBar:(BOOL)bar
 {
-  if (self->_suppressesStandaloneTabBar != a3)
+  if (self->_suppressesStandaloneTabBar != bar)
   {
-    self->_suppressesStandaloneTabBar = a3;
+    self->_suppressesStandaloneTabBar = bar;
     [(TabBarManager *)self _updateUsesStandaloneTabBar];
     [(TabBarManager *)self _updateUnifiedBarContentArrangement];
 
@@ -355,8 +355,8 @@ LABEL_10:
   if (standaloneTabBar)
   {
     v4 = [(TabBarManager *)self standaloneItemArrangementForItemArrangement:self->_itemArrangement displayMode:self->_displayMode];
-    v5 = [(SFUnifiedTabBarItemArrangement *)self->_itemArrangement activeItem];
-    [(SFUnifiedTabBar *)standaloneTabBar setItemArrangement:v4 animated:0 keepingItemVisible:v5 completionHandler:0];
+    activeItem = [(SFUnifiedTabBarItemArrangement *)self->_itemArrangement activeItem];
+    [(SFUnifiedTabBar *)standaloneTabBar setItemArrangement:v4 animated:0 keepingItemVisible:activeItem completionHandler:0];
 
     unifiedBar = self->_unifiedBar;
     v7 = self->_standaloneTabBar;
@@ -365,30 +365,30 @@ LABEL_10:
   }
 }
 
-- (void)setActiveItem:(id)a3 animated:(BOOL)a4
+- (void)setActiveItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SFUnifiedTabBarItemArrangement *)self->_itemArrangement arrangementWithActiveItem:a3];
-  [(TabBarManager *)self _setItemArrangement:v6 animated:v4 keepingItemVisible:0 completionHandler:0];
+  animatedCopy = animated;
+  v6 = [(SFUnifiedTabBarItemArrangement *)self->_itemArrangement arrangementWithActiveItem:item];
+  [(TabBarManager *)self _setItemArrangement:v6 animated:animatedCopy keepingItemVisible:0 completionHandler:0];
 }
 
-- (void)setActiveItemIsExpanded:(BOOL)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)setActiveItemIsExpanded:(BOOL)expanded animated:(BOOL)animated completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  expandedCopy = expanded;
   itemArrangement = self->_itemArrangement;
-  v9 = a5;
-  v10 = [(SFUnifiedTabBarItemArrangement *)itemArrangement arrangementWithActiveItemIsExpanded:v6];
-  [(TabBarManager *)self _setItemArrangement:v10 animated:v5 keepingItemVisible:0 completionHandler:v9];
+  handlerCopy = handler;
+  v10 = [(SFUnifiedTabBarItemArrangement *)itemArrangement arrangementWithActiveItemIsExpanded:expandedCopy];
+  [(TabBarManager *)self _setItemArrangement:v10 animated:animatedCopy keepingItemVisible:0 completionHandler:handlerCopy];
 }
 
-- (void)_setItemArrangement:(id)a3 animated:(BOOL)a4 keepingItemVisible:(id)a5 completionHandler:(id)a6
+- (void)_setItemArrangement:(id)arrangement animated:(BOOL)animated keepingItemVisible:(id)visible completionHandler:(id)handler
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  objc_storeStrong(&self->_itemArrangement, a3);
+  animatedCopy = animated;
+  arrangementCopy = arrangement;
+  visibleCopy = visible;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_itemArrangement, arrangement);
   if (self->_inlineTabBar)
   {
     v14 = dispatch_group_create();
@@ -396,55 +396,55 @@ LABEL_10:
     if (self->_inlineTabBar)
     {
       dispatch_group_enter(v14);
-      v16 = [(TabBarManager *)self _inlineItemArrangementForItemArrangement:v11 displayMode:self->_displayMode];
-      v17 = v8 && [(TabBarManager *)self _canAnimateInlineTabBarForTransitionToItemArrangement:v11];
+      v16 = [(TabBarManager *)self _inlineItemArrangementForItemArrangement:arrangementCopy displayMode:self->_displayMode];
+      v17 = animatedCopy && [(TabBarManager *)self _canAnimateInlineTabBarForTransitionToItemArrangement:arrangementCopy];
       inlineTabBar = self->_inlineTabBar;
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __83__TabBarManager__setItemArrangement_animated_keepingItemVisible_completionHandler___block_invoke;
       v26[3] = &unk_2781D4D40;
       v27 = v15;
-      [(SFUnifiedTabBar *)inlineTabBar setItemArrangement:v16 animated:v17 keepingItemVisible:v12 completionHandler:v26];
+      [(SFUnifiedTabBar *)inlineTabBar setItemArrangement:v16 animated:v17 keepingItemVisible:visibleCopy completionHandler:v26];
     }
 
     if (self->_standaloneTabBar)
     {
       dispatch_group_enter(v15);
-      v19 = [(TabBarManager *)self standaloneItemArrangementForItemArrangement:v11 displayMode:self->_displayMode];
-      if (v8)
+      v19 = [(TabBarManager *)self standaloneItemArrangementForItemArrangement:arrangementCopy displayMode:self->_displayMode];
+      if (animatedCopy)
       {
-        if (v12)
+        if (visibleCopy)
         {
-          v8 = 1;
+          animatedCopy = 1;
         }
 
         else
         {
-          v8 = [(TabBarManager *)self _canAnimateStandaloneTabBarForTransitionToItemArrangement:v19];
+          animatedCopy = [(TabBarManager *)self _canAnimateStandaloneTabBarForTransitionToItemArrangement:v19];
         }
       }
 
       standaloneTabBar = self->_standaloneTabBar;
-      v21 = [v12 secondaryItem];
+      secondaryItem = [visibleCopy secondaryItem];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __83__TabBarManager__setItemArrangement_animated_keepingItemVisible_completionHandler___block_invoke_2;
       v24[3] = &unk_2781D4D40;
       v25 = v15;
-      [(SFUnifiedTabBar *)standaloneTabBar setItemArrangement:v19 animated:v8 keepingItemVisible:v21 completionHandler:v24];
+      [(SFUnifiedTabBar *)standaloneTabBar setItemArrangement:v19 animated:animatedCopy keepingItemVisible:secondaryItem completionHandler:v24];
     }
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __83__TabBarManager__setItemArrangement_animated_keepingItemVisible_completionHandler___block_invoke_3;
     block[3] = &unk_2781D4D90;
-    v23 = v13;
+    v23 = handlerCopy;
     dispatch_group_notify(v15, MEMORY[0x277D85CD0], block);
   }
 
-  else if (v13)
+  else if (handlerCopy)
   {
-    v13[2](v13);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -459,35 +459,35 @@ uint64_t __83__TabBarManager__setItemArrangement_animated_keepingItemVisible_com
   return result;
 }
 
-- (id)_inlineItemArrangementForItemArrangement:(id)a3 displayMode:(int64_t)a4
+- (id)_inlineItemArrangementForItemArrangement:(id)arrangement displayMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = v6;
-  switch(a4)
+  arrangementCopy = arrangement;
+  v7 = arrangementCopy;
+  switch(mode)
   {
     case 2:
       v11 = objc_alloc(MEMORY[0x277D28EA8]);
-      v12 = [v7 activeItem];
-      self = [v11 initWithItem:v12 activeItemIsExpanded:{objc_msgSend(v7, "activeItemIsExpanded")}];
+      activeItem = [v7 activeItem];
+      self = [v11 initWithItem:activeItem activeItemIsExpanded:{objc_msgSend(v7, "activeItemIsExpanded")}];
 
       break;
     case 1:
-      v8 = [v6 items];
+      items = [arrangementCopy items];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __70__TabBarManager__inlineItemArrangementForItemArrangement_displayMode___block_invoke;
       v14[3] = &unk_2781DB868;
       v14[4] = self;
-      v9 = [v8 safari_filterObjectsUsingBlock:v14];
+      v9 = [items safari_filterObjectsUsingBlock:v14];
 
-      v10 = [v7 activeItem];
-      if ([(NSSet *)self->_hiddenItems containsObject:v10])
+      activeItem2 = [v7 activeItem];
+      if ([(NSSet *)self->_hiddenItems containsObject:activeItem2])
       {
 
-        v10 = 0;
+        activeItem2 = 0;
       }
 
-      self = [objc_alloc(MEMORY[0x277D28EA8]) initWithItems:v9 activeItem:v10 activeItemIsExpanded:objc_msgSend(v7 allowsScrollingPinnedItems:{"activeItemIsExpanded"), objc_msgSend(v7, "allowsScrollingPinnedItems")}];
+      self = [objc_alloc(MEMORY[0x277D28EA8]) initWithItems:v9 activeItem:activeItem2 activeItemIsExpanded:objc_msgSend(v7 allowsScrollingPinnedItems:{"activeItemIsExpanded"), objc_msgSend(v7, "allowsScrollingPinnedItems")}];
 
       break;
     case 0:
@@ -498,34 +498,34 @@ uint64_t __83__TabBarManager__setItemArrangement_animated_keepingItemVisible_com
   return self;
 }
 
-- (id)standaloneItemArrangementForItemArrangement:(id)a3 displayMode:(int64_t)a4
+- (id)standaloneItemArrangementForItemArrangement:(id)arrangement displayMode:(int64_t)mode
 {
-  v7 = a3;
-  if (a4 >= 2)
+  arrangementCopy = arrangement;
+  if (mode >= 2)
   {
-    if (a4 == 2)
+    if (mode == 2)
     {
-      v8 = [MEMORY[0x277CBEB18] array];
-      v9 = [v7 items];
+      array = [MEMORY[0x277CBEB18] array];
+      items = [arrangementCopy items];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __73__TabBarManager_standaloneItemArrangementForItemArrangement_displayMode___block_invoke;
       v16[3] = &unk_2781DB890;
       v16[4] = self;
-      v10 = [v9 safari_mapAndFilterObjectsUsingBlock:v16];
-      [v8 addObjectsFromArray:v10];
+      v10 = [items safari_mapAndFilterObjectsUsingBlock:v16];
+      [array addObjectsFromArray:v10];
 
-      v11 = [v7 activeItem];
-      if ([(NSSet *)self->_hiddenItems containsObject:v11])
+      activeItem = [arrangementCopy activeItem];
+      if ([(NSSet *)self->_hiddenItems containsObject:activeItem])
       {
 
-        v11 = 0;
+        activeItem = 0;
       }
 
-      v12 = [v7 allowsScrollingPinnedItems];
+      allowsScrollingPinnedItems = [arrangementCopy allowsScrollingPinnedItems];
       v13 = objc_alloc(MEMORY[0x277D28EA8]);
-      v14 = [v11 secondaryItem];
-      v4 = [v13 initWithItems:v8 activeItem:v14 activeItemIsExpanded:0 allowsScrollingPinnedItems:v12];
+      secondaryItem = [activeItem secondaryItem];
+      v4 = [v13 initWithItems:array activeItem:secondaryItem activeItemIsExpanded:0 allowsScrollingPinnedItems:allowsScrollingPinnedItems];
     }
   }
 
@@ -565,45 +565,45 @@ id __73__TabBarManager_standaloneItemArrangementForItemArrangement_displayMode__
   return v4;
 }
 
-- (BOOL)_canAnimateInlineTabBarForTransitionToItemArrangement:(id)a3
+- (BOOL)_canAnimateInlineTabBarForTransitionToItemArrangement:(id)arrangement
 {
   if (self->_displayMode != 2)
   {
     return 1;
   }
 
-  v4 = [a3 activeItem];
-  v5 = [(SFUnifiedTabBar *)self->_inlineTabBar itemArrangement];
-  v6 = [v5 activeItem];
-  v7 = v4 == v6;
+  activeItem = [arrangement activeItem];
+  itemArrangement = [(SFUnifiedTabBar *)self->_inlineTabBar itemArrangement];
+  activeItem2 = [itemArrangement activeItem];
+  v7 = activeItem == activeItem2;
 
   return v7;
 }
 
-- (BOOL)_canAnimateStandaloneTabBarForTransitionToItemArrangement:(id)a3
+- (BOOL)_canAnimateStandaloneTabBarForTransitionToItemArrangement:(id)arrangement
 {
   standaloneTabBar = self->_standaloneTabBar;
-  v4 = a3;
-  v5 = [(SFUnifiedTabBar *)standaloneTabBar itemArrangement];
-  v6 = [v5 items];
-  v7 = [v4 items];
+  arrangementCopy = arrangement;
+  itemArrangement = [(SFUnifiedTabBar *)standaloneTabBar itemArrangement];
+  items = [itemArrangement items];
+  items2 = [arrangementCopy items];
 
-  LOBYTE(v4) = [v6 isEqualToArray:v7];
-  return v4 ^ 1;
+  LOBYTE(arrangementCopy) = [items isEqualToArray:items2];
+  return arrangementCopy ^ 1;
 }
 
-- (void)scrollToActiveItemAnimated:(BOOL)a3
+- (void)scrollToActiveItemAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   itemArrangement = self->_itemArrangement;
-  v6 = [(SFUnifiedTabBarItemArrangement *)itemArrangement activeItem];
-  [(TabBarManager *)self setItemArrangement:itemArrangement animated:v3 keepingItemVisible:v6];
+  activeItem = [(SFUnifiedTabBarItemArrangement *)itemArrangement activeItem];
+  [(TabBarManager *)self setItemArrangement:itemArrangement animated:animatedCopy keepingItemVisible:activeItem];
 }
 
-- (void)_notifyDidCreateTabBar:(id)a3
+- (void)_notifyDidCreateTabBar:(id)bar
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  barCopy = bar;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -627,7 +627,7 @@ id __73__TabBarManager_standaloneItemArrangementForItemArrangement_displayMode__
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 tabBarManager:self didCreateTabBar:{v4, v11}];
+          [v10 tabBarManager:self didCreateTabBar:{barCopy, v11}];
         }
 
         ++v9;

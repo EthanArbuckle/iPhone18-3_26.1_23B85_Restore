@@ -5,11 +5,11 @@
 - (id)imageResource;
 - (id)localizedWaitScreenDescription;
 - (id)titleString;
-- (void)_learnMoreTapped:(id)a3;
+- (void)_learnMoreTapped:(id)tapped;
 - (void)didPushWaitScreen;
-- (void)handleSignInResultWithStatus:(int64_t)a3 errorDescription:(id)a4 detailedError:(id)a5;
+- (void)handleSignInResultWithStatus:(int64_t)status errorDescription:(id)description detailedError:(id)error;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSTinkerWaitForWatchCDPEnrollment
@@ -39,11 +39,11 @@
   [v3 setTitle:v5 forState:0];
 
   [v3 addTarget:self action:"_learnMoreTapped:" forControlEvents:0x2000];
-  v6 = [(COSTinkerWaitForWatchCDPEnrollment *)self headerView];
-  [v6 addAccessoryButton:v3];
+  headerView = [(COSTinkerWaitForWatchCDPEnrollment *)self headerView];
+  [headerView addAccessoryButton:v3];
 }
 
-- (void)_learnMoreTapped:(id)a3
+- (void)_learnMoreTapped:(id)tapped
 {
   v3 = objc_alloc_init(COSAboutTextViewController);
   v4 = +[NSBundle mainBundle];
@@ -81,13 +81,13 @@
 
 - (id)detailString
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 tinkerUserName];
-  v4 = [v3 localizedCapitalizedString];
-  v5 = v4;
-  if (v4)
+  setupController = [UIApp setupController];
+  tinkerUserName = [setupController tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
+  v5 = localizedCapitalizedString;
+  if (localizedCapitalizedString)
   {
-    v6 = v4;
+    v6 = localizedCapitalizedString;
   }
 
   else
@@ -112,7 +112,7 @@
 - (id)imageResource
 {
   v2 = sub_10002D528(@"Screen-Passcode");
-  v3 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v4 = BPSIsDeviceCompatibleWithVersions();
 
   if (v4)
@@ -125,11 +125,11 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = COSTinkerWaitForWatchCDPEnrollment;
-  [(COSTinkerWaitForWatchCDPEnrollment *)&v10 viewWillAppear:a3];
+  [(COSTinkerWaitForWatchCDPEnrollment *)&v10 viewWillAppear:appear];
   if (self->_appearingFromBackNavigation)
   {
     self->_appearingFromBackNavigation = 0;
@@ -143,8 +143,8 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Navigated back to cdp enrollment", buf, 2u);
     }
 
-    v6 = [UIApp setupController];
-    v7 = [v6 tinkerAuthenticationController];
+    setupController = [UIApp setupController];
+    tinkerAuthenticationController = [setupController tinkerAuthenticationController];
 
     self->_currentStatus = 0;
     v8[0] = _NSConcreteStackBlock;
@@ -152,38 +152,38 @@
     v8[2] = sub_1000BD160;
     v8[3] = &unk_10026B080;
     v8[4] = self;
-    [v7 waitForSatelliteSigninWithProgressCompletion:v8];
+    [tinkerAuthenticationController waitForSatelliteSigninWithProgressCompletion:v8];
   }
 }
 
-- (void)handleSignInResultWithStatus:(int64_t)a3 errorDescription:(id)a4 detailedError:(id)a5
+- (void)handleSignInResultWithStatus:(int64_t)status errorDescription:(id)description detailedError:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  descriptionCopy = description;
+  errorCopy = error;
   v10 = pbb_accountsignin_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     currentStatus = self->_currentStatus;
     *buf = 134218240;
-    v37 = a3;
+    statusCopy2 = status;
     v38 = 2048;
     v39 = currentStatus;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Got progress update from watch: %ld, Current status: %ld", buf, 0x16u);
   }
 
-  v12 = [UIApp setupController];
-  v13 = [v12 pairingReportManager];
+  setupController = [UIApp setupController];
+  pairingReportManager = [setupController pairingReportManager];
 
-  if (self->_currentStatus != a3)
+  if (self->_currentStatus != status)
   {
-    switch(a3)
+    switch(status)
     {
       case 3:
         WeakRetained = objc_loadWeakRetained(&self->_waitDelegate);
         [WeakRetained buddyControllerDone:self];
 
         objc_storeWeak(&self->_waitDelegate, 0);
-        [v13 addPairingTimeEventToPairingReportPlist:42 withValue:&__kCFBooleanTrue withError:0];
+        [pairingReportManager addPairingTimeEventToPairingReportPlist:42 withValue:&__kCFBooleanTrue withError:0];
         break;
       case 2:
         v15 = pbb_accountsignin_log();
@@ -197,45 +197,45 @@
         [v16 buddyControllerDone:self];
 
         objc_storeWeak(&self->_waitDelegate, 0);
-        [v13 addPairingTimeEventToPairingReportPlist:63 withValue:&__kCFBooleanTrue withError:0];
-        [v13 checkInWithClosingPairingTimeEvent:64];
+        [pairingReportManager addPairingTimeEventToPairingReportPlist:63 withValue:&__kCFBooleanTrue withError:0];
+        [pairingReportManager checkInWithClosingPairingTimeEvent:64];
         break;
       case 1:
         v14 = objc_loadWeakRetained(&self->_waitDelegate);
         [v14 buddyControllerReleaseHold:self];
 
-        [v13 addPairingTimeEventToPairingReportPlist:62 withValue:&__kCFBooleanTrue withError:0];
-        [v13 checkInWithOpenPairingTimeEvent:64];
+        [pairingReportManager addPairingTimeEventToPairingReportPlist:62 withValue:&__kCFBooleanTrue withError:0];
+        [pairingReportManager checkInWithOpenPairingTimeEvent:64];
         break;
       default:
         v18 = pbb_accountsignin_log();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v37 = a3;
+          statusCopy2 = status;
           v38 = 2112;
-          v39 = v8;
+          v39 = descriptionCopy;
           v40 = 2112;
-          v41 = v9;
+          v41 = errorCopy;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Canceling pairing due to status %ld - Message: %@ error: %@", buf, 0x20u);
         }
 
-        if (v9)
+        if (errorCopy)
         {
-          v19 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 code]);
-          [v13 addPairingTimeEventToPairingReportPlist:65 withValue:v19 withError:0];
+          v19 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+          [pairingReportManager addPairingTimeEventToPairingReportPlist:65 withValue:v19 withError:0];
 
-          v20 = [v9 domain];
-          [v13 addPairingTimeEventStringToPairingReportPlist:66 withValue:v20 withError:0];
+          domain = [errorCopy domain];
+          [pairingReportManager addPairingTimeEventStringToPairingReportPlist:66 withValue:domain withError:0];
         }
 
-        v21 = [v9 domain];
-        v22 = v21;
-        if (v21 == @"com.aple.COSSatelliteSignInErrorDomain")
+        domain2 = [errorCopy domain];
+        v22 = domain2;
+        if (domain2 == @"com.aple.COSSatelliteSignInErrorDomain")
         {
-          v23 = [v9 code];
+          code = [errorCopy code];
 
-          if (v23 == 1)
+          if (code == 1)
           {
             v24 = objc_loadWeakRetained(&self->_waitDelegate);
             [v24 buddyControllerCancelAnyHold];
@@ -254,15 +254,15 @@
           v25 = +[NSBundle mainBundle];
           v26 = [v25 localizedStringForKey:@"CANT_LOGIN_UNKNOWN_ERROR" value:&stru_10026E598 table:@"Localizable"];
 
-          v8 = v26;
+          descriptionCopy = v26;
         }
 
         v27 = +[NSBundle mainBundle];
         v28 = [v27 localizedStringForKey:@"CANT_LOGIN_GENERIC_TITLE" value:&stru_10026E598 table:@"Localizable"];
-        v29 = [UIAlertController alertControllerWithTitle:v28 message:v8 preferredStyle:1];
+        v29 = [UIAlertController alertControllerWithTitle:v28 message:descriptionCopy preferredStyle:1];
 
-        v30 = [UIApp setupController];
-        v31 = [v30 navigationController];
+        setupController2 = [UIApp setupController];
+        navigationController = [setupController2 navigationController];
 
         v32 = +[NSBundle mainBundle];
         v33 = [v32 localizedStringForKey:@"OK" value:&stru_10026E598 table:@"Localizable"];
@@ -274,7 +274,7 @@
         v34 = [UIAlertAction actionWithTitle:v33 style:0 handler:v35];
         [v29 addAction:v34];
 
-        [v31 presentViewController:v29 animated:1 completion:0];
+        [navigationController presentViewController:v29 animated:1 completion:0];
         break;
     }
   }
@@ -282,8 +282,8 @@
 
 - (void)didPushWaitScreen
 {
-  v3 = [UIApp setupController];
-  v4 = [v3 tinkerAuthenticationController];
+  setupController = [UIApp setupController];
+  tinkerAuthenticationController = [setupController tinkerAuthenticationController];
 
   self->_currentStatus = 0;
   v5[0] = _NSConcreteStackBlock;
@@ -291,20 +291,20 @@
   v5[2] = sub_1000BD7EC;
   v5[3] = &unk_10026B080;
   v5[4] = self;
-  [v4 startSatelliteSigninWithProgressCompletion:v5];
+  [tinkerAuthenticationController startSatelliteSigninWithProgressCompletion:v5];
 }
 
 - (id)localizedWaitScreenDescription
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 tinkerUserName];
-  v4 = [v3 localizedCapitalizedString];
+  setupController = [UIApp setupController];
+  tinkerUserName = [setupController tinkerUserName];
+  localizedCapitalizedString = [tinkerUserName localizedCapitalizedString];
 
   v5 = +[NSBundle mainBundle];
-  if (v4)
+  if (localizedCapitalizedString)
   {
     v6 = [v5 localizedStringForKey:@"APPLEID_ACCOUNT_HOLD_DESCRIPTION_TINKER_USER_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-    v7 = [NSString stringWithFormat:v6, v4];
+    v7 = [NSString stringWithFormat:v6, localizedCapitalizedString];
   }
 
   else

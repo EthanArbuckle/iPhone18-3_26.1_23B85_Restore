@@ -1,8 +1,8 @@
 @interface WCM_AntBlockPowerLimitPolicy
 - (WCM_AntBlockPowerLimitPolicy)init;
-- (WCM_AntBlockPowerLimitPolicy)initWithPlatformId:(unint64_t)a3 AntBlockPowerLimitPlist:(id)a4;
+- (WCM_AntBlockPowerLimitPolicy)initWithPlatformId:(unint64_t)id AntBlockPowerLimitPlist:(id)plist;
 - (id)getAntBlockConfigNbClient;
-- (id)getAntBlockConfigXpcMsgOnClient:(unsigned int)a3;
+- (id)getAntBlockConfigXpcMsgOnClient:(unsigned int)client;
 - (void)readAntBlockPowerLimitPolicyPlist;
 @end
 
@@ -69,9 +69,9 @@
   return v2;
 }
 
-- (WCM_AntBlockPowerLimitPolicy)initWithPlatformId:(unint64_t)a3 AntBlockPowerLimitPlist:(id)a4
+- (WCM_AntBlockPowerLimitPolicy)initWithPlatformId:(unint64_t)id AntBlockPowerLimitPlist:(id)plist
 {
-  v6 = a4;
+  plistCopy = plist;
   v36.receiver = self;
   v36.super_class = WCM_AntBlockPowerLimitPolicy;
   v7 = [(WCM_AntBlockPowerLimitPolicy *)&v36 init];
@@ -128,8 +128,8 @@
   v7->_mAntMappingPolicy = v32;
 
   mPlistFileName = v7->mPlistFileName;
-  v7->mPlatformId = a3;
-  v7->mPlistFileName = v6;
+  v7->mPlatformId = id;
+  v7->mPlistFileName = plistCopy;
 
   [(WCM_AntBlockPowerLimitPolicy *)v7 readAntBlockPowerLimitPolicyPlist];
   return v7;
@@ -254,19 +254,19 @@
   }
 }
 
-- (id)getAntBlockConfigXpcMsgOnClient:(unsigned int)a3
+- (id)getAntBlockConfigXpcMsgOnClient:(unsigned int)client
 {
-  if (a3 <= 0xB && ((0xF7Fu >> a3) & 1) != 0)
+  if (client <= 0xB && ((0xF7Fu >> client) & 1) != 0)
   {
-    v5 = [*(&self->super.isa + qword_1001991A8[a3]) constructXpcMessage];
+    constructXpcMessage = [*(&self->super.isa + qword_1001991A8[client]) constructXpcMessage];
   }
 
   else
   {
-    v5 = 0;
+    constructXpcMessage = 0;
   }
 
-  return v5;
+  return constructXpcMessage;
 }
 
 - (id)getAntBlockConfigNbClient

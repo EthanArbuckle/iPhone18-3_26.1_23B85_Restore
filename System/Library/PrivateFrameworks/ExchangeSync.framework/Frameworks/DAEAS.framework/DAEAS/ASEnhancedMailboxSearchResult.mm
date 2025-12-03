@@ -20,7 +20,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_35 = v2;
     acceptsTopLevelLeaves___haveChecked_35 = 1;
   }
@@ -37,7 +37,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_35 = v2;
     parsingLeafNode___haveChecked_35 = 1;
   }
@@ -54,7 +54,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_35 = v2;
     parsingWithSubItems___haveChecked_35 = 1;
   }
@@ -71,7 +71,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_35 = v2;
     frontingBasicTypes___haveChecked_35 = 1;
   }
@@ -88,7 +88,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_35 = v2;
     notifyOfUnknownTokens___haveChecked_35 = 1;
   }
@@ -124,7 +124,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -161,7 +161,7 @@
     v46 = [MEMORY[0x277CCABB0] numberWithInt:546];
     v6 = [ASParseRule alloc];
     v7 = objc_opt_class();
-    aClass = a1;
+    aClass = self;
     v8 = MEMORY[0x277CBEAC0];
     v37 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1209 codePage:2 token:5 objectClass:objc_opt_class() setterMethod:sel_addItem_ dataclass:0 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
     v36 = [MEMORY[0x277CCABB0] numberWithInt:517];

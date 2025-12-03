@@ -1,11 +1,11 @@
 @interface DTXFileDescriptorTransport
 - (DTXFileDescriptorTransport)init;
-- (DTXFileDescriptorTransport)initWithIncomingFilePath:(id)a3 outgoingFilePath:(id)a4 error:(id *)a5;
-- (DTXFileDescriptorTransport)initWithXPCRepresentation:(id)a3;
+- (DTXFileDescriptorTransport)initWithIncomingFilePath:(id)path outgoingFilePath:(id)filePath error:(id *)error;
+- (DTXFileDescriptorTransport)initWithXPCRepresentation:(id)representation;
 - (id)serializedXPCRepresentation;
-- (unint64_t)transmit:(const void *)a3 ofLength:(unint64_t)a4;
+- (unint64_t)transmit:(const void *)transmit ofLength:(unint64_t)length;
 - (unsigned)supportedDirections;
-- (void)_setupReadSource:(int)a3;
+- (void)_setupReadSource:(int)source;
 - (void)dealloc;
 - (void)disconnect;
 @end
@@ -26,10 +26,10 @@
   return v3;
 }
 
-- (DTXFileDescriptorTransport)initWithIncomingFilePath:(id)a3 outgoingFilePath:(id)a4 error:(id *)a5
+- (DTXFileDescriptorTransport)initWithIncomingFilePath:(id)path outgoingFilePath:(id)filePath error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  filePathCopy = filePath;
   v19.receiver = self;
   v19.super_class = DTXFileDescriptorTransport;
   v10 = [(DTXTransport *)&v19 init];
@@ -37,9 +37,9 @@
   if (v10)
   {
     sub_247F58778(v10);
-    if (v8)
+    if (pathCopy)
     {
-      v14 = sub_247F589C0(v8, 0x1000000, a5);
+      v14 = sub_247F589C0(pathCopy, 0x1000000, error);
       if ((v14 & 0x80000000) == 0)
       {
         v15 = v14;
@@ -49,13 +49,13 @@
           objc_msgSend_disconnect(v11, v12, v16);
         }
 
-        if (!v9)
+        if (!filePathCopy)
         {
           goto LABEL_15;
         }
 
 LABEL_11:
-        if ((sub_247F589C0(v9, 16778753, a5) & 0x80000000) != 0)
+        if ((sub_247F589C0(filePathCopy, 16778753, error) & 0x80000000) != 0)
         {
           goto LABEL_16;
         }
@@ -68,13 +68,13 @@ LABEL_15:
 
     else
     {
-      if (v9)
+      if (filePathCopy)
       {
         v15 = 0xFFFFFFFFLL;
         goto LABEL_11;
       }
 
-      if (v8 | v9)
+      if (pathCopy | filePathCopy)
       {
         v15 = 0xFFFFFFFFLL;
         goto LABEL_15;
@@ -92,15 +92,15 @@ LABEL_17:
   return v11;
 }
 
-- (void)_setupReadSource:(int)a3
+- (void)_setupReadSource:(int)source
 {
-  v5 = dispatch_source_create(MEMORY[0x277D85D28], a3, 0, self->_inputQueue);
-  if ((a3 & 0x80000000) == 0)
+  v5 = dispatch_source_create(MEMORY[0x277D85D28], source, 0, self->_inputQueue);
+  if ((source & 0x80000000) == 0)
   {
-    v6 = fcntl(a3, 3);
+    v6 = fcntl(source, 3);
     if ((v6 & 4) == 0)
     {
-      fcntl(a3, 4, v6 | 4u);
+      fcntl(source, 4, v6 | 4u);
     }
   }
 
@@ -108,7 +108,7 @@ LABEL_17:
   v12[1] = 3221225472;
   v12[2] = sub_247F58CD0;
   v12[3] = &unk_278EEEF38;
-  v13 = a3;
+  sourceCopy = source;
   v12[4] = self;
   v7 = MEMORY[0x24C1C0D80](v12);
   v8 = MEMORY[0x24C1C0D80]();
@@ -123,18 +123,18 @@ LABEL_17:
   dispatch_resume(v11);
 }
 
-- (DTXFileDescriptorTransport)initWithXPCRepresentation:(id)a3
+- (DTXFileDescriptorTransport)initWithXPCRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = DTXFileDescriptorTransport;
-  v5 = [(DTXTransport *)&v11 initWithXPCRepresentation:v4];
+  v5 = [(DTXTransport *)&v11 initWithXPCRepresentation:representationCopy];
   v6 = v5;
   if (v5)
   {
     sub_247F58778(v5);
-    v7 = xpc_dictionary_dup_fd(v4, "_inFD");
-    v8 = xpc_dictionary_dup_fd(v4, "_outFD");
+    v7 = xpc_dictionary_dup_fd(representationCopy, "_inFD");
+    v8 = xpc_dictionary_dup_fd(representationCopy, "_outFD");
     if ((v7 & 0x80000000) != 0 && v8 < 0)
     {
 
@@ -186,9 +186,9 @@ LABEL_17:
   return v3;
 }
 
-- (unint64_t)transmit:(const void *)a3 ofLength:(unint64_t)a4
+- (unint64_t)transmit:(const void *)transmit ofLength:(unint64_t)length
 {
-  if (objc_msgSend_status(self, a2, a3) == 1)
+  if (objc_msgSend_status(self, a2, transmit) == 1)
   {
     v15 = 0;
     v16 = &v15;
@@ -200,10 +200,10 @@ LABEL_17:
     v14[3] = &unk_278EEF510;
     v14[4] = self;
     v14[5] = &v15;
-    v14[6] = a3;
-    v14[7] = a4;
+    v14[6] = transmit;
+    v14[7] = length;
     v7 = MEMORY[0x24C1C0D80](v14);
-    while (v7[2](v7) && v16[3] < a4)
+    while (v7[2](v7) && v16[3] < length)
     {
       memset(&eventlist, 0, sizeof(eventlist));
       v10 = kevent(self->_outputWaitKQ, 0, 0, &eventlist, 1, 0);
@@ -225,12 +225,12 @@ LABEL_10:
       }
     }
 
-    a4 = v16[3];
+    length = v16[3];
 
     _Block_object_dispose(&v15, 8);
   }
 
-  return a4;
+  return length;
 }
 
 - (void)disconnect

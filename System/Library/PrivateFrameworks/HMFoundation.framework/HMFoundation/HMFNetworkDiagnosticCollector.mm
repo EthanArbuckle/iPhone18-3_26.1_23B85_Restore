@@ -1,58 +1,58 @@
 @interface HMFNetworkDiagnosticCollector
 + (id)logCategory;
-- (HMFNetworkDiagnosticCollector)initWithQueue:(id)a3;
-- (HMFNetworkDiagnosticCollector)initWithQueue:(id)a3 discoveryTimeout:(double)a4 resolveTimeout:(double)a5 diagnosticTimeout:(double)a6 serviceTypes:(id)a7;
+- (HMFNetworkDiagnosticCollector)initWithQueue:(id)queue;
+- (HMFNetworkDiagnosticCollector)initWithQueue:(id)queue discoveryTimeout:(double)timeout resolveTimeout:(double)resolveTimeout diagnosticTimeout:(double)diagnosticTimeout serviceTypes:(id)types;
 - (id)activeDevices;
 - (id)devices;
 - (id)diagnosticReport;
-- (id)discoverDevicesWithTimeout:(double)a3;
+- (id)discoverDevicesWithTimeout:(double)timeout;
 - (id)networkDiagnostics;
-- (id)resolveDevicesWithAddressType:(unint64_t)a3 timeout:(double)a4;
+- (id)resolveDevicesWithAddressType:(unint64_t)type timeout:(double)timeout;
 - (id)run;
-- (id)startDiagnosticsWithTimeout:(double)a3;
+- (id)startDiagnosticsWithTimeout:(double)timeout;
 - (id)workContext;
-- (void)browser:(id)a3 didFindNetworkService:(id)a4;
-- (void)browser:(id)a3 didLoseNetworkService:(id)a4;
-- (void)browser:(id)a3 didStartBrowsingForServiceType:(id)a4;
-- (void)browser:(id)a3 didStopBrowsingForServiceType:(id)a4;
-- (void)browser:(id)a3 didUpdateNetworkService:(id)a4;
-- (void)diagnostic:(id)a3 didCompleteWithError:(id)a4;
-- (void)diagnostic:(id)a3 didStartWithDevice:(id)a4;
+- (void)browser:(id)browser didFindNetworkService:(id)service;
+- (void)browser:(id)browser didLoseNetworkService:(id)service;
+- (void)browser:(id)browser didStartBrowsingForServiceType:(id)type;
+- (void)browser:(id)browser didStopBrowsingForServiceType:(id)type;
+- (void)browser:(id)browser didUpdateNetworkService:(id)service;
+- (void)diagnostic:(id)diagnostic didCompleteWithError:(id)error;
+- (void)diagnostic:(id)diagnostic didStartWithDevice:(id)device;
 - (void)stop;
 @end
 
 @implementation HMFNetworkDiagnosticCollector
 
-- (HMFNetworkDiagnosticCollector)initWithQueue:(id)a3 discoveryTimeout:(double)a4 resolveTimeout:(double)a5 diagnosticTimeout:(double)a6 serviceTypes:(id)a7
+- (HMFNetworkDiagnosticCollector)initWithQueue:(id)queue discoveryTimeout:(double)timeout resolveTimeout:(double)resolveTimeout diagnosticTimeout:(double)diagnosticTimeout serviceTypes:(id)types
 {
-  v13 = a3;
-  v14 = a7;
+  queueCopy = queue;
+  typesCopy = types;
   v20.receiver = self;
   v20.super_class = HMFNetworkDiagnosticCollector;
   v15 = [(HMFNetworkDiagnosticCollector *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_workQueue, a3);
-    objc_storeStrong(&v16->_serviceTypes, a7);
-    v17 = [[HMFNetworkBrowser alloc] initWithQueue:v13 domain:@"local" serviceTypes:v14];
+    objc_storeStrong(&v15->_workQueue, queue);
+    objc_storeStrong(&v16->_serviceTypes, types);
+    v17 = [[HMFNetworkBrowser alloc] initWithQueue:queueCopy domain:@"local" serviceTypes:typesCopy];
     browser = v16->_browser;
     v16->_browser = v17;
 
     [(HMFNetworkBrowser *)v16->_browser setDelegate:v16];
-    v16->_discoveryTimeout = a4;
-    v16->_diagnosticTimeout = a6;
-    v16->_resolveTimeout = a5;
+    v16->_discoveryTimeout = timeout;
+    v16->_diagnosticTimeout = diagnosticTimeout;
+    v16->_resolveTimeout = resolveTimeout;
   }
 
   return v16;
 }
 
-- (HMFNetworkDiagnosticCollector)initWithQueue:(id)a3
+- (HMFNetworkDiagnosticCollector)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = +[HMFNetworkServiceInfo defaultServiceTypes];
-  v6 = [(HMFNetworkDiagnosticCollector *)self initWithQueue:v4 discoveryTimeout:v5 resolveTimeout:5.0 diagnosticTimeout:10.0 serviceTypes:30.0];
+  v6 = [(HMFNetworkDiagnosticCollector *)self initWithQueue:queueCopy discoveryTimeout:v5 resolveTimeout:5.0 diagnosticTimeout:10.0 serviceTypes:30.0];
 
   return v6;
 }
@@ -106,13 +106,13 @@ void __44__HMFNetworkDiagnosticCollector_workContext__block_invoke(uint64_t a1)
 
 - (id)run
 {
-  v3 = [(HMFNetworkDiagnosticCollector *)self workContext];
+  workContext = [(HMFNetworkDiagnosticCollector *)self workContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__HMFNetworkDiagnosticCollector_run__block_invoke;
   v6[3] = &unk_2786E7630;
   v6[4] = self;
-  v4 = [HMFFuture inContext:v3 perform:v6];
+  v4 = [HMFFuture inContext:workContext perform:v6];
 
   return v4;
 }
@@ -185,45 +185,45 @@ uint64_t __36__HMFNetworkDiagnosticCollector_run__block_invoke_3(uint64_t a1)
 
 - (void)stop
 {
-  v3 = [(HMFNetworkDiagnosticCollector *)self currentDiagnostics];
-  [v3 na_each:&__block_literal_global_11_0];
+  currentDiagnostics = [(HMFNetworkDiagnosticCollector *)self currentDiagnostics];
+  [currentDiagnostics na_each:&__block_literal_global_11_0];
 
-  v4 = [(HMFNetworkDiagnosticCollector *)self devices];
-  [v4 na_each:&__block_literal_global_14];
+  devices = [(HMFNetworkDiagnosticCollector *)self devices];
+  [devices na_each:&__block_literal_global_14];
 }
 
 - (id)devices
 {
-  v2 = [(HMFNetworkDiagnosticCollector *)self browser];
-  v3 = [v2 foundNetworkServices];
+  browser = [(HMFNetworkDiagnosticCollector *)self browser];
+  foundNetworkServices = [browser foundNetworkServices];
 
-  return v3;
+  return foundNetworkServices;
 }
 
 - (id)activeDevices
 {
-  v2 = [(HMFNetworkDiagnosticCollector *)self devices];
-  v3 = [v2 na_filter:&__block_literal_global_17];
+  devices = [(HMFNetworkDiagnosticCollector *)self devices];
+  v3 = [devices na_filter:&__block_literal_global_17];
 
   return v3;
 }
 
-- (id)discoverDevicesWithTimeout:(double)a3
+- (id)discoverDevicesWithTimeout:(double)timeout
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [(HMFNetworkDiagnosticCollector *)self serviceTypes];
-  v6 = [v5 count];
+  serviceTypes = [(HMFNetworkDiagnosticCollector *)self serviceTypes];
+  v6 = [serviceTypes count];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
   if (v6)
   {
     if (v10)
     {
-      v11 = HMFGetLogIdentifier(v8);
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
-      v13 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+      v11 = HMFGetLogIdentifier(selfCopy);
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(serviceTypes, "count")}];
+      v13 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
       v19 = 138543874;
       v20 = v11;
       v21 = 2112;
@@ -234,15 +234,15 @@ uint64_t __36__HMFNetworkDiagnosticCollector_run__block_invoke_3(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v7);
-    v14 = [(HMFNetworkDiagnosticCollector *)v8 browser];
-    v15 = [v14 startBrowsingWithTimeout:a3];
+    browser = [(HMFNetworkDiagnosticCollector *)selfCopy browser];
+    v15 = [browser startBrowsingWithTimeout:timeout];
   }
 
   else
   {
     if (v10)
     {
-      v16 = HMFGetLogIdentifier(v8);
+      v16 = HMFGetLogIdentifier(selfCopy);
       v19 = 138543362;
       v20 = v16;
       _os_log_impl(&dword_22ADEC000, v9, OS_LOG_TYPE_INFO, "%{public}@Nothing to do, no service types provided", &v19, 0xCu);
@@ -257,22 +257,22 @@ uint64_t __36__HMFNetworkDiagnosticCollector_run__block_invoke_3(uint64_t a1)
   return v15;
 }
 
-- (id)resolveDevicesWithAddressType:(unint64_t)a3 timeout:(double)a4
+- (id)resolveDevicesWithAddressType:(unint64_t)type timeout:(double)timeout
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = [(HMFNetworkDiagnosticCollector *)self activeDevices];
-  v8 = [v7 count];
+  activeDevices = [(HMFNetworkDiagnosticCollector *)self activeDevices];
+  v8 = [activeDevices count];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
   if (v8)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v13 = HMFGetLogIdentifier(v10);
-      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
-      v15 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+      v13 = HMFGetLogIdentifier(selfCopy);
+      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(activeDevices, "count")}];
+      v15 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
       *buf = 138543874;
       v28 = v13;
       v29 = 2112;
@@ -283,37 +283,37 @@ uint64_t __36__HMFNetworkDiagnosticCollector_run__block_invoke_3(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v9);
-    v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(activeDevices, "count")}];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __71__HMFNetworkDiagnosticCollector_resolveDevicesWithAddressType_timeout___block_invoke;
     v23[3] = &unk_2786E76B8;
     v24 = v16;
-    v25 = a3;
-    v26 = a4;
+    typeCopy = type;
+    timeoutCopy = timeout;
     v17 = v16;
-    [v7 na_each:v23];
+    [activeDevices na_each:v23];
     v18 = [HMFFuture allSettled:v17];
-    v19 = [v18 ignoreResult];
+    ignoreResult = [v18 ignoreResult];
   }
 
   else
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v20 = HMFGetLogIdentifier(v10);
+      v20 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543362;
       v28 = v20;
       _os_log_impl(&dword_22ADEC000, v12, OS_LOG_TYPE_ERROR, "%{public}@No devices to resolve", buf, 0xCu);
     }
 
     objc_autoreleasePoolPop(v9);
-    v19 = +[HMFFuture futureWithNoValue];
+    ignoreResult = +[HMFFuture futureWithNoValue];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return ignoreResult;
 }
 
 void __71__HMFNetworkDiagnosticCollector_resolveDevicesWithAddressType_timeout___block_invoke(uint64_t a1, void *a2)
@@ -323,22 +323,22 @@ void __71__HMFNetworkDiagnosticCollector_resolveDevicesWithAddressType_timeout__
   [v2 addObject:v3];
 }
 
-- (id)startDiagnosticsWithTimeout:(double)a3
+- (id)startDiagnosticsWithTimeout:(double)timeout
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [(HMFNetworkDiagnosticCollector *)self activeDevices];
-  v6 = [v5 count];
+  activeDevices = [(HMFNetworkDiagnosticCollector *)self activeDevices];
+  v6 = [activeDevices count];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
   if (v6)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v11 = HMFGetLogIdentifier(v8);
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
-      v13 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+      v11 = HMFGetLogIdentifier(selfCopy);
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(activeDevices, "count")}];
+      v13 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
       *buf = 138543874;
       v30 = v11;
       v31 = 2114;
@@ -349,19 +349,19 @@ void __71__HMFNetworkDiagnosticCollector_resolveDevicesWithAddressType_timeout__
     }
 
     objc_autoreleasePoolPop(v7);
-    v14 = [(HMFNetworkDiagnosticCollector *)v8 networkDiagnostics];
+    networkDiagnostics = [(HMFNetworkDiagnosticCollector *)selfCopy networkDiagnostics];
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __61__HMFNetworkDiagnosticCollector_startDiagnosticsWithTimeout___block_invoke;
     v26 = &unk_2786E7708;
-    v27 = v5;
-    v28 = v8;
-    v15 = [v14 na_flatMap:&v23];
-    currentDiagnostics = v8->_currentDiagnostics;
-    v8->_currentDiagnostics = v15;
+    v27 = activeDevices;
+    v28 = selfCopy;
+    v15 = [networkDiagnostics na_flatMap:&v23];
+    currentDiagnostics = selfCopy->_currentDiagnostics;
+    selfCopy->_currentDiagnostics = v15;
 
-    v17 = [(HMFNetworkDiagnosticCollector *)v8 currentDiagnostics:v23];
-    v18 = [HMFNetworkDiagnostic runDiagnostics:v17 timeout:a3];
+    v17 = [(HMFNetworkDiagnosticCollector *)selfCopy currentDiagnostics:v23];
+    v18 = [HMFNetworkDiagnostic runDiagnostics:v17 timeout:timeout];
 
     v19 = v27;
   }
@@ -370,7 +370,7 @@ void __71__HMFNetworkDiagnosticCollector_resolveDevicesWithAddressType_timeout__
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v20 = HMFGetLogIdentifier(v8);
+      v20 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543362;
       v30 = v20;
       _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_ERROR, "%{public}@No devices to run diagnostics", buf, 0xCu);
@@ -417,20 +417,20 @@ id __61__HMFNetworkDiagnosticCollector_startDiagnosticsWithTimeout___block_invok
   v23[1] = *MEMORY[0x277D85DE8];
   v3 = [@"Service Type\t\tDevice ID\t\tCategory\tS#\tC#\tSF\tPing\t\t\t\t Model / Name / Address / Port\t\n" mutableCopy];
   v4 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"device.serviceInfo.serviceType.length" ascending:1];
-  v5 = [(HMFNetworkDiagnosticCollector *)self currentDiagnostics];
+  currentDiagnostics = [(HMFNetworkDiagnosticCollector *)self currentDiagnostics];
   v23[0] = v4;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
-  v7 = [v5 sortedArrayUsingDescriptors:v6];
+  v7 = [currentDiagnostics sortedArrayUsingDescriptors:v6];
 
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = __Block_byref_object_copy_;
   v21[4] = __Block_byref_object_dispose_;
-  v8 = [v7 firstObject];
-  v9 = [v8 device];
-  v10 = [v9 serviceInfo];
-  v22 = [v10 serviceType];
+  firstObject = [v7 firstObject];
+  device = [firstObject device];
+  serviceInfo = [device serviceInfo];
+  serviceType = [serviceInfo serviceType];
 
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
@@ -473,24 +473,24 @@ void __49__HMFNetworkDiagnosticCollector_diagnosticReport__block_invoke(uint64_t
   [v12 appendString:v13];
 }
 
-- (void)diagnostic:(id)a3 didStartWithDevice:(id)a4
+- (void)diagnostic:(id)diagnostic didStartWithDevice:(id)device
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 addresses];
-  v9 = [v8 na_map:&__block_literal_global_36];
+  diagnosticCopy = diagnostic;
+  deviceCopy = device;
+  addresses = [deviceCopy addresses];
+  v9 = [addresses na_map:&__block_literal_global_36];
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v19 = v10;
-    v20 = HMFGetLogIdentifier(v11);
-    v13 = [v6 shortDescription];
-    v14 = [v6 device];
-    v15 = [v14 shortDescription];
+    v20 = HMFGetLogIdentifier(selfCopy);
+    shortDescription = [diagnosticCopy shortDescription];
+    device = [diagnosticCopy device];
+    shortDescription2 = [device shortDescription];
     v16 = [v9 count];
     if (v16)
     {
@@ -505,9 +505,9 @@ void __49__HMFNetworkDiagnosticCollector_diagnosticReport__block_invoke(uint64_t
     *buf = 138544130;
     v22 = v20;
     v23 = 2114;
-    v24 = v13;
+    v24 = shortDescription;
     v25 = 2112;
-    v26 = v15;
+    v26 = shortDescription2;
     v27 = 2114;
     v28 = v17;
     _os_log_impl(&dword_22ADEC000, v12, OS_LOG_TYPE_INFO, "%{public}@Started %{public}@ with device: %@ and addresses: %{public}@", buf, 0x2Au);
@@ -522,18 +522,18 @@ void __49__HMFNetworkDiagnosticCollector_diagnosticReport__block_invoke(uint64_t
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)diagnostic:(id)a3 didCompleteWithError:(id)a4
+- (void)diagnostic:(id)diagnostic didCompleteWithError:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  diagnosticCopy = diagnostic;
+  errorCopy = error;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = HMFGetLogIdentifier(v9);
-    if (v7)
+    v11 = HMFGetLogIdentifier(selfCopy);
+    if (errorCopy)
     {
       v12 = @"❌";
     }
@@ -543,19 +543,19 @@ void __49__HMFNetworkDiagnosticCollector_diagnosticReport__block_invoke(uint64_t
       v12 = @"✅";
     }
 
-    v13 = [v6 shortDescription];
-    v14 = [v6 device];
-    v15 = [v14 shortDescription];
+    shortDescription = [diagnosticCopy shortDescription];
+    device = [diagnosticCopy device];
+    shortDescription2 = [device shortDescription];
     v17 = 138544386;
     v18 = v11;
     v19 = 2112;
     v20 = v12;
     v21 = 2114;
-    v22 = v13;
+    v22 = shortDescription;
     v23 = 2112;
-    v24 = v15;
+    v24 = shortDescription2;
     v25 = 2114;
-    v26 = v7;
+    v26 = errorCopy;
     _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_INFO, "%{public}@%@ Completed %{public}@ for device: %@ with error: %{public}@", &v17, 0x34u);
   }
 
@@ -563,21 +563,21 @@ void __49__HMFNetworkDiagnosticCollector_diagnosticReport__block_invoke(uint64_t
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)browser:(id)a3 didStartBrowsingForServiceType:(id)a4
+- (void)browser:(id)browser didStartBrowsingForServiceType:(id)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  browserCopy = browser;
+  typeCopy = type;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = HMFGetLogIdentifier(v9);
+    v11 = HMFGetLogIdentifier(selfCopy);
     v13 = 138543618;
     v14 = v11;
     v15 = 2112;
-    v16 = v7;
+    v16 = typeCopy;
     _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Browser started browsing for service type: %@", &v13, 0x16u);
   }
 
@@ -585,21 +585,21 @@ void __49__HMFNetworkDiagnosticCollector_diagnosticReport__block_invoke(uint64_t
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)browser:(id)a3 didStopBrowsingForServiceType:(id)a4
+- (void)browser:(id)browser didStopBrowsingForServiceType:(id)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  browserCopy = browser;
+  typeCopy = type;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = HMFGetLogIdentifier(v9);
+    v11 = HMFGetLogIdentifier(selfCopy);
     v13 = 138543618;
     v14 = v11;
     v15 = 2112;
-    v16 = v7;
+    v16 = typeCopy;
     _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Browser stopped browsing for service type: %@", &v13, 0x16u);
   }
 
@@ -607,22 +607,22 @@ void __49__HMFNetworkDiagnosticCollector_diagnosticReport__block_invoke(uint64_t
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)browser:(id)a3 didFindNetworkService:(id)a4
+- (void)browser:(id)browser didFindNetworkService:(id)service
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  browserCopy = browser;
+  serviceCopy = service;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = HMFGetLogIdentifier(v9);
-    v12 = [v7 shortDescription];
+    v11 = HMFGetLogIdentifier(selfCopy);
+    shortDescription = [serviceCopy shortDescription];
     v14 = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v12;
+    v17 = shortDescription;
     _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_INFO, "%{public}@Browser did find network service: %@", &v14, 0x16u);
   }
 
@@ -630,22 +630,22 @@ void __49__HMFNetworkDiagnosticCollector_diagnosticReport__block_invoke(uint64_t
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)browser:(id)a3 didLoseNetworkService:(id)a4
+- (void)browser:(id)browser didLoseNetworkService:(id)service
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  browserCopy = browser;
+  serviceCopy = service;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = HMFGetLogIdentifier(v9);
-    v12 = [v7 shortDescription];
+    v11 = HMFGetLogIdentifier(selfCopy);
+    shortDescription = [serviceCopy shortDescription];
     v14 = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v12;
+    v17 = shortDescription;
     _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_INFO, "%{public}@Browser did lose network service: %@", &v14, 0x16u);
   }
 
@@ -653,22 +653,22 @@ void __49__HMFNetworkDiagnosticCollector_diagnosticReport__block_invoke(uint64_t
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)browser:(id)a3 didUpdateNetworkService:(id)a4
+- (void)browser:(id)browser didUpdateNetworkService:(id)service
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  browserCopy = browser;
+  serviceCopy = service;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = HMFGetLogIdentifier(v9);
-    v12 = [v7 shortDescription];
+    v11 = HMFGetLogIdentifier(selfCopy);
+    shortDescription = [serviceCopy shortDescription];
     v14 = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v12;
+    v17 = shortDescription;
     _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_INFO, "%{public}@Browser did update network service: %@", &v14, 0x16u);
   }
 

@@ -1,33 +1,33 @@
 @interface MLCOptimizer
-- (MLCOptimizer)initWithDescriptor:(id)a3;
-- (MLCOptimizer)initWithLearningRate:(float)a3 gradientRescale:(float)a4 applyGradientClipping:(BOOL)a5 gradientClipMax:(float)a6 gradientClipMin:(float)a7 regularizationScale:(float)a8 regularizationType:(int)a9;
-- (MLCOptimizer)initWithLearningRate:(float)a3 gradientRescale:(float)a4 applyGradientClipping:(BOOL)a5 gradientClipMax:(float)a6 gradientClipMin:(float)a7 regularizationScale:(float)a8 regularizationType:(int)a9 gradientClippingType:(int)a10 maximumClippingNorm:(float)a11 customGlobalNorm:(float)a12;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MLCOptimizer)initWithDescriptor:(id)descriptor;
+- (MLCOptimizer)initWithLearningRate:(float)rate gradientRescale:(float)rescale applyGradientClipping:(BOOL)clipping gradientClipMax:(float)max gradientClipMin:(float)min regularizationScale:(float)scale regularizationType:(int)type;
+- (MLCOptimizer)initWithLearningRate:(float)rate gradientRescale:(float)rescale applyGradientClipping:(BOOL)clipping gradientClipMax:(float)max gradientClipMin:(float)min regularizationScale:(float)scale regularizationType:(int)type gradientClippingType:(int)self0 maximumClippingNorm:(float)self1 customGlobalNorm:(float)self2;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)bindDevice:(id)a3 deviceOps:(id)a4;
+- (void)bindDevice:(id)device deviceOps:(id)ops;
 @end
 
 @implementation MLCOptimizer
 
-- (MLCOptimizer)initWithDescriptor:(id)a3
+- (MLCOptimizer)initWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  [v4 learningRate];
+  descriptorCopy = descriptor;
+  [descriptorCopy learningRate];
   v6 = v5;
-  [v4 gradientRescale];
+  [descriptorCopy gradientRescale];
   v8 = v7;
-  v9 = [v4 appliesGradientClipping];
-  [v4 gradientClipMax];
+  appliesGradientClipping = [descriptorCopy appliesGradientClipping];
+  [descriptorCopy gradientClipMax];
   v11 = v10;
-  [v4 gradientClipMin];
+  [descriptorCopy gradientClipMin];
   v13 = v12;
-  [v4 regularizationScale];
+  [descriptorCopy regularizationScale];
   v15 = v14;
-  v16 = [v4 regularizationType];
-  v17 = [v4 gradientClippingType];
-  [v4 maximumClippingNorm];
+  regularizationType = [descriptorCopy regularizationType];
+  gradientClippingType = [descriptorCopy gradientClippingType];
+  [descriptorCopy maximumClippingNorm];
   v19 = v18;
-  [v4 customGlobalNorm];
+  [descriptorCopy customGlobalNorm];
   v21 = v20;
 
   LODWORD(v22) = v6;
@@ -38,57 +38,57 @@
   LODWORD(v27) = v19;
   LODWORD(v28) = v21;
 
-  return [(MLCOptimizer *)self initWithLearningRate:v9 gradientRescale:v16 applyGradientClipping:v17 gradientClipMax:v22 gradientClipMin:v23 regularizationScale:v24 regularizationType:v25 gradientClippingType:v26 maximumClippingNorm:v27 customGlobalNorm:v28];
+  return [(MLCOptimizer *)self initWithLearningRate:appliesGradientClipping gradientRescale:regularizationType applyGradientClipping:gradientClippingType gradientClipMax:v22 gradientClipMin:v23 regularizationScale:v24 regularizationType:v25 gradientClippingType:v26 maximumClippingNorm:v27 customGlobalNorm:v28];
 }
 
-- (MLCOptimizer)initWithLearningRate:(float)a3 gradientRescale:(float)a4 applyGradientClipping:(BOOL)a5 gradientClipMax:(float)a6 gradientClipMin:(float)a7 regularizationScale:(float)a8 regularizationType:(int)a9 gradientClippingType:(int)a10 maximumClippingNorm:(float)a11 customGlobalNorm:(float)a12
+- (MLCOptimizer)initWithLearningRate:(float)rate gradientRescale:(float)rescale applyGradientClipping:(BOOL)clipping gradientClipMax:(float)max gradientClipMin:(float)min regularizationScale:(float)scale regularizationType:(int)type gradientClippingType:(int)self0 maximumClippingNorm:(float)self1 customGlobalNorm:(float)self2
 {
   v23.receiver = self;
   v23.super_class = MLCOptimizer;
   result = [(MLCOptimizer *)&v23 init];
   if (result)
   {
-    result->_learningRate = a3;
-    result->_gradientRescale = a4;
-    result->_appliesGradientClipping = a5;
-    result->_gradientClipMax = a6;
-    result->_gradientClipMin = a7;
-    result->_regularizationScale = a8;
+    result->_learningRate = rate;
+    result->_gradientRescale = rescale;
+    result->_appliesGradientClipping = clipping;
+    result->_gradientClipMax = max;
+    result->_gradientClipMin = min;
+    result->_regularizationScale = scale;
     result->_numOptimizerDataBuffers = 0;
-    result->_regularizationType = a9;
-    result->_gradientClippingType = a10;
-    result->_maximumClippingNorm = a11;
-    result->_customGlobalNorm = a12;
+    result->_regularizationType = type;
+    result->_gradientClippingType = clippingType;
+    result->_maximumClippingNorm = norm;
+    result->_customGlobalNorm = globalNorm;
   }
 
   return result;
 }
 
-- (MLCOptimizer)initWithLearningRate:(float)a3 gradientRescale:(float)a4 applyGradientClipping:(BOOL)a5 gradientClipMax:(float)a6 gradientClipMin:(float)a7 regularizationScale:(float)a8 regularizationType:(int)a9
+- (MLCOptimizer)initWithLearningRate:(float)rate gradientRescale:(float)rescale applyGradientClipping:(BOOL)clipping gradientClipMax:(float)max gradientClipMin:(float)min regularizationScale:(float)scale regularizationType:(int)type
 {
   v17.receiver = self;
   v17.super_class = MLCOptimizer;
   result = [(MLCOptimizer *)&v17 init];
   if (result)
   {
-    result->_learningRate = a3;
-    result->_gradientRescale = a4;
-    result->_appliesGradientClipping = a5;
-    result->_gradientClipMax = a6;
-    result->_gradientClipMin = a7;
-    result->_regularizationScale = a8;
-    result->_regularizationType = a9;
+    result->_learningRate = rate;
+    result->_gradientRescale = rescale;
+    result->_appliesGradientClipping = clipping;
+    result->_gradientClipMax = max;
+    result->_gradientClipMin = min;
+    result->_regularizationScale = scale;
+    result->_regularizationType = type;
     result->_numOptimizerDataBuffers = 0;
   }
 
   return result;
 }
 
-- (void)bindDevice:(id)a3 deviceOps:(id)a4
+- (void)bindDevice:(id)device deviceOps:(id)ops
 {
-  v6 = a4;
-  [(MLCOptimizer *)self setDevice:a3];
-  [(MLCOptimizer *)self setDeviceOps:v6];
+  opsCopy = ops;
+  [(MLCOptimizer *)self setDevice:device];
+  [(MLCOptimizer *)self setDeviceOps:opsCopy];
 
   [(MLCOptimizer *)self setOneStepOptimizerBuffers:0];
 }
@@ -98,45 +98,45 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCOptimizer *)self device];
+  device = [(MLCOptimizer *)self device];
   [(MLCOptimizer *)self learningRate];
   v8 = v7;
   [(MLCOptimizer *)self gradientRescale];
   v10 = v9;
-  v11 = [(MLCOptimizer *)self appliesGradientClipping];
+  appliesGradientClipping = [(MLCOptimizer *)self appliesGradientClipping];
   [(MLCOptimizer *)self gradientClipMax];
   v13 = v12;
   [(MLCOptimizer *)self gradientClipMin];
   v15 = v14;
   [(MLCOptimizer *)self regularizationScale];
   v17 = v16;
-  v18 = [(MLCOptimizer *)self regularizationType];
-  v19 = [(MLCOptimizer *)self deviceOps];
-  v20 = [(MLCOptimizer *)self gradientClippingType];
+  regularizationType = [(MLCOptimizer *)self regularizationType];
+  deviceOps = [(MLCOptimizer *)self deviceOps];
+  gradientClippingType = [(MLCOptimizer *)self gradientClippingType];
   [(MLCOptimizer *)self maximumClippingNorm];
   v22 = v21;
   [(MLCOptimizer *)self customGlobalNorm];
-  v24 = [v3 stringWithFormat:@"%@: { device=%@ : learningRate=%f : gradientRescale=%f : applyGradientClipping=%d : gradientClipMax=%f : gradientClipMin=%f : regularizationScale=%f : regularizationType=%d : deviceOps=%@ : gradientClippingType=%d : maximumClippingNorm=%f : customGlobalNorm=%f}", v5, v6, *&v8, *&v10, v11, *&v13, *&v15, *&v17, v18, v19, v20, *&v22, v23];
+  v24 = [v3 stringWithFormat:@"%@: { device=%@ : learningRate=%f : gradientRescale=%f : applyGradientClipping=%d : gradientClipMax=%f : gradientClipMin=%f : regularizationScale=%f : regularizationType=%d : deviceOps=%@ : gradientClippingType=%d : maximumClippingNorm=%f : customGlobalNorm=%f}", v5, device, *&v8, *&v10, appliesGradientClipping, *&v13, *&v15, *&v17, regularizationType, deviceOps, gradientClippingType, *&v22, v23];
 
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(MLCOptimizer *)self learningRate];
   v6 = v5;
   [(MLCOptimizer *)self gradientRescale];
   v8 = v7;
-  v9 = [(MLCOptimizer *)self appliesGradientClipping];
+  appliesGradientClipping = [(MLCOptimizer *)self appliesGradientClipping];
   [(MLCOptimizer *)self gradientClipMax];
   v11 = v10;
   [(MLCOptimizer *)self gradientClipMin];
   v13 = v12;
   [(MLCOptimizer *)self regularizationScale];
   v15 = v14;
-  v16 = [(MLCOptimizer *)self regularizationType];
-  v17 = [(MLCOptimizer *)self gradientClippingType];
+  regularizationType = [(MLCOptimizer *)self regularizationType];
+  gradientClippingType = [(MLCOptimizer *)self gradientClippingType];
   [(MLCOptimizer *)self maximumClippingNorm];
   v19 = v18;
   [(MLCOptimizer *)self customGlobalNorm];
@@ -148,7 +148,7 @@
   LODWORD(v25) = v15;
   LODWORD(v26) = v19;
 
-  return [v4 initWithLearningRate:v9 gradientRescale:v16 applyGradientClipping:v17 gradientClipMax:v21 gradientClipMin:v22 regularizationScale:v23 regularizationType:v24 gradientClippingType:v25 maximumClippingNorm:v26 customGlobalNorm:v20];
+  return [v4 initWithLearningRate:appliesGradientClipping gradientRescale:regularizationType applyGradientClipping:gradientClippingType gradientClipMax:v21 gradientClipMin:v22 regularizationScale:v23 regularizationType:v24 gradientClippingType:v25 maximumClippingNorm:v26 customGlobalNorm:v20];
 }
 
 @end

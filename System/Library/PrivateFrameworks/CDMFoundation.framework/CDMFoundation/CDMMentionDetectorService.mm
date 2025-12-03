@@ -1,10 +1,10 @@
 @interface CDMMentionDetectorService
 + (id)getCDMServiceAssetConfig;
-- (id)getPredictor:(id)a3 forLocale:(id)a4 status:(id *)a5;
-- (id)handle:(id)a3;
+- (id)getPredictor:(id)predictor forLocale:(id)locale status:(id *)status;
+- (id)handle:(id)handle;
 - (id)handleRequestCommandTypeNames;
-- (id)predictWithInput:(id)a3 forLocale:(id)a4 status:(id *)a5;
-- (id)setup:(id)a3;
+- (id)predictWithInput:(id)input forLocale:(id)locale status:(id *)status;
+- (id)setup:(id)setup;
 @end
 
 @implementation CDMMentionDetectorService
@@ -40,26 +40,26 @@
   return v2;
 }
 
-- (id)predictWithInput:(id)a3 forLocale:(id)a4 status:(id *)a5
+- (id)predictWithInput:(id)input forLocale:(id)locale status:(id *)status
 {
-  v5 = [(MRRMultimodalMentionDetector *)self->_mentionDetector detectMentionsInUtteranceRequest:a3 status:a5];
+  v5 = [(MRRMultimodalMentionDetector *)self->_mentionDetector detectMentionsInUtteranceRequest:input status:status];
 
   return v5;
 }
 
-- (id)getPredictor:(id)a3 forLocale:(id)a4 status:(id *)a5
+- (id)getPredictor:(id)predictor forLocale:(id)locale status:(id *)status
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E69AE140]) initWithAssets:v7 forLocale:v8 status:a5];
+  predictorCopy = predictor;
+  localeCopy = locale;
+  v9 = [objc_alloc(MEMORY[0x1E69AE140]) initWithAssets:predictorCopy forLocale:localeCopy status:status];
 
   return v9;
 }
 
-- (id)handle:(id)a3
+- (id)handle:(id)handle
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -68,7 +68,7 @@
     _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s Calling Mention Detection", buf, 0xCu);
   }
 
-  if (!v4 || !self->_mentionDetector || ([v4 mdRequest], v6 = objc_claimAutoreleasedReturnValue(), v7 = v6 == 0, v6, v7))
+  if (!handleCopy || !self->_mentionDetector || ([handleCopy mdRequest], v6 = objc_claimAutoreleasedReturnValue(), v7 = v6 == 0, v6, v7))
   {
     v18 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -81,14 +81,14 @@
     goto LABEL_20;
   }
 
-  v8 = [v4 turnInput];
-  if (v8)
+  turnInput = [handleCopy turnInput];
+  if (turnInput)
   {
-    v9 = [v4 turnInput];
-    v10 = [v9 turnContext];
-    v11 = [v10 nlContext];
-    v12 = [v11 salientEntities];
-    v13 = [v12 count] == 0;
+    turnInput2 = [handleCopy turnInput];
+    turnContext = [turnInput2 turnContext];
+    nlContext = [turnContext nlContext];
+    salientEntities = [nlContext salientEntities];
+    v13 = [salientEntities count] == 0;
 
     if (v13)
     {
@@ -114,27 +114,27 @@ LABEL_20:
     v28 = 2112;
     v29 = @"mentiondetector";
     v30 = 2112;
-    v31 = v4;
+    v31 = handleCopy;
     _os_log_debug_impl(&dword_1DC287000, v14, OS_LOG_TYPE_DEBUG, "%s [insights-cdm-%@]:\nMENTIONDETECTORRequest: %@", buf, 0x20u);
   }
 
   if (+[CDMFeatureFlags isLogNluEnabled])
   {
-    v15 = [v4 mdRequest];
-    [CDMMentionDetectorServiceUtils logMDRequestToFile:v15];
+    mdRequest = [handleCopy mdRequest];
+    [CDMMentionDetectorServiceUtils logMDRequestToFile:mdRequest];
   }
 
-  v16 = [v4 mdRequest];
+  mdRequest2 = [handleCopy mdRequest];
   v25 = 0;
-  v17 = [(CDMMentionDetectorService *)self predictWithInput:v16 forLocale:0 status:&v25];
+  v17 = [(CDMMentionDetectorService *)self predictWithInput:mdRequest2 forLocale:0 status:&v25];
   v18 = v25;
 
   v19 = [[CDMMentionDetectorResponseCommand alloc] initWithResponse:v17];
   [(CDMBaseCommand *)v19 setCmdError:v18];
   if (+[CDMFeatureFlags isLogNluEnabled])
   {
-    v20 = [(CDMBaseCommand *)v19 cmdError];
-    v21 = v20 == 0;
+    cmdError = [(CDMBaseCommand *)v19 cmdError];
+    v21 = cmdError == 0;
 
     if (v21)
     {
@@ -160,10 +160,10 @@ LABEL_21:
   return v19;
 }
 
-- (id)setup:(id)a3
+- (id)setup:(id)setup
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setupCopy = setup;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -173,33 +173,33 @@ LABEL_21:
   }
 
   v6 = objc_alloc_init(CDMSetupResponseCommand);
-  v7 = [v4 dynamicConfig];
-  v8 = [v7 getAssetForFactorName:@"com.apple.siri.nl.marrs.md"];
+  dynamicConfig = [setupCopy dynamicConfig];
+  v8 = [dynamicConfig getAssetForFactorName:@"com.apple.siri.nl.marrs.md"];
   nlAsset = self->_nlAsset;
   self->_nlAsset = v8;
 
-  v10 = [v4 dynamicConfig];
-  v11 = [v10 getAssetBundlePathForFactorName:@"com.apple.siri.nl.marrs.md"];
+  dynamicConfig2 = [setupCopy dynamicConfig];
+  v11 = [dynamicConfig2 getAssetBundlePathForFactorName:@"com.apple.siri.nl.marrs.md"];
 
   if (v11)
   {
-    v12 = [v11 resourcePath];
-    v13 = [v4 dynamicConfig];
-    v14 = [v13 languageCode];
+    resourcePath = [v11 resourcePath];
+    dynamicConfig3 = [setupCopy dynamicConfig];
+    languageCode = [dynamicConfig3 languageCode];
     v26 = 0;
-    v15 = [(CDMMentionDetectorService *)self getPredictor:v12 forLocale:v14 status:&v26];
+    v15 = [(CDMMentionDetectorService *)self getPredictor:resourcePath forLocale:languageCode status:&v26];
     v16 = v26;
     mentionDetector = self->_mentionDetector;
     self->_mentionDetector = v15;
 
     if (v16)
     {
-      v18 = [v16 localizedDescription];
-      v19 = [(CDMBaseService *)self createErrorWithCode:1 description:v18];
+      localizedDescription = [v16 localizedDescription];
+      v19 = [(CDMBaseService *)self createErrorWithCode:1 description:localizedDescription];
       [(CDMBaseCommand *)v6 setCmdError:v19];
 
       self->super.super._serviceState = 4;
-      v20 = v6;
+      createSetupResponseCommand = v6;
       goto LABEL_12;
     }
   }
@@ -225,9 +225,9 @@ LABEL_21:
   }
 
   v16 = 0;
-  v20 = [(CDMBaseService *)self createSetupResponseCommand];
+  createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
 LABEL_12:
-  v23 = v20;
+  v23 = createSetupResponseCommand;
 
   v24 = *MEMORY[0x1E69E9840];
 

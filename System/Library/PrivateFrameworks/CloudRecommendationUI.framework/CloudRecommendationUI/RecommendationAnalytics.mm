@@ -1,14 +1,14 @@
 @interface RecommendationAnalytics
 - (_TtC21CloudRecommendationUI23RecommendationAnalytics)init;
-- (_TtC21CloudRecommendationUI23RecommendationAnalytics)initWithAccount:(id)a3;
+- (_TtC21CloudRecommendationUI23RecommendationAnalytics)initWithAccount:(id)account;
 @end
 
 @implementation RecommendationAnalytics
 
-- (_TtC21CloudRecommendationUI23RecommendationAnalytics)initWithAccount:(id)a3
+- (_TtC21CloudRecommendationUI23RecommendationAnalytics)initWithAccount:(id)account
 {
-  v3 = a3;
-  v4 = sub_243A7A32C(v3);
+  accountCopy = account;
+  v4 = sub_243A7A32C(accountCopy);
 
   return v4;
 }

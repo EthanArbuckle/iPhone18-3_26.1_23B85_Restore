@@ -2,12 +2,12 @@
 - (void)_queueChanged;
 - (void)_recalculatePowerAssertion;
 - (void)_recalculateTimer;
-- (void)_timerFired:(id)a3;
-- (void)clearEnqueuedSendsOnInterface:(id)a3;
-- (void)enqueueSendBlock:(id)a3 completionBlock:(id)a4;
-- (void)handleConnectionClosedOnInterface:(id)a3;
+- (void)_timerFired:(id)fired;
+- (void)clearEnqueuedSendsOnInterface:(id)interface;
+- (void)enqueueSendBlock:(id)block completionBlock:(id)completionBlock;
+- (void)handleConnectionClosedOnInterface:(id)interface;
 - (void)handleConnectionOpened;
-- (void)handleResponseForPendingItem:(id)a3 error:(id)a4 onInterface:(id)a5;
+- (void)handleResponseForPendingItem:(id)item error:(id)error onInterface:(id)interface;
 @end
 
 @implementation APSOutgoingQueue
@@ -26,11 +26,11 @@
   v8 = 3221225472;
   v9 = sub_10001ABEC;
   v10 = &unk_1001887F8;
-  v11 = self;
+  selfCopy = self;
   v12 = v4;
   v6 = v4;
   [v5 enumerateObjectsUsingBlock:&v7];
-  [(NSMutableArray *)self->_queue removeObjectsAtIndexes:v6, v7, v8, v9, v10, v11];
+  [(NSMutableArray *)self->_queue removeObjectsAtIndexes:v6, v7, v8, v9, v10, selfCopy];
   [(APSOutgoingQueue *)self _recalculateTimer];
   [(APSOutgoingQueue *)self _recalculatePowerAssertion];
 }
@@ -62,8 +62,8 @@
         {
           [v9 timeout];
           v11 = v10;
-          v12 = [v9 timestamp];
-          v13 = [v12 dateByAddingTimeInterval:v11];
+          timestamp = [v9 timestamp];
+          v13 = [timestamp dateByAddingTimeInterval:v11];
 
           if (!v6 || [v13 compare:v6] == -1)
           {
@@ -88,7 +88,7 @@
         if (v16)
         {
           *buf = 138412546;
-          v25 = self;
+          selfCopy3 = self;
           v26 = 2112;
           v27 = v6;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Setting outgoing message timer fire date %@", buf, 0x16u);
@@ -102,7 +102,7 @@
         if (v16)
         {
           *buf = 138412546;
-          v25 = self;
+          selfCopy3 = self;
           v26 = 2112;
           v27 = v6;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Creating outgoing message timer with fire date %@", buf, 0x16u);
@@ -132,7 +132,7 @@
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Invalidating outgoing message timer", buf, 0xCu);
   }
 
@@ -189,12 +189,12 @@ LABEL_3:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Creating power assertion", buf, 0xCu);
     }
 
-    v9 = [NSString stringWithFormat:@"%@-outgoingqueue", APSBundleIdentifier];
-    v10 = [[APSPowerAssertion alloc] initWithName:v9 category:214];
+    aPSBundleIdentifier = [NSString stringWithFormat:@"%@-outgoingqueue", APSBundleIdentifier];
+    v10 = [[APSPowerAssertion alloc] initWithName:aPSBundleIdentifier category:214];
     powerAssertion = self->_powerAssertion;
     self->_powerAssertion = v10;
   }
@@ -211,22 +211,22 @@ LABEL_9:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Releasing power assertion", buf, 0xCu);
     }
 
-    v9 = self->_powerAssertion;
+    aPSBundleIdentifier = self->_powerAssertion;
     self->_powerAssertion = 0;
   }
 }
 
-- (void)enqueueSendBlock:(id)a3 completionBlock:(id)a4
+- (void)enqueueSendBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   if ([(NSMutableArray *)self->_queue count]> 0x63)
   {
-    if (v7)
+    if (completionBlockCopy)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -234,16 +234,16 @@ LABEL_9:
       }
 
       v14 = APSError();
-      v7[2](v7, 0, v14);
+      completionBlockCopy[2](completionBlockCopy, 0, v14);
     }
   }
 
-  else if (v6)
+  else if (blockCopy)
   {
     v8 = [APSOutgoingItem alloc];
     v9 = +[NSDate distantFuture];
     [v9 timeIntervalSinceNow];
-    v10 = [(APSOutgoingItem *)v8 initWithSendBlock:v6 completionBlock:v7 timeout:?];
+    v10 = [(APSOutgoingItem *)v8 initWithSendBlock:blockCopy completionBlock:completionBlockCopy timeout:?];
 
     queue = self->_queue;
     if (!queue)
@@ -265,11 +265,11 @@ LABEL_9:
   }
 }
 
-- (void)handleResponseForPendingItem:(id)a3 error:(id)a4 onInterface:(id)a5
+- (void)handleResponseForPendingItem:(id)item error:(id)error onInterface:(id)interface
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  errorCopy = error;
+  interfaceCopy = interface;
   v11 = [(NSMutableArray *)self->_queue count];
   if (v11)
   {
@@ -278,8 +278,8 @@ LABEL_9:
     while (1)
     {
       v14 = [(NSMutableArray *)self->_queue objectAtIndex:v13];
-      v15 = [v14 sendInterface];
-      v16 = [v15 isEqualToString:v10];
+      sendInterface = [v14 sendInterface];
+      v16 = [sendInterface isEqualToString:interfaceCopy];
 
       if (v16)
       {
@@ -302,7 +302,7 @@ LABEL_5:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2048;
     v24 = v13;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: handleResponseForPendingItem - firstSentIndex = %lu", &v21, 0x16u);
@@ -320,11 +320,11 @@ LABEL_5:
 
   if ([v17 sent])
   {
-    v18 = [v17 completionBlock];
-    v19 = v18;
-    if (v18)
+    completionBlock = [v17 completionBlock];
+    v19 = completionBlock;
+    if (completionBlock)
     {
-      (*(v18 + 16))(v18, v8, v9);
+      (*(completionBlock + 16))(completionBlock, itemCopy, errorCopy);
     }
 
     [(NSMutableArray *)self->_queue removeObjectAtIndex:v13];
@@ -335,11 +335,11 @@ LABEL_5:
   {
     v20 = [(NSMutableArray *)self->_queue count];
     v21 = 138413058;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2112;
-    v24 = v8;
+    v24 = itemCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = errorCopy;
     v27 = 2048;
     v28 = v20;
     _os_log_fault_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "%@: Received response %@ %@ when there were no pending items (queue size %lu)", &v21, 0x2Au);
@@ -354,9 +354,9 @@ LABEL_5:
   [(APSOutgoingQueue *)self _queueChanged];
 }
 
-- (void)handleConnectionClosedOnInterface:(id)a3
+- (void)handleConnectionClosedOnInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = [(NSMutableArray *)self->_queue count];
   if (v6 >= 1)
@@ -365,8 +365,8 @@ LABEL_5:
     for (i = 0; i < v7; ++i)
     {
       v9 = [(NSMutableArray *)self->_queue objectAtIndex:i];
-      v10 = [v9 sendInterface];
-      v11 = [v10 isEqualToString:v4];
+      sendInterface = [v9 sendInterface];
+      v11 = [sendInterface isEqualToString:interfaceCopy];
 
       if (v11)
       {
@@ -379,30 +379,30 @@ LABEL_5:
     }
   }
 
-  v12 = [(APSOutgoingQueue *)self currentItem];
+  currentItem = [(APSOutgoingQueue *)self currentItem];
 
-  if (v12)
+  if (currentItem)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(APSOutgoingQueue *)self currentItem];
+      currentItem2 = [(APSOutgoingQueue *)self currentItem];
       v17 = 138412546;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
-      v20 = v13;
+      v20 = currentItem2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Deleting potentially offending message from queue %@", &v17, 0x16u);
     }
 
     queue = self->_queue;
-    v15 = [(APSOutgoingQueue *)self currentItem];
-    [(NSMutableArray *)queue removeObject:v15];
+    currentItem3 = [(APSOutgoingQueue *)self currentItem];
+    [(NSMutableArray *)queue removeObject:currentItem3];
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v16 = [v5 count];
     v17 = 138412546;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2048;
     v20 = v16;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Moving %lu unsent items to the end of queue", &v17, 0x16u);
@@ -412,9 +412,9 @@ LABEL_5:
   [(APSOutgoingQueue *)self _queueChanged];
 }
 
-- (void)clearEnqueuedSendsOnInterface:(id)a3
+- (void)clearEnqueuedSendsOnInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = [(NSMutableArray *)self->_queue count];
   if (v5 < 1)
   {
@@ -428,8 +428,8 @@ LABEL_5:
     for (i = 0; i < v6; ++i)
     {
       v9 = [(NSMutableArray *)self->_queue objectAtIndex:i];
-      v10 = [v9 sendInterface];
-      v11 = [v10 isEqualToString:v4];
+      sendInterface = [v9 sendInterface];
+      v11 = [sendInterface isEqualToString:interfaceCopy];
 
       if (v11)
       {
@@ -442,29 +442,29 @@ LABEL_5:
     }
   }
 
-  v12 = [(APSOutgoingQueue *)self currentItem];
+  currentItem = [(APSOutgoingQueue *)self currentItem];
 
-  if (v12)
+  if (currentItem)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(APSOutgoingQueue *)self currentItem];
+      currentItem2 = [(APSOutgoingQueue *)self currentItem];
       v16 = 138412546;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
-      v19 = v13;
+      v19 = currentItem2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Deleting potentially offending message from queue %@", &v16, 0x16u);
     }
 
     queue = self->_queue;
-    v15 = [(APSOutgoingQueue *)self currentItem];
-    [(NSMutableArray *)queue removeObject:v15];
+    currentItem3 = [(APSOutgoingQueue *)self currentItem];
+    [(NSMutableArray *)queue removeObject:currentItem3];
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = self;
+    selfCopy2 = self;
     v18 = 2048;
     v19 = v7;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Removing %lu unsent items from the of queue", &v16, 0x16u);
@@ -473,13 +473,13 @@ LABEL_5:
   [(APSOutgoingQueue *)self _queueChanged];
 }
 
-- (void)_timerFired:(id)a3
+- (void)_timerFired:(id)fired
 {
-  v19 = a3;
+  firedCopy = fired;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Outgoing item queue timer fired", buf, 0xCu);
   }
 
@@ -508,8 +508,8 @@ LABEL_5:
         v10 = *(*(&v20 + 1) + 8 * i);
         if (([v10 hasTimedOut] & 1) == 0)
         {
-          v11 = [v10 timestamp];
-          [v11 timeIntervalSinceNow];
+          timestamp = [v10 timestamp];
+          [timestamp timeIntervalSinceNow];
           v13 = v12;
           [v10 timeout];
           v15 = v13 + v14;
@@ -519,18 +519,18 @@ LABEL_5:
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v26 = self;
+              selfCopy3 = self;
               _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Outgoing item timed out", buf, 0xCu);
             }
 
             [v10 setHasTimedOut:1];
             [v10 sent];
             v16 = APSError();
-            v17 = [v10 completionBlock];
-            v18 = v17;
-            if (v17)
+            completionBlock = [v10 completionBlock];
+            v18 = completionBlock;
+            if (completionBlock)
             {
-              (*(v17 + 16))(v17, 0, v16);
+              (*(completionBlock + 16))(completionBlock, 0, v16);
             }
 
             if (([v10 sent] & 1) == 0)
@@ -538,7 +538,7 @@ LABEL_5:
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v26 = self;
+                selfCopy3 = self;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: Removing unsent timed out item from queue", buf, 0xCu);
               }
 

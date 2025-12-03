@@ -1,14 +1,14 @@
 @interface CMImageFillMapper
 - (BOOL)isCropped;
 - (CGRect)uncroppedBox;
-- (CMImageFillMapper)initWithOadFill:(id)a3 bounds:(CGRect)a4 parent:(id)a5;
-- (id)blipAtIndex:(unsigned int)a3;
-- (id)convertMetafileToPdf:(id)a3 state:(id)a4;
+- (CMImageFillMapper)initWithOadFill:(id)fill bounds:(CGRect)bounds parent:(id)parent;
+- (id)blipAtIndex:(unsigned int)index;
+- (id)convertMetafileToPdf:(id)pdf state:(id)state;
 - (id)mainSubBlip;
-- (id)mapImageFill:(id)a3 withState:(id)a4;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapImageFillAt:(id)a3 toStyle:(id)a4 withState:(id)a5;
-- (void)mapNonImageFillAt:(id)a3 toStyle:(id)a4 withState:(id)a5;
+- (id)mapImageFill:(id)fill withState:(id)state;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapImageFillAt:(id)at toStyle:(id)style withState:(id)state;
+- (void)mapNonImageFillAt:(id)at toStyle:(id)style withState:(id)state;
 @end
 
 @implementation CMImageFillMapper
@@ -18,12 +18,12 @@
   v2 = self->mFill;
   if (([(OADFill *)v2 isSourceRectOverridden]& 1) != 0)
   {
-    v3 = [(OADFill *)v2 sourceRect];
-    v4 = v3;
+    sourceRect = [(OADFill *)v2 sourceRect];
+    v4 = sourceRect;
     v9 = 0;
-    if (v3)
+    if (sourceRect)
     {
-      [v3 left];
+      [sourceRect left];
       if (v5 != 0.0 || ([v4 right], v6 != 0.0) || (objc_msgSend(v4, "top"), v7 != 0.0) || (objc_msgSend(v4, "bottom"), v8 != 0.0))
       {
         v9 = 1;
@@ -43,46 +43,46 @@
 {
   if ([(OADFill *)self->mFill isBlipRefOverridden])
   {
-    v3 = [(OADFill *)self->mFill blipRef];
-    v4 = [v3 blip];
-    if (v4 || (v6 = [v3 index], v6 >= 1) && (-[CMImageFillMapper blipAtIndex:](self, "blipAtIndex:", v6), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    blipRef = [(OADFill *)self->mFill blipRef];
+    blip = [blipRef blip];
+    if (blip || (v6 = [blipRef index], v6 >= 1) && (-[CMImageFillMapper blipAtIndex:](self, "blipAtIndex:", v6), (blip = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v5 = [v4 mainSubBlip];
+      mainSubBlip = [blip mainSubBlip];
     }
 
     else
     {
-      v5 = 0;
+      mainSubBlip = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    mainSubBlip = 0;
   }
 
-  return v5;
+  return mainSubBlip;
 }
 
 - (CGRect)uncroppedBox
 {
   if ([(CMImageFillMapper *)self isCropped])
   {
-    v3 = [(OADFill *)self->mFill sourceRect];
+    sourceRect = [(OADFill *)self->mFill sourceRect];
     p_mBounds = &self->mBounds;
     width = p_mBounds->size.width;
-    [v3 left];
+    [sourceRect left];
     v7 = v6;
-    [v3 right];
+    [sourceRect right];
     v9 = v8;
     height = p_mBounds->size.height;
-    [v3 top];
+    [sourceRect top];
     v12 = v11;
-    [v3 bottom];
+    [sourceRect bottom];
     v14 = v13;
-    [v3 left];
+    [sourceRect left];
     v16 = v15;
-    [v3 top];
+    [sourceRect top];
     v17 = width / ((1.0 - v7) - v9);
     v18 = height / ((1.0 - v12) - v14);
     x = v17 * -v16;
@@ -108,20 +108,20 @@
   return result;
 }
 
-- (CMImageFillMapper)initWithOadFill:(id)a3 bounds:(CGRect)a4 parent:(id)a5
+- (CMImageFillMapper)initWithOadFill:(id)fill bounds:(CGRect)bounds parent:(id)parent
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  fillCopy = fill;
   v16.receiver = self;
   v16.super_class = CMImageFillMapper;
-  v13 = [(CMMapper *)&v16 initWithParent:a5];
+  v13 = [(CMMapper *)&v16 initWithParent:parent];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->mFill, a3);
+    objc_storeStrong(&v13->mFill, fill);
     v14->mBounds.origin.x = x;
     v14->mBounds.origin.y = y;
     v14->mBounds.size.width = width;
@@ -131,10 +131,10 @@
   return v14;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v8 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   if (self->mFill)
   {
     objc_opt_class();
@@ -143,17 +143,17 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(CMImageFillMapper *)self mapImageFill:v8 withState:v6];
+        v7 = [(CMImageFillMapper *)self mapImageFill:atCopy withState:stateCopy];
       }
     }
   }
 }
 
-- (id)mapImageFill:(id)a3 withState:(id)a4
+- (id)mapImageFill:(id)fill withState:(id)state
 {
-  v5 = a4;
-  v6 = [(CMMapper *)self archiver];
-  v7 = [v6 cachedPathForDrawable:self->mFill];
+  stateCopy = state;
+  archiver = [(CMMapper *)self archiver];
+  v7 = [archiver cachedPathForDrawable:self->mFill];
   if (v7)
   {
     v8 = v7;
@@ -161,22 +161,22 @@
 
   else
   {
-    v9 = [(CMImageFillMapper *)self mainSubBlip];
-    v10 = v9;
-    if (v9 && ([v9 load] & 1) != 0)
+    mainSubBlip = [(CMImageFillMapper *)self mainSubBlip];
+    v10 = mainSubBlip;
+    if (mainSubBlip && ([mainSubBlip load] & 1) != 0)
     {
-      v11 = [v10 type];
+      type = [v10 type];
       [v10 data];
-      if ((v11 & 0xFFFFFFFE) == 4)
+      if ((type & 0xFFFFFFFE) == 4)
         v12 = {;
-        v13 = [(CMImageFillMapper *)self convertMetafileToPdf:v12 state:v5];
+        v13 = [(CMImageFillMapper *)self convertMetafileToPdf:v12 state:stateCopy];
       }
 
       else
         v13 = {;
       }
 
-      v8 = [v6 addResourceForDrawable:v13 withType:+[CMArchiveManager blipTypeToResourceType:](CMArchiveManager drawable:{"blipTypeToResourceType:", v11), self->mFill}];
+      v8 = [archiver addResourceForDrawable:v13 withType:+[CMArchiveManager blipTypeToResourceType:](CMArchiveManager drawable:{"blipTypeToResourceType:", type), self->mFill}];
     }
 
     else
@@ -188,27 +188,27 @@
   return v8;
 }
 
-- (void)mapImageFillAt:(id)a3 toStyle:(id)a4 withState:(id)a5
+- (void)mapImageFillAt:(id)at toStyle:(id)style withState:(id)state
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [(CMImageFillMapper *)self mapImageFill:v10 withState:a5];
+  atCopy = at;
+  styleCopy = style;
+  v9 = [(CMImageFillMapper *)self mapImageFill:atCopy withState:state];
   if (v9)
   {
-    [(CMMapper *)self addAttribute:0x286F07DB0 toNode:v10 value:v9];
+    [(CMMapper *)self addAttribute:0x286F07DB0 toNode:atCopy value:v9];
   }
 
   else
   {
-    [v8 appendPropertyForName:0x286F07E30 stringWithColons:@":1px solid black;"];
+    [styleCopy appendPropertyForName:0x286F07E30 stringWithColons:@":1px solid black;"];
   }
 }
 
-- (void)mapNonImageFillAt:(id)a3 toStyle:(id)a4 withState:(id)a5
+- (void)mapNonImageFillAt:(id)at toStyle:(id)style withState:(id)state
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  atCopy = at;
+  styleCopy = style;
+  stateCopy = state;
   if (self->mFill)
   {
     objc_opt_class();
@@ -217,27 +217,27 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [(OADFill *)self->mFill color];
-        v11 = [CMColorProperty nsColorFromOADColor:v10 state:v9];
+        color = [(OADFill *)self->mFill color];
+        v11 = [CMColorProperty nsColorFromOADColor:color state:stateCopy];
 
         v12 = [CMColorProperty cssStringFromTSUColor:v11];
-        [v8 appendPropertyForName:0x286F07DF0 stringWithColons:v12];
+        [styleCopy appendPropertyForName:0x286F07DF0 stringWithColons:v12];
         goto LABEL_5;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [CMColorProperty cssStringFromOADGradientFill:self->mFill state:v9];
+        v11 = [CMColorProperty cssStringFromOADGradientFill:self->mFill state:stateCopy];
         if (v11)
         {
-          [v8 appendPropertyForName:0x286F07E10 stringWithColons:v11];
+          [styleCopy appendPropertyForName:0x286F07E10 stringWithColons:v11];
           goto LABEL_6;
         }
 
-        v12 = [CMColorProperty nsColorFromOADFill:self->mFill state:v9];
+        v12 = [CMColorProperty nsColorFromOADFill:self->mFill state:stateCopy];
         v13 = [CMColorProperty cssStringFromTSUColor:v12];
-        [v8 appendPropertyForName:0x286F07DF0 stringWithColons:v13];
+        [styleCopy appendPropertyForName:0x286F07DF0 stringWithColons:v13];
 
 LABEL_5:
 LABEL_6:
@@ -248,11 +248,11 @@ LABEL_6:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [(CMImageFillMapper *)self mapImageFill:v14 withState:v9];
+        v11 = [(CMImageFillMapper *)self mapImageFill:atCopy withState:stateCopy];
         if (v11)
         {
           v12 = [MEMORY[0x277CCACA8] stringWithFormat:@":url(%@)", v11];;
-          [v8 appendPropertyForName:0x286F07E10 stringWithColons:v12];
+          [styleCopy appendPropertyForName:0x286F07E10 stringWithColons:v12];
           goto LABEL_5;
         }
       }
@@ -262,16 +262,16 @@ LABEL_6:
 LABEL_7:
 }
 
-- (id)blipAtIndex:(unsigned int)a3
+- (id)blipAtIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v5 = [(CMMapper *)self root];
-  v6 = [v5 conformsToProtocol:&unk_286FC5D90];
+  v3 = *&index;
+  root = [(CMMapper *)self root];
+  v6 = [root conformsToProtocol:&unk_286FC5D90];
 
   if (v6)
   {
-    v7 = [(CMMapper *)self root];
-    v8 = [v7 blipAtIndex:v3];
+    root2 = [(CMMapper *)self root];
+    v8 = [root2 blipAtIndex:v3];
   }
 
   else
@@ -282,9 +282,9 @@ LABEL_7:
   return v8;
 }
 
-- (id)convertMetafileToPdf:(id)a3 state:(id)a4
+- (id)convertMetafileToPdf:(id)pdf state:(id)state
 {
-  v4 = [MFConverter play:a3 frame:0 colorMap:0 fillMap:self->mBounds.origin.x, self->mBounds.origin.y, self->mBounds.size.width, self->mBounds.size.height];
+  v4 = [MFConverter play:pdf frame:0 colorMap:0 fillMap:self->mBounds.origin.x, self->mBounds.origin.y, self->mBounds.size.width, self->mBounds.size.height];
 
   return v4;
 }

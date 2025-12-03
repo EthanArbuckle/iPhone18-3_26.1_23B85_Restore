@@ -1,6 +1,6 @@
 @interface ScheduleOccurrenceCell
-- (_TtC20SleepHealthAppPlugin22ScheduleOccurrenceCell)initWithCoder:(id)a3;
-- (_TtC20SleepHealthAppPlugin22ScheduleOccurrenceCell)initWithFrame:(CGRect)a3;
+- (_TtC20SleepHealthAppPlugin22ScheduleOccurrenceCell)initWithCoder:(id)coder;
+- (_TtC20SleepHealthAppPlugin22ScheduleOccurrenceCell)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 @end
 
@@ -18,17 +18,17 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for ScheduleOccurrenceCell();
-  v3 = self;
+  selfCopy = self;
   [(SleepCollectionViewListCell *)&v4 didMoveToSuperview];
   sub_29E619138();
 }
 
-- (_TtC20SleepHealthAppPlugin22ScheduleOccurrenceCell)initWithFrame:(CGRect)a3
+- (_TtC20SleepHealthAppPlugin22ScheduleOccurrenceCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_29E7544C8();
   sub_29E7544B8();
   sub_29E754468();
@@ -44,12 +44,12 @@
   *(v8 + 4) = 0;
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = [(SleepCollectionViewListCell *)&v12 initWithFrame:x, y, width, height];
+  height = [(SleepCollectionViewListCell *)&v12 initWithFrame:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
-- (_TtC20SleepHealthAppPlugin22ScheduleOccurrenceCell)initWithCoder:(id)a3
+- (_TtC20SleepHealthAppPlugin22ScheduleOccurrenceCell)initWithCoder:(id)coder
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -65,8 +65,8 @@
   *(v5 + 4) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for ScheduleOccurrenceCell();
-  v6 = a3;
-  v7 = [(SleepCollectionViewListCell *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(SleepCollectionViewListCell *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

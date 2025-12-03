@@ -2,27 +2,27 @@
 - (id)bodyString;
 - (id)buttonTitleString;
 - (id)createHeroView;
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
 - (id)titleString;
 - (void)setUpUI;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HROnboardingAtrialFibrillationWhatIsViewController
 
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
-  v4 = a3;
+  onboardingCopy = onboarding;
   v9.receiver = self;
   v9.super_class = HROnboardingAtrialFibrillationWhatIsViewController;
-  v5 = [(HROnboardingAtrialFibrillationWhatIsViewController *)&v9 initForOnboarding:a3 upgradingFromAlgorithmVersion:a4];
+  v5 = [(HROnboardingAtrialFibrillationWhatIsViewController *)&v9 initForOnboarding:onboarding upgradingFromAlgorithmVersion:version];
   v6 = v5;
   if (v5)
   {
-    v7 = !v4;
+    v7 = !onboardingCopy;
   }
 
   else
@@ -38,25 +38,25 @@
   return v6;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HROnboardingAtrialFibrillationWhatIsViewController;
-  [(HROnboardingAtrialFibrillationWhatIsViewController *)&v6 viewWillAppear:a3];
-  v4 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v4 setCategory:*MEMORY[0x277CB8020] error:0];
+  [(HROnboardingAtrialFibrillationWhatIsViewController *)&v6 viewWillAppear:appear];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [mEMORY[0x277CB83F8] setCategory:*MEMORY[0x277CB8020] error:0];
 
-  v5 = [(HROnboardingAtrialFibrillationWhatIsViewController *)self videoPlayerView];
-  [v5 play];
+  videoPlayerView = [(HROnboardingAtrialFibrillationWhatIsViewController *)self videoPlayerView];
+  [videoPlayerView play];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HROnboardingAtrialFibrillationWhatIsViewController;
-  [(HROnboardingAtrialFibrillationWhatIsViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(HROnboardingAtrialFibrillationWhatIsViewController *)self videoPlayerView];
-  [v4 pause];
+  [(HROnboardingAtrialFibrillationWhatIsViewController *)&v5 viewDidDisappear:disappear];
+  videoPlayerView = [(HROnboardingAtrialFibrillationWhatIsViewController *)self videoPlayerView];
+  [videoPlayerView pause];
 }
 
 - (void)setUpUI
@@ -123,8 +123,8 @@
   v5 = [v4 actionWithHandler:&v8];
   v6 = [v3 initWithBarButtonSystemItem:0 primaryAction:{v5, v8, v9, v10, v11}];
 
-  v7 = [(HROnboardingAtrialFibrillationWhatIsViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(HROnboardingAtrialFibrillationWhatIsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -138,8 +138,8 @@ void __90__HROnboardingAtrialFibrillationWhatIsViewController_viewControllerWill
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = [(HROnboardingAtrialFibrillationWhatIsViewController *)self navigationItem];
-  [v2 setLeftBarButtonItem:0];
+  navigationItem = [(HROnboardingAtrialFibrillationWhatIsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 }
 
 @end

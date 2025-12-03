@@ -1,24 +1,24 @@
 @interface IDSGenericConnection
-- (IDSGenericConnection)initWithAddressPair:(id)a3 protocol:(int)a4;
-- (IDSGenericConnection)initWithConnectionID:(id)a3 protocol:(int)a4 isCloudEnabled:(BOOL)a5;
-- (IDSGenericConnection)initWithConnectionID:(id)a3 protocol:(int)a4 keyMaterialLength:(int)a5 isCloudEnabled:(BOOL)a6;
+- (IDSGenericConnection)initWithAddressPair:(id)pair protocol:(int)protocol;
+- (IDSGenericConnection)initWithConnectionID:(id)d protocol:(int)protocol isCloudEnabled:(BOOL)enabled;
+- (IDSGenericConnection)initWithConnectionID:(id)d protocol:(int)protocol keyMaterialLength:(int)length isCloudEnabled:(BOOL)enabled;
 - (OS_dispatch_queue)completionQueue;
 - (id)description;
 - (id)flagsString;
 - (void)_closeSockets;
-- (void)_createStallDetectorWithName:(id)a3;
-- (void)_triggerStallDetectionLogsForDetector:(id)a3 withEvent:(id)a4;
+- (void)_createStallDetectorWithName:(id)name;
+- (void)_triggerStallDetectionLogsForDetector:(id)detector withEvent:(id)event;
 - (void)dealloc;
 - (void)invalidate;
-- (void)reportToAWD:(unint64_t)a3 connectionType:(int)a4 error:(int)a5;
-- (void)setCompletionQueue:(id)a3;
+- (void)reportToAWD:(unint64_t)d connectionType:(int)type error:(int)error;
+- (void)setCompletionQueue:(id)queue;
 @end
 
 @implementation IDSGenericConnection
 
-- (IDSGenericConnection)initWithConnectionID:(id)a3 protocol:(int)a4 isCloudEnabled:(BOOL)a5
+- (IDSGenericConnection)initWithConnectionID:(id)d protocol:(int)protocol isCloudEnabled:(BOOL)enabled
 {
-  v8 = a3;
+  dCopy = d;
   v23.receiver = self;
   v23.super_class = IDSGenericConnection;
   v9 = [(IDSGenericConnection *)&v23 init];
@@ -28,11 +28,11 @@
     v11 = *(v9 + 1);
     *(v9 + 1) = v10;
 
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     v13 = *(v9 + 4);
     *(v9 + 4) = v12;
 
-    *(v9 + 12) = a4;
+    *(v9 + 12) = protocol;
     *(v9 + 52) = -1;
     *(v9 + 15) = -1;
     if (qword_100CBF438 != -1)
@@ -46,11 +46,11 @@
     *(v9 + 18) = v14;
 
     *(v9 + 19) = 0;
-    v9[180] = a5;
+    v9[180] = enabled;
     os_unfair_lock_lock(&unk_100CBF440);
     v16 = qword_100CBF3B0;
-    v17 = [*(v9 + 4) service];
-    v18 = [v16 objectForKey:v17];
+    service = [*(v9 + 4) service];
+    v18 = [v16 objectForKey:service];
 
     if (v18)
     {
@@ -59,8 +59,8 @@
       *(v9 + 606) = [v18 bytesSent];
       *(v9 + 605) = [v18 bytesReceived];
       v19 = qword_100CBF3B0;
-      v20 = [*(v9 + 4) service];
-      [v19 removeObjectForKey:v20];
+      service2 = [*(v9 + 4) service];
+      [v19 removeObjectForKey:service2];
 
       if (![qword_100CBF3B0 count])
       {
@@ -82,9 +82,9 @@
   return v9;
 }
 
-- (IDSGenericConnection)initWithConnectionID:(id)a3 protocol:(int)a4 keyMaterialLength:(int)a5 isCloudEnabled:(BOOL)a6
+- (IDSGenericConnection)initWithConnectionID:(id)d protocol:(int)protocol keyMaterialLength:(int)length isCloudEnabled:(BOOL)enabled
 {
-  v10 = a3;
+  dCopy = d;
   v28.receiver = self;
   v28.super_class = IDSGenericConnection;
   v11 = [(IDSGenericConnection *)&v28 init];
@@ -93,16 +93,16 @@
   {
     *(v11 + 52) = -1;
     *(v11 + 15) = -1;
-    v13 = malloc_type_malloc(a5, 0x100004077774924uLL);
+    v13 = malloc_type_malloc(length, 0x100004077774924uLL);
     *(v12 + 599) = v13;
-    *(v12 + 1197) = a5;
+    *(v12 + 1197) = length;
     if (!v13)
     {
       v26 = 0;
       goto LABEL_14;
     }
 
-    if (SecRandomCopyBytes(kSecRandomDefault, a5, v13))
+    if (SecRandomCopyBytes(kSecRandomDefault, length, v13))
     {
       sub_10092D914();
     }
@@ -111,11 +111,11 @@
     v15 = *(v12 + 1);
     *(v12 + 1) = v14;
 
-    v16 = [v10 copy];
+    v16 = [dCopy copy];
     v17 = *(v12 + 4);
     *(v12 + 4) = v16;
 
-    *(v12 + 12) = a4;
+    *(v12 + 12) = protocol;
     if (qword_100CBF438 != -1)
     {
       sub_10092D8D8();
@@ -127,11 +127,11 @@
     *(v12 + 18) = v18;
 
     *(v12 + 19) = 0;
-    *(v12 + 180) = a6;
+    *(v12 + 180) = enabled;
     os_unfair_lock_lock(&unk_100CBF440);
     v20 = qword_100CBF3B0;
-    v21 = [*(v12 + 4) service];
-    v22 = [v20 objectForKey:v21];
+    service = [*(v12 + 4) service];
+    v22 = [v20 objectForKey:service];
 
     if (v22)
     {
@@ -140,8 +140,8 @@
       *(v12 + 606) = [v22 bytesSent];
       *(v12 + 605) = [v22 bytesReceived];
       v23 = qword_100CBF3B0;
-      v24 = [*(v12 + 4) service];
-      [v23 removeObjectForKey:v24];
+      service2 = [*(v12 + 4) service];
+      [v23 removeObjectForKey:service2];
 
       if (![qword_100CBF3B0 count])
       {
@@ -220,7 +220,7 @@ LABEL_14:
   }
 
   connectionID = self->_connectionID;
-  v38 = [(IDSSockAddrWrapperPair *)self->_addressPair shortDescription];
+  shortDescription = [(IDSSockAddrWrapperPair *)self->_addressPair shortDescription];
   v37 = *&self->_localConnectionGUID;
   compressionState = self->_compressionState;
   connectError = self->_connectError;
@@ -229,10 +229,10 @@ LABEL_14:
   sd = self->_sd;
   v31 = self->_sdCopy;
   sdOriginal = self->_sdOriginal;
-  v29 = [(IDSHCInfo *)self->_compressionInfo localCID];
-  v28 = [(IDSHCInfo *)self->_compressionInfo localContext];
-  v27 = [(IDSHCInfo *)self->_compressionInfo remoteCID];
-  v6 = [(IDSHCInfo *)self->_compressionInfo remoteContext];
+  localCID = [(IDSHCInfo *)self->_compressionInfo localCID];
+  localContext = [(IDSHCInfo *)self->_compressionInfo localContext];
+  remoteCID = [(IDSHCInfo *)self->_compressionInfo remoteCID];
+  remoteContext = [(IDSHCInfo *)self->_compressionInfo remoteContext];
   v7 = "opened ";
   stateFlags = self->_stateFlags;
   if ((stateFlags & 1) == 0)
@@ -241,7 +241,7 @@ LABEL_14:
   }
 
   v25 = v7;
-  v26 = v6;
+  v26 = remoteContext;
   v9 = "handler-called ";
   if ((stateFlags & 2) == 0)
   {
@@ -338,7 +338,7 @@ LABEL_14:
 
   creationTime = self->_creationTime;
   v20 = objc_retainBlock(self->_readHandler);
-  v21 = [NSString stringWithFormat:@"<IDSGenericConnection: id[%@] ports[%@] localGUID[%@] remoteGUID[%@] clientID[%@] proto[%d] sd[%d, %d, %d] error[%@] comp_state[%d] localContext[%d, %p] remoteContext[%d, %p](%s%s%s%s%s%s%s%s%s%s%s) (CT:%0.6lf) tcp[%@], readHandler: %p>", connectionID, v38, v37, clientID, protocol, sd, v31, sdOriginal, connectError, compressionState, v29, v28, v27, v26, v25, v24, v23, v11, v12, v13, v14, v15, v16, v17, v18, *&creationTime, v40, v20];
+  v21 = [NSString stringWithFormat:@"<IDSGenericConnection: id[%@] ports[%@] localGUID[%@] remoteGUID[%@] clientID[%@] proto[%d] sd[%d, %d, %d] error[%@] comp_state[%d] localContext[%d, %p] remoteContext[%d, %p](%s%s%s%s%s%s%s%s%s%s%s) (CT:%0.6lf) tcp[%@], readHandler: %p>", connectionID, shortDescription, v37, clientID, protocol, sd, v31, sdOriginal, connectError, compressionState, localCID, localContext, remoteCID, v26, v25, v24, v23, v11, v12, v13, v14, v15, v16, v17, v18, *&creationTime, v40, v20];
 
   return v21;
 }
@@ -389,9 +389,9 @@ LABEL_14:
   return [NSString stringWithFormat:@"( %s%s%s%s%s%s)", v3, v4, v5, v6, v7, v8];
 }
 
-- (IDSGenericConnection)initWithAddressPair:(id)a3 protocol:(int)a4
+- (IDSGenericConnection)initWithAddressPair:(id)pair protocol:(int)protocol
 {
-  v6 = a3;
+  pairCopy = pair;
   v15.receiver = self;
   v15.super_class = IDSGenericConnection;
   v7 = [(IDSGenericConnection *)&v15 init];
@@ -401,11 +401,11 @@ LABEL_14:
     v9 = *(v7 + 1);
     *(v7 + 1) = v8;
 
-    v10 = [v6 copy];
+    v10 = [pairCopy copy];
     v11 = *(v7 + 5);
     *(v7 + 5) = v10;
 
-    *(v7 + 12) = a4;
+    *(v7 + 12) = protocol;
     *(v7 + 52) = -1;
     *(v7 + 15) = -1;
     if (qword_100CBF438 != -1)
@@ -426,18 +426,18 @@ LABEL_14:
   return v7;
 }
 
-- (void)setCompletionQueue:(id)a3
+- (void)setCompletionQueue:(id)queue
 {
-  v4 = a3;
-  if (!v4)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     sub_10092D940();
   }
 
   completionQueue = self->_completionQueue;
-  self->_completionQueue = v4;
+  self->_completionQueue = queueCopy;
 
-  _objc_release_x1(v4, completionQueue);
+  _objc_release_x1(queueCopy, completionQueue);
 }
 
 - (OS_dispatch_queue)completionQueue
@@ -454,7 +454,7 @@ LABEL_14:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "problem: %@ is going to use the main queue.", buf, 0xCu);
     }
 
@@ -478,21 +478,21 @@ LABEL_14:
 
 - (void)_closeSockets
 {
-  v3 = [(IDSGenericConnection *)self connectionID];
-  v4 = v3;
-  if (v3)
+  connectionID = [(IDSGenericConnection *)self connectionID];
+  v4 = connectionID;
+  if (connectionID)
   {
-    v5 = [v3 serviceConnectorServiceForAccount];
+    serviceConnectorServiceForAccount = [connectionID serviceConnectorServiceForAccount];
   }
 
   else
   {
-    v5 = 0;
+    serviceConnectorServiceForAccount = 0;
   }
 
-  if (self->_serviceConnector && self->_defaultPairedDeviceEndpoint && v5)
+  if (self->_serviceConnector && self->_defaultPairedDeviceEndpoint && serviceConnectorServiceForAccount)
   {
-    [v5 UTF8String];
+    [serviceConnectorServiceForAccount UTF8String];
     v14 = v4;
     nw_service_connector_cancel_active_connection();
   }
@@ -505,13 +505,13 @@ LABEL_14:
       serviceConnector = self->_serviceConnector;
       defaultPairedDeviceEndpoint = self->_defaultPairedDeviceEndpoint;
       *buf = 138413058;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
       v18 = serviceConnector;
       v19 = 2112;
       v20 = defaultPairedDeviceEndpoint;
       v21 = 2112;
-      v22 = v5;
+      v22 = serviceConnectorServiceForAccount;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ cannot cancel service connector for connection._serviceConnector=%@;_defaultPairedDeviceEndpoint=%@;serviceConnectionServiceString=%@", buf, 0x2Au);
     }
 
@@ -583,7 +583,7 @@ LABEL_14:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invalidating IDSGenericConnection %@", buf, 0xCu);
     }
 
@@ -591,11 +591,11 @@ LABEL_14:
     {
       if (_IDSShouldLogTransport())
       {
-        v24 = self;
+        selfCopy3 = self;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v24 = self;
+          selfCopy3 = self;
           _IDSLogV();
         }
       }
@@ -606,9 +606,9 @@ LABEL_14:
       v4 = +[IDSFoundationLog utunController];
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [(IDSGenericConnectionID *)self->_connectionID service];
+        service = [(IDSGenericConnectionID *)self->_connectionID service];
         *buf = 138412290;
-        v29 = v5;
+        selfCopy = service;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "genericConnection for %@ using BT datagram link - stop", buf, 0xCu);
       }
 
@@ -628,15 +628,15 @@ LABEL_14:
         v6 = qword_100CBF3B0;
       }
 
-      v9 = [(IDSGenericConnectionID *)self->_connectionID service];
-      v10 = [v6 objectForKey:v9];
+      service2 = [(IDSGenericConnectionID *)self->_connectionID service];
+      v10 = [v6 objectForKey:service2];
 
       if (!v10)
       {
         v10 = objc_alloc_init(IDSServiceStatistics);
         v11 = qword_100CBF3B0;
-        v12 = [(IDSGenericConnectionID *)self->_connectionID service];
-        [v11 setObject:v10 forKey:v12];
+        service3 = [(IDSGenericConnectionID *)self->_connectionID service];
+        [v11 setObject:v10 forKey:service3];
       }
 
       [(IDSServiceStatistics *)v10 setPacketsSent:[(IDSServiceStatistics *)v10 packetsSent]+ self->_packetsSent];
@@ -668,7 +668,7 @@ LABEL_14:
       openSocketCompletionHandler = self->_openSocketCompletionHandler;
       self->_openSocketCompletionHandler = 0;
 
-      v20 = [(IDSGenericConnection *)self completionQueue];
+      completionQueue = [(IDSGenericConnection *)self completionQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1006223D0;
@@ -677,7 +677,7 @@ LABEL_14:
       v27 = v18;
       v21 = v17;
       v22 = v18;
-      dispatch_async(v20, block);
+      dispatch_async(completionQueue, block);
     }
 
     [(IDSGenericConnection *)self _closeSockets];
@@ -687,18 +687,18 @@ LABEL_14:
   }
 }
 
-- (void)reportToAWD:(unint64_t)a3 connectionType:(int)a4 error:(int)a5
+- (void)reportToAWD:(unint64_t)d connectionType:(int)type error:(int)error
 {
   if (!self->_sentAWDReport)
   {
-    v5 = *&a5;
-    v6 = *&a4;
+    v5 = *&error;
+    v6 = *&type;
     v9 = +[IDSAWDLogging sharedInstance];
     if (v5)
     {
       v10 = [NSNumber numberWithInt:v6];
       v11 = [NSNumber numberWithInt:v5];
-      [v9 IDSGenericConnectionForLink:a3 connectionSetupStartTime:&off_100C3CE20 firstPacketReceiveTime:&off_100C3CE20 connectionType:v10 success:0 errorCode:v11];
+      [v9 IDSGenericConnectionForLink:d connectionSetupStartTime:&off_100C3CE20 firstPacketReceiveTime:&off_100C3CE20 connectionType:v10 success:0 errorCode:v11];
     }
 
     else
@@ -706,17 +706,17 @@ LABEL_14:
       v10 = [NSNumber numberWithDouble:self->_connectionSetupStartTime];
       v11 = [NSNumber numberWithDouble:self->_firstPacketReceiveTime];
       v12 = [NSNumber numberWithInt:v6];
-      [v9 IDSGenericConnectionForLink:a3 connectionSetupStartTime:v10 firstPacketReceiveTime:v11 connectionType:v12 success:1 errorCode:&off_100C3CE20];
+      [v9 IDSGenericConnectionForLink:d connectionSetupStartTime:v10 firstPacketReceiveTime:v11 connectionType:v12 success:1 errorCode:&off_100C3CE20];
     }
 
     self->_sentAWDReport = 1;
   }
 }
 
-- (void)_triggerStallDetectionLogsForDetector:(id)a3 withEvent:(id)a4
+- (void)_triggerStallDetectionLogsForDetector:(id)detector withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  detectorCopy = detector;
+  eventCopy = event;
   if (qword_100CBF438 != -1)
   {
     sub_10092D900();
@@ -724,16 +724,16 @@ LABEL_14:
 
   v8 = mach_continuous_time();
   v9 = *&qword_100CBF3C0;
-  [v6 UTF8String];
+  [detectorCopy UTF8String];
   if (IMGetDomainBoolForKey())
   {
     IDSNetworkingLogDump();
-    v10 = [NSString stringWithFormat:@"%p %@ Stall detected [%@].", self, v6, v7];
+    eventCopy = [NSString stringWithFormat:@"%p %@ Stall detected [%@].", self, detectorCopy, eventCopy];
     v11 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v10;
+      v20 = eventCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
 
@@ -741,11 +741,11 @@ LABEL_14:
     {
       if (_IDSShouldLogTransport())
       {
-        v18 = v10;
+        v18 = eventCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v18 = v10;
+          v18 = eventCopy;
           _IDSLogV();
         }
       }
@@ -771,7 +771,7 @@ LABEL_15:
     v15 = @"%p %@ Stall detected [%@] - netdiagnose & simulate crash";
     if (v14 != 0.0 && v13 - v14 <= 172800.0)
     {
-      v10 = 0;
+      eventCopy = 0;
       goto LABEL_27;
     }
 
@@ -782,8 +782,8 @@ LABEL_15:
 LABEL_18:
   qword_100CBF3B8 = *&v13;
   IDSNetworkingLogDump();
-  v10 = [NSString stringWithFormat:v15, self, v6, v7];
-  if (v10)
+  eventCopy = [NSString stringWithFormat:v15, self, detectorCopy, eventCopy];
+  if (eventCopy)
   {
     lastStallDetectLogTime = self->_lastStallDetectLogTime;
     if (lastStallDetectLogTime == 0.0 || v13 - lastStallDetectLogTime > 4.0)
@@ -793,7 +793,7 @@ LABEL_18:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v10;
+        v20 = eventCopy;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
       }
 
@@ -814,9 +814,9 @@ LABEL_18:
 LABEL_27:
 }
 
-- (void)_createStallDetectorWithName:(id)a3
+- (void)_createStallDetectorWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   outgoingStallDetector = self->_outgoingStallDetector;
   if (outgoingStallDetector)
   {
@@ -831,7 +831,7 @@ LABEL_27:
     v14[2] = sub_100622B90;
     v14[3] = &unk_100BE2A40;
     v14[4] = self;
-    v6 = v4;
+    v6 = nameCopy;
     v15 = v6;
     v7 = objc_retainBlock(v14);
     v12[0] = _NSConcreteStackBlock;
@@ -850,7 +850,7 @@ LABEL_27:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v8;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%p Created the stall detector %@", buf, 0x16u);

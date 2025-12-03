@@ -1,18 +1,18 @@
 @interface IDSPairedDevice
-+ (id)iCloudIdentitiesFromIdentities:(id)a3;
-+ (id)localIdentitiesFromIdentities:(id)a3;
++ (id)iCloudIdentitiesFromIdentities:(id)identities;
++ (id)localIdentitiesFromIdentities:(id)identities;
 - (BOOL)hasAllPublicKeys;
 - (BOOL)isActive;
 - (BOOL)supportIPsec;
-- (IDSPairedDevice)initWithCBUUID:(id)a3 pairingType:(int64_t)a4;
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 capabilityFlags:(unint64_t)a4;
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 deviceInfoPayload:(id)a4;
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 deviceUniqueID:(id)a4 pairingProtocolVersion:(unsigned int)a5 minCompatibilityVersion:(unsigned int)a6 maxCompatibilityVersion:(unsigned int)a7 serviceMinCompatibilityVersion:(unsigned __int16)a8 privateData:(id)a9;
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 iCloudURIs:(id)a4 pushToken:(id)a5;
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 isActive:(BOOL)a4;
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 pairingType:(int64_t)a4;
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 supportIPsec:(BOOL)a4;
-- (IDSPairedDevice)initWithProperties:(id)a3 pairingProtocolVersion:(id)a4 minCompatibilityVersion:(id)a5 maxCompatibilityVersion:(id)a6 serviceMinCompatibilityVersion:(id)a7;
+- (IDSPairedDevice)initWithCBUUID:(id)d pairingType:(int64_t)type;
+- (IDSPairedDevice)initWithPairedDevice:(id)device capabilityFlags:(unint64_t)flags;
+- (IDSPairedDevice)initWithPairedDevice:(id)device deviceInfoPayload:(id)payload;
+- (IDSPairedDevice)initWithPairedDevice:(id)device deviceUniqueID:(id)d pairingProtocolVersion:(unsigned int)version minCompatibilityVersion:(unsigned int)compatibilityVersion maxCompatibilityVersion:(unsigned int)maxCompatibilityVersion serviceMinCompatibilityVersion:(unsigned __int16)minCompatibilityVersion privateData:(id)data;
+- (IDSPairedDevice)initWithPairedDevice:(id)device iCloudURIs:(id)is pushToken:(id)token;
+- (IDSPairedDevice)initWithPairedDevice:(id)device isActive:(BOOL)active;
+- (IDSPairedDevice)initWithPairedDevice:(id)device pairingType:(int64_t)type;
+- (IDSPairedDevice)initWithPairedDevice:(id)device supportIPsec:(BOOL)psec;
+- (IDSPairedDevice)initWithProperties:(id)properties pairingProtocolVersion:(id)version minCompatibilityVersion:(id)compatibilityVersion maxCompatibilityVersion:(id)maxCompatibilityVersion serviceMinCompatibilityVersion:(id)minCompatibilityVersion;
 - (IDSPairedDevice)pairedDeviceWithoutSecuredEncryptionKeys;
 - (NSArray)iCloudIdentities;
 - (NSArray)iCloudURIs;
@@ -37,29 +37,29 @@
 - (int64_t)pairingType
 {
   v2 = [(NSDictionary *)self->_properties objectForKeyedSubscript:IDSDevicePropertyPairingType];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isActive
 {
   v2 = [(NSDictionary *)self->_properties objectForKeyedSubscript:IDSDevicePropertyIsActivePairedDevice];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasAllPublicKeys
 {
-  v3 = [(IDSPairedDevice *)self publicClassAKey];
-  if (v3)
+  publicClassAKey = [(IDSPairedDevice *)self publicClassAKey];
+  if (publicClassAKey)
   {
-    v4 = [(IDSPairedDevice *)self publicClassCKey];
-    if (v4)
+    publicClassCKey = [(IDSPairedDevice *)self publicClassCKey];
+    if (publicClassCKey)
     {
-      v5 = [(IDSPairedDevice *)self publicClassDKey];
-      v6 = v5 != 0;
+      publicClassDKey = [(IDSPairedDevice *)self publicClassDKey];
+      v6 = publicClassDKey != 0;
     }
 
     else
@@ -83,10 +83,10 @@
   [v3 removeObjectForKey:IDSDevicePropertyEncryptionClassAKey];
   [v3 removeObjectForKey:IDSDevicePropertyEncryptionClassCKey];
   [v3 removeObjectForKey:IDSDevicePropertyIdentifier];
-  v4 = [(IDSPairedDevice *)self uniqueID];
-  if (v4)
+  uniqueID = [(IDSPairedDevice *)self uniqueID];
+  if (uniqueID)
   {
-    CFDictionarySetValue(v3, IDSDevicePropertyIdentifierOverride, v4);
+    CFDictionarySetValue(v3, IDSDevicePropertyIdentifierOverride, uniqueID);
   }
 
   pairingProtocolVersion = self->_pairingProtocolVersion;
@@ -119,9 +119,9 @@
 - (BOOL)supportIPsec
 {
   v2 = [(NSDictionary *)self->_properties objectForKeyedSubscript:IDSDevicePropertySupportIPsec];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unsigned)minCompatibilityVersion
@@ -182,25 +182,25 @@
   return v3;
 }
 
-- (IDSPairedDevice)initWithProperties:(id)a3 pairingProtocolVersion:(id)a4 minCompatibilityVersion:(id)a5 maxCompatibilityVersion:(id)a6 serviceMinCompatibilityVersion:(id)a7
+- (IDSPairedDevice)initWithProperties:(id)properties pairingProtocolVersion:(id)version minCompatibilityVersion:(id)compatibilityVersion maxCompatibilityVersion:(id)maxCompatibilityVersion serviceMinCompatibilityVersion:(id)minCompatibilityVersion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  propertiesCopy = properties;
+  versionCopy = version;
+  compatibilityVersionCopy = compatibilityVersion;
+  maxCompatibilityVersionCopy = maxCompatibilityVersion;
+  minCompatibilityVersionCopy = minCompatibilityVersion;
   v31.receiver = self;
   v31.super_class = IDSPairedDevice;
   v17 = [(IDSPairedDevice *)&v31 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [propertiesCopy copy];
     properties = v17->_properties;
     v17->_properties = v18;
 
-    objc_storeStrong(&v17->_pairingProtocolVersion, a4);
-    objc_storeStrong(&v17->_minCompatibilityVersion, a5);
-    objc_storeStrong(&v17->_maxCompatibilityVersion, a6);
+    objc_storeStrong(&v17->_pairingProtocolVersion, version);
+    objc_storeStrong(&v17->_minCompatibilityVersion, compatibilityVersion);
+    objc_storeStrong(&v17->_maxCompatibilityVersion, maxCompatibilityVersion);
     v20 = IDSDeviceServicePropertyMinCompatibilityVersion;
     v21 = [(NSDictionary *)v17->_properties objectForKeyedSubscript:IDSDeviceServicePropertyMinCompatibilityVersion];
 
@@ -211,46 +211,46 @@
 
     else
     {
-      v22 = v16;
+      v22 = minCompatibilityVersionCopy;
     }
 
     serviceMinCompatibilityVersion = v17->_serviceMinCompatibilityVersion;
     v17->_serviceMinCompatibilityVersion = v22;
 
-    v24 = [v16 unsignedIntValue];
-    if (v24 >= [(NSNumber *)v17->_serviceMinCompatibilityVersion unsignedIntValue])
+    unsignedIntValue = [minCompatibilityVersionCopy unsignedIntValue];
+    if (unsignedIntValue >= [(NSNumber *)v17->_serviceMinCompatibilityVersion unsignedIntValue])
     {
-      v30 = v14;
+      v30 = compatibilityVersionCopy;
       Mutable = [(NSDictionary *)v17->_properties mutableCopy];
       if (!Mutable)
       {
         Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       }
 
-      v26 = v13;
-      if (v16)
+      v26 = versionCopy;
+      if (minCompatibilityVersionCopy)
       {
-        CFDictionarySetValue(Mutable, v20, v16);
+        CFDictionarySetValue(Mutable, v20, minCompatibilityVersionCopy);
       }
 
       v27 = v17->_properties;
       v17->_properties = Mutable;
       v28 = Mutable;
 
-      objc_storeStrong(&v17->_serviceMinCompatibilityVersion, a7);
-      v13 = v26;
-      v14 = v30;
+      objc_storeStrong(&v17->_serviceMinCompatibilityVersion, minCompatibilityVersion);
+      versionCopy = v26;
+      compatibilityVersionCopy = v30;
     }
   }
 
   return v17;
 }
 
-- (IDSPairedDevice)initWithCBUUID:(id)a3 pairingType:(int64_t)a4
+- (IDSPairedDevice)initWithCBUUID:(id)d pairingType:(int64_t)type
 {
   v21 = IDSDevicePropertyIdentitiesURI;
   v22 = IDSLocalDeviceIdentity;
-  v6 = a3;
+  dCopy = d;
   v7 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
   v19 = IDSPrivateDeviceDataUniqueID;
   v20 = IDSDeviceDefaultPairedDeviceUniqueID;
@@ -259,7 +259,7 @@
   [v9 setLength:80];
   v17[0] = IDSDevicePropertyNSUUID;
   v17[1] = IDSDevicePropertyDefaultPairedDevice;
-  v18[0] = v6;
+  v18[0] = dCopy;
   v18[1] = &__kCFBooleanTrue;
   v18[2] = &__kCFBooleanTrue;
   v17[2] = IDSDevicePropertyDefaultLocalDevice;
@@ -272,7 +272,7 @@
   v17[5] = IDSDevicePropertyPushToken;
   v18[5] = v9;
   v17[6] = IDSDevicePropertyPairingType;
-  v11 = [NSNumber numberWithInteger:a4];
+  v11 = [NSNumber numberWithInteger:type];
   v18[6] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:7];
 
@@ -282,31 +282,31 @@
   return v14;
 }
 
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 deviceUniqueID:(id)a4 pairingProtocolVersion:(unsigned int)a5 minCompatibilityVersion:(unsigned int)a6 maxCompatibilityVersion:(unsigned int)a7 serviceMinCompatibilityVersion:(unsigned __int16)a8 privateData:(id)a9
+- (IDSPairedDevice)initWithPairedDevice:(id)device deviceUniqueID:(id)d pairingProtocolVersion:(unsigned int)version minCompatibilityVersion:(unsigned int)compatibilityVersion maxCompatibilityVersion:(unsigned int)maxCompatibilityVersion serviceMinCompatibilityVersion:(unsigned __int16)minCompatibilityVersion privateData:(id)data
 {
-  v9 = a8;
-  v10 = *&a7;
-  v11 = *&a6;
-  v12 = *&a5;
-  v15 = a4;
-  v16 = a9;
-  if (a3)
+  minCompatibilityVersionCopy = minCompatibilityVersion;
+  v10 = *&maxCompatibilityVersion;
+  v11 = *&compatibilityVersion;
+  v12 = *&version;
+  dCopy = d;
+  dataCopy = data;
+  if (device)
   {
-    v17 = [*(a3 + 1) mutableCopy];
-    [v17 setObject:v16 forKeyedSubscript:IDSDevicePropertyPrivateDeviceData];
-    if ([v15 length])
+    v17 = [*(device + 1) mutableCopy];
+    [v17 setObject:dataCopy forKeyedSubscript:IDSDevicePropertyPrivateDeviceData];
+    if ([dCopy length])
     {
-      [v17 setObject:v15 forKeyedSubscript:IDSDevicePropertyIdentifier];
+      [v17 setObject:dCopy forKeyedSubscript:IDSDevicePropertyIdentifier];
     }
 
     v18 = [NSNumber numberWithUnsignedInt:v12];
     v19 = [NSNumber numberWithUnsignedInt:v11];
     v20 = [NSNumber numberWithUnsignedInt:v10];
-    v21 = [NSNumber numberWithUnsignedShort:v9];
+    v21 = [NSNumber numberWithUnsignedShort:minCompatibilityVersionCopy];
     v22 = [(IDSPairedDevice *)self initWithProperties:v17 pairingProtocolVersion:v18 minCompatibilityVersion:v19 maxCompatibilityVersion:v20 serviceMinCompatibilityVersion:v21];
 
     self = v22;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
@@ -317,19 +317,19 @@
       sub_100928214(v24, v25, v26, v27, v28, v29, v30, v31);
     }
 
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 capabilityFlags:(unint64_t)a4
+- (IDSPairedDevice)initWithPairedDevice:(id)device capabilityFlags:(unint64_t)flags
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (device)
   {
-    v4 = [(IDSPairedDevice *)self initWithProperties:*(a3 + 1) pairingProtocolVersion:*(a3 + 2) minCompatibilityVersion:*(a3 + 3) maxCompatibilityVersion:*(a3 + 4) serviceMinCompatibilityVersion:*(a3 + 5)];
-    v5 = v4;
+    selfCopy = [(IDSPairedDevice *)self initWithProperties:*(device + 1) pairingProtocolVersion:*(device + 2) minCompatibilityVersion:*(device + 3) maxCompatibilityVersion:*(device + 4) serviceMinCompatibilityVersion:*(device + 5)];
+    v5 = selfCopy;
   }
 
   else
@@ -346,16 +346,16 @@
   return v5;
 }
 
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 deviceInfoPayload:(id)a4
+- (IDSPairedDevice)initWithPairedDevice:(id)device deviceInfoPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  deviceCopy = device;
+  payloadCopy = payload;
+  v8 = payloadCopy;
+  if (deviceCopy)
   {
-    v41 = self;
+    selfCopy = self;
     v9 = IDSDevicePropertyEncryptionClassAKey;
-    v10 = [v7 objectForKeyedSubscript:IDSDevicePropertyEncryptionClassAKey];
+    v10 = [payloadCopy objectForKeyedSubscript:IDSDevicePropertyEncryptionClassAKey];
     v11 = IDSDevicePropertyEncryptionClassCKey;
     v12 = [v8 objectForKeyedSubscript:IDSDevicePropertyEncryptionClassCKey];
     key = IDSDevicePropertyEncryptionKey;
@@ -387,7 +387,7 @@
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Paired device public key D %@", buf, 0xCu);
     }
 
-    v17 = [v6[1] mutableCopy];
+    v17 = [deviceCopy[1] mutableCopy];
     v18 = v17;
     if (v10)
     {
@@ -436,8 +436,8 @@
     v28 = [v8 objectForKeyedSubscript:IDSDevicePropertyPrivateDeviceData];
     if ([v28 count])
     {
-      v29 = [v6 privateData];
-      v30 = [v29 mutableCopy];
+      privateData = [deviceCopy privateData];
+      v30 = [privateData mutableCopy];
 
       if (!v30)
       {
@@ -451,9 +451,9 @@
       }
     }
 
-    self = [(IDSPairedDevice *)v41 initWithProperties:v18 pairingProtocolVersion:v6[2] minCompatibilityVersion:v6[3] maxCompatibilityVersion:v6[4] serviceMinCompatibilityVersion:v6[5]];
+    self = [(IDSPairedDevice *)selfCopy initWithProperties:v18 pairingProtocolVersion:deviceCopy[2] minCompatibilityVersion:deviceCopy[3] maxCompatibilityVersion:deviceCopy[4] serviceMinCompatibilityVersion:deviceCopy[5]];
 
-    v31 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -464,25 +464,25 @@
       sub_100928304(v10, v32, v33, v34, v35, v36, v37, v38);
     }
 
-    v31 = 0;
+    selfCopy2 = 0;
   }
 
-  return v31;
+  return selfCopy2;
 }
 
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 isActive:(BOOL)a4
+- (IDSPairedDevice)initWithPairedDevice:(id)device isActive:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  activeCopy = active;
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (deviceCopy)
   {
-    v8 = [*(v6 + 1) mutableCopy];
-    v9 = [NSNumber numberWithBool:v4];
+    v8 = [*(deviceCopy + 1) mutableCopy];
+    v9 = [NSNumber numberWithBool:activeCopy];
     [v8 setObject:v9 forKeyedSubscript:IDSDevicePropertyIsActivePairedDevice];
 
     self = [(IDSPairedDevice *)self initWithProperties:v8 pairingProtocolVersion:v7[2] minCompatibilityVersion:v7[3] maxCompatibilityVersion:v7[4] serviceMinCompatibilityVersion:v7[5]];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -493,25 +493,25 @@
       sub_10092837C(v11, v12, v13, v14, v15, v16, v17, v18);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 supportIPsec:(BOOL)a4
+- (IDSPairedDevice)initWithPairedDevice:(id)device supportIPsec:(BOOL)psec
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  psecCopy = psec;
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (deviceCopy)
   {
-    v8 = [*(v6 + 1) mutableCopy];
-    v9 = [NSNumber numberWithBool:v4];
+    v8 = [*(deviceCopy + 1) mutableCopy];
+    v9 = [NSNumber numberWithBool:psecCopy];
     [v8 setObject:v9 forKeyedSubscript:IDSDevicePropertySupportIPsec];
 
     self = [(IDSPairedDevice *)self initWithProperties:v8 pairingProtocolVersion:v7[2] minCompatibilityVersion:v7[3] maxCompatibilityVersion:v7[4] serviceMinCompatibilityVersion:v7[5]];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -522,24 +522,24 @@
       sub_1009283F4(v11, v12, v13, v14, v15, v16, v17, v18);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 pairingType:(int64_t)a4
+- (IDSPairedDevice)initWithPairedDevice:(id)device pairingType:(int64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (deviceCopy)
   {
-    v8 = [*(v6 + 1) mutableCopy];
-    v9 = [NSNumber numberWithInteger:a4];
+    v8 = [*(deviceCopy + 1) mutableCopy];
+    v9 = [NSNumber numberWithInteger:type];
     [v8 setObject:v9 forKeyedSubscript:IDSDevicePropertyPairingType];
 
     self = [(IDSPairedDevice *)self initWithProperties:v8 pairingProtocolVersion:v7[2] minCompatibilityVersion:v7[3] maxCompatibilityVersion:v7[4] serviceMinCompatibilityVersion:v7[5]];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -550,28 +550,28 @@
       sub_10092846C(v11, v12, v13, v14, v15, v16, v17, v18);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (IDSPairedDevice)initWithPairedDevice:(id)a3 iCloudURIs:(id)a4 pushToken:(id)a5
+- (IDSPairedDevice)initWithPairedDevice:(id)device iCloudURIs:(id)is pushToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  deviceCopy = device;
+  isCopy = is;
+  tokenCopy = token;
+  v11 = tokenCopy;
+  if (deviceCopy)
   {
-    v32 = v10;
+    v32 = tokenCopy;
     v12 = objc_alloc_init(NSMutableArray);
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v33 = v9;
-    v13 = v9;
+    v33 = isCopy;
+    v13 = isCopy;
     v14 = [v13 countByEnumeratingWithState:&v34 objects:v42 count:16];
     v15 = IDSDevicePropertyIdentitiesURI;
     if (v14)
@@ -609,14 +609,14 @@
     v21 = [NSDictionary dictionaryWithObjects:&v39 forKeys:&v38 count:1];
     [v12 addObject:v21];
 
-    v22 = [v8[1] mutableCopy];
+    v22 = [deviceCopy[1] mutableCopy];
     v11 = v32;
     [v22 setObject:v32 forKeyedSubscript:IDSDevicePropertyPushToken];
     [v22 setObject:v12 forKeyedSubscript:IDSDevicePropertyIdentities];
-    self = [(IDSPairedDevice *)self initWithProperties:v22 pairingProtocolVersion:v8[2] minCompatibilityVersion:v8[3] maxCompatibilityVersion:v8[4] serviceMinCompatibilityVersion:v8[5]];
+    self = [(IDSPairedDevice *)self initWithProperties:v22 pairingProtocolVersion:deviceCopy[2] minCompatibilityVersion:deviceCopy[3] maxCompatibilityVersion:deviceCopy[4] serviceMinCompatibilityVersion:deviceCopy[5]];
 
-    v23 = self;
-    v9 = v33;
+    selfCopy = self;
+    isCopy = v33;
   }
 
   else
@@ -627,10 +627,10 @@
       sub_1009284E4(v12, v24, v25, v26, v27, v28, v29, v30);
     }
 
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
 - (IDSPairedDevice)pairedDeviceWithoutSecuredEncryptionKeys
@@ -656,21 +656,21 @@
 - (NSUUID)cbuuidUUID
 {
   v3 = [NSUUID alloc];
-  v4 = [(IDSPairedDevice *)self cbuuid];
-  v5 = [v3 initWithUUIDString:v4];
+  cbuuid = [(IDSPairedDevice *)self cbuuid];
+  v5 = [v3 initWithUUIDString:cbuuid];
 
   return v5;
 }
 
-+ (id)iCloudIdentitiesFromIdentities:(id)a3
++ (id)iCloudIdentitiesFromIdentities:(id)identities
 {
-  v3 = a3;
+  identitiesCopy = identities;
   v4 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = identitiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -706,15 +706,15 @@
   return v4;
 }
 
-+ (id)localIdentitiesFromIdentities:(id)a3
++ (id)localIdentitiesFromIdentities:(id)identities
 {
-  v3 = a3;
+  identitiesCopy = identities;
   v4 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = identitiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -752,16 +752,16 @@
 
 - (NSArray)iCloudIdentities
 {
-  v2 = [(IDSPairedDevice *)self identities];
-  v3 = [IDSPairedDevice iCloudIdentitiesFromIdentities:v2];
+  identities = [(IDSPairedDevice *)self identities];
+  v3 = [IDSPairedDevice iCloudIdentitiesFromIdentities:identities];
 
   return v3;
 }
 
 - (NSArray)localIdentities
 {
-  v2 = [(IDSPairedDevice *)self identities];
-  v3 = [IDSPairedDevice localIdentitiesFromIdentities:v2];
+  identities = [(IDSPairedDevice *)self identities];
+  v3 = [IDSPairedDevice localIdentitiesFromIdentities:identities];
 
   return v3;
 }
@@ -769,12 +769,12 @@
 - (NSArray)iCloudURIs
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(IDSPairedDevice *)self iCloudIdentities];
+  iCloudIdentities = [(IDSPairedDevice *)self iCloudIdentities];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [iCloudIdentities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -786,7 +786,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(iCloudIdentities);
         }
 
         v10 = [*(*(&v12 + 1) + 8 * i) objectForKeyedSubscript:v8];
@@ -796,7 +796,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [iCloudIdentities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -807,24 +807,24 @@
 
 - (NSString)buildVersion
 {
-  v2 = [(IDSPairedDevice *)self privateData];
-  v3 = [v2 objectForKey:IDSPrivateDeviceDataProductBuildVersion];
+  privateData = [(IDSPairedDevice *)self privateData];
+  v3 = [privateData objectForKey:IDSPrivateDeviceDataProductBuildVersion];
 
   return v3;
 }
 
 - (NSString)productVersion
 {
-  v2 = [(IDSPairedDevice *)self privateData];
-  v3 = [v2 objectForKey:IDSPrivateDeviceDataProductVersion];
+  privateData = [(IDSPairedDevice *)self privateData];
+  v3 = [privateData objectForKey:IDSPrivateDeviceDataProductVersion];
 
   return v3;
 }
 
 - (NSString)productName
 {
-  v2 = [(IDSPairedDevice *)self privateData];
-  v3 = [v2 objectForKey:IDSPrivateDeviceDataProductName];
+  privateData = [(IDSPairedDevice *)self privateData];
+  v3 = [privateData objectForKey:IDSPrivateDeviceDataProductName];
 
   return v3;
 }
@@ -834,8 +834,8 @@
   v9.receiver = self;
   v9.super_class = IDSPairedDevice;
   v3 = [(IDSPairedDevice *)&v9 description];
-  v4 = [(IDSPairedDevice *)self uniqueID];
-  v5 = [(IDSPairedDevice *)self cbuuid];
+  uniqueID = [(IDSPairedDevice *)self uniqueID];
+  cbuuid = [(IDSPairedDevice *)self cbuuid];
   if ([(IDSPairedDevice *)self isActive])
   {
     v6 = @"YES";
@@ -846,7 +846,7 @@
     v6 = @"NO";
   }
 
-  v7 = [NSString stringWithFormat:@"%@ uniqueID = %@, cbuuid = %@, isActive = %@, supportsIPSec = %d, pairingType = %ld", v3, v4, v5, v6, [(IDSPairedDevice *)self supportIPsec], [(IDSPairedDevice *)self pairingType]];
+  v7 = [NSString stringWithFormat:@"%@ uniqueID = %@, cbuuid = %@, isActive = %@, supportsIPSec = %d, pairingType = %ld", v3, uniqueID, cbuuid, v6, [(IDSPairedDevice *)self supportIPsec], [(IDSPairedDevice *)self pairingType]];
 
   return v7;
 }

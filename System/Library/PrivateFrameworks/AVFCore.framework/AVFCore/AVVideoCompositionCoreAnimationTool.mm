@@ -2,7 +2,7 @@
 + (AVVideoCompositionCoreAnimationTool)videoCompositionCoreAnimationToolWithAdditionalLayer:(CALayer *)layer asTrackID:(CMPersistentTrackID)trackID;
 + (AVVideoCompositionCoreAnimationTool)videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:(CALayer *)videoLayer inLayer:(CALayer *)animationLayer;
 + (AVVideoCompositionCoreAnimationTool)videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayers:(NSArray *)videoLayers inLayer:(CALayer *)animationLayer;
-- (AVVideoCompositionCoreAnimationTool)initWithMagicTrackID:(int)a3 animationLayer:(id)a4 videoLayers:(id)a5;
+- (AVVideoCompositionCoreAnimationTool)initWithMagicTrackID:(int)d animationLayer:(id)layer videoLayers:(id)layers;
 - (id)_auxiliaryTrackLayer;
 - (id)_postProcessingRootLayer;
 - (id)_postProcessingVideoLayers;
@@ -12,7 +12,7 @@
 
 @implementation AVVideoCompositionCoreAnimationTool
 
-- (AVVideoCompositionCoreAnimationTool)initWithMagicTrackID:(int)a3 animationLayer:(id)a4 videoLayers:(id)a5
+- (AVVideoCompositionCoreAnimationTool)initWithMagicTrackID:(int)d animationLayer:(id)layer videoLayers:(id)layers
 {
   v11.receiver = self;
   v11.super_class = AVVideoCompositionCoreAnimationTool;
@@ -24,10 +24,10 @@
     if (v9)
     {
       CFRetain(v9);
-      v8->_videoCompositionTool->way = a3 == 0;
-      v8->_videoCompositionTool->animationLayer = a4;
-      v8->_videoCompositionTool->auxiliaryTrackID = a3;
-      v8->_videoCompositionTool->postProcessingVideoLayers = [a5 copy];
+      v8->_videoCompositionTool->way = d == 0;
+      v8->_videoCompositionTool->animationLayer = layer;
+      v8->_videoCompositionTool->auxiliaryTrackID = d;
+      v8->_videoCompositionTool->postProcessingVideoLayers = [layers copy];
     }
 
     else
@@ -42,14 +42,14 @@
 
 + (AVVideoCompositionCoreAnimationTool)videoCompositionCoreAnimationToolWithAdditionalLayer:(CALayer *)layer asTrackID:(CMPersistentTrackID)trackID
 {
-  v4 = [[a1 alloc] initWithMagicTrackID:*&trackID animationLayer:layer videoLayers:0];
+  v4 = [[self alloc] initWithMagicTrackID:*&trackID animationLayer:layer videoLayers:0];
 
   return v4;
 }
 
 + (AVVideoCompositionCoreAnimationTool)videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:(CALayer *)videoLayer inLayer:(CALayer *)animationLayer
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v7 = [v6 initWithMagicTrackID:0 animationLayer:animationLayer videoLayers:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObject:", videoLayer)}];
 
   return v7;
@@ -57,7 +57,7 @@
 
 + (AVVideoCompositionCoreAnimationTool)videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayers:(NSArray *)videoLayers inLayer:(CALayer *)animationLayer
 {
-  v4 = [[a1 alloc] initWithMagicTrackID:0 animationLayer:animationLayer videoLayers:videoLayers];
+  v4 = [[self alloc] initWithMagicTrackID:0 animationLayer:animationLayer videoLayers:videoLayers];
 
   return v4;
 }

@@ -3,24 +3,24 @@
 - (BOOL)mustDrawOnMainThreadForInteractiveCanvas;
 - (TSDContainerInfo)containerInfo;
 - (TSDMutableContainerInfo)mutableContainerInfo;
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5;
-- (id)hitRepChrome:(CGPoint)a3 passingTest:(id)a4;
-- (id)hitReps:(CGPoint)a3 withSlopBlock:(id)a4;
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test;
+- (id)hitRepChrome:(CGPoint)chrome passingTest:(id)test;
+- (id)hitReps:(CGPoint)reps withSlopBlock:(id)block;
 - (id)visibleChildLayouts;
-- (void)addChildRep:(id)a3;
+- (void)addChildRep:(id)rep;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)insertChildRep:(id)a3 above:(id)a4;
-- (void)insertChildRep:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertChildRep:(id)a3 below:(id)a4;
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
-- (void)replaceChildRep:(id)a3 with:(id)a4;
-- (void)replaceContentsFromRep:(id)a3;
-- (void)selectChildRep:(id)a3;
-- (void)setChildReps:(id)a3;
+- (void)drawInContext:(CGContext *)context;
+- (void)insertChildRep:(id)rep above:(id)above;
+- (void)insertChildRep:(id)rep atIndex:(unint64_t)index;
+- (void)insertChildRep:(id)rep below:(id)below;
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object withObject:(id)withObject;
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object withObject:(id)withObject;
+- (void)replaceChildRep:(id)rep with:(id)with;
+- (void)replaceContentsFromRep:(id)rep;
+- (void)selectChildRep:(id)rep;
+- (void)setChildReps:(id)reps;
 - (void)updateChildrenFromLayout;
-- (void)willReplaceContentsFromRep:(id)a3;
+- (void)willReplaceContentsFromRep:(id)rep;
 @end
 
 @implementation TSDContainerRep
@@ -50,9 +50,9 @@
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 parentRep] != self)
         {
-          v9 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDContainerRep dealloc]"];
-          [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerRep.m"), 25, @"parentRep not correct"}];
+          [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerRep.m"), 25, @"parentRep not correct"}];
         }
 
         [v8 setParentRep:0];
@@ -76,13 +76,13 @@
   return TSUProtocolCast();
 }
 
-- (void)selectChildRep:(id)a3
+- (void)selectChildRep:(id)rep
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDContainerRep selectChildRep:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDContainerRep.m"];
 
-  [v3 handleFailureInFunction:v4 file:v5 lineNumber:61 description:@"subclass should override this method"];
+  [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:61 description:@"subclass should override this method"];
 }
 
 - (TSDMutableContainerInfo)mutableContainerInfo
@@ -92,15 +92,15 @@
   return TSUProtocolCast();
 }
 
-- (void)setChildReps:(id)a3
+- (void)setChildReps:(id)reps
 {
   v30 = *MEMORY[0x277D85DE8];
   mChildReps = self->mChildReps;
-  if (mChildReps != a3 && ([(NSMutableArray *)mChildReps isEqual:?]& 1) == 0)
+  if (mChildReps != reps && ([(NSMutableArray *)mChildReps isEqual:?]& 1) == 0)
   {
-    if (a3)
+    if (reps)
     {
-      v6 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:a3];
+      v6 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:reps];
     }
 
     else
@@ -154,7 +154,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = [a3 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    v14 = [reps countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v14)
     {
       v15 = v14;
@@ -165,7 +165,7 @@
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(reps);
           }
 
           v18 = *(*(&v20 + 1) + 8 * j);
@@ -177,18 +177,18 @@
           }
         }
 
-        v15 = [a3 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v15 = [reps countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v15);
     }
 
-    v19 = [a3 mutableCopy];
+    v19 = [reps mutableCopy];
     self->mChildReps = v19;
   }
 }
 
-- (void)addChildRep:(id)a3
+- (void)addChildRep:(id)rep
 {
   mChildReps = self->mChildReps;
   if (mChildReps)
@@ -201,19 +201,19 @@
     v6 = 0;
   }
 
-  [(TSDContainerRep *)self insertChildRep:a3 atIndex:v6];
+  [(TSDContainerRep *)self insertChildRep:rep atIndex:v6];
 }
 
-- (void)insertChildRep:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChildRep:(id)rep atIndex:(unint64_t)index
 {
-  if (a3)
+  if (rep)
   {
-    v6 = [a3 parentRep];
-    if (v6)
+    parentRep = [rep parentRep];
+    if (parentRep)
     {
-      v7 = a3;
-      [a3 parentRep];
-      [TSUProtocolCast() removeChildRep:a3];
+      repCopy = rep;
+      [rep parentRep];
+      [TSUProtocolCast() removeChildRep:rep];
     }
 
     mChildReps = self->mChildReps;
@@ -223,43 +223,43 @@
       self->mChildReps = mChildReps;
     }
 
-    [(NSMutableArray *)mChildReps insertObject:a3 atIndex:a4];
-    [a3 setParentRep:self];
-    if (v6)
+    [(NSMutableArray *)mChildReps insertObject:rep atIndex:index];
+    [rep setParentRep:self];
+    if (parentRep)
     {
     }
   }
 }
 
-- (void)insertChildRep:(id)a3 below:(id)a4
+- (void)insertChildRep:(id)rep below:(id)below
 {
   mChildReps = self->mChildReps;
   if (mChildReps)
   {
-    v7 = [(NSMutableArray *)mChildReps indexOfObjectIdenticalTo:a4];
+    v7 = [(NSMutableArray *)mChildReps indexOfObjectIdenticalTo:below];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
 
-      [(TSDContainerRep *)self insertChildRep:a3 atIndex:v7];
+      [(TSDContainerRep *)self insertChildRep:rep atIndex:v7];
     }
   }
 }
 
-- (void)insertChildRep:(id)a3 above:(id)a4
+- (void)insertChildRep:(id)rep above:(id)above
 {
   mChildReps = self->mChildReps;
   if (mChildReps)
   {
-    v7 = [(NSMutableArray *)mChildReps indexOfObjectIdenticalTo:a4];
+    v7 = [(NSMutableArray *)mChildReps indexOfObjectIdenticalTo:above];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
 
-      [(TSDContainerRep *)self insertChildRep:a3 atIndex:v7 + 1];
+      [(TSDContainerRep *)self insertChildRep:rep atIndex:v7 + 1];
     }
   }
 }
 
-- (void)replaceChildRep:(id)a3 with:(id)a4
+- (void)replaceChildRep:(id)rep with:(id)with
 {
   mChildReps = self->mChildReps;
   if (mChildReps)
@@ -268,11 +268,11 @@
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = v8;
-      v10 = a3;
+      repCopy = rep;
       [(NSMutableArray *)self->mChildReps removeObjectAtIndex:v9];
-      [a3 setParentRep:0];
+      [rep setParentRep:0];
 
-      [(TSDContainerRep *)self insertChildRep:a4 atIndex:v9];
+      [(TSDContainerRep *)self insertChildRep:with atIndex:v9];
     }
   }
 }
@@ -284,8 +284,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(TSDContainerRep *)self childReps];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  childReps = [(TSDContainerRep *)self childReps];
+  v3 = [childReps countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -297,7 +297,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(childReps);
         }
 
         if ([*(*(&v8 + 1) + 8 * v6) mustDrawOnMainThreadForInteractiveCanvas])
@@ -310,7 +310,7 @@
       }
 
       while (v4 != v6);
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [childReps countByEnumeratingWithState:&v8 objects:v12 count:16];
       v4 = v3;
       if (v3)
       {
@@ -331,8 +331,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(TSDContainerRep *)self childReps];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childReps = [(TSDContainerRep *)self childReps];
+  v3 = [childReps countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -343,18 +343,18 @@ LABEL_3:
     {
       if (*v10 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(childReps);
       }
 
-      v7 = [*(*(&v9 + 1) + 8 * v6) canDrawInParallel];
-      if (!v7)
+      canDrawInParallel = [*(*(&v9 + 1) + 8 * v6) canDrawInParallel];
+      if (!canDrawInParallel)
       {
         break;
       }
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [childReps countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -368,19 +368,19 @@ LABEL_3:
   else
   {
 LABEL_9:
-    LOBYTE(v7) = 1;
+    LOBYTE(canDrawInParallel) = 1;
   }
 
-  return v7;
+  return canDrawInParallel;
 }
 
 - (void)updateChildrenFromLayout
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = [(TSDContainerRep *)self childReps];
+  childReps = [(TSDContainerRep *)self childReps];
   obj = [(TSDContainerRep *)self visibleChildLayouts];
   v5 = [obj count];
-  if (v5 == [v4 count])
+  if (v5 == [childReps count])
   {
     v37 = 0u;
     v38 = 0u;
@@ -402,7 +402,7 @@ LABEL_4:
         }
 
         v11 = *(*(&v35 + 1) + 8 * v10);
-        if ([objc_msgSend(v4 objectAtIndex:{v8), "layout"}] != v11)
+        if ([objc_msgSend(childReps objectAtIndex:{v8), "layout"}] != v11)
         {
           break;
         }
@@ -447,7 +447,7 @@ LABEL_12:
           objc_enumerationMutation(obj);
         }
 
-        if ([objc_msgSend(v4 objectAtIndex:{v16), "parentRep"}] != self)
+        if ([objc_msgSend(childReps objectAtIndex:{v16), "parentRep"}] != self)
         {
           break;
         }
@@ -543,20 +543,20 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
 
 - (id)visibleChildLayouts
 {
-  v2 = [(TSDRep *)self layout];
+  layout = [(TSDRep *)self layout];
 
-  return [(TSDAbstractLayout *)v2 children];
+  return [(TSDAbstractLayout *)layout children];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  CGContextSetFillColorWithColor(a3, [objc_msgSend(MEMORY[0x277D6C2A8] "whiteColor")]);
+  CGContextSetFillColorWithColor(context, [objc_msgSend(MEMORY[0x277D6C2A8] "whiteColor")]);
   [(TSDRep *)self naturalBounds];
 
-  CGContextFillRect(a3, *&v5);
+  CGContextFillRect(context, *&v5);
 }
 
-- (void)recursivelyPerformSelectorIfImplemented:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (void)recursivelyPerformSelectorIfImplemented:(SEL)implemented withObject:(id)object withObject:(id)withObject
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
@@ -566,8 +566,8 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [(TSDContainerRep *)self childReps];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  childReps = [(TSDContainerRep *)self childReps];
+  v10 = [childReps countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -579,21 +579,21 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) recursivelyPerformSelectorIfImplemented:a3 withObject:a4 withObject:a5];
+        [*(*(&v14 + 1) + 8 * v13++) recursivelyPerformSelectorIfImplemented:implemented withObject:object withObject:withObject];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v11 = [childReps countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)recursivelyPerformSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (void)recursivelyPerformSelector:(SEL)selector withObject:(id)object withObject:(id)withObject
 {
   v20 = *MEMORY[0x277D85DE8];
   v18.receiver = self;
@@ -603,8 +603,8 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [(TSDContainerRep *)self childReps];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  childReps = [(TSDContainerRep *)self childReps];
+  v10 = [childReps countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -616,24 +616,24 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(childReps);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) recursivelyPerformSelector:a3 withObject:a4 withObject:a5];
+        [*(*(&v14 + 1) + 8 * v13++) recursivelyPerformSelector:selector withObject:object withObject:withObject];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v11 = [childReps countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v11);
   }
 }
 
-- (id)hitRepChrome:(CGPoint)a3 passingTest:(id)a4
+- (id)hitRepChrome:(CGPoint)chrome passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = chrome.y;
+  x = chrome.x;
   v32 = *MEMORY[0x277D85DE8];
   v27 = 0u;
   v28 = 0u;
@@ -672,7 +672,7 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
           v14 = 0uLL;
         }
 
-        v16 = [v11 hitRepChrome:a4 passingTest:{vaddq_f64(v15, vmlaq_f64(vmulq_n_f64(v14, y), v21, v13))}];
+        v16 = [v11 hitRepChrome:test passingTest:{vaddq_f64(v15, vmlaq_f64(vmulq_n_f64(v14, y), v21, v13))}];
         if (v16)
         {
           return v16;
@@ -693,7 +693,7 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
   v23.super_class = TSDContainerRep;
   v17 = [(TSDRep *)&v23 hitRepChrome:x, y];
   v18 = v17;
-  if (a4 && v17 && !(*(a4 + 2))(a4, v17))
+  if (test && v17 && !(*(test + 2))(test, v17))
   {
     return 0;
   }
@@ -701,10 +701,10 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
   return v18;
 }
 
-- (id)hitRep:(CGPoint)a3 withGesture:(id)a4 passingTest:(id)a5
+- (id)hitRep:(CGPoint)rep withGesture:(id)gesture passingTest:(id)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = rep.y;
+  x = rep.x;
   v34 = *MEMORY[0x277D85DE8];
   v29 = 0u;
   v30 = 0u;
@@ -743,7 +743,7 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
           v16 = 0uLL;
         }
 
-        v18 = [v13 hitRep:a4 withGesture:a5 passingTest:{vaddq_f64(v17, vmlaq_f64(vmulq_n_f64(v16, y), v23, v15))}];
+        v18 = [v13 hitRep:gesture withGesture:test passingTest:{vaddq_f64(v17, vmlaq_f64(vmulq_n_f64(v16, y), v23, v15))}];
         if (v18)
         {
           return v18;
@@ -764,7 +764,7 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
   v25.super_class = TSDContainerRep;
   v19 = [(TSDRep *)&v25 hitRep:x, y];
   v20 = v19;
-  if (a5 && v19 && !(*(a5 + 2))(a5, v19))
+  if (test && v19 && !(*(test + 2))(test, v19))
   {
     return 0;
   }
@@ -772,12 +772,12 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
   return v20;
 }
 
-- (id)hitReps:(CGPoint)a3 withSlopBlock:(id)a4
+- (id)hitReps:(CGPoint)reps withSlopBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
+  y = reps.y;
+  x = reps.x;
   v32 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -815,10 +815,10 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
           v15 = 0uLL;
         }
 
-        v17 = [v12 hitReps:a4 withSlopBlock:{vaddq_f64(v16, vmlaq_f64(vmulq_n_f64(v15, y), v21, v14))}];
+        v17 = [v12 hitReps:block withSlopBlock:{vaddq_f64(v16, vmlaq_f64(vmulq_n_f64(v15, y), v21, v14))}];
         if ([v17 count])
         {
-          [v6 addObjectsFromArray:v17];
+          [array addObjectsFromArray:v17];
         }
       }
 
@@ -830,16 +830,16 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
 
   v23.receiver = self;
   v23.super_class = TSDContainerRep;
-  v18 = [(TSDRep *)&v23 hitReps:a4 withSlopBlock:x, y];
+  v18 = [(TSDRep *)&v23 hitReps:block withSlopBlock:x, y];
   if ([v18 count])
   {
-    [v6 addObjectsFromArray:v18];
+    [array addObjectsFromArray:v18];
   }
 
-  return v6;
+  return array;
 }
 
-- (void)willReplaceContentsFromRep:(id)a3
+- (void)willReplaceContentsFromRep:(id)rep
 {
   v21 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
@@ -852,8 +852,8 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v4 childReps];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  childReps = [v4 childReps];
+  v7 = [childReps countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -865,7 +865,7 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childReps);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
@@ -875,8 +875,8 @@ uint64_t __43__TSDContainerRep_updateChildrenFromLayout__block_invoke()
           while (1)
           {
             v13 = [v5 objectAtIndex:v12];
-            v14 = [v13 info];
-            if (v14 == [v11 info])
+            info = [v13 info];
+            if (info == [v11 info])
             {
               break;
             }
@@ -896,14 +896,14 @@ LABEL_12:
       }
 
       while (v10 != v8);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v8 = [childReps countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)replaceContentsFromRep:(id)a3
+- (void)replaceContentsFromRep:(id)rep
 {
   v21 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
@@ -916,8 +916,8 @@ LABEL_12:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v4 childReps];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  childReps = [v4 childReps];
+  v7 = [childReps countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -929,7 +929,7 @@ LABEL_12:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childReps);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
@@ -939,8 +939,8 @@ LABEL_12:
           while (1)
           {
             v13 = [v5 objectAtIndex:v12];
-            v14 = [v13 info];
-            if (v14 == [v11 info])
+            info = [v13 info];
+            if (info == [v11 info])
             {
               break;
             }
@@ -960,7 +960,7 @@ LABEL_12:
       }
 
       while (v10 != v8);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v8 = [childReps countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v8);

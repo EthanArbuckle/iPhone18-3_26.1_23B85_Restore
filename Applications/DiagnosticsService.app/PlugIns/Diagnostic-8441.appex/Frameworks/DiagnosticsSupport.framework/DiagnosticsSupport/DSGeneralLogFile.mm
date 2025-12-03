@@ -1,23 +1,23 @@
 @interface DSGeneralLogFile
-- (BOOL)enumerateLogLinesWithIDs:(id)a3 usingBlock:(id)a4;
-- (BOOL)parseDetailsWithURL:(id)a3;
-- (BOOL)parseHeadersWithLine:(id)a3;
-- (DSGeneralLogFile)initWithURL:(id)a3;
+- (BOOL)enumerateLogLinesWithIDs:(id)ds usingBlock:(id)block;
+- (BOOL)parseDetailsWithURL:(id)l;
+- (BOOL)parseHeadersWithLine:(id)line;
+- (DSGeneralLogFile)initWithURL:(id)l;
 @end
 
 @implementation DSGeneralLogFile
 
-- (DSGeneralLogFile)initWithURL:(id)a3
+- (DSGeneralLogFile)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = DSGeneralLogFile;
   v6 = [(DSGeneralLogFile *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
-    if (![(DSGeneralLogFile *)v7 parseDetailsWithURL:v5])
+    objc_storeStrong(&v6->_url, l);
+    if (![(DSGeneralLogFile *)v7 parseDetailsWithURL:lCopy])
     {
 
       v7 = 0;
@@ -27,15 +27,15 @@
   return v7;
 }
 
-- (BOOL)parseDetailsWithURL:(id)a3
+- (BOOL)parseDetailsWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v5 = [v4 path];
-  v6 = [DSTextFile textFileWithPath:v5];
+  path = [lCopy path];
+  v6 = [DSTextFile textFileWithPath:path];
 
   if (v6)
   {
@@ -105,17 +105,17 @@ void __40__DSGeneralLogFile_parseDetailsWithURL___block_invoke(uint64_t a1, void
   }
 }
 
-- (BOOL)parseHeadersWithLine:(id)a3
+- (BOOL)parseHeadersWithLine:(id)line
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [line dataUsingEncoding:4];
   v30 = 0;
   v5 = [NSJSONSerialization JSONObjectWithData:v4 options:0 error:&v30];
   v6 = v30;
   if (v5)
   {
     v7 = [NSMutableSet setWithObjects:@"installed", @"model", @"os_build", @"serial", @"updated", @"version", 0];
-    v8 = [v5 allKeys];
-    v9 = [NSSet setWithArray:v8];
+    allKeys = [v5 allKeys];
+    v9 = [NSSet setWithArray:allKeys];
 
     [v7 minusSet:v9];
     v10 = [v7 count];
@@ -176,26 +176,26 @@ void __40__DSGeneralLogFile_parseDetailsWithURL___block_invoke(uint64_t a1, void
   return v11;
 }
 
-- (BOOL)enumerateLogLinesWithIDs:(id)a3 usingBlock:(id)a4
+- (BOOL)enumerateLogLinesWithIDs:(id)ds usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
   v8 = [(DSGeneralLogFile *)self url];
-  v9 = [v8 path];
-  v10 = [DSTextFile textFileWithPath:v9];
+  path = [v8 path];
+  v10 = [DSTextFile textFileWithPath:path];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __56__DSGeneralLogFile_enumerateLogLinesWithIDs_usingBlock___block_invoke;
   v14[3] = &unk_18440;
-  v11 = v6;
+  v11 = dsCopy;
   v15 = v11;
   v17 = &v18;
-  v12 = v7;
+  v12 = blockCopy;
   v16 = v12;
   [v10 enumerateUsingBlock:v14];
   LOBYTE(v8) = *(v19 + 24);

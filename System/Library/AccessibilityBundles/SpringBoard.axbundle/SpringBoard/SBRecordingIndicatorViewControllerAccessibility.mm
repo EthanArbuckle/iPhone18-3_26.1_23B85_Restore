@@ -1,24 +1,24 @@
 @interface SBRecordingIndicatorViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)initForLocation:(int64_t)a3 windowScene:(id)a4 minimumOnTimeCoordinator:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)initForLocation:(int64_t)location windowScene:(id)scene minimumOnTimeCoordinator:(id)coordinator;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SBRecordingIndicatorViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBRecordingIndicatorViewController" hasInstanceMethod:@"indicator" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRecordingIndicatorVisualRepresentation" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRecordingIndicatorViewController" hasInstanceMethod:@"initForLocation:windowScene:minimumOnTimeCoordinator:" withFullSignature:{"@", "Q", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBRecordingIndicatorViewController" hasInstanceMethod:@"indicator" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRecordingIndicatorVisualRepresentation" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRecordingIndicatorViewController" hasInstanceMethod:@"initForLocation:windowScene:minimumOnTimeCoordinator:" withFullSignature:{"@", "Q", "@", "@", 0}];
 }
 
-- (id)initForLocation:(int64_t)a3 windowScene:(id)a4 minimumOnTimeCoordinator:(id)a5
+- (id)initForLocation:(int64_t)location windowScene:(id)scene minimumOnTimeCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = SBRecordingIndicatorViewControllerAccessibility;
-  v5 = [(SBRecordingIndicatorViewControllerAccessibility *)&v7 initForLocation:a3 windowScene:a4 minimumOnTimeCoordinator:a5];
+  v5 = [(SBRecordingIndicatorViewControllerAccessibility *)&v7 initForLocation:location windowScene:scene minimumOnTimeCoordinator:coordinator];
   [v5 _accessibilityLoadAccessibilityInformation];
 
   return v5;

@@ -1,16 +1,16 @@
 @interface BKSHIDEventDisplay
-+ (BKSHIDEventDisplay)displayWithHardwareIdentifier:(id)a3;
++ (BKSHIDEventDisplay)displayWithHardwareIdentifier:(id)identifier;
 + (id)builtinDisplay;
 + (id)nullDisplay;
 + (id)protobufSchema;
 - (BKSHIDEventDisplay)init;
-- (BKSHIDEventDisplay)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BKSHIDEventDisplay)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithHardwareIdentifier:(id)a3;
+- (id)_initWithHardwareIdentifier:(id)identifier;
 - (id)initForProtobufDecoding;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDisplay
@@ -102,7 +102,7 @@ void __36__BKSHIDEventDisplay_builtinDisplay__block_invoke()
   block[1] = 3221225472;
   block[2] = __36__BKSHIDEventDisplay_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_2510 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_2510, block);
@@ -134,10 +134,10 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
   [v2 addField:"_builtin" forTag:2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -145,10 +145,10 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && self->_builtin == v4->_builtin)
+    if (v5 == objc_opt_class() && self->_builtin == equalCopy->_builtin)
     {
       hardwareIdentifier = self->_hardwareIdentifier;
-      v7 = v4->_hardwareIdentifier;
+      v7 = equalCopy->_hardwareIdentifier;
       v8 = BSEqualStrings();
     }
 
@@ -161,17 +161,17 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
   return v8;
 }
 
-- (BKSHIDEventDisplay)initWithCoder:(id)a3
+- (BKSHIDEventDisplay)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeBoolForKey:@"builtin"])
+  coderCopy = coder;
+  if ([coderCopy decodeBoolForKey:@"builtin"])
   {
     v5 = +[BKSHIDEventDisplay builtinDisplay];
   }
 
   else
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hardwareIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hardwareIdentifier"];
     if (v6)
     {
       [BKSHIDEventDisplay displayWithHardwareIdentifier:v6];
@@ -187,24 +187,24 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hardwareIdentifier = self->_hardwareIdentifier;
   if (hardwareIdentifier)
   {
-    [a3 encodeObject:hardwareIdentifier forKey:@"hardwareIdentifier"];
+    [coder encodeObject:hardwareIdentifier forKey:@"hardwareIdentifier"];
   }
 
   else
   {
-    [a3 encodeBool:self->_builtin forKey:@"builtin"];
+    [coder encodeBool:self->_builtin forKey:@"builtin"];
   }
 }
 
-- (id)_initWithHardwareIdentifier:(id)a3
+- (id)_initWithHardwareIdentifier:(id)identifier
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = BKSHIDEventDisplay;
   v6 = [(BKSHIDEventDisplay *)&v26 init];
@@ -240,20 +240,20 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
       JUMPOUT(0x186368828);
     }
 
-    v8 = v5;
+    v8 = identifierCopy;
     if (v8)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v17 = MEMORY[0x1E696AEC0];
-        v18 = [v8 classForCoder];
-        if (!v18)
+        classForCoder = [v8 classForCoder];
+        if (!classForCoder)
         {
-          v18 = objc_opt_class();
+          classForCoder = objc_opt_class();
         }
 
-        v19 = NSStringFromClass(v18);
+        v19 = NSStringFromClass(classForCoder);
         v20 = objc_opt_class();
         v21 = NSStringFromClass(v20);
         v22 = [v17 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"hardwareIdentifier", v19, v21];
@@ -307,7 +307,7 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDisplay.m";
     v17 = 1024;
@@ -323,13 +323,13 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
   return result;
 }
 
-+ (BKSHIDEventDisplay)displayWithHardwareIdentifier:(id)a3
++ (BKSHIDEventDisplay)displayWithHardwareIdentifier:(id)identifier
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
-  if (!v5)
+  if (!identifierCopy)
   {
     v11 = NSStringFromClass(v7);
     v12 = [v6 stringWithFormat:@"Value for '%@' was unexpectedly nil. Expected %@.", @"hardwareIdentifier", v11];
@@ -344,7 +344,7 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
       v27 = 2114;
       v28 = v15;
       v29 = 2048;
-      v30 = a1;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDisplay.m";
       v33 = 1024;
@@ -363,13 +363,13 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [v5 classForCoder];
-    if (!v17)
+    classForCoder = [identifierCopy classForCoder];
+    if (!classForCoder)
     {
-      v17 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v18 = NSStringFromClass(v17);
+    v18 = NSStringFromClass(classForCoder);
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     v21 = [v16 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"hardwareIdentifier", v18, v20];
@@ -384,7 +384,7 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
       v27 = 2114;
       v28 = v24;
       v29 = 2048;
-      v30 = a1;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDisplay.m";
       v33 = 1024;
@@ -400,7 +400,7 @@ void __36__BKSHIDEventDisplay_protobufSchema__block_invoke_2(uint64_t a1, void *
     JUMPOUT(0x186368D78);
   }
 
-  v8 = [[BKSHIDEventDisplay alloc] _initWithHardwareIdentifier:v5];
+  v8 = [[BKSHIDEventDisplay alloc] _initWithHardwareIdentifier:identifierCopy];
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;

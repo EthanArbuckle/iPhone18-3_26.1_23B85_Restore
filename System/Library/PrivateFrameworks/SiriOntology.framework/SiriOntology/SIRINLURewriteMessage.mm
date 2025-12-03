@@ -1,21 +1,21 @@
 @interface SIRINLURewriteMessage
-- (SIRINLURewriteMessage)initWithCoder:(id)a3;
-- (SIRINLURewriteMessage)initWithType:(int)a3 utterance:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SIRINLURewriteMessage)initWithCoder:(id)coder;
+- (SIRINLURewriteMessage)initWithType:(int)type utterance:(id)utterance;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLURewriteMessage
 
-- (SIRINLURewriteMessage)initWithCoder:(id)a3
+- (SIRINLURewriteMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SIRINLURewriteMessage;
   v5 = [(SIRINLURewriteMessage *)&v9 init];
   if (v5)
   {
-    v5->_rewriteType = [v4 decodeIntForKey:@"rewriteType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewrittenUtterance"];
+    v5->_rewriteType = [coderCopy decodeIntForKey:@"rewriteType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewrittenUtterance"];
     rewrittenUtterance = v5->_rewrittenUtterance;
     v5->_rewrittenUtterance = v6;
   }
@@ -23,25 +23,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rewriteType = self->_rewriteType;
-  v5 = a3;
-  [v5 encodeInt:rewriteType forKey:@"rewriteType"];
-  [v5 encodeObject:self->_rewrittenUtterance forKey:@"rewrittenUtterance"];
+  coderCopy = coder;
+  [coderCopy encodeInt:rewriteType forKey:@"rewriteType"];
+  [coderCopy encodeObject:self->_rewrittenUtterance forKey:@"rewrittenUtterance"];
 }
 
-- (SIRINLURewriteMessage)initWithType:(int)a3 utterance:(id)a4
+- (SIRINLURewriteMessage)initWithType:(int)type utterance:(id)utterance
 {
-  v7 = a4;
+  utteranceCopy = utterance;
   v11.receiver = self;
   v11.super_class = SIRINLURewriteMessage;
   v8 = [(SIRINLURewriteMessage *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_rewriteType = a3;
-    objc_storeStrong(&v8->_rewrittenUtterance, a4);
+    v8->_rewriteType = type;
+    objc_storeStrong(&v8->_rewrittenUtterance, utterance);
   }
 
   return v9;

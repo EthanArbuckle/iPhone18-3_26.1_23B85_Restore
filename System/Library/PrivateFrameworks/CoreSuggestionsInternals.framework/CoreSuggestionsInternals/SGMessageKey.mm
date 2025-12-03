@@ -1,10 +1,10 @@
 @interface SGMessageKey
-+ (BOOL)isSupportedEntityType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMessageKey:(id)a3;
++ (BOOL)isSupportedEntityType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMessageKey:(id)key;
 - (NSString)description;
-- (SGMessageKey)initWithSerialized:(id)a3;
-- (SGMessageKey)initWithSource:(id)a3 uniqueIdentifier:(id)a4;
+- (SGMessageKey)initWithSerialized:(id)serialized;
+- (SGMessageKey)initWithSource:(id)source uniqueIdentifier:(id)identifier;
 - (id)serialize;
 @end
 
@@ -17,10 +17,10 @@
   return v2;
 }
 
-- (BOOL)isEqualToMessageKey:(id)a3
+- (BOOL)isEqualToMessageKey:(id)key
 {
-  v4 = a3;
-  if (self == v4)
+  keyCopy = key;
+  if (self == keyCopy)
   {
     v8 = 1;
     goto LABEL_11;
@@ -28,7 +28,7 @@
 
   v5 = self->_source;
   v6 = v5;
-  if (v5 == v4->_source)
+  if (v5 == keyCopy->_source)
   {
   }
 
@@ -45,7 +45,7 @@
 
   v9 = self->_uniqueIdentifier;
   v10 = v9;
-  if (v9 == v4->_uniqueIdentifier)
+  if (v9 == keyCopy->_uniqueIdentifier)
   {
     v8 = 1;
   }
@@ -59,18 +59,18 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGMessageKey *)self isEqualToMessageKey:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGMessageKey *)self isEqualToMessageKey:v5];
   }
 
   return v6;
@@ -83,20 +83,20 @@ LABEL_11:
   return SGDelimitedStringsSerialize();
 }
 
-- (SGMessageKey)initWithSerialized:(id)a3
+- (SGMessageKey)initWithSerialized:(id)serialized
 {
-  v5 = a3;
-  if (!v5)
+  serializedCopy = serialized;
+  if (!serializedCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SGMessageKey.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"serialized"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGMessageKey.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"serialized"}];
   }
 
   v6 = SGDelimitedStringsDeserialize();
   if ([v6 count] != 2 && objc_msgSend(v6, "count") != 3)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"SGMessageKey.m" lineNumber:38 description:@"Invalid serialization"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGMessageKey.m" lineNumber:38 description:@"Invalid serialization"];
   }
 
   v7 = [v6 objectAtIndexedSubscript:0];
@@ -106,14 +106,14 @@ LABEL_11:
   return v9;
 }
 
-- (SGMessageKey)initWithSource:(id)a3 uniqueIdentifier:(id)a4
+- (SGMessageKey)initWithSource:(id)source uniqueIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  sourceCopy = source;
+  identifierCopy = identifier;
+  v10 = identifierCopy;
+  if (sourceCopy)
   {
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -121,8 +121,8 @@ LABEL_11:
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGMessageKey.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"source"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGMessageKey.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"source"}];
 
     if (v10)
     {
@@ -130,8 +130,8 @@ LABEL_11:
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"SGMessageKey.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"uniqueIdentifier"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGMessageKey.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"uniqueIdentifier"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -140,26 +140,26 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_uniqueIdentifier, a4);
-    objc_storeStrong(&v12->_source, a3);
+    objc_storeStrong(&v11->_uniqueIdentifier, identifier);
+    objc_storeStrong(&v12->_source, source);
   }
 
   return v12;
 }
 
-+ (BOOL)isSupportedEntityType:(int64_t)a3
++ (BOOL)isSupportedEntityType:(int64_t)type
 {
-  if (a3 >= 0x1C)
+  if (type >= 0x1C)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"SGMessageKey.m" lineNumber:81 description:{@"Unknown entity type: %lu", a3}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGMessageKey.m" lineNumber:81 description:{@"Unknown entity type: %lu", type}];
 
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = 0x52020u >> a3;
+    v4 = 0x52020u >> type;
   }
 
   return v4 & 1;

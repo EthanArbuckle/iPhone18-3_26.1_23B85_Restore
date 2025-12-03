@@ -1,42 +1,42 @@
 @interface SecureUIControllerDynamicIsland
-- (BOOL)confirmTransitionToFlipbookName:(id)a3 stateName:(id)a4;
+- (BOOL)confirmTransitionToFlipbookName:(id)name stateName:(id)stateName;
 - (BOOL)hasPendingTransitions;
 - (BOOL)isRecording;
 - (NSArray)supportedConfigurations;
 - (NSDictionary)currentStates;
 - (SecureUIElement)currentConfiguration;
 - (_TtC28LocalAuthenticationUIService31SecureUIControllerDynamicIsland)init;
-- (void)recordingResettingToDescriptionOfFlipbook:(id)a3;
-- (void)recordingUpdatedGlyphState:(int64_t)a3;
-- (void)setCurrentStates:(id)a3;
-- (void)setIsRecording:(BOOL)a3;
-- (void)setObserverOfPlayback:(id)a3;
-- (void)setObserverOfRecording:(id)a3;
-- (void)transitionToState:(int64_t)a3;
-- (void)updateCurrentConfiguration:(id)a3;
+- (void)recordingResettingToDescriptionOfFlipbook:(id)flipbook;
+- (void)recordingUpdatedGlyphState:(int64_t)state;
+- (void)setCurrentStates:(id)states;
+- (void)setIsRecording:(BOOL)recording;
+- (void)setObserverOfPlayback:(id)playback;
+- (void)setObserverOfRecording:(id)recording;
+- (void)transitionToState:(int64_t)state;
+- (void)updateCurrentConfiguration:(id)configuration;
 @end
 
 @implementation SecureUIControllerDynamicIsland
 
-- (void)setObserverOfRecording:(id)a3
+- (void)setObserverOfRecording:(id)recording
 {
   v5 = OBJC_IVAR____TtC28LocalAuthenticationUIService31SecureUIControllerDynamicIsland_observerOfRecording;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = recording;
   swift_unknownObjectRetain_n();
-  v7 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   SecureUIControllerDynamicIsland.observerChanged()();
   swift_unknownObjectRelease();
 }
 
-- (void)setObserverOfPlayback:(id)a3
+- (void)setObserverOfPlayback:(id)playback
 {
   v5 = OBJC_IVAR____TtC28LocalAuthenticationUIService31SecureUIControllerDynamicIsland_observerOfPlayback;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = playback;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -48,11 +48,11 @@
   return *(self + v3);
 }
 
-- (void)setIsRecording:(BOOL)a3
+- (void)setIsRecording:(BOOL)recording
 {
   v5 = OBJC_IVAR____TtC28LocalAuthenticationUIService31SecureUIControllerDynamicIsland_isRecording;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = recording;
 }
 
 - (NSArray)supportedConfigurations
@@ -67,7 +67,7 @@
 
 - (BOOL)hasPendingTransitions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SecureUIControllerDynamicIsland.hasPendingTransitions.getter();
 
   return v3 & 1;
@@ -75,7 +75,7 @@
 
 - (SecureUIElement)currentConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SecureUIControllerDynamicIsland.currentConfiguration.getter();
 
   return v3;
@@ -92,7 +92,7 @@
   return v5.super.isa;
 }
 
-- (void)setCurrentStates:(id)a3
+- (void)setCurrentStates:(id)states
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR____TtC28LocalAuthenticationUIService31SecureUIControllerDynamicIsland_currentStates;
@@ -101,7 +101,7 @@
   *(self + v5) = v4;
 }
 
-- (void)updateCurrentConfiguration:(id)a3
+- (void)updateCurrentConfiguration:(id)configuration
 {
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
@@ -113,19 +113,19 @@
   }
 }
 
-- (void)transitionToState:(int64_t)a3
+- (void)transitionToState:(int64_t)state
 {
-  v4 = self;
-  SecureUIControllerDynamicIsland.transition(to:)(a3);
+  selfCopy = self;
+  SecureUIControllerDynamicIsland.transition(to:)(state);
 }
 
-- (BOOL)confirmTransitionToFlipbookName:(id)a3 stateName:(id)a4
+- (BOOL)confirmTransitionToFlipbookName:(id)name stateName:(id)stateName
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;
@@ -135,15 +135,15 @@
   return v8 & 1;
 }
 
-- (void)recordingResettingToDescriptionOfFlipbook:(id)a3
+- (void)recordingResettingToDescriptionOfFlipbook:(id)flipbook
 {
   v4 = *((swift_isaMask & *self) + 0xA0);
-  v5 = a3;
-  v7 = self;
+  flipbookCopy = flipbook;
+  selfCopy = self;
   v6 = v4();
   if (v6)
   {
-    [v6 recordingResettingToDescriptionOfFlipbook:v5];
+    [v6 recordingResettingToDescriptionOfFlipbook:flipbookCopy];
 
     swift_unknownObjectRelease();
   }
@@ -153,14 +153,14 @@
   }
 }
 
-- (void)recordingUpdatedGlyphState:(int64_t)a3
+- (void)recordingUpdatedGlyphState:(int64_t)state
 {
   v4 = *((swift_isaMask & *self) + 0xA0);
-  v6 = self;
+  selfCopy = self;
   v5 = v4();
   if (v5)
   {
-    [v5 recordingUpdatedGlyphState:a3];
+    [v5 recordingUpdatedGlyphState:state];
     swift_unknownObjectRelease();
   }
 }

@@ -1,8 +1,8 @@
 @interface LEDView
 - (CGSize)intrinsicContentSize;
-- (_TtC20HeadphoneProxService7LEDView)initWithCoder:(id)a3;
-- (_TtC20HeadphoneProxService7LEDView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC20HeadphoneProxService7LEDView)initWithCoder:(id)coder;
+- (_TtC20HeadphoneProxService7LEDView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation LEDView
@@ -15,17 +15,17 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(LEDView *)&v6 traitCollectionDidChange:v4];
+  [(LEDView *)&v6 traitCollectionDidChange:changeCopy];
   [v5 invalidateIntrinsicContentSize];
 }
 
-- (_TtC20HeadphoneProxService7LEDView)initWithCoder:(id)a3
+- (_TtC20HeadphoneProxService7LEDView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC20HeadphoneProxService7LEDView_label;
   *(&self->super.super.super.isa + v3) = sub_1000261F8();
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (_TtC20HeadphoneProxService7LEDView)initWithFrame:(CGRect)a3
+- (_TtC20HeadphoneProxService7LEDView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

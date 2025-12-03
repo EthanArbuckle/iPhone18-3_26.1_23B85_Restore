@@ -1,56 +1,56 @@
 @interface SADeviceRecord
 - (BOOL)hasDisconnectedDevices;
-- (BOOL)hasSurfacedNotificationFor:(id)a3;
-- (SADeviceRecord)initWithClock:(id)a3 analytics:(id)a4;
-- (SADeviceRecord)initWithCoder:(id)a3;
-- (id)getAdvertisingStartDateForHELE:(id)a3;
-- (id)getLastCompanionDisconnectionDate:(id)a3;
-- (id)getLastWithYouDate:(id)a3;
-- (id)getLastWithYouLocation:(id)a3;
-- (id)getLatestAdvertisement:(id)a3;
-- (id)getLatestCaseAdvertisementDate:(id)a3;
-- (id)getLatestNOAdvertisement:(id)a3;
-- (id)getLatestWildAdvertisement:(id)a3;
-- (id)getRelatedDevices:(id)a3;
-- (id)getSADevice:(id)a3;
-- (int64_t)getConnectionState:(id)a3;
-- (int64_t)getMaintenanceStatus:(id)a3;
-- (int64_t)getRelationStatus:(id)a3;
-- (unint64_t)getMonitoringSessionState:(id)a3;
-- (unint64_t)getScenarioClass:(id)a3;
-- (unint64_t)getWithYouStatus:(id)a3;
-- (void)_updateAdvertisingStartDateForHELE:(id)a3;
+- (BOOL)hasSurfacedNotificationFor:(id)for;
+- (SADeviceRecord)initWithClock:(id)clock analytics:(id)analytics;
+- (SADeviceRecord)initWithCoder:(id)coder;
+- (id)getAdvertisingStartDateForHELE:(id)e;
+- (id)getLastCompanionDisconnectionDate:(id)date;
+- (id)getLastWithYouDate:(id)date;
+- (id)getLastWithYouLocation:(id)location;
+- (id)getLatestAdvertisement:(id)advertisement;
+- (id)getLatestCaseAdvertisementDate:(id)date;
+- (id)getLatestNOAdvertisement:(id)advertisement;
+- (id)getLatestWildAdvertisement:(id)advertisement;
+- (id)getRelatedDevices:(id)devices;
+- (id)getSADevice:(id)device;
+- (int64_t)getConnectionState:(id)state;
+- (int64_t)getMaintenanceStatus:(id)status;
+- (int64_t)getRelationStatus:(id)status;
+- (unint64_t)getMonitoringSessionState:(id)state;
+- (unint64_t)getScenarioClass:(id)class;
+- (unint64_t)getWithYouStatus:(id)status;
+- (void)_updateAdvertisingStartDateForHELE:(id)e;
 - (void)_updateAllRelatedDevices;
-- (void)_updateConnectionStateOnConnectionEvent:(id)a3;
-- (void)_updateDeviceRecordOnDeviceUpdateEvent:(id)a3;
-- (void)_updateLatestAdvertisement:(id)a3;
-- (void)_updateLatestCaseAdvertisementDate:(id)a3;
-- (void)_updateSingleDeviceRecordForDevice:(id)a3;
-- (void)ingestTAEvent:(id)a3;
+- (void)_updateConnectionStateOnConnectionEvent:(id)event;
+- (void)_updateDeviceRecordOnDeviceUpdateEvent:(id)event;
+- (void)_updateLatestAdvertisement:(id)advertisement;
+- (void)_updateLatestCaseAdvertisementDate:(id)date;
+- (void)_updateSingleDeviceRecordForDevice:(id)device;
+- (void)ingestTAEvent:(id)event;
 - (void)resetAllWithYouStatus;
-- (void)updateLastWithYouDate:(id)a3 forDeviceWithUUID:(id)a4;
-- (void)updateLastWithYouLocation:(id)a3 forDeviceWithUUID:(id)a4;
-- (void)updateLatestAdvertisement:(id)a3 forDeviceWithUUID:(id)a4;
-- (void)updateLocation:(id)a3;
-- (void)updateMonitoringSessionState:(unint64_t)a3 forDeviceWithUUID:(id)a4;
-- (void)updateScenario:(unint64_t)a3 forDeviceWithUUID:(id)a4;
-- (void)updatedWithYouStatusFrom:(unint64_t)a3 to:(unint64_t)a4 forDeviceWithUUID:(id)a5;
+- (void)updateLastWithYouDate:(id)date forDeviceWithUUID:(id)d;
+- (void)updateLastWithYouLocation:(id)location forDeviceWithUUID:(id)d;
+- (void)updateLatestAdvertisement:(id)advertisement forDeviceWithUUID:(id)d;
+- (void)updateLocation:(id)location;
+- (void)updateMonitoringSessionState:(unint64_t)state forDeviceWithUUID:(id)d;
+- (void)updateScenario:(unint64_t)scenario forDeviceWithUUID:(id)d;
+- (void)updatedWithYouStatusFrom:(unint64_t)from to:(unint64_t)to forDeviceWithUUID:(id)d;
 @end
 
 @implementation SADeviceRecord
 
-- (SADeviceRecord)initWithClock:(id)a3 analytics:(id)a4
+- (SADeviceRecord)initWithClock:(id)clock analytics:(id)analytics
 {
-  v7 = a3;
-  v8 = a4;
+  clockCopy = clock;
+  analyticsCopy = analytics;
   v15.receiver = self;
   v15.super_class = SADeviceRecord;
   v9 = [(SADeviceRecord *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clock, a3);
-    objc_storeStrong(&v10->_analytics, a4);
+    objc_storeStrong(&v9->_clock, clock);
+    objc_storeStrong(&v10->_analytics, analytics);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     deviceRecord = v10->_deviceRecord;
     v10->_deviceRecord = v11;
@@ -62,340 +62,340 @@
   return v10;
 }
 
-- (id)getSADevice:(id)a3
+- (id)getSADevice:(id)device
 {
-  v3 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:a3];
-  v4 = [v3 device];
+  v3 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:device];
+  device = [v3 device];
 
-  return v4;
+  return device;
 }
 
-- (int64_t)getConnectionState:(id)a3
+- (int64_t)getConnectionState:(id)state
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  stateCopy = state;
+  if (stateCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:stateCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 connectionState];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:stateCopy];
+    connectionState = [v6 connectionState];
   }
 
   else
   {
-    v7 = 0;
+    connectionState = 0;
   }
 
-  return v7;
+  return connectionState;
 }
 
-- (unint64_t)getWithYouStatus:(id)a3
+- (unint64_t)getWithYouStatus:(id)status
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  statusCopy = status;
+  if (statusCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:statusCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 withYouStatus];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:statusCopy];
+    withYouStatus = [v6 withYouStatus];
   }
 
   else
   {
-    v7 = 0;
+    withYouStatus = 0;
   }
 
-  return v7;
+  return withYouStatus;
 }
 
-- (id)getLatestAdvertisement:(id)a3
+- (id)getLatestAdvertisement:(id)advertisement
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  advertisementCopy = advertisement;
+  if (advertisementCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:advertisementCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 latestAdvertisement];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:advertisementCopy];
+    latestAdvertisement = [v6 latestAdvertisement];
   }
 
   else
   {
-    v7 = 0;
+    latestAdvertisement = 0;
   }
 
-  return v7;
+  return latestAdvertisement;
 }
 
-- (id)getLatestNOAdvertisement:(id)a3
+- (id)getLatestNOAdvertisement:(id)advertisement
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  advertisementCopy = advertisement;
+  if (advertisementCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:advertisementCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 latestNOAdvertisement];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:advertisementCopy];
+    latestNOAdvertisement = [v6 latestNOAdvertisement];
   }
 
   else
   {
-    v7 = 0;
+    latestNOAdvertisement = 0;
   }
 
-  return v7;
+  return latestNOAdvertisement;
 }
 
-- (id)getLatestWildAdvertisement:(id)a3
+- (id)getLatestWildAdvertisement:(id)advertisement
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  advertisementCopy = advertisement;
+  if (advertisementCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:advertisementCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 latestWildAdvertisement];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:advertisementCopy];
+    latestWildAdvertisement = [v6 latestWildAdvertisement];
   }
 
   else
   {
-    v7 = 0;
+    latestWildAdvertisement = 0;
   }
 
-  return v7;
+  return latestWildAdvertisement;
 }
 
-- (id)getLatestCaseAdvertisementDate:(id)a3
+- (id)getLatestCaseAdvertisementDate:(id)date
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  dateCopy = date;
+  if (dateCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:dateCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 latestCaseAdvertisementDate];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:dateCopy];
+    latestCaseAdvertisementDate = [v6 latestCaseAdvertisementDate];
   }
 
   else
   {
-    v7 = 0;
+    latestCaseAdvertisementDate = 0;
   }
 
-  return v7;
+  return latestCaseAdvertisementDate;
 }
 
-- (id)getLastWithYouDate:(id)a3
+- (id)getLastWithYouDate:(id)date
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  dateCopy = date;
+  if (dateCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:dateCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 lastWithYouDate];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:dateCopy];
+    lastWithYouDate = [v6 lastWithYouDate];
   }
 
   else
   {
-    v7 = 0;
+    lastWithYouDate = 0;
   }
 
-  return v7;
+  return lastWithYouDate;
 }
 
-- (id)getLastCompanionDisconnectionDate:(id)a3
+- (id)getLastCompanionDisconnectionDate:(id)date
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  dateCopy = date;
+  if (dateCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:dateCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 lastCompanionDisconnectionDate];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:dateCopy];
+    lastCompanionDisconnectionDate = [v6 lastCompanionDisconnectionDate];
   }
 
   else
   {
-    v7 = 0;
+    lastCompanionDisconnectionDate = 0;
   }
 
-  return v7;
+  return lastCompanionDisconnectionDate;
 }
 
-- (unint64_t)getScenarioClass:(id)a3
+- (unint64_t)getScenarioClass:(id)class
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  classCopy = class;
+  if (classCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:classCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 currentScenarioClass];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:classCopy];
+    currentScenarioClass = [v6 currentScenarioClass];
   }
 
   else
   {
-    v7 = 0;
+    currentScenarioClass = 0;
   }
 
-  return v7;
+  return currentScenarioClass;
 }
 
-- (unint64_t)getMonitoringSessionState:(id)a3
+- (unint64_t)getMonitoringSessionState:(id)state
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  stateCopy = state;
+  if (stateCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:stateCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 currentMonitoringSessionState];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:stateCopy];
+    currentMonitoringSessionState = [v6 currentMonitoringSessionState];
   }
 
   else
   {
-    v7 = 0;
+    currentMonitoringSessionState = 0;
   }
 
-  return v7;
+  return currentMonitoringSessionState;
 }
 
-- (id)getRelatedDevices:(id)a3
+- (id)getRelatedDevices:(id)devices
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  devicesCopy = devices;
+  if (devicesCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:devicesCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 uuidsOfRelatedDevices];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:devicesCopy];
+    uuidsOfRelatedDevices = [v6 uuidsOfRelatedDevices];
   }
 
   else
   {
-    v7 = 0;
+    uuidsOfRelatedDevices = 0;
   }
 
-  return v7;
+  return uuidsOfRelatedDevices;
 }
 
-- (id)getLastWithYouLocation:(id)a3
+- (id)getLastWithYouLocation:(id)location
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  locationCopy = location;
+  if (locationCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:locationCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 lastWithYouLocation];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:locationCopy];
+    lastWithYouLocation = [v6 lastWithYouLocation];
   }
 
   else
   {
-    v7 = 0;
+    lastWithYouLocation = 0;
   }
 
-  return v7;
+  return lastWithYouLocation;
 }
 
-- (id)getAdvertisingStartDateForHELE:(id)a3
+- (id)getAdvertisingStartDateForHELE:(id)e
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  eCopy = e;
+  if (eCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:eCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 advertisingStartDateForHELE];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:eCopy];
+    advertisingStartDateForHELE = [v6 advertisingStartDateForHELE];
   }
 
   else
   {
-    v7 = 0;
+    advertisingStartDateForHELE = 0;
   }
 
-  return v7;
+  return advertisingStartDateForHELE;
 }
 
-- (int64_t)getRelationStatus:(id)a3
+- (int64_t)getRelationStatus:(id)status
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  statusCopy = status;
+  if (statusCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:statusCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 relationStatus];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:statusCopy];
+    relationStatus = [v6 relationStatus];
   }
 
   else
   {
-    v7 = -1;
+    relationStatus = -1;
   }
 
-  return v7;
+  return relationStatus;
 }
 
-- (int64_t)getMaintenanceStatus:(id)a3
+- (int64_t)getMaintenanceStatus:(id)status
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  statusCopy = status;
+  if (statusCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:statusCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 maintenanceStatus];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:statusCopy];
+    maintenanceStatus = [v6 maintenanceStatus];
   }
 
   else
   {
-    v7 = -1;
+    maintenanceStatus = -1;
   }
 
-  return v7;
+  return maintenanceStatus;
 }
 
-- (void)updateLatestAdvertisement:(id)a3 forDeviceWithUUID:(id)a4
+- (void)updateLatestAdvertisement:(id)advertisement forDeviceWithUUID:(id)d
 {
   deviceRecord = self->_deviceRecord;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)deviceRecord objectForKey:a4];
-  [v7 updateLatestAdvertisement:v6];
+  advertisementCopy = advertisement;
+  v7 = [(NSMutableDictionary *)deviceRecord objectForKey:d];
+  [v7 updateLatestAdvertisement:advertisementCopy];
 }
 
-- (void)_updateSingleDeviceRecordForDevice:(id)a3
+- (void)_updateSingleDeviceRecordForDevice:(id)device
 {
-  v4 = a3;
-  v8 = [v4 identifier];
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
   v5 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:?];
 
   deviceRecord = self->_deviceRecord;
   if (v5)
   {
-    v7 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v8];
-    [(SASingleDeviceRecord *)v7 setDevice:v4];
+    v7 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:identifier];
+    [(SASingleDeviceRecord *)v7 setDevice:deviceCopy];
   }
 
   else
   {
-    v7 = [[SASingleDeviceRecord alloc] initWithDevice:v4 clock:self->_clock analytics:self->_analytics];
+    v7 = [[SASingleDeviceRecord alloc] initWithDevice:deviceCopy clock:self->_clock analytics:self->_analytics];
 
-    [(NSMutableDictionary *)deviceRecord setObject:v7 forKey:v8];
+    [(NSMutableDictionary *)deviceRecord setObject:v7 forKey:identifier];
   }
 }
 
-- (void)_updateDeviceRecordOnDeviceUpdateEvent:(id)a3
+- (void)_updateDeviceRecordOnDeviceUpdateEvent:(id)event
 {
-  v14 = a3;
-  v4 = [v14 device];
+  eventCopy = event;
+  device = [eventCopy device];
 
-  if (!v4)
+  if (!device)
   {
     goto LABEL_13;
   }
 
-  if (![v14 eventType])
+  if (![eventCopy eventType])
   {
-    v8 = [v14 device];
-    [(SADeviceRecord *)self _updateSingleDeviceRecordForDevice:v8];
+    device2 = [eventCopy device];
+    [(SADeviceRecord *)self _updateSingleDeviceRecordForDevice:device2];
 LABEL_10:
 
-    v6 = v14;
+    v6 = eventCopy;
     goto LABEL_11;
   }
 
-  v5 = [v14 eventType] == 1;
-  v6 = v14;
+  v5 = [eventCopy eventType] == 1;
+  v6 = eventCopy;
   if (v5)
   {
-    v7 = [v14 device];
-    v8 = [v7 identifier];
+    device3 = [eventCopy device];
+    device2 = [device3 identifier];
 
-    v9 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v8];
-    v10 = [v9 isConnected];
+    v9 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:device2];
+    isConnected = [v9 isConnected];
 
     deviceRecord = self->_deviceRecord;
-    if (v10)
+    if (isConnected)
     {
-      v12 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v8];
-      [v12 setDevice:0];
+      device4 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:device2];
+      [device4 setDevice:0];
     }
 
     else
     {
-      v12 = [v14 device];
-      v13 = [v12 identifier];
-      [(NSMutableDictionary *)deviceRecord removeObjectForKey:v13];
+      device4 = [eventCopy device];
+      identifier = [device4 identifier];
+      [(NSMutableDictionary *)deviceRecord removeObjectForKey:identifier];
     }
 
     goto LABEL_10;
@@ -435,13 +435,13 @@ LABEL_13:
 
         v4 = *(*(&v33 + 1) + 8 * i);
         v5 = [(SADeviceRecord *)self getSADevice:v4, v23];
-        v6 = [v5 groupIdentifier];
+        groupIdentifier = [v5 groupIdentifier];
 
         v7 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
         [v7 resetRelatedDevices];
 
-        v8 = v6;
-        if (v6)
+        v8 = groupIdentifier;
+        if (groupIdentifier)
         {
           v27 = i;
           v31 = 0u;
@@ -467,8 +467,8 @@ LABEL_13:
                 if (([v14 isEqual:v4] & 1) == 0)
                 {
                   v15 = [(SADeviceRecord *)self getSADevice:v14];
-                  v16 = [v15 groupIdentifier];
-                  v17 = [v16 isEqual:v8];
+                  groupIdentifier2 = [v15 groupIdentifier];
+                  v17 = [groupIdentifier2 isEqual:v8];
 
                   if (v17)
                   {
@@ -515,47 +515,47 @@ LABEL_13:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateConnectionStateOnConnectionEvent:(id)a3
+- (void)_updateConnectionStateOnConnectionEvent:(id)event
 {
-  v24 = a3;
+  eventCopy = event;
   deviceRecord = self->_deviceRecord;
-  v5 = [v24 identifier];
-  v6 = [(NSMutableDictionary *)deviceRecord objectForKey:v5];
+  identifier = [eventCopy identifier];
+  v6 = [(NSMutableDictionary *)deviceRecord objectForKey:identifier];
   if (v6)
   {
 
     goto LABEL_3;
   }
 
-  if ([v24 state] == 2)
+  if ([eventCopy state] == 2)
   {
 
 LABEL_14:
     v21 = self->_deviceRecord;
-    v16 = [[SASingleDeviceRecord alloc] initWithConnectionEvent:v24 clock:self->_clock analytics:self->_analytics];
-    v22 = [v24 identifier];
-    [(NSMutableDictionary *)v21 setObject:v16 forKey:v22];
+    identifier4 = [[SASingleDeviceRecord alloc] initWithConnectionEvent:eventCopy clock:self->_clock analytics:self->_analytics];
+    identifier2 = [eventCopy identifier];
+    [(NSMutableDictionary *)v21 setObject:identifier4 forKey:identifier2];
 
     goto LABEL_17;
   }
 
-  v20 = [v24 state];
+  state = [eventCopy state];
 
-  if (v20 == 3)
+  if (state == 3)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
-  v7 = [v24 identifier];
-  v8 = [(SADeviceRecord *)self getSADevice:v7];
+  identifier3 = [eventCopy identifier];
+  v8 = [(SADeviceRecord *)self getSADevice:identifier3];
   if (!v8)
   {
-    if ([v24 state])
+    if ([eventCopy state])
     {
-      v19 = [v24 state];
+      state2 = [eventCopy state];
 
-      if (v19 != 1)
+      if (state2 != 1)
       {
         goto LABEL_5;
       }
@@ -566,65 +566,65 @@ LABEL_3:
     }
 
     v23 = self->_deviceRecord;
-    v16 = [v24 identifier];
-    [(NSMutableDictionary *)v23 removeObjectForKey:v16];
+    identifier4 = [eventCopy identifier];
+    [(NSMutableDictionary *)v23 removeObjectForKey:identifier4];
     goto LABEL_17;
   }
 
 LABEL_5:
   v9 = self->_deviceRecord;
-  v10 = [v24 identifier];
-  v11 = [(NSMutableDictionary *)v9 objectForKey:v10];
-  [v11 setConnectionState:{objc_msgSend(v24, "state")}];
+  identifier5 = [eventCopy identifier];
+  v11 = [(NSMutableDictionary *)v9 objectForKey:identifier5];
+  [v11 setConnectionState:{objc_msgSend(eventCopy, "state")}];
 
-  v12 = [v24 state];
-  v13 = v24;
-  if (!v12 || (v14 = [v24 state], v13 = v24, v14 == 1))
+  state3 = [eventCopy state];
+  v13 = eventCopy;
+  if (!state3 || (v14 = [eventCopy state], v13 = eventCopy, v14 == 1))
   {
     v15 = self->_deviceRecord;
-    v16 = [v13 identifier];
-    v17 = [(NSMutableDictionary *)v15 objectForKey:v16];
-    v18 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-    [v17 updateLastCompanionDisconnectionDate:v18];
+    identifier4 = [v13 identifier];
+    v17 = [(NSMutableDictionary *)v15 objectForKey:identifier4];
+    getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+    [v17 updateLastCompanionDisconnectionDate:getCurrentTime];
 
 LABEL_17:
-    v13 = v24;
+    v13 = eventCopy;
   }
 
   MEMORY[0x2821F96F8](v14, v13);
 }
 
-- (void)_updateLatestAdvertisement:(id)a3
+- (void)_updateLatestAdvertisement:(id)advertisement
 {
   deviceRecord = self->_deviceRecord;
-  v4 = a3;
-  v6 = [v4 uuid];
-  v5 = [(NSMutableDictionary *)deviceRecord objectForKey:v6];
-  [v5 updateLatestAdvertisement:v4];
+  advertisementCopy = advertisement;
+  uuid = [advertisementCopy uuid];
+  v5 = [(NSMutableDictionary *)deviceRecord objectForKey:uuid];
+  [v5 updateLatestAdvertisement:advertisementCopy];
 }
 
-- (void)_updateLatestCaseAdvertisementDate:(id)a3
+- (void)_updateLatestCaseAdvertisementDate:(id)date
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   deviceRecord = self->_deviceRecord;
-  v6 = [v4 uuid];
-  v7 = [(NSMutableDictionary *)deviceRecord objectForKey:v6];
+  uuid = [dateCopy uuid];
+  v7 = [(NSMutableDictionary *)deviceRecord objectForKey:uuid];
 
-  v8 = [v7 device];
-  v9 = [v8 isAirPodsCase];
+  device = [v7 device];
+  isAirPodsCase = [device isAirPodsCase];
 
-  if (v9)
+  if (isAirPodsCase)
   {
-    v10 = [v4 scanDate];
-    [v7 updateLatestCaseAdvertisementDate:v10];
+    scanDate = [dateCopy scanDate];
+    [v7 updateLatestCaseAdvertisementDate:scanDate];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v7 uuidsOfRelatedDevices];
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    uuidsOfRelatedDevices = [v7 uuidsOfRelatedDevices];
+    v12 = [uuidsOfRelatedDevices countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -636,18 +636,18 @@ LABEL_17:
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(uuidsOfRelatedDevices);
           }
 
           v16 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:*(*(&v19 + 1) + 8 * v15)];
-          v17 = [v4 scanDate];
-          [v16 updateLatestCaseAdvertisementDate:v17];
+          scanDate2 = [dateCopy scanDate];
+          [v16 updateLatestCaseAdvertisementDate:scanDate2];
 
           ++v15;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [uuidsOfRelatedDevices countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v13);
@@ -657,29 +657,29 @@ LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAdvertisingStartDateForHELE:(id)a3
+- (void)_updateAdvertisingStartDateForHELE:(id)e
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eCopy = e;
   deviceRecord = self->_deviceRecord;
-  v6 = [v4 uuid];
-  v7 = [(NSMutableDictionary *)deviceRecord objectForKey:v6];
+  uuid = [eCopy uuid];
+  v7 = [(NSMutableDictionary *)deviceRecord objectForKey:uuid];
 
-  v8 = [v7 device];
-  if ([v8 deviceType] == 16 && (objc_msgSend(v8, "productId") == 8206 || objc_msgSend(v8, "productId") == 8211))
+  device = [v7 device];
+  if ([device deviceType] == 16 && (objc_msgSend(device, "productId") == 8206 || objc_msgSend(device, "productId") == 8211))
   {
-    v9 = [v7 currentBudPosition];
-    v10 = [v4 getAirPodsBudPosition:{objc_msgSend(v8, "partIdentifier")}];
+    currentBudPosition = [v7 currentBudPosition];
+    v10 = [eCopy getAirPodsBudPosition:{objc_msgSend(device, "partIdentifier")}];
     v11 = v10;
-    if (v9 != v10)
+    if (currentBudPosition != v10)
     {
-      v26 = v9;
+      v26 = currentBudPosition;
       v27 = v10;
-      v12 = [v4 scanDate];
-      [v7 updateAdvertisingStartDateForHELE:v12];
+      scanDate = [eCopy scanDate];
+      [v7 updateAdvertisingStartDateForHELE:scanDate];
 
-      v13 = [v4 uuid];
-      v14 = [(SADeviceRecord *)self getRelatedDevices:v13];
+      uuid2 = [eCopy uuid];
+      v14 = [(SADeviceRecord *)self getRelatedDevices:uuid2];
 
       v30 = 0u;
       v31 = 0u;
@@ -701,8 +701,8 @@ LABEL_17:
             }
 
             v20 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:*(*(&v28 + 1) + 8 * i)];
-            v21 = [v4 scanDate];
-            [v20 updateAdvertisingStartDateForHELE:v21];
+            scanDate2 = [eCopy scanDate];
+            [v20 updateAdvertisingStartDateForHELE:scanDate2];
           }
 
           v17 = [v15 countByEnumeratingWithState:&v28 objects:v44 count:16];
@@ -716,13 +716,13 @@ LABEL_17:
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
       {
         v23 = v22;
-        v24 = [v4 uuid];
+        uuid3 = [eCopy uuid];
         *buf = 68290051;
         v34 = 2082;
         v33 = 0;
         v35 = "";
         v36 = 2113;
-        v37 = v24;
+        v37 = uuid3;
         v38 = 2113;
         v39 = v15;
         v40 = 2049;
@@ -739,40 +739,40 @@ LABEL_17:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateLastWithYouDate:(id)a3 forDeviceWithUUID:(id)a4
+- (void)updateLastWithYouDate:(id)date forDeviceWithUUID:(id)d
 {
   deviceRecord = self->_deviceRecord;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)deviceRecord objectForKey:a4];
-  [v7 updateLastWithYouDate:v6];
+  dateCopy = date;
+  v7 = [(NSMutableDictionary *)deviceRecord objectForKey:d];
+  [v7 updateLastWithYouDate:dateCopy];
 }
 
-- (void)updateScenario:(unint64_t)a3 forDeviceWithUUID:(id)a4
+- (void)updateScenario:(unint64_t)scenario forDeviceWithUUID:(id)d
 {
-  v5 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:a4];
-  [v5 updateCurrentScenarioClass:a3];
+  v5 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:d];
+  [v5 updateCurrentScenarioClass:scenario];
 }
 
-- (void)updateMonitoringSessionState:(unint64_t)a3 forDeviceWithUUID:(id)a4
+- (void)updateMonitoringSessionState:(unint64_t)state forDeviceWithUUID:(id)d
 {
-  v5 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:a4];
-  [v5 setCurrentMonitoringSessionState:a3];
+  v5 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:d];
+  [v5 setCurrentMonitoringSessionState:state];
 }
 
-- (void)updateLastWithYouLocation:(id)a3 forDeviceWithUUID:(id)a4
+- (void)updateLastWithYouLocation:(id)location forDeviceWithUUID:(id)d
 {
-  v27 = a3;
-  v6 = a4;
-  if (v6)
+  locationCopy = location;
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:dCopy];
 
     if (v7)
     {
-      v8 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v6];
-      v9 = [v8 currentScenarioClass];
+      v8 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:dCopy];
+      currentScenarioClass = [v8 currentScenarioClass];
 
-      if (v9 == 3)
+      if (currentScenarioClass == 3)
       {
         lastLocation = self->_lastLocation;
         if (!lastLocation)
@@ -787,24 +787,24 @@ LABEL_17:
         v15 = objc_alloc(MEMORY[0x277CBFBC8]);
         [(TALocationLite *)self->_lastLocation horizontalAccuracy];
         v17 = v16;
-        v18 = [v6 UUIDString];
-        v19 = [v15 initWithCenter:v18 radius:v12 identifier:{v14, v17}];
+        uUIDString = [dCopy UUIDString];
+        v19 = [v15 initWithCenter:uUIDString radius:v12 identifier:{v14, v17}];
 
-        v20 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:v6];
+        v20 = [(NSMutableDictionary *)self->_deviceRecord objectForKey:dCopy];
         v21 = v20;
         v22 = v19;
         goto LABEL_12;
       }
 
-      v23 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v6];
-      v24 = [v23 currentScenarioClass];
+      v23 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:dCopy];
+      currentScenarioClass2 = [v23 currentScenarioClass];
 
-      if (v27 && v24 == 2)
+      if (locationCopy && currentScenarioClass2 == 2)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = v27;
+          v25 = locationCopy;
         }
 
         else
@@ -814,7 +814,7 @@ LABEL_17:
 
         deviceRecord = self->_deviceRecord;
         v21 = v25;
-        v20 = [(NSMutableDictionary *)deviceRecord objectForKey:v6];
+        v20 = [(NSMutableDictionary *)deviceRecord objectForKey:dCopy];
         v19 = v20;
         v22 = v21;
 LABEL_12:
@@ -829,12 +829,12 @@ LABEL_13:
 - (void)resetAllWithYouStatus
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_deviceRecord allKeys];
+  allKeys = [(NSMutableDictionary *)self->_deviceRecord allKeys];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -846,7 +846,7 @@ LABEL_13:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:*(*(&v10 + 1) + 8 * v7)];
@@ -856,7 +856,7 @@ LABEL_13:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -865,21 +865,21 @@ LABEL_13:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasSurfacedNotificationFor:(id)a3
+- (BOOL)hasSurfacedNotificationFor:(id)for
 {
-  v4 = a3;
-  if (v4 && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  forCopy = for;
+  if (forCopy && ([(NSMutableDictionary *)self->_deviceRecord objectForKey:forCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:v4];
-    v7 = [v6 hasSurfacedNotification];
+    v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:forCopy];
+    hasSurfacedNotification = [v6 hasSurfacedNotification];
   }
 
   else
   {
-    v7 = 0;
+    hasSurfacedNotification = 0;
   }
 
-  return v7;
+  return hasSurfacedNotification;
 }
 
 - (BOOL)hasDisconnectedDevices
@@ -905,9 +905,9 @@ LABEL_13:
         }
 
         v8 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i), v13];
-        v9 = [v8 connectionState];
+        connectionState = [v8 connectionState];
 
-        if (v9 < 2)
+        if (connectionState < 2)
         {
           v10 = 1;
           goto LABEL_11;
@@ -931,20 +931,20 @@ LABEL_11:
   return v10;
 }
 
-- (void)updateLocation:(id)a3
+- (void)updateLocation:(id)location
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  locationCopy = location;
   lastLocation = self->_lastLocation;
   p_lastLocation = &self->_lastLocation;
   v6 = lastLocation;
   if (lastLocation)
   {
-    v9 = [(TALocationLite *)v6 getDate];
-    v10 = [v5 getDate];
-    v11 = [v9 compare:v10] == 0;
+    getDate = [(TALocationLite *)v6 getDate];
+    getDate2 = [locationCopy getDate];
+    v11 = [getDate compare:getDate2] == 0;
 
-    if (!v5)
+    if (!locationCopy)
     {
 LABEL_9:
       v14 = TASALog;
@@ -953,7 +953,7 @@ LABEL_9:
         v15 = *p_lastLocation;
         v16 = v14;
         v17 = [v15 description];
-        v18 = [v5 description];
+        v18 = [locationCopy description];
         v24 = 68289539;
         v25 = 0;
         v26 = 2082;
@@ -972,20 +972,20 @@ LABEL_9:
   else
   {
     v11 = 0;
-    if (!v5)
+    if (!locationCopy)
     {
       goto LABEL_9;
     }
   }
 
-  [v5 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v13 = v12 >= 70.0 || v11;
   if (v13 == 1)
   {
     goto LABEL_9;
   }
 
-  objc_storeStrong(p_lastLocation, a3);
+  objc_storeStrong(p_lastLocation, location);
   v19 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
   {
@@ -1006,51 +1006,51 @@ LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ingestTAEvent:(id)a3
+- (void)ingestTAEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SADeviceRecord *)self _updateSingleDeviceRecordForDevice:v4];
+    [(SADeviceRecord *)self _updateSingleDeviceRecordForDevice:eventCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SADeviceRecord *)self _updateDeviceRecordOnDeviceUpdateEvent:v4];
+    [(SADeviceRecord *)self _updateDeviceRecordOnDeviceUpdateEvent:eventCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SADeviceRecord *)self _updateConnectionStateOnConnectionEvent:v4];
+    [(SADeviceRecord *)self _updateConnectionStateOnConnectionEvent:eventCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SADeviceRecord *)self _updateLatestCaseAdvertisementDate:v4];
-    [(SADeviceRecord *)self _updateAdvertisingStartDateForHELE:v4];
-    [(SADeviceRecord *)self _updateLatestAdvertisement:v4];
+    [(SADeviceRecord *)self _updateLatestCaseAdvertisementDate:eventCopy];
+    [(SADeviceRecord *)self _updateAdvertisingStartDateForHELE:eventCopy];
+    [(SADeviceRecord *)self _updateLatestAdvertisement:eventCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SADeviceRecord *)self updateLocation:v4];
+    [(SADeviceRecord *)self updateLocation:eventCopy];
   }
 }
 
-- (SADeviceRecord)initWithCoder:(id)a3
+- (SADeviceRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SADeviceRecord;
   v5 = [(SADeviceRecord *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceRecord"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceRecord"];
     deviceRecord = v5->_deviceRecord;
     v5->_deviceRecord = v6;
   }
@@ -1058,10 +1058,10 @@ LABEL_13:
   return v5;
 }
 
-- (void)updatedWithYouStatusFrom:(unint64_t)a3 to:(unint64_t)a4 forDeviceWithUUID:(id)a5
+- (void)updatedWithYouStatusFrom:(unint64_t)from to:(unint64_t)to forDeviceWithUUID:(id)d
 {
-  v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:a5];
-  [v6 updateWithYouStatus:a4];
+  v6 = [(NSMutableDictionary *)self->_deviceRecord objectForKeyedSubscript:d];
+  [v6 updateWithYouStatus:to];
 }
 
 @end

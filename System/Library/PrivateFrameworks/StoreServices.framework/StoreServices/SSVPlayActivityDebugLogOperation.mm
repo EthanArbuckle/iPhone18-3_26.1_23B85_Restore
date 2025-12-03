@@ -7,29 +7,29 @@
 - (void)main
 {
   v24 = *MEMORY[0x1E69E9840];
-  v2 = [(SSVPlayActivityDebugLogOperation *)self playActivityEvents];
-  if ([v2 count])
+  playActivityEvents = [(SSVPlayActivityDebugLogOperation *)self playActivityEvents];
+  if ([playActivityEvents count])
   {
     v3 = NSTemporaryDirectory();
     v4 = [v3 stringByAppendingPathComponent:@"com.apple.PlayActivityFeed"];
 
-    v17 = [MEMORY[0x1E696AC08] defaultManager];
-    [v17 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:0];
     v16 = [v4 stringByAppendingPathComponent:@"PlayActivityEvents.log"];
     v5 = [MEMORY[0x1E695DFC0] outputStreamToFileAtPath:? append:?];
     [v5 open];
     v6 = [@"\n-----------------------------------------\n" dataUsingEncoding:4];
     v7 = objc_alloc_init(SSVPlayActivityFeedSerialization);
     v8 = +[SSDevice currentDevice];
-    v9 = [v8 storeFrontIdentifier];
-    [(SSVPlayActivityFeedSerialization *)v7 setCurrentStoreFrontID:v9];
+    storeFrontIdentifier = [v8 storeFrontIdentifier];
+    [(SSVPlayActivityFeedSerialization *)v7 setCurrentStoreFrontID:storeFrontIdentifier];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v2;
-    v10 = v2;
+    v18 = playActivityEvents;
+    v10 = playActivityEvents;
     v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
@@ -58,7 +58,7 @@
     }
 
     [v5 close];
-    v2 = v18;
+    playActivityEvents = v18;
   }
 }
 

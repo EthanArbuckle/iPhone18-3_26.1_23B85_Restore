@@ -1,35 +1,35 @@
 @interface SFSiriClient
 - (SFSiriClient)init;
 - (void)_activate;
-- (void)_completeAllRequestsWithError:(id)a3;
-- (void)_completeRequest:(id)a3 error:(id)a4;
+- (void)_completeAllRequestsWithError:(id)error;
+- (void)_completeRequest:(id)request error:(id)error;
 - (void)_deviceSetupEnd;
-- (void)_deviceSetupPlayGreetingID:(int)a3 completion:(id)a4;
-- (void)_deviceSetupPrepareGreetingFlow:(id)a3 error:(id)a4 completion:(id)a5;
+- (void)_deviceSetupPlayGreetingID:(int)d completion:(id)completion;
+- (void)_deviceSetupPrepareGreetingFlow:(id)flow error:(id)error completion:(id)completion;
 - (void)_invalidate;
 - (void)_processQueuedRequests;
 - (void)activate;
-- (void)deviceSetupBegin:(unint64_t)a3;
+- (void)deviceSetupBegin:(unint64_t)begin;
 - (void)deviceSetupEnd;
-- (void)deviceSetupPlayGreetingID:(int)a3 completion:(id)a4;
-- (void)deviceSetupPrepareGreeting:(id)a3;
-- (void)didFinishSpeakingRequest:(id)a3 withError2:(id)a4;
-- (void)didFinishSpeakingRequest:(id)a3 withError:(id)a4;
-- (void)didFinishSynthesisRequest:(id)a3 withInstrumentMetrics:(id)a4 error2:(id)a5;
-- (void)didFinishSynthesisRequest:(id)a3 withInstrumentMetrics:(id)a4 error:(id)a5;
+- (void)deviceSetupPlayGreetingID:(int)d completion:(id)completion;
+- (void)deviceSetupPrepareGreeting:(id)greeting;
+- (void)didFinishSpeakingRequest:(id)request withError2:(id)error2;
+- (void)didFinishSpeakingRequest:(id)request withError:(id)error;
+- (void)didFinishSynthesisRequest:(id)request withInstrumentMetrics:(id)metrics error2:(id)error2;
+- (void)didFinishSynthesisRequest:(id)request withInstrumentMetrics:(id)metrics error:(id)error;
 - (void)invalidate;
-- (void)invalidateWithFlags:(unsigned int)a3;
-- (void)preWarmDeviceSetupWelcomePhaseWithCompletion:(id)a3;
-- (void)request:(id)a3 didReceiveTimingInfo2:(id)a4;
-- (void)request:(id)a3 didReceiveTimingInfo:(id)a4;
-- (void)sessionService:(id)a3 didChangeStateFrom:(int64_t)a4 to:(int64_t)a5;
-- (void)sessionService:(id)a3 willPresentFeedbackWithDialogIdentifier:(id)a4;
-- (void)speakDeviceSetupWelcomePhaseWithCompletion:(id)a3;
-- (void)speakPasscode:(id)a3 instructions:(id)a4 languageCode:(id)a5 voiceName:(id)a6 flags:(unsigned int)a7 completion:(id)a8;
-- (void)speakText:(id)a3 flags:(unsigned int)a4 rate:(double)a5 delay:(double)a6 startHandler:(id)a7 completion:(id)a8;
-- (void)speakText:(id)a3 languageCode:(id)a4 completion:(id)a5;
-- (void)speakText:(id)a3 rate:(double)a4 completion:(id)a5;
-- (void)startUtteranceRequest:(id)a3;
+- (void)invalidateWithFlags:(unsigned int)flags;
+- (void)preWarmDeviceSetupWelcomePhaseWithCompletion:(id)completion;
+- (void)request:(id)request didReceiveTimingInfo2:(id)info2;
+- (void)request:(id)request didReceiveTimingInfo:(id)info;
+- (void)sessionService:(id)service didChangeStateFrom:(int64_t)from to:(int64_t)to;
+- (void)sessionService:(id)service willPresentFeedbackWithDialogIdentifier:(id)identifier;
+- (void)speakDeviceSetupWelcomePhaseWithCompletion:(id)completion;
+- (void)speakPasscode:(id)passcode instructions:(id)instructions languageCode:(id)code voiceName:(id)name flags:(unsigned int)flags completion:(id)completion;
+- (void)speakText:(id)text flags:(unsigned int)flags rate:(double)rate delay:(double)delay startHandler:(id)handler completion:(id)completion;
+- (void)speakText:(id)text languageCode:(id)code completion:(id)completion;
+- (void)speakText:(id)text rate:(double)rate completion:(id)completion;
+- (void)startUtteranceRequest:(id)request;
 - (void)stopSpeaking;
 @end
 
@@ -81,8 +81,8 @@
       siriServiceManager = self->_siriServiceManager;
     }
 
-    v6 = [(SVXClientServiceManager *)siriServiceManager sessionService];
-    [v6 setDelegate:self];
+    sessionService = [(SVXClientServiceManager *)siriServiceManager sessionService];
+    [sessionService setDelegate:self];
   }
 }
 
@@ -97,7 +97,7 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)invalidateWithFlags:(unsigned int)a3
+- (void)invalidateWithFlags:(unsigned int)flags
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -105,7 +105,7 @@
   v4[2] = __36__SFSiriClient_invalidateWithFlags___block_invoke;
   v4[3] = &unk_1E788D970;
   v4[4] = self;
-  v5 = a3;
+  flagsCopy = flags;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -153,12 +153,12 @@ LABEL_7:
       [SFSiriClient _invalidate];
     }
 
-    v11 = [(SFSiriRequest *)self->_currentRequest speechSynthesisRequest];
+    speechSynthesisRequest = [(SFSiriRequest *)self->_currentRequest speechSynthesisRequest];
 LABEL_24:
-    v6 = v11;
-    if (v11)
+    v6 = speechSynthesisRequest;
+    if (speechSynthesisRequest)
     {
-      [(SiriTTSDaemonSession *)self->_speechSynthesizer cancelWithRequest:v11];
+      [(SiriTTSDaemonSession *)self->_speechSynthesizer cancelWithRequest:speechSynthesisRequest];
     }
 
     goto LABEL_7;
@@ -174,7 +174,7 @@ LABEL_24:
         [SFSiriClient _invalidate];
       }
 
-      v11 = [(SFSiriRequest *)self->_currentRequest speechUtteranceRequest];
+      speechSynthesisRequest = [(SFSiriRequest *)self->_currentRequest speechUtteranceRequest];
       goto LABEL_24;
     }
 
@@ -198,8 +198,8 @@ LABEL_8:
   siriDialogHandler = self->_siriDialogHandler;
   self->_siriDialogHandler = 0;
 
-  v8 = [(SVXClientServiceManager *)self->_siriServiceManager sessionService];
-  [v8 setDelegate:0];
+  sessionService = [(SVXClientServiceManager *)self->_siriServiceManager sessionService];
+  [sessionService setDelegate:0];
 
   siriServiceManager = self->_siriServiceManager;
   self->_siriServiceManager = 0;
@@ -214,17 +214,17 @@ LABEL_8:
   self->_invalidationHandler = 0;
 }
 
-- (void)preWarmDeviceSetupWelcomePhaseWithCompletion:(id)a3
+- (void)preWarmDeviceSetupWelcomePhaseWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__SFSiriClient_preWarmDeviceSetupWelcomePhaseWithCompletion___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -276,17 +276,17 @@ void __61__SFSiriClient_preWarmDeviceSetupWelcomePhaseWithCompletion___block_inv
   }
 }
 
-- (void)speakDeviceSetupWelcomePhaseWithCompletion:(id)a3
+- (void)speakDeviceSetupWelcomePhaseWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__SFSiriClient_speakDeviceSetupWelcomePhaseWithCompletion___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -340,91 +340,91 @@ void __59__SFSiriClient_speakDeviceSetupWelcomePhaseWithCompletion___block_invok
   }
 }
 
-- (void)speakPasscode:(id)a3 instructions:(id)a4 languageCode:(id)a5 voiceName:(id)a6 flags:(unsigned int)a7 completion:(id)a8
+- (void)speakPasscode:(id)passcode instructions:(id)instructions languageCode:(id)code voiceName:(id)name flags:(unsigned int)flags completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  passcodeCopy = passcode;
+  instructionsCopy = instructions;
+  codeCopy = code;
+  nameCopy = name;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__SFSiriClient_speakPasscode_instructions_languageCode_voiceName_flags_completion___block_invoke;
   block[3] = &unk_1E78911F8;
   block[4] = self;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v31 = a7;
-  v29 = v17;
-  v30 = v18;
-  v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
-  v24 = v14;
+  v26 = passcodeCopy;
+  v27 = instructionsCopy;
+  v28 = codeCopy;
+  flagsCopy = flags;
+  v29 = nameCopy;
+  v30 = completionCopy;
+  v20 = completionCopy;
+  v21 = nameCopy;
+  v22 = codeCopy;
+  v23 = instructionsCopy;
+  v24 = passcodeCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)speakText:(id)a3 rate:(double)a4 completion:(id)a5
+- (void)speakText:(id)text rate:(double)rate completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  textCopy = text;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42__SFSiriClient_speakText_rate_completion___block_invoke;
   v13[3] = &unk_1E7891220;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = textCopy;
+  rateCopy = rate;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = textCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)speakText:(id)a3 languageCode:(id)a4 completion:(id)a5
+- (void)speakText:(id)text languageCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  textCopy = text;
+  codeCopy = code;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __50__SFSiriClient_speakText_languageCode_completion___block_invoke;
   v15[3] = &unk_1E788B750;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = textCopy;
+  v17 = codeCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = codeCopy;
+  v14 = textCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (void)speakText:(id)a3 flags:(unsigned int)a4 rate:(double)a5 delay:(double)a6 startHandler:(id)a7 completion:(id)a8
+- (void)speakText:(id)text flags:(unsigned int)flags rate:(double)rate delay:(double)delay startHandler:(id)handler completion:(id)completion
 {
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  textCopy = text;
+  handlerCopy = handler;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__SFSiriClient_speakText_flags_rate_delay_startHandler_completion___block_invoke;
   block[3] = &unk_1E7891248;
   block[4] = self;
-  v22 = v14;
-  v27 = a4;
-  v25 = a5;
-  v26 = a6;
-  v23 = v15;
-  v24 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
+  v22 = textCopy;
+  flagsCopy = flags;
+  rateCopy = rate;
+  delayCopy = delay;
+  v23 = handlerCopy;
+  v24 = completionCopy;
+  v18 = completionCopy;
+  v19 = handlerCopy;
+  v20 = textCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -463,16 +463,16 @@ void __28__SFSiriClient_stopSpeaking__block_invoke(uint64_t a1)
   v4 = IsAppleInternalBuild();
   if (v4)
   {
-    v5 = [a1 text];
+    text = [self text];
   }
 
   else
   {
-    v5 = @"*";
+    text = @"*";
   }
 
-  v6 = v5;
-  [a1 rate];
+  v6 = text;
+  [self rate];
   [a2 delaySecs];
   LogPrintF();
   if (v4)
@@ -487,10 +487,10 @@ void __38__SFSiriClient__processQueuedRequests__block_invoke_2(uint64_t a1, void
   [WeakRetained didFinishSynthesisRequest:*(a1 + 32) withInstrumentMetrics:*(*(*(a1 + 40) + 8) + 40) error:v3];
 }
 
-- (void)_completeAllRequestsWithError:(id)a3
+- (void)_completeAllRequestsWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -511,7 +511,7 @@ void __38__SFSiriClient__processQueuedRequests__block_invoke_2(uint64_t a1, void
           objc_enumerationMutation(v5);
         }
 
-        [(SFSiriClient *)self _completeRequest:*(*(&v11 + 1) + 8 * v9++) error:v4, v11];
+        [(SFSiriClient *)self _completeRequest:*(*(&v11 + 1) + 8 * v9++) error:errorCopy, v11];
       }
 
       while (v7 != v9);
@@ -525,63 +525,63 @@ void __38__SFSiriClient__processQueuedRequests__block_invoke_2(uint64_t a1, void
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_completeRequest:(id)a3 error:(id)a4
+- (void)_completeRequest:(id)request error:(id)error
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = v13;
+  requestCopy = request;
+  errorCopy = error;
+  v7 = requestCopy;
   currentRequest = self->_currentRequest;
-  if (currentRequest == v13)
+  if (currentRequest == requestCopy)
   {
     self->_currentRequest = 0;
 
-    v7 = v13;
+    v7 = requestCopy;
   }
 
-  v9 = [(SFSiriRequest *)v7 speechStartHandler];
+  speechStartHandler = [(SFSiriRequest *)v7 speechStartHandler];
 
-  if (v9)
+  if (speechStartHandler)
   {
-    v10 = [(SFSiriRequest *)v13 speechStartHandler];
-    (v10)[2](v10, 0, v6);
+    speechStartHandler2 = [(SFSiriRequest *)requestCopy speechStartHandler];
+    (speechStartHandler2)[2](speechStartHandler2, 0, errorCopy);
 
-    [(SFSiriRequest *)v13 setSpeechStartHandler:0];
+    [(SFSiriRequest *)requestCopy setSpeechStartHandler:0];
   }
 
-  v11 = [(SFSiriRequest *)v13 speechCompletion];
+  speechCompletion = [(SFSiriRequest *)requestCopy speechCompletion];
 
-  if (v11)
+  if (speechCompletion)
   {
-    v12 = [(SFSiriRequest *)v13 speechCompletion];
-    (v12)[2](v12, v6);
+    speechCompletion2 = [(SFSiriRequest *)requestCopy speechCompletion];
+    (speechCompletion2)[2](speechCompletion2, errorCopy);
 
-    [(SFSiriRequest *)v13 setSpeechCompletion:0];
+    [(SFSiriRequest *)requestCopy setSpeechCompletion:0];
   }
 }
 
-- (void)startUtteranceRequest:(id)a3
+- (void)startUtteranceRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 speechUtteranceRequest];
-  [v4 delaySecs];
+  requestCopy = request;
+  speechUtteranceRequest = [requestCopy speechUtteranceRequest];
+  [requestCopy delaySecs];
   if (v6 > 0.0 && gLogCategory_SFSiriClient <= 30 && (gLogCategory_SFSiriClient != -1 || _LogCategory_Initialize()))
   {
-    [SFSiriClient startUtteranceRequest:v5];
-    if (v5)
+    [SFSiriClient startUtteranceRequest:speechUtteranceRequest];
+    if (speechUtteranceRequest)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v5)
+  else if (speechUtteranceRequest)
   {
 LABEL_6:
-    [v4 setSynthesizing:0];
+    [requestCopy setSynthesizing:0];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __38__SFSiriClient_startUtteranceRequest___block_invoke;
     v18[3] = &unk_1E788B198;
-    v7 = v5;
+    v7 = speechUtteranceRequest;
     v19 = v7;
     [v7 setDidStartSpeaking:v18];
     objc_initWeak(&location, self);
@@ -615,7 +615,7 @@ LABEL_6:
   }
 
   v10 = NSErrorWithOSStatusF();
-  [(SFSiriClient *)self _completeRequest:v4 error:v10];
+  [(SFSiriClient *)self _completeRequest:requestCopy error:v10];
 
 LABEL_12:
 }
@@ -642,7 +642,7 @@ void __38__SFSiriClient_startUtteranceRequest___block_invoke_3(uint64_t a1, void
   [WeakRetained didFinishSpeakingRequest:*(a1 + 32) withError:v3];
 }
 
-- (void)deviceSetupBegin:(unint64_t)a3
+- (void)deviceSetupBegin:(unint64_t)begin
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -650,7 +650,7 @@ void __38__SFSiriClient_startUtteranceRequest___block_invoke_3(uint64_t a1, void
   v4[2] = __33__SFSiriClient_deviceSetupBegin___block_invoke;
   v4[3] = &unk_1E788B260;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = begin;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -728,17 +728,17 @@ void __33__SFSiriClient_deviceSetupBegin___block_invoke(uint64_t a1)
   self->_siriDeviceSetupManager = 0;
 }
 
-- (void)deviceSetupPrepareGreeting:(id)a3
+- (void)deviceSetupPrepareGreeting:(id)greeting
 {
-  v4 = a3;
+  greetingCopy = greeting;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__SFSiriClient_deviceSetupPrepareGreeting___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = greetingCopy;
+  v6 = greetingCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -793,28 +793,28 @@ void __43__SFSiriClient_deviceSetupPrepareGreeting___block_invoke_2(uint64_t a1,
   dispatch_async(v9, v12);
 }
 
-- (void)_deviceSetupPrepareGreetingFlow:(id)a3 error:(id)a4 completion:(id)a5
+- (void)_deviceSetupPrepareGreetingFlow:(id)flow error:(id)error completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 || v9)
+  flowCopy = flow;
+  errorCopy = error;
+  completionCopy = completion;
+  if (!flowCopy || errorCopy)
   {
     if (gLogCategory_SFSiriClient <= 90 && (gLogCategory_SFSiriClient != -1 || _LogCategory_Initialize()))
     {
       [SFSiriClient _deviceSetupPrepareGreetingFlow:error:completion:];
     }
 
-    if (v9)
+    if (errorCopy)
     {
-      v10[2](v10, 0, v9);
+      completionCopy[2](completionCopy, 0, errorCopy);
     }
 
     else
     {
       v18 = NSErrorWithOSStatusF();
-      v10[2](v10, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
     }
   }
 
@@ -826,13 +826,13 @@ void __43__SFSiriClient_deviceSetupPrepareGreeting___block_invoke_2(uint64_t a1,
     }
 
     v20 = objc_alloc_init(SFSiriDeviceSetupGreetingDetails);
-    v21 = v8;
+    v21 = flowCopy;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [v8 scenes];
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    scenes = [flowCopy scenes];
+    v12 = [scenes countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = v12;
@@ -844,7 +844,7 @@ void __43__SFSiriClient_deviceSetupPrepareGreeting___block_invoke_2(uint64_t a1,
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(scenes);
           }
 
           v16 = *(*(&v22 + 1) + 8 * v15);
@@ -867,41 +867,41 @@ void __43__SFSiriClient_deviceSetupPrepareGreeting___block_invoke_2(uint64_t a1,
         }
 
         while (v13 != v15);
-        v17 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v17 = [scenes countByEnumeratingWithState:&v22 objects:v26 count:16];
         v13 = v17;
       }
 
       while (v17);
     }
 
-    (v10)[2](v10, v20, 0);
-    v8 = v21;
+    (completionCopy)[2](completionCopy, v20, 0);
+    flowCopy = v21;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deviceSetupPlayGreetingID:(int)a3 completion:(id)a4
+- (void)deviceSetupPlayGreetingID:(int)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__SFSiriClient_deviceSetupPlayGreetingID_completion___block_invoke;
   block[3] = &unk_1E788EAE0;
-  v11 = a3;
+  dCopy = d;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_deviceSetupPlayGreetingID:(int)a3 completion:(id)a4
+- (void)_deviceSetupPlayGreetingID:(int)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_siriDeviceSetupService && self->_siriDeviceSetupContext && self->_siriDeviceSetupManager)
   {
-    if (a3 == 5)
+    if (d == 5)
     {
       v7 = self->_deviceSetupSceneOutro;
       if (v7)
@@ -911,10 +911,10 @@ void __43__SFSiriClient_deviceSetupPrepareGreeting___block_invoke_2(uint64_t a1,
 
       v8 = objc_alloc_init(getSVXDeviceSetupFlowSceneBuilderClass());
       [v8 setSceneID:5];
-      v9 = [v8 build];
-      if (v9)
+      build = [v8 build];
+      if (build)
       {
-        v7 = v9;
+        v7 = build;
 
 LABEL_8:
         if (gLogCategory_SFSiriClient <= 30 && (gLogCategory_SFSiriClient != -1 || _LogCategory_Initialize()))
@@ -924,15 +924,15 @@ LABEL_8:
 
         v10 = objc_alloc(getSVXSystemEventClass());
         v11 = [v10 initWithType:7 timestamp:mach_absolute_time() alarm:0 deviceSetupFlowScene:v7];
-        v12 = [(SVXClientServiceManager *)self->_siriDeviceSetupManager activationService];
+        activationService = [(SVXClientServiceManager *)self->_siriDeviceSetupManager activationService];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __54__SFSiriClient__deviceSetupPlayGreetingID_completion___block_invoke;
         v14[3] = &unk_1E78912E8;
         v16 = 5;
         v14[4] = self;
-        v15 = v6;
-        [v12 activateWithSystemEvent:v11 userInfo:0 completion:v14];
+        v15 = completionCopy;
+        [activationService activateWithSystemEvent:v11 userInfo:0 completion:v14];
 
         goto LABEL_18;
       }
@@ -959,9 +959,9 @@ LABEL_8:
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 
 LABEL_18:
@@ -997,30 +997,30 @@ void __54__SFSiriClient__deviceSetupPlayGreetingID_completion___block_invoke(uin
   }
 }
 
-- (void)request:(id)a3 didReceiveTimingInfo:(id)a4
+- (void)request:(id)request didReceiveTimingInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__SFSiriClient_request_didReceiveTimingInfo___block_invoke;
   block[3] = &unk_1E788BD88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = requestCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)request:(id)a3 didReceiveTimingInfo2:(id)a4
+- (void)request:(id)request didReceiveTimingInfo2:(id)info2
 {
   v84 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SFSiriRequest *)self->_currentRequest speechStartHandler];
-  if (v8)
+  requestCopy = request;
+  info2Copy = info2;
+  speechStartHandler = [(SFSiriRequest *)self->_currentRequest speechStartHandler];
+  if (speechStartHandler)
   {
     [(SFSiriRequest *)self->_currentRequest setSpeechStartHandler:0];
     v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1028,8 +1028,8 @@ void __54__SFSiriClient__deviceSetupPlayGreetingID_completion___block_invoke(uin
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v36 = v7;
-    v9 = v7;
+    v36 = info2Copy;
+    v9 = info2Copy;
     v10 = [v9 countByEnumeratingWithState:&v46 objects:v83 count:16];
     if (v10)
     {
@@ -1048,8 +1048,8 @@ void __54__SFSiriClient__deviceSetupPlayGreetingID_completion___block_invoke(uin
           v15 = objc_alloc_init(SFSiriWordTimingInfo);
           [v14 startTime];
           [(SFSiriWordTimingInfo *)v15 setTimeOffset:?];
-          v16 = [v14 textRange];
-          [(SFSiriWordTimingInfo *)v15 setTextRange:v16, v17];
+          textRange = [v14 textRange];
+          [(SFSiriWordTimingInfo *)v15 setTextRange:textRange, v17];
           [v40 addObject:v15];
         }
 
@@ -1059,11 +1059,11 @@ void __54__SFSiriClient__deviceSetupPlayGreetingID_completion___block_invoke(uin
       while (v11);
     }
 
-    v35 = v8;
-    (v8)[2](v8, v40, 0);
-    v37 = v6;
-    v38 = [v6 text];
-    v18 = [v38 length];
+    v35 = speechStartHandler;
+    (speechStartHandler)[2](speechStartHandler, v40, 0);
+    v37 = requestCopy;
+    text = [requestCopy text];
+    v18 = [text length];
     v81 = 0u;
     memset(v82, 0, sizeof(v82));
     v79 = 0u;
@@ -1117,24 +1117,24 @@ void __54__SFSiriClient__deviceSetupPlayGreetingID_completion___block_invoke(uin
           }
 
           v23 = *(*(&v41 + 1) + 8 * j);
-          v25 = [v23 textRange];
+          textRange2 = [v23 textRange];
           v26 = v24;
-          v27 = v18 >= v25 && v18 - v25 >= v24;
+          v27 = v18 >= textRange2 && v18 - textRange2 >= v24;
           v28 = @"?";
           if (v27)
           {
-            v28 = [v38 substringWithRange:{v25, v24}];
+            v28 = [text substringWithRange:{textRange2, v24}];
           }
 
           [v23 startTime];
           v34 = v28;
           v33 = v29;
-          v31 = v25;
+          v31 = textRange2;
           v32 = v26;
           SNPrintF_Add();
         }
 
-        v20 = [obj countByEnumeratingWithState:&v41 objects:v50 count:{16, v25, v26, v33, v28}];
+        v20 = [obj countByEnumeratingWithState:&v41 objects:v50 count:{16, textRange2, v26, v33, v28}];
       }
 
       while (v20);
@@ -1145,53 +1145,53 @@ void __54__SFSiriClient__deviceSetupPlayGreetingID_completion___block_invoke(uin
       [SFSiriClient request:? didReceiveTimingInfo2:?];
     }
 
-    v7 = v36;
-    v6 = v37;
-    v8 = v35;
+    info2Copy = v36;
+    requestCopy = v37;
+    speechStartHandler = v35;
   }
 
   else if (gLogCategory_SFSiriClient <= 30 && (gLogCategory_SFSiriClient != -1 || _LogCategory_Initialize()))
   {
-    [SFSiriClient request:v7 didReceiveTimingInfo2:?];
+    [SFSiriClient request:info2Copy didReceiveTimingInfo2:?];
   }
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didFinishSpeakingRequest:(id)a3 withError:(id)a4
+- (void)didFinishSpeakingRequest:(id)request withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__SFSiriClient_didFinishSpeakingRequest_withError___block_invoke;
   block[3] = &unk_1E788BD88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = requestCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)didFinishSpeakingRequest:(id)a3 withError2:(id)a4
+- (void)didFinishSpeakingRequest:(id)request withError2:(id)error2
 {
-  v9 = a3;
-  v6 = a4;
+  requestCopy = request;
+  error2Copy = error2;
   if (gLogCategory_SFSiriClient <= 30 && (gLogCategory_SFSiriClient != -1 || _LogCategory_Initialize()))
   {
-    [SFSiriClient didFinishSpeakingRequest:v6 withError2:v9];
+    [SFSiriClient didFinishSpeakingRequest:error2Copy withError2:requestCopy];
   }
 
-  v7 = [(SFSiriRequest *)self->_currentRequest speechUtteranceRequest];
+  speechUtteranceRequest = [(SFSiriRequest *)self->_currentRequest speechUtteranceRequest];
 
-  if (v7 != v9 && gLogCategory_SFSiriClient <= 60 && (gLogCategory_SFSiriClient != -1 || _LogCategory_Initialize()))
+  if (speechUtteranceRequest != requestCopy && gLogCategory_SFSiriClient <= 60 && (gLogCategory_SFSiriClient != -1 || _LogCategory_Initialize()))
   {
     [SFSiriClient didFinishSpeakingRequest:withError2:];
   }
 
-  [(SFSiriClient *)self _completeRequest:self->_currentRequest error:v6];
+  [(SFSiriClient *)self _completeRequest:self->_currentRequest error:error2Copy];
   if (self->_invalidateCalled)
   {
     v8 = NSErrorWithOSStatusF();
@@ -1204,49 +1204,49 @@ void __54__SFSiriClient__deviceSetupPlayGreetingID_completion___block_invoke(uin
   }
 }
 
-- (void)didFinishSynthesisRequest:(id)a3 withInstrumentMetrics:(id)a4 error:(id)a5
+- (void)didFinishSynthesisRequest:(id)request withInstrumentMetrics:(id)metrics error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  metricsCopy = metrics;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__SFSiriClient_didFinishSynthesisRequest_withInstrumentMetrics_error___block_invoke;
   v15[3] = &unk_1E788B9C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = requestCopy;
+  v17 = metricsCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = metricsCopy;
+  v14 = requestCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (void)didFinishSynthesisRequest:(id)a3 withInstrumentMetrics:(id)a4 error2:(id)a5
+- (void)didFinishSynthesisRequest:(id)request withInstrumentMetrics:(id)metrics error2:(id)error2
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  metricsCopy = metrics;
+  error2Copy = error2;
   v11 = self->_currentRequest;
   [(SFSiriRequest *)v11 setSynthesizing:0];
-  if (!v10 && self->_invalidateCalled)
+  if (!error2Copy && self->_invalidateCalled)
   {
-    v10 = NSErrorWithOSStatusF();
+    error2Copy = NSErrorWithOSStatusF();
   }
 
-  if (v10)
+  if (error2Copy)
   {
     if (gLogCategory_SFSiriClient <= 90 && (gLogCategory_SFSiriClient != -1 || _LogCategory_Initialize()))
     {
-      [SFSiriClient didFinishSynthesisRequest:v10 withInstrumentMetrics:v8 error2:?];
+      [SFSiriClient didFinishSynthesisRequest:error2Copy withInstrumentMetrics:requestCopy error2:?];
       if (!v11)
       {
 LABEL_10:
         if (self->_invalidateCalled)
         {
-          [(SFSiriClient *)self _completeAllRequestsWithError:v10];
+          [(SFSiriClient *)self _completeAllRequestsWithError:error2Copy];
         }
 
         goto LABEL_21;
@@ -1258,13 +1258,13 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    [(SFSiriClient *)self _completeRequest:v11 error:v10];
+    [(SFSiriClient *)self _completeRequest:v11 error:error2Copy];
     goto LABEL_10;
   }
 
   if (gLogCategory_SFSiriClient <= 30 && (gLogCategory_SFSiriClient != -1 || _LogCategory_Initialize()))
   {
-    [SFSiriClient didFinishSynthesisRequest:v9 withInstrumentMetrics:v8 error2:?];
+    [SFSiriClient didFinishSynthesisRequest:metricsCopy withInstrumentMetrics:requestCopy error2:?];
   }
 
   [(SFSiriRequest *)v11 delaySecs];
@@ -1330,32 +1330,32 @@ uint64_t __71__SFSiriClient_didFinishSynthesisRequest_withInstrumentMetrics_erro
   return [v6 startUtteranceRequest:v7];
 }
 
-- (void)sessionService:(id)a3 didChangeStateFrom:(int64_t)a4 to:(int64_t)a5
+- (void)sessionService:(id)service didChangeStateFrom:(int64_t)from to:(int64_t)to
 {
-  v7 = a3;
-  v8 = v7;
+  serviceCopy = service;
+  v8 = serviceCopy;
   if (gLogCategory_SFSiriClient <= 30)
   {
-    v10 = v7;
+    v10 = serviceCopy;
     if (gLogCategory_SFSiriClient != -1 || (v9 = _LogCategory_Initialize(), v8 = v10, v9))
     {
-      [SFSiriClient sessionService:a4 didChangeStateFrom:a5 to:?];
+      [SFSiriClient sessionService:from didChangeStateFrom:to to:?];
       v8 = v10;
     }
   }
 }
 
-- (void)sessionService:(id)a3 willPresentFeedbackWithDialogIdentifier:(id)a4
+- (void)sessionService:(id)service willPresentFeedbackWithDialogIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__SFSiriClient_sessionService_willPresentFeedbackWithDialogIdentifier___block_invoke;
   v8[3] = &unk_1E788A658;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   dispatch_async(dispatchQueue, v8);
 }
 

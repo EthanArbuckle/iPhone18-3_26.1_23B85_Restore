@@ -1,6 +1,6 @@
 @interface IMBWebNavigationToolbar
-- (_TtC8Business23IMBWebNavigationToolbar)initWithFrame:(CGRect)a3;
-- (id)initInView:(id)a3 withFrame:(CGRect)a4 withItemList:(id)a5;
+- (_TtC8Business23IMBWebNavigationToolbar)initWithFrame:(CGRect)frame;
+- (id)initInView:(id)view withFrame:(CGRect)frame withItemList:(id)list;
 - (void)done;
 - (void)nextPage;
 - (void)previousPage;
@@ -11,36 +11,36 @@
 
 - (void)previousPage
 {
-  v2 = self;
+  selfCopy = self;
   sub_100018688();
 }
 
 - (void)nextPage
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001886C();
 }
 
 - (void)refresh
 {
-  v2 = self;
+  selfCopy = self;
   sub_100018A50();
 }
 
 - (void)done
 {
-  v2 = self;
+  selfCopy = self;
   sub_100018B90();
 }
 
-- (_TtC8Business23IMBWebNavigationToolbar)initWithFrame:(CGRect)a3
+- (_TtC8Business23IMBWebNavigationToolbar)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)initInView:(id)a3 withFrame:(CGRect)a4 withItemList:(id)a5
+- (id)initInView:(id)view withFrame:(CGRect)frame withItemList:(id)list
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

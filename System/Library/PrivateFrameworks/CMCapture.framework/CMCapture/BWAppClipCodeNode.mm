@@ -1,18 +1,18 @@
 @interface BWAppClipCodeNode
-- (BWAppClipCodeNode)initWithProcessingQueuePriority:(unsigned int)a3;
+- (BWAppClipCodeNode)initWithProcessingQueuePriority:(unsigned int)priority;
 - (uint64_t)_endAppClipCodeSession;
-- (void)_processSampleBuffer:(uint64_t)a1;
+- (void)_processSampleBuffer:(uint64_t)buffer;
 - (void)_startAppClipCodeSession;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didReceiveAppC3DUpdate:(void *)a3 userData:;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didReceiveAppC3DUpdate:(void *)update userData:;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWAppClipCodeNode
 
-- (BWAppClipCodeNode)initWithProcessingQueuePriority:(unsigned int)a3
+- (BWAppClipCodeNode)initWithProcessingQueuePriority:(unsigned int)priority
 {
   v9.receiver = self;
   v9.super_class = BWAppClipCodeNode;
@@ -74,7 +74,7 @@
   [(BWNode *)&v4 prepareForCurrentConfigurationToBecomeLive];
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   processingQueue = self->_processingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -85,7 +85,7 @@
   dispatch_sync(processingQueue, block);
   v6.receiver = self;
   v6.super_class = BWAppClipCodeNode;
-  [(BWNode *)&v6 didReachEndOfDataForInput:a3];
+  [(BWNode *)&v6 didReachEndOfDataForInput:input];
 }
 
 - (uint64_t)_endAppClipCodeSession
@@ -118,7 +118,7 @@
 
 - (void)_startAppClipCodeSession
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -128,7 +128,7 @@
       FigDebugAssert3();
     }
 
-    if (*(a1 + 136) == 1 && !*(a1 + 128))
+    if (*(self + 136) == 1 && !*(self + 128))
     {
       AppC3DConfigCreate();
       AppC3DConfigSetTrackingMode();
@@ -139,16 +139,16 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = CMGetAttachment(a3, *off_1E798A340, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A340, 0);
   v7 = v6;
   if (v6)
   {
     dispatch_group_enter(v6);
   }
 
-  if ([CMGetAttachment(a3 *off_1E798A460])
+  if ([CMGetAttachment(buffer *off_1E798A460])
   {
     processingQueue = self->_processingQueue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -156,7 +156,7 @@
     v9[2] = __49__BWAppClipCodeNode_renderSampleBuffer_forInput___block_invoke;
     v9[3] = &unk_1E7990178;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = buffer;
     dispatch_sync(processingQueue, v9);
   }
 
@@ -166,9 +166,9 @@
   }
 }
 
-- (void)_processSampleBuffer:(uint64_t)a1
+- (void)_processSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -198,26 +198,26 @@
         v16 = vcvtq_f64_f32(vzip1_s32(*&vextq_s8(*time, *time, 8uLL), *&vextq_s8(*&time[16], *&time[16], 8uLL)));
         v17 = *(&v19 + 2);
         ImageBuffer = CMSampleBufferGetImageBuffer(a2);
-        if (ImageBuffer && (*(a1 + 160) & 1) == 0)
+        if (ImageBuffer && (*(buffer + 160) & 1) == 0)
         {
           v7 = ImageBuffer;
-          *(a1 + 164) = [CMGetAttachment(ImageBuffer @"RotationDegrees"];
-          *(a1 + 168) = [CMGetAttachment(v7 @"MirroredHorizontal"];
-          *(a1 + 169) = [CMGetAttachment(v7 @"MirroredVertical"];
-          *(a1 + 160) = 1;
+          *(buffer + 164) = [CMGetAttachment(ImageBuffer @"RotationDegrees"];
+          *(buffer + 168) = [CMGetAttachment(v7 @"MirroredHorizontal"];
+          *(buffer + 169) = [CMGetAttachment(v7 @"MirroredVertical"];
+          *(buffer + 160) = 1;
         }
 
-        v8 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v9 = *MEMORY[0x1E695E480];
         v12 = v20;
-        [v8 setObject:CMTimeCopyAsDictionary(&v12 forKeyedSubscript:{v9), @"pts"}];
+        [dictionary setObject:CMTimeCopyAsDictionary(&v12 forKeyedSubscript:{v9), @"pts"}];
         memset(&v11, 0, sizeof(v11));
         BWGetOriginalPresentationTimeStampFromBuffer(a2, &v11);
         v12 = v11;
-        [v8 setObject:CMTimeCopyAsDictionary(&v12 forKeyedSubscript:{v9), @"OriginalPTS"}];
-        [v8 setObject:CMGetAttachment(a2 forKeyedSubscript:{*off_1E798A438, 0), @"primaryCaptureRectBeforeCropping"}];
-        [MEMORY[0x1E695DF20] dictionaryWithDictionary:v8];
-        if (*(a1 + 136) == 1)
+        [dictionary setObject:CMTimeCopyAsDictionary(&v12 forKeyedSubscript:{v9), @"OriginalPTS"}];
+        [dictionary setObject:CMGetAttachment(a2 forKeyedSubscript:{*off_1E798A438, 0), @"primaryCaptureRectBeforeCropping"}];
+        [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
+        if (*(buffer + 136) == 1)
         {
           CMSampleBufferGetImageBuffer(a2);
           AppC3DProcessCameraFrameData();
@@ -232,13 +232,13 @@
   }
 }
 
-- (void)didReceiveAppC3DUpdate:(void *)a3 userData:
+- (void)didReceiveAppC3DUpdate:(void *)update userData:
 {
-  if (a1)
+  if (self)
   {
     v42 = 0;
     NumberOfTrackingData = AppC3DTrackingResultGetNumberOfTrackingData();
-    dictionaryRepresentation = [a3 objectForKeyedSubscript:@"pts"];
+    dictionaryRepresentation = [update objectForKeyedSubscript:@"pts"];
     value = [MEMORY[0x1E695DF70] array];
     if (NumberOfTrackingData)
     {
@@ -287,9 +287,9 @@
         v11 = *(MEMORY[0x1E695F050] + 16);
         rect.origin = *MEMORY[0x1E695F050];
         rect.size = v11;
-        CGRectMakeWithDictionaryRepresentation([a3 objectForKeyedSubscript:@"primaryCaptureRectBeforeCropping"], &rect);
+        CGRectMakeWithDictionaryRepresentation([update objectForKeyedSubscript:@"primaryCaptureRectBeforeCropping"], &rect);
         memset(&sampleTimingArray, 0, 48);
-        FigCaptureGetTransformForMirroringRotationAndCrop(*(a1 + 168), *(a1 + 169), *(a1 + 164), &sampleTimingArray, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+        FigCaptureGetTransformForMirroringRotationAndCrop(*(self + 168), *(self + 169), *(self + 164), &sampleTimingArray, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
         v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
         v13 = 0;
         v14 = 0.0;
@@ -334,32 +334,32 @@
         v43.size.width = (v14 - x);
         v43.size.height = (v17 - v16);
         v20 = CGRectCreateDictionaryRepresentation(v43);
-        v21 = [MEMORY[0x1E695DF90] dictionary];
-        [v21 setObject:v6 forKeyedSubscript:@"RawData"];
-        [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", Metadata), @"Metadata"}];
-        [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", DataVersion), @"Version"}];
-        [v21 setObject:v12 forKeyedSubscript:@"Corners"];
-        [v21 setObject:v20 forKeyedSubscript:@"BoundingRect"];
-        [v21 setObject:dictionaryRepresentation forKeyedSubscript:@"TimeStamp"];
-        [value addObject:v21];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary setObject:v6 forKeyedSubscript:@"RawData"];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", Metadata), @"Metadata"}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", DataVersion), @"Version"}];
+        [dictionary setObject:v12 forKeyedSubscript:@"Corners"];
+        [dictionary setObject:v20 forKeyedSubscript:@"BoundingRect"];
+        [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"TimeStamp"];
+        [value addObject:dictionary];
       }
 
       while (++v5 != NumberOfTrackingData);
     }
 
-    v22 = [a3 objectForKeyedSubscript:@"OriginalPTS"];
+    v22 = [update objectForKeyedSubscript:@"OriginalPTS"];
     memset(&v39, 0, sizeof(v39));
     CMTimeMakeFromDictionary(&v39, v22);
     v23 = NumberOfTrackingData;
     if (!NumberOfTrackingData)
     {
-      v23 = *(a1 + 184);
+      v23 = *(self + 184);
     }
 
-    *(a1 + 184) = NumberOfTrackingData;
-    v24 = *(a1 + 176);
+    *(self + 184) = NumberOfTrackingData;
+    v24 = *(self + 176);
     sampleTimingArray.duration = v39;
-    [v24 node:a1 didEmitCodesCount:NumberOfTrackingData emittedIdentifiers:0 originalPTS:&sampleTimingArray];
+    [v24 node:self didEmitCodesCount:NumberOfTrackingData emittedIdentifiers:0 originalPTS:&sampleTimingArray];
     if (v23 >= 1)
     {
       *&sampleTimingArray.duration.value = *MEMORY[0x1E6960C70];
@@ -380,7 +380,7 @@
       {
         CMSetAttachment(*&point.x, @"AppClipCodes", value, 1u);
         CMSetAttachment(*&point.x, @"AppClipCodesCount", [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(value, "count")}], 1u);
-        [*(a1 + 16) emitSampleBuffer:*&point.x];
+        [*(self + 16) emitSampleBuffer:*&point.x];
         v33 = point.x;
       }
 

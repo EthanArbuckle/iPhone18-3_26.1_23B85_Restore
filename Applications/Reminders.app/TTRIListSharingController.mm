@@ -1,12 +1,12 @@
 @interface TTRIListSharingController
 - (_TtC9Reminders25TTRIListSharingController)init;
-- (id)itemThumbnailDataForCloudSharingController:(id)a3;
-- (id)itemTitleForCloudSharingController:(id)a3;
-- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)a3;
-- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)a3;
-- (void)cloudSharingController:(id)a3 failedToSaveShareWithError:(id)a4;
-- (void)cloudSharingControllerDidSaveShare:(id)a3;
-- (void)cloudSharingControllerDidStopSharing:(id)a3;
+- (id)itemThumbnailDataForCloudSharingController:(id)controller;
+- (id)itemTitleForCloudSharingController:(id)controller;
+- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)switch;
+- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)switch;
+- (void)cloudSharingController:(id)controller failedToSaveShareWithError:(id)error;
+- (void)cloudSharingControllerDidSaveShare:(id)share;
+- (void)cloudSharingControllerDidStopSharing:(id)sharing;
 @end
 
 @implementation TTRIListSharingController
@@ -18,29 +18,29 @@
   return result;
 }
 
-- (void)cloudSharingController:(id)a3 failedToSaveShareWithError:(id)a4
+- (void)cloudSharingController:(id)controller failedToSaveShareWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_1005AD2D4(v8);
+  controllerCopy = controller;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1005AD2D4(errorCopy);
 }
 
-- (void)cloudSharingControllerDidSaveShare:(id)a3
+- (void)cloudSharingControllerDidSaveShare:(id)share
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005ACB28(v4, sub_1005ACA90, &unk_10072F5E8, &selRef_updateShare_accountID_queue_completion_);
+  shareCopy = share;
+  selfCopy = self;
+  sub_1005ACB28(shareCopy, sub_1005ACA90, &unk_10072F5E8, &selRef_updateShare_accountID_queue_completion_);
 }
 
-- (void)cloudSharingControllerDidStopSharing:(id)a3
+- (void)cloudSharingControllerDidStopSharing:(id)sharing
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005ACB28(v4, sub_1005ACD88, &unk_10072F5C0, &selRef_stopShare_accountID_queue_completion_);
+  sharingCopy = sharing;
+  selfCopy = self;
+  sub_1005ACB28(sharingCopy, sub_1005ACD88, &unk_10072F5C0, &selRef_stopShare_accountID_queue_completion_);
 }
 
-- (id)itemThumbnailDataForCloudSharingController:(id)a3
+- (id)itemThumbnailDataForCloudSharingController:(id)controller
 {
   v3 = sub_1005AD498();
   if (v4 >> 60 == 15)
@@ -60,11 +60,11 @@
   return v5;
 }
 
-- (id)itemTitleForCloudSharingController:(id)a3
+- (id)itemTitleForCloudSharingController:(id)controller
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC9Reminders25TTRIListSharingController_list);
-  v4 = self;
-  v5 = [v3 displayName];
+  selfCopy = self;
+  displayName = [v3 displayName];
   static String._unconditionallyBridgeFromObjectiveC(_:)();
 
   v6 = String._bridgeToObjectiveC()();
@@ -72,21 +72,21 @@
   return v6;
 }
 
-- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)a3
+- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)switch
 {
-  v3 = a3;
-  v5 = self;
+  switchCopy = switch;
+  selfCopy = self;
   v4 = sub_1005AC7AC();
-  sub_1005AC874(v4 & 0xFFFFFFFFFFFFFFFELL | !v3);
+  sub_1005AC874(v4 & 0xFFFFFFFFFFFFFFFELL | !switchCopy);
 }
 
-- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)a3
+- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)switch
 {
-  v3 = a3;
-  v6 = self;
+  switchCopy = switch;
+  selfCopy = self;
   v4 = sub_1005AC7AC() & 0xFFFFFFFFFFFFFFFDLL;
   v5 = 2;
-  if (v3)
+  if (switchCopy)
   {
     v5 = 0;
   }

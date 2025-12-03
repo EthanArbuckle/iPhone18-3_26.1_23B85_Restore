@@ -1,9 +1,9 @@
 @interface TUIResourceRegistry
 - (TUIResourceRegistry)init;
-- (id)fileProviderForKind:(id)a3;
-- (id)imageProviderForKind:(id)a3;
-- (void)registerFileProvider:(id)a3 forKind:(id)a4;
-- (void)registerImageProvider:(id)a3 forKind:(id)a4;
+- (id)fileProviderForKind:(id)kind;
+- (id)imageProviderForKind:(id)kind;
+- (void)registerFileProvider:(id)provider forKind:(id)kind;
+- (void)registerImageProvider:(id)provider forKind:(id)kind;
 @end
 
 @implementation TUIResourceRegistry
@@ -27,17 +27,17 @@
   return v2;
 }
 
-- (void)registerImageProvider:(id)a3 forKind:(id)a4
+- (void)registerImageProvider:(id)provider forKind:(id)kind
 {
-  if (a4)
+  if (kind)
   {
-    [(NSMutableDictionary *)self->_imageProviders setObject:a3 forKeyedSubscript:?];
+    [(NSMutableDictionary *)self->_imageProviders setObject:provider forKeyedSubscript:?];
   }
 }
 
-- (id)imageProviderForKind:(id)a3
+- (id)imageProviderForKind:(id)kind
 {
-  if (a3)
+  if (kind)
   {
     v4 = [(NSMutableDictionary *)self->_imageProviders objectForKeyedSubscript:?];
   }
@@ -50,17 +50,17 @@
   return v4;
 }
 
-- (void)registerFileProvider:(id)a3 forKind:(id)a4
+- (void)registerFileProvider:(id)provider forKind:(id)kind
 {
-  if (a4)
+  if (kind)
   {
-    [(NSMutableDictionary *)self->_fileProviders setObject:a3 forKeyedSubscript:?];
+    [(NSMutableDictionary *)self->_fileProviders setObject:provider forKeyedSubscript:?];
   }
 }
 
-- (id)fileProviderForKind:(id)a3
+- (id)fileProviderForKind:(id)kind
 {
-  if (a3)
+  if (kind)
   {
     v4 = [(NSMutableDictionary *)self->_fileProviders objectForKeyedSubscript:?];
   }

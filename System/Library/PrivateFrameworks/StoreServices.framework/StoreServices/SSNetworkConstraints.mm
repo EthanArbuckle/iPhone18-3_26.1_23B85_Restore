@@ -1,29 +1,29 @@
 @interface SSNetworkConstraints
-+ (id)_newLegacyNetworkConstraintsWithDictionary:(id)a3;
-+ (id)_newModernNetworkConstraintsWithArray:(id)a3;
-+ (id)networkConstraintsForDownloadKind:(id)a3 fromBag:(id)a4;
-+ (id)newNetworkConstraintsByDownloadKindFromURLBag:(id)a3;
-+ (void)_addNetworkConstraintsToDictionary:(id)a3 forNetworkType:(int64_t)a4 legacyDictionary:(id)a5;
-- (BOOL)hasSizeLimitForNetworkType:(int64_t)a3;
++ (id)_newLegacyNetworkConstraintsWithDictionary:(id)dictionary;
++ (id)_newModernNetworkConstraintsWithArray:(id)array;
++ (id)networkConstraintsForDownloadKind:(id)kind fromBag:(id)bag;
++ (id)newNetworkConstraintsByDownloadKindFromURLBag:(id)bag;
++ (void)_addNetworkConstraintsToDictionary:(id)dictionary forNetworkType:(int64_t)type legacyDictionary:(id)legacyDictionary;
+- (BOOL)hasSizeLimitForNetworkType:(int64_t)type;
 - (BOOL)isAnyNetworkTypeEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (SSNetworkConstraints)init;
-- (SSNetworkConstraints)initWithCoder:(id)a3;
-- (SSNetworkConstraints)initWithXPCEncoding:(id)a3;
+- (SSNetworkConstraints)initWithCoder:(id)coder;
+- (SSNetworkConstraints)initWithXPCEncoding:(id)encoding;
 - (id)_copySizeLimits;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (int64_t)_sizeLimitForNetworkType:(int64_t)a3;
-- (int64_t)sizeLimitForNetworkType:(int64_t)a3;
+- (int64_t)_sizeLimitForNetworkType:(int64_t)type;
+- (int64_t)sizeLimitForNetworkType:(int64_t)type;
 - (void)_disableAllNetworkTypes;
-- (void)_setSizeLimit:(int64_t)a3 forNetworkType:(int64_t)a4;
+- (void)_setSizeLimit:(int64_t)limit forNetworkType:(int64_t)type;
 - (void)dealloc;
 - (void)disableCellularNetworkTypes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAllNetworkTypesDisabled;
-- (void)setSizeLimit:(int64_t)a3 forNetworkType:(int64_t)a4;
-- (void)setSizeLimitsWithStoreConstraintDictionary:(id)a3;
+- (void)setSizeLimit:(int64_t)limit forNetworkType:(int64_t)type;
+- (void)setSizeLimitsWithStoreConstraintDictionary:(id)dictionary;
 @end
 
 @implementation SSNetworkConstraints
@@ -75,7 +75,7 @@ uint64_t __51__SSNetworkConstraints_disableCellularNetworkTypes__block_invoke(ui
   return [v3 _setSizeLimit:v2 forNetworkType:1000];
 }
 
-- (BOOL)hasSizeLimitForNetworkType:(int64_t)a3
+- (BOOL)hasSizeLimitForNetworkType:(int64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -87,7 +87,7 @@ uint64_t __51__SSNetworkConstraints_disableCellularNetworkTypes__block_invoke(ui
   block[2] = __51__SSNetworkConstraints_hasSizeLimitForNetworkType___block_invoke;
   block[3] = &unk_1E84AC6E8;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = type;
   block[4] = self;
   dispatch_sync(dispatchQueue, block);
   v4 = *(v8 + 24);
@@ -183,7 +183,7 @@ LABEL_4:
   dispatch_sync(dispatchQueue, block);
 }
 
-- (void)setSizeLimit:(int64_t)a3 forNetworkType:(int64_t)a4
+- (void)setSizeLimit:(int64_t)limit forNetworkType:(int64_t)type
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -191,12 +191,12 @@ LABEL_4:
   block[2] = __52__SSNetworkConstraints_setSizeLimit_forNetworkType___block_invoke;
   block[3] = &unk_1E84AF108;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = limit;
+  block[6] = type;
   dispatch_sync(dispatchQueue, block);
 }
 
-- (int64_t)sizeLimitForNetworkType:(int64_t)a3
+- (int64_t)sizeLimitForNetworkType:(int64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -209,7 +209,7 @@ LABEL_4:
   block[3] = &unk_1E84AC6E8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = type;
   dispatch_sync(dispatchQueue, block);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -295,7 +295,7 @@ void __35__SSNetworkConstraints_description__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 40) = v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v11 = 0;
   v12 = &v11;
@@ -304,13 +304,13 @@ void __35__SSNetworkConstraints_description__block_invoke(uint64_t a1)
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [a3 _copySizeLimits];
+    _copySizeLimits = [equal _copySizeLimits];
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __32__SSNetworkConstraints_isEqual___block_invoke;
     block[3] = &unk_1E84ADF80;
-    block[5] = v6;
+    block[5] = _copySizeLimits;
     block[6] = &v11;
     block[4] = self;
     dispatch_sync(dispatchQueue, block);
@@ -339,32 +339,32 @@ uint64_t __32__SSNetworkConstraints_isEqual___block_invoke(void *a1)
   return result;
 }
 
-+ (id)networkConstraintsForDownloadKind:(id)a3 fromBag:(id)a4
++ (id)networkConstraintsForDownloadKind:(id)kind fromBag:(id)bag
 {
-  v5 = [a1 _newModernNetworkConstraintsWithArray:{objc_msgSend(a4, "arrayForKey:error:", @"mobile-network-constraints", 0)}];
-  v6 = [v5 objectForKeyedSubscript:a3];
+  v5 = [self _newModernNetworkConstraintsWithArray:{objc_msgSend(bag, "arrayForKey:error:", @"mobile-network-constraints", 0)}];
+  v6 = [v5 objectForKeyedSubscript:kind];
 
   return v6;
 }
 
-+ (id)newNetworkConstraintsByDownloadKindFromURLBag:(id)a3
++ (id)newNetworkConstraintsByDownloadKindFromURLBag:(id)bag
 {
-  v5 = [a3 objectForKey:@"mobile-network-constraints"];
+  v5 = [bag objectForKey:@"mobile-network-constraints"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [a1 _newModernNetworkConstraintsWithArray:v5];
+    return [self _newModernNetworkConstraintsWithArray:v5];
   }
 
   else
   {
-    v7 = [a3 objectForKey:@"mobile-connection-type-allows"];
+    v7 = [bag objectForKey:@"mobile-connection-type-allows"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 
-      return [a1 _newLegacyNetworkConstraintsWithDictionary:v7];
+      return [self _newLegacyNetworkConstraintsWithDictionary:v7];
     }
 
     else
@@ -374,14 +374,14 @@ uint64_t __32__SSNetworkConstraints_isEqual___block_invoke(void *a1)
   }
 }
 
-- (void)setSizeLimitsWithStoreConstraintDictionary:(id)a3
+- (void)setSizeLimitsWithStoreConstraintDictionary:(id)dictionary
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __67__SSNetworkConstraints_setSizeLimitsWithStoreConstraintDictionary___block_invoke;
   v4[3] = &unk_1E84AC458;
-  v4[4] = a3;
+  v4[4] = dictionary;
   v4[5] = self;
   dispatch_sync(dispatchQueue, v4);
 }
@@ -431,7 +431,7 @@ uint64_t __67__SSNetworkConstraints_setSizeLimitsWithStoreConstraintDictionary__
   return result;
 }
 
-+ (void)_addNetworkConstraintsToDictionary:(id)a3 forNetworkType:(int64_t)a4 legacyDictionary:(id)a5
++ (void)_addNetworkConstraintsToDictionary:(id)dictionary forNetworkType:(int64_t)type legacyDictionary:(id)legacyDictionary
 {
   v8 = 0;
   v51 = *MEMORY[0x1E69E9840];
@@ -473,52 +473,52 @@ uint64_t __67__SSNetworkConstraints_setSizeLimitsWithStoreConstraintDictionary__
   v50 = @"podcast-download-size-limit-in-bytes";
   do
   {
-    v9 = [a5 objectForKey:{*(&v15 + v8 + 8), v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51}];
+    v9 = [legacyDictionary objectForKey:{*(&v15 + v8 + 8), v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48, v49, v50, v51}];
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 BOOLValue])
     {
-      v10 = [a5 objectForKey:*(&v17 + v8)];
+      v10 = [legacyDictionary objectForKey:*(&v17 + v8)];
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v10 longLongValue];
+        longLongValue = [v10 longLongValue];
       }
 
       else
       {
-        v11 = 0;
+        longLongValue = 0;
       }
     }
 
     else
     {
-      v11 = -1;
+      longLongValue = -1;
     }
 
     v12 = *(&v15 + v8);
-    v13 = [a3 objectForKey:v12];
+    v13 = [dictionary objectForKey:v12];
     if (!v13)
     {
       v13 = objc_alloc_init(SSNetworkConstraints);
-      [a3 setObject:v13 forKey:v12];
+      [dictionary setObject:v13 forKey:v12];
       v14 = v13;
     }
 
-    [(SSNetworkConstraints *)v13 setSizeLimit:v11 forNetworkType:a4];
+    [(SSNetworkConstraints *)v13 setSizeLimit:longLongValue forNetworkType:type];
     v8 += 24;
   }
 
   while (v8 != 288);
 }
 
-+ (id)_newLegacyNetworkConstraintsWithDictionary:(id)a3
++ (id)_newLegacyNetworkConstraintsWithDictionary:(id)dictionary
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [a1 _addNetworkConstraintsToDictionary:v5 forNetworkType:1 legacyDictionary:{objc_msgSend(a3, "objectForKey:", @"2G"}];
-  [a1 _addNetworkConstraintsToDictionary:v5 forNetworkType:2 legacyDictionary:{objc_msgSend(a3, "objectForKey:", @"3G"}];
-  [a1 _addNetworkConstraintsToDictionary:v5 forNetworkType:1000 legacyDictionary:{objc_msgSend(a3, "objectForKey:", @"WiFi"}];
+  [self _addNetworkConstraintsToDictionary:v5 forNetworkType:1 legacyDictionary:{objc_msgSend(dictionary, "objectForKey:", @"2G"}];
+  [self _addNetworkConstraintsToDictionary:v5 forNetworkType:2 legacyDictionary:{objc_msgSend(dictionary, "objectForKey:", @"3G"}];
+  [self _addNetworkConstraintsToDictionary:v5 forNetworkType:1000 legacyDictionary:{objc_msgSend(dictionary, "objectForKey:", @"WiFi"}];
   return v5;
 }
 
-+ (id)_newModernNetworkConstraintsWithArray:(id)a3
++ (id)_newModernNetworkConstraintsWithArray:(id)array
 {
   v34 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -526,12 +526,12 @@ uint64_t __67__SSNetworkConstraints_setSizeLimitsWithStoreConstraintDictionary__
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v5 = [array countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v29;
-    v23 = a3;
+    arrayCopy = array;
     do
     {
       v8 = 0;
@@ -540,7 +540,7 @@ uint64_t __67__SSNetworkConstraints_setSizeLimitsWithStoreConstraintDictionary__
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v9 = *(*(&v28 + 1) + 8 * v8);
@@ -602,7 +602,7 @@ uint64_t __67__SSNetworkConstraints_setSizeLimitsWithStoreConstraintDictionary__
                 while (v18);
               }
 
-              a3 = v23;
+              array = arrayCopy;
             }
           }
         }
@@ -611,7 +611,7 @@ uint64_t __67__SSNetworkConstraints_setSizeLimitsWithStoreConstraintDictionary__
       }
 
       while (v8 != v6);
-      v6 = [a3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v6 = [array countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v6);
@@ -671,10 +671,10 @@ void __47__SSNetworkConstraints__disableAllNetworkTypes__block_invoke(uint64_t a
   [*(*(a1 + 32) + 16) setObject:*(a1 + 40) forKey:v3];
 }
 
-- (void)_setSizeLimit:(int64_t)a3 forNetworkType:(int64_t)a4
+- (void)_setSizeLimit:(int64_t)limit forNetworkType:(int64_t)type
 {
-  v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", a4];
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:a3];
+  type = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", type];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:limit];
   sizeLimits = self->_sizeLimits;
   if (!sizeLimits)
   {
@@ -682,28 +682,28 @@ void __47__SSNetworkConstraints__disableAllNetworkTypes__block_invoke(uint64_t a
     self->_sizeLimits = sizeLimits;
   }
 
-  [(NSMutableDictionary *)sizeLimits setObject:v6 forKey:v8];
+  [(NSMutableDictionary *)sizeLimits setObject:v6 forKey:type];
 }
 
-- (int64_t)_sizeLimitForNetworkType:(int64_t)a3
+- (int64_t)_sizeLimitForNetworkType:(int64_t)type
 {
-  v3 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", a3];
-  v6 = [(NSMutableDictionary *)self->_sizeLimits objectForKey:v5];
+  typeCopy = type;
+  type = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", type];
+  v6 = [(NSMutableDictionary *)self->_sizeLimits objectForKey:type];
   if (v6)
   {
     v7 = v6;
 LABEL_3:
-    v8 = [v7 longLongValue];
+    longLongValue = [v7 longLongValue];
   }
 
   else
   {
-    if (SSNetworkTypeIsCellularType(v3))
+    if (SSNetworkTypeIsCellularType(typeCopy))
     {
-      while (v3 >= 2)
+      while (typeCopy >= 2)
       {
-        v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", --v3];
+        v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%ld", --typeCopy];
         v7 = [(NSMutableDictionary *)self->_sizeLimits objectForKey:v9];
 
         if (v7)
@@ -713,15 +713,15 @@ LABEL_3:
       }
     }
 
-    v8 = 0;
+    longLongValue = 0;
   }
 
-  return v8;
+  return longLongValue;
 }
 
-- (SSNetworkConstraints)initWithCoder:(id)a3
+- (SSNetworkConstraints)initWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     v5 = [(SSNetworkConstraints *)self init];
     if (v5)
@@ -732,7 +732,7 @@ LABEL_3:
       v9 = objc_opt_class();
       v10 = objc_opt_class();
       v11 = objc_opt_class();
-      v12 = [a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, v9, v10, v11, objc_opt_class(), 0), @"0"}];
+      v12 = [coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, v9, v10, v11, objc_opt_class(), 0), @"0"}];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -751,21 +751,21 @@ LABEL_3:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __40__SSNetworkConstraints_encodeWithCoder___block_invoke;
   v4[3] = &unk_1E84AC458;
-  v4[4] = a3;
+  v4[4] = coder;
   v4[5] = self;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -773,7 +773,7 @@ LABEL_3:
   block[3] = &unk_1E84AF158;
   block[4] = v5;
   block[5] = self;
-  block[6] = a3;
+  block[6] = zone;
   dispatch_sync(dispatchQueue, block);
   return v5;
 }
@@ -785,9 +785,9 @@ uint64_t __37__SSNetworkConstraints_copyWithZone___block_invoke(void *a1)
   return result;
 }
 
-- (SSNetworkConstraints)initWithXPCEncoding:(id)a3
+- (SSNetworkConstraints)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v5 = [(SSNetworkConstraints *)self init];
     if (!v5)
@@ -796,7 +796,7 @@ uint64_t __37__SSNetworkConstraints_copyWithZone___block_invoke(void *a1)
     }
 
     objc_opt_class();
-    self = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
+    self = SSXPCDictionaryCopyCFObjectWithClass(encoding, "0");
 
     v5->_sizeLimits = [(SSNetworkConstraints *)self mutableCopy];
   }

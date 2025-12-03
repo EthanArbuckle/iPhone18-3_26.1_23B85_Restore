@@ -1,16 +1,16 @@
 @interface UserInfo
-- (void)database:(id)a3 didChangeZone:(id)a4 from:(id)a5 to:(id)a6;
+- (void)database:(id)database didChangeZone:(id)zone from:(id)from to:(id)to;
 @end
 
 @implementation UserInfo
 
-- (void)database:(id)a3 didChangeZone:(id)a4 from:(id)a5 to:(id)a6
+- (void)database:(id)database didChangeZone:(id)zone from:(id)from to:(id)to
 {
-  v8 = a3;
+  databaseCopy = database;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   sub_1DACB71F4();
-  sub_1DAA752CC(v8, a5, a6);
+  sub_1DAA752CC(databaseCopy, from, to);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

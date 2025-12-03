@@ -1,7 +1,7 @@
 @interface CNContactMenuBarManager
 + (id)sharedInstance;
 - (CNContactMenuBarManager)init;
-- (void)setNavigationViewControllerAndBuildMenu:(id)a3;
+- (void)setNavigationViewControllerAndBuildMenu:(id)menu;
 @end
 
 @implementation CNContactMenuBarManager
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000026B0;
   block[3] = &unk_1000205A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100029290 != -1)
   {
     dispatch_once(&qword_100029290, block);
@@ -29,9 +29,9 @@
   block[1] = 3221225472;
   block[2] = sub_100002840;
   block[3] = &unk_1000204D0;
-  v7 = self;
+  selfCopy = self;
   v2 = qword_100029298;
-  v3 = self;
+  selfCopy2 = self;
   if (v2 != -1)
   {
     dispatch_once(&qword_100029298, block);
@@ -42,10 +42,10 @@
   return v4;
 }
 
-- (void)setNavigationViewControllerAndBuildMenu:(id)a3
+- (void)setNavigationViewControllerAndBuildMenu:(id)menu
 {
-  objc_storeStrong(&self->_navigationViewController, a3);
-  v4 = a3;
+  objc_storeStrong(&self->_navigationViewController, menu);
+  menuCopy = menu;
   v5 = +[UIMenuSystem mainSystem];
 
   [v5 setNeedsRebuild];

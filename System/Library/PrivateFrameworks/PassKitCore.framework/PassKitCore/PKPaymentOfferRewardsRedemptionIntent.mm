@@ -1,48 +1,48 @@
 @interface PKPaymentOfferRewardsRedemptionIntent
 - (BOOL)hasFullBalanceSelected;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferRewardsRedemptionIntent)initWithCoder:(id)a3;
-- (PKPaymentOfferRewardsRedemptionIntent)initWithRewardsBalance:(id)a3 amount:(id)a4 value:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferRewardsRedemptionIntent)initWithCoder:(id)coder;
+- (PKPaymentOfferRewardsRedemptionIntent)initWithRewardsBalance:(id)balance amount:(id)amount value:(id)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)redactedDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferRewardsRedemptionIntent
 
-- (PKPaymentOfferRewardsRedemptionIntent)initWithRewardsBalance:(id)a3 amount:(id)a4 value:(id)a5
+- (PKPaymentOfferRewardsRedemptionIntent)initWithRewardsBalance:(id)balance amount:(id)amount value:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 monetaryValue];
+  balanceCopy = balance;
+  amountCopy = amount;
+  valueCopy = value;
+  monetaryValue = [balanceCopy monetaryValue];
   v21.receiver = self;
   v21.super_class = PKPaymentOfferRewardsRedemptionIntent;
   v12 = [(PKPaymentOfferRewardsRedemptionIntent *)&v21 init];
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [balanceCopy copy];
     rewardsBalance = v12->_rewardsBalance;
     v12->_rewardsBalance = v13;
 
-    if (v10)
+    if (valueCopy)
     {
-      v15 = [v10 copy];
+      v15 = [valueCopy copy];
     }
 
     else
     {
-      v15 = [v8 convertValueFromAmount:v9];
+      v15 = [balanceCopy convertValueFromAmount:amountCopy];
     }
 
     value = v12->_value;
     v12->_value = v15;
 
-    v17 = [v11 currency];
-    v18 = PKCurrencyAmountCreate(v9, v17, 0);
+    currency = [monetaryValue currency];
+    v18 = PKCurrencyAmountCreate(amountCopy, currency, 0);
     monetaryValue = v12->_monetaryValue;
     v12->_monetaryValue = v18;
   }
@@ -50,18 +50,18 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -144,11 +144,11 @@ LABEL_20:
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"<%@: %p; ", objc_opt_class(), self];
-  v4 = [(PKPaymentOfferRewardsRedemptionIntent *)self balanceIdentifier];
-  [v3 appendFormat:@"balanceIdentifier: '%@'; ", v4];
+  balanceIdentifier = [(PKPaymentOfferRewardsRedemptionIntent *)self balanceIdentifier];
+  [v3 appendFormat:@"balanceIdentifier: '%@'; ", balanceIdentifier];
 
-  v5 = [(PKPaymentOfferRewardsRedemptionIntent *)self programName];
-  [v3 appendFormat:@"programName: '%@'; ", v5];
+  programName = [(PKPaymentOfferRewardsRedemptionIntent *)self programName];
+  [v3 appendFormat:@"programName: '%@'; ", programName];
 
   v6 = PKPaymentRewardsBalanceTypeToString([(PKPaymentOfferRewardsRedemptionIntent *)self rewardsType]);
   [v3 appendFormat:@"rewardsType: '%@'; ", v6];
@@ -187,8 +187,8 @@ LABEL_20:
   v5 = NSStringFromClass(v4);
   [v3 appendFormat:@"<%@: %p; ", v5, self];
 
-  v6 = [(PKPaymentOfferRewardsRedemptionIntent *)self balanceIdentifier];
-  [v3 appendFormat:@"balanceIdentifier: '%@'; ", v6];
+  balanceIdentifier = [(PKPaymentOfferRewardsRedemptionIntent *)self balanceIdentifier];
+  [v3 appendFormat:@"balanceIdentifier: '%@'; ", balanceIdentifier];
 
   v7 = PKPaymentRewardsBalanceTypeToString([(PKPaymentOfferRewardsRedemptionIntent *)self rewardsType]);
   [v3 appendFormat:@"rewardsType: '%@'; ", v7];
@@ -198,23 +198,23 @@ LABEL_20:
   return v3;
 }
 
-- (PKPaymentOfferRewardsRedemptionIntent)initWithCoder:(id)a3
+- (PKPaymentOfferRewardsRedemptionIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPaymentOfferRewardsRedemptionIntent;
   v5 = [(PKPaymentOfferRewardsRedemptionIntent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsBalance"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsBalance"];
     rewardsBalance = v5->_rewardsBalance;
     v5->_rewardsBalance = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"monetaryValue"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"monetaryValue"];
     monetaryValue = v5->_monetaryValue;
     v5->_monetaryValue = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     value = v5->_value;
     v5->_value = v10;
   }
@@ -222,27 +222,27 @@ LABEL_20:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rewardsBalance = self->_rewardsBalance;
-  v5 = a3;
-  [v5 encodeObject:rewardsBalance forKey:@"rewardsBalance"];
-  [v5 encodeObject:self->_monetaryValue forKey:@"monetaryValue"];
-  [v5 encodeObject:self->_value forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rewardsBalance forKey:@"rewardsBalance"];
+  [coderCopy encodeObject:self->_monetaryValue forKey:@"monetaryValue"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PKPaymentRewardsBalance *)self->_rewardsBalance copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PKPaymentRewardsBalance *)self->_rewardsBalance copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(PKCurrencyAmount *)self->_monetaryValue copyWithZone:a3];
+  v8 = [(PKCurrencyAmount *)self->_monetaryValue copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSDecimalNumber *)self->_value copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_value copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
@@ -252,31 +252,31 @@ LABEL_20:
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKPaymentRewardsBalance *)self->_rewardsBalance identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"balanceIdentifier"];
+  identifier = [(PKPaymentRewardsBalance *)self->_rewardsBalance identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"balanceIdentifier"];
 
   v5 = PKPaymentRewardsBalanceTypeToString([(PKPaymentRewardsBalance *)self->_rewardsBalance type]);
   [v3 setObject:v5 forKeyedSubscript:@"rewardsType"];
 
-  v6 = [(PKCurrencyAmount *)self->_monetaryValue dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"monetaryValue"];
+  dictionaryRepresentation = [(PKCurrencyAmount *)self->_monetaryValue dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"monetaryValue"];
 
-  v7 = [(PKPaymentRewardsBalance *)self->_rewardsBalance monetaryValue];
-  v8 = [v7 amount];
-  v9 = [v8 stringValue];
-  [v3 setObject:v9 forKeyedSubscript:@"displayedBalanceAmount"];
+  monetaryValue = [(PKPaymentRewardsBalance *)self->_rewardsBalance monetaryValue];
+  amount = [monetaryValue amount];
+  stringValue = [amount stringValue];
+  [v3 setObject:stringValue forKeyedSubscript:@"displayedBalanceAmount"];
 
   if ([(PKPaymentRewardsBalance *)self->_rewardsBalance isQuantitative])
   {
     value = self->_value;
     if (value)
     {
-      v11 = [(NSDecimalNumber *)value stringValue];
-      [v3 setObject:v11 forKeyedSubscript:@"value"];
+      stringValue2 = [(NSDecimalNumber *)value stringValue];
+      [v3 setObject:stringValue2 forKeyedSubscript:@"value"];
 
-      v12 = [(PKPaymentRewardsBalance *)self->_rewardsBalance value];
-      v13 = [v12 stringValue];
-      [v3 setObject:v13 forKeyedSubscript:@"displayedBalanceValue"];
+      value = [(PKPaymentRewardsBalance *)self->_rewardsBalance value];
+      stringValue3 = [value stringValue];
+      [v3 setObject:stringValue3 forKeyedSubscript:@"displayedBalanceValue"];
     }
   }
 
@@ -287,11 +287,11 @@ LABEL_20:
 
 - (BOOL)hasFullBalanceSelected
 {
-  v3 = [(PKPaymentRewardsBalance *)self->_rewardsBalance monetaryValue];
+  monetaryValue = [(PKPaymentRewardsBalance *)self->_rewardsBalance monetaryValue];
   monetaryValue = self->_monetaryValue;
   if (monetaryValue)
   {
-    v5 = v3 == 0;
+    v5 = monetaryValue == 0;
   }
 
   else
@@ -299,7 +299,7 @@ LABEL_20:
     v5 = 1;
   }
 
-  v6 = !v5 && [(PKCurrencyAmount *)monetaryValue isEqual:v3];
+  v6 = !v5 && [(PKCurrencyAmount *)monetaryValue isEqual:monetaryValue];
 
   return v6;
 }

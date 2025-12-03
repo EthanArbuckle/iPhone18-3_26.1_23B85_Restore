@@ -1,7 +1,7 @@
 @interface CARThemeSelectorViewController
-- (_TtC15CarPlaySettings30CARThemeSelectorViewController)initWithCoder:(id)a3;
-- (_TtC15CarPlaySettings30CARThemeSelectorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)clusterThemeManagerDidFinishLoading:(id)a3;
+- (_TtC15CarPlaySettings30CARThemeSelectorViewController)initWithCoder:(id)coder;
+- (_TtC15CarPlaySettings30CARThemeSelectorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)clusterThemeManagerDidFinishLoading:(id)loading;
 - (void)dealloc;
 - (void)synchronizeThemeIfNeeded;
 - (void)vehicleDidUpdate;
@@ -10,7 +10,7 @@
 
 @implementation CARThemeSelectorViewController
 
-- (_TtC15CarPlaySettings30CARThemeSelectorViewController)initWithCoder:(id)a3
+- (_TtC15CarPlaySettings30CARThemeSelectorViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15CarPlaySettings30CARThemeSelectorViewController_displays) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15CarPlaySettings30CARThemeSelectorViewController_themeData) = 0;
@@ -31,44 +31,44 @@
 
 - (void)synchronizeThemeIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_100041400();
 }
 
 - (void)vehicleDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_100041760();
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for CARThemeSelectorViewController();
   [(CARThemeSelectorViewController *)&v6 dealloc];
 }
 
-- (_TtC15CarPlaySettings30CARThemeSelectorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15CarPlaySettings30CARThemeSelectorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)clusterThemeManagerDidFinishLoading:(id)a3
+- (void)clusterThemeManagerDidFinishLoading:(id)loading
 {
-  v4 = a3;
-  v9 = self;
-  v5 = [v4 displays];
+  loadingCopy = loading;
+  selfCopy = self;
+  displays = [loadingCopy displays];
   sub_1000317B8(0, &qword_1000FF320);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
-  v7 = [v4 themeData];
+  themeData = [loadingCopy themeData];
   sub_1000317B8(0, &qword_1000FF328);
   v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 

@@ -1,32 +1,32 @@
 @interface NEURLFilterConfiguration
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (NEURLFilterConfiguration)init;
-- (NEURLFilterConfiguration)initWithCoder:(id)a3;
-- (NEURLFilterConfiguration)initWithPIRServer:(id)a3 pirPrivacyPassIssuerURL:(id)a4 pirAuthenticationToken:(id)a5 controlProviderBundleIdentifier:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NEURLFilterConfiguration)initWithCoder:(id)coder;
+- (NEURLFilterConfiguration)initWithPIRServer:(id)server pirPrivacyPassIssuerURL:(id)l pirAuthenticationToken:(id)token controlProviderBundleIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEURLFilterConfiguration
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [(NEURLFilterConfiguration *)self appBundleIdentifier];
-  v6 = [v5 length];
+  errorsCopy = errors;
+  appBundleIdentifier = [(NEURLFilterConfiguration *)self appBundleIdentifier];
+  v6 = [appBundleIdentifier length];
   v7 = v6 != 0;
 
   if (!v6)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
-  v8 = [(NEURLFilterConfiguration *)self controlProviderBundleIdentifier];
-  v9 = [v8 length];
+  controlProviderBundleIdentifier = [(NEURLFilterConfiguration *)self controlProviderBundleIdentifier];
+  v9 = [controlProviderBundleIdentifier length];
 
   if (!v9)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v7 = 0;
   }
 
@@ -36,208 +36,208 @@
     [(NEURLFilterConfiguration *)self setPrefilterFetchInterval:?];
   }
 
-  v11 = [(NEURLFilterConfiguration *)self pirServerURL];
-  if (!v11)
+  pirServerURL = [(NEURLFilterConfiguration *)self pirServerURL];
+  if (!pirServerURL)
   {
     goto LABEL_9;
   }
 
-  v12 = v11;
-  v13 = [(NEURLFilterConfiguration *)self pirServerURL];
-  v14 = [v13 absoluteString];
-  v15 = [v14 length];
+  v12 = pirServerURL;
+  pirServerURL2 = [(NEURLFilterConfiguration *)self pirServerURL];
+  absoluteString = [pirServerURL2 absoluteString];
+  v15 = [absoluteString length];
 
   if (!v15)
   {
 LABEL_9:
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v7 = 0;
   }
 
-  v16 = [(NEURLFilterConfiguration *)self pirPrivacyPassIssuerURL];
-  if (!v16)
+  pirPrivacyPassIssuerURL = [(NEURLFilterConfiguration *)self pirPrivacyPassIssuerURL];
+  if (!pirPrivacyPassIssuerURL)
   {
     goto LABEL_12;
   }
 
-  v17 = v16;
-  v18 = [(NEURLFilterConfiguration *)self pirPrivacyPassIssuerURL];
-  v19 = [v18 absoluteString];
-  v20 = [v19 length];
+  v17 = pirPrivacyPassIssuerURL;
+  pirPrivacyPassIssuerURL2 = [(NEURLFilterConfiguration *)self pirPrivacyPassIssuerURL];
+  absoluteString2 = [pirPrivacyPassIssuerURL2 absoluteString];
+  v20 = [absoluteString2 length];
 
   if (!v20)
   {
 LABEL_12:
-    v21 = [(NEURLFilterConfiguration *)self pirServerURL];
-    [(NEURLFilterConfiguration *)self setPirPrivacyPassIssuerURL:v21];
+    pirServerURL3 = [(NEURLFilterConfiguration *)self pirServerURL];
+    [(NEURLFilterConfiguration *)self setPirPrivacyPassIssuerURL:pirServerURL3];
   }
 
-  v22 = [(NEURLFilterConfiguration *)self pirAuthenticationToken];
-  v23 = [v22 length];
+  pirAuthenticationToken = [(NEURLFilterConfiguration *)self pirAuthenticationToken];
+  v23 = [pirAuthenticationToken length];
 
   if (!v23)
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v7 = 0;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEURLFilterConfiguration allocWithZone:?]];
   [(NEURLFilterConfiguration *)v4 setEnabled:[(NEURLFilterConfiguration *)self isEnabled]];
   [(NEURLFilterConfiguration *)v4 setShouldFailClosed:[(NEURLFilterConfiguration *)self shouldFailClosed]];
-  v5 = [(NEURLFilterConfiguration *)self appBundleIdentifier];
-  [(NEURLFilterConfiguration *)v4 setAppBundleIdentifier:v5];
+  appBundleIdentifier = [(NEURLFilterConfiguration *)self appBundleIdentifier];
+  [(NEURLFilterConfiguration *)v4 setAppBundleIdentifier:appBundleIdentifier];
 
-  v6 = [(NEURLFilterConfiguration *)self controlProviderBundleIdentifier];
-  [(NEURLFilterConfiguration *)v4 setControlProviderBundleIdentifier:v6];
+  controlProviderBundleIdentifier = [(NEURLFilterConfiguration *)self controlProviderBundleIdentifier];
+  [(NEURLFilterConfiguration *)v4 setControlProviderBundleIdentifier:controlProviderBundleIdentifier];
 
-  v7 = [(NEURLFilterConfiguration *)self controlProviderDesignatedRequirement];
-  [(NEURLFilterConfiguration *)v4 setControlProviderDesignatedRequirement:v7];
+  controlProviderDesignatedRequirement = [(NEURLFilterConfiguration *)self controlProviderDesignatedRequirement];
+  [(NEURLFilterConfiguration *)v4 setControlProviderDesignatedRequirement:controlProviderDesignatedRequirement];
 
   [(NEURLFilterConfiguration *)self prefilterFetchInterval];
   [(NEURLFilterConfiguration *)v4 setPrefilterFetchInterval:?];
-  v8 = [(NEURLFilterConfiguration *)self pirServerURL];
-  [(NEURLFilterConfiguration *)v4 setPirServerURL:v8];
+  pirServerURL = [(NEURLFilterConfiguration *)self pirServerURL];
+  [(NEURLFilterConfiguration *)v4 setPirServerURL:pirServerURL];
 
-  v9 = [(NEURLFilterConfiguration *)self pirPrivacyPassIssuerURL];
-  [(NEURLFilterConfiguration *)v4 setPirPrivacyPassIssuerURL:v9];
+  pirPrivacyPassIssuerURL = [(NEURLFilterConfiguration *)self pirPrivacyPassIssuerURL];
+  [(NEURLFilterConfiguration *)v4 setPirPrivacyPassIssuerURL:pirPrivacyPassIssuerURL];
 
-  v10 = [(NEURLFilterConfiguration *)self pirAuthenticationToken];
-  [(NEURLFilterConfiguration *)v4 setPirAuthenticationToken:v10];
+  pirAuthenticationToken = [(NEURLFilterConfiguration *)self pirAuthenticationToken];
+  [(NEURLFilterConfiguration *)v4 setPirAuthenticationToken:pirAuthenticationToken];
 
-  v11 = [(NEURLFilterConfiguration *)self pirGroupName];
-  [(NEURLFilterConfiguration *)v4 setPirGroupName:v11];
+  pirGroupName = [(NEURLFilterConfiguration *)self pirGroupName];
+  [(NEURLFilterConfiguration *)v4 setPirGroupName:pirGroupName];
 
-  v12 = [(NEURLFilterConfiguration *)self pirUseCase];
-  [(NEURLFilterConfiguration *)v4 setPirUseCase:v12];
+  pirUseCase = [(NEURLFilterConfiguration *)self pirUseCase];
+  [(NEURLFilterConfiguration *)v4 setPirUseCase:pirUseCase];
 
   [(NEURLFilterConfiguration *)v4 setPirPrivacyProxyFailOpen:[(NEURLFilterConfiguration *)self pirPrivacyProxyFailOpen]];
   [(NEURLFilterConfiguration *)v4 setPirSkipRegistration:[(NEURLFilterConfiguration *)self pirSkipRegistration]];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  [v13 encodeBool:-[NEURLFilterConfiguration isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
-  [v13 encodeBool:-[NEURLFilterConfiguration shouldFailClosed](self forKey:{"shouldFailClosed"), @"FailClosed"}];
-  v4 = [(NEURLFilterConfiguration *)self appBundleIdentifier];
-  [v13 encodeObject:v4 forKey:@"AppBundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEURLFilterConfiguration isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
+  [coderCopy encodeBool:-[NEURLFilterConfiguration shouldFailClosed](self forKey:{"shouldFailClosed"), @"FailClosed"}];
+  appBundleIdentifier = [(NEURLFilterConfiguration *)self appBundleIdentifier];
+  [coderCopy encodeObject:appBundleIdentifier forKey:@"AppBundleIdentifier"];
 
-  v5 = [(NEURLFilterConfiguration *)self controlProviderBundleIdentifier];
-  [v13 encodeObject:v5 forKey:@"ControlProviderBundleIdentifier"];
+  controlProviderBundleIdentifier = [(NEURLFilterConfiguration *)self controlProviderBundleIdentifier];
+  [coderCopy encodeObject:controlProviderBundleIdentifier forKey:@"ControlProviderBundleIdentifier"];
 
-  v6 = [(NEURLFilterConfiguration *)self controlProviderDesignatedRequirement];
-  [v13 encodeObject:v6 forKey:@"ControlProviderDesignatedRequirement"];
+  controlProviderDesignatedRequirement = [(NEURLFilterConfiguration *)self controlProviderDesignatedRequirement];
+  [coderCopy encodeObject:controlProviderDesignatedRequirement forKey:@"ControlProviderDesignatedRequirement"];
 
   [(NEURLFilterConfiguration *)self prefilterFetchInterval];
-  [v13 encodeInt:v7 forKey:@"PrefilterFetchFrequency"];
-  v8 = [(NEURLFilterConfiguration *)self pirServerURL];
-  [v13 encodeObject:v8 forKey:@"pirServerURL"];
+  [coderCopy encodeInt:v7 forKey:@"PrefilterFetchFrequency"];
+  pirServerURL = [(NEURLFilterConfiguration *)self pirServerURL];
+  [coderCopy encodeObject:pirServerURL forKey:@"pirServerURL"];
 
-  v9 = [(NEURLFilterConfiguration *)self pirPrivacyPassIssuerURL];
-  [v13 encodeObject:v9 forKey:@"pirPrivacyPassIssuerURL"];
+  pirPrivacyPassIssuerURL = [(NEURLFilterConfiguration *)self pirPrivacyPassIssuerURL];
+  [coderCopy encodeObject:pirPrivacyPassIssuerURL forKey:@"pirPrivacyPassIssuerURL"];
 
-  v10 = [(NEURLFilterConfiguration *)self pirAuthenticationToken];
-  [v13 encodeObject:v10 forKey:@"AuthenticationToken"];
+  pirAuthenticationToken = [(NEURLFilterConfiguration *)self pirAuthenticationToken];
+  [coderCopy encodeObject:pirAuthenticationToken forKey:@"AuthenticationToken"];
 
-  v11 = [(NEURLFilterConfiguration *)self pirGroupName];
-  [v13 encodeObject:v11 forKey:@"pirGroupName"];
+  pirGroupName = [(NEURLFilterConfiguration *)self pirGroupName];
+  [coderCopy encodeObject:pirGroupName forKey:@"pirGroupName"];
 
-  v12 = [(NEURLFilterConfiguration *)self pirUseCase];
-  [v13 encodeObject:v12 forKey:@"pirUseCaseName"];
+  pirUseCase = [(NEURLFilterConfiguration *)self pirUseCase];
+  [coderCopy encodeObject:pirUseCase forKey:@"pirUseCaseName"];
 
-  [v13 encodeBool:-[NEURLFilterConfiguration pirPrivacyProxyFailOpen](self forKey:{"pirPrivacyProxyFailOpen"), @"pirPrivacyProxyFailOpen"}];
-  [v13 encodeBool:-[NEURLFilterConfiguration pirSkipRegistration](self forKey:{"pirSkipRegistration"), @"pirSkipRegistration"}];
+  [coderCopy encodeBool:-[NEURLFilterConfiguration pirPrivacyProxyFailOpen](self forKey:{"pirPrivacyProxyFailOpen"), @"pirPrivacyProxyFailOpen"}];
+  [coderCopy encodeBool:-[NEURLFilterConfiguration pirSkipRegistration](self forKey:{"pirSkipRegistration"), @"pirSkipRegistration"}];
 }
 
-- (NEURLFilterConfiguration)initWithCoder:(id)a3
+- (NEURLFilterConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = NEURLFilterConfiguration;
   v5 = [(NEURLFilterConfiguration *)&v23 init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"Enabled"];
-    v5->_shouldFailClosed = [v4 decodeBoolForKey:@"FailClosed"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AppBundleIdentifier"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"Enabled"];
+    v5->_shouldFailClosed = [coderCopy decodeBoolForKey:@"FailClosed"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AppBundleIdentifier"];
     appBundleIdentifier = v5->_appBundleIdentifier;
     v5->_appBundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ControlProviderBundleIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ControlProviderBundleIdentifier"];
     controlProviderBundleIdentifier = v5->_controlProviderBundleIdentifier;
     v5->_controlProviderBundleIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ControlProviderDesignatedRequirement"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ControlProviderDesignatedRequirement"];
     controlProviderDesignatedRequirement = v5->_controlProviderDesignatedRequirement;
     v5->_controlProviderDesignatedRequirement = v10;
 
-    v5->_prefilterFetchInterval = [v4 decodeInt32ForKey:@"PrefilterFetchFrequency"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pirServerURL"];
+    v5->_prefilterFetchInterval = [coderCopy decodeInt32ForKey:@"PrefilterFetchFrequency"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pirServerURL"];
     pirServerURL = v5->_pirServerURL;
     v5->_pirServerURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pirPrivacyPassIssuerURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pirPrivacyPassIssuerURL"];
     pirPrivacyPassIssuerURL = v5->_pirPrivacyPassIssuerURL;
     v5->_pirPrivacyPassIssuerURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AuthenticationToken"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AuthenticationToken"];
     pirAuthenticationToken = v5->_pirAuthenticationToken;
     v5->_pirAuthenticationToken = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pirGroupName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pirGroupName"];
     pirGroupName = v5->_pirGroupName;
     v5->_pirGroupName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pirUseCaseName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pirUseCaseName"];
     pirUseCase = v5->_pirUseCase;
     v5->_pirUseCase = v20;
 
-    v5->_pirPrivacyProxyFailOpen = [v4 decodeBoolForKey:@"pirPrivacyProxyFailOpen"];
-    v5->_pirSkipRegistration = [v4 decodeBoolForKey:@"pirSkipRegistration"];
+    v5->_pirPrivacyProxyFailOpen = [coderCopy decodeBoolForKey:@"pirPrivacyProxyFailOpen"];
+    v5->_pirSkipRegistration = [coderCopy decodeBoolForKey:@"pirSkipRegistration"];
   }
 
   return v5;
 }
 
-- (NEURLFilterConfiguration)initWithPIRServer:(id)a3 pirPrivacyPassIssuerURL:(id)a4 pirAuthenticationToken:(id)a5 controlProviderBundleIdentifier:(id)a6
+- (NEURLFilterConfiguration)initWithPIRServer:(id)server pirPrivacyPassIssuerURL:(id)l pirAuthenticationToken:(id)token controlProviderBundleIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serverCopy = server;
+  lCopy = l;
+  tokenCopy = token;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = NEURLFilterConfiguration;
   v14 = [(NEURLFilterConfiguration *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    [(NEURLFilterConfiguration *)v14 setPirServerURL:v10];
-    if (v11)
+    [(NEURLFilterConfiguration *)v14 setPirServerURL:serverCopy];
+    if (lCopy)
     {
-      v16 = v11;
+      v16 = lCopy;
     }
 
     else
     {
-      v16 = v10;
+      v16 = serverCopy;
     }
 
     [(NEURLFilterConfiguration *)v15 setPirPrivacyPassIssuerURL:v16];
-    [(NEURLFilterConfiguration *)v15 setPirAuthenticationToken:v12];
-    [(NEURLFilterConfiguration *)v15 setControlProviderBundleIdentifier:v13];
+    [(NEURLFilterConfiguration *)v15 setPirAuthenticationToken:tokenCopy];
+    [(NEURLFilterConfiguration *)v15 setControlProviderBundleIdentifier:identifierCopy];
     [(NEURLFilterConfiguration *)v15 setPrefilterFetchInterval:86400.0];
     [(NEURLFilterConfiguration *)v15 setEnabled:0];
     [(NEURLFilterConfiguration *)v15 setShouldFailClosed:0];
     [(NEURLFilterConfiguration *)v15 setPirPrivacyProxyFailOpen:0];
-    v17 = [MEMORY[0x1E696AAE8] mainBundle];
-    v18 = [v17 bundleIdentifier];
-    [(NEURLFilterConfiguration *)v15 setAppBundleIdentifier:v18];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [(NEURLFilterConfiguration *)v15 setAppBundleIdentifier:bundleIdentifier];
   }
 
   return v15;

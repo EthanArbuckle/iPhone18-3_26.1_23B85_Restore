@@ -1,11 +1,11 @@
 @interface AGXG18PFamilyCommandQueue_mtlnext
-- (AGXG18PFamilyCommandQueue_mtlnext)initWithDevice:(id)a3 descriptor:(id)a4 isDriverInternal:(BOOL)a5;
-- (BOOL)noMergeCommit:(const void *)a3 count:(unint64_t)a4 options:(id)a5 commitFeedback:(id)a6 error:(id *)a7;
+- (AGXG18PFamilyCommandQueue_mtlnext)initWithDevice:(id)device descriptor:(id)descriptor isDriverInternal:(BOOL)internal;
+- (BOOL)noMergeCommit:(const void *)commit count:(unint64_t)count options:(id)options commitFeedback:(id)feedback error:(id *)error;
 - (id).cxx_construct;
-- (void)commit:(const void *)a3 count:(unint64_t)a4;
-- (void)commit:(const void *)a3 count:(unint64_t)a4 options:(id)a5;
-- (void)copyTextureMappingsFromTexture:(id)a3 toTexture:(id)a4 operations:(id *)a5 count:(unint64_t)a6;
-- (void)updateTextureMappings:(id)a3 heap:(id)a4 operations:(id *)a5 count:(unint64_t)a6;
+- (void)commit:(const void *)commit count:(unint64_t)count;
+- (void)commit:(const void *)commit count:(unint64_t)count options:(id)options;
+- (void)copyTextureMappingsFromTexture:(id)texture toTexture:(id)toTexture operations:(id *)operations count:(unint64_t)count;
+- (void)updateTextureMappings:(id)mappings heap:(id)heap operations:(id *)operations count:(unint64_t)count;
 @end
 
 @implementation AGXG18PFamilyCommandQueue_mtlnext
@@ -21,65 +21,65 @@
   return self;
 }
 
-- (void)commit:(const void *)a3 count:(unint64_t)a4 options:(id)a5
+- (void)commit:(const void *)commit count:(unint64_t)count options:(id)options
 {
   if (self)
   {
     v9 = [IOGPUMetal4CommandQueue preCommit:"preCommit:count:options:" count:? options:?];
     v10 = v9;
-    if (a4 < 2)
+    if (count < 2)
     {
-      [(AGXG18PFamilyCommandQueue_mtlnext *)self noMergeCommit:a3 count:a4 options:a5 commitFeedback:v9 error:0];
+      [(AGXG18PFamilyCommandQueue_mtlnext *)self noMergeCommit:commit count:count options:options commitFeedback:v9 error:0];
     }
 
     else
     {
-      [AGXG18PFamilyRenderContext_mtlnext mergeRenderEncoders:a3 count:a4 options:a5 commitFeedback:v9 queue:self error:0];
+      [AGXG18PFamilyRenderContext_mtlnext mergeRenderEncoders:commit count:count options:options commitFeedback:v9 queue:self error:0];
     }
   }
 }
 
-- (void)commit:(const void *)a3 count:(unint64_t)a4
+- (void)commit:(const void *)commit count:(unint64_t)count
 {
   if (self)
   {
-    v7 = [(IOGPUMetal4CommandQueue *)self preCommit:a3 count:a4 options:0];
+    v7 = [(IOGPUMetal4CommandQueue *)self preCommit:commit count:count options:0];
     v8 = v7;
-    if (a4 < 2)
+    if (count < 2)
     {
-      [(AGXG18PFamilyCommandQueue_mtlnext *)self noMergeCommit:a3 count:a4 options:0 commitFeedback:v7 error:0];
+      [(AGXG18PFamilyCommandQueue_mtlnext *)self noMergeCommit:commit count:count options:0 commitFeedback:v7 error:0];
     }
 
     else
     {
-      [AGXG18PFamilyRenderContext_mtlnext mergeRenderEncoders:a3 count:a4 options:0 commitFeedback:v7 queue:self error:0];
+      [AGXG18PFamilyRenderContext_mtlnext mergeRenderEncoders:commit count:count options:0 commitFeedback:v7 queue:self error:0];
     }
   }
 }
 
-- (BOOL)noMergeCommit:(const void *)a3 count:(unint64_t)a4 options:(id)a5 commitFeedback:(id)a6 error:(id *)a7
+- (BOOL)noMergeCommit:(const void *)commit count:(unint64_t)count options:(id)options commitFeedback:(id)feedback error:(id *)error
 {
-  v7 = a6;
+  feedbackCopy2 = feedback;
   if (!self->_isDriverInternal && *(self->_device_objc->_impl + 903))
   {
-    v8 = self;
-    v10 = a4;
-    v11 = a3;
+    selfCopy = self;
+    countCopy = count;
+    commitCopy = commit;
     AGX::InternalSparseQueue::flushAndSubmitAllMappings(*(self->_device_objc->_impl + 903));
-    self = v8;
-    a3 = v11;
-    a4 = v10;
-    v7 = a6;
+    self = selfCopy;
+    commit = commitCopy;
+    count = countCopy;
+    feedbackCopy2 = feedback;
   }
 
-  [(IOGPUMetal4CommandQueue *)self _commit:a3 count:a4 commitFeedback:v7];
+  [(IOGPUMetal4CommandQueue *)self _commit:commit count:count commitFeedback:feedbackCopy2];
   return 1;
 }
 
-- (void)copyTextureMappingsFromTexture:(id)a3 toTexture:(id)a4 operations:(id *)a5 count:(unint64_t)a6
+- (void)copyTextureMappingsFromTexture:(id)texture toTexture:(id)toTexture operations:(id *)operations count:(unint64_t)count
 {
-  v10 = [a3 sparseTextureTier];
-  if (v10 != [a4 sparseTextureTier])
+  sparseTextureTier = [texture sparseTextureTier];
+  if (sparseTextureTier != [toTexture sparseTextureTier])
   {
     return;
   }
@@ -90,17 +90,17 @@
   os_unfair_lock_lock((self + v159));
   v11 = *MEMORY[0x29EDC55E0];
   v12 = *(&self->super.super.super.super.isa + v11);
-  v160 = self;
+  selfCopy = self;
   if (!v12)
   {
     [(IOGPUMetal4CommandQueue *)self allocateMappingCommandBuffer];
     v12 = *(&self->super.super.super.super.isa + v11);
   }
 
-  v13 = [a3 sparseTextureTier];
-  if (v13 != 1)
+  sparseTextureTier2 = [texture sparseTextureTier];
+  if (sparseTextureTier2 != 1)
   {
-    if (v13 == 2)
+    if (sparseTextureTier2 == 2)
     {
       [(IOGPUMetal4CommandQueue *)self endTier1MappingCommands];
       v14 = v12[15];
@@ -110,26 +110,26 @@
         v14 = v12[15];
       }
 
-      [v14 copyTextureMappingsFromTexture:a3 toTexture:a4 operations:a5 count:a6];
+      [v14 copyTextureMappingsFromTexture:texture toTexture:toTexture operations:operations count:count];
     }
 
     goto LABEL_222;
   }
 
   v156 = v12;
-  v15 = *(a3 + 74);
-  v186 = *(a4 + 74);
-  v155 = a3;
-  v16 = [a3 placementSparsePageSize];
-  if (v16 == [a4 placementSparsePageSize])
+  v15 = *(texture + 74);
+  v186 = *(toTexture + 74);
+  textureCopy = texture;
+  placementSparsePageSize = [texture placementSparsePageSize];
+  if (placementSparsePageSize == [toTexture placementSparsePageSize])
   {
     [v156 commitEncoder];
-    if (a6)
+    if (count)
     {
       v17 = 0;
       v18 = 0;
       v19 = v15[56];
-      v148 = a4 + 48;
+      v148 = toTexture + 48;
       v181 = v15 + 99;
       v180 = (v186 + 396);
       v147 = v19 - 1;
@@ -138,11 +138,11 @@
       v146 = -v19;
       v144 = -v149;
       v145 = v149 - 1;
-      v175 = a5;
+      operationsCopy = operations;
       v188 = v15;
       while (1)
       {
-        v20 = &a5[v17];
+        v20 = &operations[v17];
         var1 = v20->var1;
         var0 = v20->var0.var0.var0;
         var2 = v20->var0.var0.var2;
@@ -418,9 +418,9 @@ LABEL_37:
           v43 = v188;
         }
 
-        v56 = [v155 placementSparsePageSize];
+        placementSparsePageSize2 = [textureCopy placementSparsePageSize];
         v183 = v52;
-        switch(v56)
+        switch(placementSparsePageSize2)
         {
           case 'e':
             v58 = 1;
@@ -668,17 +668,17 @@ LABEL_37:
           v174 = v85;
           v90 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getLevelOffset<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)0>(v188, var1, 0);
           v137 = AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::getLevelOffset<(AGX::Texture<(AGXTextureMemoryLayout)4,AGX::HAL300::Encoders,AGX::HAL300::Classes>::View)0>(v186, var4, 0);
-          v91 = [v156 reserveKernelCommandBufferSpace:(16 * v58 * (v154 - v185) * (v76 - v153) + 23) & 0xFFFFFFFFFFFFFFFCLL];
+          0xFFFFFFFFFFFFFFFCLL = [v156 reserveKernelCommandBufferSpace:(16 * v58 * (v154 - v185) * (v76 - v153) + 23) & 0xFFFFFFFFFFFFFFFCLL];
           v92 = 0;
-          *v91 = 17;
+          *0xFFFFFFFFFFFFFFFCLL = 17;
           v93 = *MEMORY[0x29EDC5638];
-          v94 = *&v155[v93 + 48];
+          v94 = *&textureCopy[v93 + 48];
           v142 = (16 * v58 * (v154 - v185) * (v76 - v153) + 23) & 0xFFFFFFFFFFFFFFFCLL;
-          v143 = v91;
-          v91[1] = v142;
+          v143 = 0xFFFFFFFFFFFFFFFCLL;
+          0xFFFFFFFFFFFFFFFCLL[1] = v142;
           LODWORD(v93) = *&v148[v93];
-          v91[2] = v94;
-          v91[3] = v93;
+          0xFFFFFFFFFFFFFFFCLL[2] = v94;
+          0xFFFFFFFFFFFFFFFCLL[3] = v93;
           if (v154 > v185 && v183 < v151)
           {
             v92 = 0;
@@ -914,15 +914,15 @@ LABEL_217:
 
           v143[4] = v92;
           [v156 closeKernelCommands:v142 kernelCommand:?];
-          *(&v160->super.super.super.super.isa + *MEMORY[0x29EDC55F0]) = 1;
+          *(&selfCopy->super.super.super.super.isa + *MEMORY[0x29EDC55F0]) = 1;
         }
 
 LABEL_14:
         v17 = (v189 + 1);
         v18 = v189 + 1;
         v15 = v188;
-        a5 = v175;
-        if (v17 >= a6)
+        operations = operationsCopy;
+        if (v17 >= count)
         {
           goto LABEL_222;
         }
@@ -951,33 +951,33 @@ LABEL_34:
 
 LABEL_222:
 
-  os_unfair_lock_unlock((v160 + v159));
+  os_unfair_lock_unlock((selfCopy + v159));
 }
 
-- (void)updateTextureMappings:(id)a3 heap:(id)a4 operations:(id *)a5 count:(unint64_t)a6
+- (void)updateTextureMappings:(id)mappings heap:(id)heap operations:(id *)operations count:(unint64_t)count
 {
-  v7 = self;
+  selfCopy = self;
   *(&self->super.super.super.super.isa + *MEMORY[0x29EDBB750]) = 0;
   *(&self->super.super.super.super.isa + *MEMORY[0x29EDBB758]) = 0;
   v8 = *MEMORY[0x29EDC55E8];
   os_unfair_lock_lock((self + v8));
   v9 = *MEMORY[0x29EDC55E0];
-  v10 = *(&v7->super.super.super.super.isa + v9);
+  v10 = *(&selfCopy->super.super.super.super.isa + v9);
   v134 = v8;
   if (!v10)
   {
-    [(IOGPUMetal4CommandQueue *)v7 allocateMappingCommandBuffer];
-    v10 = *(&v7->super.super.super.super.isa + v9);
+    [(IOGPUMetal4CommandQueue *)selfCopy allocateMappingCommandBuffer];
+    v10 = *(&selfCopy->super.super.super.super.isa + v9);
   }
 
   v129 = v10;
-  v131 = a3;
-  if (![a3 buffer])
+  mappingsCopy = mappings;
+  if (![mappings buffer])
   {
-    v11 = [a3 sparseTextureTier];
-    if (v11 == 2)
+    sparseTextureTier = [mappings sparseTextureTier];
+    if (sparseTextureTier == 2)
     {
-      [(IOGPUMetal4CommandQueue *)v7 endTier1MappingCommands];
+      [(IOGPUMetal4CommandQueue *)selfCopy endTier1MappingCommands];
       v110 = v10[15];
       if (!v110)
       {
@@ -985,18 +985,18 @@ LABEL_222:
         v110 = v10[15];
       }
 
-      [v110 updateTextureMappings:a3 heap:a4 operations:a5 count:a6];
+      [v110 updateTextureMappings:mappings heap:heap operations:operations count:count];
       goto LABEL_4;
     }
 
-    if (v11 != 1)
+    if (sparseTextureTier != 1)
     {
       goto LABEL_4;
     }
 
-    v141 = *(a3 + 74);
+    v141 = *(mappings + 74);
     [v10 commitEncoder];
-    if (!a6)
+    if (!count)
     {
       goto LABEL_4;
     }
@@ -1015,7 +1015,7 @@ LABEL_222:
     do
     {
       v148 = v13;
-      v16 = &a5[v12];
+      v16 = &operations[v12];
       var0 = v16->var0;
       if (v16->var0 > 1)
       {
@@ -1160,8 +1160,8 @@ LABEL_21:
         v30 = v141;
       }
 
-      v35 = [v131 placementSparsePageSize];
-      switch(v35)
+      placementSparsePageSize = [mappingsCopy placementSparsePageSize];
+      switch(placementSparsePageSize)
       {
         case 'e':
           v142 = 1;
@@ -1306,9 +1306,9 @@ LABEL_72:
           v60[1] = v59;
           v61 = *MEMORY[0x29EDC5638];
           v117 = v59;
-          if (a4)
+          if (heap)
           {
-            v62 = *(*(a4 + *MEMORY[0x29EDC5618]) + v61 + 48);
+            v62 = *(*(heap + *MEMORY[0x29EDC5618]) + v61 + 48);
           }
 
           else
@@ -1317,7 +1317,7 @@ LABEL_72:
           }
 
           v63 = v118;
-          v64 = *&v131[v61 + 48];
+          v64 = *&mappingsCopy[v61 + 48];
           v60[2] = v62;
           v60[3] = v64;
           v116 = v60;
@@ -1378,7 +1378,7 @@ LABEL_72:
                   v80 = 0;
                   v81 = v115;
                   v82 = ((v113 + v120) & v112) / v119;
-                  v111 = v7;
+                  v111 = selfCopy;
                   v121 = v69;
                   do
                   {
@@ -1482,7 +1482,7 @@ LABEL_72:
 
                     while (v147 != v138);
                     v79 = v128 + 1;
-                    v7 = v111;
+                    selfCopy = v111;
                     v63 = v118;
                     v81 = v115;
                     LODWORD(v69) = v121;
@@ -1554,7 +1554,7 @@ LABEL_72:
 LABEL_143:
           v116[4] = v70;
           [v129 closeKernelCommands:v117 kernelCommand:v111];
-          *(&v7->super.super.super.super.isa + *MEMORY[0x29EDC55F0]) = 1;
+          *(&selfCopy->super.super.super.super.isa + *MEMORY[0x29EDC55F0]) = 1;
           break;
         case 'g':
           v36 = *(v141 + 397) << 8 == 256 || v27 == v21;
@@ -1589,21 +1589,21 @@ LABEL_11:
       v13 = v148 + 1;
     }
 
-    while (v12 < a6);
+    while (v12 < count);
   }
 
 LABEL_4:
 
-  os_unfair_lock_unlock((v7 + v134));
+  os_unfair_lock_unlock((selfCopy + v134));
 }
 
-- (AGXG18PFamilyCommandQueue_mtlnext)initWithDevice:(id)a3 descriptor:(id)a4 isDriverInternal:(BOOL)a5
+- (AGXG18PFamilyCommandQueue_mtlnext)initWithDevice:(id)device descriptor:(id)descriptor isDriverInternal:(BOOL)internal
 {
   v15 = *MEMORY[0x29EDCA608];
   bzero(v13, 0x408uLL);
-  v9 = [a4 lockParameterBufferSizeToMax];
+  lockParameterBufferSizeToMax = [descriptor lockParameterBufferSizeToMax];
   v10 = 0xEFFFFFFFFLL;
-  if (v9)
+  if (lockParameterBufferSizeToMax)
   {
     v10 = 0x1EFFFFFFFFLL;
   }
@@ -1611,11 +1611,11 @@ LABEL_4:
   v14 = v10;
   v12.receiver = self;
   v12.super_class = AGXG18PFamilyCommandQueue_mtlnext;
-  result = [(IOGPUMetal4CommandQueue *)&v12 initWithDevice:a3 descriptor:a4 args:v13 argsSize:1040];
+  result = [(IOGPUMetal4CommandQueue *)&v12 initWithDevice:device descriptor:descriptor args:v13 argsSize:1040];
   if (result)
   {
-    result->_device_objc = a3;
-    result->_isDriverInternal = a5;
+    result->_device_objc = device;
+    result->_isDriverInternal = internal;
   }
 
   return result;

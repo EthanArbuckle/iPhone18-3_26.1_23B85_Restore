@@ -1,20 +1,20 @@
 @interface FBSSettingsExtension
-+ (Class)extensionForBSObjCProtocol:(id)a3;
-+ (Class)extensionForProtocol:(id)a3;
++ (Class)extensionForBSObjCProtocol:(id)protocol;
++ (Class)extensionForProtocol:(id)protocol;
 + (id)BSObjCProtocol;
 + (id)alloc;
-+ (id)settings:(id)a3 valueDescriptionForFlag:(int64_t)a4 object:(id)a5 ofSetting:(unint64_t)a6;
-+ (void)configureSetting:(id)a3;
++ (id)settings:(id)settings valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
++ (void)configureSetting:(id)setting;
 @end
 
 @implementation FBSSettingsExtension
 
 + (id)BSObjCProtocol
 {
-  v2 = [a1 protocol];
-  if (v2)
+  protocol = [self protocol];
+  if (protocol)
   {
-    v3 = [off_1E76BCA10 protocolForProtocol:v2];
+    v3 = [off_1E76BCA10 protocolForProtocol:protocol];
   }
 
   else
@@ -28,7 +28,7 @@
 + (id)alloc
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = NSStringFromClass(a1);
+  v5 = NSStringFromClass(self);
   v6 = [v4 stringWithFormat:@"%@ is not intended to be instantiated", v5];
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -41,7 +41,7 @@
     v12 = 2114;
     v13 = v9;
     v14 = 2048;
-    v15 = a1;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"FBSSceneExtension.m";
     v18 = 1024;
@@ -55,14 +55,14 @@
   _bs_set_crash_log_message();
 }
 
-+ (Class)extensionForProtocol:(id)a3
++ (Class)extensionForProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v5 = MEMORY[0x1E696AEC0];
-  if (v4)
+  if (protocolCopy)
   {
-    v6 = v4;
-    v7 = NSStringFromProtocol(v4);
+    v6 = protocolCopy;
+    v7 = NSStringFromProtocol(protocolCopy);
     [v5 stringWithFormat:@"<%@>", v7];
     objc_claimAutoreleasedReturnValue();
 
@@ -88,18 +88,18 @@ void __45__FBSSettingsExtension_extensionForProtocol___block_invoke(uint64_t a1,
   class_addMethod(Class, sel_protocol, v4, "@@:");
 }
 
-+ (Class)extensionForBSObjCProtocol:(id)a3
++ (Class)extensionForBSObjCProtocol:(id)protocol
 {
-  v5 = a3;
+  protocolCopy = protocol;
   v6 = MEMORY[0x1E696AEC0];
-  if (v5)
+  if (protocolCopy)
   {
-    v7 = v5;
-    v8 = [v5 name];
-    [v6 stringWithFormat:@"<%@>", v8];
+    v7 = protocolCopy;
+    name = [protocolCopy name];
+    [v6 stringWithFormat:@"<%@>", name];
     objc_claimAutoreleasedReturnValue();
 
-    if (objc_opt_class() != a1)
+    if (objc_opt_class() != self)
     {
       objc_opt_class();
     }
@@ -125,20 +125,20 @@ void __51__FBSSettingsExtension_extensionForBSObjCProtocol___block_invoke(uint64
   class_addMethod(Class, sel_BSObjCProtocol, v4, "@@:");
 }
 
-+ (void)configureSetting:(id)a3
++ (void)configureSetting:(id)setting
 {
-  v5 = a3;
-  [v5 setPrivacySensitive:{objc_msgSend(a1, "isPrivacySensitiveSetting:", v5)}];
-  v4 = [a1 valueForUndefinedSetting:v5];
-  [v5 setDefaultValue:v4];
+  settingCopy = setting;
+  [settingCopy setPrivacySensitive:{objc_msgSend(self, "isPrivacySensitiveSetting:", settingCopy)}];
+  v4 = [self valueForUndefinedSetting:settingCopy];
+  [settingCopy setDefaultValue:v4];
 
-  [v5 setPropagating:{objc_msgSend(a1, "propagateSetting:", v5)}];
+  [settingCopy setPropagating:{objc_msgSend(self, "propagateSetting:", settingCopy)}];
 }
 
-+ (id)settings:(id)a3 valueDescriptionForFlag:(int64_t)a4 object:(id)a5 ofSetting:(unint64_t)a6
++ (id)settings:(id)settings valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v10 = a5;
-  v11 = [a3 keyForSetting:a6];
+  objectCopy = object;
+  v11 = [settings keyForSetting:setting];
   v12 = v11;
   if (v11 && (v13 = NSSelectorFromString(v11)) != 0 && ((v14 = v13, v15 = objc_opt_class(), FBSSettingForExtensionSelector(v15, v14), (v16 = objc_claimAutoreleasedReturnValue()) != 0) || (v17 = objc_opt_class(), FBSSettingForExtensionSelector(v17, v14), (v16 = objc_claimAutoreleasedReturnValue()) != 0) || (v18 = objc_opt_class(), FBSSettingForExtensionSelector(v18, v14), (v16 = objc_claimAutoreleasedReturnValue()) != 0)))
   {
@@ -150,16 +150,16 @@ void __51__FBSSettingsExtension_extensionForBSObjCProtocol___block_invoke(uint64
 
     else
     {
-      if (a4 != 0x7FFFFFFFFFFFFFFFLL && !v10)
+      if (flag != 0x7FFFFFFFFFFFFFFFLL && !objectCopy)
       {
         BSSettingFlagIsYes();
       }
 
-      v21 = [(FBSSetting *)v19 descriptionProvider];
-      v22 = v21;
-      if (!v21 || ((*(v21 + 16))(v21, v10), (v20 = objc_claimAutoreleasedReturnValue()) == 0))
+      descriptionProvider = [(FBSSetting *)v19 descriptionProvider];
+      v22 = descriptionProvider;
+      if (!descriptionProvider || ((*(descriptionProvider + 16))(descriptionProvider, objectCopy), (v20 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v20 = [a1 descriptionOfValue:v10 forSetting:v19];
+        v20 = [self descriptionOfValue:objectCopy forSetting:v19];
       }
     }
   }

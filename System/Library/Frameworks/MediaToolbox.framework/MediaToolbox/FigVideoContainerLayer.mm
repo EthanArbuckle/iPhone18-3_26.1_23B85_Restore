@@ -4,39 +4,39 @@
 - (BOOL)requiresRebuild;
 - (CALayer)videoLayer;
 - (CGSize)presentationSize;
-- (FigVideoContainerLayer)initWithUUID:(id)a3;
-- (FigVideoContainerLayer)initWithVideoReceiverAndUUID:(id)a3;
+- (FigVideoContainerLayer)initWithUUID:(id)d;
+- (FigVideoContainerLayer)initWithVideoReceiverAndUUID:(id)d;
 - (OpaqueFigVideoReceiver)copyVideoReceiver;
 - (OpaqueFigVideoTarget)videoTarget;
-- (id)actionForKey:(id)a3;
+- (id)actionForKey:(id)key;
 - (id)preferredDynamicRange;
-- (int)_createAndSetupVideoReceiverWithDeferredTransaction:(OpaqueFigDeferredTransaction *)a3;
-- (void)_subscribeToVideoReceiver:(OpaqueFigVideoReceiver *)a3;
-- (void)_unsubscribeFromVideoReceiver:(OpaqueFigVideoReceiver *)a3;
+- (int)_createAndSetupVideoReceiverWithDeferredTransaction:(OpaqueFigDeferredTransaction *)transaction;
+- (void)_subscribeToVideoReceiver:(OpaqueFigVideoReceiver *)receiver;
+- (void)_unsubscribeFromVideoReceiver:(OpaqueFigVideoReceiver *)receiver;
 - (void)dealloc;
 - (void)layoutSublayers;
 - (void)rebuild;
-- (void)setIsReadyForDisplay:(BOOL)a3;
-- (void)setPreferredDynamicRange:(id)a3;
-- (void)setPresentationSize:(CGSize)a3;
-- (void)setSTSLabel:(id)a3;
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3;
-- (void)setVideoLayer:(id)a3;
-- (void)setupVideoLayer:(id)a3;
+- (void)setIsReadyForDisplay:(BOOL)display;
+- (void)setPreferredDynamicRange:(id)range;
+- (void)setPresentationSize:(CGSize)size;
+- (void)setSTSLabel:(id)label;
+- (void)setToneMapToStandardDynamicRange:(BOOL)range;
+- (void)setVideoLayer:(id)layer;
+- (void)setupVideoLayer:(id)layer;
 @end
 
 @implementation FigVideoContainerLayer
 
-- (FigVideoContainerLayer)initWithVideoReceiverAndUUID:(id)a3
+- (FigVideoContainerLayer)initWithVideoReceiverAndUUID:(id)d
 {
   if (_os_feature_enabled_impl())
   {
-    self = [(FigVideoContainerLayer *)self initWithUUID:a3];
+    self = [(FigVideoContainerLayer *)self initWithUUID:d];
     self->_createdForVideoReceiver = 1;
     self->_videoTargetAndReceiverMutex = FigSimpleMutexCreate();
     if ([(FigVideoContainerLayer *)self _createAndSetupVideoReceiverWithDeferredTransaction:0])
     {
-      v5 = self;
+      selfCopy = self;
       return 0;
     }
   }
@@ -44,7 +44,7 @@
   return self;
 }
 
-- (FigVideoContainerLayer)initWithUUID:(id)a3
+- (FigVideoContainerLayer)initWithUUID:(id)d
 {
   fig_note_initialize_category_with_default_work_cf();
   fig_note_initialize_category_with_default_work_cf();
@@ -53,14 +53,14 @@
   v5 = [(FigBaseCALayer *)&v9 init];
   v6 = v5;
   v5->_createdForVideoReceiver = 0;
-  if (a3)
+  if (d)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __39__FigVideoContainerLayer_initWithUUID___block_invoke;
     v8[3] = &unk_1E7483A30;
     v8[4] = v5;
-    v8[5] = a3;
+    v8[5] = d;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
 
@@ -104,18 +104,18 @@ uint64_t __39__FigVideoContainerLayer_initWithUUID___block_invoke(uint64_t a1)
   return readyForDisplay;
 }
 
-- (void)setIsReadyForDisplay:(BOOL)a3
+- (void)setIsReadyForDisplay:(BOOL)display
 {
-  v3 = a3;
+  displayCopy = display;
   FigSimpleMutexLock();
   readyForDisplay = self->_readyForDisplay;
-  self->_readyForDisplay = v3;
+  self->_readyForDisplay = displayCopy;
   FigSimpleMutexUnlock();
-  if (readyForDisplay != v3)
+  if (readyForDisplay != displayCopy)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v6 postNotificationName:@"IsReadyForDisplayDidChange" object:self];
+    [defaultCenter postNotificationName:@"IsReadyForDisplayDidChange" object:self];
   }
 }
 
@@ -142,10 +142,10 @@ uint64_t __39__FigVideoContainerLayer_initWithUUID___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setPresentationSize:(CGSize)a3
+- (void)setPresentationSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   FigSimpleMutexLock();
   v6 = self->_presentationSize.width;
   v7 = self->_presentationSize.height;
@@ -154,9 +154,9 @@ uint64_t __39__FigVideoContainerLayer_initWithUUID___block_invoke(uint64_t a1)
   FigSimpleMutexUnlock();
   if (width != v6 || height != v7)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v9 postNotificationName:@"PresentationSizeDidChange" object:self];
+    [defaultCenter postNotificationName:@"PresentationSizeDidChange" object:self];
   }
 }
 
@@ -194,21 +194,21 @@ uint64_t __39__FigVideoContainerLayer_initWithUUID___block_invoke(uint64_t a1)
   }
 
   FigSimpleMutexLock();
-  v3 = [(FigVideoContainerLayer *)self _checkIfRebuildIsRequiredWhileHoldingVideoTargetMutex];
+  _checkIfRebuildIsRequiredWhileHoldingVideoTargetMutex = [(FigVideoContainerLayer *)self _checkIfRebuildIsRequiredWhileHoldingVideoTargetMutex];
   FigSimpleMutexUnlock();
-  return v3;
+  return _checkIfRebuildIsRequiredWhileHoldingVideoTargetMutex;
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  if (([a3 isEqualToString:@"contentsCDRStrength"] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"contentsEDRStrength") & 1) == 0 && !objc_msgSend(a3, "isEqualToString:", @"preferredDynamicRange"))
+  if (([key isEqualToString:@"contentsCDRStrength"] & 1) == 0 && (objc_msgSend(key, "isEqualToString:", @"contentsEDRStrength") & 1) == 0 && !objc_msgSend(key, "isEqualToString:", @"preferredDynamicRange"))
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = FigVideoContainerLayer;
-  return [(FigBaseCALayer *)&v6 actionForKey:a3];
+  return [(FigBaseCALayer *)&v6 actionForKey:key];
 }
 
 - (void)dealloc
@@ -258,9 +258,9 @@ uint64_t __39__FigVideoContainerLayer_initWithUUID___block_invoke(uint64_t a1)
 {
   if (self->_shouldResizeVideoLayer)
   {
-    v3 = [(FigVideoContainerLayer *)self videoLayer];
+    videoLayer = [(FigVideoContainerLayer *)self videoLayer];
     [(FigVideoContainerLayer *)self bounds];
-    [(CALayer *)v3 setFrame:?];
+    [(CALayer *)videoLayer setFrame:?];
   }
 
   STSLayer = self->_STSLayer;
@@ -272,13 +272,13 @@ uint64_t __39__FigVideoContainerLayer_initWithUUID___block_invoke(uint64_t a1)
   [(CALayer *)UUIDLayer setFrame:?];
 }
 
-- (void)setSTSLabel:(id)a3
+- (void)setSTSLabel:(id)label
 {
   STSLabel = self->_STSLabel;
-  if (STSLabel != a3)
+  if (STSLabel != label)
   {
     v6 = STSLabel;
-    self->_STSLabel = a3;
+    self->_STSLabel = label;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __38__FigVideoContainerLayer_setSTSLabel___block_invoke;
@@ -325,17 +325,17 @@ uint64_t __38__FigVideoContainerLayer_setSTSLabel___block_invoke(uint64_t a1)
   return [v8 commit];
 }
 
-- (void)setVideoLayer:(id)a3
+- (void)setVideoLayer:(id)layer
 {
   if (!_os_feature_enabled_impl() || !self->_createdForVideoReceiver)
   {
     videoLayer = self->_videoLayer;
-    if (videoLayer != a3)
+    if (videoLayer != layer)
     {
 
-      self->_videoLayer = a3;
+      self->_videoLayer = layer;
       v6 = objc_autoreleasePoolPush();
-      [(FigVideoContainerLayer *)self setupVideoLayer:a3];
+      [(FigVideoContainerLayer *)self setupVideoLayer:layer];
 
       objc_autoreleasePoolPop(v6);
     }
@@ -419,23 +419,23 @@ uint64_t __38__FigVideoContainerLayer_setSTSLabel___block_invoke(uint64_t a1)
   return CFAutorelease(v4);
 }
 
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3
+- (void)setToneMapToStandardDynamicRange:(BOOL)range
 {
-  v3 = a3;
-  [(CALayer *)[(FigVideoContainerLayer *)self videoLayer] setToneMapToStandardDynamicRange:a3];
+  rangeCopy = range;
+  [(CALayer *)[(FigVideoContainerLayer *)self videoLayer] setToneMapToStandardDynamicRange:range];
   v5.receiver = self;
   v5.super_class = FigVideoContainerLayer;
-  [(FigVideoContainerLayer *)&v5 setToneMapToStandardDynamicRange:v3];
+  [(FigVideoContainerLayer *)&v5 setToneMapToStandardDynamicRange:rangeCopy];
 }
 
-- (void)_unsubscribeFromVideoReceiver:(OpaqueFigVideoReceiver *)a3
+- (void)_unsubscribeFromVideoReceiver:(OpaqueFigVideoReceiver *)receiver
 {
-  if (a3)
+  if (receiver)
   {
     v4 = *(*(CMBaseObjectGetVTable() + 24) + 112);
     if (v4)
     {
-      v4(a3, 0, 0);
+      v4(receiver, 0, 0);
     }
 
     v5 = *(CMBaseObjectGetVTable() + 16);
@@ -444,7 +444,7 @@ uint64_t __38__FigVideoContainerLayer_setSTSLabel___block_invoke(uint64_t a1)
       v6 = v5[25];
       if (v6)
       {
-        v6(a3, 0, 0);
+        v6(receiver, 0, 0);
       }
     }
 
@@ -455,14 +455,14 @@ uint64_t __38__FigVideoContainerLayer_setSTSLabel___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_subscribeToVideoReceiver:(OpaqueFigVideoReceiver *)a3
+- (void)_subscribeToVideoReceiver:(OpaqueFigVideoReceiver *)receiver
 {
-  if (a3)
+  if (receiver)
   {
     v5 = *(*(CMBaseObjectGetVTable() + 24) + 112);
     if (v5)
     {
-      if (!v5(a3, videoContainerLayer_boundsDidChangeCallback, self))
+      if (!v5(receiver, videoContainerLayer_boundsDidChangeCallback, self))
       {
         v6 = *(CMBaseObjectGetVTable() + 16);
         if (*v6 >= 2uLL)
@@ -470,7 +470,7 @@ uint64_t __38__FigVideoContainerLayer_setSTSLabel___block_invoke(uint64_t a1)
           v7 = v6[25];
           if (v7)
           {
-            if (!v7(a3, videoContainerLayer_activeConfigurationChangedCallback, self))
+            if (!v7(receiver, videoContainerLayer_activeConfigurationChangedCallback, self))
             {
               CMNotificationCenterGetDefaultLocalCenter();
               OUTLINED_FUNCTION_0_74();
@@ -547,20 +547,20 @@ uint64_t __38__FigVideoContainerLayer_setSTSLabel___block_invoke(uint64_t a1)
   }
 }
 
-- (int)_createAndSetupVideoReceiverWithDeferredTransaction:(OpaqueFigDeferredTransaction *)a3
+- (int)_createAndSetupVideoReceiverWithDeferredTransaction:(OpaqueFigDeferredTransaction *)transaction
 {
-  v3 = a3;
+  transactionCopy = transaction;
   v20[24] = *MEMORY[0x1E69E9840];
   cf = 0;
   v20[0] = self;
   v5 = MEMORY[0x1E695E480];
-  if (!a3)
+  if (!transaction)
   {
     FigDeferredTransactionCreate(*MEMORY[0x1E695E480], &cf);
-    v3 = cf;
+    transactionCopy = cf;
   }
 
-  v6 = [[FigVideoLayer alloc] initWithDeferredTransaction:v3];
+  v6 = [[FigVideoLayer alloc] initWithDeferredTransaction:transactionCopy];
   values = v6;
   if (!v6)
   {
@@ -589,7 +589,7 @@ LABEL_20:
   }
 
   v13 = v12;
-  v9 = FPSupport_AppendDeferredTransactionChangeForClearingFigVideoLayers(v3, v11, 1);
+  v9 = FPSupport_AppendDeferredTransactionChangeForClearingFigVideoLayers(transactionCopy, v11, 1);
   if (v9)
   {
     goto LABEL_21;
@@ -601,25 +601,25 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v9 = FPSupport_AppendDeferredTransactionChangeForSettingEdgeAntialiasingMaskOnLayers(v3, 0, v11);
+  v9 = FPSupport_AppendDeferredTransactionChangeForSettingEdgeAntialiasingMaskOnLayers(transactionCopy, 0, v11);
   if (v9)
   {
     goto LABEL_21;
   }
 
-  v9 = FPSupport_AppendDeferredTransactionChangeToRelease(v3, v13);
+  v9 = FPSupport_AppendDeferredTransactionChangeToRelease(transactionCopy, v13);
   if (v9)
   {
     goto LABEL_21;
   }
 
-  v9 = FPSupport_AppendDeferredTransactionChangeToRelease(v3, v11);
+  v9 = FPSupport_AppendDeferredTransactionChangeToRelease(transactionCopy, v11);
   if (v9)
   {
     goto LABEL_21;
   }
 
-  v9 = FPSupport_AppendDeferredTransactionChangeToRelease(v3, values);
+  v9 = FPSupport_AppendDeferredTransactionChangeToRelease(transactionCopy, values);
   if (v9)
   {
     goto LABEL_21;
@@ -651,7 +651,7 @@ LABEL_15:
   return v15;
 }
 
-- (void)setupVideoLayer:(id)a3
+- (void)setupVideoLayer:(id)layer
 {
   cf = 0;
   if (!FigDeferredTransactionCreate(*MEMORY[0x1E695E480], &cf))
@@ -660,18 +660,18 @@ LABEL_15:
     preferredCADynamicRange = self->_preferredCADynamicRange;
     if (preferredCADynamicRange)
     {
-      FBLSupportAppendDeferredTransactionChangeToSetPreferredCADynamicRange(cf, a3, preferredCADynamicRange, "[FigVideoContainerLayer setupVideoLayer:]");
+      FBLSupportAppendDeferredTransactionChangeToSetPreferredCADynamicRange(cf, layer, preferredCADynamicRange, "[FigVideoContainerLayer setupVideoLayer:]");
     }
 
     FigSimpleMutexUnlock();
     if (objc_opt_respondsToSelector())
     {
-      [a3 enableDRMFallback];
+      [layer enableDRMFallback];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [a3 setToneMapToStandardDynamicRange:{-[FigVideoContainerLayer toneMapToStandardDynamicRange](self, "toneMapToStandardDynamicRange")}];
+      [layer setToneMapToStandardDynamicRange:{-[FigVideoContainerLayer toneMapToStandardDynamicRange](self, "toneMapToStandardDynamicRange")}];
     }
   }
 
@@ -679,33 +679,33 @@ LABEL_15:
   CFRelease(cf);
 }
 
-- (void)setPreferredDynamicRange:(id)a3
+- (void)setPreferredDynamicRange:(id)range
 {
   cf = 0;
   if (!FigCFEqual())
   {
-    v5 = [(FigVideoContainerLayer *)self videoLayer];
+    videoLayer = [(FigVideoContainerLayer *)self videoLayer];
     if (!FigDeferredTransactionCreate(*MEMORY[0x1E695E480], &cf))
     {
       FigSimpleMutexLock();
 
       self->_preferredCADynamicRange = 0;
-      if (a3)
+      if (range)
       {
-        v6 = [a3 copy];
+        v6 = [range copy];
         self->_preferredCADynamicRange = v6;
-        if (v5)
+        if (videoLayer)
         {
           if (v6)
           {
-            FBLSupportAppendDeferredTransactionChangeToSetPreferredCADynamicRange(cf, v5, v6, "[FigVideoContainerLayer setPreferredDynamicRange:]");
+            FBLSupportAppendDeferredTransactionChangeToSetPreferredCADynamicRange(cf, videoLayer, v6, "[FigVideoContainerLayer setPreferredDynamicRange:]");
           }
         }
       }
 
       FigSimpleMutexUnlock();
-      v7 = v5;
-      FPSupport_AppendDeferredTransactionChangeToRelease(cf, v5);
+      v7 = videoLayer;
+      FPSupport_AppendDeferredTransactionChangeToRelease(cf, videoLayer);
     }
   }
 

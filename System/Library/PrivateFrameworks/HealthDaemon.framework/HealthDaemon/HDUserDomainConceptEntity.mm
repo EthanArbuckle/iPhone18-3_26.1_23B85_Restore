@@ -1,37 +1,37 @@
 @interface HDUserDomainConceptEntity
-+ (BOOL)_removeIsHiddenDeviceLocalPropertyForUserDomainConceptWithPersistentID:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (BOOL)cannonicalDoseUnitStringForUserDomainConceptWithUUID:(id)a3 profile:(id)a4 transaction:(id)a5 canonicalDoseUnitStringOut:(id *)a6 error:(id *)a7;
-+ (BOOL)deleteUserDomainConcept:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)enumerateUserDomainConceptsWithPredicate:(id)a3 limit:(int64_t)a4 orderingTerms:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8 enumerationHandler:(id)a9;
-+ (BOOL)generateAPIObjectForUserDomainConcept:(id)a3 apiObjectOut:(id *)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)generateUserAnnotatedMedicationForUserDomainConcept:(id)a3 userAnnotatedMedicationOut:(id *)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)incrementSyncAnchorAndAdjustSyncProvenanceIfNotLocalForUserDomainConceptWithUUID:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)insertPrivateDataEnitiesForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)retrievePrivateDataEntitiesForUserDomainConcept:(id)a3 persistentID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)updateLinksTargetingUserDomainConceptUUID:(id)a3 toTargetUserDomainConceptUUID:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7;
-+ (BOOL)updatePrivateDataEnitiesForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 syncProvenance:(int64_t)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8;
-+ (id)_linkCollectionToPersistGivenLinkCollection:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (id)_userDomainConceptWithPersistentID:(void *)a3 encoder:(void *)a4 transaction:(void *)a5 error:;
-+ (id)createAndRefreshOntologyBackedUserDomainConceptWithConceptIdentifier:(id)a3 additionalProperties:(id)a4 userDomainConceptTypeIdentifier:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)_removeIsHiddenDeviceLocalPropertyForUserDomainConceptWithPersistentID:(void *)d transaction:(uint64_t)transaction error:;
++ (BOOL)cannonicalDoseUnitStringForUserDomainConceptWithUUID:(id)d profile:(id)profile transaction:(id)transaction canonicalDoseUnitStringOut:(id *)out error:(id *)error;
++ (BOOL)deleteUserDomainConcept:(id)concept profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (BOOL)enumerateUserDomainConceptsWithPredicate:(id)predicate limit:(int64_t)limit orderingTerms:(id)terms profile:(id)profile transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)generateAPIObjectForUserDomainConcept:(id)concept apiObjectOut:(id *)out transaction:(id)transaction error:(id *)error;
++ (BOOL)generateUserAnnotatedMedicationForUserDomainConcept:(id)concept userAnnotatedMedicationOut:(id *)out transaction:(id)transaction error:(id *)error;
++ (BOOL)incrementSyncAnchorAndAdjustSyncProvenanceIfNotLocalForUserDomainConceptWithUUID:(id)d profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (BOOL)insertPrivateDataEnitiesForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)retrievePrivateDataEntitiesForUserDomainConcept:(id)concept persistentID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)updateLinksTargetingUserDomainConceptUUID:(id)d toTargetUserDomainConceptUUID:(id)iD profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (BOOL)updatePrivateDataEnitiesForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d syncProvenance:(int64_t)provenance profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (id)_linkCollectionToPersistGivenLinkCollection:(void *)collection transaction:(uint64_t)transaction error:;
++ (id)_userDomainConceptWithPersistentID:(void *)d encoder:(void *)encoder transaction:(void *)transaction error:;
++ (id)createAndRefreshOntologyBackedUserDomainConceptWithConceptIdentifier:(id)identifier additionalProperties:(id)properties userDomainConceptTypeIdentifier:(id)typeIdentifier profile:(id)profile error:(id *)error;
 + (id)defaultForeignKey;
-+ (id)disambiguatedSQLForProperty:(id)a3;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (id)disambiguatedSQLForProperty:(id)property;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)ignoreHiddenConceptsPredicate;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)newUserDomainConceptForRefreshWithCodingCollection:(id)a3 propertyCollection:(id)a4;
-+ (id)predicateMatchingSemanticIdentifier:(id)a3;
++ (id)joinClausesForProperty:(id)property;
++ (id)newUserDomainConceptForRefreshWithCodingCollection:(id)collection propertyCollection:(id)propertyCollection;
++ (id)predicateMatchingSemanticIdentifier:(id)identifier;
 + (id)privateDataEntities;
 + (id)privateSubEntities;
-+ (id)userDomainConceptUUIDForCanonicalConceptWithSemanticIdentifierString:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (int64_t)evaluateIsCanonicalConcept:(id)a3 entityClass:(Class)a4 transaction:(id)a5 error:(id *)a6;
-+ (int64_t)storeUserDomainConcept:(id)a3 method:(int64_t)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7;
-+ (uint64_t)_enumerateLinkCollectionsContainingTargetUUID:(void *)a3 transaction:(uint64_t)a4 error:(void *)a5 enumerationHandler:;
-+ (uint64_t)_inflateLinkCollection:(uint64_t)a3 row:(uint64_t)a4 error:;
-+ (uint64_t)_storeUserDomainConcept:(uint64_t)a3 method:(uint64_t)a4 syncProvenance:(uint64_t)a5 syncIdentity:(uint64_t)a6 syncVersion:(void *)a7 profile:(void *)a8 transaction:(void *)a9 error:;
-+ (uint64_t)_updateLinkCollection:(uint64_t)a3 userDomainConceptID:(uint64_t)a4 syncProvenance:(uint64_t)a5 syncIdentity:(void *)a6 transaction:(uint64_t)a7 error:;
-+ (uint64_t)_updateLinkCollectionDataByRemovingTargetUUID:(uint64_t)a3 syncProvenance:(uint64_t)a4 syncIdentity:(void *)a5 transaction:(uint64_t)a6 error:;
-+ (void)_bindToStatement:(int)a3 index:(void *)a4 linkCollection:;
-+ (void)_notifyObserversForUserDomainConcept:(int)a3 update:(void *)a4 profile:(void *)a5 transaction:;
++ (id)userDomainConceptUUIDForCanonicalConceptWithSemanticIdentifierString:(id)string profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (int64_t)evaluateIsCanonicalConcept:(id)concept entityClass:(Class)class transaction:(id)transaction error:(id *)error;
++ (int64_t)storeUserDomainConcept:(id)concept method:(int64_t)method profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (uint64_t)_enumerateLinkCollectionsContainingTargetUUID:(void *)d transaction:(uint64_t)transaction error:(void *)error enumerationHandler:;
++ (uint64_t)_inflateLinkCollection:(uint64_t)collection row:(uint64_t)row error:;
++ (uint64_t)_storeUserDomainConcept:(uint64_t)concept method:(uint64_t)method syncProvenance:(uint64_t)provenance syncIdentity:(uint64_t)identity syncVersion:(void *)version profile:(void *)profile transaction:(void *)transaction error:;
++ (uint64_t)_updateLinkCollection:(uint64_t)collection userDomainConceptID:(uint64_t)d syncProvenance:(uint64_t)provenance syncIdentity:(void *)identity transaction:(uint64_t)transaction error:;
++ (uint64_t)_updateLinkCollectionDataByRemovingTargetUUID:(uint64_t)d syncProvenance:(uint64_t)provenance syncIdentity:(void *)identity transaction:(uint64_t)transaction error:;
++ (void)_bindToStatement:(int)statement index:(void *)index linkCollection:;
++ (void)_notifyObserversForUserDomainConcept:(int)concept update:(void *)update profile:(void *)profile transaction:;
 @end
 
 @implementation HDUserDomainConceptEntity
@@ -51,11 +51,11 @@
   return v2;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 containsString:@"||"])
+  propertyCopy = property;
+  if ([propertyCopy containsString:@"||"])
   {
     v5 = 0;
   }
@@ -67,17 +67,17 @@
     v50 = 0u;
     v51 = 0u;
     v6 = +[HDUserDomainConceptEntityRegistry sharedInstance];
-    v7 = [v6 registeredUserDomainConceptEntityClasses];
+    registeredUserDomainConceptEntityClasses = [v6 registeredUserDomainConceptEntityClasses];
 
-    v8 = [v7 countByEnumeratingWithState:&v50 objects:v58 count:16];
+    v8 = [registeredUserDomainConceptEntityClasses countByEnumeratingWithState:&v50 objects:v58 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = &selRef__queue_enqueueConceptAuthorizationRequestWithIdentifier_bundleIdentifier_objectType_promptIfNeeded_authorizationNeededHandler_completionHandler_;
       v11 = *v51;
-      v40 = v7;
-      v41 = v4;
-      v39 = a1;
+      v40 = registeredUserDomainConceptEntityClasses;
+      v41 = propertyCopy;
+      selfCopy = self;
       v42 = *v51;
 LABEL_5:
       v12 = 0;
@@ -87,37 +87,37 @@ LABEL_5:
       {
         if (*v51 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(registeredUserDomainConceptEntityClasses);
         }
 
         v13 = *(*(&v50 + 1) + 8 * v12);
-        if ([v13 hasColumnWithName:v4])
+        if ([v13 hasColumnWithName:propertyCopy])
         {
           break;
         }
 
-        if ([v4 rangeOfString:@"."] != 0x7FFFFFFFFFFFFFFFLL)
+        if ([propertyCopy rangeOfString:@"."] != 0x7FFFFFFFFFFFFFFFLL)
         {
           v47 = v12;
-          v14 = v4;
+          v14 = propertyCopy;
           v15 = objc_opt_self();
           v16 = [v14 componentsSeparatedByString:@"."];
           if ([v16 count] != 2)
           {
-            v31 = [MEMORY[0x277CCA890] currentHandler];
-            [v31 handleFailureInMethod:v38 object:v15 file:@"HDUserDomainConceptEntity.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"[components count] == 2"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:v38 object:v15 file:@"HDUserDomainConceptEntity.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"[components count] == 2"}];
           }
 
-          v17 = [v16 firstObject];
+          firstObject = [v16 firstObject];
           v46 = v16;
-          v48 = [v16 lastObject];
+          lastObject = [v16 lastObject];
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
           v57 = 0u;
           v45 = v13;
-          v18 = [v13 privateSubEntities];
-          v5 = [v18 countByEnumeratingWithState:&v54 objects:v59 count:16];
+          privateSubEntities = [v13 privateSubEntities];
+          v5 = [privateSubEntities countByEnumeratingWithState:&v54 objects:v59 count:16];
           if (v5)
           {
             v44 = v15;
@@ -128,15 +128,15 @@ LABEL_5:
               {
                 if (*v55 != v19)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(privateSubEntities);
                 }
 
                 v21 = *(*(&v54 + 1) + 8 * i);
                 v22 = [v21 joinClausesForProperty:v14];
-                v23 = [v21 databaseTable];
-                if ([v23 isEqualToString:v17])
+                databaseTable = [v21 databaseTable];
+                if ([databaseTable isEqualToString:firstObject])
                 {
-                  v24 = [v21 hasColumnWithName:v48];
+                  v24 = [v21 hasColumnWithName:lastObject];
                 }
 
                 else
@@ -150,31 +150,31 @@ LABEL_5:
                   if (v44 != v45)
                   {
                     v25 = MEMORY[0x277D10B50];
-                    v26 = [v44 disambiguatedDatabaseTable];
-                    v27 = [v25 leftJoinClauseFromTable:v26 toTargetEntity:v45 as:0 localReference:@"udc_id" targetKey:@"udc_id"];
+                    disambiguatedDatabaseTable = [v44 disambiguatedDatabaseTable];
+                    v27 = [v25 leftJoinClauseFromTable:disambiguatedDatabaseTable toTargetEntity:v45 as:0 localReference:@"udc_id" targetKey:@"udc_id"];
 
                     [v5 addObject:v27];
                   }
 
-                  v7 = v40;
+                  registeredUserDomainConceptEntityClasses = v40;
                   if ([v21 hasColumnWithName:@"udc_id"])
                   {
                     v28 = MEMORY[0x277D10B50];
-                    v29 = [v45 disambiguatedDatabaseTable];
-                    v30 = [v28 leftJoinClauseFromTable:v29 toTargetEntity:v21 as:0 localReference:@"udc_id" targetKey:@"udc_id"];
+                    disambiguatedDatabaseTable2 = [v45 disambiguatedDatabaseTable];
+                    v30 = [v28 leftJoinClauseFromTable:disambiguatedDatabaseTable2 toTargetEntity:v21 as:0 localReference:@"udc_id" targetKey:@"udc_id"];
 
                     [v5 addObject:v30];
                   }
 
                   [v5 unionSet:v22];
 
-                  v4 = v41;
-                  a1 = v39;
+                  propertyCopy = v41;
+                  self = selfCopy;
                   goto LABEL_30;
                 }
               }
 
-              v5 = [v18 countByEnumeratingWithState:&v54 objects:v59 count:16];
+              v5 = [privateSubEntities countByEnumeratingWithState:&v54 objects:v59 count:16];
               if (v5)
               {
                 continue;
@@ -183,9 +183,9 @@ LABEL_5:
               break;
             }
 
-            v7 = v40;
-            v4 = v41;
-            a1 = v39;
+            registeredUserDomainConceptEntityClasses = v40;
+            propertyCopy = v41;
+            self = selfCopy;
           }
 
 LABEL_30:
@@ -201,7 +201,7 @@ LABEL_30:
 
         if (++v12 == v9)
         {
-          v9 = [v7 countByEnumeratingWithState:&v50 objects:v58 count:16];
+          v9 = [registeredUserDomainConceptEntityClasses countByEnumeratingWithState:&v50 objects:v58 count:16];
           v10 = &selRef__queue_enqueueConceptAuthorizationRequestWithIdentifier_bundleIdentifier_objectType_promptIfNeeded_authorizationNeededHandler_completionHandler_;
           if (v9)
           {
@@ -214,7 +214,7 @@ LABEL_30:
 
       if (v13)
       {
-        v32 = v13 == a1;
+        v32 = v13 == self;
       }
 
       else
@@ -225,8 +225,8 @@ LABEL_30:
       if (!v32)
       {
         v33 = MEMORY[0x277D10B50];
-        v34 = [a1 disambiguatedDatabaseTable];
-        v35 = [v33 leftJoinClauseFromTable:v34 toTargetEntity:v13 as:0 localReference:@"udc_id" targetKey:@"udc_id"];
+        disambiguatedDatabaseTable3 = [self disambiguatedDatabaseTable];
+        v35 = [v33 leftJoinClauseFromTable:disambiguatedDatabaseTable3 toTargetEntity:v13 as:0 localReference:@"udc_id" targetKey:@"udc_id"];
 
         v5 = [MEMORY[0x277CBEB98] setWithObject:v35];
 
@@ -237,9 +237,9 @@ LABEL_40:
 
 LABEL_39:
 
-    v49.receiver = a1;
+    v49.receiver = self;
     v49.super_class = &OBJC_METACLASS___HDUserDomainConceptEntity;
-    v5 = objc_msgSendSuper2(&v49, sel_joinClausesForProperty_, v4);
+    v5 = objc_msgSendSuper2(&v49, sel_joinClausesForProperty_, propertyCopy);
   }
 
 LABEL_41:
@@ -249,29 +249,29 @@ LABEL_41:
   return v5;
 }
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D10A40]])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:*MEMORY[0x277D10A40]])
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [a1 disambiguatedDatabaseTable];
-    v7 = [v5 stringWithFormat:@"%@.%@", v6, @"udc_id"];
+    disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+    v7 = [v5 stringWithFormat:@"%@.%@", disambiguatedDatabaseTable, @"udc_id"];
   }
 
   else
   {
-    v8 = v4;
+    v8 = propertyCopy;
     objc_opt_self();
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v9 = +[HDUserDomainConceptEntityRegistry sharedInstance];
-    v10 = [v9 registeredUserDomainConceptEntityClasses];
+    registeredUserDomainConceptEntityClasses = [v9 registeredUserDomainConceptEntityClasses];
 
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v11 = [registeredUserDomainConceptEntityClasses countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
       v12 = *v21;
@@ -281,7 +281,7 @@ LABEL_41:
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(registeredUserDomainConceptEntityClasses);
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
@@ -292,7 +292,7 @@ LABEL_41:
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [registeredUserDomainConceptEntityClasses countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v11)
         {
           continue;
@@ -308,8 +308,8 @@ LABEL_13:
     if (v11)
     {
       v16 = MEMORY[0x277CCACA8];
-      v17 = [v11 disambiguatedDatabaseTable];
-      v7 = [v16 stringWithFormat:@"%@.%@", v17, v8];
+      disambiguatedDatabaseTable2 = [v11 disambiguatedDatabaseTable];
+      v7 = [v16 stringWithFormat:@"%@.%@", disambiguatedDatabaseTable2, v8];
     }
 
     else
@@ -325,49 +325,49 @@ LABEL_13:
 
 + (id)defaultForeignKey
 {
-  v2 = [objc_alloc(MEMORY[0x277D10B38]) initWithEntityClass:a1 property:@"udc_id" deletionAction:2];
+  v2 = [objc_alloc(MEMORY[0x277D10B38]) initWithEntityClass:self property:@"udc_id" deletionAction:2];
 
   return v2;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDUserDomainConceptEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDUserDomainConceptEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (uint64_t)_storeUserDomainConcept:(uint64_t)a3 method:(uint64_t)a4 syncProvenance:(uint64_t)a5 syncIdentity:(uint64_t)a6 syncVersion:(void *)a7 profile:(void *)a8 transaction:(void *)a9 error:
++ (uint64_t)_storeUserDomainConcept:(uint64_t)concept method:(uint64_t)method syncProvenance:(uint64_t)provenance syncIdentity:(uint64_t)identity syncVersion:(void *)version profile:(void *)profile transaction:(void *)transaction error:
 {
   v252 = *MEMORY[0x277D85DE8];
   v14 = a2;
-  v15 = a7;
-  v16 = a8;
+  versionCopy = version;
+  profileCopy = profile;
   v17 = objc_opt_self();
-  v223 = a5;
-  [v14 setHealthd_use_only_syncEntityIdentity:a5];
+  provenanceCopy = provenance;
+  [v14 setHealthd_use_only_syncEntityIdentity:provenance];
   v232 = 0;
   v18 = v14;
-  v229 = v15;
-  v19 = v16;
+  v229 = versionCopy;
+  v19 = profileCopy;
   v218 = v17;
   v20 = objc_opt_self();
   v21 = v18;
   v230 = v19;
   v22 = objc_opt_self();
   v231 = v21;
-  v23 = [v21 linkCollection];
-  if (v23)
+  linkCollection = [v21 linkCollection];
+  if (linkCollection)
   {
-    v24 = [(HDUserDomainConceptEntity *)v22 _linkCollectionToPersistGivenLinkCollection:v23 transaction:v230 error:&v232];
+    v24 = [(HDUserDomainConceptEntity *)v22 _linkCollectionToPersistGivenLinkCollection:linkCollection transaction:v230 error:&v232];
 
     if (!v24)
     {
-      v25 = 0;
+      lastInsertRowID = 0;
       goto LABEL_11;
     }
   }
@@ -377,7 +377,7 @@ LABEL_13:
     v24 = 0;
   }
 
-  v26 = [v230 protectedDatabase];
+  protectedDatabase = [v230 protectedDatabase];
   *&v233 = MEMORY[0x277D85DD0];
   *(&v233 + 1) = 3221225472;
   *&v234 = __104__HDUserDomainConceptEntity__insertBaseUserDomainConcept_syncProvenance_syncIdentity_transaction_error___block_invoke;
@@ -389,45 +389,45 @@ LABEL_13:
   v248 = &unk_27862C5A8;
   v27 = v231;
   *v249 = v27;
-  *&v249[16] = a4;
-  *&v249[24] = v223;
+  *&v249[16] = method;
+  *&v249[24] = provenanceCopy;
   v250 = v22;
   v28 = v24;
   *&v249[8] = v28;
-  if (![v26 executeCachedStatementForKey:&_insertBaseUserDomainConcept_syncProvenance_syncIdentity_transaction_error__statementKey error:&v232 SQLGenerator:&v233 bindingHandler:buf enumerationHandler:0])
+  if (![protectedDatabase executeCachedStatementForKey:&_insertBaseUserDomainConcept_syncProvenance_syncIdentity_transaction_error__statementKey error:&v232 SQLGenerator:&v233 bindingHandler:buf enumerationHandler:0])
   {
     goto LABEL_9;
   }
 
-  if ([v26 getChangesCount] < 1)
+  if ([protectedDatabase getChangesCount] < 1)
   {
     v29 = MEMORY[0x277CCA9B8];
-    v30 = [v27 UUID];
-    [v29 hk_assignError:&v232 code:115 format:{@"Duplicate User Domain Concept with UUID %@", v30}];
+    uUID = [v27 UUID];
+    [v29 hk_assignError:&v232 code:115 format:{@"Duplicate User Domain Concept with UUID %@", uUID}];
 
 LABEL_9:
-    v25 = 0;
+    lastInsertRowID = 0;
     goto LABEL_10;
   }
 
-  v25 = [v26 lastInsertRowID];
+  lastInsertRowID = [protectedDatabase lastInsertRowID];
 LABEL_10:
 
 LABEL_11:
-  if (!v25)
+  if (!lastInsertRowID)
   {
     goto LABEL_24;
   }
 
-  if (![v231 isDeleted] || (objc_msgSend(v231, "UUID"), v31 = objc_claimAutoreleasedReturnValue(), v32 = +[HDUserDomainConceptEntity _updateLinkCollectionDataByRemovingTargetUUID:syncProvenance:syncIdentity:transaction:error:](v20, v31, a4, v223, v230, &v232), v31, v32))
+  if (![v231 isDeleted] || (objc_msgSend(v231, "UUID"), v31 = objc_claimAutoreleasedReturnValue(), v32 = +[HDUserDomainConceptEntity _updateLinkCollectionDataByRemovingTargetUUID:syncProvenance:syncIdentity:transaction:error:](v20, v31, method, provenanceCopy, v230, &v232), v31, v32))
   {
-    v33 = [v25 longLongValue];
-    if ([v20 insertPrivateDataEnitiesForUserDomainConcept:v231 userDomainConceptID:v33 transaction:v230 error:&v232])
+    longLongValue = [lastInsertRowID longLongValue];
+    if ([v20 insertPrivateDataEnitiesForUserDomainConcept:v231 userDomainConceptID:longLongValue transaction:v230 error:&v232])
     {
-      v34 = [v229 daemon];
-      v35 = [v34 userDomainConceptEntityRegistry];
-      v36 = [v231 identifier];
-      v37 = [v35 userDomainConceptEntityClassForTypeIdentifier:v36];
+      daemon = [v229 daemon];
+      userDomainConceptEntityRegistry = [daemon userDomainConceptEntityRegistry];
+      identifier = [v231 identifier];
+      v37 = [userDomainConceptEntityRegistry userDomainConceptEntityClassForTypeIdentifier:identifier];
 
       if (!v37 || v37 == objc_opt_class())
       {
@@ -438,7 +438,7 @@ LABEL_11:
       v38 = v231;
       v39 = v230;
       objc_opt_self();
-      if (![v37 insertConcreteUserDomainConcept:v38 userDomainConceptID:v33 transaction:v39 error:&v232] || !objc_msgSend(v37, "insertPrivateDataEnitiesForUserDomainConcept:userDomainConceptID:transaction:error:", v38, v33, v39, &v232))
+      if (![v37 insertConcreteUserDomainConcept:v38 userDomainConceptID:longLongValue transaction:v39 error:&v232] || !objc_msgSend(v37, "insertPrivateDataEnitiesForUserDomainConcept:userDomainConceptID:transaction:error:", v38, longLongValue, v39, &v232))
       {
         goto LABEL_61;
       }
@@ -460,7 +460,7 @@ LABEL_11:
       if (v43 == 2)
       {
         v44 = [objc_alloc(MEMORY[0x277CCDAF8]) initWithType:2 version:1 BOOLValue:1];
-        v45 = [HDUserDomainConceptPropertyEntity insertDeviceLocalProperty:v44 userDomainConceptID:v33 transaction:v41 error:&v232];
+        v45 = [HDUserDomainConceptPropertyEntity insertDeviceLocalProperty:v44 userDomainConceptID:longLongValue transaction:v41 error:&v232];
 
         if (!v45)
         {
@@ -474,7 +474,7 @@ LABEL_62:
         goto LABEL_25;
       }
 
-      if ([(HDUserDomainConceptEntity *)v42 _removeIsHiddenDeviceLocalPropertyForUserDomainConceptWithPersistentID:v33 transaction:v41 error:&v232])
+      if ([(HDUserDomainConceptEntity *)v42 _removeIsHiddenDeviceLocalPropertyForUserDomainConceptWithPersistentID:longLongValue transaction:v41 error:&v232])
       {
         v226 = v41;
         v228 = v40;
@@ -482,8 +482,8 @@ LABEL_62:
         v84 = MEMORY[0x277D10B20];
         v85 = [v37 predicateMatchingSemanticDuplicatesOf:v228];
 
-        v86 = [v83 ignoreHiddenConceptsPredicate];
-        v220 = [v84 compoundPredicateWithPredicate:v85 otherPredicate:v86];
+        ignoreHiddenConceptsPredicate = [v83 ignoreHiddenConceptsPredicate];
+        v220 = [v84 compoundPredicateWithPredicate:v85 otherPredicate:ignoreHiddenConceptsPredicate];
 
         v216 = [v226 databaseForEntityClass:v83];
         v87 = objc_alloc_init(MEMORY[0x277D10B80]);
@@ -533,15 +533,15 @@ LABEL_25:
     goto LABEL_159;
   }
 
-  v48 = [v46 hk_isDuplicateObjectError];
-  if (a3 == 1)
+  hk_isDuplicateObjectError = [v46 hk_isDuplicateObjectError];
+  if (concept == 1)
   {
     v49 = 0;
   }
 
   else
   {
-    v49 = v48;
+    v49 = hk_isDuplicateObjectError;
   }
 
   if ((v49 & 1) == 0)
@@ -550,10 +550,10 @@ LABEL_25:
     v60 = v59;
     if (v59)
     {
-      if (a9)
+      if (transaction)
       {
         v61 = v59;
-        *a9 = v60;
+        *transaction = v60;
       }
 
       else
@@ -567,7 +567,7 @@ LABEL_25:
   }
 
   v50 = v231;
-  if (a3 != 2)
+  if (concept != 2)
   {
     goto LABEL_87;
   }
@@ -576,7 +576,7 @@ LABEL_25:
   v52 = v230;
   v53 = v229;
   objc_opt_self();
-  v54 = [v51 UUID];
+  uUID2 = [v51 UUID];
   v219 = v53;
   v55 = v52;
   v56 = objc_opt_self();
@@ -586,13 +586,13 @@ LABEL_25:
   v248 = __Block_byref_object_copy__182;
   *v249 = __Block_byref_object_dispose__182;
   *&v249[8] = 0;
-  v57 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" value:v54 comparisonType:1];
+  v57 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" value:uUID2 comparisonType:1];
   *&v233 = MEMORY[0x277D85DD0];
   *(&v233 + 1) = 3221225472;
   *&v234 = __82__HDUserDomainConceptEntity__userDomainConceptWithUUID_profile_transaction_error___block_invoke;
   *(&v234 + 1) = &unk_2786276E0;
   *&v235 = buf;
-  if ([v56 enumerateUserDomainConceptsWithPredicate:v57 profile:v219 transaction:v55 error:a9 enumerationHandler:&v233])
+  if ([v56 enumerateUserDomainConceptsWithPredicate:v57 profile:v219 transaction:v55 error:transaction enumerationHandler:&v233])
   {
     v58 = *(*&buf[8] + 40);
   }
@@ -635,11 +635,11 @@ LABEL_82:
         *&buf[22] = 2114;
         v248 = v64;
         *v249 = 2048;
-        *&v249[2] = a4;
+        *&v249[2] = method;
         *&v249[10] = 2048;
-        *&v249[12] = a6;
+        *&v249[12] = identity;
         *&v249[20] = 2048;
-        *&v249[22] = a6 >> 32;
+        *&v249[22] = identity >> 32;
         _os_log_impl(&dword_228986000, v69, OS_LOG_TYPE_DEFAULT, "%{public}@: replace %{public}@ with %{public}@. sync_provenance=%ld, syncVersion=(%ld, %ld)", buf, 0x3Eu);
       }
 
@@ -673,7 +673,7 @@ LABEL_82:
 
     v211 = v76;
     v207 = v75;
-    if (SHIDWORD(a6) > 3)
+    if (SHIDWORD(identity) > 3)
     {
       v80 = [v76 copyUserDomainConceptByMergingInConcept:v75];
 LABEL_75:
@@ -713,9 +713,9 @@ LABEL_75:
     v77 = v75;
     v78 = v211;
     objc_opt_self();
-    v79 = [v77 propertyCollection];
+    propertyCollection = [v77 propertyCollection];
 
-    v80 = [v78 copyUserDomainConceptByMergingInPropertyCollection:v79];
+    v80 = [v78 copyUserDomainConceptByMergingInPropertyCollection:propertyCollection];
     if (v78 != v205)
     {
 LABEL_74:
@@ -724,39 +724,39 @@ LABEL_74:
     }
 
     obj = [v202 linkCollection];
-    v81 = [v205 linkCollection];
-    v200 = v81;
-    if (v81)
+    linkCollection2 = [v205 linkCollection];
+    v200 = linkCollection2;
+    if (linkCollection2)
     {
-      v82 = [v81 links];
-      v194 = [obj collectionByMergingInLegacyArrayOfLinks:v82];
+      links = [linkCollection2 links];
+      collectionByRemovingAllLinks = [obj collectionByMergingInLegacyArrayOfLinks:links];
     }
 
     else
     {
-      v194 = [obj collectionByRemovingAllLinks];
+      collectionByRemovingAllLinks = [obj collectionByRemovingAllLinks];
     }
 
     v92 = v200;
     if (obj)
     {
-      v92 = v194;
+      v92 = collectionByRemovingAllLinks;
     }
 
     v196 = v92;
-    v93 = [v80 linkCollection];
-    v94 = v93;
-    if (v196 == v93)
+    linkCollection3 = [v80 linkCollection];
+    v94 = linkCollection3;
+    if (v196 == linkCollection3)
     {
     }
 
     else
     {
-      v95 = [v80 linkCollection];
-      if (v95)
+      linkCollection4 = [v80 linkCollection];
+      if (linkCollection4)
       {
-        v96 = [v80 linkCollection];
-        v192 = [v196 isEqual:v96];
+        linkCollection5 = [v80 linkCollection];
+        v192 = [v196 isEqual:linkCollection5];
 
         if (v192)
         {
@@ -768,10 +768,10 @@ LABEL_74:
       {
       }
 
-      v97 = [v80 modificationCopy];
+      modificationCopy = [v80 modificationCopy];
 
-      [v97 _setLinkCollection:v196];
-      v80 = v97;
+      [modificationCopy _setLinkCollection:v196];
+      v80 = modificationCopy;
     }
 
 LABEL_73:
@@ -798,8 +798,8 @@ LABEL_83:
 
   if (v68 == 3)
   {
-    v223 = [v219 currentSyncIdentityPersistentID];
-    a4 = 0;
+    provenanceCopy = [v219 currentSyncIdentityPersistentID];
+    method = 0;
     v50 = v67;
   }
 
@@ -821,7 +821,7 @@ LABEL_87:
   v248 = __Block_byref_object_copy__182;
   *v249 = __Block_byref_object_dispose__182;
   *&v249[8] = 0;
-  v108 = [v206 protectedDatabase];
+  protectedDatabase2 = [v206 protectedDatabase];
   *&v233 = MEMORY[0x277D85DD0];
   *(&v233 + 1) = 3221225472;
   *&v234 = __88__HDUserDomainConceptEntity__userDomainConceptIDForUserDomainConcept_transaction_error___block_invoke_2;
@@ -833,7 +833,7 @@ LABEL_87:
   v244 = &unk_278614620;
   v245 = buf;
   v217 = v235;
-  if ([v108 executeCachedStatementForKey:&_userDomainConceptIDForUserDomainConcept_transaction_error__statementKey error:a9 SQLGenerator:&__block_literal_global_493 bindingHandler:&v233 enumerationHandler:&v241])
+  if ([protectedDatabase2 executeCachedStatementForKey:&_userDomainConceptIDForUserDomainConcept_transaction_error__statementKey error:transaction SQLGenerator:&__block_literal_global_493 bindingHandler:&v233 enumerationHandler:&v241])
   {
     v109 = *(*&buf[8] + 40);
   }
@@ -852,10 +852,10 @@ LABEL_87:
     goto LABEL_142;
   }
 
-  v110 = [v217 linkCollection];
-  if (v110)
+  linkCollection6 = [v217 linkCollection];
+  if (linkCollection6)
   {
-    v111 = [(HDUserDomainConceptEntity *)v193 _linkCollectionToPersistGivenLinkCollection:v110 transaction:v206 error:a9];
+    v111 = [(HDUserDomainConceptEntity *)v193 _linkCollectionToPersistGivenLinkCollection:linkCollection6 transaction:v206 error:transaction];
 
     if (!v111)
     {
@@ -876,7 +876,7 @@ LABEL_87:
     goto LABEL_134;
   }
 
-  v214 = [v195 longLongValue];
+  longLongValue2 = [v195 longLongValue];
   v189 = v197;
   v190 = v206;
   objc_opt_self();
@@ -885,9 +885,9 @@ LABEL_87:
   v236 = 0u;
   v233 = 0u;
   v234 = 0u;
-  v113 = [v189 daemon];
-  v114 = [v113 userDomainConceptEntityRegistry];
-  obja = [v114 registeredUserDomainConceptEntityClasses];
+  daemon2 = [v189 daemon];
+  userDomainConceptEntityRegistry2 = [daemon2 userDomainConceptEntityRegistry];
+  obja = [userDomainConceptEntityRegistry2 registeredUserDomainConceptEntityClasses];
 
   v208 = [obja countByEnumeratingWithState:&v233 objects:buf count:16];
   if (!v208)
@@ -908,7 +908,7 @@ LABEL_87:
       v116 = *(*(&v233 + 1) + 8 * i);
       if (v116 != objc_opt_class())
       {
-        v221 = [[v116 alloc] initWithPersistentID:v214];
+        v221 = [[v116 alloc] initWithPersistentID:longLongValue2];
         if (![v221 existsInDatabase:v201])
         {
 LABEL_130:
@@ -921,7 +921,7 @@ LABEL_130:
         v118 = objc_opt_self();
         v119 = [(objc_class *)v116 entityEncoderForProfile:v210 transaction:v117 purpose:1 encodingOptions:0 authorizationFilter:0];
 
-        v120 = [(HDUserDomainConceptEntity *)v118 _userDomainConceptWithPersistentID:v214 encoder:v119 transaction:v117 error:a9];
+        v120 = [(HDUserDomainConceptEntity *)v118 _userDomainConceptWithPersistentID:longLongValue2 encoder:v119 transaction:v117 error:transaction];
 
         if (v120)
         {
@@ -932,13 +932,13 @@ LABEL_130:
             goto LABEL_110;
           }
 
-          [MEMORY[0x277CCA9B8] hk_assignError:a9 code:3 format:{@"Concept of class %@ should not be inflated for entity %@", objc_opt_class(), v116}];
+          [MEMORY[0x277CCA9B8] hk_assignError:transaction code:3 format:{@"Concept of class %@ should not be inflated for entity %@", objc_opt_class(), v116}];
         }
 
         v212 = 0;
 LABEL_110:
 
-        if (!v212 || ![(objc_class *)v116 willDeleteConcreteUserDomainConcept:v212 userDomainConceptID:v214 syncProvenance:a4 profile:v210 transaction:v117 error:a9])
+        if (!v212 || ![(objc_class *)v116 willDeleteConcreteUserDomainConcept:v212 userDomainConceptID:longLongValue2 syncProvenance:method profile:v210 transaction:v117 error:transaction])
         {
 LABEL_139:
 
@@ -958,19 +958,19 @@ LABEL_139:
           v240 = 0;
           v123 = HDUserDomainConceptPropertyEntityPredicateForPropertiesWithType(2, 1);
           v124 = MEMORY[0x277D10B18];
-          v125 = [MEMORY[0x277CCABB0] numberWithLongLong:v214];
+          v125 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue2];
           v126 = [v124 predicateWithProperty:@"udc_id" equalToValue:v125];
 
           v127 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v126 otherPredicate:v123];
           v246 = @"number_value";
           v128 = [MEMORY[0x277CBEA60] arrayWithObjects:&v246 count:1];
-          v129 = [v122 database];
+          database = [v122 database];
           v241 = MEMORY[0x277D85DD0];
           v242 = 3221225472;
           v243 = __95__HDUserDomainConceptEntity__isConceptHiddenFromEnumerationWithPersistentID_transaction_error___block_invoke;
           v244 = &unk_27862C558;
           v245 = &v237;
-          v130 = [(HDHealthEntity *)HDUserDomainConceptPropertyEntity enumerateProperties:v128 withPredicate:v127 healthDatabase:v129 error:a9 enumerationHandler:&v241];
+          v130 = [(HDHealthEntity *)HDUserDomainConceptPropertyEntity enumerateProperties:v128 withPredicate:v127 healthDatabase:database error:transaction enumerationHandler:&v241];
 
           if (v130)
           {
@@ -1006,10 +1006,10 @@ LABEL_139:
             v136 = [v133 predicateMatchingAllPredicates:v135];
 
             v137 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"creation_date" entityClass:objc_opt_class() ascending:1];
-            v138 = [v132 protectedDatabase];
+            protectedDatabase3 = [v132 protectedDatabase];
             v246 = v137;
             v139 = [MEMORY[0x277CBEA60] arrayWithObjects:&v246 count:1];
-            v140 = [(HDSQLiteEntity *)HDUserDomainConceptEntity queryWithDatabase:v138 predicate:v136 limit:1 orderingTerms:v139 groupBy:0];
+            v140 = [(HDSQLiteEntity *)HDUserDomainConceptEntity queryWithDatabase:protectedDatabase3 predicate:v136 limit:1 orderingTerms:v139 groupBy:0];
 
             v241 = MEMORY[0x277D85DD0];
             v242 = 3221225472;
@@ -1017,7 +1017,7 @@ LABEL_139:
             v244 = &unk_278615128;
             v245 = v132;
             v141 = v132;
-            LOBYTE(v132) = [v140 enumeratePersistentIDsAndProperties:MEMORY[0x277CBEBF8] error:a9 enumerationHandler:&v241];
+            LOBYTE(v132) = [v140 enumeratePersistentIDsAndProperties:MEMORY[0x277CBEBF8] error:transaction enumerationHandler:&v241];
 
             if ((v132 & 1) == 0)
             {
@@ -1046,27 +1046,27 @@ LABEL_139:
         v147 = [MEMORY[0x277CBEA60] arrayWithObjects:&v241 count:2];
         v148 = [v145 predicateMatchingAllPredicates:v147];
 
-        v149 = [v143 protectedDatabase];
+        protectedDatabase4 = [v143 protectedDatabase];
         v237 = 0;
-        v150 = [(HDSQLiteEntity *)HDUserDomainConceptEntity anyInDatabase:v149 predicate:v148 error:&v237];
+        v150 = [(HDSQLiteEntity *)HDUserDomainConceptEntity anyInDatabase:protectedDatabase4 predicate:v148 error:&v237];
         v151 = v237;
 
         if (v150 || !v151)
         {
           if (!v150)
           {
-            v153 = [v142 semanticIdentifier];
-            v154 = [v153 stringValue];
+            semanticIdentifier = [v142 semanticIdentifier];
+            stringValue = [semanticIdentifier stringValue];
 
-            v155 = HDConceptAuthorizationEntityPredicateForSemanticIdentifierString(v154, 1);
-            [HDConceptAuthorizationEntity deleteConceptAuthorizationRecordsMatchingPredicate:v155 transaction:v143 error:a9];
+            v155 = HDConceptAuthorizationEntityPredicateForSemanticIdentifierString(stringValue, 1);
+            [HDConceptAuthorizationEntity deleteConceptAuthorizationRecordsMatchingPredicate:v155 transaction:v143 error:transaction];
           }
         }
 
-        else if (a9)
+        else if (transaction)
         {
           v152 = v151;
-          *a9 = v151;
+          *transaction = v151;
         }
 
         else
@@ -1089,13 +1089,13 @@ LABEL_139:
 
 LABEL_133:
 
-  v156 = [v217 UUID];
-  v157 = [(HDUserDomainConceptEntity *)v193 _updateLinkCollectionDataByRemovingTargetUUID:v156 syncProvenance:a4 syncIdentity:v223 transaction:v190 error:a9];
+  uUID3 = [v217 UUID];
+  v157 = [(HDUserDomainConceptEntity *)v193 _updateLinkCollectionDataByRemovingTargetUUID:uUID3 syncProvenance:method syncIdentity:provenanceCopy transaction:v190 error:transaction];
 
   if (v157)
   {
 LABEL_134:
-    v158 = [v206 protectedDatabase];
+    protectedDatabase5 = [v206 protectedDatabase];
     *&v233 = MEMORY[0x277D85DD0];
     *(&v233 + 1) = 3221225472;
     *&v234 = __112__HDUserDomainConceptEntity__updateBaseUserDomainConcept_syncProvenance_syncIdentity_profile_transaction_error___block_invoke;
@@ -1106,14 +1106,14 @@ LABEL_134:
     *&buf[16] = __112__HDUserDomainConceptEntity__updateBaseUserDomainConcept_syncProvenance_syncIdentity_profile_transaction_error___block_invoke_2;
     v248 = &unk_27862C5D0;
     *v249 = v217;
-    *&v249[24] = a4;
-    v250 = v223;
+    *&v249[24] = method;
+    v250 = provenanceCopy;
     v251 = v193;
     v112 = v185;
     *&v249[8] = v112;
     v159 = v195;
     *&v249[16] = v159;
-    if ([v158 executeCachedStatementForKey:&_updateBaseUserDomainConcept_syncProvenance_syncIdentity_profile_transaction_error__statementKey error:a9 SQLGenerator:&v233 bindingHandler:buf enumerationHandler:0])
+    if ([protectedDatabase5 executeCachedStatementForKey:&_updateBaseUserDomainConcept_syncProvenance_syncIdentity_profile_transaction_error__statementKey error:transaction SQLGenerator:&v233 bindingHandler:buf enumerationHandler:0])
     {
       v160 = v159;
     }
@@ -1137,7 +1137,7 @@ LABEL_141:
 
 LABEL_142:
   v161 = v224;
-  if (!v224 || (v162 = [v224 longLongValue], v163 = objc_msgSend(v191, "updatePrivateDataEnitiesForUserDomainConcept:userDomainConceptID:syncProvenance:profile:transaction:error:", v217, v162, a4, v197, v206, a9), v161 = v224, !v163))
+  if (!v224 || (v162 = [v224 longLongValue], v163 = objc_msgSend(v191, "updatePrivateDataEnitiesForUserDomainConcept:userDomainConceptID:syncProvenance:profile:transaction:error:", v217, v162, method, v197, v206, transaction), v161 = v224, !v163))
   {
 
 LABEL_156:
@@ -1151,10 +1151,10 @@ LABEL_156:
   objc_opt_self();
   if (![v217 isDeleted])
   {
-    v177 = [v222 daemon];
-    v178 = [v177 userDomainConceptEntityRegistry];
-    v179 = [v217 identifier];
-    v180 = [v178 userDomainConceptEntityClassForTypeIdentifier:v179];
+    daemon3 = [v222 daemon];
+    userDomainConceptEntityRegistry3 = [daemon3 userDomainConceptEntityRegistry];
+    identifier2 = [v217 identifier];
+    v180 = [userDomainConceptEntityRegistry3 userDomainConceptEntityClassForTypeIdentifier:identifier2];
 
     if (!v180 || v180 == objc_opt_class())
     {
@@ -1165,9 +1165,9 @@ LABEL_156:
     v182 = v222;
     v183 = v164;
     objc_opt_self();
-    if ([v180 updateConcreteUserDomainConcept:v181 userDomainConceptID:v162 transaction:v183 error:a9])
+    if ([v180 updateConcreteUserDomainConcept:v181 userDomainConceptID:v162 transaction:v183 error:transaction])
     {
-      v184 = [v180 updatePrivateDataEnitiesForUserDomainConcept:v181 userDomainConceptID:v162 syncProvenance:a4 profile:v182 transaction:v183 error:a9];
+      v184 = [v180 updatePrivateDataEnitiesForUserDomainConcept:v181 userDomainConceptID:v162 syncProvenance:method profile:v182 transaction:v183 error:transaction];
 
       if (v184)
       {
@@ -1190,11 +1190,11 @@ LABEL_164:
   v236 = 0u;
   v233 = 0u;
   v234 = 0u;
-  v165 = [v222 daemon];
-  v166 = [v165 userDomainConceptEntityRegistry];
-  v167 = [v166 registeredUserDomainConceptEntityClasses];
+  daemon4 = [v222 daemon];
+  userDomainConceptEntityRegistry4 = [daemon4 userDomainConceptEntityRegistry];
+  registeredUserDomainConceptEntityClasses = [userDomainConceptEntityRegistry4 registeredUserDomainConceptEntityClasses];
 
-  v168 = [v167 countByEnumeratingWithState:&v233 objects:buf count:16];
+  v168 = [registeredUserDomainConceptEntityClasses countByEnumeratingWithState:&v233 objects:buf count:16];
   if (v168)
   {
     v169 = *v234;
@@ -1204,15 +1204,15 @@ LABEL_164:
       {
         if (*v234 != v169)
         {
-          objc_enumerationMutation(v167);
+          objc_enumerationMutation(registeredUserDomainConceptEntityClasses);
         }
 
         v171 = *(*(&v233 + 1) + 8 * j);
         if (v171 != objc_opt_class())
         {
           v172 = [[v171 alloc] initWithPersistentID:v162];
-          v173 = [v164 protectedDatabase];
-          v174 = [v172 deleteFromDatabase:v173 error:a9];
+          protectedDatabase6 = [v164 protectedDatabase];
+          v174 = [v172 deleteFromDatabase:protectedDatabase6 error:transaction];
 
           if (!v174)
           {
@@ -1222,7 +1222,7 @@ LABEL_164:
         }
       }
 
-      v168 = [v167 countByEnumeratingWithState:&v233 objects:buf count:16];
+      v168 = [registeredUserDomainConceptEntityClasses countByEnumeratingWithState:&v233 objects:buf count:16];
       if (v168)
       {
         continue;
@@ -1244,70 +1244,70 @@ LABEL_159:
   return v47;
 }
 
-+ (int64_t)storeUserDomainConcept:(id)a3 method:(int64_t)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7
++ (int64_t)storeUserDomainConcept:(id)concept method:(int64_t)method profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [a1 storeUserDomainConcept:v14 method:a4 syncProvenance:0 syncIdentity:objc_msgSend(v13 syncVersion:"currentSyncIdentityPersistentID") profile:0x400000000 transaction:v13 error:{v12, a7}];
+  transactionCopy = transaction;
+  profileCopy = profile;
+  conceptCopy = concept;
+  v15 = [self storeUserDomainConcept:conceptCopy method:method syncProvenance:0 syncIdentity:objc_msgSend(profileCopy syncVersion:"currentSyncIdentityPersistentID") profile:0x400000000 transaction:profileCopy error:{transactionCopy, error}];
 
   return v15;
 }
 
-+ (BOOL)deleteUserDomainConcept:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)deleteUserDomainConcept:(id)concept profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  conceptCopy = concept;
+  transactionCopy = transaction;
+  profileCopy = profile;
   _HKInitializeLogging();
   v13 = HKLogHealthOntology();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543618;
-    v19 = a1;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v10;
+    v21 = conceptCopy;
     _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: deleteUserDomainConcept: %{public}@", &v18, 0x16u);
   }
 
-  v14 = [v10 deletedUserDomainConcept];
-  v15 = [a1 storeUserDomainConcept:v14 method:3 profile:v12 transaction:v11 error:a6];
+  deletedUserDomainConcept = [conceptCopy deletedUserDomainConcept];
+  v15 = [self storeUserDomainConcept:deletedUserDomainConcept method:3 profile:profileCopy transaction:transactionCopy error:error];
 
   v16 = *MEMORY[0x277D85DE8];
   return v15 != 0;
 }
 
-+ (BOOL)enumerateUserDomainConceptsWithPredicate:(id)a3 limit:(int64_t)a4 orderingTerms:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8 enumerationHandler:(id)a9
++ (BOOL)enumerateUserDomainConceptsWithPredicate:(id)predicate limit:(int64_t)limit orderingTerms:(id)terms profile:(id)profile transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
-  v18 = a5;
-  v19 = a3;
-  v20 = [v16 databaseForEntityClass:a1];
+  profileCopy = profile;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  termsCopy = terms;
+  predicateCopy = predicate;
+  v20 = [transactionCopy databaseForEntityClass:self];
   v21 = objc_alloc_init(MEMORY[0x277D10B80]);
-  [v21 setEntityClass:a1];
-  [v21 setLimitCount:a4];
-  [v21 setOrderingTerms:v18];
+  [v21 setEntityClass:self];
+  [v21 setLimitCount:limit];
+  [v21 setOrderingTerms:termsCopy];
 
-  [v21 setPredicate:v19];
+  [v21 setPredicate:predicateCopy];
   [v21 setReturnsDistinctEntities:1];
   v22 = [objc_alloc(MEMORY[0x277D10B78]) initWithDatabase:v20 descriptor:v21];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __135__HDUserDomainConceptEntity_enumerateUserDomainConceptsWithPredicate_limit_orderingTerms_profile_transaction_error_enumerationHandler___block_invoke;
   v27[3] = &unk_27862C530;
-  v28 = v15;
-  v29 = v16;
-  v30 = v17;
-  v31 = a1;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  LOBYTE(a8) = [v22 enumeratePersistentIDsAndProperties:&unk_283CB0210 error:a8 enumerationHandler:v27];
+  v28 = profileCopy;
+  v29 = transactionCopy;
+  v30 = handlerCopy;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v24 = transactionCopy;
+  v25 = profileCopy;
+  LOBYTE(error) = [v22 enumeratePersistentIDsAndProperties:&unk_283CB0210 error:error enumerationHandler:v27];
 
-  return a8;
+  return error;
 }
 
 uint64_t __135__HDUserDomainConceptEntity_enumerateUserDomainConceptsWithPredicate_limit_orderingTerms_profile_transaction_error_enumerationHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, void *a5)
@@ -1334,10 +1334,10 @@ uint64_t __135__HDUserDomainConceptEntity_enumerateUserDomainConceptsWithPredica
   return v15;
 }
 
-+ (id)_userDomainConceptWithPersistentID:(void *)a3 encoder:(void *)a4 transaction:(void *)a5 error:
++ (id)_userDomainConceptWithPersistentID:(void *)d encoder:(void *)encoder transaction:(void *)transaction error:
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  encoderCopy = encoder;
   objc_opt_self();
   v31 = 0;
   v32 = &v31;
@@ -1351,19 +1351,19 @@ uint64_t __135__HDUserDomainConceptEntity_enumerateUserDomainConceptsWithPredica
   v28 = __Block_byref_object_copy__182;
   v29 = __Block_byref_object_dispose__182;
   v30 = 0;
-  v10 = [objc_alloc(objc_msgSend(v8 "entityClass"))];
-  v11 = [v8 orderedProperties];
-  v12 = [v9 protectedDatabase];
+  v10 = [objc_alloc(objc_msgSend(dCopy "entityClass"))];
+  orderedProperties = [dCopy orderedProperties];
+  protectedDatabase = [encoderCopy protectedDatabase];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __90__HDUserDomainConceptEntity__userDomainConceptWithPersistentID_encoder_transaction_error___block_invoke;
   v20[3] = &unk_27862C648;
   v22 = &v31;
-  v13 = v8;
+  v13 = dCopy;
   v21 = v13;
   v23 = &v25;
   v24 = a2;
-  LOBYTE(a2) = [v10 getValuesForProperties:v11 database:v12 error:a5 handler:v20];
+  LOBYTE(a2) = [v10 getValuesForProperties:orderedProperties database:protectedDatabase error:transaction handler:v20];
 
   if (a2)
   {
@@ -1378,10 +1378,10 @@ uint64_t __135__HDUserDomainConceptEntity_enumerateUserDomainConceptsWithPredica
     v17 = v16;
     if (v16)
     {
-      if (a5)
+      if (transaction)
       {
         v18 = v16;
-        *a5 = v17;
+        *transaction = v17;
       }
 
       else
@@ -1400,27 +1400,27 @@ LABEL_10:
   return v15;
 }
 
-+ (BOOL)updateLinksTargetingUserDomainConceptUUID:(id)a3 toTargetUserDomainConceptUUID:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)updateLinksTargetingUserDomainConceptUUID:(id)d toTargetUserDomainConceptUUID:(id)iD profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([v11 isEqual:v12])
+  dCopy = d;
+  iDCopy = iD;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  if ([dCopy isEqual:iDCopy])
   {
     LOBYTE(v15) = 1;
   }
 
   else
   {
-    v16 = v11;
-    v17 = v12;
-    v18 = v14;
-    v31 = v13;
-    v19 = v13;
+    v16 = dCopy;
+    v17 = iDCopy;
+    v18 = transactionCopy;
+    v31 = profileCopy;
+    v19 = profileCopy;
     v15 = objc_opt_self();
-    v20 = a7;
-    v21 = [v19 currentSyncIdentityPersistentID];
+    errorCopy = error;
+    currentSyncIdentityPersistentID = [v19 currentSyncIdentityPersistentID];
 
     v32 = MEMORY[0x277D85DD0];
     v33 = 3221225472;
@@ -1429,12 +1429,12 @@ LABEL_10:
     v36 = v16;
     v37 = v17;
     v39 = v15;
-    v40 = v21;
+    v40 = currentSyncIdentityPersistentID;
     v38 = v18;
     v22 = v18;
     v23 = v17;
     v24 = v16;
-    LODWORD(v15) = [(HDUserDomainConceptEntity *)v15 _enumerateLinkCollectionsContainingTargetUUID:v24 transaction:v22 error:v20 enumerationHandler:&v32];
+    LODWORD(v15) = [(HDUserDomainConceptEntity *)v15 _enumerateLinkCollectionsContainingTargetUUID:v24 transaction:v22 error:errorCopy enumerationHandler:&v32];
 
     if (v15)
     {
@@ -1442,7 +1442,7 @@ LABEL_10:
       v25 = v23;
       v26 = v22;
       objc_opt_self();
-      v27 = [v26 protectedDatabase];
+      protectedDatabase = [v26 protectedDatabase];
 
       v32 = MEMORY[0x277D85DD0];
       v33 = 3221225472;
@@ -1452,10 +1452,10 @@ LABEL_10:
       v37 = v15;
       v28 = v15;
       v29 = v25;
-      LOBYTE(v15) = [v27 executeCachedStatementForKey:&_updateLinksMovingFromTargetUUID_toTargetUUID_transaction_error__statementKey error:v20 SQLGenerator:&__block_literal_global_487_0 bindingHandler:&v32 enumerationHandler:0];
+      LOBYTE(v15) = [protectedDatabase executeCachedStatementForKey:&_updateLinksMovingFromTargetUUID_toTargetUUID_transaction_error__statementKey error:errorCopy SQLGenerator:&__block_literal_global_487_0 bindingHandler:&v32 enumerationHandler:0];
     }
 
-    v13 = v31;
+    profileCopy = v31;
   }
 
   return v15;
@@ -1476,22 +1476,22 @@ LABEL_10:
   return v2;
 }
 
-+ (BOOL)retrievePrivateDataEntitiesForUserDomainConcept:(id)a3 persistentID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)retrievePrivateDataEntitiesForUserDomainConcept:(id)concept persistentID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  conceptCopy = concept;
+  transactionCopy = transaction;
   v12 = objc_alloc(MEMORY[0x277CBEB18]);
-  v13 = [v10 propertyCollection];
-  v14 = [v13 properties];
-  v15 = [v12 initWithArray:v14];
+  propertyCollection = [conceptCopy propertyCollection];
+  properties = [propertyCollection properties];
+  v15 = [v12 initWithArray:properties];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = [a1 privateDataEntities];
-  v17 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  privateDataEntities = [self privateDataEntities];
+  v17 = [privateDataEntities countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1502,17 +1502,17 @@ LABEL_10:
       {
         if (*v25 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(privateDataEntities);
         }
 
-        if (![*(*(&v24 + 1) + 8 * i) retrieveDataForUserDomainConcept:v10 userDomainConceptID:a4 mutableUserDomainConceptProperties:v15 transaction:v11 error:a6])
+        if (![*(*(&v24 + 1) + 8 * i) retrieveDataForUserDomainConcept:conceptCopy userDomainConceptID:d mutableUserDomainConceptProperties:v15 transaction:transactionCopy error:error])
         {
           v21 = 0;
           goto LABEL_12;
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v18 = [privateDataEntities countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v18)
       {
         continue;
@@ -1524,8 +1524,8 @@ LABEL_10:
 
   if ([v15 count])
   {
-    v16 = [objc_alloc(MEMORY[0x277CCDB28]) initWithProperties:v15];
-    [v10 _setPropertyCollection:v16];
+    privateDataEntities = [objc_alloc(MEMORY[0x277CCDB28]) initWithProperties:v15];
+    [conceptCopy _setPropertyCollection:privateDataEntities];
     v21 = 1;
 LABEL_12:
   }
@@ -1539,41 +1539,41 @@ LABEL_12:
   return v21;
 }
 
-+ (id)userDomainConceptUUIDForCanonicalConceptWithSemanticIdentifierString:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (id)userDomainConceptUUIDForCanonicalConceptWithSemanticIdentifierString:(id)string profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stringCopy = string;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__182;
   v37 = __Block_byref_object_dispose__182;
   v38 = 0;
-  v11 = [MEMORY[0x277D10B70] falsePredicate];
-  v12 = [MEMORY[0x277CCDB40] semanticIdentifierFromSemanticIdentifierString:v8 profile:v9];
+  falsePredicate = [MEMORY[0x277D10B70] falsePredicate];
+  v12 = [MEMORY[0x277CCDB40] semanticIdentifierFromSemanticIdentifierString:stringCopy profile:profileCopy];
   if (v12)
   {
-    v13 = [v9 daemon];
-    v14 = [v13 userDomainConceptEntityRegistry];
-    v15 = [v12 typeIdentifier];
-    v16 = [v14 userDomainConceptEntityClassForTypeIdentifier:v15];
+    daemon = [profileCopy daemon];
+    userDomainConceptEntityRegistry = [daemon userDomainConceptEntityRegistry];
+    typeIdentifier = [v12 typeIdentifier];
+    v16 = [userDomainConceptEntityRegistry userDomainConceptEntityClassForTypeIdentifier:typeIdentifier];
 
     v17 = [v16 predicateMatchingSemanticIdentifier:v12];
 
-    v11 = v17;
+    falsePredicate = v17;
   }
 
   v18 = MEMORY[0x277D10B20];
   v19 = [MEMORY[0x277D10B18] predicateWithProperty:@"deleted" equalToValue:MEMORY[0x277CBEC28]];
-  v20 = [v18 compoundPredicateWithPredicate:v11 otherPredicate:v19];
+  v20 = [v18 compoundPredicateWithPredicate:falsePredicate otherPredicate:v19];
 
   v21 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"creation_date" entityClass:objc_opt_class() ascending:1];
-  v22 = [v10 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
   v40[0] = v21;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-  v24 = [(HDSQLiteEntity *)HDUserDomainConceptEntity queryWithDatabase:v22 predicate:v20 limit:1 orderingTerms:v23 groupBy:0];
+  v24 = [(HDSQLiteEntity *)HDUserDomainConceptEntity queryWithDatabase:protectedDatabase predicate:v20 limit:1 orderingTerms:v23 groupBy:0];
 
   v39 = @"uuid";
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
@@ -1582,7 +1582,7 @@ LABEL_12:
   v32[2] = __124__HDUserDomainConceptEntity_userDomainConceptUUIDForCanonicalConceptWithSemanticIdentifierString_profile_transaction_error___block_invoke;
   v32[3] = &unk_27862C558;
   v32[4] = &v33;
-  v26 = [v24 enumeratePersistentIDsAndProperties:v25 error:a6 enumerationHandler:v32];
+  v26 = [v24 enumeratePersistentIDsAndProperties:v25 error:error enumerationHandler:v32];
 
   if (v26)
   {
@@ -1612,23 +1612,23 @@ uint64_t __124__HDUserDomainConceptEntity_userDomainConceptUUIDForCanonicalConce
   return 0;
 }
 
-+ (BOOL)incrementSyncAnchorAndAdjustSyncProvenanceIfNotLocalForUserDomainConceptWithUUID:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)incrementSyncAnchorAndAdjustSyncProvenanceIfNotLocalForUserDomainConceptWithUUID:(id)d profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [a4 currentSyncIdentityPersistentID];
-  v12 = [v10 protectedDatabase];
+  dCopy = d;
+  transactionCopy = transaction;
+  currentSyncIdentityPersistentID = [profile currentSyncIdentityPersistentID];
+  protectedDatabase = [transactionCopy protectedDatabase];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __136__HDUserDomainConceptEntity_incrementSyncAnchorAndAdjustSyncProvenanceIfNotLocalForUserDomainConceptWithUUID_profile_transaction_error___block_invoke_2;
   v15[3] = &unk_278613B58;
-  v16 = v9;
-  v17 = v11;
-  v13 = v9;
-  LOBYTE(a6) = [v12 executeCachedStatementForKey:&incrementSyncAnchorAndAdjustSyncProvenanceIfNotLocalForUserDomainConceptWithUUID_profile_transaction_error__statementKeyUDCUpdate error:a6 SQLGenerator:&__block_literal_global_218 bindingHandler:v15 enumerationHandler:0];
+  v16 = dCopy;
+  v17 = currentSyncIdentityPersistentID;
+  v13 = dCopy;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&incrementSyncAnchorAndAdjustSyncProvenanceIfNotLocalForUserDomainConceptWithUUID_profile_transaction_error__statementKeyUDCUpdate error:error SQLGenerator:&__block_literal_global_218 bindingHandler:v15 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __136__HDUserDomainConceptEntity_incrementSyncAnchorAndAdjustSyncProvenanceIfNotLocalForUserDomainConceptWithUUID_profile_transaction_error___block_invoke_2(uint64_t a1, sqlite3_stmt *a2)
@@ -1641,27 +1641,27 @@ uint64_t __136__HDUserDomainConceptEntity_incrementSyncAnchorAndAdjustSyncProven
   return sqlite3_bind_int64(a2, 4, 0);
 }
 
-+ (int64_t)evaluateIsCanonicalConcept:(id)a3 entityClass:(Class)a4 transaction:(id)a5 error:(id *)a6
++ (int64_t)evaluateIsCanonicalConcept:(id)concept entityClass:(Class)class transaction:(id)transaction error:(id *)error
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 semanticIdentifier];
-  v13 = [(objc_class *)a4 predicateMatchingSemanticIdentifier:v12];
+  transactionCopy = transaction;
+  conceptCopy = concept;
+  semanticIdentifier = [conceptCopy semanticIdentifier];
+  v13 = [(objc_class *)class predicateMatchingSemanticIdentifier:semanticIdentifier];
 
   v14 = MEMORY[0x277D10B20];
-  v15 = [v11 creationDate];
+  creationDate = [conceptCopy creationDate];
 
-  [v15 timeIntervalSinceReferenceDate];
+  [creationDate timeIntervalSinceReferenceDate];
   v16 = HDUserDomainConceptEntityPredicateForConceptsWithCreationDateBefore();
   v24[0] = v16;
   v24[1] = v13;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
   v18 = [v14 predicateMatchingAllPredicates:v17];
 
-  v19 = [v10 databaseForEntityClass:a4];
+  v19 = [transactionCopy databaseForEntityClass:class];
 
-  v20 = [a1 countValueForProperty:@"udc_id" predicate:v18 database:v19 error:a6];
+  v20 = [self countValueForProperty:@"udc_id" predicate:v18 database:v19 error:error];
 
   if (v20)
   {
@@ -1685,20 +1685,20 @@ uint64_t __136__HDUserDomainConceptEntity_incrementSyncAnchorAndAdjustSyncProven
   return v21;
 }
 
-+ (id)createAndRefreshOntologyBackedUserDomainConceptWithConceptIdentifier:(id)a3 additionalProperties:(id)a4 userDomainConceptTypeIdentifier:(id)a5 profile:(id)a6 error:(id *)a7
++ (id)createAndRefreshOntologyBackedUserDomainConceptWithConceptIdentifier:(id)identifier additionalProperties:(id)properties userDomainConceptTypeIdentifier:(id)typeIdentifier profile:(id)profile error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [MEMORY[0x277CCD5C0] appleOntologyCodingWithIdentifier:v11];
-  v16 = [v14 daemon];
-  v17 = [v16 userDomainConceptEntityRegistry];
-  v18 = [v17 userDomainConceptEntityClassForTypeIdentifier:v13];
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  typeIdentifierCopy = typeIdentifier;
+  profileCopy = profile;
+  v15 = [MEMORY[0x277CCD5C0] appleOntologyCodingWithIdentifier:identifierCopy];
+  daemon = [profileCopy daemon];
+  userDomainConceptEntityRegistry = [daemon userDomainConceptEntityRegistry];
+  v18 = [userDomainConceptEntityRegistry userDomainConceptEntityClassForTypeIdentifier:typeIdentifierCopy];
 
-  if (v12)
+  if (propertiesCopy)
   {
-    v19 = [objc_alloc(MEMORY[0x277CCDB28]) initWithProperties:v12];
+    v19 = [objc_alloc(MEMORY[0x277CCDB28]) initWithProperties:propertiesCopy];
   }
 
   else
@@ -1717,7 +1717,7 @@ uint64_t __136__HDUserDomainConceptEntity_incrementSyncAnchorAndAdjustSyncProven
     v39 = __Block_byref_object_copy__182;
     v40 = __Block_byref_object_dispose__182;
     v41 = 0;
-    v22 = [v14 database];
+    database = [profileCopy database];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __165__HDUserDomainConceptEntity_createAndRefreshOntologyBackedUserDomainConceptWithConceptIdentifier_additionalProperties_userDomainConceptTypeIdentifier_profile_error___block_invoke;
@@ -1725,8 +1725,8 @@ uint64_t __136__HDUserDomainConceptEntity_incrementSyncAnchorAndAdjustSyncProven
     v34 = &v36;
     v35 = v18;
     v32 = v21;
-    v33 = v14;
-    v23 = [a1 performWriteTransactionWithHealthDatabase:v22 error:a7 block:v31];
+    v33 = profileCopy;
+    v23 = [self performWriteTransactionWithHealthDatabase:database error:error block:v31];
 
     if (v23)
     {
@@ -1745,14 +1745,14 @@ uint64_t __136__HDUserDomainConceptEntity_incrementSyncAnchorAndAdjustSyncProven
 
   else
   {
-    v25 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"%@{public}: User Domain Concept subclass entity does not currently support creating and refreshing on demand. %@{public}", a1, v18}];
+    v25 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"%@{public}: User Domain Concept subclass entity does not currently support creating and refreshing on demand. %@{public}", self, v18}];
     v26 = v25;
     if (v25)
     {
-      if (a7)
+      if (error)
       {
         v27 = v25;
-        *a7 = v26;
+        *error = v26;
       }
 
       else
@@ -1798,12 +1798,12 @@ uint64_t __165__HDUserDomainConceptEntity_createAndRefreshOntologyBackedUserDoma
   return v7;
 }
 
-+ (BOOL)cannonicalDoseUnitStringForUserDomainConceptWithUUID:(id)a3 profile:(id)a4 transaction:(id)a5 canonicalDoseUnitStringOut:(id *)a6 error:(id *)a7
++ (BOOL)cannonicalDoseUnitStringForUserDomainConceptWithUUID:(id)d profile:(id)profile transaction:(id)transaction canonicalDoseUnitStringOut:(id *)out error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" value:v12 comparisonType:1];
+  dCopy = d;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  v15 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" value:dCopy comparisonType:1];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1815,7 +1815,7 @@ uint64_t __165__HDUserDomainConceptEntity_createAndRefreshOntologyBackedUserDoma
   v21[2] = __135__HDUserDomainConceptEntity_cannonicalDoseUnitStringForUserDomainConceptWithUUID_profile_transaction_canonicalDoseUnitStringOut_error___block_invoke;
   v21[3] = &unk_2786276E0;
   v21[4] = &v22;
-  if (([a1 enumerateUserDomainConceptsWithPredicate:v15 limit:1 orderingTerms:0 profile:v13 transaction:v14 error:a7 enumerationHandler:v21] & 1) == 0)
+  if (([self enumerateUserDomainConceptsWithPredicate:v15 limit:1 orderingTerms:0 profile:profileCopy transaction:transactionCopy error:error enumerationHandler:v21] & 1) == 0)
   {
     goto LABEL_7;
   }
@@ -1824,17 +1824,17 @@ uint64_t __165__HDUserDomainConceptEntity_createAndRefreshOntologyBackedUserDoma
   if (!v16)
   {
     v18 = MEMORY[0x277CCA9B8];
-    v19 = [v12 UUIDString];
-    [v18 hk_assignError:a7 code:100 format:{@"[%@] unable to find a concept with UUID %@. Either the UUID provided did not exist in the same transaction provided, or somehow went missing along the way.", a1, v19}];
+    uUIDString = [dCopy UUIDString];
+    [v18 hk_assignError:error code:100 format:{@"[%@] unable to find a concept with UUID %@. Either the UUID provided did not exist in the same transaction provided, or somehow went missing along the way.", self, uUIDString}];
 
 LABEL_7:
     v17 = 0;
     goto LABEL_8;
   }
 
-  if (a6)
+  if (out)
   {
-    *a6 = [v16 canonicalDoseUnitString];
+    *out = [v16 canonicalDoseUnitString];
   }
 
   v17 = 1;
@@ -1844,35 +1844,35 @@ LABEL_8:
   return v17;
 }
 
-+ (id)predicateMatchingSemanticIdentifier:(id)a3
++ (id)predicateMatchingSemanticIdentifier:(id)identifier
 {
-  v3 = [a3 UUID];
-  v4 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" value:v3 comparisonType:1];
+  uUID = [identifier UUID];
+  v4 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" value:uUID comparisonType:1];
 
   return v4;
 }
 
-+ (id)newUserDomainConceptForRefreshWithCodingCollection:(id)a3 propertyCollection:(id)a4
++ (id)newUserDomainConceptForRefreshWithCodingCollection:(id)collection propertyCollection:(id)propertyCollection
 {
   v5 = MEMORY[0x277CCDAF0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithCodingCollection:v7 linkCollection:0 propertyCollection:v6];
+  propertyCollectionCopy = propertyCollection;
+  collectionCopy = collection;
+  v8 = [[v5 alloc] initWithCodingCollection:collectionCopy linkCollection:0 propertyCollection:propertyCollectionCopy];
 
   return v8;
 }
 
-+ (BOOL)insertPrivateDataEnitiesForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertPrivateDataEnitiesForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  conceptCopy = concept;
+  transactionCopy = transaction;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [a1 privateDataEntities];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  privateDataEntities = [self privateDataEntities];
+  v13 = [privateDataEntities countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1883,17 +1883,17 @@ LABEL_8:
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(privateDataEntities);
         }
 
-        if (![*(*(&v20 + 1) + 8 * i) insertDataForUserDomainConcept:v10 userDomainConceptID:a4 transaction:v11 error:a6])
+        if (![*(*(&v20 + 1) + 8 * i) insertDataForUserDomainConcept:conceptCopy userDomainConceptID:d transaction:transactionCopy error:error])
         {
           v17 = 0;
           goto LABEL_11;
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v14 = [privateDataEntities countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v14)
       {
         continue;
@@ -1910,17 +1910,17 @@ LABEL_11:
   return v17;
 }
 
-+ (BOOL)updatePrivateDataEnitiesForUserDomainConcept:(id)a3 userDomainConceptID:(int64_t)a4 syncProvenance:(int64_t)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8
++ (BOOL)updatePrivateDataEnitiesForUserDomainConcept:(id)concept userDomainConceptID:(int64_t)d syncProvenance:(int64_t)provenance profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v34 = a6;
-  v33 = a7;
+  conceptCopy = concept;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = [a1 privateDataEntities];
+  obj = [self privateDataEntities];
   v31 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v31)
   {
@@ -1938,11 +1938,11 @@ LABEL_11:
         }
 
         v13 = *(*(&v38 + 1) + 8 * v12);
-        v14 = v35;
-        v15 = v34;
-        v16 = v33;
+        v14 = conceptCopy;
+        v15 = profileCopy;
+        v16 = transactionCopy;
         objc_opt_self();
-        if ([v14 isDeleted] && !objc_msgSend(v13, "willDeleteUserDomainConcept:userDomainConceptID:syncProvenance:profile:transaction:error:", v14, a4, a5, v15, v16, a8))
+        if ([v14 isDeleted] && !objc_msgSend(v13, "willDeleteUserDomainConcept:userDomainConceptID:syncProvenance:profile:transaction:error:", v14, d, provenance, v15, v16, error))
         {
 LABEL_17:
 
@@ -1956,16 +1956,16 @@ LABEL_17:
         if (([v17 isDeleted] & 1) != 0 || (objc_opt_respondsToSelector() & 1) == 0)
         {
           v20 = MEMORY[0x277CCACA8];
-          v21 = [v13 disambiguatedDatabaseTable];
-          v22 = [v20 stringWithFormat:@"DELETE FROM %@ WHERE udc_id = ?", v21];
+          disambiguatedDatabaseTable = [v13 disambiguatedDatabaseTable];
+          v22 = [v20 stringWithFormat:@"DELETE FROM %@ WHERE udc_id = ?", disambiguatedDatabaseTable];
 
-          v23 = [v18 protectedDatabase];
+          protectedDatabase = [v18 protectedDatabase];
           v42[0] = MEMORY[0x277D85DD0];
           v42[1] = 3221225472;
           v42[2] = __111__HDUserDomainConceptEntity__deleteDataForUserDomainConcept_userDomainConceptID_entityClass_transaction_error___block_invoke;
           v42[3] = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
-          v42[4] = a4;
-          v24 = [v23 executeSQL:v22 error:a8 bindingHandler:v42 enumerationHandler:0];
+          v42[4] = d;
+          v24 = [protectedDatabase executeSQL:v22 error:error bindingHandler:v42 enumerationHandler:0];
 
           if ((v24 & 1) == 0)
           {
@@ -1975,7 +1975,7 @@ LABEL_17:
 
         else
         {
-          v19 = [v13 pruneDataForUpdatedUserDomainConcept:v17 userDomainConceptID:a4 transaction:v18 error:a8];
+          v19 = [v13 pruneDataForUpdatedUserDomainConcept:v17 userDomainConceptID:d transaction:v18 error:error];
 
           if ((v19 & 1) == 0)
           {
@@ -1983,7 +1983,7 @@ LABEL_17:
           }
         }
 
-        LODWORD(v16) = [v13 insertDataForUserDomainConcept:v17 userDomainConceptID:a4 transaction:v18 error:a8];
+        LODWORD(v16) = [v13 insertDataForUserDomainConcept:v17 userDomainConceptID:d transaction:v18 error:error];
 
         if (!v16)
         {
@@ -2018,76 +2018,76 @@ LABEL_19:
   return v16;
 }
 
-+ (BOOL)generateAPIObjectForUserDomainConcept:(id)a3 apiObjectOut:(id *)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)generateAPIObjectForUserDomainConcept:(id)concept apiObjectOut:(id *)out transaction:(id)transaction error:(id *)error
 {
-  if (a4)
+  if (out)
   {
-    *a4 = 0;
+    *out = 0;
   }
 
   return 1;
 }
 
-+ (BOOL)generateUserAnnotatedMedicationForUserDomainConcept:(id)a3 userAnnotatedMedicationOut:(id *)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)generateUserAnnotatedMedicationForUserDomainConcept:(id)concept userAnnotatedMedicationOut:(id *)out transaction:(id)transaction error:(id *)error
 {
-  if (a4)
+  if (out)
   {
-    *a4 = 0;
+    *out = 0;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a6 code:100 format:{@"[%@] User Domain Concept Entity Class does not support API object generation.", a1}];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"[%@] User Domain Concept Entity Class does not support API object generation.", self}];
   return 0;
 }
 
-+ (void)_notifyObserversForUserDomainConcept:(int)a3 update:(void *)a4 profile:(void *)a5 transaction:
++ (void)_notifyObserversForUserDomainConcept:(int)concept update:(void *)update profile:(void *)profile transaction:
 {
   v11 = a2;
-  v8 = a5;
-  v9 = a4;
+  profileCopy = profile;
+  updateCopy = update;
   objc_opt_self();
-  v10 = [v9 userDomainConceptManager];
+  userDomainConceptManager = [updateCopy userDomainConceptManager];
 
   if ([v11 isDeleted])
   {
-    [v10 notifyObserversForDeletedUDC:v11 transaction:v8];
+    [userDomainConceptManager notifyObserversForDeletedUDC:v11 transaction:profileCopy];
   }
 
-  else if (a3)
+  else if (concept)
   {
-    [v10 notifyObserversForUpdatedUDC:v11 transaction:v8];
+    [userDomainConceptManager notifyObserversForUpdatedUDC:v11 transaction:profileCopy];
   }
 
   else
   {
-    [v10 notifyObserversForAddedUDC:v11 transaction:v8];
+    [userDomainConceptManager notifyObserversForAddedUDC:v11 transaction:profileCopy];
   }
 }
 
-+ (uint64_t)_updateLinkCollectionDataByRemovingTargetUUID:(uint64_t)a3 syncProvenance:(uint64_t)a4 syncIdentity:(void *)a5 transaction:(uint64_t)a6 error:
++ (uint64_t)_updateLinkCollectionDataByRemovingTargetUUID:(uint64_t)d syncProvenance:(uint64_t)provenance syncIdentity:(void *)identity transaction:(uint64_t)transaction error:
 {
   v10 = a2;
-  v11 = a5;
+  identityCopy = identity;
   v12 = objc_opt_self();
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __121__HDUserDomainConceptEntity__updateLinkCollectionDataByRemovingTargetUUID_syncProvenance_syncIdentity_transaction_error___block_invoke;
   v17[3] = &unk_27862C5F8;
   v20 = v12;
-  v21 = a3;
-  v22 = a4;
+  dCopy = d;
+  provenanceCopy = provenance;
   v18 = v10;
-  v19 = v11;
-  v13 = v11;
+  v19 = identityCopy;
+  v13 = identityCopy;
   v14 = v10;
-  v15 = [(HDUserDomainConceptEntity *)v12 _enumerateLinkCollectionsContainingTargetUUID:v14 transaction:v13 error:a6 enumerationHandler:v17];
+  v15 = [(HDUserDomainConceptEntity *)v12 _enumerateLinkCollectionsContainingTargetUUID:v14 transaction:v13 error:transaction enumerationHandler:v17];
 
   return v15;
 }
 
-+ (id)_linkCollectionToPersistGivenLinkCollection:(void *)a3 transaction:(uint64_t)a4 error:
++ (id)_linkCollectionToPersistGivenLinkCollection:(void *)collection transaction:(uint64_t)transaction error:
 {
   v6 = a2;
-  v7 = a3;
+  collectionCopy = collection;
   objc_opt_self();
   v13 = 0;
   v14 = &v13;
@@ -2096,13 +2096,13 @@ LABEL_19:
   v17 = __Block_byref_object_dispose__182;
   v8 = v6;
   v18 = v8;
-  v9 = [v7 protectedDatabase];
+  protectedDatabase = [collectionCopy protectedDatabase];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__HDUserDomainConceptEntity__linkCollectionToPersistGivenLinkCollection_transaction_error___block_invoke_2;
   v12[3] = &unk_278614620;
   v12[4] = &v13;
-  if ([v9 executeCachedStatementForKey:&_linkCollectionToPersistGivenLinkCollection_transaction_error__statementKey error:a4 SQLGenerator:&__block_literal_global_463 bindingHandler:0 enumerationHandler:v12])
+  if ([protectedDatabase executeCachedStatementForKey:&_linkCollectionToPersistGivenLinkCollection_transaction_error__statementKey error:transaction SQLGenerator:&__block_literal_global_463 bindingHandler:0 enumerationHandler:v12])
   {
     v10 = v14[5];
   }
@@ -2188,19 +2188,19 @@ void __104__HDUserDomainConceptEntity__insertBaseUserDomainConcept_syncProvenanc
   [(HDUserDomainConceptEntity *)*(a1 + 64) _bindToStatement:a2 index:13 linkCollection:*(a1 + 40)];
 }
 
-+ (void)_bindToStatement:(int)a3 index:(void *)a4 linkCollection:
++ (void)_bindToStatement:(int)statement index:(void *)index linkCollection:
 {
-  v7 = a4;
+  indexCopy = index;
   objc_opt_self();
-  if (v7)
+  if (indexCopy)
   {
-    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:indexCopy requiringSecureCoding:1 error:0];
     HDSQLiteBindFoundationValueToStatement();
   }
 
   else
   {
-    sqlite3_bind_null(a2, a3);
+    sqlite3_bind_null(a2, statement);
   }
 }
 
@@ -2298,13 +2298,13 @@ uint64_t __121__HDUserDomainConceptEntity__updateLinkCollectionDataByRemovingTar
   return v16;
 }
 
-+ (uint64_t)_enumerateLinkCollectionsContainingTargetUUID:(void *)a3 transaction:(uint64_t)a4 error:(void *)a5 enumerationHandler:
++ (uint64_t)_enumerateLinkCollectionsContainingTargetUUID:(void *)d transaction:(uint64_t)transaction error:(void *)error enumerationHandler:
 {
   v8 = a2;
-  v9 = a5;
-  v10 = a3;
+  errorCopy = error;
+  dCopy = d;
   v11 = objc_opt_self();
-  v12 = [v10 protectedDatabase];
+  protectedDatabase = [dCopy protectedDatabase];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -2315,11 +2315,11 @@ uint64_t __121__HDUserDomainConceptEntity__updateLinkCollectionDataByRemovingTar
   v17[1] = 3221225472;
   v17[2] = __112__HDUserDomainConceptEntity__enumerateLinkCollectionsContainingTargetUUID_transaction_error_enumerationHandler___block_invoke_3;
   v17[3] = &unk_278618B70;
-  v18 = v9;
+  v18 = errorCopy;
   v19 = v11;
-  v13 = v9;
+  v13 = errorCopy;
   v14 = v8;
-  v15 = [v12 executeCachedStatementForKey:&_enumerateLinkCollectionsContainingTargetUUID_transaction_error_enumerationHandler__statementKey error:a4 SQLGenerator:&__block_literal_global_477 bindingHandler:v20 enumerationHandler:v17];
+  v15 = [protectedDatabase executeCachedStatementForKey:&_enumerateLinkCollectionsContainingTargetUUID_transaction_error_enumerationHandler__statementKey error:transaction SQLGenerator:&__block_literal_global_477 bindingHandler:v20 enumerationHandler:v17];
 
   return v15;
 }
@@ -2370,13 +2370,13 @@ uint64_t __112__HDUserDomainConceptEntity__enumerateLinkCollectionsContainingTar
   return v10;
 }
 
-+ (uint64_t)_inflateLinkCollection:(uint64_t)a3 row:(uint64_t)a4 error:
++ (uint64_t)_inflateLinkCollection:(uint64_t)collection row:(uint64_t)row error:
 {
   objc_opt_self();
   v6 = HDSQLiteColumnWithNameAsData();
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:a4];
+    v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:row];
     if (!v7)
     {
       v8 = 0;
@@ -2396,24 +2396,24 @@ LABEL_8:
   return v8;
 }
 
-+ (uint64_t)_updateLinkCollection:(uint64_t)a3 userDomainConceptID:(uint64_t)a4 syncProvenance:(uint64_t)a5 syncIdentity:(void *)a6 transaction:(uint64_t)a7 error:
++ (uint64_t)_updateLinkCollection:(uint64_t)collection userDomainConceptID:(uint64_t)d syncProvenance:(uint64_t)provenance syncIdentity:(void *)identity transaction:(uint64_t)transaction error:
 {
   v12 = a2;
-  v13 = a6;
+  identityCopy = identity;
   v14 = objc_opt_self();
-  v15 = [v13 protectedDatabase];
+  protectedDatabase = [identityCopy protectedDatabase];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __117__HDUserDomainConceptEntity__updateLinkCollection_userDomainConceptID_syncProvenance_syncIdentity_transaction_error___block_invoke_2;
   v19[3] = &unk_278619C40;
-  v22 = a5;
+  provenanceCopy = provenance;
   v23 = v14;
   v20 = v12;
-  v21 = a4;
-  v24 = a3;
+  dCopy = d;
+  collectionCopy = collection;
   v16 = v12;
-  v17 = [v15 executeCachedStatementForKey:&_updateLinkCollection_userDomainConceptID_syncProvenance_syncIdentity_transaction_error__statementKey error:a7 SQLGenerator:&__block_literal_global_482_0 bindingHandler:v19 enumerationHandler:0];
+  v17 = [protectedDatabase executeCachedStatementForKey:&_updateLinkCollection_userDomainConceptID_syncProvenance_syncIdentity_transaction_error__statementKey error:transaction SQLGenerator:&__block_literal_global_482_0 bindingHandler:v19 enumerationHandler:0];
 
   return v17;
 }
@@ -2468,11 +2468,11 @@ uint64_t __88__HDUserDomainConceptEntity__userDomainConceptIDForUserDomainConcep
   return 1;
 }
 
-+ (BOOL)_removeIsHiddenDeviceLocalPropertyForUserDomainConceptWithPersistentID:(void *)a3 transaction:(uint64_t)a4 error:
++ (BOOL)_removeIsHiddenDeviceLocalPropertyForUserDomainConceptWithPersistentID:(void *)d transaction:(uint64_t)transaction error:
 {
-  v6 = a3;
+  dCopy = d;
   objc_opt_self();
-  v7 = [HDUserDomainConceptPropertyEntity deleteDeviceLocalPropertiesWithType:2 userDomainConceptID:a2 transaction:v6 error:a4];
+  v7 = [HDUserDomainConceptPropertyEntity deleteDeviceLocalPropertiesWithType:2 userDomainConceptID:a2 transaction:dCopy error:transaction];
 
   return v7;
 }

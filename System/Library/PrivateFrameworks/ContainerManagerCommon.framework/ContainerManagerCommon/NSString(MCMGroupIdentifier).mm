@@ -7,8 +7,8 @@
 - (id)stringByExtractingTeamIDPrefix
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [a1 cStringUsingEncoding:4];
-  if ([a1 lengthOfBytesUsingEncoding:4] >= 0xC && *(v2 + 10) == 46)
+  v2 = [self cStringUsingEncoding:4];
+  if ([self lengthOfBytesUsingEncoding:4] >= 0xC && *(v2 + 10) == 46)
   {
     v3 = 0;
     while (1)
@@ -23,7 +23,7 @@
 
       if (++v3 == 10)
       {
-        v8 = [a1 substringToIndex:10];
+        v8 = [self substringToIndex:10];
         goto LABEL_11;
       }
     }

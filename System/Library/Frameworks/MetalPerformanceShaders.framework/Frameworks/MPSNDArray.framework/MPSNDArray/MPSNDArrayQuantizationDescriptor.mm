@@ -1,7 +1,7 @@
 @interface MPSNDArrayQuantizationDescriptor
 - (MPSNDArrayQuantizationDescriptor)init;
-- (MPSNDArrayQuantizationDescriptor)initWithDataType:(unsigned int)a3 quantizationScheme:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MPSNDArrayQuantizationDescriptor)initWithDataType:(unsigned int)type quantizationScheme:(unint64_t)scheme;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSNDArrayQuantizationDescriptor
@@ -13,16 +13,16 @@
   return self;
 }
 
-- (MPSNDArrayQuantizationDescriptor)initWithDataType:(unsigned int)a3 quantizationScheme:(unint64_t)a4
+- (MPSNDArrayQuantizationDescriptor)initWithDataType:(unsigned int)type quantizationScheme:(unint64_t)scheme
 {
-  self->_quantizationDataType = a3;
-  self->_quantizationScheme = a4;
+  self->_quantizationDataType = type;
+  self->_quantizationScheme = scheme;
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_quantizationDataType;
   *(result + 2) = self->_quantizationScheme;
   return result;

@@ -1,21 +1,21 @@
 @interface MapsSuggestionsPortraitData
-- (MapsSuggestionsPortraitData)initWithName:(id)a3 lastInteractionTime:(id)a4;
+- (MapsSuggestionsPortraitData)initWithName:(id)name lastInteractionTime:(id)time;
 @end
 
 @implementation MapsSuggestionsPortraitData
 
-- (MapsSuggestionsPortraitData)initWithName:(id)a3 lastInteractionTime:(id)a4
+- (MapsSuggestionsPortraitData)initWithName:(id)name lastInteractionTime:(id)time
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  timeCopy = time;
   v12.receiver = self;
   v12.super_class = MapsSuggestionsPortraitData;
   v9 = [(MapsSuggestionsPortraitData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_lastInteractionTime, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_lastInteractionTime, time);
   }
 
   return v10;

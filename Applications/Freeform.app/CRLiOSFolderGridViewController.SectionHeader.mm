@@ -1,15 +1,15 @@
 @interface CRLiOSFolderGridViewController.SectionHeader
-- (void)collapseButtonTapped:(id)a3;
+- (void)collapseButtonTapped:(id)tapped;
 @end
 
 @implementation CRLiOSFolderGridViewController.SectionHeader
 
-- (void)collapseButtonTapped:(id)a3
+- (void)collapseButtonTapped:(id)tapped
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v4 = self;
-    sub_100F3B66C(v4);
+    selfCopy = self;
+    sub_100F3B66C(selfCopy);
     swift_unknownObjectRelease();
   }
 }

@@ -1,44 +1,44 @@
 @interface AKLivenessRequestProvider
-- (BOOL)signRequest:(id)a3 error:(id *)a4;
+- (BOOL)signRequest:(id)request error:(id *)error;
 - (id)authKitBody;
 - (id)requestURLOverride;
-- (void)_updateTelemtryOptInForAccount:(id)a3 withWalrusStatus:(unint64_t)a4;
-- (void)addMDMInformationIfNecessaryToRequest:(id)a3;
-- (void)addPairedDeviceInfoIfNecessary:(id)a3;
+- (void)_updateTelemtryOptInForAccount:(id)account withWalrusStatus:(unint64_t)status;
+- (void)addMDMInformationIfNecessaryToRequest:(id)request;
+- (void)addPairedDeviceInfoIfNecessary:(id)necessary;
 @end
 
 @implementation AKLivenessRequestProvider
 
 - (id)requestURLOverride
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
-  v4 = [(AKURLRequestProviderImpl *)self context];
-  v3 = [(AKAuthenticatedServerRequest *)v4 altDSID];
+  context = [(AKURLRequestProviderImpl *)self context];
+  altDSID = [(AKAuthenticatedServerRequest *)context altDSID];
   v8[0] = [AKURLBag bagForAltDSID:?];
-  _objc_release(v3);
-  _objc_release(v4);
+  _objc_release(altDSID);
+  _objc_release(context);
   v5 = v8[0];
-  v6 = [(AKURLRequestProviderImpl *)v9 urlBagKey];
+  urlBagKey = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
   v7 = [v5 urlAtKey:?];
-  _objc_release(v6);
+  _objc_release(urlBagKey);
   objc_storeStrong(v8, 0);
 
   return v7;
 }
 
-- (BOOL)signRequest:(id)a3 error:(id *)a4
+- (BOOL)signRequest:(id)request error:(id *)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = a4;
-  v6.receiver = v9;
+  objc_storeStrong(location, request);
+  errorCopy = error;
+  v6.receiver = selfCopy;
   v6.super_class = AKLivenessRequestProvider;
-  if ([(AKGrandSlamRequestProvider *)&v6 signRequest:location[0] error:a4])
+  if ([(AKGrandSlamRequestProvider *)&v6 signRequest:location[0] error:error])
   {
-    [(AKLivenessRequestProvider *)v9 addMDMInformationIfNecessaryToRequest:location[0]];
+    [(AKLivenessRequestProvider *)selfCopy addMDMInformationIfNecessaryToRequest:location[0]];
     v10 = 1;
   }
 
@@ -51,25 +51,25 @@
   return v10 & 1;
 }
 
-- (void)addMDMInformationIfNecessaryToRequest:(id)a3
+- (void)addMDMInformationIfNecessaryToRequest:(id)request
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v25 = 0;
   v23 = 0;
   v17 = 0;
   if ((+[AKFeatureManager isEnforceMDMPolicyEnabled]& 1) != 0)
   {
-    v26 = [(AKLivenessRequestProvider *)v28 event];
+    event = [(AKLivenessRequestProvider *)selfCopy event];
     v25 = 1;
     v16 = 1;
-    if (![(NSString *)v26 isEqualToString:AKPostDataEventLiveness])
+    if (![(NSString *)event isEqualToString:AKPostDataEventLiveness])
     {
-      v24 = [(AKLivenessRequestProvider *)v28 event];
+      event2 = [(AKLivenessRequestProvider *)selfCopy event];
       v23 = 1;
-      v16 = [(NSString *)v24 isEqualToString:AKPostDataEventUpdateDeviceState];
+      v16 = [(NSString *)event2 isEqualToString:AKPostDataEventUpdateDeviceState];
     }
 
     v17 = v16;
@@ -77,12 +77,12 @@
 
   if (v23)
   {
-    _objc_release(v24);
+    _objc_release(event2);
   }
 
   if (v25)
   {
-    _objc_release(v26);
+    _objc_release(event);
   }
 
   if (v17)
@@ -98,36 +98,36 @@
     }
 
     objc_storeStrong(&v22, 0);
-    v10 = [(AKURLRequestProviderImpl *)v28 accountManager];
-    v9 = [(AKURLRequestProviderImpl *)v28 context];
-    v8 = [(AKAuthenticatedServerRequest *)v9 altDSID];
-    v19 = [AKAccountManager authKitAccountWithAltDSID:v10 error:"authKitAccountWithAltDSID:error:"];
-    _objc_release(v8);
-    _objc_release(v9);
-    _objc_release(v10);
+    accountManager = [(AKURLRequestProviderImpl *)selfCopy accountManager];
+    context = [(AKURLRequestProviderImpl *)selfCopy context];
+    altDSID = [(AKAuthenticatedServerRequest *)context altDSID];
+    v19 = [AKAccountManager authKitAccountWithAltDSID:accountManager error:"authKitAccountWithAltDSID:error:"];
+    _objc_release(altDSID);
+    _objc_release(context);
+    _objc_release(accountManager);
     v12 = objc_alloc_init(AKMDMInformationProvider);
-    v11 = [(AKURLRequestProviderImpl *)v28 accountManager];
+    accountManager2 = [(AKURLRequestProviderImpl *)selfCopy accountManager];
     v18 = [(AKMDMInformationProvider *)v12 fetchMDMInformationIfNecessaryForAccount:v19 accountManager:?];
-    _objc_release(v11);
+    _objc_release(accountManager2);
     _objc_release(v12);
-    v13 = [v18 deviceManagedState];
-    _objc_release(v13);
-    if (v13)
+    deviceManagedState = [v18 deviceManagedState];
+    _objc_release(deviceManagedState);
+    if (deviceManagedState)
     {
       v6 = location[0];
-      v7 = [v18 deviceManagedState];
+      deviceManagedState2 = [v18 deviceManagedState];
       [v6 ak_addHeaderForDeviceManagementState:?];
-      _objc_release(v7);
+      _objc_release(deviceManagedState2);
     }
 
-    v5 = [v18 organizationToken];
-    _objc_release(v5);
-    if (v5)
+    organizationToken = [v18 organizationToken];
+    _objc_release(organizationToken);
+    if (organizationToken)
     {
       v3 = location[0];
-      v4 = [v18 organizationToken];
+      organizationToken2 = [v18 organizationToken];
       [v3 ak_addHeaderForMDMOrganizationToken:?];
-      _objc_release(v4);
+      _objc_release(organizationToken2);
     }
 
     objc_storeStrong(&v18, 0);
@@ -137,18 +137,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)addPairedDeviceInfoIfNecessary:(id)a3
+- (void)addPairedDeviceInfoIfNecessary:(id)necessary
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, necessary);
   v5 = +[AKURLBag sharedBag];
   v4 = [v5 configurationAtKey:@"isAccessorySyncInLivenessEnabled"];
-  v6 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
   _objc_release(v4);
   _objc_release(v5);
-  if (v6)
+  if (bOOLValue)
   {
     v7 = +[AKAccessoryHandler getPairedDevices];
     if ([v7 count])
@@ -166,52 +166,52 @@
 
 - (id)authKitBody
 {
-  v215 = self;
+  selfCopy = self;
   v214[1] = a2;
   v214[0] = +[AKDevice currentDevice];
   v213 = objc_alloc_init(NSMutableDictionary);
   [v213 setObject:&off_100339220 forKeyedSubscript:@"ut"];
-  v112 = [(AKLivenessRequestProvider *)v215 event];
+  event = [(AKLivenessRequestProvider *)selfCopy event];
   [v213 setObject:? forKeyedSubscript:?];
-  _objc_release(v112);
-  v212 = [v214[0] serialNumber];
-  if (v212)
+  _objc_release(event);
+  serialNumber = [v214[0] serialNumber];
+  if (serialNumber)
   {
-    [v213 setObject:v212 forKeyedSubscript:@"sn"];
+    [v213 setObject:serialNumber forKeyedSubscript:@"sn"];
   }
 
-  v211 = [v214[0] internationalMobileEquipmentIdentity];
-  if (v211)
+  internationalMobileEquipmentIdentity = [v214[0] internationalMobileEquipmentIdentity];
+  if (internationalMobileEquipmentIdentity)
   {
-    [v213 setObject:v211 forKeyedSubscript:@"imei"];
+    [v213 setObject:internationalMobileEquipmentIdentity forKeyedSubscript:@"imei"];
   }
 
-  v210 = [v214[0] internationalMobileEquipmentIdentity2];
-  if (v210)
+  internationalMobileEquipmentIdentity2 = [v214[0] internationalMobileEquipmentIdentity2];
+  if (internationalMobileEquipmentIdentity2)
   {
-    [v213 setObject:v210 forKeyedSubscript:@"imei2"];
+    [v213 setObject:internationalMobileEquipmentIdentity2 forKeyedSubscript:@"imei2"];
   }
 
-  v209 = [v214[0] userChosenName];
-  if (v209)
+  userChosenName = [v214[0] userChosenName];
+  if (userChosenName)
   {
-    [v213 setObject:v209 forKeyedSubscript:@"dn"];
+    [v213 setObject:userChosenName forKeyedSubscript:@"dn"];
   }
 
-  v111 = [(AKLivenessRequestProvider *)v215 pushToken];
-  _objc_release(v111);
-  if (v111)
+  pushToken = [(AKLivenessRequestProvider *)selfCopy pushToken];
+  _objc_release(pushToken);
+  if (pushToken)
   {
-    v110 = [(AKLivenessRequestProvider *)v215 pushToken];
+    pushToken2 = [(AKLivenessRequestProvider *)selfCopy pushToken];
     [v213 setObject:? forKeyedSubscript:?];
-    _objc_release(v110);
+    _objc_release(pushToken2);
   }
 
   else
   {
-    v108 = [(AKLivenessRequestProvider *)v215 event];
-    v109 = [(NSString *)v108 isEqualToString:AKPostDataEventLiveness];
-    _objc_release(v108);
+    event2 = [(AKLivenessRequestProvider *)selfCopy event];
+    v109 = [(NSString *)event2 isEqualToString:AKPostDataEventLiveness];
+    _objc_release(event2);
     if (v109)
     {
       location = _AKLogSystem();
@@ -229,72 +229,72 @@
     }
   }
 
-  v205 = [v214[0] mobileEquipmentIdentifier];
-  if (v205)
+  mobileEquipmentIdentifier = [v214[0] mobileEquipmentIdentifier];
+  if (mobileEquipmentIdentifier)
   {
-    [v213 setObject:v205 forKeyedSubscript:@"meid"];
+    [v213 setObject:mobileEquipmentIdentifier forKeyedSubscript:@"meid"];
   }
 
-  v204 = [v214[0] integratedCircuitCardIdentifier];
-  if (v204)
+  integratedCircuitCardIdentifier = [v214[0] integratedCircuitCardIdentifier];
+  if (integratedCircuitCardIdentifier)
   {
-    [v213 setObject:v204 forKeyedSubscript:@"iccid"];
+    [v213 setObject:integratedCircuitCardIdentifier forKeyedSubscript:@"iccid"];
   }
 
-  v203 = [v214[0] color];
-  if (v203)
+  color = [v214[0] color];
+  if (color)
   {
-    [v213 setObject:v203 forKeyedSubscript:@"dc"];
+    [v213 setObject:color forKeyedSubscript:@"dc"];
   }
 
-  v202 = [v214[0] enclosureColor];
-  if (v202)
+  enclosureColor = [v214[0] enclosureColor];
+  if (enclosureColor)
   {
-    [v213 setObject:v202 forKeyedSubscript:@"dec"];
+    [v213 setObject:enclosureColor forKeyedSubscript:@"dec"];
   }
 
-  v201 = [v214[0] coverGlassColor];
-  if (v201)
+  coverGlassColor = [v214[0] coverGlassColor];
+  if (coverGlassColor)
   {
-    v105 = [v201 stringValue];
+    stringValue = [coverGlassColor stringValue];
     [v213 setObject:? forKeyedSubscript:?];
-    _objc_release(v105);
+    _objc_release(stringValue);
   }
 
-  v200 = [v214[0] housingColor];
-  if (v200)
+  housingColor = [v214[0] housingColor];
+  if (housingColor)
   {
-    v104 = [v200 stringValue];
+    stringValue2 = [housingColor stringValue];
     [v213 setObject:? forKeyedSubscript:?];
-    _objc_release(v104);
+    _objc_release(stringValue2);
   }
 
-  v199 = [v214[0] backingColor];
-  if (v199)
+  backingColor = [v214[0] backingColor];
+  if (backingColor)
   {
-    v103 = [v199 stringValue];
+    stringValue3 = [backingColor stringValue];
     [v213 setObject:? forKeyedSubscript:?];
-    _objc_release(v103);
+    _objc_release(stringValue3);
   }
 
-  v198 = [v214[0] modelNumber];
-  if (v198)
+  modelNumber = [v214[0] modelNumber];
+  if (modelNumber)
   {
-    [v213 setObject:v198 forKeyedSubscript:@"prtn"];
+    [v213 setObject:modelNumber forKeyedSubscript:@"prtn"];
   }
 
-  v197 = [v214[0] phoneNumber];
-  if (v197)
+  phoneNumber = [v214[0] phoneNumber];
+  if (phoneNumber)
   {
-    [v213 setObject:v197 forKeyedSubscript:@"pn"];
+    [v213 setObject:phoneNumber forKeyedSubscript:@"pn"];
   }
 
   v102 = +[NSLocale currentLocale];
-  v196 = [(NSLocale *)v102 localeIdentifier];
+  localeIdentifier = [(NSLocale *)v102 localeIdentifier];
   _objc_release(v102);
-  if (v196)
+  if (localeIdentifier)
   {
-    [v213 setObject:v196 forKeyedSubscript:@"loc"];
+    [v213 setObject:localeIdentifier forKeyedSubscript:@"loc"];
   }
 
   v96 = +[NSDate now];
@@ -307,28 +307,28 @@
   _objc_release(v98);
   v101 = +[AKAccountManager sharedInstance];
   v100 = +[AKAccountManager sharedInstance];
-  v99 = [(AKAccountManager *)v100 primaryAuthKitAccount];
+  primaryAuthKitAccount = [(AKAccountManager *)v100 primaryAuthKitAccount];
   v195[0] = [(AKAccountManager *)v101 passkeysInKeychainCountForAccount:?];
-  _objc_release(v99);
+  _objc_release(primaryAuthKitAccount);
   _objc_release(v100);
   _objc_release(v101);
   if (v195[0])
   {
-    v95 = [v195[0] stringValue];
+    stringValue4 = [v195[0] stringValue];
     [v213 setObject:? forKeyedSubscript:?];
-    _objc_release(v95);
+    _objc_release(stringValue4);
   }
 
   v194 = objc_alloc_init(AKBiometricRatchetController);
   if ([v194 isDTOEnabled])
   {
-    v193 = [v194 currentRachetState];
-    if (v193)
+    currentRachetState = [v194 currentRachetState];
+    if (currentRachetState)
     {
-      v92 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v193 rawState]);
-      v91 = [(NSNumber *)v92 stringValue];
+      v92 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [currentRachetState rawState]);
+      stringValue5 = [(NSNumber *)v92 stringValue];
       [v213 setObject:? forKeyedSubscript:?];
-      _objc_release(v91);
+      _objc_release(stringValue5);
       _objc_release(v92);
     }
 
@@ -348,7 +348,7 @@
       [v213 setObject:@"9" forKeyedSubscript:@"biometricRatchetEnablementState"];
     }
 
-    objc_storeStrong(&v193, 0);
+    objc_storeStrong(&currentRachetState, 0);
   }
 
   else
@@ -370,10 +370,10 @@
 
   [v213 setObject:v90 forKeyedSubscript:@"biometricLivenessInLast24Hours"];
   v85 = +[AKDevice currentDevice];
-  v86 = [v85 isProtectedWithPasscode];
+  isProtectedWithPasscode = [v85 isProtectedWithPasscode];
   _objc_release(v85);
-  v187 = v86;
-  v87 = [NSNumber numberWithBool:v86 & 1];
+  v187 = isProtectedWithPasscode;
+  v87 = [NSNumber numberWithBool:isProtectedWithPasscode & 1];
   [v213 setObject:? forKeyedSubscript:?];
   _objc_release(v87);
   v186 = 0;
@@ -402,28 +402,28 @@
   }
 
   v82 = +[AKAccountManager sharedInstance];
-  v81 = [(AKURLRequestProviderImpl *)v215 context];
-  v80 = [(AKAuthenticatedServerRequest *)v81 altDSID];
+  context = [(AKURLRequestProviderImpl *)selfCopy context];
+  altDSID = [(AKAuthenticatedServerRequest *)context altDSID];
   v181 = [AKAccountManager authKitAccountWithAltDSID:v82 error:"authKitAccountWithAltDSID:error:"];
-  _objc_release(v80);
-  _objc_release(v81);
+  _objc_release(altDSID);
+  _objc_release(context);
   _objc_release(v82);
-  v83 = [(AKLivenessRequestProvider *)v215 event];
-  v84 = [(NSString *)v83 isEqualToString:AKPostDataEventLiveness];
-  _objc_release(v83);
+  event3 = [(AKLivenessRequestProvider *)selfCopy event];
+  v84 = [(NSString *)event3 isEqualToString:AKPostDataEventLiveness];
+  _objc_release(event3);
   if (v84)
   {
-    v77 = [NSNumber numberWithUnsignedInteger:[(AKLivenessRequestProvider *)v215 livenessReason]];
+    v77 = [NSNumber numberWithUnsignedInteger:[(AKLivenessRequestProvider *)selfCopy livenessReason]];
     [v213 setObject:? forKeyedSubscript:?];
     _objc_release(v77);
     v180 = 0;
-    v79 = [(AKLivenessRequestProvider *)v215 followUpProvider];
+    followUpProvider = [(AKLivenessRequestProvider *)selfCopy followUpProvider];
     v178 = v180;
-    v78 = [(AKFollowUpProvider *)v79 pendingFollowUpItems:&v178];
+    v78 = [(AKFollowUpProvider *)followUpProvider pendingFollowUpItems:&v178];
     objc_storeStrong(&v180, v178);
     v179 = [AKFollowUpServerPayloadFormatter pendingAuthKitFollowUpPayload:v78];
     _objc_release(v78);
-    _objc_release(v79);
+    _objc_release(followUpProvider);
     if (v180)
     {
       v177 = _AKLogSystem();
@@ -443,59 +443,59 @@
     }
 
     v75 = +[AKAccountManager sharedInstance];
-    v175 = [(AKAccountManager *)v75 altDSIDforPrimaryiCloudAccount];
+    altDSIDforPrimaryiCloudAccount = [(AKAccountManager *)v75 altDSIDforPrimaryiCloudAccount];
     _objc_release(v75);
     v173 = 0;
     v171 = 0;
     v76 = 0;
-    if (v175)
+    if (altDSIDforPrimaryiCloudAccount)
     {
-      v174 = [(AKURLRequestProviderImpl *)v215 context];
+      context2 = [(AKURLRequestProviderImpl *)selfCopy context];
       v173 = 1;
-      v172 = [v174 altDSID];
+      altDSID2 = [context2 altDSID];
       v171 = 1;
-      v76 = [v175 isEqualToString:?];
+      v76 = [altDSIDforPrimaryiCloudAccount isEqualToString:?];
     }
 
     if (v171)
     {
-      _objc_release(v172);
+      _objc_release(altDSID2);
     }
 
     if (v173)
     {
-      _objc_release(v174);
+      _objc_release(context2);
     }
 
     if (v76)
     {
       v74 = +[AKCDPFactory walrusStatusLiveValue];
-      v170 = [v74 captureCurrentValue];
+      captureCurrentValue = [v74 captureCurrentValue];
       _objc_release(v74);
-      v169 = [v170 unsignedIntegerValue];
-      if (v169)
+      unsignedIntegerValue = [captureCurrentValue unsignedIntegerValue];
+      if (unsignedIntegerValue)
       {
-        v168 = v169 == 1;
-        v73 = [NSNumber numberWithBool:v169 == 1];
+        v168 = unsignedIntegerValue == 1;
+        v73 = [NSNumber numberWithBool:unsignedIntegerValue == 1];
         [v213 setObject:? forKeyedSubscript:?];
         _objc_release(v73);
-        [(AKLivenessRequestProvider *)v215 _updateTelemtryOptInForAccount:v181 withWalrusStatus:v169];
+        [(AKLivenessRequestProvider *)selfCopy _updateTelemtryOptInForAccount:v181 withWalrusStatus:unsignedIntegerValue];
       }
 
       v72 = +[AKCDPFactory webAccessStatusLiveValue];
-      v167 = [v72 captureCurrentValue];
+      captureCurrentValue2 = [v72 captureCurrentValue];
       _objc_release(v72);
-      v166 = [v167 unsignedIntegerValue];
-      if (v166)
+      unsignedIntegerValue2 = [captureCurrentValue2 unsignedIntegerValue];
+      if (unsignedIntegerValue2)
       {
-        v165 = v166 == 1;
-        v71 = [NSNumber numberWithBool:v166 == 1];
+        v165 = unsignedIntegerValue2 == 1;
+        v71 = [NSNumber numberWithBool:unsignedIntegerValue2 == 1];
         [v213 setObject:? forKeyedSubscript:?];
         _objc_release(v71);
       }
 
-      objc_storeStrong(&v167, 0);
-      objc_storeStrong(&v170, 0);
+      objc_storeStrong(&captureCurrentValue2, 0);
+      objc_storeStrong(&captureCurrentValue, 0);
     }
 
     v70 = +[AKAccountManager sharedInstance];
@@ -507,16 +507,16 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v69 = [v163 BOOLValue];
+        bOOLValue = [v163 BOOLValue];
       }
 
       else
       {
-        v69 = 0;
+        bOOLValue = 0;
       }
 
-      v162 = v69 != 0;
-      if (v69)
+      v162 = bOOLValue != 0;
+      if (bOOLValue)
       {
         v161 = _AKLogSystem();
         v160 = OS_LOG_TYPE_DEBUG;
@@ -542,11 +542,11 @@
     }
 
     v63 = +[AKAccountManager sharedInstance];
-    v62 = [(AKURLRequestProviderImpl *)v215 context];
-    v61 = [(AKAuthenticatedServerRequest *)v62 altDSID];
+    context3 = [(AKURLRequestProviderImpl *)selfCopy context];
+    altDSID3 = [(AKAuthenticatedServerRequest *)context3 altDSID];
     v157 = [NSNumber numberWithUnsignedInteger:[(AKAccountManager *)v63 signInPartitionForLivenessWithAltDSID:?]];
-    _objc_release(v61);
-    _objc_release(v62);
+    _objc_release(altDSID3);
+    _objc_release(context3);
     _objc_release(v63);
     [v213 setObject:v157 forKeyedSubscript:AKSignInPartitionLivenessBodyKey];
     v64 = +[AKAccountManager sharedInstance];
@@ -558,7 +558,7 @@
     _objc_release(v66);
     objc_storeStrong(&v157, 0);
     objc_storeStrong(&v164, 0);
-    objc_storeStrong(&v175, 0);
+    objc_storeStrong(&altDSIDforPrimaryiCloudAccount, 0);
     objc_storeStrong(&v179, 0);
     objc_storeStrong(&v180, 0);
   }
@@ -587,15 +587,15 @@
       v5 = objc_opt_class();
       v154 = sub_1001953B4(v5, v156[0]);
       v153 = 1;
-      v152 = [v154 stringValue];
+      stringValue6 = [v154 stringValue];
       v151 = 1;
-      v4 = _objc_retain(v152);
+      v4 = _objc_retain(stringValue6);
     }
 
     v155 = v4;
     if (v151)
     {
-      _objc_release(v152);
+      _objc_release(stringValue6);
     }
 
     if (v153)
@@ -607,20 +607,20 @@
     v53 = [NSNumber numberWithBool:[AKCDPFactory cdpAccountIsICDPEnabledForDSID:v155]];
     [v213 setObject:? forKeyedSubscript:?];
     _objc_release(v53);
-    v56 = [(AKURLRequestProviderImpl *)v215 context];
-    v55 = [(AKAuthenticatedServerRequest *)v56 altDSID];
+    context4 = [(AKURLRequestProviderImpl *)selfCopy context];
+    altDSID4 = [(AKAuthenticatedServerRequest *)context4 altDSID];
     v54 = [NSNumber numberWithBool:[AKCDPFactory cdpAccountIsOTEnabledForAltDSID:?]];
     [v213 setObject:? forKeyedSubscript:?];
     _objc_release(v54);
-    _objc_release(v55);
-    _objc_release(v56);
+    _objc_release(altDSID4);
+    _objc_release(context4);
     objc_storeStrong(&v155, 0);
     objc_storeStrong(v156, 0);
   }
 
-  v51 = [(AKLivenessRequestProvider *)v215 event];
-  v52 = [(NSString *)v51 isEqual:AKPostDataEventFinalSignOut];
-  _objc_release(v51);
+  event4 = [(AKLivenessRequestProvider *)selfCopy event];
+  v52 = [(NSString *)event4 isEqual:AKPostDataEventFinalSignOut];
+  _objc_release(event4);
   if (!v52)
   {
     v50 = +[AKAccountManager sharedInstance];
@@ -662,11 +662,11 @@
   _objc_release(v47);
   _objc_release(v48);
   v49 = +[AKAccountManager sharedInstance];
-  v145 = [(AKAccountManager *)v49 primaryiCloudAccount];
+  primaryiCloudAccount = [(AKAccountManager *)v49 primaryiCloudAccount];
   _objc_release(v49);
-  if (v145)
+  if (primaryiCloudAccount)
   {
-    v144 = [v145 accountPropertyForKey:@"custodianAssigneeStatus"];
+    v144 = [primaryiCloudAccount accountPropertyForKey:@"custodianAssigneeStatus"];
     if (v144)
     {
       v46 = v144;
@@ -678,7 +678,7 @@
     }
 
     [v213 setObject:v46 forKeyedSubscript:@"isRecoveryContactAssignee"];
-    v143 = [v145 accountPropertyForKey:@"beneficiaryAssigneeStatus"];
+    v143 = [primaryiCloudAccount accountPropertyForKey:@"beneficiaryAssigneeStatus"];
     if (v143)
     {
       v45 = v143;
@@ -690,14 +690,14 @@
     }
 
     [v213 setObject:v45 forKeyedSubscript:@"isLegacyContactAssignee"];
-    v44 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v145 isEnabledForDataclass:ACAccountDataclassMail]);
+    v44 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [primaryiCloudAccount isEnabledForDataclass:ACAccountDataclassMail]);
     [v213 setObject:? forKeyedSubscript:?];
     _objc_release(v44);
     objc_storeStrong(&v143, 0);
     objc_storeStrong(&v144, 0);
   }
 
-  if ([(AKLivenessRequestProvider *)v215 livenessReason]== 1)
+  if ([(AKLivenessRequestProvider *)selfCopy livenessReason]== 1)
   {
     v43 = +[AKAccountManager sharedInstance];
     v142 = [(AKAccountManager *)v43 nextLivenessNonce:v181];
@@ -706,13 +706,13 @@
     if (v142)
     {
       v140 = 0;
-      v41 = [(AKURLRequestProviderImpl *)v215 context];
-      v40 = [(AKAuthenticatedServerRequest *)v41 altDSID];
+      context5 = [(AKURLRequestProviderImpl *)selfCopy context];
+      altDSID5 = [(AKAuthenticatedServerRequest *)context5 altDSID];
       v138 = v140;
       v42 = [AKSecureKey osVersionAttestationRefKeyForAltDSID:"osVersionAttestationRefKeyForAltDSID:error:" error:?];
       objc_storeStrong(&v140, v138);
-      _objc_release(v40);
-      _objc_release(v41);
+      _objc_release(altDSID5);
+      _objc_release(context5);
       cf = v42;
       if (v42)
       {
@@ -783,18 +783,18 @@
       objc_storeStrong(&v130, 0);
     }
 
-    v31 = [(AKURLRequestProviderImpl *)v215 context];
-    v32 = [(AKAuthenticatedServerRequest *)v31 altDSID];
+    context6 = [(AKURLRequestProviderImpl *)selfCopy context];
+    altDSID6 = [(AKAuthenticatedServerRequest *)context6 altDSID];
     v128 = 0;
-    v33 = 0;
-    if (v32)
+    isPRKHealingEnabled = 0;
+    if (altDSID6)
     {
-      v33 = 0;
+      isPRKHealingEnabled = 0;
       if (v187)
       {
         v129 = +[AKFeatureManager sharedManager];
         v128 = 1;
-        v33 = [v129 isPRKHealingEnabled];
+        isPRKHealingEnabled = [v129 isPRKHealingEnabled];
       }
     }
 
@@ -803,20 +803,20 @@
       _objc_release(v129);
     }
 
-    _objc_release(v32);
-    _objc_release(v31);
-    if (v33)
+    _objc_release(altDSID6);
+    _objc_release(context6);
+    if (isPRKHealingEnabled)
     {
       v127 = 0;
       v29 = +[AKAccountManager sharedInstance];
-      v28 = [(AKURLRequestProviderImpl *)v215 context];
-      v27 = [(AKAuthenticatedServerRequest *)v28 altDSID];
+      context7 = [(AKURLRequestProviderImpl *)selfCopy context];
+      altDSID7 = [(AKAuthenticatedServerRequest *)context7 altDSID];
       v125 = v127;
       v26 = [AKAccountManager authKitAccountWithAltDSID:v29 error:"authKitAccountWithAltDSID:error:"];
       objc_storeStrong(&v127, v125);
       v126 = v26;
-      _objc_release(v27);
-      _objc_release(v28);
+      _objc_release(altDSID7);
+      _objc_release(context7);
       _objc_release(v29);
       v30 = +[AKAccountManager sharedInstance];
       v124 = [(AKAccountManager *)v30 passwordResetTokenForAccount:v26];
@@ -842,23 +842,23 @@
       objc_storeStrong(&v127, 0);
     }
 
-    [(AKLivenessRequestProvider *)v215 addPairedDeviceInfoIfNecessary:v213];
+    [(AKLivenessRequestProvider *)selfCopy addPairedDeviceInfoIfNecessary:v213];
     objc_storeStrong(&v141, 0);
     objc_storeStrong(&v142, 0);
   }
 
-  v22 = [(AKURLRequestProviderImpl *)v215 context];
-  v23 = [(AKAuthenticatedServerRequest *)v22 altDSID];
-  _objc_release(v23);
-  _objc_release(v22);
-  if (v23)
+  context8 = [(AKURLRequestProviderImpl *)selfCopy context];
+  altDSID8 = [(AKAuthenticatedServerRequest *)context8 altDSID];
+  _objc_release(altDSID8);
+  _objc_release(context8);
+  if (altDSID8)
   {
     v21 = +[AKAccountManager sharedInstance];
-    v20 = [(AKURLRequestProviderImpl *)v215 context];
-    v19 = [(AKAuthenticatedServerRequest *)v20 altDSID];
+    context9 = [(AKURLRequestProviderImpl *)selfCopy context];
+    altDSID9 = [(AKAuthenticatedServerRequest *)context9 altDSID];
     v120 = [(AKAccountManager *)v21 iCloudAccountForAltDSID:?];
-    _objc_release(v19);
-    _objc_release(v20);
+    _objc_release(altDSID9);
+    _objc_release(context9);
     _objc_release(v21);
     if (v120)
     {
@@ -883,12 +883,12 @@
       v116 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v117, OS_LOG_TYPE_ERROR))
       {
-        v15 = [(AKURLRequestProviderImpl *)v215 context];
-        v14 = [(AKAuthenticatedServerRequest *)v15 altDSID];
-        sub_1000194D4(v216, v14);
+        context10 = [(AKURLRequestProviderImpl *)selfCopy context];
+        altDSID10 = [(AKAuthenticatedServerRequest *)context10 altDSID];
+        sub_1000194D4(v216, altDSID10);
         _os_log_error_impl(&_mh_execute_header, v117, v116, "Couldn't find iCloud account for altDSID: %@", v216, 0xCu);
-        _objc_release(v14);
-        _objc_release(v15);
+        _objc_release(altDSID10);
+        _objc_release(context10);
       }
 
       objc_storeStrong(&v117, 0);
@@ -913,40 +913,40 @@
   }
 
   v11 = [v213 copy];
-  objc_storeStrong(&v145, 0);
+  objc_storeStrong(&primaryiCloudAccount, 0);
   objc_storeStrong(&v181, 0);
   objc_storeStrong(&v185, 0);
   objc_storeStrong(&v186, 0);
   objc_storeStrong(&v189, 0);
   objc_storeStrong(&v194, 0);
   objc_storeStrong(v195, 0);
-  objc_storeStrong(&v196, 0);
-  objc_storeStrong(&v197, 0);
-  objc_storeStrong(&v198, 0);
-  objc_storeStrong(&v199, 0);
-  objc_storeStrong(&v200, 0);
-  objc_storeStrong(&v201, 0);
-  objc_storeStrong(&v202, 0);
-  objc_storeStrong(&v203, 0);
-  objc_storeStrong(&v204, 0);
-  objc_storeStrong(&v205, 0);
-  objc_storeStrong(&v209, 0);
-  objc_storeStrong(&v210, 0);
-  objc_storeStrong(&v211, 0);
-  objc_storeStrong(&v212, 0);
+  objc_storeStrong(&localeIdentifier, 0);
+  objc_storeStrong(&phoneNumber, 0);
+  objc_storeStrong(&modelNumber, 0);
+  objc_storeStrong(&backingColor, 0);
+  objc_storeStrong(&housingColor, 0);
+  objc_storeStrong(&coverGlassColor, 0);
+  objc_storeStrong(&enclosureColor, 0);
+  objc_storeStrong(&color, 0);
+  objc_storeStrong(&integratedCircuitCardIdentifier, 0);
+  objc_storeStrong(&mobileEquipmentIdentifier, 0);
+  objc_storeStrong(&userChosenName, 0);
+  objc_storeStrong(&internationalMobileEquipmentIdentity2, 0);
+  objc_storeStrong(&internationalMobileEquipmentIdentity, 0);
+  objc_storeStrong(&serialNumber, 0);
   objc_storeStrong(&v213, 0);
   objc_storeStrong(v214, 0);
 
   return v11;
 }
 
-- (void)_updateTelemtryOptInForAccount:(id)a3 withWalrusStatus:(unint64_t)a4
+- (void)_updateTelemtryOptInForAccount:(id)account withWalrusStatus:(unint64_t)status
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v49 = a4;
+  objc_storeStrong(location, account);
+  statusCopy = status;
   v20 = +[AKAccountManager sharedInstance];
   v21 = [(AKAccountManager *)v20 accountAccessTelemetryOptInForAccount:location[0]];
   _objc_release(v20);
@@ -1010,7 +1010,7 @@
       v38 = v32 >= 172800.0;
     }
 
-    if ((v48 & 1) == 1 && v49 == 2 && v38)
+    if ((v48 & 1) == 1 && statusCopy == 2 && v38)
     {
       v29 = 0;
       v7 = +[AKAccountManager sharedInstance];

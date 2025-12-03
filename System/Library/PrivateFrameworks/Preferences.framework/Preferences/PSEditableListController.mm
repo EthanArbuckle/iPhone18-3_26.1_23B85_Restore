@@ -1,14 +1,14 @@
 @interface PSEditableListController
-- (BOOL)performDeletionActionForSpecifier:(id)a3;
+- (BOOL)performDeletionActionForSpecifier:(id)specifier;
 - (PSEditableListController)init;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_setEditable:(BOOL)a3 animated:(BOOL)a4;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_setEditable:(BOOL)editable animated:(BOOL)animated;
 - (void)didLock;
-- (void)setEditable:(BOOL)a3;
-- (void)setEditingButtonHidden:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEditable:(BOOL)editable;
+- (void)setEditingButtonHidden:(BOOL)hidden animated:(BOOL)animated;
 - (void)suspend;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation PSEditableListController
@@ -27,29 +27,29 @@
     editBarButtonItem = v2->_editBarButtonItem;
     v2->_editBarButtonItem = v5;
 
-    v7 = [(PSEditableListController *)v2 navigationItem];
-    v8 = [(PSEditableListController *)v2 editBarButtonItem];
-    v12[0] = v8;
+    navigationItem = [(PSEditableListController *)v2 navigationItem];
+    editBarButtonItem = [(PSEditableListController *)v2 editBarButtonItem];
+    v12[0] = editBarButtonItem;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v7 setRightBarButtonItems:v9];
+    [navigationItem setRightBarButtonItems:v9];
   }
 
   return v2;
 }
 
-- (void)setEditingButtonHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditingButtonHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
   v15[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (hidden)
   {
     [(PSEditableListController *)self setEditable:0];
-    if (self->_editingDisabled != v5)
+    if (self->_editingDisabled != hiddenCopy)
     {
-      self->_editingDisabled = v5;
-      v7 = [(PSEditableListController *)self navigationItem];
-      [v7 setRightBarButtonItems:self->_previousRightBarButtonItems animated:v4];
+      self->_editingDisabled = hiddenCopy;
+      navigationItem = [(PSEditableListController *)self navigationItem];
+      [navigationItem setRightBarButtonItems:self->_previousRightBarButtonItems animated:animatedCopy];
 
       previousRightBarButtonItems = self->_previousRightBarButtonItems;
       self->_previousRightBarButtonItems = 0;
@@ -59,25 +59,25 @@
   else if (self->_editingDisabled)
   {
     self->_editingDisabled = 0;
-    v9 = [(PSEditableListController *)self navigationItem];
-    v10 = [v9 rightBarButtonItems];
+    navigationItem2 = [(PSEditableListController *)self navigationItem];
+    rightBarButtonItems = [navigationItem2 rightBarButtonItems];
     v11 = self->_previousRightBarButtonItems;
-    self->_previousRightBarButtonItems = v10;
+    self->_previousRightBarButtonItems = rightBarButtonItems;
 
-    v12 = [(PSEditableListController *)self navigationItem];
-    v13 = [(PSEditableListController *)self editBarButtonItem];
-    v15[0] = v13;
+    navigationItem3 = [(PSEditableListController *)self navigationItem];
+    editBarButtonItem = [(PSEditableListController *)self editBarButtonItem];
+    v15[0] = editBarButtonItem;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-    [v12 setRightBarButtonItems:v14 animated:v4];
+    [navigationItem3 setRightBarButtonItems:v14 animated:animatedCopy];
   }
 }
 
-- (void)_setEditable:(BOOL)a3 animated:(BOOL)a4
+- (void)_setEditable:(BOOL)editable animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_editable = a3;
-  v6 = [(PSEditableListController *)self navigationItem];
-  [v6 setHidesBackButton:self->_editable animated:v4];
+  animatedCopy = animated;
+  self->_editable = editable;
+  navigationItem = [(PSEditableListController *)self navigationItem];
+  [navigationItem setHidesBackButton:self->_editable animated:animatedCopy];
 
   if (self->_editable)
   {
@@ -106,21 +106,21 @@
   table = self->super._table;
   editable = self->_editable;
 
-  [(UITableView *)table setEditing:editable animated:v4];
+  [(UITableView *)table setEditing:editable animated:animatedCopy];
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  if (self->_editable != a3)
+  if (self->_editable != editable)
   {
     [PSEditableListController _setEditable:"_setEditable:animated:" animated:?];
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(PSListController *)self indexForIndexPath:v5];
+  pathCopy = path;
+  v6 = [(PSListController *)self indexForIndexPath:pathCopy];
   if (self->_editable)
   {
     v7 = 0;
@@ -130,11 +130,11 @@
   {
     v8 = [(NSArray *)self->super._specifiers objectAtIndex:v6];
     v9 = [v8 propertyForKey:@"cellObject"];
-    v10 = [v9 isUserInteractionEnabled];
+    isUserInteractionEnabled = [v9 isUserInteractionEnabled];
 
-    if (v10)
+    if (isUserInteractionEnabled)
     {
-      v7 = v5;
+      v7 = pathCopy;
     }
 
     else
@@ -148,22 +148,22 @@
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(NSArray *)self->super._specifiers objectAtIndex:[(PSListController *)self indexForIndexPath:a4]];
+  v4 = [(NSArray *)self->super._specifiers objectAtIndex:[(PSListController *)self indexForIndexPath:path]];
   v5 = v4[7];
   v7 = v5 == 1 || (v5 - 3) < 2;
 
   return v7;
 }
 
-- (BOOL)performDeletionActionForSpecifier:(id)a3
+- (BOOL)performDeletionActionForSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 propertyForKey:@"deletionAction"];
+  specifierCopy = specifier;
+  v4 = [specifierCopy propertyForKey:@"deletionAction"];
   if (NSSelectorFromString(v4))
   {
-    v5 = [v3 target];
+    target = [specifierCopy target];
     v6 = SFPerformSelector();
 
     v7 = 1;
@@ -193,15 +193,15 @@
   [(PSEditableListController *)self _setEditable:0 animated:0];
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v6 = [(PSListController *)self specifierAtIndexPath:a5, a4];
-  if (v6)
+  style = [(PSListController *)self specifierAtIndexPath:path, style];
+  if (style)
   {
-    v7 = v6;
-    [(PSEditableListController *)self performDeletionActionForSpecifier:v6];
+    v7 = style;
+    [(PSEditableListController *)self performDeletionActionForSpecifier:style];
     [(PSListController *)self removeSpecifier:v7 animated:1];
-    v6 = v7;
+    style = v7;
   }
 }
 

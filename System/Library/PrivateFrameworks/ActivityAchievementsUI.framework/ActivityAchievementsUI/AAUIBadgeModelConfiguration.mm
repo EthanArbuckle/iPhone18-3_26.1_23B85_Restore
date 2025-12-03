@@ -1,36 +1,36 @@
 @interface AAUIBadgeModelConfiguration
-- (AAUIBadgeModelConfiguration)initWithModelPaths:(id)a3 texturePaths:(id)a4 shapeName:(id)a5 metalColor:(id)a6 useFullColorEnamel:(BOOL)a7 modelEnamelColor:(id)a8 unearnedUsesTwoToneEnamel:(BOOL)a9 faceHasMetalInlay:(BOOL)a10 enamelTricolors:(id)a11 glyphTexturePath:(id)a12 glyphTextureScale:(double)a13 glyphPositionOffset:(CGPoint)a14;
+- (AAUIBadgeModelConfiguration)initWithModelPaths:(id)paths texturePaths:(id)texturePaths shapeName:(id)name metalColor:(id)color useFullColorEnamel:(BOOL)enamel modelEnamelColor:(id)enamelColor unearnedUsesTwoToneEnamel:(BOOL)toneEnamel faceHasMetalInlay:(BOOL)self0 enamelTricolors:(id)self1 glyphTexturePath:(id)self2 glyphTextureScale:(double)self3 glyphPositionOffset:(CGPoint)self4;
 - (CGPoint)glyphPositionOffset;
 - (unint64_t)badgeShape;
 @end
 
 @implementation AAUIBadgeModelConfiguration
 
-- (AAUIBadgeModelConfiguration)initWithModelPaths:(id)a3 texturePaths:(id)a4 shapeName:(id)a5 metalColor:(id)a6 useFullColorEnamel:(BOOL)a7 modelEnamelColor:(id)a8 unearnedUsesTwoToneEnamel:(BOOL)a9 faceHasMetalInlay:(BOOL)a10 enamelTricolors:(id)a11 glyphTexturePath:(id)a12 glyphTextureScale:(double)a13 glyphPositionOffset:(CGPoint)a14
+- (AAUIBadgeModelConfiguration)initWithModelPaths:(id)paths texturePaths:(id)texturePaths shapeName:(id)name metalColor:(id)color useFullColorEnamel:(BOOL)enamel modelEnamelColor:(id)enamelColor unearnedUsesTwoToneEnamel:(BOOL)toneEnamel faceHasMetalInlay:(BOOL)self0 enamelTricolors:(id)self1 glyphTexturePath:(id)self2 glyphTextureScale:(double)self3 glyphPositionOffset:(CGPoint)self4
 {
-  y = a14.y;
-  x = a14.x;
+  y = offset.y;
+  x = offset.x;
   v55 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v36 = a4;
-  v47 = a4;
-  v37 = a5;
-  v46 = a5;
-  v38 = a6;
-  v45 = a6;
-  v40 = a8;
-  v44 = a8;
-  v43 = a11;
-  v42 = a12;
-  v22 = [MEMORY[0x277CBEAF8] currentLocale];
-  v23 = [v22 usesMetricSystem];
+  pathsCopy = paths;
+  texturePathsCopy = texturePaths;
+  texturePathsCopy2 = texturePaths;
+  nameCopy = name;
+  nameCopy2 = name;
+  colorCopy = color;
+  colorCopy2 = color;
+  enamelColorCopy = enamelColor;
+  enamelColorCopy2 = enamelColor;
+  tricolorsCopy = tricolors;
+  pathCopy = path;
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  usesMetricSystem = [currentLocale usesMetricSystem];
 
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v21;
+  obj = pathsCopy;
   v25 = [obj countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (v25)
   {
@@ -47,9 +47,9 @@
 
         v29 = *(*(&v50 + 1) + 8 * i);
         v30 = [v29 componentsSeparatedByString:@"/"];
-        v31 = [v30 lastObject];
+        lastObject = [v30 lastObject];
 
-        if (([v31 containsString:@"Kilometer"] & v23 & 1) != 0 || !(v23 & 1 | ((objc_msgSend(v31, "containsString:", @"Mile") & 1) == 0)) || (objc_msgSend(v31, "containsString:", @"Mile") & 1) == 0 && (objc_msgSend(v31, "containsString:", @"Kilometer") & 1) == 0)
+        if (([lastObject containsString:@"Kilometer"] & usesMetricSystem & 1) != 0 || !(usesMetricSystem & 1 | ((objc_msgSend(lastObject, "containsString:", @"Mile") & 1) == 0)) || (objc_msgSend(lastObject, "containsString:", @"Mile") & 1) == 0 && (objc_msgSend(lastObject, "containsString:", @"Kilometer") & 1) == 0)
         {
           [v24 addObject:v29];
         }
@@ -70,16 +70,16 @@
     badgeModelPaths = v32->_badgeModelPaths;
     v32->_badgeModelPaths = v33;
 
-    objc_storeStrong(&v32->_badgeTexturePaths, v36);
-    objc_storeStrong(&v32->_glyphTexturePath, a12);
-    objc_storeStrong(&v32->_shapeName, v37);
-    objc_storeStrong(&v32->_metalColor, v38);
-    v32->_useFullColorEnamel = a7;
-    objc_storeStrong(&v32->_modelEnamelColor, v40);
-    v32->_unearnedUsesTwoToneEnamel = a9;
-    v32->_faceHasMetalInlay = a10;
-    objc_storeStrong(&v32->_enamelTriColors, a11);
-    v32->_glyphTextureScale = a13;
+    objc_storeStrong(&v32->_badgeTexturePaths, texturePathsCopy);
+    objc_storeStrong(&v32->_glyphTexturePath, path);
+    objc_storeStrong(&v32->_shapeName, nameCopy);
+    objc_storeStrong(&v32->_metalColor, colorCopy);
+    v32->_useFullColorEnamel = enamel;
+    objc_storeStrong(&v32->_modelEnamelColor, enamelColorCopy);
+    v32->_unearnedUsesTwoToneEnamel = toneEnamel;
+    v32->_faceHasMetalInlay = inlay;
+    objc_storeStrong(&v32->_enamelTriColors, tricolors);
+    v32->_glyphTextureScale = scale;
     v32->_glyphPositionOffset.x = x;
     v32->_glyphPositionOffset.y = y;
   }
@@ -89,16 +89,16 @@
 
 - (unint64_t)badgeShape
 {
-  v2 = [(AAUIBadgeModelConfiguration *)self shapeName];
+  shapeName = [(AAUIBadgeModelConfiguration *)self shapeName];
   if (AAUIBadgeShapeFromName_onceToken != -1)
   {
     [AAUIBadgeModelConfiguration badgeShape];
   }
 
-  v3 = [AAUIBadgeShapeFromName_shapeNameMappings objectForKeyedSubscript:v2];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [AAUIBadgeShapeFromName_shapeNameMappings objectForKeyedSubscript:shapeName];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (CGPoint)glyphPositionOffset

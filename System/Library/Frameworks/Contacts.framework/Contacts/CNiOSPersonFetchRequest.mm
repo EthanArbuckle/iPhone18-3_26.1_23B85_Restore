@@ -1,9 +1,9 @@
 @interface CNiOSPersonFetchRequest
-+ (id)effectivePredicate:(id)a3;
-+ (id)fetchRequestFromCNFetchRequest:(id)a3 managedConfiguration:(id)a4 error:(id *)a5;
-+ (id)validatePredicate:(id)a3 error:(id *)a4;
-+ (int64_t)resolvedSortOrderFromContactSortOrder:(int64_t)a3;
-- (CNiOSPersonFetchRequest)initWithPredicate:(id)a3 keysToFetch:(id)a4 shouldSort:(BOOL)a5 sortOrder:(unsigned int)a6 unifiedFetch:(BOOL)a7 batchSize:(int64_t)a8 managedConfiguration:(id)a9 options:(unint64_t)a10;
++ (id)effectivePredicate:(id)predicate;
++ (id)fetchRequestFromCNFetchRequest:(id)request managedConfiguration:(id)configuration error:(id *)error;
++ (id)validatePredicate:(id)predicate error:(id *)error;
++ (int64_t)resolvedSortOrderFromContactSortOrder:(int64_t)order;
+- (CNiOSPersonFetchRequest)initWithPredicate:(id)predicate keysToFetch:(id)fetch shouldSort:(BOOL)sort sortOrder:(unsigned int)order unifiedFetch:(BOOL)unifiedFetch batchSize:(int64_t)size managedConfiguration:(id)configuration options:(unint64_t)self0;
 - (unsigned)sortOrderIncludingNone;
 @end
 
@@ -19,64 +19,64 @@
   return [(CNiOSPersonFetchRequest *)self sortOrder];
 }
 
-- (CNiOSPersonFetchRequest)initWithPredicate:(id)a3 keysToFetch:(id)a4 shouldSort:(BOOL)a5 sortOrder:(unsigned int)a6 unifiedFetch:(BOOL)a7 batchSize:(int64_t)a8 managedConfiguration:(id)a9 options:(unint64_t)a10
+- (CNiOSPersonFetchRequest)initWithPredicate:(id)predicate keysToFetch:(id)fetch shouldSort:(BOOL)sort sortOrder:(unsigned int)order unifiedFetch:(BOOL)unifiedFetch batchSize:(int64_t)size managedConfiguration:(id)configuration options:(unint64_t)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v23 = a9;
+  predicateCopy = predicate;
+  fetchCopy = fetch;
+  configurationCopy = configuration;
   v24.receiver = self;
   v24.super_class = CNiOSPersonFetchRequest;
   v19 = [(CNiOSPersonFetchRequest *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_keysToFetch, a4);
-    objc_storeStrong(&v20->_predicate, a3);
-    v20->_shouldSort = a5;
-    v20->_sortOrder = a6;
-    v20->_options = a10;
-    v20->_unifiedFetch = a7;
-    v20->_batchSize = a8;
-    objc_storeStrong(&v20->_managedConfiguration, a9);
+    objc_storeStrong(&v19->_keysToFetch, fetch);
+    objc_storeStrong(&v20->_predicate, predicate);
+    v20->_shouldSort = sort;
+    v20->_sortOrder = order;
+    v20->_options = options;
+    v20->_unifiedFetch = unifiedFetch;
+    v20->_batchSize = size;
+    objc_storeStrong(&v20->_managedConfiguration, configuration);
     v21 = v20;
   }
 
   return v20;
 }
 
-+ (int64_t)resolvedSortOrderFromContactSortOrder:(int64_t)a3
++ (int64_t)resolvedSortOrderFromContactSortOrder:(int64_t)order
 {
-  if (a3 <= 3 && a3 != 1 || a3 == 1000)
+  if (order <= 3 && order != 1 || order == 1000)
   {
-    return a3;
+    return order;
   }
 
   v4 = +[CNContactsUserDefaults sharedDefaults];
-  v5 = [v4 sortOrder];
+  sortOrder = [v4 sortOrder];
 
-  return v5;
+  return sortOrder;
 }
 
-+ (id)fetchRequestFromCNFetchRequest:(id)a3 managedConfiguration:(id)a4 error:(id *)a5
++ (id)fetchRequestFromCNFetchRequest:(id)request managedConfiguration:(id)configuration error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 predicate];
-  v11 = [a1 validatePredicate:v10 error:a5];
+  requestCopy = request;
+  configurationCopy = configuration;
+  predicate = [requestCopy predicate];
+  v11 = [self validatePredicate:predicate error:error];
 
   if (v11)
   {
-    v12 = [a1 resolvedSortOrderFromContactSortOrder:{objc_msgSend(v8, "sortOrder")}];
+    v12 = [self resolvedSortOrderFromContactSortOrder:{objc_msgSend(requestCopy, "sortOrder")}];
     v13 = v12 != 0;
     v14 = +[CNiOSABConstantsMapping CNToABPersonSortOrderingConstantsMapping];
     v15 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
     v16 = [v14 mappedConstant:v15];
-    v17 = [v16 unsignedIntValue];
+    unsignedIntValue = [v16 unsignedIntValue];
 
     v18 = [CNiOSPersonFetchRequest alloc];
-    v19 = [v8 effectiveKeysToFetch];
-    v20 = [v19 allObjects];
-    v21 = -[CNiOSPersonFetchRequest initWithPredicate:keysToFetch:shouldSort:sortOrder:unifiedFetch:batchSize:managedConfiguration:options:](v18, "initWithPredicate:keysToFetch:shouldSort:sortOrder:unifiedFetch:batchSize:managedConfiguration:options:", v11, v20, v13, v17, [v8 unifyResults], objc_msgSend(v8, "batchSize"), v9, 1);
+    effectiveKeysToFetch = [requestCopy effectiveKeysToFetch];
+    allObjects = [effectiveKeysToFetch allObjects];
+    v21 = -[CNiOSPersonFetchRequest initWithPredicate:keysToFetch:shouldSort:sortOrder:unifiedFetch:batchSize:managedConfiguration:options:](v18, "initWithPredicate:keysToFetch:shouldSort:sortOrder:unifiedFetch:batchSize:managedConfiguration:options:", v11, allObjects, v13, unsignedIntValue, [requestCopy unifyResults], objc_msgSend(requestCopy, "batchSize"), configurationCopy, 1);
   }
 
   else
@@ -87,15 +87,15 @@
   return v21;
 }
 
-+ (id)validatePredicate:(id)a3 error:(id *)a4
++ (id)validatePredicate:(id)predicate error:(id *)error
 {
-  v5 = [a1 effectivePredicate:a3];
+  v5 = [self effectivePredicate:predicate];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [CNErrorFactory errorWithCode:400 userInfo:0];
+      *error = [CNErrorFactory errorWithCode:400 userInfo:0];
     }
 
     goto LABEL_6;
@@ -111,15 +111,15 @@ LABEL_6:
   return v5;
 }
 
-+ (id)effectivePredicate:(id)a3
++ (id)effectivePredicate:(id)predicate
 {
-  v3 = a3;
-  if (!v3)
+  predicateCopy = predicate;
+  if (!predicateCopy)
   {
-    v3 = +[CNContact predicateForAllContacts];
+    predicateCopy = +[CNContact predicateForAllContacts];
   }
 
-  return v3;
+  return predicateCopy;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface OfficeDocument
-+ (id)parseFile:(id)a3 contentType:(id)a4 requestedSize:(CGSize)a5 error:(id *)a6;
++ (id)parseFile:(id)file contentType:(id)type requestedSize:(CGSize)size error:(id *)error;
 - (CGSize)size;
 @end
 
 @implementation OfficeDocument
 
-+ (id)parseFile:(id)a3 contentType:(id)a4 requestedSize:(CGSize)a5 error:(id *)a6
++ (id)parseFile:(id)file contentType:(id)type requestedSize:(CGSize)size error:(id *)error
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  v11 = a4;
+  height = size.height;
+  width = size.width;
+  fileCopy = file;
+  typeCopy = type;
   v12 = objc_opt_new();
-  [v11 identifier];
+  [typeCopy identifier];
 
   v64 = 0;
   cf = 0;
@@ -74,9 +74,9 @@
   }
 
   [v12 setMultipage:v64 != 0];
-  v27 = [v12 embeddedThumbnail];
+  embeddedThumbnail = [v12 embeddedThumbnail];
 
-  if (v27)
+  if (embeddedThumbnail)
   {
     v28 = v12;
   }
@@ -93,7 +93,7 @@
       {
         v33 = v31;
         v28 = 0;
-        *a6 = v32;
+        *error = v32;
       }
 
       else
@@ -106,8 +106,8 @@
         {
           v54 = v30;
           v55 = v12;
-          v56 = v11;
-          v57 = v10;
+          v56 = typeCopy;
+          v57 = fileCopy;
           v35 = +[NSMutableDictionary dictionary];
           v59 = 0u;
           v60 = 0u;
@@ -130,8 +130,8 @@
 
                 v41 = *(*(&v59 + 1) + 8 * i);
                 v42 = [v36 objectForKeyedSubscript:v41];
-                v43 = [v41 pathExtension];
-                v44 = [UTType typeWithFilenameExtension:v43];
+                pathExtension = [v41 pathExtension];
+                v44 = [UTType typeWithFilenameExtension:pathExtension];
 
                 if (v44)
                 {
@@ -157,8 +157,8 @@
           v12 = v55;
           [v55 setAttachments:v35];
 
-          v11 = v56;
-          v10 = v57;
+          typeCopy = v56;
+          fileCopy = v57;
           v32 = 0;
           v30 = v54;
         }
@@ -188,7 +188,7 @@
     else
     {
       [NSError errorWithDomain:QLThumbnailErrorDomain code:0 userInfo:0];
-      *a6 = v28 = 0;
+      *error = v28 = 0;
     }
   }
 

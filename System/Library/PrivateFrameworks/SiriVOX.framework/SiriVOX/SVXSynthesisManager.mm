@@ -1,10 +1,10 @@
 @interface SVXSynthesisManager
-- (SVXSynthesisManager)initWithModule:(id)a3;
-- (SVXSynthesisManager)initWithPerformer:(id)a3 remoteDelegateSupplier:(id)a4;
+- (SVXSynthesisManager)initWithModule:(id)module;
+- (SVXSynthesisManager)initWithPerformer:(id)performer remoteDelegateSupplier:(id)supplier;
 - (id)_createGroup;
-- (void)startWithModuleInstanceProvider:(id)a3 platformDependencies:(id)a4;
-- (void)stopWithModuleInstanceProvider:(id)a3;
-- (void)synthesizeRequest:(id)a3 xpcConnection:(id)a4 handlerUUID:(id)a5 completion:(id)a6;
+- (void)startWithModuleInstanceProvider:(id)provider platformDependencies:(id)dependencies;
+- (void)stopWithModuleInstanceProvider:(id)provider;
+- (void)synthesizeRequest:(id)request xpcConnection:(id)connection handlerUUID:(id)d completion:(id)completion;
 @end
 
 @implementation SVXSynthesisManager
@@ -16,34 +16,34 @@
   return v2;
 }
 
-- (void)synthesizeRequest:(id)a3 xpcConnection:(id)a4 handlerUUID:(id)a5 completion:(id)a6
+- (void)synthesizeRequest:(id)request xpcConnection:(id)connection handlerUUID:(id)d completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [(SVXSynthesisManager *)self _createGroup];
+  connectionCopy = connection;
+  dCopy = d;
+  completionCopy = completion;
+  requestCopy = request;
+  _createGroup = [(SVXSynthesisManager *)self _createGroup];
   speechSynthesizer = self->_speechSynthesizer;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __78__SVXSynthesisManager_synthesizeRequest_xpcConnection_handlerUUID_completion___block_invoke;
   v24[3] = &unk_279C67D00;
-  v25 = v11;
-  v26 = v14;
-  v27 = self;
-  v28 = v10;
+  v25 = dCopy;
+  v26 = _createGroup;
+  selfCopy = self;
+  v28 = connectionCopy;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __78__SVXSynthesisManager_synthesizeRequest_xpcConnection_handlerUUID_completion___block_invoke_8;
   v20[3] = &unk_279C67D28;
   v21 = v26;
-  v22 = self;
-  v23 = v12;
-  v16 = v12;
+  selfCopy2 = self;
+  v23 = completionCopy;
+  v16 = completionCopy;
   v17 = v26;
-  v18 = v10;
-  v19 = v11;
-  [(SVXSpeechSynthesizer *)speechSynthesizer synthesizeRequest:v13 audioChunkHandler:v24 taskTracker:0 analyticsContext:0 completion:v20];
+  v18 = connectionCopy;
+  v19 = dCopy;
+  [(SVXSpeechSynthesizer *)speechSynthesizer synthesizeRequest:requestCopy audioChunkHandler:v24 taskTracker:0 analyticsContext:0 completion:v20];
 }
 
 void __78__SVXSynthesisManager_synthesizeRequest_xpcConnection_handlerUUID_completion___block_invoke(uint64_t a1, void *a2)
@@ -182,26 +182,6 @@ void __78__SVXSynthesisManager_synthesizeRequest_xpcConnection_handlerUUID_compl
   dispatch_group_leave(*(a1 + 32));
 }
 
-{
-  v2 = *(a1 + 40);
-  v3 = *(*(a1 + 32) + 16);
-  v10[0] = MEMORY[0x277D85DD0];
-  v10[1] = 3221225472;
-  v10[2] = __78__SVXSynthesisManager_synthesizeRequest_xpcConnection_handlerUUID_completion___block_invoke_3;
-  v10[3] = &unk_279C68108;
-  v11 = *(a1 + 48);
-  v4 = [v3 remoteServiceDelegateWithConnection:v2 errorHandler:v10];
-  v5 = *(a1 + 56);
-  v6 = *(a1 + 64);
-  v7 = *(a1 + 72);
-  v8[0] = MEMORY[0x277D85DD0];
-  v8[1] = 3221225472;
-  v8[2] = __78__SVXSynthesisManager_synthesizeRequest_xpcConnection_handlerUUID_completion___block_invoke_4;
-  v8[3] = &unk_279C68CD8;
-  v9 = *(a1 + 48);
-  [v4 handleSpeechSynthesisSynthesizedBufferForHandlerUUID:v5 audioChunkData:v6 audioChunkIndex:v7 reply:v8];
-}
-
 void __78__SVXSynthesisManager_synthesizeRequest_xpcConnection_handlerUUID_completion___block_invoke_3(uint64_t a1, void *a2)
 {
   v10 = *MEMORY[0x277D85DE8];
@@ -239,43 +219,43 @@ uint64_t __78__SVXSynthesisManager_synthesizeRequest_xpcConnection_handlerUUID_c
   return result;
 }
 
-- (void)stopWithModuleInstanceProvider:(id)a3
+- (void)stopWithModuleInstanceProvider:(id)provider
 {
   speechSynthesizer = self->_speechSynthesizer;
   self->_speechSynthesizer = 0;
   MEMORY[0x2821F96F8]();
 }
 
-- (void)startWithModuleInstanceProvider:(id)a3 platformDependencies:(id)a4
+- (void)startWithModuleInstanceProvider:(id)provider platformDependencies:(id)dependencies
 {
-  v5 = [a3 speechSynthesizer];
+  speechSynthesizer = [provider speechSynthesizer];
   speechSynthesizer = self->_speechSynthesizer;
-  self->_speechSynthesizer = v5;
+  self->_speechSynthesizer = speechSynthesizer;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (SVXSynthesisManager)initWithModule:(id)a3
+- (SVXSynthesisManager)initWithModule:(id)module
 {
-  v4 = [a3 performer];
+  performer = [module performer];
   v5 = objc_alloc_init(SVXClientServiceRemoteDelegateSupplier);
-  v6 = [(SVXSynthesisManager *)self initWithPerformer:v4 remoteDelegateSupplier:v5];
+  v6 = [(SVXSynthesisManager *)self initWithPerformer:performer remoteDelegateSupplier:v5];
 
   return v6;
 }
 
-- (SVXSynthesisManager)initWithPerformer:(id)a3 remoteDelegateSupplier:(id)a4
+- (SVXSynthesisManager)initWithPerformer:(id)performer remoteDelegateSupplier:(id)supplier
 {
-  v7 = a3;
-  v8 = a4;
+  performerCopy = performer;
+  supplierCopy = supplier;
   v12.receiver = self;
   v12.super_class = SVXSynthesisManager;
   v9 = [(SVXSynthesisManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_performer, a3);
-    objc_storeStrong(&v10->_remoteDelegateSupplier, a4);
+    objc_storeStrong(&v9->_performer, performer);
+    objc_storeStrong(&v10->_remoteDelegateSupplier, supplier);
   }
 
   return v10;

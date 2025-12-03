@@ -1,36 +1,36 @@
 @interface SIRINLUEXTERNALNLU_ROUTERAliasTypes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsOptions:(id)a3;
-- (int)optionsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (int)StringAsOptions:(id)options;
+- (int)optionsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTERAliasTypes
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v7 = a3;
-  v4 = [v7 optionsCount];
-  if (v4)
+  fromCopy = from;
+  optionsCount = [fromCopy optionsCount];
+  if (optionsCount)
   {
-    v5 = v4;
+    v5 = optionsCount;
     for (i = 0; i != v5; ++i)
     {
-      -[SIRINLUEXTERNALNLU_ROUTERAliasTypes addOptions:](self, "addOptions:", [v7 optionsAtIndex:i]);
+      -[SIRINLUEXTERNALNLU_ROUTERAliasTypes addOptions:](self, "addOptions:", [fromCopy optionsAtIndex:i]);
     }
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     IsEqual = PBRepeatedInt32IsEqual();
   }
@@ -43,32 +43,32 @@
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedInt32Copy();
   return v3;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(SIRINLUEXTERNALNLU_ROUTERAliasTypes *)self optionsCount])
   {
-    [v7 clearOptions];
-    v4 = [(SIRINLUEXTERNALNLU_ROUTERAliasTypes *)self optionsCount];
-    if (v4)
+    [toCopy clearOptions];
+    optionsCount = [(SIRINLUEXTERNALNLU_ROUTERAliasTypes *)self optionsCount];
+    if (optionsCount)
     {
-      v5 = v4;
+      v5 = optionsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addOptions:{-[SIRINLUEXTERNALNLU_ROUTERAliasTypes optionsAtIndex:](self, "optionsAtIndex:", i)}];
+        [toCopy addOptions:{-[SIRINLUEXTERNALNLU_ROUTERAliasTypes optionsAtIndex:](self, "optionsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   p_options = &self->_options;
   if (self->_options.count)
@@ -87,7 +87,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_options = &self->_options;
   if (self->_options.count)
   {
@@ -116,10 +116,10 @@
       while (v6 < p_options->count);
     }
 
-    [v3 setObject:v5 forKey:@"options"];
+    [dictionary setObject:v5 forKey:@"options"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -128,46 +128,46 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTERAliasTypes;
   v4 = [(SIRINLUEXTERNALNLU_ROUTERAliasTypes *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTERAliasTypes *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERAliasTypes *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsOptions:(id)a3
+- (int)StringAsOptions:(id)options
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"homeEntity"])
+  optionsCopy = options;
+  if ([optionsCopy isEqualToString:@"homeEntity"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"synonym"])
+  else if ([optionsCopy isEqualToString:@"synonym"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"transliteration"])
+  else if ([optionsCopy isEqualToString:@"transliteration"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"expandedEmoji"])
+  else if ([optionsCopy isEqualToString:@"expandedEmoji"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"contactRelationship"])
+  else if ([optionsCopy isEqualToString:@"contactRelationship"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"contactHypocorism"])
+  else if ([optionsCopy isEqualToString:@"contactHypocorism"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"contactHandle"])
+  else if ([optionsCopy isEqualToString:@"contactHandle"])
   {
     v4 = 6;
   }
@@ -180,20 +180,20 @@
   return v4;
 }
 
-- (int)optionsAtIndex:(unint64_t)a3
+- (int)optionsAtIndex:(unint64_t)index
 {
   p_options = &self->_options;
   count = self->_options.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_options->list[a3];
+  return p_options->list[index];
 }
 
 - (void)dealloc

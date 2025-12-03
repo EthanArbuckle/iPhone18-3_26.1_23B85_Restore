@@ -1,22 +1,22 @@
 @interface PKAccountFlowController
-- (BOOL)_startIngestionFlowIfNecessaryWithOnDisplay:(id)a3 flowCompletion:(id)a4;
+- (BOOL)_startIngestionFlowIfNecessaryWithOnDisplay:(id)display flowCompletion:(id)completion;
 - (PKAccountFlowController)init;
-- (PKAccountFlowController)initWithAccountCredential:(id)a3 provisioningController:(id)a4 setupDelegate:(id)a5 context:(int64_t)a6 operations:(unint64_t)a7;
+- (PKAccountFlowController)initWithAccountCredential:(id)credential provisioningController:(id)controller setupDelegate:(id)delegate context:(int64_t)context operations:(unint64_t)operations;
 - (PKAccountFlowControllerDelegate)delegate;
 - (PKAccountProvisioningController)accountProvisioningController;
 - (id)firstAccountViewController;
-- (unint64_t)_fitleredOperations:(unint64_t)a3 account:(id)a4 context:(int64_t)a5;
-- (void)_accountProvisioningControllerRequiresNextViewController:(id)a3;
+- (unint64_t)_fitleredOperations:(unint64_t)operations account:(id)account context:(int64_t)context;
+- (void)_accountProvisioningControllerRequiresNextViewController:(id)controller;
 - (void)_acquireAssertion;
-- (void)_checkAccountProvisioningControllerState:(id)a3;
+- (void)_checkAccountProvisioningControllerState:(id)state;
 - (void)_invalidateAssertion;
-- (void)_nextPostProvisioningViewControllerWithCompletion:(id)a3;
-- (void)_requestPresentationOfActiviationViewControllerShowingMadeDefault:(BOOL)a3;
-- (void)accountProvisioningController:(id)a3 displayableError:(id)a4;
-- (void)accountProvisioningControllerUpdatedState:(id)a3;
+- (void)_nextPostProvisioningViewControllerWithCompletion:(id)completion;
+- (void)_requestPresentationOfActiviationViewControllerShowingMadeDefault:(BOOL)default;
+- (void)accountProvisioningController:(id)controller displayableError:(id)error;
+- (void)accountProvisioningControllerUpdatedState:(id)state;
 - (void)dealloc;
-- (void)makeAccountPassDefault:(BOOL)a3;
-- (void)nextViewControllerWithCompletion:(id)a3;
+- (void)makeAccountPassDefault:(BOOL)default;
+- (void)nextViewControllerWithCompletion:(id)completion;
 - (void)performInitalOperations;
 @end
 
@@ -29,33 +29,33 @@
   v2 = [(PKAccountFlowController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v2->_accountService;
-    v2->_accountService = v3;
+    v2->_accountService = mEMORY[0x1E69B8400];
   }
 
   return v2;
 }
 
-- (PKAccountFlowController)initWithAccountCredential:(id)a3 provisioningController:(id)a4 setupDelegate:(id)a5 context:(int64_t)a6 operations:(unint64_t)a7
+- (PKAccountFlowController)initWithAccountCredential:(id)credential provisioningController:(id)controller setupDelegate:(id)delegate context:(int64_t)context operations:(unint64_t)operations
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  credentialCopy = credential;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v16 = [(PKAccountFlowController *)self init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_setupDelegate, v15);
-    objc_storeStrong(&v17->_accountCredential, a3);
-    v18 = [(PKAccountCredential *)v17->_accountCredential account];
+    objc_storeWeak(&v16->_setupDelegate, delegateCopy);
+    objc_storeStrong(&v17->_accountCredential, credential);
+    account = [(PKAccountCredential *)v17->_accountCredential account];
     account = v17->_account;
-    v17->_account = v18;
+    v17->_account = account;
 
-    objc_storeStrong(&v17->_provisioningController, a4);
-    v17->_context = a6;
+    objc_storeStrong(&v17->_provisioningController, controller);
+    v17->_context = context;
     v17->_isMerchantApp = PKPaymentSetupContextIsMerchantApp();
-    v17->_operations = [(PKAccountFlowController *)v17 _fitleredOperations:a7 account:v17->_account context:v17->_context];
+    v17->_operations = [(PKAccountFlowController *)v17 _fitleredOperations:operations account:v17->_account context:v17->_context];
   }
 
   return v17;
@@ -69,20 +69,20 @@
   [(PKAccountFlowController *)&v3 dealloc];
 }
 
-- (unint64_t)_fitleredOperations:(unint64_t)a3 account:(id)a4 context:(int64_t)a5
+- (unint64_t)_fitleredOperations:(unint64_t)operations account:(id)account context:(int64_t)context
 {
-  v6 = [a4 state];
-  if (((v6 < 6) & (0x3Du >> v6)) != 0)
+  state = [account state];
+  if (((state < 6) & (0x3Du >> state)) != 0)
   {
-    a3 = 1;
+    operations = 1;
   }
 
   if ((PKPaymentSetupContextIsBridge() & 1) != 0 || !PKIsPairedWithWatch())
   {
-    a3 &= ~2uLL;
+    operations &= ~2uLL;
   }
 
-  return a3;
+  return operations;
 }
 
 - (id)firstAccountViewController
@@ -111,18 +111,18 @@
   return v6;
 }
 
-- (void)nextViewControllerWithCompletion:(id)a3
+- (void)nextViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__PKAccountFlowController_nextViewControllerWithCompletion___block_invoke;
     v6[3] = &unk_1E8011E10;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(PKAccountFlowController *)self _nextPostProvisioningViewControllerWithCompletion:v6];
   }
 }
@@ -179,62 +179,62 @@ void __60__PKAccountFlowController_nextViewControllerWithCompletion___block_invo
 - (void)performInitalOperations
 {
   [(PKAccountFlowController *)self _acquireAssertion];
-  v3 = [(PKAccountFlowController *)self accountProvisioningController];
+  accountProvisioningController = [(PKAccountFlowController *)self accountProvisioningController];
   if (self->_operations)
   {
-    v4 = v3;
-    [v3 provisionAccountPassToLocalDevice];
-    v3 = v4;
+    v4 = accountProvisioningController;
+    [accountProvisioningController provisionAccountPassToLocalDevice];
+    accountProvisioningController = v4;
   }
 }
 
-- (void)makeAccountPassDefault:(BOOL)a3
+- (void)makeAccountPassDefault:(BOOL)default
 {
-  v3 = a3;
+  defaultCopy = default;
   v5 = 1;
-  if (!a3)
+  if (!default)
   {
     v5 = 2;
   }
 
   self->_madeDefault = v5;
-  v8 = [(PKAccountFlowController *)self accountProvisioningController];
-  if (v3)
+  accountProvisioningController = [(PKAccountFlowController *)self accountProvisioningController];
+  if (defaultCopy)
   {
     operations = self->_operations;
     if ((operations & 8) != 0)
     {
-      [v8 addToIDMS];
+      [accountProvisioningController addToIDMS];
       operations = self->_operations;
     }
 
     if ((operations & 4) != 0)
     {
-      [v8 makeAccountPassDefaultOnLocalDevice];
+      [accountProvisioningController makeAccountPassDefaultOnLocalDevice];
     }
   }
 
   v7 = self->_operations;
   if ((v7 & 2) != 0)
   {
-    [v8 provisionAccountPassToWatchAsDefault:v3];
+    [accountProvisioningController provisionAccountPassToWatchAsDefault:defaultCopy];
     v7 = self->_operations;
   }
 
   if ((v7 & 0x10) != 0)
   {
-    [v8 performAMPEnrollmentShouldEnroll:v3 shouldMakeDefault:v3];
+    [accountProvisioningController performAMPEnrollmentShouldEnroll:defaultCopy shouldMakeDefault:defaultCopy];
   }
 
-  [(PKAccountFlowController *)self _requestPresentationOfActiviationViewControllerShowingMadeDefault:v3];
+  [(PKAccountFlowController *)self _requestPresentationOfActiviationViewControllerShowingMadeDefault:defaultCopy];
 }
 
-- (void)accountProvisioningControllerUpdatedState:(id)a3
+- (void)accountProvisioningControllerUpdatedState:(id)state
 {
   accountProvisioningController = self->_accountProvisioningController;
   if (accountProvisioningController)
   {
-    v5 = accountProvisioningController == a3;
+    v5 = accountProvisioningController == state;
   }
 
   else
@@ -248,14 +248,14 @@ void __60__PKAccountFlowController_nextViewControllerWithCompletion___block_invo
   }
 }
 
-- (void)accountProvisioningController:(id)a3 displayableError:(id)a4
+- (void)accountProvisioningController:(id)controller displayableError:(id)error
 {
-  v13 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   accountProvisioningController = self->_accountProvisioningController;
   if (accountProvisioningController)
   {
-    v8 = accountProvisioningController == v13;
+    v8 = accountProvisioningController == controllerCopy;
   }
 
   else
@@ -265,9 +265,9 @@ void __60__PKAccountFlowController_nextViewControllerWithCompletion___block_invo
 
   if (v8)
   {
-    if (v6)
+    if (errorCopy)
     {
-      v9 = v6;
+      v9 = errorCopy;
     }
 
     else
@@ -286,11 +286,11 @@ void __60__PKAccountFlowController_nextViewControllerWithCompletion___block_invo
   }
 }
 
-- (void)_checkAccountProvisioningControllerState:(id)a3
+- (void)_checkAccountProvisioningControllerState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if ((self->_operations & 1) != 0 && [v4 provisionLocalPassState] != 3)
+  stateCopy = state;
+  v5 = stateCopy;
+  if ((self->_operations & 1) != 0 && [stateCopy provisionLocalPassState] != 3)
   {
     v7 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -386,9 +386,9 @@ LABEL_29:
 LABEL_31:
 }
 
-- (void)_accountProvisioningControllerRequiresNextViewController:(id)a3
+- (void)_accountProvisioningControllerRequiresNextViewController:(id)controller
 {
-  [a3 setDelegate:0];
+  [controller setDelegate:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;
   if (WeakRetained)
@@ -398,7 +398,7 @@ LABEL_31:
     v6[2] = __84__PKAccountFlowController__accountProvisioningControllerRequiresNextViewController___block_invoke;
     v6[3] = &unk_1E801CDE0;
     v7 = WeakRetained;
-    v8 = self;
+    selfCopy = self;
     [(PKAccountFlowController *)self nextViewControllerWithCompletion:v6];
   }
 }
@@ -418,9 +418,9 @@ uint64_t __84__PKAccountFlowController__accountProvisioningControllerRequiresNex
   }
 }
 
-- (void)_requestPresentationOfActiviationViewControllerShowingMadeDefault:(BOOL)a3
+- (void)_requestPresentationOfActiviationViewControllerShowingMadeDefault:(BOOL)default
 {
-  v3 = a3;
+  defaultCopy = default;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -430,11 +430,11 @@ uint64_t __84__PKAccountFlowController__accountProvisioningControllerRequiresNex
     v8 = objc_loadWeakRetained(&self->_setupDelegate);
     v9 = [(PKAccountPassActivationResultViewController *)v6 initWithAccountFlowController:self context:context setupDelegate:v8];
 
-    v10 = [(PKAccountFlowController *)self accountProvisioningController];
-    v11 = [v10 provisionLocalPassState] != 3 || objc_msgSend(v10, "makeAccountPassDefaultOnLocalDeviceState") != 3 || objc_msgSend(v10, "addToAMPState") != 3 || objc_msgSend(v10, "addToIDMSState") != 3;
+    accountProvisioningController = [(PKAccountFlowController *)self accountProvisioningController];
+    v11 = [accountProvisioningController provisionLocalPassState] != 3 || objc_msgSend(accountProvisioningController, "makeAccountPassDefaultOnLocalDeviceState") != 3 || objc_msgSend(accountProvisioningController, "addToAMPState") != 3 || objc_msgSend(accountProvisioningController, "addToIDMSState") != 3;
     [(PKAccountPassActivationResultViewController *)v9 setShowingLoadingIndicator:v11];
-    [(PKAccountPassActivationResultViewController *)v9 setDidMakeAccountPassDefault:v3];
-    -[PKAccountPassActivationResultViewController setDidAddToAmp:](v9, "setDidAddToAmp:", [v10 didAddToAMP]);
+    [(PKAccountPassActivationResultViewController *)v9 setDidMakeAccountPassDefault:defaultCopy];
+    -[PKAccountPassActivationResultViewController setDidAddToAmp:](v9, "setDidAddToAmp:", [accountProvisioningController didAddToAMP]);
     objc_storeWeak(&self->_delegate, v9);
     [v12 accountFlowController:self requestsPresentationOfViewController:v9];
 
@@ -459,16 +459,16 @@ uint64_t __84__PKAccountFlowController__accountProvisioningControllerRequiresNex
     }
 
     [(PKAccountProvisioningController *)self->_accountProvisioningController setPassActivationTimeout:v6];
-    v7 = [(PKAccountCredential *)self->_accountCredential paymentPass];
+    paymentPass = [(PKAccountCredential *)self->_accountCredential paymentPass];
     if ([(PKAccount *)self->_account state]== 1)
     {
-      v8 = [v7 devicePrimaryPaymentApplication];
+      devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
 
-      if (v8)
+      if (devicePrimaryPaymentApplication)
       {
         v9 = self->_accountProvisioningController;
-        v10 = [v7 uniqueID];
-        [(PKAccountProvisioningController *)v9 setProvisionedPassUniqueID:v10];
+        uniqueID = [paymentPass uniqueID];
+        [(PKAccountProvisioningController *)v9 setProvisionedPassUniqueID:uniqueID];
       }
     }
 
@@ -478,11 +478,11 @@ uint64_t __84__PKAccountFlowController__accountProvisioningControllerRequiresNex
   return accountProvisioningController;
 }
 
-- (BOOL)_startIngestionFlowIfNecessaryWithOnDisplay:(id)a3 flowCompletion:(id)a4
+- (BOOL)_startIngestionFlowIfNecessaryWithOnDisplay:(id)display flowCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  displayCopy = display;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (self->_startedIngestionFlow)
   {
 LABEL_2:
@@ -492,7 +492,7 @@ LABEL_2:
 
   v9 = 0;
   self->_startedIngestionFlow = 1;
-  if (v6 && v7)
+  if (displayCopy && completionCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v12 = objc_opt_respondsToSelector();
@@ -506,8 +506,8 @@ LABEL_2:
       v16[2] = __86__PKAccountFlowController__startIngestionFlowIfNecessaryWithOnDisplay_flowCompletion___block_invoke;
       v16[3] = &unk_1E801CE08;
       v17 = v13;
-      v18 = self;
-      v19 = v6;
+      selfCopy = self;
+      v19 = displayCopy;
       v20 = v8;
       v15 = v13;
       [v14 accountFlowController:self requestsNavigationControllerWithOnDisplay:v16];
@@ -546,10 +546,10 @@ void __86__PKAccountFlowController__startIngestionFlowIfNecessaryWithOnDisplay_f
   [PKProvisioningFlowBridge startIngestionFlowWithUnownedNavController:v7 context:v4 credential:v5 onFirstViewControllerShown:v11 completion:v8];
 }
 
-- (void)_nextPostProvisioningViewControllerWithCompletion:(id)a3
+- (void)_nextPostProvisioningViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -559,15 +559,15 @@ void __86__PKAccountFlowController__startIngestionFlowIfNecessaryWithOnDisplay_f
     objc_copyWeak(&v38, location);
     aBlock[4] = self;
     v5 = _Block_copy(aBlock);
-    v6 = [(PKPaymentProvisioningController *)self->_provisioningController provisionedPasses];
-    if ([v6 count])
+    provisionedPasses = [(PKPaymentProvisioningController *)self->_provisioningController provisionedPasses];
+    if ([provisionedPasses count])
     {
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __77__PKAccountFlowController__nextPostProvisioningViewControllerWithCompletion___block_invoke_3;
       v35[3] = &unk_1E801CE80;
       v36 = v5;
-      v7 = [(PKAccountFlowController *)self _startIngestionFlowIfNecessaryWithOnDisplay:v4 flowCompletion:v35];
+      v7 = [(PKAccountFlowController *)self _startIngestionFlowIfNecessaryWithOnDisplay:completionCopy flowCompletion:v35];
 
       if (v7)
       {
@@ -586,7 +586,7 @@ void __86__PKAccountFlowController__startIngestionFlowIfNecessaryWithOnDisplay_f
       {
 LABEL_10:
 
-        v4[2](v4, 0);
+        completionCopy[2](completionCopy, 0);
 LABEL_35:
 
         objc_destroyWeak(&v38);
@@ -615,41 +615,41 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v11 = [(PKAccountCredential *)self->_accountCredential passDetailsResponse];
-    v12 = [v11 postProvisioningContent];
+    passDetailsResponse = [(PKAccountCredential *)self->_accountCredential passDetailsResponse];
+    postProvisioningContent = [passDetailsResponse postProvisioningContent];
 
     postProvisoningContentIndex = self->_postProvisoningContentIndex;
-    if (postProvisoningContentIndex >= [v12 count])
+    if (postProvisoningContentIndex >= [postProvisioningContent count])
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
 LABEL_34:
 
       goto LABEL_35;
     }
 
     ++self->_postProvisoningContentIndex;
-    v14 = [v12 objectAtIndex:?];
+    v14 = [postProvisioningContent objectAtIndex:?];
     v15 = v14;
     if (!v14)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
       goto LABEL_33;
     }
 
-    v16 = [v14 type];
-    if (v16 >= 2)
+    type = [v14 type];
+    if (type >= 2)
     {
-      if (v16 == 2)
+      if (type == 2)
       {
-        v20 = [(PKPaymentProvisioningController *)self->_provisioningController provisionedPasses];
-        v21 = [v20 lastObject];
-        v22 = [v21 secureElementPass];
-        v23 = [v22 paymentPass];
+        provisionedPasses2 = [(PKPaymentProvisioningController *)self->_provisioningController provisionedPasses];
+        lastObject = [provisionedPasses2 lastObject];
+        secureElementPass = [lastObject secureElementPass];
+        paymentPass = [secureElementPass paymentPass];
 
-        if ([PKEducationViewController shouldPresentForPass:v23 inEducationContext:0])
+        if ([PKEducationViewController shouldPresentForPass:paymentPass inEducationContext:0])
         {
           PKSetHasSeenApplePayEducation();
-          v24 = [[PKEducationViewController alloc] initWithPaymentPass:v23 setupContext:self->_context educationContext:0];
+          v24 = [[PKEducationViewController alloc] initWithPaymentPass:paymentPass setupContext:self->_context educationContext:0];
           [(PKAccount *)self->_account feature];
           v25 = PKLocalizedFeatureString();
           [(PKEducationViewController *)v24 setTitleOverride:v25];
@@ -665,7 +665,7 @@ LABEL_34:
           v29 = v5;
           objc_copyWeak(&v30, buf);
           [(PKEducationViewController *)v24 setContinueHandler:v28];
-          (v4)[2](v4, v24);
+          (completionCopy)[2](completionCopy, v24);
           objc_destroyWeak(&v30);
 
           objc_destroyWeak(buf);
@@ -673,13 +673,13 @@ LABEL_34:
 
         else
         {
-          [(PKAccountFlowController *)self _nextPostProvisioningViewControllerWithCompletion:v4];
+          [(PKAccountFlowController *)self _nextPostProvisioningViewControllerWithCompletion:completionCopy];
         }
 
         goto LABEL_33;
       }
 
-      if (v16 != 3)
+      if (type != 3)
       {
 LABEL_33:
 
@@ -690,15 +690,15 @@ LABEL_33:
       if (v17 <= 8 && ((1 << v17) & 0x109) != 0)
       {
         accountService = self->_accountService;
-        v19 = [(PKAccount *)self->_account accountIdentifier];
+        accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __77__PKAccountFlowController__nextPostProvisioningViewControllerWithCompletion___block_invoke_78;
         v32[3] = &unk_1E8014A08;
         v32[4] = self;
-        v34 = v4;
+        v34 = completionCopy;
         v33 = v15;
-        [(PKAccountService *)accountService physicalCardsForAccountWithIdentifier:v19 completion:v32];
+        [(PKAccountService *)accountService physicalCardsForAccountWithIdentifier:accountIdentifier completion:v32];
 
         goto LABEL_33;
       }
@@ -711,7 +711,7 @@ LABEL_33:
       }
     }
 
-    [(PKAccountFlowController *)self _nextPostProvisioningViewControllerWithCompletion:v4];
+    [(PKAccountFlowController *)self _nextPostProvisioningViewControllerWithCompletion:completionCopy];
     goto LABEL_33;
   }
 

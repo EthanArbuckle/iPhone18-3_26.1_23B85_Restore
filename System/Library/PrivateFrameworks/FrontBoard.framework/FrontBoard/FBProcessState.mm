@@ -1,13 +1,13 @@
 @interface FBProcessState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FBProcessState)init;
-- (FBProcessState)initWithPid:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (FBProcessState)initWithPid:(int)pid;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)setTaskState:(int64_t)a3;
-- (void)setVisibility:(int64_t)a3;
+- (void)setTaskState:(int64_t)state;
+- (void)setVisibility:(int64_t)visibility;
 @end
 
 @implementation FBProcessState
@@ -25,14 +25,14 @@
   return result;
 }
 
-- (FBProcessState)initWithPid:(int)a3
+- (FBProcessState)initWithPid:(int)pid
 {
   result = [(FBProcessState *)self init];
   if (result)
   {
-    result->_pid = a3;
+    result->_pid = pid;
     result->_visibility = 0;
-    if (a3 < 1)
+    if (pid < 1)
     {
       v5 = 0;
     }
@@ -49,28 +49,28 @@
   return result;
 }
 
-- (void)setTaskState:(int64_t)a3
+- (void)setTaskState:(int64_t)state
 {
-  if (self->_taskState != a3)
+  if (self->_taskState != state)
   {
-    self->_taskState = a3;
-    self->_running = (a3 & 0xFFFFFFFFFFFFFFFELL) == 2;
+    self->_taskState = state;
+    self->_running = (state & 0xFFFFFFFFFFFFFFFELL) == 2;
   }
 }
 
-- (void)setVisibility:(int64_t)a3
+- (void)setVisibility:(int64_t)visibility
 {
-  if (self->_visibility != a3)
+  if (self->_visibility != visibility)
   {
-    self->_visibility = a3;
-    self->_foreground = (a3 & 0xFFFFFFFFFFFFFFFELL) == 2;
+    self->_visibility = visibility;
+    self->_foreground = (visibility & 0xFFFFFFFFFFFFFFFELL) == 2;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -78,13 +78,13 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && self->_pid == v4->_pid && self->_taskState == v4->_taskState && self->_visibility == v4->_visibility && self->_debugging == v4->_debugging;
+    v6 = v5 == objc_opt_class() && self->_pid == equalCopy->_pid && self->_taskState == equalCopy->_taskState && self->_visibility == equalCopy->_visibility && self->_debugging == equalCopy->_debugging;
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[FBProcessState alloc] initWithPid:[(FBProcessState *)self pid]];
   [(FBProcessState *)v4 setTaskState:[(FBProcessState *)self taskState]];
@@ -95,10 +95,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBProcessState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBProcessState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -134,12 +134,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBProcessState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBProcessState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface PGGraphHighlightCollectionEnrichmentProcessor
-- (PGGraphHighlightCollectionEnrichmentProcessor)initWithOptions:(id)a3;
-- (void)_enrichYearHighlights:(id)a3 monthsHighlights:(id)a4 withManager:(id)a5 curationContext:(id)a6 enrichmentprogressBlock:(id)a7;
-- (void)enrichDataModelWithManager:(id)a3 curationContext:(id)a4 graphUpdateInventory:(id)a5 progressReporter:(id)a6;
+- (PGGraphHighlightCollectionEnrichmentProcessor)initWithOptions:(id)options;
+- (void)_enrichYearHighlights:(id)highlights monthsHighlights:(id)monthsHighlights withManager:(id)manager curationContext:(id)context enrichmentprogressBlock:(id)block;
+- (void)enrichDataModelWithManager:(id)manager curationContext:(id)context graphUpdateInventory:(id)inventory progressReporter:(id)reporter;
 @end
 
 @implementation PGGraphHighlightCollectionEnrichmentProcessor
 
-- (void)_enrichYearHighlights:(id)a3 monthsHighlights:(id)a4 withManager:(id)a5 curationContext:(id)a6 enrichmentprogressBlock:(id)a7
+- (void)_enrichYearHighlights:(id)highlights monthsHighlights:(id)monthsHighlights withManager:(id)manager curationContext:(id)context enrichmentprogressBlock:(id)block
 {
   *(&v194[2] + 4) = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v135 = a4;
-  v12 = a5;
-  v131 = a6;
-  v130 = a7;
-  v13 = _Block_copy(v130);
+  highlightsCopy = highlights;
+  monthsHighlightsCopy = monthsHighlights;
+  managerCopy = manager;
+  contextCopy = context;
+  blockCopy = block;
+  v13 = _Block_copy(blockCopy);
   v190 = &v189;
   v191 = 0x2020000000;
   v192 = 0;
@@ -25,17 +25,17 @@
   v189 = 0;
   if (!v13 || (v14 = CFAbsoluteTimeGetCurrent(), v14 - v186[3] < 0.01) || (v186[3] = v14, LOBYTE(info.numer) = 0, (*(v13 + 2))(v13, &info, 0.0), v15 = *(v190 + 24) | LOBYTE(info.numer), *(v190 + 24) = v15, (v15 & 1) == 0))
   {
-    v134 = [v12 photoLibrary];
-    v16 = [v12 enrichmentLoggingConnection];
-    v17 = [[PGHighlightItemModelManager alloc] initWithLibrary:v134];
-    v133 = [[PGMonthEnrichmentRule alloc] initWithModelReader:v17 loggingConnection:v16];
-    v132 = [[PGYearEnrichmentRule alloc] initWithModelReader:v17 loggingConnection:v16];
+    photoLibrary = [managerCopy photoLibrary];
+    enrichmentLoggingConnection = [managerCopy enrichmentLoggingConnection];
+    v17 = [[PGHighlightItemModelManager alloc] initWithLibrary:photoLibrary];
+    v133 = [[PGMonthEnrichmentRule alloc] initWithModelReader:v17 loggingConnection:enrichmentLoggingConnection];
+    v132 = [[PGYearEnrichmentRule alloc] initWithModelReader:v17 loggingConnection:enrichmentLoggingConnection];
     v129 = [[PGHighlightItemEnrichment alloc] initWithRule:v133 modelWriter:v17];
     v127 = [[PGHighlightItemEnrichment alloc] initWithRule:v132 modelWriter:v17];
-    v18 = v16;
+    v18 = enrichmentLoggingConnection;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [v11 count];
+      v19 = [highlightsCopy count];
       buf = 134217984;
       v194[0] = v19;
       _os_log_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_INFO, "Extracting existing clusters from (%ld) backing year", &buf, 0xCu);
@@ -50,7 +50,7 @@
     v182 = &v185;
     v183 = &v189;
     v184 = 0x3F847AE147AE147BLL;
-    v128 = [PGHighlightItemRestorer restoreExistingHighlightItemListsFromBackingHighlightItems:v11 usingModelReader:v17 progressBlock:v180];
+    v128 = [PGHighlightItemRestorer restoreExistingHighlightItemListsFromBackingHighlightItems:highlightsCopy usingModelReader:v17 progressBlock:v180];
     if (*(v190 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -100,7 +100,7 @@ LABEL_11:
     v24 = v18;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [v135 count];
+      v25 = [monthsHighlightsCopy count];
       buf = 134217984;
       v194[0] = v25;
       _os_log_impl(&dword_22F0FC000, v24, OS_LOG_TYPE_INFO, "Extracting existing clusters from (%ld) backing months", &buf, 0xCu);
@@ -115,7 +115,7 @@ LABEL_11:
     v177 = &v185;
     v178 = &v189;
     v179 = 0x3F847AE147AE147BLL;
-    v27 = [PGHighlightItemRestorer restoreExistingHighlightItemListsFromBackingHighlightItems:v135 usingModelReader:v17 progressBlock:v175];
+    v27 = [PGHighlightItemRestorer restoreExistingHighlightItemListsFromBackingHighlightItems:monthsHighlightsCopy usingModelReader:v17 progressBlock:v175];
     if (*(v190 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -187,7 +187,7 @@ LABEL_22:
     v171 = &v185;
     v172 = &v189;
     v173 = 0x3F847AE147AE147BLL;
-    [(PGHighlightItemEnrichment *)v129 updateVisibilityStateForHighlightItemLists:v122 withManager:v12 progressBlock:v169];
+    [(PGHighlightItemEnrichment *)v129 updateVisibilityStateForHighlightItemLists:v122 withManager:managerCopy progressBlock:v169];
     if (*(v190 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -244,7 +244,7 @@ LABEL_34:
     v166 = &v185;
     v167 = &v189;
     v168 = 0x3F847AE147AE147BLL;
-    [(PGHighlightItemEnrichment *)v127 updateVisibilityStateForHighlightItemLists:v128 withManager:v12 progressBlock:v164];
+    [(PGHighlightItemEnrichment *)v127 updateVisibilityStateForHighlightItemLists:v128 withManager:managerCopy progressBlock:v164];
     if (*(v190 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -337,7 +337,7 @@ LABEL_43:
     v160 = &v185;
     v161 = &v189;
     v162 = 0x3F847AE147AE147BLL;
-    [(PGHighlightItemEnrichment *)v127 contextualKeyAssetForYearHighlightItemLists:v128 withManager:v12 curationContext:v131 options:options progressBlock:v158];
+    [(PGHighlightItemEnrichment *)v127 contextualKeyAssetForYearHighlightItemLists:v128 withManager:managerCopy curationContext:contextCopy options:options progressBlock:v158];
     if (*(v190 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -587,7 +587,7 @@ LABEL_94:
         v141 = v128;
         v142 = v17;
         v143 = v122;
-        v144 = v134;
+        v144 = photoLibrary;
         v137[0] = MEMORY[0x277D85DD0];
         v137[1] = 3221225472;
         v137[2] = __140__PGGraphHighlightCollectionEnrichmentProcessor__enrichYearHighlights_monthsHighlights_withManager_curationContext_enrichmentprogressBlock___block_invoke_2;
@@ -1006,16 +1006,16 @@ void __140__PGGraphHighlightCollectionEnrichmentProcessor__enrichYearHighlights_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enrichDataModelWithManager:(id)a3 curationContext:(id)a4 graphUpdateInventory:(id)a5 progressReporter:(id)a6
+- (void)enrichDataModelWithManager:(id)manager curationContext:(id)context graphUpdateInventory:(id)inventory progressReporter:(id)reporter
 {
   v77[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v63 = a4;
-  v10 = a5;
-  v65 = a6;
-  v11 = [v9 enrichmentLoggingConnection];
-  v12 = os_signpost_id_generate(v11);
-  v13 = v11;
+  managerCopy = manager;
+  contextCopy = context;
+  inventoryCopy = inventory;
+  reporterCopy = reporter;
+  enrichmentLoggingConnection = [managerCopy enrichmentLoggingConnection];
+  v12 = os_signpost_id_generate(enrichmentLoggingConnection);
+  v13 = enrichmentLoggingConnection;
   v14 = v13;
   v62 = v12 - 1;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
@@ -1029,108 +1029,108 @@ void __140__PGGraphHighlightCollectionEnrichmentProcessor__enrichYearHighlights_
   info = 0;
   mach_timebase_info(&info);
   v61 = mach_absolute_time();
-  v15 = [v10 updateType];
-  v16 = [v10 isResumingFullAnalysis];
+  updateType = [inventoryCopy updateType];
+  isResumingFullAnalysis = [inventoryCopy isResumingFullAnalysis];
   v17 = [(NSDictionary *)self->_options objectForKeyedSubscript:*MEMORY[0x277D3AE20]];
   if ([v17 count])
   {
-    v18 = [v9 photoLibrary];
-    v19 = [v18 librarySpecificFetchOptions];
+    photoLibrary = [managerCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid IN %@", v17];
-    [v19 setPredicate:v20];
+    [librarySpecificFetchOptions setPredicate:v20];
 
     v21 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
     v77[0] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:1];
-    [v19 setSortDescriptors:v22];
+    [librarySpecificFetchOptions setSortDescriptors:v22];
 
-    v23 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000302 options:v19];
-    v24 = [v23 fetchedObjects];
+    v23 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000302 options:librarySpecificFetchOptions];
+    fetchedObjects = [v23 fetchedObjects];
 
-    v25 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000303 options:v19];
-    v26 = [v25 fetchedObjects];
+    v25 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000303 options:librarySpecificFetchOptions];
+    fetchedObjects2 = [v25 fetchedObjects];
 LABEL_11:
-    v32 = v26;
+    allObjects = fetchedObjects2;
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  if (v15 == 4)
+  if (updateType == 4)
   {
     v27 = 1;
   }
 
   else
   {
-    v27 = v16;
+    v27 = isResumingFullAnalysis;
   }
 
   if (v27 == 1)
   {
-    v28 = [v9 photoLibrary];
-    v19 = [v28 librarySpecificFetchOptions];
+    photoLibrary2 = [managerCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary2 librarySpecificFetchOptions];
 
     v29 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
     v76 = v29;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v76 count:1];
-    [v19 setSortDescriptors:v30];
+    [librarySpecificFetchOptions setSortDescriptors:v30];
 
-    v31 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000302 options:v19];
-    v24 = [v31 fetchedObjects];
+    v31 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000302 options:librarySpecificFetchOptions];
+    fetchedObjects = [v31 fetchedObjects];
 
-    v25 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000303 options:v19];
-    v26 = [v25 fetchedObjects];
+    v25 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:1000000303 options:librarySpecificFetchOptions];
+    fetchedObjects2 = [v25 fetchedObjects];
     goto LABEL_11;
   }
 
-  if (v15 == 2)
+  if (updateType == 2)
   {
-    v39 = [v9 photoLibrary];
-    v19 = [v39 librarySpecificFetchOptions];
+    photoLibrary3 = [managerCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary3 librarySpecificFetchOptions];
 
-    v25 = [v10 highlightsToProcessForKind:0 withHighlightUpdateTypes:127 includeHighlightsToIngest:1];
-    v57 = [v10 highlightsToProcessForKind:3 withHighlightUpdateTypes:127 includeHighlightsToIngest:1];
+    v25 = [inventoryCopy highlightsToProcessForKind:0 withHighlightUpdateTypes:127 includeHighlightsToIngest:1];
+    v57 = [inventoryCopy highlightsToProcessForKind:3 withHighlightUpdateTypes:127 includeHighlightsToIngest:1];
     v59 = [MEMORY[0x277CBEB58] set];
     [v59 unionSet:v25];
     [v59 unionSet:v57];
-    v40 = [v10 highlightsToProcessForKind:1 withHighlightUpdateTypes:127 includeHighlightsToIngest:1];
+    v40 = [inventoryCopy highlightsToProcessForKind:1 withHighlightUpdateTypes:127 includeHighlightsToIngest:1];
     v58 = [v40 mutableCopy];
 
     if ([v59 count])
     {
-      v41 = [MEMORY[0x277CD9958] fetchParentHighlightsForHighlights:v59 options:v19];
-      v42 = [v41 fetchedObjects];
+      v41 = [MEMORY[0x277CD9958] fetchParentHighlightsForHighlights:v59 options:librarySpecificFetchOptions];
+      fetchedObjects3 = [v41 fetchedObjects];
 
-      [v58 addObjectsFromArray:v42];
+      [v58 addObjectsFromArray:fetchedObjects3];
     }
 
-    v24 = [v58 allObjects];
-    v43 = [v10 highlightsToProcessForKind:2 withHighlightUpdateTypes:127 includeHighlightsToIngest:1];
+    fetchedObjects = [v58 allObjects];
+    v43 = [inventoryCopy highlightsToProcessForKind:2 withHighlightUpdateTypes:127 includeHighlightsToIngest:1];
     v44 = [v43 mutableCopy];
 
     if ([v58 count])
     {
-      v45 = [MEMORY[0x277CD9958] fetchParentHighlightsForHighlights:v58 options:v19];
-      v46 = [v45 fetchedObjects];
+      v45 = [MEMORY[0x277CD9958] fetchParentHighlightsForHighlights:v58 options:librarySpecificFetchOptions];
+      fetchedObjects4 = [v45 fetchedObjects];
 
-      [v44 addObjectsFromArray:v46];
+      [v44 addObjectsFromArray:fetchedObjects4];
     }
 
-    v32 = [v44 allObjects];
+    allObjects = [v44 allObjects];
 
     goto LABEL_12;
   }
 
-  v32 = 0;
-  v24 = 0;
+  allObjects = 0;
+  fetchedObjects = 0;
 LABEL_13:
-  v33 = [v24 count];
-  v34 = [v32 count] + v33;
+  v33 = [fetchedObjects count];
+  v34 = [allObjects count] + v33;
   if (v34)
   {
-    v35 = v65;
+    v35 = reporterCopy;
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
@@ -1160,7 +1160,7 @@ LABEL_13:
     v68 = buf;
     v37 = v35;
     v67 = v37;
-    [(PGGraphHighlightCollectionEnrichmentProcessor *)self _enrichYearHighlights:v32 monthsHighlights:v24 withManager:v9 curationContext:v63 enrichmentprogressBlock:v66];
+    [(PGGraphHighlightCollectionEnrichmentProcessor *)self _enrichYearHighlights:allObjects monthsHighlights:fetchedObjects withManager:managerCopy curationContext:contextCopy enrichmentprogressBlock:v66];
     if (*(*&buf[8] + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1178,13 +1178,13 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    v47 = [v37 throughputReportBlock];
-    v48 = v47 == 0;
+    throughputReportBlock = [v37 throughputReportBlock];
+    v48 = throughputReportBlock == 0;
 
     if (!v48)
     {
-      v49 = [v37 throughputReportBlock];
-      v49[2](v49, v34, 0);
+      throughputReportBlock2 = [v37 throughputReportBlock];
+      throughputReportBlock2[2](throughputReportBlock2, v34, 0);
     }
 
     if (*(*&buf[8] + 24))
@@ -1265,16 +1265,16 @@ uint64_t __130__PGGraphHighlightCollectionEnrichmentProcessor_enrichDataModelWit
   return result;
 }
 
-- (PGGraphHighlightCollectionEnrichmentProcessor)initWithOptions:(id)a3
+- (PGGraphHighlightCollectionEnrichmentProcessor)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = PGGraphHighlightCollectionEnrichmentProcessor;
   v6 = [(PGGraphHighlightCollectionEnrichmentProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
   }
 
   return v7;

@@ -1,28 +1,28 @@
 @interface CAFMedia
 + (void)load;
 - (NSArray)mediaSourceServices;
-- (void)registerObserver:(id)a3;
-- (void)tuneToMediaItem:(id)a3 inSource:(id)a4 completion:(id)a5;
-- (void)tuneToMediaItemIdentifier:(id)a3 inSourceWithIdentifier:(id)a4 completion:(id)a5;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)tuneToMediaItem:(id)item inSource:(id)source completion:(id)completion;
+- (void)tuneToMediaItemIdentifier:(id)identifier inSourceWithIdentifier:(id)withIdentifier completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFMedia
 
-- (void)tuneToMediaItem:(id)a3 inSource:(id)a4 completion:(id)a5
+- (void)tuneToMediaItem:(id)item inSource:(id)source completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  sourceCopy = source;
+  completionCopy = completion;
   v11 = CAFGeneralLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [CAFMedia(Utilties) tuneToMediaItem:inSource:completion:];
   }
 
-  v12 = [v8 identifier];
-  v13 = [v9 identifier];
-  [(CAFMedia *)self tuneToMediaItemIdentifier:v12 inSourceWithIdentifier:v13 completion:v10];
+  identifier = [itemCopy identifier];
+  identifier2 = [sourceCopy identifier];
+  [(CAFMedia *)self tuneToMediaItemIdentifier:identifier inSourceWithIdentifier:identifier2 completion:completionCopy];
 }
 
 void __72__CAFMedia_Utilties__tuneToFrequency_inSourceWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -55,11 +55,11 @@ void __72__CAFMedia_Utilties__tuneToFrequency_inSourceWithIdentifier_completion_
   }
 }
 
-- (void)tuneToMediaItemIdentifier:(id)a3 inSourceWithIdentifier:(id)a4 completion:(id)a5
+- (void)tuneToMediaItemIdentifier:(id)identifier inSourceWithIdentifier:(id)withIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  completionCopy = completion;
   v11 = CAFGeneralLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -67,12 +67,12 @@ void __72__CAFMedia_Utilties__tuneToFrequency_inSourceWithIdentifier_completion_
   }
 
   v12 = [(CAFAccessory *)self car];
-  v13 = [v12 nowPlayingInformation];
-  v14 = [v13 nowPlaying];
+  nowPlayingInformation = [v12 nowPlayingInformation];
+  nowPlaying = [nowPlayingInformation nowPlaying];
 
-  if (v14)
+  if (nowPlaying)
   {
-    [v14 tuneToIdentifier:v8 sourceIdentifier:v9 completion:v10];
+    [nowPlaying tuneToIdentifier:identifierCopy sourceIdentifier:withIdentifierCopy completion:completionCopy];
   }
 
   else
@@ -87,7 +87,7 @@ void __72__CAFMedia_Utilties__tuneToFrequency_inSourceWithIdentifier_completion_
     block[1] = 3221225472;
     block[2] = __82__CAFMedia_Utilties__tuneToMediaItemIdentifier_inSourceWithIdentifier_completion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v24 = v10;
+    v24 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -104,17 +104,17 @@ void __82__CAFMedia_Utilties__tuneToMediaItemIdentifier_inSourceWithIdentifier_c
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFMedia;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABD38])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABD38])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -127,12 +127,12 @@ void __82__CAFMedia_Utilties__tuneToMediaItemIdentifier_inSourceWithIdentifier_c
   [(CAFAccessory *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABD38])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABD38])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -148,11 +148,11 @@ void __82__CAFMedia_Utilties__tuneToMediaItemIdentifier_inSourceWithIdentifier_c
 - (NSArray)mediaSourceServices
 {
   v3 = [(CAFAccessory *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [objc_opt_class() accessoryIdentifier];
-  [v6 validateRegisteredForAccessory:v7 service:@"0x0000000014000006"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:@"0x0000000014000006"];
 
   objc_opt_class();
   v8 = [(CAFAccessory *)self servicesForType:@"0x0000000014000006"];

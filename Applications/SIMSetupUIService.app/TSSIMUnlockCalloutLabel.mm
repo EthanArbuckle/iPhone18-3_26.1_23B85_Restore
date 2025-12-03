@@ -1,16 +1,16 @@
 @interface TSSIMUnlockCalloutLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TSSIMUnlockCalloutLabel)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TSSIMUnlockCalloutLabel)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation TSSIMUnlockCalloutLabel
 
-- (TSSIMUnlockCalloutLabel)initWithFrame:(CGRect)a3
+- (TSSIMUnlockCalloutLabel)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = TSSIMUnlockCalloutLabel;
-  v3 = [(TSSIMUnlockCalloutLabel *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TSSIMUnlockCalloutLabel *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
@@ -38,13 +38,13 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_textlabel sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_textlabel sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
-  v8 = [(UIImageView *)self->_calloutImageView image];
-  [v8 size];
+  image = [(UIImageView *)self->_calloutImageView image];
+  [image size];
   v10 = v9;
   v12 = v11;
 
@@ -69,8 +69,8 @@
   v11.receiver = self;
   v11.super_class = TSSIMUnlockCalloutLabel;
   [(TSSIMUnlockCalloutLabel *)&v11 layoutSubviews];
-  v3 = [(UIImageView *)self->_calloutImageView image];
-  [v3 size];
+  image = [(UIImageView *)self->_calloutImageView image];
+  [image size];
 
   [(TSSIMUnlockCalloutLabel *)self bounds];
   UIRectCenteredYInRect();

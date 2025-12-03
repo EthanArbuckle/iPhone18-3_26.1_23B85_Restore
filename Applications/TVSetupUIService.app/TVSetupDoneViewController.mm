@@ -1,5 +1,5 @@
 @interface TVSetupDoneViewController
-- (_TtC16TVSetupUIService25TVSetupDoneViewController)initWithContentView:(id)a3;
+- (_TtC16TVSetupUIService25TVSetupDoneViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100011708();
 }
 
-- (_TtC16TVSetupUIService25TVSetupDoneViewController)initWithContentView:(id)a3
+- (_TtC16TVSetupUIService25TVSetupDoneViewController)initWithContentView:(id)view
 {
   *&self->delegate[OBJC_IVAR____TtC16TVSetupUIService25TVSetupDoneViewController_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -21,7 +21,7 @@
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16TVSetupUIService25TVSetupDoneViewController_error] = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for TVSetupDoneViewController();
-  return [(TVSetupDoneViewController *)&v7 initWithContentView:a3];
+  return [(TVSetupDoneViewController *)&v7 initWithContentView:view];
 }
 
 @end

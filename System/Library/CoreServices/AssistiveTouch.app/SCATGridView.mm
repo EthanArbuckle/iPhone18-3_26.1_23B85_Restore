@@ -1,32 +1,32 @@
 @interface SCATGridView
 - (CGSize)shadowOffset;
 - (SCATGridDelegate)delegate;
-- (SCATGridView)initWithFrame:(CGRect)a3;
-- (double)_adjustOriginValue:(double)a3 forDistance:(double)a4 maximumEndPosition:(double)a5;
-- (void)_drawLinesInContext:(CGContext *)a3 forRows:(BOOL)a4;
-- (void)drawRect:(CGRect)a3;
+- (SCATGridView)initWithFrame:(CGRect)frame;
+- (double)_adjustOriginValue:(double)value forDistance:(double)distance maximumEndPosition:(double)position;
+- (void)_drawLinesInContext:(CGContext *)context forRows:(BOOL)rows;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setCenterPointVisible:(BOOL)a3;
-- (void)setLineColor:(id)a3;
-- (void)setLineThickness:(double)a3;
-- (void)setNumberOfColumns:(unint64_t)a3;
-- (void)setNumberOfRows:(unint64_t)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setShouldIncludeCenterPoint:(BOOL)a3;
-- (void)setShowsBottomBorder:(BOOL)a3;
-- (void)setShowsLeftBorder:(BOOL)a3;
-- (void)setShowsRightBorder:(BOOL)a3;
-- (void)setShowsTopBorder:(BOOL)a3;
+- (void)setCenterPointVisible:(BOOL)visible;
+- (void)setLineColor:(id)color;
+- (void)setLineThickness:(double)thickness;
+- (void)setNumberOfColumns:(unint64_t)columns;
+- (void)setNumberOfRows:(unint64_t)rows;
+- (void)setShadowColor:(id)color;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setShouldIncludeCenterPoint:(BOOL)point;
+- (void)setShowsBottomBorder:(BOOL)border;
+- (void)setShowsLeftBorder:(BOOL)border;
+- (void)setShowsRightBorder:(BOOL)border;
+- (void)setShowsTopBorder:(BOOL)border;
 @end
 
 @implementation SCATGridView
 
-- (SCATGridView)initWithFrame:(CGRect)a3
+- (SCATGridView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SCATGridView;
-  v3 = [(SCATGridView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SCATGridView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -47,12 +47,12 @@
   return v4;
 }
 
-- (void)setShouldIncludeCenterPoint:(BOOL)a3
+- (void)setShouldIncludeCenterPoint:(BOOL)point
 {
-  if (self->_shouldIncludeCenterPoint != a3)
+  if (self->_shouldIncludeCenterPoint != point)
   {
-    self->_shouldIncludeCenterPoint = a3;
-    if (a3 && self->_centerPoint)
+    self->_shouldIncludeCenterPoint = point;
+    if (point && self->_centerPoint)
     {
       [(SCATGridView *)self addSubview:self->_centerPoint];
     }
@@ -64,15 +64,15 @@
   }
 }
 
-- (double)_adjustOriginValue:(double)a3 forDistance:(double)a4 maximumEndPosition:(double)a5
+- (double)_adjustOriginValue:(double)value forDistance:(double)distance maximumEndPosition:(double)position
 {
   result = 0.0;
-  if (a3 >= 0.0)
+  if (value >= 0.0)
   {
-    result = a3;
-    if (a3 + a4 > a5)
+    result = value;
+    if (value + distance > position)
     {
-      return a5 - a4;
+      return position - distance;
     }
   }
 
@@ -88,8 +88,8 @@
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(SCATGridView *)self delegate];
-    v12 = [v11 centerPointImageForGrid:self];
+    delegate = [(SCATGridView *)self delegate];
+    v12 = [delegate centerPointImageForGrid:self];
     [(UIImageView *)self->_centerPoint setImage:v12];
 
     [(UIImageView *)self->_centerPoint sizeToFit];
@@ -102,124 +102,124 @@
   }
 }
 
-- (void)setShowsTopBorder:(BOOL)a3
+- (void)setShowsTopBorder:(BOOL)border
 {
-  if (self->_showsTopBorder != a3)
+  if (self->_showsTopBorder != border)
   {
-    self->_showsTopBorder = a3;
+    self->_showsTopBorder = border;
     [(SCATGridView *)self setNeedsDisplay];
   }
 }
 
-- (void)setShowsBottomBorder:(BOOL)a3
+- (void)setShowsBottomBorder:(BOOL)border
 {
-  if (self->_showsBottomBorder != a3)
+  if (self->_showsBottomBorder != border)
   {
-    self->_showsBottomBorder = a3;
+    self->_showsBottomBorder = border;
     [(SCATGridView *)self setNeedsDisplay];
   }
 }
 
-- (void)setShowsLeftBorder:(BOOL)a3
+- (void)setShowsLeftBorder:(BOOL)border
 {
-  if (self->_showsLeftBorder != a3)
+  if (self->_showsLeftBorder != border)
   {
-    self->_showsLeftBorder = a3;
+    self->_showsLeftBorder = border;
     [(SCATGridView *)self setNeedsDisplay];
   }
 }
 
-- (void)setShowsRightBorder:(BOOL)a3
+- (void)setShowsRightBorder:(BOOL)border
 {
-  if (self->_showsRightBorder != a3)
+  if (self->_showsRightBorder != border)
   {
-    self->_showsRightBorder = a3;
+    self->_showsRightBorder = border;
     [(SCATGridView *)self setNeedsDisplay];
   }
 }
 
-- (void)setNumberOfColumns:(unint64_t)a3
+- (void)setNumberOfColumns:(unint64_t)columns
 {
-  if (self->_numberOfColumns != a3)
+  if (self->_numberOfColumns != columns)
   {
-    self->_numberOfColumns = a3;
+    self->_numberOfColumns = columns;
     [(SCATGridView *)self setNeedsDisplay];
   }
 }
 
-- (void)setNumberOfRows:(unint64_t)a3
+- (void)setNumberOfRows:(unint64_t)rows
 {
-  if (self->_numberOfRows != a3)
+  if (self->_numberOfRows != rows)
   {
-    self->_numberOfRows = a3;
+    self->_numberOfRows = rows;
     [(SCATGridView *)self setNeedsDisplay];
   }
 }
 
-- (void)setLineThickness:(double)a3
+- (void)setLineThickness:(double)thickness
 {
-  if (self->_lineThickness != a3)
+  if (self->_lineThickness != thickness)
   {
-    self->_lineThickness = a3;
+    self->_lineThickness = thickness;
     [(SCATGridView *)self setNeedsDisplay];
   }
 }
 
-- (void)setLineColor:(id)a3
+- (void)setLineColor:(id)color
 {
-  v5 = a3;
-  if (self->_lineColor != v5)
+  colorCopy = color;
+  if (self->_lineColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_lineColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_lineColor, color);
     [(SCATGridView *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v5 = a3;
-  if (self->_shadowColor != v5)
+  colorCopy = color;
+  if (self->_shadowColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_shadowColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_shadowColor, color);
     [(SCATGridView *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  if (self->_shadowOffset.width != a3.width || self->_shadowOffset.height != a3.height)
+  if (self->_shadowOffset.width != offset.width || self->_shadowOffset.height != offset.height)
   {
-    self->_shadowOffset = a3;
+    self->_shadowOffset = offset;
     [(SCATGridView *)self setNeedsDisplay];
   }
 }
 
-- (void)setCenterPointVisible:(BOOL)a3
+- (void)setCenterPointVisible:(BOOL)visible
 {
-  if (self->_centerPointVisible != a3)
+  if (self->_centerPointVisible != visible)
   {
-    self->_centerPointVisible = a3;
-    [(UIImageView *)self->_centerPoint setHidden:!a3];
+    self->_centerPointVisible = visible;
+    [(UIImageView *)self->_centerPoint setHidden:!visible];
   }
 }
 
-- (void)_drawLinesInContext:(CGContext *)a3 forRows:(BOOL)a4
+- (void)_drawLinesInContext:(CGContext *)context forRows:(BOOL)rows
 {
-  v4 = a4;
-  if (a4)
+  rowsCopy = rows;
+  if (rows)
   {
-    v6 = [(SCATGridView *)self numberOfRows];
+    numberOfRows = [(SCATGridView *)self numberOfRows];
     [(SCATGridView *)self bounds];
     v8 = v7;
   }
 
   else
   {
-    v6 = [(SCATGridView *)self numberOfColumns];
+    numberOfRows = [(SCATGridView *)self numberOfColumns];
     [(SCATGridView *)self bounds];
     v8 = v9;
   }
@@ -233,19 +233,19 @@
   [(SCATGridView *)self bounds];
   v15 = v14;
   [(SCATGridView *)self bounds];
-  if (v6 != -1)
+  if (numberOfRows != -1)
   {
     v17 = 0;
-    v33 = v8 / v6;
+    v33 = v8 / numberOfRows;
     v18 = v11 * -0.5;
     v19 = v32 + v15;
     v20 = v31 + v16;
-    for (i = -v6; i != 1; ++i)
+    for (i = -numberOfRows; i != 1; ++i)
     {
-      if (v4)
+      if (rowsCopy)
       {
-        v22 = [(SCATGridView *)self showsTopBorder];
-        if (!v17 && !v22 || ![(SCATGridView *)self showsBottomBorder]&& !i)
+        showsTopBorder = [(SCATGridView *)self showsTopBorder];
+        if (!v17 && !showsTopBorder || ![(SCATGridView *)self showsBottomBorder]&& !i)
         {
           goto LABEL_18;
         }
@@ -258,8 +258,8 @@
 
       else
       {
-        v27 = [(SCATGridView *)self showsLeftBorder];
-        if (!v17 && !v27 || ![(SCATGridView *)self showsRightBorder]&& !i)
+        showsLeftBorder = [(SCATGridView *)self showsLeftBorder];
+        if (!v17 && !showsLeftBorder || ![(SCATGridView *)self showsRightBorder]&& !i)
         {
           goto LABEL_18;
         }
@@ -284,20 +284,20 @@ LABEL_18:
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [(SCATGridView *)self lineColor];
-  [v5 set];
+  lineColor = [(SCATGridView *)self lineColor];
+  [lineColor set];
 
   [(SCATGridView *)self shadowOffset];
   v7 = v6;
   v9 = v8;
-  v10 = [(SCATGridView *)self shadowColor];
-  v11 = [v10 CGColor];
+  shadowColor = [(SCATGridView *)self shadowColor];
+  cGColor = [shadowColor CGColor];
   v13.width = v7;
   v13.height = v9;
-  CGContextSetShadowWithColor(CurrentContext, v13, 0.0, v11);
+  CGContextSetShadowWithColor(CurrentContext, v13, 0.0, cGColor);
 
   CGContextBeginTransparencyLayer(CurrentContext, 0);
   [(SCATGridView *)self _drawLinesInContext:CurrentContext forRows:1];

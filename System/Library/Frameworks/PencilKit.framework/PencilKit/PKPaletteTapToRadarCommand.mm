@@ -1,21 +1,21 @@
 @interface PKPaletteTapToRadarCommand
-- (PKPaletteTapToRadarCommand)initWithDelegate:(id)a3;
+- (PKPaletteTapToRadarCommand)initWithDelegate:(id)delegate;
 - (PKPaletteTapToRadarCommandDelegate)delegate;
 - (void)execute;
 @end
 
 @implementation PKPaletteTapToRadarCommand
 
-- (PKPaletteTapToRadarCommand)initWithDelegate:(id)a3
+- (PKPaletteTapToRadarCommand)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = PKPaletteTapToRadarCommand;
   v5 = [(PKPaletteTapToRadarCommand *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -25,14 +25,14 @@
 {
   if (os_variant_has_internal_diagnostics())
   {
-    v3 = [(PKPaletteTapToRadarCommand *)self delegate];
-    v14 = [v3 paletteTapToRadarCommandConfiguration:self];
+    delegate = [(PKPaletteTapToRadarCommand *)self delegate];
+    v14 = [delegate paletteTapToRadarCommandConfiguration:self];
 
     if (v14)
     {
-      v4 = [v14 debugSharpenerLog];
+      debugSharpenerLog = [v14 debugSharpenerLog];
 
-      if (v4)
+      if (debugSharpenerLog)
       {
         v5 = [PKPaletteTapToRadarCommandExecution commandExecutionWithConfiguration:v14];
         execution = self->_execution;
@@ -50,15 +50,15 @@
         v12 = [v9 actionWithTitle:v11 style:1 handler:0];
         [v8 addAction:v12];
 
-        v13 = [v14 presentationViewController];
-        [v13 presentViewController:v8 animated:1 completion:0];
+        presentationViewController = [v14 presentationViewController];
+        [presentationViewController presentViewController:v8 animated:1 completion:0];
       }
     }
 
     else
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 postNotificationName:@"PKPaletteTapToRadarCommandTriggeredNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"PKPaletteTapToRadarCommandTriggeredNotification" object:self];
     }
   }
 }

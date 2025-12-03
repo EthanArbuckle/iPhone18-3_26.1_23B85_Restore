@@ -1,22 +1,22 @@
 @interface MTLCountersParallelRenderCommandEncoder
-- (MTLCountersParallelRenderCommandEncoder)initWithBaseRenderPass:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5;
+- (MTLCountersParallelRenderCommandEncoder)initWithBaseRenderPass:(id)pass commandBuffer:(id)buffer descriptor:(id)descriptor;
 - (id)renderCommandEncoder;
-- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4;
-- (void)setColorStoreAction:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setDepthStoreAction:(unint64_t)a3;
-- (void)setStencilStoreAction:(unint64_t)a3;
+- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (void)setColorStoreAction:(unint64_t)action atIndex:(unint64_t)index;
+- (void)setDepthStoreAction:(unint64_t)action;
+- (void)setStencilStoreAction:(unint64_t)action;
 @end
 
 @implementation MTLCountersParallelRenderCommandEncoder
 
-- (MTLCountersParallelRenderCommandEncoder)initWithBaseRenderPass:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5
+- (MTLCountersParallelRenderCommandEncoder)initWithBaseRenderPass:(id)pass commandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v6.receiver = self;
   v6.super_class = MTLCountersParallelRenderCommandEncoder;
-  return [(MTLToolsParallelRenderCommandEncoder *)&v6 initWithParallelRenderCommandEncoder:a3 parent:a4 descriptor:a5];
+  return [(MTLToolsParallelRenderCommandEncoder *)&v6 initWithParallelRenderCommandEncoder:pass parent:buffer descriptor:descriptor];
 }
 
-- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4
+- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v7 = objc_autoreleasePoolPush();
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -54,25 +54,25 @@
   }
 }
 
-- (void)setColorStoreAction:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setColorStoreAction:(unint64_t)action atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setColorStoreAction:a3 atIndex:a4];
+  [baseObject setColorStoreAction:action atIndex:index];
 }
 
-- (void)setDepthStoreAction:(unint64_t)a3
+- (void)setDepthStoreAction:(unint64_t)action
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setDepthStoreAction:a3];
+  [baseObject setDepthStoreAction:action];
 }
 
-- (void)setStencilStoreAction:(unint64_t)a3
+- (void)setStencilStoreAction:(unint64_t)action
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setStencilStoreAction:a3];
+  [baseObject setStencilStoreAction:action];
 }
 
 @end

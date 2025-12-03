@@ -1,10 +1,10 @@
 @interface UICollaborationInviteWithLinkActivity
 + (unint64_t)_xpcAttributes;
-- (BOOL)canPerformWithCollaborationItem:(id)a3 activityItems:(id)a4;
+- (BOOL)canPerformWithCollaborationItem:(id)item activityItems:(id)items;
 - (id)_activityImage;
 - (id)_activitySettingsImage;
 - (id)activityTitle;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation UICollaborationInviteWithLinkActivity
@@ -28,8 +28,8 @@
   v2 = MEMORY[0x1E69DCAB8];
   v3 = _ShareSheetBundle();
   v4 = [v2 imageNamed:@"CopyLinkActivity" inBundle:v3];
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v6 = [v4 _applicationIconImageForFormat:10 precomposed:0 scale:?];
 
   return v6;
@@ -40,8 +40,8 @@
   v2 = MEMORY[0x1E69DCAB8];
   v3 = _ShareSheetBundle();
   v4 = [v2 imageNamed:@"CopyLinkActivity" inBundle:v3];
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v6 = [v4 _applicationIconImageForFormat:0 precomposed:0 scale:?];
 
   return v6;
@@ -55,17 +55,17 @@
   return v3;
 }
 
-- (BOOL)canPerformWithCollaborationItem:(id)a3 activityItems:(id)a4
+- (BOOL)canPerformWithCollaborationItem:(id)item activityItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5)
+  itemCopy = item;
+  type = [itemCopy type];
+  if (type)
   {
-    if (v5 == 2)
+    if (type == 2)
     {
-      v6 = [v4 isURLProviderSupported];
+      isURLProviderSupported = [itemCopy isURLProviderSupported];
 LABEL_8:
-      v7 = v6;
+      v7 = isURLProviderSupported;
       goto LABEL_9;
     }
 
@@ -76,7 +76,7 @@ LABEL_8:
   {
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      v6 = [v4 isiCloudDrive];
+      isURLProviderSupported = [itemCopy isiCloudDrive];
       goto LABEL_8;
     }
 
@@ -88,14 +88,14 @@ LABEL_9:
   return v7;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 firstObject];
-  v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v6[0] = v3;
+  firstObject = [items firstObject];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  v6[0] = firstObject;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
-  [v4 setObjects:v5];
+  [generalPasteboard setObjects:v5];
 }
 
 @end

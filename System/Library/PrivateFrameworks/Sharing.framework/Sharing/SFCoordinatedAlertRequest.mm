@@ -1,6 +1,6 @@
 @interface SFCoordinatedAlertRequest
 - (SFCoordinatedAlertRequest)init;
-- (SFCoordinatedAlertRequest)initWithCoder:(id)a3;
+- (SFCoordinatedAlertRequest)initWithCoder:(id)coder;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidate;
@@ -8,7 +8,7 @@
 - (void)_startWithTimer;
 - (void)_timeoutFired;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 - (void)start;
 @end
@@ -257,8 +257,8 @@ void __44__SFCoordinatedAlertRequest__startWithTimer__block_invoke_3(uint64_t a1
       invalidationHandler[2]();
     }
 
-    v12 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v12 coordinatedAlertsRequestCancel];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy coordinatedAlertsRequestCancel];
 
     v13 = self->_completionHandler;
     self->_completionHandler = 0;
@@ -321,12 +321,12 @@ LABEL_7:
   [(SFCoordinatedAlertRequest *)&v8 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
   if (type)
   {
-    [a3 encodeInteger:type forKey:@"type"];
+    [coder encodeInteger:type forKey:@"type"];
   }
 }
 
@@ -394,15 +394,15 @@ void __44__SFCoordinatedAlertRequest__startWithTimer__block_invoke_2(uint64_t a1
     self->_timeoutTimer = 0;
   }
 
-  v7 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-  [v7 coordinatedAlertsRequestFinish];
+  remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+  [remoteObjectProxy coordinatedAlertsRequestFinish];
 
   os_activity_scope_leave(&v8);
 }
 
-- (SFCoordinatedAlertRequest)initWithCoder:(id)a3
+- (SFCoordinatedAlertRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = SFCoordinatedAlertRequest;
   v5 = [(SFCoordinatedAlertRequest *)&v15 init];
@@ -413,9 +413,9 @@ void __44__SFCoordinatedAlertRequest__startWithTimer__block_invoke_2(uint64_t a1
     dispatchQueue = v6->_dispatchQueue;
     v6->_dispatchQueue = v7;
 
-    if ([v4 containsValueForKey:@"type"])
+    if ([coderCopy containsValueForKey:@"type"])
     {
-      v9 = [v4 decodeIntegerForKey:@"type"];
+      v9 = [coderCopy decodeIntegerForKey:@"type"];
       v6->_type = v9;
       if (v9 >= 7)
       {

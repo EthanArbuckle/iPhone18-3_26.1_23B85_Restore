@@ -1,7 +1,7 @@
 @interface CKOrganicTranscriptBalloonCell
 - (double)layoutOffset;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
 @end
 
@@ -9,8 +9,8 @@
 
 - (double)layoutOffset
 {
-  v2 = [(CKOrganicTranscriptBalloonCell *)self layoutRecipe];
-  [v2 offset];
+  layoutRecipe = [(CKOrganicTranscriptBalloonCell *)self layoutRecipe];
+  [layoutRecipe offset];
   v4 = v3;
 
   return v4;
@@ -21,27 +21,27 @@
   v30.receiver = self;
   v30.super_class = CKOrganicTranscriptBalloonCell;
   [(CKTranscriptBalloonCell *)&v30 layoutSubviewsForAlignmentContents];
-  v3 = [(CKTranscriptBalloonCell *)self quickActionButton];
-  if (v3)
+  quickActionButton = [(CKTranscriptBalloonCell *)self quickActionButton];
+  if (quickActionButton)
   {
-    v4 = v3;
-    v5 = [(CKOrganicTranscriptBalloonCell *)self layoutRecipe];
-    v6 = [v5 relativeGroupCenter];
+    v4 = quickActionButton;
+    layoutRecipe = [(CKOrganicTranscriptBalloonCell *)self layoutRecipe];
+    relativeGroupCenter = [layoutRecipe relativeGroupCenter];
 
-    if (v6)
+    if (relativeGroupCenter)
     {
-      v7 = [(CKOrganicTranscriptBalloonCell *)self layoutRecipe];
-      v8 = [v7 relativeGroupCenter];
-      [v8 doubleValue];
+      layoutRecipe2 = [(CKOrganicTranscriptBalloonCell *)self layoutRecipe];
+      relativeGroupCenter2 = [layoutRecipe2 relativeGroupCenter];
+      [relativeGroupCenter2 doubleValue];
       v10 = v9;
 
-      v11 = [(CKOrganicTranscriptBalloonCell *)self layoutRecipe];
-      v12 = [v11 groupMaxX];
-      [v12 doubleValue];
+      layoutRecipe3 = [(CKOrganicTranscriptBalloonCell *)self layoutRecipe];
+      groupMaxX = [layoutRecipe3 groupMaxX];
+      [groupMaxX doubleValue];
       v14 = v13;
 
-      v15 = [(CKTranscriptBalloonCell *)self quickActionButton];
-      [v15 frame];
+      quickActionButton2 = [(CKTranscriptBalloonCell *)self quickActionButton];
+      [quickActionButton2 frame];
       v17 = v16;
       v19 = v18;
       v21 = v20;
@@ -58,54 +58,54 @@
       [v26 transcriptQuickActionButtonHorizontalSpacing];
       v28 = v25 + v27;
 
-      v29 = [(CKTranscriptBalloonCell *)self quickActionButton];
-      [v29 setFrame:{v28, v24, v21, v23}];
+      quickActionButton3 = [(CKTranscriptBalloonCell *)self quickActionButton];
+      [quickActionButton3 setFrame:{v28, v24, v21, v23}];
     }
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CKTranscriptBalloonCell *)self quickActionButton];
-  [v8 frame];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  quickActionButton = [(CKTranscriptBalloonCell *)self quickActionButton];
+  [quickActionButton frame];
   v20.x = x;
   v20.y = y;
   v9 = CGRectContainsPoint(v21, v20);
 
   if (v9)
   {
-    v10 = [(CKTranscriptBalloonCell *)self quickActionButton];
-    [(CKOrganicTranscriptBalloonCell *)self convertPoint:v10 toView:x, y];
+    quickActionButton2 = [(CKTranscriptBalloonCell *)self quickActionButton];
+    [(CKOrganicTranscriptBalloonCell *)self convertPoint:quickActionButton2 toView:x, y];
     v12 = v11;
     v14 = v13;
 
-    v15 = [(CKTranscriptBalloonCell *)self quickActionButton];
-    v16 = [v15 hitTest:v7 withEvent:{v12, v14}];
+    quickActionButton3 = [(CKTranscriptBalloonCell *)self quickActionButton];
+    v16 = [quickActionButton3 hitTest:eventCopy withEvent:{v12, v14}];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = CKOrganicTranscriptBalloonCell;
-    v16 = [(CKOrganicTranscriptBalloonCell *)&v18 hitTest:v7 withEvent:x, y];
+    v16 = [(CKOrganicTranscriptBalloonCell *)&v18 hitTest:eventCopy withEvent:x, y];
   }
 
   return v16;
 }
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
+  animatedCopy = animated;
   v14.receiver = self;
   v14.super_class = CKOrganicTranscriptBalloonCell;
-  v12 = a3;
-  [(CKTranscriptBalloonCell *)&v14 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  v13 = [v12 layoutRecipe];
+  itemCopy = item;
+  [(CKTranscriptBalloonCell *)&v14 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  layoutRecipe = [itemCopy layoutRecipe];
 
-  [(CKOrganicTranscriptBalloonCell *)self setLayoutRecipe:v13];
+  [(CKOrganicTranscriptBalloonCell *)self setLayoutRecipe:layoutRecipe];
 }
 
 @end

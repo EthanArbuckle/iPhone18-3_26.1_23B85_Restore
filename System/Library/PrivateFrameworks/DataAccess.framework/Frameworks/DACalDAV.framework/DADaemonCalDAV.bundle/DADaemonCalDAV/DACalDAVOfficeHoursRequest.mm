@@ -1,28 +1,28 @@
 @interface DACalDAVOfficeHoursRequest
-- (DACalDAVOfficeHoursRequest)initWithAccount:(id)a3 consumer:(id)a4;
+- (DACalDAVOfficeHoursRequest)initWithAccount:(id)account consumer:(id)consumer;
 - (DAEventsOfficeHoursRequestResponseConsumer)consumer;
 - (MobileCalDAVDADaemonAccount)account;
-- (void)_doRequestWithTaskGroupCreationBlock:(id)a3 taskGroupCompletionBlock:(id)a4;
-- (void)_finishWithError:(id)a3;
+- (void)_doRequestWithTaskGroupCreationBlock:(id)block taskGroupCompletionBlock:(id)completionBlock;
+- (void)_finishWithError:(id)error;
 - (void)cancel;
 - (void)startFetchOfficeHoursRequest;
-- (void)startSetOfficeHoursRequest:(id)a3;
+- (void)startSetOfficeHoursRequest:(id)request;
 @end
 
 @implementation DACalDAVOfficeHoursRequest
 
-- (DACalDAVOfficeHoursRequest)initWithAccount:(id)a3 consumer:(id)a4
+- (DACalDAVOfficeHoursRequest)initWithAccount:(id)account consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  consumerCopy = consumer;
   v17.receiver = self;
   v17.super_class = DACalDAVOfficeHoursRequest;
   v8 = [(DACalDAVOfficeHoursRequest *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_account, v6);
-    objc_storeWeak(&v9->_consumer, v7);
+    objc_storeWeak(&v8->_account, accountCopy);
+    objc_storeWeak(&v9->_consumer, consumerCopy);
     v10 = +[NSString da_newGUID];
     requestID = v9->_requestID;
     v9->_requestID = v10;
@@ -37,18 +37,18 @@
   return v9;
 }
 
-- (void)_doRequestWithTaskGroupCreationBlock:(id)a3 taskGroupCompletionBlock:(id)a4
+- (void)_doRequestWithTaskGroupCreationBlock:(id)block taskGroupCompletionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DACalDAVOfficeHoursRequest *)self account];
-  v9 = [v8 mobileCalDAVAccount];
-  v10 = [v9 mainPrincipal];
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  account = [(DACalDAVOfficeHoursRequest *)self account];
+  mobileCalDAVAccount = [account mobileCalDAVAccount];
+  mainPrincipal = [mobileCalDAVAccount mainPrincipal];
 
-  v11 = v10;
-  v12 = [v11 inboxURL];
+  v11 = mainPrincipal;
+  inboxURL = [v11 inboxURL];
   v26 = 0;
-  v13 = v6[2](v6, v11, v12, &v26);
+  v13 = blockCopy[2](blockCopy, v11, inboxURL, &v26);
   v14 = v26;
   taskGroup = self->_taskGroup;
   self->_taskGroup = v13;
@@ -64,7 +64,7 @@
     v20 = &unk_28A08;
     objc_copyWeak(&v22, &location);
     objc_copyWeak(&v23, &from);
-    v21 = v7;
+    v21 = completionBlockCopy;
     [(CoreDAVTaskGroup *)self->_taskGroup setCompletionBlock:&v17];
     [(CoreDAVTaskGroup *)self->_taskGroup startTaskGroup:v17];
 
@@ -100,15 +100,15 @@
   [(DACalDAVOfficeHoursRequest *)self _doRequestWithTaskGroupCreationBlock:v3 taskGroupCompletionBlock:v2];
 }
 
-- (void)startSetOfficeHoursRequest:(id)a3
+- (void)startSetOfficeHoursRequest:(id)request
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_CC50;
   v5[3] = &unk_28A80;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  requestCopy = request;
+  selfCopy = self;
+  v4 = requestCopy;
   [(DACalDAVOfficeHoursRequest *)self _doRequestWithTaskGroupCreationBlock:v5 taskGroupCompletionBlock:0];
 }
 
@@ -117,35 +117,35 @@
   if (!self->_finished)
   {
     [(CoreDAVTaskGroup *)self->_taskGroup cancelTaskGroup];
-    v4 = [(DACalDAVOfficeHoursRequest *)self taskManager];
-    [v4 cancelAllTasks];
+    taskManager = [(DACalDAVOfficeHoursRequest *)self taskManager];
+    [taskManager cancelAllTasks];
 
     v5 = [NSError errorWithDomain:DAErrorDomain code:-1 userInfo:0];
     [(DACalDAVOfficeHoursRequest *)self _finishWithError:v5];
   }
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!self->_finished)
   {
     self->_finished = 1;
     fetchedOfficeHours = self->_fetchedOfficeHours;
-    v6 = [(DACalDAVOfficeHoursRequest *)self consumer];
-    v7 = [(DACalDAVOfficeHoursRequest *)self requestID];
+    consumer = [(DACalDAVOfficeHoursRequest *)self consumer];
+    requestID = [(DACalDAVOfficeHoursRequest *)self requestID];
     if (fetchedOfficeHours)
     {
-      [v6 officeHoursRequestWithID:v7 finishedWithOfficeHours:self->_fetchedOfficeHours error:v4];
+      [consumer officeHoursRequestWithID:requestID finishedWithOfficeHours:self->_fetchedOfficeHours error:errorCopy];
     }
 
     else
     {
-      [v6 officeHoursRequestWithID:v7 finishedWithError:v4];
+      [consumer officeHoursRequestWithID:requestID finishedWithError:errorCopy];
     }
 
-    v8 = [(DACalDAVOfficeHoursRequest *)self taskManager];
-    [v8 shutdown];
+    taskManager = [(DACalDAVOfficeHoursRequest *)self taskManager];
+    [taskManager shutdown];
 
     v9 = dataaccess_get_global_queue();
     block[0] = _NSConcreteStackBlock;

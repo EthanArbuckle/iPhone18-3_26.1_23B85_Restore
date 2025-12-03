@@ -1,10 +1,10 @@
 @interface StockSearchSectionHeaderView
-- (_TtC8StocksUI28StockSearchSectionHeaderView)initWithCoder:(id)a3;
+- (_TtC8StocksUI28StockSearchSectionHeaderView)initWithCoder:(id)coder;
 @end
 
 @implementation StockSearchSectionHeaderView
 
-- (_TtC8StocksUI28StockSearchSectionHeaderView)initWithCoder:(id)a3
+- (_TtC8StocksUI28StockSearchSectionHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8StocksUI28StockSearchSectionHeaderView_watchlistSwitcherButton;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(sub_22088AC2C()) initWithFrame_];

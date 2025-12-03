@@ -1,11 +1,11 @@
 @interface BWMatteMediaSuppressionNode
-- (BWMatteMediaSuppressionNode)initWithBehavior:(unsigned int)a3;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (BWMatteMediaSuppressionNode)initWithBehavior:(unsigned int)behavior;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWMatteMediaSuppressionNode
 
-- (BWMatteMediaSuppressionNode)initWithBehavior:(unsigned int)a3
+- (BWMatteMediaSuppressionNode)initWithBehavior:(unsigned int)behavior
 {
   v9.receiver = self;
   v9.super_class = BWMatteMediaSuppressionNode;
@@ -24,16 +24,16 @@
     [(BWNodeOutput *)v7 setPassthroughMode:1];
     [(BWNode *)v5 addOutput:v7];
 
-    *(&v5->super._requiresEndOfDataForConfigurationChanges + 3) = a3;
+    *(&v5->super._requiresEndOfDataForConfigurationChanges + 3) = behavior;
   }
 
   return v5;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  CMGetAttachment(a3, @"BWStillImageCaptureSettings", 0);
-  v6 = CMGetAttachment(a3, @"StillSettings", 0);
+  CMGetAttachment(buffer, @"BWStillImageCaptureSettings", 0);
+  v6 = CMGetAttachment(buffer, @"StillSettings", 0);
   if ([objc_msgSend(v6 "processingSettings")])
   {
     LOBYTE(v7) = 0;
@@ -48,7 +48,7 @@
   v9 = [MEMORY[0x1E695DF70] arrayWithObjects:{0x1F21AABB0, @"PersonSemanticsHair", @"PersonSemanticsSkin", @"PersonSemanticsTeeth", @"PersonSemanticsGlasses", 0}];
   if (v7)
   {
-    v10 = BWSampleBufferGetAttachedMedia(a3, @"Depth") == 0;
+    v10 = BWSampleBufferGetAttachedMedia(buffer, @"Depth") == 0;
     if (v10)
     {
       goto LABEL_9;
@@ -62,20 +62,20 @@
 
   if ((v7 & 2) != 0)
   {
-    v10 = BWSampleBufferHasDetectedFaces(a3, 0, 0, 1, 0, 1) ^ 1;
+    v10 = BWSampleBufferHasDetectedFaces(buffer, 0, 0, 1, 0, 1) ^ 1;
   }
 
 LABEL_9:
   if ((v10 & 1) == 0 && (v7 & 4) != 0)
   {
-    v10 = BWSampleBufferHasDetectedFaces(a3, 0, 0, 1, 1, 1) ^ 1;
+    v10 = BWSampleBufferHasDetectedFaces(buffer, 0, 0, 1, 1, 1) ^ 1;
   }
 
   if ((v7 & 8) != 0)
   {
-    v11 = BWStillImageProcessingFlagsForSampleBuffer(a3) & 0x1000;
+    v11 = BWStillImageProcessingFlagsForSampleBuffer(buffer) & 0x1000;
     v12 = [objc_msgSend(v6 "requestedSettings")];
-    v13 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v13 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     v14 = BWSmartStylePersonMasksValidHint(v13) <= 0.0 || v12 == 0;
     if (!v14 && v11 == 0)
     {
@@ -104,7 +104,7 @@ LABEL_9:
             objc_enumerationMutation(v9);
           }
 
-          BWSampleBufferRemoveAttachedMedia(a3, *(*(&v21 + 1) + 8 * v19++));
+          BWSampleBufferRemoveAttachedMedia(buffer, *(*(&v21 + 1) + 8 * v19++));
         }
 
         while (v17 != v19);
@@ -115,7 +115,7 @@ LABEL_9:
     }
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 }
 
 @end

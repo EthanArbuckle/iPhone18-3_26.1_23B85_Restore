@@ -1,6 +1,6 @@
 @interface SBWindowDefaultLayoutStrategy
-+ (id)_strategyWithClipping:(BOOL)a3;
-- (CGRect)frameWithInterfaceOrientation:(int64_t)a3 windowScene:(id)a4;
++ (id)_strategyWithClipping:(BOOL)clipping;
+- (CGRect)frameWithInterfaceOrientation:(int64_t)orientation windowScene:(id)scene;
 - (id)_init;
 @end
 
@@ -13,16 +13,16 @@
   return [(SBWindowDefaultLayoutStrategy *)&v3 init];
 }
 
-+ (id)_strategyWithClipping:(BOOL)a3
++ (id)_strategyWithClipping:(BOOL)clipping
 {
-  v3 = a3;
+  clippingCopy = clipping;
   if (_strategyWithClipping____once != -1)
   {
     +[SBWindowDefaultLayoutStrategy _strategyWithClipping:];
   }
 
   v4 = &_strategyWithClipping____clipStrategy;
-  if (!v3)
+  if (!clippingCopy)
   {
     v4 = &_strategyWithClipping____noClipStrategy;
   }
@@ -47,13 +47,13 @@ uint64_t __55__SBWindowDefaultLayoutStrategy__strategyWithClipping___block_invok
   return kdebug_trace();
 }
 
-- (CGRect)frameWithInterfaceOrientation:(int64_t)a3 windowScene:(id)a4
+- (CGRect)frameWithInterfaceOrientation:(int64_t)orientation windowScene:(id)scene
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  sceneCopy = scene;
+  v6 = sceneCopy;
+  if (sceneCopy)
   {
-    [v5 _referenceBounds];
+    [sceneCopy _referenceBounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -62,15 +62,15 @@ uint64_t __55__SBWindowDefaultLayoutStrategy__strategyWithClipping___block_invok
 
   else
   {
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     v8 = v16;
     v10 = v17;
     v12 = v18;
     Width = v19;
   }
 
-  if ((a3 - 3) <= 1)
+  if ((orientation - 3) <= 1)
   {
     v25.origin.x = v8;
     v25.origin.y = v10;

@@ -1,5 +1,5 @@
 @interface FlyoverGlyphFrameList
-- ($6FF9910CDCD476ED463384A0FC482A98)frameAtIndex:(SEL)a3;
+- ($6FF9910CDCD476ED463384A0FC482A98)frameAtIndex:(SEL)index;
 - (FlyoverGlyphFrameList)init;
 - (_NSRange)introFrameRange;
 - (_NSRange)loopFrameRange;
@@ -35,7 +35,7 @@
   return result;
 }
 
-- ($6FF9910CDCD476ED463384A0FC482A98)frameAtIndex:(SEL)a3
+- ($6FF9910CDCD476ED463384A0FC482A98)frameAtIndex:(SEL)index
 {
   v7 = *&self->var0.y + 14 * a4;
   if (*(v7 + 12))
@@ -115,12 +115,12 @@
     }
 
     v2->_frames = v6;
-    v8 = [v3 CGImage];
-    v2->_atlasImage = v8;
-    if (v8)
+    cGImage = [v3 CGImage];
+    v2->_atlasImage = cGImage;
+    if (cGImage)
     {
       v2->_inverseScaleFactor = 1.0 / v5;
-      v2->_horizontalScale = 1.0 / CGImageGetWidth(v8);
+      v2->_horizontalScale = 1.0 / CGImageGetWidth(cGImage);
       v2->_verticalScale = 1.0 / CGImageGetHeight(v2->_atlasImage);
       v2->_frameCount = 214;
       v2->_frameDuration = 0.0166666667;

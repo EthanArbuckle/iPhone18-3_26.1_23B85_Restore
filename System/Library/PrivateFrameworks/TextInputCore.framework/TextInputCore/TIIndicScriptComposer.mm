@@ -3,21 +3,21 @@
 - (BOOL)_characterBeforeCursorIsVowel;
 - (BOOL)_characterBeforeCursorIsVowelLetter;
 - (BOOL)_contextIsStartOfWord;
-- (BOOL)_isSingleGlyph:(id)a3;
+- (BOOL)_isSingleGlyph:(id)glyph;
 - (NSString)context;
-- (TIIndicScriptComposer)initWithLanguage:(id)a3 contextFetcher:(id)a4;
+- (TIIndicScriptComposer)initWithLanguage:(id)language contextFetcher:(id)fetcher;
 - (id)_consonantLetters;
 - (id)_consonantLettersSet;
 - (id)_contextualVowelLetters;
 - (id)_letterToSignConverter;
 - (id)_singleGlyphConjuncts;
-- (id)_stringByStrippingTrailingVirama:(id)a3;
+- (id)_stringByStrippingTrailingVirama:(id)virama;
 - (id)_vowelLetterToSignConverter;
 - (id)_vowelLetters;
 - (id)_vowelLettersAndSigns;
 - (id)_vowelModifierLetterToSignConverter;
 - (id)contextualDisplayKeys;
-- (id)stringByComposingInput:(id)a3;
+- (id)stringByComposingInput:(id)input;
 - (int)scriptCode;
 @end
 
@@ -25,30 +25,30 @@
 
 - (id)contextualDisplayKeys
 {
-  v2 = self;
+  selfCopy = self;
   v69 = *MEMORY[0x277D85DE8];
-  v3 = [(TIIndicScriptComposer *)self languageIdentifier];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v46 = [(TIIndicScriptComposer *)v2 context];
-  v5 = [v46 _lastConjunctInLanguage:v3];
-  v6 = [(TIIndicScriptComposer *)v2 _characterBeforeCursorIsConsonant];
-  v51 = [(TIIndicScriptComposer *)v2 _characterBeforeCursorIsVowel];
-  v45 = v3;
-  v47 = v51 && [(TIIndicScriptComposer *)v2 _characterBeforeCursorIsVowelLetter];
+  languageIdentifier = [(TIIndicScriptComposer *)self languageIdentifier];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  context = [(TIIndicScriptComposer *)selfCopy context];
+  v5 = [context _lastConjunctInLanguage:languageIdentifier];
+  _characterBeforeCursorIsConsonant = [(TIIndicScriptComposer *)selfCopy _characterBeforeCursorIsConsonant];
+  _characterBeforeCursorIsVowel = [(TIIndicScriptComposer *)selfCopy _characterBeforeCursorIsVowel];
+  v45 = languageIdentifier;
+  v47 = _characterBeforeCursorIsVowel && [(TIIndicScriptComposer *)selfCopy _characterBeforeCursorIsVowelLetter];
   v53 = v5;
   v49 = v53;
-  if (![(TIIndicScriptComposer *)v2 _isSingleGlyph:v53])
+  if (![(TIIndicScriptComposer *)selfCopy _isSingleGlyph:v53])
   {
     v49 = [MEMORY[0x277CCACA8] _stringWithUnichar:{objc_msgSend(v53, "_lastLongCharacter")}];
   }
 
-  [(TIIndicScriptComposer *)v2 _contextualVowelLetters];
+  [(TIIndicScriptComposer *)selfCopy _contextualVowelLetters];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   obj = v65 = 0u;
   v7 = [obj countByEnumeratingWithState:&v62 objects:v68 count:16];
-  v8 = v2;
+  v8 = selfCopy;
   if (v7)
   {
     v9 = v7;
@@ -64,23 +64,23 @@
         }
 
         v12 = *(*(&v62 + 1) + 8 * v11);
-        if (v6)
+        if (_characterBeforeCursorIsConsonant)
         {
-          v13 = [(TIIndicScriptComposer *)v2 _vowelLetterToSignConverter];
-          v14 = (v13)[2](v13, v12, v53);
+          _vowelLetterToSignConverter = [(TIIndicScriptComposer *)selfCopy _vowelLetterToSignConverter];
+          v14 = (_vowelLetterToSignConverter)[2](_vowelLetterToSignConverter, v12, v53);
           v15 = [v14 length];
 
           if (v15)
           {
             v16 = [v49 stringByAppendingString:v14];
-            [v4 setObject:v16 forKeyedSubscript:v12];
+            [dictionary setObject:v16 forKeyedSubscript:v12];
 
-            v2 = v8;
+            selfCopy = v8;
             goto LABEL_25;
           }
 
           v17 = v14;
-          v2 = v8;
+          selfCopy = v8;
         }
 
         else
@@ -88,22 +88,22 @@
           v17 = 0;
         }
 
-        if (!v51)
+        if (!_characterBeforeCursorIsVowel)
         {
           v14 = v17;
           goto LABEL_24;
         }
 
-        v18 = [(TIIndicScriptComposer *)v2 _vowelModifierLetterToSignConverter];
-        v14 = (v18)[2](v18, v12, v53);
+        _vowelModifierLetterToSignConverter = [(TIIndicScriptComposer *)selfCopy _vowelModifierLetterToSignConverter];
+        v14 = (_vowelModifierLetterToSignConverter)[2](_vowelModifierLetterToSignConverter, v12, v53);
 
         if (![v14 length])
         {
 
 LABEL_23:
-          v2 = v8;
+          selfCopy = v8;
 LABEL_24:
-          [v4 setObject:@"UI-Nothing" forKeyedSubscript:v12];
+          [dictionary setObject:@"UI-Nothing" forKeyedSubscript:v12];
           goto LABEL_25;
         }
 
@@ -114,7 +114,7 @@ LABEL_24:
           goto LABEL_23;
         }
 
-        v2 = v8;
+        selfCopy = v8;
         if (v47)
         {
           v20 = v49;
@@ -126,7 +126,7 @@ LABEL_24:
         }
 
         v21 = [v20 stringByAppendingString:v14];
-        [v4 setObject:v21 forKeyedSubscript:v12];
+        [dictionary setObject:v21 forKeyedSubscript:v12];
 
 LABEL_25:
         ++v11;
@@ -140,18 +140,18 @@ LABEL_25:
     while (v22);
   }
 
-  if ([(TIIndicScriptComposer *)v2 composesConsonants])
+  if ([(TIIndicScriptComposer *)selfCopy composesConsonants])
   {
-    v52 = [(TIIndicScriptComposer *)v2 _stringByStrippingTrailingVirama:v46];
+    v52 = [(TIIndicScriptComposer *)selfCopy _stringByStrippingTrailingVirama:context];
     v23 = [v52 length];
-    v24 = [v46 length];
-    v25 = [(TIIndicScriptComposer *)v2 _consonantLetters];
-    v48 = [(TIIndicScriptComposer *)v2 _consonantLettersSet];
+    v24 = [context length];
+    _consonantLetters = [(TIIndicScriptComposer *)selfCopy _consonantLetters];
+    _consonantLettersSet = [(TIIndicScriptComposer *)selfCopy _consonantLettersSet];
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v26 = v25;
+    v26 = _consonantLetters;
     v27 = [v26 countByEnumeratingWithState:&v58 objects:v67 count:16];
     if (v27)
     {
@@ -168,15 +168,15 @@ LABEL_25:
 
           v31 = *(*(&v58 + 1) + 8 * i);
           v32 = [v53 stringByAppendingString:v31];
-          if (v23 < v24 && [v48 longCharacterIsMember:{objc_msgSend(v52, "_lastLongCharacter")}] && -[TIIndicScriptComposer _isSingleGlyph:](v8, "_isSingleGlyph:", v32))
+          if (v23 < v24 && [_consonantLettersSet longCharacterIsMember:{objc_msgSend(v52, "_lastLongCharacter")}] && -[TIIndicScriptComposer _isSingleGlyph:](v8, "_isSingleGlyph:", v32))
           {
-            v33 = v4;
+            v33 = dictionary;
             v34 = v32;
           }
 
           else
           {
-            v33 = v4;
+            v33 = dictionary;
             v34 = @"UI-Nothing";
           }
 
@@ -194,8 +194,8 @@ LABEL_25:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v35 = [v4 allKeys];
-  v36 = [v35 countByEnumeratingWithState:&v54 objects:v66 count:16];
+  allKeys = [dictionary allKeys];
+  v36 = [allKeys countByEnumeratingWithState:&v54 objects:v66 count:16];
   if (v36)
   {
     v37 = v36;
@@ -206,19 +206,19 @@ LABEL_25:
       {
         if (*v55 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(allKeys);
         }
 
         v40 = *(*(&v54 + 1) + 8 * j);
-        v41 = [v4 objectForKeyedSubscript:v40];
-        v42 = [v41 _stringByRemovingOffensiveOrVulgarWords];
-        if (([v41 isEqualToString:v42] & 1) == 0)
+        v41 = [dictionary objectForKeyedSubscript:v40];
+        _stringByRemovingOffensiveOrVulgarWords = [v41 _stringByRemovingOffensiveOrVulgarWords];
+        if (([v41 isEqualToString:_stringByRemovingOffensiveOrVulgarWords] & 1) == 0)
         {
-          [v4 setObject:v42 forKeyedSubscript:v40];
+          [dictionary setObject:_stringByRemovingOffensiveOrVulgarWords forKeyedSubscript:v40];
         }
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v54 objects:v66 count:16];
+      v37 = [allKeys countByEnumeratingWithState:&v54 objects:v66 count:16];
     }
 
     while (v37);
@@ -226,20 +226,20 @@ LABEL_25:
 
   v43 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
-- (id)stringByComposingInput:(id)a3
+- (id)stringByComposingInput:(id)input
 {
-  v4 = a3;
-  v5 = [v4 _lastLongCharacter];
-  if (v5 != [(TIIndicScriptComposer *)self _viramaSign])
+  inputCopy = input;
+  _lastLongCharacter = [inputCopy _lastLongCharacter];
+  if (_lastLongCharacter != [(TIIndicScriptComposer *)self _viramaSign])
   {
-    v10 = [(TIIndicScriptComposer *)self _letterToSignConverter];
-    if (v10)
+    _letterToSignConverter = [(TIIndicScriptComposer *)self _letterToSignConverter];
+    if (_letterToSignConverter)
     {
-      v11 = [(TIIndicScriptComposer *)self context];
-      v9 = (v10)[2](v10, v4, v11);
+      context = [(TIIndicScriptComposer *)self context];
+      v9 = (_letterToSignConverter)[2](_letterToSignConverter, inputCopy, context);
 
       if (v9)
       {
@@ -251,11 +251,11 @@ LABEL_25:
     goto LABEL_9;
   }
 
-  v6 = [(TIIndicScriptComposer *)self context];
-  v7 = [v6 _lastLongCharacter];
-  v8 = [(TIIndicScriptComposer *)self _viramaSign];
+  context2 = [(TIIndicScriptComposer *)self context];
+  _lastLongCharacter2 = [context2 _lastLongCharacter];
+  _viramaSign = [(TIIndicScriptComposer *)self _viramaSign];
 
-  if (v7 == v8)
+  if (_lastLongCharacter2 == _viramaSign)
   {
     v9 = @"‌";
     goto LABEL_11;
@@ -264,7 +264,7 @@ LABEL_25:
   if ([(TIIndicScriptComposer *)self _characterBeforeCursorIsConsonant])
   {
 LABEL_9:
-    v9 = v4;
+    v9 = inputCopy;
     goto LABEL_11;
   }
 
@@ -274,19 +274,19 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)_isSingleGlyph:(id)a3
+- (BOOL)_isSingleGlyph:(id)glyph
 {
-  v4 = a3;
-  v5 = [(TIIndicScriptComposer *)self languageIdentifier];
-  if ([v5 isEqualToString:@"kn"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"or") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"te"))
+  glyphCopy = glyph;
+  languageIdentifier = [(TIIndicScriptComposer *)self languageIdentifier];
+  if ([languageIdentifier isEqualToString:@"kn"] & 1) != 0 || (objc_msgSend(languageIdentifier, "isEqualToString:", @"or") & 1) != 0 || (objc_msgSend(languageIdentifier, "isEqualToString:", @"te"))
   {
     v6 = 1;
   }
 
-  else if ([v4 length])
+  else if ([glyphCopy length])
   {
-    v8 = [(TIIndicScriptComposer *)self _singleGlyphConjuncts];
-    v6 = [v8 containsObject:v4];
+    _singleGlyphConjuncts = [(TIIndicScriptComposer *)self _singleGlyphConjuncts];
+    v6 = [_singleGlyphConjuncts containsObject:glyphCopy];
   }
 
   else
@@ -327,7 +327,7 @@ LABEL_11:
 
   if ([(TIIndicScriptComposer *)self _characterBeforeCursorIsConsonant])
   {
-    v3 = [(TIIndicScriptComposer *)self _vowelLetterToSignConverter];
+    _vowelLetterToSignConverter = [(TIIndicScriptComposer *)self _vowelLetterToSignConverter];
   }
 
   else
@@ -335,16 +335,16 @@ LABEL_11:
     if (![(TIIndicScriptComposer *)self _characterBeforeCursorIsVowel])
     {
 LABEL_2:
-      v3 = 0;
+      _vowelLetterToSignConverter = 0;
       goto LABEL_7;
     }
 
-    v3 = [(TIIndicScriptComposer *)self _vowelModifierLetterToSignConverter];
+    _vowelLetterToSignConverter = [(TIIndicScriptComposer *)self _vowelModifierLetterToSignConverter];
   }
 
 LABEL_7:
 
-  return v3;
+  return _vowelLetterToSignConverter;
 }
 
 - (id)_vowelModifierLetterToSignConverter
@@ -664,15 +664,15 @@ KB *__52__TIIndicScriptComposer__vowelLetterToSignConverter__block_invoke(uint64
 
 - (BOOL)_contextIsStartOfWord
 {
-  v2 = [(TIIndicScriptComposer *)self context];
-  if ([v2 length])
+  context = [(TIIndicScriptComposer *)self context];
+  if ([context length])
   {
     if ([TIIndicScriptComposer _contextIsStartOfWord]::__onceToken != -1)
     {
       dispatch_once(&[TIIndicScriptComposer _contextIsStartOfWord]::__onceToken, &__block_literal_global_15251);
     }
 
-    v3 = [v2 characterAtIndex:{objc_msgSend(v2, "length") - 1}];
+    v3 = [context characterAtIndex:{objc_msgSend(context, "length") - 1}];
     v4 = [-[TIIndicScriptComposer _contextIsStartOfWord]::__nonLetterCharacterSet characterIsMember:v3];
   }
 
@@ -692,17 +692,17 @@ void __46__TIIndicScriptComposer__contextIsStartOfWord__block_invoke()
   [TIIndicScriptComposer _contextIsStartOfWord]::__nonLetterCharacterSet = v0;
 }
 
-- (id)_stringByStrippingTrailingVirama:(id)a3
+- (id)_stringByStrippingTrailingVirama:(id)virama
 {
-  v4 = a3;
-  if ([v4 length] && (v5 = objc_msgSend(v4, "_lastLongCharacter"), v5 == -[TIIndicScriptComposer _viramaSign](self, "_viramaSign")) && objc_msgSend(v4, "_rangeOfLongCharacterAtIndex:", objc_msgSend(v4, "length") - 1) != 0x7FFFFFFFFFFFFFFFLL)
+  viramaCopy = virama;
+  if ([viramaCopy length] && (v5 = objc_msgSend(viramaCopy, "_lastLongCharacter"), v5 == -[TIIndicScriptComposer _viramaSign](self, "_viramaSign")) && objc_msgSend(viramaCopy, "_rangeOfLongCharacterAtIndex:", objc_msgSend(viramaCopy, "length") - 1) != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v4 substringToIndex:{objc_msgSend(v4, "length") - v6}];
+    v7 = [viramaCopy substringToIndex:{objc_msgSend(viramaCopy, "length") - v6}];
   }
 
   else
   {
-    v7 = v4;
+    v7 = viramaCopy;
   }
 
   v8 = v7;
@@ -712,13 +712,13 @@ void __46__TIIndicScriptComposer__contextIsStartOfWord__block_invoke()
 
 - (BOOL)_characterBeforeCursorIsConsonant
 {
-  v3 = [(TIIndicScriptComposer *)self context];
+  context = [(TIIndicScriptComposer *)self context];
   v6 = 0;
-  if ([v3 length])
+  if ([context length])
   {
-    v4 = [v3 characterAtIndex:{objc_msgSend(v3, "length") - 1}];
-    v5 = [(TIIndicScriptComposer *)self _consonantLettersSet];
-    LOBYTE(v4) = [v5 characterIsMember:v4];
+    v4 = [context characterAtIndex:{objc_msgSend(context, "length") - 1}];
+    _consonantLettersSet = [(TIIndicScriptComposer *)self _consonantLettersSet];
+    LOBYTE(v4) = [_consonantLettersSet characterIsMember:v4];
 
     if (v4)
     {
@@ -731,13 +731,13 @@ void __46__TIIndicScriptComposer__contextIsStartOfWord__block_invoke()
 
 - (BOOL)_characterBeforeCursorIsVowelLetter
 {
-  v3 = [(TIIndicScriptComposer *)self context];
+  context = [(TIIndicScriptComposer *)self context];
   v6 = 0;
-  if ([v3 length])
+  if ([context length])
   {
-    v4 = [v3 characterAtIndex:{objc_msgSend(v3, "length") - 1}];
-    v5 = [(TIIndicScriptComposer *)self _vowelLetters];
-    LOBYTE(v4) = [v5 characterIsMember:v4];
+    v4 = [context characterAtIndex:{objc_msgSend(context, "length") - 1}];
+    _vowelLetters = [(TIIndicScriptComposer *)self _vowelLetters];
+    LOBYTE(v4) = [_vowelLetters characterIsMember:v4];
 
     if (v4)
     {
@@ -750,13 +750,13 @@ void __46__TIIndicScriptComposer__contextIsStartOfWord__block_invoke()
 
 - (BOOL)_characterBeforeCursorIsVowel
 {
-  v3 = [(TIIndicScriptComposer *)self context];
+  context = [(TIIndicScriptComposer *)self context];
   v6 = 0;
-  if ([v3 length])
+  if ([context length])
   {
-    v4 = [v3 characterAtIndex:{objc_msgSend(v3, "length") - 1}];
-    v5 = [(TIIndicScriptComposer *)self _vowelLettersAndSigns];
-    LOBYTE(v4) = [v5 characterIsMember:v4];
+    v4 = [context characterAtIndex:{objc_msgSend(context, "length") - 1}];
+    _vowelLettersAndSigns = [(TIIndicScriptComposer *)self _vowelLettersAndSigns];
+    LOBYTE(v4) = [_vowelLettersAndSigns characterIsMember:v4];
 
     if (v4)
     {
@@ -807,8 +807,8 @@ void __46__TIIndicScriptComposer__contextIsStartOfWord__block_invoke()
   if (!contextualVowelLetters)
   {
     v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:16];
-    v5 = [(TIIndicScriptComposer *)self scriptCode];
-    v6 = TI::IndicUtils::initialVowelLetterForScript(v5);
+    scriptCode = [(TIIndicScriptComposer *)self scriptCode];
+    v6 = TI::IndicUtils::initialVowelLetterForScript(scriptCode);
     if (v6 > (v6 - 4))
     {
       v7 = (v6 - 4);
@@ -836,16 +836,16 @@ void __46__TIIndicScriptComposer__contextIsStartOfWord__block_invoke()
     }
 
     while (v14 <= v9);
-    if (v5 > 15)
+    if (scriptCode > 15)
     {
-      if (v5 == 16)
+      if (scriptCode == 16)
       {
         [(NSArray *)v4 addObject:@"ਅੱ"];
         v11 = @"ਅੰ";
         goto LABEL_16;
       }
 
-      if (v5 == 31)
+      if (scriptCode == 31)
       {
         v11 = @"ଅ‍୍ୟ";
         goto LABEL_16;
@@ -854,13 +854,13 @@ void __46__TIIndicScriptComposer__contextIsStartOfWord__block_invoke()
 
     else
     {
-      if (v5 == 4)
+      if (scriptCode == 4)
       {
         v11 = @"অ‍্য";
         goto LABEL_16;
       }
 
-      if (v5 == 10)
+      if (scriptCode == 10)
       {
         v11 = @"ॲ";
 LABEL_16:
@@ -909,32 +909,32 @@ LABEL_16:
 
 - (int)scriptCode
 {
-  v2 = [(TIIndicScriptComposer *)self languageIdentifier];
-  ScriptCodeForLanguage = GetScriptCodeForLanguage(v2);
+  languageIdentifier = [(TIIndicScriptComposer *)self languageIdentifier];
+  ScriptCodeForLanguage = GetScriptCodeForLanguage(languageIdentifier);
 
   return ScriptCodeForLanguage;
 }
 
 - (NSString)context
 {
-  v2 = [(TIIndicScriptComposer *)self contextFetcher];
-  v3 = v2[2]();
+  contextFetcher = [(TIIndicScriptComposer *)self contextFetcher];
+  v3 = contextFetcher[2]();
 
   return v3;
 }
 
-- (TIIndicScriptComposer)initWithLanguage:(id)a3 contextFetcher:(id)a4
+- (TIIndicScriptComposer)initWithLanguage:(id)language contextFetcher:(id)fetcher
 {
-  v6 = a3;
-  v7 = a4;
+  languageCopy = language;
+  fetcherCopy = fetcher;
   v11.receiver = self;
   v11.super_class = TIIndicScriptComposer;
   v8 = [(TIIndicScriptComposer *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(TIIndicScriptComposer *)v8 setLanguageIdentifier:v6];
-    [(TIIndicScriptComposer *)v9 setContextFetcher:v7];
+    [(TIIndicScriptComposer *)v8 setLanguageIdentifier:languageCopy];
+    [(TIIndicScriptComposer *)v9 setContextFetcher:fetcherCopy];
   }
 
   return v9;

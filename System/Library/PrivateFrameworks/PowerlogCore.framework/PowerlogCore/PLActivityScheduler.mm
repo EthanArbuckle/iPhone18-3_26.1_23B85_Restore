@@ -1,9 +1,9 @@
 @interface PLActivityScheduler
 + (id)sharedInstance;
 - (PLActivityScheduler)init;
-- (id)lastCompletedDateWithIdentifier:(id)a3;
-- (void)cancelActivityWithIdentifier:(id)a3;
-- (void)scheduleActivityWithIdentifier:(id)a3 withCriteria:(id)a4 withMustRunCriterion:(id)a5 withQueue:(id)a6 withInterruptBlock:(id)a7 withActivityBlock:(id)a8;
+- (id)lastCompletedDateWithIdentifier:(id)identifier;
+- (void)cancelActivityWithIdentifier:(id)identifier;
+- (void)scheduleActivityWithIdentifier:(id)identifier withCriteria:(id)criteria withMustRunCriterion:(id)criterion withQueue:(id)queue withInterruptBlock:(id)block withActivityBlock:(id)activityBlock;
 @end
 
 @implementation PLActivityScheduler
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __37__PLActivityScheduler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -40,9 +40,9 @@ uint64_t __37__PLActivityScheduler_sharedInstance__block_invoke(uint64_t a1)
   v2 = [(PLActivityScheduler *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     activities = v2->_activities;
-    v2->_activities = v3;
+    v2->_activities = dictionary;
 
     v5 = [PLUtilities workQueueForClass:objc_opt_class()];
     workQueue = v2->_workQueue;
@@ -52,31 +52,31 @@ uint64_t __37__PLActivityScheduler_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)scheduleActivityWithIdentifier:(id)a3 withCriteria:(id)a4 withMustRunCriterion:(id)a5 withQueue:(id)a6 withInterruptBlock:(id)a7 withActivityBlock:(id)a8
+- (void)scheduleActivityWithIdentifier:(id)identifier withCriteria:(id)criteria withMustRunCriterion:(id)criterion withQueue:(id)queue withInterruptBlock:(id)block withActivityBlock:(id)activityBlock
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  criteriaCopy = criteria;
+  criterionCopy = criterion;
+  queueCopy = queue;
+  blockCopy = block;
+  activityBlockCopy = activityBlock;
   v20 = +[PowerlogCore sharedCore];
-  v21 = [v20 storage];
-  v22 = [v21 storageLocked];
+  storage = [v20 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v22 & 1) == 0)
+  if ((storageLocked & 1) == 0)
   {
-    v23 = [[PLActivity alloc] initWithIdentifier:v14 withCriteria:v15 withMustRunCriterion:v16 withQueue:v17 withInterruptBlock:v18 withActivityBlock:v19];
+    v23 = [[PLActivity alloc] initWithIdentifier:identifierCopy withCriteria:criteriaCopy withMustRunCriterion:criterionCopy withQueue:queueCopy withInterruptBlock:blockCopy withActivityBlock:activityBlockCopy];
     if (v23)
     {
-      v24 = [(PLActivityScheduler *)self workQueue];
+      workQueue = [(PLActivityScheduler *)self workQueue];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __135__PLActivityScheduler_scheduleActivityWithIdentifier_withCriteria_withMustRunCriterion_withQueue_withInterruptBlock_withActivityBlock___block_invoke;
       v25[3] = &unk_1E8519100;
       v25[4] = self;
       v26 = v23;
-      dispatch_async_and_wait(v24, v25);
+      dispatch_async_and_wait(workQueue, v25);
     }
   }
 }
@@ -93,25 +93,25 @@ uint64_t __135__PLActivityScheduler_scheduleActivityWithIdentifier_withCriteria_
   return [v5 setEnabled:1];
 }
 
-- (void)cancelActivityWithIdentifier:(id)a3
+- (void)cancelActivityWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = +[PowerlogCore sharedCore];
-    v6 = [v5 storage];
-    v7 = [v6 storageLocked];
+    storage = [v5 storage];
+    storageLocked = [storage storageLocked];
 
-    if ((v7 & 1) == 0)
+    if ((storageLocked & 1) == 0)
     {
-      v8 = [(PLActivityScheduler *)self workQueue];
+      workQueue = [(PLActivityScheduler *)self workQueue];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __52__PLActivityScheduler_cancelActivityWithIdentifier___block_invoke;
       v9[3] = &unk_1E8519100;
       v9[4] = self;
-      v10 = v4;
-      dispatch_async_and_wait(v8, v9);
+      v10 = identifierCopy;
+      dispatch_async_and_wait(workQueue, v9);
     }
   }
 }
@@ -132,25 +132,25 @@ void __52__PLActivityScheduler_cancelActivityWithIdentifier___block_invoke(uint6
   }
 }
 
-- (id)lastCompletedDateWithIdentifier:(id)a3
+- (id)lastCompletedDateWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(PLActivityScheduler *)self workQueue];
+  workQueue = [(PLActivityScheduler *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__PLActivityScheduler_lastCompletedDateWithIdentifier___block_invoke;
   block[3] = &unk_1E8519128;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_async_and_wait(v5, block);
+  v6 = identifierCopy;
+  dispatch_async_and_wait(workQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);

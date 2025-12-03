@@ -1,22 +1,22 @@
 @interface NEHelperAppTrackerManager
-- (NEHelperAppTrackerManager)initWithFirstMessage:(id)a3;
-- (void)handleMessage:(id)a3;
+- (NEHelperAppTrackerManager)initWithFirstMessage:(id)message;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperAppTrackerManager
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = sub_1000016DC();
   if (!v4 || (v5 = v4[12], v4, (v5 & 1) == 0))
   {
-    sub_10000BA0C(NEHelperServer, v3, 22, 0);
+    sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
     goto LABEL_23;
   }
 
-  uint64 = xpc_dictionary_get_uint64(v3, "app-tracker-check");
-  v7 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "app-tracker-signing-identifier")];
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "app-tracker-check");
+  v7 = [NSString stringWithUTF8String:xpc_dictionary_get_string(messageCopy, "app-tracker-signing-identifier")];
   v8 = xpc_dictionary_create(0, 0, 0);
   if (v8)
   {
@@ -27,15 +27,15 @@
       v10 = v26;
       if (v10 || !v9)
       {
-        sub_10000BA0C(NEHelperServer, v3, 22, 0);
+        sub_10000BA0C(NEHelperServer, messageCopy, 22, 0);
 
         goto LABEL_20;
       }
 
-      v11 = [v9 privacyTrackingDomains];
-      if (v11)
+      privacyTrackingDomains = [v9 privacyTrackingDomains];
+      if (privacyTrackingDomains)
       {
-        v12 = v11;
+        v12 = privacyTrackingDomains;
         v13 = xpc_array_create(0, 0);
         v22 = 0u;
         v23 = 0u;
@@ -69,14 +69,14 @@
       }
     }
 
-    v19 = v3;
+    v19 = messageCopy;
     v20 = 0;
     v21 = v8;
   }
 
   else
   {
-    v19 = v3;
+    v19 = messageCopy;
     v20 = 22;
     v21 = 0;
   }
@@ -87,16 +87,16 @@ LABEL_20:
 LABEL_23:
 }
 
-- (NEHelperAppTrackerManager)initWithFirstMessage:(id)a3
+- (NEHelperAppTrackerManager)initWithFirstMessage:(id)message
 {
   v4 = qword_100046978;
-  v5 = a3;
+  messageCopy = message;
   if (v4 != -1)
   {
     dispatch_once(&qword_100046978, &stru_10003CC68);
   }
 
-  v6 = xpc_dictionary_get_remote_connection(v5);
+  v6 = xpc_dictionary_get_remote_connection(messageCopy);
 
   objc_opt_self();
   v9.receiver = self;

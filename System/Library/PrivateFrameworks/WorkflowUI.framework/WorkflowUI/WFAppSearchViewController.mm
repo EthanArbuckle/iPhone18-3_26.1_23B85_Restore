@@ -1,26 +1,26 @@
 @interface WFAppSearchViewController
 - (UIImage)placeholderImage;
 - (UITableView)tableView;
-- (WFAppSearchViewController)initWithAppSearchType:(int64_t)a3 omittedAppBundleIDs:(id)a4 allowMultipleSelection:(BOOL)a5 selectedApps:(id)a6;
+- (WFAppSearchViewController)initWithAppSearchType:(int64_t)type omittedAppBundleIDs:(id)ds allowMultipleSelection:(BOOL)selection selectedApps:(id)apps;
 - (WFAppSearchViewControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)applicationIconImageForBundleIdentifier:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)applicationIconImageForBundleIdentifier:(id)identifier;
 - (id)filteredApps;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)adjustInsetsForKeyboard;
 - (void)cancel;
 - (void)dealloc;
 - (void)done;
 - (void)loadApps;
 - (void)loadView;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateDoneButtonEnabledState;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFAppSearchViewController
@@ -39,21 +39,21 @@
   return WeakRetained;
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v3 = [(WFAppSearchViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(WFAppSearchViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v4 = [(WFAppSearchViewController *)self tableView:a3];
+  v4 = [(WFAppSearchViewController *)self tableView:bar];
   [v4 reloadData];
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFAppSearchViewController *)self filteredApps:a3];
+  v4 = [(WFAppSearchViewController *)self filteredApps:view];
   if ([v4 count])
   {
     v5 = 0.0;
@@ -67,9 +67,9 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [(WFAppSearchViewController *)self filteredApps:a3];
+  v5 = [(WFAppSearchViewController *)self filteredApps:view];
   v6 = [v5 count];
 
   if (v6)
@@ -80,21 +80,21 @@
   else
   {
     v8 = objc_alloc(MEMORY[0x277D75D18]);
-    v9 = [(WFAppSearchViewController *)self view];
-    [v9 bounds];
+    view = [(WFAppSearchViewController *)self view];
+    [view bounds];
     v7 = [v8 initWithFrame:{0.0, 0.0, CGRectGetWidth(v17), 0.0}];
 
     v10 = objc_alloc(MEMORY[0x277D756B8]);
-    v11 = [(WFAppSearchViewController *)self view];
-    [v11 bounds];
+    view2 = [(WFAppSearchViewController *)self view];
+    [view2 bounds];
     v12 = [v10 initWithFrame:{15.0, 0.0, CGRectGetWidth(v18) + -30.0, 0.0}];
 
     [v12 setAutoresizingMask:21];
     v13 = WFLocalizedString(@"No results.");
     [v12 setText:v13];
 
-    v14 = [MEMORY[0x277D75348] lightGrayColor];
-    [v12 setTextColor:v14];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    [v12 setTextColor:lightGrayColor];
 
     [v7 addSubview:v12];
   }
@@ -104,80 +104,80 @@
 
 - (void)updateDoneButtonEnabledState
 {
-  v3 = [(WFAppSearchViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
+  navigationItem = [(WFAppSearchViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  if (v4)
+  if (rightBarButtonItem)
   {
-    v8 = [(WFAppSearchViewController *)self selectedApps];
-    v5 = [v8 count] != 0;
-    v6 = [(WFAppSearchViewController *)self navigationItem];
-    v7 = [v6 rightBarButtonItem];
-    [v7 setEnabled:v5];
+    selectedApps = [(WFAppSearchViewController *)self selectedApps];
+    v5 = [selectedApps count] != 0;
+    navigationItem2 = [(WFAppSearchViewController *)self navigationItem];
+    rightBarButtonItem2 = [navigationItem2 rightBarButtonItem];
+    [rightBarButtonItem2 setEnabled:v5];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(WFAppSearchViewController *)self filteredApps];
-  v8 = [v6 row];
-  if (v8 < [v7 count])
+  viewCopy = view;
+  pathCopy = path;
+  filteredApps = [(WFAppSearchViewController *)self filteredApps];
+  v8 = [pathCopy row];
+  if (v8 < [filteredApps count])
   {
-    v9 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+    v9 = [filteredApps objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     if ([(WFAppSearchViewController *)self allowMultipleSelection])
     {
-      v10 = [v17 cellForRowAtIndexPath:v6];
-      if ([v10 accessoryType])
+      delegate = [viewCopy cellForRowAtIndexPath:pathCopy];
+      if ([delegate accessoryType])
       {
-        [v10 setAccessoryType:0];
-        v11 = [(WFAppSearchViewController *)self selectedApps];
-        [v11 removeObject:v9];
+        [delegate setAccessoryType:0];
+        selectedApps = [(WFAppSearchViewController *)self selectedApps];
+        [selectedApps removeObject:v9];
       }
 
       else
       {
-        [v10 setAccessoryType:3];
-        v11 = [(WFAppSearchViewController *)self selectedApps];
-        [v11 addObject:v9];
+        [delegate setAccessoryType:3];
+        selectedApps = [(WFAppSearchViewController *)self selectedApps];
+        [selectedApps addObject:v9];
       }
 
-      [v17 deselectRowAtIndexPath:v6 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       [(WFAppSearchViewController *)self updateDoneButtonEnabledState];
     }
 
     else
     {
-      v12 = [(WFAppSearchViewController *)self navigationItem];
-      v13 = [v12 searchController];
-      v14 = [v13 isActive];
+      navigationItem = [(WFAppSearchViewController *)self navigationItem];
+      searchController = [navigationItem searchController];
+      isActive = [searchController isActive];
 
-      if (v14)
+      if (isActive)
       {
-        v15 = [(WFAppSearchViewController *)self navigationItem];
-        v16 = [v15 searchController];
-        [v16 setActive:0];
+        navigationItem2 = [(WFAppSearchViewController *)self navigationItem];
+        searchController2 = [navigationItem2 searchController];
+        [searchController2 setActive:0];
       }
 
-      [v17 deselectRowAtIndexPath:v6 animated:1];
-      v10 = [(WFAppSearchViewController *)self delegate];
-      [v10 appSearchViewController:self didFinishWithApp:v9];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+      delegate = [(WFAppSearchViewController *)self delegate];
+      [delegate appSearchViewController:self didFinishWithApp:v9];
     }
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFAppSearchViewController *)self filteredApps];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  filteredApps = [(WFAppSearchViewController *)self filteredApps];
+  v9 = [filteredApps objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [v6 dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:v7];
-  v11 = [v9 localizedName];
-  v12 = [v10 textLabel];
-  [v12 setText:v11];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:pathCopy];
+  localizedName = [v9 localizedName];
+  textLabel = [v10 textLabel];
+  [textLabel setText:localizedName];
 
   if (-[WFAppSearchViewController allowMultipleSelection](self, "allowMultipleSelection") && (-[WFAppSearchViewController selectedApps](self, "selectedApps"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 containsObject:v9], v13, (v14 & 1) != 0))
   {
@@ -190,22 +190,22 @@
   }
 
   [v10 setAccessoryType:v15];
-  v16 = [(WFAppSearchViewController *)self placeholderImage];
-  v17 = [v10 imageView];
-  [v17 setImage:v16];
+  placeholderImage = [(WFAppSearchViewController *)self placeholderImage];
+  imageView = [v10 imageView];
+  [imageView setImage:placeholderImage];
 
-  v18 = [v9 bundleIdentifier];
+  bundleIdentifier = [v9 bundleIdentifier];
 
-  if (v18)
+  if (bundleIdentifier)
   {
-    v19 = [(WFAppSearchViewController *)self cachedAppIconForBundleId];
-    v20 = [v9 bundleIdentifier];
-    v21 = [v19 objectForKeyedSubscript:v20];
+    cachedAppIconForBundleId = [(WFAppSearchViewController *)self cachedAppIconForBundleId];
+    bundleIdentifier2 = [v9 bundleIdentifier];
+    v21 = [cachedAppIconForBundleId objectForKeyedSubscript:bundleIdentifier2];
 
     if (v21)
     {
-      v22 = [v10 imageView];
-      [v22 setImage:v21];
+      imageView2 = [v10 imageView];
+      [imageView2 setImage:v21];
     }
 
     else
@@ -217,8 +217,8 @@
       v25[3] = &unk_279EE8138;
       v25[4] = self;
       v26 = v9;
-      v27 = v6;
-      v28 = v7;
+      v27 = viewCopy;
+      v28 = pathCopy;
       dispatch_async(v23, v25);
     }
   }
@@ -260,9 +260,9 @@ void __61__WFAppSearchViewController_tableView_cellForRowAtIndexPath___block_inv
   [v5 setObject:v4 forKeyedSubscript:v6];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WFAppSearchViewController *)self filteredApps:a3];
+  v4 = [(WFAppSearchViewController *)self filteredApps:view];
   v5 = [v4 count];
 
   return v5;
@@ -276,8 +276,8 @@ void __61__WFAppSearchViewController_tableView_cellForRowAtIndexPath___block_inv
     v9.width = 29.0;
     v9.height = 29.0;
     UIGraphicsBeginImageContextWithOptions(v9, 1, 0.0);
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    [v4 setFill];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [whiteColor setFill];
 
     v10.origin.x = 0.0;
     v10.origin.y = 0.0;
@@ -295,53 +295,53 @@ void __61__WFAppSearchViewController_tableView_cellForRowAtIndexPath___block_inv
   return placeholderImage;
 }
 
-- (id)applicationIconImageForBundleIdentifier:(id)a3
+- (id)applicationIconImageForBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277D7C540];
-  v5 = a3;
-  v6 = [v4 sharedRegistry];
-  v7 = [v6 appWithIdentifier:v5];
+  identifierCopy = identifier;
+  sharedRegistry = [v4 sharedRegistry];
+  v7 = [sharedRegistry appWithIdentifier:identifierCopy];
 
-  v8 = [v7 icon];
-  v9 = [v8 UIImage];
+  icon = [v7 icon];
+  uIImage = [icon UIImage];
 
-  if (v9)
+  if (uIImage)
   {
-    v10 = v9;
+    placeholderImage = uIImage;
   }
 
   else
   {
-    v10 = [(WFAppSearchViewController *)self placeholderImage];
+    placeholderImage = [(WFAppSearchViewController *)self placeholderImage];
   }
 
-  v11 = v10;
+  v11 = placeholderImage;
 
   return v11;
 }
 
 - (id)filteredApps
 {
-  v3 = [(WFAppSearchViewController *)self navigationItem];
-  v4 = [v3 searchController];
-  v5 = [v4 searchBar];
+  navigationItem = [(WFAppSearchViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
+  searchBar = [searchController searchBar];
 
-  v6 = [v5 text];
-  v7 = [v6 length];
-  v8 = [(WFAppSearchViewController *)self apps];
+  text = [searchBar text];
+  v7 = [text length];
+  apps = [(WFAppSearchViewController *)self apps];
   if (v7)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __41__WFAppSearchViewController_filteredApps__block_invoke;
     v11[3] = &unk_279EE78A0;
-    v12 = v6;
-    v9 = [v8 if_objectsPassingTest:v11];
+    v12 = text;
+    v9 = [apps if_objectsPassingTest:v11];
 
-    v8 = v9;
+    apps = v9;
   }
 
-  return v8;
+  return apps;
 }
 
 uint64_t __41__WFAppSearchViewController_filteredApps__block_invoke(uint64_t a1, void *a2)
@@ -451,14 +451,14 @@ void __37__WFAppSearchViewController_loadApps__block_invoke_3(uint64_t a1)
   [v2 reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = WFAppSearchViewController;
-  [(WFAppSearchViewController *)&v6 viewWillAppear:a3];
+  [(WFAppSearchViewController *)&v6 viewWillAppear:appear];
   [(WFAppSearchViewController *)self updateDoneButtonEnabledState];
-  v4 = [(WFAppSearchViewController *)self apps];
-  v5 = [v4 count];
+  apps = [(WFAppSearchViewController *)self apps];
+  v5 = [apps count];
 
   if (!v5)
   {
@@ -476,21 +476,21 @@ void __37__WFAppSearchViewController_loadApps__block_invoke_3(uint64_t a1)
 
 - (void)adjustInsetsForKeyboard
 {
-  v3 = [MEMORY[0x277D7BDB0] sharedKeyboard];
-  v4 = [v3 isVisible];
+  mEMORY[0x277D7BDB0] = [MEMORY[0x277D7BDB0] sharedKeyboard];
+  isVisible = [mEMORY[0x277D7BDB0] isVisible];
 
-  if (v4)
+  if (isVisible)
   {
-    v5 = [MEMORY[0x277D7BDB0] sharedKeyboard];
-    v6 = [(WFAppSearchViewController *)self view];
-    [v5 keyboardFrameInView:v6];
+    mEMORY[0x277D7BDB0]2 = [MEMORY[0x277D7BDB0] sharedKeyboard];
+    view = [(WFAppSearchViewController *)self view];
+    [mEMORY[0x277D7BDB0]2 keyboardFrameInView:view];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = [(WFAppSearchViewController *)self view];
-    [v15 bounds];
+    view2 = [(WFAppSearchViewController *)self view];
+    [view2 bounds];
     v31.origin.x = v8;
     v31.origin.y = v10;
     v31.size.width = v12;
@@ -508,8 +508,8 @@ void __37__WFAppSearchViewController_loadApps__block_invoke_3(uint64_t a1)
     v20 = 0.0;
     if (!CGRectIsNull(v28))
     {
-      v21 = [(WFAppSearchViewController *)self view];
-      [v21 bounds];
+      view3 = [(WFAppSearchViewController *)self view];
+      [view3 bounds];
       MaxY = CGRectGetMaxY(v29);
       v30.origin.x = x;
       v30.origin.y = y;
@@ -518,41 +518,41 @@ void __37__WFAppSearchViewController_loadApps__block_invoke_3(uint64_t a1)
       v20 = MaxY - CGRectGetMinY(v30);
     }
 
-    v23 = [(WFAppSearchViewController *)self tableView];
-    [v23 setContentInset:{0.0, 0.0, v20, 0.0}];
+    tableView = [(WFAppSearchViewController *)self tableView];
+    [tableView setContentInset:{0.0, 0.0, v20, 0.0}];
   }
 
   else
   {
-    v23 = [(WFAppSearchViewController *)self tableView];
-    [v23 setContentInset:{0.0, 0.0, 0.0, 0.0}];
+    tableView = [(WFAppSearchViewController *)self tableView];
+    [tableView setContentInset:{0.0, 0.0, 0.0, 0.0}];
     v20 = 0.0;
   }
 
-  v24 = [(WFAppSearchViewController *)self tableView];
-  [v24 setScrollIndicatorInsets:{0.0, 0.0, v20, 0.0}];
+  tableView2 = [(WFAppSearchViewController *)self tableView];
+  [tableView2 setScrollIndicatorInsets:{0.0, 0.0, v20, 0.0}];
 }
 
 - (void)done
 {
-  v3 = [(WFAppSearchViewController *)self navigationItem];
-  v4 = [v3 searchController];
-  [v4 setActive:0];
+  navigationItem = [(WFAppSearchViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
+  [searchController setActive:0];
 
-  v7 = [(WFAppSearchViewController *)self delegate];
-  v5 = [(WFAppSearchViewController *)self selectedApps];
-  v6 = [v5 array];
-  [v7 appSearchViewController:self didFinishWithApps:v6];
+  delegate = [(WFAppSearchViewController *)self delegate];
+  selectedApps = [(WFAppSearchViewController *)self selectedApps];
+  array = [selectedApps array];
+  [delegate appSearchViewController:self didFinishWithApps:array];
 }
 
 - (void)cancel
 {
-  v3 = [(WFAppSearchViewController *)self navigationItem];
-  v4 = [v3 searchController];
-  [v4 setActive:0];
+  navigationItem = [(WFAppSearchViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
+  [searchController setActive:0];
 
-  v5 = [(WFAppSearchViewController *)self delegate];
-  [v5 appSearchViewControllerDidCancel:self];
+  delegate = [(WFAppSearchViewController *)self delegate];
+  [delegate appSearchViewControllerDidCancel:self];
 }
 
 - (void)loadView
@@ -565,14 +565,14 @@ void __37__WFAppSearchViewController_loadApps__block_invoke_3(uint64_t a1)
   [(WFAppSearchViewController *)self setTitle:v3];
 
   v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancel];
-  v5 = [(WFAppSearchViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  navigationItem = [(WFAppSearchViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 
   if ([(WFAppSearchViewController *)self allowMultipleSelection])
   {
     v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_done];
-    v7 = [(WFAppSearchViewController *)self navigationItem];
-    [v7 setRightBarButtonItem:v6];
+    navigationItem2 = [(WFAppSearchViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v6];
   }
 
   v8 = objc_alloc(MEMORY[0x277D75B40]);
@@ -589,49 +589,49 @@ void __37__WFAppSearchViewController_loadApps__block_invoke_3(uint64_t a1)
   [v13 setTableFooterView:v14];
 
   [v13 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
-  v15 = [(WFAppSearchViewController *)self view];
-  [v15 addSubview:v13];
+  view = [(WFAppSearchViewController *)self view];
+  [view addSubview:v13];
 
   [(WFAppSearchViewController *)self setTableView:v13];
   v16 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:0];
   [v16 setObscuresBackgroundDuringPresentation:0];
-  v17 = [v16 searchBar];
-  [v17 setAutocorrectionType:1];
+  searchBar = [v16 searchBar];
+  [searchBar setAutocorrectionType:1];
 
   [v16 setHidesNavigationBarDuringPresentation:0];
   v18 = WFLocalizedString(@"Search Apps");
-  v19 = [v16 searchBar];
-  [v19 setPlaceholder:v18];
+  searchBar2 = [v16 searchBar];
+  [searchBar2 setPlaceholder:v18];
 
-  v20 = [v16 searchBar];
-  [v20 setDelegate:self];
+  searchBar3 = [v16 searchBar];
+  [searchBar3 setDelegate:self];
 
-  v21 = [(WFAppSearchViewController *)self navigationItem];
-  [v21 setSearchController:v16];
+  navigationItem3 = [(WFAppSearchViewController *)self navigationItem];
+  [navigationItem3 setSearchController:v16];
 
-  v22 = [(WFAppSearchViewController *)self navigationItem];
-  [v22 setHidesSearchBarWhenScrolling:0];
+  navigationItem4 = [(WFAppSearchViewController *)self navigationItem];
+  [navigationItem4 setHidesSearchBarWhenScrolling:0];
 
   v33 = MEMORY[0x277CCAAD0];
-  v39 = [v13 topAnchor];
-  v40 = [(WFAppSearchViewController *)self view];
-  v38 = [v40 topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  topAnchor = [v13 topAnchor];
+  view2 = [(WFAppSearchViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[0] = v37;
-  v35 = [v13 leadingAnchor];
-  v36 = [(WFAppSearchViewController *)self view];
-  v34 = [v36 leadingAnchor];
-  v32 = [v35 constraintEqualToAnchor:v34];
+  leadingAnchor = [v13 leadingAnchor];
+  view3 = [(WFAppSearchViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[1] = v32;
-  v31 = [v13 bottomAnchor];
-  v23 = [(WFAppSearchViewController *)self view];
-  v24 = [v23 bottomAnchor];
-  v25 = [v31 constraintEqualToAnchor:v24];
+  bottomAnchor = [v13 bottomAnchor];
+  view4 = [(WFAppSearchViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v42[2] = v25;
-  v26 = [v13 trailingAnchor];
-  v27 = [(WFAppSearchViewController *)self view];
-  v28 = [v27 trailingAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  trailingAnchor = [v13 trailingAnchor];
+  view5 = [(WFAppSearchViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v42[3] = v29;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:4];
   [v33 activateConstraints:v30];
@@ -639,33 +639,33 @@ void __37__WFAppSearchViewController_loadApps__block_invoke_3(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7BE00] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7BE00] object:0];
 
   v4.receiver = self;
   v4.super_class = WFAppSearchViewController;
   [(WFAppSearchViewController *)&v4 dealloc];
 }
 
-- (WFAppSearchViewController)initWithAppSearchType:(int64_t)a3 omittedAppBundleIDs:(id)a4 allowMultipleSelection:(BOOL)a5 selectedApps:(id)a6
+- (WFAppSearchViewController)initWithAppSearchType:(int64_t)type omittedAppBundleIDs:(id)ds allowMultipleSelection:(BOOL)selection selectedApps:(id)apps
 {
-  v10 = a4;
-  v11 = a6;
+  dsCopy = ds;
+  appsCopy = apps;
   v23.receiver = self;
   v23.super_class = WFAppSearchViewController;
   v12 = [(WFAppSearchViewController *)&v23 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    v12->_appSearchType = a3;
-    v14 = [v10 copy];
+    v12->_appSearchType = type;
+    v14 = [dsCopy copy];
     omittedAppBundleIDs = v13->_omittedAppBundleIDs;
     v13->_omittedAppBundleIDs = v14;
 
-    v13->_allowMultipleSelection = a5;
-    if (v11)
+    v13->_allowMultipleSelection = selection;
+    if (appsCopy)
     {
-      v16 = [objc_alloc(MEMORY[0x277CBEB40]) initWithOrderedSet:v11];
+      v16 = [objc_alloc(MEMORY[0x277CBEB40]) initWithOrderedSet:appsCopy];
     }
 
     else
@@ -680,8 +680,8 @@ void __37__WFAppSearchViewController_loadApps__block_invoke_3(uint64_t a1)
     cachedAppIconForBundleId = v13->_cachedAppIconForBundleId;
     v13->_cachedAppIconForBundleId = v18;
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v13 selector:sel_adjustInsetsForKeyboard name:*MEMORY[0x277D7BE00] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel_adjustInsetsForKeyboard name:*MEMORY[0x277D7BE00] object:0];
 
     v21 = v13;
   }

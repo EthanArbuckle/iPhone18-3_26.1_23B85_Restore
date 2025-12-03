@@ -1,7 +1,7 @@
 @interface AXCameraSceneDescriber
 - (AXCameraSceneDescriber)init;
-- (void)imageDescriptionForCurrentCameraScene:(id)a3 withPreferredLocale:(id)a4;
-- (void)visionResultHandler:(id)a3 withFeatureDescriptionOptions:(id)a4 result:(id)a5 error:(id)a6;
+- (void)imageDescriptionForCurrentCameraScene:(id)scene withPreferredLocale:(id)locale;
+- (void)visionResultHandler:(id)handler withFeatureDescriptionOptions:(id)options result:(id)result error:(id)error;
 @end
 
 @implementation AXCameraSceneDescriber
@@ -19,20 +19,20 @@
   visionEngine = v2->_visionEngine;
   v2->_visionEngine = v5;
 
-  v7 = [(AXMVoiceOverVisionEngine *)v2->_visionEngine imageNode];
-  [v7 setShouldProcessRemotely:1];
+  imageNode = [(AXMVoiceOverVisionEngine *)v2->_visionEngine imageNode];
+  [imageNode setShouldProcessRemotely:1];
 
   [(AXMVoiceOverVisionEngine *)v2->_visionEngine prewarmEngine];
   return v2;
 }
 
-- (void)imageDescriptionForCurrentCameraScene:(id)a3 withPreferredLocale:(id)a4
+- (void)imageDescriptionForCurrentCameraScene:(id)scene withPreferredLocale:(id)locale
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sceneCopy = scene;
   v30[0] = *MEMORY[0x1E6988C38];
   v7 = MEMORY[0x1E695DF58];
-  v8 = a4;
+  localeCopy = locale;
   v9 = [v7 localeWithLocaleIdentifier:@"en_US"];
   v30[1] = *MEMORY[0x1E6988C40];
   v31[0] = v9;
@@ -43,8 +43,8 @@
   [v11 setDetectText:{-[AXCameraSceneDescriber includeTextDetection](self, "includeTextDetection")}];
   if ([(AXCameraSceneDescriber *)self includeTextDetection])
   {
-    v12 = [MEMORY[0x1E6988C50] defaultOptions];
-    [v11 setTextDetectionOptions:v12];
+    defaultOptions = [MEMORY[0x1E6988C50] defaultOptions];
+    [v11 setTextDetectionOptions:defaultOptions];
   }
 
   else
@@ -52,10 +52,10 @@
     [v11 setTextDetectionOptions:0];
   }
 
-  v13 = [v11 textDetectionOptions];
-  [v13 setRecognitionLevel:1];
+  textDetectionOptions = [v11 textDetectionOptions];
+  [textDetectionOptions setRecognitionLevel:1];
 
-  [v11 setPreferredOutputLocale:v8];
+  [v11 setPreferredOutputLocale:localeCopy];
   v14 = VOTLogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -66,17 +66,17 @@
 
   if (AXIsInternalInstall() && ([MEMORY[0x1E6989890] sharedInstance], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "cameraSceneDescriberImageURL"), v16 = objc_claimAutoreleasedReturnValue(), v15, v16))
   {
-    v17 = [(AXMVoiceOverVisionEngine *)self->_visionEngine imageNode];
+    imageNode = [(AXMVoiceOverVisionEngine *)self->_visionEngine imageNode];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __84__AXCameraSceneDescriber_imageDescriptionForCurrentCameraScene_withPreferredLocale___block_invoke;
     v25[3] = &unk_1E812E650;
     v26 = v10;
-    v27 = v6;
+    v27 = sceneCopy;
     v25[4] = self;
     v18 = v10;
-    v19 = v6;
-    [v17 triggerWithImageURL:v16 options:v11 cacheKey:0 resultHandler:v25];
+    v19 = sceneCopy;
+    [imageNode triggerWithImageURL:v16 options:v11 cacheKey:0 resultHandler:v25];
   }
 
   else
@@ -88,10 +88,10 @@
     v21[3] = &unk_1E812E678;
     v21[4] = self;
     v23 = v10;
-    v24 = v6;
+    v24 = sceneCopy;
     v22 = v11;
     v19 = v10;
-    v16 = v6;
+    v16 = sceneCopy;
     [(AXCameraManager *)manager fetchCurrentCameraSceneBufferWithHandler:v21];
   }
 }
@@ -120,27 +120,27 @@ void __84__AXCameraSceneDescriber_imageDescriptionForCurrentCameraScene_withPref
   [v5 triggerWithImage:v6 options:v7 cacheKey:0 resultHandler:v8];
 }
 
-- (void)visionResultHandler:(id)a3 withFeatureDescriptionOptions:(id)a4 result:(id)a5 error:(id)a6
+- (void)visionResultHandler:(id)handler withFeatureDescriptionOptions:(id)options result:(id)result error:(id)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
+  handlerCopy = handler;
+  resultCopy = result;
+  errorCopy = error;
+  optionsCopy = options;
   v13 = VOTLogCommon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v10;
+    v24 = resultCopy;
     v25 = 2112;
-    v26 = v11;
+    v26 = errorCopy;
     _os_log_impl(&dword_1C0DFB000, v13, OS_LOG_TYPE_DEFAULT, "Got results: %@ error: %@", buf, 0x16u);
   }
 
-  v14 = [v10 detectedFeatureDescriptionWithOptions:v12];
+  v14 = [resultCopy detectedFeatureDescriptionWithOptions:optionsCopy];
 
-  v15 = [v10 detectedTextDescription];
-  if ([v15 length])
+  detectedTextDescription = [resultCopy detectedTextDescription];
+  if ([detectedTextDescription length])
   {
     v16 = AXUILocalizedStringForKey(@"DetectedText");
     v17 = AXCFormattedString();
@@ -153,9 +153,9 @@ void __84__AXCameraSceneDescriber_imageDescriptionForCurrentCameraScene_withPref
 
   if ([v14 length])
   {
-    v19 = [v10 captionTranslationLocale];
-    v20 = [v19 localeIdentifier];
-    v9[2](v9, v14, v20);
+    captionTranslationLocale = [resultCopy captionTranslationLocale];
+    localeIdentifier = [captionTranslationLocale localeIdentifier];
+    handlerCopy[2](handlerCopy, v14, localeIdentifier);
   }
 }
 

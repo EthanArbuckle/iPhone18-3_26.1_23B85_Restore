@@ -1,28 +1,28 @@
 @interface ARCoachingAnimationView
-- (ARCoachingAnimationView)initWithCoder:(id)a3;
-- (ARCoachingAnimationView)initWithFrame:(CGRect)a3;
+- (ARCoachingAnimationView)initWithCoder:(id)coder;
+- (ARCoachingAnimationView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (double)calcNextAnimationSwitchTime:(double)a3 forState:(unint64_t)a4;
+- (double)calcNextAnimationSwitchTime:(double)time forState:(unint64_t)state;
 - (void)clampCubeToQuarterRotation;
 - (void)killCoachingAnimation;
 - (void)layoutSubviews;
-- (void)setAnimationState:(int64_t)a3;
-- (void)startCoachingAnimation:(int64_t)a3;
-- (void)updateAlternatingPlanes:(double)a3;
-- (void)updateCubeRotation:(id)a3 motionTracker:(id)a4;
-- (void)updateForCurrentTime:(double)a3 timeDelta:(double)a4;
+- (void)setAnimationState:(int64_t)state;
+- (void)startCoachingAnimation:(int64_t)animation;
+- (void)updateAlternatingPlanes:(double)planes;
+- (void)updateCubeRotation:(id)rotation motionTracker:(id)tracker;
+- (void)updateForCurrentTime:(double)time timeDelta:(double)delta;
 - (void)updateMetalLayer;
-- (void)updateVerticalClamp:(double)a3;
-- (void)updateWithFrame:(id)a3 motionTracker:(id)a4;
+- (void)updateVerticalClamp:(double)clamp;
+- (void)updateWithFrame:(id)frame motionTracker:(id)tracker;
 @end
 
 @implementation ARCoachingAnimationView
 
-- (ARCoachingAnimationView)initWithFrame:(CGRect)a3
+- (ARCoachingAnimationView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ARCoachingAnimationView;
-  v3 = [(ARCoachingAnimationView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ARCoachingAnimationView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,11 +32,11 @@
   return v4;
 }
 
-- (ARCoachingAnimationView)initWithCoder:(id)a3
+- (ARCoachingAnimationView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ARCoachingAnimationView;
-  v3 = [(ARCoachingAnimationView *)&v6 initWithCoder:a3];
+  v3 = [(ARCoachingAnimationView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -46,30 +46,30 @@
   return v4;
 }
 
-- (void)setAnimationState:(int64_t)a3
+- (void)setAnimationState:(int64_t)state
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (self->_animationState == a3)
+  if (self->_animationState == state)
   {
     goto LABEL_26;
   }
 
-  self->_animationState = a3;
+  self->_animationState = state;
   if (self->_isDeactivating)
   {
     goto LABEL_26;
   }
 
-  v4 = 0;
-  if (a3 > 3)
+  stateCopy = 0;
+  if (state > 3)
   {
-    if (a3 <= 5)
+    if (state <= 5)
     {
-      if (a3 != 4)
+      if (state != 4)
       {
         self->_nextStateTime = -1.0;
-        v5 = [(ARCoachingRenderer *)self->_renderer state];
-        v4 = [v5 snapState];
+        state = [(ARCoachingRenderer *)self->_renderer state];
+        stateCopy = [state snapState];
 
         goto LABEL_25;
       }
@@ -77,9 +77,9 @@
       goto LABEL_20;
     }
 
-    if (a3 != 6)
+    if (state != 6)
     {
-      if (a3 != 7)
+      if (state != 7)
       {
         goto LABEL_25;
       }
@@ -109,7 +109,7 @@ LABEL_26:
           *buf = 138543874;
           v26 = v12;
           v27 = 2048;
-          v28 = self;
+          selfCopy2 = self;
           v29 = 2048;
           v30 = currentCoachingGoal;
           v14 = "%{public}@ <%p>: Trying to set animation state to geo tracking but geo tracking is not the current goal, goal is: %ld";
@@ -128,7 +128,7 @@ LABEL_32:
         *buf = 138543874;
         v26 = v12;
         v27 = 2048;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 2048;
         v30 = v23;
         v14 = "Error: %{public}@ <%p>: Trying to set animation state to geo tracking but geo tracking is not the current goal, goal is: %ld";
@@ -146,47 +146,47 @@ LABEL_32:
     goto LABEL_23;
   }
 
-  if (!a3)
+  if (!state)
   {
-    v4 = 1;
+    stateCopy = 1;
     goto LABEL_25;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
 LABEL_20:
-    v4 = a3;
+    stateCopy = state;
     goto LABEL_25;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
     goto LABEL_25;
   }
 
-  v6 = [(ARCoachingRenderer *)self->_renderer state];
-  v7 = [v6 snapState];
+  state2 = [(ARCoachingRenderer *)self->_renderer state];
+  snapState = [state2 snapState];
 
-  if (v7 == 4)
+  if (snapState == 4)
   {
     self->_nextStateTime = -1.0;
 LABEL_23:
-    v4 = 4;
+    stateCopy = 4;
     goto LABEL_25;
   }
 
-  v4 = 3;
+  stateCopy = 3;
 LABEL_25:
-  v18 = [(ARCoachingRenderer *)self->_renderer state];
-  v19 = [v18 snapState];
+  state3 = [(ARCoachingRenderer *)self->_renderer state];
+  snapState2 = [state3 snapState];
 
-  if (v19 == v4)
+  if (snapState2 == stateCopy)
   {
     goto LABEL_26;
   }
 
-  v24 = [(ARCoachingRenderer *)self->_renderer state];
-  [v24 setSnapState:v4];
+  state4 = [(ARCoachingRenderer *)self->_renderer state];
+  [state4 setSnapState:stateCopy];
   v21 = *MEMORY[0x277D85DE8];
 }
 
@@ -199,28 +199,28 @@ LABEL_25:
   return result;
 }
 
-- (void)startCoachingAnimation:(int64_t)a3
+- (void)startCoachingAnimation:(int64_t)animation
 {
-  self->_currentCoachingGoal = a3;
+  self->_currentCoachingGoal = animation;
   if (!self->_renderer)
   {
-    v5 = [MEMORY[0x277CE5378] sharedInstance];
-    v6 = [v5 device];
+    mEMORY[0x277CE5378] = [MEMORY[0x277CE5378] sharedInstance];
+    device = [mEMORY[0x277CE5378] device];
 
-    v7 = [MEMORY[0x277CD9F10] layer];
+    layer = [MEMORY[0x277CD9F10] layer];
     metalLayer = self->_metalLayer;
-    self->_metalLayer = v7;
+    self->_metalLayer = layer;
 
     [(CAMetalLayer *)self->_metalLayer setOpaque:0];
-    v9 = [[ARCoachingUpdateManager alloc] init:v6 metalLayer:self->_metalLayer];
+    v9 = [[ARCoachingUpdateManager alloc] init:device metalLayer:self->_metalLayer];
     updateManager = self->_updateManager;
     self->_updateManager = v9;
 
     [(ARCoachingUpdateManager *)self->_updateManager setDelegate:self];
     v11 = 8;
-    if (([v6 supportsTextureSampleCount:8] & 1) == 0)
+    if (([device supportsTextureSampleCount:8] & 1) == 0)
     {
-      if ([v6 supportsTextureSampleCount:4])
+      if ([device supportsTextureSampleCount:4])
       {
         v11 = 4;
       }
@@ -233,12 +233,12 @@ LABEL_25:
 
     v12 = ARCoachingLoadDeviceGlyph();
     v13 = off_278BCCE90;
-    if (a3 != 4)
+    if (animation != 4)
     {
       v13 = off_278BCCE98;
     }
 
-    v14 = [objc_alloc(*v13) initWithLayer:self->_metalLayer device:v6 pixelFormat:-[CAMetalLayer pixelFormat](self->_metalLayer sampleCount:"pixelFormat") deviceMaskImage:v11, v12];
+    v14 = [objc_alloc(*v13) initWithLayer:self->_metalLayer device:device pixelFormat:-[CAMetalLayer pixelFormat](self->_metalLayer sampleCount:"pixelFormat") deviceMaskImage:v11, v12];
     renderer = self->_renderer;
     self->_renderer = v14;
 
@@ -249,22 +249,22 @@ LABEL_25:
     v21[3] = &unk_278BCD4D0;
     v21[4] = self;
     [(ARCoachingRenderer *)v16 prepareWithCompletionHandler:v21];
-    v17 = [(ARCoachingAnimationView *)self layer];
-    [v17 addSublayer:self->_metalLayer];
+    layer2 = [(ARCoachingAnimationView *)self layer];
+    [layer2 addSublayer:self->_metalLayer];
 
     [(ARCoachingAnimationView *)self updateMetalLayer];
   }
 
   self->_cubeAngle = 0.0;
   [(ARCoachingRenderer *)self->_renderer setOrientationAngle:0.0];
-  v18 = [(ARCoachingRenderer *)self->_renderer state];
-  [v18 setIsVertical:a3 == 2];
+  state = [(ARCoachingRenderer *)self->_renderer state];
+  [state setIsVertical:animation == 2];
 
-  v19 = [(ARCoachingRenderer *)self->_renderer state];
-  [v19 setSnapState:1];
+  state2 = [(ARCoachingRenderer *)self->_renderer state];
+  [state2 setSnapState:1];
 
   v20 = 7;
-  if (a3 != 4)
+  if (animation != 4)
   {
     v20 = 0;
   }
@@ -354,9 +354,9 @@ LABEL_12:
   self->_metalLayer = 0;
 }
 
-- (void)updateWithFrame:(id)a3 motionTracker:(id)a4
+- (void)updateWithFrame:(id)frame motionTracker:(id)tracker
 {
-  [(ARCoachingAnimationView *)self updateCubeRotation:a3 motionTracker:a4];
+  [(ARCoachingAnimationView *)self updateCubeRotation:frame motionTracker:tracker];
   if (self->_isRotating || self->_wasRotating)
   {
     renderer = self->_renderer;
@@ -366,13 +366,13 @@ LABEL_12:
   }
 }
 
-- (void)updateCubeRotation:(id)a3 motionTracker:(id)a4
+- (void)updateCubeRotation:(id)rotation motionTracker:(id)tracker
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 camera];
-  [v8 viewMatrixForOrientation:{objc_msgSend(v7, "interfaceOrientation")}];
+  trackerCopy = tracker;
+  rotationCopy = rotation;
+  camera = [rotationCopy camera];
+  [camera viewMatrixForOrientation:{objc_msgSend(rotationCopy, "interfaceOrientation")}];
   v33 = v9;
   v34 = v10;
   v31 = v11;
@@ -383,17 +383,17 @@ LABEL_12:
   v15 = vzip1q_s32(v34, v32);
   v16 = vzip2q_s32(v34, v32);
   *self->_lastCameraRight = vmlaq_f32(vmlaq_f32(vmlaq_f32(vzip1q_s32(v13, v15), 0, vzip2q_s32(v13, v15)), 0, vzip1q_s32(v14, v16)), 0, vzip2q_s32(v14, v16));
-  v17 = [v7 camera];
+  camera2 = [rotationCopy camera];
 
-  [v17 transform];
+  [camera2 transform];
   *self->_lastCameraTranslation = v18;
 
   self->_wasRotating = self->_isRotating;
   if (self->_animationState == 4)
   {
-    v19 = [v6 isMoving];
-    self->_isRotating = v19;
-    if (v19)
+    isMoving = [trackerCopy isMoving];
+    self->_isRotating = isMoving;
+    if (isMoving)
     {
       if (self->_wasRotating)
       {
@@ -408,7 +408,7 @@ LABEL_12:
         *buf = 138543618;
         v36 = v22;
         v37 = 2048;
-        v38 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_23D3AE000, v20, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Coaching animation began rotation", buf, 0x16u);
       }
 
@@ -444,7 +444,7 @@ LABEL_7:
       *buf = 138543618;
       v36 = v29;
       v37 = 2048;
-      v38 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_23D3AE000, v27, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Coaching animation ended rotation", buf, 0x16u);
     }
 
@@ -467,10 +467,10 @@ LABEL_13:
 
   v5 = v4 * 1.57079633;
   self->_cubeAngle = v5;
-  v6 = [(ARCoachingRenderer *)self->_renderer state];
-  v7 = [v6 isVertical];
+  state = [(ARCoachingRenderer *)self->_renderer state];
+  isVertical = [state isVertical];
 
-  if (v7)
+  if (isVertical)
   {
     v10 = self->_cubeAngle;
     *v8.i64 = v10 / 1.57079633;
@@ -486,15 +486,15 @@ LABEL_13:
   }
 }
 
-- (double)calcNextAnimationSwitchTime:(double)a3 forState:(unint64_t)a4
+- (double)calcNextAnimationSwitchTime:(double)time forState:(unint64_t)state
 {
-  v5 = dbl_23D3DC190[a4 == 3];
+  v5 = dbl_23D3DC190[state == 3];
   [(ARCoachingRenderer *)self->_renderer currentAnimationTime];
   v7 = fmod(v6, 6.28318531);
-  return fmod(v5 - v7 + 6.28318531, 6.28318531) + a3;
+  return fmod(v5 - v7 + 6.28318531, 6.28318531) + time;
 }
 
-- (void)updateAlternatingPlanes:(double)a3
+- (void)updateAlternatingPlanes:(double)planes
 {
   if (self->_animationState != 5)
   {
@@ -504,18 +504,18 @@ LABEL_13:
   nextStateTime = self->_nextStateTime;
   if (nextStateTime < 0.0)
   {
-    v6 = [(ARCoachingRenderer *)self->_renderer state];
-    v7 = [v6 snapState];
+    state = [(ARCoachingRenderer *)self->_renderer state];
+    snapState = [state snapState];
 
-    if (v7 == 2)
+    if (snapState == 2)
     {
       v8 = 3;
     }
 
     else
     {
-      nextStateTime = a3;
-      if (v7 != 3)
+      nextStateTime = planes;
+      if (snapState != 3)
       {
 LABEL_8:
         self->_nextStateTime = nextStateTime;
@@ -525,102 +525,102 @@ LABEL_8:
       v8 = 2;
     }
 
-    [(ARCoachingAnimationView *)self calcNextAnimationSwitchTime:v8 forState:a3];
+    [(ARCoachingAnimationView *)self calcNextAnimationSwitchTime:v8 forState:planes];
     goto LABEL_8;
   }
 
 LABEL_9:
-  if (nextStateTime > a3)
+  if (nextStateTime > planes)
   {
     return;
   }
 
-  v9 = [(ARCoachingRenderer *)self->_renderer state];
-  v10 = [v9 snapState];
+  state2 = [(ARCoachingRenderer *)self->_renderer state];
+  snapState2 = [state2 snapState];
 
-  if (v10 == 3)
+  if (snapState2 == 3)
   {
-    [(ARCoachingAnimationView *)self calcNextAnimationSwitchTime:3 forState:a3];
-    v12 = 0;
+    [(ARCoachingAnimationView *)self calcNextAnimationSwitchTime:3 forState:planes];
+    isVertical = 0;
 LABEL_19:
     v13 = 2;
     goto LABEL_20;
   }
 
-  if (v10 == 2)
+  if (snapState2 == 2)
   {
     goto LABEL_13;
   }
 
-  v14 = [(ARCoachingRenderer *)self->_renderer state];
-  v12 = [v14 isVertical];
+  state3 = [(ARCoachingRenderer *)self->_renderer state];
+  isVertical = [state3 isVertical];
 
-  if (!v12)
+  if (!isVertical)
   {
     [(ARCoachingRenderer *)self->_renderer resetAnimationTime:2.84159265];
-    [(ARCoachingAnimationView *)self calcNextAnimationSwitchTime:3 forState:a3];
+    [(ARCoachingAnimationView *)self calcNextAnimationSwitchTime:3 forState:planes];
     goto LABEL_19;
   }
 
   if (self->_lastUpdateState == 4)
   {
-    v11 = a3 + 0.5;
-    v12 = 1;
+    v11 = planes + 0.5;
+    isVertical = 1;
     v13 = 4;
     goto LABEL_20;
   }
 
   [(ARCoachingRenderer *)self->_renderer resetAnimationTime:5.98318531];
 LABEL_13:
-  [(ARCoachingAnimationView *)self calcNextAnimationSwitchTime:2 forState:a3];
-  v12 = 1;
+  [(ARCoachingAnimationView *)self calcNextAnimationSwitchTime:2 forState:planes];
+  isVertical = 1;
   v13 = 3;
 LABEL_20:
   self->_nextStateTime = v11;
-  v15 = [(ARCoachingRenderer *)self->_renderer state];
-  [v15 setIsVertical:v12];
+  state4 = [(ARCoachingRenderer *)self->_renderer state];
+  [state4 setIsVertical:isVertical];
 
-  v16 = [(ARCoachingRenderer *)self->_renderer state];
-  [v16 setSnapState:v13];
+  state5 = [(ARCoachingRenderer *)self->_renderer state];
+  [state5 setSnapState:v13];
 }
 
-- (void)updateVerticalClamp:(double)a3
+- (void)updateVerticalClamp:(double)clamp
 {
   if (self->_animationState == 3)
   {
-    v5 = [(ARCoachingRenderer *)self->_renderer state];
-    v6 = [v5 snapState];
+    state = [(ARCoachingRenderer *)self->_renderer state];
+    snapState = [state snapState];
 
-    if (v6 != 3)
+    if (snapState != 3)
     {
       nextStateTime = self->_nextStateTime;
       if (nextStateTime < 0.0)
       {
-        v8 = [(ARCoachingRenderer *)self->_renderer state];
-        v9 = [v8 snapState];
+        state2 = [(ARCoachingRenderer *)self->_renderer state];
+        snapState2 = [state2 snapState];
 
-        nextStateTime = a3 + 0.5;
-        if (v9 != 4)
+        nextStateTime = clamp + 0.5;
+        if (snapState2 != 4)
         {
-          nextStateTime = a3;
+          nextStateTime = clamp;
         }
 
         self->_nextStateTime = nextStateTime;
       }
 
-      if (nextStateTime <= a3)
+      if (nextStateTime <= clamp)
       {
-        v10 = [(ARCoachingRenderer *)self->_renderer state];
-        [v10 setSnapState:3];
+        state3 = [(ARCoachingRenderer *)self->_renderer state];
+        [state3 setSnapState:3];
       }
     }
   }
 }
 
-- (void)updateForCurrentTime:(double)a3 timeDelta:(double)a4
+- (void)updateForCurrentTime:(double)time timeDelta:(double)delta
 {
-  [(ARCoachingAnimationView *)self updateAlternatingPlanes:a3, a4];
-  [(ARCoachingAnimationView *)self updateVerticalClamp:a3];
+  [(ARCoachingAnimationView *)self updateAlternatingPlanes:time, delta];
+  [(ARCoachingAnimationView *)self updateVerticalClamp:time];
   self->_lastUpdateState = self->_animationState;
 }
 
@@ -641,13 +641,13 @@ LABEL_20:
     [(CAMetalLayer *)self->_metalLayer setBounds:0.0, 0.0, v4, v5];
     [(CAMetalLayer *)self->_metalLayer bounds];
     v7 = v6;
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = v7 * v9;
     [(CAMetalLayer *)self->_metalLayer bounds];
     v12 = v11;
-    v13 = [MEMORY[0x277D759A0] mainScreen];
-    [v13 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     [(CAMetalLayer *)self->_metalLayer setDrawableSize:v10, v12 * v14];
 
     [(ARCoachingAnimationView *)self bounds];

@@ -1,13 +1,13 @@
 @interface PBBridgeResponsePerformanceMonitor
 + (id)shareMonitor;
-- (double)endMacroActivity:(id)a3 beginTime:(double)a4;
-- (void)_logLocalMeasurements:(BOOL)a3;
-- (void)_logMacroActivitiesLocal:(BOOL)a3;
+- (double)endMacroActivity:(id)activity beginTime:(double)time;
+- (void)_logLocalMeasurements:(BOOL)measurements;
+- (void)_logMacroActivitiesLocal:(BOOL)local;
 - (void)_logMeasurements;
 - (void)_logMilestones;
-- (void)addMeasurement:(double)a3 timeSent:(double)a4 activityType:(id)a5 activityIdentifier:(id)a6;
-- (void)addMilestone:(double)a3 activityType:(id)a4 activityIdentifier:(id)a5;
-- (void)beginMacroActivity:(id)a3 beginTime:(double)a4;
+- (void)addMeasurement:(double)measurement timeSent:(double)sent activityType:(id)type activityIdentifier:(id)identifier;
+- (void)addMilestone:(double)milestone activityType:(id)type activityIdentifier:(id)identifier;
+- (void)beginMacroActivity:(id)activity beginTime:(double)time;
 - (void)beginMonitorTransaction;
 - (void)endMonitorTransaction;
 @end
@@ -37,23 +37,23 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
 {
   if (!self->_measurements)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     measurements = self->_measurements;
-    self->_measurements = v3;
+    self->_measurements = array;
   }
 
   if (!self->_macroActivities)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     macroActivities = self->_macroActivities;
-    self->_macroActivities = v5;
+    self->_macroActivities = dictionary;
   }
 
   if (!self->_milestones)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     milestones = self->_milestones;
-    self->_milestones = v7;
+    self->_milestones = dictionary2;
 
     MEMORY[0x2821F96F8]();
   }
@@ -61,9 +61,9 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
 
 - (void)endMonitorTransaction
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   logBuffer = self->_logBuffer;
-  self->_logBuffer = v3;
+  self->_logBuffer = string;
 
   [(PBBridgeResponsePerformanceMonitor *)self _logMeasurements];
   [(PBBridgeResponsePerformanceMonitor *)self _logMacroActivitiesLocal:1];
@@ -84,11 +84,11 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
   [(NSMutableDictionary *)self->_milestones removeAllObjects];
 }
 
-- (void)_logLocalMeasurements:(BOOL)a3
+- (void)_logLocalMeasurements:(BOOL)measurements
 {
   v136 = *MEMORY[0x277D85DE8];
   v4 = @"Remote";
-  if (a3)
+  if (measurements)
   {
     v4 = @"Local";
     v5 = 8;
@@ -99,7 +99,7 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
     v5 = 32;
   }
 
-  if (a3)
+  if (measurements)
   {
     v6 = 40;
   }
@@ -148,8 +148,8 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
           }
 
           v35 = *(*(&v131 + 1) + 8 * i);
-          v36 = [v35 identifier];
-          v37 = [v129 objectForKey:v36];
+          identifier = [v35 identifier];
+          v37 = [v129 objectForKey:identifier];
 
           if (v37)
           {
@@ -178,20 +178,20 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
             ++v130;
           }
 
-          v46 = self;
+          selfCopy = self;
           logBuffer = self->_logBuffer;
-          v48 = [v35 activityType];
-          v49 = [v35 identifier];
+          activityType = [v35 activityType];
+          identifier2 = [v35 identifier];
           [v35 timeDelta];
           [v35 timeStarted];
-          PBBAddToBufferAndLog(logBuffer, @"\t%@, %@, %f, %f, %f", v50, v51, v52, v53, v54, v55, v48);
+          PBBAddToBufferAndLog(logBuffer, @"\t%@, %@, %f, %f, %f", v50, v51, v52, v53, v54, v55, activityType);
 
-          v56 = [v35 activityType];
-          LOBYTE(v49) = [v56 isEqualToString:@"PBBGMessageIDTellGizmoToUpdateProgressState"];
+          activityType2 = [v35 activityType];
+          LOBYTE(identifier2) = [activityType2 isEqualToString:@"PBBGMessageIDTellGizmoToUpdateProgressState"];
 
-          if (v49)
+          if (identifier2)
           {
-            self = v46;
+            self = selfCopy;
           }
 
           else
@@ -207,7 +207,7 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
               v59 = v61;
             }
 
-            self = v46;
+            self = selfCopy;
             v128 = v59;
             if (!v29 || ([v29 timeDelta], v58 < v62))
             {
@@ -290,11 +290,11 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
   }
 }
 
-- (void)_logMacroActivitiesLocal:(BOOL)a3
+- (void)_logMacroActivitiesLocal:(BOOL)local
 {
   v49 = *MEMORY[0x277D85DE8];
   v4 = @"Remote";
-  if (a3)
+  if (local)
   {
     v4 = @"Local";
     v5 = 24;
@@ -316,8 +316,8 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v20 = [v7 allValues];
-    v21 = [v20 countByEnumeratingWithState:&v44 objects:v48 count:16];
+    allValues = [v7 allValues];
+    v21 = [allValues countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v21)
     {
       v22 = v21;
@@ -328,17 +328,17 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
         {
           if (*v45 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(allValues);
           }
 
           v25 = *(*(&v44 + 1) + 8 * i);
           logBuffer = self->_logBuffer;
-          v27 = [v25 activityType];
+          activityType = [v25 activityType];
           [v25 timeDelta];
-          PBBAddToBufferAndLog(logBuffer, @"\t Activity: %@ time: %f", v28, v29, v30, v31, v32, v33, v27);
+          PBBAddToBufferAndLog(logBuffer, @"\t Activity: %@ time: %f", v28, v29, v30, v31, v32, v33, activityType);
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v44 objects:v48 count:16];
+        v22 = [allValues countByEnumeratingWithState:&v44 objects:v48 count:16];
       }
 
       while (v22);
@@ -362,8 +362,8 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v15 = [(NSMutableDictionary *)self->_milestones allValues];
-    v16 = [v15 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    allValues = [(NSMutableDictionary *)self->_milestones allValues];
+    v16 = [allValues countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v16)
     {
       v17 = v16;
@@ -374,18 +374,18 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
         {
           if (*v41 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allValues);
           }
 
           v20 = *(*(&v40 + 1) + 8 * i);
           logBuffer = self->_logBuffer;
-          v22 = [v20 activityType];
-          v23 = [v20 identifier];
+          activityType = [v20 activityType];
+          identifier = [v20 identifier];
           [v20 timeEnded];
-          PBBAddToBufferAndLog(logBuffer, @"\t Milestone: %@ (%@) time ended: %f", v24, v25, v26, v27, v28, v29, v22);
+          PBBAddToBufferAndLog(logBuffer, @"\t Milestone: %@ (%@) time ended: %f", v24, v25, v26, v27, v28, v29, activityType);
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        v17 = [allValues countByEnumeratingWithState:&v40 objects:v44 count:16];
       }
 
       while (v17);
@@ -397,64 +397,64 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMeasurement:(double)a3 timeSent:(double)a4 activityType:(id)a5 activityIdentifier:(id)a6
+- (void)addMeasurement:(double)measurement timeSent:(double)sent activityType:(id)type activityIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
+  identifierCopy = identifier;
+  typeCopy = type;
   [(PBBridgeResponsePerformanceMonitor *)self beginMonitorTransaction];
   v12 = objc_alloc_init(PBBProtoPerformanceResult);
-  [(PBBProtoPerformanceResult *)v12 setTimeDelta:a3];
-  [(PBBProtoPerformanceResult *)v12 setTimeStarted:a4];
-  [(PBBProtoPerformanceResult *)v12 setActivityType:v11];
+  [(PBBProtoPerformanceResult *)v12 setTimeDelta:measurement];
+  [(PBBProtoPerformanceResult *)v12 setTimeStarted:sent];
+  [(PBBProtoPerformanceResult *)v12 setActivityType:typeCopy];
 
-  [(PBBProtoPerformanceResult *)v12 setIdentifier:v10];
+  [(PBBProtoPerformanceResult *)v12 setIdentifier:identifierCopy];
   [(NSMutableArray *)self->_measurements addObject:v12];
 }
 
-- (void)addMilestone:(double)a3 activityType:(id)a4 activityIdentifier:(id)a5
+- (void)addMilestone:(double)milestone activityType:(id)type activityIdentifier:(id)identifier
 {
-  v10 = a4;
-  v8 = a5;
+  typeCopy = type;
+  identifierCopy = identifier;
   [(PBBridgeResponsePerformanceMonitor *)self beginMonitorTransaction];
-  if (v8)
+  if (identifierCopy)
   {
     v9 = objc_alloc_init(PBBProtoPerformanceResult);
-    [(PBBProtoPerformanceResult *)v9 setTimeEnded:a3];
-    [(PBBProtoPerformanceResult *)v9 setActivityType:v10];
-    [(PBBProtoPerformanceResult *)v9 setIdentifier:v8];
-    [(NSMutableDictionary *)self->_milestones setObject:v9 forKey:v8];
+    [(PBBProtoPerformanceResult *)v9 setTimeEnded:milestone];
+    [(PBBProtoPerformanceResult *)v9 setActivityType:typeCopy];
+    [(PBBProtoPerformanceResult *)v9 setIdentifier:identifierCopy];
+    [(NSMutableDictionary *)self->_milestones setObject:v9 forKey:identifierCopy];
   }
 }
 
-- (void)beginMacroActivity:(id)a3 beginTime:(double)a4
+- (void)beginMacroActivity:(id)activity beginTime:(double)time
 {
-  v7 = a3;
+  activityCopy = activity;
   [(PBBridgeResponsePerformanceMonitor *)self beginMonitorTransaction];
-  if (v7)
+  if (activityCopy)
   {
     v6 = objc_alloc_init(PBBProtoPerformanceResult);
-    [(PBBProtoPerformanceResult *)v6 setTimeStarted:a4];
-    [(PBBProtoPerformanceResult *)v6 setActivityType:v7];
+    [(PBBProtoPerformanceResult *)v6 setTimeStarted:time];
+    [(PBBProtoPerformanceResult *)v6 setActivityType:activityCopy];
     [(PBBProtoPerformanceResult *)v6 setIdentifier:&stru_286FA8098];
-    [(NSMutableDictionary *)self->_macroActivities setObject:v6 forKey:v7];
+    [(NSMutableDictionary *)self->_macroActivities setObject:v6 forKey:activityCopy];
   }
 }
 
-- (double)endMacroActivity:(id)a3 beginTime:(double)a4
+- (double)endMacroActivity:(id)activity beginTime:(double)time
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_macroActivities objectForKey:v6];
+  activityCopy = activity;
+  v7 = [(NSMutableDictionary *)self->_macroActivities objectForKey:activityCopy];
   v8 = v7;
   if (v7)
   {
-    [v7 setTimeEnded:a4];
+    [v7 setTimeEnded:time];
     [v8 timeEnded];
     v10 = v9;
     [v8 timeStarted];
     v12 = v10 - v11;
     [v8 setTimeDelta:v12];
-    [(NSMutableDictionary *)self->_macroActivities setObject:v8 forKey:v6];
+    [(NSMutableDictionary *)self->_macroActivities setObject:v8 forKey:activityCopy];
   }
 
   else
@@ -463,7 +463,7 @@ uint64_t __50__PBBridgeResponsePerformanceMonitor_shareMonitor__block_invoke()
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v6;
+      v17 = activityCopy;
       _os_log_impl(&dword_25DE64000, v13, OS_LOG_TYPE_DEFAULT, "Tried to end un-started Activity (%@)", &v16, 0xCu);
     }
 

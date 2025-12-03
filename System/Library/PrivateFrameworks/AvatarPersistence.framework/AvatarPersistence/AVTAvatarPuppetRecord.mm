@@ -1,24 +1,24 @@
 @interface AVTAvatarPuppetRecord
-+ (id)matchingIdentifierTest:(id)a3;
-- (AVTAvatarPuppetRecord)initWithCoder:(id)a3;
-- (AVTAvatarPuppetRecord)initWithPuppetName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)matchingIdentifierTest:(id)test;
+- (AVTAvatarPuppetRecord)initWithCoder:(id)coder;
+- (AVTAvatarPuppetRecord)initWithPuppetName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVTAvatarPuppetRecord
 
-+ (id)matchingIdentifierTest:(id)a3
++ (id)matchingIdentifierTest:(id)test
 {
-  v3 = a3;
+  testCopy = test;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__AVTAvatarPuppetRecord_matchingIdentifierTest___block_invoke;
   v7[3] = &unk_278CFA3E0;
-  v8 = v3;
-  v4 = v3;
+  v8 = testCopy;
+  v4 = testCopy;
   v5 = MEMORY[0x245CF3540](v7);
 
   return v5;
@@ -32,15 +32,15 @@ uint64_t __48__AVTAvatarPuppetRecord_matchingIdentifierTest___block_invoke(uint6
   return v4;
 }
 
-- (AVTAvatarPuppetRecord)initWithPuppetName:(id)a3
+- (AVTAvatarPuppetRecord)initWithPuppetName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = AVTAvatarPuppetRecord;
   v5 = [(AVTAvatarPuppetRecord *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     puppetName = v5->_puppetName;
     v5->_puppetName = v6;
   }
@@ -48,10 +48,10 @@ uint64_t __48__AVTAvatarPuppetRecord_matchingIdentifierTest___block_invoke(uint6
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -61,14 +61,14 @@ uint64_t __48__AVTAvatarPuppetRecord_matchingIdentifierTest___block_invoke(uint6
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(AVTAvatarPuppetRecord *)self identifier];
-      if (v6 || ([(AVTAvatarPuppetRecord *)v5 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      identifier = [(AVTAvatarPuppetRecord *)self identifier];
+      if (identifier || ([(AVTAvatarPuppetRecord *)equalCopy identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v7 = [(AVTAvatarPuppetRecord *)self identifier];
-        v8 = [(AVTAvatarPuppetRecord *)v5 identifier];
-        v9 = [v7 isEqual:v8];
+        identifier2 = [(AVTAvatarPuppetRecord *)self identifier];
+        identifier3 = [(AVTAvatarPuppetRecord *)equalCopy identifier];
+        v9 = [identifier2 isEqual:identifier3];
 
-        if (v6)
+        if (identifier)
         {
 LABEL_11:
 
@@ -94,33 +94,33 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v2 = [(AVTAvatarPuppetRecord *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(AVTAvatarPuppetRecord *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (AVTAvatarPuppetRecord)initWithCoder:(id)a3
+- (AVTAvatarPuppetRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   v6 = [(AVTAvatarPuppetRecord *)self initWithPuppetName:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AVTAvatarPuppetRecord *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(AVTAvatarPuppetRecord *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVTAvatarPuppetRecord alloc];
-  v5 = [(AVTAvatarPuppetRecord *)self puppetName];
-  v6 = [(AVTAvatarPuppetRecord *)v4 initWithPuppetName:v5];
+  puppetName = [(AVTAvatarPuppetRecord *)self puppetName];
+  v6 = [(AVTAvatarPuppetRecord *)v4 initWithPuppetName:puppetName];
 
   return v6;
 }

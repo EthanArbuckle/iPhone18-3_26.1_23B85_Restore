@@ -1,23 +1,23 @@
 @interface VUILibrarySeasonViewModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)identifier;
-- (VUILibrarySeasonViewModel)initWithSeasonIdentifier:(id)a3 type:(unint64_t)a4;
+- (VUILibrarySeasonViewModel)initWithSeasonIdentifier:(id)identifier type:(unint64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation VUILibrarySeasonViewModel
 
-- (VUILibrarySeasonViewModel)initWithSeasonIdentifier:(id)a3 type:(unint64_t)a4
+- (VUILibrarySeasonViewModel)initWithSeasonIdentifier:(id)identifier type:(unint64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = VUILibrarySeasonViewModel;
   v8 = [(VUILibrarySeasonViewModel *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_seasonIdentifier, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_seasonIdentifier, identifier);
+    v9->_type = type;
   }
 
   return v9;
@@ -27,8 +27,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(VUILibrarySeasonViewModel *)self seasonIdentifier];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "hash")}];
+  seasonIdentifier = [(VUILibrarySeasonViewModel *)self seasonIdentifier];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(seasonIdentifier, "hash")}];
   v7 = [v3 stringWithFormat:@"%@-%lu", v6, -[VUILibrarySeasonViewModel type](self, "type")];
 
   return v7;
@@ -36,34 +36,34 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUILibrarySeasonViewModel *)self type];
-  v4 = [(VUILibrarySeasonViewModel *)self seasonIdentifier];
-  v5 = [v4 hash];
+  type = [(VUILibrarySeasonViewModel *)self type];
+  seasonIdentifier = [(VUILibrarySeasonViewModel *)self seasonIdentifier];
+  v5 = [seasonIdentifier hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(VUILibrarySeasonViewModel *)self seasonIdentifier];
-        v8 = [(VUILibrarySeasonViewModel *)v6 seasonIdentifier];
-        v9 = v7;
-        v10 = v8;
+        seasonIdentifier = [(VUILibrarySeasonViewModel *)self seasonIdentifier];
+        seasonIdentifier2 = [(VUILibrarySeasonViewModel *)v6 seasonIdentifier];
+        v9 = seasonIdentifier;
+        v10 = seasonIdentifier2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -87,8 +87,8 @@ LABEL_14:
           }
         }
 
-        v14 = [(VUILibrarySeasonViewModel *)self type];
-        v13 = v14 == [(VUILibrarySeasonViewModel *)v6 type];
+        type = [(VUILibrarySeasonViewModel *)self type];
+        v13 = type == [(VUILibrarySeasonViewModel *)v6 type];
 LABEL_15:
 
         goto LABEL_16;

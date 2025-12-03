@@ -1,24 +1,24 @@
 @interface PaddingLabel
 - (CGSize)intrinsicContentSize;
-- (_TtC16MagnifierSupport12PaddingLabel)initWithFrame:(CGRect)a3;
-- (void)drawTextInRect:(CGRect)a3;
+- (_TtC16MagnifierSupport12PaddingLabel)initWithFrame:(CGRect)frame;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation PaddingLabel
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_257E55F30(x, y, width, height);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_257E56084();
   v5 = v4;
 
@@ -29,12 +29,12 @@
   return result;
 }
 
-- (_TtC16MagnifierSupport12PaddingLabel)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport12PaddingLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport12PaddingLabel_topInset) = 0x4014000000000000;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport12PaddingLabel_bottomInset) = 0x4014000000000000;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport12PaddingLabel_leftInset) = 0x4014000000000000;

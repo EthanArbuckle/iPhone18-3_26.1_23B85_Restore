@@ -1,17 +1,17 @@
 @interface MastheadTitleLabel
 - (NSString)accessibilityLabel;
-- (_TtC7NewsUI218MastheadTitleLabel)initWithCoder:(id)a3;
-- (_TtC7NewsUI218MastheadTitleLabel)initWithFrame:(CGRect)a3;
+- (_TtC7NewsUI218MastheadTitleLabel)initWithCoder:(id)coder;
+- (_TtC7NewsUI218MastheadTitleLabel)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MastheadTitleLabel
 
-- (_TtC7NewsUI218MastheadTitleLabel)initWithFrame:(CGRect)a3
+- (_TtC7NewsUI218MastheadTitleLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7NewsUI218MastheadTitleLabel_model) = 0xF000000000000007;
   v9 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC7NewsUI218MastheadTitleLabel_cachedAccessibilityLabel);
@@ -22,7 +22,7 @@
   return [(MastheadTitleLabel *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7NewsUI218MastheadTitleLabel)initWithCoder:(id)a3
+- (_TtC7NewsUI218MastheadTitleLabel)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7NewsUI218MastheadTitleLabel_model) = 0xF000000000000007;
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC7NewsUI218MastheadTitleLabel_cachedAccessibilityLabel);
@@ -35,7 +35,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_218DBAC78();
   v4 = v3;
 

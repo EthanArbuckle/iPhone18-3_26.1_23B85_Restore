@@ -1,29 +1,29 @@
 @interface PNPersonDeduperSocialGroupComplementStep
-- (BOOL)isPersonSimilar:(id)a3 withOtherPerson:(id)a4 withDistance:(float)a5 minAgeType:(unsigned __int16)a6;
-- (void)dedupePersons:(id)a3 withOtherPersons:(id)a4 updateBlock:(id)a5 resultBlock:(id)a6;
+- (BOOL)isPersonSimilar:(id)similar withOtherPerson:(id)person withDistance:(float)distance minAgeType:(unsigned __int16)type;
+- (void)dedupePersons:(id)persons withOtherPersons:(id)otherPersons updateBlock:(id)block resultBlock:(id)resultBlock;
 @end
 
 @implementation PNPersonDeduperSocialGroupComplementStep
 
-- (void)dedupePersons:(id)a3 withOtherPersons:(id)a4 updateBlock:(id)a5 resultBlock:(id)a6
+- (void)dedupePersons:(id)persons withOtherPersons:(id)otherPersons updateBlock:(id)block resultBlock:(id)resultBlock
 {
   v138 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  personsCopy = persons;
+  otherPersonsCopy = otherPersons;
+  blockCopy = block;
+  resultBlockCopy = resultBlock;
+  if (personsCopy)
   {
-    if (v12)
+    if (otherPersonsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_78:
-    v79 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v79 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupComplementStep.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"otherPersons"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupComplementStep.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"otherPersons"}];
 
-    if (v13)
+    if (blockCopy)
     {
       goto LABEL_4;
     }
@@ -31,57 +31,57 @@ LABEL_78:
     goto LABEL_79;
   }
 
-  v78 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v78 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupComplementStep.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"persons"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupComplementStep.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"persons"}];
 
-  if (!v12)
+  if (!otherPersonsCopy)
   {
     goto LABEL_78;
   }
 
 LABEL_3:
-  if (v13)
+  if (blockCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_79:
-  v80 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v80 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupComplementStep.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupComplementStep.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"updateBlock"}];
 
 LABEL_4:
-  v83 = v14;
-  if (!v14)
+  v83 = resultBlockCopy;
+  if (!resultBlockCopy)
   {
-    v81 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v81 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupComplementStep.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"resultBlock"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PNPersonDeduperSocialGroupComplementStep.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"resultBlock"}];
   }
 
-  v85 = v11;
-  v15 = [v11 mutableCopy];
-  [v15 unionSet:v12];
-  v16 = [(PNPersonDeduperStep *)self delegate];
-  v17 = [(PNPersonDeduperStep *)self personClusterManager];
-  v88 = [v16 performSocialGroupsIdentifiersWithPersonClusterManager:v17 forPersons:v15 overTheYearsComputation:0 updateBlock:v13];
+  v85 = personsCopy;
+  v15 = [personsCopy mutableCopy];
+  [v15 unionSet:otherPersonsCopy];
+  delegate = [(PNPersonDeduperStep *)self delegate];
+  personClusterManager = [(PNPersonDeduperStep *)self personClusterManager];
+  v88 = [delegate performSocialGroupsIdentifiersWithPersonClusterManager:personClusterManager forPersons:v15 overTheYearsComputation:0 updateBlock:blockCopy];
 
-  v18 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
   v131 = 0u;
   v19 = v15;
-  v102 = self;
-  v103 = v13;
+  selfCopy = self;
+  v103 = blockCopy;
   v82 = [v19 countByEnumeratingWithState:&v128 objects:v137 count:16];
   v87 = v19;
   if (v82)
   {
     v84 = *v129;
-    v90 = v12;
+    v90 = otherPersonsCopy;
     while (2)
     {
       v20 = 0;
-      v21 = v13;
+      v21 = blockCopy;
       do
       {
         if (*v129 != v84)
@@ -94,18 +94,18 @@ LABEL_4:
         if ([(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:v21])
         {
 LABEL_72:
-          v13 = v21;
+          blockCopy = v21;
           objc_autoreleasePoolPop(v23);
           v59 = v19;
-          v12 = v90;
+          otherPersonsCopy = v90;
           goto LABEL_73;
         }
 
         v89 = v23;
         v86 = v20;
         v24 = MEMORY[0x1E695DFA8];
-        v25 = [v22 localIdentifier];
-        obj = [v24 setWithObject:v25];
+        localIdentifier = [v22 localIdentifier];
+        obj = [v24 setWithObject:localIdentifier];
 
         v126 = 0u;
         v127 = 0u;
@@ -130,14 +130,14 @@ LABEL_72:
               v32 = *(*(&v124 + 1) + 8 * i);
               if (v32 != v28)
               {
-                v33 = [v28 backingAssetIdentifiers];
-                v34 = [v32 backingAssetIdentifiers];
-                v35 = [v33 intersectsSet:v34];
+                backingAssetIdentifiers = [v28 backingAssetIdentifiers];
+                backingAssetIdentifiers2 = [v32 backingAssetIdentifiers];
+                v35 = [backingAssetIdentifiers intersectsSet:backingAssetIdentifiers2];
 
                 if (v35)
                 {
-                  v36 = [v32 localIdentifier];
-                  [obj addObject:v36];
+                  localIdentifier2 = [v32 localIdentifier];
+                  [obj addObject:localIdentifier2];
                 }
               }
             }
@@ -150,7 +150,7 @@ LABEL_72:
 
         v98 = v28;
 
-        self = v102;
+        self = selfCopy;
         v21 = v103;
         if ([obj count])
         {
@@ -199,7 +199,7 @@ LABEL_72:
                   if ([v44 count] >= v47)
                   {
                     v100 = v41;
-                    v48 = [v98 localIdentifier];
+                    localIdentifier3 = [v98 localIdentifier];
                     v49 = [v42 mutableCopy];
                     [v49 minusSet:v44];
                     v118 = 0u;
@@ -223,23 +223,23 @@ LABEL_72:
                           }
 
                           v56 = *(*(&v116 + 1) + 8 * j);
-                          v57 = [v18 objectForKeyedSubscript:v48];
+                          v57 = [dictionary objectForKeyedSubscript:localIdentifier3];
                           if (!v57)
                           {
                             v57 = [MEMORY[0x1E695DFA8] set];
-                            [v18 setObject:v57 forKeyedSubscript:v48];
+                            [dictionary setObject:v57 forKeyedSubscript:localIdentifier3];
                           }
 
                           [v57 addObject:v56];
-                          v58 = [v18 objectForKeyedSubscript:v56];
+                          v58 = [dictionary objectForKeyedSubscript:v56];
 
                           if (!v58)
                           {
                             v58 = [MEMORY[0x1E695DFA8] set];
-                            [v18 setObject:v58 forKeyedSubscript:v56];
+                            [dictionary setObject:v58 forKeyedSubscript:v56];
                           }
 
-                          [v58 addObject:v48];
+                          [v58 addObject:localIdentifier3];
                         }
 
                         v53 = [v50 countByEnumeratingWithState:&v116 objects:v134 count:16];
@@ -248,7 +248,7 @@ LABEL_72:
                       while (v53);
                     }
 
-                    self = v102;
+                    self = selfCopy;
                     v44 = v52;
                     v21 = v103;
                     v40 = v92;
@@ -280,8 +280,8 @@ LABEL_72:
       }
 
       while (v86 + 1 != v82);
-      v13 = v21;
-      v12 = v90;
+      blockCopy = v21;
+      otherPersonsCopy = v90;
       v82 = [v87 countByEnumeratingWithState:&v128 objects:v137 count:16];
       if (v82)
       {
@@ -292,7 +292,7 @@ LABEL_72:
     }
   }
 
-  v59 = [v12 mutableCopy];
+  v59 = [otherPersonsCopy mutableCopy];
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
@@ -302,7 +302,7 @@ LABEL_72:
   if (v95)
   {
     v61 = *v113;
-    v91 = v12;
+    v91 = otherPersonsCopy;
     v93 = *v113;
     v99 = v60;
     v101 = v59;
@@ -340,27 +340,27 @@ LABEL_72:
               }
 
               v68 = *(*(&v108 + 1) + 8 * k);
-              if ([(PNPersonDeduperStep *)self shouldStop]|| [(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:v13])
+              if ([(PNPersonDeduperStep *)self shouldStop]|| [(PNPersonDeduperStep *)self shouldStopWithUpdateBlock:blockCopy])
               {
 
                 objc_autoreleasePoolPop(contexta);
-                v12 = v91;
+                otherPersonsCopy = v91;
                 v74 = v99;
                 v59 = v101;
                 goto LABEL_75;
               }
 
-              v69 = [v63 localIdentifier];
-              v70 = [v18 objectForKeyedSubscript:v69];
-              v71 = [v68 localIdentifier];
-              v72 = [v70 containsObject:v71];
+              localIdentifier4 = [v63 localIdentifier];
+              v70 = [dictionary objectForKeyedSubscript:localIdentifier4];
+              localIdentifier5 = [v68 localIdentifier];
+              v72 = [v70 containsObject:localIdentifier5];
 
-              v13 = v103;
-              self = v102;
+              blockCopy = v103;
+              self = selfCopy;
               if (v72)
               {
                 v73 = objc_autoreleasePoolPush();
-                [(PNPersonDeduperStep *)v102 addPotentialMergeCandidateForPerson:v63 withOtherPerson:v68 updateBlock:v103];
+                [(PNPersonDeduperStep *)selfCopy addPotentialMergeCandidateForPerson:v63 withOtherPerson:v68 updateBlock:v103];
                 objc_autoreleasePoolPop(v73);
               }
             }
@@ -380,7 +380,7 @@ LABEL_72:
 
         objc_autoreleasePoolPop(contexta);
         v62 = v97 + 1;
-        v12 = v91;
+        otherPersonsCopy = v91;
         v61 = v93;
       }
 
@@ -399,9 +399,9 @@ LABEL_73:
 
   else
   {
-    v74 = [(PNPersonDeduperStep *)self mergeCandidatePersonsWithUpdateBlock:v13];
+    v74 = [(PNPersonDeduperStep *)self mergeCandidatePersonsWithUpdateBlock:blockCopy];
     v75 = [v60 mutableCopy];
-    v76 = [v12 mutableCopy];
+    v76 = [otherPersonsCopy mutableCopy];
     [v75 minusSet:v74];
     [v76 minusSet:v74];
     v83[2](v83, v75, v76);
@@ -412,29 +412,29 @@ LABEL_75:
   }
 }
 
-- (BOOL)isPersonSimilar:(id)a3 withOtherPerson:(id)a4 withDistance:(float)a5 minAgeType:(unsigned __int16)a6
+- (BOOL)isPersonSimilar:(id)similar withOtherPerson:(id)person withDistance:(float)distance minAgeType:(unsigned __int16)type
 {
-  v6 = a6;
-  v9 = [(PNPersonDeduperStep *)self profile:a3];
-  v10 = [v9 shouldRelaxThreshold];
-  v11 = [(PNPersonDeduperStep *)self profile];
-  v12 = v11;
-  if (v10)
+  typeCopy = type;
+  v9 = [(PNPersonDeduperStep *)self profile:similar];
+  shouldRelaxThreshold = [v9 shouldRelaxThreshold];
+  profile = [(PNPersonDeduperStep *)self profile];
+  v12 = profile;
+  if (shouldRelaxThreshold)
   {
-    [v11 fuzzyMaximumDistance];
+    [profile fuzzyMaximumDistance];
   }
 
   else
   {
-    [v11 normalMaximumDistance];
+    [profile normalMaximumDistance];
   }
 
   v14 = v13;
 
   *&v14 = v14;
   LODWORD(v15) = LODWORD(v14);
-  [(PNPersonDeduperStep *)self adjustedThreshold:v6 forMinAgeType:v15];
-  return v16 > a5;
+  [(PNPersonDeduperStep *)self adjustedThreshold:typeCopy forMinAgeType:v15];
+  return v16 > distance;
 }
 
 @end

@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&OrgApacheLuceneCodecsCompressingCompressionMode_FAST_, [OrgApacheLuceneCodecsCompressingCompressionMode__1 alloc]);
     JreStrongAssignAndConsume(&OrgApacheLuceneCodecsCompressingCompressionMode_HIGH_COMPRESSION_, [OrgApacheLuceneCodecsCompressingCompressionMode__2 alloc]);

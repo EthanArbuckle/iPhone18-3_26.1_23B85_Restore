@@ -1,22 +1,22 @@
 @interface VCPMADSceneAssetProcessingTask
-- (BOOL)run:(id *)a3;
-- (VCPMADSceneAssetProcessingTask)initWithLocalIdentifiers:(id)a3 fromPhotoLibraryWithURL:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7;
-- (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5;
+- (BOOL)run:(id *)run;
+- (VCPMADSceneAssetProcessingTask)initWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation VCPMADSceneAssetProcessingTask
 
-- (VCPMADSceneAssetProcessingTask)initWithLocalIdentifiers:(id)a3 fromPhotoLibraryWithURL:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7
+- (VCPMADSceneAssetProcessingTask)initWithLocalIdentifiers:(id)identifiers fromPhotoLibraryWithURL:(id)l cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v25.receiver = self;
   v25.super_class = VCPMADSceneAssetProcessingTask;
-  v17 = [(VCPMADPhotoAssetProcessingTask *)&v25 initWithLocalIdentifiers:v12 fromPhotoLibraryWithURL:v13 cancelBlock:v14 progressHandler:v15 completionHandler:v16];
+  v17 = [(VCPMADPhotoAssetProcessingTask *)&v25 initWithLocalIdentifiers:identifiersCopy fromPhotoLibraryWithURL:lCopy cancelBlock:blockCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
   if (v17 && (+[VCPPreAnalysisRequests asyncCacheRequestIdealDimension](VCPPreAnalysisRequests, "asyncCacheRequestIdealDimension"), +[VCPPreAnalysisRequests asyncLoadSharedPhotoFormatsObjects], v18 = objc_alloc_init(MADSceneResources), v19 = *(v17 + 52), *(v17 + 52) = v18, v19, !*(v17 + 52)))
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -54,21 +54,21 @@
   [(VCPMADSceneAssetProcessingTask *)&v4 dealloc];
 }
 
-- (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5
+- (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block
 {
-  v5 = [VCPMADSceneAssetBatch batchWithAnalysisDatabase:a3 allowDownload:a4 cancelBlock:a5 resources:*(&self->super._progressHandler + 4)];
+  v5 = [VCPMADSceneAssetBatch batchWithAnalysisDatabase:database allowDownload:download cancelBlock:block resources:*(&self->super._progressHandler + 4)];
   [v5 setAllowBeforeMigration:{objc_msgSend(objc_opt_class(), "allowBeforeMigration")}];
 
   return v5;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if ((+[PFSceneTaxonomy mad_isExpectedTaxonomy]& 1) != 0)
   {
     v11.receiver = self;
     v11.super_class = VCPMADSceneAssetProcessingTask;
-    return [(VCPMADPhotoAssetProcessingTask *)&v11 run:a3];
+    return [(VCPMADPhotoAssetProcessingTask *)&v11 run:run];
   }
 
   else
@@ -78,11 +78,11 @@
     v13 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v8 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v7];
-    v9 = *a3;
-    *a3 = v8;
+    v9 = *run;
+    *run = v8;
 
-    v10 = [(VCPMADSceneAssetProcessingTask *)self completionHandler];
-    (v10)[2](v10, 0, *a3);
+    completionHandler = [(VCPMADSceneAssetProcessingTask *)self completionHandler];
+    (completionHandler)[2](completionHandler, 0, *run);
 
     return 0;
   }

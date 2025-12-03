@@ -8,11 +8,11 @@
 {
   v3 = objc_alloc_init(NSMutableString);
   [v3 appendFormat:@"BCAugmentedExperiencePoint\n"];
-  v4 = [(BCAugmentedExperiencePoint *)self experiencePoint];
-  [v3 appendFormat:@"        experiencePoint . . . : %@\n", v4];
+  experiencePoint = [(BCAugmentedExperiencePoint *)self experiencePoint];
+  [v3 appendFormat:@"        experiencePoint . . . : %@\n", experiencePoint];
 
-  v5 = [(BCAugmentedExperiencePoint *)self validRange];
-  [v3 appendFormat:@"        validRange  . . . . . : %@", v5];
+  validRange = [(BCAugmentedExperiencePoint *)self validRange];
+  [v3 appendFormat:@"        validRange  . . . . . : %@", validRange];
 
   return v3;
 }

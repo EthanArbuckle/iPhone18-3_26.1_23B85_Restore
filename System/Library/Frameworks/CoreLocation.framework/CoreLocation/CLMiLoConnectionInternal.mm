@@ -1,51 +1,51 @@
 @interface CLMiLoConnectionInternal
-+ (BOOL)_isKnownNonActionableMessage:(void *)a3;
-- (CLMiLoConnectionInternal)initWithInfo:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
-- (void)_connectServiceWithIdentifier:(id)a3;
-- (void)_createCustomLocationOfInterestAtCurrentLocationWithRequestIdentifier:(id)a3;
-- (void)_createServiceWithServiceType:(unint64_t)a3 locationTypes:(id)a4;
-- (void)_deleteServiceWithIdentifier:(id)a3;
-- (void)_disconnectServiceWithIdentifier:(id)a3;
-- (void)_handleDaemonEvent:(id)a3;
-- (void)_handleDebugResponseEvent:(id)a3;
-- (void)_handleGenericEvent:(id)a3;
-- (void)_handleMiLoConnectionStatusEvent:(id)a3;
-- (void)_handlePredictionUpdateEvent:(id)a3;
++ (BOOL)_isKnownNonActionableMessage:(void *)message;
+- (CLMiLoConnectionInternal)initWithInfo:(id)info delegate:(id)delegate delegateQueue:(id)queue;
+- (void)_connectServiceWithIdentifier:(id)identifier;
+- (void)_createCustomLocationOfInterestAtCurrentLocationWithRequestIdentifier:(id)identifier;
+- (void)_createServiceWithServiceType:(unint64_t)type locationTypes:(id)types;
+- (void)_deleteServiceWithIdentifier:(id)identifier;
+- (void)_disconnectServiceWithIdentifier:(id)identifier;
+- (void)_handleDaemonEvent:(id)event;
+- (void)_handleDebugResponseEvent:(id)event;
+- (void)_handleGenericEvent:(id)event;
+- (void)_handleMiLoConnectionStatusEvent:(id)event;
+- (void)_handlePredictionUpdateEvent:(id)event;
 - (void)_invalidateLocationClient;
-- (void)_labelEventWithRequestIdentifier:(id)a3 placeIdentifier:(id)a4 observationIdentifier:(id)a5;
-- (void)_labelEventsWithStartDate:(id)a3 endDate:(id)a4 placeIdentifier:(id)a5 requestIdentifier:(id)a6;
-- (void)_notifyClientConnectServiceDidFailWithServiceIdentifier:(id)a3 withError:(id)a4;
-- (void)_notifyClientCreateServiceDidFailWithError:(id)a3;
-- (void)_notifyClientDeleteServiceDidFailWithServiceIdentifier:(id)a3 withError:(id)a4;
-- (void)_notifyClientDidCompleteClientRequest:(id)a3 withError:(id)a4;
-- (void)_notifyClientDidCreateServiceWithServiceIdentifier:(id)a3;
-- (void)_notifyClientDidDeleteServiceWithServiceIdentifier:(id)a3;
-- (void)_notifyClientDidExportDatabaseWithResponse:(id)a3;
-- (void)_notifyClientDidFindMyServicesWithServiceDescriptors:(id)a3;
-- (void)_notifyClientDidUpdateMiLoConnectionStatus:(id)a3;
-- (void)_notifyClientDidUpdatePrediction:(id)a3;
-- (void)_notifyClientDidUpdateServiceStatus:(id)a3;
-- (void)_notifyClientDisconnectServiceDidFailWithError:(id)a3 serviceIdentifier:(id)a4;
-- (void)_notifyClientOfGenericEventResponse:(id)a3;
-- (void)_notifyClientQueryMiLoConnectionStatusDidFailWithError:(id)a3;
-- (void)_notifyClientQueryServiceDidFailWithError:(id)a3;
-- (void)_notifyClientRecordingMetaInfo:(id)a3;
-- (void)_purgeAllMiLoDataWithRequestIdentifier:(id)a3;
+- (void)_labelEventWithRequestIdentifier:(id)identifier placeIdentifier:(id)placeIdentifier observationIdentifier:(id)observationIdentifier;
+- (void)_labelEventsWithStartDate:(id)date endDate:(id)endDate placeIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier;
+- (void)_notifyClientConnectServiceDidFailWithServiceIdentifier:(id)identifier withError:(id)error;
+- (void)_notifyClientCreateServiceDidFailWithError:(id)error;
+- (void)_notifyClientDeleteServiceDidFailWithServiceIdentifier:(id)identifier withError:(id)error;
+- (void)_notifyClientDidCompleteClientRequest:(id)request withError:(id)error;
+- (void)_notifyClientDidCreateServiceWithServiceIdentifier:(id)identifier;
+- (void)_notifyClientDidDeleteServiceWithServiceIdentifier:(id)identifier;
+- (void)_notifyClientDidExportDatabaseWithResponse:(id)response;
+- (void)_notifyClientDidFindMyServicesWithServiceDescriptors:(id)descriptors;
+- (void)_notifyClientDidUpdateMiLoConnectionStatus:(id)status;
+- (void)_notifyClientDidUpdatePrediction:(id)prediction;
+- (void)_notifyClientDidUpdateServiceStatus:(id)status;
+- (void)_notifyClientDisconnectServiceDidFailWithError:(id)error serviceIdentifier:(id)identifier;
+- (void)_notifyClientOfGenericEventResponse:(id)response;
+- (void)_notifyClientQueryMiLoConnectionStatusDidFailWithError:(id)error;
+- (void)_notifyClientQueryServiceDidFailWithError:(id)error;
+- (void)_notifyClientRecordingMetaInfo:(id)info;
+- (void)_purgeAllMiLoDataWithRequestIdentifier:(id)identifier;
 - (void)_queryMiLoConnectionStatus;
 - (void)_queryMyServices;
 - (void)_registerForMiLoConnectionStatusEvents;
 - (void)_registerForMiLoDebugResponseEvents;
 - (void)_registerForMiLoGenericEvents;
 - (void)_registerForMiLoServiceEvents;
-- (void)_removeCustomLocationOfInterestFromMonitoringWithIdentifier:(id)a3 withRequestIdentifier:(id)a4;
-- (void)_removeLabels:(id)a3 withRequestIdentifier:(id)a4;
-- (void)_requestExportDatabaseWithRequestIdentifier:(id)a3;
-- (void)_requestMiLoPredictionWithRequestIdentifier:(id)a3;
-- (void)_requestModelLearningWithRequestIdentifier:(id)a3;
-- (void)_requestObservationWithRequestIdentifier:(id)a3 placeIdentifier:(id)a4;
+- (void)_removeCustomLocationOfInterestFromMonitoringWithIdentifier:(id)identifier withRequestIdentifier:(id)requestIdentifier;
+- (void)_removeLabels:(id)labels withRequestIdentifier:(id)identifier;
+- (void)_requestExportDatabaseWithRequestIdentifier:(id)identifier;
+- (void)_requestMiLoPredictionWithRequestIdentifier:(id)identifier;
+- (void)_requestModelLearningWithRequestIdentifier:(id)identifier;
+- (void)_requestObservationWithRequestIdentifier:(id)identifier placeIdentifier:(id)placeIdentifier;
 - (void)_setHandlerForMiLoPredictionEvents;
-- (void)_startUpdatingMicroLocationWithConfiguration:(id)a3 withRequestIdentifier:(id)a4;
-- (void)_stopUpdatingMicroLocationWithRequestIdentifier:(id)a3;
+- (void)_startUpdatingMicroLocationWithConfiguration:(id)configuration withRequestIdentifier:(id)identifier;
+- (void)_stopUpdatingMicroLocationWithRequestIdentifier:(id)identifier;
 - (void)_teardown;
 - (void)_unregisterForMiLoConnectionStatusEvents;
 - (void)_unregisterForMiLoDebugResponseEvents;
@@ -57,7 +57,7 @@
 
 @implementation CLMiLoConnectionInternal
 
-- (CLMiLoConnectionInternal)initWithInfo:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (CLMiLoConnectionInternal)initWithInfo:(id)info delegate:(id)delegate delegateQueue:(id)queue
 {
   v12.receiver = self;
   v12.super_class = CLMiLoConnectionInternal;
@@ -65,11 +65,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->_delegate = a4;
-    if (a5)
+    v8->_delegate = delegate;
+    if (queue)
     {
-      v8->_delegateQueue = a5;
-      dispatch_retain(a5);
+      v8->_delegateQueue = queue;
+      dispatch_retain(queue);
     }
 
     else
@@ -78,7 +78,7 @@
     }
 
     v10 = dispatch_queue_create("com.apple.MiLoConnection.internalQueue", 0);
-    v9->_sender = a3;
+    v9->_sender = info;
     v9->_connectedServiceIdentifier = 0;
     v9->_locationdConnection = 0;
     v9->_internalQueue = v10;
@@ -87,18 +87,18 @@
   return v9;
 }
 
-+ (BOOL)_isKnownNonActionableMessage:(void *)a3
++ (BOOL)_isKnownNonActionableMessage:(void *)message
 {
   result = 0;
-  if (a3)
+  if (message)
   {
-    v4 = CLConnectionMessage::name(a3);
+    v4 = CLConnectionMessage::name(message);
     if (!std::string::compare(v4, "LocationManager/kCLConnectionMessageRegistration"))
     {
       return 1;
     }
 
-    v5 = CLConnectionMessage::name(a3);
+    v5 = CLConnectionMessage::name(message);
     if (!std::string::compare(v5, "kCLConnectionMessageAuthorizationStatus"))
     {
       return 1;
@@ -168,7 +168,7 @@
     v8 = 2082;
     v9 = "";
     v10 = 2082;
-    v11 = [NSStringFromClass(v4) UTF8String];
+    uTF8String = [NSStringFromClass(v4) UTF8String];
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_INFO, "{msg%{public}.0s:tearing down:, class:%{public, location:escape_only}s}", v7, 0x1Cu);
   }
 
@@ -528,7 +528,7 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyClientDidUpdateMiLoConnectionStatus:(id)a3
+- (void)_notifyClientDidUpdateMiLoConnectionStatus:(id)status
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -539,12 +539,12 @@
     v7[2] = sub_19B9FD6E8;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = status;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientDidUpdateServiceStatus:(id)a3
+- (void)_notifyClientDidUpdateServiceStatus:(id)status
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -555,12 +555,12 @@
     v7[2] = sub_19B9FD788;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = status;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientDidCreateServiceWithServiceIdentifier:(id)a3
+- (void)_notifyClientDidCreateServiceWithServiceIdentifier:(id)identifier
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -571,12 +571,12 @@
     v7[2] = sub_19B9FD828;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = identifier;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientCreateServiceDidFailWithError:(id)a3
+- (void)_notifyClientCreateServiceDidFailWithError:(id)error
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -587,12 +587,12 @@
     v7[2] = sub_19B9FD8C8;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = error;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientDeleteServiceDidFailWithServiceIdentifier:(id)a3 withError:(id)a4
+- (void)_notifyClientDeleteServiceDidFailWithServiceIdentifier:(id)identifier withError:(id)error
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -603,13 +603,13 @@
     block[2] = sub_19B9FD978;
     block[3] = &unk_1E753D098;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = identifier;
+    block[6] = error;
     dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)_notifyClientDidDeleteServiceWithServiceIdentifier:(id)a3
+- (void)_notifyClientDidDeleteServiceWithServiceIdentifier:(id)identifier
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -620,12 +620,12 @@
     v7[2] = sub_19B9FDA20;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = identifier;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientDidFindMyServicesWithServiceDescriptors:(id)a3
+- (void)_notifyClientDidFindMyServicesWithServiceDescriptors:(id)descriptors
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -636,12 +636,12 @@
     v7[2] = sub_19B9FDAC0;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = descriptors;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientConnectServiceDidFailWithServiceIdentifier:(id)a3 withError:(id)a4
+- (void)_notifyClientConnectServiceDidFailWithServiceIdentifier:(id)identifier withError:(id)error
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -652,13 +652,13 @@
     block[2] = sub_19B9FDB70;
     block[3] = &unk_1E753D098;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = identifier;
+    block[6] = error;
     dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)_notifyClientDidUpdatePrediction:(id)a3
+- (void)_notifyClientDidUpdatePrediction:(id)prediction
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -669,12 +669,12 @@
     v7[2] = sub_19B9FDC18;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = prediction;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientQueryServiceDidFailWithError:(id)a3
+- (void)_notifyClientQueryServiceDidFailWithError:(id)error
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -685,12 +685,12 @@
     v7[2] = sub_19B9FDCB8;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = error;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientDisconnectServiceDidFailWithError:(id)a3 serviceIdentifier:(id)a4
+- (void)_notifyClientDisconnectServiceDidFailWithError:(id)error serviceIdentifier:(id)identifier
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -701,13 +701,13 @@
     block[2] = sub_19B9FDD68;
     block[3] = &unk_1E753D098;
     block[4] = self;
-    block[5] = a4;
-    block[6] = a3;
+    block[5] = identifier;
+    block[6] = error;
     dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)_notifyClientDidCompleteClientRequest:(id)a3 withError:(id)a4
+- (void)_notifyClientDidCompleteClientRequest:(id)request withError:(id)error
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -718,13 +718,13 @@
     block[2] = sub_19B9FDE20;
     block[3] = &unk_1E753D098;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = request;
+    block[6] = error;
     dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)_notifyClientDidExportDatabaseWithResponse:(id)a3
+- (void)_notifyClientDidExportDatabaseWithResponse:(id)response
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -735,12 +735,12 @@
     v7[2] = sub_19B9FDEC8;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = response;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientOfGenericEventResponse:(id)a3
+- (void)_notifyClientOfGenericEventResponse:(id)response
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -751,12 +751,12 @@
     v7[2] = sub_19B9FDFE0;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = response;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientQueryMiLoConnectionStatusDidFailWithError:(id)a3
+- (void)_notifyClientQueryMiLoConnectionStatusDidFailWithError:(id)error
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -767,12 +767,12 @@
     v7[2] = sub_19B9FE0EC;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = error;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_notifyClientRecordingMetaInfo:(id)a3
+- (void)_notifyClientRecordingMetaInfo:(id)info
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
@@ -783,12 +783,12 @@
     v7[2] = sub_19B9FE18C;
     v7[3] = &unk_1E753CF38;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = info;
     dispatch_async(delegateQueue, v7);
   }
 }
 
-- (void)_handleDaemonEvent:(id)a3
+- (void)_handleDaemonEvent:(id)event
 {
   v173 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -825,7 +825,7 @@
     goto LABEL_48;
   }
 
-  if (!a3)
+  if (!event)
   {
     if (qword_1EAFE4728 != -1)
     {
@@ -866,7 +866,7 @@
     goto LABEL_46;
   }
 
-  if (![a3 objectForKeyedSubscript:0x1F0E73DA0])
+  if (![event objectForKeyedSubscript:0x1F0E73DA0])
   {
     if (qword_1EAFE4728 != -1)
     {
@@ -876,7 +876,7 @@
     v22 = qword_1EAFE4730;
     if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_FAULT))
     {
-      v23 = [objc_msgSend(objc_msgSend(a3 "allKeys")];
+      v23 = [objc_msgSend(objc_msgSend(event "allKeys")];
       *buf = 68289282;
       v164 = 0;
       v165 = 2082;
@@ -893,7 +893,7 @@
     v24 = qword_1EAFE4730;
     if (os_signpost_enabled(qword_1EAFE4730))
     {
-      v25 = [objc_msgSend(objc_msgSend(a3 "allKeys")];
+      v25 = [objc_msgSend(objc_msgSend(event "allKeys")];
       *buf = 68289282;
       v164 = 0;
       v165 = 2082;
@@ -912,14 +912,14 @@
     v21 = 0;
 LABEL_46:
     v27 = -[CLMiLoServiceStatus initWithServiceState:suspendReasons:serviceDescriptor:currentLocationOfInterestUuid:currentLocationOfInterestType:error:serviceQualityInfo:places:metaInfo:]([CLMiLoServiceStatus alloc], "initWithServiceState:suspendReasons:serviceDescriptor:currentLocationOfInterestUuid:currentLocationOfInterestType:error:serviceQualityInfo:places:metaInfo:", 2, 0, 0, 0, 0, [v19 errorWithDomain:v20 code:v21 userInfo:v18], 0, 0, 0);
-    v28 = self;
+    selfCopy2 = self;
 LABEL_47:
-    [(CLMiLoConnectionInternal *)v28 _notifyClientDidUpdateServiceStatus:v27];
+    [(CLMiLoConnectionInternal *)selfCopy2 _notifyClientDidUpdateServiceStatus:v27];
     goto LABEL_48;
   }
 
-  v8 = [objc_msgSend(a3 objectForKeyedSubscript:{0x1F0E73DA0), "integerValue"}];
-  v9 = [a3 objectForKeyedSubscript:0x1F0E73DC0];
+  v8 = [objc_msgSend(event objectForKeyedSubscript:{0x1F0E73DA0), "integerValue"}];
+  v9 = [event objectForKeyedSubscript:0x1F0E73DC0];
   v10 = v9;
   if (v8 <= 6)
   {
@@ -930,11 +930,11 @@ LABEL_47:
         if (v9)
         {
           v65 = MEMORY[0x1E696ABC0];
-          v66 = [v9 integerValue];
+          integerValue = [v9 integerValue];
           v157 = *MEMORY[0x1E696A578];
           v158 = sub_19BA007C0([v10 integerValue]);
-          v67 = [v65 errorWithDomain:@"kCLErrorDomainPrivate" code:v66 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v158, &v157, 1)}];
-          v68 = [a3 objectForKeyedSubscript:0x1F0E73DE0];
+          v67 = [v65 errorWithDomain:@"kCLErrorDomainPrivate" code:integerValue userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v158, &v157, 1)}];
+          v68 = [event objectForKeyedSubscript:0x1F0E73DE0];
           if (qword_1EAFE4728 != -1)
           {
             dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -943,7 +943,7 @@ LABEL_47:
           v69 = qword_1EAFE4730;
           if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_ERROR))
           {
-            v70 = [v10 integerValue];
+            integerValue2 = [v10 integerValue];
             v71 = [objc_msgSend(v67 "localizedDescription")];
             v72 = [objc_msgSend(v68 "UUIDString")];
             *buf = 68289794;
@@ -951,7 +951,7 @@ LABEL_47:
             v165 = 2082;
             v166 = "";
             v167 = 2050;
-            v168 = v70;
+            v168 = integerValue2;
             v169 = 2082;
             v170 = v71;
             v171 = 2082;
@@ -966,7 +966,7 @@ LABEL_47:
           v73 = qword_1EAFE4730;
           if (os_signpost_enabled(qword_1EAFE4730))
           {
-            v74 = [v10 integerValue];
+            integerValue3 = [v10 integerValue];
             v75 = [objc_msgSend(v67 "localizedDescription")];
             v76 = [objc_msgSend(v68 "UUIDString")];
             *buf = 68289794;
@@ -974,7 +974,7 @@ LABEL_47:
             v165 = 2082;
             v166 = "";
             v167 = 2050;
-            v168 = v74;
+            v168 = integerValue3;
             v169 = 2082;
             v170 = v75;
             v171 = 2082;
@@ -1044,7 +1044,7 @@ LABEL_47:
           }
         }
 
-        v114 = [a3 objectForKeyedSubscript:0x1F0E73E00];
+        v114 = [event objectForKeyedSubscript:0x1F0E73E00];
         v115 = [objc_msgSend(v114 valueForKey:{@"serviceIdentifier", "componentsJoinedByString:", @", "}];
         if (qword_1EAFE4728 != -1)
         {
@@ -1055,7 +1055,7 @@ LABEL_47:
         if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_DEFAULT))
         {
           v117 = [v114 count];
-          v118 = [v115 UTF8String];
+          uTF8String = [v115 UTF8String];
           *buf = 68289538;
           v164 = 0;
           v165 = 2082;
@@ -1063,7 +1063,7 @@ LABEL_47:
           v167 = 2050;
           v168 = v117;
           v169 = 2082;
-          v170 = v118;
+          v170 = uTF8String;
           _os_log_impl(&dword_19B873000, v116, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:query services success, size:%{public}ld, service descriptors:%{public, location:escape_only}s}", buf, 0x26u);
         }
 
@@ -1073,10 +1073,10 @@ LABEL_47:
       else if (v9)
       {
         v44 = MEMORY[0x1E696ABC0];
-        v45 = [v9 integerValue];
+        integerValue4 = [v9 integerValue];
         v155 = *MEMORY[0x1E696A578];
         v156 = sub_19BA007C0([v10 integerValue]);
-        v46 = [v44 errorWithDomain:@"kCLErrorDomainPrivate" code:v45 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v156, &v155, 1)}];
+        v46 = [v44 errorWithDomain:@"kCLErrorDomainPrivate" code:integerValue4 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v156, &v155, 1)}];
         if (qword_1EAFE4728 != -1)
         {
           dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -1085,14 +1085,14 @@ LABEL_47:
         v47 = qword_1EAFE4730;
         if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_ERROR))
         {
-          v48 = [v10 integerValue];
+          integerValue5 = [v10 integerValue];
           v49 = [objc_msgSend(v46 "localizedDescription")];
           *buf = 68289538;
           v164 = 0;
           v165 = 2082;
           v166 = "";
           v167 = 2050;
-          v168 = v48;
+          v168 = integerValue5;
           v169 = 2082;
           v170 = v49;
           _os_log_impl(&dword_19B873000, v47, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:query services failed, error code:%{public}ld, error message:%{public, location:escape_only}s}", buf, 0x26u);
@@ -1105,14 +1105,14 @@ LABEL_47:
         v50 = qword_1EAFE4730;
         if (os_signpost_enabled(qword_1EAFE4730))
         {
-          v51 = [v10 integerValue];
+          integerValue6 = [v10 integerValue];
           v52 = [objc_msgSend(v46 "localizedDescription")];
           *buf = 68289538;
           v164 = 0;
           v165 = 2082;
           v166 = "";
           v167 = 2050;
-          v168 = v51;
+          v168 = integerValue6;
           v169 = 2082;
           v170 = v52;
           _os_signpost_emit_with_name_impl(&dword_19B873000, v50, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "query services failed", "{msg%{public}.0s:query services failed, error code:%{public}ld, error message:%{public, location:escape_only}s}", buf, 0x26u);
@@ -1151,7 +1151,7 @@ LABEL_47:
 
     else if (v8 == 1)
     {
-      v56 = [a3 objectForKeyedSubscript:0x1F0E73DE0];
+      v56 = [event objectForKeyedSubscript:0x1F0E73DE0];
       if (qword_1EAFE4728 != -1)
       {
         dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -1179,7 +1179,7 @@ LABEL_47:
       {
         if (v8 == 3)
         {
-          v11 = [a3 objectForKeyedSubscript:0x1F0E73DE0];
+          v11 = [event objectForKeyedSubscript:0x1F0E73DE0];
           if (qword_1EAFE4728 != -1)
           {
             dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -1207,10 +1207,10 @@ LABEL_47:
       if (v9)
       {
         v88 = MEMORY[0x1E696ABC0];
-        v89 = [v9 integerValue];
+        integerValue7 = [v9 integerValue];
         v159 = *MEMORY[0x1E696A578];
         v160 = sub_19BA007C0([v10 integerValue]);
-        v90 = [v88 errorWithDomain:@"kCLErrorDomainPrivate" code:v89 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v160, &v159, 1)}];
+        v90 = [v88 errorWithDomain:@"kCLErrorDomainPrivate" code:integerValue7 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v160, &v159, 1)}];
         if (qword_1EAFE4728 != -1)
         {
           dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -1219,14 +1219,14 @@ LABEL_47:
         v91 = qword_1EAFE4730;
         if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_ERROR))
         {
-          v92 = [v10 integerValue];
+          integerValue8 = [v10 integerValue];
           v93 = [objc_msgSend(v90 "localizedDescription")];
           *buf = 68289538;
           v164 = 0;
           v165 = 2082;
           v166 = "";
           v167 = 2050;
-          v168 = v92;
+          v168 = integerValue8;
           v169 = 2082;
           v170 = v93;
           _os_log_impl(&dword_19B873000, v91, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:create service fail, error code:%{public}ld, error message:%{public, location:escape_only}s}", buf, 0x26u);
@@ -1239,14 +1239,14 @@ LABEL_47:
         v94 = qword_1EAFE4730;
         if (os_signpost_enabled(qword_1EAFE4730))
         {
-          v95 = [v10 integerValue];
+          integerValue9 = [v10 integerValue];
           v96 = [objc_msgSend(v90 "localizedDescription")];
           *buf = 68289538;
           v164 = 0;
           v165 = 2082;
           v166 = "";
           v167 = 2050;
-          v168 = v95;
+          v168 = integerValue9;
           v169 = 2082;
           v170 = v96;
           _os_signpost_emit_with_name_impl(&dword_19B873000, v94, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "create service fail", "{msg%{public}.0s:create service fail, error code:%{public}ld, error message:%{public, location:escape_only}s}", buf, 0x26u);
@@ -1318,14 +1318,14 @@ LABEL_47:
           }
         }
 
-        v80 = [a3 objectForKeyedSubscript:0x1F0E73E60];
+        v80 = [event objectForKeyedSubscript:0x1F0E73E60];
         if (v10)
         {
           v81 = MEMORY[0x1E696ABC0];
-          v82 = [v10 integerValue];
+          integerValue10 = [v10 integerValue];
           v149 = *MEMORY[0x1E696A578];
           v150 = sub_19BA007C0([v10 integerValue]);
-          v83 = [v81 errorWithDomain:@"kCLErrorDomainPrivate" code:v82 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v150, &v149, 1)}];
+          v83 = [v81 errorWithDomain:@"kCLErrorDomainPrivate" code:integerValue10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v150, &v149, 1)}];
           if (qword_1EAFE4728 != -1)
           {
             dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -1335,7 +1335,7 @@ LABEL_47:
           if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_DEFAULT))
           {
             v85 = [objc_msgSend(v80 "UUIDString")];
-            v86 = [v10 integerValue];
+            integerValue11 = [v10 integerValue];
             v87 = [objc_msgSend(v83 "localizedDescription")];
             *buf = 68289794;
             v164 = 0;
@@ -1344,7 +1344,7 @@ LABEL_47:
             v167 = 2082;
             v168 = v85;
             v169 = 2050;
-            v170 = v86;
+            v170 = integerValue11;
             v171 = 2082;
             v172 = v87;
             _os_log_impl(&dword_19B873000, v84, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:client request complete with status code, request id:%{public, location:escape_only}s, status code:%{public}ld, status message:%{public, location:escape_only}s}", buf, 0x30u);
@@ -1397,10 +1397,10 @@ LABEL_47:
         if (v9)
         {
           v119 = MEMORY[0x1E696ABC0];
-          v120 = [v9 integerValue];
+          integerValue12 = [v9 integerValue];
           v147 = *MEMORY[0x1E696A578];
           v148 = sub_19BA007C0([v10 integerValue]);
-          v121 = [v119 errorWithDomain:@"kCLErrorDomainPrivate" code:v120 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v148, &v147, 1)}];
+          v121 = [v119 errorWithDomain:@"kCLErrorDomainPrivate" code:integerValue12 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v148, &v147, 1)}];
           if (qword_1EAFE4728 != -1)
           {
             dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -1409,14 +1409,14 @@ LABEL_47:
           v122 = qword_1EAFE4730;
           if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_ERROR))
           {
-            v123 = [v10 integerValue];
+            integerValue13 = [v10 integerValue];
             v124 = [objc_msgSend(v121 "localizedDescription")];
             *buf = 68289538;
             v164 = 0;
             v165 = 2082;
             v166 = "";
             v167 = 2050;
-            v168 = v123;
+            v168 = integerValue13;
             v169 = 2082;
             v170 = v124;
             _os_log_impl(&dword_19B873000, v122, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:query MiLo connection status failed, error code:%{public}ld, error message:%{public, location:escape_only}s}", buf, 0x26u);
@@ -1429,14 +1429,14 @@ LABEL_47:
           v125 = qword_1EAFE4730;
           if (os_signpost_enabled(qword_1EAFE4730))
           {
-            v126 = [v10 integerValue];
+            integerValue14 = [v10 integerValue];
             v127 = [objc_msgSend(v121 "localizedDescription")];
             *buf = 68289538;
             v164 = 0;
             v165 = 2082;
             v166 = "";
             v167 = 2050;
-            v168 = v126;
+            v168 = integerValue14;
             v169 = 2082;
             v170 = v127;
             _os_signpost_emit_with_name_impl(&dword_19B873000, v125, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "query MiLo connection status failed", "{msg%{public}.0s:query MiLo connection status failed, error code:%{public}ld, error message:%{public, location:escape_only}s}", buf, 0x26u);
@@ -1503,7 +1503,7 @@ LABEL_47:
           }
         }
 
-        -[CLMiLoConnectionInternal _notifyClientRecordingMetaInfo:](self, "_notifyClientRecordingMetaInfo:", [a3 objectForKeyedSubscript:0x1F0E73F80]);
+        -[CLMiLoConnectionInternal _notifyClientRecordingMetaInfo:](self, "_notifyClientRecordingMetaInfo:", [event objectForKeyedSubscript:0x1F0E73F80]);
         break;
     }
 
@@ -1541,7 +1541,7 @@ LABEL_47:
       }
     }
 
-    v62 = [a3 objectForKeyedSubscript:0x1F0E73E20];
+    v62 = [event objectForKeyedSubscript:0x1F0E73E20];
     if ([(CLMiLoServiceStatus *)v62 serviceState])
     {
       if ([(CLMiLoServiceStatus *)v62 serviceState]== 2)
@@ -1612,7 +1612,7 @@ LABEL_47:
 
     _os_log_impl(&dword_19B873000, v63, OS_LOG_TYPE_DEFAULT, v64, buf, 0x12u);
 LABEL_277:
-    v28 = self;
+    selfCopy2 = self;
     v27 = v62;
     goto LABEL_47;
   }
@@ -1622,11 +1622,11 @@ LABEL_277:
     if (v9)
     {
       v97 = MEMORY[0x1E696ABC0];
-      v98 = [v9 integerValue];
+      integerValue15 = [v9 integerValue];
       v153 = *MEMORY[0x1E696A578];
       v154 = sub_19BA007C0([v10 integerValue]);
-      v99 = [v97 errorWithDomain:@"kCLErrorDomainPrivate" code:v98 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v154, &v153, 1)}];
-      v100 = [a3 objectForKeyedSubscript:0x1F0E73DE0];
+      v99 = [v97 errorWithDomain:@"kCLErrorDomainPrivate" code:integerValue15 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v154, &v153, 1)}];
+      v100 = [event objectForKeyedSubscript:0x1F0E73DE0];
       if (qword_1EAFE4728 != -1)
       {
         dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -1635,7 +1635,7 @@ LABEL_277:
       v101 = qword_1EAFE4730;
       if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_ERROR))
       {
-        v102 = [v10 integerValue];
+        integerValue16 = [v10 integerValue];
         v103 = [objc_msgSend(v99 "localizedDescription")];
         v104 = [objc_msgSend(v100 "UUIDString")];
         *buf = 68289794;
@@ -1643,7 +1643,7 @@ LABEL_277:
         v165 = 2082;
         v166 = "";
         v167 = 2050;
-        v168 = v102;
+        v168 = integerValue16;
         v169 = 2082;
         v170 = v103;
         v171 = 2082;
@@ -1658,7 +1658,7 @@ LABEL_277:
       v105 = qword_1EAFE4730;
       if (os_signpost_enabled(qword_1EAFE4730))
       {
-        v106 = [v10 integerValue];
+        integerValue17 = [v10 integerValue];
         v107 = [objc_msgSend(v99 "localizedDescription")];
         v108 = [objc_msgSend(v100 "UUIDString")];
         *buf = 68289794;
@@ -1666,7 +1666,7 @@ LABEL_277:
         v165 = 2082;
         v166 = "";
         v167 = 2050;
-        v168 = v106;
+        v168 = integerValue17;
         v169 = 2082;
         v170 = v107;
         v171 = 2082;
@@ -1754,11 +1754,11 @@ LABEL_290:
   else if (v9)
   {
     v30 = MEMORY[0x1E696ABC0];
-    v31 = [v9 integerValue];
+    integerValue18 = [v9 integerValue];
     v151 = *MEMORY[0x1E696A578];
     v152 = sub_19BA007C0([v10 integerValue]);
-    v32 = [v30 errorWithDomain:@"kCLErrorDomainPrivate" code:v31 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v152, &v151, 1)}];
-    v33 = [a3 objectForKeyedSubscript:0x1F0E73DE0];
+    v32 = [v30 errorWithDomain:@"kCLErrorDomainPrivate" code:integerValue18 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v152, &v151, 1)}];
+    v33 = [event objectForKeyedSubscript:0x1F0E73DE0];
     if (qword_1EAFE4728 != -1)
     {
       dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -1767,7 +1767,7 @@ LABEL_290:
     v34 = qword_1EAFE4730;
     if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_ERROR))
     {
-      v35 = [v10 integerValue];
+      integerValue19 = [v10 integerValue];
       v36 = [objc_msgSend(v32 "localizedDescription")];
       v37 = [objc_msgSend(v33 "UUIDString")];
       *buf = 68289794;
@@ -1775,7 +1775,7 @@ LABEL_290:
       v165 = 2082;
       v166 = "";
       v167 = 2050;
-      v168 = v35;
+      v168 = integerValue19;
       v169 = 2082;
       v170 = v36;
       v171 = 2082;
@@ -1790,7 +1790,7 @@ LABEL_290:
     v38 = qword_1EAFE4730;
     if (os_signpost_enabled(qword_1EAFE4730))
     {
-      v39 = [v10 integerValue];
+      integerValue20 = [v10 integerValue];
       v40 = [objc_msgSend(v32 "localizedDescription")];
       v41 = [objc_msgSend(v33 "UUIDString")];
       *buf = 68289794;
@@ -1798,7 +1798,7 @@ LABEL_290:
       v165 = 2082;
       v166 = "";
       v167 = 2050;
-      v168 = v39;
+      v168 = integerValue20;
       v169 = 2082;
       v170 = v40;
       v171 = 2082;
@@ -1876,7 +1876,7 @@ LABEL_48:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handlePredictionUpdateEvent:(id)a3
+- (void)_handlePredictionUpdateEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -1908,9 +1908,9 @@ LABEL_48:
     }
   }
 
-  if (a3)
+  if (event)
   {
-    v8 = [a3 objectForKeyedSubscript:0x1F0E73E40];
+    v8 = [event objectForKeyedSubscript:0x1F0E73E40];
     if (qword_1EAFE4728 != -1)
     {
       dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -1985,7 +1985,7 @@ LABEL_48:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleDebugResponseEvent:(id)a3
+- (void)_handleDebugResponseEvent:(id)event
 {
   v14 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -2017,9 +2017,9 @@ LABEL_48:
     }
   }
 
-  if (a3)
+  if (event)
   {
-    v8 = [a3 objectForKeyedSubscript:0x1F0E73F40];
+    v8 = [event objectForKeyedSubscript:0x1F0E73F40];
     if ([v8 exportDatabaseTablesResult])
     {
       [(CLMiLoConnectionInternal *)self _notifyClientDidExportDatabaseWithResponse:v8];
@@ -2061,7 +2061,7 @@ LABEL_48:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleMiLoConnectionStatusEvent:(id)a3
+- (void)_handleMiLoConnectionStatusEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -2093,9 +2093,9 @@ LABEL_48:
     }
   }
 
-  if (a3)
+  if (event)
   {
-    v8 = [a3 objectForKeyedSubscript:0x1F0E73F60];
+    v8 = [event objectForKeyedSubscript:0x1F0E73F60];
     if (qword_1EAFE4728 != -1)
     {
       dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -2104,9 +2104,9 @@ LABEL_48:
     v9 = qword_1EAFE4730;
     if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 connectionState];
+      connectionState = [v8 connectionState];
       *buf = 134217984;
-      v18 = v10;
+      v18 = connectionState;
       _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "_handleMiLoConnectionStatusEvent, connectionState %lu", buf, 0xCu);
     }
 
@@ -2166,7 +2166,7 @@ LABEL_48:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleGenericEvent:(id)a3
+- (void)_handleGenericEvent:(id)event
 {
   v22 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -2198,9 +2198,9 @@ LABEL_48:
     }
   }
 
-  if (a3)
+  if (event)
   {
-    v8 = [a3 objectForKeyedSubscript:0x1F0E73FA0];
+    v8 = [event objectForKeyedSubscript:0x1F0E73FA0];
     if (qword_1EAFE4728 != -1)
     {
       dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -2209,10 +2209,10 @@ LABEL_48:
     v9 = qword_1EAFE4730;
     if (os_log_type_enabled(qword_1EAFE4730, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 eventType];
+      eventType = [v8 eventType];
       v11 = [objc_msgSend(v8 "genericEventDescription")];
       *buf = 67109378;
-      v19 = v10;
+      v19 = eventType;
       v20 = 2080;
       v21 = v11;
       _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "_handleGenericEvent, eventType %u, description %s", buf, 0x12u);
@@ -2275,7 +2275,7 @@ LABEL_48:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_createServiceWithServiceType:(unint64_t)a3 locationTypes:(id)a4
+- (void)_createServiceWithServiceType:(unint64_t)type locationTypes:(id)types
 {
   v21 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -2294,7 +2294,7 @@ LABEL_48:
 
   if (self->_locationdConnection)
   {
-    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a4 requiringSecureCoding:1 error:0];
+    v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:types requiringSecureCoding:1 error:0];
     v9 = v8;
     if (!v8 || ![v8 length])
     {
@@ -2305,7 +2305,7 @@ LABEL_48:
 
     v15[0] = 0x1F0E73D60;
     v15[1] = 0x1F0E73D80;
-    v16[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v16[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
     v16[1] = v9;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
     sub_19BA0B68C();
@@ -2344,7 +2344,7 @@ LABEL_48:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deleteServiceWithIdentifier:(id)a3
+- (void)_deleteServiceWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -2364,8 +2364,8 @@ LABEL_48:
   if (self->_locationdConnection)
   {
     v11 = 0x1F0E73DE0;
-    v12 = a3;
-    [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
+    identifierCopy = identifier;
+    [MEMORY[0x1E695DF20] dictionaryWithObjects:&identifierCopy forKeys:&v11 count:1];
     sub_19BA0B68C();
   }
 
@@ -2398,7 +2398,7 @@ LABEL_48:
 
   v9 = *MEMORY[0x1E696A578];
   v10 = @"Internal error";
-  -[CLMiLoConnectionInternal _notifyClientDeleteServiceDidFailWithServiceIdentifier:withError:](self, "_notifyClientDeleteServiceDidFailWithServiceIdentifier:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v10, &v9, 1)}]);
+  -[CLMiLoConnectionInternal _notifyClientDeleteServiceDidFailWithServiceIdentifier:withError:](self, "_notifyClientDeleteServiceDidFailWithServiceIdentifier:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v10, &v9, 1)}]);
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -2532,7 +2532,7 @@ LABEL_48:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_connectServiceWithIdentifier:(id)a3
+- (void)_connectServiceWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -2567,7 +2567,7 @@ LABEL_48:
 
     v16 = *MEMORY[0x1E696A578];
     v17 = @"Already connected to another service";
-    -[CLMiLoConnectionInternal _notifyClientConnectServiceDidFailWithServiceIdentifier:withError:](self, "_notifyClientConnectServiceDidFailWithServiceIdentifier:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:9 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientConnectServiceDidFailWithServiceIdentifier:withError:](self, "_notifyClientConnectServiceDidFailWithServiceIdentifier:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:9 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
   }
 
   else
@@ -2588,7 +2588,7 @@ LABEL_48:
         _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:connect to service, set connectedServiceIdentifier}", buf, 0x12u);
       }
 
-      self->_connectedServiceIdentifier = [a3 copy];
+      self->_connectedServiceIdentifier = [identifier copy];
       if (qword_1EAFE4728 != -1)
       {
         dispatch_once(&qword_1EAFE4728, &unk_1F0E6EAB0);
@@ -2605,8 +2605,8 @@ LABEL_48:
 
       [(CLMiLoConnectionInternal *)self _setHandlerForMiLoPredictionEvents];
       v14 = 0x1F0E73DE0;
-      v15 = a3;
-      [MEMORY[0x1E695DF20] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
+      identifierCopy = identifier;
+      [MEMORY[0x1E695DF20] dictionaryWithObjects:&identifierCopy forKeys:&v14 count:1];
       sub_19B960254();
     }
 
@@ -2639,13 +2639,13 @@ LABEL_48:
 
     v12 = *MEMORY[0x1E696A578];
     v13 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientConnectServiceDidFailWithServiceIdentifier:withError:](self, "_notifyClientConnectServiceDidFailWithServiceIdentifier:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientConnectServiceDidFailWithServiceIdentifier:withError:](self, "_notifyClientConnectServiceDidFailWithServiceIdentifier:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_disconnectServiceWithIdentifier:(id)a3
+- (void)_disconnectServiceWithIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -2664,7 +2664,7 @@ LABEL_48:
 
   if (self->_connectedServiceIdentifier)
   {
-    if ([a3 isEqual:?])
+    if ([identifier isEqual:?])
     {
       if (self->_locationdConnection)
       {
@@ -2697,8 +2697,8 @@ LABEL_48:
 
         [(CLMiLoConnectionInternal *)self _unsetHandlerForMiLoPredictionEvents];
         v15 = 0x1F0E73DE0;
-        v16 = a3;
-        [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
+        identifierCopy = identifier;
+        [MEMORY[0x1E695DF20] dictionaryWithObjects:&identifierCopy forKeys:&v15 count:1];
         operator new();
       }
 
@@ -2731,7 +2731,7 @@ LABEL_48:
 
       v13 = *MEMORY[0x1E696A578];
       v14 = @"Internal error";
-      -[CLMiLoConnectionInternal _notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:](self, "_notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:", [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v14, &v13, 1)}], a3);
+      -[CLMiLoConnectionInternal _notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:](self, "_notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:", [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v14, &v13, 1)}], identifier);
     }
 
     else
@@ -2752,7 +2752,7 @@ LABEL_48:
 
       v17 = *MEMORY[0x1E696A578];
       v18 = @"Invalid parameter";
-      -[CLMiLoConnectionInternal _notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:](self, "_notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:", [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v18, &v17, 1)}], a3);
+      -[CLMiLoConnectionInternal _notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:](self, "_notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:", [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:3 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v18, &v17, 1)}], identifier);
     }
   }
 
@@ -2774,13 +2774,13 @@ LABEL_48:
 
     v19 = *MEMORY[0x1E696A578];
     v20 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:](self, "_notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:", [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v20, &v19, 1)}], a3);
+    -[CLMiLoConnectionInternal _notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:](self, "_notifyClientDisconnectServiceDidFailWithError:serviceIdentifier:", [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v20, &v19, 1)}], identifier);
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestMiLoPredictionWithRequestIdentifier:(id)a3
+- (void)_requestMiLoPredictionWithRequestIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -2805,7 +2805,7 @@ LABEL_48:
       v14[0] = 0x1F0E73DE0;
       v14[1] = 0x1F0E73E60;
       v15[0] = connectedServiceIdentifier;
-      v15[1] = a3;
+      v15[1] = identifier;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
       operator new();
     }
@@ -2839,7 +2839,7 @@ LABEL_48:
 
     v12 = *MEMORY[0x1E696A578];
     v13 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
   }
 
   else
@@ -2873,13 +2873,13 @@ LABEL_48:
 
     v16 = *MEMORY[0x1E696A578];
     v17 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestObservationWithRequestIdentifier:(id)a3 placeIdentifier:(id)a4
+- (void)_requestObservationWithRequestIdentifier:(id)identifier placeIdentifier:(id)placeIdentifier
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -2904,11 +2904,11 @@ LABEL_48:
       v17[0] = 0x1F0E73DE0;
       v17[1] = 0x1F0E73E60;
       v18[0] = connectedServiceIdentifier;
-      v18[1] = a3;
+      v18[1] = identifier;
       v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v18, v17, 2)}];
-      if (a4)
+      if (placeIdentifier)
       {
-        [v9 setObject:a4 forKey:0x1F0E73E80];
+        [v9 setObject:placeIdentifier forKey:0x1F0E73E80];
       }
 
       operator new();
@@ -2943,7 +2943,7 @@ LABEL_48:
 
     v15 = *MEMORY[0x1E696A578];
     v16 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v16, &v15, 1)}]);
   }
 
   else
@@ -2977,13 +2977,13 @@ LABEL_48:
 
     v19 = *MEMORY[0x1E696A578];
     v20 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v20, &v19, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v20, &v19, 1)}]);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_labelEventWithRequestIdentifier:(id)a3 placeIdentifier:(id)a4 observationIdentifier:(id)a5
+- (void)_labelEventWithRequestIdentifier:(id)identifier placeIdentifier:(id)placeIdentifier observationIdentifier:(id)observationIdentifier
 {
   v25 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -3008,11 +3008,11 @@ LABEL_48:
       v18[0] = 0x1F0E73DE0;
       v18[1] = 0x1F0E73E60;
       v19[0] = connectedServiceIdentifier;
-      v19[1] = a3;
+      v19[1] = identifier;
       v18[2] = 0x1F0E73E80;
       v18[3] = 0x1F0E73EA0;
-      v19[2] = a4;
-      v19[3] = a5;
+      v19[2] = placeIdentifier;
+      v19[3] = observationIdentifier;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
       operator new();
     }
@@ -3046,7 +3046,7 @@ LABEL_48:
 
     v16 = *MEMORY[0x1E696A578];
     v17 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
   }
 
   else
@@ -3080,13 +3080,13 @@ LABEL_48:
 
     v20 = *MEMORY[0x1E696A578];
     v21 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v21, &v20, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v21, &v20, 1)}]);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_labelEventsWithStartDate:(id)a3 endDate:(id)a4 placeIdentifier:(id)a5 requestIdentifier:(id)a6
+- (void)_labelEventsWithStartDate:(id)date endDate:(id)endDate placeIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier
 {
   v27 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -3111,13 +3111,13 @@ LABEL_48:
       v20[0] = 0x1F0E73DE0;
       v20[1] = 0x1F0E73E60;
       v21[0] = connectedServiceIdentifier;
-      v21[1] = a6;
+      v21[1] = requestIdentifier;
       v20[2] = 0x1F0E73E80;
       v20[3] = 0x1F0E73EC0;
-      v21[2] = a5;
-      v21[3] = a3;
+      v21[2] = identifier;
+      v21[3] = date;
       v20[4] = 0x1F0E73EE0;
-      v21[4] = a4;
+      v21[4] = endDate;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:5];
       operator new();
     }
@@ -3151,7 +3151,7 @@ LABEL_48:
 
     v18 = *MEMORY[0x1E696A578];
     v19 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a6, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", requestIdentifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
   }
 
   else
@@ -3185,13 +3185,13 @@ LABEL_48:
 
     v22 = *MEMORY[0x1E696A578];
     v23 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a6, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v23, &v22, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", requestIdentifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v23, &v22, 1)}]);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeLabels:(id)a3 withRequestIdentifier:(id)a4
+- (void)_removeLabels:(id)labels withRequestIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -3216,9 +3216,9 @@ LABEL_48:
       v16[0] = 0x1F0E73DE0;
       v16[1] = 0x1F0E73E60;
       v17[0] = connectedServiceIdentifier;
-      v17[1] = a4;
+      v17[1] = identifier;
       v16[2] = 0x1F0E73F00;
-      v17[2] = a3;
+      v17[2] = labels;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
       operator new();
     }
@@ -3252,7 +3252,7 @@ LABEL_48:
 
     v14 = *MEMORY[0x1E696A578];
     v15 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a4, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
   }
 
   else
@@ -3286,13 +3286,13 @@ LABEL_48:
 
     v18 = *MEMORY[0x1E696A578];
     v19 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a4, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeCustomLocationOfInterestFromMonitoringWithIdentifier:(id)a3 withRequestIdentifier:(id)a4
+- (void)_removeCustomLocationOfInterestFromMonitoringWithIdentifier:(id)identifier withRequestIdentifier:(id)requestIdentifier
 {
   v22 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -3317,9 +3317,9 @@ LABEL_48:
       v16[0] = 0x1F0E73DE0;
       v16[1] = 0x1F0E73E60;
       v17[0] = connectedServiceIdentifier;
-      v17[1] = a4;
+      v17[1] = requestIdentifier;
       v16[2] = 0x1F0E73FC0;
-      v17[2] = a3;
+      v17[2] = identifier;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
       sub_19B943D9C();
     }
@@ -3353,7 +3353,7 @@ LABEL_48:
 
     v14 = *MEMORY[0x1E696A578];
     v15 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a4, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", requestIdentifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
   }
 
   else
@@ -3387,13 +3387,13 @@ LABEL_48:
 
     v18 = *MEMORY[0x1E696A578];
     v19 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a4, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", requestIdentifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startUpdatingMicroLocationWithConfiguration:(id)a3 withRequestIdentifier:(id)a4
+- (void)_startUpdatingMicroLocationWithConfiguration:(id)configuration withRequestIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -3418,9 +3418,9 @@ LABEL_48:
       v16[0] = 0x1F0E73DE0;
       v16[1] = 0x1F0E73E60;
       v17[0] = connectedServiceIdentifier;
-      v17[1] = a4;
+      v17[1] = identifier;
       v16[2] = 0x1F0E73F20;
-      v17[2] = a3;
+      v17[2] = configuration;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
       sub_19B952ED0();
     }
@@ -3454,7 +3454,7 @@ LABEL_48:
 
     v14 = *MEMORY[0x1E696A578];
     v15 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a4, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v15, &v14, 1)}]);
   }
 
   else
@@ -3488,13 +3488,13 @@ LABEL_48:
 
     v18 = *MEMORY[0x1E696A578];
     v19 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a4, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}]);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_stopUpdatingMicroLocationWithRequestIdentifier:(id)a3
+- (void)_stopUpdatingMicroLocationWithRequestIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -3519,7 +3519,7 @@ LABEL_48:
       v14[0] = 0x1F0E73DE0;
       v14[1] = 0x1F0E73E60;
       v15[0] = connectedServiceIdentifier;
-      v15[1] = a3;
+      v15[1] = identifier;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
       sub_19BA0B764();
     }
@@ -3553,7 +3553,7 @@ LABEL_48:
 
     v12 = *MEMORY[0x1E696A578];
     v13 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
   }
 
   else
@@ -3587,13 +3587,13 @@ LABEL_48:
 
     v16 = *MEMORY[0x1E696A578];
     v17 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestModelLearningWithRequestIdentifier:(id)a3
+- (void)_requestModelLearningWithRequestIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -3618,7 +3618,7 @@ LABEL_48:
       v14[0] = 0x1F0E73DE0;
       v14[1] = 0x1F0E73E60;
       v15[0] = connectedServiceIdentifier;
-      v15[1] = a3;
+      v15[1] = identifier;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
       sub_19B960254();
     }
@@ -3652,7 +3652,7 @@ LABEL_48:
 
     v12 = *MEMORY[0x1E696A578];
     v13 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
   }
 
   else
@@ -3686,13 +3686,13 @@ LABEL_48:
 
     v16 = *MEMORY[0x1E696A578];
     v17 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_purgeAllMiLoDataWithRequestIdentifier:(id)a3
+- (void)_purgeAllMiLoDataWithRequestIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -3712,8 +3712,8 @@ LABEL_48:
   if (self->_locationdConnection)
   {
     v11 = 0x1F0E73E60;
-    v12 = a3;
-    [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
+    identifierCopy = identifier;
+    [MEMORY[0x1E695DF20] dictionaryWithObjects:&identifierCopy forKeys:&v11 count:1];
     sub_19B960254();
   }
 
@@ -3746,11 +3746,11 @@ LABEL_48:
 
   v9 = *MEMORY[0x1E696A578];
   v10 = @"Internal error";
-  -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v10, &v9, 1)}]);
+  -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v10, &v9, 1)}]);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestExportDatabaseWithRequestIdentifier:(id)a3
+- (void)_requestExportDatabaseWithRequestIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -3775,7 +3775,7 @@ LABEL_48:
       v14[0] = 0x1F0E73DE0;
       v14[1] = 0x1F0E73E60;
       v15[0] = connectedServiceIdentifier;
-      v15[1] = a3;
+      v15[1] = identifier;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
       sub_19BA0B83C();
     }
@@ -3809,7 +3809,7 @@ LABEL_48:
 
     v12 = *MEMORY[0x1E696A578];
     v13 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
   }
 
   else
@@ -3843,13 +3843,13 @@ LABEL_48:
 
     v16 = *MEMORY[0x1E696A578];
     v17 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_createCustomLocationOfInterestAtCurrentLocationWithRequestIdentifier:(id)a3
+- (void)_createCustomLocationOfInterestAtCurrentLocationWithRequestIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE4728 != -1)
@@ -3874,7 +3874,7 @@ LABEL_48:
       v14[0] = 0x1F0E73DE0;
       v14[1] = 0x1F0E73E60;
       v15[0] = connectedServiceIdentifier;
-      v15[1] = a3;
+      v15[1] = identifier;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
       sub_19BA0B83C();
     }
@@ -3908,7 +3908,7 @@ LABEL_48:
 
     v12 = *MEMORY[0x1E696A578];
     v13 = @"Internal error";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:0 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v13, &v12, 1)}]);
   }
 
   else
@@ -3942,7 +3942,7 @@ LABEL_48:
 
     v16 = *MEMORY[0x1E696A578];
     v17 = @"Not connected to any service";
-    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", a3, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
+    -[CLMiLoConnectionInternal _notifyClientDidCompleteClientRequest:withError:](self, "_notifyClientDidCompleteClientRequest:withError:", identifier, [MEMORY[0x1E696ABC0] errorWithDomain:@"kCLErrorDomainPrivate" code:10 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v17, &v16, 1)}]);
   }
 
   v11 = *MEMORY[0x1E69E9840];

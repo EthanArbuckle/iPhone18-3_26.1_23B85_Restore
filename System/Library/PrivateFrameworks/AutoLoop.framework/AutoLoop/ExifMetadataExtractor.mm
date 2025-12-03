@@ -1,11 +1,11 @@
 @interface ExifMetadataExtractor
-- (BOOL)CopyFromMakerMediaDict:(id)a3 toDict:(id)a4;
-- (BOOL)copyKeysFromDictionary:(id)a3;
-- (BOOL)keyIsDesired:(id)a3;
+- (BOOL)CopyFromMakerMediaDict:(id)dict toDict:(id)toDict;
+- (BOOL)copyKeysFromDictionary:(id)dictionary;
+- (BOOL)keyIsDesired:(id)desired;
 - (ExifMetadataExtractor)init;
 - (signed)processFile;
-- (void)CopyFacesDataFromAuxDictionary:(id)a3 toArray:(id)a4;
-- (void)performCorrectionsOnDictionary:(id)a3;
+- (void)CopyFacesDataFromAuxDictionary:(id)dictionary toArray:(id)array;
+- (void)performCorrectionsOnDictionary:(id)dictionary;
 @end
 
 @implementation ExifMetadataExtractor
@@ -43,10 +43,10 @@
   return v2;
 }
 
-- (BOOL)keyIsDesired:(id)a3
+- (BOOL)keyIsDesired:(id)desired
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  desiredCopy = desired;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -65,7 +65,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([v4 isEqualToString:{*(*(&v10 + 1) + 8 * i), v10}])
+        if ([desiredCopy isEqualToString:{*(*(&v10 + 1) + 8 * i), v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -87,28 +87,28 @@ LABEL_11:
   return v6;
 }
 
-- (void)performCorrectionsOnDictionary:(id)a3
+- (void)performCorrectionsOnDictionary:(id)dictionary
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v4 = *MEMORY[0x277CD3040];
   if ([(ExifMetadataExtractor *)self keyIsDesired:*MEMORY[0x277CD3040]])
   {
-    v5 = [v7 objectForKeyedSubscript:v4];
+    v5 = [dictionaryCopy objectForKeyedSubscript:v4];
     if (!v5)
     {
       LODWORD(v6) = 1.0;
       v5 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
     }
 
-    [v7 setObject:v5 forKeyedSubscript:v4];
+    [dictionaryCopy setObject:v5 forKeyedSubscript:v4];
   }
 }
 
-- (BOOL)CopyFromMakerMediaDict:(id)a3 toDict:(id)a4
+- (BOOL)CopyFromMakerMediaDict:(id)dict toDict:(id)toDict
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictCopy = dict;
+  toDictCopy = toDict;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -131,11 +131,11 @@ LABEL_11:
 
         v13 = *(*(&v18 + 1) + 8 * i);
         v14 = [(NSDictionary *)self->desiredAppleMakerKeyPairs objectForKeyedSubscript:v13];
-        v15 = [v6 objectForKeyedSubscript:v14];
+        v15 = [dictCopy objectForKeyedSubscript:v14];
 
         if (v15)
         {
-          [v7 setObject:v15 forKeyedSubscript:v13];
+          [toDictCopy setObject:v15 forKeyedSubscript:v13];
         }
 
         else
@@ -158,11 +158,11 @@ LABEL_11:
   return v17 & 1;
 }
 
-- (void)CopyFacesDataFromAuxDictionary:(id)a3 toArray:(id)a4
+- (void)CopyFacesDataFromAuxDictionary:(id)dictionary toArray:(id)array
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"Regions"];
+  arrayCopy = array;
+  v6 = [dictionary objectForKeyedSubscript:@"Regions"];
   v7 = v6;
   if (v6)
   {
@@ -192,7 +192,7 @@ LABEL_11:
             v15 = [v14 objectForKeyedSubscript:@"Type"];
             if ([v15 isEqualToString:@"Face"])
             {
-              [v5 addObject:v14];
+              [arrayCopy addObject:v14];
             }
           }
 
@@ -205,10 +205,10 @@ LABEL_11:
   }
 }
 
-- (BOOL)copyKeysFromDictionary:(id)a3
+- (BOOL)copyKeysFromDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
@@ -231,7 +231,7 @@ LABEL_11:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v4 objectForKeyedSubscript:{v12, v16}];
+        v13 = [dictionaryCopy objectForKeyedSubscript:{v12, v16}];
         if (v13)
         {
           [(NSMutableDictionary *)v5 setObject:v13 forKeyedSubscript:v12];

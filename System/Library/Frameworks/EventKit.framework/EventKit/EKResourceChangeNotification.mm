@@ -1,7 +1,7 @@
 @interface EKResourceChangeNotification
 + (id)knownRelationshipMultiValueKeys;
-- (void)addResourceChange:(id)a3;
-- (void)removeResourceChange:(id)a3;
+- (void)addResourceChange:(id)change;
+- (void)removeResourceChange:(id)change;
 @end
 
 @implementation EKResourceChangeNotification
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __63__EKResourceChangeNotification_knownRelationshipMultiValueKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (knownRelationshipMultiValueKeys_onceToken_1 != -1)
   {
     dispatch_once(&knownRelationshipMultiValueKeys_onceToken_1, block);
@@ -37,30 +37,30 @@ void __63__EKResourceChangeNotification_knownRelationshipMultiValueKeys__block_i
   knownRelationshipMultiValueKeys_keys_1 = v4;
 }
 
-- (void)addResourceChange:(id)a3
+- (void)addResourceChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  changeCopy = change;
+  v5 = changeCopy;
+  if (!changeCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Nil resource change passed."];
-    v4 = 0;
+    changeCopy = 0;
   }
 
-  [(EKObject *)self addCachedMeltedObject:v4 forMultiValueKey:*MEMORY[0x1E6992AD0]];
+  [(EKObject *)self addCachedMeltedObject:changeCopy forMultiValueKey:*MEMORY[0x1E6992AD0]];
 }
 
-- (void)removeResourceChange:(id)a3
+- (void)removeResourceChange:(id)change
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  changeCopy = change;
+  v5 = changeCopy;
+  if (!changeCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Nil resource change passed."];
-    v4 = 0;
+    changeCopy = 0;
   }
 
-  [(EKObject *)self removeCachedMeltedObject:v4 forMultiValueKey:*MEMORY[0x1E6992AD0]];
+  [(EKObject *)self removeCachedMeltedObject:changeCopy forMultiValueKey:*MEMORY[0x1E6992AD0]];
 }
 
 @end

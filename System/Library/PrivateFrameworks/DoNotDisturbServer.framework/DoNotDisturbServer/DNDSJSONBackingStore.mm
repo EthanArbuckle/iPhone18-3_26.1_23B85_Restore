@@ -1,37 +1,37 @@
 @interface DNDSJSONBackingStore
-+ (unint64_t)dataWritingOptionsForSecurityClass:(unint64_t)a3;
++ (unint64_t)dataWritingOptionsForSecurityClass:(unint64_t)class;
 - (DNDSBackingStoreDelegate)delegate;
-- (DNDSJSONBackingStore)initWithRecordClass:(Class)a3 fileURL:(id)a4 secureFileURL:(id)a5 versionNumber:(unint64_t)a6 securityClass:(unint64_t)a7;
-- (id)readRecordDictionaryfromURL:(id)a3 withError:(id *)a4;
-- (id)readRecordWithError:(id *)a3;
-- (unint64_t)writeRecord:(id)a3 writePartition:(BOOL)a4 error:(id *)a5;
-- (unint64_t)writeRecordDictionary:(id)a3 withSecurityClass:(unint64_t)a4 toURL:(id)a5 error:(id *)a6;
+- (DNDSJSONBackingStore)initWithRecordClass:(Class)class fileURL:(id)l secureFileURL:(id)rL versionNumber:(unint64_t)number securityClass:(unint64_t)securityClass;
+- (id)readRecordDictionaryfromURL:(id)l withError:(id *)error;
+- (id)readRecordWithError:(id *)error;
+- (unint64_t)writeRecord:(id)record writePartition:(BOOL)partition error:(id *)error;
+- (unint64_t)writeRecordDictionary:(id)dictionary withSecurityClass:(unint64_t)class toURL:(id)l error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation DNDSJSONBackingStore
 
-- (DNDSJSONBackingStore)initWithRecordClass:(Class)a3 fileURL:(id)a4 secureFileURL:(id)a5 versionNumber:(unint64_t)a6 securityClass:(unint64_t)a7
+- (DNDSJSONBackingStore)initWithRecordClass:(Class)class fileURL:(id)l secureFileURL:(id)rL versionNumber:(unint64_t)number securityClass:(unint64_t)securityClass
 {
-  v12 = a4;
-  v13 = a5;
+  lCopy = l;
+  rLCopy = rL;
   v21.receiver = self;
   v21.super_class = DNDSJSONBackingStore;
   v14 = [(DNDSJSONBackingStore *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    v14->_recordClass = a3;
-    v16 = [v12 copy];
+    v14->_recordClass = class;
+    v16 = [lCopy copy];
     fileURL = v15->_fileURL;
     v15->_fileURL = v16;
 
-    v18 = [v13 copy];
+    v18 = [rLCopy copy];
     secureFileURL = v15->_secureFileURL;
     v15->_secureFileURL = v18;
 
-    v15->_versionNumber = a6;
-    v15->_securityClass = a7;
+    v15->_versionNumber = number;
+    v15->_securityClass = securityClass;
     DNDSRegisterSysdiagnoseDataProvider(v15);
   }
 
@@ -46,15 +46,15 @@
   [(DNDSJSONBackingStore *)&v3 dealloc];
 }
 
-- (id)readRecordWithError:(id *)a3
+- (id)readRecordWithError:(id *)error
 {
   v5 = objc_alloc_init(DNDSApplicationIdentifierMapper);
   v6 = objc_alloc_init(DNDSContactProvider);
-  v7 = [(DNDSJSONBackingStore *)self readRecordDictionaryfromURL:self->_fileURL withError:a3];
+  v7 = [(DNDSJSONBackingStore *)self readRecordDictionaryfromURL:self->_fileURL withError:error];
   if (self->_secureFileURL && [(objc_class *)self->_recordClass conformsToProtocol:&unk_285C5AFC8])
   {
     v8 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:3 redactSensitiveData:0 contactProvider:v6 applicationIdentifierMapper:v5];
-    v9 = [(DNDSJSONBackingStore *)self readRecordDictionaryfromURL:self->_secureFileURL withError:a3];
+    v9 = [(DNDSJSONBackingStore *)self readRecordDictionaryfromURL:self->_secureFileURL withError:error];
     v10 = [(objc_class *)self->_recordClass newWithDictionaryRepresentation:v7 partitionedDictionaryRepresentation:v9 context:v8];
   }
 
@@ -67,34 +67,34 @@
   return v10;
 }
 
-- (unint64_t)writeRecord:(id)a3 writePartition:(BOOL)a4 error:(id *)a5
+- (unint64_t)writeRecord:(id)record writePartition:(BOOL)partition error:(id *)error
 {
-  v5 = a4;
-  v7 = a3;
+  partitionCopy = partition;
+  recordCopy = record;
   self->_deviceOutOfSpace = 0;
   context = objc_autoreleasePoolPush();
   v8 = objc_alloc_init(DNDSApplicationIdentifierMapper);
   v9 = objc_alloc_init(DNDSContactProvider);
   v10 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:1 redactSensitiveData:0 contactProvider:v9 applicationIdentifierMapper:v8];
-  v11 = [v7 dictionaryRepresentationWithContext:v10];
+  v11 = [recordCopy dictionaryRepresentationWithContext:v10];
   fileURL = self->_fileURL;
   v25 = 0;
   v13 = [(DNDSJSONBackingStore *)self writeRecordDictionary:v11 withSecurityClass:3 toURL:fileURL error:&v25];
   v14 = v25;
-  if (v5 && v13 == 2)
+  if (partitionCopy && v13 == 2)
   {
     if (self->_secureFileURL)
     {
-      v15 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:2 redactSensitiveData:0 contactProvider:v9 applicationIdentifierMapper:v8, context];
+      context = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:2 redactSensitiveData:0 contactProvider:v9 applicationIdentifierMapper:v8, context];
 
-      v16 = [v7 dictionaryRepresentationWithContext:v15];
+      v16 = [recordCopy dictionaryRepresentationWithContext:context];
       securityClass = self->_securityClass;
       secureFileURL = self->_secureFileURL;
       v24 = v14;
       v13 = [(DNDSJSONBackingStore *)self writeRecordDictionary:v16 withSecurityClass:securityClass toURL:secureFileURL error:&v24];
       v19 = v24;
 
-      v10 = v15;
+      v10 = context;
       v14 = v19;
     }
 
@@ -105,28 +105,28 @@
   }
 
   objc_autoreleasePoolPop(context);
-  if (a5)
+  if (error)
   {
     v20 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   return v13;
 }
 
-- (id)readRecordDictionaryfromURL:(id)a3 withError:(id *)a4
+- (id)readRecordDictionaryfromURL:(id)l withError:(id *)error
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
     v10 = objc_autoreleasePoolPush();
     v44 = 0;
-    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v6 options:0 error:&v44];
+    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:0 error:&v44];
     v12 = v44;
     if (!v11)
     {
@@ -145,7 +145,7 @@ LABEL_27:
 
 LABEL_28:
       objc_autoreleasePoolPop(v10);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_34;
       }
@@ -178,15 +178,15 @@ LABEL_28:
 
     v40 = [v19 bs_safeObjectForKey:@"header" ofType:objc_opt_class()];
     v39 = [v40 bs_safeObjectForKey:@"version" ofType:objc_opt_class()];
-    v20 = [v39 integerValue];
+    integerValue = [v39 integerValue];
     v41 = v19;
-    if (v20 <= self->_versionNumber)
+    if (integerValue <= self->_versionNumber)
     {
       v38 = v10;
       v37 = [v19 bs_safeObjectForKey:@"data" ofType:objc_opt_class()];
-      v28 = [v37 firstObject];
+      firstObject = [v37 firstObject];
       v29 = objc_opt_class();
-      v30 = v28;
+      v30 = firstObject;
       if (v29)
       {
         if (objc_opt_isKindOfClass())
@@ -207,15 +207,15 @@ LABEL_28:
 
       v18 = v31;
 
-      if (v20 >= self->_versionNumber)
+      if (integerValue >= self->_versionNumber)
       {
         v26 = v37;
         v10 = v38;
         goto LABEL_26;
       }
 
-      v27 = [(DNDSJSONBackingStore *)self delegate];
-      v32 = [v27 backingStore:self migrateDictionaryRepresentation:v18 fromVersionNumber:v20 toVersionNumber:self->_versionNumber];
+      delegate = [(DNDSJSONBackingStore *)self delegate];
+      v32 = [delegate backingStore:self migrateDictionaryRepresentation:v18 fromVersionNumber:integerValue toVersionNumber:self->_versionNumber];
 
       v18 = v32;
       v26 = v37;
@@ -227,7 +227,7 @@ LABEL_28:
       v21 = DNDSLogGeneral;
       if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_ERROR))
       {
-        [(DNDSJSONBackingStore *)&self->_versionNumber readRecordDictionaryfromURL:v20 withError:v21];
+        [(DNDSJSONBackingStore *)&self->_versionNumber readRecordDictionaryfromURL:integerValue withError:v21];
       }
 
       v22 = MEMORY[0x277CCA9B8];
@@ -239,7 +239,7 @@ LABEL_28:
       v26 = v24;
       [v22 errorWithDomain:v25 code:1006 userInfo:v24];
       v18 = 0;
-      v12 = v27 = v12;
+      v12 = delegate = v12;
     }
 
 LABEL_26:
@@ -251,7 +251,7 @@ LABEL_26:
   v14 = 0;
   v12 = 0;
   v18 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_34;
   }
@@ -269,7 +269,7 @@ LABEL_29:
       v33 = v14;
     }
 
-    *a4 = v33;
+    *error = v33;
   }
 
 LABEL_34:
@@ -279,14 +279,14 @@ LABEL_34:
   return v18;
 }
 
-- (unint64_t)writeRecordDictionary:(id)a3 withSecurityClass:(unint64_t)a4 toURL:(id)a5 error:(id *)a6
+- (unint64_t)writeRecordDictionary:(id)dictionary withSecurityClass:(unint64_t)class toURL:(id)l error:(id *)error
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  dictionaryCopy = dictionary;
+  lCopy = l;
   self->_deviceOutOfSpace = 0;
   context = objc_autoreleasePoolPush();
-  v46[0] = v10;
+  v46[0] = dictionaryCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:1];
   v44[0] = @"header";
   v42[0] = @"version";
@@ -305,8 +305,8 @@ LABEL_34:
 
   if ([MEMORY[0x277CCAAA0] isValidJSONObject:v17])
   {
-    v36 = a4;
-    v37 = a6;
+    classCopy = class;
+    errorCopy = error;
     v41 = 0;
     v18 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v17 options:0 error:&v41];
     v19 = v41;
@@ -317,24 +317,24 @@ LABEL_34:
       v29 = 0;
 LABEL_17:
 
-      a6 = v37;
+      error = errorCopy;
       goto LABEL_18;
     }
 
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
-    v21 = [v11 path];
-    v22 = [v20 fileExistsAtPath:v21];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [lCopy path];
+    v22 = [defaultManager fileExistsAtPath:path];
 
-    v35 = v20;
+    v35 = defaultManager;
     if ((v22 & 1) == 0)
     {
-      v23 = [v11 URLByDeletingLastPathComponent];
-      v24 = [v23 path];
+      uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+      path2 = [uRLByDeletingLastPathComponent path];
 
-      if (![v20 fileExistsAtPath:v24 isDirectory:0])
+      if (![defaultManager fileExistsAtPath:path2 isDirectory:0])
       {
         v40 = 0;
-        v30 = [v20 createDirectoryAtPath:v24 withIntermediateDirectories:1 attributes:0 error:&v40];
+        v30 = [defaultManager createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v40];
         v25 = v40;
 
         if (!v30)
@@ -345,7 +345,7 @@ LABEL_17:
 
 LABEL_7:
         v39 = 0;
-        v26 = [v18 writeToURL:v11 options:objc_msgSend(objc_opt_class() error:{"dataWritingOptionsForSecurityClass:", v36), &v39}];
+        v26 = [v18 writeToURL:lCopy options:objc_msgSend(objc_opt_class() error:{"dataWritingOptionsForSecurityClass:", classCopy), &v39}];
         v27 = v39;
         v28 = v27;
         if (v26)
@@ -380,7 +380,7 @@ LABEL_15:
 LABEL_18:
 
   objc_autoreleasePoolPop(context);
-  if (a6 && (v28 || v25 || v19))
+  if (error && (v28 || v25 || v19))
   {
     if (v25)
     {
@@ -402,23 +402,23 @@ LABEL_18:
       v32 = v31;
     }
 
-    *a6 = v32;
+    *error = v32;
   }
 
   v33 = *MEMORY[0x277D85DE8];
   return v29;
 }
 
-+ (unint64_t)dataWritingOptionsForSecurityClass:(unint64_t)a3
++ (unint64_t)dataWritingOptionsForSecurityClass:(unint64_t)class
 {
-  if (a3 > 3)
+  if (class > 3)
   {
     return 1;
   }
 
   else
   {
-    return qword_2491FFA10[a3];
+    return qword_2491FFA10[class];
   }
 }
 

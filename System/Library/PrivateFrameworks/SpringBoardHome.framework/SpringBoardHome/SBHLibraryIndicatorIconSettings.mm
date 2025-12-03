@@ -13,21 +13,21 @@
   [(SBHLibraryIndicatorIconSettings *)self setPod1Scale:0.93];
   [(SBHLibraryIndicatorIconSettings *)self setPod2Scale:0.9075];
   [(SBHLibraryIndicatorIconSettings *)self setPod3Scale:0.87];
-  v3 = [(SBHLibraryIndicatorIconSettings *)self pod1AnimationSettings];
-  [v3 setDefaultValues];
-  [v3 setBehaviorType:1];
-  [v3 setDampingRatio:0.4];
-  [v3 setResponse:0.5];
-  v4 = [(SBHLibraryIndicatorIconSettings *)self pod2AnimationSettings];
-  [v4 setDefaultValues];
-  [v4 setBehaviorType:1];
-  [v4 setDampingRatio:0.6];
-  [v4 setResponse:0.4];
-  v5 = [(SBHLibraryIndicatorIconSettings *)self pod3AnimationSettings];
-  [v5 setDefaultValues];
-  [v5 setBehaviorType:1];
-  [v5 setDampingRatio:0.8];
-  [v5 setResponse:0.3];
+  pod1AnimationSettings = [(SBHLibraryIndicatorIconSettings *)self pod1AnimationSettings];
+  [pod1AnimationSettings setDefaultValues];
+  [pod1AnimationSettings setBehaviorType:1];
+  [pod1AnimationSettings setDampingRatio:0.4];
+  [pod1AnimationSettings setResponse:0.5];
+  pod2AnimationSettings = [(SBHLibraryIndicatorIconSettings *)self pod2AnimationSettings];
+  [pod2AnimationSettings setDefaultValues];
+  [pod2AnimationSettings setBehaviorType:1];
+  [pod2AnimationSettings setDampingRatio:0.6];
+  [pod2AnimationSettings setResponse:0.4];
+  pod3AnimationSettings = [(SBHLibraryIndicatorIconSettings *)self pod3AnimationSettings];
+  [pod3AnimationSettings setDefaultValues];
+  [pod3AnimationSettings setBehaviorType:1];
+  [pod3AnimationSettings setDampingRatio:0.8];
+  [pod3AnimationSettings setResponse:0.3];
 }
 
 + (id)settingsControllerModule
@@ -61,8 +61,8 @@
 
   v18 = MEMORY[0x1E69C6638];
   v19 = MEMORY[0x1E69C65E8];
-  v20 = [MEMORY[0x1E69C6640] action];
-  v21 = [v19 rowWithTitle:@"Restore Defaults" action:v20];
+  action = [MEMORY[0x1E69C6640] action];
+  v21 = [v19 rowWithTitle:@"Restore Defaults" action:action];
   v31 = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
   v23 = [v18 sectionWithRows:v22];

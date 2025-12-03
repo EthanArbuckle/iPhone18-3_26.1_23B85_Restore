@@ -1,16 +1,16 @@
 @interface STUIStatusBarScaledImageView
 - (CGSize)intrinsicContentSize;
-- (STUIStatusBarScaledImageView)initWithFrame:(CGRect)a3;
-- (void)applyStyleAttributes:(id)a3;
+- (STUIStatusBarScaledImageView)initWithFrame:(CGRect)frame;
+- (void)applyStyleAttributes:(id)attributes;
 @end
 
 @implementation STUIStatusBarScaledImageView
 
-- (STUIStatusBarScaledImageView)initWithFrame:(CGRect)a3
+- (STUIStatusBarScaledImageView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = STUIStatusBarScaledImageView;
-  result = [(STUIStatusBarImageView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(STUIStatusBarImageView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   result->_pointSize = 1.0;
   return result;
 }
@@ -22,17 +22,17 @@
   [(STUIStatusBarImageView *)&v13 intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(STUIStatusBarScaledImageView *)self image];
-  if ([v7 isFromStatusBarImageProvider])
+  image = [(STUIStatusBarScaledImageView *)self image];
+  if ([image isFromStatusBarImageProvider])
   {
   }
 
   else
   {
-    v8 = [(STUIStatusBarScaledImageView *)self image];
-    v9 = [v8 _isSymbolImage];
+    image2 = [(STUIStatusBarScaledImageView *)self image];
+    _isSymbolImage = [image2 _isSymbolImage];
 
-    if ((v9 & 1) == 0)
+    if ((_isSymbolImage & 1) == 0)
     {
       v10 = 1.0;
       if (v6 > 0.0)
@@ -52,13 +52,13 @@
   return result;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = STUIStatusBarScaledImageView;
-  v4 = a3;
-  [(STUIStatusBarImageView *)&v6 applyStyleAttributes:v4];
-  v5 = [v4 fontForStyle:{-[STUIStatusBarImageView fontStyle](self, "fontStyle", v6.receiver, v6.super_class)}];
+  attributesCopy = attributes;
+  [(STUIStatusBarImageView *)&v6 applyStyleAttributes:attributesCopy];
+  v5 = [attributesCopy fontForStyle:{-[STUIStatusBarImageView fontStyle](self, "fontStyle", v6.receiver, v6.super_class)}];
 
   [v5 pointSize];
   [(STUIStatusBarScaledImageView *)self setPointSize:?];

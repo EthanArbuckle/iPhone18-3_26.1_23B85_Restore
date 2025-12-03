@@ -1,33 +1,33 @@
 @interface FPUserProcess
-+ (unsigned)_dirtyFlagsFromEntryState:(unsigned int)a3;
-- (BOOL)_populateMemoryRegionWithPageQueries:(id)a3 regionInfo:(vm_region_submap_info_64 *)a4;
++ (unsigned)_dirtyFlagsFromEntryState:(unsigned int)state;
+- (BOOL)_populateMemoryRegionWithPageQueries:(id)queries regionInfo:(vm_region_submap_info_64 *)info;
 - (BOOL)_populateTask;
-- (FPUserProcess)initWithBsdInfo:(proc_bsdinfo *)a3;
+- (FPUserProcess)initWithBsdInfo:(proc_bsdinfo *)info;
 - (id)_gatherOwnedVmObjects;
 - (id)auxData;
-- (id)extendedInfoForRegionType:(int)a3 at:(unint64_t)a4 extendedInfoProvider:(id)a5;
-- (void)_addSubrangesForRegion:(id)a3 purgeState:(int)a4;
+- (id)extendedInfoForRegionType:(int)type at:(unint64_t)at extendedInfoProvider:(id)provider;
+- (void)_addSubrangesForRegion:(id)region purgeState:(int)state;
 - (void)_drainDeferredReclaim;
 - (void)_gatherImageData;
 - (void)_gatherLedgers;
 - (void)_gatherProcessState;
-- (void)_gatherSharedCacheFromDyldSnapshot:(dyld_process_snapshot_s *)a3;
-- (void)_setIdleExitStatusFromDirtyFlags:(unsigned int)a3;
-- (void)addLedgerData:(unint64_t *)a3 count:(unint64_t)a4;
+- (void)_gatherSharedCacheFromDyldSnapshot:(dyld_process_snapshot_s *)snapshot;
+- (void)_setIdleExitStatusFromDirtyFlags:(unsigned int)flags;
+- (void)addLedgerData:(unint64_t *)data count:(unint64_t)count;
 - (void)dealloc;
-- (void)enumerateRegions:(id)a3;
-- (void)gatherData:(unint64_t)a3 extendedInfoProvider:(id)a4;
+- (void)enumerateRegions:(id)regions;
+- (void)gatherData:(unint64_t)data extendedInfoProvider:(id)provider;
 @end
 
 @implementation FPUserProcess
 
-- (FPUserProcess)initWithBsdInfo:(proc_bsdinfo *)a3
+- (FPUserProcess)initWithBsdInfo:(proc_bsdinfo *)info
 {
-  self->super._pid = a3->pbi_pid;
+  self->super._pid = info->pbi_pid;
   [(FPUserProcess *)self _gatherIsTranslated];
   v9.receiver = self;
   v9.super_class = FPUserProcess;
-  v5 = [(FPProcess *)&v9 initWithBsdInfo:a3];
+  v5 = [(FPProcess *)&v9 initWithBsdInfo:info];
   if (v5)
   {
     v6 = objc_alloc_init(NSMutableArray);
@@ -54,13 +54,13 @@
   [(FPUserProcess *)&v4 dealloc];
 }
 
-- (void)gatherData:(unint64_t)a3 extendedInfoProvider:(id)a4
+- (void)gatherData:(unint64_t)data extendedInfoProvider:(id)provider
 {
-  v4 = a3;
-  v64 = a4;
-  v6 = [(FPProcess *)self memoryRegions];
+  dataCopy = data;
+  providerCopy = provider;
+  memoryRegions = [(FPProcess *)self memoryRegions];
 
-  if (!v6)
+  if (!memoryRegions)
   {
     if (![(FPUserProcess *)self _configurePageSize])
     {
@@ -75,7 +75,7 @@ LABEL_64:
 
     if ([(FPProcess *)self hiddenFromDisplay])
     {
-      v7 = v64;
+      v7 = providerCopy;
       if (!self)
       {
 LABEL_63:
@@ -88,7 +88,7 @@ LABEL_63:
 
     else
     {
-      if ((v4 & 8) != 0)
+      if ((dataCopy & 8) != 0)
       {
         [(FPUserProcess *)self _drainDeferredReclaim];
       }
@@ -97,23 +97,23 @@ LABEL_63:
       [(FPUserProcess *)self _gatherImageData];
       objc_autoreleasePoolPop(v10);
       [(FPUserProcess *)self _gatherLedgers];
-      v11 = [(FPUserProcess *)self _gatherOwnedVmObjects];
+      _gatherOwnedVmObjects = [(FPUserProcess *)self _gatherOwnedVmObjects];
       ownedVmObjects = self->_ownedVmObjects;
-      self->_ownedVmObjects = v11;
+      self->_ownedVmObjects = _gatherOwnedVmObjects;
 
-      v13 = v64;
+      v13 = providerCopy;
     }
 
-    v14 = (v4 >> 1) & 1;
-    v15 = (v4 >> 2) & 1;
+    v14 = (dataCopy >> 1) & 1;
+    v15 = (dataCopy >> 2) & 1;
     v16 = sub_10000AC10([FPImageEnumerator alloc], self->_images);
     v17 = objc_alloc_init(NSMutableArray);
-    v18 = [(FPProcess *)self hiddenFromDisplay];
-    v63 = [(FPProcess *)self breakDownPhysFootprint];
+    hiddenFromDisplay = [(FPProcess *)self hiddenFromDisplay];
+    breakDownPhysFootprint = [(FPProcess *)self breakDownPhysFootprint];
     objc_opt_self();
-    v19 = self;
+    selfCopy = self;
     v20 = byte_100038638;
-    v62 = [(FPUserProcess *)v19 doOwnedAccountingAdjustments];
+    doOwnedAccountingAdjustments = [(FPUserProcess *)selfCopy doOwnedAccountingAdjustments];
     v100 = 0;
     v101 = &v100;
     v102 = 0x2020000000;
@@ -124,8 +124,8 @@ LABEL_63:
     v97 = sub_1000072EC;
     v98 = sub_1000072FC;
     v99 = 0;
-    v67 = v19;
-    sharedCache = v19->super._sharedCache;
+    v67 = selfCopy;
+    sharedCache = selfCopy->super._sharedCache;
     if (sharedCache)
     {
       v22 = *&sharedCache->_baseAddress;
@@ -141,31 +141,31 @@ LABEL_63:
     v81[2] = sub_100007304;
     v81[3] = &unk_1000291B0;
     v87 = v22;
-    v88 = v18;
-    v81[4] = v19;
+    v88 = hiddenFromDisplay;
+    v81[4] = selfCopy;
     v68 = v17;
     v82 = v68;
-    v89 = v63;
+    v89 = breakDownPhysFootprint;
     v61 = v16;
     v83 = v61;
     v85 = &v94;
     v90 = v14;
     v91 = v15;
-    v92 = v62;
-    v84 = v64;
+    v92 = doOwnedAccountingAdjustments;
+    v84 = providerCopy;
     v86 = &v100;
     v93 = v20;
-    self = v19;
-    [(FPUserProcess *)v19 enumerateRegions:v81];
+    self = selfCopy;
+    [(FPUserProcess *)selfCopy enumerateRegions:v81];
     v79 = 0u;
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v23 = [(NSMutableDictionary *)v19->_ownedVmObjects objectEnumerator];
-    v24 = [v23 countByEnumeratingWithState:&v77 objects:v104 count:16];
+    objectEnumerator = [(NSMutableDictionary *)selfCopy->_ownedVmObjects objectEnumerator];
+    v24 = [objectEnumerator countByEnumeratingWithState:&v77 objects:v104 count:16];
     if (v24)
     {
-      obj = v23;
+      obj = objectEnumerator;
       v66 = *v78;
       do
       {
@@ -247,7 +247,7 @@ LABEL_63:
           self = v67;
         }
 
-        v23 = obj;
+        objectEnumerator = obj;
         v24 = [obj countByEnumeratingWithState:&v77 objects:v104 count:16];
       }
 
@@ -260,31 +260,31 @@ LABEL_63:
     v40 = v95[5];
     if (v40)
     {
-      if (v62)
+      if (doOwnedAccountingAdjustments)
       {
-        v41 = [v40 dirtySize];
-        if (v41 >= v101[3])
+        dirtySize = [v40 dirtySize];
+        if (dirtySize >= v101[3])
         {
           [v95[5] setDirtySize:{objc_msgSend(v95[5], "dirtySize") - v101[3]}];
         }
 
         else
         {
-          v42 = [v95[5] dirtySize];
-          v101[3] -= v42;
+          dirtySize2 = [v95[5] dirtySize];
+          v101[3] -= dirtySize2;
           [v95[5] setDirtySize:0];
-          v43 = [v95[5] swappedSize];
+          swappedSize = [v95[5] swappedSize];
           v44 = v101;
           v45 = v95[5];
-          if (v43 >= v101[3])
+          if (swappedSize >= v101[3])
           {
             v50 = [v95[5] swappedSize] - v44[3];
           }
 
           else
           {
-            v46 = [v95[5] swappedSize];
-            v47 = v101[3] - v46;
+            swappedSize2 = [v95[5] swappedSize];
+            v47 = v101[3] - swappedSize2;
             v101[3] = v47;
             warnings = self->super._warnings;
             v49 = [NSString stringWithFormat:@"Footprint changed while analyzing – unmapped owned physical footprint may be over-counted by %llu bytes", v47];
@@ -298,8 +298,8 @@ LABEL_63:
         }
       }
 
-      v51 = [v95[5] dirtySize];
-      if ([v95[5] swappedSize] + v51)
+      dirtySize3 = [v95[5] dirtySize];
+      if ([v95[5] swappedSize] + dirtySize3)
       {
         v52 = v95;
         v53 = v95[5];
@@ -318,7 +318,7 @@ LABEL_63:
       }
     }
 
-    if (v63 && self->_ledgers[0])
+    if (breakDownPhysFootprint && self->_ledgers[0])
     {
       v55 = objc_alloc_init(FPMemoryRegion);
       v56 = v55;
@@ -344,7 +344,7 @@ LABEL_63:
       [v68 addObject:v56];
     }
 
-    if ((os_variant_has_internal_content() & v63) == 1 && self->_ledgers[3])
+    if ((os_variant_has_internal_content() & breakDownPhysFootprint) == 1 && self->_ledgers[3])
     {
       v58 = objc_alloc_init(FPMemoryRegion);
       v59 = v58;
@@ -484,30 +484,30 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)_populateMemoryRegionWithPageQueries:(id)a3 regionInfo:(vm_region_submap_info_64 *)a4
+- (BOOL)_populateMemoryRegionWithPageQueries:(id)queries regionInfo:(vm_region_submap_info_64 *)info
 {
-  v5 = a3;
-  v6 = [(FPProcess *)self pageSize];
-  v7 = v6;
-  if (!v5)
+  queriesCopy = queries;
+  pageSize = [(FPProcess *)self pageSize];
+  v7 = pageSize;
+  if (!queriesCopy)
   {
     goto LABEL_28;
   }
 
-  v8 = v5[10];
-  v9 = -v6;
-  v10 = v8 & -v6;
+  v8 = queriesCopy[10];
+  v9 = -pageSize;
+  v10 = v8 & -pageSize;
   if (v8 == -1)
   {
-    v12 = (v6 - 2) & v9;
+    v12 = (pageSize - 2) & v9;
     v13 = v10 != -1;
     v11 = -1;
   }
 
   else
   {
-    v11 = v5[11] + v8;
-    v12 = (v6 + v11 - 1) & v9;
+    v11 = queriesCopy[11] + v8;
+    v12 = (pageSize + v11 - 1) & v9;
     v13 = v10 != v8;
   }
 
@@ -521,7 +521,7 @@ LABEL_18:
     v44 = &v43;
     v45 = 0x2020000000;
     v46 = 0;
-    if ([v5 dirtySize])
+    if ([queriesCopy dirtySize])
     {
       _os_assert_log();
       _os_crash();
@@ -529,7 +529,7 @@ LABEL_18:
       goto LABEL_27;
     }
 
-    if (![v5 swappedSize])
+    if (![queriesCopy swappedSize])
     {
       break;
     }
@@ -559,9 +559,9 @@ LABEL_28:
     cachedDisposition = self->_cachedDisposition;
     v19 = v48;
     v20 = v44;
-    v21 = v5;
+    v21 = queriesCopy;
     v22 = v20;
-    if (v5)
+    if (queriesCopy)
     {
       v23 = v7 - v21[10] + (v21[10] & v9);
       if (v21[11] < v23)
@@ -587,7 +587,7 @@ LABEL_28:
     v17 = v10 == cachedDispositionAddress;
   }
 
-  if (!v5 || (v5[1] & 4) == 0)
+  if (!queriesCopy || (queriesCopy[1] & 4) == 0)
   {
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
@@ -596,11 +596,11 @@ LABEL_28:
     v40 = v17;
     v41 = v32;
     v42 = v31;
-    v24 = v5;
+    v24 = queriesCopy;
     v36 = &v47;
     v37 = &v43;
     v34 = v24;
-    v35 = self;
+    selfCopy = self;
     v38 = v7;
     v39 = v12;
     v25 = sub_100006768(self, v15, v16, v33);
@@ -612,14 +612,14 @@ LABEL_28:
 
   if (v10 == cachedDispositionAddress)
   {
-    [v5 setDirtySize:v48[3]];
-    [v5 setSwappedSize:v44[3]];
+    [queriesCopy setDirtySize:v48[3]];
+    [queriesCopy setSwappedSize:v44[3]];
   }
 
   v25 = 1;
   if (v12 != v11 && v16)
   {
-    v27 = v5;
+    v27 = queriesCopy;
     pendingUnusedSharedRegion = self->_pendingUnusedSharedRegion;
     self->_pendingUnusedSharedRegion = v27;
     v25 = 1;
@@ -632,9 +632,9 @@ LABEL_24:
   return v25;
 }
 
-- (void)enumerateRegions:(id)a3
+- (void)enumerateRegions:(id)regions
 {
-  v4 = a3;
+  regionsCopy = regions;
   memset(v36, 0, 76);
   v35 = 0;
   *v33 = 0u;
@@ -657,10 +657,10 @@ LABEL_55:
     mappedSize = 0;
   }
 
-  v7 = [(NSMutableArray *)self->_images firstObject];
-  if (v7)
+  firstObject = [(NSMutableArray *)self->_images firstObject];
+  if (firstObject)
   {
-    v8 = v7[3] + v7[2];
+    v8 = firstObject[3] + firstObject[2];
   }
 
   else
@@ -668,7 +668,7 @@ LABEL_55:
     v8 = 0;
   }
 
-  v27 = v4;
+  v27 = regionsCopy;
   v37 = 0;
   *nesting_depth = 0;
   v29 = 0;
@@ -678,10 +678,10 @@ LABEL_55:
   *info = 0u;
   v43 = 0u;
   object_name = 0;
-  v9 = [(FPProcess *)self pageSize];
+  pageSize = [(FPProcess *)self pageSize];
   if (v6)
   {
-    v10 = v9;
+    v10 = pageSize;
     v11 = v6;
     v12 = v8;
     do
@@ -722,7 +722,7 @@ LABEL_55:
   v14 = v6 + slide + mappedSize;
   while (1)
   {
-    v4 = objc_autoreleasePoolPush();
+    regionsCopy = objc_autoreleasePoolPush();
     nesting_depth[1] = -1;
     v37 = 9;
     v15 = v32;
@@ -816,7 +816,7 @@ LABEL_25:
     }
 
     v32 += v31;
-    objc_autoreleasePoolPop(v4);
+    objc_autoreleasePoolPop(regionsCopy);
   }
 
   v21 = v17;
@@ -833,19 +833,19 @@ LABEL_49:
 LABEL_52:
   sub_100006D50(self, v21, v25);
 LABEL_53:
-  objc_autoreleasePoolPop(v4);
+  objc_autoreleasePoolPop(regionsCopy);
 }
 
-- (void)_addSubrangesForRegion:(id)a3 purgeState:(int)a4
+- (void)_addSubrangesForRegion:(id)region purgeState:(int)state
 {
-  v6 = a3;
-  v7 = [(FPProcess *)self pageSize];
-  if (v6)
+  regionCopy = region;
+  pageSize = [(FPProcess *)self pageSize];
+  if (regionCopy)
   {
-    if ((v6[8] & 8) == 0)
+    if ((regionCopy[8] & 8) == 0)
     {
-      v8 = v6[8] & 1;
-      v9 = *(v6 + 10);
+      v8 = regionCopy[8] & 1;
+      v9 = *(regionCopy + 10);
       if (v9 == -1)
       {
         v10 = -1;
@@ -853,7 +853,7 @@ LABEL_53:
 
       else
       {
-        v10 = *(v6 + 11) + v9;
+        v10 = *(regionCopy + 11) + v9;
       }
 
       goto LABEL_6;
@@ -868,9 +868,9 @@ LABEL_53:
   v8 = 0;
   v9 = 0;
 LABEL_6:
-  v11 = (v7 + v10 - 1) & -v7;
-  v12 = v9 & -v7;
-  if (a4 == 1)
+  v11 = (pageSize + v10 - 1) & -pageSize;
+  v12 = v9 & -pageSize;
+  if (state == 1)
   {
     v13 = 1;
   }
@@ -884,10 +884,10 @@ LABEL_6:
   v26[1] = v26;
   v26[2] = 0x3010000000;
   v26[3] = "";
-  v14 = (v11 - v12) / v7;
-  if (v6)
+  v14 = (v11 - v12) / pageSize;
+  if (regionCopy)
   {
-    v15 = *(v6 + 9);
+    v15 = *(regionCopy + 9);
   }
 
   else
@@ -910,9 +910,9 @@ LABEL_6:
   v19 = v25;
   v20 = v26;
   v24 = v8;
-  v16 = v6;
+  v16 = regionCopy;
   v18 = v16;
-  v21 = v7;
+  v21 = pageSize;
   sub_100006768(self, v12, v14, v17);
 
   _Block_object_dispose(v25, 8);
@@ -931,9 +931,9 @@ LABEL_6:
   return v2 == 0;
 }
 
-- (void)_setIdleExitStatusFromDirtyFlags:(unsigned int)a3
+- (void)_setIdleExitStatusFromDirtyFlags:(unsigned int)flags
 {
-  if ((a3 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v3 = 3;
   }
@@ -943,7 +943,7 @@ LABEL_6:
     v3 = 2;
   }
 
-  if ((a3 & 1) == 0)
+  if ((flags & 1) == 0)
   {
     v3 = 1;
   }
@@ -982,9 +982,9 @@ LABEL_6:
   }
 }
 
-+ (unsigned)_dirtyFlagsFromEntryState:(unsigned int)a3
++ (unsigned)_dirtyFlagsFromEntryState:(unsigned int)state
 {
-  if ((a3 & 0x20) != 0)
+  if ((state & 0x20) != 0)
   {
     v3 = 5;
   }
@@ -994,8 +994,8 @@ LABEL_6:
     v3 = 1;
   }
 
-  v4 = v3 | (a3 >> 3) & 2;
-  if ((a3 & 8) != 0)
+  v4 = v3 | (state >> 3) & 2;
+  if ((state & 8) != 0)
   {
     return v4;
   }
@@ -1041,7 +1041,7 @@ LABEL_6:
   }
 }
 
-- (void)_gatherSharedCacheFromDyldSnapshot:(dyld_process_snapshot_s *)a3
+- (void)_gatherSharedCacheFromDyldSnapshot:(dyld_process_snapshot_s *)snapshot
 {
   v4 = sub_100002964();
   sharedCache = self->super._sharedCache;
@@ -1090,18 +1090,18 @@ LABEL_6:
 - (id)auxData
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(FPProcess *)self priority];
-  if (os_variant_has_internal_content() && (v4 & 0x80000000) == 0)
+  priority = [(FPProcess *)self priority];
+  if (os_variant_has_internal_content() && (priority & 0x80000000) == 0)
   {
-    v5 = [[FPAuxData alloc] initWithValue:v4 shouldAggregate:0];
+    v5 = [[FPAuxData alloc] initWithValue:priority shouldAggregate:0];
     [(FPAuxData *)v5 setFormatter:&stru_100029280];
     [v3 setObject:v5 forKeyedSubscript:@"jetsam priority"];
   }
 
-  v6 = [(FPProcess *)self idleExitStatus];
-  if (os_variant_has_internal_content() && v6)
+  idleExitStatus = [(FPProcess *)self idleExitStatus];
+  if (os_variant_has_internal_content() && idleExitStatus)
   {
-    v7 = [[FPAuxData alloc] initWithValue:v6 shouldAggregate:0];
+    v7 = [[FPAuxData alloc] initWithValue:idleExitStatus shouldAggregate:0];
     [(FPAuxData *)v7 setFormatter:&stru_1000292A0];
     [v3 setObject:v7 forKeyedSubscript:@"dirty"];
   }
@@ -1136,82 +1136,82 @@ LABEL_6:
   return v13;
 }
 
-- (id)extendedInfoForRegionType:(int)a3 at:(unint64_t)a4 extendedInfoProvider:(id)a5
+- (id)extendedInfoForRegionType:(int)type at:(unint64_t)at extendedInfoProvider:(id)provider
 {
-  v8 = a5;
-  v9 = v8;
-  if (a3 != 100)
+  providerCopy = provider;
+  v9 = providerCopy;
+  if (type != 100)
   {
-    if (a3 != 88 || !self)
+    if (type != 88 || !self)
     {
-      v16 = 0;
+      __str = 0;
       goto LABEL_38;
     }
 
-    v10 = v8;
-    v11 = [v10 ioSurfaceExtendedInfoDetailsAtAddress:a4 for:{-[FPProcess pid](self, "pid")}];
+    v10 = providerCopy;
+    v11 = [v10 ioSurfaceExtendedInfoDetailsAtAddress:at for:{-[FPProcess pid](self, "pid")}];
 
     if (!v11)
     {
-      v16 = 0;
+      __str = 0;
 LABEL_22:
 
       goto LABEL_38;
     }
 
     v12 = [v11 objectForKeyedSubscript:@"surfaceID"];
-    v13 = [v12 unsignedIntValue];
+    unsignedIntValue = [v12 unsignedIntValue];
 
     v14 = [v11 objectForKeyedSubscript:@"PixelFormat"];
-    v15 = [v14 unsignedIntValue];
+    unsignedIntValue2 = [v14 unsignedIntValue];
 
-    if ((v15 & 0x80000000) != 0)
+    if ((unsignedIntValue2 & 0x80000000) != 0)
     {
-      if (__maskrune(HIBYTE(v15), 0x800uLL))
+      if (__maskrune(HIBYTE(unsignedIntValue2), 0x800uLL))
       {
         goto LABEL_7;
       }
     }
 
-    else if ((_DefaultRuneLocale.__runetype[HIBYTE(v15)] & 0x800) != 0)
+    else if ((_DefaultRuneLocale.__runetype[HIBYTE(unsignedIntValue2)] & 0x800) != 0)
     {
 LABEL_7:
-      __str[0] = HIBYTE(v15);
-      __str[1] = BYTE2(v15);
-      __str[2] = BYTE1(v15);
-      __str[3] = v15;
+      __str[0] = HIBYTE(unsignedIntValue2);
+      __str[1] = BYTE2(unsignedIntValue2);
+      __str[2] = BYTE1(unsignedIntValue2);
+      __str[3] = unsignedIntValue2;
       __str[4] = 0;
 LABEL_19:
       v29 = [NSMutableString alloc];
       v30 = [v11 objectForKeyedSubscript:@"Width"];
-      v31 = [v30 unsignedIntValue];
+      unsignedIntValue3 = [v30 unsignedIntValue];
       v32 = [v11 objectForKeyedSubscript:@"Height"];
-      v16 = [v29 initWithFormat:@"SID: %#x  %ux%u (%s)", v13, v31, objc_msgSend(v32, "unsignedIntValue"), __str];
+      __str = [v29 initWithFormat:@"SID: %#x  %ux%u (%s)", unsignedIntValue, unsignedIntValue3, objc_msgSend(v32, "unsignedIntValue"), __str];
 
       v33 = [v11 objectForKeyedSubscript:@"Name"];
       if ([v33 length])
       {
-        [v16 appendFormat:@"  '%@'", v33];
+        [__str appendFormat:@"  '%@'", v33];
       }
 
       goto LABEL_22;
     }
 
-    snprintf(__str, 5uLL, "%4d", v15);
+    snprintf(__str, 5uLL, "%4d", unsignedIntValue2);
     goto LABEL_19;
   }
 
-  v17 = v8;
+  v17 = providerCopy;
   if (self)
   {
     v63 = 0;
-    v18 = [v17 ioAccelMemoryInfoDetailsAtAddress:a4 for:-[FPProcess pid](self error:{"pid"), &v63}];
+    v18 = [v17 ioAccelMemoryInfoDetailsAtAddress:at for:-[FPProcess pid](self error:{"pid"), &v63}];
     v19 = v63;
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 localizedDescription];
-      [(FPProcess *)self _addGlobalError:v21];
+      localizedDescription = [v19 localizedDescription];
+      [(FPProcess *)self _addGlobalError:localizedDescription];
     }
 
     if (v18)
@@ -1245,9 +1245,9 @@ LABEL_19:
 
       else
       {
-        v36 = [v58 BOOLValue];
+        bOOLValue = [v58 BOOLValue];
         v35 = @"Normal";
-        if (v36)
+        if (bOOLValue)
         {
           v35 = @"Purgeable";
         }
@@ -1288,14 +1288,14 @@ LABEL_19:
       v48 = v22;
       [v22 unsignedLongLongValue];
       v43 = NSLocalizedFileSizeDescription();
-      v49 = [v43 UTF8String];
+      uTF8String = [v43 UTF8String];
       [v23 unsignedLongLongValue];
       v44 = NSLocalizedFileSizeDescription();
-      v47 = [v44 UTF8String];
+      uTF8String2 = [v44 UTF8String];
       [v34 unsignedLongLongValue];
       NSLocalizedFileSizeDescription();
       v45 = v50 = v23;
-      v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Size:%s Resident:%s Dirty:%s IOSurfaceID:%s State:%s %s", v49, v47, [v45 UTF8String], -[__CFString UTF8String](v52, "UTF8String"), -[__CFString UTF8String](v51, "UTF8String"), objc_msgSend(v37, "UTF8String"));
+      __str = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Size:%s Resident:%s Dirty:%s IOSurfaceID:%s State:%s %s", uTF8String, uTF8String2, [v45 UTF8String], -[__CFString UTF8String](v52, "UTF8String"), -[__CFString UTF8String](v51, "UTF8String"), objc_msgSend(v37, "UTF8String"));
 
       v17 = v56;
       v9 = v57;
@@ -1304,29 +1304,29 @@ LABEL_19:
 
     else
     {
-      v16 = 0;
+      __str = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    __str = 0;
   }
 
 LABEL_38:
 
-  return v16;
+  return __str;
 }
 
-- (void)addLedgerData:(unint64_t *)a3 count:(unint64_t)a4
+- (void)addLedgerData:(unint64_t *)data count:(unint64_t)count
 {
-  v4 = 5;
-  if (a4 < 5)
+  countCopy = 5;
+  if (count < 5)
   {
-    v4 = a4;
+    countCopy = count;
   }
 
-  memcpy(self->_ledgers, a3, 8 * v4);
+  memcpy(self->_ledgers, data, 8 * countCopy);
 }
 
 @end

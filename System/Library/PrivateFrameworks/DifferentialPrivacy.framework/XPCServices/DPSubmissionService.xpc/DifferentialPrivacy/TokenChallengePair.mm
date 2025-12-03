@@ -1,21 +1,21 @@
 @interface TokenChallengePair
-- (TokenChallengePair)initWithChallenge:(id)a3 token:(id)a4;
+- (TokenChallengePair)initWithChallenge:(id)challenge token:(id)token;
 @end
 
 @implementation TokenChallengePair
 
-- (TokenChallengePair)initWithChallenge:(id)a3 token:(id)a4
+- (TokenChallengePair)initWithChallenge:(id)challenge token:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  challengeCopy = challenge;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = TokenChallengePair;
   v9 = [(TokenChallengePair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_challenge, a3);
-    objc_storeStrong(&v10->_token, a4);
+    objc_storeStrong(&v9->_challenge, challenge);
+    objc_storeStrong(&v10->_token, token);
   }
 
   return v10;

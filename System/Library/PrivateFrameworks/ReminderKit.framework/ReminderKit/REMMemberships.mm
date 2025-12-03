@@ -1,43 +1,43 @@
 @interface REMMemberships
-- (BOOL)isEqual:(id)a3;
-- (REMMemberships)initWithCoder:(id)a3;
-- (REMMemberships)initWithMembershipByMemberIdentifier:(id)a3;
-- (REMMemberships)initWithMemberships:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMMemberships)initWithCoder:(id)coder;
+- (REMMemberships)initWithMembershipByMemberIdentifier:(id)identifier;
+- (REMMemberships)initWithMemberships:(id)memberships;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)excludingObsoleteAndModifiedEarlierThan:(id)a3;
-- (id)groupIdentifierOfMemberWithIdentifier:(id)a3;
-- (id)mergingWith:(id)a3 mergePolicy:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)excludingObsoleteAndModifiedEarlierThan:(id)than;
+- (id)groupIdentifierOfMemberWithIdentifier:(id)identifier;
+- (id)mergingWith:(id)with mergePolicy:(unint64_t)policy;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMMemberships
 
-- (REMMemberships)initWithMembershipByMemberIdentifier:(id)a3
+- (REMMemberships)initWithMembershipByMemberIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = REMMemberships;
   v6 = [(REMMemberships *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_membershipByMemberIdentifier, a3);
+    objc_storeStrong(&v6->_membershipByMemberIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (REMMemberships)initWithMemberships:(id)a3
+- (REMMemberships)initWithMemberships:(id)memberships
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  membershipsCopy = memberships;
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(membershipsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = membershipsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -53,8 +53,8 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 memberIdentifier];
-        [v5 setObject:v11 forKeyedSubscript:v12];
+        memberIdentifier = [v11 memberIdentifier];
+        [v5 setObject:v11 forKeyedSubscript:memberIdentifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -68,44 +68,44 @@
   return v13;
 }
 
-- (id)groupIdentifierOfMemberWithIdentifier:(id)a3
+- (id)groupIdentifierOfMemberWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(REMMemberships *)self membershipByMemberIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  membershipByMemberIdentifier = [(REMMemberships *)self membershipByMemberIdentifier];
+  v6 = [membershipByMemberIdentifier objectForKeyedSubscript:identifierCopy];
 
-  v7 = [v6 groupIdentifier];
+  groupIdentifier = [v6 groupIdentifier];
 
-  return v7;
+  return groupIdentifier;
 }
 
-- (id)mergingWith:(id)a3 mergePolicy:(unint64_t)a4
+- (id)mergingWith:(id)with mergePolicy:(unint64_t)policy
 {
   v40 = *MEMORY[0x1E69E9840];
-  v31 = a3;
+  withCopy = with;
   v6 = objc_alloc(MEMORY[0x1E695DF90]);
-  v34 = self;
-  v7 = [(REMMemberships *)self membershipByMemberIdentifier];
-  v33 = [v6 initWithDictionary:v7];
+  selfCopy = self;
+  membershipByMemberIdentifier = [(REMMemberships *)self membershipByMemberIdentifier];
+  v33 = [v6 initWithDictionary:membershipByMemberIdentifier];
 
-  if (a4 == 1)
+  if (policy == 1)
   {
-    v27 = [v31 membershipByMemberIdentifier];
-    [v33 addEntriesFromDictionary:v27];
+    membershipByMemberIdentifier2 = [withCopy membershipByMemberIdentifier];
+    [v33 addEntriesFromDictionary:membershipByMemberIdentifier2];
 
-    v8 = v31;
+    v8 = withCopy;
   }
 
   else
   {
-    v8 = v31;
-    if (!a4)
+    v8 = withCopy;
+    if (!policy)
     {
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      obj = [v31 membershipByMemberIdentifier];
+      obj = [withCopy membershipByMemberIdentifier];
       v9 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v9)
       {
@@ -121,20 +121,20 @@
             }
 
             v13 = *(*(&v35 + 1) + 8 * i);
-            v14 = [v8 membershipByMemberIdentifier];
-            v15 = [v14 objectForKeyedSubscript:v13];
+            membershipByMemberIdentifier3 = [v8 membershipByMemberIdentifier];
+            v15 = [membershipByMemberIdentifier3 objectForKeyedSubscript:v13];
 
-            v16 = [(REMMemberships *)v34 membershipByMemberIdentifier];
-            v17 = [v16 objectForKeyedSubscript:v13];
+            membershipByMemberIdentifier4 = [(REMMemberships *)selfCopy membershipByMemberIdentifier];
+            v17 = [membershipByMemberIdentifier4 objectForKeyedSubscript:v13];
 
             if (!v17)
             {
               goto LABEL_14;
             }
 
-            v18 = [v17 modifiedOn];
-            v19 = [v15 modifiedOn];
-            v20 = [v18 compare:v19];
+            modifiedOn = [v17 modifiedOn];
+            modifiedOn2 = [v15 modifiedOn];
+            v20 = [modifiedOn compare:modifiedOn2];
 
             if (v20 == -1)
             {
@@ -143,19 +143,19 @@
 
             if (!v20)
             {
-              v21 = [v17 groupIdentifier];
-              if (!v21)
+              groupIdentifier = [v17 groupIdentifier];
+              if (!groupIdentifier)
               {
                 goto LABEL_14;
               }
 
-              v22 = v21;
-              v23 = [v15 groupIdentifier];
-              v24 = [v17 groupIdentifier];
-              v25 = [v23 compare:v24];
+              v22 = groupIdentifier;
+              groupIdentifier2 = [v15 groupIdentifier];
+              groupIdentifier3 = [v17 groupIdentifier];
+              v25 = [groupIdentifier2 compare:groupIdentifier3];
 
               v26 = v25 == 1;
-              v8 = v31;
+              v8 = withCopy;
               if (v26)
               {
 LABEL_14:
@@ -179,20 +179,20 @@ LABEL_14:
   return v28;
 }
 
-- (id)excludingObsoleteAndModifiedEarlierThan:(id)a3
+- (id)excludingObsoleteAndModifiedEarlierThan:(id)than
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  thanCopy = than;
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
-  v6 = [(REMMemberships *)self membershipByMemberIdentifier];
-  v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+  membershipByMemberIdentifier = [(REMMemberships *)self membershipByMemberIdentifier];
+  v7 = [v5 initWithCapacity:{objc_msgSend(membershipByMemberIdentifier, "count")}];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(REMMemberships *)self membershipByMemberIdentifier];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  membershipByMemberIdentifier2 = [(REMMemberships *)self membershipByMemberIdentifier];
+  v9 = [membershipByMemberIdentifier2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -203,23 +203,23 @@ LABEL_14:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(membershipByMemberIdentifier2);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [(REMMemberships *)self membershipByMemberIdentifier];
-        v15 = [v14 objectForKeyedSubscript:v13];
+        membershipByMemberIdentifier3 = [(REMMemberships *)self membershipByMemberIdentifier];
+        v15 = [membershipByMemberIdentifier3 objectForKeyedSubscript:v13];
 
         if (v15)
         {
-          if (![v15 isObsolete] || (objc_msgSend(v15, "modifiedOn"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "compare:", v4), v16, v17 != -1))
+          if (![v15 isObsolete] || (objc_msgSend(v15, "modifiedOn"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "compare:", thanCopy), v16, v17 != -1))
           {
             [v7 addObject:v15];
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [membershipByMemberIdentifier2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
@@ -235,30 +235,30 @@ LABEL_14:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMMemberships *)self membershipByMemberIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p membershipByMemberIdentifier: %@>", v4, self, v5];
+  membershipByMemberIdentifier = [(REMMemberships *)self membershipByMemberIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p membershipByMemberIdentifier: %@>", v4, self, membershipByMemberIdentifier];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMMemberships *)self membershipByMemberIdentifier];
-    v6 = [v4 membershipByMemberIdentifier];
-    if (v5 == v6)
+    membershipByMemberIdentifier = [(REMMemberships *)self membershipByMemberIdentifier];
+    membershipByMemberIdentifier2 = [equalCopy membershipByMemberIdentifier];
+    if (membershipByMemberIdentifier == membershipByMemberIdentifier2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(REMMemberships *)self membershipByMemberIdentifier];
-      v8 = [v4 membershipByMemberIdentifier];
-      v9 = [v7 isEqual:v8];
+      membershipByMemberIdentifier3 = [(REMMemberships *)self membershipByMemberIdentifier];
+      membershipByMemberIdentifier4 = [equalCopy membershipByMemberIdentifier];
+      v9 = [membershipByMemberIdentifier3 isEqual:membershipByMemberIdentifier4];
     }
   }
 
@@ -270,33 +270,33 @@ LABEL_14:
   return v9 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(REMMemberships *)self membershipByMemberIdentifier];
-  v6 = [v4 initWithMembershipByMemberIdentifier:v5];
+  membershipByMemberIdentifier = [(REMMemberships *)self membershipByMemberIdentifier];
+  v6 = [v4 initWithMembershipByMemberIdentifier:membershipByMemberIdentifier];
 
   return v6;
 }
 
-- (REMMemberships)initWithCoder:(id)a3
+- (REMMemberships)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"membershipByMemberIdentifier"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"membershipByMemberIdentifier"];
 
   v10 = [(REMMemberships *)self initWithMembershipByMemberIdentifier:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMMemberships *)self membershipByMemberIdentifier];
-  [v4 encodeObject:v5 forKey:@"membershipByMemberIdentifier"];
+  coderCopy = coder;
+  membershipByMemberIdentifier = [(REMMemberships *)self membershipByMemberIdentifier];
+  [coderCopy encodeObject:membershipByMemberIdentifier forKey:@"membershipByMemberIdentifier"];
 }
 
 @end

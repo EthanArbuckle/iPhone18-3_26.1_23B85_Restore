@@ -1,10 +1,10 @@
 @interface PXSurveyQuestionAssetConfiguration
-+ (void)configureViewForAsset:(id)a3;
-- (BOOL)needsQuestionInvalidationForChange:(id)a3;
++ (void)configureViewForAsset:(id)asset;
+- (BOOL)needsQuestionInvalidationForChange:(id)change;
 - (CGRect)assetContentsRect;
 - (CGRect)contentRectForOneUp;
 - (PXSurveyQuestionAssetConfiguration)init;
-- (PXSurveyQuestionAssetConfiguration)initWithTitle:(id)a3 asset:(id)a4;
+- (PXSurveyQuestionAssetConfiguration)initWithTitle:(id)title asset:(id)asset;
 - (UIView)contentView;
 - (void)_handleDidSelectAssetView;
 - (void)dealloc;
@@ -25,24 +25,24 @@
   return result;
 }
 
-- (BOOL)needsQuestionInvalidationForChange:(id)a3
+- (BOOL)needsQuestionInvalidationForChange:(id)change
 {
-  v3 = [a3 changeDetailsForObject:self->_asset];
-  v4 = [v3 objectWasDeleted];
+  v3 = [change changeDetailsForObject:self->_asset];
+  objectWasDeleted = [v3 objectWasDeleted];
 
-  return v4;
+  return objectWasDeleted;
 }
 
 - (void)_handleDidSelectAssetView
 {
-  v3 = [(PXSurveyQuestionAssetConfiguration *)self handlers];
-  v4 = [v3 didSelectAssetHandler];
+  handlers = [(PXSurveyQuestionAssetConfiguration *)self handlers];
+  didSelectAssetHandler = [handlers didSelectAssetHandler];
 
-  if (v4)
+  if (didSelectAssetHandler)
   {
-    v6 = [(PXSurveyQuestionAssetConfiguration *)self handlers];
-    v5 = [v6 didSelectAssetHandler];
-    (v5)[2](v5, self->_asset);
+    handlers2 = [(PXSurveyQuestionAssetConfiguration *)self handlers];
+    didSelectAssetHandler2 = [handlers2 didSelectAssetHandler];
+    (didSelectAssetHandler2)[2](didSelectAssetHandler2, self->_asset);
   }
 }
 
@@ -74,8 +74,8 @@
   assetView = self->_assetView;
   if (!assetView)
   {
-    v4 = [(PXSurveyQuestionAssetConfiguration *)self asset];
-    v5 = [PXDisplayAssetContentView checkOutViewForAsset:v4 withPlaybackStyle:1];
+    asset = [(PXSurveyQuestionAssetConfiguration *)self asset];
+    v5 = [PXDisplayAssetContentView checkOutViewForAsset:asset withPlaybackStyle:1];
     v6 = self->_assetView;
     self->_assetView = v5;
 
@@ -109,46 +109,46 @@
 
 - (PXSurveyQuestionAssetConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionAssetConfiguration.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXSurveyQuestionAssetConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionAssetConfiguration.m" lineNumber:36 description:{@"%s is not available as initializer", "-[PXSurveyQuestionAssetConfiguration init]"}];
 
   abort();
 }
 
-- (PXSurveyQuestionAssetConfiguration)initWithTitle:(id)a3 asset:(id)a4
+- (PXSurveyQuestionAssetConfiguration)initWithTitle:(id)title asset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  assetCopy = asset;
   v12.receiver = self;
   v12.super_class = PXSurveyQuestionAssetConfiguration;
   v8 = [(PXSurveyQuestionAssetConfiguration *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    objc_storeStrong(&v8->_asset, a4);
+    objc_storeStrong(&v8->_asset, asset);
     v8->_isStale = 0;
   }
 
   return v8;
 }
 
-+ (void)configureViewForAsset:(id)a3
++ (void)configureViewForAsset:(id)asset
 {
   v3 = MEMORY[0x1E69DC888];
-  v6 = a3;
-  v4 = [v3 quaternarySystemFillColor];
-  [v6 setBackgroundColor:v4];
+  assetCopy = asset;
+  quaternarySystemFillColor = [v3 quaternarySystemFillColor];
+  [assetCopy setBackgroundColor:quaternarySystemFillColor];
 
-  [v6 setCanDisplayLoadingIndicator:1];
-  [v6 setHidden:0];
+  [assetCopy setCanDisplayLoadingIndicator:1];
+  [assetCopy setHidden:0];
   v5 = objc_alloc_init(PXPhotoKitUIMediaProvider);
-  [v6 setMediaProvider:v5];
+  [assetCopy setMediaProvider:v5];
 
-  [v6 setPlaceholderTransitionDuration:0.2];
-  [v6 setContentMode:2];
+  [assetCopy setPlaceholderTransitionDuration:0.2];
+  [assetCopy setContentMode:2];
 }
 
 @end

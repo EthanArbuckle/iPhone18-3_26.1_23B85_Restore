@@ -1,18 +1,18 @@
 @interface Util
-+ (BOOL)linewiseFromFile:(id)a3 dataReadingOptions:(unint64_t)a4 withIterator:(id)a5;
-+ (double)elapsedMillisForBlock:(id)a3 enableTiming:(BOOL)a4;
-+ (double)elapsedMillisSinceMachAbsolute:(unint64_t)a3;
-+ (double)elapsedMillisSinceMachAbsolute:(unint64_t)a3 nowTarget:(unint64_t *)a4;
-+ (double)elapsedNanosForMachAbsoluteTimeStart:(unint64_t)a3 machAbsoluteTimeEnd:(unint64_t)a4;
-+ (double)elapsedNanosSinceMachAbsolute:(unint64_t)a3;
-+ (double)elapsedNanosSinceMachAbsolute:(unint64_t)a3 nowTarget:(unint64_t *)a4;
++ (BOOL)linewiseFromFile:(id)file dataReadingOptions:(unint64_t)options withIterator:(id)iterator;
++ (double)elapsedMillisForBlock:(id)block enableTiming:(BOOL)timing;
++ (double)elapsedMillisSinceMachAbsolute:(unint64_t)absolute;
++ (double)elapsedMillisSinceMachAbsolute:(unint64_t)absolute nowTarget:(unint64_t *)target;
++ (double)elapsedNanosForMachAbsoluteTimeStart:(unint64_t)start machAbsoluteTimeEnd:(unint64_t)end;
++ (double)elapsedNanosSinceMachAbsolute:(unint64_t)absolute;
++ (double)elapsedNanosSinceMachAbsolute:(unint64_t)absolute nowTarget:(unint64_t *)target;
 + (id)buildVersion;
-+ (id)languageTagForString:(id)a3;
++ (id)languageTagForString:(id)string;
 @end
 
 @implementation Util
 
-+ (double)elapsedNanosForMachAbsoluteTimeStart:(unint64_t)a3 machAbsoluteTimeEnd:(unint64_t)a4
++ (double)elapsedNanosForMachAbsoluteTimeStart:(unint64_t)start machAbsoluteTimeEnd:(unint64_t)end
 {
   v6 = dword_1005572CC;
   if (!dword_1005572CC)
@@ -21,58 +21,58 @@
     v6 = dword_1005572CC;
   }
 
-  return ((a4 - a3) * dword_1005572C8 / v6);
+  return ((end - start) * dword_1005572C8 / v6);
 }
 
-+ (double)elapsedNanosSinceMachAbsolute:(unint64_t)a3
++ (double)elapsedNanosSinceMachAbsolute:(unint64_t)absolute
 {
   v5 = mach_absolute_time();
 
-  [a1 elapsedNanosForMachAbsoluteTimeStart:a3 machAbsoluteTimeEnd:v5];
+  [self elapsedNanosForMachAbsoluteTimeStart:absolute machAbsoluteTimeEnd:v5];
   return result;
 }
 
-+ (double)elapsedMillisSinceMachAbsolute:(unint64_t)a3
++ (double)elapsedMillisSinceMachAbsolute:(unint64_t)absolute
 {
   v5 = mach_absolute_time();
 
-  [a1 elapsedMillisForMachAbsoluteTimeStart:a3 machAbsoluteTimeEnd:v5];
+  [self elapsedMillisForMachAbsoluteTimeStart:absolute machAbsoluteTimeEnd:v5];
   return result;
 }
 
-+ (double)elapsedNanosSinceMachAbsolute:(unint64_t)a3 nowTarget:(unint64_t *)a4
++ (double)elapsedNanosSinceMachAbsolute:(unint64_t)absolute nowTarget:(unint64_t *)target
 {
   v7 = mach_absolute_time();
-  [a1 elapsedNanosForMachAbsoluteTimeStart:a3 machAbsoluteTimeEnd:v7];
-  *a4 = v7;
+  [self elapsedNanosForMachAbsoluteTimeStart:absolute machAbsoluteTimeEnd:v7];
+  *target = v7;
   return result;
 }
 
-+ (double)elapsedMillisSinceMachAbsolute:(unint64_t)a3 nowTarget:(unint64_t *)a4
++ (double)elapsedMillisSinceMachAbsolute:(unint64_t)absolute nowTarget:(unint64_t *)target
 {
   v7 = mach_absolute_time();
-  [a1 elapsedMillisForMachAbsoluteTimeStart:a3 machAbsoluteTimeEnd:v7];
-  *a4 = v7;
+  [self elapsedMillisForMachAbsoluteTimeStart:absolute machAbsoluteTimeEnd:v7];
+  *target = v7;
   return result;
 }
 
-+ (double)elapsedMillisForBlock:(id)a3 enableTiming:(BOOL)a4
++ (double)elapsedMillisForBlock:(id)block enableTiming:(BOOL)timing
 {
-  if (a4)
+  if (timing)
   {
-    v5 = a3;
+    blockCopy = block;
     v6 = mach_absolute_time();
-    v5[2](v5);
+    blockCopy[2](blockCopy);
 
     v7 = mach_absolute_time();
 
-    [a1 elapsedMillisForMachAbsoluteTimeStart:v6 machAbsoluteTimeEnd:v7];
+    [self elapsedMillisForMachAbsoluteTimeStart:v6 machAbsoluteTimeEnd:v7];
   }
 
   else
   {
-    v9 = *(a3 + 2);
-    v10 = a3;
+    v9 = *(block + 2);
+    blockCopy2 = block;
     v9();
 
     return 0.0;
@@ -89,10 +89,10 @@
   return v3;
 }
 
-+ (id)languageTagForString:(id)a3
++ (id)languageTagForString:(id)string
 {
-  v3 = a3;
-  if (![v3 length])
+  stringCopy = string;
+  if (![stringCopy length])
   {
     v11 = 0;
     goto LABEL_10;
@@ -109,30 +109,30 @@
   v4 = [NSArray arrayWithObjects:v13 count:8];
   v5 = objc_alloc_init(NLLanguageRecognizer);
   [v5 setLanguageConstraints:v4];
-  [v5 processString:v3];
+  [v5 processString:stringCopy];
   v6 = [v5 languageHypothesesWithMaximum:1];
-  v7 = [v6 allValues];
-  v8 = [v7 firstObject];
+  allValues = [v6 allValues];
+  firstObject = [allValues firstObject];
 
-  if (v8 && ([v8 doubleValue], v9 > 0.4))
+  if (firstObject && ([firstObject doubleValue], v9 > 0.4))
   {
-    v10 = [v5 dominantLanguage];
+    dominantLanguage = [v5 dominantLanguage];
   }
 
   else
   {
     [v5 reset];
-    [v5 processString:v3];
-    v10 = [v5 dominantLanguage];
-    if (v10 == NLLanguageUndetermined)
+    [v5 processString:stringCopy];
+    dominantLanguage = [v5 dominantLanguage];
+    if (dominantLanguage == NLLanguageUndetermined)
     {
       v11 = 0;
       goto LABEL_9;
     }
   }
 
-  v10 = v10;
-  v11 = v10;
+  dominantLanguage = dominantLanguage;
+  v11 = dominantLanguage;
 LABEL_9:
 
 LABEL_10:
@@ -140,17 +140,17 @@ LABEL_10:
   return v11;
 }
 
-+ (BOOL)linewiseFromFile:(id)a3 dataReadingOptions:(unint64_t)a4 withIterator:(id)a5
++ (BOOL)linewiseFromFile:(id)file dataReadingOptions:(unint64_t)options withIterator:(id)iterator
 {
-  v7 = a5;
-  if (a3)
+  iteratorCopy = iterator;
+  if (file)
   {
-    v8 = [NSData dataWithContentsOfFile:a3 options:a4 error:0];
+    v8 = [NSData dataWithContentsOfFile:file options:options error:0];
     v9 = v8;
     v10 = v8 != 0;
     if (v8)
     {
-      v11 = [v8 bytes];
+      bytes = [v8 bytes];
       v12 = [v9 length];
       if (v12)
       {
@@ -160,10 +160,10 @@ LABEL_10:
         v16 = CKContextExecutor_ptr;
         while (1)
         {
-          v17 = &v11[-v15 - 1];
+          v17 = &bytes[-v15 - 1];
           while (1)
           {
-            v18 = v11[v15];
+            v18 = bytes[v15];
             if (v18 != 10)
             {
               break;
@@ -191,7 +191,7 @@ LABEL_10:
           while (v19 != v20)
           {
             v14 = v20 + 1;
-            v21 = v11[++v20];
+            v21 = bytes[++v20];
             if (v21 == 10)
             {
               goto LABEL_17;
@@ -225,8 +225,8 @@ LABEL_23:
 
         v22 = ~v15 + v14;
 LABEL_22:
-        v23 = [objc_alloc(v16[70]) initWithBytes:&v11[v15] length:v22 encoding:4];
-        v7[2](v7, v23);
+        v23 = [objc_alloc(v16[70]) initWithBytes:&bytes[v15] length:v22 encoding:4];
+        iteratorCopy[2](iteratorCopy, v23);
         v15 = v14 + 1;
 
         v16 = CKContextExecutor_ptr;

@@ -1,25 +1,25 @@
 @interface AMSLogoutTask
-+ (void)_resetServerDataCacheForAccountWithDSID:(id)a3;
-- (AMSLogoutTask)initWithAccount:(id)a3;
-- (BOOL)_disableAutomaticDownloadKindsWithError:(id *)a3;
-- (BOOL)_disableBookkeeperWithBag:(id)a3 error:(id *)a4;
-- (BOOL)_revokeMusicKitUserTokensWithError:(id *)a3;
-- (BOOL)_sendLogoutRequestWithBag:(id)a3 error:(id *)a4;
++ (void)_resetServerDataCacheForAccountWithDSID:(id)d;
+- (AMSLogoutTask)initWithAccount:(id)account;
+- (BOOL)_disableAutomaticDownloadKindsWithError:(id *)error;
+- (BOOL)_disableBookkeeperWithBag:(id)bag error:(id *)error;
+- (BOOL)_revokeMusicKitUserTokensWithError:(id *)error;
+- (BOOL)_sendLogoutRequestWithBag:(id)bag error:(id *)error;
 - (id)logout;
 @end
 
 @implementation AMSLogoutTask
 
-- (AMSLogoutTask)initWithAccount:(id)a3
+- (AMSLogoutTask)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v13.receiver = self;
   v13.super_class = AMSLogoutTask;
   v6 = [(AMSTask *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v15 = 0;
     v16 = &v15;
     v17 = 0x2050000000;
@@ -57,7 +57,7 @@
   objc_copyWeak(&v11, &location);
   v4 = v3;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v6 = objc_msgSend_performBinaryTaskWithBlock_(self, v5, v8);
 
   objc_destroyWeak(&v11);
@@ -66,10 +66,10 @@
   return v6;
 }
 
-- (BOOL)_revokeMusicKitUserTokensWithError:(id *)a3
+- (BOOL)_revokeMusicKitUserTokensWithError:(id *)error
 {
   v46 = *MEMORY[0x29EDCA608];
-  v7 = objc_msgSend_sharedAccountsNotificationPluginConfig(MEMORY[0x29EDBF9F0], a2, a3);
+  v7 = objc_msgSend_sharedAccountsNotificationPluginConfig(MEMORY[0x29EDBF9F0], a2, error);
   if (!v7)
   {
     v7 = objc_msgSend_sharedConfig(MEMORY[0x29EDBF9F0], v5, v6);
@@ -101,7 +101,7 @@
     objc_msgSend_revokeMusicKitUserTokensForAccountDSID_withCompletion_(v24, v28, v16, v27);
 
     v31 = objc_msgSend_binaryPromiseAdapter(v17, v29, v30);
-    v33 = objc_msgSend_resultWithError_(v31, v32, a3);
+    v33 = objc_msgSend_resultWithError_(v31, v32, error);
   }
 
   else
@@ -124,10 +124,10 @@
       _os_log_impl(&dword_29C87A000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Unable to revoke Music User Tokens missing necessary method in ICCloudServiceStatusMonitor", &v42, 0x16u);
     }
 
-    if (a3)
+    if (error)
     {
       AMSError();
-      *a3 = v33 = 0;
+      *error = v33 = 0;
     }
 
     else
@@ -140,10 +140,10 @@
   return v33;
 }
 
-- (BOOL)_disableAutomaticDownloadKindsWithError:(id *)a3
+- (BOOL)_disableAutomaticDownloadKindsWithError:(id *)error
 {
   v34 = *MEMORY[0x29EDCA608];
-  v7 = objc_msgSend_sharedAccountsNotificationPluginConfig(MEMORY[0x29EDBF9F0], a2, a3);
+  v7 = objc_msgSend_sharedAccountsNotificationPluginConfig(MEMORY[0x29EDBF9F0], a2, error);
   if (!v7)
   {
     v7 = objc_msgSend_sharedConfig(MEMORY[0x29EDBF9F0], v5, v6);
@@ -168,17 +168,17 @@
 
   v22 = objc_msgSend_perform(v19, v20, v21);
   v25 = objc_msgSend_binaryPromiseAdapter(v22, v23, v24);
-  v27 = objc_msgSend_resultWithError_(v25, v26, a3);
+  v27 = objc_msgSend_resultWithError_(v25, v26, error);
 
   v28 = *MEMORY[0x29EDCA608];
   return v27;
 }
 
-- (BOOL)_disableBookkeeperWithBag:(id)a3 error:(id *)a4
+- (BOOL)_disableBookkeeperWithBag:(id)bag error:(id *)error
 {
   v46 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDBF9F0];
-  v6 = a3;
+  bagCopy = bag;
   v11 = objc_msgSend_sharedAccountsNotificationPluginConfig(v5, v7, v8);
   if (!v11)
   {
@@ -197,9 +197,9 @@
     _os_log_impl(&dword_29C87A000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Disabling Bookkeeper.", buf, 0x16u);
   }
 
-  v16 = objc_msgSend_URLForKey_(v6, v15, @"push-notification-types/add-push-notification-type-url");
+  v16 = objc_msgSend_URLForKey_(bagCopy, v15, @"push-notification-types/add-push-notification-type-url");
   v17 = objc_alloc(MEMORY[0x29EDBFA38]);
-  v19 = objc_msgSend_initWithBag_(v17, v18, v6);
+  v19 = objc_msgSend_initWithBag_(v17, v18, bagCopy);
 
   objc_msgSend_setRequestEncoding_(v19, v20, 2);
   v23 = objc_msgSend_deviceGUID(MEMORY[0x29EDBF9D0], v21, v22, @"guid");
@@ -214,17 +214,17 @@
   v30 = objc_msgSend_defaultSession(MEMORY[0x29EDBFA40], v28, v29);
   v32 = objc_msgSend_dataTaskPromiseWithRequestPromise_(v30, v31, v27);
   v35 = objc_msgSend_binaryPromiseAdapter(v32, v33, v34);
-  v37 = objc_msgSend_resultWithError_(v35, v36, a4);
+  v37 = objc_msgSend_resultWithError_(v35, v36, error);
 
   v38 = *MEMORY[0x29EDCA608];
   return v37;
 }
 
-- (BOOL)_sendLogoutRequestWithBag:(id)a3 error:(id *)a4
+- (BOOL)_sendLogoutRequestWithBag:(id)bag error:(id *)error
 {
   v59 = *MEMORY[0x29EDCA608];
   v6 = MEMORY[0x29EDBF9F0];
-  v7 = a3;
+  bagCopy = bag;
   v12 = objc_msgSend_sharedAccountsNotificationPluginConfig(v6, v8, v9);
   if (!v12)
   {
@@ -243,9 +243,9 @@
     _os_log_impl(&dword_29C87A000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Sending logout request.", buf, 0x16u);
   }
 
-  v17 = objc_msgSend_URLForKey_(v7, v16, @"logout-url");
+  v17 = objc_msgSend_URLForKey_(bagCopy, v16, @"logout-url");
   v18 = objc_alloc(MEMORY[0x29EDBFA38]);
-  v20 = objc_msgSend_initWithBag_(v18, v19, v7);
+  v20 = objc_msgSend_initWithBag_(v18, v19, bagCopy);
 
   objc_msgSend_setRequestEncoding_(v20, v21, 2);
   v24 = objc_msgSend_deviceGUID(MEMORY[0x29EDBF9D0], v22, v23, @"guid");
@@ -262,19 +262,19 @@
   v43 = objc_msgSend_defaultSession(MEMORY[0x29EDBFA40], v41, v42);
   v45 = objc_msgSend_dataTaskPromiseWithRequestPromise_(v43, v44, v40);
   v48 = objc_msgSend_binaryPromiseAdapter(v45, v46, v47);
-  v50 = objc_msgSend_resultWithError_(v48, v49, a4);
+  v50 = objc_msgSend_resultWithError_(v48, v49, error);
 
   v51 = *MEMORY[0x29EDCA608];
   return v50;
 }
 
-+ (void)_resetServerDataCacheForAccountWithDSID:(id)a3
++ (void)_resetServerDataCacheForAccountWithDSID:(id)d
 {
   v24 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  dCopy = d;
   v6 = objc_msgSend_sharedAccountsNotificationPluginConfig(MEMORY[0x29EDBF9F0], v4, v5);
   v9 = v6;
-  if (v3)
+  if (dCopy)
   {
     if (!v6)
     {
@@ -294,7 +294,7 @@
     }
 
     v9 = objc_alloc_init(MEMORY[0x29EDBFA28]);
-    v14 = objc_msgSend_tearDownCacheForAccountDSID_(v9, v13, v3);
+    v14 = objc_msgSend_tearDownCacheForAccountDSID_(v9, v13, dCopy);
   }
 
   else

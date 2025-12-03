@@ -1,74 +1,74 @@
 @interface PXAnimation
-+ (BOOL)readOptionalStringAttribute:(id)a3 fromNode:(_xmlNode *)a4 attributeMap:(id)a5 toPDDomValue:(unint64_t *)a6;
++ (BOOL)readOptionalStringAttribute:(id)attribute fromNode:(_xmlNode *)node attributeMap:(id)map toPDDomValue:(unint64_t *)value;
 + (id)chartBuildStepMap;
 + (id)chartTypeMap;
-+ (id)newShapeTarget:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)newTarget:(_xmlNode *)a3 drawingState:(id)a4;
++ (id)newShapeTarget:(_xmlNode *)target drawingState:(id)state;
++ (id)newTarget:(_xmlNode *)target drawingState:(id)state;
 + (id)presetClassMap;
-+ (id)readAnimVariant:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readGraphicBuild:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readOleChartBuild:(_xmlNode *)a3;
-+ (id)readParagraphBuild:(_xmlNode *)a3;
++ (id)readAnimVariant:(_xmlNode *)variant drawingState:(id)state;
++ (id)readGraphicBuild:(_xmlNode *)build drawingState:(id)state;
++ (id)readOleChartBuild:(_xmlNode *)build;
++ (id)readParagraphBuild:(_xmlNode *)build;
 + (id)restartTypeMap;
 + (id)sequentialNextActionMap;
 + (id)sequentialPreviousActionMap;
 + (id)timeNodeFillTypeMap;
 + (id)timeNodeTypeMap;
 + (id)triggerEventMap;
-+ (int)readChartBuildType:(id)a3;
-+ (void)readAnimAudioElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimCmdElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimEffectElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimMotionElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimParallelElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimRotationElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimScaleElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimSequentialElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimSetElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimVideoElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5;
-+ (void)readAnimationFromTimingXmlNode:(_xmlNode *)a3 tgtAnimation:(id)a4 drawingState:(id)a5;
-+ (void)readChartBuildStep:(id)a3 chartTarget:(id)a4;
-+ (void)readChartType:(id)a3 oleChartTarget:(id)a4;
-+ (void)readChildTimeNodeList:(_xmlNode *)a3 commonTimeNodeData:(id)a4 drawingState:(id)a5;
-+ (void)readCommonBehaviorData:(_xmlNode *)a3 tgtCommonBehaviorData:(id)a4 drawingState:(id)a5;
-+ (void)readCommonMediaNodeData:(_xmlNode *)a3 commonMediaData:(id)a4 drawingState:(id)a5;
-+ (void)readCommonTimeNodeData:(_xmlNode *)a3 commonTimeNodeData:(id)a4 drawingState:(id)a5;
-+ (void)readCondition:(_xmlNode *)a3 timeCondition:(id)a4 drawingState:(id)a5;
-+ (void)readConditionList:(_xmlNode *)a3 arrayOfConditions:(id)a4 drawingState:(id)a5;
-+ (void)readIterate:(_xmlNode *)a3 commonTimeNodeData:(id)a4 drawingState:(id)a5;
-+ (void)readPresetClass:(id)a3 commonTimeNodeData:(id)a4;
-+ (void)readRestartType:(id)a3 commonTimeNodeData:(id)a4;
-+ (void)readStConditionList:(_xmlNode *)a3 commonTimeNodeData:(id)a4 drawingState:(id)a5;
-+ (void)readTimeNodeType:(id)a3 commonTimeNodeData:(id)a4;
-+ (void)readTriggerEvent:(id)a3 timeCondition:(id)a4;
-+ (void)writeAnimationFromSlideBase:(id)a3 to:(id)a4 state:(id)a5;
++ (int)readChartBuildType:(id)type;
++ (void)readAnimAudioElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimCmdElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimEffectElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimMotionElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimParallelElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimRotationElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimScaleElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimSequentialElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimSetElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimVideoElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state;
++ (void)readAnimationFromTimingXmlNode:(_xmlNode *)node tgtAnimation:(id)animation drawingState:(id)state;
++ (void)readChartBuildStep:(id)step chartTarget:(id)target;
++ (void)readChartType:(id)type oleChartTarget:(id)target;
++ (void)readChildTimeNodeList:(_xmlNode *)list commonTimeNodeData:(id)data drawingState:(id)state;
++ (void)readCommonBehaviorData:(_xmlNode *)data tgtCommonBehaviorData:(id)behaviorData drawingState:(id)state;
++ (void)readCommonMediaNodeData:(_xmlNode *)data commonMediaData:(id)mediaData drawingState:(id)state;
++ (void)readCommonTimeNodeData:(_xmlNode *)data commonTimeNodeData:(id)nodeData drawingState:(id)state;
++ (void)readCondition:(_xmlNode *)condition timeCondition:(id)timeCondition drawingState:(id)state;
++ (void)readConditionList:(_xmlNode *)list arrayOfConditions:(id)conditions drawingState:(id)state;
++ (void)readIterate:(_xmlNode *)iterate commonTimeNodeData:(id)data drawingState:(id)state;
++ (void)readPresetClass:(id)class commonTimeNodeData:(id)data;
++ (void)readRestartType:(id)type commonTimeNodeData:(id)data;
++ (void)readStConditionList:(_xmlNode *)list commonTimeNodeData:(id)data drawingState:(id)state;
++ (void)readTimeNodeType:(id)type commonTimeNodeData:(id)data;
++ (void)readTriggerEvent:(id)event timeCondition:(id)condition;
++ (void)writeAnimationFromSlideBase:(id)base to:(id)to state:(id)state;
 @end
 
 @implementation PXAnimation
 
-+ (void)readAnimationFromTimingXmlNode:(_xmlNode *)a3 tgtAnimation:(id)a4 drawingState:(id)a5
++ (void)readAnimationFromTimingXmlNode:(_xmlNode *)node tgtAnimation:(id)animation drawingState:(id)state
 {
-  v31 = a4;
-  v7 = a5;
-  v8 = v7;
-  if (a3)
+  animationCopy = animation;
+  stateCopy = state;
+  v8 = stateCopy;
+  if (node)
   {
-    v9 = [v7 client];
-    v10 = [v9 presentationState];
+    client = [stateCopy client];
+    presentationState = [client presentationState];
 
-    v11 = [v10 PXPresentationMLNamespace];
-    v12 = OCXFindChild(a3, v11, "tnLst");
+    pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+    v12 = OCXFindChild(node, pXPresentationMLNamespace, "tnLst");
 
     if (v12)
     {
-      v13 = [v10 PXPresentationMLNamespace];
-      v14 = OCXFindChild(v12, v13, "par");
+      pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+      v14 = OCXFindChild(v12, pXPresentationMLNamespace2, "par");
 
       if (v14)
       {
-        v15 = [v10 PXPresentationMLNamespace];
-        v16 = OCXFindChild(v14, v15, "cTn");
+        pXPresentationMLNamespace3 = [presentationState PXPresentationMLNamespace];
+        v16 = OCXFindChild(v14, pXPresentationMLNamespace3, "cTn");
 
         if (v16)
         {
@@ -76,27 +76,27 @@
           v18 = v17;
           if (v17 && [v17 isEqualToString:@"tmRoot"])
           {
-            v19 = [v31 addRootTimeNode];
-            [a1 readCommonTimeNodeData:v16 commonTimeNodeData:v19 drawingState:v8];
+            addRootTimeNode = [animationCopy addRootTimeNode];
+            [self readCommonTimeNodeData:v16 commonTimeNodeData:addRootTimeNode drawingState:v8];
           }
         }
       }
     }
 
-    v20 = [v10 PXPresentationMLNamespace];
-    v21 = OCXFindChild(a3, v20, "bldLst");
+    pXPresentationMLNamespace4 = [presentationState PXPresentationMLNamespace];
+    v21 = OCXFindChild(node, pXPresentationMLNamespace4, "bldLst");
 
     if (v21)
     {
-      v30 = v10;
+      v30 = presentationState;
       v32 = objc_alloc_init(OITSUNoCopyDictionary);
       for (i = OCXFirstChild(v21); ; i = OCXNextSibling(i))
       {
         if (!i)
         {
-          [v31 setBuildMap:v32];
+          [animationCopy setBuildMap:v32];
 
-          v10 = v30;
+          presentationState = v30;
           goto LABEL_30;
         }
 
@@ -114,7 +114,7 @@ LABEL_27:
       v25 = [v8 drawableForShapeId:v23];
       if (xmlStrEqual(i->name, "bldP"))
       {
-        v26 = [a1 readParagraphBuild:i];
+        v26 = [self readParagraphBuild:i];
       }
 
       else if (xmlStrEqual(i->name, "bldDgm"))
@@ -124,7 +124,7 @@ LABEL_27:
 
       else if (xmlStrEqual(i->name, "bldOleChart"))
       {
-        v26 = [a1 readOleChartBuild:i];
+        v26 = [self readOleChartBuild:i];
       }
 
       else
@@ -137,7 +137,7 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v26 = [a1 readGraphicBuild:i drawingState:v8];
+        v26 = [self readGraphicBuild:i drawingState:v8];
       }
 
       v27 = v26;
@@ -164,30 +164,30 @@ LABEL_30:
   }
 }
 
-+ (void)writeAnimationFromSlideBase:(id)a3 to:(id)a4 state:(id)a5
++ (void)writeAnimationFromSlideBase:(id)base to:(id)to state:(id)state
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v17 animation];
-  v11 = [v10 rootTimeNode];
+  baseCopy = base;
+  toCopy = to;
+  stateCopy = state;
+  animation = [baseCopy animation];
+  rootTimeNode = [animation rootTimeNode];
 
-  if (v11)
+  if (rootTimeNode)
   {
-    [v8 startElement:@"timing"];
-    v12 = [[PXAnimationWriteState alloc] initWithWriteState:v9 file:v8];
-    [a1 writeTimeList:v11 state:v12];
-    v13 = [v17 animation];
-    v14 = [v13 buildMap];
+    [toCopy startElement:@"timing"];
+    v12 = [[PXAnimationWriteState alloc] initWithWriteState:stateCopy file:toCopy];
+    [self writeTimeList:rootTimeNode state:v12];
+    animation2 = [baseCopy animation];
+    buildMap = [animation2 buildMap];
 
-    if (v14)
+    if (buildMap)
     {
-      v15 = [v17 animation];
-      v16 = [v15 buildMap];
-      [a1 writeBuildList:v16 state:v12];
+      animation3 = [baseCopy animation];
+      buildMap2 = [animation3 buildMap];
+      [self writeBuildList:buildMap2 state:v12];
     }
 
-    [v8 endElement];
+    [toCopy endElement];
   }
 }
 
@@ -214,75 +214,75 @@ void __43__PXAnimation_Private__timeNodeFillTypeMap__block_invoke()
   +[PXAnimation(Private) timeNodeFillTypeMap]::sEnumerationMap = v0;
 }
 
-+ (BOOL)readOptionalStringAttribute:(id)a3 fromNode:(_xmlNode *)a4 attributeMap:(id)a5 toPDDomValue:(unint64_t *)a6
++ (BOOL)readOptionalStringAttribute:(id)attribute fromNode:(_xmlNode *)node attributeMap:(id)map toPDDomValue:(unint64_t *)value
 {
-  v9 = a3;
-  v10 = a5;
+  attributeCopy = attribute;
+  mapCopy = map;
   v17 = 0;
-  v11 = CXOptionalStringAttribute(a4, CXNoNamespace, [v9 UTF8String], &v17);
+  v11 = CXOptionalStringAttribute(node, CXNoNamespace, [attributeCopy UTF8String], &v17);
   v12 = v17;
   if (v11)
   {
-    v13 = [v10 valueForString:v12];
+    v13 = [mapCopy valueForString:v12];
     LOBYTE(v11) = v13 != -130883970;
     if (v13 == -130883970)
     {
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PXAnimation(Private) readOptionalStringAttribute:fromNode:attributeMap:toPDDomValue:]"];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/PowerPoint/Xml/PXAnimation.mm"];
-      [OITSUAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:365 isFatal:0 description:"Located attribute for element but failed to resolve mapping %@ to %@", v9, v12];
+      [OITSUAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:365 isFatal:0 description:"Located attribute for element but failed to resolve mapping %@ to %@", attributeCopy, v12];
 
       +[OITSUAssertionHandler logBacktraceThrottled];
     }
 
-    *a6 = v13;
+    *value = v13;
   }
 
   return v11;
 }
 
-+ (void)readCommonTimeNodeData:(_xmlNode *)a3 commonTimeNodeData:(id)a4 drawingState:(id)a5
++ (void)readCommonTimeNodeData:(_xmlNode *)data commonTimeNodeData:(id)nodeData drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  nodeDataCopy = nodeData;
+  stateCopy = state;
   v38 = 0;
   v37 = 0;
-  v10 = CXOptionalStringAttribute(a3, CXNoNamespace, "nodeType", &v37);
+  v10 = CXOptionalStringAttribute(data, CXNoNamespace, "nodeType", &v37);
   v11 = v37;
   if (v10)
   {
-    [a1 readTimeNodeType:v11 commonTimeNodeData:v8];
+    [self readTimeNodeType:v11 commonTimeNodeData:nodeDataCopy];
   }
 
   v36 = 0;
-  v12 = CXOptionalStringAttribute(a3, CXNoNamespace, "presetClass", &v36);
+  v12 = CXOptionalStringAttribute(data, CXNoNamespace, "presetClass", &v36);
   v13 = v36;
   if (v12)
   {
-    [a1 readPresetClass:v13 commonTimeNodeData:v8];
+    [self readPresetClass:v13 commonTimeNodeData:nodeDataCopy];
   }
 
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "presetSubtype", &v38))
+  if (CXOptionalLongAttribute(data, CXNoNamespace, "presetSubtype", &v38))
   {
-    [v8 setPresetSubType:v38];
+    [nodeDataCopy setPresetSubType:v38];
   }
 
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "presetID", &v38))
+  if (CXOptionalLongAttribute(data, CXNoNamespace, "presetID", &v38))
   {
-    [v8 setPresetId:v38];
+    [nodeDataCopy setPresetId:v38];
   }
 
   v35 = 0;
   v31 = v13;
-  v14 = CXOptionalStringAttribute(a3, CXNoNamespace, "grpId", &v35);
+  v14 = CXOptionalStringAttribute(data, CXNoNamespace, "grpId", &v35);
   v15 = v35;
   if (v14)
   {
-    [v8 setGroupId:v15];
+    [nodeDataCopy setGroupId:v15];
   }
 
   v34 = 0;
   v30 = v15;
-  v16 = CXOptionalStringAttribute(a3, CXNoNamespace, "repeatCount", &v34);
+  v16 = CXOptionalStringAttribute(data, CXNoNamespace, "repeatCount", &v34);
   v17 = v34;
   v18 = v17;
   if (v16)
@@ -290,89 +290,89 @@ void __43__PXAnimation_Private__timeNodeFillTypeMap__block_invoke()
     v38 = 0;
     if ([v17 isEqualToString:@"indefinite"])
     {
-      v19 = -1;
+      intValue = -1;
     }
 
     else
     {
-      v19 = [v18 intValue];
+      intValue = [v18 intValue];
     }
 
-    v38 = v19;
-    [v8 setRepeatCount:?];
+    v38 = intValue;
+    [nodeDataCopy setRepeatCount:?];
   }
 
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "repeatDur", &v38))
+  if (CXOptionalLongAttribute(data, CXNoNamespace, "repeatDur", &v38))
   {
-    [v8 setRepeatDuration:v38];
+    [nodeDataCopy setRepeatDuration:v38];
   }
 
   v28 = v18;
   v33 = 0;
-  v20 = CXOptionalStringAttribute(a3, CXNoNamespace, "restart", &v33);
+  v20 = CXOptionalStringAttribute(data, CXNoNamespace, "restart", &v33);
   v21 = v33;
   if (v20)
   {
-    [a1 readRestartType:v21 commonTimeNodeData:{v8, v18, v30, v13}];
+    [self readRestartType:v21 commonTimeNodeData:{nodeDataCopy, v18, v30, v13}];
   }
 
-  v22 = CXDefaultStringAttribute(a3, CXNoNamespace, "dur", 0);
+  v22 = CXDefaultStringAttribute(data, CXNoNamespace, "dur", 0);
   v23 = v22;
   if (v22)
   {
     if ([v22 isEqualToString:@"indefinite"])
     {
-      v24 = -1;
+      intValue2 = -1;
     }
 
     else
     {
-      v24 = [v23 intValue];
-      v38 = v24;
+      intValue2 = [v23 intValue];
+      v38 = intValue2;
     }
 
-    [v8 setDuration:{v24, v28}];
+    [nodeDataCopy setDuration:{intValue2, v28}];
   }
 
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "spd", &v38))
+  if (CXOptionalLongAttribute(data, CXNoNamespace, "spd", &v38))
   {
-    [v8 setSpeed:v38];
+    [nodeDataCopy setSpeed:v38];
   }
 
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "accel", &v38))
+  if (CXOptionalLongAttribute(data, CXNoNamespace, "accel", &v38))
   {
-    [v8 setAcceleration:v38];
+    [nodeDataCopy setAcceleration:v38];
   }
 
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "decel", &v38))
+  if (CXOptionalLongAttribute(data, CXNoNamespace, "decel", &v38))
   {
-    [v8 setDeceleration:v38];
+    [nodeDataCopy setDeceleration:v38];
   }
 
   v32 = 3;
-  v25 = [a1 timeNodeFillTypeMap];
-  v26 = [a1 readOptionalStringAttribute:@"fill" fromNode:a3 attributeMap:v25 toPDDomValue:&v32];
+  timeNodeFillTypeMap = [self timeNodeFillTypeMap];
+  v26 = [self readOptionalStringAttribute:@"fill" fromNode:data attributeMap:timeNodeFillTypeMap toPDDomValue:&v32];
 
   if (v26)
   {
-    [v8 setFillType:v32];
+    [nodeDataCopy setFillType:v32];
   }
 
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  for (i = OCXFirstChild(data); i; i = OCXNextSibling(i))
   {
     if (xmlStrEqual(i->name, "childTnLst"))
     {
-      [a1 readChildTimeNodeList:i commonTimeNodeData:v8 drawingState:v9];
+      [self readChildTimeNodeList:i commonTimeNodeData:nodeDataCopy drawingState:stateCopy];
     }
 
     else if (xmlStrEqual(i->name, "iterate"))
     {
-      [a1 readIterate:i commonTimeNodeData:v8 drawingState:v9];
+      [self readIterate:i commonTimeNodeData:nodeDataCopy drawingState:stateCopy];
     }
 
     else if (xmlStrEqual(i->name, "stCondLst"))
     {
-      [a1 readStConditionList:i commonTimeNodeData:v8 drawingState:v9];
+      [self readStConditionList:i commonTimeNodeData:nodeDataCopy drawingState:stateCopy];
     }
   }
 }
@@ -400,16 +400,16 @@ void __39__PXAnimation_Private__timeNodeTypeMap__block_invoke()
   +[PXAnimation(Private) timeNodeTypeMap]::sEnumerationMap = v0;
 }
 
-+ (void)readTimeNodeType:(id)a3 commonTimeNodeData:(id)a4
++ (void)readTimeNodeType:(id)type commonTimeNodeData:(id)data
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 timeNodeTypeMap];
-  v8 = [v7 valueForString:v9];
+  typeCopy = type;
+  dataCopy = data;
+  timeNodeTypeMap = [self timeNodeTypeMap];
+  v8 = [timeNodeTypeMap valueForString:typeCopy];
 
   if (v8 != -130883970)
   {
-    [v6 setType:v8];
+    [dataCopy setType:v8];
   }
 }
 
@@ -436,16 +436,16 @@ void __38__PXAnimation_Private__presetClassMap__block_invoke()
   +[PXAnimation(Private) presetClassMap]::sEnumerationMap = v0;
 }
 
-+ (void)readPresetClass:(id)a3 commonTimeNodeData:(id)a4
++ (void)readPresetClass:(id)class commonTimeNodeData:(id)data
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 presetClassMap];
-  v8 = [v7 valueForString:v9];
+  classCopy = class;
+  dataCopy = data;
+  presetClassMap = [self presetClassMap];
+  v8 = [presetClassMap valueForString:classCopy];
 
   if (v8 != -130883970)
   {
-    [v6 setAnimationPresetClass:v8];
+    [dataCopy setAnimationPresetClass:v8];
   }
 }
 
@@ -472,25 +472,25 @@ void __38__PXAnimation_Private__restartTypeMap__block_invoke()
   +[PXAnimation(Private) restartTypeMap]::sEnumerationMap = v0;
 }
 
-+ (void)readRestartType:(id)a3 commonTimeNodeData:(id)a4
++ (void)readRestartType:(id)type commonTimeNodeData:(id)data
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 restartTypeMap];
-  v8 = [v7 valueForString:v9];
+  typeCopy = type;
+  dataCopy = data;
+  restartTypeMap = [self restartTypeMap];
+  v8 = [restartTypeMap valueForString:typeCopy];
 
   if (v8 != -130883970)
   {
-    [v6 setRestartType:v8];
+    [dataCopy setRestartType:v8];
   }
 }
 
-+ (void)readChildTimeNodeList:(_xmlNode *)a3 commonTimeNodeData:(id)a4 drawingState:(id)a5
++ (void)readChildTimeNodeList:(_xmlNode *)list commonTimeNodeData:(id)data drawingState:(id)state
 {
-  v14 = a4;
-  v8 = a5;
+  dataCopy = data;
+  stateCopy = state;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = OCXFirstChild(a3);
+  v10 = OCXFirstChild(list);
   v11 = 0;
   while (v10)
   {
@@ -498,7 +498,7 @@ void __38__PXAnimation_Private__restartTypeMap__block_invoke()
     {
       v12 = objc_alloc_init(PDTimeNodeUnion);
 
-      [a1 readAnimElement:v10 timeNode:v12 drawingState:v8];
+      [self readAnimElement:v10 timeNode:v12 drawingState:stateCopy];
       [v9 addObject:v12];
 LABEL_11:
 
@@ -510,7 +510,7 @@ LABEL_11:
     {
       v12 = objc_alloc_init(PDTimeNodeUnion);
 
-      [a1 readAnimEffectElement:v10 timeNode:v12 drawingState:v8];
+      [self readAnimEffectElement:v10 timeNode:v12 drawingState:stateCopy];
       [v9 addObject:v12];
       goto LABEL_11;
     }
@@ -519,7 +519,7 @@ LABEL_11:
     {
       v12 = objc_alloc_init(PDTimeNodeUnion);
 
-      [a1 readAnimMotionElement:v10 timeNode:v12 drawingState:v8];
+      [self readAnimMotionElement:v10 timeNode:v12 drawingState:stateCopy];
       [v9 addObject:v12];
       goto LABEL_11;
     }
@@ -528,7 +528,7 @@ LABEL_11:
     {
       v12 = objc_alloc_init(PDTimeNodeUnion);
 
-      [a1 readAnimRotationElement:v10 timeNode:v12 drawingState:v8];
+      [self readAnimRotationElement:v10 timeNode:v12 drawingState:stateCopy];
       [v9 addObject:v12];
       goto LABEL_11;
     }
@@ -537,7 +537,7 @@ LABEL_11:
     {
       v13 = objc_alloc_init(PDTimeNodeUnion);
 
-      [a1 readAnimScaleElement:v10 timeNode:v13 drawingState:v8];
+      [self readAnimScaleElement:v10 timeNode:v13 drawingState:stateCopy];
       [v9 addObject:v13];
     }
 
@@ -547,7 +547,7 @@ LABEL_11:
       {
         v12 = objc_alloc_init(PDTimeNodeUnion);
 
-        [a1 readAnimAudioElement:v10 timeNode:v12 drawingState:v8];
+        [self readAnimAudioElement:v10 timeNode:v12 drawingState:stateCopy];
         [v9 addObject:v12];
         goto LABEL_11;
       }
@@ -556,7 +556,7 @@ LABEL_11:
       {
         v12 = objc_alloc_init(PDTimeNodeUnion);
 
-        [a1 readAnimVideoElement:v10 timeNode:v12 drawingState:v8];
+        [self readAnimVideoElement:v10 timeNode:v12 drawingState:stateCopy];
         [v9 addObject:v12];
         goto LABEL_11;
       }
@@ -565,7 +565,7 @@ LABEL_11:
       {
         v12 = objc_alloc_init(PDTimeNodeUnion);
 
-        [a1 readAnimCmdElement:v10 timeNode:v12 drawingState:v8];
+        [self readAnimCmdElement:v10 timeNode:v12 drawingState:stateCopy];
         [v9 addObject:v12];
         goto LABEL_11;
       }
@@ -574,7 +574,7 @@ LABEL_11:
       {
         v13 = objc_alloc_init(PDTimeNodeUnion);
 
-        [a1 readAnimParallelElement:v10 timeNode:v13 drawingState:v8];
+        [self readAnimParallelElement:v10 timeNode:v13 drawingState:stateCopy];
         [v9 addObject:v13];
       }
 
@@ -584,7 +584,7 @@ LABEL_11:
         {
           v12 = objc_alloc_init(PDTimeNodeUnion);
 
-          [a1 readAnimSequentialElement:v10 timeNode:v12 drawingState:v8];
+          [self readAnimSequentialElement:v10 timeNode:v12 drawingState:stateCopy];
           [v9 addObject:v12];
           goto LABEL_11;
         }
@@ -593,7 +593,7 @@ LABEL_11:
         {
           v12 = objc_alloc_init(PDTimeNodeUnion);
 
-          [a1 readAnimSetElement:v10 timeNode:v12 drawingState:v8];
+          [self readAnimSetElement:v10 timeNode:v12 drawingState:stateCopy];
           [v9 addObject:v12];
           goto LABEL_11;
         }
@@ -607,16 +607,16 @@ LABEL_12:
     v10 = OCXNextSibling(v10);
   }
 
-  [v14 setChildTimeNodeList:v9];
+  [dataCopy setChildTimeNodeList:v9];
 }
 
-+ (void)readIterate:(_xmlNode *)a3 commonTimeNodeData:(id)a4 drawingState:(id)a5
++ (void)readIterate:(_xmlNode *)iterate commonTimeNodeData:(id)data drawingState:(id)state
 {
-  v7 = a4;
-  v8 = a5;
+  dataCopy = data;
+  stateCopy = state;
   v9 = objc_alloc_init(PDIterate);
   v22 = 0;
-  v10 = CXOptionalStringAttribute(a3, CXNoNamespace, "type", &v22);
+  v10 = CXOptionalStringAttribute(iterate, CXNoNamespace, "type", &v22);
   v11 = v22;
   if (!v10)
   {
@@ -624,11 +624,11 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v12 = [v8 client];
-  v13 = [v12 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v14 = [v13 PXPresentationMLNamespace];
-  v15 = OCXFindChild(a3, v14, "tmPct");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v15 = OCXFindChild(iterate, pXPresentationMLNamespace, "tmPct");
 
   if (v15)
   {
@@ -640,8 +640,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v18 = [v13 PXPresentationMLNamespace];
-  v19 = OCXFindChild(a3, v18, "tmAbs");
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  v19 = OCXFindChild(iterate, pXPresentationMLNamespace2, "tmAbs");
 
   if (v19)
   {
@@ -674,72 +674,72 @@ LABEL_8:
 
 LABEL_16:
   [(PDIterate *)v9 setType:v17];
-  [v7 setIterate:v9];
+  [dataCopy setIterate:v9];
 }
 
-+ (void)readConditionList:(_xmlNode *)a3 arrayOfConditions:(id)a4 drawingState:(id)a5
++ (void)readConditionList:(_xmlNode *)list arrayOfConditions:(id)conditions drawingState:(id)state
 {
-  v11 = a4;
-  v8 = a5;
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  conditionsCopy = conditions;
+  stateCopy = state;
+  for (i = OCXFirstChild(list); i; i = OCXNextSibling(i))
   {
     if (xmlStrEqual(i->name, "cond"))
     {
       v10 = objc_alloc_init(PDTimeCondition);
-      [a1 readCondition:i timeCondition:v10 drawingState:v8];
-      [v11 addObject:v10];
+      [self readCondition:i timeCondition:v10 drawingState:stateCopy];
+      [conditionsCopy addObject:v10];
     }
   }
 }
 
-+ (void)readStConditionList:(_xmlNode *)a3 commonTimeNodeData:(id)a4 drawingState:(id)a5
++ (void)readStConditionList:(_xmlNode *)list commonTimeNodeData:(id)data drawingState:(id)state
 {
-  v10 = a4;
-  v8 = a5;
+  dataCopy = data;
+  stateCopy = state;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [a1 readConditionList:a3 arrayOfConditions:v9 drawingState:v8];
-  [v10 setStartTimeConditions:v9];
+  [self readConditionList:list arrayOfConditions:v9 drawingState:stateCopy];
+  [dataCopy setStartTimeConditions:v9];
 }
 
-+ (void)readCondition:(_xmlNode *)a3 timeCondition:(id)a4 drawingState:(id)a5
++ (void)readCondition:(_xmlNode *)condition timeCondition:(id)timeCondition drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = CXDefaultStringAttribute(a3, CXNoNamespace, "delay", 0);
+  timeConditionCopy = timeCondition;
+  stateCopy = state;
+  v10 = CXDefaultStringAttribute(condition, CXNoNamespace, "delay", 0);
   v11 = v10;
   if (v10)
   {
     if ([v10 isEqualToString:@"indefinite"])
     {
-      v12 = 0xFFFFFFFFLL;
+      intValue = 0xFFFFFFFFLL;
     }
 
     else
     {
-      v12 = [v11 intValue];
+      intValue = [v11 intValue];
     }
 
-    [v8 setDelay:v12];
+    [timeConditionCopy setDelay:intValue];
   }
 
   v20 = 0;
-  v13 = CXOptionalStringAttribute(a3, CXNoNamespace, "evt", &v20);
+  v13 = CXOptionalStringAttribute(condition, CXNoNamespace, "evt", &v20);
   v14 = v20;
   if (v13)
   {
-    [a1 readTriggerEvent:v14 timeCondition:v8];
+    [self readTriggerEvent:v14 timeCondition:timeConditionCopy];
   }
 
-  v15 = [v9 client];
-  v16 = [v15 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v17 = [v16 PXPresentationMLNamespace];
-  v18 = OCXFindChild(a3, v17, "tgtEl");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v18 = OCXFindChild(condition, pXPresentationMLNamespace, "tgtEl");
 
   if (v18)
   {
-    v19 = [a1 newTarget:v18 drawingState:v9];
-    [v8 setTarget:v19];
+    v19 = [self newTarget:v18 drawingState:stateCopy];
+    [timeConditionCopy setTarget:v19];
   }
 }
 
@@ -766,27 +766,27 @@ void __39__PXAnimation_Private__triggerEventMap__block_invoke()
   +[PXAnimation(Private) triggerEventMap]::sEnumerationMap = v0;
 }
 
-+ (void)readTriggerEvent:(id)a3 timeCondition:(id)a4
++ (void)readTriggerEvent:(id)event timeCondition:(id)condition
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 triggerEventMap];
-  v8 = [v7 valueForString:v9];
+  eventCopy = event;
+  conditionCopy = condition;
+  triggerEventMap = [self triggerEventMap];
+  v8 = [triggerEventMap valueForString:eventCopy];
 
   if (v8 != -130883970)
   {
-    [v6 setTriggerEvent:v8];
+    [conditionCopy setTriggerEvent:v8];
   }
 }
 
-+ (id)newTarget:(_xmlNode *)a3 drawingState:(id)a4
++ (id)newTarget:(_xmlNode *)target drawingState:(id)state
 {
-  v6 = a4;
-  v7 = [v6 client];
-  v8 = [v7 presentationState];
+  stateCopy = state;
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v9 = [v8 PXPresentationMLNamespace];
-  v10 = OCXFindChild(a3, v9, "sldTgt");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v10 = OCXFindChild(target, pXPresentationMLNamespace, "sldTgt");
 
   if (v10)
   {
@@ -798,8 +798,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [v8 PXPresentationMLNamespace];
-  v13 = OCXFindChild(a3, v12, "sndTgt");
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  v13 = OCXFindChild(target, pXPresentationMLNamespace2, "sndTgt");
 
   if (v13)
   {
@@ -807,17 +807,17 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  v17 = [v8 PXPresentationMLNamespace];
-  v18 = OCXFindChild(a3, v17, "spTgt");
+  pXPresentationMLNamespace3 = [presentationState PXPresentationMLNamespace];
+  v18 = OCXFindChild(target, pXPresentationMLNamespace3, "spTgt");
 
   if (v18)
   {
-    v14 = [a1 newShapeTarget:v18 drawingState:v6];
+    v14 = [self newShapeTarget:v18 drawingState:stateCopy];
     goto LABEL_6;
   }
 
-  v19 = [v8 PXPresentationMLNamespace];
-  v20 = OCXFindChild(a3, v19, "inkTgt");
+  pXPresentationMLNamespace4 = [presentationState PXPresentationMLNamespace];
+  v20 = OCXFindChild(target, pXPresentationMLNamespace4, "inkTgt");
 
   if (v20)
   {
@@ -826,8 +826,8 @@ LABEL_6:
     v22 = v25;
     if (v21)
     {
-      v23 = [v8 oavState];
-      v24 = [v23 drawableForVmlShapeId:v22];
+      oavState = [presentationState oavState];
+      v24 = [oavState drawableForVmlShapeId:v22];
       if (v24)
       {
         v15 = objc_alloc_init(PDAnimationShapeTarget);
@@ -856,15 +856,15 @@ LABEL_7:
   return v15;
 }
 
-+ (id)newShapeTarget:(_xmlNode *)a3 drawingState:(id)a4
++ (id)newShapeTarget:(_xmlNode *)target drawingState:(id)state
 {
-  v6 = a4;
-  v7 = [v6 client];
-  v8 = [v7 presentationState];
+  stateCopy = state;
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
   v37 = -1;
-  v9 = [v8 PXPresentationMLNamespace];
-  v10 = OCXFindChild(a3, v9, "bg");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v10 = OCXFindChild(target, pXPresentationMLNamespace, "bg");
 
   if (v10)
   {
@@ -876,13 +876,13 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v18 = [v8 PXPresentationMLNamespace];
-  v19 = OCXFindChild(a3, v18, "graphicEl");
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  v19 = OCXFindChild(target, pXPresentationMLNamespace2, "graphicEl");
 
   if (v19)
   {
-    v20 = [v6 OAXMainNamespace];
-    v21 = OCXFindChild(v19, v20, "dgm");
+    oAXMainNamespace = [stateCopy OAXMainNamespace];
+    v21 = OCXFindChild(v19, oAXMainNamespace, "dgm");
 
     if (v21)
     {
@@ -890,8 +890,8 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    v26 = [v6 OAXMainNamespace];
-    v27 = OCXFindChild(v19, v26, "chart");
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    v27 = OCXFindChild(v19, oAXMainNamespace2, "chart");
 
     if (v27)
     {
@@ -901,7 +901,7 @@ LABEL_4:
       v25 = v36;
       if (v28)
       {
-        [a1 readChartBuildStep:v25 chartTarget:v13];
+        [self readChartBuildStep:v25 chartTarget:v13];
       }
 
       if (CXOptionalLongAttribute(v27, CXNoNamespace, "categoryIdx", &v37))
@@ -924,8 +924,8 @@ LABEL_23:
 
   else
   {
-    v22 = [v8 PXPresentationMLNamespace];
-    v23 = OCXFindChild(a3, v22, "oleChartEl");
+    pXPresentationMLNamespace3 = [presentationState PXPresentationMLNamespace];
+    v23 = OCXFindChild(target, pXPresentationMLNamespace3, "oleChartEl");
 
     if (v23)
     {
@@ -940,14 +940,14 @@ LABEL_23:
       v25 = v35;
       if (v24)
       {
-        [a1 readChartType:v25 oleChartTarget:v13];
+        [self readChartType:v25 oleChartTarget:v13];
       }
 
       goto LABEL_23;
     }
 
-    v29 = [v8 PXPresentationMLNamespace];
-    v30 = OCXFindChild(a3, v29, "txEl");
+    pXPresentationMLNamespace4 = [presentationState PXPresentationMLNamespace];
+    v30 = OCXFindChild(target, pXPresentationMLNamespace4, "txEl");
 
     if (!v30)
     {
@@ -956,8 +956,8 @@ LABEL_23:
     }
 
     v13 = objc_alloc_init(PDAnimationTextTarget);
-    v31 = [v8 PXPresentationMLNamespace];
-    v32 = OCXFindChild(v30, v31, "charRg");
+    pXPresentationMLNamespace5 = [presentationState PXPresentationMLNamespace];
+    v32 = OCXFindChild(v30, pXPresentationMLNamespace5, "charRg");
 
     if (v32)
     {
@@ -966,8 +966,8 @@ LABEL_23:
 
     else
     {
-      v33 = [v8 PXPresentationMLNamespace];
-      v32 = OCXFindChild(v30, v33, "pRg");
+      pXPresentationMLNamespace6 = [presentationState PXPresentationMLNamespace];
+      v32 = OCXFindChild(v30, pXPresentationMLNamespace6, "pRg");
 
       [(PDAnimationChartTarget *)v13 setType:1];
       if (!v32)
@@ -983,13 +983,13 @@ LABEL_23:
   }
 
 LABEL_5:
-  v37 = CXRequiredLongAttribute(a3, CXNoNamespace, "spid");
-  v14 = [v6 drawableForShapeId:v37];
+  v37 = CXRequiredLongAttribute(target, CXNoNamespace, "spid");
+  v14 = [stateCopy drawableForShapeId:v37];
   if (!v14)
   {
-    v15 = [v6 oavState];
+    oavState = [stateCopy oavState];
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v37];
-    v14 = [v15 drawableForVmlShapeId:v16];
+    v14 = [oavState drawableForVmlShapeId:v16];
   }
 
   [(PDAnimationShapeTarget *)v13 setDrawable:v14];
@@ -1020,16 +1020,16 @@ void __41__PXAnimation_Private__chartBuildStepMap__block_invoke()
   +[PXAnimation(Private) chartBuildStepMap]::sEnumerationMap = v0;
 }
 
-+ (void)readChartBuildStep:(id)a3 chartTarget:(id)a4
++ (void)readChartBuildStep:(id)step chartTarget:(id)target
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 chartBuildStepMap];
-  v8 = [v7 valueForString:v9];
+  stepCopy = step;
+  targetCopy = target;
+  chartBuildStepMap = [self chartBuildStepMap];
+  v8 = [chartBuildStepMap valueForString:stepCopy];
 
   if (v8 != -130883970)
   {
-    [v6 setBuildStep:v8];
+    [targetCopy setBuildStep:v8];
   }
 }
 
@@ -1056,59 +1056,59 @@ void __36__PXAnimation_Private__chartTypeMap__block_invoke()
   +[PXAnimation(Private) chartTypeMap]::sEnumerationMap = v0;
 }
 
-+ (void)readChartType:(id)a3 oleChartTarget:(id)a4
++ (void)readChartType:(id)type oleChartTarget:(id)target
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 chartTypeMap];
-  v8 = [v7 valueForString:v9];
+  typeCopy = type;
+  targetCopy = target;
+  chartTypeMap = [self chartTypeMap];
+  v8 = [chartTypeMap valueForString:typeCopy];
 
   if (v8 != -130883970)
   {
-    [v6 setChartSubElementType:v8];
+    [targetCopy setChartSubElementType:v8];
   }
 }
 
-+ (void)readAnimElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v15 = a4;
-  v8 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v9 = objc_alloc_init(PDAnimateTimeBehavior);
-  v10 = [v8 client];
-  v11 = [v10 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v12 = [v11 PXPresentationMLNamespace];
-  v13 = OCXFindChild(a3, v12, "cBhvr");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v13 = OCXFindChild(element, pXPresentationMLNamespace, "cBhvr");
 
   if (v13)
   {
-    [a1 readCommonBehaviorData:v13 tgtCommonBehaviorData:v9 drawingState:v8];
+    [self readCommonBehaviorData:v13 tgtCommonBehaviorData:v9 drawingState:stateCopy];
   }
 
-  v14 = [v11 PXPresentationMLNamespace];
-  OCXFindChild(a3, v14, "tavLst");
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  OCXFindChild(element, pXPresentationMLNamespace2, "tavLst");
 
-  [v15 setTimeBehavior:v9];
+  [nodeCopy setTimeBehavior:v9];
 }
 
-+ (void)readAnimEffectElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimEffectElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v10 = objc_alloc_init(PDAnimateEffectBehavior);
-  v11 = [v9 client];
-  v12 = [v11 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v13 = [v12 PXPresentationMLNamespace];
-  v14 = OCXFindChild(a3, v13, "cBhvr");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v14 = OCXFindChild(element, pXPresentationMLNamespace, "cBhvr");
 
   if (v14)
   {
-    [a1 readCommonBehaviorData:v14 tgtCommonBehaviorData:v10 drawingState:v9];
+    [self readCommonBehaviorData:v14 tgtCommonBehaviorData:v10 drawingState:stateCopy];
   }
 
   v19 = 0;
-  v15 = CXOptionalStringAttribute(a3, CXNoNamespace, "transition", &v19);
+  v15 = CXOptionalStringAttribute(element, CXNoNamespace, "transition", &v19);
   v16 = v19;
   v17 = v16;
   if (v15)
@@ -1136,27 +1136,27 @@ void __36__PXAnimation_Private__chartTypeMap__block_invoke()
     [(PDAnimateEffectBehavior *)v10 setTransition:v18];
   }
 
-  [v8 setEffectBehavior:v10];
+  [nodeCopy setEffectBehavior:v10];
 }
 
-+ (void)readAnimMotionElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimMotionElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v10 = objc_alloc_init(PDAnimateMotionBehavior);
-  v11 = [v9 client];
-  v12 = [v11 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v13 = [v12 PXPresentationMLNamespace];
-  v14 = OCXFindChild(a3, v13, "cBhvr");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v14 = OCXFindChild(element, pXPresentationMLNamespace, "cBhvr");
 
   if (v14)
   {
-    [a1 readCommonBehaviorData:v14 tgtCommonBehaviorData:v10 drawingState:v9];
+    [self readCommonBehaviorData:v14 tgtCommonBehaviorData:v10 drawingState:stateCopy];
   }
 
   v28 = 0;
-  v15 = CXOptionalStringAttribute(a3, CXNoNamespace, "path", &v28);
+  v15 = CXOptionalStringAttribute(element, CXNoNamespace, "path", &v28);
   v16 = v28;
   if (v15)
   {
@@ -1166,186 +1166,186 @@ void __36__PXAnimation_Private__chartTypeMap__block_invoke()
 
   v26 = 0.0;
   v27 = 0.0;
-  v18 = [v12 PXPresentationMLNamespace];
-  v19 = OCXFindChild(a3, v18, "by");
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  v19 = OCXFindChild(element, pXPresentationMLNamespace2, "by");
 
   if (v19)
   {
-    [a1 readPointFromNode:v19 tgtPoint:&v26];
+    [self readPointFromNode:v19 tgtPoint:&v26];
     [(PDAnimateScaleBehavior *)v10 setBy:v26, v27];
   }
 
-  v20 = [v12 PXPresentationMLNamespace];
-  v21 = OCXFindChild(a3, v20, "from");
+  pXPresentationMLNamespace3 = [presentationState PXPresentationMLNamespace];
+  v21 = OCXFindChild(element, pXPresentationMLNamespace3, "from");
 
   if (v21)
   {
-    [a1 readPointFromNode:v21 tgtPoint:&v26];
+    [self readPointFromNode:v21 tgtPoint:&v26];
     [(PDAnimateScaleBehavior *)v10 setFrom:v26, v27];
   }
 
-  v22 = [v12 PXPresentationMLNamespace];
-  v23 = OCXFindChild(a3, v22, "to");
+  pXPresentationMLNamespace4 = [presentationState PXPresentationMLNamespace];
+  v23 = OCXFindChild(element, pXPresentationMLNamespace4, "to");
 
   if (v23)
   {
-    [a1 readPointFromNode:v23 tgtPoint:&v26];
+    [self readPointFromNode:v23 tgtPoint:&v26];
     [(PDAnimateScaleBehavior *)v10 setTo:v26, v27];
   }
 
-  v24 = [v12 PXPresentationMLNamespace];
-  v25 = OCXFindChild(a3, v24, "rCtr");
+  pXPresentationMLNamespace5 = [presentationState PXPresentationMLNamespace];
+  v25 = OCXFindChild(element, pXPresentationMLNamespace5, "rCtr");
 
   if (v25)
   {
-    [a1 readPointFromNode:v23 tgtPoint:&v26];
+    [self readPointFromNode:v23 tgtPoint:&v26];
     [(PDAnimateMotionBehavior *)v10 setRotationCenter:v26, v27];
   }
 
-  [v8 setMotionBehavior:v10];
+  [nodeCopy setMotionBehavior:v10];
 }
 
-+ (void)readAnimScaleElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimScaleElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v10 = objc_alloc_init(PDAnimateScaleBehavior);
-  v11 = [v9 client];
-  v12 = [v11 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v13 = [v12 PXPresentationMLNamespace];
-  v14 = OCXFindChild(a3, v13, "cBhvr");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v14 = OCXFindChild(element, pXPresentationMLNamespace, "cBhvr");
 
   if (v14)
   {
-    [a1 readCommonBehaviorData:v14 tgtCommonBehaviorData:v10 drawingState:v9];
+    [self readCommonBehaviorData:v14 tgtCommonBehaviorData:v10 drawingState:stateCopy];
   }
 
-  v15 = [v12 PXPresentationMLNamespace];
-  v16 = OCXFindChild(a3, v15, "by");
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  v16 = OCXFindChild(element, pXPresentationMLNamespace2, "by");
 
   if (v16)
   {
-    [a1 readPointFromNode:v16 tgtPoint:&v21];
+    [self readPointFromNode:v16 tgtPoint:&v21];
     [(PDAnimateScaleBehavior *)v10 setBy:v21, v22];
   }
 
-  v17 = [v12 PXPresentationMLNamespace];
-  v18 = OCXFindChild(a3, v17, "from");
+  pXPresentationMLNamespace3 = [presentationState PXPresentationMLNamespace];
+  v18 = OCXFindChild(element, pXPresentationMLNamespace3, "from");
 
   if (v18)
   {
-    [a1 readPointFromNode:v18 tgtPoint:&v21];
+    [self readPointFromNode:v18 tgtPoint:&v21];
     [(PDAnimateScaleBehavior *)v10 setFrom:v21, v22];
   }
 
-  v19 = [v12 PXPresentationMLNamespace];
-  v20 = OCXFindChild(a3, v19, "to");
+  pXPresentationMLNamespace4 = [presentationState PXPresentationMLNamespace];
+  v20 = OCXFindChild(element, pXPresentationMLNamespace4, "to");
 
   if (v20)
   {
-    [a1 readPointFromNode:v20 tgtPoint:&v21];
+    [self readPointFromNode:v20 tgtPoint:&v21];
     [(PDAnimateScaleBehavior *)v10 setTo:v21, v22];
   }
 
-  [v8 setScaleBehavior:v10];
+  [nodeCopy setScaleBehavior:v10];
 }
 
-+ (void)readCommonMediaNodeData:(_xmlNode *)a3 commonMediaData:(id)a4 drawingState:(id)a5
++ (void)readCommonMediaNodeData:(_xmlNode *)data commonMediaData:(id)mediaData drawingState:(id)state
 {
-  v20 = a4;
-  v8 = a5;
-  v9 = [v8 client];
-  v10 = [v9 presentationState];
+  mediaDataCopy = mediaData;
+  stateCopy = state;
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v11 = [v10 PXPresentationMLNamespace];
-  v12 = OCXFindChild(a3, v11, "cTn");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v12 = OCXFindChild(data, pXPresentationMLNamespace, "cTn");
 
   if (!v12)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  [a1 readCommonTimeNodeData:v12 commonTimeNodeData:v20 drawingState:v8];
-  v13 = [v10 PXPresentationMLNamespace];
-  v14 = OCXFindChild(a3, v13, "tgtEl");
+  [self readCommonTimeNodeData:v12 commonTimeNodeData:mediaDataCopy drawingState:stateCopy];
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  v14 = OCXFindChild(data, pXPresentationMLNamespace2, "tgtEl");
 
-  v15 = [a1 newTarget:v14 drawingState:v8];
-  v16 = CXDefaultBoolAttribute(a3, CXNoNamespace, "mute", 0);
-  v17 = CXDefaultBoolAttribute(a3, CXNoNamespace, "showWhenStopped", 1);
-  v18 = CXDefaultLongAttribute(a3, CXNoNamespace, "numSld", 1);
-  v19 = CXDefaultFractionAttribute(a3, CXNoNamespace, "vol", 0.5);
-  [v20 setTarget:v15];
-  [v20 setIsMuted:v16];
-  [v20 setIsShowWhenStopped:v17];
-  [v20 setNumberOfSlides:v18];
-  [v20 setVolume:(v19 * 100000.0)];
+  v15 = [self newTarget:v14 drawingState:stateCopy];
+  v16 = CXDefaultBoolAttribute(data, CXNoNamespace, "mute", 0);
+  v17 = CXDefaultBoolAttribute(data, CXNoNamespace, "showWhenStopped", 1);
+  v18 = CXDefaultLongAttribute(data, CXNoNamespace, "numSld", 1);
+  v19 = CXDefaultFractionAttribute(data, CXNoNamespace, "vol", 0.5);
+  [mediaDataCopy setTarget:v15];
+  [mediaDataCopy setIsMuted:v16];
+  [mediaDataCopy setIsShowWhenStopped:v17];
+  [mediaDataCopy setNumberOfSlides:v18];
+  [mediaDataCopy setVolume:(v19 * 100000.0)];
 }
 
-+ (void)readAnimAudioElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimAudioElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v14 = a4;
-  v8 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v9 = objc_alloc_init(PDAudioNode);
-  v10 = [v8 client];
-  v11 = [v10 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  [(PDAudioNode *)v9 setIsNarration:CXDefaultBoolAttribute(a3, CXNoNamespace, "isNarration", 0)];
-  v12 = [v11 PXPresentationMLNamespace];
-  v13 = OCXFindChild(a3, v12, "cMediaNode");
+  [(PDAudioNode *)v9 setIsNarration:CXDefaultBoolAttribute(element, CXNoNamespace, "isNarration", 0)];
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v13 = OCXFindChild(element, pXPresentationMLNamespace, "cMediaNode");
 
   if (v13)
   {
-    [a1 readCommonMediaNodeData:v13 commonMediaData:v9 drawingState:v8];
-    [v14 setAudio:v9];
+    [self readCommonMediaNodeData:v13 commonMediaData:v9 drawingState:stateCopy];
+    [nodeCopy setAudio:v9];
   }
 }
 
-+ (void)readAnimVideoElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimVideoElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v14 = a4;
-  v8 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v9 = objc_alloc_init(PDVideoNode);
-  v10 = [v8 client];
-  v11 = [v10 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  [(PDVideoNode *)v9 setIsFullScreen:CXDefaultBoolAttribute(a3, CXNoNamespace, "fullScrn", 0)];
-  v12 = [v11 PXPresentationMLNamespace];
-  v13 = OCXFindChild(a3, v12, "cMediaNode");
+  [(PDVideoNode *)v9 setIsFullScreen:CXDefaultBoolAttribute(element, CXNoNamespace, "fullScrn", 0)];
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v13 = OCXFindChild(element, pXPresentationMLNamespace, "cMediaNode");
 
   if (v13)
   {
-    [a1 readCommonMediaNodeData:v13 commonMediaData:v9 drawingState:v8];
-    [v14 setVideo:v9];
+    [self readCommonMediaNodeData:v13 commonMediaData:v9 drawingState:stateCopy];
+    [nodeCopy setVideo:v9];
   }
 }
 
-+ (void)readAnimCmdElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimCmdElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v14 = a4;
-  v8 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v9 = objc_alloc_init(PDCmdBehavior);
-  v10 = [v8 client];
-  v11 = [v10 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v12 = [v11 PXPresentationMLNamespace];
-  v13 = OCXFindChild(a3, v12, "cBhvr");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v13 = OCXFindChild(element, pXPresentationMLNamespace, "cBhvr");
 
   if (v13)
   {
-    [a1 readCommonBehaviorData:v13 tgtCommonBehaviorData:v9 drawingState:v8];
+    [self readCommonBehaviorData:v13 tgtCommonBehaviorData:v9 drawingState:stateCopy];
   }
 
-  [v14 setCmdBehavior:v9];
+  [nodeCopy setCmdBehavior:v9];
 }
 
-+ (id)readAnimVariant:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readAnimVariant:(_xmlNode *)variant drawingState:(id)state
 {
-  v5 = [a4 client];
-  v6 = [v5 presentationState];
+  client = [state client];
+  presentationState = [client presentationState];
 
-  v7 = [v6 PXPresentationMLNamespace];
-  v8 = OCXFindChild(a3, v7, "strVal");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v8 = OCXFindChild(variant, pXPresentationMLNamespace, "strVal");
 
   if (v8)
   {
@@ -1366,8 +1366,8 @@ void __36__PXAnimation_Private__chartTypeMap__block_invoke()
     goto LABEL_17;
   }
 
-  v13 = [v6 PXPresentationMLNamespace];
-  v14 = OCXFindChild(a3, v13, "BOOLVal");
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  v14 = OCXFindChild(variant, pXPresentationMLNamespace2, "BOOLVal");
 
   if (v14)
   {
@@ -1383,8 +1383,8 @@ LABEL_15:
 
   else
   {
-    v16 = [v6 PXPresentationMLNamespace];
-    v17 = OCXFindChild(a3, v16, "intVal");
+    pXPresentationMLNamespace3 = [presentationState PXPresentationMLNamespace];
+    v17 = OCXFindChild(variant, pXPresentationMLNamespace3, "intVal");
 
     if (v17)
     {
@@ -1398,8 +1398,8 @@ LABEL_15:
 
     else
     {
-      v18 = [v6 PXPresentationMLNamespace];
-      v12 = OCXFindChild(a3, v18, "fltVal");
+      pXPresentationMLNamespace4 = [presentationState PXPresentationMLNamespace];
+      v12 = OCXFindChild(variant, pXPresentationMLNamespace4, "fltVal");
 
       if (!v12)
       {
@@ -1421,83 +1421,83 @@ LABEL_17:
   return v12;
 }
 
-+ (void)readAnimSetElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimSetElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v17 = a4;
-  v8 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v9 = objc_alloc_init(PDSetBehavior);
-  v10 = [v8 client];
-  v11 = [v10 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v12 = [v11 PXPresentationMLNamespace];
-  v13 = OCXFindChild(a3, v12, "cBhvr");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v13 = OCXFindChild(element, pXPresentationMLNamespace, "cBhvr");
 
   if (v13)
   {
-    [a1 readCommonBehaviorData:v13 tgtCommonBehaviorData:v9 drawingState:v8];
+    [self readCommonBehaviorData:v13 tgtCommonBehaviorData:v9 drawingState:stateCopy];
   }
 
-  v14 = [v11 PXPresentationMLNamespace];
-  v15 = OCXFindChild(a3, v14, "to");
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  v15 = OCXFindChild(element, pXPresentationMLNamespace2, "to");
 
   if (v15)
   {
-    v16 = [a1 readAnimVariant:v15 drawingState:v8];
+    v16 = [self readAnimVariant:v15 drawingState:stateCopy];
     if (v16)
     {
       [(PDSetBehavior *)v9 setValue:v16];
     }
   }
 
-  [v17 setBehavior:v9];
+  [nodeCopy setBehavior:v9];
 }
 
-+ (void)readAnimRotationElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimRotationElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v14 = a4;
-  v8 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v9 = objc_alloc_init(PDAnimateRotateBehavior);
-  v10 = [v8 client];
-  v11 = [v10 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v12 = [v11 PXPresentationMLNamespace];
-  v13 = OCXFindChild(a3, v12, "cBhvr");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v13 = OCXFindChild(element, pXPresentationMLNamespace, "cBhvr");
 
   if (v13)
   {
-    [a1 readCommonBehaviorData:v13 tgtCommonBehaviorData:v9 drawingState:v8];
+    [self readCommonBehaviorData:v13 tgtCommonBehaviorData:v9 drawingState:stateCopy];
   }
 
-  [(PDAnimateRotateBehavior *)v9 setBy:CXDefaultLongAttribute(a3, CXNoNamespace, "by", 1)];
-  [v14 setRotateBehavior:v9];
+  [(PDAnimateRotateBehavior *)v9 setBy:CXDefaultLongAttribute(element, CXNoNamespace, "by", 1)];
+  [nodeCopy setRotateBehavior:v9];
 }
 
-+ (void)readCommonBehaviorData:(_xmlNode *)a3 tgtCommonBehaviorData:(id)a4 drawingState:(id)a5
++ (void)readCommonBehaviorData:(_xmlNode *)data tgtCommonBehaviorData:(id)behaviorData drawingState:(id)state
 {
-  v21 = a4;
-  v8 = a5;
-  v9 = [v8 client];
-  v10 = [v9 presentationState];
+  behaviorDataCopy = behaviorData;
+  stateCopy = state;
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v11 = [v10 PXPresentationMLNamespace];
-  v12 = OCXFindChild(a3, v11, "cTn");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v12 = OCXFindChild(data, pXPresentationMLNamespace, "cTn");
 
   if (v12)
   {
-    [a1 readCommonTimeNodeData:v12 commonTimeNodeData:v21 drawingState:v8];
+    [self readCommonTimeNodeData:v12 commonTimeNodeData:behaviorDataCopy drawingState:stateCopy];
   }
 
-  v13 = [v10 PXPresentationMLNamespace];
-  v14 = OCXFindChild(a3, v13, "tgtEl");
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  v14 = OCXFindChild(data, pXPresentationMLNamespace2, "tgtEl");
 
   if (v14)
   {
-    v15 = [a1 newTarget:v14 drawingState:v8];
-    [v21 setTarget:v15];
+    v15 = [self newTarget:v14 drawingState:stateCopy];
+    [behaviorDataCopy setTarget:v15];
   }
 
-  v16 = [v10 PXPresentationMLNamespace];
-  v17 = OCXFindChild(a3, v16, "attrNameLst");
+  pXPresentationMLNamespace3 = [presentationState PXPresentationMLNamespace];
+  v17 = OCXFindChild(data, pXPresentationMLNamespace3, "attrNameLst");
 
   if (v17)
   {
@@ -1514,27 +1514,27 @@ LABEL_17:
       v19 = OCXNextSiblingNamed(v19, "attrName");
     }
 
-    [v21 setAttributeNames:v18];
+    [behaviorDataCopy setAttributeNames:v18];
   }
 }
 
-+ (void)readAnimParallelElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimParallelElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v14 = a4;
-  v8 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v9 = objc_alloc_init(PDParallelTimeNode);
-  v10 = [v8 client];
-  v11 = [v10 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v12 = [v11 PXPresentationMLNamespace];
-  v13 = OCXFindChild(a3, v12, "cTn");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v13 = OCXFindChild(element, pXPresentationMLNamespace, "cTn");
 
   if (v13)
   {
-    [a1 readCommonTimeNodeData:v13 commonTimeNodeData:v9 drawingState:v8];
+    [self readCommonTimeNodeData:v13 commonTimeNodeData:v9 drawingState:stateCopy];
   }
 
-  [v14 setParallel:v9];
+  [nodeCopy setParallel:v9];
 }
 
 + (id)sequentialPreviousActionMap
@@ -1583,70 +1583,70 @@ void __47__PXAnimation_Private__sequentialNextActionMap__block_invoke()
   +[PXAnimation(Private) sequentialNextActionMap]::sEnumerationMap = v0;
 }
 
-+ (void)readAnimSequentialElement:(_xmlNode *)a3 timeNode:(id)a4 drawingState:(id)a5
++ (void)readAnimSequentialElement:(_xmlNode *)element timeNode:(id)node drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  nodeCopy = node;
+  stateCopy = state;
   v10 = objc_alloc_init(PDSequentialTimeNode);
-  v11 = [v9 client];
-  v12 = [v11 presentationState];
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  [(PDSequentialTimeNode *)v10 setConcurrent:CXDefaultBoolAttribute(a3, CXNoNamespace, "concurrent", 0)];
+  [(PDSequentialTimeNode *)v10 setConcurrent:CXDefaultBoolAttribute(element, CXNoNamespace, "concurrent", 0)];
   v26 = 0;
-  v13 = [a1 sequentialPreviousActionMap];
-  v14 = [a1 readOptionalStringAttribute:@"prevAc" fromNode:a3 attributeMap:v13 toPDDomValue:&v26];
+  sequentialPreviousActionMap = [self sequentialPreviousActionMap];
+  v14 = [self readOptionalStringAttribute:@"prevAc" fromNode:element attributeMap:sequentialPreviousActionMap toPDDomValue:&v26];
 
   if (v14)
   {
     [(PDSequentialTimeNode *)v10 setPreviousAction:v26];
   }
 
-  v15 = [a1 sequentialNextActionMap];
-  v16 = [a1 readOptionalStringAttribute:@"nextAc" fromNode:a3 attributeMap:v15 toPDDomValue:&v25];
+  sequentialNextActionMap = [self sequentialNextActionMap];
+  v16 = [self readOptionalStringAttribute:@"nextAc" fromNode:element attributeMap:sequentialNextActionMap toPDDomValue:&v25];
 
   if (v16)
   {
     [(PDSequentialTimeNode *)v10 setNextAction:v25];
   }
 
-  v17 = [v12 PXPresentationMLNamespace];
-  v18 = OCXFindChild(a3, v17, "cTn");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v18 = OCXFindChild(element, pXPresentationMLNamespace, "cTn");
 
   if (v18)
   {
-    [a1 readCommonTimeNodeData:v18 commonTimeNodeData:v10 drawingState:v9];
+    [self readCommonTimeNodeData:v18 commonTimeNodeData:v10 drawingState:stateCopy];
   }
 
-  v19 = [v12 PXPresentationMLNamespace];
-  v20 = OCXFindChild(a3, v19, "prevCondLst");
+  pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+  v20 = OCXFindChild(element, pXPresentationMLNamespace2, "prevCondLst");
 
   if (v20)
   {
     v21 = objc_opt_new();
-    [a1 readConditionList:v20 arrayOfConditions:v21 drawingState:v9];
+    [self readConditionList:v20 arrayOfConditions:v21 drawingState:stateCopy];
     [(PDSequentialTimeNode *)v10 setPreviousConditions:v21];
   }
 
-  v22 = [v12 PXPresentationMLNamespace];
-  v23 = OCXFindChild(a3, v22, "nextCondLst");
+  pXPresentationMLNamespace3 = [presentationState PXPresentationMLNamespace];
+  v23 = OCXFindChild(element, pXPresentationMLNamespace3, "nextCondLst");
 
   if (v23)
   {
     v24 = objc_opt_new();
-    [a1 readConditionList:v23 arrayOfConditions:v24 drawingState:v9];
+    [self readConditionList:v23 arrayOfConditions:v24 drawingState:stateCopy];
     [(PDSequentialTimeNode *)v10 setNextConditions:v24];
   }
 
-  [v8 setSequential:v10];
+  [nodeCopy setSequential:v10];
 }
 
-+ (id)readParagraphBuild:(_xmlNode *)a3
++ (id)readParagraphBuild:(_xmlNode *)build
 {
-  v4 = CXDefaultLongAttribute(a3, CXNoNamespace, "advAuto", -1);
-  v5 = CXDefaultBoolAttribute(a3, CXNoNamespace, "animBg", 0);
-  v6 = CXDefaultLongAttribute(a3, CXNoNamespace, "bldLvl", 1);
-  v7 = CXDefaultBoolAttribute(a3, CXNoNamespace, "rev", 0);
-  v8 = CXDefaultStringAttribute(a3, CXNoNamespace, "build", @"whole");
+  v4 = CXDefaultLongAttribute(build, CXNoNamespace, "advAuto", -1);
+  v5 = CXDefaultBoolAttribute(build, CXNoNamespace, "animBg", 0);
+  v6 = CXDefaultLongAttribute(build, CXNoNamespace, "bldLvl", 1);
+  v7 = CXDefaultBoolAttribute(build, CXNoNamespace, "rev", 0);
+  v8 = CXDefaultStringAttribute(build, CXNoNamespace, "build", @"whole");
   if ([v8 isEqualToString:@"allAtOnce"])
   {
     v9 = 0;
@@ -1677,25 +1677,25 @@ void __47__PXAnimation_Private__sequentialNextActionMap__block_invoke()
   return v10;
 }
 
-+ (int)readChartBuildType:(id)a3
++ (int)readChartBuildType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"series"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"series"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"category"])
+  else if ([typeCopy isEqualToString:@"category"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"seriesEl"])
+  else if ([typeCopy isEqualToString:@"seriesEl"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"categoryEl"])
+  else if ([typeCopy isEqualToString:@"categoryEl"])
   {
     v4 = 4;
   }
@@ -1708,48 +1708,48 @@ void __47__PXAnimation_Private__sequentialNextActionMap__block_invoke()
   return v4;
 }
 
-+ (id)readOleChartBuild:(_xmlNode *)a3
++ (id)readOleChartBuild:(_xmlNode *)build
 {
-  v5 = CXDefaultBoolAttribute(a3, CXNoNamespace, "animBg", 0);
-  v6 = CXDefaultStringAttribute(a3, CXNoNamespace, "bld", @"allAtOnce");
-  v7 = -[PDChartBuild initWithBuildType:]([PDChartBuild alloc], "initWithBuildType:", [a1 readChartBuildType:v6]);
+  v5 = CXDefaultBoolAttribute(build, CXNoNamespace, "animBg", 0);
+  v6 = CXDefaultStringAttribute(build, CXNoNamespace, "bld", @"allAtOnce");
+  v7 = -[PDChartBuild initWithBuildType:]([PDChartBuild alloc], "initWithBuildType:", [self readChartBuildType:v6]);
   [(PDBuild *)v7 setIsAnimateBackground:v5];
 
   return v7;
 }
 
-+ (id)readGraphicBuild:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readGraphicBuild:(_xmlNode *)build drawingState:(id)state
 {
-  v6 = a4;
-  v7 = [v6 client];
-  v8 = [v7 presentationState];
+  stateCopy = state;
+  client = [stateCopy client];
+  presentationState = [client presentationState];
 
-  v9 = [v8 PXPresentationMLNamespace];
-  v10 = OCXFindChild(a3, v9, "bldAsOne");
+  pXPresentationMLNamespace = [presentationState PXPresentationMLNamespace];
+  v10 = OCXFindChild(build, pXPresentationMLNamespace, "bldAsOne");
 
   if (!v10 || (v11 = objc_alloc_init(PDBuild)) == 0)
   {
-    v12 = [v8 PXPresentationMLNamespace];
-    v13 = OCXFindChild(a3, v12, "bldSub");
+    pXPresentationMLNamespace2 = [presentationState PXPresentationMLNamespace];
+    v13 = OCXFindChild(build, pXPresentationMLNamespace2, "bldSub");
 
     if (!v13)
     {
       goto LABEL_8;
     }
 
-    v14 = [v8 PXPresentationMLNamespace];
-    v15 = OCXFindChild(v13, v14, "bldDmg");
+    pXPresentationMLNamespace3 = [presentationState PXPresentationMLNamespace];
+    v15 = OCXFindChild(v13, pXPresentationMLNamespace3, "bldDmg");
 
     if (!v15 || (v11 = objc_alloc_init(PDDiagramBuild)) == 0)
     {
-      v16 = [v6 OAXMainNamespace];
-      v17 = OCXFindChild(v13, v16, "bldChart");
+      oAXMainNamespace = [stateCopy OAXMainNamespace];
+      v17 = OCXFindChild(v13, oAXMainNamespace, "bldChart");
 
       if (v17)
       {
         v18 = CXDefaultLongAttribute(v17, CXNoNamespace, "animBg", 1);
         v19 = CXDefaultStringAttribute(v17, CXNoNamespace, "bld", @"allAtOnce");
-        v11 = -[PDChartBuild initWithBuildType:]([PDChartBuild alloc], "initWithBuildType:", [a1 readChartBuildType:v19]);
+        v11 = -[PDChartBuild initWithBuildType:]([PDChartBuild alloc], "initWithBuildType:", [self readChartBuildType:v19]);
         [(PDBuild *)v11 setIsAnimateBackground:v18 > 0];
 
         goto LABEL_9;

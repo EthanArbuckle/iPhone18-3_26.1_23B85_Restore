@@ -1,6 +1,6 @@
 @interface AXEmojiConversionCandidateElement
 - (BOOL)accessibilityActivate;
-- (BOOL)selectEmoji:(id)a3;
+- (BOOL)selectEmoji:(id)emoji;
 - (_NSRange)candidateRange;
 - (id)accessibilityHint;
 - (id)candidateEmojiArray;
@@ -11,7 +11,7 @@
 
 - (id)candidateEmojiArray
 {
-  v2 = [(AXEmojiConversionCandidateElement *)self candidateEmojiList];
+  candidateEmojiList = [(AXEmojiConversionCandidateElement *)self candidateEmojiList];
   v3 = __UIAccessibilitySafeClass();
 
   v4 = [v3 safeValueForKey:@"emojiTokenArray"];
@@ -21,14 +21,14 @@
 
 - (id)accessibilityHint
 {
-  v3 = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
-  v4 = [v3 count];
+  candidateEmojiArray = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
+  v4 = [candidateEmojiArray count];
 
   if (v4 == 1)
   {
-    v5 = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
-    v6 = [v5 firstObject];
-    v7 = [v6 safeValueForKey:@"string"];
+    candidateEmojiArray2 = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
+    firstObject = [candidateEmojiArray2 firstObject];
+    v7 = [firstObject safeValueForKey:@"string"];
 
     v8 = MEMORY[0x29EDBA0F8];
     v9 = accessibilityLocalizedString(@"emoji.replace.with.single");
@@ -45,8 +45,8 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
-  v4 = [v3 count];
+  candidateEmojiArray = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
+  v4 = [candidateEmojiArray count];
 
   textView = self->_textView;
   if (v4 == 1)
@@ -66,8 +66,8 @@
 - (id)currentEmoji
 {
   currentIndex = self->_currentIndex;
-  v4 = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
-  v5 = [v4 count];
+  candidateEmojiArray = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
+  v5 = [candidateEmojiArray count];
 
   if (currentIndex >= v5)
   {
@@ -76,18 +76,18 @@
 
   else
   {
-    v6 = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
-    v7 = [v6 objectAtIndexedSubscript:self->_currentIndex];
+    candidateEmojiArray2 = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
+    v7 = [candidateEmojiArray2 objectAtIndexedSubscript:self->_currentIndex];
   }
 
   return v7;
 }
 
-- (BOOL)selectEmoji:(id)a3
+- (BOOL)selectEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
-  v6 = [v5 indexOfObject:v4];
+  emojiCopy = emoji;
+  candidateEmojiArray = [(AXEmojiConversionCandidateElement *)self candidateEmojiArray];
+  v6 = [candidateEmojiArray indexOfObject:emojiCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {

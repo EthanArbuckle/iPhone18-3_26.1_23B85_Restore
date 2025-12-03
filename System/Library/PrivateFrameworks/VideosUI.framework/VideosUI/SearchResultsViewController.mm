@@ -1,32 +1,32 @@
 @interface SearchResultsViewController
-- (_TtC8VideosUI27SearchResultsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8VideosUI27SearchResultsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)vui_viewDidLayoutSubviews;
-- (void)vui_willMoveToParentViewController:(id)a3;
+- (void)vui_willMoveToParentViewController:(id)controller;
 @end
 
 @implementation SearchResultsViewController
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3BAA6A8();
 }
 
-- (void)vui_willMoveToParentViewController:(id)a3
+- (void)vui_willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1E3BAAA04();
 }
 
-- (_TtC8VideosUI27SearchResultsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI27SearchResultsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E3BACFE8();
 }
 

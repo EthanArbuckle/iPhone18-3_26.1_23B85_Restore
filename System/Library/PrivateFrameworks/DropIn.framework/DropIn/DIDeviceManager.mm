@@ -1,22 +1,22 @@
 @interface DIDeviceManager
-- (DIDeviceManager)initWithConnectionManager:(id)a3;
+- (DIDeviceManager)initWithConnectionManager:(id)manager;
 - (DIDeviceManagerDelegate)delegate;
 - (DIXPCConnectionManager)connectionManager;
 - (NSArray)devices;
-- (void)didAddDevice:(id)a3;
-- (void)didLoadDevices:(id)a3;
-- (void)didRemoveDevice:(id)a3;
-- (void)didUpdateDevice:(id)a3;
-- (void)setCurrentDevice:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)xpcManagerDidPerformDaemonCheckIn:(id)a3;
+- (void)didAddDevice:(id)device;
+- (void)didLoadDevices:(id)devices;
+- (void)didRemoveDevice:(id)device;
+- (void)didUpdateDevice:(id)device;
+- (void)setCurrentDevice:(id)device;
+- (void)setDelegate:(id)delegate;
+- (void)xpcManagerDidPerformDaemonCheckIn:(id)in;
 @end
 
 @implementation DIDeviceManager
 
-- (DIDeviceManager)initWithConnectionManager:(id)a3
+- (DIDeviceManager)initWithConnectionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = DIDeviceManager;
   v5 = [(DIDeviceManager *)&v15 init];
@@ -26,52 +26,52 @@
     devices = v5->_devices;
     v5->_devices = v6;
 
-    v8 = objc_storeWeak(&v5->_connectionManager, v4);
-    v9 = [v4 dispatcher];
-    [v9 setDeviceListDelegate:v5];
+    v8 = objc_storeWeak(&v5->_connectionManager, managerCopy);
+    dispatcher = [managerCopy dispatcher];
+    [dispatcher setDeviceListDelegate:v5];
 
     WeakRetained = objc_loadWeakRetained(&v5->_connectionManager);
-    v11 = [WeakRetained dispatcher];
-    [v11 setDeviceStatusDelegate:v5];
+    dispatcher2 = [WeakRetained dispatcher];
+    [dispatcher2 setDeviceStatusDelegate:v5];
 
     v12 = objc_loadWeakRetained(&v5->_connectionManager);
-    v13 = [v12 manager];
-    [v13 addCheckInObserver:v5];
+    manager = [v12 manager];
+    [manager addCheckInObserver:v5];
   }
 
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = DILogHandleDeviceManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v16 = &stru_285D02BA8;
     v17 = 2112;
-    v18 = v4;
+    v18 = delegateCopy;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_DEFAULT, "%@Delegate set to %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (delegateCopy)
   {
-    v6 = [(DIDeviceManager *)self connectionManager];
-    v7 = [v6 manager];
-    v8 = [v7 connection];
-    v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
-    v10 = [(DIDeviceManager *)self connectionManager];
-    v11 = [v10 manager];
-    v12 = [v11 clientContext];
+    connectionManager = [(DIDeviceManager *)self connectionManager];
+    manager = [connectionManager manager];
+    connection = [manager connection];
+    v9 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
+    connectionManager2 = [(DIDeviceManager *)self connectionManager];
+    manager2 = [connectionManager2 manager];
+    clientContext = [manager2 clientContext];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __31__DIDeviceManager_setDelegate___block_invoke_2;
     v14[3] = &unk_278FB9168;
     v14[4] = self;
-    [v9 loadDevicesWithContext:v12 completionHandler:v14];
+    [v9 loadDevicesWithContext:clientContext completionHandler:v14];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -135,22 +135,22 @@ LABEL_7:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentDevice:(id)a3
+- (void)setCurrentDevice:(id)device
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = DILogHandleDeviceManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
     v9 = &stru_285D02BA8;
     v10 = 2112;
-    v11 = v4;
+    v11 = deviceCopy;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_DEFAULT, "%@Setting Current Device: %@", &v8, 0x16u);
   }
 
   currentDevice = self->_currentDevice;
-  self->_currentDevice = v4;
+  self->_currentDevice = deviceCopy;
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -165,51 +165,51 @@ LABEL_7:
   return v4;
 }
 
-- (void)didAddDevice:(id)a3
+- (void)didAddDevice:(id)device
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = DILogHandleDeviceManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v19 = &stru_285D02BA8;
     v20 = 2112;
-    v21 = v4;
+    v21 = deviceCopy;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_DEFAULT, "%@Did add device %@", buf, 0x16u);
   }
 
-  v6 = [(DIDeviceManager *)self devices];
-  objc_sync_enter(v6);
-  v7 = [(DIDeviceManager *)self connectionManager];
-  [v4 setConnectionManager:v7];
+  devices = [(DIDeviceManager *)self devices];
+  objc_sync_enter(devices);
+  connectionManager = [(DIDeviceManager *)self connectionManager];
+  [deviceCopy setConnectionManager:connectionManager];
 
-  v8 = [(DIDeviceManager *)self devices];
-  v9 = [v8 arrayByAddingObject:v4];
+  devices2 = [(DIDeviceManager *)self devices];
+  v9 = [devices2 arrayByAddingObject:deviceCopy];
   [(DIDeviceManager *)self setDevices:v9];
 
-  if ([v4 isCurrentDevice])
+  if ([deviceCopy isCurrentDevice])
   {
-    [(DIDeviceManager *)self setCurrentDevice:v4];
+    [(DIDeviceManager *)self setCurrentDevice:deviceCopy];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(devices);
 
-  v10 = [(DIDeviceManager *)self delegate];
+  delegate = [(DIDeviceManager *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(DIDeviceManager *)self connectionManager];
-    v13 = [v12 manager];
-    v14 = [v13 clientQueue];
+    connectionManager2 = [(DIDeviceManager *)self connectionManager];
+    manager = [connectionManager2 manager];
+    clientQueue = [manager clientQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __32__DIDeviceManager_didAddDevice___block_invoke;
     v16[3] = &unk_278FB8E48;
     v16[4] = self;
-    v17 = v4;
-    [DIUtilities onQueue:v14 block:v16];
+    v17 = deviceCopy;
+    [DIUtilities onQueue:clientQueue block:v16];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -221,17 +221,17 @@ void __32__DIDeviceManager_didAddDevice___block_invoke(uint64_t a1)
   [v2 manager:*(a1 + 32) didAddDevice:*(a1 + 40)];
 }
 
-- (void)didLoadDevices:(id)a3
+- (void)didLoadDevices:(id)devices
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = DILogHandleDeviceManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v40 = &stru_285D02BA8;
     v41 = 2048;
-    v42 = [v4 count];
+    v42 = [devicesCopy count];
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_DEFAULT, "%@Did Load Devices %lu", buf, 0x16u);
   }
 
@@ -239,7 +239,7 @@ void __32__DIDeviceManager_didAddDevice___block_invoke(uint64_t a1)
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = v4;
+  v6 = devicesCopy;
   v7 = [v6 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v7)
   {
@@ -277,8 +277,8 @@ void __32__DIDeviceManager_didAddDevice___block_invoke(uint64_t a1)
     while (v7);
   }
 
-  v13 = [(DIDeviceManager *)self devices];
-  objc_sync_enter(v13);
+  devices = [(DIDeviceManager *)self devices];
+  objc_sync_enter(devices);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -299,11 +299,11 @@ void __32__DIDeviceManager_didAddDevice___block_invoke(uint64_t a1)
         }
 
         v18 = *(*(&v29 + 1) + 8 * v17);
-        v19 = [(DIDeviceManager *)self connectionManager];
-        [v18 setConnectionManager:v19];
+        connectionManager = [(DIDeviceManager *)self connectionManager];
+        [v18 setConnectionManager:connectionManager];
 
-        v20 = [v18 stateExpiration];
-        [v18 setStateExpiration:v20];
+        stateExpiration = [v18 stateExpiration];
+        [v18 setStateExpiration:stateExpiration];
 
         if ([v18 isCurrentDevice])
         {
@@ -321,22 +321,22 @@ void __32__DIDeviceManager_didAddDevice___block_invoke(uint64_t a1)
   }
 
   [(DIDeviceManager *)self setDevices:v14];
-  objc_sync_exit(v13);
+  objc_sync_exit(devices);
 
-  v21 = [(DIDeviceManager *)self delegate];
+  delegate = [(DIDeviceManager *)self delegate];
   v22 = objc_opt_respondsToSelector();
 
   if (v22)
   {
-    v23 = [(DIDeviceManager *)self connectionManager];
-    v24 = [v23 manager];
-    v25 = [v24 clientQueue];
+    connectionManager2 = [(DIDeviceManager *)self connectionManager];
+    manager = [connectionManager2 manager];
+    clientQueue = [manager clientQueue];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __34__DIDeviceManager_didLoadDevices___block_invoke;
     v28[3] = &unk_278FB8F78;
     v28[4] = self;
-    [DIUtilities onQueue:v25 block:v28];
+    [DIUtilities onQueue:clientQueue block:v28];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -348,51 +348,51 @@ void __34__DIDeviceManager_didLoadDevices___block_invoke(uint64_t a1)
   [v2 managerDidUpdateDevices:*(a1 + 32)];
 }
 
-- (void)didRemoveDevice:(id)a3
+- (void)didRemoveDevice:(id)device
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = DILogHandleDeviceManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v20 = &stru_285D02BA8;
     v21 = 2112;
-    v22 = v4;
+    v22 = deviceCopy;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_DEFAULT, "%@Did remove device %@", buf, 0x16u);
   }
 
-  v6 = [(DIDeviceManager *)self devices];
-  objc_sync_enter(v6);
+  devices = [(DIDeviceManager *)self devices];
+  objc_sync_enter(devices);
   v7 = MEMORY[0x277CBEB18];
-  v8 = [(DIDeviceManager *)self devices];
-  v9 = [v7 arrayWithArray:v8];
+  devices2 = [(DIDeviceManager *)self devices];
+  v9 = [v7 arrayWithArray:devices2];
 
-  [v9 removeObject:v4];
+  [v9 removeObject:deviceCopy];
   v10 = [v9 copy];
   [(DIDeviceManager *)self setDevices:v10];
 
-  if ([v4 isCurrentDevice])
+  if ([deviceCopy isCurrentDevice])
   {
     [(DIDeviceManager *)self setCurrentDevice:0];
   }
 
-  objc_sync_exit(v6);
-  v11 = [(DIDeviceManager *)self delegate];
+  objc_sync_exit(devices);
+  delegate = [(DIDeviceManager *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(DIDeviceManager *)self connectionManager];
-    v14 = [v13 manager];
-    v15 = [v14 clientQueue];
+    connectionManager = [(DIDeviceManager *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __35__DIDeviceManager_didRemoveDevice___block_invoke;
     v17[3] = &unk_278FB8E48;
     v17[4] = self;
-    v18 = v4;
-    [DIUtilities onQueue:v15 block:v17];
+    v18 = deviceCopy;
+    [DIUtilities onQueue:clientQueue block:v17];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -404,17 +404,17 @@ void __35__DIDeviceManager_didRemoveDevice___block_invoke(uint64_t a1)
   [v2 manager:*(a1 + 32) didRemoveDevice:*(a1 + 40)];
 }
 
-- (void)didUpdateDevice:(id)a3
+- (void)didUpdateDevice:(id)device
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  deviceCopy = device;
   v4 = DILogHandleDeviceManager();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v34 = &stru_285D02BA8;
     v35 = 2112;
-    v36 = v3;
+    v36 = deviceCopy;
     _os_log_impl(&dword_249DA7000, v4, OS_LOG_TYPE_DEFAULT, "%@Did update device %@", buf, 0x16u);
   }
 
@@ -426,8 +426,8 @@ void __35__DIDeviceManager_didRemoveDevice___block_invoke(uint64_t a1)
     v6 = v5;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(DIDeviceManager *)self devices];
-      v8 = [v7 count];
+      devices = [(DIDeviceManager *)self devices];
+      v8 = [devices count];
       *buf = 138412546;
       v34 = &stru_285D02BA8;
       v35 = 2048;
@@ -440,8 +440,8 @@ void __35__DIDeviceManager_didRemoveDevice___block_invoke(uint64_t a1)
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [(DIDeviceManager *)self devices];
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  devices2 = [(DIDeviceManager *)self devices];
+  v10 = [devices2 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v10)
   {
     v11 = *v28;
@@ -451,7 +451,7 @@ void __35__DIDeviceManager_didRemoveDevice___block_invoke(uint64_t a1)
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(devices2);
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
@@ -466,7 +466,7 @@ void __35__DIDeviceManager_didRemoveDevice___block_invoke(uint64_t a1)
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v10 = [devices2 countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v10);
@@ -476,8 +476,8 @@ void __35__DIDeviceManager_didRemoveDevice___block_invoke(uint64_t a1)
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = [(DIDeviceManager *)self devices];
-  v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  devices3 = [(DIDeviceManager *)self devices];
+  v16 = [devices3 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v16)
   {
     v17 = *v24;
@@ -487,17 +487,17 @@ void __35__DIDeviceManager_didRemoveDevice___block_invoke(uint64_t a1)
       {
         if (*v24 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(devices3);
         }
 
         v19 = *(*(&v23 + 1) + 8 * j);
-        if ([v19 isEqual:{v3, obj}])
+        if ([v19 isEqual:{deviceCopy, obj}])
         {
-          [v19 updateWithDevice:v3 updateState:1];
+          [v19 updateWithDevice:deviceCopy updateState:1];
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v16 = [devices3 countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v16);
@@ -507,7 +507,7 @@ void __35__DIDeviceManager_didRemoveDevice___block_invoke(uint64_t a1)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)xpcManagerDidPerformDaemonCheckIn:(id)a3
+- (void)xpcManagerDidPerformDaemonCheckIn:(id)in
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [(DIDeviceManager *)self setDelegate:WeakRetained];

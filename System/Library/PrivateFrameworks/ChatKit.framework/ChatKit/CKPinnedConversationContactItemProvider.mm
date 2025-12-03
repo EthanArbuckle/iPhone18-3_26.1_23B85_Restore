@@ -1,13 +1,13 @@
 @interface CKPinnedConversationContactItemProvider
-+ (id)contactItemFromEntity:(id)a3;
++ (id)contactItemFromEntity:(id)entity;
 @end
 
 @implementation CKPinnedConversationContactItemProvider
 
-+ (id)contactItemFromEntity:(id)a3
++ (id)contactItemFromEntity:(id)entity
 {
-  v3 = a3;
-  v4 = [[CKPinnedConversationContactItemFromHandle alloc] initWithEntity:v3];
+  entityCopy = entity;
+  v4 = [[CKPinnedConversationContactItemFromHandle alloc] initWithEntity:entityCopy];
 
   return v4;
 }

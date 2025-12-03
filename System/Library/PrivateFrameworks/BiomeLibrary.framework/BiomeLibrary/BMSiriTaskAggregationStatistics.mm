@@ -1,26 +1,26 @@
 @interface BMSiriTaskAggregationStatistics
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriTaskAggregationStatistics)initWithCompletedSystemTasks:(id)a3 failedSystemTasks:(id)a4 cancelledSystemTasks:(id)a5 tasksPerformedWithUI:(id)a6;
-- (BMSiriTaskAggregationStatistics)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriTaskAggregationStatistics)initWithCompletedSystemTasks:(id)tasks failedSystemTasks:(id)systemTasks cancelledSystemTasks:(id)cancelledSystemTasks tasksPerformedWithUI:(id)i;
+- (BMSiriTaskAggregationStatistics)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriTaskAggregationStatistics
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMSiriTaskAggregationStatistics hasCompletedSystemTasks](self, "hasCompletedSystemTasks") || [v5 hasCompletedSystemTasks])
     {
       if (![(BMSiriTaskAggregationStatistics *)self hasCompletedSystemTasks])
@@ -33,8 +33,8 @@
         goto LABEL_23;
       }
 
-      v6 = [(BMSiriTaskAggregationStatistics *)self completedSystemTasks];
-      if (v6 != [v5 completedSystemTasks])
+      completedSystemTasks = [(BMSiriTaskAggregationStatistics *)self completedSystemTasks];
+      if (completedSystemTasks != [v5 completedSystemTasks])
       {
         goto LABEL_23;
       }
@@ -52,8 +52,8 @@
         goto LABEL_23;
       }
 
-      v7 = [(BMSiriTaskAggregationStatistics *)self failedSystemTasks];
-      if (v7 != [v5 failedSystemTasks])
+      failedSystemTasks = [(BMSiriTaskAggregationStatistics *)self failedSystemTasks];
+      if (failedSystemTasks != [v5 failedSystemTasks])
       {
         goto LABEL_23;
       }
@@ -71,8 +71,8 @@
         goto LABEL_23;
       }
 
-      v8 = [(BMSiriTaskAggregationStatistics *)self cancelledSystemTasks];
-      if (v8 != [v5 cancelledSystemTasks])
+      cancelledSystemTasks = [(BMSiriTaskAggregationStatistics *)self cancelledSystemTasks];
+      if (cancelledSystemTasks != [v5 cancelledSystemTasks])
       {
         goto LABEL_23;
       }
@@ -86,8 +86,8 @@
 
     if (-[BMSiriTaskAggregationStatistics hasTasksPerformedWithUI](self, "hasTasksPerformedWithUI") && [v5 hasTasksPerformedWithUI])
     {
-      v9 = [(BMSiriTaskAggregationStatistics *)self tasksPerformedWithUI];
-      v10 = v9 == [v5 tasksPerformedWithUI];
+      tasksPerformedWithUI = [(BMSiriTaskAggregationStatistics *)self tasksPerformedWithUI];
+      v10 = tasksPerformedWithUI == [v5 tasksPerformedWithUI];
     }
 
     else
@@ -151,37 +151,37 @@ LABEL_25:
   }
 
   v14[0] = @"completedSystemTasks";
-  v7 = v3;
+  null = v3;
   if (!v3)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"failedSystemTasks";
-  v8 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"cancelledSystemTasks";
-  v9 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"tasksPerformedWithUI";
-  v10 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
   if (v6)
   {
@@ -232,38 +232,38 @@ LABEL_25:
   return v11;
 }
 
-- (BMSiriTaskAggregationStatistics)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriTaskAggregationStatistics)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"completedSystemTasks"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"completedSystemTasks"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"failedSystemTasks"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"failedSystemTasks"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
           goto LABEL_34;
         }
 
         v19 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v33 = a4;
+        errorCopy = error;
         v20 = *MEMORY[0x1E698F240];
         v38 = *MEMORY[0x1E696A578];
         v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"failedSystemTasks"];
         v39 = v12;
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
         v21 = [v19 initWithDomain:v20 code:2 userInfo:v10];
-        a4 = 0;
+        error = 0;
         v15 = 0;
-        *v33 = v21;
+        *errorCopy = v21;
         goto LABEL_33;
       }
 
@@ -275,22 +275,22 @@ LABEL_4:
       v32 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"cancelledSystemTasks"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cancelledSystemTasks"];
     v31 = v7;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v12 = 0;
           v15 = 0;
-          a4 = v32;
+          error = v32;
           goto LABEL_33;
         }
 
-        v11 = self;
+        selfCopy3 = self;
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
         v22 = *MEMORY[0x1E698F240];
         v36 = *MEMORY[0x1E696A578];
@@ -300,31 +300,31 @@ LABEL_4:
         v23 = [v29 initWithDomain:v22 code:2 userInfo:v13];
         v12 = 0;
         v15 = 0;
-        *a4 = v23;
+        *error = v23;
         goto LABEL_31;
       }
 
-      v11 = self;
+      selfCopy3 = self;
       v12 = v10;
     }
 
     else
     {
-      v11 = self;
+      selfCopy3 = self;
       v12 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"tasksPerformedWithUI"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"tasksPerformedWithUI"];
     if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v14 = 0;
 LABEL_13:
-      a4 = v32;
-      v15 = [(BMSiriTaskAggregationStatistics *)v11 initWithCompletedSystemTasks:v8 failedSystemTasks:v32 cancelledSystemTasks:v12 tasksPerformedWithUI:v14];
-      v11 = v15;
+      error = v32;
+      v15 = [(BMSiriTaskAggregationStatistics *)selfCopy3 initWithCompletedSystemTasks:v8 failedSystemTasks:v32 cancelledSystemTasks:v12 tasksPerformedWithUI:v14];
+      selfCopy3 = v15;
 LABEL_32:
 
-      self = v11;
+      self = selfCopy3;
       v7 = v31;
 LABEL_33:
 
@@ -338,7 +338,7 @@ LABEL_33:
       goto LABEL_13;
     }
 
-    if (a4)
+    if (error)
     {
       v30 = objc_alloc(MEMORY[0x1E696ABC0]);
       v28 = *MEMORY[0x1E698F240];
@@ -346,13 +346,13 @@ LABEL_33:
       v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"tasksPerformedWithUI"];
       v35 = v24;
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-      *a4 = [v30 initWithDomain:v28 code:2 userInfo:v25];
+      *error = [v30 initWithDomain:v28 code:2 userInfo:v25];
     }
 
     v14 = 0;
     v15 = 0;
 LABEL_31:
-    a4 = v32;
+    error = v32;
     goto LABEL_32;
   }
 
@@ -363,7 +363,7 @@ LABEL_31:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v15 = 0;
@@ -378,8 +378,8 @@ LABEL_31:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
   v8 = 0;
   v15 = 0;
-  *a4 = [v16 initWithDomain:v17 code:2 userInfo:v9];
-  a4 = v18;
+  *error = [v16 initWithDomain:v17 code:2 userInfo:v9];
+  error = v18;
 LABEL_34:
 
 LABEL_35:
@@ -391,14 +391,14 @@ LABEL_35:
 {
   v3 = objc_opt_new();
   [(BMSiriTaskAggregationStatistics *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_hasCompletedSystemTasks)
   {
     completedSystemTasks = self->_completedSystemTasks;
@@ -424,9 +424,9 @@ LABEL_35:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v43.receiver = self;
   v43.super_class = BMSiriTaskAggregationStatistics;
   v5 = [(BMEventBase *)&v43 init];
@@ -435,12 +435,12 @@ LABEL_35:
     goto LABEL_72;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -451,18 +451,18 @@ LABEL_35:
       while (1)
       {
         v44 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v44 & 0x7F) << v7;
@@ -479,9 +479,9 @@ LABEL_35:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -498,18 +498,18 @@ LABEL_16:
           while (1)
           {
             v44 = 0;
-            v37 = [v4 position] + 1;
-            if (v37 >= [v4 position] && (v38 = objc_msgSend(v4, "position") + 1, v38 <= objc_msgSend(v4, "length")))
+            v37 = [fromCopy position] + 1;
+            if (v37 >= [fromCopy position] && (v38 = objc_msgSend(fromCopy, "position") + 1, v38 <= objc_msgSend(fromCopy, "length")))
             {
-              v39 = [v4 data];
-              [v39 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v44 & 0x7F) << v35;
@@ -551,18 +551,18 @@ LABEL_41:
           while (1)
           {
             v44 = 0;
-            v27 = [v4 position] + 1;
-            if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+            v27 = [fromCopy position] + 1;
+            if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
             {
-              v29 = [v4 data];
-              [v29 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v44 & 0x7F) << v25;
@@ -594,18 +594,18 @@ LABEL_41:
         while (1)
         {
           v44 = 0;
-          v32 = [v4 position] + 1;
-          if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+          v32 = [fromCopy position] + 1;
+          if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
           {
-            v34 = [v4 data];
-            [v34 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v44 & 0x7F) << v30;
@@ -641,18 +641,18 @@ LABEL_41:
         while (1)
         {
           v44 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v44 & 0x7F) << v16;
@@ -674,7 +674,7 @@ LABEL_41:
         v24 = &OBJC_IVAR___BMSiriTaskAggregationStatistics__failedSystemTasks;
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v23 = 0;
       }
@@ -687,13 +687,13 @@ LABEL_41:
 LABEL_68:
       *(&v5->super.super.isa + *v24) = v23;
 LABEL_69:
-      v40 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v40 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_71:
     v41 = 0;
@@ -720,70 +720,70 @@ LABEL_72:
   return v8;
 }
 
-- (BMSiriTaskAggregationStatistics)initWithCompletedSystemTasks:(id)a3 failedSystemTasks:(id)a4 cancelledSystemTasks:(id)a5 tasksPerformedWithUI:(id)a6
+- (BMSiriTaskAggregationStatistics)initWithCompletedSystemTasks:(id)tasks failedSystemTasks:(id)systemTasks cancelledSystemTasks:(id)cancelledSystemTasks tasksPerformedWithUI:(id)i
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tasksCopy = tasks;
+  systemTasksCopy = systemTasks;
+  cancelledSystemTasksCopy = cancelledSystemTasks;
+  iCopy = i;
   v20.receiver = self;
   v20.super_class = BMSiriTaskAggregationStatistics;
   v14 = [(BMEventBase *)&v20 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v10)
+    if (tasksCopy)
     {
       v14->_hasCompletedSystemTasks = 1;
-      v15 = [v10 unsignedIntValue];
+      unsignedIntValue = [tasksCopy unsignedIntValue];
     }
 
     else
     {
-      v15 = 0;
+      unsignedIntValue = 0;
       v14->_hasCompletedSystemTasks = 0;
     }
 
-    v14->_completedSystemTasks = v15;
-    if (v11)
+    v14->_completedSystemTasks = unsignedIntValue;
+    if (systemTasksCopy)
     {
       v14->_hasFailedSystemTasks = 1;
-      v16 = [v11 unsignedIntValue];
+      unsignedIntValue2 = [systemTasksCopy unsignedIntValue];
     }
 
     else
     {
-      v16 = 0;
+      unsignedIntValue2 = 0;
       v14->_hasFailedSystemTasks = 0;
     }
 
-    v14->_failedSystemTasks = v16;
-    if (v12)
+    v14->_failedSystemTasks = unsignedIntValue2;
+    if (cancelledSystemTasksCopy)
     {
       v14->_hasCancelledSystemTasks = 1;
-      v17 = [v12 unsignedIntValue];
+      unsignedIntValue3 = [cancelledSystemTasksCopy unsignedIntValue];
     }
 
     else
     {
-      v17 = 0;
+      unsignedIntValue3 = 0;
       v14->_hasCancelledSystemTasks = 0;
     }
 
-    v14->_cancelledSystemTasks = v17;
-    if (v13)
+    v14->_cancelledSystemTasks = unsignedIntValue3;
+    if (iCopy)
     {
       v14->_hasTasksPerformedWithUI = 1;
-      v18 = [v13 unsignedIntValue];
+      unsignedIntValue4 = [iCopy unsignedIntValue];
     }
 
     else
     {
-      v18 = 0;
+      unsignedIntValue4 = 0;
       v14->_hasTasksPerformedWithUI = 0;
     }
 
-    v14->_tasksPerformedWithUI = v18;
+    v14->_tasksPerformedWithUI = unsignedIntValue4;
   }
 
   return v14;
@@ -825,9 +825,9 @@ LABEL_72:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -835,8 +835,8 @@ LABEL_72:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriTaskAggregationStatistics alloc] initByReadFrom:v7];
     v4 = v8;

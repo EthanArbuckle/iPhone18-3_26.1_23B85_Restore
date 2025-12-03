@@ -7,9 +7,9 @@
 - (void)createConnection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(DIBaseXPCHandler *)self isPrivileged];
-  v4 = [(DIBaseXPCHandler *)self serviceName];
-  v5 = [v4 stringByAppendingString:@".xpc"];
+  isPrivileged = [(DIBaseXPCHandler *)self isPrivileged];
+  serviceName = [(DIBaseXPCHandler *)self serviceName];
+  v5 = [serviceName stringByAppendingString:@".xpc"];
 
   v6 = *__error();
   if (DIForwardLogs())
@@ -46,7 +46,7 @@
     }
   }
 
-  if (v3)
+  if (isPrivileged)
   {
     v10 = 4096;
   }
@@ -61,9 +61,9 @@
   [(DIBaseXPCHandler *)self setConnection:v11];
 
   [(DIBaseAgentXPCHandler *)self setConnectionMode];
-  v12 = [(DIBaseXPCHandler *)self remoteObjectInterface];
-  v13 = [(DIBaseXPCHandler *)self connection];
-  [v13 setRemoteObjectInterface:v12];
+  remoteObjectInterface = [(DIBaseXPCHandler *)self remoteObjectInterface];
+  connection = [(DIBaseXPCHandler *)self connection];
+  [connection setRemoteObjectInterface:remoteObjectInterface];
 
   v14 = *MEMORY[0x277D85DE8];
 }

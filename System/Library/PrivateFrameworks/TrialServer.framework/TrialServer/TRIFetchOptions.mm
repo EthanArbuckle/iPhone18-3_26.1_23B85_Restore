@@ -1,23 +1,23 @@
 @interface TRIFetchOptions
-+ (id)optionsWithDownloadOptions:(id)a3 cacheDeleteAvailableSpaceClass:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOptions:(id)a3;
-- (TRIFetchOptions)initWithDownloadOptions:(id)a3 cacheDeleteAvailableSpaceClass:(id)a4;
-- (id)copyWithReplacementCacheDeleteAvailableSpaceClass:(id)a3;
-- (id)copyWithReplacementDownloadOptions:(id)a3;
++ (id)optionsWithDownloadOptions:(id)options cacheDeleteAvailableSpaceClass:(id)class;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOptions:(id)options;
+- (TRIFetchOptions)initWithDownloadOptions:(id)options cacheDeleteAvailableSpaceClass:(id)class;
+- (id)copyWithReplacementCacheDeleteAvailableSpaceClass:(id)class;
+- (id)copyWithReplacementDownloadOptions:(id)options;
 - (id)description;
 @end
 
 @implementation TRIFetchOptions
 
-- (TRIFetchOptions)initWithDownloadOptions:(id)a3 cacheDeleteAvailableSpaceClass:(id)a4
+- (TRIFetchOptions)initWithDownloadOptions:(id)options cacheDeleteAvailableSpaceClass:(id)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  optionsCopy = options;
+  classCopy = class;
+  v10 = classCopy;
+  if (optionsCopy)
   {
-    if (v9)
+    if (classCopy)
     {
       goto LABEL_3;
     }
@@ -25,8 +25,8 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:4263 description:{@"Invalid parameter not satisfying: %@", @"downloadOptions != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:4263 description:{@"Invalid parameter not satisfying: %@", @"downloadOptions != nil"}];
 
     if (v10)
     {
@@ -34,8 +34,8 @@
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:4264 description:{@"Invalid parameter not satisfying: %@", @"cacheDeleteAvailableSpaceClass != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:4264 description:{@"Invalid parameter not satisfying: %@", @"cacheDeleteAvailableSpaceClass != nil"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -44,50 +44,50 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_downloadOptions, a3);
-    objc_storeStrong(&v12->_cacheDeleteAvailableSpaceClass, a4);
+    objc_storeStrong(&v11->_downloadOptions, options);
+    objc_storeStrong(&v12->_cacheDeleteAvailableSpaceClass, class);
   }
 
   return v12;
 }
 
-+ (id)optionsWithDownloadOptions:(id)a3 cacheDeleteAvailableSpaceClass:(id)a4
++ (id)optionsWithDownloadOptions:(id)options cacheDeleteAvailableSpaceClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithDownloadOptions:v7 cacheDeleteAvailableSpaceClass:v6];
+  classCopy = class;
+  optionsCopy = options;
+  v8 = [[self alloc] initWithDownloadOptions:optionsCopy cacheDeleteAvailableSpaceClass:classCopy];
 
   return v8;
 }
 
-- (id)copyWithReplacementDownloadOptions:(id)a3
+- (id)copyWithReplacementDownloadOptions:(id)options
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDownloadOptions:v4 cacheDeleteAvailableSpaceClass:self->_cacheDeleteAvailableSpaceClass];
+  optionsCopy = options;
+  v5 = [objc_alloc(objc_opt_class()) initWithDownloadOptions:optionsCopy cacheDeleteAvailableSpaceClass:self->_cacheDeleteAvailableSpaceClass];
 
   return v5;
 }
 
-- (id)copyWithReplacementCacheDeleteAvailableSpaceClass:(id)a3
+- (id)copyWithReplacementCacheDeleteAvailableSpaceClass:(id)class
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDownloadOptions:self->_downloadOptions cacheDeleteAvailableSpaceClass:v4];
+  classCopy = class;
+  v5 = [objc_alloc(objc_opt_class()) initWithDownloadOptions:self->_downloadOptions cacheDeleteAvailableSpaceClass:classCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToOptions:(id)a3
+- (BOOL)isEqualToOptions:(id)options
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  optionsCopy = options;
+  v5 = optionsCopy;
+  if (!optionsCopy)
   {
     goto LABEL_8;
   }
 
   v6 = self->_downloadOptions == 0;
-  v7 = [v4 downloadOptions];
-  v8 = v7 != 0;
+  downloadOptions = [optionsCopy downloadOptions];
+  v8 = downloadOptions != 0;
 
   if (v6 == v8)
   {
@@ -97,8 +97,8 @@ LABEL_3:
   downloadOptions = self->_downloadOptions;
   if (downloadOptions)
   {
-    v10 = [v5 downloadOptions];
-    v11 = [(TRIDownloadOptions *)downloadOptions isEqual:v10];
+    downloadOptions2 = [v5 downloadOptions];
+    v11 = [(TRIDownloadOptions *)downloadOptions isEqual:downloadOptions2];
 
     if (!v11)
     {
@@ -107,8 +107,8 @@ LABEL_3:
   }
 
   v12 = self->_cacheDeleteAvailableSpaceClass == 0;
-  v13 = [v5 cacheDeleteAvailableSpaceClass];
-  v14 = v13 != 0;
+  cacheDeleteAvailableSpaceClass = [v5 cacheDeleteAvailableSpaceClass];
+  v14 = cacheDeleteAvailableSpaceClass != 0;
 
   if (v12 == v14)
   {
@@ -121,8 +121,8 @@ LABEL_8:
     cacheDeleteAvailableSpaceClass = self->_cacheDeleteAvailableSpaceClass;
     if (cacheDeleteAvailableSpaceClass)
     {
-      v16 = [v5 cacheDeleteAvailableSpaceClass];
-      v17 = [(NSNumber *)cacheDeleteAvailableSpaceClass isEqual:v16];
+      cacheDeleteAvailableSpaceClass2 = [v5 cacheDeleteAvailableSpaceClass];
+      v17 = [(NSNumber *)cacheDeleteAvailableSpaceClass isEqual:cacheDeleteAvailableSpaceClass2];
     }
 
     else
@@ -134,18 +134,18 @@ LABEL_8:
   return v17 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIFetchOptions *)self isEqualToOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIFetchOptions *)self isEqualToOptions:v5];
   }
 
   return v6;

@@ -1,20 +1,20 @@
 @interface HDClinicalAuthorizationSessionJournalEntry
-- (HDClinicalAuthorizationSessionJournalEntry)initWithCoder:(id)a3;
-- (HDClinicalAuthorizationSessionJournalEntry)initWithState:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HDClinicalAuthorizationSessionJournalEntry)initWithCoder:(id)coder;
+- (HDClinicalAuthorizationSessionJournalEntry)initWithState:(id)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDClinicalAuthorizationSessionJournalEntry
 
-- (HDClinicalAuthorizationSessionJournalEntry)initWithState:(id)a3
+- (HDClinicalAuthorizationSessionJournalEntry)initWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = HDClinicalAuthorizationSessionJournalEntry;
   v5 = [(HDClinicalAuthorizationSessionJournalEntry *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stateCopy copy];
     state = v5->_state;
     v5->_state = v6;
   }
@@ -22,15 +22,15 @@
   return v5;
 }
 
-- (HDClinicalAuthorizationSessionJournalEntry)initWithCoder:(id)a3
+- (HDClinicalAuthorizationSessionJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
   if (v5)
   {
     v11.receiver = self;
     v11.super_class = HDClinicalAuthorizationSessionJournalEntry;
-    v6 = [(HDClinicalAuthorizationSessionJournalEntry *)&v11 initWithCoder:v4];
+    v6 = [(HDClinicalAuthorizationSessionJournalEntry *)&v11 initWithCoder:coderCopy];
 
     if (v6)
     {
@@ -40,28 +40,28 @@
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HDClinicalAuthorizationSessionJournalEntry *)self state];
-  [v4 encodeObject:v5 forKey:@"state"];
+  coderCopy = coder;
+  state = [(HDClinicalAuthorizationSessionJournalEntry *)self state];
+  [coderCopy encodeObject:state forKey:@"state"];
 
   v6.receiver = self;
   v6.super_class = HDClinicalAuthorizationSessionJournalEntry;
-  [(HDClinicalAuthorizationSessionJournalEntry *)&v6 encodeWithCoder:v4];
+  [(HDClinicalAuthorizationSessionJournalEntry *)&v6 encodeWithCoder:coderCopy];
 }
 
 @end

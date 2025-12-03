@@ -1,9 +1,9 @@
 @interface CNMultiValueDiff
-+ (id)diffMultiValue:(id)a3 toMultiValue:(id)a4;
++ (id)diffMultiValue:(id)value toMultiValue:(id)multiValue;
 + (id)emptyDiff;
-- (BOOL)applyToABPerson:(void *)a3 propertyDescription:(id)a4 isUnified:(BOOL)a5 logger:(id)a6 error:(id *)a7;
-- (CNMultiValueDiff)initWithUpdates:(id)a3;
-- (id)multiValueByApplyToMultiValue:(id)a3 withIdentifierMap:(id)a4;
+- (BOOL)applyToABPerson:(void *)person propertyDescription:(id)description isUnified:(BOOL)unified logger:(id)logger error:(id *)error;
+- (CNMultiValueDiff)initWithUpdates:(id)updates;
+- (id)multiValueByApplyToMultiValue:(id)value withIdentifierMap:(id)map;
 @end
 
 @implementation CNMultiValueDiff
@@ -29,9 +29,9 @@ void __29__CNMultiValueDiff_emptyDiff__block_invoke()
   emptyDiff_cn_once_object_0 = v1;
 }
 
-+ (id)diffMultiValue:(id)a3 toMultiValue:(id)a4
++ (id)diffMultiValue:(id)value toMultiValue:(id)multiValue
 {
-  v4 = [CNCalculatesMultiValueDiff diffMultiValue:a3 toMultiValue:a4];
+  v4 = [CNCalculatesMultiValueDiff diffMultiValue:value toMultiValue:multiValue];
   if ([v4 count])
   {
     v5 = [[CNMultiValueDiff alloc] initWithUpdates:v4];
@@ -47,15 +47,15 @@ void __29__CNMultiValueDiff_emptyDiff__block_invoke()
   return v6;
 }
 
-- (CNMultiValueDiff)initWithUpdates:(id)a3
+- (CNMultiValueDiff)initWithUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v10.receiver = self;
   v10.super_class = CNMultiValueDiff;
   v5 = [(CNMultiValueDiff *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [updatesCopy copy];
     updates = v5->_updates;
     v5->_updates = v6;
 
@@ -65,11 +65,11 @@ void __29__CNMultiValueDiff_emptyDiff__block_invoke()
   return v5;
 }
 
-- (id)multiValueByApplyToMultiValue:(id)a3 withIdentifierMap:(id)a4
+- (id)multiValueByApplyToMultiValue:(id)value withIdentifierMap:(id)map
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 mutableCopy];
+  mapCopy = map;
+  v7 = [value mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -89,7 +89,7 @@ void __29__CNMultiValueDiff_emptyDiff__block_invoke()
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v15 + 1) + 8 * i) applyToMutableMultiValue:v7 withIdentifierMap:{v6, v15}];
+        [*(*(&v15 + 1) + 8 * i) applyToMutableMultiValue:v7 withIdentifierMap:{mapCopy, v15}];
       }
 
       v10 = [(NSArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -103,19 +103,19 @@ void __29__CNMultiValueDiff_emptyDiff__block_invoke()
   return v13;
 }
 
-- (BOOL)applyToABPerson:(void *)a3 propertyDescription:(id)a4 isUnified:(BOOL)a5 logger:(id)a6 error:(id *)a7
+- (BOOL)applyToABPerson:(void *)person propertyDescription:(id)description isUnified:(BOOL)unified logger:(id)logger error:(id *)error
 {
-  v9 = a5;
+  unifiedCopy = unified;
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
-  v14 = [v12 ABMutableMultiValueForABPerson:a3];
+  descriptionCopy = description;
+  loggerCopy = logger;
+  v14 = [descriptionCopy ABMutableMultiValueForABPerson:person];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = [(CNMultiValueDiff *)self updates];
-  v16 = [v15 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  updates = [(CNMultiValueDiff *)self updates];
+  v16 = [updates countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v16)
   {
     v17 = v16;
@@ -126,10 +126,10 @@ void __29__CNMultiValueDiff_emptyDiff__block_invoke()
       {
         if (*v29 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(updates);
         }
 
-        if (![*(*(&v28 + 1) + 8 * i) applyToABPerson:a3 abmultivalue:v14 propertyDescription:v12 isUnified:v9 logger:v13 error:a7])
+        if (![*(*(&v28 + 1) + 8 * i) applyToABPerson:person abmultivalue:v14 propertyDescription:descriptionCopy isUnified:unifiedCopy logger:loggerCopy error:error])
         {
 
           v21 = 0;
@@ -137,7 +137,7 @@ void __29__CNMultiValueDiff_emptyDiff__block_invoke()
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v17 = [updates countByEnumeratingWithState:&v28 objects:v35 count:16];
       if (v17)
       {
         continue;
@@ -148,20 +148,20 @@ void __29__CNMultiValueDiff_emptyDiff__block_invoke()
   }
 
   cf = 0;
-  v20 = [v12 setABValue:v14 onABPerson:a3 error:&cf];
+  v20 = [descriptionCopy setABValue:v14 onABPerson:person error:&cf];
   v21 = v20;
-  if (a7)
+  if (error)
   {
     if ((v20 & 1) == 0)
     {
       v33 = @"CNKeyPaths";
-      v22 = [v12 key];
+      v22 = [descriptionCopy key];
       v32 = v22;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
       v34 = v23;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
       v25 = [CNErrorFactory errorForiOSABError:cf];
-      *a7 = [CNErrorFactory errorByAddingUserInfoEntries:v24 toError:v25];
+      *error = [CNErrorFactory errorByAddingUserInfoEntries:v24 toError:v25];
 
       if (cf)
       {

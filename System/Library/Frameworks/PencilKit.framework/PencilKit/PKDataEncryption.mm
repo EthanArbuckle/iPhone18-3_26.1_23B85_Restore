@@ -1,22 +1,22 @@
 @interface PKDataEncryption
-+ (id)decryptFile:(void *)a3 key:(uint64_t)a4 error:;
-+ (id)encryptData:(void *)a3 key:;
-+ (uint64_t)encryptData:(void *)a3 to:(void *)a4 key:(uint64_t)a5 error:;
++ (id)decryptFile:(void *)file key:(uint64_t)key error:;
++ (id)encryptData:(void *)data key:;
++ (uint64_t)encryptData:(void *)data to:(void *)to key:(uint64_t)key error:;
 @end
 
 @implementation PKDataEncryption
 
-+ (id)encryptData:(void *)a3 key:
++ (id)encryptData:(void *)data key:
 {
   v4 = a2;
-  v5 = a3;
+  dataCopy = data;
   objc_opt_self();
   dataOutMoved = 0;
   v6 = 0;
-  if (CCCrypt(0, 0, 1u, [v5 bytes], objc_msgSend(v5, "length"), 0, objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length"), 0, 0, &dataOutMoved) == -4301)
+  if (CCCrypt(0, 0, 1u, [dataCopy bytes], objc_msgSend(dataCopy, "length"), 0, objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length"), 0, 0, &dataOutMoved) == -4301)
   {
     v6 = [MEMORY[0x1E695DF88] dataWithLength:dataOutMoved];
-    if (CCCrypt(0, 0, 1u, [v5 bytes], objc_msgSend(v5, "length"), 0, objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length"), objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length"), &dataOutMoved))
+    if (CCCrypt(0, 0, 1u, [dataCopy bytes], objc_msgSend(dataCopy, "length"), 0, objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length"), objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length"), &dataOutMoved))
     {
 
       v6 = 0;
@@ -31,17 +31,17 @@
   return v6;
 }
 
-+ (id)decryptFile:(void *)a3 key:(uint64_t)a4 error:
++ (id)decryptFile:(void *)file key:(uint64_t)key error:
 {
-  v6 = a3;
+  fileCopy = file;
   v7 = a2;
   objc_opt_self();
-  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v7 options:1 error:a4];
+  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v7 options:1 error:key];
 
   if (v8 && [v8 length])
   {
     v9 = v8;
-    v10 = v6;
+    v10 = fileCopy;
     objc_opt_self();
     dataOutMoved = 0;
     v11 = 0;
@@ -69,17 +69,17 @@
   return v11;
 }
 
-+ (uint64_t)encryptData:(void *)a3 to:(void *)a4 key:(uint64_t)a5 error:
++ (uint64_t)encryptData:(void *)data to:(void *)to key:(uint64_t)key error:
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  toCopy = to;
   v10 = a2;
   v11 = objc_opt_self();
-  v12 = [(PKDataEncryption *)v11 encryptData:v10 key:v9];
+  v12 = [(PKDataEncryption *)v11 encryptData:v10 key:toCopy];
 
   if (v12)
   {
-    v13 = [v12 writeToURL:v8 options:1 error:a5];
+    v13 = [v12 writeToURL:dataCopy options:1 error:key];
   }
 
   else

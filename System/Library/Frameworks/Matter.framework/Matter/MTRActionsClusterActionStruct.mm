@@ -1,6 +1,6 @@
 @interface MTRActionsClusterActionStruct
 - (MTRActionsClusterActionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRActionsClusterActionStruct);
-  v5 = [(MTRActionsClusterActionStruct *)self actionID];
-  [(MTRActionsClusterActionStruct *)v4 setActionID:v5];
+  actionID = [(MTRActionsClusterActionStruct *)self actionID];
+  [(MTRActionsClusterActionStruct *)v4 setActionID:actionID];
 
-  v6 = [(MTRActionsClusterActionStruct *)self name];
-  [(MTRActionsClusterActionStruct *)v4 setName:v6];
+  name = [(MTRActionsClusterActionStruct *)self name];
+  [(MTRActionsClusterActionStruct *)v4 setName:name];
 
-  v7 = [(MTRActionsClusterActionStruct *)self type];
-  [(MTRActionsClusterActionStruct *)v4 setType:v7];
+  type = [(MTRActionsClusterActionStruct *)self type];
+  [(MTRActionsClusterActionStruct *)v4 setType:type];
 
-  v8 = [(MTRActionsClusterActionStruct *)self endpointListID];
-  [(MTRActionsClusterActionStruct *)v4 setEndpointListID:v8];
+  endpointListID = [(MTRActionsClusterActionStruct *)self endpointListID];
+  [(MTRActionsClusterActionStruct *)v4 setEndpointListID:endpointListID];
 
-  v9 = [(MTRActionsClusterActionStruct *)self supportedCommands];
-  [(MTRActionsClusterActionStruct *)v4 setSupportedCommands:v9];
+  supportedCommands = [(MTRActionsClusterActionStruct *)self supportedCommands];
+  [(MTRActionsClusterActionStruct *)v4 setSupportedCommands:supportedCommands];
 
-  v10 = [(MTRActionsClusterActionStruct *)self state];
-  [(MTRActionsClusterActionStruct *)v4 setState:v10];
+  state = [(MTRActionsClusterActionStruct *)self state];
+  [(MTRActionsClusterActionStruct *)v4 setState:state];
 
   return v4;
 }

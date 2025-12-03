@@ -1,6 +1,6 @@
 @interface DSDateFormatter
 + (id)sharedFormatter;
-- (DSDateFormatter)formatterWithType:(int64_t)a3;
+- (DSDateFormatter)formatterWithType:(int64_t)type;
 - (DSDateFormatter)init;
 @end
 
@@ -32,25 +32,25 @@ uint64_t __34__DSDateFormatter_sharedFormatter__block_invoke()
   v2 = [(DSDateFormatter *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dateFormatters = v2->_dateFormatters;
-    v2->_dateFormatters = v3;
+    v2->_dateFormatters = dictionary;
   }
 
   return v2;
 }
 
-- (DSDateFormatter)formatterWithType:(int64_t)a3
+- (DSDateFormatter)formatterWithType:(int64_t)type
 {
-  v5 = [(DSDateFormatter *)self dateFormatters];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  dateFormatters = [(DSDateFormatter *)self dateFormatters];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  v7 = [dateFormatters objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    v8 = [(DSDateFormatter *)self dateFormatters];
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    dateFormatters2 = [(DSDateFormatter *)self dateFormatters];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+    v10 = [dateFormatters2 objectForKeyedSubscript:v9];
     goto LABEL_21;
   }
 
@@ -59,16 +59,16 @@ uint64_t __34__DSDateFormatter_sharedFormatter__block_invoke()
   [v10 setLocale:v11];
 
   [v10 setFormatterBehavior:1040];
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 > 4)
+    if (type > 4)
     {
-      if (a3 != 5)
+      if (type != 5)
       {
-        if (a3 == 6)
+        if (type == 6)
         {
-          v14 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-          [v10 setLocale:v14];
+          autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+          [v10 setLocale:autoupdatingCurrentLocale];
 
           [v10 setDateStyle:3];
           [v10 setTimeStyle:1];
@@ -81,7 +81,7 @@ uint64_t __34__DSDateFormatter_sharedFormatter__block_invoke()
       v12 = @"yyyy-MM-dd HH.mm.ss.SSS Z";
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
       v12 = @"yyyy-MM-dd";
     }
@@ -94,7 +94,7 @@ uint64_t __34__DSDateFormatter_sharedFormatter__block_invoke()
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0:
       v12 = @"yyyy-MM-dd'T'HH:mm:ssZZZZZ";
@@ -103,22 +103,22 @@ LABEL_17:
       break;
     case 1:
       [v10 setDateFormat:@"MM/dd/YYYY HH:mm:ss ZZZ"];
-      v13 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
-      [v10 setTimeZone:v13];
+      systemLocale = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
+      [v10 setTimeZone:systemLocale];
       goto LABEL_19;
     case 2:
       [v10 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
-      v13 = [MEMORY[0x277CBEAF8] systemLocale];
-      [v10 setLocale:v13];
+      systemLocale = [MEMORY[0x277CBEAF8] systemLocale];
+      [v10 setLocale:systemLocale];
 LABEL_19:
 
       break;
   }
 
 LABEL_20:
-  v8 = [(DSDateFormatter *)self dateFormatters];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v8 setObject:v10 forKeyedSubscript:v9];
+  dateFormatters2 = [(DSDateFormatter *)self dateFormatters];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+  [dateFormatters2 setObject:v10 forKeyedSubscript:v9];
 LABEL_21:
 
   return v10;

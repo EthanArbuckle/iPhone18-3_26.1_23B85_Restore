@@ -1,28 +1,28 @@
 @interface ADSiriTaskService
-- (ADSiriTaskService)initWithCommandType:(id)a3 requestTransformer:(id)a4 responseTransformer:(id)a5 requestHandler:(id)a6;
-- (BOOL)implementsCommand:(id)a3 forDomain:(id)a4;
-- (id)_informCommandCenter:(id)a3 willPerformLaunchApp:(id)a4;
-- (id)commandsForDomain:(id)a3;
+- (ADSiriTaskService)initWithCommandType:(id)type requestTransformer:(id)transformer responseTransformer:(id)responseTransformer requestHandler:(id)handler;
+- (BOOL)implementsCommand:(id)command forDomain:(id)domain;
+- (id)_informCommandCenter:(id)center willPerformLaunchApp:(id)app;
+- (id)commandsForDomain:(id)domain;
 - (id)domains;
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
 @end
 
 @implementation ADSiriTaskService
 
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  commandCopy = command;
+  contextCopy = context;
+  replyCopy = reply;
   v12 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v22 = "[ADSiriTaskService handleCommand:forDomain:executionContext:reply:]";
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v9;
+    v26 = commandCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s %@ handling %@", buf, 0x20u);
   }
 
@@ -32,27 +32,27 @@
   v17[2] = sub_100282D38;
   v17[3] = &unk_10051E0D8;
   v17[4] = self;
-  v18 = v9;
-  v19 = v10;
-  v20 = v11;
-  v14 = v10;
-  v15 = v11;
-  v16 = v9;
+  v18 = commandCopy;
+  v19 = contextCopy;
+  v20 = replyCopy;
+  v14 = contextCopy;
+  v15 = replyCopy;
+  v16 = commandCopy;
   dispatch_async(queue, v17);
 }
 
-- (BOOL)implementsCommand:(id)a3 forDomain:(id)a4
+- (BOOL)implementsCommand:(id)command forDomain:(id)domain
 {
-  v6 = a3;
+  commandCopy = command;
   commandType = self->_commandType;
-  v8 = a4;
-  v9 = [(ADServiceCommandType *)commandType domainName];
-  LODWORD(commandType) = [v8 isEqualToString:v9];
+  domainCopy = domain;
+  domainName = [(ADServiceCommandType *)commandType domainName];
+  LODWORD(commandType) = [domainCopy isEqualToString:domainName];
 
   if (commandType)
   {
-    v10 = [(ADServiceCommandType *)self->_commandType className];
-    v11 = [v6 isEqualToString:v10];
+    className = [(ADServiceCommandType *)self->_commandType className];
+    v11 = [commandCopy isEqualToString:className];
   }
 
   else
@@ -63,17 +63,17 @@
   return v11;
 }
 
-- (id)commandsForDomain:(id)a3
+- (id)commandsForDomain:(id)domain
 {
   commandType = self->_commandType;
-  v5 = a3;
-  v6 = [(ADServiceCommandType *)commandType domainName];
-  v7 = [v5 isEqualToString:v6];
+  domainCopy = domain;
+  domainName = [(ADServiceCommandType *)commandType domainName];
+  v7 = [domainCopy isEqualToString:domainName];
 
   if (v7)
   {
-    v8 = [(ADServiceCommandType *)self->_commandType className];
-    v11 = v8;
+    className = [(ADServiceCommandType *)self->_commandType className];
+    v11 = className;
     v9 = [NSArray arrayWithObjects:&v11 count:1];
   }
 
@@ -87,27 +87,27 @@
 
 - (id)domains
 {
-  v2 = [(ADServiceCommandType *)self->_commandType domainName];
-  v5 = v2;
+  domainName = [(ADServiceCommandType *)self->_commandType domainName];
+  v5 = domainName;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
 }
 
-- (id)_informCommandCenter:(id)a3 willPerformLaunchApp:(id)a4
+- (id)_informCommandCenter:(id)center willPerformLaunchApp:(id)app
 {
-  v5 = a3;
-  v6 = [a4 launchId];
-  [v5 willProcessAppLaunchWithBundleIdentifier:v6];
-  objc_initWeak(&location, v5);
+  centerCopy = center;
+  launchId = [app launchId];
+  [centerCopy willProcessAppLaunchWithBundleIdentifier:launchId];
+  objc_initWeak(&location, centerCopy);
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1002836B4;
   v10[3] = &unk_10051ADC0;
   objc_copyWeak(&v12, &location);
-  v11 = v6;
-  v7 = v6;
+  v11 = launchId;
+  v7 = launchId;
   v8 = objc_retainBlock(v10);
 
   objc_destroyWeak(&v12);
@@ -116,45 +116,45 @@
   return v8;
 }
 
-- (ADSiriTaskService)initWithCommandType:(id)a3 requestTransformer:(id)a4 responseTransformer:(id)a5 requestHandler:(id)a6
+- (ADSiriTaskService)initWithCommandType:(id)type requestTransformer:(id)transformer responseTransformer:(id)responseTransformer requestHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  transformerCopy = transformer;
+  responseTransformerCopy = responseTransformer;
+  handlerCopy = handler;
   v30.receiver = self;
   v30.super_class = ADSiriTaskService;
   v15 = [(ADSiriTaskService *)&v30 init];
   if (v15)
   {
     v16 = [NSString alloc];
-    [v11 qualifiedCommandName];
-    v17 = v29 = v12;
+    [typeCopy qualifiedCommandName];
+    v17 = v29 = transformerCopy;
     v18 = [v16 initWithFormat:@"SiriTaskService-%@", v17];
 
-    v19 = [v18 UTF8String];
+    uTF8String = [v18 UTF8String];
     dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v28 = v11;
-    v20 = v14;
-    v22 = v21 = v13;
-    v23 = dispatch_queue_create(v19, v22);
+    v28 = typeCopy;
+    v20 = handlerCopy;
+    v22 = v21 = responseTransformerCopy;
+    v23 = dispatch_queue_create(uTF8String, v22);
 
     queue = v15->_queue;
     v15->_queue = v23;
 
-    objc_storeStrong(&v15->_commandType, a3);
-    objc_storeStrong(&v15->_requestTransformer, a4);
-    objc_storeStrong(&v15->_responseTransformer, a5);
-    objc_storeStrong(&v15->_requestHandler, a6);
-    v25 = [(ADServiceCommandType *)v15->_commandType qualifiedCommandName];
-    v26 = [@"SiriTaskService-" stringByAppendingString:v25];
+    objc_storeStrong(&v15->_commandType, type);
+    objc_storeStrong(&v15->_requestTransformer, transformer);
+    objc_storeStrong(&v15->_responseTransformer, responseTransformer);
+    objc_storeStrong(&v15->_requestHandler, handler);
+    qualifiedCommandName = [(ADServiceCommandType *)v15->_commandType qualifiedCommandName];
+    v26 = [@"SiriTaskService-" stringByAppendingString:qualifiedCommandName];
     [(ADService *)v15 setIdentifier:v26];
 
-    v13 = v21;
-    v14 = v20;
-    v11 = v28;
+    responseTransformerCopy = v21;
+    handlerCopy = v20;
+    typeCopy = v28;
 
-    v12 = v29;
+    transformerCopy = v29;
   }
 
   return v15;

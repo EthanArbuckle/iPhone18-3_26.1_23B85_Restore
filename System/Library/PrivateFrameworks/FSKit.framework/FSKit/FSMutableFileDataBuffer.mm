@@ -1,20 +1,20 @@
 @interface FSMutableFileDataBuffer
-+ (id)dataWithCapacity:(unint64_t)a3;
-+ (id)dataWithLength:(unint64_t)a3;
-- (BOOL)ensureMappedMB:(unint64_t)a3;
-- (FSMutableFileDataBuffer)initWithCapacity:(unint64_t)a3;
-- (FSMutableFileDataBuffer)initWithCapacity:(unint64_t)a3 andLength:(unint64_t)a4;
-- (FSMutableFileDataBuffer)initWithCoder:(id)a3;
-- (id)initProxyFrom:(id)a3;
++ (id)dataWithCapacity:(unint64_t)capacity;
++ (id)dataWithLength:(unint64_t)length;
+- (BOOL)ensureMappedMB:(unint64_t)b;
+- (FSMutableFileDataBuffer)initWithCapacity:(unint64_t)capacity;
+- (FSMutableFileDataBuffer)initWithCapacity:(unint64_t)capacity andLength:(unint64_t)length;
+- (FSMutableFileDataBuffer)initWithCoder:(id)coder;
+- (id)initProxyFrom:(id)from;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)mutableBytes;
-- (void)withMutableBytes:(id)a3;
+- (void)withMutableBytes:(id)bytes;
 @end
 
 @implementation FSMutableFileDataBuffer
 
-- (FSMutableFileDataBuffer)initWithCapacity:(unint64_t)a3 andLength:(unint64_t)a4
+- (FSMutableFileDataBuffer)initWithCapacity:(unint64_t)capacity andLength:(unint64_t)length
 {
   v13.receiver = self;
   v13.super_class = FSMutableFileDataBuffer;
@@ -25,10 +25,10 @@
     proxyOfBuffer = v6->_proxyOfBuffer;
     v6->_proxyOfBuffer = 0;
 
-    v7->_internalCapacity = a3;
-    v7->_length = a4;
+    v7->_internalCapacity = capacity;
+    v7->_length = length;
     v9 = MEMORY[0x277D85F48];
-    if (vm_allocate(*MEMORY[0x277D85F48], &v7->_vma, a3, -1778384895))
+    if (vm_allocate(*MEMORY[0x277D85F48], &v7->_vma, capacity, -1778384895))
     {
 
       v7 = fskit_std_log();
@@ -74,35 +74,35 @@ LABEL_12:
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_debug_impl(&dword_24A929000, a2, OS_LOG_TYPE_DEBUG, "FSFileDataBuffer: dealloc: error %d", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)dataWithLength:(unint64_t)a3
++ (id)dataWithLength:(unint64_t)length
 {
-  v3 = [[FSMutableFileDataBuffer alloc] initWithLength:a3];
+  v3 = [[FSMutableFileDataBuffer alloc] initWithLength:length];
 
   return v3;
 }
 
-+ (id)dataWithCapacity:(unint64_t)a3
++ (id)dataWithCapacity:(unint64_t)capacity
 {
-  v3 = [[FSMutableFileDataBuffer alloc] initWithCapacity:a3];
+  v3 = [[FSMutableFileDataBuffer alloc] initWithCapacity:capacity];
 
   return v3;
 }
 
-- (FSMutableFileDataBuffer)initWithCapacity:(unint64_t)a3
+- (FSMutableFileDataBuffer)initWithCapacity:(unint64_t)capacity
 {
-  v4 = [[FSMutableFileDataBuffer alloc] initWithCapacity:a3 andLength:0];
+  v4 = [[FSMutableFileDataBuffer alloc] initWithCapacity:capacity andLength:0];
 
   return v4;
 }
 
-- (BOOL)ensureMappedMB:(unint64_t)a3
+- (BOOL)ensureMappedMB:(unint64_t)b
 {
-  address = a3;
+  address = b;
   v4 = mach_vm_map(*MEMORY[0x277D85F48], &address, self->_internalCapacity, 0, 1, self->_mp, 0, 0, 67, 67, 2u);
   if (v4)
   {
@@ -121,9 +121,9 @@ LABEL_12:
   return v4 == 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -133,14 +133,14 @@ LABEL_12:
 
   mp = self->_mp;
   v5 = xpc_mach_send_create();
-  [v7 encodeInteger:self->_length forKey:@"FSKitBuff.len"];
-  [v7 encodeXPCObject:v5 forKey:@"FSKitBuff.mp"];
-  [v7 encodeInteger:self->_internalCapacity forKey:@"FSKitMBuff.cap"];
+  [coderCopy encodeInteger:self->_length forKey:@"FSKitBuff.len"];
+  [coderCopy encodeXPCObject:v5 forKey:@"FSKitBuff.mp"];
+  [coderCopy encodeInteger:self->_internalCapacity forKey:@"FSKitMBuff.cap"];
 }
 
-- (FSMutableFileDataBuffer)initWithCoder:(id)a3
+- (FSMutableFileDataBuffer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = FSMutableFileDataBuffer;
   v5 = [(FSMutableFileDataBuffer *)&v13 init];
@@ -153,11 +153,11 @@ LABEL_12:
       objc_exception_throw(v12);
     }
 
-    v6 = [v4 decodeIntegerForKey:@"FSKitBuff.len"];
+    v6 = [coderCopy decodeIntegerForKey:@"FSKitBuff.len"];
     v5->_internalCapacity = v6;
     v5->_length = v6;
-    v7 = [v4 decodeXPCObjectOfType:MEMORY[0x277D864A0] forKey:@"FSKitBuff.mp"];
-    v8 = [v4 decodeIntegerForKey:@"FSKitMBuff.cap"];
+    v7 = [coderCopy decodeXPCObjectOfType:MEMORY[0x277D864A0] forKey:@"FSKitBuff.mp"];
+    v8 = [coderCopy decodeIntegerForKey:@"FSKitMBuff.cap"];
     v5->_internalCapacity = v8;
     if (v5->_length > v8)
     {
@@ -206,25 +206,25 @@ LABEL_12:
   }
 }
 
-- (void)withMutableBytes:(id)a3
+- (void)withMutableBytes:(id)bytes
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(FSMutableFileDataBuffer *)self mutableBytes]);
+  bytesCopy = bytes;
+  (*(bytes + 2))(bytesCopy, [(FSMutableFileDataBuffer *)self mutableBytes]);
 }
 
-- (id)initProxyFrom:(id)a3
+- (id)initProxyFrom:(id)from
 {
-  v5 = a3;
+  fromCopy = from;
   v8.receiver = self;
   v8.super_class = FSMutableFileDataBuffer;
   v6 = [(FSMutableFileDataBuffer *)&v8 init];
   if (v6)
   {
-    v6->_internalCapacity = [v5 capacity];
-    v6->_length = [v5 length];
-    v6->_vma = [v5 vma];
-    v6->_mp = [v5 mp];
-    objc_storeStrong(&v6->_proxyOfBuffer, a3);
+    v6->_internalCapacity = [fromCopy capacity];
+    v6->_length = [fromCopy length];
+    v6->_vma = [fromCopy vma];
+    v6->_mp = [fromCopy mp];
+    objc_storeStrong(&v6->_proxyOfBuffer, from);
   }
 
   return v6;

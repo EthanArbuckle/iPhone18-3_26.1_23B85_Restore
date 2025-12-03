@@ -1,17 +1,17 @@
 @interface _MXExtensionProvider
 + (id)sharedProvider;
-- (BOOL)_disableExtension:(id)a3 error:(id *)a4;
-- (BOOL)_enableExtension:(id)a3 error:(id *)a4;
+- (BOOL)_disableExtension:(id)extension error:(id *)error;
+- (BOOL)_enableExtension:(id)extension error:(id *)error;
 - (_MXExtensionProvider)init;
-- (id)_extensionsByFilteringBlacklistedExtensionsFromArray:(id)a3;
-- (id)_intentClassFilter:(id)a3;
-- (id)addExtensionsUpdateHandler:(id)a3;
+- (id)_extensionsByFilteringBlacklistedExtensionsFromArray:(id)array;
+- (id)_intentClassFilter:(id)filter;
+- (id)addExtensionsUpdateHandler:(id)handler;
 - (void)_beginMatchingExtensionsIfNeeded;
 - (void)_endMatchingExtensionsIfNeeded;
 - (void)_restartMatchingExtensionsForDefaultsChange;
 - (void)dealloc;
-- (void)imageForKey:(id)a3 completion:(id)a4;
-- (void)loadImageForKey:(id)a3 withBlock:(id)a4;
+- (void)imageForKey:(id)key completion:(id)completion;
+- (void)loadImageForKey:(id)key withBlock:(id)block;
 @end
 
 @implementation _MXExtensionProvider
@@ -51,8 +51,8 @@
     assetStorage = v2->_assetStorage;
     v2->_assetStorage = v9;
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v2 selector:sel__restartMatchingExtensionsForDefaultsChange name:*MEMORY[0x1E69A1698] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__restartMatchingExtensionsForDefaultsChange name:*MEMORY[0x1E69A1698] object:0];
   }
 
   return v2;
@@ -88,11 +88,11 @@
 
     v7 = +[_MXExtensionManager restaurantQueueingIntentClassNames];
     v8 = +[_MXExtensionManager restaurantReservationIntentClassNames];
-    v9 = [MEMORY[0x1E695DF70] array];
-    [v9 addObjectsFromArray:v7];
-    [v9 addObjectsFromArray:v8];
-    [v9 addObjectsFromArray:&unk_1F1612180];
-    v10 = [v9 copy];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObjectsFromArray:v7];
+    [array addObjectsFromArray:v8];
+    [array addObjectsFromArray:&unk_1F1612180];
+    v10 = [array copy];
     v11 = [(_MXExtensionProvider *)self _intentClassFilter:v10];
 
     v12 = [(objc_class *)self->_extensionMatchingClass _intents_extensionMatchingAttributesForIntents:v11];
@@ -125,54 +125,54 @@
   }
 }
 
-- (void)loadImageForKey:(id)a3 withBlock:(id)a4
+- (void)loadImageForKey:(id)key withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v8 = [(_MXExtensionProvider *)self assetStorage];
+    assetStorage = [(_MXExtensionProvider *)self assetStorage];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __50___MXExtensionProvider_loadImageForKey_withBlock___block_invoke;
     v9[3] = &unk_1E76CAA70;
     v9[4] = self;
-    v11 = v7;
-    v10 = v6;
-    [v8 loadAssetForKey:v10 withBlock:v9];
+    v11 = blockCopy;
+    v10 = keyCopy;
+    [assetStorage loadAssetForKey:v10 withBlock:v9];
   }
 }
 
-- (void)imageForKey:(id)a3 completion:(id)a4
+- (void)imageForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_MXExtensionProvider *)self assetStorage];
+  completionCopy = completion;
+  keyCopy = key;
+  assetStorage = [(_MXExtensionProvider *)self assetStorage];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47___MXExtensionProvider_imageForKey_completion___block_invoke;
   v10[3] = &unk_1E76C8E00;
-  v11 = v6;
-  v9 = v6;
-  [v8 fetchAssetForKey:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [assetStorage fetchAssetForKey:keyCopy completion:v10];
 }
 
-- (BOOL)_disableExtension:(id)a3 error:(id *)a4
+- (BOOL)_disableExtension:(id)extension error:(id *)error
 {
-  v6 = a3;
-  LODWORD(dispatchCenter) = [v6 isEnabled] ^ 1;
-  if (v6)
+  extensionCopy = extension;
+  LODWORD(dispatchCenter) = [extensionCopy isEnabled] ^ 1;
+  if (extensionCopy)
   {
-    if ([v6 isEnabled])
+    if ([extensionCopy isEnabled])
     {
-      v8 = [v6 extension];
-      v9 = [v8 attemptOptOut:a4];
+      extension = [extensionCopy extension];
+      v9 = [extension attemptOptOut:error];
 
       if (v9)
       {
         dispatchCenter = self->_dispatchCenter;
-        v10 = [(_MXExtensionProvider *)self _currentExtensions];
-        [(_MXExtensionDispatchCenter *)dispatchCenter dispatchExtensions:v10 error:0];
+        _currentExtensions = [(_MXExtensionProvider *)self _currentExtensions];
+        [(_MXExtensionDispatchCenter *)dispatchCenter dispatchExtensions:_currentExtensions error:0];
 
         LOBYTE(dispatchCenter) = 1;
       }
@@ -182,29 +182,29 @@
   return dispatchCenter;
 }
 
-- (BOOL)_enableExtension:(id)a3 error:(id *)a4
+- (BOOL)_enableExtension:(id)extension error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 isEnabled];
-  if (v6)
+  extensionCopy = extension;
+  isEnabled = [extensionCopy isEnabled];
+  if (extensionCopy)
   {
-    if (([v6 isEnabled] & 1) == 0)
+    if (([extensionCopy isEnabled] & 1) == 0)
     {
-      v8 = [v6 extension];
-      v9 = [v8 attemptOptIn:a4];
+      extension = [extensionCopy extension];
+      v9 = [extension attemptOptIn:error];
 
       if (v9)
       {
         dispatchCenter = self->_dispatchCenter;
-        v11 = [(_MXExtensionProvider *)self _currentExtensions];
-        [(_MXExtensionDispatchCenter *)dispatchCenter dispatchExtensions:v11 error:0];
+        _currentExtensions = [(_MXExtensionProvider *)self _currentExtensions];
+        [(_MXExtensionDispatchCenter *)dispatchCenter dispatchExtensions:_currentExtensions error:0];
 
-        v7 = 1;
+        isEnabled = 1;
       }
     }
   }
 
-  return v7;
+  return isEnabled;
 }
 
 - (void)_restartMatchingExtensionsForDefaultsChange
@@ -212,23 +212,23 @@
   if (self->_matchingContext)
   {
     [(_MXExtensionProvider *)self _endMatchingExtensionsIfNeeded];
-    v3 = [(_MXExtensionProvider *)self serviceCenter];
-    [v3 _clearExtensions];
+    serviceCenter = [(_MXExtensionProvider *)self serviceCenter];
+    [serviceCenter _clearExtensions];
 
-    v4 = [(_MXExtensionProvider *)self merger];
-    [v4 clearExtensions];
+    merger = [(_MXExtensionProvider *)self merger];
+    [merger clearExtensions];
 
-    v5 = self;
-    objc_sync_enter(v5);
-    blacklistedExtensions = v5->_blacklistedExtensions;
-    v5->_blacklistedExtensions = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    blacklistedExtensions = selfCopy->_blacklistedExtensions;
+    selfCopy->_blacklistedExtensions = 0;
 
-    blacklistedContainingApplications = v5->_blacklistedContainingApplications;
-    v5->_blacklistedContainingApplications = 0;
+    blacklistedContainingApplications = selfCopy->_blacklistedContainingApplications;
+    selfCopy->_blacklistedContainingApplications = 0;
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    [(_MXExtensionProvider *)v5 _beginMatchingExtensionsIfNeeded];
+    [(_MXExtensionProvider *)selfCopy _beginMatchingExtensionsIfNeeded];
   }
 }
 
@@ -251,60 +251,60 @@
   [(objc_class *)self->_extensionMatchingClass endMatchingExtensions:v7];
 }
 
-- (id)_intentClassFilter:(id)a3
+- (id)_intentClassFilter:(id)filter
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
+  filterCopy = filter;
+  array = [v3 array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43___MXExtensionProvider__intentClassFilter___block_invoke;
   v8[3] = &unk_1E76C8DD8;
-  v6 = v5;
+  v6 = array;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [filterCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
 
-- (id)_extensionsByFilteringBlacklistedExtensionsFromArray:(id)a3
+- (id)_extensionsByFilteringBlacklistedExtensionsFromArray:(id)array
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  blacklistedExtensions = v5->_blacklistedExtensions;
+  arrayCopy = array;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  blacklistedExtensions = selfCopy->_blacklistedExtensions;
   if (!blacklistedExtensions)
   {
     v7 = GEOConfigGetDictionary();
     v8 = [_MXBundleBlacklistEntry blacklistEntriesFromDefaultsValue:v7];
-    v9 = v5->_blacklistedExtensions;
-    v5->_blacklistedExtensions = v8;
+    v9 = selfCopy->_blacklistedExtensions;
+    selfCopy->_blacklistedExtensions = v8;
 
-    blacklistedExtensions = v5->_blacklistedExtensions;
+    blacklistedExtensions = selfCopy->_blacklistedExtensions;
   }
 
   v38 = [(NSArray *)blacklistedExtensions copy];
-  blacklistedContainingApplications = v5->_blacklistedContainingApplications;
+  blacklistedContainingApplications = selfCopy->_blacklistedContainingApplications;
   if (!blacklistedContainingApplications)
   {
     v11 = GEOConfigGetDictionary();
     v12 = [_MXBundleBlacklistEntry blacklistEntriesFromDefaultsValue:v11];
-    v13 = v5->_blacklistedContainingApplications;
-    v5->_blacklistedContainingApplications = v12;
+    v13 = selfCopy->_blacklistedContainingApplications;
+    selfCopy->_blacklistedContainingApplications = v12;
 
-    blacklistedContainingApplications = v5->_blacklistedContainingApplications;
+    blacklistedContainingApplications = selfCopy->_blacklistedContainingApplications;
   }
 
   v36 = [(NSArray *)blacklistedContainingApplications copy];
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v34 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v34 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v4;
+  obj = arrayCopy;
   v14 = [obj countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v14)
   {
@@ -358,8 +358,8 @@
         if ([v36 count])
         {
           v21 = objc_alloc(MEMORY[0x1E69635D0]);
-          v22 = [v16 _plugIn];
-          v23 = [v22 valueForKey:@"uuid"];
+          _plugIn = [v16 _plugIn];
+          v23 = [_plugIn valueForKey:@"uuid"];
           v24 = [v21 initWithUUID:v23 error:0];
 
           v41 = 0u;
@@ -381,8 +381,8 @@
                 }
 
                 v29 = *(*(&v39 + 1) + 8 * j);
-                v30 = [v24 containingBundleRecord];
-                LODWORD(v29) = [v29 isBundleRecordAllowed:v30];
+                containingBundleRecord = [v24 containingBundleRecord];
+                LODWORD(v29) = [v29 isBundleRecordAllowed:containingBundleRecord];
 
                 if (!v29)
                 {
@@ -420,9 +420,9 @@ LABEL_30:
   return v32;
 }
 
-- (id)addExtensionsUpdateHandler:(id)a3
+- (id)addExtensionsUpdateHandler:(id)handler
 {
-  v4 = [(_MXExtensionDispatchCenter *)self->_dispatchCenter addExtensionsUpdateHandler:a3];
+  v4 = [(_MXExtensionDispatchCenter *)self->_dispatchCenter addExtensionsUpdateHandler:handler];
   [(_MXExtensionProvider *)self _beginMatchingExtensionsIfNeeded];
 
   return v4;

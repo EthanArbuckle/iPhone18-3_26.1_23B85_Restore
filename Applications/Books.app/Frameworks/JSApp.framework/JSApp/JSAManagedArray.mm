@@ -1,30 +1,30 @@
 @interface JSAManagedArray
-- (JSAManagedArray)initWithArray:(id)a3 ownerObject:(id)a4;
-- (id)jsValuesWithContext:(id)a3;
+- (JSAManagedArray)initWithArray:(id)array ownerObject:(id)object;
+- (id)jsValuesWithContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation JSAManagedArray
 
-- (JSAManagedArray)initWithArray:(id)a3 ownerObject:(id)a4
+- (JSAManagedArray)initWithArray:(id)array ownerObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  arrayCopy = array;
+  objectCopy = object;
   v30.receiver = self;
   v30.super_class = JSAManagedArray;
   v8 = [(JSAManagedArray *)&v30 init];
   v9 = v8;
   if (v8)
   {
-    v24 = v7;
-    objc_storeStrong(&v8->_ownerObject, a4);
-    v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+    v24 = objectCopy;
+    objc_storeStrong(&v8->_ownerObject, object);
+    v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrayCopy count]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v25 = v6;
-    v11 = v6;
+    v25 = arrayCopy;
+    v11 = arrayCopy;
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (!v12)
     {
@@ -46,18 +46,18 @@
         v16 = *(*(&v26 + 1) + 8 * v15);
         objc_opt_class();
         v17 = BUDynamicCast();
-        v18 = [v17 isObject];
+        isObject = [v17 isObject];
 
-        if (v18)
+        if (isObject)
         {
-          v19 = [JSManagedValue managedValueWithValue:v16 andOwner:v9->_ownerObject];
+          toObject = [JSManagedValue managedValueWithValue:v16 andOwner:v9->_ownerObject];
 LABEL_10:
-          [(NSArray *)v10 addObject:v19, v24];
+          [(NSArray *)v10 addObject:toObject, v24];
           goto LABEL_11;
         }
 
-        v19 = [v16 toObject];
-        if (v19)
+        toObject = [v16 toObject];
+        if (toObject)
         {
           goto LABEL_10;
         }
@@ -79,8 +79,8 @@ LABEL_15:
         managedArray = v9->_managedArray;
         v9->_managedArray = v10;
 
-        v7 = v24;
-        v6 = v25;
+        objectCopy = v24;
+        arrayCopy = v25;
         break;
       }
     }
@@ -114,11 +114,11 @@ LABEL_15:
         v8 = *(*(&v14 + 1) + 8 * v7);
         objc_opt_class();
         v9 = BUDynamicCast();
-        v10 = [v9 value];
+        value = [v9 value];
 
-        v11 = [v10 context];
-        v12 = [v11 virtualMachine];
-        [v12 removeManagedReference:v8 withOwner:self->_ownerObject];
+        context = [value context];
+        virtualMachine = [context virtualMachine];
+        [virtualMachine removeManagedReference:v8 withOwner:self->_ownerObject];
 
         v7 = v7 + 1;
       }
@@ -135,9 +135,9 @@ LABEL_15:
   [(JSAManagedArray *)&v13 dealloc];
 }
 
-- (id)jsValuesWithContext:(id)a3
+- (id)jsValuesWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [NSMutableArray arrayWithCapacity:[(NSArray *)self->_managedArray count]];
   v15 = 0u;
   v16 = 0u;
@@ -167,7 +167,7 @@ LABEL_15:
 
         else
         {
-          [JSValue valueWithObject:v11 inContext:v4, v15];
+          [JSValue valueWithObject:v11 inContext:contextCopy, v15];
         }
         v12 = ;
         if (v12)

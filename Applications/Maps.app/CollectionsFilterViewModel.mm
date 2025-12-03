@@ -1,22 +1,22 @@
 @interface CollectionsFilterViewModel
-- (CollectionsFilterViewModel)initWithAddressFilter:(id)a3 isDarkMode:(BOOL)a4;
-- (CollectionsFilterViewModel)initWithAllCollectionsAddressFilter:(id)a3 isDarkMode:(BOOL)a4;
-- (CollectionsFilterViewModel)initWithAllCollectionsKeywordFilter:(id)a3 isDarkMode:(BOOL)a4;
-- (CollectionsFilterViewModel)initWithFilter:(id)a3 isDarkMode:(BOOL)a4;
-- (CollectionsFilterViewModel)initWithGuidesHomeConceptFilter:(id)a3 isDarkMode:(BOOL)a4;
-- (CollectionsFilterViewModel)initWithKeywordFilter:(id)a3 isDarkMode:(BOOL)a4;
-- (void)modelSelected:(BOOL)a3 isDarkMode:(BOOL)a4;
-- (void)switchToSelectedIsDarkMode:(BOOL)a3;
-- (void)switchToUnSelectedIsDarkMode:(BOOL)a3;
+- (CollectionsFilterViewModel)initWithAddressFilter:(id)filter isDarkMode:(BOOL)mode;
+- (CollectionsFilterViewModel)initWithAllCollectionsAddressFilter:(id)filter isDarkMode:(BOOL)mode;
+- (CollectionsFilterViewModel)initWithAllCollectionsKeywordFilter:(id)filter isDarkMode:(BOOL)mode;
+- (CollectionsFilterViewModel)initWithFilter:(id)filter isDarkMode:(BOOL)mode;
+- (CollectionsFilterViewModel)initWithGuidesHomeConceptFilter:(id)filter isDarkMode:(BOOL)mode;
+- (CollectionsFilterViewModel)initWithKeywordFilter:(id)filter isDarkMode:(BOOL)mode;
+- (void)modelSelected:(BOOL)selected isDarkMode:(BOOL)mode;
+- (void)switchToSelectedIsDarkMode:(BOOL)mode;
+- (void)switchToUnSelectedIsDarkMode:(BOOL)mode;
 @end
 
 @implementation CollectionsFilterViewModel
 
-- (void)switchToUnSelectedIsDarkMode:(BOOL)a3
+- (void)switchToUnSelectedIsDarkMode:(BOOL)mode
 {
   if (MapsFeature_IsEnabled_Maps269())
   {
-    if (a3)
+    if (mode)
     {
       +[UIColor whiteColor];
     }
@@ -58,7 +58,7 @@
   self->_filterFont = v16;
 }
 
-- (void)switchToSelectedIsDarkMode:(BOOL)a3
+- (void)switchToSelectedIsDarkMode:(BOOL)mode
 {
   if (MapsFeature_IsEnabled_Maps269())
   {
@@ -84,7 +84,7 @@
 
     v14 = +[UIColor systemWhiteColor];
     selectedBackgroundColor = v14;
-    if (a3)
+    if (mode)
     {
       v15 = [(UIColor *)v14 colorWithAlphaComponent:0.25];
       v16 = self->_backgroundColor;
@@ -107,100 +107,100 @@
   self->_filterFont = v18;
 }
 
-- (void)modelSelected:(BOOL)a3 isDarkMode:(BOOL)a4
+- (void)modelSelected:(BOOL)selected isDarkMode:(BOOL)mode
 {
-  self->_selected = a3;
-  if (a3)
+  self->_selected = selected;
+  if (selected)
   {
-    [(CollectionsFilterViewModel *)self switchToSelectedIsDarkMode:a4];
+    [(CollectionsFilterViewModel *)self switchToSelectedIsDarkMode:mode];
   }
 
   else
   {
-    [(CollectionsFilterViewModel *)self switchToUnSelectedIsDarkMode:a4];
+    [(CollectionsFilterViewModel *)self switchToUnSelectedIsDarkMode:mode];
   }
 }
 
-- (CollectionsFilterViewModel)initWithGuidesHomeConceptFilter:(id)a3 isDarkMode:(BOOL)a4
+- (CollectionsFilterViewModel)initWithGuidesHomeConceptFilter:(id)filter isDarkMode:(BOOL)mode
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 searchSuggestion];
-  v8 = [v7 displayString];
-  v9 = [(CollectionsFilterViewModel *)self initWithFilter:v8 isDarkMode:v4];
+  modeCopy = mode;
+  filterCopy = filter;
+  searchSuggestion = [filterCopy searchSuggestion];
+  displayString = [searchSuggestion displayString];
+  v9 = [(CollectionsFilterViewModel *)self initWithFilter:displayString isDarkMode:modeCopy];
 
   conceptFilter = v9->_conceptFilter;
-  v9->_conceptFilter = v6;
+  v9->_conceptFilter = filterCopy;
 
   return v9;
 }
 
-- (CollectionsFilterViewModel)initWithAllCollectionsAddressFilter:(id)a3 isDarkMode:(BOOL)a4
+- (CollectionsFilterViewModel)initWithAllCollectionsAddressFilter:(id)filter isDarkMode:(BOOL)mode
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 displayString];
-  v8 = [(CollectionsFilterViewModel *)self initWithFilter:v7 isDarkMode:v4];
+  modeCopy = mode;
+  filterCopy = filter;
+  displayString = [filterCopy displayString];
+  v8 = [(CollectionsFilterViewModel *)self initWithFilter:displayString isDarkMode:modeCopy];
 
   allCollectionsAddressFilter = v8->_allCollectionsAddressFilter;
-  v8->_allCollectionsAddressFilter = v6;
+  v8->_allCollectionsAddressFilter = filterCopy;
 
   return v8;
 }
 
-- (CollectionsFilterViewModel)initWithAllCollectionsKeywordFilter:(id)a3 isDarkMode:(BOOL)a4
+- (CollectionsFilterViewModel)initWithAllCollectionsKeywordFilter:(id)filter isDarkMode:(BOOL)mode
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 searchSuggestion];
-  v8 = [v7 displayString];
-  v9 = [(CollectionsFilterViewModel *)self initWithFilter:v8 isDarkMode:v4];
+  modeCopy = mode;
+  filterCopy = filter;
+  searchSuggestion = [filterCopy searchSuggestion];
+  displayString = [searchSuggestion displayString];
+  v9 = [(CollectionsFilterViewModel *)self initWithFilter:displayString isDarkMode:modeCopy];
 
   allCollectionsKeywordFilter = v9->_allCollectionsKeywordFilter;
-  v9->_allCollectionsKeywordFilter = v6;
+  v9->_allCollectionsKeywordFilter = filterCopy;
 
   return v9;
 }
 
-- (CollectionsFilterViewModel)initWithAddressFilter:(id)a3 isDarkMode:(BOOL)a4
+- (CollectionsFilterViewModel)initWithAddressFilter:(id)filter isDarkMode:(BOOL)mode
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 displayString];
-  v8 = [(CollectionsFilterViewModel *)self initWithFilter:v7 isDarkMode:v4];
+  modeCopy = mode;
+  filterCopy = filter;
+  displayString = [filterCopy displayString];
+  v8 = [(CollectionsFilterViewModel *)self initWithFilter:displayString isDarkMode:modeCopy];
 
   addressFilter = v8->_addressFilter;
-  v8->_addressFilter = v6;
+  v8->_addressFilter = filterCopy;
 
   return v8;
 }
 
-- (CollectionsFilterViewModel)initWithKeywordFilter:(id)a3 isDarkMode:(BOOL)a4
+- (CollectionsFilterViewModel)initWithKeywordFilter:(id)filter isDarkMode:(BOOL)mode
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 searchSuggestion];
-  v8 = [v7 displayString];
-  v9 = [(CollectionsFilterViewModel *)self initWithFilter:v8 isDarkMode:v4];
+  modeCopy = mode;
+  filterCopy = filter;
+  searchSuggestion = [filterCopy searchSuggestion];
+  displayString = [searchSuggestion displayString];
+  v9 = [(CollectionsFilterViewModel *)self initWithFilter:displayString isDarkMode:modeCopy];
 
   keywordFilter = v9->_keywordFilter;
-  v9->_keywordFilter = v6;
+  v9->_keywordFilter = filterCopy;
 
   return v9;
 }
 
-- (CollectionsFilterViewModel)initWithFilter:(id)a3 isDarkMode:(BOOL)a4
+- (CollectionsFilterViewModel)initWithFilter:(id)filter isDarkMode:(BOOL)mode
 {
-  v4 = a4;
-  v7 = a3;
+  modeCopy = mode;
+  filterCopy = filter;
   v11.receiver = self;
   v11.super_class = CollectionsFilterViewModel;
   v8 = [(CollectionsFilterViewModel *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_filterTitle, a3);
-    [(CollectionsFilterViewModel *)v9 switchToUnSelectedIsDarkMode:v4];
+    objc_storeStrong(&v8->_filterTitle, filter);
+    [(CollectionsFilterViewModel *)v9 switchToUnSelectedIsDarkMode:modeCopy];
   }
 
   return v9;

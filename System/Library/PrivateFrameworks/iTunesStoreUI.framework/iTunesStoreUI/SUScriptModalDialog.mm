@@ -1,6 +1,6 @@
 @interface SUScriptModalDialog
-+ (id)titleForURL:(id)a3;
-- (SUScriptModalDialog)initWithDialog:(id)a3;
++ (id)titleForURL:(id)l;
+- (SUScriptModalDialog)initWithDialog:(id)dialog;
 - (id)_copyResponseByRunningModal;
 - (id)copyResponseByRunningModal;
 - (void)dealloc;
@@ -8,12 +8,12 @@
 
 @implementation SUScriptModalDialog
 
-- (SUScriptModalDialog)initWithDialog:(id)a3
+- (SUScriptModalDialog)initWithDialog:(id)dialog
 {
   v4 = [(SUScriptModalDialog *)self init];
   if (v4)
   {
-    v4->_dialog = a3;
+    v4->_dialog = dialog;
   }
 
   return v4;
@@ -27,23 +27,23 @@
   [(SUScriptModalDialog *)&v3 dealloc];
 }
 
-+ (id)titleForURL:(id)a3
++ (id)titleForURL:(id)l
 {
-  if (([a3 isFileURL] & 1) == 0)
+  if (([l isFileURL] & 1) == 0)
   {
-    return [MEMORY[0x1E696AD60] stringWithFormat:@"%@://%@", objc_msgSend(a3, "scheme"), objc_msgSend(a3, "host")];
+    return [MEMORY[0x1E696AD60] stringWithFormat:@"%@://%@", objc_msgSend(l, "scheme"), objc_msgSend(l, "host")];
   }
 
-  v4 = [a3 path];
-  v5 = [v4 lastPathComponent];
-  if ([v5 length])
+  path = [l path];
+  lastPathComponent = [path lastPathComponent];
+  if ([lastPathComponent length])
   {
-    return v5;
+    return lastPathComponent;
   }
 
   else
   {
-    return v4;
+    return path;
   }
 }
 
@@ -75,19 +75,19 @@
   v48 = __Block_byref_object_dispose__6;
   v49 = 0;
   v4 = [(SUScriptModalDialogDelegate *)self->_delegate presentingViewControllerForScriptModalDialog:self];
-  v5 = [v4 view];
-  if ([v5 window])
+  view = [v4 view];
+  if ([view window])
   {
     v6 = [SUScriptDialogAlertController alertControllerWithTitle:[(ISDialog *)self->_dialog title] message:[(ISDialog *)self->_dialog message] preferredStyle:1];
-    v7 = [(ISDialog *)self->_dialog buttons];
-    v25 = v5;
+    buttons = [(ISDialog *)self->_dialog buttons];
+    v25 = view;
     v24 = v3;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = v7;
-    v8 = [v7 countByEnumeratingWithState:&v40 objects:v55 count:16];
+    obj = buttons;
+    v8 = [buttons countByEnumeratingWithState:&v40 objects:v55 count:16];
     if (v8)
     {
       v9 = 0;
@@ -102,14 +102,14 @@
           }
 
           v12 = MEMORY[0x1E69DC648];
-          v13 = [*(*(&v40 + 1) + 8 * i) title];
+          title = [*(*(&v40 + 1) + 8 * i) title];
           v39[0] = MEMORY[0x1E69E9820];
           v39[1] = 3221225472;
           v39[2] = __50__SUScriptModalDialog__copyResponseByRunningModal__block_invoke;
           v39[3] = &unk_1E81654B0;
           v39[4] = &v50;
           v39[5] = v9;
-          -[SUScriptDialogAlertController addAction:](v6, "addAction:", [v12 actionWithTitle:v13 style:0 handler:v39]);
+          -[SUScriptDialogAlertController addAction:](v6, "addAction:", [v12 actionWithTitle:title style:0 handler:v39]);
           ++v9;
         }
 
@@ -125,12 +125,12 @@
     v36 = __Block_byref_object_copy__6;
     v37 = __Block_byref_object_dispose__6;
     v38 = 0;
-    v14 = [(ISDialog *)self->_dialog textFields];
+    textFields = [(ISDialog *)self->_dialog textFields];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v15 = [v14 countByEnumeratingWithState:&v29 objects:v54 count:16];
+    v15 = [textFields countByEnumeratingWithState:&v29 objects:v54 count:16];
     if (v15)
     {
       v16 = *v30;
@@ -140,7 +140,7 @@
         {
           if (*v30 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(textFields);
           }
 
           v18 = *(*(&v29 + 1) + 8 * j);
@@ -153,7 +153,7 @@
           [(SUScriptDialogAlertController *)v6 addTextFieldWithConfigurationHandler:v28];
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v29 objects:v54 count:16];
+        v15 = [textFields countByEnumeratingWithState:&v29 objects:v54 count:16];
       }
 
       while (v15);
@@ -172,8 +172,8 @@
   {
     NSLog(&cfstr_WarningViewFor.isa);
     v20 = dispatch_semaphore_create(0);
-    v21 = [(ISDialog *)self->_dialog copyXPCEncoding];
-    v22 = [objc_alloc(MEMORY[0x1E69D4A18]) initWithEncodedDialog:v21];
+    copyXPCEncoding = [(ISDialog *)self->_dialog copyXPCEncoding];
+    v22 = [objc_alloc(MEMORY[0x1E69D4A18]) initWithEncodedDialog:copyXPCEncoding];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __50__SUScriptModalDialog__copyResponseByRunningModal__block_invoke_3;
@@ -185,7 +185,7 @@
     dispatch_semaphore_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
     dispatch_release(v20);
 
-    xpc_release(v21);
+    xpc_release(copyXPCEncoding);
   }
 
   [(SUScriptModalDialogResponse *)v3 setTextFieldValue:v45[5]];

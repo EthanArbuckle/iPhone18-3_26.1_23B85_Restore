@@ -1,14 +1,14 @@
 @interface LoadMicroPaymentQueuesOperation
-- (BOOL)_appendAutoRenewQueueToResponse:(id)a3 error:(id *)a4;
-- (BOOL)_appendNormalQueueToResponse:(id)a3 error:(id *)a4;
-- (BOOL)_appendToResponse:(id)a3 usingOperation:(id)a4 error:(id *)a5;
+- (BOOL)_appendAutoRenewQueueToResponse:(id)response error:(id *)error;
+- (BOOL)_appendNormalQueueToResponse:(id)response error:(id *)error;
+- (BOOL)_appendToResponse:(id)response usingOperation:(id)operation error:(id *)error;
 - (BOOL)_shouldCheckAutoRenewQueue;
 - (NSDate)lastQueueCheckDate;
 - (StoreKitClientIdentity)clientIdentity;
 - (id)_URLBagContext;
 - (void)run;
-- (void)setClientIdentity:(id)a3;
-- (void)setLastQueueCheckDate:(id)a3;
+- (void)setClientIdentity:(id)identity;
+- (void)setLastQueueCheckDate:(id)date;
 @end
 
 @implementation LoadMicroPaymentQueuesOperation
@@ -31,13 +31,13 @@
   return v3;
 }
 
-- (void)setClientIdentity:(id)a3
+- (void)setClientIdentity:(id)identity
 {
-  v6 = a3;
+  identityCopy = identity;
   [(LoadMicroPaymentQueuesOperation *)self lock];
-  if (self->_clientIdentity != v6)
+  if (self->_clientIdentity != identityCopy)
   {
-    v4 = [(StoreKitClientIdentity *)v6 copy];
+    v4 = [(StoreKitClientIdentity *)identityCopy copy];
     clientIdentity = self->_clientIdentity;
     self->_clientIdentity = v4;
   }
@@ -45,13 +45,13 @@
   [(LoadMicroPaymentQueuesOperation *)self unlock];
 }
 
-- (void)setLastQueueCheckDate:(id)a3
+- (void)setLastQueueCheckDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   [(LoadMicroPaymentQueuesOperation *)self lock];
-  if (self->_lastQueueCheckDate != v6)
+  if (self->_lastQueueCheckDate != dateCopy)
   {
-    v4 = [(NSDate *)v6 copy];
+    v4 = [(NSDate *)dateCopy copy];
     lastQueueCheckDate = self->_lastQueueCheckDate;
     self->_lastQueueCheckDate = v4;
   }
@@ -66,13 +66,13 @@
 
   v4 = objc_alloc_init(MicroPaymentQueueResponse);
   v5 = [ClaimStoreKitClientOperation alloc];
-  v6 = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
-  v7 = [(ClaimStoreKitClientOperation *)v5 initWithClientIdentity:v6];
+  clientIdentity = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
+  v7 = [(ClaimStoreKitClientOperation *)v5 initWithClientIdentity:clientIdentity];
 
   if ([(LoadMicroPaymentQueuesOperation *)self runSubOperation:v7 returningError:0])
   {
-    v8 = [(ClaimStoreKitClientOperation *)v7 clientIdentity];
-    [(LoadMicroPaymentQueuesOperation *)self setClientIdentity:v8];
+    clientIdentity2 = [(ClaimStoreKitClientOperation *)v7 clientIdentity];
+    [(LoadMicroPaymentQueuesOperation *)self setClientIdentity:clientIdentity2];
   }
 
   v43 = 0;
@@ -90,19 +90,19 @@
 
       v40 = v10;
       v41 = v7;
-      v13 = [v12 shouldLog];
+      shouldLog = [v12 shouldLog];
       if ([v12 shouldLogToDisk])
       {
-        v14 = v13 | 2;
+        v14 = shouldLog | 2;
       }
 
       else
       {
-        v14 = v13;
+        v14 = shouldLog;
       }
 
-      v15 = [v12 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v12 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v14;
       }
@@ -116,16 +116,16 @@
       {
         v17 = objc_opt_class();
         v39 = v17;
-        v18 = [(MicroPaymentQueueResponse *)v4 appReceipt];
-        v19 = [v18 length];
-        v20 = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
-        v21 = [v20 bundleIdentifier];
+        appReceipt = [(MicroPaymentQueueResponse *)v4 appReceipt];
+        v19 = [appReceipt length];
+        clientIdentity3 = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
+        bundleIdentifier = [clientIdentity3 bundleIdentifier];
         v44 = 138412802;
         v45 = v17;
         v46 = 1024;
         LODWORD(v47[0]) = v19;
         WORD2(v47[0]) = 2112;
-        *(v47 + 6) = v21;
+        *(v47 + 6) = bundleIdentifier;
         LODWORD(v38) = 28;
         v37 = &v44;
         v22 = _os_log_send_and_compose_impl();
@@ -135,21 +135,21 @@
           goto LABEL_18;
         }
 
-        v15 = [NSString stringWithCString:v22 encoding:4, &v44, v38];
+        oSLogObject = [NSString stringWithCString:v22 encoding:4, &v44, v38];
         free(v22);
-        v37 = v15;
+        v37 = oSLogObject;
         SSFileLog();
       }
 
 LABEL_18:
-      v23 = [(MicroPaymentQueueResponse *)v4 appReceipt];
-      v24 = [v23 length];
+      appReceipt2 = [(MicroPaymentQueueResponse *)v4 appReceipt];
+      v24 = [appReceipt2 length];
 
       if (v24)
       {
-        v25 = [(MicroPaymentQueueResponse *)v4 appReceipt];
-        v26 = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
-        [AppReceipt writeReceipt:v25 forStoreKitClient:v26];
+        appReceipt3 = [(MicroPaymentQueueResponse *)v4 appReceipt];
+        clientIdentity4 = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
+        [AppReceipt writeReceipt:appReceipt3 forStoreKitClient:clientIdentity4];
       }
 
       v27 = +[SSLogConfig sharedDaemonConfig];
@@ -158,29 +158,29 @@ LABEL_18:
         v27 = +[SSLogConfig sharedConfig];
       }
 
-      v28 = [v27 shouldLog];
+      shouldLog2 = [v27 shouldLog];
       if ([v27 shouldLogToDisk])
       {
-        v28 |= 2u;
+        shouldLog2 |= 2u;
       }
 
-      v29 = [v27 OSLogObject];
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
+      oSLogObject2 = [v27 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
       {
-        v30 = v28;
+        v30 = shouldLog2;
       }
 
       else
       {
-        v30 = v28 & 2;
+        v30 = shouldLog2 & 2;
       }
 
       if (v30)
       {
         v31 = objc_opt_class();
         v32 = v31;
-        v33 = [(MicroPaymentQueueResponse *)v4 payments];
-        v34 = [v33 count];
+        payments = [(MicroPaymentQueueResponse *)v4 payments];
+        v34 = [payments count];
         v44 = 138412546;
         v45 = v31;
         v46 = 2048;
@@ -200,9 +200,9 @@ LABEL_32:
           goto LABEL_33;
         }
 
-        v29 = [NSString stringWithCString:v35 encoding:4, &v44, v38];
+        oSLogObject2 = [NSString stringWithCString:v35 encoding:4, &v44, v38];
         free(v35);
-        v37 = v29;
+        v37 = oSLogObject2;
         SSFileLog();
       }
 
@@ -222,67 +222,67 @@ LABEL_33:
   [ISLoadURLBagOperation decrementNetworkCounterForBagContext:v36];
 }
 
-- (BOOL)_appendAutoRenewQueueToResponse:(id)a3 error:(id *)a4
+- (BOOL)_appendAutoRenewQueueToResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v7 = objc_alloc_init(LoadMicroPaymentQueueOperation);
-  v8 = [(LoadMicroPaymentQueuesOperation *)self lastQueueCheckDate];
-  [(LoadMicroPaymentQueueOperation *)v7 setLastQueueCheckDate:v8];
+  lastQueueCheckDate = [(LoadMicroPaymentQueuesOperation *)self lastQueueCheckDate];
+  [(LoadMicroPaymentQueueOperation *)v7 setLastQueueCheckDate:lastQueueCheckDate];
 
   [(LoadMicroPaymentQueueOperation *)v7 setQueueCountURLBagKey:@"p2-in-app-check-recurring-download-queue"];
   [(LoadMicroPaymentQueueOperation *)v7 setQueuePaymentsURLBagKey:@"p2-in-app-recurring-transactions"];
   v9 = objc_alloc_init(MicroPaymentQueueRequest);
-  v10 = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
-  [(MicroPaymentQueueRequest *)v9 setClientIdentity:v10];
+  clientIdentity = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
+  [(MicroPaymentQueueRequest *)v9 setClientIdentity:clientIdentity];
 
   [(LoadMicroPaymentQueueOperation *)v7 setRequest:v9];
   v16 = 0;
-  v11 = [(LoadMicroPaymentQueuesOperation *)self _appendToResponse:v6 usingOperation:v7 error:&v16];
+  v11 = [(LoadMicroPaymentQueuesOperation *)self _appendToResponse:responseCopy usingOperation:v7 error:&v16];
 
   v12 = v16;
   v13 = v12;
-  if (a4 && !v11)
+  if (error && !v11)
   {
     v14 = v12;
-    *a4 = v13;
+    *error = v13;
   }
 
   return v11;
 }
 
-- (BOOL)_appendNormalQueueToResponse:(id)a3 error:(id *)a4
+- (BOOL)_appendNormalQueueToResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v7 = objc_alloc_init(LoadMicroPaymentQueueOperation);
-  v8 = [(LoadMicroPaymentQueuesOperation *)self lastQueueCheckDate];
-  [(LoadMicroPaymentQueueOperation *)v7 setLastQueueCheckDate:v8];
+  lastQueueCheckDate = [(LoadMicroPaymentQueuesOperation *)self lastQueueCheckDate];
+  [(LoadMicroPaymentQueueOperation *)v7 setLastQueueCheckDate:lastQueueCheckDate];
 
   [(LoadMicroPaymentQueueOperation *)v7 setQueueCountURLBagKey:@"p2-in-app-check-download-queue"];
   [(LoadMicroPaymentQueueOperation *)v7 setQueuePaymentsURLBagKey:@"p2-in-app-pending-transactions"];
   v9 = objc_alloc_init(MicroPaymentQueueRequest);
-  v10 = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
-  [(MicroPaymentQueueRequest *)v9 setClientIdentity:v10];
+  clientIdentity = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
+  [(MicroPaymentQueueRequest *)v9 setClientIdentity:clientIdentity];
 
   [(LoadMicroPaymentQueueOperation *)v7 setRequest:v9];
   v16 = 0;
-  v11 = [(LoadMicroPaymentQueuesOperation *)self _appendToResponse:v6 usingOperation:v7 error:&v16];
+  v11 = [(LoadMicroPaymentQueuesOperation *)self _appendToResponse:responseCopy usingOperation:v7 error:&v16];
 
   v12 = v16;
   v13 = v12;
-  if (a4 && !v11)
+  if (error && !v11)
   {
     v14 = v12;
-    *a4 = v13;
+    *error = v13;
   }
 
   return v11;
 }
 
-- (BOOL)_appendToResponse:(id)a3 usingOperation:(id)a4 error:(id *)a5
+- (BOOL)_appendToResponse:(id)response usingOperation:(id)operation error:(id *)error
 {
-  v31 = a3;
-  v8 = a4;
-  v30 = self;
+  responseCopy = response;
+  operationCopy = operation;
+  selfCopy = self;
   [(LoadMicroPaymentQueuesOperation *)self userDSIDs];
   v33 = 0u;
   v34 = 0u;
@@ -292,7 +292,7 @@ LABEL_33:
   if (v10)
   {
     v11 = v10;
-    v28 = a5;
+    errorCopy = error;
     obj = v9;
     v12 = 0;
     v13 = *v34;
@@ -310,36 +310,36 @@ LABEL_33:
         v16 = *(*(&v33 + 1) + 8 * v14);
         v17 = objc_autoreleasePoolPush();
         v18 = objc_alloc_init(LoadMicroPaymentQueueOperation);
-        -[LoadMicroPaymentQueueOperation setExpectedCount:](v18, "setExpectedCount:", [v8 expectedCount]);
-        v19 = [v8 lastQueueCheckDate];
-        [(LoadMicroPaymentQueueOperation *)v18 setLastQueueCheckDate:v19];
+        -[LoadMicroPaymentQueueOperation setExpectedCount:](v18, "setExpectedCount:", [operationCopy expectedCount]);
+        lastQueueCheckDate = [operationCopy lastQueueCheckDate];
+        [(LoadMicroPaymentQueueOperation *)v18 setLastQueueCheckDate:lastQueueCheckDate];
 
-        v20 = [v8 queueCountURLBagKey];
-        [(LoadMicroPaymentQueueOperation *)v18 setQueueCountURLBagKey:v20];
+        queueCountURLBagKey = [operationCopy queueCountURLBagKey];
+        [(LoadMicroPaymentQueueOperation *)v18 setQueueCountURLBagKey:queueCountURLBagKey];
 
-        v21 = [v8 queuePaymentsURLBagKey];
-        [(LoadMicroPaymentQueueOperation *)v18 setQueuePaymentsURLBagKey:v21];
+        queuePaymentsURLBagKey = [operationCopy queuePaymentsURLBagKey];
+        [(LoadMicroPaymentQueueOperation *)v18 setQueuePaymentsURLBagKey:queuePaymentsURLBagKey];
 
-        v22 = [v8 request];
-        v23 = [v22 copy];
+        request = [operationCopy request];
+        v23 = [request copy];
 
         [v23 setUserIdentifier:v16];
         [(LoadMicroPaymentQueueOperation *)v18 setRequest:v23];
         v32 = v15;
-        LODWORD(v22) = [(LoadMicroPaymentQueuesOperation *)v30 runSubOperation:v18 returningError:&v32];
+        LODWORD(request) = [(LoadMicroPaymentQueuesOperation *)selfCopy runSubOperation:v18 returningError:&v32];
         v12 = v32;
 
-        if (!v22)
+        if (!request)
         {
 
           objc_autoreleasePoolPop(v17);
           v9 = obj;
 
-          if (v28)
+          if (errorCopy)
           {
             v25 = v12;
             v26 = 0;
-            *v28 = v12;
+            *errorCopy = v12;
           }
 
           else
@@ -350,8 +350,8 @@ LABEL_33:
           goto LABEL_15;
         }
 
-        v24 = [(LoadMicroPaymentQueueOperation *)v18 response];
-        [v31 appendResponse:v24];
+        response = [(LoadMicroPaymentQueueOperation *)v18 response];
+        [responseCopy appendResponse:response];
 
         objc_autoreleasePoolPop(v17);
         v14 = v14 + 1;
@@ -383,9 +383,9 @@ LABEL_15:
 
 - (BOOL)_shouldCheckAutoRenewQueue
 {
-  v2 = [(LoadMicroPaymentQueuesOperation *)self _URLBagContext];
+  _URLBagContext = [(LoadMicroPaymentQueuesOperation *)self _URLBagContext];
   v3 = +[ISURLBagCache sharedCache];
-  v4 = [v3 URLBagForContext:v2];
+  v4 = [v3 URLBagForContext:_URLBagContext];
 
   v5 = [v4 urlForKey:@"p2-in-app-check-recurring-download-queue"];
   if (v5)
@@ -404,10 +404,10 @@ LABEL_15:
 
 - (id)_URLBagContext
 {
-  v2 = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
-  v3 = [v2 isSandboxed];
+  clientIdentity = [(LoadMicroPaymentQueuesOperation *)self clientIdentity];
+  isSandboxed = [clientIdentity isSandboxed];
 
-  v4 = [SSURLBagContext contextWithBagType:v3];
+  v4 = [SSURLBagContext contextWithBagType:isSandboxed];
 
   return v4;
 }

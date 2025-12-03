@@ -9,19 +9,19 @@
 - (NSArray)excludedParentOIDs;
 - (NSNumber)desiredNumberOfItems;
 - (NSString)tagIdentifier;
-- (id)_createDescriptorWithSortDescriptors:(id)a3;
+- (id)_createDescriptorWithSortDescriptors:(id)descriptors;
 - (id)_enumerationSettingsPredicate;
-- (id)createDataSourceWithSortDescriptors:(id)a3;
+- (id)createDataSourceWithSortDescriptors:(id)descriptors;
 - (id)description;
 - (id)scopedSearchQuery;
-- (id)underlyingQueryStringForMountPoint:(id)a3;
-- (void)dataSource:(id)a3 didChangeItemsOrigin:(unint64_t)a4;
-- (void)setAllowedFileTypes:(id)a3;
-- (void)setAllowedProviderIdentifiers:(id)a3;
-- (void)setDesiredNumberOfItems:(id)a3;
-- (void)setExcludedFileTypes:(id)a3;
-- (void)setExcludedParentOIDs:(id)a3;
-- (void)setTagIdentifier:(id)a3;
+- (id)underlyingQueryStringForMountPoint:(id)point;
+- (void)dataSource:(id)source didChangeItemsOrigin:(unint64_t)origin;
+- (void)setAllowedFileTypes:(id)types;
+- (void)setAllowedProviderIdentifiers:(id)identifiers;
+- (void)setDesiredNumberOfItems:(id)items;
+- (void)setExcludedFileTypes:(id)types;
+- (void)setExcludedParentOIDs:(id)ds;
+- (void)setTagIdentifier:(id)identifier;
 @end
 
 @implementation FPQueryCollection
@@ -34,10 +34,10 @@
 
 - (id)_enumerationSettingsPredicate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_settings;
-  v4 = v2->_predicate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_settings;
+  v4 = selfCopy->_predicate;
   v5 = MEMORY[0x1E696AE18];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -49,7 +49,7 @@
   v12 = v7;
   v8 = [v5 predicateWithBlock:v10];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -196,67 +196,67 @@ LABEL_27:
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  descriptionName = v2->_descriptionName;
-  v6 = [v3 stringWithFormat:@"<%@:%p %@ %@>", v4, v2, descriptionName, v2->_settings];
-  objc_sync_exit(v2);
+  descriptionName = selfCopy->_descriptionName;
+  v6 = [v3 stringWithFormat:@"<%@:%p %@ %@>", v4, selfCopy, descriptionName, selfCopy->_settings];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)createDataSourceWithSortDescriptors:(id)a3
+- (id)createDataSourceWithSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(FPQueryCollection *)v5 _enumerationSettingsPredicate];
-  [(FPItemCollection *)v5 setAdditionalItemFilteringPredicate:v6];
+  descriptorsCopy = descriptors;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _enumerationSettingsPredicate = [(FPQueryCollection *)selfCopy _enumerationSettingsPredicate];
+  [(FPItemCollection *)selfCopy setAdditionalItemFilteringPredicate:_enumerationSettingsPredicate];
 
-  v7 = [(FPQueryCollection *)v5 _createDescriptorWithSortDescriptors:v4];
-  v8 = [[FPSpotlightDataSource alloc] initWithQueryDescriptor:v7 predicate:v5->_predicate];
+  v7 = [(FPQueryCollection *)selfCopy _createDescriptorWithSortDescriptors:descriptorsCopy];
+  v8 = [[FPSpotlightDataSource alloc] initWithQueryDescriptor:v7 predicate:selfCopy->_predicate];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)dataSource:(id)a3 didChangeItemsOrigin:(unint64_t)a4
+- (void)dataSource:(id)source didChangeItemsOrigin:(unint64_t)origin
 {
-  v7 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_itemsOrigin != a4)
+  sourceCopy = source;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_itemsOrigin != origin)
   {
-    [(FPQueryCollection *)v6 willChangeValueForKey:@"itemsOrigin"];
-    v6->_itemsOrigin = a4;
-    [(FPQueryCollection *)v6 didChangeValueForKey:@"itemsOrigin"];
+    [(FPQueryCollection *)selfCopy willChangeValueForKey:@"itemsOrigin"];
+    selfCopy->_itemsOrigin = origin;
+    [(FPQueryCollection *)selfCopy didChangeValueForKey:@"itemsOrigin"];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)scopedSearchQuery
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPQueryCollection *)v2 _createDescriptorWithSortDescriptors:0];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(FPQueryCollection *)selfCopy _createDescriptorWithSortDescriptors:0];
   v4 = [[NSFileProviderSearchQuery alloc] initWithSearchScope:0];
   v5 = [NSFileProviderDomain alloc];
-  v6 = [(FPItemCollection *)v2 domainIdentifier];
-  v7 = [(NSFileProviderDomain *)v5 initWithIdentifier:v6 displayName:&stru_1F1F94B20 pathRelativeToDocumentStorage:&stru_1F1F94B20];
+  domainIdentifier = [(FPItemCollection *)selfCopy domainIdentifier];
+  v7 = [(NSFileProviderDomain *)v5 initWithIdentifier:domainIdentifier displayName:&stru_1F1F94B20 pathRelativeToDocumentStorage:&stru_1F1F94B20];
 
   v8 = [FPProviderDomain alloc];
-  v9 = [(FPItemCollection *)v2 providerIdentifier];
-  v10 = [(FPProviderDomain *)v8 initWithProviderID:v9 domain:v7];
+  providerIdentifier = [(FPItemCollection *)selfCopy providerIdentifier];
+  v10 = [(FPProviderDomain *)v8 initWithProviderID:providerIdentifier domain:v7];
 
-  v11 = [(FPProviderDomain *)v10 spotlightMountPoint];
-  v12 = [v3 queryStringForMountPoint:v11];
+  spotlightMountPoint = [(FPProviderDomain *)v10 spotlightMountPoint];
+  v12 = [v3 queryStringForMountPoint:spotlightMountPoint];
   [(NSFileProviderSearchQuery *)v4 setScopeFragment:v12];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -279,158 +279,158 @@ LABEL_27:
   [v2 disableMountPointQueries];
 }
 
-- (void)setDesiredNumberOfItems:(id)a3
+- (void)setDesiredNumberOfItems:(id)items
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(FPQueryEnumerationSettings *)v4->_settings setDesiredNumberOfItems:v5];
-  objc_sync_exit(v4);
+  itemsCopy = items;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(FPQueryEnumerationSettings *)selfCopy->_settings setDesiredNumberOfItems:itemsCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (NSNumber)desiredNumberOfItems
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPQueryEnumerationSettings *)v2->_settings desiredNumberOfItems];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  desiredNumberOfItems = [(FPQueryEnumerationSettings *)selfCopy->_settings desiredNumberOfItems];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return desiredNumberOfItems;
 }
 
-- (void)setAllowedFileTypes:(id)a3
+- (void)setAllowedFileTypes:(id)types
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v6 copy];
-  [(FPQueryEnumerationSettings *)v4->_settings setAllowedFileTypes:v5];
+  typesCopy = types;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [typesCopy copy];
+  [(FPQueryEnumerationSettings *)selfCopy->_settings setAllowedFileTypes:v5];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)allowedFileTypes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPQueryEnumerationSettings *)v2->_settings allowedFileTypes];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allowedFileTypes = [(FPQueryEnumerationSettings *)selfCopy->_settings allowedFileTypes];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allowedFileTypes;
 }
 
-- (void)setExcludedFileTypes:(id)a3
+- (void)setExcludedFileTypes:(id)types
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v6 copy];
-  [(FPQueryEnumerationSettings *)v4->_settings setExcludedFileTypes:v5];
+  typesCopy = types;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [typesCopy copy];
+  [(FPQueryEnumerationSettings *)selfCopy->_settings setExcludedFileTypes:v5];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)excludedFileTypes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPQueryEnumerationSettings *)v2->_settings excludedFileTypes];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  excludedFileTypes = [(FPQueryEnumerationSettings *)selfCopy->_settings excludedFileTypes];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return excludedFileTypes;
 }
 
-- (void)setExcludedParentOIDs:(id)a3
+- (void)setExcludedParentOIDs:(id)ds
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v6 copy];
-  [(FPQueryEnumerationSettings *)v4->_settings setExcludedParentOIDs:v5];
+  dsCopy = ds;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [dsCopy copy];
+  [(FPQueryEnumerationSettings *)selfCopy->_settings setExcludedParentOIDs:v5];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)excludedParentOIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPQueryEnumerationSettings *)v2->_settings excludedParentOIDs];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  excludedParentOIDs = [(FPQueryEnumerationSettings *)selfCopy->_settings excludedParentOIDs];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return excludedParentOIDs;
 }
 
-- (void)setAllowedProviderIdentifiers:(id)a3
+- (void)setAllowedProviderIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v6 copy];
-  [(FPQueryEnumerationSettings *)v4->_settings setAllowedProviders:v5];
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [identifiersCopy copy];
+  [(FPQueryEnumerationSettings *)selfCopy->_settings setAllowedProviders:v5];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)allowedProviderIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPQueryEnumerationSettings *)v2->_settings allowedProviders];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allowedProviders = [(FPQueryEnumerationSettings *)selfCopy->_settings allowedProviders];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allowedProviders;
 }
 
-- (id)underlyingQueryStringForMountPoint:(id)a3
+- (id)underlyingQueryStringForMountPoint:(id)point
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(FPQueryCollection *)v5 _createDescriptorWithSortDescriptors:0];
-  v7 = [v6 queryStringForMountPoint:v4];
+  pointCopy = point;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(FPQueryCollection *)selfCopy _createDescriptorWithSortDescriptors:0];
+  v7 = [v6 queryStringForMountPoint:pointCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)_createDescriptorWithSortDescriptors:(id)a3
+- (id)_createDescriptorWithSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(FPQueryEnumerationSettings *)v5->_settings copy];
-  [v6 setSortDescriptors:v4];
-  v7 = [objc_alloc(v5->_descriptorClass) initWithSettings:v6];
+  descriptorsCopy = descriptors;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(FPQueryEnumerationSettings *)selfCopy->_settings copy];
+  [v6 setSortDescriptors:descriptorsCopy];
+  v7 = [objc_alloc(selfCopy->_descriptorClass) initWithSettings:v6];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setTagIdentifier:(id)a3
+- (void)setTagIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  v6 = [(FPQueryCollection *)v4 settings];
-  [v6 setTagIdentifier:v5];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [identifierCopy copy];
+  settings = [(FPQueryCollection *)selfCopy settings];
+  [settings setTagIdentifier:v5];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)tagIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(FPQueryCollection *)v2 settings];
-  v4 = [v3 tagIdentifier];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  settings = [(FPQueryCollection *)selfCopy settings];
+  tagIdentifier = [settings tagIdentifier];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return tagIdentifier;
 }
 
 void __50__FPQueryCollection__enumerationSettingsPredicate__block_invoke_cold_1()

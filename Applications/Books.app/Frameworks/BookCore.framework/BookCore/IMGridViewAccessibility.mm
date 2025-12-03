@@ -1,41 +1,41 @@
 @interface IMGridViewAccessibility
-- (void)_swapGrabbedCell:(id)a3 withOtherCell:(id)a4;
-- (void)setGrabbedCell:(id)a3;
+- (void)_swapGrabbedCell:(id)cell withOtherCell:(id)otherCell;
+- (void)setGrabbedCell:(id)cell;
 @end
 
 @implementation IMGridViewAccessibility
 
-- (void)setGrabbedCell:(id)a3
+- (void)setGrabbedCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v5 = [(IMGridViewAccessibility *)self imaxValueForKey:@"_grabbedCell"];
   v9.receiver = self;
   v9.super_class = IMGridViewAccessibility;
-  [(IMGridViewAccessibility *)&v9 setGrabbedCell:v4];
-  if (v4 && v5 != v4)
+  [(IMGridViewAccessibility *)&v9 setGrabbedCell:cellCopy];
+  if (cellCopy && v5 != cellCopy)
   {
     v6 = IMAXLocString(@"started.moving.book %@");
-    v7 = [v4 accessibilityLabel];
-    v8 = [NSString stringWithFormat:v6, v7];
+    accessibilityLabel = [cellCopy accessibilityLabel];
+    v8 = [NSString stringWithFormat:v6, accessibilityLabel];
 
     UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, v8);
   }
 }
 
-- (void)_swapGrabbedCell:(id)a3 withOtherCell:(id)a4
+- (void)_swapGrabbedCell:(id)cell withOtherCell:(id)otherCell
 {
   v18.receiver = self;
   v18.super_class = IMGridViewAccessibility;
-  v6 = a3;
-  [(IMGridViewAccessibility *)&v18 _swapGrabbedCell:v6 withOtherCell:a4];
+  cellCopy = cell;
+  [(IMGridViewAccessibility *)&v18 _swapGrabbedCell:cellCopy withOtherCell:otherCell];
   v7 = [(IMGridViewAccessibility *)self imaxValueForKey:@"numberOfColumns"];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  v9 = [v6 imaxValueForKey:@"tag"];
+  v9 = [cellCopy imaxValueForKey:@"tag"];
 
   v10 = [v9 integerValue] - 10000;
-  v11 = v10 / v8;
-  v12 = [NSNumber numberWithInteger:v10 % v8 + 1];
+  v11 = v10 / integerValue;
+  v12 = [NSNumber numberWithInteger:v10 % integerValue + 1];
   v13 = [NSNumberFormatter imaxLocalizedNumber:v12];
 
   v14 = [NSNumber numberWithInteger:v11 + 1];

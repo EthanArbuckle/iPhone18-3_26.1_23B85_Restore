@@ -1,8 +1,8 @@
 @interface SigningKey
 - (id)description;
 - (id)publicKey;
-- (id)signData:(id)a3 error:(id *)a4;
-- (id)signDataWithFormatter:(id)a3 error:(id *)a4;
+- (id)signData:(id)data error:(id *)error;
+- (id)signDataWithFormatter:(id)formatter error:(id *)error;
 - (id)tetraWrapped;
 @end
 
@@ -26,11 +26,11 @@
   else
   {
     v5 = [(FullKey *)self key];
-    v6 = [v5 publicKey];
+    publicKey = [v5 publicKey];
 
-    if (v6)
+    if (publicKey)
     {
-      v7 = [[SigningPublicKey alloc] initWithKey:v6];
+      v7 = [[SigningPublicKey alloc] initWithKey:publicKey];
       v8 = self->__publicKey;
       self->__publicKey = v7;
 
@@ -46,19 +46,19 @@
   return v3;
 }
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = [(FullKey *)self key];
-  v8 = [v7 signData:v6 error:a4];
+  v8 = [v7 signData:dataCopy error:error];
 
   return v8;
 }
 
-- (id)signDataWithFormatter:(id)a3 error:(id *)a4
+- (id)signDataWithFormatter:(id)formatter error:(id *)error
 {
-  v6 = [a3 signedData];
-  v7 = [(SigningKey *)self signData:v6 error:a4];
+  signedData = [formatter signedData];
+  v7 = [(SigningKey *)self signData:signedData error:error];
 
   return v7;
 }
@@ -66,9 +66,9 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SigningKey *)self publicKey];
-  v4 = [v3 dataRepresentation];
-  v5 = [v2 stringWithFormat:@"SigningKey with public data representation: %@", v4];
+  publicKey = [(SigningKey *)self publicKey];
+  dataRepresentation = [publicKey dataRepresentation];
+  v5 = [v2 stringWithFormat:@"SigningKey with public data representation: %@", dataRepresentation];
 
   return v5;
 }

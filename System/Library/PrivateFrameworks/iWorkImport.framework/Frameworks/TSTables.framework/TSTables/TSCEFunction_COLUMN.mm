@@ -1,25 +1,25 @@
 @interface TSCEFunction_COLUMN
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_COLUMN
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
   v8 = MEMORY[0x277D80680];
-  v9 = objc_msgSend_locale(a3, a2, a3, a4, a5);
+  v9 = objc_msgSend_locale(context, a2, context, spec, arguments);
   v12 = objc_msgSend_defaultFormatWithFormatType_locale_(v8, v10, 256, v9, v11);
 
-  if (*(a5 + 1) == *a5)
+  if (*(arguments + 1) == *arguments)
   {
-    objc_msgSend_containingCell(a3, v13, v14, v15, v16);
+    objc_msgSend_containingCell(context, v13, v14, v15, v16);
     goto LABEL_6;
   }
 
-  v17 = **a5;
+  v17 = **arguments;
   if (objc_msgSend_isTokenOrEmptyArg(v17, v18, v19, v20, v21))
   {
-    objc_msgSend_containingCell(a3, v22, v23, v24, v25);
+    objc_msgSend_containingCell(context, v22, v23, v24, v25);
 LABEL_4:
 
 LABEL_6:
@@ -30,15 +30,15 @@ LABEL_6:
   }
 
   v112 = 0;
-  v29 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v17, v22, a3, a4, 0, &v112);
+  v29 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v17, v22, context, spec, 0, &v112);
   v34 = v112;
   if (!v34)
   {
     if (objc_msgSend_isNil(v29, v30, v31, v32, v33))
     {
-      v39 = objc_msgSend_functionName(a4, v35, v36, v37, v38);
+      v39 = objc_msgSend_functionName(spec, v35, v36, v37, v38);
       v43 = objc_msgSend_notAReferenceErrorForFunctionName_(TSCEError, v40, v39, v41, v42);
-      v47 = objc_msgSend_raiseErrorOrConvert_(a3, v44, v43, v45, v46);
+      v47 = objc_msgSend_raiseErrorOrConvert_(context, v44, v43, v45, v46);
 LABEL_11:
       v28 = v47;
 LABEL_25:
@@ -46,7 +46,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v48 = objc_msgSend_calcEngine(a3, v35, v36, v37, v38);
+    v48 = objc_msgSend_calcEngine(context, v35, v36, v37, v38);
     v108._tskFormat = objc_msgSend_tableUID(v29, v49, v50, v51, v52);
     *&v108._formatType = v53;
     v39 = objc_msgSend_tableResolverForTableUID_(v48, v53, &v108, v54, v55);
@@ -74,7 +74,7 @@ LABEL_25:
 
         else
         {
-          v78 = objc_msgSend_argumentSpecForIndex_(a4, v73, 0, v75, v76);
+          v78 = objc_msgSend_argumentSpecForIndex_(spec, v73, 0, v75, v76);
           v83 = objc_msgSend_rangeContext(v78, v79, v80, v81, v82);
           v77 = objc_msgSend_apparentRangeForRange_rangeContext_(v39, v84, &v111, v83, v85);
         }
@@ -132,9 +132,9 @@ LABEL_25:
 LABEL_35:
         objc_msgSend_rangeRef(v29, v60, v61, v62, v63);
 LABEL_44:
-        v103 = objc_msgSend_containingTable(a3, v60, v61, v62, v63, *&v108._tskFormat, *&v108._durationFormat);
+        v103 = objc_msgSend_containingTable(context, v60, v61, v62, v63, *&v108._tskFormat, *&v108._durationFormat);
         v43 = objc_msgSend_errorForInvalidReference_orString_contextEntityUID_(TSCEError, v104, &v108, 0, v103);
-        v47 = objc_msgSend_raiseErrorOrConvert_(a3, v105, v43, v106, v107);
+        v47 = objc_msgSend_raiseErrorOrConvert_(context, v105, v43, v106, v107);
         goto LABEL_11;
       }
     }
@@ -157,7 +157,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  v28 = objc_msgSend_raiseErrorOrConvert_(a3, v30, v34, v32, v33);
+  v28 = objc_msgSend_raiseErrorOrConvert_(context, v30, v34, v32, v33);
 LABEL_26:
 
 LABEL_27:

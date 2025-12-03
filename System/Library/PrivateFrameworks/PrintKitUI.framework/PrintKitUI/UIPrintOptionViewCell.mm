@@ -1,9 +1,9 @@
 @interface UIPrintOptionViewCell
 - (UIPrintOptionViewDelegate)optionViewDelegate;
 - (void)prepareForReuse;
-- (void)previewDidChangeSize:(id)a3;
+- (void)previewDidChangeSize:(id)size;
 - (void)printOptionCellTapped;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation UIPrintOptionViewCell
@@ -12,37 +12,37 @@
 {
   if ([(UIPrintOptionCell *)self enabled])
   {
-    v3 = [(UIPrintOptionViewCell *)self optionViewDelegate];
-    v24 = [v3 printPanelViewController];
+    optionViewDelegate = [(UIPrintOptionViewCell *)self optionViewDelegate];
+    printPanelViewController = [optionViewDelegate printPanelViewController];
 
     v4 = objc_alloc_init(MEMORY[0x277D75D28]);
     [(UIPrintOptionViewCell *)self setPrintOptionViewController:v4];
 
-    v5 = [(UIPrintOptionViewCell *)self optionViewDelegate];
-    v6 = [v5 printOptionDetailView];
-    v7 = [(UIPrintOptionViewCell *)self printOptionViewController];
-    [v7 setView:v6];
+    optionViewDelegate2 = [(UIPrintOptionViewCell *)self optionViewDelegate];
+    printOptionDetailView = [optionViewDelegate2 printOptionDetailView];
+    printOptionViewController = [(UIPrintOptionViewCell *)self printOptionViewController];
+    [printOptionViewController setView:printOptionDetailView];
 
-    v8 = [(UIPrintOptionViewCell *)self optionViewDelegate];
-    v9 = [v8 title];
-    v10 = [(UIPrintOptionViewCell *)self printOptionViewController];
-    [v10 setTitle:v9];
+    optionViewDelegate3 = [(UIPrintOptionViewCell *)self optionViewDelegate];
+    title = [optionViewDelegate3 title];
+    printOptionViewController2 = [(UIPrintOptionViewCell *)self printOptionViewController];
+    [printOptionViewController2 setTitle:title];
 
-    [v24 contentInsetForPreviewWithHeight:0.0];
+    [printPanelViewController contentInsetForPreviewWithHeight:0.0];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17 + 20.0;
-    v19 = [(UIPrintOptionViewCell *)self printOptionViewController];
-    [v19 setAdditionalSafeAreaInsets:{v18, v12, v14, v16}];
+    printOptionViewController3 = [(UIPrintOptionViewCell *)self printOptionViewController];
+    [printOptionViewController3 setAdditionalSafeAreaInsets:{v18, v12, v14, v16}];
 
-    v20 = [(UIPrintOptionViewCell *)self printOptionViewController];
-    v21 = [v20 navigationItem];
-    [v24 addPrintShareButtonsToNavItem:v21];
+    printOptionViewController4 = [(UIPrintOptionViewCell *)self printOptionViewController];
+    navigationItem = [printOptionViewController4 navigationItem];
+    [printPanelViewController addPrintShareButtonsToNavItem:navigationItem];
 
-    v22 = [v24 printOptionsNavController];
-    v23 = [(UIPrintOptionViewCell *)self printOptionViewController];
-    [v22 pushViewController:v23 animated:1];
+    printOptionsNavController = [printPanelViewController printOptionsNavController];
+    printOptionViewController5 = [(UIPrintOptionViewCell *)self printOptionViewController];
+    [printOptionsNavController pushViewController:printOptionViewController5 animated:1];
   }
 }
 
@@ -56,14 +56,14 @@
   [(UIPrintOptionViewCell *)self setEnabled:1];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = UIPrintOptionViewCell;
   [(UIPrintOptionCell *)&v6 setEnabled:?];
-  [(UIPrintOptionViewCell *)self setAccessoryType:v3];
-  if (v3)
+  [(UIPrintOptionViewCell *)self setAccessoryType:enabledCopy];
+  if (enabledCopy)
   {
     v5 = 3;
   }
@@ -77,22 +77,22 @@
   [(UIPrintOptionViewCell *)self setSelected:0];
 }
 
-- (void)previewDidChangeSize:(id)a3
+- (void)previewDidChangeSize:(id)size
 {
-  v4 = [a3 object];
-  [v4 floatValue];
+  object = [size object];
+  [object floatValue];
   v6 = v5;
 
-  v7 = [(UIPrintOptionViewCell *)self optionViewDelegate];
-  v8 = [v7 printPanelViewController];
-  [v8 contentInsetForPreviewWithHeight:v6];
+  optionViewDelegate = [(UIPrintOptionViewCell *)self optionViewDelegate];
+  printPanelViewController = [optionViewDelegate printPanelViewController];
+  [printPanelViewController contentInsetForPreviewWithHeight:v6];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(UIPrintOptionViewCell *)self printOptionViewController];
-  [v17 setAdditionalSafeAreaInsets:{v10 + 20.0, v12, v14, v16}];
+  printOptionViewController = [(UIPrintOptionViewCell *)self printOptionViewController];
+  [printOptionViewController setAdditionalSafeAreaInsets:{v10 + 20.0, v12, v14, v16}];
 }
 
 - (UIPrintOptionViewDelegate)optionViewDelegate

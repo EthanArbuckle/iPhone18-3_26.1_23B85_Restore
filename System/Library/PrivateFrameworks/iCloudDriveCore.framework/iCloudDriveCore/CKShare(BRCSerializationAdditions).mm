@@ -7,10 +7,10 @@
 
 - (uint64_t)_brc_isOwner
 {
-  v1 = [a1 recordID];
-  v2 = [v1 zoneID];
-  v3 = [v2 ownerName];
-  v4 = [v3 isEqualToString:*MEMORY[0x277CBBF28]];
+  recordID = [self recordID];
+  zoneID = [recordID zoneID];
+  ownerName = [zoneID ownerName];
+  v4 = [ownerName isEqualToString:*MEMORY[0x277CBBF28]];
 
   return v4;
 }
@@ -18,16 +18,16 @@
 - (uint64_t)deserializeSharingOptions:()BRCSerializationAdditions error:
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [a1 publicPermission];
-  if (v5 == 3)
+  publicPermission = [self publicPermission];
+  if (publicPermission == 3)
   {
     v6 = 8;
     goto LABEL_31;
   }
 
-  if (v5 == 2)
+  if (publicPermission == 2)
   {
-    if ([a1 _brc_isOwner])
+    if ([self _brc_isOwner])
     {
       v6 = 24;
     }
@@ -40,40 +40,40 @@
     goto LABEL_31;
   }
 
-  if (![a1 _brc_isOwner])
+  if (![self _brc_isOwner])
   {
-    v14 = [a1 currentUserParticipant];
-    v15 = [v14 permission] > 1;
+    currentUserParticipant = [self currentUserParticipant];
+    v15 = [currentUserParticipant permission] > 1;
 
     v6 = v15 << 6;
     goto LABEL_31;
   }
 
-  v7 = [a1 participants];
-  if (![v7 count])
+  participants = [self participants];
+  if (![participants count])
   {
 
     goto LABEL_15;
   }
 
-  v8 = [a1 participants];
-  if ([v8 count] == 1)
+  participants2 = [self participants];
+  if ([participants2 count] == 1)
   {
-    v9 = [a1 participants];
-    v10 = [v9 firstObject];
-    if ([v10 isCurrentUser])
+    participants3 = [self participants];
+    firstObject = [participants3 firstObject];
+    if ([firstObject isCurrentUser])
     {
-      v11 = [a1 participants];
-      v12 = [v11 firstObject];
-      v13 = [v12 role];
+      participants4 = [self participants];
+      firstObject2 = [participants4 firstObject];
+      role = [firstObject2 role];
 
-      if (v13 != 1)
+      if (role != 1)
       {
         goto LABEL_20;
       }
 
 LABEL_15:
-      if ([a1 allowsAccessRequests])
+      if ([self allowsAccessRequests])
       {
         v6 = 64;
       }
@@ -92,8 +92,8 @@ LABEL_20:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = [a1 participants];
-  v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  participants5 = [self participants];
+  v17 = [participants5 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v17)
   {
     v18 = v17;
@@ -105,7 +105,7 @@ LABEL_22:
     {
       if (*v27 != v19)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(participants5);
       }
 
       v21 = *(*(&v26 + 1) + 8 * v20);
@@ -116,7 +116,7 @@ LABEL_22:
 
       if (v18 == ++v20)
       {
-        v18 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v18 = [participants5 countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v18)
         {
           goto LABEL_22;
@@ -134,8 +134,8 @@ LABEL_29:
   }
 
 LABEL_31:
-  v22 = [a1 currentUserParticipant];
-  if ([v22 permission] == 3)
+  currentUserParticipant2 = [self currentUserParticipant];
+  if ([currentUserParticipant2 permission] == 3)
   {
 
     if (!a3)
@@ -146,9 +146,9 @@ LABEL_31:
     goto LABEL_37;
   }
 
-  v23 = [a1 publicPermission];
+  publicPermission2 = [self publicPermission];
 
-  if (v23 != 3)
+  if (publicPermission2 != 3)
   {
     v6 |= 0x20uLL;
   }

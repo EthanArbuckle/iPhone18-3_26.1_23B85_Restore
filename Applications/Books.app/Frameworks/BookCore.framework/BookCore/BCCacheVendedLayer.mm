@@ -1,15 +1,15 @@
 @interface BCCacheVendedLayer
-- (BCCacheVendedLayer)initWithDebugLayout:(BOOL)a3;
-- (void)_setDescribedImage:(id)a3;
+- (BCCacheVendedLayer)initWithDebugLayout:(BOOL)layout;
+- (void)_setDescribedImage:(id)image;
 - (void)dealloc;
-- (void)setDescribedImage:(id)a3;
+- (void)setDescribedImage:(id)image;
 @end
 
 @implementation BCCacheVendedLayer
 
-- (BCCacheVendedLayer)initWithDebugLayout:(BOOL)a3
+- (BCCacheVendedLayer)initWithDebugLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v16.receiver = self;
   v16.super_class = BCCacheVendedLayer;
   v4 = [(BCCacheVendedLayer *)&v16 init];
@@ -21,7 +21,7 @@
     y = CGPointZero.y;
     [(CALayer *)v5 setAnchorPoint:CGPointZero.x, y];
     [(BCCacheVendedLayer *)v4 setMasksToBounds:0];
-    if (v3)
+    if (layoutCopy)
     {
       DeviceRGB = CGColorSpaceCreateDeviceRGB();
       v20[0] = xmmword_2A4650;
@@ -84,19 +84,19 @@
   [(BCCacheVendedLayer *)&v5 dealloc];
 }
 
-- (void)setDescribedImage:(id)a3
+- (void)setDescribedImage:(id)image
 {
-  v4 = a3;
-  [(BCCacheVendedLayer *)self setDescribedImageShown:v4];
+  imageCopy = image;
+  [(BCCacheVendedLayer *)self setDescribedImageShown:imageCopy];
   if (+[NSThread isMainThread])
   {
-    [(BCCacheVendedLayer *)self _setDescribedImage:v4];
+    [(BCCacheVendedLayer *)self _setDescribedImage:imageCopy];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v5 = [v4 copy];
+    v5 = [imageCopy copy];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1748B4;
@@ -111,21 +111,21 @@
   }
 }
 
-- (void)_setDescribedImage:(id)a3
+- (void)_setDescribedImage:(id)image
 {
-  v27 = a3;
+  imageCopy = image;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v4 = [v27 image];
-  v5 = [v4 CGImage];
+  image = [imageCopy image];
+  cGImage = [image CGImage];
 
-  v6 = [(BCCacheVendedLayer *)self imageLayer];
-  [v6 setContents:v5];
+  imageLayer = [(BCCacheVendedLayer *)self imageLayer];
+  [imageLayer setContents:cGImage];
 
   v7 = mainScreenScaleFactor();
-  v8 = CGImageGetWidth(v5) / v7;
-  v9 = CGImageGetHeight(v5) / v7;
-  [v27 nonShadowArea];
+  v8 = CGImageGetWidth(cGImage) / v7;
+  v9 = CGImageGetHeight(cGImage) / v7;
+  [imageCopy nonShadowArea];
   v30.origin.x = CGRectZero.origin.x;
   v30.origin.y = CGRectZero.origin.y;
   v30.size.width = CGRectZero.size.width;
@@ -136,41 +136,41 @@
   v13 = 0.0;
   if (!CGRectEqualToRect(v29, v30))
   {
-    [v27 nonShadowArea];
+    [imageCopy nonShadowArea];
     v13 = v14;
     v10 = v15;
     v12 = v16;
     v11 = v17;
   }
 
-  v18 = [(BCCacheVendedLayer *)self imageLayer];
-  [v18 setBounds:{0.0, 0.0, v8, v9}];
+  imageLayer2 = [(BCCacheVendedLayer *)self imageLayer];
+  [imageLayer2 setBounds:{0.0, 0.0, v8, v9}];
 
-  v19 = [(BCCacheVendedLayer *)self imageLayer];
-  [v19 setPosition:{-v13, -v10}];
+  imageLayer3 = [(BCCacheVendedLayer *)self imageLayer];
+  [imageLayer3 setPosition:{-v13, -v10}];
 
   [(BCCacheVendedLayer *)self setBounds:CGPointZero.x, CGPointZero.y, v12, v11];
-  v20 = [(BCCacheVendedLayer *)self stackLayer];
+  stackLayer = [(BCCacheVendedLayer *)self stackLayer];
 
-  if (v20)
+  if (stackLayer)
   {
-    v21 = [v27 stackOutline];
-    v22 = [(BCCacheVendedLayer *)self stackLayer];
-    [v22 setPath:v21];
+    stackOutline = [imageCopy stackOutline];
+    stackLayer2 = [(BCCacheVendedLayer *)self stackLayer];
+    [stackLayer2 setPath:stackOutline];
   }
 
-  v23 = [(BCCacheVendedLayer *)self descriptionLayer];
+  descriptionLayer = [(BCCacheVendedLayer *)self descriptionLayer];
 
-  if (v23)
+  if (descriptionLayer)
   {
-    v24 = [v27 identifier];
-    v25 = [(BCCacheVendedLayer *)self descriptionLayer];
-    [v25 setString:v24];
+    identifier = [imageCopy identifier];
+    descriptionLayer2 = [(BCCacheVendedLayer *)self descriptionLayer];
+    [descriptionLayer2 setString:identifier];
   }
 
   +[CATransaction commit];
-  v26 = [(BCCacheVendedLayer *)self vendedLayerDelegate];
-  [v26 vendedLayerDidUpdate:self];
+  vendedLayerDelegate = [(BCCacheVendedLayer *)self vendedLayerDelegate];
+  [vendedLayerDelegate vendedLayerDidUpdate:self];
 }
 
 @end

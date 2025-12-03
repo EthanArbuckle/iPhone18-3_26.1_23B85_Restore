@@ -1,76 +1,76 @@
 @interface HUDashboardItemManager
 - (BOOL)isEmptyDashboard;
-- (BOOL)isHomeMenuStatusItem:(id)a3;
-- (HUDashboardItemManager)initWithContext:(id)a3 delegate:(id)a4;
-- (HUDashboardItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
+- (BOOL)isHomeMenuStatusItem:(id)item;
+- (HUDashboardItemManager)initWithContext:(id)context delegate:(id)delegate;
+- (HUDashboardItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
 - (HUDashboardItemManagerDelegate)dashboardDelegate;
 - (NSSet)homeMenuStatusItems;
-- (id)_buildAccessoryCategorySectionsWithItems:(id)a3;
-- (id)_buildFavoritesSectionWithFavoriteItems:(id)a3;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildNowPlayingSectionWithItems:(id)a3 forRouteIdentifier:(id)a4;
-- (id)_buildRoomSectionsWithItems:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_buildSingleAccessoryGroupSectionWithItems:(id)a3 allDisplayedItems:(id)a4;
-- (id)_buildStaticItemsForHome:(id)a3;
-- (id)_itemSectionForRoom:(id)a3;
-- (id)_itemsToHideInSet:(id)a3;
+- (id)_buildAccessoryCategorySectionsWithItems:(id)items;
+- (id)_buildFavoritesSectionWithFavoriteItems:(id)items;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildNowPlayingSectionWithItems:(id)items forRouteIdentifier:(id)identifier;
+- (id)_buildRoomSectionsWithItems:(id)items;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_buildSingleAccessoryGroupSectionWithItems:(id)items allDisplayedItems:(id)displayedItems;
+- (id)_buildStaticItemsForHome:(id)home;
+- (id)_itemSectionForRoom:(id)room;
+- (id)_itemsToHideInSet:(id)set;
 - (id)_itemsToUpdateWhenApplicationDidBecomeActive;
-- (id)buildItemForHomeKitObject:(id)a3;
-- (id)itemModuleForSectionIdentifier:(id)a3;
-- (id)matchingItemForHomeKitObject:(id)a3;
+- (id)buildItemForHomeKitObject:(id)object;
+- (id)itemModuleForSectionIdentifier:(id)identifier;
+- (id)matchingItemForHomeKitObject:(id)object;
 - (id)reorderableFavoritesList;
-- (id)reorderableServiceListForRoom:(id)a3;
-- (id)reorderableServiceListForType:(id)a3;
-- (void)_didFinishUpdateTransactionWithAffectedItems:(id)a3;
+- (id)reorderableServiceListForRoom:(id)room;
+- (id)reorderableServiceListForType:(id)type;
+- (void)_didFinishUpdateTransactionWithAffectedItems:(id)items;
 - (void)_registerForExternalUpdates;
 - (void)_unregisterForExternalUpdates;
-- (void)_updateHomeDashboardWithHome:(id)a3;
+- (void)_updateHomeDashboardWithHome:(id)home;
 - (void)dealloc;
-- (void)home:(id)a3 didAddRoom:(id)a4;
-- (void)home:(id)a3 didRemoveRoom:(id)a4;
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3;
-- (void)homeDidUpdateApplicationData:(id)a3;
-- (void)homeDidUpdateHomeLocationStatus:(id)a3;
-- (void)homeManager:(id)a3 didUpdateHH2State:(BOOL)a4;
-- (void)pinCodeManagerDidUpdate:(id)a3 pinCodes:(id)a4;
-- (void)restrictedGuestAllowedPeriodEnded:(id)a3;
-- (void)restrictedGuestAllowedPeriodStarted:(id)a3;
-- (void)setHome:(id)a3;
-- (void)setReorderableServiceList:(id)a3 forRoom:(id)a4;
-- (void)setReorderableServiceList:(id)a3 forType:(id)a4;
-- (void)updateItemSectionHeaderTitleForRoom:(id)a3;
+- (void)home:(id)home didAddRoom:(id)room;
+- (void)home:(id)home didRemoveRoom:(id)room;
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user;
+- (void)homeDidUpdateApplicationData:(id)data;
+- (void)homeDidUpdateHomeLocationStatus:(id)status;
+- (void)homeManager:(id)manager didUpdateHH2State:(BOOL)state;
+- (void)pinCodeManagerDidUpdate:(id)update pinCodes:(id)codes;
+- (void)restrictedGuestAllowedPeriodEnded:(id)ended;
+- (void)restrictedGuestAllowedPeriodStarted:(id)started;
+- (void)setHome:(id)home;
+- (void)setReorderableServiceList:(id)list forRoom:(id)room;
+- (void)setReorderableServiceList:(id)list forType:(id)type;
+- (void)updateItemSectionHeaderTitleForRoom:(id)room;
 @end
 
 @implementation HUDashboardItemManager
 
-- (HUDashboardItemManager)initWithContext:(id)a3 delegate:(id)a4
+- (HUDashboardItemManager)initWithContext:(id)context delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = HUDashboardItemManager;
-  v9 = [(HFItemManager *)&v22 initWithDelegate:v8 sourceItem:0];
+  v9 = [(HFItemManager *)&v22 initWithDelegate:delegateCopy sourceItem:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeWeak(&v10->_dashboardDelegate, v8);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeWeak(&v10->_dashboardDelegate, delegateCopy);
     v11 = [(HFItemModule *)[HUServicePlaceholderItemModule alloc] initWithItemUpdater:v10];
     servicePlaceholderItemModule = v10->_servicePlaceholderItemModule;
     v10->_servicePlaceholderItemModule = v11;
 
-    v13 = [(HUDashboardItemManager *)v10 context];
-    v14 = [v13 home];
-    v15 = [v14 hf_currentUserIsRestrictedGuest];
+    context = [(HUDashboardItemManager *)v10 context];
+    home = [context home];
+    hf_currentUserIsRestrictedGuest = [home hf_currentUserIsRestrictedGuest];
 
-    if (v15)
+    if (hf_currentUserIsRestrictedGuest)
     {
-      v16 = [MEMORY[0x277D146E8] sharedDispatcher];
-      v17 = [(HUDashboardItemManager *)v10 context];
-      v18 = [v17 home];
-      v19 = [v16 pinCodeManagerForHome:v18];
+      mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+      context2 = [(HUDashboardItemManager *)v10 context];
+      home2 = [context2 home];
+      v19 = [mEMORY[0x277D146E8] pinCodeManagerForHome:home2];
       pinCodeManager = v10->_pinCodeManager;
       v10->_pinCodeManager = v19;
     }
@@ -79,51 +79,51 @@
   return v10;
 }
 
-- (HUDashboardItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUDashboardItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithContext_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUDashboardItemManager.m" lineNumber:98 description:{@"%s is unavailable; use %@ instead", "-[HUDashboardItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUDashboardItemManager.m" lineNumber:98 description:{@"%s is unavailable; use %@ instead", "-[HUDashboardItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
 - (BOOL)isEmptyDashboard
 {
-  v3 = [(HUDashboardItemManager *)self context];
-  v4 = [v3 room];
+  context = [(HUDashboardItemManager *)self context];
+  room = [context room];
 
-  if (v4)
+  if (room)
   {
-    v9 = [(HUDashboardItemManager *)self context];
-    v5 = [v9 room];
-    v6 = [v5 hf_visibleAccessories];
+    context2 = [(HUDashboardItemManager *)self context];
+    room2 = [context2 room];
+    hf_visibleAccessories = [room2 hf_visibleAccessories];
 
-    LOBYTE(v9) = [v6 na_all:&__block_literal_global_130];
-    v7 = [(HUDashboardItemManager *)self context];
-    v8 = [v7 room];
-    LOBYTE(v9) = [v8 hf_hasVisibleAccessories] ^ 1 | v9;
+    LOBYTE(context2) = [hf_visibleAccessories na_all:&__block_literal_global_130];
+    context3 = [(HUDashboardItemManager *)self context];
+    room3 = [context3 room];
+    LOBYTE(context2) = [room3 hf_hasVisibleAccessories] ^ 1 | context2;
   }
 
   else
   {
-    v6 = [(HFItemManager *)self home];
-    v9 = [v6 hf_hasVisibleAccessories] ^ 1u;
+    hf_visibleAccessories = [(HFItemManager *)self home];
+    context2 = [hf_visibleAccessories hf_hasVisibleAccessories] ^ 1u;
   }
 
-  return v9 & 1;
+  return context2 & 1;
 }
 
 - (NSSet)homeMenuStatusItems
 {
-  v3 = [(HUDashboardItemManager *)self statusItemModule];
-  v4 = [v3 allItems];
+  statusItemModule = [(HUDashboardItemManager *)self statusItemModule];
+  allItems = [statusItemModule allItems];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__HUDashboardItemManager_homeMenuStatusItems__block_invoke;
   v7[3] = &unk_277DB85D8;
   v7[4] = self;
-  v5 = [v4 na_filter:v7];
+  v5 = [allItems na_filter:v7];
 
   return v5;
 }
@@ -146,11 +146,11 @@ uint64_t __45__HUDashboardItemManager_homeMenuStatusItems__block_invoke(uint64_t
   return v6;
 }
 
-- (BOOL)isHomeMenuStatusItem:(id)a3
+- (BOOL)isHomeMenuStatusItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = v3;
+  v4 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -165,8 +165,8 @@ uint64_t __45__HUDashboardItemManager_homeMenuStatusItems__block_invoke(uint64_t
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D14B58] hu_homeMenuStatusItemClasses];
-    v8 = [v7 containsObject:objc_opt_class()];
+    hu_homeMenuStatusItemClasses = [MEMORY[0x277D14B58] hu_homeMenuStatusItemClasses];
+    v8 = [hu_homeMenuStatusItemClasses containsObject:objc_opt_class()];
   }
 
   else
@@ -177,32 +177,32 @@ uint64_t __45__HUDashboardItemManager_homeMenuStatusItems__block_invoke(uint64_t
   return v8;
 }
 
-- (id)itemModuleForSectionIdentifier:(id)a3
+- (id)itemModuleForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"scenesSection"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"scenesSection"])
   {
-    v5 = [(HUDashboardItemManager *)self actionSetItemModule];
+    actionSetItemModule = [(HUDashboardItemManager *)self actionSetItemModule];
 LABEL_9:
-    v6 = v5;
+    v6 = actionSetItemModule;
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"camerasSection"])
+  if ([identifierCopy isEqualToString:@"camerasSection"])
   {
-    v5 = [(HUDashboardItemManager *)self cameraItemModule];
+    actionSetItemModule = [(HUDashboardItemManager *)self cameraItemModule];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"statusSection"])
+  if ([identifierCopy isEqualToString:@"statusSection"])
   {
-    v5 = [(HUDashboardItemManager *)self statusItemModule];
+    actionSetItemModule = [(HUDashboardItemManager *)self statusItemModule];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"tipsSection"])
+  if ([identifierCopy isEqualToString:@"tipsSection"])
   {
-    v5 = [(HUDashboardItemManager *)self tipItemModule];
+    actionSetItemModule = [(HUDashboardItemManager *)self tipItemModule];
     goto LABEL_9;
   }
 
@@ -212,12 +212,12 @@ LABEL_10:
   return v6;
 }
 
-- (id)buildItemForHomeKitObject:(id)a3
+- (id)buildItemForHomeKitObject:(id)object
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2825BCA78])
+  objectCopy = object;
+  if ([objectCopy conformsToProtocol:&unk_2825BCA78])
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -228,8 +228,8 @@ LABEL_10:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
-    v8 = [v7 buildItemForAccessoryRepresentable:v6];
+    accessoryLikeItemProvider = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
+    v8 = [accessoryLikeItemProvider buildItemForAccessoryRepresentable:v6];
   }
 
   else
@@ -240,9 +240,9 @@ LABEL_10:
   return v8;
 }
 
-- (id)_itemSectionForRoom:(id)a3
+- (id)_itemSectionForRoom:(id)room
 {
-  v4 = HUDashboardRoomSectionIdentifierForRoom(a3);
+  v4 = HUDashboardRoomSectionIdentifierForRoom(room);
   if ([v4 length] && (v5 = -[HFItemManager sectionIndexForDisplayedSectionIdentifier:](self, "sectionIndexForDisplayedSectionIdentifier:", v4), v5 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v6 = [(HFItemManager *)self itemSectionForSectionIndex:v5];
@@ -256,12 +256,12 @@ LABEL_10:
   return v6;
 }
 
-- (void)updateItemSectionHeaderTitleForRoom:(id)a3
+- (void)updateItemSectionHeaderTitleForRoom:(id)room
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  roomCopy = room;
   objc_opt_class();
-  v5 = [(HUDashboardItemManager *)self _itemSectionForRoom:v4];
+  v5 = [(HUDashboardItemManager *)self _itemSectionForRoom:roomCopy];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -276,9 +276,9 @@ LABEL_10:
 
   if (v7)
   {
-    v8 = [v7 headerTitle];
-    v9 = [v4 name];
-    v10 = [v8 isEqualToString:v9];
+    headerTitle = [v7 headerTitle];
+    name = [roomCopy name];
+    v10 = [headerTitle isEqualToString:name];
 
     v11 = HFLogForCategory();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -286,13 +286,13 @@ LABEL_10:
     {
       if (v12)
       {
-        v13 = [v4 name];
+        name2 = [roomCopy name];
         *buf = 138412802;
-        v20 = self;
+        selfCopy3 = self;
         v21 = 2080;
         v22 = "[HUDashboardItemManager updateItemSectionHeaderTitleForRoom:]";
         v23 = 2112;
-        v24 = v13;
+        v24 = name2;
         v14 = "(%@ %s) Not updating room name %@ since it's the same.";
 LABEL_10:
         _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, v14, buf, 0x20u);
@@ -303,23 +303,23 @@ LABEL_10:
     {
       if (v12)
       {
-        v15 = [v7 headerTitle];
-        v16 = [v4 name];
+        headerTitle2 = [v7 headerTitle];
+        name3 = [roomCopy name];
         *buf = 138413314;
-        v20 = self;
+        selfCopy3 = self;
         v21 = 2080;
         v22 = "[HUDashboardItemManager updateItemSectionHeaderTitleForRoom:]";
         v23 = 2112;
-        v24 = v15;
+        v24 = headerTitle2;
         v25 = 2112;
-        v26 = v16;
+        v26 = name3;
         v27 = 2112;
-        v28 = v4;
+        v28 = roomCopy;
         _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "(%@ %s) Updating room name from %@ to %@ for room %@", buf, 0x34u);
       }
 
-      v17 = [v4 name];
-      [v7 setHeaderTitle:v17];
+      name4 = [roomCopy name];
+      [v7 setHeaderTitle:name4];
 
       v18 = v7;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
@@ -332,37 +332,37 @@ LABEL_10:
     v11 = HFLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 name];
+      name2 = [roomCopy name];
       *buf = 138412802;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2080;
       v22 = "[HUDashboardItemManager updateItemSectionHeaderTitleForRoom:]";
       v23 = 2112;
-      v24 = v13;
+      v24 = name2;
       v14 = "(%@ %s) roomItemSection is nil for room %@";
       goto LABEL_10;
     }
   }
 }
 
-- (void)setHome:(id)a3
+- (void)setHome:(id)home
 {
-  v4 = a3;
-  if (v4)
+  homeCopy = home;
+  if (homeCopy)
   {
-    v5 = [(HUDashboardItemManager *)self context];
-    v6 = [v5 home];
-    v7 = v4;
+    context = [(HUDashboardItemManager *)self context];
+    home = [context home];
+    v7 = homeCopy;
     v8 = v7;
-    if (v6 == v7)
+    if (home == v7)
     {
     }
 
     else
     {
-      if (v6)
+      if (home)
       {
-        v9 = [v6 isEqual:v7];
+        v9 = [home isEqual:v7];
 
         if (v9)
         {
@@ -378,51 +378,51 @@ LABEL_10:
       context = self->_context;
       self->_context = v10;
 
-      v12 = [(HUDashboardItemManager *)self context];
-      v13 = [v12 home];
-      v14 = [v13 hf_currentUserIsRestrictedGuest];
+      context2 = [(HUDashboardItemManager *)self context];
+      home2 = [context2 home];
+      hf_currentUserIsRestrictedGuest = [home2 hf_currentUserIsRestrictedGuest];
 
-      if (v14)
+      if (hf_currentUserIsRestrictedGuest)
       {
-        v15 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v16 = [(HUDashboardItemManager *)self context];
-        v17 = [v16 home];
-        v18 = [v15 pinCodeManagerForHome:v17];
+        mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+        context3 = [(HUDashboardItemManager *)self context];
+        home3 = [context3 home];
+        v18 = [mEMORY[0x277D146E8] pinCodeManagerForHome:home3];
         [(HUDashboardItemManager *)self setPinCodeManager:v18];
 
-        v19 = [(HUDashboardItemManager *)self pinCodeManager];
-        [v19 addObserver:self];
+        pinCodeManager = [(HUDashboardItemManager *)self pinCodeManager];
+        [pinCodeManager addObserver:self];
       }
 
       else
       {
-        v20 = [(HUDashboardItemManager *)self pinCodeManager];
-        [v20 removeObserver:self];
+        pinCodeManager2 = [(HUDashboardItemManager *)self pinCodeManager];
+        [pinCodeManager2 removeObserver:self];
 
         [(HUDashboardItemManager *)self setPinCodeManager:0];
       }
 
-      v5 = [(HUDashboardItemManager *)self dashboardDelegate];
-      v6 = [(HUDashboardItemManager *)self context];
-      [v5 dashboardItemManager:self didUpdateContext:v6];
+      context = [(HUDashboardItemManager *)self dashboardDelegate];
+      home = [(HUDashboardItemManager *)self context];
+      [context dashboardItemManager:self didUpdateContext:home];
     }
   }
 
 LABEL_13:
   v21.receiver = self;
   v21.super_class = HUDashboardItemManager;
-  [(HFItemManager *)&v21 setHome:v4];
+  [(HFItemManager *)&v21 setHome:homeCopy];
 }
 
-- (id)matchingItemForHomeKitObject:(id)a3
+- (id)matchingItemForHomeKitObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (objectCopy)
   {
     v6 = MEMORY[0x277CBEB58];
-    v7 = [v4 uniqueIdentifier];
-    v8 = [v6 na_setWithSafeObject:v7];
+    uniqueIdentifier = [objectCopy uniqueIdentifier];
+    v8 = [v6 na_setWithSafeObject:uniqueIdentifier];
 
     v9 = v5;
     v10 = &unk_2825BCA78;
@@ -449,7 +449,7 @@ LABEL_13:
       [v13 na_each:v21];
     }
 
-    v14 = [(HFItemManager *)self allDisplayedItems];
+    allDisplayedItems = [(HFItemManager *)self allDisplayedItems];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __55__HUDashboardItemManager_matchingItemForHomeKitObject___block_invoke_4;
@@ -457,7 +457,7 @@ LABEL_13:
     v19 = v9;
     v20 = v8;
     v15 = v8;
-    v16 = [v14 na_firstObjectPassingTest:v18];
+    v16 = [allDisplayedItems na_firstObjectPassingTest:v18];
   }
 
   else
@@ -570,9 +570,9 @@ LABEL_15:
   return v15;
 }
 
-- (id)_buildStaticItemsForHome:(id)a3
+- (id)_buildStaticItemsForHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v6 = [MEMORY[0x277CBEB58] set];
   objc_initWeak(location, self);
   v7 = objc_alloc(MEMORY[0x277D14B38]);
@@ -584,8 +584,8 @@ LABEL_15:
   v8 = [v7 initWithResultsBlock:v36];
   [(HUDashboardItemManager *)self setAccessoryNoAccessItem:v8];
 
-  v9 = [(HUDashboardItemManager *)self accessoryNoAccessItem];
-  [v6 addObject:v9];
+  accessoryNoAccessItem = [(HUDashboardItemManager *)self accessoryNoAccessItem];
+  [v6 addObject:accessoryNoAccessItem];
 
   v10 = objc_alloc(MEMORY[0x277D14B38]);
   v34[0] = MEMORY[0x277D85DD0];
@@ -596,8 +596,8 @@ LABEL_15:
   v11 = [v10 initWithResultsBlock:v34];
   [(HUDashboardItemManager *)self setAlwaysAllowedScheduleItem:v11];
 
-  v12 = [(HUDashboardItemManager *)self alwaysAllowedScheduleItem];
-  [v6 na_safeAddObject:v12];
+  alwaysAllowedScheduleItem = [(HUDashboardItemManager *)self alwaysAllowedScheduleItem];
+  [v6 na_safeAddObject:alwaysAllowedScheduleItem];
 
   v13 = objc_alloc(MEMORY[0x277D14B38]);
   v31[0] = MEMORY[0x277D85DD0];
@@ -606,13 +606,13 @@ LABEL_15:
   v31[3] = &unk_277DBE3C8;
   objc_copyWeak(v33, location);
   v33[1] = a2;
-  v14 = v5;
+  v14 = homeCopy;
   v32 = v14;
   v15 = [v13 initWithResultsBlock:v31];
   [(HUDashboardItemManager *)self setPinCodeAccessItem:v15];
 
-  v16 = [(HUDashboardItemManager *)self pinCodeAccessItem];
-  [v6 addObject:v16];
+  pinCodeAccessItem = [(HUDashboardItemManager *)self pinCodeAccessItem];
+  [v6 addObject:pinCodeAccessItem];
 
   v17 = objc_alloc(MEMORY[0x277D14B38]);
   v25 = MEMORY[0x277D85DD0];
@@ -626,14 +626,14 @@ LABEL_15:
   v19 = [v17 initWithResultsBlock:&v25];
   [(HUDashboardItemManager *)self setHomeKeyItem:v19, v25, v26, v27, v28];
 
-  v20 = [(HUDashboardItemManager *)self homeKeyItem];
-  [v6 na_safeAddObject:v20];
+  homeKeyItem = [(HUDashboardItemManager *)self homeKeyItem];
+  [v6 na_safeAddObject:homeKeyItem];
 
   v21 = [[HUContactHomeOwnerItem alloc] initWithHome:v18];
   [(HUDashboardItemManager *)self setContactOwnerItem:v21];
 
-  v22 = [(HUDashboardItemManager *)self contactOwnerItem];
-  [v6 addObject:v22];
+  contactOwnerItem = [(HUDashboardItemManager *)self contactOwnerItem];
+  [v6 addObject:contactOwnerItem];
 
   v23 = [v6 copy];
   objc_destroyWeak(v30);
@@ -1141,35 +1141,35 @@ id __51__HUDashboardItemManager__buildStaticItemsForHome___block_invoke_2_284(ui
   return v6;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v86[1] = *MEMORY[0x277D85DE8];
-  v78 = a3;
-  v5 = [(HUDashboardItemManager *)self context];
-  v6 = [v5 room];
+  homeCopy = home;
+  context = [(HUDashboardItemManager *)self context];
+  room = [context room];
 
-  if (v6)
+  if (room)
   {
     v7 = objc_alloc(MEMORY[0x277D149E0]);
-    v8 = [(HUDashboardItemManager *)self context];
-    v9 = [v8 room];
-    v10 = [v7 initWithHome:v78 room:v9];
+    context2 = [(HUDashboardItemManager *)self context];
+    room2 = [context2 room];
+    v10 = [v7 initWithHome:homeCopy room:room2];
     [(HFItemManager *)self setSourceItem:v10];
   }
 
   else
   {
-    if (!v78)
+    if (!homeCopy)
     {
       goto LABEL_6;
     }
 
-    v8 = [objc_alloc(MEMORY[0x277D146D0]) initWithHome:v78];
-    [(HFItemManager *)self setSourceItem:v8];
+    context2 = [objc_alloc(MEMORY[0x277D146D0]) initWithHome:homeCopy];
+    [(HFItemManager *)self setSourceItem:context2];
   }
 
 LABEL_6:
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_initWeak(&location, self);
   if (_os_feature_enabled_impl())
   {
@@ -1178,26 +1178,26 @@ LABEL_6:
       v12 = objc_alloc_init(MEMORY[0x277D14688]);
       [(HUDashboardItemManager *)self setFakeSpeakersAndTVsItemProvider:v12];
 
-      v13 = [(HUDashboardItemManager *)self fakeSpeakersAndTVsItemProvider];
-      [v11 addObject:v13];
+      fakeSpeakersAndTVsItemProvider = [(HUDashboardItemManager *)self fakeSpeakersAndTVsItemProvider];
+      [array addObject:fakeSpeakersAndTVsItemProvider];
     }
 
     v14 = objc_alloc(MEMORY[0x277D142F8]);
-    v15 = [(HUDashboardItemManager *)self context];
-    v16 = [v15 room];
-    v17 = v16;
-    if (!v16)
+    context3 = [(HUDashboardItemManager *)self context];
+    room3 = [context3 room];
+    home = room3;
+    if (!room3)
     {
-      v3 = [(HUDashboardItemManager *)self context];
-      v17 = [v3 home];
+      context4 = [(HUDashboardItemManager *)self context];
+      home = [context4 home];
     }
 
-    v18 = [(HUDashboardItemManager *)self context];
-    v19 = [v18 home];
-    v20 = [v14 initWithAccessoryContainer:v17 inHome:v19];
+    context5 = [(HUDashboardItemManager *)self context];
+    home2 = [context5 home];
+    v20 = [v14 initWithAccessoryContainer:home inHome:home2];
     [(HUDashboardItemManager *)self setSpeakersAndTVsItemProvider:v20];
 
-    if (!v16)
+    if (!room3)
     {
     }
 
@@ -1206,31 +1206,31 @@ LABEL_6:
     v83[2] = __53__HUDashboardItemManager__buildItemProvidersForHome___block_invoke;
     v83[3] = &unk_277DBE418;
     objc_copyWeak(&v84, &location);
-    v21 = [(HUDashboardItemManager *)self speakersAndTVsItemProvider];
-    [v21 setFilterBlock:v83];
+    speakersAndTVsItemProvider = [(HUDashboardItemManager *)self speakersAndTVsItemProvider];
+    [speakersAndTVsItemProvider setFilterBlock:v83];
 
-    v22 = [(HUDashboardItemManager *)self speakersAndTVsItemProvider];
-    [v11 addObject:v22];
+    speakersAndTVsItemProvider2 = [(HUDashboardItemManager *)self speakersAndTVsItemProvider];
+    [array addObject:speakersAndTVsItemProvider2];
 
     objc_destroyWeak(&v84);
   }
 
   v23 = objc_alloc(MEMORY[0x277D142F8]);
-  v24 = [(HUDashboardItemManager *)self context];
-  v25 = [v24 room];
-  v26 = v25;
-  if (!v25)
+  context6 = [(HUDashboardItemManager *)self context];
+  room4 = [context6 room];
+  home3 = room4;
+  if (!room4)
   {
-    v3 = [(HUDashboardItemManager *)self context];
-    v26 = [v3 home];
+    context4 = [(HUDashboardItemManager *)self context];
+    home3 = [context4 home];
   }
 
-  v27 = [(HUDashboardItemManager *)self context];
-  v28 = [v27 home];
-  v29 = [v23 initWithAccessoryContainer:v26 inHome:v28];
+  context7 = [(HUDashboardItemManager *)self context];
+  home4 = [context7 home];
+  v29 = [v23 initWithAccessoryContainer:home3 inHome:home4];
   [(HUDashboardItemManager *)self setFavoritesItemProvider:v29];
 
-  if (!v25)
+  if (!room4)
   {
   }
 
@@ -1239,110 +1239,110 @@ LABEL_6:
   v81[2] = __53__HUDashboardItemManager__buildItemProvidersForHome___block_invoke_2;
   v81[3] = &unk_277DBE418;
   objc_copyWeak(&v82, &location);
-  v30 = [(HUDashboardItemManager *)self favoritesItemProvider];
-  [v30 setFilterBlock:v81];
+  favoritesItemProvider = [(HUDashboardItemManager *)self favoritesItemProvider];
+  [favoritesItemProvider setFilterBlock:v81];
 
-  v31 = [(HUDashboardItemManager *)self favoritesItemProvider];
-  [v11 addObject:v31];
+  favoritesItemProvider2 = [(HUDashboardItemManager *)self favoritesItemProvider];
+  [array addObject:favoritesItemProvider2];
 
   v32 = objc_alloc(MEMORY[0x277D142F8]);
-  v33 = [(HUDashboardItemManager *)self context];
-  v34 = [v33 room];
-  v35 = v34;
-  if (!v34)
+  context8 = [(HUDashboardItemManager *)self context];
+  room5 = [context8 room];
+  home5 = room5;
+  if (!room5)
   {
-    v3 = [(HUDashboardItemManager *)self context];
-    v35 = [v3 home];
+    context4 = [(HUDashboardItemManager *)self context];
+    home5 = [context4 home];
   }
 
-  v36 = [(HUDashboardItemManager *)self context];
-  v37 = [v36 home];
-  v38 = [v32 initWithAccessoryContainer:v35 inHome:v37];
+  context9 = [(HUDashboardItemManager *)self context];
+  home6 = [context9 home];
+  v38 = [v32 initWithAccessoryContainer:home5 inHome:home6];
   [(HUDashboardItemManager *)self setAccessoryLikeItemProvider:v38];
 
-  if (!v34)
+  if (!room5)
   {
   }
 
-  v39 = [(HUDashboardItemManager *)self context];
-  v40 = [v39 accessoryLikeItemObjectLevel];
-  v41 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
-  [v41 setObjectLevel:v40];
+  context10 = [(HUDashboardItemManager *)self context];
+  accessoryLikeItemObjectLevel = [context10 accessoryLikeItemObjectLevel];
+  accessoryLikeItemProvider = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
+  [accessoryLikeItemProvider setObjectLevel:accessoryLikeItemObjectLevel];
 
   v79[0] = MEMORY[0x277D85DD0];
   v79[1] = 3221225472;
   v79[2] = __53__HUDashboardItemManager__buildItemProvidersForHome___block_invoke_3;
   v79[3] = &unk_277DBE418;
   objc_copyWeak(&v80, &location);
-  v42 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
-  [v42 setFilterBlock:v79];
+  accessoryLikeItemProvider2 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
+  [accessoryLikeItemProvider2 setFilterBlock:v79];
 
-  v43 = [(HUDashboardItemManager *)self context];
-  v44 = [v43 accessoryTypeGroup];
+  context11 = [(HUDashboardItemManager *)self context];
+  accessoryTypeGroup = [context11 accessoryTypeGroup];
 
-  if (v44)
+  if (accessoryTypeGroup)
   {
-    v45 = [(HUDashboardItemManager *)self context];
-    v46 = [v45 accessoryTypeGroup];
-    v86[0] = v46;
+    context12 = [(HUDashboardItemManager *)self context];
+    accessoryTypeGroup2 = [context12 accessoryTypeGroup];
+    v86[0] = accessoryTypeGroup2;
     v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v86 count:1];
-    v48 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
-    [v48 setAccessoryTypeGroups:v47];
+    accessoryLikeItemProvider3 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
+    [accessoryLikeItemProvider3 setAccessoryTypeGroups:v47];
   }
 
   else
   {
-    v45 = [MEMORY[0x277D14308] sortedAccessoryTypeGroups];
-    v46 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
-    [v46 setAccessoryTypeGroups:v45];
+    context12 = [MEMORY[0x277D14308] sortedAccessoryTypeGroups];
+    accessoryTypeGroup2 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
+    [accessoryTypeGroup2 setAccessoryTypeGroups:context12];
   }
 
   v49 = [HUDashboardAccessoryTransformItemProvider alloc];
-  v50 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
-  v51 = [(HFItemManager *)self home];
-  v52 = [(HUDashboardAccessoryTransformItemProvider *)v49 initWithSourceProvider:v50 inHome:v51];
+  accessoryLikeItemProvider4 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
+  home7 = [(HFItemManager *)self home];
+  v52 = [(HUDashboardAccessoryTransformItemProvider *)v49 initWithSourceProvider:accessoryLikeItemProvider4 inHome:home7];
   [(HUDashboardItemManager *)self setAccessoryTransformItemProvider:v52];
 
-  v53 = [(HUDashboardItemManager *)self context];
-  v54 = [v53 accessoryGroupingStyle];
-  v55 = [(HUDashboardItemManager *)self accessoryTransformItemProvider];
-  [v55 setSplitAccessoryGroupsByRoom:v54 == 2];
+  context13 = [(HUDashboardItemManager *)self context];
+  accessoryGroupingStyle = [context13 accessoryGroupingStyle];
+  accessoryTransformItemProvider = [(HUDashboardItemManager *)self accessoryTransformItemProvider];
+  [accessoryTransformItemProvider setSplitAccessoryGroupsByRoom:accessoryGroupingStyle == 2];
 
-  v56 = [(HUDashboardItemManager *)self accessoryTransformItemProvider];
-  [v11 addObject:v56];
+  accessoryTransformItemProvider2 = [(HUDashboardItemManager *)self accessoryTransformItemProvider];
+  [array addObject:accessoryTransformItemProvider2];
 
   v57 = objc_alloc(MEMORY[0x277D14A30]);
-  v58 = [(HUDashboardItemManager *)self context];
-  v59 = [v58 home];
-  v60 = [v57 initWithHome:v59];
+  context14 = [(HUDashboardItemManager *)self context];
+  home8 = [context14 home];
+  v60 = [v57 initWithHome:home8];
   [(HUDashboardItemManager *)self setScheduleRuleItemProvider:v60];
 
-  v61 = [(HUDashboardItemManager *)self scheduleRuleItemProvider];
-  [v11 addObject:v61];
+  scheduleRuleItemProvider = [(HUDashboardItemManager *)self scheduleRuleItemProvider];
+  [array addObject:scheduleRuleItemProvider];
 
-  v62 = [(HUDashboardItemManager *)self _buildStaticItemsForHome:v78];
+  v62 = [(HUDashboardItemManager *)self _buildStaticItemsForHome:homeCopy];
   if ([v62 count])
   {
-    v63 = [(HUDashboardItemManager *)self context];
-    v64 = [v63 home];
-    v65 = [v64 hf_currentUserIsRestrictedGuest];
+    context15 = [(HUDashboardItemManager *)self context];
+    home9 = [context15 home];
+    hf_currentUserIsRestrictedGuest = [home9 hf_currentUserIsRestrictedGuest];
 
     v66 = MEMORY[0x277CBEB98];
-    v67 = [(HUDashboardItemManager *)self pinCodeAccessItem];
-    v68 = [(HUDashboardItemManager *)self homeKeyItem];
-    v69 = [v66 setWithObjects:{v67, v68, 0}];
+    pinCodeAccessItem = [(HUDashboardItemManager *)self pinCodeAccessItem];
+    homeKeyItem = [(HUDashboardItemManager *)self homeKeyItem];
+    v69 = [v66 setWithObjects:{pinCodeAccessItem, homeKeyItem, 0}];
 
-    if (v65)
+    if (hf_currentUserIsRestrictedGuest)
     {
       v70 = [objc_alloc(MEMORY[0x277D14B48]) initWithItems:v69];
       [(HUDashboardItemManager *)self setNonBlockingItemProvider:v70];
 
       v71 = [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277D13B88]];
-      v72 = [(HUDashboardItemManager *)self nonBlockingItemProvider];
-      [v72 setClientInvalidationReasons:v71];
+      nonBlockingItemProvider = [(HUDashboardItemManager *)self nonBlockingItemProvider];
+      [nonBlockingItemProvider setClientInvalidationReasons:v71];
 
-      v73 = [(HUDashboardItemManager *)self nonBlockingItemProvider];
-      [v11 addObject:v73];
+      nonBlockingItemProvider2 = [(HUDashboardItemManager *)self nonBlockingItemProvider];
+      [array addObject:nonBlockingItemProvider2];
     }
 
     v74 = [v62 na_setByRemovingObjectsFromSet:v69];
@@ -1350,8 +1350,8 @@ LABEL_6:
     v75 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v74];
     [(HUDashboardItemManager *)self setStaticItemProvider:v75];
 
-    v76 = [(HUDashboardItemManager *)self staticItemProvider];
-    [v11 na_safeAddObject:v76];
+    staticItemProvider = [(HUDashboardItemManager *)self staticItemProvider];
+    [array na_safeAddObject:staticItemProvider];
   }
 
   else
@@ -1363,7 +1363,7 @@ LABEL_6:
   objc_destroyWeak(&v82);
   objc_destroyWeak(&location);
 
-  return v11;
+  return array;
 }
 
 uint64_t __53__HUDashboardItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1, void *a2)
@@ -1419,43 +1419,43 @@ uint64_t __53__HUDashboardItemManager__buildItemProvidersForHome___block_invoke_
 - (id)_itemsToUpdateWhenApplicationDidBecomeActive
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUDashboardItemManager *)self bannerItemModule];
-  v4 = [v3 bannerItemProvider];
-  v5 = [v4 setupBannerItem];
-  v6 = [v2 na_setWithSafeObject:v5];
+  bannerItemModule = [(HUDashboardItemManager *)self bannerItemModule];
+  bannerItemProvider = [bannerItemModule bannerItemProvider];
+  setupBannerItem = [bannerItemProvider setupBannerItem];
+  v6 = [v2 na_setWithSafeObject:setupBannerItem];
 
   return v6;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v119[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(HUDashboardItemManager *)self context];
-  v7 = [v6 shouldHideSectionWithIdentifier:@"bannersSection"];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
+  context = [(HUDashboardItemManager *)self context];
+  v7 = [context shouldHideSectionWithIdentifier:@"bannersSection"];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(HUDashboardItemManager *)self bannerItemModule];
-    v9 = [v8 buildSectionsWithDisplayedItems:v4];
+    bannerItemModule = [(HUDashboardItemManager *)self bannerItemModule];
+    v9 = [bannerItemModule buildSectionsWithDisplayedItems:itemsCopy];
 
-    [v5 na_safeAddObjectsFromArray:v9];
+    [array na_safeAddObjectsFromArray:v9];
   }
 
-  v10 = [(HUDashboardItemManager *)self context];
-  v11 = [v10 shouldHideSectionWithIdentifier:@"statusSection"];
+  context2 = [(HUDashboardItemManager *)self context];
+  v11 = [context2 shouldHideSectionWithIdentifier:@"statusSection"];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [(HUDashboardItemManager *)self statusItemModule];
-    v13 = [v12 buildSectionsWithDisplayedItems:v4];
+    statusItemModule = [(HUDashboardItemManager *)self statusItemModule];
+    v13 = [statusItemModule buildSectionsWithDisplayedItems:itemsCopy];
 
-    [v5 na_safeAddObjectsFromArray:v13];
+    [array na_safeAddObjectsFromArray:v13];
   }
 
-  v14 = [(HUDashboardItemManager *)self context];
-  v15 = [v14 shouldHideSectionWithIdentifier:@"tipsSection"];
+  context3 = [(HUDashboardItemManager *)self context];
+  v15 = [context3 shouldHideSectionWithIdentifier:@"tipsSection"];
 
   if (v15)
   {
@@ -1464,12 +1464,12 @@ uint64_t __53__HUDashboardItemManager__buildItemProvidersForHome___block_invoke_
 
   else
   {
-    v16 = [(HUDashboardItemManager *)self tipItemModule];
-    v108 = [v16 buildSectionsWithDisplayedItems:v4];
+    tipItemModule = [(HUDashboardItemManager *)self tipItemModule];
+    v108 = [tipItemModule buildSectionsWithDisplayedItems:itemsCopy];
   }
 
-  v17 = [(HUDashboardItemManager *)self energyDashboardItemModule];
-  v18 = [v17 buildSectionsWithDisplayedItems:v4];
+  energyDashboardItemModule = [(HUDashboardItemManager *)self energyDashboardItemModule];
+  v18 = [energyDashboardItemModule buildSectionsWithDisplayedItems:itemsCopy];
 
   v114[0] = MEMORY[0x277D85DD0];
   v114[1] = 3221225472;
@@ -1479,41 +1479,41 @@ uint64_t __53__HUDashboardItemManager__buildItemProvidersForHome___block_invoke_
   v19 = [v18 na_filter:v114];
 
   v106 = v19;
-  [v5 na_safeAddObjectsFromArray:v19];
-  v20 = [MEMORY[0x277CBEB18] array];
-  v21 = [(HUDashboardItemManager *)self context];
-  if (([v21 shouldHideSectionWithIdentifier:@"camerasSection"] & 1) == 0)
+  [array na_safeAddObjectsFromArray:v19];
+  array2 = [MEMORY[0x277CBEB18] array];
+  context4 = [(HUDashboardItemManager *)self context];
+  if (([context4 shouldHideSectionWithIdentifier:@"camerasSection"] & 1) == 0)
   {
-    v22 = [(HUDashboardItemManager *)self context];
-    v23 = [v22 cameraPresentationStyle];
+    context5 = [(HUDashboardItemManager *)self context];
+    cameraPresentationStyle = [context5 cameraPresentationStyle];
 
-    if (v23 != 1)
+    if (cameraPresentationStyle != 1)
     {
       goto LABEL_12;
     }
 
-    v24 = [(HUDashboardItemManager *)self cameraItemModule];
-    v21 = [v24 buildSectionsWithDisplayedItems:v4];
+    cameraItemModule = [(HUDashboardItemManager *)self cameraItemModule];
+    context4 = [cameraItemModule buildSectionsWithDisplayedItems:itemsCopy];
 
-    [v20 na_safeAddObjectsFromArray:v21];
+    [array2 na_safeAddObjectsFromArray:context4];
   }
 
 LABEL_12:
-  v25 = [(HUDashboardItemManager *)self context];
-  v26 = [v25 shouldHideSectionWithIdentifier:@"scenesSection"];
+  context6 = [(HUDashboardItemManager *)self context];
+  v26 = [context6 shouldHideSectionWithIdentifier:@"scenesSection"];
 
   if ((v26 & 1) == 0)
   {
-    v27 = [(HUDashboardItemManager *)self actionSetItemModule];
-    v28 = [v27 buildSectionsWithDisplayedItems:v4];
+    actionSetItemModule = [(HUDashboardItemManager *)self actionSetItemModule];
+    v28 = [actionSetItemModule buildSectionsWithDisplayedItems:itemsCopy];
 
-    [v20 na_safeAddObjectsFromArray:v28];
+    [array2 na_safeAddObjectsFromArray:v28];
   }
 
   if (_os_feature_enabled_impl())
   {
-    v29 = [(HUDashboardItemManager *)self context];
-    v30 = [v29 shouldHideSectionWithIdentifier:@"NowPlayingSection"];
+    context7 = [(HUDashboardItemManager *)self context];
+    v30 = [context7 shouldHideSectionWithIdentifier:@"NowPlayingSection"];
 
     if ((v30 & 1) == 0)
     {
@@ -1523,33 +1523,33 @@ LABEL_12:
       v111[2] = __59__HUDashboardItemManager__buildSectionsWithDisplayedItems___block_invoke_2;
       v111[3] = &unk_277DBE468;
       v111[4] = self;
-      v112 = v4;
-      v113 = v5;
+      v112 = itemsCopy;
+      v113 = array;
       [v31 homePlatterPreferredRouteIdentifier:v111];
     }
   }
 
-  v32 = [(HUDashboardItemManager *)self accessoryTransformItemProvider];
-  v33 = [v32 items];
-  v34 = [v33 na_setByIntersectingWithSet:v4];
+  accessoryTransformItemProvider = [(HUDashboardItemManager *)self accessoryTransformItemProvider];
+  items = [accessoryTransformItemProvider items];
+  v34 = [items na_setByIntersectingWithSet:itemsCopy];
 
-  v35 = [(HUDashboardItemManager *)self context];
-  LOBYTE(v33) = [v35 shouldHideSectionWithIdentifier:@"favoritesSection"];
+  context8 = [(HUDashboardItemManager *)self context];
+  LOBYTE(items) = [context8 shouldHideSectionWithIdentifier:@"favoritesSection"];
 
-  if ((v33 & 1) == 0)
+  if ((items & 1) == 0)
   {
-    v36 = [(HUDashboardItemManager *)self favoritesItemProvider];
-    v37 = [v36 items];
-    v38 = [v37 na_setByIntersectingWithSet:v4];
+    favoritesItemProvider = [(HUDashboardItemManager *)self favoritesItemProvider];
+    items2 = [favoritesItemProvider items];
+    v38 = [items2 na_setByIntersectingWithSet:itemsCopy];
 
     v39 = [(HUDashboardItemManager *)self _buildFavoritesSectionWithFavoriteItems:v38];
-    [v20 na_safeAddObjectsFromArray:v39];
+    [array2 na_safeAddObjectsFromArray:v39];
   }
 
-  v40 = [(HUDashboardItemManager *)self context];
-  v41 = [v40 accessoryGroupingStyle];
+  context9 = [(HUDashboardItemManager *)self context];
+  accessoryGroupingStyle = [context9 accessoryGroupingStyle];
 
-  if (v41 == 2)
+  if (accessoryGroupingStyle == 2)
   {
     v110[0] = MEMORY[0x277D85DD0];
     v110[1] = 3221225472;
@@ -1558,52 +1558,52 @@ LABEL_12:
     v110[4] = self;
     v42 = [v34 na_filter:v110];
     v43 = [(HUDashboardItemManager *)self _buildRoomSectionsWithItems:v42];
-    [v20 addObjectsFromArray:v43];
+    [array2 addObjectsFromArray:v43];
   }
 
-  v44 = [(HUDashboardItemManager *)self context];
-  v45 = [v44 accessoryGroupingStyle];
+  context10 = [(HUDashboardItemManager *)self context];
+  accessoryGroupingStyle2 = [context10 accessoryGroupingStyle];
 
-  if (v45 == 3)
+  if (accessoryGroupingStyle2 == 3)
   {
     v46 = [(HUDashboardItemManager *)self _buildAccessoryCategorySectionsWithItems:v34];
-    [v20 addObjectsFromArray:v46];
+    [array2 addObjectsFromArray:v46];
   }
 
-  v47 = [(HUDashboardItemManager *)self context];
-  v48 = [v47 shouldHideSectionWithIdentifier:@"AllAccessoriesSection"];
+  context11 = [(HUDashboardItemManager *)self context];
+  v48 = [context11 shouldHideSectionWithIdentifier:@"AllAccessoriesSection"];
 
   if ((v48 & 1) == 0)
   {
-    v49 = [(HUDashboardItemManager *)self _buildSingleAccessoryGroupSectionWithItems:v34 allDisplayedItems:v4];
-    [v20 addObject:v49];
+    v49 = [(HUDashboardItemManager *)self _buildSingleAccessoryGroupSectionWithItems:v34 allDisplayedItems:itemsCopy];
+    [array2 addObject:v49];
   }
 
   v107 = v34;
-  v50 = [(HUDashboardItemManager *)self context];
-  v51 = [v50 room];
+  context12 = [(HUDashboardItemManager *)self context];
+  room = [context12 room];
 
   v52 = objc_alloc(MEMORY[0x277CCAC98]);
-  if (v51)
+  if (room)
   {
-    v53 = [(HUDashboardItemManager *)self context];
-    v54 = [v53 room];
-    v55 = [v54 hf_dashboardSectionReorderableUUIDStringComparator];
-    v56 = [v52 initWithKey:@"identifier" ascending:1 comparator:v55];
+    context13 = [(HUDashboardItemManager *)self context];
+    room2 = [context13 room];
+    hf_dashboardSectionReorderableUUIDStringComparator = [room2 hf_dashboardSectionReorderableUUIDStringComparator];
+    v56 = [v52 initWithKey:@"identifier" ascending:1 comparator:hf_dashboardSectionReorderableUUIDStringComparator];
   }
 
   else
   {
-    v53 = [(HFItemManager *)self home];
-    v54 = [v53 hf_dashboardSectionReorderableUUIDStringComparator];
-    v56 = [v52 initWithKey:@"identifier" ascending:1 comparator:v54];
+    context13 = [(HFItemManager *)self home];
+    room2 = [context13 hf_dashboardSectionReorderableUUIDStringComparator];
+    v56 = [v52 initWithKey:@"identifier" ascending:1 comparator:room2];
   }
 
   v119[0] = v56;
   v57 = [MEMORY[0x277CBEA60] arrayWithObjects:v119 count:1];
-  [v20 sortUsingDescriptors:v57];
+  [array2 sortUsingDescriptors:v57];
 
-  [v5 na_safeAddObjectsFromArray:v20];
+  [array na_safeAddObjectsFromArray:array2];
   if (v108)
   {
     v109[0] = MEMORY[0x277D85DD0];
@@ -1611,34 +1611,34 @@ LABEL_12:
     v109[2] = __59__HUDashboardItemManager__buildSectionsWithDisplayedItems___block_invoke_2_311;
     v109[3] = &unk_277DBE490;
     v109[4] = self;
-    v58 = [v5 indexOfObjectPassingTest:v109];
-    if (v58 < [v5 count])
+    v58 = [array indexOfObjectPassingTest:v109];
+    if (v58 < [array count])
     {
       v59 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v58 + 1, objc_msgSend(v108, "count")}];
-      [v5 insertObjects:v108 atIndexes:v59];
+      [array insertObjects:v108 atIndexes:v59];
     }
   }
 
-  v60 = [(HUDashboardItemManager *)self context];
-  if (([v60 shouldHideSectionWithIdentifier:@"camerasSection"] & 1) == 0)
+  context14 = [(HUDashboardItemManager *)self context];
+  if (([context14 shouldHideSectionWithIdentifier:@"camerasSection"] & 1) == 0)
   {
-    v61 = [(HUDashboardItemManager *)self context];
-    v62 = [v61 cameraPresentationStyle];
+    context15 = [(HUDashboardItemManager *)self context];
+    cameraPresentationStyle2 = [context15 cameraPresentationStyle];
 
-    if (v62 != 2)
+    if (cameraPresentationStyle2 != 2)
     {
       goto LABEL_35;
     }
 
-    v63 = [(HUDashboardItemManager *)self cameraItemModule];
-    v60 = [v63 buildSectionsWithDisplayedItems:v4];
+    cameraItemModule2 = [(HUDashboardItemManager *)self cameraItemModule];
+    context14 = [cameraItemModule2 buildSectionsWithDisplayedItems:itemsCopy];
 
-    [v5 na_safeAddObjectsFromArray:v60];
+    [array na_safeAddObjectsFromArray:context14];
   }
 
 LABEL_35:
-  v64 = [(HUDashboardItemManager *)self context];
-  v65 = [v64 shouldHideSectionWithIdentifier:@"GuestAccessSection"];
+  context16 = [(HUDashboardItemManager *)self context];
+  v65 = [context16 shouldHideSectionWithIdentifier:@"GuestAccessSection"];
 
   if (v65)
   {
@@ -1649,18 +1649,18 @@ LABEL_35:
   v67 = _HULocalizedStringWithDefaultValue(@"HUDashboardSection_GuestAccess_Title", @"HUDashboardSection_GuestAccess_Title", 1);
   [v66 setHeaderTitle:v67];
 
-  v68 = [(HUDashboardItemManager *)self scheduleRuleItemProvider];
-  v69 = [v68 items];
-  v70 = [v4 intersectsSet:v69];
+  scheduleRuleItemProvider = [(HUDashboardItemManager *)self scheduleRuleItemProvider];
+  items3 = [scheduleRuleItemProvider items];
+  v70 = [itemsCopy intersectsSet:items3];
 
   v105 = v56;
   if (v70)
   {
-    v71 = [(HUDashboardItemManager *)self scheduleRuleItemProvider];
-    v72 = [v71 items];
-    v73 = [v72 allObjects];
-    v74 = [MEMORY[0x277D14A50] sortComparatorForScheduleRules];
-    v75 = [v73 sortedArrayUsingComparator:v74];
+    scheduleRuleItemProvider2 = [(HUDashboardItemManager *)self scheduleRuleItemProvider];
+    items4 = [scheduleRuleItemProvider2 items];
+    allObjects = [items4 allObjects];
+    sortComparatorForScheduleRules = [MEMORY[0x277D14A50] sortComparatorForScheduleRules];
+    v75 = [allObjects sortedArrayUsingComparator:sortComparatorForScheduleRules];
     [v66 setItems:v75];
 
     v56 = v105;
@@ -1669,106 +1669,106 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v76 = [(HUDashboardItemManager *)self alwaysAllowedScheduleItem];
-  v77 = [v4 containsObject:v76];
+  alwaysAllowedScheduleItem = [(HUDashboardItemManager *)self alwaysAllowedScheduleItem];
+  v77 = [itemsCopy containsObject:alwaysAllowedScheduleItem];
 
   if (v77)
   {
-    v71 = [(HUDashboardItemManager *)self alwaysAllowedScheduleItem];
-    v118 = v71;
-    v72 = [MEMORY[0x277CBEA60] arrayWithObjects:&v118 count:1];
-    [v66 setItems:v72];
+    scheduleRuleItemProvider2 = [(HUDashboardItemManager *)self alwaysAllowedScheduleItem];
+    v118 = scheduleRuleItemProvider2;
+    items4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v118 count:1];
+    [v66 setItems:items4];
     goto LABEL_40;
   }
 
 LABEL_41:
-  v78 = [(HUDashboardItemManager *)self pinCodeAccessItem];
-  v79 = [v4 containsObject:v78];
+  pinCodeAccessItem = [(HUDashboardItemManager *)self pinCodeAccessItem];
+  v79 = [itemsCopy containsObject:pinCodeAccessItem];
 
   if (v79)
   {
-    v80 = [v66 items];
-    v81 = [(HUDashboardItemManager *)self pinCodeAccessItem];
-    v117 = v81;
+    items5 = [v66 items];
+    pinCodeAccessItem2 = [(HUDashboardItemManager *)self pinCodeAccessItem];
+    v117 = pinCodeAccessItem2;
     v82 = [MEMORY[0x277CBEA60] arrayWithObjects:&v117 count:1];
-    v83 = [v80 arrayByAddingObjectsFromArray:v82];
+    v83 = [items5 arrayByAddingObjectsFromArray:v82];
     [v66 setItems:v83];
 
     v56 = v105;
   }
 
-  v84 = [(HUDashboardItemManager *)self homeKeyItem];
-  v85 = [v4 containsObject:v84];
+  homeKeyItem = [(HUDashboardItemManager *)self homeKeyItem];
+  v85 = [itemsCopy containsObject:homeKeyItem];
 
   if (v85)
   {
-    v86 = [v66 items];
-    v87 = [(HUDashboardItemManager *)self homeKeyItem];
-    v116 = v87;
+    items6 = [v66 items];
+    homeKeyItem2 = [(HUDashboardItemManager *)self homeKeyItem];
+    v116 = homeKeyItem2;
     v88 = [MEMORY[0x277CBEA60] arrayWithObjects:&v116 count:1];
-    v89 = [v86 arrayByAddingObjectsFromArray:v88];
+    v89 = [items6 arrayByAddingObjectsFromArray:v88];
     [v66 setItems:v89];
 
     v56 = v105;
   }
 
-  v90 = [(HUDashboardItemManager *)self contactOwnerItem];
-  v91 = [v4 containsObject:v90];
+  contactOwnerItem = [(HUDashboardItemManager *)self contactOwnerItem];
+  v91 = [itemsCopy containsObject:contactOwnerItem];
 
   if (v91)
   {
-    v92 = [v66 items];
-    v93 = [(HUDashboardItemManager *)self contactOwnerItem];
-    v115 = v93;
+    items7 = [v66 items];
+    contactOwnerItem2 = [(HUDashboardItemManager *)self contactOwnerItem];
+    v115 = contactOwnerItem2;
     v94 = [MEMORY[0x277CBEA60] arrayWithObjects:&v115 count:1];
-    v95 = [v92 arrayByAddingObjectsFromArray:v94];
+    v95 = [items7 arrayByAddingObjectsFromArray:v94];
     [v66 setItems:v95];
 
     v56 = v105;
   }
 
-  [v5 na_safeAddObject:v66];
+  [array na_safeAddObject:v66];
 
 LABEL_48:
-  v96 = [v5 na_firstObjectPassingTest:&__block_literal_global_319];
+  v96 = [array na_firstObjectPassingTest:&__block_literal_global_319];
   v97 = v107;
   if (v96)
   {
-    [v5 removeObject:v96];
-    [v5 addObject:v96];
+    [array removeObject:v96];
+    [array addObject:v96];
   }
 
-  v98 = [(HUDashboardItemManager *)self context];
-  if ([v98 shouldHideSectionWithIdentifier:@"servicePlaceholder"])
+  context17 = [(HUDashboardItemManager *)self context];
+  if ([context17 shouldHideSectionWithIdentifier:@"servicePlaceholder"])
   {
     goto LABEL_55;
   }
 
-  v99 = [(HFItemManager *)self home];
-  if ([v99 hf_hasVisibleAccessories])
+  home = [(HFItemManager *)self home];
+  if ([home hf_hasVisibleAccessories])
   {
 
 LABEL_55:
     goto LABEL_56;
   }
 
-  v100 = [(HUDashboardItemManager *)self context];
-  v101 = [v100 shouldHidePlaceholderService];
+  context18 = [(HUDashboardItemManager *)self context];
+  shouldHidePlaceholderService = [context18 shouldHidePlaceholderService];
 
   v97 = v107;
-  if ((v101 & 1) == 0)
+  if ((shouldHidePlaceholderService & 1) == 0)
   {
-    v102 = [(HUDashboardItemManager *)self servicePlaceholderItemModule];
-    v98 = [v102 buildSectionsWithDisplayedItems:v4];
+    servicePlaceholderItemModule = [(HUDashboardItemManager *)self servicePlaceholderItemModule];
+    context17 = [servicePlaceholderItemModule buildSectionsWithDisplayedItems:itemsCopy];
 
-    [v5 na_safeAddObjectsFromArray:v98];
+    [array na_safeAddObjectsFromArray:context17];
     goto LABEL_55;
   }
 
 LABEL_56:
-  v103 = v5;
+  v103 = array;
 
-  return v5;
+  return array;
 }
 
 uint64_t __59__HUDashboardItemManager__buildSectionsWithDisplayedItems___block_invoke(uint64_t a1, void *a2)
@@ -1870,89 +1870,89 @@ uint64_t __59__HUDashboardItemManager__buildSectionsWithDisplayedItems___block_i
   return v5;
 }
 
-- (id)_buildFavoritesSectionWithFavoriteItems:(id)a3
+- (id)_buildFavoritesSectionWithFavoriteItems:(id)items
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"favoritesSection"];
   v7 = _HULocalizedStringWithDefaultValue(@"HUDashboardFavoritesHeaderTitle", @"HUDashboardFavoritesHeaderTitle", 1);
   [v6 setHeaderTitle:v7];
 
-  v8 = [(HUDashboardItemManager *)self reorderableFavoritesList];
-  v9 = [v8 sortedHomeKitItemComparator];
-  if (!v8)
+  reorderableFavoritesList = [(HUDashboardItemManager *)self reorderableFavoritesList];
+  sortedHomeKitItemComparator = [reorderableFavoritesList sortedHomeKitItemComparator];
+  if (!reorderableFavoritesList)
   {
     v17.receiver = self;
     v17.super_class = HUDashboardItemManager;
     v10 = [(HFItemManager *)&v17 _comparatorForSectionIdentifier:@"favoritesSection"];
 
-    v9 = v10;
+    sortedHomeKitItemComparator = v10;
   }
 
-  v11 = [v5 allObjects];
-  v12 = [v11 sortedArrayUsingComparator:v9];
+  allObjects = [itemsCopy allObjects];
+  v12 = [allObjects sortedArrayUsingComparator:sortedHomeKitItemComparator];
   [v6 setItems:v12];
 
   v13 = MEMORY[0x277D14778];
   v18[0] = v6;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  v15 = [v13 filterSections:v14 toDisplayedItems:v5];
+  v15 = [v13 filterSections:v14 toDisplayedItems:itemsCopy];
 
   return v15;
 }
 
-- (id)_buildNowPlayingSectionWithItems:(id)a3 forRouteIdentifier:(id)a4
+- (id)_buildNowPlayingSectionWithItems:(id)items forRouteIdentifier:(id)identifier
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = MEMORY[0x277D14850];
-  v8 = a3;
+  itemsCopy = items;
   v9 = [[v7 alloc] initWithIdentifier:@"NowPlayingSection"];
   v10 = _HULocalizedStringWithDefaultValue(@"HUDashboardNowPlayingSectionTitle", @"HUDashboardNowPlayingSectionTitle", 1);
   [v9 setHeaderTitle:v10];
 
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [(HUDashboardItemManager *)self fakeSpeakersAndTVsItemProvider];
-  v13 = [v12 items];
-  v14 = [v13 count];
+  array = [MEMORY[0x277CBEB18] array];
+  fakeSpeakersAndTVsItemProvider = [(HUDashboardItemManager *)self fakeSpeakersAndTVsItemProvider];
+  items = [fakeSpeakersAndTVsItemProvider items];
+  v14 = [items count];
 
   if (v14)
   {
-    v15 = [(HUDashboardItemManager *)self fakeSpeakersAndTVsItemProvider];
-    v16 = [v15 items];
-    v17 = [v16 allObjects];
-    [v11 addObjectsFromArray:v17];
+    fakeSpeakersAndTVsItemProvider2 = [(HUDashboardItemManager *)self fakeSpeakersAndTVsItemProvider];
+    items2 = [fakeSpeakersAndTVsItemProvider2 items];
+    allObjects = [items2 allObjects];
+    [array addObjectsFromArray:allObjects];
   }
 
-  v18 = [(HUDashboardItemManager *)self speakersAndTVsItemProvider];
-  v19 = [v18 items];
-  v20 = [v19 count];
+  speakersAndTVsItemProvider = [(HUDashboardItemManager *)self speakersAndTVsItemProvider];
+  items3 = [speakersAndTVsItemProvider items];
+  v20 = [items3 count];
 
   if (v20)
   {
-    v21 = [(HUDashboardItemManager *)self speakersAndTVsItemProvider];
-    v22 = [v21 items];
-    v23 = [v22 allObjects];
+    speakersAndTVsItemProvider2 = [(HUDashboardItemManager *)self speakersAndTVsItemProvider];
+    items4 = [speakersAndTVsItemProvider2 items];
+    allObjects2 = [items4 allObjects];
     v35 = MEMORY[0x277D85DD0];
     v36 = 3221225472;
     v37 = __78__HUDashboardItemManager__buildNowPlayingSectionWithItems_forRouteIdentifier___block_invoke;
     v38 = &unk_277DBE4B8;
-    v39 = v6;
-    v24 = [v23 na_firstObjectPassingTest:&v35];
+    v39 = identifierCopy;
+    v24 = [allObjects2 na_firstObjectPassingTest:&v35];
 
-    [v11 na_safeAddObject:{v24, v35, v36, v37, v38}];
+    [array na_safeAddObject:{v24, v35, v36, v37, v38}];
   }
 
-  v25 = [(HUDashboardItemManager *)self context];
-  v26 = [v25 maximumNumberOfItemsInSectionWithIdentifier:@"SpeakersAndTVsSection"];
+  context = [(HUDashboardItemManager *)self context];
+  v26 = [context maximumNumberOfItemsInSectionWithIdentifier:@"SpeakersAndTVsSection"];
 
   if (v26 < 2)
   {
-    if ([v11 count])
+    if ([array count])
     {
-      v30 = [v11 firstObject];
-      v41[0] = v30;
+      firstObject = [array firstObject];
+      v41[0] = firstObject;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
     }
 
@@ -1964,11 +1964,11 @@ uint64_t __59__HUDashboardItemManager__buildSectionsWithDisplayedItems___block_i
 
   else
   {
-    v27 = v11;
-    v28 = [(HUDashboardItemManager *)self context];
-    v29 = [v28 room];
+    v27 = array;
+    context2 = [(HUDashboardItemManager *)self context];
+    room = [context2 room];
 
-    if (!v29)
+    if (!room)
     {
       [v9 setHeaderTitle:0];
     }
@@ -1978,7 +1978,7 @@ uint64_t __59__HUDashboardItemManager__buildSectionsWithDisplayedItems___block_i
   v31 = MEMORY[0x277D14778];
   v40 = v9;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
-  v33 = [v31 filterSections:v32 toDisplayedItems:v8];
+  v33 = [v31 filterSections:v32 toDisplayedItems:itemsCopy];
 
   return v33;
 }
@@ -2006,25 +2006,25 @@ uint64_t __78__HUDashboardItemManager__buildNowPlayingSectionWithItems_forRouteI
   return v8;
 }
 
-- (id)_buildRoomSectionsWithItems:(id)a3
+- (id)_buildRoomSectionsWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = MEMORY[0x277D14308];
-  v6 = [v4 allObjects];
-  v7 = [(HFItemManager *)self home];
+  allObjects = [itemsCopy allObjects];
+  home = [(HFItemManager *)self home];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__HUDashboardItemManager__buildRoomSectionsWithItems___block_invoke;
   v13[3] = &unk_277DBE4E0;
   v13[4] = self;
-  v8 = [v5 createRoomSectionsWithItems:v6 inHome:v7 sectionIdentifierBlock:v13];
+  v8 = [v5 createRoomSectionsWithItems:allObjects inHome:home sectionIdentifierBlock:v13];
 
-  v9 = [(HUDashboardItemManager *)self context];
-  LODWORD(v6) = [v9 shouldHideEmptySections];
+  context = [(HUDashboardItemManager *)self context];
+  LODWORD(allObjects) = [context shouldHideEmptySections];
 
-  if (v6)
+  if (allObjects)
   {
-    v10 = [MEMORY[0x277D14778] filterSections:v8 toDisplayedItems:v4];
+    v10 = [MEMORY[0x277D14778] filterSections:v8 toDisplayedItems:itemsCopy];
   }
 
   else
@@ -2056,50 +2056,50 @@ id __54__HUDashboardItemManager__buildRoomSectionsWithItems___block_invoke(uint6
   return v6;
 }
 
-- (id)_buildSingleAccessoryGroupSectionWithItems:(id)a3 allDisplayedItems:(id)a4
+- (id)_buildSingleAccessoryGroupSectionWithItems:(id)items allDisplayedItems:(id)displayedItems
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemsCopy = items;
   v7 = MEMORY[0x277D14850];
-  v8 = a4;
+  displayedItemsCopy = displayedItems;
   v9 = [[v7 alloc] initWithIdentifier:@"AllAccessoriesSection"];
   v10 = _HULocalizedStringWithDefaultValue(@"HUDashboardSection_Accessories_Title", @"HUDashboardSection_Accessories_Title", 1);
   [v9 setHeaderTitle:v10];
 
-  v11 = [(HUDashboardItemManager *)self accessoryNoAccessItem];
-  v12 = [v8 containsObject:v11];
+  accessoryNoAccessItem = [(HUDashboardItemManager *)self accessoryNoAccessItem];
+  v12 = [displayedItemsCopy containsObject:accessoryNoAccessItem];
 
   if (v12)
   {
-    v13 = [(HUDashboardItemManager *)self accessoryNoAccessItem];
-    v17[0] = v13;
-    v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    [v9 setItems:v14];
+    accessoryNoAccessItem2 = [(HUDashboardItemManager *)self accessoryNoAccessItem];
+    v17[0] = accessoryNoAccessItem2;
+    defaultItemComparator = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
+    [v9 setItems:defaultItemComparator];
   }
 
   else
   {
-    v13 = [v6 allObjects];
-    v14 = [MEMORY[0x277D14778] defaultItemComparator];
-    v15 = [v13 sortedArrayUsingComparator:v14];
+    accessoryNoAccessItem2 = [itemsCopy allObjects];
+    defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+    v15 = [accessoryNoAccessItem2 sortedArrayUsingComparator:defaultItemComparator];
     [v9 setItems:v15];
   }
 
   return v9;
 }
 
-- (id)_buildAccessoryCategorySectionsWithItems:(id)a3
+- (id)_buildAccessoryCategorySectionsWithItems:(id)items
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB58] setWithSet:v4];
+  itemsCopy = items;
+  v5 = [MEMORY[0x277CBEB58] setWithSet:itemsCopy];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__16;
   v31 = __Block_byref_object_dispose__16;
   v32 = 0;
-  v6 = [MEMORY[0x277D14308] sortedAccessoryTypeGroups];
+  sortedAccessoryTypeGroups = [MEMORY[0x277D14308] sortedAccessoryTypeGroups];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __67__HUDashboardItemManager__buildAccessoryCategorySectionsWithItems___block_invoke;
@@ -2108,7 +2108,7 @@ id __54__HUDashboardItemManager__buildRoomSectionsWithItems___block_invoke(uint6
   v7 = v5;
   v25 = v7;
   v26 = &v27;
-  v8 = [v6 na_map:v24];
+  v8 = [sortedAccessoryTypeGroups na_map:v24];
 
   if ([v7 count])
   {
@@ -2117,7 +2117,7 @@ id __54__HUDashboardItemManager__buildRoomSectionsWithItems___block_invoke(uint6
     {
       v10 = [v7 count];
       *buf = 138412802;
-      v34 = self;
+      selfCopy = self;
       v35 = 2048;
       v36 = v10;
       v37 = 2112;
@@ -2125,32 +2125,32 @@ id __54__HUDashboardItemManager__buildRoomSectionsWithItems___block_invoke(uint6
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@ Found %lu item(s) without an identified category: %@", buf, 0x20u);
     }
 
-    v11 = [MEMORY[0x277D14378] otherAccessoryTypeGroup];
-    v12 = [(HUDashboardItemManager *)self reorderableServiceListForType:v11];
-    v13 = [v12 sortedHomeKitItemComparator];
-    v14 = v13;
-    if (v13)
+    otherAccessoryTypeGroup = [MEMORY[0x277D14378] otherAccessoryTypeGroup];
+    v12 = [(HUDashboardItemManager *)self reorderableServiceListForType:otherAccessoryTypeGroup];
+    sortedHomeKitItemComparator = [v12 sortedHomeKitItemComparator];
+    v14 = sortedHomeKitItemComparator;
+    if (sortedHomeKitItemComparator)
     {
-      v15 = _Block_copy(v13);
+      v15 = _Block_copy(sortedHomeKitItemComparator);
     }
 
     else
     {
-      v16 = [MEMORY[0x277D14778] defaultItemComparator];
-      v15 = _Block_copy(v16);
+      defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+      v15 = _Block_copy(defaultItemComparator);
     }
 
-    v17 = [v7 allObjects];
-    v18 = [v17 sortedArrayUsingComparator:v15];
+    allObjects = [v7 allObjects];
+    v18 = [allObjects sortedArrayUsingComparator:v15];
     [v28[5] setItems:v18];
   }
 
-  v19 = [(HUDashboardItemManager *)self context];
-  v20 = [v19 shouldHideEmptySections];
+  context = [(HUDashboardItemManager *)self context];
+  shouldHideEmptySections = [context shouldHideEmptySections];
 
-  if (v20)
+  if (shouldHideEmptySections)
   {
-    v21 = [MEMORY[0x277D14778] filterSections:v8 toDisplayedItems:v4];
+    v21 = [MEMORY[0x277D14778] filterSections:v8 toDisplayedItems:itemsCopy];
   }
 
   else
@@ -2234,114 +2234,114 @@ uint64_t __67__HUDashboardItemManager__buildAccessoryCategorySectionsWithItems__
   return v5;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v10.receiver = self;
   v10.super_class = HUDashboardItemManager;
-  v4 = a3;
-  v5 = [(HFItemManager *)&v10 _itemsToHideInSet:v4];
+  setCopy = set;
+  v5 = [(HFItemManager *)&v10 _itemsToHideInSet:setCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [(HUDashboardItemManager *)self homeMenuStatusItems];
-  v8 = [v4 na_setByIntersectingWithSet:v7];
+  homeMenuStatusItems = [(HUDashboardItemManager *)self homeMenuStatusItems];
+  v8 = [setCopy na_setByIntersectingWithSet:homeMenuStatusItems];
 
   [v6 unionSet:v8];
 
   return v6;
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = [HUStatusItemModule alloc];
-  v6 = [(HUDashboardItemManager *)self context];
-  v7 = [(HUStatusItemModule *)v5 initWithContext:v6 itemUpdater:self];
+  context = [(HUDashboardItemManager *)self context];
+  v7 = [(HUStatusItemModule *)v5 initWithContext:context itemUpdater:self];
   [(HUDashboardItemManager *)self setStatusItemModule:v7];
 
-  v8 = [(HUDashboardItemManager *)self statusItemModule];
-  [v4 na_safeAddObject:v8];
+  statusItemModule = [(HUDashboardItemManager *)self statusItemModule];
+  [array na_safeAddObject:statusItemModule];
 
   v9 = [HUDashboardActionSetItemModule alloc];
-  v10 = [(HUDashboardItemManager *)self context];
-  v11 = [(HUDashboardActionSetItemModule *)v9 initWithContext:v10 itemUpdater:self];
+  context2 = [(HUDashboardItemManager *)self context];
+  v11 = [(HUDashboardActionSetItemModule *)v9 initWithContext:context2 itemUpdater:self];
   [(HUDashboardItemManager *)self setActionSetItemModule:v11];
 
-  v12 = [(HUDashboardItemManager *)self actionSetItemModule];
-  [v4 na_safeAddObject:v12];
+  actionSetItemModule = [(HUDashboardItemManager *)self actionSetItemModule];
+  [array na_safeAddObject:actionSetItemModule];
 
   v13 = [HUDashboardCameraItemModule alloc];
-  v14 = [(HUDashboardItemManager *)self context];
-  v15 = [(HUDashboardCameraItemModule *)v13 initWithContext:v14 itemUpdater:self];
+  context3 = [(HUDashboardItemManager *)self context];
+  v15 = [(HUDashboardCameraItemModule *)v13 initWithContext:context3 itemUpdater:self];
   [(HUDashboardItemManager *)self setCameraItemModule:v15];
 
-  v16 = [(HUDashboardItemManager *)self cameraItemModule];
-  [v4 na_safeAddObject:v16];
+  cameraItemModule = [(HUDashboardItemManager *)self cameraItemModule];
+  [array na_safeAddObject:cameraItemModule];
 
   if ([MEMORY[0x277D14670] isHomeApp])
   {
-    v17 = [(HUDashboardItemManager *)self context];
-    v18 = [v17 shouldCreateModule:objc_opt_class()];
+    context4 = [(HUDashboardItemManager *)self context];
+    v18 = [context4 shouldCreateModule:objc_opt_class()];
 
     if (v18)
     {
       v19 = [HUBannerItemModule alloc];
-      v20 = [(HUDashboardItemManager *)self context];
-      v21 = [(HUBannerItemModule *)v19 initWithContext:v20 itemUpdater:self];
+      context5 = [(HUDashboardItemManager *)self context];
+      v21 = [(HUBannerItemModule *)v19 initWithContext:context5 itemUpdater:self];
       [(HUDashboardItemManager *)self setBannerItemModule:v21];
 
-      v22 = [(HUDashboardItemManager *)self bannerItemModule];
-      [v4 na_safeAddObject:v22];
+      bannerItemModule = [(HUDashboardItemManager *)self bannerItemModule];
+      [array na_safeAddObject:bannerItemModule];
     }
 
     v23 = [HUDashboardTipModule alloc];
-    v24 = [(HUDashboardItemManager *)self context];
-    v25 = [(HUDashboardTipModule *)v23 initWithContext:v24 itemUpdater:self];
+    context6 = [(HUDashboardItemManager *)self context];
+    v25 = [(HUDashboardTipModule *)v23 initWithContext:context6 itemUpdater:self];
     [(HUDashboardItemManager *)self setTipItemModule:v25];
 
-    v26 = [(HUDashboardItemManager *)self tipItemModule];
-    [v4 na_safeAddObject:v26];
+    tipItemModule = [(HUDashboardItemManager *)self tipItemModule];
+    [array na_safeAddObject:tipItemModule];
   }
 
-  v27 = [(HUDashboardItemManager *)self servicePlaceholderItemModule];
-  [v4 na_safeAddObject:v27];
+  servicePlaceholderItemModule = [(HUDashboardItemManager *)self servicePlaceholderItemModule];
+  [array na_safeAddObject:servicePlaceholderItemModule];
 
   v28 = [HUEnergyDashboardItemModule alloc];
-  v29 = [(HUDashboardItemManager *)self context];
-  v30 = [(HFItemManager *)self home];
-  v31 = [(HUEnergyDashboardItemModule *)v28 initWithItemUpdater:self dashboardContext:v29 home:v30];
+  context7 = [(HUDashboardItemManager *)self context];
+  home = [(HFItemManager *)self home];
+  v31 = [(HUEnergyDashboardItemModule *)v28 initWithItemUpdater:self dashboardContext:context7 home:home];
   [(HUDashboardItemManager *)self setEnergyDashboardItemModule:v31];
 
-  v32 = [(HUDashboardItemManager *)self energyDashboardItemModule];
-  [v4 na_safeAddObject:v32];
+  energyDashboardItemModule = [(HUDashboardItemManager *)self energyDashboardItemModule];
+  [array na_safeAddObject:energyDashboardItemModule];
 
-  return v4;
+  return array;
 }
 
-- (void)_didFinishUpdateTransactionWithAffectedItems:(id)a3
+- (void)_didFinishUpdateTransactionWithAffectedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v11.receiver = self;
   v11.super_class = HUDashboardItemManager;
-  [(HFItemManager *)&v11 _didFinishUpdateTransactionWithAffectedItems:v4];
+  [(HFItemManager *)&v11 _didFinishUpdateTransactionWithAffectedItems:itemsCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__HUDashboardItemManager__didFinishUpdateTransactionWithAffectedItems___block_invoke;
   v10[3] = &unk_277DB85D8;
   v10[4] = self;
-  v5 = [v4 na_filter:v10];
+  v5 = [itemsCopy na_filter:v10];
   if ([v5 count])
   {
-    v6 = [(HUDashboardItemManager *)self dashboardDelegate];
-    [v6 dashboardItemManager:self didUpdateHomeMenuStatusItems:v5];
+    dashboardDelegate = [(HUDashboardItemManager *)self dashboardDelegate];
+    [dashboardDelegate dashboardItemManager:self didUpdateHomeMenuStatusItems:v5];
   }
 
-  v7 = [(HFItemManager *)self sourceItem];
-  v8 = [v4 containsObject:v7];
+  sourceItem = [(HFItemManager *)self sourceItem];
+  v8 = [itemsCopy containsObject:sourceItem];
 
   if (v8)
   {
-    v9 = [(HFItemManager *)self itemModules];
-    [v9 na_each:&__block_literal_global_349];
+    itemModules = [(HFItemManager *)self itemModules];
+    [itemModules na_each:&__block_literal_global_349];
   }
 }
 
@@ -2354,105 +2354,105 @@ void __71__HUDashboardItemManager__didFinishUpdateTransactionWithAffectedItems__
   }
 }
 
-- (id)reorderableServiceListForRoom:(id)a3
+- (id)reorderableServiceListForRoom:(id)room
 {
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  roomCopy = room;
+  uniqueIdentifier = [roomCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  v7 = [(HUDashboardItemManager *)self clientReorderableServiceListByRoom];
+  clientReorderableServiceListByRoom = [(HUDashboardItemManager *)self clientReorderableServiceListByRoom];
 
-  if (!v7)
+  if (!clientReorderableServiceListByRoom)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(HUDashboardItemManager *)self setClientReorderableServiceListByRoom:v8];
   }
 
-  v9 = [(HUDashboardItemManager *)self clientReorderableServiceListByRoom];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  clientReorderableServiceListByRoom2 = [(HUDashboardItemManager *)self clientReorderableServiceListByRoom];
+  v10 = [clientReorderableServiceListByRoom2 objectForKeyedSubscript:uUIDString];
 
   if (v10)
   {
-    v11 = [(HUDashboardItemManager *)self clientReorderableServiceListByRoom];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    clientReorderableServiceListByRoom3 = [(HUDashboardItemManager *)self clientReorderableServiceListByRoom];
+    hf_reorderableServicesList = [clientReorderableServiceListByRoom3 objectForKeyedSubscript:uUIDString];
   }
 
   else
   {
-    v12 = [v4 hf_reorderableServicesList];
+    hf_reorderableServicesList = [roomCopy hf_reorderableServicesList];
   }
 
-  return v12;
+  return hf_reorderableServicesList;
 }
 
-- (void)setReorderableServiceList:(id)a3 forRoom:(id)a4
+- (void)setReorderableServiceList:(id)list forRoom:(id)room
 {
-  v6 = a3;
-  v7 = [a4 uniqueIdentifier];
-  v9 = [v7 UUIDString];
+  listCopy = list;
+  uniqueIdentifier = [room uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  v8 = [(HUDashboardItemManager *)self clientReorderableServiceListByRoom];
-  [v8 setObject:v6 forKeyedSubscript:v9];
+  clientReorderableServiceListByRoom = [(HUDashboardItemManager *)self clientReorderableServiceListByRoom];
+  [clientReorderableServiceListByRoom setObject:listCopy forKeyedSubscript:uUIDString];
 }
 
-- (id)reorderableServiceListForType:(id)a3
+- (id)reorderableServiceListForType:(id)type
 {
-  v4 = [a3 uniqueIdentifier];
-  v5 = [v4 UUIDString];
+  uniqueIdentifier = [type uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  v6 = [(HUDashboardItemManager *)self clientReorderableServiceByTypeList];
+  clientReorderableServiceByTypeList = [(HUDashboardItemManager *)self clientReorderableServiceByTypeList];
 
-  if (!v6)
+  if (!clientReorderableServiceByTypeList)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(HUDashboardItemManager *)self setClientReorderableServiceByTypeList:v7];
   }
 
-  v8 = [(HUDashboardItemManager *)self clientReorderableServiceByTypeList];
-  v9 = [v8 objectForKeyedSubscript:v5];
+  clientReorderableServiceByTypeList2 = [(HUDashboardItemManager *)self clientReorderableServiceByTypeList];
+  v9 = [clientReorderableServiceByTypeList2 objectForKeyedSubscript:uUIDString];
 
   if (v9)
   {
-    v10 = [(HUDashboardItemManager *)self clientReorderableServiceByTypeList];
-    v11 = [v10 objectForKeyedSubscript:v5];
+    clientReorderableServiceByTypeList3 = [(HUDashboardItemManager *)self clientReorderableServiceByTypeList];
+    v11 = [clientReorderableServiceByTypeList3 objectForKeyedSubscript:uUIDString];
   }
 
   else
   {
-    v10 = [(HFItemManager *)self sourceItem];
-    v12 = [v10 latestResults];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13EF0]];
-    v11 = [v13 objectForKeyedSubscript:v5];
+    clientReorderableServiceByTypeList3 = [(HFItemManager *)self sourceItem];
+    latestResults = [clientReorderableServiceByTypeList3 latestResults];
+    v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EF0]];
+    v11 = [v13 objectForKeyedSubscript:uUIDString];
   }
 
   return v11;
 }
 
-- (void)setReorderableServiceList:(id)a3 forType:(id)a4
+- (void)setReorderableServiceList:(id)list forType:(id)type
 {
-  v6 = a3;
-  v7 = [a4 uniqueIdentifier];
-  v9 = [v7 UUIDString];
+  listCopy = list;
+  uniqueIdentifier = [type uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  v8 = [(HUDashboardItemManager *)self clientReorderableServiceByTypeList];
-  [v8 setObject:v6 forKeyedSubscript:v9];
+  clientReorderableServiceByTypeList = [(HUDashboardItemManager *)self clientReorderableServiceByTypeList];
+  [clientReorderableServiceByTypeList setObject:listCopy forKeyedSubscript:uUIDString];
 }
 
 - (id)reorderableFavoritesList
 {
-  v3 = [(HUDashboardItemManager *)self clientReorderableFavoritesList];
+  clientReorderableFavoritesList = [(HUDashboardItemManager *)self clientReorderableFavoritesList];
 
-  if (v3)
+  if (clientReorderableFavoritesList)
   {
-    v4 = [(HUDashboardItemManager *)self clientReorderableFavoritesList];
+    clientReorderableFavoritesList2 = [(HUDashboardItemManager *)self clientReorderableFavoritesList];
   }
 
   else
   {
     objc_opt_class();
-    v5 = [(HFItemManager *)self sourceItem];
-    v6 = [v5 latestResults];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13EE8]];
+    sourceItem = [(HFItemManager *)self sourceItem];
+    latestResults = [sourceItem latestResults];
+    v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EE8]];
     if (objc_opt_isKindOfClass())
     {
       v8 = v7;
@@ -2463,45 +2463,45 @@ void __71__HUDashboardItemManager__didFinishUpdateTransactionWithAffectedItems__
       v8 = 0;
     }
 
-    v4 = v8;
+    clientReorderableFavoritesList2 = v8;
   }
 
-  return v4;
+  return clientReorderableFavoritesList2;
 }
 
-- (void)_updateHomeDashboardWithHome:(id)a3
+- (void)_updateHomeDashboardWithHome:(id)home
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [HUDashboardContext homeDashboardForHome:v5];
+  homeCopy = home;
+  v6 = [HUDashboardContext homeDashboardForHome:homeCopy];
   context = self->_context;
   self->_context = v6;
 
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v5 uniqueIdentifier];
+    uniqueIdentifier = [homeCopy uniqueIdentifier];
     v10 = self->_context;
     *buf = 138412802;
-    v20 = v5;
+    v20 = homeCopy;
     v21 = 2114;
-    v22 = v9;
+    v22 = uniqueIdentifier;
     v23 = 2112;
     v24 = v10;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_INFO, "<HUDashboardItemManager-_updateHomeDashboardWithHome:> home = %@ (uniqueIdentifier = %{public}@) | created new _context = %@", buf, 0x20u);
   }
 
-  v11 = [(HUDashboardItemManager *)self dashboardDelegate];
-  v12 = [(HUDashboardItemManager *)self context];
-  [v11 dashboardItemManager:self didUpdateContext:v12];
+  dashboardDelegate = [(HUDashboardItemManager *)self dashboardDelegate];
+  context = [(HUDashboardItemManager *)self context];
+  [dashboardDelegate dashboardItemManager:self didUpdateContext:context];
 
   [(HFItemManager *)self recalculateVisibilityAndSortAllItems];
-  v13 = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
-  v18[0] = v13;
-  v14 = [(HUDashboardItemManager *)self accessoryTransformItemProvider];
-  v18[1] = v14;
-  v15 = [(HUDashboardItemManager *)self staticItemProvider];
-  v18[2] = v15;
+  accessoryLikeItemProvider = [(HUDashboardItemManager *)self accessoryLikeItemProvider];
+  v18[0] = accessoryLikeItemProvider;
+  accessoryTransformItemProvider = [(HUDashboardItemManager *)self accessoryTransformItemProvider];
+  v18[1] = accessoryTransformItemProvider;
+  staticItemProvider = [(HUDashboardItemManager *)self staticItemProvider];
+  v18[2] = staticItemProvider;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
   v17 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:v16 senderSelector:a2];
 }
@@ -2518,8 +2518,8 @@ void __71__HUDashboardItemManager__didFinishUpdateTransactionWithAffectedItems__
   v4.receiver = self;
   v4.super_class = HUDashboardItemManager;
   [(HFItemManager *)&v4 _registerForExternalUpdates];
-  v3 = [(HUDashboardItemManager *)self pinCodeManager];
-  [v3 addObserver:self];
+  pinCodeManager = [(HUDashboardItemManager *)self pinCodeManager];
+  [pinCodeManager addObserver:self];
 }
 
 - (void)_unregisterForExternalUpdates
@@ -2527,77 +2527,77 @@ void __71__HUDashboardItemManager__didFinishUpdateTransactionWithAffectedItems__
   v4.receiver = self;
   v4.super_class = HUDashboardItemManager;
   [(HFItemManager *)&v4 _unregisterForExternalUpdates];
-  v3 = [(HUDashboardItemManager *)self pinCodeManager];
-  [v3 removeObserver:self];
+  pinCodeManager = [(HUDashboardItemManager *)self pinCodeManager];
+  [pinCodeManager removeObserver:self];
 }
 
-- (void)home:(id)a3 didAddRoom:(id)a4
+- (void)home:(id)home didAddRoom:(id)room
 {
   v5.receiver = self;
   v5.super_class = HUDashboardItemManager;
-  [(HFItemManager *)&v5 home:a3 didAddRoom:a4];
+  [(HFItemManager *)&v5 home:home didAddRoom:room];
   [(HFItemManager *)self recalculateVisibilityAndSortAllItems];
 }
 
-- (void)home:(id)a3 didRemoveRoom:(id)a4
+- (void)home:(id)home didRemoveRoom:(id)room
 {
   v5.receiver = self;
   v5.super_class = HUDashboardItemManager;
-  [(HFItemManager *)&v5 home:a3 didRemoveRoom:a4];
+  [(HFItemManager *)&v5 home:home didRemoveRoom:room];
   [(HFItemManager *)self recalculateVisibilityAndSortAllItems];
 }
 
-- (void)homeDidUpdateApplicationData:(id)a3
+- (void)homeDidUpdateApplicationData:(id)data
 {
   v9.receiver = self;
   v9.super_class = HUDashboardItemManager;
-  [(HFItemManager *)&v9 homeDidUpdateApplicationData:a3];
+  [(HFItemManager *)&v9 homeDidUpdateApplicationData:data];
   [(HFItemManager *)self recalculateVisibilityAndSortAllItems];
-  v5 = [(HUDashboardItemManager *)self actionSetItemModule];
-  v6 = [v5 itemProviders];
-  v7 = [v6 allObjects];
-  v8 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:v7 senderSelector:a2];
+  actionSetItemModule = [(HUDashboardItemManager *)self actionSetItemModule];
+  itemProviders = [actionSetItemModule itemProviders];
+  allObjects = [itemProviders allObjects];
+  v8 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:allObjects senderSelector:a2];
 }
 
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  userCopy = user;
   v14.receiver = self;
   v14.super_class = HUDashboardItemManager;
-  [(HFItemManager *)&v14 homeDidUpdateAccessControlForCurrentUser:v4];
+  [(HFItemManager *)&v14 homeDidUpdateAccessControlForCurrentUser:userCopy];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 currentUser];
-    v7 = [v6 uniqueIdentifier];
-    v8 = [v4 uniqueIdentifier];
+    currentUser = [userCopy currentUser];
+    uniqueIdentifier = [currentUser uniqueIdentifier];
+    uniqueIdentifier2 = [userCopy uniqueIdentifier];
     *buf = 138543874;
-    v16 = v7;
+    v16 = uniqueIdentifier;
     v17 = 2112;
-    v18 = v4;
+    v18 = userCopy;
     v19 = 2114;
-    v20 = v8;
+    v20 = uniqueIdentifier2;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "<HUDashboardItemManager-homeDidUpdateAccessControlForCurrentUser:> Access control for current user (uniqueIdentifier:%{public}@) did update for home: %@ (uniqueIdentifier: %{public}@)", buf, 0x20u);
   }
 
-  v9 = [(HUDashboardItemManager *)self context];
-  v10 = [v9 home];
-  v11 = v4;
+  context = [(HUDashboardItemManager *)self context];
+  home = [context home];
+  v11 = userCopy;
   v12 = v11;
-  if (v10 == v11)
+  if (home == v11)
   {
   }
 
   else
   {
-    if (!v10)
+    if (!home)
     {
 
       goto LABEL_12;
     }
 
-    v13 = [v10 isEqual:v11];
+    v13 = [home isEqual:v11];
 
     if ((v13 & 1) == 0)
     {
@@ -2613,44 +2613,44 @@ void __71__HUDashboardItemManager__didFinishUpdateTransactionWithAffectedItems__
 LABEL_12:
 }
 
-- (void)homeDidUpdateHomeLocationStatus:(id)a3
+- (void)homeDidUpdateHomeLocationStatus:(id)status
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  statusCopy = status;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    [v5 homeLocationStatus];
+    [statusCopy homeLocationStatus];
     v8 = HMStringFromHomeLocation();
     v14 = 138413058;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v7;
     v18 = 2112;
-    v19 = v5;
+    v19 = statusCopy;
     v20 = 2112;
     v21 = v8;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: %@ Home location status did update for home: %@. homeLocationStatus = %@", &v14, 0x2Au);
   }
 
-  v9 = [(HUDashboardItemManager *)self context];
-  v10 = [v9 home];
-  v11 = v5;
+  context = [(HUDashboardItemManager *)self context];
+  home = [context home];
+  v11 = statusCopy;
   v12 = v11;
-  if (v10 == v11)
+  if (home == v11)
   {
   }
 
   else
   {
-    if (!v10)
+    if (!home)
     {
 
       goto LABEL_11;
     }
 
-    v13 = [v10 isEqual:v11];
+    v13 = [home isEqual:v11];
 
     if ((v13 & 1) == 0)
     {
@@ -2666,41 +2666,41 @@ LABEL_12:
 LABEL_11:
 }
 
-- (void)restrictedGuestAllowedPeriodStarted:(id)a3
+- (void)restrictedGuestAllowedPeriodStarted:(id)started
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  startedCopy = started;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v17 = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v7;
     v21 = 2112;
-    v22 = v5;
+    v22 = startedCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: %@ Restricted Guest allowed period started for user: %@.", &v17, 0x20u);
   }
 
-  v8 = [(HUDashboardItemManager *)self context];
-  v9 = [v8 home];
-  v10 = [v9 currentUser];
-  v11 = v5;
+  context = [(HUDashboardItemManager *)self context];
+  home = [context home];
+  currentUser = [home currentUser];
+  v11 = startedCopy;
   v12 = v11;
-  if (v10 == v11)
+  if (currentUser == v11)
   {
   }
 
   else
   {
-    if (!v10)
+    if (!currentUser)
     {
 
       goto LABEL_11;
     }
 
-    v13 = [v10 isEqual:v11];
+    v13 = [currentUser isEqual:v11];
 
     if ((v13 & 1) == 0)
     {
@@ -2708,56 +2708,56 @@ LABEL_11:
     }
   }
 
-  v14 = [(HUDashboardItemManager *)self context];
-  v15 = [v14 home];
-  v16 = [v15 hf_currentUserIsRestrictedGuest];
+  context2 = [(HUDashboardItemManager *)self context];
+  home2 = [context2 home];
+  hf_currentUserIsRestrictedGuest = [home2 hf_currentUserIsRestrictedGuest];
 
-  if (v16)
+  if (hf_currentUserIsRestrictedGuest)
   {
-    v8 = [(HUDashboardItemManager *)self context];
-    v9 = [v8 home];
-    [(HUDashboardItemManager *)self _updateHomeDashboardWithHome:v9];
+    context = [(HUDashboardItemManager *)self context];
+    home = [context home];
+    [(HUDashboardItemManager *)self _updateHomeDashboardWithHome:home];
 LABEL_11:
   }
 
 LABEL_12:
 }
 
-- (void)restrictedGuestAllowedPeriodEnded:(id)a3
+- (void)restrictedGuestAllowedPeriodEnded:(id)ended
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  endedCopy = ended;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v17 = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v7;
     v21 = 2112;
-    v22 = v5;
+    v22 = endedCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: %@ Restricted Guest allowed period ended for user: %@.", &v17, 0x20u);
   }
 
-  v8 = [(HUDashboardItemManager *)self context];
-  v9 = [v8 home];
-  v10 = [v9 currentUser];
-  v11 = v5;
+  context = [(HUDashboardItemManager *)self context];
+  home = [context home];
+  currentUser = [home currentUser];
+  v11 = endedCopy;
   v12 = v11;
-  if (v10 == v11)
+  if (currentUser == v11)
   {
   }
 
   else
   {
-    if (!v10)
+    if (!currentUser)
     {
 
       goto LABEL_11;
     }
 
-    v13 = [v10 isEqual:v11];
+    v13 = [currentUser isEqual:v11];
 
     if ((v13 & 1) == 0)
     {
@@ -2765,51 +2765,51 @@ LABEL_12:
     }
   }
 
-  v14 = [(HUDashboardItemManager *)self context];
-  v15 = [v14 home];
-  v16 = [v15 hf_currentUserIsRestrictedGuest];
+  context2 = [(HUDashboardItemManager *)self context];
+  home2 = [context2 home];
+  hf_currentUserIsRestrictedGuest = [home2 hf_currentUserIsRestrictedGuest];
 
-  if (v16)
+  if (hf_currentUserIsRestrictedGuest)
   {
-    v8 = [(HUDashboardItemManager *)self context];
-    v9 = [v8 home];
-    [(HUDashboardItemManager *)self _updateHomeDashboardWithHome:v9];
+    context = [(HUDashboardItemManager *)self context];
+    home = [context home];
+    [(HUDashboardItemManager *)self _updateHomeDashboardWithHome:home];
 LABEL_11:
   }
 
 LABEL_12:
 }
 
-- (void)homeManager:(id)a3 didUpdateHH2State:(BOOL)a4
+- (void)homeManager:(id)manager didUpdateHH2State:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v21 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = HUDashboardItemManager;
-  [(HFItemManager *)&v14 homeManager:a3 didUpdateHH2State:?];
+  [(HFItemManager *)&v14 homeManager:manager didUpdateHH2State:?];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HUDashboardItemManager *)self context];
-    v8 = [v7 home];
-    v9 = [(HUDashboardItemManager *)self context];
-    v10 = [v9 home];
-    v11 = [v10 uniqueIdentifier];
+    context = [(HUDashboardItemManager *)self context];
+    home = [context home];
+    context2 = [(HUDashboardItemManager *)self context];
+    home2 = [context2 home];
+    uniqueIdentifier = [home2 uniqueIdentifier];
     *buf = 67109634;
-    v16 = v4;
+    v16 = stateCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = home;
     v19 = 2114;
-    v20 = v11;
+    v20 = uniqueIdentifier;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "<HUDashboardItemManager-homeManager:didUpdateHH2State:> didUpdateHH2State = %{BOOL}d | Updating context for home %@ (uniqueIdentifier: %{public}@)", buf, 0x1Cu);
   }
 
-  v12 = [(HUDashboardItemManager *)self context];
-  v13 = [v12 home];
-  [(HUDashboardItemManager *)self _updateHomeDashboardWithHome:v13];
+  context3 = [(HUDashboardItemManager *)self context];
+  home3 = [context3 home];
+  [(HUDashboardItemManager *)self _updateHomeDashboardWithHome:home3];
 }
 
-- (void)pinCodeManagerDidUpdate:(id)a3 pinCodes:(id)a4
+- (void)pinCodeManagerDidUpdate:(id)update pinCodes:(id)codes
 {
   v17 = *MEMORY[0x277D85DE8];
   v6 = HFLogForCategory();
@@ -2817,18 +2817,18 @@ LABEL_12:
   {
     v7 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v7;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@: %@ Reloading PIN Code related items...", buf, 0x16u);
   }
 
-  v8 = [(HUDashboardItemManager *)self nonBlockingItemProvider];
+  nonBlockingItemProvider = [(HUDashboardItemManager *)self nonBlockingItemProvider];
 
-  if (v8)
+  if (nonBlockingItemProvider)
   {
-    v9 = [(HUDashboardItemManager *)self nonBlockingItemProvider];
-    v12 = v9;
+    nonBlockingItemProvider2 = [(HUDashboardItemManager *)self nonBlockingItemProvider];
+    v12 = nonBlockingItemProvider2;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
     v11 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:v10 senderSelector:a2];
   }

@@ -1,23 +1,23 @@
 @interface _UIProgressiveBlurContextController
-- (_UIProgressiveBlurContextController)initWithPresentedViewController:(id)a3;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (_UIProgressiveBlurContextController)initWithPresentedViewController:(id)controller;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)viewDidLoad;
 @end
 
 @implementation _UIProgressiveBlurContextController
 
-- (_UIProgressiveBlurContextController)initWithPresentedViewController:(id)a3
+- (_UIProgressiveBlurContextController)initWithPresentedViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = _UIProgressiveBlurContextController;
   v6 = [(UIViewController *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presentedViewController, a3);
+    objc_storeStrong(&v6->_presentedViewController, controller);
     v8 = _UISolariumEnabled();
     v9 = 5003;
     if (v8)
@@ -40,46 +40,46 @@
   [(UIViewController *)&v17 viewDidLoad];
   if (!self->_presentedViewController)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIProgressiveBlurContextController.m" lineNumber:39 description:@"A view controller to present is required"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIProgressiveBlurContextController.m" lineNumber:39 description:@"A view controller to present is required"];
   }
 
   [(UIViewController *)self addChildViewController:?];
-  v4 = [(UIViewController *)self view];
-  [v4 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIViewController *)self->_presentedViewController view];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  view2 = [(UIViewController *)self->_presentedViewController view];
+  [view2 setFrame:{v6, v8, v10, v12}];
 
-  v14 = [(UIViewController *)self view];
-  v15 = [(UIViewController *)self->_presentedViewController view];
-  [v14 addSubview:v15];
+  view3 = [(UIViewController *)self view];
+  view4 = [(UIViewController *)self->_presentedViewController view];
+  [view3 addSubview:view4];
 
   [(UIViewController *)self->_presentedViewController didMoveToParentViewController:self];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v5 = [[_UIProgressiveBlurPresentationAnimator alloc] initForPresenting:1];
 
   return v5;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = [[_UIProgressiveBlurPresentationAnimator alloc] initForPresenting:0];
 
   return v3;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[_UIProgressiveBlurPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v7];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v9 = [[_UIProgressiveBlurPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   [(_UIProgressiveBlurPresentationController *)v9 setBlurStyle:[(_UIProgressiveBlurContextController *)self blurStyle]];
 

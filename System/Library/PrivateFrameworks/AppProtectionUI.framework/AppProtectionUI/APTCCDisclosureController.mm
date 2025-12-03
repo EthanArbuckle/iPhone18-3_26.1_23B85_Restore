@@ -1,7 +1,7 @@
 @interface APTCCDisclosureController
-- (APTCCDisclosureController)initWithApplication:(id)a3 users:(id)a4 includeDoneButton:(BOOL)a5 scrollViewAssistant:(id)a6;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (APTCCDisclosureController)initWithApplication:(id)application users:(id)users includeDoneButton:(BOOL)button scrollViewAssistant:(id)assistant;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)setScrollContentInsets;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -9,17 +9,17 @@
 
 @implementation APTCCDisclosureController
 
-- (APTCCDisclosureController)initWithApplication:(id)a3 users:(id)a4 includeDoneButton:(BOOL)a5 scrollViewAssistant:(id)a6
+- (APTCCDisclosureController)initWithApplication:(id)application users:(id)users includeDoneButton:(BOOL)button scrollViewAssistant:(id)assistant
 {
-  v48 = a5;
+  buttonCopy = button;
   v60[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v47 = a4;
-  v56 = a4;
-  v46 = a6;
-  v55 = a6;
-  v54 = [v9 findApplicationRecordWithError:0];
-  v10 = [v54 localizedName];
+  applicationCopy = application;
+  usersCopy = users;
+  usersCopy2 = users;
+  assistantCopy = assistant;
+  assistantCopy2 = assistant;
+  v54 = [applicationCopy findApplicationRecordWithError:0];
+  localizedName = [v54 localizedName];
   v11 = APGetPreferredAuthenticationMechanism() - 1;
   if (v11 >= 3)
   {
@@ -40,8 +40,8 @@
   v14 = APUIFrameworkBundle();
   v15 = [v14 localizedStringForKey:v12 value:&stru_1F2485CF8 table:@"Localizable"];
 
-  v53 = v10;
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:v15, v10];
+  v53 = localizedName;
+  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:v15, localizedName];
 
   v17 = MEMORY[0x1E696AEC0];
   v18 = APGetPreferredAuthenticationMechanismLocKey();
@@ -54,52 +54,52 @@
 
   v22 = [APSymbolBadgedAppIconView alloc];
   +[APSymbolBadgedAppIconView metricsForEducation];
-  v57 = v9;
-  v23 = [(APSymbolBadgedAppIconView *)v22 initWithApplication:v9 symbolType:@"com.apple.appprotection.lock.education" metrics:v58];
+  v57 = applicationCopy;
+  v23 = [(APSymbolBadgedAppIconView *)v22 initWithApplication:applicationCopy symbolType:@"com.apple.appprotection.lock.education" metrics:v58];
   [(APSymbolBadgedAppIconView *)v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v24 = [(APTCCDisclosureController *)v21 headerView];
-  v25 = [v24 customIconContainerView];
-  [v25 setClipsToBounds:0];
+  headerView = [(APTCCDisclosureController *)v21 headerView];
+  customIconContainerView = [headerView customIconContainerView];
+  [customIconContainerView setClipsToBounds:0];
 
-  v26 = [(APTCCDisclosureController *)v21 headerView];
-  v27 = [v26 customIconContainerView];
-  [v27 addSubview:v23];
+  headerView2 = [(APTCCDisclosureController *)v21 headerView];
+  customIconContainerView2 = [headerView2 customIconContainerView];
+  [customIconContainerView2 addSubview:v23];
 
   v49 = MEMORY[0x1E696ACD8];
-  v50 = [(APSymbolBadgedAppIconView *)v23 centerXAnchor];
-  v51 = [(APTCCDisclosureController *)v21 headerView];
-  v28 = [v51 customIconContainerView];
-  v29 = [v28 centerXAnchor];
-  v30 = [v50 constraintEqualToAnchor:v29];
+  centerXAnchor = [(APSymbolBadgedAppIconView *)v23 centerXAnchor];
+  headerView3 = [(APTCCDisclosureController *)v21 headerView];
+  customIconContainerView3 = [headerView3 customIconContainerView];
+  centerXAnchor2 = [customIconContainerView3 centerXAnchor];
+  v30 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v60[0] = v30;
   v52 = v23;
-  v31 = [(APSymbolBadgedAppIconView *)v23 centerYAnchor];
-  v32 = [(APTCCDisclosureController *)v21 headerView];
-  v33 = [v32 customIconContainerView];
-  v34 = [v33 centerYAnchor];
-  v35 = [v31 constraintEqualToAnchor:v34];
+  centerYAnchor = [(APSymbolBadgedAppIconView *)v23 centerYAnchor];
+  headerView4 = [(APTCCDisclosureController *)v21 headerView];
+  customIconContainerView4 = [headerView4 customIconContainerView];
+  centerYAnchor2 = [customIconContainerView4 centerYAnchor];
+  v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v60[1] = v35;
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:2];
   [v49 activateConstraints:v36];
 
   if (v21)
   {
-    objc_storeStrong(&v21->_app, a3);
-    objc_storeStrong(&v21->_scrollViewAssistant, v46);
-    objc_storeStrong(&v21->_users, v47);
-    if (v48)
+    objc_storeStrong(&v21->_app, application);
+    objc_storeStrong(&v21->_scrollViewAssistant, assistantCopy);
+    objc_storeStrong(&v21->_users, usersCopy);
+    if (buttonCopy)
     {
-      v37 = [MEMORY[0x1E69B7D00] boldButton];
+      boldButton = [MEMORY[0x1E69B7D00] boldButton];
       doneButton = v21->_doneButton;
-      v21->_doneButton = v37;
+      v21->_doneButton = boldButton;
 
       v39 = v21->_doneButton;
       v40 = APUIFrameworkBundle();
       v41 = [v40 localizedStringForKey:@"DONE" value:&stru_1F2485CF8 table:@"Localizable"];
       [(OBBoldTrayButton *)v39 setTitle:v41 forState:0];
 
-      v42 = [(APTCCDisclosureController *)v21 buttonTray];
-      [v42 addButton:v21->_doneButton];
+      buttonTray = [(APTCCDisclosureController *)v21 buttonTray];
+      [buttonTray addButton:v21->_doneButton];
     }
   }
 
@@ -116,34 +116,34 @@
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"APTCCDisclosureCell"];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"APTCCDisclosureCell"];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setDataSource:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDataSource:self];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setDelegate:self];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setDelegate:self];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [v8 setBackgroundColor:v9];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [tableView4 setBackgroundColor:clearColor];
 
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 setBackgroundView:0];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setBackgroundView:0];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 reloadData];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 reloadData];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(OBTableWelcomeController *)self tableView];
-  v7 = [v6 dequeueReusableCellWithIdentifier:@"APTCCDisclosureCell"];
+  pathCopy = path;
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v7 = [tableView dequeueReusableCellWithIdentifier:@"APTCCDisclosureCell"];
 
   users = self->_users;
-  v9 = [v5 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)users objectAtIndex:v9];
   [v7 configureForRecord:v10];
@@ -151,9 +151,9 @@
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -167,8 +167,8 @@
 - (void)setScrollContentInsets
 {
   scrollViewAssistant = self->_scrollViewAssistant;
-  v3 = [(OBTableWelcomeController *)self scrollView];
-  [(APButtonTrayScrollViewAssistant *)scrollViewAssistant performAdjustmentsForScrollView:v3];
+  scrollView = [(OBTableWelcomeController *)self scrollView];
+  [(APButtonTrayScrollViewAssistant *)scrollViewAssistant performAdjustmentsForScrollView:scrollView];
 }
 
 - (void)viewDidLayoutSubviews

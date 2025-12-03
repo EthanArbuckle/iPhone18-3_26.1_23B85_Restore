@@ -1,16 +1,16 @@
 @interface MOClientRequestStore
-- (MOClientRequestStore)initWithPersistenceManager:(id)a3;
-- (void)fetchMostRecentClientRequestWithHandler:(id)a3;
-- (void)removeExpiredClientRequestsWithHandler:(id)a3;
-- (void)storeClientRequest:(id)a3 handler:(id)a4;
+- (MOClientRequestStore)initWithPersistenceManager:(id)manager;
+- (void)fetchMostRecentClientRequestWithHandler:(id)handler;
+- (void)removeExpiredClientRequestsWithHandler:(id)handler;
+- (void)storeClientRequest:(id)request handler:(id)handler;
 @end
 
 @implementation MOClientRequestStore
 
-- (MOClientRequestStore)initWithPersistenceManager:(id)a3
+- (MOClientRequestStore)initWithPersistenceManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v13.receiver = self;
     v13.super_class = MOClientRequestStore;
@@ -18,7 +18,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_persistenceManager, a3);
+      objc_storeStrong(&v6->_persistenceManager, manager);
       v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v9 = dispatch_queue_create("MOClientRequestStore", v8);
       queue = v7->_queue;
@@ -26,37 +26,37 @@
     }
 
     self = v7;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)storeClientRequest:(id)a3 handler:(id)a4
+- (void)storeClientRequest:(id)request handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__3;
   v18 = __Block_byref_object_dispose__3;
   v19 = 0;
-  if (v6)
+  if (requestCopy)
   {
-    v8 = [(MOClientRequestStore *)self persistenceManager];
+    persistenceManager = [(MOClientRequestStore *)self persistenceManager];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = __51__MOClientRequestStore_storeClientRequest_handler___block_invoke;
     v11[3] = &unk_1000B4E58;
-    v12 = v6;
+    v12 = requestCopy;
     v13 = &v14;
-    [v8 performBlockAndWait:v11];
+    [persistenceManager performBlockAndWait:v11];
 
     v9 = v12;
   }
@@ -71,9 +71,9 @@
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v15[5]);
+    handlerCopy[2](handlerCopy, v15[5]);
   }
 
   _Block_object_dispose(&v14, 8);
@@ -169,9 +169,9 @@ LABEL_8:
   [v3 reset];
 }
 
-- (void)fetchMostRecentClientRequestWithHandler:(id)a3
+- (void)fetchMostRecentClientRequestWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -184,7 +184,7 @@ LABEL_8:
   v11[2] = __Block_byref_object_copy__3;
   v11[3] = __Block_byref_object_dispose__3;
   v12 = 0;
-  v6 = [(MOClientRequestStore *)self persistenceManager];
+  persistenceManager = [(MOClientRequestStore *)self persistenceManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __64__MOClientRequestStore_fetchMostRecentClientRequestWithHandler___block_invoke;
@@ -192,9 +192,9 @@ LABEL_8:
   v9[5] = &v10;
   v9[6] = a2;
   v9[4] = &v13;
-  [v6 performBlockAndWait:v9];
+  [persistenceManager performBlockAndWait:v9];
 
-  if (v5)
+  if (handlerCopy)
   {
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityClientRequestStore);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -203,7 +203,7 @@ LABEL_8:
       [(MOClientRequestStore *)v8 fetchMostRecentClientRequestWithHandler:v11, buf, v7];
     }
 
-    v5[2](v5, *(v11[0] + 40), v14[5]);
+    handlerCopy[2](handlerCopy, *(v11[0] + 40), v14[5]);
   }
 
   _Block_object_dispose(&v10, 8);
@@ -258,27 +258,27 @@ void __64__MOClientRequestStore_fetchMostRecentClientRequestWithHandler___block_
   [v3 reset];
 }
 
-- (void)removeExpiredClientRequestsWithHandler:(id)a3
+- (void)removeExpiredClientRequestsWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__3;
   v12 = __Block_byref_object_dispose__3;
   v13 = 0;
-  v6 = [(MOClientRequestStore *)self persistenceManager];
+  persistenceManager = [(MOClientRequestStore *)self persistenceManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __63__MOClientRequestStore_removeExpiredClientRequestsWithHandler___block_invoke;
   v7[3] = &unk_1000B4EA8;
   v7[4] = &v8;
   v7[5] = a2;
-  [v6 performBlockAndWait:v7];
+  [persistenceManager performBlockAndWait:v7];
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, v9[5]);
+    handlerCopy[2](handlerCopy, v9[5]);
   }
 
   _Block_object_dispose(&v8, 8);

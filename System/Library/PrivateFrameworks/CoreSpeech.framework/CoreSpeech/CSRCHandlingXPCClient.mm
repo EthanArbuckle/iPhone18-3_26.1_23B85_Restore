@@ -3,7 +3,7 @@
 - (id)_getRemoteServiceProxyObject;
 - (void)_createClientConnection;
 - (void)dealloc;
-- (void)getMitigationDecisionForRCIdWithCompletion:(unint64_t)a3 requestId:(id)a4 completion:(id)a5;
+- (void)getMitigationDecisionForRCIdWithCompletion:(unint64_t)completion requestId:(id)id completion:(id)a5;
 - (void)invalidate;
 @end
 
@@ -217,10 +217,10 @@ void __53__CSRCHandlingXPCClient__getRemoteServiceProxyObject__block_invoke(uint
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getMitigationDecisionForRCIdWithCompletion:(unint64_t)a3 requestId:(id)a4 completion:(id)a5
+- (void)getMitigationDecisionForRCIdWithCompletion:(unint64_t)completion requestId:(id)id completion:(id)a5
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  idCopy = id;
   v9 = a5;
   v10 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -228,12 +228,12 @@ void __53__CSRCHandlingXPCClient__getRemoteServiceProxyObject__block_invoke(uint
     v13 = 136315394;
     v14 = "[CSRCHandlingXPCClient getMitigationDecisionForRCIdWithCompletion:requestId:completion:]";
     v15 = 2048;
-    v16 = a3;
+    completionCopy = completion;
     _os_log_impl(&dword_222E4D000, v10, OS_LOG_TYPE_DEFAULT, "%s Getting mitigation decision for rdId: %lu", &v13, 0x16u);
   }
 
-  v11 = [(CSRCHandlingXPCClient *)self _getRemoteServiceProxyObject];
-  [v11 getMitigationDecisionForRCIdWithCompletion:a3 requestId:v8 completion:v9];
+  _getRemoteServiceProxyObject = [(CSRCHandlingXPCClient *)self _getRemoteServiceProxyObject];
+  [_getRemoteServiceProxyObject getMitigationDecisionForRCIdWithCompletion:completion requestId:idCopy completion:v9];
 
   v12 = *MEMORY[0x277D85DE8];
 }

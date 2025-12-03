@@ -1,11 +1,11 @@
 @interface VMVoicemailTranscript
 - (VMVoicemailTranscript)init;
-- (VMVoicemailTranscript)initWithCoder:(id)a3;
-- (VMVoicemailTranscript)initWithTranscriberResult:(id)a3;
-- (VMVoicemailTranscript)initWithTranscription:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VMVoicemailTranscript)initWithCoder:(id)coder;
+- (VMVoicemailTranscript)initWithTranscriberResult:(id)result;
+- (VMVoicemailTranscript)initWithTranscription:(id)transcription;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VMVoicemailTranscript
@@ -30,10 +30,10 @@
   return v3;
 }
 
-- (VMVoicemailTranscript)initWithTranscription:(id)a3
+- (VMVoicemailTranscript)initWithTranscription:(id)transcription
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transcriptionCopy = transcription;
   v38.receiver = self;
   v38.super_class = VMVoicemailTranscript;
   v5 = [(VMVoicemailTranscript *)&v38 init];
@@ -42,13 +42,13 @@
   {
     v5->_confidence = 0.0;
     v5->_confidenceRating = 0;
-    v7 = [v4 formattedString];
+    formattedString = [transcriptionCopy formattedString];
     transcriptionString = v6->_transcriptionString;
-    v6->_transcriptionString = v7;
+    v6->_transcriptionString = formattedString;
 
     v9 = objc_alloc(MEMORY[0x277CBEB18]);
-    v10 = [v4 segments];
-    v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+    segments = [transcriptionCopy segments];
+    v11 = [v9 initWithCapacity:{objc_msgSend(segments, "count")}];
 
     +[VMConfiguration confidenceSegmentThreshold];
     v13 = v12;
@@ -56,8 +56,8 @@
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v14 = [v4 segments];
-    v15 = [v14 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    segments2 = [transcriptionCopy segments];
+    v15 = [segments2 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v15)
     {
       v16 = v15;
@@ -69,7 +69,7 @@
         {
           if (*v35 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(segments2);
           }
 
           v20 = *(*(&v34 + 1) + 8 * i);
@@ -81,7 +81,7 @@
           [v11 addObject:v23];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v16 = [segments2 countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v16);
@@ -139,10 +139,10 @@
   return v6;
 }
 
-- (VMVoicemailTranscript)initWithTranscriberResult:(id)a3
+- (VMVoicemailTranscript)initWithTranscriberResult:(id)result
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   v34.receiver = self;
   v34.super_class = VMVoicemailTranscript;
   v5 = [(VMVoicemailTranscript *)&v34 init];
@@ -151,16 +151,16 @@
   {
     v5->_confidence = 0.0;
     v5->_confidenceRating = 0;
-    v7 = [v4 contextualizedTranscriberMultisegmentResult];
-    v8 = [v7 transcriptions];
-    v9 = [v8 firstObject];
+    contextualizedTranscriberMultisegmentResult = [resultCopy contextualizedTranscriberMultisegmentResult];
+    transcriptions = [contextualizedTranscriberMultisegmentResult transcriptions];
+    firstObject = [transcriptions firstObject];
 
-    v10 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v11 = v9;
+    v11 = firstObject;
     v12 = [v11 countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v12)
     {
@@ -176,8 +176,8 @@
           }
 
           v16 = *(*(&v30 + 1) + 8 * i);
-          v17 = [v16 text];
-          [v10 appendString:v17];
+          text = [v16 text];
+          [string appendString:text];
 
           [v16 confidence];
           *&v18 = v18 + v6->_confidence;
@@ -197,7 +197,7 @@
     }
 
     v6->_confidence = confidence;
-    objc_storeStrong(&v6->_transcriptionString, v10);
+    objc_storeStrong(&v6->_transcriptionString, string);
     v20 = vm_framework_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -243,72 +243,72 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(VMVoicemailTranscript *)self confidence];
   *(v5 + 8) = v6;
   *(v5 + 32) = [(VMVoicemailTranscript *)self confidenceRating];
-  v7 = [(VMVoicemailTranscript *)self segments];
-  v8 = [v7 copyWithZone:a3];
+  segments = [(VMVoicemailTranscript *)self segments];
+  v8 = [segments copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(VMVoicemailTranscript *)self transcriptionString];
-  v11 = [v10 copyWithZone:a3];
+  transcriptionString = [(VMVoicemailTranscript *)self transcriptionString];
+  v11 = [transcriptionString copyWithZone:zone];
   v12 = *(v5 + 16);
   *(v5 + 16) = v11;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   confidence = self->_confidence;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_confidence);
   *&v7 = confidence;
-  [v5 encodeFloat:v6 forKey:v7];
+  [coderCopy encodeFloat:v6 forKey:v7];
 
   confidenceRating = self->_confidenceRating;
   v9 = NSStringFromSelector(sel_confidenceRating);
-  [v5 encodeInteger:confidenceRating forKey:v9];
+  [coderCopy encodeInteger:confidenceRating forKey:v9];
 
   segments = self->_segments;
   v11 = NSStringFromSelector(sel_segments);
-  [v5 encodeObject:segments forKey:v11];
+  [coderCopy encodeObject:segments forKey:v11];
 
   transcriptionString = self->_transcriptionString;
   v13 = NSStringFromSelector(sel_transcriptionString);
-  [v5 encodeObject:transcriptionString forKey:v13];
+  [coderCopy encodeObject:transcriptionString forKey:v13];
 }
 
-- (VMVoicemailTranscript)initWithCoder:(id)a3
+- (VMVoicemailTranscript)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = VMVoicemailTranscript;
   v5 = [(VMVoicemailTranscript *)&v20 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_confidence);
-    [v4 decodeFloatForKey:v6];
+    [coderCopy decodeFloatForKey:v6];
     v5->_confidence = v7;
 
     v8 = NSStringFromSelector(sel_confidenceRating);
-    v5->_confidenceRating = [v4 decodeIntegerForKey:v8];
+    v5->_confidenceRating = [coderCopy decodeIntegerForKey:v8];
 
     v9 = MEMORY[0x277CBEB98];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
     v12 = NSStringFromSelector(sel_segments);
-    v13 = [v4 decodeObjectOfClasses:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClasses:v11 forKey:v12];
     segments = v5->_segments;
     v5->_segments = v13;
 
     v15 = objc_opt_class();
     v16 = NSStringFromSelector(sel_transcriptionString);
-    v17 = [v4 decodeObjectOfClass:v15 forKey:v16];
+    v17 = [coderCopy decodeObjectOfClass:v15 forKey:v16];
     transcriptionString = v5->_transcriptionString;
     v5->_transcriptionString = v17;
   }
@@ -321,8 +321,8 @@
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v3 appendFormat:@"=====================================================\n"];
-  v4 = [(VMVoicemailTranscript *)self transcriptionString];
-  [v3 appendFormat:@"%@\n", v4];
+  transcriptionString = [(VMVoicemailTranscript *)self transcriptionString];
+  [v3 appendFormat:@"%@\n", transcriptionString];
 
   [v3 appendFormat:@"=====================================================\n"];
   [v3 appendString:@"Comprised of:\n"];
@@ -330,8 +330,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(VMVoicemailTranscript *)self segments];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  segments = [(VMVoicemailTranscript *)self segments];
+  v6 = [segments countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -342,14 +342,14 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(segments);
         }
 
         v10 = [*(*(&v15 + 1) + 8 * i) debugDescription];
         [v3 appendFormat:@"%@\n", v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [segments countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);

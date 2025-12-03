@@ -1,23 +1,23 @@
 @interface HMImmutableSettingsProtoBoundedIntegerSettingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMinValue:(BOOL)a3;
-- (void)setHasStepValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMinValue:(BOOL)value;
+- (void)setHasStepValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMImmutableSettingsProtoBoundedIntegerSettingEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   value = self->_value;
-  v6 = v4[4];
+  v6 = fromCopy[4];
   if (value)
   {
     if (!v6)
@@ -25,7 +25,7 @@
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     value = [(HMImmutableSettingsProtoIntegerValueEvent *)value mergeFrom:?];
   }
 
@@ -36,18 +36,18 @@
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     value = [(HMImmutableSettingsProtoBoundedIntegerSettingEvent *)self setValue:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 40);
+  v7 = *(fromCopy + 40);
   if ((v7 & 2) != 0)
   {
-    self->_minValue = v4[2];
+    self->_minValue = fromCopy[2];
     *&self->_has |= 2u;
-    v7 = *(v4 + 40);
+    v7 = *(fromCopy + 40);
     if ((v7 & 1) == 0)
     {
 LABEL_9:
@@ -60,23 +60,23 @@ LABEL_9:
     }
   }
 
-  else if ((v4[5] & 1) == 0)
+  else if ((fromCopy[5] & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_maxValue = v4[1];
+  self->_maxValue = fromCopy[1];
   *&self->_has |= 1u;
-  if ((v4[5] & 4) != 0)
+  if ((fromCopy[5] & 4) != 0)
   {
 LABEL_10:
-    self->_stepValue = v4[3];
+    self->_stepValue = fromCopy[3];
     *&self->_has |= 4u;
   }
 
 LABEL_11:
 
-  MEMORY[0x1EEE66BB8](value, v4);
+  MEMORY[0x1EEE66BB8](value, fromCopy);
 }
 
 - (unint64_t)hash
@@ -120,16 +120,16 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   value = self->_value;
-  if (value | *(v4 + 4))
+  if (value | *(equalCopy + 4))
   {
     if (![(HMImmutableSettingsProtoIntegerValueEvent *)value isEqual:?])
     {
@@ -139,13 +139,13 @@ LABEL_4:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_minValue != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_minValue != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_18:
     v6 = 0;
@@ -154,21 +154,21 @@ LABEL_18:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_maxValue != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_maxValue != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_18;
   }
 
-  v6 = (*(v4 + 40) & 4) == 0;
+  v6 = (*(equalCopy + 40) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_stepValue != *(v4 + 3))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_stepValue != *(equalCopy + 3))
     {
       goto LABEL_18;
     }
@@ -181,10 +181,10 @@ LABEL_19:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HMImmutableSettingsProtoIntegerValueEvent *)self->_value copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HMImmutableSettingsProtoIntegerValueEvent *)self->_value copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -226,21 +226,21 @@ LABEL_4:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_value)
   {
-    v6 = v4;
-    [v4 setValue:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setValue:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_minValue;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = self->_minValue;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -259,26 +259,26 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = self->_maxValue;
-  *(v4 + 40) |= 1u;
+  *(toCopy + 1) = self->_maxValue;
+  *(toCopy + 40) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
-    *(v4 + 3) = self->_stepValue;
-    *(v4 + 40) |= 4u;
+    *(toCopy + 3) = self->_stepValue;
+    *(toCopy + 40) |= 4u;
   }
 
 LABEL_7:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -286,7 +286,7 @@ LABEL_7:
   {
     minValue = self->_minValue;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -307,13 +307,13 @@ LABEL_5:
 
   maxValue = self->_maxValue;
   PBDataWriterWriteInt64Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     stepValue = self->_stepValue;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
@@ -321,19 +321,19 @@ LABEL_7:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   value = self->_value;
   if (value)
   {
-    v5 = [(HMImmutableSettingsProtoIntegerValueEvent *)value dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"value"];
+    dictionaryRepresentation = [(HMImmutableSettingsProtoIntegerValueEvent *)value dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"value"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_minValue];
-    [v3 setObject:v9 forKey:@"minValue"];
+    [dictionary setObject:v9 forKey:@"minValue"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -354,18 +354,18 @@ LABEL_5:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_maxValue];
-  [v3 setObject:v10 forKey:@"maxValue"];
+  [dictionary setObject:v10 forKey:@"maxValue"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_stepValue];
-    [v3 setObject:v7 forKey:@"stepValue"];
+    [dictionary setObject:v7 forKey:@"stepValue"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -374,15 +374,15 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = HMImmutableSettingsProtoBoundedIntegerSettingEvent;
   v4 = [(HMImmutableSettingsProtoBoundedIntegerSettingEvent *)&v8 description];
-  v5 = [(HMImmutableSettingsProtoBoundedIntegerSettingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMImmutableSettingsProtoBoundedIntegerSettingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasStepValue:(BOOL)a3
+- (void)setHasStepValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -395,9 +395,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMinValue:(BOOL)a3
+- (void)setHasMinValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }

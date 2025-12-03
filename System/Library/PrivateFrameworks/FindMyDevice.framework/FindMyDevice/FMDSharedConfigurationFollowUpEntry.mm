@@ -1,7 +1,7 @@
 @interface FMDSharedConfigurationFollowUpEntry
 - (FMDSharedConfigurationFollowUpEntry)init;
-- (FMDSharedConfigurationFollowUpEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FMDSharedConfigurationFollowUpEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDSharedConfigurationFollowUpEntry
@@ -38,56 +38,56 @@
   return v3;
 }
 
-- (FMDSharedConfigurationFollowUpEntry)initWithCoder:(id)a3
+- (FMDSharedConfigurationFollowUpEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = FMDSharedConfigurationFollowUpEntry;
   v5 = [(FMDSharedConfigurationFollowUpEntry *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"informativeText"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"informativeText"];
     [(FMDSharedConfigurationFollowUpEntry *)v5 setInformativeText:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reminderInMins"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reminderInMins"];
     [(FMDSharedConfigurationFollowUpEntry *)v5 setReminderInMins:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idNumber"];
     [(FMDSharedConfigurationFollowUpEntry *)v5 setIdNumber:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     [(FMDSharedConfigurationFollowUpEntry *)v5 setMessage:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
     [(FMDSharedConfigurationFollowUpEntry *)v5 setCategory:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     [(FMDSharedConfigurationFollowUpEntry *)v5 setTitle:v11];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDSharedConfigurationFollowUpEntry *)self informativeText];
-  [v4 encodeObject:v5 forKey:@"informativeText"];
+  coderCopy = coder;
+  informativeText = [(FMDSharedConfigurationFollowUpEntry *)self informativeText];
+  [coderCopy encodeObject:informativeText forKey:@"informativeText"];
 
-  v6 = [(FMDSharedConfigurationFollowUpEntry *)self reminderInMins];
-  [v4 encodeObject:v6 forKey:@"reminderInMins"];
+  reminderInMins = [(FMDSharedConfigurationFollowUpEntry *)self reminderInMins];
+  [coderCopy encodeObject:reminderInMins forKey:@"reminderInMins"];
 
-  v7 = [(FMDSharedConfigurationFollowUpEntry *)self idNumber];
-  [v4 encodeObject:v7 forKey:@"idNumber"];
+  idNumber = [(FMDSharedConfigurationFollowUpEntry *)self idNumber];
+  [coderCopy encodeObject:idNumber forKey:@"idNumber"];
 
-  v8 = [(FMDSharedConfigurationFollowUpEntry *)self message];
-  [v4 encodeObject:v8 forKey:@"message"];
+  message = [(FMDSharedConfigurationFollowUpEntry *)self message];
+  [coderCopy encodeObject:message forKey:@"message"];
 
-  v9 = [(FMDSharedConfigurationFollowUpEntry *)self category];
-  [v4 encodeObject:v9 forKey:@"category"];
+  category = [(FMDSharedConfigurationFollowUpEntry *)self category];
+  [coderCopy encodeObject:category forKey:@"category"];
 
-  v10 = [(FMDSharedConfigurationFollowUpEntry *)self title];
-  [v4 encodeObject:v10 forKey:@"title"];
+  title = [(FMDSharedConfigurationFollowUpEntry *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 }
 
 @end

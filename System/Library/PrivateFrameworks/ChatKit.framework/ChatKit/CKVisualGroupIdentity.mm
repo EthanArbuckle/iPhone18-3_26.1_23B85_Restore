@@ -1,20 +1,20 @@
 @interface CKVisualGroupIdentity
-- (id)initGroupWithName:(id)a3 photo:(id)a4 visualContacts:(id)a5 groupParticipantCount:(int64_t)a6;
+- (id)initGroupWithName:(id)name photo:(id)photo visualContacts:(id)contacts groupParticipantCount:(int64_t)count;
 - (int64_t)numberOfContacts;
-- (void)updateContacts:(id)a3;
-- (void)updateVisualContacts:(id)a3 groupParticipantCount:(int64_t)a4;
+- (void)updateContacts:(id)contacts;
+- (void)updateVisualContacts:(id)contacts groupParticipantCount:(int64_t)count;
 @end
 
 @implementation CKVisualGroupIdentity
 
-- (id)initGroupWithName:(id)a3 photo:(id)a4 visualContacts:(id)a5 groupParticipantCount:(int64_t)a6
+- (id)initGroupWithName:(id)name photo:(id)photo visualContacts:(id)contacts groupParticipantCount:(int64_t)count
 {
   v11.receiver = self;
   v11.super_class = CKVisualGroupIdentity;
-  v7 = [(CKVisualGroupIdentity *)&v11 initGroupWithName:a3 photo:a4 contacts:a5];
+  v7 = [(CKVisualGroupIdentity *)&v11 initGroupWithName:name photo:photo contacts:contacts];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     v9 = v7[5];
     v7[5] = v8;
   }
@@ -29,9 +29,9 @@
   return [(CKVisualGroupIdentity *)&v3 numberOfContacts];
 }
 
-- (void)updateContacts:(id)a3
+- (void)updateContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   if (self->_groupParticipantCount)
   {
     v5 = IMLogHandleForCategory();
@@ -43,15 +43,15 @@
 
   v6.receiver = self;
   v6.super_class = CKVisualGroupIdentity;
-  [(CKVisualGroupIdentity *)&v6 updateContacts:v4];
+  [(CKVisualGroupIdentity *)&v6 updateContacts:contactsCopy];
 }
 
-- (void)updateVisualContacts:(id)a3 groupParticipantCount:(int64_t)a4
+- (void)updateVisualContacts:(id)contacts groupParticipantCount:(int64_t)count
 {
   v8.receiver = self;
   v8.super_class = CKVisualGroupIdentity;
-  [(CKVisualGroupIdentity *)&v8 updateContacts:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  [(CKVisualGroupIdentity *)&v8 updateContacts:contacts];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:count];
   groupParticipantCount = self->_groupParticipantCount;
   self->_groupParticipantCount = v6;
 }

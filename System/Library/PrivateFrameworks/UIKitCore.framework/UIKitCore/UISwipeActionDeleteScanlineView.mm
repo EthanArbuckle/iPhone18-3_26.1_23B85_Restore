@@ -1,18 +1,18 @@
 @interface UISwipeActionDeleteScanlineView
-- (UISwipeActionDeleteScanlineView)initWithFrame:(CGRect)a3;
+- (UISwipeActionDeleteScanlineView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setDeleteLineColor:(id)a3;
+- (void)setDeleteLineColor:(id)color;
 @end
 
 @implementation UISwipeActionDeleteScanlineView
 
-- (UISwipeActionDeleteScanlineView)initWithFrame:(CGRect)a3
+- (UISwipeActionDeleteScanlineView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v18.receiver = self;
   v18.super_class = UISwipeActionDeleteScanlineView;
-  v5 = [(UIView *)&v18 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(UIView *)&v18 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = [[UIView alloc] initWithFrame:0.0, 0.0, width, 1.0];
@@ -60,12 +60,12 @@
   [(UIView *)bottomLine setFrame:0.0, v4];
 }
 
-- (void)setDeleteLineColor:(id)a3
+- (void)setDeleteLineColor:(id)color
 {
   topLine = self->_topLine;
-  v5 = a3;
-  [(UIView *)topLine setBackgroundColor:v5];
-  [(UIView *)self->_bottomLine setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIView *)topLine setBackgroundColor:colorCopy];
+  [(UIView *)self->_bottomLine setBackgroundColor:colorCopy];
 }
 
 @end

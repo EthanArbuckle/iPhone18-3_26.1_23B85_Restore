@@ -1,29 +1,29 @@
 @interface PXSurveyQuestionsDataSource
-- (BOOL)didAnswerQuestionForGadgetIdentifier:(id)a3;
+- (BOOL)didAnswerQuestionForGadgetIdentifier:(id)identifier;
 - (PXSurveyQuestionsDataSource)init;
-- (PXSurveyQuestionsDataSource)initWithPhotoLibrary:(id)a3 predicate:(id)a4;
-- (id)_fetchOptionsForShouldPrefetchCount:(BOOL)a3;
-- (id)fetchSortedAllUnansweredQuestionsWithLimit:(unint64_t)a3;
+- (PXSurveyQuestionsDataSource)initWithPhotoLibrary:(id)library predicate:(id)predicate;
+- (id)_fetchOptionsForShouldPrefetchCount:(BOOL)count;
+- (id)fetchSortedAllUnansweredQuestionsWithLimit:(unint64_t)limit;
 - (id)mostRecentQuestionCreationDate;
 - (unint64_t)fetchTotalNumberOfAnsweredYesOrNoQuestions;
 - (unint64_t)fetchTotalNumberOfUnansweredQuestions;
-- (void)invalidateQuestions:(id)a3;
+- (void)invalidateQuestions:(id)questions;
 - (void)resetGeneratedQuestions;
 @end
 
 @implementation PXSurveyQuestionsDataSource
 
-- (void)invalidateQuestions:(id)a3
+- (void)invalidateQuestions:(id)questions
 {
-  v4 = a3;
-  if ([v4 count])
+  questionsCopy = questions;
+  if ([questionsCopy count])
   {
     photoLibrary = self->_photoLibrary;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __51__PXSurveyQuestionsDataSource_invalidateQuestions___block_invoke;
     v6[3] = &unk_1E774C648;
-    v7 = v4;
+    v7 = questionsCopy;
     [(PHPhotoLibrary *)photoLibrary performChangesAndWait:v6 error:0];
   }
 }
@@ -78,21 +78,21 @@ void __51__PXSurveyQuestionsDataSource_invalidateQuestions___block_invoke(uint64
 
   [v2 setFetchLimit:1];
   v6 = [MEMORY[0x1E6978A10] fetchQuestionsWithOptions:v2 validQuestionsOnly:0];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  v8 = [v7 creationDate];
+  creationDate = [firstObject creationDate];
 
-  return v8;
+  return creationDate;
 }
 
-- (id)_fetchOptionsForShouldPrefetchCount:(BOOL)a3
+- (id)_fetchOptionsForShouldPrefetchCount:(BOOL)count
 {
-  v3 = a3;
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v5 setPredicate:self->_predicate];
-  [v5 setShouldPrefetchCount:v3];
+  countCopy = count;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPredicate:self->_predicate];
+  [librarySpecificFetchOptions setShouldPrefetchCount:countCopy];
 
-  return v5;
+  return librarySpecificFetchOptions;
 }
 
 - (unint64_t)fetchTotalNumberOfAnsweredYesOrNoQuestions
@@ -113,7 +113,7 @@ void __51__PXSurveyQuestionsDataSource_invalidateQuestions___block_invoke(uint64
   return v4;
 }
 
-- (id)fetchSortedAllUnansweredQuestionsWithLimit:(unint64_t)a3
+- (id)fetchSortedAllUnansweredQuestionsWithLimit:(unint64_t)limit
 {
   v43[2] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -128,12 +128,12 @@ void __51__PXSurveyQuestionsDataSource_invalidateQuestions___block_invoke(uint64
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
   [v6 setSortDescriptors:v10];
 
-  [v6 setFetchLimit:a3];
+  [v6 setFetchLimit:limit];
   v11 = [MEMORY[0x1E6978A10] fetchUnansweredQuestionsWithOptions:v6 validQuestionsOnly:0];
-  v12 = [v11 fetchedObjects];
-  [v5 addObjectsFromArray:v12];
+  fetchedObjects = [v11 fetchedObjects];
+  [v5 addObjectsFromArray:fetchedObjects];
 
-  v13 = a3 - [v11 count];
+  v13 = limit - [v11 count];
   if (v13)
   {
     v16 = [(PXSurveyQuestionsDataSource *)self _fetchOptionsForShouldPrefetchCount:0];
@@ -153,8 +153,8 @@ void __51__PXSurveyQuestionsDataSource_invalidateQuestions___block_invoke(uint64
 
     [v16 setFetchLimit:v13];
     v22 = [MEMORY[0x1E6978A10] fetchUnansweredQuestionsWithOptions:v16 validQuestionsOnly:0];
-    v23 = [v22 fetchedObjects];
-    [v5 addObjectsFromArray:v23];
+    fetchedObjects2 = [v22 fetchedObjects];
+    [v5 addObjectsFromArray:fetchedObjects2];
 
     v24 = [v22 count];
     if (v13 != v24)
@@ -206,13 +206,13 @@ void __51__PXSurveyQuestionsDataSource_invalidateQuestions___block_invoke(uint64
   return v15;
 }
 
-- (BOOL)didAnswerQuestionForGadgetIdentifier:(id)a3
+- (BOOL)didAnswerQuestionForGadgetIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->_answeredGadgetIdentifiers containsObject:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableSet *)self->_answeredGadgetIdentifiers containsObject:identifierCopy];
   if ((v5 & 1) == 0)
   {
-    [(NSMutableSet *)self->_answeredGadgetIdentifiers addObject:v4];
+    [(NSMutableSet *)self->_answeredGadgetIdentifiers addObject:identifierCopy];
   }
 
   return v5 ^ 1;
@@ -226,14 +226,14 @@ void __51__PXSurveyQuestionsDataSource_invalidateQuestions___block_invoke(uint64
   self->_answeredGadgetIdentifiers = v3;
 }
 
-- (PXSurveyQuestionsDataSource)initWithPhotoLibrary:(id)a3 predicate:(id)a4
+- (PXSurveyQuestionsDataSource)initWithPhotoLibrary:(id)library predicate:(id)predicate
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  libraryCopy = library;
+  predicateCopy = predicate;
+  if (!libraryCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsDataSource.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsDataSource.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v18.receiver = self;
@@ -242,8 +242,8 @@ void __51__PXSurveyQuestionsDataSource_invalidateQuestions___block_invoke(uint64
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_photoLibrary, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_photoLibrary, library);
+    v12 = [predicateCopy copy];
     predicate = v11->_predicate;
     v11->_predicate = v12;
 
@@ -258,8 +258,8 @@ void __51__PXSurveyQuestionsDataSource_invalidateQuestions___block_invoke(uint64
 
 - (PXSurveyQuestionsDataSource)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsDataSource.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSurveyQuestionsDataSource init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionsDataSource.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSurveyQuestionsDataSource init]"}];
 
   abort();
 }

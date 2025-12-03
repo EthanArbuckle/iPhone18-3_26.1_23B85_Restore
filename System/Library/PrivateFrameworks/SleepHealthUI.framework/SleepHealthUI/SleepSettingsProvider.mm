@@ -1,8 +1,8 @@
 @interface SleepSettingsProvider
 - (_TtC13SleepHealthUI21SleepSettingsProvider)init;
 - (void)dealloc;
-- (void)sleepStore:(id)a3 sleepFocusConfigurationDidUpdate:(id)a4;
-- (void)sleepStore:(id)a3 sleepSettingsDidChange:(id)a4;
+- (void)sleepStore:(id)store sleepFocusConfigurationDidUpdate:(id)update;
+- (void)sleepStore:(id)store sleepSettingsDidChange:(id)change;
 @end
 
 @implementation SleepSettingsProvider
@@ -10,9 +10,9 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC13SleepHealthUI21SleepSettingsProvider_sleepStore);
-  v3 = self;
+  selfCopy = self;
   [v2 removeObserver_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for SleepSettingsProvider();
   [(SleepSettingsProvider *)&v4 dealloc];
 }
@@ -24,20 +24,20 @@
   return result;
 }
 
-- (void)sleepStore:(id)a3 sleepSettingsDidChange:(id)a4
+- (void)sleepStore:(id)store sleepSettingsDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_269C76B94(v7);
+  storeCopy = store;
+  changeCopy = change;
+  selfCopy = self;
+  sub_269C76B94(changeCopy);
 }
 
-- (void)sleepStore:(id)a3 sleepFocusConfigurationDidUpdate:(id)a4
+- (void)sleepStore:(id)store sleepFocusConfigurationDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_269C76F78(v7);
+  storeCopy = store;
+  updateCopy = update;
+  selfCopy = self;
+  sub_269C76F78(updateCopy);
 }
 
 @end

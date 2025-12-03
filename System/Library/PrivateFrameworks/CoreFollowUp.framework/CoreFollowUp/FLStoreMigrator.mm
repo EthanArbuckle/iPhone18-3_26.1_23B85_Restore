@@ -1,25 +1,25 @@
 @interface FLStoreMigrator
-- (FLStoreMigrator)initWithExecutor:(id)a3;
+- (FLStoreMigrator)initWithExecutor:(id)executor;
 - (int64_t)_schemaVersion;
 - (void)_createCleanCurrentDatabase;
-- (void)_createCurrentDatabaseWithTableSuffix:(id)a3;
+- (void)_createCurrentDatabaseWithTableSuffix:(id)suffix;
 - (void)_dropTables;
 - (void)_migrateFujitailToCurrent;
-- (void)_migrateSchema:(int64_t)a3 toSchema:(int64_t)a4;
-- (void)_migrateToCurrentFrom:(int64_t)a3;
+- (void)_migrateSchema:(int64_t)schema toSchema:(int64_t)toSchema;
+- (void)_migrateToCurrentFrom:(int64_t)from;
 - (void)migrateSchemeIfNecessary;
 @end
 
 @implementation FLStoreMigrator
 
-- (FLStoreMigrator)initWithExecutor:(id)a3
+- (FLStoreMigrator)initWithExecutor:(id)executor
 {
-  v5 = a3;
+  executorCopy = executor;
   v6 = [(FLStoreMigrator *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queryExecutor, a3);
+    objc_storeStrong(&v6->_queryExecutor, executor);
   }
 
   return v7;
@@ -27,11 +27,11 @@
 
 - (void)migrateSchemeIfNecessary
 {
-  v3 = [(FLStoreMigrator *)self _schemaVersion];
-  if (v3 != 23)
+  _schemaVersion = [(FLStoreMigrator *)self _schemaVersion];
+  if (_schemaVersion != 23)
   {
 
-    [(FLStoreMigrator *)self _migrateSchema:v3 toSchema:23];
+    [(FLStoreMigrator *)self _migrateSchema:_schemaVersion toSchema:23];
   }
 }
 
@@ -53,7 +53,7 @@
   return v3;
 }
 
-- (void)_migrateSchema:(int64_t)a3 toSchema:(int64_t)a4
+- (void)_migrateSchema:(int64_t)schema toSchema:(int64_t)toSchema
 {
   v7 = _os_activity_create(&_mh_execute_header, "followup/migration", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -63,9 +63,9 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v13 = a3;
+    schemaCopy = schema;
     v14 = 2048;
-    v15 = a4;
+    toSchemaCopy = toSchema;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Migrating from %lld to %lld", buf, 0x16u);
   }
 
@@ -76,7 +76,7 @@
   v10[2] = sub_10000207C;
   v10[3] = &unk_100020718;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = schema;
   [(FLSQLiteExecutor *)queryExecutor performTransactionBlockAndWait:v10];
   [(FLSQLiteExecutor *)self->_queryExecutor performQuery:@"pragma foreign_keys=on" rowHandler:0];
   os_activity_scope_leave(&state);
@@ -89,17 +89,17 @@
   [(FLStoreMigrator *)self _createCurrentDatabaseWithTableSuffix:&stru_100021020];
 }
 
-- (void)_migrateToCurrentFrom:(int64_t)a3
+- (void)_migrateToCurrentFrom:(int64_t)from
 {
-  if (a3 > 16)
+  if (from > 16)
   {
-    if (a3 > 19)
+    if (from > 19)
     {
-      if (a3 != 20)
+      if (from != 20)
       {
-        if (a3 != 21)
+        if (from != 21)
         {
-          if (a3 != 22)
+          if (from != 22)
           {
             return;
           }
@@ -190,9 +190,9 @@ LABEL_38:
       goto LABEL_41;
     }
 
-    if (a3 != 17)
+    if (from != 17)
     {
-      if (a3 != 18)
+      if (from != 18)
       {
 LABEL_35:
         v48 = _FLLogSystem();
@@ -268,17 +268,17 @@ LABEL_28:
     [(FLSQLiteExecutor *)v41 performQuery:v42];
 
     v43 = self->_queryExecutor;
-    v44 = [NSString stringWithFormat:@"UPDATE items SET category_identifier='%@'", FLFollowUpNotificationDefaultCategory];
-    [(FLSQLiteExecutor *)v43 performQuery:v44];
+    fLFollowUpNotificationDefaultCategory = [NSString stringWithFormat:@"UPDATE items SET category_identifier='%@'", FLFollowUpNotificationDefaultCategory];
+    [(FLSQLiteExecutor *)v43 performQuery:fLFollowUpNotificationDefaultCategory];
 
     goto LABEL_31;
   }
 
-  if (a3 > 13)
+  if (from > 13)
   {
-    if (a3 != 14)
+    if (from != 14)
     {
-      if (a3 != 15)
+      if (from != 15)
       {
 LABEL_25:
         v23 = _FLLogSystem();
@@ -342,8 +342,8 @@ LABEL_22:
       [(FLSQLiteExecutor *)v19 performQuery:v20];
 
       v21 = self->_queryExecutor;
-      v22 = [NSString stringWithFormat:@"UPDATE items SET target_bundle_identifier='%@'", FLFollowUpPreferencesBundleIdentifier];
-      [(FLSQLiteExecutor *)v21 performQuery:v22];
+      fLFollowUpPreferencesBundleIdentifier = [NSString stringWithFormat:@"UPDATE items SET target_bundle_identifier='%@'", FLFollowUpPreferencesBundleIdentifier];
+      [(FLSQLiteExecutor *)v21 performQuery:fLFollowUpPreferencesBundleIdentifier];
 
       goto LABEL_25;
     }
@@ -370,9 +370,9 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  if (a3 != 9)
+  if (from != 9)
   {
-    if (a3 != 13)
+    if (from != 13)
     {
       return;
     }
@@ -415,8 +415,8 @@ LABEL_19:
 
 - (void)_migrateFujitailToCurrent
 {
-  v3 = [(FLSQLiteExecutor *)self->_queryExecutor database];
-  if (sqlite3_create_function_v2(v3, [off_100026770 UTF8String], 1, 2049, 0, sub_100002EA4, 0, 0, 0))
+  database = [(FLSQLiteExecutor *)self->_queryExecutor database];
+  if (sqlite3_create_function_v2(database, [off_100026770 UTF8String], 1, 2049, 0, sub_100002EA4, 0, 0, 0))
   {
     v4 = _FLLogSystem();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -427,8 +427,8 @@ LABEL_19:
 
   [(FLStoreMigrator *)self _createCurrentDatabaseWithTableSuffix:@"_tmp"];
   queryExecutor = self->_queryExecutor;
-  v6 = [NSString stringWithFormat:@"INSERT INTO items_tmp (uuid, title, body, show_in_settings, style, persist_when_activated, persist_when_dismissed, user_info, client_identifier, extension_identifier, group_identifier, target_bundle_identifier, representing_bundle_path, bundle_icon_name, informative_footer_text, category_identifier) SELECT uuid, title, body, show_in_settings, style, persist_when_activated, persist_when_dismissed, user_info, client_identifier, NULL, '%@', '%@', NULL, NULL, NULL, '%@' FROM items", FLGroupIdentifierDevice, FLFollowUpPreferencesBundleIdentifier, FLFollowUpNotificationDefaultCategory];
-  [(FLSQLiteExecutor *)queryExecutor performInsertQuery:v6];
+  fLFollowUpNotificationDefaultCategory = [NSString stringWithFormat:@"INSERT INTO items_tmp (uuid, title, body, show_in_settings, style, persist_when_activated, persist_when_dismissed, user_info, client_identifier, extension_identifier, group_identifier, target_bundle_identifier, representing_bundle_path, bundle_icon_name, informative_footer_text, category_identifier) SELECT uuid, title, body, show_in_settings, style, persist_when_activated, persist_when_dismissed, user_info, client_identifier, NULL, '%@', '%@', NULL, NULL, NULL, '%@' FROM items", FLGroupIdentifierDevice, FLFollowUpPreferencesBundleIdentifier, FLFollowUpNotificationDefaultCategory];
+  [(FLSQLiteExecutor *)queryExecutor performInsertQuery:fLFollowUpNotificationDefaultCategory];
 
   [(FLSQLiteExecutor *)self->_queryExecutor performInsertQuery:@"INSERT INTO actions_tmp (label, url, launch_url, launch_arguments, item_id, action_identifier) SELECT label, url, launch_url, fl_convert_la_userinfo(launch_arguments), item_id, NULL FROM actions"];
   v7 = self->_queryExecutor;
@@ -447,9 +447,9 @@ LABEL_19:
   [(FLSQLiteExecutor *)self->_queryExecutor performQuery:@"ALTER TABLE items_tmp RENAME TO items"];
 }
 
-- (void)_createCurrentDatabaseWithTableSuffix:(id)a3
+- (void)_createCurrentDatabaseWithTableSuffix:(id)suffix
 {
-  v4 = a3;
+  suffixCopy = suffix;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -457,23 +457,23 @@ LABEL_19:
   }
 
   queryExecutor = self->_queryExecutor;
-  v7 = [NSString stringWithFormat:@"CREATE TABLE databaseProperties%@ (key TEXT PRIMARY KEY, value TEXT)", v4];
-  [(FLSQLiteExecutor *)queryExecutor performQuery:v7];
+  suffixCopy = [NSString stringWithFormat:@"CREATE TABLE databaseProperties%@ (key TEXT PRIMARY KEY, value TEXT)", suffixCopy];
+  [(FLSQLiteExecutor *)queryExecutor performQuery:suffixCopy];
 
-  v8 = [NSString stringWithFormat:@"INSERT INTO databaseProperties%@ (key, value) VALUES ('schemaVersion', '%@')", v4, &off_100021B70];
+  v8 = [NSString stringWithFormat:@"INSERT INTO databaseProperties%@ (key, value) VALUES ('schemaVersion', '%@')", suffixCopy, &off_100021B70];
   [(FLSQLiteExecutor *)self->_queryExecutor performInsertQuery:v8];
   v9 = self->_queryExecutor;
-  v10 = [NSString stringWithFormat:@"CREATE TABLE notifications%@ (id INTEGER PRIMARY KEY, item_id INTEGER REFERENCES items(id) ON DELETE CASCADE, title TEXT, subtitle_text TEXT, body TEXT, unlock_label TEXT, relevance_date INTEGER, activate_action_id INTEGER REFERENCES actions(id) ON DELETE CASCADE, dismiss_action_id INTEGER REFERENCES actions(id) ON DELETE CASCADE, clear_action_id INTEGER REFERENCES actions(id) ON DELETE CASCADE, frequency INTEGER, creationDate INTEGER, options BLOB)", v4];
-  [(FLSQLiteExecutor *)v9 performQuery:v10];
+  suffixCopy2 = [NSString stringWithFormat:@"CREATE TABLE notifications%@ (id INTEGER PRIMARY KEY, item_id INTEGER REFERENCES items(id) ON DELETE CASCADE, title TEXT, subtitle_text TEXT, body TEXT, unlock_label TEXT, relevance_date INTEGER, activate_action_id INTEGER REFERENCES actions(id) ON DELETE CASCADE, dismiss_action_id INTEGER REFERENCES actions(id) ON DELETE CASCADE, clear_action_id INTEGER REFERENCES actions(id) ON DELETE CASCADE, frequency INTEGER, creationDate INTEGER, options BLOB)", suffixCopy];
+  [(FLSQLiteExecutor *)v9 performQuery:suffixCopy2];
 
   v11 = self->_queryExecutor;
-  v12 = [NSString stringWithFormat:@"CREATE TABLE actions%@ (id INTEGER PRIMARY KEY, item_id INTEGER REFERENCES items(id) ON DELETE CASCADE, label TEXT, url TEXT, launch_url TEXT, launch_arguments BLOB, action_identifier TEXT)", v4];
-  [(FLSQLiteExecutor *)v11 performQuery:v12];
+  suffixCopy3 = [NSString stringWithFormat:@"CREATE TABLE actions%@ (id INTEGER PRIMARY KEY, item_id INTEGER REFERENCES items(id) ON DELETE CASCADE, label TEXT, url TEXT, launch_url TEXT, launch_arguments BLOB, action_identifier TEXT)", suffixCopy];
+  [(FLSQLiteExecutor *)v11 performQuery:suffixCopy3];
 
   v13 = self->_queryExecutor;
-  v14 = [NSString stringWithFormat:@"CREATE TABLE items%@ (id INTEGER PRIMARY KEY, uuid TEXT, client_identifier TEXT, title TEXT, body TEXT, show_in_settings INTEGER, style INTEGER, persist_when_activated INTEGER, persist_when_dismissed INTEGER, user_info BLOB, extension_identifier TEXT, group_identifier TEXT, collection_id TEXT, target_bundle_identifier TEXT, representing_bundle_path TEXT, bundle_icon_name TEXT, informative_footer_text TEXT, category_identifier TEXT, expiration_date INTEGER, account_id TEXT, type_id TEXT, UNIQUE(uuid))", v4];
+  suffixCopy4 = [NSString stringWithFormat:@"CREATE TABLE items%@ (id INTEGER PRIMARY KEY, uuid TEXT, client_identifier TEXT, title TEXT, body TEXT, show_in_settings INTEGER, style INTEGER, persist_when_activated INTEGER, persist_when_dismissed INTEGER, user_info BLOB, extension_identifier TEXT, group_identifier TEXT, collection_id TEXT, target_bundle_identifier TEXT, representing_bundle_path TEXT, bundle_icon_name TEXT, informative_footer_text TEXT, category_identifier TEXT, expiration_date INTEGER, account_id TEXT, type_id TEXT, UNIQUE(uuid))", suffixCopy];
 
-  [(FLSQLiteExecutor *)v13 performQuery:v14];
+  [(FLSQLiteExecutor *)v13 performQuery:suffixCopy4];
 }
 
 - (void)_dropTables

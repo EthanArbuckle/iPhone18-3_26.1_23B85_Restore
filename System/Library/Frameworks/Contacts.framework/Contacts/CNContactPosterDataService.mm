@@ -1,6 +1,6 @@
 @interface CNContactPosterDataService
 - (CNContactPosterDataService)init;
-- (CNContactPosterDataService)initWithListener:(id)a3 store:(id)a4;
+- (CNContactPosterDataService)initWithListener:(id)listener store:(id)store;
 - (void)beginListening;
 - (void)invalidate;
 @end
@@ -16,10 +16,10 @@
   return v5;
 }
 
-- (CNContactPosterDataService)initWithListener:(id)a3 store:(id)a4
+- (CNContactPosterDataService)initWithListener:(id)listener store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = CNContactPosterDataService;
   v9 = [(CNContactPosterDataService *)&v17 init];
@@ -29,12 +29,12 @@
     queue = v9->_queue;
     v9->_queue = v10;
 
-    v12 = [[_ListenerStoreAdapter alloc] initWithStore:v8];
+    v12 = [[_ListenerStoreAdapter alloc] initWithStore:storeCopy];
     v13 = [[_ListenerDelegate alloc] initWithService:v12 queue:v9->_queue];
     listenerDelegate = v9->_listenerDelegate;
     v9->_listenerDelegate = v13;
 
-    objc_storeStrong(&v9->_listener, a3);
+    objc_storeStrong(&v9->_listener, listener);
     [(NSXPCListener *)v9->_listener setDelegate:v9->_listenerDelegate];
     v15 = v9;
   }
@@ -44,14 +44,14 @@
 
 - (void)beginListening
 {
-  v2 = [(CNContactPosterDataService *)self listener];
-  [v2 resume];
+  listener = [(CNContactPosterDataService *)self listener];
+  [listener resume];
 }
 
 - (void)invalidate
 {
-  v2 = [(CNContactPosterDataService *)self listener];
-  [v2 invalidate];
+  listener = [(CNContactPosterDataService *)self listener];
+  [listener invalidate];
 }
 
 @end

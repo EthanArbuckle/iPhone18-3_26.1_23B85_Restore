@@ -1,16 +1,16 @@
 @interface CLSInputPeopleClue
-+ (id)clueWithConsolidatedPersonLocalIdentifier:(id)a3 inPhotoLibrary:(id)a4 serviceManager:(id)a5;
-+ (id)clueWithPeople:(id)a3 serviceManager:(id)a4;
-+ (id)clueWithPersonContactIdentifier:(id)a3 inPhotoLibrary:(id)a4 serviceManager:(id)a5;
-+ (id)clueWithPersonLocalIdentifier:(id)a3 inPhotoLibrary:(id)a4 serviceManager:(id)a5;
-+ (id)cluesWithConsolidatedPersonLocalIdentifiers:(id)a3 inPhotoLibrary:(id)a4 serviceManager:(id)a5;
-+ (id)cluesWithPeoples:(id)a3 serviceManager:(id)a4;
-+ (id)cluesWithPersonLocalIdentifiers:(id)a3 inPhotoLibrary:(id)a4 serviceManager:(id)a5;
++ (id)clueWithConsolidatedPersonLocalIdentifier:(id)identifier inPhotoLibrary:(id)library serviceManager:(id)manager;
++ (id)clueWithPeople:(id)people serviceManager:(id)manager;
++ (id)clueWithPersonContactIdentifier:(id)identifier inPhotoLibrary:(id)library serviceManager:(id)manager;
++ (id)clueWithPersonLocalIdentifier:(id)identifier inPhotoLibrary:(id)library serviceManager:(id)manager;
++ (id)cluesWithConsolidatedPersonLocalIdentifiers:(id)identifiers inPhotoLibrary:(id)library serviceManager:(id)manager;
++ (id)cluesWithPeoples:(id)peoples serviceManager:(id)manager;
++ (id)cluesWithPersonLocalIdentifiers:(id)identifiers inPhotoLibrary:(id)library serviceManager:(id)manager;
 - (CLSPersonIdentity)person;
 - (PHPhotoLibrary)photoLibrary;
 - (id)description;
 - (id)name;
-- (void)_prepareWithProgressBlock:(id)a3;
+- (void)_prepareWithProgressBlock:(id)block;
 @end
 
 @implementation CLSInputPeopleClue
@@ -22,45 +22,45 @@
   return WeakRetained;
 }
 
-- (void)_prepareWithProgressBlock:(id)a3
+- (void)_prepareWithProgressBlock:(id)block
 {
   if (!self->_person)
   {
-    v4 = [(CLSClue *)self value];
+    value = [(CLSClue *)self value];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
       serviceManager = self->_serviceManager;
-      v7 = [(CLSClue *)self value];
-      v8 = [(CLSInputPeopleClue *)self photoLibrary];
-      v9 = [(CLSServiceManager *)serviceManager personResultForName:v7 inPhotoLibrary:v8];
+      value2 = [(CLSClue *)self value];
+      photoLibrary = [(CLSInputPeopleClue *)self photoLibrary];
+      mePerson2 = [(CLSServiceManager *)serviceManager personResultForName:value2 inPhotoLibrary:photoLibrary];
 
-      v10 = [v9 person];
-      if ([v10 isMe])
+      person = [mePerson2 person];
+      if ([person isMe])
       {
-        v11 = [v10 localIdentifier];
-        v12 = [v11 length];
+        localIdentifier = [person localIdentifier];
+        v12 = [localIdentifier length];
 
         if (v12)
         {
-          v13 = [(CLSServiceManager *)self->_serviceManager mePerson];
-          v14 = [v13 localIdentifier];
-          v15 = [v14 length];
+          mePerson = [(CLSServiceManager *)self->_serviceManager mePerson];
+          localIdentifier2 = [mePerson localIdentifier];
+          v15 = [localIdentifier2 length];
 
           if (!v15)
           {
-            v16 = [v10 localIdentifier];
-            [v13 setLocalIdentifier:v16];
+            localIdentifier3 = [person localIdentifier];
+            [mePerson setLocalIdentifier:localIdentifier3];
           }
         }
       }
 
-      if (v9)
+      if (mePerson2)
       {
-        objc_storeStrong(&self->_person, v10);
-        [v9 confidence];
+        objc_storeStrong(&self->_person, person);
+        [mePerson2 confidence];
         [(CLSClue *)self setConfidence:v17];
       }
 
@@ -73,20 +73,20 @@
       goto LABEL_15;
     }
 
-    v18 = [(CLSClue *)self value];
+    value3 = [(CLSClue *)self value];
     objc_opt_class();
     v19 = objc_opt_isKindOfClass();
 
     if (v19)
     {
-      v20 = [(CLSClue *)self value];
+      value4 = [(CLSClue *)self value];
       v21 = self->_person;
-      self->_person = v20;
+      self->_person = value4;
 
       if ([(CLSPersonIdentity *)self->_person isMe])
       {
-        v9 = [(CLSServiceManager *)self->_serviceManager mePerson];
-        [(CLSPersonIdentity *)self->_person mergeWithPerson:v9];
+        mePerson2 = [(CLSServiceManager *)self->_serviceManager mePerson];
+        [(CLSPersonIdentity *)self->_person mergeWithPerson:mePerson2];
 LABEL_15:
       }
     }
@@ -103,8 +103,8 @@ LABEL_15:
   v4 = [(CLSClue *)&v8 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(CLSInputPeopleClue *)self name];
-  [v5 appendFormat:@"\n\tname:[%@]", v6];
+  name = [(CLSInputPeopleClue *)self name];
+  [v5 appendFormat:@"\n\tname:[%@]", name];
 
   return v5;
 }
@@ -135,18 +135,18 @@ LABEL_15:
   return v4;
 }
 
-+ (id)cluesWithConsolidatedPersonLocalIdentifiers:(id)a3 inPhotoLibrary:(id)a4 serviceManager:(id)a5
++ (id)cluesWithConsolidatedPersonLocalIdentifiers:(id)identifiers inPhotoLibrary:(id)library serviceManager:(id)manager
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  libraryCopy = library;
+  managerCopy = manager;
   v10 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v7;
+  v11 = identifiersCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -161,7 +161,7 @@ LABEL_15:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [objc_opt_class() clueWithConsolidatedPersonLocalIdentifier:*(*(&v18 + 1) + 8 * i) inPhotoLibrary:v8 serviceManager:{v9, v18}];
+        v16 = [objc_opt_class() clueWithConsolidatedPersonLocalIdentifier:*(*(&v18 + 1) + 8 * i) inPhotoLibrary:libraryCopy serviceManager:{managerCopy, v18}];
         [v10 addObject:v16];
       }
 
@@ -174,18 +174,18 @@ LABEL_15:
   return v10;
 }
 
-+ (id)cluesWithPersonLocalIdentifiers:(id)a3 inPhotoLibrary:(id)a4 serviceManager:(id)a5
++ (id)cluesWithPersonLocalIdentifiers:(id)identifiers inPhotoLibrary:(id)library serviceManager:(id)manager
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  libraryCopy = library;
+  managerCopy = manager;
   v10 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v7;
+  v11 = identifiersCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -200,7 +200,7 @@ LABEL_15:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [objc_opt_class() clueWithPersonLocalIdentifier:*(*(&v18 + 1) + 8 * i) inPhotoLibrary:v8 serviceManager:{v9, v18}];
+        v16 = [objc_opt_class() clueWithPersonLocalIdentifier:*(*(&v18 + 1) + 8 * i) inPhotoLibrary:libraryCopy serviceManager:{managerCopy, v18}];
         [v10 addObject:v16];
       }
 
@@ -213,51 +213,51 @@ LABEL_15:
   return v10;
 }
 
-+ (id)clueWithConsolidatedPersonLocalIdentifier:(id)a3 inPhotoLibrary:(id)a4 serviceManager:(id)a5
++ (id)clueWithConsolidatedPersonLocalIdentifier:(id)identifier inPhotoLibrary:(id)library serviceManager:(id)manager
 {
-  v5 = [a1 clueWithPersonLocalIdentifier:a3 inPhotoLibrary:a4 serviceManager:a5];
+  v5 = [self clueWithPersonLocalIdentifier:identifier inPhotoLibrary:library serviceManager:manager];
   [v5 setIncludeMergeCandidates:1];
 
   return v5;
 }
 
-+ (id)clueWithPersonContactIdentifier:(id)a3 inPhotoLibrary:(id)a4 serviceManager:(id)a5
++ (id)clueWithPersonContactIdentifier:(id)identifier inPhotoLibrary:(id)library serviceManager:(id)manager
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CLSClue *)CLSInputPeopleClue _clueWithValue:a3 forKey:@"Global People"];
-  [v9 setPhotoLibrary:v8];
+  managerCopy = manager;
+  libraryCopy = library;
+  v9 = [(CLSClue *)CLSInputPeopleClue _clueWithValue:identifier forKey:@"Global People"];
+  [v9 setPhotoLibrary:libraryCopy];
 
   v10 = v9[14];
-  v9[14] = v7;
+  v9[14] = managerCopy;
 
   return v9;
 }
 
-+ (id)clueWithPersonLocalIdentifier:(id)a3 inPhotoLibrary:(id)a4 serviceManager:(id)a5
++ (id)clueWithPersonLocalIdentifier:(id)identifier inPhotoLibrary:(id)library serviceManager:(id)manager
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CLSClue *)CLSInputPeopleClue _clueWithValue:a3 forKey:@"Global People"];
-  [v9 setPhotoLibrary:v8];
+  managerCopy = manager;
+  libraryCopy = library;
+  v9 = [(CLSClue *)CLSInputPeopleClue _clueWithValue:identifier forKey:@"Global People"];
+  [v9 setPhotoLibrary:libraryCopy];
 
   v10 = v9[14];
-  v9[14] = v7;
+  v9[14] = managerCopy;
 
   return v9;
 }
 
-+ (id)cluesWithPeoples:(id)a3 serviceManager:(id)a4
++ (id)cluesWithPeoples:(id)peoples serviceManager:(id)manager
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  peoplesCopy = peoples;
+  managerCopy = manager;
   v7 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = peoplesCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -272,7 +272,7 @@ LABEL_15:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [objc_opt_class() clueWithPeople:*(*(&v15 + 1) + 8 * i) serviceManager:{v6, v15}];
+        v13 = [objc_opt_class() clueWithPeople:*(*(&v15 + 1) + 8 * i) serviceManager:{managerCopy, v15}];
         [v7 addObject:v13];
       }
 
@@ -285,12 +285,12 @@ LABEL_15:
   return v7;
 }
 
-+ (id)clueWithPeople:(id)a3 serviceManager:(id)a4
++ (id)clueWithPeople:(id)people serviceManager:(id)manager
 {
-  v5 = a4;
-  v6 = [(CLSClue *)CLSInputPeopleClue _clueWithValue:a3 forKey:@"Global People"];
+  managerCopy = manager;
+  v6 = [(CLSClue *)CLSInputPeopleClue _clueWithValue:people forKey:@"Global People"];
   v7 = v6[14];
-  v6[14] = v5;
+  v6[14] = managerCopy;
 
   return v6;
 }

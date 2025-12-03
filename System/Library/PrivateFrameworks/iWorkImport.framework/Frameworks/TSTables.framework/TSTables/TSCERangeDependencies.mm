@@ -1,65 +1,65 @@
 @interface TSCERangeDependencies
-- (BOOL)addRangeReference:(const TSCEInternalCellReference *)a3 toRange:(const TSCERangeCoordinate *)a4;
-- (BOOL)cellHasDeepPrecedentInRange:(const TSUCellCoord *)a3 cellRange:(const TSCEInternalRangeReference *)a4;
-- (BOOL)hasDependentsAtCoord:(const TSUCellCoord *)a3;
-- (BOOL)hasPrecedentsAtCoord:(const TSUCellCoord *)a3;
+- (BOOL)addRangeReference:(const TSCEInternalCellReference *)reference toRange:(const TSCERangeCoordinate *)range;
+- (BOOL)cellHasDeepPrecedentInRange:(const TSUCellCoord *)range cellRange:(const TSCEInternalRangeReference *)cellRange;
+- (BOOL)hasDependentsAtCoord:(const TSUCellCoord *)coord;
+- (BOOL)hasPrecedentsAtCoord:(const TSUCellCoord *)coord;
 - (BOOL)isEmpty;
-- (TSCERangeDependencies)initWithDependTracker:(id)a3 ownerID:(unsigned __int16)a4;
+- (TSCERangeDependencies)initWithDependTracker:(id)tracker ownerID:(unsigned __int16)d;
 - (TSKUIDStruct)ownerUID;
-- (id)explainDirtyPrecedentCount:(TSUCellCoord)a3 cellIsInACycle:(BOOL)a4;
-- (id)findTileForToOwnerId:(unsigned __int16)a3 createIfMissing:(BOOL)a4;
-- (id)precedentsAsString:(TSUCellCoord)a3 dirtyOnly:(BOOL)a4;
-- (unint64_t)computedNumberOfDirtyPrecedents:(TSUCellCoord)a3 cellIsInACycle:(BOOL)a4;
-- (void)RTreeSearchWithBlock:(const TSUCellRect *)a3 block:(id)a4;
-- (void)addPrecedentsAtCoord:(const TSUCellCoord *)a3 toReferenceSet:(void *)a4;
-- (void)addUnarchivedPrecedent:(const TSCEUnarchiveRangePrecedent *)a3;
-- (void)cellRefsForCycleCellsReferringToCell:(const TSUCellCoord *)a3 outCellRefs:(void *)a4;
-- (void)decrementReferringDirtyCountAndPushNextLeaves:(const TSCECellToEvaluate *)a3 referencingCellIsInACycle:(BOOL)a4;
+- (id)explainDirtyPrecedentCount:(TSUCellCoord)count cellIsInACycle:(BOOL)cycle;
+- (id)findTileForToOwnerId:(unsigned __int16)id createIfMissing:(BOOL)missing;
+- (id)precedentsAsString:(TSUCellCoord)string dirtyOnly:(BOOL)only;
+- (unint64_t)computedNumberOfDirtyPrecedents:(TSUCellCoord)precedents cellIsInACycle:(BOOL)cycle;
+- (void)RTreeSearchWithBlock:(const TSUCellRect *)block block:(id)a4;
+- (void)addPrecedentsAtCoord:(const TSUCellCoord *)coord toReferenceSet:(void *)set;
+- (void)addUnarchivedPrecedent:(const TSCEUnarchiveRangePrecedent *)precedent;
+- (void)cellRefsForCycleCellsReferringToCell:(const TSUCellCoord *)cell outCellRefs:(void *)refs;
+- (void)decrementReferringDirtyCountAndPushNextLeaves:(const TSCECellToEvaluate *)leaves referencingCellIsInACycle:(BOOL)cycle;
 - (void)deleteAllReferencesFromThisTable;
-- (void)deleteRangeReferencesForFromCell:(const TSUCellCoord *)a3;
-- (void)dirtyAllFormulasReferencingRange:(TSCERangeCoordinate)a3;
+- (void)deleteRangeReferencesForFromCell:(const TSUCellCoord *)cell;
+- (void)dirtyAllFormulasReferencingRange:(TSCERangeCoordinate)range;
 - (void)dirtyAllReferencingFormulas;
-- (void)encodeToArchive:(void *)a3;
-- (void)encodeToTiledArchive:(void *)a3 archiver:(id)a4;
-- (void)enumerateAllRanges:(id)a3;
-- (void)enumerateAllRangesForFromCoord:(const TSUCellCoord *)a3 block:(id)a4;
-- (void)formulaCellsReferencingIndexes:(id)a3 rowIndexes:(id)a4 outFormulaCells:(void *)a5;
-- (void)formulaCellsReferencingRange:(const TSCERangeCoordinate *)a3 outFormulaCells:(void *)a4;
-- (void)formulaCellsReferencingRangesAffectedByRewriteSpec:(id)a3 outFormulaCells:(void *)a4;
-- (void)formulaCoordsReferencingRange:(TSCERangeCoordinate)a3 inOwnerID:(unsigned __int16)a4 outFormulaCells:(void *)a5;
-- (void)processDependentsForDFS:(id)a3 coord:(const TSUCellCoord *)a4 outCells:(void *)a5;
-- (void)pushDependents:(const TSUCellCoord *)a3 outDependents:(id)a4 referencingCellIsInACycle:(BOOL)a5;
-- (void)readFromArchive:(const void *)a3;
-- (void)readFromExpandedArchive:(const void *)a3;
-- (void)readFromTiledArchive:(const void *)a3 unarchiver:(id)a4 ownerDepends:(id)a5;
+- (void)encodeToArchive:(void *)archive;
+- (void)encodeToTiledArchive:(void *)archive archiver:(id)archiver;
+- (void)enumerateAllRanges:(id)ranges;
+- (void)enumerateAllRangesForFromCoord:(const TSUCellCoord *)coord block:(id)block;
+- (void)formulaCellsReferencingIndexes:(id)indexes rowIndexes:(id)rowIndexes outFormulaCells:(void *)cells;
+- (void)formulaCellsReferencingRange:(const TSCERangeCoordinate *)range outFormulaCells:(void *)cells;
+- (void)formulaCellsReferencingRangesAffectedByRewriteSpec:(id)spec outFormulaCells:(void *)cells;
+- (void)formulaCoordsReferencingRange:(TSCERangeCoordinate)range inOwnerID:(unsigned __int16)d outFormulaCells:(void *)cells;
+- (void)processDependentsForDFS:(id)s coord:(const TSUCellCoord *)coord outCells:(void *)cells;
+- (void)pushDependents:(const TSUCellCoord *)dependents outDependents:(id)outDependents referencingCellIsInACycle:(BOOL)cycle;
+- (void)readFromArchive:(const void *)archive;
+- (void)readFromExpandedArchive:(const void *)archive;
+- (void)readFromTiledArchive:(const void *)archive unarchiver:(id)unarchiver ownerDepends:(id)depends;
 - (void)unpackAfterUnarchive;
 @end
 
 @implementation TSCERangeDependencies
 
-- (TSCERangeDependencies)initWithDependTracker:(id)a3 ownerID:(unsigned __int16)a4
+- (TSCERangeDependencies)initWithDependTracker:(id)tracker ownerID:(unsigned __int16)d
 {
   v7.receiver = self;
   v7.super_class = TSCERangeDependencies;
   result = [(TSCERangeDependencies *)&v7 init];
   if (result)
   {
-    result->_dependencyTracker = a3;
-    result->_internalOwnerID = a4;
+    result->_dependencyTracker = tracker;
+    result->_internalOwnerID = d;
   }
 
   return result;
 }
 
-- (void)RTreeSearchWithBlock:(const TSUCellRect *)a3 block:(id)a4
+- (void)RTreeSearchWithBlock:(const TSUCellRect *)block block:(id)a4
 {
   v6 = a4;
-  v8[0] = TSUCellRect::nonSpanningCellRectWithTableRange(a3, &unk_2217E1ED0);
+  v8[0] = TSUCellRect::nonSpanningCellRectWithTableRange(block, &unk_2217E1ED0);
   v8[1] = v7;
   sub_221495334(&self->_rTree, v8, v6);
 }
 
-- (void)addUnarchivedPrecedent:(const TSCEUnarchiveRangePrecedent *)a3
+- (void)addUnarchivedPrecedent:(const TSCEUnarchiveRangePrecedent *)precedent
 {
   end = self->_unarchivedPrecedentList.__end_;
   cap = self->_unarchivedPrecedentList.__cap_;
@@ -95,8 +95,8 @@
     }
 
     v13 = 28 * v9;
-    v14 = *&a3->var0.row;
-    *(v13 + 12) = a3->var2;
+    v14 = *&precedent->var0.row;
+    *(v13 + 12) = precedent->var2;
     *v13 = v14;
     v7 = (28 * v9 + 28);
     v15 = self->_unarchivedPrecedentList.__begin_;
@@ -115,8 +115,8 @@
 
   else
   {
-    v6 = *&a3->var0.row;
-    end->var2 = a3->var2;
+    v6 = *&precedent->var0.row;
+    end->var2 = precedent->var2;
     *&end->var0.row = v6;
     v7 = end + 1;
   }
@@ -124,24 +124,24 @@
   self->_unarchivedPrecedentList.__end_ = v7;
 }
 
-- (BOOL)addRangeReference:(const TSCEInternalCellReference *)a3 toRange:(const TSCERangeCoordinate *)a4
+- (BOOL)addRangeReference:(const TSCEInternalCellReference *)reference toRange:(const TSCERangeCoordinate *)range
 {
-  TSCERangeCoordinate::asCellRect(a4);
+  TSCERangeCoordinate::asCellRect(range);
   v20[0] = v6;
   v20[1] = v7;
-  objc_msgSend_RTreeInsert_fromCellRef_(self, v7, v20, a3, v8);
-  v12 = objc_msgSend_dgl_rangeDependenciesForOwnerID_(self->_dependencyTracker, v9, a3->tableID, v10, v11);
+  objc_msgSend_RTreeInsert_fromCellRef_(self, v7, v20, reference, v8);
+  v12 = objc_msgSend_dgl_rangeDependenciesForOwnerID_(self->_dependencyTracker, v9, reference->tableID, v10, v11);
   v15 = v12;
   if (v12)
   {
     v16 = objc_msgSend_findTileForToOwnerId_createIfMissing_(v12, v13, self->_internalOwnerID, 1, v14);
-    objc_msgSend_addRect_fromCoord_(v16, v17, v20, a3, v18);
+    objc_msgSend_addRect_fromCoord_(v16, v17, v20, reference, v18);
   }
 
   return 1;
 }
 
-- (void)deleteRangeReferencesForFromCell:(const TSUCellCoord *)a3
+- (void)deleteRangeReferencesForFromCell:(const TSUCellCoord *)cell
 {
   v44[0] = 0;
   v44[1] = v44;
@@ -155,7 +155,7 @@
   v43[3] = &unk_278465B28;
   v43[4] = self;
   v43[5] = v44;
-  objc_msgSend_enumerateAllRangesForFromCoord_block_(self, a2, a3, v43, v3);
+  objc_msgSend_enumerateAllRangesForFromCoord_block_(self, a2, cell, v43, v3);
   __src = 0;
   v41 = 0;
   v42 = 0;
@@ -168,9 +168,9 @@
     do
     {
       v10 = begin[v9];
-      if (objc_msgSend_containsFromCoord_(v10, v11, a3, v12, v13))
+      if (objc_msgSend_containsFromCoord_(v10, v11, cell, v12, v13))
       {
-        objc_msgSend_removeRectsForFromCoord_(v10, v14, a3, v15, v16);
+        objc_msgSend_removeRectsForFromCoord_(v10, v14, cell, v15, v16);
         if (objc_msgSend_isEmpty(v10, v17, v18, v19, v20))
         {
           v21 = v41;
@@ -312,15 +312,15 @@
   _Block_object_dispose(v9, 8);
 }
 
-- (void)pushDependents:(const TSUCellCoord *)a3 outDependents:(id)a4 referencingCellIsInACycle:(BOOL)a5
+- (void)pushDependents:(const TSUCellCoord *)dependents outDependents:(id)outDependents referencingCellIsInACycle:(BOOL)cycle
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = v8;
-  v10 = *a3;
-  v28[0] = *a3;
+  cycleCopy = cycle;
+  outDependentsCopy = outDependents;
+  v9 = outDependentsCopy;
+  v10 = *dependents;
+  v28[0] = *dependents;
   v28[1] = 0x100000001;
-  if (v5)
+  if (cycleCopy)
   {
     v26[0] = 0;
     v26[1] = v26;
@@ -334,8 +334,8 @@
     v22[3] = &unk_278465B50;
     v24 = v26;
     v22[4] = self;
-    v23 = v8;
-    v25 = a3;
+    v23 = outDependentsCopy;
+    dependentsCopy = dependents;
     objc_msgSend_RTreeSearchWithBlock_block_(self, v11, v28, v22, v12);
 
     _Block_object_dispose(v26, 8);
@@ -350,7 +350,7 @@
     v18[1] = 3221225472;
     v18[2] = sub_221495D6C;
     v18[3] = &unk_278465B78;
-    v19 = v8;
+    v19 = outDependentsCopy;
     v20 = v15;
     v21 = internalOwnerID;
     objc_msgSend_RTreeSearchWithBlock_block_(self, v16, v28, v18, v17);
@@ -369,10 +369,10 @@
   objc_msgSend_RTreeSearchWithBlock_block_(self, a2, &v4, v3, v2);
 }
 
-- (void)dirtyAllFormulasReferencingRange:(TSCERangeCoordinate)a3
+- (void)dirtyAllFormulasReferencingRange:(TSCERangeCoordinate)range
 {
-  v9 = a3;
-  TSCERangeCoordinate::asCellRect(&v9);
+  rangeCopy = range;
+  TSCERangeCoordinate::asCellRect(&rangeCopy);
   v8[0] = v4;
   v8[1] = v5;
   v7[0] = MEMORY[0x277D85DD0];
@@ -383,31 +383,31 @@
   objc_msgSend_RTreeSearchWithBlock_block_(self, v5, v8, v7, v6);
 }
 
-- (void)formulaCoordsReferencingRange:(TSCERangeCoordinate)a3 inOwnerID:(unsigned __int16)a4 outFormulaCells:(void *)a5
+- (void)formulaCoordsReferencingRange:(TSCERangeCoordinate)range inOwnerID:(unsigned __int16)d outFormulaCells:(void *)cells
 {
-  v14 = a3;
-  TSCERangeCoordinate::asCellRect(&v14);
+  rangeCopy = range;
+  TSCERangeCoordinate::asCellRect(&rangeCopy);
   v13[0] = v8;
   v13[1] = v9;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_221495F64;
   v11[3] = &unk_278465B98;
-  v12 = a4;
-  v11[4] = a5;
+  dCopy = d;
+  v11[4] = cells;
   objc_msgSend_RTreeSearchWithBlock_block_(self, v9, v13, v11, v10);
 }
 
-- (void)decrementReferringDirtyCountAndPushNextLeaves:(const TSCECellToEvaluate *)a3 referencingCellIsInACycle:(BOOL)a4
+- (void)decrementReferringDirtyCountAndPushNextLeaves:(const TSCECellToEvaluate *)leaves referencingCellIsInACycle:(BOOL)cycle
 {
-  v23[0] = a3->var0.coordinate;
+  v23[0] = leaves->var0.coordinate;
   v23[1] = 0x100000001;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
   v21[3] = sub_221495868;
   v21[4] = sub_221495878;
-  v6 = a3->var1;
+  v6 = leaves->var1;
   v22 = objc_msgSend_cellDependencies(v6, v7, v8, v9, v10);
 
   v15 = objc_msgSend_currentCellBeingModified(self->_dependencyTracker, v11, v12, v13, v14);
@@ -419,18 +419,18 @@
   v18[5] = v21;
   v18[6] = v15;
   v18[4] = self;
-  v20 = a4;
+  cycleCopy = cycle;
   objc_msgSend_RTreeSearchWithBlock_block_(self, v16, v23, v18, v17);
   _Block_object_dispose(v21, 8);
 }
 
-- (BOOL)hasDependentsAtCoord:(const TSUCellCoord *)a3
+- (BOOL)hasDependentsAtCoord:(const TSUCellCoord *)coord
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v7[0] = *a3;
+  v7[0] = *coord;
   v7[1] = 0x100000001;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -443,25 +443,25 @@
   return v4;
 }
 
-- (void)processDependentsForDFS:(id)a3 coord:(const TSUCellCoord *)a4 outCells:(void *)a5
+- (void)processDependentsForDFS:(id)s coord:(const TSUCellCoord *)coord outCells:(void *)cells
 {
-  v8 = a3;
-  v15[0] = *a4;
+  sCopy = s;
+  v15[0] = *coord;
   v15[1] = 0x100000001;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_221496528;
   v12[3] = &unk_278465C10;
-  v13 = v8;
-  v14 = a5;
-  v9 = v8;
+  v13 = sCopy;
+  cellsCopy = cells;
+  v9 = sCopy;
   objc_msgSend_RTreeSearchWithBlock_block_(self, v10, v15, v12, v11);
 }
 
-- (unint64_t)computedNumberOfDirtyPrecedents:(TSUCellCoord)a3 cellIsInACycle:(BOOL)a4
+- (unint64_t)computedNumberOfDirtyPrecedents:(TSUCellCoord)precedents cellIsInACycle:(BOOL)cycle
 {
   v14 = 0;
-  v15 = a3;
+  precedentsCopy = precedents;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -477,9 +477,9 @@
   v7[3] = &unk_278465C38;
   v7[4] = self;
   v7[5] = v9;
-  v8 = a4;
+  cycleCopy = cycle;
   v7[6] = &v11;
-  objc_msgSend_enumerateAllRangesForFromCoord_block_(self, a2, &v15, v7, v4);
+  objc_msgSend_enumerateAllRangesForFromCoord_block_(self, a2, &precedentsCopy, v7, v4);
   v5 = v12[3];
   _Block_object_dispose(v9, 8);
 
@@ -487,14 +487,14 @@
   return v5;
 }
 
-- (id)explainDirtyPrecedentCount:(TSUCellCoord)a3 cellIsInACycle:(BOOL)a4
+- (id)explainDirtyPrecedentCount:(TSUCellCoord)count cellIsInACycle:(BOOL)cycle
 {
-  objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], a2, @"Range dependencies:\n", a4, v4);
+  objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], a2, @"Range dependencies:\n", cycle, v4);
 
   return 0;
 }
 
-- (id)precedentsAsString:(TSUCellCoord)a3 dirtyOnly:(BOOL)a4
+- (id)precedentsAsString:(TSUCellCoord)string dirtyOnly:(BOOL)only
 {
   v4 = MEMORY[0x277CCAB68];
   v5 = NSStringFromTSUCellCoord();
@@ -503,9 +503,9 @@
   return v9;
 }
 
-- (void)cellRefsForCycleCellsReferringToCell:(const TSUCellCoord *)a3 outCellRefs:(void *)a4
+- (void)cellRefsForCycleCellsReferringToCell:(const TSUCellCoord *)cell outCellRefs:(void *)refs
 {
-  v8[0] = *a3;
+  v8[0] = *cell;
   v8[1] = 0x100000001;
   v6[0] = 0;
   v6[1] = v6;
@@ -519,12 +519,12 @@
   v5[3] = &unk_278465C60;
   v5[4] = self;
   v5[5] = v6;
-  v5[6] = a4;
+  v5[6] = refs;
   objc_msgSend_RTreeSearchWithBlock_block_(self, a2, v8, v5, v4);
   _Block_object_dispose(v6, 8);
 }
 
-- (BOOL)hasPrecedentsAtCoord:(const TSUCellCoord *)a3
+- (BOOL)hasPrecedentsAtCoord:(const TSUCellCoord *)coord
 {
   v7 = 0;
   v8 = &v7;
@@ -535,24 +535,24 @@
   v6[2] = sub_221496A38;
   v6[3] = &unk_278465C88;
   v6[4] = &v7;
-  objc_msgSend_enumerateAllRangesForFromCoord_block_(self, a2, a3, v6, v3);
+  objc_msgSend_enumerateAllRangesForFromCoord_block_(self, a2, coord, v6, v3);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)addPrecedentsAtCoord:(const TSUCellCoord *)a3 toReferenceSet:(void *)a4
+- (void)addPrecedentsAtCoord:(const TSUCellCoord *)coord toReferenceSet:(void *)set
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_221496AC0;
   v5[3] = &unk_278465CB0;
   v5[4] = self;
-  v5[5] = a4;
-  objc_msgSend_enumerateAllRangesForFromCoord_block_(self, a2, a3, v5, v4);
+  v5[5] = set;
+  objc_msgSend_enumerateAllRangesForFromCoord_block_(self, a2, coord, v5, v4);
 }
 
-- (BOOL)cellHasDeepPrecedentInRange:(const TSUCellCoord *)a3 cellRange:(const TSCEInternalRangeReference *)a4
+- (BOOL)cellHasDeepPrecedentInRange:(const TSUCellCoord *)range cellRange:(const TSCEInternalRangeReference *)cellRange
 {
   v8 = 0;
   v9 = &v8;
@@ -563,16 +563,16 @@
   v7[2] = sub_221496BEC;
   v7[3] = &unk_278465CD8;
   v7[4] = &v8;
-  v7[5] = a4;
-  objc_msgSend_enumerateAllRangesForFromCoord_block_(self, a2, a3, v7, v4);
+  v7[5] = cellRange;
+  objc_msgSend_enumerateAllRangesForFromCoord_block_(self, a2, range, v7, v4);
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
   return v5;
 }
 
-- (void)formulaCellsReferencingRange:(const TSCERangeCoordinate *)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsReferencingRange:(const TSCERangeCoordinate *)range outFormulaCells:(void *)cells
 {
-  TSCERangeCoordinate::asCellRect(a3);
+  TSCERangeCoordinate::asCellRect(range);
   v21.origin = v6;
   v21.size = v7;
   v20[0] = TSUCellRect::nonSpanningCellRectWithTableRange(&v21, &unk_2217E1ED0);
@@ -594,7 +594,7 @@
   if (!sub_2212E0280((v13 + 6)))
   {
     sub_2212E0430((v13 + 6), self->_dependencyTracker, &v10);
-    TSCECellRefSet::addCellRefs(a4, &v10);
+    TSCECellRefSet::addCellRefs(cells, &v10);
     sub_22107C800(&v10, v10._coordsForOwnerUid.__tree_.__end_node_.__left_);
   }
 
@@ -602,26 +602,26 @@
   sub_221122744(v18);
 }
 
-- (void)formulaCellsReferencingIndexes:(id)a3 rowIndexes:(id)a4 outFormulaCells:(void *)a5
+- (void)formulaCellsReferencingIndexes:(id)indexes rowIndexes:(id)rowIndexes outFormulaCells:(void *)cells
 {
-  v8 = a4;
+  rowIndexesCopy = rowIndexes;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_221496EE0;
   v13[3] = &unk_278463340;
-  v14 = v8;
-  v15 = self;
-  v16 = a5;
-  v9 = v8;
-  objc_msgSend_enumerateRangesUsingBlock_(a3, v10, v13, v11, v12);
+  v14 = rowIndexesCopy;
+  selfCopy = self;
+  cellsCopy = cells;
+  v9 = rowIndexesCopy;
+  objc_msgSend_enumerateRangesUsingBlock_(indexes, v10, v13, v11, v12);
 }
 
-- (void)formulaCellsReferencingRangesAffectedByRewriteSpec:(id)a3 outFormulaCells:(void *)a4
+- (void)formulaCellsReferencingRangesAffectedByRewriteSpec:(id)spec outFormulaCells:(void *)cells
 {
-  v6 = a3;
-  v13[0] = objc_msgSend_affectedRange(v6, v7, v8, v9, v10);
+  specCopy = spec;
+  v13[0] = objc_msgSend_affectedRange(specCopy, v7, v8, v9, v10);
   v13[1] = v11;
-  objc_msgSend_formulaCellsReferencingRange_outFormulaCells_(self, v11, v13, a4, v12);
+  objc_msgSend_formulaCellsReferencingRange_outFormulaCells_(self, v11, v13, cells, v12);
 }
 
 - (BOOL)isEmpty
@@ -645,16 +645,16 @@
   return result;
 }
 
-- (id)findTileForToOwnerId:(unsigned __int16)a3 createIfMissing:(BOOL)a4
+- (id)findTileForToOwnerId:(unsigned __int16)id createIfMissing:(BOOL)missing
 {
-  if (a3 == 0xFFFF)
+  if (id == 0xFFFF)
   {
     v22 = 0;
     goto LABEL_21;
   }
 
-  v5 = a4;
-  v6 = a3;
+  missingCopy = missing;
+  idCopy = id;
   v45 = 0;
   p_rangePrecedentsTiles = &self->_rangePrecedentsTiles;
   v9 = 0;
@@ -669,7 +669,7 @@
   {
     v12 = v9 + ((v11 - v9) >> 1);
     v13 = p_rangePrecedentsTiles->__begin_[v12];
-    if (objc_msgSend_toInternalOwnerID(v13, v14, v15, v16, v17) >= v6)
+    if (objc_msgSend_toInternalOwnerID(v13, v14, v15, v16, v17) >= idCopy)
     {
       break;
     }
@@ -683,7 +683,7 @@ LABEL_8:
     }
   }
 
-  if (objc_msgSend_toInternalOwnerID(v13, v18, v19, v20, v21) > v6)
+  if (objc_msgSend_toInternalOwnerID(v13, v18, v19, v20, v21) > idCopy)
   {
     v11 = v9 + ((v11 - v9) >> 1);
     goto LABEL_8;
@@ -693,12 +693,12 @@ LABEL_8:
   if (!v13)
   {
 LABEL_12:
-    if (v5)
+    if (missingCopy)
     {
       if (!self->_dependencyTracker)
       {
         v23 = MEMORY[0x277D81150];
-        v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCERangeDependencies findTileForToOwnerId:createIfMissing:]", a4, v4);
+        v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCERangeDependencies findTileForToOwnerId:createIfMissing:]", missing, v4);
         v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCERangeDependencies.mm", v26, v27);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v23, v29, v24, v28, 479, 0, "invalid nil value for '%{public}s'", "_dependencyTracker", v45);
 
@@ -707,7 +707,7 @@ LABEL_12:
 
       v34 = [TSCERangePrecedentsTile alloc];
       v39 = objc_msgSend_objectContext(self->_dependencyTracker, v35, v36, v37, v38);
-      v45 = objc_msgSend_initWithOwnerId_context_(v34, v40, v6, v39, v41);
+      v45 = objc_msgSend_initWithOwnerId_context_(v34, v40, idCopy, v39, v41);
 
       begin = self->_rangePrecedentsTiles.__begin_;
       v43 = self->_rangePrecedentsTiles.var0 - begin;
@@ -735,9 +735,9 @@ LABEL_21:
   return v22;
 }
 
-- (void)enumerateAllRangesForFromCoord:(const TSUCellCoord *)a3 block:(id)a4
+- (void)enumerateAllRangesForFromCoord:(const TSUCellCoord *)coord block:(id)block
 {
-  v10 = a4;
+  blockCopy = block;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
@@ -751,19 +751,19 @@ LABEL_21:
     v18[1] = 3221225472;
     v18[2] = sub_22149764C;
     v18[3] = &unk_278465D50;
-    v15 = v10;
+    v15 = blockCopy;
     v21 = v14;
     v19 = v15;
     v20 = v22;
-    objc_msgSend_enumerateAllRangesForFromCoord_usingBlock_(v13, v16, a3, v18, v17);
+    objc_msgSend_enumerateAllRangesForFromCoord_usingBlock_(v13, v16, coord, v18, v17);
   }
 
   _Block_object_dispose(v22, 8);
 }
 
-- (void)enumerateAllRanges:(id)a3
+- (void)enumerateAllRanges:(id)ranges
 {
-  v8 = a3;
+  rangesCopy = ranges;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -777,7 +777,7 @@ LABEL_21:
     v17[1] = 3221225472;
     v17[2] = sub_2214977E4;
     v17[3] = &unk_278465D50;
-    v13 = v8;
+    v13 = rangesCopy;
     v20 = v12;
     v18 = v13;
     v19 = v21;
@@ -787,19 +787,19 @@ LABEL_21:
   _Block_object_dispose(v21, 8);
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_2214978B0;
   v5[3] = &unk_278465D70;
-  v5[4] = a3;
+  v5[4] = archive;
   objc_msgSend_enumerateAllRanges_(self, a2, v5, v3, v4);
 }
 
-- (void)readFromArchive:(const void *)a3
+- (void)readFromArchive:(const void *)archive
 {
-  v3 = *(a3 + 6);
+  v3 = *(archive + 6);
   if (v3 >= 1)
   {
     v68 = vdupq_n_s64(0x7FFF7FFFFFFFuLL);
@@ -808,7 +808,7 @@ LABEL_21:
     v8 = &TSCE::_InternalRangeReferenceArchive_default_instance_;
     while (1)
     {
-      TSCE::RangeBackDependencyArchive::RangeBackDependencyArchive(v76, *(*(a3 + 4) + v6));
+      TSCE::RangeBackDependencyArchive::RangeBackDependencyArchive(v76, *(*(archive + 4) + v6));
       if (!(v81 >> 15) && (v80 & 0x80000000) == 0)
       {
         break;
@@ -925,9 +925,9 @@ LABEL_18:
   }
 }
 
-- (void)readFromExpandedArchive:(const void *)a3
+- (void)readFromExpandedArchive:(const void *)archive
 {
-  v3 = *(a3 + 6);
+  v3 = *(archive + 6);
   if (v3 >= 1)
   {
     v5 = 8;
@@ -935,7 +935,7 @@ LABEL_18:
     v7 = &TSCE::_InternalRangeReferenceArchive_default_instance_;
     do
     {
-      TSCE::RangeBackDependencyArchive::RangeBackDependencyArchive(v39, *(*(a3 + 4) + v5));
+      TSCE::RangeBackDependencyArchive::RangeBackDependencyArchive(v39, *(*(archive + 4) + v5));
       v11 = v42;
       if (!(v42 >> 15))
       {
@@ -992,9 +992,9 @@ LABEL_18:
   }
 }
 
-- (void)encodeToTiledArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToTiledArchive:(void *)archive archiver:(id)archiver
 {
-  v23 = a4;
+  archiverCopy = archiver;
   v6 = objc_alloc(MEMORY[0x277CBEB18]);
   v12 = objc_msgSend_initWithCapacity_(v6, v7, self->_rangePrecedentsTiles.var0 - self->_rangePrecedentsTiles.__begin_, v8, v9);
   begin = self->_rangePrecedentsTiles.__begin_;
@@ -1010,22 +1010,22 @@ LABEL_18:
     ++begin;
   }
 
-  objc_msgSend_setStrongReferenceArray_message_(v23, v10, v12, a3 + 16, v11);
+  objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v10, v12, archive + 16, v11);
 }
 
-- (void)readFromTiledArchive:(const void *)a3 unarchiver:(id)a4 ownerDepends:(id)a5
+- (void)readFromTiledArchive:(const void *)archive unarchiver:(id)unarchiver ownerDepends:(id)depends
 {
-  v7 = a4;
-  v8 = a5;
+  unarchiverCopy = unarchiver;
+  dependsCopy = depends;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_2214981B4;
   v13[3] = &unk_27845D8D8;
-  v9 = v8;
+  v9 = dependsCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = unarchiverCopy;
   v11 = objc_opt_class();
-  objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v10, v12, a3 + 16, v11, 0, v13);
+  objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v10, v12, archive + 16, v11, 0, v13);
 }
 
 - (void)unpackAfterUnarchive

@@ -1,20 +1,20 @@
 @interface CPLEngineLibrary
-- (CPLEngineLibrary)initWithParameters:(id)a3;
+- (CPLEngineLibrary)initWithParameters:(id)parameters;
 @end
 
 @implementation CPLEngineLibrary
 
-- (CPLEngineLibrary)initWithParameters:(id)a3
+- (CPLEngineLibrary)initWithParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 clientLibraryBaseURL];
-  v6 = [v4 cloudLibraryStateStorageURL];
-  v7 = [v4 cloudLibraryResourceStorageURL];
-  v8 = [v4 libraryIdentifier];
-  v9 = [v4 mainScopeIdentifier];
-  v10 = [v4 options];
+  parametersCopy = parameters;
+  clientLibraryBaseURL = [parametersCopy clientLibraryBaseURL];
+  cloudLibraryStateStorageURL = [parametersCopy cloudLibraryStateStorageURL];
+  cloudLibraryResourceStorageURL = [parametersCopy cloudLibraryResourceStorageURL];
+  libraryIdentifier = [parametersCopy libraryIdentifier];
+  mainScopeIdentifier = [parametersCopy mainScopeIdentifier];
+  options = [parametersCopy options];
 
-  v11 = [(CPLEngineLibrary *)self initWithClientLibraryBaseURL:v5 cloudLibraryStateStorageURL:v6 cloudLibraryResourceStorageURL:v7 libraryIdentifier:v8 mainScopeIdentifier:v9 options:v10];
+  v11 = [(CPLEngineLibrary *)self initWithClientLibraryBaseURL:clientLibraryBaseURL cloudLibraryStateStorageURL:cloudLibraryStateStorageURL cloudLibraryResourceStorageURL:cloudLibraryResourceStorageURL libraryIdentifier:libraryIdentifier mainScopeIdentifier:mainScopeIdentifier options:options];
   return v11;
 }
 

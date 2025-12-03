@@ -1,36 +1,36 @@
 @interface CloudTabStore
-+ (id)cloudTabForTabDocument:(uint64_t)a1;
++ (id)cloudTabForTabDocument:(uint64_t)document;
 + (id)sharedCloudTabStore;
-- (BOOL)closeAllTabsOnDevice:(id)a3;
-- (BOOL)closeTab:(id)a3 onDevice:(id)a4;
+- (BOOL)closeAllTabsOnDevice:(id)device;
+- (BOOL)closeTab:(id)tab onDevice:(id)device;
 - (BOOL)cloudTabsAreEnabled;
-- (BOOL)tabArrayOfDeviceFromDictionary:(id)a3 isEqualToOtherDeviceTabsFromDictionary:(id)a4 includingLastViewedTime:(BOOL)a5;
+- (BOOL)tabArrayOfDeviceFromDictionary:(id)dictionary isEqualToOtherDeviceTabsFromDictionary:(id)fromDictionary includingLastViewedTime:(BOOL)time;
 - (CloudTabStore)init;
 - (CloudTabStoreDelegate)delegate;
-- (id)_syncedCloudTabDevicesUsingFilter:(BOOL)a3;
+- (id)_syncedCloudTabDevicesUsingFilter:(BOOL)filter;
 - (id)currentDevice;
 - (void)_callFetchCloudKitDataCompletionHandlers;
 - (void)_checkCloudTabsEnabledFromAccounts;
 - (void)_clearAllDevices;
-- (void)_clearTabsForCurrentDeviceWithSyncCompletionHandler:(id)a3;
-- (void)_closeRequestedTabIfPossible:(id)a3;
-- (void)_cloudKitDataDidUpdateOnServer:(id)a3;
-- (void)_cloudKitDataWasDeletedAfterAccountChange:(id)a3;
+- (void)_clearTabsForCurrentDeviceWithSyncCompletionHandler:(id)handler;
+- (void)_closeRequestedTabIfPossible:(id)possible;
+- (void)_cloudKitDataDidUpdateOnServer:(id)server;
+- (void)_cloudKitDataWasDeletedAfterAccountChange:(id)change;
 - (void)_cloudTabsEnabledDidChange;
-- (void)_forceFetchAllCloudTabDevicesWithCompletion:(id)a3;
+- (void)_forceFetchAllCloudTabDevicesWithCompletion:(id)completion;
 - (void)_notifyCloudTabStoreDidUpdate;
 - (void)_removeConflictingDevice;
-- (void)_saveCurrentDeviceCloudTabs:(id)a3 syncCompletionHandler:(id)a4;
-- (void)_saveCurrentDeviceCloudTabsNow:(id)a3 syncCompletionHandler:(id)a4;
-- (void)_saveCurrentDeviceTabs:(void *)a3 sceneIDToLocalGroupTabs:(int)a4 isForEnteringBackground:(void *)a5 completion:;
-- (void)_waitForInitialCloudKitFetchToComplete:(id)a3;
-- (void)didGetCachedDevicesFromCloudKitForCloudTabStore:(id)a3;
-- (void)didUpdateDevicesAndCloseRequestsFromCloudKitForCloudTabStore:(id)a3 error:(id)a4;
+- (void)_saveCurrentDeviceCloudTabs:(id)tabs syncCompletionHandler:(id)handler;
+- (void)_saveCurrentDeviceCloudTabsNow:(id)now syncCompletionHandler:(id)handler;
+- (void)_saveCurrentDeviceTabs:(void *)tabs sceneIDToLocalGroupTabs:(int)groupTabs isForEnteringBackground:(void *)background completion:;
+- (void)_waitForInitialCloudKitFetchToComplete:(id)complete;
+- (void)didGetCachedDevicesFromCloudKitForCloudTabStore:(id)store;
+- (void)didUpdateDevicesAndCloseRequestsFromCloudKitForCloudTabStore:(id)store error:(id)error;
 - (void)fetchSyncedCloudTabDevicesAndCloseRequestsFromCloudKit;
-- (void)saveCurrentDeviceCloudTabsForEnteringBackground:(id)a3 completion:(id)a4;
-- (void)saveCurrentDeviceTabs:(void *)a3 sceneIDToLocalGroupTabs:;
-- (void)saveCurrentDeviceTabsForEnteringBackground:(void *)a3 sceneIDToLocalGroupTabs:(void *)a4 completion:;
-- (void)saveCurrentDeviceTabsFromBrowserState:(id)a3 syncCompletionHandler:(id)a4;
+- (void)saveCurrentDeviceCloudTabsForEnteringBackground:(id)background completion:(id)completion;
+- (void)saveCurrentDeviceTabs:(void *)tabs sceneIDToLocalGroupTabs:;
+- (void)saveCurrentDeviceTabsForEnteringBackground:(void *)background sceneIDToLocalGroupTabs:(void *)tabs completion:;
+- (void)saveCurrentDeviceTabsFromBrowserState:(id)state syncCompletionHandler:(id)handler;
 - (void)startObservingTabStoreStateChanges;
 - (void)stopObservingTabStoreStateChanges;
 - (void)synchronizeCloudTabDevices;
@@ -40,11 +40,11 @@
 
 - (void)startObservingTabStoreStateChanges
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 addObserver:self selector:sel__cloudKitDataDidUpdateOnServer_ name:*MEMORY[0x277D49D20] object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__cloudKitDataDidUpdateOnServer_ name:*MEMORY[0x277D49D20] object:0];
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 addObserver:self selector:sel__cloudKitDataWasDeletedAfterAccountChange_ name:*MEMORY[0x277D49D18] object:0];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__cloudKitDataWasDeletedAfterAccountChange_ name:*MEMORY[0x277D49D18] object:0];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -81,12 +81,12 @@ void __36__CloudTabStore_sharedCloudTabStore__block_invoke()
     [(WBSCloudTabStore *)v2 setWbsDelegate:v2];
     [(CloudTabStore *)v3 _setCloudKitDataNeedsFetching:1];
     [(CloudTabStore *)v3 _checkCloudTabsEnabledFromAccounts];
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    if ([v4 BOOLForKey:*MEMORY[0x277D4A190]])
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    if ([standardUserDefaults BOOLForKey:*MEMORY[0x277D4A190]])
     {
-      v5 = [MEMORY[0x277D49A08] isInternalInstall];
+      isInternalInstall = [MEMORY[0x277D49A08] isInternalInstall];
 
-      if (v5)
+      if (isInternalInstall)
       {
         [(CloudTabStore *)v3 _forceFetchAllCloudTabDevicesWithCompletion:0];
       }
@@ -106,8 +106,8 @@ void __36__CloudTabStore_sharedCloudTabStore__block_invoke()
 {
   v10 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 isEnabledForDataclass:*MEMORY[0x277CB90D0]];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  v4 = [aa_primaryAppleAccount isEnabledForDataclass:*MEMORY[0x277CB90D0]];
   v5 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -122,9 +122,9 @@ void __36__CloudTabStore_sharedCloudTabStore__block_invoke()
     _os_log_impl(&dword_215819000, v5, OS_LOG_TYPE_DEFAULT, "Setting CloudTabs %@ in user defaults", &v8, 0xCu);
   }
 
-  v7 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  [v7 setBool:v4 forKey:@"CloudTabsEnabled"];
-  [v7 synchronize];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  [safari_browserDefaults setBool:v4 forKey:@"CloudTabsEnabled"];
+  [safari_browserDefaults synchronize];
 }
 
 - (BOOL)cloudTabsAreEnabled
@@ -134,8 +134,8 @@ void __36__CloudTabStore_sharedCloudTabStore__block_invoke()
     return 1;
   }
 
-  v3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v4 = [v3 BOOLForKey:@"CloudTabsEnabled"];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v4 = [safari_browserDefaults BOOLForKey:@"CloudTabsEnabled"];
 
   return v4;
 }
@@ -177,8 +177,8 @@ LABEL_8:
 
 - (void)stopObservingTabStoreStateChanges
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -187,14 +187,14 @@ LABEL_8:
 
 - (void)_cloudTabsEnabledDidChange
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 synchronize];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults synchronize];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained cloudTabStore:self cloudTabsEnabledDidChange:{-[CloudTabStore cloudTabsAreEnabled](self, "cloudTabsAreEnabled")}];
 }
 
-- (void)_cloudKitDataDidUpdateOnServer:(id)a3
+- (void)_cloudKitDataDidUpdateOnServer:(id)server
 {
   [(CloudTabStore *)self _setCloudKitDataNeedsFetching:1];
   v4 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
@@ -207,7 +207,7 @@ LABEL_8:
   [(CloudTabStore *)self fetchSyncedCloudTabDevicesAndCloseRequestsFromCloudKit];
 }
 
-- (void)_cloudKitDataWasDeletedAfterAccountChange:(id)a3
+- (void)_cloudKitDataWasDeletedAfterAccountChange:(id)change
 {
   v4 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -221,9 +221,9 @@ LABEL_8:
 
 - (void)_notifyCloudTabStoreDidUpdate
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = [MEMORY[0x277CCAB88] notificationWithName:@"CloudTabStoreDidUpdateNotification" object:self userInfo:0];
-  [v3 postNotification:v4];
+  [defaultCenter postNotification:v4];
 
   [(WBSCloudTabStore *)self notifyObserversOfSyncedCloudTabDevicesChanged];
 }
@@ -232,13 +232,13 @@ LABEL_8:
 {
   if ([(WBSCloudTabStore *)self syncAgentIsAvailable])
   {
-    v3 = [(WBSCloudTabStore *)self dictionaryRepresentationOfCurrentDeviceInCloudKit];
-    if (v3)
+    dictionaryRepresentationOfCurrentDeviceInCloudKit = [(WBSCloudTabStore *)self dictionaryRepresentationOfCurrentDeviceInCloudKit];
+    if (dictionaryRepresentationOfCurrentDeviceInCloudKit)
     {
       v4 = objc_alloc(MEMORY[0x277D49EC0]);
-      v5 = [(CloudTabStore *)self _currentDeviceUUID];
-      v6 = [v5 UUIDString];
-      v7 = [v4 initWithDictionary:v3 uuid:v6];
+      _currentDeviceUUID = [(CloudTabStore *)self _currentDeviceUUID];
+      uUIDString = [_currentDeviceUUID UUIDString];
+      v7 = [v4 initWithDictionary:dictionaryRepresentationOfCurrentDeviceInCloudKit uuid:uUIDString];
     }
 
     else
@@ -261,13 +261,13 @@ LABEL_8:
   return v7;
 }
 
-- (id)_syncedCloudTabDevicesUsingFilter:(BOOL)a3
+- (id)_syncedCloudTabDevicesUsingFilter:(BOOL)filter
 {
   if ([(CloudTabStore *)self cloudTabsAreEnabled])
   {
     v18.receiver = self;
     v18.super_class = CloudTabStore;
-    v5 = [(WBSCloudTabStore *)&v18 syncedCloudTabDevices];
+    syncedCloudTabDevices = [(WBSCloudTabStore *)&v18 syncedCloudTabDevices];
     v6 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -276,10 +276,10 @@ LABEL_8:
     }
 
     [(CloudTabStore *)self synchronizeCloudTabDevices];
-    v7 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v8 = [v7 objectForKey:@"uuidOfCloudTabDeviceUsedForRestoration"];
-    [v7 doubleForKey:@"lastModifiedTimeOfCloudTabDeviceUsedForRestoration"];
-    if (v8 && a3)
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    v8 = [safari_browserDefaults objectForKey:@"uuidOfCloudTabDeviceUsedForRestoration"];
+    [safari_browserDefaults doubleForKey:@"lastModifiedTimeOfCloudTabDeviceUsedForRestoration"];
+    if (v8 && filter)
     {
       v10 = v9;
       v15[0] = MEMORY[0x277D85DD0];
@@ -288,14 +288,14 @@ LABEL_8:
       v15[3] = &unk_2781D7A98;
       v16 = v8;
       v17 = v10;
-      v11 = [v5 safari_filterObjectsUsingBlock:v15];
+      v11 = [syncedCloudTabDevices safari_filterObjectsUsingBlock:v15];
 
       v12 = v11;
     }
 
     else
     {
-      v12 = v5;
+      v12 = syncedCloudTabDevices;
     }
   }
 
@@ -351,10 +351,10 @@ uint64_t __51__CloudTabStore__syncedCloudTabDevicesUsingFilter___block_invoke(ui
 
 - (void)synchronizeCloudTabDevices
 {
-  v3 = [(CloudTabStore *)self cloudTabsAreEnabled];
+  cloudTabsAreEnabled = [(CloudTabStore *)self cloudTabsAreEnabled];
   v4 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
   v5 = v4;
-  if (v3)
+  if (cloudTabsAreEnabled)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -416,9 +416,9 @@ uint64_t __43__CloudTabStore_synchronizeCloudTabDevices__block_invoke_2(uint64_t
   return [*(a1 + 32) fetchSyncedCloudTabDevicesAndCloseRequestsFromCloudKit];
 }
 
-- (void)_waitForInitialCloudKitFetchToComplete:(id)a3
+- (void)_waitForInitialCloudKitFetchToComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   if (self->_hasCompletedFetchOfCloudKitDataAtLeastOnce)
   {
     v5 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
@@ -427,7 +427,7 @@ uint64_t __43__CloudTabStore_synchronizeCloudTabDevices__block_invoke_2(uint64_t
       [CloudTabStore _waitForInitialCloudKitFetchToComplete:];
     }
 
-    v4[2](v4, 1);
+    completeCopy[2](completeCopy, 1);
     goto LABEL_16;
   }
 
@@ -451,7 +451,7 @@ uint64_t __43__CloudTabStore_synchronizeCloudTabDevices__block_invoke_2(uint64_t
     }
 
 LABEL_15:
-    v4[2](v4, 0);
+    completeCopy[2](completeCopy, 0);
     goto LABEL_16;
   }
 
@@ -459,7 +459,7 @@ LABEL_15:
   aBlock[1] = 3221225472;
   aBlock[2] = __56__CloudTabStore__waitForInitialCloudKitFetchToComplete___block_invoke;
   aBlock[3] = &unk_2781D4D90;
-  v16 = v4;
+  v16 = completeCopy;
   v6 = _Block_copy(aBlock);
   v7 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -540,11 +540,11 @@ uint64_t __56__CloudTabStore__waitForInitialCloudKitFetchToComplete___block_invo
   }
 }
 
-- (BOOL)closeTab:(id)a3 onDevice:(id)a4
+- (BOOL)closeTab:(id)tab onDevice:(id)device
 {
   v7.receiver = self;
   v7.super_class = CloudTabStore;
-  v5 = [(WBSCloudTabStore *)&v7 closeTab:a3 onDevice:a4];
+  v5 = [(WBSCloudTabStore *)&v7 closeTab:tab onDevice:device];
   if (v5)
   {
     [(CloudTabStore *)self _notifyCloudTabStoreDidUpdate];
@@ -553,11 +553,11 @@ uint64_t __56__CloudTabStore__waitForInitialCloudKitFetchToComplete___block_invo
   return v5;
 }
 
-- (BOOL)closeAllTabsOnDevice:(id)a3
+- (BOOL)closeAllTabsOnDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = CloudTabStore;
-  v4 = [(WBSCloudTabStore *)&v6 closeAllTabsOnDevice:a3];
+  v4 = [(WBSCloudTabStore *)&v6 closeAllTabsOnDevice:device];
   if (v4)
   {
     [(CloudTabStore *)self _notifyCloudTabStoreDidUpdate];
@@ -575,9 +575,9 @@ uint64_t __56__CloudTabStore__waitForInitialCloudKitFetchToComplete___block_invo
   }
 }
 
-- (void)_clearTabsForCurrentDeviceWithSyncCompletionHandler:(id)a3
+- (void)_clearTabsForCurrentDeviceWithSyncCompletionHandler:(id)handler
 {
-  [(CloudTabStore *)self _saveCurrentDeviceCloudTabs:0 syncCompletionHandler:a3];
+  [(CloudTabStore *)self _saveCurrentDeviceCloudTabs:0 syncCompletionHandler:handler];
 
   [(CloudTabStore *)self _notifyCloudTabStoreDidUpdate];
 }
@@ -588,13 +588,13 @@ uint64_t __56__CloudTabStore__waitForInitialCloudKitFetchToComplete___block_invo
   {
     if ([(WBSCloudTabStore *)self syncAgentIsAvailable])
     {
-      v3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-      v4 = [(CloudTabStore *)self _currentDeviceUUID];
-      v5 = [v4 UUIDString];
+      safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+      _currentDeviceUUID = [(CloudTabStore *)self _currentDeviceUUID];
+      uUIDString = [_currentDeviceUUID UUIDString];
 
-      v6 = [v3 objectForKey:*MEMORY[0x277D291D0]];
-      v7 = [v3 objectForKey:@"uuidOfCloudTabDeviceUsedForRestoration"];
-      if ([v5 isEqualToString:v6])
+      v6 = [safari_browserDefaults objectForKey:*MEMORY[0x277D291D0]];
+      v7 = [safari_browserDefaults objectForKey:@"uuidOfCloudTabDeviceUsedForRestoration"];
+      if ([uUIDString isEqualToString:v6])
       {
         v8 = v7;
       }
@@ -605,15 +605,15 @@ uint64_t __56__CloudTabStore__waitForInitialCloudKitFetchToComplete___block_invo
       }
 
       v9 = v8;
-      v10 = [MEMORY[0x277D499F0] currentDevice];
-      v11 = [v10 userAssignedName];
+      currentDevice = [MEMORY[0x277D499F0] currentDevice];
+      userAssignedName = [currentDevice userAssignedName];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __41__CloudTabStore__removeConflictingDevice__block_invoke;
       v14[3] = &unk_2781D7AC0;
       v15 = v9;
       v12 = v9;
-      [(WBSCloudTabStore *)self clearTabsForFirstDuplicateDeviceInCloudKitWithName:v11 passingTest:v14];
+      [(WBSCloudTabStore *)self clearTabsForFirstDuplicateDeviceInCloudKitWithName:userAssignedName passingTest:v14];
     }
 
     else
@@ -636,25 +636,25 @@ uint64_t __41__CloudTabStore__removeConflictingDevice__block_invoke(uint64_t a1,
   return v2 ^ 1;
 }
 
-- (void)saveCurrentDeviceCloudTabsForEnteringBackground:(id)a3 completion:(id)a4
+- (void)saveCurrentDeviceCloudTabsForEnteringBackground:(id)background completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  backgroundCopy = background;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__CloudTabStore_saveCurrentDeviceCloudTabsForEnteringBackground_completion___block_invoke;
   aBlock[3] = &unk_2781D4D90;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
   v9 = _Block_copy(aBlock);
-  if (v6)
+  if (backgroundCopy)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __76__CloudTabStore_saveCurrentDeviceCloudTabsForEnteringBackground_completion___block_invoke_49;
     v11[3] = &unk_2781D7AE8;
     v11[4] = self;
-    v12 = v6;
+    v12 = backgroundCopy;
     v13 = v9;
     [(CloudTabStore *)self _waitForInitialCloudKitFetchToComplete:v11];
   }
@@ -763,35 +763,35 @@ LABEL_7:
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_saveCurrentDeviceCloudTabs:(id)a3 syncCompletionHandler:(id)a4
+- (void)_saveCurrentDeviceCloudTabs:(id)tabs syncCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tabsCopy = tabs;
+  handlerCopy = handler;
   if (![(WBSCloudTabStore *)self syncAgentIsAvailable])
   {
     v8 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       [CloudTabStore _saveCurrentDeviceCloudTabs:syncCompletionHandler:];
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_8;
       }
     }
 
-    else if (!v7)
+    else if (!handlerCopy)
     {
       goto LABEL_8;
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_8;
   }
 
   if (![(CloudTabStore *)self canSaveCloudTabsForCurrentDevice])
   {
 
-    v6 = 0;
+    tabsCopy = 0;
   }
 
   objc_initWeak(&location, self);
@@ -800,9 +800,9 @@ LABEL_7:
   v9[2] = __67__CloudTabStore__saveCurrentDeviceCloudTabs_syncCompletionHandler___block_invoke;
   v9[3] = &unk_2781D7B10;
   objc_copyWeak(&v12, &location);
-  v6 = v6;
-  v10 = v6;
-  v11 = v7;
+  tabsCopy = tabsCopy;
+  v10 = tabsCopy;
+  v11 = handlerCopy;
   [(CloudTabStore *)self _waitForInitialCloudKitFetchToComplete:v9];
 
   objc_destroyWeak(&v12);
@@ -816,36 +816,36 @@ void __67__CloudTabStore__saveCurrentDeviceCloudTabs_syncCompletionHandler___blo
   [WeakRetained _saveCurrentDeviceCloudTabsNow:*(a1 + 32) syncCompletionHandler:*(a1 + 40)];
 }
 
-- (void)_saveCurrentDeviceCloudTabsNow:(id)a3 syncCompletionHandler:(id)a4
+- (void)_saveCurrentDeviceCloudTabsNow:(id)now syncCompletionHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSCloudTabStore *)self dictionaryRepresentationOfCurrentDeviceInCloudKit];
-  if (v8)
+  nowCopy = now;
+  handlerCopy = handler;
+  dictionaryRepresentationOfCurrentDeviceInCloudKit = [(WBSCloudTabStore *)self dictionaryRepresentationOfCurrentDeviceInCloudKit];
+  if (dictionaryRepresentationOfCurrentDeviceInCloudKit)
   {
 LABEL_2:
     v9 = [MEMORY[0x277D7B838] accessLevel] == 2;
     v10 = objc_alloc_init(MEMORY[0x277D49EC8]);
-    v11 = [MEMORY[0x277D499F0] currentDevice];
-    v12 = [v11 userAssignedName];
-    [v10 setDeviceName:v12];
+    currentDevice = [MEMORY[0x277D499F0] currentDevice];
+    userAssignedName = [currentDevice userAssignedName];
+    [v10 setDeviceName:userAssignedName];
 
-    v13 = [MEMORY[0x277CBEAA8] date];
-    [v10 setLastModified:v13];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v10 setLastModified:date];
 
-    [v10 setTabs:v6];
+    [v10 setTabs:nowCopy];
     [v10 setEphemeralDevice:v9];
-    v14 = [MEMORY[0x277D499F0] currentDevice];
-    v15 = [v14 deviceTypeIdentifier];
-    [v10 setDeviceTypeIdentifier:v15];
+    currentDevice2 = [MEMORY[0x277D499F0] currentDevice];
+    deviceTypeIdentifier = [currentDevice2 deviceTypeIdentifier];
+    [v10 setDeviceTypeIdentifier:deviceTypeIdentifier];
 
-    v16 = [v10 dictionaryRepresentation];
-    v17 = [v16 objectForKey:@"DeviceName"];
-    v18 = [v8 objectForKey:@"DeviceName"];
-    if (-[CloudTabStore tabArrayOfDeviceFromDictionary:isEqualToOtherDeviceTabsFromDictionary:includingLastViewedTime:](self, "tabArrayOfDeviceFromDictionary:isEqualToOtherDeviceTabsFromDictionary:includingLastViewedTime:", v16, v8, 0) && [v17 isEqual:v18])
+    dictionaryRepresentation = [v10 dictionaryRepresentation];
+    v17 = [dictionaryRepresentation objectForKey:@"DeviceName"];
+    v18 = [dictionaryRepresentationOfCurrentDeviceInCloudKit objectForKey:@"DeviceName"];
+    if (-[CloudTabStore tabArrayOfDeviceFromDictionary:isEqualToOtherDeviceTabsFromDictionary:includingLastViewedTime:](self, "tabArrayOfDeviceFromDictionary:isEqualToOtherDeviceTabsFromDictionary:includingLastViewedTime:", dictionaryRepresentation, dictionaryRepresentationOfCurrentDeviceInCloudKit, 0) && [v17 isEqual:v18])
     {
-      if ([(CloudTabStore *)self tabArrayOfDeviceFromDictionary:v16 isEqualToOtherDeviceTabsFromDictionary:v8 includingLastViewedTime:1])
+      if ([(CloudTabStore *)self tabArrayOfDeviceFromDictionary:dictionaryRepresentation isEqualToOtherDeviceTabsFromDictionary:dictionaryRepresentationOfCurrentDeviceInCloudKit includingLastViewedTime:1])
       {
         v19 = 86400.0;
       }
@@ -854,22 +854,22 @@ LABEL_2:
       {
         v35.receiver = self;
         v35.super_class = CloudTabStore;
-        v25 = [(WBSCloudTabStore *)&v35 syncedCloudTabDevices];
-        v26 = [v25 count] > 1;
+        syncedCloudTabDevices = [(WBSCloudTabStore *)&v35 syncedCloudTabDevices];
+        v26 = [syncedCloudTabDevices count] > 1;
 
         v19 = dbl_215A95C50[v26];
       }
 
-      v27 = [v16 objectForKey:@"LastModified"];
-      v28 = [v8 objectForKey:@"LastModified"];
+      v27 = [dictionaryRepresentation objectForKey:@"LastModified"];
+      v28 = [dictionaryRepresentationOfCurrentDeviceInCloudKit objectForKey:@"LastModified"];
       if (v28)
       {
         [v27 timeIntervalSinceDate:v28];
         if (v29 < v19)
         {
-          if (v7)
+          if (handlerCopy)
           {
-            v7[2](v7, 0);
+            handlerCopy[2](handlerCopy, 0);
           }
 
           goto LABEL_23;
@@ -877,25 +877,25 @@ LABEL_2:
       }
     }
 
-    v30 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v31 = [v6 count];
-    [v30 setInteger:v31 forKey:*MEMORY[0x277D291E0]];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    v31 = [nowCopy count];
+    [safari_browserDefaults setInteger:v31 forKey:*MEMORY[0x277D291E0]];
 
-    v32 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v33 = [MEMORY[0x277CBEAA8] date];
-    [v32 safari_setDate:v33 forKey:*MEMORY[0x277D291D8]];
+    safari_browserDefaults2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [safari_browserDefaults2 safari_setDate:date2 forKey:*MEMORY[0x277D291D8]];
 
-    [(WBSCloudTabStore *)self saveCurrentCloudTabDeviceDictionaryToCloudKit:v16 completionHandler:v7];
+    [(WBSCloudTabStore *)self saveCurrentCloudTabDeviceDictionaryToCloudKit:dictionaryRepresentation completionHandler:handlerCopy];
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v20 = [(WBSCloudTabStore *)self currentDeviceIsRegisteredInCloudKit];
-  if (v6)
+  currentDeviceIsRegisteredInCloudKit = [(WBSCloudTabStore *)self currentDeviceIsRegisteredInCloudKit];
+  if (nowCopy)
   {
-    v21 = [(CloudTabStore *)self allSyncedCloudTabDevices];
-    v22 = [v21 count];
+    allSyncedCloudTabDevices = [(CloudTabStore *)self allSyncedCloudTabDevices];
+    v22 = [allSyncedCloudTabDevices count];
 
     v23 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -917,7 +917,7 @@ LABEL_23:
       *buf = 134349312;
       v39 = 0;
       v40 = 1026;
-      v41 = v20;
+      v41 = currentDeviceIsRegisteredInCloudKit;
       _os_log_impl(&dword_215819000, v34, OS_LOG_TYPE_DEFAULT, "No devices saved, %{public}lu tabs to sync up, CK device registration state: %{public}d", buf, 0x12u);
     }
 
@@ -925,7 +925,7 @@ LABEL_23:
     v36[1] = 3221225472;
     v36[2] = __70__CloudTabStore__saveCurrentDeviceCloudTabsNow_syncCompletionHandler___block_invoke;
     v36[3] = &unk_2781D4D90;
-    v37 = v7;
+    v37 = handlerCopy;
     [(CloudTabStore *)self _forceFetchAllCloudTabDevicesWithCompletion:v36];
   }
 
@@ -935,13 +935,13 @@ LABEL_23:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67240192;
-      LODWORD(v39) = v20;
+      LODWORD(v39) = currentDeviceIsRegisteredInCloudKit;
       _os_log_impl(&dword_215819000, v24, OS_LOG_TYPE_DEFAULT, "No previous device or cloud tabs to sync up, CK device registration state: %{public}d", buf, 8u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -959,14 +959,14 @@ uint64_t __70__CloudTabStore__saveCurrentDeviceCloudTabsNow_syncCompletionHandle
   return result;
 }
 
-- (void)_forceFetchAllCloudTabDevicesWithCompletion:(id)a3
+- (void)_forceFetchAllCloudTabDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CloudTabStore *)self cloudTabsAreEnabled])
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v6 = *MEMORY[0x277D4A178];
-    v7 = [v5 safari_dateForKey:*MEMORY[0x277D4A178]];
+    v7 = [standardUserDefaults safari_dateForKey:*MEMORY[0x277D4A178]];
     v8 = v7;
     if (v7)
     {
@@ -980,18 +980,18 @@ uint64_t __70__CloudTabStore__saveCurrentDeviceCloudTabsNow_syncCompletionHandle
     }
 
     v12 = *MEMORY[0x277D4A190];
-    v13 = [v5 BOOLForKey:*MEMORY[0x277D4A190]];
-    if (v13)
+    isInternalInstall = [standardUserDefaults BOOLForKey:*MEMORY[0x277D4A190]];
+    if (isInternalInstall)
     {
-      v13 = [MEMORY[0x277D49A08] isInternalInstall];
+      isInternalInstall = [MEMORY[0x277D49A08] isInternalInstall];
     }
 
-    if ((v10 | v13))
+    if ((v10 | isInternalInstall))
     {
-      v14 = [MEMORY[0x277CBEAA8] date];
-      [v5 safari_setDate:v14 forKey:v6];
+      date = [MEMORY[0x277CBEAA8] date];
+      [standardUserDefaults safari_setDate:date forKey:v6];
 
-      [v5 removeObjectForKey:v12];
+      [standardUserDefaults removeObjectForKey:v12];
       v15 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -1002,14 +1002,14 @@ uint64_t __70__CloudTabStore__saveCurrentDeviceCloudTabsNow_syncCompletionHandle
       self->_hasInitiatedFetchOfCloudKitDataAtLeastOnce = 0;
       self->_hasCompletedFetchOfCloudKitDataAtLeastOnce = 0;
       [(CloudTabStore *)self _setCloudKitDataNeedsFetching:1];
-      v16 = [MEMORY[0x277D49B18] sharedProxy];
+      mEMORY[0x277D49B18] = [MEMORY[0x277D49B18] sharedProxy];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __61__CloudTabStore__forceFetchAllCloudTabDevicesWithCompletion___block_invoke;
       v18[3] = &unk_2781D56B0;
       v18[4] = self;
-      v19 = v4;
-      [v16 clearServerChangeTokenWithCompletionHandler:v18];
+      v19 = completionCopy;
+      [mEMORY[0x277D49B18] clearServerChangeTokenWithCompletionHandler:v18];
     }
 
     else
@@ -1021,9 +1021,9 @@ uint64_t __70__CloudTabStore__saveCurrentDeviceCloudTabsNow_syncCompletionHandle
         _os_log_impl(&dword_215819000, v17, OS_LOG_TYPE_DEFAULT, "Skipping force fetch since attempted recently", buf, 2u);
       }
 
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4);
+        completionCopy[2](completionCopy);
       }
     }
   }
@@ -1037,9 +1037,9 @@ uint64_t __70__CloudTabStore__saveCurrentDeviceCloudTabsNow_syncCompletionHandle
       _os_log_impl(&dword_215819000, v11, OS_LOG_TYPE_INFO, "Skipping force fetch since cloud tabs disabled", buf, 2u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1093,20 +1093,20 @@ uint64_t __61__CloudTabStore__forceFetchAllCloudTabDevicesWithCompletion___block
   return result;
 }
 
-- (BOOL)tabArrayOfDeviceFromDictionary:(id)a3 isEqualToOtherDeviceTabsFromDictionary:(id)a4 includingLastViewedTime:(BOOL)a5
+- (BOOL)tabArrayOfDeviceFromDictionary:(id)dictionary isEqualToOtherDeviceTabsFromDictionary:(id)fromDictionary includingLastViewedTime:(BOOL)time
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsFromDictionary_includingLastViewedTime___block_invoke;
   aBlock[3] = &__block_descriptor_33_e26___NSArray_16__0__NSArray_8l;
-  v16 = a5;
-  v6 = a4;
-  v7 = a3;
+  timeCopy = time;
+  fromDictionaryCopy = fromDictionary;
+  dictionaryCopy = dictionary;
   v8 = _Block_copy(aBlock);
-  v9 = [v7 objectForKeyedSubscript:@"Tabs"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"Tabs"];
 
   v10 = v8[2](v8, v9);
-  v11 = [v6 objectForKeyedSubscript:@"Tabs"];
+  v11 = [fromDictionaryCopy objectForKeyedSubscript:@"Tabs"];
 
   v12 = v8[2](v8, v11);
   v13 = [v10 isEqual:v12];
@@ -1176,26 +1176,26 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
   return v2;
 }
 
-- (void)saveCurrentDeviceTabsFromBrowserState:(id)a3 syncCompletionHandler:(id)a4
+- (void)saveCurrentDeviceTabsFromBrowserState:(id)state syncCompletionHandler:(id)handler
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 windowStates];
-  if ([v7 count])
+  handlerCopy = handler;
+  windowStates = [state windowStates];
+  if ([windowStates count])
   {
-    v31 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v7;
+    obj = windowStates;
     v28 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v28)
     {
-      v26 = v6;
+      v26 = handlerCopy;
       v27 = *v38;
-      v24 = self;
-      v25 = v7;
+      selfCopy = self;
+      v25 = windowStates;
       do
       {
         for (i = 0; i != v28; ++i)
@@ -1206,17 +1206,17 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
           }
 
           v32 = *(*(&v37 + 1) + 8 * i);
-          v9 = [v32 localTabGroup];
-          if (v9)
+          localTabGroup = [v32 localTabGroup];
+          if (localTabGroup)
           {
-            v29 = v9;
+            v29 = localTabGroup;
             v30 = i;
             v35 = 0u;
             v36 = 0u;
             v33 = 0u;
             v34 = 0u;
-            v10 = [v9 allTabs];
-            v11 = [v10 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            allTabs = [localTabGroup allTabs];
+            v11 = [allTabs countByEnumeratingWithState:&v33 objects:v41 count:16];
             if (v11)
             {
               v12 = v11;
@@ -1227,50 +1227,50 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
                 {
                   if (*v34 != v13)
                   {
-                    objc_enumerationMutation(v10);
+                    objc_enumerationMutation(allTabs);
                   }
 
                   v15 = *(*(&v33 + 1) + 8 * j);
                   v16 = [v15 url];
                   if (v16)
                   {
-                    v17 = [v15 uuid];
-                    if ([v17 length])
+                    uuid = [v15 uuid];
+                    if ([uuid length])
                     {
-                      v18 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v17];
+                      v18 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:uuid];
                       if (v18)
                       {
                         v19 = [objc_alloc(MEMORY[0x277D49ED0]) initWithURL:v16];
                         [v19 setUuid:v18];
-                        v20 = [v15 title];
-                        [v19 setTitle:v20];
+                        title = [v15 title];
+                        [v19 setTitle:title];
 
                         [v19 setShowingReader:{objc_msgSend(v15, "isShowingReader")}];
-                        v21 = [v32 sceneID];
-                        [v19 setSceneID:v21];
+                        sceneID = [v32 sceneID];
+                        [v19 setSceneID:sceneID];
 
                         [v15 lastViewedTime];
                         [v19 setLastViewedTime:?];
                         v22 = [objc_alloc(MEMORY[0x277D49EB8]) initWithParameters:v19];
                         if (v22)
                         {
-                          [v31 addObject:v22];
+                          [array addObject:v22];
                         }
                       }
                     }
                   }
                 }
 
-                v12 = [v10 countByEnumeratingWithState:&v33 objects:v41 count:16];
+                v12 = [allTabs countByEnumeratingWithState:&v33 objects:v41 count:16];
               }
 
               while (v12);
             }
 
-            v7 = v25;
-            v6 = v26;
-            self = v24;
-            v9 = v29;
+            windowStates = v25;
+            handlerCopy = v26;
+            self = selfCopy;
+            localTabGroup = v29;
             i = v30;
           }
         }
@@ -1281,24 +1281,24 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
       while (v28);
     }
 
-    if ([v31 count])
+    if ([array count])
     {
-      [(CloudTabStore *)self _saveCurrentDeviceCloudTabs:v31 syncCompletionHandler:v6];
+      [(CloudTabStore *)self _saveCurrentDeviceCloudTabs:array syncCompletionHandler:handlerCopy];
     }
 
     else
     {
-      [(CloudTabStore *)self _clearTabsForCurrentDeviceWithSyncCompletionHandler:v6];
+      [(CloudTabStore *)self _clearTabsForCurrentDeviceWithSyncCompletionHandler:handlerCopy];
     }
   }
 
   else
   {
-    [(CloudTabStore *)self _clearTabsForCurrentDeviceWithSyncCompletionHandler:v6];
+    [(CloudTabStore *)self _clearTabsForCurrentDeviceWithSyncCompletionHandler:handlerCopy];
   }
 }
 
-- (void)didGetCachedDevicesFromCloudKitForCloudTabStore:(id)a3
+- (void)didGetCachedDevicesFromCloudKitForCloudTabStore:(id)store
 {
   v4 = objc_alloc_init(MEMORY[0x277D49B60]);
   v6[0] = MEMORY[0x277D85DD0];
@@ -1314,9 +1314,9 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
   }
 }
 
-- (void)didUpdateDevicesAndCloseRequestsFromCloudKitForCloudTabStore:(id)a3 error:(id)a4
+- (void)didUpdateDevicesAndCloseRequestsFromCloudKitForCloudTabStore:(id)store error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   self->_hasCompletedFetchOfCloudKitDataAtLeastOnce = 1;
   if ([(WBSCloudTabStore *)self syncAgentIsAvailable])
   {
@@ -1324,7 +1324,7 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
     [(WBSCloudTabStore *)self handleCloseTabRequestsFromCloudKit];
     [(CloudTabStore *)self _notifyCloudTabStoreDidUpdate];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained cloudTabStore:self didUpdateDevicesFromCloudKitWithError:v6];
+    [WeakRetained cloudTabStore:self didUpdateDevicesFromCloudKitWithError:errorCopy];
     if (self->_didAttemptToCloseAtLeastOneTab)
     {
       [WeakRetained saveCloudTabsUsingCloudTabStore:self];
@@ -1339,30 +1339,30 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
   }
 }
 
-- (void)_closeRequestedTabIfPossible:(id)a3
+- (void)_closeRequestedTabIfPossible:(id)possible
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  possibleCopy = possible;
   v5 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 tabUUID];
-    v8 = [v7 UUIDString];
+    tabUUID = [possibleCopy tabUUID];
+    uUIDString = [tabUUID UUIDString];
     v11 = 138543362;
-    v12 = v8;
+    v12 = uUIDString;
     _os_log_impl(&dword_215819000, v6, OS_LOG_TYPE_DEFAULT, "Attempting to close tab with UUID %{public}@", &v11, 0xCu);
   }
 
   v9 = WBS_LOG_CHANNEL_PREFIXCloudTabs();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(CloudTabStore *)v9 _closeRequestedTabIfPossible:v4];
+    [(CloudTabStore *)v9 _closeRequestedTabIfPossible:possibleCopy];
   }
 
   self->_didAttemptToCloseAtLeastOneTab = 1;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained cloudTabStore:self didReceiveTabCloseRequest:v4];
+  [WeakRetained cloudTabStore:self didReceiveTabCloseRequest:possibleCopy];
 }
 
 - (CloudTabStoreDelegate)delegate
@@ -1372,25 +1372,25 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
   return WeakRetained;
 }
 
-+ (id)cloudTabForTabDocument:(uint64_t)a1
++ (id)cloudTabForTabDocument:(uint64_t)document
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 urlForSharing];
-  v4 = [v2 titleForSharing];
-  if (![v4 length])
+  urlForSharing = [v2 urlForSharing];
+  titleForSharing = [v2 titleForSharing];
+  if (![titleForSharing length])
   {
-    v5 = [v3 safari_userVisibleString];
+    safari_userVisibleString = [urlForSharing safari_userVisibleString];
 
-    v4 = v5;
+    titleForSharing = safari_userVisibleString;
   }
 
-  v6 = [objc_alloc(MEMORY[0x277D49ED0]) initWithURL:v3];
-  [v6 setTitle:v4];
+  v6 = [objc_alloc(MEMORY[0x277D49ED0]) initWithURL:urlForSharing];
+  [v6 setTitle:titleForSharing];
   [v6 setShowingReader:{objc_msgSend(v2, "isShowingReader")}];
-  v7 = [v2 readerContext];
-  v8 = [v7 scrollPositionInformation];
-  [v6 setReaderScrollPosition:v8];
+  readerContext = [v2 readerContext];
+  scrollPositionInformation = [readerContext scrollPositionInformation];
+  [v6 setReaderScrollPosition:scrollPositionInformation];
 
   [v2 lastViewedTime];
   [v6 setLastViewedTime:?];
@@ -1399,15 +1399,15 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
   return v9;
 }
 
-- (void)_saveCurrentDeviceTabs:(void *)a3 sceneIDToLocalGroupTabs:(int)a4 isForEnteringBackground:(void *)a5 completion:
+- (void)_saveCurrentDeviceTabs:(void *)tabs sceneIDToLocalGroupTabs:(int)groupTabs isForEnteringBackground:(void *)background completion:
 {
   v26 = *MEMORY[0x277D85DE8];
   v18 = a2;
-  v9 = a3;
-  v10 = a5;
-  if (a1)
+  tabsCopy = tabs;
+  backgroundCopy = background;
+  if (self)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -1427,8 +1427,8 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
             objc_enumerationMutation(v12);
           }
 
-          v16 = [*(*(&v21 + 1) + 8 * v15) cloudTab];
-          [v11 safari_addObjectUnlessNil:v16];
+          cloudTab = [*(*(&v21 + 1) + 8 * v15) cloudTab];
+          [array safari_addObjectUnlessNil:cloudTab];
 
           ++v15;
         }
@@ -1444,20 +1444,20 @@ id __111__CloudTabStore_tabArrayOfDeviceFromDictionary_isEqualToOtherDeviceTabsF
     v19[1] = 3221225472;
     v19[2] = __116__CloudTabStore_SafariAdditions___saveCurrentDeviceTabs_sceneIDToLocalGroupTabs_isForEnteringBackground_completion___block_invoke;
     v19[3] = &unk_2781DBC68;
-    v17 = v11;
+    v17 = array;
     v20 = v17;
-    [v9 enumerateKeysAndObjectsUsingBlock:v19];
-    if (a4)
+    [tabsCopy enumerateKeysAndObjectsUsingBlock:v19];
+    if (groupTabs)
     {
-      [a1 saveCurrentDeviceCloudTabsForEnteringBackground:v17 completion:v10];
+      [self saveCurrentDeviceCloudTabsForEnteringBackground:v17 completion:backgroundCopy];
     }
 
     else
     {
-      [a1 saveCurrentDeviceCloudTabs:v17];
-      if (v10)
+      [self saveCurrentDeviceCloudTabs:v17];
+      if (backgroundCopy)
       {
-        v10[2](v10);
+        backgroundCopy[2](backgroundCopy);
       }
     }
   }
@@ -1517,24 +1517,24 @@ void __116__CloudTabStore_SafariAdditions___saveCurrentDeviceTabs_sceneIDToLocal
   }
 }
 
-- (void)saveCurrentDeviceTabs:(void *)a3 sceneIDToLocalGroupTabs:
+- (void)saveCurrentDeviceTabs:(void *)tabs sceneIDToLocalGroupTabs:
 {
   v6 = a2;
-  v5 = a3;
-  if (a1)
+  tabsCopy = tabs;
+  if (self)
   {
-    [(CloudTabStore *)a1 _saveCurrentDeviceTabs:v6 sceneIDToLocalGroupTabs:v5 isForEnteringBackground:0 completion:0];
+    [(CloudTabStore *)self _saveCurrentDeviceTabs:v6 sceneIDToLocalGroupTabs:tabsCopy isForEnteringBackground:0 completion:0];
   }
 }
 
-- (void)saveCurrentDeviceTabsForEnteringBackground:(void *)a3 sceneIDToLocalGroupTabs:(void *)a4 completion:
+- (void)saveCurrentDeviceTabsForEnteringBackground:(void *)background sceneIDToLocalGroupTabs:(void *)tabs completion:
 {
   v9 = a2;
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  backgroundCopy = background;
+  tabsCopy = tabs;
+  if (self)
   {
-    [(CloudTabStore *)a1 _saveCurrentDeviceTabs:v9 sceneIDToLocalGroupTabs:v7 isForEnteringBackground:1 completion:v8];
+    [(CloudTabStore *)self _saveCurrentDeviceTabs:v9 sceneIDToLocalGroupTabs:backgroundCopy isForEnteringBackground:1 completion:tabsCopy];
   }
 }
 

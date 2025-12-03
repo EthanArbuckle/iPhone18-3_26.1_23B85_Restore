@@ -1,61 +1,61 @@
 @interface PHCollectionShareAssetSource
-+ (id)collectionShareAssetSourceWithData:(id)a3 resourceType:(int64_t)a4;
-+ (id)collectionShareAssetSourceWithFileURL:(id)a3 resourceType:(int64_t)a4;
-+ (id)collectionShareAssetSourceWithVideoComplementBundle:(id)a3;
-- (PHCollectionShareAssetSource)initWithCollectionShareAssetSourceWithFileURL:(id)a3 data:(id)a4 videoComplementBundle:(id)a5 resourceType:(int64_t)a6 sourceType:(int64_t)a7;
++ (id)collectionShareAssetSourceWithData:(id)data resourceType:(int64_t)type;
++ (id)collectionShareAssetSourceWithFileURL:(id)l resourceType:(int64_t)type;
++ (id)collectionShareAssetSourceWithVideoComplementBundle:(id)bundle;
+- (PHCollectionShareAssetSource)initWithCollectionShareAssetSourceWithFileURL:(id)l data:(id)data videoComplementBundle:(id)bundle resourceType:(int64_t)type sourceType:(int64_t)sourceType;
 @end
 
 @implementation PHCollectionShareAssetSource
 
-- (PHCollectionShareAssetSource)initWithCollectionShareAssetSourceWithFileURL:(id)a3 data:(id)a4 videoComplementBundle:(id)a5 resourceType:(int64_t)a6 sourceType:(int64_t)a7
+- (PHCollectionShareAssetSource)initWithCollectionShareAssetSourceWithFileURL:(id)l data:(id)data videoComplementBundle:(id)bundle resourceType:(int64_t)type sourceType:(int64_t)sourceType
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  lCopy = l;
+  dataCopy = data;
+  bundleCopy = bundle;
   v23.receiver = self;
   v23.super_class = PHCollectionShareAssetSource;
   v15 = [(PHCollectionShareAssetSource *)&v23 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [lCopy copy];
     fileURL = v15->_fileURL;
     v15->_fileURL = v16;
 
-    v18 = [v13 copy];
+    v18 = [dataCopy copy];
     data = v15->_data;
     v15->_data = v18;
 
-    v20 = [v14 copy];
+    v20 = [bundleCopy copy];
     videoComplementBundle = v15->_videoComplementBundle;
     v15->_videoComplementBundle = v20;
 
-    v15->_resourceType = a6;
-    v15->_sourceType = a7;
+    v15->_resourceType = type;
+    v15->_sourceType = sourceType;
   }
 
   return v15;
 }
 
-+ (id)collectionShareAssetSourceWithVideoComplementBundle:(id)a3
++ (id)collectionShareAssetSourceWithVideoComplementBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [[PHCollectionShareAssetSource alloc] initWithCollectionShareAssetSourceWithFileURL:0 data:0 videoComplementBundle:v3 resourceType:0 sourceType:3];
+  bundleCopy = bundle;
+  v4 = [[PHCollectionShareAssetSource alloc] initWithCollectionShareAssetSourceWithFileURL:0 data:0 videoComplementBundle:bundleCopy resourceType:0 sourceType:3];
 
   return v4;
 }
 
-+ (id)collectionShareAssetSourceWithData:(id)a3 resourceType:(int64_t)a4
++ (id)collectionShareAssetSourceWithData:(id)data resourceType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [[PHCollectionShareAssetSource alloc] initWithCollectionShareAssetSourceWithFileURL:0 data:v5 videoComplementBundle:0 resourceType:a4 sourceType:2];
+  dataCopy = data;
+  v6 = [[PHCollectionShareAssetSource alloc] initWithCollectionShareAssetSourceWithFileURL:0 data:dataCopy videoComplementBundle:0 resourceType:type sourceType:2];
 
   return v6;
 }
 
-+ (id)collectionShareAssetSourceWithFileURL:(id)a3 resourceType:(int64_t)a4
++ (id)collectionShareAssetSourceWithFileURL:(id)l resourceType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [[PHCollectionShareAssetSource alloc] initWithCollectionShareAssetSourceWithFileURL:v5 data:0 videoComplementBundle:0 resourceType:a4 sourceType:1];
+  lCopy = l;
+  v6 = [[PHCollectionShareAssetSource alloc] initWithCollectionShareAssetSourceWithFileURL:lCopy data:0 videoComplementBundle:0 resourceType:type sourceType:1];
 
   return v6;
 }

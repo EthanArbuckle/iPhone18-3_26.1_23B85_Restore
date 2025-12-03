@@ -1,27 +1,27 @@
 @interface TSDPartitionedPartialLayout
 - (CGRect)bounds;
-- (TSDPartitionedPartialLayout)initWithInfo:(id)a3 bounds:(CGRect)a4 partitioner:(id)a5;
+- (TSDPartitionedPartialLayout)initWithInfo:(id)info bounds:(CGRect)bounds partitioner:(id)partitioner;
 - (id)computeLayoutGeometry;
 @end
 
 @implementation TSDPartitionedPartialLayout
 
-- (TSDPartitionedPartialLayout)initWithInfo:(id)a3 bounds:(CGRect)a4 partitioner:(id)a5
+- (TSDPartitionedPartialLayout)initWithInfo:(id)info bounds:(CGRect)bounds partitioner:(id)partitioner
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v11.receiver = self;
   v11.super_class = TSDPartitionedPartialLayout;
-  result = [(TSDLayout *)&v11 initWithInfo:a3];
+  result = [(TSDLayout *)&v11 initWithInfo:info];
   if (result)
   {
     result->mBounds.origin.x = x;
     result->mBounds.origin.y = y;
     result->mBounds.size.width = width;
     result->mBounds.size.height = height;
-    result->mPartitioner = a5;
+    result->mPartitioner = partitioner;
   }
 
   return result;

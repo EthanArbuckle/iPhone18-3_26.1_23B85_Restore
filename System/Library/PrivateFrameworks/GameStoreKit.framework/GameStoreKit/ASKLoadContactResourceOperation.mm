@@ -1,7 +1,7 @@
 @interface ASKLoadContactResourceOperation
 + (double)mainScreenScale;
-- (ASKLoadContactResourceOperation)initWithContactId:(id)a3;
-- (ASKLoadContactResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5;
+- (ASKLoadContactResourceOperation)initWithContactId:(id)id;
+- (ASKLoadContactResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer;
 - (id)makeFetchError;
 - (id)makePlatformUnsupportedError;
 - (void)main;
@@ -9,25 +9,25 @@
 
 @implementation ASKLoadContactResourceOperation
 
-- (ASKLoadContactResourceOperation)initWithURLRequest:(id)a3 URLSession:(id)a4 dataConsumer:(id)a5
+- (ASKLoadContactResourceOperation)initWithURLRequest:(id)request URLSession:(id)session dataConsumer:(id)consumer
 {
-  v6 = [a3 URL];
-  v7 = [v6 host];
-  v8 = [v7 stringByRemovingPercentEncoding];
+  v6 = [request URL];
+  host = [v6 host];
+  stringByRemovingPercentEncoding = [host stringByRemovingPercentEncoding];
 
-  v9 = [(ASKLoadContactResourceOperation *)self initWithContactId:v8];
+  v9 = [(ASKLoadContactResourceOperation *)self initWithContactId:stringByRemovingPercentEncoding];
   return v9;
 }
 
-- (ASKLoadContactResourceOperation)initWithContactId:(id)a3
+- (ASKLoadContactResourceOperation)initWithContactId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v11.receiver = self;
   v11.super_class = ASKLoadContactResourceOperation;
   v5 = [(ASKLoadContactResourceOperation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     contactId = v5->_contactId;
     v5->_contactId = v6;
 
@@ -63,9 +63,9 @@
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:10];
 
     v10 = objc_alloc_init(MEMORY[0x277CBDAB8]);
-    v11 = [(ASKLoadContactResourceOperation *)self contactId];
+    contactId = [(ASKLoadContactResourceOperation *)self contactId];
     v21 = 0;
-    v12 = [v10 unifiedContactWithIdentifier:v11 keysToFetch:v9 error:&v21];
+    v12 = [v10 unifiedContactWithIdentifier:contactId keysToFetch:v9 error:&v21];
     v13 = v21;
 
     if (v13 || !v12)
@@ -75,20 +75,20 @@
 
     else
     {
-      v14 = [v12 imageData];
+      imageData = [v12 imageData];
 
-      if (v14)
+      if (imageData)
       {
         v15 = objc_alloc(MEMORY[0x277D755B8]);
-        v16 = [v12 imageData];
-        v17 = [v15 initWithData:v16];
+        imageData2 = [v12 imageData];
+        monogrammer = [v15 initWithData:imageData2];
 
-        [(ASKLoadResourceOperation *)self didCompleteWithResource:v17 error:0];
+        [(ASKLoadResourceOperation *)self didCompleteWithResource:monogrammer error:0];
       }
 
       else
       {
-        v17 = [(ASKLoadContactResourceOperation *)self monogrammer];
+        monogrammer = [(ASKLoadContactResourceOperation *)self monogrammer];
         v22 = v12;
         v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
         v20[0] = MEMORY[0x277D85DD0];
@@ -96,7 +96,7 @@
         v20[2] = __39__ASKLoadContactResourceOperation_main__block_invoke;
         v20[3] = &unk_27968B890;
         v20[4] = self;
-        v19 = [v17 renderAvatarsForContacts:v18 handler:v20];
+        v19 = [monogrammer renderAvatarsForContacts:v18 handler:v20];
       }
     }
   }
@@ -127,8 +127,8 @@ void __39__ASKLoadContactResourceOperation_main__block_invoke(uint64_t a1, void 
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ASKLoadContactResourceOperation *)self contactId];
-  v4 = [v2 stringWithFormat:@"Unable to contact photo with Id: %@", v3];
+  contactId = [(ASKLoadContactResourceOperation *)self contactId];
+  v4 = [v2 stringWithFormat:@"Unable to contact photo with Id: %@", contactId];
 
   v5 = MEMORY[0x277CCA9B8];
   v9 = *MEMORY[0x277CCA450];
@@ -143,8 +143,8 @@ void __39__ASKLoadContactResourceOperation_main__block_invoke(uint64_t a1, void 
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ASKLoadContactResourceOperation *)self contactId];
-  v4 = [v2 stringWithFormat:@"Unable to contact photo with Id: %@. This platform is not currently supported, see code comments in ASKLoadContactResourceOperation for more information", v3];
+  contactId = [(ASKLoadContactResourceOperation *)self contactId];
+  v4 = [v2 stringWithFormat:@"Unable to contact photo with Id: %@. This platform is not currently supported, see code comments in ASKLoadContactResourceOperation for more information", contactId];
 
   v5 = MEMORY[0x277CCA9B8];
   v9 = *MEMORY[0x277CCA450];
@@ -161,13 +161,13 @@ void __39__ASKLoadContactResourceOperation_main__block_invoke(uint64_t a1, void 
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [MEMORY[0x277D759A0] screens];
+  screens = [MEMORY[0x277D759A0] screens];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__ASKLoadContactResourceOperation_mainScreenScale__block_invoke;
   v5[3] = &unk_27968B8B8;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [screens enumerateObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);

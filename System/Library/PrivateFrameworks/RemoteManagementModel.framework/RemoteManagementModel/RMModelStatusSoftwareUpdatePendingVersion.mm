@@ -1,11 +1,11 @@
 @interface RMModelStatusSoftwareUpdatePendingVersion
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithOsVersion:(id)a3 buildVersion:(id)a4;
-+ (id)buildWithOsVersion:(id)a3 buildVersion:(id)a4 targetLocalDateTime:(id)a5;
++ (id)buildRequiredOnlyWithOsVersion:(id)version buildVersion:(id)buildVersion;
++ (id)buildWithOsVersion:(id)version buildVersion:(id)buildVersion targetLocalDateTime:(id)time;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusSoftwareUpdatePendingVersion
@@ -25,28 +25,28 @@
   return v4;
 }
 
-+ (id)buildWithOsVersion:(id)a3 buildVersion:(id)a4 targetLocalDateTime:(id)a5
++ (id)buildWithOsVersion:(id)version buildVersion:(id)buildVersion targetLocalDateTime:(id)time
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  timeCopy = time;
+  buildVersionCopy = buildVersion;
+  versionCopy = version;
   v10 = objc_opt_new();
-  [v10 setStatusOsVersion:v9];
+  [v10 setStatusOsVersion:versionCopy];
 
-  [v10 setStatusBuildVersion:v8];
-  [v10 setStatusTargetLocalDateTime:v7];
+  [v10 setStatusBuildVersion:buildVersionCopy];
+  [v10 setStatusTargetLocalDateTime:timeCopy];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithOsVersion:(id)a3 buildVersion:(id)a4
++ (id)buildRequiredOnlyWithOsVersion:(id)version buildVersion:(id)buildVersion
 {
-  v5 = a4;
-  v6 = a3;
+  buildVersionCopy = buildVersion;
+  versionCopy = version;
   v7 = objc_opt_new();
-  [v7 setStatusOsVersion:v6];
+  [v7 setStatusOsVersion:versionCopy];
 
-  [v7 setStatusBuildVersion:v5];
+  [v7 setStatusBuildVersion:buildVersionCopy];
 
   return v7;
 }
@@ -96,12 +96,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelStatusSoftwareUpdatePendingVersion allowedStatusKeys];
   [v10 minusSet:v11];
@@ -109,32 +109,32 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"os-version" forKeyPath:@"statusOsVersion" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"build-version" forKeyPath:@"statusBuildVersion" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"target-local-date-time" forKeyPath:@"statusTargetLocalDateTime" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"os-version" forKeyPath:@"statusOsVersion" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"build-version" forKeyPath:@"statusBuildVersion" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"target-local-date-time" forKeyPath:@"statusTargetLocalDateTime" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelStatusSoftwareUpdatePendingVersion *)self statusOsVersion];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"os-version" value:v5 isRequired:1 defaultValue:0];
+  statusOsVersion = [(RMModelStatusSoftwareUpdatePendingVersion *)self statusOsVersion];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"os-version" value:statusOsVersion isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelStatusSoftwareUpdatePendingVersion *)self statusBuildVersion];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"build-version" value:v6 isRequired:1 defaultValue:0];
+  statusBuildVersion = [(RMModelStatusSoftwareUpdatePendingVersion *)self statusBuildVersion];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"build-version" value:statusBuildVersion isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelStatusSoftwareUpdatePendingVersion *)self statusTargetLocalDateTime];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"target-local-date-time" value:v7 isRequired:0 defaultValue:0];
+  statusTargetLocalDateTime = [(RMModelStatusSoftwareUpdatePendingVersion *)self statusTargetLocalDateTime];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"target-local-date-time" value:statusTargetLocalDateTime isRequired:0 defaultValue:0];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelStatusSoftwareUpdatePendingVersion;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_statusOsVersion copy];
   v6 = v4[2];
   v4[2] = v5;

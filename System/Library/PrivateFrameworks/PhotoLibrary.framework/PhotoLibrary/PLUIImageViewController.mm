@@ -7,12 +7,12 @@
 - (BOOL)viewImageBeforeSelecting;
 - (CGRect)_viewFrame;
 - (CGRect)previewFrame;
-- (PLUIImageViewController)initWithImage:(CGImage *)a3 cropRect:(CGRect)a4;
-- (PLUIImageViewController)initWithImageData:(id)a3 cropRect:(CGRect)a4;
-- (PLUIImageViewController)initWithPhoto:(id)a3;
-- (PLUIImageViewController)initWithUIImage:(id)a3 cropRect:(CGRect)a4;
-- (PLUIImageViewController)initWithVideoURL:(id)a3;
-- (double)videoViewScrubberYOrigin:(id)a3 forOrientation:(int64_t)a4;
+- (PLUIImageViewController)initWithImage:(CGImage *)image cropRect:(CGRect)rect;
+- (PLUIImageViewController)initWithImageData:(id)data cropRect:(CGRect)rect;
+- (PLUIImageViewController)initWithPhoto:(id)photo;
+- (PLUIImageViewController)initWithUIImage:(id)image cropRect:(CGRect)rect;
+- (PLUIImageViewController)initWithVideoURL:(id)l;
+- (double)videoViewScrubberYOrigin:(id)origin forOrientation:(int64_t)orientation;
 - (id)cancelButtonTitle;
 - (id)chooseButtonTitle;
 - (id)customBackgroundColor;
@@ -23,30 +23,30 @@
 - (int)cropOverlayMode;
 - (unint64_t)imagePickerSavingOptions;
 - (unsigned)imageFormat;
-- (void)_editabilityChanged:(id)a3;
+- (void)_editabilityChanged:(id)changed;
 - (void)_enableCropOverlayIfNecessary;
 - (void)_handleVideoSelected;
 - (void)_updateGestureSettings;
 - (void)attachScrubberPalette;
 - (void)beginDisplayingProgress;
-- (void)cropOverlay:(id)a3 didFinishSaving:(id)a4;
-- (void)cropOverlayWasCancelled:(id)a3;
-- (void)cropOverlayWasOKed:(id)a3;
+- (void)cropOverlay:(id)overlay didFinishSaving:(id)saving;
+- (void)cropOverlayWasCancelled:(id)cancelled;
+- (void)cropOverlayWasOKed:(id)ked;
 - (void)dealloc;
-- (void)handleMediaSelectionUsingTile:(id)a3 managedAsset:(id)a4 args:(id)a5 includeEditing:(BOOL)a6;
-- (void)handleVideoSelectionWithURL:(id)a3 args:(id)a4;
+- (void)handleMediaSelectionUsingTile:(id)tile managedAsset:(id)asset args:(id)args includeEditing:(BOOL)editing;
+- (void)handleVideoSelectionWithURL:(id)l args:(id)args;
 - (void)loadView;
-- (void)photoTileViewControllerCancelImageRequests:(id)a3;
-- (void)photoTileViewControllerRequestsFullScreenImage:(id)a3;
-- (void)setAllowsEditing:(BOOL)a3;
+- (void)photoTileViewControllerCancelImageRequests:(id)requests;
+- (void)photoTileViewControllerRequestsFullScreenImage:(id)image;
+- (void)setAllowsEditing:(BOOL)editing;
 - (void)setupNavigationItem;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)videoRemakerDidEndRemaking:(id)a3 temporaryPath:(id)a4;
-- (void)videoView:(id)a3 scrubberWasCreated:(id)a4 slalomRegionEditor:(id)a5;
-- (void)videoViewIsReadyToBeginPlayback:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)videoRemakerDidEndRemaking:(id)remaking temporaryPath:(id)path;
+- (void)videoView:(id)view scrubberWasCreated:(id)created slalomRegionEditor:(id)editor;
+- (void)videoViewIsReadyToBeginPlayback:(id)playback;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -54,15 +54,15 @@
 
 - (unint64_t)imagePickerSavingOptions
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerController];
+  uiipc_imagePickerController = [(UIViewController *)self uiipc_imagePickerController];
 
-  return [v2 _imagePickerSavingOptions];
+  return [uiipc_imagePickerController _imagePickerSavingOptions];
 }
 
 - (BOOL)imagePickerAllowsEditing
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
-  v3 = [v2 objectForKey:*MEMORY[0x277D76A40]];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
+  v3 = [uiipc_imagePickerOptions objectForKey:*MEMORY[0x277D76A40]];
 
   return [v3 BOOLValue];
 }
@@ -99,131 +99,131 @@
 
 - (id)cancelButtonTitle
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
 
-  return [v2 objectForKey:@"_UIImagePickerControllerCancelButtonTitle"];
+  return [uiipc_imagePickerOptions objectForKey:@"_UIImagePickerControllerCancelButtonTitle"];
 }
 
 - (id)chooseButtonTitle
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
   v3 = *MEMORY[0x277D77440];
 
-  return [v2 objectForKey:v3];
+  return [uiipc_imagePickerOptions objectForKey:v3];
 }
 
 - (BOOL)force1XCroppedImage
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
-  v3 = [v2 objectForKey:*MEMORY[0x277D77430]];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
+  v3 = [uiipc_imagePickerOptions objectForKey:*MEMORY[0x277D77430]];
 
   return [v3 BOOLValue];
 }
 
 - (BOOL)forceNativeScreenScale
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
-  v3 = [v2 objectForKey:*MEMORY[0x277D77458]];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
+  v3 = [uiipc_imagePickerOptions objectForKey:*MEMORY[0x277D77458]];
 
   return [v3 BOOLValue];
 }
 
 - (BOOL)disableVideoTrimMessage
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
-  v3 = [v2 objectForKey:*MEMORY[0x277D77448]];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
+  v3 = [uiipc_imagePickerOptions objectForKey:*MEMORY[0x277D77448]];
 
   return [v3 BOOLValue];
 }
 
 - (id)videoMaximumDuration
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
   v3 = *MEMORY[0x277D76A98];
 
-  return [v2 objectForKey:v3];
+  return [uiipc_imagePickerOptions objectForKey:v3];
 }
 
 - (BOOL)viewImageBeforeSelecting
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
-  v3 = [v2 objectForKey:*MEMORY[0x277D774B8]];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
+  v3 = [uiipc_imagePickerOptions objectForKey:*MEMORY[0x277D774B8]];
 
   return [v3 BOOLValue];
 }
 
 - (id)exportPreset
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
   v3 = *MEMORY[0x277D774B0];
 
-  return [v2 objectForKey:v3];
+  return [uiipc_imagePickerOptions objectForKey:v3];
 }
 
 - (id)videoQuality
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
   v3 = *MEMORY[0x277D76AA0];
 
-  return [v2 objectForKey:v3];
+  return [uiipc_imagePickerOptions objectForKey:v3];
 }
 
 - (BOOL)doNotTranscode
 {
-  v2 = [(UIViewController *)self uiipc_imagePickerOptions];
-  v3 = [v2 objectForKey:*MEMORY[0x277D77498]];
+  uiipc_imagePickerOptions = [(UIViewController *)self uiipc_imagePickerOptions];
+  v3 = [uiipc_imagePickerOptions objectForKey:*MEMORY[0x277D77498]];
 
   return [v3 BOOLValue];
 }
 
-- (void)handleVideoSelectionWithURL:(id)a3 args:(id)a4
+- (void)handleVideoSelectionWithURL:(id)l args:(id)args
 {
-  v7 = [(UIViewController *)self uiipc_imagePickerController];
-  if (v7)
+  uiipc_imagePickerController = [(UIViewController *)self uiipc_imagePickerController];
+  if (uiipc_imagePickerController)
   {
     photo = self->_photo;
 
-    PLNotifyImagePickerOfVideoAvailability(v7, a3, photo, a4);
+    PLNotifyImagePickerOfVideoAvailability(uiipc_imagePickerController, l, photo, args);
   }
 
   else
   {
 
-    [(PLUIImageViewController *)self didChooseVideoAtURL:a3 options:a4];
+    [(PLUIImageViewController *)self didChooseVideoAtURL:l options:args];
   }
 }
 
-- (void)handleMediaSelectionUsingTile:(id)a3 managedAsset:(id)a4 args:(id)a5 includeEditing:(BOOL)a6
+- (void)handleMediaSelectionUsingTile:(id)tile managedAsset:(id)asset args:(id)args includeEditing:(BOOL)editing
 {
-  v6 = a6;
-  v10 = [(UIViewController *)self uiipc_imagePickerController];
+  editingCopy = editing;
+  uiipc_imagePickerController = [(UIViewController *)self uiipc_imagePickerController];
 
-  PLNotifyImagePickerOfMediaAvailability(v10, a3, a4, a5, v6);
+  PLNotifyImagePickerOfMediaAvailability(uiipc_imagePickerController, tile, asset, args, editingCopy);
 }
 
-- (void)photoTileViewControllerCancelImageRequests:(id)a3
+- (void)photoTileViewControllerCancelImageRequests:(id)requests
 {
-  if ([a3 inflightFullSizeImageRequestID])
+  if ([requests inflightFullSizeImageRequestID])
   {
     [objc_msgSend(MEMORY[0x277CD9898] "defaultManager")];
 
-    [a3 setInflightFullSizeImageRequestID:0];
+    [requests setInflightFullSizeImageRequestID:0];
   }
 }
 
-- (void)photoTileViewControllerRequestsFullScreenImage:(id)a3
+- (void)photoTileViewControllerRequestsFullScreenImage:(id)image
 {
   [(PLUIImageViewController *)self photoTileViewControllerCancelImageRequests:?];
-  v4 = [a3 photo];
+  photo = [image photo];
   v5 = objc_alloc_init(MEMORY[0x277CD98A0]);
   [v5 setDeliveryMode:1];
-  v6 = [MEMORY[0x277CD9898] defaultManager];
+  defaultManager = [MEMORY[0x277CD9898] defaultManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__PLUIImageViewController_photoTileViewControllerRequestsFullScreenImage___block_invoke;
   v7[3] = &unk_2782A1F30;
-  v7[4] = a3;
-  [a3 setInflightFullSizeImageRequestID:{objc_msgSend(v6, "requestImageForAsset:targetSize:contentMode:options:resultHandler:", v4, 0, v5, v7, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8))}];
+  v7[4] = image;
+  [image setInflightFullSizeImageRequestID:{objc_msgSend(defaultManager, "requestImageForAsset:targetSize:contentMode:options:resultHandler:", photo, 0, v5, v7, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8))}];
 }
 
 uint64_t __74__PLUIImageViewController_photoTileViewControllerRequestsFullScreenImage___block_invoke(uint64_t result, uint64_t a2)
@@ -243,13 +243,13 @@ uint64_t __74__PLUIImageViewController_photoTileViewControllerRequestsFullScreen
   return [v2 formatID];
 }
 
-- (void)videoRemakerDidEndRemaking:(id)a3 temporaryPath:(id)a4
+- (void)videoRemakerDidEndRemaking:(id)remaking temporaryPath:(id)path
 {
   *(self + 1112) &= ~0x10u;
   [*MEMORY[0x277D76620] endIgnoringInteractionEvents];
-  if (a4)
+  if (path)
   {
-    v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:a4 isDirectory:0];
+    v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:path isDirectory:0];
   }
 
   else
@@ -264,12 +264,12 @@ uint64_t __74__PLUIImageViewController_photoTileViewControllerRequestsFullScreen
   [(PLUIImageViewController *)self _enableCropOverlayIfNecessary];
 }
 
-- (void)videoViewIsReadyToBeginPlayback:(id)a3
+- (void)videoViewIsReadyToBeginPlayback:(id)playback
 {
-  v5 = [(PLUIImageViewController *)self videoMaximumDuration];
-  [a3 duration];
+  videoMaximumDuration = [(PLUIImageViewController *)self videoMaximumDuration];
+  [playback duration];
   v7 = v6;
-  v8 = [(PLUIImageViewController *)self disableVideoTrimMessage];
+  disableVideoTrimMessage = [(PLUIImageViewController *)self disableVideoTrimMessage];
   if (*(self + 1112))
   {
     v9 = 0;
@@ -281,85 +281,85 @@ uint64_t __74__PLUIImageViewController_photoTileViewControllerRequestsFullScreen
   }
 
   [(PLCropOverlay *)self->_cropOverlay setUserInteractionEnabled:1];
-  [v5 doubleValue];
+  [videoMaximumDuration doubleValue];
   if (v10 > 0.0 && (v9 & 1) == 0)
   {
-    [v5 doubleValue];
+    [videoMaximumDuration doubleValue];
     if (v7 > v11)
     {
-      [v5 doubleValue];
-      [a3 setMaximumTrimLength:?];
-      if (([a3 isEditing] & 1) == 0)
+      [videoMaximumDuration doubleValue];
+      [playback setMaximumTrimLength:?];
+      if (([playback isEditing] & 1) == 0)
       {
-        [a3 setEditing:1];
+        [playback setEditing:1];
       }
 
-      if (!v8)
+      if (!disableVideoTrimMessage)
       {
-        v12 = [(PLCropOverlay *)self->_cropOverlay bottomBar];
-        [v12 bounds];
-        [a3 convertRect:v12 fromView:?];
+        bottomBar = [(PLCropOverlay *)self->_cropOverlay bottomBar];
+        [bottomBar bounds];
+        [playback convertRect:bottomBar fromView:?];
         v14 = v13;
-        v15 = [(PLUIImageViewController *)self _trimMessage];
+        _trimMessage = [(PLUIImageViewController *)self _trimMessage];
         v16 = v14 + -20.0;
 
         *&v16 = v14 + -20.0;
-        [a3 showTrimMessage:v15 withBottomY:v16];
+        [playback showTrimMessage:_trimMessage withBottomY:v16];
       }
     }
   }
 }
 
-- (double)videoViewScrubberYOrigin:(id)a3 forOrientation:(int64_t)a4
+- (double)videoViewScrubberYOrigin:(id)origin forOrientation:(int64_t)orientation
 {
-  v5 = [(PLUIImageViewController *)self view:a3];
+  v5 = [(PLUIImageViewController *)self view:origin];
   [objc_msgSend(v5 "safeAreaLayoutGuide")];
-  [a3 convertPoint:v5 fromView:0.0];
+  [origin convertPoint:v5 fromView:0.0];
   return v6;
 }
 
-- (void)videoView:(id)a3 scrubberWasCreated:(id)a4 slalomRegionEditor:(id)a5
+- (void)videoView:(id)view scrubberWasCreated:(id)created slalomRegionEditor:(id)editor
 {
-  if (self->_videoView == a3)
+  if (self->_videoView == view)
   {
     [(PLUIImageViewController *)self attachScrubberPalette];
   }
 }
 
-- (void)cropOverlay:(id)a3 didFinishSaving:(id)a4
+- (void)cropOverlay:(id)overlay didFinishSaving:(id)saving
 {
-  [(PLUIImageViewController *)self handleMediaSelectionUsingTile:self->_imageTile managedAsset:self->_photo args:a4 includeEditing:*(self + 1112) & 1];
+  [(PLUIImageViewController *)self handleMediaSelectionUsingTile:self->_imageTile managedAsset:self->_photo args:saving includeEditing:*(self + 1112) & 1];
 
   [(PLUIImageViewController *)self _enableCropOverlayIfNecessary];
 }
 
 - (void)beginDisplayingProgress
 {
-  v3 = [(PLUIImageViewController *)self view];
-  v4 = [(PLCropOverlay *)self->_cropOverlay bottomBar];
-  [v4 bounds];
-  [v3 convertRect:v4 fromView:?];
+  view = [(PLUIImageViewController *)self view];
+  bottomBar = [(PLCropOverlay *)self->_cropOverlay bottomBar];
+  [bottomBar bounds];
+  [view convertRect:bottomBar fromView:?];
   v7 = [[PLProgressView alloc] initWithFrame:*MEMORY[0x277CBF3A0], v5 - *(MEMORY[0x277CBF3A0] + 24), v6, 45.0];
   self->_progressView = v7;
   [(PLProgressView *)v7 setBackgroundType:3];
   [(PLProgressView *)self->_progressView setAutoresizingMask:2];
   progressView = self->_progressView;
 
-  [v3 addSubview:progressView];
+  [view addSubview:progressView];
 }
 
 - (void)_handleVideoSelected
 {
   [(PLVideoView *)self->_videoView pause];
-  v3 = [(PLVideoView *)self->_videoView videoCameraImage];
+  videoCameraImage = [(PLVideoView *)self->_videoView videoCameraImage];
   if ([(NSURL *)self->_videoURL isFileURL])
   {
-    v4 = [(NSURL *)self->_videoURL path];
+    path = [(NSURL *)self->_videoURL path];
   }
 
   else
   {
-    v4 = 0;
+    path = 0;
   }
 
   [(PLVideoView *)self->_videoView startTime];
@@ -375,10 +375,10 @@ uint64_t __74__PLUIImageViewController_photoTileViewControllerRequestsFullScreen
       v11 = *MEMORY[0x277D774A8];
       v12 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
       v13 = [v9 initWithObjectsAndKeys:{v10, v11, v12, *MEMORY[0x277D774A0], 0}];
-      if (v3)
+      if (videoCameraImage)
       {
 LABEL_7:
-        v14 = [(PLManagedAsset *)v3 mainFileURL];
+        mainFileURL = [(PLManagedAsset *)videoCameraImage mainFileURL];
         goto LABEL_13;
       }
     }
@@ -386,21 +386,21 @@ LABEL_7:
     else
     {
       v13 = 0;
-      if (v3)
+      if (videoCameraImage)
       {
         goto LABEL_7;
       }
     }
 
-    if (!v4)
+    if (!path)
     {
       v16 = 0;
       goto LABEL_14;
     }
 
-    v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4 isDirectory:0];
+    mainFileURL = [MEMORY[0x277CBEBC0] fileURLWithPath:path isDirectory:0];
 LABEL_13:
-    v16 = v14;
+    v16 = mainFileURL;
 LABEL_14:
     [(PLUIImageViewController *)self handleVideoSelectionWithURL:v16 args:v13];
 
@@ -409,42 +409,42 @@ LABEL_14:
   }
 
   self->_remaker = 0;
-  if (v3)
+  if (videoCameraImage)
   {
-    self->_remaker = [[PLVideoRemaker alloc] initWithManagedAsset:v3 applyVideoAdjustments:1];
-    v15 = [(PLManagedAsset *)v3 isHDVideo];
+    self->_remaker = [[PLVideoRemaker alloc] initWithManagedAsset:videoCameraImage applyVideoAdjustments:1];
+    isHDVideo = [(PLManagedAsset *)videoCameraImage isHDVideo];
   }
 
   else
   {
-    v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4 isDirectory:0];
+    v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:path isDirectory:0];
     v18 = -[PLVideoRemaker initWithAVAsset:]([PLVideoRemaker alloc], "initWithAVAsset:", [MEMORY[0x277CE6650] assetWithURL:v17]);
     self->_remaker = v18;
     [(PLVideoView *)self->_videoView duration];
     [(PLVideoRemaker *)v18 setDuration:?];
-    v15 = 0;
+    isHDVideo = 0;
   }
 
   [(PLVideoRemaker *)self->_remaker setDelegate:self];
   [(PLVideoRemaker *)self->_remaker setTrimStartTime:v6];
   [(PLVideoRemaker *)self->_remaker setTrimEndTime:v8];
-  v19 = [(PLUIImageViewController *)self exportPreset];
-  v20 = [(PLUIImageViewController *)self videoQuality];
-  if (!v19)
+  exportPreset = [(PLUIImageViewController *)self exportPreset];
+  videoQuality = [(PLUIImageViewController *)self videoQuality];
+  if (!exportPreset)
   {
-    if (!v20)
+    if (!videoQuality)
     {
       v21 = 7;
       goto LABEL_20;
     }
 
-    v37 = [v20 intValue];
+    intValue = [videoQuality intValue];
     v21 = 7;
-    if (v37 > 2)
+    if (intValue > 2)
     {
-      if ((v37 - 4) >= 2)
+      if ((intValue - 4) >= 2)
       {
-        if (v37 != 3)
+        if (intValue != 3)
         {
           goto LABEL_20;
         }
@@ -466,9 +466,9 @@ LABEL_43:
       }
     }
 
-    else if (v37)
+    else if (intValue)
     {
-      if (v15)
+      if (isHDVideo)
       {
         v38 = 5;
       }
@@ -478,7 +478,7 @@ LABEL_43:
         v38 = 7;
       }
 
-      if (v37 == 2)
+      if (intValue == 2)
       {
         v39 = 8;
       }
@@ -488,7 +488,7 @@ LABEL_43:
         v39 = 7;
       }
 
-      if (v37 == 1)
+      if (intValue == 1)
       {
         v21 = v38;
       }
@@ -501,36 +501,36 @@ LABEL_43:
       goto LABEL_20;
     }
 
-    v40 = v15 == 0;
+    v40 = isHDVideo == 0;
     v41 = 5;
     goto LABEL_43;
   }
 
-  [(PLVideoRemaker *)self->_remaker setExportPresetOverride:v19];
-  v21 = PLVideoRemakerModeForAVAssetExportPreset(v19);
+  [(PLVideoRemaker *)self->_remaker setExportPresetOverride:exportPreset];
+  v21 = PLVideoRemakerModeForAVAssetExportPreset(exportPreset);
 LABEL_20:
   [(PLVideoRemaker *)self->_remaker setMode:v21];
   [(PLVideoView *)self->_videoView hideTrimMessage];
   v22 = v8 - v6;
   [(PLVideoView *)self->_videoView duration];
   v24 = v23;
-  v25 = [(PLVideoRemaker *)self->_remaker progressView];
-  self->_progressView = v25;
-  [(PLProgressView *)v25 frame];
+  progressView = [(PLVideoRemaker *)self->_remaker progressView];
+  self->_progressView = progressView;
+  [(PLProgressView *)progressView frame];
   v27 = v26;
   v29 = v28;
-  [(PLProgressView *)v25 setBackgroundType:3];
-  v30 = [(PLUIImageViewController *)self view];
-  v31 = [(PLCropOverlay *)self->_cropOverlay bottomBar];
-  [v31 bounds];
-  [v30 convertRect:v31 fromView:?];
+  [(PLProgressView *)progressView setBackgroundType:3];
+  view = [(PLUIImageViewController *)self view];
+  bottomBar = [(PLCropOverlay *)self->_cropOverlay bottomBar];
+  [bottomBar bounds];
+  [view convertRect:bottomBar fromView:?];
   v33 = v32;
   v35 = v34 - v29;
-  [v30 addSubview:v25];
-  [(PLProgressView *)v25 setFrame:v27, v35, v33, v29];
+  [view addSubview:progressView];
+  [(PLProgressView *)progressView setFrame:v27, v35, v33, v29];
   if (v22 >= v24)
   {
-    [(PLProgressView *)v25 setLabelText:PLLocalizedFrameworkString()];
+    [(PLProgressView *)progressView setLabelText:PLLocalizedFrameworkString()];
   }
 
   remaker = self->_remaker;
@@ -538,7 +538,7 @@ LABEL_20:
   [(PLVideoRemaker *)remaker remake];
 }
 
-- (void)cropOverlayWasOKed:(id)a3
+- (void)cropOverlayWasOKed:(id)ked
 {
   if ((*(self + 1112) & 4) != 0 || [(PLUIImageViewController *)self wantsAutoloopUI])
   {
@@ -590,22 +590,22 @@ LABEL_20:
   }
 }
 
-- (void)cropOverlayWasCancelled:(id)a3
+- (void)cropOverlayWasCancelled:(id)cancelled
 {
-  v4 = [(UIViewController *)self uiipc_imagePickerController];
-  if (!v4)
+  uiipc_imagePickerController = [(UIViewController *)self uiipc_imagePickerController];
+  if (!uiipc_imagePickerController)
   {
-    v6 = [(PLUIImageViewController *)self navigationController];
+    navigationController = [(PLUIImageViewController *)self navigationController];
     goto LABEL_5;
   }
 
-  v5 = v4;
-  if ([objc_msgSend(v4 "viewControllers")])
+  v5 = uiipc_imagePickerController;
+  if ([objc_msgSend(uiipc_imagePickerController "viewControllers")])
   {
-    v6 = v5;
+    navigationController = v5;
 LABEL_5:
 
-    [v6 popViewControllerAnimated:1];
+    [navigationController popViewControllerAnimated:1];
     return;
   }
 
@@ -617,26 +617,26 @@ LABEL_5:
   if ((*(self + 1112) & 4) == 0 && ![(PLUIImageViewController *)self wantsAutoloopUI])
   {
     [-[PLPhotoTileViewController scrollView](self->_imageTile "scrollView")];
-    v3 = [(PLPhotoTileViewController *)self->_imageTile scrollView];
+    scrollView = [(PLPhotoTileViewController *)self->_imageTile scrollView];
     v4 = *(self + 1112) & 1;
 
-    [v3 setScrollEnabled:v4];
+    [scrollView setScrollEnabled:v4];
   }
 }
 
-- (void)_editabilityChanged:(id)a3
+- (void)_editabilityChanged:(id)changed
 {
-  v4 = [(PLUIImageViewController *)self imagePickerAllowsEditing];
+  imagePickerAllowsEditing = [(PLUIImageViewController *)self imagePickerAllowsEditing];
 
-  [(PLUIImageViewController *)self setAllowsEditing:v4];
+  [(PLUIImageViewController *)self setAllowsEditing:imagePickerAllowsEditing];
 }
 
-- (void)setAllowsEditing:(BOOL)a3
+- (void)setAllowsEditing:(BOOL)editing
 {
   v3 = *(self + 1112);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != editing)
   {
-    *(self + 1112) = v3 & 0xFE | a3;
+    *(self + 1112) = v3 & 0xFE | editing;
     [(PLUIImageViewController *)self _updateGestureSettings];
     cropOverlay = self->_cropOverlay;
     v6 = (*(self + 1112) & 1) == 0;
@@ -647,21 +647,21 @@ LABEL_5:
 
 - (void)attachScrubberPalette
 {
-  v3 = [(PLVideoView *)self->_videoView scrubberBackgroundView];
-  if (v3)
+  scrubberBackgroundView = [(PLVideoView *)self->_videoView scrubberBackgroundView];
+  if (scrubberBackgroundView)
   {
-    v4 = v3;
-    v5 = [(PLUIImageViewController *)self navigationController];
-    if (([v5 isNavigationBarHidden] & 1) == 0 && !objc_msgSend(v5, "existingPaletteForEdge:", 2))
+    v4 = scrubberBackgroundView;
+    navigationController = [(PLUIImageViewController *)self navigationController];
+    if (([navigationController isNavigationBarHidden] & 1) == 0 && !objc_msgSend(navigationController, "existingPaletteForEdge:", 2))
     {
       [(PLUIImageViewController *)self _viewFrame];
       Width = CGRectGetWidth(v10);
       [(UIView *)v4 bounds];
-      v7 = [v5 paletteForEdge:2 size:{Width, CGRectGetHeight(v11)}];
+      v7 = [navigationController paletteForEdge:2 size:{Width, CGRectGetHeight(v11)}];
       if (v7)
       {
         v8 = v7;
-        [v5 attachPalette:v7 isPinned:1];
+        [navigationController attachPalette:v7 isPinned:1];
         [v8 addSubview:v4];
         [(UIView *)v4 setBackgroundColor:0];
         [v8 bounds];
@@ -673,9 +673,9 @@ LABEL_5:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ((*(self + 1112) & 0x10) != 0)
   {
     [(PLVideoRemaker *)self->_remaker cancel];
@@ -686,15 +686,15 @@ LABEL_5:
   [(PLVideoView *)self->_videoView setDelegate:0];
   v5.receiver = self;
   v5.super_class = PLUIImageViewController;
-  [(PLUIImageViewController *)&v5 viewWillDisappear:v3];
+  [(PLUIImageViewController *)&v5 viewWillDisappear:disappearCopy];
   *(self + 1112) &= ~8u;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PLUIImageViewController;
-  [(PLUIImageViewController *)&v5 viewDidAppear:a3];
+  [(PLUIImageViewController *)&v5 viewDidAppear:appear];
   if ([(UIViewController *)self uiipc_useTelephonyUI])
   {
     imageTile = self->_imageTile;
@@ -703,26 +703,26 @@ LABEL_5:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if ([(PLUIImageViewController *)self isDisplayedInPhotoPicker])
   {
     [(PLUIImageViewController *)self setAllowsEditing:[(PLUIImageViewController *)self imagePickerAllowsEditing]];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel__editabilityChanged_ name:*MEMORY[0x277D77450] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__editabilityChanged_ name:*MEMORY[0x277D77450] object:0];
   }
 
-  v6 = [(PLUIImageViewController *)self cropOverlayMode];
-  v7 = [(PLUIImageViewController *)self navigationController];
-  if (v6 == 4)
+  cropOverlayMode = [(PLUIImageViewController *)self cropOverlayMode];
+  navigationController = [(PLUIImageViewController *)self navigationController];
+  if (cropOverlayMode == 4)
   {
-    [v7 setNavigationBarHidden:1];
+    [navigationController setNavigationBarHidden:1];
   }
 
   else
   {
-    [objc_msgSend(v7 "navigationBar")];
+    [objc_msgSend(navigationController "navigationBar")];
   }
 
   [(PLVideoView *)self->_videoView setDelegate:self];
@@ -748,14 +748,14 @@ LABEL_5:
   [MEMORY[0x277D75D18] animateWithDuration:v11 animations:v9];
   v10.receiver = self;
   v10.super_class = PLUIImageViewController;
-  [(PLUIImageViewController *)&v10 viewWillAppear:v3];
+  [(PLUIImageViewController *)&v10 viewWillAppear:appearCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = PLUIImageViewController;
-  [(PLUIImageViewController *)&v5 traitCollectionDidChange:a3];
+  [(PLUIImageViewController *)&v5 traitCollectionDidChange:change];
   if ([(UIViewController *)self uiipc_useTelephonyUI])
   {
     imageTile = self->_imageTile;
@@ -771,10 +771,10 @@ LABEL_5:
   v7.receiver = self;
   v7.super_class = PLUIImageViewController;
   [(PLUIImageViewController *)&v7 viewWillLayoutSubviews];
-  v3 = [(PLUIImageViewController *)self view];
-  v4 = [(PLPhotoTileViewController *)self->_imageTile view];
-  [v3 bounds];
-  [v4 setFrame:?];
+  view = [(PLUIImageViewController *)self view];
+  view2 = [(PLPhotoTileViewController *)self->_imageTile view];
+  [view bounds];
+  [view2 setFrame:?];
   if ((*(self + 1112) & 4) == 0 && ![(PLUIImageViewController *)self wantsAutoloopUI])
   {
     cropOverlay = self->_cropOverlay;
@@ -797,44 +797,44 @@ LABEL_5:
   v43 = [objc_alloc(-[PLUIImageViewController _viewClass](self "_viewClass"))];
   [v43 setAutoresizingMask:{-[PLUIImageViewController _contentAutoresizingMask](self, "_contentAutoresizingMask")}];
   v8 = MEMORY[0x277CBF348];
-  v9 = [MEMORY[0x277D75348] blackColor];
-  v10 = [(PLUIImageViewController *)self customBackgroundColor];
-  if (v10)
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  customBackgroundColor = [(PLUIImageViewController *)self customBackgroundColor];
+  if (customBackgroundColor)
   {
-    v11 = v10;
+    v11 = customBackgroundColor;
   }
 
   else
   {
-    v11 = v9;
+    v11 = blackColor;
   }
 
   [v43 setBackgroundColor:v11];
   [(PLUIImageViewController *)self setExtendedLayoutIncludesOpaqueBars:1];
-  v12 = [(UIViewController *)self uiipc_useTelephonyUI];
+  uiipc_useTelephonyUI = [(UIViewController *)self uiipc_useTelephonyUI];
   v13 = ([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) != 1;
   [(PLUIImageViewController *)self setupNavigationItem];
-  v14 = [(PLUIImageViewController *)self chooseButtonTitle];
-  if (![v14 length])
+  chooseButtonTitle = [(PLUIImageViewController *)self chooseButtonTitle];
+  if (![chooseButtonTitle length])
   {
-    v14 = PLLocalizedFrameworkString();
+    chooseButtonTitle = PLLocalizedFrameworkString();
   }
 
   v16 = *v8;
   v15 = v8[1];
-  v17 = [(PLUIImageViewController *)self cancelButtonTitle];
-  if (![v17 length])
+  cancelButtonTitle = [(PLUIImageViewController *)self cancelButtonTitle];
+  if (![cancelButtonTitle length])
   {
-    v17 = PLLocalizedFrameworkString();
+    cancelButtonTitle = PLLocalizedFrameworkString();
   }
 
-  v18 = [[PLCropOverlay alloc] initWithFrame:[(PLUIImageViewController *)self cropOverlayMode] mode:v13 & v12 offsettingStatusBar:v16, v15, v6, v5];
+  v18 = [[PLCropOverlay alloc] initWithFrame:[(PLUIImageViewController *)self cropOverlayMode] mode:v13 & uiipc_useTelephonyUI offsettingStatusBar:v16, v15, v6, v5];
   self->_cropOverlay = v18;
   [(PLCropOverlay *)v18 setDisplayedInPopover:0];
-  [(PLCropOverlay *)self->_cropOverlay setOKButtonTitle:v14];
-  [(PLCropOverlay *)self->_cropOverlay setDefaultOKButtonTitle:v14];
-  [(PLCropOverlay *)self->_cropOverlay setCancelButtonTitle:v17];
-  [(PLCropOverlay *)self->_cropOverlay setDefaultCancelButtonTitle:v17];
+  [(PLCropOverlay *)self->_cropOverlay setOKButtonTitle:chooseButtonTitle];
+  [(PLCropOverlay *)self->_cropOverlay setDefaultOKButtonTitle:chooseButtonTitle];
+  [(PLCropOverlay *)self->_cropOverlay setCancelButtonTitle:cancelButtonTitle];
+  [(PLCropOverlay *)self->_cropOverlay setDefaultCancelButtonTitle:cancelButtonTitle];
   [(PLCropOverlay *)self->_cropOverlay setDelegate:self];
   [(PLCropOverlay *)self->_cropOverlay setAutoresizingMask:[(PLUIImageViewController *)self _tileAutoresizingMask]];
   [(PLVideoView *)self->_videoView setDelegate:0];
@@ -943,16 +943,16 @@ LABEL_5:
     [-[PLPhotoTileViewController view](v35 "view")];
     [(PLVideoView *)self->_videoView setFrame:0.0, 0.0, v32, v5];
     [(PLVideoView *)self->_videoView setDelegate:self];
-    v36 = 1;
+    viewImageBeforeSelecting = 1;
     [(PLVideoView *)self->_videoView setLoadMediaImmediately:1];
     [(PLVideoView *)self->_videoView setShowsPlayOverlay:0];
     videoView = self->_videoView;
     if ((*(self + 1112) & 1) == 0)
     {
-      v36 = [(PLUIImageViewController *)self viewImageBeforeSelecting];
+      viewImageBeforeSelecting = [(PLUIImageViewController *)self viewImageBeforeSelecting];
     }
 
-    [(PLVideoView *)videoView setCanEdit:v36];
+    [(PLVideoView *)videoView setCanEdit:viewImageBeforeSelecting];
     [(PLVideoView *)self->_videoView setImageTile:self->_imageTile];
     [(PLPhotoTileViewController *)self->_imageTile setVideoView:self->_videoView];
     [(PLCropOverlay *)self->_cropOverlay didCaptureVideo];
@@ -967,9 +967,9 @@ LABEL_33:
   if ([(PLUIImageViewController *)self wantsLegacyImageUI]&& self->_imageTile)
   {
     [(PLUIImageViewController *)self addChildViewController:?];
-    v38 = [(PLPhotoTileViewController *)self->_imageTile view];
-    [v38 setAutoresizingMask:{-[PLUIImageViewController _tileAutoresizingMask](self, "_tileAutoresizingMask")}];
-    [v43 addSubview:v38];
+    view = [(PLPhotoTileViewController *)self->_imageTile view];
+    [view setAutoresizingMask:{-[PLUIImageViewController _tileAutoresizingMask](self, "_tileAutoresizingMask")}];
+    [v43 addSubview:view];
   }
 
   [v43 addSubview:self->_cropOverlay];
@@ -992,30 +992,30 @@ LABEL_33:
 {
   if (([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v3 = [(PLUIImageViewController *)self navigationItem];
-    [v3 setTitle:{-[PLUIImageViewController localizedTitle](self, "localizedTitle")}];
-    v4 = [(PLUIImageViewController *)self chooseButtonTitle];
-    if (![(NSString *)v4 length])
+    navigationItem = [(PLUIImageViewController *)self navigationItem];
+    [navigationItem setTitle:{-[PLUIImageViewController localizedTitle](self, "localizedTitle")}];
+    chooseButtonTitle = [(PLUIImageViewController *)self chooseButtonTitle];
+    if (![(NSString *)chooseButtonTitle length])
     {
-      v4 = [(PLUIImageViewController *)self localizedUseButtonTitle];
+      chooseButtonTitle = [(PLUIImageViewController *)self localizedUseButtonTitle];
     }
 
-    v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v4 style:2 target:self action:sel_cropOverlayWasOKed_];
+    v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:chooseButtonTitle style:2 target:self action:sel_cropOverlayWasOKed_];
     [v5 setAccessibilityIdentifier:@"Done"];
-    [v3 setRightBarButtonItem:v5];
+    [navigationItem setRightBarButtonItem:v5];
 
-    v6 = [(PLUIImageViewController *)self cropOverlayMode];
-    if (v6 <= 8 && ((1 << v6) & 0x1E6) != 0)
+    cropOverlayMode = [(PLUIImageViewController *)self cropOverlayMode];
+    if (cropOverlayMode <= 8 && ((1 << cropOverlayMode) & 0x1E6) != 0)
     {
-      v7 = [(PLUIImageViewController *)self cancelButtonTitle];
-      if (![v7 length])
+      cancelButtonTitle = [(PLUIImageViewController *)self cancelButtonTitle];
+      if (![cancelButtonTitle length])
       {
-        v7 = PLLocalizedFrameworkString();
+        cancelButtonTitle = PLLocalizedFrameworkString();
       }
 
-      v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v7 style:0 target:self action:sel_cropOverlayWasCancelled_];
+      v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:cancelButtonTitle style:0 target:self action:sel_cropOverlayWasCancelled_];
       [v8 setAccessibilityIdentifier:@"Cancel"];
-      [v3 setLeftBarButtonItem:v8];
+      [navigationItem setLeftBarButtonItem:v8];
     }
   }
 }
@@ -1121,7 +1121,7 @@ LABEL_33:
   [(PLUIImageViewController *)&v4 dealloc];
 }
 
-- (PLUIImageViewController)initWithVideoURL:(id)a3
+- (PLUIImageViewController)initWithVideoURL:(id)l
 {
   v7.receiver = self;
   v7.super_class = PLUIImageViewController;
@@ -1130,13 +1130,13 @@ LABEL_33:
   if (v4)
   {
     *(v4 + 1112) |= 4u;
-    v4->_videoURL = a3;
+    v4->_videoURL = l;
   }
 
   return v5;
 }
 
-- (PLUIImageViewController)initWithImageData:(id)a3 cropRect:(CGRect)a4
+- (PLUIImageViewController)initWithImageData:(id)data cropRect:(CGRect)rect
 {
   v11.receiver = self;
   v11.super_class = PLUIImageViewController;
@@ -1162,18 +1162,18 @@ LABEL_33:
   return v4;
 }
 
-- (PLUIImageViewController)initWithUIImage:(id)a3 cropRect:(CGRect)a4
+- (PLUIImageViewController)initWithUIImage:(id)image cropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11.receiver = self;
   v11.super_class = PLUIImageViewController;
   v9 = [(PLUIImageViewController *)&v11 init];
   if (v9)
   {
-    v9->_image = a3;
+    v9->_image = image;
     v9->_cropRect.origin.x = x;
     v9->_cropRect.origin.y = y;
     v9->_cropRect.size.width = width;
@@ -1183,18 +1183,18 @@ LABEL_33:
   return v9;
 }
 
-- (PLUIImageViewController)initWithImage:(CGImage *)a3 cropRect:(CGRect)a4
+- (PLUIImageViewController)initWithImage:(CGImage *)image cropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11.receiver = self;
   v11.super_class = PLUIImageViewController;
   v9 = [(PLUIImageViewController *)&v11 init];
   if (v9)
   {
-    v9->_imageRef = CGImageRetain(a3);
+    v9->_imageRef = CGImageRetain(image);
     v9->_cropRect.origin.x = x;
     v9->_cropRect.origin.y = y;
     v9->_cropRect.size.width = width;
@@ -1204,16 +1204,16 @@ LABEL_33:
   return v9;
 }
 
-- (PLUIImageViewController)initWithPhoto:(id)a3
+- (PLUIImageViewController)initWithPhoto:(id)photo
 {
   v8.receiver = self;
   v8.super_class = PLUIImageViewController;
   v4 = [(PLUIImageViewController *)&v8 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_photo = v5;
-    if ([(PLManagedAsset *)v5 isVideo])
+    photoCopy = photo;
+    v4->_photo = photoCopy;
+    if ([(PLManagedAsset *)photoCopy isVideo])
     {
       v6 = 4;
     }

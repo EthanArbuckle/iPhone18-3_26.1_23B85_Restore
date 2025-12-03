@@ -1,18 +1,18 @@
 @interface TPShapeTextWrapController
-- (id)beginWrappingToColumn:(id)a3 columnTransformFromWP:(CGAffineTransform *)a4 target:(id)a5 hasWrappables:(BOOL *)a6;
+- (id)beginWrappingToColumn:(id)column columnTransformFromWP:(CGAffineTransform *)p target:(id)target hasWrappables:(BOOL *)wrappables;
 @end
 
 @implementation TPShapeTextWrapController
 
-- (id)beginWrappingToColumn:(id)a3 columnTransformFromWP:(CGAffineTransform *)a4 target:(id)a5 hasWrappables:(BOOL *)a6
+- (id)beginWrappingToColumn:(id)column columnTransformFromWP:(CGAffineTransform *)p target:(id)target hasWrappables:(BOOL *)wrappables
 {
   v119 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  columnCopy = column;
+  targetCopy = target;
   v10 = [TPTextWrapCookie alloc];
-  v16 = objc_msgSend_initWithColumn_targetLayout_(v10, v11, v12, v13, v14, v15, v8, v9);
+  v16 = objc_msgSend_initWithColumn_targetLayout_(v10, v11, v12, v13, v14, v15, columnCopy, targetCopy);
   objc_opt_class();
-  v22 = objc_msgSend_parent(v9, v17, v18, v19, v20, v21);
+  v22 = objc_msgSend_parent(targetCopy, v17, v18, v19, v20, v21);
   v23 = TSUDynamicCast();
 
   if (v23)
@@ -27,17 +27,17 @@
     }
   }
 
-  v112 = v8;
-  objc_msgSend_frameBounds(v8, v24, v25, v26, v27, v28);
+  v112 = columnCopy;
+  objc_msgSend_frameBounds(columnCopy, v24, v25, v26, v27, v28);
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
   objc_opt_class();
-  v55 = objc_msgSend_pageLayout(v9, v50, v51, v52, v53, v54);
+  v55 = objc_msgSend_pageLayout(targetCopy, v50, v51, v52, v53, v54);
   v56 = TSUDynamicCast();
 
-  v62 = objc_msgSend_layoutsCausingWrapOnTextLayoutTarget_ignoreIntersection_(v56, v57, v58, v59, v60, v61, v9, 1);
+  v62 = objc_msgSend_layoutsCausingWrapOnTextLayoutTarget_ignoreIntersection_(v56, v57, v58, v59, v60, v61, targetCopy, 1);
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
@@ -93,21 +93,21 @@
     while (v73);
   }
 
-  v86 = *&a4->c;
-  *&v113.a = *&a4->a;
+  v86 = *&p->c;
+  *&v113.a = *&p->a;
   *&v113.c = v86;
-  *&v113.tx = *&a4->tx;
+  *&v113.tx = *&p->tx;
   objc_msgSend_setUpCanvasToWrapSpaceAffineTransformation_(self, v68, *&v113.tx, v86, v71, v72, &v113);
   v92 = objc_msgSend_pathSource(v23, v87, v88, v89, v90, v91);
   if (objc_msgSend_isRectangular(v92, v93, v94, v95, v96, v97))
   {
     v103 = objc_msgSend_floatingWrappables(v16, v98, v99, v100, v101, v102);
-    *a6 = objc_msgSend_count(v103, v104, v105, v106, v107, v108) != 0;
+    *wrappables = objc_msgSend_count(v103, v104, v105, v106, v107, v108) != 0;
   }
 
   else
   {
-    *a6 = 1;
+    *wrappables = 1;
   }
 
   return v16;

@@ -1,14 +1,14 @@
 @interface EnergyGuidanceCache
-- (EnergyGuidanceCache)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (EnergyGuidanceCache)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation EnergyGuidanceCache
 
-- (EnergyGuidanceCache)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (EnergyGuidanceCache)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   (MEMORY[0x1E69E5928])();
-  MEMORY[0x1E69E5928](a4);
-  return EnergyGuidanceCache.init(entity:insertInto:)(a3, a4);
+  MEMORY[0x1E69E5928](context);
+  return EnergyGuidanceCache.init(entity:insertInto:)(entity, context);
 }
 
 @end

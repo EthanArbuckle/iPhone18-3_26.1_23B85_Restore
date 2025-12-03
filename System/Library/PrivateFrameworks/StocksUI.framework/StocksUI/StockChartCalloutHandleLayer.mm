@@ -1,12 +1,12 @@
 @interface StockChartCalloutHandleLayer
-- (_TtC8StocksUI28StockChartCalloutHandleLayer)initWithCoder:(id)a3;
-- (_TtC8StocksUI28StockChartCalloutHandleLayer)initWithLayer:(id)a3;
+- (_TtC8StocksUI28StockChartCalloutHandleLayer)initWithCoder:(id)coder;
+- (_TtC8StocksUI28StockChartCalloutHandleLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
 @implementation StockChartCalloutHandleLayer
 
-- (_TtC8StocksUI28StockChartCalloutHandleLayer)initWithCoder:(id)a3
+- (_TtC8StocksUI28StockChartCalloutHandleLayer)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8StocksUI28StockChartCalloutHandleLayer_knobLayer;
   *(&self->super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277CD9F90]) init];
@@ -27,7 +27,7 @@
   [v3 setPosition_];
 }
 
-- (_TtC8StocksUI28StockChartCalloutHandleLayer)initWithLayer:(id)a3
+- (_TtC8StocksUI28StockChartCalloutHandleLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_2208923BC();

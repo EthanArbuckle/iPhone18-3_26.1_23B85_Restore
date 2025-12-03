@@ -8,17 +8,17 @@
 - (BOOL)supportsHomeInvitation
 {
   v2 = +[HMDDeviceCapabilities deviceCapabilities];
-  v3 = [v2 supportsHomeInvitation];
+  supportsHomeInvitation = [v2 supportsHomeInvitation];
 
-  return v3;
+  return supportsHomeInvitation;
 }
 
 - (BOOL)isResidentCapable
 {
   v2 = +[HMDDeviceCapabilities deviceCapabilities];
-  v3 = [v2 isResidentCapable];
+  isResidentCapable = [v2 isResidentCapable];
 
-  return v3;
+  return isResidentCapable;
 }
 
 @end

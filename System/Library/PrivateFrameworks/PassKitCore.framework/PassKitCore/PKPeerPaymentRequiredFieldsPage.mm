@@ -1,29 +1,29 @@
 @interface PKPeerPaymentRequiredFieldsPage
-- (PKPeerPaymentRequiredFieldsPage)initWithDictionary:(id)a3 fieldOptions:(id)a4;
+- (PKPeerPaymentRequiredFieldsPage)initWithDictionary:(id)dictionary fieldOptions:(id)options;
 @end
 
 @implementation PKPeerPaymentRequiredFieldsPage
 
-- (PKPeerPaymentRequiredFieldsPage)initWithDictionary:(id)a3 fieldOptions:(id)a4
+- (PKPeerPaymentRequiredFieldsPage)initWithDictionary:(id)dictionary fieldOptions:(id)options
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v33 = a4;
+  dictionaryCopy = dictionary;
+  optionsCopy = options;
   v38.receiver = self;
   v38.super_class = PKPeerPaymentRequiredFieldsPage;
   v7 = [(PKPeerPaymentRequiredFieldsPage *)&v38 init];
   if (v7)
   {
-    v8 = [v6 objectForKey:@"localizedTitle"];
+    v8 = [dictionaryCopy objectForKey:@"localizedTitle"];
     localizedTitle = v7->_localizedTitle;
     v7->_localizedTitle = v8;
 
-    v10 = [v6 objectForKey:@"localizedDescription"];
+    v10 = [dictionaryCopy objectForKey:@"localizedDescription"];
     localizedDescription = v7->_localizedDescription;
     v7->_localizedDescription = v10;
 
-    v12 = [v6 PKArrayContaining:objc_opt_class() forKey:@"requiredFields"];
-    v13 = [MEMORY[0x1E695DF70] array];
+    v12 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"requiredFields"];
+    array = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -34,7 +34,7 @@
     {
       v16 = v15;
       v31 = v7;
-      v32 = v6;
+      v32 = dictionaryCopy;
       v17 = 0;
       v18 = *v35;
       do
@@ -47,13 +47,13 @@
           }
 
           v20 = *(*(&v34 + 1) + 8 * i);
-          v21 = [v20 lowercaseString];
-          v22 = [v21 isEqualToString:@"disclosure_footer"];
+          lowercaseString = [v20 lowercaseString];
+          v22 = [lowercaseString isEqualToString:@"disclosure_footer"];
 
           v17 |= v22;
-          v23 = [v33 PKDictionaryForKey:v20];
+          v23 = [optionsCopy PKDictionaryForKey:v20];
           v24 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:v20 configuration:v23];
-          [v13 safelyAddObject:v24];
+          [array safelyAddObject:v24];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v34 objects:v41 count:16];
@@ -62,7 +62,7 @@
       while (v16);
 
       v7 = v31;
-      v6 = v32;
+      dictionaryCopy = v32;
       if (v17)
       {
         goto LABEL_13;
@@ -83,10 +83,10 @@
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:3];
 
     v27 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:@"disclosure_footer" configuration:v26];
-    [v13 addObject:v27];
+    [array addObject:v27];
 
 LABEL_13:
-    v28 = [v13 copy];
+    v28 = [array copy];
     requiredFields = v7->_requiredFields;
     v7->_requiredFields = v28;
   }

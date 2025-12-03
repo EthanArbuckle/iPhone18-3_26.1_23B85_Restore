@@ -1,7 +1,7 @@
 @interface SAUIPreferredLayoutModeAssertion
 - (SAElement)representedElement;
-- (SAUIPreferredLayoutModeAssertion)initWithRepresentedElement:(id)a3 layoutModePreference:(id)a4;
-- (SAUIPreferredLayoutModeAssertion)initWithRepresentedElement:(id)a3 preferredLayoutMode:(int64_t)a4 reason:(int64_t)a5;
+- (SAUIPreferredLayoutModeAssertion)initWithRepresentedElement:(id)element layoutModePreference:(id)preference;
+- (SAUIPreferredLayoutModeAssertion)initWithRepresentedElement:(id)element preferredLayoutMode:(int64_t)mode reason:(int64_t)reason;
 - (id)_descriptionConstituents;
 @end
 
@@ -13,21 +13,21 @@
   WeakRetained = objc_loadWeakRetained(&self->_representedElement);
   if (WeakRetained)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"<%@: %p", objc_opt_class(), WeakRetained];
+    weakRetained = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"<%@: %p", objc_opt_class(), WeakRetained];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [WeakRetained clientIdentifier];
-      [v5 appendFormat:@"; clientIdentifier: %@", v6];
+      clientIdentifier = [WeakRetained clientIdentifier];
+      [weakRetained appendFormat:@"; clientIdentifier: %@", clientIdentifier];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [WeakRetained elementIdentifier];
-      [v5 appendFormat:@"; elementIdentifier: %@", v7];
+      elementIdentifier = [WeakRetained elementIdentifier];
+      [weakRetained appendFormat:@"; elementIdentifier: %@", elementIdentifier];
     }
 
-    [v5 appendString:@">"];
-    [v3 setObject:v5 forKey:@"representedElement"];
+    [weakRetained appendString:@">"];
+    [v3 setObject:weakRetained forKey:@"representedElement"];
   }
 
   v8 = SAUIStringFromElementViewLayoutMode([(SAUIPreferredLayoutModeAssertion *)self preferredLayoutMode]);
@@ -38,18 +38,18 @@
 
   v13.receiver = self;
   v13.super_class = SAUIPreferredLayoutModeAssertion;
-  v10 = [(SAAssertion *)&v13 _descriptionConstituents];
-  v11 = [v10 arrayByAddingObject:v3];
+  _descriptionConstituents = [(SAAssertion *)&v13 _descriptionConstituents];
+  v11 = [_descriptionConstituents arrayByAddingObject:v3];
 
   return v11;
 }
 
-- (SAUIPreferredLayoutModeAssertion)initWithRepresentedElement:(id)a3 layoutModePreference:(id)a4
+- (SAUIPreferredLayoutModeAssertion)initWithRepresentedElement:(id)element layoutModePreference:(id)preference
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  elementCopy = element;
+  preferenceCopy = preference;
+  if (!elementCopy)
   {
     [SAUIPreferredLayoutModeAssertion initWithRepresentedElement:a2 layoutModePreference:self];
   }
@@ -60,8 +60,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_layoutModePreference, a4);
-    objc_storeWeak(&v10->_representedElement, v7);
+    objc_storeStrong(&v9->_layoutModePreference, preference);
+    objc_storeWeak(&v10->_representedElement, elementCopy);
     v11 = SAUILogElementViewControlling;
     if (os_log_type_enabled(SAUILogElementViewControlling, OS_LOG_TYPE_DEFAULT))
     {
@@ -74,11 +74,11 @@
   return v10;
 }
 
-- (SAUIPreferredLayoutModeAssertion)initWithRepresentedElement:(id)a3 preferredLayoutMode:(int64_t)a4 reason:(int64_t)a5
+- (SAUIPreferredLayoutModeAssertion)initWithRepresentedElement:(id)element preferredLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = [[SAUILayoutModePreference alloc] initWithPreferredLayoutMode:a4 reason:a5];
-  v10 = [(SAUIPreferredLayoutModeAssertion *)self initWithRepresentedElement:v8 layoutModePreference:v9];
+  elementCopy = element;
+  v9 = [[SAUILayoutModePreference alloc] initWithPreferredLayoutMode:mode reason:reason];
+  v10 = [(SAUIPreferredLayoutModeAssertion *)self initWithRepresentedElement:elementCopy layoutModePreference:v9];
 
   return v10;
 }

@@ -2,8 +2,8 @@
 - (BOOL)acceptConnectionFromPeer:(NSString *)peerID error:(NSError *)error;
 - (BOOL)isAvailable;
 - (BOOL)isBusy;
-- (BOOL)isPeerBusy:(id)a3;
-- (GKSession)initWithViceroySession:(id)a3;
+- (BOOL)isPeerBusy:(id)busy;
+- (GKSession)initWithViceroySession:(id)session;
 - (GKSessionMode)sessionMode;
 - (NSString)displayName;
 - (NSString)displayNameForPeer:(NSString *)peerID;
@@ -24,21 +24,21 @@
 - (void)setDataReceiveHandler:(id)handler withContext:(void *)context;
 - (void)setDelegate:(id)delegate;
 - (void)setDisconnectTimeout:(NSTimeInterval)disconnectTimeout;
-- (void)setPrivateDelegate:(id)a3;
+- (void)setPrivateDelegate:(id)delegate;
 @end
 
 @implementation GKSession
 
-- (GKSession)initWithViceroySession:(id)a3
+- (GKSession)initWithViceroySession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = GKSession;
   v6 = [(GKSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
   }
 
   return v7;
@@ -46,8 +46,8 @@
 
 - (id)description
 {
-  v2 = [(GKSession *)self session];
-  v3 = [v2 description];
+  session = [(GKSession *)self session];
+  v3 = [session description];
 
   return v3;
 }
@@ -63,44 +63,44 @@
 - (void)setDelegate:(id)delegate
 {
   v4 = delegate;
-  v5 = [(GKSession *)self session];
-  [v5 setDelegate:v4];
+  session = [(GKSession *)self session];
+  [session setDelegate:v4];
 }
 
 - (id)delegate
 {
-  v2 = [(GKSession *)self session];
-  v3 = [v2 delegate];
+  session = [(GKSession *)self session];
+  delegate = [session delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (NSString)sessionID
 {
-  v2 = [(GKSession *)self session];
-  v3 = [v2 sessionID];
+  session = [(GKSession *)self session];
+  sessionID = [session sessionID];
 
-  return v3;
+  return sessionID;
 }
 
 - (NSString)displayName
 {
-  v2 = [(GKSession *)self session];
-  v3 = [v2 displayName];
+  session = [(GKSession *)self session];
+  displayName = [session displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (void)setDisconnectTimeout:(NSTimeInterval)disconnectTimeout
 {
-  v4 = [(GKSession *)self session];
-  [v4 setDisconnectTimeout:disconnectTimeout];
+  session = [(GKSession *)self session];
+  [session setDisconnectTimeout:disconnectTimeout];
 }
 
 - (NSTimeInterval)disconnectTimeout
 {
-  v2 = [(GKSession *)self session];
-  [v2 disconnectTimeout];
+  session = [(GKSession *)self session];
+  [session disconnectTimeout];
   v4 = v3;
 
   return v4;
@@ -109,8 +109,8 @@
 - (NSString)displayNameForPeer:(NSString *)peerID
 {
   v4 = peerID;
-  v5 = [(GKSession *)self session];
-  v6 = [v5 displayNameForPeer:v4];
+  session = [(GKSession *)self session];
+  v6 = [session displayNameForPeer:v4];
 
   return v6;
 }
@@ -118,29 +118,29 @@
 - (void)setDataReceiveHandler:(id)handler withContext:(void *)context
 {
   v6 = handler;
-  v7 = [(GKSession *)self session];
-  [v7 setDataReceiveHandler:v6 withContext:context];
+  session = [(GKSession *)self session];
+  [session setDataReceiveHandler:v6 withContext:context];
 }
 
 - (void)connectToPeer:(NSString *)peerID withTimeout:(NSTimeInterval)timeout
 {
   v6 = peerID;
-  v7 = [(GKSession *)self session];
-  [v7 connectToPeer:v6 withTimeout:timeout];
+  session = [(GKSession *)self session];
+  [session connectToPeer:v6 withTimeout:timeout];
 }
 
 - (void)cancelConnectToPeer:(NSString *)peerID
 {
   v4 = peerID;
-  v5 = [(GKSession *)self session];
-  [v5 cancelConnectToPeer:v4];
+  session = [(GKSession *)self session];
+  [session cancelConnectToPeer:v4];
 }
 
 - (BOOL)acceptConnectionFromPeer:(NSString *)peerID error:(NSError *)error
 {
   v6 = peerID;
-  v7 = [(GKSession *)self session];
-  LOBYTE(error) = [v7 acceptConnectionFromPeer:v6 error:error];
+  session = [(GKSession *)self session];
+  LOBYTE(error) = [session acceptConnectionFromPeer:v6 error:error];
 
   return error;
 }
@@ -148,91 +148,91 @@
 - (void)denyConnectionFromPeer:(NSString *)peerID
 {
   v4 = peerID;
-  v5 = [(GKSession *)self session];
-  [v5 denyConnectionFromPeer:v4];
+  session = [(GKSession *)self session];
+  [session denyConnectionFromPeer:v4];
 }
 
 - (void)disconnectPeerFromAllPeers:(NSString *)peerID
 {
   v4 = peerID;
-  v5 = [(GKSession *)self session];
-  [v5 disconnectPeerFromAllPeers:v4];
+  session = [(GKSession *)self session];
+  [session disconnectPeerFromAllPeers:v4];
 }
 
 - (void)disconnectFromAllPeers
 {
-  v2 = [(GKSession *)self session];
-  [v2 disconnectFromAllPeers];
+  session = [(GKSession *)self session];
+  [session disconnectFromAllPeers];
 }
 
 - (GKSessionMode)sessionMode
 {
-  v2 = [(GKSession *)self session];
-  v3 = [v2 sessionMode];
+  session = [(GKSession *)self session];
+  sessionMode = [session sessionMode];
 
-  return v3;
+  return sessionMode;
 }
 
 - (BOOL)isAvailable
 {
-  v2 = [(GKSession *)self session];
-  v3 = [v2 isAvailable];
+  session = [(GKSession *)self session];
+  isAvailable = [session isAvailable];
 
-  return v3;
+  return isAvailable;
 }
 
 - (NSString)peerID
 {
-  v2 = [(GKSession *)self session];
-  v3 = [v2 peerID];
+  session = [(GKSession *)self session];
+  peerID = [session peerID];
 
-  return v3;
+  return peerID;
 }
 
 - (BOOL)isBusy
 {
-  v2 = [(GKSession *)self session];
-  v3 = [v2 isBusy];
+  session = [(GKSession *)self session];
+  isBusy = [session isBusy];
 
-  return v3;
+  return isBusy;
 }
 
-- (BOOL)isPeerBusy:(id)a3
+- (BOOL)isPeerBusy:(id)busy
 {
-  v4 = a3;
-  v5 = [(GKSession *)self session];
-  v6 = [v5 isPeerBusy:v4];
+  busyCopy = busy;
+  session = [(GKSession *)self session];
+  v6 = [session isPeerBusy:busyCopy];
 
   return v6;
 }
 
 - (void)disableWifi
 {
-  v2 = [(GKSession *)self session];
-  [v2 disableWifi];
+  session = [(GKSession *)self session];
+  [session disableWifi];
 }
 
-- (void)setPrivateDelegate:(id)a3
+- (void)setPrivateDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(GKSession *)self session];
-  [v5 setPrivateDelegate:v4];
+  delegateCopy = delegate;
+  session = [(GKSession *)self session];
+  [session setPrivateDelegate:delegateCopy];
 }
 
 - (id)privateDelegate
 {
-  v2 = [(GKSession *)self session];
-  v3 = [v2 privateDelegate];
+  session = [(GKSession *)self session];
+  privateDelegate = [session privateDelegate];
 
-  return v3;
+  return privateDelegate;
 }
 
 - (id)privateImpl
 {
-  v2 = [(GKSession *)self session];
-  v3 = [v2 viceroyInternalSession];
+  session = [(GKSession *)self session];
+  viceroyInternalSession = [session viceroyInternalSession];
 
-  return v3;
+  return viceroyInternalSession;
 }
 
 @end

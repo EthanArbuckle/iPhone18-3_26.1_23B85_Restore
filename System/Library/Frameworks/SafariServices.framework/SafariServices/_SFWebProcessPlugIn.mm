@@ -1,22 +1,22 @@
 @interface _SFWebProcessPlugIn
-- (id)pageControllerWithBrowserContextController:(id)a3;
-- (void)_installUIClientIfNecessaryWithPageController:(id)a3;
+- (id)pageControllerWithBrowserContextController:(id)controller;
+- (void)_installUIClientIfNecessaryWithPageController:(id)controller;
 - (void)dealloc;
-- (void)didCreatePageController:(id)a3 forBrowserContextController:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)webProcessPlugIn:(id)a3 initializeWithObject:(id)a4;
+- (void)didCreatePageController:(id)controller forBrowserContextController:(id)contextController;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)webProcessPlugIn:(id)in initializeWithObject:(id)object;
 @end
 
 @implementation _SFWebProcessPlugIn
 
-- (void)webProcessPlugIn:(id)a3 initializeWithObject:(id)a4
+- (void)webProcessPlugIn:(id)in initializeWithObject:(id)object
 {
-  v6 = a3;
+  inCopy = in;
   v20.receiver = self;
   v20.super_class = _SFWebProcessPlugIn;
-  [(WBSWebProcessPlugIn *)&v20 webProcessPlugIn:v6 initializeWithObject:a4];
-  v7 = [v6 parameters];
-  v8 = [v7 valueForKey:@"JavaScriptConsoleOutputURLBookmarkData"];
+  [(WBSWebProcessPlugIn *)&v20 webProcessPlugIn:inCopy initializeWithObject:object];
+  parameters = [inCopy parameters];
+  v8 = [parameters valueForKey:@"JavaScriptConsoleOutputURLBookmarkData"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -26,7 +26,7 @@
     v15 = 3221225472;
     v16 = __61___SFWebProcessPlugIn_webProcessPlugIn_initializeWithObject___block_invoke;
     v17 = &unk_1E848F9B0;
-    v18 = self;
+    selfCopy = self;
     v10 = v9;
     v19 = v10;
     [v10 safari_accessingSecurityScopedResource:&v14];
@@ -48,19 +48,19 @@
 
   if ([MEMORY[0x1E69C8880] isInternalInstall])
   {
-    v13 = [v6 parameters];
-    [v13 addObserver:self forKeyPath:*MEMORY[0x1E69C9188] options:4 context:0];
+    parameters2 = [inCopy parameters];
+    [parameters2 addObserver:self forKeyPath:*MEMORY[0x1E69C9188] options:4 context:0];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(WBSWebProcessPlugIn *)self plugInController];
-  v4 = [v3 parameters];
+  plugInController = [(WBSWebProcessPlugIn *)self plugInController];
+  parameters = [plugInController parameters];
 
-  [v4 removeObserver:self forKeyPath:*MEMORY[0x1E69B1E60]];
-  [v4 removeObserver:self forKeyPath:*MEMORY[0x1E69B1E68]];
-  [v4 removeObserver:self forKeyPath:*MEMORY[0x1E69C91D0]];
+  [parameters removeObserver:self forKeyPath:*MEMORY[0x1E69B1E60]];
+  [parameters removeObserver:self forKeyPath:*MEMORY[0x1E69B1E68]];
+  [parameters removeObserver:self forKeyPath:*MEMORY[0x1E69C91D0]];
   javaScriptConsoleOutputFile = self->_javaScriptConsoleOutputFile;
   if (javaScriptConsoleOutputFile)
   {
@@ -69,9 +69,9 @@
 
   if ([MEMORY[0x1E69C8880] isInternalInstall])
   {
-    v6 = [(WBSWebProcessPlugIn *)self plugInController];
-    v7 = [v6 parameters];
-    [v7 removeObserver:self forKeyPath:*MEMORY[0x1E69C9188]];
+    plugInController2 = [(WBSWebProcessPlugIn *)self plugInController];
+    parameters2 = [plugInController2 parameters];
+    [parameters2 removeObserver:self forKeyPath:*MEMORY[0x1E69C9188]];
   }
 
   v8.receiver = self;
@@ -79,34 +79,34 @@
   [(_SFWebProcessPlugIn *)&v8 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([MEMORY[0x1E69C8880] isInternalInstall] && (v13 = *MEMORY[0x1E69C9188], objc_msgSend(v10, "isEqualToString:", *MEMORY[0x1E69C9188])))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([MEMORY[0x1E69C8880] isInternalInstall] && (v13 = *MEMORY[0x1E69C9188], objc_msgSend(pathCopy, "isEqualToString:", *MEMORY[0x1E69C9188])))
   {
-    v14 = [(WBSWebProcessPlugIn *)self plugInController];
-    v15 = [v14 parameters];
-    v16 = [v15 valueForKey:v13];
-    v17 = [v16 BOOLValue];
+    plugInController = [(WBSWebProcessPlugIn *)self plugInController];
+    parameters = [plugInController parameters];
+    v16 = [parameters valueForKey:v13];
+    bOOLValue = [v16 BOOLValue];
 
-    v18 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v18 setBool:v17 forKey:v13];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setBool:bOOLValue forKey:v13];
   }
 
   else
   {
     v19.receiver = self;
     v19.super_class = _SFWebProcessPlugIn;
-    [(_SFWebProcessPlugIn *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_SFWebProcessPlugIn *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)_installUIClientIfNecessaryWithPageController:(id)a3
+- (void)_installUIClientIfNecessaryWithPageController:(id)controller
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69B1B18] supportsWebpageStatusBar];
+  controllerCopy = controller;
+  supportsWebpageStatusBar = [MEMORY[0x1E69B1B18] supportsWebpageStatusBar];
   javaScriptConsoleOutputFile = self->_javaScriptConsoleOutputFile;
   if (javaScriptConsoleOutputFile)
   {
@@ -115,13 +115,13 @@
 
   else
   {
-    v7 = v5;
+    v7 = supportsWebpageStatusBar;
   }
 
   if (v7)
   {
     v8 = mouseDidMoveOverElementCallback;
-    if (!v5)
+    if (!supportsWebpageStatusBar)
     {
       v8 = 0;
     }
@@ -136,42 +136,42 @@
       v9 = 0;
     }
 
-    v10 = [v4 browserContextController];
-    [v10 _bundlePageRef];
+    browserContextController = [controllerCopy browserContextController];
+    [browserContextController _bundlePageRef];
     WKBundlePageSetUIClient();
   }
 }
 
-- (void)didCreatePageController:(id)a3 forBrowserContextController:(id)a4
+- (void)didCreatePageController:(id)controller forBrowserContextController:(id)contextController
 {
-  value = a3;
-  v6 = a4;
-  objc_setAssociatedObject(v6, &kContextControllerToPlugInPageControllerAssociationKey, value, 0x301);
+  value = controller;
+  contextControllerCopy = contextController;
+  objc_setAssociatedObject(contextControllerCopy, &kContextControllerToPlugInPageControllerAssociationKey, value, 0x301);
   [(_SFWebProcessPlugIn *)self _installUIClientIfNecessaryWithPageController:value];
 }
 
-- (id)pageControllerWithBrowserContextController:(id)a3
+- (id)pageControllerWithBrowserContextController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 _groupIdentifier];
+    _groupIdentifier = [controllerCopy _groupIdentifier];
   }
 
   else
   {
-    v6 = [v4 pageGroup];
-    v5 = [v6 identifier];
+    pageGroup = [controllerCopy pageGroup];
+    _groupIdentifier = [pageGroup identifier];
   }
 
-  if ([v5 isEqualToString:@"Reader"])
+  if ([_groupIdentifier isEqualToString:@"Reader"])
   {
     v7 = off_1E848D338;
   }
 
   else
   {
-    v8 = [v5 isEqualToString:*MEMORY[0x1E69C9A08]];
+    v8 = [_groupIdentifier isEqualToString:*MEMORY[0x1E69C9A08]];
     v7 = off_1E848D430;
     if (v8)
     {
@@ -179,7 +179,7 @@
     }
   }
 
-  v9 = [objc_alloc(*v7) initWithPlugIn:self contextController:v4];
+  v9 = [objc_alloc(*v7) initWithPlugIn:self contextController:controllerCopy];
 
   return v9;
 }

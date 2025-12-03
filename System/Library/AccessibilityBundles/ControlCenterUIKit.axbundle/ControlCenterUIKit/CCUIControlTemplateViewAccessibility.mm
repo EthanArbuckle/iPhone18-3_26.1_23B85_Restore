@@ -1,28 +1,28 @@
 @interface CCUIControlTemplateViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 @end
 
 @implementation CCUIControlTemplateViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIControlTemplateView" hasInstanceVariable:@"title" withType:"?"];
-  [v3 validateClass:@"CCUIControlTemplateView" hasInstanceVariable:@"subtitle" withType:"?"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIControlTemplateView" hasInstanceVariable:@"title" withType:"?"];
+  [validationsCopy validateClass:@"CCUIControlTemplateView" hasInstanceVariable:@"subtitle" withType:"?"];
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"CCUIAirDropModuleViewController" hasInstanceMethod:@"_glyphViewForExpandedConnectivityModuleTapped" withFullSignature:{"v", 0}];
-    [v3 validateClass:@"CCUIBluetoothModuleViewController" hasInstanceMethod:@"_glyphViewForExpandedConnectivityModuleTapped" withFullSignature:{"v", 0}];
-    [v3 validateClass:@"CCUISatelliteModuleViewController" hasInstanceMethod:@"_glyphViewForExpandedConnectivityModuleTapped" withFullSignature:{"v", 0}];
-    [v3 validateClass:@"CCUIVPNModuleViewController" hasInstanceMethod:@"_glyphViewForExpandedConnectivityModuleTapped" withFullSignature:{"v", 0}];
-    [v3 validateClass:@"CCUIWiFiModuleViewController" hasInstanceMethod:@"_glyphViewForExpandedConnectivityModuleTapped" withFullSignature:{"v", 0}];
+    [validationsCopy validateClass:@"CCUIAirDropModuleViewController" hasInstanceMethod:@"_glyphViewForExpandedConnectivityModuleTapped" withFullSignature:{"v", 0}];
+    [validationsCopy validateClass:@"CCUIBluetoothModuleViewController" hasInstanceMethod:@"_glyphViewForExpandedConnectivityModuleTapped" withFullSignature:{"v", 0}];
+    [validationsCopy validateClass:@"CCUISatelliteModuleViewController" hasInstanceMethod:@"_glyphViewForExpandedConnectivityModuleTapped" withFullSignature:{"v", 0}];
+    [validationsCopy validateClass:@"CCUIVPNModuleViewController" hasInstanceMethod:@"_glyphViewForExpandedConnectivityModuleTapped" withFullSignature:{"v", 0}];
+    [validationsCopy validateClass:@"CCUIWiFiModuleViewController" hasInstanceMethod:@"_glyphViewForExpandedConnectivityModuleTapped" withFullSignature:{"v", 0}];
   }
 
-  [v3 validateClass:@"CCUIControlTemplateView" hasInstanceMethod:@"customGlyphView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIGestureRecognizer" hasInstanceVariable:@"_targets" withType:"NSMutableArray"];
-  [v3 validateClass:@"UIGestureRecognizerTarget" hasInstanceMethod:@"target" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIControlTemplateView" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUIControlTemplateView" hasInstanceMethod:@"customGlyphView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIGestureRecognizer" hasInstanceVariable:@"_targets" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"UIGestureRecognizerTarget" hasInstanceMethod:@"target" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIControlTemplateView" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)accessibilityActivate
@@ -34,14 +34,14 @@
 
   if (v4)
   {
-    v5 = [v4 gestureRecognizers];
-    v6 = [v5 firstObject];
+    gestureRecognizers = [v4 gestureRecognizers];
+    firstObject = [gestureRecognizers firstObject];
 
-    if (v6)
+    if (firstObject)
     {
-      v7 = [v6 safeValueForKey:@"_targets"];
-      v8 = [v7 firstObject];
-      v9 = [v8 safeValueForKey:@"target"];
+      v7 = [firstObject safeValueForKey:@"_targets"];
+      firstObject2 = [v7 firstObject];
+      v9 = [firstObject2 safeValueForKey:@"target"];
 
       v14 = MEMORY[0x29EDCA5F8];
       v15 = 3221225472;
@@ -52,17 +52,17 @@
       AXPerformSafeBlock();
     }
 
-    v11 = 1;
+    accessibilityActivate = 1;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = CCUIControlTemplateViewAccessibility;
-    v11 = [(CCUIControlTemplateViewAccessibility *)&v13 accessibilityActivate];
+    accessibilityActivate = [(CCUIControlTemplateViewAccessibility *)&v13 accessibilityActivate];
   }
 
-  return v11;
+  return accessibilityActivate;
 }
 
 @end

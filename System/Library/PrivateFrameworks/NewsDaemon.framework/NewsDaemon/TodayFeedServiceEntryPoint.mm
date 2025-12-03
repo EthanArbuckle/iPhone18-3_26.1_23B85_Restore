@@ -1,16 +1,16 @@
 @interface TodayFeedServiceEntryPoint
-- (void)adoptFeedConfigData:(id)a3;
-- (void)fetchCachedTodayFeedWithCompletionHandler:(id)a3;
-- (void)fetchFeedItemPoolWithOptions:(NDFeedItemPoolFetchOptions *)a3 completionHandler:(id)a4;
-- (void)flushWithCompletionHandler:(id)a3;
-- (void)registerForManagedFeedItemPoolWithOptions:(NDManagedFeedItemPoolOptions *)a3 completionHandler:(id)a4;
+- (void)adoptFeedConfigData:(id)data;
+- (void)fetchCachedTodayFeedWithCompletionHandler:(id)handler;
+- (void)fetchFeedItemPoolWithOptions:(NDFeedItemPoolFetchOptions *)options completionHandler:(id)handler;
+- (void)flushWithCompletionHandler:(id)handler;
+- (void)registerForManagedFeedItemPoolWithOptions:(NDManagedFeedItemPoolOptions *)options completionHandler:(id)handler;
 @end
 
 @implementation TodayFeedServiceEntryPoint
 
-- (void)adoptFeedConfigData:(id)a3
+- (void)adoptFeedConfigData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
 
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -21,13 +21,13 @@
   sub_1000153DC(v5, v7);
 }
 
-- (void)fetchCachedTodayFeedWithCompletionHandler:(id)a3
+- (void)fetchCachedTodayFeedWithCompletionHandler:(id)handler
 {
   v5 = sub_100015140(&unk_10007EB50, &qword_10005AB40);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -47,13 +47,13 @@
   sub_10004039C(0, 0, v8, &unk_10005ABB0, v13);
 }
 
-- (void)flushWithCompletionHandler:(id)a3
+- (void)flushWithCompletionHandler:(id)handler
 {
   v5 = sub_100015140(&unk_10007EB50, &qword_10005AB40);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -73,15 +73,15 @@
   sub_10004039C(0, 0, v8, &unk_10005AB90, v13);
 }
 
-- (void)registerForManagedFeedItemPoolWithOptions:(NDManagedFeedItemPoolOptions *)a3 completionHandler:(id)a4
+- (void)registerForManagedFeedItemPoolWithOptions:(NDManagedFeedItemPoolOptions *)options completionHandler:(id)handler
 {
   v7 = sub_100015140(&unk_10007EB50, &qword_10005AB40);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = options;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -96,20 +96,20 @@
   v15[3] = 0;
   v15[4] = &unk_10005AB68;
   v15[5] = v14;
-  v16 = a3;
+  optionsCopy = options;
 
   sub_10004039C(0, 0, v10, &unk_10005AB70, v15);
 }
 
-- (void)fetchFeedItemPoolWithOptions:(NDFeedItemPoolFetchOptions *)a3 completionHandler:(id)a4
+- (void)fetchFeedItemPoolWithOptions:(NDFeedItemPoolFetchOptions *)options completionHandler:(id)handler
 {
   v7 = sub_100015140(&unk_10007EB50, &qword_10005AB40);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = options;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -124,7 +124,7 @@
   v15[3] = 0;
   v15[4] = &unk_10005A958;
   v15[5] = v14;
-  v16 = a3;
+  optionsCopy = options;
 
   sub_10004039C(0, 0, v10, &unk_10005A960, v15);
 }

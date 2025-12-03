@@ -1,12 +1,12 @@
 @interface BKSHIDEventPointerAttributes
 + (id)protobufSchema;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)acceleratedRelativePosition;
 - (CGPoint)unacceleratedRelativePosition;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unsigned)pointerState;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)setPointerState:(unsigned __int16)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)setPointerState:(unsigned __int16)state;
 @end
 
 @implementation BKSHIDEventPointerAttributes
@@ -29,45 +29,45 @@
   return result;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v14.receiver = self;
   v14.super_class = BKSHIDEventPointerAttributes;
-  [(BKSHIDEventDigitizerAttributes *)&v14 appendDescriptionToFormatter:v4];
+  [(BKSHIDEventDigitizerAttributes *)&v14 appendDescriptionToFormatter:formatterCopy];
   v5 = NSStringFromBKSHIDEventContextType(self->_contextType);
-  [v4 appendString:v5 withName:@"contextType"];
+  [formatterCopy appendString:v5 withName:@"contextType"];
 
   v6 = NSStringFromBKSHIDEventContextMove(self->_contextMove);
-  [v4 appendString:v6 withName:@"contextMove"];
+  [formatterCopy appendString:v6 withName:@"contextMove"];
 
-  v7 = [v4 appendObject:self->_hitTestContexts withName:@"hitTestContexts" skipIfNil:1];
-  v8 = [v4 appendObject:self->_hitTestSecurityAnalysis withName:@"hitTestSecurityAnalysis" skipIfNil:1];
-  v9 = [v4 appendPoint:@"unacceleratedRelativePosition" withName:{self->_unacceleratedRelativePosition.x, self->_unacceleratedRelativePosition.y}];
-  v10 = [v4 appendPoint:@"acceleratedRelativePosition" withName:{self->_acceleratedRelativePosition.x, self->_acceleratedRelativePosition.y}];
+  v7 = [formatterCopy appendObject:self->_hitTestContexts withName:@"hitTestContexts" skipIfNil:1];
+  v8 = [formatterCopy appendObject:self->_hitTestSecurityAnalysis withName:@"hitTestSecurityAnalysis" skipIfNil:1];
+  v9 = [formatterCopy appendPoint:@"unacceleratedRelativePosition" withName:{self->_unacceleratedRelativePosition.x, self->_unacceleratedRelativePosition.y}];
+  v10 = [formatterCopy appendPoint:@"acceleratedRelativePosition" withName:{self->_acceleratedRelativePosition.x, self->_acceleratedRelativePosition.y}];
   if (self->_fingerDownCount >= 1)
   {
-    v11 = [v4 appendInteger:? withName:?];
+    v11 = [formatterCopy appendInteger:? withName:?];
   }
 
   if (self->_pointerEdgeMask)
   {
     v12 = NSStringFromBKSHIDEventScreenEdgeMask(self->_pointerEdgeMask);
-    [v4 appendString:v12 withName:@"pointerEdgeMask"];
+    [formatterCopy appendString:v12 withName:@"pointerEdgeMask"];
   }
 
   if (self->_teleportState)
   {
     v13 = NSStringFromBKSHIDEventTeleportState(self->_teleportState);
-    [v4 appendString:v13 withName:@"teleportState"];
+    [formatterCopy appendString:v13 withName:@"teleportState"];
   }
 }
 
-- (void)setPointerState:(unsigned __int16)a3
+- (void)setPointerState:(unsigned __int16)state
 {
-  if ((a3 - 1) <= 3u)
+  if ((state - 1) <= 3u)
   {
-    v3 = (a3 - 1);
+    v3 = (state - 1);
     v4 = qword_1863CFBC0[v3];
     v5 = qword_1863CFBE0[v3];
     self->_contextType = v4;
@@ -103,14 +103,14 @@ LABEL_7:
   return 0x300010002uLL >> (16 * v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = BKSHIDEventPointerAttributes;
-  if ([(BKSHIDEventDigitizerAttributes *)&v13 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(BKSHIDEventDigitizerAttributes *)&v13 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v11 = self->_contextMove == *(v5 + 16) && self->_contextType == *(v5 + 17) && (hitTestContexts = self->_hitTestContexts, v8 = *(v6 + 18), BSEqualObjects()) && (hitTestSecurityAnalysis = self->_hitTestSecurityAnalysis, v10 = *(v6 + 20), BSEqualObjects()) && self->_unacceleratedRelativePosition.x == v6[21] && self->_unacceleratedRelativePosition.y == v6[22] && self->_acceleratedRelativePosition.x == v6[23] && self->_acceleratedRelativePosition.y == v6[24] && self->_fingerDownCount == *(v6 + 19) && self->_pointerEdgeMask == *(v6 + 120) && self->_teleportState == *(v6 + 61);
   }
@@ -123,14 +123,14 @@ LABEL_7:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = BKSHIDEventPointerAttributes;
   v5 = [(BKSHIDEventDigitizerAttributes *)&v9 copyWithZone:?];
   *(v5 + 17) = self->_contextType;
   *(v5 + 16) = self->_contextMove;
-  v6 = [(NSArray *)self->_hitTestContexts copyWithZone:a3];
+  v6 = [(NSArray *)self->_hitTestContexts copyWithZone:zone];
   v7 = *(v5 + 18);
   *(v5 + 18) = v6;
 
@@ -149,7 +149,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __46__BKSHIDEventPointerAttributes_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_551 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_551, block);

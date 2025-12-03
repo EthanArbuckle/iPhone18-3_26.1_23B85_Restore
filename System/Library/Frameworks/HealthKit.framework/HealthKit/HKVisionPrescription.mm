@@ -1,17 +1,17 @@
 @interface HKVisionPrescription
-+ (BOOL)_validateAddPower:(id)a3 error:(id *)a4;
-+ (BOOL)_validateAxis:(id)a3 error:(id *)a4;
-+ (BOOL)_validateCylinder:(id)a3 error:(id *)a4;
-+ (BOOL)_validateSphere:(id)a3 error:(id *)a4;
++ (BOOL)_validateAddPower:(id)power error:(id *)error;
++ (BOOL)_validateAxis:(id)axis error:(id *)error;
++ (BOOL)_validateCylinder:(id)cylinder error:(id *)error;
++ (BOOL)_validateSphere:(id)sphere error:(id *)error;
 + (HKVisionPrescription)prescriptionWithType:(HKVisionPrescriptionType)type dateIssued:(NSDate *)dateIssued expirationDate:(NSDate *)expirationDate device:(HKDevice *)device metadata:(NSDictionary *)metadata;
-- (BOOL)_validateCommonFieldsWithError:(id *)a3;
-- (BOOL)_validateForSavingWithClientEntitlements:(id)a3 applicationSDKVersionToken:(unint64_t)a4 isAppleWatch:(BOOL)a5 error:(id *)a6;
-- (HKVisionPrescription)initWithCoder:(id)a3;
+- (BOOL)_validateCommonFieldsWithError:(id *)error;
+- (BOOL)_validateForSavingWithClientEntitlements:(id)entitlements applicationSDKVersionToken:(unint64_t)token isAppleWatch:(BOOL)watch error:(id *)error;
+- (HKVisionPrescription)initWithCoder:(id)coder;
 - (NSDate)expirationDate;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKVisionPrescription
@@ -21,9 +21,9 @@
   v12 = expirationDate;
   v13 = metadata;
   v14 = device;
-  v15 = dateIssued;
+  distantFuture = dateIssued;
   v16 = +[HKObjectType visionPrescriptionType];
-  [(NSDate *)v15 timeIntervalSinceReferenceDate];
+  [(NSDate *)distantFuture timeIntervalSinceReferenceDate];
   v18 = v17;
 
   if (v12)
@@ -33,8 +33,8 @@
 
   else
   {
-    v15 = [MEMORY[0x1E695DF00] distantFuture];
-    [(NSDate *)v15 timeIntervalSinceReferenceDate];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [(NSDate *)distantFuture timeIntervalSinceReferenceDate];
   }
 
   v22[0] = MEMORY[0x1E69E9820];
@@ -42,7 +42,7 @@
   v22[2] = __87__HKVisionPrescription_prescriptionWithType_dateIssued_expirationDate_device_metadata___block_invoke;
   v22[3] = &__block_descriptor_40_e30_v16__0__HKVisionPrescription_8l;
   v22[4] = type;
-  v20 = [a1 _newSampleWithType:v16 startDate:v14 endDate:v13 device:v22 metadata:v18 config:v19];
+  v20 = [self _newSampleWithType:v16 startDate:v14 endDate:v13 device:v22 metadata:v18 config:v19];
 
   if (!v12)
   {
@@ -53,24 +53,24 @@
 
 - (NSDate)expirationDate
 {
-  v3 = [(HKSample *)self endDate];
-  [v3 timeIntervalSinceReferenceDate];
+  endDate = [(HKSample *)self endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v5 = v4;
-  v6 = [MEMORY[0x1E695DF00] distantFuture];
-  [v6 timeIntervalSinceReferenceDate];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   v8 = v7;
 
   if (v5 >= v8)
   {
-    v9 = 0;
+    endDate2 = 0;
   }
 
   else
   {
-    v9 = [(HKSample *)self endDate];
+    endDate2 = [(HKSample *)self endDate];
   }
 
-  return v9;
+  return endDate2;
 }
 
 - (id)description
@@ -79,65 +79,65 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   prescriptionType = self->_prescriptionType;
-  v7 = [(HKVisionPrescription *)self dateIssued];
-  v8 = [(HKVisionPrescription *)self expirationDate];
-  v9 = [v3 stringWithFormat:@"<%@:%p PrescriptionType=%lu, dateIssued=%@, expirationDate=%@>", v5, self, prescriptionType, v7, v8];
+  dateIssued = [(HKVisionPrescription *)self dateIssued];
+  expirationDate = [(HKVisionPrescription *)self expirationDate];
+  v9 = [v3 stringWithFormat:@"<%@:%p PrescriptionType=%lu, dateIssued=%@, expirationDate=%@>", v5, self, prescriptionType, dateIssued, expirationDate];
 
   return v9;
 }
 
-- (BOOL)_validateForSavingWithClientEntitlements:(id)a3 applicationSDKVersionToken:(unint64_t)a4 isAppleWatch:(BOOL)a5 error:(id *)a6
+- (BOOL)_validateForSavingWithClientEntitlements:(id)entitlements applicationSDKVersionToken:(unint64_t)token isAppleWatch:(BOOL)watch error:(id *)error
 {
-  v7 = a5;
+  watchCopy = watch;
   v11.receiver = self;
   v11.super_class = HKVisionPrescription;
-  v8 = [HKObject _validateForSavingWithClientEntitlements:sel__validateForSavingWithClientEntitlements_applicationSDKVersionToken_isAppleWatch_error_ applicationSDKVersionToken:a3 isAppleWatch:a4 error:?];
-  if (v8 && v7)
+  v8 = [HKObject _validateForSavingWithClientEntitlements:sel__validateForSavingWithClientEntitlements_applicationSDKVersionToken_isAppleWatch_error_ applicationSDKVersionToken:entitlements isAppleWatch:token error:?];
+  if (v8 && watchCopy)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a6 code:2 description:@"Unable to save vision samples on this device"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:2 description:@"Unable to save vision samples on this device"];
     LOBYTE(v8) = 0;
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = HKVisionPrescription;
-  result = [(HKObject *)&v5 copyWithZone:a3];
+  result = [(HKObject *)&v5 copyWithZone:zone];
   *(result + 12) = self->_prescriptionType;
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKVisionPrescription;
-  v4 = a3;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_prescriptionType forKey:{@"PrescriptionType", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_prescriptionType forKey:{@"PrescriptionType", v5.receiver, v5.super_class}];
 }
 
-- (HKVisionPrescription)initWithCoder:(id)a3
+- (HKVisionPrescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKVisionPrescription;
-  v5 = [(HKSample *)&v7 initWithCoder:v4];
+  v5 = [(HKSample *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_prescriptionType = [v4 decodeIntegerForKey:@"PrescriptionType"];
+    v5->_prescriptionType = [coderCopy decodeIntegerForKey:@"PrescriptionType"];
   }
 
   return v5;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v9.receiver = self;
   v9.super_class = HKVisionPrescription;
-  v4 = [(HKSample *)&v9 _validateWithConfiguration:a3.var0, a3.var1];
+  v4 = [(HKSample *)&v9 _validateWithConfiguration:configuration.var0, configuration.var1];
   if (v4 || (v8 = 0, v5 = [(HKVisionPrescription *)self _validateCommonFieldsWithError:&v8], v4 = v8, v6 = 0, !v5))
   {
     v4 = v4;
@@ -147,66 +147,66 @@
   return v6;
 }
 
-- (BOOL)_validateCommonFieldsWithError:(id *)a3
+- (BOOL)_validateCommonFieldsWithError:(id *)error
 {
-  v5 = [(HKVisionPrescription *)self leftSphere];
-  if (v5 && ![objc_opt_class() _validateSphere:v5 error:a3])
+  leftSphere = [(HKVisionPrescription *)self leftSphere];
+  if (leftSphere && ![objc_opt_class() _validateSphere:leftSphere error:error])
   {
     v13 = 0;
   }
 
   else
   {
-    v6 = [(HKVisionPrescription *)self rightSphere];
-    if (v6 && ![objc_opt_class() _validateSphere:v6 error:a3])
+    rightSphere = [(HKVisionPrescription *)self rightSphere];
+    if (rightSphere && ![objc_opt_class() _validateSphere:rightSphere error:error])
     {
       v13 = 0;
     }
 
     else
     {
-      v7 = [(HKVisionPrescription *)self leftCylinder];
-      if (v7 && ![objc_opt_class() _validateCylinder:v7 error:a3])
+      leftCylinder = [(HKVisionPrescription *)self leftCylinder];
+      if (leftCylinder && ![objc_opt_class() _validateCylinder:leftCylinder error:error])
       {
         v13 = 0;
       }
 
       else
       {
-        v8 = [(HKVisionPrescription *)self rightCylinder];
-        if (v8 && ![objc_opt_class() _validateCylinder:v8 error:a3])
+        rightCylinder = [(HKVisionPrescription *)self rightCylinder];
+        if (rightCylinder && ![objc_opt_class() _validateCylinder:rightCylinder error:error])
         {
           v13 = 0;
         }
 
         else
         {
-          v9 = [(HKVisionPrescription *)self leftAxis];
-          if (v9 && ![objc_opt_class() _validateAxis:v9 error:a3])
+          leftAxis = [(HKVisionPrescription *)self leftAxis];
+          if (leftAxis && ![objc_opt_class() _validateAxis:leftAxis error:error])
           {
             v13 = 0;
           }
 
           else
           {
-            v10 = [(HKVisionPrescription *)self rightAxis];
-            if (v10 && ![objc_opt_class() _validateAxis:v10 error:a3])
+            rightAxis = [(HKVisionPrescription *)self rightAxis];
+            if (rightAxis && ![objc_opt_class() _validateAxis:rightAxis error:error])
             {
               v13 = 0;
             }
 
             else
             {
-              v11 = [(HKVisionPrescription *)self leftAddPower];
-              if (v11 && ![objc_opt_class() _validateAddPower:v11 error:a3])
+              leftAddPower = [(HKVisionPrescription *)self leftAddPower];
+              if (leftAddPower && ![objc_opt_class() _validateAddPower:leftAddPower error:error])
               {
                 v13 = 0;
               }
 
               else
               {
-                v12 = [(HKVisionPrescription *)self rightAddPower];
-                v13 = !v12 || [objc_opt_class() _validateAddPower:v12 error:a3];
+                rightAddPower = [(HKVisionPrescription *)self rightAddPower];
+                v13 = !rightAddPower || [objc_opt_class() _validateAddPower:rightAddPower error:error];
               }
             }
           }
@@ -218,11 +218,11 @@
   return v13;
 }
 
-+ (BOOL)_validateSphere:(id)a3 error:(id *)a4
++ (BOOL)_validateSphere:(id)sphere error:(id *)error
 {
-  v6 = a3;
+  sphereCopy = sphere;
   v7 = +[HKUnit diopterUnit];
-  v8 = [v6 isCompatibleWithUnit:v7];
+  v8 = [sphereCopy isCompatibleWithUnit:v7];
 
   if (v8)
   {
@@ -234,10 +234,10 @@
   v9 = v10 == 0;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -249,11 +249,11 @@
   return v9;
 }
 
-+ (BOOL)_validateCylinder:(id)a3 error:(id *)a4
++ (BOOL)_validateCylinder:(id)cylinder error:(id *)error
 {
-  v6 = a3;
+  cylinderCopy = cylinder;
   v7 = +[HKUnit diopterUnit];
-  v8 = [v6 isCompatibleWithUnit:v7];
+  v8 = [cylinderCopy isCompatibleWithUnit:v7];
 
   if (v8)
   {
@@ -265,10 +265,10 @@
   v9 = v10 == 0;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -280,11 +280,11 @@
   return v9;
 }
 
-+ (BOOL)_validateAxis:(id)a3 error:(id *)a4
++ (BOOL)_validateAxis:(id)axis error:(id *)error
 {
-  v6 = a3;
+  axisCopy = axis;
   v7 = +[HKUnit degreeAngleUnit];
-  v8 = [v6 isCompatibleWithUnit:v7];
+  v8 = [axisCopy isCompatibleWithUnit:v7];
 
   if (v8)
   {
@@ -296,10 +296,10 @@
   v9 = v10 == 0;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -311,11 +311,11 @@
   return v9;
 }
 
-+ (BOOL)_validateAddPower:(id)a3 error:(id *)a4
++ (BOOL)_validateAddPower:(id)power error:(id *)error
 {
-  v6 = a3;
+  powerCopy = power;
   v7 = +[HKUnit diopterUnit];
-  v8 = [v6 isCompatibleWithUnit:v7];
+  v8 = [powerCopy isCompatibleWithUnit:v7];
 
   if (v8)
   {
@@ -327,10 +327,10 @@
   v9 = v10 == 0;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     else

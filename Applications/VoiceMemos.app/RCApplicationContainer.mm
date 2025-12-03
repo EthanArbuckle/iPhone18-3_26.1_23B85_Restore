@@ -1,6 +1,6 @@
 @interface RCApplicationContainer
 + (id)sharedContainer;
-- (RCApplicationContainer)initWithURL:(id)a3;
+- (RCApplicationContainer)initWithURL:(id)l;
 - (id)newChangeTrackingBackgroundModel;
 @end
 
@@ -18,26 +18,26 @@
   return v3;
 }
 
-- (RCApplicationContainer)initWithURL:(id)a3
+- (RCApplicationContainer)initWithURL:(id)l
 {
   v17.receiver = self;
   v17.super_class = RCApplicationContainer;
-  v3 = [(RCApplicationContainer *)&v17 initWithURL:a3];
+  v3 = [(RCApplicationContainer *)&v17 initWithURL:l];
   v4 = v3;
   if (v3)
   {
-    v5 = [(RCApplicationContainer *)v3 persistentContainer];
-    v6 = [v5 persistentStoreCoordinator];
-    v7 = [v6 persistentStores];
-    v8 = [v7 firstObject];
+    persistentContainer = [(RCApplicationContainer *)v3 persistentContainer];
+    persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    firstObject = [persistentStores firstObject];
 
     v9 = [RCRemoteChangeMerger alloc];
-    v18 = v8;
+    v18 = firstObject;
     v10 = [NSArray arrayWithObjects:&v18 count:1];
-    v11 = [(RCApplicationContainer *)v4 persistentContainer];
-    v12 = [v11 viewContext];
-    v13 = [(RCApplicationContainer *)v4 transactionAuthor];
-    v14 = [(RCRemoteChangeMerger *)v9 initWithStores:v10 viewContext:v12 transactionAuthorToIgnore:v13];
+    persistentContainer2 = [(RCApplicationContainer *)v4 persistentContainer];
+    viewContext = [persistentContainer2 viewContext];
+    transactionAuthor = [(RCApplicationContainer *)v4 transactionAuthor];
+    v14 = [(RCRemoteChangeMerger *)v9 initWithStores:v10 viewContext:viewContext transactionAuthorToIgnore:transactionAuthor];
     remoteChangeMerger = v4->_remoteChangeMerger;
     v4->_remoteChangeMerger = v14;
   }
@@ -48,19 +48,19 @@
 - (id)newChangeTrackingBackgroundModel
 {
   v3 = +[RCApplicationContainer sharedContainer];
-  v4 = [v3 newBackgroundModel];
+  newBackgroundModel = [v3 newBackgroundModel];
 
-  v5 = [v4 context];
-  [v5 setAutomaticallyMergesChangesFromParent:1];
+  context = [newBackgroundModel context];
+  [context setAutomaticallyMergesChangesFromParent:1];
 
   remoteChangeMerger = self->_remoteChangeMerger;
   if (remoteChangeMerger)
   {
-    v7 = [v4 context];
-    [(RCRemoteChangeMerger *)remoteChangeMerger addContextToMergeChangesInto:v7];
+    context2 = [newBackgroundModel context];
+    [(RCRemoteChangeMerger *)remoteChangeMerger addContextToMergeChangesInto:context2];
   }
 
-  return v4;
+  return newBackgroundModel;
 }
 
 @end

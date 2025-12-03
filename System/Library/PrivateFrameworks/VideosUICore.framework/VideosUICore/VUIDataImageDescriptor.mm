@@ -1,21 +1,21 @@
 @interface VUIDataImageDescriptor
 - (CGSize)backgroundSize;
 - (CGSize)renderSize;
-- (VUIDataImageDescriptor)initWithData:(id)a3;
+- (VUIDataImageDescriptor)initWithData:(id)data;
 @end
 
 @implementation VUIDataImageDescriptor
 
-- (VUIDataImageDescriptor)initWithData:(id)a3
+- (VUIDataImageDescriptor)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = VUIDataImageDescriptor;
   v6 = [(VUIDataImageDescriptor *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
     v8 = *MEMORY[0x277CBF3A8];
     v7->_renderSize = *MEMORY[0x277CBF3A8];
     v7->_backgroundSize = v8;

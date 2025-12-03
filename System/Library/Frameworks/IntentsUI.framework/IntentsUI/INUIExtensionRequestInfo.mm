@@ -1,56 +1,56 @@
 @interface INUIExtensionRequestInfo
-- (INUIExtensionRequestInfo)initWithCoder:(id)a3;
-- (INUIExtensionRequestInfo)initWithInteraction:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (INUIExtensionRequestInfo)initWithCoder:(id)coder;
+- (INUIExtensionRequestInfo)initWithInteraction:(id)interaction;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INUIExtensionRequestInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(INUIExtensionRequestInfo *)self interaction];
-  v7 = [v6 copyWithZone:a3];
+  interaction = [(INUIExtensionRequestInfo *)self interaction];
+  v7 = [interaction copyWithZone:zone];
   v8 = [v5 initWithInteraction:v7];
 
   [v8 setRequiresUserConsent:{-[INUIExtensionRequestInfo requiresUserConsent](self, "requiresUserConsent")}];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(INUIExtensionRequestInfo *)self interaction];
-  [v5 encodeObject:v4 forKey:@"interaction"];
+  coderCopy = coder;
+  interaction = [(INUIExtensionRequestInfo *)self interaction];
+  [coderCopy encodeObject:interaction forKey:@"interaction"];
 
-  [v5 encodeBool:-[INUIExtensionRequestInfo requiresUserConsent](self forKey:{"requiresUserConsent"), @"requiresUserConsent"}];
+  [coderCopy encodeBool:-[INUIExtensionRequestInfo requiresUserConsent](self forKey:{"requiresUserConsent"), @"requiresUserConsent"}];
 }
 
-- (INUIExtensionRequestInfo)initWithCoder:(id)a3
+- (INUIExtensionRequestInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interaction"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interaction"];
   v6 = [(INUIExtensionRequestInfo *)self initWithInteraction:v5];
 
   if (v6)
   {
-    -[INUIExtensionRequestInfo setRequiresUserConsent:](v6, "setRequiresUserConsent:", [v4 decodeBoolForKey:@"requiresUserConsent"]);
+    -[INUIExtensionRequestInfo setRequiresUserConsent:](v6, "setRequiresUserConsent:", [coderCopy decodeBoolForKey:@"requiresUserConsent"]);
   }
 
   return v6;
 }
 
-- (INUIExtensionRequestInfo)initWithInteraction:(id)a3
+- (INUIExtensionRequestInfo)initWithInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   v9.receiver = self;
   v9.super_class = INUIExtensionRequestInfo;
   v6 = [(INUIExtensionRequestInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_interaction, a3);
+    objc_storeStrong(&v6->_interaction, interaction);
     v7->_requiresUserConsent = 1;
   }
 

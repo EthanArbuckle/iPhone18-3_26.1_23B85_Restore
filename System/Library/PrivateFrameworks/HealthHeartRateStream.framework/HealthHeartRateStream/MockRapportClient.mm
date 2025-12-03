@@ -1,22 +1,22 @@
 @interface MockRapportClient
 - (_TtC21HealthHeartRateStream17MockRapportClient)init;
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)sendRequestID:(id)a3 request:(id)a4 destinationID:(id)a5 options:(id)a6 responseHandler:(id)a7;
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler;
+- (void)sendRequestID:(id)d request:(id)request destinationID:(id)iD options:(id)options responseHandler:(id)handler;
 @end
 
 @implementation MockRapportClient
 
-- (void)sendRequestID:(id)a3 request:(id)a4 destinationID:(id)a5 options:(id)a6 responseHandler:(id)a7
+- (void)sendRequestID:(id)d request:(id)request destinationID:(id)iD options:(id)options responseHandler:(id)handler
 {
-  v9 = _Block_copy(a7);
+  v9 = _Block_copy(handler);
   v10 = sub_2517B32F0();
   v12 = v11;
   v13 = sub_2517B32B0();
   v14 = sub_2517B32F0();
   v16 = v15;
-  if (a6)
+  if (options)
   {
-    a6 = sub_2517B32B0();
+    options = sub_2517B32B0();
   }
 
   v17 = swift_allocObject();
@@ -27,9 +27,9 @@
   if (*v18)
   {
     v20 = *(v18 + 1);
-    v21 = self;
+    selfCopy = self;
     sub_2517A9F58(v19);
-    v19(v10, v12, v13, v14, v16, a6, sub_2517AA9B8, v17);
+    v19(v10, v12, v13, v14, v16, options, sub_2517AA9B8, v17);
 
     sub_2517A9F88(v19);
   }
@@ -39,13 +39,13 @@
   }
 }
 
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler
 {
   v7 = sub_2517B32F0();
   v9 = v8;
-  if (a4)
+  if (options)
   {
-    a4 = sub_2517B32B0();
+    options = sub_2517B32B0();
   }
 
   v10 = self + OBJC_IVAR____TtC21HealthHeartRateStream17MockRapportClient_registerRequestHandler;
@@ -54,9 +54,9 @@
   if (*v10)
   {
     v12 = *(v10 + 1);
-    v13 = self;
+    selfCopy = self;
     sub_2517A9F58(v11);
-    v11(v7, v9, a4);
+    v11(v7, v9, options);
 
     sub_2517A9F88(v11);
   }

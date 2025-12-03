@@ -1,25 +1,25 @@
 @interface QLCacheIndexDatabaseFileInfoEnumerator
-- (BOOL)nextFileWithCacheId:(unint64_t *)a3 versionedFileIdentifier:(id *)a4 thumbnailCount:(unsigned int *)a5 minSize:(float *)a6 maxSize:(float *)a7 totalDataLength:(unint64_t *)a8;
-- (QLCacheIndexDatabaseFileInfoEnumerator)initWithSqliteDatabase:(id)a3 toEnumerateUbiquitousFiles:(BOOL)a4 extraInfo:(BOOL)a5;
+- (BOOL)nextFileWithCacheId:(unint64_t *)id versionedFileIdentifier:(id *)identifier thumbnailCount:(unsigned int *)count minSize:(float *)size maxSize:(float *)maxSize totalDataLength:(unint64_t *)length;
+- (QLCacheIndexDatabaseFileInfoEnumerator)initWithSqliteDatabase:(id)database toEnumerateUbiquitousFiles:(BOOL)files extraInfo:(BOOL)info;
 @end
 
 @implementation QLCacheIndexDatabaseFileInfoEnumerator
 
-- (QLCacheIndexDatabaseFileInfoEnumerator)initWithSqliteDatabase:(id)a3 toEnumerateUbiquitousFiles:(BOOL)a4 extraInfo:(BOOL)a5
+- (QLCacheIndexDatabaseFileInfoEnumerator)initWithSqliteDatabase:(id)database toEnumerateUbiquitousFiles:(BOOL)files extraInfo:(BOOL)info
 {
   v8.receiver = self;
   v8.super_class = QLCacheIndexDatabaseFileInfoEnumerator;
-  result = [(QLCacheIndexDatabaseGenericEnumerator *)&v8 initWithSqliteDatabase:a3];
+  result = [(QLCacheIndexDatabaseGenericEnumerator *)&v8 initWithSqliteDatabase:database];
   if (result)
   {
-    result->_extraInfo = a5;
-    result->_ubiquitous = a4;
+    result->_extraInfo = info;
+    result->_ubiquitous = files;
   }
 
   return result;
 }
 
-- (BOOL)nextFileWithCacheId:(unint64_t *)a3 versionedFileIdentifier:(id *)a4 thumbnailCount:(unsigned int *)a5 minSize:(float *)a6 maxSize:(float *)a7 totalDataLength:(unint64_t *)a8
+- (BOOL)nextFileWithCacheId:(unint64_t *)id versionedFileIdentifier:(id *)identifier thumbnailCount:(unsigned int *)count minSize:(float *)size maxSize:(float *)maxSize totalDataLength:(unint64_t *)length
 {
   p_stmt = &self->super._stmt;
   if (!self->super._stmt)
@@ -71,7 +71,7 @@ LABEL_19:
 
   v23 = [(QLSqliteDatabase *)self->super._sqliteDatabase unsignedLongLongFromColumn:0 inStatement:self->super._stmt];
   ubiquitous = self->_ubiquitous;
-  *a3 = v23;
+  *id = v23;
   if (ubiquitous)
   {
     v25 = 0x277CDAA98;
@@ -88,18 +88,18 @@ LABEL_19:
 
   if (self->_extraInfo)
   {
-    *a5 = [(QLSqliteDatabase *)self->super._sqliteDatabase intFromColumn:4 inStatement:self->super._stmt];
+    *count = [(QLSqliteDatabase *)self->super._sqliteDatabase intFromColumn:4 inStatement:self->super._stmt];
     [(QLSqliteDatabase *)self->super._sqliteDatabase floatFromColumn:5 inStatement:self->super._stmt];
-    *a6 = v28;
+    *size = v28;
     [(QLSqliteDatabase *)self->super._sqliteDatabase floatFromColumn:6 inStatement:self->super._stmt];
-    *a7 = v29;
+    *maxSize = v29;
     [(QLSqliteDatabase *)self->super._sqliteDatabase floatFromColumn:7 inStatement:self->super._stmt];
-    *a8 = v30;
+    *length = v30;
   }
 
   v31 = 1;
 LABEL_20:
-  *a4 = self->_fileIdentifier;
+  *identifier = self->_fileIdentifier;
   return v31;
 }
 

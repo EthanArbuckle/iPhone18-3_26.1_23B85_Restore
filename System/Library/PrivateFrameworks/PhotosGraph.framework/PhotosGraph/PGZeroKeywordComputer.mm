@@ -1,37 +1,37 @@
 @interface PGZeroKeywordComputer
-+ (id)contextualHolidayZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5;
++ (id)contextualHolidayZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block;
 + (id)zeroKeywordLog;
-- (PGZeroKeywordComputer)initWithPhotoLibrary:(id)a3 curationManager:(id)a4 searchComputationCache:(id)a5;
-- (id)_tripZeroKeywordWithGraph:(id)a3 curationContext:(id)a4 score:(double *)a5;
-- (id)_zeroKeywordDisplayMeaningNodeForMeaningNode:(id)a3;
-- (id)_zeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6;
-- (id)contextualDateZeroKeywordsWithGraph:(id)a3 options:(id)a4;
-- (id)contextualMeaningAndTripZeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6;
-- (id)contextualPersonZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5;
-- (id)contextualSceneZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5;
-- (id)contextualSeasonZeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5;
-- (id)contextualSocialGroupZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5;
-- (id)eventZeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6;
-- (id)meaningNodeZeroKeywordForDisplayMeaningNode:(id)a3 collectionUUIDsToAvoid:(id)a4 curationContext:(id)a5;
-- (id)momentNodesOverlappingLocalDateInterval:(id)a3 inGraph:(id)a4;
-- (id)peopleZeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6;
-- (id)placeZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5;
-- (id)sceneZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5;
-- (id)socialGroupKeyAssetLocalIdentifierWithPersonLocalIdentifiers:(id)a3;
-- (id)socialGroupKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6;
-- (id)tripRankedKeywordWithGraph:(id)a3 curationContext:(id)a4;
-- (id)zeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6;
+- (PGZeroKeywordComputer)initWithPhotoLibrary:(id)library curationManager:(id)manager searchComputationCache:(id)cache;
+- (id)_tripZeroKeywordWithGraph:(id)graph curationContext:(id)context score:(double *)score;
+- (id)_zeroKeywordDisplayMeaningNodeForMeaningNode:(id)node;
+- (id)_zeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block;
+- (id)contextualDateZeroKeywordsWithGraph:(id)graph options:(id)options;
+- (id)contextualMeaningAndTripZeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block;
+- (id)contextualPersonZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block;
+- (id)contextualSceneZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block;
+- (id)contextualSeasonZeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options;
+- (id)contextualSocialGroupZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block;
+- (id)eventZeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block;
+- (id)meaningNodeZeroKeywordForDisplayMeaningNode:(id)node collectionUUIDsToAvoid:(id)avoid curationContext:(id)context;
+- (id)momentNodesOverlappingLocalDateInterval:(id)interval inGraph:(id)graph;
+- (id)peopleZeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block;
+- (id)placeZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block;
+- (id)sceneZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block;
+- (id)socialGroupKeyAssetLocalIdentifierWithPersonLocalIdentifiers:(id)identifiers;
+- (id)socialGroupKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block;
+- (id)tripRankedKeywordWithGraph:(id)graph curationContext:(id)context;
+- (id)zeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block;
 @end
 
 @implementation PGZeroKeywordComputer
 
-- (id)momentNodesOverlappingLocalDateInterval:(id)a3 inGraph:(id)a4
+- (id)momentNodesOverlappingLocalDateInterval:(id)interval inGraph:(id)graph
 {
-  v5 = [PGGraphMomentNodeCollection momentNodesForLocalDateInterval:a3 inGraph:a4];
+  v5 = [PGGraphMomentNodeCollection momentNodesForLocalDateInterval:interval inGraph:graph];
   if ([(PGZeroKeywordComputer *)self shouldFilterMomentNodesWithPresence])
   {
-    v6 = [(PGZeroKeywordComputer *)self momentNodesWhereMeIsPresent];
-    v7 = [v5 collectionByIntersecting:v6];
+    momentNodesWhereMeIsPresent = [(PGZeroKeywordComputer *)self momentNodesWhereMeIsPresent];
+    v7 = [v5 collectionByIntersecting:momentNodesWhereMeIsPresent];
 
     v5 = v7;
   }
@@ -39,25 +39,25 @@
   return v5;
 }
 
-- (id)_zeroKeywordDisplayMeaningNodeForMeaningNode:(id)a3
+- (id)_zeroKeywordDisplayMeaningNodeForMeaningNode:(id)node
 {
-  v3 = a3;
+  nodeCopy = node;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__32890;
   v16 = __Block_byref_object_dispose__32891;
   v17 = 0;
-  v4 = [v3 graph];
-  v5 = [v4 zeroKeywordMappingByMeaningLabel];
+  graph = [nodeCopy graph];
+  zeroKeywordMappingByMeaningLabel = [graph zeroKeywordMappingByMeaningLabel];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __82__PGZeroKeywordComputer_Contextual___zeroKeywordDisplayMeaningNodeForMeaningNode___block_invoke;
   v9[3] = &unk_278883368;
-  v6 = v3;
+  v6 = nodeCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [zeroKeywordMappingByMeaningLabel enumerateKeysAndObjectsUsingBlock:v9];
   v7 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -80,41 +80,41 @@ void __82__PGZeroKeywordComputer_Contextual___zeroKeywordDisplayMeaningNodeForMe
   }
 }
 
-- (id)contextualDateZeroKeywordsWithGraph:(id)a3 options:(id)a4
+- (id)contextualDateZeroKeywordsWithGraph:(id)graph options:(id)options
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
-  v10 = [v7 objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
+  optionsCopy = options;
+  graphCopy = graph;
+  array = [v6 array];
+  v10 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
 
   if (v10)
   {
-    v11 = v10;
+    currentLocalDate = v10;
   }
 
   else
   {
-    v11 = [MEMORY[0x277D27690] currentLocalDate];
+    currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
   }
 
-  v12 = v11;
+  v12 = currentLocalDate;
 
   v13 = [MEMORY[0x277D27690] dateByAddingYears:-1 toDate:v12];
   v14 = [MEMORY[0x277D27690] dateByAddingDays:-3 toDate:v13];
   v15 = [MEMORY[0x277D27690] dateByAddingDays:3 toDate:v13];
   v16 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v14 endDate:v15];
-  v17 = [(PGZeroKeywordComputer *)self momentNodesOverlappingLocalDateInterval:v16 inGraph:v8];
+  v17 = [(PGZeroKeywordComputer *)self momentNodesOverlappingLocalDateInterval:v16 inGraph:graphCopy];
 
   if ([v17 count])
   {
-    v27 = v9;
+    v27 = array;
     v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"PGZeroKeywordOneYearAgoSearchableText" value:@"PGZeroKeywordOneYearAgoSearchableText" table:@"Localizable"];
 
     v20 = MEMORY[0x277D3ACF8];
-    v21 = [MEMORY[0x277D3AD78] locale];
-    LODWORD(v20) = [v20 nlpSearchSupportsLocale:v21];
+    locale = [MEMORY[0x277D3AD78] locale];
+    LODWORD(v20) = [v20 nlpSearchSupportsLocale:locale];
 
     if (v20)
     {
@@ -123,29 +123,29 @@ void __82__PGZeroKeywordComputer_Contextual___zeroKeywordDisplayMeaningNodeForMe
 
       if (v23)
       {
-        v24 = [v23 localIdentifier];
-        v25 = zeroKeywordWithAttributes(7, 8, v19, v19, 0, v24);
+        localIdentifier = [v23 localIdentifier];
+        v25 = zeroKeywordWithAttributes(7, 8, v19, v19, 0, localIdentifier);
 
         [v27 addObject:v25];
       }
     }
 
-    v9 = v27;
+    array = v27;
   }
 
-  return v9;
+  return array;
 }
 
-- (id)contextualMeaningAndTripZeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6
+- (id)contextualMeaningAndTripZeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block
 {
   v71 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v46 = a4;
-  v9 = a5;
-  v36 = a6;
+  graphCopy = graph;
+  contextCopy = context;
+  optionsCopy = options;
+  blockCopy = block;
   v10 = 0.0;
-  v48 = _Block_copy(v36);
-  v37 = v9;
+  v48 = _Block_copy(blockCopy);
+  v37 = optionsCopy;
   if (v48)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -171,23 +171,23 @@ void __82__PGZeroKeywordComputer_Contextual___zeroKeywordDisplayMeaningNodeForMe
     }
   }
 
-  v13 = [v9 objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
+  v13 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
   v14 = v13;
   if (v13)
   {
-    v42 = v13;
+    currentLocalDate = v13;
   }
 
   else
   {
-    v42 = [MEMORY[0x277D27690] currentLocalDate];
+    currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
   }
 
-  v44 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v47 = [MEMORY[0x277CBEB58] set];
-  v41 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-2 toDate:v42];
-  v40 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v41 endDate:v42];
-  v39 = [(PGZeroKeywordComputer *)self momentNodesOverlappingLocalDateInterval:v40 inGraph:v43];
+  v41 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-2 toDate:currentLocalDate];
+  v40 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v41 endDate:currentLocalDate];
+  v39 = [(PGZeroKeywordComputer *)self momentNodesOverlappingLocalDateInterval:v40 inGraph:graphCopy];
   v15 = [v39 set];
   v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalStartDate" ascending:1];
   buf = v16;
@@ -203,8 +203,8 @@ void __82__PGZeroKeywordComputer_Contextual___zeroKeywordDisplayMeaningNodeForMe
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v20 = [v38 reverseObjectEnumerator];
-  v21 = [v20 countByEnumeratingWithState:&v58 objects:v70 count:16];
+  reverseObjectEnumerator = [v38 reverseObjectEnumerator];
+  v21 = [reverseObjectEnumerator countByEnumeratingWithState:&v58 objects:v70 count:16];
   if (!v21)
   {
     v45 = 0;
@@ -223,7 +223,7 @@ void __82__PGZeroKeywordComputer_Contextual___zeroKeywordDisplayMeaningNodeForMe
     {
       if (*v59 != v24)
       {
-        objc_enumerationMutation(v20);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v26 = *(*(&v58 + 1) + 8 * v25);
@@ -240,10 +240,10 @@ void __82__PGZeroKeywordComputer_Contextual___zeroKeywordDisplayMeaningNodeForMe
           goto LABEL_24;
         }
 
-        v27 = [(PGZeroKeywordComputer *)self tripZeroKeywordWithGraph:v43 curationContext:v46];
+        v27 = [(PGZeroKeywordComputer *)self tripZeroKeywordWithGraph:graphCopy curationContext:contextCopy];
         if (v27)
         {
-          [v44 addObject:v27];
+          [array addObject:v27];
         }
       }
 
@@ -269,9 +269,9 @@ LABEL_24:
       v51[5] = &buf;
       v51[6] = &v52;
       [v26 enumerateMeaningEdgesAndNodesUsingBlock:v51];
-      if (*(v66 + 40) && ([v47 containsObject:v53[5]] & 1) == 0 && (-[PGZeroKeywordComputer meaningNodeZeroKeywordForDisplayMeaningNode:collectionUUIDsToAvoid:curationContext:](self, "meaningNodeZeroKeywordForDisplayMeaningNode:collectionUUIDsToAvoid:curationContext:", v53[5], 0, v46), (v28 = objc_claimAutoreleasedReturnValue()) != 0))
+      if (*(v66 + 40) && ([v47 containsObject:v53[5]] & 1) == 0 && (-[PGZeroKeywordComputer meaningNodeZeroKeywordForDisplayMeaningNode:collectionUUIDsToAvoid:curationContext:](self, "meaningNodeZeroKeywordForDisplayMeaningNode:collectionUUIDsToAvoid:curationContext:", v53[5], 0, contextCopy), (v28 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        [v44 addObject:v28];
+        [array addObject:v28];
 
         v29 = 0;
         v30 = 1;
@@ -339,7 +339,7 @@ LABEL_34:
     }
 
     while (v21 != v25);
-    v32 = [v20 countByEnumeratingWithState:&v58 objects:v70 count:16];
+    v32 = [reverseObjectEnumerator countByEnumeratingWithState:&v58 objects:v70 count:16];
     v21 = v32;
     if (v32)
     {
@@ -369,7 +369,7 @@ LABEL_44:
 
   else
   {
-    v12 = v44;
+    v12 = array;
   }
 
 LABEL_54:
@@ -402,14 +402,14 @@ void __121__PGZeroKeywordComputer_Contextual__contextualMeaningAndTripZeroKeywor
   }
 }
 
-- (id)contextualSceneZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5
+- (id)contextualSceneZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block
 {
   v68 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v43 = a4;
-  v37 = a5;
+  graphCopy = graph;
+  optionsCopy = options;
+  blockCopy = block;
   v8 = 0.0;
-  v47 = _Block_copy(v37);
+  v47 = _Block_copy(blockCopy);
   if (v47)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -435,23 +435,23 @@ void __121__PGZeroKeywordComputer_Contextual__contextualMeaningAndTripZeroKeywor
     }
   }
 
-  v48 = [MEMORY[0x277CBEB18] array];
-  v11 = [v43 objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
+  array = [MEMORY[0x277CBEB18] array];
+  v11 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
   v12 = v11;
   if (v11)
   {
-    v44 = v11;
+    currentLocalDate = v11;
   }
 
   else
   {
-    v44 = [MEMORY[0x277D27690] currentLocalDate];
+    currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
   }
 
-  v41 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-2 toDate:v44];
-  v40 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v41 endDate:v44];
+  v41 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-2 toDate:currentLocalDate];
+  v40 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v41 endDate:currentLocalDate];
   v46 = [MEMORY[0x277CBEB58] set];
-  v39 = [(PGZeroKeywordComputer *)self momentNodesOverlappingLocalDateInterval:v40 inGraph:v42];
+  v39 = [(PGZeroKeywordComputer *)self momentNodesOverlappingLocalDateInterval:v40 inGraph:graphCopy];
   v13 = [v39 set];
   v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalStartDate" ascending:1];
   buf = v14;
@@ -467,8 +467,8 @@ void __121__PGZeroKeywordComputer_Contextual__contextualMeaningAndTripZeroKeywor
   v56 = 0u;
   v57 = 0u;
   v55 = 0u;
-  v18 = [v38 reverseObjectEnumerator];
-  v19 = [v18 countByEnumeratingWithState:&v55 objects:v67 count:16];
+  reverseObjectEnumerator = [v38 reverseObjectEnumerator];
+  v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v55 objects:v67 count:16];
   if (!v19)
   {
     v45 = 0;
@@ -486,7 +486,7 @@ void __121__PGZeroKeywordComputer_Contextual__contextualMeaningAndTripZeroKeywor
     {
       if (*v56 != v21)
       {
-        objc_enumerationMutation(v18);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v23 = *(*(&v55 + 1) + 8 * v22);
@@ -520,14 +520,14 @@ void __121__PGZeroKeywordComputer_Contextual__contextualMeaningAndTripZeroKeywor
         goto LABEL_51;
       }
 
-      v26 = [v25 targetNode];
-      v27 = [v26 localizedName];
-      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v26, "sceneIdentifier")}];
-      v29 = zeroKeywordWithAttributes(3, 13, v27, 0, 0, v28);
+      targetNode = [v25 targetNode];
+      localizedName = [targetNode localizedName];
+      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(targetNode, "sceneIdentifier")}];
+      v29 = zeroKeywordWithAttributes(3, 13, localizedName, 0, 0, v28);
 
-      [v48 addObject:v29];
-      [v24 addObject:v26];
-      LOBYTE(v28) = [v48 count] < 2;
+      [array addObject:v29];
+      [v24 addObject:targetNode];
+      LOBYTE(v28) = [array count] < 2;
 
       if ((v28 & 1) == 0)
       {
@@ -599,7 +599,7 @@ LABEL_26:
     }
 
     while (v19 != v22);
-    v33 = [v18 countByEnumeratingWithState:&v55 objects:v67 count:16];
+    v33 = [reverseObjectEnumerator countByEnumeratingWithState:&v55 objects:v67 count:16];
     v19 = v33;
     if (v33)
     {
@@ -629,7 +629,7 @@ LABEL_36:
 
   else
   {
-    v10 = v48;
+    v10 = array;
   }
 
 LABEL_46:
@@ -666,43 +666,43 @@ void __96__PGZeroKeywordComputer_Contextual__contextualSceneZeroKeywordsWithGrap
   }
 }
 
-- (id)contextualSeasonZeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5
+- (id)contextualSeasonZeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  graphCopy = graph;
+  contextCopy = context;
   v10 = MEMORY[0x277CBEB18];
-  v11 = a5;
-  v12 = [v10 array];
-  v13 = [v11 objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
+  optionsCopy = options;
+  array = [v10 array];
+  v13 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
 
   if (v13)
   {
-    v14 = v13;
+    currentLocalDate = v13;
   }
 
   else
   {
-    v14 = [MEMORY[0x277D27690] currentLocalDate];
+    currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
   }
 
-  v15 = v14;
+  v15 = currentLocalDate;
 
-  v16 = [v8 seasonNodeForLocalDate:v15];
+  v16 = [graphCopy seasonNodeForLocalDate:v15];
   if ([MEMORY[0x277D27690] isFirstTenDaysOfSeasonForLocalDate:v15])
   {
-    v17 = [v8 previousSeasonNodeForSeasonNode:v16];
+    v17 = [graphCopy previousSeasonNodeForSeasonNode:v16];
     v18 = +[PGLogging sharedLogging];
-    v19 = [v18 loggingConnection];
+    loggingConnection = [v18 loggingConnection];
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
-      v20 = [v17 name];
+      name = [v17 name];
       v29 = 138412290;
-      v30 = v20;
+      v30 = name;
       v21 = "Contextual Season ZK : previous season %@";
 LABEL_9:
-      _os_log_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_INFO, v21, &v29, 0xCu);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, v21, &v29, 0xCu);
     }
   }
 
@@ -710,13 +710,13 @@ LABEL_9:
   {
     v17 = v16;
     v22 = +[PGLogging sharedLogging];
-    v19 = [v22 loggingConnection];
+    loggingConnection = [v22 loggingConnection];
 
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
-      v20 = [v17 name];
+      name = [v17 name];
       v29 = 138412290;
-      v30 = v20;
+      v30 = name;
       v21 = "Contextual Season ZK : current season %@";
       goto LABEL_9;
     }
@@ -726,28 +726,28 @@ LABEL_9:
   {
     photoLibrary = self->_photoLibrary;
     curationManager = self->_curationManager;
-    v25 = [(PGZeroKeywordComputer *)self searchComputationCache];
-    v26 = seasonNodeZeroKeyword(v17, photoLibrary, curationManager, v25, v9);
+    searchComputationCache = [(PGZeroKeywordComputer *)self searchComputationCache];
+    v26 = seasonNodeZeroKeyword(v17, photoLibrary, curationManager, searchComputationCache, contextCopy);
 
     if (v26)
     {
-      [v12 addObject:v26];
+      [array addObject:v26];
     }
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return array;
 }
 
-- (id)contextualSocialGroupZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5
+- (id)contextualSocialGroupZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block
 {
   v101 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  graphCopy = graph;
+  optionsCopy = options;
+  blockCopy = block;
   v11 = 0.0;
-  v72 = _Block_copy(v10);
+  v72 = _Block_copy(blockCopy);
   if (!v72)
   {
     goto LABEL_8;
@@ -765,40 +765,40 @@ LABEL_9:
   {
     v11 = Current;
 LABEL_8:
-    v63 = v10;
-    v14 = [MEMORY[0x277CBEB18] array];
-    v15 = [v9 objectForKeyedSubscript:@"PHMemoryOptionPeopleNamesKey"];
-    v64 = v9;
-    v16 = [v9 objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
+    v63 = blockCopy;
+    array = [MEMORY[0x277CBEB18] array];
+    v15 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionPeopleNamesKey"];
+    v64 = optionsCopy;
+    v16 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
     v17 = v16;
     if (v16)
     {
-      v18 = v16;
+      currentLocalDate = v16;
     }
 
     else
     {
-      v18 = [MEMORY[0x277D27690] currentLocalDate];
+      currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
     }
 
-    v68 = v18;
+    v68 = currentLocalDate;
 
     v19 = [MEMORY[0x277CBEB58] set];
     v74 = [MEMORY[0x277CBEB58] set];
-    v70 = self;
+    selfCopy = self;
     v20 = self->_photoLibrary;
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsWithGraph_options_progressBlock___block_invoke;
     aBlock[3] = &unk_278883250;
-    v65 = v8;
-    v21 = v8;
+    v65 = graphCopy;
+    v21 = graphCopy;
     v90 = v21;
     v61 = v20;
     v91 = v61;
     v62 = v19;
     v92 = v62;
-    v67 = v14;
+    v67 = array;
     v93 = v67;
     v71 = _Block_copy(aBlock);
     v85 = 0u;
@@ -860,7 +860,7 @@ LABEL_8:
           }
 
           v13 = MEMORY[0x277CBEBF8];
-          v10 = v63;
+          blockCopy = v63;
 LABEL_64:
 
           goto LABEL_65;
@@ -880,7 +880,7 @@ LABEL_64:
     v59 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-1 toDate:v29];
     v69 = v29;
     v58 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v59 endDate:v29];
-    v57 = [PGZeroKeywordComputer momentNodesOverlappingLocalDateInterval:v70 inGraph:"momentNodesOverlappingLocalDateInterval:inGraph:"];
+    v57 = [PGZeroKeywordComputer momentNodesOverlappingLocalDateInterval:selfCopy inGraph:"momentNodesOverlappingLocalDateInterval:inGraph:"];
     v31 = [v57 set];
     v32 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalStartDate" ascending:1];
     *buf = v32;
@@ -897,8 +897,8 @@ LABEL_64:
     v79 = 0u;
     v80 = 0u;
     v60 = v36;
-    v37 = [v36 reverseObjectEnumerator];
-    v38 = [v37 countByEnumeratingWithState:&v79 objects:v95 count:16];
+    reverseObjectEnumerator = [v36 reverseObjectEnumerator];
+    v38 = [reverseObjectEnumerator countByEnumeratingWithState:&v79 objects:v95 count:16];
     if (v38)
     {
       v39 = v38;
@@ -909,7 +909,7 @@ LABEL_64:
         {
           if (*v80 != v40)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v42 = *(*(&v79 + 1) + 8 * j);
@@ -943,9 +943,9 @@ LABEL_64:
 
                 objc_autoreleasePoolPop(v43);
                 v13 = MEMORY[0x277CBEBF8];
-                v9 = v64;
-                v8 = v65;
-                v10 = v63;
+                optionsCopy = v64;
+                graphCopy = v65;
+                blockCopy = v63;
                 v30 = v67;
                 v29 = v69;
                 goto LABEL_63;
@@ -958,7 +958,7 @@ LABEL_64:
           objc_autoreleasePoolPop(v43);
         }
 
-        v39 = [v37 countByEnumeratingWithState:&v79 objects:v95 count:16];
+        v39 = [reverseObjectEnumerator countByEnumeratingWithState:&v79 objects:v95 count:16];
         if (v39)
         {
           continue;
@@ -972,17 +972,17 @@ LABEL_64:
     if ([v67 count] == v66)
     {
       v46 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-2 toDate:v69];
-      v47 = [v60 firstObject];
-      v48 = [v47 previousMomentNode];
+      firstObject = [v60 firstObject];
+      previousMomentNode = [firstObject previousMomentNode];
 
-      v8 = v65;
-      v10 = v63;
-      if ([v67 count] == v66 && v48)
+      graphCopy = v65;
+      blockCopy = v63;
+      if ([v67 count] == v66 && previousMomentNode)
       {
         while (1)
         {
-          v49 = [v48 localEndDate];
-          v50 = [v49 compare:v46];
+          localEndDate = [previousMomentNode localEndDate];
+          v50 = [localEndDate compare:v46];
 
           if (v50 == -1)
           {
@@ -990,7 +990,7 @@ LABEL_64:
           }
 
           v51 = objc_autoreleasePoolPush();
-          if ([v48 isInteresting])
+          if ([previousMomentNode isInteresting])
           {
             [v74 removeAllObjects];
             v75[0] = MEMORY[0x277D85DD0];
@@ -999,7 +999,7 @@ LABEL_64:
             v75[3] = &unk_278889240;
             v52 = v74;
             v76 = v52;
-            [v48 enumeratePersonNodesUsingBlock:v75];
+            [previousMomentNode enumeratePersonNodesUsingBlock:v75];
             v71[2](v71, v52);
             if (v72)
             {
@@ -1021,7 +1021,7 @@ LABEL_64:
 
                   objc_autoreleasePoolPop(v51);
                   v13 = MEMORY[0x277CBEBF8];
-                  v9 = v64;
+                  optionsCopy = v64;
                   v29 = v69;
                   goto LABEL_63;
                 }
@@ -1031,13 +1031,13 @@ LABEL_64:
             }
           }
 
-          v54 = [v48 previousMomentNode];
+          v48PreviousMomentNode = [previousMomentNode previousMomentNode];
 
           objc_autoreleasePoolPop(v51);
           if ([v67 count] == v66)
           {
-            v48 = v54;
-            if (v54)
+            previousMomentNode = v48PreviousMomentNode;
+            if (v48PreviousMomentNode)
             {
               continue;
             }
@@ -1047,18 +1047,18 @@ LABEL_64:
         }
       }
 
-      v54 = v48;
+      v48PreviousMomentNode = previousMomentNode;
 LABEL_55:
     }
 
     else
     {
-      v8 = v65;
-      v10 = v63;
+      graphCopy = v65;
+      blockCopy = v63;
     }
 
     v29 = v69;
-    v9 = v64;
+    optionsCopy = v64;
     if (v72 && CFAbsoluteTimeGetCurrent() - v11 >= 0.01 && (v94 = 0, v72[2](v72, &v94, 1.0), v94))
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1145,12 +1145,12 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
   [v2 addObject:v3];
 }
 
-- (id)contextualPersonZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5
+- (id)contextualPersonZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block
 {
   v121 = *MEMORY[0x277D85DE8];
-  v65 = a3;
-  v7 = a4;
-  v57 = a5;
+  graphCopy = graph;
+  optionsCopy = options;
+  blockCopy = block;
   v111 = 0;
   v112 = &v111;
   v113 = 0x2020000000;
@@ -1159,8 +1159,8 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
   v108 = &v107;
   v109 = 0x2020000000;
   v110 = 0;
-  v66 = _Block_copy(v57);
-  v56 = v7;
+  v66 = _Block_copy(blockCopy);
+  v56 = optionsCopy;
   if (v66 && (v8 = CFAbsoluteTimeGetCurrent(), v8 - v108[3] >= 0.01) && (v108[3] = v8, v106 = 0, (*(v66 + 2))(v66, &v106, 0.0), v9 = *(v112 + 24) | v106, *(v112 + 24) = v9, (v9 & 1) != 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1177,29 +1177,29 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
 
   else
   {
-    v59 = [MEMORY[0x277CBEB18] array];
-    v11 = [v7 objectForKeyedSubscript:@"PHMemoryOptionPeopleNamesKey"];
-    v12 = [v7 objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
+    array = [MEMORY[0x277CBEB18] array];
+    v11 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionPeopleNamesKey"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
     v13 = v12;
     if (v12)
     {
-      v58 = v12;
+      currentLocalDate = v12;
     }
 
     else
     {
-      v58 = [MEMORY[0x277D27690] currentLocalDate];
+      currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
     }
 
     v14 = [MEMORY[0x277CBEB58] set];
-    v15 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __97__PGZeroKeywordComputer_Contextual__contextualPersonZeroKeywordsWithGraph_options_progressBlock___block_invoke;
     aBlock[3] = &unk_2788831D8;
     v54 = v14;
     v104 = v54;
-    v60 = v15;
+    v60 = array2;
     v105 = v60;
     v64 = _Block_copy(aBlock);
     v101 = 0u;
@@ -1233,7 +1233,7 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
           v96 = &v107;
           v98 = 0x3F847AE147AE147BLL;
           v97 = &v111;
-          [v65 enumerateNodesWithLabel:@"People" domain:300 properties:v20 usingBlock:v93];
+          [graphCopy enumerateNodesWithLabel:@"People" domain:300 properties:v20 usingBlock:v93];
 
           if (*(v112 + 24) == 1)
           {
@@ -1264,11 +1264,11 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
     }
 
     v21 = filteredKeywords(v60, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0.0);
-    [v59 addObjectsFromArray:v21];
+    [array addObjectsFromArray:v21];
 
     [v60 removeAllObjects];
-    v22 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-1 toDate:v58];
-    v23 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:1 toDate:v58];
+    v22 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-1 toDate:currentLocalDate];
+    v23 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:1 toDate:currentLocalDate];
     v24 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v22 endDate:v23];
     v25 = [MEMORY[0x277D27690] yearFromDate:v22];
     v55 = v22;
@@ -1289,7 +1289,7 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
     v87 = &v107;
     v91 = 0x3F847AE147AE147BLL;
     v88 = &v111;
-    [v65 enumerateNodesWithLabel:0 domain:300 usingBlock:v83];
+    [graphCopy enumerateNodesWithLabel:0 domain:300 usingBlock:v83];
     if (*(v112 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1307,10 +1307,10 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
     else
     {
       v28 = filteredKeywords(v60, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0.0);
-      [v59 addObjectsFromArray:v28];
+      [array addObjectsFromArray:v28];
 
       [v60 removeAllObjects];
-      v50 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v55 endDate:v58];
+      v50 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v55 endDate:currentLocalDate];
       v49 = [PGZeroKeywordComputer momentNodesOverlappingLocalDateInterval:"momentNodesOverlappingLocalDateInterval:inGraph:" inGraph:?];
       v29 = [v49 set];
       v30 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"universalStartDate" ascending:1];
@@ -1327,8 +1327,8 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v34 = [v53 reverseObjectEnumerator];
-      v35 = [v34 countByEnumeratingWithState:&v79 objects:v115 count:16];
+      reverseObjectEnumerator = [v53 reverseObjectEnumerator];
+      v35 = [reverseObjectEnumerator countByEnumeratingWithState:&v79 objects:v115 count:16];
       if (v35)
       {
         v36 = *v80;
@@ -1338,7 +1338,7 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
           {
             if (*v80 != v36)
             {
-              objc_enumerationMutation(v34);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
             v38 = *(*(&v79 + 1) + 8 * j);
@@ -1367,7 +1367,7 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
             }
           }
 
-          v35 = [v34 countByEnumeratingWithState:&v79 objects:v115 count:16];
+          v35 = [reverseObjectEnumerator countByEnumeratingWithState:&v79 objects:v115 count:16];
           if (v35)
           {
             continue;
@@ -1379,19 +1379,19 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
 
       if (![v60 count])
       {
-        v39 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-2 toDate:v58];
-        v40 = [v53 firstObject];
-        v41 = [v40 previousMomentNode];
+        v39 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-2 toDate:currentLocalDate];
+        firstObject = [v53 firstObject];
+        previousMomentNode = [firstObject previousMomentNode];
 
         while (1)
         {
-          if ([v60 count] || !v41 || (objc_msgSend(v41, "localEndDate"), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "compare:", v39) == -1, v42, v43))
+          if ([v60 count] || !previousMomentNode || (objc_msgSend(previousMomentNode, "localEndDate"), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "compare:", v39) == -1, v42, v43))
           {
 
             break;
           }
 
-          if ([v41 isInteresting])
+          if ([previousMomentNode isInteresting])
           {
             v67[0] = MEMORY[0x277D85DD0];
             v67[1] = 3221225472;
@@ -1402,7 +1402,7 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
             v70 = &v107;
             v71 = &v111;
             v72 = 0x3F847AE147AE147BLL;
-            [v41 enumeratePersonNodesUsingBlock:v67];
+            [previousMomentNode enumeratePersonNodesUsingBlock:v67];
             if (*(v112 + 24) == 1)
             {
               if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1418,9 +1418,9 @@ void __102__PGZeroKeywordComputer_Contextual__contextualSocialGroupZeroKeywordsW
             }
           }
 
-          v44 = [v41 previousMomentNode];
+          v41PreviousMomentNode = [previousMomentNode previousMomentNode];
 
-          v41 = v44;
+          previousMomentNode = v41PreviousMomentNode;
         }
       }
 
@@ -1441,7 +1441,7 @@ LABEL_45:
 
       else
       {
-        v10 = v59;
+        v10 = array;
       }
     }
 
@@ -1568,12 +1568,12 @@ void __97__PGZeroKeywordComputer_Contextual__contextualPersonZeroKeywordsWithGra
   }
 }
 
-+ (id)contextualHolidayZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5
++ (id)contextualHolidayZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block
 {
   v85 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v7 = a4;
-  v40 = a5;
+  graphCopy = graph;
+  optionsCopy = options;
+  blockCopy = block;
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
@@ -1582,25 +1582,25 @@ void __97__PGZeroKeywordComputer_Contextual__contextualPersonZeroKeywordsWithGra
   v71 = &v70;
   v72 = 0x2020000000;
   v73 = 0;
-  v48 = _Block_copy(v40);
-  v39 = v7;
+  v48 = _Block_copy(blockCopy);
+  v39 = optionsCopy;
   if (!v48 || (v8 = CFAbsoluteTimeGetCurrent(), v8 - v71[3] < 0.01) || (v71[3] = v8, LOBYTE(v78) = 0, (*(v48 + 2))(v48, &v78, 0.0), v9 = *(v75 + 24) | v78, *(v75 + 24) = v9, (v9 & 1) == 0))
   {
-    v11 = [MEMORY[0x277CBEB18] array];
-    v46 = [MEMORY[0x277CBEAF8] currentLocale];
-    v12 = [v7 objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
+    array = [MEMORY[0x277CBEB18] array];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v12 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
     v13 = v12;
     if (v12)
     {
-      v14 = v12;
+      currentLocalDate = v12;
     }
 
     else
     {
-      v14 = [MEMORY[0x277D27690] currentLocalDate];
+      currentLocalDate = [MEMORY[0x277D27690] currentLocalDate];
     }
 
-    v15 = v14;
+    v15 = currentLocalDate;
 
     v44 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:-1 toDate:v15];
     v43 = [MEMORY[0x277D27690] endOfDayForDate:v15];
@@ -1609,13 +1609,13 @@ void __97__PGZeroKeywordComputer_Contextual__contextualPersonZeroKeywordsWithGra
     v42 = [v16 startOfDayForDate:v17];
 
     v41 = [MEMORY[0x277D27690] dateByAddingWeeksOfYear:1 toDate:v15];
-    v49 = [objc_alloc(MEMORY[0x277D276D8]) initWithLocale:v46];
-    v45 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection nodesInGraph:v47];
+    v49 = [objc_alloc(MEMORY[0x277D276D8]) initWithLocale:currentLocale];
+    v45 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection nodesInGraph:graphCopy];
     v18 = MEMORY[0x277D22BF8];
     v19 = +[PGGraphHolidayNode datesOfCelebration];
     v20 = [v18 adjacencyWithSources:v45 relation:v19 targetsClass:objc_opt_class()];
 
-    v21 = [v20 sources];
+    sources = [v20 sources];
     v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
@@ -1623,18 +1623,18 @@ void __97__PGZeroKeywordComputer_Contextual__contextualPersonZeroKeywordsWithGra
     v68[3] = &unk_278888D00;
     v23 = v22;
     v69 = v23;
-    [v21 enumerateNodesUsingBlock:v68];
+    [sources enumerateNodesUsingBlock:v68];
     v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v25 = [v20 targets];
+    targets = [v20 targets];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __98__PGZeroKeywordComputer_Contextual__contextualHolidayZeroKeywordsWithGraph_options_progressBlock___block_invoke_2;
     v66[3] = &unk_2788875A8;
     v26 = v24;
     v67 = v26;
-    [v25 enumerateNodesUsingBlock:v66];
+    [targets enumerateNodesUsingBlock:v66];
 
-    v27 = [v21 holidayNames];
+    holidayNames = [sources holidayNames];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __98__PGZeroKeywordComputer_Contextual__contextualHolidayZeroKeywordsWithGraph_options_progressBlock___block_invoke_3;
@@ -1645,9 +1645,9 @@ void __97__PGZeroKeywordComputer_Contextual__contextualPersonZeroKeywordsWithGra
     v63 = v29;
     v30 = v26;
     v64 = v30;
-    v31 = v11;
+    v31 = array;
     v65 = v31;
-    [v49 enumerateEventRulesWithNames:v27 betweenLocalDate:v44 andLocalDate:v43 usingBlock:v61];
+    [v49 enumerateEventRulesWithNames:holidayNames betweenLocalDate:v44 andLocalDate:v43 usingBlock:v61];
     if (*(v75 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1686,7 +1686,7 @@ void __97__PGZeroKeywordComputer_Contextual__contextualPersonZeroKeywordsWithGra
     v58 = &v70;
     v59 = &v74;
     v60 = 0x3F847AE147AE147BLL;
-    [v49 enumerateEventRulesWithNames:v27 betweenLocalDate:v42 andLocalDate:v41 usingBlock:v51];
+    [v49 enumerateEventRulesWithNames:holidayNames betweenLocalDate:v42 andLocalDate:v41 usingBlock:v51];
     if (*(v75 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2033,43 +2033,43 @@ void __98__PGZeroKeywordComputer_Contextual__contextualHolidayZeroKeywordsWithGr
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)meaningNodeZeroKeywordForDisplayMeaningNode:(id)a3 collectionUUIDsToAvoid:(id)a4 curationContext:(id)a5
+- (id)meaningNodeZeroKeywordForDisplayMeaningNode:(id)node collectionUUIDsToAvoid:(id)avoid curationContext:(id)context
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 label];
-  v12 = [v8 graph];
-  v13 = [v12 zeroKeywordMappingByMeaningLabel];
-  v14 = [v13 objectForKeyedSubscript:v11];
-  v15 = [v14 mappedMeaningNodes];
-  if ([v15 count])
+  nodeCopy = node;
+  avoidCopy = avoid;
+  contextCopy = context;
+  label = [nodeCopy label];
+  graph = [nodeCopy graph];
+  zeroKeywordMappingByMeaningLabel = [graph zeroKeywordMappingByMeaningLabel];
+  v14 = [zeroKeywordMappingByMeaningLabel objectForKeyedSubscript:label];
+  mappedMeaningNodes = [v14 mappedMeaningNodes];
+  if ([mappedMeaningNodes count])
   {
-    if (!isSuitableForZeroKeywordWithMeanings(v15))
+    if (!isSuitableForZeroKeywordWithMeanings(mappedMeaningNodes))
     {
       v26 = 0;
       goto LABEL_12;
     }
 
-    v35 = v13;
+    v35 = zeroKeywordMappingByMeaningLabel;
     photoLibrary = self->_photoLibrary;
     curationManager = self->_curationManager;
-    v18 = [(PGZeroKeywordComputer *)self searchComputationCache];
-    v19 = v9;
-    v20 = v18;
-    v33 = v10;
+    searchComputationCache = [(PGZeroKeywordComputer *)self searchComputationCache];
+    v19 = avoidCopy;
+    v20 = searchComputationCache;
+    v33 = contextCopy;
     v34 = v19;
-    v21 = bestAssetIdentifiersForMeaningNodes(v15, v19, photoLibrary, curationManager, v18, v12, v10);
+    v21 = bestAssetIdentifiersForMeaningNodes(mappedMeaningNodes, v19, photoLibrary, curationManager, searchComputationCache, graph, contextCopy);
 
-    v22 = zeroKeywordLocalizationKeyForMeaningLabel(v11);
+    v22 = zeroKeywordLocalizationKeyForMeaningLabel(label);
     v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v24 = [v23 localizedStringForKey:v22 value:v22 table:@"Localizable"];
 
-    v25 = [v8 localizedName];
+    localizedName = [nodeCopy localizedName];
     if ([v21 count])
     {
-      v26 = zeroKeywordWithAttributes(5, 13, v24, v25, 0, v21);
+      v26 = zeroKeywordWithAttributes(5, 13, v24, localizedName, 0, v21);
     }
 
     else
@@ -2077,30 +2077,30 @@ void __98__PGZeroKeywordComputer_Contextual__contextualHolidayZeroKeywordsWithGr
       v26 = 0;
     }
 
-    v10 = v33;
-    v9 = v34;
+    contextCopy = v33;
+    avoidCopy = v34;
   }
 
   else
   {
-    v35 = v13;
-    v27 = v10;
+    v35 = zeroKeywordMappingByMeaningLabel;
+    v27 = contextCopy;
     v28 = +[PGLogging sharedLogging];
-    v29 = [v28 loggingConnection];
+    loggingConnection = [v28 loggingConnection];
 
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
-      v32 = [v8 label];
+      label2 = [nodeCopy label];
       *buf = 138412290;
-      v37 = v32;
-      _os_log_error_impl(&dword_22F0FC000, v29, OS_LOG_TYPE_ERROR, "Cannot find root applicable meaning nodes for display meaning %@", buf, 0xCu);
+      v37 = label2;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Cannot find root applicable meaning nodes for display meaning %@", buf, 0xCu);
     }
 
     v26 = 0;
-    v10 = v27;
+    contextCopy = v27;
   }
 
-  v13 = v35;
+  zeroKeywordMappingByMeaningLabel = v35;
 LABEL_12:
 
   v30 = *MEMORY[0x277D85DE8];
@@ -2108,29 +2108,29 @@ LABEL_12:
   return v26;
 }
 
-- (id)_tripZeroKeywordWithGraph:(id)a3 curationContext:(id)a4 score:(double *)a5
+- (id)_tripZeroKeywordWithGraph:(id)graph curationContext:(id)context score:(double *)score
 {
   v68 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 longTripNodes];
-  if (![v8 count])
+  graphCopy = graph;
+  contextCopy = context;
+  longTripNodes = [graphCopy longTripNodes];
+  if (![longTripNodes count])
   {
-    v9 = [v6 shortTripNodes];
+    shortTripNodes = [graphCopy shortTripNodes];
 
-    v8 = v9;
+    longTripNodes = shortTripNodes;
   }
 
   if ([(PGZeroKeywordComputer *)self shouldFilterMomentNodesWithPresence])
   {
-    v51 = v6;
-    v53 = v7;
-    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    v51 = graphCopy;
+    v53 = contextCopy;
+    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(longTripNodes, "count")}];
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v11 = v8;
+    v11 = longTripNodes;
     v12 = [v11 countByEnumeratingWithState:&v61 objects:v67 count:16];
     if (v12)
     {
@@ -2146,10 +2146,10 @@ LABEL_12:
           }
 
           v16 = *(*(&v61 + 1) + 8 * i);
-          v17 = [v16 collection];
-          v18 = [v17 momentNodes];
-          v19 = [(PGZeroKeywordComputer *)self momentNodesWhereMeIsPresent];
-          v20 = [v18 intersectsCollection:v19];
+          collection = [v16 collection];
+          momentNodes = [collection momentNodes];
+          momentNodesWhereMeIsPresent = [(PGZeroKeywordComputer *)self momentNodesWhereMeIsPresent];
+          v20 = [momentNodes intersectsCollection:momentNodesWhereMeIsPresent];
 
           if (v20)
           {
@@ -2163,12 +2163,12 @@ LABEL_12:
       while (v13);
     }
 
-    v6 = v51;
-    v7 = v53;
-    v8 = v10;
+    graphCopy = v51;
+    contextCopy = v53;
+    longTripNodes = v10;
   }
 
-  if (![v8 count])
+  if (![longTripNodes count])
   {
     v46 = 0;
     goto LABEL_37;
@@ -2178,7 +2178,7 @@ LABEL_12:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v21 = v8;
+  v21 = longTripNodes;
   v22 = [v21 countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (!v22)
   {
@@ -2191,9 +2191,9 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v49 = v8;
-  v52 = v6;
-  v54 = v7;
+  v49 = longTripNodes;
+  v52 = graphCopy;
+  v54 = contextCopy;
   v23 = 0;
   v24 = 0;
   v25 = *v58;
@@ -2207,10 +2207,10 @@ LABEL_36:
       }
 
       v27 = *(*(&v57 + 1) + 8 * j);
-      v28 = [v27 localStartDate];
-      if (!v23 || [MEMORY[0x277D27690] compareDate:v28 toDate:v23 toUnitGranularity:16] == 1)
+      localStartDate = [v27 localStartDate];
+      if (!v23 || [MEMORY[0x277D27690] compareDate:localStartDate toDate:v23 toUnitGranularity:16] == 1)
       {
-        v29 = v28;
+        v29 = localStartDate;
 
         v30 = v27;
         v23 = v29;
@@ -2226,41 +2226,41 @@ LABEL_36:
   if (!v24)
   {
     v46 = 0;
-    v6 = v52;
-    v7 = v54;
-    v8 = v49;
+    graphCopy = v52;
+    contextCopy = v54;
+    longTripNodes = v49;
     goto LABEL_36;
   }
 
-  v31 = [v24 eventEnrichmentMomentNodes];
-  v32 = [v31 uuids];
-  v33 = [(PGZeroKeywordComputer *)self searchComputationCache];
-  v34 = [v24 UUID];
-  v35 = [v32 allObjects];
-  v22 = [v33 keyAssetLocalIdentifierForNodeIdentifier:v34 withAssociatedMomentUUIDs:v35];
+  eventEnrichmentMomentNodes = [v24 eventEnrichmentMomentNodes];
+  uuids = [eventEnrichmentMomentNodes uuids];
+  searchComputationCache = [(PGZeroKeywordComputer *)self searchComputationCache];
+  uUID = [v24 UUID];
+  allObjects = [uuids allObjects];
+  v22 = [searchComputationCache keyAssetLocalIdentifierForNodeIdentifier:uUID withAssociatedMomentUUIDs:allObjects];
 
   if (!v22)
   {
-    v36 = [v31 temporaryArray];
+    temporaryArray = [eventEnrichmentMomentNodes temporaryArray];
     v56 = 0;
-    v22 = bestAssetIdentifierForMomentNodes(v36, &v56, v54);
+    v22 = bestAssetIdentifierForMomentNodes(temporaryArray, &v56, v54);
     v37 = v56;
 
-    v38 = [(PGZeroKeywordComputer *)self searchComputationCache];
-    v39 = [v24 UUID];
-    [v38 setKeyAssetLocalIdentifier:v22 forNodeIdentifier:v39 withAssociatedMomentUUID:v37];
+    searchComputationCache2 = [(PGZeroKeywordComputer *)self searchComputationCache];
+    uUID2 = [v24 UUID];
+    [searchComputationCache2 setKeyAssetLocalIdentifier:v22 forNodeIdentifier:uUID2 withAssociatedMomentUUID:v37];
   }
 
   if (v22)
   {
-    v6 = v52;
-    v8 = v49;
-    if (a5)
+    graphCopy = v52;
+    longTripNodes = v49;
+    if (score)
     {
-      v40 = [v52 allTripNodes];
-      v41 = [v40 count];
+      allTripNodes = [v52 allTripNodes];
+      v41 = [allTripNodes count];
 
-      *a5 = v41;
+      *score = v41;
     }
 
     v42 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -2273,14 +2273,14 @@ LABEL_36:
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:&v65 count:1];
     v46 = zeroKeywordWithAttributes(5, 13, v21, v44, 0, v45);
 
-    v7 = v54;
+    contextCopy = v54;
     goto LABEL_34;
   }
 
   v46 = 0;
-  v6 = v52;
-  v7 = v54;
-  v8 = v49;
+  graphCopy = v52;
+  contextCopy = v54;
+  longTripNodes = v49;
 LABEL_37:
 
   v47 = *MEMORY[0x277D85DE8];
@@ -2288,23 +2288,23 @@ LABEL_37:
   return v46;
 }
 
-- (id)tripRankedKeywordWithGraph:(id)a3 curationContext:(id)a4
+- (id)tripRankedKeywordWithGraph:(id)graph curationContext:(id)context
 {
   v8 = 0.0;
-  v4 = [(PGZeroKeywordComputer *)self _tripZeroKeywordWithGraph:a3 curationContext:a4 score:&v8];
+  v4 = [(PGZeroKeywordComputer *)self _tripZeroKeywordWithGraph:graph curationContext:context score:&v8];
   v5 = [PGRankedZeroKeyword alloc];
   v6 = [(PGRankedZeroKeyword *)v5 initWithKeyword:v4 score:v8];
 
   return v6;
 }
 
-- (id)sceneZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5
+- (id)sceneZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block
 {
   v107 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v51 = a4;
-  v7 = a5;
-  v8 = _Block_copy(v7);
+  graphCopy = graph;
+  optionsCopy = options;
+  blockCopy = block;
+  v8 = _Block_copy(blockCopy);
   v94 = 0;
   v95 = &v94;
   v96 = 0x2020000000;
@@ -2313,11 +2313,11 @@ LABEL_37:
   v91 = &v90;
   v92 = 0x2020000000;
   v93 = 0;
-  v49 = v7;
+  v49 = blockCopy;
   v52 = v8;
   if (!v8 || (v9 = CFAbsoluteTimeGetCurrent(), v9 - v91[3] < 0.01) || (v91[3] = v9, v99[0] = 0, (*(v8 + 2))(v8, v99, 0.0), v10 = *(v95 + 24) | v99[0], *(v95 + 24) = v10, (v10 & 1) == 0))
   {
-    v55 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v54 = [MEMORY[0x277CBEB58] set];
     v85[0] = MEMORY[0x277D85DD0];
     v85[1] = 3221225472;
@@ -2328,7 +2328,7 @@ LABEL_37:
     v87 = &v90;
     v88 = &v94;
     v89 = 0x3F847AE147AE147BLL;
-    v50 = [(PGZeroKeywordComputer *)self contextualSceneZeroKeywordsWithGraph:v53 options:v51 progressBlock:v85];
+    v50 = [(PGZeroKeywordComputer *)self contextualSceneZeroKeywordsWithGraph:graphCopy options:optionsCopy progressBlock:v85];
     if (*(v95 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2370,7 +2370,7 @@ LABEL_14:
         }
 
         v19 = *(*(&v81 + 1) + 8 * v18);
-        [v55 addObject:v19];
+        [array addObject:v19];
         v20 = [v19 objectForKeyedSubscript:v17];
         [v54 addObject:v20];
 
@@ -2421,12 +2421,12 @@ LABEL_14:
 
     v23 = [MEMORY[0x277CBEB58] set];
     v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     *buf = 0;
     *&v104 = buf;
     *(&v104 + 1) = 0x2020000000;
     v105 = 0x3FB999999999999ALL;
-    v26 = [(PGGraphNodeCollection *)PGGraphSceneNodeCollection nodesInGraph:v53];
+    v26 = [(PGGraphNodeCollection *)PGGraphSceneNodeCollection nodesInGraph:graphCopy];
     v70[0] = MEMORY[0x277D85DD0];
     v70[1] = 3221225472;
     v70[2] = __74__PGZeroKeywordComputer_sceneZeroKeywordsWithGraph_options_progressBlock___block_invoke_346;
@@ -2437,14 +2437,14 @@ LABEL_14:
     v78 = buf;
     v79 = &v94;
     v80 = 0x3F847AE147AE147BLL;
-    v56 = v25;
+    v56 = dictionary;
     v71 = v56;
     v72 = v54;
     v57 = v23;
     v73 = v57;
     v48 = v24;
     v74 = v48;
-    v75 = self;
+    selfCopy = self;
     [v26 enumerateNodesUsingBlock:v70];
 
     if (*(v95 + 24) == 1)
@@ -2560,18 +2560,18 @@ LABEL_28:
         }
       }
 
-      v41 = [v57 allObjects];
-      v42 = filteredKeywords(v41, 0xAuLL, 0xFuLL, 0.9);
-      [v55 addObjectsFromArray:v42];
+      allObjects = [v57 allObjects];
+      v42 = filteredKeywords(allObjects, 0xAuLL, 0xFuLL, 0.9);
+      [array addObjectsFromArray:v42];
 
-      if ([v55 count] >= 0x10)
+      if ([array count] >= 0x10)
       {
-        [v55 removeObjectsInRange:{15, objc_msgSend(v55, "count") - 15}];
+        [array removeObjectsInRange:{15, objc_msgSend(array, "count") - 15}];
       }
 
       if (!v52 || (v43 = CFAbsoluteTimeGetCurrent(), v43 - v91[3] < 0.01) || (v91[3] = v43, v69 = 0, (*(v47 + 2))(v47, &v69, 1.0), v44 = *(v95 + 24) | v69, *(v95 + 24) = v44, (v44 & 1) == 0))
       {
-        v11 = v55;
+        v11 = array;
         goto LABEL_55;
       }
 
@@ -2770,13 +2770,13 @@ void __74__PGZeroKeywordComputer_sceneZeroKeywordsWithGraph_options_progressBloc
   *(*(*(a1 + 32) + 8) + 24) = v4 + *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (id)eventZeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6
+- (id)eventZeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block
 {
   v137 = *MEMORY[0x277D85DE8];
-  v78 = a3;
-  v71 = a4;
-  v77 = a5;
-  v68 = a6;
+  graphCopy = graph;
+  contextCopy = context;
+  optionsCopy = options;
+  blockCopy = block;
   v122 = 0;
   v123 = &v122;
   v124 = 0x2020000000;
@@ -2785,12 +2785,12 @@ void __74__PGZeroKeywordComputer_sceneZeroKeywordsWithGraph_options_progressBloc
   v119 = &v118;
   v120 = 0x2020000000;
   v121 = 0;
-  v83 = _Block_copy(v68);
+  v83 = _Block_copy(blockCopy);
   if (!v83 || (v9 = CFAbsoluteTimeGetCurrent(), v9 - v119[3] < 0.01) || (v119[3] = v9, v128[0] = 0, (*(v83 + 2))(v83, v128, 0.0), v10 = *(v123 + 24) | v128[0], *(v123 + 24) = v10, (v10 & 1) == 0))
   {
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v79 = [MEMORY[0x277CBEB58] set];
-    v80 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
     v13 = objc_opt_class();
     v113[0] = MEMORY[0x277D85DD0];
     v113[1] = 3221225472;
@@ -2801,8 +2801,8 @@ void __74__PGZeroKeywordComputer_sceneZeroKeywordsWithGraph_options_progressBloc
     v115 = &v118;
     v117 = 0x3F847AE147AE147BLL;
     v116 = &v122;
-    v69 = [v13 contextualHolidayZeroKeywordsWithGraph:v78 options:v77 progressBlock:v113];
-    v81 = v12;
+    v69 = [v13 contextualHolidayZeroKeywordsWithGraph:graphCopy options:optionsCopy progressBlock:v113];
+    v81 = array;
     if (*(v123 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2842,8 +2842,8 @@ LABEL_14:
           objc_enumerationMutation(v16);
         }
 
-        [v12 addObject:*(*(&v109 + 1) + 8 * v19)];
-        if ([v12 count] > 2)
+        [array addObject:*(*(&v109 + 1) + 8 * v19)];
+        if ([array count] > 2)
         {
           break;
         }
@@ -2888,11 +2888,11 @@ LABEL_14:
       }
     }
 
-    v22 = [(PGZeroKeywordComputer *)self contextualDateZeroKeywordsWithGraph:v78 options:v77];
-    [v12 addObjectsFromArray:v22];
+    v22 = [(PGZeroKeywordComputer *)self contextualDateZeroKeywordsWithGraph:graphCopy options:optionsCopy];
+    [array addObjectsFromArray:v22];
 
-    v23 = [(PGZeroKeywordComputer *)self contextualSeasonZeroKeywordsWithGraph:v78 curationContext:v71 options:v77];
-    [v12 addObjectsFromArray:v23];
+    v23 = [(PGZeroKeywordComputer *)self contextualSeasonZeroKeywordsWithGraph:graphCopy curationContext:contextCopy options:optionsCopy];
+    [array addObjectsFromArray:v23];
 
     v24 = [MEMORY[0x277CBEB58] set];
     v104[0] = MEMORY[0x277D85DD0];
@@ -2904,7 +2904,7 @@ LABEL_14:
     v106 = &v118;
     v107 = &v122;
     v108 = 0x3F847AE147AE147BLL;
-    v25 = [(PGZeroKeywordComputer *)self contextualMeaningAndTripZeroKeywordsWithGraph:v78 curationContext:v71 options:v77 progressBlock:v104];
+    v25 = [(PGZeroKeywordComputer *)self contextualMeaningAndTripZeroKeywordsWithGraph:graphCopy curationContext:contextCopy options:optionsCopy progressBlock:v104];
     v66 = v25;
     if (*(v123 + 24) == 1)
     {
@@ -2985,15 +2985,15 @@ LABEL_14:
           v35 = [v31 objectForKeyedSubscript:v73];
           if ([v35 count])
           {
-            v36 = [v35 firstObject];
+            firstObject = [v35 firstObject];
             v37 = MEMORY[0x277CD97A8];
-            v127 = v36;
+            v127 = firstObject;
             v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v127 count:1];
-            v39 = [v37 fetchAssetsWithLocalIdentifiers:v38 options:v80];
+            v39 = [v37 fetchAssetsWithLocalIdentifiers:v38 options:librarySpecificFetchOptions];
 
             if ([v39 count])
             {
-              v40 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAssets:v39 withType:3 options:v80];
+              v40 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAssets:v39 withType:3 options:librarySpecificFetchOptions];
               v97 = 0u;
               v98 = 0u;
               v96 = 0u;
@@ -3012,8 +3012,8 @@ LABEL_14:
                       objc_enumerationMutation(v41);
                     }
 
-                    v45 = [*(*(&v95 + 1) + 8 * j) uuid];
-                    [v24 addObject:v45];
+                    uuid = [*(*(&v95 + 1) + 8 * j) uuid];
+                    [v24 addObject:uuid];
                   }
 
                   v42 = [v41 countByEnumeratingWithState:&v95 objects:v126 count:16];
@@ -3073,8 +3073,8 @@ LABEL_86:
       }
     }
 
-    v48 = [v78 zeroKeywordMappingByMeaningLabel];
-    v49 = [MEMORY[0x277CBEB18] array];
+    zeroKeywordMappingByMeaningLabel = [graphCopy zeroKeywordMappingByMeaningLabel];
+    array2 = [MEMORY[0x277CBEB18] array];
     *(v134 + 24) = 0x3FE3333333333333;
     v84[0] = MEMORY[0x277D85DD0];
     v84[1] = 3221225472;
@@ -3088,14 +3088,14 @@ LABEL_86:
     v90 = v50;
     v84[4] = self;
     v85 = v24;
-    v51 = v71;
+    v51 = contextCopy;
     v86 = v51;
-    v87 = v80;
+    v87 = librarySpecificFetchOptions;
     v52 = v79;
     v88 = v52;
-    v53 = v49;
+    v53 = array2;
     v89 = v53;
-    [v48 enumerateKeysAndObjectsUsingBlock:v84];
+    [zeroKeywordMappingByMeaningLabel enumerateKeysAndObjectsUsingBlock:v84];
     if (*(v123 + 24) == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3114,12 +3114,12 @@ LABEL_61:
     {
       if (!v83 || (v55 = CFAbsoluteTimeGetCurrent(), v55 - v119[3] < 0.01) || (v119[3] = v55, v99 = 0, (*(v50 + 2))(v50, &v99, 0.9), v56 = *(v123 + 24) | v99, *(v123 + 24) = v56, (v56 & 1) == 0))
       {
-        v57 = [(PGZeroKeywordComputer *)self tripRankedKeywordWithGraph:v78 curationContext:v51];
+        v57 = [(PGZeroKeywordComputer *)self tripRankedKeywordWithGraph:graphCopy curationContext:v51];
         v58 = v57;
         if (v57)
         {
-          v59 = [v57 zeroKeyword];
-          v60 = [v59 objectForKeyedSubscript:*MEMORY[0x277D3B1D8]];
+          zeroKeyword = [v57 zeroKeyword];
+          v60 = [zeroKeyword objectForKeyedSubscript:*MEMORY[0x277D3B1D8]];
 
           if (([v52 containsObject:v60] & 1) == 0)
           {
@@ -3369,12 +3369,12 @@ void __90__PGZeroKeywordComputer_eventZeroKeywordsWithGraph_curationContext_opti
   }
 }
 
-- (id)placeZeroKeywordsWithGraph:(id)a3 options:(id)a4 progressBlock:(id)a5
+- (id)placeZeroKeywordsWithGraph:(id)graph options:(id)options progressBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = _Block_copy(a5);
+  graphCopy = graph;
+  optionsCopy = options;
+  v10 = _Block_copy(block);
   if (v10 && CFAbsoluteTimeGetCurrent() >= 0.01 && (v26 = 0, v10[2](v10, &v26, 0.0), v26 == 1))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3386,19 +3386,19 @@ void __90__PGZeroKeywordComputer_eventZeroKeywordsWithGraph_curationContext_opti
       _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
     }
 
-    v11 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v12 = [[PGPlaceZeroKeywordGenerator alloc] initWithGraph:v8 photoLibrary:self->_photoLibrary searchComputationCache:self->_searchComputationCache options:v9];
-    v13 = [(PGPlaceZeroKeywordGenerator *)v12 generatePlaceZeroKeywords];
-    v11 = [MEMORY[0x277CBEB18] array];
+    v12 = [[PGPlaceZeroKeywordGenerator alloc] initWithGraph:graphCopy photoLibrary:self->_photoLibrary searchComputationCache:self->_searchComputationCache options:optionsCopy];
+    generatePlaceZeroKeywords = [(PGPlaceZeroKeywordGenerator *)v12 generatePlaceZeroKeywords];
+    array = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v14 = v13;
+    v14 = generatePlaceZeroKeywords;
     v15 = [v14 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v15)
     {
@@ -3413,8 +3413,8 @@ void __90__PGZeroKeywordComputer_eventZeroKeywordsWithGraph_curationContext_opti
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * i) getZeroKeywordDict];
-          [v11 addObject:v19];
+          getZeroKeywordDict = [*(*(&v22 + 1) + 8 * i) getZeroKeywordDict];
+          [array addObject:getZeroKeywordDict];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -3426,14 +3426,14 @@ void __90__PGZeroKeywordComputer_eventZeroKeywordsWithGraph_curationContext_opti
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return array;
 }
 
-- (id)socialGroupKeyAssetLocalIdentifierWithPersonLocalIdentifiers:(id)a3
+- (id)socialGroupKeyAssetLocalIdentifierWithPersonLocalIdentifiers:(id)identifiers
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  identifiersCopy = identifiers;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"type" ascending:1];
   v29[0] = v6;
   v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"manualOrder" ascending:0];
@@ -3441,59 +3441,59 @@ void __90__PGZeroKeywordComputer_eventZeroKeywordsWithGraph_curationContext_opti
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v29[2] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
-  [v5 setSortDescriptors:v9];
+  [librarySpecificFetchOptions setSortDescriptors:v9];
 
-  v10 = [MEMORY[0x277CD9938] fetchPersonsWithLocalIdentifiers:v4 options:v5];
+  v10 = [MEMORY[0x277CD9938] fetchPersonsWithLocalIdentifiers:identifiersCopy options:librarySpecificFetchOptions];
   v11 = MEMORY[0x277CBEB18];
-  v12 = [v10 fetchedObjects];
-  v13 = [v11 arrayWithArray:v12];
+  fetchedObjects = [v10 fetchedObjects];
+  v13 = [v11 arrayWithArray:fetchedObjects];
 
-  v14 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions2 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:0];
   v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:{1, v15}];
   v28[1] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
-  [v14 setSortDescriptors:v17];
+  [librarySpecificFetchOptions2 setSortDescriptors:v17];
 
-  [v14 setFetchLimit:100];
+  [librarySpecificFetchOptions2 setFetchLimit:100];
   v18 = 0;
   do
   {
     v19 = v18;
-    v18 = [MEMORY[0x277CD97A8] fetchAssetsContainingAllPersons:v13 options:v14];
+    v18 = [MEMORY[0x277CD97A8] fetchAssetsContainingAllPersons:v13 options:librarySpecificFetchOptions2];
 
     if ([v18 count])
     {
       break;
     }
 
-    v20 = [v13 firstObject];
-    [v13 removeObject:v20];
+    firstObject = [v13 firstObject];
+    [v13 removeObject:firstObject];
   }
 
   while ([v13 count]);
   v21 = [MEMORY[0x277CD97B8] transientAssetCollectionWithAssetFetchResult:v18 title:&stru_2843F5C58 subtitle:&stru_2843F5C58 titleFontName:&stru_2843F5C58];
   v22 = objc_alloc_init(PGKeyAssetCurationOptions);
-  v23 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  v23 = [MEMORY[0x277CBEB98] setWithArray:identifiersCopy];
   [(PGKeyAssetCurationOptions *)v22 setReferencePersonLocalIdentifiers:v23];
 
   [(PGKeyAssetCurationOptions *)v22 setFocusOnPeople:1];
   [(PGKeyAssetCurationOptions *)v22 setComplete:1];
   v24 = [(PGCurationManager *)self->_curationManager curatedKeyAssetForAssetCollection:v21 curatedAssetCollection:0 options:v22 criteria:0 curationContext:self->_curationContext];
-  v25 = [v24 localIdentifier];
+  localIdentifier = [v24 localIdentifier];
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return localIdentifier;
 }
 
-- (id)socialGroupKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6
+- (id)socialGroupKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block
 {
   v145 = *MEMORY[0x277D85DE8];
-  v86 = a3;
-  v89 = a4;
-  v85 = a5;
-  v9 = a6;
+  graphCopy = graph;
+  contextCopy = context;
+  optionsCopy = options;
+  blockCopy = block;
   v131 = 0;
   v132 = &v131;
   v133 = 0x2020000000;
@@ -3502,11 +3502,11 @@ void __90__PGZeroKeywordComputer_eventZeroKeywordsWithGraph_curationContext_opti
   v128 = &v127;
   v129 = 0x2020000000;
   v130 = 0;
-  v96 = _Block_copy(v9);
-  v83 = v9;
+  v96 = _Block_copy(blockCopy);
+  v83 = blockCopy;
   if (!v96 || (v10 = CFAbsoluteTimeGetCurrent(), v10 - v128[3] < 0.01) || (v128[3] = v10, v126 = 0, (*(v96 + 2))(v96, &v126, 0.0), v11 = *(v132 + 24) | v126, *(v132 + 24) = v11, (v11 & 1) == 0))
   {
-    v99 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v95 = [MEMORY[0x277CBEB58] set];
     v121[0] = MEMORY[0x277D85DD0];
     v121[1] = 3221225472;
@@ -3517,7 +3517,7 @@ void __90__PGZeroKeywordComputer_eventZeroKeywordsWithGraph_curationContext_opti
     v123 = &v127;
     v125 = 0x3F847AE147AE147BLL;
     v124 = &v131;
-    v13 = [(PGZeroKeywordComputer *)self contextualSocialGroupZeroKeywordsWithGraph:v86 options:v85 progressBlock:v121];
+    v13 = [(PGZeroKeywordComputer *)self contextualSocialGroupZeroKeywordsWithGraph:graphCopy options:optionsCopy progressBlock:v121];
     v81 = v13;
     if (*(v132 + 24) == 1)
     {
@@ -3555,11 +3555,11 @@ LABEL_14:
           }
 
           v20 = *(*(&v117 + 1) + 8 * v19);
-          [v99 addObject:v20];
+          [array addObject:v20];
           v21 = [v20 objectForKeyedSubscript:v18];
           [v95 addObject:v21];
 
-          if ([v99 count] > 2)
+          if ([array count] > 2)
           {
             break;
           }
@@ -3579,8 +3579,8 @@ LABEL_14:
 
       if (!v96 || (v22 = CFAbsoluteTimeGetCurrent(), v22 - v128[3] < 0.01) || (v128[3] = v22, v126 = 0, (*(v88 + 2))(v88, &v126, 0.3), v23 = *(v132 + 24) | v126, *(v132 + 24) = v23, (v23 & 1) == 0))
       {
-        v79 = [v86 socialGroupNodesSortedByImportance];
-        v80 = [v79 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_62226];
+        socialGroupNodesSortedByImportance = [graphCopy socialGroupNodesSortedByImportance];
+        v80 = [socialGroupNodesSortedByImportance sortedArrayWithOptions:16 usingComparator:&__block_literal_global_62226];
         if (v96 && (v24 = CFAbsoluteTimeGetCurrent(), v24 - v128[3] >= 0.01) && (v128[3] = v24, v126 = 0, (*(v88 + 2))(v88, &v126, 0.5), v25 = *(v132 + 24) | v126, *(v132 + 24) = v25, (v25 & 1) != 0))
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3642,8 +3642,8 @@ LABEL_14:
 
                 else
                 {
-                  v37 = [v33 personNodes];
-                  v38 = [v37 count];
+                  personNodes = [v33 personNodes];
+                  v38 = [personNodes count];
                   if (v38 == 1)
                   {
                     ++v29;
@@ -3669,8 +3669,8 @@ LABEL_14:
                         }
 
                         v43 = *(*(&v109 + 1) + 8 * j);
-                        v44 = [v43 personNodes];
-                        v45 = [v44 count];
+                        personNodes2 = [v43 personNodes];
+                        v45 = [personNodes2 count];
                         if ((v38 - v45) >= 2)
                         {
 
@@ -3734,16 +3734,16 @@ LABEL_71:
 
           else
           {
-            v84 = [v86 fetchMemberNodesBySocialGroupNodeForSocialGroupNodes:{v79, v78}];
-            v49 = [v86 memberLocalIdentifiersBySocialGroupUUIDWithMemberNodesBySocialGroupNode:? shouldIncludeMeNode:? simulateMeNodeNotSet:?];
-            v94 = [PGPeopleUtilities validateKeyedSocialGroups:v49 withPhotoLibrary:self->_photoLibrary graph:v86];
+            v84 = [graphCopy fetchMemberNodesBySocialGroupNodeForSocialGroupNodes:{socialGroupNodesSortedByImportance, v78}];
+            v49 = [graphCopy memberLocalIdentifiersBySocialGroupUUIDWithMemberNodesBySocialGroupNode:? shouldIncludeMeNode:? simulateMeNodeNotSet:?];
+            v94 = [PGPeopleUtilities validateKeyedSocialGroups:v49 withPhotoLibrary:self->_photoLibrary graph:graphCopy];
 
-            v50 = [v79 count];
+            v50 = [socialGroupNodesSortedByImportance count];
             v107 = 0u;
             v108 = 0u;
             v105 = 0u;
             v106 = 0u;
-            v92 = v79;
+            v92 = socialGroupNodesSortedByImportance;
             v51 = [v92 countByEnumeratingWithState:&v105 objects:v137 count:16];
             if (v51)
             {
@@ -3786,20 +3786,20 @@ LABEL_71:
                     }
                   }
 
-                  if ([v99 count] > 0xE)
+                  if ([array count] > 0xE)
                   {
                     goto LABEL_105;
                   }
 
                   if (([v100 containsObject:v55] & 1) == 0)
                   {
-                    v58 = [v55 UUID];
-                    v59 = [v94 objectForKey:v58];
+                    uUID = [v55 UUID];
+                    v59 = [v94 objectForKey:uUID];
 
                     if (v59)
                     {
-                      v60 = [v55 UUID];
-                      v61 = [v94 objectForKeyedSubscript:v60];
+                      uUID2 = [v55 UUID];
+                      v61 = [v94 objectForKeyedSubscript:uUID2];
 
                       if ([v61 count] >= 2 && (objc_msgSend(v95, "containsObject:", v61) & 1) == 0)
                       {
@@ -3822,8 +3822,8 @@ LABEL_71:
                               }
 
                               v66 = [MEMORY[0x277CD9938] uuidFromLocalIdentifier:*(*(&v101 + 1) + 8 * m)];
-                              v67 = [v89 userFeedbackCalculator];
-                              v68 = [v67 userFeedbackTypeForPersonUUID:v66];
+                              userFeedbackCalculator = [contextCopy userFeedbackCalculator];
+                              v68 = [userFeedbackCalculator userFeedbackTypeForPersonUUID:v66];
 
                               if (v68 == 2)
                               {
@@ -3869,7 +3869,7 @@ LABEL_98:
                         }
 
                         v73 = zeroKeywordForSocialGroupWithIdentifier(v70, v62, v66);
-                        [v99 addObject:v73];
+                        [array addObject:v73];
 
 LABEL_101:
                       }
@@ -3891,9 +3891,9 @@ LABEL_101:
 
 LABEL_105:
 
-            if ([v99 count] >= 0x10)
+            if ([array count] >= 0x10)
             {
-              [v99 removeObjectsInRange:{15, objc_msgSend(v99, "count") - 15}];
+              [array removeObjectsInRange:{15, objc_msgSend(array, "count") - 15}];
             }
 
             if (v96 && (v74 = CFAbsoluteTimeGetCurrent(), v74 - v128[3] >= 0.01) && (v128[3] = v74, v126 = 0, (*(v88 + 2))(v88, &v126, 1.0), v75 = *(v132 + 24) | v126, *(v132 + 24) = v75, (v75 & 1) != 0))
@@ -3913,7 +3913,7 @@ LABEL_116:
 
             else
             {
-              v12 = v99;
+              v12 = array;
             }
           }
         }
@@ -4006,13 +4006,13 @@ uint64_t __92__PGZeroKeywordComputer_socialGroupKeywordsWithGraph_curationContex
   }
 }
 
-- (id)peopleZeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6
+- (id)peopleZeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block
 {
   v158 = *MEMORY[0x277D85DE8];
-  v100 = a3;
-  v109 = a4;
-  v9 = a5;
-  v97 = a6;
+  graphCopy = graph;
+  contextCopy = context;
+  optionsCopy = options;
+  blockCopy = block;
   v144 = 0;
   v145 = &v144;
   v146 = 0x2020000000;
@@ -4021,8 +4021,8 @@ uint64_t __92__PGZeroKeywordComputer_socialGroupKeywordsWithGraph_curationContex
   v141 = &v140;
   v142 = 0x2020000000;
   v143 = 0;
-  v110 = _Block_copy(v97);
-  v96 = v9;
+  v110 = _Block_copy(blockCopy);
+  v96 = optionsCopy;
   if (v110)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -4050,7 +4050,7 @@ uint64_t __92__PGZeroKeywordComputer_socialGroupKeywordsWithGraph_curationContex
     }
   }
 
-  v111 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = [MEMORY[0x277CBEB58] set];
   v134[0] = MEMORY[0x277D85DD0];
   v134[1] = 3221225472;
@@ -4061,7 +4061,7 @@ uint64_t __92__PGZeroKeywordComputer_socialGroupKeywordsWithGraph_curationContex
   v136 = &v140;
   v138 = 0x3F847AE147AE147BLL;
   v137 = &v144;
-  v98 = [(PGZeroKeywordComputer *)self contextualPersonZeroKeywordsWithGraph:v100 options:v9 progressBlock:v134];
+  v98 = [(PGZeroKeywordComputer *)self contextualPersonZeroKeywordsWithGraph:graphCopy options:optionsCopy progressBlock:v134];
   if (*(v145 + 24) == 1)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4101,11 +4101,11 @@ LABEL_14:
       }
 
       v20 = *(*(&v130 + 1) + 8 * v19);
-      [v111 addObject:v20];
+      [array addObject:v20];
       v21 = [v20 objectForKeyedSubscript:v18];
       [v13 addObject:v21];
 
-      if ([v111 count] > 2)
+      if ([array count] > 2)
       {
         break;
       }
@@ -4150,9 +4150,9 @@ LABEL_14:
     }
   }
 
-  v99 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v99 setPersonContext:1];
-  [v99 setIncludedDetectionTypes:&unk_284486420];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setPersonContext:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_284486420];
   v24 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"type" ascending:0];
   v152[0] = v24;
   v25 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"manualOrder" ascending:1];
@@ -4162,9 +4162,9 @@ LABEL_14:
   v27 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:0];
   v152[3] = v27;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v152 count:4];
-  [v99 setSortDescriptors:v28];
+  [librarySpecificFetchOptions setSortDescriptors:v28];
 
-  v29 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v99];
+  v29 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions];
   v30 = [v29 count];
   v128 = 0u;
   v129 = 0u;
@@ -4216,30 +4216,30 @@ LABEL_14:
         }
       }
 
-      if ([v111 count] > 0xE)
+      if ([array count] > 0xE)
       {
         goto LABEL_45;
       }
 
-      v39 = [v36 localIdentifier];
-      if (([v13 containsObject:v39] & 1) == 0)
+      localIdentifier = [v36 localIdentifier];
+      if (([v13 containsObject:localIdentifier] & 1) == 0)
       {
-        [v13 addObject:v39];
-        v40 = [v109 userFeedbackCalculator];
-        v41 = [v36 uuid];
-        v42 = [v40 userFeedbackTypeForPersonUUID:v41];
+        [v13 addObject:localIdentifier];
+        userFeedbackCalculator = [contextCopy userFeedbackCalculator];
+        uuid = [v36 uuid];
+        v42 = [userFeedbackCalculator userFeedbackTypeForPersonUUID:uuid];
 
         if ((v42 & 0xFFFFFFFFFFFFFFFELL) != 2)
         {
-          v43 = [v36 detectionType];
-          if (v43 - 3 >= 2)
+          detectionType = [v36 detectionType];
+          if (detectionType - 3 >= 2)
           {
-            if (v43 != 1)
+            if (detectionType != 1)
             {
               goto LABEL_43;
             }
 
-            v44 = v43;
+            v44 = detectionType;
           }
 
           else
@@ -4247,13 +4247,13 @@ LABEL_14:
             v44 = 6;
           }
 
-          v45 = [v36 name];
-          v46 = [v36 uuid];
-          v47 = zeroKeywordWithAttributes(0, v44, v45, 0, v46, v39);
+          name = [v36 name];
+          uuid2 = [v36 uuid];
+          v47 = zeroKeywordWithAttributes(0, v44, name, 0, uuid2, localIdentifier);
 
           if (v47)
           {
-            [v111 addObject:v47];
+            [array addObject:v47];
           }
         }
       }
@@ -4274,9 +4274,9 @@ LABEL_43:
 
 LABEL_45:
 
-  if ([v111 count] >= 0x10)
+  if ([array count] >= 0x10)
   {
-    [v111 removeObjectsInRange:{15, objc_msgSend(v111, "count") - 15}];
+    [array removeObjectsInRange:{15, objc_msgSend(array, "count") - 15}];
   }
 
   if (v110 && (v48 = CFAbsoluteTimeGetCurrent(), v48 - v141[3] >= 0.01) && (v141[3] = v48, v139 = 0, v108[2](v108, &v139, 0.7), v49 = *(v145 + 24) | v139, *(v145 + 24) = v49, (v49 & 1) != 0))
@@ -4296,16 +4296,16 @@ LABEL_105:
 
   else
   {
-    v50 = [v100 bestSocialGroupNodes];
+    bestSocialGroupNodes = [graphCopy bestSocialGroupNodes];
     v124[0] = MEMORY[0x277D85DD0];
     v124[1] = 3221225472;
     v124[2] = __91__PGZeroKeywordComputer_peopleZeroKeywordsWithGraph_curationContext_options_progressBlock___block_invoke_326;
     v124[3] = &unk_278888170;
-    v51 = v100;
+    v51 = graphCopy;
     v125 = v51;
-    v52 = [v50 indexesOfObjectsPassingTest:v124];
-    v53 = [v50 objectsAtIndexes:v52];
-    v95 = v50;
+    v52 = [bestSocialGroupNodes indexesOfObjectsPassingTest:v124];
+    v53 = [bestSocialGroupNodes objectsAtIndexes:v52];
+    v95 = bestSocialGroupNodes;
 
     v94 = [v51 fetchMemberNodesBySocialGroupNodeForSocialGroupNodes:v53];
     v54 = [v51 memberLocalIdentifiersBySocialGroupUUIDWithMemberNodesBySocialGroupNode:? shouldIncludeMeNode:? simulateMeNodeNotSet:?];
@@ -4316,8 +4316,8 @@ LABEL_105:
     v123 = 0u;
     v120 = 0u;
     v121 = 0u;
-    v56 = [v107 objectEnumerator];
-    v57 = [v56 countByEnumeratingWithState:&v120 objects:v150 count:16];
+    objectEnumerator = [v107 objectEnumerator];
+    v57 = [objectEnumerator countByEnumeratingWithState:&v120 objects:v150 count:16];
     if (v57)
     {
       v58 = *v121;
@@ -4327,20 +4327,20 @@ LABEL_105:
         {
           if (*v121 != v58)
           {
-            objc_enumerationMutation(v56);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [v55 addObjectsFromArray:*(*(&v120 + 1) + 8 * j)];
         }
 
-        v57 = [v56 countByEnumeratingWithState:&v120 objects:v150 count:16];
+        v57 = [objectEnumerator countByEnumeratingWithState:&v120 objects:v150 count:16];
       }
 
       while (v57);
     }
 
     v93 = [PGGraphPersonNodeCollection personNodesForLocalIdentifiers:v55 inGraph:v51];
-    v104 = [v93 personNodeByLocalIdentifier];
+    personNodeByLocalIdentifier = [v93 personNodeByLocalIdentifier];
     v60 = [v95 count];
     v118 = 0u;
     v119 = 0u;
@@ -4363,14 +4363,14 @@ LABEL_105:
           }
 
           v66 = *(*(&v116 + 1) + 8 * k);
-          v67 = [v66 UUID];
-          v68 = [v107 objectForKey:v67];
+          uUID = [v66 UUID];
+          v68 = [v107 objectForKey:uUID];
 
           v64 = v62 + v64;
           if (v68)
           {
-            v69 = [v66 UUID];
-            v70 = [v107 objectForKeyedSubscript:v69];
+            uUID2 = [v66 UUID];
+            v70 = [v107 objectForKeyedSubscript:uUID2];
 
             v101 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v70, "count")}];
             v114 = 0u;
@@ -4420,15 +4420,15 @@ LABEL_105:
 
                   if (([v13 containsObject:v74] & 1) == 0)
                   {
-                    v77 = [v104 objectForKeyedSubscript:v74];
+                    v77 = [personNodeByLocalIdentifier objectForKeyedSubscript:v74];
                     v78 = [MEMORY[0x277CD9938] uuidFromLocalIdentifier:v74];
-                    v79 = [v109 userFeedbackCalculator];
-                    v80 = [v79 userFeedbackTypeForPersonUUID:v78];
+                    userFeedbackCalculator2 = [contextCopy userFeedbackCalculator];
+                    v80 = [userFeedbackCalculator2 userFeedbackTypeForPersonUUID:v78];
 
                     if ((v80 - 4) <= 0xFFFFFFFFFFFFFFFDLL)
                     {
-                      v81 = [v77 name];
-                      v82 = zeroKeywordWithAttributes(0, 1, v81, 0, v78, v74);
+                      name2 = [v77 name];
+                      v82 = zeroKeywordWithAttributes(0, 1, name2, 0, v78, v74);
 
                       [v101 addObject:v82];
                     }
@@ -4445,22 +4445,22 @@ LABEL_105:
               }
             }
 
-            if ([v101 count] && objc_msgSend(v111, "count"))
+            if ([v101 count] && objc_msgSend(array, "count"))
             {
-              v83 = [v111 count];
+              v83 = [array count];
               v84 = [v101 count];
-              v85 = v84 + [v111 count] - 15;
+              v85 = v84 + [array count] - 15;
               if (v85 >= 1)
               {
                 v86 = v83 - 1;
                 do
                 {
-                  v87 = [v111 objectAtIndexedSubscript:v86];
+                  v87 = [array objectAtIndexedSubscript:v86];
                   v88 = [v101 containsObject:v87];
 
                   if ((v88 & 1) == 0)
                   {
-                    [v111 removeObjectAtIndex:v86];
+                    [array removeObjectAtIndex:v86];
                     --v85;
                   }
 
@@ -4470,7 +4470,7 @@ LABEL_105:
                 while (v85 > 0);
               }
 
-              [v111 addObjectsFromArray:v101];
+              [array addObjectsFromArray:v101];
             }
 
             goto LABEL_91;
@@ -4506,7 +4506,7 @@ LABEL_100:
 
     else
     {
-      v12 = v111;
+      v12 = array;
     }
   }
 
@@ -4539,14 +4539,14 @@ void __91__PGZeroKeywordComputer_peopleZeroKeywordsWithGraph_curationContext_opt
   }
 }
 
-- (id)_zeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6
+- (id)_zeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block
 {
   v107 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = _Block_copy(v13);
+  graphCopy = graph;
+  contextCopy = context;
+  optionsCopy = options;
+  blockCopy = block;
+  v14 = _Block_copy(blockCopy);
   v101 = 0;
   v102 = &v101;
   v103 = 0x2020000000;
@@ -4557,16 +4557,16 @@ void __91__PGZeroKeywordComputer_peopleZeroKeywordsWithGraph_curationContext_opt
   v100 = 0;
   if (!v14 || (v15 = CFAbsoluteTimeGetCurrent(), v15 - v98[3] < 0.01) || (v98[3] = v15, LOBYTE(info.numer) = 0, (*(v14 + 2))(v14, &info, 0.0), v16 = *(v102 + 24) | LOBYTE(info.numer), *(v102 + 24) = v16, (v16 & 1) == 0))
   {
-    v69 = [v10 meNodeCollection];
-    if ([v10 isSharedLibraryEnabled])
+    meNodeCollection = [graphCopy meNodeCollection];
+    if ([graphCopy isSharedLibraryEnabled])
     {
-      v18 = [v69 count];
+      v18 = [meNodeCollection count];
       self->_shouldFilterMomentNodesWithPresence = v18 != 0;
       if (v18)
       {
-        v19 = [v69 momentNodesWithPresence];
+        momentNodesWithPresence = [meNodeCollection momentNodesWithPresence];
         momentNodesWhereMeIsPresent = self->_momentNodesWhereMeIsPresent;
-        self->_momentNodesWhereMeIsPresent = v19;
+        self->_momentNodesWhereMeIsPresent = momentNodesWithPresence;
       }
     }
 
@@ -4575,7 +4575,7 @@ void __91__PGZeroKeywordComputer_peopleZeroKeywordsWithGraph_curationContext_opt
       self->_shouldFilterMomentNodesWithPresence = 0;
     }
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v22 = objc_autoreleasePoolPush();
     v92[0] = MEMORY[0x277D85DD0];
     v92[1] = 3221225472;
@@ -4586,8 +4586,8 @@ void __91__PGZeroKeywordComputer_peopleZeroKeywordsWithGraph_curationContext_opt
     v94 = &v97;
     v95 = &v101;
     v96 = 0x3F847AE147AE147BLL;
-    v24 = [(PGZeroKeywordComputer *)self peopleZeroKeywordsWithGraph:v10 curationContext:v11 options:v12 progressBlock:v92];
-    [v21 setObject:v24 forKeyedSubscript:&unk_284484638];
+    v24 = [(PGZeroKeywordComputer *)self peopleZeroKeywordsWithGraph:graphCopy curationContext:contextCopy options:optionsCopy progressBlock:v92];
+    [dictionary setObject:v24 forKeyedSubscript:&unk_284484638];
 
     v25 = *(v102 + 24);
     if (v25 == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4644,8 +4644,8 @@ LABEL_29:
     v89 = &v97;
     v90 = &v101;
     v91 = 0x3F847AE147AE147BLL;
-    v31 = [(PGZeroKeywordComputer *)self socialGroupKeywordsWithGraph:v10 curationContext:v11 options:v12 progressBlock:v87];
-    [v21 setObject:v31 forKeyedSubscript:&unk_284484650];
+    v31 = [(PGZeroKeywordComputer *)self socialGroupKeywordsWithGraph:graphCopy curationContext:contextCopy options:optionsCopy progressBlock:v87];
+    [dictionary setObject:v31 forKeyedSubscript:&unk_284484650];
 
     v32 = *(v102 + 24);
     if (v32 == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4694,9 +4694,9 @@ LABEL_31:
       }
     }
 
-    v37 = [objc_opt_class() zeroKeywordLog];
-    v38 = os_signpost_id_generate(v37);
-    v39 = v37;
+    zeroKeywordLog = [objc_opt_class() zeroKeywordLog];
+    v38 = os_signpost_id_generate(zeroKeywordLog);
+    v39 = zeroKeywordLog;
     v40 = v39;
     spid = v38;
     v67 = v38 - 1;
@@ -4721,8 +4721,8 @@ LABEL_31:
     v83 = &v97;
     v84 = &v101;
     v85 = 0x3F847AE147AE147BLL;
-    v43 = [(PGZeroKeywordComputer *)self placeZeroKeywordsWithGraph:v10 options:v12 progressBlock:v81];
-    [v21 setObject:v43 forKeyedSubscript:&unk_284484668];
+    v43 = [(PGZeroKeywordComputer *)self placeZeroKeywordsWithGraph:graphCopy options:optionsCopy progressBlock:v81];
+    [dictionary setObject:v43 forKeyedSubscript:&unk_284484668];
 
     v44 = *(v102 + 24);
     if (v44 == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4786,8 +4786,8 @@ LABEL_70:
       v77 = &v97;
       v78 = &v101;
       v79 = 0x3F847AE147AE147BLL;
-      v55 = [(PGZeroKeywordComputer *)self eventZeroKeywordsWithGraph:v10 curationContext:v11 options:v12 progressBlock:v75];
-      [v21 setObject:v55 forKeyedSubscript:&unk_284484680];
+      v55 = [(PGZeroKeywordComputer *)self eventZeroKeywordsWithGraph:graphCopy curationContext:contextCopy options:optionsCopy progressBlock:v75];
+      [dictionary setObject:v55 forKeyedSubscript:&unk_284484680];
 
       v56 = *(v102 + 24);
       if (v56 == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4830,8 +4830,8 @@ LABEL_70:
         v72 = &v97;
         v73 = &v101;
         v74 = 0x3F847AE147AE147BLL;
-        v61 = [(PGZeroKeywordComputer *)self sceneZeroKeywordsWithGraph:v10 options:v12 progressBlock:v70];
-        [v21 setObject:v61 forKeyedSubscript:&unk_284484698];
+        v61 = [(PGZeroKeywordComputer *)self sceneZeroKeywordsWithGraph:graphCopy options:optionsCopy progressBlock:v70];
+        [dictionary setObject:v61 forKeyedSubscript:&unk_284484698];
 
         v62 = *(v102 + 24);
         if (v62 == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -4848,7 +4848,7 @@ LABEL_70:
         {
           if (!v14 || (v63 = CFAbsoluteTimeGetCurrent(), v63 - v98[3] < 0.01) || (v98[3] = v63, v80 = 0, (*(v60 + 2))(v60, &v80, 1.0), v64 = *(v102 + 24) | v80, *(v102 + 24) = v64, (v64 & 1) == 0))
           {
-            v17 = v21;
+            v17 = dictionary;
             goto LABEL_72;
           }
 
@@ -4986,15 +4986,15 @@ void __86__PGZeroKeywordComputer__zeroKeywordsWithGraph_curationContext_options_
   }
 }
 
-- (id)zeroKeywordsWithGraph:(id)a3 curationContext:(id)a4 options:(id)a5 progressBlock:(id)a6
+- (id)zeroKeywordsWithGraph:(id)graph curationContext:(id)context options:(id)options progressBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_opt_class() zeroKeywordLog];
-  v15 = os_signpost_id_generate(v14);
-  v16 = v14;
+  blockCopy = block;
+  optionsCopy = options;
+  contextCopy = context;
+  graphCopy = graph;
+  zeroKeywordLog = [objc_opt_class() zeroKeywordLog];
+  v15 = os_signpost_id_generate(zeroKeywordLog);
+  v16 = zeroKeywordLog;
   v17 = v16;
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
@@ -5002,7 +5002,7 @@ void __86__PGZeroKeywordComputer__zeroKeywordsWithGraph_curationContext_options_
     _os_signpost_emit_with_name_impl(&dword_22F0FC000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "ZeroKeywordComputer-ZeroKeywordComputing", "", buf, 2u);
   }
 
-  v18 = [(PGZeroKeywordComputer *)self _zeroKeywordsWithGraph:v13 curationContext:v12 options:v11 progressBlock:v10];
+  v18 = [(PGZeroKeywordComputer *)self _zeroKeywordsWithGraph:graphCopy curationContext:contextCopy options:optionsCopy progressBlock:blockCopy];
 
   v19 = v17;
   v20 = v19;
@@ -5015,24 +5015,24 @@ void __86__PGZeroKeywordComputer__zeroKeywordsWithGraph_curationContext_options_
   return v18;
 }
 
-- (PGZeroKeywordComputer)initWithPhotoLibrary:(id)a3 curationManager:(id)a4 searchComputationCache:(id)a5
+- (PGZeroKeywordComputer)initWithPhotoLibrary:(id)library curationManager:(id)manager searchComputationCache:(id)cache
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  managerCopy = manager;
+  cacheCopy = cache;
   v20.receiver = self;
   v20.super_class = PGZeroKeywordComputer;
   v12 = [(PGZeroKeywordComputer *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_photoLibrary, a3);
-    objc_storeStrong(&v13->_curationManager, a4);
+    objc_storeStrong(&v12->_photoLibrary, library);
+    objc_storeStrong(&v13->_curationManager, manager);
     v14 = [objc_alloc(MEMORY[0x277D3C790]) initWithPhotoLibrary:v13->_photoLibrary];
     curationContext = v13->_curationContext;
     v13->_curationContext = v14;
 
-    objc_storeStrong(&v13->_searchComputationCache, a5);
+    objc_storeStrong(&v13->_searchComputationCache, cache);
     v16 = [objc_alloc(MEMORY[0x277D3C7B8]) initForSceneNetOnly:1];
     sceneTaxonomy = v13->_sceneTaxonomy;
     v13->_sceneTaxonomy = v16;

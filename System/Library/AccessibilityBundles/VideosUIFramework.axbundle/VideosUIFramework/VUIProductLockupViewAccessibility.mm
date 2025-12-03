@@ -1,6 +1,6 @@
 @interface VUIProductLockupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilitySpeakableLabelForBadgeName:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilitySpeakableLabelForBadgeName:(id)name;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityMarkupBadgeViews;
 - (void)didMoveToWindow;
@@ -8,22 +8,22 @@
 
 @implementation VUIProductLockupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIProductLockupView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"VUIProductLockupView" hasInstanceMethod:@"mediaBadgeTagsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIProductLockupView" hasInstanceMethod:@"badgeResources" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIProductBadgeResource" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIProductLockupView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"VUIProductLockupView" hasInstanceMethod:@"mediaBadgeTagsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIProductLockupView" hasInstanceMethod:@"badgeResources" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIProductBadgeResource" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
-- (id)_accessibilitySpeakableLabelForBadgeName:(id)a3
+- (id)_accessibilitySpeakableLabelForBadgeName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   if (_accessibilitySpeakableLabelForBadgeName__onceToken == -1)
   {
-    if (!v3)
+    if (!nameCopy)
     {
       goto LABEL_6;
     }
@@ -81,7 +81,7 @@ void __78__VUIProductLockupViewAccessibility__accessibilitySpeakableLabelForBadg
 - (void)_accessibilityMarkupBadgeViews
 {
   v15 = [(VUIProductLockupViewAccessibility *)self safeUIViewForKey:@"mediaBadgeTagsView"];
-  v3 = [v15 subviews];
+  subviews = [v15 subviews];
   objc_opt_class();
   v4 = [(VUIProductLockupViewAccessibility *)self safeValueForKey:@"badgeResources"];
   v5 = __UIAccessibilityCastAsClass();
@@ -89,14 +89,14 @@ void __78__VUIProductLockupViewAccessibility__accessibilitySpeakableLabelForBadg
   v6 = [v5 axFilterObjectsUsingBlock:&__block_literal_global_349];
 
   v7 = [v6 count];
-  if (v7 == [v3 count] && objc_msgSend(v3, "count"))
+  if (v7 == [subviews count] && objc_msgSend(subviews, "count"))
   {
     v8 = 0;
     v9 = ~*MEMORY[0x29EDC7F88];
     do
     {
       objc_opt_class();
-      v10 = [v3 objectAtIndexedSubscript:v8];
+      v10 = [subviews objectAtIndexedSubscript:v8];
       v11 = __UIAccessibilityCastAsClass();
 
       v12 = [v6 objectAtIndexedSubscript:v8];
@@ -113,7 +113,7 @@ void __78__VUIProductLockupViewAccessibility__accessibilitySpeakableLabelForBadg
       ++v8;
     }
 
-    while (v8 < [v3 count]);
+    while (v8 < [subviews count]);
   }
 }
 

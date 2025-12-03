@@ -1,32 +1,32 @@
 @interface AVAudioPropertyNotification
-- (AVAudioPropertyNotification)initWithInternal:(id)a3;
+- (AVAudioPropertyNotification)initWithInternal:(id)internal;
 @end
 
 @implementation AVAudioPropertyNotification
 
-- (AVAudioPropertyNotification)initWithInternal:(id)a3
+- (AVAudioPropertyNotification)initWithInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   v15.receiver = self;
   v15.super_class = AVAudioPropertyNotification;
   v5 = [(AVAudioPropertyNotification *)&v15 init];
   if (v5)
   {
-    v6 = [v4 propertyName];
+    propertyName = [internalCopy propertyName];
     propertyName = v5->_propertyName;
-    v5->_propertyName = v6;
+    v5->_propertyName = propertyName;
 
-    v8 = [v4 sourceSessionID];
+    sourceSessionID = [internalCopy sourceSessionID];
     sourceSessionID = v5->_sourceSessionID;
-    v5->_sourceSessionID = v8;
+    v5->_sourceSessionID = sourceSessionID;
 
-    v10 = [v4 nodeSessionID];
+    nodeSessionID = [internalCopy nodeSessionID];
     nodeSessionID = v5->_nodeSessionID;
-    v5->_nodeSessionID = v10;
+    v5->_nodeSessionID = nodeSessionID;
 
-    v12 = [v4 propertyData];
+    propertyData = [internalCopy propertyData];
     propertyData = v5->_propertyData;
-    v5->_propertyData = v12;
+    v5->_propertyData = propertyData;
   }
 
   return v5;

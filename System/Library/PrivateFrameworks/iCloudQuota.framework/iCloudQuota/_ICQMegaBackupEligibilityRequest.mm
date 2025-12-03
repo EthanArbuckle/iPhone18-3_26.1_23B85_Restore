@@ -1,31 +1,31 @@
 @interface _ICQMegaBackupEligibilityRequest
-+ (id)eligibilityRequestWithAccount:(id)a3 deviceBackupUUID:(id)a4 deviceTotalUsedSpaceInBytes:(id)a5 entryMethod:(int64_t)a6 deepLinkURL:(id)a7 requestURL:(id)a8 URLSession:(id)a9 queue:(id)a10 error:(id *)a11;
++ (id)eligibilityRequestWithAccount:(id)account deviceBackupUUID:(id)d deviceTotalUsedSpaceInBytes:(id)bytes entryMethod:(int64_t)method deepLinkURL:(id)l requestURL:(id)rL URLSession:(id)session queue:(id)self0 error:(id *)self1;
 - (id)additionalRequestHeaders;
 - (id)bodyJSON;
-- (id)handleResponse:(id)a3 body:(id)a4;
-- (void)addAdditionalRequestHeaders:(id)a3;
+- (id)handleResponse:(id)response body:(id)body;
+- (void)addAdditionalRequestHeaders:(id)headers;
 @end
 
 @implementation _ICQMegaBackupEligibilityRequest
 
-+ (id)eligibilityRequestWithAccount:(id)a3 deviceBackupUUID:(id)a4 deviceTotalUsedSpaceInBytes:(id)a5 entryMethod:(int64_t)a6 deepLinkURL:(id)a7 requestURL:(id)a8 URLSession:(id)a9 queue:(id)a10 error:(id *)a11
++ (id)eligibilityRequestWithAccount:(id)account deviceBackupUUID:(id)d deviceTotalUsedSpaceInBytes:(id)bytes entryMethod:(int64_t)method deepLinkURL:(id)l requestURL:(id)rL URLSession:(id)session queue:(id)self0 error:(id *)self1
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v17 = a7;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = [[a1 alloc] initWithRequestURL:v20 URLSession:v19 queue:v18];
+  accountCopy = account;
+  dCopy = d;
+  bytesCopy = bytes;
+  lCopy = l;
+  queueCopy = queue;
+  sessionCopy = session;
+  rLCopy = rL;
+  v21 = [[self alloc] initWithRequestURL:rLCopy URLSession:sessionCopy queue:queueCopy];
 
   if (v21)
   {
-    objc_storeStrong((v21 + 64), a3);
-    objc_storeStrong((v21 + 72), a4);
-    objc_storeStrong((v21 + 80), a5);
-    *(v21 + 88) = a6;
-    objc_storeStrong((v21 + 96), a7);
+    objc_storeStrong((v21 + 64), account);
+    objc_storeStrong((v21 + 72), d);
+    objc_storeStrong((v21 + 80), bytes);
+    *(v21 + 88) = method;
+    objc_storeStrong((v21 + 96), l);
   }
 
   return v21;
@@ -65,8 +65,8 @@
 {
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
   deviceBackupUUID = self->_deviceBackupUUID;
-  v5 = [(NSNumber *)self->_deviceTotalUsedSpaceInBytes stringValue];
-  v6 = [v3 initWithObjectsAndKeys:{deviceBackupUUID, @"deviceBackupUdid", v5, @"deviceTotalUsedSpace", 0}];
+  stringValue = [(NSNumber *)self->_deviceTotalUsedSpaceInBytes stringValue];
+  v6 = [v3 initWithObjectsAndKeys:{deviceBackupUUID, @"deviceBackupUdid", stringValue, @"deviceTotalUsedSpace", 0}];
 
   if (self->_entryMethod)
   {
@@ -95,28 +95,28 @@
   return v6;
 }
 
-- (void)addAdditionalRequestHeaders:(id)a3
+- (void)addAdditionalRequestHeaders:(id)headers
 {
   v7.receiver = self;
   v7.super_class = _ICQMegaBackupEligibilityRequest;
-  v4 = a3;
-  [(_ICQMegaBackupNetworkRequest *)&v7 addAdditionalRequestHeaders:v4];
+  headersCopy = headers;
+  [(_ICQMegaBackupNetworkRequest *)&v7 addAdditionalRequestHeaders:headersCopy];
   v5 = [ICQRequestProvider alloc];
   v6 = [(ICQRequestProvider *)v5 initWithAccount:self->_account, v7.receiver, v7.super_class];
-  [(ICQRequestProvider *)v6 addBasicAndCloudBackupHeadersToRequest:v4];
+  [(ICQRequestProvider *)v6 addBasicAndCloudBackupHeadersToRequest:headersCopy];
 }
 
-- (id)handleResponse:(id)a3 body:(id)a4
+- (id)handleResponse:(id)response body:(id)body
 {
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"needsTemporaryStorage"];
+  bodyCopy = body;
+  v6 = [bodyCopy objectForKeyedSubscript:@"needsTemporaryStorage"];
   self->_needsTemporaryStorage = [v6 BOOLValue];
 
-  v7 = [v5 objectForKeyedSubscript:@"durationInDays"];
+  v7 = [bodyCopy objectForKeyedSubscript:@"durationInDays"];
   daysUntilExpiration = self->_daysUntilExpiration;
   self->_daysUntilExpiration = v7;
 
-  v9 = [v5 objectForKeyedSubscript:@"backupStatus"];
+  v9 = [bodyCopy objectForKeyedSubscript:@"backupStatus"];
 
   if ((self->_needsTemporaryStorage || v9) && ([v9 isEqualToString:@"ALLOWED"] & 1) == 0)
   {

@@ -1,22 +1,22 @@
 @interface WFShutDownDeviceAction
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
 - (NSString)iconSymbolName;
-- (WFShutDownDeviceAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (WFShutDownDeviceAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFShutDownDeviceAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
-  v5 = self;
+  inputCopy = input;
+  selfCopy = self;
   sub_23DF0EA74();
 }
 
 - (NSString)iconSymbolName
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DF0F448();
   v4 = v3;
 
@@ -33,29 +33,29 @@
   return v5;
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
   sub_23E1FDC1C();
   swift_unknownObjectRetain();
-  v6 = self;
-  v7 = sub_23DF0F6D4(a3);
+  selfCopy = self;
+  v7 = sub_23DF0F6D4(state);
   swift_unknownObjectRelease();
 
   return v7 & 1;
 }
 
-- (WFShutDownDeviceAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5
+- (WFShutDownDeviceAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters
 {
   v7 = sub_23E1FDC1C();
   v9 = v8;
-  if (a5)
+  if (parameters)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E32CB70, &qword_23E2236E0);
-    a5 = sub_23E1FDAAC();
+    parameters = sub_23E1FDAAC();
   }
 
-  v10 = a4;
-  return sub_23DF0F7CC(v7, v9, a4, a5);
+  definitionCopy = definition;
+  return sub_23DF0F7CC(v7, v9, definition, parameters);
 }
 
 @end

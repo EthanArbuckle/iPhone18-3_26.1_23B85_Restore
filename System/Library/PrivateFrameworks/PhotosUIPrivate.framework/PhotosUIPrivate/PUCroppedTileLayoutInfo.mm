@@ -1,8 +1,8 @@
 @interface PUCroppedTileLayoutInfo
-- (PUCroppedTileLayoutInfo)initWithTileIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 alpha:(double)a6 transform:(CGAffineTransform *)a7 zPosition:(double)a8 contentsRect:(CGRect)a9 coordinateSystem:(id)a10;
+- (PUCroppedTileLayoutInfo)initWithTileIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size alpha:(double)alpha transform:(CGAffineTransform *)transform zPosition:(double)position contentsRect:(CGRect)rect coordinateSystem:(id)self0;
 - (id)clone;
 - (id)description;
-- (id)initWithTileIdentifier:(double)a3 center:(double)a4 size:(double)a5 cropInsets:(double)a6 normalizedLegibilityInsets:(double)a7 alpha:(double)a8 cornerRadius:(double)a9 cornerCurve:(uint64_t)a10 cornerMask:(uint64_t)a11 transform:(uint64_t)a12 zPosition:(uint64_t)a13 contentsRect:(_OWORD *)a14 coordinateSystem:(uint64_t)a15;
+- (id)initWithTileIdentifier:(double)identifier center:(double)center size:(double)size cropInsets:(double)insets normalizedLegibilityInsets:(double)legibilityInsets alpha:(double)alpha cornerRadius:(double)radius cornerCurve:(uint64_t)self0 cornerMask:(uint64_t)self1 transform:(uint64_t)self2 zPosition:(uint64_t)self3 contentsRect:(_OWORD *)self4 coordinateSystem:(uint64_t)self5;
 @end
 
 @implementation PUCroppedTileLayoutInfo
@@ -12,10 +12,10 @@
   v22 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v21 = NSStringFromClass(v3);
-  v24 = [(PUTileLayoutInfo *)self indexPath];
-  v20 = [v24 pu_shortDescription];
-  v4 = [(PUTileLayoutInfo *)self tileKind];
-  v5 = [(PUTileLayoutInfo *)self dataSourceIdentifier];
+  indexPath = [(PUTileLayoutInfo *)self indexPath];
+  pu_shortDescription = [indexPath pu_shortDescription];
+  tileKind = [(PUTileLayoutInfo *)self tileKind];
+  dataSourceIdentifier = [(PUTileLayoutInfo *)self dataSourceIdentifier];
   [(PUTileLayoutInfo *)self center];
   v6 = NSStringFromCGPoint(v27);
   [(PUTileLayoutInfo *)self size];
@@ -26,15 +26,15 @@
   v10 = v9;
   [(PUTileLayoutInfo *)self cornerRadius];
   v12 = v11;
-  v13 = [(PUTileLayoutInfo *)self cornerCurve];
-  v14 = [(PUTileLayoutInfo *)self cornerMask];
+  cornerCurve = [(PUTileLayoutInfo *)self cornerCurve];
+  cornerMask = [(PUTileLayoutInfo *)self cornerMask];
   [(PUTileLayoutInfo *)self transform];
   v15 = NSStringFromCGAffineTransform(&transform);
   [(PUTileLayoutInfo *)self zPosition];
   v17 = v16;
   [(PUTileLayoutInfo *)self contentsRect];
   v18 = NSStringFromCGRect(v30);
-  v23 = [v22 stringWithFormat:@"<%@: %p indexPath: %@; tileKind: %@; dataSourceIdentifier: %@; center: %@; size: %@; cropInsets: %@; alpha: %f; cornerRadius: %f; cornerCurve: %@; cornerMask: %lu; transform: %@; zPosition: %f; contentsRect: %@>", v21, self, v20, v4, v5, v6, v7, v8, v10, v12, v13, v14, v15, v17, v18];;
+  v23 = [v22 stringWithFormat:@"<%@: %p indexPath: %@; tileKind: %@; dataSourceIdentifier: %@; center: %@; size: %@; cropInsets: %@; alpha: %f; cornerRadius: %f; cornerCurve: %@; cornerMask: %lu; transform: %@; zPosition: %f; contentsRect: %@>", v21, self, pu_shortDescription, tileKind, dataSourceIdentifier, v6, v7, v8, v10, v12, cornerCurve, cornerMask, v15, v17, v18];;
 
   return v23;
 }
@@ -43,33 +43,33 @@
 {
   v4.receiver = self;
   v4.super_class = PUCroppedTileLayoutInfo;
-  v2 = [(PUTileLayoutInfo *)&v4 clone];
+  clone = [(PUTileLayoutInfo *)&v4 clone];
 
-  return v2;
+  return clone;
 }
 
-- (id)initWithTileIdentifier:(double)a3 center:(double)a4 size:(double)a5 cropInsets:(double)a6 normalizedLegibilityInsets:(double)a7 alpha:(double)a8 cornerRadius:(double)a9 cornerCurve:(uint64_t)a10 cornerMask:(uint64_t)a11 transform:(uint64_t)a12 zPosition:(uint64_t)a13 contentsRect:(_OWORD *)a14 coordinateSystem:(uint64_t)a15
+- (id)initWithTileIdentifier:(double)identifier center:(double)center size:(double)size cropInsets:(double)insets normalizedLegibilityInsets:(double)legibilityInsets alpha:(double)alpha cornerRadius:(double)radius cornerCurve:(uint64_t)self0 cornerMask:(uint64_t)self1 transform:(uint64_t)self2 zPosition:(uint64_t)self3 contentsRect:(_OWORD *)self4 coordinateSystem:(uint64_t)self5
 {
-  v28.receiver = a1;
+  v28.receiver = self;
   v28.super_class = PUCroppedTileLayoutInfo;
-  v25 = a14[1];
-  v27[0] = *a14;
+  v25 = rect[1];
+  v27[0] = *rect;
   v27[1] = v25;
-  v27[2] = a14[2];
-  return objc_msgSendSuper2(&v28, sel_initWithTileIdentifier_center_size_alpha_cornerRadius_cornerCurve_cornerMask_borderWidth_borderColor_transform_zPosition_contentsRect_hitTestOutset_coordinateSystem_cropInsets_normalizedLegibilityInsets_, a11, a12, a13, 0, v27, a15, a2, a3, a4, a5, a20, a21, 0.0, a22, a23, a24, a25, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24), *&a6, *&a7, *&a8, *&a9, a17, a18, a19);
+  v27[2] = rect[2];
+  return objc_msgSendSuper2(&v28, sel_initWithTileIdentifier_center_size_alpha_cornerRadius_cornerCurve_cornerMask_borderWidth_borderColor_transform_zPosition_contentsRect_hitTestOutset_coordinateSystem_cropInsets_normalizedLegibilityInsets_, mask, transform, position, 0, v27, system, a2, identifier, center, size, a20, a21, 0.0, a22, a23, a24, a25, *MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24), *&insets, *&legibilityInsets, *&alpha, *&radius, a17, a18, a19);
 }
 
-- (PUCroppedTileLayoutInfo)initWithTileIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 alpha:(double)a6 transform:(CGAffineTransform *)a7 zPosition:(double)a8 contentsRect:(CGRect)a9 coordinateSystem:(id)a10
+- (PUCroppedTileLayoutInfo)initWithTileIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size alpha:(double)alpha transform:(CGAffineTransform *)transform zPosition:(double)position contentsRect:(CGRect)rect coordinateSystem:(id)self0
 {
   v10 = *MEMORY[0x1E69DDCE0];
   v11 = *(MEMORY[0x1E69DDCE0] + 8);
   v12 = *(MEMORY[0x1E69DDCE0] + 16);
   v13 = *(MEMORY[0x1E69DDCE0] + 24);
-  v14 = *&a7->c;
-  v16[0] = *&a7->a;
+  v14 = *&transform->c;
+  v16[0] = *&transform->a;
   v16[1] = v14;
-  v16[2] = *&a7->tx;
-  return [(PUCroppedTileLayoutInfo *)self initWithTileIdentifier:a3 center:0 size:0 cropInsets:v16 normalizedLegibilityInsets:a10 alpha:a4.x cornerRadius:a4.y cornerCurve:a5.width cornerMask:a5.height transform:v10 zPosition:v11 contentsRect:*&v10 coordinateSystem:*&v11, v12, v13, *&a6, 0, *&a8, *&a9.origin.x, *&a9.origin.y, *&a9.size.width, *&a9.size.height];
+  v16[2] = *&transform->tx;
+  return [(PUCroppedTileLayoutInfo *)self initWithTileIdentifier:identifier center:0 size:0 cropInsets:v16 normalizedLegibilityInsets:system alpha:center.x cornerRadius:center.y cornerCurve:size.width cornerMask:size.height transform:v10 zPosition:v11 contentsRect:*&v10 coordinateSystem:*&v11, v12, v13, *&alpha, 0, *&position, *&rect.origin.x, *&rect.origin.y, *&rect.size.width, *&rect.size.height];
 }
 
 @end

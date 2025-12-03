@@ -1,18 +1,18 @@
 @interface CalDAVPrincipalSearchPropertySet
-+ (id)searchSetWithProperties:(id)a3;
-- (BOOL)isEqualToPropertySet:(id)a3;
++ (id)searchSetWithProperties:(id)properties;
+- (BOOL)isEqualToPropertySet:(id)set;
 - (BOOL)supportsPropertySearch;
-- (BOOL)supportsPropertyTypeWithNameSpace:(id)a3 andName:(id)a4;
-- (CalDAVPrincipalSearchPropertySet)initWithSearchProperties:(id)a3;
-- (CalDAVPrincipalSearchPropertySet)initWithStringProperties:(id)a3;
+- (BOOL)supportsPropertyTypeWithNameSpace:(id)space andName:(id)name;
+- (CalDAVPrincipalSearchPropertySet)initWithSearchProperties:(id)properties;
+- (CalDAVPrincipalSearchPropertySet)initWithStringProperties:(id)properties;
 @end
 
 @implementation CalDAVPrincipalSearchPropertySet
 
-- (CalDAVPrincipalSearchPropertySet)initWithSearchProperties:(id)a3
+- (CalDAVPrincipalSearchPropertySet)initWithSearchProperties:(id)properties
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   v28.receiver = self;
   v28.super_class = CalDAVPrincipalSearchPropertySet;
   v5 = [(CalDAVPrincipalSearchPropertySet *)&v28 init];
@@ -20,12 +20,12 @@
   if (v5)
   {
     v23 = v5;
-    v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+    v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v4;
+    v8 = propertiesCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v9)
     {
@@ -40,16 +40,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v24 + 1) + 8 * i) prop];
-          v14 = [v13 extraChildItems];
-          v15 = [v14 lastObject];
+          prop = [*(*(&v24 + 1) + 8 * i) prop];
+          extraChildItems = [prop extraChildItems];
+          lastObject = [extraChildItems lastObject];
 
-          if (v15)
+          if (lastObject)
           {
             v16 = MEMORY[0x277CCACA8];
-            v17 = [v15 nameSpace];
-            v18 = [v15 name];
-            v19 = [v16 CDVStringWithNameSpace:v17 andName:v18];
+            nameSpace = [lastObject nameSpace];
+            name = [lastObject name];
+            v19 = [v16 CDVStringWithNameSpace:nameSpace andName:name];
             [v7 addObject:v19];
           }
         }
@@ -69,54 +69,54 @@
   return v6;
 }
 
-- (CalDAVPrincipalSearchPropertySet)initWithStringProperties:(id)a3
+- (CalDAVPrincipalSearchPropertySet)initWithStringProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v8.receiver = self;
   v8.super_class = CalDAVPrincipalSearchPropertySet;
   v5 = [(CalDAVPrincipalSearchPropertySet *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CalDAVPrincipalSearchPropertySet *)v5 setStringProperties:v4];
+    [(CalDAVPrincipalSearchPropertySet *)v5 setStringProperties:propertiesCopy];
   }
 
   return v6;
 }
 
-+ (id)searchSetWithProperties:(id)a3
++ (id)searchSetWithProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [[CalDAVPrincipalSearchPropertySet alloc] initWithSearchProperties:v3];
+  propertiesCopy = properties;
+  v4 = [[CalDAVPrincipalSearchPropertySet alloc] initWithSearchProperties:propertiesCopy];
 
   return v4;
 }
 
-- (BOOL)supportsPropertyTypeWithNameSpace:(id)a3 andName:(id)a4
+- (BOOL)supportsPropertyTypeWithNameSpace:(id)space andName:(id)name
 {
-  v5 = [MEMORY[0x277CCACA8] CDVStringWithNameSpace:a3 andName:a4];
-  v6 = [(CalDAVPrincipalSearchPropertySet *)self stringProperties];
-  v7 = [v6 containsObject:v5];
+  v5 = [MEMORY[0x277CCACA8] CDVStringWithNameSpace:space andName:name];
+  stringProperties = [(CalDAVPrincipalSearchPropertySet *)self stringProperties];
+  v7 = [stringProperties containsObject:v5];
 
   return v7;
 }
 
 - (BOOL)supportsPropertySearch
 {
-  v2 = [(CalDAVPrincipalSearchPropertySet *)self stringProperties];
-  v3 = [v2 count] != 0;
+  stringProperties = [(CalDAVPrincipalSearchPropertySet *)self stringProperties];
+  v3 = [stringProperties count] != 0;
 
   return v3;
 }
 
-- (BOOL)isEqualToPropertySet:(id)a3
+- (BOOL)isEqualToPropertySet:(id)set
 {
-  v4 = a3;
-  v5 = [(CalDAVPrincipalSearchPropertySet *)self stringProperties];
-  v6 = [v4 stringProperties];
+  setCopy = set;
+  stringProperties = [(CalDAVPrincipalSearchPropertySet *)self stringProperties];
+  stringProperties2 = [setCopy stringProperties];
 
-  LOBYTE(v4) = [v5 isEqualToSet:v6];
-  return v4;
+  LOBYTE(setCopy) = [stringProperties isEqualToSet:stringProperties2];
+  return setCopy;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface STKMSStickerView
 - (STKMSStickerView)init;
 - (STKMSStickerViewDelegate)delegate;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
 - (void)_prepareForReuse;
-- (void)handleLongPress:(id)a3;
-- (void)handleTap:(id)a3;
-- (void)startAnimatingWithOffset:(double)a3;
+- (void)handleLongPress:(id)press;
+- (void)handleTap:(id)tap;
+- (void)startAnimatingWithOffset:(double)offset;
 @end
 
 @implementation STKMSStickerView
@@ -19,8 +19,8 @@
   if (v2)
   {
     [(STKMSStickerView *)v2 setClipsToBounds:0];
-    v4 = [(STKMSStickerView *)v3 layer];
-    [v4 setMasksToBounds:0];
+    layer = [(STKMSStickerView *)v3 layer];
+    [layer setMasksToBounds:0];
 
     v5 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v3 action:sel_handleLongPress_];
     longPressGestureRecognizer = v3->_longPressGestureRecognizer;
@@ -33,50 +33,50 @@
   return v3;
 }
 
-- (void)startAnimatingWithOffset:(double)a3
+- (void)startAnimatingWithOffset:(double)offset
 {
   if (objc_opt_respondsToSelector())
   {
-    [(MSStickerView *)self setAnimationOffset:a3];
+    [(MSStickerView *)self setAnimationOffset:offset];
   }
 
   [(MSStickerView *)self startAnimating];
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STKMSStickerView *)self delegate];
-  [v8 handleWillDrag:self];
+  sessionCopy = session;
+  interactionCopy = interaction;
+  delegate = [(STKMSStickerView *)self delegate];
+  [delegate handleWillDrag:self];
 
   v11.receiver = self;
   v11.super_class = STKMSStickerView;
-  v9 = [(MSStickerView *)&v11 dragInteraction:v7 itemsForBeginningSession:v6];
+  v9 = [(MSStickerView *)&v11 dragInteraction:interactionCopy itemsForBeginningSession:sessionCopy];
 
   return v9;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = [(STKMSStickerView *)self delegate];
+  tapCopy = tap;
+  delegate = [(STKMSStickerView *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(STKMSStickerView *)self delegate];
-    v7 = [v6 canHandleTap];
+    delegate2 = [(STKMSStickerView *)self delegate];
+    canHandleTap = [delegate2 canHandleTap];
 
-    if (v7)
+    if (canHandleTap)
     {
-      v8 = [(STKMSStickerView *)self delegate];
-      [v8 handleWillTap:self];
+      delegate3 = [(STKMSStickerView *)self delegate];
+      [delegate3 handleWillTap:self];
 
       v11.receiver = self;
       v11.super_class = STKMSStickerView;
-      [(MSStickerView *)&v11 handleTap:v4];
-      v9 = [(STKMSStickerView *)self delegate];
-      [v9 handleTap:self recognizer:v4];
+      [(MSStickerView *)&v11 handleTap:tapCopy];
+      delegate4 = [(STKMSStickerView *)self delegate];
+      [delegate4 handleTap:self recognizer:tapCopy];
     }
   }
 
@@ -84,15 +84,15 @@
   {
     v10.receiver = self;
     v10.super_class = STKMSStickerView;
-    [(MSStickerView *)&v10 handleTap:v4];
+    [(MSStickerView *)&v10 handleTap:tapCopy];
   }
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  v5 = [(STKMSStickerView *)self delegate];
-  [v5 handleLongPress:self recognizer:v4];
+  pressCopy = press;
+  delegate = [(STKMSStickerView *)self delegate];
+  [delegate handleLongPress:self recognizer:pressCopy];
 }
 
 - (void)_prepareForReuse

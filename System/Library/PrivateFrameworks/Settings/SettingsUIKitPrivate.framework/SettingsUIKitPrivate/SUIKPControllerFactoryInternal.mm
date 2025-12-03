@@ -1,14 +1,14 @@
 @interface SUIKPControllerFactoryInternal
-+ (id)thirdPartySettingsControllerForSpecifierWithSpecifier:(id)a3;
++ (id)thirdPartySettingsControllerForSpecifierWithSpecifier:(id)specifier;
 - (SUIKPControllerFactoryInternal)init;
 @end
 
 @implementation SUIKPControllerFactoryInternal
 
-+ (id)thirdPartySettingsControllerForSpecifierWithSpecifier:(id)a3
++ (id)thirdPartySettingsControllerForSpecifierWithSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = _s20SettingsUIKitPrivate18_ControllerFactoryC010thirdPartyaD12ForSpecifier9specifierSo06UIViewD0CSo11PSSpecifierC_tFZ_0(v3);
+  specifierCopy = specifier;
+  v4 = _s20SettingsUIKitPrivate18_ControllerFactoryC010thirdPartyaD12ForSpecifier9specifierSo06UIViewD0CSo11PSSpecifierC_tFZ_0(specifierCopy);
 
   return v4;
 }

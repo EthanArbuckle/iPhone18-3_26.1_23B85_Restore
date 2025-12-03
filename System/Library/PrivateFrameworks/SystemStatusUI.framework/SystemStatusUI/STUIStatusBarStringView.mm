@@ -1,14 +1,14 @@
 @interface STUIStatusBarStringView
 - (BOOL)isEncapsulated;
-- (STUIStatusBarStringView)initWithFrame:(CGRect)a3;
+- (STUIStatusBarStringView)initWithFrame:(CGRect)frame;
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation;
 - (UIEdgeInsets)alignmentRectInsets;
 - (void)_updateAlternateTextTimer;
-- (void)applyStyleAttributes:(id)a3;
-- (void)setAlternateText:(id)a3;
-- (void)setEncapsulated:(BOOL)a3;
-- (void)setShowsAlternateText:(BOOL)a3;
-- (void)setText:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)setAlternateText:(id)text;
+- (void)setEncapsulated:(BOOL)encapsulated;
+- (void)setShowsAlternateText:(BOOL)text;
+- (void)setText:(id)text;
 @end
 
 @implementation STUIStatusBarStringView
@@ -17,13 +17,13 @@
 {
   if ([(NSString *)self->_alternateText length])
   {
-    v3 = [(STUIStatusBarStringView *)self window];
-    v4 = v3 != 0;
+    window = [(STUIStatusBarStringView *)self window];
+    v4 = window != 0;
 
     p_alternateTextTimer = &self->_alternateTextTimer;
     alternateTextTimer = self->_alternateTextTimer;
     v7 = alternateTextTimer == 0;
-    if (v3 && !alternateTextTimer)
+    if (window && !alternateTextTimer)
     {
       objc_initWeak(&location, self);
       v8 = MEMORY[0x277CBEBB8];
@@ -73,37 +73,37 @@
   return result;
 }
 
-- (STUIStatusBarStringView)initWithFrame:(CGRect)a3
+- (STUIStatusBarStringView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = STUIStatusBarStringView;
-  v3 = [(STUIStatusBarStringView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUIStatusBarStringView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(STUIStatusBarStringView *)v3 setAllowsDefaultTighteningForTruncation:1];
   return v3;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v14 = a3;
-  v4 = [v14 fontForStyle:self->_fontStyle];
+  attributesCopy = attributes;
+  v4 = [attributesCopy fontForStyle:self->_fontStyle];
   [(STUIStatusBarStringView *)self setFont:v4];
 
   if (_os_feature_enabled_impl())
   {
-    v5 = [(STUIStatusBarStringView *)self traitCollection];
-    v6 = [v5 userInterfaceIdiom];
+    traitCollection = [(STUIStatusBarStringView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v6 == 3)
+    if (userInterfaceIdiom == 3)
     {
-      v7 = [(STUIStatusBarStringView *)self font];
-      v8 = [v7 fontName];
-      v9 = [v8 isEqualToString:@".SFSoftNumeric-Semibold"];
+      font = [(STUIStatusBarStringView *)self font];
+      fontName = [font fontName];
+      v9 = [fontName isEqualToString:@".SFSoftNumeric-Semibold"];
 
       if (v9)
       {
         v10 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D769D0]];
-        v11 = [(STUIStatusBarStringView *)self font];
-        v12 = [v10 scaledFontForFont:v11];
+        font2 = [(STUIStatusBarStringView *)self font];
+        v12 = [v10 scaledFontForFont:font2];
         [(STUIStatusBarStringView *)self setFont:v12];
       }
 
@@ -112,18 +112,18 @@
     }
   }
 
-  v13 = [v14 textColor];
-  [(STUIStatusBarStringView *)self setTextColor:v13];
+  textColor = [attributesCopy textColor];
+  [(STUIStatusBarStringView *)self setTextColor:textColor];
 }
 
-- (void)setShowsAlternateText:(BOOL)a3
+- (void)setShowsAlternateText:(BOOL)text
 {
-  if (self->_showsAlternateText != a3)
+  if (self->_showsAlternateText != text)
   {
     v7 = v3;
     v8 = v4;
-    self->_showsAlternateText = a3;
-    if (a3)
+    self->_showsAlternateText = text;
+    if (text)
     {
       [(STUIStatusBarStringView *)&v6 setText:self->_alternateText, v5.receiver, v5.super_class, self, STUIStatusBarStringView, v7, v8];
     }
@@ -135,24 +135,24 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  [(STUIStatusBarStringView *)self setOriginalText:v4];
+  textCopy = text;
+  [(STUIStatusBarStringView *)self setOriginalText:textCopy];
   v5.receiver = self;
   v5.super_class = STUIStatusBarStringView;
-  [(STUIStatusBarStringView *)&v5 setText:v4];
+  [(STUIStatusBarStringView *)&v5 setText:textCopy];
 }
 
-- (void)setAlternateText:(id)a3
+- (void)setAlternateText:(id)text
 {
-  v5 = a3;
-  if (self->_alternateText != v5)
+  textCopy = text;
+  if (self->_alternateText != textCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_alternateText, a3);
+    v6 = textCopy;
+    objc_storeStrong(&self->_alternateText, text);
     [(STUIStatusBarStringView *)self _updateAlternateTextTimer];
-    v5 = v6;
+    textCopy = v6;
   }
 }
 
@@ -164,9 +164,9 @@ void __52__STUIStatusBarStringView__updateAlternateTextTimer__block_invoke(uint6
   [v3 setShowsAlternateText:v2 ^ 1u];
 }
 
-- (void)setEncapsulated:(BOOL)a3
+- (void)setEncapsulated:(BOOL)encapsulated
 {
-  if (a3)
+  if (encapsulated)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75078]);
     [(STUIStatusBarStringView *)self _setTextEncapsulation:v4];
@@ -181,8 +181,8 @@ void __52__STUIStatusBarStringView__updateAlternateTextTimer__block_invoke(uint6
 
 - (BOOL)isEncapsulated
 {
-  v2 = [(STUIStatusBarStringView *)self _textEncapsulation];
-  v3 = v2 != 0;
+  _textEncapsulation = [(STUIStatusBarStringView *)self _textEncapsulation];
+  v3 = _textEncapsulation != 0;
 
   return v3;
 }
@@ -190,8 +190,8 @@ void __52__STUIStatusBarStringView__updateAlternateTextTimer__block_invoke(uint6
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation
 {
   v3 = objc_alloc(MEMORY[0x277D750B0]);
-  v4 = [(STUIStatusBarStringView *)self originalText];
-  v5 = [v3 initWithTitle:v4 image:0 imageInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  originalText = [(STUIStatusBarStringView *)self originalText];
+  v5 = [v3 initWithTitle:originalText image:0 imageInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
 
   return v5;
 }

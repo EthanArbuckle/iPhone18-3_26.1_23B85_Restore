@@ -7,39 +7,39 @@
 - (SBH3DPoint)lastLightDirection;
 - (SBH3DPoint)lastLightDirection2;
 - (SBHLightSourceManager)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)layers;
-- (id)pauseUpdatesForReason:(id)a3;
-- (id)reduceUpdateFrequencyForReason:(id)a3;
+- (id)pauseUpdatesForReason:(id)reason;
+- (id)reduceUpdateFrequencyForReason:(id)reason;
 - (id)succinctDescription;
 - (unsigned)effectiveActivityLevel;
-- (void)_didAddLightSourceObserverInView:(id)a3;
-- (void)addLayer:(id)a3 inView:(id)a4;
-- (void)addObserver:(id)a3 inView:(id)a4;
+- (void)_didAddLightSourceObserverInView:(id)view;
+- (void)addLayer:(id)layer inView:(id)view;
+- (void)addObserver:(id)observer inView:(id)view;
 - (void)evaluateLightAngleUpdates;
-- (void)invalidateAssertion:(id)a3;
-- (void)invalidateDisableUpdatesAssertion:(id)a3;
-- (void)invalidateReduceUpdateFrequencyAssertion:(id)a3;
-- (void)lightSourceDisplayLinkDidFire:(id)a3;
+- (void)invalidateAssertion:(id)assertion;
+- (void)invalidateDisableUpdatesAssertion:(id)assertion;
+- (void)invalidateReduceUpdateFrequencyAssertion:(id)assertion;
+- (void)lightSourceDisplayLinkDidFire:(id)fire;
 - (void)pauseLightAngleUpdates;
-- (void)pushLightAngleUpdateWithDirection:(SBH3DPoint)a3 intensity:(double)a4 angle:(double)a5;
-- (void)reduceMotionDidChange:(id)a3;
-- (void)removeLayer:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)pushLightAngleUpdateWithDirection:(SBH3DPoint)direction intensity:(double)intensity angle:(double)angle;
+- (void)reduceMotionDidChange:(id)change;
+- (void)removeLayer:(id)layer;
+- (void)removeObserver:(id)observer;
 - (void)resumeLightAngleUpdates;
 - (void)setUpDisplayLink;
 - (void)setUpLightSourceSubscription;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)startOrStopUpdatesAsNecessary;
 - (void)startUpdates;
 - (void)stopUpdates;
 - (void)tearDownDisplayLink;
 - (void)tearDownLightSourceSubscription;
-- (void)updateLightInLayerOutsideOfDisplayLink:(id)a3;
-- (void)updateLightSourceForTargetTimestamp:(double)a3;
+- (void)updateLightInLayerOutsideOfDisplayLink:(id)link;
+- (void)updateLightSourceForTargetTimestamp:(double)timestamp;
 - (void)updateLightSourceRefreshRate;
-- (void)updateLightSourceUpdateActivityLevel:(unsigned __int8)a3;
+- (void)updateLightSourceUpdateActivityLevel:(unsigned __int8)level;
 @end
 
 @implementation SBHLightSourceManager
@@ -81,8 +81,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -94,21 +94,21 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v11 + 1) + 8 * v7++) setLightActivityLevel:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(SBHLightSourceManager *)self lightSourceDisplayLink];
-  if (([v8 isPaused] & 1) == 0)
+  lightSourceDisplayLink = [(SBHLightSourceManager *)self lightSourceDisplayLink];
+  if (([lightSourceDisplayLink isPaused] & 1) == 0)
   {
     v9 = SBLogLightAngle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -117,7 +117,7 @@
       _os_log_impl(&dword_1BEB18000, v9, OS_LOG_TYPE_INFO, "Pausing light angle update display link", v10, 2u);
     }
 
-    [v8 setPaused:1];
+    [lightSourceDisplayLink setPaused:1];
   }
 
   [(SBHLightSourceManager *)self setInitialLightDirection:0.0, 0.0, 0.0];
@@ -127,10 +127,10 @@
 - (void)evaluateLightAngleUpdates
 {
   BSDispatchQueueAssertMain();
-  v3 = [(SBHLightSourceManager *)self effectiveActivityLevel];
-  if ((v3 - 2) >= 2)
+  effectiveActivityLevel = [(SBHLightSourceManager *)self effectiveActivityLevel];
+  if ((effectiveActivityLevel - 2) >= 2)
   {
-    if (v3 == 1)
+    if (effectiveActivityLevel == 1)
     {
       v4 = CACurrentMediaTime();
 
@@ -165,8 +165,8 @@ void __53__SBHLightSourceManager_setUpLightSourceSubscription__block_invoke(uint
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -178,14 +178,14 @@ void __53__SBHLightSourceManager_setUpLightSourceSubscription__block_invoke(uint
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setLightActivityLevel:1];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -213,21 +213,21 @@ void __53__SBHLightSourceManager_setUpLightSourceSubscription__block_invoke(uint
   v2 = [(SBHLightSourceManager *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     layers = v2->_layers;
-    v2->_layers = v3;
+    v2->_layers = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable2;
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v2 selector:sel_reduceMotionDidChange_ name:*MEMORY[0x1E69DD918] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_reduceMotionDidChange_ name:*MEMORY[0x1E69DD918] object:0];
 
     v8 = +[SBHHomeScreenDomain rootSettings];
-    v9 = [v8 iconSettings];
+    iconSettings = [v8 iconSettings];
     iconSettings = v2->_iconSettings;
-    v2->_iconSettings = v9;
+    v2->_iconSettings = iconSettings;
 
     [(PTSettings *)v2->_iconSettings addKeyObserver:v2];
     [(SBHIconSettings *)v2->_iconSettings lightAngleRefreshRate];
@@ -265,22 +265,22 @@ uint64_t __38__SBHLightSourceManager_sharedManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addLayer:(id)a3 inView:(id)a4
+- (void)addLayer:(id)layer inView:(id)view
 {
-  v7 = a3;
-  v6 = a4;
+  layerCopy = layer;
+  viewCopy = view;
   BSDispatchQueueAssertMain();
-  if (![(NSHashTable *)self->_layers containsObject:v7])
+  if (![(NSHashTable *)self->_layers containsObject:layerCopy])
   {
-    [(NSHashTable *)self->_layers addObject:v7];
-    [(SBHLightSourceManager *)self updateLightInLayerOutsideOfDisplayLink:v7];
-    [(SBHLightSourceManager *)self _didAddLightSourceObserverInView:v6];
+    [(NSHashTable *)self->_layers addObject:layerCopy];
+    [(SBHLightSourceManager *)self updateLightInLayerOutsideOfDisplayLink:layerCopy];
+    [(SBHLightSourceManager *)self _didAddLightSourceObserverInView:viewCopy];
   }
 }
 
-- (void)updateLightInLayerOutsideOfDisplayLink:(id)a3
+- (void)updateLightInLayerOutsideOfDisplayLink:(id)link
 {
-  v12 = a3;
+  linkCopy = link;
   if ([(SBHLightSourceManager *)self canUpdateLight])
   {
     [(SBHLightSourceManager *)self lastLightDirectionCoordinates];
@@ -289,30 +289,30 @@ uint64_t __38__SBHLightSourceManager_sharedManager__block_invoke()
     v9 = v8;
     [(SBHLightSourceManager *)self lastLightIntensity];
     v11 = v10;
-    [v12 setLightDirection:{v5, v7, v9}];
-    [v12 setLightIntensity:v11];
+    [linkCopy setLightDirection:{v5, v7, v9}];
+    [linkCopy setLightIntensity:v11];
   }
 }
 
-- (void)_didAddLightSourceObserverInView:(id)a3
+- (void)_didAddLightSourceObserverInView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHLightSourceManager *)self lightSourceDisplayLink];
+  viewCopy = view;
+  lightSourceDisplayLink = [(SBHLightSourceManager *)self lightSourceDisplayLink];
 
-  if (!v5)
+  if (!lightSourceDisplayLink)
   {
     [(SBHLightSourceManager *)self startUpdates];
   }
 
   [(SBHLightSourceManager *)self evaluateLightAngleUpdates];
-  if (v4 && !self->_overlayManager && +[SBHLightSourceOverlayManager isOverlayAllowed](SBHLightSourceOverlayManager, "isOverlayAllowed") && (-[SBHLightSourceManager iconSettings](self, "iconSettings"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 lightAngleDebugUIEnabled], v6, v7))
+  if (viewCopy && !self->_overlayManager && +[SBHLightSourceOverlayManager isOverlayAllowed](SBHLightSourceOverlayManager, "isOverlayAllowed") && (-[SBHLightSourceManager iconSettings](self, "iconSettings"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 lightAngleDebugUIEnabled], v6, v7))
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __58__SBHLightSourceManager__didAddLightSourceObserverInView___block_invoke;
     v8[3] = &unk_1E8088F18;
-    v9 = v4;
-    v10 = self;
+    v9 = viewCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
 
@@ -346,50 +346,50 @@ void __58__SBHLightSourceManager__didAddLightSourceObserverInView___block_invoke
   }
 }
 
-- (void)removeLayer:(id)a3
+- (void)removeLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   BSDispatchQueueAssertMain();
-  if ([(NSHashTable *)self->_layers containsObject:v4])
+  if ([(NSHashTable *)self->_layers containsObject:layerCopy])
   {
     v5 = SBLogLightAngle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(SBHLightSourceManager *)v4 removeLayer:v5];
+      [(SBHLightSourceManager *)layerCopy removeLayer:v5];
     }
 
-    [(NSHashTable *)self->_layers removeObject:v4];
+    [(NSHashTable *)self->_layers removeObject:layerCopy];
     [(SBHLightSourceManager *)self evaluateLightAngleUpdates];
     [(SBHLightSourceManager *)self startOrStopUpdatesAsNecessary];
     [(SBHLightSourceOverlayManager *)self->_overlayManager updateOverlay];
   }
 }
 
-- (void)addObserver:(id)a3 inView:(id)a4
+- (void)addObserver:(id)observer inView:(id)view
 {
-  v7 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  viewCopy = view;
   BSDispatchQueueAssertMain();
-  if (![(NSHashTable *)self->_observers containsObject:v7])
+  if (![(NSHashTable *)self->_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_observers addObject:v7];
-    [(SBHLightSourceManager *)self _didAddLightSourceObserverInView:v6];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
+    [(SBHLightSourceManager *)self _didAddLightSourceObserverInView:viewCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  if ([(NSHashTable *)self->_observers containsObject:v4])
+  if ([(NSHashTable *)self->_observers containsObject:observerCopy])
   {
     v5 = SBLogLightAngle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(SBHLightSourceManager *)v4 removeObserver:v5];
+      [(SBHLightSourceManager *)observerCopy removeObserver:v5];
     }
 
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     [(SBHLightSourceManager *)self evaluateLightAngleUpdates];
     [(SBHLightSourceOverlayManager *)self->_overlayManager updateOverlay];
   }
@@ -398,32 +398,32 @@ void __58__SBHLightSourceManager__didAddLightSourceObserverInView___block_invoke
 - (id)layers
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSHashTable *)self->_layers allObjects];
-  v4 = [v2 setWithArray:v3];
+  allObjects = [(NSHashTable *)self->_layers allObjects];
+  v4 = [v2 setWithArray:allObjects];
 
   return v4;
 }
 
-- (id)pauseUpdatesForReason:(id)a3
+- (id)pauseUpdatesForReason:(id)reason
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
   v5 = SBLogLightAngle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = reasonCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_INFO, "Pausing light angle updates for reason '%{public}@'", &v11, 0xCu);
   }
 
-  v6 = [[SBHLightSourceManagerAssertion alloc] initWithLightSourceManager:self type:0 reason:v4];
+  v6 = [[SBHLightSourceManagerAssertion alloc] initWithLightSourceManager:self type:0 reason:reasonCopy];
   disableUpdatesAssertions = self->_disableUpdatesAssertions;
   if (!disableUpdatesAssertions)
   {
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v9 = self->_disableUpdatesAssertions;
-    self->_disableUpdatesAssertions = v8;
+    self->_disableUpdatesAssertions = weakObjectsHashTable;
 
     disableUpdatesAssertions = self->_disableUpdatesAssertions;
   }
@@ -438,26 +438,26 @@ void __58__SBHLightSourceManager__didAddLightSourceObserverInView___block_invoke
   return v6;
 }
 
-- (id)reduceUpdateFrequencyForReason:(id)a3
+- (id)reduceUpdateFrequencyForReason:(id)reason
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
   v5 = SBLogLightAngle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = reasonCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_INFO, "Reducing light angle update frequency for reason '%{public}@'", &v11, 0xCu);
   }
 
-  v6 = [[SBHLightSourceManagerAssertion alloc] initWithLightSourceManager:self type:1 reason:v4];
+  v6 = [[SBHLightSourceManagerAssertion alloc] initWithLightSourceManager:self type:1 reason:reasonCopy];
   reduceUpdateFreqencyAssertions = self->_reduceUpdateFreqencyAssertions;
   if (!reduceUpdateFreqencyAssertions)
   {
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v9 = self->_reduceUpdateFreqencyAssertions;
-    self->_reduceUpdateFreqencyAssertions = v8;
+    self->_reduceUpdateFreqencyAssertions = weakObjectsHashTable;
 
     reduceUpdateFreqencyAssertions = self->_reduceUpdateFreqencyAssertions;
   }
@@ -475,8 +475,8 @@ void __58__SBHLightSourceManager__didAddLightSourceObserverInView___block_invoke
     return 0;
   }
 
-  v3 = [MEMORY[0x1E698E740] processHandle];
-  v4 = [v3 hasEntitlement:@"com.apple.lightsourcesupport.listener"];
+  processHandle = [MEMORY[0x1E698E740] processHandle];
+  v4 = [processHandle hasEntitlement:@"com.apple.lightsourcesupport.listener"];
 
   if (!v4)
   {
@@ -505,18 +505,18 @@ void __58__SBHLightSourceManager__didAddLightSourceObserverInView___block_invoke
 
 - (void)setUpLightSourceSubscription
 {
-  v3 = [(SBHLightSourceManager *)self lightSourceSubscription];
-  if (!v3)
+  lightSourceSubscription = [(SBHLightSourceManager *)self lightSourceSubscription];
+  if (!lightSourceSubscription)
   {
     if ([(SBHLightSourceManager *)self areUpdatesDisabled])
     {
-      v3 = 0;
+      lightSourceSubscription = 0;
     }
 
     else
     {
       objc_initWeak(&location, self);
-      v4 = [MEMORY[0x1E69AC030] sharedInstance];
+      mEMORY[0x1E69AC030] = [MEMORY[0x1E69AC030] sharedInstance];
       v5 = MEMORY[0x1E69E96A0];
       v6 = MEMORY[0x1E69E96A0];
       v7 = MEMORY[0x1E69E9820];
@@ -524,9 +524,9 @@ void __58__SBHLightSourceManager__didAddLightSourceObserverInView___block_invoke
       v9 = __53__SBHLightSourceManager_setUpLightSourceSubscription__block_invoke;
       v10 = &unk_1E8092048;
       objc_copyWeak(&v11, &location);
-      v3 = [v4 subscribeOnQueue:v5 options:2 activityLevelChangeHandler:&v7];
+      lightSourceSubscription = [mEMORY[0x1E69AC030] subscribeOnQueue:v5 options:2 activityLevelChangeHandler:&v7];
 
-      [(SBHLightSourceManager *)self setLightSourceSubscription:v3, v7, v8, v9, v10];
+      [(SBHLightSourceManager *)self setLightSourceSubscription:lightSourceSubscription, v7, v8, v9, v10];
       objc_destroyWeak(&v11);
 
       objc_destroyWeak(&location);
@@ -536,65 +536,65 @@ void __58__SBHLightSourceManager__didAddLightSourceObserverInView___block_invoke
 
 - (void)tearDownLightSourceSubscription
 {
-  v3 = [(SBHLightSourceManager *)self lightSourceSubscription];
-  if (v3)
+  lightSourceSubscription = [(SBHLightSourceManager *)self lightSourceSubscription];
+  if (lightSourceSubscription)
   {
-    v4 = v3;
-    [v3 invalidate];
+    v4 = lightSourceSubscription;
+    [lightSourceSubscription invalidate];
     [(SBHLightSourceManager *)self setLightSourceSubscription:0];
-    v3 = v4;
+    lightSourceSubscription = v4;
   }
 }
 
-- (void)updateLightSourceUpdateActivityLevel:(unsigned __int8)a3
+- (void)updateLightSourceUpdateActivityLevel:(unsigned __int8)level
 {
-  v3 = a3;
+  levelCopy = level;
   v10 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssertMain();
   v5 = SBLogLightAngle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134218240;
-    v7 = [(SBHLightSourceManager *)self currentActivityLevel];
+    currentActivityLevel = [(SBHLightSourceManager *)self currentActivityLevel];
     v8 = 2048;
-    v9 = v3;
+    v9 = levelCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_INFO, "Light source update activity level changed: %li -> %li", &v6, 0x16u);
   }
 
-  [(SBHLightSourceManager *)self setCurrentActivityLevel:v3];
+  [(SBHLightSourceManager *)self setCurrentActivityLevel:levelCopy];
   [(SBHLightSourceManager *)self evaluateLightAngleUpdates];
 }
 
 - (void)setUpDisplayLink
 {
   BSDispatchQueueAssertMain();
-  v4 = [(SBHLightSourceManager *)self lightSourceDisplayLink];
-  if (v4 || [(SBHLightSourceManager *)self areUpdatesDisabled])
+  lightSourceDisplayLink = [(SBHLightSourceManager *)self lightSourceDisplayLink];
+  if (lightSourceDisplayLink || [(SBHLightSourceManager *)self areUpdatesDisabled])
   {
-    [v4 setPaused:{-[SBHLightSourceManager effectiveActivityLevel](self, "effectiveActivityLevel") == 0}];
+    [lightSourceDisplayLink setPaused:{-[SBHLightSourceManager effectiveActivityLevel](self, "effectiveActivityLevel") == 0}];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel_lightSourceDisplayLinkDidFire_];
+    lightSourceDisplayLink = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel_lightSourceDisplayLinkDidFire_];
     [(SBHLightSourceManager *)self preferredFrameRateRange];
-    [v4 setPreferredFrameRateRange:?];
-    v3 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v4 addToRunLoop:v3 forMode:*MEMORY[0x1E695DA28]];
+    [lightSourceDisplayLink setPreferredFrameRateRange:?];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [lightSourceDisplayLink addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-    [(SBHLightSourceManager *)self setLightSourceDisplayLink:v4];
+    [(SBHLightSourceManager *)self setLightSourceDisplayLink:lightSourceDisplayLink];
   }
 }
 
 - (void)tearDownDisplayLink
 {
-  v3 = [(SBHLightSourceManager *)self lightSourceDisplayLink];
-  if (v3)
+  lightSourceDisplayLink = [(SBHLightSourceManager *)self lightSourceDisplayLink];
+  if (lightSourceDisplayLink)
   {
-    v4 = v3;
-    [v3 invalidate];
+    v4 = lightSourceDisplayLink;
+    [lightSourceDisplayLink invalidate];
     [(SBHLightSourceManager *)self setLightSourceDisplayLink:0];
-    v3 = v4;
+    lightSourceDisplayLink = v4;
   }
 }
 
@@ -620,24 +620,24 @@ void __58__SBHLightSourceManager__didAddLightSourceObserverInView___block_invoke
   }
 }
 
-- (void)lightSourceDisplayLinkDidFire:(id)a3
+- (void)lightSourceDisplayLinkDidFire:(id)fire
 {
-  v4 = a3;
+  fireCopy = fire;
   BSDispatchQueueAssertMain();
-  [v4 targetTimestamp];
+  [fireCopy targetTimestamp];
   v6 = v5;
 
   [(SBHLightSourceManager *)self updateLightSourceForTargetTimestamp:v6];
 }
 
-- (void)updateLightSourceForTargetTimestamp:(double)a3
+- (void)updateLightSourceForTargetTimestamp:(double)timestamp
 {
   BSDispatchQueueAssertMain();
-  v5 = [(SBHLightSourceManager *)self lightSourceSubscription];
-  v6 = v5;
-  if (v5)
+  lightSourceSubscription = [(SBHLightSourceManager *)self lightSourceSubscription];
+  v6 = lightSourceSubscription;
+  if (lightSourceSubscription)
   {
-    v7 = [v5 lightSourceForTargetTime:a3];
+    v7 = [lightSourceSubscription lightSourceForTargetTime:timestamp];
     [v7 direction];
     v9 = v8;
     v11 = v10;
@@ -681,7 +681,7 @@ LABEL_19:
       }
     }
 
-    v31 = SBH3DPointVelocity(v17, v43, v42, v9, v11, v13, a3 - v29);
+    v31 = SBH3DPointVelocity(v17, v43, v42, v9, v11, v13, timestamp - v29);
     v34 = SBH3DVelocityMagnitude(v31, v32, v33);
     [(SBHLightSourceManager *)self initialVelocityThreshold];
     if (v34 <= v35)
@@ -703,7 +703,7 @@ LABEL_16:
     [(SBHLightSourceManager *)self setLastLightDirection:v9, v11, v13];
     [(SBHLightSourceManager *)self setLastLightDirection2:v17, v43, v42];
     [(SBHLightSourceManager *)self setLastLightIntensity:v36];
-    [(SBHLightSourceManager *)self setLastLightTimestamp:a3];
+    [(SBHLightSourceManager *)self setLastLightTimestamp:timestamp];
     [(SBHLightSourceManager *)self setLastLightTimestamp2:v29];
     [(SBHLightSourceOverlayManager *)self->_overlayManager noteLightAngleDidUpdate];
     v40 = SBLogLightAngle();
@@ -718,11 +718,11 @@ LABEL_16:
 LABEL_20:
 }
 
-- (void)pushLightAngleUpdateWithDirection:(SBH3DPoint)a3 intensity:(double)a4 angle:(double)a5
+- (void)pushLightAngleUpdateWithDirection:(SBH3DPoint)direction intensity:(double)intensity angle:(double)angle
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = direction.z;
+  y = direction.y;
+  x = direction.x;
   v32 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
@@ -745,7 +745,7 @@ LABEL_20:
 
         v16 = *(*(&v26 + 1) + 8 * i);
         [v16 setLightDirection:{x, y, z}];
-        [v16 setLightIntensity:a4];
+        [v16 setLightIntensity:intensity];
       }
 
       v13 = [(NSHashTable *)v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -773,7 +773,7 @@ LABEL_20:
           objc_enumerationMutation(v17);
         }
 
-        [*(*(&v22 + 1) + 8 * j) setLightAngle:{a5, v22}];
+        [*(*(&v22 + 1) + 8 * j) setLightAngle:{angle, v22}];
       }
 
       v19 = [(NSHashTable *)v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -785,9 +785,9 @@ LABEL_20:
 
 - (void)updateLightSourceRefreshRate
 {
-  v3 = [(SBHLightSourceManager *)self lightSourceDisplayLink];
+  lightSourceDisplayLink = [(SBHLightSourceManager *)self lightSourceDisplayLink];
   [(SBHLightSourceManager *)self preferredFrameRateRange];
-  [v3 setPreferredFrameRateRange:?];
+  [lightSourceDisplayLink setPreferredFrameRateRange:?];
 }
 
 - (CAFrameRateRange)preferredFrameRateRange
@@ -803,49 +803,49 @@ LABEL_20:
   return CAFrameRateRangeMake(4.0, v4, v4);
 }
 
-- (void)invalidateAssertion:(id)a3
+- (void)invalidateAssertion:(id)assertion
 {
-  v6 = a3;
-  v4 = [v6 type];
-  if (v4 == 1)
+  assertionCopy = assertion;
+  type = [assertionCopy type];
+  if (type == 1)
   {
-    v4 = [(SBHLightSourceManager *)self invalidateReduceUpdateFrequencyAssertion:v6];
+    type = [(SBHLightSourceManager *)self invalidateReduceUpdateFrequencyAssertion:assertionCopy];
   }
 
   else
   {
-    v5 = v6;
-    if (v4)
+    v5 = assertionCopy;
+    if (type)
     {
       goto LABEL_6;
     }
 
-    v4 = [(SBHLightSourceManager *)self invalidateDisableUpdatesAssertion:v6];
+    type = [(SBHLightSourceManager *)self invalidateDisableUpdatesAssertion:assertionCopy];
   }
 
-  v5 = v6;
+  v5 = assertionCopy;
 LABEL_6:
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](type, v5);
 }
 
-- (void)invalidateDisableUpdatesAssertion:(id)a3
+- (void)invalidateDisableUpdatesAssertion:(id)assertion
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   BSDispatchQueueAssertMain();
-  if ([(NSHashTable *)self->_disableUpdatesAssertions containsObject:v4])
+  if ([(NSHashTable *)self->_disableUpdatesAssertions containsObject:assertionCopy])
   {
     v5 = SBLogLightAngle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 reason];
+      reason = [assertionCopy reason];
       v7 = 138543362;
-      v8 = v6;
+      v8 = reason;
       _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_INFO, "Light angle pause reason '%{public}@' did invalidate", &v7, 0xCu);
     }
 
-    [(NSHashTable *)self->_disableUpdatesAssertions removeObject:v4];
+    [(NSHashTable *)self->_disableUpdatesAssertions removeObject:assertionCopy];
     if (![(NSHashTable *)self->_disableUpdatesAssertions count])
     {
       [(SBHLightSourceManager *)self setUpdatesDisabled:0];
@@ -854,23 +854,23 @@ LABEL_6:
   }
 }
 
-- (void)invalidateReduceUpdateFrequencyAssertion:(id)a3
+- (void)invalidateReduceUpdateFrequencyAssertion:(id)assertion
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   BSDispatchQueueAssertMain();
-  if ([(NSHashTable *)self->_reduceUpdateFreqencyAssertions containsObject:v4])
+  if ([(NSHashTable *)self->_reduceUpdateFreqencyAssertions containsObject:assertionCopy])
   {
     v5 = SBLogLightAngle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 reason];
+      reason = [assertionCopy reason];
       v7 = 138543362;
-      v8 = v6;
+      v8 = reason;
       _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_INFO, "Light angle update frequency reason '%{public}@' did invalidate", &v7, 0xCu);
     }
 
-    [(NSHashTable *)self->_reduceUpdateFreqencyAssertions removeObject:v4];
+    [(NSHashTable *)self->_reduceUpdateFreqencyAssertions removeObject:assertionCopy];
     if (![(NSHashTable *)self->_reduceUpdateFreqencyAssertions count])
     {
       [(SBHLightSourceManager *)self updateLightSourceRefreshRate];
@@ -878,32 +878,32 @@ LABEL_6:
   }
 }
 
-- (void)reduceMotionDidChange:(id)a3
+- (void)reduceMotionDidChange:(id)change
 {
   BSDispatchQueueAssertMain();
 
   [(SBHLightSourceManager *)self startOrStopUpdatesAsNecessary];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(SBHLightSourceManager *)self iconSettings];
+  keyCopy = key;
+  settingsCopy = settings;
+  iconSettings = [(SBHLightSourceManager *)self iconSettings];
 
-  if (v7 == v6)
+  if (iconSettings == settingsCopy)
   {
-    if ([v9 isEqualToString:@"lightAngleRefreshRate"])
+    if ([keyCopy isEqualToString:@"lightAngleRefreshRate"])
     {
-      [v7 lightAngleRefreshRate];
+      [iconSettings lightAngleRefreshRate];
       [(SBHLightSourceManager *)self setActiveRefreshRate:?];
       [(SBHLightSourceManager *)self updateLightSourceRefreshRate];
     }
 
-    else if ([v9 isEqualToString:@"lightAngleDebugUIEnabled"] && (objc_msgSend(v7, "lightAngleDebugUIEnabled") & 1) == 0)
+    else if ([keyCopy isEqualToString:@"lightAngleDebugUIEnabled"] && (objc_msgSend(iconSettings, "lightAngleDebugUIEnabled") & 1) == 0)
     {
-      v8 = [(SBHLightSourceManager *)self overlayManager];
-      [v8 invalidate];
+      overlayManager = [(SBHLightSourceManager *)self overlayManager];
+      [overlayManager invalidate];
 
       [(SBHLightSourceManager *)self setOverlayManager:0];
     }
@@ -912,38 +912,38 @@ LABEL_6:
 
 - (id)succinctDescription
 {
-  v2 = [(SBHLightSourceManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHLightSourceManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHLightSourceManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHLightSourceManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHLightSourceManager *)self succinctDescriptionBuilder];
-  v5 = [(SBHLightSourceManager *)self currentActivityLevel];
-  if (v5 > 3)
+  succinctDescriptionBuilder = [(SBHLightSourceManager *)self succinctDescriptionBuilder];
+  currentActivityLevel = [(SBHLightSourceManager *)self currentActivityLevel];
+  if (currentActivityLevel > 3)
   {
     v6 = @"unknown";
   }
 
   else
   {
-    v6 = *(&off_1E8092068 + v5);
+    v6 = *(&off_1E8092068 + currentActivityLevel);
   }
 
-  [v4 appendString:v6 withName:@"currentActivityLevel"];
-  v7 = [v4 appendBool:-[SBHLightSourceManager areUpdatesDisabled](self withName:"areUpdatesDisabled") ifEqualTo:{@"areUpdatesDisabled", 1}];
+  [succinctDescriptionBuilder appendString:v6 withName:@"currentActivityLevel"];
+  v7 = [succinctDescriptionBuilder appendBool:-[SBHLightSourceManager areUpdatesDisabled](self withName:"areUpdatesDisabled") ifEqualTo:{@"areUpdatesDisabled", 1}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBH3DPoint)lastLightDirection2

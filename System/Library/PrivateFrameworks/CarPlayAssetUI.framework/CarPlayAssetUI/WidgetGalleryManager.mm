@@ -1,15 +1,15 @@
 @interface WidgetGalleryManager
 - (SBIconListLayoutProvider)listLayoutProvider;
 - (_TtC14CarPlayAssetUI20WidgetGalleryManager)init;
-- (id)addWidgetSheetConfigurationManager:(id)a3 vendorNameForAppWithBundleIdentifier:(id)a4;
-- (id)addWidgetSheetViewControllerForAddWidgetSheetConfigurationManager:(id)a3;
-- (id)customImageViewControllerForIconView:(id)a3;
-- (id)recycledViewsContainerProviderForViewMap:(id)a3;
-- (id)widgetIconForDescriptor:(id)a3 sizeClass:(int64_t)a4;
-- (id)widgetIconForDescriptors:(id)a3 sizeClass:(int64_t)a4;
-- (id)widgetIconForGalleryItem:(id)a3 sizeClass:(int64_t)a4;
-- (void)addWidgetSheetViewController:(id)a3 didSelectWidgetIconView:(id)a4;
-- (void)addWidgetSheetViewControllerDidCancel:(id)a3;
+- (id)addWidgetSheetConfigurationManager:(id)manager vendorNameForAppWithBundleIdentifier:(id)identifier;
+- (id)addWidgetSheetViewControllerForAddWidgetSheetConfigurationManager:(id)manager;
+- (id)customImageViewControllerForIconView:(id)view;
+- (id)recycledViewsContainerProviderForViewMap:(id)map;
+- (id)widgetIconForDescriptor:(id)descriptor sizeClass:(int64_t)class;
+- (id)widgetIconForDescriptors:(id)descriptors sizeClass:(int64_t)class;
+- (id)widgetIconForGalleryItem:(id)item sizeClass:(int64_t)class;
+- (void)addWidgetSheetViewController:(id)controller didSelectWidgetIconView:(id)view;
+- (void)addWidgetSheetViewControllerDidCancel:(id)cancel;
 @end
 
 @implementation WidgetGalleryManager
@@ -28,33 +28,33 @@
   return result;
 }
 
-- (id)recycledViewsContainerProviderForViewMap:(id)a3
+- (id)recycledViewsContainerProviderForViewMap:(id)map
 {
-  v4 = a3;
-  v5 = self;
+  mapCopy = map;
+  selfCopy = self;
   sub_242E345C0();
   v7 = v6;
 
   return v7;
 }
 
-- (id)customImageViewControllerForIconView:(id)a3
+- (id)customImageViewControllerForIconView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_242E33998(v4);
+  viewCopy = view;
+  selfCopy = self;
+  v6 = sub_242E33998(viewCopy);
 
   return v6;
 }
 
-- (id)addWidgetSheetConfigurationManager:(id)a3 vendorNameForAppWithBundleIdentifier:(id)a4
+- (id)addWidgetSheetConfigurationManager:(id)manager vendorNameForAppWithBundleIdentifier:(id)identifier
 {
   v4 = sub_242F04F00();
 
   return v4;
 }
 
-- (id)addWidgetSheetViewControllerForAddWidgetSheetConfigurationManager:(id)a3
+- (id)addWidgetSheetViewControllerForAddWidgetSheetConfigurationManager:(id)manager
 {
   result = swift_unknownObjectWeakLoadStrong();
   if (result)
@@ -71,42 +71,42 @@
   return result;
 }
 
-- (void)addWidgetSheetViewController:(id)a3 didSelectWidgetIconView:(id)a4
+- (void)addWidgetSheetViewController:(id)controller didSelectWidgetIconView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_242E3466C(v7);
+  controllerCopy = controller;
+  viewCopy = view;
+  selfCopy = self;
+  sub_242E3466C(viewCopy);
 }
 
-- (void)addWidgetSheetViewControllerDidCancel:(id)a3
+- (void)addWidgetSheetViewControllerDidCancel:(id)cancel
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC14CarPlayAssetUI20WidgetGalleryManager_dismiss);
-  v5 = self;
+  selfCopy = self;
 
   v3(v4);
 }
 
-- (id)widgetIconForGalleryItem:(id)a3 sizeClass:(int64_t)a4
+- (id)widgetIconForGalleryItem:(id)item sizeClass:(int64_t)class
 {
   objc_opt_self();
-  v6 = [(WidgetGalleryManager *)self widgetIconForDescriptor:swift_dynamicCastObjCClassUnconditional() sizeClass:a4];
+  v6 = [(WidgetGalleryManager *)self widgetIconForDescriptor:swift_dynamicCastObjCClassUnconditional() sizeClass:class];
 
   return v6;
 }
 
-- (id)widgetIconForDescriptor:(id)a3 sizeClass:(int64_t)a4
+- (id)widgetIconForDescriptor:(id)descriptor sizeClass:(int64_t)class
 {
   v5 = objc_allocWithZone(MEMORY[0x277D66450]);
-  v6 = a3;
-  v7 = [v5 initWithCHSWidgetDescriptor_];
+  descriptorCopy = descriptor;
+  initWithCHSWidgetDescriptor_ = [v5 initWithCHSWidgetDescriptor_];
   result = SBHIconGridSizeClassForCHSWidgetFamily();
   if (result)
   {
     v9 = result;
-    [v7 setGridSizeClass_];
+    [initWithCHSWidgetDescriptor_ setGridSizeClass_];
 
-    return v7;
+    return initWithCHSWidgetDescriptor_;
   }
 
   else
@@ -117,16 +117,16 @@
   return result;
 }
 
-- (id)widgetIconForDescriptors:(id)a3 sizeClass:(int64_t)a4
+- (id)widgetIconForDescriptors:(id)descriptors sizeClass:(int64_t)class
 {
-  v4 = [objc_allocWithZone(MEMORY[0x277D66450]) initWithCHSWidgetDescriptors_];
+  initWithCHSWidgetDescriptors_ = [objc_allocWithZone(MEMORY[0x277D66450]) initWithCHSWidgetDescriptors_];
   result = SBHIconGridSizeClassForCHSWidgetFamily();
   if (result)
   {
     v6 = result;
-    [v4 setGridSizeClass_];
+    [initWithCHSWidgetDescriptors_ setGridSizeClass_];
 
-    return v4;
+    return initWithCHSWidgetDescriptors_;
   }
 
   else

@@ -8,11 +8,11 @@
 {
   v4.receiver = self;
   v4.super_class = MSParsecSearchSessionMessageListResult;
-  v2 = [(MSParsecSearchSessionMessageResult *)&v4 feedbackResult];
-  [v2 setSectionBundleIdentifier:@"com.apple.mail.search.messagelist"];
-  [v2 setResultBundleId:@"com.apple.mail.search.messageresult"];
+  feedbackResult = [(MSParsecSearchSessionMessageResult *)&v4 feedbackResult];
+  [feedbackResult setSectionBundleIdentifier:@"com.apple.mail.search.messagelist"];
+  [feedbackResult setResultBundleId:@"com.apple.mail.search.messageresult"];
 
-  return v2;
+  return feedbackResult;
 }
 
 @end

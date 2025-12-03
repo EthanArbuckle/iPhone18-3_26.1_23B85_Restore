@@ -1,6 +1,6 @@
 @interface __NSPlaceholderURLQueryItem
 - (__NSPlaceholderURLQueryItem)init;
-- (__NSPlaceholderURLQueryItem)initWithName:(id)a3 value:(id)a4;
+- (__NSPlaceholderURLQueryItem)initWithName:(id)name value:(id)value;
 @end
 
 @implementation __NSPlaceholderURLQueryItem
@@ -12,24 +12,24 @@
   return v2;
 }
 
-- (__NSPlaceholderURLQueryItem)initWithName:(id)a3 value:(id)a4
+- (__NSPlaceholderURLQueryItem)initWithName:(id)name value:(id)value
 {
   if (!_NSIsNSString())
   {
-    a3 = &stru_1EEEFDF90;
+    name = &stru_1EEEFDF90;
   }
 
   if (_NSIsNSString())
   {
-    v6 = a4;
+    valueCopy = value;
   }
 
   else
   {
-    v6 = 0;
+    valueCopy = 0;
   }
 
-  v7 = [NSURLQueryItem _queryItemWithName:a3 value:v6];
+  v7 = [NSURLQueryItem _queryItemWithName:name value:valueCopy];
 
   return v7;
 }

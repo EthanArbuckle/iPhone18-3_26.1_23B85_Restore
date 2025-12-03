@@ -1,18 +1,18 @@
 @interface PXPhotosensitivityProcessing
 - (PSEVideoProcessor)lock_processor;
 - (PXPhotosensitivityProcessing)init;
-- (__CVBuffer)_lock_processPixelBuffer:(__CVBuffer *)a3 timestamp:(double)a4;
-- (__CVBuffer)copyAndProcessPixelBuffer:(__CVBuffer *)a3 timestamp:(double)a4;
-- (__CVPixelBufferPool)_lock_poolForSize:(CGSize)a3;
+- (__CVBuffer)_lock_processPixelBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp;
+- (__CVBuffer)copyAndProcessPixelBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp;
+- (__CVPixelBufferPool)_lock_poolForSize:(CGSize)size;
 - (void)dealloc;
 @end
 
 @implementation PXPhotosensitivityProcessing
 
-- (__CVPixelBufferPool)_lock_poolForSize:(CGSize)a3
+- (__CVPixelBufferPool)_lock_poolForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15[5] = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
   lock_pool = self->_lock_pool;
@@ -49,21 +49,21 @@
   return lock_pool;
 }
 
-- (__CVBuffer)_lock_processPixelBuffer:(__CVBuffer *)a3 timestamp:(double)a4
+- (__CVBuffer)_lock_processPixelBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp
 {
   v19 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
   if (([MEMORY[0x1E69C49C8] needsProcessing] & 1) != 0 || -[PXPhotosensitivityProcessing forceEnable](self, "forceEnable"))
   {
-    IOSurface = CVPixelBufferGetIOSurface(a3);
+    IOSurface = CVPixelBufferGetIOSurface(buffer);
     if (IOSurface)
     {
       v8 = IOSurface;
-      v9 = [(PXPhotosensitivityProcessing *)self lock_processor];
-      if (([v9 canProcessSurface:v8]& 1) != 0)
+      lock_processor = [(PXPhotosensitivityProcessing *)self lock_processor];
+      if (([lock_processor canProcessSurface:v8]& 1) != 0)
       {
-        Width = CVPixelBufferGetWidth(a3);
-        v11 = [(PXPhotosensitivityProcessing *)self _lock_poolForSize:Width, CVPixelBufferGetHeight(a3)];
+        Width = CVPixelBufferGetWidth(buffer);
+        v11 = [(PXPhotosensitivityProcessing *)self _lock_poolForSize:Width, CVPixelBufferGetHeight(buffer)];
         if (!v11)
         {
           PXAssertGetLog();
@@ -82,10 +82,10 @@
         }
 
         v16 = v15;
-        v17 = CVBufferCopyAttachments(a3, kCVAttachmentMode_ShouldPropagate);
+        v17 = CVBufferCopyAttachments(buffer, kCVAttachmentMode_ShouldPropagate);
         CVBufferSetAttachments(*pixelBufferOut, v17, kCVAttachmentMode_ShouldPropagate);
         CFRelease(v17);
-        [v9 processSourceSurface:v8 withTimestamp:v16 toDestinationSurface:&unk_1F190E6D0 options:a4];
+        [lock_processor processSourceSurface:v8 withTimestamp:v16 toDestinationSurface:&unk_1F190E6D0 options:timestamp];
         v12 = *pixelBufferOut;
         goto LABEL_16;
       }
@@ -101,12 +101,12 @@
 
     else
     {
-      v9 = PLUIGetLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      lock_processor = PLUIGetLog();
+      if (os_log_type_enabled(lock_processor, OS_LOG_TYPE_ERROR))
       {
         *pixelBufferOut = 138412290;
-        *&pixelBufferOut[4] = a3;
-        _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_ERROR, "PXPhotosensitivityProcessing unable to get surface from %@", pixelBufferOut, 0xCu);
+        *&pixelBufferOut[4] = buffer;
+        _os_log_impl(&dword_1A3C1C000, lock_processor, OS_LOG_TYPE_ERROR, "PXPhotosensitivityProcessing unable to get surface from %@", pixelBufferOut, 0xCu);
       }
     }
 
@@ -119,10 +119,10 @@ LABEL_16:
   return 0;
 }
 
-- (__CVBuffer)copyAndProcessPixelBuffer:(__CVBuffer *)a3 timestamp:(double)a4
+- (__CVBuffer)copyAndProcessPixelBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp
 {
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(PXPhotosensitivityProcessing *)self _lock_processPixelBuffer:a3 timestamp:a4];
+  v7 = [(PXPhotosensitivityProcessing *)self _lock_processPixelBuffer:buffer timestamp:timestamp];
   os_unfair_lock_unlock(&self->_lock);
   return v7;
 }

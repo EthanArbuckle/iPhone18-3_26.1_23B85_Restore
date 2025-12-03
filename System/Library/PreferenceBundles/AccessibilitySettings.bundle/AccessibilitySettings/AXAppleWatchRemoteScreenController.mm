@@ -1,8 +1,8 @@
 @interface AXAppleWatchRemoteScreenController
 - (id)specifiers;
-- (id)twiceRemtoeScreenValue:(id)a3;
+- (id)twiceRemtoeScreenValue:(id)value;
 - (void)dealloc;
-- (void)twiceRemtoeScreenValue:(id)a3 specifier:(id)a4;
+- (void)twiceRemtoeScreenValue:(id)value specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -37,13 +37,13 @@ void __49__AXAppleWatchRemoteScreenController_viewDidLoad__block_invoke(uint64_t
 
 - (void)dealloc
 {
-  v3 = [(AXAppleWatchRemoteScreenController *)self observerToken];
+  observerToken = [(AXAppleWatchRemoteScreenController *)self observerToken];
 
-  if (v3)
+  if (observerToken)
   {
     v4 = +[NSNotificationCenter defaultCenter];
-    v5 = [(AXAppleWatchRemoteScreenController *)self observerToken];
-    [v4 removeObserver:v5];
+    observerToken2 = [(AXAppleWatchRemoteScreenController *)self observerToken];
+    [v4 removeObserver:observerToken2];
   }
 
   v6.receiver = self;
@@ -78,16 +78,16 @@ void __49__AXAppleWatchRemoteScreenController_viewDidLoad__block_invoke(uint64_t
   return v4;
 }
 
-- (void)twiceRemtoeScreenValue:(id)a3 specifier:(id)a4
+- (void)twiceRemtoeScreenValue:(id)value specifier:(id)specifier
 {
-  v4 = a3;
+  valueCopy = value;
   _AXSTwiceRemoteScreenSetPlatform();
-  v5 = [v4 BOOLValue];
+  bOOLValue = [valueCopy BOOLValue];
 
-  __AXSTwiceRemoteScreenSetEnabled(v5);
+  __AXSTwiceRemoteScreenSetEnabled(bOOLValue);
 }
 
-- (id)twiceRemtoeScreenValue:(id)a3
+- (id)twiceRemtoeScreenValue:(id)value
 {
   v3 = _AXSTwiceRemoteScreenEnabled();
 

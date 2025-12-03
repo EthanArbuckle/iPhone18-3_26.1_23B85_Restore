@@ -1,76 +1,76 @@
 @interface AXRequest
-- (AXRequest)initWithCoder:(id)a3;
-- (AXRequest)initWithTechnology:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AXRequest)initWithCoder:(id)coder;
+- (AXRequest)initWithTechnology:(id)technology;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXRequest
 
-- (AXRequest)initWithTechnology:(id)a3
+- (AXRequest)initWithTechnology:(id)technology
 {
   v6.receiver = self;
   v6.super_class = AXRequest;
-  v3 = a3;
+  technologyCopy = technology;
   v4 = [(AXRequest *)&v6 init];
-  [(AXRequest *)v4 setTechnology:v3, v6.receiver, v6.super_class];
+  [(AXRequest *)v4 setTechnology:technologyCopy, v6.receiver, v6.super_class];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v7.receiver = v3;
+  selfCopy = self;
+  v7.receiver = selfCopy;
   v7.super_class = AXRequest;
   v4 = [(AXRequest *)&v7 init];
-  v5 = [(AXRequest *)v3 technology];
-  [(AXRequest *)v4 setTechnology:v5];
+  technology = [(AXRequest *)selfCopy technology];
+  [(AXRequest *)v4 setTechnology:technology];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXRequest *)self technology];
-  [v4 encodeObject:v5 forKey:@"technology"];
+  coderCopy = coder;
+  technology = [(AXRequest *)self technology];
+  [coderCopy encodeObject:technology forKey:@"technology"];
 }
 
-- (AXRequest)initWithCoder:(id)a3
+- (AXRequest)initWithCoder:(id)coder
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AXRequest *)self init];
   v6 = MEMORY[0x1E695DFD8];
   v12[0] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"technology"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"technology"];
 
   [(AXRequest *)v5 setTechnology:v9];
   v10 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 technology];
+    technology = [equalCopy technology];
 
-    v6 = [(AXRequest *)self technology];
-    v7 = [v5 isEqualToString:v6];
+    technology2 = [(AXRequest *)self technology];
+    v7 = [technology isEqualToString:technology2];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = AXRequest;
-    v7 = [(AXRequest *)&v9 isEqual:v4];
+    v7 = [(AXRequest *)&v9 isEqual:equalCopy];
   }
 
   return v7;

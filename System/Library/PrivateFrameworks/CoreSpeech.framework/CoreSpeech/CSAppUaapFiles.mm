@@ -1,7 +1,7 @@
 @interface CSAppUaapFiles
-+ (BOOL)enumerateUaapLocales:(id)a3 error:(id *)a4;
-- (CSAppUaapFiles)initWithBundleId:(id)a3 assetDir:(id)a4 forLanguage:(id)a5;
-- (CSAppUaapFiles)initWithBundleId:(id)a3 forLanguage:(id)a4;
++ (BOOL)enumerateUaapLocales:(id)locales error:(id *)error;
+- (CSAppUaapFiles)initWithBundleId:(id)id assetDir:(id)dir forLanguage:(id)language;
+- (CSAppUaapFiles)initWithBundleId:(id)id forLanguage:(id)language;
 - (id)filesAsDictionary;
 - (id)generateNextLmPath;
 @end
@@ -13,11 +13,11 @@
   appLmPath = self->_appLmPath;
   if (appLmPath)
   {
-    v4 = [(NSString *)appLmPath pathExtension];
-    v5 = v4;
-    if (v4)
+    pathExtension = [(NSString *)appLmPath pathExtension];
+    v5 = pathExtension;
+    if (pathExtension)
     {
-      v6 = [v4 integerValue] + 1;
+      v6 = [pathExtension integerValue] + 1;
     }
 
     else
@@ -51,21 +51,21 @@
   return v4;
 }
 
-- (CSAppUaapFiles)initWithBundleId:(id)a3 forLanguage:(id)a4
+- (CSAppUaapFiles)initWithBundleId:(id)id forLanguage:(id)language
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = sub_100060B30(v7, v6);
-  v9 = [(CSAppUaapFiles *)self initWithBundleId:v7 assetDir:v8 forLanguage:v6];
+  languageCopy = language;
+  idCopy = id;
+  v8 = sub_100060B30(idCopy, languageCopy);
+  v9 = [(CSAppUaapFiles *)self initWithBundleId:idCopy assetDir:v8 forLanguage:languageCopy];
 
   return v9;
 }
 
-- (CSAppUaapFiles)initWithBundleId:(id)a3 assetDir:(id)a4 forLanguage:(id)a5
+- (CSAppUaapFiles)initWithBundleId:(id)id assetDir:(id)dir forLanguage:(id)language
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  dirCopy = dir;
+  languageCopy = language;
   v42.receiver = self;
   v42.super_class = CSAppUaapFiles;
   v12 = [(CSAppUaapFiles *)&v42 init];
@@ -75,7 +75,7 @@
   }
 
   v13 = +[NSFileManager defaultManager];
-  v14 = [v13 contentsOfDirectoryAtPath:v10 error:0];
+  v14 = [v13 contentsOfDirectoryAtPath:dirCopy error:0];
 
   if (!v14 || ![v14 count])
   {
@@ -89,7 +89,7 @@ LABEL_8:
   v39[1] = 3221225472;
   v39[2] = sub_100060F68;
   v39[3] = &unk_10024F588;
-  v40 = v10;
+  v40 = dirCopy;
   v15 = v12;
   v41 = v15;
   [v14 enumerateObjectsUsingBlock:v39];
@@ -99,13 +99,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v16 = sub_100060984(v9, v11);
+  v16 = sub_100060984(idCopy, languageCopy);
   v17 = [v16 stringByAppendingPathComponent:@"LM"];
   appLmPath = v15->_appLmPath;
   v15->_appLmPath = v17;
 
   v19 = +[NSFileManager defaultManager];
-  v20 = sub_100060984(v9, v11);
+  v20 = sub_100060984(idCopy, languageCopy);
   v30 = objc_alloc_init(NSMutableArray);
   v21 = [v20 stringByAppendingPathComponent:@"LM"];
   v22 = v15->_appLmPath;
@@ -135,8 +135,8 @@ LABEL_8:
   oldAppLmPaths = v24->_oldAppLmPaths;
   v24->_oldAppLmPaths = v25;
 
-  objc_storeStrong(&v24->_language, a5);
-  objc_storeStrong(&v24->_bundleId, a3);
+  objc_storeStrong(&v24->_language, language);
+  objc_storeStrong(&v24->_bundleId, id);
 
   _Block_object_dispose(v38, 8);
 LABEL_6:
@@ -146,9 +146,9 @@ LABEL_9:
   return v27;
 }
 
-+ (BOOL)enumerateUaapLocales:(id)a3 error:(id *)a4
++ (BOOL)enumerateUaapLocales:(id)locales error:(id *)error
 {
-  v5 = a3;
+  localesCopy = locales;
   v6 = AFLibraryDirectoryWithSubPath();
   v7 = [v6 stringByAppendingPathComponent:@"SpeechModels"];
 
@@ -172,22 +172,22 @@ LABEL_9:
       v19[3] = &unk_10024F560;
       v20 = v12;
       v21 = v7;
-      v22 = v5;
+      v22 = localesCopy;
       [v9 enumerateObjectsUsingBlock:v19];
     }
 
-    else if (a4)
+    else if (error)
     {
       v17 = v13;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v16 = v10;
     v15 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else

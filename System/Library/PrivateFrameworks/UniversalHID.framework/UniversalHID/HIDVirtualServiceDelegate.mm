@@ -1,20 +1,20 @@
 @interface HIDVirtualServiceDelegate
-- (BOOL)setOutputEvent:(id)a3 forService:(id)a4;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5;
-- (id)copyEventMatching:(id)a3 forService:(id)a4;
-- (id)propertyForKey:(id)a3 forService:(id)a4;
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5;
+- (BOOL)setOutputEvent:(id)event forService:(id)service;
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service;
+- (id)copyEventMatching:(id)matching forService:(id)service;
+- (id)propertyForKey:(id)key forService:(id)service;
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service;
 @end
 
 @implementation HIDVirtualServiceDelegate
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service
 {
-  if (a3)
+  if (property)
   {
-    v7 = a4;
+    keyCopy = key;
     swift_unknownObjectRetain();
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2707A8A20();
     swift_unknownObjectRelease();
@@ -23,9 +23,9 @@
   else
   {
     memset(v17, 0, sizeof(v17));
-    v9 = a4;
+    keyCopy2 = key;
     swift_unknownObjectRetain();
-    v10 = self;
+    selfCopy2 = self;
   }
 
   v11 = sub_2707A85D0();
@@ -40,11 +40,11 @@
   return v14 & 1;
 }
 
-- (id)propertyForKey:(id)a3 forService:(id)a4
+- (id)propertyForKey:(id)key forService:(id)service
 {
   sub_2707A85D0();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_2707A8A20();
   swift_unknownObjectRelease();
   sub_27077D5B8(&v14);
@@ -71,15 +71,15 @@
   return v11;
 }
 
-- (id)copyEventMatching:(id)a3 forService:(id)a4
+- (id)copyEventMatching:(id)matching forService:(id)service
 {
-  if (a3)
+  if (matching)
   {
     sub_2707A8500();
   }
 
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_2707A8A20();
   swift_unknownObjectRelease();
   v6 = OUTLINED_FUNCTION_3_0();
@@ -88,11 +88,11 @@
   return v6;
 }
 
-- (BOOL)setOutputEvent:(id)a3 forService:(id)a4
+- (BOOL)setOutputEvent:(id)event forService:(id)service
 {
-  v5 = a3;
+  eventCopy = event;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_2707A8A20();
   swift_unknownObjectRelease();
   v7 = OUTLINED_FUNCTION_1_0();
@@ -101,9 +101,9 @@
   return v7 & 1;
 }
 
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service
 {
-  if (a4)
+  if (property)
   {
     v7 = sub_2707A8500();
   }
@@ -114,10 +114,10 @@
   }
 
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   sub_2707A8A20();
   swift_unknownObjectRelease();
-  nullsub_1(a3, v7, v9);
+  nullsub_1(notification, v7, v9);
 
   __swift_destroy_boxed_opaque_existential_1(v9);
 }

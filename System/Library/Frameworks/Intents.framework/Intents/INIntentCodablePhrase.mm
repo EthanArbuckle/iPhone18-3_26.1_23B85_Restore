@@ -1,21 +1,21 @@
 @interface INIntentCodablePhrase
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (INIntentCodableDescription)_codableDescription;
-- (INIntentCodablePhrase)initWithCoder:(id)a3;
+- (INIntentCodablePhrase)initWithCoder:(id)coder;
 - (id)__INCodableDescriptionPhraseIDKey;
 - (id)__INCodableDescriptionPhraseKey;
 - (id)__INCodableDescriptionPronunciationHintIDKey;
 - (id)__INCodableDescriptionPronunciationHintKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)localizedPhraseForLanguage:(id)a3;
-- (id)localizedPhraseWithLocalizer:(id)a3;
-- (id)localizedPronunciationHintForLanguage:(id)a3;
-- (id)localizedPronunciationHintWithLocalizer:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)localizedPhraseForLanguage:(id)language;
+- (id)localizedPhraseWithLocalizer:(id)localizer;
+- (id)localizedPronunciationHintForLanguage:(id)language;
+- (id)localizedPronunciationHintWithLocalizer:(id)localizer;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INIntentCodablePhrase
@@ -27,9 +27,9 @@
   return WeakRetained;
 }
 
-- (INIntentCodablePhrase)initWithCoder:(id)a3
+- (INIntentCodablePhrase)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = INIntentCodablePhrase;
   v5 = [(INIntentCodablePhrase *)&v22 init];
@@ -38,99 +38,99 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"phrase"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"phrase"];
     phrase = v5->_phrase;
     v5->_phrase = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phraseLocID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phraseLocID"];
     phraseLocID = v5->_phraseLocID;
     v5->_phraseLocID = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"pronunciationHint"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"pronunciationHint"];
     pronunciationHint = v5->_pronunciationHint;
     v5->_pronunciationHint = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pronunciationHintLocID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pronunciationHintLocID"];
     pronunciationHintLocID = v5->_pronunciationHintLocID;
     v5->_pronunciationHintLocID = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_codableDescription"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_codableDescription"];
     objc_storeWeak(&v5->_codableDescription, v20);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(INIntentCodablePhrase *)self phrase];
-  [v4 encodeObject:v5 forKey:@"phrase"];
+  coderCopy = coder;
+  phrase = [(INIntentCodablePhrase *)self phrase];
+  [coderCopy encodeObject:phrase forKey:@"phrase"];
 
-  v6 = [(INIntentCodablePhrase *)self phraseLocID];
-  [v4 encodeObject:v6 forKey:@"phraseLocID"];
+  phraseLocID = [(INIntentCodablePhrase *)self phraseLocID];
+  [coderCopy encodeObject:phraseLocID forKey:@"phraseLocID"];
 
-  v7 = [(INIntentCodablePhrase *)self pronunciationHint];
-  [v4 encodeObject:v7 forKey:@"pronunciationHint"];
+  pronunciationHint = [(INIntentCodablePhrase *)self pronunciationHint];
+  [coderCopy encodeObject:pronunciationHint forKey:@"pronunciationHint"];
 
-  v8 = [(INIntentCodablePhrase *)self pronunciationHintLocID];
-  [v4 encodeObject:v8 forKey:@"pronunciationHintLocID"];
+  pronunciationHintLocID = [(INIntentCodablePhrase *)self pronunciationHintLocID];
+  [coderCopy encodeObject:pronunciationHintLocID forKey:@"pronunciationHintLocID"];
 
-  v9 = [(INIntentCodablePhrase *)self _codableDescription];
-  [v4 encodeConditionalObject:v9 forKey:@"_codableDescription"];
+  _codableDescription = [(INIntentCodablePhrase *)self _codableDescription];
+  [coderCopy encodeConditionalObject:_codableDescription forKey:@"_codableDescription"];
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v24[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v21 = [(INIntentCodablePhrase *)self __INCodableDescriptionPhraseKey];
-  v23[0] = v21;
-  v5 = [(INIntentCodablePhrase *)self localizedPhraseWithLocalizer:v4];
-  v6 = v5;
-  if (!v5)
+  localizerCopy = localizer;
+  __INCodableDescriptionPhraseKey = [(INIntentCodablePhrase *)self __INCodableDescriptionPhraseKey];
+  v23[0] = __INCodableDescriptionPhraseKey;
+  null = [(INIntentCodablePhrase *)self localizedPhraseWithLocalizer:localizerCopy];
+  v6 = null;
+  if (!null)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v5;
-  v24[0] = v5;
-  v20 = [(INIntentCodablePhrase *)self __INCodableDescriptionPhraseIDKey];
-  v23[1] = v20;
-  v7 = [(INIntentCodablePhrase *)self phraseLocID];
-  v8 = v7;
-  if (!v7)
+  v19 = null;
+  v24[0] = null;
+  __INCodableDescriptionPhraseIDKey = [(INIntentCodablePhrase *)self __INCodableDescriptionPhraseIDKey];
+  v23[1] = __INCodableDescriptionPhraseIDKey;
+  phraseLocID = [(INIntentCodablePhrase *)self phraseLocID];
+  null2 = phraseLocID;
+  if (!phraseLocID)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[1] = v8;
-  v9 = [(INIntentCodablePhrase *)self __INCodableDescriptionPronunciationHintKey];
-  v23[2] = v9;
-  v22 = v4;
-  v10 = [(INIntentCodablePhrase *)self localizedPronunciationHintWithLocalizer:v4];
-  v11 = v10;
+  v24[1] = null2;
+  __INCodableDescriptionPronunciationHintKey = [(INIntentCodablePhrase *)self __INCodableDescriptionPronunciationHintKey];
+  v23[2] = __INCodableDescriptionPronunciationHintKey;
+  v22 = localizerCopy;
+  v10 = [(INIntentCodablePhrase *)self localizedPronunciationHintWithLocalizer:localizerCopy];
+  null3 = v10;
   if (!v10)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[2] = v11;
-  v12 = [(INIntentCodablePhrase *)self __INCodableDescriptionPronunciationHintIDKey];
-  v23[3] = v12;
-  v13 = [(INIntentCodablePhrase *)self pronunciationHintLocID];
-  v14 = v13;
-  if (!v13)
+  v24[2] = null3;
+  __INCodableDescriptionPronunciationHintIDKey = [(INIntentCodablePhrase *)self __INCodableDescriptionPronunciationHintIDKey];
+  v23[3] = __INCodableDescriptionPronunciationHintIDKey;
+  pronunciationHintLocID = [(INIntentCodablePhrase *)self pronunciationHintLocID];
+  null4 = pronunciationHintLocID;
+  if (!pronunciationHintLocID)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[3] = v14;
+  v24[3] = null4;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:4];
-  if (!v13)
+  if (!pronunciationHintLocID)
   {
   }
 
@@ -138,7 +138,7 @@
   {
   }
 
-  if (!v7)
+  if (!phraseLocID)
   {
   }
 
@@ -146,11 +146,11 @@
   {
   }
 
-  v16 = [v15 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v15 if_dictionaryWithNonEmptyValues];
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return if_dictionaryWithNonEmptyValues;
 }
 
 - (id)dictionaryRepresentation
@@ -161,80 +161,80 @@
   return v4;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(INIntentCodablePhrase *)self __INCodableDescriptionPhraseKey];
-  v6 = [v4 objectForKey:v5];
+  dictionaryCopy = dictionary;
+  __INCodableDescriptionPhraseKey = [(INIntentCodablePhrase *)self __INCodableDescriptionPhraseKey];
+  v6 = [dictionaryCopy objectForKey:__INCodableDescriptionPhraseKey];
   phrase = self->_phrase;
   self->_phrase = v6;
 
-  v8 = [(INIntentCodablePhrase *)self __INCodableDescriptionPhraseIDKey];
-  v9 = [v4 objectForKey:v8];
+  __INCodableDescriptionPhraseIDKey = [(INIntentCodablePhrase *)self __INCodableDescriptionPhraseIDKey];
+  v9 = [dictionaryCopy objectForKey:__INCodableDescriptionPhraseIDKey];
   phraseLocID = self->_phraseLocID;
   self->_phraseLocID = v9;
 
-  v11 = [(INIntentCodablePhrase *)self __INCodableDescriptionPronunciationHintKey];
-  v12 = [v4 objectForKey:v11];
+  __INCodableDescriptionPronunciationHintKey = [(INIntentCodablePhrase *)self __INCodableDescriptionPronunciationHintKey];
+  v12 = [dictionaryCopy objectForKey:__INCodableDescriptionPronunciationHintKey];
   pronunciationHint = self->_pronunciationHint;
   self->_pronunciationHint = v12;
 
-  v16 = [(INIntentCodablePhrase *)self __INCodableDescriptionPronunciationHintIDKey];
-  v14 = [v4 objectForKey:v16];
+  __INCodableDescriptionPronunciationHintIDKey = [(INIntentCodablePhrase *)self __INCodableDescriptionPronunciationHintIDKey];
+  v14 = [dictionaryCopy objectForKey:__INCodableDescriptionPronunciationHintIDKey];
 
   pronunciationHintLocID = self->_pronunciationHintLocID;
   self->_pronunciationHintLocID = v14;
 }
 
-- (id)localizedPronunciationHintWithLocalizer:(id)a3
+- (id)localizedPronunciationHintWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INIntentCodablePhrase *)self pronunciationHintLocID];
-  v6 = [(INIntentCodablePhrase *)self pronunciationHint];
-  v7 = [(INIntentCodablePhrase *)self _codableDescription];
-  v8 = [v7 _localizationTable];
-  v9 = INLocalizedStringFromCodable(v5, v6, v8, v4, 0);
+  localizerCopy = localizer;
+  pronunciationHintLocID = [(INIntentCodablePhrase *)self pronunciationHintLocID];
+  pronunciationHint = [(INIntentCodablePhrase *)self pronunciationHint];
+  _codableDescription = [(INIntentCodablePhrase *)self _codableDescription];
+  _localizationTable = [_codableDescription _localizationTable];
+  v9 = INLocalizedStringFromCodable(pronunciationHintLocID, pronunciationHint, _localizationTable, localizerCopy, 0);
 
   return v9;
 }
 
-- (id)localizedPronunciationHintForLanguage:(id)a3
+- (id)localizedPronunciationHintForLanguage:(id)language
 {
-  v4 = [INStringLocalizer localizerForLanguage:a3];
+  v4 = [INStringLocalizer localizerForLanguage:language];
   v5 = [(INIntentCodablePhrase *)self localizedPronunciationHintWithLocalizer:v4];
 
   return v5;
 }
 
-- (id)localizedPhraseWithLocalizer:(id)a3
+- (id)localizedPhraseWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INIntentCodablePhrase *)self phraseLocID];
-  v6 = [(INIntentCodablePhrase *)self phrase];
-  v7 = [(INIntentCodablePhrase *)self _codableDescription];
-  v8 = [v7 _localizationTable];
-  v9 = INLocalizedStringFromCodable(v5, v6, v8, v4, 0);
+  localizerCopy = localizer;
+  phraseLocID = [(INIntentCodablePhrase *)self phraseLocID];
+  phrase = [(INIntentCodablePhrase *)self phrase];
+  _codableDescription = [(INIntentCodablePhrase *)self _codableDescription];
+  _localizationTable = [_codableDescription _localizationTable];
+  v9 = INLocalizedStringFromCodable(phraseLocID, phrase, _localizationTable, localizerCopy, 0);
 
   return v9;
 }
 
-- (id)localizedPhraseForLanguage:(id)a3
+- (id)localizedPhraseForLanguage:(id)language
 {
-  v4 = [INStringLocalizer localizerForLanguage:a3];
+  v4 = [INStringLocalizer localizerForLanguage:language];
   v5 = [(INIntentCodablePhrase *)self localizedPhraseWithLocalizer:v4];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(INIntentCodablePhrase *)self phrase];
-    v6 = [v4 phrase];
-    v7 = v5;
-    v8 = v6;
+    phrase = [(INIntentCodablePhrase *)self phrase];
+    phrase2 = [equalCopy phrase];
+    v7 = phrase;
+    v8 = phrase2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -261,10 +261,10 @@ LABEL_30:
       }
     }
 
-    v14 = [(INIntentCodablePhrase *)self pronunciationHint];
-    v15 = [v4 pronunciationHint];
-    v12 = v14;
-    v16 = v15;
+    pronunciationHint = [(INIntentCodablePhrase *)self pronunciationHint];
+    pronunciationHint2 = [equalCopy pronunciationHint];
+    v12 = pronunciationHint;
+    v16 = pronunciationHint2;
     v11 = v16;
     if (v12 == v16)
     {
@@ -291,10 +291,10 @@ LABEL_29:
       }
     }
 
-    v20 = [(INIntentCodablePhrase *)self phraseLocID];
-    v21 = [v4 phraseLocID];
-    v18 = v20;
-    v22 = v21;
+    phraseLocID = [(INIntentCodablePhrase *)self phraseLocID];
+    phraseLocID2 = [equalCopy phraseLocID];
+    v18 = phraseLocID;
+    v22 = phraseLocID2;
     v17 = v22;
     v29 = v18;
     if (v18 == v22)
@@ -324,10 +324,10 @@ LABEL_28:
       }
     }
 
-    v25 = [(INIntentCodablePhrase *)self pronunciationHintLocID];
-    v26 = [v4 pronunciationHintLocID];
-    v18 = v25;
-    v27 = v26;
+    pronunciationHintLocID = [(INIntentCodablePhrase *)self pronunciationHintLocID];
+    pronunciationHintLocID2 = [equalCopy pronunciationHintLocID];
+    v18 = pronunciationHintLocID;
+    v27 = pronunciationHintLocID2;
     v23 = v27;
     if (v18 == v27)
     {
@@ -354,66 +354,66 @@ LABEL_31:
 
 - (unint64_t)hash
 {
-  v3 = [(INIntentCodablePhrase *)self phrase];
-  v4 = [v3 hash];
-  v5 = [(INIntentCodablePhrase *)self phraseLocID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(INIntentCodablePhrase *)self pronunciationHint];
-  v8 = [v7 hash];
-  v9 = [(INIntentCodablePhrase *)self pronunciationHintLocID];
-  v10 = v8 ^ [v9 hash];
+  phrase = [(INIntentCodablePhrase *)self phrase];
+  v4 = [phrase hash];
+  phraseLocID = [(INIntentCodablePhrase *)self phraseLocID];
+  v6 = [phraseLocID hash] ^ v4;
+  pronunciationHint = [(INIntentCodablePhrase *)self pronunciationHint];
+  v8 = [pronunciationHint hash];
+  pronunciationHintLocID = [(INIntentCodablePhrase *)self pronunciationHintLocID];
+  v10 = v8 ^ [pronunciationHintLocID hash];
 
   return v6 ^ v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[INIntentCodablePhrase allocWithZone:?]];
-  v5 = [(INIntentCodablePhrase *)self pronunciationHint];
-  [(INIntentCodablePhrase *)v4 setPronunciationHint:v5];
+  pronunciationHint = [(INIntentCodablePhrase *)self pronunciationHint];
+  [(INIntentCodablePhrase *)v4 setPronunciationHint:pronunciationHint];
 
-  v6 = [(INIntentCodablePhrase *)self pronunciationHintLocID];
-  [(INIntentCodablePhrase *)v4 setPronunciationHintLocID:v6];
+  pronunciationHintLocID = [(INIntentCodablePhrase *)self pronunciationHintLocID];
+  [(INIntentCodablePhrase *)v4 setPronunciationHintLocID:pronunciationHintLocID];
 
-  v7 = [(INIntentCodablePhrase *)self phrase];
-  [(INIntentCodablePhrase *)v4 setPhrase:v7];
+  phrase = [(INIntentCodablePhrase *)self phrase];
+  [(INIntentCodablePhrase *)v4 setPhrase:phrase];
 
-  v8 = [(INIntentCodablePhrase *)self phraseLocID];
-  [(INIntentCodablePhrase *)v4 setPhraseLocID:v8];
+  phraseLocID = [(INIntentCodablePhrase *)self phraseLocID];
+  [(INIntentCodablePhrase *)v4 setPhraseLocID:phraseLocID];
 
   return v4;
 }
 
 - (id)__INCodableDescriptionPronunciationHintIDKey
 {
-  v2 = [(INIntentCodablePhrase *)self _codableDescription];
-  v3 = [objc_opt_class() __INIntentCodablePhrasePronunciationHintIDKey];
+  _codableDescription = [(INIntentCodablePhrase *)self _codableDescription];
+  __INIntentCodablePhrasePronunciationHintIDKey = [objc_opt_class() __INIntentCodablePhrasePronunciationHintIDKey];
 
-  return v3;
+  return __INIntentCodablePhrasePronunciationHintIDKey;
 }
 
 - (id)__INCodableDescriptionPronunciationHintKey
 {
-  v2 = [(INIntentCodablePhrase *)self _codableDescription];
-  v3 = [objc_opt_class() __INIntentCodablePhrasePronunciationHintKey];
+  _codableDescription = [(INIntentCodablePhrase *)self _codableDescription];
+  __INIntentCodablePhrasePronunciationHintKey = [objc_opt_class() __INIntentCodablePhrasePronunciationHintKey];
 
-  return v3;
+  return __INIntentCodablePhrasePronunciationHintKey;
 }
 
 - (id)__INCodableDescriptionPhraseIDKey
 {
-  v2 = [(INIntentCodablePhrase *)self _codableDescription];
-  v3 = [objc_opt_class() __INIntentCodablePhrasePhraseIDKey];
+  _codableDescription = [(INIntentCodablePhrase *)self _codableDescription];
+  __INIntentCodablePhrasePhraseIDKey = [objc_opt_class() __INIntentCodablePhrasePhraseIDKey];
 
-  return v3;
+  return __INIntentCodablePhrasePhraseIDKey;
 }
 
 - (id)__INCodableDescriptionPhraseKey
 {
-  v2 = [(INIntentCodablePhrase *)self _codableDescription];
-  v3 = [objc_opt_class() __INIntentCodablePhrasePhraseKey];
+  _codableDescription = [(INIntentCodablePhrase *)self _codableDescription];
+  __INIntentCodablePhrasePhraseKey = [objc_opt_class() __INIntentCodablePhrasePhraseKey];
 
-  return v3;
+  return __INIntentCodablePhrasePhraseKey;
 }
 
 @end

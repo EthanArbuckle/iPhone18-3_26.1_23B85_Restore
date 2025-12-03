@@ -1,14 +1,14 @@
 @interface WebEmbedShareActivityItemSource
 - (_TtC7NewsUI231WebEmbedShareActivityItemSource)init;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation WebEmbedShareActivityItemSource
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v4 = sub_219BDB954();
   MEMORY[0x28223BE20](v4);
@@ -18,7 +18,7 @@
   return v7;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   v5 = sub_219BDB954();
   MEMORY[0x28223BE20](v5);
@@ -28,7 +28,7 @@
   return v8;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
 
   v4 = sub_219BF53D4();
@@ -36,10 +36,10 @@
   return v4;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   v4 = objc_allocWithZone(MEMORY[0x277CD46C8]);
-  v5 = self;
+  selfCopy = self;
   v6 = [v4 init];
   v7 = sub_219BF53D4();
   [v6 setTitle_];

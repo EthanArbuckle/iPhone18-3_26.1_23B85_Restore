@@ -1,11 +1,11 @@
 @interface VMVoicemailTranscriptSegment
 - (VMVoicemailTranscriptSegment)init;
-- (VMVoicemailTranscriptSegment)initWithCoder:(id)a3;
-- (VMVoicemailTranscriptSegment)initWithTranscriptionSegment:(id)a3 confidenceThreshold:(float)a4;
+- (VMVoicemailTranscriptSegment)initWithCoder:(id)coder;
+- (VMVoicemailTranscriptSegment)initWithTranscriptionSegment:(id)segment confidenceThreshold:(float)threshold;
 - (_NSRange)substringRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VMVoicemailTranscriptSegment
@@ -17,18 +17,18 @@
   return 0;
 }
 
-- (VMVoicemailTranscriptSegment)initWithTranscriptionSegment:(id)a3 confidenceThreshold:(float)a4
+- (VMVoicemailTranscriptSegment)initWithTranscriptionSegment:(id)segment confidenceThreshold:(float)threshold
 {
-  v6 = a3;
+  segmentCopy = segment;
   v16.receiver = self;
   v16.super_class = VMVoicemailTranscriptSegment;
   v7 = [(VMVoicemailTranscriptSegment *)&v16 init];
   if (v7)
   {
-    [v6 confidence];
+    [segmentCopy confidence];
     v7->_confidence = v8;
     v9 = 3;
-    if (v8 < a4)
+    if (v8 < threshold)
     {
       v9 = 1;
     }
@@ -39,31 +39,31 @@
     }
 
     v7->_confidenceRating = v9;
-    [v6 duration];
+    [segmentCopy duration];
     v7->_duration = v10;
-    v11 = [v6 substring];
+    substring = [segmentCopy substring];
     substring = v7->_substring;
-    v7->_substring = v11;
+    v7->_substring = substring;
 
-    v7->_substringRange.location = [v6 substringRange];
+    v7->_substringRange.location = [segmentCopy substringRange];
     v7->_substringRange.length = v13;
-    [v6 timestamp];
+    [segmentCopy timestamp];
     v7->_timestamp = v14;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(VMVoicemailTranscriptSegment *)self confidence];
   *(v5 + 8) = v6;
   *(v5 + 40) = [(VMVoicemailTranscriptSegment *)self confidenceRating];
   [(VMVoicemailTranscriptSegment *)self duration];
   *(v5 + 24) = v7;
-  v8 = [(VMVoicemailTranscriptSegment *)self substring];
-  v9 = [v8 copyWithZone:a3];
+  substring = [(VMVoicemailTranscriptSegment *)self substring];
+  v9 = [substring copyWithZone:zone];
   v10 = *(v5 + 16);
   *(v5 + 16) = v9;
 
@@ -80,8 +80,8 @@
   [(VMVoicemailTranscriptSegment *)self timestamp];
   v4 = [v3 dateWithTimeIntervalSince1970:?];
   v5 = MEMORY[0x277CCAE60];
-  v6 = [(VMVoicemailTranscriptSegment *)self substringRange];
-  v8 = [v5 valueWithRange:{v6, v7}];
+  substringRange = [(VMVoicemailTranscriptSegment *)self substringRange];
+  v8 = [v5 valueWithRange:{substringRange, v7}];
   v9 = MEMORY[0x277CCACA8];
   v10 = objc_opt_class();
   v11 = MEMORY[0x277CCABB0];
@@ -91,73 +91,73 @@
   v14 = MEMORY[0x277CCABB0];
   [(VMVoicemailTranscriptSegment *)self duration];
   v15 = [v14 numberWithDouble:?];
-  v16 = [(VMVoicemailTranscriptSegment *)self substring];
-  v17 = [v9 stringWithFormat:@"<%@ %p timestampDate=%@, confidence=%@, confidenceRating=%@, duration=%@, substring=%@, substringRange=%@>", v10, self, v4, v12, v13, v15, v16, v8];
+  substring = [(VMVoicemailTranscriptSegment *)self substring];
+  v17 = [v9 stringWithFormat:@"<%@ %p timestampDate=%@, confidence=%@, confidenceRating=%@, duration=%@, substring=%@, substringRange=%@>", v10, self, v4, v12, v13, v15, substring, v8];
 
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   confidence = self->_confidence;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_confidence);
   *&v7 = confidence;
-  [v5 encodeFloat:v6 forKey:v7];
+  [coderCopy encodeFloat:v6 forKey:v7];
 
   confidenceRating = self->_confidenceRating;
   v9 = NSStringFromSelector(sel_confidenceRating);
-  [v5 encodeInteger:confidenceRating forKey:v9];
+  [coderCopy encodeInteger:confidenceRating forKey:v9];
 
   duration = self->_duration;
   v11 = NSStringFromSelector(sel_duration);
-  [v5 encodeDouble:v11 forKey:duration];
+  [coderCopy encodeDouble:v11 forKey:duration];
 
   substring = self->_substring;
   v13 = NSStringFromSelector(sel_substring);
-  [v5 encodeObject:substring forKey:v13];
+  [coderCopy encodeObject:substring forKey:v13];
 
   v14 = [MEMORY[0x277CCAE60] valueWithRange:{self->_substringRange.location, self->_substringRange.length}];
   v15 = NSStringFromSelector(sel_substringRange);
-  [v5 encodeObject:v14 forKey:v15];
+  [coderCopy encodeObject:v14 forKey:v15];
 
   timestamp = self->_timestamp;
   v17 = NSStringFromSelector(sel_timestamp);
-  [v5 encodeDouble:v17 forKey:timestamp];
+  [coderCopy encodeDouble:v17 forKey:timestamp];
 }
 
-- (VMVoicemailTranscriptSegment)initWithCoder:(id)a3
+- (VMVoicemailTranscriptSegment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = VMVoicemailTranscriptSegment;
   v5 = [(VMVoicemailTranscriptSegment *)&v22 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_confidence);
-    [v4 decodeFloatForKey:v6];
+    [coderCopy decodeFloatForKey:v6];
     v5->_confidence = v7;
 
     v8 = NSStringFromSelector(sel_confidenceRating);
-    v5->_confidenceRating = [v4 decodeIntegerForKey:v8];
+    v5->_confidenceRating = [coderCopy decodeIntegerForKey:v8];
 
     v9 = NSStringFromSelector(sel_duration);
-    [v4 decodeDoubleForKey:v9];
+    [coderCopy decodeDoubleForKey:v9];
     v5->_duration = v10;
 
     v11 = NSStringFromSelector(sel_timestamp);
-    [v4 decodeDoubleForKey:v11];
+    [coderCopy decodeDoubleForKey:v11];
     v5->_timestamp = v12;
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector(sel_substring);
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     substring = v5->_substring;
     v5->_substring = v15;
 
     v17 = objc_opt_class();
     v18 = NSStringFromSelector(sel_substringRange);
-    v19 = [v4 decodeObjectOfClass:v17 forKey:v18];
+    v19 = [coderCopy decodeObjectOfClass:v17 forKey:v18];
     v5->_substringRange.location = [v19 rangeValue];
     v5->_substringRange.length = v20;
   }

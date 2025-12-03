@@ -1,21 +1,21 @@
 @interface SBSystemAperturePortalSourceInfoRequestServer
-- (SBSystemAperturePortalSourceInfoRequestServer)initWithPortalSource:(id)a3;
+- (SBSystemAperturePortalSourceInfoRequestServer)initWithPortalSource:(id)source;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)rootWindowPortalSourceWithCompletion:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)rootWindowPortalSourceWithCompletion:(id)completion;
 @end
 
 @implementation SBSystemAperturePortalSourceInfoRequestServer
 
-- (SBSystemAperturePortalSourceInfoRequestServer)initWithPortalSource:(id)a3
+- (SBSystemAperturePortalSourceInfoRequestServer)initWithPortalSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v17.receiver = self;
   v17.super_class = SBSystemAperturePortalSourceInfoRequestServer;
   v5 = [(SBSystemAperturePortalSourceInfoRequestServer *)&v17 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [sourceCopy copy];
     rootSystemApertureWindowPortalSource = v5->_rootSystemApertureWindowPortalSource;
     v5->_rootSystemApertureWindowPortalSource = v6;
 
@@ -56,17 +56,17 @@ void __70__SBSystemAperturePortalSourceInfoRequestServer_initWithPortalSource___
   [(SBSystemAperturePortalSourceInfoRequestServer *)&v3 dealloc];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   v11 = SBLogSystemApertureHosting();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "SBSSystemAperturePortalSourceInfoRequestServer received connection %@", &buf, 0xCu);
   }
 
@@ -75,7 +75,7 @@ void __70__SBSystemAperturePortalSourceInfoRequestServer_initWithPortalSource___
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__67;
   v17 = __Block_byref_object_dispose__67;
-  v12 = v9;
+  v12 = connectionCopy;
   v18 = v12;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -124,28 +124,28 @@ void __91__SBSystemAperturePortalSourceInfoRequestServer_listener_didReceiveConn
   *(v4 + 40) = 0;
 }
 
-- (void)rootWindowPortalSourceWithCompletion:(id)a3
+- (void)rootWindowPortalSourceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   serviceClientAuthenticator = self->_serviceClientAuthenticator;
-  v6 = [MEMORY[0x277CF3280] currentContext];
-  v7 = [v6 remoteProcess];
-  v8 = [v7 auditToken];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
   v11 = 0;
-  v9 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:v8 error:&v11];
+  v9 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:auditToken error:&v11];
   v10 = v11;
 
   if (v9)
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, self->_rootSystemApertureWindowPortalSource, 0);
+      completionCopy[2](completionCopy, self->_rootSystemApertureWindowPortalSource, 0);
     }
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (v4)[2](v4, 0, v10);
+    (completionCopy)[2](completionCopy, 0, v10);
   }
 }
 

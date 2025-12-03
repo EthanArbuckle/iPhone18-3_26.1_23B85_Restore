@@ -1,27 +1,27 @@
 @interface VCPCNNBlurAnalyzerEspresso
-+ (id)sharedModel:(id)a3;
-+ (id)sharedModelPoolWithRevision:(unint64_t)a3;
-- (VCPCNNBlurAnalyzerEspresso)initWithRevision:(unint64_t)a3;
-- (float)calculateScoreFromNetworkOutputV2:(float *)a3;
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6;
-- (int)computeSharpnessScore:(float *)a3 textureness:(char *)a4 contrast:(float)a5 imgWidth:(int)a6 cancel:(id)a7;
-- (int)prepareModelForSourceWidth:(int)a3 andSourceHeight:(int)a4;
-- (void)copyBufferFrom:(char *)a3 fromStride:(int64_t)a4 toPtr:(float *)a5 toStride:(int64_t)a6 toWidth:(int)a7 toHeight:(int)a8;
++ (id)sharedModel:(id)model;
++ (id)sharedModelPoolWithRevision:(unint64_t)revision;
+- (VCPCNNBlurAnalyzerEspresso)initWithRevision:(unint64_t)revision;
+- (float)calculateScoreFromNetworkOutputV2:(float *)v2;
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth;
+- (int)computeSharpnessScore:(float *)score textureness:(char *)textureness contrast:(float)contrast imgWidth:(int)width cancel:(id)cancel;
+- (int)prepareModelForSourceWidth:(int)width andSourceHeight:(int)height;
+- (void)copyBufferFrom:(char *)from fromStride:(int64_t)stride toPtr:(float *)ptr toStride:(int64_t)toStride toWidth:(int)width toHeight:(int)height;
 - (void)dealloc;
 @end
 
 @implementation VCPCNNBlurAnalyzerEspresso
 
-+ (id)sharedModelPoolWithRevision:(unint64_t)a3
++ (id)sharedModelPoolWithRevision:(unint64_t)revision
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VCPCNNBlurAnalyzerEspresso.sharedModelPool-%lu", a3];
+  revision = [MEMORY[0x1E696AEC0] stringWithFormat:@"VCPCNNBlurAnalyzerEspresso.sharedModelPool-%lu", revision];
   v5 = +[VCPSharedInstanceManager sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__VCPCNNBlurAnalyzerEspresso_sharedModelPoolWithRevision___block_invoke;
   v8[3] = &__block_descriptor_40_e20___VCPObjectPool_8__0l;
-  v8[4] = a3;
-  v6 = [v5 sharedInstanceWithIdentifier:v4 andCreationBlock:v8];
+  v8[4] = revision;
+  v6 = [v5 sharedInstanceWithIdentifier:revision andCreationBlock:v8];
 
   return v6;
 }
@@ -59,17 +59,17 @@ VCPCNNModelEspresso *__58__VCPCNNBlurAnalyzerEspresso_sharedModelPoolWithRevisio
   return v6;
 }
 
-- (VCPCNNBlurAnalyzerEspresso)initWithRevision:(unint64_t)a3
+- (VCPCNNBlurAnalyzerEspresso)initWithRevision:(unint64_t)revision
 {
   v12.receiver = self;
   v12.super_class = VCPCNNBlurAnalyzerEspresso;
   v4 = [(VCPCNNBlurAnalyzer *)&v12 initWithRevision:?];
   if (v4)
   {
-    v5 = [VCPCNNBlurAnalyzerEspresso sharedModelPoolWithRevision:a3];
-    v6 = [v5 getObject];
+    v5 = [VCPCNNBlurAnalyzerEspresso sharedModelPoolWithRevision:revision];
+    getObject = [v5 getObject];
     modelEspresso = v4->_modelEspresso;
-    v4->_modelEspresso = v6;
+    v4->_modelEspresso = getObject;
 
     v8 = v4->_modelEspresso;
     if (v8)
@@ -104,15 +104,15 @@ VCPCNNModelEspresso *__58__VCPCNNBlurAnalyzerEspresso_sharedModelPoolWithRevisio
   [(VCPCNNBlurAnalyzerEspresso *)&v4 dealloc];
 }
 
-+ (id)sharedModel:(id)a3
++ (id)sharedModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = +[VCPSharedInstanceManager sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke;
   v8[3] = &unk_1E834CF10;
-  v5 = v3;
+  v5 = modelCopy;
   v9 = v5;
   v6 = [v4 sharedInstanceWithIdentifier:@"VCPBlurEspresso" andCreationBlock:v8];
 
@@ -126,7 +126,7 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
   return v1;
 }
 
-- (float)calculateScoreFromNetworkOutputV2:(float *)a3
+- (float)calculateScoreFromNetworkOutputV2:(float *)v2
 {
   v5 = 0;
   v11 = *MEMORY[0x1E69E9840];
@@ -134,7 +134,7 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
   do
   {
     v9 = v3;
-    v6 = expf(a3[v5]);
+    v6 = expf(v2[v5]);
     v3 = v9;
     v10.f32[v5] = v6;
     *&v3 = *&v9 + v6;
@@ -146,20 +146,20 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
   return (((v7.f32[0] + 0.0) + v7.f32[1]) + v7.f32[2]) + v7.f32[3];
 }
 
-- (int)prepareModelForSourceWidth:(int)a3 andSourceHeight:(int)a4
+- (int)prepareModelForSourceWidth:(int)width andSourceHeight:(int)height
 {
-  if (self->_srcWidth == a3 && self->_srcHeight == a4)
+  if (self->_srcWidth == width && self->_srcHeight == height)
   {
     return 0;
   }
 
-  if (a4 == 299 && a3 == 299)
+  if (height == 299 && width == 299)
   {
     resConfig = self->_resConfig;
     v10 = @"res_299x299";
   }
 
-  else if (a4 == a3)
+  else if (height == width)
   {
     resConfig = self->_resConfig;
     v10 = @"res_400x400";
@@ -168,7 +168,7 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
   else
   {
     resConfig = self->_resConfig;
-    if (a4 >= a3)
+    if (height >= width)
     {
       v10 = @"res_300x400";
     }
@@ -181,8 +181,8 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
 
   self->_resConfig = &v10->isa;
 
-  v11 = [(VCPLoaned *)self->_modelEspresso object];
-  v7 = [v11 prepareModelWithConfig:self->_resConfig];
+  object = [(VCPLoaned *)self->_modelEspresso object];
+  v7 = [object prepareModelWithConfig:self->_resConfig];
 
   if (!v7)
   {
@@ -194,11 +194,11 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
       MEMORY[0x1CCA95C10](inputData, 0x1000C8052888210);
     }
 
-    v13 = [(VCPLoaned *)self->_modelEspresso object];
-    v14 = v13;
-    if (v13)
+    object2 = [(VCPLoaned *)self->_modelEspresso object];
+    v14 = object2;
+    if (object2)
     {
-      [v13 inputBlob];
+      [object2 inputBlob];
       v15 = v27;
     }
 
@@ -207,11 +207,11 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
       v15 = 0;
     }
 
-    v16 = [(VCPLoaned *)self->_modelEspresso object];
-    v17 = v16;
-    if (v16)
+    object3 = [(VCPLoaned *)self->_modelEspresso object];
+    v17 = object3;
+    if (object3)
     {
-      [v16 inputBlob];
+      [object3 inputBlob];
       v18 = v26;
     }
 
@@ -220,11 +220,11 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
       v18 = 0;
     }
 
-    v19 = [(VCPLoaned *)self->_modelEspresso object];
-    v20 = v19;
-    if (v19)
+    object4 = [(VCPLoaned *)self->_modelEspresso object];
+    v20 = object4;
+    if (object4)
     {
-      [v19 inputBlob];
+      [object4 inputBlob];
       v21 = v25;
     }
 
@@ -249,8 +249,8 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
     if (self->_inputData)
     {
       v7 = 0;
-      self->_srcWidth = a3;
-      self->_srcHeight = a4;
+      self->_srcWidth = width;
+      self->_srcHeight = height;
     }
 
     else
@@ -262,9 +262,9 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
   return v7;
 }
 
-- (float)getInputBuffer:(int)a3 srcWidth:(int)a4 cnnInputHeight:(int *)a5 cnnInputWidth:(int *)a6
+- (float)getInputBuffer:(int)buffer srcWidth:(int)width cnnInputHeight:(int *)height cnnInputWidth:(int *)inputWidth
 {
-  v9 = [(VCPLoaned *)self->_modelEspresso object:*&a3];
+  v9 = [(VCPLoaned *)self->_modelEspresso object:*&buffer];
   v10 = v9;
   if (v9)
   {
@@ -278,13 +278,13 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
     v16 = 0;
   }
 
-  *a5 = v11;
+  *height = v11;
 
-  v12 = [(VCPLoaned *)self->_modelEspresso object];
-  v13 = v12;
-  if (v12)
+  object = [(VCPLoaned *)self->_modelEspresso object];
+  v13 = object;
+  if (object)
   {
-    [v12 inputBlob];
+    [object inputBlob];
     v14 = v16;
   }
 
@@ -293,35 +293,35 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
     v14 = 0;
   }
 
-  *a6 = v14;
+  *inputWidth = v14;
 
   return self->_inputData;
 }
 
-- (int)computeSharpnessScore:(float *)a3 textureness:(char *)a4 contrast:(float)a5 imgWidth:(int)a6 cancel:(id)a7
+- (int)computeSharpnessScore:(float *)score textureness:(char *)textureness contrast:(float)contrast imgWidth:(int)width cancel:(id)cancel
 {
-  v7 = *&a6;
-  v12 = a7;
-  v13 = v12;
-  if (v12 && ((*(v12 + 2))(v12) & 1) != 0)
+  v7 = *&width;
+  cancelCopy = cancel;
+  v13 = cancelCopy;
+  if (cancelCopy && ((*(cancelCopy + 2))(cancelCopy) & 1) != 0)
   {
     v14 = -128;
   }
 
   else
   {
-    v15 = [(VCPLoaned *)self->_modelEspresso object];
-    v14 = [v15 espressoForward:self->_inputData];
+    object = [(VCPLoaned *)self->_modelEspresso object];
+    v14 = [object espressoForward:self->_inputData];
 
     if (!v14)
     {
       if ([(VCPCNNBlurAnalyzer *)self getRevision]== 2)
       {
-        v16 = [(VCPLoaned *)self->_modelEspresso object];
-        v17 = v16;
-        if (v16)
+        object2 = [(VCPLoaned *)self->_modelEspresso object];
+        v17 = object2;
+        if (object2)
         {
-          [v16 outputBlob];
+          [object2 outputBlob];
           v18 = v35;
         }
 
@@ -342,16 +342,16 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
         }
 
         [(VCPCNNBlurAnalyzerEspresso *)self calculateScoreFromNetworkOutputV2:v18, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45];
-        *a3 = v22;
+        *score = v22;
       }
 
       else
       {
-        v19 = [(VCPLoaned *)self->_modelEspresso object];
-        v20 = v19;
-        if (v19)
+        object3 = [(VCPLoaned *)self->_modelEspresso object];
+        v20 = object3;
+        if (object3)
         {
-          [v19 outputBlob];
+          [object3 outputBlob];
           v21 = v41;
         }
 
@@ -371,11 +371,11 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
           v36 = 0u;
         }
 
-        v23 = [(VCPLoaned *)self->_modelEspresso object];
-        v24 = v23;
-        if (v23)
+        object4 = [(VCPLoaned *)self->_modelEspresso object];
+        v24 = object4;
+        if (object4)
         {
-          [v23 outputBlob];
+          [object4 outputBlob];
           v25 = DWORD2(v40);
         }
 
@@ -395,11 +395,11 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
           v36 = 0u;
         }
 
-        v26 = [(VCPLoaned *)self->_modelEspresso object];
-        v27 = v26;
-        if (v26)
+        object5 = [(VCPLoaned *)self->_modelEspresso object];
+        v27 = object5;
+        if (object5)
         {
-          [v26 outputBlob];
+          [object5 outputBlob];
           v28 = v40;
         }
 
@@ -419,11 +419,11 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
           v36 = 0u;
         }
 
-        v29 = [(VCPLoaned *)self->_modelEspresso object];
-        v30 = v29;
-        if (v29)
+        object6 = [(VCPLoaned *)self->_modelEspresso object];
+        v30 = object6;
+        if (object6)
         {
-          [v29 outputBlob];
+          [object6 outputBlob];
           v32 = v35;
         }
 
@@ -444,9 +444,9 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
           v36 = 0u;
         }
 
-        *&v31 = a5;
-        [(VCPCNNBlurAnalyzer *)self calculateScoreFromNetworkOutput:v32 outChannel:v21 outHeight:v25 outWidth:v28 textureness:a4 contrast:v7 imgWidth:v31, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45];
-        *a3 = v33;
+        *&v31 = contrast;
+        [(VCPCNNBlurAnalyzer *)self calculateScoreFromNetworkOutput:v32 outChannel:v21 outHeight:v25 outWidth:v28 textureness:textureness contrast:v7 imgWidth:v31, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45];
+        *score = v33;
       }
 
       v14 = 0;
@@ -456,17 +456,17 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
   return v14;
 }
 
-- (void)copyBufferFrom:(char *)a3 fromStride:(int64_t)a4 toPtr:(float *)a5 toStride:(int64_t)a6 toWidth:(int)a7 toHeight:(int)a8
+- (void)copyBufferFrom:(char *)from fromStride:(int64_t)stride toPtr:(float *)ptr toStride:(int64_t)toStride toWidth:(int)width toHeight:(int)height
 {
-  v8 = *&a8;
-  v9 = *&a7;
+  v8 = *&height;
+  v9 = *&width;
   if ([(VCPCNNBlurAnalyzer *)self getRevision]== 2)
   {
     if (v8 >= 1)
     {
       v16 = 0;
       v17 = 0.0;
-      v18 = a3;
+      fromCopy = from;
       do
       {
         if (v9 >= 1)
@@ -474,7 +474,7 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
           v19 = 0;
           do
           {
-            LOBYTE(v15) = v18[v19];
+            LOBYTE(v15) = fromCopy[v19];
             v15 = LODWORD(v15);
             v17 = v17 + v15;
             ++v19;
@@ -483,14 +483,14 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
           while (v9 != v19);
         }
 
-        v18 += a4;
+        fromCopy += stride;
         ++v16;
       }
 
       while (v16 != v8);
       v20 = v17 / ((v9 * 255.0) * v8);
       v21 = 0;
-      v22 = 4 * a6;
+      v22 = 4 * toStride;
       if (v20 >= 0.1)
       {
         do
@@ -500,17 +500,17 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
             v24 = 0;
             do
             {
-              LOBYTE(v20) = a3[v24];
+              LOBYTE(v20) = from[v24];
               v20 = LODWORD(v20) / 255.0;
-              a5[v24++] = v20;
+              ptr[v24++] = v20;
             }
 
             while (v9 != v24);
           }
 
-          a3 += a4;
+          from += stride;
           ++v21;
-          a5 = (a5 + v22);
+          ptr = (ptr + v22);
         }
 
         while (v21 != v8);
@@ -525,17 +525,17 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
             v23 = 0;
             do
             {
-              LOBYTE(v20) = a3[v23];
+              LOBYTE(v20) = from[v23];
               v20 = (LODWORD(v20) + LODWORD(v20)) / 255.0;
-              a5[v23++] = v20;
+              ptr[v23++] = v20;
             }
 
             while (v9 != v23);
           }
 
-          a3 += a4;
+          from += stride;
           ++v21;
-          a5 = (a5 + v22);
+          ptr = (ptr + v22);
         }
 
         while (v21 != v8);
@@ -547,7 +547,7 @@ VCPCNNModelEspresso *__42__VCPCNNBlurAnalyzerEspresso_sharedModel___block_invoke
   {
     v25.receiver = self;
     v25.super_class = VCPCNNBlurAnalyzerEspresso;
-    [(VCPCNNBlurAnalyzer *)&v25 copyBufferFrom:a3 fromStride:a4 toPtr:a5 toStride:a6 toWidth:v9 toHeight:v8];
+    [(VCPCNNBlurAnalyzer *)&v25 copyBufferFrom:from fromStride:stride toPtr:ptr toStride:toStride toWidth:v9 toHeight:v8];
   }
 }
 

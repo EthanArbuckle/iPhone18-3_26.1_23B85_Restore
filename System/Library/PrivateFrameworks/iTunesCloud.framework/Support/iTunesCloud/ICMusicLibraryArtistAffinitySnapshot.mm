@@ -1,5 +1,5 @@
 @interface ICMusicLibraryArtistAffinitySnapshot
-- (ICMusicLibraryArtistAffinitySnapshot)initWithContentItemSnapshot:(id)a3;
+- (ICMusicLibraryArtistAffinitySnapshot)initWithContentItemSnapshot:(id)snapshot;
 - (float)legacyScore;
 - (id)debugDescription;
 - (int64_t)daysSinceLastPlayedDate;
@@ -9,20 +9,20 @@
 
 - (id)debugDescription
 {
-  v3 = [(ICMusicLibraryArtistAffinitySnapshot *)self artistName];
+  artistName = [(ICMusicLibraryArtistAffinitySnapshot *)self artistName];
   [(ICMusicLibraryArtistAffinitySnapshot *)self legacyScore];
   v5 = v4;
-  v17 = [(ICMusicLibraryArtistAffinitySnapshot *)self artistAdamID];
-  v6 = [(ICMusicLibraryArtistAffinitySnapshot *)self cumulativePlayCount];
-  v7 = [(ICMusicLibraryArtistAffinitySnapshot *)self cumulativeSkipCount];
+  artistAdamID = [(ICMusicLibraryArtistAffinitySnapshot *)self artistAdamID];
+  cumulativePlayCount = [(ICMusicLibraryArtistAffinitySnapshot *)self cumulativePlayCount];
+  cumulativeSkipCount = [(ICMusicLibraryArtistAffinitySnapshot *)self cumulativeSkipCount];
   [(ICMusicLibraryArtistAffinitySnapshot *)self averagePlaysPerItemAdded];
   v9 = v8;
-  v10 = [(ICMusicLibraryArtistAffinitySnapshot *)self uniqueAlbums];
-  v11 = [v10 count];
-  v12 = [(ICMusicLibraryArtistAffinitySnapshot *)self uniqueSongs];
-  v13 = [v12 count];
-  v14 = [(ICMusicLibraryArtistAffinitySnapshot *)self uniqueDatesWithAddedContent];
-  v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Artist: %@: Score: %f, artistID: %lld, cumulativePlayCount: %ld, cumulativeSkipCount: %ld, playsPerItem: %f, uniqueAlbums: %lu, uniqueSongs: %lu, daysWithAdds: %lu, daysSinceLastPlay: %ld", v3, *&v5, v17, v6, v7, v9, v11, v13, [v14 count], -[ICMusicLibraryArtistAffinitySnapshot daysSinceLastPlayedDate](self, "daysSinceLastPlayedDate"));
+  uniqueAlbums = [(ICMusicLibraryArtistAffinitySnapshot *)self uniqueAlbums];
+  v11 = [uniqueAlbums count];
+  uniqueSongs = [(ICMusicLibraryArtistAffinitySnapshot *)self uniqueSongs];
+  v13 = [uniqueSongs count];
+  uniqueDatesWithAddedContent = [(ICMusicLibraryArtistAffinitySnapshot *)self uniqueDatesWithAddedContent];
+  v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Artist: %@: Score: %f, artistID: %lld, cumulativePlayCount: %ld, cumulativeSkipCount: %ld, playsPerItem: %f, uniqueAlbums: %lu, uniqueSongs: %lu, daysWithAdds: %lu, daysSinceLastPlay: %ld", artistName, *&v5, artistAdamID, cumulativePlayCount, cumulativeSkipCount, v9, v11, v13, [uniqueDatesWithAddedContent count], -[ICMusicLibraryArtistAffinitySnapshot daysSinceLastPlayedDate](self, "daysSinceLastPlayedDate"));
 
   return v15;
 }
@@ -68,37 +68,37 @@
   }
 }
 
-- (ICMusicLibraryArtistAffinitySnapshot)initWithContentItemSnapshot:(id)a3
+- (ICMusicLibraryArtistAffinitySnapshot)initWithContentItemSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v18.receiver = self;
   v18.super_class = ICMusicLibraryArtistAffinitySnapshot;
   v5 = [(ICMusicLibraryArtistAffinitySnapshot *)&v18 init];
   if (v5)
   {
-    v6 = [v4 artistMetadataDescriptor];
-    [(ICMusicLibraryArtistAffinitySnapshot *)v5 setArtistMetadataDescriptor:v6];
+    artistMetadataDescriptor = [snapshotCopy artistMetadataDescriptor];
+    [(ICMusicLibraryArtistAffinitySnapshot *)v5 setArtistMetadataDescriptor:artistMetadataDescriptor];
 
     v7 = [NSMutableArray alloc];
-    v8 = [v4 songMetadataDescriptor];
-    v9 = [v7 initWithObjects:{v8, 0}];
+    songMetadataDescriptor = [snapshotCopy songMetadataDescriptor];
+    v9 = [v7 initWithObjects:{songMetadataDescriptor, 0}];
     [(ICMusicLibraryArtistAffinitySnapshot *)v5 setUniqueSongs:v9];
 
     v10 = [NSMutableArray alloc];
-    v11 = [v4 albumMetadataDescriptor];
-    v12 = [v10 initWithObjects:{v11, 0}];
+    albumMetadataDescriptor = [snapshotCopy albumMetadataDescriptor];
+    v12 = [v10 initWithObjects:{albumMetadataDescriptor, 0}];
     [(ICMusicLibraryArtistAffinitySnapshot *)v5 setUniqueAlbums:v12];
 
     v13 = [NSMutableSet alloc];
-    v14 = [v4 libraryAddedDate];
-    v15 = [v13 initWithObjects:{v14, 0}];
+    libraryAddedDate = [snapshotCopy libraryAddedDate];
+    v15 = [v13 initWithObjects:{libraryAddedDate, 0}];
     [(ICMusicLibraryArtistAffinitySnapshot *)v5 setUniqueDatesWithAddedContent:v15];
 
-    v16 = [v4 lastPlayedDate];
-    [(ICMusicLibraryArtistAffinitySnapshot *)v5 setLastPlayedDate:v16];
+    lastPlayedDate = [snapshotCopy lastPlayedDate];
+    [(ICMusicLibraryArtistAffinitySnapshot *)v5 setLastPlayedDate:lastPlayedDate];
 
-    -[ICMusicLibraryArtistAffinitySnapshot setCumulativePlayCount:](v5, "setCumulativePlayCount:", [v4 playCount]);
-    -[ICMusicLibraryArtistAffinitySnapshot setCumulativeSkipCount:](v5, "setCumulativeSkipCount:", [v4 skipCount]);
+    -[ICMusicLibraryArtistAffinitySnapshot setCumulativePlayCount:](v5, "setCumulativePlayCount:", [snapshotCopy playCount]);
+    -[ICMusicLibraryArtistAffinitySnapshot setCumulativeSkipCount:](v5, "setCumulativeSkipCount:", [snapshotCopy skipCount]);
   }
 
   return v5;

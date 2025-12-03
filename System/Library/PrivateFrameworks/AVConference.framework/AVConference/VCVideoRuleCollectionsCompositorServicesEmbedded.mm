@@ -1,13 +1,13 @@
 @interface VCVideoRuleCollectionsCompositorServicesEmbedded
 + (id)sharedInstance;
 - (BOOL)initSupportedPayloads;
-- (VCVideoRuleCollectionsCompositorServicesEmbedded)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsCompositorServicesEmbedded)initWithHardwareSettings:(id)settings;
 - (void)dealloc;
 @end
 
 @implementation VCVideoRuleCollectionsCompositorServicesEmbedded
 
-- (VCVideoRuleCollectionsCompositorServicesEmbedded)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsCompositorServicesEmbedded)initWithHardwareSettings:(id)settings
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -21,7 +21,7 @@ LABEL_8:
     return 0;
   }
 
-  v4->_hardwareSettings = a3;
+  v4->_hardwareSettings = settings;
   if (![(VCVideoRuleCollectionsCompositorServicesEmbedded *)v4 initSupportedPayloads])
   {
     [VCVideoRuleCollectionsCompositorServicesEmbedded initWithHardwareSettings:v4];
@@ -91,7 +91,7 @@ VCVideoRuleCollectionsCompositorServicesEmbedded *__66__VCVideoRuleCollectionsCo
         return v7 != 0;
       }
 
-      v12 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+      deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
       v19 = 136316418;
       v20 = v10;
       v21 = 2080;
@@ -99,7 +99,7 @@ VCVideoRuleCollectionsCompositorServicesEmbedded *__66__VCVideoRuleCollectionsCo
       v23 = 1024;
       v24 = 59;
       v25 = 2048;
-      v26 = v12;
+      v26 = deviceClass;
       v27 = 1024;
       *v28 = v3;
       *&v28[4] = 1024;
@@ -133,7 +133,7 @@ VCVideoRuleCollectionsCompositorServicesEmbedded *__66__VCVideoRuleCollectionsCo
         return v7 != 0;
       }
 
-      v18 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+      deviceClass2 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
       v19 = 136316930;
       v20 = v16;
       v21 = 2080;
@@ -145,7 +145,7 @@ VCVideoRuleCollectionsCompositorServicesEmbedded *__66__VCVideoRuleCollectionsCo
       v27 = 2048;
       *v28 = self;
       *&v28[8] = 2048;
-      v29 = v18;
+      v29 = deviceClass2;
       v30 = 1024;
       v31 = v3;
       v32 = 1024;

@@ -1,14 +1,14 @@
 @interface _NSAssumedFallbackInflectionAttributeDescriptor
-- (id)attributeValueFromValue:(id)a3;
+- (id)attributeValueFromValue:(id)value;
 @end
 
 @implementation _NSAssumedFallbackInflectionAttributeDescriptor
 
-- (id)attributeValueFromValue:(id)a3
+- (id)attributeValueFromValue:(id)value
 {
   if (_NSIsNSDictionary())
   {
-    v4 = [[_NSAttributedStringGrammarInflection alloc] initWithExternalRepresentationDictionary:a3 error:0];
+    v4 = [[_NSAttributedStringGrammarInflection alloc] initWithExternalRepresentationDictionary:value error:0];
 
     return v4;
   }
@@ -25,7 +25,7 @@
       }
     }
 
-    return a3;
+    return value;
   }
 }
 

@@ -1,7 +1,7 @@
 @interface NTKCCFaceAddedInfoViewController
 + (UIEdgeInsets)layoutMargins;
 - (CGSize)preferredContentSize;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -27,8 +27,8 @@
   v6 = NTKCCustomizationLocalizedString();
   [(UILabel *)self->_header setText:v6];
 
-  v7 = [(NTKCCFaceAddedInfoViewController *)self view];
-  [v7 addSubview:self->_header];
+  view = [(NTKCCFaceAddedInfoViewController *)self view];
+  [view addSubview:self->_header];
 
   v8 = objc_opt_new();
   [(NTKCCFaceAddedInfoViewController *)self setBody:v8];
@@ -44,8 +44,8 @@
   v11 = NTKCCustomizationLocalizedString();
   [(UILabel *)self->_body setText:v11];
 
-  v12 = [(NTKCCFaceAddedInfoViewController *)self view];
-  [v12 addSubview:self->_body];
+  view2 = [(NTKCCFaceAddedInfoViewController *)self view];
+  [view2 addSubview:self->_body];
 
   v13 = +[UIButtonConfiguration plainButtonConfiguration];
   v14 = +[UIColor whiteColor];
@@ -62,8 +62,8 @@
   [(UIButton *)self->_close addTarget:self action:"_closeTapped" forControlEvents:64];
   [(UIButton *)self->_close sizeToFit];
   [(UIButton *)self->_close layoutBelowIfNeeded];
-  v18 = [(NTKCCFaceAddedInfoViewController *)self view];
-  [v18 addSubview:self->_close];
+  view3 = [(NTKCCFaceAddedInfoViewController *)self view];
+  [view3 addSubview:self->_close];
 }
 
 - (void)viewDidLayoutSubviews
@@ -71,8 +71,8 @@
   v74.receiver = self;
   v74.super_class = NTKCCFaceAddedInfoViewController;
   [(NTKCCFaceAddedInfoViewController *)&v74 viewDidLayoutSubviews];
-  v3 = [(NTKCCFaceAddedInfoViewController *)self view];
-  [v3 bounds];
+  view = [(NTKCCFaceAddedInfoViewController *)self view];
+  [view bounds];
   v5 = v4;
   v69 = v6;
   v8 = v7;
@@ -84,8 +84,8 @@
   v67 = v13;
   v68 = v14;
   close = self->_close;
-  v16 = [(UIButton *)close imageView];
-  [v16 frame];
+  imageView = [(UIButton *)close imageView];
+  [imageView frame];
   [(UIButton *)close convertRect:self->_close toView:?];
   v18 = v17;
   v20 = v19;
@@ -136,14 +136,14 @@
 
   [(UIButton *)self->_close setFrame:v29, rect, v27, v26];
   v30 = self->_close;
-  v31 = [(UIButton *)v30 imageView];
-  [v31 frame];
+  imageView2 = [(UIButton *)v30 imageView];
+  [imageView2 frame];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  v40 = [(NTKCCFaceAddedInfoViewController *)self view];
-  [(UIButton *)v30 convertRect:v40 toView:v33, v35, v37, v39];
+  view2 = [(NTKCCFaceAddedInfoViewController *)self view];
+  [(UIButton *)v30 convertRect:view2 toView:v33, v35, v37, v39];
   v42 = v41;
   v44 = v43;
   v46 = v45;
@@ -205,11 +205,11 @@
   [(UILabel *)self->_body setFrame:v53, v63 - v64, v54, v60];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = NTKCCFaceAddedInfoViewController;
-  [(NTKCCFaceAddedInfoViewController *)&v3 viewDidAppear:a3];
+  [(NTKCCFaceAddedInfoViewController *)&v3 viewDidAppear:appear];
   CFPreferencesSetAppValue(@"FaceAddedInfoPopoverShown", kCFBooleanTrue, NTKFacePreferencesDomain);
 }
 
@@ -221,11 +221,11 @@
   v7 = v6;
 
   v8 = v5 + -40.0;
-  v9 = [(NTKCCFaceAddedInfoViewController *)self view];
-  [v9 setFrame:{0.0, 0.0, v8, v7}];
+  view = [(NTKCCFaceAddedInfoViewController *)self view];
+  [view setFrame:{0.0, 0.0, v8, v7}];
 
-  v10 = [(NTKCCFaceAddedInfoViewController *)self view];
-  [v10 layoutIfNeeded];
+  view2 = [(NTKCCFaceAddedInfoViewController *)self view];
+  [view2 layoutIfNeeded];
 
   [(UILabel *)self->_body frame];
   MaxY = CGRectGetMaxY(v16);

@@ -1,47 +1,47 @@
 @interface JavaLangAbstractStringBuilder
 - (id)description;
-- (int)indexOfWithNSString:(id)a3 withInt:(int)a4;
-- (int)lastIndexOfWithNSString:(id)a3 withInt:(int)a4;
+- (int)indexOfWithNSString:(id)string withInt:(int)int;
+- (int)lastIndexOfWithNSString:(id)string withInt:(int)int;
 - (void)dealloc;
-- (void)ensureCapacityWithInt:(int)a3;
-- (void)setWithCharArray:(id)a3 withInt:(int)a4;
+- (void)ensureCapacityWithInt:(int)int;
+- (void)setWithCharArray:(id)array withInt:(int)int;
 - (void)trimToSize;
 @end
 
 @implementation JavaLangAbstractStringBuilder
 
-- (void)setWithCharArray:(id)a3 withInt:(int)a4
+- (void)setWithCharArray:(id)array withInt:(int)int
 {
-  v5 = a3;
-  if (!a3)
+  arrayCopy = array;
+  if (!array)
   {
     if ((atomic_load_explicit(LibcoreUtilEmptyArray__initialized, memory_order_acquire) & 1) == 0)
     {
       sub_1001BBB54();
     }
 
-    v5 = LibcoreUtilEmptyArray_CHAR_;
+    arrayCopy = LibcoreUtilEmptyArray_CHAR_;
     if (!LibcoreUtilEmptyArray_CHAR_)
     {
       JreThrowNullPointerException();
     }
   }
 
-  if (v5[2] < a4)
+  if (arrayCopy[2] < int)
   {
     objc_exception_throw([[JavaIoInvalidObjectException alloc] initWithNSString:@"count out of range"]);
   }
 
   buffer = self->delegate_.buffer_;
-  if (self->delegate_.bufferSize_ >= a4)
+  if (self->delegate_.bufferSize_ >= int)
   {
-    v8 = 2 * a4;
+    v8 = 2 * int;
   }
 
   else
   {
     free(buffer);
-    v8 = 2 * a4;
+    v8 = 2 * int;
     buffer = malloc_type_malloc(v8, 0x1000040BDFB0063uLL);
     self->delegate_.buffer_ = buffer;
     if (!buffer)
@@ -49,30 +49,30 @@
       sub_100248B50();
     }
 
-    self->delegate_.bufferSize_ = a4;
+    self->delegate_.bufferSize_ = int;
   }
 
-  memcpy(buffer, v5 + 3, v8);
-  self->delegate_.count_ = a4;
+  memcpy(buffer, arrayCopy + 3, v8);
+  self->delegate_.count_ = int;
 }
 
-- (void)ensureCapacityWithInt:(int)a3
+- (void)ensureCapacityWithInt:(int)int
 {
   bufferSize = self->delegate_.bufferSize_;
-  if (bufferSize < a3)
+  if (bufferSize < int)
   {
     v4 = 2 * bufferSize + 2;
-    if (v4 <= a3)
+    if (v4 <= int)
     {
-      v5 = a3;
+      intCopy = int;
     }
 
     else
     {
-      v5 = v4;
+      intCopy = v4;
     }
 
-    sub_1002476A4(&self->delegate_, v5);
+    sub_1002476A4(&self->delegate_, intCopy);
   }
 }
 
@@ -89,15 +89,15 @@
   }
 }
 
-- (int)indexOfWithNSString:(id)a3 withInt:(int)a4
+- (int)indexOfWithNSString:(id)string withInt:(int)int
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = a4 & ~(a4 >> 31);
-  v8 = [a3 length];
+  v7 = int & ~(int >> 31);
+  v8 = [string length];
   v9 = v8;
   if (v8 < 1)
   {
@@ -107,7 +107,7 @@
       count = v7;
     }
 
-    if (a4 >= 1)
+    if (int >= 1)
     {
       return count;
     }
@@ -125,7 +125,7 @@
       return -1;
     }
 
-    v12 = [a3 characterAtIndex:0];
+    v12 = [string characterAtIndex:0];
     v13 = (v9 - 1);
 LABEL_11:
     v14 = self->delegate_.count_;
@@ -165,7 +165,7 @@ LABEL_11:
       while (v13)
       {
         v22 = self->delegate_.buffer_[i];
-        v23 = [a3 characterAtIndex:v20];
+        v23 = [string characterAtIndex:v20];
         --v13;
         --v21;
         ++v20;
@@ -188,16 +188,16 @@ LABEL_11:
   }
 }
 
-- (int)lastIndexOfWithNSString:(id)a3 withInt:(int)a4
+- (int)lastIndexOfWithNSString:(id)string withInt:(int)int
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = [a3 length];
+  v7 = [string length];
   v8 = -1;
-  if (a4 < 0)
+  if (int < 0)
   {
     return v8;
   }
@@ -211,26 +211,26 @@ LABEL_11:
 
   if (v7 >= 1)
   {
-    if (count - v7 >= a4)
+    if (count - v7 >= int)
     {
-      v11 = a4;
+      intCopy = int;
     }
 
     else
     {
-      v11 = count - v7;
+      intCopy = count - v7;
     }
 
-    v12 = [a3 characterAtIndex:0];
+    v12 = [string characterAtIndex:0];
     v13 = (v9 - 1);
 LABEL_9:
-    if (v11 < 0)
+    if (intCopy < 0)
     {
       return -1;
     }
 
-    v14 = v11 + 1;
-    v8 = v11;
+    v14 = intCopy + 1;
+    v8 = intCopy;
     while (self->delegate_.buffer_[v8] != v12)
     {
       --v14;
@@ -246,14 +246,14 @@ LABEL_9:
     while (v13)
     {
       v18 = self->delegate_.buffer_[v14];
-      v19 = [a3 characterAtIndex:v16];
+      v19 = [string characterAtIndex:v16];
       --v13;
       --v17;
       ++v16;
       ++v14;
       if (v18 != v19)
       {
-        v11 = v8 - 1;
+        intCopy = v8 - 1;
         v13 = v21;
         if (v17)
         {
@@ -267,9 +267,9 @@ LABEL_9:
     return v8;
   }
 
-  if (count >= a4)
+  if (count >= int)
   {
-    return a4;
+    return int;
   }
 
   else

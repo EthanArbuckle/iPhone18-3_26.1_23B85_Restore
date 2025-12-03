@@ -1,11 +1,11 @@
 @interface OKActionBindingScroll
 + (id)supportedSettings;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (CGPoint)offset;
 - (OKActionBindingScroll)init;
-- (OKActionBindingScroll)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
+- (OKActionBindingScroll)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
 - (void)unload;
 @end
 
@@ -28,14 +28,14 @@
   return v3;
 }
 
-- (OKActionBindingScroll)initWithSettings:(id)a3
+- (OKActionBindingScroll)initWithSettings:(id)settings
 {
   v9.receiver = self;
   v9.super_class = OKActionBindingScroll;
   v4 = [(OKActionBinding *)&v9 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"offset"];
+    v5 = [settings objectForKey:@"offset"];
     if (v5)
     {
       [v5 CGPointValue];
@@ -43,13 +43,13 @@
       v4->_continuous = 0;
     }
 
-    v6 = [a3 objectForKey:@"triggerLimit"];
+    v6 = [settings objectForKey:@"triggerLimit"];
     if (v6)
     {
       v4->_triggerLimit = [v6 intValue];
     }
 
-    v7 = [a3 objectForKey:@"probability"];
+    v7 = [settings objectForKey:@"probability"];
     if (v7)
     {
       v4->_probability = [v7 intValue];
@@ -59,11 +59,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingScroll;
-  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -78,10 +78,10 @@
   [(OKActionBindingProxy *)self actionResponder];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v4 = [(OKActionBindingProxy *)self actionResponder];
+  actionResponder = [(OKActionBindingProxy *)self actionResponder];
   if (isKindOfClass)
   {
-    v5 = [(OKActionResponder *)v4 pageViewController];
+    pageViewController = [(OKActionResponder *)actionResponder pageViewController];
   }
 
   else
@@ -92,13 +92,13 @@
       goto LABEL_7;
     }
 
-    v5 = [(OKActionBindingProxy *)self actionResponder];
+    pageViewController = [(OKActionBindingProxy *)self actionResponder];
   }
 
-  v6 = [(OKActionResponder *)v5 navigatorViewController];
-  if (v6)
+  navigatorViewController = [(OKActionResponder *)pageViewController navigatorViewController];
+  if (navigatorViewController)
   {
-    [v6 removeRegisteredObject:-[OKActionBindingProxy actionResponder](self forActionAtOffset:"actionResponder") continuous:{self->_continuous, self->_offset.x, self->_offset.y}];
+    [navigatorViewController removeRegisteredObject:-[OKActionBindingProxy actionResponder](self forActionAtOffset:"actionResponder") continuous:{self->_continuous, self->_offset.x, self->_offset.y}];
   }
 
 LABEL_7:
@@ -110,7 +110,7 @@ LABEL_7:
 + (id)supportedSettings
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKActionBindingScroll;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v11[0] = @"offset";
@@ -129,44 +129,44 @@ LABEL_7:
   return v2;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v9.receiver = self;
   v9.super_class = OKActionBindingScroll;
-  [(OKActionBindingProxy *)&v9 loadForResponder:a3 scope:a4];
+  [(OKActionBindingProxy *)&v9 loadForResponder:responder scope:scope];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a3 pageViewController];
+    responderCopy = [responder pageViewController];
   }
 
   else
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v6 = a3;
+    responderCopy = responder;
     if ((isKindOfClass & 1) == 0)
     {
       return;
     }
   }
 
-  v8 = [v6 navigatorViewController];
-  if (v8)
+  navigatorViewController = [responderCopy navigatorViewController];
+  if (navigatorViewController)
   {
     if (self->_continuous)
     {
-      [v8 registerObjectOnScrollingEvent:a3];
+      [navigatorViewController registerObjectOnScrollingEvent:responder];
     }
 
     else
     {
-      [v8 registerObject:a3 forActionAtOffset:self->_probability probability:self->_triggerLimit andLimit:{self->_offset.x, self->_offset.y}];
+      [navigatorViewController registerObject:responder forActionAtOffset:self->_probability probability:self->_triggerLimit andLimit:{self->_offset.x, self->_offset.y}];
     }
   }
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -176,7 +176,7 @@ LABEL_7:
 
   if (!self->_continuous)
   {
-    [a3 location];
+    [action location];
     v8 = v7;
     v10 = v9;
     [(OKActionBindingScroll *)self offset];
@@ -184,7 +184,7 @@ LABEL_7:
   }
 
   v6 = 1;
-  [a3 setShouldPropagate:1];
+  [action setShouldPropagate:1];
   return v6;
 }
 

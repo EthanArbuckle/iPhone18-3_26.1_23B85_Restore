@@ -1,14 +1,14 @@
 @interface SBRootFolder
-- (BOOL)canAddIconCount:(int64_t)a3 startingAtList:(id)a4;
-- (BOOL)canBounceIcon:(id)a3;
+- (BOOL)canAddIconCount:(int64_t)count startingAtList:(id)list;
+- (BOOL)canBounceIcon:(id)icon;
 - (BOOL)containsNonDefaultSizedIconExcludingTodayList;
 - (BOOL)containsVisibleNonDefaultSizedIconExcludingTodayList;
 - (BOOL)containsVisibleWidgetIconExcludingTodayList;
 - (BOOL)containsWidgetIconExcludingTodayList;
-- (BOOL)isIconAtIndexPathInDock:(id)a3;
-- (BOOL)isIconAtIndexPathInDock:(id)a3 includingDockFolders:(BOOL)a4;
-- (BOOL)isIconInIgnoredList:(id)a3;
-- (BOOL)isIconWithIdentifierInIgnoredList:(id)a3;
+- (BOOL)isIconAtIndexPathInDock:(id)dock;
+- (BOOL)isIconAtIndexPathInDock:(id)dock includingDockFolders:(BOOL)folders;
+- (BOOL)isIconInIgnoredList:(id)list;
+- (BOOL)isIconWithIdentifierInIgnoredList:(id)list;
 - (NSArray)icons;
 - (SBHIconModel)model;
 - (SBIconListModel)bumpedIconsFallbackList;
@@ -16,30 +16,30 @@
 - (SBIconListModel)dockUtilities;
 - (SBIconListModel)ignoredList;
 - (SBIconListModel)todayList;
-- (SBRootFolder)initWithUniqueIdentifier:(id)a3 displayName:(id)a4 maxListCount:(int64_t)a5 listGridSize:(SBHIconGridSize)a6 iconGridSizeClassSizes:(id)a7;
+- (SBRootFolder)initWithUniqueIdentifier:(id)identifier displayName:(id)name maxListCount:(int64_t)count listGridSize:(SBHIconGridSize)size iconGridSizeClassSizes:(id)sizes;
 - (SBRootFolderDelegate)delegate;
-- (id)listAtIndex:(int64_t)a3;
-- (int64_t)hiddenIndexOfList:(id)a3;
-- (int64_t)indexOfList:(id)a3;
-- (int64_t)visibleIndexOfList:(id)a3;
-- (void)_didExplicitlyRemoveHiddenLists:(id)a3;
-- (void)_setDock:(id)a3;
-- (void)_setDockUtilities:(id)a3;
-- (void)_setIgnoredList:(id)a3;
-- (void)_setTodayList:(id)a3;
+- (id)listAtIndex:(int64_t)index;
+- (int64_t)hiddenIndexOfList:(id)list;
+- (int64_t)indexOfList:(id)list;
+- (int64_t)visibleIndexOfList:(id)list;
+- (void)_didExplicitlyRemoveHiddenLists:(id)lists;
+- (void)_setDock:(id)dock;
+- (void)_setDockUtilities:(id)utilities;
+- (void)_setIgnoredList:(id)list;
+- (void)_setTodayList:(id)list;
 - (void)checkIgnoredListConsistency;
-- (void)enumerateExtraListsUsingBlock:(id)a3;
-- (void)enumerateTodayListIconsUsingBlock:(id)a3;
-- (void)enumerateTodayListsUsingBlock:(id)a3;
-- (void)removeList:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)enumerateExtraListsUsingBlock:(id)block;
+- (void)enumerateTodayListIconsUsingBlock:(id)block;
+- (void)enumerateTodayListsUsingBlock:(id)block;
+- (void)removeList:(id)list;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SBRootFolder
 
 - (SBIconListModel)dock
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BEB368E8();
 
   return v3;
@@ -47,7 +47,7 @@
 
 - (SBIconListModel)todayList
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BEB36A44();
 
   return v3;
@@ -63,10 +63,10 @@
 
   else
   {
-    v4 = self;
-    v5 = [(SBFolder *)v4 iconGridSizeClassSizes];
-    v3 = [objc_allocWithZone(SBIconListModel) initWithFolder:v4 gridSize:4294901770 gridSizeClassSizes:v5];
-    [(SBRootFolder *)v4 _setIgnoredList:v3];
+    selfCopy = self;
+    iconGridSizeClassSizes = [(SBFolder *)selfCopy iconGridSizeClassSizes];
+    v3 = [objc_allocWithZone(SBIconListModel) initWithFolder:selfCopy gridSize:4294901770 gridSizeClassSizes:iconGridSizeClassSizes];
+    [(SBRootFolder *)selfCopy _setIgnoredList:v3];
 
     v2 = 0;
   }
@@ -78,7 +78,7 @@
 
 - (SBIconListModel)dockUtilities
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BEB37078();
 
   return v3;
@@ -91,9 +91,9 @@
   return Strong;
 }
 
-- (SBRootFolder)initWithUniqueIdentifier:(id)a3 displayName:(id)a4 maxListCount:(int64_t)a5 listGridSize:(SBHIconGridSize)a6 iconGridSizeClassSizes:(id)a7
+- (SBRootFolder)initWithUniqueIdentifier:(id)identifier displayName:(id)name maxListCount:(int64_t)count listGridSize:(SBHIconGridSize)size iconGridSizeClassSizes:(id)sizes
 {
-  if (a3)
+  if (identifier)
   {
     v10 = sub_1BEE4708C();
     v12 = v11;
@@ -106,7 +106,7 @@
   }
 
   v13 = sub_1BEE4708C();
-  return SBRootFolder.init(uniqueIdentifier:displayName:maxListCount:listGridSize:iconGridSizeClassSizes:)(v10, v12, v13, v14, a5, *&a6, a7);
+  return SBRootFolder.init(uniqueIdentifier:displayName:maxListCount:listGridSize:iconGridSizeClassSizes:)(v10, v12, v13, v14, count, *&size, sizes);
 }
 
 - (SBRootFolderDelegate)delegate
@@ -116,18 +116,18 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BEE35864();
   swift_unknownObjectRelease();
 }
 
 - (BOOL)containsWidgetIconExcludingTodayList
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BEE35C94();
 
   return v3 & 1;
@@ -135,7 +135,7 @@
 
 - (BOOL)containsVisibleWidgetIconExcludingTodayList
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BEE35E30();
 
   return v3 & 1;
@@ -143,7 +143,7 @@
 
 - (BOOL)containsNonDefaultSizedIconExcludingTodayList
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BEE3605C();
 
   return v3 & 1;
@@ -151,17 +151,17 @@
 
 - (BOOL)containsVisibleNonDefaultSizedIconExcludingTodayList
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BEE361F8();
 
   return v3 & 1;
 }
 
-- (BOOL)canBounceIcon:(id)a3
+- (BOOL)canBounceIcon:(id)icon
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = SBRootFolder.canBounceIcon(_:)(v4);
+  iconCopy = icon;
+  selfCopy = self;
+  LOBYTE(self) = SBRootFolder.canBounceIcon(_:)(iconCopy);
 
   return self & 1;
 }
@@ -170,14 +170,14 @@
 {
   v10.receiver = self;
   v10.super_class = SBRootFolder;
-  v2 = self;
-  v3 = [(SBFolder *)&v10 icons];
+  selfCopy = self;
+  icons = [(SBFolder *)&v10 icons];
   sub_1BEB20D28(0, &qword_1EBDBFEA0);
   v4 = sub_1BEE471AC();
 
   v11 = v4;
-  v5 = [(SBRootFolder *)v2 dock];
-  v6 = [(SBIconListModel *)v5 icons];
+  dock = [(SBRootFolder *)selfCopy dock];
+  icons2 = [(SBIconListModel *)dock icons];
 
   v7 = sub_1BEE471AC();
   sub_1BEE35018(v7, sub_1BEE394E0);
@@ -187,50 +187,50 @@
   return v8;
 }
 
-- (void)_didExplicitlyRemoveHiddenLists:(id)a3
+- (void)_didExplicitlyRemoveHiddenLists:(id)lists
 {
   sub_1BEB20D28(0, &qword_1EBDBFF10);
   v4 = sub_1BEE471AC();
-  v5 = self;
+  selfCopy = self;
   SBRootFolder._didExplicitlyRemoveHiddenLists(_:)(v4);
 }
 
 - (SBIconListModel)bumpedIconsFallbackList
 {
-  v2 = [(SBRootFolder *)self ignoredList];
+  ignoredList = [(SBRootFolder *)self ignoredList];
 
-  return v2;
+  return ignoredList;
 }
 
-- (BOOL)canAddIconCount:(int64_t)a3 startingAtList:(id)a4
+- (BOOL)canAddIconCount:(int64_t)count startingAtList:(id)list
 {
-  v4 = a4;
-  v7 = a4;
-  v8 = self;
-  LOBYTE(v4) = SBRootFolder.canAddIconCount(_:startingAtList:)(a3, v4);
+  listCopy = list;
+  listCopy2 = list;
+  selfCopy = self;
+  LOBYTE(listCopy) = SBRootFolder.canAddIconCount(_:startingAtList:)(count, listCopy);
 
-  return v4 & 1;
+  return listCopy & 1;
 }
 
-- (id)listAtIndex:(int64_t)a3
+- (id)listAtIndex:(int64_t)index
 {
-  v4 = self;
-  SBRootFolder.list(at:)(v5, a3);
+  selfCopy = self;
+  SBRootFolder.list(at:)(v5, index);
   v7 = v6;
 
   return v7;
 }
 
-- (int64_t)indexOfList:(id)a3
+- (int64_t)indexOfList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1BEE373C8(v4);
+  listCopy = list;
+  selfCopy = self;
+  v6 = sub_1BEE373C8(listCopy);
   if (v7)
   {
-    v10.receiver = v5;
+    v10.receiver = selfCopy;
     v10.super_class = SBRootFolder;
-    v6 = [(SBFolder *)&v10 indexOfList:v4];
+    v6 = [(SBFolder *)&v10 indexOfList:listCopy];
   }
 
   v8 = v6;
@@ -238,23 +238,23 @@
   return v8;
 }
 
-- (int64_t)visibleIndexOfList:(id)a3
+- (int64_t)visibleIndexOfList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 isHidden])
+  listCopy = list;
+  selfCopy = self;
+  if ([listCopy isHidden])
   {
     v6 = sub_1BEE467EC();
   }
 
   else
   {
-    v6 = sub_1BEE373C8(v4);
+    v6 = sub_1BEE373C8(listCopy);
     if (v7)
     {
-      v10.receiver = v5;
+      v10.receiver = selfCopy;
       v10.super_class = SBRootFolder;
-      v6 = [(SBFolder *)&v10 visibleIndexOfList:v4];
+      v6 = [(SBFolder *)&v10 visibleIndexOfList:listCopy];
     }
   }
 
@@ -263,18 +263,18 @@
   return v8;
 }
 
-- (int64_t)hiddenIndexOfList:(id)a3
+- (int64_t)hiddenIndexOfList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 isHidden])
+  listCopy = list;
+  selfCopy = self;
+  if ([listCopy isHidden])
   {
-    v6 = sub_1BEE373C8(v4);
+    v6 = sub_1BEE373C8(listCopy);
     if (v7)
     {
-      v10.receiver = v5;
+      v10.receiver = selfCopy;
       v10.super_class = SBRootFolder;
-      v6 = [(SBFolder *)&v10 hiddenIndexOfList:v4];
+      v6 = [(SBFolder *)&v10 hiddenIndexOfList:listCopy];
     }
   }
 
@@ -288,16 +288,16 @@
   return v8;
 }
 
-- (void)removeList:(id)a3
+- (void)removeList:(id)list
 {
-  v4 = a3;
-  v6 = self;
-  sub_1BEE373C8(v4);
+  listCopy = list;
+  selfCopy = self;
+  sub_1BEE373C8(listCopy);
   if (v5)
   {
-    v7.receiver = v6;
+    v7.receiver = selfCopy;
     v7.super_class = SBRootFolder;
-    [(SBFolder *)&v7 removeList:v4];
+    [(SBFolder *)&v7 removeList:listCopy];
   }
 
   else
@@ -305,39 +305,39 @@
   }
 }
 
-- (void)enumerateExtraListsUsingBlock:(id)a3
+- (void)enumerateExtraListsUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_1BEE39A78(v5, v4);
+  selfCopy = self;
+  sub_1BEE39A78(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)_setDock:(id)a3
+- (void)_setDock:(id)dock
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BEE392AC(v4, &OBJC_IVAR___SBRootFolder__dock, &SBDockIndex);
+  dockCopy = dock;
+  selfCopy = self;
+  sub_1BEE392AC(dockCopy, &OBJC_IVAR___SBRootFolder__dock, &SBDockIndex);
 }
 
-- (BOOL)isIconAtIndexPathInDock:(id)a3
+- (BOOL)isIconAtIndexPathInDock:(id)dock
 {
   v4 = sub_1BEE469DC();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1BEE4697C();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1BEE4696C();
-  v10 = [(SBRootFolder *)v8 isIconAtIndexPathInDock:v9 includingDockFolders:0];
+  v10 = [(SBRootFolder *)selfCopy isIconAtIndexPathInDock:v9 includingDockFolders:0];
 
   (*(v5 + 8))(v7, v4);
   return v10;
 }
 
-- (BOOL)isIconAtIndexPathInDock:(id)a3 includingDockFolders:(BOOL)a4
+- (BOOL)isIconAtIndexPathInDock:(id)dock includingDockFolders:(BOOL)folders
 {
   v5 = sub_1BEE469DC();
   v6 = *(v5 - 8);
@@ -345,42 +345,42 @@
   v8 = &v15 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1BEE4697C();
   v9 = sub_1BEE4696C();
-  v10 = [v9 sbListIndex];
+  sbListIndex = [v9 sbListIndex];
 
-  v11 = v10 == 10000 && a4;
-  if (!a4 && v10 == 10000)
+  v11 = sbListIndex == 10000 && folders;
+  if (!folders && sbListIndex == 10000)
   {
     v12 = sub_1BEE4696C();
-    v13 = [v12 sb_iconPathCount];
+    sb_iconPathCount = [v12 sb_iconPathCount];
 
-    v11 = v13 == 1;
+    v11 = sb_iconPathCount == 1;
   }
 
   (*(v6 + 8))(v8, v5);
   return v11;
 }
 
-- (void)_setTodayList:(id)a3
+- (void)_setTodayList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BEE37DF8(v4);
+  listCopy = list;
+  selfCopy = self;
+  sub_1BEE37DF8(listCopy);
 }
 
-- (void)enumerateTodayListsUsingBlock:(id)a3
+- (void)enumerateTodayListsUsingBlock:(id)block
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v7 = 0;
-  v5 = self;
-  v6 = [(SBRootFolder *)v5 todayList];
-  v4[2](v4, v6, 20000, &v7);
+  selfCopy = self;
+  todayList = [(SBRootFolder *)selfCopy todayList];
+  v4[2](v4, todayList, 20000, &v7);
   _Block_release(v4);
 }
 
-- (void)enumerateTodayListIconsUsingBlock:(id)a3
+- (void)enumerateTodayListIconsUsingBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v9[2] = v4;
   v5 = swift_allocObject();
   *(v5 + 16) = sub_1BEB31FD8;
@@ -395,9 +395,9 @@
   aBlock[2] = sub_1BEE39C64;
   aBlock[3] = &block_descriptor_34;
   v7 = _Block_copy(aBlock);
-  v8 = self;
+  selfCopy = self;
 
-  [(SBRootFolder *)v8 enumerateTodayListsUsingBlock:v7];
+  [(SBRootFolder *)selfCopy enumerateTodayListsUsingBlock:v7];
   _Block_release(v7);
   LOBYTE(v7) = swift_isEscapingClosureAtFileLocation();
 
@@ -409,44 +409,44 @@
   }
 }
 
-- (void)_setIgnoredList:(id)a3
+- (void)_setIgnoredList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BEE384D0(v4);
+  listCopy = list;
+  selfCopy = self;
+  sub_1BEE384D0(listCopy);
 }
 
-- (BOOL)isIconInIgnoredList:(id)a3
+- (BOOL)isIconInIgnoredList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(SBRootFolder *)v5 ignoredList];
-  v7 = [(SBIconListModel *)v6 directlyContainsIcon:v4];
+  listCopy = list;
+  selfCopy = self;
+  ignoredList = [(SBRootFolder *)selfCopy ignoredList];
+  v7 = [(SBIconListModel *)ignoredList directlyContainsIcon:listCopy];
 
   return v7;
 }
 
-- (BOOL)isIconWithIdentifierInIgnoredList:(id)a3
+- (BOOL)isIconWithIdentifierInIgnoredList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(SBRootFolder *)v5 ignoredList];
-  v7 = [(SBIconListModel *)v6 directlyContainsIconWithIdentifier:v4];
+  listCopy = list;
+  selfCopy = self;
+  ignoredList = [(SBRootFolder *)selfCopy ignoredList];
+  v7 = [(SBIconListModel *)ignoredList directlyContainsIconWithIdentifier:listCopy];
 
   return v7;
 }
 
 - (void)checkIgnoredListConsistency
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BEE38938();
 }
 
-- (void)_setDockUtilities:(id)a3
+- (void)_setDockUtilities:(id)utilities
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BEE392AC(v4, &OBJC_IVAR___SBRootFolder__dockUtilities, &SBDockUtilitiesIndex);
+  utilitiesCopy = utilities;
+  selfCopy = self;
+  sub_1BEE392AC(utilitiesCopy, &OBJC_IVAR___SBRootFolder__dockUtilities, &SBDockUtilitiesIndex);
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface BMPBPhotosKnowledgeGraphEnrichmentEntity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCategory:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCategory:(BOOL)category;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBPhotosKnowledgeGraphEnrichmentEntity
 
-- (void)setHasCategory:(BOOL)a3
+- (void)setHasCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = BMPBPhotosKnowledgeGraphEnrichmentEntity;
   v4 = [(BMPBPhotosKnowledgeGraphEnrichmentEntity *)&v8 description];
-  v5 = [(BMPBPhotosKnowledgeGraphEnrichmentEntity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBPhotosKnowledgeGraphEnrichmentEntity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   if (*&self->_has)
@@ -70,70 +70,70 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     score = self->_score;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_language)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     category = self->_category;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v5;
+    [toCopy setName:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_score;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_score;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_language)
   {
     [v5 setLanguage:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 4) = self->_category;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 4) = self->_category;
+    *(toCopy + 40) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -143,7 +143,7 @@
     *(v5 + 40) |= 1u;
   }
 
-  v8 = [(NSString *)self->_language copyWithZone:a3];
+  v8 = [(NSString *)self->_language copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -156,16 +156,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   name = self->_name;
-  if (name | *(v4 + 4))
+  if (name | *(equalCopy + 4))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -174,22 +174,22 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_score != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_score != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_16;
   }
 
   language = self->_language;
-  if (language | *(v4 + 3))
+  if (language | *(equalCopy + 3))
   {
     if (![(NSString *)language isEqual:?])
     {
@@ -201,10 +201,10 @@ LABEL_16:
     has = self->_has;
   }
 
-  v9 = (*(v4 + 40) & 2) == 0;
+  v9 = (*(equalCopy + 40) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_category != *(v4 + 4))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_category != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
@@ -267,31 +267,31 @@ LABEL_17:
   return v6 ^ v3 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(BMPBPhotosKnowledgeGraphEnrichmentEntity *)self setName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_score = *(v4 + 1);
+    self->_score = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBPhotosKnowledgeGraphEnrichmentEntity *)self setLanguage:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 40) & 2) != 0)
+  if ((*(fromCopy + 40) & 2) != 0)
   {
-    self->_category = *(v4 + 4);
+    self->_category = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 }

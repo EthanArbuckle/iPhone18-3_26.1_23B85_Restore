@@ -1,7 +1,7 @@
 @interface UIView
 - (BOOL)mf_prefersRightToLeftInterfaceLayout;
-- (void)mf_applyingConversationMessageShadow:(BOOL)a3 shouldRoundCorners:(BOOL)a4 cornerRadius:(double)a5;
-- (void)mf_setAlpha:(double)a3;
+- (void)mf_applyingConversationMessageShadow:(BOOL)shadow shouldRoundCorners:(BOOL)corners cornerRadius:(double)radius;
+- (void)mf_setAlpha:(double)alpha;
 @end
 
 @implementation UIView
@@ -21,20 +21,20 @@
   return byte_1E870;
 }
 
-- (void)mf_applyingConversationMessageShadow:(BOOL)a3 shouldRoundCorners:(BOOL)a4 cornerRadius:(double)a5
+- (void)mf_applyingConversationMessageShadow:(BOOL)shadow shouldRoundCorners:(BOOL)corners cornerRadius:(double)radius
 {
-  v5 = a4;
-  v6 = a3;
-  v19 = [(UIView *)self traitCollection];
-  v8 = [v19 userInterfaceStyle];
+  cornersCopy = corners;
+  shadowCopy = shadow;
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v6 && v8 == &dword_0 + 1)
+  if (shadowCopy && userInterfaceStyle == &dword_0 + 1)
   {
     v9 = MUISolariumFeatureEnabled();
     v20 = +[UIColor systemBlackColor];
-    v10 = [v20 CGColor];
-    v11 = [(UIView *)self layer];
-    [v11 setShadowColor:v10];
+    cGColor = [v20 CGColor];
+    layer = [(UIView *)self layer];
+    [layer setShadowColor:cGColor];
 
     if (v9)
     {
@@ -46,9 +46,9 @@
       v12 = 0.1;
     }
 
-    v21 = [(UIView *)self layer];
+    layer2 = [(UIView *)self layer];
     *&v13 = v12;
-    [v21 setShadowOpacity:v13];
+    [layer2 setShadowOpacity:v13];
 
     if (v9)
     {
@@ -70,8 +70,8 @@
       height = 2.0;
     }
 
-    v22 = [(UIView *)self layer];
-    [v22 setShadowOffset:{width, height}];
+    layer3 = [(UIView *)self layer];
+    [layer3 setShadowOffset:{width, height}];
 
     if (v9)
     {
@@ -83,14 +83,14 @@
       v16 = 8.0;
     }
 
-    v23 = [(UIView *)self layer];
-    [v23 setShadowRadius:v16];
+    layer4 = [(UIView *)self layer];
+    [layer4 setShadowRadius:v16];
 
-    v24 = [(UIView *)self layer];
-    [v24 setMasksToBounds:0];
+    layer5 = [(UIView *)self layer];
+    [layer5 setMasksToBounds:0];
 
     [(UIView *)self bounds];
-    if (v5)
+    if (cornersCopy)
     {
       [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
     }
@@ -99,23 +99,23 @@
     {
       [UIBezierPath bezierPathWithRect:?];
     }
-    v25 = ;
-    v17 = [v25 CGPath];
-    v18 = [(UIView *)self layer];
-    [v18 setShadowPath:v17];
+    layer7 = ;
+    cGPath = [layer7 CGPath];
+    layer6 = [(UIView *)self layer];
+    [layer6 setShadowPath:cGPath];
   }
 
   else
   {
-    v25 = [(UIView *)self layer];
-    [v25 setShadowOpacity:0.0];
+    layer7 = [(UIView *)self layer];
+    [layer7 setShadowOpacity:0.0];
   }
 }
 
-- (void)mf_setAlpha:(double)a3
+- (void)mf_setAlpha:(double)alpha
 {
   [(UIView *)self alpha];
-  v6 = v5 - a3;
+  v6 = v5 - alpha;
   if (v6 < 0.0)
   {
     v6 = -v6;
@@ -124,7 +124,7 @@
   if (v6 >= 2.22044605e-16)
   {
 
-    [(UIView *)self setAlpha:a3];
+    [(UIView *)self setAlpha:alpha];
   }
 }
 

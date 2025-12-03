@@ -1,39 +1,39 @@
 @interface SCNGeometryWrapDeformerInstance
-- (_BYTE)initWithNode:(void *)a3 drivingNode:(void *)a4 deformer:(uint64_t)a5 outputs:(uint64_t)a6 computeVertexCount:(void *)a7 context:;
-- (unint64_t)updateWithContext:(id)a3;
+- (_BYTE)initWithNode:(void *)node drivingNode:(void *)drivingNode deformer:(uint64_t)deformer outputs:(uint64_t)outputs computeVertexCount:(void *)count context:;
+- (unint64_t)updateWithContext:(id)context;
 - (void)dealloc;
-- (void)initWithNode:(void *)a3 innerLayerNode:(void *)a4 outerLayerNode:(void *)a5 deformer:(uint64_t)a6 outputs:(uint64_t)a7 computeVertexCount:(void *)a8 context:;
+- (void)initWithNode:(void *)node innerLayerNode:(void *)layerNode outerLayerNode:(void *)outerLayerNode deformer:(uint64_t)deformer outputs:(uint64_t)outputs computeVertexCount:(void *)count context:;
 @end
 
 @implementation SCNGeometryWrapDeformerInstance
 
-- (_BYTE)initWithNode:(void *)a3 drivingNode:(void *)a4 deformer:(uint64_t)a5 outputs:(uint64_t)a6 computeVertexCount:(void *)a7 context:
+- (_BYTE)initWithNode:(void *)node drivingNode:(void *)drivingNode deformer:(uint64_t)deformer outputs:(uint64_t)outputs computeVertexCount:(void *)count context:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v36.receiver = a1;
+  v36.receiver = self;
   v36.super_class = SCNGeometryWrapDeformerInstance;
   v12 = objc_msgSendSuper2(&v36, sel_init);
   if (v12)
   {
-    [a4 initParametersIfNeededForDeformedNode:a2];
-    v13 = a4[3];
+    [drivingNode initParametersIfNeededForDeformedNode:a2];
+    v13 = drivingNode[3];
     v12[256] = 1;
     *(v12 + 1) = *(v13 + 16);
-    *(v12 + 44) = [a3 nodeRef];
+    *(v12 + 44) = [node nodeRef];
     *(v12 + 22) = [a2 nodeRef];
-    if (*(v13 + 8) != a6)
+    if (*(v13 + 8) != outputs)
     {
       [SCNGeometryWrapDeformerInstance initWithNode:drivingNode:deformer:outputs:computeVertexCount:context:];
     }
 
-    *(v12 + 68) = a6;
+    *(v12 + 68) = outputs;
     v14 = *(v13 + 32);
     v15 = *(v13 + 56);
-    if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes([a7 device]))
+    if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes([count device]))
     {
       v14 = (*(v13 + 32) + 3) & 0xFFFFFFFFFFFFFFFCLL;
       v15 = (*(v13 + 56) + 3) & 0xFFFFFFFFFFFFFFFCLL;
@@ -43,7 +43,7 @@
     v34[1] = 3221225472;
     v34[2] = __104__SCNGeometryWrapDeformerInstance_initWithNode_drivingNode_deformer_outputs_computeVertexCount_context___block_invoke;
     v34[3] = &unk_2782FE430;
-    v34[4] = a7;
+    v34[4] = count;
     v34[5] = v13;
     v34[7] = v14;
     v34[8] = v15;
@@ -67,11 +67,11 @@
     }
 
     v19 = objc_alloc_init(MEMORY[0x277CD6FF0]);
-    *(v12 + 24) = [objc_msgSend(a7 "_currentResourceManager")];
+    *(v12 + 24) = [objc_msgSend(count "_currentResourceManager")];
 
     if (v14 == *(v13 + 32))
     {
-      v20 = [objc_msgSend(a7 "device")];
+      v20 = [objc_msgSend(count "device")];
       v21 = 0;
     }
 
@@ -93,13 +93,13 @@
         while (v24 < *(v13 + 8));
       }
 
-      v20 = [objc_msgSend(a7 "device")];
+      v20 = [objc_msgSend(count "device")];
     }
 
     *(v12 + 25) = v20;
     if (v15 == *(v13 + 56))
     {
-      v26 = [a7 device];
+      device = [count device];
       v27 = *(v13 + 48);
       v28 = *(v13 + 56) * *(v13 + 8);
     }
@@ -122,46 +122,46 @@
         while (v31 < *(v13 + 8));
       }
 
-      v26 = [a7 device];
+      device = [count device];
       v27 = v21;
       v28 = v29;
     }
 
-    *(v12 + 26) = [v26 newBufferWithBytes:v27 length:v28 options:0];
-    *(v12 + 45) = [objc_msgSend(a7 "device")];
+    *(v12 + 26) = [device newBufferWithBytes:v27 length:v28 options:0];
+    *(v12 + 45) = [objc_msgSend(count "device")];
     free(v21);
   }
 
   return v12;
 }
 
-- (void)initWithNode:(void *)a3 innerLayerNode:(void *)a4 outerLayerNode:(void *)a5 deformer:(uint64_t)a6 outputs:(uint64_t)a7 computeVertexCount:(void *)a8 context:
+- (void)initWithNode:(void *)node innerLayerNode:(void *)layerNode outerLayerNode:(void *)outerLayerNode deformer:(uint64_t)deformer outputs:(uint64_t)outputs computeVertexCount:(void *)count context:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v47.receiver = a1;
+  v47.receiver = self;
   v47.super_class = SCNGeometryWrapDeformerInstance;
   v14 = objc_msgSendSuper2(&v47, sel_init);
   if (v14)
   {
-    [a5 initParametersIfNeededForDeformedNode:a2];
-    v15 = a5[3];
+    [outerLayerNode initParametersIfNeededForDeformedNode:a2];
+    v15 = outerLayerNode[3];
     v14[1] = *(v15 + 16);
-    v14[20] = [a3 nodeRef];
-    v14[21] = [a4 nodeRef];
+    v14[20] = [node nodeRef];
+    v14[21] = [layerNode nodeRef];
     v14[22] = [a2 nodeRef];
-    if (*(v15 + 8) != a7)
+    if (*(v15 + 8) != outputs)
     {
       [SCNGeometryWrapDeformerInstance initWithNode:innerLayerNode:outerLayerNode:deformer:outputs:computeVertexCount:context:];
     }
 
-    *(v14 + 4) = a7;
+    *(v14 + 4) = outputs;
     v16 = *(v15 + 32);
     v17 = *(v15 + 56);
-    if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes([a8 device]))
+    if (SCNMTLDeviceRequiresOffsetAndStrideForStageInAsMultipleOf4Bytes([count device]))
     {
       v16 = (*(v15 + 32) + 3) & 0xFFFFFFFFFFFFFFFCLL;
       v17 = (*(v15 + 56) + 3) & 0xFFFFFFFFFFFFFFFCLL;
@@ -171,7 +171,7 @@
     v37 = 3221225472;
     v38 = __122__SCNGeometryWrapDeformerInstance_initWithNode_innerLayerNode_outerLayerNode_deformer_outputs_computeVertexCount_context___block_invoke;
     v39 = &unk_2782FE458;
-    v40 = a8;
+    countCopy = count;
     v41 = v15;
     v43 = v16;
     v44 = v17;
@@ -196,11 +196,11 @@
     }
 
     v21 = objc_alloc_init(MEMORY[0x277CD6FF0]);
-    v14[24] = [objc_msgSend(a8 _currentResourceManager];
+    v14[24] = [objc_msgSend(count _currentResourceManager];
 
     if (v16 == *(v15 + 32))
     {
-      v22 = [objc_msgSend(a8 "device")];
+      v22 = [objc_msgSend(count "device")];
       v23 = 0;
     }
 
@@ -222,13 +222,13 @@
         while (v26 < *(v15 + 8));
       }
 
-      v22 = [objc_msgSend(a8 "device")];
+      v22 = [objc_msgSend(count "device")];
     }
 
     v14[25] = v22;
     if (v17 == *(v15 + 56))
     {
-      v28 = [a8 device];
+      device = [count device];
       v29 = *(v15 + 48);
       v30 = *(v15 + 56) * *(v15 + 8);
     }
@@ -251,19 +251,19 @@
         while (v33 < *(v15 + 8));
       }
 
-      v28 = [a8 device];
+      device = [count device];
       v29 = v23;
       v30 = v31;
     }
 
-    v14[26] = [v28 newBufferWithBytes:v29 length:v30 options:0];
-    v14[27] = [objc_msgSend(a8 "device")];
+    v14[26] = [device newBufferWithBytes:v29 length:v30 options:0];
+    v14[27] = [objc_msgSend(count "device")];
     if (v14[1] == 1)
     {
-      v14[28] = [objc_msgSend(a8 "device")];
-      v14[29] = [objc_msgSend(a8 "device")];
-      v14[30] = [objc_msgSend(a8 "device")];
-      v14[31] = [objc_msgSend(a8 "device")];
+      v14[28] = [objc_msgSend(count "device")];
+      v14[29] = [objc_msgSend(count "device")];
+      v14[30] = [objc_msgSend(count "device")];
+      v14[31] = [objc_msgSend(count "device")];
     }
 
     free(v23);
@@ -407,16 +407,16 @@ uint64_t __122__SCNGeometryWrapDeformerInstance_initWithNode_innerLayerNode_oute
   [(SCNGeometryWrapDeformerInstance *)&v3 dealloc];
 }
 
-- (unint64_t)updateWithContext:(id)a3
+- (unint64_t)updateWithContext:(id)context
 {
-  v5 = [a3 _currentFrameHash];
-  if (self->_currentFrameHash == v5)
+  _currentFrameHash = [context _currentFrameHash];
+  if (self->_currentFrameHash == _currentFrameHash)
   {
     return 0;
   }
 
-  self->_currentFrameHash = v5;
-  v7 = -[SCNMTLRenderContext resourceComputeEncoder]([a3 _currentRenderContext]);
+  self->_currentFrameHash = _currentFrameHash;
+  v7 = -[SCNMTLRenderContext resourceComputeEncoder]([context _currentRenderContext]);
   if (!self->_isLegacySingleLayerDeformer)
   {
     WorldMatrix = C3DNodeGetWorldMatrix(self->_innerLayerNode);
@@ -474,8 +474,8 @@ uint64_t __122__SCNGeometryWrapDeformerInstance_initWithNode_innerLayerNode_oute
     *&self->_anon_14[108] = v24;
     *&self->_anon_14[124] = v25;
     SCNMTLComputeCommandEncoder::setBytes(v7, &self->_uniforms, 0x90uLL, 0);
-    v26 = [a3 dependency0PositionBuffer];
-    if (v7->_buffers[1] == v26)
+    dependency0PositionBuffer = [context dependency0PositionBuffer];
+    if (v7->_buffers[1] == dependency0PositionBuffer)
     {
       if (!v7->_offsets[1])
       {
@@ -485,14 +485,14 @@ uint64_t __122__SCNGeometryWrapDeformerInstance_initWithNode_innerLayerNode_oute
 
     else
     {
-      v7->_buffers[1] = v26;
+      v7->_buffers[1] = dependency0PositionBuffer;
     }
 
     v7->_offsets[1] = 0;
     v7->_buffersToBind[0] |= 2uLL;
 LABEL_20:
-    v28 = [a3 dependency1PositionBuffer];
-    if (v7->_buffers[2] == v28)
+    dependency1PositionBuffer = [context dependency1PositionBuffer];
+    if (v7->_buffers[2] == dependency1PositionBuffer)
     {
       if (!v7->_offsets[2])
       {
@@ -502,14 +502,14 @@ LABEL_20:
 
     else
     {
-      v7->_buffers[2] = v28;
+      v7->_buffers[2] = dependency1PositionBuffer;
     }
 
     v7->_offsets[2] = 0;
     v7->_buffersToBind[0] |= 4uLL;
 LABEL_28:
-    v30 = [a3 dstPositionBuffer];
-    if (v7->_buffers[11] == v30)
+    dstPositionBuffer = [context dstPositionBuffer];
+    if (v7->_buffers[11] == dstPositionBuffer)
     {
       if (!v7->_offsets[11])
       {
@@ -519,7 +519,7 @@ LABEL_28:
 
     else
     {
-      v7->_buffers[11] = v30;
+      v7->_buffers[11] = dstPositionBuffer;
     }
 
     v7->_offsets[11] = 0;
@@ -581,8 +581,8 @@ LABEL_57:
       goto LABEL_81;
     }
 
-    v37 = [a3 srcPositionBuffer];
-    if (v7->_buffers[10] == v37)
+    srcPositionBuffer = [context srcPositionBuffer];
+    if (v7->_buffers[10] == srcPositionBuffer)
     {
       if (!v7->_offsets[10])
       {
@@ -592,7 +592,7 @@ LABEL_57:
 
     else
     {
-      v7->_buffers[10] = v37;
+      v7->_buffers[10] = srcPositionBuffer;
     }
 
     v7->_offsets[10] = 0;
@@ -661,7 +661,7 @@ LABEL_81:
         *(&v65 + 1) = vertexCount;
         v66 = vdupq_n_s64(1uLL);
         [(MTLComputeCommandEncoder *)encoder setStageInRegion:&v64];
-        v40 = [(SCNMTLOpenSubdivComputeEvaluator *)self->_computePipeline computeEvaluator];
+        computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)self->_computePipeline computeEvaluator];
         v41 = self->_uniforms.vertexCount;
         goto LABEL_82;
       }
@@ -708,8 +708,8 @@ LABEL_81:
   *&self->_anon_114[44] = v12;
   *&self->_anon_114[60] = v13;
   SCNMTLComputeCommandEncoder::setBytes(v7, &self->_legacyUniforms, 0x50uLL, 0);
-  v14 = [a3 dependency0PositionBuffer];
-  if (v7->_buffers[1] == v14)
+  dependency0PositionBuffer2 = [context dependency0PositionBuffer];
+  if (v7->_buffers[1] == dependency0PositionBuffer2)
   {
     if (!v7->_offsets[1])
     {
@@ -719,14 +719,14 @@ LABEL_81:
 
   else
   {
-    v7->_buffers[1] = v14;
+    v7->_buffers[1] = dependency0PositionBuffer2;
   }
 
   v7->_offsets[1] = 0;
   v7->_buffersToBind[0] |= 2uLL;
 LABEL_16:
-  v27 = [a3 dstPositionBuffer];
-  if (v7->_buffers[11] == v27)
+  dstPositionBuffer2 = [context dstPositionBuffer];
+  if (v7->_buffers[11] == dstPositionBuffer2)
   {
     if (!v7->_offsets[11])
     {
@@ -736,7 +736,7 @@ LABEL_16:
 
   else
   {
-    v7->_buffers[11] = v27;
+    v7->_buffers[11] = dstPositionBuffer2;
   }
 
   v7->_offsets[11] = 0;
@@ -795,10 +795,10 @@ LABEL_40:
 LABEL_48:
   if (self->_bindingMode == 1)
   {
-    v35 = [a3 srcPositionBuffer];
-    if (v7->_buffers[10] != v35)
+    srcPositionBuffer2 = [context srcPositionBuffer];
+    if (v7->_buffers[10] != srcPositionBuffer2)
     {
-      v7->_buffers[10] = v35;
+      v7->_buffers[10] = srcPositionBuffer2;
 LABEL_61:
       v7->_offsets[10] = 0;
       v7->_buffersToBind[0] |= 0x400uLL;
@@ -819,13 +819,13 @@ LABEL_62:
   *(&v65 + 1) = v38;
   v66 = vdupq_n_s64(1uLL);
   [(MTLComputeCommandEncoder *)v39 setStageInRegion:&v64];
-  v40 = [(SCNMTLOpenSubdivComputeEvaluator *)self->_computePipeline computeEvaluator];
+  computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)self->_computePipeline computeEvaluator];
   v41 = self->_legacyUniforms.vertexCount;
 LABEL_82:
-  if (v7->_computePipelineState != v40)
+  if (v7->_computePipelineState != computeEvaluator)
   {
-    v7->_computePipelineState = v40;
-    [(MTLComputeCommandEncoder *)v7->_encoder setComputePipelineState:v40];
+    v7->_computePipelineState = computeEvaluator;
+    [(MTLComputeCommandEncoder *)v7->_encoder setComputePipelineState:computeEvaluator];
   }
 
   SCNMTLComputeCommandEncoder::dispatchOnGrid1D(v7, v41);

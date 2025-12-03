@@ -12,8 +12,8 @@
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   v3 = *MEMORY[0x29EDC7ED8];
-  v4 = [v2 view];
-  UIAccessibilityPostNotification(v3, v4);
+  view = [v2 view];
+  UIAccessibilityPostNotification(v3, view);
 }
 
 @end

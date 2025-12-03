@@ -13,7 +13,7 @@
   v6[3] = &unk_1E6A445A8;
   v7 = v2;
   v3 = v2;
-  [a1 enumerateObjectsUsingBlock:v6];
+  [self enumerateObjectsUsingBlock:v6];
   [v3 appendString:@"\n"]);
   v4 = [v3 copy];
 

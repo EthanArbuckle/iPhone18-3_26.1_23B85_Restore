@@ -2,8 +2,8 @@
 - (BOOL)_isPad;
 - (UIView)contentView;
 - (void)layoutSubviews;
-- (void)setBarButtonView:(id)a3;
-- (void)setCustomView:(id)a3;
+- (void)setBarButtonView:(id)view;
+- (void)setCustomView:(id)view;
 @end
 
 @implementation TUIButtonBarItemView
@@ -27,16 +27,16 @@
     v10 = v14;
   }
 
-  v15 = [(TUIButtonBarItemView *)self contentView];
-  [v15 setFrame:{v4, v6, v8, v10}];
+  contentView = [(TUIButtonBarItemView *)self contentView];
+  [contentView setFrame:{v4, v6, v8, v10}];
 }
 
 - (BOOL)_isPad
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return [MEMORY[0x1E69DCBE0] isFloating] ^ 1;
   }
@@ -47,11 +47,11 @@
   }
 }
 
-- (void)setBarButtonView:(id)a3
+- (void)setBarButtonView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(_UIButtonBarButton *)self->_barButtonView removeFromSuperview];
-  objc_storeStrong(&self->_barButtonView, a3);
+  objc_storeStrong(&self->_barButtonView, view);
   if (self->_barButtonView)
   {
     [(TUIButtonBarItemView *)self addSubview:?];
@@ -60,17 +60,17 @@
   }
 }
 
-- (void)setCustomView:(id)a3
+- (void)setCustomView:(id)view
 {
-  v7 = a3;
-  v5 = [(UIView *)self->_customView superview];
+  viewCopy = view;
+  superview = [(UIView *)self->_customView superview];
 
-  if (v5 == self)
+  if (superview == self)
   {
     [(UIView *)self->_customView removeFromSuperview];
   }
 
-  objc_storeStrong(&self->_customView, a3);
+  objc_storeStrong(&self->_customView, view);
   customView = self->_customView;
   if (customView)
   {

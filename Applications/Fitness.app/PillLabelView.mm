@@ -1,13 +1,13 @@
 @interface PillLabelView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC10FitnessAppP33_4EA4BC32C3BA0CE5667C98FF7F64C93913PillLabelView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC10FitnessAppP33_4EA4BC32C3BA0CE5667C98FF7F64C93913PillLabelView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PillLabelView
 
-- (_TtC10FitnessAppP33_4EA4BC32C3BA0CE5667C98FF7F64C93913PillLabelView)initWithCoder:(id)a3
+- (_TtC10FitnessAppP33_4EA4BC32C3BA0CE5667C98FF7F64C93913PillLabelView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10FitnessAppP33_4EA4BC32C3BA0CE5667C98FF7F64C93913PillLabelView_label;
   v5 = [objc_allocWithZone(UILabel) init];
@@ -24,9 +24,9 @@
   return 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [*(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessAppP33_4EA4BC32C3BA0CE5667C98FF7F64C93913PillLabelView_label) sizeThatFits:{a3.width, a3.height}];
+  [*(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessAppP33_4EA4BC32C3BA0CE5667C98FF7F64C93913PillLabelView_label) sizeThatFits:{fits.width, fits.height}];
   v4 = v3 + 6.0 + 2.0;
   v6 = v5 + 2.0 + 6.0;
   result.height = v6;

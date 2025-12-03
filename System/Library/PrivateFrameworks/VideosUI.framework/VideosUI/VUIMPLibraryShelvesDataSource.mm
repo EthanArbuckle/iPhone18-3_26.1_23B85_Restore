@@ -1,26 +1,26 @@
 @interface VUIMPLibraryShelvesDataSource
-- (VUIMPLibraryShelvesDataSource)initWithValidShelfTypes:(id)a3 forMediaLibrary:(id)a4;
+- (VUIMPLibraryShelvesDataSource)initWithValidShelfTypes:(id)types forMediaLibrary:(id)library;
 - (id)_dataSourceForShelves;
 - (void)_addRentalsUpdateNotificationObserver;
 - (void)_removeRentalsUpdateNotificationObserver;
 - (void)_updateRentalShelf;
-- (void)dataSourceDidFinishFetching:(id)a3;
+- (void)dataSourceDidFinishFetching:(id)fetching;
 - (void)dealloc;
 - (void)startFetch;
 @end
 
 @implementation VUIMPLibraryShelvesDataSource
 
-- (VUIMPLibraryShelvesDataSource)initWithValidShelfTypes:(id)a3 forMediaLibrary:(id)a4
+- (VUIMPLibraryShelvesDataSource)initWithValidShelfTypes:(id)types forMediaLibrary:(id)library
 {
-  v7 = a4;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = VUIMPLibraryShelvesDataSource;
-  v8 = [(VUILibraryShelvesDataSource *)&v11 initWithValidShelfTypes:a3];
+  v8 = [(VUILibraryShelvesDataSource *)&v11 initWithValidShelfTypes:types];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mediaLibrary, a4);
+    objc_storeStrong(&v8->_mediaLibrary, library);
     [(VUIMPLibraryShelvesDataSource *)v9 _addRentalsUpdateNotificationObserver];
   }
 
@@ -42,17 +42,17 @@
   fetchedDataSources = self->_fetchedDataSources;
   self->_fetchedDataSources = v3;
 
-  v5 = [(VUIMPLibraryShelvesDataSource *)self _dataSourceForShelves];
-  [(VUILibraryShelvesDataSource *)self setDataSourcesByShelfType:v5];
+  _dataSourceForShelves = [(VUIMPLibraryShelvesDataSource *)self _dataSourceForShelves];
+  [(VUILibraryShelvesDataSource *)self setDataSourcesByShelfType:_dataSourceForShelves];
 }
 
-- (void)dataSourceDidFinishFetching:(id)a3
+- (void)dataSourceDidFinishFetching:(id)fetching
 {
-  v4 = a3;
-  [(NSMutableArray *)self->_fetchedDataSources addObject:v4];
+  fetchingCopy = fetching;
+  [(NSMutableArray *)self->_fetchedDataSources addObject:fetchingCopy];
   v5 = [(NSMutableArray *)self->_fetchedDataSources count];
-  v6 = [(VUILibraryShelvesDataSource *)self shelfTypes];
-  v7 = [v6 count];
+  shelfTypes = [(VUILibraryShelvesDataSource *)self shelfTypes];
+  v7 = [shelfTypes count];
 
   if (v5 >= v7)
   {
@@ -90,14 +90,14 @@ void __61__VUIMPLibraryShelvesDataSource_dataSourceDidFinishFetching___block_inv
 
 - (void)_addRentalsUpdateNotificationObserver
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__updateRentalShelf name:@"VUIRentalExpirationMonitorRentalDidExpireNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateRentalShelf name:@"VUIRentalExpirationMonitorRentalDidExpireNotification" object:0];
 }
 
 - (void)_removeRentalsUpdateNotificationObserver
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"VUIRentalExpirationMonitorRentalDidExpireNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VUIRentalExpirationMonitorRentalDidExpireNotification" object:0];
 }
 
 - (id)_dataSourceForShelves
@@ -124,9 +124,9 @@ void __61__VUIMPLibraryShelvesDataSource_dataSourceDidFinishFetching___block_inv
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 unsignedIntegerValue];
-        v10 = [(VUIMPLibraryShelvesDataSource *)self mediaLibrary];
-        v11 = [VUIMediaEntitiesDataSourceFactory dataSourceForShelf:v9 withLibrary:v10];
+        unsignedIntegerValue = [v8 unsignedIntegerValue];
+        mediaLibrary = [(VUIMPLibraryShelvesDataSource *)self mediaLibrary];
+        v11 = [VUIMediaEntitiesDataSourceFactory dataSourceForShelf:unsignedIntegerValue withLibrary:mediaLibrary];
 
         [v11 setDelegate:self];
         [v11 startFetch];
@@ -146,8 +146,8 @@ void __61__VUIMPLibraryShelvesDataSource_dataSourceDidFinishFetching___block_inv
 
 - (void)_updateRentalShelf
 {
-  v3 = [(VUILibraryShelvesDataSource *)self dataSourcesByShelfType];
-  v4 = [v3 objectForKey:&unk_1F5E5E610];
+  dataSourcesByShelfType = [(VUILibraryShelvesDataSource *)self dataSourcesByShelfType];
+  v4 = [dataSourcesByShelfType objectForKey:&unk_1F5E5E610];
 
   [(NSMutableArray *)self->_fetchedDataSources removeObject:v4];
   [v4 startFetch];

@@ -1,158 +1,158 @@
 @interface MCInstallProfileViewController
 - (BOOL)_attemptRemoteInstallAfterCompletingPrecheck;
-- (BOOL)_installErrorIsUserCancelledError:(id)a3;
+- (BOOL)_installErrorIsUserCancelledError:(id)error;
 - (BOOL)displayedAsSheet;
 - (MCInstallProfileDelegate)delegate;
-- (MCInstallProfileViewController)initWithInstallableProfileData:(id)a3 fromSource:(unint64_t)a4;
-- (MCInstallProfileViewController)initWithProfile:(id)a3 viewMode:(int64_t)a4;
-- (MCInstallProfileViewController)initWithProfile:(id)a3 viewMode:(int64_t)a4 profileUIDataProvider:(id)a5;
+- (MCInstallProfileViewController)initWithInstallableProfileData:(id)data fromSource:(unint64_t)source;
+- (MCInstallProfileViewController)initWithProfile:(id)profile viewMode:(int64_t)mode;
+- (MCInstallProfileViewController)initWithProfile:(id)profile viewMode:(int64_t)mode profileUIDataProvider:(id)provider;
 - (id)_localizedCPLFinalWarningString;
 - (id)_newRightBarButtonItem;
 - (void)_beginInstallFlow;
 - (void)_cancelInstallDueToApplicationExit;
-- (void)_didFinishEnteringPINWithCompletion:(id)a3;
-- (void)_didFinishPresentingConsent:(id)a3;
+- (void)_didFinishEnteringPINWithCompletion:(id)completion;
+- (void)_didFinishPresentingConsent:(id)consent;
 - (void)_finishWaitingForMoreQuestions;
-- (void)_handleInstallationError:(id)a3;
+- (void)_handleInstallationError:(id)error;
 - (void)_hideProgressIndicatorIfNeeded;
-- (void)_installFinishedWithIdentifier:(id)a3 error:(id)a4;
-- (void)_presentConsent:(id)a3;
-- (void)_promptUserWithQuestions:(id)a3;
-- (void)_promptUserWithQuestionsAfterDelay:(id)a3;
-- (void)_removeProfileWithIdentifier:(id)a3 isProtectedProfile:(BOOL)a4 completionHandler:(id)a5;
+- (void)_installFinishedWithIdentifier:(id)identifier error:(id)error;
+- (void)_presentConsent:(id)consent;
+- (void)_promptUserWithQuestions:(id)questions;
+- (void)_promptUserWithQuestionsAfterDelay:(id)delay;
+- (void)_removeProfileWithIdentifier:(id)identifier isProtectedProfile:(BOOL)profile completionHandler:(id)handler;
 - (void)_resetInstallationVariables;
 - (void)_returnToSender;
-- (void)_showCPLFinalInstallationWarning:(id)a3 withMDMWarning:(BOOL)a4;
-- (void)_signInMAID:(id)a3 completionHandler:(id)a4;
+- (void)_showCPLFinalInstallationWarning:(id)warning withMDMWarning:(BOOL)mWarning;
+- (void)_signInMAID:(id)d completionHandler:(id)handler;
 - (void)_takeMeBack;
 - (void)_waitForNextQuestion;
-- (void)addCancelActionToAlert:(id)a3 withCompletion:(id)a4;
-- (void)addInstallActionWithTitle:(id)a3 style:(int64_t)a4 toAlert:(id)a5 completion:(id)a6;
+- (void)addCancelActionToAlert:(id)alert withCompletion:(id)completion;
+- (void)addInstallActionWithTitle:(id)title style:(int64_t)style toAlert:(id)alert completion:(id)completion;
 - (void)cancelInstallWhilePresentingConsentAndWarningsUponDidAppear;
-- (void)consentExtensionShowConsentAndWarnings:(id)a3;
+- (void)consentExtensionShowConsentAndWarnings:(id)warnings;
 - (void)continueInstallFlowAfterCompletingPrecheck;
 - (void)continueInstallFlowAfterPINVerification;
 - (void)dealloc;
-- (void)didAcceptEnteredPIN:(id)a3;
+- (void)didAcceptEnteredPIN:(id)n;
 - (void)didCancelEnteringPIN;
-- (void)installationConsentViewController:(id)a3 finishedWithUserContinueResponse:(BOOL)a4;
-- (void)installationWarningViewController:(id)a3 finishedWithUserContinueResponse:(BOOL)a4;
+- (void)installationConsentViewController:(id)controller finishedWithUserContinueResponse:(BOOL)response;
+- (void)installationWarningViewController:(id)controller finishedWithUserContinueResponse:(BOOL)response;
 - (void)performRemoveAfterFinalVerification;
 - (void)pinExtensionShowPINSheet;
-- (void)profileConnection:(id)a3 didBeginInstallingNextProfile:(id)a4;
-- (void)profileConnection:(id)a3 didFinishInstallationWithIdentifier:(id)a4 error:(id)a5;
-- (void)profileConnection:(id)a3 didFinishPreflightWithError:(id)a4;
-- (void)profileConnection:(id)a3 didRequestMAIDSignIn:(id)a4 personaID:(id)a5;
-- (void)profileConnection:(id)a3 didRequestUserInput:(id)a4;
-- (void)profileConnection:(id)a3 didShowUserWarnings:(id)a4;
-- (void)profileConnection:(id)a3 didUpdateStatus:(id)a4;
-- (void)profileConnectionDidRequestCurrentPasscode:(id)a3;
+- (void)profileConnection:(id)connection didBeginInstallingNextProfile:(id)profile;
+- (void)profileConnection:(id)connection didFinishInstallationWithIdentifier:(id)identifier error:(id)error;
+- (void)profileConnection:(id)connection didFinishPreflightWithError:(id)error;
+- (void)profileConnection:(id)connection didRequestMAIDSignIn:(id)in personaID:(id)d;
+- (void)profileConnection:(id)connection didRequestUserInput:(id)input;
+- (void)profileConnection:(id)connection didShowUserWarnings:(id)warnings;
+- (void)profileConnection:(id)connection didUpdateStatus:(id)status;
+- (void)profileConnectionDidRequestCurrentPasscode:(id)passcode;
 - (void)profileRemovalDidFinish;
-- (void)questionsController:(id)a3 didFinishWithResponses:(id)a4;
-- (void)questionsExtensionDidFinishPreflightWithError:(id)a3;
-- (void)questionsExtensionDidRequestAnswersForQuestions:(id)a3;
+- (void)questionsController:(id)controller didFinishWithResponses:(id)responses;
+- (void)questionsExtensionDidFinishPreflightWithError:(id)error;
+- (void)questionsExtensionDidRequestAnswersForQuestions:(id)questions;
 - (void)questionsExtensionInstallFinished;
-- (void)queueNextProfileData:(id)a3;
-- (void)setCurrentQuestionsController:(id)a3;
-- (void)setProfile:(id)a3;
-- (void)setProfileData:(id)a3;
-- (void)showFinalInstallationAlert:(id)a3;
-- (void)showMDMFinalInstallationAlert:(id)a3;
+- (void)queueNextProfileData:(id)data;
+- (void)setCurrentQuestionsController:(id)controller;
+- (void)setProfile:(id)profile;
+- (void)setProfileData:(id)data;
+- (void)showFinalInstallationAlert:(id)alert;
+- (void)showMDMFinalInstallationAlert:(id)alert;
 - (void)showProgressIndicator;
 - (void)showReEnrollFailureAlert;
-- (void)signInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5;
-- (void)submitQuestionAnswers:(id)a3;
-- (void)updateTitleForProfileInstallationState:(int)a3;
-- (void)warningsExtensionPushWarningsControllerWithWarnings:(id)a3;
+- (void)signInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error;
+- (void)submitQuestionAnswers:(id)answers;
+- (void)updateTitleForProfileInstallationState:(int)state;
+- (void)warningsExtensionPushWarningsControllerWithWarnings:(id)warnings;
 @end
 
 @implementation MCInstallProfileViewController
 
-- (MCInstallProfileViewController)initWithInstallableProfileData:(id)a3 fromSource:(unint64_t)a4
+- (MCInstallProfileViewController)initWithInstallableProfileData:(id)data fromSource:(unint64_t)source
 {
-  v7 = a3;
-  v8 = [MEMORY[0x277D26290] profileWithData:v7 outError:0];
+  dataCopy = data;
+  v8 = [MEMORY[0x277D26290] profileWithData:dataCopy outError:0];
   v9 = [(MCInstallProfileViewController *)self initWithProfile:v8 viewMode:1];
   v10 = v9;
   if (v9)
   {
     [(MCInstallProfileViewController *)v9 setInstallState:1 animated:1];
-    objc_storeStrong(&v10->_profileData, a3);
-    [(MCInstallProfileViewController *)v10 setOriginalProfileData:v7];
-    v11 = [(MCInstallProfileViewController *)v10 profileViewController];
-    [v11 setInstallProfileSource:a4];
+    objc_storeStrong(&v10->_profileData, data);
+    [(MCInstallProfileViewController *)v10 setOriginalProfileData:dataCopy];
+    profileViewController = [(MCInstallProfileViewController *)v10 profileViewController];
+    [profileViewController setInstallProfileSource:source];
 
-    if (a4)
+    if (source)
     {
-      v12 = MCUILocalizedString(@"BLOB_INSTALL_TITLE");
-      v13 = [(MCInstallProfileViewController *)v10 navigationItem];
-      [v13 setTitle:v12];
+      defaultCenter = MCUILocalizedString(@"BLOB_INSTALL_TITLE");
+      navigationItem = [(MCInstallProfileViewController *)v10 navigationItem];
+      [navigationItem setTitle:defaultCenter];
     }
 
     else
     {
-      v14 = [v8 friendlyName];
-      v15 = [(MCInstallProfileViewController *)v10 navigationItem];
-      [v15 setTitle:v14];
+      friendlyName = [v8 friendlyName];
+      navigationItem2 = [(MCInstallProfileViewController *)v10 navigationItem];
+      [navigationItem2 setTitle:friendlyName];
 
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v12 addObserver:v10 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v10 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
     }
 
-    v16 = [(MCInstallProfileViewController *)v10 navigationItem];
+    navigationItem3 = [(MCInstallProfileViewController *)v10 navigationItem];
     DMCSendNavUIUpdatedNotification();
   }
 
   return v10;
 }
 
-- (MCInstallProfileViewController)initWithProfile:(id)a3 viewMode:(int64_t)a4
+- (MCInstallProfileViewController)initWithProfile:(id)profile viewMode:(int64_t)mode
 {
-  v6 = a3;
+  profileCopy = profile;
   v7 = objc_opt_new();
-  v8 = [(MCInstallProfileViewController *)self initWithProfile:v6 viewMode:a4 profileUIDataProvider:v7];
+  v8 = [(MCInstallProfileViewController *)self initWithProfile:profileCopy viewMode:mode profileUIDataProvider:v7];
 
   return v8;
 }
 
-- (MCInstallProfileViewController)initWithProfile:(id)a3 viewMode:(int64_t)a4 profileUIDataProvider:(id)a5
+- (MCInstallProfileViewController)initWithProfile:(id)profile viewMode:(int64_t)mode profileUIDataProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a5;
+  profileCopy = profile;
+  providerCopy = provider;
   v32.receiver = self;
   v32.super_class = MCInstallProfileViewController;
   v11 = [(MCUIViewController *)&v32 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_profile, a3);
-    [(MCInstallProfileViewController *)v12 setOriginalProfile:v9];
-    v13 = [objc_alloc(MEMORY[0x277D03280]) initWithProfile:v9 viewMode:a4 profileUIDataProvider:v10];
+    objc_storeStrong(&v11->_profile, profile);
+    [(MCInstallProfileViewController *)v12 setOriginalProfile:profileCopy];
+    v13 = [objc_alloc(MEMORY[0x277D03280]) initWithProfile:profileCopy viewMode:mode profileUIDataProvider:providerCopy];
     [(MCInstallProfileViewController *)v12 setProfileViewController:v13];
 
-    v14 = [(MCInstallProfileViewController *)v12 profileViewController];
-    [(MCInstallProfileViewController *)v12 addChildViewController:v14];
+    profileViewController = [(MCInstallProfileViewController *)v12 profileViewController];
+    [(MCInstallProfileViewController *)v12 addChildViewController:profileViewController];
 
-    v15 = [(MCInstallProfileViewController *)v12 view];
-    [v15 frame];
+    view = [(MCInstallProfileViewController *)v12 view];
+    [view frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(MCInstallProfileViewController *)v12 profileViewController];
-    v25 = [v24 view];
-    [v25 setFrame:{v17, v19, v21, v23}];
+    profileViewController2 = [(MCInstallProfileViewController *)v12 profileViewController];
+    view2 = [profileViewController2 view];
+    [view2 setFrame:{v17, v19, v21, v23}];
 
-    v26 = [(MCInstallProfileViewController *)v12 view];
-    v27 = [(MCInstallProfileViewController *)v12 profileViewController];
-    v28 = [v27 view];
-    [v26 addSubview:v28];
+    view3 = [(MCInstallProfileViewController *)v12 view];
+    profileViewController3 = [(MCInstallProfileViewController *)v12 profileViewController];
+    view4 = [profileViewController3 view];
+    [view3 addSubview:view4];
 
-    v29 = [(MCInstallProfileViewController *)v12 profileViewController];
-    [v29 didMoveToParentViewController:v12];
+    profileViewController4 = [(MCInstallProfileViewController *)v12 profileViewController];
+    [profileViewController4 didMoveToParentViewController:v12];
 
-    v30 = [(MCInstallProfileViewController *)v12 profileViewController];
-    [v30 setProfileViewControllerDelegate:v12];
+    profileViewController5 = [(MCInstallProfileViewController *)v12 profileViewController];
+    [profileViewController5 setProfileViewControllerDelegate:v12];
   }
 
   return v12;
@@ -167,8 +167,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(MCInstallProfileViewController *)self childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childViewControllers = [(MCInstallProfileViewController *)self childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -179,18 +179,18 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         [v8 willMoveToParentViewController:0];
-        v9 = [v8 view];
-        [v9 removeFromSuperview];
+        view = [v8 view];
+        [view removeFromSuperview];
 
         [v8 removeFromParentViewController];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -204,8 +204,8 @@
 
 - (BOOL)displayedAsSheet
 {
-  v2 = [(MCInstallProfileViewController *)self presentingViewController];
-  v3 = v2 != 0;
+  presentingViewController = [(MCInstallProfileViewController *)self presentingViewController];
+  v3 = presentingViewController != 0;
 
   return v3;
 }
@@ -214,12 +214,12 @@
 {
   if ([(MCInstallProfileViewController *)self installHasFailed])
   {
-    v3 = [(MCInstallProfileViewController *)self userCancelledInstall];
+    userCancelledInstall = [(MCInstallProfileViewController *)self userCancelledInstall];
   }
 
   else
   {
-    v3 = 1;
+    userCancelledInstall = 1;
   }
 
   v4[0] = MEMORY[0x277D85DD0];
@@ -227,7 +227,7 @@
   v4[2] = __49__MCInstallProfileViewController__returnToSender__block_invoke;
   v4[3] = &unk_2798619C8;
   v4[4] = self;
-  [(UIViewController *)self MCUIReturnToSender:v3 returnToAccountSettings:0 viewControllerDismissalBlock:v4];
+  [(UIViewController *)self MCUIReturnToSender:userCancelledInstall returnToAccountSettings:0 viewControllerDismissalBlock:v4];
 }
 
 void __49__MCInstallProfileViewController__returnToSender__block_invoke(uint64_t a1, uint64_t a2)
@@ -239,19 +239,19 @@ void __49__MCInstallProfileViewController__returnToSender__block_invoke(uint64_t
 
 - (void)_takeMeBack
 {
-  v3 = [(MCInstallProfileViewController *)self profileViewController];
-  v4 = [v3 installProfileSource];
+  profileViewController = [(MCInstallProfileViewController *)self profileViewController];
+  installProfileSource = [profileViewController installProfileSource];
 
-  if ((v4 - 1) >= 2)
+  if ((installProfileSource - 1) >= 2)
   {
-    if (!v4)
+    if (!installProfileSource)
     {
-      v5 = [MEMORY[0x277D262A0] sharedConnection];
-      v6 = [v5 popProfileDataFromHeadOfInstallationQueue];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      popProfileDataFromHeadOfInstallationQueue = [mEMORY[0x277D262A0] popProfileDataFromHeadOfInstallationQueue];
 
-      if (v6)
+      if (popProfileDataFromHeadOfInstallationQueue)
       {
-        [(MCInstallProfileViewController *)self queueNextProfileData:v6];
+        [(MCInstallProfileViewController *)self queueNextProfileData:popProfileDataFromHeadOfInstallationQueue];
       }
 
       else
@@ -268,51 +268,51 @@ void __49__MCInstallProfileViewController__returnToSender__block_invoke(uint64_t
   }
 }
 
-- (void)queueNextProfileData:(id)a3
+- (void)queueNextProfileData:(id)data
 {
-  v4 = a3;
-  v5 = [(MCInstallProfileViewController *)self profile];
-  [(MCInstallProfileViewController *)self setOriginalProfile:v5];
+  dataCopy = data;
+  profile = [(MCInstallProfileViewController *)self profile];
+  [(MCInstallProfileViewController *)self setOriginalProfile:profile];
 
-  v6 = [(MCInstallProfileViewController *)self profileData];
-  [(MCInstallProfileViewController *)self setOriginalProfileData:v6];
+  profileData = [(MCInstallProfileViewController *)self profileData];
+  [(MCInstallProfileViewController *)self setOriginalProfileData:profileData];
 
-  [(MCInstallProfileViewController *)self setProfileData:v4];
+  [(MCInstallProfileViewController *)self setProfileData:dataCopy];
 
   [(MCInstallProfileViewController *)self setInstallState:1 animated:1];
 }
 
-- (void)setProfile:(id)a3
+- (void)setProfile:(id)profile
 {
-  v8 = a3;
-  v5 = [(MCInstallProfileViewController *)self profile];
+  profileCopy = profile;
+  profile = [(MCInstallProfileViewController *)self profile];
 
-  if (v5 != v8)
+  if (profile != profileCopy)
   {
-    objc_storeStrong(&self->_profile, a3);
+    objc_storeStrong(&self->_profile, profile);
     profileData = self->_profileData;
     self->_profileData = 0;
 
-    v7 = [(MCInstallProfileViewController *)self profileViewController];
-    [v7 setProfile:v8];
+    profileViewController = [(MCInstallProfileViewController *)self profileViewController];
+    [profileViewController setProfile:profileCopy];
   }
 }
 
-- (void)setProfileData:(id)a3
+- (void)setProfileData:(id)data
 {
-  v10 = a3;
-  v5 = [(MCInstallProfileViewController *)self profileData];
+  dataCopy = data;
+  profileData = [(MCInstallProfileViewController *)self profileData];
 
-  if (v5 != v10)
+  if (profileData != dataCopy)
   {
-    objc_storeStrong(&self->_profileData, a3);
-    v6 = [MEMORY[0x277D26290] profileWithData:v10 outError:0];
+    objc_storeStrong(&self->_profileData, data);
+    v6 = [MEMORY[0x277D26290] profileWithData:dataCopy outError:0];
     profile = self->_profile;
     self->_profile = v6;
 
     v8 = self->_profile;
-    v9 = [(MCInstallProfileViewController *)self profileViewController];
-    [v9 setProfile:v8];
+    profileViewController = [(MCInstallProfileViewController *)self profileViewController];
+    [profileViewController setProfile:v8];
   }
 }
 
@@ -331,11 +331,11 @@ void __49__MCInstallProfileViewController__returnToSender__block_invoke(uint64_t
 {
   if ([(MCInstallProfileViewController *)self displayedAsSheet])
   {
-    v3 = [(MCInstallProfileViewController *)self navigationItem];
-    [v3 setLeftBarButtonItem:0 animated:0];
+    navigationItem = [(MCInstallProfileViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:0 animated:0];
 
-    v4 = [(MCInstallProfileViewController *)self navigationItem];
-    [v4 setRightBarButtonItem:0 animated:0];
+    navigationItem2 = [(MCInstallProfileViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0 animated:0];
   }
 
   [(UIViewController *)self MCUIShowProgressInNavBar];
@@ -350,15 +350,15 @@ void __49__MCInstallProfileViewController__returnToSender__block_invoke(uint64_t
   }
 }
 
-- (void)updateTitleForProfileInstallationState:(int)a3
+- (void)updateTitleForProfileInstallationState:(int)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     v4 = @"BLOB_INSTALL_TITLE";
     goto LABEL_5;
   }
 
-  if (a3 == 9)
+  if (state == 9)
   {
     v4 = @"BLOB_JUST_INSTALLED_TITLE";
 LABEL_5:
@@ -386,8 +386,8 @@ LABEL_7:
   {
 LABEL_11:
     v9 = v6;
-    v7 = [(MCInstallProfileViewController *)self navigationItem];
-    [v7 setTitle:v9];
+    navigationItem = [(MCInstallProfileViewController *)self navigationItem];
+    [navigationItem setTitle:v9];
 
     v6 = v9;
   }
@@ -397,9 +397,9 @@ LABEL_12:
 
 - (id)_newRightBarButtonItem
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [(MCInstallProfileViewController *)self profile];
-  v5 = [v3 mustInstallProfileNonInteractively:v4];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  profile = [(MCInstallProfileViewController *)self profile];
+  v5 = [mEMORY[0x277D262A0] mustInstallProfileNonInteractively:profile];
 
   if ((v5 & 1) != 0 || [(MCInstallProfileViewController *)self installState]!= 1)
   {
@@ -424,22 +424,22 @@ LABEL_12:
 - (void)_beginInstallFlow
 {
   [(MCInstallProfileViewController *)self setInstallState:2 animated:1];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 isPasscodeSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
-  if (v4)
+  if (isPasscodeSet)
   {
-    v5 = [(MCInstallProfileViewController *)self delegate];
-    if (v5 && (v6 = v5, [(MCInstallProfileViewController *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+    delegate = [(MCInstallProfileViewController *)self delegate];
+    if (delegate && (v6 = delegate, [(MCInstallProfileViewController *)self delegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
     {
       objc_initWeak(&location, self);
-      v9 = [(MCInstallProfileViewController *)self delegate];
+      delegate2 = [(MCInstallProfileViewController *)self delegate];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __51__MCInstallProfileViewController__beginInstallFlow__block_invoke;
       v10[3] = &unk_2798619F0;
       objc_copyWeak(&v11, &location);
-      [v9 performPinAuthenticationWithCompletionHandler:v10];
+      [delegate2 performPinAuthenticationWithCompletionHandler:v10];
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);
@@ -502,35 +502,35 @@ void __51__MCInstallProfileViewController__beginInstallFlow__block_invoke_2(uint
   NSLog(&cfstr_Mcinstallprofi.isa, v3);
   if ((v4 & 1) == 0)
   {
-    v5 = [(MCInstallProfileViewController *)self delegate];
+    delegate = [(MCInstallProfileViewController *)self delegate];
 
-    if (!v5)
+    if (!delegate)
     {
-      v11 = [MEMORY[0x277D262A0] sharedConnection];
-      v10 = [(MCInstallProfileViewController *)self profileData];
-      [v11 installProfileData:v10 interactionDelegate:self];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      profileData = [(MCInstallProfileViewController *)self profileData];
+      [mEMORY[0x277D262A0] installProfileData:profileData interactionDelegate:self];
       goto LABEL_8;
     }
   }
 
-  v6 = [(MCInstallProfileViewController *)self profile];
-  v7 = [v6 installationWarnings];
-  if ([v7 count])
+  profile = [(MCInstallProfileViewController *)self profile];
+  installationWarnings = [profile installationWarnings];
+  if ([installationWarnings count])
   {
 
 LABEL_6:
-    v11 = [(MCInstallProfileViewController *)self profile];
-    v10 = [v11 installationWarnings];
-    [(MCInstallProfileViewController *)self profileConnection:0 didShowUserWarnings:v10];
+    mEMORY[0x277D262A0] = [(MCInstallProfileViewController *)self profile];
+    profileData = [mEMORY[0x277D262A0] installationWarnings];
+    [(MCInstallProfileViewController *)self profileConnection:0 didShowUserWarnings:profileData];
 LABEL_8:
 
     return;
   }
 
-  v8 = [(MCInstallProfileViewController *)self profile];
-  v9 = [v8 localizedConsentText];
+  profile2 = [(MCInstallProfileViewController *)self profile];
+  localizedConsentText = [profile2 localizedConsentText];
 
-  if (v9)
+  if (localizedConsentText)
   {
     goto LABEL_6;
   }
@@ -550,15 +550,15 @@ LABEL_8:
   if (![(MCInstallProfileViewController *)self _attemptRemoteInstallAfterCompletingPrecheck])
   {
     NSLog(&cfstr_Mcinstallprofi_0.isa);
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
-    [v3 respondToWarningsContinueInstallation:1];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] respondToWarningsContinueInstallation:1];
   }
 }
 
 - (BOOL)_attemptRemoteInstallAfterCompletingPrecheck
 {
-  v3 = [(MCInstallProfileViewController *)self profile];
-  v4 = [v3 identifier];
+  profile = [(MCInstallProfileViewController *)self profile];
+  identifier = [profile identifier];
 
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
@@ -566,7 +566,7 @@ LABEL_8:
   v13[2] = __78__MCInstallProfileViewController__attemptRemoteInstallAfterCompletingPrecheck__block_invoke;
   v13[3] = &unk_279861A18;
   objc_copyWeak(&v15, &location);
-  v5 = v4;
+  v5 = identifier;
   v14 = v5;
   v6 = MEMORY[0x259C799C0](v13);
   v7 = +[MCUIWatchManager shared];
@@ -574,24 +574,24 @@ LABEL_8:
   if (v7)
   {
     NSLog(&cfstr_Mcinstallprofi_1.isa);
-    v8 = +[MCUIWatchManager shared];
-    v9 = [(MCInstallProfileViewController *)self profileData];
-    [v8 installProfileData:v9 completion:v6];
+    delegate2 = +[MCUIWatchManager shared];
+    profileData = [(MCInstallProfileViewController *)self profileData];
+    [delegate2 installProfileData:profileData completion:v6];
   }
 
   else
   {
-    v10 = [(MCInstallProfileViewController *)self delegate];
+    delegate = [(MCInstallProfileViewController *)self delegate];
 
-    if (!v10)
+    if (!delegate)
     {
       v11 = 0;
       goto LABEL_6;
     }
 
     NSLog(&cfstr_Mcinstallprofi_2.isa);
-    v8 = [(MCInstallProfileViewController *)self delegate];
-    [v8 installProfileWithCompletionHandler:v6];
+    delegate2 = [(MCInstallProfileViewController *)self delegate];
+    [delegate2 installProfileWithCompletionHandler:v6];
   }
 
   v11 = 1;
@@ -614,17 +614,17 @@ void __78__MCInstallProfileViewController__attemptRemoteInstallAfterCompletingPr
   }
 }
 
-- (void)profileConnection:(id)a3 didRequestUserInput:(id)a4
+- (void)profileConnection:(id)connection didRequestUserInput:(id)input
 {
-  v5 = a4;
+  inputCopy = input;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__MCInstallProfileViewController_profileConnection_didRequestUserInput___block_invoke;
   block[3] = &unk_279861A40;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = inputCopy;
+  v6 = inputCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v9);
@@ -642,17 +642,17 @@ void __72__MCInstallProfileViewController_profileConnection_didRequestUserInput_
   }
 }
 
-- (void)profileConnection:(id)a3 didShowUserWarnings:(id)a4
+- (void)profileConnection:(id)connection didShowUserWarnings:(id)warnings
 {
-  v5 = a4;
+  warningsCopy = warnings;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__MCInstallProfileViewController_profileConnection_didShowUserWarnings___block_invoke;
   block[3] = &unk_279861A40;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = warningsCopy;
+  v6 = warningsCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v9);
@@ -670,17 +670,17 @@ void __72__MCInstallProfileViewController_profileConnection_didShowUserWarnings_
   }
 }
 
-- (void)profileConnection:(id)a3 didUpdateStatus:(id)a4
+- (void)profileConnection:(id)connection didUpdateStatus:(id)status
 {
-  v5 = a4;
+  statusCopy = status;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__MCInstallProfileViewController_profileConnection_didUpdateStatus___block_invoke;
   block[3] = &unk_279861A40;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = statusCopy;
+  v6 = statusCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v9);
@@ -709,17 +709,17 @@ void __68__MCInstallProfileViewController_profileConnection_didUpdateStatus___bl
   }
 }
 
-- (void)profileConnection:(id)a3 didFinishPreflightWithError:(id)a4
+- (void)profileConnection:(id)connection didFinishPreflightWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__MCInstallProfileViewController_profileConnection_didFinishPreflightWithError___block_invoke;
   block[3] = &unk_279861A40;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v9);
@@ -737,20 +737,20 @@ void __80__MCInstallProfileViewController_profileConnection_didFinishPreflightWi
   }
 }
 
-- (void)profileConnection:(id)a3 didFinishInstallationWithIdentifier:(id)a4 error:(id)a5
+- (void)profileConnection:(id)connection didFinishInstallationWithIdentifier:(id)identifier error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  errorCopy = error;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __94__MCInstallProfileViewController_profileConnection_didFinishInstallationWithIdentifier_error___block_invoke;
   v11[3] = &unk_279861A68;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v11);
 
   objc_destroyWeak(&v14);
@@ -768,17 +768,17 @@ void __94__MCInstallProfileViewController_profileConnection_didFinishInstallatio
   }
 }
 
-- (void)profileConnection:(id)a3 didBeginInstallingNextProfile:(id)a4
+- (void)profileConnection:(id)connection didBeginInstallingNextProfile:(id)profile
 {
-  v5 = a4;
+  profileCopy = profile;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__MCInstallProfileViewController_profileConnection_didBeginInstallingNextProfile___block_invoke;
   block[3] = &unk_279861A40;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = profileCopy;
+  v6 = profileCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v9);
@@ -798,19 +798,19 @@ void __82__MCInstallProfileViewController_profileConnection_didBeginInstallingNe
   }
 }
 
-- (void)profileConnectionDidRequestCurrentPasscode:(id)a3
+- (void)profileConnectionDidRequestCurrentPasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = [(MCInstallProfileViewController *)self pin];
-  [v4 respondToCurrentPasscodeRequestContinue:1 passcode:v5];
+  [passcodeCopy respondToCurrentPasscodeRequestContinue:1 passcode:v5];
 }
 
-- (void)profileConnection:(id)a3 didRequestMAIDSignIn:(id)a4 personaID:(id)a5
+- (void)profileConnection:(id)connection didRequestMAIDSignIn:(id)in personaID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277D03550] currentPersonaID];
-  [(MCInstallProfileViewController *)self setEnrollmentPersonaID:v9];
+  connectionCopy = connection;
+  inCopy = in;
+  currentPersonaID = [MEMORY[0x277D03550] currentPersonaID];
+  [(MCInstallProfileViewController *)self setEnrollmentPersonaID:currentPersonaID];
 
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
@@ -818,10 +818,10 @@ void __82__MCInstallProfileViewController_profileConnection_didBeginInstallingNe
   v12[2] = __83__MCInstallProfileViewController_profileConnection_didRequestMAIDSignIn_personaID___block_invoke;
   v12[3] = &unk_279861A68;
   objc_copyWeak(&v15, &location);
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = inCopy;
+  v14 = connectionCopy;
+  v10 = connectionCopy;
+  v11 = inCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 
   objc_destroyWeak(&v15);
@@ -889,12 +889,12 @@ void __83__MCInstallProfileViewController_profileConnection_didRequestMAIDSignIn
   }
 }
 
-- (void)submitQuestionAnswers:(id)a3
+- (void)submitQuestionAnswers:(id)answers
 {
-  v4 = a3;
+  answersCopy = answers;
   [(MCInstallProfileViewController *)self setInstallState:2 animated:1];
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  [v5 submitUserInputResponses:v4];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] submitUserInputResponses:answersCopy];
 }
 
 - (void)cancelInstallWhilePresentingConsentAndWarningsUponDidAppear
@@ -933,28 +933,28 @@ void __93__MCInstallProfileViewController_cancelInstallWhilePresentingConsentAnd
   }
 }
 
-- (void)_installFinishedWithIdentifier:(id)a3 error:(id)a4
+- (void)_installFinishedWithIdentifier:(id)identifier error:(id)error
 {
-  v12 = a4;
+  errorCopy = error;
   [(MCInstallProfileViewController *)self questionsExtensionInstallFinished];
-  if (v12)
+  if (errorCopy)
   {
     [(MCInstallProfileViewController *)self setInstallState:1 animated:0];
     [(MCInstallProfileViewController *)self setInstallHasFailed:1];
-    if ([(MCInstallProfileViewController *)self _installErrorIsUserCancelledError:v12])
+    if ([(MCInstallProfileViewController *)self _installErrorIsUserCancelledError:errorCopy])
     {
       [(MCInstallProfileViewController *)self setUserCancelledInstall:1];
     }
 
     else
     {
-      [(MCInstallProfileViewController *)self _handleInstallationError:v12];
+      [(MCInstallProfileViewController *)self _handleInstallationError:errorCopy];
     }
 
     if ([(MCInstallProfileViewController *)self secondaryProfileReceived])
     {
-      v7 = [(MCInstallProfileViewController *)self originalProfileData];
-      [(MCInstallProfileViewController *)self setProfileData:v7];
+      originalProfileData = [(MCInstallProfileViewController *)self originalProfileData];
+      [(MCInstallProfileViewController *)self setProfileData:originalProfileData];
 
       [(MCInstallProfileViewController *)self setSecondaryProfileReceived:0];
     }
@@ -962,32 +962,32 @@ void __93__MCInstallProfileViewController_cancelInstallWhilePresentingConsentAnd
 
   else
   {
-    v5 = [(MCInstallProfileViewController *)self profileViewController];
-    [v5 setInstallComplete:1];
+    profileViewController = [(MCInstallProfileViewController *)self profileViewController];
+    [profileViewController setInstallComplete:1];
 
     [(MCInstallProfileViewController *)self setInstallState:9 animated:1];
-    v6 = [(MCInstallProfileViewController *)self originalProfile];
-    if ([v6 needsReboot])
+    originalProfile = [(MCInstallProfileViewController *)self originalProfile];
+    if ([originalProfile needsReboot])
     {
     }
 
     else
     {
-      v8 = [(MCInstallProfileViewController *)self profile];
-      v9 = [v8 needsReboot];
+      profile = [(MCInstallProfileViewController *)self profile];
+      needsReboot = [profile needsReboot];
 
-      if (!v9)
+      if (!needsReboot)
       {
         goto LABEL_13;
       }
     }
 
-    v10 = [(MCInstallProfileViewController *)self delegate];
+    delegate = [(MCInstallProfileViewController *)self delegate];
 
-    if (v10)
+    if (delegate)
     {
-      v11 = [(MCInstallProfileViewController *)self delegate];
-      [v11 showRebootAlertAndReboot];
+      delegate2 = [(MCInstallProfileViewController *)self delegate];
+      [delegate2 showRebootAlertAndReboot];
     }
 
     else
@@ -999,22 +999,22 @@ void __93__MCInstallProfileViewController_cancelInstallWhilePresentingConsentAnd
 LABEL_13:
 }
 
-- (BOOL)_installErrorIsUserCancelledError:(id)a3
+- (BOOL)_installErrorIsUserCancelledError:(id)error
 {
-  v3 = a3;
-  if (!v3)
+  errorCopy = error;
+  if (!errorCopy)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = errorCopy;
   v5 = *MEMORY[0x277D26108];
   v6 = *MEMORY[0x277D26130];
   v7 = *MEMORY[0x277CCA7E8];
   while (1)
   {
-    v8 = [v4 domain];
-    v9 = [v8 isEqualToString:v5];
+    domain = [v4 domain];
+    v9 = [domain isEqualToString:v5];
 
     if (!v9)
     {
@@ -1027,8 +1027,8 @@ LABEL_13:
     }
 
 LABEL_8:
-    v12 = [v4 userInfo];
-    v13 = [v12 objectForKey:v7];
+    userInfo = [v4 userInfo];
+    v13 = [userInfo objectForKey:v7];
 
     v4 = v13;
     if (!v13)
@@ -1038,8 +1038,8 @@ LABEL_8:
     }
   }
 
-  v10 = [v4 domain];
-  v11 = [v10 isEqualToString:v6];
+  domain2 = [v4 domain];
+  v11 = [domain2 isEqualToString:v6];
 
   if (!v11 || [v4 code] != 24007)
   {
@@ -1053,30 +1053,30 @@ LABEL_12:
   return v14;
 }
 
-- (void)_handleInstallationError:(id)a3
+- (void)_handleInstallationError:(id)error
 {
-  v16 = self;
-  v17 = a3;
-  v3 = [v17 localizedDescription];
-  v4 = [v17 localizedRecoverySuggestion];
-  if (v17)
+  selfCopy = self;
+  errorCopy = error;
+  localizedDescription = [errorCopy localizedDescription];
+  localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
+  if (errorCopy)
   {
     v5 = *MEMORY[0x277D25CA8];
     v6 = *MEMORY[0x277CCA7E8];
-    v7 = v17;
+    v7 = errorCopy;
     while (1)
     {
-      v8 = [v7 userInfo];
-      v9 = [v7 localizedRecoverySuggestion];
+      userInfo = [v7 userInfo];
+      localizedRecoverySuggestion2 = [v7 localizedRecoverySuggestion];
 
-      if (v9)
+      if (localizedRecoverySuggestion2)
       {
-        v10 = [v7 localizedRecoverySuggestion];
+        localizedRecoverySuggestion3 = [v7 localizedRecoverySuggestion];
 
-        v4 = v10;
+        localizedRecoverySuggestion = localizedRecoverySuggestion3;
       }
 
-      v11 = [v8 objectForKey:v5];
+      v11 = [userInfo objectForKey:v5];
       if (v11)
       {
         objc_opt_class();
@@ -1090,7 +1090,7 @@ LABEL_12:
         }
       }
 
-      v13 = [v8 objectForKey:v6];
+      v13 = [userInfo objectForKey:v6];
 
       v7 = v13;
       if (!v13)
@@ -1100,36 +1100,36 @@ LABEL_12:
     }
 
     v14 = v12;
-    v15 = [MEMORY[0x277D75128] sharedApplication];
-    [v15 openURL:v14 options:MEMORY[0x277CBEC10] completionHandler:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] openURL:v14 options:MEMORY[0x277CBEC10] completionHandler:0];
   }
 
   else
   {
 LABEL_9:
-    [MEMORY[0x277D75110] MCUIShowAlertForError:v17 fromViewController:v16 suggestedTitle:v3 suggestedMessage:v4 completion:{0, v16}];
+    [MEMORY[0x277D75110] MCUIShowAlertForError:errorCopy fromViewController:selfCopy suggestedTitle:localizedDescription suggestedMessage:localizedRecoverySuggestion completion:{0, selfCopy}];
     v7 = 0;
   }
 }
 
 - (void)_cancelInstallDueToApplicationExit
 {
-  v3 = [(MCInstallProfileViewController *)self installState];
-  if (v3 > 3)
+  installState = [(MCInstallProfileViewController *)self installState];
+  if (installState > 3)
   {
-    if (v3 == 4)
+    if (installState == 4)
     {
       [(MCInstallProfileViewController *)self cancelInstallWhilePresentingQuestionsAnimated:0];
       goto LABEL_13;
     }
 
-    if (v3 == 5)
+    if (installState == 5)
     {
       [(MCInstallProfileViewController *)self _cancelInstallAfterMAIDAuthenticationAnimated:0];
       goto LABEL_13;
     }
 
-    if (v3 != 9)
+    if (installState != 9)
     {
       goto LABEL_13;
     }
@@ -1139,7 +1139,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  switch(v3)
+  switch(installState)
   {
     case 1:
       goto LABEL_9;
@@ -1156,21 +1156,21 @@ LABEL_13:
   [(MCInstallProfileViewController *)self dmc_popToViewController:self animated:1];
 }
 
-- (void)showFinalInstallationAlert:(id)a3
+- (void)showFinalInstallationAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v20 = MCUILocalizedString(@"BLOB_INSTALL_TITLE");
-  v5 = [(MCInstallProfileViewController *)self profile];
-  v6 = [v5 trustLevel];
+  profile = [(MCInstallProfileViewController *)self profile];
+  trustLevel = [profile trustLevel];
 
-  v7 = [(MCInstallProfileViewController *)self profile];
-  v8 = [v7 isLocked];
+  profile2 = [(MCInstallProfileViewController *)self profile];
+  isLocked = [profile2 isLocked];
 
-  if (v8)
+  if (isLocked)
   {
-    v9 = [(MCInstallProfileViewController *)self profile];
-    v10 = [v9 removalPasscode];
-    if (v10)
+    profile3 = [(MCInstallProfileViewController *)self profile];
+    removalPasscode = [profile3 removalPasscode];
+    if (removalPasscode)
     {
       v11 = @"BLOB_INSTALL_NOT_REMOVABLE_AUTH";
     }
@@ -1187,40 +1187,40 @@ LABEL_13:
 
   else
   {
-    v14 = v6 != 2;
+    v14 = trustLevel != 2;
     v12 = MCUILocalizedStringByDevice(@"PROFILE_INSTALL_WARNING");
     v13 = 2 * v14;
   }
 
   v15 = [MEMORY[0x277D75110] alertControllerWithTitle:v20 message:v12 preferredStyle:1];
   v16 = MCUILocalizedString(@"INSTALL");
-  [(MCInstallProfileViewController *)self addInstallActionWithTitle:v16 style:v13 toAlert:v15 completion:v4];
+  [(MCInstallProfileViewController *)self addInstallActionWithTitle:v16 style:v13 toAlert:v15 completion:alertCopy];
 
-  [(MCInstallProfileViewController *)self addCancelActionToAlert:v15 withCompletion:v4];
-  v17 = [(MCInstallProfileViewController *)self rightNavBarButton];
+  [(MCInstallProfileViewController *)self addCancelActionToAlert:v15 withCompletion:alertCopy];
+  rightNavBarButton = [(MCInstallProfileViewController *)self rightNavBarButton];
 
-  if (v17)
+  if (rightNavBarButton)
   {
-    v18 = [(MCInstallProfileViewController *)self rightNavBarButton];
-    v19 = [v15 popoverPresentationController];
-    [v19 setSourceItem:v18];
+    rightNavBarButton2 = [(MCInstallProfileViewController *)self rightNavBarButton];
+    popoverPresentationController = [v15 popoverPresentationController];
+    [popoverPresentationController setSourceItem:rightNavBarButton2];
   }
 
   [(MCInstallProfileViewController *)self dmc_presentAlert:v15 completion:0];
 }
 
-- (void)showMDMFinalInstallationAlert:(id)a3
+- (void)showMDMFinalInstallationAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v9 = MCUILocalizedStringByDevice(@"MOBILE_DEVICE_MANAGEMENT_WARNING");
   v5 = MEMORY[0x277D75110];
   v6 = MCUILocalizedString(@"BLOB_MDM_ENROLL_TITLE");
   v7 = [v5 alertControllerWithTitle:v6 message:v9 preferredStyle:1];
 
   v8 = MCUILocalizedString(@"TRUST");
-  [(MCInstallProfileViewController *)self addInstallActionWithTitle:v8 style:2 toAlert:v7 completion:v4];
+  [(MCInstallProfileViewController *)self addInstallActionWithTitle:v8 style:2 toAlert:v7 completion:alertCopy];
 
-  [(MCInstallProfileViewController *)self addCancelActionToAlert:v7 withCompletion:v4];
+  [(MCInstallProfileViewController *)self addCancelActionToAlert:v7 withCompletion:alertCopy];
   [(MCInstallProfileViewController *)self dmc_presentAlert:v7 completion:0];
 }
 
@@ -1237,20 +1237,20 @@ LABEL_13:
   [(MCInstallProfileViewController *)self dmc_presentAlert:v7 completion:0];
 }
 
-- (void)addInstallActionWithTitle:(id)a3 style:(int64_t)a4 toAlert:(id)a5 completion:(id)a6
+- (void)addInstallActionWithTitle:(id)title style:(int64_t)style toAlert:(id)alert completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  alertCopy = alert;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __85__MCInstallProfileViewController_addInstallActionWithTitle_style_toAlert_completion___block_invoke;
   v14[3] = &unk_279861AE0;
-  v13 = v12;
+  v13 = completionCopy;
   v15 = v13;
   objc_copyWeak(&v16, &location);
-  [v11 MCUIAddActionWithTitle:v10 style:a4 completion:v14];
+  [alertCopy MCUIAddActionWithTitle:titleCopy style:style completion:v14];
   objc_destroyWeak(&v16);
 
   objc_destroyWeak(&location);
@@ -1273,20 +1273,20 @@ void __85__MCInstallProfileViewController_addInstallActionWithTitle_style_toAler
   }
 }
 
-- (void)addCancelActionToAlert:(id)a3 withCompletion:(id)a4
+- (void)addCancelActionToAlert:(id)alert withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  alertCopy = alert;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = MCUILocalizedString(@"CANCEL");
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__MCInstallProfileViewController_addCancelActionToAlert_withCompletion___block_invoke;
   v10[3] = &unk_279861AE0;
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
   objc_copyWeak(&v12, &location);
-  [v6 MCUIAddActionWithTitle:v8 style:1 completion:v10];
+  [alertCopy MCUIAddActionWithTitle:v8 style:1 completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -1312,8 +1312,8 @@ void __72__MCInstallProfileViewController_addCancelActionToAlert_withCompletion_
 - (void)performRemoveAfterFinalVerification
 {
   v3 = MCUILocalizedString(@"BLOB_REMOVING_TITLE");
-  v4 = [(MCInstallProfileViewController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationItem = [(MCInstallProfileViewController *)self navigationItem];
+  [navigationItem setTitle:v3];
 
   [(MCInstallProfileViewController *)self showProgressIndicator];
   [(MCInstallProfileViewController *)self setProcessingPayload:1];
@@ -1325,8 +1325,8 @@ void __72__MCInstallProfileViewController_addCancelActionToAlert_withCompletion_
   objc_copyWeak(&v12, &location);
   v5 = MEMORY[0x259C799C0](&v8);
   v6 = [(MCInstallProfileViewController *)self profile:v8];
-  v7 = [v6 identifier];
-  [(MCInstallProfileViewController *)self _removeProfileWithIdentifier:v7 isProtectedProfile:0 completionHandler:v5];
+  identifier = [v6 identifier];
+  [(MCInstallProfileViewController *)self _removeProfileWithIdentifier:identifier isProtectedProfile:0 completionHandler:v5];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -1366,11 +1366,11 @@ void __69__MCInstallProfileViewController_performRemoveAfterFinalVerification__b
   }
 }
 
-- (void)_removeProfileWithIdentifier:(id)a3 isProtectedProfile:(BOOL)a4 completionHandler:(id)a5
+- (void)_removeProfileWithIdentifier:(id)identifier isProtectedProfile:(BOOL)profile completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  profileCopy = profile;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(MCInstallProfileViewController *)self profileViewControllerIsProfileInstalled])
   {
     v10 = +[MCUIWatchManager shared];
@@ -1378,17 +1378,17 @@ void __69__MCInstallProfileViewController_performRemoveAfterFinalVerification__b
     if (v10)
     {
       v11 = +[MCUIWatchManager shared];
-      [v11 removeProfileIdentifier:v8 completion:v9];
+      [v11 removeProfileIdentifier:identifierCopy completion:handlerCopy];
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v15 = [MEMORY[0x277D262A0] sharedConnection];
-    v11 = v15;
-    if (v6)
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v11 = mEMORY[0x277D262A0];
+    if (profileCopy)
     {
-      [v15 removeProtectedProfileAsyncWithIdentifier:v8 installationType:1 completion:v9];
+      [mEMORY[0x277D262A0] removeProtectedProfileAsyncWithIdentifier:identifierCopy installationType:1 completion:handlerCopy];
       goto LABEL_11;
     }
 
@@ -1396,8 +1396,8 @@ LABEL_11:
     v16[1] = 3221225472;
     v16[2] = __100__MCInstallProfileViewController__removeProfileWithIdentifier_isProtectedProfile_completionHandler___block_invoke_2;
     v16[3] = &unk_279861B30;
-    v17 = v9;
-    [v11 removeProfileWithIdentifier:v8 installationType:1 completion:v16];
+    v17 = handlerCopy;
+    [v11 removeProfileWithIdentifier:identifierCopy installationType:1 completion:v16];
 
     v14 = v17;
   }
@@ -1406,21 +1406,21 @@ LABEL_11:
   {
     if (MCUIForPairedDevice())
     {
-      v12 = 2;
+      thisDeviceType = 2;
     }
 
     else
     {
-      v12 = [MEMORY[0x277D26290] thisDeviceType];
+      thisDeviceType = [MEMORY[0x277D26290] thisDeviceType];
     }
 
-    v13 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __100__MCInstallProfileViewController__removeProfileWithIdentifier_isProtectedProfile_completionHandler___block_invoke;
     v18[3] = &unk_279861B30;
-    v19 = v9;
-    [v13 removeUninstalledProfileWithIdentifier:v8 installationType:1 targetDeviceType:v12 completion:v18];
+    v19 = handlerCopy;
+    [mEMORY[0x277D262A0]2 removeUninstalledProfileWithIdentifier:identifierCopy installationType:1 targetDeviceType:thisDeviceType completion:v18];
 
     v14 = v19;
   }
@@ -1459,40 +1459,40 @@ void __57__MCInstallProfileViewController_profileRemovalDidFinish__block_invoke(
   }
 }
 
-- (void)_signInMAID:(id)a3 completionHandler:(id)a4
+- (void)_signInMAID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   v10 = objc_alloc_init(MCUISignInViewController);
   [(MCUISignInViewController *)v10 setDelegate:self];
   v8 = objc_alloc_init(MEMORY[0x277CF0380]);
   [v8 setIsEphemeral:0];
   [v8 setAuthenticationType:2];
   [v8 setPresentingViewController:v10];
-  [v8 setUsername:v7];
+  [v8 setUsername:dCopy];
 
   [v8 setIsUsernameEditable:0];
   [(MCUISignInViewController *)v10 setContext:v8];
-  [(MCInstallProfileViewController *)self setSignInCompletionHandler:v6];
+  [(MCInstallProfileViewController *)self setSignInCompletionHandler:handlerCopy];
 
-  v9 = [(MCInstallProfileViewController *)self navigationController];
-  [v9 presentViewController:v10 animated:1 completion:0];
+  navigationController = [(MCInstallProfileViewController *)self navigationController];
+  [navigationController presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)signInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5
+- (void)signInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MCInstallProfileViewController *)self signInCompletionHandler];
+  controllerCopy = controller;
+  resultsCopy = results;
+  errorCopy = error;
+  signInCompletionHandler = [(MCInstallProfileViewController *)self signInCompletionHandler];
 
-  if (v11)
+  if (signInCompletionHandler)
   {
-    if (v10)
+    if (errorCopy)
     {
-      v12 = [(MCInstallProfileViewController *)self signInCompletionHandler];
-      (v12)[2](v12, 0, v10, 0);
+      signInCompletionHandler2 = [(MCInstallProfileViewController *)self signInCompletionHandler];
+      (signInCompletionHandler2)[2](signInCompletionHandler2, 0, errorCopy, 0);
     }
 
     else
@@ -1509,13 +1509,13 @@ void __57__MCInstallProfileViewController_profileRemovalDidFinish__block_invoke(
       v23[0] = *MEMORY[0x277CB8BA0];
       v23[1] = v14;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
-      v16 = [(MCInstallProfileViewController *)self enrollmentPersonaID];
+      enrollmentPersonaID = [(MCInstallProfileViewController *)self enrollmentPersonaID];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __88__MCInstallProfileViewController_signInViewController_didAuthenticateWithResults_error___block_invoke_2;
       v18[3] = &unk_279861B58;
       objc_copyWeak(&v19, &location);
-      [v13 signInAccountsWithTypes:v15 authenticationResult:v9 personaID:v16 canMakeAccountActive:0 baseViewController:self completionHandler:v18];
+      [v13 signInAccountsWithTypes:v15 authenticationResult:resultsCopy personaID:enrollmentPersonaID canMakeAccountActive:0 baseViewController:self completionHandler:v18];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&v21);
@@ -1583,33 +1583,33 @@ void __88__MCInstallProfileViewController_signInViewController_didAuthenticateWi
   return WeakRetained;
 }
 
-- (void)consentExtensionShowConsentAndWarnings:(id)a3
+- (void)consentExtensionShowConsentAndWarnings:(id)warnings
 {
-  v6 = a3;
+  warningsCopy = warnings;
   [(MCInstallProfileViewController *)self hideProgressIndicatorWithShowButtons:0];
   [(MCInstallProfileViewController *)self setInstallState:3 animated:1];
-  v4 = [(MCInstallProfileViewController *)self profile];
-  v5 = [v4 localizedConsentText];
+  profile = [(MCInstallProfileViewController *)self profile];
+  localizedConsentText = [profile localizedConsentText];
 
-  if (v5)
+  if (localizedConsentText)
   {
-    [(MCInstallProfileViewController *)self _presentConsent:v6];
+    [(MCInstallProfileViewController *)self _presentConsent:warningsCopy];
   }
 
   else
   {
-    [(MCInstallProfileViewController *)self _didFinishPresentingConsent:v6];
+    [(MCInstallProfileViewController *)self _didFinishPresentingConsent:warningsCopy];
   }
 }
 
-- (void)installationConsentViewController:(id)a3 finishedWithUserContinueResponse:(BOOL)a4
+- (void)installationConsentViewController:(id)controller finishedWithUserContinueResponse:(BOOL)response
 {
-  v4 = a4;
-  NSLog(&cfstr_Mcinstallprofi_3.isa, a2, a3, a4);
-  if (v4)
+  responseCopy = response;
+  NSLog(&cfstr_Mcinstallprofi_3.isa, a2, controller, response);
+  if (responseCopy)
   {
-    v6 = [(MCInstallProfileViewController *)self warnings];
-    [(MCInstallProfileViewController *)self _didFinishPresentingConsent:v6];
+    warnings = [(MCInstallProfileViewController *)self warnings];
+    [(MCInstallProfileViewController *)self _didFinishPresentingConsent:warnings];
 
     [(MCInstallProfileViewController *)self setWarnings:0];
   }
@@ -1621,29 +1621,29 @@ void __88__MCInstallProfileViewController_signInViewController_didAuthenticateWi
   }
 }
 
-- (void)_presentConsent:(id)a3
+- (void)_presentConsent:(id)consent
 {
-  v4 = a3;
+  consentCopy = consent;
   NSLog(&cfstr_Mcinstallprofi_4.isa);
-  [(MCInstallProfileViewController *)self setWarnings:v4];
+  [(MCInstallProfileViewController *)self setWarnings:consentCopy];
   v7 = [[MCInstallationConsentViewController alloc] initWithStyle:2];
-  v5 = [(MCInstallProfileViewController *)self profile];
-  [(MCInstallationConsentViewController *)v7 setProfile:v5];
+  profile = [(MCInstallProfileViewController *)self profile];
+  [(MCInstallationConsentViewController *)v7 setProfile:profile];
 
   [(MCInstallationConsentViewController *)v7 setConsentDelegate:self];
-  v6 = [v4 count];
+  v6 = [consentCopy count];
 
   [(MCInstallationConsentViewController *)v7 setShowInstall:v6 == 0];
   [(MCInstallProfileViewController *)self dmc_pushViewController:v7 animated:1];
 }
 
-- (void)_didFinishPresentingConsent:(id)a3
+- (void)_didFinishPresentingConsent:(id)consent
 {
-  v4 = a3;
-  if ([v4 count])
+  consentCopy = consent;
+  if ([consentCopy count])
   {
-    NSLog(&cfstr_Mcinstallprofi_5.isa, v4);
-    [(MCInstallProfileViewController *)self warningsExtensionPushWarningsControllerWithWarnings:v4];
+    NSLog(&cfstr_Mcinstallprofi_5.isa, consentCopy);
+    [(MCInstallProfileViewController *)self warningsExtensionPushWarningsControllerWithWarnings:consentCopy];
   }
 
   else if ([(MCInstallProfileViewController *)self questionsAlreadyAsked])
@@ -1762,16 +1762,16 @@ void __63__MCInstallProfileViewController_PIN__pinExtensionShowPINSheet__block_i
   }
 }
 
-- (void)didAcceptEnteredPIN:(id)a3
+- (void)didAcceptEnteredPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__MCInstallProfileViewController_PIN__didAcceptEnteredPIN___block_invoke;
   v6[3] = &unk_279861A40;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = nCopy;
   v7 = v5;
   [(MCInstallProfileViewController *)self _didFinishEnteringPINWithCompletion:v6];
 
@@ -1815,41 +1815,41 @@ void __59__MCInstallProfileViewController_PIN__didCancelEnteringPIN__block_invok
   }
 }
 
-- (void)_didFinishEnteringPINWithCompletion:(id)a3
+- (void)_didFinishEnteringPINWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MCInstallProfileViewController *)self installHasFailed];
-  if (v4 && !v5)
+  completionCopy = completion;
+  installHasFailed = [(MCInstallProfileViewController *)self installHasFailed];
+  if (completionCopy && !installHasFailed)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __75__MCInstallProfileViewController_PIN___didFinishEnteringPINWithCompletion___block_invoke;
     block[3] = &unk_279861B30;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)questionsExtensionDidRequestAnswersForQuestions:(id)a3
+- (void)questionsExtensionDidRequestAnswersForQuestions:(id)questions
 {
-  v4 = a3;
+  questionsCopy = questions;
   [(MCInstallProfileViewController *)self setInstallState:4 animated:1];
   if ([(MCInstallProfileViewController *)self delayNextQuesion])
   {
-    [(MCInstallProfileViewController *)self _promptUserWithQuestionsAfterDelay:v4];
+    [(MCInstallProfileViewController *)self _promptUserWithQuestionsAfterDelay:questionsCopy];
   }
 
   else
   {
-    [(MCInstallProfileViewController *)self _promptUserWithQuestions:v4];
+    [(MCInstallProfileViewController *)self _promptUserWithQuestions:questionsCopy];
   }
 }
 
-- (void)questionsExtensionDidFinishPreflightWithError:(id)a3
+- (void)questionsExtensionDidFinishPreflightWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(MCInstallProfileViewController *)self questionsController];
-  [v5 profileConnectionDidFinishPreflightWithError:v4];
+  errorCopy = error;
+  questionsController = [(MCInstallProfileViewController *)self questionsController];
+  [questionsController profileConnectionDidFinishPreflightWithError:errorCopy];
 }
 
 - (void)questionsExtensionInstallFinished
@@ -1866,25 +1866,25 @@ void __59__MCInstallProfileViewController_PIN__didCancelEnteringPIN__block_invok
   [(MCInstallProfileViewController *)self setQuestionsController:0];
 }
 
-- (void)setCurrentQuestionsController:(id)a3
+- (void)setCurrentQuestionsController:(id)controller
 {
-  v6 = a3;
-  v4 = [(MCInstallProfileViewController *)self questionsController];
+  controllerCopy = controller;
+  questionsController = [(MCInstallProfileViewController *)self questionsController];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = controllerCopy;
+  if (questionsController != controllerCopy)
   {
-    [(MCInstallProfileViewController *)self setQuestionsController:v6];
-    v5 = v6;
+    [(MCInstallProfileViewController *)self setQuestionsController:controllerCopy];
+    v5 = controllerCopy;
   }
 }
 
-- (void)questionsController:(id)a3 didFinishWithResponses:(id)a4
+- (void)questionsController:(id)controller didFinishWithResponses:(id)responses
 {
-  v5 = a4;
-  if ([v5 count])
+  responsesCopy = responses;
+  if ([responsesCopy count])
   {
-    [(MCInstallProfileViewController *)self submitQuestionAnswers:v5];
+    [(MCInstallProfileViewController *)self submitQuestionAnswers:responsesCopy];
     [(MCInstallProfileViewController *)self _waitForNextQuestion];
   }
 
@@ -1894,37 +1894,37 @@ void __59__MCInstallProfileViewController_PIN__didCancelEnteringPIN__block_invok
   }
 }
 
-- (void)_promptUserWithQuestions:(id)a3
+- (void)_promptUserWithQuestions:(id)questions
 {
-  v4 = a3;
+  questionsCopy = questions;
   if ([(MCInstallProfileViewController *)self waitingForNextQuestion])
   {
     [(MCInstallProfileViewController *)self setWaitingForNextQuestion:0];
-    v5 = [(MCInstallProfileViewController *)self questionsController];
-    [v5 stopWaitingForMoreInput];
+    questionsController = [(MCInstallProfileViewController *)self questionsController];
+    [questionsController stopWaitingForMoreInput];
   }
 
   [(MCInstallProfileViewController *)self hideProgressIndicatorWithShowButtons:0];
-  v6 = [objc_alloc(MEMORY[0x277D03258]) initWithUserInput:v4];
+  v6 = [objc_alloc(MEMORY[0x277D03258]) initWithUserInput:questionsCopy];
 
   [(MCInstallProfileViewController *)self setQuestionsController:v6];
-  v7 = [(MCInstallProfileViewController *)self questionsController];
-  [v7 setQuestionsDelegate:self];
+  questionsController2 = [(MCInstallProfileViewController *)self questionsController];
+  [questionsController2 setQuestionsDelegate:self];
 
-  v8 = [(MCInstallProfileViewController *)self questionsController];
-  [(MCInstallProfileViewController *)self dmc_pushViewController:v8 animated:1];
+  questionsController3 = [(MCInstallProfileViewController *)self questionsController];
+  [(MCInstallProfileViewController *)self dmc_pushViewController:questionsController3 animated:1];
 }
 
-- (void)_promptUserWithQuestionsAfterDelay:(id)a3
+- (void)_promptUserWithQuestionsAfterDelay:(id)delay
 {
-  v4 = a3;
+  delayCopy = delay;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __80__MCInstallProfileViewController_Questions___promptUserWithQuestionsAfterDelay___block_invoke;
   v6[3] = &unk_279861A40;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = delayCopy;
   v7 = v5;
   [(MCInstallProfileViewController *)self setDidAppearBlock:v6];
 
@@ -1958,8 +1958,8 @@ void __80__MCInstallProfileViewController_Questions___promptUserWithQuestionsAft
 - (void)_waitForNextQuestion
 {
   [(MCInstallProfileViewController *)self setWaitingForNextQuestion:1];
-  v3 = [(MCInstallProfileViewController *)self questionsController];
-  [v3 waitForMoreInput];
+  questionsController = [(MCInstallProfileViewController *)self questionsController];
+  [questionsController waitForMoreInput];
 
   v4 = dispatch_time(0, 1000000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -1975,8 +1975,8 @@ void __80__MCInstallProfileViewController_Questions___promptUserWithQuestionsAft
   if ([(MCInstallProfileViewController *)self waitingForNextQuestion])
   {
     [(MCInstallProfileViewController *)self setWaitingForNextQuestion:0];
-    v3 = [(MCInstallProfileViewController *)self questionsController];
-    [v3 stopWaitingForMoreInput];
+    questionsController = [(MCInstallProfileViewController *)self questionsController];
+    [questionsController stopWaitingForMoreInput];
 
     [(MCInstallProfileViewController *)self showProgressIndicator];
     [(MCInstallProfileViewController *)self setDelayNextQuesion:1];
@@ -1985,70 +1985,70 @@ void __80__MCInstallProfileViewController_Questions___promptUserWithQuestionsAft
   }
 }
 
-- (void)warningsExtensionPushWarningsControllerWithWarnings:(id)a3
+- (void)warningsExtensionPushWarningsControllerWithWarnings:(id)warnings
 {
-  v4 = a3;
-  v5 = [(MCInstallProfileViewController *)self profile];
+  warningsCopy = warnings;
+  profile = [(MCInstallProfileViewController *)self profile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(MCInstallProfileViewController *)self profile];
-    v7 = [v6 isMDMProfile];
+    profile2 = [(MCInstallProfileViewController *)self profile];
+    isMDMProfile = [profile2 isMDMProfile];
   }
 
   else
   {
-    v7 = 0;
+    isMDMProfile = 0;
   }
 
   v8 = [[MCInstallationWarningViewController alloc] initWithStyle:2];
-  [(MCInstallationWarningViewController *)v8 setIsMDMInstall:v7];
-  [(MCInstallationWarningViewController *)v8 setWarnings:v4];
+  [(MCInstallationWarningViewController *)v8 setIsMDMInstall:isMDMProfile];
+  [(MCInstallationWarningViewController *)v8 setWarnings:warningsCopy];
 
   [(MCInstallationWarningViewController *)v8 setWarningDelegate:self];
   [(MCInstallProfileViewController *)self dmc_pushViewController:v8 animated:1];
 }
 
-- (void)installationWarningViewController:(id)a3 finishedWithUserContinueResponse:(BOOL)a4
+- (void)installationWarningViewController:(id)controller finishedWithUserContinueResponse:(BOOL)response
 {
-  v6 = a3;
-  if (!a4)
+  controllerCopy = controller;
+  if (!response)
   {
     [(MCInstallProfileViewController *)self cancelInstallWhilePresentingConsentAndWarningsUponDidAppear];
     goto LABEL_17;
   }
 
-  v7 = [(MCInstallProfileViewController *)self profileViewController];
-  v8 = [v7 UIProfile];
-  v9 = [v8 finalInstallationWarningStyle];
+  profileViewController = [(MCInstallProfileViewController *)self profileViewController];
+  uIProfile = [profileViewController UIProfile];
+  finalInstallationWarningStyle = [uIProfile finalInstallationWarningStyle];
 
-  if (v9 == 1)
+  if (finalInstallationWarningStyle == 1)
   {
     goto LABEL_10;
   }
 
-  if (v9 == 3)
+  if (finalInstallationWarningStyle == 3)
   {
-    v9 = 1;
+    finalInstallationWarningStyle = 1;
     goto LABEL_8;
   }
 
-  if (v9 != 2)
+  if (finalInstallationWarningStyle != 2)
   {
-    v9 = 0;
+    finalInstallationWarningStyle = 0;
 LABEL_10:
     v12 = 0;
     goto LABEL_11;
   }
 
-  v9 = 0;
+  finalInstallationWarningStyle = 0;
 LABEL_8:
   v20 = 0;
   location = 0;
   v19 = 0;
   v10 = MEMORY[0x277D3ACE0];
-  v11 = [MEMORY[0x277D3AD38] systemPhotoLibrary];
-  [v10 countOfAssetsWithRequiredResourcesNotLocallyAvailableInLibrary:v11 outCount:&location photoCount:&v20 videoCount:&v19];
+  systemPhotoLibrary = [MEMORY[0x277D3AD38] systemPhotoLibrary];
+  [v10 countOfAssetsWithRequiredResourcesNotLocallyAvailableInLibrary:systemPhotoLibrary outCount:&location photoCount:&v20 videoCount:&v19];
 
   v12 = location != 0;
 LABEL_11:
@@ -2061,10 +2061,10 @@ LABEL_11:
   v13 = MEMORY[0x259C799C0](&v14);
   if (v12)
   {
-    [(MCInstallProfileViewController *)self _showCPLFinalInstallationWarning:v13 withMDMWarning:v9, v14, v15, v16, v17];
+    [(MCInstallProfileViewController *)self _showCPLFinalInstallationWarning:v13 withMDMWarning:finalInstallationWarningStyle, v14, v15, v16, v17];
   }
 
-  else if (v9)
+  else if (finalInstallationWarningStyle)
   {
     [(MCInstallProfileViewController *)self showMDMFinalInstallationAlert:v13, v14, v15, v16, v17];
   }
@@ -2090,14 +2090,14 @@ void __111__MCInstallProfileViewController_Warnings__installationWarningViewCont
   }
 }
 
-- (void)_showCPLFinalInstallationWarning:(id)a3 withMDMWarning:(BOOL)a4
+- (void)_showCPLFinalInstallationWarning:(id)warning withMDMWarning:(BOOL)mWarning
 {
-  v4 = a4;
-  v6 = a3;
+  mWarningCopy = mWarning;
+  warningCopy = warning;
   v7 = MCUILocalizedString(@"BLOB_INSTALL_TITLE");
-  v8 = [(MCInstallProfileViewController *)self _localizedCPLFinalWarningString];
-  v9 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:v8 preferredStyle:1];
-  if (v4)
+  _localizedCPLFinalWarningString = [(MCInstallProfileViewController *)self _localizedCPLFinalWarningString];
+  v9 = [MEMORY[0x277D75110] alertControllerWithTitle:v7 message:_localizedCPLFinalWarningString preferredStyle:1];
+  if (mWarningCopy)
   {
     objc_initWeak(&location, self);
     v10 = MCUILocalizedString(@"INSTALL");
@@ -2106,7 +2106,7 @@ void __111__MCInstallProfileViewController_Warnings__installationWarningViewCont
     v15[2] = __92__MCInstallProfileViewController_Warnings___showCPLFinalInstallationWarning_withMDMWarning___block_invoke;
     v15[3] = &unk_279861BD0;
     objc_copyWeak(&v17, &location);
-    v16 = v6;
+    v16 = warningCopy;
     [v9 MCUIAddActionWithTitle:v10 style:2 completion:v15];
 
     objc_destroyWeak(&v17);
@@ -2116,17 +2116,17 @@ void __111__MCInstallProfileViewController_Warnings__installationWarningViewCont
   else
   {
     v11 = MCUILocalizedString(@"INSTALL");
-    [(MCInstallProfileViewController *)self addInstallActionWithTitle:v11 style:2 toAlert:v9 completion:v6];
+    [(MCInstallProfileViewController *)self addInstallActionWithTitle:v11 style:2 toAlert:v9 completion:warningCopy];
   }
 
-  [(MCInstallProfileViewController *)self addCancelActionToAlert:v9 withCompletion:v6];
-  v12 = [(MCInstallProfileViewController *)self rightNavBarButton];
+  [(MCInstallProfileViewController *)self addCancelActionToAlert:v9 withCompletion:warningCopy];
+  rightNavBarButton = [(MCInstallProfileViewController *)self rightNavBarButton];
 
-  if (v12)
+  if (rightNavBarButton)
   {
-    v13 = [(MCInstallProfileViewController *)self rightNavBarButton];
-    v14 = [v9 popoverPresentationController];
-    [v14 setSourceItem:v13];
+    rightNavBarButton2 = [(MCInstallProfileViewController *)self rightNavBarButton];
+    popoverPresentationController = [v9 popoverPresentationController];
+    [popoverPresentationController setSourceItem:rightNavBarButton2];
   }
 
   [(MCInstallProfileViewController *)self dmc_presentAlert:v9 completion:0];
@@ -2149,8 +2149,8 @@ void __92__MCInstallProfileViewController_Warnings___showCPLFinalInstallationWar
   v11 = 0;
   v9 = 0;
   v2 = MEMORY[0x277D3ACE0];
-  v3 = [MEMORY[0x277D3AD38] systemPhotoLibrary];
-  [v2 countOfAssetsWithRequiredResourcesNotLocallyAvailableInLibrary:v3 outCount:&v11 photoCount:&v10 videoCount:&v9];
+  systemPhotoLibrary = [MEMORY[0x277D3AD38] systemPhotoLibrary];
+  [v2 countOfAssetsWithRequiredResourcesNotLocallyAvailableInLibrary:systemPhotoLibrary outCount:&v11 photoCount:&v10 videoCount:&v9];
 
   if (v11 >= 2)
   {

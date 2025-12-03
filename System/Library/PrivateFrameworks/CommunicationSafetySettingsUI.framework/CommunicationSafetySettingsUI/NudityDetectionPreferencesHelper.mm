@@ -1,8 +1,8 @@
 @interface NudityDetectionPreferencesHelper
-+ (BOOL)nudityDetectionAvailableForBundleID:(id)a3;
++ (BOOL)nudityDetectionAvailableForBundleID:(id)d;
 + (BOOL)nudityDetectionFeatureEnabled;
 + (id)classForNudityDetectionSettings;
-+ (id)nudityDetectionOnOffLabelForBundleID:(id)a3;
++ (id)nudityDetectionOnOffLabelForBundleID:(id)d;
 + (id)nudityDetectionRowIconID;
 + (id)nudityDetectionRowLabel;
 + (void)initializeNudityDetection;
@@ -56,7 +56,7 @@
   return v4;
 }
 
-+ (BOOL)nudityDetectionAvailableForBundleID:(id)a3
++ (BOOL)nudityDetectionAvailableForBundleID:(id)d
 {
   v3 = sub_21CDDBB2C();
   v5 = v4;
@@ -72,7 +72,7 @@
   return v6 & 1;
 }
 
-+ (id)nudityDetectionOnOffLabelForBundleID:(id)a3
++ (id)nudityDetectionOnOffLabelForBundleID:(id)d
 {
   v3 = sub_21CDDBB2C();
   sub_21CDCBC60(v3, v4);

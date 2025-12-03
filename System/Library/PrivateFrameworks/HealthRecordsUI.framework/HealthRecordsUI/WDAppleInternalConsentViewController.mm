@@ -1,20 +1,20 @@
 @interface WDAppleInternalConsentViewController
-- (WDAppleInternalConsentViewController)initWithPresentingViewController:(id)a3 completionBlock:(id)a4;
+- (WDAppleInternalConsentViewController)initWithPresentingViewController:(id)controller completionBlock:(id)block;
 - (id)bottomAnchoredButtons;
-- (void)acceptButtonTapped:(id)a3;
-- (void)buttonAtIndexTapped:(int64_t)a3;
-- (void)updateBodyTextAttributesWithMutableString:(id)a3;
+- (void)acceptButtonTapped:(id)tapped;
+- (void)buttonAtIndexTapped:(int64_t)tapped;
+- (void)updateBodyTextAttributesWithMutableString:(id)string;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WDAppleInternalConsentViewController
 
-- (WDAppleInternalConsentViewController)initWithPresentingViewController:(id)a3 completionBlock:(id)a4
+- (WDAppleInternalConsentViewController)initWithPresentingViewController:(id)controller completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = WDAppleInternalConsentViewController;
   v9 = [(HKTitledBuddyViewController *)&v14 init];
@@ -22,8 +22,8 @@
   if (v9)
   {
     [(WDAppleInternalConsentViewController *)v9 setTitle:&stru_1F4D16E38];
-    objc_storeStrong(&v10->_actionViewController, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v10->_actionViewController, controller);
+    v11 = [blockCopy copy];
     completionBlock = v10->_completionBlock;
     v10->_completionBlock = v11;
   }
@@ -36,9 +36,9 @@
   v9.receiver = self;
   v9.super_class = WDAppleInternalConsentViewController;
   [(HKTitledBuddyViewController *)&v9 viewDidLoad];
-  v3 = [(WDAppleInternalConsentViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(WDAppleInternalConsentViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(WDAppleInternalConsentViewController *)self setEdgesForExtendedLayout:14];
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonTapped_];
@@ -46,32 +46,32 @@
   self->_navigationCancelButton = v5;
 
   v7 = self->_navigationCancelButton;
-  v8 = [(WDAppleInternalConsentViewController *)self navigationItem];
-  [v8 setLeftBarButtonItem:v7];
+  navigationItem = [(WDAppleInternalConsentViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v7];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = WDAppleInternalConsentViewController;
-  [(HKTitledBuddyViewController *)&v7 viewWillAppear:a3];
-  v4 = [(WDAppleInternalConsentViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  v6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v5 setBarTintColor:v6];
+  [(HKTitledBuddyViewController *)&v7 viewWillAppear:appear];
+  navigationController = [(WDAppleInternalConsentViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [navigationBar setBarTintColor:systemBackgroundColor];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = WDAppleInternalConsentViewController;
-  [(WDAppleInternalConsentViewController *)&v3 viewWillDisappear:a3];
+  [(WDAppleInternalConsentViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)updateBodyTextAttributesWithMutableString:(id)a3
+- (void)updateBodyTextAttributesWithMutableString:(id)string
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v5 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] variant:1024];
   v16 = 0u;
   v17 = 0u;
@@ -94,11 +94,11 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
-        v12 = [(WDAppleInternalConsentViewController *)self bodyString];
-        v13 = [v12 rangeOfString:v11];
+        bodyString = [(WDAppleInternalConsentViewController *)self bodyString];
+        v13 = [bodyString rangeOfString:v11];
         v15 = v14;
 
-        [v4 addAttribute:v9 value:v5 range:{v13, v15}];
+        [stringCopy addAttribute:v9 value:v5 range:{v13, v15}];
         ++v10;
       }
 
@@ -120,23 +120,23 @@
   return v3;
 }
 
-- (void)buttonAtIndexTapped:(int64_t)a3
+- (void)buttonAtIndexTapped:(int64_t)tapped
 {
-  if (a3 == 1)
+  if (tapped == 1)
   {
     [(WDAppleInternalConsentViewController *)self declineButtonTapped:0];
   }
 
-  else if (!a3)
+  else if (!tapped)
   {
     [(WDAppleInternalConsentViewController *)self acceptButtonTapped:?];
   }
 }
 
-- (void)acceptButtonTapped:(id)a3
+- (void)acceptButtonTapped:(id)tapped
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:1 forKey:@"WDInternalHealthRecordsConsentScreenShownKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:1 forKey:@"WDInternalHealthRecordsConsentScreenShownKey"];
 
   v5 = *(self->_completionBlock + 2);
 

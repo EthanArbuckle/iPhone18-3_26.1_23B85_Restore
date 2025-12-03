@@ -1,31 +1,31 @@
 @interface SVAudioSession
 + (id)sharedSession;
-+ (id)sharedSessionForMode:(int)a3;
++ (id)sharedSessionForMode:(int)mode;
 + (id)sharedSilentSession;
 - (BOOL)canDeactivateAudioSession;
 - (BOOL)needsToSetupAudioSessionCategory;
 - (BOOL)shouldActivateAudioSession;
-- (SVAudioSession)initWithAudioSession:(id)a3;
+- (SVAudioSession)initWithAudioSession:(id)session;
 - (id)desiredAudioSessionConfiguration;
 - (void)activateAudioSessionCategory;
 - (void)deactivateAudioSessionCategory;
-- (void)registerPlaybackControlForPlayer:(id)a3 withMode:(int)a4;
-- (void)removeInterestForPlayer:(id)a3;
+- (void)registerPlaybackControlForPlayer:(id)player withMode:(int)mode;
+- (void)removeInterestForPlayer:(id)player;
 - (void)setupAudioSessionCategory;
 @end
 
 @implementation SVAudioSession
 
-+ (id)sharedSessionForMode:(int)a3
++ (id)sharedSessionForMode:(int)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
-    [a1 sharedSilentSession];
+    [self sharedSilentSession];
   }
 
   else
   {
-    [a1 sharedSession];
+    [self sharedSession];
   }
   v3 = ;
 
@@ -95,23 +95,23 @@ void __37__SVAudioSession_sharedSilentSession__block_invoke()
   }
 }
 
-- (SVAudioSession)initWithAudioSession:(id)a3
+- (SVAudioSession)initWithAudioSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v15.receiver = self;
   v15.super_class = SVAudioSession;
   v6 = [(SVAudioSession *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioSession, a3);
+    objc_storeStrong(&v6->_audioSession, session);
     v8 = dispatch_semaphore_create(1);
     semaphore = v7->_semaphore;
     v7->_semaphore = v8;
 
-    v10 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     players = v7->_players;
-    v7->_players = v10;
+    v7->_players = weakToStrongObjectsMapTable;
 
     v12 = objc_alloc_init(SVMediaPlaybackController);
     playbackController = v7->_playbackController;
@@ -121,27 +121,27 @@ void __37__SVAudioSession_sharedSilentSession__block_invoke()
   return v7;
 }
 
-- (void)registerPlaybackControlForPlayer:(id)a3 withMode:(int)a4
+- (void)registerPlaybackControlForPlayer:(id)player withMode:(int)mode
 {
-  if (a4 != 2)
+  if (mode != 2)
   {
-    v6 = a3;
-    v7 = [(SVAudioSession *)self playbackController];
-    [v7 registerPlayer:v6];
+    playerCopy = player;
+    playbackController = [(SVAudioSession *)self playbackController];
+    [playbackController registerPlayer:playerCopy];
   }
 }
 
-- (void)removeInterestForPlayer:(id)a3
+- (void)removeInterestForPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(SVAudioSession *)self semaphore];
-  dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
+  playerCopy = player;
+  semaphore = [(SVAudioSession *)self semaphore];
+  dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
 
-  v6 = [(SVAudioSession *)self playbackController];
-  [v6 unregisterPlayer:v4];
+  playbackController = [(SVAudioSession *)self playbackController];
+  [playbackController unregisterPlayer:playerCopy];
 
-  v7 = [(SVAudioSession *)self players];
-  [v7 removeObjectForKey:v4];
+  players = [(SVAudioSession *)self players];
+  [players removeObjectForKey:playerCopy];
 
   [(SVAudioSession *)self setupAudioSessionCategory];
   v8 = dispatch_time(0, 1000000000);
@@ -153,51 +153,51 @@ void __37__SVAudioSession_sharedSilentSession__block_invoke()
   block[4] = self;
   dispatch_after(v8, v9, block);
 
-  v10 = [(SVAudioSession *)self semaphore];
-  dispatch_semaphore_signal(v10);
+  semaphore2 = [(SVAudioSession *)self semaphore];
+  dispatch_semaphore_signal(semaphore2);
 }
 
 - (BOOL)shouldActivateAudioSession
 {
-  v2 = [(SVAudioSession *)self players];
-  v3 = [v2 count] != 0;
+  players = [(SVAudioSession *)self players];
+  v3 = [players count] != 0;
 
   return v3;
 }
 
 - (BOOL)canDeactivateAudioSession
 {
-  v2 = [(SVAudioSession *)self players];
-  v3 = [v2 count] == 0;
+  players = [(SVAudioSession *)self players];
+  v3 = [players count] == 0;
 
   return v3;
 }
 
 - (BOOL)needsToSetupAudioSessionCategory
 {
-  v3 = [(SVAudioSession *)self desiredAudioSessionConfiguration];
+  desiredAudioSessionConfiguration = [(SVAudioSession *)self desiredAudioSessionConfiguration];
   v4 = [SVAudioSessionConfiguration alloc];
-  v5 = [(SVAudioSession *)self audioSession];
-  v6 = [v5 category];
-  v7 = [(SVAudioSession *)self audioSession];
-  v8 = [v7 mode];
-  v9 = [(SVAudioSession *)self audioSession];
-  v10 = -[SVAudioSessionConfiguration initWithCategory:mode:policy:](v4, "initWithCategory:mode:policy:", v6, v8, [v9 routeSharingPolicy]);
+  audioSession = [(SVAudioSession *)self audioSession];
+  category = [audioSession category];
+  audioSession2 = [(SVAudioSession *)self audioSession];
+  mode = [audioSession2 mode];
+  audioSession3 = [(SVAudioSession *)self audioSession];
+  v10 = -[SVAudioSessionConfiguration initWithCategory:mode:policy:](v4, "initWithCategory:mode:policy:", category, mode, [audioSession3 routeSharingPolicy]);
 
-  LOBYTE(v9) = [v3 isEqualToConfiguration:v10];
-  return v9 ^ 1;
+  LOBYTE(audioSession3) = [desiredAudioSessionConfiguration isEqualToConfiguration:v10];
+  return audioSession3 ^ 1;
 }
 
 - (void)setupAudioSessionCategory
 {
   if ([(SVAudioSession *)self needsToSetupAudioSessionCategory])
   {
-    v3 = [(SVAudioSession *)self desiredAudioSessionConfiguration];
-    v4 = [(SVAudioSession *)self audioSession];
-    v5 = [v3 category];
-    v6 = [v3 mode];
+    desiredAudioSessionConfiguration = [(SVAudioSession *)self desiredAudioSessionConfiguration];
+    audioSession = [(SVAudioSession *)self audioSession];
+    category = [desiredAudioSessionConfiguration category];
+    mode = [desiredAudioSessionConfiguration mode];
     v7 = 0;
-    [v4 setCategory:v5 mode:v6 routeSharingPolicy:objc_msgSend(v3 options:"routeSharingPolicy") error:{0, &v7}];
+    [audioSession setCategory:category mode:mode routeSharingPolicy:objc_msgSend(desiredAudioSessionConfiguration options:"routeSharingPolicy") error:{0, &v7}];
   }
 }
 
@@ -207,9 +207,9 @@ void __37__SVAudioSession_sharedSilentSession__block_invoke()
   {
     if ([(SVAudioSession *)self shouldActivateAudioSession])
     {
-      v3 = [(SVAudioSession *)self audioSession];
+      audioSession = [(SVAudioSession *)self audioSession];
       v5 = 0;
-      v4 = [v3 setActive:1 error:&v5];
+      v4 = [audioSession setActive:1 error:&v5];
 
       [(SVAudioSession *)self setAudioSessionActive:v4];
     }
@@ -218,20 +218,20 @@ void __37__SVAudioSession_sharedSilentSession__block_invoke()
 
 - (void)deactivateAudioSessionCategory
 {
-  v3 = [(SVAudioSession *)self semaphore];
-  dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
+  semaphore = [(SVAudioSession *)self semaphore];
+  dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   if ([(SVAudioSession *)self isAudioSessionActive]&& [(SVAudioSession *)self canDeactivateAudioSession])
   {
-    v4 = [(SVAudioSession *)self audioSession];
+    audioSession = [(SVAudioSession *)self audioSession];
     v7 = 0;
-    v5 = [v4 setActive:0 error:&v7];
+    v5 = [audioSession setActive:0 error:&v7];
 
     [(SVAudioSession *)self setAudioSessionActive:v5 ^ 1u];
   }
 
-  v6 = [(SVAudioSession *)self semaphore];
-  dispatch_semaphore_signal(v6);
+  semaphore2 = [(SVAudioSession *)self semaphore];
+  dispatch_semaphore_signal(semaphore2);
 }
 
 - (id)desiredAudioSessionConfiguration
@@ -239,10 +239,10 @@ void __37__SVAudioSession_sharedSilentSession__block_invoke()
   v3 = *MEMORY[0x277CB8020];
   v4 = *MEMORY[0x277CB80A8];
   v5 = MEMORY[0x277CCA940];
-  v6 = [(SVAudioSession *)self players];
-  v7 = [v6 objectEnumerator];
-  v8 = [v7 allObjects];
-  v9 = [v5 setWithArray:v8];
+  players = [(SVAudioSession *)self players];
+  objectEnumerator = [players objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v9 = [v5 setWithArray:allObjects];
 
   if ([v9 countForObject:&unk_2877C6D30])
   {

@@ -1,57 +1,57 @@
 @interface MFMailComposeViewController
-+ (BOOL)hasAutosavedMessageWithIdentifier:(id)a3;
++ (BOOL)hasAutosavedMessageWithIdentifier:(id)identifier;
 + (id)log;
-+ (void)removeAutosavedMessageWithIdentifier:(id)a3;
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
-- (MFMailComposeViewController)initWithURL:(id)a3 sourceAccountManagement:(int)a4;
++ (void)removeAutosavedMessageWithIdentifier:(id)identifier;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
+- (MFMailComposeViewController)initWithURL:(id)l sourceAccountManagement:(int)management;
 - (_UIRemoteViewController)_containedRemoteViewController;
 - (id)UTITypes;
-- (id)_addAttachmentItemProvider:(id)a3 mimeType:(id)a4 fileName:(id)a5;
-- (id)_addAttachmentWithFileURL:(id)a3 mimeType:(id)a4;
-- (id)_addContentVariationWithName:(id)a3;
-- (id)_validEmailAddressesFromArray:(id)a3;
+- (id)_addAttachmentItemProvider:(id)provider mimeType:(id)type fileName:(id)name;
+- (id)_addAttachmentWithFileURL:(id)l mimeType:(id)type;
+- (id)_addContentVariationWithName:(id)name;
+- (id)_validEmailAddressesFromArray:(id)array;
 - (id)cloudPhotoIDs;
 - (id)contentText;
 - (id)contentURLs;
 - (id)mailComposeDelegate;
 - (id)photoIDs;
 - (id)shareSheetSessionID;
-- (void)__viewControllerWillBePresented:(BOOL)a3;
-- (void)_addAttachmentDataItemProvider:(id)a3 mimeType:(id)a4 fileName:(id)a5 forContentVariation:(id)a6;
-- (void)_presentComposeInNewWindowWithCompletion:(id)a3;
-- (void)_setCKShare:(id)a3 setupContainerInfo:(id)a4 permissionType:(int64_t)a5 allowOthersToInvite:(BOOL)a6;
-- (void)_setCKShareURLWrapper:(id)a3 share:(id)a4 permissionType:(int64_t)a5 allowOthersToInvite:(BOOL)a6;
-- (void)_setDefaultContentVariation:(id)a3;
-- (void)_setMessageBody:(id)a3 isHTML:(BOOL)a4 forContentVariation:(id)a5;
+- (void)__viewControllerWillBePresented:(BOOL)presented;
+- (void)_addAttachmentDataItemProvider:(id)provider mimeType:(id)type fileName:(id)name forContentVariation:(id)variation;
+- (void)_presentComposeInNewWindowWithCompletion:(id)completion;
+- (void)_setCKShare:(id)share setupContainerInfo:(id)info permissionType:(int64_t)type allowOthersToInvite:(BOOL)invite;
+- (void)_setCKShareURLWrapper:(id)wrapper share:(id)share permissionType:(int64_t)type allowOthersToInvite:(BOOL)invite;
+- (void)_setDefaultContentVariation:(id)variation;
+- (void)_setMessageBody:(id)body isHTML:(BOOL)l forContentVariation:(id)variation;
 - (void)addAttachmentData:(NSData *)attachment mimeType:(NSString *)mimeType fileName:(NSString *)filename;
-- (void)addSetupAnimationBlock:(id)a3;
-- (void)autosaveWithHandler:(id)a3;
-- (void)currentAttachmentLimitWithHandler:(id)a3;
+- (void)addSetupAnimationBlock:(id)block;
+- (void)autosaveWithHandler:(id)handler;
+- (void)currentAttachmentLimitWithHandler:(id)handler;
 - (void)finalizeCompositionValues;
-- (void)insertCollaborationItemProvider:(id)a3 completionHandler:(id)a4;
-- (void)loadCKShare:(id)a3 completionHandler:(id)a4;
-- (void)recoverAutosavedMessageWithIdentifier:(id)a3;
-- (void)requestFramesForAttachmentsWithIdentifiers:(id)a3 resultHandler:(id)a4;
+- (void)insertCollaborationItemProvider:(id)provider completionHandler:(id)handler;
+- (void)loadCKShare:(id)share completionHandler:(id)handler;
+- (void)recoverAutosavedMessageWithIdentifier:(id)identifier;
+- (void)requestFramesForAttachmentsWithIdentifiers:(id)identifiers resultHandler:(id)handler;
 - (void)setBccRecipients:(NSArray *)bccRecipients;
-- (void)setCaretPosition:(unint64_t)a3;
+- (void)setCaretPosition:(unint64_t)position;
 - (void)setCcRecipients:(NSArray *)ccRecipients;
-- (void)setCloudPhotoIDs:(id)a3;
-- (void)setContentText:(id)a3;
-- (void)setContentURLs:(id)a3;
-- (void)setContentVisible:(BOOL)a3;
-- (void)setHideMyEmailFrom:(id)a3;
-- (void)setKeyboardVisible:(BOOL)a3;
+- (void)setCloudPhotoIDs:(id)ds;
+- (void)setContentText:(id)text;
+- (void)setContentURLs:(id)ls;
+- (void)setContentVisible:(BOOL)visible;
+- (void)setHideMyEmailFrom:(id)from;
+- (void)setKeyboardVisible:(BOOL)visible;
 - (void)setMailComposeDelegate:(id)mailComposeDelegate;
 - (void)setMessageBody:(NSString *)body isHTML:(BOOL)isHTML;
-- (void)setPhotoIDs:(id)a3;
+- (void)setPhotoIDs:(id)ds;
 - (void)setPreferredSendingEmailAddress:(NSString *)emailAddress;
-- (void)setShareSheetSessionID:(id)a3;
-- (void)setSourceAccountManagement:(int)a3;
+- (void)setShareSheetSessionID:(id)d;
+- (void)setSourceAccountManagement:(int)management;
 - (void)setSubject:(NSString *)subject;
 - (void)setToRecipients:(NSArray *)toRecipients;
-- (void)setUTITypes:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setUTITypes:(id)types;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MFMailComposeViewController
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = __34__MFMailComposeViewController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_5 != -1)
   {
     dispatch_once(&log_onceToken_5, block);
@@ -81,10 +81,10 @@ void __34__MFMailComposeViewController_log__block_invoke(uint64_t a1)
   log_log_5 = v1;
 }
 
-- (MFMailComposeViewController)initWithURL:(id)a3 sourceAccountManagement:(int)a4
+- (MFMailComposeViewController)initWithURL:(id)l sourceAccountManagement:(int)management
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&management;
+  lCopy = l;
   if ([objc_opt_class() canSendMailSourceAccountManagement:v4])
   {
     v13.receiver = self;
@@ -99,9 +99,9 @@ void __34__MFMailComposeViewController_log__block_invoke(uint64_t a1)
 
       v8 = objc_alloc_init(MFMailComposeInternalViewController);
       v9 = v8;
-      if (v6)
+      if (lCopy)
       {
-        [(MFMailComposeInternalViewController *)v8 setURL:v6];
+        [(MFMailComposeInternalViewController *)v8 setURL:lCopy];
       }
 
       [(MFMailComposeViewController *)v7 pushViewController:v9 animated:0];
@@ -110,7 +110,7 @@ void __34__MFMailComposeViewController_log__block_invoke(uint64_t a1)
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -121,25 +121,25 @@ void __34__MFMailComposeViewController_log__block_invoke(uint64_t a1)
       [MFMailComposeViewController initWithURL:v11 sourceAccountManagement:?];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)__viewControllerWillBePresented:(BOOL)a3
+- (void)__viewControllerWillBePresented:(BOOL)presented
 {
   v4.receiver = self;
   v4.super_class = MFMailComposeViewController;
-  [(MFMailComposeViewController *)&v4 __viewControllerWillBePresented:a3];
+  [(MFMailComposeViewController *)&v4 __viewControllerWillBePresented:presented];
   [(MFMailComposeViewController *)self finalizeCompositionValues];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MFMailComposeViewController;
-  [(MFMailComposeViewController *)&v6 viewWillAppear:a3];
+  [(MFMailComposeViewController *)&v6 viewWillAppear:appear];
   [(MFMailComposeViewController *)self finalizeCompositionValues];
   setupAnimationBlock = self->_setupAnimationBlock;
   if (setupAnimationBlock)
@@ -150,11 +150,11 @@ void __34__MFMailComposeViewController_log__block_invoke(uint64_t a1)
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MFMailComposeViewController;
-  [(MFMailComposeViewController *)&v5 viewWillDisappear:a3];
+  [(MFMailComposeViewController *)&v5 viewWillDisappear:disappear];
   if ([(MFMailComposeViewController *)self isBeingDismissed])
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -174,35 +174,35 @@ void __49__MFMailComposeViewController_viewWillDisappear___block_invoke(uint64_t
 
 - (id)mailComposeDelegate
 {
-  v2 = [(MFMailComposeViewController *)self _internalViewController];
-  v3 = [v2 mailComposeDelegate];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  mailComposeDelegate = [_internalViewController mailComposeDelegate];
 
-  return v3;
+  return mailComposeDelegate;
 }
 
 - (void)setMailComposeDelegate:(id)mailComposeDelegate
 {
   v5 = mailComposeDelegate;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setMailComposeDelegate:v5];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setMailComposeDelegate:v5];
 }
 
 - (void)setSubject:(NSString *)subject
 {
   v5 = subject;
-  v4 = [(MFMailComposeViewController *)self _impl];
-  [v4 setSubject:v5];
+  _impl = [(MFMailComposeViewController *)self _impl];
+  [_impl setSubject:v5];
 }
 
-- (id)_validEmailAddressesFromArray:(id)a3
+- (id)_validEmailAddressesFromArray:(id)array
 {
   v22 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  arrayCopy = array;
+  v4 = [arrayCopy countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v4)
   {
     v6 = 0;
@@ -215,7 +215,7 @@ void __49__MFMailComposeViewController_viewWillDisappear___block_invoke(uint64_t
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -238,16 +238,16 @@ void __49__MFMailComposeViewController_viewWillDisappear___block_invoke(uint64_t
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v4 = [arrayCopy countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v4);
 
     if (v6)
     {
-      v11 = [MEMORY[0x1E695DF70] arrayWithArray:v3];
-      v12 = [v6 allObjects];
-      [v11 removeObjectsInArray:v12];
+      v11 = [MEMORY[0x1E695DF70] arrayWithArray:arrayCopy];
+      allObjects = [v6 allObjects];
+      [v11 removeObjectsInArray:allObjects];
 
       goto LABEL_18;
     }
@@ -257,7 +257,7 @@ void __49__MFMailComposeViewController_viewWillDisappear___block_invoke(uint64_t
   {
   }
 
-  v11 = v3;
+  v11 = arrayCopy;
   v6 = 0;
 LABEL_18:
 
@@ -269,8 +269,8 @@ LABEL_18:
   v5 = [(MFMailComposeViewController *)self _validEmailAddressesFromArray:toRecipients];
   if ([v5 count])
   {
-    v4 = [(MFMailComposeViewController *)self _impl];
-    [v4 setToRecipients:v5];
+    _impl = [(MFMailComposeViewController *)self _impl];
+    [_impl setToRecipients:v5];
   }
 }
 
@@ -280,8 +280,8 @@ LABEL_18:
   v4 = [(MFMailComposeViewController *)self _validEmailAddressesFromArray:?];
   if ([v4 count])
   {
-    v5 = [(MFMailComposeViewController *)self _impl];
-    [v5 setCcRecipients:v6];
+    _impl = [(MFMailComposeViewController *)self _impl];
+    [_impl setCcRecipients:v6];
   }
 }
 
@@ -291,8 +291,8 @@ LABEL_18:
   v4 = [(MFMailComposeViewController *)self _validEmailAddressesFromArray:?];
   if ([v4 count])
   {
-    v5 = [(MFMailComposeViewController *)self _impl];
-    [v5 setBccRecipients:v6];
+    _impl = [(MFMailComposeViewController *)self _impl];
+    [_impl setBccRecipients:v6];
   }
 }
 
@@ -300,15 +300,15 @@ LABEL_18:
 {
   v4 = isHTML;
   v7 = body;
-  v6 = [(MFMailComposeViewController *)self _impl];
-  [v6 setMessageBody:v7 isHTML:v4];
+  _impl = [(MFMailComposeViewController *)self _impl];
+  [_impl setMessageBody:v7 isHTML:v4];
 }
 
-- (void)setHideMyEmailFrom:(id)a3
+- (void)setHideMyEmailFrom:(id)from
 {
-  v5 = a3;
-  v4 = [(MFMailComposeViewController *)self _impl];
-  [v4 setHideMyEmailFrom:v5];
+  fromCopy = from;
+  _impl = [(MFMailComposeViewController *)self _impl];
+  [_impl setHideMyEmailFrom:fromCopy];
 }
 
 - (void)addAttachmentData:(NSData *)attachment mimeType:(NSString *)mimeType fileName:(NSString *)filename
@@ -316,8 +316,8 @@ LABEL_18:
   v12 = attachment;
   v8 = mimeType;
   v9 = filename;
-  v10 = [(MFMailComposeViewController *)self _impl];
-  v11 = [v10 addAttachmentData:v12 mimeType:v8 fileName:v9];
+  _impl = [(MFMailComposeViewController *)self _impl];
+  v11 = [_impl addAttachmentData:v12 mimeType:v8 fileName:v9];
 }
 
 - (void)setPreferredSendingEmailAddress:(NSString *)emailAddress
@@ -325,35 +325,35 @@ LABEL_18:
   v4 = emailAddress;
   if (([(NSString *)v4 ea_isLegalCommentedEmailAddress]& 1) != 0)
   {
-    v5 = [(MFMailComposeViewController *)self _impl];
-    [v5 setPreferredSendingEmailAddress:v4];
+    _impl = [(MFMailComposeViewController *)self _impl];
+    [_impl setPreferredSendingEmailAddress:v4];
   }
 
   else
   {
-    v5 = +[MFMailComposeViewController log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _impl = +[MFMailComposeViewController log];
+    if (os_log_type_enabled(_impl, OS_LOG_TYPE_ERROR))
     {
       [MFMailComposeViewController setPreferredSendingEmailAddress:];
     }
   }
 }
 
-- (void)insertCollaborationItemProvider:(id)a3 completionHandler:(id)a4
+- (void)insertCollaborationItemProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  if ([v6 canLoadObjectOfClass:objc_opt_class()])
+  if ([providerCopy canLoadObjectOfClass:objc_opt_class()])
   {
     v8 = objc_opt_class();
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __81__MFMailComposeViewController_insertCollaborationItemProvider_completionHandler___block_invoke;
     v22[3] = &unk_1E806FA98;
-    v24 = v7;
+    v24 = handlerCopy;
     v22[4] = self;
-    v23 = v6;
+    v23 = providerCopy;
     v9 = &v25;
     objc_copyWeak(&v25, &location);
     v10 = [v23 loadObjectOfClass:v8 completionHandler:v22];
@@ -365,10 +365,10 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  if ([v6 canLoadObjectOfClass:objc_opt_class()])
+  if ([providerCopy canLoadObjectOfClass:objc_opt_class()])
   {
     v13 = getSWCopyRepresentationTypeIdentifier();
-    v14 = [v6 hasItemConformingToTypeIdentifier:v13];
+    v14 = [providerCopy hasItemConformingToTypeIdentifier:v13];
 
     if (v14)
     {
@@ -377,9 +377,9 @@ LABEL_3:
       v18[1] = 3221225472;
       v18[2] = __81__MFMailComposeViewController_insertCollaborationItemProvider_completionHandler___block_invoke_67;
       v18[3] = &unk_1E806FB10;
-      v20 = v7;
+      v20 = handlerCopy;
       v18[4] = self;
-      v19 = v6;
+      v19 = providerCopy;
       v9 = &v21;
       objc_copyWeak(&v21, &location);
       v16 = [v19 loadInPlaceFileRepresentationForTypeIdentifier:v15 completionHandler:v18];
@@ -396,7 +396,7 @@ LABEL_3:
     [MFMailComposeViewController insertCollaborationItemProvider:v17 completionHandler:?];
   }
 
-  (*(v7 + 2))(v7, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_10:
   objc_destroyWeak(&location);
 }
@@ -605,214 +605,214 @@ void __81__MFMailComposeViewController_insertCollaborationItemProvider_completio
   }
 }
 
-- (void)setUTITypes:(id)a3
+- (void)setUTITypes:(id)types
 {
-  v5 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setUTITypes:v5];
+  typesCopy = types;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setUTITypes:typesCopy];
 }
 
 - (id)UTITypes
 {
-  v2 = [(MFMailComposeViewController *)self _internalViewController];
-  v3 = [v2 UTITypes];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  uTITypes = [_internalViewController UTITypes];
 
-  return v3;
+  return uTITypes;
 }
 
-- (void)setPhotoIDs:(id)a3
+- (void)setPhotoIDs:(id)ds
 {
-  v5 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setPhotoIDs:v5];
+  dsCopy = ds;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setPhotoIDs:dsCopy];
 }
 
 - (id)photoIDs
 {
-  v2 = [(MFMailComposeViewController *)self _internalViewController];
-  v3 = [v2 photoIDs];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  photoIDs = [_internalViewController photoIDs];
 
-  return v3;
+  return photoIDs;
 }
 
-- (void)setCloudPhotoIDs:(id)a3
+- (void)setCloudPhotoIDs:(id)ds
 {
-  v5 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setCloudPhotoIDs:v5];
+  dsCopy = ds;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setCloudPhotoIDs:dsCopy];
 }
 
 - (id)cloudPhotoIDs
 {
-  v2 = [(MFMailComposeViewController *)self _internalViewController];
-  v3 = [v2 cloudPhotoIDs];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  cloudPhotoIDs = [_internalViewController cloudPhotoIDs];
 
-  return v3;
+  return cloudPhotoIDs;
 }
 
-- (void)setContentText:(id)a3
+- (void)setContentText:(id)text
 {
-  v5 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setContentText:v5];
+  textCopy = text;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setContentText:textCopy];
 }
 
 - (id)contentText
 {
-  v2 = [(MFMailComposeViewController *)self _internalViewController];
-  v3 = [v2 contentText];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  contentText = [_internalViewController contentText];
 
-  return v3;
+  return contentText;
 }
 
-- (void)setContentURLs:(id)a3
+- (void)setContentURLs:(id)ls
 {
-  v5 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setContentURLs:v5];
+  lsCopy = ls;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setContentURLs:lsCopy];
 }
 
 - (id)contentURLs
 {
-  v2 = [(MFMailComposeViewController *)self _internalViewController];
-  v3 = [v2 contentURLs];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  contentURLs = [_internalViewController contentURLs];
 
-  return v3;
+  return contentURLs;
 }
 
-- (void)setShareSheetSessionID:(id)a3
+- (void)setShareSheetSessionID:(id)d
 {
-  v5 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setShareSheetSessionID:v5];
+  dCopy = d;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setShareSheetSessionID:dCopy];
 }
 
 - (id)shareSheetSessionID
 {
-  v2 = [(MFMailComposeViewController *)self _internalViewController];
-  v3 = [v2 shareSheetSessionID];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  shareSheetSessionID = [_internalViewController shareSheetSessionID];
 
-  return v3;
+  return shareSheetSessionID;
 }
 
-- (id)_addAttachmentWithFileURL:(id)a3 mimeType:(id)a4
+- (id)_addAttachmentWithFileURL:(id)l mimeType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFMailComposeViewController *)self _internalViewController];
-  v9 = [v8 addAttachmentFileURL:v6 mimeType:v7];
+  lCopy = l;
+  typeCopy = type;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  v9 = [_internalViewController addAttachmentFileURL:lCopy mimeType:typeCopy];
 
   return v9;
 }
 
-- (id)_addAttachmentItemProvider:(id)a3 mimeType:(id)a4 fileName:(id)a5
+- (id)_addAttachmentItemProvider:(id)provider mimeType:(id)type fileName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MFMailComposeViewController *)self _internalViewController];
-  v12 = [v11 addAttachmentItemProvider:v8 mimeType:v9 fileName:v10];
+  providerCopy = provider;
+  typeCopy = type;
+  nameCopy = name;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  v12 = [_internalViewController addAttachmentItemProvider:providerCopy mimeType:typeCopy fileName:nameCopy];
 
   return v12;
 }
 
-- (void)currentAttachmentLimitWithHandler:(id)a3
+- (void)currentAttachmentLimitWithHandler:(id)handler
 {
-  v3 = a3;
-  v3[2](v3, [MEMORY[0x1E69B15B8] currentMessageLimit]);
+  handlerCopy = handler;
+  handlerCopy[2](handlerCopy, [MEMORY[0x1E69B15B8] currentMessageLimit]);
 }
 
-- (void)requestFramesForAttachmentsWithIdentifiers:(id)a3 resultHandler:(id)a4
+- (void)requestFramesForAttachmentsWithIdentifiers:(id)identifiers resultHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MFMailComposeViewController *)self _internalViewController];
-  [v7 requestFramesForAttachmentsWithIdentifiers:v8 resultHandler:v6];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController requestFramesForAttachmentsWithIdentifiers:identifiersCopy resultHandler:handlerCopy];
 }
 
-- (void)setKeyboardVisible:(BOOL)a3
+- (void)setKeyboardVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setShowKeyboardImmediately:v3];
+  visibleCopy = visible;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setShowKeyboardImmediately:visibleCopy];
 }
 
-- (void)setContentVisible:(BOOL)a3
+- (void)setContentVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setContentVisible:v3];
+  visibleCopy = visible;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setContentVisible:visibleCopy];
 }
 
-- (void)setSourceAccountManagement:(int)a3
+- (void)setSourceAccountManagement:(int)management
 {
-  v3 = *&a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setSourceAccountManagement:v3];
+  v3 = *&management;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setSourceAccountManagement:v3];
 }
 
-- (id)_addContentVariationWithName:(id)a3
+- (id)_addContentVariationWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(MFMailComposeViewController *)self _internalViewController];
-  v6 = [v5 addContentVariationWithName:v4];
+  nameCopy = name;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  v6 = [_internalViewController addContentVariationWithName:nameCopy];
 
   return v6;
 }
 
-- (void)_setDefaultContentVariation:(id)a3
+- (void)_setDefaultContentVariation:(id)variation
 {
-  v5 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setDefaultContentVariation:v5];
+  variationCopy = variation;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setDefaultContentVariation:variationCopy];
 }
 
-- (void)_setMessageBody:(id)a3 isHTML:(BOOL)a4 forContentVariation:(id)a5
+- (void)_setMessageBody:(id)body isHTML:(BOOL)l forContentVariation:(id)variation
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = a5;
-  [v7 setBody:v8];
-  [v7 setBodyIsHTML:v6];
+  lCopy = l;
+  bodyCopy = body;
+  variationCopy = variation;
+  [variationCopy setBody:bodyCopy];
+  [variationCopy setBodyIsHTML:lCopy];
 }
 
-- (void)_addAttachmentDataItemProvider:(id)a3 mimeType:(id)a4 fileName:(id)a5 forContentVariation:(id)a6
+- (void)_addAttachmentDataItemProvider:(id)provider mimeType:(id)type fileName:(id)name forContentVariation:(id)variation
 {
-  v11 = a6;
-  v10 = [(MFMailComposeViewController *)self _addAttachmentItemProvider:a3 mimeType:a4 fileName:a5];
-  [v11 addAttachmentIdentifier:v10];
+  variationCopy = variation;
+  v10 = [(MFMailComposeViewController *)self _addAttachmentItemProvider:provider mimeType:type fileName:name];
+  [variationCopy addAttachmentIdentifier:v10];
 }
 
 - (void)finalizeCompositionValues
 {
-  v2 = [(MFMailComposeViewController *)self _internalViewController];
-  [v2 finalizeCompositionValues];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController finalizeCompositionValues];
 }
 
-- (void)addSetupAnimationBlock:(id)a3
+- (void)addSetupAnimationBlock:(id)block
 {
-  v4 = a3;
-  v7 = v4;
+  blockCopy = block;
+  v7 = blockCopy;
   if (self->_setupAnimationBlock)
   {
     __assert_rtn("[MFMailComposeViewController addSetupAnimationBlock:]", "MFMailComposeViewController.m", 507, "_setupAnimationBlock == NULL");
   }
 
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(blockCopy);
   setupAnimationBlock = self->_setupAnimationBlock;
   self->_setupAnimationBlock = v5;
 }
 
-- (void)setCaretPosition:(unint64_t)a3
+- (void)setCaretPosition:(unint64_t)position
 {
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setCaretPosition:a3];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setCaretPosition:position];
 }
 
-- (void)loadCKShare:(id)a3 completionHandler:(id)a4
+- (void)loadCKShare:(id)share completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
@@ -820,22 +820,22 @@ void __81__MFMailComposeViewController_insertCollaborationItemProvider_completio
   v15[4] = __Block_byref_object_dispose__7;
   v16 = 0;
   v7 = *MEMORY[0x1E695BB00];
-  if (![v5 hasItemConformingToTypeIdentifier:*MEMORY[0x1E695BB00]])
+  if (![shareCopy hasItemConformingToTypeIdentifier:*MEMORY[0x1E695BB00]])
   {
     v7 = *MEMORY[0x1E695BAF8];
-    if (![v5 hasItemConformingToTypeIdentifier:*MEMORY[0x1E695BAF8]])
+    if (![shareCopy hasItemConformingToTypeIdentifier:*MEMORY[0x1E695BAF8]])
     {
       v8 = 0;
 LABEL_7:
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69B1560] code:1030 userInfo:&unk_1F3D16750];
-      v6[2](v6, 0, v11);
+      handlerCopy[2](handlerCopy, 0, v11);
       goto LABEL_8;
     }
   }
 
   v8 = v7;
   objc_opt_class();
-  if (!v8 || ![v5 canLoadObjectOfClass:objc_opt_class()])
+  if (!v8 || ![shareCopy canLoadObjectOfClass:objc_opt_class()])
   {
     goto LABEL_7;
   }
@@ -846,8 +846,8 @@ LABEL_7:
   v12[2] = __61__MFMailComposeViewController_loadCKShare_completionHandler___block_invoke;
   v12[3] = &unk_1E806FB38;
   v14 = v15;
-  v13 = v6;
-  v10 = [v5 loadObjectOfClass:v9 completionHandler:v12];
+  v13 = handlerCopy;
+  v10 = [shareCopy loadObjectOfClass:v9 completionHandler:v12];
   v11 = v13;
 LABEL_8:
 
@@ -866,76 +866,76 @@ void __61__MFMailComposeViewController_loadCKShare_completionHandler___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_setCKShareURLWrapper:(id)a3 share:(id)a4 permissionType:(int64_t)a5 allowOthersToInvite:(BOOL)a6
+- (void)_setCKShareURLWrapper:(id)wrapper share:(id)share permissionType:(int64_t)type allowOthersToInvite:(BOOL)invite
 {
-  v6 = a6;
-  v12 = a3;
-  v10 = a4;
-  v11 = [(MFMailComposeViewController *)self _internalViewController];
-  [v11 _setCKShareURLWrapper:v12 share:v10 permissionType:a5 allowOthersToInvite:v6];
+  inviteCopy = invite;
+  wrapperCopy = wrapper;
+  shareCopy = share;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController _setCKShareURLWrapper:wrapperCopy share:shareCopy permissionType:type allowOthersToInvite:inviteCopy];
 }
 
-- (void)_setCKShare:(id)a3 setupContainerInfo:(id)a4 permissionType:(int64_t)a5 allowOthersToInvite:(BOOL)a6
+- (void)_setCKShare:(id)share setupContainerInfo:(id)info permissionType:(int64_t)type allowOthersToInvite:(BOOL)invite
 {
-  v6 = a6;
-  v12 = a3;
-  v10 = a4;
-  v11 = [(MFMailComposeViewController *)self _internalViewController];
-  [v11 _setCKShare:v12 setupContainerInfo:v10 permissionType:a5 allowOthersToInvite:v6];
+  inviteCopy = invite;
+  shareCopy = share;
+  infoCopy = info;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController _setCKShare:shareCopy setupContainerInfo:infoCopy permissionType:type allowOthersToInvite:inviteCopy];
 }
 
-- (void)_presentComposeInNewWindowWithCompletion:(id)a3
+- (void)_presentComposeInNewWindowWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 _presentComposeInNewWindowFromComposeViewController:self completion:v5];
+  completionCopy = completion;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController _presentComposeInNewWindowFromComposeViewController:self completion:completionCopy];
 }
 
-+ (BOOL)hasAutosavedMessageWithIdentifier:(id)a3
++ (BOOL)hasAutosavedMessageWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69ADAC8] autosave];
-  v5 = [v4 hasAutosavedMessageWithIdentifier:v3];
+  identifierCopy = identifier;
+  autosave = [MEMORY[0x1E69ADAC8] autosave];
+  v5 = [autosave hasAutosavedMessageWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (void)recoverAutosavedMessageWithIdentifier:(id)a3
+- (void)recoverAutosavedMessageWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  v4 = [(MFMailComposeViewController *)self _internalViewController];
-  [v4 setAutosaveIdentifier:v5];
+  identifierCopy = identifier;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  [_internalViewController setAutosaveIdentifier:identifierCopy];
 }
 
-- (void)autosaveWithHandler:(id)a3
+- (void)autosaveWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MFMailComposeViewController *)self _internalViewController];
+  handlerCopy = handler;
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__MFMailComposeViewController_autosaveWithHandler___block_invoke;
   v7[3] = &unk_1E806F780;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
-  [v5 autosaveWithHandler:v7];
+  [_internalViewController autosaveWithHandler:v7];
 }
 
-+ (void)removeAutosavedMessageWithIdentifier:(id)a3
++ (void)removeAutosavedMessageWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v3 = [MEMORY[0x1E69ADAC8] autosave];
-  [v3 removeAutosavedMessageWithIdentifier:v4];
+  identifierCopy = identifier;
+  autosave = [MEMORY[0x1E69ADAC8] autosave];
+  [autosave removeAutosavedMessageWithIdentifier:identifierCopy];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   if ([MEMORY[0x1E69DC938] mf_isPadIdiom])
   {
-    v5 = [(MFMailComposeViewController *)self parentViewController];
-    v6 = v5;
-    if (v5)
+    parentViewController = [(MFMailComposeViewController *)self parentViewController];
+    v6 = parentViewController;
+    if (parentViewController)
     {
-      v7 = [v5 shouldAutorotateToInterfaceOrientation:a3];
+      v7 = [parentViewController shouldAutorotateToInterfaceOrientation:orientation];
     }
 
     else
@@ -948,7 +948,7 @@ void __61__MFMailComposeViewController_loadCKShare_completionHandler___block_inv
   {
     v9.receiver = self;
     v9.super_class = MFMailComposeViewController;
-    return [(MFMailComposeViewController *)&v9 shouldAutorotateToInterfaceOrientation:a3];
+    return [(MFMailComposeViewController *)&v9 shouldAutorotateToInterfaceOrientation:orientation];
   }
 
   return v7;
@@ -956,10 +956,10 @@ void __61__MFMailComposeViewController_loadCKShare_completionHandler___block_inv
 
 - (_UIRemoteViewController)_containedRemoteViewController
 {
-  v2 = [(MFMailComposeViewController *)self _internalViewController];
-  v3 = [v2 remoteViewController];
+  _internalViewController = [(MFMailComposeViewController *)self _internalViewController];
+  remoteViewController = [_internalViewController remoteViewController];
 
-  return v3;
+  return remoteViewController;
 }
 
 @end

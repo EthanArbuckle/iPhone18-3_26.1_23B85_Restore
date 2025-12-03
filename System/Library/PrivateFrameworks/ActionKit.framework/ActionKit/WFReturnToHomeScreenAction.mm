@@ -1,6 +1,6 @@
 @interface WFReturnToHomeScreenAction
 - (id)returnToHomeScreenError;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFReturnToHomeScreenAction
@@ -13,12 +13,12 @@
   v3 = WFLocalizedString(@"Could not go to Home Screen");
   v15[0] = v3;
   v14[1] = *MEMORY[0x277CCA450];
-  v4 = [MEMORY[0x277D79F18] currentDevice];
-  v5 = [v4 idiom];
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  idiom = [currentDevice idiom];
 
-  if (v5 > 2)
+  if (idiom > 2)
   {
-    switch(v5)
+    switch(idiom)
     {
       case 3:
         v6 = @"DEVICE_LOCKED_ERROR_WATCH";
@@ -36,21 +36,21 @@
     goto LABEL_12;
   }
 
-  if (!v5)
+  if (!idiom)
   {
     v6 = @"DEVICE_LOCKED_ERROR_PHONE";
     v7 = @"Please make sure your iPhone is unlocked.";
     goto LABEL_15;
   }
 
-  if (v5 == 1)
+  if (idiom == 1)
   {
     v6 = @"DEVICE_LOCKED_ERROR_PAD";
     v7 = @"Please make sure your iPad is unlocked.";
     goto LABEL_15;
   }
 
-  if (v5 != 2)
+  if (idiom != 2)
   {
 LABEL_12:
     v6 = @"DEVICE_LOCKED_ERROR_UNSPECIFIED";
@@ -73,13 +73,13 @@ LABEL_16:
   return v11;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = [(WFReturnToHomeScreenAction *)self userInterface];
-  if ([v4 isRunningWithSiriUI])
+  userInterface = [(WFReturnToHomeScreenAction *)self userInterface];
+  if ([userInterface isRunningWithSiriUI])
   {
-    v5 = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
-    [(WFReturnToHomeScreenAction *)self finishRunningWithError:v5];
+    wfUnsupportedUserInterfaceError = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
+    [(WFReturnToHomeScreenAction *)self finishRunningWithError:wfUnsupportedUserInterfaceError];
   }
 
   else

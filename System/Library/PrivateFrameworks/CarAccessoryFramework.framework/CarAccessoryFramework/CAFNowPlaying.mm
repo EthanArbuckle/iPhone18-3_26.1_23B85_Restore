@@ -88,37 +88,37 @@
 - (NSString)userVisibleDescription;
 - (unsigned)audioContentBadge;
 - (unsigned)playbackState;
-- (void)_controlDidUpdate:(id)a3;
-- (void)beginSeekBackwardWithCompletion:(id)a3;
-- (void)beginSeekForwardWithCompletion:(id)a3;
-- (void)changeMediaSourceWithIdentifier:(id)a3 completion:(id)a4;
-- (void)endSeekWithCompletion:(id)a3;
-- (void)nextItemWithCompletion:(id)a3;
-- (void)pauseWithCompletion:(id)a3;
-- (void)playWithCompletion:(id)a3;
-- (void)previousItemWithCompletion:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)setArtistSongNotificationWithCompletion:(id)a3;
-- (void)stopWithCompletion:(id)a3;
-- (void)tuneToIdentifier:(id)a3 sourceIdentifier:(id)a4 completion:(id)a5;
-- (void)unregisterObserver:(id)a3;
+- (void)_controlDidUpdate:(id)update;
+- (void)beginSeekBackwardWithCompletion:(id)completion;
+- (void)beginSeekForwardWithCompletion:(id)completion;
+- (void)changeMediaSourceWithIdentifier:(id)identifier completion:(id)completion;
+- (void)endSeekWithCompletion:(id)completion;
+- (void)nextItemWithCompletion:(id)completion;
+- (void)pauseWithCompletion:(id)completion;
+- (void)playWithCompletion:(id)completion;
+- (void)previousItemWithCompletion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)setArtistSongNotificationWithCompletion:(id)completion;
+- (void)stopWithCompletion:(id)completion;
+- (void)tuneToIdentifier:(id)identifier sourceIdentifier:(id)sourceIdentifier completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFNowPlaying
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFNowPlaying;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -131,12 +131,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -152,13 +152,13 @@
 - (CAFStringCharacteristic)currentMediaSourceIdentifierCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000023"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000023"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000023"];
@@ -177,22 +177,22 @@
 
 - (NSString)currentMediaSourceIdentifier
 {
-  v2 = [(CAFNowPlaying *)self currentMediaSourceIdentifierCharacteristic];
-  v3 = [v2 stringValue];
+  currentMediaSourceIdentifierCharacteristic = [(CAFNowPlaying *)self currentMediaSourceIdentifierCharacteristic];
+  stringValue = [currentMediaSourceIdentifierCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (CAFStringCharacteristic)titleCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000003"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000003"];
@@ -211,22 +211,22 @@
 
 - (NSString)title
 {
-  v2 = [(CAFNowPlaying *)self titleCharacteristic];
-  v3 = [v2 stringValue];
+  titleCharacteristic = [(CAFNowPlaying *)self titleCharacteristic];
+  stringValue = [titleCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (CAFStringCharacteristic)artistCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000004"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000004"];
@@ -245,22 +245,22 @@
 
 - (NSString)artist
 {
-  v2 = [(CAFNowPlaying *)self artistCharacteristic];
-  v3 = [v2 stringValue];
+  artistCharacteristic = [(CAFNowPlaying *)self artistCharacteristic];
+  stringValue = [artistCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (CAFStringCharacteristic)albumCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000005"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000005"];
@@ -279,22 +279,22 @@
 
 - (NSString)album
 {
-  v2 = [(CAFNowPlaying *)self albumCharacteristic];
-  v3 = [v2 stringValue];
+  albumCharacteristic = [(CAFNowPlaying *)self albumCharacteristic];
+  stringValue = [albumCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (CAFStringCharacteristic)userVisibleDescriptionCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000005"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000005"];
@@ -313,16 +313,16 @@
 
 - (NSString)userVisibleDescription
 {
-  v2 = [(CAFNowPlaying *)self userVisibleDescriptionCharacteristic];
-  v3 = [v2 stringValue];
+  userVisibleDescriptionCharacteristic = [(CAFNowPlaying *)self userVisibleDescriptionCharacteristic];
+  stringValue = [userVisibleDescriptionCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (BOOL)hasUserVisibleDescription
 {
-  v2 = [(CAFNowPlaying *)self userVisibleDescriptionCharacteristic];
-  v3 = v2 != 0;
+  userVisibleDescriptionCharacteristic = [(CAFNowPlaying *)self userVisibleDescriptionCharacteristic];
+  v3 = userVisibleDescriptionCharacteristic != 0;
 
   return v3;
 }
@@ -330,13 +330,13 @@
 - (CAFDataCharacteristic)artworkCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000020"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000020"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000020"];
@@ -355,22 +355,22 @@
 
 - (NSData)artwork
 {
-  v2 = [(CAFNowPlaying *)self artworkCharacteristic];
-  v3 = [v2 dataValue];
+  artworkCharacteristic = [(CAFNowPlaying *)self artworkCharacteristic];
+  dataValue = [artworkCharacteristic dataValue];
 
-  return v3;
+  return dataValue;
 }
 
 - (CAFMeasurementCharacteristic)jumpBackwardIntervalCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000032"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000032"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000032"];
@@ -389,35 +389,35 @@
 
 - (NSMeasurement)jumpBackwardInterval
 {
-  v2 = [(CAFNowPlaying *)self jumpBackwardIntervalCharacteristic];
-  v3 = [v2 measurementValue];
+  jumpBackwardIntervalCharacteristic = [(CAFNowPlaying *)self jumpBackwardIntervalCharacteristic];
+  measurementValue = [jumpBackwardIntervalCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt16Range)jumpBackwardIntervalRange
 {
-  v2 = [(CAFNowPlaying *)self jumpBackwardIntervalCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt16Range];
+  jumpBackwardIntervalCharacteristic = [(CAFNowPlaying *)self jumpBackwardIntervalCharacteristic];
+  range = [jumpBackwardIntervalCharacteristic range];
+  uInt16Range = [range uInt16Range];
 
-  return v4;
+  return uInt16Range;
 }
 
 - (CAFMeasurementRange)jumpBackwardIntervalMeasurementRange
 {
-  v3 = [(CAFNowPlaying *)self jumpBackwardIntervalRange];
-  v4 = [(CAFNowPlaying *)self jumpBackwardInterval];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  jumpBackwardIntervalRange = [(CAFNowPlaying *)self jumpBackwardIntervalRange];
+  jumpBackwardInterval = [(CAFNowPlaying *)self jumpBackwardInterval];
+  unit = [jumpBackwardInterval unit];
+  v6 = [jumpBackwardIntervalRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasJumpBackwardInterval
 {
-  v2 = [(CAFNowPlaying *)self jumpBackwardIntervalCharacteristic];
-  v3 = v2 != 0;
+  jumpBackwardIntervalCharacteristic = [(CAFNowPlaying *)self jumpBackwardIntervalCharacteristic];
+  v3 = jumpBackwardIntervalCharacteristic != 0;
 
   return v3;
 }
@@ -425,13 +425,13 @@
 - (CAFMeasurementCharacteristic)jumpForwardIntervalCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000033"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000033"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000033"];
@@ -450,35 +450,35 @@
 
 - (NSMeasurement)jumpForwardInterval
 {
-  v2 = [(CAFNowPlaying *)self jumpForwardIntervalCharacteristic];
-  v3 = [v2 measurementValue];
+  jumpForwardIntervalCharacteristic = [(CAFNowPlaying *)self jumpForwardIntervalCharacteristic];
+  measurementValue = [jumpForwardIntervalCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt16Range)jumpForwardIntervalRange
 {
-  v2 = [(CAFNowPlaying *)self jumpForwardIntervalCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt16Range];
+  jumpForwardIntervalCharacteristic = [(CAFNowPlaying *)self jumpForwardIntervalCharacteristic];
+  range = [jumpForwardIntervalCharacteristic range];
+  uInt16Range = [range uInt16Range];
 
-  return v4;
+  return uInt16Range;
 }
 
 - (CAFMeasurementRange)jumpForwardIntervalMeasurementRange
 {
-  v3 = [(CAFNowPlaying *)self jumpForwardIntervalRange];
-  v4 = [(CAFNowPlaying *)self jumpForwardInterval];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  jumpForwardIntervalRange = [(CAFNowPlaying *)self jumpForwardIntervalRange];
+  jumpForwardInterval = [(CAFNowPlaying *)self jumpForwardInterval];
+  unit = [jumpForwardInterval unit];
+  v6 = [jumpForwardIntervalRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasJumpForwardInterval
 {
-  v2 = [(CAFNowPlaying *)self jumpForwardIntervalCharacteristic];
-  v3 = v2 != 0;
+  jumpForwardIntervalCharacteristic = [(CAFNowPlaying *)self jumpForwardIntervalCharacteristic];
+  v3 = jumpForwardIntervalCharacteristic != 0;
 
   return v3;
 }
@@ -486,13 +486,13 @@
 - (CAFPlaybackStateCharacteristic)playbackStateCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000034"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000034"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000034"];
@@ -511,16 +511,16 @@
 
 - (unsigned)playbackState
 {
-  v2 = [(CAFNowPlaying *)self playbackStateCharacteristic];
-  v3 = [v2 playbackStateValue];
+  playbackStateCharacteristic = [(CAFNowPlaying *)self playbackStateCharacteristic];
+  playbackStateValue = [playbackStateCharacteristic playbackStateValue];
 
-  return v3;
+  return playbackStateValue;
 }
 
 - (BOOL)hasPlaybackState
 {
-  v2 = [(CAFNowPlaying *)self playbackStateCharacteristic];
-  v3 = v2 != 0;
+  playbackStateCharacteristic = [(CAFNowPlaying *)self playbackStateCharacteristic];
+  v3 = playbackStateCharacteristic != 0;
 
   return v3;
 }
@@ -528,13 +528,13 @@
 - (CAFAudioContentBadgeCharacteristic)audioContentBadgeCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000032000035"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000035"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000032000035"];
@@ -553,16 +553,16 @@
 
 - (unsigned)audioContentBadge
 {
-  v2 = [(CAFNowPlaying *)self audioContentBadgeCharacteristic];
-  v3 = [v2 audioContentBadgeValue];
+  audioContentBadgeCharacteristic = [(CAFNowPlaying *)self audioContentBadgeCharacteristic];
+  audioContentBadgeValue = [audioContentBadgeCharacteristic audioContentBadgeValue];
 
-  return v3;
+  return audioContentBadgeValue;
 }
 
 - (BOOL)hasAudioContentBadge
 {
-  v2 = [(CAFNowPlaying *)self audioContentBadgeCharacteristic];
-  v3 = v2 != 0;
+  audioContentBadgeCharacteristic = [(CAFNowPlaying *)self audioContentBadgeCharacteristic];
+  v3 = audioContentBadgeCharacteristic != 0;
 
   return v3;
 }
@@ -584,24 +584,24 @@
   return v4;
 }
 
-- (void)playWithCompletion:(id)a3
+- (void)playWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFNowPlaying *)self playControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  playControl = [(CAFNowPlaying *)self playControl];
+  v6 = playControl;
+  if (playControl)
   {
-    [v5 playWithCompletion:v4];
+    [playControl playWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __36__CAFNowPlaying_playWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -615,18 +615,18 @@ void __36__CAFNowPlaying_playWithCompletion___block_invoke(uint64_t a1)
 
 - (BOOL)hasPlay
 {
-  v2 = [(CAFNowPlaying *)self playControl];
-  v3 = v2 != 0;
+  playControl = [(CAFNowPlaying *)self playControl];
+  v3 = playControl != 0;
 
   return v3;
 }
 
 - (BOOL)playDisabled
 {
-  v2 = [(CAFNowPlaying *)self playControl];
-  v3 = [v2 isDisabled];
+  playControl = [(CAFNowPlaying *)self playControl];
+  isDisabled = [playControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFPauseControl)pauseControl
@@ -646,24 +646,24 @@ void __36__CAFNowPlaying_playWithCompletion___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)pauseWithCompletion:(id)a3
+- (void)pauseWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFNowPlaying *)self pauseControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  pauseControl = [(CAFNowPlaying *)self pauseControl];
+  v6 = pauseControl;
+  if (pauseControl)
   {
-    [v5 pauseWithCompletion:v4];
+    [pauseControl pauseWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__CAFNowPlaying_pauseWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -677,18 +677,18 @@ void __37__CAFNowPlaying_pauseWithCompletion___block_invoke(uint64_t a1)
 
 - (BOOL)hasPause
 {
-  v2 = [(CAFNowPlaying *)self pauseControl];
-  v3 = v2 != 0;
+  pauseControl = [(CAFNowPlaying *)self pauseControl];
+  v3 = pauseControl != 0;
 
   return v3;
 }
 
 - (BOOL)pauseDisabled
 {
-  v2 = [(CAFNowPlaying *)self pauseControl];
-  v3 = [v2 isDisabled];
+  pauseControl = [(CAFNowPlaying *)self pauseControl];
+  isDisabled = [pauseControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFStopControl)stopControl
@@ -708,24 +708,24 @@ void __37__CAFNowPlaying_pauseWithCompletion___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)stopWithCompletion:(id)a3
+- (void)stopWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFNowPlaying *)self stopControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  stopControl = [(CAFNowPlaying *)self stopControl];
+  v6 = stopControl;
+  if (stopControl)
   {
-    [v5 stopWithCompletion:v4];
+    [stopControl stopWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __36__CAFNowPlaying_stopWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -739,18 +739,18 @@ void __36__CAFNowPlaying_stopWithCompletion___block_invoke(uint64_t a1)
 
 - (BOOL)hasStop
 {
-  v2 = [(CAFNowPlaying *)self stopControl];
-  v3 = v2 != 0;
+  stopControl = [(CAFNowPlaying *)self stopControl];
+  v3 = stopControl != 0;
 
   return v3;
 }
 
 - (BOOL)stopDisabled
 {
-  v2 = [(CAFNowPlaying *)self stopControl];
-  v3 = [v2 isDisabled];
+  stopControl = [(CAFNowPlaying *)self stopControl];
+  isDisabled = [stopControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFNextItemControl)nextItemControl
@@ -770,24 +770,24 @@ void __36__CAFNowPlaying_stopWithCompletion___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)nextItemWithCompletion:(id)a3
+- (void)nextItemWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFNowPlaying *)self nextItemControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  nextItemControl = [(CAFNowPlaying *)self nextItemControl];
+  v6 = nextItemControl;
+  if (nextItemControl)
   {
-    [v5 nextItemWithCompletion:v4];
+    [nextItemControl nextItemWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__CAFNowPlaying_nextItemWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -801,18 +801,18 @@ void __40__CAFNowPlaying_nextItemWithCompletion___block_invoke(uint64_t a1)
 
 - (BOOL)hasNextItem
 {
-  v2 = [(CAFNowPlaying *)self nextItemControl];
-  v3 = v2 != 0;
+  nextItemControl = [(CAFNowPlaying *)self nextItemControl];
+  v3 = nextItemControl != 0;
 
   return v3;
 }
 
 - (BOOL)nextItemDisabled
 {
-  v2 = [(CAFNowPlaying *)self nextItemControl];
-  v3 = [v2 isDisabled];
+  nextItemControl = [(CAFNowPlaying *)self nextItemControl];
+  isDisabled = [nextItemControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFPreviousItemControl)previousItemControl
@@ -832,24 +832,24 @@ void __40__CAFNowPlaying_nextItemWithCompletion___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)previousItemWithCompletion:(id)a3
+- (void)previousItemWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFNowPlaying *)self previousItemControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  previousItemControl = [(CAFNowPlaying *)self previousItemControl];
+  v6 = previousItemControl;
+  if (previousItemControl)
   {
-    [v5 previousItemWithCompletion:v4];
+    [previousItemControl previousItemWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __44__CAFNowPlaying_previousItemWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -863,18 +863,18 @@ void __44__CAFNowPlaying_previousItemWithCompletion___block_invoke(uint64_t a1)
 
 - (BOOL)hasPreviousItem
 {
-  v2 = [(CAFNowPlaying *)self previousItemControl];
-  v3 = v2 != 0;
+  previousItemControl = [(CAFNowPlaying *)self previousItemControl];
+  v3 = previousItemControl != 0;
 
   return v3;
 }
 
 - (BOOL)previousItemDisabled
 {
-  v2 = [(CAFNowPlaying *)self previousItemControl];
-  v3 = [v2 isDisabled];
+  previousItemControl = [(CAFNowPlaying *)self previousItemControl];
+  isDisabled = [previousItemControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFBeginSeekForwardControl)beginSeekForwardControl
@@ -894,24 +894,24 @@ void __44__CAFNowPlaying_previousItemWithCompletion___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)beginSeekForwardWithCompletion:(id)a3
+- (void)beginSeekForwardWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFNowPlaying *)self beginSeekForwardControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  beginSeekForwardControl = [(CAFNowPlaying *)self beginSeekForwardControl];
+  v6 = beginSeekForwardControl;
+  if (beginSeekForwardControl)
   {
-    [v5 beginSeekForwardWithCompletion:v4];
+    [beginSeekForwardControl beginSeekForwardWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __48__CAFNowPlaying_beginSeekForwardWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -925,18 +925,18 @@ void __48__CAFNowPlaying_beginSeekForwardWithCompletion___block_invoke(uint64_t 
 
 - (BOOL)hasBeginSeekForward
 {
-  v2 = [(CAFNowPlaying *)self beginSeekForwardControl];
-  v3 = v2 != 0;
+  beginSeekForwardControl = [(CAFNowPlaying *)self beginSeekForwardControl];
+  v3 = beginSeekForwardControl != 0;
 
   return v3;
 }
 
 - (BOOL)beginSeekForwardDisabled
 {
-  v2 = [(CAFNowPlaying *)self beginSeekForwardControl];
-  v3 = [v2 isDisabled];
+  beginSeekForwardControl = [(CAFNowPlaying *)self beginSeekForwardControl];
+  isDisabled = [beginSeekForwardControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFBeginSeekBackwardControl)beginSeekBackwardControl
@@ -956,24 +956,24 @@ void __48__CAFNowPlaying_beginSeekForwardWithCompletion___block_invoke(uint64_t 
   return v4;
 }
 
-- (void)beginSeekBackwardWithCompletion:(id)a3
+- (void)beginSeekBackwardWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFNowPlaying *)self beginSeekBackwardControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  beginSeekBackwardControl = [(CAFNowPlaying *)self beginSeekBackwardControl];
+  v6 = beginSeekBackwardControl;
+  if (beginSeekBackwardControl)
   {
-    [v5 beginSeekBackwardWithCompletion:v4];
+    [beginSeekBackwardControl beginSeekBackwardWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__CAFNowPlaying_beginSeekBackwardWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -987,18 +987,18 @@ void __49__CAFNowPlaying_beginSeekBackwardWithCompletion___block_invoke(uint64_t
 
 - (BOOL)hasBeginSeekBackward
 {
-  v2 = [(CAFNowPlaying *)self beginSeekBackwardControl];
-  v3 = v2 != 0;
+  beginSeekBackwardControl = [(CAFNowPlaying *)self beginSeekBackwardControl];
+  v3 = beginSeekBackwardControl != 0;
 
   return v3;
 }
 
 - (BOOL)beginSeekBackwardDisabled
 {
-  v2 = [(CAFNowPlaying *)self beginSeekBackwardControl];
-  v3 = [v2 isDisabled];
+  beginSeekBackwardControl = [(CAFNowPlaying *)self beginSeekBackwardControl];
+  isDisabled = [beginSeekBackwardControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFEndSeekControl)endSeekControl
@@ -1018,24 +1018,24 @@ void __49__CAFNowPlaying_beginSeekBackwardWithCompletion___block_invoke(uint64_t
   return v4;
 }
 
-- (void)endSeekWithCompletion:(id)a3
+- (void)endSeekWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFNowPlaying *)self endSeekControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  endSeekControl = [(CAFNowPlaying *)self endSeekControl];
+  v6 = endSeekControl;
+  if (endSeekControl)
   {
-    [v5 endSeekWithCompletion:v4];
+    [endSeekControl endSeekWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __39__CAFNowPlaying_endSeekWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -1049,8 +1049,8 @@ void __39__CAFNowPlaying_endSeekWithCompletion___block_invoke(uint64_t a1)
 
 - (BOOL)hasEndSeek
 {
-  v2 = [(CAFNowPlaying *)self endSeekControl];
-  v3 = v2 != 0;
+  endSeekControl = [(CAFNowPlaying *)self endSeekControl];
+  v3 = endSeekControl != 0;
 
   return v3;
 }
@@ -1081,18 +1081,18 @@ void __56__CAFNowPlaying_jumpForwardWithJumpInterval_completion___block_invoke(u
 
 - (BOOL)hasJumpForward
 {
-  v2 = [(CAFNowPlaying *)self jumpForwardControl];
-  v3 = v2 != 0;
+  jumpForwardControl = [(CAFNowPlaying *)self jumpForwardControl];
+  v3 = jumpForwardControl != 0;
 
   return v3;
 }
 
 - (BOOL)jumpForwardDisabled
 {
-  v2 = [(CAFNowPlaying *)self jumpForwardControl];
-  v3 = [v2 isDisabled];
+  jumpForwardControl = [(CAFNowPlaying *)self jumpForwardControl];
+  isDisabled = [jumpForwardControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFJumpBackwardControl)jumpBackwardControl
@@ -1121,18 +1121,18 @@ void __57__CAFNowPlaying_jumpBackwardWithJumpInterval_completion___block_invoke(
 
 - (BOOL)hasJumpBackward
 {
-  v2 = [(CAFNowPlaying *)self jumpBackwardControl];
-  v3 = v2 != 0;
+  jumpBackwardControl = [(CAFNowPlaying *)self jumpBackwardControl];
+  v3 = jumpBackwardControl != 0;
 
   return v3;
 }
 
 - (BOOL)jumpBackwardDisabled
 {
-  v2 = [(CAFNowPlaying *)self jumpBackwardControl];
-  v3 = [v2 isDisabled];
+  jumpBackwardControl = [(CAFNowPlaying *)self jumpBackwardControl];
+  isDisabled = [jumpBackwardControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (CAFTuneToIdentifierControl)tuneToIdentifierControl
@@ -1152,26 +1152,26 @@ void __57__CAFNowPlaying_jumpBackwardWithJumpInterval_completion___block_invoke(
   return v4;
 }
 
-- (void)tuneToIdentifier:(id)a3 sourceIdentifier:(id)a4 completion:(id)a5
+- (void)tuneToIdentifier:(id)identifier sourceIdentifier:(id)sourceIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CAFNowPlaying *)self tuneToIdentifierControl];
-  v12 = v11;
-  if (v11)
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
+  completionCopy = completion;
+  tuneToIdentifierControl = [(CAFNowPlaying *)self tuneToIdentifierControl];
+  v12 = tuneToIdentifierControl;
+  if (tuneToIdentifierControl)
   {
-    [v11 tuneToIdentifier:v8 sourceIdentifier:v9 completion:v10];
+    [tuneToIdentifierControl tuneToIdentifier:identifierCopy sourceIdentifier:sourceIdentifierCopy completion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v13 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__CAFNowPlaying_tuneToIdentifier_sourceIdentifier_completion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v15 = v10;
+    v15 = completionCopy;
     dispatch_async(v13, block);
   }
 }
@@ -1224,25 +1224,25 @@ void __61__CAFNowPlaying_tuneToFrequency_sourceIdentifier_completion___block_inv
   return v4;
 }
 
-- (void)changeMediaSourceWithIdentifier:(id)a3 completion:(id)a4
+- (void)changeMediaSourceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAFNowPlaying *)self changeMediaSourceControl];
-  v9 = v8;
-  if (v8)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  changeMediaSourceControl = [(CAFNowPlaying *)self changeMediaSourceControl];
+  v9 = changeMediaSourceControl;
+  if (changeMediaSourceControl)
   {
-    [v8 changeMediaSourceWithIdentifier:v6 completion:v7];
+    [changeMediaSourceControl changeMediaSourceWithIdentifier:identifierCopy completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v10 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__CAFNowPlaying_changeMediaSourceWithIdentifier_completion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v12 = v7;
+    v12 = completionCopy;
     dispatch_async(v10, block);
   }
 }
@@ -1271,24 +1271,24 @@ void __60__CAFNowPlaying_changeMediaSourceWithIdentifier_completion___block_invo
   return v4;
 }
 
-- (void)setArtistSongNotificationWithCompletion:(id)a3
+- (void)setArtistSongNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFNowPlaying *)self setArtistSongNotificationControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  setArtistSongNotificationControl = [(CAFNowPlaying *)self setArtistSongNotificationControl];
+  v6 = setArtistSongNotificationControl;
+  if (setArtistSongNotificationControl)
   {
-    [v5 setArtistSongNotificationWithCompletion:v4];
+    [setArtistSongNotificationControl setArtistSongNotificationWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__CAFNowPlaying_setArtistSongNotificationWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -1302,35 +1302,35 @@ void __57__CAFNowPlaying_setArtistSongNotificationWithCompletion___block_invoke(
 
 - (BOOL)hasSetArtistSongNotification
 {
-  v2 = [(CAFNowPlaying *)self setArtistSongNotificationControl];
-  v3 = v2 != 0;
+  setArtistSongNotificationControl = [(CAFNowPlaying *)self setArtistSongNotificationControl];
+  v3 = setArtistSongNotificationControl != 0;
 
   return v3;
 }
 
 - (BOOL)setArtistSongNotificationDisabled
 {
-  v2 = [(CAFNowPlaying *)self setArtistSongNotificationControl];
-  v3 = [v2 isDisabled];
+  setArtistSongNotificationControl = [(CAFNowPlaying *)self setArtistSongNotificationControl];
+  isDisabled = [setArtistSongNotificationControl isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
-- (void)_controlDidUpdate:(id)a3
+- (void)_controlDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 controlType];
-  if ([v5 isEqual:@"0x000000000F000032"])
+  updateCopy = update;
+  controlType = [updateCopy controlType];
+  if ([controlType isEqual:@"0x000000000F000032"])
   {
-    v6 = [v4 uniqueIdentifier];
-    v7 = [(CAFNowPlaying *)self playControl];
-    v8 = [v7 uniqueIdentifier];
-    v9 = [v6 isEqual:v8];
+    uniqueIdentifier = [updateCopy uniqueIdentifier];
+    playControl = [(CAFNowPlaying *)self playControl];
+    uniqueIdentifier2 = [playControl uniqueIdentifier];
+    v9 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
     if (v9)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 nowPlayingServiceDidUpdatePlay:self];
+      observers = [(CAFService *)self observers];
+      [observers nowPlayingServiceDidUpdatePlay:self];
 LABEL_40:
 
       goto LABEL_41;
@@ -1341,18 +1341,18 @@ LABEL_40:
   {
   }
 
-  v11 = [v4 controlType];
-  if ([v11 isEqual:@"0x000000000F000033"])
+  controlType2 = [updateCopy controlType];
+  if ([controlType2 isEqual:@"0x000000000F000033"])
   {
-    v12 = [v4 uniqueIdentifier];
-    v13 = [(CAFNowPlaying *)self pauseControl];
-    v14 = [v13 uniqueIdentifier];
-    v15 = [v12 isEqual:v14];
+    uniqueIdentifier3 = [updateCopy uniqueIdentifier];
+    pauseControl = [(CAFNowPlaying *)self pauseControl];
+    uniqueIdentifier4 = [pauseControl uniqueIdentifier];
+    v15 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
     if (v15)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 nowPlayingServiceDidUpdatePause:self];
+      observers = [(CAFService *)self observers];
+      [observers nowPlayingServiceDidUpdatePause:self];
       goto LABEL_40;
     }
   }
@@ -1361,18 +1361,18 @@ LABEL_40:
   {
   }
 
-  v16 = [v4 controlType];
-  if ([v16 isEqual:@"0x000000000F000034"])
+  controlType3 = [updateCopy controlType];
+  if ([controlType3 isEqual:@"0x000000000F000034"])
   {
-    v17 = [v4 uniqueIdentifier];
-    v18 = [(CAFNowPlaying *)self stopControl];
-    v19 = [v18 uniqueIdentifier];
-    v20 = [v17 isEqual:v19];
+    uniqueIdentifier5 = [updateCopy uniqueIdentifier];
+    stopControl = [(CAFNowPlaying *)self stopControl];
+    uniqueIdentifier6 = [stopControl uniqueIdentifier];
+    v20 = [uniqueIdentifier5 isEqual:uniqueIdentifier6];
 
     if (v20)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 nowPlayingServiceDidUpdateStop:self];
+      observers = [(CAFService *)self observers];
+      [observers nowPlayingServiceDidUpdateStop:self];
       goto LABEL_40;
     }
   }
@@ -1381,18 +1381,18 @@ LABEL_40:
   {
   }
 
-  v21 = [v4 controlType];
-  if ([v21 isEqual:@"0x000000000F000035"])
+  controlType4 = [updateCopy controlType];
+  if ([controlType4 isEqual:@"0x000000000F000035"])
   {
-    v22 = [v4 uniqueIdentifier];
-    v23 = [(CAFNowPlaying *)self nextItemControl];
-    v24 = [v23 uniqueIdentifier];
-    v25 = [v22 isEqual:v24];
+    uniqueIdentifier7 = [updateCopy uniqueIdentifier];
+    nextItemControl = [(CAFNowPlaying *)self nextItemControl];
+    uniqueIdentifier8 = [nextItemControl uniqueIdentifier];
+    v25 = [uniqueIdentifier7 isEqual:uniqueIdentifier8];
 
     if (v25)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 nowPlayingServiceDidUpdateNextItem:self];
+      observers = [(CAFService *)self observers];
+      [observers nowPlayingServiceDidUpdateNextItem:self];
       goto LABEL_40;
     }
   }
@@ -1401,18 +1401,18 @@ LABEL_40:
   {
   }
 
-  v26 = [v4 controlType];
-  if ([v26 isEqual:@"0x000000000F000036"])
+  controlType5 = [updateCopy controlType];
+  if ([controlType5 isEqual:@"0x000000000F000036"])
   {
-    v27 = [v4 uniqueIdentifier];
-    v28 = [(CAFNowPlaying *)self previousItemControl];
-    v29 = [v28 uniqueIdentifier];
-    v30 = [v27 isEqual:v29];
+    uniqueIdentifier9 = [updateCopy uniqueIdentifier];
+    previousItemControl = [(CAFNowPlaying *)self previousItemControl];
+    uniqueIdentifier10 = [previousItemControl uniqueIdentifier];
+    v30 = [uniqueIdentifier9 isEqual:uniqueIdentifier10];
 
     if (v30)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 nowPlayingServiceDidUpdatePreviousItem:self];
+      observers = [(CAFService *)self observers];
+      [observers nowPlayingServiceDidUpdatePreviousItem:self];
       goto LABEL_40;
     }
   }
@@ -1421,18 +1421,18 @@ LABEL_40:
   {
   }
 
-  v31 = [v4 controlType];
-  if ([v31 isEqual:@"0x000000000F000037"])
+  controlType6 = [updateCopy controlType];
+  if ([controlType6 isEqual:@"0x000000000F000037"])
   {
-    v32 = [v4 uniqueIdentifier];
-    v33 = [(CAFNowPlaying *)self beginSeekForwardControl];
-    v34 = [v33 uniqueIdentifier];
-    v35 = [v32 isEqual:v34];
+    uniqueIdentifier11 = [updateCopy uniqueIdentifier];
+    beginSeekForwardControl = [(CAFNowPlaying *)self beginSeekForwardControl];
+    uniqueIdentifier12 = [beginSeekForwardControl uniqueIdentifier];
+    v35 = [uniqueIdentifier11 isEqual:uniqueIdentifier12];
 
     if (v35)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 nowPlayingServiceDidUpdateBeginSeekForward:self];
+      observers = [(CAFService *)self observers];
+      [observers nowPlayingServiceDidUpdateBeginSeekForward:self];
       goto LABEL_40;
     }
   }
@@ -1441,18 +1441,18 @@ LABEL_40:
   {
   }
 
-  v36 = [v4 controlType];
-  if ([v36 isEqual:@"0x000000000F000038"])
+  controlType7 = [updateCopy controlType];
+  if ([controlType7 isEqual:@"0x000000000F000038"])
   {
-    v37 = [v4 uniqueIdentifier];
-    v38 = [(CAFNowPlaying *)self beginSeekBackwardControl];
-    v39 = [v38 uniqueIdentifier];
-    v40 = [v37 isEqual:v39];
+    uniqueIdentifier13 = [updateCopy uniqueIdentifier];
+    beginSeekBackwardControl = [(CAFNowPlaying *)self beginSeekBackwardControl];
+    uniqueIdentifier14 = [beginSeekBackwardControl uniqueIdentifier];
+    v40 = [uniqueIdentifier13 isEqual:uniqueIdentifier14];
 
     if (v40)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 nowPlayingServiceDidUpdateBeginSeekBackward:self];
+      observers = [(CAFService *)self observers];
+      [observers nowPlayingServiceDidUpdateBeginSeekBackward:self];
       goto LABEL_40;
     }
   }
@@ -1461,18 +1461,18 @@ LABEL_40:
   {
   }
 
-  v41 = [v4 controlType];
-  if ([v41 isEqual:@"0x000000000F000040"])
+  controlType8 = [updateCopy controlType];
+  if ([controlType8 isEqual:@"0x000000000F000040"])
   {
-    v42 = [v4 uniqueIdentifier];
-    v43 = [(CAFNowPlaying *)self jumpForwardControl];
-    v44 = [v43 uniqueIdentifier];
-    v45 = [v42 isEqual:v44];
+    uniqueIdentifier15 = [updateCopy uniqueIdentifier];
+    jumpForwardControl = [(CAFNowPlaying *)self jumpForwardControl];
+    uniqueIdentifier16 = [jumpForwardControl uniqueIdentifier];
+    v45 = [uniqueIdentifier15 isEqual:uniqueIdentifier16];
 
     if (v45)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 nowPlayingServiceDidUpdateJumpForward:self];
+      observers = [(CAFService *)self observers];
+      [observers nowPlayingServiceDidUpdateJumpForward:self];
       goto LABEL_40;
     }
   }
@@ -1481,18 +1481,18 @@ LABEL_40:
   {
   }
 
-  v46 = [v4 controlType];
-  if ([v46 isEqual:@"0x000000000F00004A"])
+  controlType9 = [updateCopy controlType];
+  if ([controlType9 isEqual:@"0x000000000F00004A"])
   {
-    v47 = [v4 uniqueIdentifier];
-    v48 = [(CAFNowPlaying *)self jumpBackwardControl];
-    v49 = [v48 uniqueIdentifier];
-    v50 = [v47 isEqual:v49];
+    uniqueIdentifier17 = [updateCopy uniqueIdentifier];
+    jumpBackwardControl = [(CAFNowPlaying *)self jumpBackwardControl];
+    uniqueIdentifier18 = [jumpBackwardControl uniqueIdentifier];
+    v50 = [uniqueIdentifier17 isEqual:uniqueIdentifier18];
 
     if (v50)
     {
-      v10 = [(CAFService *)self observers];
-      [v10 nowPlayingServiceDidUpdateJumpBackward:self];
+      observers = [(CAFService *)self observers];
+      [observers nowPlayingServiceDidUpdateJumpBackward:self];
       goto LABEL_40;
     }
   }
@@ -1501,40 +1501,40 @@ LABEL_40:
   {
   }
 
-  v10 = [v4 controlType];
-  if (![v10 isEqual:@"0x000000000F00004E"])
+  observers = [updateCopy controlType];
+  if (![observers isEqual:@"0x000000000F00004E"])
   {
     goto LABEL_40;
   }
 
-  v51 = [v4 uniqueIdentifier];
-  v52 = [(CAFNowPlaying *)self setArtistSongNotificationControl];
-  v53 = [v52 uniqueIdentifier];
-  v54 = [v51 isEqual:v53];
+  uniqueIdentifier19 = [updateCopy uniqueIdentifier];
+  setArtistSongNotificationControl = [(CAFNowPlaying *)self setArtistSongNotificationControl];
+  uniqueIdentifier20 = [setArtistSongNotificationControl uniqueIdentifier];
+  v54 = [uniqueIdentifier19 isEqual:uniqueIdentifier20];
 
   if (v54)
   {
-    v10 = [(CAFService *)self observers];
-    [v10 nowPlayingServiceDidUpdateSetArtistSongNotification:self];
+    observers = [(CAFService *)self observers];
+    [observers nowPlayingServiceDidUpdateSetArtistSongNotification:self];
     goto LABEL_40;
   }
 
 LABEL_41:
   v55.receiver = self;
   v55.super_class = CAFNowPlaying;
-  [(CAFService *)&v55 _controlDidUpdate:v4];
+  [(CAFService *)&v55 _controlDidUpdate:updateCopy];
 }
 
 - (BOOL)registeredForCurrentMediaSourceIdentifier
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000023"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000023"];
 
   return v10;
 }
@@ -1542,13 +1542,13 @@ LABEL_41:
 - (BOOL)registeredForTitle
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000003"];
 
   return v10;
 }
@@ -1556,13 +1556,13 @@ LABEL_41:
 - (BOOL)registeredForArtist
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000004"];
 
   return v10;
 }
@@ -1570,13 +1570,13 @@ LABEL_41:
 - (BOOL)registeredForAlbum
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000005"];
 
   return v10;
 }
@@ -1584,13 +1584,13 @@ LABEL_41:
 - (BOOL)registeredForUserVisibleDescription
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000005"];
 
   return v10;
 }
@@ -1598,13 +1598,13 @@ LABEL_41:
 - (BOOL)registeredForArtwork
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000020"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000020"];
 
   return v10;
 }
@@ -1612,13 +1612,13 @@ LABEL_41:
 - (BOOL)registeredForJumpBackwardInterval
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000032"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000032"];
 
   return v10;
 }
@@ -1626,13 +1626,13 @@ LABEL_41:
 - (BOOL)registeredForJumpForwardInterval
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000033"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000033"];
 
   return v10;
 }
@@ -1640,13 +1640,13 @@ LABEL_41:
 - (BOOL)registeredForPlaybackState
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000034"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000034"];
 
   return v10;
 }
@@ -1654,13 +1654,13 @@ LABEL_41:
 - (BOOL)registeredForAudioContentBadge
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000032000035"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000032000035"];
 
   return v10;
 }
@@ -1668,13 +1668,13 @@ LABEL_41:
 - (BOOL)registeredForPlay
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F000032"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F000032"];
 
   return v10;
 }
@@ -1682,13 +1682,13 @@ LABEL_41:
 - (BOOL)registeredForPause
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F000033"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F000033"];
 
   return v10;
 }
@@ -1696,13 +1696,13 @@ LABEL_41:
 - (BOOL)registeredForStop
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F000034"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F000034"];
 
   return v10;
 }
@@ -1710,13 +1710,13 @@ LABEL_41:
 - (BOOL)registeredForNextItem
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F000035"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F000035"];
 
   return v10;
 }
@@ -1724,13 +1724,13 @@ LABEL_41:
 - (BOOL)registeredForPreviousItem
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F000036"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F000036"];
 
   return v10;
 }
@@ -1738,13 +1738,13 @@ LABEL_41:
 - (BOOL)registeredForBeginSeekForward
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F000037"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F000037"];
 
   return v10;
 }
@@ -1752,13 +1752,13 @@ LABEL_41:
 - (BOOL)registeredForBeginSeekBackward
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F000038"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F000038"];
 
   return v10;
 }
@@ -1766,13 +1766,13 @@ LABEL_41:
 - (BOOL)registeredForEndSeek
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F000039"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F000039"];
 
   return v10;
 }
@@ -1780,13 +1780,13 @@ LABEL_41:
 - (BOOL)registeredForJumpForward
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F000040"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F000040"];
 
   return v10;
 }
@@ -1794,13 +1794,13 @@ LABEL_41:
 - (BOOL)registeredForJumpBackward
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F00004A"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F00004A"];
 
   return v10;
 }
@@ -1808,13 +1808,13 @@ LABEL_41:
 - (BOOL)registeredForTuneToIdentifier
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F00004B"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F00004B"];
 
   return v10;
 }
@@ -1822,13 +1822,13 @@ LABEL_41:
 - (BOOL)registeredForTuneToFrequency
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F00004C"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F00004C"];
 
   return v10;
 }
@@ -1836,13 +1836,13 @@ LABEL_41:
 - (BOOL)registeredForChangeMediaSource
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F00004D"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F00004D"];
 
   return v10;
 }
@@ -1850,13 +1850,13 @@ LABEL_41:
 - (BOOL)registeredForSetArtistSongNotification
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x000000000F00004E"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x000000000F00004E"];
 
   return v10;
 }

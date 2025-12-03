@@ -2,7 +2,7 @@
 - (CGSize)intrinsicContentSize;
 - (LACUIKeyboardInternal)initWithDefaultSize;
 - (void)_setup;
-- (void)setRenderInProcess:(BOOL)a3;
+- (void)setRenderInProcess:(BOOL)process;
 @end
 
 @implementation LACUIKeyboardInternal
@@ -11,11 +11,11 @@
 {
   v5.receiver = self;
   v5.super_class = LACUIKeyboardInternal;
-  v2 = [(UIKeyboard *)&v5 initWithDefaultSize];
-  v3 = v2;
-  if (v2)
+  initWithDefaultSize = [(UIKeyboard *)&v5 initWithDefaultSize];
+  v3 = initWithDefaultSize;
+  if (initWithDefaultSize)
   {
-    [(LACUIKeyboardInternal *)v2 _setup];
+    [(LACUIKeyboardInternal *)initWithDefaultSize _setup];
   }
 
   return v3;
@@ -24,17 +24,17 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = MEMORY[0x277D75658];
-  v3 = [(UIKeyboard *)self interfaceOrientation];
+  interfaceOrientation = [(UIKeyboard *)self interfaceOrientation];
 
-  [v2 keyboardSizeForInterfaceOrientation:v3];
+  [v2 keyboardSizeForInterfaceOrientation:interfaceOrientation];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (void)setRenderInProcess:(BOOL)a3
+- (void)setRenderInProcess:(BOOL)process
 {
-  if (a3)
+  if (process)
   {
     UIKeyboardDisableAutomaticAppearance();
     [(UIKeyboard *)self activate];
@@ -47,23 +47,23 @@
     [(UIKeyboard *)self activate];
   }
 
-  self->_renderedInProcess = a3;
+  self->_renderedInProcess = process;
 }
 
 - (void)_setup
 {
-  v3 = [(LACUIKeyboardInternal *)self layer];
-  [v3 setDisableUpdateMask:16];
+  layer = [(LACUIKeyboardInternal *)self layer];
+  [layer setDisableUpdateMask:16];
 
-  v4 = [(UIKeyboard *)self defaultTextInputTraits];
-  v5 = v4;
-  if (v4)
+  defaultTextInputTraits = [(UIKeyboard *)self defaultTextInputTraits];
+  v5 = defaultTextInputTraits;
+  if (defaultTextInputTraits)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __31__LACUIKeyboardInternal__setup__block_invoke;
     v7[3] = &unk_27981EA48;
-    v8 = v4;
+    v8 = defaultTextInputTraits;
     v6 = __31__LACUIKeyboardInternal__setup__block_invoke(v7);
     [(UIKeyboard *)self setDefaultTextInputTraits:v6];
   }

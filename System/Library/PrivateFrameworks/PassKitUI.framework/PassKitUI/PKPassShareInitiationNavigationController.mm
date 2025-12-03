@@ -1,65 +1,65 @@
 @interface PKPassShareInitiationNavigationController
 - (PKClientShareSecureElementPassViewControllerDelegate)shareDelegate;
-- (PKPassShareInitiationNavigationController)initWithSharesController:(id)a3 environment:(unint64_t)a4;
+- (PKPassShareInitiationNavigationController)initWithSharesController:(id)controller environment:(unint64_t)environment;
 - (id)_activityItemForActivationCode;
 - (id)_placeholderActivityItem;
-- (unint64_t)_transitionToNextStepIsMockTransition:(BOOL)a3;
+- (unint64_t)_transitionToNextStepIsMockTransition:(BOOL)transition;
 - (void)_flowDidCancel;
-- (void)_flowDidCancelWithError:(id)a3;
+- (void)_flowDidCancelWithError:(id)error;
 - (void)_flowDidFinishWithSuccess;
-- (void)_revokeCreatedShareWithCompletion:(id)a3;
+- (void)_revokeCreatedShareWithCompletion:(id)completion;
 - (void)_sendOverLegacyCarKeyiMessage;
 - (void)_sendOverSelectedChannel;
 - (void)_sendOveriMessage;
 - (void)_sendOveriMessageUsingComposeViewController;
-- (void)_transitionToStep:(unint64_t)a3;
+- (void)_transitionToStep:(unint64_t)step;
 - (void)_updateShareActivationOptions;
-- (void)interceptableActivityViewController:(id)a3 didInterceptActivitySelectionOfType:(id)a4;
-- (void)passShareIntroductionExplanationViewControllerDidCancel:(id)a3;
-- (void)passShareIntroductionExplanationViewControllerDidContinue:(id)a3;
-- (void)setShouldPromptUserToShare:(BOOL)a3;
-- (void)shareActivityDidFinishWithShare:(BOOL)a3;
-- (void)sharePreviewViewControllerDidCancel:(id)a3;
-- (void)sharePreviewViewControllerDidContinue:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)interceptableActivityViewController:(id)controller didInterceptActivitySelectionOfType:(id)type;
+- (void)passShareIntroductionExplanationViewControllerDidCancel:(id)cancel;
+- (void)passShareIntroductionExplanationViewControllerDidContinue:(id)continue;
+- (void)setShouldPromptUserToShare:(BOOL)share;
+- (void)shareActivityDidFinishWithShare:(BOOL)share;
+- (void)sharePreviewViewControllerDidCancel:(id)cancel;
+- (void)sharePreviewViewControllerDidContinue:(id)continue;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPassShareInitiationNavigationController
 
-- (PKPassShareInitiationNavigationController)initWithSharesController:(id)a3 environment:(unint64_t)a4
+- (PKPassShareInitiationNavigationController)initWithSharesController:(id)controller environment:(unint64_t)environment
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  controllerCopy = controller;
   v39.receiver = self;
   v39.super_class = PKPassShareInitiationNavigationController;
   v8 = [(PKNavigationController *)&v39 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sharesController, a3);
+    objc_storeStrong(&v8->_sharesController, controller);
     [(PKSharedPassSharesController *)v9->_sharesController prewarmCreateShare];
-    v10 = [(PKSharedPassSharesController *)v9->_sharesController pass];
-    v11 = [[PKShareInitiationAnalyticsReporter alloc] initWithPass:v10];
+    pass = [(PKSharedPassSharesController *)v9->_sharesController pass];
+    v11 = [[PKShareInitiationAnalyticsReporter alloc] initWithPass:pass];
     analyticsReporter = v9->_analyticsReporter;
     v9->_analyticsReporter = v11;
 
     v13 = [PKPassShareInitiationContext alloc];
-    v14 = [(PKSharedPassSharesController *)v9->_sharesController baseNewShareForPass];
-    v15 = [(PKPassShareInitiationContext *)v13 initWithFlow:0 share:v14];
+    baseNewShareForPass = [(PKSharedPassSharesController *)v9->_sharesController baseNewShareForPass];
+    v15 = [(PKPassShareInitiationContext *)v13 initWithFlow:0 share:baseNewShareForPass];
     context = v9->_context;
     v9->_context = v15;
 
-    -[PKPassShareInitiationContext setAuthenticationType:](v9->_context, "setAuthenticationType:", [v10 isCarKeyPass]);
-    [(PKPassShareInitiationContext *)v9->_context setEnvironment:a4];
+    -[PKPassShareInitiationContext setAuthenticationType:](v9->_context, "setAuthenticationType:", [pass isCarKeyPass]);
+    [(PKPassShareInitiationContext *)v9->_context setEnvironment:environment];
     v17 = v9->_context;
-    v18 = [(PKSharedPassSharesController *)v9->_sharesController blockedSharingChannels];
-    [(PKPassShareInitiationContext *)v17 setBlockedChannels:v18];
+    blockedSharingChannels = [(PKSharedPassSharesController *)v9->_sharesController blockedSharingChannels];
+    [(PKPassShareInitiationContext *)v17 setBlockedChannels:blockedSharingChannels];
 
     v19 = v9->_context;
-    v20 = [(PKSharedPassSharesController *)v9->_sharesController allowedSharingChannels];
-    [(PKPassShareInitiationContext *)v19 setAllowedChannels:v20];
+    allowedSharingChannels = [(PKSharedPassSharesController *)v9->_sharesController allowedSharingChannels];
+    [(PKPassShareInitiationContext *)v19 setAllowedChannels:allowedSharingChannels];
 
-    v21 = [(PKPassShareInitiationContext *)v9->_context allowedChannels];
+    allowedChannels = [(PKPassShareInitiationContext *)v9->_context allowedChannels];
     v22 = *MEMORY[0x1E69CDAB0];
     v40[0] = *MEMORY[0x1E69CDAB0];
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
@@ -72,20 +72,20 @@
     }
 
     v25 = MEMORY[0x1E69B9280];
-    v26 = [(PKSharedPassSharesController *)v9->_sharesController pass];
-    v27 = [v25 displayInformationForAccessPass:v26 webService:0];
+    pass2 = [(PKSharedPassSharesController *)v9->_sharesController pass];
+    v27 = [v25 displayInformationForAccessPass:pass2 webService:0];
 
     v28 = v9->_context;
-    v29 = [v27 title];
-    [(PKPassShareInitiationContext *)v28 setSharePreviewTitle:v29];
+    title = [v27 title];
+    [(PKPassShareInitiationContext *)v28 setSharePreviewTitle:title];
 
     v30 = v9->_context;
-    v31 = [v27 subtitle];
-    [(PKPassShareInitiationContext *)v30 setSharePreviewSubtitle:v31];
+    subtitle = [v27 subtitle];
+    [(PKPassShareInitiationContext *)v30 setSharePreviewSubtitle:subtitle];
 
     v32 = v9->_context;
-    v33 = [v27 imageURL];
-    [(PKPassShareInitiationContext *)v32 setSharePreviewImageURL:v33];
+    imageURL = [v27 imageURL];
+    [(PKPassShareInitiationContext *)v32 setSharePreviewImageURL:imageURL];
 
     v34 = v9->_context;
     v35 = MEMORY[0x1E69DCAB8];
@@ -97,20 +97,20 @@
   return v9;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = PKPassShareInitiationNavigationController;
-  [(PKPassShareInitiationNavigationController *)&v9 viewWillAppear:a3];
+  [(PKPassShareInitiationNavigationController *)&v9 viewWillAppear:appear];
   if (!self->_hasAppeared)
   {
     self->_hasAppeared = 1;
     if (([(PKSharedPassSharesController *)self->_sharesController isCrossPlatformSharingEnabled]& 1) == 0)
     {
-      v4 = [(PKSharedPassSharesController *)self->_sharesController pass];
-      v5 = [v4 isCarKeyPass];
+      pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+      isCarKeyPass = [pass isCarKeyPass];
 
-      if (!v5)
+      if (!isCarKeyPass)
       {
         [(PKPassShareInitiationNavigationController *)self setNavigationBarHidden:1];
         v7 = [MEMORY[0x1E696ABC0] pkSharingError:7];
@@ -133,9 +133,9 @@
   }
 }
 
-- (void)setShouldPromptUserToShare:(BOOL)a3
+- (void)setShouldPromptUserToShare:(BOOL)share
 {
-  if (!a3)
+  if (!share)
   {
     if ([(PKPassShareInitiationContext *)self->_context flow]== 5)
     {
@@ -156,17 +156,17 @@
   }
 }
 
-- (unint64_t)_transitionToNextStepIsMockTransition:(BOOL)a3
+- (unint64_t)_transitionToNextStepIsMockTransition:(BOOL)transition
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(PKPassShareInitiationContext *)self->_context flow];
+  flow = [(PKPassShareInitiationContext *)self->_context flow];
   v6 = 0;
   v7 = 0;
   currentStep = self->_currentStep;
   v9 = 1;
   if (currentStep <= 2)
   {
-    v10 = v5;
+    v10 = flow;
     if (currentStep)
     {
       if (currentStep != 1)
@@ -183,7 +183,7 @@
 
       v7 = 0;
       v9 = 0;
-      v13 = v5 - 4 >= 3;
+      v13 = flow - 4 >= 3;
     }
 
     else
@@ -217,7 +217,7 @@
   if ((currentStep - 5) < 2)
   {
     v6 = 0;
-    if (a3)
+    if (transition)
     {
       return v6;
     }
@@ -234,11 +234,11 @@
 
   else if (currentStep == 4)
   {
-    v11 = [(PKPassShareInitiationContext *)self->_context composedShare];
-    v12 = [v11 activationOptions];
+    composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+    activationOptions = [composedShare activationOptions];
 
-    v7 = v12 == 0;
-    if (v12)
+    v7 = activationOptions == 0;
+    if (activationOptions)
     {
       v6 = 5;
     }
@@ -248,11 +248,11 @@
       v6 = 0;
     }
 
-    v9 = v12 == 0;
+    v9 = activationOptions == 0;
   }
 
 LABEL_23:
-  if (!a3)
+  if (!transition)
   {
     if (v7)
     {
@@ -282,20 +282,20 @@ LABEL_25:
   return v6;
 }
 
-- (void)_transitionToStep:(unint64_t)a3
+- (void)_transitionToStep:(unint64_t)step
 {
   v60 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3 > 6)
+    if (step > 6)
     {
       v6 = @"unknown";
     }
 
     else
     {
-      v6 = off_1E8022798[a3];
+      v6 = off_1E8022798[step];
     }
 
     *buf = 138412290;
@@ -304,21 +304,21 @@ LABEL_25:
   }
 
   currentStep = self->_currentStep;
-  self->_currentStep = a3;
-  if (currentStep > a3)
+  self->_currentStep = step;
+  if (currentStep > step)
   {
     return;
   }
 
-  v8 = [(PKPassShareInitiationNavigationController *)self viewControllers];
-  v9 = [v8 count];
+  viewControllers = [(PKPassShareInitiationNavigationController *)self viewControllers];
+  v9 = [viewControllers count];
 
-  if (a3 > 3)
+  if (step > 3)
   {
-    if (a3 == 4)
+    if (step == 4)
     {
-      v22 = [(PKPassShareInitiationContext *)self->_context flow];
-      switch(v22)
+      flow = [(PKPassShareInitiationContext *)self->_context flow];
+      switch(flow)
       {
         case 6uLL:
           [(PKPassShareInitiationNavigationController *)self _sendOveriMessageUsingComposeViewController];
@@ -337,13 +337,13 @@ LABEL_25:
       return;
     }
 
-    if (a3 != 5)
+    if (step != 5)
     {
-      if (a3 == 6)
+      if (step == 6)
       {
         v15 = [PKInterceptableActivityViewController alloc];
-        v16 = [(PKPassShareInitiationNavigationController *)self _activityItemForActivationCode];
-        v54 = v16;
+        _activityItemForActivationCode = [(PKPassShareInitiationNavigationController *)self _activityItemForActivationCode];
+        v54 = _activityItemForActivationCode;
         v14 = 1;
         v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
         v18 = [(PKInterceptableActivityViewController *)v15 initWithItems:v17 delegate:self];
@@ -351,8 +351,8 @@ LABEL_25:
         self->_activityViewController = v18;
 
         v20 = self->_activityViewController;
-        v21 = [(PKPassShareInitiationContext *)self->_context blockedChannels];
-        [(PKInterceptableActivityViewController *)v20 setExcludedActivityTypes:v21];
+        blockedChannels = [(PKPassShareInitiationContext *)self->_context blockedChannels];
+        [(PKInterceptableActivityViewController *)v20 setExcludedActivityTypes:blockedChannels];
 
         v12 = self->_activityViewController;
         v13 = 0;
@@ -366,10 +366,10 @@ LABEL_25:
     }
 
     v33 = [_TtC9PassKitUI43PKPassShareActivationOverviewViewController alloc];
-    v34 = [(PKPassShareInitiationContext *)self->_context composedShare];
-    v35 = [v34 activationOptions];
-    v36 = [(PKPassShareInitiationContext *)self->_context recipient];
-    v37 = [(PKPassShareActivationOverviewViewController *)v33 initWithActivationOptions:v35 recipient:v36 delegate:self];
+    composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+    activationOptions = [composedShare activationOptions];
+    recipient = [(PKPassShareInitiationContext *)self->_context recipient];
+    v37 = [(PKPassShareActivationOverviewViewController *)v33 initWithActivationOptions:activationOptions recipient:recipient delegate:self];
 
     v12 = [[PKNavigationController alloc] initWithRootViewController:v37];
     v14 = 0;
@@ -383,7 +383,7 @@ LABEL_26:
     goto LABEL_32;
   }
 
-  if (a3 == 1)
+  if (step == 1)
   {
     v12 = [[PKPassShareIntroductionExplanationViewController alloc] initWithSharesController:self->_sharesController context:self->_context delegate:self];
     [(PKShareInitiationAnalyticsReporter *)self->_analyticsReporter sendEventForPage:0 specifics:0];
@@ -391,9 +391,9 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (a3 != 2)
+  if (step != 2)
   {
-    if (a3 != 3)
+    if (step != 3)
     {
       return;
     }
@@ -415,15 +415,15 @@ LABEL_26:
 LABEL_32:
     if (v9)
     {
-      v43 = [(UIViewController *)self pkui_frontMostViewController];
-      if ([(PKPassShareInitiationNavigationController *)v43 isBeingDismissed])
+      pkui_frontMostViewController = [(UIViewController *)self pkui_frontMostViewController];
+      if ([(PKPassShareInitiationNavigationController *)pkui_frontMostViewController isBeingDismissed])
       {
-        v44 = [(PKPassShareInitiationNavigationController *)v43 presentingViewController];
+        presentingViewController = [(PKPassShareInitiationNavigationController *)pkui_frontMostViewController presentingViewController];
 
-        v43 = v44;
+        pkui_frontMostViewController = presentingViewController;
       }
 
-      if (v43 == self)
+      if (pkui_frontMostViewController == self)
       {
         v45 = 1;
       }
@@ -436,12 +436,12 @@ LABEL_32:
       if ((v45 & 1) == 0)
       {
         v46 = self->_activityViewController;
-        if (v43 != v46)
+        if (pkui_frontMostViewController != v46)
         {
-          v47 = [(PKPassShareInitiationNavigationController *)v43 presentingViewController];
+          presentingViewController2 = [(PKPassShareInitiationNavigationController *)pkui_frontMostViewController presentingViewController];
           v48 = self->_activityViewController;
 
-          if (v47 != v48)
+          if (presentingViewController2 != v48)
           {
 LABEL_43:
             v50[0] = MEMORY[0x1E69E9820];
@@ -470,36 +470,36 @@ LABEL_48:
       if (v13)
       {
         v53 = v12;
-        v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-        [(PKPassShareInitiationNavigationController *)self setViewControllers:v43];
+        pkui_frontMostViewController = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
+        [(PKPassShareInitiationNavigationController *)self setViewControllers:pkui_frontMostViewController];
         goto LABEL_48;
       }
 
-      v43 = objc_alloc_init(MEMORY[0x1E69DD258]);
-      v52 = v43;
+      pkui_frontMostViewController = objc_alloc_init(MEMORY[0x1E69DD258]);
+      v52 = pkui_frontMostViewController;
       v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v52 count:1];
       [(PKPassShareInitiationNavigationController *)self setViewControllers:v49];
     }
 
-    [(PKPassShareInitiationNavigationController *)v43 presentViewController:v12 animated:1 completion:0];
+    [(PKPassShareInitiationNavigationController *)pkui_frontMostViewController presentViewController:v12 animated:1 completion:0];
     goto LABEL_48;
   }
 
   v23 = [PKInterceptableActivityViewController alloc];
-  v24 = [(PKPassShareInitiationNavigationController *)self _placeholderActivityItem];
-  v57 = v24;
+  _placeholderActivityItem = [(PKPassShareInitiationNavigationController *)self _placeholderActivityItem];
+  v57 = _placeholderActivityItem;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
   v26 = [(PKInterceptableActivityViewController *)v23 initWithItems:v25 peopleSuggestionBundleIds:&unk_1F3CC86F0 delegate:self];
   v27 = self->_activityViewController;
   self->_activityViewController = v26;
 
   v28 = self->_activityViewController;
-  v29 = [(PKPassShareInitiationContext *)self->_context blockedChannels];
-  [(PKInterceptableActivityViewController *)v28 setExcludedActivityTypes:v29];
+  blockedChannels2 = [(PKPassShareInitiationContext *)self->_context blockedChannels];
+  [(PKInterceptableActivityViewController *)v28 setExcludedActivityTypes:blockedChannels2];
 
   v30 = self->_activityViewController;
-  v31 = [(PKPassShareInitiationContext *)self->_context allowedChannels];
-  [(PKInterceptableActivityViewController *)v30 setAllowedActivityTypes:v31];
+  allowedChannels = [(PKPassShareInitiationContext *)self->_context allowedChannels];
+  [(PKInterceptableActivityViewController *)v30 setAllowedActivityTypes:allowedChannels];
 
   v12 = self->_activityViewController;
   if ([(PKPassShareInitiationContext *)self->_context environment]== 2)
@@ -544,13 +544,13 @@ LABEL_48:
   }
 
   sharesController = self->_sharesController;
-  v5 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  v6 = [(PKSharedPassSharesController *)sharesController entitlementsForShare:v5];
+  composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+  v6 = [(PKSharedPassSharesController *)sharesController entitlementsForShare:composedShare];
 
   v7 = objc_alloc(MEMORY[0x1E69B85B0]);
-  v8 = [(PKSharedPassSharesController *)self->_sharesController pass];
-  v9 = [v8 paymentPass];
-  v10 = [v7 initWithPaymentPass:v9 entitlements:v6];
+  pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+  paymentPass = [pass paymentPass];
+  v10 = [v7 initWithPaymentPass:paymentPass entitlements:v6];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -586,27 +586,27 @@ void __74__PKPassShareInitiationNavigationController__sendOverLegacyCarKeyiMessa
   }
 
   [(PKPassSharePreviewViewController *)self->_previewViewController setShowHeaderSpinner:1];
-  v4 = [(PKInterceptableActivityViewController *)self->_activityViewController view];
-  [v4 setUserInteractionEnabled:0];
+  view = [(PKInterceptableActivityViewController *)self->_activityViewController view];
+  [view setUserInteractionEnabled:0];
 
-  v5 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  v6 = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
-  [v5 updateDisplayableSharedEntitlementsFromDisplayableEntitlements:v6];
+  composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+  shareableEntitlements = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
+  [composedShare updateDisplayableSharedEntitlementsFromDisplayableEntitlements:shareableEntitlements];
 
   v7 = objc_alloc(MEMORY[0x1E69B8A18]);
-  v8 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  v9 = [(PKSharedPassSharesController *)self->_sharesController pass];
-  v10 = [v7 initWithShare:v8 pass:v9];
+  composedShare2 = [(PKPassShareInitiationContext *)self->_context composedShare];
+  pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+  v10 = [v7 initWithShare:composedShare2 pass:pass];
 
   [v10 setSharingInvitationFlow:1];
   objc_initWeak(buf, self);
-  v11 = [(PKSharingAnalyticsReporter *)self->_analyticsReporter sessionToken];
+  sessionToken = [(PKSharingAnalyticsReporter *)self->_analyticsReporter sessionToken];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__PKPassShareInitiationNavigationController__sendOveriMessage__block_invoke;
   v12[3] = &unk_1E80226D8;
   objc_copyWeak(&v13, buf);
-  [PKSharingMessageExtensionMessageBuilder messageFromInvitation:v10 analyticsSessionToken:v11 completionHandler:v12];
+  [PKSharingMessageExtensionMessageBuilder messageFromInvitation:v10 analyticsSessionToken:sessionToken completionHandler:v12];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -665,24 +665,24 @@ void __62__PKPassShareInitiationNavigationController__sendOveriMessage__block_in
   }
 
   [(PKPassSharePreviewViewController *)self->_previewViewController setShowHeaderSpinner:1];
-  v4 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  v5 = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
-  [v4 updateDisplayableSharedEntitlementsFromDisplayableEntitlements:v5];
+  composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+  shareableEntitlements = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
+  [composedShare updateDisplayableSharedEntitlementsFromDisplayableEntitlements:shareableEntitlements];
 
   v6 = objc_alloc(MEMORY[0x1E69B8A18]);
-  v7 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  v8 = [(PKSharedPassSharesController *)self->_sharesController pass];
-  v9 = [v6 initWithShare:v7 pass:v8];
+  composedShare2 = [(PKPassShareInitiationContext *)self->_context composedShare];
+  pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+  v9 = [v6 initWithShare:composedShare2 pass:pass];
 
   [v9 setSharingInvitationFlow:1];
   objc_initWeak(buf, self);
-  v10 = [(PKSharingAnalyticsReporter *)self->_analyticsReporter sessionToken];
+  sessionToken = [(PKSharingAnalyticsReporter *)self->_analyticsReporter sessionToken];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88__PKPassShareInitiationNavigationController__sendOveriMessageUsingComposeViewController__block_invoke;
   v11[3] = &unk_1E80226D8;
   objc_copyWeak(&v12, buf);
-  [PKSharingMessageExtensionMessageBuilder messageFromInvitation:v9 analyticsSessionToken:v10 completionHandler:v11];
+  [PKSharingMessageExtensionMessageBuilder messageFromInvitation:v9 analyticsSessionToken:sessionToken completionHandler:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
@@ -720,19 +720,19 @@ void __88__PKPassShareInitiationNavigationController__sendOveriMessageUsingCompo
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "ShareInitiation: Sending share over previously selected channel", buf, 2u);
   }
 
-  v4 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  v5 = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
-  [v4 updateDisplayableSharedEntitlementsFromDisplayableEntitlements:v5];
+  composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+  shareableEntitlements = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
+  [composedShare updateDisplayableSharedEntitlementsFromDisplayableEntitlements:shareableEntitlements];
 
   v6 = objc_alloc(MEMORY[0x1E69B8A18]);
-  v7 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  v8 = [(PKSharedPassSharesController *)self->_sharesController pass];
-  v9 = [v6 initWithShare:v7 pass:v8];
+  composedShare2 = [(PKPassShareInitiationContext *)self->_context composedShare];
+  pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+  v9 = [v6 initWithShare:composedShare2 pass:pass];
 
-  v10 = [(PKPassShareInitiationContext *)self->_context flow];
-  if (v10 <= 6)
+  flow = [(PKPassShareInitiationContext *)self->_context flow];
+  if (flow <= 6)
   {
-    [v9 setSharingInvitationFlow:qword_1BE1168B0[v10]];
+    [v9 setSharingInvitationFlow:qword_1BE1168B0[flow]];
   }
 
   objc_initWeak(location, self);
@@ -774,18 +774,18 @@ void __88__PKPassShareInitiationNavigationController__sendOveriMessageUsingCompo
   v21[5] = v31;
   v21[6] = v29;
   v13 = _Block_copy(v21);
-  v14 = [(PKPassShareInitiationContext *)self->_context authenticationType];
-  if (v14)
+  authenticationType = [(PKPassShareInitiationContext *)self->_context authenticationType];
+  if (authenticationType)
   {
-    if (v14 == 1)
+    if (authenticationType == 1)
     {
       v15 = PKShareAuthorizationPaymentRequest(v11);
-      v16 = [(PKPassShareInitiationNavigationController *)self view];
-      v17 = [v16 window];
-      v18 = [v17 windowScene];
-      v19 = [v18 _sceneIdentifier];
+      view = [(PKPassShareInitiationNavigationController *)self view];
+      window = [view window];
+      windowScene = [window windowScene];
+      _sceneIdentifier = [windowScene _sceneIdentifier];
 
-      v20 = [MEMORY[0x1E69B9250] authorizeForRequest:v15 presentationSceneIdentifier:v19 authHandler:v12 completion:v13];
+      v20 = [MEMORY[0x1E69B9250] authorizeForRequest:v15 presentationSceneIdentifier:_sceneIdentifier authHandler:v12 completion:v13];
     }
   }
 
@@ -967,21 +967,21 @@ void __69__PKPassShareInitiationNavigationController__sendOverSelectedChannel__b
   *(v2 + 1592) = 0;
 }
 
-- (void)_flowDidCancelWithError:(id)a3
+- (void)_flowDidCancelWithError:(id)error
 {
   analyticsReporter = self->_analyticsReporter;
-  v5 = a3;
-  [(PKShareInitiationAnalyticsReporter *)analyticsReporter sendDoneEventWithDidShare:0 error:v5 specifics:0];
+  errorCopy = error;
+  [(PKShareInitiationAnalyticsReporter *)analyticsReporter sendDoneEventWithDidShare:0 error:errorCopy specifics:0];
   v6 = self->_analyticsReporter;
   self->_analyticsReporter = 0;
 
-  v7 = PKSharingDisplayableError(v5);
+  v7 = PKSharingDisplayableError(errorCopy);
 
   if (!v7)
   {
     v8 = [MEMORY[0x1E696ABC0] pkSharingError:7];
-    v9 = [(PKSharedPassSharesController *)self->_sharesController pass];
-    v7 = PKSharingDisplayableError(v8, v9);
+    pass = [(PKSharedPassSharesController *)self->_sharesController pass];
+    v7 = PKSharingDisplayableError(v8, pass);
   }
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -990,8 +990,8 @@ void __69__PKPassShareInitiationNavigationController__sendOverSelectedChannel__b
   v12[3] = &unk_1E8010970;
   v12[4] = self;
   v10 = PKAlertForDisplayableErrorWithHandlers(v7, 0, v12, 0);
-  v11 = [(UIViewController *)self pkui_frontMostViewController];
-  [v11 presentViewController:v10 animated:1 completion:0];
+  pkui_frontMostViewController = [(UIViewController *)self pkui_frontMostViewController];
+  [pkui_frontMostViewController presentViewController:v10 animated:1 completion:0];
 }
 
 - (void)_flowDidCancel
@@ -1062,44 +1062,44 @@ void __59__PKPassShareInitiationNavigationController__flowDidCancel__block_invok
 
   else
   {
-    v7 = [(PKPassShareInitiationNavigationController *)self presentingViewController];
-    v8 = v7;
-    if (v7)
+    presentingViewController = [(PKPassShareInitiationNavigationController *)self presentingViewController];
+    v8 = presentingViewController;
+    if (presentingViewController)
     {
-      v9 = v7;
+      selfCopy = presentingViewController;
     }
 
     else
     {
-      v9 = self;
+      selfCopy = self;
     }
 
-    v6 = v9;
+    v6 = selfCopy;
 
     [(PKPassShareInitiationNavigationController *)v6 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)_revokeCreatedShareWithCompletion:(id)a3
+- (void)_revokeCreatedShareWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKPassShareInitiationContext *)self->_context didCreateShare])
   {
     sharesController = self->_sharesController;
-    v6 = [(PKPassShareInitiationContext *)self->_context composedShare];
+    composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __79__PKPassShareInitiationNavigationController__revokeCreatedShareWithCompletion___block_invoke;
     v7[3] = &unk_1E8012C28;
-    v8 = v4;
-    [(PKSharedPassSharesController *)sharesController revokeShare:v6 shouldCascade:0 withCompletion:v7];
+    v8 = completionCopy;
+    [(PKSharedPassSharesController *)sharesController revokeShare:composedShare shouldCascade:0 withCompletion:v7];
 
     [(PKPassShareInitiationContext *)self->_context setDidCreateShare:0];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1116,8 +1116,8 @@ uint64_t __79__PKPassShareInitiationNavigationController__revokeCreatedShareWith
 
 - (void)_updateShareActivationOptions
 {
-  v3 = [(PKPassShareInitiationContext *)self->_context flow];
-  if (v3 == 5)
+  flow = [(PKPassShareInitiationContext *)self->_context flow];
+  if (flow == 5)
   {
     v4 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1129,21 +1129,21 @@ uint64_t __79__PKPassShareInitiationNavigationController__revokeCreatedShareWith
 
   else
   {
-    v5 = v3;
-    v6 = [(PKPassShareInitiationContext *)self->_context recipient];
-    v9 = v5 == 1 || v5 == 6 || v6 != 0;
+    v5 = flow;
+    recipient = [(PKPassShareInitiationContext *)self->_context recipient];
+    v9 = v5 == 1 || v5 == 6 || recipient != 0;
 
     sharesController = self->_sharesController;
-    v11 = [(PKPassShareInitiationContext *)self->_context channelBundleIdentifier];
-    v16 = [(PKSharedPassSharesController *)sharesController shareInitiationActivationConfigurationForChannelBundleIdentifier:v11 isRecipientKnownContact:v9];
+    channelBundleIdentifier = [(PKPassShareInitiationContext *)self->_context channelBundleIdentifier];
+    v16 = [(PKSharedPassSharesController *)sharesController shareInitiationActivationConfigurationForChannelBundleIdentifier:channelBundleIdentifier isRecipientKnownContact:v9];
 
-    v12 = [(PKPassShareInitiationContext *)self->_context composedShare];
-    v13 = [v16 defaultOptions];
-    [v12 setActivationOptions:v13];
+    composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+    defaultOptions = [v16 defaultOptions];
+    [composedShare setActivationOptions:defaultOptions];
 
     context = self->_context;
-    v15 = [v16 availableOptions];
-    [(PKPassShareInitiationContext *)context setAvailableActivationOptions:v15];
+    availableOptions = [v16 availableOptions];
+    [(PKPassShareInitiationContext *)context setAvailableActivationOptions:availableOptions];
 
     -[PKPassShareInitiationContext setActivationOptionsUserEditable:](self->_context, "setActivationOptionsUserEditable:", [v16 allowUserEdit]);
   }
@@ -1151,40 +1151,40 @@ uint64_t __79__PKPassShareInitiationNavigationController__revokeCreatedShareWith
 
 - (id)_placeholderActivityItem
 {
-  v3 = [(PKPassShareInitiationContext *)self->_context sharePreviewTitle];
-  v4 = [(PKPassShareInitiationContext *)self->_context sharePreviewSubtitle];
-  v5 = [(PKPassShareInitiationContext *)self->_context sharePreviewImageURL];
-  v6 = [(PKPassShareInitiationContext *)self->_context sharePreviewFallbackImage];
-  v7 = [PKActivityItemSource placeholderURLItemWithTitle:v3 subtitle:v4 iconURL:v5 iconPlaceholder:v6];
+  sharePreviewTitle = [(PKPassShareInitiationContext *)self->_context sharePreviewTitle];
+  sharePreviewSubtitle = [(PKPassShareInitiationContext *)self->_context sharePreviewSubtitle];
+  sharePreviewImageURL = [(PKPassShareInitiationContext *)self->_context sharePreviewImageURL];
+  sharePreviewFallbackImage = [(PKPassShareInitiationContext *)self->_context sharePreviewFallbackImage];
+  v7 = [PKActivityItemSource placeholderURLItemWithTitle:sharePreviewTitle subtitle:sharePreviewSubtitle iconURL:sharePreviewImageURL iconPlaceholder:sharePreviewFallbackImage];
 
   return v7;
 }
 
 - (id)_activityItemForActivationCode
 {
-  v3 = [(PKPassShareInitiationNavigationController *)self _placeholderActivityItem];
-  v4 = [(PKPassShareInitiationContext *)self->_context composedShare];
-  v5 = [v4 activationOptions];
-  v6 = [v5 activationCode];
+  _placeholderActivityItem = [(PKPassShareInitiationNavigationController *)self _placeholderActivityItem];
+  composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
+  activationOptions = [composedShare activationOptions];
+  activationCode = [activationOptions activationCode];
 
-  [v3 setValue:v6];
+  [_placeholderActivityItem setValue:activationCode];
 
-  return v3;
+  return _placeholderActivityItem;
 }
 
-- (void)sharePreviewViewControllerDidCancel:(id)a3
+- (void)sharePreviewViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(PKPassShareInitiationContext *)self->_context flow];
-  if (v5 <= 6)
+  cancelCopy = cancel;
+  flow = [(PKPassShareInitiationContext *)self->_context flow];
+  if (flow <= 6)
   {
-    if (((1 << v5) & 0x1B) != 0)
+    if (((1 << flow) & 0x1B) != 0)
     {
       v7 = MEMORY[0x1E69E9820];
       v8 = 3221225472;
       v9 = __81__PKPassShareInitiationNavigationController_sharePreviewViewControllerDidCancel___block_invoke_2;
       v10 = &unk_1E8010970;
-      v11 = self;
+      selfCopy = self;
       v6 = &v7;
     }
 
@@ -1200,33 +1200,33 @@ uint64_t __79__PKPassShareInitiationNavigationController__revokeCreatedShareWith
       v13 = 3221225472;
       v14 = __81__PKPassShareInitiationNavigationController_sharePreviewViewControllerDidCancel___block_invoke;
       v15 = &unk_1E8010970;
-      v16 = self;
+      selfCopy2 = self;
       v6 = &v12;
     }
 
-    [v4 dismissViewControllerAnimated:1 completion:{v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16}];
+    [cancelCopy dismissViewControllerAnimated:1 completion:{v6, v7, v8, v9, v10, selfCopy, v12, v13, v14, v15, selfCopy2}];
   }
 
 LABEL_8:
 }
 
-- (void)sharePreviewViewControllerDidContinue:(id)a3
+- (void)sharePreviewViewControllerDidContinue:(id)continue
 {
-  v21 = [(PKPassShareInitiationContext *)self->_context composedShare];
+  composedShare = [(PKPassShareInitiationContext *)self->_context composedShare];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = objc_alloc(MEMORY[0x1E69B8A38]);
-  v6 = [v21 sharedEntitlements];
-  v7 = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
-  v8 = [v5 initWithSharedEntitlements:v6 availableEntitlements:v7 editable:1];
+  sharedEntitlements = [composedShare sharedEntitlements];
+  shareableEntitlements = [(PKSharedPassSharesController *)self->_sharesController shareableEntitlements];
+  v8 = [v5 initWithSharedEntitlements:sharedEntitlements availableEntitlements:shareableEntitlements editable:1];
 
   if ([v8 canAllowResharing])
   {
-    v9 = [v8 globalView];
-    v10 = [v9 shareability];
+    globalView = [v8 globalView];
+    shareability = [globalView shareability];
 
     v11 = *MEMORY[0x1E69BB300];
     v12 = *MEMORY[0x1E69BB2F8];
-    if (v10)
+    if (shareability)
     {
       v13 = *MEMORY[0x1E69BB300];
     }
@@ -1245,9 +1245,9 @@ LABEL_8:
     v12 = *MEMORY[0x1E69BB2F8];
   }
 
-  v14 = [v21 sharedEntitlements];
-  v15 = [(PKSharedPassSharesController *)self->_sharesController baseNewShareForPass];
-  v16 = [v15 sharedEntitlements];
+  sharedEntitlements2 = [composedShare sharedEntitlements];
+  baseNewShareForPass = [(PKSharedPassSharesController *)self->_sharesController baseNewShareForPass];
+  sharedEntitlements3 = [baseNewShareForPass sharedEntitlements];
   v17 = PKEqualObjects();
 
   v18 = MEMORY[0x1E69BB1F8];
@@ -1257,9 +1257,9 @@ LABEL_8:
   }
 
   [v4 setObject:*v18 forKeyedSubscript:*MEMORY[0x1E69BB1F0]];
-  v19 = [v21 activationOptions];
+  activationOptions = [composedShare activationOptions];
 
-  if (v19)
+  if (activationOptions)
   {
     v20 = v11;
   }
@@ -1275,11 +1275,11 @@ LABEL_8:
   [(PKPassShareInitiationNavigationController *)self _transitionToNextStep];
 }
 
-- (void)interceptableActivityViewController:(id)a3 didInterceptActivitySelectionOfType:(id)a4
+- (void)interceptableActivityViewController:(id)controller didInterceptActivitySelectionOfType:(id)type
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   if (PKEqualObjects() && (PKSharingUseIMessageExtension() & 1) != 0)
   {
     v8 = 0;
@@ -1312,32 +1312,32 @@ LABEL_8:
 
   v13 = *v10;
   [(PKPassShareInitiationContext *)self->_context setFlow:v11];
-  [(PKPassShareInitiationContext *)self->_context setChannelBundleIdentifier:v7];
+  [(PKPassShareInitiationContext *)self->_context setChannelBundleIdentifier:typeCopy];
   if (v8)
   {
     v34 = 0;
-    v14 = [v6 selectedRecipientWithOutContactIdentifier:&v34];
+    v14 = [controllerCopy selectedRecipientWithOutContactIdentifier:&v34];
     v15 = v34;
     [MEMORY[0x1E69B8740] defaultContactResolver];
     v16 = v8;
-    v17 = v7;
+    v17 = typeCopy;
     v19 = v18 = v9;
     [v19 contactForIdentifier:v15];
     v32 = v13;
-    v21 = v20 = v6;
+    v21 = v20 = controllerCopy;
 
     v9 = v18;
-    v7 = v17;
+    typeCopy = v17;
     v8 = v16;
     [(PKPassShareInitiationContext *)self->_context setRecipient:v21 fallbackNickname:v14];
 
-    v6 = v20;
+    controllerCopy = v20;
     v13 = v32;
   }
 
   sharesController = self->_sharesController;
-  v23 = [(PKPassShareInitiationContext *)self->_context channelBundleIdentifier];
-  LODWORD(sharesController) = [(PKSharedPassSharesController *)sharesController isSharingChannelBlockedForChannel:v23 isRecipientKnownContact:v8 | v9];
+  channelBundleIdentifier = [(PKPassShareInitiationContext *)self->_context channelBundleIdentifier];
+  LODWORD(sharesController) = [(PKSharedPassSharesController *)sharesController isSharingChannelBlockedForChannel:channelBundleIdentifier isRecipientKnownContact:v8 | v9];
 
   if (sharesController)
   {
@@ -1360,8 +1360,8 @@ LABEL_8:
     else
     {
       v30 = PKAlertForDisplayableErrorWithHandlers(v27, 0, 0, 0);
-      v31 = [(UIViewController *)self pkui_frontMostViewController];
-      [v31 presentViewController:v30 animated:1 completion:0];
+      pkui_frontMostViewController = [(UIViewController *)self pkui_frontMostViewController];
+      [pkui_frontMostViewController presentViewController:v30 animated:1 completion:0];
     }
   }
 
@@ -1377,19 +1377,19 @@ LABEL_8:
   }
 }
 
-- (void)shareActivityDidFinishWithShare:(BOOL)a3
+- (void)shareActivityDidFinishWithShare:(BOOL)share
 {
-  v3 = a3;
+  shareCopy = share;
   v21[1] = *MEMORY[0x1E69E9840];
-  if (self->_currentStep == 2 && !a3)
+  if (self->_currentStep == 2 && !share)
   {
     [(PKShareInitiationAnalyticsReporter *)self->_analyticsReporter sendEventForPage:1 button:1 specifics:0];
   }
 
-  if (v3)
+  if (shareCopy)
   {
-    v5 = [(PKPassShareInitiationContext *)self->_context flow];
-    v6 = v5 == 6 || v5 == 1;
+    flow = [(PKPassShareInitiationContext *)self->_context flow];
+    v6 = flow == 6 || flow == 1;
     if (v6 && self->_currentStep == 4)
     {
       sharesController = self->_sharesController;
@@ -1413,7 +1413,7 @@ LABEL_8:
   currentStep = self->_currentStep;
   if (currentStep == 6)
   {
-    v9 = self;
+    selfCopy4 = self;
     v10 = 5;
     goto LABEL_24;
   }
@@ -1423,21 +1423,21 @@ LABEL_8:
     activityViewController = self->_activityViewController;
     if (activityViewController)
     {
-      v12 = [(PKInterceptableActivityViewController *)activityViewController presentingViewController];
+      presentingViewController = [(PKInterceptableActivityViewController *)activityViewController presentingViewController];
 
-      if (!v12)
+      if (!presentingViewController)
       {
         goto LABEL_27;
       }
 
       [(PKPassShareInitiationNavigationController *)self _revokeCreatedShareWithCompletion:0];
       v13 = self->_activityViewController;
-      v14 = [(PKPassShareInitiationNavigationController *)self _placeholderActivityItem];
-      v21[0] = v14;
+      _placeholderActivityItem = [(PKPassShareInitiationNavigationController *)self _placeholderActivityItem];
+      v21[0] = _placeholderActivityItem;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
       [(PKInterceptableActivityViewController *)v13 setItems:v15];
 
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2;
     }
 
@@ -1456,11 +1456,11 @@ LABEL_8:
       v19[3] = &unk_1E8010970;
       v19[4] = self;
       [(MFMessageComposeViewController *)carKeyMessageComposer dismissViewControllerAnimated:1 completion:v19];
-      v16 = self;
+      selfCopy3 = self;
       v17 = 3;
     }
 
-    [(PKPassShareInitiationNavigationController *)v16 _transitionToStep:v17];
+    [(PKPassShareInitiationNavigationController *)selfCopy3 _transitionToStep:v17];
     return;
   }
 
@@ -1471,11 +1471,11 @@ LABEL_8:
 
   if ([(PKPassShareInitiationContext *)self->_context environment]== 2)
   {
-    v9 = self;
+    selfCopy4 = self;
     v10 = 1;
 LABEL_24:
 
-    [(PKPassShareInitiationNavigationController *)v9 _transitionToStep:v10];
+    [(PKPassShareInitiationNavigationController *)selfCopy4 _transitionToStep:v10];
     return;
   }
 
@@ -1508,7 +1508,7 @@ void __77__PKPassShareInitiationNavigationController_shareActivityDidFinishWithS
   *(v1 + 1568) = 0;
 }
 
-- (void)passShareIntroductionExplanationViewControllerDidContinue:(id)a3
+- (void)passShareIntroductionExplanationViewControllerDidContinue:(id)continue
 {
   sharesController = self->_sharesController;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1540,7 +1540,7 @@ void __103__PKPassShareInitiationNavigationController_passShareIntroductionExpla
   }
 }
 
-- (void)passShareIntroductionExplanationViewControllerDidCancel:(id)a3
+- (void)passShareIntroductionExplanationViewControllerDidCancel:(id)cancel
 {
   [(PKShareInitiationAnalyticsReporter *)self->_analyticsReporter sendEventForPage:2 button:1 specifics:0];
 

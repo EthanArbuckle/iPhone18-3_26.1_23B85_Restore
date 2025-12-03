@@ -1,6 +1,6 @@
 @interface HMHearingAidAudiogramViewController.HearingAidAudiogramFooterView
 - (CGSize)intrinsicContentSize;
-- (_TtCE21HearingModeSettingsUICSo35HMHearingAidAudiogramViewController29HearingAidAudiogramFooterView)initWithFrame:(CGRect)a3;
+- (_TtCE21HearingModeSettingsUICSo35HMHearingAidAudiogramViewController29HearingAidAudiogramFooterView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -40,7 +40,7 @@
   [v2 setFrame_];
 }
 
-- (_TtCE21HearingModeSettingsUICSo35HMHearingAidAudiogramViewController29HearingAidAudiogramFooterView)initWithFrame:(CGRect)a3
+- (_TtCE21HearingModeSettingsUICSo35HMHearingAidAudiogramViewController29HearingAidAudiogramFooterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

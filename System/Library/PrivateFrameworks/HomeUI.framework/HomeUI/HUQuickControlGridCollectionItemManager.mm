@@ -1,55 +1,55 @@
 @interface HUQuickControlGridCollectionItemManager
-+ (BOOL)isPrimaryOrBinaryStateControlItem:(id)a3;
-+ (unint64_t)preferredControlForControlItem:(id)a3 allControlItems:(id)a4 isSupplementary:(BOOL)a5;
-+ (unint64_t)specialCaseSectionSortingForControlItem:(id)a3 quickControlContext:(id)a4 fromControlItems:(id)a5 primaryServiceType:(id)a6;
-- (BOOL)_catchAllLayoutForGridViewProfiles:(id)a3 supplementaryViewProfiles:(id)a4;
-- (HUQuickControlGridCollectionItemManager)initWithDelegate:(id)a3 controlItems:(id)a4;
-- (HUQuickControlGridCollectionItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_composeIdentifierForService:(id)a3 section:(unint64_t)a4;
-- (id)_findAndRemoveMediaAlarmsAndTimerItemsFromSection:(id)a3;
-- (id)_findAndRemoveMediaControlItemsFromSection:(id)a3;
-- (id)_generateQuickControlGroupContextForControlItems:(id)a3;
-- (id)_itemsToHideInSet:(id)a3;
++ (BOOL)isPrimaryOrBinaryStateControlItem:(id)item;
++ (unint64_t)preferredControlForControlItem:(id)item allControlItems:(id)items isSupplementary:(BOOL)supplementary;
++ (unint64_t)specialCaseSectionSortingForControlItem:(id)item quickControlContext:(id)context fromControlItems:(id)items primaryServiceType:(id)type;
+- (BOOL)_catchAllLayoutForGridViewProfiles:(id)profiles supplementaryViewProfiles:(id)viewProfiles;
+- (HUQuickControlGridCollectionItemManager)initWithDelegate:(id)delegate controlItems:(id)items;
+- (HUQuickControlGridCollectionItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_composeIdentifierForService:(id)service section:(unint64_t)section;
+- (id)_findAndRemoveMediaAlarmsAndTimerItemsFromSection:(id)section;
+- (id)_findAndRemoveMediaControlItemsFromSection:(id)section;
+- (id)_generateQuickControlGroupContextForControlItems:(id)items;
+- (id)_itemsToHideInSet:(id)set;
 - (id)configuration;
-- (id)headerAccessoryButtonTargetForSection:(unint64_t)a3;
-- (id)headerAccessoryButtonTitleForSection:(unint64_t)a3;
-- (id)quickControlContextForItem:(id)a3;
-- (id)titleForItem:(id)a3;
-- (void)_addMediaAlarmsAndTimers:(id)a3 toSections:(id)a4;
+- (id)headerAccessoryButtonTargetForSection:(unint64_t)section;
+- (id)headerAccessoryButtonTitleForSection:(unint64_t)section;
+- (id)quickControlContextForItem:(id)item;
+- (id)titleForItem:(id)item;
+- (void)_addMediaAlarmsAndTimers:(id)timers toSections:(id)sections;
 - (void)tearDown;
-- (void)updateSettingValue:(id)a3 forKeyPath:(id)a4;
+- (void)updateSettingValue:(id)value forKeyPath:(id)path;
 @end
 
 @implementation HUQuickControlGridCollectionItemManager
 
-- (HUQuickControlGridCollectionItemManager)initWithDelegate:(id)a3 controlItems:(id)a4
+- (HUQuickControlGridCollectionItemManager)initWithDelegate:(id)delegate controlItems:(id)items
 {
-  v6 = a4;
+  itemsCopy = items;
   v22.receiver = self;
   v22.super_class = HUQuickControlGridCollectionItemManager;
-  v7 = [(HFItemManager *)&v22 initWithDelegate:a3 sourceItem:0];
+  v7 = [(HFItemManager *)&v22 initWithDelegate:delegate sourceItem:0];
   if (v7)
   {
-    v8 = [v6 na_map:&__block_literal_global_57];
+    v8 = [itemsCopy na_map:&__block_literal_global_57];
     controlItems = v7->_controlItems;
     v7->_controlItems = v8;
 
-    v10 = [v6 na_firstObjectPassingTest:&__block_literal_global_3_1];
+    v10 = [itemsCopy na_firstObjectPassingTest:&__block_literal_global_3_1];
     v11 = [v10 copy];
     accessoryControlItem = v7->_accessoryControlItem;
     v7->_accessoryControlItem = v11;
 
-    v13 = [MEMORY[0x277CCAB00] mapTableWithWeakToStrongObjects];
+    mapTableWithWeakToStrongObjects = [MEMORY[0x277CCAB00] mapTableWithWeakToStrongObjects];
     controlItemToQuickControlContextTable = v7->_controlItemToQuickControlContextTable;
-    v7->_controlItemToQuickControlContextTable = v13;
+    v7->_controlItemToQuickControlContextTable = mapTableWithWeakToStrongObjects;
 
     objc_opt_class();
-    v15 = [(HFItemManager *)v7 delegate];
+    delegate = [(HFItemManager *)v7 delegate];
     if (objc_opt_isKindOfClass())
     {
-      v16 = v15;
+      v16 = delegate;
     }
 
     else
@@ -59,12 +59,12 @@
 
     v17 = v16;
 
-    v18 = [v17 view];
+    view = [v17 view];
 
-    v7->_isRTL = [v18 effectiveUserInterfaceLayoutDirection] == 1;
-    v19 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v20 = [v19 accessorySettingsDataSource];
-    [v20 addObserver:v7];
+    v7->_isRTL = [view effectiveUserInterfaceLayoutDirection] == 1;
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    accessorySettingsDataSource = [mEMORY[0x277D146E8] accessorySettingsDataSource];
+    [accessorySettingsDataSource addObserver:v7];
   }
 
   return v7;
@@ -86,33 +86,33 @@ uint64_t __73__HUQuickControlGridCollectionItemManager_initWithDelegate_controlI
   return isKindOfClass & 1;
 }
 
-- (HUQuickControlGridCollectionItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUQuickControlGridCollectionItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_controlItems_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUQuickControlGridCollectionItemManager.m" lineNumber:88 description:{@"%s is unavailable; use %@ instead", "-[HUQuickControlGridCollectionItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlGridCollectionItemManager.m" lineNumber:88 description:{@"%s is unavailable; use %@ instead", "-[HUQuickControlGridCollectionItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
 - (void)tearDown
 {
-  v4 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v3 = [v4 accessorySettingsDataSource];
-  [v3 removeObserver:self];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  accessorySettingsDataSource = [mEMORY[0x277D146E8] accessorySettingsDataSource];
+  [accessorySettingsDataSource removeObserver:self];
 }
 
 - (id)configuration
 {
   v3 = [HUQuickControlViewControllerConfiguration alloc];
-  v4 = [(HFItemManager *)self home];
-  v5 = [(HUQuickControlViewControllerConfiguration *)v3 initWithHome:v4];
+  home = [(HFItemManager *)self home];
+  v5 = [(HUQuickControlViewControllerConfiguration *)v3 initWithHome:home];
 
   [(HUQuickControlViewControllerConfiguration *)v5 setCopyItems:0];
-  v6 = [(HFItemManager *)self delegate];
-  if ([v6 conformsToProtocol:&unk_28251F4B0])
+  delegate = [(HFItemManager *)self delegate];
+  if ([delegate conformsToProtocol:&unk_28251F4B0])
   {
-    v7 = v6;
+    v7 = delegate;
   }
 
   else
@@ -126,34 +126,34 @@ uint64_t __73__HUQuickControlGridCollectionItemManager_initWithDelegate_controlI
   return v5;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-  v6 = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
+  accessoryControlItem = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
 
-  if (v6)
+  if (accessoryControlItem)
   {
-    v7 = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
-    v8 = [v7 valueSource];
-    v9 = [v8 valueSource];
+    accessoryControlItem2 = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
+    valueSource = [accessoryControlItem2 valueSource];
+    v8ValueSource = [valueSource valueSource];
 
     v10 = objc_alloc(MEMORY[0x277D142E8]);
-    v11 = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
-    v12 = [v11 accessory];
-    v13 = [v10 initWithAccessory:v12 valueSource:v9];
+    accessoryControlItem3 = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
+    accessory = [accessoryControlItem3 accessory];
+    v13 = [v10 initWithAccessory:accessory valueSource:v8ValueSource];
 
     v14 = [objc_alloc(MEMORY[0x277D142B0]) initWithAccessoryItem:v13];
     [(HUQuickControlGridCollectionItemManager *)self setControlItemProvider:v14];
 
-    v15 = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
-    v16 = [v15 copy];
+    accessoryControlItem4 = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
+    v16 = [accessoryControlItem4 copy];
 
-    v17 = [objc_alloc(MEMORY[0x277D14AD0]) initWithHome:v4];
+    v17 = [objc_alloc(MEMORY[0x277D14AD0]) initWithHome:homeCopy];
     [(HUQuickControlGridCollectionItemManager *)self setServiceItemProvider:v17];
 
-    v18 = [(HUQuickControlGridCollectionItemManager *)self serviceItemProvider];
-    [v18 setValueSource:v9];
+    serviceItemProvider = [(HUQuickControlGridCollectionItemManager *)self serviceItemProvider];
+    [serviceItemProvider setValueSource:v8ValueSource];
 
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -161,23 +161,23 @@ uint64_t __73__HUQuickControlGridCollectionItemManager_initWithDelegate_controlI
     v27[3] = &unk_277DB9780;
     v28 = v16;
     v19 = v16;
-    v20 = [(HUQuickControlGridCollectionItemManager *)self serviceItemProvider];
-    [v20 setSourceServiceGenerator:v27];
+    serviceItemProvider2 = [(HUQuickControlGridCollectionItemManager *)self serviceItemProvider];
+    [serviceItemProvider2 setSourceServiceGenerator:v27];
   }
 
   else
   {
     v21 = objc_alloc(MEMORY[0x277D14B40]);
-    v22 = [(HUQuickControlGridCollectionItemManager *)self controlItems];
-    v23 = [v21 initWithItems:v22];
+    controlItems = [(HUQuickControlGridCollectionItemManager *)self controlItems];
+    v23 = [v21 initWithItems:controlItems];
     [(HUQuickControlGridCollectionItemManager *)self setControlItemProvider:v23];
   }
 
-  v24 = [(HUQuickControlGridCollectionItemManager *)self controlItemProvider];
-  [v5 na_safeAddObject:v24];
+  controlItemProvider = [(HUQuickControlGridCollectionItemManager *)self controlItemProvider];
+  [v5 na_safeAddObject:controlItemProvider];
 
-  v25 = [(HUQuickControlGridCollectionItemManager *)self serviceItemProvider];
-  [v5 na_safeAddObject:v25];
+  serviceItemProvider3 = [(HUQuickControlGridCollectionItemManager *)self serviceItemProvider];
+  [v5 na_safeAddObject:serviceItemProvider3];
 
   return v5;
 }
@@ -192,18 +192,18 @@ id __70__HUQuickControlGridCollectionItemManager__buildItemProvidersForHome___bl
   return v4;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v163 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUQuickControlGridCollectionItemManager *)self controlItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 na_setByIntersectingWithSet:v4];
+  itemsCopy = items;
+  controlItemProvider = [(HUQuickControlGridCollectionItemManager *)self controlItemProvider];
+  items = [controlItemProvider items];
+  v7 = [items na_setByIntersectingWithSet:itemsCopy];
 
-  v8 = [(HUQuickControlGridCollectionItemManager *)self serviceItemProvider];
-  v9 = [v8 items];
-  v133 = v4;
-  v10 = [v9 na_setByIntersectingWithSet:v4];
+  serviceItemProvider = [(HUQuickControlGridCollectionItemManager *)self serviceItemProvider];
+  items2 = [serviceItemProvider items];
+  v133 = itemsCopy;
+  v10 = [items2 na_setByIntersectingWithSet:itemsCopy];
   v11 = v10;
   if (v10)
   {
@@ -217,12 +217,12 @@ id __70__HUQuickControlGridCollectionItemManager__buildItemProvidersForHome___bl
 
   v13 = v12;
 
-  v14 = [v13 allObjects];
-  v15 = [objc_opt_class() serviceItemComparator];
-  v16 = [v14 sortedArrayUsingComparator:v15];
+  allObjects = [v13 allObjects];
+  serviceItemComparator = [objc_opt_class() serviceItemComparator];
+  v16 = [allObjects sortedArrayUsingComparator:serviceItemComparator];
 
   v17 = 0x277CBE000uLL;
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count")}];
   v20 = [MEMORY[0x277CCA940] setWithCapacity:{objc_msgSend(v13, "count")}];
   v21 = [MEMORY[0x277CCA940] setWithCapacity:{objc_msgSend(v13, "count")}];
@@ -231,30 +231,30 @@ id __70__HUQuickControlGridCollectionItemManager__buildItemProvidersForHome___bl
   aBlock[2] = __76__HUQuickControlGridCollectionItemManager__buildSectionsWithDisplayedItems___block_invoke;
   aBlock[3] = &unk_277DBA6F0;
   aBlock[4] = self;
-  v131 = v18;
+  v131 = array;
   v158 = v131;
   v137 = v20;
   v159 = v137;
   v136 = v21;
   v160 = v136;
   v22 = _Block_copy(aBlock);
-  v23 = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
+  accessoryControlItem = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
 
   v140 = v22;
   v141 = v19;
-  v143 = self;
+  selfCopy = self;
   v134 = v13;
   v135 = v7;
   v132 = v16;
-  if (v23)
+  if (accessoryControlItem)
   {
-    v24 = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
-    v25 = [v24 accessory];
-    v26 = [v25 hf_primaryService];
+    accessoryControlItem2 = [(HUQuickControlGridCollectionItemManager *)self accessoryControlItem];
+    accessory = [accessoryControlItem2 accessory];
+    hf_primaryService = [accessory hf_primaryService];
 
-    v27 = [v26 serviceType];
-    v28 = [(HUQuickControlGridCollectionItemManager *)self controlItemProvider];
-    v29 = [v28 items];
+    serviceType = [hf_primaryService serviceType];
+    controlItemProvider2 = [(HUQuickControlGridCollectionItemManager *)self controlItemProvider];
+    items3 = [controlItemProvider2 items];
 
     v155 = 0u;
     v156 = 0u;
@@ -276,9 +276,9 @@ id __70__HUQuickControlGridCollectionItemManager__buildItemProvidersForHome___bl
           }
 
           v34 = *(*(&v153 + 1) + 8 * i);
-          v35 = [(HFItemManager *)v143 childItemsForItem:v34 ofClass:objc_opt_class()];
-          v36 = [(HUQuickControlGridCollectionItemManager *)v143 _generateQuickControlGroupContextForControlItems:v35];
-          v37 = (v140)[2](v140, v36, v35, v27, v29, v34);
+          v35 = [(HFItemManager *)selfCopy childItemsForItem:v34 ofClass:objc_opt_class()];
+          v36 = [(HUQuickControlGridCollectionItemManager *)selfCopy _generateQuickControlGroupContextForControlItems:v35];
+          v37 = (v140)[2](v140, v36, v35, serviceType, items3, v34);
           [v141 addObject:v37];
         }
 
@@ -288,7 +288,7 @@ id __70__HUQuickControlGridCollectionItemManager__buildItemProvidersForHome___bl
       while (v31);
     }
 
-    v38 = [(HUQuickControlGridCollectionItemManager *)v143 _catchAllLayoutForGridViewProfiles:v137 supplementaryViewProfiles:v136];
+    v38 = [(HUQuickControlGridCollectionItemManager *)selfCopy _catchAllLayoutForGridViewProfiles:v137 supplementaryViewProfiles:v136];
     v7 = v135;
     v19 = v141;
     v17 = 0x277CBE000;
@@ -296,65 +296,65 @@ id __70__HUQuickControlGridCollectionItemManager__buildItemProvidersForHome___bl
 
   else
   {
-    v26 = [(HUQuickControlGridCollectionItemManager *)self _generateQuickControlGroupContextForControlItems:v7];
-    v27 = (*(v22 + 2))(v22, v26, v7, 0, 0, 0);
-    [v19 addObject:v27];
+    hf_primaryService = [(HUQuickControlGridCollectionItemManager *)self _generateQuickControlGroupContextForControlItems:v7];
+    serviceType = (*(v22 + 2))(v22, hf_primaryService, v7, 0, 0, 0);
+    [v19 addObject:serviceType];
     v38 = 0;
   }
 
   obja = [*(v17 + 2840) array];
   if (!v38)
   {
-    v74 = [*(v17 + 2840) array];
-    v75 = [*(v17 + 2840) array];
+    array2 = [*(v17 + 2840) array];
+    array3 = [*(v17 + 2840) array];
     v146[0] = MEMORY[0x277D85DD0];
     v146[1] = 3221225472;
     v146[2] = __76__HUQuickControlGridCollectionItemManager__buildSectionsWithDisplayedItems___block_invoke_4;
     v146[3] = &unk_277DBA718;
-    v76 = v74;
+    v76 = array2;
     v147 = v76;
-    v139 = v75;
+    v139 = array3;
     v148 = v139;
     [v19 na_each:v146];
     v142 = v76;
     if ([v76 count])
     {
       v77 = [v76 na_firstObjectPassingTest:&__block_literal_global_86];
-      v78 = [v77 valueSource];
-      v79 = [v78 allServices];
-      v80 = [v79 anyObject];
+      valueSource = [v77 valueSource];
+      allServices = [valueSource allServices];
+      anyObject = [allServices anyObject];
 
-      v81 = [v80 accessory];
-      v82 = [v81 hf_siriEndpointProfile];
+      accessory2 = [anyObject accessory];
+      hf_siriEndpointProfile = [accessory2 hf_siriEndpointProfile];
 
-      v83 = v82 != 0;
-      v84 = v143;
-      if (v82)
+      v83 = hf_siriEndpointProfile != 0;
+      v84 = selfCopy;
+      if (hf_siriEndpointProfile)
       {
-        v85 = [v80 accessory];
-        -[HUQuickControlGridCollectionItemManager setIsSpeakerAccessory:](v143, "setIsSpeakerAccessory:", [v85 hf_isDumbSpeaker]);
+        accessory3 = [anyObject accessory];
+        -[HUQuickControlGridCollectionItemManager setIsSpeakerAccessory:](selfCopy, "setIsSpeakerAccessory:", [accessory3 hf_isDumbSpeaker]);
 
-        if (![(HUQuickControlGridCollectionItemManager *)v143 isSpeakerAccessory])
+        if (![(HUQuickControlGridCollectionItemManager *)selfCopy isSpeakerAccessory])
         {
-          v86 = [(HUQuickControlGridCollectionItemManager *)v143 airPlayEnabledSettingNumberValue];
+          airPlayEnabledSettingNumberValue = [(HUQuickControlGridCollectionItemManager *)selfCopy airPlayEnabledSettingNumberValue];
 
-          if (!v86)
+          if (!airPlayEnabledSettingNumberValue)
           {
-            v87 = [v80 accessory];
-            v88 = [v87 mediaProfile];
-            v89 = [v88 hf_mediaAccessoryCommonSettingsManager];
+            accessory4 = [anyObject accessory];
+            mediaProfile = [accessory4 mediaProfile];
+            hf_mediaAccessoryCommonSettingsManager = [mediaProfile hf_mediaAccessoryCommonSettingsManager];
 
-            v90 = [v89 settingValueForKeyPath:*MEMORY[0x277D133A0]];
-            [(HUQuickControlGridCollectionItemManager *)v143 setAirPlayEnabledSettingNumberValue:v90];
+            v90 = [hf_mediaAccessoryCommonSettingsManager settingValueForKeyPath:*MEMORY[0x277D133A0]];
+            [(HUQuickControlGridCollectionItemManager *)selfCopy setAirPlayEnabledSettingNumberValue:v90];
           }
         }
 
         v91 = [v76 na_filter:&__block_literal_global_88_0];
-        v92 = [(HUQuickControlGridCollectionItemManager *)v143 mediaControlItems];
+        mediaControlItems = [(HUQuickControlGridCollectionItemManager *)selfCopy mediaControlItems];
 
-        if (!v92)
+        if (!mediaControlItems)
         {
-          [(HUQuickControlGridCollectionItemManager *)v143 setMediaControlItems:v91];
+          [(HUQuickControlGridCollectionItemManager *)selfCopy setMediaControlItems:v91];
         }
 
         [v76 removeObjectsInArray:v91];
@@ -368,14 +368,14 @@ id __70__HUQuickControlGridCollectionItemManager__buildItemProvidersForHome___bl
     else
     {
       v83 = 0;
-      v84 = v143;
+      v84 = selfCopy;
     }
 
     v103 = [(HUQuickControlGridCollectionItemManager *)v84 _mediaAlarmsAndTimerItemsFromControlItems:v139];
     v104 = v84;
     v105 = v103;
-    v106 = [(HUQuickControlGridCollectionItemManager *)v104 mediaControlItems];
-    v107 = [v106 count];
+    mediaControlItems2 = [(HUQuickControlGridCollectionItemManager *)v104 mediaControlItems];
+    v107 = [mediaControlItems2 count];
 
     v108 = 0;
     if (v83 && v107)
@@ -385,11 +385,11 @@ id __70__HUQuickControlGridCollectionItemManager__buildItemProvidersForHome___bl
       v108 = [v109 initWithIdentifier:v110];
 
       [v108 setItems:MEMORY[0x277CBEBF8]];
-      if (-[HUQuickControlGridCollectionItemManager isSpeakerAccessory](v143, "isSpeakerAccessory") || (-[HUQuickControlGridCollectionItemManager airPlayEnabledSettingNumberValue](v143, "airPlayEnabledSettingNumberValue"), v111 = objc_claimAutoreleasedReturnValue(), v112 = [v111 BOOLValue], v111, v112))
+      if (-[HUQuickControlGridCollectionItemManager isSpeakerAccessory](selfCopy, "isSpeakerAccessory") || (-[HUQuickControlGridCollectionItemManager airPlayEnabledSettingNumberValue](selfCopy, "airPlayEnabledSettingNumberValue"), v111 = objc_claimAutoreleasedReturnValue(), v112 = [v111 BOOLValue], v111, v112))
       {
         v113 = _HULocalizedStringWithDefaultValue(@"HUMediaSectionTitle", @"HUMediaSectionTitle", 1);
-        v114 = [(HUQuickControlGridCollectionItemManager *)v143 mediaControlItems];
-        [v108 setItems:v114];
+        mediaControlItems3 = [(HUQuickControlGridCollectionItemManager *)selfCopy mediaControlItems];
+        [v108 setItems:mediaControlItems3];
       }
 
       else
@@ -404,7 +404,7 @@ id __70__HUQuickControlGridCollectionItemManager__buildItemProvidersForHome___bl
     if ([v105 count])
     {
       [v139 removeObjectsInArray:v105];
-      [(HUQuickControlGridCollectionItemManager *)v143 _addMediaAlarmsAndTimers:v105 toSections:obja];
+      [(HUQuickControlGridCollectionItemManager *)selfCopy _addMediaAlarmsAndTimers:v105 toSections:obja];
     }
 
     v94 = v141;
@@ -414,19 +414,19 @@ id __70__HUQuickControlGridCollectionItemManager__buildItemProvidersForHome___bl
     }
 
     v118 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"supplementary"];
-    v119 = [MEMORY[0x277D14778] defaultItemComparator];
-    v120 = [v139 sortedArrayUsingComparator:v119];
+    defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+    v120 = [v139 sortedArrayUsingComparator:defaultItemComparator];
     [v118 setItems:v120];
 
-    if ([(HUQuickControlGridCollectionItemManager *)v143 isSpeakerAccessory])
+    if ([(HUQuickControlGridCollectionItemManager *)selfCopy isSpeakerAccessory])
     {
       v121 = [obja indexOfObject:v108];
     }
 
     else
     {
-      v122 = [(HUQuickControlGridCollectionItemManager *)v143 airPlayEnabledSettingNumberValue];
-      if ([v122 BOOLValue])
+      airPlayEnabledSettingNumberValue2 = [(HUQuickControlGridCollectionItemManager *)selfCopy airPlayEnabledSettingNumberValue];
+      if ([airPlayEnabledSettingNumberValue2 BOOLValue])
       {
         v121 = [obja indexOfObject:v108];
       }
@@ -469,32 +469,32 @@ LABEL_88:
     goto LABEL_89;
   }
 
-  v39 = [(HUQuickControlGridCollectionItemManager *)v143 accessoryControlItem];
-  v40 = [v39 accessory];
-  v41 = [v40 hf_primaryService];
+  accessoryControlItem3 = [(HUQuickControlGridCollectionItemManager *)selfCopy accessoryControlItem];
+  accessory5 = [accessoryControlItem3 accessory];
+  hf_primaryService2 = [accessory5 hf_primaryService];
 
-  v42 = [v41 accessory];
-  v43 = [v42 hf_siriEndpointProfile];
+  accessory6 = [hf_primaryService2 accessory];
+  hf_siriEndpointProfile2 = [accessory6 hf_siriEndpointProfile];
 
-  v44 = [v41 accessory];
-  -[HUQuickControlGridCollectionItemManager setIsSpeakerAccessory:](v143, "setIsSpeakerAccessory:", [v44 hf_isDumbSpeaker]);
+  accessory7 = [hf_primaryService2 accessory];
+  -[HUQuickControlGridCollectionItemManager setIsSpeakerAccessory:](selfCopy, "setIsSpeakerAccessory:", [accessory7 hf_isDumbSpeaker]);
 
-  if (![(HUQuickControlGridCollectionItemManager *)v143 isSpeakerAccessory])
+  if (![(HUQuickControlGridCollectionItemManager *)selfCopy isSpeakerAccessory])
   {
-    v45 = [(HUQuickControlGridCollectionItemManager *)v143 airPlayEnabledSettingNumberValue];
+    airPlayEnabledSettingNumberValue3 = [(HUQuickControlGridCollectionItemManager *)selfCopy airPlayEnabledSettingNumberValue];
 
-    if (!v45)
+    if (!airPlayEnabledSettingNumberValue3)
     {
-      v46 = [v41 accessory];
-      v47 = [v46 mediaProfile];
-      v48 = [v47 hf_mediaAccessoryCommonSettingsManager];
+      accessory8 = [hf_primaryService2 accessory];
+      mediaProfile2 = [accessory8 mediaProfile];
+      hf_mediaAccessoryCommonSettingsManager2 = [mediaProfile2 hf_mediaAccessoryCommonSettingsManager];
 
-      v49 = [v48 settingValueForKeyPath:*MEMORY[0x277D133A0]];
-      [(HUQuickControlGridCollectionItemManager *)v143 setAirPlayEnabledSettingNumberValue:v49];
+      v49 = [hf_mediaAccessoryCommonSettingsManager2 settingValueForKeyPath:*MEMORY[0x277D133A0]];
+      [(HUQuickControlGridCollectionItemManager *)selfCopy setAirPlayEnabledSettingNumberValue:v49];
     }
   }
 
-  v130 = v41;
+  v130 = hf_primaryService2;
   v151 = 0u;
   v152 = 0u;
   v149 = 0u;
@@ -507,7 +507,7 @@ LABEL_88:
     v139 = 0;
     v142 = 0;
     v52 = *v150;
-    v53 = v143;
+    v53 = selfCopy;
     do
     {
       for (j = 0; j != v51; ++j)
@@ -518,10 +518,10 @@ LABEL_88:
         }
 
         v55 = *(*(&v149 + 1) + 8 * j);
-        v56 = [v55 serviceItem];
-        v57 = [v56 service];
+        serviceItem = [v55 serviceItem];
+        service = [serviceItem service];
 
-        if (v43)
+        if (hf_siriEndpointProfile2)
         {
           v58 = v142;
           if (!v142)
@@ -536,42 +536,42 @@ LABEL_88:
           }
         }
 
-        v59 = [v55 gridControlItems];
-        v60 = [v59 count];
+        gridControlItems = [v55 gridControlItems];
+        v60 = [gridControlItems count];
 
         if (v60)
         {
           v61 = objc_alloc(MEMORY[0x277D14850]);
-          v62 = [(HUQuickControlGridCollectionItemManager *)v53 _composeIdentifierForService:v57 section:1];
+          v62 = [(HUQuickControlGridCollectionItemManager *)v53 _composeIdentifierForService:service section:1];
           v63 = [v61 initWithIdentifier:v62];
 
-          v64 = [v55 gridControlItems];
-          [v63 setItems:v64];
+          gridControlItems2 = [v55 gridControlItems];
+          [v63 setItems:gridControlItems2];
 
-          if (v43 && [obja count])
+          if (hf_siriEndpointProfile2 && [obja count])
           {
-            v65 = [v55 serviceItem];
-            v66 = [v65 namingComponentForHomeKitObject];
-            v67 = [v66 name];
-            [v63 setHeaderTitle:v67];
+            serviceItem2 = [v55 serviceItem];
+            namingComponentForHomeKitObject = [serviceItem2 namingComponentForHomeKitObject];
+            name = [namingComponentForHomeKitObject name];
+            [v63 setHeaderTitle:name];
 
-            v53 = v143;
+            v53 = selfCopy;
           }
 
           [obja addObject:v63];
         }
 
-        v68 = [v55 supplementaryControlItems];
-        v69 = [v68 count];
+        supplementaryControlItems = [v55 supplementaryControlItems];
+        v69 = [supplementaryControlItems count];
 
         if (v69)
         {
           v70 = objc_alloc(MEMORY[0x277D14850]);
-          v71 = [(HUQuickControlGridCollectionItemManager *)v53 _composeIdentifierForService:v57 section:2];
+          v71 = [(HUQuickControlGridCollectionItemManager *)v53 _composeIdentifierForService:service section:2];
           v72 = [v70 initWithIdentifier:v71];
 
-          v73 = [v55 supplementaryControlItems];
-          [v72 setItems:v73];
+          supplementaryControlItems2 = [v55 supplementaryControlItems];
+          [v72 setItems:supplementaryControlItems2];
 
           [obja addObject:v72];
         }
@@ -587,14 +587,14 @@ LABEL_88:
   {
     v139 = 0;
     v142 = 0;
-    v53 = v143;
+    v53 = selfCopy;
   }
 
   v13 = v134;
   v7 = v135;
   v94 = v141;
   v95 = v130;
-  if ([v142 count] && v43)
+  if ([v142 count] && hf_siriEndpointProfile2)
   {
     v96 = objc_alloc(MEMORY[0x277D14850]);
     v97 = [MEMORY[0x277CCACA8] stringWithFormat:@"Media-%@", @"grid"];
@@ -610,8 +610,8 @@ LABEL_88:
         [(HUQuickControlGridCollectionItemManager *)v53 setMediaControlItems:?];
       }
 
-      v102 = [(HUQuickControlGridCollectionItemManager *)v53 mediaControlItems];
-      [v98 setItems:v102];
+      mediaControlItems4 = [(HUQuickControlGridCollectionItemManager *)v53 mediaControlItems];
+      [v98 setItems:mediaControlItems4];
     }
 
     else
@@ -629,7 +629,7 @@ LABEL_88:
   }
 
   v115 = v132;
-  if (v43)
+  if (hf_siriEndpointProfile2)
   {
     v116 = v53;
     v117 = obja;
@@ -942,33 +942,33 @@ uint64_t __76__HUQuickControlGridCollectionItemManager__buildSectionsWithDisplay
   return v25;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v11.receiver = self;
   v11.super_class = HUQuickControlGridCollectionItemManager;
-  v4 = [(HFItemManager *)&v11 _itemsToHideInSet:a3];
+  v4 = [(HFItemManager *)&v11 _itemsToHideInSet:set];
   v5 = [v4 mutableCopy];
 
-  v6 = [(HUQuickControlGridCollectionItemManager *)self mediaControlItems];
-  if (v6)
+  mediaControlItems = [(HUQuickControlGridCollectionItemManager *)self mediaControlItems];
+  if (mediaControlItems)
   {
-    v7 = v6;
-    v8 = [(HUQuickControlGridCollectionItemManager *)self airPlayEnabledSettingNumberValue];
-    if ([v8 BOOLValue])
+    mediaControlItems2 = mediaControlItems;
+    airPlayEnabledSettingNumberValue = [(HUQuickControlGridCollectionItemManager *)self airPlayEnabledSettingNumberValue];
+    if ([airPlayEnabledSettingNumberValue BOOLValue])
     {
     }
 
     else
     {
-      v9 = [(HUQuickControlGridCollectionItemManager *)self isSpeakerAccessory];
+      isSpeakerAccessory = [(HUQuickControlGridCollectionItemManager *)self isSpeakerAccessory];
 
-      if (v9)
+      if (isSpeakerAccessory)
       {
         goto LABEL_7;
       }
 
-      v7 = [(HUQuickControlGridCollectionItemManager *)self mediaControlItems];
-      [v5 addObjectsFromArray:v7];
+      mediaControlItems2 = [(HUQuickControlGridCollectionItemManager *)self mediaControlItems];
+      [v5 addObjectsFromArray:mediaControlItems2];
     }
   }
 
@@ -977,13 +977,13 @@ LABEL_7:
   return v5;
 }
 
-- (id)_generateQuickControlGroupContextForControlItems:(id)a3
+- (id)_generateQuickControlGroupContextForControlItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v5 = [(HUQuickControlGridCollectionItemManager *)self configuration];
-    v6 = [MEMORY[0x277D145C8] hu_preferredQuickControlGroupContextForControlItems:v4 configuration:v5 ignoringGrid:1];
+    configuration = [(HUQuickControlGridCollectionItemManager *)self configuration];
+    v6 = [MEMORY[0x277D145C8] hu_preferredQuickControlGroupContextForControlItems:itemsCopy configuration:configuration ignoringGrid:1];
   }
 
   else
@@ -994,28 +994,28 @@ LABEL_7:
   return v6;
 }
 
-- (void)_addMediaAlarmsAndTimers:(id)a3 toSections:(id)a4
+- (void)_addMediaAlarmsAndTimers:(id)timers toSections:(id)sections
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v34 = a4;
-  v7 = [MEMORY[0x277D14670] sharedInstance];
-  if ([v7 hostProcess] == 100)
+  timersCopy = timers;
+  sectionsCopy = sections;
+  mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+  if ([mEMORY[0x277D14670] hostProcess] == 100)
   {
     v33 = 1;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D14670] sharedInstance];
-    v33 = [v8 hostProcess] == 3;
+    mEMORY[0x277D14670]2 = [MEMORY[0x277D14670] sharedInstance];
+    v33 = [mEMORY[0x277D14670]2 hostProcess] == 3;
   }
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v6;
+  obj = timersCopy;
   v9 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v9)
   {
@@ -1085,7 +1085,7 @@ LABEL_7:
         v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
         [v17 setItems:v28];
 
-        [v34 addObject:v17];
+        [sectionsCopy addObject:v17];
         ++v11;
       }
 
@@ -1114,27 +1114,27 @@ uint64_t __85__HUQuickControlGridCollectionItemManager__mediaAlarmsAndTimerItems
   return v5 & 1;
 }
 
-- (id)_findAndRemoveMediaControlItemsFromSection:(id)a3
+- (id)_findAndRemoveMediaControlItemsFromSection:(id)section
 {
-  v3 = a3;
-  v4 = [v3 gridControlItems];
-  v5 = [v4 na_filter:&__block_literal_global_128];
+  sectionCopy = section;
+  gridControlItems = [sectionCopy gridControlItems];
+  v5 = [gridControlItems na_filter:&__block_literal_global_128];
 
   if (![v5 count])
   {
-    v6 = [v3 supplementaryControlItems];
-    v7 = [v6 na_filter:&__block_literal_global_130];
+    supplementaryControlItems = [sectionCopy supplementaryControlItems];
+    v7 = [supplementaryControlItems na_filter:&__block_literal_global_130];
 
     v5 = v7;
   }
 
   if ([v5 count])
   {
-    v8 = [v3 gridControlItems];
-    [v8 removeObjectsInArray:v5];
+    gridControlItems2 = [sectionCopy gridControlItems];
+    [gridControlItems2 removeObjectsInArray:v5];
 
-    v9 = [v3 supplementaryControlItems];
-    [v9 removeObjectsInArray:v5];
+    supplementaryControlItems2 = [sectionCopy supplementaryControlItems];
+    [supplementaryControlItems2 removeObjectsInArray:v5];
   }
 
   if ([v5 count])
@@ -1170,27 +1170,27 @@ uint64_t __86__HUQuickControlGridCollectionItemManager__findAndRemoveMediaContro
   return isKindOfClass & 1;
 }
 
-- (id)_findAndRemoveMediaAlarmsAndTimerItemsFromSection:(id)a3
+- (id)_findAndRemoveMediaAlarmsAndTimerItemsFromSection:(id)section
 {
-  v4 = a3;
-  v5 = [v4 gridControlItems];
-  v6 = [(HUQuickControlGridCollectionItemManager *)self _mediaAlarmsAndTimerItemsFromControlItems:v5];
+  sectionCopy = section;
+  gridControlItems = [sectionCopy gridControlItems];
+  v6 = [(HUQuickControlGridCollectionItemManager *)self _mediaAlarmsAndTimerItemsFromControlItems:gridControlItems];
 
   if (![v6 count])
   {
-    v7 = [v4 supplementaryControlItems];
-    v8 = [(HUQuickControlGridCollectionItemManager *)self _mediaAlarmsAndTimerItemsFromControlItems:v7];
+    supplementaryControlItems = [sectionCopy supplementaryControlItems];
+    v8 = [(HUQuickControlGridCollectionItemManager *)self _mediaAlarmsAndTimerItemsFromControlItems:supplementaryControlItems];
 
     v6 = v8;
   }
 
   if (v6)
   {
-    v9 = [v4 gridControlItems];
-    [v9 removeObjectsInArray:v6];
+    gridControlItems2 = [sectionCopy gridControlItems];
+    [gridControlItems2 removeObjectsInArray:v6];
 
-    v10 = [v4 supplementaryControlItems];
-    [v10 removeObjectsInArray:v6];
+    supplementaryControlItems2 = [sectionCopy supplementaryControlItems];
+    [supplementaryControlItems2 removeObjectsInArray:v6];
   }
 
   if ([v6 count])
@@ -1208,30 +1208,30 @@ uint64_t __86__HUQuickControlGridCollectionItemManager__findAndRemoveMediaContro
   return v11;
 }
 
-- (id)quickControlContextForItem:(id)a3
+- (id)quickControlContextForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUQuickControlGridCollectionItemManager *)self controlItemToQuickControlContextTable];
-  v6 = [v5 objectForKey:v4];
+  itemCopy = item;
+  controlItemToQuickControlContextTable = [(HUQuickControlGridCollectionItemManager *)self controlItemToQuickControlContextTable];
+  v6 = [controlItemToQuickControlContextTable objectForKey:itemCopy];
 
   return v6;
 }
 
-- (id)titleForItem:(id)a3
+- (id)titleForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 latestResults];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    latestResults = [itemCopy latestResults];
+    v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   }
 
   else
   {
-    v7 = [(HUQuickControlGridCollectionItemManager *)self controlItemProvider];
-    v8 = [v7 items];
-    v9 = [v8 containsObject:v4];
+    controlItemProvider = [(HUQuickControlGridCollectionItemManager *)self controlItemProvider];
+    items = [controlItemProvider items];
+    v9 = [items containsObject:itemCopy];
 
     if (!v9)
     {
@@ -1240,7 +1240,7 @@ uint64_t __86__HUQuickControlGridCollectionItemManager__findAndRemoveMediaContro
     }
 
     objc_opt_class();
-    v10 = v4;
+    v10 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -1251,24 +1251,24 @@ uint64_t __86__HUQuickControlGridCollectionItemManager__findAndRemoveMediaContro
       v11 = 0;
     }
 
-    v5 = v11;
+    latestResults = v11;
 
-    v12 = [v5 valueSource];
-    v13 = [v12 allServices];
+    valueSource = [latestResults valueSource];
+    allServices = [valueSource allServices];
 
     v6 = 0;
-    if ([v13 count] == 1)
+    if ([allServices count] == 1)
     {
-      v14 = [v13 anyObject];
-      v15 = [(HUQuickControlGridCollectionItemManager *)self serviceItemProvider];
-      v16 = [v15 items];
+      anyObject = [allServices anyObject];
+      serviceItemProvider = [(HUQuickControlGridCollectionItemManager *)self serviceItemProvider];
+      items2 = [serviceItemProvider items];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __56__HUQuickControlGridCollectionItemManager_titleForItem___block_invoke;
       v24[3] = &unk_277DBA780;
-      v17 = v14;
+      v17 = anyObject;
       v25 = v17;
-      v18 = [v16 na_firstObjectPassingTest:v24];
+      v18 = [items2 na_firstObjectPassingTest:v24];
 
       v19 = v18;
       if ([v19 conformsToProtocol:&unk_28251B048])
@@ -1285,15 +1285,15 @@ uint64_t __86__HUQuickControlGridCollectionItemManager__findAndRemoveMediaContro
 
       if (v21)
       {
-        v22 = [v21 namingComponentForHomeKitObject];
+        namingComponentForHomeKitObject = [v21 namingComponentForHomeKitObject];
 
-        [v22 name];
+        [namingComponentForHomeKitObject name];
       }
 
       else
       {
-        v22 = [v19 latestResults];
-        [v22 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+        namingComponentForHomeKitObject = [v19 latestResults];
+        [namingComponentForHomeKitObject objectForKeyedSubscript:*MEMORY[0x277D13F60]];
       }
       v6 = ;
     }
@@ -1327,35 +1327,35 @@ uint64_t __56__HUQuickControlGridCollectionItemManager_titleForItem___block_invo
   return v8;
 }
 
-- (id)headerAccessoryButtonTitleForSection:(unint64_t)a3
+- (id)headerAccessoryButtonTitleForSection:(unint64_t)section
 {
-  v3 = [(HFItemManager *)self itemSectionForSectionIndex:a3];
-  v4 = [v3 headerAccessoryButtonTitle];
+  v3 = [(HFItemManager *)self itemSectionForSectionIndex:section];
+  headerAccessoryButtonTitle = [v3 headerAccessoryButtonTitle];
 
-  return v4;
+  return headerAccessoryButtonTitle;
 }
 
-- (id)headerAccessoryButtonTargetForSection:(unint64_t)a3
+- (id)headerAccessoryButtonTargetForSection:(unint64_t)section
 {
-  v3 = [(HFItemManager *)self itemSectionForSectionIndex:a3];
-  v4 = [v3 headerAccessoryButtonDelegate];
+  v3 = [(HFItemManager *)self itemSectionForSectionIndex:section];
+  headerAccessoryButtonDelegate = [v3 headerAccessoryButtonDelegate];
 
-  return v4;
+  return headerAccessoryButtonDelegate;
 }
 
-+ (unint64_t)preferredControlForControlItem:(id)a3 allControlItems:(id)a4 isSupplementary:(BOOL)a5
++ (unint64_t)preferredControlForControlItem:(id)item allControlItems:(id)items isSupplementary:(BOOL)supplementary
 {
-  v8 = a3;
-  v9 = [a4 allObjects];
+  itemCopy = item;
+  allObjects = [items allObjects];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __106__HUQuickControlGridCollectionItemManager_preferredControlForControlItem_allControlItems_isSupplementary___block_invoke;
   v13[3] = &__block_descriptor_40_e23_B16__0__HFControlItem_8l;
-  v13[4] = a1;
-  v10 = [v9 na_filter:v13];
+  v13[4] = self;
+  v10 = [allObjects na_filter:v13];
 
-  LODWORD(a1) = [objc_opt_class() isPrimaryOrBinaryStateControlItem:v8];
-  if (!a1 || (v11 = 1, [v10 count] <= 2) && !a5)
+  LODWORD(self) = [objc_opt_class() isPrimaryOrBinaryStateControlItem:itemCopy];
+  if (!self || (v11 = 1, [v10 count] <= 2) && !supplementary)
   {
     v11 = 0;
   }
@@ -1371,11 +1371,11 @@ uint64_t __106__HUQuickControlGridCollectionItemManager_preferredControlForContr
   return v3;
 }
 
-+ (BOOL)isPrimaryOrBinaryStateControlItem:(id)a3
++ (BOOL)isPrimaryOrBinaryStateControlItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v4 = v3;
+  v4 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -1390,9 +1390,9 @@ uint64_t __106__HUQuickControlGridCollectionItemManager_preferredControlForContr
 
   if (v6)
   {
-    v7 = [v6 possibleValueSet];
-    v8 = [v7 allValues];
-    v9 = [v8 count] == 2;
+    possibleValueSet = [v6 possibleValueSet];
+    allValues = [possibleValueSet allValues];
+    v9 = [allValues count] == 2;
   }
 
   else
@@ -1405,40 +1405,40 @@ uint64_t __106__HUQuickControlGridCollectionItemManager_preferredControlForContr
   return v10 & 1;
 }
 
-+ (unint64_t)specialCaseSectionSortingForControlItem:(id)a3 quickControlContext:(id)a4 fromControlItems:(id)a5 primaryServiceType:(id)a6
++ (unint64_t)specialCaseSectionSortingForControlItem:(id)item quickControlContext:(id)context fromControlItems:(id)items primaryServiceType:(id)type
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [a3 valueSource];
-  v13 = [v12 allServices];
+  contextCopy = context;
+  itemsCopy = items;
+  typeCopy = type;
+  valueSource = [item valueSource];
+  allServices = [valueSource allServices];
 
-  if ([v13 count] != 1)
+  if ([allServices count] != 1)
   {
-    v15 = 0;
+    serviceType = 0;
     goto LABEL_7;
   }
 
-  v14 = [v13 anyObject];
-  v15 = [v14 serviceType];
+  anyObject = [allServices anyObject];
+  serviceType = [anyObject serviceType];
 
   v16 = 0;
-  if (v11 && v15)
+  if (typeCopy && serviceType)
   {
-    if ([objc_msgSend(v9 "quickControlClass")])
+    if ([objc_msgSend(contextCopy "quickControlClass")])
     {
       v16 = 3;
       goto LABEL_8;
     }
 
-    v18 = [MEMORY[0x277CD1D90] hf_fanServiceTypes];
-    v19 = [v18 containsObject:v11];
+    hf_fanServiceTypes = [MEMORY[0x277CD1D90] hf_fanServiceTypes];
+    v19 = [hf_fanServiceTypes containsObject:typeCopy];
 
     if (v19)
     {
-      v20 = [v15 isEqualToString:*MEMORY[0x277CD0EA0]];
-      v21 = [objc_msgSend(v9 "quickControlClass")];
-      v22 = [v10 na_any:&__block_literal_global_149];
+      v20 = [serviceType isEqualToString:*MEMORY[0x277CD0EA0]];
+      v21 = [objc_msgSend(contextCopy "quickControlClass")];
+      v22 = [itemsCopy na_any:&__block_literal_global_149];
       if (v20 & v21) == 1 && (v22)
       {
         v16 = 2;
@@ -1470,19 +1470,19 @@ uint64_t __139__HUQuickControlGridCollectionItemManager_specialCaseSectionSortin
   return v4;
 }
 
-- (BOOL)_catchAllLayoutForGridViewProfiles:(id)a3 supplementaryViewProfiles:(id)a4
+- (BOOL)_catchAllLayoutForGridViewProfiles:(id)profiles supplementaryViewProfiles:(id)viewProfiles
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 countForObject:objc_opt_class()];
-  v8 = [v5 countForObject:objc_opt_class()];
-  v9 = [v5 countForObject:objc_opt_class()];
-  v10 = [v6 countForObject:objc_opt_class()];
-  v11 = [v6 countForObject:objc_opt_class()];
-  v12 = [v6 countForObject:objc_opt_class()];
+  profilesCopy = profiles;
+  viewProfilesCopy = viewProfiles;
+  v7 = [profilesCopy countForObject:objc_opt_class()];
+  v8 = [profilesCopy countForObject:objc_opt_class()];
+  v9 = [profilesCopy countForObject:objc_opt_class()];
+  v10 = [viewProfilesCopy countForObject:objc_opt_class()];
+  v11 = [viewProfilesCopy countForObject:objc_opt_class()];
+  v12 = [viewProfilesCopy countForObject:objc_opt_class()];
   if (v9)
   {
-    LODWORD(v9) = [v5 count] != v9;
+    LODWORD(v9) = [profilesCopy count] != v9;
   }
 
   if (v8 < 2)
@@ -1496,21 +1496,21 @@ uint64_t __139__HUQuickControlGridCollectionItemManager_specialCaseSectionSortin
     goto LABEL_7;
   }
 
-  v13 = [v5 count] > 1;
+  v13 = [profilesCopy count] > 1;
   if (v11)
   {
 LABEL_7:
-    LODWORD(v11) = [v6 count] != v11;
+    LODWORD(v11) = [viewProfilesCopy count] != v11;
   }
 
 LABEL_8:
   if (v10)
   {
-    v14 = [v6 count] != v10;
+    v14 = [viewProfilesCopy count] != v10;
     if (v12)
     {
 LABEL_10:
-      v15 = [v6 count] != v12;
+      v15 = [viewProfilesCopy count] != v12;
       goto LABEL_13;
     }
   }
@@ -1532,18 +1532,18 @@ LABEL_13:
   return v18 & 1;
 }
 
-- (id)_composeIdentifierForService:(id)a3 section:(unint64_t)a4
+- (id)_composeIdentifierForService:(id)service section:(unint64_t)section
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = [a3 uniqueIdentifier];
-  v7 = v6;
+  uniqueIdentifier = [service uniqueIdentifier];
+  v7 = uniqueIdentifier;
   v8 = HUQuickControlCollectionItemGridSectionID;
-  if (a4 != 1)
+  if (section != 1)
   {
     v8 = HUQuickControlCollectionItemSupplementarySectionID;
   }
 
-  v9 = [v5 stringWithFormat:@"%@-%@", v6, *v8];
+  v9 = [v5 stringWithFormat:@"%@-%@", uniqueIdentifier, *v8];
 
   return v9;
 }
@@ -1583,12 +1583,12 @@ uint64_t __64__HUQuickControlGridCollectionItemManager_serviceItemComparator__bl
   return v8;
 }
 
-- (void)updateSettingValue:(id)a3 forKeyPath:(id)a4
+- (void)updateSettingValue:(id)value forKeyPath:(id)path
 {
-  v8 = a3;
-  if ([a4 isEqualToString:*MEMORY[0x277D133A0]])
+  valueCopy = value;
+  if ([path isEqualToString:*MEMORY[0x277D133A0]])
   {
-    [(HUQuickControlGridCollectionItemManager *)self setAirPlayEnabledSettingNumberValue:v8];
+    [(HUQuickControlGridCollectionItemManager *)self setAirPlayEnabledSettingNumberValue:valueCopy];
     v7 = [(HFItemManager *)self reloadAndUpdateAllItemsFromSenderSelector:a2];
   }
 }

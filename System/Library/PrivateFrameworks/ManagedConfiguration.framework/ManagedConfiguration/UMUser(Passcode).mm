@@ -39,7 +39,7 @@
 {
   v6 = 0;
   v4 = [MCPasscodeUtilities unlockScreenTypeForPasscode:a3 outSimplePasscodeType:&v6];
-  return [a1 mc_userPasscodeTypeWithUnlockScreenType:v4 simplePasscodeType:v6];
+  return [self mc_userPasscodeTypeWithUnlockScreenType:v4 simplePasscodeType:v6];
 }
 
 @end

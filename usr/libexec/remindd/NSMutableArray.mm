@@ -1,45 +1,45 @@
 @interface NSMutableArray
-- (void)ic_addNonNilObject:(id)a3;
-- (void)ic_addObjectsFromNonNilArray:(id)a3;
-- (void)ic_insertNonNilObject:(id)a3 atIndex:(int64_t)a4;
-- (void)ic_removeRecordsWithSameCKRecordIDInRecords:(id)a3;
+- (void)ic_addNonNilObject:(id)object;
+- (void)ic_addObjectsFromNonNilArray:(id)array;
+- (void)ic_insertNonNilObject:(id)object atIndex:(int64_t)index;
+- (void)ic_removeRecordsWithSameCKRecordIDInRecords:(id)records;
 @end
 
 @implementation NSMutableArray
 
-- (void)ic_addNonNilObject:(id)a3
+- (void)ic_addNonNilObject:(id)object
 {
-  if (a3)
+  if (object)
   {
     [(NSMutableArray *)self addObject:?];
   }
 }
 
-- (void)ic_addObjectsFromNonNilArray:(id)a3
+- (void)ic_addObjectsFromNonNilArray:(id)array
 {
-  if (a3)
+  if (array)
   {
     [(NSMutableArray *)self addObjectsFromArray:?];
   }
 }
 
-- (void)ic_insertNonNilObject:(id)a3 atIndex:(int64_t)a4
+- (void)ic_insertNonNilObject:(id)object atIndex:(int64_t)index
 {
-  v6 = a3;
-  if (a4 < 0)
+  objectCopy = object;
+  if (index < 0)
   {
     v8 = +[REMLog utility];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      sub_10076AF84(a4, v8);
+      sub_10076AF84(index, v8);
     }
   }
 
-  else if ([(NSMutableArray *)self count]>= a4)
+  else if ([(NSMutableArray *)self count]>= index)
   {
-    if (v6)
+    if (objectCopy)
     {
-      [(NSMutableArray *)self insertObject:v6 atIndex:a4];
+      [(NSMutableArray *)self insertObject:objectCopy atIndex:index];
     }
   }
 
@@ -48,20 +48,20 @@
     v7 = +[REMLog utility];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      sub_10076AEE8(self, a4, v7);
+      sub_10076AEE8(self, index, v7);
     }
   }
 }
 
-- (void)ic_removeRecordsWithSameCKRecordIDInRecords:(id)a3
+- (void)ic_removeRecordsWithSameCKRecordIDInRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = objc_alloc_init(NSMutableDictionary);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v3;
+  v5 = recordsCopy;
   v6 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v6)
   {
@@ -83,9 +83,9 @@
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 recordID];
-          v14 = [v13 recordName];
-          [v4 setObject:v13 forKeyedSubscript:v14];
+          recordID = [v11 recordID];
+          recordName = [recordID recordName];
+          [v4 setObject:recordID forKeyedSubscript:recordName];
         }
 
         v9 = v9 + 1;
@@ -99,11 +99,11 @@
   }
 
   v15 = objc_alloc_init(NSMutableArray);
-  v16 = [(NSMutableArray *)self objectEnumerator];
-  v17 = [v16 nextObject];
-  if (v17)
+  objectEnumerator = [(NSMutableArray *)self objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v18 = v17;
+    v18 = nextObject;
     do
     {
       objc_opt_class();
@@ -111,22 +111,22 @@
       v20 = v19;
       if (v19)
       {
-        v21 = [v19 recordID];
-        v22 = [v21 recordName];
-        v23 = [v4 objectForKeyedSubscript:v22];
+        recordID2 = [v19 recordID];
+        recordName2 = [recordID2 recordName];
+        v23 = [v4 objectForKeyedSubscript:recordName2];
 
-        if ([v21 isEqual:v23])
+        if ([recordID2 isEqual:v23])
         {
           [v15 addObject:v20];
         }
       }
 
-      v24 = [v16 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v18 = v24;
+      v18 = nextObject2;
     }
 
-    while (v24);
+    while (nextObject2);
   }
 
   [(NSMutableArray *)self removeObjectsInArray:v15];

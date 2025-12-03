@@ -1,5 +1,5 @@
 @interface XPCDaemonService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)start;
 - (void)stop;
 @end
@@ -8,22 +8,22 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   XPCDaemonService.start()();
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   XPCDaemonService.stop()();
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = XPCDaemonService.listener(_:shouldAcceptNewConnection:)(v8, v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = XPCDaemonService.listener(_:shouldAcceptNewConnection:)(selfCopy, connectionCopy);
 
   return v9;
 }

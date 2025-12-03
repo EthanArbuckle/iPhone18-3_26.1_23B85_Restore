@@ -1,9 +1,9 @@
 @interface MFFakeMailAccount
-- (BOOL)shouldFetchAgainWithError:(id)a3 foregroundRequest:(BOOL)a4;
+- (BOOL)shouldFetchAgainWithError:(id)error foregroundRequest:(BOOL)request;
 - (MFFakeMailAccount)init;
-- (MFFakeMailAccount)initWithURL:(id)a3 rootMailboxUid:(id)a4;
-- (id)powerAssertionIdentifierWithPrefix:(id)a3;
-- (void)setCachedConnection:(id)a3;
+- (MFFakeMailAccount)initWithURL:(id)l rootMailboxUid:(id)uid;
+- (id)powerAssertionIdentifierWithPrefix:(id)prefix;
+- (void)setCachedConnection:(id)connection;
 @end
 
 @implementation MFFakeMailAccount
@@ -16,10 +16,10 @@
   return v4;
 }
 
-- (MFFakeMailAccount)initWithURL:(id)a3 rootMailboxUid:(id)a4
+- (MFFakeMailAccount)initWithURL:(id)l rootMailboxUid:(id)uid
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  uidCopy = uid;
   v13.receiver = self;
   v13.super_class = MFFakeMailAccount;
   v9 = [(MFAccount *)&v13 init];
@@ -29,57 +29,57 @@
     flagChangesLock = v9->_flagChangesLock;
     v9->_flagChangesLock = v10;
 
-    objc_storeStrong(&v9->_URL, a3);
-    objc_storeStrong(&v9->super._rootMailboxUid, a4);
+    objc_storeStrong(&v9->_URL, l);
+    objc_storeStrong(&v9->super._rootMailboxUid, uid);
   }
 
   return v9;
 }
 
-- (id)powerAssertionIdentifierWithPrefix:(id)a3
+- (id)powerAssertionIdentifierWithPrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(MFFakeMailAccount *)self displayName];
-  if ([v5 length])
+  prefixCopy = prefix;
+  displayName = [(MFFakeMailAccount *)self displayName];
+  if ([displayName length])
   {
-    v6 = [(MFFakeMailAccount *)self displayName];
+    displayName2 = [(MFFakeMailAccount *)self displayName];
   }
 
   else
   {
-    v6 = &stru_2869ED3E0;
+    displayName2 = &stru_2869ED3E0;
   }
 
-  v7 = [(MFFakeMailAccount *)self uniqueId];
-  v8 = [v4 stringByAppendingFormat:@"-%@-(%@)", v7, v6];
+  uniqueId = [(MFFakeMailAccount *)self uniqueId];
+  v8 = [prefixCopy stringByAppendingFormat:@"-%@-(%@)", uniqueId, displayName2];
 
   return v8;
 }
 
-- (void)setCachedConnection:(id)a3
+- (void)setCachedConnection:(id)connection
 {
-  v5 = a3;
-  if (self->_cachedConnection != v5)
+  connectionCopy = connection;
+  if (self->_cachedConnection != connectionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cachedConnection, a3);
-    v5 = v6;
+    v6 = connectionCopy;
+    objc_storeStrong(&self->_cachedConnection, connection);
+    connectionCopy = v6;
   }
 }
 
-- (BOOL)shouldFetchAgainWithError:(id)a3 foregroundRequest:(BOOL)a4
+- (BOOL)shouldFetchAgainWithError:(id)error foregroundRequest:(BOOL)request
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  v7 = v6;
-  if (!v5)
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v7 = domain;
+  if (!errorCopy)
   {
     goto LABEL_11;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277CCA670]])
+  if ([domain isEqualToString:*MEMORY[0x277CCA670]])
   {
-    a4 = 0;
+    request = 0;
     goto LABEL_12;
   }
 
@@ -87,33 +87,33 @@
   {
     if ([v7 isEqualToString:@"MFMessageErrorDomain"])
     {
-      v8 = [v5 code];
-      if ((v8 - 1032) <= 0x1B)
+      code = [errorCopy code];
+      if ((code - 1032) <= 0x1B)
       {
-        a4 = 0x7FFFF7Eu >> (v8 - 8);
+        request = 0x7FFFF7Eu >> (code - 8);
       }
 
       else
       {
-        a4 = 1;
+        request = 1;
       }
 
       goto LABEL_12;
     }
 
 LABEL_11:
-    a4 = 1;
+    request = 1;
     goto LABEL_12;
   }
 
-  if ([v5 code] != 60)
+  if ([errorCopy code] != 60)
   {
-    a4 = 1;
+    request = 1;
   }
 
 LABEL_12:
 
-  return a4;
+  return request;
 }
 
 @end

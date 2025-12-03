@@ -1,75 +1,75 @@
 @interface TransparencyMapInclusionProofVerifier
-- (TransparencyMapInclusionProofVerifier)initWithKeyBag:(id)a3 application:(id)a4;
-- (TransparencyMapInclusionProofVerifier)initWithKeyStore:(id)a3 application:(id)a4;
-- (unint64_t)verifyInclusionProofWithMapEntry:(id)a3 perAppLogEntry:(id)a4 topLevelTreeEntry:(id)a5 error:(id *)a6;
-- (unint64_t)verifyPerApplicationTreeEntry:(id)a3 mapHead:(id)a4 topLevelTreeEntry:(id)a5 error:(id *)a6;
-- (void)setInclusionResult:(unint64_t)a3 mapHead:(id)a4 failure:(id)a5;
+- (TransparencyMapInclusionProofVerifier)initWithKeyBag:(id)bag application:(id)application;
+- (TransparencyMapInclusionProofVerifier)initWithKeyStore:(id)store application:(id)application;
+- (unint64_t)verifyInclusionProofWithMapEntry:(id)entry perAppLogEntry:(id)logEntry topLevelTreeEntry:(id)treeEntry error:(id *)error;
+- (unint64_t)verifyPerApplicationTreeEntry:(id)entry mapHead:(id)head topLevelTreeEntry:(id)treeEntry error:(id *)error;
+- (void)setInclusionResult:(unint64_t)result mapHead:(id)head failure:(id)failure;
 @end
 
 @implementation TransparencyMapInclusionProofVerifier
 
-- (TransparencyMapInclusionProofVerifier)initWithKeyBag:(id)a3 application:(id)a4
+- (TransparencyMapInclusionProofVerifier)initWithKeyBag:(id)bag application:(id)application
 {
-  v7 = a3;
-  v8 = a4;
+  bagCopy = bag;
+  applicationCopy = application;
   v12.receiver = self;
   v12.super_class = TransparencyMapInclusionProofVerifier;
   v9 = [(TransparencyMapInclusionProofVerifier *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_keyBag, a3);
-    objc_storeStrong(&v10->_application, a4);
+    objc_storeStrong(&v9->_keyBag, bag);
+    objc_storeStrong(&v10->_application, application);
   }
 
   return v10;
 }
 
-- (void)setInclusionResult:(unint64_t)a3 mapHead:(id)a4 failure:(id)a5
+- (void)setInclusionResult:(unint64_t)result mapHead:(id)head failure:(id)failure
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 dataStore];
+  headCopy = head;
+  failureCopy = failure;
+  dataStore = [headCopy dataStore];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001E14C0;
   v12[3] = &unk_10031A7F0;
-  v14 = v8;
-  v15 = a3;
-  v13 = v7;
-  v10 = v8;
-  v11 = v7;
-  [v9 performBlockAndWait:v12];
+  v14 = failureCopy;
+  resultCopy = result;
+  v13 = headCopy;
+  v10 = failureCopy;
+  v11 = headCopy;
+  [dataStore performBlockAndWait:v12];
 }
 
-- (unint64_t)verifyPerApplicationTreeEntry:(id)a3 mapHead:(id)a4 topLevelTreeEntry:(id)a5 error:(id *)a6
+- (unint64_t)verifyPerApplicationTreeEntry:(id)entry mapHead:(id)head topLevelTreeEntry:(id)treeEntry error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  entryCopy = entry;
+  headCopy = head;
+  treeEntryCopy = treeEntry;
+  if (entryCopy)
   {
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_1001E19B8;
     v23[3] = &unk_100328130;
-    v13 = v10;
+    v13 = entryCopy;
     v24 = v13;
-    v25 = v11;
-    v26 = self;
+    v25 = headCopy;
+    selfCopy = self;
     v14 = objc_retainBlock(v23);
-    v15 = [(TransparencyMapInclusionProofVerifier *)self application];
-    v16 = [TransparencyAnalytics formatEventName:@"VerifyPATInclusionProofEvent" application:v15];
-    v17 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v16 validateType:3 error:a6 block:v14];
+    application = [(TransparencyMapInclusionProofVerifier *)self application];
+    v16 = [TransparencyAnalytics formatEventName:@"VerifyPATInclusionProofEvent" application:application];
+    v17 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v16 validateType:3 error:error block:v14];
 
     if (v17 == 1)
     {
-      if (v12)
+      if (treeEntryCopy)
       {
         v18 = [v13 slh];
         v19 = [SignedLogHead signedTypeWithObject:v18];
 
-        v17 = [v12 verifyTLTEntryForPerApplicationLogHead:v19 error:a6];
+        v17 = [treeEntryCopy verifyTLTEntryForPerApplicationLogHead:v19 error:error];
       }
 
       else
@@ -105,53 +105,53 @@
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "failed to get PAT inclusion proof for PAM head; deferring inclusion verification", buf, 2u);
     }
 
-    [(TransparencyMapInclusionProofVerifier *)self setInclusionResult:2 mapHead:v11 failure:0];
+    [(TransparencyMapInclusionProofVerifier *)self setInclusionResult:2 mapHead:headCopy failure:0];
     v17 = 1;
   }
 
   return v17;
 }
 
-- (unint64_t)verifyInclusionProofWithMapEntry:(id)a3 perAppLogEntry:(id)a4 topLevelTreeEntry:(id)a5 error:(id *)a6
+- (unint64_t)verifyInclusionProofWithMapEntry:(id)entry perAppLogEntry:(id)logEntry topLevelTreeEntry:(id)treeEntry error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  entryCopy = entry;
+  logEntryCopy = logEntry;
+  treeEntryCopy = treeEntry;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1001E21AC;
   v28[3] = &unk_100328178;
-  v13 = v10;
+  v13 = entryCopy;
   v29 = v13;
   v14 = objc_retainBlock(v28);
-  v15 = [(TransparencyMapInclusionProofVerifier *)self application];
-  v16 = [TransparencyAnalytics formatEventName:@"VerifyMapInclusionProofEvent" application:v15];
-  v17 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v16 validateType:3 error:a6 block:v14];
+  application = [(TransparencyMapInclusionProofVerifier *)self application];
+  v16 = [TransparencyAnalytics formatEventName:@"VerifyMapInclusionProofEvent" application:application];
+  v17 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v16 validateType:3 error:error block:v14];
 
   v18 = [v13 smh];
   v19 = [SignedMapHead signedTypeWithObject:v18];
 
-  v20 = [v13 dataStore];
-  [v19 setDataStore:v20];
+  dataStore = [v13 dataStore];
+  [v19 setDataStore:dataStore];
 
-  if (v11)
+  if (logEntryCopy)
   {
-    [v19 setOverrideBeginTimeFromLogEntry:v11];
+    [v19 setOverrideBeginTimeFromLogEntry:logEntryCopy];
   }
 
   else
   {
-    v27 = a6;
-    v21 = v12;
-    v22 = [v13 metadata];
-    v23 = [v22 objectForKeyedSubscript:@"overrideLogBeginTime"];
-    v24 = [v23 longLongValue];
+    errorCopy = error;
+    v21 = treeEntryCopy;
+    metadata = [v13 metadata];
+    v23 = [metadata objectForKeyedSubscript:@"overrideLogBeginTime"];
+    longLongValue = [v23 longLongValue];
 
-    if (v24)
+    if (longLongValue)
     {
-      [v19 setOverrideBeginTime:v24];
-      v12 = v21;
-      a6 = v27;
+      [v19 setOverrideBeginTime:longLongValue];
+      treeEntryCopy = v21;
+      error = errorCopy;
     }
 
     else
@@ -161,9 +161,9 @@
         sub_10025CB90();
       }
 
-      v12 = v21;
+      treeEntryCopy = v21;
       v25 = qword_10039CA28;
-      a6 = v27;
+      error = errorCopy;
       if (os_log_type_enabled(qword_10039CA28, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
@@ -175,17 +175,17 @@
 
   if (v17 == 1)
   {
-    v17 = [(TransparencyMapInclusionProofVerifier *)self verifyPerApplicationTreeEntry:v11 mapHead:v19 topLevelTreeEntry:v12 error:a6];
+    v17 = [(TransparencyMapInclusionProofVerifier *)self verifyPerApplicationTreeEntry:logEntryCopy mapHead:v19 topLevelTreeEntry:treeEntryCopy error:error];
   }
 
   return v17;
 }
 
-- (TransparencyMapInclusionProofVerifier)initWithKeyStore:(id)a3 application:(id)a4
+- (TransparencyMapInclusionProofVerifier)initWithKeyStore:(id)store application:(id)application
 {
-  v6 = a4;
-  v7 = [a3 keyBag];
-  v8 = [(TransparencyMapInclusionProofVerifier *)self initWithKeyBag:v7 application:v6];
+  applicationCopy = application;
+  keyBag = [store keyBag];
+  v8 = [(TransparencyMapInclusionProofVerifier *)self initWithKeyBag:keyBag application:applicationCopy];
 
   return v8;
 }

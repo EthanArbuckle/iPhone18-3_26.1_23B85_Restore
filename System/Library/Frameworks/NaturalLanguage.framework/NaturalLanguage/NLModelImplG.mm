@@ -1,55 +1,55 @@
 @interface NLModelImplG
-- (NLModelImplG)initWithGazetteer:(id)a3;
-- (NLModelImplG)initWithModelData:(id)a3 configuration:(id)a4 labelMap:(id)a5 vocabularyMap:(id)a6 documentFrequencyMap:(id)a7 customEmbeddingData:(id)a8 trainingInfo:(id)a9 error:(id *)a10;
-- (id)predictedLabelsForTokens:(id)a3;
+- (NLModelImplG)initWithGazetteer:(id)gazetteer;
+- (NLModelImplG)initWithModelData:(id)data configuration:(id)configuration labelMap:(id)map vocabularyMap:(id)vocabularyMap documentFrequencyMap:(id)frequencyMap customEmbeddingData:(id)embeddingData trainingInfo:(id)info error:(id *)self0;
+- (id)predictedLabelsForTokens:(id)tokens;
 @end
 
 @implementation NLModelImplG
 
-- (NLModelImplG)initWithGazetteer:(id)a3
+- (NLModelImplG)initWithGazetteer:(id)gazetteer
 {
-  v5 = a3;
+  gazetteerCopy = gazetteer;
   v9.receiver = self;
   v9.super_class = NLModelImplG;
   v6 = [(NLModelImplG *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_gazetteer, a3);
+    objc_storeStrong(&v6->_gazetteer, gazetteer);
   }
 
   return v7;
 }
 
-- (NLModelImplG)initWithModelData:(id)a3 configuration:(id)a4 labelMap:(id)a5 vocabularyMap:(id)a6 documentFrequencyMap:(id)a7 customEmbeddingData:(id)a8 trainingInfo:(id)a9 error:(id *)a10
+- (NLModelImplG)initWithModelData:(id)data configuration:(id)configuration labelMap:(id)map vocabularyMap:(id)vocabularyMap documentFrequencyMap:(id)frequencyMap customEmbeddingData:(id)embeddingData trainingInfo:(id)info error:(id *)self0
 {
-  v11 = a3;
-  v12 = [[NLGazetteer alloc] initWithData:v11 error:a10];
+  dataCopy = data;
+  v12 = [[NLGazetteer alloc] initWithData:dataCopy error:error];
 
   if (v12)
   {
     self = [(NLModelImplG *)self initWithGazetteer:v12];
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  v14 = v13;
+  v14 = selfCopy;
 
   return v14;
 }
 
-- (id)predictedLabelsForTokens:(id)a3
+- (id)predictedLabelsForTokens:(id)tokens
 {
-  v4 = a3;
-  v5 = [v4 componentsJoinedByString:@" "];
+  tokensCopy = tokens;
+  v5 = [tokensCopy componentsJoinedByString:@" "];
   v6 = [(NLModelImplG *)self predictedLabelForString:v5];
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([v4 count])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([tokensCopy count])
   {
     v8 = 0;
     if (v6)
@@ -64,14 +64,14 @@
 
     do
     {
-      [v7 addObject:v9];
+      [array addObject:v9];
       ++v8;
     }
 
-    while (v8 < [v4 count]);
+    while (v8 < [tokensCopy count]);
   }
 
-  return v7;
+  return array;
 }
 
 @end

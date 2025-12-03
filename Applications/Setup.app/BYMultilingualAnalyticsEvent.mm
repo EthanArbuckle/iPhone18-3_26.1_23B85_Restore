@@ -1,66 +1,66 @@
 @interface BYMultilingualAnalyticsEvent
-+ (id)identifierForAction:(unint64_t)a3;
-+ (id)stringDescriptionForArray:(id)a3;
-+ (id)stringDescriptionForNestedArray:(id)a3;
-+ (id)stringNameForMultilingualPane:(unint64_t)a3;
-+ (unint64_t)actionTypeForStarting:(id)a3 endingDataSet:(id)a4;
-+ (void)recordExpressPaneShownUserCustomized:(BOOL)a3 withData:(id)a4 analyticsManager:(id)a5;
-+ (void)recordMultilingualPane:(unint64_t)a3 startingData:(id)a4 modifiedData:(id)a5 analyticsManager:(id)a6;
-- (BYMultilingualAnalyticsEvent)initWithWithEventName:(id)a3 sourcePane:(id)a4;
++ (id)identifierForAction:(unint64_t)action;
++ (id)stringDescriptionForArray:(id)array;
++ (id)stringDescriptionForNestedArray:(id)array;
++ (id)stringNameForMultilingualPane:(unint64_t)pane;
++ (unint64_t)actionTypeForStarting:(id)starting endingDataSet:(id)set;
++ (void)recordExpressPaneShownUserCustomized:(BOOL)customized withData:(id)data analyticsManager:(id)manager;
++ (void)recordMultilingualPane:(unint64_t)pane startingData:(id)data modifiedData:(id)modifiedData analyticsManager:(id)manager;
+- (BYMultilingualAnalyticsEvent)initWithWithEventName:(id)name sourcePane:(id)pane;
 - (id)description;
-- (void)recordWithAnalyticsManager:(id)a3;
+- (void)recordWithAnalyticsManager:(id)manager;
 @end
 
 @implementation BYMultilingualAnalyticsEvent
 
-- (BYMultilingualAnalyticsEvent)initWithWithEventName:(id)a3 sourcePane:(id)a4
+- (BYMultilingualAnalyticsEvent)initWithWithEventName:(id)name sourcePane:(id)pane
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v5 = v14;
-  v14 = 0;
+  objc_storeStrong(&v12, pane);
+  v5 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v5;
   v11.super_class = BYMultilingualAnalyticsEvent;
-  v14 = [(BYMultilingualAnalyticsEvent *)&v11 init];
-  objc_storeStrong(&v14, v14);
-  if (v14)
+  selfCopy = [(BYMultilingualAnalyticsEvent *)&v11 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(v14 + 2, location[0]);
+    objc_storeStrong(selfCopy + 2, location[0]);
     v15 = @"pane";
     v16 = v12;
     v6 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v7 = [(NSDictionary *)v6 mutableCopy];
-    v8 = *(v14 + 1);
-    *(v14 + 1) = v7;
+    v8 = *(selfCopy + 1);
+    *(selfCopy + 1) = v7;
   }
 
-  v9 = v14;
+  v9 = selfCopy;
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (void)recordWithAnalyticsManager:(id)a3
+- (void)recordWithAnalyticsManager:(id)manager
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v3 = location[0];
-  v4 = [(BYMultilingualAnalyticsEvent *)v10 eventName];
-  v5 = [(BYMultilingualAnalyticsEvent *)v10 mutablePayload];
-  v6 = [(NSMutableDictionary *)v5 copy];
-  [v3 addEvent:v4 withPayload:v6 persist:1];
+  eventName = [(BYMultilingualAnalyticsEvent *)selfCopy eventName];
+  mutablePayload = [(BYMultilingualAnalyticsEvent *)selfCopy mutablePayload];
+  v6 = [(NSMutableDictionary *)mutablePayload copy];
+  [v3 addEvent:eventName withPayload:v6 persist:1];
 
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [(BYMultilingualAnalyticsEvent *)v10 description];
+    v7 = [(BYMultilingualAnalyticsEvent *)selfCopy description];
     sub_10006AE18(buf, v7);
     _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "recording MultilingualAnalyticsEvent %@", buf, 0xCu);
   }
@@ -69,33 +69,33 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)recordMultilingualPane:(unint64_t)a3 startingData:(id)a4 modifiedData:(id)a5 analyticsManager:(id)a6
++ (void)recordMultilingualPane:(unint64_t)pane startingData:(id)data modifiedData:(id)modifiedData analyticsManager:(id)manager
 {
-  v23 = a1;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
+  paneCopy = pane;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, data);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, modifiedData);
   v18 = 0;
-  objc_storeStrong(&v18, a6);
+  objc_storeStrong(&v18, manager);
   v8 = [BYMultilingualAnalyticsEvent alloc];
-  v9 = [v23 stringNameForMultilingualPane:v21];
+  v9 = [selfCopy stringNameForMultilingualPane:paneCopy];
   v17 = [(BYMultilingualAnalyticsEvent *)v8 initWithWithEventName:@"com.apple.setupassistant.ios.multilingual.individual" sourcePane:v9];
 
-  v16 = [v23 actionTypeForStarting:location endingDataSet:v19];
-  v10 = [v17 mutablePayload];
-  v11 = [v23 identifierForAction:v16];
-  [v10 setObject:v11 forKey:@"typeValue"];
+  v16 = [selfCopy actionTypeForStarting:location endingDataSet:v19];
+  mutablePayload = [v17 mutablePayload];
+  v11 = [selfCopy identifierForAction:v16];
+  [mutablePayload setObject:v11 forKey:@"typeValue"];
 
-  v12 = [v17 mutablePayload];
-  v13 = [v23 stringDescriptionForArray:location];
-  [v12 setObject:v13 forKey:@"startData"];
+  mutablePayload2 = [v17 mutablePayload];
+  v13 = [selfCopy stringDescriptionForArray:location];
+  [mutablePayload2 setObject:v13 forKey:@"startData"];
 
-  v14 = [v17 mutablePayload];
-  v15 = [v23 stringDescriptionForArray:v19];
-  [v14 setObject:v15 forKey:@"endData"];
+  mutablePayload3 = [v17 mutablePayload];
+  v15 = [selfCopy stringDescriptionForArray:v19];
+  [mutablePayload3 setObject:v15 forKey:@"endData"];
 
   [v17 recordWithAnalyticsManager:v18];
   objc_storeStrong(&v17, 0);
@@ -104,30 +104,30 @@
   objc_storeStrong(&location, 0);
 }
 
-+ (void)recordExpressPaneShownUserCustomized:(BOOL)a3 withData:(id)a4 analyticsManager:(id)a5
++ (void)recordExpressPaneShownUserCustomized:(BOOL)customized withData:(id)data analyticsManager:(id)manager
 {
-  v17 = a1;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  customizedCopy = customized;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, data);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v12 = [v17 stringNameForMultilingualPane:3];
+  objc_storeStrong(&v13, manager);
+  v12 = [selfCopy stringNameForMultilingualPane:3];
   v11 = @"selectedDefaults";
-  if (v15)
+  if (customizedCopy)
   {
     objc_storeStrong(&v11, @"selectedCustomize");
   }
 
   v6 = [BYMultilingualAnalyticsEvent alloc];
   v10 = [(BYMultilingualAnalyticsEvent *)v6 initWithWithEventName:@"com.apple.setupassistant.ios.multilingual.individual" sourcePane:v12];
-  v7 = [(BYMultilingualAnalyticsEvent *)v10 mutablePayload];
-  [(NSMutableDictionary *)v7 setObject:v11 forKey:@"typeValue"];
+  mutablePayload = [(BYMultilingualAnalyticsEvent *)v10 mutablePayload];
+  [(NSMutableDictionary *)mutablePayload setObject:v11 forKey:@"typeValue"];
 
-  v8 = [(BYMultilingualAnalyticsEvent *)v10 mutablePayload];
-  v9 = [v17 stringDescriptionForNestedArray:location];
-  [(NSMutableDictionary *)v8 setObject:v9 forKey:@"endData"];
+  mutablePayload2 = [(BYMultilingualAnalyticsEvent *)v10 mutablePayload];
+  v9 = [selfCopy stringDescriptionForNestedArray:location];
+  [(NSMutableDictionary *)mutablePayload2 setObject:v9 forKey:@"endData"];
 
   [(BYMultilingualAnalyticsEvent *)v10 recordWithAnalyticsManager:v13];
   objc_storeStrong(&v10, 0);
@@ -137,14 +137,14 @@
   objc_storeStrong(&location, 0);
 }
 
-+ (unint64_t)actionTypeForStarting:(id)a3 endingDataSet:(id)a4
++ (unint64_t)actionTypeForStarting:(id)starting endingDataSet:(id)set
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, starting);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, set);
   v5 = [v16 count];
   if (v5 <= [location[0] count])
   {
@@ -163,10 +163,10 @@
           }
 
           v9 = [v16 objectAtIndexedSubscript:v15];
-          v10 = [v9 identifier];
+          identifier = [v9 identifier];
           v11 = [location[0] objectAtIndexedSubscript:v15];
-          v12 = [v11 identifier];
-          v13 = [v10 isEqualToString:v12] ^ 1;
+          identifier2 = [v11 identifier];
+          v13 = [identifier isEqualToString:identifier2] ^ 1;
 
           if (v13)
           {
@@ -204,11 +204,11 @@ LABEL_12:
   return v3;
 }
 
-+ (id)identifierForAction:(unint64_t)a3
++ (id)identifierForAction:(unint64_t)action
 {
-  if (a3)
+  if (action)
   {
-    switch(a3)
+    switch(action)
     {
       case 1uLL:
         v4 = @"deleted";
@@ -230,11 +230,11 @@ LABEL_12:
   return v4;
 }
 
-+ (id)stringNameForMultilingualPane:(unint64_t)a3
++ (id)stringNameForMultilingualPane:(unint64_t)pane
 {
-  if (a3)
+  if (pane)
   {
-    switch(a3)
+    switch(pane)
     {
       case 1uLL:
         v4 = @"Keyboard";
@@ -256,12 +256,12 @@ LABEL_12:
   return v4;
 }
 
-+ (id)stringDescriptionForArray:(id)a3
++ (id)stringDescriptionForArray:(id)array
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, array);
   v3 = [location[0] valueForKey:@"identifier"];
   v4 = [v3 componentsJoinedByString:@" "];
 
@@ -270,12 +270,12 @@ LABEL_12:
   return v4;
 }
 
-+ (id)stringDescriptionForNestedArray:(id)a3
++ (id)stringDescriptionForNestedArray:(id)array
 {
-  v15 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, array);
   v13 = +[NSMutableString string];
   memset(v11, 0, sizeof(v11));
   v3 = location[0];
@@ -294,7 +294,7 @@ LABEL_12:
 
         v12 = *(v11[1] + 8 * i);
         v7 = v13;
-        v8 = [v15 stringDescriptionForArray:v12];
+        v8 = [selfCopy stringDescriptionForArray:v12];
         [v7 appendString:v8];
 
         [v13 appendString:@" | "];

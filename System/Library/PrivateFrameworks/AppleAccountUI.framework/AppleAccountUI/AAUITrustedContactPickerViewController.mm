@@ -1,5 +1,5 @@
 @interface AAUITrustedContactPickerViewController
-+ (id)addressKindAndHandleForSingleAddressContact:(id)a3;
++ (id)addressKindAndHandleForSingleAddressContact:(id)contact;
 - (AAUITrustedContactPickerViewController)init;
 @end
 
@@ -19,11 +19,11 @@
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
     v6 = objc_alloc_init(MEMORY[0x1E695CE18]);
     v7 = [v6 _crossPlatformUnifiedMeContactWithKeysToFetch:v5 error:0];
-    v8 = [v7 identifier];
-    if (v8)
+    identifier = [v7 identifier];
+    if (identifier)
     {
       v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"((emailAddresses.@count > 0) OR (phoneNumbers.@count > 0)) AND (NOT %K IN $IDENTIFIERS)", v3];
-      v20 = v8;
+      v20 = identifier;
       v21 = @"IDENTIFIERS";
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
       v22 = v10;
@@ -56,23 +56,23 @@
   return v2;
 }
 
-+ (id)addressKindAndHandleForSingleAddressContact:(id)a3
++ (id)addressKindAndHandleForSingleAddressContact:(id)contact
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contactCopy = contact;
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = v3;
+    v22 = contactCopy;
     _os_log_impl(&dword_1C5355000, v4, OS_LOG_TYPE_DEFAULT, "AAUITrustedContactPickerViewController extracting handle and type for contact: %@", &v21, 0xCu);
   }
 
-  v5 = [v3 phoneNumbers];
-  if ([v5 count] == 1)
+  phoneNumbers = [contactCopy phoneNumbers];
+  if ([phoneNumbers count] == 1)
   {
-    v6 = [v3 emailAddresses];
-    v7 = [v6 count] == 0;
+    emailAddresses = [contactCopy emailAddresses];
+    v7 = [emailAddresses count] == 0;
   }
 
   else
@@ -80,8 +80,8 @@
     v7 = 0;
   }
 
-  v8 = [v3 phoneNumbers];
-  if ([v8 count])
+  phoneNumbers2 = [contactCopy phoneNumbers];
+  if ([phoneNumbers2 count])
   {
 
     if (!v7)
@@ -92,22 +92,22 @@
     goto LABEL_10;
   }
 
-  v9 = [v3 emailAddresses];
-  v10 = [v9 count];
+  emailAddresses2 = [contactCopy emailAddresses];
+  v10 = [emailAddresses2 count];
 
   if (v7)
   {
 LABEL_10:
-    v11 = [v3 phoneNumbers];
-    v12 = [v11 firstObject];
-    v13 = [v12 value];
-    v14 = [v13 stringValue];
+    phoneNumbers3 = [contactCopy phoneNumbers];
+    firstObject = [phoneNumbers3 firstObject];
+    value = [firstObject value];
+    stringValue = [value stringValue];
 
     v15 = _AAUILogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412290;
-      v22 = v14;
+      v22 = stringValue;
       _os_log_impl(&dword_1C5355000, v15, OS_LOG_TYPE_DEFAULT, "AAUITrustedContactPickerViewController extracted phone number: %@", &v21, 0xCu);
     }
 
@@ -119,15 +119,15 @@ LABEL_13:
 
   if (v10 == 1)
   {
-    v17 = [v3 emailAddresses];
-    v18 = [v17 firstObject];
-    v14 = [v18 value];
+    emailAddresses3 = [contactCopy emailAddresses];
+    firstObject2 = [emailAddresses3 firstObject];
+    stringValue = [firstObject2 value];
 
     v15 = _AAUILogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412290;
-      v22 = v14;
+      v22 = stringValue;
       _os_log_impl(&dword_1C5355000, v15, OS_LOG_TYPE_DEFAULT, "AAUITrustedContactPickerViewController extracted email: %@", &v21, 0xCu);
     }
 
@@ -136,10 +136,10 @@ LABEL_13:
   }
 
 LABEL_18:
-  v14 = 0;
+  stringValue = 0;
   v16 = 5;
 LABEL_19:
-  v19 = [[AAUIHandleWithKind alloc] initWithHandle:v14 kind:v16];
+  v19 = [[AAUIHandleWithKind alloc] initWithHandle:stringValue kind:v16];
 
   return v19;
 }

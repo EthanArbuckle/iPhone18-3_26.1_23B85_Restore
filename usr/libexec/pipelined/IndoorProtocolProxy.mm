@@ -1,93 +1,93 @@
 @interface IndoorProtocolProxy
 - (CLIndoorDelegateProtocol)delegate;
-- (IndoorProtocolProxy)initWithDelegate:(id)a3;
-- (void)indoorAssetDownloadProgress:(float)a3;
-- (void)indoorDidFailWithError:(id)a3;
-- (void)indoorDidShutdown:(id)a3;
-- (void)indoorDidUpdateToLocation:(id)a3 fromLocation:(id)a4;
-- (void)indoorGivesUpWithLocation:(id)a3;
-- (void)indoorIsUncertainWithLocation:(id)a3;
+- (IndoorProtocolProxy)initWithDelegate:(id)delegate;
+- (void)indoorAssetDownloadProgress:(float)progress;
+- (void)indoorDidFailWithError:(id)error;
+- (void)indoorDidShutdown:(id)shutdown;
+- (void)indoorDidUpdateToLocation:(id)location fromLocation:(id)fromLocation;
+- (void)indoorGivesUpWithLocation:(id)location;
+- (void)indoorIsUncertainWithLocation:(id)location;
 @end
 
 @implementation IndoorProtocolProxy
 
-- (IndoorProtocolProxy)initWithDelegate:(id)a3
+- (IndoorProtocolProxy)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = IndoorProtocolProxy;
   v5 = [(IndoorProtocolProxy *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    if (!v4)
+    if (!delegateCopy)
     {
       v9 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"no delegate" userInfo:0];
       objc_exception_throw(v9);
     }
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)indoorDidUpdateToLocation:(id)a3 fromLocation:(id)a4
+- (void)indoorDidUpdateToLocation:(id)location fromLocation:(id)fromLocation
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(IndoorProtocolProxy *)self delegate];
-  [v7 indoorDidUpdateToLocation:v8 fromLocation:v6];
+  locationCopy = location;
+  fromLocationCopy = fromLocation;
+  delegate = [(IndoorProtocolProxy *)self delegate];
+  [delegate indoorDidUpdateToLocation:locationCopy fromLocation:fromLocationCopy];
 }
 
-- (void)indoorIsUncertainWithLocation:(id)a3
+- (void)indoorIsUncertainWithLocation:(id)location
 {
-  v5 = a3;
-  v4 = [(IndoorProtocolProxy *)self delegate];
+  locationCopy = location;
+  delegate = [(IndoorProtocolProxy *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 indoorIsUncertainWithLocation:v5];
+    [delegate indoorIsUncertainWithLocation:locationCopy];
   }
 }
 
-- (void)indoorGivesUpWithLocation:(id)a3
+- (void)indoorGivesUpWithLocation:(id)location
 {
-  v5 = a3;
-  v4 = [(IndoorProtocolProxy *)self delegate];
+  locationCopy = location;
+  delegate = [(IndoorProtocolProxy *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 indoorGivesUpWithLocation:v5];
+    [delegate indoorGivesUpWithLocation:locationCopy];
   }
 }
 
-- (void)indoorAssetDownloadProgress:(float)a3
+- (void)indoorAssetDownloadProgress:(float)progress
 {
-  v5 = [(IndoorProtocolProxy *)self delegate];
+  delegate = [(IndoorProtocolProxy *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    *&v4 = a3;
-    [v5 indoorAssetDownloadProgress:v4];
+    *&v4 = progress;
+    [delegate indoorAssetDownloadProgress:v4];
   }
 }
 
-- (void)indoorDidFailWithError:(id)a3
+- (void)indoorDidFailWithError:(id)error
 {
-  v5 = a3;
-  v4 = [(IndoorProtocolProxy *)self delegate];
+  errorCopy = error;
+  delegate = [(IndoorProtocolProxy *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 indoorDidFailWithError:v5];
+    [delegate indoorDidFailWithError:errorCopy];
   }
 }
 
-- (void)indoorDidShutdown:(id)a3
+- (void)indoorDidShutdown:(id)shutdown
 {
-  v4 = a3;
-  if (v4)
+  shutdownCopy = shutdown;
+  if (shutdownCopy)
   {
     shutdownReason = self->_shutdownReason;
-    self->_shutdownReason = v4;
+    self->_shutdownReason = shutdownCopy;
   }
 
   else

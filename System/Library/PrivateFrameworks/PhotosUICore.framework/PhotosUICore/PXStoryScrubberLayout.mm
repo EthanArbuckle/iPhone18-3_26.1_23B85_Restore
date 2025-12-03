@@ -1,11 +1,11 @@
 @interface PXStoryScrubberLayout
 - (BOOL)_shouldEnableFocusGuide;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (PXStoryScrubberLayout)init;
-- (PXStoryScrubberLayout)initWithViewModel:(id)a3;
+- (PXStoryScrubberLayout)initWithViewModel:(id)model;
 - (id)axSpriteIndexes;
 - (id)preferredFocusLayouts;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (void)_invalidateFocusGuide;
 - (void)_invalidateLastScrubbedDate;
 - (void)_invalidateMainModel;
@@ -26,16 +26,16 @@
 - (void)_updateWantsVisible;
 - (void)alphaDidChange;
 - (void)didUpdate;
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
-- (void)setAlphaOverride:(id)a3;
-- (void)setCurrentSkipSegmentActionDate:(id)a3;
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4;
-- (void)setIsHidden:(BOOL)a3;
-- (void)setLastScrubbedDate:(id)a3;
-- (void)setMainModel:(id)a3;
+- (void)setAlphaOverride:(id)override;
+- (void)setCurrentSkipSegmentActionDate:(id)date;
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference;
+- (void)setIsHidden:(BOOL)hidden;
+- (void)setLastScrubbedDate:(id)date;
+- (void)setMainModel:(id)model;
 - (void)update;
 - (void)willUpdate;
 @end
@@ -60,11 +60,11 @@
 - (id)preferredFocusLayouts
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryScrubberLayout *)self contentLayout];
-  if (v3)
+  contentLayout = [(PXStoryScrubberLayout *)self contentLayout];
+  if (contentLayout)
   {
-    v4 = [(PXStoryScrubberLayout *)self contentLayout];
-    v7[0] = v4;
+    contentLayout2 = [(PXStoryScrubberLayout *)self contentLayout];
+    v7[0] = contentLayout2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
@@ -76,37 +76,37 @@
   return v5;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v11 = a3;
-  if (ViewModelObservationContext_127890 == a5)
+  observableCopy = observable;
+  if (ViewModelObservationContext_127890 == context)
   {
-    if ((a4 & 0x800000) != 0)
+    if ((change & 0x800000) != 0)
     {
       [(PXStoryScrubberLayout *)self _invalidateLastScrubbedDate];
     }
 
-    if ((a4 & 0x4000000A008) != 0 && !self->_isUpdatingWantsVisible)
+    if ((change & 0x4000000A008) != 0 && !self->_isUpdatingWantsVisible)
     {
       [(PXStoryScrubberLayout *)self _invalidateWantsVisible];
     }
 
-    if ((a4 & 0x1000000) != 0)
+    if ((change & 0x1000000) != 0)
     {
       [(PXStoryScrubberLayout *)self _invalidateVisibilityFraction];
     }
 
-    if ((a4 & 0x4000000) != 0)
+    if ((change & 0x4000000) != 0)
     {
       [(PXStoryScrubberLayout *)self _invalidateSkipSegmentActionDate];
     }
 
-    if ((a4 & 0x2000048) != 0)
+    if ((change & 0x2000048) != 0)
     {
       [(PXStoryScrubberLayout *)self _invalidateSublayouts];
     }
 
-    if ((a4 & 0x40) != 0)
+    if ((change & 0x40) != 0)
     {
       [(PXStoryScrubberLayout *)self _invalidateMainModel];
     }
@@ -116,15 +116,15 @@
 
   else
   {
-    if (MainModelObservationContext_127891 != a5)
+    if (MainModelObservationContext_127891 != context)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXStoryScrubberLayout.m" lineNumber:426 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryScrubberLayout.m" lineNumber:426 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((a4 & 0x400000000000000) != 0)
+    if ((change & 0x400000000000000) != 0)
     {
       [(PXStoryScrubberLayout *)self _invalidateWantsVisible];
     }
@@ -132,50 +132,50 @@
     v9 = 34;
   }
 
-  if ((a4 & v9) != 0)
+  if ((change & v9) != 0)
   {
     [(PXStoryScrubberLayout *)self _invalidateFocusGuide];
   }
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_focusGuideSpriteIndex == a3)
+  layoutCopy = layout;
+  if (self->_focusGuideSpriteIndex == index)
   {
     v8 = objc_alloc_init(PXGFocusGuideViewConfiguration);
     PXGDeepestPreferredFocusEnvironmentsForLayout();
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXStoryScrubberLayout.m" lineNumber:389 description:@"Code which should be unreachable has been reached"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryScrubberLayout.m" lineNumber:389 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_focusGuideSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_focusGuideSpriteIndex != index)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXStoryScrubberLayout.m" lineNumber:379 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryScrubberLayout.m" lineNumber:379 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
+  v8 = layoutCopy;
   v9 = objc_opt_class();
 
   return v9;
 }
 
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference
 {
-  if (a3)
+  if (override)
   {
     v5 = MEMORY[0x1E696AD98];
-    [a3 scrubberAlpha];
+    [override scrubberAlpha];
     v6 = [v5 numberWithDouble:?];
     [(PXStoryScrubberLayout *)self setAlphaOverride:v6];
   }
@@ -187,19 +187,19 @@
   }
 }
 
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference
 {
-  v5 = a3;
+  placementCopy = placement;
   [(PXStoryScrubberLayout *)self alpha];
-  [v5 setScrubberAlpha:?];
+  [placementCopy setScrubberAlpha:?];
 }
 
 - (BOOL)_shouldEnableFocusGuide
 {
-  v2 = [(PXStoryScrubberLayout *)self viewModel];
-  if ([v2 viewMode] == 1 && objc_msgSend(v2, "wantsChromeVisible"))
+  viewModel = [(PXStoryScrubberLayout *)self viewModel];
+  if ([viewModel viewMode] == 1 && objc_msgSend(viewModel, "wantsChromeVisible"))
   {
-    v3 = [v2 wantsRelatedOverlayVisible] ^ 1;
+    v3 = [viewModel wantsRelatedOverlayVisible] ^ 1;
   }
 
   else
@@ -316,9 +316,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 0x80) != 0)
       {
-        v6 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout _invalidateFocusGuide]"];
-        [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:339 description:{@"invalidating %lu after it already has been updated", 128}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:339 description:{@"invalidating %lu after it already has been updated", 128}];
 
         abort();
       }
@@ -351,8 +351,8 @@ LABEL_6:
 
   else
   {
-    v3 = [(PXStoryScrubberLayout *)self viewModel];
-    [v3 scrubberVisibilityFraction];
+    viewModel = [(PXStoryScrubberLayout *)self viewModel];
+    [viewModel scrubberVisibilityFraction];
     [(PXStoryScrubberLayout *)self setAlpha:?];
   }
 }
@@ -373,9 +373,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout _invalidateVisibilityFraction]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:327 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:327 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -401,22 +401,22 @@ LABEL_5:
 {
   isUpdatingWantsVisible = self->_isUpdatingWantsVisible;
   self->_isUpdatingWantsVisible = 1;
-  v4 = [(PXStoryScrubberLayout *)self viewModel];
+  viewModel = [(PXStoryScrubberLayout *)self viewModel];
   v5 = +[PXStorySettings sharedInstance];
-  v6 = [v5 scrubberDisplayMode];
-  if (v6)
+  scrubberDisplayMode = [v5 scrubberDisplayMode];
+  if (scrubberDisplayMode)
   {
-    v7 = v6 == 1;
+    v7 = scrubberDisplayMode == 1;
     v8 = 1;
   }
 
   else
   {
-    v9 = [v4 viewMode];
-    v10 = [v4 wantsChromeVisible];
-    v11 = [v4 wantsRelatedOverlayVisible];
-    v12 = [v4 mainModel];
-    [v12 desiredInfoPanelVisibilityFraction];
+    viewMode = [viewModel viewMode];
+    wantsChromeVisible = [viewModel wantsChromeVisible];
+    wantsRelatedOverlayVisible = [viewModel wantsRelatedOverlayVisible];
+    mainModel = [viewModel mainModel];
+    [mainModel desiredInfoPanelVisibilityFraction];
     v14 = v13;
 
     if (v14 == 1.0)
@@ -426,15 +426,15 @@ LABEL_5:
 
     else
     {
-      v8 = v10;
+      v8 = wantsChromeVisible;
     }
 
-    if (v11)
+    if (wantsRelatedOverlayVisible)
     {
       v8 = 0;
     }
 
-    v7 = v9 == 1;
+    v7 = viewMode == 1;
   }
 
   if (!v7)
@@ -447,7 +447,7 @@ LABEL_5:
   v15[2] = __44__PXStoryScrubberLayout__updateWantsVisible__block_invoke;
   v15[3] = &__block_descriptor_33_e35_v16__0___PXStoryMutableViewModel__8l;
   v16 = v8;
-  [v4 performChanges:v15];
+  [viewModel performChanges:v15];
   self->_isUpdatingWantsVisible = isUpdatingWantsVisible;
 }
 
@@ -467,9 +467,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout _invalidateWantsVisible]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:292 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:292 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -513,9 +513,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout _invalidateLastScrubbedDate]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:284 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:284 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -539,9 +539,9 @@ LABEL_5:
 
 - (void)_updateSkipSegmentActionDate
 {
-  v4 = [(PXStoryScrubberLayout *)self viewModel];
-  v3 = [v4 lastSkipSegmentActionDate];
-  [(PXStoryScrubberLayout *)self setCurrentSkipSegmentActionDate:v3];
+  viewModel = [(PXStoryScrubberLayout *)self viewModel];
+  lastSkipSegmentActionDate = [viewModel lastSkipSegmentActionDate];
+  [(PXStoryScrubberLayout *)self setCurrentSkipSegmentActionDate:lastSkipSegmentActionDate];
 }
 
 - (void)_invalidateSkipSegmentActionDate
@@ -560,9 +560,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout _invalidateSkipSegmentActionDate]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:276 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:276 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -588,19 +588,19 @@ LABEL_5:
 {
   [(PXStoryScrubberLayout *)self alpha];
   v4 = v3;
-  v5 = [(PXStoryScrubberLayout *)self alphaOverride];
-  v9 = v5;
-  if (v5)
+  alphaOverride = [(PXStoryScrubberLayout *)self alphaOverride];
+  v9 = alphaOverride;
+  if (alphaOverride)
   {
-    [v5 floatValue];
+    [alphaOverride floatValue];
     v4 = v6;
   }
 
-  v7 = [(PXGSplitLayout *)self firstSublayout];
-  [v7 setAlpha:v4];
+  firstSublayout = [(PXGSplitLayout *)self firstSublayout];
+  [firstSublayout setAlpha:v4];
 
-  v8 = [(PXGSplitLayout *)self secondSublayout];
-  [v8 setAlpha:v4];
+  secondSublayout = [(PXGSplitLayout *)self secondSublayout];
+  [secondSublayout setAlpha:v4];
 }
 
 - (void)_invalidateSublayoutsAlpha
@@ -619,9 +619,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x20) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout _invalidateSublayoutsAlpha]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:259 description:{@"invalidating %lu after it already has been updated", 32}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:259 description:{@"invalidating %lu after it already has been updated", 32}];
 
       abort();
     }
@@ -645,16 +645,16 @@ LABEL_5:
 
 - (void)_loadSublayoutsIfNeeded
 {
-  v20 = [(PXStoryScrubberLayout *)self viewModel];
-  v3 = [(PXStoryScrubberLayout *)self contentLayout];
-  v4 = [v3 viewModel];
-  if (v4 == v20)
+  viewModel = [(PXStoryScrubberLayout *)self viewModel];
+  contentLayout = [(PXStoryScrubberLayout *)self contentLayout];
+  viewModel2 = [contentLayout viewModel];
+  if (viewModel2 == viewModel)
   {
-    v5 = [(PXStoryScrubberLayout *)self contentLayout];
-    v6 = [v5 model];
-    v7 = [v20 mainModel];
+    contentLayout2 = [(PXStoryScrubberLayout *)self contentLayout];
+    model = [contentLayout2 model];
+    mainModel = [viewModel mainModel];
 
-    if (v6 == v7)
+    if (model == mainModel)
     {
       goto LABEL_5;
     }
@@ -664,22 +664,22 @@ LABEL_5:
   {
   }
 
-  v8 = [[PXStoryScrubberContentLayout alloc] initWithViewModel:v20];
+  v8 = [[PXStoryScrubberContentLayout alloc] initWithViewModel:viewModel];
   [(PXStoryScrubberLayout *)self setContentLayout:v8];
 
-  v9 = [(PXStoryScrubberLayout *)self contentLayout];
-  [(PXGSplitLayout *)self setFirstSublayout:v9];
+  contentLayout3 = [(PXStoryScrubberLayout *)self contentLayout];
+  [(PXGSplitLayout *)self setFirstSublayout:contentLayout3];
 
 LABEL_5:
-  v10 = [(PXStoryScrubberLayout *)self scrollLayout];
-  v11 = [v10 viewModel];
-  if (v11 == v20)
+  scrollLayout = [(PXStoryScrubberLayout *)self scrollLayout];
+  viewModel3 = [scrollLayout viewModel];
+  if (viewModel3 == viewModel)
   {
-    v12 = [(PXStoryScrubberLayout *)self scrollLayout];
-    v13 = [v12 model];
-    v14 = [v20 mainModel];
+    scrollLayout2 = [(PXStoryScrubberLayout *)self scrollLayout];
+    model2 = [scrollLayout2 model];
+    mainModel2 = [viewModel mainModel];
 
-    if (v13 == v14)
+    if (model2 == mainModel2)
     {
       goto LABEL_9;
     }
@@ -690,8 +690,8 @@ LABEL_5:
   }
 
   v15 = [PXStoryScrubberScrollLayout alloc];
-  v16 = [v20 mainModel];
-  v17 = [(PXStoryScrubberScrollLayout *)v15 initWithViewModel:v20 model:v16];
+  mainModel3 = [viewModel mainModel];
+  v17 = [(PXStoryScrubberScrollLayout *)v15 initWithViewModel:viewModel model:mainModel3];
 
   v18 = [[off_1E77216A8 alloc] initWithContentLayout:v17];
   [v18 setDelegate:v17];
@@ -709,16 +709,16 @@ LABEL_9:
 
 - (void)_loadTVSublayoutsIfNeeded
 {
-  v13 = [(PXStoryScrubberLayout *)self viewModel];
-  v3 = [(PXStoryScrubberLayout *)self contentLayout];
-  v4 = [v3 viewModel];
-  if (v4 == v13)
+  viewModel = [(PXStoryScrubberLayout *)self viewModel];
+  contentLayout = [(PXStoryScrubberLayout *)self contentLayout];
+  viewModel2 = [contentLayout viewModel];
+  if (viewModel2 == viewModel)
   {
-    v5 = [(PXStoryScrubberLayout *)self contentLayout];
-    v6 = [v5 model];
-    v7 = [v13 mainModel];
+    contentLayout2 = [(PXStoryScrubberLayout *)self contentLayout];
+    model = [contentLayout2 model];
+    mainModel = [viewModel mainModel];
 
-    if (v6 == v7)
+    if (model == mainModel)
     {
       goto LABEL_5;
     }
@@ -728,12 +728,12 @@ LABEL_9:
   {
   }
 
-  v8 = [[PXStoryScrubberContentLayout alloc] initWithViewModel:v13];
+  v8 = [[PXStoryScrubberContentLayout alloc] initWithViewModel:viewModel];
   [(PXStoryScrubberLayout *)self setContentLayout:v8];
 
   v9 = [off_1E77216A8 alloc];
-  v10 = [(PXStoryScrubberLayout *)self contentLayout];
-  v11 = [v9 initWithContentLayout:v10];
+  contentLayout3 = [(PXStoryScrubberLayout *)self contentLayout];
+  v11 = [v9 initWithContentLayout:contentLayout3];
 
   [v11 setClipsToBounds:0];
   [v11 setShowsHorizontalScrollIndicator:0];
@@ -749,8 +749,8 @@ LABEL_5:
 
 - (void)_updateSublayouts
 {
-  v4 = [(PXStoryScrubberLayout *)self viewModel];
-  if (([v4 wantsChromeVisible] & 1) != 0 || (objc_msgSend(v4, "wantsScrubberVisible") & 1) != 0 || (-[PXGSplitLayout firstSublayout](self, "firstSublayout"), v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
+  viewModel = [(PXStoryScrubberLayout *)self viewModel];
+  if (([viewModel wantsChromeVisible] & 1) != 0 || (objc_msgSend(viewModel, "wantsScrubberVisible") & 1) != 0 || (-[PXGSplitLayout firstSublayout](self, "firstSublayout"), v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
     [(PXStoryScrubberLayout *)self _loadSublayoutsIfNeeded];
   }
@@ -774,9 +774,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x10) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout _invalidateSublayouts]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:204 description:{@"invalidating %lu after it already has been updated", 16}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:204 description:{@"invalidating %lu after it already has been updated", 16}];
 
       abort();
     }
@@ -800,9 +800,9 @@ LABEL_5:
 
 - (void)_updateMainModel
 {
-  v4 = [(PXStoryScrubberLayout *)self viewModel];
-  v3 = [v4 mainModel];
-  [(PXStoryScrubberLayout *)self setMainModel:v3];
+  viewModel = [(PXStoryScrubberLayout *)self viewModel];
+  mainModel = [viewModel mainModel];
+  [(PXStoryScrubberLayout *)self setMainModel:mainModel];
 }
 
 - (void)_invalidateMainModel
@@ -821,9 +821,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x40) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout _invalidateMainModel]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:196 description:{@"invalidating %lu after it already has been updated", 64}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberLayout.m" lineNumber:196 description:{@"invalidating %lu after it already has been updated", 64}];
 
       abort();
     }
@@ -852,9 +852,9 @@ LABEL_5:
   [(PXGSplitLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryScrubberLayout.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryScrubberLayout.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -867,9 +867,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout update]"];
-      [v12 handleFailureInFunction:v13 file:@"PXStoryScrubberLayout.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v13 file:@"PXStoryScrubberLayout.m" lineNumber:161 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -882,9 +882,9 @@ LABEL_5:
       [(PXStoryScrubberLayout *)self _updateMainModel];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout update]"];
-        [v14 handleFailureInFunction:v15 file:@"PXStoryScrubberLayout.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v15 file:@"PXStoryScrubberLayout.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -898,9 +898,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout update]"];
-      [v16 handleFailureInFunction:v17 file:@"PXStoryScrubberLayout.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v17 file:@"PXStoryScrubberLayout.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -913,9 +913,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout update]"];
-      [v18 handleFailureInFunction:v19 file:@"PXStoryScrubberLayout.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v19 file:@"PXStoryScrubberLayout.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -928,9 +928,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout update]"];
-      [v20 handleFailureInFunction:v21 file:@"PXStoryScrubberLayout.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v21 file:@"PXStoryScrubberLayout.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v8 = p_updateFlags->needsUpdate;
@@ -943,9 +943,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout update]"];
-      [v22 handleFailureInFunction:v23 file:@"PXStoryScrubberLayout.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler6 handleFailureInFunction:v23 file:@"PXStoryScrubberLayout.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v9 = p_updateFlags->needsUpdate;
@@ -958,9 +958,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout update]"];
-      [v24 handleFailureInFunction:v25 file:@"PXStoryScrubberLayout.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler7 handleFailureInFunction:v25 file:@"PXStoryScrubberLayout.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v10 = p_updateFlags->needsUpdate;
@@ -973,9 +973,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout update]"];
-      [v26 handleFailureInFunction:v27 file:@"PXStoryScrubberLayout.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler8 handleFailureInFunction:v27 file:@"PXStoryScrubberLayout.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v11 = p_updateFlags->needsUpdate;
@@ -990,9 +990,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v11)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
       v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout update]"];
-      [v28 handleFailureInFunction:v29 file:@"PXStoryScrubberLayout.m" lineNumber:186 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler9 handleFailureInFunction:v29 file:@"PXStoryScrubberLayout.m" lineNumber:186 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -1009,39 +1009,39 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryScrubberLayout.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryScrubberLayout.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
-- (void)setMainModel:(id)a3
+- (void)setMainModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   mainModel = self->_mainModel;
-  if (mainModel != v5)
+  if (mainModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PXStoryModel *)mainModel unregisterChangeObserver:self context:MainModelObservationContext_127891];
-    objc_storeStrong(&self->_mainModel, a3);
+    objc_storeStrong(&self->_mainModel, model);
     [(PXStoryModel *)self->_mainModel registerChangeObserver:self context:MainModelObservationContext_127891];
     [(PXStoryScrubberLayout *)self _invalidateWantsVisible];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
-- (void)setAlphaOverride:(id)a3
+- (void)setAlphaOverride:(id)override
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_alphaOverride != v5)
+  overrideCopy = override;
+  v6 = overrideCopy;
+  if (self->_alphaOverride != overrideCopy)
   {
-    v8 = v5;
-    v7 = [(NSNumber *)v5 isEqual:?];
+    v8 = overrideCopy;
+    v7 = [(NSNumber *)overrideCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_alphaOverride, a3);
+      objc_storeStrong(&self->_alphaOverride, override);
       [(PXStoryScrubberLayout *)self _invalidateSublayoutsAlpha];
       v6 = v8;
     }
@@ -1073,46 +1073,46 @@ LABEL_5:
   [(PXStoryScrubberLayout *)self _invalidateFocusGuide];
 }
 
-- (void)setLastScrubbedDate:(id)a3
+- (void)setLastScrubbedDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_lastScrubbedDate isEqualToDate:?])
   {
-    objc_storeStrong(&self->_lastScrubbedDate, a3);
+    objc_storeStrong(&self->_lastScrubbedDate, date);
     [(PXStoryScrubberLayout *)self _invalidateWantsVisible];
   }
 }
 
-- (void)setCurrentSkipSegmentActionDate:(id)a3
+- (void)setCurrentSkipSegmentActionDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_currentSkipSegmentActionDate isEqualToDate:?])
   {
-    objc_storeStrong(&self->_currentSkipSegmentActionDate, a3);
+    objc_storeStrong(&self->_currentSkipSegmentActionDate, date);
     [(PXStoryScrubberLayout *)self _invalidateWantsVisible];
   }
 }
 
-- (void)setIsHidden:(BOOL)a3
+- (void)setIsHidden:(BOOL)hidden
 {
-  if (self->_isHidden != a3)
+  if (self->_isHidden != hidden)
   {
-    self->_isHidden = a3;
+    self->_isHidden = hidden;
     [(PXStoryScrubberLayout *)self _invalidateVisibilityFraction];
   }
 }
 
-- (PXStoryScrubberLayout)initWithViewModel:(id)a3
+- (PXStoryScrubberLayout)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXStoryScrubberLayout;
   v6 = [(PXStoryScrubberLayout *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
-    [v5 registerChangeObserver:v7 context:ViewModelObservationContext_127890];
+    objc_storeStrong(&v6->_viewModel, model);
+    [modelCopy registerChangeObserver:v7 context:ViewModelObservationContext_127890];
     [(PXGSplitLayout *)v7 setMode:5];
     [(PXStoryScrubberLayout *)v7 setContentSource:v7];
     v7->_focusGuideSpriteIndex = -1;
@@ -1128,8 +1128,8 @@ LABEL_5:
 
 - (PXStoryScrubberLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryScrubberLayout.m" lineNumber:58 description:{@"%s is not available as initializer", "-[PXStoryScrubberLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryScrubberLayout.m" lineNumber:58 description:{@"%s is not available as initializer", "-[PXStoryScrubberLayout init]"}];
 
   abort();
 }

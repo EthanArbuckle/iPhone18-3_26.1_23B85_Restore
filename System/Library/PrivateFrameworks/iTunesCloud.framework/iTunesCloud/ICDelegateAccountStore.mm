@@ -1,41 +1,41 @@
 @interface ICDelegateAccountStore
-+ (void)openWithOptions:(id)a3 completionHandler:(id)a4;
++ (void)openWithOptions:(id)options completionHandler:(id)handler;
 - (BOOL)_resetCorruptionUsingSQL;
-- (BOOL)connectionNeedsResetForCorruption:(id)a3;
-- (id)_initWithValidatedOptions:(id)a3;
+- (BOOL)connectionNeedsResetForCorruption:(id)corruption;
+- (id)_initWithValidatedOptions:(id)options;
 - (id)_popConnection;
-- (id)initSingleWriterWithOptions:(id)a3 error:(id *)a4;
-- (void)_openWithXPCWriter:(id)a3 completionHandler:(id)a4;
+- (id)initSingleWriterWithOptions:(id)options error:(id *)error;
+- (void)_openWithXPCWriter:(id)writer completionHandler:(id)handler;
 - (void)_postDidChangeNotification;
-- (void)_recycleConnection:(id)a3;
+- (void)_recycleConnection:(id)connection;
 - (void)_resetCorruptionUsingXPC;
-- (void)_writeSQLUsingBlock:(id)a3;
-- (void)_writeUsingBlock:(id)a3;
-- (void)_writeXPCUsingBlock:(id)a3;
-- (void)addDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
+- (void)_writeSQLUsingBlock:(id)block;
+- (void)_writeUsingBlock:(id)block;
+- (void)_writeXPCUsingBlock:(id)block;
+- (void)addDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler;
 - (void)close;
-- (void)readUsingBlock:(id)a3;
-- (void)removeAllTokensWithCompletionHandler:(id)a3;
-- (void)removeDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
-- (void)removeIdentityPropertiesForUserIdentity:(id)a3 completionHandler:(id)a4;
-- (void)removeTokenForUserIdentity:(id)a3 completionHandler:(id)a4;
-- (void)removeTokensExpiringBeforeDate:(id)a3 completionHandler:(id)a4;
-- (void)setIdentityProperties:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
-- (void)setToken:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
+- (void)readUsingBlock:(id)block;
+- (void)removeAllTokensWithCompletionHandler:(id)handler;
+- (void)removeDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeIdentityPropertiesForUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeTokenForUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeTokensExpiringBeforeDate:(id)date completionHandler:(id)handler;
+- (void)setIdentityProperties:(id)properties forUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)setToken:(id)token forUserIdentity:(id)identity completionHandler:(id)handler;
 @end
 
 @implementation ICDelegateAccountStore
 
-- (void)_writeXPCUsingBlock:(id)a3
+- (void)_writeXPCUsingBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = self->_xpcWriter;
-  v5[2](v5, v4);
+  blockCopy[2](blockCopy, v4);
 }
 
-- (void)_writeUsingBlock:(id)a3
+- (void)_writeUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (!self->_isOpen)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Cannot use a closed delegate account store: %@", self}];
@@ -43,35 +43,35 @@
 
   if ([(ICDelegateAccountStoreOptions *)self->_options isSingleWriter])
   {
-    [(ICDelegateAccountStore *)self _writeSQLUsingBlock:v4];
+    [(ICDelegateAccountStore *)self _writeSQLUsingBlock:blockCopy];
   }
 
   else
   {
-    [(ICDelegateAccountStore *)self _writeXPCUsingBlock:v4];
+    [(ICDelegateAccountStore *)self _writeXPCUsingBlock:blockCopy];
   }
 }
 
-- (void)_writeSQLUsingBlock:(id)a3
+- (void)_writeSQLUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ICDelegateAccountStore *)self _popConnection];
-  v6 = [[ICDelegateAccountStoreReader alloc] initWithConnection:v5];
-  v7 = [[ICDelegateAccountStoreSQLWriter alloc] initWithConnection:v5];
-  v8 = [(ICDelegateAccountStoreReader *)v6 lastExpirationPruningDate];
+  blockCopy = block;
+  _popConnection = [(ICDelegateAccountStore *)self _popConnection];
+  v6 = [[ICDelegateAccountStoreReader alloc] initWithConnection:_popConnection];
+  v7 = [[ICDelegateAccountStoreSQLWriter alloc] initWithConnection:_popConnection];
+  lastExpirationPruningDate = [(ICDelegateAccountStoreReader *)v6 lastExpirationPruningDate];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__ICDelegateAccountStore__writeSQLUsingBlock___block_invoke;
   v9[3] = &unk_1E7BF46E0;
-  v9[4] = v8;
+  v9[4] = lastExpirationPruningDate;
   v10 = v7;
-  v11 = v4;
-  [v5 performTransaction:v9];
+  v11 = blockCopy;
+  [_popConnection performTransaction:v9];
 
   [(ICDelegateAccountStoreReader *)v6 invalidate];
   [(ICDelegateAccountStoreSQLWriter *)v7 invalidate];
 
-  [(ICDelegateAccountStore *)self _recycleConnection:v5];
+  [(ICDelegateAccountStore *)self _recycleConnection:_popConnection];
 }
 
 uint64_t __46__ICDelegateAccountStore__writeSQLUsingBlock___block_invoke(uint64_t a1)
@@ -164,27 +164,27 @@ LABEL_10:
   return v7;
 }
 
-- (void)_recycleConnection:(id)a3
+- (void)_recycleConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_lock);
   if ([(NSMutableArray *)self->_connectionPool count]> 2)
   {
     os_unfair_lock_unlock(&self->_lock);
-    [v4 close];
+    [connectionCopy close];
   }
 
   else
   {
-    [(NSMutableArray *)self->_connectionPool addObject:v4];
+    [(NSMutableArray *)self->_connectionPool addObject:connectionCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
 - (void)_postDidChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"ICDelegateAccountStoreDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICDelegateAccountStoreDidChangeNotification" object:self];
 }
 
 - (id)_popConnection
@@ -216,11 +216,11 @@ LABEL_6:
   return v3;
 }
 
-- (void)_openWithXPCWriter:(id)a3 completionHandler:(id)a4
+- (void)_openWithXPCWriter:(id)writer completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_xpcWriter, a3);
+  writerCopy = writer;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_xpcWriter, writer);
   objc_initWeak(&location, self);
   xpcWriter = self->_xpcWriter;
   v14[0] = MEMORY[0x1E69E9820];
@@ -235,7 +235,7 @@ LABEL_6:
   v12[2] = __63__ICDelegateAccountStore__openWithXPCWriter_completionHandler___block_invoke_2;
   v12[3] = &unk_1E7BF46B8;
   v12[4] = self;
-  v11 = v8;
+  v11 = handlerCopy;
   v13 = v11;
   [(ICDelegateAccountStoreXPCWriter *)v10 openWithCompletionHandler:v12];
 
@@ -295,7 +295,7 @@ void __63__ICDelegateAccountStore__openWithXPCWriter_completionHandler___block_i
   }
 }
 
-- (BOOL)connectionNeedsResetForCorruption:(id)a3
+- (BOOL)connectionNeedsResetForCorruption:(id)corruption
 {
   if ([(ICDelegateAccountStoreOptions *)self->_options isSingleWriter])
   {
@@ -310,22 +310,22 @@ void __63__ICDelegateAccountStore__openWithXPCWriter_completionHandler___block_i
   }
 }
 
-- (void)setToken:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)setToken:(id)token forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  identityCopy = identity;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __69__ICDelegateAccountStore_setToken_forUserIdentity_completionHandler___block_invoke;
   v14[3] = &unk_1E7BF4640;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = tokenCopy;
+  v16 = identityCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = identityCopy;
+  v13 = tokenCopy;
   [(ICDelegateAccountStore *)self _writeUsingBlock:v14];
 }
 
@@ -361,22 +361,22 @@ uint64_t __69__ICDelegateAccountStore_setToken_forUserIdentity_completionHandler
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)setIdentityProperties:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)setIdentityProperties:(id)properties forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertiesCopy = properties;
+  identityCopy = identity;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__ICDelegateAccountStore_setIdentityProperties_forUserIdentity_completionHandler___block_invoke;
   v14[3] = &unk_1E7BF4640;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = propertiesCopy;
+  v16 = identityCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = identityCopy;
+  v13 = propertiesCopy;
   [(ICDelegateAccountStore *)self _writeUsingBlock:v14];
 }
 
@@ -412,19 +412,19 @@ uint64_t __82__ICDelegateAccountStore_setIdentityProperties_forUserIdentity_comp
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)removeTokensExpiringBeforeDate:(id)a3 completionHandler:(id)a4
+- (void)removeTokensExpiringBeforeDate:(id)date completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__ICDelegateAccountStore_removeTokensExpiringBeforeDate_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF4690;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dateCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = dateCopy;
   [(ICDelegateAccountStore *)self _writeUsingBlock:v10];
 }
 
@@ -459,19 +459,19 @@ uint64_t __75__ICDelegateAccountStore_removeTokensExpiringBeforeDate_completionH
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)removeTokenForUserIdentity:(id)a3 completionHandler:(id)a4
+- (void)removeTokenForUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__ICDelegateAccountStore_removeTokenForUserIdentity_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF4690;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identityCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = identityCopy;
   [(ICDelegateAccountStore *)self _writeUsingBlock:v10];
 }
 
@@ -506,19 +506,19 @@ uint64_t __71__ICDelegateAccountStore_removeTokenForUserIdentity_completionHandl
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)removeIdentityPropertiesForUserIdentity:(id)a3 completionHandler:(id)a4
+- (void)removeIdentityPropertiesForUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__ICDelegateAccountStore_removeIdentityPropertiesForUserIdentity_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF4690;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identityCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = identityCopy;
   [(ICDelegateAccountStore *)self _writeUsingBlock:v10];
 }
 
@@ -553,22 +553,22 @@ uint64_t __84__ICDelegateAccountStore_removeIdentityPropertiesForUserIdentity_co
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)removeDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)removeDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__ICDelegateAccountStore_removeDelegationUUIDs_forUserIdentity_completionHandler___block_invoke;
   v14[3] = &unk_1E7BF4640;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = dsCopy;
+  v16 = identityCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = identityCopy;
+  v13 = dsCopy;
   [(ICDelegateAccountStore *)self _writeUsingBlock:v14];
 }
 
@@ -604,16 +604,16 @@ uint64_t __82__ICDelegateAccountStore_removeDelegationUUIDs_forUserIdentity_comp
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)removeAllTokensWithCompletionHandler:(id)a3
+- (void)removeAllTokensWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__ICDelegateAccountStore_removeAllTokensWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7BF4668;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICDelegateAccountStore *)self _writeUsingBlock:v6];
 }
 
@@ -647,22 +647,22 @@ uint64_t __63__ICDelegateAccountStore_removeAllTokensWithCompletionHandler___blo
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)addDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)addDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__ICDelegateAccountStore_addDelegationUUIDs_forUserIdentity_completionHandler___block_invoke;
   v14[3] = &unk_1E7BF4640;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = dsCopy;
+  v16 = identityCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = identityCopy;
+  v13 = dsCopy;
   [(ICDelegateAccountStore *)self _writeUsingBlock:v14];
 }
 
@@ -698,20 +698,20 @@ uint64_t __79__ICDelegateAccountStore_addDelegationUUIDs_forUserIdentity_complet
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)readUsingBlock:(id)a3
+- (void)readUsingBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (!self->_isOpen)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Cannot use a closed delegate account store: %@", self}];
   }
 
-  v4 = [(ICDelegateAccountStore *)self _popConnection];
-  v5 = [[ICDelegateAccountStoreReader alloc] initWithConnection:v4];
-  v6[2](v6, v5);
+  _popConnection = [(ICDelegateAccountStore *)self _popConnection];
+  v5 = [[ICDelegateAccountStoreReader alloc] initWithConnection:_popConnection];
+  blockCopy[2](blockCopy, v5);
   [(ICDelegateAccountStoreReader *)v5 invalidate];
 
-  [(ICDelegateAccountStore *)self _recycleConnection:v4];
+  [(ICDelegateAccountStore *)self _recycleConnection:_popConnection];
 }
 
 - (void)close
@@ -756,22 +756,22 @@ uint64_t __79__ICDelegateAccountStore_addDelegationUUIDs_forUserIdentity_complet
   self->_strongSelf = 0;
 }
 
-- (id)initSingleWriterWithOptions:(id)a3 error:(id *)a4
+- (id)initSingleWriterWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  if (([v6 isSingleWriter] & 1) == 0)
+  optionsCopy = options;
+  if (([optionsCopy isSingleWriter] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"options not single-writer"];
   }
 
-  v7 = __SQLiteOptionsWithAccountStoreOptions(v6);
+  v7 = __SQLiteOptionsWithAccountStoreOptions(optionsCopy);
   v8 = [[ICSQLiteConnection alloc] initWithOptions:v7];
   v15 = 0;
   v9 = __SetupSingleWriterWithConnection(v8, &v15);
   v10 = v15;
   if (v9)
   {
-    v11 = [(ICDelegateAccountStore *)self _initWithValidatedOptions:v6];
+    v11 = [(ICDelegateAccountStore *)self _initWithValidatedOptions:optionsCopy];
     if (v11)
     {
       v12 = v11;
@@ -785,11 +785,11 @@ uint64_t __79__ICDelegateAccountStore_addDelegationUUIDs_forUserIdentity_complet
   {
   }
 
-  if (a4)
+  if (error)
   {
     v13 = v10;
     v12 = 0;
-    *a4 = v10;
+    *error = v10;
   }
 
   else
@@ -802,9 +802,9 @@ LABEL_10:
   return v12;
 }
 
-- (id)_initWithValidatedOptions:(id)a3
+- (id)_initWithValidatedOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = ICDelegateAccountStore;
   v5 = [(ICDelegateAccountStore *)&v11 init];
@@ -816,7 +816,7 @@ LABEL_10:
 
     v5->_isOpen = 1;
     v5->_lock._os_unfair_lock_opaque = 0;
-    v8 = [v4 copy];
+    v8 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v8;
 
@@ -826,31 +826,31 @@ LABEL_10:
   return v5;
 }
 
-+ (void)openWithOptions:(id)a3 completionHandler:(id)a4
++ (void)openWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isSingleWriter])
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([optionsCopy isSingleWriter])
   {
     v12 = 0;
-    v8 = [[a1 alloc] initSingleWriterWithOptions:v6 error:&v12];
+    v8 = [[self alloc] initSingleWriterWithOptions:optionsCopy error:&v12];
     v9 = v12;
-    v7[2](v7, v8, v9);
+    handlerCopy[2](handlerCopy, v8, v9);
   }
 
   else
   {
-    v10 = [[ICDelegateAccountStoreXPCWriter alloc] initWithAccountStoreOptions:v6];
+    v10 = [[ICDelegateAccountStoreXPCWriter alloc] initWithAccountStoreOptions:optionsCopy];
     if (v10)
     {
-      v11 = [[a1 alloc] _initWithValidatedOptions:v6];
-      [v11 _openWithXPCWriter:v10 completionHandler:v7];
+      v11 = [[self alloc] _initWithValidatedOptions:optionsCopy];
+      [v11 _openWithXPCWriter:v10 completionHandler:handlerCopy];
     }
 
     else
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Invalid XPC options"];
-      v7[2](v7, 0, 0);
+      handlerCopy[2](handlerCopy, 0, 0);
     }
   }
 }

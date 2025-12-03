@@ -1,10 +1,10 @@
 @interface NTKCompanion1stPartyApp
-+ (BOOL)complicationType:(unint64_t)a3 mapsToRemovedSystemAppOnDevice:(id)a4;
++ (BOOL)complicationType:(unint64_t)type mapsToRemovedSystemAppOnDevice:(id)device;
 + (id)_allApps;
-+ (id)allAppsForDevice:(id)a3;
-+ (id)appForBundleIdentifier:(id)a3;
-+ (id)companionAppWithAppInfo:(_NTKCompanion1stPartyInfo *)a3;
-- (NTKCompanion1stPartyApp)initWithAppInfo:(_NTKCompanion1stPartyInfo *)a3;
++ (id)allAppsForDevice:(id)device;
++ (id)appForBundleIdentifier:(id)identifier;
++ (id)companionAppWithAppInfo:(_NTKCompanion1stPartyInfo *)info;
+- (NTKCompanion1stPartyApp)initWithAppInfo:(_NTKCompanion1stPartyInfo *)info;
 - (id)complication;
 - (id)icon;
 @end
@@ -13,21 +13,21 @@
 
 - (id)complication
 {
-  v2 = [(NTKCompanion1stPartyApp *)self complicationType];
+  complicationType = [(NTKCompanion1stPartyApp *)self complicationType];
 
-  return [NTKComplication anyComplicationOfType:v2];
+  return [NTKComplication anyComplicationOfType:complicationType];
 }
 
-+ (id)appForBundleIdentifier:(id)a3
++ (id)appForBundleIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a1 _allApps];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _allApps = [self _allApps];
+  v6 = [_allApps countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -38,12 +38,12 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_allApps);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 watchApplicationIdentifier];
-        if ([v11 isEqualToString:v4])
+        watchApplicationIdentifier = [v10 watchApplicationIdentifier];
+        if ([watchApplicationIdentifier isEqualToString:identifierCopy])
         {
 
 LABEL_13:
@@ -51,8 +51,8 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v12 = [v10 containerApplicationIdentifier];
-        v13 = [v12 isEqualToString:v4];
+        containerApplicationIdentifier = [v10 containerApplicationIdentifier];
+        v13 = [containerApplicationIdentifier isEqualToString:identifierCopy];
 
         if (v13)
         {
@@ -60,7 +60,7 @@ LABEL_13:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [_allApps countByEnumeratingWithState:&v16 objects:v20 count:16];
       v14 = 0;
       if (v7)
       {
@@ -81,19 +81,19 @@ LABEL_14:
   return v14;
 }
 
-+ (id)allAppsForDevice:(id)a3
++ (id)allAppsForDevice:(id)device
 {
-  if ([a3 isRunningGraceOrLater])
+  if ([device isRunningGraceOrLater])
   {
-    v4 = MEMORY[0x277CBEBF8];
+    _allApps = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v4 = [a1 _allApps];
+    _allApps = [self _allApps];
   }
 
-  return v4;
+  return _allApps;
 }
 
 + (id)_allApps
@@ -102,9 +102,9 @@ LABEL_14:
   v5[1] = 3221225472;
   v5[2] = __35__NTKCompanion1stPartyApp__allApps__block_invoke;
   v5[3] = &__block_descriptor_40_e35___NSMutableArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v2 = [MEMORY[0x277CBBAE8] currentDevice];
-  v3 = __35__NTKCompanion1stPartyApp__allApps__block_invoke(v5, v2);
+  v5[4] = self;
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  v3 = __35__NTKCompanion1stPartyApp__allApps__block_invoke(v5, currentDevice);
 
   return v3;
 }
@@ -162,9 +162,9 @@ id __35__NTKCompanion1stPartyApp__allApps__block_invoke_2(uint64_t a1)
   return v2;
 }
 
-+ (id)companionAppWithAppInfo:(_NTKCompanion1stPartyInfo *)a3
++ (id)companionAppWithAppInfo:(_NTKCompanion1stPartyInfo *)info
 {
-  v4 = a3->var0;
+  v4 = info->var0;
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
@@ -180,16 +180,16 @@ id __35__NTKCompanion1stPartyApp__allApps__block_invoke_2(uint64_t a1)
     v5 = 0;
   }
 
-  if (a3->var2 == 9)
+  if (info->var2 == 9)
   {
     v7 = [NTKCompanion1stPartyStocksApp alloc];
-    v8 = [MEMORY[0x277CBBAE8] currentDevice];
-    v9 = [(NTKCompanion1stPartyStocksApp *)v7 initWithDevice:v8];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    v9 = [(NTKCompanion1stPartyStocksApp *)v7 initWithDevice:currentDevice];
 
-    v10 = [v5 applicationState];
-    v11 = [v10 isInstalled];
+    applicationState = [v5 applicationState];
+    isInstalled = [applicationState isInstalled];
 
-    if (v11)
+    if (isInstalled)
     {
       [v5 localizedName];
     }
@@ -201,12 +201,12 @@ id __35__NTKCompanion1stPartyApp__allApps__block_invoke_2(uint64_t a1)
     v15 = ;
     [(NTKCompanionApp *)v9 setName:v15];
 
-    NTKImageNamed(a3->var3);
+    NTKImageNamed(info->var3);
   }
 
   v13 = [NTKCompanion1stPartyApp alloc];
-  v14 = *&a3->var2;
-  v17[0] = *&a3->var0;
+  v14 = *&info->var2;
+  v17[0] = *&info->var0;
   v17[1] = v14;
   v6 = [(NTKCompanion1stPartyApp *)v13 initWithAppInfo:v17];
 
@@ -215,7 +215,7 @@ LABEL_11:
   return v6;
 }
 
-- (NTKCompanion1stPartyApp)initWithAppInfo:(_NTKCompanion1stPartyInfo *)a3
+- (NTKCompanion1stPartyApp)initWithAppInfo:(_NTKCompanion1stPartyInfo *)info
 {
   v10.receiver = self;
   v10.super_class = NTKCompanion1stPartyApp;
@@ -223,9 +223,9 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    [(NTKCompanionApp *)v4 setContainerApplicationIdentifier:a3->var0];
-    [(NTKCompanionApp *)v5 setWatchApplicationIdentifier:a3->var1];
-    [(NTKCompanion1stPartyApp *)v5 setComplicationType:a3->var2];
+    [(NTKCompanionApp *)v4 setContainerApplicationIdentifier:info->var0];
+    [(NTKCompanionApp *)v5 setWatchApplicationIdentifier:info->var1];
+    [(NTKCompanion1stPartyApp *)v5 setComplicationType:info->var2];
     if ([(NTKCompanion1stPartyApp *)v5 complicationType]== 8)
     {
       v7 = NTKCCustomizationLocalizedString(@"CALENDAR_APP_NAME", @"Calendar", v6);
@@ -236,7 +236,7 @@ LABEL_11:
       if ([(NTKCompanion1stPartyApp *)v5 complicationType]== 9)
       {
 LABEL_7:
-        [(NTKCompanion1stPartyApp *)v5 setIconName:a3->var3];
+        [(NTKCompanion1stPartyApp *)v5 setIconName:info->var3];
         return v5;
       }
 
@@ -263,16 +263,16 @@ LABEL_7:
   return icon;
 }
 
-+ (BOOL)complicationType:(unint64_t)a3 mapsToRemovedSystemAppOnDevice:(id)a4
++ (BOOL)complicationType:(unint64_t)type mapsToRemovedSystemAppOnDevice:(id)device
 {
-  if ([a4 isRunningGraceOrLater])
+  if ([device isRunningGraceOrLater])
   {
     return 0;
   }
 
   v5 = &qword_27877DF98;
   v6 = 20;
-  while (*v5 != a3)
+  while (*v5 != type)
   {
     v5 += 4;
     if (!--v6)
@@ -289,16 +289,16 @@ LABEL_7:
 
   v8 = v7;
   v9 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v7 allowPlaceholder:0 error:0];
-  v10 = [v9 applicationState];
-  v11 = [v10 isInstalled];
+  applicationState = [v9 applicationState];
+  isInstalled = [applicationState isInstalled];
 
-  if ((v11 & 1) == 0)
+  if ((isInstalled & 1) == 0)
   {
-    v12 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v12 openApplicationWithBundleID:v8];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace openApplicationWithBundleID:v8];
   }
 
-  v13 = v11 ^ 1;
+  v13 = isInstalled ^ 1;
 
   return v13;
 }

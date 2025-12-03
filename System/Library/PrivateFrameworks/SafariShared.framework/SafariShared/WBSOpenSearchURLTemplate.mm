@@ -1,27 +1,27 @@
 @interface WBSOpenSearchURLTemplate
-- (BOOL)includesParameter:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (WBSOpenSearchURLTemplate)initWithCoder:(id)a3;
-- (WBSOpenSearchURLTemplate)initWithString:(id)a3;
-- (id)URLWithSearchTerms:(id)a3;
+- (BOOL)includesParameter:(id)parameter;
+- (BOOL)isEqual:(id)equal;
+- (WBSOpenSearchURLTemplate)initWithCoder:(id)coder;
+- (WBSOpenSearchURLTemplate)initWithString:(id)string;
+- (id)URLWithSearchTerms:(id)terms;
 - (id)description;
-- (id)templateByAddingParameter:(id)a3 asURLQueryParameter:(id)a4;
-- (id)templateBySubstitutingValue:(id)a3 forParameter:(id)a4;
-- (id)templateBySubstitutingValues:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)templateByAddingParameter:(id)parameter asURLQueryParameter:(id)queryParameter;
+- (id)templateBySubstitutingValue:(id)value forParameter:(id)parameter;
+- (id)templateBySubstitutingValues:(id)values;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSOpenSearchURLTemplate
 
-- (WBSOpenSearchURLTemplate)initWithString:(id)a3
+- (WBSOpenSearchURLTemplate)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v29.receiver = self;
   v29.super_class = WBSOpenSearchURLTemplate;
   v5 = [(WBSOpenSearchURLTemplate *)&v29 init];
-  if (v5 && [v4 length])
+  if (v5 && [stringCopy length])
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     templateString = v5->_templateString;
     v5->_templateString = v6;
 
@@ -148,19 +148,19 @@ LABEL_23:
   return v15;
 }
 
-- (BOOL)includesParameter:(id)a3
+- (BOOL)includesParameter:(id)parameter
 {
-  v3 = [(NSMutableDictionary *)self->_parametersByName objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_parametersByName objectForKeyedSubscript:parameter];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)URLWithSearchTerms:(id)a3
+- (id)URLWithSearchTerms:(id)terms
 {
   v29 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
+  termsCopy = terms;
+  string = [MEMORY[0x1E696AD60] string];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -182,12 +182,12 @@ LABEL_3:
       }
 
       v11 = *(*(&v22 + 1) + 8 * v10);
-      v12 = [v11 prefix];
-      [v4 appendString:v12];
+      prefix = [v11 prefix];
+      [string appendString:prefix];
 
-      v13 = [v11 name];
+      name = [v11 name];
 
-      if (!v13)
+      if (!name)
       {
 LABEL_18:
 
@@ -199,8 +199,8 @@ LABEL_18:
         goto LABEL_21;
       }
 
-      v14 = [v11 name];
-      v15 = [v14 isEqualToString:@"searchTerms"];
+      name2 = [v11 name];
+      v15 = [name2 isEqualToString:@"searchTerms"];
 
       if (v15)
       {
@@ -215,8 +215,8 @@ LABEL_18:
           [(WBSOpenSearchURLTemplate *)v26 URLWithSearchTerms:v17, v11, &v27];
         }
 
-        v16 = [v11 name];
-        [v4 appendFormat:@"{%@}", v16];
+        name3 = [v11 name];
+        [string appendFormat:@"{%@}", name3];
         goto LABEL_15;
       }
 
@@ -233,10 +233,10 @@ LABEL_16:
       }
     }
 
-    v16 = [v21 safari_stringEncodedAsURLQueryParameter];
-    if (v16)
+    name3 = [termsCopy safari_stringEncodedAsURLQueryParameter];
+    if (name3)
     {
-      [v4 appendString:v16];
+      [string appendString:name3];
     }
 
     v8 = 1;
@@ -253,17 +253,17 @@ LABEL_21:
   }
 
 LABEL_23:
-  v19 = [MEMORY[0x1E695DFF8] safari_URLWithUserTypedString:v4];
+  v19 = [MEMORY[0x1E695DFF8] safari_URLWithUserTypedString:string];
 
   return v19;
 }
 
-- (id)templateBySubstitutingValue:(id)a3 forParameter:(id)a4
+- (id)templateBySubstitutingValue:(id)value forParameter:(id)parameter
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_parametersByName objectForKeyedSubscript:v7];
+  valueCopy = value;
+  parameterCopy = parameter;
+  v8 = [(NSMutableDictionary *)self->_parametersByName objectForKeyedSubscript:parameterCopy];
   if (v8)
   {
     objc_opt_class();
@@ -271,33 +271,33 @@ LABEL_23:
     {
       v9 = objc_alloc(objc_opt_class());
       templateString = self->_templateString;
-      v11 = [v8 range];
-      v13 = [(NSString *)templateString stringByReplacingCharactersInRange:v11 withString:v12, v6];
-      v14 = [v9 initWithString:v13];
+      range = [v8 range];
+      valueCopy = [(NSString *)templateString stringByReplacingCharactersInRange:range withString:v12, valueCopy];
+      selfCopy = [v9 initWithString:valueCopy];
     }
 
     else
     {
-      v17 = v7;
-      v18[0] = v6;
+      v17 = parameterCopy;
+      v18[0] = valueCopy;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-      v14 = [(WBSOpenSearchURLTemplate *)self templateBySubstitutingValues:v15];
+      selfCopy = [(WBSOpenSearchURLTemplate *)self templateBySubstitutingValues:v15];
     }
   }
 
   else
   {
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)templateBySubstitutingValues:(id)a3
+- (id)templateBySubstitutingValues:(id)values
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
+  valuesCopy = values;
+  string = [MEMORY[0x1E696AD60] string];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -318,37 +318,37 @@ LABEL_3:
       }
 
       v11 = *(*(&v21 + 1) + 8 * v10);
-      v12 = [v11 prefix];
-      [v5 appendString:v12];
+      prefix = [v11 prefix];
+      [string appendString:prefix];
 
-      v13 = [v11 name];
+      name = [v11 name];
 
-      if (!v13)
+      if (!name)
       {
         break;
       }
 
-      v14 = [v11 name];
-      v15 = [v4 objectForKeyedSubscript:v14];
+      name2 = [v11 name];
+      v15 = [valuesCopy objectForKeyedSubscript:name2];
 
       if (v15)
       {
-        [v5 appendString:v15];
+        [string appendString:v15];
       }
 
       else
       {
-        v16 = [v11 isOptional];
-        v17 = [v11 name];
-        v18 = v17;
-        if (v16)
+        isOptional = [v11 isOptional];
+        name3 = [v11 name];
+        v18 = name3;
+        if (isOptional)
         {
-          [v5 appendFormat:@"{%@?}", v17];
+          [string appendFormat:@"{%@?}", name3];
         }
 
         else
         {
-          [v5 appendFormat:@"{%@}", v17];
+          [string appendFormat:@"{%@}", name3];
         }
       }
 
@@ -365,22 +365,22 @@ LABEL_3:
     }
   }
 
-  v19 = [objc_alloc(objc_opt_class()) initWithString:v5];
+  v19 = [objc_alloc(objc_opt_class()) initWithString:string];
 
   return v19;
 }
 
-- (id)templateByAddingParameter:(id)a3 asURLQueryParameter:(id)a4
+- (id)templateByAddingParameter:(id)parameter asURLQueryParameter:(id)queryParameter
 {
-  v6 = a3;
-  v7 = a4;
+  parameterCopy = parameter;
+  queryParameterCopy = queryParameter;
   v8 = [(NSString *)self->_templateString rangeOfString:@"?"];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [(NSString *)self->_templateString rangeOfString:@"#"];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [(NSString *)self->_templateString stringByAppendingFormat:@"?%@={%@}", v7, v6];
+      parameterCopy = [(NSString *)self->_templateString stringByAppendingFormat:@"?%@={%@}", queryParameterCopy, parameterCopy];
       goto LABEL_7;
     }
 
@@ -388,7 +388,7 @@ LABEL_3:
     v16 = MEMORY[0x1E696AEC0];
     v13 = [(NSString *)self->_templateString substringToIndex:v9];
     v14 = [(NSString *)self->_templateString substringFromIndex:v15];
-    [v16 stringWithFormat:@"%@?%@={%@}%@", v13, v7, v6, v14];
+    [v16 stringWithFormat:@"%@?%@={%@}%@", v13, queryParameterCopy, parameterCopy, v14];
   }
 
   else
@@ -397,20 +397,20 @@ LABEL_3:
     v12 = MEMORY[0x1E696AEC0];
     v13 = [(NSString *)self->_templateString substringToIndex:v8 + 1];
     v14 = [(NSString *)self->_templateString substringFromIndex:v11 + 1];
-    [v12 stringWithFormat:@"%@%@={%@}&%@", v13, v7, v6, v14];
+    [v12 stringWithFormat:@"%@%@={%@}&%@", v13, queryParameterCopy, parameterCopy, v14];
   }
-  v10 = ;
+  parameterCopy = ;
 
 LABEL_7:
-  v17 = [objc_alloc(objc_opt_class()) initWithString:v10];
+  v17 = [objc_alloc(objc_opt_class()) initWithString:parameterCopy];
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -418,7 +418,7 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_templateString isEqualToString:v4->_templateString];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_templateString isEqualToString:equalCopy->_templateString];
   }
 
   return v5;
@@ -434,34 +434,34 @@ LABEL_7:
   return v6;
 }
 
-- (WBSOpenSearchURLTemplate)initWithCoder:(id)a3
+- (WBSOpenSearchURLTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templateString"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templateString"];
     self = [(WBSOpenSearchURLTemplate *)self initWithString:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if ([v5 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     templateString = self->_templateString;
     if (templateString)
     {
-      [v5 encodeObject:templateString forKey:@"templateString"];
+      [coderCopy encodeObject:templateString forKey:@"templateString"];
     }
   }
 }

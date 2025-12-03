@@ -1,27 +1,27 @@
 @interface XPCWrapper
 - (_TtC20LiveCommunicationKit10XPCWrapper)init;
-- (_TtC20LiveCommunicationKit10XPCWrapper)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC20LiveCommunicationKit10XPCWrapper)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XPCWrapper
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC20LiveCommunicationKit10XPCWrapper_data);
   v5 = *&self->data[OBJC_IVAR____TtC20LiveCommunicationKit10XPCWrapper_data];
-  v6 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_238B6C4C4();
   v8 = sub_238B6C844();
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
-- (_TtC20LiveCommunicationKit10XPCWrapper)initWithCoder:(id)a3
+- (_TtC20LiveCommunicationKit10XPCWrapper)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_238B34714();
-  v6 = a3;
+  coderCopy = coder;
   v7 = sub_238B6CA94();
   if (v7)
   {

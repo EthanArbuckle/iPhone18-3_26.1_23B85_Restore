@@ -1,17 +1,17 @@
 @interface WebPresentmentCABLEClient
 - (_TtC8coreidvd25WebPresentmentCABLEClient)init;
-- (void)encodeDigitalCredentialJSONCommandForAuthenticatorWithAuthenticatorSupportedExtensions:(id)a3 completionHandler:(id)a4;
+- (void)encodeDigitalCredentialJSONCommandForAuthenticatorWithAuthenticatorSupportedExtensions:(id)extensions completionHandler:(id)handler;
 @end
 
 @implementation WebPresentmentCABLEClient
 
-- (void)encodeDigitalCredentialJSONCommandForAuthenticatorWithAuthenticatorSupportedExtensions:(id)a3 completionHandler:(id)a4
+- (void)encodeDigitalCredentialJSONCommandForAuthenticatorWithAuthenticatorSupportedExtensions:(id)extensions completionHandler:(id)handler
 {
   v6 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v7 = *(*(v6 - 8) + 64);
   __chkstk_darwin(v6 - 8);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = swift_allocObject();
   *(v12 + 16) = v10;

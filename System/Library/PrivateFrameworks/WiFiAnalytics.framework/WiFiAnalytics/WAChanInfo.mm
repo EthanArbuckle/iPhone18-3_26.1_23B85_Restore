@@ -1,25 +1,25 @@
 @interface WAChanInfo
-+ (id)chanInfoWithObjectHavingChInfo:(id)a3 withPrefix:(id)a4;
-+ (int)simplifiedChannelFlags:(signed __int16)a3;
++ (id)chanInfoWithObjectHavingChInfo:(id)info withPrefix:(id)prefix;
++ (int)simplifiedChannelFlags:(signed __int16)flags;
 - (id)chanInfoDictionary;
 @end
 
 @implementation WAChanInfo
 
-+ (id)chanInfoWithObjectHavingChInfo:(id)a3 withPrefix:(id)a4
++ (id)chanInfoWithObjectHavingChInfo:(id)info withPrefix:(id)prefix
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  prefixCopy = prefix;
   v7 = MEMORY[0x1E696AEC0];
   v8 = [@"channel" substringFromIndex:1];
-  v9 = [v7 stringWithFormat:@"%@%@", v6, v8];
+  v9 = [v7 stringWithFormat:@"%@%@", prefixCopy, v8];
 
   v10 = MEMORY[0x1E696AEC0];
   v11 = [@"channelFlags" substringFromIndex:1];
-  v12 = [v10 stringWithFormat:@"%@%@", v6, v11];
+  v12 = [v10 stringWithFormat:@"%@%@", prefixCopy, v11];
 
-  v13 = [v5 valueForKey:v9];
+  v13 = [infoCopy valueForKey:v9];
   if (!v13)
   {
     v13 = WALogCategoryDeviceStoreHandle();
@@ -30,7 +30,7 @@
       v25 = 1024;
       v26 = 1583;
       v27 = 2112;
-      v28 = v5;
+      v28 = infoCopy;
       v29 = 2112;
       v30 = v9;
 LABEL_17:
@@ -54,7 +54,7 @@ LABEL_21:
       v25 = 1024;
       v26 = 1584;
       v27 = 2112;
-      v28 = v5;
+      v28 = infoCopy;
       v29 = 2112;
       v30 = v9;
       v31 = 2112;
@@ -65,8 +65,8 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v14 = [v13 shortValue];
-  v15 = [v5 valueForKey:v12];
+  shortValue = [v13 shortValue];
+  v15 = [infoCopy valueForKey:v12];
 
   if (!v15)
   {
@@ -78,7 +78,7 @@ LABEL_21:
       v25 = 1024;
       v26 = 1588;
       v27 = 2112;
-      v28 = v5;
+      v28 = infoCopy;
       v29 = 2112;
       v30 = v12;
       goto LABEL_17;
@@ -98,7 +98,7 @@ LABEL_21:
       v25 = 1024;
       v26 = 1589;
       v27 = 2112;
-      v28 = v5;
+      v28 = infoCopy;
       v29 = 2112;
       v30 = v12;
       v31 = 2112;
@@ -110,14 +110,14 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v16 = [v15 intValue];
+  intValue = [v15 intValue];
 
   v17 = objc_opt_new();
   v18 = v17;
   if (v17)
   {
-    [v17 setChannel:v14];
-    [v18 setBand:{+[WADeviceAnalyticsClient bandFromChannelFlags:](WADeviceAnalyticsClient, "bandFromChannelFlags:", v16)}];
+    [v17 setChannel:shortValue];
+    [v18 setBand:{+[WADeviceAnalyticsClient bandFromChannelFlags:](WADeviceAnalyticsClient, "bandFromChannelFlags:", intValue)}];
     [v18 setSimplifiedChannelFlags:{objc_msgSend(objc_opt_class(), "simplifiedChannelFlags:", objc_msgSend(v18, "band"))}];
   }
 
@@ -128,9 +128,9 @@ LABEL_7:
   return v18;
 }
 
-+ (int)simplifiedChannelFlags:(signed __int16)a3
++ (int)simplifiedChannelFlags:(signed __int16)flags
 {
-  if (a3 == 1)
+  if (flags == 1)
   {
     v3 = 16;
   }
@@ -140,7 +140,7 @@ LABEL_7:
     v3 = 0x2000;
   }
 
-  if (a3)
+  if (flags)
   {
     return v3;
   }

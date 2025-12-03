@@ -1,5 +1,5 @@
 @interface UIImagePickerController
-+ (BOOL)_isMediaTypeAvailable:(id)a3 forSource:(int64_t)a4;
++ (BOOL)_isMediaTypeAvailable:(id)available forSource:(int64_t)source;
 + (BOOL)isCameraDeviceAvailable:(UIImagePickerControllerCameraDevice)cameraDevice;
 + (BOOL)isFlashAvailableForCameraDevice:(UIImagePickerControllerCameraDevice)cameraDevice;
 + (BOOL)isSourceTypeAvailable:(UIImagePickerControllerSourceType)sourceType;
@@ -9,15 +9,15 @@
 - (BOOL)_allowsIris;
 - (BOOL)_allowsMultipleSelection;
 - (BOOL)_convertAutoloopsToGIF;
-- (BOOL)_isCameraCaptureModeValid:(int64_t)a3;
-- (BOOL)_isSupportedInterfaceOrientation:(int64_t)a3;
+- (BOOL)_isCameraCaptureModeValid:(int64_t)valid;
+- (BOOL)_isSupportedInterfaceOrientation:(int64_t)orientation;
 - (BOOL)_onlyShowAutoloops;
 - (BOOL)_requiresPickingConfirmation;
 - (BOOL)_showsFileSizePicker;
 - (BOOL)_showsPrompt;
 - (BOOL)_sourceTypeIsCamera;
 - (BOOL)_stagedPhotoPickerIsReadyForDisplay;
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (BOOL)showsCameraControls;
 - (BOOL)startVideoCapture;
 - (CGAffineTransform)cameraViewTransform;
@@ -25,7 +25,7 @@
 - (NSArray)mediaTypes;
 - (NSTimeInterval)videoMaximumDuration;
 - (UIImagePickerController)init;
-- (UIImagePickerController)initWithCoder:(id)a3;
+- (UIImagePickerController)initWithCoder:(id)coder;
 - (UIImagePickerControllerCameraCaptureMode)cameraCaptureMode;
 - (UIImagePickerControllerCameraDevice)cameraDevice;
 - (UIImagePickerControllerCameraFlashMode)cameraFlashMode;
@@ -34,53 +34,53 @@
 - (UIView)cameraOverlayView;
 - (_UIRemoteViewController)_containedRemoteViewController;
 - (id)_cameraViewController;
-- (id)_initWithSourceImageData:(id)a3 cropRect:(CGRect)a4;
+- (id)_initWithSourceImageData:(id)data cropRect:(CGRect)rect;
 - (id)_photoPickerDisplayCompletion;
 - (id)_photoPickerPreviewDisplayCompletion;
 - (id)_properties;
 - (id)_propertiesForPhotoPickerExtension;
-- (id)_valueForProperty:(id)a3;
+- (id)_valueForProperty:(id)property;
 - (int64_t)_preferredModalPresentationStyle;
 - (unint64_t)_multipleSelectionLimit;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_autoDismiss;
-- (void)_createInitialControllerWithCompletion:(id)a3;
+- (void)_createInitialControllerWithCompletion:(id)completion;
 - (void)_handleEndingPhotoPickerPresentationDelay;
-- (void)_handleInstantiatedRemoteViewController:(id)a3 request:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)_handleMatchingExtension:(id)a3 viewControllerClassName:(id)a4 completion:(id)a5;
-- (void)_handleTopViewControllerReadyForDisplay:(id)a3;
+- (void)_handleInstantiatedRemoteViewController:(id)controller request:(id)request error:(id)error completion:(id)completion;
+- (void)_handleMatchingExtension:(id)extension viewControllerClassName:(id)name completion:(id)completion;
+- (void)_handleTopViewControllerReadyForDisplay:(id)display;
 - (void)_imagePickerDidCancel;
-- (void)_imagePickerDidCompleteWithInfo:(id)a3;
-- (void)_imagePickerDidCompleteWithInfoArray:(id)a3;
+- (void)_imagePickerDidCompleteWithInfo:(id)info;
+- (void)_imagePickerDidCompleteWithInfoArray:(id)array;
 - (void)_initializeProperties;
 - (void)_invalidatePhotoPickerServices;
-- (void)_populateArchivedChildViewControllers:(id)a3;
+- (void)_populateArchivedChildViewControllers:(id)controllers;
 - (void)_removeAllChildren;
-- (void)_setAllowsImageEditing:(BOOL)a3;
-- (void)_setAllowsIris:(BOOL)a3;
-- (void)_setAllowsMultipleSelection:(BOOL)a3;
-- (void)_setConvertAutoloopsToGIF:(BOOL)a3;
-- (void)_setMultipleSelectionLimit:(unint64_t)a3;
-- (void)_setOnlyShowAutoloops:(BOOL)a3;
-- (void)_setPhotoPickerDisplayCompletion:(id)a3;
-- (void)_setPhotoPickerPreviewDisplayCompletion:(id)a3;
-- (void)_setProperties:(id)a3;
-- (void)_setRequiresPickingConfirmation:(BOOL)a3;
-- (void)_setShowsFileSizePicker:(BOOL)a3;
-- (void)_setShowsPrompt:(BOOL)a3;
-- (void)_setValue:(id)a3 forProperty:(id)a4;
+- (void)_setAllowsImageEditing:(BOOL)editing;
+- (void)_setAllowsIris:(BOOL)iris;
+- (void)_setAllowsMultipleSelection:(BOOL)selection;
+- (void)_setConvertAutoloopsToGIF:(BOOL)f;
+- (void)_setMultipleSelectionLimit:(unint64_t)limit;
+- (void)_setOnlyShowAutoloops:(BOOL)autoloops;
+- (void)_setPhotoPickerDisplayCompletion:(id)completion;
+- (void)_setPhotoPickerPreviewDisplayCompletion:(id)completion;
+- (void)_setProperties:(id)properties;
+- (void)_setRequiresPickingConfirmation:(BOOL)confirmation;
+- (void)_setShowsFileSizePicker:(BOOL)picker;
+- (void)_setShowsPrompt:(BOOL)prompt;
+- (void)_setValue:(id)value forProperty:(id)property;
 - (void)_setupControllersForCurrentMediaTypes;
-- (void)_setupControllersForCurrentSourceTypeWithCompletion:(id)a3;
+- (void)_setupControllersForCurrentSourceTypeWithCompletion:(id)completion;
 - (void)_testPerformPreviewOfFirstPhoto;
 - (void)_updateCameraCaptureMode;
 - (void)_viewControllerPresentationDidInitiate;
 - (void)cancelPhotoPicker;
 - (void)didDisplayPhotoPickerPreview;
-- (void)didDisplayPhotoPickerSourceType:(id)a3;
-- (void)didSelectMediaWithInfoDictionary:(id)a3;
-- (void)didSelectMultipleMediaItemsWithInfoDictionaries:(id)a3;
-- (void)dismissCurrentViewControllerFromPhotoPickerAnimated:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)didDisplayPhotoPickerSourceType:(id)type;
+- (void)didSelectMediaWithInfoDictionary:(id)dictionary;
+- (void)didSelectMultipleMediaItemsWithInfoDictionaries:(id)dictionaries;
+- (void)dismissCurrentViewControllerFromPhotoPickerAnimated:(id)animated;
+- (void)encodeWithCoder:(id)coder;
 - (void)photoPickerIsReadyForDisplay;
 - (void)setCameraCaptureMode:(UIImagePickerControllerCameraCaptureMode)cameraCaptureMode;
 - (void)setCameraDevice:(UIImagePickerControllerCameraDevice)cameraDevice;
@@ -95,9 +95,9 @@
 - (void)setVideoQuality:(UIImagePickerControllerQualityType)videoQuality;
 - (void)stopVideoCapture;
 - (void)takePicture;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillUnload;
 @end
 
@@ -137,13 +137,13 @@ LABEL_10:
   return v3;
 }
 
-+ (BOOL)_isMediaTypeAvailable:(id)a3 forSource:(int64_t)a4
++ (BOOL)_isMediaTypeAvailable:(id)available forSource:(int64_t)source
 {
-  v6 = a3;
-  if ([a1 isSourceTypeAvailable:a4])
+  availableCopy = available;
+  if ([self isSourceTypeAvailable:source])
   {
-    v7 = [*MEMORY[0x1E6982E30] identifier];
-    v8 = [v6 isEqualToString:v7];
+    identifier = [*MEMORY[0x1E6982E30] identifier];
+    v8 = [availableCopy isEqualToString:identifier];
 
     if (v8)
     {
@@ -152,28 +152,28 @@ LABEL_10:
 
     else
     {
-      v11 = [*MEMORY[0x1E6982EE8] identifier];
-      v12 = [v6 isEqualToString:v11];
+      identifier2 = [*MEMORY[0x1E6982EE8] identifier];
+      v12 = [availableCopy isEqualToString:identifier2];
 
       if (v12)
       {
-        if (a4 == 1)
+        if (source == 1)
         {
           v9 = MGGetBoolAnswer();
         }
 
         else
         {
-          v9 = (a4 & 0xFFFFFFFFFFFFFFFDLL) == 0;
+          v9 = (source & 0xFFFFFFFFFFFFFFFDLL) == 0;
         }
       }
 
       else
       {
-        v13 = [*MEMORY[0x1E6982E80] identifier];
-        v14 = [v6 isEqualToString:v13];
+        identifier3 = [*MEMORY[0x1E6982E80] identifier];
+        v14 = [availableCopy isEqualToString:identifier3];
 
-        if (a4 == 1)
+        if (source == 1)
         {
           v9 = 0;
         }
@@ -197,25 +197,25 @@ LABEL_10:
 + (NSArray)availableMediaTypesForSourceType:(UIImagePickerControllerSourceType)sourceType
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  if ([a1 isSourceTypeAvailable:?])
+  if ([self isSourceTypeAvailable:?])
   {
     v5 = *MEMORY[0x1E6982EE8];
-    v6 = [*MEMORY[0x1E6982EE8] identifier];
-    v7 = [a1 _isMediaTypeAvailable:v6 forSource:sourceType];
+    identifier = [*MEMORY[0x1E6982EE8] identifier];
+    v7 = [self _isMediaTypeAvailable:identifier forSource:sourceType];
 
-    v8 = [*MEMORY[0x1E6982E30] identifier];
-    v9 = v8;
+    identifier2 = [*MEMORY[0x1E6982E30] identifier];
+    v9 = identifier2;
     if (v7)
     {
-      v14[0] = v8;
-      v10 = [v5 identifier];
-      v14[1] = v10;
+      v14[0] = identifier2;
+      identifier3 = [v5 identifier];
+      v14[1] = identifier3;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
     }
 
     else
     {
-      v13 = v8;
+      v13 = identifier2;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
     }
   }
@@ -328,8 +328,8 @@ LABEL_10:
 LABEL_11:
         v2->_sourceType = 0;
         v2->_savingOptions = 2;
-        v7 = [*MEMORY[0x1E6982E30] identifier];
-        v12[0] = v7;
+        identifier = [*MEMORY[0x1E6982E30] identifier];
+        v12[0] = identifier;
         v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
         mediaTypes = v2->_mediaTypes;
         v2->_mediaTypes = v8;
@@ -364,26 +364,26 @@ LABEL_12:
   return v2;
 }
 
-- (UIImagePickerController)initWithCoder:(id)a3
+- (UIImagePickerController)initWithCoder:(id)coder
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = UIImagePickerController;
-  v5 = [(UINavigationController *)&v11 initWithCoder:v4];
+  v5 = [(UINavigationController *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     if (UIImagePickerLoadPhotoLibraryIfNecessary())
     {
       v5->_sourceType = 0;
-      if ([v4 containsValueForKey:@"UISourceType"])
+      if ([coderCopy containsValueForKey:@"UISourceType"])
       {
-        v5->_sourceType = [v4 decodeIntegerForKey:@"UISourceType"];
+        v5->_sourceType = [coderCopy decodeIntegerForKey:@"UISourceType"];
       }
 
-      if ([v4 containsValueForKey:@"UIMediaTypes"])
+      if ([coderCopy containsValueForKey:@"UIMediaTypes"])
       {
-        v6 = [v4 decodeObjectForKey:@"UIMediaTypes"];
+        v6 = [coderCopy decodeObjectForKey:@"UIMediaTypes"];
         mediaTypes = v5->_mediaTypes;
         v5->_mediaTypes = v6;
       }
@@ -397,7 +397,7 @@ LABEL_12:
         v5->_mediaTypes = v8;
       }
 
-      -[UIImagePickerController _setAllowsImageEditing:](v5, "_setAllowsImageEditing:", [v4 decodeBoolForKey:@"UIAllowsImageEditing"]);
+      -[UIImagePickerController _setAllowsImageEditing:](v5, "_setAllowsImageEditing:", [coderCopy decodeBoolForKey:@"UIAllowsImageEditing"]);
       v5->_savingOptions = 2;
       [(UIViewController *)v5 _setIgnoreAppSupportedOrientations:1];
       [(UINavigationController *)v5 setPreferredContentSize:320.0, 480.0];
@@ -413,14 +413,14 @@ LABEL_12:
   return v5;
 }
 
-- (id)_initWithSourceImageData:(id)a3 cropRect:(CGRect)a4
+- (id)_initWithSourceImageData:(id)data cropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v17[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = UIImagePickerController;
   v11 = [(UIViewController *)&v16 init];
@@ -428,14 +428,14 @@ LABEL_12:
   {
     if (UIImagePickerLoadPhotoLibraryIfNecessary())
     {
-      objc_storeStrong(&v11->_image, a3);
+      objc_storeStrong(&v11->_image, data);
       v11->_cropRect.origin.x = x;
       v11->_cropRect.origin.y = y;
       v11->_cropRect.size.width = width;
       v11->_cropRect.size.height = height;
       v11->_sourceType = 1000;
-      v12 = [*MEMORY[0x1E6982E30] identifier];
-      v17[0] = v12;
+      identifier = [*MEMORY[0x1E6982E30] identifier];
+      v17[0] = identifier;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
       mediaTypes = v11->_mediaTypes;
       v11->_mediaTypes = v13;
@@ -456,36 +456,36 @@ LABEL_12:
   return v11;
 }
 
-- (void)_populateArchivedChildViewControllers:(id)a3
+- (void)_populateArchivedChildViewControllers:(id)controllers
 {
   v4.receiver = self;
   v4.super_class = UIImagePickerController;
-  v3 = a3;
-  [(UIViewController *)&v4 _populateArchivedChildViewControllers:v3];
-  [v3 removeAllObjects];
+  controllersCopy = controllers;
+  [(UIViewController *)&v4 _populateArchivedChildViewControllers:controllersCopy];
+  [controllersCopy removeAllObjects];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = UIImagePickerController;
-  [(UINavigationController *)&v7 encodeWithCoder:v4];
+  [(UINavigationController *)&v7 encodeWithCoder:coderCopy];
   sourceType = self->_sourceType;
   if (sourceType)
   {
-    [v4 encodeInteger:sourceType forKey:@"UISourceType"];
+    [coderCopy encodeInteger:sourceType forKey:@"UISourceType"];
   }
 
   if ([(UIImagePickerController *)self _allowsImageEditing])
   {
-    [v4 encodeBool:-[UIImagePickerController _allowsImageEditing](self forKey:{"_allowsImageEditing"), @"UIAllowsImageEditing"}];
+    [coderCopy encodeBool:-[UIImagePickerController _allowsImageEditing](self forKey:{"_allowsImageEditing"), @"UIAllowsImageEditing"}];
   }
 
   mediaTypes = self->_mediaTypes;
   if (mediaTypes)
   {
-    [v4 encodeObject:mediaTypes forKey:@"UIMediaTypes"];
+    [coderCopy encodeObject:mediaTypes forKey:@"UIMediaTypes"];
   }
 }
 
@@ -494,8 +494,8 @@ LABEL_12:
   if ([(UIImagePickerController *)self sourceType]== UIImagePickerControllerSourceTypeCamera && [(NSArray *)self->_mediaTypes count]== 1)
   {
     v5 = [(NSArray *)self->_mediaTypes objectAtIndex:0];
-    v3 = [*MEMORY[0x1E6982EE8] identifier];
-    v4 = [v5 isEqual:v3];
+    identifier = [*MEMORY[0x1E6982EE8] identifier];
+    v4 = [v5 isEqual:identifier];
 
     [(UIImagePickerController *)self setCameraCaptureMode:v4];
   }
@@ -549,8 +549,8 @@ LABEL_12:
 
     if (![(NSArray *)v5 count])
     {
-      v12 = [*MEMORY[0x1E6982E30] identifier];
-      [(NSArray *)v5 addObject:v12];
+      identifier = [*MEMORY[0x1E6982E30] identifier];
+      [(NSArray *)v5 addObject:identifier];
     }
 
     mediaTypes = self->_mediaTypes;
@@ -576,7 +576,7 @@ LABEL_12:
 
   else
   {
-    v5 = [(UIImagePickerController *)self sourceType];
+    sourceType = [(UIImagePickerController *)self sourceType];
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v22 = 0u;
     v23 = 0u;
@@ -599,7 +599,7 @@ LABEL_12:
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          if ([objc_opt_class() _isMediaTypeAvailable:v13 forSource:v5])
+          if ([objc_opt_class() _isMediaTypeAvailable:v13 forSource:sourceType])
           {
             [v6 addObject:v13];
             ++v10;
@@ -618,11 +618,11 @@ LABEL_12:
       v14 = 1;
     }
 
-    v15 = [*MEMORY[0x1E6982E80] identifier];
-    if ([v6 containsObject:v15])
+    identifier = [*MEMORY[0x1E6982E80] identifier];
+    if ([v6 containsObject:identifier])
     {
-      v16 = [*MEMORY[0x1E6982E30] identifier];
-      v17 = [v6 containsObject:v16];
+      identifier2 = [*MEMORY[0x1E6982E30] identifier];
+      v17 = [v6 containsObject:identifier2];
 
       if ((v17 & 1) == 0)
       {
@@ -639,7 +639,7 @@ LABEL_12:
     if (v14)
     {
       v18 = MEMORY[0x1E696AEC0];
-      v21 = v5;
+      v21 = sourceType;
       v19 = @"No available types for source %ld";
 LABEL_23:
       [v18 stringWithFormat:v19, v21];
@@ -666,121 +666,121 @@ LABEL_23:
 - (BOOL)_allowsMultipleSelection
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerAllowMutipleSelection"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setAllowsMultipleSelection:(BOOL)a3
+- (void)_setAllowsMultipleSelection:(BOOL)selection
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:selection];
   [(UIImagePickerController *)self _setValue:v4 forProperty:@"_UIImagePickerControllerAllowMutipleSelection"];
 }
 
 - (unint64_t)_multipleSelectionLimit
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerMultipleSelectionLimit"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)_setMultipleSelectionLimit:(unint64_t)a3
+- (void)_setMultipleSelectionLimit:(unint64_t)limit
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
   [(UIImagePickerController *)self _setValue:v4 forProperty:@"_UIImagePickerControllerMultipleSelectionLimit"];
 }
 
 - (BOOL)_requiresPickingConfirmation
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerRequiresPickingConfirmation"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setRequiresPickingConfirmation:(BOOL)a3
+- (void)_setRequiresPickingConfirmation:(BOOL)confirmation
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:confirmation];
   [(UIImagePickerController *)self _setValue:v4 forProperty:@"_UIImagePickerControllerRequiresPickingConfirmation"];
 }
 
 - (BOOL)_showsFileSizePicker
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerShowsFileSizePicker"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setShowsFileSizePicker:(BOOL)a3
+- (void)_setShowsFileSizePicker:(BOOL)picker
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:picker];
   [(UIImagePickerController *)self _setValue:v4 forProperty:@"_UIImagePickerControllerShowsFileSizePicker"];
 }
 
 - (BOOL)_onlyShowAutoloops
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerOnlyShowAutoloopVideos"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setOnlyShowAutoloops:(BOOL)a3
+- (void)_setOnlyShowAutoloops:(BOOL)autoloops
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:autoloops];
   [(UIImagePickerController *)self _setValue:v4 forProperty:@"_UIImagePickerControllerOnlyShowAutoloopVideos"];
 }
 
 - (BOOL)_convertAutoloopsToGIF
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerConvertAutoloopsToGIF"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setConvertAutoloopsToGIF:(BOOL)a3
+- (void)_setConvertAutoloopsToGIF:(BOOL)f
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:f];
   [(UIImagePickerController *)self _setValue:v4 forProperty:@"_UIImagePickerControllerConvertAutoloopsToGIF"];
 }
 
 - (BOOL)_showsPrompt
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerShowsPrompt"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setShowsPrompt:(BOOL)a3
+- (void)_setShowsPrompt:(BOOL)prompt
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:prompt];
   [(UIImagePickerController *)self _setValue:v4 forProperty:@"_UIImagePickerControllerShowsPrompt"];
 }
 
 - (BOOL)_allowsIris
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerAllowIris"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setAllowsIris:(BOOL)a3
+- (void)_setAllowsIris:(BOOL)iris
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:iris];
   [(UIImagePickerController *)self _setValue:v4 forProperty:@"_UIImagePickerControllerAllowIris"];
 }
 
 - (UIImagePickerControllerImageURLExportPreset)imageExportPreset
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerImageURLExportPreset"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (void)setImageExportPreset:(UIImagePickerControllerImageURLExportPreset)imageExportPreset
@@ -807,9 +807,9 @@ LABEL_23:
 - (UIImagePickerControllerQualityType)videoQuality
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"UIImagePickerControllerVideoQuality"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (void)setVideoQuality:(UIImagePickerControllerQualityType)videoQuality
@@ -818,31 +818,31 @@ LABEL_23:
   [(UIImagePickerController *)self _setValue:v4 forProperty:@"UIImagePickerControllerVideoQuality"];
 }
 
-- (void)_setAllowsImageEditing:(BOOL)a3
+- (void)_setAllowsImageEditing:(BOOL)editing
 {
-  v3 = a3;
-  if ([(UIImagePickerController *)self _allowsImageEditing]!= a3)
+  editingCopy = editing;
+  if ([(UIImagePickerController *)self _allowsImageEditing]!= editing)
   {
-    if (v3)
+    if (editingCopy)
     {
       v5 = [NSClassFromString(&cfstr_Plprivacy.isa) performSelector:sel_sharedInstance];
       if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v6 = [v5 isPhotoLibraryModificationAllowed];
+        isPhotoLibraryModificationAllowed = [v5 isPhotoLibraryModificationAllowed];
       }
 
       else
       {
-        v6 = 1;
+        isPhotoLibraryModificationAllowed = 1;
       }
     }
 
     else
     {
-      v6 = 0;
+      isPhotoLibraryModificationAllowed = 0;
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:isPhotoLibraryModificationAllowed];
     [(UIImagePickerController *)self _setValue:v7 forProperty:@"UIImagePickerControllerAllowsEditing"];
   }
 }
@@ -850,18 +850,18 @@ LABEL_23:
 - (BOOL)_allowsImageEditing
 {
   v2 = [(UIImagePickerController *)self _valueForProperty:@"UIImagePickerControllerAllowsEditing"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)_setProperties:(id)a3
+- (void)_setProperties:(id)properties
 {
-  if (self->_properties != a3)
+  if (self->_properties != properties)
   {
     v4 = MEMORY[0x1E695DF90];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithDictionary:v5];
+    propertiesCopy = properties;
+    v6 = [[v4 alloc] initWithDictionary:propertiesCopy];
 
     properties = self->_properties;
     self->_properties = v6;
@@ -917,37 +917,37 @@ LABEL_23:
   return v4;
 }
 
-- (void)_setValue:(id)a3 forProperty:(id)a4
+- (void)_setValue:(id)value forProperty:(id)property
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  propertyCopy = property;
   if (!self->_properties)
   {
     [(UIImagePickerController *)self _initializeProperties];
   }
 
-  v7 = [(UIImagePickerController *)self _allowsImageEditing];
+  _allowsImageEditing = [(UIImagePickerController *)self _allowsImageEditing];
   properties = self->_properties;
-  if (v10)
+  if (valueCopy)
   {
-    [(NSMutableDictionary *)properties setObject:v10 forKey:v6];
+    [(NSMutableDictionary *)properties setObject:valueCopy forKey:propertyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)properties removeObjectForKey:v6];
+    [(NSMutableDictionary *)properties removeObjectForKey:propertyCopy];
   }
 
-  if (v7 != [(UIImagePickerController *)self _allowsImageEditing])
+  if (_allowsImageEditing != [(UIImagePickerController *)self _allowsImageEditing])
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"_UIImagePickerControllerEditabilityChanged" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIImagePickerControllerEditabilityChanged" object:self userInfo:0];
   }
 }
 
-- (id)_valueForProperty:(id)a3
+- (id)_valueForProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   properties = self->_properties;
   if (!properties)
   {
@@ -955,31 +955,31 @@ LABEL_23:
     properties = self->_properties;
   }
 
-  v6 = [(NSMutableDictionary *)properties objectForKey:v4];
+  v6 = [(NSMutableDictionary *)properties objectForKey:propertyCopy];
 
   return v6;
 }
 
 - (BOOL)_sourceTypeIsCamera
 {
-  v2 = [(UIImagePickerController *)self sourceType];
-  if (v2 != UIImagePickerControllerSourceTypeCamera)
+  sourceType = [(UIImagePickerController *)self sourceType];
+  if (sourceType != UIImagePickerControllerSourceTypeCamera)
   {
     v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Source type must be UIImagePickerControllerSourceTypeCamera" userInfo:0];
     objc_exception_throw(v3);
   }
 
-  return v2;
+  return sourceType;
 }
 
 - (id)_cameraViewController
 {
   if ([(UIImagePickerController *)self _sourceTypeIsCamera])
   {
-    v3 = [(UINavigationController *)self viewControllers];
-    if ([v3 count])
+    viewControllers = [(UINavigationController *)self viewControllers];
+    if ([viewControllers count])
     {
-      v4 = [v3 objectAtIndex:0];
+      v4 = [viewControllers objectAtIndex:0];
     }
 
     else
@@ -1015,17 +1015,17 @@ LABEL_23:
 
   if (*&self->_imagePickerFlags)
   {
-    v3 = [(UIImagePickerController *)self _cameraViewController];
-    v4 = [v3 _showsCameraControls];
+    _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+    _showsCameraControls = [_cameraViewController _showsCameraControls];
   }
 
   else
   {
-    v3 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerShowCameraControls"];
-    v4 = [v3 BOOLValue];
+    _cameraViewController = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerShowCameraControls"];
+    _showsCameraControls = [_cameraViewController BOOLValue];
   }
 
-  v5 = v4;
+  v5 = _showsCameraControls;
 
   return v5;
 }
@@ -1037,13 +1037,13 @@ LABEL_23:
   {
     if (*&self->_imagePickerFlags)
     {
-      v5 = [(UIImagePickerController *)self _cameraViewController];
-      [v5 _setShowsCameraControls:v3];
+      _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+      [_cameraViewController _setShowsCameraControls:v3];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+      _cameraViewController = [MEMORY[0x1E696AD98] numberWithBool:v3];
       [UIImagePickerController _setValue:"_setValue:forProperty:" forProperty:?];
     }
   }
@@ -1053,17 +1053,17 @@ LABEL_23:
 {
   if ([(UIImagePickerController *)self _sourceTypeIsCamera])
   {
-    v3 = [(UIImagePickerController *)self _cameraViewController];
-    v4 = v3;
-    if (v3)
+    _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+    v4 = _cameraViewController;
+    if (_cameraViewController)
     {
-      v5 = [v3 _cameraOverlayView];
+      _cameraOverlayView = [_cameraViewController _cameraOverlayView];
     }
 
     else
     {
-      v5 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerCameraOverlayView"];
-      if (!v5)
+      _cameraOverlayView = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerCameraOverlayView"];
+      if (!_cameraOverlayView)
       {
         v6 = +[UIWindow _applicationKeyWindow];
         [v6 bounds];
@@ -1072,18 +1072,18 @@ LABEL_23:
         v12 = v11;
         v14 = v13;
 
-        v5 = [[UIView alloc] initWithFrame:v8, v10, v12, v14];
-        [(UIImagePickerController *)self _setValue:v5 forProperty:@"_UIImagePickerControllerCameraOverlayView"];
+        _cameraOverlayView = [[UIView alloc] initWithFrame:v8, v10, v12, v14];
+        [(UIImagePickerController *)self _setValue:_cameraOverlayView forProperty:@"_UIImagePickerControllerCameraOverlayView"];
       }
     }
   }
 
   else
   {
-    v5 = 0;
+    _cameraOverlayView = 0;
   }
 
-  return v5;
+  return _cameraOverlayView;
 }
 
 - (void)setCameraOverlayView:(UIView *)cameraOverlayView
@@ -1091,11 +1091,11 @@ LABEL_23:
   v6 = cameraOverlayView;
   if ([(UIImagePickerController *)self _sourceTypeIsCamera])
   {
-    v4 = [(UIImagePickerController *)self _cameraViewController];
-    v5 = v4;
-    if (v4)
+    _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+    v5 = _cameraViewController;
+    if (_cameraViewController)
     {
-      [v4 _setCameraOverlayView:v6];
+      [_cameraViewController _setCameraOverlayView:v6];
     }
 
     else
@@ -1117,11 +1117,11 @@ LABEL_23:
   {
     if (*&self->_imagePickerFlags)
     {
-      v10 = [(UIImagePickerController *)self _cameraViewController];
-      v9 = v10;
-      if (v10)
+      _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+      v9 = _cameraViewController;
+      if (_cameraViewController)
       {
-        [v10 _cameraViewTransform];
+        [_cameraViewController _cameraViewTransform];
         goto LABEL_8;
       }
     }
@@ -1157,12 +1157,12 @@ LABEL_8:
   {
     if (*&self->_imagePickerFlags)
     {
-      v6 = [(UIImagePickerController *)self _cameraViewController];
+      _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
       v7 = *&cameraViewTransform->c;
       v8 = *&cameraViewTransform->a;
       v9 = v7;
       v10 = *&cameraViewTransform->tx;
-      [v6 _setCameraViewTransform:&v8];
+      [_cameraViewController _setCameraViewTransform:&v8];
     }
 
     else
@@ -1171,8 +1171,8 @@ LABEL_8:
       v8 = *&cameraViewTransform->a;
       v9 = v5;
       v10 = *&cameraViewTransform->tx;
-      v6 = [MEMORY[0x1E696B098] valueWithCGAffineTransform:&v8];
-      [(UIImagePickerController *)self _setValue:v6 forProperty:@"_UIImagePickerControllerCameraViewTransform"];
+      _cameraViewController = [MEMORY[0x1E696B098] valueWithCGAffineTransform:&v8];
+      [(UIImagePickerController *)self _setValue:_cameraViewController forProperty:@"_UIImagePickerControllerCameraViewTransform"];
     }
   }
 }
@@ -1181,31 +1181,31 @@ LABEL_8:
 {
   if ([(UIImagePickerController *)self _sourceTypeIsCamera])
   {
-    v3 = [(UIImagePickerController *)self _cameraViewController];
-    [v3 _takePicture];
+    _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+    [_cameraViewController _takePicture];
   }
 }
 
 - (BOOL)startVideoCapture
 {
-  v3 = [(UIImagePickerController *)self _sourceTypeIsCamera];
-  if (v3)
+  _sourceTypeIsCamera = [(UIImagePickerController *)self _sourceTypeIsCamera];
+  if (_sourceTypeIsCamera)
   {
-    v4 = [(UIImagePickerController *)self _cameraViewController];
-    v5 = [v4 _startVideoCapture];
+    _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+    _startVideoCapture = [_cameraViewController _startVideoCapture];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_sourceTypeIsCamera) = _startVideoCapture;
   }
 
-  return v3;
+  return _sourceTypeIsCamera;
 }
 
 - (void)stopVideoCapture
 {
   if ([(UIImagePickerController *)self _sourceTypeIsCamera])
   {
-    v3 = [(UIImagePickerController *)self _cameraViewController];
-    [v3 _stopVideoCapture];
+    _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+    [_cameraViewController _stopVideoCapture];
   }
 }
 
@@ -1218,17 +1218,17 @@ LABEL_8:
 
   if (*&self->_imagePickerFlags)
   {
-    v3 = [(UIImagePickerController *)self _cameraViewController];
-    v4 = [v3 _cameraDevice];
+    _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+    _cameraDevice = [_cameraViewController _cameraDevice];
   }
 
   else
   {
-    v3 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerCameraDevice"];
-    v4 = [v3 intValue];
+    _cameraViewController = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerCameraDevice"];
+    _cameraDevice = [_cameraViewController intValue];
   }
 
-  return v4;
+  return _cameraDevice;
 }
 
 - (void)setCameraDevice:(UIImagePickerControllerCameraDevice)cameraDevice
@@ -1237,13 +1237,13 @@ LABEL_8:
   {
     if (*&self->_imagePickerFlags)
     {
-      v5 = [(UIImagePickerController *)self _cameraViewController];
-      [v5 _setCameraDevice:cameraDevice];
+      _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+      [_cameraViewController _setCameraDevice:cameraDevice];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AD98] numberWithInt:cameraDevice];
+      _cameraViewController = [MEMORY[0x1E696AD98] numberWithInt:cameraDevice];
       [UIImagePickerController _setValue:"_setValue:forProperty:" forProperty:?];
     }
   }
@@ -1258,23 +1258,23 @@ LABEL_8:
 
   if (*&self->_imagePickerFlags)
   {
-    v3 = [(UIImagePickerController *)self _cameraViewController];
-    v4 = [v3 _cameraCaptureMode];
+    _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+    _cameraCaptureMode = [_cameraViewController _cameraCaptureMode];
   }
 
   else
   {
-    v3 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerCameraCaptureMode"];
-    v4 = [v3 intValue];
+    _cameraViewController = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerCameraCaptureMode"];
+    _cameraCaptureMode = [_cameraViewController intValue];
   }
 
-  return v4;
+  return _cameraCaptureMode;
 }
 
-- (BOOL)_isCameraCaptureModeValid:(int64_t)a3
+- (BOOL)_isCameraCaptureModeValid:(int64_t)valid
 {
   mediaTypes = self->_mediaTypes;
-  v4 = MediaTypeForCameraCaptureMode(a3);
+  v4 = MediaTypeForCameraCaptureMode(valid);
   LOBYTE(mediaTypes) = [(NSArray *)mediaTypes containsObject:v4];
 
   return mediaTypes;
@@ -1294,13 +1294,13 @@ LABEL_8:
 
     if (*&self->_imagePickerFlags)
     {
-      v6 = [(UIImagePickerController *)self _cameraViewController];
-      [v6 _setCameraCaptureMode:cameraCaptureMode];
+      _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+      [_cameraViewController _setCameraCaptureMode:cameraCaptureMode];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInt:cameraCaptureMode];
+      _cameraViewController = [MEMORY[0x1E696AD98] numberWithInt:cameraCaptureMode];
       [UIImagePickerController _setValue:"_setValue:forProperty:" forProperty:?];
     }
   }
@@ -1315,17 +1315,17 @@ LABEL_8:
 
   if (*&self->_imagePickerFlags)
   {
-    v3 = [(UIImagePickerController *)self _cameraViewController];
-    v4 = [v3 _cameraFlashMode];
+    _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+    _cameraFlashMode = [_cameraViewController _cameraFlashMode];
   }
 
   else
   {
-    v3 = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerCameraFlashMode"];
-    v4 = [v3 intValue];
+    _cameraViewController = [(UIImagePickerController *)self _valueForProperty:@"_UIImagePickerControllerCameraFlashMode"];
+    _cameraFlashMode = [_cameraViewController intValue];
   }
 
-  return v4;
+  return _cameraFlashMode;
 }
 
 - (void)setCameraFlashMode:(UIImagePickerControllerCameraFlashMode)cameraFlashMode
@@ -1334,13 +1334,13 @@ LABEL_8:
   {
     if (*&self->_imagePickerFlags)
     {
-      v5 = [(UIImagePickerController *)self _cameraViewController];
-      [v5 _setCameraFlashMode:cameraFlashMode];
+      _cameraViewController = [(UIImagePickerController *)self _cameraViewController];
+      [_cameraViewController _setCameraFlashMode:cameraFlashMode];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AD98] numberWithInt:cameraFlashMode];
+      _cameraViewController = [MEMORY[0x1E696AD98] numberWithInt:cameraFlashMode];
       [UIImagePickerController _setValue:"_setValue:forProperty:" forProperty:?];
     }
   }
@@ -1368,13 +1368,13 @@ LABEL_8:
 
 - (void)viewWillUnload
 {
-  v3 = [(UIViewController *)self parentViewController];
-  if (v3)
+  parentViewController = [(UIViewController *)self parentViewController];
+  if (parentViewController)
   {
-    v4 = v3;
-    v5 = [(UIViewController *)self presentingViewController];
+    v4 = parentViewController;
+    presentingViewController = [(UIViewController *)self presentingViewController];
 
-    if (!v5)
+    if (!presentingViewController)
     {
       *&self->_imagePickerFlags &= ~1u;
       [(UIImagePickerController *)self _removeAllChildren];
@@ -1386,16 +1386,16 @@ LABEL_8:
   [(UIViewController *)&v6 viewWillUnload];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if ((*&self->_imagePickerFlags & 3) == 0)
   {
     *&self->_imagePickerFlags = *&self->_imagePickerFlags & 0xF8 | 1;
     if (!self->_photoPickerIsPreheating)
     {
-      v5 = [(UINavigationController *)self viewControllers];
-      v6 = [v5 count];
+      viewControllers = [(UINavigationController *)self viewControllers];
+      v6 = [viewControllers count];
 
       if (!v6)
       {
@@ -1415,9 +1415,9 @@ LABEL_8:
 
     if (([UIApp _viewControllerBasedStatusBarAppearance] & 1) == 0)
     {
-      v8 = [(UINavigationController *)self _window];
-      v9 = __UIStatusBarManagerForWindow(v8);
-      v10 = [v9 statusBarStyle];
+      _window = [(UINavigationController *)self _window];
+      v9 = __UIStatusBarManagerForWindow(_window);
+      statusBarStyle = [v9 statusBarStyle];
 
       v11 = __UIStatusBarManagerForWindow(0);
       LODWORD(v9) = [v11 isStatusBarHidden];
@@ -1429,58 +1429,58 @@ LABEL_8:
 
       else
       {
-        v12 = v10;
+        v12 = statusBarStyle;
       }
 
       self->_previousStatusBarStyle = v12;
-      v13 = [(UINavigationController *)self _window];
-      v14 = __UIStatusBarManagerForWindow(v13);
-      v15 = [v14 isStatusBarHidden];
+      _window2 = [(UINavigationController *)self _window];
+      v14 = __UIStatusBarManagerForWindow(_window2);
+      isStatusBarHidden = [v14 isStatusBarHidden];
 
-      self->_previousStatusBarHidden = v15;
+      self->_previousStatusBarHidden = isStatusBarHidden;
     }
   }
 
   v16.receiver = self;
   v16.super_class = UIImagePickerController;
-  [(UINavigationController *)&v16 viewWillAppear:v3];
+  [(UINavigationController *)&v16 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ([UIApp _viewControllerBasedStatusBarAppearance])
   {
     goto LABEL_9;
   }
 
-  v5 = [(UINavigationController *)self viewControllers];
+  viewControllers = [(UINavigationController *)self viewControllers];
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v8 = [(UIViewController *)self presentedViewController];
-    if (v8)
+    presentedViewController = [(UIViewController *)self presentedViewController];
+    if (presentedViewController)
     {
 LABEL_4:
 
       goto LABEL_5;
     }
 
-    if ([v5 count] >= 2)
+    if ([viewControllers count] >= 2)
     {
       *&self->_imagePickerFlags |= 4u;
-      v13 = [(UINavigationController *)self _window];
-      v14 = __UIStatusBarManagerForWindow(v13);
-      v15 = [v14 statusBarStyle];
+      _window = [(UINavigationController *)self _window];
+      v14 = __UIStatusBarManagerForWindow(_window);
+      statusBarStyle = [v14 statusBarStyle];
 
-      v8 = [v5 lastObject];
-      v16 = [v8 _imagePickerStatusBarStyle];
+      presentedViewController = [viewControllers lastObject];
+      _imagePickerStatusBarStyle = [presentedViewController _imagePickerStatusBarStyle];
       previousStatusBarStyle = self->_previousStatusBarStyle;
-      if (previousStatusBarStyle != -1 && v15 == v16 && v15 != previousStatusBarStyle)
+      if (previousStatusBarStyle != -1 && statusBarStyle == _imagePickerStatusBarStyle && statusBarStyle != previousStatusBarStyle)
       {
-        if (v3)
+        if (disappearCopy)
         {
           [UITransitionView defaultDurationForTransition:2];
           previousStatusBarStyle = self->_previousStatusBarStyle;
@@ -1500,39 +1500,39 @@ LABEL_4:
 
 LABEL_5:
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom2 = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v11 = [(UIViewController *)self presentedViewController];
+    presentedViewController2 = [(UIViewController *)self presentedViewController];
 
-    if (!v11)
+    if (!presentedViewController2)
     {
-      v12 = [[UIStatusBarHideAnimationParameters alloc] initWithDefaultParameters];
-      [(UIStatusBarHideAnimationParameters *)v12 setHideAnimation:0];
-      [UIApp setStatusBarHidden:self->_previousStatusBarHidden animationParameters:v12];
+      initWithDefaultParameters = [[UIStatusBarHideAnimationParameters alloc] initWithDefaultParameters];
+      [(UIStatusBarHideAnimationParameters *)initWithDefaultParameters setHideAnimation:0];
+      [UIApp setStatusBarHidden:self->_previousStatusBarHidden animationParameters:initWithDefaultParameters];
     }
   }
 
 LABEL_9:
   v19.receiver = self;
   v19.super_class = UIImagePickerController;
-  [(UINavigationController *)&v19 viewWillDisappear:v3];
+  [(UINavigationController *)&v19 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(UIViewController *)self parentViewController];
-  if (v5)
+  disappearCopy = disappear;
+  parentViewController = [(UIViewController *)self parentViewController];
+  if (parentViewController)
   {
   }
 
   else
   {
-    v6 = [(UIViewController *)self presentingViewController];
+    presentingViewController = [(UIViewController *)self presentingViewController];
 
-    if (!v6)
+    if (!presentingViewController)
     {
       *&self->_imagePickerFlags &= ~1u;
       [(UIImagePickerController *)self _invalidatePhotoPickerServices];
@@ -1554,10 +1554,10 @@ LABEL_9:
   *&self->_imagePickerFlags &= ~4u;
   v8.receiver = self;
   v8.super_class = UIImagePickerController;
-  [(UINavigationController *)&v8 viewDidDisappear:v3];
+  [(UINavigationController *)&v8 viewDidDisappear:disappearCopy];
 }
 
-- (BOOL)_isSupportedInterfaceOrientation:(int64_t)a3
+- (BOOL)_isSupportedInterfaceOrientation:(int64_t)orientation
 {
   if ([(UIImagePickerController *)self sourceType]!= UIImagePickerControllerSourceTypeCamera)
   {
@@ -1565,12 +1565,12 @@ LABEL_9:
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  return a3 == 1 || (v5 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return orientation == 1 || (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   if ([(UIImagePickerController *)self sourceType]!= UIImagePickerControllerSourceTypeCamera)
   {
@@ -1578,9 +1578,9 @@ LABEL_9:
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  return a3 == 1 || (v5 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return orientation == 1 || (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -1598,35 +1598,35 @@ LABEL_9:
 
 - (void)_removeAllChildren
 {
-  v3 = [(UINavigationController *)self topViewController];
+  topViewController = [(UINavigationController *)self topViewController];
 
-  if (v3)
+  if (topViewController)
   {
-    v4 = [(UIViewController *)self presentedViewController];
+    presentedViewController = [(UIViewController *)self presentedViewController];
 
-    if (v4)
+    if (presentedViewController)
     {
       *&self->_imagePickerFlags |= 2u;
       [(UIViewController *)self dismissViewControllerAnimated:0 completion:0];
       *&self->_imagePickerFlags &= ~2u;
     }
 
-    v6 = [(UINavigationController *)self topViewController];
+    topViewController2 = [(UINavigationController *)self topViewController];
     [(UINavigationController *)self setViewControllers:MEMORY[0x1E695E0F0]];
     if (objc_opt_respondsToSelector())
     {
-      [v6 performSelector:sel__removedAsTopViewController];
+      [topViewController2 performSelector:sel__removedAsTopViewController];
     }
 
-    v5 = [(UIViewController *)self view];
-    [v5 layoutSubviews];
+    view = [(UIViewController *)self view];
+    [view layoutSubviews];
   }
 }
 
-- (void)_createInitialControllerWithCompletion:(id)a3
+- (void)_createInitialControllerWithCompletion:(id)completion
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   sourceType = self->_sourceType;
   if (sourceType > 1)
   {
@@ -1663,11 +1663,11 @@ LABEL_8:
       -[_UIImagePickerPlaceholderViewController setHidesPlaceholderNavigationBar:](v9, "setHidesPlaceholderNavigationBar:", [v10 BOOLValue]);
 
       v11 = +[UIColor systemBackgroundColor];
-      v12 = [(UIViewController *)v9 view];
-      [v12 setBackgroundColor:v11];
+      view = [(UIViewController *)v9 view];
+      [view setBackgroundColor:v11];
 
 LABEL_18:
-      v4[2](v4, v9, 0);
+      completionCopy[2](completionCopy, v9, 0);
 LABEL_19:
 
       goto LABEL_20;
@@ -1680,10 +1680,10 @@ LABEL_10:
     -[_UIImagePickerPlaceholderViewController setHidesPlaceholderNavigationBar:](v9, "setHidesPlaceholderNavigationBar:", [v13 BOOLValue]);
 
     v14 = +[UIColor systemBackgroundColor];
-    v15 = [(UIViewController *)v9 view];
-    [v15 setBackgroundColor:v14];
+    view2 = [(UIViewController *)v9 view];
+    [view2 setBackgroundColor:v14];
 
-    v4[2](v4, v9, 1);
+    completionCopy[2](completionCopy, v9, 1);
     v31 = *MEMORY[0x1E696A2E0];
     v32[0] = @"com.apple.mobileslideshow.photo-picker";
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
@@ -1692,14 +1692,14 @@ LABEL_10:
     v18 = v30;
     if ([v17 count])
     {
-      v19 = [v17 firstObject];
-      [(UIImagePickerController *)self setPhotosExtension:v19];
+      firstObject = [v17 firstObject];
+      [(UIImagePickerController *)self setPhotosExtension:firstObject];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __66__UIImagePickerController__createInitialControllerWithCompletion___block_invoke;
       v28[3] = &unk_1E7102738;
-      v29 = v4;
-      [(UIImagePickerController *)self _handleMatchingExtension:v19 viewControllerClassName:v8 completion:v28];
+      v29 = completionCopy;
+      [(UIImagePickerController *)self _handleMatchingExtension:firstObject viewControllerClassName:v8 completion:v28];
     }
 
     else
@@ -1721,25 +1721,25 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v6 = [(UIImagePickerController *)self _properties];
-  v7 = [objc_alloc(NSClassFromString(&cfstr_Camimagepicker.isa)) initWithInitialImagePickerProperties:v6];
+  _properties = [(UIImagePickerController *)self _properties];
+  v7 = [objc_alloc(NSClassFromString(&cfstr_Camimagepicker.isa)) initWithInitialImagePickerProperties:_properties];
   [(UIViewController *)v7 _setImagePickerMediaTypes:self->_mediaTypes];
-  v4[2](v4, v7, 0);
+  completionCopy[2](completionCopy, v7, 0);
 
 LABEL_20:
 }
 
-- (void)_handleMatchingExtension:(id)a3 viewControllerClassName:(id)a4 completion:(id)a5
+- (void)_handleMatchingExtension:(id)extension viewControllerClassName:(id)name completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIImagePickerController *)self _propertiesForPhotoPickerExtension];
+  extensionCopy = extension;
+  nameCopy = name;
+  completionCopy = completion;
+  _propertiesForPhotoPickerExtension = [(UIImagePickerController *)self _propertiesForPhotoPickerExtension];
   v12 = [objc_alloc(-[UIImagePickerController photoPickerRequestOptionsClass](self "photoPickerRequestOptionsClass"))];
   v13 = objc_alloc(MEMORY[0x1E696ACA0]);
-  v14 = [*MEMORY[0x1E6982E48] identifier];
-  v15 = [v13 initWithItem:v12 typeIdentifier:v14];
+  identifier = [*MEMORY[0x1E6982E48] identifier];
+  v15 = [v13 initWithItem:v12 typeIdentifier:identifier];
 
   v16 = objc_alloc_init(MEMORY[0x1E696ABE0]);
   v25[0] = v15;
@@ -1754,9 +1754,9 @@ LABEL_20:
   v20[2] = __87__UIImagePickerController__handleMatchingExtension_viewControllerClassName_completion___block_invoke;
   v20[3] = &unk_1E7102760;
   objc_copyWeak(&v22, &location);
-  v19 = v10;
+  v19 = completionCopy;
   v21 = v19;
-  [v8 instantiateViewControllerWithInputItems:v18 connectionHandler:v20];
+  [extensionCopy instantiateViewControllerWithInputItems:v18 connectionHandler:v20];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -1771,40 +1771,40 @@ void __87__UIImagePickerController__handleMatchingExtension_viewControllerClassN
   [WeakRetained _handleInstantiatedRemoteViewController:v8 request:v9 error:v7 completion:*(a1 + 32)];
 }
 
-- (void)_handleInstantiatedRemoteViewController:(id)a3 request:(id)a4 error:(id)a5 completion:(id)a6
+- (void)_handleInstantiatedRemoteViewController:(id)controller request:(id)request error:(id)error completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  controllerCopy = controller;
+  requestCopy = request;
+  errorCopy = error;
+  completionCopy = completion;
+  if (controllerCopy)
   {
-    v14 = v11;
-    v15 = [(UIImagePickerController *)self photosExtension];
-    v16 = [v15 _extensionContextForUUID:v14];
+    v14 = requestCopy;
+    photosExtension = [(UIImagePickerController *)self photosExtension];
+    v16 = [photosExtension _extensionContextForUUID:v14];
 
     [v16 performSelector:sel_setDelegate_ withObject:self];
     [v16 performSelector:sel_setRequestIdentifier_ withObject:v14];
-    [v10 performSelector:sel_setHostExtensionContext_ withObject:v16];
+    [controllerCopy performSelector:sel_setHostExtensionContext_ withObject:v16];
     if (objc_opt_respondsToSelector())
     {
-      [v10 _setImagePickerMediaTypes:self->_mediaTypes];
+      [controllerCopy _setImagePickerMediaTypes:self->_mediaTypes];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v10 performSelector:sel_setDelegate_ withObject:self];
+      [controllerCopy performSelector:sel_setDelegate_ withObject:self];
     }
 
-    v17 = [(UIViewController *)self view];
-    [v17 frame];
+    view = [(UIViewController *)self view];
+    [view frame];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
-    v26 = [v10 view];
-    [v26 setFrame:{v19, v21, v23, v25}];
+    view2 = [controllerCopy view];
+    [view2 setFrame:{v19, v21, v23, v25}];
     if (dyld_program_sdk_at_least())
     {
       objc_initWeak(location, self);
@@ -1812,8 +1812,8 @@ void __87__UIImagePickerController__handleMatchingExtension_viewControllerClassN
       block[1] = 3221225472;
       block[2] = __92__UIImagePickerController__handleInstantiatedRemoteViewController_request_error_completion___block_invoke_3;
       block[3] = &unk_1E70F7558;
-      v35 = v13;
-      v34 = v10;
+      v35 = completionCopy;
+      v34 = controllerCopy;
       objc_copyWeak(&v36, location);
       dispatch_async(MEMORY[0x1E69E96A0], block);
       objc_destroyWeak(&v36);
@@ -1823,20 +1823,20 @@ void __87__UIImagePickerController__handleMatchingExtension_viewControllerClassN
 
     else
     {
-      v32 = v11;
-      v30 = [(UIViewController *)self traitCollection];
-      [v10 setOverrideTraitCollection:?];
+      v32 = requestCopy;
+      traitCollection = [(UIViewController *)self traitCollection];
+      [controllerCopy setOverrideTraitCollection:?];
       [(UIViewController *)self _contentOverlayInsets];
-      [v10 _setContentOverlayInsets:?];
+      [controllerCopy _setContentOverlayInsets:?];
       objc_initWeak(location, self);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __92__UIImagePickerController__handleInstantiatedRemoteViewController_request_error_completion___block_invoke;
       aBlock[3] = &unk_1E7102788;
-      v38 = v12;
-      v31 = v13;
-      v40 = v13;
-      v27 = v10;
+      v38 = errorCopy;
+      v31 = completionCopy;
+      v40 = completionCopy;
+      v27 = controllerCopy;
       v39 = v27;
       objc_copyWeak(&v41, location);
       v28 = _Block_copy(aBlock);
@@ -1846,14 +1846,14 @@ void __87__UIImagePickerController__handleMatchingExtension_viewControllerClassN
       objc_destroyWeak(&v41);
       objc_destroyWeak(location);
 
-      v13 = v31;
-      v11 = v32;
+      completionCopy = v31;
+      requestCopy = v32;
     }
   }
 
-  if (v12)
+  if (errorCopy)
   {
-    NSLog(&cfstr_Uiimagepickerc_64.isa, v12);
+    NSLog(&cfstr_Uiimagepickerc_64.isa, errorCopy);
   }
 }
 
@@ -1904,28 +1904,28 @@ void __92__UIImagePickerController__handleInstantiatedRemoteViewController_reque
 - (id)_propertiesForPhotoPickerExtension
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = [(UIImagePickerController *)self _properties];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  _properties = [(UIImagePickerController *)self _properties];
+  v5 = [v3 dictionaryWithDictionary:_properties];
 
-  v6 = [(UIImagePickerController *)self mediaTypes];
-  [v5 setObject:v6 forKey:@"_UIImagePickerControllerMediaTypes"];
+  mediaTypes = [(UIImagePickerController *)self mediaTypes];
+  [v5 setObject:mediaTypes forKey:@"_UIImagePickerControllerMediaTypes"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[UIImagePickerController _allowsMultipleSelection](self, "_allowsMultipleSelection")}];
   [v5 setObject:v7 forKey:@"_UIImagePickerControllerAllowMutipleSelection"];
 
   [v5 removeObjectForKey:@"_UIImagePickerControllerCameraViewTransform"];
-  v8 = [(UIImagePickerController *)self _imagePickerSavingOptions];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
+  _imagePickerSavingOptions = [(UIImagePickerController *)self _imagePickerSavingOptions];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:_imagePickerSavingOptions];
   [v5 setObject:v9 forKey:@"_UIImagePickerSavingOptions"];
 
-  v10 = [(UIImagePickerController *)self sourceType];
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
+  sourceType = [(UIImagePickerController *)self sourceType];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:sourceType];
   [v5 setObject:v11 forKey:@"_UIImagePickerControllerSourceType"];
 
   v12 = NSTemporaryDirectory();
   [v5 setObject:v12 forKey:@"_UIImagePickerControllerTemporaryDirectoryUrl"];
 
-  v13 = [(UIViewController *)self modalPresentationStyle];
+  modalPresentationStyle = [(UIViewController *)self modalPresentationStyle];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3010000000;
@@ -1936,7 +1936,7 @@ void __92__UIImagePickerController__handleInstantiatedRemoteViewController_reque
   v21 = 3221225472;
   v22 = __61__UIImagePickerController__propertiesForPhotoPickerExtension__block_invoke;
   v23 = &unk_1E71027B0;
-  v25[1] = v13;
+  v25[1] = modalPresentationStyle;
   v24 = &v27;
   objc_copyWeak(v25, &location);
   v14 = _Block_copy(&v20);
@@ -1956,7 +1956,7 @@ void __92__UIImagePickerController__handleInstantiatedRemoteViewController_reque
   v16 = [MEMORY[0x1E696AD98] numberWithDouble:v28[5]];
   [v5 setObject:v16 forKey:@"_UIImagePickerControllerViewHeight"];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
+  v17 = [MEMORY[0x1E696AD98] numberWithInteger:modalPresentationStyle];
   [v5 setObject:v17 forKey:@"_UIImagePickerControllerModalPresentationStyle"];
 
   [v5 removeObjectForKey:@"_UIImagePickerControllerCameraOverlayView"];
@@ -2013,9 +2013,9 @@ void __61__UIImagePickerController__propertiesForPhotoPickerExtension__block_inv
   return v2;
 }
 
-- (void)_setPhotoPickerDisplayCompletion:(id)a3
+- (void)_setPhotoPickerDisplayCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   photoPickerDisplayCompletion = self->_photoPickerDisplayCompletion;
   self->_photoPickerDisplayCompletion = v4;
 }
@@ -2027,9 +2027,9 @@ void __61__UIImagePickerController__propertiesForPhotoPickerExtension__block_inv
   return v2;
 }
 
-- (void)_setPhotoPickerPreviewDisplayCompletion:(id)a3
+- (void)_setPhotoPickerPreviewDisplayCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   photoPickerPreviewDisplayCompletion = self->_photoPickerPreviewDisplayCompletion;
   self->_photoPickerPreviewDisplayCompletion = v4;
 }
@@ -2041,8 +2041,8 @@ void __61__UIImagePickerController__propertiesForPhotoPickerExtension__block_inv
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(UINavigationController *)self viewControllers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  viewControllers = [(UINavigationController *)self viewControllers];
+  v3 = [viewControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -2053,7 +2053,7 @@ void __61__UIImagePickerController__propertiesForPhotoPickerExtension__block_inv
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(viewControllers);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
@@ -2063,7 +2063,7 @@ void __61__UIImagePickerController__propertiesForPhotoPickerExtension__block_inv
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [viewControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -2072,10 +2072,10 @@ void __61__UIImagePickerController__propertiesForPhotoPickerExtension__block_inv
 
 - (void)_testPerformPreviewOfFirstPhoto
 {
-  v2 = [(UINavigationController *)self topViewController];
+  topViewController = [(UINavigationController *)self topViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v2 performSelector:sel_performPhotoPickerPreviewOfFirstAsset];
+    [topViewController performSelector:sel_performPhotoPickerPreviewOfFirstAsset];
   }
 }
 
@@ -2098,17 +2098,17 @@ void __44__UIImagePickerController_cancelPhotoPicker__block_invoke(uint64_t a1)
   [WeakRetained _imagePickerDidCancel];
 }
 
-- (void)dismissCurrentViewControllerFromPhotoPickerAnimated:(id)a3
+- (void)dismissCurrentViewControllerFromPhotoPickerAnimated:(id)animated
 {
-  v4 = a3;
-  v5 = [v4 BOOLValue];
+  animatedCopy = animated;
+  bOOLValue = [animatedCopy BOOLValue];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__UIImagePickerController_dismissCurrentViewControllerFromPhotoPickerAnimated___block_invoke;
   aBlock[3] = &unk_1E7101C60;
   objc_copyWeak(&v10, &location);
-  v11 = v5;
+  v11 = bOOLValue;
   v6 = _Block_copy(aBlock);
   if (pthread_main_np() == 1)
   {
@@ -2160,20 +2160,20 @@ void __55__UIImagePickerController_photoPickerIsReadyForDisplay__block_invoke(ui
   }
 }
 
-- (void)didDisplayPhotoPickerSourceType:(id)a3
+- (void)didDisplayPhotoPickerSourceType:(id)type
 {
-  v4 = [a3 integerValue];
-  v5 = [(UIImagePickerController *)self _photoPickerDisplayCompletion];
+  integerValue = [type integerValue];
+  _photoPickerDisplayCompletion = [(UIImagePickerController *)self _photoPickerDisplayCompletion];
 
   objc_initWeak(&location, self);
-  if (v5)
+  if (_photoPickerDisplayCompletion)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__UIImagePickerController_didDisplayPhotoPickerSourceType___block_invoke;
     block[3] = &unk_1E70F8DC8;
     objc_copyWeak(v10, &location);
-    v10[1] = v4;
+    v10[1] = integerValue;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v6 = v10;
   }
@@ -2244,9 +2244,9 @@ uint64_t __62__UIImagePickerController__stagedPhotoPickerIsReadyForDisplay__bloc
 
 - (void)didDisplayPhotoPickerPreview
 {
-  v3 = [(UIImagePickerController *)self _photoPickerPreviewDisplayCompletion];
+  _photoPickerPreviewDisplayCompletion = [(UIImagePickerController *)self _photoPickerPreviewDisplayCompletion];
 
-  if (v3)
+  if (_photoPickerPreviewDisplayCompletion)
   {
     objc_initWeak(&location, self);
     v4[0] = MEMORY[0x1E69E9820];
@@ -2273,17 +2273,17 @@ void __55__UIImagePickerController_didDisplayPhotoPickerPreview__block_invoke(ui
   }
 }
 
-- (void)didSelectMediaWithInfoDictionary:(id)a3
+- (void)didSelectMediaWithInfoDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__UIImagePickerController_didSelectMediaWithInfoDictionary___block_invoke;
   block[3] = &unk_1E70F2F80;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = dictionaryCopy;
+  v5 = dictionaryCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -2296,17 +2296,17 @@ void __60__UIImagePickerController_didSelectMediaWithInfoDictionary___block_invo
   [WeakRetained _imagePickerDidCompleteWithInfo:*(a1 + 32)];
 }
 
-- (void)didSelectMultipleMediaItemsWithInfoDictionaries:(id)a3
+- (void)didSelectMultipleMediaItemsWithInfoDictionaries:(id)dictionaries
 {
-  v4 = a3;
+  dictionariesCopy = dictionaries;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__UIImagePickerController_didSelectMultipleMediaItemsWithInfoDictionaries___block_invoke;
   block[3] = &unk_1E70F2F80;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = dictionariesCopy;
+  v5 = dictionariesCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);
@@ -2319,16 +2319,16 @@ void __75__UIImagePickerController_didSelectMultipleMediaItemsWithInfoDictionari
   [WeakRetained _imagePickerDidCompleteWithInfoArray:*(a1 + 32)];
 }
 
-- (void)_setupControllersForCurrentSourceTypeWithCompletion:(id)a3
+- (void)_setupControllersForCurrentSourceTypeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __79__UIImagePickerController__setupControllersForCurrentSourceTypeWithCompletion___block_invoke;
   v6[3] = &unk_1E71027D8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(UIImagePickerController *)self _createInitialControllerWithCompletion:v6];
 }
 
@@ -2368,13 +2368,13 @@ void __79__UIImagePickerController__setupControllersForCurrentSourceTypeWithComp
   }
 }
 
-- (void)_handleTopViewControllerReadyForDisplay:(id)a3
+- (void)_handleTopViewControllerReadyForDisplay:(id)display
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  displayCopy = display;
   [(UIImagePickerController *)self _removeAllChildren];
-  -[UINavigationController setNavigationBarHidden:animated:](self, "setNavigationBarHidden:animated:", [v4 _displaysFullScreen], 0);
-  v6[0] = v4;
+  -[UINavigationController setNavigationBarHidden:animated:](self, "setNavigationBarHidden:animated:", [displayCopy _displaysFullScreen], 0);
+  v6[0] = displayCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   [(UINavigationController *)self setViewControllers:v5 animated:0];
@@ -2383,12 +2383,12 @@ void __79__UIImagePickerController__setupControllersForCurrentSourceTypeWithComp
 - (void)_setupControllersForCurrentMediaTypes
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(UINavigationController *)self viewControllers];
+  viewControllers = [(UINavigationController *)self viewControllers];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2400,21 +2400,21 @@ void __79__UIImagePickerController__setupControllersForCurrentSourceTypeWithComp
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewControllers);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) _setImagePickerMediaTypes:self->_mediaTypes];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(UIViewController *)self presentedViewController];
-  [v8 _setImagePickerMediaTypes:self->_mediaTypes];
+  presentedViewController = [(UIViewController *)self presentedViewController];
+  [presentedViewController _setImagePickerMediaTypes:self->_mediaTypes];
 }
 
 - (int64_t)_preferredModalPresentationStyle
@@ -2431,11 +2431,11 @@ void __79__UIImagePickerController__setupControllersForCurrentSourceTypeWithComp
 
 - (_UIRemoteViewController)_containedRemoteViewController
 {
-  v2 = [(UINavigationController *)self topViewController];
+  topViewController = [(UINavigationController *)self topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = topViewController;
   }
 
   else
@@ -2448,16 +2448,16 @@ void __79__UIImagePickerController__setupControllersForCurrentSourceTypeWithComp
 
 - (void)_autoDismiss
 {
-  v2 = [(UIViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(UIViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)_imagePickerDidCancel
 {
-  v3 = [(UINavigationController *)self delegate];
+  delegate = [(UINavigationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 imagePickerControllerDidCancel:self];
+    [delegate imagePickerControllerDidCancel:self];
   }
 
   else
@@ -2466,16 +2466,16 @@ void __79__UIImagePickerController__setupControllersForCurrentSourceTypeWithComp
   }
 }
 
-- (void)_imagePickerDidCompleteWithInfo:(id)a3
+- (void)_imagePickerDidCompleteWithInfo:(id)info
 {
-  v10 = a3;
-  if (!v10)
+  infoCopy = info;
+  if (!infoCopy)
   {
     [(UIImagePickerController *)self _imagePickerDidCancel];
     goto LABEL_16;
   }
 
-  v4 = [(UINavigationController *)self delegate];
+  delegate = [(UINavigationController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -2484,9 +2484,9 @@ void __79__UIImagePickerController__setupControllersForCurrentSourceTypeWithComp
       goto LABEL_15;
     }
 
-    v5 = [v10 objectForKey:@"UIImagePickerControllerMediaType"];
-    v6 = [*MEMORY[0x1E6982E30] identifier];
-    v7 = [v5 isEqualToString:v6];
+    v5 = [infoCopy objectForKey:@"UIImagePickerControllerMediaType"];
+    identifier = [*MEMORY[0x1E6982E30] identifier];
+    v7 = [v5 isEqualToString:identifier];
 
     if (!v7)
     {
@@ -2497,14 +2497,14 @@ void __79__UIImagePickerController__setupControllersForCurrentSourceTypeWithComp
 
     if ([(UIImagePickerController *)self _allowsImageEditing])
     {
-      v8 = [v10 objectForKey:@"UIImagePickerControllerEditedImage"];
-      v9 = [v10 mutableCopy];
+      v8 = [infoCopy objectForKey:@"UIImagePickerControllerEditedImage"];
+      v9 = [infoCopy mutableCopy];
       [v9 removeObjectForKey:@"UIImagePickerControllerMediaType"];
       [v9 removeObjectForKey:@"UIImagePickerControllerEditedImage"];
       if (v8)
       {
 LABEL_9:
-        [v4 imagePickerController:self didFinishPickingImage:v8 editingInfo:v9];
+        [delegate imagePickerController:self didFinishPickingImage:v8 editingInfo:v9];
 
 LABEL_14:
         goto LABEL_15;
@@ -2513,7 +2513,7 @@ LABEL_14:
 
     else
     {
-      v8 = [v10 objectForKey:@"UIImagePickerControllerOriginalImage"];
+      v8 = [infoCopy objectForKey:@"UIImagePickerControllerOriginalImage"];
       v9 = 0;
       if (v8)
       {
@@ -2525,27 +2525,27 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  [v4 imagePickerController:self didFinishPickingMediaWithInfo:v10];
+  [delegate imagePickerController:self didFinishPickingMediaWithInfo:infoCopy];
 LABEL_15:
 
 LABEL_16:
 }
 
-- (void)_imagePickerDidCompleteWithInfoArray:(id)a3
+- (void)_imagePickerDidCompleteWithInfoArray:(id)array
 {
-  v6 = a3;
-  if ([v6 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v4 = [v6 objectAtIndex:0];
+    v4 = [arrayCopy objectAtIndex:0];
     [(UIImagePickerController *)self _imagePickerDidCompleteWithInfo:v4];
   }
 
-  if (v6)
+  if (arrayCopy)
   {
-    v5 = [(UINavigationController *)self delegate];
+    delegate = [(UINavigationController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 performSelector:sel_imagePickerController_didFinishPickingMultipleMediaWithInfo_ withObject:self withObject:v6];
+      [delegate performSelector:sel_imagePickerController_didFinishPickingMultipleMediaWithInfo_ withObject:self withObject:arrayCopy];
     }
 
     else

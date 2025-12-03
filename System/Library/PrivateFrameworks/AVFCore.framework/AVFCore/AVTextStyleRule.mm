@@ -4,7 +4,7 @@
 + (id)propertyListForTextStyleRules:(NSArray *)textStyleRules;
 - (AVTextStyleRule)init;
 - (AVTextStyleRule)initWithTextMarkupAttributes:(NSDictionary *)textMarkupAttributes textSelector:(NSString *)textSelector;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_dictionaryPlistRepresentation;
 - (void)dealloc;
 @end
@@ -202,24 +202,24 @@
   [(AVTextStyleRule *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = -[NSDictionary isEqualToDictionary:](self->_textStyleRule->textMarkupAttributes, "isEqualToDictionary:", [a3 textMarkupAttributes]);
+      v5 = -[NSDictionary isEqualToDictionary:](self->_textStyleRule->textMarkupAttributes, "isEqualToDictionary:", [equal textMarkupAttributes]);
       if (!v5)
       {
         return v5;
       }
 
-      v6 = [a3 textSelector];
+      textSelector = [equal textSelector];
       textSelector = self->_textStyleRule->textSelector;
       if (textSelector)
       {
-        v5 = [(NSString *)textSelector isEqualToString:v6];
+        v5 = [(NSString *)textSelector isEqualToString:textSelector];
         if (!v5)
         {
           return v5;
@@ -228,7 +228,7 @@
         goto LABEL_11;
       }
 
-      if (!v6)
+      if (!textSelector)
       {
 LABEL_11:
         LOBYTE(v5) = 1;
@@ -250,7 +250,7 @@ LABEL_11:
   v3 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:self->_textStyleRule->textMarkupAttributes];
   textSelector = self->_textStyleRule->textSelector;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E69607C0], *MEMORY[0x1E6960878], 0}];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -277,7 +277,7 @@ LABEL_11:
           if (v13 == CGColorGetTypeID())
           {
             [v3 setValue:FigCopyCGColorSRGBAsCFArray() forKey:v11];
-            [v6 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
@@ -289,9 +289,9 @@ LABEL_11:
   }
 
   v14 = *MEMORY[0x1E6960C08];
-  if ([v6 count])
+  if ([array count])
   {
-    [v3 setObject:v6 forKey:@"AVCGColorAttributes"];
+    [v3 setObject:array forKey:@"AVCGColorAttributes"];
   }
 
   if (textSelector)

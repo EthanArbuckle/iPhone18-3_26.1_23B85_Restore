@@ -1,32 +1,32 @@
 @interface ICPeerInputStream
-- (ICPeerInputStream)initWithInputStream:(id)a3;
+- (ICPeerInputStream)initWithInputStream:(id)stream;
 - (ICPeerInputStreamDelegate)delegate;
 - (void)dealloc;
-- (void)readDataFrom:(id)a3;
+- (void)readDataFrom:(id)from;
 - (void)startReadLength;
-- (void)startReadMessage:(unint64_t)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)startReadMessage:(unint64_t)message;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation ICPeerInputStream
 
-- (ICPeerInputStream)initWithInputStream:(id)a3
+- (ICPeerInputStream)initWithInputStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v10.receiver = self;
   v10.super_class = ICPeerInputStream;
   v6 = [(ICPeerInputStream *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inputStream, a3);
-    [v5 setDelegate:v7];
-    v8 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v5 scheduleInRunLoop:v8 forMode:*MEMORY[0x277CBE640]];
+    objc_storeStrong(&v6->_inputStream, stream);
+    [streamCopy setDelegate:v7];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [streamCopy scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE640]];
 
-    if (![v5 streamStatus])
+    if (![streamCopy streamStatus])
     {
-      [v5 open];
+      [streamCopy open];
     }
   }
 
@@ -56,21 +56,21 @@
   [(ICPeerInputStream *)self setIsMessage:0];
 }
 
-- (void)startReadMessage:(unint64_t)a3
+- (void)startReadMessage:(unint64_t)message
 {
   v5 = [MEMORY[0x277CBEB28] dataWithLength:?];
   [(ICPeerInputStream *)self setData:v5];
 
   [(ICPeerInputStream *)self setLength:0];
-  [(ICPeerInputStream *)self setMaxLength:a3];
+  [(ICPeerInputStream *)self setMaxLength:message];
 
   [(ICPeerInputStream *)self setIsMessage:1];
 }
 
-- (void)readDataFrom:(id)a3
+- (void)readDataFrom:(id)from
 {
-  v4 = a3;
-  if (![v4 hasBytesAvailable])
+  fromCopy = from;
+  if (![fromCopy hasBytesAvailable])
   {
     goto LABEL_18;
   }
@@ -78,30 +78,30 @@
   v5 = *MEMORY[0x277CCA5B8];
   while (1)
   {
-    v6 = [(ICPeerInputStream *)self maxLength];
-    v7 = v6 - [(ICPeerInputStream *)self length];
-    v8 = [(ICPeerInputStream *)self data];
-    v9 = [v4 read:objc_msgSend(v8 maxLength:{"bytes") + -[ICPeerInputStream length](self, "length"), v7}];
+    maxLength = [(ICPeerInputStream *)self maxLength];
+    v7 = maxLength - [(ICPeerInputStream *)self length];
+    data = [(ICPeerInputStream *)self data];
+    v9 = [fromCopy read:objc_msgSend(data maxLength:{"bytes") + -[ICPeerInputStream length](self, "length"), v7}];
 
     if (v9 >= 1)
     {
       [(ICPeerInputStream *)self setLength:[(ICPeerInputStream *)self length]+ v9];
-      v10 = [(ICPeerInputStream *)self maxLength];
-      if (v10 == [(ICPeerInputStream *)self length])
+      maxLength2 = [(ICPeerInputStream *)self maxLength];
+      if (maxLength2 == [(ICPeerInputStream *)self length])
       {
         if ([(ICPeerInputStream *)self isMessage])
         {
-          v11 = [(ICPeerInputStream *)self delegate];
-          v12 = [(ICPeerInputStream *)self data];
-          [v11 handleMessage:v12 fromInputStream:self];
+          delegate = [(ICPeerInputStream *)self delegate];
+          data2 = [(ICPeerInputStream *)self data];
+          [delegate handleMessage:data2 fromInputStream:self];
 
           [(ICPeerInputStream *)self startReadLength];
         }
 
         else
         {
-          v17 = [(ICPeerInputStream *)self data];
-          v18 = *[v17 bytes];
+          data3 = [(ICPeerInputStream *)self data];
+          v18 = *[data3 bytes];
 
           [(ICPeerInputStream *)self startReadMessage:v18];
         }
@@ -116,20 +116,20 @@
     }
 
 LABEL_12:
-    if (([v4 hasBytesAvailable] & 1) == 0)
+    if (([fromCopy hasBytesAvailable] & 1) == 0)
     {
       goto LABEL_18;
     }
   }
 
-  v13 = [v4 streamError];
-  v14 = [v13 domain];
-  if ([v14 isEqualToString:v5])
+  streamError = [fromCopy streamError];
+  domain = [streamError domain];
+  if ([domain isEqualToString:v5])
   {
-    v15 = [v4 streamError];
-    v16 = [v15 code];
+    streamError2 = [fromCopy streamError];
+    code = [streamError2 code];
 
-    if (v16 != 35)
+    if (code != 35)
     {
       goto LABEL_15;
     }
@@ -141,26 +141,26 @@ LABEL_15:
   v19 = os_log_create("com.apple.notes", "Multipeer");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    [(ICPeerInputStream *)v4 readDataFrom:v19];
+    [(ICPeerInputStream *)fromCopy readDataFrom:v19];
   }
 
 LABEL_18:
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 > 3)
+  streamCopy = stream;
+  if (event > 3)
   {
-    switch(a4)
+    switch(event)
     {
       case 4uLL:
         v10 = os_log_create("com.apple.notes", "Multipeer");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v16 = 138412290;
-          v17 = v6;
+          v17 = streamCopy;
           v11 = "Stream space available %@.";
           goto LABEL_17;
         }
@@ -173,7 +173,7 @@ LABEL_18:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v16 = 138412290;
-          v17 = v6;
+          v17 = streamCopy;
           v9 = "Stream error occurred %@.";
           goto LABEL_24;
         }
@@ -184,7 +184,7 @@ LABEL_18:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v16 = 138412290;
-          v17 = v6;
+          v17 = streamCopy;
           v9 = "Stream end %@.";
 LABEL_24:
           _os_log_impl(&dword_214D51000, v8, OS_LOG_TYPE_INFO, v9, &v16, 0xCu);
@@ -195,27 +195,27 @@ LABEL_24:
         goto LABEL_26;
     }
 
-    [v6 close];
-    v13 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v6 removeFromRunLoop:v13 forMode:*MEMORY[0x277CBE640]];
+    [streamCopy close];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [streamCopy removeFromRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
     inputStream = self->_inputStream;
     self->_inputStream = 0;
 
-    v15 = [(ICPeerInputStream *)self delegate];
-    [v15 didDisconnectInputStream:self];
+    delegate = [(ICPeerInputStream *)self delegate];
+    [delegate didDisconnectInputStream:self];
 
     goto LABEL_26;
   }
 
-  switch(a4)
+  switch(event)
   {
     case 0uLL:
       v10 = os_log_create("com.apple.notes", "Multipeer");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v16 = 138412290;
-        v17 = v6;
+        v17 = streamCopy;
         v11 = "Stream none event %@.";
 LABEL_17:
         _os_log_impl(&dword_214D51000, v10, OS_LOG_TYPE_INFO, v11, &v16, 0xCu);
@@ -228,7 +228,7 @@ LABEL_17:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v16 = 138412290;
-        v17 = v6;
+        v17 = streamCopy;
         _os_log_impl(&dword_214D51000, v12, OS_LOG_TYPE_INFO, "Stream open %@.", &v16, 0xCu);
       }
 
@@ -239,11 +239,11 @@ LABEL_17:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v16 = 138412290;
-        v17 = v6;
+        v17 = streamCopy;
         _os_log_impl(&dword_214D51000, v7, OS_LOG_TYPE_INFO, "Stream bytes available %@.", &v16, 0xCu);
       }
 
-      [(ICPeerInputStream *)self readDataFrom:v6];
+      [(ICPeerInputStream *)self readDataFrom:streamCopy];
       break;
   }
 

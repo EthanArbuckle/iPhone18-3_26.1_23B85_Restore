@@ -2,49 +2,49 @@
 - (BOOL)_canEditDataSources;
 - (BOOL)_isPrimaryProfile;
 - (BOOL)_objectTypeRequiresPerObjectAuthorization;
-- (BOOL)_sourceIsEnabled:(id)a3;
+- (BOOL)_sourceIsEnabled:(id)enabled;
 - (BOOL)showDataSourcesSectionOnly;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (WDDisplayTypeDataSourcesTableViewController)initWithCoder:(id)a3;
-- (WDDisplayTypeDataSourcesTableViewController)initWithDisplayType:(id)a3 displayCategory:(id)a4 sourceOrderController:(id)a5 profile:(id)a6;
-- (WDDisplayTypeDataSourcesTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (WDDisplayTypeDataSourcesTableViewController)initWithStyle:(int64_t)a3;
-- (id)_authorizationStatusesWithAuth:(int64_t)a3;
-- (id)_createIndexPathsWithSection:(int64_t)a3 startingRow:(int64_t)a4 numIndices:(int64_t)a5;
-- (id)_dataSourceCellForTableView:(id)a3 row:(unint64_t)a4;
-- (id)_fetchAuthorizationRecordsBySourceForType:(id)a3;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (WDDisplayTypeDataSourcesTableViewController)initWithCoder:(id)coder;
+- (WDDisplayTypeDataSourcesTableViewController)initWithDisplayType:(id)type displayCategory:(id)category sourceOrderController:(id)controller profile:(id)profile;
+- (WDDisplayTypeDataSourcesTableViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (WDDisplayTypeDataSourcesTableViewController)initWithStyle:(int64_t)style;
+- (id)_authorizationStatusesWithAuth:(int64_t)auth;
+- (id)_createIndexPathsWithSection:(int64_t)section startingRow:(int64_t)row numIndices:(int64_t)indices;
+- (id)_dataSourceCellForTableView:(id)view row:(unint64_t)row;
+- (id)_fetchAuthorizationRecordsBySourceForType:(id)type;
 - (id)_fetchBloodPressureAuthorizationRecordsBySource;
-- (id)_makeDataListViewControllerForSource:(id)a3;
+- (id)_makeDataListViewControllerForSource:(id)source;
 - (id)_noneTableViewCell;
-- (id)_readerSourceCellForTableView:(id)a3 sourceArray:(id)a4 row:(unint64_t)a5 group:(int64_t)a6;
+- (id)_readerSourceCellForTableView:(id)view sourceArray:(id)array row:(unint64_t)row group:(int64_t)group;
 - (id)createSectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)sectionForSectionIdentifier:(int64_t)a3;
-- (int64_t)sectionIdentifierForSection:(int64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_addDataSources:(id)a3;
-- (void)_fetchAuthorizationRecordsBySourceForType:(id)a3 completion:(id)a4;
-- (void)_fetchDataSourcesForSampleType:(id)a3 completion:(id)a4;
-- (void)_fetchOrderedSourcesForType:(id)a3 completion:(id)a4;
-- (void)_gatherDataFromDataSource:(id)a3;
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 tableView:(id)a6 fetchError:(id)a7;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)sectionForSectionIdentifier:(int64_t)identifier;
+- (int64_t)sectionIdentifierForSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_addDataSources:(id)sources;
+- (void)_fetchAuthorizationRecordsBySourceForType:(id)type completion:(id)completion;
+- (void)_fetchDataSourcesForSampleType:(id)type completion:(id)completion;
+- (void)_fetchOrderedSourcesForType:(id)type completion:(id)completion;
+- (void)_gatherDataFromDataSource:(id)source;
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell tableView:(id)view fetchError:(id)error;
 - (void)_loadDataSource;
 - (void)_refreshUI;
 - (void)_sortDataSources;
-- (void)_sourceIsEnabledDidChange:(id)a3;
+- (void)_sourceIsEnabledDidChange:(id)change;
 - (void)_updateOrderedSources;
-- (void)_willDisableSource:(id)a3;
-- (void)_willEnableSource:(id)a3;
-- (void)setSourceListDataSource:(id)a3;
-- (void)sourceListDataSourceDidUpdate:(id)a3;
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)_willDisableSource:(id)source;
+- (void)_willEnableSource:(id)source;
+- (void)setSourceListDataSource:(id)source;
+- (void)sourceListDataSourceDidUpdate:(id)update;
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)updateHeaderView;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
@@ -53,12 +53,12 @@
 
 @implementation WDDisplayTypeDataSourcesTableViewController
 
-- (WDDisplayTypeDataSourcesTableViewController)initWithDisplayType:(id)a3 displayCategory:(id)a4 sourceOrderController:(id)a5 profile:(id)a6
+- (WDDisplayTypeDataSourcesTableViewController)initWithDisplayType:(id)type displayCategory:(id)category sourceOrderController:(id)controller profile:(id)profile
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  categoryCopy = category;
+  controllerCopy = controller;
+  profileCopy = profile;
   v51.receiver = self;
   v51.super_class = WDDisplayTypeDataSourcesTableViewController;
   v15 = [(HKTableViewController *)&v51 initWithUsingInsetStyling:1];
@@ -66,23 +66,23 @@
   if (v15)
   {
     v15->_isLoaded = 0;
-    objc_storeStrong(&v15->_displayType, a3);
-    objc_storeStrong(&v16->_displayCategory, a4);
-    objc_storeStrong(&v16->_sourceOrderController, a5);
-    objc_storeStrong(&v16->_profile, a6);
-    v17 = [v14 healthStore];
+    objc_storeStrong(&v15->_displayType, type);
+    objc_storeStrong(&v16->_displayCategory, category);
+    objc_storeStrong(&v16->_sourceOrderController, controller);
+    objc_storeStrong(&v16->_profile, profile);
+    healthStore = [profileCopy healthStore];
     healthStore = v16->_healthStore;
-    v16->_healthStore = v17;
+    v16->_healthStore = healthStore;
 
     v19 = objc_alloc(MEMORY[0x277CCD7D0]);
-    v20 = [v14 healthStore];
-    v21 = [v19 initWithHealthStore:v20];
+    healthStore2 = [profileCopy healthStore];
+    v21 = [v19 initWithHealthStore:healthStore2];
     profileStore = v16->_profileStore;
     v16->_profileStore = v21;
 
     v23 = objc_alloc(MEMORY[0x277CCD060]);
-    v24 = [v14 healthStore];
-    v25 = [v23 initWithHealthStore:v24];
+    healthStore3 = [profileCopy healthStore];
+    v25 = [v23 initWithHealthStore:healthStore3];
     authorizationStore = v16->_authorizationStore;
     v16->_authorizationStore = v25;
 
@@ -90,9 +90,9 @@
     dataSources = v16->_dataSources;
     v16->_dataSources = v27;
 
-    v29 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     orderedDataSources = v16->_orderedDataSources;
-    v16->_orderedDataSources = v29;
+    v16->_orderedDataSources = array;
 
     readerAppSources = v16->_readerAppSources;
     v32 = MEMORY[0x277CBEBF8];
@@ -101,9 +101,9 @@
     readerResearchStudySources = v16->_readerResearchStudySources;
     v16->_readerResearchStudySources = v32;
 
-    v34 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     authorizationRecordsBySource = v16->_authorizationRecordsBySource;
-    v16->_authorizationRecordsBySource = v34;
+    v16->_authorizationRecordsBySource = dictionary;
 
     v36 = [MEMORY[0x277CBEB58] set];
     sourcesPendingToggleOn = v16->_sourcesPendingToggleOn;
@@ -114,9 +114,9 @@
     v16->_sourcesPendingToggleOff = v38;
 
     v16->_shouldInsetSectionContentForDataSourceDataList = 0;
-    v40 = [(WDDisplayTypeDataSourcesTableViewController *)v16 createSectionIdentifiers];
+    createSectionIdentifiers = [(WDDisplayTypeDataSourcesTableViewController *)v16 createSectionIdentifiers];
     sectionIdentifiers = v16->_sectionIdentifiers;
-    v16->_sectionIdentifiers = v40;
+    v16->_sectionIdentifiers = createSectionIdentifiers;
 
     LODWORD(v32) = [(WDDisplayTypeDataSourcesTableViewController *)v16 showDataSourcesSectionOnly];
     v42 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -133,8 +133,8 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v45 = [(WDProfile *)v16->_profile healthStore];
-      v43 = WDGetProfileNameForHealthStore(v45);
+      healthStore4 = [(WDProfile *)v16->_profile healthStore];
+      v43 = WDGetProfileNameForHealthStore(healthStore4);
 
       if (!v43)
       {
@@ -164,7 +164,7 @@ LABEL_10:
   return v16;
 }
 
-- (WDDisplayTypeDataSourcesTableViewController)initWithStyle:(int64_t)a3
+- (WDDisplayTypeDataSourcesTableViewController)initWithStyle:(int64_t)style
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -174,14 +174,14 @@ LABEL_10:
   return 0;
 }
 
-- (WDDisplayTypeDataSourcesTableViewController)initWithCoder:(id)a3
+- (WDDisplayTypeDataSourcesTableViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = WDDisplayTypeDataSourcesTableViewController;
-  return [(WDDisplayTypeDataSourcesTableViewController *)&v4 initWithCoder:a3];
+  return [(WDDisplayTypeDataSourcesTableViewController *)&v4 initWithCoder:coder];
 }
 
-- (WDDisplayTypeDataSourcesTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WDDisplayTypeDataSourcesTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -191,27 +191,27 @@ LABEL_10:
   return 0;
 }
 
-- (void)setSourceListDataSource:(id)a3
+- (void)setSourceListDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   sourceListDataSource = self->_sourceListDataSource;
-  if (sourceListDataSource != v5)
+  if (sourceListDataSource != sourceCopy)
   {
-    v7 = v5;
+    v7 = sourceCopy;
     [(HKSourceListDataSource *)sourceListDataSource unregisterObserver:self];
-    objc_storeStrong(&self->_sourceListDataSource, a3);
+    objc_storeStrong(&self->_sourceListDataSource, source);
     sourceListDataSource = [(HKSourceListDataSource *)self->_sourceListDataSource registerObserver:self];
-    v5 = v7;
+    sourceCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](sourceListDataSource, v5);
+  MEMORY[0x2821F96F8](sourceListDataSource, sourceCopy);
 }
 
 - (void)updateHeaderView
 {
   headerView = self->_headerView;
-  v4 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
-  [v4 bounds];
+  tableView = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
+  [tableView bounds];
   v6 = v5;
   LODWORD(v5) = 1148846080;
   LODWORD(v7) = 1112014848;
@@ -220,8 +220,8 @@ LABEL_10:
   [(HKTitledIconHeaderView *)self->_headerView bounds];
   [(HKTitledIconHeaderView *)self->_headerView setBounds:?];
   v8 = self->_headerView;
-  v9 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
-  [v9 setTableHeaderView:v8];
+  tableView2 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
+  [tableView2 setTableHeaderView:v8];
 }
 
 - (void)viewDidLoad
@@ -230,30 +230,30 @@ LABEL_10:
   v21.receiver = self;
   v21.super_class = WDDisplayTypeDataSourcesTableViewController;
   [(HKTableViewController *)&v21 viewDidLoad];
-  v3 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
-  [v3 setRowHeight:*MEMORY[0x277D76F30]];
-  [v3 setAllowsSelectionDuringEditing:1];
-  [v3 setEstimatedRowHeight:*MEMORY[0x277D12780]];
+  tableView = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
+  [tableView setRowHeight:*MEMORY[0x277D76F30]];
+  [tableView setAllowsSelectionDuringEditing:1];
+  [tableView setEstimatedRowHeight:*MEMORY[0x277D12780]];
   v4 = HKUIJoinStringsForAutomationIdentifier();
-  [v3 setAccessibilityIdentifier:v4];
+  [tableView setAccessibilityIdentifier:v4];
 
   v5 = [MEMORY[0x277D755D0] configurationWithPointSize:50.0];
-  v6 = [(HKDisplayType *)self->_displayType shareIcon];
-  v7 = [v6 imageByApplyingSymbolConfiguration:v5];
+  shareIcon = [(HKDisplayType *)self->_displayType shareIcon];
+  v7 = [shareIcon imageByApplyingSymbolConfiguration:v5];
 
   v8 = objc_alloc_init(MEMORY[0x277D12B08]);
   headerView = self->_headerView;
   self->_headerView = v8;
 
   v10 = self->_headerView;
-  v11 = [(HKDisplayType *)self->_displayType localization];
-  v12 = [v11 displayName];
-  [(HKTitledIconHeaderView *)v10 setTitle:v12];
+  localization = [(HKDisplayType *)self->_displayType localization];
+  displayName = [localization displayName];
+  [(HKTitledIconHeaderView *)v10 setTitle:displayName];
 
   [(HKTitledIconHeaderView *)self->_headerView setIconImage:v7];
   v13 = self->_headerView;
-  v14 = [(HKDisplayCategory *)self->_displayCategory color];
-  [(HKTitledIconHeaderView *)v13 setIconImageTint:v14];
+  color = [(HKDisplayCategory *)self->_displayCategory color];
+  [(HKTitledIconHeaderView *)v13 setIconImageTint:color];
 
   [(WDDisplayTypeDataSourcesTableViewController *)self _loadDataSource];
   objc_initWeak(&location, self);
@@ -306,63 +306,63 @@ void __58__WDDisplayTypeDataSourcesTableViewController_viewDidLoad__block_invoke
 
 - (BOOL)_objectTypeRequiresPerObjectAuthorization
 {
-  v2 = [(HKDisplayType *)self->_displayType objectType];
-  v3 = [v2 requiresPerObjectAuthorization];
+  objectType = [(HKDisplayType *)self->_displayType objectType];
+  requiresPerObjectAuthorization = [objectType requiresPerObjectAuthorization];
 
-  return v3;
+  return requiresPerObjectAuthorization;
 }
 
 - (BOOL)_isPrimaryProfile
 {
-  v2 = [(WDProfile *)self->_profile healthStore];
-  v3 = [v2 profileIdentifier];
-  v4 = [v3 type] == 1;
+  healthStore = [(WDProfile *)self->_profile healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  v4 = [profileIdentifier type] == 1;
 
   return v4;
 }
 
-- (int64_t)sectionIdentifierForSection:(int64_t)a3
+- (int64_t)sectionIdentifierForSection:(int64_t)section
 {
-  v3 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:section];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (int64_t)sectionForSectionIdentifier:(int64_t)a3
+- (int64_t)sectionForSectionIdentifier:(int64_t)identifier
 {
   sectionIdentifiers = self->_sectionIdentifiers;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:identifier];
   v5 = [(NSArray *)sectionIdentifiers indexOfObject:v4];
 
   return v5;
 }
 
-- (void)_gatherDataFromDataSource:(id)a3
+- (void)_gatherDataFromDataSource:(id)source
 {
   v73 = *MEMORY[0x277D85DE8];
-  v4 = [a3 sources];
-  v5 = [v4 allSources];
+  sources = [source sources];
+  allSources = [sources allSources];
   v69[0] = MEMORY[0x277D85DD0];
   v69[1] = 3221225472;
   v69[2] = __73__WDDisplayTypeDataSourcesTableViewController__gatherDataFromDataSource___block_invoke;
   v69[3] = &unk_2796E7768;
   v69[4] = self;
-  v6 = [v5 hk_filter:v69];
+  v6 = [allSources hk_filter:v69];
   v50 = [v6 mutableCopy];
 
   v52 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [v4 allSources];
-  v49 = [v8 hk_mapToDictionary:&__block_literal_global_5];
+  allSources2 = [sources allSources];
+  v49 = [allSources2 hk_mapToDictionary:&__block_literal_global_5];
 
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v51 = v4;
-  v9 = [v4 orderedAppSources];
-  v10 = [v9 countByEnumeratingWithState:&v65 objects:v72 count:16];
+  v51 = sources;
+  orderedAppSources = [sources orderedAppSources];
+  v10 = [orderedAppSources countByEnumeratingWithState:&v65 objects:v72 count:16];
   if (v10)
   {
     v11 = v10;
@@ -374,13 +374,13 @@ void __58__WDDisplayTypeDataSourcesTableViewController_viewDidLoad__block_invoke
       {
         if (*v66 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(orderedAppSources);
         }
 
         v14 = *(*(&v65 + 1) + 8 * v13);
-        v15 = [(WDDisplayTypeDataSourcesTableViewController *)self loadedAuthorizationRecordsBySource];
-        v16 = [v14 source];
-        v17 = [v15 objectForKeyedSubscript:v16];
+        loadedAuthorizationRecordsBySource = [(WDDisplayTypeDataSourcesTableViewController *)self loadedAuthorizationRecordsBySource];
+        source = [v14 source];
+        v17 = [loadedAuthorizationRecordsBySource objectForKeyedSubscript:source];
 
         if (v17)
         {
@@ -396,7 +396,7 @@ void __58__WDDisplayTypeDataSourcesTableViewController_viewDidLoad__block_invoke
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v65 objects:v72 count:16];
+      v11 = [orderedAppSources countByEnumeratingWithState:&v65 objects:v72 count:16];
     }
 
     while (v11);
@@ -406,8 +406,8 @@ void __58__WDDisplayTypeDataSourcesTableViewController_viewDidLoad__block_invoke
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v18 = [v51 orderedResearchStudySources];
-  v19 = [v18 countByEnumeratingWithState:&v61 objects:v71 count:16];
+  orderedResearchStudySources = [v51 orderedResearchStudySources];
+  v19 = [orderedResearchStudySources countByEnumeratingWithState:&v61 objects:v71 count:16];
   if (v19)
   {
     v20 = v19;
@@ -419,13 +419,13 @@ void __58__WDDisplayTypeDataSourcesTableViewController_viewDidLoad__block_invoke
       {
         if (*v62 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(orderedResearchStudySources);
         }
 
         v23 = *(*(&v61 + 1) + 8 * v22);
-        v24 = [(WDDisplayTypeDataSourcesTableViewController *)self loadedAuthorizationRecordsBySource];
-        v25 = [v23 source];
-        v26 = [v24 objectForKeyedSubscript:v25];
+        loadedAuthorizationRecordsBySource2 = [(WDDisplayTypeDataSourcesTableViewController *)self loadedAuthorizationRecordsBySource];
+        source2 = [v23 source];
+        v26 = [loadedAuthorizationRecordsBySource2 objectForKeyedSubscript:source2];
 
         if (v26)
         {
@@ -441,7 +441,7 @@ void __58__WDDisplayTypeDataSourcesTableViewController_viewDidLoad__block_invoke
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v61 objects:v71 count:16];
+      v20 = [orderedResearchStudySources countByEnumeratingWithState:&v61 objects:v71 count:16];
     }
 
     while (v20);
@@ -452,8 +452,8 @@ void __58__WDDisplayTypeDataSourcesTableViewController_viewDidLoad__block_invoke
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v28 = [(WDDisplayTypeDataSourcesTableViewController *)self loadedOrderedDataSources];
-  v29 = [v28 countByEnumeratingWithState:&v57 objects:v70 count:16];
+  loadedOrderedDataSources = [(WDDisplayTypeDataSourcesTableViewController *)self loadedOrderedDataSources];
+  v29 = [loadedOrderedDataSources countByEnumeratingWithState:&v57 objects:v70 count:16];
   v30 = v49;
   if (v29)
   {
@@ -466,7 +466,7 @@ void __58__WDDisplayTypeDataSourcesTableViewController_viewDidLoad__block_invoke
       {
         if (*v58 != v32)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(loadedOrderedDataSources);
         }
 
         v34 = [v30 objectForKeyedSubscript:{*(*(&v57 + 1) + 8 * v33), v49}];
@@ -479,7 +479,7 @@ void __58__WDDisplayTypeDataSourcesTableViewController_viewDidLoad__block_invoke
       }
 
       while (v31 != v33);
-      v31 = [v28 countByEnumeratingWithState:&v57 objects:v70 count:16];
+      v31 = [loadedOrderedDataSources countByEnumeratingWithState:&v57 objects:v70 count:16];
     }
 
     while (v31);
@@ -495,27 +495,27 @@ void __58__WDDisplayTypeDataSourcesTableViewController_viewDidLoad__block_invoke
 
   [(WDDisplayTypeDataSourcesTableViewController *)self _addDataSources:v50];
   [(WDDisplayTypeDataSourcesTableViewController *)self _sortDataSources];
-  v39 = [v51 orderedAppSources];
+  orderedAppSources2 = [v51 orderedAppSources];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
   v55[2] = __73__WDDisplayTypeDataSourcesTableViewController__gatherDataFromDataSource___block_invoke_3;
   v55[3] = &unk_2796E7768;
   v40 = v52;
   v56 = v40;
-  v41 = [v39 hk_filter:v55];
+  v41 = [orderedAppSources2 hk_filter:v55];
 
   readerAppSources = self->_readerAppSources;
   self->_readerAppSources = v41;
   v43 = v41;
 
-  v44 = [v51 orderedResearchStudySources];
+  orderedResearchStudySources2 = [v51 orderedResearchStudySources];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __73__WDDisplayTypeDataSourcesTableViewController__gatherDataFromDataSource___block_invoke_4;
   v53[3] = &unk_2796E7768;
   v54 = v40;
   v45 = v40;
-  v46 = [v44 hk_filter:v53];
+  v46 = [orderedResearchStudySources2 hk_filter:v53];
 
   readerResearchStudySources = self->_readerResearchStudySources;
   self->_readerResearchStudySources = v46;
@@ -551,41 +551,41 @@ void __73__WDDisplayTypeDataSourcesTableViewController__gatherDataFromDataSource
 - (void)_refreshUI
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
-  v4 = [v3 window];
+  tableView = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
+  window = [tableView window];
 
-  if (v4)
+  if (window)
   {
     isLoaded = self->_isLoaded;
     self->_isLoaded = 1;
     if ([(WDDisplayTypeDataSourcesTableViewController *)self _canEditDataSources])
     {
-      v6 = [(WDDisplayTypeDataSourcesTableViewController *)self editButtonItem];
-      v7 = [(WDDisplayTypeDataSourcesTableViewController *)self navigationItem];
-      [v7 setRightBarButtonItem:v6];
+      editButtonItem = [(WDDisplayTypeDataSourcesTableViewController *)self editButtonItem];
+      navigationItem = [(WDDisplayTypeDataSourcesTableViewController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:editButtonItem];
     }
 
     else
     {
-      v6 = [(WDDisplayTypeDataSourcesTableViewController *)self navigationItem];
-      [v6 setRightBarButtonItem:0];
+      editButtonItem = [(WDDisplayTypeDataSourcesTableViewController *)self navigationItem];
+      [editButtonItem setRightBarButtonItem:0];
     }
 
     headerView = self->_headerView;
-    v10 = [(HKDisplayType *)self->_displayType localization];
-    v11 = [v10 displayName];
-    [(HKTitledIconHeaderView *)headerView setTitle:v11];
+    localization = [(HKDisplayType *)self->_displayType localization];
+    displayName = [localization displayName];
+    [(HKTitledIconHeaderView *)headerView setTitle:displayName];
 
-    v12 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
-    v13 = v12;
+    tableView2 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
+    v13 = tableView2;
     if (isLoaded)
     {
-      [v12 reloadData];
+      [tableView2 reloadData];
     }
 
     else
     {
-      [v12 beginUpdates];
+      [tableView2 beginUpdates];
 
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
@@ -623,26 +623,26 @@ void __73__WDDisplayTypeDataSourcesTableViewController__gatherDataFromDataSource
         while (v16);
       }
 
-      v19 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
-      [v19 endUpdates];
+      tableView3 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
+      [tableView3 endUpdates];
     }
 
-    v20 = [(WDDisplayTypeDataSourcesTableViewController *)self isEditing];
-    v21 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
-    [v21 setEditing:0];
+    isEditing = [(WDDisplayTypeDataSourcesTableViewController *)self isEditing];
+    tableView4 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
+    [tableView4 setEditing:0];
 
-    v8 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
-    [v8 setEditing:v20];
+    tableView5 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
+    [tableView5 setEditing:isEditing];
   }
 
   else
   {
     _HKInitializeLogging();
-    v8 = HKLogWellnessDashboard();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    tableView5 = HKLogWellnessDashboard();
+    if (os_log_type_enabled(tableView5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_251E85000, v8, OS_LOG_TYPE_DEFAULT, "WDDisplayTypeDataSourcesTableViewController has been removed, not updating UI", buf, 2u);
+      _os_log_impl(&dword_251E85000, tableView5, OS_LOG_TYPE_DEFAULT, "WDDisplayTypeDataSourcesTableViewController has been removed, not updating UI", buf, 2u);
     }
   }
 
@@ -675,12 +675,12 @@ void __57__WDDisplayTypeDataSourcesTableViewController__refreshUI__block_invoke(
 
 - (BOOL)_canEditDataSources
 {
-  v3 = [(WDProfile *)self->_profile healthStore];
-  v4 = [v3 profileIdentifier];
-  v5 = [v4 type];
+  healthStore = [(WDProfile *)self->_profile healthStore];
+  profileIdentifier = [healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
-  v6 = [(HKDisplayType *)self->_displayType behavior];
-  if ([v6 allowEditView])
+  behavior = [(HKDisplayType *)self->_displayType behavior];
+  if ([behavior allowEditView])
   {
     v7 = [(NSMutableArray *)self->_orderedDataSources count]!= 0;
   }
@@ -690,12 +690,12 @@ void __57__WDDisplayTypeDataSourcesTableViewController__refreshUI__block_invoke(
     v7 = 0;
   }
 
-  return v5 == 1 && v7;
+  return type == 1 && v7;
 }
 
 - (void)_loadDataSource
 {
-  v3 = [(HKDisplayType *)self->_displayType sampleType];
+  sampleType = [(HKDisplayType *)self->_displayType sampleType];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -709,9 +709,9 @@ void __57__WDDisplayTypeDataSourcesTableViewController__refreshUI__block_invoke(
   v25 = v8;
   v9 = v7;
   v26 = v9;
-  [(WDDisplayTypeDataSourcesTableViewController *)self _fetchOrderedSourcesForType:v3 completion:v24];
+  [(WDDisplayTypeDataSourcesTableViewController *)self _fetchOrderedSourcesForType:sampleType completion:v24];
   dispatch_group_enter(v9);
-  v10 = [(HKDisplayType *)self->_displayType recordSampleType];
+  recordSampleType = [(HKDisplayType *)self->_displayType recordSampleType];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __62__WDDisplayTypeDataSourcesTableViewController__loadDataSource__block_invoke_2;
@@ -720,15 +720,15 @@ void __57__WDDisplayTypeDataSourcesTableViewController__refreshUI__block_invoke(
   v22 = v11;
   v23 = v9;
   v12 = v9;
-  [(WDDisplayTypeDataSourcesTableViewController *)self _fetchDataSourcesForSampleType:v10 completion:v21];
-  if ([v3 code] == 80)
+  [(WDDisplayTypeDataSourcesTableViewController *)self _fetchDataSourcesForSampleType:recordSampleType completion:v21];
+  if ([sampleType code] == 80)
   {
     [(WDDisplayTypeDataSourcesTableViewController *)self _fetchBloodPressureAuthorizationRecordsBySource];
   }
 
   else
   {
-    [(WDDisplayTypeDataSourcesTableViewController *)self _fetchAuthorizationRecordsBySourceForType:v3];
+    [(WDDisplayTypeDataSourcesTableViewController *)self _fetchAuthorizationRecordsBySourceForType:sampleType];
   }
   v13 = ;
   [v6 addEntriesFromDictionary:v13];
@@ -786,17 +786,17 @@ void __62__WDDisplayTypeDataSourcesTableViewController__loadDataSource__block_in
   [v8 fetchSources];
 }
 
-- (void)_fetchOrderedSourcesForType:(id)a3 completion:(id)a4
+- (void)_fetchOrderedSourcesForType:(id)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   sourceOrderController = self->_sourceOrderController;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__WDDisplayTypeDataSourcesTableViewController__fetchOrderedSourcesForType_completion___block_invoke;
   v9[3] = &unk_2796E7828;
-  v10 = v6;
-  v8 = v6;
-  [(WDSourceOrderController *)sourceOrderController getOrderedSourcesForDataType:a3 withCompletion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(WDSourceOrderController *)sourceOrderController getOrderedSourcesForDataType:type withCompletion:v9];
 }
 
 uint64_t __86__WDDisplayTypeDataSourcesTableViewController__fetchOrderedSourcesForType_completion___block_invoke(uint64_t a1)
@@ -810,19 +810,19 @@ uint64_t __86__WDDisplayTypeDataSourcesTableViewController__fetchOrderedSourcesF
   return result;
 }
 
-- (void)_fetchDataSourcesForSampleType:(id)a3 completion:(id)a4
+- (void)_fetchDataSourcesForSampleType:(id)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CCDA10];
-  v8 = a3;
+  typeCopy = type;
   v9 = [v7 alloc];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __89__WDDisplayTypeDataSourcesTableViewController__fetchDataSourcesForSampleType_completion___block_invoke;
   v12[3] = &unk_2796E7850;
-  v13 = v6;
-  v10 = v6;
-  v11 = [v9 initWithSampleType:v8 samplePredicate:0 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  v11 = [v9 initWithSampleType:typeCopy samplePredicate:0 completionHandler:v12];
 
   [(HKHealthStore *)self->_healthStore executeQuery:v11];
 }
@@ -860,11 +860,11 @@ void __89__WDDisplayTypeDataSourcesTableViewController__fetchDataSourcesForSampl
   v31 = v4;
   v6 = [(WDDisplayTypeDataSourcesTableViewController *)self _fetchAuthorizationRecordsBySourceForType:v4];
   v7 = MEMORY[0x277CBEB58];
-  v8 = [v5 allKeys];
-  v9 = [v7 setWithArray:v8];
+  allKeys = [v5 allKeys];
+  v9 = [v7 setWithArray:allKeys];
 
-  v10 = [v6 allKeys];
-  [v9 addObjectsFromArray:v10];
+  allKeys2 = [v6 allKeys];
+  [v9 addObjectsFromArray:allKeys2];
 
   v37 = 0u;
   v38 = 0u;
@@ -919,18 +919,18 @@ void __89__WDDisplayTypeDataSourcesTableViewController__fetchDataSourcesForSampl
           v22 = HKInternalAuthorizationStatusMake();
           if ([v16 requestedReading])
           {
-            v23 = 1;
+            requestedReading = 1;
           }
 
           else
           {
-            v23 = [v18 requestedReading];
+            requestedReading = [v18 requestedReading];
           }
 
           if ([v16 requestedSharing])
           {
             v24 = 202;
-            if (v23)
+            if (requestedReading)
             {
               v24 = 203;
             }
@@ -938,14 +938,14 @@ void __89__WDDisplayTypeDataSourcesTableViewController__fetchDataSourcesForSampl
             goto LABEL_27;
           }
 
-          v25 = [v18 requestedSharing];
+          requestedSharing = [v18 requestedSharing];
           v24 = 202;
-          if ((v25 & 1 & v23) != 0)
+          if ((requestedSharing & 1 & requestedReading) != 0)
           {
             v24 = 203;
           }
 
-          if (v25)
+          if (requestedSharing)
           {
 LABEL_27:
             v26 = 201;
@@ -957,7 +957,7 @@ LABEL_27:
             v26 = 200;
           }
 
-          if (v23)
+          if (requestedReading)
           {
             v27 = v24;
           }
@@ -1001,9 +1001,9 @@ LABEL_33:
   return v33;
 }
 
-- (id)_fetchAuthorizationRecordsBySourceForType:(id)a3
+- (id)_fetchAuthorizationRecordsBySourceForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1019,7 +1019,7 @@ LABEL_33:
   v11 = &v12;
   v6 = v5;
   v10 = v6;
-  [(WDDisplayTypeDataSourcesTableViewController *)self _fetchAuthorizationRecordsBySourceForType:v4 completion:v9];
+  [(WDDisplayTypeDataSourcesTableViewController *)self _fetchAuthorizationRecordsBySourceForType:typeCopy completion:v9];
   dispatch_group_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];
 
@@ -1035,17 +1035,17 @@ void __89__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecord
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)_fetchAuthorizationRecordsBySourceForType:(id)a3 completion:(id)a4
+- (void)_fetchAuthorizationRecordsBySourceForType:(id)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   authorizationStore = self->_authorizationStore;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecordsBySourceForType_completion___block_invoke;
   v9[3] = &unk_2796E78A0;
-  v10 = v6;
-  v8 = v6;
-  [(HKAuthorizationStore *)authorizationStore fetchAuthorizationRecordsForType:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(HKAuthorizationStore *)authorizationStore fetchAuthorizationRecordsForType:type completion:v9];
 }
 
 void __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecordsBySourceForType_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1106,21 +1106,21 @@ void __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecor
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createIndexPathsWithSection:(int64_t)a3 startingRow:(int64_t)a4 numIndices:(int64_t)a5
+- (id)_createIndexPathsWithSection:(int64_t)section startingRow:(int64_t)row numIndices:(int64_t)indices
 {
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a5 >= 1)
+  if (indices >= 1)
   {
     do
     {
-      v9 = [MEMORY[0x277CCAA70] indexPathForRow:a4 inSection:a3];
+      v9 = [MEMORY[0x277CCAA70] indexPathForRow:row inSection:section];
       [v8 addObject:v9];
 
-      ++a4;
-      --a5;
+      ++row;
+      --indices;
     }
 
-    while (a5);
+    while (indices);
   }
 
   return v8;
@@ -1193,7 +1193,7 @@ void __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecor
     while (v11);
   }
 
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -1216,7 +1216,7 @@ void __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecor
         v21 = *(*(&v23 + 1) + 8 * k);
         if (![(WDDisplayTypeDataSourcesTableViewController *)self _sourceIsEnabled:v21])
         {
-          [v15 addObject:v21];
+          [array addObject:v21];
           [(NSMutableArray *)self->_orderedDataSources removeObject:v21];
         }
       }
@@ -1227,7 +1227,7 @@ void __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecor
     while (v18);
   }
 
-  [(NSMutableArray *)self->_orderedDataSources addObjectsFromArray:v15];
+  [(NSMutableArray *)self->_orderedDataSources addObjectsFromArray:array];
   v22 = *MEMORY[0x277D85DE8];
 }
 
@@ -1235,14 +1235,14 @@ void __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecor
 {
   v5 = [(NSMutableArray *)self->_orderedDataSources hk_map:&__block_literal_global_373];
   sourceOrderController = self->_sourceOrderController;
-  v4 = [(HKDisplayType *)self->_displayType objectType];
-  [(WDSourceOrderController *)sourceOrderController setOrderedSources:v5 dataType:v4];
+  objectType = [(HKDisplayType *)self->_displayType objectType];
+  [(WDSourceOrderController *)sourceOrderController setOrderedSources:v5 dataType:objectType];
 }
 
-- (void)_addDataSources:(id)a3
+- (void)_addDataSources:(id)sources
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourcesCopy = sources;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -1263,7 +1263,7 @@ void __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecor
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        if (([v4 containsObject:v10] & 1) == 0)
+        if (([sourcesCopy containsObject:v10] & 1) == 0)
         {
           v11 = [(NSMutableDictionary *)self->_authorizationRecordsBySource objectForKeyedSubscript:v10];
 
@@ -1284,7 +1284,7 @@ void __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecor
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = v4;
+  v12 = sourcesCopy;
   v13 = [v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v13)
   {
@@ -1315,25 +1315,25 @@ void __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecor
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_sourceIsEnabled:(id)a3
+- (BOOL)_sourceIsEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(HKHealthStore *)self->_healthStore profileIdentifier];
-  v6 = [v5 type];
+  enabledCopy = enabled;
+  profileIdentifier = [(HKHealthStore *)self->_healthStore profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v6 == 3 || ([(NSMutableSet *)self->_sourcesPendingToggleOn containsObject:v4]& 1) != 0)
+  if (type == 3 || ([(NSMutableSet *)self->_sourcesPendingToggleOn containsObject:enabledCopy]& 1) != 0)
   {
     LOBYTE(v7) = 1;
   }
 
-  else if (([(NSMutableSet *)self->_sourcesPendingToggleOff containsObject:v4]& 1) != 0)
+  else if (([(NSMutableSet *)self->_sourcesPendingToggleOff containsObject:enabledCopy]& 1) != 0)
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v9 = [(NSMutableDictionary *)self->_authorizationRecordsBySource objectForKeyedSubscript:v4];
+    v9 = [(NSMutableDictionary *)self->_authorizationRecordsBySource objectForKeyedSubscript:enabledCopy];
     [v9 status];
     if (HKAuthorizationStatusAllowsSharing())
     {
@@ -1342,36 +1342,36 @@ void __100__WDDisplayTypeDataSourcesTableViewController__fetchAuthorizationRecor
 
     else
     {
-      v10 = [v4 source];
-      v7 = [v10 _requiresAuthorization] ^ 1;
+      source = [enabledCopy source];
+      v7 = [source _requiresAuthorization] ^ 1;
     }
   }
 
   return v7;
 }
 
-- (void)_willDisableSource:(id)a3
+- (void)_willDisableSource:(id)source
 {
   sourcesPendingToggleOn = self->_sourcesPendingToggleOn;
-  v5 = a3;
-  [(NSMutableSet *)sourcesPendingToggleOn removeObject:v5];
-  [(NSMutableSet *)self->_sourcesPendingToggleOff addObject:v5];
+  sourceCopy = source;
+  [(NSMutableSet *)sourcesPendingToggleOn removeObject:sourceCopy];
+  [(NSMutableSet *)self->_sourcesPendingToggleOff addObject:sourceCopy];
 }
 
-- (void)_willEnableSource:(id)a3
+- (void)_willEnableSource:(id)source
 {
   sourcesPendingToggleOff = self->_sourcesPendingToggleOff;
-  v5 = a3;
-  [(NSMutableSet *)sourcesPendingToggleOff removeObject:v5];
-  [(NSMutableSet *)self->_sourcesPendingToggleOn addObject:v5];
+  sourceCopy = source;
+  [(NSMutableSet *)sourcesPendingToggleOff removeObject:sourceCopy];
+  [(NSMutableSet *)self->_sourcesPendingToggleOn addObject:sourceCopy];
 }
 
-- (void)_sourceIsEnabledDidChange:(id)a3
+- (void)_sourceIsEnabledDidChange:(id)change
 {
   sourcesPendingToggleOff = self->_sourcesPendingToggleOff;
-  v5 = a3;
-  [(NSMutableSet *)sourcesPendingToggleOff removeObject:v5];
-  [(NSMutableSet *)self->_sourcesPendingToggleOn removeObject:v5];
+  changeCopy = change;
+  [(NSMutableSet *)sourcesPendingToggleOff removeObject:changeCopy];
+  [(NSMutableSet *)self->_sourcesPendingToggleOn removeObject:changeCopy];
 }
 
 void __67__WDDisplayTypeDataSourcesTableViewController_setEditing_animated___block_invoke(uint64_t a1)
@@ -1444,14 +1444,14 @@ void __67__WDDisplayTypeDataSourcesTableViewController_setEditing_animated___blo
   [v8 setUserInteractionEnabled:(*(a1 + 48) & 1) == 0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (!self->_isLoaded)
   {
     return 1;
   }
 
-  v5 = [(WDDisplayTypeDataSourcesTableViewController *)self sectionIdentifierForSection:a4];
+  v5 = [(WDDisplayTypeDataSourcesTableViewController *)self sectionIdentifierForSection:section];
   if (v5 > 2)
   {
     result = 0;
@@ -1470,40 +1470,40 @@ void __67__WDDisplayTypeDataSourcesTableViewController_setEditing_animated___blo
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   if (!self->_isLoaded)
   {
     v16 = objc_alloc_init(WDSpinnerTableViewCell);
     goto LABEL_11;
   }
 
-  v9 = -[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [v7 section]);
+  v9 = -[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [pathCopy section]);
   switch(v9)
   {
     case 2:
-      v16 = -[WDDisplayTypeDataSourcesTableViewController _dataSourceCellForTableView:row:](self, "_dataSourceCellForTableView:row:", v6, [v8 row]);
+      v16 = -[WDDisplayTypeDataSourcesTableViewController _dataSourceCellForTableView:row:](self, "_dataSourceCellForTableView:row:", viewCopy, [v8 row]);
       break;
     case 1:
       readerResearchStudySources = self->_readerResearchStudySources;
       v11 = [v8 row];
-      v12 = self;
-      v13 = v6;
+      selfCopy2 = self;
+      v13 = viewCopy;
       v14 = readerResearchStudySources;
       v15 = 1;
       goto LABEL_8;
     case 0:
       readerAppSources = self->_readerAppSources;
       v11 = [v8 row];
-      v12 = self;
-      v13 = v6;
+      selfCopy2 = self;
+      v13 = viewCopy;
       v14 = readerAppSources;
       v15 = 0;
 LABEL_8:
-      v16 = [(WDDisplayTypeDataSourcesTableViewController *)v12 _readerSourceCellForTableView:v13 sourceArray:v14 row:v11 group:v15];
+      v16 = [(WDDisplayTypeDataSourcesTableViewController *)selfCopy2 _readerSourceCellForTableView:v13 sourceArray:v14 row:v11 group:v15];
       break;
     default:
       v16 = HKErrorTableViewCell();
@@ -1516,17 +1516,17 @@ LABEL_11:
   return v18;
 }
 
-- (id)_readerSourceCellForTableView:(id)a3 sourceArray:(id)a4 row:(unint64_t)a5 group:(int64_t)a6
+- (id)_readerSourceCellForTableView:(id)view sourceArray:(id)array row:(unint64_t)row group:(int64_t)group
 {
-  v10 = a3;
-  v11 = a4;
-  if (!a6)
+  viewCopy = view;
+  arrayCopy = array;
+  if (!group)
   {
     v12 = @".ReaderApps";
     goto LABEL_5;
   }
 
-  if (a6 == 1)
+  if (group == 1)
   {
     v12 = @".ResearchStudies";
 LABEL_5:
@@ -1536,11 +1536,11 @@ LABEL_5:
 
   v13 = @"Sources";
 LABEL_7:
-  if ([v11 count])
+  if ([arrayCopy count])
   {
-    v14 = [v11 objectAtIndexedSubscript:a5];
+    v14 = [arrayCopy objectAtIndexedSubscript:row];
     v15 = [(NSMutableDictionary *)self->_authorizationRecordsBySource objectForKeyedSubscript:v14];
-    v16 = [v10 dequeueReusableCellWithIdentifier:@"sharing"];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:@"sharing"];
     if (!v16)
     {
       v16 = [objc_alloc(MEMORY[0x277D12AE8]) initWithStyle:0 reuseIdentifier:@"sharing"];
@@ -1548,10 +1548,10 @@ LABEL_7:
     }
 
     [v16 setSelectionStyle:0];
-    v17 = [v14 source];
-    v18 = [v17 name];
+    source = [v14 source];
+    name = [source name];
 
-    [v16 setDisplayText:v18];
+    [v16 setDisplayText:name];
     if ([(WDDisplayTypeDataSourcesTableViewController *)self isEditing])
     {
       v19 = 0.600000024;
@@ -1562,23 +1562,23 @@ LABEL_7:
       v19 = 1.0;
     }
 
-    v20 = [v16 contentView];
-    [v20 setAlpha:v19];
+    contentView = [v16 contentView];
+    [contentView setAlpha:v19];
 
     [v15 status];
     [v16 setOn:HKAuthorizationStatusAllowsReading()];
-    v21 = [(WDProfile *)self->_profile healthStore];
-    v22 = [v21 profileIdentifier];
-    [v16 setEnabled:{objc_msgSend(v22, "type") == 1}];
+    healthStore = [(WDProfile *)self->_profile healthStore];
+    profileIdentifier = [healthStore profileIdentifier];
+    [v16 setEnabled:{objc_msgSend(profileIdentifier, "type") == 1}];
 
-    v23 = [(__CFString *)v13 stringByAppendingFormat:@".%@", v18];
+    v23 = [(__CFString *)v13 stringByAppendingFormat:@".%@", name];
 
     v24 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:0 suffix:v23];
     [v16 setAccessibilityIdentifier:v24];
 
     objc_initWeak(&location, self);
-    v25 = [MEMORY[0x277D127A8] sharedImageManager];
-    v26 = [v14 source];
+    mEMORY[0x277D127A8] = [MEMORY[0x277D127A8] sharedImageManager];
+    source2 = [v14 source];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __99__WDDisplayTypeDataSourcesTableViewController__readerSourceCellForTableView_sourceArray_row_group___block_invoke;
@@ -1594,11 +1594,11 @@ LABEL_7:
     v37 = v28;
     v29 = v27;
     v38 = v29;
-    v39 = v10;
-    [v25 loadIconForSource:v26 syncHandler:v41 asyncHandler:v36];
+    v39 = viewCopy;
+    [mEMORY[0x277D127A8] loadIconForSource:source2 syncHandler:v41 asyncHandler:v36];
 
     v30 = v39;
-    v31 = v29;
+    _noneTableViewCell = v29;
 
     objc_destroyWeak(&v40);
     objc_destroyWeak(&location);
@@ -1608,14 +1608,14 @@ LABEL_7:
 
   else
   {
-    v31 = [(WDDisplayTypeDataSourcesTableViewController *)self _noneTableViewCell];
+    _noneTableViewCell = [(WDDisplayTypeDataSourcesTableViewController *)self _noneTableViewCell];
     v32 = MEMORY[0x277CCACA8];
     v33 = [(__CFString *)v13 stringByAppendingString:@".None"];
     v34 = [v32 healthAccessibilityIdentifier:0 suffix:v33];
-    [v31 setAccessibilityIdentifier:v34];
+    [_noneTableViewCell setAccessibilityIdentifier:v34];
   }
 
-  return v31;
+  return _noneTableViewCell;
 }
 
 void __99__WDDisplayTypeDataSourcesTableViewController__readerSourceCellForTableView_sourceArray_row_group___block_invoke_2(id *a1, void *a2, void *a3)
@@ -1647,14 +1647,14 @@ void __99__WDDisplayTypeDataSourcesTableViewController__readerSourceCellForTable
   [WeakRetained _handleReturnedImage:v2 forSource:v3 cell:*(a1 + 48) tableView:*(a1 + 56) fetchError:*(a1 + 64)];
 }
 
-- (id)_dataSourceCellForTableView:(id)a3 row:(unint64_t)a4
+- (id)_dataSourceCellForTableView:(id)view row:(unint64_t)row
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = [@"Sources" stringByAppendingString:@".DataSources"];
   if ([(NSMutableArray *)self->_orderedDataSources count])
   {
-    v8 = [(NSMutableArray *)self->_orderedDataSources objectAtIndexedSubscript:a4];
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"provider"];
+    v8 = [(NSMutableArray *)self->_orderedDataSources objectAtIndexedSubscript:row];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"provider"];
     if (!v9)
     {
       v9 = [[WDDataProviderTableViewCell alloc] initWithStyle:3 reuseIdentifier:@"provider"];
@@ -1663,10 +1663,10 @@ void __99__WDDisplayTypeDataSourcesTableViewController__readerSourceCellForTable
       [(WDDataProviderTableViewCell *)v9 setAccessoryType:[(HKDisplayType *)self->_displayType isActivitySummary]^ 1];
     }
 
-    v10 = [v8 source];
-    v11 = [v10 name];
+    source = [v8 source];
+    name = [source name];
 
-    [(WDDataProviderTableViewCell *)v9 setDisplayName:v11];
+    [(WDDataProviderTableViewCell *)v9 setDisplayName:name];
     if ([v8 installed])
     {
       if ([(WDDisplayTypeDataSourcesTableViewController *)self _sourceIsEnabled:v8])
@@ -1686,14 +1686,14 @@ void __99__WDDisplayTypeDataSourcesTableViewController__readerSourceCellForTable
     }
 
     [(WDDataProviderTableViewCell *)v9 setSourceStatus:v12];
-    v15 = [v7 stringByAppendingFormat:@".%@", v11];
+    v15 = [v7 stringByAppendingFormat:@".%@", name];
 
     v16 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:0 suffix:v15];
     [(WDDataProviderTableViewCell *)v9 setAccessibilityIdentifier:v16];
 
     objc_initWeak(&location, self);
-    v17 = [MEMORY[0x277D127A8] sharedImageManager];
-    v18 = [v8 source];
+    mEMORY[0x277D127A8] = [MEMORY[0x277D127A8] sharedImageManager];
+    source2 = [v8 source];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __79__WDDisplayTypeDataSourcesTableViewController__dataSourceCellForTableView_row___block_invoke;
@@ -1709,11 +1709,11 @@ void __99__WDDisplayTypeDataSourcesTableViewController__readerSourceCellForTable
     v25 = v20;
     v21 = v19;
     v26 = v21;
-    v27 = v6;
-    [v17 loadIconForSource:v18 syncHandler:v29 asyncHandler:v24];
+    v27 = viewCopy;
+    [mEMORY[0x277D127A8] loadIconForSource:source2 syncHandler:v29 asyncHandler:v24];
 
     v22 = v27;
-    v13 = v21;
+    _noneTableViewCell = v21;
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);
@@ -1723,12 +1723,12 @@ void __99__WDDisplayTypeDataSourcesTableViewController__readerSourceCellForTable
 
   else
   {
-    v13 = [(WDDisplayTypeDataSourcesTableViewController *)self _noneTableViewCell];
+    _noneTableViewCell = [(WDDisplayTypeDataSourcesTableViewController *)self _noneTableViewCell];
     v14 = [v7 stringByAppendingString:@".None"];
-    [(WDDataProviderTableViewCell *)v13 setAccessibilityIdentifier:v14];
+    [(WDDataProviderTableViewCell *)_noneTableViewCell setAccessibilityIdentifier:v14];
   }
 
-  return v13;
+  return _noneTableViewCell;
 }
 
 void __79__WDDisplayTypeDataSourcesTableViewController__dataSourceCellForTableView_row___block_invoke_2(id *a1, void *a2, void *a3)
@@ -1765,36 +1765,36 @@ void __79__WDDisplayTypeDataSourcesTableViewController__dataSourceCellForTableVi
   v2 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:0];
   v3 = WDBundle();
   v4 = [v3 localizedStringForKey:@"NONE" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-  v5 = [v2 textLabel];
-  [v5 setText:v4];
+  textLabel = [v2 textLabel];
+  [textLabel setText:v4];
 
   v6 = [MEMORY[0x277D74300] hk_preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v7 = [v2 textLabel];
-  [v7 setFont:v6];
+  textLabel2 = [v2 textLabel];
+  [textLabel2 setFont:v6];
 
-  v8 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v9 = [v2 textLabel];
-  [v9 setTextColor:v8];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  textLabel3 = [v2 textLabel];
+  [textLabel3 setTextColor:secondaryLabelColor];
 
   [v2 setSelectionStyle:0];
 
   return v2;
 }
 
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 tableView:(id)a6 fetchError:(id)a7
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell tableView:(id)view fetchError:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v12 && !a7)
+  imageCopy = image;
+  sourceCopy = source;
+  cellCopy = cell;
+  if (imageCopy && !error)
   {
-    v15 = [a6 indexPathForCell:v14];
+    v15 = [view indexPathForCell:cellCopy];
     v16 = v15;
     if (v15)
     {
       v17 = [v15 row];
-      v18 = [(WDDisplayTypeDataSourcesTableViewController *)self orderedDataSources];
-      v19 = [v18 count];
+      orderedDataSources = [(WDDisplayTypeDataSourcesTableViewController *)self orderedDataSources];
+      v19 = [orderedDataSources count];
 
       if (v17 >= v19)
       {
@@ -1808,22 +1808,22 @@ void __79__WDDisplayTypeDataSourcesTableViewController__dataSourceCellForTableVi
         goto LABEL_15;
       }
 
-      v20 = [(WDDisplayTypeDataSourcesTableViewController *)self orderedDataSources];
-      v21 = [v20 objectAtIndex:{objc_msgSend(v16, "row")}];
-      v22 = [v21 source];
+      orderedDataSources2 = [(WDDisplayTypeDataSourcesTableViewController *)self orderedDataSources];
+      v21 = [orderedDataSources2 objectAtIndex:{objc_msgSend(v16, "row")}];
+      source = [v21 source];
 
-      if ([v22 isEqual:v13])
+      if ([source isEqual:sourceCopy])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          [v14 setIconImage:v12];
+          [cellCopy setIconImage:imageCopy];
         }
 
         else
         {
-          v24 = [v14 imageView];
-          [v24 setImage:v12];
+          imageView = [cellCopy imageView];
+          [imageView setImage:imageCopy];
         }
       }
     }
@@ -1831,10 +1831,10 @@ void __79__WDDisplayTypeDataSourcesTableViewController__dataSourceCellForTableVi
     else
     {
       _HKInitializeLogging();
-      v22 = HKLogWellnessDashboard();
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      source = HKLogWellnessDashboard();
+      if (os_log_type_enabled(source, OS_LOG_TYPE_ERROR))
       {
-        [WDDisplayTypeDataSourcesTableViewController _handleReturnedImage:v22 forSource:? cell:? tableView:? fetchError:?];
+        [WDDisplayTypeDataSourcesTableViewController _handleReturnedImage:source forSource:? cell:? tableView:? fetchError:?];
       }
     }
 
@@ -1842,9 +1842,9 @@ LABEL_15:
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(WDDisplayTypeDataSourcesTableViewController *)self sectionIdentifierForSection:a4];
+  v5 = [(WDDisplayTypeDataSourcesTableViewController *)self sectionIdentifierForSection:section];
   switch(v5)
   {
     case 2:
@@ -1862,9 +1862,9 @@ LABEL_10:
 
       goto LABEL_12;
     case 0:
-      v6 = [(HKDisplayType *)self->_displayType isDocument];
+      isDocument = [(HKDisplayType *)self->_displayType isDocument];
       v7 = @"APPS_READ_ACCESS_HEADER";
-      if (v6)
+      if (isDocument)
       {
         v7 = @"SHARE_DATA_HEADER_CCD";
       }
@@ -1882,24 +1882,24 @@ LABEL_12:
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(WDDisplayTypeDataSourcesTableViewController *)self sectionIdentifierForSection:a4];
+  v5 = [(WDDisplayTypeDataSourcesTableViewController *)self sectionIdentifierForSection:section];
   switch(v5)
   {
     case 2:
-      v14 = [(HKHealthStore *)self->_healthStore profileIdentifier];
-      v15 = [v14 type];
+      profileIdentifier = [(HKHealthStore *)self->_healthStore profileIdentifier];
+      type = [profileIdentifier type];
 
-      v16 = [(HKDisplayType *)self->_displayType behavior];
-      v17 = [v16 allowsSourceReordering];
+      behavior = [(HKDisplayType *)self->_displayType behavior];
+      allowsSourceReordering = [behavior allowsSourceReordering];
 
       v6 = MEMORY[0x277CCACA8];
       v7 = WDBundle();
       v8 = v7;
-      if (v15 == 3)
+      if (type == 3)
       {
-        if (v17)
+        if (allowsSourceReordering)
         {
           v18 = @"%1$@_DATA_TYPE_PROVIDERS_EXPLANATION_%2$@";
         }
@@ -1910,15 +1910,15 @@ LABEL_12:
         }
 
         v10 = [v7 localizedStringForKey:v18 value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable-Tinker"];
-        v11 = [(HKProfileStore *)self->_profileStore synchronouslyFetchFirstName];
-        v12 = [(HKDisplayType *)self->_displayType localization];
-        v20 = [v12 embeddedDisplayName];
-        v13 = [v6 stringWithFormat:v10, v11, v20];
+        synchronouslyFetchFirstName = [(HKProfileStore *)self->_profileStore synchronouslyFetchFirstName];
+        localization = [(HKDisplayType *)self->_displayType localization];
+        embeddedDisplayName = [localization embeddedDisplayName];
+        v13 = [v6 stringWithFormat:v10, synchronouslyFetchFirstName, embeddedDisplayName];
 
         goto LABEL_7;
       }
 
-      if (v17)
+      if (allowsSourceReordering)
       {
         v9 = @"DATA_TYPE_PROVIDERS_EXPLANATION";
       }
@@ -1930,9 +1930,9 @@ LABEL_12:
 
 LABEL_6:
       v10 = [v7 localizedStringForKey:v9 value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-      v11 = [(HKDisplayType *)self->_displayType localization];
-      v12 = [v11 embeddedDisplayName];
-      v13 = [v6 stringWithFormat:v10, v12];
+      synchronouslyFetchFirstName = [(HKDisplayType *)self->_displayType localization];
+      localization = [synchronouslyFetchFirstName embeddedDisplayName];
+      v13 = [v6 stringWithFormat:v10, localization];
 LABEL_7:
 
       goto LABEL_12;
@@ -1956,47 +1956,47 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HKDisplayType *)self->_displayType behavior];
-  v7 = [v6 allowEditView];
+  pathCopy = path;
+  behavior = [(HKDisplayType *)self->_displayType behavior];
+  allowEditView = [behavior allowEditView];
 
-  v8 = v7 && -[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [v5 section]) == 2 && -[NSMutableArray count](self->_orderedDataSources, "count") != 0;
+  v8 = allowEditView && -[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [pathCopy section]) == 2 && -[NSMutableArray count](self->_orderedDataSources, "count") != 0;
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  if (-[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [a4 section]) != 2)
+  if (-[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [path section]) != 2)
   {
     return 0;
   }
 
-  v5 = [(HKDisplayType *)self->_displayType behavior];
-  v6 = [v5 allowsSourceReordering];
+  behavior = [(HKDisplayType *)self->_displayType behavior];
+  allowsSourceReordering = [behavior allowsSourceReordering];
 
-  return v6;
+  return allowsSourceReordering;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   orderedDataSources = self->_orderedDataSources;
-  v8 = a5;
-  v11 = -[NSMutableArray objectAtIndexedSubscript:](orderedDataSources, "objectAtIndexedSubscript:", [a4 row]);
+  indexPathCopy = indexPath;
+  v11 = -[NSMutableArray objectAtIndexedSubscript:](orderedDataSources, "objectAtIndexedSubscript:", [path row]);
   [(NSMutableArray *)self->_orderedDataSources removeObject:v11];
   v9 = self->_orderedDataSources;
-  v10 = [v8 row];
+  v10 = [indexPathCopy row];
 
   [(NSMutableArray *)v9 insertObject:v11 atIndex:v10];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (-[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [v5 section]) == 2 && -[NSMutableArray count](self->_orderedDataSources, "count"))
+  pathCopy = path;
+  if (-[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [pathCopy section]) == 2 && -[NSMutableArray count](self->_orderedDataSources, "count"))
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   else
@@ -2007,30 +2007,30 @@ LABEL_12:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (-[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [v7 section]) == 2 && -[NSMutableArray count](self->_orderedDataSources, "count"))
+  viewCopy = view;
+  pathCopy = path;
+  if (-[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [pathCopy section]) == 2 && -[NSMutableArray count](self->_orderedDataSources, "count"))
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
-    v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_orderedDataSources, "objectAtIndexedSubscript:", [v7 row]);
-    v9 = [(WDDisplayTypeDataSourcesTableViewController *)self isEditing];
-    v10 = [v8 source];
-    v11 = v10;
-    if (v9)
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_orderedDataSources, "objectAtIndexedSubscript:", [pathCopy row]);
+    isEditing = [(WDDisplayTypeDataSourcesTableViewController *)self isEditing];
+    source = [v8 source];
+    v11 = source;
+    if (isEditing)
     {
-      v12 = [v10 _requiresAuthorization];
+      _requiresAuthorization = [source _requiresAuthorization];
 
-      if (v12)
+      if (_requiresAuthorization)
       {
-        v13 = [v6 cellForRowAtIndexPath:v7];
-        v14 = [v13 isActive];
+        v13 = [viewCopy cellForRowAtIndexPath:pathCopy];
+        isActive = [v13 isActive];
         v15 = [(NSMutableDictionary *)self->_authorizationRecordsBySource objectForKeyedSubscript:v8];
         if (v15)
         {
-          if (v14)
+          if (isActive)
           {
             [(WDDisplayTypeDataSourcesTableViewController *)self _willDisableSource:v8];
             if ([v15 requestedReading] && (objc_msgSend(v15, "status"), (HKAuthorizationStatusAllowsReading() & 1) != 0))
@@ -2058,25 +2058,25 @@ LABEL_12:
             }
           }
 
-          v33[0] = v7;
+          v33[0] = pathCopy;
           v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
-          [v6 reloadRowsAtIndexPaths:v21 withRowAnimation:0];
+          [viewCopy reloadRowsAtIndexPaths:v21 withRowAnimation:0];
 
           [v15 setStatus:v16];
           objc_initWeak(&location, self);
           v22 = [(WDDisplayTypeDataSourcesTableViewController *)self _authorizationStatusesWithAuth:v16];
           authorizationStore = self->_authorizationStore;
-          v24 = [v8 source];
-          v25 = [v24 bundleIdentifier];
+          source2 = [v8 source];
+          bundleIdentifier = [source2 bundleIdentifier];
           v27[0] = MEMORY[0x277D85DD0];
           v27[1] = 3221225472;
           v27[2] = __81__WDDisplayTypeDataSourcesTableViewController_tableView_didSelectRowAtIndexPath___block_invoke;
           v27[3] = &unk_2796E7938;
           objc_copyWeak(&v31, &location);
           v28 = v8;
-          v29 = v6;
-          v30 = v7;
-          [(HKAuthorizationStore *)authorizationStore setAuthorizationStatuses:v22 authorizationModes:MEMORY[0x277CBEC10] forBundleIdentifier:v25 options:0 completion:v27];
+          v29 = viewCopy;
+          v30 = pathCopy;
+          [(HKAuthorizationStore *)authorizationStore setAuthorizationStatuses:v22 authorizationModes:MEMORY[0x277CBEC10] forBundleIdentifier:bundleIdentifier options:0 completion:v27];
 
           objc_destroyWeak(&v31);
           objc_destroyWeak(&location);
@@ -2086,14 +2086,14 @@ LABEL_12:
 
     else
     {
-      v17 = [(WDDisplayTypeDataSourcesTableViewController *)self _makeDataListViewControllerForSource:v10];
+      v17 = [(WDDisplayTypeDataSourcesTableViewController *)self _makeDataListViewControllerForSource:source];
 
-      v18 = [v8 source];
-      v19 = [v18 name];
-      [v17 setTitle:v19];
+      source3 = [v8 source];
+      name = [source3 name];
+      [v17 setTitle:name];
 
-      v20 = [(WDDisplayTypeDataSourcesTableViewController *)self navigationController];
-      [v20 pushViewController:v17 animated:1];
+      navigationController = [(WDDisplayTypeDataSourcesTableViewController *)self navigationController];
+      [navigationController pushViewController:v17 animated:1];
     }
   }
 
@@ -2144,30 +2144,30 @@ void __81__WDDisplayTypeDataSourcesTableViewController_tableView_didSelectRowAtI
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_authorizationStatusesWithAuth:(int64_t)a3
+- (id)_authorizationStatusesWithAuth:(int64_t)auth
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v5 = [(HKDisplayType *)self->_displayType objectType];
-  v6 = [v5 code];
+  objectType = [(HKDisplayType *)self->_displayType objectType];
+  code = [objectType code];
 
-  if (v6 == 80)
+  if (code == 80)
   {
-    v7 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCC978]];
+    objectType2 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCC978]];
     v8 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCC980]];
-    v16[0] = v7;
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v16[0] = objectType2;
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:auth];
     v16[1] = v8;
     v17[0] = v9;
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:auth];
     v17[1] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
   }
 
   else
   {
-    v7 = [(HKDisplayType *)self->_displayType objectType];
-    v14 = v7;
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    objectType2 = [(HKDisplayType *)self->_displayType objectType];
+    v14 = objectType2;
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:auth];
     v15 = v8;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   }
@@ -2177,11 +2177,11 @@ void __81__WDDisplayTypeDataSourcesTableViewController_tableView_didSelectRowAtI
   return v11;
 }
 
-- (id)_makeDataListViewControllerForSource:(id)a3
+- (id)_makeDataListViewControllerForSource:(id)source
 {
-  v4 = [MEMORY[0x277CCD838] predicateForObjectsFromSource:a3];
-  v5 = [(WDProfile *)self->_profile healthStore];
-  v6 = [HBXHealthAppPluginFactory makeDataListViewControllerForHealthStore:v5 displayType:self->_displayType predicate:v4];
+  v4 = [MEMORY[0x277CCD838] predicateForObjectsFromSource:source];
+  healthStore = [(WDProfile *)self->_profile healthStore];
+  v6 = [HBXHealthAppPluginFactory makeDataListViewControllerForHealthStore:healthStore displayType:self->_displayType predicate:v4];
 
   if (v6)
   {
@@ -2192,40 +2192,40 @@ void __81__WDDisplayTypeDataSourcesTableViewController_tableView_didSelectRowAtI
   {
     displayType = self->_displayType;
     profile = self->_profile;
-    v10 = [(WDProfile *)profile unitController];
-    v11 = [(HKDisplayType *)displayType wd_listViewControllerDataProviderWithProfile:profile unitController:v10];
+    unitController = [(WDProfile *)profile unitController];
+    v11 = [(HKDisplayType *)displayType wd_listViewControllerDataProviderWithProfile:profile unitController:unitController];
 
     [v11 setDefaultQueryPredicate:v4];
     v7 = [[WDDataListViewController alloc] initWithDisplayType:self->_displayType profile:self->_profile dataProvider:v11 usingInsetStyling:1];
     if ([(WDDisplayTypeDataSourcesTableViewController *)self shouldInsetSectionContentForDataSourceDataList])
     {
-      v12 = [(WDDataListViewController *)v7 tableView];
-      [v12 _setSectionContentInsetFollowsLayoutMargins:1];
+      tableView = [(WDDataListViewController *)v7 tableView];
+      [tableView _setSectionContentInsetFollowsLayoutMargins:1];
 
       v13 = *MEMORY[0x277D12798];
-      v14 = [(WDDataListViewController *)v7 tableView];
-      [v14 _setSectionCornerRadius:v13];
+      tableView2 = [(WDDataListViewController *)v7 tableView];
+      [tableView2 _setSectionCornerRadius:v13];
     }
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = a5;
-  if (-[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [v8 section]) == 2)
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (-[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [indexPathCopy section]) == 2)
   {
-    v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_orderedDataSources, "objectAtIndexedSubscript:", [v8 row]);
+    v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_orderedDataSources, "objectAtIndexedSubscript:", [indexPathCopy row]);
     if ([(WDDisplayTypeDataSourcesTableViewController *)self _sourceIsEnabled:v9])
     {
-      v10 = v8;
+      v10 = indexPathCopy;
     }
 
     else
     {
-      v10 = v7;
+      v10 = pathCopy;
     }
 
     v11 = v10;
@@ -2233,17 +2233,17 @@ void __81__WDDisplayTypeDataSourcesTableViewController_tableView_didSelectRowAtI
 
   else
   {
-    v11 = v7;
+    v11 = pathCopy;
   }
 
   return v11;
 }
 
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value
 {
-  v5 = a3;
-  v6 = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
-  v16 = [v6 indexPathForCell:v5];
+  changedCopy = changed;
+  tableView = [(WDDisplayTypeDataSourcesTableViewController *)self tableView];
+  v16 = [tableView indexPathForCell:changedCopy];
 
   v7 = -[WDDisplayTypeDataSourcesTableViewController sectionIdentifierForSection:](self, "sectionIdentifierForSection:", [v16 section]);
   if (!v7)
@@ -2269,9 +2269,9 @@ LABEL_7:
   [v10 setStatus:v11];
   v12 = [(WDDisplayTypeDataSourcesTableViewController *)self _authorizationStatusesWithAuth:v11];
   authorizationStore = self->_authorizationStore;
-  v14 = [v9 source];
-  v15 = [v14 bundleIdentifier];
-  [(HKAuthorizationStore *)authorizationStore setAuthorizationStatuses:v12 authorizationModes:MEMORY[0x277CBEC10] forBundleIdentifier:v15 options:0 completion:&__block_literal_global_458];
+  source = [v9 source];
+  bundleIdentifier = [source bundleIdentifier];
+  [(HKAuthorizationStore *)authorizationStore setAuthorizationStatuses:v12 authorizationModes:MEMORY[0x277CBEC10] forBundleIdentifier:bundleIdentifier options:0 completion:&__block_literal_global_458];
 }
 
 void __76__WDDisplayTypeDataSourcesTableViewController_switchCellValueChanged_value___block_invoke(uint64_t a1, char a2, void *a3)
@@ -2288,9 +2288,9 @@ void __76__WDDisplayTypeDataSourcesTableViewController_switchCellValueChanged_va
   }
 }
 
-- (void)sourceListDataSourceDidUpdate:(id)a3
+- (void)sourceListDataSourceDidUpdate:(id)update
 {
-  [(WDDisplayTypeDataSourcesTableViewController *)self _gatherDataFromDataSource:a3];
+  [(WDDisplayTypeDataSourcesTableViewController *)self _gatherDataFromDataSource:update];
 
   [(WDDisplayTypeDataSourcesTableViewController *)self _refreshUI];
 }
@@ -2315,8 +2315,8 @@ void __76__WDDisplayTypeDataSourcesTableViewController_switchCellValueChanged_va
 
   else
   {
-    v7 = [(WDDisplayTypeDataSourcesTableViewController *)self navigationItem];
-    [v7 setLeftBarButtonItem:v6];
+    navigationItem = [(WDDisplayTypeDataSourcesTableViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v6];
   }
 
   objc_destroyWeak(&v12);
@@ -2339,8 +2339,8 @@ void __83__WDDisplayTypeDataSourcesTableViewController_viewControllerWillEnterAd
 
   else
   {
-    v3 = [(WDDisplayTypeDataSourcesTableViewController *)self navigationItem];
-    [v3 setLeftBarButtonItem:0];
+    navigationItem = [(WDDisplayTypeDataSourcesTableViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:0];
   }
 }
 

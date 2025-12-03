@@ -1,60 +1,60 @@
 @interface GSManager
-- (BOOL)_forsakePath:(id)a3;
-- (BOOL)_generationForsakeRow:(id)a3 withCredential:(const GSCredential *)a4 error:(id *)a5;
-- (BOOL)_pathIsStaged:(id)a3;
-- (BOOL)_removeAddition:(int64_t)a3 inNameSpace:(id)a4 named:(id)a5 credentials:(const GSCredential *)a6 error:(id *)a7;
-- (BOOL)_removeAdditionByRow:(id)a3 credentials:(const GSCredential *)a4 error:(id *)a5;
-- (BOOL)_thinningPrecompute:(BOOL)a3 error:(id *)a4;
-- (BOOL)dispatchSync:(id)a3;
-- (BOOL)removePendingDeleteDocumentTimerForDocID:(id)a3;
+- (BOOL)_forsakePath:(id)path;
+- (BOOL)_generationForsakeRow:(id)row withCredential:(const GSCredential *)credential error:(id *)error;
+- (BOOL)_pathIsStaged:(id)staged;
+- (BOOL)_removeAddition:(int64_t)addition inNameSpace:(id)space named:(id)named credentials:(const GSCredential *)credentials error:(id *)error;
+- (BOOL)_removeAdditionByRow:(id)row credentials:(const GSCredential *)credentials error:(id *)error;
+- (BOOL)_thinningPrecompute:(BOOL)precompute error:(id *)error;
+- (BOOL)dispatchSync:(id)sync;
+- (BOOL)removePendingDeleteDocumentTimerForDocID:(id)d;
 - (GSManager)init;
 - (NSString)description;
-- (id)_additionDictionary:(id)a3 path:(id)a4;
-- (id)_additionDictionary:(id)a3 url:(id)a4;
-- (id)_createAddition:(int64_t)a3 creationInfo:(id)a4 isDir:(BOOL)a5 stagedPath:(id)a6 credentials:(const GSCredential *)a7 error:(id *)a8;
-- (id)_getAddition:(int64_t)a3 inNameSpace:(id)a4 named:(id)a5 credentials:(const GSCredential *)a6 error:(id *)a7;
-- (id)_listAdditions:(int64_t)a3 nameSpace:(id)a4 withOptions:(unint64_t)a5 withoutOptions:(unint64_t)a6 andEnumerationState:(id)a7 credentials:(const GSCredential *)a8;
-- (id)_setAdditionNameSpace:(int64_t)a3 inNameSpace:(id)a4 named:(id)a5 newNameSpace:(id)a6 credentials:(const GSCredential *)a7 error:(id *)a8;
-- (id)makeStagingPathForCredential:(const GSCredential *)a3 prefix:(id)a4 stagedName:(id)a5;
-- (id)pendingDeleteDocumentTimerForDocID:(id)a3;
-- (int64_t)_purgeAggressively:(unint64_t *)a3 credentials:(const GSCredential *)a4 whilePredicateIsTrue:(id)a5;
-- (int64_t)_purgeGenerationsWithCredentials:(const GSCredential *)a3;
+- (id)_additionDictionary:(id)dictionary path:(id)path;
+- (id)_additionDictionary:(id)dictionary url:(id)url;
+- (id)_createAddition:(int64_t)addition creationInfo:(id)info isDir:(BOOL)dir stagedPath:(id)path credentials:(const GSCredential *)credentials error:(id *)error;
+- (id)_getAddition:(int64_t)addition inNameSpace:(id)space named:(id)named credentials:(const GSCredential *)credentials error:(id *)error;
+- (id)_listAdditions:(int64_t)additions nameSpace:(id)space withOptions:(unint64_t)options withoutOptions:(unint64_t)withoutOptions andEnumerationState:(id)state credentials:(const GSCredential *)credentials;
+- (id)_setAdditionNameSpace:(int64_t)space inNameSpace:(id)nameSpace named:(id)named newNameSpace:(id)newNameSpace credentials:(const GSCredential *)credentials error:(id *)error;
+- (id)makeStagingPathForCredential:(const GSCredential *)credential prefix:(id)prefix stagedName:(id)name;
+- (id)pendingDeleteDocumentTimerForDocID:(id)d;
+- (int64_t)_purgeAggressively:(unint64_t *)aggressively credentials:(const GSCredential *)credentials whilePredicateIsTrue:(id)true;
+- (int64_t)_purgeGenerationsWithCredentials:(const GSCredential *)credentials;
 - (int64_t)estimatePurgeableSpace;
 - (unint64_t)computeNumberOfPruneableStorages;
 - (unint64_t)computePruneableNumberOfGenerations;
 - (unint64_t)computePurgeableSpace;
-- (void)_actOnDocidChange:(unint64_t)a3 src:(unint64_t)a4 dst:(unint64_t)a5;
-- (void)_actOnDocidDeletion:(unint64_t)a3 row:(id)a4;
-- (void)_fseventAtPaths:(const char *)a3 flags:(const unsigned int *)a4 eventIds:(const unint64_t *)a5 count:(unint64_t)a6;
+- (void)_actOnDocidChange:(unint64_t)change src:(unint64_t)src dst:(unint64_t)dst;
+- (void)_actOnDocidDeletion:(unint64_t)deletion row:(id)row;
+- (void)_fseventAtPaths:(const char *)paths flags:(const unsigned int *)flags eventIds:(const unint64_t *)ids count:(unint64_t)count;
 - (void)_invalidate;
-- (void)_nukeStorageID:(int64_t)a3;
+- (void)_nukeStorageID:(int64_t)d;
 - (void)_purgePurgatory;
-- (void)_purgeWithCredential:(const GSCredential *)a3 tryingToFreeSpace:(int64_t)a4 highUrgency:(BOOL)a5 whilePredicateIsTrue:(id)a6 done:(id)a7;
-- (void)_removeAllAdditions:(int64_t)a3 inNameSpace:(id)a4 credentials:(const GSCredential *)a5;
-- (void)_updateThrottlingProperty:(id)a3;
-- (void)_validateGenerationsStorage:(id *)a3 forEntry:(_ftsent *)a4 forStorageId:(int64_t)a5 andClientName:(id)a6;
-- (void)_validateGenerationsStorageTree:(const char *)a3 atDepth:(int)a4;
+- (void)_purgeWithCredential:(const GSCredential *)credential tryingToFreeSpace:(int64_t)space highUrgency:(BOOL)urgency whilePredicateIsTrue:(id)true done:(id)done;
+- (void)_removeAllAdditions:(int64_t)additions inNameSpace:(id)space credentials:(const GSCredential *)credentials;
+- (void)_updateThrottlingProperty:(id)property;
+- (void)_validateGenerationsStorage:(id *)storage forEntry:(_ftsent *)entry forStorageId:(int64_t)id andClientName:(id)name;
+- (void)_validateGenerationsStorageTree:(const char *)tree atDepth:(int)depth;
 - (void)_validateGenerationsTable;
-- (void)cleanupStagingPath:(id)a3 withCredential:(const GSCredential *)a4;
+- (void)cleanupStagingPath:(id)path withCredential:(const GSCredential *)credential;
 - (void)dealloc;
-- (void)extensionsForStorageID:(int64_t)a3 credentials:(const GSCredential *)a4 pubExt:(id *)a5 privExt:(id *)a6;
-- (void)invalidate:(BOOL)a3;
-- (void)lowDiskStatusChangedForDevice:(int)a3 hasEnoughSpace:(BOOL)a4;
-- (void)powerLevelChanged:(BOOL)a3;
-- (void)purgeWithCredential:(const GSCredential *)a3 whilePredicateIsTrue:(id)a4 done:(id)a5;
-- (void)resolveDocId:(unint64_t)a3 reply:(id)a4;
-- (void)setIsInconsistent:(BOOL)a3;
-- (void)setPendingDeleteDocumentTimer:(id)a3 forDocID:(id)a4;
+- (void)extensionsForStorageID:(int64_t)d credentials:(const GSCredential *)credentials pubExt:(id *)ext privExt:(id *)privExt;
+- (void)invalidate:(BOOL)invalidate;
+- (void)lowDiskStatusChangedForDevice:(int)device hasEnoughSpace:(BOOL)space;
+- (void)powerLevelChanged:(BOOL)changed;
+- (void)purgeWithCredential:(const GSCredential *)credential whilePredicateIsTrue:(id)true done:(id)done;
+- (void)resolveDocId:(unint64_t)id reply:(id)reply;
+- (void)setIsInconsistent:(BOOL)inconsistent;
+- (void)setPendingDeleteDocumentTimer:(id)timer forDocID:(id)d;
 - (void)start;
 - (void)validateLibrary;
 @end
 
 @implementation GSManager
 
-- (void)setIsInconsistent:(BOOL)a3
+- (void)setIsInconsistent:(BOOL)inconsistent
 {
   state = self->_state;
-  if (a3)
+  if (inconsistent)
   {
     v4 = 2;
   }
@@ -72,25 +72,25 @@
   state->state = v4;
 }
 
-- (void)_updateThrottlingProperty:(id)a3
+- (void)_updateThrottlingProperty:(id)property
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(GSManager *)v5 isThrottlingIo];
-  v4[2](v4);
-  v7 = [(GSManager *)v5 isThrottlingIo];
-  objc_sync_exit(v5);
+  propertyCopy = property;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isThrottlingIo = [(GSManager *)selfCopy isThrottlingIo];
+  propertyCopy[2](propertyCopy);
+  isThrottlingIo2 = [(GSManager *)selfCopy isThrottlingIo];
+  objc_sync_exit(selfCopy);
 
-  if (v6 != v7)
+  if (isThrottlingIo != isThrottlingIo2)
   {
     v8 = sub_100003164();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    if (isThrottlingIo)
     {
       if (v9)
       {
-        device = v5->_device;
+        device = selfCopy->_device;
         v13 = 67109120;
         v14 = device;
         v11 = "[NOTICE] Quitting throttled mode on device %d";
@@ -101,7 +101,7 @@ LABEL_7:
 
     else if (v9)
     {
-      v12 = v5->_device;
+      v12 = selfCopy->_device;
       v13 = 67109120;
       v14 = v12;
       v11 = "[WARNING] Entering throttled mode on device %d";
@@ -110,7 +110,7 @@ LABEL_7:
   }
 }
 
-- (void)lowDiskStatusChangedForDevice:(int)a3 hasEnoughSpace:(BOOL)a4
+- (void)lowDiskStatusChangedForDevice:(int)device hasEnoughSpace:(BOOL)space
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -118,11 +118,11 @@ LABEL_7:
   v5[2] = sub_10001D23C;
   v5[3] = &unk_1000416C8;
   v5[4] = self;
-  v6 = a4;
+  spaceCopy = space;
   dispatch_async(queue, v5);
 }
 
-- (void)powerLevelChanged:(BOOL)a3
+- (void)powerLevelChanged:(BOOL)changed
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -130,74 +130,74 @@ LABEL_7:
   v4[2] = sub_10001D354;
   v4[3] = &unk_1000416C8;
   v4[4] = self;
-  v5 = a3;
+  changedCopy = changed;
   dispatch_async(queue, v4);
 }
 
-- (id)pendingDeleteDocumentTimerForDocID:(id)a3
+- (id)pendingDeleteDocumentTimerForDocID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_pendingDeleteDocuments objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_pendingDeleteDocuments objectForKeyedSubscript:dCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)setPendingDeleteDocumentTimer:(id)a3 forDocID:(id)a4
+- (void)setPendingDeleteDocumentTimer:(id)timer forDocID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableDictionary *)v7->_pendingDeleteDocuments setObject:v8 forKey:v6];
-  objc_sync_exit(v7);
+  timerCopy = timer;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_pendingDeleteDocuments setObject:timerCopy forKey:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)removePendingDeleteDocumentTimerForDocID:(id)a3
+- (BOOL)removePendingDeleteDocumentTimerForDocID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_pendingDeleteDocuments objectForKeyedSubscript:v4];
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_pendingDeleteDocuments objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
-    [(NSMutableDictionary *)v5->_pendingDeleteDocuments removeObjectForKey:v4];
+    [(NSMutableDictionary *)selfCopy->_pendingDeleteDocuments removeObjectForKey:dCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6 != 0;
 }
 
-- (void)resolveDocId:(unint64_t)a3 reply:(id)a4
+- (void)resolveDocId:(unint64_t)id reply:(id)reply
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001D638;
   v7[3] = &unk_1000416F0;
-  v8 = a4;
-  v9 = a3;
+  replyCopy = reply;
+  idCopy = id;
   v7[4] = self;
-  v6 = v8;
+  v6 = replyCopy;
   [(GSManager *)self dispatchSync:v7];
 }
 
-- (void)_actOnDocidDeletion:(unint64_t)a3 row:(id)a4
+- (void)_actOnDocidDeletion:(unint64_t)deletion row:(id)row
 {
-  v6 = a4;
-  v6[8] = 1001;
-  *(v6 + 2) = 0;
+  rowCopy = row;
+  rowCopy[8] = 1001;
+  *(rowCopy + 2) = 0;
   v7 = sub_100003164();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_10002A938();
   }
 
-  [v6 saveToDB:self->_db];
-  v8 = [NSNumber numberWithUnsignedLongLong:a3];
+  [rowCopy saveToDB:self->_db];
+  v8 = [NSNumber numberWithUnsignedLongLong:deletion];
   v9 = [(GSManager *)self pendingDeleteDocumentTimerForDocID:v8];
 
   if (!v9)
@@ -216,21 +216,21 @@ LABEL_7:
     handler[2] = sub_10001DAE4;
     handler[3] = &unk_100041718;
     handler[5] = v24;
-    handler[6] = a3;
+    handler[6] = deletion;
     handler[4] = self;
     dispatch_source_set_cancel_handler(v11, handler);
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_10001DB58;
     v17 = &unk_100041740;
-    v18 = v6;
-    v19 = self;
-    v21 = a3;
-    v22 = a3;
+    v18 = rowCopy;
+    selfCopy = self;
+    deletionCopy = deletion;
+    deletionCopy2 = deletion;
     v12 = v11;
     v20 = v12;
     dispatch_source_set_event_handler(v12, &v14);
-    v13 = [NSNumber numberWithUnsignedLongLong:a3, v14, v15, v16, v17];
+    v13 = [NSNumber numberWithUnsignedLongLong:deletion, v14, v15, v16, v17];
     [(GSManager *)self setPendingDeleteDocumentTimer:v12 forDocID:v13];
 
     dispatch_resume(v12);
@@ -238,28 +238,28 @@ LABEL_7:
   }
 }
 
-- (void)_actOnDocidChange:(unint64_t)a3 src:(unint64_t)a4 dst:(unint64_t)a5
+- (void)_actOnDocidChange:(unint64_t)change src:(unint64_t)src dst:(unint64_t)dst
 {
-  v8 = [GSFileRow fileRow:self->_db byFileID:a5];
+  v8 = [GSFileRow fileRow:self->_db byFileID:dst];
   v9 = v8;
-  if (v8 && *(v8 + 40) != a3)
+  if (v8 && *(v8 + 40) != change)
   {
     v10 = sub_100003164();
     if (os_log_type_enabled(v10, 0x90u))
     {
       v17 = 134218498;
-      v18 = a5;
+      dstCopy = dst;
       v19 = 2112;
       v20 = v9;
       v21 = 2048;
-      v22 = a3;
+      changeCopy = change;
       _os_log_error_impl(&_mh_execute_header, v10, 0x90u, "[ERROR] FileID %lld was already tracked as %@, received %lld: simulating deletion", &v17, 0x20u);
     }
 
     [(GSManager *)self _actOnDocidDeletion:v9[5] row:v9];
   }
 
-  v11 = [GSFileRow fileRow:self->_db byDocumentID:a3];
+  v11 = [GSFileRow fileRow:self->_db byDocumentID:change];
 
   v12 = sub_100003164();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
@@ -271,7 +271,7 @@ LABEL_7:
     }
 
     *(v11 + 32) = 1;
-    *(v11 + 16) = a5;
+    *(v11 + 16) = dst;
     [v11 saveToDB:self->_db];
   }
 
@@ -282,23 +282,23 @@ LABEL_7:
       sub_10002AA90();
     }
 
-    [GSFileRow createEntry:self->_db withDocumentID:a3 fileID:a5 error:0];
+    [GSFileRow createEntry:self->_db withDocumentID:change fileID:dst error:0];
   }
 
-  v14 = self;
-  objc_sync_enter(v14);
-  v15 = [NSNumber numberWithUnsignedLongLong:a3];
-  v16 = [(NSMutableDictionary *)v14->_pendingDeleteDocuments objectForKeyedSubscript:v15];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v15 = [NSNumber numberWithUnsignedLongLong:change];
+  v16 = [(NSMutableDictionary *)selfCopy->_pendingDeleteDocuments objectForKeyedSubscript:v15];
   if (v16)
   {
-    [(NSMutableDictionary *)v14->_pendingDeleteDocuments removeObjectForKey:v15];
+    [(NSMutableDictionary *)selfCopy->_pendingDeleteDocuments removeObjectForKey:v15];
     dispatch_source_cancel(v16);
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_fseventAtPaths:(const char *)a3 flags:(const unsigned int *)a4 eventIds:(const unint64_t *)a5 count:(unint64_t)a6
+- (void)_fseventAtPaths:(const char *)paths flags:(const unsigned int *)flags eventIds:(const unint64_t *)ids count:(unint64_t)count
 {
   if (!self->_invalidated)
   {
@@ -310,10 +310,10 @@ LABEL_7:
     v9[2] = sub_10001DEEC;
     v9[3] = &unk_100041768;
     v9[4] = self;
-    v9[5] = a6;
-    v9[6] = a3;
-    v9[7] = a4;
-    v9[8] = a5;
+    v9[5] = count;
+    v9[6] = paths;
+    v9[7] = flags;
+    v9[8] = ids;
     [(PQLConnection *)db groupInBatch:v9];
   }
 }
@@ -416,19 +416,19 @@ LABEL_5:
   db = self->_db;
   self->_db = 0;
 
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_pendingDeleteDocuments;
-  pendingDeleteDocuments = v5->_pendingDeleteDocuments;
-  v5->_pendingDeleteDocuments = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_pendingDeleteDocuments;
+  pendingDeleteDocuments = selfCopy->_pendingDeleteDocuments;
+  selfCopy->_pendingDeleteDocuments = 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [(NSMutableDictionary *)v6 allValues];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)v6 allValues];
+  v9 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -440,7 +440,7 @@ LABEL_5:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         dispatch_source_cancel(*(*(&v13 + 1) + 8 * v12));
@@ -448,16 +448,16 @@ LABEL_5:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 
-  [GSStorageManager invalidateLibrary:v5];
+  [GSStorageManager invalidateLibrary:selfCopy];
 }
 
-- (void)invalidate:(BOOL)a3
+- (void)invalidate:(BOOL)invalidate
 {
   v5 = 0;
   atomic_compare_exchange_strong(&self->_invalidated, &v5, 1u);
@@ -465,7 +465,7 @@ LABEL_5:
   {
     block[9] = v3;
     block[10] = v4;
-    v6 = a3;
+    invalidateCopy = invalidate;
     v8 = +[GSSystemResourcesManager manager];
     v9 = sub_100003164();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -475,7 +475,7 @@ LABEL_5:
 
     [v8 removePowerObserver:self];
     [v8 removeLowDiskObserver:self forDevice:self->_device];
-    if (v6)
+    if (invalidateCopy)
     {
       dispatch_assert_queue_not_V2(self->_queue);
       dispatch_group_wait(self->_operationsGroup, 0xFFFFFFFFFFFFFFFFLL);
@@ -523,9 +523,9 @@ LABEL_5:
   return [NSString stringWithFormat:@"<GSLibrary dev:%x [%s%s]>", self->_device, v2, v3];
 }
 
-- (BOOL)dispatchSync:(id)a3
+- (BOOL)dispatchSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -535,10 +535,10 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = sub_1000202E8;
   block[3] = &unk_1000417B0;
-  v9 = v4;
+  v9 = syncCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = syncCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -546,9 +546,9 @@ LABEL_5:
   return queue;
 }
 
-- (BOOL)_thinningPrecompute:(BOOL)a3 error:(id *)a4
+- (BOOL)_thinningPrecompute:(BOOL)precompute error:(id *)error
 {
-  v5 = a3;
+  precomputeCopy = precompute;
   v7 = +[GSSystemResourcesManager manager];
   v8 = [v7 deviceLowSpaceFlags:self->_device];
 
@@ -572,9 +572,9 @@ LABEL_5:
       sub_10002AB70();
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = sub_10000F0F8(111, v10, 0);
+      *error = sub_10000F0F8(111, v10, 0);
     }
 
     v12 = 0;
@@ -584,7 +584,7 @@ LABEL_5:
   {
     v13 = v9;
     v14 = 3600;
-    if (v5)
+    if (precomputeCopy)
     {
       v14 = 60;
     }
@@ -612,9 +612,9 @@ LABEL_5:
       v17[6] = &v25;
       v17[7] = v13;
       [(GSManager *)self dispatchSync:v17];
-      if (a4)
+      if (error)
       {
-        *a4 = v20[5];
+        *error = v20[5];
       }
 
       v12 = *(v26 + 24);
@@ -627,7 +627,7 @@ LABEL_5:
   return v12 & 1;
 }
 
-- (int64_t)_purgeGenerationsWithCredentials:(const GSCredential *)a3
+- (int64_t)_purgeGenerationsWithCredentials:(const GSCredential *)credentials
 {
   v8 = 0;
   v9 = &v8;
@@ -638,7 +638,7 @@ LABEL_5:
   v7[2] = sub_100020B44;
   v7[3] = &unk_100041828;
   v7[5] = &v8;
-  v7[6] = a3;
+  v7[6] = credentials;
   v7[4] = self;
   [(GSManager *)self dispatchSync:v7];
   purgatoryPath = self->_purgatoryPath;
@@ -652,9 +652,9 @@ LABEL_5:
   return v5;
 }
 
-- (int64_t)_purgeAggressively:(unint64_t *)a3 credentials:(const GSCredential *)a4 whilePredicateIsTrue:(id)a5
+- (int64_t)_purgeAggressively:(unint64_t *)aggressively credentials:(const GSCredential *)credentials whilePredicateIsTrue:(id)true
 {
-  v8 = a5;
+  trueCopy = true;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -665,8 +665,8 @@ LABEL_5:
     v11[1] = 3221225472;
     v11[2] = sub_100021000;
     v11[3] = &unk_100041850;
-    v11[6] = a4;
-    v11[7] = a3;
+    v11[6] = credentials;
+    v11[7] = aggressively;
     v11[4] = self;
     v11[5] = &v12;
     if (![(GSManager *)self dispatchSync:v11])
@@ -687,10 +687,10 @@ LABEL_5:
   return 0;
 }
 
-- (void)_purgeWithCredential:(const GSCredential *)a3 tryingToFreeSpace:(int64_t)a4 highUrgency:(BOOL)a5 whilePredicateIsTrue:(id)a6 done:(id)a7
+- (void)_purgeWithCredential:(const GSCredential *)credential tryingToFreeSpace:(int64_t)space highUrgency:(BOOL)urgency whilePredicateIsTrue:(id)true done:(id)done
 {
-  v11 = a6;
-  v12 = a7;
+  trueCopy = true;
+  doneCopy = done;
   if ([(GSManager *)self isReadOnly])
   {
     v13 = sub_100003164();
@@ -699,15 +699,15 @@ LABEL_5:
       sub_10002B27C();
     }
 
-    v12[2](v12, 0);
+    doneCopy[2](doneCopy, 0);
   }
 
   else
   {
-    v14 = *&a3->auditToken.val[1];
-    v20 = *&a3->pid;
+    v14 = *&credential->auditToken.val[1];
+    v20 = *&credential->pid;
     *v21 = v14;
-    *&v21[12] = *&a3->auditToken.val[4];
+    *&v21[12] = *&credential->auditToken.val[4];
     operationsGroup = self->_operationsGroup;
     backgroundQueue = self->_backgroundQueue;
     block[0] = _NSConcreteStackBlock;
@@ -715,9 +715,9 @@ LABEL_5:
     block[2] = sub_100021390;
     block[3] = &unk_1000418A0;
     block[4] = self;
-    v22 = a5;
-    v18 = v11;
-    v19 = v12;
+    urgencyCopy = urgency;
+    v18 = trueCopy;
+    v19 = doneCopy;
     dispatch_group_async(operationsGroup, backgroundQueue, block);
   }
 }
@@ -800,21 +800,21 @@ LABEL_5:
   return v2;
 }
 
-- (void)purgeWithCredential:(const GSCredential *)a3 whilePredicateIsTrue:(id)a4 done:(id)a5
+- (void)purgeWithCredential:(const GSCredential *)credential whilePredicateIsTrue:(id)true done:(id)done
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100021ED8;
   v12[3] = &unk_100041938;
-  v13 = a4;
+  trueCopy = true;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100021EE8;
   v10[3] = &unk_100041960;
-  v11 = a5;
-  v8 = v11;
-  v9 = v13;
-  [(GSManager *)self _purgeWithCredential:a3 tryingToFreeSpace:20971520 highUrgency:1 whilePredicateIsTrue:v12 done:v10];
+  doneCopy = done;
+  v8 = doneCopy;
+  v9 = trueCopy;
+  [(GSManager *)self _purgeWithCredential:credential tryingToFreeSpace:20971520 highUrgency:1 whilePredicateIsTrue:v12 done:v10];
 }
 
 - (void)_purgePurgatory
@@ -829,59 +829,59 @@ LABEL_5:
   dispatch_group_async(operationsGroup, backgroundQueue, block);
 }
 
-- (BOOL)_forsakePath:(id)a3
+- (BOOL)_forsakePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 attributesOfItemAtPath:v4 error:0];
-  v7 = [v6 fileSystemFileNumber];
+  v6 = [v5 attributesOfItemAtPath:pathCopy error:0];
+  fileSystemFileNumber = [v6 fileSystemFileNumber];
 
-  if (v7 && (v8 = [v4 fileSystemRepresentation], -[NSString stringByAppendingFormat:](self->_purgatoryPath, "stringByAppendingFormat:", @"/ino.%lld", v7), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "fileSystemRepresentation"), rename(v8, v10, v11), v13 = v12, v9, !v13))
+  if (fileSystemFileNumber && (v8 = [pathCopy fileSystemRepresentation], -[NSString stringByAppendingFormat:](self->_purgatoryPath, "stringByAppendingFormat:", @"/ino.%lld", fileSystemFileNumber), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "fileSystemRepresentation"), rename(v8, v10, v11), v13 = v12, v9, !v13))
   {
     v14 = 1;
   }
 
   else
   {
-    v14 = sub_10000965C([v4 fileSystemRepresentation], 0, 0);
+    v14 = sub_10000965C([pathCopy fileSystemRepresentation], 0, 0);
   }
 
-  v15 = [v4 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
 
-  if ([v15 length])
+  if ([stringByDeletingLastPathComponent length])
   {
-    while (!rmdir([v15 fileSystemRepresentation]) || *__error() == 2)
+    while (!rmdir([stringByDeletingLastPathComponent fileSystemRepresentation]) || *__error() == 2)
     {
-      v16 = [v15 stringByDeletingLastPathComponent];
+      v15StringByDeletingLastPathComponent = [stringByDeletingLastPathComponent stringByDeletingLastPathComponent];
 
-      v15 = v16;
-      if (![v16 length])
+      stringByDeletingLastPathComponent = v15StringByDeletingLastPathComponent;
+      if (![v15StringByDeletingLastPathComponent length])
       {
         goto LABEL_11;
       }
     }
   }
 
-  v16 = v15;
+  v15StringByDeletingLastPathComponent = stringByDeletingLastPathComponent;
 LABEL_11:
 
   return v14;
 }
 
-- (BOOL)_generationForsakeRow:(id)a3 withCredential:(const GSCredential *)a4 error:(id *)a5
+- (BOOL)_generationForsakeRow:(id)row withCredential:(const GSCredential *)credential error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 isAccessibleByUID:a4->uid error:a5];
+  rowCopy = row;
+  v9 = [rowCopy isAccessibleByUID:credential->uid error:error];
   if (v9)
   {
-    v10 = [v8 fullPath:self];
+    v10 = [rowCopy fullPath:self];
     [(GSManager *)self _forsakePath:v10];
   }
 
   return v9;
 }
 
-- (void)_nukeStorageID:(int64_t)a3
+- (void)_nukeStorageID:(int64_t)d
 {
   v5 = sub_100003164();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -890,7 +890,7 @@ LABEL_11:
   }
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [NSString stringWithFormat:@"%@/%s/%llx", self->_libraryRoot, "AllUIDs", a3];
+  v7 = [NSString stringWithFormat:@"%@/%s/%llx", self->_libraryRoot, "AllUIDs", d];
   if ([v6 fileExistsAtPath:v7] && !-[GSManager _forsakePath:](self, "_forsakePath:", v7))
   {
     v8 = sub_100003164();
@@ -926,15 +926,15 @@ LABEL_11:
           objc_enumerationMutation(v10);
         }
 
-        v16 = [v9 stringByAppendingFormat:v14, *(*(&v27 + 1) + 8 * v15), a3];
+        v16 = [v9 stringByAppendingFormat:v14, *(*(&v27 + 1) + 8 * v15), d];
         if ([v6 fileExistsAtPath:v16] && !-[GSManager _forsakePath:](self, "_forsakePath:", v16))
         {
           v17 = v9;
           v18 = v14;
           v19 = v10;
           v20 = v6;
-          v21 = a3;
-          v22 = self;
+          dCopy = d;
+          selfCopy = self;
           v23 = sub_100003164();
           if (os_log_type_enabled(v23, 0x90u))
           {
@@ -943,9 +943,9 @@ LABEL_11:
             _os_log_error_impl(&_mh_execute_header, v23, 0x90u, "[ERROR] Failed to forsake %@", buf, 0xCu);
           }
 
-          self = v22;
-          [(GSManager *)v22 setIsInconsistent:1];
-          a3 = v21;
+          self = selfCopy;
+          [(GSManager *)selfCopy setIsInconsistent:1];
+          d = dCopy;
           v6 = v20;
           v10 = v19;
           v14 = v18;
@@ -963,7 +963,7 @@ LABEL_11:
     while (v12);
   }
 
-  if (([(PQLConnection *)self->_db execute:@"DELETE FROM generations WHERE generation_storage_id = %lld", a3]& 1) == 0)
+  if (([(PQLConnection *)self->_db execute:@"DELETE FROM generations WHERE generation_storage_id = %lld", d]& 1) == 0)
   {
     v24 = sub_100003164();
     if (os_log_type_enabled(v24, 0x90u))
@@ -974,7 +974,7 @@ LABEL_11:
     [(GSManager *)self setIsInconsistent:1];
   }
 
-  if (![GSFileRow deleteRow:self->_db storageID:a3])
+  if (![GSFileRow deleteRow:self->_db storageID:d])
   {
     v25 = sub_100003164();
     if (os_log_type_enabled(v25, 0x90u))
@@ -988,17 +988,17 @@ LABEL_11:
   [(GSManager *)self _purgePurgatory];
 }
 
-- (BOOL)_removeAdditionByRow:(id)a3 credentials:(const GSCredential *)a4 error:(id *)a5
+- (BOOL)_removeAdditionByRow:(id)row credentials:(const GSCredential *)credentials error:(id *)error
 {
-  v8 = a3;
-  if (v8 && [(GSManager *)self _generationForsakeRow:v8 withCredential:a4 error:a5])
+  rowCopy = row;
+  if (rowCopy && [(GSManager *)self _generationForsakeRow:rowCopy withCredential:credentials error:error])
   {
-    if ([GSGenerationRow deleteRow:self->_db rowID:v8[1]]< 0)
+    if ([GSGenerationRow deleteRow:self->_db rowID:rowCopy[1]]< 0)
     {
       v9 = sub_100003164();
       if (os_log_type_enabled(v9, 0x90u))
       {
-        sub_10002B460(v8);
+        sub_10002B460(rowCopy);
       }
 
       [(GSManager *)self setIsInconsistent:1];
@@ -1016,14 +1016,14 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_removeAddition:(int64_t)a3 inNameSpace:(id)a4 named:(id)a5 credentials:(const GSCredential *)a6 error:(id *)a7
+- (BOOL)_removeAddition:(int64_t)addition inNameSpace:(id)space named:(id)named credentials:(const GSCredential *)credentials error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = [GSGenerationRow generationRow:self->_db storageID:a3 name:v13 clientID:v12 error:a7];
+  spaceCopy = space;
+  namedCopy = named;
+  v14 = [GSGenerationRow generationRow:self->_db storageID:addition name:namedCopy clientID:spaceCopy error:error];
   if (v14 || (-[PQLConnection lastError](self->_db, "lastError"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 isSqliteErrorCode:12], v15, !v16))
   {
-    v18 = [(GSManager *)self _removeAdditionByRow:v14 credentials:a6 error:a7];
+    v18 = [(GSManager *)self _removeAdditionByRow:v14 credentials:credentials error:error];
   }
 
   else
@@ -1040,21 +1040,21 @@ LABEL_11:
   return v18;
 }
 
-- (void)_removeAllAdditions:(int64_t)a3 inNameSpace:(id)a4 credentials:(const GSCredential *)a5
+- (void)_removeAllAdditions:(int64_t)additions inNameSpace:(id)space credentials:(const GSCredential *)credentials
 {
-  v8 = a4;
+  spaceCopy = space;
   v9 = objc_alloc_init(NSMutableIndexSet);
   v26 = 0;
   v25 = 0u;
   v23 = 0;
   v22 = 0u;
-  v21 = a3;
-  v24 = [v8 UTF8String];
+  additionsCopy = additions;
+  uTF8String = [spaceCopy UTF8String];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [GSGenerationRow enumerate:self->_db withOptions:&v21];
+  v10 = [GSGenerationRow enumerate:self->_db withOptions:&additionsCopy];
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v11)
   {
@@ -1070,7 +1070,7 @@ LABEL_11:
         }
 
         v15 = *(*(&v17 + 1) + 8 * i);
-        if ([(GSManager *)self _generationForsakeRow:v15 withCredential:a5 error:0])
+        if ([(GSManager *)self _generationForsakeRow:v15 withCredential:credentials error:0])
         {
           [v9 addIndex:*(v15 + 8)];
         }
@@ -1091,15 +1091,15 @@ LABEL_11:
   [(GSManager *)self _purgePurgatory];
 }
 
-- (id)makeStagingPathForCredential:(const GSCredential *)a3 prefix:(id)a4 stagedName:(id)a5
+- (id)makeStagingPathForCredential:(const GSCredential *)credential prefix:(id)prefix stagedName:(id)name
 {
-  v8 = a4;
-  v9 = a5;
+  prefixCopy = prefix;
+  nameCopy = name;
   v10 = +[NSFileManager defaultManager];
   v20[0] = NSFileOwnerAccountID;
-  if (a3)
+  if (credential)
   {
-    v11 = [NSNumber numberWithUnsignedInt:a3->uid];
+    v11 = [NSNumber numberWithUnsignedInt:credential->uid];
   }
 
   else
@@ -1111,14 +1111,14 @@ LABEL_11:
   v21[0] = v11;
   v21[1] = &off_1000442B0;
   v12 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
-  if (a3)
+  if (credential)
   {
   }
 
   v13 = @"tmp";
-  if (v8)
+  if (prefixCopy)
   {
-    v13 = v8;
+    v13 = prefixCopy;
   }
 
   v14 = [NSString stringWithFormat:@"%@.XXXXXX", v13, v20[0]];
@@ -1126,9 +1126,9 @@ LABEL_11:
 
   if (v15 && [v10 setAttributes:v12 ofItemAtPath:v15 error:0])
   {
-    if (v9)
+    if (nameCopy)
     {
-      v16 = v9;
+      v16 = nameCopy;
     }
 
     else
@@ -1150,26 +1150,26 @@ LABEL_11:
   return v18;
 }
 
-- (BOOL)_pathIsStaged:(id)a3
+- (BOOL)_pathIsStaged:(id)staged
 {
-  v4 = a3;
-  v6 = [v4 hasPrefix:self->_stagingPath] && (v5 = objc_msgSend(v4, "length"), v5 >= -[NSString length](self->_stagingPath, "length") + 2) && objc_msgSend(v4, "characterAtIndex:", -[NSString length](self->_stagingPath, "length")) == 47 && objc_msgSend(v4, "characterAtIndex:", -[NSString length](self->_stagingPath, "length") + 1) != 47;
+  stagedCopy = staged;
+  v6 = [stagedCopy hasPrefix:self->_stagingPath] && (v5 = objc_msgSend(stagedCopy, "length"), v5 >= -[NSString length](self->_stagingPath, "length") + 2) && objc_msgSend(stagedCopy, "characterAtIndex:", -[NSString length](self->_stagingPath, "length")) == 47 && objc_msgSend(stagedCopy, "characterAtIndex:", -[NSString length](self->_stagingPath, "length") + 1) != 47;
 
   return v6;
 }
 
-- (void)cleanupStagingPath:(id)a3 withCredential:(const GSCredential *)a4
+- (void)cleanupStagingPath:(id)path withCredential:(const GSCredential *)credential
 {
-  v6 = a3;
-  if ([(GSManager *)self _pathIsStaged:v6])
+  pathCopy = path;
+  if ([(GSManager *)self _pathIsStaged:pathCopy])
   {
-    v7 = [v6 substringFromIndex:{-[NSString length](self->_stagingPath, "length") + 1}];
+    v7 = [pathCopy substringFromIndex:{-[NSString length](self->_stagingPath, "length") + 1}];
     stagingPath = self->_stagingPath;
-    v9 = [v7 pathComponents];
-    v10 = [v9 objectAtIndexedSubscript:0];
+    pathComponents = [v7 pathComponents];
+    v10 = [pathComponents objectAtIndexedSubscript:0];
     v11 = [(NSString *)stagingPath stringByAppendingPathComponent:v10];
 
-    if (!a4 || [(GSManager *)self isIgnoringOwners])
+    if (!credential || [(GSManager *)self isIgnoringOwners])
     {
       goto LABEL_7;
     }
@@ -1179,9 +1179,9 @@ LABEL_11:
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 fileOwnerAccountID];
-      v16 = [NSNumber numberWithUnsignedInt:a4->uid];
-      v17 = [v15 isEqualToNumber:v16];
+      fileOwnerAccountID = [v13 fileOwnerAccountID];
+      v16 = [NSNumber numberWithUnsignedInt:credential->uid];
+      v17 = [fileOwnerAccountID isEqualToNumber:v16];
 
       if (v17)
       {
@@ -1224,12 +1224,12 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)extensionsForStorageID:(int64_t)a3 credentials:(const GSCredential *)a4 pubExt:(id *)a5 privExt:(id *)a6
+- (void)extensionsForStorageID:(int64_t)d credentials:(const GSCredential *)credentials pubExt:(id *)ext privExt:(id *)privExt
 {
-  if (!a5)
+  if (!ext)
   {
     v12 = 0;
-    if (!a6)
+    if (!privExt)
     {
       goto LABEL_4;
     }
@@ -1237,84 +1237,84 @@ LABEL_18:
     goto LABEL_3;
   }
 
-  v11 = [NSString stringWithFormat:@"%@/%llx", @"AllUIDs", a3];
+  v11 = [NSString stringWithFormat:@"%@/%llx", @"AllUIDs", d];
   v12 = [(NSString *)self->_libraryRoot stringByAppendingPathComponent:v11];
 
-  v13 = *&a4->auditToken.val[4];
-  v16 = *a4->auditToken.val;
+  v13 = *&credentials->auditToken.val[4];
+  v16 = *credentials->auditToken.val;
   v17 = v13;
-  *a5 = [v12 gs_issueReadExtensionIfNeededForAuditToken:&v16];
-  if (a6)
+  *ext = [v12 gs_issueReadExtensionIfNeededForAuditToken:&v16];
+  if (privExt)
   {
 LABEL_3:
-    v14 = [NSString stringWithFormat:@"%@/%d/%llx", @"PerUID", a4->uid, a3];
+    v14 = [NSString stringWithFormat:@"%@/%d/%llx", @"PerUID", credentials->uid, d];
 
     v12 = [(NSString *)self->_libraryRoot stringByAppendingPathComponent:v14];
 
-    v15 = *&a4->auditToken.val[4];
-    v16 = *a4->auditToken.val;
+    v15 = *&credentials->auditToken.val[4];
+    v16 = *credentials->auditToken.val;
     v17 = v15;
-    *a6 = [v12 gs_issueReadExtensionIfNeededForAuditToken:&v16];
+    *privExt = [v12 gs_issueReadExtensionIfNeededForAuditToken:&v16];
   }
 
 LABEL_4:
 }
 
-- (id)_createAddition:(int64_t)a3 creationInfo:(id)a4 isDir:(BOOL)a5 stagedPath:(id)a6 credentials:(const GSCredential *)a7 error:(id *)a8
+- (id)_createAddition:(int64_t)addition creationInfo:(id)info isDir:(BOOL)dir stagedPath:(id)path credentials:(const GSCredential *)credentials error:(id *)error
 {
-  v58 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = [v13 objectForKeyedSubscript:@"kGSAdditionName"];
-  v15 = [v13 objectForKeyedSubscript:@"kGSAdditionNameSpace"];
-  v16 = [v13 objectForKeyedSubscript:@"kGSAdditionOptions"];
-  v60 = [v13 objectForKeyedSubscript:@"kGSAdditionConflictResolved"];
-  v62 = [v13 objectForKeyedSubscript:@"kGSAdditionOnDuplicate"];
+  dirCopy = dir;
+  pathCopy = path;
+  infoCopy = info;
+  v14 = [infoCopy objectForKeyedSubscript:@"kGSAdditionName"];
+  v15 = [infoCopy objectForKeyedSubscript:@"kGSAdditionNameSpace"];
+  v16 = [infoCopy objectForKeyedSubscript:@"kGSAdditionOptions"];
+  v60 = [infoCopy objectForKeyedSubscript:@"kGSAdditionConflictResolved"];
+  v62 = [infoCopy objectForKeyedSubscript:@"kGSAdditionOnDuplicate"];
 
   v64 = 0;
-  v17 = [(GSManager *)self isIgnoringOwners];
+  isIgnoringOwners = [(GSManager *)self isIgnoringOwners];
   if ([v14 characterAtIndex:0] != 58)
   {
     goto LABEL_3;
   }
 
-  [NSString stringWithFormat:@":%d:", a7->uid];
-  v18 = self;
-  v19 = a7;
-  v20 = v17;
-  v21 = a3;
+  [NSString stringWithFormat:@":%d:", credentials->uid];
+  selfCopy = self;
+  credentialsCopy = credentials;
+  v20 = isIgnoringOwners;
+  additionCopy = addition;
   v22 = v16;
-  v23 = v12;
+  v23 = pathCopy;
   v25 = v24 = v15;
   v26 = [v14 hasPrefix:v25];
 
   v15 = v24;
-  v12 = v23;
+  pathCopy = v23;
   v16 = v22;
-  a3 = v21;
-  v17 = v20;
-  a7 = v19;
-  self = v18;
+  addition = additionCopy;
+  isIgnoringOwners = v20;
+  credentials = credentialsCopy;
+  self = selfCopy;
   if (v26)
   {
 LABEL_3:
-    if ([(GSManager *)self _pathIsStaged:v12])
+    if ([(GSManager *)self _pathIsStaged:pathCopy])
     {
-      if ([GSFileRow storageIDExists:self->_db storageID:a3])
+      if ([GSFileRow storageIDExists:self->_db storageID:addition])
       {
         db = self->_db;
         v63 = 0;
-        v56 = a3;
-        v28 = [GSGenerationRow generationRow:db storageID:a3 name:v14 clientID:v15 error:&v63];
+        additionCopy2 = addition;
+        v28 = [GSGenerationRow generationRow:db storageID:addition name:v14 clientID:v15 error:&v63];
         v29 = v63;
         v30 = v29;
         if (v28)
         {
-          v31 = [v62 intValue];
-          if (v31 != 1)
+          intValue = [v62 intValue];
+          if (intValue != 1)
           {
             v57 = v30;
-            if (!v31)
+            if (!intValue)
             {
               v32 = v28;
               v33 = [NSString stringWithFormat:@"generation already exists"];
@@ -1325,9 +1325,9 @@ LABEL_3:
                 sub_10002B898();
               }
 
-              if (a8)
+              if (error)
               {
-                *a8 = sub_10000F0F8(106, v33, 0);
+                *error = sub_10000F0F8(106, v33, 0);
               }
 
               v36 = 0;
@@ -1337,14 +1337,14 @@ LABEL_3:
             }
 
             v44 = v15;
-            v47 = a8;
-            if ([(GSManager *)self _removeAdditionByRow:v28 credentials:a7 error:a8])
+            errorCopy2 = error;
+            if ([(GSManager *)self _removeAdditionByRow:v28 credentials:credentials error:error])
             {
 LABEL_35:
-              if (sub_10000B60C([v12 fileSystemRepresentation], v17, &v64, v47))
+              if (sub_10000B60C([pathCopy fileSystemRepresentation], isIgnoringOwners, &v64, errorCopy2))
               {
                 v15 = v44;
-                v50 = [(GSManager *)self makeStoragePathForGenerationNamed:v14 storageID:v56 clientID:v44 forUID:a7->uid makePublic:v17];
+                v50 = [(GSManager *)self makeStoragePathForGenerationNamed:v14 storageID:additionCopy2 clientID:v44 forUID:credentials->uid makePublic:isIgnoringOwners];
                 if (!v50)
                 {
                   v38 = v28;
@@ -1356,9 +1356,9 @@ LABEL_35:
                     sub_100027C60();
                   }
 
-                  if (v47)
+                  if (errorCopy2)
                   {
-                    *v47 = sub_10000F0F8(101, v53, 0);
+                    *errorCopy2 = sub_10000F0F8(101, v53, 0);
                   }
 
                   v37 = 0;
@@ -1368,11 +1368,11 @@ LABEL_35:
 
                 v36 = v50;
                 v35 = v60;
-                if (sub_100009D60([v12 fileSystemRepresentation], objc_msgSend(v50, "fileSystemRepresentation"), v47))
+                if (sub_100009D60([pathCopy fileSystemRepresentation], objc_msgSend(v50, "fileSystemRepresentation"), errorCopy2))
                 {
                   v38 = objc_alloc_init(GSGenerationRow);
 
-                  v38->generation_storage_id = v56;
+                  v38->generation_storage_id = additionCopy2;
                   objc_storeStrong(&v38->generation_name, v14);
                   objc_storeStrong(&v38->generation_client_id, v15);
                   v51 = [v36 substringFromIndex:{-[NSString length](self->_libraryRoot, "length") + 1}];
@@ -1386,7 +1386,7 @@ LABEL_35:
                   v38->generation_conflict_resolved = [v60 BOOLValue];
                   if ([(GSGenerationRow *)v38 saveToDB:self->_db])
                   {
-                    v37 = [(GSManager *)self _additionDictionary:v38 path:v36 isDir:v58];
+                    v37 = [(GSManager *)self _additionDictionary:v38 path:v36 isDir:dirCopy];
 LABEL_53:
                     v30 = v57;
                     if (!v37 && v38)
@@ -1400,10 +1400,10 @@ LABEL_53:
                     goto LABEL_56;
                   }
 
-                  if (v47)
+                  if (errorCopy2)
                   {
                     [(PQLConnection *)self->_db translatedError];
-                    *v47 = v37 = 0;
+                    *errorCopy2 = v37 = 0;
                     goto LABEL_53;
                   }
                 }
@@ -1441,16 +1441,16 @@ LABEL_53:
         {
           v57 = v29;
           v44 = v15;
-          v45 = [(PQLConnection *)self->_db lastError];
-          v46 = [v45 isSqliteErrorCode:12];
+          lastError = [(PQLConnection *)self->_db lastError];
+          v46 = [lastError isSqliteErrorCode:12];
 
-          v47 = a8;
+          errorCopy2 = error;
           if (v46)
           {
             goto LABEL_35;
           }
 
-          if (!a8)
+          if (!error)
           {
             v38 = 0;
             v36 = 0;
@@ -1466,7 +1466,7 @@ LABEL_43:
           v38 = 0;
           v36 = 0;
           v37 = 0;
-          *a8 = v48;
+          *error = v48;
           v30 = v48;
           v15 = v44;
         }
@@ -1484,9 +1484,9 @@ LABEL_56:
         sub_1000256F4();
       }
 
-      v40 = a8;
+      errorCopy4 = error;
       v35 = v60;
-      if (a8)
+      if (error)
       {
         v41 = 102;
         goto LABEL_25;
@@ -1502,14 +1502,14 @@ LABEL_56:
         sub_10002B820();
       }
 
-      v40 = a8;
+      errorCopy4 = error;
       v35 = v60;
-      if (a8)
+      if (error)
       {
         v41 = 104;
 LABEL_25:
         sub_10000F0F8(v41, v36, 0);
-        *v40 = v37 = 0;
+        *errorCopy4 = v37 = 0;
         goto LABEL_57;
       }
     }
@@ -1525,10 +1525,10 @@ LABEL_25:
     sub_100028B4C();
   }
 
-  if (a8)
+  if (error)
   {
     sub_10000F0F8(105, v36, 0);
-    *a8 = v37 = 0;
+    *error = v37 = 0;
   }
 
   else
@@ -1542,45 +1542,45 @@ LABEL_57:
   return v37;
 }
 
-- (id)_additionDictionary:(id)a3 url:(id)a4
+- (id)_additionDictionary:(id)dictionary url:(id)url
 {
   v14[0] = @"o";
-  v5 = *(a3 + 6);
-  v6 = a4;
-  v7 = a3;
+  v5 = *(dictionary + 6);
+  urlCopy = url;
+  dictionaryCopy = dictionary;
   v8 = [NSNumber numberWithUnsignedLongLong:v5];
   v15[0] = v8;
   v14[1] = @"ns";
-  v15[1] = v7[4];
-  v15[2] = v6;
+  v15[1] = dictionaryCopy[4];
+  v15[2] = urlCopy;
   v14[2] = @"u";
   v14[3] = @"sz";
-  v9 = [NSNumber numberWithLongLong:v7[9]];
+  v9 = [NSNumber numberWithLongLong:dictionaryCopy[9]];
   v15[3] = v9;
   v14[4] = @"sID";
-  v10 = [NSNumber numberWithLongLong:v7[2]];
+  v10 = [NSNumber numberWithLongLong:dictionaryCopy[2]];
   v15[4] = v10;
   v14[5] = @"cr";
-  v11 = [NSNumber numberWithBool:*(v7 + 80)];
+  v11 = [NSNumber numberWithBool:*(dictionaryCopy + 80)];
   v15[5] = v11;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:6];
 
   return v12;
 }
 
-- (id)_additionDictionary:(id)a3 path:(id)a4
+- (id)_additionDictionary:(id)dictionary path:(id)path
 {
-  v6 = a3;
-  v7 = [NSURL fileURLWithPath:a4];
-  v8 = [(GSManager *)self _additionDictionary:v6 url:v7];
+  dictionaryCopy = dictionary;
+  v7 = [NSURL fileURLWithPath:path];
+  v8 = [(GSManager *)self _additionDictionary:dictionaryCopy url:v7];
 
   return v8;
 }
 
-- (id)_getAddition:(int64_t)a3 inNameSpace:(id)a4 named:(id)a5 credentials:(const GSCredential *)a6 error:(id *)a7
+- (id)_getAddition:(int64_t)addition inNameSpace:(id)space named:(id)named credentials:(const GSCredential *)credentials error:(id *)error
 {
-  v10 = [GSGenerationRow generationRow:self->_db storageID:a3 name:a5 clientID:a4 error:?];
-  if ([v10 isAccessibleByUID:a6->uid error:a7])
+  v10 = [GSGenerationRow generationRow:self->_db storageID:addition name:named clientID:space error:?];
+  if ([v10 isAccessibleByUID:credentials->uid error:error])
   {
     v11 = [v10 fullPath:self];
     v12 = [(GSManager *)self _additionDictionary:v10 path:v11];
@@ -1594,22 +1594,22 @@ LABEL_57:
   return v12;
 }
 
-- (id)_setAdditionNameSpace:(int64_t)a3 inNameSpace:(id)a4 named:(id)a5 newNameSpace:(id)a6 credentials:(const GSCredential *)a7 error:(id *)a8
+- (id)_setAdditionNameSpace:(int64_t)space inNameSpace:(id)nameSpace named:(id)named newNameSpace:(id)newNameSpace credentials:(const GSCredential *)credentials error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a6;
-  v38 = v14;
-  v18 = [v14 isEqualToString:v17];
+  nameSpaceCopy = nameSpace;
+  namedCopy = named;
+  newNameSpaceCopy = newNameSpace;
+  newNameSpaceCopy2 = newNameSpace;
+  v38 = nameSpaceCopy;
+  v18 = [nameSpaceCopy isEqualToString:newNameSpaceCopy2];
   if ((v18 & 1) == 0)
   {
-    v19 = [GSGenerationRow generationRow:self->_db storageID:a3 name:v15 clientID:v17 error:a8];
+    v19 = [GSGenerationRow generationRow:self->_db storageID:space name:namedCopy clientID:newNameSpaceCopy2 error:error];
     if (v19)
     {
       v20 = v19;
       v21 = v38;
-      if (![(GSManager *)self _removeAddition:a3 inNameSpace:v38 named:v15 credentials:a7 error:a8])
+      if (![(GSManager *)self _removeAddition:space inNameSpace:v38 named:namedCopy credentials:credentials error:error])
       {
         goto LABEL_8;
       }
@@ -1618,9 +1618,9 @@ LABEL_57:
     }
   }
 
-  v21 = v14;
-  v20 = [GSGenerationRow generationRow:self->_db storageID:a3 name:v15 clientID:v14 error:a8];
-  if (![v20 isAccessibleByUID:a7->uid error:a8])
+  v21 = nameSpaceCopy;
+  v20 = [GSGenerationRow generationRow:self->_db storageID:space name:namedCopy clientID:nameSpaceCopy error:error];
+  if (![v20 isAccessibleByUID:credentials->uid error:error])
   {
 LABEL_8:
     v23 = 0;
@@ -1636,13 +1636,13 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v25 = [(GSManager *)self makeStoragePathForGenerationNamed:v15 storageID:a3 clientID:v17 forUID:a7->uid makePublic:[(GSManager *)self isIgnoringOwners]];
+  v25 = [(GSManager *)self makeStoragePathForGenerationNamed:namedCopy storageID:space clientID:newNameSpaceCopy2 forUID:credentials->uid makePublic:[(GSManager *)self isIgnoringOwners]];
   if (v25)
   {
     v26 = v25;
     v27 = v20[5];
     v28 = v27;
-    objc_storeStrong(v20 + 4, v16);
+    objc_storeStrong(v20 + 4, newNameSpaceCopy);
     v29 = [v26 substringFromIndex:{-[NSString length](self->_libraryRoot, "length") + 1}];
     v30 = v20[5];
     v20[5] = v29;
@@ -1660,12 +1660,12 @@ LABEL_7:
           sub_100026B50();
         }
 
-        if (a8)
+        if (error)
         {
-          *a8 = sub_10000F37C(v36, v31);
+          *error = sub_10000F37C(v36, v31);
         }
 
-        objc_storeStrong(v20 + 4, v16);
+        objc_storeStrong(v20 + 4, newNameSpaceCopy);
         objc_storeStrong(v20 + 5, obj);
         [v20 saveToDB:self->_db];
         v23 = 0;
@@ -1682,10 +1682,10 @@ LABEL_7:
     else
     {
       v21 = v38;
-      if (a8)
+      if (error)
       {
         [(PQLConnection *)self->_db translatedError];
-        *a8 = v23 = 0;
+        *error = v23 = 0;
       }
 
       else
@@ -1705,9 +1705,9 @@ LABEL_7:
       sub_100026B50();
     }
 
-    if (a8)
+    if (error)
     {
-      *a8 = sub_10000F37C(v34, v33);
+      *error = sub_10000F37C(v34, v33);
     }
 
     v23 = 0;
@@ -1719,32 +1719,32 @@ LABEL_9:
   return v23;
 }
 
-- (id)_listAdditions:(int64_t)a3 nameSpace:(id)a4 withOptions:(unint64_t)a5 withoutOptions:(unint64_t)a6 andEnumerationState:(id)a7 credentials:(const GSCredential *)a8
+- (id)_listAdditions:(int64_t)additions nameSpace:(id)space withOptions:(unint64_t)options withoutOptions:(unint64_t)withoutOptions andEnumerationState:(id)state credentials:(const GSCredential *)credentials
 {
-  v14 = a4;
-  v15 = a7;
+  spaceCopy = space;
+  stateCopy = state;
   v31 = objc_alloc_init(NSMutableArray);
-  v36[0] = a3;
-  v36[1] = a5;
-  v36[2] = a6;
+  v36[0] = additions;
+  v36[1] = options;
+  v36[2] = withoutOptions;
   v36[3] = 0;
-  v30 = v14;
-  v36[4] = [v14 UTF8String];
+  v30 = spaceCopy;
+  v36[4] = [spaceCopy UTF8String];
   v37 = 0;
-  v38 = 0;
-  v39 = 0;
-  v16 = 0;
-  if ([v15 count] >= 3)
+  longLongValue = 0;
+  longLongValue2 = 0;
+  intValue = 0;
+  if ([stateCopy count] >= 3)
   {
-    v17 = [v15 objectAtIndexedSubscript:0];
-    v16 = [v17 intValue];
-    LODWORD(v37) = v16;
+    v17 = [stateCopy objectAtIndexedSubscript:0];
+    intValue = [v17 intValue];
+    LODWORD(v37) = intValue;
 
-    v18 = [v15 objectAtIndexedSubscript:1];
-    v38 = [v18 longLongValue];
+    v18 = [stateCopy objectAtIndexedSubscript:1];
+    longLongValue = [v18 longLongValue];
 
-    v19 = [v15 objectAtIndexedSubscript:2];
-    v39 = [v19 longLongValue];
+    v19 = [stateCopy objectAtIndexedSubscript:2];
+    longLongValue2 = [v19 longLongValue];
   }
 
   v34 = 0u;
@@ -1767,13 +1767,13 @@ LABEL_9:
         }
 
         v25 = *(*(&v32 + 1) + 8 * i);
-        if (v16)
+        if (intValue)
         {
-          v26 = [NSNumber numberWithLongLong:v25[1] + v16];
-          [v15 setObject:v26 atIndexedSubscript:2];
+          v26 = [NSNumber numberWithLongLong:v25[1] + intValue];
+          [stateCopy setObject:v26 atIndexedSubscript:2];
         }
 
-        if ([v25 isAccessibleByUID:a8->uid error:0])
+        if ([v25 isAccessibleByUID:credentials->uid error:0])
         {
           v27 = [v25 fullPath:self];
           v28 = [(GSManager *)self _additionDictionary:v25 path:v27];
@@ -1791,20 +1791,20 @@ LABEL_9:
   return v31;
 }
 
-- (void)_validateGenerationsStorage:(id *)a3 forEntry:(_ftsent *)a4 forStorageId:(int64_t)a5 andClientName:(id)a6
+- (void)_validateGenerationsStorage:(id *)storage forEntry:(_ftsent *)entry forStorageId:(int64_t)id andClientName:(id)name
 {
-  v10 = a6;
-  v11 = fts_children(a3, 256);
+  nameCopy = name;
+  v11 = fts_children(storage, 256);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100024748;
   v21[3] = &unk_1000419B0;
   v23 = v11;
-  v24 = a5;
-  v12 = v10;
+  idCopy = id;
+  v12 = nameCopy;
   v22 = v12;
   [(GSManager *)self dispatchSync:v21];
-  v13 = [NSString gs_stringWithFileSystemRepresentation:a4->fts_path];
+  v13 = [NSString gs_stringWithFileSystemRepresentation:entry->fts_path];
   if (v11)
   {
     *&v14 = 67109890;
@@ -1817,13 +1817,13 @@ LABEL_9:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           device = self->_device;
-          v17 = [v12 UTF8String];
+          uTF8String = [v12 UTF8String];
           *buf = v20;
           v26 = device;
           v27 = 2048;
-          v28 = a5;
+          idCopy2 = id;
           v29 = 2080;
-          v30 = v17;
+          v30 = uTF8String;
           v31 = 2080;
           fts_name = v11->fts_name;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[WARNING] removing generation [dev:%d,id:%lld,client:%s,name:%s] not represented in the database", buf, 0x26u);
@@ -1843,11 +1843,11 @@ LABEL_9:
   [(GSManager *)self _purgePurgatory];
 }
 
-- (void)_validateGenerationsStorageTree:(const char *)a3 atDepth:(int)a4
+- (void)_validateGenerationsStorageTree:(const char *)tree atDepth:(int)depth
 {
-  v20[0] = a3;
+  v20[0] = tree;
   v20[1] = 0;
-  if (faccessat(self->_libDirfd, a3, 0, 0))
+  if (faccessat(self->_libDirfd, tree, 0, 0))
   {
     return;
   }
@@ -1885,7 +1885,7 @@ LABEL_26:
     {
       if (fts_info == 1)
       {
-        v13 = v10->fts_level - a4;
+        v13 = v10->fts_level - depth;
         if (v13 == 1)
         {
           v15 = [NSString gs_stringWithFileSystemRepresentation:v10->fts_name];
@@ -1987,11 +1987,11 @@ LABEL_9:
   v4 = [NSDictionary dictionaryWithContentsOfFile:v3];
   if ([v4 isEqual:&off_100044328])
   {
-    v5 = [(PQLConnection *)self->_db loadLibraryState];
-    v6 = v5;
-    if (v5)
+    loadLibraryState = [(PQLConnection *)self->_db loadLibraryState];
+    v6 = loadLibraryState;
+    if (loadLibraryState)
     {
-      v7 = v5;
+      v7 = loadLibraryState;
     }
 
     else

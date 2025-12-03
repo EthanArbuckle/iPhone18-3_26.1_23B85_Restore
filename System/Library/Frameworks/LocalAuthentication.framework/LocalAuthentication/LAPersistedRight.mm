@@ -1,23 +1,23 @@
 @interface LAPersistedRight
-- (LAPersistedRight)initWithIdentifier:(id)a3 accessKey:(id)a4 privateKeys:(id)a5 secrets:(id)a6;
+- (LAPersistedRight)initWithIdentifier:(id)identifier accessKey:(id)key privateKeys:(id)keys secrets:(id)secrets;
 - (LAPrivateKey)key;
 - (LASecret)secret;
 @end
 
 @implementation LAPersistedRight
 
-- (LAPersistedRight)initWithIdentifier:(id)a3 accessKey:(id)a4 privateKeys:(id)a5 secrets:(id)a6
+- (LAPersistedRight)initWithIdentifier:(id)identifier accessKey:(id)key privateKeys:(id)keys secrets:(id)secrets
 {
-  v11 = a5;
-  v12 = a6;
+  keysCopy = keys;
+  secretsCopy = secrets;
   v16.receiver = self;
   v16.super_class = LAPersistedRight;
-  v13 = [(LARight *)&v16 initWithIdentifier:a3 accessKey:a4];
+  v13 = [(LARight *)&v16 initWithIdentifier:identifier accessKey:key];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_secrets, a6);
-    objc_storeStrong(&v14->_privateKeys, a5);
+    objc_storeStrong(&v13->_secrets, secrets);
+    objc_storeStrong(&v14->_privateKeys, keys);
   }
 
   return v14;
@@ -30,10 +30,10 @@
     [LAPersistedRight secret];
   }
 
-  v3 = [(NSArray *)self->_secrets firstObject];
-  [v3 setRight:self];
+  firstObject = [(NSArray *)self->_secrets firstObject];
+  [firstObject setRight:self];
 
-  return v3;
+  return firstObject;
 }
 
 - (LAPrivateKey)key
@@ -43,10 +43,10 @@
     [LAPersistedRight key];
   }
 
-  v3 = [(NSArray *)self->_privateKeys firstObject];
-  [v3 setRight:self];
+  firstObject = [(NSArray *)self->_privateKeys firstObject];
+  [firstObject setRight:self];
 
-  return v3;
+  return firstObject;
 }
 
 @end

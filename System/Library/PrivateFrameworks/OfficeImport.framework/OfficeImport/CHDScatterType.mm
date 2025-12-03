@@ -20,14 +20,14 @@
 
 - (BOOL)isSmoothType
 {
-  v2 = [(CHDChartType *)self seriesCollection];
-  v3 = [v2 count];
+  seriesCollection = [(CHDChartType *)self seriesCollection];
+  v3 = [seriesCollection count];
   if (v3)
   {
     v4 = 0;
     while (1)
     {
-      v5 = [v2 objectAtIndex:v4];
+      v5 = [seriesCollection objectAtIndex:v4];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if ((isKindOfClass & 1) == 0)
@@ -36,9 +36,9 @@
       }
 
       v7 = v5;
-      v8 = [v7 isSmooth];
+      isSmooth = [v7 isSmooth];
 
-      if (v8)
+      if (isSmooth)
       {
         break;
       }

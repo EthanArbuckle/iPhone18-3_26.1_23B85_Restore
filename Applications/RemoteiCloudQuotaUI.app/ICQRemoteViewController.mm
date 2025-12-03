@@ -3,15 +3,15 @@
 - (void)_cancelFlow;
 - (void)_dismissAndExit;
 - (void)_main_dismissAndExit;
-- (void)_presentFlowWithOffer:(id)a3 flowOptions:(id)a4 containerViewController:(id)a5;
-- (void)_presentFreshmintWithOffer:(id)a3 link:(id)a4 flowOptions:(id)a5 preloadedRemoteUIData:(id)a6;
-- (void)_presentOSLOWithOffer:(id)a3 link:(id)a4 presenter:(id)a5;
-- (void)_presentPostPurchaseFlowWithOffer:(id)a3 link:(id)a4 flowOptions:(id)a5 preloadedRemoteUIData:(id)a6;
+- (void)_presentFlowWithOffer:(id)offer flowOptions:(id)options containerViewController:(id)controller;
+- (void)_presentFreshmintWithOffer:(id)offer link:(id)link flowOptions:(id)options preloadedRemoteUIData:(id)data;
+- (void)_presentOSLOWithOffer:(id)offer link:(id)link presenter:(id)presenter;
+- (void)_presentPostPurchaseFlowWithOffer:(id)offer link:(id)link flowOptions:(id)options preloadedRemoteUIData:(id)data;
 - (void)_setupRemoteProxy;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 @end
 
 @implementation ICQRemoteViewController
@@ -28,12 +28,12 @@
   [(SBUIRemoteAlertHostInterface *)remoteVCProxy setDismissalAnimationStyle:1];
 }
 
-- (void)_presentPostPurchaseFlowWithOffer:(id)a3 link:(id)a4 flowOptions:(id)a5 preloadedRemoteUIData:(id)a6
+- (void)_presentPostPurchaseFlowWithOffer:(id)offer link:(id)link flowOptions:(id)options preloadedRemoteUIData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  offerCopy = offer;
+  linkCopy = link;
+  optionsCopy = options;
+  dataCopy = data;
   if (self->_flowManager)
   {
     v14 = _ICQGetLogSystem();
@@ -53,22 +53,22 @@
     v16[2] = sub_100001368;
     v16[3] = &unk_10000C2D0;
     v16[4] = self;
-    v17 = v10;
-    v18 = v12;
-    v19 = v11;
+    v17 = offerCopy;
+    v18 = optionsCopy;
+    v19 = linkCopy;
     v20 = v15;
-    v21 = v13;
+    v21 = dataCopy;
     v14 = v15;
     [(ICQRemoteViewController *)self presentViewController:v14 animated:1 completion:v16];
   }
 }
 
-- (void)_presentFreshmintWithOffer:(id)a3 link:(id)a4 flowOptions:(id)a5 preloadedRemoteUIData:(id)a6
+- (void)_presentFreshmintWithOffer:(id)offer link:(id)link flowOptions:(id)options preloadedRemoteUIData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  offerCopy = offer;
+  linkCopy = link;
+  optionsCopy = options;
+  dataCopy = data;
   if (self->_flowManager)
   {
     v14 = _ICQGetLogSystem();
@@ -81,8 +81,8 @@
 
   else
   {
-    v15 = [v10 bundleIdentifier];
-    [ICQMLBiomePublisher publishOfferDisplayActionEventWithBundleId:v15];
+    bundleIdentifier = [offerCopy bundleIdentifier];
+    [ICQMLBiomePublisher publishOfferDisplayActionEventWithBundleId:bundleIdentifier];
 
     v16 = [[ICQRemoteContainerViewController alloc] initWithRootViewController:self];
     [v16 setModalPresentationCapturesStatusBarAppearance:1];
@@ -90,32 +90,32 @@
     v17[1] = 3221225472;
     v17[2] = sub_1000015C4;
     v17[3] = &unk_10000C2D0;
-    v18 = v10;
-    v19 = v11;
-    v20 = self;
+    v18 = offerCopy;
+    v19 = linkCopy;
+    selfCopy = self;
     v21 = v16;
-    v22 = v12;
-    v23 = v13;
+    v22 = optionsCopy;
+    v23 = dataCopy;
     v14 = v16;
     [(ICQRemoteViewController *)self presentViewController:v14 animated:1 completion:v17];
   }
 }
 
-- (void)_presentFlowWithOffer:(id)a3 flowOptions:(id)a4 containerViewController:(id)a5
+- (void)_presentFlowWithOffer:(id)offer flowOptions:(id)options containerViewController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  offerCopy = offer;
+  optionsCopy = options;
+  controllerCopy = controller;
   v11 = [[AAUISpinnerViewController alloc] initWithNibName:0 bundle:0];
   v12 = [[ICQRemoteUINavigationController alloc] initWithRootViewController:v11];
-  v13 = [v12 navigationBar];
-  [v13 setTranslucent:1];
+  navigationBar = [v12 navigationBar];
+  [navigationBar setTranslucent:1];
 
   [v12 setModalInPresentation:1];
   v14 = +[UIDevice currentDevice];
-  v15 = [v14 userInterfaceIdiom];
+  userInterfaceIdiom = [v14 userInterfaceIdiom];
 
-  if (v15 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v16 = 2;
   }
@@ -126,8 +126,8 @@
   }
 
   [v12 setModalPresentationStyle:v16];
-  v17 = [v8 context];
-  v18 = [v8 universalLinkForContext:v17];
+  context = [offerCopy context];
+  v18 = [offerCopy universalLinkForContext:context];
 
   if ([v18 action] == 118)
   {
@@ -141,7 +141,7 @@
 
   else
   {
-    [v10 presentViewController:v12 animated:1 completion:0];
+    [controllerCopy presentViewController:v12 animated:1 completion:0];
   }
 
   v20 = +[ICQOfferManager sharedOfferManager];
@@ -150,23 +150,23 @@
   v26[1] = 3221225472;
   v26[2] = sub_1000019D0;
   v26[3] = &unk_10000C388;
-  v27 = v8;
-  v28 = self;
-  v29 = v10;
+  v27 = offerCopy;
+  selfCopy = self;
+  v29 = controllerCopy;
   v30 = v12;
-  v31 = v9;
-  v22 = v9;
+  v31 = optionsCopy;
+  v22 = optionsCopy;
   v23 = v12;
-  v24 = v10;
-  v25 = v8;
+  v24 = controllerCopy;
+  v25 = offerCopy;
   [v20 getOfferForBundleIdentifier:v21 completion:v26];
 }
 
-- (void)_presentOSLOWithOffer:(id)a3 link:(id)a4 presenter:(id)a5
+- (void)_presentOSLOWithOffer:(id)offer link:(id)link presenter:(id)presenter
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  offerCopy = offer;
+  linkCopy = link;
+  presenterCopy = presenter;
   if (self->_flowManager)
   {
     v11 = _ICQGetLogSystem();
@@ -180,13 +180,13 @@
 
   else
   {
-    v12 = [[ICQUpgradeFlowManager alloc] initWithOffer:v8];
+    v12 = [[ICQUpgradeFlowManager alloc] initWithOffer:offerCopy];
     flowManager = self->_flowManager;
     self->_flowManager = v12;
 
     [(ICQUpgradeFlowManager *)self->_flowManager setDelegate:self];
-    [(ICQUpgradeFlowManager *)self->_flowManager setIcqLink:v9];
-    [(ICQUpgradeFlowManager *)self->_flowManager beginOSLOFlowWithPresentingViewController:v10];
+    [(ICQUpgradeFlowManager *)self->_flowManager setIcqLink:linkCopy];
+    [(ICQUpgradeFlowManager *)self->_flowManager beginOSLOFlowWithPresentingViewController:presenterCopy];
   }
 }
 
@@ -214,9 +214,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -227,56 +227,56 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000028A4;
   v19[3] = &unk_10000C400;
   v19[4] = self;
-  v7 = a3;
+  contextCopy = context;
   v8 = [(ICQRemoteViewController *)self _remoteViewControllerProxyWithErrorHandler:v19];
   remoteVCProxy = self->_remoteVCProxy;
   self->_remoteVCProxy = v8;
 
-  v10 = [v7 xpcEndpoint];
+  xpcEndpoint = [contextCopy xpcEndpoint];
   xpcEndpoint = self->_xpcEndpoint;
-  self->_xpcEndpoint = v10;
+  self->_xpcEndpoint = xpcEndpoint;
 
-  v12 = [ICQRemoteContext ICQContextFromRemoteAlertContext:v7];
+  v12 = [ICQRemoteContext ICQContextFromRemoteAlertContext:contextCopy];
 
-  v13 = [v12 flowOptionsData];
-  v14 = [ICQUpgradeFlowOptions flowOptionsFromData:v13];
+  flowOptionsData = [v12 flowOptionsData];
+  v14 = [ICQUpgradeFlowOptions flowOptionsFromData:flowOptionsData];
 
-  v15 = [v12 isPostPurchaseFlow];
-  v16 = [v12 offer];
-  v17 = [v12 link];
-  v18 = [v12 preloadedRemoteUIData];
-  if (v15)
+  isPostPurchaseFlow = [v12 isPostPurchaseFlow];
+  offer = [v12 offer];
+  link = [v12 link];
+  preloadedRemoteUIData = [v12 preloadedRemoteUIData];
+  if (isPostPurchaseFlow)
   {
-    [(ICQRemoteViewController *)self _presentPostPurchaseFlowWithOffer:v16 link:v17 flowOptions:v14 preloadedRemoteUIData:v18];
+    [(ICQRemoteViewController *)self _presentPostPurchaseFlowWithOffer:offer link:link flowOptions:v14 preloadedRemoteUIData:preloadedRemoteUIData];
   }
 
   else
   {
-    [(ICQRemoteViewController *)self _presentFreshmintWithOffer:v16 link:v17 flowOptions:v14 preloadedRemoteUIData:v18];
+    [(ICQRemoteViewController *)self _presentFreshmintWithOffer:offer link:link flowOptions:v14 preloadedRemoteUIData:preloadedRemoteUIData];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -288,7 +288,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * v8) events] & 0x10) != 0)
@@ -300,7 +300,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -321,15 +321,15 @@
   }
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   flowManager = self->_flowManager;
   if (flowManager)
   {
     v6 = _ICQGetLogSystem();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (flowManager == v4)
+    if (flowManager == cancelCopy)
     {
       if (v7)
       {
@@ -346,7 +346,7 @@
     {
       v8 = self->_flowManager;
       v12 = 138412546;
-      v13 = v4;
+      v13 = cancelCopy;
       v14 = 2112;
       v15 = v8;
       v9 = "ICQRemoteViewController UpgradeFlowManager did cancel for manager %@ instead of %@";
@@ -375,15 +375,15 @@ LABEL_7:
   [(ICQRemoteViewController *)self _dismissFlowWithSuccess:0];
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   flowManager = self->_flowManager;
   if (flowManager)
   {
     v6 = _ICQGetLogSystem();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (flowManager == v4)
+    if (flowManager == completeCopy)
     {
       if (v7)
       {
@@ -391,17 +391,17 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICQRemoteViewController local UpgradeFlowManager did complete!", &v19, 2u);
       }
 
-      v12 = [(ICQUpgradeFlowManager *)self->_flowManager offer];
-      v13 = [v12 isPremiumOffer];
+      offer = [(ICQUpgradeFlowManager *)self->_flowManager offer];
+      isPremiumOffer = [offer isPremiumOffer];
 
-      v14 = [(ICQUpgradeFlowManager *)self->_flowManager offer];
-      v15 = [v14 isDefaultOffer];
+      offer2 = [(ICQUpgradeFlowManager *)self->_flowManager offer];
+      isDefaultOffer = [offer2 isDefaultOffer];
 
-      if ((v15 & 1) == 0)
+      if ((isDefaultOffer & 1) == 0)
       {
         v16 = _ICQGetLogSystem();
         v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-        if (v13)
+        if (isPremiumOffer)
         {
           if (v17)
           {
@@ -434,7 +434,7 @@ LABEL_7:
     {
       v8 = self->_flowManager;
       v19 = 138412546;
-      v20 = v4;
+      v20 = completeCopy;
       v21 = 2112;
       v22 = v8;
       v9 = "ICQRemoteViewController local UpgradeFlowManager did complete for manager %@ instead of %@";

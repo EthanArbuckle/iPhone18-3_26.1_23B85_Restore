@@ -1,18 +1,18 @@
 @interface PFCloudKitHistoryAnalyzerContext
-- (BOOL)finishProcessing:(id *)a3;
-- (BOOL)processChange:(id)a3 error:(id *)a4;
-- (BOOL)reset:(id *)a3;
-- (BOOL)resetStateForObjectID:(id)a3 error:(id *)a4;
-- (PFCloudKitHistoryAnalyzerContext)initWithOptions:(id)a3 managedObjectContext:(id)a4 store:(id)a5;
-- (id)fetchSortedStates:(id *)a3;
-- (id)newAnalyzerStateForChange:(id)a3 error:(id *)a4;
-- (uint64_t)_flushPendingAnalyzerStates:(uint64_t)a1;
+- (BOOL)finishProcessing:(id *)processing;
+- (BOOL)processChange:(id)change error:(id *)error;
+- (BOOL)reset:(id *)reset;
+- (BOOL)resetStateForObjectID:(id)d error:(id *)error;
+- (PFCloudKitHistoryAnalyzerContext)initWithOptions:(id)options managedObjectContext:(id)context store:(id)store;
+- (id)fetchSortedStates:(id *)states;
+- (id)newAnalyzerStateForChange:(id)change error:(id *)error;
+- (uint64_t)_flushPendingAnalyzerStates:(uint64_t)states;
 - (void)dealloc;
 @end
 
 @implementation PFCloudKitHistoryAnalyzerContext
 
-- (PFCloudKitHistoryAnalyzerContext)initWithOptions:(id)a3 managedObjectContext:(id)a4 store:(id)a5
+- (PFCloudKitHistoryAnalyzerContext)initWithOptions:(id)options managedObjectContext:(id)context store:(id)store
 {
   v29 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -22,7 +22,7 @@
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v28 = a3;
+      optionsCopy2 = options;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Attempt to initialize PFCloudKitHistoryAnalyzerContext with options that aren't PFCloudKitHistoryAnalyzerOptions: %@\n", buf, 0xCu);
     }
 
@@ -30,22 +30,22 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v28 = a3;
+      optionsCopy2 = options;
       _os_log_fault_impl(&dword_18565F000, v10, OS_LOG_TYPE_FAULT, "CoreData: Attempt to initialize PFCloudKitHistoryAnalyzerContext with options that aren't PFCloudKitHistoryAnalyzerOptions: %@", buf, 0xCu);
     }
   }
 
   v25.receiver = self;
   v25.super_class = PFCloudKitHistoryAnalyzerContext;
-  v11 = [(PFHistoryAnalyzerContext *)&v25 initWithOptions:a3];
+  v11 = [(PFHistoryAnalyzerContext *)&v25 initWithOptions:options];
   if (v11)
   {
-    v11->_managedObjectContext = a4;
+    v11->_managedObjectContext = context;
     v11->_resetChangedObjectIDs = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v11->_entityIDToChangedPrimaryKeySet = objc_alloc_init(MEMORY[0x1E695DF90]);
     v12 = objc_autoreleasePoolPush();
     v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v14 = [objc_msgSend(objc_msgSend(a4 "persistentStoreCoordinator")];
+    v14 = [objc_msgSend(objc_msgSend(context "persistentStoreCoordinator")];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -78,7 +78,7 @@
     v11->_configuredEntityNames = [v13 copy];
 
     objc_autoreleasePoolPop(v12);
-    v11->_store = a5;
+    v11->_store = store;
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -92,10 +92,10 @@
   [(PFHistoryAnalyzerContext *)&v3 dealloc];
 }
 
-- (BOOL)processChange:(id)a3 error:(id *)a4
+- (BOOL)processChange:(id)change error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (!-[NSSet containsObject:](self->_configuredEntityNames, "containsObject:", [objc_msgSend(objc_msgSend(a3 "changedObjectID")]))
+  if (!-[NSSet containsObject:](self->_configuredEntityNames, "containsObject:", [objc_msgSend(objc_msgSend(change "changedObjectID")]))
   {
     v10 = objc_autoreleasePoolPush();
     Stream = __PFCloudKitLoggingGetStream();
@@ -147,9 +147,9 @@
       v29 = 1024;
       v30 = 97;
       v31 = 2112;
-      v32 = self;
+      selfCopy = self;
       v33 = 2112;
-      v34 = [a3 changedObjectID];
+      changedObjectID = [change changedObjectID];
       _os_log_impl(&dword_18565F000, v12, v15, "CoreData+CloudKit: %s(%d): %@: Skipping change because its entity is not in the configured set of entities for this store: %@", buf, 0x26u);
     }
 
@@ -157,12 +157,12 @@
     goto LABEL_26;
   }
 
-  if (([objc_msgSend(objc_msgSend(a3 "transaction")] & 1) != 0 || (objc_msgSend(objc_msgSend(objc_msgSend(a3, "transaction"), "contextName"), "isEqualToString:", @"NSCloudKitMirroringDelegate.import") & 1) != 0 || objc_msgSend(objc_msgSend(objc_msgSend(a3, "transaction"), "author"), "isEqualToString:", @"NSCloudKitMirroringDelegate.reset"))
+  if (([objc_msgSend(objc_msgSend(change "transaction")] & 1) != 0 || (objc_msgSend(objc_msgSend(objc_msgSend(change, "transaction"), "contextName"), "isEqualToString:", @"NSCloudKitMirroringDelegate.import") & 1) != 0 || objc_msgSend(objc_msgSend(objc_msgSend(change, "transaction"), "author"), "isEqualToString:", @"NSCloudKitMirroringDelegate.reset"))
   {
     options = self->super._options;
     if (!options || (BYTE1(options[1].super.isa) & 1) == 0)
     {
-      if ([a3 changeType] == 2 && !-[PFCloudKitHistoryAnalyzerContext resetStateForObjectID:error:](self, "resetStateForObjectID:error:", objc_msgSend(a3, "changedObjectID"), a4))
+      if ([change changeType] == 2 && !-[PFCloudKitHistoryAnalyzerContext resetStateForObjectID:error:](self, "resetStateForObjectID:error:", objc_msgSend(change, "changedObjectID"), error))
       {
 LABEL_32:
         result = 0;
@@ -173,14 +173,14 @@ LABEL_32:
     }
   }
 
-  else if ([a3 changeType] != 2 && objc_msgSend(objc_msgSend(a3, "updatedProperties"), "count"))
+  else if ([change changeType] != 2 && objc_msgSend(objc_msgSend(change, "updatedProperties"), "count"))
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v17 = [a3 updatedProperties];
-    v18 = [v17 countByEnumeratingWithState:&v23 objects:v35 count:16];
+    updatedProperties = [change updatedProperties];
+    v18 = [updatedProperties countByEnumeratingWithState:&v23 objects:v35 count:16];
     if (!v18)
     {
 LABEL_26:
@@ -191,7 +191,7 @@ LABEL_26:
 
       else
       {
-        result = [(PFCloudKitHistoryAnalyzerContext *)self _flushPendingAnalyzerStates:a4];
+        result = [(PFCloudKitHistoryAnalyzerContext *)self _flushPendingAnalyzerStates:error];
       }
 
       goto LABEL_29;
@@ -205,7 +205,7 @@ LABEL_37:
     {
       if (*v24 != v20)
       {
-        objc_enumerationMutation(v17);
+        objc_enumerationMutation(updatedProperties);
       }
 
       if (![objc_msgSend(objc_msgSend(*(*(&v23 + 1) + 8 * v21) "userInfo")])
@@ -215,7 +215,7 @@ LABEL_37:
 
       if (v19 == ++v21)
       {
-        v19 = [v17 countByEnumeratingWithState:&v23 objects:v35 count:16];
+        v19 = [updatedProperties countByEnumeratingWithState:&v23 objects:v35 count:16];
         if (v19)
         {
           goto LABEL_37;
@@ -233,7 +233,7 @@ LABEL_37:
 
   v22.receiver = self;
   v22.super_class = PFCloudKitHistoryAnalyzerContext;
-  v8 = [(PFHistoryAnalyzerContext *)&v22 processChange:a3 error:a4];
+  v8 = [(PFHistoryAnalyzerContext *)&v22 processChange:change error:error];
   result = 0;
   if (self && (v8 & 1) != 0)
   {
@@ -245,10 +245,10 @@ LABEL_29:
   return result;
 }
 
-- (uint64_t)_flushPendingAnalyzerStates:(uint64_t)a1
+- (uint64_t)_flushPendingAnalyzerStates:(uint64_t)states
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (states)
   {
     v17 = 0;
     v18 = &v17;
@@ -259,23 +259,23 @@ LABEL_29:
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
-    v4 = *(a1 + 64);
+    v4 = *(states + 64);
     v16 = 1;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __64__PFCloudKitHistoryAnalyzerContext__flushPendingAnalyzerStates___block_invoke;
     v12[3] = &unk_1E6EC2F08;
-    v12[4] = a1;
+    v12[4] = states;
     v12[5] = &v13;
     v12[6] = &v17;
     [v4 performBlockAndWait:v12];
     v5 = *(v14 + 24);
     if (v5 == 1)
     {
-      [*(a1 + 24) removeAllObjects];
-      [*(a1 + 40) removeAllObjects];
-      [*(a1 + 80) removeAllObjects];
-      [*(a1 + 88) removeAllObjects];
+      [*(states + 24) removeAllObjects];
+      [*(states + 40) removeAllObjects];
+      [*(states + 80) removeAllObjects];
+      [*(states + 88) removeAllObjects];
       v5 = *(v14 + 24);
     }
 
@@ -581,23 +581,23 @@ LABEL_37:
   return result;
 }
 
-- (BOOL)resetStateForObjectID:(id)a3 error:(id *)a4
+- (BOOL)resetStateForObjectID:(id)d error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = PFCloudKitHistoryAnalyzerContext;
   v13 = 0;
-  v7 = [(PFHistoryAnalyzerContext *)&v12 resetStateForObjectID:a3 error:&v13];
+  v7 = [(PFHistoryAnalyzerContext *)&v12 resetStateForObjectID:d error:&v13];
   if (v7)
   {
-    [(NSMutableSet *)self->_resetChangedObjectIDs addObject:a3];
+    [(NSMutableSet *)self->_resetChangedObjectIDs addObject:d];
   }
 
   else if (v13)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -628,7 +628,7 @@ LABEL_37:
   return v7;
 }
 
-- (BOOL)reset:(id *)a3
+- (BOOL)reset:(id *)reset
 {
   v18 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -652,10 +652,10 @@ LABEL_37:
 
   if (v13)
   {
-    if (a3)
+    if (reset)
     {
       LOBYTE(v7) = 0;
-      *a3 = v13;
+      *reset = v13;
       goto LABEL_12;
     }
 
@@ -691,7 +691,7 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)finishProcessing:(id *)a3
+- (BOOL)finishProcessing:(id *)processing
 {
   v20 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -711,10 +711,10 @@ LABEL_12:
 
   if (v15)
   {
-    if (a3)
+    if (processing)
     {
       LOBYTE(v9) = 0;
-      *a3 = v15;
+      *processing = v15;
       goto LABEL_16;
     }
 
@@ -750,23 +750,23 @@ LABEL_16:
   return v9;
 }
 
-- (id)fetchSortedStates:(id *)a3
+- (id)fetchSortedStates:(id *)states
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v5 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKHistoryAnalyzerState entityPath]);
   v8[0] = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"finalTransactionNumber" ascending:1];
   -[NSFetchRequest setSortDescriptors:](v5, "setSortDescriptors:", [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1]);
   [(NSFetchRequest *)v5 setFetchBatchSize:200];
-  result = [(NSManagedObjectContext *)self->_managedObjectContext executeFetchRequest:v5 error:a3];
+  result = [(NSManagedObjectContext *)self->_managedObjectContext executeFetchRequest:v5 error:states];
   v7 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)newAnalyzerStateForChange:(id)a3 error:(id *)a4
+- (id)newAnalyzerStateForChange:(id)change error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = PFCloudKitHistoryAnalyzerContext;
-  v5 = [(PFHistoryAnalyzerContext *)&v12 newAnalyzerStateForChange:a3 error:a4];
+  v5 = [(PFHistoryAnalyzerContext *)&v12 newAnalyzerStateForChange:change error:error];
   if (v5)
   {
     v6 = _sqlEntityForEntityDescription(-[NSSQLCore model](self->_store, "model"), [objc_msgSend(v5 "analyzedObjectID")]);

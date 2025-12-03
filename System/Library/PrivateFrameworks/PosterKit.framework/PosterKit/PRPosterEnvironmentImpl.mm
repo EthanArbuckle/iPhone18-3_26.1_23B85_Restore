@@ -8,13 +8,13 @@
 - (BOOL)isWallpaperObscured;
 - (BOOL)showsComplications;
 - (BOOL)showsHeaderElements;
-- (BOOL)updateFromSceneSettings:(id)a3 traitCollection:(id)a4 overrides:(id)a5;
+- (BOOL)updateFromSceneSettings:(id)settings traitCollection:(id)collection overrides:(id)overrides;
 - (CGPoint)userTapLocation;
 - (CGRect)contentCutoutBounds;
 - (CGRect)floatingObscurableBounds;
 - (CGRect)salientContentRectangle;
 - (CGRect)screenBounds;
-- (CGRect)titleBoundsForLayout:(unint64_t)a3;
+- (CGRect)titleBoundsForLayout:(unint64_t)layout;
 - (CGSize)canvasSize;
 - (CGSize)desiredContentSize;
 - (CGSize)minimumContentSize;
@@ -23,7 +23,7 @@
 - (PRPosterAmbientEnvironment)ambientEnvironment;
 - (PRPosterConfigurableOptions)sourceConfigurableOptions;
 - (PRPosterContents)contents;
-- (PRPosterEnvironmentImpl)initWithSceneSettings:(id)a3 traitCollection:(id)a4 targetConfig:(id)a5 extensionBundleURL:(id)a6;
+- (PRPosterEnvironmentImpl)initWithSceneSettings:(id)settings traitCollection:(id)collection targetConfig:(id)config extensionBundleURL:(id)l;
 - (PRTimeFontConfiguration)sourceTimeFontConfiguration;
 - (UIColor)caseColor;
 - (double)devicePitch;
@@ -36,23 +36,23 @@
 - (unint64_t)effectiveMotionEffectsMode;
 - (unint64_t)significantEventsCounter;
 - (unint64_t)userTapEventsCounter;
-- (void)_appendDescriptionToStream:(id)a3;
-- (void)_applyToSceneSettings:(id)a3;
-- (void)_lock_hydratePosterContents:(id *)a3 sourceConfigurableOptions:(id *)a4 sourceTitleFontConfiguration:(id *)a5 targetConfigurableProperties:(id *)a6;
+- (void)_appendDescriptionToStream:(id)stream;
+- (void)_applyToSceneSettings:(id)settings;
+- (void)_lock_hydratePosterContents:(id *)contents sourceConfigurableOptions:(id *)options sourceTitleFontConfiguration:(id *)configuration targetConfigurableProperties:(id *)properties;
 - (void)_resetSnapshot;
 - (void)deviceMotionRotation;
 - (void)invalidate;
-- (void)setAppliesCountertransformForRotation:(BOOL)a3;
-- (void)setBacklightProgress:(double)a3;
-- (void)setDepthEffectDisabled:(BOOL)a3;
-- (void)setDeviceMotionRotation:(float64x2_t *)a3;
-- (void)setDevicePitch:(double)a3;
-- (void)setDeviceRoll:(double)a3;
-- (void)setDeviceYaw:(double)a3;
-- (void)setLinearBacklightProgress:(double)a3;
-- (void)setOverrides:(id)a3;
-- (void)setUnlockProgress:(double)a3;
-- (void)setWakeSourceIsSwipeToUnlock:(BOOL)a3;
+- (void)setAppliesCountertransformForRotation:(BOOL)rotation;
+- (void)setBacklightProgress:(double)progress;
+- (void)setDepthEffectDisabled:(BOOL)disabled;
+- (void)setDeviceMotionRotation:(float64x2_t *)rotation;
+- (void)setDevicePitch:(double)pitch;
+- (void)setDeviceRoll:(double)roll;
+- (void)setDeviceYaw:(double)yaw;
+- (void)setLinearBacklightProgress:(double)progress;
+- (void)setOverrides:(id)overrides;
+- (void)setUnlockProgress:(double)progress;
+- (void)setWakeSourceIsSwipeToUnlock:(BOOL)unlock;
 @end
 
 @implementation PRPosterEnvironmentImpl
@@ -69,20 +69,20 @@
 
 - (id)environmentSnapshot
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  snapshot = v2->_snapshot;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  snapshot = selfCopy->_snapshot;
   if (!snapshot)
   {
-    v4 = [[_PRPosterEnvironmentSnapshot alloc] initWithEnvironment:v2 layoutController:v2->_layoutController];
-    v5 = v2->_snapshot;
-    v2->_snapshot = v4;
+    v4 = [[_PRPosterEnvironmentSnapshot alloc] initWithEnvironment:selfCopy layoutController:selfCopy->_layoutController];
+    v5 = selfCopy->_snapshot;
+    selfCopy->_snapshot = v4;
 
-    snapshot = v2->_snapshot;
+    snapshot = selfCopy->_snapshot;
   }
 
   v6 = snapshot;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -92,8 +92,8 @@
   if (objc_opt_respondsToSelector())
   {
     v3 = [PRPosterAmbientEnvironmentImpl alloc];
-    v4 = [(PRPosterEnvironmentImpl *)self traitCollection];
-    v5 = [(PRPosterAmbientEnvironmentImpl *)v3 initWithTraitCollection:v4];
+    traitCollection = [(PRPosterEnvironmentImpl *)self traitCollection];
+    v5 = [(PRPosterAmbientEnvironmentImpl *)v3 initWithTraitCollection:traitCollection];
   }
 
   else
@@ -114,16 +114,16 @@
 - (BOOL)isSnapshot
 {
   v3 = NSStringFromSelector(a2);
-  v4 = [(FBSSceneSettings *)self->_settings pui_isSnapshot];
+  pui_isSnapshot = [(FBSSceneSettings *)self->_settings pui_isSnapshot];
   v5 = [(NSDictionary *)self->_environmentOverrides objectForKey:v3];
 
   if (v5)
   {
     v6 = [(NSDictionary *)self->_environmentOverrides objectForKey:v3];
-    v4 = [v6 BOOLValue];
+    pui_isSnapshot = [v6 BOOLValue];
   }
 
-  return v4;
+  return pui_isSnapshot;
 }
 
 - (PRPosterContents)contents
@@ -342,18 +342,18 @@ LABEL_17:
 
 - (UIColor)caseColor
 {
-  v2 = [(FBSSceneSettings *)self->_settings pr_caseColor];
-  v3 = [v2 UIColor];
+  pr_caseColor = [(FBSSceneSettings *)self->_settings pr_caseColor];
+  uIColor = [pr_caseColor UIColor];
 
-  return v3;
+  return uIColor;
 }
 
 - (int64_t)userInterfaceStyle
 {
-  v2 = [(PRPosterEnvironmentImpl *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(PRPosterEnvironmentImpl *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v3;
+  return userInterfaceStyle;
 }
 
 - (CGRect)contentCutoutBounds
@@ -470,9 +470,9 @@ LABEL_17:
   if (v3)
   {
     v4 = [(NSDictionary *)self->_environmentOverrides objectForKey:@"significantEventsCounter"];
-    v5 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-    return v5;
+    return unsignedIntegerValue;
   }
 
   else
@@ -485,10 +485,10 @@ LABEL_17:
 
 - (NSString)role
 {
-  v2 = [(PRPosterEnvironmentImpl *)self contents];
-  v3 = [v2 role];
+  contents = [(PRPosterEnvironmentImpl *)self contents];
+  role = [contents role];
 
-  return v3;
+  return role;
 }
 
 - (PRTimeFontConfiguration)sourceTimeFontConfiguration
@@ -565,15 +565,15 @@ LABEL_17:
 
 - (void)deviceMotionRotation
 {
-  v3 = *(a1 + 288);
-  *a2 = *(a1 + 272);
+  v3 = *(self + 288);
+  *a2 = *(self + 272);
   a2[1] = v3;
-  v4 = [*(a1 + 88) objectForKey:@"deviceMotionRotation"];
+  v4 = [*(self + 88) objectForKey:@"deviceMotionRotation"];
 
   if (v4)
   {
     v5 = MEMORY[0x1E69C5110];
-    v6 = [*(a1 + 88) objectForKey:@"deviceMotionRotation"];
+    v6 = [*(self + 88) objectForKey:@"deviceMotionRotation"];
     [v5 rotationFromSerializedRepresentation:v6];
   }
 }
@@ -698,34 +698,34 @@ LABEL_17:
   return depthEffectDisabled;
 }
 
-- (PRPosterEnvironmentImpl)initWithSceneSettings:(id)a3 traitCollection:(id)a4 targetConfig:(id)a5 extensionBundleURL:(id)a6
+- (PRPosterEnvironmentImpl)initWithSceneSettings:(id)settings traitCollection:(id)collection targetConfig:(id)config extensionBundleURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  settingsCopy = settings;
+  collectionCopy = collection;
+  configCopy = config;
+  lCopy = l;
   v24.receiver = self;
   v24.super_class = PRPosterEnvironmentImpl;
   v14 = [(PRPosterEnvironmentImpl *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [settingsCopy copy];
     settings = v14->_settings;
     v14->_settings = v15;
 
-    v17 = [v11 copy];
+    v17 = [collectionCopy copy];
     traitCollection = v14->_traitCollection;
     v14->_traitCollection = v17;
 
-    v19 = [v13 copy];
+    v19 = [lCopy copy];
     bundleURL = v14->_bundleURL;
     v14->_bundleURL = v19;
 
-    objc_storeStrong(&v14->_targetConfig, a5);
+    objc_storeStrong(&v14->_targetConfig, config);
     v14->_lock._os_unfair_lock_opaque = 0;
-    v21 = [(PRPosterEnvironmentImpl *)v14 luminance];
+    luminance = [(PRPosterEnvironmentImpl *)v14 luminance];
     v22 = 0.0;
-    if (v21 == 2)
+    if (luminance == 2)
     {
       v22 = 1.0;
     }
@@ -735,40 +735,40 @@ LABEL_17:
     v14->_depthEffectDisabled = [(PRPosterEnvironmentImpl *)v14 isDepthEffectDisabledInConfiguredProperties];
     *v14->_anon_110 = SPRotation3DIdentity_0;
     *&v14->_anon_110[16] = unk_1A8BF7D30;
-    [(PRPosterEnvironmentImpl *)v14 updateFromSceneSettings:v10 traitCollection:v11 overrides:MEMORY[0x1E695E0F8]];
+    [(PRPosterEnvironmentImpl *)v14 updateFromSceneSettings:settingsCopy traitCollection:collectionCopy overrides:MEMORY[0x1E695E0F8]];
   }
 
   return v14;
 }
 
-- (void)setOverrides:(id)a3
+- (void)setOverrides:(id)overrides
 {
-  if (a3)
+  if (overrides)
   {
-    v3 = a3;
+    overridesCopy = overrides;
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F8];
+    overridesCopy = MEMORY[0x1E695E0F8];
   }
 
-  [(PRPosterEnvironmentImpl *)self updateFromSceneSettings:self->_settings traitCollection:self->_traitCollection overrides:v3];
+  [(PRPosterEnvironmentImpl *)self updateFromSceneSettings:self->_settings traitCollection:self->_traitCollection overrides:overridesCopy];
 }
 
-- (BOOL)updateFromSceneSettings:(id)a3 traitCollection:(id)a4 overrides:(id)a5
+- (BOOL)updateFromSceneSettings:(id)settings traitCollection:(id)collection overrides:(id)overrides
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
+  settingsCopy = settings;
+  collectionCopy = collection;
+  overridesCopy = overrides;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = BSEqualObjects();
   if ((v12 & 1) == 0)
   {
-    v13 = [v8 copy];
-    settings = v11->_settings;
-    v11->_settings = v13;
+    v13 = [settingsCopy copy];
+    settings = selfCopy->_settings;
+    selfCopy->_settings = v13;
   }
 
   if (BSEqualObjects())
@@ -778,9 +778,9 @@ LABEL_17:
 
   else
   {
-    v16 = [v9 copy];
-    traitCollection = v11->_traitCollection;
-    v11->_traitCollection = v16;
+    v16 = [collectionCopy copy];
+    traitCollection = selfCopy->_traitCollection;
+    selfCopy->_traitCollection = v16;
 
     v15 = 1;
   }
@@ -796,7 +796,7 @@ LABEL_17:
 
   else
   {
-    v19 = [v10 copy];
+    v19 = [overridesCopy copy];
     v20 = v19;
     if (v19)
     {
@@ -808,99 +808,99 @@ LABEL_17:
       v21 = MEMORY[0x1E695E0F8];
     }
 
-    objc_storeStrong(&v11->_environmentOverrides, v21);
+    objc_storeStrong(&selfCopy->_environmentOverrides, v21);
   }
 
-  [v8 pr_unlockProgress];
-  v11->_unlockProgress = v22;
-  v11->_effectiveMotionEffectsMode = [v8 pr_effectiveMotionEffectsMode];
-  v11->_wakeSourceIsSwipeToUnlock = [v8 pr_wakeSourceIsSwipeToUnlock];
-  v23 = [[PREditorElementLayoutController alloc] initWithTraitEnvironment:v11];
-  layoutController = v11->_layoutController;
-  v11->_layoutController = v23;
+  [settingsCopy pr_unlockProgress];
+  selfCopy->_unlockProgress = v22;
+  selfCopy->_effectiveMotionEffectsMode = [settingsCopy pr_effectiveMotionEffectsMode];
+  selfCopy->_wakeSourceIsSwipeToUnlock = [settingsCopy pr_wakeSourceIsSwipeToUnlock];
+  v23 = [[PREditorElementLayoutController alloc] initWithTraitEnvironment:selfCopy];
+  layoutController = selfCopy->_layoutController;
+  selfCopy->_layoutController = v23;
 
-  v11->_boundingShape = PRPosterBoundingShapeFromPUIPosterBoundingShape([v8 pui_posterBoundingShape]);
-  v11->_appliesCountertransformForRotation = [v8 pr_appliesCountertransformForRotation];
-  [v8 pui_salientContentRectangle];
-  v11->_salientContentRectangle.origin.x = v25;
-  v11->_salientContentRectangle.origin.y = v26;
-  v11->_salientContentRectangle.size.width = v27;
-  v11->_salientContentRectangle.size.height = v28;
-  v29 = [v8 pui_contentOcclusionRectangles];
-  if (v29)
+  selfCopy->_boundingShape = PRPosterBoundingShapeFromPUIPosterBoundingShape([settingsCopy pui_posterBoundingShape]);
+  selfCopy->_appliesCountertransformForRotation = [settingsCopy pr_appliesCountertransformForRotation];
+  [settingsCopy pui_salientContentRectangle];
+  selfCopy->_salientContentRectangle.origin.x = v25;
+  selfCopy->_salientContentRectangle.origin.y = v26;
+  selfCopy->_salientContentRectangle.size.width = v27;
+  selfCopy->_salientContentRectangle.size.height = v28;
+  pui_contentOcclusionRectangles = [settingsCopy pui_contentOcclusionRectangles];
+  if (pui_contentOcclusionRectangles)
   {
     v30 = [PRPosterContentOcclusionRectSet alloc];
-    v31 = [v8 pui_contentOcclusionRectangles];
-    v32 = [v31 allRects];
-    v33 = [(PRPosterContentOcclusionRectSet *)v30 initWithNameToRectMap:v32];
-    contentOcclusionRectangles = v11->_contentOcclusionRectangles;
-    v11->_contentOcclusionRectangles = v33;
+    pui_contentOcclusionRectangles2 = [settingsCopy pui_contentOcclusionRectangles];
+    allRects = [pui_contentOcclusionRectangles2 allRects];
+    v33 = [(PRPosterContentOcclusionRectSet *)v30 initWithNameToRectMap:allRects];
+    contentOcclusionRectangles = selfCopy->_contentOcclusionRectangles;
+    selfCopy->_contentOcclusionRectangles = v33;
   }
 
   else
   {
-    v31 = v11->_contentOcclusionRectangles;
-    v11->_contentOcclusionRectangles = 0;
+    pui_contentOcclusionRectangles2 = selfCopy->_contentOcclusionRectangles;
+    selfCopy->_contentOcclusionRectangles = 0;
   }
 
-  [v8 frame];
-  v11->_canvasSize.width = v35;
-  v11->_canvasSize.height = v36;
-  [v8 pr_deviceMotionUpdateInterval];
-  v11->_deviceMotionUpdateInterval = v37;
-  v11->_showsHeaderElements = [v8 pui_showsHeaderElements];
-  v11->_showsComplications = [v8 pui_showsComplications];
-  [v8 pui_userTapLocation];
-  v11->_userTapLocation.x = v38;
-  v11->_userTapLocation.y = v39;
-  v11->_userTapEventsCounter = [v8 pui_userTapEventsCounter];
-  v11->_wallpaperObscured = [v8 pui_isWallpaperObscured];
-  [v8 bounds];
-  v11->_screenBounds.origin.x = v40;
-  v11->_screenBounds.origin.y = v41;
-  v11->_screenBounds.size.width = v42;
-  v11->_screenBounds.size.height = v43;
-  os_unfair_lock_lock(&v11->_lock);
-  v44 = [(PRPosterContentsInternal *)v11->_lock_sourceContents _path];
-  if (v44)
+  [settingsCopy frame];
+  selfCopy->_canvasSize.width = v35;
+  selfCopy->_canvasSize.height = v36;
+  [settingsCopy pr_deviceMotionUpdateInterval];
+  selfCopy->_deviceMotionUpdateInterval = v37;
+  selfCopy->_showsHeaderElements = [settingsCopy pui_showsHeaderElements];
+  selfCopy->_showsComplications = [settingsCopy pui_showsComplications];
+  [settingsCopy pui_userTapLocation];
+  selfCopy->_userTapLocation.x = v38;
+  selfCopy->_userTapLocation.y = v39;
+  selfCopy->_userTapEventsCounter = [settingsCopy pui_userTapEventsCounter];
+  selfCopy->_wallpaperObscured = [settingsCopy pui_isWallpaperObscured];
+  [settingsCopy bounds];
+  selfCopy->_screenBounds.origin.x = v40;
+  selfCopy->_screenBounds.origin.y = v41;
+  selfCopy->_screenBounds.size.width = v42;
+  selfCopy->_screenBounds.size.height = v43;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  _path = [(PRPosterContentsInternal *)selfCopy->_lock_sourceContents _path];
+  if (_path)
   {
-    v45 = [(FBSSceneSettings *)v11->_settings pui_posterContents];
+    pui_posterContents = [(FBSSceneSettings *)selfCopy->_settings pui_posterContents];
     if ((BSEqualObjects() & 1) == 0)
     {
-      lock_sourceContents = v11->_lock_sourceContents;
-      v11->_lock_sourceContents = 0;
+      lock_sourceContents = selfCopy->_lock_sourceContents;
+      selfCopy->_lock_sourceContents = 0;
 
-      lock_sourceConfigurableOptions = v11->_lock_sourceConfigurableOptions;
-      v11->_lock_sourceConfigurableOptions = 0;
+      lock_sourceConfigurableOptions = selfCopy->_lock_sourceConfigurableOptions;
+      selfCopy->_lock_sourceConfigurableOptions = 0;
 
-      lock_targetConfiguredProperties = v11->_lock_targetConfiguredProperties;
-      v11->_lock_targetConfiguredProperties = 0;
+      lock_targetConfiguredProperties = selfCopy->_lock_targetConfiguredProperties;
+      selfCopy->_lock_targetConfiguredProperties = 0;
 
-      lock_sourceTitleFontConfiguration = v11->_lock_sourceTitleFontConfiguration;
-      v11->_lock_sourceTitleFontConfiguration = 0;
+      lock_sourceTitleFontConfiguration = selfCopy->_lock_sourceTitleFontConfiguration;
+      selfCopy->_lock_sourceTitleFontConfiguration = 0;
     }
   }
 
-  os_unfair_lock_unlock(&v11->_lock);
-  v50 = [[_PRPosterEnvironmentSnapshot alloc] initWithEnvironment:v11 layoutController:v11->_layoutController];
-  snapshot = v11->_snapshot;
-  v11->_snapshot = v50;
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  v50 = [[_PRPosterEnvironmentSnapshot alloc] initWithEnvironment:selfCopy layoutController:selfCopy->_layoutController];
+  snapshot = selfCopy->_snapshot;
+  selfCopy->_snapshot = v50;
 
   v18 = 1;
 LABEL_21:
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 
   return v18;
 }
 
-- (CGRect)titleBoundsForLayout:(unint64_t)a3
+- (CGRect)titleBoundsForLayout:(unint64_t)layout
 {
   [(PRPosterEnvironmentImpl *)self screenBounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(PREditorElementLayoutController *)self->_layoutController frameAttributesForElements:1 variant:1 titleLayout:a3 withBoundingRect:?];
+  v13 = [(PREditorElementLayoutController *)self->_layoutController frameAttributesForElements:1 variant:1 titleLayout:layout withBoundingRect:?];
   [v13 rect];
   v29 = v14;
   v16 = v15;
@@ -937,9 +937,9 @@ LABEL_21:
   if (v3)
   {
     v4 = [(NSDictionary *)self->_environmentOverrides objectForKey:@"isAdaptiveTimeDisabled"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    return v5;
+    return bOOLValue;
   }
 
   else
@@ -952,127 +952,127 @@ LABEL_21:
 
 - (BOOL)isDepthEffectDisabledInConfiguredProperties
 {
-  v2 = [(PRPosterEnvironmentImpl *)self targetConfiguredProperties];
-  v3 = v2;
-  if (v2)
+  targetConfiguredProperties = [(PRPosterEnvironmentImpl *)self targetConfiguredProperties];
+  v3 = targetConfiguredProperties;
+  if (targetConfiguredProperties)
   {
-    v4 = [v2 renderingConfiguration];
-    v5 = [v4 isDepthEffectDisabled];
+    renderingConfiguration = [targetConfiguredProperties renderingConfiguration];
+    isDepthEffectDisabled = [renderingConfiguration isDepthEffectDisabled];
   }
 
   else
   {
-    v5 = 0;
+    isDepthEffectDisabled = 0;
   }
 
-  return v5;
+  return isDepthEffectDisabled;
 }
 
-- (void)setDepthEffectDisabled:(BOOL)a3
+- (void)setDepthEffectDisabled:(BOOL)disabled
 {
   if ((BSEqualBools() & 1) == 0)
   {
-    self->_depthEffectDisabled = a3;
+    self->_depthEffectDisabled = disabled;
 
     [(PRPosterEnvironmentImpl *)self _resetSnapshot];
   }
 }
 
-- (void)setBacklightProgress:(double)a3
+- (void)setBacklightProgress:(double)progress
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_backlightProgress = a3;
+    self->_backlightProgress = progress;
 
     [(PRPosterEnvironmentImpl *)self _resetSnapshot];
   }
 }
 
-- (void)setLinearBacklightProgress:(double)a3
+- (void)setLinearBacklightProgress:(double)progress
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_linearBacklightProgress = a3;
+    self->_linearBacklightProgress = progress;
 
     [(PRPosterEnvironmentImpl *)self _resetSnapshot];
   }
 }
 
-- (void)setUnlockProgress:(double)a3
+- (void)setUnlockProgress:(double)progress
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_unlockProgress = a3;
+    self->_unlockProgress = progress;
 
     [(PRPosterEnvironmentImpl *)self _resetSnapshot];
   }
 }
 
-- (void)setDeviceRoll:(double)a3
+- (void)setDeviceRoll:(double)roll
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_deviceRoll = a3;
+    self->_deviceRoll = roll;
 
     [(PRPosterEnvironmentImpl *)self _resetSnapshot];
   }
 }
 
-- (void)setDevicePitch:(double)a3
+- (void)setDevicePitch:(double)pitch
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_devicePitch = a3;
+    self->_devicePitch = pitch;
 
     [(PRPosterEnvironmentImpl *)self _resetSnapshot];
   }
 }
 
-- (void)setDeviceYaw:(double)a3
+- (void)setDeviceYaw:(double)yaw
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_deviceYaw = a3;
+    self->_deviceYaw = yaw;
 
     [(PRPosterEnvironmentImpl *)self _resetSnapshot];
   }
 }
 
-- (void)setDeviceMotionRotation:(float64x2_t *)a3
+- (void)setDeviceMotionRotation:(float64x2_t *)rotation
 {
-  v3 = *(a1 + 17);
-  v4 = *(a1 + 18);
-  v5 = a3[1];
-  v6 = vandq_s8(vceqq_f64(v3, *a3), vceqq_f64(v4, v5));
+  v3 = *(self + 17);
+  v4 = *(self + 18);
+  v5 = rotation[1];
+  v6 = vandq_s8(vceqq_f64(v3, *rotation), vceqq_f64(v4, v5));
   if ((vandq_s8(v6, vdupq_laneq_s64(v6, 1)).u64[0] & 0x8000000000000000) == 0)
   {
-    v7 = vandq_s8(vceqq_f64(v3, vnegq_f64(*a3)), vceqq_f64(v4, vnegq_f64(v5)));
+    v7 = vandq_s8(vceqq_f64(v3, vnegq_f64(*rotation)), vceqq_f64(v4, vnegq_f64(v5)));
     if ((vandq_s8(v7, vdupq_laneq_s64(v7, 1)).u64[0] & 0x8000000000000000) == 0)
     {
-      v8 = a3[1];
-      *(a1 + 17) = *a3;
-      *(a1 + 18) = v8;
-      return [a1 _resetSnapshot];
+      v8 = rotation[1];
+      *(self + 17) = *rotation;
+      *(self + 18) = v8;
+      return [self _resetSnapshot];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setWakeSourceIsSwipeToUnlock:(BOOL)a3
+- (void)setWakeSourceIsSwipeToUnlock:(BOOL)unlock
 {
-  if (self->_wakeSourceIsSwipeToUnlock != a3)
+  if (self->_wakeSourceIsSwipeToUnlock != unlock)
   {
-    self->_wakeSourceIsSwipeToUnlock = a3;
+    self->_wakeSourceIsSwipeToUnlock = unlock;
     [(PRPosterEnvironmentImpl *)self _resetSnapshot];
   }
 }
 
-- (void)setAppliesCountertransformForRotation:(BOOL)a3
+- (void)setAppliesCountertransformForRotation:(BOOL)rotation
 {
-  if (self->_appliesCountertransformForRotation != a3)
+  if (self->_appliesCountertransformForRotation != rotation)
   {
-    self->_appliesCountertransformForRotation = a3;
+    self->_appliesCountertransformForRotation = rotation;
     [(PRPosterEnvironmentImpl *)self _resetSnapshot];
   }
 }
@@ -1080,65 +1080,65 @@ LABEL_21:
 - (BOOL)isFloatingViewSnapshot
 {
   v3 = NSStringFromSelector(a2);
-  v4 = [(FBSSceneSettings *)self->_settings pui_isFloatingLayerSnapshot];
+  pui_isFloatingLayerSnapshot = [(FBSSceneSettings *)self->_settings pui_isFloatingLayerSnapshot];
   v5 = [(NSDictionary *)self->_environmentOverrides objectForKey:v3];
 
   if (v5)
   {
     v6 = [(NSDictionary *)self->_environmentOverrides objectForKey:v3];
-    v4 = [v6 BOOLValue];
+    pui_isFloatingLayerSnapshot = [v6 BOOLValue];
   }
 
-  return v4;
+  return pui_isFloatingLayerSnapshot;
 }
 
-- (void)_lock_hydratePosterContents:(id *)a3 sourceConfigurableOptions:(id *)a4 sourceTitleFontConfiguration:(id *)a5 targetConfigurableProperties:(id *)a6
+- (void)_lock_hydratePosterContents:(id *)contents sourceConfigurableOptions:(id *)options sourceTitleFontConfiguration:(id *)configuration targetConfigurableProperties:(id *)properties
 {
-  v61 = [(FBSSceneSettings *)self->_settings pui_posterContents];
-  v10 = [v61 identity];
-  v11 = [(FBSSceneSettings *)self->_settings pr_posterConfigurableOptions];
-  v12 = [v10 role];
-  v59 = a3;
-  if (([v12 isEqualToString:*MEMORY[0x1E69C5220]] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", *MEMORY[0x1E69C5218]))
+  pui_posterContents = [(FBSSceneSettings *)self->_settings pui_posterContents];
+  identity = [pui_posterContents identity];
+  pr_posterConfigurableOptions = [(FBSSceneSettings *)self->_settings pr_posterConfigurableOptions];
+  role = [identity role];
+  contentsCopy = contents;
+  if (([role isEqualToString:*MEMORY[0x1E69C5220]] & 1) != 0 || objc_msgSend(role, "isEqualToString:", *MEMORY[0x1E69C5218]))
   {
-    v13 = a4;
-    v14 = [(FBSSceneSettings *)self->_settings pr_posterConfiguredProperties];
-    v15 = [v14 renderingConfiguration];
+    optionsCopy2 = options;
+    pr_posterConfiguredProperties = [(FBSSceneSettings *)self->_settings pr_posterConfiguredProperties];
+    renderingConfiguration = [pr_posterConfiguredProperties renderingConfiguration];
 
     v16 = [PRPosterConfiguredProperties alloc];
-    v17 = [(FBSSceneSettings *)self->_settings pr_posterTitleStyleConfiguration];
-    v62 = [(PRPosterConfiguredProperties *)v16 initWithTitleStyleConfiguration:v17 focusConfiguration:0 complicationLayout:0 renderingConfiguration:v15 homeScreenConfiguration:0 colorVariationsConfiguration:0 quickActionsConfiguration:0 suggestionMetadata:0 otherMetadata:0 userInfo:0];
+    pr_posterTitleStyleConfiguration = [(FBSSceneSettings *)self->_settings pr_posterTitleStyleConfiguration];
+    v62 = [(PRPosterConfiguredProperties *)v16 initWithTitleStyleConfiguration:pr_posterTitleStyleConfiguration focusConfiguration:0 complicationLayout:0 renderingConfiguration:renderingConfiguration homeScreenConfiguration:0 colorVariationsConfiguration:0 quickActionsConfiguration:0 suggestionMetadata:0 otherMetadata:0 userInfo:0];
   }
 
   else
   {
-    v13 = a4;
-    if ([v12 isEqualToString:*MEMORY[0x1E69C5208]])
+    optionsCopy2 = options;
+    if ([role isEqualToString:*MEMORY[0x1E69C5208]])
     {
       v30 = [PRPosterConfiguredProperties alloc];
-      v31 = [(FBSSceneSettings *)self->_settings pr_posterAmbientConfiguration];
-      v62 = [(PRPosterConfiguredProperties *)v30 initWithAmbientConfiguration:v31 widgetLayout:0 otherMetadata:0 userInfo:0];
+      pr_posterAmbientConfiguration = [(FBSSceneSettings *)self->_settings pr_posterAmbientConfiguration];
+      v62 = [(PRPosterConfiguredProperties *)v30 initWithAmbientConfiguration:pr_posterAmbientConfiguration widgetLayout:0 otherMetadata:0 userInfo:0];
     }
 
     else
     {
-      v62 = [PRPosterConfiguredProperties defaultConfiguredPropertiesForRole:v12];
+      v62 = [PRPosterConfiguredProperties defaultConfiguredPropertiesForRole:role];
     }
   }
 
-  v18 = [v10 type];
-  v19 = v18;
+  type = [identity type];
+  v19 = type;
   if (self->_lock_sourceContents)
   {
     goto LABEL_5;
   }
 
-  v24 = v18 - 1;
-  v25 = [0 _path];
-  v26 = v25;
+  v24 = type - 1;
+  _path = [0 _path];
+  v26 = _path;
   if (v24 <= 2)
   {
-    v27 = [v25 isEqual:v61];
+    v27 = [_path isEqual:pui_posterContents];
 
     if (v27)
     {
@@ -1147,18 +1147,18 @@ LABEL_21:
 
     if (v19 == 3)
     {
-      v20 = a5;
-      v28 = [[PRPosterConfiguration alloc] _initWithPath:v61];
+      configurationCopy2 = configuration;
+      v28 = [[PRPosterConfiguration alloc] _initWithPath:pui_posterContents];
       lock_sourceContents = self->_lock_sourceContents;
       self->_lock_sourceContents = v28;
 
       p_lock_sourceConfigurableOptions = &self->_lock_sourceConfigurableOptions;
 LABEL_13:
-      v22 = v59;
+      v22 = contentsCopy;
       goto LABEL_23;
     }
 
-    v57 = [[PRPosterDescriptor alloc] _initWithPath:v61];
+    v57 = [[PRPosterDescriptor alloc] _initWithPath:pui_posterContents];
     v36 = self->_lock_sourceContents;
     self->_lock_sourceContents = v57;
 LABEL_46:
@@ -1166,9 +1166,9 @@ LABEL_46:
     goto LABEL_5;
   }
 
-  v32 = [v25 serverIdentity];
+  serverIdentity = [_path serverIdentity];
 
-  if (v32)
+  if (serverIdentity)
   {
     v33 = self->_lock_sourceContents;
     self->_lock_sourceContents = 0;
@@ -1177,8 +1177,8 @@ LABEL_46:
   if (!self->_lock_sourceContents)
   {
     v34 = MEMORY[0x1E69C5178];
-    v35 = [v10 role];
-    v36 = [v34 temporaryPathForRole:v35];
+    role2 = [identity role];
+    v36 = [v34 temporaryPathForRole:role2];
 
     v37 = [[PRPosterConfiguration alloc] _initWithPath:v36];
     v38 = self->_lock_sourceContents;
@@ -1189,17 +1189,17 @@ LABEL_46:
   }
 
 LABEL_5:
-  v20 = a5;
+  configurationCopy2 = configuration;
   p_lock_sourceConfigurableOptions = &self->_lock_sourceConfigurableOptions;
   if (self->_lock_sourceConfigurableOptions || v19 == 3)
   {
     goto LABEL_13;
   }
 
-  v22 = v59;
-  if (v11)
+  v22 = contentsCopy;
+  if (pr_posterConfigurableOptions)
   {
-    v23 = v11;
+    v23 = pr_posterConfigurableOptions;
   }
 
   else
@@ -1225,8 +1225,8 @@ LABEL_23:
     {
       v49 = [PRTimeFontConfiguration alloc];
       v50 = MEMORY[0x1E69DB878];
-      [v10 role];
-      v58 = v13;
+      [identity role];
+      v58 = optionsCopy2;
       v52 = v51 = v22;
       v53 = [v50 pr_defaultTimeFontIdentifierForRole:v52];
       v54 = [(PRTimeFontConfiguration *)v49 initWithTimeFontIdentifier:v53];
@@ -1234,7 +1234,7 @@ LABEL_23:
       self->_lock_sourceTitleFontConfiguration = v54;
 
       v22 = v51;
-      v13 = v58;
+      optionsCopy2 = v58;
       p_lock_targetConfiguredProperties = &self->_lock_targetConfiguredProperties;
       if (self->_lock_targetConfiguredProperties)
       {
@@ -1244,9 +1244,9 @@ LABEL_23:
       goto LABEL_32;
     }
 
-    v45 = [(PRPosterConfiguredProperties *)v62 titleStyleConfiguration];
-    v46 = [v45 timeFontConfiguration];
-    v47 = [v46 timeFontConfigurationWithExtensionBundleURL:self->_bundleURL];
+    titleStyleConfiguration = [(PRPosterConfiguredProperties *)v62 titleStyleConfiguration];
+    timeFontConfiguration = [titleStyleConfiguration timeFontConfiguration];
+    v47 = [timeFontConfiguration timeFontConfigurationWithExtensionBundleURL:self->_bundleURL];
     v48 = self->_lock_sourceTitleFontConfiguration;
     self->_lock_sourceTitleFontConfiguration = v47;
   }
@@ -1275,90 +1275,90 @@ LABEL_34:
     *v22 = self->_lock_sourceContents;
   }
 
-  if (v13)
+  if (optionsCopy2)
   {
-    *v13 = *p_lock_sourceConfigurableOptions;
+    *optionsCopy2 = *p_lock_sourceConfigurableOptions;
   }
 
-  if (v20)
+  if (configurationCopy2)
   {
-    *v20 = self->_lock_sourceTitleFontConfiguration;
+    *configurationCopy2 = self->_lock_sourceTitleFontConfiguration;
   }
 
-  if (a6)
+  if (properties)
   {
-    *a6 = *p_lock_targetConfiguredProperties;
+    *properties = *p_lock_targetConfiguredProperties;
   }
 }
 
-- (void)_applyToSceneSettings:(id)a3
+- (void)_applyToSceneSettings:(id)settings
 {
   settings = self->_settings;
-  v5 = a3;
-  v6 = [(FBSSceneSettings *)settings pr_caseColor];
-  [v5 pr_setCaseColor:v6];
+  settingsCopy = settings;
+  pr_caseColor = [(FBSSceneSettings *)settings pr_caseColor];
+  [settingsCopy pr_setCaseColor:pr_caseColor];
 
-  [v5 pui_setUserInterfaceStyle:{-[FBSSceneSettings pui_userInterfaceStyle](self->_settings, "pui_userInterfaceStyle")}];
-  [v5 pr_setEffectiveMotionEffectsMode:{-[FBSSceneSettings pr_effectiveMotionEffectsMode](self->_settings, "pr_effectiveMotionEffectsMode")}];
-  [v5 pui_setMode:{-[FBSSceneSettings pui_mode](self->_settings, "pui_mode")}];
+  [settingsCopy pui_setUserInterfaceStyle:{-[FBSSceneSettings pui_userInterfaceStyle](self->_settings, "pui_userInterfaceStyle")}];
+  [settingsCopy pr_setEffectiveMotionEffectsMode:{-[FBSSceneSettings pr_effectiveMotionEffectsMode](self->_settings, "pr_effectiveMotionEffectsMode")}];
+  [settingsCopy pui_setMode:{-[FBSSceneSettings pui_mode](self->_settings, "pui_mode")}];
   [(FBSSceneSettings *)self->_settings pr_unlockProgress];
-  [v5 pr_setUnlockProgress:?];
-  [v5 pui_setIdle:{-[FBSSceneSettings pui_isIdle](self->_settings, "pui_isIdle")}];
-  [v5 pui_setShowingIdealizedTime:{-[FBSSceneSettings pui_isShowingIdealizedTime](self->_settings, "pui_isShowingIdealizedTime")}];
-  [v5 pui_setEditorPreview:{-[FBSSceneSettings pui_isEditorPreview](self->_settings, "pui_isEditorPreview")}];
-  [v5 pui_setShowsComplications:{-[FBSSceneSettings pui_showsComplications](self->_settings, "pui_showsComplications")}];
-  [v5 pui_setShowsHeaderElements:{-[FBSSceneSettings pui_showsHeaderElements](self->_settings, "pui_showsHeaderElements")}];
+  [settingsCopy pr_setUnlockProgress:?];
+  [settingsCopy pui_setIdle:{-[FBSSceneSettings pui_isIdle](self->_settings, "pui_isIdle")}];
+  [settingsCopy pui_setShowingIdealizedTime:{-[FBSSceneSettings pui_isShowingIdealizedTime](self->_settings, "pui_isShowingIdealizedTime")}];
+  [settingsCopy pui_setEditorPreview:{-[FBSSceneSettings pui_isEditorPreview](self->_settings, "pui_isEditorPreview")}];
+  [settingsCopy pui_setShowsComplications:{-[FBSSceneSettings pui_showsComplications](self->_settings, "pui_showsComplications")}];
+  [settingsCopy pui_setShowsHeaderElements:{-[FBSSceneSettings pui_showsHeaderElements](self->_settings, "pui_showsHeaderElements")}];
 
   [(PRPosterEnvironmentImpl *)self _resetSnapshot];
 }
 
-- (void)_appendDescriptionToStream:(id)a3
+- (void)_appendDescriptionToStream:(id)stream
 {
-  v28 = a3;
-  v4 = [(PRPosterEnvironmentImpl *)self context];
-  v5 = [v28 appendObject:v4 withName:@"environmentContext"];
+  streamCopy = stream;
+  context = [(PRPosterEnvironmentImpl *)self context];
+  v5 = [streamCopy appendObject:context withName:@"environmentContext"];
 
-  v6 = [(PRPosterEnvironmentImpl *)self caseColor];
-  v7 = [v28 appendObject:v6 withName:@"caseColor" skipIfNil:1];
+  caseColor = [(PRPosterEnvironmentImpl *)self caseColor];
+  v7 = [streamCopy appendObject:caseColor withName:@"caseColor" skipIfNil:1];
 
-  v8 = [(PRPosterEnvironmentImpl *)self traitCollection];
-  [v8 userInterfaceStyle];
+  traitCollection = [(PRPosterEnvironmentImpl *)self traitCollection];
+  [traitCollection userInterfaceStyle];
   v9 = UIApplicationSceneStringForUserInterfaceStyle();
-  v10 = [v28 appendObject:v9 withName:@"uiStyle"];
+  v10 = [streamCopy appendObject:v9 withName:@"uiStyle"];
 
   v11 = NSStringFromPRRenderingMode([(PRPosterEnvironmentImpl *)self mode]);
-  v12 = [v28 appendObject:v11 withName:@"mode"];
+  v12 = [streamCopy appendObject:v11 withName:@"mode"];
 
   [(PRPosterEnvironmentImpl *)self luminance];
   v13 = NSStringFromBLSAdjustedLuminance();
-  v14 = [v28 appendObject:v13 withName:@"luminance"];
+  v14 = [streamCopy appendObject:v13 withName:@"luminance"];
 
-  v15 = [v28 appendBool:-[PRPosterEnvironmentImpl isDepthEffectDisallowed](self withName:"isDepthEffectDisallowed") ifEqualTo:{@"depthEffectDisallowed", 1}];
-  v16 = [v28 appendBool:-[PRPosterEnvironmentImpl isDepthEffectDisabled](self withName:"isDepthEffectDisabled") ifEqualTo:{@"depthEffectDisabled", 1}];
+  v15 = [streamCopy appendBool:-[PRPosterEnvironmentImpl isDepthEffectDisallowed](self withName:"isDepthEffectDisallowed") ifEqualTo:{@"depthEffectDisallowed", 1}];
+  v16 = [streamCopy appendBool:-[PRPosterEnvironmentImpl isDepthEffectDisabled](self withName:"isDepthEffectDisabled") ifEqualTo:{@"depthEffectDisabled", 1}];
   [(PRPosterEnvironmentImpl *)self unlockProgress];
-  v17 = [v28 appendFloat:@"unlockProgress" withName:3 decimalPrecision:?];
-  v18 = [v28 appendInteger:-[PRPosterEnvironmentImpl effectiveMotionEffectsMode](self withName:{"effectiveMotionEffectsMode"), @"effectiveMotionEffectsMode"}];
+  v17 = [streamCopy appendFloat:@"unlockProgress" withName:3 decimalPrecision:?];
+  v18 = [streamCopy appendInteger:-[PRPosterEnvironmentImpl effectiveMotionEffectsMode](self withName:{"effectiveMotionEffectsMode"), @"effectiveMotionEffectsMode"}];
   [(PRPosterEnvironmentImpl *)self deviceRoll];
-  v19 = [v28 appendFloat:@"deviceRoll" withName:2 decimalPrecision:?];
+  v19 = [streamCopy appendFloat:@"deviceRoll" withName:2 decimalPrecision:?];
   [(PRPosterEnvironmentImpl *)self devicePitch];
-  v20 = [v28 appendFloat:@"devicePitch" withName:2 decimalPrecision:?];
+  v20 = [streamCopy appendFloat:@"devicePitch" withName:2 decimalPrecision:?];
   [(PRPosterEnvironmentImpl *)self deviceYaw];
-  v21 = [v28 appendFloat:@"deviceYaw" withName:2 decimalPrecision:?];
+  v21 = [streamCopy appendFloat:@"deviceYaw" withName:2 decimalPrecision:?];
   [(PRPosterEnvironmentImpl *)self backlightProgress];
-  v22 = [v28 appendFloat:@"backlightProgress" withName:3 decimalPrecision:?];
-  v23 = [v28 appendBool:-[PRPosterEnvironmentImpl wakeSourceIsSwipeToUnlock](self withName:{"wakeSourceIsSwipeToUnlock"), @"wakeSourceIsSwipeToUnlock"}];
-  v24 = [v28 appendUnsignedInteger:-[PRPosterEnvironmentImpl significantEventsCounter](self withName:{"significantEventsCounter"), @"significantEventsCounter"}];
-  v25 = [v28 appendBool:-[PRPosterEnvironmentImpl isIdle](self withName:"isIdle") ifEqualTo:{@"idle", 1}];
-  v26 = [(PRPosterEnvironmentImpl *)self overrides];
-  v27 = [v28 appendBool:objc_msgSend(v26 withName:{"count") != 0, @"envrionmentOverridesActive"}];
+  v22 = [streamCopy appendFloat:@"backlightProgress" withName:3 decimalPrecision:?];
+  v23 = [streamCopy appendBool:-[PRPosterEnvironmentImpl wakeSourceIsSwipeToUnlock](self withName:{"wakeSourceIsSwipeToUnlock"), @"wakeSourceIsSwipeToUnlock"}];
+  v24 = [streamCopy appendUnsignedInteger:-[PRPosterEnvironmentImpl significantEventsCounter](self withName:{"significantEventsCounter"), @"significantEventsCounter"}];
+  v25 = [streamCopy appendBool:-[PRPosterEnvironmentImpl isIdle](self withName:"isIdle") ifEqualTo:{@"idle", 1}];
+  overrides = [(PRPosterEnvironmentImpl *)self overrides];
+  v27 = [streamCopy appendBool:objc_msgSend(overrides withName:{"count") != 0, @"envrionmentOverridesActive"}];
 }
 
 - (int64_t)mode
 {
-  v2 = [(PRPosterEnvironmentImpl *)self context];
-  v3 = [v2 mode];
+  context = [(PRPosterEnvironmentImpl *)self context];
+  mode = [context mode];
 
-  return v3;
+  return mode;
 }
 
 - (void)invalidate
@@ -1401,7 +1401,7 @@ LABEL_34:
   v9 = __38__PRPosterEnvironmentImpl_description__block_invoke;
   v10 = &unk_1E7843070;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:self block:&v7];
   v5 = [v4 description];

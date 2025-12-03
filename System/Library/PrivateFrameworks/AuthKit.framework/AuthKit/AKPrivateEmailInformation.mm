@@ -1,60 +1,60 @@
 @interface AKPrivateEmailInformation
-- (AKPrivateEmailInformation)initWithResponseBody:(id)a3;
-- (void)_processDictionary:(id)a3 addedPrivateEmails:(id *)a4 removedPrivateEmails:(id *)a5;
+- (AKPrivateEmailInformation)initWithResponseBody:(id)body;
+- (void)_processDictionary:(id)dictionary addedPrivateEmails:(id *)emails removedPrivateEmails:(id *)privateEmails;
 @end
 
 @implementation AKPrivateEmailInformation
 
-- (AKPrivateEmailInformation)initWithResponseBody:(id)a3
+- (AKPrivateEmailInformation)initWithResponseBody:(id)body
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v30;
-  v30 = 0;
+  objc_storeStrong(location, body);
+  v3 = selfCopy;
+  selfCopy = 0;
   v28.receiver = v3;
   v28.super_class = AKPrivateEmailInformation;
   v16 = [(AKPrivateEmailInformation *)&v28 init];
-  v30 = v16;
-  objc_storeStrong(&v30, v16);
+  selfCopy = v16;
+  objc_storeStrong(&selfCopy, v16);
   if (v16)
   {
-    v30->_shouldSyncWithServer = 0;
+    selfCopy->_shouldSyncWithServer = 0;
     v27 = [location[0] objectForKeyedSubscript:AKPrivateEmailListVersionKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&v30->_privateEmailListVersion, v27);
+      objc_storeStrong(&selfCopy->_privateEmailListVersion, v27);
     }
 
     else
     {
-      objc_storeStrong(&v30->_privateEmailListVersion, 0);
+      objc_storeStrong(&selfCopy->_privateEmailListVersion, 0);
     }
 
     v26 = [location[0] objectForKeyedSubscript:@"invalidListVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30->_invalidListVersionSupplied = [v26 BOOLValue];
+      selfCopy->_invalidListVersionSupplied = [v26 BOOLValue];
     }
 
     else
     {
-      v30->_invalidListVersionSupplied = 0;
+      selfCopy->_invalidListVersionSupplied = 0;
     }
 
     v25 = [location[0] objectForKeyedSubscript:@"hmeProtocolVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30->_protocolVersion = [v25 intValue];
+      selfCopy->_protocolVersion = [v25 intValue];
     }
 
     else
     {
-      v30->_protocolVersion = AKPrivateEmailInitialProtocolVersion;
+      selfCopy->_protocolVersion = AKPrivateEmailInitialProtocolVersion;
     }
 
     v24 = objc_alloc_init(NSMutableArray);
@@ -82,7 +82,7 @@
           v21 = *(__b[1] + 8 * v12);
           v19 = v24;
           v18 = v23;
-          [(AKPrivateEmailInformation *)v30 _processDictionary:v21 addedPrivateEmails:&v19 removedPrivateEmails:&v18];
+          [(AKPrivateEmailInformation *)selfCopy _processDictionary:v21 addedPrivateEmails:&v19 removedPrivateEmails:&v18];
           objc_storeStrong(&v24, v19);
           objc_storeStrong(&v23, v18);
           ++v12;
@@ -101,12 +101,12 @@
       _objc_release(v14);
     }
 
-    else if (!v30->_privateEmailListVersion || v22)
+    else if (!selfCopy->_privateEmailListVersion || v22)
     {
       oslog = _AKLogHme();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        sub_10001B098(v31, v22, v30->_privateEmailListVersion);
+        sub_10001B098(v31, v22, selfCopy->_privateEmailListVersion);
         _os_log_error_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_ERROR, "Got unexpected combination, mappings=%@, hmeListVersion=%@", v31, 0x16u);
       }
 
@@ -115,16 +115,16 @@
 
     else
     {
-      v30->_shouldSyncWithServer = 1;
+      selfCopy->_shouldSyncWithServer = 1;
     }
 
     v4 = [v24 copy];
-    addedPrivateEmails = v30->_addedPrivateEmails;
-    v30->_addedPrivateEmails = v4;
+    addedPrivateEmails = selfCopy->_addedPrivateEmails;
+    selfCopy->_addedPrivateEmails = v4;
     _objc_release(addedPrivateEmails);
     v6 = [v23 copy];
-    removedPrivateEmails = v30->_removedPrivateEmails;
-    v30->_removedPrivateEmails = v6;
+    removedPrivateEmails = selfCopy->_removedPrivateEmails;
+    selfCopy->_removedPrivateEmails = v6;
     _objc_release(removedPrivateEmails);
     objc_storeStrong(&v22, 0);
     objc_storeStrong(&v23, 0);
@@ -134,20 +134,20 @@
     objc_storeStrong(&v27, 0);
   }
 
-  v9 = _objc_retain(v30);
+  v9 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (void)_processDictionary:(id)a3 addedPrivateEmails:(id *)a4 removedPrivateEmails:(id *)a5
+- (void)_processDictionary:(id)dictionary addedPrivateEmails:(id *)emails removedPrivateEmails:(id *)privateEmails
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
-  v16 = a5;
+  objc_storeStrong(location, dictionary);
+  emailsCopy = emails;
+  privateEmailsCopy = privateEmails;
   v15 = [location[0] objectForKeyedSubscript:@"d"];
   objc_opt_class();
   v13 = objc_opt_isKindOfClass() & 1;
@@ -191,12 +191,12 @@
     v8 = [v5 initWithAddress:v10 forKey:v15];
     if ([v12 isEqualToString:@"D"])
     {
-      [*v16 addObject:v8];
+      [*privateEmailsCopy addObject:v8];
     }
 
     else if ([v12 isEqualToString:@"A"])
     {
-      [*v17 addObject:v8];
+      [*emailsCopy addObject:v8];
     }
 
     objc_storeStrong(&v8, 0);

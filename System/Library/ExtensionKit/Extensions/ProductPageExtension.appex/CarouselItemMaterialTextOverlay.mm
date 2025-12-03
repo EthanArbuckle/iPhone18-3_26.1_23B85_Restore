@@ -1,6 +1,6 @@
 @interface CarouselItemMaterialTextOverlay
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)handleSelection:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)handleSelection:(id)selection;
 - (void)layoutSubviews;
 @end
 
@@ -18,17 +18,17 @@
   sub_1003E172C(0, v5);
   sub_10000CF78(v5, v5[3]);
   sub_10076422C();
-  v4 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_10076E0EC();
 
   sub_10000CD74(v5);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1003E172C(1, v11);
   v6 = sub_1007255D8(v11, width, height);
   v8 = v7;
@@ -41,12 +41,12 @@
   return result;
 }
 
-- (void)handleSelection:(id)a3
+- (void)handleSelection:(id)selection
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension31CarouselItemMaterialTextOverlay_selectionHandler);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_10001CE50(v3);
     v3(v5);
 

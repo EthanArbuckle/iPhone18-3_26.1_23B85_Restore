@@ -1,5 +1,5 @@
 @interface MapsSuggestionsContactActivityDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 - (_TtC15MapsSuggestions37MapsSuggestionsContactActivityDeduper)init;
 @end
 
@@ -12,12 +12,12 @@
   return [(MapsSuggestionsContactActivityDeduper *)&v3 init];
 }
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1C526697C(v6, v7);
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  selfCopy = self;
+  v9 = sub_1C526697C(entryCopy, withEntryCopy);
 
   return v9 & 1;
 }

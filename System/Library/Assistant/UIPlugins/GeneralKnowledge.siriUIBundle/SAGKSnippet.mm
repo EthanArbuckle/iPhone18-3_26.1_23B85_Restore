@@ -6,19 +6,19 @@
 
 - (BOOL)sirigk_isMapOnlySnippet
 {
-  v3 = [(SAGKSnippet *)self pods];
-  v4 = [v3 count];
+  pods = [(SAGKSnippet *)self pods];
+  v4 = [pods count];
 
   result = 0;
   if (v4 == &dword_0 + 1)
   {
-    v5 = [(SAGKSnippet *)self pods];
-    v6 = [v5 objectAtIndex:0];
+    pods2 = [(SAGKSnippet *)self pods];
+    v6 = [pods2 objectAtIndex:0];
 
     objc_opt_class();
-    LOBYTE(v5) = objc_opt_isKindOfClass();
+    LOBYTE(pods2) = objc_opt_isKindOfClass();
 
-    if (v5)
+    if (pods2)
     {
       return 1;
     }

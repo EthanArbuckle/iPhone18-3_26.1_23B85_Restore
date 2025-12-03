@@ -1,20 +1,20 @@
 @interface ERDistanceEvent
-- (ERDistanceEvent)initWithDistance:(float)a3 distanceCategory:(int64_t)a4 andAttention:(BOOL)a5;
+- (ERDistanceEvent)initWithDistance:(float)distance distanceCategory:(int64_t)category andAttention:(BOOL)attention;
 - (id)description;
 @end
 
 @implementation ERDistanceEvent
 
-- (ERDistanceEvent)initWithDistance:(float)a3 distanceCategory:(int64_t)a4 andAttention:(BOOL)a5
+- (ERDistanceEvent)initWithDistance:(float)distance distanceCategory:(int64_t)category andAttention:(BOOL)attention
 {
   v9.receiver = self;
   v9.super_class = ERDistanceEvent;
   result = [(ERDistanceEvent *)&v9 init];
   if (result)
   {
-    result->_distance = a3;
-    result->_distanceCategory = a4;
-    result->_didDetectAttention = a5;
+    result->_distance = distance;
+    result->_distanceCategory = category;
+    result->_didDetectAttention = attention;
   }
 
   return result;
@@ -25,15 +25,15 @@
   v3 = MEMORY[0x277CCACA8];
   [(ERDistanceEvent *)self distance];
   v5 = v4;
-  v6 = [(ERDistanceEvent *)self distanceCategory];
-  v7 = [(ERDistanceEvent *)self didDetectAttention];
+  distanceCategory = [(ERDistanceEvent *)self distanceCategory];
+  didDetectAttention = [(ERDistanceEvent *)self didDetectAttention];
   v8 = "no";
-  if (v7)
+  if (didDetectAttention)
   {
     v8 = "yes";
   }
 
-  return [v3 stringWithFormat:@"Distance: %f, Distance Category: %li, didDetectAttention: %s", *&v5, v6, v8];
+  return [v3 stringWithFormat:@"Distance: %f, Distance Category: %li, didDetectAttention: %s", *&v5, distanceCategory, v8];
 }
 
 @end

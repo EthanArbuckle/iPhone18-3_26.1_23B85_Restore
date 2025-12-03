@@ -1,16 +1,16 @@
 @interface CDRichComplicationTemplateView
 - (unint64_t)timelineAnimationFadeTypeOverride;
-- (void)setComplicationTemplate:(id)a3 reason:(int64_t)a4;
+- (void)setComplicationTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation CDRichComplicationTemplateView
 
-- (void)setComplicationTemplate:(id)a3 reason:(int64_t)a4
+- (void)setComplicationTemplate:(id)template reason:(int64_t)reason
 {
-  v11 = a3;
-  objc_storeStrong(&self->_complicationTemplate, a3);
-  v7 = [v11 metadata];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CBB6E8]];
+  templateCopy = template;
+  objc_storeStrong(&self->_complicationTemplate, template);
+  metadata = [templateCopy metadata];
+  v8 = [metadata objectForKeyedSubscript:*MEMORY[0x277CBB6E8]];
   if (v8)
   {
     self->_templateWantsPlatter = 1;
@@ -18,31 +18,31 @@
 
   else
   {
-    v9 = [v11 metadata];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CBB6E0]];
+    metadata2 = [templateCopy metadata];
+    v10 = [metadata2 objectForKeyedSubscript:*MEMORY[0x277CBB6E0]];
     self->_templateWantsPlatter = v10 != 0;
   }
 
-  [(CDRichComplicationTemplateView *)self _handleTemplate:v11 reason:a4];
+  [(CDRichComplicationTemplateView *)self _handleTemplate:templateCopy reason:reason];
   [(CDRichComplicationTemplateView *)self setNeedsLayout];
 }
 
 - (unint64_t)timelineAnimationFadeTypeOverride
 {
-  v2 = [(CLKComplicationTemplate *)self->_complicationTemplate metadata];
-  v3 = [v2 objectForKeyedSubscript:@"NTKComplicationTimelineAnimationFadeType"];
+  metadata = [(CLKComplicationTemplate *)self->_complicationTemplate metadata];
+  v3 = [metadata objectForKeyedSubscript:@"NTKComplicationTimelineAnimationFadeType"];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 @end

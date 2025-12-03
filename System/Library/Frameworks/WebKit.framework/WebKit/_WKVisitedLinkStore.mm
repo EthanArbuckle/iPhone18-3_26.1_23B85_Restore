@@ -1,11 +1,11 @@
 @interface _WKVisitedLinkStore
-- (BOOL)containsVisitedLinkWithURL:(id)a3;
+- (BOOL)containsVisitedLinkWithURL:(id)l;
 - (_WKVisitedLinkStore)init;
-- (void)addVisitedLinkWithString:(id)a3;
-- (void)addVisitedLinkWithURL:(id)a3;
+- (void)addVisitedLinkWithString:(id)string;
+- (void)addVisitedLinkWithURL:(id)l;
 - (void)dealloc;
 - (void)removeAll;
-- (void)removeVisitedLinkWithURL:(id)a3;
+- (void)removeVisitedLinkWithURL:(id)l;
 @end
 
 @implementation _WKVisitedLinkStore
@@ -19,9 +19,9 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(_WKVisitedLinkStore *)v3 _apiObject];
+    _apiObject = [(_WKVisitedLinkStore *)v3 _apiObject];
     v9 = v3;
-    v10 = v5;
+    v10 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v10, &v9, v8);
     WebKit::VisitedLinkStore::VisitedLinkStore([(_WKVisitedLinkStore *)v3 _apiObject]);
   }
@@ -43,9 +43,9 @@
   }
 }
 
-- (void)addVisitedLinkWithURL:(id)a3
+- (void)addVisitedLinkWithURL:(id)l
 {
-  MEMORY[0x19EB02040](&v8, [a3 absoluteString]);
+  MEMORY[0x19EB02040](&v8, [l absoluteString]);
   v6 = WebCore::computeSharedStringHash(&v8, v4);
   v7 = v8;
   v8 = 0;
@@ -59,10 +59,10 @@
   CFRelease(*&self->_visitedLinkStore.m_storage.data[8]);
 }
 
-- (void)addVisitedLinkWithString:(id)a3
+- (void)addVisitedLinkWithString:(id)string
 {
   CFRetain(*&self->_visitedLinkStore.m_storage.data[8]);
-  MEMORY[0x19EB02040](&v9, a3);
+  MEMORY[0x19EB02040](&v9, string);
   v6 = WebCore::computeSharedStringHash(&v9, v5);
   WebKit::SharedStringHashStore::scheduleAddition(&self[1]._visitedLinkStore.m_storage.data[8], v6);
   v8 = v9;
@@ -84,9 +84,9 @@
   CFRelease(v3);
 }
 
-- (BOOL)containsVisitedLinkWithURL:(id)a3
+- (BOOL)containsVisitedLinkWithURL:(id)l
 {
-  MEMORY[0x19EB02040](&v10, [a3 absoluteString]);
+  MEMORY[0x19EB02040](&v10, [l absoluteString]);
   v6 = WebCore::computeSharedStringHash(&v10, v4);
   v7 = v10;
   v10 = 0;
@@ -101,9 +101,9 @@
   return v8;
 }
 
-- (void)removeVisitedLinkWithURL:(id)a3
+- (void)removeVisitedLinkWithURL:(id)l
 {
-  MEMORY[0x19EB02040](&v8, [a3 absoluteString]);
+  MEMORY[0x19EB02040](&v8, [l absoluteString]);
   v6 = WebCore::computeSharedStringHash(&v8, v4);
   v7 = v8;
   v8 = 0;

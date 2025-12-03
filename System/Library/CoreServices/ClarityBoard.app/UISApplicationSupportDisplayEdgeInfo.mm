@@ -1,13 +1,13 @@
 @interface UISApplicationSupportDisplayEdgeInfo
-+ (id)clb_displayEdgeInfoForScreenType:(unint64_t)a3;
++ (id)clb_displayEdgeInfoForScreenType:(unint64_t)type;
 + (id)clb_thisDeviceDisplayEdgeInfo;
 - (UIEdgeInsets)clb_displayBasedSafeAreaInsets;
-- (void)clb_applyDisplayEdgeInfoToSceneSettings:(id)a3;
+- (void)clb_applyDisplayEdgeInfoToSceneSettings:(id)settings;
 @end
 
 @implementation UISApplicationSupportDisplayEdgeInfo
 
-+ (id)clb_displayEdgeInfoForScreenType:(unint64_t)a3
++ (id)clb_displayEdgeInfoForScreenType:(unint64_t)type
 {
   v5 = 29.0;
   v6 = 0x4048800000000000;
@@ -16,7 +16,7 @@
   v9 = 0x4043000000000000;
   v10 = 53.0;
   v11 = 0x4044000000000000;
-  switch(a3)
+  switch(type)
   {
     case 3uLL:
     case 5uLL:
@@ -99,7 +99,7 @@ LABEL_11:
       v11 = v8;
       v7 = v8;
       v6 = v8;
-      switch(a3)
+      switch(type)
       {
         case 3uLL:
         case 5uLL:
@@ -139,7 +139,7 @@ LABEL_11:
         case 0x1AuLL:
           goto LABEL_21;
         default:
-          if (a3 - 105 >= 0xE)
+          if (type - 105 >= 0xE)
           {
             v10 = *&v8;
             v5 = 0.0;
@@ -162,15 +162,15 @@ LABEL_11:
 LABEL_25:
       v10 = *&v8;
 LABEL_26:
-      v14 = objc_alloc_init(a1);
-      if (!sub_100027F78(a3) && (sub_100027FB0(a3) || sub_100027FA0(a3)))
+      v14 = objc_alloc_init(self);
+      if (!sub_100027F78(type) && (sub_100027FB0(type) || sub_100027FA0(type)))
       {
-        if (sub_100027FB0(a3))
+        if (sub_100027FB0(type))
         {
           v15 = 0.0;
-          if (a3 <= 0x76)
+          if (type <= 0x76)
           {
-            v15 = dbl_100296338[a3];
+            v15 = dbl_100296338[type];
           }
 
           v16 = [[UISApplicationSupportDisplayEdgeInsetsWrapper alloc] initWithTop:v15 left:0.0 bottom:0.0 right:0.0];
@@ -192,7 +192,7 @@ LABEL_26:
   block[1] = 3221225472;
   block[2] = sub_100025488;
   block[3] = &unk_1002FC8C8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003311C8 != -1)
   {
     dispatch_once(&qword_1003311C8, block);
@@ -203,23 +203,23 @@ LABEL_26:
   return v2;
 }
 
-- (void)clb_applyDisplayEdgeInfoToSceneSettings:(id)a3
+- (void)clb_applyDisplayEdgeInfoToSceneSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   [(UISApplicationSupportDisplayEdgeInfo *)self clb_displayBasedSafeAreaInsets];
-  [v4 setSafeAreaInsetsPortrait:?];
-  v5 = [(UISApplicationSupportDisplayEdgeInfo *)self peripheryInsets];
+  [settingsCopy setSafeAreaInsetsPortrait:?];
+  peripheryInsets = [(UISApplicationSupportDisplayEdgeInfo *)self peripheryInsets];
   UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper();
-  [v4 setPeripheryInsets:?];
+  [settingsCopy setPeripheryInsets:?];
 
-  v6 = [(UISApplicationSupportDisplayEdgeInfo *)self homeAffordanceOverlayAllowance];
-  [v6 doubleValue];
-  [v4 setHomeAffordanceOverlayAllowance:?];
+  homeAffordanceOverlayAllowance = [(UISApplicationSupportDisplayEdgeInfo *)self homeAffordanceOverlayAllowance];
+  [homeAffordanceOverlayAllowance doubleValue];
+  [settingsCopy setHomeAffordanceOverlayAllowance:?];
 }
 
 - (UIEdgeInsets)clb_displayBasedSafeAreaInsets
 {
-  v2 = [(UISApplicationSupportDisplayEdgeInfo *)self safeAreaInsetsPortrait];
+  safeAreaInsetsPortrait = [(UISApplicationSupportDisplayEdgeInfo *)self safeAreaInsetsPortrait];
   UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper();
   v4 = v3;
   v6 = v5;

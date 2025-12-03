@@ -1,6 +1,6 @@
 @interface AVBlockOperation
 - (AVBlockOperation)init;
-- (AVBlockOperation)initWithBlock:(id)a3;
+- (AVBlockOperation)initWithBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
 - (void)start;
@@ -17,16 +17,16 @@
   objc_exception_throw(v12);
 }
 
-- (AVBlockOperation)initWithBlock:(id)a3
+- (AVBlockOperation)initWithBlock:(id)block
 {
-  if (!a3)
+  if (!block)
   {
-    v6 = self;
+    selfCopy = self;
     v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v7, v8, v9, v10, v11, "block != nil"), 0}];
     objc_exception_throw(v12);
   }
 
-  [(AVBlockOperation *)self initWithBlock:a3, &v14];
+  [(AVBlockOperation *)self initWithBlock:block, &v14];
   return v14;
 }
 

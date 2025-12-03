@@ -1,13 +1,13 @@
 @interface AudioRecordingLiveActivityStopButton.PackageView
 - (CGSize)intrinsicContentSize;
-- (_TtCC7Journal36AudioRecordingLiveActivityStopButtonP33_9B17AF2B67F796200586389DA24B04BC11PackageView)initWithCoder:(id)a3;
-- (_TtCC7Journal36AudioRecordingLiveActivityStopButtonP33_9B17AF2B67F796200586389DA24B04BC11PackageView)initWithFrame:(CGRect)a3;
+- (_TtCC7Journal36AudioRecordingLiveActivityStopButtonP33_9B17AF2B67F796200586389DA24B04BC11PackageView)initWithCoder:(id)coder;
+- (_TtCC7Journal36AudioRecordingLiveActivityStopButtonP33_9B17AF2B67F796200586389DA24B04BC11PackageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation AudioRecordingLiveActivityStopButton.PackageView
 
-- (_TtCC7Journal36AudioRecordingLiveActivityStopButtonP33_9B17AF2B67F796200586389DA24B04BC11PackageView)initWithCoder:(id)a3
+- (_TtCC7Journal36AudioRecordingLiveActivityStopButtonP33_9B17AF2B67F796200586389DA24B04BC11PackageView)initWithCoder:(id)coder
 {
   type metadata accessor for AudioRecordingLiveActivityStopButton.PackageView();
   swift_deallocPartialClassInstance();
@@ -26,11 +26,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10031DA18();
 }
 
-- (_TtCC7Journal36AudioRecordingLiveActivityStopButtonP33_9B17AF2B67F796200586389DA24B04BC11PackageView)initWithFrame:(CGRect)a3
+- (_TtCC7Journal36AudioRecordingLiveActivityStopButtonP33_9B17AF2B67F796200586389DA24B04BC11PackageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

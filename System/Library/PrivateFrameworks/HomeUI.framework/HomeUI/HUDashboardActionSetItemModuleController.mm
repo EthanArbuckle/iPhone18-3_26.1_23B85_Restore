@@ -1,15 +1,15 @@
 @interface HUDashboardActionSetItemModuleController
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (void)configureCell:(id)cell forItem:(id)item;
 @end
 
 @implementation HUDashboardActionSetItemModuleController
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v8 = objc_opt_class();
-  v9 = v6;
+  v9 = cellCopy;
   v22 = v9;
   if (!v9)
   {
@@ -31,21 +31,21 @@
   v12 = v22;
   if (!v11)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v13 handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v14 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
 
     v9 = v22;
 LABEL_7:
     v12 = 0;
   }
 
-  [v12 setItem:v7];
+  [v12 setItem:itemCopy];
   objc_opt_class();
-  v15 = [(HUItemModuleController *)self host];
+  host = [(HUItemModuleController *)self host];
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = host;
   }
 
   else
@@ -57,12 +57,12 @@ LABEL_7:
 
   if (v17)
   {
-    v18 = [v17 layoutManager];
-    v19 = [v18 gridSizeForItem:v7];
+    layoutManager = [v17 layoutManager];
+    v19 = [layoutManager gridSizeForItem:itemCopy];
     [v12 setGridSize:{v19, v20}];
 
-    v21 = [v17 blurGroupingEffectView];
-    [v12 setBackgroundEffectGrouper:v21];
+    blurGroupingEffectView = [v17 blurGroupingEffectView];
+    [v12 setBackgroundEffectGrouper:blurGroupingEffectView];
   }
 }
 

@@ -1,7 +1,7 @@
 @interface WFWorkflowSettingsViewController
-- (WFWorkflowSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WFWorkflowSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (WFWorkflowSettingsViewControllerDelegate)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)viewDidLoad;
 @end
 
@@ -14,27 +14,27 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_2748DE744();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2748DEA90();
 }
 
-- (WFWorkflowSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFWorkflowSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   WorkflowSettingsViewController.init(nibName:bundle:)();
 }
 

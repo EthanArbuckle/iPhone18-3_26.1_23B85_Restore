@@ -1,14 +1,14 @@
 @interface SUUIOverlayContainerView
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SUUIOverlayContainerView
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SUUIOverlayContainerView;
-  [(SUUIOverlayContainerView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUUIOverlayContainerView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SUUIOverlayContainerView *)self sendActionsForControlEvents:4096];
 }
 

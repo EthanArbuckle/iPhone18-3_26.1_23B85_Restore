@@ -1,17 +1,17 @@
 @interface MTCrownFilterManager
-+ (double)secondsFromMachTime:(unint64_t)a3;
++ (double)secondsFromMachTime:(unint64_t)time;
 - (MTCrownFilterManager)init;
-- (id)filterButtonEvent:(id)a3;
-- (id)filterDigitizerEvent:(id)a3;
-- (id)filterEvent:(id)a3 fromService:(id)a4;
-- (void)registerService:(id)a3;
-- (void)unregisterService:(id)a3;
-- (void)updateScrollMotionAccumulator:(id)a3;
+- (id)filterButtonEvent:(id)event;
+- (id)filterDigitizerEvent:(id)event;
+- (id)filterEvent:(id)event fromService:(id)service;
+- (void)registerService:(id)service;
+- (void)unregisterService:(id)service;
+- (void)updateScrollMotionAccumulator:(id)accumulator;
 @end
 
 @implementation MTCrownFilterManager
 
-+ (double)secondsFromMachTime:(unint64_t)a3
++ (double)secondsFromMachTime:(unint64_t)time
 {
   if (secondsFromMachTime__once != -1)
   {
@@ -20,7 +20,7 @@
 
   LODWORD(v3) = secondsFromMachTime__timebase;
   LODWORD(v4) = *algn_D23C;
-  return a3 * v3 / v4 / 1000000000.0;
+  return time * v3 / v4 / 1000000000.0;
 }
 
 - (MTCrownFilterManager)init
@@ -65,15 +65,15 @@
   return v3;
 }
 
-- (void)registerService:(id)a3
+- (void)registerService:(id)service
 {
-  v4 = a3;
-  if ([v4 conformsToUsagePage:13 usage:4])
+  serviceCopy = service;
+  if ([serviceCopy conformsToUsagePage:13 usage:4])
   {
-    v5 = [v4 propertyForKey:@"CrownFilterRect"];
+    v5 = [serviceCopy propertyForKey:@"CrownFilterRect"];
     if (v5)
     {
-      [(MTCrownFilterManager *)self setTouchService:v4];
+      [(MTCrownFilterManager *)self setTouchService:serviceCopy];
       v6 = [v5 objectForKeyedSubscript:@"X1"];
       -[MTCrownFilterManager setTouchFilterX1:](self, "setTouchFilterX1:", ([v6 intValue] / 100.0));
 
@@ -106,42 +106,42 @@
     }
   }
 
-  else if ([v4 conformsToUsagePage:65291 usage:1])
+  else if ([serviceCopy conformsToUsagePage:65291 usage:1])
   {
-    [(MTCrownFilterManager *)self setCrownService:v4];
+    [(MTCrownFilterManager *)self setCrownService:serviceCopy];
   }
 
-  else if ([v4 conformsToUsagePage:11 usage:1])
+  else if ([serviceCopy conformsToUsagePage:11 usage:1])
   {
-    [(MTCrownFilterManager *)self setButtonService:v4];
+    [(MTCrownFilterManager *)self setButtonService:serviceCopy];
   }
 }
 
-- (void)unregisterService:(id)a3
+- (void)unregisterService:(id)service
 {
-  v8 = a3;
-  v4 = [(MTCrownFilterManager *)self touchService];
+  serviceCopy = service;
+  touchService = [(MTCrownFilterManager *)self touchService];
 
-  if (v4 == v8)
+  if (touchService == serviceCopy)
   {
     [(MTCrownFilterManager *)self setTouchService:0];
   }
 
   else
   {
-    v5 = [(MTCrownFilterManager *)self crownService];
+    crownService = [(MTCrownFilterManager *)self crownService];
 
-    if (v5 == v8)
+    if (crownService == serviceCopy)
     {
       [(MTCrownFilterManager *)self setCrownService:0];
     }
 
     else
     {
-      v6 = [(MTCrownFilterManager *)self buttonService];
+      buttonService = [(MTCrownFilterManager *)self buttonService];
 
-      v7 = v8;
-      if (v6 != v8)
+      v7 = serviceCopy;
+      if (buttonService != serviceCopy)
       {
         goto LABEL_8;
       }
@@ -150,68 +150,68 @@
     }
   }
 
-  v7 = v8;
+  v7 = serviceCopy;
 LABEL_8:
 }
 
-- (id)filterEvent:(id)a3 fromService:(id)a4
+- (id)filterEvent:(id)event fromService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTCrownFilterManager *)self touchService];
-  if (!v8)
+  eventCopy = event;
+  serviceCopy = service;
+  touchService = [(MTCrownFilterManager *)self touchService];
+  if (!touchService)
   {
     goto LABEL_10;
   }
 
-  v9 = v8;
-  v10 = [(MTCrownFilterManager *)self crownService];
-  if (!v10)
+  v9 = touchService;
+  crownService = [(MTCrownFilterManager *)self crownService];
+  if (!crownService)
   {
     goto LABEL_9;
   }
 
-  v11 = v10;
-  v12 = [(MTCrownFilterManager *)self buttonService];
-  if (!v12)
+  v11 = crownService;
+  buttonService = [(MTCrownFilterManager *)self buttonService];
+  if (!buttonService)
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v13 = v12;
-  v14 = [(MTCrownFilterManager *)self touchService];
-  if (v14 == v7)
+  v13 = buttonService;
+  touchService2 = [(MTCrownFilterManager *)self touchService];
+  if (touchService2 == serviceCopy)
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v15 = [(MTCrownFilterManager *)self crownService];
-  v16 = v15;
-  if (v15 == v7)
+  crownService2 = [(MTCrownFilterManager *)self crownService];
+  v16 = crownService2;
+  if (crownService2 == serviceCopy)
   {
 
     goto LABEL_15;
   }
 
-  v17 = [(MTCrownFilterManager *)self buttonService];
+  buttonService2 = [(MTCrownFilterManager *)self buttonService];
 
-  if (v17 != v7)
+  if (buttonService2 != serviceCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_16:
-  v21 = [(MTCrownFilterManager *)self touchService];
-  v22 = v21;
-  if (v21 == v7)
+  touchService3 = [(MTCrownFilterManager *)self touchService];
+  v22 = touchService3;
+  if (touchService3 == serviceCopy)
   {
-    v23 = [v6 type];
+    type = [eventCopy type];
 
-    if (v23 != 11)
+    if (type != 11)
     {
       goto LABEL_10;
     }
@@ -221,57 +221,57 @@ LABEL_16:
   {
   }
 
-  v24 = [(MTCrownFilterManager *)self crownService];
-  v25 = v24;
-  if (v24 != v7)
+  crownService3 = [(MTCrownFilterManager *)self crownService];
+  v25 = crownService3;
+  if (crownService3 != serviceCopy)
   {
 
     goto LABEL_22;
   }
 
-  v26 = [v6 type];
+  type2 = [eventCopy type];
 
-  if (v26 != 6)
+  if (type2 != 6)
   {
 LABEL_10:
-    v18 = v6;
-    v6 = v18;
+    v18 = eventCopy;
+    eventCopy = v18;
     goto LABEL_11;
   }
 
 LABEL_22:
-  v27 = [(MTCrownFilterManager *)self buttonService];
+  buttonService3 = [(MTCrownFilterManager *)self buttonService];
 
-  if (v27 != v7)
+  if (buttonService3 != serviceCopy)
   {
-    [(MTCrownFilterManager *)self updateScrollMotionAccumulator:v6];
-    if ([v6 type] == 11)
+    [(MTCrownFilterManager *)self updateScrollMotionAccumulator:eventCopy];
+    if ([eventCopy type] == 11)
     {
-      v28 = [(MTCrownFilterManager *)self filterDigitizerEvent:v6];
+      v28 = [(MTCrownFilterManager *)self filterDigitizerEvent:eventCopy];
 
-      v6 = v28;
+      eventCopy = v28;
     }
 
     goto LABEL_10;
   }
 
-  v18 = [(MTCrownFilterManager *)self filterButtonEvent:v6];
+  v18 = [(MTCrownFilterManager *)self filterButtonEvent:eventCopy];
 LABEL_11:
   v19 = v18;
 
   return v19;
 }
 
-- (id)filterDigitizerEvent:(id)a3
+- (id)filterDigitizerEvent:(id)event
 {
-  v68 = a3;
-  v4 = [v68 children];
-  v71 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  eventCopy = event;
+  children = [eventCopy children];
+  v71 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [children count]);
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v4;
+  obj = children;
   v5 = [obj countByEnumeratingWithState:&v77 objects:v88 count:16];
   if (!v5)
   {
@@ -303,8 +303,8 @@ LABEL_11:
         v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 integerValueForField:720901]);
         v12 = [v10 integerValueForField:720903];
         v13 = [v10 integerValueForField:720905];
-        v14 = [(MTCrownFilterManager *)self consumePathIDs];
-        v15 = [v14 containsObject:v11];
+        consumePathIDs = [(MTCrownFilterManager *)self consumePathIDs];
+        v15 = [consumePathIDs containsObject:v11];
 
         if (v15)
         {
@@ -313,47 +313,47 @@ LABEL_11:
 
         if (v13 == &dword_0 + 1)
         {
-          v16 = [(MTCrownFilterManager *)self cancelPathIDs];
-          if ([v16 containsObject:v11])
+          cancelPathIDs = [(MTCrownFilterManager *)self cancelPathIDs];
+          if ([cancelPathIDs containsObject:v11])
           {
             goto LABEL_14;
           }
 
-          v17 = [(MTCrownFilterManager *)self consumePathIDs];
-          v18 = [v17 containsObject:v11];
+          consumePathIDs2 = [(MTCrownFilterManager *)self consumePathIDs];
+          v18 = [consumePathIDs2 containsObject:v11];
 
           if ((v18 & 1) == 0)
           {
-            v16 = [(MTCrownFilterManager *)self activePathIDs];
-            [v16 addObject:v11];
+            cancelPathIDs = [(MTCrownFilterManager *)self activePathIDs];
+            [cancelPathIDs addObject:v11];
             goto LABEL_14;
           }
         }
 
         else
         {
-          v19 = [(MTCrownFilterManager *)self activePathIDs];
-          [v19 removeObject:v11];
+          activePathIDs = [(MTCrownFilterManager *)self activePathIDs];
+          [activePathIDs removeObject:v11];
 
-          v16 = [(MTCrownFilterManager *)self consumePathIDs];
-          [v16 removeObject:v11];
+          cancelPathIDs = [(MTCrownFilterManager *)self consumePathIDs];
+          [cancelPathIDs removeObject:v11];
 LABEL_14:
         }
 
         if ([(MTCrownFilterManager *)self touchIsNearCrown:v10])
         {
-          v20 = [(MTCrownFilterManager *)self crownIsActive];
+          crownIsActive = [(MTCrownFilterManager *)self crownIsActive];
         }
 
         else
         {
-          v20 = 0;
+          crownIsActive = 0;
         }
 
         [MTCrownFilterManager secondsFromMachTime:mach_continuous_time() - [(MTCrownFilterManager *)self buttonDownMachTime]];
         v22 = v21;
-        v23 = [(MTCrownFilterManager *)self buttonDownMachTime];
-        v24 = v22 >= 0.5 || v23 == 0;
+        buttonDownMachTime = [(MTCrownFilterManager *)self buttonDownMachTime];
+        v24 = v22 >= 0.5 || buttonDownMachTime == 0;
         v25 = !v24;
         if (!v24)
         {
@@ -368,16 +368,16 @@ LABEL_14:
 
         if (v13 == &dword_0 + 1)
         {
-          v27 = (v12 >> 1) & 1 & (v20 | v25);
-          if ((v12 & 2) == 0 && v20 == 1)
+          v27 = (v12 >> 1) & 1 & (crownIsActive | v25);
+          if ((v12 & 2) == 0 && crownIsActive == 1)
           {
             v28 = 1;
 LABEL_35:
-            v30 = [(MTCrownFilterManager *)self consumePathIDs];
-            [v30 addObject:v11];
+            consumePathIDs3 = [(MTCrownFilterManager *)self consumePathIDs];
+            [consumePathIDs3 addObject:v11];
 
-            v31 = [(MTCrownFilterManager *)self activePathIDs];
-            [v31 removeObject:v11];
+            activePathIDs2 = [(MTCrownFilterManager *)self activePathIDs];
+            [activePathIDs2 removeObject:v11];
 
             if (!v27 || (v28 & 1) != 0)
             {
@@ -385,8 +385,8 @@ LABEL_35:
               [v10 setIntegerValue:0 forField:720905];
               [v10 setIntegerValue:0 forField:720904];
               [v10 setIntegerValue:v12 | 0x83 forField:720903];
-              v33 = [(MTCrownFilterManager *)self cancelPathIDs];
-              [v33 removeObject:v11];
+              cancelPathIDs2 = [(MTCrownFilterManager *)self cancelPathIDs];
+              [cancelPathIDs2 removeObject:v11];
 
               [v10 position];
               v35 = v34;
@@ -394,9 +394,9 @@ LABEL_35:
               v38 = MTLoggingCrownFilterManager();
               if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
               {
-                v39 = [v11 unsignedIntegerValue];
+                unsignedIntegerValue = [v11 unsignedIntegerValue];
                 *buf = 134218496;
-                v83 = *&v39;
+                v83 = *&unsignedIntegerValue;
                 v84 = 2048;
                 v85 = v35;
                 v86 = 2048;
@@ -416,15 +416,15 @@ LABEL_42:
             v40 = MTLoggingCrownFilterManager();
             if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
             {
-              v66 = [(MTCrownFilterManager *)self activePathIDs];
-              v65 = [v66 allObjects];
-              v63 = [v65 componentsJoinedByString:{@", "}];
-              v64 = [(MTCrownFilterManager *)self cancelPathIDs];
-              v62 = [v64 allObjects];
-              v41 = [v62 componentsJoinedByString:{@", "}];
-              v42 = [(MTCrownFilterManager *)self consumePathIDs];
-              v43 = [v42 allObjects];
-              v44 = [v43 componentsJoinedByString:{@", "}];
+              activePathIDs3 = [(MTCrownFilterManager *)self activePathIDs];
+              allObjects = [activePathIDs3 allObjects];
+              v63 = [allObjects componentsJoinedByString:{@", "}];
+              cancelPathIDs3 = [(MTCrownFilterManager *)self cancelPathIDs];
+              allObjects2 = [cancelPathIDs3 allObjects];
+              v41 = [allObjects2 componentsJoinedByString:{@", "}];
+              consumePathIDs4 = [(MTCrownFilterManager *)self consumePathIDs];
+              allObjects3 = [consumePathIDs4 allObjects];
+              v44 = [allObjects3 componentsJoinedByString:{@", "}];
               *buf = 138412802;
               v83 = *&v63;
               v84 = 2112;
@@ -446,8 +446,8 @@ LABEL_42:
           v27 = 0;
         }
 
-        v29 = [(MTCrownFilterManager *)self cancelPathIDs];
-        v28 = [v29 containsObject:v11];
+        cancelPathIDs4 = [(MTCrownFilterManager *)self cancelPathIDs];
+        v28 = [cancelPathIDs4 containsObject:v11];
 
         if ((v28 & 1) != 0 || v27)
         {
@@ -471,10 +471,10 @@ LABEL_49:
   v45 = v71;
   if (v67 == v72 - [v71 count])
   {
-    v46 = [v68 integerValueForField:720903];
-    [v68 setIntegerValue:0 forField:720905];
-    [v68 setIntegerValue:0 forField:720904];
-    [v68 setIntegerValue:v46 | 0x83 forField:720903];
+    v46 = [eventCopy integerValueForField:720903];
+    [eventCopy setIntegerValue:0 forField:720905];
+    [eventCopy setIntegerValue:0 forField:720904];
+    [eventCopy setIntegerValue:v46 | 0x83 forField:720903];
   }
 
   if ([v71 count] == v72)
@@ -485,8 +485,8 @@ LABEL_49:
       [MTCrownFilterManager filterDigitizerEvent:v47];
     }
 
-    v48 = v68;
-    v68 = 0;
+    v48 = eventCopy;
+    eventCopy = 0;
   }
 
   else
@@ -527,7 +527,7 @@ LABEL_49:
             _os_log_debug_impl(&dword_0, v59, OS_LOG_TYPE_DEBUG, "MTCrownFilterManager: Consuming path id %ld at (%f, %f)", buf, 0x20u);
           }
 
-          [v68 removeEvent:v53];
+          [eventCopy removeEvent:v53];
         }
 
         v50 = [v48 countByEnumeratingWithState:&v73 objects:v81 count:16];
@@ -538,17 +538,17 @@ LABEL_49:
     }
   }
 
-  return v68;
+  return eventCopy;
 }
 
-- (id)filterButtonEvent:(id)a3
+- (id)filterButtonEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 3)
+  eventCopy = event;
+  if ([eventCopy type] == 3)
   {
-    v5 = [v4 integerValueForField:196608];
-    v6 = [v4 integerValueForField:196609];
-    v7 = [v4 integerValueForField:196610];
+    v5 = [eventCopy integerValueForField:196608];
+    v6 = [eventCopy integerValueForField:196609];
+    v7 = [eventCopy integerValueForField:196610];
     if (v5 == &dword_C)
     {
       v8 = v7;
@@ -569,12 +569,12 @@ LABEL_49:
 
       if (v8 == &dword_0 + 1)
       {
-        v9 = [(MTCrownFilterManager *)self cancelPathIDs];
-        v10 = [(MTCrownFilterManager *)self activePathIDs];
-        [v9 unionSet:v10];
+        cancelPathIDs = [(MTCrownFilterManager *)self cancelPathIDs];
+        activePathIDs = [(MTCrownFilterManager *)self activePathIDs];
+        [cancelPathIDs unionSet:activePathIDs];
 
-        v11 = [(MTCrownFilterManager *)self activePathIDs];
-        [v11 removeAllObjects];
+        activePathIDs2 = [(MTCrownFilterManager *)self activePathIDs];
+        [activePathIDs2 removeAllObjects];
 
         if (![(MTCrownFilterManager *)self buttonDownMachTime])
         {
@@ -597,30 +597,30 @@ LABEL_49:
 
 LABEL_16:
 
-  return v4;
+  return eventCopy;
 }
 
-- (void)updateScrollMotionAccumulator:(id)a3
+- (void)updateScrollMotionAccumulator:(id)accumulator
 {
-  v10 = a3;
-  v4 = [v10 timestamp];
+  accumulatorCopy = accumulator;
+  timestamp = [accumulatorCopy timestamp];
   v5 = 0.0;
   v6 = 0.0;
-  if ([v10 type] == 6)
+  if ([accumulatorCopy type] == 6)
   {
-    [v10 position];
+    [accumulatorCopy position];
     v6 = v7;
   }
 
   if (self->_scrollAccumulatorMachTime)
   {
-    [MTCrownFilterManager secondsFromMachTime:v4 - [(MTCrownFilterManager *)self scrollAccumulatorMachTime]];
+    [MTCrownFilterManager secondsFromMachTime:timestamp - [(MTCrownFilterManager *)self scrollAccumulatorMachTime]];
     v5 = v8;
   }
 
   v9 = pow(0.95, v5 / 0.00800000038);
   [(MTCrownFilterManager *)self setScrollAccumulatorDistance:fabs(v6) + self->_scrollAccumulatorDistance * v9];
-  [(MTCrownFilterManager *)self setScrollAccumulatorMachTime:v4];
+  [(MTCrownFilterManager *)self setScrollAccumulatorMachTime:timestamp];
 }
 
 - (void)filterButtonEvent:(void *)a1 .cold.1(void *a1, NSObject *a2)

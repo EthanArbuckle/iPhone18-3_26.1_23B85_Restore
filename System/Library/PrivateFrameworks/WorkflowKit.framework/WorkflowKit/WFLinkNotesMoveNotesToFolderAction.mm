@@ -1,16 +1,16 @@
 @interface WFLinkNotesMoveNotesToFolderAction
-- (id)localizedCategoryWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 - (id)parameterSummary;
 @end
 
 @implementation WFLinkNotesMoveNotesToFolderAction
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"NotesSubcategoryFolders", @"Folders");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"WFLinkNotesMoveNotesToFolderAction - Action Name", @"Move Notes to Folder");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

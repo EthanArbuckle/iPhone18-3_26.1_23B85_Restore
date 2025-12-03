@@ -7,13 +7,13 @@
 - (NSString)trueTone;
 - (id)airDropMode;
 - (id)getSavedValues;
-- (void)initializeCacheWithValues:(id)a3;
-- (void)initializeWithOverwrite:(BOOL)a3;
+- (void)initializeCacheWithValues:(id)values;
+- (void)initializeWithOverwrite:(BOOL)overwrite;
 - (void)restoreSavedDeviceSettings;
-- (void)setAirDropMode:(id)a3;
-- (void)setAirplaneMode:(id)a3;
-- (void)setTrueTone:(id)a3;
-- (void)setVolume:(id)a3;
+- (void)setAirDropMode:(id)mode;
+- (void)setAirplaneMode:(id)mode;
+- (void)setTrueTone:(id)tone;
+- (void)setVolume:(id)volume;
 @end
 
 @implementation MSDSettingsRefresher
@@ -51,9 +51,9 @@
   return v3;
 }
 
-- (void)initializeWithOverwrite:(BOOL)a3
+- (void)initializeWithOverwrite:(BOOL)overwrite
 {
-  v3 = a3;
+  overwriteCopy = overwrite;
   v5 = +[NSFileManager defaultManager];
   if (self->_initialized)
   {
@@ -68,14 +68,14 @@
 
   else
   {
-    v7 = [(MSDSettingsRefresher *)self settingsFilePath];
-    v8 = [v5 fileExistsAtPath:v7];
+    settingsFilePath = [(MSDSettingsRefresher *)self settingsFilePath];
+    v8 = [v5 fileExistsAtPath:settingsFilePath];
 
     v9 = sub_100063A54();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
     if (v8)
     {
-      v11 = !v3;
+      v11 = !overwriteCopy;
     }
 
     else
@@ -87,16 +87,16 @@
     {
       if (v10)
       {
-        v13 = [(MSDSettingsRefresher *)self settingsFilePath];
+        settingsFilePath2 = [(MSDSettingsRefresher *)self settingsFilePath];
         v15 = 136315394;
         v16 = "[MSDSettingsRefresher initializeWithOverwrite:]";
         v17 = 2114;
-        v18 = v13;
+        v18 = settingsFilePath2;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s - Settings file already exists at %{public}@", &v15, 0x16u);
       }
 
-      v14 = [(MSDSettingsRefresher *)self getSavedValues];
-      [(MSDSettingsRefresher *)self initializeCacheWithValues:v14];
+      getSavedValues = [(MSDSettingsRefresher *)self getSavedValues];
+      [(MSDSettingsRefresher *)self initializeCacheWithValues:getSavedValues];
 
       self->_initialized = 1;
     }
@@ -105,11 +105,11 @@
     {
       if (v10)
       {
-        v12 = [(MSDSettingsRefresher *)self settingsFilePath];
+        settingsFilePath3 = [(MSDSettingsRefresher *)self settingsFilePath];
         v15 = 136315394;
         v16 = "[MSDSettingsRefresher initializeWithOverwrite:]";
         v17 = 2114;
-        v18 = v12;
+        v18 = settingsFilePath3;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s - Settings file doesn't exist at %{public}@: creating a new file...", &v15, 0x16u);
       }
 
@@ -122,10 +122,10 @@
 {
   v3 = [NSMutableDictionary dictionaryWithCapacity:0];
   v4 = +[NSFileManager defaultManager];
-  v5 = [(MSDSettingsRefresher *)self trueTone];
-  if (v5)
+  trueTone = [(MSDSettingsRefresher *)self trueTone];
+  if (trueTone)
   {
-    [v3 setObject:v5 forKey:@"TrueTone"];
+    [v3 setObject:trueTone forKey:@"TrueTone"];
   }
 
   else
@@ -137,11 +137,11 @@
     }
   }
 
-  v7 = [(MSDSettingsRefresher *)self airDropMode];
+  airDropMode = [(MSDSettingsRefresher *)self airDropMode];
 
-  if (v7)
+  if (airDropMode)
   {
-    [v3 setObject:v7 forKey:@"AirDrop"];
+    [v3 setObject:airDropMode forKey:@"AirDrop"];
   }
 
   else
@@ -153,11 +153,11 @@
     }
   }
 
-  v9 = [(MSDSettingsRefresher *)self volume];
+  volume = [(MSDSettingsRefresher *)self volume];
 
-  if (v9)
+  if (volume)
   {
-    [v3 setObject:v9 forKey:@"Volume"];
+    [v3 setObject:volume forKey:@"Volume"];
   }
 
   else
@@ -169,11 +169,11 @@
     }
   }
 
-  v11 = [(MSDSettingsRefresher *)self airplaneMode];
+  airplaneMode = [(MSDSettingsRefresher *)self airplaneMode];
 
-  if (v11)
+  if (airplaneMode)
   {
-    [v3 setObject:v11 forKey:@"AirplaneMode"];
+    [v3 setObject:airplaneMode forKey:@"AirplaneMode"];
   }
 
   else
@@ -185,10 +185,10 @@
     }
   }
 
-  v13 = [(MSDSettingsRefresher *)self settingsFilePath];
-  v14 = [v13 stringByDeletingLastPathComponent];
+  settingsFilePath = [(MSDSettingsRefresher *)self settingsFilePath];
+  stringByDeletingLastPathComponent = [settingsFilePath stringByDeletingLastPathComponent];
 
-  if ([v4 fileExistsAtPath:v14])
+  if ([v4 fileExistsAtPath:stringByDeletingLastPathComponent])
   {
     v15 = 0;
   }
@@ -201,18 +201,18 @@
       *buf = 136315394;
       v31 = "[MSDSettingsRefresher initializeSettingsFileWithDeviceValues]";
       v32 = 2114;
-      v33 = v14;
+      v33 = stringByDeletingLastPathComponent;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s - creating directory at %{public}@", buf, 0x16u);
     }
 
-    v17 = [NSURL fileURLWithPath:v14];
+    v17 = [NSURL fileURLWithPath:stringByDeletingLastPathComponent];
     v29 = 0;
     v18 = [v4 createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:&v29];
     v15 = v29;
 
     if ((v18 & 1) == 0)
     {
-      sub_1000E3024(v14, v15);
+      sub_1000E3024(stringByDeletingLastPathComponent, v15);
 LABEL_30:
       v24 = 0;
       goto LABEL_36;
@@ -220,8 +220,8 @@ LABEL_30:
   }
 
   v19 = v15;
-  v20 = [(MSDSettingsRefresher *)self settingsFilePath];
-  v21 = [NSURL fileURLWithPath:v20];
+  settingsFilePath2 = [(MSDSettingsRefresher *)self settingsFilePath];
+  v21 = [NSURL fileURLWithPath:settingsFilePath2];
   v28 = v15;
   [v3 writeToURL:v21 error:&v28];
   v15 = v28;
@@ -240,11 +240,11 @@ LABEL_30:
 
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [(MSDSettingsRefresher *)self settingsFilePath];
+    settingsFilePath3 = [(MSDSettingsRefresher *)self settingsFilePath];
     *buf = 136315394;
     v31 = "[MSDSettingsRefresher initializeSettingsFileWithDeviceValues]";
     v32 = 2114;
-    v33 = v25;
+    v33 = settingsFilePath3;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s - Initialized the default system settings file '%{public}@' and cache with values", buf, 0x16u);
   }
 
@@ -266,22 +266,22 @@ LABEL_36:
   return v24;
 }
 
-- (void)initializeCacheWithValues:(id)a3
+- (void)initializeCacheWithValues:(id)values
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"TrueTone"];
+  valuesCopy = values;
+  v5 = [valuesCopy objectForKey:@"TrueTone"];
   trueTone = self->_trueTone;
   self->_trueTone = v5;
 
-  v7 = [v4 objectForKey:@"AirDrop"];
+  v7 = [valuesCopy objectForKey:@"AirDrop"];
   airDrop = self->_airDrop;
   self->_airDrop = v7;
 
-  v9 = [v4 objectForKey:@"Volume"];
+  v9 = [valuesCopy objectForKey:@"Volume"];
   volume = self->_volume;
   self->_volume = v9;
 
-  v11 = [v4 objectForKey:@"AirplaneMode"];
+  v11 = [valuesCopy objectForKey:@"AirplaneMode"];
 
   airplaneMode = self->_airplaneMode;
   self->_airplaneMode = v11;
@@ -392,21 +392,21 @@ LABEL_36:
   return v14;
 }
 
-- (void)setVolume:(id)a3
+- (void)setVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(MSDSettingsRefresher *)self volume];
-  v6 = [v4 isEqualToNumber:v5];
+  volumeCopy = volume;
+  volume = [(MSDSettingsRefresher *)self volume];
+  v6 = [volumeCopy isEqualToNumber:volume];
 
   if ((v6 & 1) == 0)
   {
     v7 = +[MSDAudioController sharedInstance];
-    [v4 floatValue];
+    [volumeCopy floatValue];
     [v7 setVolumeTo:3 forCategory:?];
     v8 = sub_100063A54();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      [v4 floatValue];
+      [volumeCopy floatValue];
       v10 = 136315394;
       v11 = "[MSDSettingsRefresher setVolume:]";
       v12 = 2050;
@@ -418,12 +418,12 @@ LABEL_36:
 
 - (NSString)trueTone
 {
-  v2 = [(MSDSettingsRefresher *)self brightnessClient];
-  v3 = [v2 copyPropertyForKey:@"ColorAdaptationEnabled"];
+  brightnessClient = [(MSDSettingsRefresher *)self brightnessClient];
+  v3 = [brightnessClient copyPropertyForKey:@"ColorAdaptationEnabled"];
 
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
   v5 = @"NO";
-  if (v4)
+  if (bOOLValue)
   {
     v5 = @"YES";
   }
@@ -438,18 +438,18 @@ LABEL_36:
   return v6;
 }
 
-- (void)setTrueTone:(id)a3
+- (void)setTrueTone:(id)tone
 {
-  v4 = a3;
-  v5 = [(MSDSettingsRefresher *)self trueTone];
-  v6 = [v4 isEqual:v5];
+  toneCopy = tone;
+  trueTone = [(MSDSettingsRefresher *)self trueTone];
+  v6 = [toneCopy isEqual:trueTone];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 isEqual:@"YES"];
-    v8 = [(MSDSettingsRefresher *)self brightnessClient];
+    v7 = [toneCopy isEqual:@"YES"];
+    brightnessClient = [(MSDSettingsRefresher *)self brightnessClient];
     v9 = [NSNumber numberWithBool:v7];
-    [v8 setProperty:v9 forKey:@"ColorAdaptationEnabled"];
+    [brightnessClient setProperty:v9 forKey:@"ColorAdaptationEnabled"];
 
     v10 = sub_100063A54();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -457,7 +457,7 @@ LABEL_36:
       v11 = 136315394;
       v12 = "[MSDSettingsRefresher setTrueTone:]";
       v13 = 2114;
-      v14 = v4;
+      v14 = toneCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s - Set system true tone setting to %{public}@", &v11, 0x16u);
     }
   }
@@ -507,11 +507,11 @@ LABEL_36:
   return v4;
 }
 
-- (void)setAirplaneMode:(id)a3
+- (void)setAirplaneMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(MSDSettingsRefresher *)self airplaneMode];
-  v6 = [v4 isEqual:v5];
+  modeCopy = mode;
+  airplaneMode = [(MSDSettingsRefresher *)self airplaneMode];
+  v6 = [modeCopy isEqual:airplaneMode];
 
   if ((v6 & 1) == 0)
   {
@@ -519,8 +519,8 @@ LABEL_36:
     v9 = 3221225472;
     v10 = sub_100096C58;
     v11 = &unk_10016AFB0;
-    v13 = [v4 isEqual:@"YES"];
-    v12 = v4;
+    v13 = [modeCopy isEqual:@"YES"];
+    v12 = modeCopy;
     v7 = objc_retainBlock(&v8);
     if ([NSThread isMainThread:v8])
     {
@@ -536,10 +536,10 @@ LABEL_36:
 
 - (id)airDropMode
 {
-  v2 = [(MSDSettingsRefresher *)self sfAirDropController];
-  v3 = [v2 discoverableMode];
+  sfAirDropController = [(MSDSettingsRefresher *)self sfAirDropController];
+  discoverableMode = [sfAirDropController discoverableMode];
 
-  if (v3 >= 3)
+  if (discoverableMode >= 3)
   {
     v5 = sub_100063A54();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -552,7 +552,7 @@ LABEL_36:
 
   else
   {
-    v4 = off_10016BCA0[v3];
+    v4 = off_10016BCA0[discoverableMode];
   }
 
   v6 = sub_100063A54();
@@ -564,25 +564,25 @@ LABEL_36:
   return v4;
 }
 
-- (void)setAirDropMode:(id)a3
+- (void)setAirDropMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(MSDSettingsRefresher *)self airDropMode];
-  v6 = [v5 isEqualToString:v4];
+  modeCopy = mode;
+  airDropMode = [(MSDSettingsRefresher *)self airDropMode];
+  v6 = [airDropMode isEqualToString:modeCopy];
 
   if ((v6 & 1) == 0)
   {
-    if ([v4 isEqualToString:@"Off"])
+    if ([modeCopy isEqualToString:@"Off"])
     {
       v7 = 0;
     }
 
-    else if ([v4 isEqualToString:@"Contacts Only"])
+    else if ([modeCopy isEqualToString:@"Contacts Only"])
     {
       v7 = 1;
     }
 
-    else if ([v4 isEqualToString:@"Everyone"])
+    else if ([modeCopy isEqualToString:@"Everyone"])
     {
       v7 = 2;
     }
@@ -592,8 +592,8 @@ LABEL_36:
       v7 = 0;
     }
 
-    v8 = [(MSDSettingsRefresher *)self sfAirDropController];
-    [v8 setDiscoverableMode:v7];
+    sfAirDropController = [(MSDSettingsRefresher *)self sfAirDropController];
+    [sfAirDropController setDiscoverableMode:v7];
 
     v9 = sub_100063A54();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -601,7 +601,7 @@ LABEL_36:
       v10 = 136315394;
       v11 = "[MSDSettingsRefresher setAirDropMode:]";
       v12 = 2114;
-      v13 = v4;
+      v13 = modeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s - Set system AirDrop mode setting to %{public}@", &v10, 0x16u);
     }
   }
@@ -610,13 +610,13 @@ LABEL_36:
 - (id)getSavedValues
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(MSDSettingsRefresher *)self settingsFilePath];
-  v5 = [v3 fileExistsAtPath:v4];
+  settingsFilePath = [(MSDSettingsRefresher *)self settingsFilePath];
+  v5 = [v3 fileExistsAtPath:settingsFilePath];
 
   if (v5)
   {
-    v6 = [(MSDSettingsRefresher *)self settingsFilePath];
-    v7 = [NSURL fileURLWithPath:v6];
+    settingsFilePath2 = [(MSDSettingsRefresher *)self settingsFilePath];
+    v7 = [NSURL fileURLWithPath:settingsFilePath2];
     v8 = [NSDictionary dictionaryWithContentsOfURL:v7];
   }
 

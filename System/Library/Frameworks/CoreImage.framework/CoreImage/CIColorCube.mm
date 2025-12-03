@@ -4,7 +4,7 @@
 - (id)cubeImage;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setInputCubeData:(id)a3;
+- (void)setInputCubeData:(id)data;
 @end
 
 @implementation CIColorCube
@@ -17,11 +17,11 @@
   [(CIFilter *)&v3 dealloc];
 }
 
-- (void)setInputCubeData:(id)a3
+- (void)setInputCubeData:(id)data
 {
   self->_cubeImage = 0;
   v5 = self->inputCubeData;
-  self->inputCubeData = a3;
+  self->inputCubeData = data;
 }
 
 + (id)customAttributes
@@ -82,20 +82,20 @@
   result = self->_cubeImage;
   if (!result)
   {
-    v4 = [(NSNumber *)self->inputCubeDimension intValue];
+    intValue = [(NSNumber *)self->inputCubeDimension intValue];
     v5 = [(NSData *)self->inputCubeData length];
-    v6 = v4;
-    v7 = 4 * v4;
-    v8 = 16 * v4;
-    if (v4 * v4 * v8 == v5)
+    v6 = intValue;
+    v7 = 4 * intValue;
+    v8 = 16 * intValue;
+    if (intValue * intValue * v8 == v5)
     {
       inputCubeData = [MEMORY[0x1E695DF88] dataWithLength:v5 >> 2];
-      v10 = [(NSData *)inputCubeData mutableBytes];
+      mutableBytes = [(NSData *)inputCubeData mutableBytes];
       src.data = [(NSData *)self->inputCubeData bytes];
       src.height = (v6 * v6);
       src.width = 4 * v6;
       src.rowBytes = v8;
-      dest.data = v10;
+      dest.data = mutableBytes;
       dest.height = src.height;
       dest.width = src.width;
       dest.rowBytes = v7;
@@ -107,11 +107,11 @@
       inputCubeData = self->inputCubeData;
     }
 
-    v11 = [(NSData *)inputCubeData bytes];
+    bytes = [(NSData *)inputCubeData bytes];
     if ([(NSData *)inputCubeData length])
     {
       v12 = 0;
-      v13 = v11 + 3;
+      v13 = bytes + 3;
       v14 = 1;
       do
       {
@@ -201,10 +201,10 @@ uint64_t __24__CIColorCube_cubeImage__block_invoke(uint64_t a1, uint64_t a2, uin
 
 - (BOOL)_checkInputs
 {
-  v3 = [(NSNumber *)self->inputCubeDimension intValue];
-  if ((v3 - 129) > 0xFFFFFF80)
+  intValue = [(NSNumber *)self->inputCubeDimension intValue];
+  if ((intValue - 129) > 0xFFFFFF80)
   {
-    v4 = v3;
+    v4 = intValue;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -239,39 +239,39 @@ uint64_t __24__CIColorCube_cubeImage__block_invoke(uint64_t a1, uint64_t a2, uin
     return 0;
   }
 
-  v3 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
-  v4 = [(NSNumber *)self->inputCubeDimension intValue];
-  v5 = [CIVector vectorWithX:v4 + -1.0 Y:1.0 / (v4 + -1.0) Z:1.0 / v4 W:1.0 / (v4 * v4)];
-  v6 = [(CIColorCube *)self cubeImage];
-  if ([v6 isOpaque])
+  imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+  intValue = [(NSNumber *)self->inputCubeDimension intValue];
+  v5 = [CIVector vectorWithX:intValue + -1.0 Y:1.0 / (intValue + -1.0) Z:1.0 / intValue W:1.0 / (intValue * intValue)];
+  cubeImage = [(CIColorCube *)self cubeImage];
+  if ([cubeImage isOpaque])
   {
-    v7 = [(CIColorCube *)self _kernelOpaque];
+    _kernelOpaque = [(CIColorCube *)self _kernelOpaque];
   }
 
   else
   {
-    v7 = [(CIColorCube *)self _kernel];
+    _kernelOpaque = [(CIColorCube *)self _kernel];
   }
 
-  v9 = v7;
+  _kernelOpaqueExtend = _kernelOpaque;
   if ([(NSNumber *)self->inputExtrapolate BOOLValue])
   {
-    if ([v6 isOpaque])
+    if ([cubeImage isOpaque])
     {
-      v9 = [(CIColorCube *)self _kernelOpaqueExtend];
+      _kernelOpaqueExtend = [(CIColorCube *)self _kernelOpaqueExtend];
     }
 
     else
     {
-      v9 = 0;
+      _kernelOpaqueExtend = 0;
     }
   }
 
-  [(CIImage *)v3 extent];
-  v14[0] = v3;
-  v14[1] = v6;
+  [(CIImage *)imageByUnpremultiplyingAlpha extent];
+  v14[0] = imageByUnpremultiplyingAlpha;
+  v14[1] = cubeImage;
   v14[2] = v5;
-  return [objc_msgSend(v9 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v14, 3), v10, v11, v12, v13), "imageByPremultiplyingAlpha"}];
+  return [objc_msgSend(_kernelOpaqueExtend applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v14, 3), v10, v11, v12, v13), "imageByPremultiplyingAlpha"}];
 }
 
 @end

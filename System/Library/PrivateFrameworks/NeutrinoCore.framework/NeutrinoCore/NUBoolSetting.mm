@@ -1,25 +1,25 @@
 @interface NUBoolSetting
-+ (id)deserializeFromDictionary:(id)a3 error:(id *)a4;
-- (BOOL)serializeIntoDictionary:(id)a3 error:(id *)a4;
-- (BOOL)validate:(id)a3 error:(id *)a4;
++ (id)deserializeFromDictionary:(id)dictionary error:(id *)error;
+- (BOOL)serializeIntoDictionary:(id)dictionary error:(id *)error;
+- (BOOL)validate:(id)validate error:(id *)error;
 @end
 
 @implementation NUBoolSetting
 
-- (BOOL)serializeIntoDictionary:(id)a3 error:(id *)a4
+- (BOOL)serializeIntoDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
-  [v6 setObject:@"BOOL" forKeyedSubscript:@"isa"];
-  LOBYTE(a4) = [(NUSetting *)self serializeAttributesIntoDictionary:v6 error:a4];
+  dictionaryCopy = dictionary;
+  [dictionaryCopy setObject:@"BOOL" forKeyedSubscript:@"isa"];
+  LOBYTE(error) = [(NUSetting *)self serializeAttributesIntoDictionary:dictionaryCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  validateCopy = validate;
+  if (!validateCopy)
   {
     v9 = NUAssertLogger_25303();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -40,8 +40,8 @@
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v24 = MEMORY[0x1E696AF00];
         v25 = v23;
-        v26 = [v24 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v24 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v23;
         v43 = 2114;
@@ -52,8 +52,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -62,7 +62,7 @@
     _NUAssertFailHandler("[NUBoolSetting validate:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 304, @"Invalid parameter not satisfying: %s", v28, v29, v30, v31, "object != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v16 = NUAssertLogger_25303();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -83,8 +83,8 @@
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v33 callStackSymbols];
+        v36 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v32;
         v43 = 2114;
@@ -95,8 +95,8 @@
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -105,27 +105,27 @@
     _NUAssertFailHandler("[NUBoolSetting validate:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSetting.m", 305, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "error != NULL");
   }
 
-  v6 = v5;
-  v7 = [NUModel validateBool:v5 error:a4];
+  v6 = validateCopy;
+  v7 = [NUModel validateBool:validateCopy error:error];
 
   return v7;
 }
 
-+ (id)deserializeFromDictionary:(id)a3 error:(id *)a4
++ (id)deserializeFromDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v11 = 0;
-  v7 = [a1 deserializeAttributesFromDictionary:v6 error:&v11];
+  v7 = [self deserializeAttributesFromDictionary:dictionaryCopy error:&v11];
   v8 = v11;
   if (v7)
   {
-    v9 = [[a1 alloc] initWithAttributes:v7];
+    v9 = [[self alloc] initWithAttributes:v7];
   }
 
   else
   {
-    [NUError errorWithCode:1 reason:@"Failed to deserialized attributes" object:v6 underlyingError:v8];
-    *a4 = v9 = 0;
+    [NUError errorWithCode:1 reason:@"Failed to deserialized attributes" object:dictionaryCopy underlyingError:v8];
+    *error = v9 = 0;
   }
 
   return v9;

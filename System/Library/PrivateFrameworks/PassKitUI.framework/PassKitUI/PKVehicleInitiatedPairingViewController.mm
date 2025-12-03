@@ -1,41 +1,41 @@
 @interface PKVehicleInitiatedPairingViewController
-+ (void)vehicleInitiatedPairingViewControllerForConfiguration:(id)a3 paymentService:(id)a4 completion:(id)a5;
-- (PKVehicleInitiatedPairingViewController)initWithSupportedTerminal:(id)a3 launchURL:(id)a4 referralSource:(unint64_t)a5 didDismiss:(id)a6;
-- (void)_configureLinkedApplicationForTerminal:(id)a3;
++ (void)vehicleInitiatedPairingViewControllerForConfiguration:(id)configuration paymentService:(id)service completion:(id)completion;
+- (PKVehicleInitiatedPairingViewController)initWithSupportedTerminal:(id)terminal launchURL:(id)l referralSource:(unint64_t)source didDismiss:(id)dismiss;
+- (void)_configureLinkedApplicationForTerminal:(id)terminal;
 - (void)_handleEnterCode;
 - (void)_handleOpenApp;
 - (void)_updateViewState;
-- (void)linkedApplicationDidChangeState:(id)a3;
+- (void)linkedApplicationDidChangeState:(id)state;
 - (void)loadView;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PKVehicleInitiatedPairingViewController
 
-+ (void)vehicleInitiatedPairingViewControllerForConfiguration:(id)a3 paymentService:(id)a4 completion:(id)a5
++ (void)vehicleInitiatedPairingViewControllerForConfiguration:(id)configuration paymentService:(id)service completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v7 ownerKeyPairingAvailable] & 1) == 0)
+  configurationCopy = configuration;
+  serviceCopy = service;
+  completionCopy = completion;
+  if (([configurationCopy ownerKeyPairingAvailable] & 1) == 0)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
-  v10 = [MEMORY[0x1E69B8A58] sharedInstance];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __123__PKVehicleInitiatedPairingViewController_vehicleInitiatedPairingViewControllerForConfiguration_paymentService_completion___block_invoke;
   v14[3] = &unk_1E801F620;
-  v16 = v8;
-  v17 = v9;
-  v15 = v7;
-  v11 = v8;
-  v12 = v7;
-  v13 = v9;
-  [v10 canAddCarKeyPassWithConfiguration:v12 completion:v14];
+  v16 = serviceCopy;
+  v17 = completionCopy;
+  v15 = configurationCopy;
+  v11 = serviceCopy;
+  v12 = configurationCopy;
+  v13 = completionCopy;
+  [mEMORY[0x1E69B8A58] canAddCarKeyPassWithConfiguration:v12 completion:v14];
 }
 
 void __123__PKVehicleInitiatedPairingViewController_vehicleInitiatedPairingViewControllerForConfiguration_paymentService_completion___block_invoke(id *a1, char a2, void *a3, void *a4)
@@ -129,26 +129,26 @@ void __123__PKVehicleInitiatedPairingViewController_vehicleInitiatedPairingViewC
   (*(*(a1 + 56) + 16))();
 }
 
-- (PKVehicleInitiatedPairingViewController)initWithSupportedTerminal:(id)a3 launchURL:(id)a4 referralSource:(unint64_t)a5 didDismiss:(id)a6
+- (PKVehicleInitiatedPairingViewController)initWithSupportedTerminal:(id)terminal launchURL:(id)l referralSource:(unint64_t)source didDismiss:(id)dismiss
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  terminalCopy = terminal;
+  lCopy = l;
+  dismissCopy = dismiss;
   v42.receiver = self;
   v42.super_class = PKVehicleInitiatedPairingViewController;
   v13 = [(PKVehicleInitiatedPairingViewController *)&v42 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_launchURL, a4);
-    v14->_referralSource = a5;
-    v15 = _Block_copy(v12);
+    objc_storeStrong(&v13->_launchURL, l);
+    v14->_referralSource = source;
+    v15 = _Block_copy(dismissCopy);
     didDismiss = v14->_didDismiss;
     v14->_didDismiss = v15;
 
-    v17 = [v10 partnerIdentifier];
+    partnerIdentifier = [terminalCopy partnerIdentifier];
     partnerIdentifier = v14->_partnerIdentifier;
-    v14->_partnerIdentifier = v17;
+    v14->_partnerIdentifier = partnerIdentifier;
 
     v19 = PKLocalizedCredentialString(&cfstr_VehicleInitiat.isa);
     [(PKVehicleInitiatedPairingViewController *)v14 setTitle:v19];
@@ -167,8 +167,8 @@ void __123__PKVehicleInitiatedPairingViewController_vehicleInitiatedPairingViewC
     v25 = PKLocalizedCredentialString(&cfstr_VehicleInitiat_0.isa);
     [(PRXLabel *)v24 setText:v25];
 
-    v26 = [(PKVehicleInitiatedPairingViewController *)v14 contentView];
-    [v26 setSubtitleLabel:v14->_subtitleLabel];
+    contentView = [(PKVehicleInitiatedPairingViewController *)v14 contentView];
+    [contentView setSubtitleLabel:v14->_subtitleLabel];
 
     [(PKVehicleInitiatedPairingViewController *)v14 setDismissalType:3];
     objc_initWeak(&location, v14);
@@ -196,7 +196,7 @@ void __123__PKVehicleInitiatedPairingViewController_vehicleInitiatedPairingViewC
     v14->_placeholderAction = v33;
 
     v35 = [(PKVehicleInitiatedPairingViewController *)v14 addAction:v14->_placeholderAction];
-    [(PKVehicleInitiatedPairingViewController *)v14 _configureLinkedApplicationForTerminal:v10];
+    [(PKVehicleInitiatedPairingViewController *)v14 _configureLinkedApplicationForTerminal:terminalCopy];
     objc_destroyWeak(&v38);
     objc_destroyWeak(&v40);
     objc_destroyWeak(&location);
@@ -252,11 +252,11 @@ void __105__PKVehicleInitiatedPairingViewController_initWithSupportedTerminal_la
   self->_artworkView = v13;
 
   [(UIImageView *)self->_artworkView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [(PKVehicleInitiatedPairingViewController *)self contentView];
-  [v15 addSubview:self->_bodyLabel];
+  contentView = [(PKVehicleInitiatedPairingViewController *)self contentView];
+  [contentView addSubview:self->_bodyLabel];
 
-  v16 = [(PKVehicleInitiatedPairingViewController *)self contentView];
-  [v16 addSubview:self->_artworkView];
+  contentView2 = [(PKVehicleInitiatedPairingViewController *)self contentView];
+  [contentView2 addSubview:self->_artworkView];
 
   [(PKVehicleInitiatedPairingViewController *)self _updateViewState];
 }
@@ -269,77 +269,77 @@ void __105__PKVehicleInitiatedPairingViewController_initWithSupportedTerminal_la
   [(PKVehicleInitiatedPairingViewController *)&v55 updateViewConstraints];
   if (!self->_layoutConstraints)
   {
-    v3 = [(UIImageView *)self->_artworkView image];
-    [v3 size];
+    image = [(UIImageView *)self->_artworkView image];
+    [image size];
     v5 = v4;
     v7 = v6;
 
-    v8 = [(PKVehicleInitiatedPairingViewController *)self contentView];
-    v9 = [v8 mainContentGuide];
+    contentView = [(PKVehicleInitiatedPairingViewController *)self contentView];
+    mainContentGuide = [contentView mainContentGuide];
 
-    v10 = [(PRXLabel *)self->_subtitleLabel widthAnchor];
-    v11 = [v9 widthAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 multiplier:0.85];
+    widthAnchor = [(PRXLabel *)self->_subtitleLabel widthAnchor];
+    widthAnchor2 = [mainContentGuide widthAnchor];
+    v12 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.85];
 
     v53 = v12;
     LODWORD(v13) = 1148829696;
     [v12 setPriority:v13];
-    v14 = [(UILabel *)self->_bodyLabel widthAnchor];
-    v15 = [v9 widthAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 multiplier:0.85];
+    widthAnchor3 = [(UILabel *)self->_bodyLabel widthAnchor];
+    widthAnchor4 = [mainContentGuide widthAnchor];
+    v16 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:0.85];
 
     v51 = v16;
     LODWORD(v17) = 1148829696;
     [v16 setPriority:v17];
-    v18 = [(UIImageView *)self->_artworkView widthAnchor];
-    v19 = [v9 widthAnchor];
-    v54 = [v18 constraintEqualToAnchor:v19 multiplier:0.37];
+    widthAnchor5 = [(UIImageView *)self->_artworkView widthAnchor];
+    widthAnchor6 = [mainContentGuide widthAnchor];
+    v54 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:0.37];
 
     LODWORD(v20) = 1148829696;
     [v54 setPriority:v20];
-    v21 = [(UIImageView *)self->_artworkView bottomAnchor];
-    v22 = [v9 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:-20.0];
+    bottomAnchor = [(UIImageView *)self->_artworkView bottomAnchor];
+    bottomAnchor2 = [mainContentGuide bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
 
     LODWORD(v24) = 1148813312;
     v45 = v23;
     [v23 setPriority:v24];
-    v25 = [(UIImageView *)self->_artworkView bottomAnchor];
-    v26 = [v9 bottomAnchor];
-    v27 = [v25 constraintLessThanOrEqualToAnchor:v26 constant:-20.0];
+    bottomAnchor3 = [(UIImageView *)self->_artworkView bottomAnchor];
+    bottomAnchor4 = [mainContentGuide bottomAnchor];
+    v27 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4 constant:-20.0];
 
     v28 = v27;
     v44 = v27;
     LODWORD(v29) = 1148829696;
     [v27 setPriority:v29];
     v56[0] = v12;
-    v52 = [(PRXLabel *)self->_subtitleLabel centerXAnchor];
-    v50 = [v9 centerXAnchor];
-    v49 = [v52 constraintEqualToAnchor:v50];
+    centerXAnchor = [(PRXLabel *)self->_subtitleLabel centerXAnchor];
+    centerXAnchor2 = [mainContentGuide centerXAnchor];
+    v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v56[1] = v49;
-    v48 = [(UILabel *)self->_bodyLabel topAnchor];
-    v47 = [v9 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47 constant:0.0];
+    topAnchor = [(UILabel *)self->_bodyLabel topAnchor];
+    topAnchor2 = [mainContentGuide topAnchor];
+    v46 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v56[2] = v46;
     v56[3] = v16;
-    v43 = [(UILabel *)self->_bodyLabel centerXAnchor];
-    v42 = [v9 centerXAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42];
+    centerXAnchor3 = [(UILabel *)self->_bodyLabel centerXAnchor];
+    centerXAnchor4 = [mainContentGuide centerXAnchor];
+    v41 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v56[4] = v41;
-    v40 = [(UIImageView *)self->_artworkView topAnchor];
-    v30 = [(UILabel *)self->_bodyLabel bottomAnchor];
-    v31 = [v40 constraintEqualToAnchor:v30 constant:30.0];
+    topAnchor3 = [(UIImageView *)self->_artworkView topAnchor];
+    bottomAnchor5 = [(UILabel *)self->_bodyLabel bottomAnchor];
+    v31 = [topAnchor3 constraintEqualToAnchor:bottomAnchor5 constant:30.0];
     v56[5] = v31;
     v56[6] = v23;
     v56[7] = v28;
     v56[8] = v54;
-    v32 = [(UIImageView *)self->_artworkView heightAnchor];
-    v33 = [(UIImageView *)self->_artworkView widthAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 multiplier:v7 / v5];
+    heightAnchor = [(UIImageView *)self->_artworkView heightAnchor];
+    widthAnchor7 = [(UIImageView *)self->_artworkView widthAnchor];
+    v34 = [heightAnchor constraintEqualToAnchor:widthAnchor7 multiplier:v7 / v5];
     v56[9] = v34;
-    v35 = [(UIImageView *)self->_artworkView centerXAnchor];
-    v36 = [v9 centerXAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    centerXAnchor5 = [(UIImageView *)self->_artworkView centerXAnchor];
+    centerXAnchor6 = [mainContentGuide centerXAnchor];
+    v37 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v56[10] = v37;
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:11];
     layoutConstraints = self->_layoutConstraints;
@@ -349,11 +349,11 @@ void __105__PKVehicleInitiatedPairingViewController_initWithSupportedTerminal_la
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = PKVehicleInitiatedPairingViewController;
-  [(PKVehicleInitiatedPairingViewController *)&v12 viewDidAppear:a3];
+  [(PKVehicleInitiatedPairingViewController *)&v12 viewDidAppear:appear];
   v4 = MEMORY[0x1E69B90D0];
   v5 = PKSubcredentialPairingReferralSourceToString();
   v6 = [v4 startAnalyticsSessionForEnvironment:@"first_party.wallet" intent:@"provision" referralSource:v5];
@@ -375,17 +375,17 @@ void __105__PKVehicleInitiatedPairingViewController_initWithSupportedTerminal_la
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)_configureLinkedApplicationForTerminal:(id)a3
+- (void)_configureLinkedApplicationForTerminal:(id)terminal
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  terminalCopy = terminal;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 associatedApplicationIdentifiers];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  associatedApplicationIdentifiers = [terminalCopy associatedApplicationIdentifiers];
+  v7 = [associatedApplicationIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -397,7 +397,7 @@ void __105__PKVehicleInitiatedPairingViewController_initWithSupportedTerminal_la
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(associatedApplicationIdentifiers);
         }
 
         v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(*(*(&v14 + 1) + 8 * v10), "integerValue")}];
@@ -407,7 +407,7 @@ void __105__PKVehicleInitiatedPairingViewController_initWithSupportedTerminal_la
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [associatedApplicationIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -427,16 +427,16 @@ void __105__PKVehicleInitiatedPairingViewController_initWithSupportedTerminal_la
   if ([(PKVehicleInitiatedPairingViewController *)self isViewLoaded])
   {
     v3 = self->_linkedApplication;
-    v4 = [(PKLinkedApplication *)v3 state];
-    if (v4)
+    state = [(PKLinkedApplication *)v3 state];
+    if (state)
     {
-      v5 = v4;
-      v6 = [(PKLinkedApplication *)v3 displayName];
-      v7 = v6;
+      v5 = state;
+      displayName = [(PKLinkedApplication *)v3 displayName];
+      v7 = displayName;
       v8 = @"partner";
-      if (v6)
+      if (displayName)
       {
-        v8 = v6;
+        v8 = displayName;
       }
 
       v9 = PKLocalizedCredentialString(&cfstr_VehicleInitiat_3.isa, &stru_1F3BD5BF0.isa, v8);
@@ -458,9 +458,9 @@ void __105__PKVehicleInitiatedPairingViewController_initWithSupportedTerminal_la
         if (v5 == 1)
         {
           objc_initWeak(&location, self);
-          v13 = [(PKLinkedApplication *)v3 isInstalled];
+          isInstalled = [(PKLinkedApplication *)v3 isInstalled];
           v14 = @"CAR_KEY_GET_PARTNER_APP_ACTION";
-          if (v13)
+          if (isInstalled)
           {
             v14 = @"CAR_KEY_OPEN_PARTNER_APP_ACTION";
           }
@@ -499,26 +499,26 @@ void __59__PKVehicleInitiatedPairingViewController__updateViewState__block_invok
   [WeakRetained _handleOpenApp];
 }
 
-- (void)linkedApplicationDidChangeState:(id)a3
+- (void)linkedApplicationDidChangeState:(id)state
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = [v4 state];
+    state = [stateCopy state];
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "PKVehicleInitiatedPairingViewController: linkedApplicationDidChangeState: %ld", &v6, 0xCu);
   }
 
-  if ([v4 state])
+  if ([stateCopy state])
   {
     [(PKVehicleInitiatedPairingViewController *)self _updateViewState];
   }
 
   else
   {
-    [v4 reloadApplicationStateIfNecessary];
+    [stateCopy reloadApplicationStateIfNecessary];
   }
 }
 
@@ -623,11 +623,11 @@ uint64_t __57__PKVehicleInitiatedPairingViewController__handleOpenApp__block_inv
   return [v2 openApplication:0 withLaunchOptions:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKVehicleInitiatedPairingViewController;
-  [(PKVehicleInitiatedPairingViewController *)&v5 viewDidDisappear:a3];
+  [(PKVehicleInitiatedPairingViewController *)&v5 viewDidDisappear:disappear];
   didDismiss = self->_didDismiss;
   if (didDismiss)
   {

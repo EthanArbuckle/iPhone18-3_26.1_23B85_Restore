@@ -5,15 +5,15 @@
 - (id)contactPickerPrompt;
 - (id)favoritesFooterText;
 - (id)incomingHeaderText;
-- (id)isInCallKeypadEnabled:(id)a3;
-- (id)isSpeakerOptionEnabled:(id)a3;
+- (id)isInCallKeypadEnabled:(id)enabled;
+- (id)isSpeakerOptionEnabled:(id)enabled;
 - (id)outgoingHeaderText;
-- (id)showRecentsEnabled:(id)a3;
+- (id)showRecentsEnabled:(id)enabled;
 - (id)specifiers;
 - (void)reload;
-- (void)setInCallKeypadEnabled:(id)a3 specifier:(id)a4;
-- (void)setShowRecentsEnabled:(id)a3 specifier:(id)a4;
-- (void)setSpeakerOptionEnabled:(id)a3 specifier:(id)a4;
+- (void)setInCallKeypadEnabled:(id)enabled specifier:(id)specifier;
+- (void)setShowRecentsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSpeakerOptionEnabled:(id)enabled specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -26,8 +26,8 @@
   [(CLPHController *)&v6 viewDidLoad];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"CALLS" value:&stru_4160 table:@"CLPHController"];
-  v5 = [(CLPHController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(CLPHController *)self navigationItem];
+  [navigationItem setTitle:v4];
 }
 
 - (id)specifiers
@@ -36,17 +36,17 @@
   v4 = *&self->AXCLFCommunicationLimitController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(CLPHController *)self communicationLimitSpecifiers];
-    v6 = [v5 mutableCopy];
+    communicationLimitSpecifiers = [(CLPHController *)self communicationLimitSpecifiers];
+    v6 = [communicationLimitSpecifiers mutableCopy];
 
-    v7 = [(CLPHController *)self _axLoadSpecifiersFromPlist];
-    [v6 addObjectsFromArray:v7];
+    _axLoadSpecifiersFromPlist = [(CLPHController *)self _axLoadSpecifiersFromPlist];
+    [v6 addObjectsFromArray:_axLoadSpecifiersFromPlist];
 
     v8 = +[CLFPhoneFaceTimeSettings sharedInstance];
-    v9 = [v8 outgoingCommunicationLimit];
+    outgoingCommunicationLimit = [v8 outgoingCommunicationLimit];
     v10 = CLFCommunicationLimitSelectedContacts;
 
-    if (v9 != v10)
+    if (outgoingCommunicationLimit != v10)
     {
       v11 = [PSSpecifier groupSpecifierWithID:@"ClarityUIFullScreenCompatibilityModeSpecifierID"];
       [v6 addObject:v11];
@@ -166,14 +166,14 @@
   return v2;
 }
 
-- (void)setInCallKeypadEnabled:(id)a3 specifier:(id)a4
+- (void)setInCallKeypadEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFPhoneFaceTimeSettings sharedInstance];
-  [v5 setInCallKeypadEnabled:v4];
+  [v5 setInCallKeypadEnabled:bOOLValue];
 }
 
-- (id)isInCallKeypadEnabled:(id)a3
+- (id)isInCallKeypadEnabled:(id)enabled
 {
   v3 = +[CLFPhoneFaceTimeSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 inCallKeypadEnabled]);
@@ -181,14 +181,14 @@
   return v4;
 }
 
-- (void)setSpeakerOptionEnabled:(id)a3 specifier:(id)a4
+- (void)setSpeakerOptionEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFPhoneFaceTimeSettings sharedInstance];
-  [v5 setSpeakerOptionEnabled:v4];
+  [v5 setSpeakerOptionEnabled:bOOLValue];
 }
 
-- (id)isSpeakerOptionEnabled:(id)a3
+- (id)isSpeakerOptionEnabled:(id)enabled
 {
   v3 = +[CLFPhoneFaceTimeSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 speakerOptionEnabled]);
@@ -196,14 +196,14 @@
   return v4;
 }
 
-- (void)setShowRecentsEnabled:(id)a3 specifier:(id)a4
+- (void)setShowRecentsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[CLFPhoneFaceTimeSettings sharedInstance];
-  [v5 setRecentsEnabled:v4];
+  [v5 setRecentsEnabled:bOOLValue];
 }
 
-- (id)showRecentsEnabled:(id)a3
+- (id)showRecentsEnabled:(id)enabled
 {
   v3 = +[CLFPhoneFaceTimeSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 recentsEnabled]);

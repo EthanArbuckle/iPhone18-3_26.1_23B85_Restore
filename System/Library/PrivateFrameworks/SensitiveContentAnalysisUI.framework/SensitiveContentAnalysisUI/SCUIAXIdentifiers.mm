@@ -3,7 +3,7 @@
 + (NSString)actionMenuCancel;
 + (NSString)interventionScreenContent;
 + (NSString)interventionScreenHeader;
-+ (id)interventionScreen:(int64_t)a3;
++ (id)interventionScreen:(int64_t)screen;
 - (SCUIAXIdentifiers)init;
 @end
 
@@ -30,7 +30,7 @@
   return v2;
 }
 
-+ (id)interventionScreen:(int64_t)a3
++ (id)interventionScreen:(int64_t)screen
 {
   v3 = sub_1BC75BB30();
 

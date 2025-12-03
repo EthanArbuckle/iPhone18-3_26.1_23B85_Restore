@@ -1,85 +1,85 @@
 @interface REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier
-- (BOOL)isEqual:(id)a3;
-- (REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier)initWithCoder:(id)a3;
-- (REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier)initWithDACalendarItemUniqueIdentifiers:(id)a3 listObjectID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier)initWithCoder:(id)coder;
+- (REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier)initWithDACalendarItemUniqueIdentifiers:(id)identifiers listObjectID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier
 
-- (REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier)initWithDACalendarItemUniqueIdentifiers:(id)a3 listObjectID:(id)a4
+- (REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier)initWithDACalendarItemUniqueIdentifiers:(id)identifiers listObjectID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier;
   v9 = [(REMStoreInvocationValueStorage *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_daCalendarItemUniqueIdentifiers, a3);
-    objc_storeStrong(&v10->_listObjectID, a4);
+    objc_storeStrong(&v9->_daCalendarItemUniqueIdentifiers, identifiers);
+    objc_storeStrong(&v10->_listObjectID, d);
   }
 
   return v10;
 }
 
-- (REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier)initWithCoder:(id)a3
+- (REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"daCalendarItemUniqueIdentifiers"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"daCalendarItemUniqueIdentifiers"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"listObjectID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"listObjectID"];
 
   if (v8)
   {
     self = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self initWithDACalendarItemUniqueIdentifiers:v8 listObjectID:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self daCalendarItemUniqueIdentifiers];
-  [v4 encodeObject:v5 forKey:@"daCalendarItemUniqueIdentifiers"];
+  coderCopy = coder;
+  daCalendarItemUniqueIdentifiers = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self daCalendarItemUniqueIdentifiers];
+  [coderCopy encodeObject:daCalendarItemUniqueIdentifiers forKey:@"daCalendarItemUniqueIdentifiers"];
 
-  v6 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self listObjectID];
-  [v4 encodeObject:v6 forKey:@"listObjectID"];
+  listObjectID = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self listObjectID];
+  [coderCopy encodeObject:listObjectID forKey:@"listObjectID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v5 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self daCalendarItemUniqueIdentifiers];
-  v6 = [v4 daCalendarItemUniqueIdentifiers];
-  v7 = v6;
-  if (v5 == v6)
+  daCalendarItemUniqueIdentifiers = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self daCalendarItemUniqueIdentifiers];
+  daCalendarItemUniqueIdentifiers2 = [equalCopy daCalendarItemUniqueIdentifiers];
+  v7 = daCalendarItemUniqueIdentifiers2;
+  if (daCalendarItemUniqueIdentifiers == daCalendarItemUniqueIdentifiers2)
   {
   }
 
   else
   {
-    v8 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self daCalendarItemUniqueIdentifiers];
-    v9 = [v4 daCalendarItemUniqueIdentifiers];
-    v10 = [v8 isEqual:v9];
+    daCalendarItemUniqueIdentifiers3 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self daCalendarItemUniqueIdentifiers];
+    daCalendarItemUniqueIdentifiers4 = [equalCopy daCalendarItemUniqueIdentifiers];
+    v10 = [daCalendarItemUniqueIdentifiers3 isEqual:daCalendarItemUniqueIdentifiers4];
 
     if (!v10)
     {
@@ -89,18 +89,18 @@ LABEL_4:
     }
   }
 
-  v12 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self listObjectID];
-  v13 = [v4 listObjectID];
-  if (v12 == v13)
+  listObjectID = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self listObjectID];
+  listObjectID2 = [equalCopy listObjectID];
+  if (listObjectID == listObjectID2)
   {
     v11 = 1;
   }
 
   else
   {
-    v14 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self listObjectID];
-    v15 = [v4 listObjectID];
-    v11 = [v14 isEqual:v15];
+    listObjectID3 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self listObjectID];
+    listObjectID4 = [equalCopy listObjectID];
+    v11 = [listObjectID3 isEqual:listObjectID4];
   }
 
 LABEL_10:
@@ -109,8 +109,8 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self daCalendarItemUniqueIdentifiers];
-  v3 = [v2 hash];
+  daCalendarItemUniqueIdentifiers = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)self daCalendarItemUniqueIdentifiers];
+  v3 = [daCalendarItemUniqueIdentifiers hash];
 
   return v3;
 }

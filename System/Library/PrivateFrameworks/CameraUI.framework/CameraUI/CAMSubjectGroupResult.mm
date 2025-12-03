@@ -1,29 +1,29 @@
 @interface CAMSubjectGroupResult
 - (AVMetadataObject)underlyingMetadataObject;
-- (CAMSubjectGroupResult)initWithMetadataObjects:(id)a3 groupID:(int64_t)a4;
+- (CAMSubjectGroupResult)initWithMetadataObjects:(id)objects groupID:(int64_t)d;
 - (NSString)description;
 - (unint64_t)syntheticFocusMode;
 @end
 
 @implementation CAMSubjectGroupResult
 
-- (CAMSubjectGroupResult)initWithMetadataObjects:(id)a3 groupID:(int64_t)a4
+- (CAMSubjectGroupResult)initWithMetadataObjects:(id)objects groupID:(int64_t)d
 {
-  v6 = a3;
+  objectsCopy = objects;
   v14.receiver = self;
   v14.super_class = CAMSubjectGroupResult;
   v7 = [(CAMSubjectGroupResult *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [objectsCopy copy];
     metadataObjects = v7->_metadataObjects;
     v7->_metadataObjects = v8;
 
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %ld", @"CAMMetadataObjectTypeSubjectGroup", a4];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %ld", @"CAMMetadataObjectTypeSubjectGroup", d];
     uniqueIdentifier = v7->_uniqueIdentifier;
     v7->_uniqueIdentifier = v10;
 
-    v7->__groupID = a4;
+    v7->__groupID = d;
     v12 = v7;
   }
 
@@ -43,16 +43,16 @@
 - (AVMetadataObject)underlyingMetadataObject
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMSubjectGroupResult *)self metadataObjects];
-  v4 = [v3 firstObject];
-  v5 = [v4 underlyingMetadataObject];
+  metadataObjects = [(CAMSubjectGroupResult *)self metadataObjects];
+  firstObject = [metadataObjects firstObject];
+  underlyingMetadataObject = [firstObject underlyingMetadataObject];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CAMSubjectGroupResult *)self metadataObjects];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  metadataObjects2 = [(CAMSubjectGroupResult *)self metadataObjects];
+  v7 = [metadataObjects2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -63,21 +63,21 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(metadataObjects2);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 underlyingMetadataObject];
+          underlyingMetadataObject2 = [v11 underlyingMetadataObject];
 
-          v5 = v12;
+          underlyingMetadataObject = underlyingMetadataObject2;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [metadataObjects2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -89,7 +89,7 @@
 
 LABEL_11:
 
-  return v5;
+  return underlyingMetadataObject;
 }
 
 - (unint64_t)syntheticFocusMode
@@ -99,8 +99,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CAMSubjectGroupResult *)self metadataObjects];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  metadataObjects = [(CAMSubjectGroupResult *)self metadataObjects];
+  v3 = [metadataObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -112,16 +112,16 @@ LABEL_11:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(metadataObjects);
         }
 
         v7 = *(*(&v11 + 1) + 8 * v6);
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v7 syntheticFocusMode];
-          if (v8)
+          syntheticFocusMode = [v7 syntheticFocusMode];
+          if (syntheticFocusMode)
           {
-            v9 = v8;
+            v9 = syntheticFocusMode;
             goto LABEL_12;
           }
         }
@@ -130,7 +130,7 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [metadataObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;

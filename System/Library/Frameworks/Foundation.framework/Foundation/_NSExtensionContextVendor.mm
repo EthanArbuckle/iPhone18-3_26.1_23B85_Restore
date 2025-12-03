@@ -4,13 +4,13 @@
 + (id)_extensionDictionary;
 + (id)_extensionMainStoryboard;
 + (id)_sharedExtensionContextVendor;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (void)_startListening;
-+ (void)_startListening:(BOOL)a3;
++ (void)_startListening:(BOOL)listening;
 - (_NSExtensionContextVendor)init;
 - (id)_init;
-- (void)_setPrincipalObject:(id)a3 forUUID:(id)a4;
-- (void)_tearDownContextWithUUID:(id)a3;
+- (void)_setPrincipalObject:(id)object forUUID:(id)d;
+- (void)_tearDownContextWithUUID:(id)d;
 @end
 
 @implementation _NSExtensionContextVendor
@@ -45,9 +45,9 @@
   return [(_NSExtensionContextVendor *)&v3 init];
 }
 
-+ (void)_startListening:(BOOL)a3
++ (void)_startListening:(BOOL)listening
 {
-  v3 = a3;
+  listeningCopy = listening;
   if (qword_1ED43F758 != -1)
   {
     dispatch_once(&qword_1ED43F758, &__block_literal_global_22);
@@ -55,7 +55,7 @@
 
   v4 = _MergedGlobals_105;
 
-  [v4 _startListening:v3];
+  [v4 _startListening:listeningCopy];
 }
 
 + (id)_extensionDictionary
@@ -106,18 +106,18 @@
   return [v3 _extensionContextClass];
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (_NSExtensionContextVendor == a1)
+  if (_NSExtensionContextVendor == self)
   {
     v6 = NSClassFromString(@"_NSExtensionContextVendor");
-    NSRequestConcreteImplementation(a1, a2, v6);
+    NSRequestConcreteImplementation(self, a2, v6);
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS____NSExtensionContextVendor;
-  return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
 }
 
 - (_NSExtensionContextVendor)init
@@ -128,14 +128,14 @@
   return [(_NSExtensionContextVendor *)&v3 init];
 }
 
-- (void)_tearDownContextWithUUID:(id)a3
+- (void)_tearDownContextWithUUID:(id)d
 {
   v5 = NSClassFromString(@"_NSExtensionContextVendor");
 
   NSRequestConcreteImplementation(self, a2, v5);
 }
 
-- (void)_setPrincipalObject:(id)a3 forUUID:(id)a4
+- (void)_setPrincipalObject:(id)object forUUID:(id)d
 {
   v6 = NSClassFromString(@"_NSExtensionContextVendor");
 

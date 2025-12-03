@@ -1,46 +1,46 @@
 @interface SUDDMManager
 + (id)statePath;
-+ (int64_t)_NSNumberToTriState:(id)a3;
++ (int64_t)_NSNumberToTriState:(id)state;
 - (BOOL)_evaluateAllDeclarations;
-- (BOOL)_nonFatalScanError:(id)a3;
-- (BOOL)cancelDDMDeclarationForKey:(id)a3 outError:(id *)a4;
+- (BOOL)_nonFatalScanError:(id)error;
+- (BOOL)cancelDDMDeclarationForKey:(id)key outError:(id *)error;
 - (BOOL)enableGlobalNotifications;
 - (BOOL)enableRapidSecurityResponse;
 - (BOOL)enableRapidSecurityResponseRollback;
-- (BOOL)handleDDMDeclaration:(id)a3 outError:(id *)a4;
-- (BOOL)setDDMGlobalSettings:(id)a3 outError:(id *)a4;
-- (SUDDMManager)initWithDelegate:(id)a3;
-- (id)_scanForUpdateForDeclaration:(id)a3 retryIfNecessary:(int)a4;
+- (BOOL)handleDDMDeclaration:(id)declaration outError:(id *)error;
+- (BOOL)setDDMGlobalSettings:(id)settings outError:(id *)error;
+- (SUDDMManager)initWithDelegate:(id)delegate;
+- (id)_scanForUpdateForDeclaration:(id)declaration retryIfNecessary:(int)necessary;
 - (id)activeDDMDeclarationEnfrocedSU;
 - (id)allDeclarations;
-- (id)getDDMGlobalSettingsWithError:(id *)a3;
+- (id)getDDMGlobalSettingsWithError:(id *)error;
 - (id)manager;
 - (int64_t)alwaysEnableAutoDownload;
 - (int64_t)alwaysEnableAutoInstallOSUpdates;
 - (int64_t)alwaysEnableAutoInstallRapidSecurityResponse;
 - (unint64_t)recommendedCadence;
 - (unint64_t)updateDeferralPeriodDays;
-- (void)_cancelCurrentDownloadAndDownload:(id)a3;
-- (void)_cancelScheduledDownloadRetryForReason:(id)a3;
-- (void)_downloadRequestCompletedWithStatus:(BOOL)a3 error:(id)a4 withDescriptor:(id)a5;
-- (void)_evaluateDeclarationsWithNewDeclaration:(id)a3;
-- (void)_handleExistingDownload:(id)a3 targetUpdate:(id)a4;
-- (void)_handleScanResults:(id)a3;
-- (void)_initiateDownloadWithDescriptor:(id)a3;
-- (void)_notifyUI:(id)a3;
-- (void)_purgeDownloadWithHandler:(id)a3;
-- (void)_scheduleDownloadRetryForReason:(id)a3;
-- (void)_setActiveDeclaration:(id)a3;
-- (void)downloadDidFail:(id)a3 withError:(id)a4;
-- (void)downloadDidFinish:(id)a3 withInstallPolicy:(id)a4;
-- (void)downloadDidStart:(id)a3;
-- (void)downloadWasInvalidated:(id)a3;
-- (void)getActiveDDMDeclarationEnforcedSUWithResponse:(id)a3;
-- (void)getDescriptorWithCallback:(id)a3;
-- (void)installDidFinish:(id)a3;
+- (void)_cancelCurrentDownloadAndDownload:(id)download;
+- (void)_cancelScheduledDownloadRetryForReason:(id)reason;
+- (void)_downloadRequestCompletedWithStatus:(BOOL)status error:(id)error withDescriptor:(id)descriptor;
+- (void)_evaluateDeclarationsWithNewDeclaration:(id)declaration;
+- (void)_handleExistingDownload:(id)download targetUpdate:(id)update;
+- (void)_handleScanResults:(id)results;
+- (void)_initiateDownloadWithDescriptor:(id)descriptor;
+- (void)_notifyUI:(id)i;
+- (void)_purgeDownloadWithHandler:(id)handler;
+- (void)_scheduleDownloadRetryForReason:(id)reason;
+- (void)_setActiveDeclaration:(id)declaration;
+- (void)downloadDidFail:(id)fail withError:(id)error;
+- (void)downloadDidFinish:(id)finish withInstallPolicy:(id)policy;
+- (void)downloadDidStart:(id)start;
+- (void)downloadWasInvalidated:(id)invalidated;
+- (void)getActiveDDMDeclarationEnforcedSUWithResponse:(id)response;
+- (void)getDescriptorWithCallback:(id)callback;
+- (void)installDidFinish:(id)finish;
 - (void)resumeOrResetStateIfNecessary;
-- (void)scanRequestDidFinishForOptions:(id)a3 results:(id)a4 error:(id)a5;
-- (void)timeFiredForScheduler:(id)a3 withOptions:(id)a4 replyBlock:(id)a5;
+- (void)scanRequestDidFinishForOptions:(id)options results:(id)results error:(id)error;
+- (void)timeFiredForScheduler:(id)scheduler withOptions:(id)options replyBlock:(id)block;
 @end
 
 @implementation SUDDMManager
@@ -52,12 +52,12 @@
   if (v2)
   {
     v4 = MEMORY[0x277CCACA8];
-    v14 = [v2 path];
+    path = [v2 path];
     v5 = [v4 stringWithFormat:@"%@%@"];
 
     if (!v5)
     {
-      SULogInfo(@"Failed to create state file path", v6, v7, v8, v9, v10, v11, v12, v14);
+      SULogInfo(@"Failed to create state file path", v6, v7, v8, v9, v10, v11, v12, path);
     }
   }
 
@@ -69,13 +69,13 @@
   return v5;
 }
 
-- (SUDDMManager)initWithDelegate:(id)a3
+- (SUDDMManager)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"was called"];
   SULogInfo(@"[DDM] %s: %@", v6, v7, v8, v9, v10, v11, v12, "[SUDDMManager initWithDelegate:]");
 
-  if (v5)
+  if (delegateCopy)
   {
     v38.receiver = self;
     v38.super_class = SUDDMManager;
@@ -92,7 +92,7 @@
       gsWorkQueue = v13->_gsWorkQueue;
       v13->_gsWorkQueue = v18;
 
-      objc_storeStrong(&v13->_managerServerDelegate, a3);
+      objc_storeStrong(&v13->_managerServerDelegate, delegate);
       v20 = [objc_alloc(MEMORY[0x277D64170]) initWithDelegate:v13 options:&unk_287B6F7D8];
       evaluationScheduler = v13->_evaluationScheduler;
       v13->_evaluationScheduler = v20;
@@ -112,7 +112,7 @@
     }
 
     self = v13;
-    v27 = self;
+    selfCopy = self;
   }
 
   else
@@ -120,10 +120,10 @@
     v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"SUDDMManager failed to initiate as first call to sharedManager was made without a server delegate"];
     SULogInfo(@"[DDM] %s: %@", v28, v29, v30, v31, v32, v33, v34, "[SUDDMManager initWithDelegate:]");
 
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
 - (void)resumeOrResetStateIfNecessary
@@ -229,52 +229,52 @@ uint64_t __45__SUDDMManager_resumeOrResetStateIfNecessary__block_invoke_2(uint64
   return manager;
 }
 
-- (void)_notifyUI:(id)a3
+- (void)_notifyUI:(id)i
 {
-  v13 = a3;
+  iCopy = i;
   managerServerDelegate = self->_managerServerDelegate;
   if (objc_opt_respondsToSelector())
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sending %@ to UI", v13];
+    iCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Sending %@ to UI", iCopy];
     SULogInfo(@"[DDM] %s: %@", v5, v6, v7, v8, v9, v10, v11, "[SUDDMManager _notifyUI:]");
 
-    [(SUManagerDelegate *)self->_managerServerDelegate sendDDMDeclarationToUI:v13];
+    [(SUManagerDelegate *)self->_managerServerDelegate sendDDMDeclarationToUI:iCopy];
   }
 }
 
-- (void)_setActiveDeclaration:(id)a3
+- (void)_setActiveDeclaration:(id)declaration
 {
-  v15 = a3;
+  declarationCopy = declaration;
   dispatch_assert_queue_V2(self->_workQueue);
   ddmConfiguration = self->_ddmConfiguration;
-  v5 = [v15 declarationKey];
-  LODWORD(ddmConfiguration) = [(SUCorePolicyDDMConfiguration *)ddmConfiguration setActiveDeclarationKey:v5];
+  declarationKey = [declarationCopy declarationKey];
+  LODWORD(ddmConfiguration) = [(SUCorePolicyDDMConfiguration *)ddmConfiguration setActiveDeclarationKey:declarationKey];
 
   if (ddmConfiguration)
   {
-    v6 = v15;
+    v6 = declarationCopy;
     activeDeclarationEnforcedSU = self->_activeDeclarationEnforcedSU;
     self->_activeDeclarationEnforcedSU = v6;
   }
 
   else
   {
-    activeDeclarationEnforcedSU = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to set %@ as active it must not be valid!!!", v15];;
+    activeDeclarationEnforcedSU = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to set %@ as active it must not be valid!!!", declarationCopy];;
     SULogError(@"[DDM] %s: %@", v8, v9, v10, v11, v12, v13, v14, "[SUDDMManager _setActiveDeclaration:]");
   }
 }
 
-- (id)_scanForUpdateForDeclaration:(id)a3 retryIfNecessary:(int)a4
+- (id)_scanForUpdateForDeclaration:(id)declaration retryIfNecessary:(int)necessary
 {
-  v6 = a3;
-  v97 = self;
+  declarationCopy = declaration;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_workQueue);
-  if (!v6)
+  if (!declarationCopy)
   {
     v92 = [MEMORY[0x277CCACA8] stringWithFormat:@"Don't scan for a null declaration"];
     SULogInfo(@"[DDM] %s: %@", v28, v29, v30, v31, v32, v33, v34, "[SUDDMManager _scanForUpdateForDeclaration:retryIfNecessary:]");
 
-    v35 = 0;
+    preferredDescriptor3 = 0;
     goto LABEL_21;
   }
 
@@ -283,11 +283,11 @@ uint64_t __45__SUDDMManager_resumeOrResetStateIfNecessary__block_invoke_2(uint64
   [v7 setIdentifier:@"com.apple.SoftwareUpdateServices.DDM"];
   [v7 setForced:1];
   [v7 setScanType:2];
-  v8 = [v6 versionString];
-  [v7 setRequestedPMV:v8];
+  versionString = [declarationCopy versionString];
+  [v7 setRequestedPMV:versionString];
 
-  v9 = [v6 buildVersionString];
-  [v7 setRequestedBuild:v9];
+  buildVersionString = [declarationCopy buildVersionString];
+  [v7 setRequestedBuild:buildVersionString];
 
   [v7 setMDMUseDelayPeriod:0];
   [v7 setMDMSoftwareUpdatePath:0];
@@ -305,13 +305,13 @@ uint64_t __45__SUDDMManager_resumeOrResetStateIfNecessary__block_invoke_2(uint64
   v105 = __Block_byref_object_copy__1;
   v106 = __Block_byref_object_dispose__1;
   v107 = 0;
-  v11 = a4 + 1;
+  v11 = necessary + 1;
   while (1)
   {
-    v91 = [MEMORY[0x277CCACA8] stringWithFormat:@"Scanning for update for DDM declaration %@", v6, v90];
+    v91 = [MEMORY[0x277CCACA8] stringWithFormat:@"Scanning for update for DDM declaration %@", declarationCopy, v90];
     SULogInfo(@"[DDM] %s: %@", v12, v13, v14, v15, v16, v17, v18, "[SUDDMManager _scanForUpdateForDeclaration:retryIfNecessary:]");
 
-    v19 = [(SUDDMManager *)v97 manager];
+    manager = [(SUDDMManager *)selfCopy manager];
     v98[0] = MEMORY[0x277D85DD0];
     v98[1] = 3221225472;
     v98[2] = __62__SUDDMManager__scanForUpdateForDeclaration_retryIfNecessary___block_invoke;
@@ -320,7 +320,7 @@ uint64_t __45__SUDDMManager_resumeOrResetStateIfNecessary__block_invoke_2(uint64
     v101 = &v102;
     v20 = v10;
     v99 = v20;
-    [v19 scanForUpdates:v7 complete:v98];
+    [manager scanForUpdates:v7 complete:v98];
 
     dispatch_semaphore_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
     if (!v103[5])
@@ -338,39 +338,39 @@ uint64_t __45__SUDDMManager_resumeOrResetStateIfNecessary__block_invoke_2(uint64
     }
   }
 
-  v36 = [v109[5] preferredDescriptor];
-  if (v36)
+  preferredDescriptor = [v109[5] preferredDescriptor];
+  if (preferredDescriptor)
   {
-    v37 = [v109[5] preferredDescriptor];
-    v38 = [v37 isRelevantToDeclaration:v6];
+    preferredDescriptor2 = [v109[5] preferredDescriptor];
+    v38 = [preferredDescriptor2 isRelevantToDeclaration:declarationCopy];
 
     if (v38)
     {
-      v35 = [v109[5] preferredDescriptor];
+      preferredDescriptor3 = [v109[5] preferredDescriptor];
       v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Picked preferred descriptor from scan results"];
       SULogInfo(@"[DDM] %s: %@", v40, v41, v42, v43, v44, v45, v46, "[SUDDMManager _scanForUpdateForDeclaration:retryIfNecessary:]");
       goto LABEL_13;
     }
   }
 
-  v47 = [v109[5] alternateDescriptor];
-  if (v47)
+  alternateDescriptor = [v109[5] alternateDescriptor];
+  if (alternateDescriptor)
   {
-    v48 = [v109[5] alternateDescriptor];
-    v49 = [v48 isRelevantToDeclaration:v6];
+    alternateDescriptor2 = [v109[5] alternateDescriptor];
+    v49 = [alternateDescriptor2 isRelevantToDeclaration:declarationCopy];
 
     if (v49)
     {
-      v35 = [v109[5] alternateDescriptor];
+      preferredDescriptor3 = [v109[5] alternateDescriptor];
       v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Picked alternate descriptor from scan results"];
       SULogInfo(@"[DDM] %s: %@", v50, v51, v52, v53, v54, v55, v56, "[SUDDMManager _scanForUpdateForDeclaration:retryIfNecessary:]");
 LABEL_13:
 
-      if (v35)
+      if (preferredDescriptor3)
       {
         v57 = MEMORY[0x277CCACA8];
-        v58 = [v35 humanReadableUpdateName];
-        v93 = [v57 stringWithFormat:@"Update found for DDM declaration %@: %@ [%p]", v6, v58, v35];
+        humanReadableUpdateName = [preferredDescriptor3 humanReadableUpdateName];
+        v93 = [v57 stringWithFormat:@"Update found for DDM declaration %@: %@ [%p]", declarationCopy, humanReadableUpdateName, preferredDescriptor3];
         SULogInfo(@"[DDM] %s: %@", v59, v60, v61, v62, v63, v64, v65, "[SUDDMManager _scanForUpdateForDeclaration:retryIfNecessary:]");
 
         goto LABEL_20;
@@ -384,7 +384,7 @@ LABEL_13:
   SULogInfo(@"[DDM] %s: %@", v66, v67, v68, v69, v70, v71, v72, "[SUDDMManager _scanForUpdateForDeclaration:retryIfNecessary:]");
 
 LABEL_16:
-  v95 = [MEMORY[0x277CCACA8] stringWithFormat:@"No update found for DDM declaration %@ with error %@", v6, v103[5]];
+  v95 = [MEMORY[0x277CCACA8] stringWithFormat:@"No update found for DDM declaration %@ with error %@", declarationCopy, v103[5]];
   SULogInfo(@"[DDM] %s: %@", v73, v74, v75, v76, v77, v78, v79, "[SUDDMManager _scanForUpdateForDeclaration:retryIfNecessary:]");
 
   if (v103[5])
@@ -393,7 +393,7 @@ LABEL_16:
     v81 = [v103[5] description];
     [v80 setDdmPersistedErrorDescription:v81];
 
-    if (![(SUDDMManager *)v97 _nonFatalScanError:v103[5]])
+    if (![(SUDDMManager *)selfCopy _nonFatalScanError:v103[5]])
     {
       v96 = [MEMORY[0x277CCACA8] stringWithFormat:@"The last scan error %@ is fatal, notifying the status channel.", v103[5], v95];
       SULogInfo(@"[DDM] %s: %@", v82, v83, v84, v85, v86, v87, v88, "[SUDDMManager _scanForUpdateForDeclaration:retryIfNecessary:]");
@@ -402,14 +402,14 @@ LABEL_16:
     }
   }
 
-  v35 = 0;
+  preferredDescriptor3 = 0;
 LABEL_20:
   _Block_object_dispose(&v102, 8);
 
   _Block_object_dispose(&v108, 8);
 LABEL_21:
 
-  return v35;
+  return preferredDescriptor3;
 }
 
 void __62__SUDDMManager__scanForUpdateForDeclaration_retryIfNecessary___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -429,14 +429,14 @@ void __62__SUDDMManager__scanForUpdateForDeclaration_retryIfNecessary___block_in
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_nonFatalScanError:(id)a3
+- (BOOL)_nonFatalScanError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    if ([v5 isEqualToString:@"com.apple.softwareupdateservices.errors"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"com.apple.softwareupdateservices.errors"])
     {
       v6 = [v4 code] == 3 || objc_msgSend(v4, "code") == 105 || objc_msgSend(v4, "code") == 22 || objc_msgSend(v4, "code") == 57;
     }
@@ -462,10 +462,10 @@ void __62__SUDDMManager__scanForUpdateForDeclaration_retryIfNecessary___block_in
   v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"Let's evaluate all declaraions!"];
   SULogInfo(@"[DDM] %s: %@", v3, v4, v5, v6, v7, v8, v9, "[SUDDMManager _evaluateAllDeclarations]");
 
-  v10 = [(SUCorePolicyDDMConfiguration *)self->_ddmConfiguration invalidateAllInvalidDeclarationsReturningAllInvalid];
-  v11 = [(SUCorePolicyDDMConfiguration *)self->_ddmConfiguration allDeclarations];
-  v12 = v11;
-  if (v11 && [v11 count])
+  invalidateAllInvalidDeclarationsReturningAllInvalid = [(SUCorePolicyDDMConfiguration *)self->_ddmConfiguration invalidateAllInvalidDeclarationsReturningAllInvalid];
+  allDeclarations = [(SUCorePolicyDDMConfiguration *)self->_ddmConfiguration allDeclarations];
+  v12 = allDeclarations;
+  if (allDeclarations && [allDeclarations count])
   {
     v52 = 0u;
     v53 = 0u;
@@ -543,9 +543,9 @@ LABEL_15:
   return v35;
 }
 
-- (void)_evaluateDeclarationsWithNewDeclaration:(id)a3
+- (void)_evaluateDeclarationsWithNewDeclaration:(id)declaration
 {
-  v101 = a3;
+  declarationCopy = declaration;
   dispatch_assert_queue_V2(self->_workQueue);
   v94 = [MEMORY[0x277CCACA8] stringWithFormat:@"was called"];
   SULogInfo(@"[DDM] %s: %@", v4, v5, v6, v7, v8, v9, v10, "[SUDDMManager _evaluateDeclarationsWithNewDeclaration:]");
@@ -560,33 +560,33 @@ LABEL_15:
   }
 
   v15 = 0;
-  v16 = v101;
-  if (v101 && v11)
+  v16 = declarationCopy;
+  if (declarationCopy && v11)
   {
-    v17 = [v101 enforcedInstallDate];
-    v18 = [(SUCoreDDMDeclaration *)v11 enforcedInstallDate];
-    v15 = [v17 compare:v18] == -1;
+    enforcedInstallDate = [declarationCopy enforcedInstallDate];
+    enforcedInstallDate2 = [(SUCoreDDMDeclaration *)v11 enforcedInstallDate];
+    v15 = [enforcedInstallDate compare:enforcedInstallDate2] == -1;
 
-    v16 = v101;
+    v16 = declarationCopy;
   }
 
   if (v14)
   {
-    v19 = [v16 declarationKey];
-    v20 = [(SUCoreDDMDeclaration *)v11 declarationKey];
-    v21 = [v19 isEqualToString:v20];
+    declarationKey = [v16 declarationKey];
+    declarationKey2 = [(SUCoreDDMDeclaration *)v11 declarationKey];
+    v21 = [declarationKey isEqualToString:declarationKey2];
 
     if (!v21)
     {
       if (v15)
       {
-        v42 = [(SUDDMManager *)self _scanForUpdateForDeclaration:v101 retryIfNecessary:3];
+        v42 = [(SUDDMManager *)self _scanForUpdateForDeclaration:declarationCopy retryIfNecessary:3];
         if (v42)
         {
-          v97 = [MEMORY[0x277CCACA8] stringWithFormat:@"Update found for the new declaration %@ let's enforce it!", v101, v94];;
+          v97 = [MEMORY[0x277CCACA8] stringWithFormat:@"Update found for the new declaration %@ let's enforce it!", declarationCopy, v94];;
           SULogInfo(@"[DDM] %s: %@", v43, v44, v45, v46, v47, v48, v49, "[SUDDMManager _evaluateDeclarationsWithNewDeclaration:]");
 
-          [(SUDDMManager *)self _setActiveDeclaration:v101];
+          [(SUDDMManager *)self _setActiveDeclaration:declarationCopy];
           v50 = v42;
           descriptor = self->_descriptor;
           self->_descriptor = v50;
@@ -594,7 +594,7 @@ LABEL_15:
 
         else
         {
-          descriptor = [MEMORY[0x277CCACA8] stringWithFormat:@"Nothing found for the new declaration %@ let's keep the original one.", v101, v94];;
+          descriptor = [MEMORY[0x277CCACA8] stringWithFormat:@"Nothing found for the new declaration %@ let's keep the original one.", declarationCopy, v94];;
           SULogInfo(@"[DDM] %s: %@", v67, v68, v69, v70, v71, v72, v73, "[SUDDMManager _evaluateDeclarationsWithNewDeclaration:]");
         }
       }
@@ -609,16 +609,16 @@ LABEL_15:
     }
 
     v22 = MEMORY[0x277D64400];
-    v23 = [(SUCoreDDMDeclaration *)v11 versionString];
-    v24 = [v101 versionString];
-    if ([v22 stringIsEqual:v23 to:v24])
+    versionString = [(SUCoreDDMDeclaration *)v11 versionString];
+    versionString2 = [declarationCopy versionString];
+    if ([v22 stringIsEqual:versionString to:versionString2])
     {
       v25 = MEMORY[0x277D64400];
-      v26 = [(SUCoreDDMDeclaration *)v11 buildVersionString];
-      v27 = [v101 buildVersionString];
-      LOBYTE(v25) = [v25 stringIsEqual:v26 to:v27];
+      buildVersionString = [(SUCoreDDMDeclaration *)v11 buildVersionString];
+      buildVersionString2 = [declarationCopy buildVersionString];
+      LOBYTE(v25) = [v25 stringIsEqual:buildVersionString to:buildVersionString2];
 
-      v95 = [MEMORY[0x277CCACA8] stringWithFormat:@"Current declaration changed from %@ to %@", v11, v101];
+      declarationCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Current declaration changed from %@ to %@", v11, declarationCopy];
       SULogInfo(@"[DDM] %s: %@", v28, v29, v30, v31, v32, v33, v34, "[SUDDMManager _evaluateDeclarationsWithNewDeclaration:]");
 
       if (v25)
@@ -626,9 +626,9 @@ LABEL_15:
         v96 = [MEMORY[0x277CCACA8] stringWithFormat:@"No target versions changed no need to re-evaluate"];;
         SULogInfo(@"[DDM] %s: %@", v35, v36, v37, v38, v39, v40, v41, "[SUDDMManager _evaluateDeclarationsWithNewDeclaration:]");
 
-        [(SUDDMManager *)self _setActiveDeclaration:v101];
+        [(SUDDMManager *)self _setActiveDeclaration:declarationCopy];
 LABEL_21:
-        v59 = 1;
+        _evaluateAllDeclarations = 1;
         goto LABEL_22;
       }
     }
@@ -636,19 +636,19 @@ LABEL_21:
     else
     {
 
-      v98 = [MEMORY[0x277CCACA8] stringWithFormat:@"Current declaration changed from %@ to %@", v11, v101];
+      declarationCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Current declaration changed from %@ to %@", v11, declarationCopy];
       SULogInfo(@"[DDM] %s: %@", v52, v53, v54, v55, v56, v57, v58, "[SUDDMManager _evaluateDeclarationsWithNewDeclaration:]");
     }
   }
 
-  v59 = [(SUDDMManager *)self _evaluateAllDeclarations];
+  _evaluateAllDeclarations = [(SUDDMManager *)self _evaluateAllDeclarations];
 LABEL_22:
   v74 = self->_activeDeclarationEnforcedSU;
 
   v75 = self->_descriptor;
   v76 = MEMORY[0x277CCACA8];
-  v77 = [(SUDescriptor *)v75 humanReadableUpdateName];
-  v99 = [v76 stringWithFormat:@"declarationToEnforce = %@, updateForDeclaration = %@ [%p]", v74, v77, v75];
+  humanReadableUpdateName = [(SUDescriptor *)v75 humanReadableUpdateName];
+  v99 = [v76 stringWithFormat:@"declarationToEnforce = %@, updateForDeclaration = %@ [%p]", v74, humanReadableUpdateName, v75];
   SULogInfo(@"[DDM] %s: %@", v78, v79, v80, v81, v82, v83, v84, "[SUDDMManager _evaluateDeclarationsWithNewDeclaration:]");
 
   [(SUCoreDDMActivityScheduler *)self->_evaluationScheduler disarmActivityScheduler];
@@ -657,7 +657,7 @@ LABEL_22:
     [(SUDDMManager *)self _initiateDownloadWithDescriptor:v75];
   }
 
-  else if (v59)
+  else if (_evaluateAllDeclarations)
   {
     v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to find any updates for declarations will re-evaluate later"];;
     SULogInfo(@"[DDM] %s: %@", v85, v86, v87, v88, v89, v90, v91, "[SUDDMManager _evaluateDeclarationsWithNewDeclaration:]");
@@ -670,16 +670,16 @@ LABEL_22:
   [(SUDDMManager *)self _notifyUI:v74];
 }
 
-- (void)_scheduleDownloadRetryForReason:(id)a3
+- (void)_scheduleDownloadRetryForReason:(id)reason
 {
   workQueue = self->_workQueue;
-  v5 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(workQueue);
   v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:3600.0];
   v7 = MEMORY[0x277CCACA8];
   v25 = v6;
   v8 = [SUUtility prettyPrintDate:?];
-  v9 = [v7 stringWithFormat:@"Schedule to retry downloading on %@ for reason: %@", v8, v5];
+  reasonCopy = [v7 stringWithFormat:@"Schedule to retry downloading on %@ for reason: %@", v8, reasonCopy];
 
   SULogInfo(@"[DDM] %s: %@", v10, v11, v12, v13, v14, v15, v16, "[SUDDMManager _scheduleDownloadRetryForReason:]");
   if ([(SUCoreDDMActivityScheduler *)self->_downloadScheduler isArmed])
@@ -693,58 +693,58 @@ LABEL_22:
   [(SUCoreDDMActivityScheduler *)self->_downloadScheduler armActivitySchedulerWithDate:v25];
 }
 
-- (void)_cancelScheduledDownloadRetryForReason:(id)a3
+- (void)_cancelScheduledDownloadRetryForReason:(id)reason
 {
-  v12 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_workQueue);
   if ([(SUCoreDDMActivityScheduler *)self->_downloadScheduler isArmed])
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cancel scheduled download retry for reason: %@", v12];
+    reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cancel scheduled download retry for reason: %@", reasonCopy];
     SULogInfo(@"[DDM] %s: %@", v4, v5, v6, v7, v8, v9, v10, "[SUDDMManager _cancelScheduledDownloadRetryForReason:]");
 
     [(SUCoreDDMActivityScheduler *)self->_downloadScheduler disarmActivityScheduler];
   }
 }
 
-- (void)_initiateDownloadWithDescriptor:(id)a3
+- (void)_initiateDownloadWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   dispatch_assert_queue_V2(self->_workQueue);
   v5 = MEMORY[0x277CCACA8];
-  v6 = [v4 humanReadableUpdateName];
-  v54 = [v5 stringWithFormat:@"Downloading: %@ [%p]", v6, v4];
+  humanReadableUpdateName = [descriptorCopy humanReadableUpdateName];
+  descriptorCopy = [v5 stringWithFormat:@"Downloading: %@ [%p]", humanReadableUpdateName, descriptorCopy];
   SULogInfo(@"[DDM] %s: %@", v7, v8, v9, v10, v11, v12, v13, "[SUDDMManager _initiateDownloadWithDescriptor:]");
 
-  if (v4)
+  if (descriptorCopy)
   {
-    v14 = [(SUDDMManager *)self manager];
-    v15 = [v14 download];
+    manager = [(SUDDMManager *)self manager];
+    download = [manager download];
 
-    if (v15)
+    if (download)
     {
-      v16 = [(SUDDMManager *)self manager];
-      v17 = [(SUDownloadOptions *)v16 download];
-      [(SUDDMManager *)self _handleExistingDownload:v17 targetUpdate:v4];
+      manager2 = [(SUDDMManager *)self manager];
+      download2 = [(SUDownloadOptions *)manager2 download];
+      [(SUDDMManager *)self _handleExistingDownload:download2 targetUpdate:descriptorCopy];
 
 LABEL_11:
       goto LABEL_12;
     }
 
     v18 = +[SUNetworkMonitor sharedInstance];
-    v19 = [v18 currentNetworkType];
+    currentNetworkType = [v18 currentNetworkType];
 
-    v16 = [[SUDownloadOptions alloc] initWithDescriptor:v4];
-    [(SUDownloadOptions *)v16 setActiveDownloadPolicyType:0];
-    [(SUDownloadOptions *)v16 setAutoDownload:0];
-    [(SUDownloadOptions *)v16 setDownloadOnly:1];
-    [(SUDownloadOptions *)v16 setClientName:@"com.apple.sus.ddm"];
-    [(SUDownloadOptions *)v16 setTermsAndConditionsAgreementStatus:1];
-    if (v19 == 1)
+    manager2 = [[SUDownloadOptions alloc] initWithDescriptor:descriptorCopy];
+    [(SUDownloadOptions *)manager2 setActiveDownloadPolicyType:0];
+    [(SUDownloadOptions *)manager2 setAutoDownload:0];
+    [(SUDownloadOptions *)manager2 setDownloadOnly:1];
+    [(SUDownloadOptions *)manager2 setClientName:@"com.apple.sus.ddm"];
+    [(SUDownloadOptions *)manager2 setTermsAndConditionsAgreementStatus:1];
+    if (currentNetworkType == 1)
     {
       goto LABEL_9;
     }
 
-    if (!v19)
+    if (!currentNetworkType)
     {
       v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"No network connection try again later..."];;
       SULogInfo(@"[DDM] %s: %@", v20, v21, v22, v23, v24, v25, v26, "[SUDDMManager _initiateDownloadWithDescriptor:]");
@@ -755,28 +755,28 @@ LABEL_7:
       goto LABEL_11;
     }
 
-    if ([(SUDownloadOptions *)v16 isEnabledForCellular])
+    if ([(SUDownloadOptions *)manager2 isEnabledForCellular])
     {
 LABEL_9:
-      v28 = [(SUDDMManager *)self manager];
+      manager3 = [(SUDDMManager *)self manager];
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
       v61[2] = __48__SUDDMManager__initiateDownloadWithDescriptor___block_invoke;
       v61[3] = &unk_279CAAD78;
       v61[4] = self;
-      v62 = v4;
-      [v28 startDownloadWithOptions:v16 withResult:v61];
+      v62 = descriptorCopy;
+      [manager3 startDownloadWithOptions:manager2 withResult:v61];
 
       v29 = v62;
     }
 
     else
     {
-      v30 = [(SUDownloadOptions *)v16 activeDownloadPolicy];
-      v31 = [v30 isDownloadAllowableForCellular];
+      activeDownloadPolicy = [(SUDownloadOptions *)manager2 activeDownloadPolicy];
+      isDownloadAllowableForCellular = [activeDownloadPolicy isDownloadAllowableForCellular];
 
       v32 = MEMORY[0x277CCACA8];
-      if (!v31)
+      if (!isDownloadAllowableForCellular)
       {
         v57 = [MEMORY[0x277CCACA8] stringWithFormat:@"Download policy doesn't allow downloading over cellular try again later..."];;
         SULogInfo(@"[DDM] %s: %@", v47, v48, v49, v50, v51, v52, v53, "[SUDDMManager _initiateDownloadWithDescriptor:]");
@@ -785,8 +785,8 @@ LABEL_9:
         goto LABEL_7;
       }
 
-      v33 = SUStringFromNetworkType(v19);
-      v56 = [v32 stringWithFormat:@"Current network: %@", v33, v54];
+      v33 = SUStringFromNetworkType(currentNetworkType);
+      v56 = [v32 stringWithFormat:@"Current network: %@", v33, descriptorCopy];
       SULogInfo(@"[DDM] %s: %@", v34, v35, v36, v37, v38, v39, v40, "[SUDDMManager _initiateDownloadWithDescriptor:]");
 
       v41 = +[SUAlertPresentationManager sharedInstance];
@@ -798,11 +798,11 @@ LABEL_9:
       v58[2] = __48__SUDDMManager__initiateDownloadWithDescriptor___block_invoke_2;
       v58[3] = &unk_279CAADC8;
       v58[4] = self;
-      v59 = v16;
-      v60 = v4;
-      v43 = [(SUDescriptor *)self->_descriptor humanReadableUpdateName];
-      v44 = [(SUCoreDDMDeclaration *)self->_activeDeclarationEnforcedSU enforcedInstallDate];
-      v45 = [(SUCellularFeeAlertItem *)v42 initWithHandler:v58 updateName:v43 dueDate:v44];
+      v59 = manager2;
+      v60 = descriptorCopy;
+      humanReadableUpdateName2 = [(SUDescriptor *)self->_descriptor humanReadableUpdateName];
+      enforcedInstallDate = [(SUCoreDDMDeclaration *)self->_activeDeclarationEnforcedSU enforcedInstallDate];
+      v45 = [(SUCellularFeeAlertItem *)v42 initWithHandler:v58 updateName:humanReadableUpdateName2 dueDate:enforcedInstallDate];
 
       v46 = +[SUAlertPresentationManager sharedInstance];
       [v46 presentAlert:v45 animated:1];
@@ -847,12 +847,12 @@ void __48__SUDDMManager__initiateDownloadWithDescriptor___block_invoke_3(uint64_
   [v2 startDownloadWithOptions:v3 withResult:v5];
 }
 
-- (void)_handleExistingDownload:(id)a3 targetUpdate:(id)a4
+- (void)_handleExistingDownload:(id)download targetUpdate:(id)update
 {
-  v26 = a3;
-  v6 = a4;
+  downloadCopy = download;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_workQueue);
-  if (!v26)
+  if (!downloadCopy)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"No download"];
     SULogError(@"[DDM] %s: %@", v12, v13, v14, v15, v16, v17, v18, "[SUDDMManager _handleExistingDownload:targetUpdate:]");
@@ -861,15 +861,15 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!updateCopy)
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = @"No target update; not handling the download";
     goto LABEL_7;
   }
 
-  v7 = [v26 descriptor];
-  v8 = [v7 isEqual:v6];
+  descriptor = [downloadCopy descriptor];
+  v8 = [descriptor isEqual:updateCopy];
 
   if (v8)
   {
@@ -881,26 +881,26 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [(SUDDMManager *)self _cancelCurrentDownloadAndDownload:v6];
+  [(SUDDMManager *)self _cancelCurrentDownloadAndDownload:updateCopy];
 LABEL_9:
 }
 
-- (void)_cancelCurrentDownloadAndDownload:(id)a3
+- (void)_cancelCurrentDownloadAndDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   dispatch_assert_queue_V2(self->_workQueue);
   v5 = MEMORY[0x277CCACA8];
-  v6 = [v4 humanReadableUpdateName];
-  v15 = [v5 stringWithFormat:@"Canceling the current download to download %@ [%p]", v6, v4];
+  humanReadableUpdateName = [downloadCopy humanReadableUpdateName];
+  downloadCopy = [v5 stringWithFormat:@"Canceling the current download to download %@ [%p]", humanReadableUpdateName, downloadCopy];
   SULogInfo(@"[DDM] %s: %@", v7, v8, v9, v10, v11, v12, v13, "[SUDDMManager _cancelCurrentDownloadAndDownload:]");
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __50__SUDDMManager__cancelCurrentDownloadAndDownload___block_invoke;
   v16[3] = &unk_279CAAD78;
-  v17 = v4;
-  v18 = self;
-  v14 = v4;
+  v17 = downloadCopy;
+  selfCopy = self;
+  v14 = downloadCopy;
   [(SUDDMManager *)self _purgeDownloadWithHandler:v16];
 }
 
@@ -914,9 +914,9 @@ uint64_t __50__SUDDMManager__cancelCurrentDownloadAndDownload___block_invoke(uin
   return result;
 }
 
-- (void)_purgeDownloadWithHandler:(id)a3
+- (void)_purgeDownloadWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_workQueue);
   v5 = objc_opt_new();
   [v5 setUserRequested:0];
@@ -924,15 +924,15 @@ uint64_t __50__SUDDMManager__cancelCurrentDownloadAndDownload___block_invoke(uin
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Purging download with options %@", v5];
   SULogInfo(@"[DDM] %s: %@", v6, v7, v8, v9, v10, v11, v12, "[SUDDMManager _purgeDownloadWithHandler:]");
 
-  v13 = [(SUDDMManager *)self manager];
+  manager = [(SUDDMManager *)self manager];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __42__SUDDMManager__purgeDownloadWithHandler___block_invoke;
   v16[3] = &unk_279CAAE18;
   v16[4] = self;
-  v17 = v4;
-  v14 = v4;
-  [v13 purgeDownloadWithOptions:v5 withResult:v16];
+  v17 = handlerCopy;
+  v14 = handlerCopy;
+  [manager purgeDownloadWithOptions:v5 withResult:v16];
 }
 
 void __42__SUDDMManager__purgeDownloadWithHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -965,18 +965,18 @@ uint64_t __42__SUDDMManager__purgeDownloadWithHandler___block_invoke_2(uint64_t 
   return result;
 }
 
-- (void)_downloadRequestCompletedWithStatus:(BOOL)a3 error:(id)a4 withDescriptor:(id)a5
+- (void)_downloadRequestCompletedWithStatus:(BOOL)status error:(id)error withDescriptor:(id)descriptor
 {
-  v7 = a4;
+  errorCopy = error;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__SUDDMManager__downloadRequestCompletedWithStatus_error_withDescriptor___block_invoke;
   block[3] = &unk_279CAAE40;
-  v13 = a3;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
+  statusCopy = status;
+  v11 = errorCopy;
+  selfCopy = self;
+  v9 = errorCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1031,14 +1031,14 @@ LABEL_14:
   notify_post(v23);
 }
 
-- (void)_handleScanResults:(id)a3
+- (void)_handleScanResults:(id)results
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   dispatch_assert_queue_V2(self->_workQueue);
-  v5 = [v4 preferredDescriptor];
-  v6 = [v4 alternateDescriptor];
-  if (v5 | v6)
+  preferredDescriptor = [resultsCopy preferredDescriptor];
+  alternateDescriptor = [resultsCopy alternateDescriptor];
+  if (preferredDescriptor | alternateDescriptor)
   {
     v7 = self->_activeDeclarationEnforcedSU;
     v8 = self->_descriptor;
@@ -1051,10 +1051,10 @@ LABEL_14:
 
     else
     {
-      v25 = [(SUCorePolicyDDMConfiguration *)self->_ddmConfiguration invalidateAllInvalidDeclarationsReturningAllInvalid];
-      v26 = [(SUCorePolicyDDMConfiguration *)self->_ddmConfiguration allDeclarations];
-      v10 = v26;
-      if (v26 && [v26 count])
+      invalidateAllInvalidDeclarationsReturningAllInvalid = [(SUCorePolicyDDMConfiguration *)self->_ddmConfiguration invalidateAllInvalidDeclarationsReturningAllInvalid];
+      allDeclarations = [(SUCorePolicyDDMConfiguration *)self->_ddmConfiguration allDeclarations];
+      v10 = allDeclarations;
+      if (allDeclarations && [allDeclarations count])
       {
         v51 = v9;
         v56[0] = MEMORY[0x277D85DD0];
@@ -1084,7 +1084,7 @@ LABEL_14:
               }
 
               v33 = *(*(&v52 + 1) + 8 * i);
-              if (v27[2](v27, v33, v5) & 1) != 0 || (v27[2](v27, v33, v6))
+              if (v27[2](v27, v33, preferredDescriptor) & 1) != 0 || (v27[2](v27, v33, alternateDescriptor))
               {
                 v10 = v50;
                 goto LABEL_21;
@@ -1147,9 +1147,9 @@ uint64_t __35__SUDDMManager__handleScanResults___block_invoke(uint64_t a1, void 
   return v7;
 }
 
-- (BOOL)handleDDMDeclaration:(id)a3 outError:(id *)a4
+- (BOOL)handleDDMDeclaration:(id)declaration outError:(id *)error
 {
-  v6 = a3;
+  declarationCopy = declaration;
   dispatch_assert_queue_not_V2(self->_workQueue);
   v22 = 0;
   v23 = &v22;
@@ -1166,15 +1166,15 @@ uint64_t __35__SUDDMManager__handleScanResults___block_invoke(uint64_t a1, void 
   v11[1] = 3221225472;
   v11[2] = __46__SUDDMManager_handleDDMDeclaration_outError___block_invoke;
   v11[3] = &unk_279CAAE90;
-  v8 = v6;
+  v8 = declarationCopy;
   v14 = &v16;
   v15 = &v22;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   dispatch_sync(workQueue, v11);
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v9 = *(v23 + 24);
@@ -1249,11 +1249,11 @@ LABEL_5:
   }
 }
 
-- (BOOL)cancelDDMDeclarationForKey:(id)a3 outError:(id *)a4
+- (BOOL)cancelDDMDeclarationForKey:(id)key outError:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   dispatch_assert_queue_not_V2(self->_workQueue);
-  v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"About to cancel the declaration for key: %@", v6];
+  keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"About to cancel the declaration for key: %@", keyCopy];
   SULogInfo(@"[DDM] %s: %@", v7, v8, v9, v10, v11, v12, v13, "[SUDDMManager cancelDDMDeclarationForKey:outError:]");
 
   v36 = 0;
@@ -1266,7 +1266,7 @@ LABEL_5:
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0;
-  if (!v6)
+  if (!keyCopy)
   {
     v17 = [SUUtility errorWithCode:22];
     v18 = v37[5];
@@ -1275,7 +1275,7 @@ LABEL_5:
     v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot cancel: key is nil"];
     SULogInfo(@"[DDM] %s: %@", v19, v20, v21, v22, v23, v24, v25, "[SUDDMManager cancelDDMDeclarationForKey:outError:]");
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -1289,15 +1289,15 @@ LABEL_5:
   block[2] = __52__SUDDMManager_cancelDDMDeclarationForKey_outError___block_invoke;
   block[3] = &unk_279CAAEE0;
   block[4] = self;
-  v29 = v6;
+  v29 = keyCopy;
   v30 = &v36;
   v31 = &v32;
   dispatch_sync(workQueue, block);
 
-  if (a4)
+  if (error)
   {
 LABEL_3:
-    *a4 = v37[5];
+    *error = v37[5];
   }
 
 LABEL_4:
@@ -1425,21 +1425,21 @@ uint64_t __31__SUDDMManager_allDeclarations__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)scanRequestDidFinishForOptions:(id)a3 results:(id)a4 error:(id)a5
+- (void)scanRequestDidFinishForOptions:(id)options results:(id)results error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  optionsCopy = options;
+  resultsCopy = results;
+  if (error)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Scan failed with error %@", a5];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Scan failed with error %@", error];
     v22 = LABEL_7:;
     SULogInfo(@"[DDM] %s: %@", v13, v14, v15, v16, v17, v18, v19, "[SUDDMManager scanRequestDidFinishForOptions:results:error:]");
 
     goto LABEL_8;
   }
 
-  v10 = [v8 clientName];
-  if ([v10 isEqualToString:@"com.apple.SoftwareUpdateServices.DDM"])
+  clientName = [optionsCopy clientName];
+  if ([clientName isEqualToString:@"com.apple.SoftwareUpdateServices.DDM"])
   {
 
 LABEL_6:
@@ -1447,15 +1447,15 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [v8 identifier];
-  v12 = [v11 isEqualToString:@"com.apple.SoftwareUpdateServices.DDM"];
+  identifier = [optionsCopy identifier];
+  v12 = [identifier isEqualToString:@"com.apple.SoftwareUpdateServices.DDM"];
 
   if (v12)
   {
     goto LABEL_6;
   }
 
-  if (v9)
+  if (resultsCopy)
   {
     workQueue = self->_workQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1463,7 +1463,7 @@ LABEL_6:
     block[2] = __61__SUDDMManager_scanRequestDidFinishForOptions_results_error___block_invoke;
     block[3] = &unk_279CAA7C0;
     block[4] = self;
-    v24 = v9;
+    v24 = resultsCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -1479,17 +1479,17 @@ uint64_t __61__SUDDMManager_scanRequestDidFinishForOptions_results_error___block
   return [v2 _notifyUI:v3];
 }
 
-- (void)getDescriptorWithCallback:(id)a3
+- (void)getDescriptorWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__SUDDMManager_getDescriptorWithCallback___block_invoke;
   v7[3] = &unk_279CAAF08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -1527,17 +1527,17 @@ uint64_t __42__SUDDMManager_getDescriptorWithCallback___block_invoke(uint64_t a1
   return v4;
 }
 
-- (void)getActiveDDMDeclarationEnforcedSUWithResponse:(id)a3
+- (void)getActiveDDMDeclarationEnforcedSUWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__SUDDMManager_getActiveDDMDeclarationEnforcedSUWithResponse___block_invoke;
   v7[3] = &unk_279CAAF08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = responseCopy;
+  v6 = responseCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -1552,10 +1552,10 @@ uint64_t __62__SUDDMManager_getActiveDDMDeclarationEnforcedSUWithResponse___bloc
   return result;
 }
 
-- (void)downloadDidStart:(id)a3
+- (void)downloadDidStart:(id)start
 {
-  v4 = a3;
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"download did start: %@", v4];
+  startCopy = start;
+  startCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"download did start: %@", startCopy];
   SULogInfo(@"[DDM] %s: %@", v5, v6, v7, v8, v9, v10, v11, "[SUDDMManager downloadDidStart:]");
 
   workQueue = self->_workQueue;
@@ -1564,8 +1564,8 @@ uint64_t __62__SUDDMManager_getActiveDDMDeclarationEnforcedSUWithResponse___bloc
   block[2] = __33__SUDDMManager_downloadDidStart___block_invoke;
   block[3] = &unk_279CAA7C0;
   block[4] = self;
-  v16 = v4;
-  v13 = v4;
+  v16 = startCopy;
+  v13 = startCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1579,10 +1579,10 @@ uint64_t __33__SUDDMManager_downloadDidStart___block_invoke(uint64_t a1)
   return [v2 _handleExistingDownload:v3 targetUpdate:v4];
 }
 
-- (void)downloadDidFail:(id)a3 withError:(id)a4
+- (void)downloadDidFail:(id)fail withError:(id)error
 {
-  v6 = a3;
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"download did fail: %@, error: %@", v6, a4];
+  failCopy = fail;
+  error = [MEMORY[0x277CCACA8] stringWithFormat:@"download did fail: %@, error: %@", failCopy, error];
   SULogInfo(@"[DDM] %s: %@", v7, v8, v9, v10, v11, v12, v13, "[SUDDMManager downloadDidFail:withError:]");
 
   workQueue = self->_workQueue;
@@ -1591,8 +1591,8 @@ uint64_t __33__SUDDMManager_downloadDidStart___block_invoke(uint64_t a1)
   block[2] = __42__SUDDMManager_downloadDidFail_withError___block_invoke;
   block[3] = &unk_279CAA7C0;
   block[4] = self;
-  v18 = v6;
-  v15 = v6;
+  v18 = failCopy;
+  v15 = failCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1610,10 +1610,10 @@ void __42__SUDDMManager_downloadDidFail_withError___block_invoke(uint64_t a1)
   }
 }
 
-- (void)downloadDidFinish:(id)a3 withInstallPolicy:(id)a4
+- (void)downloadDidFinish:(id)finish withInstallPolicy:(id)policy
 {
-  v6 = a3;
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"download did finish: %@, install policy: %@", v6, a4];
+  finishCopy = finish;
+  policy = [MEMORY[0x277CCACA8] stringWithFormat:@"download did finish: %@, install policy: %@", finishCopy, policy];
   SULogInfo(@"[DDM] %s: %@", v7, v8, v9, v10, v11, v12, v13, "[SUDDMManager downloadDidFinish:withInstallPolicy:]");
 
   workQueue = self->_workQueue;
@@ -1622,8 +1622,8 @@ void __42__SUDDMManager_downloadDidFail_withError___block_invoke(uint64_t a1)
   block[2] = __52__SUDDMManager_downloadDidFinish_withInstallPolicy___block_invoke;
   block[3] = &unk_279CAA7C0;
   block[4] = self;
-  v18 = v6;
-  v15 = v6;
+  v18 = finishCopy;
+  v15 = finishCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1637,10 +1637,10 @@ uint64_t __52__SUDDMManager_downloadDidFinish_withInstallPolicy___block_invoke(u
   return [v2 _handleExistingDownload:v3 targetUpdate:v4];
 }
 
-- (void)downloadWasInvalidated:(id)a3
+- (void)downloadWasInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"download was killed: %@", v4];
+  invalidatedCopy = invalidated;
+  invalidatedCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"download was killed: %@", invalidatedCopy];
   SULogInfo(@"[DDM] %s: %@", v5, v6, v7, v8, v9, v10, v11, "[SUDDMManager downloadWasInvalidated:]");
 
   workQueue = self->_workQueue;
@@ -1648,9 +1648,9 @@ uint64_t __52__SUDDMManager_downloadDidFinish_withInstallPolicy___block_invoke(u
   block[1] = 3221225472;
   block[2] = __39__SUDDMManager_downloadWasInvalidated___block_invoke;
   block[3] = &unk_279CAA7C0;
-  v16 = v4;
-  v17 = self;
-  v13 = v4;
+  v16 = invalidatedCopy;
+  selfCopy = self;
+  v13 = invalidatedCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1675,10 +1675,10 @@ void __39__SUDDMManager_downloadWasInvalidated___block_invoke(uint64_t a1)
   }
 }
 
-- (void)installDidFinish:(id)a3
+- (void)installDidFinish:(id)finish
 {
-  v4 = a3;
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"update was successfully installed: %@", v4];
+  finishCopy = finish;
+  finishCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"update was successfully installed: %@", finishCopy];
   SULogInfo(@"[DDM] %s: %@", v5, v6, v7, v8, v9, v10, v11, "[SUDDMManager installDidFinish:]");
 
   dispatch_assert_queue_not_V2(self->_workQueue);
@@ -1687,9 +1687,9 @@ void __39__SUDDMManager_downloadWasInvalidated___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__SUDDMManager_installDidFinish___block_invoke;
   block[3] = &unk_279CAA7C0;
-  v16 = v4;
-  v17 = self;
-  v13 = v4;
+  v16 = finishCopy;
+  selfCopy = self;
+  v13 = finishCopy;
   dispatch_sync(workQueue, block);
 }
 
@@ -1710,20 +1710,20 @@ void __33__SUDDMManager_installDidFinish___block_invoke(uint64_t a1)
   }
 }
 
-- (void)timeFiredForScheduler:(id)a3 withOptions:(id)a4 replyBlock:(id)a5
+- (void)timeFiredForScheduler:(id)scheduler withOptions:(id)options replyBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
+  optionsCopy = options;
+  blockCopy = block;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__SUDDMManager_timeFiredForScheduler_withOptions_replyBlock___block_invoke;
   block[3] = &unk_279CAA8F8;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = optionsCopy;
+  selfCopy = self;
+  v15 = blockCopy;
+  v10 = blockCopy;
+  v11 = optionsCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1747,9 +1747,9 @@ void __61__SUDDMManager_timeFiredForScheduler_withOptions_replyBlock___block_inv
   }
 }
 
-- (BOOL)setDDMGlobalSettings:(id)a3 outError:(id *)a4
+- (BOOL)setDDMGlobalSettings:(id)settings outError:(id *)error
 {
-  v6 = a3;
+  settingsCopy = settings;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -1766,15 +1766,15 @@ void __61__SUDDMManager_timeFiredForScheduler_withOptions_replyBlock___block_inv
   v11[1] = 3221225472;
   v11[2] = __46__SUDDMManager_setDDMGlobalSettings_outError___block_invoke;
   v11[3] = &unk_279CAAF30;
-  v8 = v6;
+  v8 = settingsCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v22;
   v15 = &v16;
   dispatch_sync(gsWorkQueue, v11);
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v9 = *(v23 + 24);
@@ -1880,7 +1880,7 @@ LABEL_17:
 LABEL_21:
 }
 
-- (id)getDDMGlobalSettingsWithError:(id *)a3
+- (id)getDDMGlobalSettingsWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1908,26 +1908,26 @@ LABEL_21:
 
 - (BOOL)enableGlobalNotifications
 {
-  v2 = self;
+  selfCopy = self;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
   dispatch_assert_queue_not_V2(self->_gsWorkQueue);
-  gsWorkQueue = v2->_gsWorkQueue;
+  gsWorkQueue = selfCopy->_gsWorkQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__SUDDMManager_enableGlobalNotifications__block_invoke;
   block[3] = &unk_279CAA948;
-  block[4] = v2;
+  block[4] = selfCopy;
   block[5] = &v14;
   dispatch_sync(gsWorkQueue, block);
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"enableGlobalNotifications: %d", *(v15 + 24)];
   SULogDebug(@"[DDM] %s: %@", v4, v5, v6, v7, v8, v9, v10, "[SUDDMManager enableGlobalNotifications]");
 
-  LOBYTE(v2) = *(v15 + 24);
+  LOBYTE(selfCopy) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __41__SUDDMManager_enableGlobalNotifications__block_invoke(uint64_t a1)
@@ -1943,26 +1943,26 @@ void __41__SUDDMManager_enableGlobalNotifications__block_invoke(uint64_t a1)
 
 - (BOOL)enableRapidSecurityResponse
 {
-  v2 = self;
+  selfCopy = self;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
   dispatch_assert_queue_not_V2(self->_gsWorkQueue);
-  gsWorkQueue = v2->_gsWorkQueue;
+  gsWorkQueue = selfCopy->_gsWorkQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__SUDDMManager_enableRapidSecurityResponse__block_invoke;
   block[3] = &unk_279CAA948;
-  block[4] = v2;
+  block[4] = selfCopy;
   block[5] = &v14;
   dispatch_sync(gsWorkQueue, block);
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"enableRapidSecurityResponse: %d", *(v15 + 24)];
   SULogDebug(@"[DDM] %s: %@", v4, v5, v6, v7, v8, v9, v10, "[SUDDMManager enableRapidSecurityResponse]");
 
-  LOBYTE(v2) = *(v15 + 24);
+  LOBYTE(selfCopy) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __43__SUDDMManager_enableRapidSecurityResponse__block_invoke(uint64_t a1)
@@ -1978,26 +1978,26 @@ void __43__SUDDMManager_enableRapidSecurityResponse__block_invoke(uint64_t a1)
 
 - (BOOL)enableRapidSecurityResponseRollback
 {
-  v2 = self;
+  selfCopy = self;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
   dispatch_assert_queue_not_V2(self->_gsWorkQueue);
-  gsWorkQueue = v2->_gsWorkQueue;
+  gsWorkQueue = selfCopy->_gsWorkQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SUDDMManager_enableRapidSecurityResponseRollback__block_invoke;
   block[3] = &unk_279CAA948;
-  block[4] = v2;
+  block[4] = selfCopy;
   block[5] = &v14;
   dispatch_sync(gsWorkQueue, block);
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"enableRapidSecurityResponseRollback: %d", *(v15 + 24)];
   SULogDebug(@"[DDM] %s: %@", v4, v5, v6, v7, v8, v9, v10, "[SUDDMManager enableRapidSecurityResponseRollback]");
 
-  LOBYTE(v2) = *(v15 + 24);
+  LOBYTE(selfCopy) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __51__SUDDMManager_enableRapidSecurityResponseRollback__block_invoke(uint64_t a1)
@@ -2045,13 +2045,13 @@ void __40__SUDDMManager_updateDeferralPeriodDays__block_invoke(uint64_t a1)
   }
 }
 
-+ (int64_t)_NSNumberToTriState:(id)a3
++ (int64_t)_NSNumberToTriState:(id)state
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stateCopy = state;
+  v4 = stateCopy;
+  if (stateCopy)
   {
-    if ([v3 intValue] == 1)
+    if ([stateCopy intValue] == 1)
     {
       v5 = 1;
     }

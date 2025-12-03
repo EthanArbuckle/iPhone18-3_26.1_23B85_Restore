@@ -1,18 +1,18 @@
 @interface ELSSnapshot
-+ (id)consentToString:(unint64_t)a3;
-+ (id)statusToString:(unint64_t)a3;
++ (id)consentToString:(unint64_t)string;
++ (id)statusToString:(unint64_t)string;
 - (BOOL)needsFollowup;
 - (ELSSnapshot)init;
 - (NSArray)encodedQueue;
 - (double)durationRemaining;
 - (double)totalDuration;
 - (id)JSONObject;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)decodeQueue:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)decodeQueue:(id)queue;
 - (id)dedSessionIdentifier;
-- (id)dedSessionIdentifierForRemoteDeviceIdentifier:(id)a3;
+- (id)dedSessionIdentifierForRemoteDeviceIdentifier:(id)identifier;
 - (id)description;
-- (id)dictionaryRepresentationPretty:(BOOL)a3;
+- (id)dictionaryRepresentationPretty:(BOOL)pretty;
 - (id)sessionDevice;
 - (void)JSONObject;
 - (void)refreshConsent;
@@ -22,7 +22,7 @@
 - (void)refreshDeviceSelectionMap;
 - (void)refreshFollowUpOptions;
 - (void)refreshIdentifiersToRetry;
-- (void)refreshKeyPaths:(id)a3;
+- (void)refreshKeyPaths:(id)paths;
 - (void)refreshMetadata;
 - (void)refreshQueue;
 - (void)refreshRetriesRemaining;
@@ -58,80 +58,80 @@
   return v3;
 }
 
-- (void)refreshKeyPaths:(id)a3
+- (void)refreshKeyPaths:(id)paths
 {
-  v4 = a3;
-  if ([v4 containsObject:@"sessionID"])
+  pathsCopy = paths;
+  if ([pathsCopy containsObject:@"sessionID"])
   {
     [(ELSSnapshot *)self refreshSessionID];
   }
 
-  if ([v4 containsObject:@"status"])
+  if ([pathsCopy containsObject:@"status"])
   {
     [(ELSSnapshot *)self refreshStatus];
   }
 
-  if ([v4 containsObject:@"consent"])
+  if ([pathsCopy containsObject:@"consent"])
   {
     [(ELSSnapshot *)self refreshConsent];
   }
 
-  if ([v4 containsObject:@"dates"])
+  if ([pathsCopy containsObject:@"dates"])
   {
     [(ELSSnapshot *)self refreshDates];
   }
 
-  if ([v4 containsObject:@"queue"])
+  if ([pathsCopy containsObject:@"queue"])
   {
     [(ELSSnapshot *)self refreshQueue];
   }
 
-  if ([v4 containsObject:@"consentHandles"])
+  if ([pathsCopy containsObject:@"consentHandles"])
   {
     [(ELSSnapshot *)self refreshConsentHandles];
   }
 
-  if ([v4 containsObject:@"retriesRemaining"])
+  if ([pathsCopy containsObject:@"retriesRemaining"])
   {
     [(ELSSnapshot *)self refreshRetriesRemaining];
   }
 
-  if ([v4 containsObject:@"identifiersToRetry"])
+  if ([pathsCopy containsObject:@"identifiersToRetry"])
   {
     [(ELSSnapshot *)self refreshIdentifiersToRetry];
   }
 
-  if ([v4 containsObject:@"metadata"])
+  if ([pathsCopy containsObject:@"metadata"])
   {
     [(ELSSnapshot *)self refreshMetadata];
   }
 
-  if ([v4 containsObject:@"uploadCompletedPercentage"])
+  if ([pathsCopy containsObject:@"uploadCompletedPercentage"])
   {
     [(ELSSnapshot *)self refreshUploadCompletedPercentage];
   }
 
-  if ([v4 containsObject:@"followUpOptions"])
+  if ([pathsCopy containsObject:@"followUpOptions"])
   {
     [(ELSSnapshot *)self refreshFollowUpOptions];
   }
 
-  if ([v4 containsObject:@"targetDevices"])
+  if ([pathsCopy containsObject:@"targetDevices"])
   {
     [(ELSSnapshot *)self refreshSessionDevice];
   }
 
-  if ([v4 containsObject:@"consentData"])
+  if ([pathsCopy containsObject:@"consentData"])
   {
     [(ELSSnapshot *)self refreshConsentData];
   }
 
-  if ([v4 containsObject:@"topLevelPrivacyPolicy"])
+  if ([pathsCopy containsObject:@"topLevelPrivacyPolicy"])
   {
     [(ELSSnapshot *)self refreshTopLevelPrivacyDescription];
   }
 
-  if ([v4 containsObject:@"deviceSelection"])
+  if ([pathsCopy containsObject:@"deviceSelection"])
   {
     [(ELSSnapshot *)self refreshDeviceSelectionMap];
   }
@@ -139,51 +139,51 @@
 
 - (void)refreshSessionID
 {
-  v4 = [(ELSSnapshot *)self defaults];
-  v3 = [v4 objectForKey:@"sessionID"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v3 = [defaults objectForKey:@"sessionID"];
   [(ELSSnapshot *)self setSessionID:v3];
 }
 
 - (void)refreshStatus
 {
-  v3 = [(ELSSnapshot *)self defaults];
-  v5 = [v3 objectForKey:@"status"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v5 = [defaults objectForKey:@"status"];
 
   if (v5)
   {
-    v4 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  [(ELSSnapshot *)self setStatus:v4];
+  [(ELSSnapshot *)self setStatus:unsignedIntegerValue];
 }
 
 - (void)refreshConsent
 {
-  v3 = [(ELSSnapshot *)self defaults];
-  v5 = [v3 objectForKey:@"consent"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v5 = [defaults objectForKey:@"consent"];
 
   if (v5)
   {
-    v4 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  [(ELSSnapshot *)self setConsent:v4];
+  [(ELSSnapshot *)self setConsent:unsignedIntegerValue];
 }
 
 - (void)refreshDates
 {
-  v3 = [(ELSSnapshot *)self defaults];
-  v6 = [v3 objectForKey:@"dates"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v6 = [defaults objectForKey:@"dates"];
 
   if (v6)
   {
@@ -203,8 +203,8 @@
 
 - (void)refreshQueue
 {
-  v3 = [(ELSSnapshot *)self defaults];
-  v5 = [v3 objectForKey:@"queue"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v5 = [defaults objectForKey:@"queue"];
 
   if (v5)
   {
@@ -220,8 +220,8 @@
 
 - (void)refreshConsentHandles
 {
-  v4 = [(ELSSnapshot *)self defaults];
-  v3 = [v4 objectForKey:@"consentHandles"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v3 = [defaults objectForKey:@"consentHandles"];
   [(ELSSnapshot *)self setConsentHandles:v3];
 }
 
@@ -229,68 +229,68 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24A07C000, a2, OS_LOG_TYPE_ERROR, "Could not decode enhanced logging state session device: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
 - (void)refreshConsentData
 {
-  v4 = [(ELSSnapshot *)self defaults];
-  v3 = [v4 objectForKey:@"consentData"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v3 = [defaults objectForKey:@"consentData"];
   [(ELSSnapshot *)self setConsentData:v3];
 }
 
 - (void)refreshRetriesRemaining
 {
-  v3 = [(ELSSnapshot *)self defaults];
-  v5 = [v3 objectForKey:@"retriesRemaining"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v5 = [defaults objectForKey:@"retriesRemaining"];
 
   if (v5)
   {
-    v4 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  [(ELSSnapshot *)self setRetriesRemaining:v4];
+  [(ELSSnapshot *)self setRetriesRemaining:integerValue];
 }
 
 - (void)refreshIdentifiersToRetry
 {
-  v4 = [(ELSSnapshot *)self defaults];
-  v3 = [v4 objectForKey:@"identifiersToRetry"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v3 = [defaults objectForKey:@"identifiersToRetry"];
   [(ELSSnapshot *)self setIdentifiersToRetry:v3];
 }
 
 - (void)refreshMetadata
 {
-  v4 = [(ELSSnapshot *)self defaults];
-  v3 = [v4 objectForKey:@"metadata"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v3 = [defaults objectForKey:@"metadata"];
   [(ELSSnapshot *)self setMetadata:v3];
 }
 
 - (void)refreshUploadCompletedPercentage
 {
-  v4 = [(ELSSnapshot *)self defaults];
-  v3 = [v4 objectForKey:@"uploadCompletedPercentage"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v3 = [defaults objectForKey:@"uploadCompletedPercentage"];
   [(ELSSnapshot *)self setUploadCompletedPercentage:v3];
 }
 
 - (void)refreshFollowUpOptions
 {
-  v4 = [(ELSSnapshot *)self defaults];
-  v3 = [v4 objectForKey:@"followUpOptions"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v3 = [defaults objectForKey:@"followUpOptions"];
   [(ELSSnapshot *)self setFollowUpOptions:v3];
 }
 
 - (void)refreshTopLevelPrivacyDescription
 {
-  v3 = [(ELSSnapshot *)self defaults];
-  v8 = [v3 objectForKey:@"topLevelPrivacyPolicy"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v8 = [defaults objectForKey:@"topLevelPrivacyPolicy"];
 
   if (v8)
   {
@@ -309,22 +309,22 @@
 
 - (void)refreshDeviceSelectionMap
 {
-  v4 = [(ELSSnapshot *)self defaults];
-  v3 = [v4 objectForKey:@"deviceSelection"];
+  defaults = [(ELSSnapshot *)self defaults];
+  v3 = [defaults objectForKey:@"deviceSelection"];
   [(ELSSnapshot *)self setDeviceSelection:v3];
 }
 
 - (double)durationRemaining
 {
-  v3 = [(ELSSnapshot *)self endDate];
+  endDate = [(ELSSnapshot *)self endDate];
 
-  if (!v3)
+  if (!endDate)
   {
     return 0.0;
   }
 
-  v4 = [(ELSSnapshot *)self endDate];
-  [v4 timeIntervalSinceNow];
+  endDate2 = [(ELSSnapshot *)self endDate];
+  [endDate2 timeIntervalSinceNow];
   v6 = v5;
 
   return v6;
@@ -337,8 +337,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(ELSSnapshot *)self queue];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  queue = [(ELSSnapshot *)self queue];
+  v3 = [queue countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -350,7 +350,7 @@
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(queue);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -362,7 +362,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [queue countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -384,8 +384,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(ELSSnapshot *)self queue];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  queue = [(ELSSnapshot *)self queue];
+  v3 = [queue countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -395,11 +395,11 @@
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(queue);
         }
 
-        v6 = [*(*(&v10 + 1) + 8 * i) type];
-        v7 = [ELSWhitelist findEntryForBundleIdentifier:v6];
+        type = [*(*(&v10 + 1) + 8 * i) type];
+        v7 = [ELSWhitelist findEntryForBundleIdentifier:type];
 
         if (v7 && [v7 requiresFollowup])
         {
@@ -409,7 +409,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [queue countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v3)
       {
         continue;
@@ -428,17 +428,17 @@ LABEL_12:
 - (NSArray)encodedQueue
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ELSSnapshot *)self queue];
+  array = [MEMORY[0x277CBEB18] array];
+  queue = [(ELSSnapshot *)self queue];
 
-  if (v4)
+  if (queue)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [(ELSSnapshot *)self queue];
-    v6 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    queue2 = [(ELSSnapshot *)self queue];
+    v6 = [queue2 countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v6)
     {
       v8 = v6;
@@ -453,7 +453,7 @@ LABEL_12:
           v12 = v9;
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(queue2);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
@@ -463,7 +463,7 @@ LABEL_12:
 
           if (v14)
           {
-            [v3 addObject:v14];
+            [array addObject:v14];
           }
 
           else if (v9)
@@ -478,30 +478,30 @@ LABEL_12:
           }
         }
 
-        v8 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+        v8 = [queue2 countByEnumeratingWithState:&v21 objects:v27 count:16];
       }
 
       while (v8);
     }
   }
 
-  v16 = [MEMORY[0x277CBEA60] arrayWithArray:v3];
+  v16 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (id)decodeQueue:(id)a3
+- (id)decodeQueue:(id)queue
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v22 = [MEMORY[0x277CBEB18] array];
+  queueCopy = queue;
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = queueCopy;
   v24 = [obj countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v24)
   {
@@ -532,7 +532,7 @@ LABEL_12:
 
         if (v16)
         {
-          [v22 addObject:v16];
+          [array addObject:v16];
         }
 
         else if (v4)
@@ -553,92 +553,92 @@ LABEL_12:
     while (v24);
   }
 
-  v18 = [MEMORY[0x277CBEA60] arrayWithArray:v22];
+  v18 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v5 + 8), self->_sessionID);
   *(v5 + 16) = self->_status;
   *(v5 + 24) = self->_consent;
-  v6 = [(NSDate *)self->_startDate copyWithZone:a3];
+  v6 = [(NSDate *)self->_startDate copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSDate *)self->_endDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_endDate copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSArray *)self->_queue copyWithZone:a3];
+  v10 = [(NSArray *)self->_queue copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
   *(v5 + 56) = self->_retriesRemaining;
-  v12 = [(NSArray *)self->_identifiersToRetry copyWithZone:a3];
+  v12 = [(NSArray *)self->_identifiersToRetry copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
-  v14 = [(NSDictionary *)self->_metadata copyWithZone:a3];
+  v14 = [(NSDictionary *)self->_metadata copyWithZone:zone];
   v15 = *(v5 + 72);
   *(v5 + 72) = v14;
 
-  v16 = [(NSNumber *)self->_uploadCompletedPercentage copyWithZone:a3];
+  v16 = [(NSNumber *)self->_uploadCompletedPercentage copyWithZone:zone];
   v17 = *(v5 + 88);
   *(v5 + 88) = v16;
 
-  v18 = [(NSData *)self->_consentData copyWithZone:a3];
+  v18 = [(NSData *)self->_consentData copyWithZone:zone];
   v19 = *(v5 + 120);
   *(v5 + 120) = v18;
 
-  v20 = [(ELSPrivacyPolicyDescription *)self->_topLevelPrivacyPolicy copyWithZone:a3];
+  v20 = [(ELSPrivacyPolicyDescription *)self->_topLevelPrivacyPolicy copyWithZone:zone];
   v21 = *(v5 + 128);
   *(v5 + 128) = v20;
 
-  v22 = [(NSDictionary *)self->_deviceSelection copyWithZone:a3];
+  v22 = [(NSDictionary *)self->_deviceSelection copyWithZone:zone];
   v23 = *(v5 + 80);
   *(v5 + 80) = v22;
 
   return v5;
 }
 
-+ (id)statusToString:(unint64_t)a3
++ (id)statusToString:(unint64_t)string
 {
-  if (a3 > 9)
+  if (string > 9)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_278FC4D00[a3];
+    v5 = off_278FC4D00[string];
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%lu (%@)", a3, v5, v3, v4];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%lu (%@)", string, v5, v3, v4];
 }
 
-+ (id)consentToString:(unint64_t)a3
++ (id)consentToString:(unint64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_278FC4D50[a3];
+    v5 = off_278FC4D50[string];
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%lu (%@)", a3, v5, v3, v4];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%lu (%@)", string, v5, v3, v4];
 }
 
-- (id)dictionaryRepresentationPretty:(BOOL)a3
+- (id)dictionaryRepresentationPretty:(BOOL)pretty
 {
-  v3 = a3;
+  prettyCopy = pretty;
   v114 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CCA968]);
   v6 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:@"en_US_POSIX"];
@@ -646,17 +646,17 @@ LABEL_12:
 
   [v5 setFormatterBehavior:1040];
   [v5 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
-  v7 = [(ELSSnapshot *)self queue];
+  queue = [(ELSSnapshot *)self queue];
 
-  if (v7)
+  if (queue)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v77 = 0u;
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v9 = [(ELSSnapshot *)self queue];
-    v10 = [v9 countByEnumeratingWithState:&v77 objects:v113 count:16];
+    queue2 = [(ELSSnapshot *)self queue];
+    v10 = [queue2 countByEnumeratingWithState:&v77 objects:v113 count:16];
     if (v10)
     {
       v11 = v10;
@@ -667,14 +667,14 @@ LABEL_12:
         {
           if (*v78 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(queue2);
           }
 
-          v14 = [*(*(&v77 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v77 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v77 objects:v113 count:16];
+        v11 = [queue2 countByEnumeratingWithState:&v77 objects:v113 count:16];
       }
 
       while (v11);
@@ -683,15 +683,15 @@ LABEL_12:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  v15 = [(ELSSnapshot *)self consentData];
+  consentData = [(ELSSnapshot *)self consentData];
 
-  if (v15)
+  if (consentData)
   {
-    v16 = [(ELSSnapshot *)self consentData];
-    v72 = [v16 base64EncodedStringWithOptions:0];
+    consentData2 = [(ELSSnapshot *)self consentData];
+    v72 = [consentData2 base64EncodedStringWithOptions:0];
   }
 
   else
@@ -699,13 +699,13 @@ LABEL_12:
     v72 = 0;
   }
 
-  v17 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v18 = [(ELSSnapshot *)self targetDevices];
-  v19 = [v18 countByEnumeratingWithState:&v73 objects:v112 count:16];
+  targetDevices = [(ELSSnapshot *)self targetDevices];
+  v19 = [targetDevices countByEnumeratingWithState:&v73 objects:v112 count:16];
   if (v19)
   {
     v20 = v19;
@@ -716,35 +716,35 @@ LABEL_12:
       {
         if (*v74 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(targetDevices);
         }
 
         v23 = *(*(&v73 + 1) + 8 * j);
         if (v23)
         {
           v24 = [v23 description];
-          [v17 addObject:v24];
+          [array2 addObject:v24];
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v73 objects:v112 count:16];
+      v20 = [targetDevices countByEnumeratingWithState:&v73 objects:v112 count:16];
     }
 
     while (v20);
   }
 
   v81[0] = @"sessionID";
-  v25 = [(ELSSnapshot *)self sessionID];
-  v70 = v25;
-  if (!v25)
+  sessionID = [(ELSSnapshot *)self sessionID];
+  v70 = sessionID;
+  if (!sessionID)
   {
-    v25 = [MEMORY[0x277CBEB68] null];
+    sessionID = [MEMORY[0x277CBEB68] null];
   }
 
-  v57 = v25;
-  v96 = v25;
+  v57 = sessionID;
+  v96 = sessionID;
   v81[1] = @"status";
-  if (v3)
+  if (prettyCopy)
   {
     v69 = [ELSSnapshot statusToString:[(ELSSnapshot *)self status]];
     v97 = v69;
@@ -762,141 +762,141 @@ LABEL_12:
   v68 = ;
   v98 = v68;
   v83 = @"startDate";
-  v67 = [(ELSSnapshot *)self startDate];
-  v26 = [v5 stringFromDate:?];
-  v66 = v26;
-  if (!v26)
+  startDate = [(ELSSnapshot *)self startDate];
+  null = [v5 stringFromDate:?];
+  v66 = null;
+  if (!null)
   {
-    v26 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v56 = v26;
-  v99 = v26;
+  v56 = null;
+  v99 = null;
   v84 = @"endDate";
-  v65 = [(ELSSnapshot *)self endDate];
-  v27 = [v5 stringFromDate:?];
-  v64 = v27;
-  if (!v27)
+  endDate = [(ELSSnapshot *)self endDate];
+  null2 = [v5 stringFromDate:?];
+  v64 = null2;
+  if (!null2)
   {
-    v27 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v55 = v27;
-  v100 = v27;
+  v55 = null2;
+  v100 = null2;
   v85 = @"queue";
-  v28 = v8;
-  if (!v8)
+  null3 = array;
+  if (!array)
   {
-    v28 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v54 = v28;
-  v101 = v28;
+  v54 = null3;
+  v101 = null3;
   v86 = @"consentHandles";
-  v29 = [(ELSSnapshot *)self consentHandles];
-  v30 = v29;
-  if (!v29)
+  consentHandles = [(ELSSnapshot *)self consentHandles];
+  v30 = consentHandles;
+  if (!consentHandles)
   {
-    v29 = [MEMORY[0x277CBEB68] null];
+    consentHandles = [MEMORY[0x277CBEB68] null];
   }
 
-  v53 = v29;
-  v102 = v29;
+  v53 = consentHandles;
+  v102 = consentHandles;
   v87 = @"retriesRemaining";
   v62 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ELSSnapshot retriesRemaining](self, "retriesRemaining")}];
   v103 = v62;
   v88 = @"identifiersToRetry";
-  v31 = [(ELSSnapshot *)self identifiersToRetry];
-  v32 = v31;
-  if (!v31)
+  identifiersToRetry = [(ELSSnapshot *)self identifiersToRetry];
+  v32 = identifiersToRetry;
+  if (!identifiersToRetry)
   {
-    v31 = [MEMORY[0x277CBEB68] null];
+    identifiersToRetry = [MEMORY[0x277CBEB68] null];
   }
 
-  v52 = v31;
-  v104 = v31;
+  v52 = identifiersToRetry;
+  v104 = identifiersToRetry;
   v89 = @"metadata";
-  v33 = [(ELSSnapshot *)self metadata];
-  v60 = v33;
-  if (!v33)
+  metadata = [(ELSSnapshot *)self metadata];
+  v60 = metadata;
+  if (!metadata)
   {
-    v33 = [MEMORY[0x277CBEB68] null];
+    metadata = [MEMORY[0x277CBEB68] null];
   }
 
   v63 = v30;
-  v51 = v33;
-  v105 = v33;
+  v51 = metadata;
+  v105 = metadata;
   v90 = @"uploadCompletedPercentage";
-  v34 = [(ELSSnapshot *)self uploadCompletedPercentage];
-  v35 = v34;
-  if (!v34)
+  uploadCompletedPercentage = [(ELSSnapshot *)self uploadCompletedPercentage];
+  v35 = uploadCompletedPercentage;
+  if (!uploadCompletedPercentage)
   {
-    v34 = [MEMORY[0x277CBEB68] null];
+    uploadCompletedPercentage = [MEMORY[0x277CBEB68] null];
   }
 
-  v50 = v34;
-  v106 = v34;
+  v50 = uploadCompletedPercentage;
+  v106 = uploadCompletedPercentage;
   v91 = @"followUpOptions";
-  v36 = [(ELSSnapshot *)self followUpOptions];
-  v37 = v36;
-  if (!v36)
+  followUpOptions = [(ELSSnapshot *)self followUpOptions];
+  v37 = followUpOptions;
+  if (!followUpOptions)
   {
-    v36 = [MEMORY[0x277CBEB68] null];
+    followUpOptions = [MEMORY[0x277CBEB68] null];
   }
 
   v61 = v32;
-  v49 = v36;
-  v107 = v36;
+  v49 = followUpOptions;
+  v107 = followUpOptions;
   v92 = @"targetDevices";
-  v38 = [v17 count];
-  v39 = v17;
+  v38 = [array2 count];
+  null4 = array2;
   v59 = v38;
   if (!v38)
   {
-    v39 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
   v71 = v5;
-  v48 = v39;
-  v108 = v39;
+  v48 = null4;
+  v108 = null4;
   v93 = @"consentData";
-  v40 = v72;
+  null5 = v72;
   if (!v72)
   {
-    v40 = [MEMORY[0x277CBEB68] null];
+    null5 = [MEMORY[0x277CBEB68] null];
   }
 
-  v109 = v40;
+  v109 = null5;
   v94 = @"topLevelPrivacyPolicy";
-  v41 = [(ELSSnapshot *)self topLevelPrivacyPolicy];
-  if (v41)
+  topLevelPrivacyPolicy = [(ELSSnapshot *)self topLevelPrivacyPolicy];
+  if (topLevelPrivacyPolicy)
   {
-    v42 = [(ELSSnapshot *)self topLevelPrivacyPolicy];
-    v43 = [v42 dictionaryRepresentation];
+    topLevelPrivacyPolicy2 = [(ELSSnapshot *)self topLevelPrivacyPolicy];
+    dictionaryRepresentation2 = [topLevelPrivacyPolicy2 dictionaryRepresentation];
   }
 
   else
   {
-    v43 = [MEMORY[0x277CBEB68] null];
-    v42 = v43;
+    dictionaryRepresentation2 = [MEMORY[0x277CBEB68] null];
+    topLevelPrivacyPolicy2 = dictionaryRepresentation2;
   }
 
-  v110 = v43;
+  v110 = dictionaryRepresentation2;
   v95 = @"deviceSelection";
-  v44 = [(ELSSnapshot *)self deviceSelection];
-  v45 = v44;
-  if (!v44)
+  deviceSelection = [(ELSSnapshot *)self deviceSelection];
+  null6 = deviceSelection;
+  if (!deviceSelection)
   {
-    v45 = [MEMORY[0x277CBEB68] null];
+    null6 = [MEMORY[0x277CBEB68] null];
   }
 
-  v111 = v45;
+  v111 = null6;
   v58 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v96 forKeys:v81 count:16];
-  if (!v44)
+  if (!deviceSelection)
   {
   }
 
-  if (v41)
+  if (topLevelPrivacyPolicy)
   {
   }
 
@@ -928,7 +928,7 @@ LABEL_12:
   {
   }
 
-  if (v8)
+  if (array)
   {
     if (v64)
     {
@@ -961,8 +961,8 @@ LABEL_73:
 
 - (id)dedSessionIdentifier
 {
-  v2 = [(ELSSnapshot *)self metadata];
-  v3 = [v2 objectForKey:@"enrollmentTicketNumber"];
+  metadata = [(ELSSnapshot *)self metadata];
+  v3 = [metadata objectForKey:@"enrollmentTicketNumber"];
 
   if ([v3 length])
   {
@@ -979,13 +979,13 @@ LABEL_73:
   return v5;
 }
 
-- (id)dedSessionIdentifierForRemoteDeviceIdentifier:(id)a3
+- (id)dedSessionIdentifierForRemoteDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ELSSnapshot *)self dedSessionIdentifier];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v5, v4];
+  identifierCopy = identifier;
+  dedSessionIdentifier = [(ELSSnapshot *)self dedSessionIdentifier];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", dedSessionIdentifier, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 - (id)JSONObject
@@ -1008,18 +1008,18 @@ LABEL_73:
 
 - (id)sessionDevice
 {
-  v2 = [(ELSSnapshot *)self targetDevices];
-  v3 = [v2 firstObject];
+  targetDevices = [(ELSSnapshot *)self targetDevices];
+  firstObject = [targetDevices firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)description
 {
-  v3 = [(ELSSnapshot *)self JSONObject];
-  if (v3)
+  jSONObject = [(ELSSnapshot *)self JSONObject];
+  if (jSONObject)
   {
-    v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
+    v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:jSONObject encoding:4];
   }
 
   else
@@ -1035,7 +1035,7 @@ LABEL_73:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24A07C000, a2, OS_LOG_TYPE_ERROR, "Error JSON serializing ELS Snapshot = %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

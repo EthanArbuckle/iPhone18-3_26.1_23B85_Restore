@@ -1,29 +1,29 @@
 @interface SiriUICardSectionView
-+ (CGSize)sizeThatFitsCardSection:(id)a3 boundingSize:(CGSize)a4;
++ (CGSize)sizeThatFitsCardSection:(id)section boundingSize:(CGSize)size;
 - (CGSize)contentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (CRKComposableView)composedSuperview;
-- (SiriUICardSectionView)initWithFrame:(CGRect)a3;
+- (SiriUICardSectionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)removeFromComposedSuperview;
-- (void)setContentView:(id)a3;
-- (void)setFooterView:(id)a3;
-- (void)setHeaderView:(id)a3;
+- (void)setContentView:(id)view;
+- (void)setFooterView:(id)view;
+- (void)setHeaderView:(id)view;
 @end
 
 @implementation SiriUICardSectionView
 
-- (SiriUICardSectionView)initWithFrame:(CGRect)a3
+- (SiriUICardSectionView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SiriUICardSectionView;
-  v3 = [(SiriUICardSectionView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUICardSectionView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     cardSectionViewIdentifier = v3->_cardSectionViewIdentifier;
-    v3->_cardSectionViewIdentifier = v5;
+    v3->_cardSectionViewIdentifier = uUIDString;
   }
 
   return v3;
@@ -36,52 +36,52 @@
   return result;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     contentView = [(SiriUICardSectionView *)self addSubview:self->_contentView];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](contentView, v5);
+  MEMORY[0x2821F96F8](contentView, viewCopy);
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  if (headerView != v5)
+  if (headerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(SiriUIReusableView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
+    objc_storeStrong(&self->_headerView, view);
     headerView = [(SiriUICardSectionView *)self addSubview:self->_headerView];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](headerView, v5);
+  MEMORY[0x2821F96F8](headerView, viewCopy);
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  if (footerView != v5)
+  if (footerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(SiriUIReusableView *)footerView removeFromSuperview];
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     footerView = [(SiriUICardSectionView *)self addSubview:self->_footerView];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](footerView, v5);
+  MEMORY[0x2821F96F8](footerView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -134,11 +134,11 @@
   [(SiriUIReusableView *)footerView setFrame:0.0, v19, CGRectGetWidth(v26), footerViewHeight];
 }
 
-+ (CGSize)sizeThatFitsCardSection:(id)a3 boundingSize:(CGSize)a4
++ (CGSize)sizeThatFitsCardSection:(id)section boundingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = objc_alloc_init(a1);
+  height = size.height;
+  width = size.width;
+  v6 = objc_alloc_init(self);
   [v6 sizeThatFits:{width, height}];
   v8 = v7;
   v10 = v9;
@@ -152,8 +152,8 @@
 
 - (void)removeFromComposedSuperview
 {
-  v3 = [(SiriUICardSectionView *)self composedSuperview];
-  [v3 cardSectionSubviewWantsToBeRemovedFromHierarchy:self];
+  composedSuperview = [(SiriUICardSectionView *)self composedSuperview];
+  [composedSuperview cardSectionSubviewWantsToBeRemovedFromHierarchy:self];
 }
 
 - (CRKComposableView)composedSuperview

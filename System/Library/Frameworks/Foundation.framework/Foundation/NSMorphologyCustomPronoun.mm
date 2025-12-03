@@ -1,17 +1,17 @@
 @interface NSMorphologyCustomPronoun
-+ (BOOL)_validateCustomPronounWithAccessor:(id)a3 forLanguage:(id)a4 error:(id *)a5;
++ (BOOL)_validateCustomPronounWithAccessor:(id)accessor forLanguage:(id)language error:(id *)error;
 + (BOOL)isSupportedForLanguage:(NSString *)language;
 + (NSArray)requiredKeysForLanguage:(NSString *)language;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)_externalRepresentationDictionary;
-- (NSMorphologyCustomPronoun)initWithCoder:(id)a3;
+- (NSMorphologyCustomPronoun)initWithCoder:(id)coder;
 - (id)_externalRepresentation;
-- (id)_initWithExternalRepresentationDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithExternalRepresentationDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSMorphologyCustomPronoun
@@ -34,30 +34,30 @@
   return v6 ^ [(NSString *)[(NSMorphologyCustomPronoun *)self reflexiveForm] hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSMorphologyCustomPronoun *)self subjectForm];
-    v6 = [a3 subjectForm];
-    if (v5 == v6 || (v7 = [(NSString *)v5 isEqual:v6]))
+    subjectForm = [(NSMorphologyCustomPronoun *)self subjectForm];
+    subjectForm2 = [equal subjectForm];
+    if (subjectForm == subjectForm2 || (v7 = [(NSString *)subjectForm isEqual:subjectForm2]))
     {
-      v8 = [(NSMorphologyCustomPronoun *)self objectForm];
-      v9 = [a3 objectForm];
-      if (v8 == v9 || (v7 = [(NSString *)v8 isEqual:v9]))
+      objectForm = [(NSMorphologyCustomPronoun *)self objectForm];
+      objectForm2 = [equal objectForm];
+      if (objectForm == objectForm2 || (v7 = [(NSString *)objectForm isEqual:objectForm2]))
       {
-        v10 = [(NSMorphologyCustomPronoun *)self possessiveForm];
-        v11 = [a3 possessiveForm];
-        if (v10 == v11 || (v7 = [(NSString *)v10 isEqual:v11]))
+        possessiveForm = [(NSMorphologyCustomPronoun *)self possessiveForm];
+        possessiveForm2 = [equal possessiveForm];
+        if (possessiveForm == possessiveForm2 || (v7 = [(NSString *)possessiveForm isEqual:possessiveForm2]))
         {
-          v12 = [(NSMorphologyCustomPronoun *)self possessiveAdjectiveForm];
-          v13 = [a3 possessiveAdjectiveForm];
-          if (v12 == v13 || (v7 = [(NSString *)v12 isEqual:v13]))
+          possessiveAdjectiveForm = [(NSMorphologyCustomPronoun *)self possessiveAdjectiveForm];
+          possessiveAdjectiveForm2 = [equal possessiveAdjectiveForm];
+          if (possessiveAdjectiveForm == possessiveAdjectiveForm2 || (v7 = [(NSString *)possessiveAdjectiveForm isEqual:possessiveAdjectiveForm2]))
           {
-            v14 = [(NSMorphologyCustomPronoun *)self reflexiveForm];
-            v15 = [a3 reflexiveForm];
-            if (v14 == v15)
+            reflexiveForm = [(NSMorphologyCustomPronoun *)self reflexiveForm];
+            reflexiveForm2 = [equal reflexiveForm];
+            if (reflexiveForm == reflexiveForm2)
             {
               LOBYTE(v7) = 1;
             }
@@ -65,7 +65,7 @@
             else
             {
 
-              LOBYTE(v7) = [(NSString *)v14 isEqual:v15];
+              LOBYTE(v7) = [(NSString *)reflexiveForm isEqual:reflexiveForm2];
             }
           }
         }
@@ -98,7 +98,7 @@
 
 + (NSArray)requiredKeysForLanguage:(NSString *)language
 {
-  if ([a1 isSupportedForLanguage:language])
+  if ([self isSupportedForLanguage:language])
   {
     return &unk_1EEF57EC0;
   }
@@ -109,7 +109,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[1] = [(NSString *)[(NSMorphologyCustomPronoun *)self subjectForm] copy];
@@ -120,18 +120,18 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_subjectForm forKey:@"subjectForm"];
-  [a3 encodeObject:self->_objectForm forKey:@"objectForm"];
-  [a3 encodeObject:self->_possessiveForm forKey:@"possessiveForm"];
-  [a3 encodeObject:self->_possessiveAdjectiveForm forKey:@"possessiveAdjectiveForm"];
+  [coder encodeObject:self->_subjectForm forKey:@"subjectForm"];
+  [coder encodeObject:self->_objectForm forKey:@"objectForm"];
+  [coder encodeObject:self->_possessiveForm forKey:@"possessiveForm"];
+  [coder encodeObject:self->_possessiveAdjectiveForm forKey:@"possessiveAdjectiveForm"];
   reflexiveForm = self->_reflexiveForm;
 
-  [a3 encodeObject:reflexiveForm forKey:@"reflexiveForm"];
+  [coder encodeObject:reflexiveForm forKey:@"reflexiveForm"];
 }
 
-- (NSMorphologyCustomPronoun)initWithCoder:(id)a3
+- (NSMorphologyCustomPronoun)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -139,17 +139,17 @@
   v4 = [(NSMorphologyCustomPronoun *)&v6 init];
   if (v4)
   {
-    v4->_subjectForm = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"subjectForm", "copy"}];
-    v4->_objectForm = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"objectForm", "copy"}];
-    v4->_possessiveForm = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"possessiveForm", "copy"}];
-    v4->_possessiveAdjectiveForm = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"possessiveAdjectiveForm", "copy"}];
-    v4->_reflexiveForm = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"reflexiveForm", "copy"}];
+    v4->_subjectForm = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"subjectForm", "copy"}];
+    v4->_objectForm = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"objectForm", "copy"}];
+    v4->_possessiveForm = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"possessiveForm", "copy"}];
+    v4->_possessiveAdjectiveForm = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"possessiveAdjectiveForm", "copy"}];
+    v4->_reflexiveForm = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"reflexiveForm", "copy"}];
   }
 
   return v4;
 }
 
-- (id)_initWithExternalRepresentationDictionary:(id)a3
+- (id)_initWithExternalRepresentationDictionary:(id)dictionary
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -157,8 +157,8 @@
   v4 = [(NSMorphologyCustomPronoun *)&v11 init];
   if (v4)
   {
-    v5 = [a3 objectForKeyedSubscript:@"subjectForm"];
-    if (v5 && (_NSIsNSString() & 1) == 0 || (v6 = [a3 objectForKeyedSubscript:@"objectForm"]) != 0 && (_NSIsNSString() & 1) == 0 || (v7 = objc_msgSend(a3, "objectForKeyedSubscript:", @"possessiveForm")) != 0 && (_NSIsNSString() & 1) == 0 || (v8 = objc_msgSend(a3, "objectForKeyedSubscript:", @"possessiveAdjectiveForm")) != 0 && (_NSIsNSString() & 1) == 0 || (v9 = objc_msgSend(a3, "objectForKeyedSubscript:", @"reflexiveForm")) != 0 && (_NSIsNSString() & 1) == 0)
+    v5 = [dictionary objectForKeyedSubscript:@"subjectForm"];
+    if (v5 && (_NSIsNSString() & 1) == 0 || (v6 = [dictionary objectForKeyedSubscript:@"objectForm"]) != 0 && (_NSIsNSString() & 1) == 0 || (v7 = objc_msgSend(dictionary, "objectForKeyedSubscript:", @"possessiveForm")) != 0 && (_NSIsNSString() & 1) == 0 || (v8 = objc_msgSend(dictionary, "objectForKeyedSubscript:", @"possessiveAdjectiveForm")) != 0 && (_NSIsNSString() & 1) == 0 || (v9 = objc_msgSend(dictionary, "objectForKeyedSubscript:", @"reflexiveForm")) != 0 && (_NSIsNSString() & 1) == 0)
     {
 
       return 0;
@@ -191,9 +191,9 @@
 
 - (id)_externalRepresentation
 {
-  v2 = [(NSMorphologyCustomPronoun *)self _externalRepresentationDictionary];
+  _externalRepresentationDictionary = [(NSMorphologyCustomPronoun *)self _externalRepresentationDictionary];
 
-  return [NSJSONSerialization dataWithJSONObject:v2 options:0 error:0];
+  return [NSJSONSerialization dataWithJSONObject:_externalRepresentationDictionary options:0 error:0];
 }
 
 - (id)description
@@ -204,16 +204,16 @@
   return [NSString stringWithFormat:@"%@ { subject: '%@', object: '%@', possessive: '%@', possessive adjective: '%@', reflexive: '%@' }", [(NSMorphologyCustomPronoun *)&v3 description], [(NSMorphologyCustomPronoun *)self subjectForm], [(NSMorphologyCustomPronoun *)self objectForm], [(NSMorphologyCustomPronoun *)self possessiveForm], [(NSMorphologyCustomPronoun *)self possessiveAdjectiveForm], [(NSMorphologyCustomPronoun *)self reflexiveForm]];
 }
 
-+ (BOOL)_validateCustomPronounWithAccessor:(id)a3 forLanguage:(id)a4 error:(id *)a5
++ (BOOL)_validateCustomPronounWithAccessor:(id)accessor forLanguage:(id)language error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  if ([NSMorphologyCustomPronoun isSupportedForLanguage:a4])
+  if ([NSMorphologyCustomPronoun isSupportedForLanguage:language])
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [NSMorphologyCustomPronoun requiredKeysForLanguage:a4];
+    v8 = [NSMorphologyCustomPronoun requiredKeysForLanguage:language];
     v9 = [(NSArray *)v8 countByEnumeratingWithState:&v23 objects:v22 count:16];
     if (v9)
     {
@@ -229,7 +229,7 @@ LABEL_4:
         }
 
         v13 = *(*(&v23 + 1) + 8 * v12);
-        v14 = (*(a3 + 2))(a3, v13);
+        v14 = (*(accessor + 2))(accessor, v13);
         if (!v14 || v14 == [MEMORY[0x1E695DFB0] null])
         {
           break;
@@ -248,7 +248,7 @@ LABEL_4:
         }
       }
 
-      if (!a5)
+      if (!error)
       {
         return 0;
       }
@@ -266,7 +266,7 @@ LABEL_4:
 
   else
   {
-    if (a5)
+    if (error)
     {
       v27 = @"NSInvalidValue";
       v28[0] = @"self";
@@ -276,7 +276,7 @@ LABEL_4:
 LABEL_16:
       v19 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 1024, [v16 dictionaryWithObjects:v17 forKeys:v18 count:{1, v20, v21}]);
       result = 0;
-      *a5 = v19;
+      *error = v19;
       return result;
     }
 

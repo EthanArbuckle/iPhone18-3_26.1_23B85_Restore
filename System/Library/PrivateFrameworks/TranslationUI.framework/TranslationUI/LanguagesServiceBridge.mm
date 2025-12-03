@@ -1,10 +1,10 @@
 @interface LanguagesServiceBridge
 + (NSString)modelsKeyPath;
 - (NSArray)models;
-- (id)modelForLocale:(id)a3;
-- (void)deleteLocale:(id)a3;
-- (void)downloadLocales:(id)a3;
-- (void)setModels:(id)a3;
+- (id)modelForLocale:(id)locale;
+- (void)deleteLocale:(id)locale;
+- (void)downloadLocales:(id)locales;
+- (void)setModels:(id)models;
 @end
 
 @implementation LanguagesServiceBridge
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (void)setModels:(id)a3
+- (void)setModels:(id)models
 {
   sub_26F3B0C24(0, &qword_280F65650, 0x277CE1B00);
   v4 = sub_26F49FAF8();
@@ -38,7 +38,7 @@
   return v2;
 }
 
-- (id)modelForLocale:(id)a3
+- (id)modelForLocale:(id)locale
 {
   v4 = sub_26F49DAB8();
   v5 = *(v4 - 8);
@@ -46,8 +46,8 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v14[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   sub_26F49DA18();
-  v9 = self;
-  v10 = [(LanguagesServiceBridge *)v9 models];
+  selfCopy = self;
+  models = [(LanguagesServiceBridge *)selfCopy models];
   sub_26F3B0C24(0, &qword_280F65650, 0x277CE1B00);
   v11 = sub_26F49FAF8();
 
@@ -59,15 +59,15 @@
   return v12;
 }
 
-- (void)downloadLocales:(id)a3
+- (void)downloadLocales:(id)locales
 {
   sub_26F49DAB8();
   v4 = sub_26F49FAF8();
-  v5 = self;
+  selfCopy = self;
   LanguagesServiceBridge.download(locales:)(v4);
 }
 
-- (void)deleteLocale:(id)a3
+- (void)deleteLocale:(id)locale
 {
   v3 = sub_26F49DAB8();
   v4 = *(v3 - 8);

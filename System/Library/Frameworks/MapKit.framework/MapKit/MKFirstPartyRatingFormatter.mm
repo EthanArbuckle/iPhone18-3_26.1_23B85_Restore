@@ -1,14 +1,14 @@
 @interface MKFirstPartyRatingFormatter
-+ (id)stringFromCount:(unint64_t)a3;
++ (id)stringFromCount:(unint64_t)count;
 @end
 
 @implementation MKFirstPartyRatingFormatter
 
-+ (id)stringFromCount:(unint64_t)a3
++ (id)stringFromCount:(unint64_t)count
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [v3 localeIdentifier];
-  [v4 UTF8String];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  [localeIdentifier UTF8String];
   if (unum_open())
   {
     unum_setAttribute();

@@ -1,29 +1,29 @@
 @interface DDIGroup
-+ (id)groupWithUUID:(id)a3 gid:(unsigned int)a4 name:(id)a5 fullName:(id)a6;
-- (id)initWithUUID:(int)a3 gid:(void *)a4 name:(void *)a5 fullName:;
++ (id)groupWithUUID:(id)d gid:(unsigned int)gid name:(id)name fullName:(id)fullName;
+- (id)initWithUUID:(int)d gid:(void *)gid name:(void *)name fullName:;
 @end
 
 @implementation DDIGroup
 
-+ (id)groupWithUUID:(id)a3 gid:(unsigned int)a4 name:(id)a5 fullName:(id)a6
++ (id)groupWithUUID:(id)d gid:(unsigned int)gid name:(id)name fullName:(id)fullName
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [[DDIGroup alloc] initWithUUID:v11 gid:a4 name:v10 fullName:v9];
+  fullNameCopy = fullName;
+  nameCopy = name;
+  dCopy = d;
+  v12 = [[DDIGroup alloc] initWithUUID:dCopy gid:gid name:nameCopy fullName:fullNameCopy];
 
   return v12;
 }
 
-- (id)initWithUUID:(int)a3 gid:(void *)a4 name:(void *)a5 fullName:
+- (id)initWithUUID:(int)d gid:(void *)gid name:(void *)name fullName:
 {
   v25 = *MEMORY[0x277D85DE8];
   v10 = a2;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  gidCopy = gid;
+  nameCopy = name;
+  if (self)
   {
-    v23.receiver = a1;
+    v23.receiver = self;
     v23.super_class = DDIGroup;
     v13 = objc_msgSendSuper2(&v23, sel_init);
     if (!v13)
@@ -31,25 +31,25 @@
       [DDIUser initWithUUID:v24 uid:? name:? primaryGroupUUID:? fullName:? homeDirectory:? shell:? memberships:?];
     }
 
-    a1 = v13;
+    self = v13;
 
-    objc_storeStrong(a1 + 2, a2);
-    *(a1 + 2) = a3;
-    v14 = [v11 copy];
-    v15 = a1[3];
-    a1[3] = v14;
+    objc_storeStrong(self + 2, a2);
+    *(self + 2) = d;
+    v14 = [gidCopy copy];
+    v15 = self[3];
+    self[3] = v14;
 
-    v16 = [v12 copy];
-    v17 = a1[4];
-    a1[4] = v16;
+    v16 = [nameCopy copy];
+    v17 = self[4];
+    self[4] = v16;
 
     v18 = [MEMORY[0x277CBEB58] set];
-    v19 = a1[5];
-    a1[5] = v18;
+    v19 = self[5];
+    self[5] = v18;
   }
 
   v20 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface AVContentKey
-+ (AVContentKey)contentKeyWithSpecifier:(id)a3 cryptor:(OpaqueFigCPECryptor *)a4 contentKeyBoss:(OpaqueFigContentKeyBoss *)a5 contentKeySpecifier:(OpaqueFigContentKeySpecifier *)a6;
-- (AVContentKey)initWithSpecifier:(id)a3 cryptor:(OpaqueFigCPECryptor *)a4 contentKeyBoss:(OpaqueFigContentKeyBoss *)a5 contentKeySpecifier:(OpaqueFigContentKeySpecifier *)a6;
-- (OpaqueFigCPECryptor)_cryptorForFormatDescription:(opaqueCMFormatDescription *)a3 error:(id *)a4;
++ (AVContentKey)contentKeyWithSpecifier:(id)specifier cryptor:(OpaqueFigCPECryptor *)cryptor contentKeyBoss:(OpaqueFigContentKeyBoss *)boss contentKeySpecifier:(OpaqueFigContentKeySpecifier *)keySpecifier;
+- (AVContentKey)initWithSpecifier:(id)specifier cryptor:(OpaqueFigCPECryptor *)cryptor contentKeyBoss:(OpaqueFigContentKeyBoss *)boss contentKeySpecifier:(OpaqueFigContentKeySpecifier *)keySpecifier;
+- (OpaqueFigCPECryptor)_cryptorForFormatDescription:(opaqueCMFormatDescription *)description error:(id *)error;
 - (void)dealloc;
 - (void)revoke;
 @end
 
 @implementation AVContentKey
 
-- (AVContentKey)initWithSpecifier:(id)a3 cryptor:(OpaqueFigCPECryptor *)a4 contentKeyBoss:(OpaqueFigContentKeyBoss *)a5 contentKeySpecifier:(OpaqueFigContentKeySpecifier *)a6
+- (AVContentKey)initWithSpecifier:(id)specifier cryptor:(OpaqueFigCPECryptor *)cryptor contentKeyBoss:(OpaqueFigContentKeyBoss *)boss contentKeySpecifier:(OpaqueFigContentKeySpecifier *)keySpecifier
 {
   v15.receiver = self;
   v15.super_class = AVContentKey;
   v10 = [(AVContentKey *)&v15 init];
   if (v10)
   {
-    v10->contentKeySpecifier = [a3 copy];
-    if (a4)
+    v10->contentKeySpecifier = [specifier copy];
+    if (cryptor)
     {
-      v11 = CFRetain(a4);
+      v11 = CFRetain(cryptor);
     }
 
     else
@@ -27,9 +27,9 @@
     }
 
     v10->_cryptor = v11;
-    if (a6)
+    if (keySpecifier)
     {
-      v12 = CFRetain(a6);
+      v12 = CFRetain(keySpecifier);
     }
 
     else
@@ -38,9 +38,9 @@
     }
 
     v10->_contentKeySpecifier = v12;
-    if (a5)
+    if (boss)
     {
-      v13 = CFRetain(a5);
+      v13 = CFRetain(boss);
     }
 
     else
@@ -79,9 +79,9 @@
   [(AVContentKey *)&v6 dealloc];
 }
 
-+ (AVContentKey)contentKeyWithSpecifier:(id)a3 cryptor:(OpaqueFigCPECryptor *)a4 contentKeyBoss:(OpaqueFigContentKeyBoss *)a5 contentKeySpecifier:(OpaqueFigContentKeySpecifier *)a6
++ (AVContentKey)contentKeyWithSpecifier:(id)specifier cryptor:(OpaqueFigCPECryptor *)cryptor contentKeyBoss:(OpaqueFigContentKeyBoss *)boss contentKeySpecifier:(OpaqueFigContentKeySpecifier *)keySpecifier
 {
-  v6 = [[AVContentKey alloc] initWithSpecifier:a3 cryptor:a4 contentKeyBoss:a5 contentKeySpecifier:a6];
+  v6 = [[AVContentKey alloc] initWithSpecifier:specifier cryptor:cryptor contentKeyBoss:boss contentKeySpecifier:keySpecifier];
 
   return v6;
 }
@@ -98,15 +98,15 @@
   }
 }
 
-- (OpaqueFigCPECryptor)_cryptorForFormatDescription:(opaqueCMFormatDescription *)a3 error:(id *)a4
+- (OpaqueFigCPECryptor)_cryptorForFormatDescription:(opaqueCMFormatDescription *)description error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = [(AVContentKey *)self cryptor];
-  if (v7)
+  cryptor = [(AVContentKey *)self cryptor];
+  if (cryptor)
   {
-    v8 = v7;
-    MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
-    MediaType = CMFormatDescriptionGetMediaType(a3);
+    v8 = cryptor;
+    MediaSubType = CMFormatDescriptionGetMediaSubType(description);
+    MediaType = CMFormatDescriptionGetMediaType(description);
     if ([(NSString *)[(AVContentKeySpecifier *)[(AVContentKey *)self contentKeySpecifier] keySystem] isEqual:@"FairPlayStreaming"])
     {
       if (MediaSubType == 1903587385)
@@ -122,7 +122,7 @@
       if (!clientCanDecryptContentKey_browserEngineAllowedToDecrypt && MediaType == 1936684398)
       {
 LABEL_8:
-        v11 = [(AVContentKey *)self cryptor];
+        cryptor2 = [(AVContentKey *)self cryptor];
         v16 = *MEMORY[0x1E695E4C0];
         v12 = *(CMBaseObjectGetVTable() + 16);
         if (*v12 >= 6uLL)
@@ -130,7 +130,7 @@ LABEL_8:
           v13 = v12[19];
           if (v13)
           {
-            v13(v11, *MEMORY[0x1E6961090], 1903587385, *MEMORY[0x1E695E480], &v16);
+            v13(cryptor2, *MEMORY[0x1E6961090], 1903587385, *MEMORY[0x1E695E480], &v16);
           }
         }
 
@@ -138,7 +138,7 @@ LABEL_8:
         {
 LABEL_12:
           v14 = 0;
-          if (!a4)
+          if (!error)
           {
             return v8;
           }
@@ -164,10 +164,10 @@ LABEL_12:
   }
 
   v8 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_18:
-    *a4 = v14;
+    *error = v14;
   }
 
   return v8;

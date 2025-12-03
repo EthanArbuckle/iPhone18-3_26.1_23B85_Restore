@@ -1,46 +1,46 @@
 @interface ATXAppInFocusEvent
-- (ATXAppInFocusEvent)initWithBundleId:(id)a3 type:(int)a4 displayType:(int)a5 parentBundleID:(id)a6 extensionHostID:(id)a7 starting:(BOOL)a8 absoluteTimestamp:(id)a9 launchReason:(id)a10;
-- (ATXAppInFocusEvent)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXAppInFocusEvent:(id)a3;
+- (ATXAppInFocusEvent)initWithBundleId:(id)id type:(int)type displayType:(int)displayType parentBundleID:(id)d extensionHostID:(id)iD starting:(BOOL)starting absoluteTimestamp:(id)timestamp launchReason:(id)self0;
+- (ATXAppInFocusEvent)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXAppInFocusEvent:(id)event;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXAppInFocusEvent
 
-- (ATXAppInFocusEvent)initWithBundleId:(id)a3 type:(int)a4 displayType:(int)a5 parentBundleID:(id)a6 extensionHostID:(id)a7 starting:(BOOL)a8 absoluteTimestamp:(id)a9 launchReason:(id)a10
+- (ATXAppInFocusEvent)initWithBundleId:(id)id type:(int)type displayType:(int)displayType parentBundleID:(id)d extensionHostID:(id)iD starting:(BOOL)starting absoluteTimestamp:(id)timestamp launchReason:(id)self0
 {
-  v16 = a3;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
-  v20 = a10;
+  idCopy = id;
+  dCopy = d;
+  iDCopy = iD;
+  timestampCopy = timestamp;
+  reasonCopy = reason;
   v33.receiver = self;
   v33.super_class = ATXAppInFocusEvent;
   v21 = [(ATXAppInFocusEvent *)&v33 init];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [idCopy copy];
     bundleID = v21->_bundleID;
     v21->_bundleID = v22;
 
-    v21->_type = a4;
-    v21->_displayType = a5;
-    v24 = [v17 copy];
+    v21->_type = type;
+    v21->_displayType = displayType;
+    v24 = [dCopy copy];
     parentBundleID = v21->_parentBundleID;
     v21->_parentBundleID = v24;
 
-    v26 = [v18 copy];
+    v26 = [iDCopy copy];
     extensionHostID = v21->_extensionHostID;
     v21->_extensionHostID = v26;
 
-    v21->_starting = a8;
-    v28 = [v19 copy];
+    v21->_starting = starting;
+    v28 = [timestampCopy copy];
     absoluteTimestamp = v21->_absoluteTimestamp;
     v21->_absoluteTimestamp = v28;
 
-    v30 = [v20 copy];
+    v30 = [reasonCopy copy];
     launchReason = v21->_launchReason;
     v21->_launchReason = v30;
   }
@@ -48,29 +48,29 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppInFocusEvent *)self isEqualToATXAppInFocusEvent:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXAppInFocusEvent *)self isEqualToATXAppInFocusEvent:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXAppInFocusEvent:(id)a3
+- (BOOL)isEqualToATXAppInFocusEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_bundleID;
   v6 = v5;
-  if (v5 == v4[3])
+  if (v5 == eventCopy[3])
   {
   }
 
@@ -84,14 +84,14 @@
     }
   }
 
-  if (self->_type != *(v4 + 3) || self->_displayType != *(v4 + 4))
+  if (self->_type != *(eventCopy + 3) || self->_displayType != *(eventCopy + 4))
   {
     goto LABEL_18;
   }
 
   v8 = self->_parentBundleID;
   v9 = v8;
-  if (v8 == v4[4])
+  if (v8 == eventCopy[4])
   {
   }
 
@@ -107,7 +107,7 @@
 
   v11 = self->_extensionHostID;
   v12 = v11;
-  if (v11 == v4[5])
+  if (v11 == eventCopy[5])
   {
   }
 
@@ -121,7 +121,7 @@
     }
   }
 
-  if (self->_starting != *(v4 + 8))
+  if (self->_starting != *(eventCopy + 8))
   {
 LABEL_18:
     v17 = 0;
@@ -130,7 +130,7 @@ LABEL_18:
 
   v14 = self->_absoluteTimestamp;
   v15 = v14;
-  if (v14 == v4[6])
+  if (v14 == eventCopy[6])
   {
   }
 
@@ -146,7 +146,7 @@ LABEL_18:
 
   v19 = self->_launchReason;
   v20 = v19;
-  if (v19 == v4[7])
+  if (v19 == eventCopy[7])
   {
     v17 = 1;
   }
@@ -162,77 +162,77 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXAppInFocusEvent *)self bundleID];
-  v4 = [v3 hash];
+  bundleID = [(ATXAppInFocusEvent *)self bundleID];
+  v4 = [bundleID hash];
 
   v5 = 31 * (31 * v4 + [(ATXAppInFocusEvent *)self type]);
   v6 = v5 + [(ATXAppInFocusEvent *)self displayType];
-  v7 = [(ATXAppInFocusEvent *)self parentBundleID];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  parentBundleID = [(ATXAppInFocusEvent *)self parentBundleID];
+  v8 = [parentBundleID hash] - v6 + 32 * v6;
 
-  v9 = [(ATXAppInFocusEvent *)self extensionHostID];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  extensionHostID = [(ATXAppInFocusEvent *)self extensionHostID];
+  v10 = [extensionHostID hash] - v8 + 32 * v8;
 
   v11 = 31 * v10 + [(ATXAppInFocusEvent *)self starting];
-  v12 = [(ATXAppInFocusEvent *)self absoluteTimestamp];
-  v13 = [v12 hash] - v11 + 32 * v11;
+  absoluteTimestamp = [(ATXAppInFocusEvent *)self absoluteTimestamp];
+  v13 = [absoluteTimestamp hash] - v11 + 32 * v11;
 
-  v14 = [(ATXAppInFocusEvent *)self launchReason];
-  v15 = [v14 hash] - v13 + 32 * v13;
+  launchReason = [(ATXAppInFocusEvent *)self launchReason];
+  v15 = [launchReason hash] - v13 + 32 * v13;
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXAppInFocusEvent *)self bundleID];
-  [v4 encodeObject:v5 forKey:@"bundleID"];
+  coderCopy = coder;
+  bundleID = [(ATXAppInFocusEvent *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 
-  [v4 encodeInt32:-[ATXAppInFocusEvent type](self forKey:{"type"), @"type"}];
-  [v4 encodeInt32:-[ATXAppInFocusEvent displayType](self forKey:{"displayType"), @"displayType"}];
-  v6 = [(ATXAppInFocusEvent *)self parentBundleID];
-  [v4 encodeObject:v6 forKey:@"parentBundleID"];
+  [coderCopy encodeInt32:-[ATXAppInFocusEvent type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInt32:-[ATXAppInFocusEvent displayType](self forKey:{"displayType"), @"displayType"}];
+  parentBundleID = [(ATXAppInFocusEvent *)self parentBundleID];
+  [coderCopy encodeObject:parentBundleID forKey:@"parentBundleID"];
 
-  v7 = [(ATXAppInFocusEvent *)self extensionHostID];
-  [v4 encodeObject:v7 forKey:@"extensionHostID"];
+  extensionHostID = [(ATXAppInFocusEvent *)self extensionHostID];
+  [coderCopy encodeObject:extensionHostID forKey:@"extensionHostID"];
 
-  [v4 encodeBool:-[ATXAppInFocusEvent starting](self forKey:{"starting"), @"starting"}];
-  v8 = [(ATXAppInFocusEvent *)self absoluteTimestamp];
-  [v4 encodeObject:v8 forKey:@"absoluteTimestamp"];
+  [coderCopy encodeBool:-[ATXAppInFocusEvent starting](self forKey:{"starting"), @"starting"}];
+  absoluteTimestamp = [(ATXAppInFocusEvent *)self absoluteTimestamp];
+  [coderCopy encodeObject:absoluteTimestamp forKey:@"absoluteTimestamp"];
 
-  v9 = [(ATXAppInFocusEvent *)self launchReason];
-  [v4 encodeObject:v9 forKey:@"launchReason"];
+  launchReason = [(ATXAppInFocusEvent *)self launchReason];
+  [coderCopy encodeObject:launchReason forKey:@"launchReason"];
 }
 
-- (ATXAppInFocusEvent)initWithCoder:(id)a3
+- (ATXAppInFocusEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = ATXAppInFocusEvent;
   v5 = [(ATXAppInFocusEvent *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
-    v5->_type = [v4 decodeInt32ForKey:@"type"];
-    v5->_displayType = [v4 decodeInt32ForKey:@"displayType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentBundleID"];
+    v5->_type = [coderCopy decodeInt32ForKey:@"type"];
+    v5->_displayType = [coderCopy decodeInt32ForKey:@"displayType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentBundleID"];
     parentBundleID = v5->_parentBundleID;
     v5->_parentBundleID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionHostID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionHostID"];
     extensionHostID = v5->_extensionHostID;
     v5->_extensionHostID = v10;
 
-    v5->_starting = [v4 decodeBoolForKey:@"starting"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"absoluteTimestamp"];
+    v5->_starting = [coderCopy decodeBoolForKey:@"starting"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"absoluteTimestamp"];
     absoluteTimestamp = v5->_absoluteTimestamp;
     v5->_absoluteTimestamp = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"launchReason"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"launchReason"];
     launchReason = v5->_launchReason;
     v5->_launchReason = v14;
 

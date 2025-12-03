@@ -1,6 +1,6 @@
 @interface OSLogStatistics
-- (OSLogStatistics)initWithLogArchivePath:(id)a3 forRelativePaths:(id)a4 errorOut:(id *)a5;
-- (id)_initializeEventSourceWithPaths:(id)a3;
+- (OSLogStatistics)initWithLogArchivePath:(id)path forRelativePaths:(id)paths errorOut:(id *)out;
+- (id)_initializeEventSourceWithPaths:(id)paths;
 @end
 
 @implementation OSLogStatistics
@@ -115,17 +115,17 @@ LABEL_17:
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_initializeEventSourceWithPaths:(id)a3
+- (id)_initializeEventSourceWithPaths:(id)paths
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(OSLogStatistics *)self archivePath];
+  pathsCopy = paths;
+  archivePath = [(OSLogStatistics *)self archivePath];
 
-  if (!v5 || (v6 = MEMORY[0x277CBEBC0], -[OSLogStatistics archivePath](self, "archivePath"), v7 = objc_claimAutoreleasedReturnValue(), [v6 fileURLWithPath:v7 isDirectory:0], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if (!archivePath || (v6 = MEMORY[0x277CBEBC0], -[OSLogStatistics archivePath](self, "archivePath"), v7 = objc_claimAutoreleasedReturnValue(), [v6 fileURLWithPath:v7 isDirectory:0], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
-    if (v4)
+    if (pathsCopy)
     {
-      [OSLogEventStore localStoreWithRelativePaths:v4];
+      [OSLogEventStore localStoreWithRelativePaths:pathsCopy];
     }
 
     else
@@ -177,9 +177,9 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  if (v4)
+  if (pathsCopy)
   {
-    [OSLogEventStore storeWithArchiveURL:v8 relativePaths:v4];
+    [OSLogEventStore storeWithArchiveURL:v8 relativePaths:pathsCopy];
   }
 
   else
@@ -227,16 +227,16 @@ void __51__OSLogStatistics__initializeEventSourceWithPaths___block_invoke(uint64
   *(v8 + 40) = v9;
 }
 
-- (OSLogStatistics)initWithLogArchivePath:(id)a3 forRelativePaths:(id)a4 errorOut:(id *)a5
+- (OSLogStatistics)initWithLogArchivePath:(id)path forRelativePaths:(id)paths errorOut:(id *)out
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  pathsCopy = paths;
   v20.receiver = self;
   v20.super_class = OSLogStatistics;
   v11 = [(OSLogStatistics *)&v20 init];
   v12 = v11;
-  if (v11 && (objc_storeStrong(&v11->_archivePath, a3), [(OSLogStatistics *)v12 _initializeEventSourceWithPaths:v10], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v11 && (objc_storeStrong(&v11->_archivePath, path), [(OSLogStatistics *)v12 _initializeEventSourceWithPaths:pathsCopy], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v14 = v13;
     v15 = _logHandle();
@@ -247,10 +247,10 @@ void __51__OSLogStatistics__initializeEventSourceWithPaths___block_invoke(uint64
       _os_log_error_impl(&dword_22E01A000, v15, OS_LOG_TYPE_ERROR, "Encountered error during initialisation of OSLogStatistics: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (out)
     {
       v16 = v14;
-      *a5 = v14;
+      *out = v14;
     }
 
     v17 = 0;

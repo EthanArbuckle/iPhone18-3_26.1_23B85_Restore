@@ -1,26 +1,26 @@
 @interface CKAudioProgressView
-+ (float)progressForTime:(double)a3 duration:(double)a4;
-+ (id)imageWithType:(unsigned __int8)a3 color:(char)a4;
-+ (id)templateImageWithControlImage:(id)a3;
-+ (id)templateImageWithType:(unsigned __int8)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKAudioProgressView)initWithFrame:(CGRect)a3;
++ (float)progressForTime:(double)time duration:(double)duration;
++ (id)imageWithType:(unsigned __int8)type color:(char)color;
++ (id)templateImageWithControlImage:(id)image;
++ (id)templateImageWithType:(unsigned __int8)type;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKAudioProgressView)initWithFrame:(CGRect)frame;
 - (void)prepareForDisplay;
 - (void)prepareForDisplayIfNeeded;
-- (void)setColor:(char)a3;
+- (void)setColor:(char)color;
 - (void)setNeedsPrepareForDisplay;
-- (void)setPlayed:(BOOL)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setProgress:(float)a3;
+- (void)setPlayed:(BOOL)played;
+- (void)setPlaying:(BOOL)playing;
+- (void)setProgress:(float)progress;
 @end
 
 @implementation CKAudioProgressView
 
-- (CKAudioProgressView)initWithFrame:(CGRect)a3
+- (CKAudioProgressView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKAudioProgressView;
-  v3 = [(CKBalloonImageView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKBalloonImageView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,9 +32,9 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [CKUIBehavior sharedBehaviors:a3.width];
+  v3 = [CKUIBehavior sharedBehaviors:fits.width];
   [v3 audioProgressViewSize];
   v5 = v4;
   v7 = v6;
@@ -46,20 +46,20 @@
   return result;
 }
 
-+ (float)progressForTime:(double)a3 duration:(double)a4
++ (float)progressForTime:(double)time duration:(double)duration
 {
   v4 = 0.0;
-  if (a3 != 0.0)
+  if (time != 0.0)
   {
     v4 = 1.0;
-    if (a3 != a4)
+    if (time != duration)
     {
-      if (a4 >= 0.05)
+      if (duration >= 0.05)
       {
-        a3 = a3 + 0.05;
+        time = time + 0.05;
       }
 
-      v4 = a3 / a4;
+      v4 = time / duration;
     }
   }
 
@@ -72,15 +72,15 @@
   return fmax(v5, 0.0);
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  v3 = a3;
-  if (v3 > 1.0)
+  progressCopy = progress;
+  if (progressCopy > 1.0)
   {
-    v3 = 1.0;
+    progressCopy = 1.0;
   }
 
-  v4 = fmax(v3, 0.0);
+  v4 = fmax(progressCopy, 0.0);
   if (self->_progress != v4)
   {
     self->_progress = v4;
@@ -88,40 +88,40 @@
   }
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    self->_playing = a3;
+    self->_playing = playing;
     [(CKAudioProgressView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setPlayed:(BOOL)a3
+- (void)setPlayed:(BOOL)played
 {
-  if (self->_played != a3)
+  if (self->_played != played)
   {
-    self->_played = a3;
+    self->_played = played;
     [(CKAudioProgressView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setColor:(char)a3
+- (void)setColor:(char)color
 {
-  if (self->_color != a3)
+  if (self->_color != color)
   {
-    self->_color = a3;
+    self->_color = color;
     [(CKAudioProgressView *)self setNeedsPrepareForDisplay];
   }
 }
 
 - (void)prepareForDisplay
 {
-  v3 = [(CKAudioProgressView *)self isPlaying];
+  isPlaying = [(CKAudioProgressView *)self isPlaying];
   [(CKAudioProgressView *)self progress];
   v5 = v4;
-  v6 = [(CKAudioProgressView *)self color];
-  v7 = [CKAudioProgressView imageWithType:v3 color:v6];
+  color = [(CKAudioProgressView *)self color];
+  v7 = [CKAudioProgressView imageWithType:isPlaying color:color];
   v8 = *MEMORY[0x1E695EFF8];
   v9 = *(MEMORY[0x1E695EFF8] + 8);
   v10 = +[CKUIBehavior sharedBehaviors];
@@ -140,15 +140,15 @@
   v32.size.height = v14;
   MidY = CGRectGetMidY(v32);
   v17 = +[CKUIBehavior sharedBehaviors];
-  v18 = [v17 theme];
-  v19 = [v18 progressViewColorForColorType:v6];
+  theme = [v17 theme];
+  v19 = [theme progressViewColorForColorType:color];
 
-  v20 = [(CKAudioProgressView *)self traitCollection];
+  traitCollection = [(CKAudioProgressView *)self traitCollection];
   v21 = 4.0;
-  if ([v20 userInterfaceIdiom] != 6)
+  if ([traitCollection userInterfaceIdiom] != 6)
   {
-    v22 = [(CKAudioProgressView *)self traitCollection];
-    [v22 displayScale];
+    traitCollection2 = [(CKAudioProgressView *)self traitCollection];
+    [traitCollection2 displayScale];
     v21 = v23;
   }
 
@@ -175,32 +175,32 @@
 
 - (void)prepareForDisplayIfNeeded
 {
-  v2 = [(CKAudioProgressView *)self displayUpdater];
-  [v2 updateIfNeeded];
+  displayUpdater = [(CKAudioProgressView *)self displayUpdater];
+  [displayUpdater updateIfNeeded];
 }
 
 - (void)setNeedsPrepareForDisplay
 {
-  v2 = [(CKAudioProgressView *)self displayUpdater];
-  [v2 setNeedsUpdate];
+  displayUpdater = [(CKAudioProgressView *)self displayUpdater];
+  [displayUpdater setNeedsUpdate];
 }
 
-+ (id)imageWithType:(unsigned __int8)a3 color:(char)a4
++ (id)imageWithType:(unsigned __int8)type color:(char)color
 {
-  v4 = a4;
-  v5 = a3;
+  colorCopy = color;
+  typeCopy = type;
   v7 = CKAudioProgressImageCache();
-  v15[0] = v4;
-  v15[1] = v5;
+  v15[0] = colorCopy;
+  v15[1] = typeCopy;
   v15[2] = 0;
   v8 = [MEMORY[0x1E696B098] value:v15 withObjCType:"{?=cCB}"];
   v9 = [v7 objectForKey:v8];
   if (!v9)
   {
-    v10 = [a1 templateImageWithType:v5];
+    v10 = [self templateImageWithType:typeCopy];
     v11 = +[CKUIBehavior sharedBehaviors];
-    v12 = [v11 theme];
-    v13 = [v12 progressViewColorForColorType:v4];
+    theme = [v11 theme];
+    v13 = [theme progressViewColorForColorType:colorCopy];
     v9 = [v10 _flatImageWithColor:v13];
 
     [v7 setObject:v9 forKey:v8];
@@ -209,12 +209,12 @@
   return v9;
 }
 
-+ (id)templateImageWithType:(unsigned __int8)a3
++ (id)templateImageWithType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = CKAudioProgressImageCache();
   v14[0] = 0;
-  v14[1] = v3;
+  v14[1] = typeCopy;
   v14[2] = 1;
   v5 = [MEMORY[0x1E696B098] value:v14 withObjCType:"{?=cCB}"];
   v6 = [v4 objectForKey:v5];
@@ -225,7 +225,7 @@
     v9 = v8 + -10.0;
 
     v10 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:v9];
-    if (v3)
+    if (typeCopy)
     {
       v11 = @"pause.circle.fill";
     }
@@ -244,9 +244,9 @@
   return v6;
 }
 
-+ (id)templateImageWithControlImage:(id)a3
++ (id)templateImageWithControlImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = +[CKUIBehavior sharedBehaviors];
   [v4 audioProgressViewSize];
   v6 = v5;
@@ -255,19 +255,19 @@
   v28.width = v6;
   v28.height = v8;
   UIGraphicsBeginImageContextWithOptions(v28, 0, 0.0);
-  v9 = [MEMORY[0x1E69DC888] blackColor];
-  [v9 set];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [blackColor set];
 
-  if (v3)
+  if (imageCopy)
   {
     v11 = *MEMORY[0x1E695EFF8];
     v10 = *(MEMORY[0x1E695EFF8] + 8);
-    [v3 alignmentRectInsets];
+    [imageCopy alignmentRectInsets];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    [v3 size];
+    [imageCopy size];
     v21 = v20 - (v15 + v19);
     v23 = v22 - (v13 + v17);
     if (CKMainScreenScale_once_97 != -1)
@@ -281,7 +281,7 @@
       v24 = 1.0;
     }
 
-    [v3 drawAtPoint:{floor((v11 + (v6 - v21) * 0.5) * v24) / v24 - v15, floor((v10 + (v8 - v23) * 0.5) * v24) / v24 - v13}];
+    [imageCopy drawAtPoint:{floor((v11 + (v6 - v21) * 0.5) * v24) / v24 - v15, floor((v10 + (v8 - v23) * 0.5) * v24) / v24 - v13}];
   }
 
   v25 = UIGraphicsGetImageFromCurrentImageContext();

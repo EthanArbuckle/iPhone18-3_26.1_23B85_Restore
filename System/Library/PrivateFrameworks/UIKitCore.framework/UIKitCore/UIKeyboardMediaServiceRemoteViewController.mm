@@ -1,30 +1,30 @@
 @interface UIKeyboardMediaServiceRemoteViewController
 + (id)exportedInterface;
-+ (id)requestCardViewControllerWithConnectionHandler:(id)a3;
-+ (id)requestInlineViewControllerWithConnectionHandler:(id)a3;
++ (id)requestCardViewControllerWithConnectionHandler:(id)handler;
++ (id)requestInlineViewControllerWithConnectionHandler:(id)handler;
 + (id)serviceViewControllerInterface;
-- (BOOL)__shouldRemoteViewControllerFenceGeometryChange:(id *)a3 forAncestor:(id)a4;
+- (BOOL)__shouldRemoteViewControllerFenceGeometryChange:(id *)change forAncestor:(id)ancestor;
 - (UIKeyboardMediaServiceRemoteViewControllerDelegate)delegate;
 - (void)dismissCard;
-- (void)draggedStickerToPoint:(CGPoint)a3;
-- (void)pasteImageAtFileHandle:(id)a3;
+- (void)draggedStickerToPoint:(CGPoint)point;
+- (void)pasteImageAtFileHandle:(id)handle;
 - (void)presentCard;
-- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)a3;
-- (void)requestInsertionPointCompletion:(id)a3;
-- (void)setHostBundleID:(id)a3;
-- (void)stageSticker:(id)a3;
-- (void)stageStickerWithFileHandle:(id)a3 url:(id)a4 accessibilityLabel:(id)a5;
-- (void)stageStickerWithIdentifier:(id)a3 representations:(id)a4 name:(id)a5 externalURI:(id)a6 accessibilityLabel:(id)a7;
+- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)handler;
+- (void)requestInsertionPointCompletion:(id)completion;
+- (void)setHostBundleID:(id)d;
+- (void)stageSticker:(id)sticker;
+- (void)stageStickerWithFileHandle:(id)handle url:(id)url accessibilityLabel:(id)label;
+- (void)stageStickerWithIdentifier:(id)identifier representations:(id)representations name:(id)name externalURI:(id)i accessibilityLabel:(id)label;
 - (void)stickerPickerCardDidLoad;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation UIKeyboardMediaServiceRemoteViewController
 
-+ (id)requestInlineViewControllerWithConnectionHandler:(id)a3
++ (id)requestInlineViewControllerWithConnectionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v5 = @"InlineRecentStickersViewController";
@@ -49,9 +49,9 @@
   v11[2] = __95__UIKeyboardMediaServiceRemoteViewController_requestInlineViewControllerWithConnectionHandler___block_invoke;
   v11[3] = &unk_1E7107448;
   v12 = v5;
-  v13 = v4;
-  v8 = v4;
-  v9 = [a1 requestViewController:v5 fromServiceWithBundleIdentifier:v7 connectionHandler:v11];
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [self requestViewController:v5 fromServiceWithBundleIdentifier:v7 connectionHandler:v11];
 
   return v9;
 }
@@ -93,10 +93,10 @@ void __95__UIKeyboardMediaServiceRemoteViewController_requestInlineViewControlle
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)requestCardViewControllerWithConnectionHandler:(id)a3
++ (id)requestCardViewControllerWithConnectionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v5 = @"StickersAppCardViewController";
@@ -121,9 +121,9 @@ void __95__UIKeyboardMediaServiceRemoteViewController_requestInlineViewControlle
   v11[2] = __93__UIKeyboardMediaServiceRemoteViewController_requestCardViewControllerWithConnectionHandler___block_invoke;
   v11[3] = &unk_1E7107448;
   v12 = v5;
-  v13 = v4;
-  v8 = v4;
-  v9 = [a1 requestViewController:v5 fromServiceWithBundleIdentifier:v7 connectionHandler:v11];
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [self requestViewController:v5 fromServiceWithBundleIdentifier:v7 connectionHandler:v11];
 
   return v9;
 }
@@ -158,11 +158,11 @@ void __93__UIKeyboardMediaServiceRemoteViewController_requestCardViewControllerW
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setHostBundleID:(id)a3
+- (void)setHostBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v5 setHostBundleID:v4];
+  dCopy = d;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy setHostBundleID:dCopy];
 }
 
 + (id)serviceViewControllerInterface
@@ -238,12 +238,12 @@ void __63__UIKeyboardMediaServiceRemoteViewController_exportedInterface__block_i
   }
 }
 
-- (BOOL)__shouldRemoteViewControllerFenceGeometryChange:(id *)a3 forAncestor:(id)a4
+- (BOOL)__shouldRemoteViewControllerFenceGeometryChange:(id *)change forAncestor:(id)ancestor
 {
-  v6 = a4;
-  if (_UIUpdateCycleEnabled() && self->_shownInline && (a3->var0 & 4) != 0)
+  ancestorCopy = ancestor;
+  if (_UIUpdateCycleEnabled() && self->_shownInline && (change->var0 & 4) != 0)
   {
-    v7 = [v6 __isKindOfUIScrollView] ^ 1;
+    v7 = [ancestorCopy __isKindOfUIScrollView] ^ 1;
   }
 
   else
@@ -254,105 +254,105 @@ void __63__UIKeyboardMediaServiceRemoteViewController_exportedInterface__block_i
   return v7;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-  [v5 viewServiceDidTerminateWithError:v4];
+  errorCopy = error;
+  delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+  [delegate viewServiceDidTerminateWithError:errorCopy];
 }
 
 - (void)presentCard
 {
-  v2 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-  [v2 presentCard];
+  delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+  [delegate presentCard];
 }
 
 - (void)dismissCard
 {
-  v2 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-  [v2 dismissCard];
+  delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+  [delegate dismissCard];
 }
 
-- (void)pasteImageAtFileHandle:(id)a3
+- (void)pasteImageAtFileHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-  [v5 pasteImageAtFileHandle:v4];
+  handleCopy = handle;
+  delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+  [delegate pasteImageAtFileHandle:handleCopy];
 }
 
-- (void)stageStickerWithFileHandle:(id)a3 url:(id)a4 accessibilityLabel:(id)a5
+- (void)stageStickerWithFileHandle:(id)handle url:(id)url accessibilityLabel:(id)label
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-  [v11 stageStickerWithFileHandle:v10 url:v9 accessibilityLabel:v8];
+  labelCopy = label;
+  urlCopy = url;
+  handleCopy = handle;
+  delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+  [delegate stageStickerWithFileHandle:handleCopy url:urlCopy accessibilityLabel:labelCopy];
 }
 
-- (void)requestInsertionPointCompletion:(id)a3
+- (void)requestInsertionPointCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-  [v5 requestInsertionPointCompletion:v4];
+  completionCopy = completion;
+  delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+  [delegate requestInsertionPointCompletion:completionCopy];
 }
 
-- (void)draggedStickerToPoint:(CGPoint)a3
+- (void)draggedStickerToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-  [v5 draggedStickerToPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+  [delegate draggedStickerToPoint:{x, y}];
 }
 
-- (void)stageStickerWithIdentifier:(id)a3 representations:(id)a4 name:(id)a5 externalURI:(id)a6 accessibilityLabel:(id)a7
+- (void)stageStickerWithIdentifier:(id)identifier representations:(id)representations name:(id)name externalURI:(id)i accessibilityLabel:(id)label
 {
   v21 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
+  identifierCopy = identifier;
+  labelCopy = label;
+  iCopy = i;
+  nameCopy = name;
+  representationsCopy = representations;
   v17 = _UIKBMediaLog_0();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v19 = 138412290;
-    v20 = v12;
+    v20 = identifierCopy;
     _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_INFO, "Staging sticker identifier %@", &v19, 0xCu);
   }
 
-  v18 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-  [v18 stageStickerWithIdentifier:v12 representations:v16 name:v15 externalURI:v14 accessibilityLabel:v13];
+  delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+  [delegate stageStickerWithIdentifier:identifierCopy representations:representationsCopy name:nameCopy externalURI:iCopy accessibilityLabel:labelCopy];
 }
 
-- (void)stageSticker:(id)a3
+- (void)stageSticker:(id)sticker
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stickerCopy = sticker;
   v5 = _UIKBMediaLog_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 identifier];
+    identifier = [stickerCopy identifier];
     v8 = 138412290;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_INFO, "Staging sticker identifier %@", &v8, 0xCu);
   }
 
-  v7 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-  [v7 stageSticker:v4];
+  delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+  [delegate stageSticker:stickerCopy];
 }
 
-- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)a3
+- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = v4;
-    v5 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+    v7 = handlerCopy;
+    delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
 
-    if (v5)
+    if (delegate)
     {
-      v6 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-      [v6 remoteHandlesRecentsStickerDonationWithCompletionHandler:v7];
+      delegate2 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+      [delegate2 remoteHandlesRecentsStickerDonationWithCompletionHandler:v7];
     }
 
     else
@@ -360,14 +360,14 @@ void __63__UIKeyboardMediaServiceRemoteViewController_exportedInterface__block_i
       v7[2](v7, 1);
     }
 
-    v4 = v7;
+    handlerCopy = v7;
   }
 }
 
 - (void)stickerPickerCardDidLoad
 {
-  v2 = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
-  [v2 stickerPickerCardDidLoad];
+  delegate = [(UIKeyboardMediaServiceRemoteViewController *)self delegate];
+  [delegate stickerPickerCardDidLoad];
 }
 
 - (UIKeyboardMediaServiceRemoteViewControllerDelegate)delegate

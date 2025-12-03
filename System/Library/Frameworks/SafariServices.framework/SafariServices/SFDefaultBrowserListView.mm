@@ -4,51 +4,51 @@
 - (CGPoint)_collectionViewInitialOffset;
 - (CGSize)intrinsicContentSize;
 - (SFDefaultBrowserChangeDelegate)delegate;
-- (SFDefaultBrowserListView)initWithCompletionHandler:(id)a3;
+- (SFDefaultBrowserListView)initWithCompletionHandler:(id)handler;
 - (SFDefaultBrowserListViewController)containerViewController;
 - (id)_sectionFooterView;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (void)_createPlaceholderLockupViews;
-- (void)_didFinishAppInstallation:(id)a3 browserChoiceResult:(int64_t)a4;
-- (void)_installBrowserWithLockupView:(id)a3 shouldObserveProgress:(BOOL)a4;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (void)_didFinishAppInstallation:(id)installation browserChoiceResult:(int64_t)result;
+- (void)_installBrowserWithLockupView:(id)view shouldObserveProgress:(BOOL)progress;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)_showAlertForRestrictedBrowser;
 - (void)_updateBrowserLockupViews;
-- (void)_updateCell:(id)a3 lockupView:(id)a4;
-- (void)_updateHeaderWithLockupView:(id)a3;
-- (void)_updateListWithState:(unint64_t)a3 lockupView:(id)a4;
-- (void)_updateSelectedCellWithProgressMetaData:(id)a3 lockupView:(id)a4;
+- (void)_updateCell:(id)cell lockupView:(id)view;
+- (void)_updateHeaderWithLockupView:(id)view;
+- (void)_updateListWithState:(unint64_t)state lockupView:(id)view;
+- (void)_updateSelectedCellWithProgressMetaData:(id)data lockupView:(id)view;
 - (void)browserInstallerDidCancelInstallation;
 - (void)browserInstallerDidCompleteAppStoreInstallation;
 - (void)browserInstallerDidCompleteInstallation;
-- (void)browserInstallerDidFailWithError:(id)a3 appName:(id)a4 shouldDismissSheet:(BOOL)a5;
+- (void)browserInstallerDidFailWithError:(id)error appName:(id)name shouldDismissSheet:(BOOL)sheet;
 - (void)browserInstallerDidStartInstallation;
-- (void)browserInstallerDownloadWithProgress:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)browserInstallerDownloadWithProgress:(id)progress;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)footerViewDidTapConfirmationAction:(id)a3;
+- (void)footerViewDidTapConfirmationAction:(id)action;
 - (void)hostApplicationEnteredBackground;
 - (void)layoutSubviews;
-- (void)lockupViewDidFinishRequest:(id)a3;
-- (void)productDetailsUserDidInteractWithApp:(id)a3 interactionType:(id)a4;
-- (void)setContainerViewController:(id)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setInstructionView:(id)a3;
+- (void)lockupViewDidFinishRequest:(id)request;
+- (void)productDetailsUserDidInteractWithApp:(id)app interactionType:(id)type;
+- (void)setContainerViewController:(id)controller;
+- (void)setHeaderView:(id)view;
+- (void)setInstructionView:(id)view;
 @end
 
 @implementation SFDefaultBrowserListView
 
-- (SFDefaultBrowserListView)initWithCompletionHandler:(id)a3
+- (SFDefaultBrowserListView)initWithCompletionHandler:(id)handler
 {
   v39[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v38.receiver = self;
   v38.super_class = SFDefaultBrowserListView;
   v5 = [(SFDefaultBrowserListView *)&v38 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     completionHandler = v5->_completionHandler;
     v5->_completionHandler = v6;
 
@@ -57,7 +57,7 @@
     v36 = [objc_alloc(MEMORY[0x1E69DC808]) initWithSectionProvider:&__block_literal_global_1];
     v8 = objc_alloc(MEMORY[0x1E69DC7F0]);
     [MEMORY[0x1E69DCEB0] mainScreen];
-    v9 = v37 = v4;
+    v9 = v37 = handlerCopy;
     [v9 bounds];
     v10 = [v8 initWithFrame:v36 collectionViewLayout:?];
     collectionView = v5->_collectionView;
@@ -79,28 +79,28 @@
 
     [(SFDefaultBrowserListView *)v5 addSubview:v5->_collectionView];
     [(UICollectionView *)v5->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v32 = [(SFDefaultBrowserListView *)v5 layoutMarginsGuide];
+    layoutMarginsGuide = [(SFDefaultBrowserListView *)v5 layoutMarginsGuide];
     v30 = MEMORY[0x1E696ACD8];
-    v35 = [(UICollectionView *)v5->_collectionView topAnchor];
-    v34 = [(SFDefaultBrowserListView *)v5 topAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    topAnchor = [(UICollectionView *)v5->_collectionView topAnchor];
+    topAnchor2 = [(SFDefaultBrowserListView *)v5 topAnchor];
+    v33 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v39[0] = v33;
-    v31 = [(UICollectionView *)v5->_collectionView leadingAnchor];
-    v19 = [v32 leadingAnchor];
-    v20 = [v31 constraintEqualToAnchor:v19];
+    leadingAnchor = [(UICollectionView *)v5->_collectionView leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v39[1] = v20;
-    v21 = [(UICollectionView *)v5->_collectionView trailingAnchor];
-    v22 = [v32 trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    trailingAnchor = [(UICollectionView *)v5->_collectionView trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v39[2] = v23;
-    v24 = [(UICollectionView *)v5->_collectionView bottomAnchor];
-    v25 = [(SFDefaultBrowserListView *)v5 bottomAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    bottomAnchor = [(UICollectionView *)v5->_collectionView bottomAnchor];
+    bottomAnchor2 = [(SFDefaultBrowserListView *)v5 bottomAnchor];
+    v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v39[3] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:4];
     [v30 activateConstraints:v27];
 
-    v4 = v37;
+    handlerCopy = v37;
     v28 = v5;
   }
 
@@ -131,9 +131,9 @@ id __54__SFDefaultBrowserListView_initWithCompletionHandler___block_invoke(uint6
   [(SFDefaultBrowserListView *)&v3 dealloc];
 }
 
-- (void)setContainerViewController:(id)a3
+- (void)setContainerViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
 
   v5 = obj;
@@ -141,9 +141,9 @@ id __54__SFDefaultBrowserListView_initWithCompletionHandler___block_invoke(uint6
   {
     [(UIScrollView *)self->_containerScrollView _removeScrollViewScrollObserver:self];
     objc_storeWeak(&self->_containerViewController, obj);
-    v6 = [obj scrollView];
-    objc_storeStrong(&self->_containerScrollView, v6);
-    [v6 _addScrollViewScrollObserver:self];
+    scrollView = [obj scrollView];
+    objc_storeStrong(&self->_containerScrollView, scrollView);
+    [scrollView _addScrollViewScrollObserver:self];
     browserInstaller = self->_browserInstaller;
     if (browserInstaller)
     {
@@ -163,49 +163,49 @@ id __54__SFDefaultBrowserListView_initWithCompletionHandler___block_invoke(uint6
   }
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
-  if (self->_headerView != v5)
+  viewCopy = view;
+  if (self->_headerView != viewCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_headerView, a3);
-    v6 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-    v5 = v8;
-    if (v6)
+    v8 = viewCopy;
+    objc_storeStrong(&self->_headerView, view);
+    isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    viewCopy = v8;
+    if (isSolariumEnabled)
     {
       v7 = [objc_alloc(MEMORY[0x1E69DD6C0]) initWithScrollView:self->_containerScrollView edge:1];
       [(SFDefaultBrowserPinnedHeaderView *)self->_headerView setPocketContainerInteraction:v7];
 
-      v5 = v8;
+      viewCopy = v8;
     }
   }
 }
 
-- (void)setInstructionView:(id)a3
+- (void)setInstructionView:(id)view
 {
-  v5 = a3;
-  if (self->_instructionView != v5)
+  viewCopy = view;
+  if (self->_instructionView != viewCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_instructionView, a3);
-    v6 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-    v5 = v8;
-    if (v6)
+    v8 = viewCopy;
+    objc_storeStrong(&self->_instructionView, view);
+    isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    viewCopy = v8;
+    if (isSolariumEnabled)
     {
       v7 = [objc_alloc(MEMORY[0x1E69DD6C0]) initWithScrollView:self->_containerScrollView edge:4];
       [(SFDefaultBrowserScrollInstructionView *)self->_instructionView setPocketContainerInteraction:v7];
 
-      v5 = v8;
+      viewCopy = v8;
     }
   }
 }
 
 - (void)hostApplicationEnteredBackground
 {
-  v3 = [MEMORY[0x1E69C8810] sharedLogger];
+  mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
   LOBYTE(v4) = self->_userTriedSelectingDisabledBrowser;
-  [v3 didSelectBrowserChoice:0 browserAlreadyInstalled:0 browsersWithProductPagesViewed:self->_browsersWithProductPageViewed browserList:self->_browserListBundleIDs userCohort:self->_userCohort listContainsDisabledBrowser:self->_listContainsDisabledBrowser userTriedSelectingDisabledBrowser:v4];
+  [mEMORY[0x1E69C8810] didSelectBrowserChoice:0 browserAlreadyInstalled:0 browsersWithProductPagesViewed:self->_browsersWithProductPageViewed browserList:self->_browserListBundleIDs userCohort:self->_userCohort listContainsDisabledBrowser:self->_listContainsDisabledBrowser userTriedSelectingDisabledBrowser:v4];
 
   if ([(SFDefaultBrowserListView *)self _isInstalling])
   {
@@ -230,15 +230,15 @@ id __54__SFDefaultBrowserListView_initWithCompletionHandler___block_invoke(uint6
   [(SFDefaultBrowserListView *)self setLayoutMargins:0.0, v3, 0.0, v3];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   collectionView = self->_collectionView;
-  v6 = a4;
+  pathCopy = path;
   v7 = +[SFDefaultBrowserAppCollectionViewCell reuseIdentifier];
-  v8 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v6];
+  v8 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
   browserAppLockupViews = self->_browserAppLockupViews;
-  v10 = [v6 row];
+  v10 = [pathCopy row];
 
   v11 = [(NSArray *)browserAppLockupViews objectAtIndexedSubscript:v10];
   [(SFDefaultBrowserListView *)self _updateCell:v8 lockupView:v11];
@@ -246,13 +246,13 @@ id __54__SFDefaultBrowserListView_initWithCompletionHandler___block_invoke(uint6
   return v8;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   collectionView = self->_collectionView;
   v7 = *MEMORY[0x1E69DDC00];
-  v8 = a5;
+  pathCopy = path;
   v9 = +[SFDefaultBrowserListFooterView reuseIdentifier];
-  v10 = [(UICollectionView *)collectionView dequeueReusableSupplementaryViewOfKind:v7 withReuseIdentifier:v9 forIndexPath:v8];
+  v10 = [(UICollectionView *)collectionView dequeueReusableSupplementaryViewOfKind:v7 withReuseIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setDelegate:self];
   [v10 updateButtonState:self->_state];
@@ -260,29 +260,29 @@ id __54__SFDefaultBrowserListView_initWithCompletionHandler___block_invoke(uint6
   return v10;
 }
 
-- (void)_updateCell:(id)a3 lockupView:(id)a4
+- (void)_updateCell:(id)cell lockupView:(id)view
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  cellCopy = cell;
+  viewCopy = view;
+  if (cellCopy)
   {
-    [v5 setLockupView:v6];
-    v7 = [v6 lockup];
-    v8 = [v7 id];
+    [cellCopy setLockupView:viewCopy];
+    lockup = [viewCopy lockup];
+    v8 = [lockup id];
 
     if (v8)
     {
       v9 = objc_alloc_init(MEMORY[0x1E69DC7C0]);
       [v9 setDisplayedState:0];
-      v10 = [v6 lockup];
-      v11 = [v10 offer];
+      lockup2 = [viewCopy lockup];
+      offer = [lockup2 offer];
 
-      if (v11)
+      if (offer)
       {
         v15[0] = v9;
         v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-        [v5 setAccessories:v12];
+        [cellCopy setAccessories:v12];
       }
 
       else
@@ -291,74 +291,74 @@ id __54__SFDefaultBrowserListView_initWithCompletionHandler___block_invoke(uint6
         v12 = objc_alloc_init(MEMORY[0x1E69DC7A8]);
         v14[1] = v12;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-        [v5 setAccessories:{v13, v14[0]}];
+        [cellCopy setAccessories:{v13, v14[0]}];
       }
     }
   }
 }
 
-- (void)_updateSelectedCellWithProgressMetaData:(id)a3 lockupView:(id)a4
+- (void)_updateSelectedCellWithProgressMetaData:(id)data lockupView:(id)view
 {
-  v11 = a4;
-  if (a3)
+  viewCopy = view;
+  if (data)
   {
     v6 = MEMORY[0x1E698B3A8];
-    v7 = a3;
-    a3 = [[v6 alloc] initWithMetadata:v7 action:0];
+    dataCopy = data;
+    data = [[v6 alloc] initWithMetadata:dataCopy action:0];
   }
 
-  v8 = [v11 lockup];
-  v9 = [v8 lockupWithOffer:a3];
-  [v11 setLockup:v9];
+  lockup = [viewCopy lockup];
+  v9 = [lockup lockupWithOffer:data];
+  [viewCopy setLockup:v9];
 
   v10 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:self->_selectedIndexPath];
-  [(SFDefaultBrowserListView *)self _updateCell:v10 lockupView:v11];
-  [(SFDefaultBrowserListView *)self _updateHeaderWithLockupView:v11];
+  [(SFDefaultBrowserListView *)self _updateCell:v10 lockupView:viewCopy];
+  [(SFDefaultBrowserListView *)self _updateHeaderWithLockupView:viewCopy];
 }
 
-- (void)_updateHeaderWithLockupView:(id)a3
+- (void)_updateHeaderWithLockupView:(id)view
 {
-  v12 = a3;
+  viewCopy = view;
   v4 = objc_alloc(MEMORY[0x1E698B3C8]);
   v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v6 = [v12 request];
-  v7 = [v6 copy];
+  request = [viewCopy request];
+  v7 = [request copy];
   [v5 setRequest:v7];
 
   if ([(SFDefaultBrowserListView *)self _isInstalling])
   {
-    v8 = [v12 lockup];
-    v9 = [v8 offer];
+    lockup = [viewCopy lockup];
+    offer = [lockup offer];
   }
 
   else
   {
-    v9 = 0;
+    offer = 0;
   }
 
-  v10 = [v12 lockup];
-  v11 = [v10 lockupWithOffer:v9];
+  lockup2 = [viewCopy lockup];
+  v11 = [lockup2 lockupWithOffer:offer];
   [v5 setLockup:v11];
 
   [(SFDefaultBrowserPinnedHeaderView *)self->_headerView setLockupView:v5];
   [(SFDefaultBrowserPinnedHeaderView *)self->_headerView setHidden:[(SFDefaultBrowserListView *)self _shouldHidePinnedHeader]];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  v5 = -[NSArray objectAtIndexedSubscript:](self->_browserAppLockupViews, "objectAtIndexedSubscript:", [v10 item]);
+  pathCopy = path;
+  v5 = -[NSArray objectAtIndexedSubscript:](self->_browserAppLockupViews, "objectAtIndexedSubscript:", [pathCopy item]);
   selectedIndexPath = self->_selectedIndexPath;
-  if (selectedIndexPath && [(NSIndexPath *)selectedIndexPath isEqual:v10])
+  if (selectedIndexPath && [(NSIndexPath *)selectedIndexPath isEqual:pathCopy])
   {
-    [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:v10 animated:1];
+    [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:pathCopy animated:1];
     v7 = 0;
     v8 = 0;
   }
 
   else
   {
-    v7 = v10;
+    v7 = pathCopy;
     v8 = 3;
   }
 
@@ -371,7 +371,7 @@ id __54__SFDefaultBrowserListView_initWithCompletionHandler___block_invoke(uint6
 
 - (void)_createPlaceholderLockupViews
 {
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
   v5 = *(MEMORY[0x1E695F058] + 16);
@@ -381,13 +381,13 @@ id __54__SFDefaultBrowserListView_initWithCompletionHandler___block_invoke(uint6
   {
     v8 = [objc_alloc(MEMORY[0x1E698B3C8]) initWithFrame:{v3, v4, v5, v6}];
     [v8 setShowsPlaceholderContent:1];
-    [v11 addObject:v8];
+    [array addObject:v8];
 
     --v7;
   }
 
   while (v7);
-  v9 = [v11 copy];
+  v9 = [array copy];
   browserAppLockupViews = self->_browserAppLockupViews;
   self->_browserAppLockupViews = v9;
 
@@ -483,8 +483,8 @@ id __53__SFDefaultBrowserListView__updateBrowserLockupViews__block_invoke_2(uint
   [(UICollectionView *)self->_collectionView bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(SFDefaultBrowserListView *)self traitCollection];
-  [SFDefaultBrowserAppCollectionViewCell estimatedSizeForBounds:v7 withTraits:v4, v6];
+  traitCollection = [(SFDefaultBrowserListView *)self traitCollection];
+  [SFDefaultBrowserAppCollectionViewCell estimatedSizeForBounds:traitCollection withTraits:v4, v6];
   v9 = v8;
 
   [(UICollectionView *)self->_collectionView layoutMargins];
@@ -495,8 +495,8 @@ id __53__SFDefaultBrowserListView__updateBrowserLockupViews__block_invoke_2(uint
   [(UICollectionView *)self->_collectionView bounds];
   v17 = v16;
   state = self->_state;
-  v19 = [(SFDefaultBrowserListView *)self traitCollection];
-  [SFDefaultBrowserListFooterView sizeForBounds:state state:v19 traitCollection:v15, v17];
+  traitCollection2 = [(SFDefaultBrowserListView *)self traitCollection];
+  [SFDefaultBrowserListFooterView sizeForBounds:state state:traitCollection2 traitCollection:v15, v17];
   v21 = v20;
 
   v22 = v21 + v9 * [(NSArray *)self->_browserAppLockupViews count];
@@ -508,11 +508,11 @@ id __53__SFDefaultBrowserListView__updateBrowserLockupViews__block_invoke_2(uint
 
 - (CGPoint)_collectionViewInitialOffset
 {
-  v2 = [(SFDefaultBrowserListView *)self superview];
-  v3 = v2;
-  if (v2)
+  superview = [(SFDefaultBrowserListView *)self superview];
+  v3 = superview;
+  if (superview)
   {
-    [v2 frame];
+    [superview frame];
     v5 = v4;
     v7 = v6;
   }
@@ -585,11 +585,11 @@ id __53__SFDefaultBrowserListView__updateBrowserLockupViews__block_invoke_2(uint
     return 1;
   }
 
-  v4 = [(SFDefaultBrowserListView *)self _sectionFooterView];
-  v5 = v4;
-  if (v4)
+  _sectionFooterView = [(SFDefaultBrowserListView *)self _sectionFooterView];
+  v5 = _sectionFooterView;
+  if (_sectionFooterView)
   {
-    [v4 frame];
+    [_sectionFooterView frame];
     v7 = v6;
     v9 = v8;
     [v5 frame];
@@ -622,34 +622,34 @@ id __53__SFDefaultBrowserListView__updateBrowserLockupViews__block_invoke_2(uint
   return v3;
 }
 
-- (void)_didFinishAppInstallation:(id)a3 browserChoiceResult:(int64_t)a4
+- (void)_didFinishAppInstallation:(id)installation browserChoiceResult:(int64_t)result
 {
-  v6 = a3;
-  if (a4 == 1)
+  installationCopy = installation;
+  if (result == 1)
   {
     self->_state = 3;
-    v7 = [(SFDefaultBrowserListView *)self _sectionFooterView];
-    [v7 updateButtonState:self->_state];
+    _sectionFooterView = [(SFDefaultBrowserListView *)self _sectionFooterView];
+    [_sectionFooterView updateButtonState:self->_state];
   }
 
   [(UICollectionView *)self->_collectionView setUserInteractionEnabled:1];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   [WeakRetained setNavigationEnabled:1];
 
-  [(SFDefaultBrowserListView *)self _updateSelectedCellWithProgressMetaData:0 lockupView:v6];
+  [(SFDefaultBrowserListView *)self _updateSelectedCellWithProgressMetaData:0 lockupView:installationCopy];
   v9 = +[SFDefaultBrowserPromptController sharedController];
-  v10 = [v9 didCompleteBrowserSheet];
+  didCompleteBrowserSheet = [v9 didCompleteBrowserSheet];
 
-  if (v10)
+  if (didCompleteBrowserSheet)
   {
-    v11 = [MEMORY[0x1E695E000] safari_browserDefaults];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
     v12 = SFDefaultBrowserSelectionStateKey();
-    [v11 setInteger:1 forKey:v12];
+    [safari_browserDefaults setInteger:1 forKey:v12];
 
     v13 = objc_loadWeakRetained(&self->_delegate);
-    v14 = [v6 lockup];
-    v15 = [v14 bundleID];
-    [v13 didChangeDefaultBrowserWithBundleIdentifier:v15 browserChoiceResult:a4];
+    lockup = [installationCopy lockup];
+    bundleID = [lockup bundleID];
+    [v13 didChangeDefaultBrowserWithBundleIdentifier:bundleID browserChoiceResult:result];
   }
 
   else
@@ -662,10 +662,10 @@ id __53__SFDefaultBrowserListView__updateBrowserLockupViews__block_invoke_2(uint
   }
 }
 
-- (void)_updateListWithState:(unint64_t)a3 lockupView:(id)a4
+- (void)_updateListWithState:(unint64_t)state lockupView:(id)view
 {
-  v12 = a4;
-  self->_state = a3;
+  viewCopy = view;
+  self->_state = state;
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
   state = self->_state;
   if (state - 1 >= 2)
@@ -674,47 +674,47 @@ id __53__SFDefaultBrowserListView__updateBrowserLockupViews__block_invoke_2(uint
     {
       [(UICollectionView *)self->_collectionView setUserInteractionEnabled:1];
       [WeakRetained setNavigationEnabled:1];
-      v9 = self;
-      v10 = v12;
+      selfCopy2 = self;
+      v10 = viewCopy;
     }
 
     else
     {
-      v9 = self;
+      selfCopy2 = self;
       v10 = 0;
     }
 
-    [(SFDefaultBrowserListView *)v9 _updateSelectedCellWithProgressMetaData:0 lockupView:v10];
+    [(SFDefaultBrowserListView *)selfCopy2 _updateSelectedCellWithProgressMetaData:0 lockupView:v10];
   }
 
   else
   {
     [(UICollectionView *)self->_collectionView setUserInteractionEnabled:0];
     [WeakRetained setNavigationEnabled:0];
-    v8 = [MEMORY[0x1E698B3E0] indeterminateProgressMetadata];
-    [(SFDefaultBrowserListView *)self _updateSelectedCellWithProgressMetaData:v8 lockupView:v12];
+    indeterminateProgressMetadata = [MEMORY[0x1E698B3E0] indeterminateProgressMetadata];
+    [(SFDefaultBrowserListView *)self _updateSelectedCellWithProgressMetaData:indeterminateProgressMetadata lockupView:viewCopy];
   }
 
-  v11 = [(SFDefaultBrowserListView *)self _sectionFooterView];
-  [v11 updateButtonState:self->_state];
+  _sectionFooterView = [(SFDefaultBrowserListView *)self _sectionFooterView];
+  [_sectionFooterView updateButtonState:self->_state];
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   [(SFDefaultBrowserPinnedHeaderView *)self->_headerView setHidden:[(SFDefaultBrowserListView *)self _shouldHidePinnedHeader]];
-  v4 = [(SFDefaultBrowserListView *)self _shouldHideScrollInstruction];
+  _shouldHideScrollInstruction = [(SFDefaultBrowserListView *)self _shouldHideScrollInstruction];
   instructionView = self->_instructionView;
 
-  [(SFDefaultBrowserScrollInstructionView *)instructionView setHidden:v4];
+  [(SFDefaultBrowserScrollInstructionView *)instructionView setHidden:_shouldHideScrollInstruction];
 }
 
-- (void)footerViewDidTapConfirmationAction:(id)a3
+- (void)footerViewDidTapConfirmationAction:(id)action
 {
   v4 = [(NSArray *)self->_browserAppLockupViews objectAtIndexedSubscript:[(NSIndexPath *)self->_selectedIndexPath item]];
-  v5 = [v4 lockup];
+  lockup = [v4 lockup];
   v6 = objc_alloc(MEMORY[0x1E69635F8]);
-  v7 = [v5 bundleID];
-  v8 = [v6 initWithBundleIdentifier:v7 allowPlaceholder:0 error:0];
+  bundleID = [lockup bundleID];
+  v8 = [v6 initWithBundleIdentifier:bundleID allowPlaceholder:0 error:0];
   if (v8)
   {
   }
@@ -729,9 +729,9 @@ id __53__SFDefaultBrowserListView__updateBrowserLockupViews__block_invoke_2(uint
       v11 = _WBSLocalizedString();
       v12 = MEMORY[0x1E696AEC0];
       v13 = _WBSLocalizedString();
-      v14 = [v5 title];
-      v15 = [v5 title];
-      v16 = [v12 stringWithFormat:v13, v14, v15];
+      title = [lockup title];
+      title2 = [lockup title];
+      v16 = [v12 stringWithFormat:v13, title, title2];
       v17 = [v10 alertControllerWithTitle:v11 message:v16 preferredStyle:1];
 
       v18 = MEMORY[0x1E69DC648];
@@ -777,16 +777,16 @@ uint64_t __63__SFDefaultBrowserListView_footerViewDidTapConfirmationAction___blo
   return [v2 installAppStore];
 }
 
-- (void)_installBrowserWithLockupView:(id)a3 shouldObserveProgress:(BOOL)a4
+- (void)_installBrowserWithLockupView:(id)view shouldObserveProgress:(BOOL)progress
 {
-  v4 = a4;
-  v23 = a3;
-  v6 = [v23 lockup];
+  progressCopy = progress;
+  viewCopy = view;
+  lockup = [viewCopy lockup];
   browserListAgeRating = self->_browserListAgeRating;
-  v8 = [v6 id];
-  v9 = [v8 numberValue];
-  v10 = [(NSMutableDictionary *)browserListAgeRating objectForKeyedSubscript:v9];
-  v11 = [SFDefaultBrowserInstaller isRestrictedToInstallBrowser:v6 withAgeRating:v10];
+  v8 = [lockup id];
+  numberValue = [v8 numberValue];
+  v10 = [(NSMutableDictionary *)browserListAgeRating objectForKeyedSubscript:numberValue];
+  v11 = [SFDefaultBrowserInstaller isRestrictedToInstallBrowser:lockup withAgeRating:v10];
 
   if (v11)
   {
@@ -794,20 +794,20 @@ uint64_t __63__SFDefaultBrowserListView_footerViewDidTapConfirmationAction___blo
     goto LABEL_11;
   }
 
-  v12 = [(SFDefaultBrowserInstaller *)self->_browserInstaller browserIsAlreadyInstalled:v6];
+  v12 = [(SFDefaultBrowserInstaller *)self->_browserInstaller browserIsAlreadyInstalled:lockup];
   browserInstaller = self->_browserInstaller;
   v14 = self->_browserListAgeRating;
-  v15 = [v6 id];
-  v16 = [v15 numberValue];
-  v17 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:v16];
-  v18 = [(SFDefaultBrowserInstaller *)browserInstaller installBrowserFromLockup:v6 shouldObserveProgress:v4 ageRating:v17];
+  v15 = [lockup id];
+  numberValue2 = [v15 numberValue];
+  v17 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:numberValue2];
+  v18 = [(SFDefaultBrowserInstaller *)browserInstaller installBrowserFromLockup:lockup shouldObserveProgress:progressCopy ageRating:v17];
 
   if (v18)
   {
-    [(SFDefaultBrowserListView *)self _updateListWithState:2 lockupView:v23];
+    [(SFDefaultBrowserListView *)self _updateListWithState:2 lockupView:viewCopy];
   }
 
-  v19 = [v23 lockup];
+  lockup2 = [viewCopy lockup];
   if (objc_opt_respondsToSelector())
   {
 
@@ -816,30 +816,30 @@ uint64_t __63__SFDefaultBrowserListView_footerViewDidTapConfirmationAction___blo
       goto LABEL_9;
     }
 
-    v19 = [MEMORY[0x1E69C8810] sharedLogger];
-    v20 = [v23 lockup];
-    v21 = [v20 bundleID];
+    lockup2 = [MEMORY[0x1E69C8810] sharedLogger];
+    lockup3 = [viewCopy lockup];
+    bundleID = [lockup3 bundleID];
     LOBYTE(v22) = self->_userTriedSelectingDisabledBrowser;
-    [v19 didSelectBrowserChoice:v21 browserAlreadyInstalled:v12 browsersWithProductPagesViewed:self->_browsersWithProductPageViewed browserList:self->_browserListBundleIDs userCohort:self->_userCohort listContainsDisabledBrowser:self->_listContainsDisabledBrowser userTriedSelectingDisabledBrowser:v22];
+    [lockup2 didSelectBrowserChoice:bundleID browserAlreadyInstalled:v12 browsersWithProductPagesViewed:self->_browsersWithProductPageViewed browserList:self->_browserListBundleIDs userCohort:self->_userCohort listContainsDisabledBrowser:self->_listContainsDisabledBrowser userTriedSelectingDisabledBrowser:v22];
   }
 
 LABEL_9:
   if (v12)
   {
-    [(SFDefaultBrowserListView *)self _didFinishAppInstallation:v23 browserChoiceResult:1];
+    [(SFDefaultBrowserListView *)self _didFinishAppInstallation:viewCopy browserChoiceResult:1];
   }
 
 LABEL_11:
 }
 
-- (void)browserInstallerDownloadWithProgress:(id)a3
+- (void)browserInstallerDownloadWithProgress:(id)progress
 {
   browserAppLockupViews = self->_browserAppLockupViews;
   selectedIndexPath = self->_selectedIndexPath;
-  v6 = a3;
+  progressCopy = progress;
   v11 = [(NSArray *)browserAppLockupViews objectAtIndexedSubscript:[(NSIndexPath *)selectedIndexPath item]];
   v7 = MEMORY[0x1E698B3E0];
-  [v6 fractionCompleted];
+  [progressCopy fractionCompleted];
   v9 = v8;
 
   v10 = [v7 progressMetadataWithValue:v9];
@@ -878,19 +878,19 @@ LABEL_11:
   }
 }
 
-- (void)browserInstallerDidFailWithError:(id)a3 appName:(id)a4 shouldDismissSheet:(BOOL)a5
+- (void)browserInstallerDidFailWithError:(id)error appName:(id)name shouldDismissSheet:(BOOL)sheet
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  sheetCopy = sheet;
+  errorCopy = error;
+  nameCopy = name;
   v10 = WBS_LOG_CHANNEL_PREFIXBrowserChoiceScreen();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [SFDefaultBrowserListView browserInstallerDidFailWithError:v9 appName:v10 shouldDismissSheet:v8];
+    [SFDefaultBrowserListView browserInstallerDidFailWithError:nameCopy appName:v10 shouldDismissSheet:errorCopy];
   }
 
   v11 = [(NSArray *)self->_browserAppLockupViews objectAtIndexedSubscript:[(NSIndexPath *)self->_selectedIndexPath item]];
-  if (v5)
+  if (sheetCopy)
   {
     [(SFDefaultBrowserListView *)self _didFinishAppInstallation:v11 browserChoiceResult:2];
   }
@@ -900,9 +900,9 @@ LABEL_11:
     v12 = MEMORY[0x1E69DC650];
     v13 = MEMORY[0x1E696AEC0];
     v14 = _WBSLocalizedString();
-    v15 = [v13 stringWithFormat:v14, v9];
+    nameCopy = [v13 stringWithFormat:v14, nameCopy];
     v16 = _WBSLocalizedString();
-    v17 = [v12 alertControllerWithTitle:v15 message:v16 preferredStyle:1];
+    v17 = [v12 alertControllerWithTitle:nameCopy message:v16 preferredStyle:1];
 
     v18 = MEMORY[0x1E69DC648];
     v19 = _WBSLocalizedString();
@@ -924,59 +924,59 @@ LABEL_11:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1D4644000, a2, OS_LOG_TYPE_ERROR, "Disabled to install %{public}@ due to one of the following restrictions: managed apple ID, age rating or retail store demo mode", &v2, 0xCu);
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v25 = a3;
-  v4 = [v25 lockup];
+  requestCopy = request;
+  lockup = [requestCopy lockup];
   browserListAgeRating = self->_browserListAgeRating;
   if (!browserListAgeRating)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_browserListAgeRating;
-    self->_browserListAgeRating = v6;
+    self->_browserListAgeRating = dictionary;
 
     browserListAgeRating = self->_browserListAgeRating;
   }
 
-  v8 = [v4 offer];
-  v9 = [v8 ageRating];
-  v10 = [v4 id];
-  v11 = [v10 numberValue];
-  [(NSMutableDictionary *)browserListAgeRating setObject:v9 forKey:v11];
+  offer = [lockup offer];
+  ageRating = [offer ageRating];
+  v10 = [lockup id];
+  numberValue = [v10 numberValue];
+  [(NSMutableDictionary *)browserListAgeRating setObject:ageRating forKey:numberValue];
 
   if (!self->_browserListBundleIDs)
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     browserListBundleIDs = self->_browserListBundleIDs;
-    self->_browserListBundleIDs = v12;
+    self->_browserListBundleIDs = array;
   }
 
-  v14 = [v25 lockup];
+  lockup2 = [requestCopy lockup];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
     v16 = self->_browserListBundleIDs;
-    v17 = [v25 lockup];
-    v18 = [v17 bundleID];
-    [(NSMutableArray *)v16 addObject:v18];
+    lockup3 = [requestCopy lockup];
+    bundleID = [lockup3 bundleID];
+    [(NSMutableArray *)v16 addObject:bundleID];
   }
 
   if ([(NSMutableArray *)self->_browserListBundleIDs count]== 12)
   {
-    v19 = [MEMORY[0x1E69C8810] sharedLogger];
-    [v19 didShowBrowserChoiceScreen:self->_browserListBundleIDs];
+    mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+    [mEMORY[0x1E69C8810] didShowBrowserChoiceScreen:self->_browserListBundleIDs];
   }
 
   if (!self->_listContainsDisabledBrowser)
   {
-    v20 = [v4 offer];
-    v21 = [v20 ageRating];
-    v22 = [SFDefaultBrowserInstaller isRestrictedToInstallBrowser:v4 withAgeRating:v21];
+    offer2 = [lockup offer];
+    ageRating2 = [offer2 ageRating];
+    v22 = [SFDefaultBrowserInstaller isRestrictedToInstallBrowser:lockup withAgeRating:ageRating2];
 
     if (v22)
     {
@@ -984,21 +984,21 @@ LABEL_11:
     }
   }
 
-  v23 = [v25 lockup];
-  v24 = [v23 lockupWithOffer:0];
-  [v25 setLockup:v24];
+  lockup4 = [requestCopy lockup];
+  v24 = [lockup4 lockupWithOffer:0];
+  [requestCopy setLockup:v24];
 }
 
-- (void)productDetailsUserDidInteractWithApp:(id)a3 interactionType:(id)a4
+- (void)productDetailsUserDidInteractWithApp:(id)app interactionType:(id)type
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  typeCopy = type;
   v8 = WBS_LOG_CHANNEL_PREFIXBrowserChoiceScreen();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = typeCopy;
     _os_log_impl(&dword_1D4644000, v8, OS_LOG_TYPE_INFO, "Received user interaction with type %{public}@", &buf, 0xCu);
   }
 
@@ -1025,9 +1025,9 @@ LABEL_11:
     __break(1u);
   }
 
-  if ([v7 isEqualToString:{*v9, v22}])
+  if ([typeCopy isEqualToString:{*v9, v22}])
   {
-    v10 = [(NSArray *)self->_browserAppLockupViews indexOfObject:v6];
+    v10 = [(NSArray *)self->_browserAppLockupViews indexOfObject:appCopy];
     v11 = [MEMORY[0x1E696AC88] indexPathForItem:v10 inSection:0];
     [(UICollectionView *)self->_collectionView selectItemAtIndexPath:v11 animated:0 scrollPosition:0];
     [(SFDefaultBrowserListView *)self collectionView:self->_collectionView didSelectItemAtIndexPath:v11];
@@ -1040,20 +1040,20 @@ LABEL_11:
     self->_browsersWithProductPageViewed = v12;
   }
 
-  v14 = [v6 lockup];
+  lockup = [appCopy lockup];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
     v16 = self->_browsersWithProductPageViewed;
-    v17 = [v6 lockup];
-    v18 = [v17 bundleID];
-    [(NSMutableSet *)v16 addObject:v18];
+    lockup2 = [appCopy lockup];
+    bundleID = [lockup2 bundleID];
+    [(NSMutableSet *)v16 addObject:bundleID];
 
-    v19 = [MEMORY[0x1E69C8810] sharedLogger];
-    v20 = [v6 lockup];
-    v21 = [v20 bundleID];
-    [v19 didViewBrowserProductPage:v21];
+    mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+    lockup3 = [appCopy lockup];
+    bundleID2 = [lockup3 bundleID];
+    [mEMORY[0x1E69C8810] didViewBrowserProductPage:bundleID2];
   }
 }
 

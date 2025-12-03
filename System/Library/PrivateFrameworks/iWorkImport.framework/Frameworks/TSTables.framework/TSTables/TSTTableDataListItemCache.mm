@@ -2,14 +2,14 @@
 + (id)cache;
 - (TSTTableDataListItemCache)init;
 - (void)removeAllObjects;
-- (void)setObject:(id)a3 forKey:(unsigned int)a4;
+- (void)setObject:(id)object forKey:(unsigned int)key;
 @end
 
 @implementation TSTTableDataListItemCache
 
 + (id)cache
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -33,14 +33,14 @@
   return v4;
 }
 
-- (void)setObject:(id)a3 forKey:(unsigned int)a4
+- (void)setObject:(id)object forKey:(unsigned int)key
 {
-  if (objc_msgSend_count(self->_data, a2, a3, *&a4, v4) <= 0x3FF)
+  if (objc_msgSend_count(self->_data, a2, object, *&key, v4) <= 0x3FF)
   {
-    objc_msgSend_setObject_forKey_(self->_data, v8, a3, a4, v9);
+    objc_msgSend_setObject_forKey_(self->_data, v8, object, key, v9);
     strongRefs = self->_strongRefs;
 
-    objc_msgSend_addObject_(strongRefs, v10, a3, v11, v12);
+    objc_msgSend_addObject_(strongRefs, v10, object, v11, v12);
   }
 }
 

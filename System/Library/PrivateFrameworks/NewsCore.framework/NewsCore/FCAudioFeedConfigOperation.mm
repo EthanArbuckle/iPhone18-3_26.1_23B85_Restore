@@ -1,8 +1,8 @@
 @interface FCAudioFeedConfigOperation
 - (BOOL)validateOperation;
 - (FCAudioFeedConfigOperation)init;
-- (FCAudioFeedConfigOperation)initWithContext:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCAudioFeedConfigOperation)initWithContext:(id)context;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -34,16 +34,16 @@
   objc_exception_throw(v6);
 }
 
-- (FCAudioFeedConfigOperation)initWithContext:(id)a3
+- (FCAudioFeedConfigOperation)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = FCAudioFeedConfigOperation;
   v6 = [(FCOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -175,14 +175,14 @@ uint64_t __46__FCAudioFeedConfigOperation_performOperation__block_invoke_3(uint6
   return 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(FCAudioFeedConfigOperation *)self fetchCompletionHandler];
+  errorCopy = error;
+  fetchCompletionHandler = [(FCAudioFeedConfigOperation *)self fetchCompletionHandler];
 
-  if (v4)
+  if (fetchCompletionHandler)
   {
-    v5 = [(FCAudioFeedConfigOperation *)self fetchCompletionHandler];
+    fetchCompletionHandler2 = [(FCAudioFeedConfigOperation *)self fetchCompletionHandler];
     if (self)
     {
       v6 = self->_resultFeedConfig;
@@ -195,7 +195,7 @@ uint64_t __46__FCAudioFeedConfigOperation_performOperation__block_invoke_3(uint6
       resultLegacyConfig = 0;
     }
 
-    (v5)[2](v5, v6, resultLegacyConfig, v8);
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, v6, resultLegacyConfig, errorCopy);
   }
 }
 

@@ -1,8 +1,8 @@
 @interface CRLWPSearchReference
-+ (id)searchReferenceWithStorage:(id)a3 selection:(id)a4 searchCanvasDelegate:(id)a5;
-+ (id)searchReferenceWithStorage:(id)a3 selection:(id)a4 selectionPath:(id)a5;
-- (BOOL)contains:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)searchReferenceWithStorage:(id)storage selection:(id)selection searchCanvasDelegate:(id)delegate;
++ (id)searchReferenceWithStorage:(id)storage selection:(id)selection selectionPath:(id)path;
+- (BOOL)contains:(id)contains;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInsertionPoint;
 - (BOOL)isReplaceable;
 - (BOOL)isSelectable;
@@ -10,64 +10,64 @@
 - (CGPoint)searchReferencePoint;
 - (CGRect)searchReferenceLayoutFrame;
 - (CRLSelectionPath)selectionPath;
-- (CRLWPSearchReference)initWithStorage:(id)a3 selection:(id)a4 searchCanvasDelegate:(id)a5;
-- (CRLWPSearchReference)initWithStorage:(id)a3 selection:(id)a4 selectionPath:(id)a5;
-- (CRLWPSearchReference)initWithStorage:(id)a3 selectionPath:(id)a4;
+- (CRLWPSearchReference)initWithStorage:(id)storage selection:(id)selection searchCanvasDelegate:(id)delegate;
+- (CRLWPSearchReference)initWithStorage:(id)storage selection:(id)selection selectionPath:(id)path;
+- (CRLWPSearchReference)initWithStorage:(id)storage selectionPath:(id)path;
 - (NSString)description;
 - (_NSRange)range;
-- (id)commandForReplacingWithString:(id)a3 options:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)commandForReplacingWithString:(id)string options:(unint64_t)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)p_selectionForComparison;
-- (id)p_selectionWithRange:(_NSRange)a3;
+- (id)p_selectionWithRange:(_NSRange)range;
 - (id)searchReferenceEnd;
-- (id)searchReferenceForReplacingWithString:(id)a3 options:(unint64_t)a4;
+- (id)searchReferenceForReplacingWithString:(id)string options:(unint64_t)options;
 - (id)searchReferenceStart;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)setRange:(_NSRange)a3;
-- (void)setSelection:(id)a3;
+- (void)setRange:(_NSRange)range;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation CRLWPSearchReference
 
-+ (id)searchReferenceWithStorage:(id)a3 selection:(id)a4 searchCanvasDelegate:(id)a5
++ (id)searchReferenceWithStorage:(id)storage selection:(id)selection searchCanvasDelegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithStorage:v10 selection:v9 searchCanvasDelegate:v8];
+  delegateCopy = delegate;
+  selectionCopy = selection;
+  storageCopy = storage;
+  v11 = [[self alloc] initWithStorage:storageCopy selection:selectionCopy searchCanvasDelegate:delegateCopy];
 
   return v11;
 }
 
-+ (id)searchReferenceWithStorage:(id)a3 selection:(id)a4 selectionPath:(id)a5
++ (id)searchReferenceWithStorage:(id)storage selection:(id)selection selectionPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithStorage:v10 selection:v9 selectionPath:v8];
+  pathCopy = path;
+  selectionCopy = selection;
+  storageCopy = storage;
+  v11 = [[self alloc] initWithStorage:storageCopy selection:selectionCopy selectionPath:pathCopy];
 
   return v11;
 }
 
-- (CRLWPSearchReference)initWithStorage:(id)a3 selection:(id)a4 searchCanvasDelegate:(id)a5
+- (CRLWPSearchReference)initWithStorage:(id)storage selection:(id)selection searchCanvasDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storageCopy = storage;
+  selectionCopy = selection;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = CRLWPSearchReference;
   v12 = [(CRLWPSearchReference *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_storage, a3);
-    [(CRLWPSearchReference *)v13 setSelection:v10];
+    objc_storeStrong(&v12->_storage, storage);
+    [(CRLWPSearchReference *)v13 setSelection:selectionCopy];
     v13->_rootIndex = 0x7FFFFFFFFFFFFFFFLL;
     v13->_pulseAnimationStyle = 0;
-    if (v11)
+    if (delegateCopy)
     {
-      v14 = [v11 selectionPathForSearchReference:v13];
+      v14 = [delegateCopy selectionPathForSearchReference:v13];
       selectionPath = v13->_selectionPath;
       v13->_selectionPath = v14;
     }
@@ -76,20 +76,20 @@
   return v13;
 }
 
-- (CRLWPSearchReference)initWithStorage:(id)a3 selectionPath:(id)a4
+- (CRLWPSearchReference)initWithStorage:(id)storage selectionPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = CRLWPSearchReference;
   v9 = [(CRLWPSearchReference *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storage, a3);
-    objc_storeStrong(&v10->_selectionPath, a4);
+    objc_storeStrong(&v9->_storage, storage);
+    objc_storeStrong(&v10->_selectionPath, path);
     v11 = objc_opt_class();
-    v12 = [v8 mostSpecificSelectionOfClass:0];
+    v12 = [pathCopy mostSpecificSelectionOfClass:0];
     v13 = sub_100013F00(v11, v12);
 
     [(CRLWPSearchReference *)v10 setSelection:v13];
@@ -100,22 +100,22 @@
   return v10;
 }
 
-- (CRLWPSearchReference)initWithStorage:(id)a3 selection:(id)a4 selectionPath:(id)a5
+- (CRLWPSearchReference)initWithStorage:(id)storage selection:(id)selection selectionPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storageCopy = storage;
+  selectionCopy = selection;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = CRLWPSearchReference;
   v12 = [(CRLWPSearchReference *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_storage, a3);
-    if (v11)
+    objc_storeStrong(&v12->_storage, storage);
+    if (pathCopy)
     {
-      v14 = [v11 orderedSelections];
-      v15 = [v14 containsObject:v10];
+      orderedSelections = [pathCopy orderedSelections];
+      v15 = [orderedSelections containsObject:selectionCopy];
 
       if ((v15 & 1) == 0)
       {
@@ -146,10 +146,10 @@
         [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:92 isFatal:0 description:"Search reference selection path must contain the text selection if selection path is provided"];
       }
 
-      objc_storeStrong(&v13->_selectionPath, a5);
+      objc_storeStrong(&v13->_selectionPath, path);
     }
 
-    [(CRLWPSearchReference *)v13 setSelection:v10];
+    [(CRLWPSearchReference *)v13 setSelection:selectionCopy];
     v13->_rootIndex = 0x7FFFFFFFFFFFFFFFLL;
     v13->_pulseAnimationStyle = 0;
   }
@@ -157,24 +157,24 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6)
   {
-    v7 = [(CRLWPSearchReference *)self storage];
-    v8 = [v6 storage];
-    if (v7 == v8)
+    storage = [(CRLWPSearchReference *)self storage];
+    storage2 = [v6 storage];
+    if (storage == storage2)
     {
-      v10 = [(CRLWPSearchReference *)self selection];
-      v11 = [v6 selection];
-      if ([v10 isEqual:v11] && (-[CRLWPSearchReference searchReferencePoint](self, "searchReferencePoint"), v13 = v12, v15 = v14, objc_msgSend(v6, "searchReferencePoint"), sub_10011ED38(v13, v15, v16, v17)))
+      selection = [(CRLWPSearchReference *)self selection];
+      selection2 = [v6 selection];
+      if ([selection isEqual:selection2] && (-[CRLWPSearchReference searchReferencePoint](self, "searchReferencePoint"), v13 = v12, v15 = v14, objc_msgSend(v6, "searchReferencePoint"), sub_10011ED38(v13, v15, v16, v17)))
       {
-        v18 = [(CRLWPSearchReference *)self pulseAnimationStyle];
-        v9 = v18 == [v6 pulseAnimationStyle];
+        pulseAnimationStyle = [(CRLWPSearchReference *)self pulseAnimationStyle];
+        v9 = pulseAnimationStyle == [v6 pulseAnimationStyle];
       }
 
       else
@@ -197,20 +197,20 @@
   return v9;
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  v4 = a3;
+  containsCopy = contains;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, containsCopy);
 
-  v7 = [(CRLWPSearchReference *)self storage];
-  v8 = [v6 storage];
-  if (v7 == v8)
+  storage = [(CRLWPSearchReference *)self storage];
+  storage2 = [v6 storage];
+  if (storage == storage2)
   {
-    v10 = [(CRLWPSearchReference *)self range];
+    range = [(CRLWPSearchReference *)self range];
     v12 = v11;
-    v13 = [v6 range];
-    v9 = v10 <= v13 && &v10[v12] >= &v13[v14];
+    range2 = [v6 range];
+    v9 = range <= range2 && &range[v12] >= &range2[v14];
   }
 
   else
@@ -224,22 +224,22 @@
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(CRLHasher);
-  v4 = [(CRLWPSearchReference *)self storage];
-  [(CRLHasher *)v3 addObject:v4];
+  storage = [(CRLWPSearchReference *)self storage];
+  [(CRLHasher *)v3 addObject:storage];
 
-  v5 = [(CRLWPSearchReference *)self selection];
-  [(CRLHasher *)v3 addObject:v5];
+  selection = [(CRLWPSearchReference *)self selection];
+  [(CRLHasher *)v3 addObject:selection];
 
   [(CRLHasher *)v3 addInteger:[(CRLWPSearchReference *)self pulseAnimationStyle]];
-  v6 = [(CRLHasher *)v3 hashValue];
+  hashValue = [(CRLHasher *)v3 hashValue];
 
-  return v6;
+  return hashValue;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  [v4 searchReferencePoint];
+  compareCopy = compare;
+  [compareCopy searchReferencePoint];
   v6 = v5;
   [(CRLWPSearchReference *)self searchReferencePoint];
   if (v6 <= v7)
@@ -252,17 +252,17 @@
     else
     {
       v9 = objc_opt_class();
-      v10 = sub_100014370(v9, v4);
+      v10 = sub_100014370(v9, compareCopy);
       v11 = v10;
       if (v10 && (-[CRLWPSearchReference storage](self, "storage"), (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, -[CRLWPSearchReference storage](self, "storage"), v14 = objc_claimAutoreleasedReturnValue(), [v11 storage], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, v14 == v15))
       {
-        v17 = [(CRLWPSearchReference *)self p_selectionForComparison];
-        v18 = [v11 p_selectionForComparison];
-        v19 = v18;
+        p_selectionForComparison = [(CRLWPSearchReference *)self p_selectionForComparison];
+        p_selectionForComparison2 = [v11 p_selectionForComparison];
+        v19 = p_selectionForComparison2;
         v8 = 0;
-        if (v17 && v18)
+        if (p_selectionForComparison && p_selectionForComparison2)
         {
-          v8 = [v17 compare:v18];
+          v8 = [p_selectionForComparison compare:p_selectionForComparison2];
         }
       }
 
@@ -281,13 +281,13 @@
   return v8;
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   selection = self->_selection;
-  if (selection != v4)
+  if (selection != selectionCopy)
   {
-    if (selection && ([(CRLWPSelection *)v4 isMemberOfClass:objc_opt_class()]& 1) == 0)
+    if (selection && ([(CRLWPSelection *)selectionCopy isMemberOfClass:objc_opt_class()]& 1) == 0)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -316,11 +316,11 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:170 isFatal:0 description:"New selection is not the same class as the old selection."];
     }
 
-    v9 = [(CRLWPSelection *)v4 copyWithNewType:[(CRLWPSelection *)v4 type] smartFieldRange:0x7FFFFFFFFFFFFFFFLL, 0];
+    v9 = [(CRLWPSelection *)selectionCopy copyWithNewType:[(CRLWPSelection *)selectionCopy type] smartFieldRange:0x7FFFFFFFFFFFFFFFLL, 0];
     v10 = self->_selection;
     if (!v10)
     {
-      v10 = v4;
+      v10 = selectionCopy;
     }
 
     selectionPath = self->_selectionPath;
@@ -338,54 +338,54 @@
 
 - (_NSRange)range
 {
-  v2 = [(CRLWPSearchReference *)self selection];
-  v3 = [v2 range];
+  selection = [(CRLWPSearchReference *)self selection];
+  range = [selection range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (void)setRange:(_NSRange)a3
+- (void)setRange:(_NSRange)range
 {
-  v4 = [(CRLWPSearchReference *)self p_selectionWithRange:a3.location, a3.length];
+  v4 = [(CRLWPSearchReference *)self p_selectionWithRange:range.location, range.length];
   [(CRLWPSearchReference *)self setSelection:v4];
 }
 
 - (BOOL)isInsertionPoint
 {
-  v2 = [(CRLWPSearchReference *)self selection];
-  v3 = [v2 isInsertionPoint];
+  selection = [(CRLWPSearchReference *)self selection];
+  isInsertionPoint = [selection isInsertionPoint];
 
-  return v3;
+  return isInsertionPoint;
 }
 
 - (NSString)description
 {
-  v3 = [(CRLWPSearchReference *)self storage];
+  storage = [(CRLWPSearchReference *)self storage];
   [(CRLWPSearchReference *)self searchReferencePoint];
   v5 = v4;
   [(CRLWPSearchReference *)self searchReferencePoint];
   v7 = v6;
-  v8 = [(CRLWPSearchReference *)self selection];
-  v9 = [NSString stringWithFormat:@"[CRLWPSearchReference %p] storage=%p, loc: %f, %f selection: %@", self, v3, v5, v7, v8];
+  selection = [(CRLWPSearchReference *)self selection];
+  v9 = [NSString stringWithFormat:@"[CRLWPSearchReference %p] storage=%p, loc: %f, %f selection: %@", self, storage, v5, v7, selection];
 
   return v9;
 }
 
-- (id)searchReferenceForReplacingWithString:(id)a3 options:(unint64_t)a4
+- (id)searchReferenceForReplacingWithString:(id)string options:(unint64_t)options
 {
-  v5 = a3;
-  v6 = [(CRLWPSearchReference *)self range];
-  v7 = [v5 length];
+  stringCopy = string;
+  range = [(CRLWPSearchReference *)self range];
+  v7 = [stringCopy length];
 
-  v8 = [(CRLWPSearchReference *)self p_selectionWithRange:v6, v7];
-  v9 = [(CRLWPSearchReference *)self selectionPath];
-  v10 = [(CRLWPSearchReference *)self selection];
-  v11 = [v9 selectionPathReplacingMostSpecificLocationOfSelection:v10 withSelection:v8];
+  v8 = [(CRLWPSearchReference *)self p_selectionWithRange:range, v7];
+  selectionPath = [(CRLWPSearchReference *)self selectionPath];
+  selection = [(CRLWPSearchReference *)self selection];
+  v11 = [selectionPath selectionPathReplacingMostSpecificLocationOfSelection:selection withSelection:v8];
 
   v12 = [CRLWPSearchReference searchReferenceWithStorage:self->_storage selection:v8 selectionPath:v11];
   [v12 setRootIndex:{-[CRLWPSearchReference rootIndex](self, "rootIndex")}];
@@ -396,9 +396,9 @@
 - (id)searchReferenceStart
 {
   v3 = [(CRLWPSearchReference *)self p_selectionWithRange:[(CRLWPSearchReference *)self range], 0];
-  v4 = [(CRLWPSearchReference *)self selectionPath];
-  v5 = [(CRLWPSearchReference *)self selection];
-  v6 = [v4 selectionPathReplacingMostSpecificLocationOfSelection:v5 withSelection:v3];
+  selectionPath = [(CRLWPSearchReference *)self selectionPath];
+  selection = [(CRLWPSearchReference *)self selection];
+  v6 = [selectionPath selectionPathReplacingMostSpecificLocationOfSelection:selection withSelection:v3];
 
   v7 = [CRLWPSearchReference searchReferenceWithStorage:self->_storage selection:v3 selectionPath:v6];
   [v7 setRootIndex:{-[CRLWPSearchReference rootIndex](self, "rootIndex")}];
@@ -408,11 +408,11 @@
 
 - (id)searchReferenceEnd
 {
-  v3 = [(CRLWPSearchReference *)self range];
-  v5 = [(CRLWPSearchReference *)self p_selectionWithRange:&v3[v4], 0];
-  v6 = [(CRLWPSearchReference *)self selectionPath];
-  v7 = [(CRLWPSearchReference *)self selection];
-  v8 = [v6 selectionPathReplacingMostSpecificLocationOfSelection:v7 withSelection:v5];
+  range = [(CRLWPSearchReference *)self range];
+  v5 = [(CRLWPSearchReference *)self p_selectionWithRange:&range[v4], 0];
+  selectionPath = [(CRLWPSearchReference *)self selectionPath];
+  selection = [(CRLWPSearchReference *)self selection];
+  v8 = [selectionPath selectionPathReplacingMostSpecificLocationOfSelection:selection withSelection:v5];
 
   v9 = [CRLWPSearchReference searchReferenceWithStorage:self->_storage selection:v5 selectionPath:v8];
   [v9 setRootIndex:{-[CRLWPSearchReference rootIndex](self, "rootIndex")}];
@@ -420,35 +420,35 @@
   return v9;
 }
 
-- (id)p_selectionWithRange:(_NSRange)a3
+- (id)p_selectionWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(CRLWPSearchReference *)self selection];
+  length = range.length;
+  location = range.location;
+  selection = [(CRLWPSearchReference *)self selection];
   v6 = objc_opt_class();
 
   return [v6 selectionWithRange:{location, length}];
 }
 
-- (id)commandForReplacingWithString:(id)a3 options:(unint64_t)a4
+- (id)commandForReplacingWithString:(id)string options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [(CRLWPSearchReference *)self storage];
+  stringCopy = string;
+  storage = [(CRLWPSearchReference *)self storage];
   if ([(CRLWPSearchReference *)self isReplaceable])
   {
-    v8 = [v7 string];
-    v9 = [(CRLWPSearchReference *)self range];
-    v11 = [v6 crl_stringByCapitalizingToMatchString:v8 range:v9 searchOptions:{v10, a4}];
+    string = [storage string];
+    range = [(CRLWPSearchReference *)self range];
+    v11 = [stringCopy crl_stringByCapitalizingToMatchString:string range:range searchOptions:{v10, options}];
 
     v12 = objc_opt_class();
-    v13 = [v7 parentInfo];
-    v14 = sub_100014370(v12, v13);
+    parentInfo = [storage parentInfo];
+    v14 = sub_100014370(v12, parentInfo);
 
     if (v14)
     {
       v15 = [_TtC8Freeform23CRLWPReplaceTextCommand alloc];
-      v16 = [(CRLWPSearchReference *)self range];
-      v18 = [(CRLWPReplaceTextCommand *)v15 initWithShapeItem:v14 range:v16 text:v17, v11];
+      range2 = [(CRLWPSearchReference *)self range];
+      v18 = [(CRLWPReplaceTextCommand *)v15 initWithShapeItem:v14 range:range2 text:v17, v11];
     }
 
     else
@@ -460,7 +460,7 @@
   else
   {
     v18 = 0;
-    v11 = v6;
+    v11 = stringCopy;
   }
 
   return v18;
@@ -505,27 +505,27 @@
 
 - (BOOL)isReplaceable
 {
-  v3 = [(CRLWPSearchReference *)self storage];
-  v4 = [v3 canUserReplaceText];
+  storage = [(CRLWPSearchReference *)self storage];
+  canUserReplaceText = [storage canUserReplaceText];
 
-  if (!v4)
+  if (!canUserReplaceText)
   {
     return 0;
   }
 
-  v5 = [(CRLWPSearchReference *)self selection];
+  selection = [(CRLWPSearchReference *)self selection];
 
-  if (!v5)
+  if (!selection)
   {
     return 1;
   }
 
-  v6 = [(CRLWPSearchReference *)self selection];
-  v7 = [v6 range];
+  selection2 = [(CRLWPSearchReference *)self selection];
+  range = [selection2 range];
   v9 = v8;
 
-  v10 = [(CRLWPSearchReference *)self storage];
-  v11 = [v10 hasSmartFieldsInRange:{v7, v9}];
+  storage2 = [(CRLWPSearchReference *)self storage];
+  v11 = [storage2 hasSmartFieldsInRange:{range, v9}];
 
   if (!v11)
   {
@@ -534,19 +534,19 @@
 
   v16 = 0;
   v17 = 0;
-  v12 = [(CRLWPSearchReference *)self storage];
-  v13 = [v12 smartFieldAtCharIndex:v7 attributeKind:6 effectiveRange:&v16];
+  storage3 = [(CRLWPSearchReference *)self storage];
+  v13 = [storage3 smartFieldAtCharIndex:range attributeKind:6 effectiveRange:&v16];
 
-  v14 = v13 && v16 < v7 && v17 + v16 >= v7 + v9;
+  v14 = v13 && v16 < range && v17 + v16 >= range + v9;
   return v14;
 }
 
 - (BOOL)isSelectable
 {
-  v2 = [(CRLWPSearchReference *)self storage];
-  v3 = [v2 parentInfo];
+  storage = [(CRLWPSearchReference *)self storage];
+  parentInfo = [storage parentInfo];
 
-  if (!v3)
+  if (!parentInfo)
   {
     return 1;
   }
@@ -554,15 +554,15 @@
   while (1)
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v3 locked])
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([parentInfo locked])
     {
       break;
     }
 
-    v4 = [v3 parentInfo];
+    v3ParentInfo = [parentInfo parentInfo];
 
-    v3 = v4;
-    if (!v4)
+    parentInfo = v3ParentInfo;
+    if (!v3ParentInfo)
     {
       v5 = 1;
       goto LABEL_8;
@@ -575,12 +575,12 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRLWPSearchReference allocWithZone:a3];
+  v4 = [CRLWPSearchReference allocWithZone:zone];
   storage = self->_storage;
-  v6 = [(CRLWPSearchReference *)self selection];
-  v7 = [(CRLWPSearchReference *)v4 initWithStorage:storage selection:v6 selectionPath:self->_selectionPath];
+  selection = [(CRLWPSearchReference *)self selection];
+  v7 = [(CRLWPSearchReference *)v4 initWithStorage:storage selection:selection selectionPath:self->_selectionPath];
 
   [(CRLWPSearchReference *)self searchReferencePoint];
   [(CRLWPSearchReference *)v7 setSearchReferencePoint:?];
@@ -588,8 +588,8 @@ LABEL_8:
   [(CRLWPSearchReference *)v7 setConnectionLineUnscaledPoint:?];
   [(CRLWPSearchReference *)v7 setPulseAnimationStyle:[(CRLWPSearchReference *)self pulseAnimationStyle]];
   [(CRLWPSearchReference *)v7 setAutohideHighlight:[(CRLWPSearchReference *)self autohideHighlight]];
-  v8 = [(CRLWPSearchReference *)self findHighlights];
-  [(CRLWPSearchReference *)v7 setFindHighlights:v8];
+  findHighlights = [(CRLWPSearchReference *)self findHighlights];
+  [(CRLWPSearchReference *)v7 setFindHighlights:findHighlights];
 
   [(CRLWPSearchReference *)v7 setPulseHighlight:[(CRLWPSearchReference *)self pulseHighlight]];
   [(CRLWPSearchReference *)v7 setRootIndex:[(CRLWPSearchReference *)self rootIndex]];
@@ -600,16 +600,16 @@ LABEL_8:
 {
   if (self->_selectionPath)
   {
-    v2 = [(CRLWPSearchReference *)self selectionPath];
-    v3 = [v2 mostSpecificSelectionOfClass:objc_opt_class()];
+    selectionPath = [(CRLWPSearchReference *)self selectionPath];
+    selection = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
   }
 
   else
   {
-    v3 = [(CRLWPSearchReference *)self selection];
+    selection = [(CRLWPSearchReference *)self selection];
   }
 
-  return v3;
+  return selection;
 }
 
 - (CGPoint)searchReferencePoint

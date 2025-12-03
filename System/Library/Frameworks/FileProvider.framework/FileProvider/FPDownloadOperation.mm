@@ -1,21 +1,21 @@
 @interface FPDownloadOperation
-- (FPDownloadOperation)initWithItems:(id)a3;
-- (FPDownloadOperation)initWithRemoteOperation:(id)a3 info:(id)a4;
+- (FPDownloadOperation)initWithItems:(id)items;
+- (FPDownloadOperation)initWithRemoteOperation:(id)operation info:(id)info;
 - (id)fp_prettyDescription;
-- (void)_completedWithResultsByRoot:(id)a3 errorsByRoot:(id)a4 error:(id)a5;
+- (void)_completedWithResultsByRoot:(id)root errorsByRoot:(id)byRoot error:(id)error;
 - (void)_recomputeDownloadInfoIfNecessary;
-- (void)_removeProgressWithItemID:(id)a3;
-- (void)_retrieveChildProgressForItem:(id)a3 childProxies:(id)a4 parentSetup:(id)a5;
-- (void)_runWithRemoteOperation:(id)a3;
+- (void)_removeProgressWithItemID:(id)d;
+- (void)_retrieveChildProgressForItem:(id)item childProxies:(id)proxies parentSetup:(id)setup;
+- (void)_runWithRemoteOperation:(id)operation;
 - (void)_setupParentProgress;
-- (void)_updateParentProgressForItem:(id)a3 withUnitCount:(id)a4;
-- (void)_updateProgressWithUpdatedFileCountForItem:(id)a3;
+- (void)_updateParentProgressForItem:(id)item withUnitCount:(id)count;
+- (void)_updateProgressWithUpdatedFileCountForItem:(id)item;
 - (void)actionMain;
-- (void)completedWithResult:(id)a3 error:(id)a4;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)completedWithResult:(id)result error:(id)error;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)presendNotifications;
-- (void)remoteOperationCompletedRoot:(id)a3 resultingItem:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)remoteOperationCreatedRoot:(id)a3 resultingItem:(id)a4 completion:(id)a5;
+- (void)remoteOperationCompletedRoot:(id)root resultingItem:(id)item error:(id)error completion:(id)completion;
+- (void)remoteOperationCreatedRoot:(id)root resultingItem:(id)item completion:(id)completion;
 - (void)remoteOperationProgressesAreReady;
 @end
 
@@ -26,36 +26,36 @@
   if (!self->_info)
   {
     v3 = +[FPDaemonOperationManager sharedInstance];
-    v4 = [v3 generateLocalOperationID];
+    generateLocalOperationID = [v3 generateLocalOperationID];
 
     v5 = [(NSArray *)self->_items fp_map:&__block_literal_global_26];
-    v6 = [(FPActionOperationInfo *)[FPDownloadInfo alloc] initWithOperationID:v4 roots:v5];
+    v6 = [(FPActionOperationInfo *)[FPDownloadInfo alloc] initWithOperationID:generateLocalOperationID roots:v5];
     info = self->_info;
     self->_info = v6;
 
     [(FPDownloadInfo *)self->_info setRecursively:1];
   }
 
-  v8 = [(FPDownloadOperation *)self _t_patchActionOperationInfo];
+  _t_patchActionOperationInfo = [(FPDownloadOperation *)self _t_patchActionOperationInfo];
 
-  if (v8)
+  if (_t_patchActionOperationInfo)
   {
-    v9 = [(FPDownloadOperation *)self _t_patchActionOperationInfo];
-    v9[2](v9, self->_info);
+    _t_patchActionOperationInfo2 = [(FPDownloadOperation *)self _t_patchActionOperationInfo];
+    _t_patchActionOperationInfo2[2](_t_patchActionOperationInfo2, self->_info);
   }
 }
 
-- (FPDownloadOperation)initWithItems:(id)a3
+- (FPDownloadOperation)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v13.receiver = self;
   v13.super_class = FPDownloadOperation;
   v6 = [(FPActionOperation *)&v13 initWithProvider:0 action:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_items, a3);
-    v8 = [MEMORY[0x1E695DFA8] setWithArray:v5];
+    objc_storeStrong(&v6->_items, items);
+    v8 = [MEMORY[0x1E695DFA8] setWithArray:itemsCopy];
     itemsPendingDownload = v7->_itemsPendingDownload;
     v7->_itemsPendingDownload = v8;
 
@@ -71,14 +71,14 @@
 
 - (void)presendNotifications
 {
-  v3 = [(FPActionOperation *)self stitcher];
-  [v3 start];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher start];
 
-  v4 = [(FPActionOperation *)self stitcher];
-  [v4 transformItems:self->_items handler:&__block_literal_global_7_0];
+  stitcher2 = [(FPActionOperation *)self stitcher];
+  [stitcher2 transformItems:self->_items handler:&__block_literal_global_7_0];
 
-  v5 = [(FPActionOperation *)self stitcher];
-  [v5 flush];
+  stitcher3 = [(FPActionOperation *)self stitcher];
+  [stitcher3 flush];
 }
 
 void __43__FPDownloadOperation_presendNotifications__block_invoke(uint64_t a1, void *a2)
@@ -94,8 +94,8 @@ void __43__FPDownloadOperation_presendNotifications__block_invoke(uint64_t a1, v
 - (id)fp_prettyDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NSArray *)self->_items fp_itemIdentifiers];
-  v4 = [v3 componentsJoinedByString:{@", "}];
+  fp_itemIdentifiers = [(NSArray *)self->_items fp_itemIdentifiers];
+  v4 = [fp_itemIdentifiers componentsJoinedByString:{@", "}];
   v5 = [v2 stringWithFormat:@"download items (%@)", v4];
 
   return v5;
@@ -103,8 +103,8 @@ void __43__FPDownloadOperation_presendNotifications__block_invoke(uint64_t a1, v
 
 - (void)actionMain
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"FPDownloadOperation.m" lineNumber:106 description:@"operation shouldn't run"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"FPDownloadOperation.m" lineNumber:106 description:@"operation shouldn't run"];
 }
 
 void __33__FPDownloadOperation_actionMain__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -140,25 +140,25 @@ uint64_t __33__FPDownloadOperation_actionMain__block_invoke_2(void *a1)
   }
 }
 
-- (void)_completedWithResultsByRoot:(id)a3 errorsByRoot:(id)a4 error:(id)a5
+- (void)_completedWithResultsByRoot:(id)root errorsByRoot:(id)byRoot error:(id)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v11);
+  rootCopy = root;
+  byRootCopy = byRoot;
+  errorCopy = error;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   v12 = fp_current_or_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v10 fp_prettyDescription];
+    fp_prettyDescription = [errorCopy fp_prettyDescription];
     v21 = 138412802;
-    v22 = v8;
+    v22 = rootCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = byRootCopy;
     v25 = 2112;
-    v26 = v20;
+    v26 = fp_prettyDescription;
     _os_log_debug_impl(&dword_1AAAE1000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] Remote download operation finished with results:%@; errors:%@; %@", &v21, 0x20u);
   }
 
@@ -168,21 +168,21 @@ uint64_t __33__FPDownloadOperation_actionMain__block_invoke_2(void *a1)
     [FPDownloadOperation _completedWithResultsByRoot:? errorsByRoot:? error:?];
   }
 
-  if (v10)
+  if (errorCopy)
   {
-    v14 = v10;
+    firstObject = errorCopy;
   }
 
   else
   {
-    v15 = [v9 fp_copyItemKeysUnwrappedAndKeyMap:0];
-    v16 = [v15 allValues];
-    v14 = [v16 firstObject];
+    v15 = [byRootCopy fp_copyItemKeysUnwrappedAndKeyMap:0];
+    allValues = [v15 allValues];
+    firstObject = [allValues firstObject];
   }
 
-  v17 = [v8 allValues];
-  v18 = [v17 fp_map:&__block_literal_global_25_1];
-  [(FPDownloadOperation *)self completedWithResult:v18 error:v14];
+  allValues2 = [rootCopy allValues];
+  v18 = [allValues2 fp_map:&__block_literal_global_25_1];
+  [(FPDownloadOperation *)self completedWithResult:v18 error:firstObject];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -203,21 +203,21 @@ id __70__FPDownloadOperation__completedWithResultsByRoot_errorsByRoot_error___bl
   return v3;
 }
 
-- (void)completedWithResult:(id)a3 error:(id)a4
+- (void)completedWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FPOperation *)self callbackQueue];
+  resultCopy = result;
+  errorCopy = error;
+  callbackQueue = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__FPDownloadOperation_completedWithResult_error___block_invoke;
   block[3] = &unk_1E7939090;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = resultCopy;
+  v13 = errorCopy;
+  selfCopy = self;
+  v9 = errorCopy;
+  v10 = resultCopy;
+  dispatch_async(callbackQueue, block);
 }
 
 void __49__FPDownloadOperation_completedWithResult_error___block_invoke(uint64_t a1)
@@ -232,11 +232,11 @@ void __49__FPDownloadOperation_completedWithResult_error___block_invoke(uint64_t
   *(v4 + 472) = 0;
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v8 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
@@ -258,11 +258,11 @@ void __49__FPDownloadOperation_completedWithResult_error___block_invoke(uint64_t
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        v15 = [v14 itemID];
-        [(FPDownloadOperation *)self _removeProgressWithItemID:v15];
+        itemID = [v14 itemID];
+        [(FPDownloadOperation *)self _removeProgressWithItemID:itemID];
 
-        v16 = [v14 providerDomainID];
-        [v8 addObject:v16];
+        providerDomainID = [v14 providerDomainID];
+        [v8 addObject:providerDomainID];
       }
 
       v11 = [(NSArray *)v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -275,10 +275,10 @@ void __49__FPDownloadOperation_completedWithResult_error___block_invoke(uint64_t
   observation = self->_observation;
   self->_observation = 0;
 
-  v18 = [(FPActionOperation *)self progress];
-  v19 = [v18 fileTotalCount];
-  v20 = [(FPActionOperation *)self progress];
-  [v20 setFileCompletedCount:v19];
+  progress = [(FPActionOperation *)self progress];
+  fileTotalCount = [progress fileTotalCount];
+  progress2 = [(FPActionOperation *)self progress];
+  [progress2 setFileCompletedCount:fileTotalCount];
 
   v21 = fp_current_or_default_log();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -289,7 +289,7 @@ void __49__FPDownloadOperation_completedWithResult_error___block_invoke(uint64_t
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v6 copyItems:1];
+    v22 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:resultCopy copyItems:1];
   }
 
   else
@@ -297,53 +297,53 @@ void __49__FPDownloadOperation_completedWithResult_error___block_invoke(uint64_t
     v22 = 0;
   }
 
-  v23 = [(FPActionOperation *)self stitcher];
-  [v23 finishWithItems:v22 error:v7];
+  stitcher = [(FPActionOperation *)self stitcher];
+  [stitcher finishWithItems:v22 error:errorCopy];
 
-  v24 = [(FPDownloadOperation *)self downloadCompletionBlock];
-  v25 = v24;
-  if (v24)
+  downloadCompletionBlock = [(FPDownloadOperation *)self downloadCompletionBlock];
+  v25 = downloadCompletionBlock;
+  if (downloadCompletionBlock)
   {
-    (*(v24 + 16))(v24, v6, v7);
+    (*(downloadCompletionBlock + 16))(downloadCompletionBlock, resultCopy, errorCopy);
     [(FPDownloadOperation *)self setDownloadCompletionBlock:0];
   }
 
   v27.receiver = self;
   v27.super_class = FPDownloadOperation;
-  [(FPActionOperation *)&v27 finishWithResult:v6 error:v7];
+  [(FPActionOperation *)&v27 finishWithResult:resultCopy error:errorCopy];
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (FPDownloadOperation)initWithRemoteOperation:(id)a3 info:(id)a4
+- (FPDownloadOperation)initWithRemoteOperation:(id)operation info:(id)info
 {
   v5.receiver = self;
   v5.super_class = FPDownloadOperation;
   return [(FPActionOperation *)&v5 initWithProvider:0 action:0];
 }
 
-- (void)remoteOperationCompletedRoot:(id)a3 resultingItem:(id)a4 error:(id)a5 completion:(id)a6
+- (void)remoteOperationCompletedRoot:(id)root resultingItem:(id)item error:(id)error completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  rootCopy = root;
+  itemCopy = item;
+  errorCopy = error;
+  completionCopy = completion;
   v14 = fp_current_or_default_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [FPDownloadOperation remoteOperationCompletedRoot:v10 resultingItem:v12 error:v14 completion:?];
+    [FPDownloadOperation remoteOperationCompletedRoot:rootCopy resultingItem:errorCopy error:v14 completion:?];
   }
 
-  v13[2](v13);
-  v15 = [(FPOperation *)self callbackQueue];
+  completionCopy[2](completionCopy);
+  callbackQueue = [(FPOperation *)self callbackQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __83__FPDownloadOperation_remoteOperationCompletedRoot_resultingItem_error_completion___block_invoke;
   v17[3] = &unk_1E79390B8;
-  v18 = v11;
-  v19 = self;
-  v16 = v11;
-  dispatch_async(v15, v17);
+  v18 = itemCopy;
+  selfCopy = self;
+  v16 = itemCopy;
+  dispatch_async(callbackQueue, v17);
 }
 
 void __83__FPDownloadOperation_remoteOperationCompletedRoot_resultingItem_error_completion___block_invoke(uint64_t a1)
@@ -360,29 +360,29 @@ void __83__FPDownloadOperation_remoteOperationCompletedRoot_resultingItem_error_
   }
 }
 
-- (void)remoteOperationCreatedRoot:(id)a3 resultingItem:(id)a4 completion:(id)a5
+- (void)remoteOperationCreatedRoot:(id)root resultingItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a5;
+  rootCopy = root;
+  completionCopy = completion;
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [FPDownloadOperation remoteOperationCreatedRoot:v6 resultingItem:v8 completion:?];
+    [FPDownloadOperation remoteOperationCreatedRoot:rootCopy resultingItem:v8 completion:?];
   }
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 }
 
 - (void)remoteOperationProgressesAreReady
 {
-  v4 = [(FPOperation *)self callbackQueue];
+  callbackQueue = [(FPOperation *)self callbackQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __56__FPDownloadOperation_remoteOperationProgressesAreReady__block_invoke;
   v5[3] = &unk_1E7939038;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(callbackQueue, v5);
 }
 
 void __56__FPDownloadOperation_remoteOperationProgressesAreReady__block_invoke(uint64_t a1)
@@ -476,14 +476,14 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)_runWithRemoteOperation:(id)a3
+- (void)_runWithRemoteOperation:(id)operation
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__FPDownloadOperation__runWithRemoteOperation___block_invoke;
   v8[3] = &unk_1E7939C00;
   v8[4] = self;
-  v4 = [a3 remoteObjectProxyWithErrorHandler:v8];
+  v4 = [operation remoteObjectProxyWithErrorHandler:v8];
   remoteMoveOperation = self->_remoteMoveOperation;
   self->_remoteMoveOperation = v4;
 
@@ -530,27 +530,27 @@ void __47__FPDownloadOperation__runWithRemoteOperation___block_invoke_3(uint64_t
   dispatch_async(v10, v14);
 }
 
-- (void)_updateProgressWithUpdatedFileCountForItem:(id)a3
+- (void)_updateProgressWithUpdatedFileCountForItem:(id)item
 {
-  v6 = a3;
-  v4 = [v6 itemID];
+  itemCopy = item;
+  itemID = [itemCopy itemID];
 
-  if (v4)
+  if (itemID)
   {
-    v5 = [v6 itemID];
-    [(FPDownloadOperation *)self _removeProgressWithItemID:v5];
+    itemID2 = [itemCopy itemID];
+    [(FPDownloadOperation *)self _removeProgressWithItemID:itemID2];
   }
 }
 
 - (void)_setupParentProgress
 {
-  v3 = [(FPOperation *)self callbackQueue];
+  callbackQueue = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__FPDownloadOperation__setupParentProgress__block_invoke;
   block[3] = &unk_1E79399B0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(callbackQueue, block);
 }
 
 void __43__FPDownloadOperation__setupParentProgress__block_invoke(uint64_t a1)
@@ -628,21 +628,21 @@ void __43__FPDownloadOperation__setupParentProgress__block_invoke_2(uint64_t a1,
   [v10 _updateParentProgressForItem:v9 withUnitCount:v12];
 }
 
-- (void)_updateParentProgressForItem:(id)a3 withUnitCount:(id)a4
+- (void)_updateParentProgressForItem:(id)item withUnitCount:(id)count
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FPOperation *)self callbackQueue];
+  itemCopy = item;
+  countCopy = count;
+  callbackQueue = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__FPDownloadOperation__updateParentProgressForItem_withUnitCount___block_invoke;
   block[3] = &unk_1E7939090;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = itemCopy;
+  v13 = countCopy;
+  v9 = countCopy;
+  v10 = itemCopy;
+  dispatch_async(callbackQueue, block);
 }
 
 void __66__FPDownloadOperation__updateParentProgressForItem_withUnitCount___block_invoke(id *a1)
@@ -712,39 +712,39 @@ void __66__FPDownloadOperation__updateParentProgressForItem_withUnitCount___bloc
   }
 }
 
-- (void)_removeProgressWithItemID:(id)a3
+- (void)_removeProgressWithItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
-  v6 = [(NSMutableDictionary *)self->_childProxies objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_childProxies objectForKeyedSubscript:dCopy];
   [v6 stopTrackingIfStarted];
-  [(NSMutableDictionary *)self->_childProxies removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_childProxies removeObjectForKey:dCopy];
 }
 
-- (void)_retrieveChildProgressForItem:(id)a3 childProxies:(id)a4 parentSetup:(id)a5
+- (void)_retrieveChildProgressForItem:(id)item childProxies:(id)proxies parentSetup:(id)setup
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v11);
+  setupCopy = setup;
+  proxiesCopy = proxies;
+  itemCopy = item;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
-  v12 = [v10 fileURL];
+  fileURL = [itemCopy fileURL];
   v13 = objc_opt_new();
   [v13 setUpdateFileCount:1];
-  v14 = [v10 itemID];
+  itemID = [itemCopy itemID];
 
-  [v9 setObject:v13 forKeyedSubscript:v14];
+  [proxiesCopy setObject:v13 forKeyedSubscript:itemID];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __78__FPDownloadOperation__retrieveChildProgressForItem_childProxies_parentSetup___block_invoke;
   v16[3] = &unk_1E793C458;
-  v17 = v8;
-  v15 = v8;
+  v17 = setupCopy;
+  v15 = setupCopy;
   [v13 setProgressDidSetupHandler:v16];
-  [v13 startTrackingFileURL:v12 kind:*MEMORY[0x1E696A848] allowReadPausedProgressFromDisk:0];
+  [v13 startTrackingFileURL:fileURL kind:*MEMORY[0x1E696A848] allowReadPausedProgressFromDisk:0];
 }
 
 - (void)_completedWithResultsByRoot:(void *)a1 errorsByRoot:error:.cold.1(void *a1)

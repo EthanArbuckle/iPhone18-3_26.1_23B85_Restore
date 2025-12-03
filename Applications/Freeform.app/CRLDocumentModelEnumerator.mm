@@ -1,40 +1,40 @@
 @interface CRLDocumentModelEnumerator
-- (CRLDocumentModelEnumerator)initWithEnumerator:(id)a3 flags:(unint64_t)a4 filter:(id)a5;
-- (CRLDocumentModelEnumerator)initWithRootModelObject:(id)a3 flags:(unint64_t)a4 filter:(id)a5;
+- (CRLDocumentModelEnumerator)initWithEnumerator:(id)enumerator flags:(unint64_t)flags filter:(id)filter;
+- (CRLDocumentModelEnumerator)initWithRootModelObject:(id)object flags:(unint64_t)flags filter:(id)filter;
 - (id)nextObject;
-- (void)addFilter:(id)a3;
+- (void)addFilter:(id)filter;
 - (void)dealloc;
-- (void)enumerateUsingBlock:(id)a3;
+- (void)enumerateUsingBlock:(id)block;
 @end
 
 @implementation CRLDocumentModelEnumerator
 
-- (CRLDocumentModelEnumerator)initWithRootModelObject:(id)a3 flags:(unint64_t)a4 filter:(id)a5
+- (CRLDocumentModelEnumerator)initWithRootModelObject:(id)object flags:(unint64_t)flags filter:(id)filter
 {
-  v9 = a3;
-  v10 = a5;
+  objectCopy = object;
+  filterCopy = filter;
   v16.receiver = self;
   v16.super_class = CRLDocumentModelEnumerator;
   v11 = [(CRLDocumentModelEnumerator *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_root, a3);
-    v13 = objc_retainBlock(v10);
+    objc_storeStrong(&v11->_root, object);
+    v13 = objc_retainBlock(filterCopy);
     filter = v12->_filter;
     v12->_filter = v13;
 
-    v12->_flags = a4;
+    v12->_flags = flags;
   }
 
   return v12;
 }
 
-- (CRLDocumentModelEnumerator)initWithEnumerator:(id)a3 flags:(unint64_t)a4 filter:(id)a5
+- (CRLDocumentModelEnumerator)initWithEnumerator:(id)enumerator flags:(unint64_t)flags filter:(id)filter
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  enumeratorCopy = enumerator;
+  filterCopy = filter;
+  if (!enumeratorCopy)
   {
     v10 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -69,15 +69,15 @@
   v15 = [(CRLDocumentModelEnumerator *)&v21 init];
   if (v15)
   {
-    v16 = [NSMutableArray arrayWithObject:v8];
+    v16 = [NSMutableArray arrayWithObject:enumeratorCopy];
     enumeratorStack = v15->_enumeratorStack;
     v15->_enumeratorStack = v16;
 
-    v18 = objc_retainBlock(v9);
+    v18 = objc_retainBlock(filterCopy);
     filter = v15->_filter;
     v15->_filter = v18;
 
-    v15->_flags = a4;
+    v15->_flags = flags;
   }
 
   return v15;
@@ -95,11 +95,11 @@
   if (!self->_enumeratorStack)
   {
     v29 = 1;
-    v6 = [(CRLDocumentModelEnumerator *)self filter];
-    if (!v6 || ([(CRLDocumentModelEnumerator *)self filter], v2 = objc_claimAutoreleasedReturnValue(), [(CRLDocumentModelEnumerator *)self root], v3 = objc_claimAutoreleasedReturnValue(), (v2)[2](v2, v3, &self->_stop, &v29)))
+    filter = [(CRLDocumentModelEnumerator *)self filter];
+    if (!filter || ([(CRLDocumentModelEnumerator *)self filter], v2 = objc_claimAutoreleasedReturnValue(), [(CRLDocumentModelEnumerator *)self root], v3 = objc_claimAutoreleasedReturnValue(), (v2)[2](v2, v3, &self->_stop, &v29)))
     {
-      v5 = [(CRLDocumentModelEnumerator *)self root];
-      if (!v6)
+      root = [(CRLDocumentModelEnumerator *)self root];
+      if (!filter)
       {
         goto LABEL_8;
       }
@@ -107,30 +107,30 @@
 
     else
     {
-      v5 = 0;
+      root = 0;
     }
 
 LABEL_8:
     if (v29 == 1)
     {
-      v7 = [(CRLDocumentModelEnumerator *)self root];
+      root2 = [(CRLDocumentModelEnumerator *)self root];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
       {
-        v9 = [(CRLDocumentModelEnumerator *)self root];
-        v10 = [v9 childEnumeratorForUserFlags:self->_flags];
+        root3 = [(CRLDocumentModelEnumerator *)self root];
+        childEnumeratorForUserSearch = [root3 childEnumeratorForUserFlags:self->_flags];
       }
 
       else if ([(CRLDocumentModelEnumerator *)self isEnumeratingForUserSearch]&& ([(CRLDocumentModelEnumerator *)self root], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_opt_respondsToSelector(), v11, (v12 & 1) != 0))
       {
-        v9 = [(CRLDocumentModelEnumerator *)self root];
-        v10 = [v9 childEnumeratorForUserSearch];
+        root3 = [(CRLDocumentModelEnumerator *)self root];
+        childEnumeratorForUserSearch = [root3 childEnumeratorForUserSearch];
       }
 
       else
       {
-        v13 = [(CRLDocumentModelEnumerator *)self root];
+        root4 = [(CRLDocumentModelEnumerator *)self root];
         v14 = objc_opt_respondsToSelector();
 
         if ((v14 & 1) == 0)
@@ -138,12 +138,12 @@ LABEL_8:
           goto LABEL_17;
         }
 
-        v9 = [(CRLDocumentModelEnumerator *)self root];
-        v10 = [v9 childEnumerator];
+        root3 = [(CRLDocumentModelEnumerator *)self root];
+        childEnumeratorForUserSearch = [root3 childEnumerator];
       }
 
-      v15 = v10;
-      v16 = [NSMutableArray arrayWithObject:v10];
+      v15 = childEnumeratorForUserSearch;
+      v16 = [NSMutableArray arrayWithObject:childEnumeratorForUserSearch];
 
       if (v16)
       {
@@ -159,10 +159,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v5 = 0;
+  root = 0;
 LABEL_19:
-  v17 = [(CRLDocumentModelEnumerator *)self enumeratorStack];
-  if (![v17 count] || v5)
+  enumeratorStack = [(CRLDocumentModelEnumerator *)self enumeratorStack];
+  if (![enumeratorStack count] || root)
   {
 LABEL_42:
 
@@ -179,28 +179,28 @@ LABEL_42:
     }
 
     v28 = 1;
-    v19 = [(CRLDocumentModelEnumerator *)self enumeratorStack];
-    v20 = [v19 lastObject];
-    v5 = [v20 nextObject];
+    enumeratorStack2 = [(CRLDocumentModelEnumerator *)self enumeratorStack];
+    lastObject = [enumeratorStack2 lastObject];
+    root = [lastObject nextObject];
 
-    if (!v5)
+    if (!root)
     {
-      v21 = [(CRLDocumentModelEnumerator *)self enumeratorStack];
-      [v21 removeLastObject];
+      enumeratorStack3 = [(CRLDocumentModelEnumerator *)self enumeratorStack];
+      [enumeratorStack3 removeLastObject];
       goto LABEL_38;
     }
 
-    v21 = v5;
-    v22 = [(CRLDocumentModelEnumerator *)self filter];
-    v5 = v21;
-    if (v22)
+    enumeratorStack3 = root;
+    filter2 = [(CRLDocumentModelEnumerator *)self filter];
+    root = enumeratorStack3;
+    if (filter2)
     {
-      v23 = [(CRLDocumentModelEnumerator *)self filter];
-      v5 = v21;
-      if (((v23)[2](v23, v21, &self->_stop, &v28) & 1) == 0)
+      filter3 = [(CRLDocumentModelEnumerator *)self filter];
+      root = enumeratorStack3;
+      if (((filter3)[2](filter3, enumeratorStack3, &self->_stop, &v28) & 1) == 0)
       {
 
-        v5 = 0;
+        root = 0;
       }
     }
 
@@ -211,12 +211,12 @@ LABEL_42:
 
     if (objc_opt_respondsToSelector())
     {
-      v24 = [v21 childEnumeratorForUserFlags:self->_flags];
+      childEnumeratorForUserSearch2 = [enumeratorStack3 childEnumeratorForUserFlags:self->_flags];
     }
 
     else if ([(CRLDocumentModelEnumerator *)self isEnumeratingForUserSearch]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v24 = [v21 childEnumeratorForUserSearch];
+      childEnumeratorForUserSearch2 = [enumeratorStack3 childEnumeratorForUserSearch];
     }
 
     else
@@ -227,50 +227,50 @@ LABEL_42:
         goto LABEL_37;
       }
 
-      v24 = [v21 childEnumerator];
+      childEnumeratorForUserSearch2 = [enumeratorStack3 childEnumerator];
     }
 
-    v25 = v24;
+    v25 = childEnumeratorForUserSearch2;
 LABEL_37:
-    v26 = [(CRLDocumentModelEnumerator *)self enumeratorStack];
-    [v26 crl_addNonNilObject:v25];
+    enumeratorStack4 = [(CRLDocumentModelEnumerator *)self enumeratorStack];
+    [enumeratorStack4 crl_addNonNilObject:v25];
 
 LABEL_38:
-    v17 = [(CRLDocumentModelEnumerator *)self enumeratorStack];
-    if (![v17 count] || v5)
+    enumeratorStack = [(CRLDocumentModelEnumerator *)self enumeratorStack];
+    if (![enumeratorStack count] || root)
     {
       goto LABEL_42;
     }
   }
 
-  v5 = 0;
+  root = 0;
 LABEL_44:
 
-  return v5;
+  return root;
 }
 
-- (void)enumerateUsingBlock:(id)a3
+- (void)enumerateUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8 = 0;
-  v5 = [(CRLDocumentModelEnumerator *)self nextObject];
-  if (v5)
+  nextObject = [(CRLDocumentModelEnumerator *)self nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     do
     {
-      v7 = v6;
-      v4[2](v4, v6, &v8);
-      v6 = [(CRLDocumentModelEnumerator *)self nextObject];
+      v7 = nextObject2;
+      blockCopy[2](blockCopy, nextObject2, &v8);
+      nextObject2 = [(CRLDocumentModelEnumerator *)self nextObject];
     }
 
-    while (v6 && !v8);
+    while (nextObject2 && !v8);
   }
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   filter = self->_filter;
   if (filter)
   {
@@ -279,7 +279,7 @@ LABEL_44:
     v11[2] = sub_1002E54B0;
     v11[3] = &unk_1018536F0;
     v12 = objc_retainBlock(filter);
-    v13 = v4;
+    v13 = filterCopy;
     v6 = v12;
     v7 = objc_retainBlock(v11);
     v8 = self->_filter;
@@ -288,7 +288,7 @@ LABEL_44:
 
   else
   {
-    v9 = objc_retainBlock(v4);
+    v9 = objc_retainBlock(filterCopy);
     v10 = self->_filter;
     self->_filter = v9;
   }

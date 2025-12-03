@@ -4,42 +4,42 @@
 - (BOOL)_createCaptureSessions;
 - (BOOL)_determineMetadataCameraConfiguration;
 - (BOOL)_determineVideoCameraOutputMetadataIdentifiers;
-- (BOOL)_startSessionForMetadataCameraStream:(id)a3 outError:(id *)a4;
-- (BOOL)_startSessionForVideoCameraStream:(id)a3 outError:(id *)a4;
-- (BOOL)_stopSessionForMetadataCameraStream:(id)a3 outError:(id *)a4;
-- (BOOL)_stopSessionForVideoCameraStream:(id)a3 outError:(id *)a4;
-- (BOOL)startSessionForStream:(id)a3 outError:(id *)a4;
-- (BOOL)stopSessionForStream:(id)a3 outError:(id *)a4;
-- (CMCaptureLocalSessionController)initWithQueue:(id)a3;
+- (BOOL)_startSessionForMetadataCameraStream:(id)stream outError:(id *)error;
+- (BOOL)_startSessionForVideoCameraStream:(id)stream outError:(id *)error;
+- (BOOL)_stopSessionForMetadataCameraStream:(id)stream outError:(id *)error;
+- (BOOL)_stopSessionForVideoCameraStream:(id)stream outError:(id *)error;
+- (BOOL)startSessionForStream:(id)stream outError:(id *)error;
+- (BOOL)stopSessionForStream:(id)stream outError:(id *)error;
+- (CMCaptureLocalSessionController)initWithQueue:(id)queue;
 - (id)_newMetadataCameraFigCaptureSessionConfiguration;
 - (id)_newVideoCameraFigCaptureSessionConfiguration;
-- (int)setCaptureSourceProperty:(id)a3 withValue:(id)a4;
+- (int)setCaptureSourceProperty:(id)property withValue:(id)value;
 - (void)_createCaptureSessions;
 - (void)_enableConnectionsForActiveVideoCameraSourcedSinkIDs;
 - (void)_resolveCaptureSourcePropertiesFromLocalVideoCameraSessionConfigurationValues;
 - (void)_resolveMetadataCameraFigCaptureSessionConfigurationValuesFromLocalSessionConfigurationValues;
 - (void)_resolveVideoCameraFigCaptureSessionConfigurationValuesFromLocalSessionConfigurationValues;
-- (void)_startSession:(OpaqueFigCaptureSession *)a3 sessionRunningInOut:(BOOL *)a4;
-- (void)_stopSession:(OpaqueFigCaptureSession *)a3 sessionRunningInOut:(BOOL *)a4;
+- (void)_startSession:(OpaqueFigCaptureSession *)session sessionRunningInOut:(BOOL *)out;
+- (void)_stopSession:(OpaqueFigCaptureSession *)session sessionRunningInOut:(BOOL *)out;
 - (void)_updateFrameRate;
 - (void)_updateSessionConfigurationForMetadataCameraStream;
 - (void)_updateSessionConfigurationForVideoCameraStream;
-- (void)_updateVideoCameraActiveSinkIDsWhenStartingStream:(id)a3;
-- (void)_updateVideoCameraActiveSinkIDsWhenStoppingStream:(id)a3;
-- (void)associateStream:(id)a3 withSink:(id)a4;
+- (void)_updateVideoCameraActiveSinkIDsWhenStartingStream:(id)stream;
+- (void)_updateVideoCameraActiveSinkIDsWhenStoppingStream:(id)stream;
+- (void)associateStream:(id)stream withSink:(id)sink;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setActiveMaxFrameRate:(id)a3;
-- (void)setActiveMinFrameRate:(id)a3;
-- (void)updateSessionConfigurationForStream:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setActiveMaxFrameRate:(id)rate;
+- (void)setActiveMinFrameRate:(id)rate;
+- (void)updateSessionConfigurationForStream:(id)stream;
 @end
 
 @implementation CMCaptureLocalSessionController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -48,14 +48,14 @@
   }
 }
 
-- (CMCaptureLocalSessionController)initWithQueue:(id)a3
+- (CMCaptureLocalSessionController)initWithQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = CMCaptureLocalSessionController;
   v4 = [(CMCaptureLocalSessionController *)&v7 init];
   if (v4)
   {
-    v4->_queue = a3;
+    v4->_queue = queue;
     v4->_streamsBySinkID = objc_alloc_init(MEMORY[0x1E695DF90]);
     v4->_activeVideoCameraSinkIDs = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v4->_activeVideoCameraOutputMetadataIdentifiers = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -138,7 +138,7 @@
       v88 = 136315906;
       v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
       v90 = 2114;
-      v91 = self;
+      selfCopy11 = self;
       v92 = 2112;
       v93 = videoCameraCaptureSession;
       v94 = 1024;
@@ -172,7 +172,7 @@
       v88 = 136315650;
       v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
       v90 = 2112;
-      v91 = self;
+      selfCopy11 = self;
       v92 = 1024;
       LODWORD(v93) = v5;
       _os_log_send_and_compose_impl();
@@ -202,7 +202,7 @@
       v88 = 136315394;
       v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
       v90 = 2112;
-      v91 = self;
+      selfCopy11 = self;
       _os_log_send_and_compose_impl();
     }
 
@@ -234,7 +234,7 @@ LABEL_141:
       v88 = 136315906;
       v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
       v90 = 2114;
-      v91 = self;
+      selfCopy11 = self;
       v92 = 2112;
       v93 = v14;
       v94 = 2112;
@@ -306,7 +306,7 @@ LABEL_48:
             v88 = 136315650;
             v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
             v90 = 2114;
-            v91 = self;
+            selfCopy11 = self;
             v92 = 1024;
             LODWORD(v93) = v35;
             goto LABEL_72;
@@ -350,7 +350,7 @@ LABEL_41:
             v88 = 136315650;
             v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
             v90 = 2114;
-            v91 = self;
+            selfCopy11 = self;
             v92 = 1024;
             LODWORD(v93) = v31;
             goto LABEL_46;
@@ -382,7 +382,7 @@ LABEL_97:
             v88 = 136315394;
             v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
             v90 = 2114;
-            v91 = self;
+            selfCopy11 = self;
 LABEL_46:
             _os_log_send_and_compose_impl();
           }
@@ -430,7 +430,7 @@ LABEL_71:
             v88 = 136315650;
             v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
             v90 = 2114;
-            v91 = self;
+            selfCopy11 = self;
             v92 = 1024;
             LODWORD(v93) = v41;
 LABEL_72:
@@ -453,10 +453,10 @@ LABEL_72:
               goto LABEL_74;
             }
 
-            v54 = [v53 firstObject];
-            self->_videoCameraDeviceFormat = v54;
+            firstObject = [v53 firstObject];
+            self->_videoCameraDeviceFormat = firstObject;
             v55 = MEMORY[0x1E696AD98];
-            [(FigCaptureSourceFormat *)v54 minSupportedFrameRate];
+            [(FigCaptureSourceFormat *)firstObject minSupportedFrameRate];
             self->_activeMinFrameRate = [v55 numberWithFloat:?];
             v56 = MEMORY[0x1E696AD98];
             [(FigCaptureSourceFormat *)self->_videoCameraDeviceFormat maxSupportedFrameRate];
@@ -484,7 +484,7 @@ LABEL_72:
                 v88 = 136315650;
                 v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
                 v90 = 2112;
-                v91 = activeMinFrameRate;
+                selfCopy11 = activeMinFrameRate;
                 v92 = 2112;
                 v93 = activeMaxFrameRate;
                 _os_log_send_and_compose_impl();
@@ -519,7 +519,7 @@ LABEL_110:
           v88 = 136315394;
           v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
           v90 = 2114;
-          v91 = self;
+          selfCopy11 = self;
           goto LABEL_72;
         }
 
@@ -553,7 +553,7 @@ LABEL_110:
                 v88 = 136316162;
                 v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
                 v90 = 2114;
-                v91 = self;
+                selfCopy11 = self;
                 v92 = 2112;
                 v93 = metadataCameraCaptureSession;
                 v94 = 2112;
@@ -710,7 +710,7 @@ LABEL_121:
     v88 = 136315394;
     v89 = "[CMCaptureLocalSessionController _createCaptureSessions]";
     v90 = 2112;
-    v91 = self;
+    selfCopy11 = self;
     _os_log_send_and_compose_impl();
   }
 
@@ -745,7 +745,7 @@ LABEL_122:
   FigCaptureFrameRateFromFloat();
   [(FigCaptureSourceConfiguration *)v4 setRequiredMaxFrameRate:v8, v7];
   [(FigCaptureSourceConfiguration *)v4 setRequiredFormat:self->_videoCameraDeviceFormat];
-  v25 = self;
+  selfCopy = self;
   [(FigCaptureSourceFormat *)self->_videoCameraDeviceFormat maxSupportedFrameRate];
   v26 = v4;
   [(FigCaptureSourceConfiguration *)v4 setMaxFrameRateClientOverride:?];
@@ -766,8 +766,8 @@ LABEL_122:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = [(NSMutableDictionary *)self->_streamsBySinkID allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v27 count:16];
+  allKeys = [(NSMutableDictionary *)self->_streamsBySinkID allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v28 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -778,7 +778,7 @@ LABEL_122:
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
@@ -787,7 +787,7 @@ LABEL_122:
           v16 = objc_alloc_init(FigVideoCaptureConnectionConfiguration);
           -[FigCaptureConnectionConfiguration setConnectionID:](v16, "setConnectionID:", [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.cameracaptured-%@", v15]);
           [(FigCaptureConnectionConfiguration *)v16 setSourceConfiguration:v26];
-          -[FigCaptureConnectionConfiguration setUnderlyingDeviceType:](v16, "setUnderlyingDeviceType:", [-[NSDictionary objectForKeyedSubscript:](v25->_videoCameraCaptureSourceAttributes objectForKeyedSubscript:{@"DeviceType", "intValue"}]);
+          -[FigCaptureConnectionConfiguration setUnderlyingDeviceType:](v16, "setUnderlyingDeviceType:", [-[NSDictionary objectForKeyedSubscript:](selfCopy->_videoCameraCaptureSourceAttributes objectForKeyedSubscript:{@"DeviceType", "intValue"}]);
           v17 = objc_alloc_init(FigCaptureVideoDataSinkConfiguration);
           [(FigCaptureConnectionConfiguration *)v16 setSinkConfiguration:v17];
           [(FigCaptureSinkConfiguration *)[(FigCaptureConnectionConfiguration *)v16 sinkConfiguration] setSinkID:v15];
@@ -797,7 +797,7 @@ LABEL_122:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v28 objects:v27 count:16];
     }
 
     while (v12);
@@ -806,7 +806,7 @@ LABEL_122:
   v18 = objc_alloc_init(FigMetadataObjectCaptureConnectionConfiguration);
   -[FigCaptureConnectionConfiguration setConnectionID:](v18, "setConnectionID:", [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.cameracaptured-%@", @"CMCaptureLocalSessionSinkID_MetadataObject"]);
   [(FigCaptureConnectionConfiguration *)v18 setSourceConfiguration:v26];
-  -[FigCaptureConnectionConfiguration setUnderlyingDeviceType:](v18, "setUnderlyingDeviceType:", [-[NSDictionary objectForKeyedSubscript:](v25->_videoCameraCaptureSourceAttributes objectForKeyedSubscript:{@"DeviceType", "intValue"}]);
+  -[FigCaptureConnectionConfiguration setUnderlyingDeviceType:](v18, "setUnderlyingDeviceType:", [-[NSDictionary objectForKeyedSubscript:](selfCopy->_videoCameraCaptureSourceAttributes objectForKeyedSubscript:{@"DeviceType", "intValue"}]);
   [(FigCaptureConnectionConfiguration *)v18 setMediaType:1836016234];
   [(FigMetadataObjectCaptureConnectionConfiguration *)v18 setMetadataIdentifiers:0];
   [(FigMetadataObjectCaptureConnectionConfiguration *)v18 setMetadataRectOfInterest:0.0, 0.0, 1.0, 1.0];
@@ -883,15 +883,15 @@ LABEL_122:
   return v3;
 }
 
-- (void)_updateVideoCameraActiveSinkIDsWhenStartingStream:(id)a3
+- (void)_updateVideoCameraActiveSinkIDsWhenStartingStream:(id)stream
 {
-  if ([objc_msgSend(a3 "associatedSinkIDs")])
+  if ([objc_msgSend(stream "associatedSinkIDs")])
   {
     activeVideoCameraSinkIDs = self->_activeVideoCameraSinkIDs;
     p_activeVideoCameraSinkIDs = &self->_activeVideoCameraSinkIDs;
     [(NSMutableSet *)activeVideoCameraSinkIDs addObject:@"CMCaptureLocalSessionSinkID_MainVideo"];
     v7 = @"CMCaptureLocalSessionSinkID_MetadataObject";
-    if (![objc_msgSend(a3 "associatedSinkIDs")] || !objc_msgSend(objc_msgSend(a3, "requestedMetadataObjects"), "count"))
+    if (![objc_msgSend(stream "associatedSinkIDs")] || !objc_msgSend(objc_msgSend(stream, "requestedMetadataObjects"), "count"))
     {
       return;
     }
@@ -900,7 +900,7 @@ LABEL_122:
   else
   {
     v7 = @"CMCaptureLocalSessionSinkID_DeskcamVideo";
-    if (![objc_msgSend(a3 "associatedSinkIDs")])
+    if (![objc_msgSend(stream "associatedSinkIDs")])
     {
       return;
     }
@@ -913,9 +913,9 @@ LABEL_122:
   [(NSMutableSet *)v8 addObject:v7];
 }
 
-- (void)_updateVideoCameraActiveSinkIDsWhenStoppingStream:(id)a3
+- (void)_updateVideoCameraActiveSinkIDsWhenStoppingStream:(id)stream
 {
-  if ([objc_msgSend(a3 "associatedSinkIDs")])
+  if ([objc_msgSend(stream "associatedSinkIDs")])
   {
     [(NSMutableSet *)self->_activeVideoCameraSinkIDs removeObject:@"CMCaptureLocalSessionSinkID_MainVideo"];
     activeVideoCameraSinkIDs = self->_activeVideoCameraSinkIDs;
@@ -924,7 +924,7 @@ LABEL_122:
 
   else
   {
-    if (![objc_msgSend(a3 "associatedSinkIDs")])
+    if (![objc_msgSend(stream "associatedSinkIDs")])
     {
       return;
     }
@@ -942,8 +942,8 @@ LABEL_122:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(FigCaptureSessionConfiguration *)self->_videoCameraCaptureSessionConfig connectionConfigurations];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+  connectionConfigurations = [(FigCaptureSessionConfiguration *)self->_videoCameraCaptureSessionConfig connectionConfigurations];
+  v4 = [(NSArray *)connectionConfigurations countByEnumeratingWithState:&v9 objects:v8 count:16];
   if (v4)
   {
     v5 = v4;
@@ -955,7 +955,7 @@ LABEL_122:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectionConfigurations);
         }
 
         [*(*(&v9 + 1) + 8 * v7) setEnabled:{-[NSMutableSet containsObject:](self->_activeVideoCameraSinkIDs, "containsObject:", objc_msgSend(objc_msgSend(*(*(&v9 + 1) + 8 * v7), "sinkConfiguration"), "sinkID"))}];
@@ -963,7 +963,7 @@ LABEL_122:
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+      v5 = [(NSArray *)connectionConfigurations countByEnumeratingWithState:&v9 objects:v8 count:16];
     }
 
     while (v5);
@@ -976,8 +976,8 @@ LABEL_122:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v3 = [(FigCaptureSessionConfiguration *)self->_videoCameraCaptureSessionConfig connectionConfigurations];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v38 objects:v37 count:16];
+  connectionConfigurations = [(FigCaptureSessionConfiguration *)self->_videoCameraCaptureSessionConfig connectionConfigurations];
+  v4 = [(NSArray *)connectionConfigurations countByEnumeratingWithState:&v38 objects:v37 count:16];
   if (v4)
   {
     v5 = v4;
@@ -990,7 +990,7 @@ LABEL_122:
       {
         if (*v39 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectionConfigurations);
         }
 
         v9 = *(*(&v38 + 1) + 8 * i);
@@ -1002,8 +1002,8 @@ LABEL_122:
           if (v11)
           {
             v12 = v11;
-            v13 = [v11 dimensions];
-            if ([v9 outputWidth] != v13 || (v14 = objc_msgSend(v12, "dimensions") >> 32, objc_msgSend(v9, "outputHeight") != v14) || (v15 = objc_msgSend(v12, "outputFormat"), v15 != objc_msgSend(v9, "outputFormat")))
+            dimensions = [v11 dimensions];
+            if ([v9 outputWidth] != dimensions || (v14 = objc_msgSend(v12, "dimensions") >> 32, objc_msgSend(v9, "outputHeight") != v14) || (v15 = objc_msgSend(v12, "outputFormat"), v15 != objc_msgSend(v9, "outputFormat")))
             {
               v6 |= [(NSMutableSet *)self->_activeVideoCameraSinkIDs containsObject:v10, v22, v23];
             }
@@ -1029,18 +1029,18 @@ LABEL_122:
 
               if (v18)
               {
-                v19 = [v9 outputWidth];
-                v20 = [v9 outputHeight];
+                outputWidth = [v9 outputWidth];
+                outputHeight = [v9 outputHeight];
                 v25 = 136316162;
                 v26 = "[CMCaptureLocalSessionController _configureVideoCameraStreamOutputFormat]";
                 v27 = 2114;
-                v28 = self;
+                selfCopy = self;
                 v29 = 2112;
                 v30 = v10;
                 v31 = 1024;
-                v32 = v19;
+                v32 = outputWidth;
                 v33 = 1024;
-                v34 = v20;
+                v34 = outputHeight;
                 LODWORD(v23) = 44;
                 v22 = &v25;
                 _os_log_send_and_compose_impl();
@@ -1053,7 +1053,7 @@ LABEL_122:
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v38 objects:v37 count:16];
+      v5 = [(NSArray *)connectionConfigurations countByEnumeratingWithState:&v38 objects:v37 count:16];
     }
 
     while (v5);
@@ -1158,17 +1158,17 @@ LABEL_122:
 
 - (void)_resolveVideoCameraFigCaptureSessionConfigurationValuesFromLocalSessionConfigurationValues
 {
-  v3 = [(NSArray *)[(FigCaptureSessionConfiguration *)self->_videoCameraCaptureSessionConfig sourceConfigurations] firstObject];
-  v4 = [v3 faceDrivenAEAFEnabledByDefault];
-  [v3 setFaceDrivenAEAFEnabledByDefault:v4];
-  v22 = v3;
-  [v3 setFaceDrivenAEAFMode:v4];
+  firstObject = [(NSArray *)[(FigCaptureSessionConfiguration *)self->_videoCameraCaptureSessionConfig sourceConfigurations] firstObject];
+  faceDrivenAEAFEnabledByDefault = [firstObject faceDrivenAEAFEnabledByDefault];
+  [firstObject setFaceDrivenAEAFEnabledByDefault:faceDrivenAEAFEnabledByDefault];
+  v22 = firstObject;
+  [firstObject setFaceDrivenAEAFMode:faceDrivenAEAFEnabledByDefault];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(FigCaptureSessionConfiguration *)self->_videoCameraCaptureSessionConfig connectionConfigurations];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v24 objects:v23 count:16];
+  connectionConfigurations = [(FigCaptureSessionConfiguration *)self->_videoCameraCaptureSessionConfig connectionConfigurations];
+  v6 = [(NSArray *)connectionConfigurations countByEnumeratingWithState:&v24 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1180,7 +1180,7 @@ LABEL_122:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectionConfigurations);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -1202,14 +1202,14 @@ LABEL_122:
           [v12 manualFramingZoomFactor];
           *&v15 = v15;
           [v22 setVideoZoomFactor:v15];
-          v16 = v5;
+          v16 = connectionConfigurations;
           v17 = v9;
-          v18 = [v12 cinematicFramingEnabled];
-          v19 = [v11 videoDataSinkConfiguration];
-          v20 = v18;
+          cinematicFramingEnabled = [v12 cinematicFramingEnabled];
+          videoDataSinkConfiguration = [v11 videoDataSinkConfiguration];
+          v20 = cinematicFramingEnabled;
           v9 = v17;
-          v5 = v16;
-          [v19 setCinematicFramingEnabled:v20];
+          connectionConfigurations = v16;
+          [videoDataSinkConfiguration setCinematicFramingEnabled:v20];
           v21 = v12;
           goto LABEL_13;
         }
@@ -1230,7 +1230,7 @@ LABEL_13:
         }
       }
 
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v24 objects:v23 count:16];
+      v7 = [(NSArray *)connectionConfigurations countByEnumeratingWithState:&v24 objects:v23 count:16];
     }
 
     while (v7);
@@ -1239,16 +1239,16 @@ LABEL_13:
 
 - (void)_resolveMetadataCameraFigCaptureSessionConfigurationValuesFromLocalSessionConfigurationValues
 {
-  v3 = [(NSArray *)[(FigCaptureSessionConfiguration *)self->_metadataCameraCaptureSessionConfig sourceConfigurations] firstObject];
-  v4 = [v3 faceDrivenAEAFEnabledByDefault];
-  [v3 setFaceDrivenAEAFEnabledByDefault:v4];
-  [v3 setFaceDrivenAEAFMode:v4];
+  firstObject = [(NSArray *)[(FigCaptureSessionConfiguration *)self->_metadataCameraCaptureSessionConfig sourceConfigurations] firstObject];
+  faceDrivenAEAFEnabledByDefault = [firstObject faceDrivenAEAFEnabledByDefault];
+  [firstObject setFaceDrivenAEAFEnabledByDefault:faceDrivenAEAFEnabledByDefault];
+  [firstObject setFaceDrivenAEAFMode:faceDrivenAEAFEnabledByDefault];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(FigCaptureSessionConfiguration *)self->_metadataCameraCaptureSessionConfig connectionConfigurations];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  connectionConfigurations = [(FigCaptureSessionConfiguration *)self->_metadataCameraCaptureSessionConfig connectionConfigurations];
+  v6 = [(NSArray *)connectionConfigurations countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1260,7 +1260,7 @@ LABEL_13:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectionConfigurations);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -1296,7 +1296,7 @@ LABEL_13:
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v7 = [(NSArray *)connectionConfigurations countByEnumeratingWithState:&v12 objects:v11 count:16];
     }
 
     while (v7);
@@ -1309,8 +1309,8 @@ LABEL_13:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v3 = [(FigCaptureSessionConfiguration *)self->_videoCameraCaptureSessionConfig connectionConfigurations];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v63 objects:v62 count:16];
+  connectionConfigurations = [(FigCaptureSessionConfiguration *)self->_videoCameraCaptureSessionConfig connectionConfigurations];
+  v4 = [(NSArray *)connectionConfigurations countByEnumeratingWithState:&v63 objects:v62 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1321,7 +1321,7 @@ LABEL_13:
       {
         if (*v64 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectionConfigurations);
         }
 
         if ([objc_msgSend(objc_msgSend(*(*(&v63 + 1) + 8 * i) "sinkConfiguration")])
@@ -1357,7 +1357,7 @@ LABEL_13:
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v63 objects:v62 count:16];
+      v5 = [(NSArray *)connectionConfigurations countByEnumeratingWithState:&v63 objects:v62 count:16];
       if (v5)
       {
         continue;
@@ -1470,9 +1470,9 @@ LABEL_39:
     CFRelease(v26);
   }
 
-  v34 = [-[NSArray firstObject](-[FigCaptureSessionConfiguration sourceConfigurations](self->_videoCameraCaptureSessionConfig sourceConfigurations];
+  sourceConfigurations = [-[NSArray firstObject](-[FigCaptureSessionConfiguration sourceConfigurations](self->_videoCameraCaptureSessionConfig sourceConfigurations];
   v35 = self->_videoCameraCaptureSource;
-  v36 = [MEMORY[0x1E696AD98] numberWithInt:v34];
+  v36 = [MEMORY[0x1E696AD98] numberWithInt:sourceConfigurations];
   v37 = *(*(CMBaseObjectGetVTable() + 8) + 56);
   if (v37)
   {
@@ -1509,7 +1509,7 @@ LABEL_39:
       v51 = 136315650;
       v52 = "[CMCaptureLocalSessionController _resolveCaptureSourcePropertiesFromLocalVideoCameraSessionConfigurationValues]";
       v53 = 1024;
-      *v54 = v34;
+      *v54 = sourceConfigurations;
       *&v54[4] = 1024;
       *&v54[6] = v38;
       LODWORD(v50) = 24;
@@ -1567,22 +1567,22 @@ LABEL_52:
   }
 }
 
-- (BOOL)startSessionForStream:(id)a3 outError:(id *)a4
+- (BOOL)startSessionForStream:(id)stream outError:(id *)error
 {
-  if ([objc_msgSend(a3 "sampleBufferReceiver")] == 2)
+  if ([objc_msgSend(stream "sampleBufferReceiver")] == 2)
   {
 
-    return [(CMCaptureLocalSessionController *)self _startSessionForMetadataCameraStream:a3 outError:a4];
+    return [(CMCaptureLocalSessionController *)self _startSessionForMetadataCameraStream:stream outError:error];
   }
 
   else
   {
 
-    return [(CMCaptureLocalSessionController *)self _startSessionForVideoCameraStream:a3 outError:a4];
+    return [(CMCaptureLocalSessionController *)self _startSessionForVideoCameraStream:stream outError:error];
   }
 }
 
-- (BOOL)_startSessionForVideoCameraStream:(id)a3 outError:(id *)a4
+- (BOOL)_startSessionForVideoCameraStream:(id)stream outError:(id *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -1591,9 +1591,9 @@ LABEL_52:
   v4 = atomic_load(&self->_invalidated);
   if (v4)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"CMCaptureLocalDomain" code:1 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"CMCaptureLocalDomain" code:1 userInfo:0];
     }
   }
 
@@ -1607,7 +1607,7 @@ LABEL_52:
     block[2] = __78__CMCaptureLocalSessionController__startSessionForVideoCameraStream_outError___block_invoke;
     block[3] = &unk_1E7999DD0;
     objc_copyWeak(&v11, &location);
-    block[4] = a3;
+    block[4] = stream;
     block[5] = self;
     block[6] = &v13;
     dispatch_async_and_wait(queue, block);
@@ -1815,7 +1815,7 @@ LABEL_40:
   }
 }
 
-- (BOOL)_startSessionForMetadataCameraStream:(id)a3 outError:(id *)a4
+- (BOOL)_startSessionForMetadataCameraStream:(id)stream outError:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -1824,9 +1824,9 @@ LABEL_40:
   v4 = atomic_load(&self->_invalidated);
   if (v4)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"CMCaptureLocalDomain" code:1 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"CMCaptureLocalDomain" code:1 userInfo:0];
     }
   }
 
@@ -1932,22 +1932,22 @@ void __81__CMCaptureLocalSessionController__startSessionForMetadataCameraStream_
   }
 }
 
-- (BOOL)stopSessionForStream:(id)a3 outError:(id *)a4
+- (BOOL)stopSessionForStream:(id)stream outError:(id *)error
 {
-  if ([objc_msgSend(a3 "sampleBufferReceiver")] == 2)
+  if ([objc_msgSend(stream "sampleBufferReceiver")] == 2)
   {
 
-    return [(CMCaptureLocalSessionController *)self _stopSessionForMetadataCameraStream:a3 outError:a4];
+    return [(CMCaptureLocalSessionController *)self _stopSessionForMetadataCameraStream:stream outError:error];
   }
 
   else
   {
 
-    return [(CMCaptureLocalSessionController *)self _stopSessionForVideoCameraStream:a3 outError:a4];
+    return [(CMCaptureLocalSessionController *)self _stopSessionForVideoCameraStream:stream outError:error];
   }
 }
 
-- (BOOL)_stopSessionForVideoCameraStream:(id)a3 outError:(id *)a4
+- (BOOL)_stopSessionForVideoCameraStream:(id)stream outError:(id *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -1956,9 +1956,9 @@ void __81__CMCaptureLocalSessionController__startSessionForMetadataCameraStream_
   v4 = atomic_load(&self->_invalidated);
   if (v4)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"CMCaptureLocalDomain" code:1 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"CMCaptureLocalDomain" code:1 userInfo:0];
     }
   }
 
@@ -1972,7 +1972,7 @@ void __81__CMCaptureLocalSessionController__startSessionForMetadataCameraStream_
     block[2] = __77__CMCaptureLocalSessionController__stopSessionForVideoCameraStream_outError___block_invoke;
     block[3] = &unk_1E7999DD0;
     objc_copyWeak(&v11, &location);
-    block[4] = a3;
+    block[4] = stream;
     block[5] = self;
     block[6] = &v13;
     dispatch_async_and_wait(queue, block);
@@ -2085,7 +2085,7 @@ void __77__CMCaptureLocalSessionController__stopSessionForVideoCameraStream_outE
   }
 }
 
-- (BOOL)_stopSessionForMetadataCameraStream:(id)a3 outError:(id *)a4
+- (BOOL)_stopSessionForMetadataCameraStream:(id)stream outError:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -2094,9 +2094,9 @@ void __77__CMCaptureLocalSessionController__stopSessionForVideoCameraStream_outE
   v4 = atomic_load(&self->_invalidated);
   if (v4)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"CMCaptureLocalDomain" code:1 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"CMCaptureLocalDomain" code:1 userInfo:0];
     }
   }
 
@@ -2202,8 +2202,8 @@ void __80__CMCaptureLocalSessionController__stopSessionForMetadataCameraStream_o
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v15 = [(FigCaptureSessionConfiguration *)self->_metadataCameraCaptureSessionConfig sourceConfigurations];
-  v16 = [(NSArray *)v15 countByEnumeratingWithState:&v31 objects:v30 count:16];
+  sourceConfigurations = [(FigCaptureSessionConfiguration *)self->_metadataCameraCaptureSessionConfig sourceConfigurations];
+  v16 = [(NSArray *)sourceConfigurations countByEnumeratingWithState:&v31 objects:v30 count:16];
   if (v16)
   {
     v17 = v16;
@@ -2214,7 +2214,7 @@ void __80__CMCaptureLocalSessionController__stopSessionForMetadataCameraStream_o
       {
         if (*v32 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(sourceConfigurations);
         }
 
         v20 = *(*(&v31 + 1) + 8 * j);
@@ -2226,7 +2226,7 @@ void __80__CMCaptureLocalSessionController__stopSessionForMetadataCameraStream_o
         [v20 setRequiredMinFrameRate:{v24, v23}];
       }
 
-      v17 = [(NSArray *)v15 countByEnumeratingWithState:&v31 objects:v30 count:16];
+      v17 = [(NSArray *)sourceConfigurations countByEnumeratingWithState:&v31 objects:v30 count:16];
     }
 
     while (v17);
@@ -2256,7 +2256,7 @@ void __80__CMCaptureLocalSessionController__stopSessionForMetadataCameraStream_o
   }
 }
 
-- (void)setActiveMaxFrameRate:(id)a3
+- (void)setActiveMaxFrameRate:(id)rate
 {
   v3 = atomic_load(&self->_invalidated);
   if ((v3 & 1) == 0)
@@ -2269,7 +2269,7 @@ void __80__CMCaptureLocalSessionController__stopSessionForMetadataCameraStream_o
     v7[2] = __57__CMCaptureLocalSessionController_setActiveMaxFrameRate___block_invoke;
     v7[3] = &unk_1E7999E20;
     objc_copyWeak(&v8, &location);
-    v7[4] = a3;
+    v7[4] = rate;
     v7[5] = self;
     dispatch_async_and_wait(queue, v7);
     objc_destroyWeak(&v8);
@@ -2327,7 +2327,7 @@ void __57__CMCaptureLocalSessionController_setActiveMaxFrameRate___block_invoke(
   }
 }
 
-- (void)setActiveMinFrameRate:(id)a3
+- (void)setActiveMinFrameRate:(id)rate
 {
   v3 = atomic_load(&self->_invalidated);
   if ((v3 & 1) == 0)
@@ -2340,7 +2340,7 @@ void __57__CMCaptureLocalSessionController_setActiveMaxFrameRate___block_invoke(
     block[2] = __57__CMCaptureLocalSessionController_setActiveMinFrameRate___block_invoke;
     block[3] = &unk_1E798F9E8;
     objc_copyWeak(&v8, &location);
-    block[4] = a3;
+    block[4] = rate;
     dispatch_async_and_wait(queue, block);
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -2392,9 +2392,9 @@ void __57__CMCaptureLocalSessionController_setActiveMinFrameRate___block_invoke(
   }
 }
 
-- (void)updateSessionConfigurationForStream:(id)a3
+- (void)updateSessionConfigurationForStream:(id)stream
 {
-  if ([objc_msgSend(a3 "sampleBufferReceiver")] == 2)
+  if ([objc_msgSend(stream "sampleBufferReceiver")] == 2)
   {
 
     [(CMCaptureLocalSessionController *)self _updateSessionConfigurationForMetadataCameraStream];
@@ -2584,7 +2584,7 @@ LABEL_12:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   objc_initWeak(&location, self);
   dispatch_assert_queue_not_V2(self->_queue);
@@ -2594,8 +2594,8 @@ LABEL_12:
   block[2] = __82__CMCaptureLocalSessionController_observeValueForKeyPath_ofObject_change_context___block_invoke;
   block[3] = &unk_1E7999E48;
   objc_copyWeak(&v11, &location);
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = path;
+  block[5] = object;
   block[6] = self;
   dispatch_async_and_wait(queue, block);
   objc_destroyWeak(&v11);
@@ -2735,7 +2735,7 @@ void __82__CMCaptureLocalSessionController_observeValueForKeyPath_ofObject_chang
   }
 }
 
-- (int)setCaptureSourceProperty:(id)a3 withValue:(id)a4
+- (int)setCaptureSourceProperty:(id)property withValue:(id)value
 {
   v12 = 0;
   v13 = &v12;
@@ -2749,15 +2749,15 @@ void __82__CMCaptureLocalSessionController_observeValueForKeyPath_ofObject_chang
   block[2] = __70__CMCaptureLocalSessionController_setCaptureSourceProperty_withValue___block_invoke;
   block[3] = &unk_1E7999E70;
   objc_copyWeak(&v10, &location);
-  block[5] = a4;
+  block[5] = value;
   block[6] = &v12;
-  block[4] = a3;
+  block[4] = property;
   dispatch_async_and_wait(queue, block);
-  LODWORD(a4) = *(v13 + 6);
+  LODWORD(value) = *(v13 + 6);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
   _Block_object_dispose(&v12, 8);
-  return a4;
+  return value;
 }
 
 void __70__CMCaptureLocalSessionController_setCaptureSourceProperty_withValue___block_invoke(uint64_t a1)
@@ -2887,10 +2887,10 @@ void __70__CMCaptureLocalSessionController_setCaptureSourceProperty_withValue___
   }
 }
 
-- (void)_startSession:(OpaqueFigCaptureSession *)a3 sessionRunningInOut:(BOOL *)a4
+- (void)_startSession:(OpaqueFigCaptureSession *)session sessionRunningInOut:(BOOL *)out
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (!*a4)
+  if (!*out)
   {
     if ([+[FigCaptureSystemStatus systemState] sharedInstance]
     {
@@ -2909,7 +2909,7 @@ void __70__CMCaptureLocalSessionController_setCaptureSourceProperty_withValue___
       v7 = *(*(CMBaseObjectGetVTable() + 16) + 32);
       if (v7)
       {
-        v7(a3);
+        v7(session);
       }
 
       else
@@ -2921,22 +2921,22 @@ void __70__CMCaptureLocalSessionController_setCaptureSourceProperty_withValue___
         CMNotificationCenterPostNotification();
       }
 
-      *a4 = 1;
+      *out = 1;
     }
   }
 }
 
-- (void)_stopSession:(OpaqueFigCaptureSession *)a3 sessionRunningInOut:(BOOL *)a4
+- (void)_stopSession:(OpaqueFigCaptureSession *)session sessionRunningInOut:(BOOL *)out
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (*a4)
+  if (*out)
   {
-    *a4 = 0;
+    *out = 0;
     v6 = *(*(CMBaseObjectGetVTable() + 16) + 40);
     if (v6)
     {
 
-      v6(a3);
+      v6(session);
     }
 
     else
@@ -2950,11 +2950,11 @@ void __70__CMCaptureLocalSessionController_setCaptureSourceProperty_withValue___
   }
 }
 
-- (void)associateStream:(id)a3 withSink:(id)a4
+- (void)associateStream:(id)stream withSink:(id)sink
 {
-  if (a3)
+  if (stream)
   {
-    if (a4)
+    if (sink)
     {
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }
@@ -2963,13 +2963,13 @@ void __70__CMCaptureLocalSessionController_setCaptureSourceProperty_withValue___
 
 - (void)_createCaptureSessions
 {
-  v4 = *a1;
+  v4 = *self;
   if (v4)
   {
     CFRelease(v4);
   }
 
-  *a1 = 0;
+  *self = 0;
   if (*a2)
   {
     CFRelease(*a2);

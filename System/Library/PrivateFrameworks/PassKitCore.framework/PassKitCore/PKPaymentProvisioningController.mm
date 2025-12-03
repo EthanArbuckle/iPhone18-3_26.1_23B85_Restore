@@ -1,171 +1,171 @@
 @interface PKPaymentProvisioningController
 + (id)watchWebServiceForIssuerProvisioning;
-- (BOOL)_credentialIsValidForSetupConfiguration:(id)a3;
+- (BOOL)_credentialIsValidForSetupConfiguration:(id)configuration;
 - (BOOL)_hasSetupConfiguration;
-- (BOOL)_isExtensionSupported:(id)a3 usingUnsupportedProvisioningExtensions:(id)a4;
+- (BOOL)_isExtensionSupported:(id)supported usingUnsupportedProvisioningExtensions:(id)extensions;
 - (BOOL)_isProvisioningPaymentAccount;
-- (BOOL)_isValidLocation:(id)a3;
+- (BOOL)_isValidLocation:(id)location;
 - (BOOL)hasCreditPaymentPass;
 - (BOOL)hasDebitPaymentPass;
 - (BOOL)hasPaymentPass;
 - (BOOL)isPasscodeUpgradeRequired;
-- (BOOL)isWatchSupportedForProduct:(id)a3;
-- (BOOL)setState:(int64_t)a3 forCredential:(id)a4;
+- (BOOL)isWatchSupportedForProduct:(id)product;
+- (BOOL)setState:(int64_t)state forCredential:(id)credential;
 - (BOOL)suppressDefaultCardholderNameField;
 - (NSArray)allCredentials;
 - (PKPaymentPass)provisionedPass;
-- (PKPaymentProvisioningController)initWithWebService:(id)a3 localPaymentService:(id)a4 paymentOffersController:(id)a5;
-- (PKPaymentProvisioningController)initWithWebService:(id)a3 paymentOffersController:(id)a4;
-- (PKPaymentProvisioningController)initWithWebService:(id)a3 paymentSetupRequest:(id)a4;
+- (PKPaymentProvisioningController)initWithWebService:(id)service localPaymentService:(id)paymentService paymentOffersController:(id)controller;
+- (PKPaymentProvisioningController)initWithWebService:(id)service paymentOffersController:(id)controller;
+- (PKPaymentProvisioningController)initWithWebService:(id)service paymentSetupRequest:(id)request;
 - (PKProvisioningAnalyticsSessionPreflightReporter)analyticsReporter;
-- (id)_accountsForFeatureIdentifier:(unint64_t)a3;
-- (id)_displayableErrorOverrideForUnderlyingError:(id)a3;
-- (id)_doesDisplayableErrorConstitutePreflightFailure:(id)a3;
+- (id)_accountsForFeatureIdentifier:(unint64_t)identifier;
+- (id)_displayableErrorOverrideForUnderlyingError:(id)error;
+- (id)_doesDisplayableErrorConstitutePreflightFailure:(id)failure;
 - (id)_effectiveSessionIdentifier;
-- (id)_eligibleMarketNames:(id)a3;
-- (id)_fetchOrCreateProductsForIdentifier:(unint64_t)a3;
-- (id)_filterFPANCredentials:(id)a3 forExistingCredentials:(id)a4;
-- (id)_filterPaymentSetupProducts:(id)a3;
-- (id)_filteredPaymentSetupProductSections:(id)a3;
+- (id)_eligibleMarketNames:(id)names;
+- (id)_fetchOrCreateProductsForIdentifier:(unint64_t)identifier;
+- (id)_filterFPANCredentials:(id)credentials forExistingCredentials:(id)existingCredentials;
+- (id)_filterPaymentSetupProducts:(id)products;
+- (id)_filteredPaymentSetupProductSections:(id)sections;
 - (id)_localizedProgressDescriptionForEnablingCard;
 - (id)_mockBrowseBanksResponse;
-- (id)_paymentPassWithPaymentMethodType:(unint64_t)a3;
+- (id)_paymentPassWithPaymentMethodType:(unint64_t)type;
 - (id)_supportedFeatureIdentifierStrings;
 - (id)_supportedFeatureIdentifierStringsForAccountProvisioning;
 - (id)_supportedProvisioningExtensions;
 - (id)associatedCredentialsForDefaultBehaviour;
-- (id)associatedCredentialsForProductIdentifier:(id)a3;
-- (id)displayableErrorForError:(id)a3;
-- (id)displayableErrorForProvisioningError:(id)a3;
+- (id)associatedCredentialsForProductIdentifier:(id)identifier;
+- (id)displayableErrorForError:(id)error;
+- (id)displayableErrorForProvisioningError:(id)error;
 - (id)localCredentials;
-- (id)pendingProvisioningForCredential:(id)a3;
+- (id)pendingProvisioningForCredential:(id)credential;
 - (id)provisioningTracker;
 - (int64_t)availableSecureElementPassSpaces;
 - (unint64_t)countSupportedProvisioningExtensions;
-- (void)_addOrUpdateProvisonedPassData:(id)a3;
-- (void)_applyIdentityConfiguration:(unint64_t)a3 activeConfigurations:(id)a4 completion:(id)a5;
-- (void)_associateCredential:(id)a3 withCompletionHandler:(id)a4;
-- (void)_associateCredentials:(id)a3 withCompletionHandler:(id)a4;
+- (void)_addOrUpdateProvisonedPassData:(id)data;
+- (void)_applyIdentityConfiguration:(unint64_t)configuration activeConfigurations:(id)configurations completion:(id)completion;
+- (void)_associateCredential:(id)credential withCompletionHandler:(id)handler;
+- (void)_associateCredentials:(id)credentials withCompletionHandler:(id)handler;
 - (void)_beginReportingIfNecessary;
-- (void)_browsableBanksWithRequest:(id)a3 completion:(id)a4;
-- (void)_deletePaymentPass:(id)a3;
-- (void)_downloadRemoteAssetsForPaymentPass:(id)a3 paymentCredential:(id)a4 completion:(id)a5;
+- (void)_browsableBanksWithRequest:(id)request completion:(id)completion;
+- (void)_deletePaymentPass:(id)pass;
+- (void)_downloadRemoteAssetsForPaymentPass:(id)pass paymentCredential:(id)credential completion:(id)completion;
 - (void)_endRequiringUpgradedPasscodeIfNecessary;
 - (void)_endSessionIfNecessary;
-- (void)_handleProvisioningError:(id)a3 forRequest:(id)a4 pass:(id)a5;
-- (void)_identityConfigurationWithCompletion:(id)a3;
+- (void)_handleProvisioningError:(id)error forRequest:(id)request pass:(id)pass;
+- (void)_identityConfigurationWithCompletion:(id)completion;
 - (void)_informDelegatesOfAccountsUpdated;
-- (void)_informDelegatesOfPaymentPassUpdateOnCredential:(id)a3;
-- (void)_loadMoreInfoItemForMarket:(id)a3 eligibleMarkets:(id)a4 completionHandler:(id)a5;
+- (void)_informDelegatesOfPaymentPassUpdateOnCredential:(id)credential;
+- (void)_loadMoreInfoItemForMarket:(id)market eligibleMarkets:(id)markets completionHandler:(id)handler;
 - (void)_metadataUpdatedOnCredentials;
 - (void)_noteProvisioningDidBegin;
 - (void)_noteProvisioningDidEnd;
 - (void)_passAlreadyProvisioned;
-- (void)_preflightRequirementsUpdated:(unint64_t)a3 displayableError:(id)a4;
-- (void)_queryEligibilityForCredential:(id)a3 completion:(id)a4;
-- (void)_queryRequirementsForCredential:(id)a3 completion:(id)a4;
-- (void)_registerDevice:(id)a3;
+- (void)_preflightRequirementsUpdated:(unint64_t)updated displayableError:(id)error;
+- (void)_queryEligibilityForCredential:(id)credential completion:(id)completion;
+- (void)_queryRequirementsForCredential:(id)credential completion:(id)completion;
+- (void)_registerDevice:(id)device;
 - (void)_reloadSetupProducts;
-- (void)_requestProvisioning:(id)a3 withCompletionHandler:(id)a4;
-- (void)_requestRequirements:(id)a3 withCompletionHandler:(id)a4;
-- (void)_retrieveFPANCredentialsWithCompletion:(id)a3;
-- (void)_retrievePendingCarKeys:(id)a3;
-- (void)_setLocalizedProgressDescription:(id)a3;
-- (void)_setState:(int64_t)a3 notify:(BOOL)a4;
-- (void)_setupAccountCredentialForProvisioning:(id)a3 completion:(id)a4;
+- (void)_requestProvisioning:(id)provisioning withCompletionHandler:(id)handler;
+- (void)_requestRequirements:(id)requirements withCompletionHandler:(id)handler;
+- (void)_retrieveFPANCredentialsWithCompletion:(id)completion;
+- (void)_retrievePendingCarKeys:(id)keys;
+- (void)_setLocalizedProgressDescription:(id)description;
+- (void)_setState:(int64_t)state notify:(BOOL)notify;
+- (void)_setupAccountCredentialForProvisioning:(id)provisioning completion:(id)completion;
 - (void)_setupAccounts;
-- (void)_setupFeatureApplications:(id)a3;
-- (void)_startLocationSearchWithTimeout:(double)a3 completion:(id)a4;
-- (void)_updateAllAssoicatedCredentialsMetadataWithCompletion:(id)a3;
-- (void)_updateCredentialWithPaymentPass:(id)a3 completion:(id)a4;
-- (void)_updateCredentialWithPaymentPassAssets:(id)a3 completion:(id)a4;
+- (void)_setupFeatureApplications:(id)applications;
+- (void)_startLocationSearchWithTimeout:(double)timeout completion:(id)completion;
+- (void)_updateAllAssoicatedCredentialsMetadataWithCompletion:(id)completion;
+- (void)_updateCredentialWithPaymentPass:(id)pass completion:(id)completion;
+- (void)_updateCredentialWithPaymentPassAssets:(id)assets completion:(id)completion;
 - (void)_updateLocalizedProgressAndInvalidateTimer;
-- (void)_updatePaymentSetupProductModelExtensionsWithCompletion:(id)a3;
-- (void)_updatePaymentSetupProductModelWithAvailability:(unint64_t)a3 activeConfigurations:(id)a4;
-- (void)_updatePreflightRequirement:(unint64_t)a3 displayableError:(id)a4;
+- (void)_updatePaymentSetupProductModelExtensionsWithCompletion:(id)completion;
+- (void)_updatePaymentSetupProductModelWithAvailability:(unint64_t)availability activeConfigurations:(id)configurations;
+- (void)_updatePreflightRequirement:(unint64_t)requirement displayableError:(id)error;
 - (void)acceptTerms;
-- (void)accountAdded:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)associateCredentials:(id)a3 withCompletionHandler:(id)a4;
-- (void)cachedPaymentSetupProductModelWithCompletion:(id)a3;
-- (void)cleanupTransferredCredentialFromSourceDevice:(id)a3 completion:(id)a4;
+- (void)accountAdded:(id)added;
+- (void)addDelegate:(id)delegate;
+- (void)associateCredentials:(id)credentials withCompletionHandler:(id)handler;
+- (void)cachedPaymentSetupProductModelWithCompletion:(id)completion;
+- (void)cleanupTransferredCredentialFromSourceDevice:(id)device completion:(id)completion;
 - (void)dealloc;
 - (void)declineTerms;
-- (void)deleteCredential:(id)a3 completionHandler:(id)a4;
-- (void)didReceivePendingProvisioningUpdate:(id)a3;
-- (void)featureApplicationAdded:(id)a3;
-- (void)featureApplicationChanged:(id)a3;
-- (void)featureApplicationRemoved:(id)a3;
-- (void)finishOptionalExpressModeSetupForPass:(id)a3 withProvisioningTracker:(id)a4 completion:(id)a5;
-- (void)handleOptionalExpressModeSetupDidFinishForPass:(id)a3 withExpressModes:(id)a4 provisioningTracker:(id)a5 completion:(id)a6;
-- (void)ingestSecureElementPassForCredential:(id)a3 completion:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)passcodeUpgradeCompleted:(BOOL)a3;
-- (void)paymentWebService:(id)a3 didCompleteTSMConnectionForTaskID:(unint64_t)a4;
-- (void)paymentWebService:(id)a3 didQueueTSMConnectionForTaskID:(unint64_t)a4;
-- (void)performDeviceCheckInIfNeeded:(id)a3;
-- (void)preflightPasscodeUpgradeWithCompletion:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)preflightWithRequirements:(unint64_t)a3 completionRequirements:(unint64_t)a4 completion:(id)a5;
-- (void)preflightWithRequirements:(unint64_t)a3 update:(id)a4;
-- (void)proofingFlowManager:(id)a3 completedProofingWithError:(id)a4;
-- (void)proofingFlowManager:(id)a3 didChangeActiveConfigurations:(id)a4;
-- (void)provisionHomeKeyCredential:(id)a3 completionHandler:(id)a4;
-- (void)provisioningExtensionProductsWithCompletionHandler:(id)a3;
-- (void)registerDevice:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)deleteCredential:(id)credential completionHandler:(id)handler;
+- (void)didReceivePendingProvisioningUpdate:(id)update;
+- (void)featureApplicationAdded:(id)added;
+- (void)featureApplicationChanged:(id)changed;
+- (void)featureApplicationRemoved:(id)removed;
+- (void)finishOptionalExpressModeSetupForPass:(id)pass withProvisioningTracker:(id)tracker completion:(id)completion;
+- (void)handleOptionalExpressModeSetupDidFinishForPass:(id)pass withExpressModes:(id)modes provisioningTracker:(id)tracker completion:(id)completion;
+- (void)ingestSecureElementPassForCredential:(id)credential completion:(id)completion;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)passcodeUpgradeCompleted:(BOOL)completed;
+- (void)paymentWebService:(id)service didCompleteTSMConnectionForTaskID:(unint64_t)d;
+- (void)paymentWebService:(id)service didQueueTSMConnectionForTaskID:(unint64_t)d;
+- (void)performDeviceCheckInIfNeeded:(id)needed;
+- (void)preflightPasscodeUpgradeWithCompletion:(id)completion;
+- (void)preflightWithCompletion:(id)completion;
+- (void)preflightWithRequirements:(unint64_t)requirements completionRequirements:(unint64_t)completionRequirements completion:(id)completion;
+- (void)preflightWithRequirements:(unint64_t)requirements update:(id)update;
+- (void)proofingFlowManager:(id)manager completedProofingWithError:(id)error;
+- (void)proofingFlowManager:(id)manager didChangeActiveConfigurations:(id)configurations;
+- (void)provisionHomeKeyCredential:(id)credential completionHandler:(id)handler;
+- (void)provisioningExtensionProductsWithCompletionHandler:(id)handler;
+- (void)registerDevice:(id)device;
+- (void)removeDelegate:(id)delegate;
 - (void)removeProvisionedPasses;
-- (void)requestEligibility:(id)a3 withCompletionHandler:(id)a4;
-- (void)requestExternalizedAuthForWatchWithVisibleViewController:(id)a3 completion:(id)a4;
-- (void)requestProvisioning:(id)a3 withCompletion:(id)a4;
-- (void)requestProvisioning:(id)a3 withCompletionHandler:(id)a4;
-- (void)requestProvisioningMethodMetadataForProduct:(id)a3 completionHandler:(id)a4;
-- (void)requestPurchasesForProduct:(id)a3 completionHandler:(id)a4;
-- (void)requestRequirements:(id)a3 withCompletionHandler:(id)a4;
+- (void)requestEligibility:(id)eligibility withCompletionHandler:(id)handler;
+- (void)requestExternalizedAuthForWatchWithVisibleViewController:(id)controller completion:(id)completion;
+- (void)requestProvisioning:(id)provisioning withCompletion:(id)completion;
+- (void)requestProvisioning:(id)provisioning withCompletionHandler:(id)handler;
+- (void)requestProvisioningMethodMetadataForProduct:(id)product completionHandler:(id)handler;
+- (void)requestPurchasesForProduct:(id)product completionHandler:(id)handler;
+- (void)requestRequirements:(id)requirements withCompletionHandler:(id)handler;
 - (void)reset;
-- (void)resetForNewProvisioningForce:(BOOL)a3;
-- (void)resolveAmbiguousRequirementsWithProductIdentifier:(id)a3;
-- (void)resolveLocalEligibilityRequirementsForAppleBalanceCredential:(id)a3 withCompletion:(id)a4;
-- (void)resolveProvisioningForCredential:(id)a3;
-- (void)resolveRequirementsForIssuerProvisioningExtensionCredential:(id)a3;
-- (void)resolveRequirementsForShareableCredential:(id)a3;
-- (void)resolveRequirementsUsingProduct:(id)a3;
-- (void)resolveRequirementsUsingProvisioningMethodMetadata:(id)a3;
-- (void)retrieveAccountCredentials:(id)a3;
-- (void)retrieveAllAvailableCredentials:(id)a3;
-- (void)retrieveRemoteCredentials:(id)a3;
-- (void)setAllowedFeatureIdentifiers:(id)a3;
-- (void)setAnalyticsReporter:(id)a3;
-- (void)setupAccountCredentialForProvisioning:(id)a3 completion:(id)a4;
-- (void)setupProductForProvisioning:(id)a3 includePurchases:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)storeExternalizedAuth:(id)a3;
-- (void)triggerWatchProvisioningForAppleBalanceCredential:(id)a3;
-- (void)updatePaymentSetupProductModelWithCompletionHandler:(id)a3;
-- (void)updateRemoteCredentials:(id)a3 withCompletionHandler:(id)a4;
-- (void)updateStateAfterProvisioning:(id)a3 credential:(id)a4 passes:(id)a5 moreInfoItems:(id)a6;
-- (void)validatePreconditions:(id)a3;
-- (void)validatePreconditionsAndRegister:(id)a3;
-- (void)verifyPassIsSupportedForExpressInLocalMarket:(id)a3 completion:(id)a4;
+- (void)resetForNewProvisioningForce:(BOOL)force;
+- (void)resolveAmbiguousRequirementsWithProductIdentifier:(id)identifier;
+- (void)resolveLocalEligibilityRequirementsForAppleBalanceCredential:(id)credential withCompletion:(id)completion;
+- (void)resolveProvisioningForCredential:(id)credential;
+- (void)resolveRequirementsForIssuerProvisioningExtensionCredential:(id)credential;
+- (void)resolveRequirementsForShareableCredential:(id)credential;
+- (void)resolveRequirementsUsingProduct:(id)product;
+- (void)resolveRequirementsUsingProvisioningMethodMetadata:(id)metadata;
+- (void)retrieveAccountCredentials:(id)credentials;
+- (void)retrieveAllAvailableCredentials:(id)credentials;
+- (void)retrieveRemoteCredentials:(id)credentials;
+- (void)setAllowedFeatureIdentifiers:(id)identifiers;
+- (void)setAnalyticsReporter:(id)reporter;
+- (void)setupAccountCredentialForProvisioning:(id)provisioning completion:(id)completion;
+- (void)setupProductForProvisioning:(id)provisioning includePurchases:(BOOL)purchases withCompletionHandler:(id)handler;
+- (void)storeExternalizedAuth:(id)auth;
+- (void)triggerWatchProvisioningForAppleBalanceCredential:(id)credential;
+- (void)updatePaymentSetupProductModelWithCompletionHandler:(id)handler;
+- (void)updateRemoteCredentials:(id)credentials withCompletionHandler:(id)handler;
+- (void)updateStateAfterProvisioning:(id)provisioning credential:(id)credential passes:(id)passes moreInfoItems:(id)items;
+- (void)validatePreconditions:(id)preconditions;
+- (void)validatePreconditionsAndRegister:(id)register;
+- (void)verifyPassIsSupportedForExpressInLocalMarket:(id)market completion:(id)completion;
 @end
 
 @implementation PKPaymentProvisioningController
 
-- (PKPaymentProvisioningController)initWithWebService:(id)a3 paymentOffersController:(id)a4
+- (PKPaymentProvisioningController)initWithWebService:(id)service paymentOffersController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
+  controllerCopy = controller;
+  serviceCopy = service;
   v8 = +[PKPaymentService paymentService];
-  v9 = [(PKPaymentProvisioningController *)self initWithWebService:v7 localPaymentService:v8 paymentOffersController:v6];
+  v9 = [(PKPaymentProvisioningController *)self initWithWebService:serviceCopy localPaymentService:v8 paymentOffersController:controllerCopy];
 
   return v9;
 }
 
-- (PKPaymentProvisioningController)initWithWebService:(id)a3 localPaymentService:(id)a4 paymentOffersController:(id)a5
+- (PKPaymentProvisioningController)initWithWebService:(id)service localPaymentService:(id)paymentService paymentOffersController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  serviceCopy = service;
+  paymentServiceCopy = paymentService;
+  controllerCopy = controller;
+  if (serviceCopy)
   {
     v57.receiver = self;
     v57.super_class = PKPaymentProvisioningController;
@@ -183,7 +183,7 @@
           _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "PKPaymentSetupUseXPCProxyTargetDevice() enabled. PKPaymentProvisioningController is using a wrapped web service for provisioning.", buf, 2u);
         }
 
-        v15 = [PKPaymentWebServiceProxyTargetDeviceDebugHelper webServiceWithProxiedTargetDevice:v9];
+        v15 = [PKPaymentWebServiceProxyTargetDeviceDebugHelper webServiceWithProxiedTargetDevice:serviceCopy];
         webService = v13->_webService;
         v13->_webService = v15;
 
@@ -192,14 +192,14 @@
 
       else
       {
-        objc_storeStrong(&v13->_webService, a3);
+        objc_storeStrong(&v13->_webService, service);
       }
 
       [(PKPaymentWebService *)v13->_webService addDelegate:v13];
       [(PKWebService *)v13->_webService resetWebServiceSessionMarker];
-      v18 = [(PKPaymentWebService *)v13->_webService targetDevice];
-      v19 = [v18 deviceName];
-      v20 = [v19 isEqualToString:@"Apple Watch"];
+      targetDevice = [(PKPaymentWebService *)v13->_webService targetDevice];
+      deviceName = [targetDevice deviceName];
+      v20 = [deviceName isEqualToString:@"Apple Watch"];
 
       if (v20 && (PKRunningInPassd() & 1) == 0)
       {
@@ -236,15 +236,15 @@
       credentialProvisioningQueue = v13->_credentialProvisioningQueue;
       v13->_credentialProvisioningQueue = v33;
 
-      v35 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+      pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
       delegates = v13->_delegates;
-      v13->_delegates = v35;
+      v13->_delegates = pk_weakObjectsHashTableUsingPointerPersonality;
 
       v37 = objc_alloc_init(PKPaymentSetupProductModel);
       paymentSetupProductModel = v13->_paymentSetupProductModel;
       v13->_paymentSetupProductModel = v37;
 
-      objc_storeStrong(&v13->_paymentService, a4);
+      objc_storeStrong(&v13->_paymentService, paymentService);
       [(PKPaymentService *)v13->_paymentService registerObserver:v13];
       v39 = dispatch_queue_create("com.apple.passkit.updateRecentsAndKeychainWithContactInformation", 0);
       updateQueue = v13->_updateQueue;
@@ -275,11 +275,11 @@
       pendingProvisionings = v13->_pendingProvisionings;
       v13->_pendingProvisionings = v51;
 
-      objc_storeStrong(&v13->_paymentOffersController, a5);
-      if (!v11 && (PKRunningInPassd() & 1) == 0)
+      objc_storeStrong(&v13->_paymentOffersController, controller);
+      if (!controllerCopy && (PKRunningInPassd() & 1) == 0)
       {
-        v53 = [[PKPaymentOffersSessionDetails alloc] initForWalletProvisioning];
-        v54 = [[PKPaymentOffersController alloc] initWithPaymentService:v13->_paymentService paymentWebService:v13->_webService configuration:v53];
+        initForWalletProvisioning = [[PKPaymentOffersSessionDetails alloc] initForWalletProvisioning];
+        v54 = [[PKPaymentOffersController alloc] initWithPaymentService:v13->_paymentService paymentWebService:v13->_webService configuration:initForWalletProvisioning];
         paymentOffersController = v13->_paymentOffersController;
         v13->_paymentOffersController = v54;
       }
@@ -303,24 +303,24 @@
   return v13;
 }
 
-- (PKPaymentProvisioningController)initWithWebService:(id)a3 paymentSetupRequest:(id)a4
+- (PKPaymentProvisioningController)initWithWebService:(id)service paymentSetupRequest:(id)request
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PKPaymentProvisioningController *)self initWithWebService:a3];
+  requestCopy = request;
+  v7 = [(PKPaymentProvisioningController *)self initWithWebService:service];
   v8 = v7;
   if (v7)
   {
     provisioningState = v7->_provisioningState;
-    v10 = [v6 configuration];
-    v11 = [v10 referrerIdentifier];
-    [(PKSecureElementProvisioningState *)provisioningState setReferrerIdentifier:v11];
+    configuration = [requestCopy configuration];
+    referrerIdentifier = [configuration referrerIdentifier];
+    [(PKSecureElementProvisioningState *)provisioningState setReferrerIdentifier:referrerIdentifier];
 
-    v12 = [v6 paymentSetupFeatures];
-    if (v12)
+    paymentSetupFeatures = [requestCopy paymentSetupFeatures];
+    if (paymentSetupFeatures)
     {
-      v33 = v6;
-      objc_storeStrong(&v8->_paymentSetupFeatures, v12);
+      v33 = requestCopy;
+      objc_storeStrong(&v8->_paymentSetupFeatures, paymentSetupFeatures);
       v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v14 = objc_alloc_init(MEMORY[0x1E695DFD8]);
       requiredTransitNetworkIdentifiers = v8->_requiredTransitNetworkIdentifiers;
@@ -330,8 +330,8 @@
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v32 = v12;
-      v16 = v12;
+      v32 = paymentSetupFeatures;
+      v16 = paymentSetupFeatures;
       v17 = [v16 countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v17)
       {
@@ -347,24 +347,24 @@
             }
 
             v21 = *(*(&v34 + 1) + 8 * i);
-            v22 = [v21 type];
-            if (v22 == 3)
+            type = [v21 type];
+            if (type == 3)
             {
               v23 = v8->_requiredTransitNetworkIdentifiers;
-              v24 = [v21 identifiers];
-              v25 = [(NSSet *)v23 setByAddingObjectsFromSet:v24];
+              identifiers = [v21 identifiers];
+              v25 = [(NSSet *)v23 setByAddingObjectsFromSet:identifiers];
               v26 = v8->_requiredTransitNetworkIdentifiers;
               v8->_requiredTransitNetworkIdentifiers = v25;
             }
 
-            if (v22 == 2)
+            if (type == 2)
             {
               v27 = 4;
             }
 
             else
             {
-              v27 = 2 * (v22 == 1);
+              v27 = 2 * (type == 1);
             }
 
             if (v27)
@@ -384,18 +384,18 @@
       allowedFeatureIdentifiers = v8->_allowedFeatureIdentifiers;
       v8->_allowedFeatureIdentifiers = v29;
 
-      v12 = v32;
-      v6 = v33;
+      paymentSetupFeatures = v32;
+      requestCopy = v33;
     }
   }
 
   return v8;
 }
 
-- (BOOL)isWatchSupportedForProduct:(id)a3
+- (BOOL)isWatchSupportedForProduct:(id)product
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  productCopy = product;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -415,11 +415,11 @@
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 identifiers];
+        identifiers = [v8 identifiers];
         v10 = MEMORY[0x1E695DFD8];
-        v11 = [v4 supportedTransitNetworkIdentifiers];
-        v12 = [v10 setWithArray:v11];
-        v13 = [v9 intersectsSet:v12];
+        supportedTransitNetworkIdentifiers = [productCopy supportedTransitNetworkIdentifiers];
+        v12 = [v10 setWithArray:supportedTransitNetworkIdentifiers];
+        v13 = [identifiers intersectsSet:v12];
 
         if (v13 && ([v8 supportedDevices] & 0xFFFFFFFFFFFFFFFELL) == 2)
         {
@@ -531,7 +531,7 @@ LABEL_12:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v18 = self;
+  selfCopy = self;
   v7 = self->_analyticsFeaturesToReport;
   v8 = [(NSMutableSet *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
@@ -570,8 +570,8 @@ LABEL_12:
   }
 
   v16 = [v6 copy];
-  featuresDidBeginReporting = v18->_featuresDidBeginReporting;
-  v18->_featuresDidBeginReporting = v16;
+  featuresDidBeginReporting = selfCopy->_featuresDidBeginReporting;
+  selfCopy->_featuresDidBeginReporting = v16;
 }
 
 - (void)reset
@@ -582,19 +582,19 @@ LABEL_12:
   [(PKPaymentProvisioningControllerCredentialQueue *)credentialProvisioningQueue setCredentialsToProvision:0];
 }
 
-- (void)resetForNewProvisioningForce:(BOOL)a3
+- (void)resetForNewProvisioningForce:(BOOL)force
 {
-  v3 = a3;
+  forceCopy = force;
   v22 = *MEMORY[0x1E69E9840];
   state = self->_state;
-  if (state != [(PKPaymentProvisioningController *)self _defaultResetState]|| v3)
+  if (state != [(PKPaymentProvisioningController *)self _defaultResetState]|| forceCopy)
   {
-    v7 = [(PKPaymentProvisioningController *)self _defaultResetState];
+    _defaultResetState = [(PKPaymentProvisioningController *)self _defaultResetState];
     v8 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = PKPaymentProvisioningControllerStateToString(self->_state);
-      v10 = PKPaymentProvisioningControllerStateToString(v7);
+      v10 = PKPaymentProvisioningControllerStateToString(_defaultResetState);
       v18 = 138412546;
       v19 = v9;
       v20 = 2112;
@@ -602,13 +602,13 @@ LABEL_12:
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Provisioning Controller Reset (from: %@ to: %@)", &v18, 0x16u);
     }
 
-    [(PKPaymentProvisioningController *)self _setState:v7 notify:1];
-    v11 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+    [(PKPaymentProvisioningController *)self _setState:_defaultResetState notify:1];
+    referrerIdentifier = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
     v12 = objc_alloc_init(PKSecureElementProvisioningState);
     provisioningState = self->_provisioningState;
     self->_provisioningState = v12;
 
-    [(PKSecureElementProvisioningState *)self->_provisioningState setReferrerIdentifier:v11];
+    [(PKSecureElementProvisioningState *)self->_provisioningState setReferrerIdentifier:referrerIdentifier];
     [(NSMutableOrderedSet *)self->_provisionedPasses removeAllObjects];
     moreInfoItems = self->_moreInfoItems;
     self->_moreInfoItems = 0;
@@ -627,25 +627,25 @@ LABEL_12:
   }
 }
 
-- (void)_setState:(int64_t)a3 notify:(BOOL)a4
+- (void)_setState:(int64_t)state notify:(BOOL)notify
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    if (a4)
+    self->_state = state;
+    if (notify)
     {
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 postNotificationName:@"PKPaymentProvisioningControllerStateDidChangeNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"PKPaymentProvisioningControllerStateDidChangeNotification" object:self];
     }
   }
 }
 
-- (void)validatePreconditions:(id)a3
+- (void)validatePreconditions:(id)preconditions
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self->_webService targetDevice];
+  preconditionsCopy = preconditions;
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
 
-  if (v5)
+  if (targetDevice)
   {
     PKTimeProfileBegin(0, @"validate");
     v6 = PKLogFacilityTypeGetObject(0x24uLL);
@@ -660,15 +660,15 @@ LABEL_12:
       }
     }
 
-    v9 = [(PKPaymentWebService *)self->_webService targetDevice];
+    targetDevice2 = [(PKPaymentWebService *)self->_webService targetDevice];
     webService = self->_webService;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __57__PKPaymentProvisioningController_validatePreconditions___block_invoke;
     v13[3] = &unk_1E79C4568;
     v13[4] = self;
-    v14 = v4;
-    [v9 paymentWebService:webService validateAddPreconditionsWithCompletion:v13];
+    v14 = preconditionsCopy;
+    [targetDevice2 paymentWebService:webService validateAddPreconditionsWithCompletion:v13];
   }
 
   else
@@ -680,10 +680,10 @@ LABEL_12:
       _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "No target device for preconditions, bailing out", buf, 2u);
     }
 
-    if (v4)
+    if (preconditionsCopy)
     {
       v12 = [(PKPaymentProvisioningController *)self displayableErrorForError:0];
-      (*(v4 + 2))(v4, 0, v12);
+      (*(preconditionsCopy + 2))(preconditionsCopy, 0, v12);
     }
   }
 }
@@ -828,21 +828,21 @@ uint64_t __57__PKPaymentProvisioningController_validatePreconditions___block_inv
   return result;
 }
 
-- (void)registerDevice:(id)a3
+- (void)registerDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__PKPaymentProvisioningController_registerDevice___block_invoke;
   v6[3] = &unk_1E79C4E50;
-  v7 = v4;
-  v5 = v4;
+  v7 = deviceCopy;
+  v5 = deviceCopy;
   [(PKPaymentProvisioningController *)self _registerDevice:v6];
 }
 
-- (void)_registerDevice:(id)a3
+- (void)_registerDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   PKTimeProfileBegin(0, @"register");
   v5 = PKLogFacilityTypeGetObject(0x24uLL);
   v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -861,12 +861,12 @@ uint64_t __57__PKPaymentProvisioningController_validatePreconditions___block_inv
   aBlock[2] = __51__PKPaymentProvisioningController__registerDevice___block_invoke;
   aBlock[3] = &unk_1E79D65E0;
   aBlock[4] = self;
-  v8 = v4;
+  v8 = deviceCopy;
   v20 = v8;
   v9 = _Block_copy(aBlock);
   if ([(PKPaymentWebService *)self->_webService _needsRegistrationShouldCheckSecureElementOwnership:1])
   {
-    v10 = [(PKPaymentWebService *)self->_webService targetDevice];
+    targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
     if (objc_opt_respondsToSelector())
     {
       v17[0] = MEMORY[0x1E69E9820];
@@ -875,7 +875,7 @@ uint64_t __57__PKPaymentProvisioningController_validatePreconditions___block_inv
       v17[3] = &unk_1E79D62F0;
       v11 = &v18;
       v18 = v9;
-      [v10 performDeviceRegistrationReturningContextForReason:@"ProvisoningController" brokerURL:0 completion:v17];
+      [targetDevice performDeviceRegistrationReturningContextForReason:@"ProvisoningController" brokerURL:0 completion:v17];
     }
 
     else if (objc_opt_respondsToSelector())
@@ -886,7 +886,7 @@ uint64_t __57__PKPaymentProvisioningController_validatePreconditions___block_inv
       v15[3] = &unk_1E79C8E90;
       v11 = &v16;
       v16 = v9;
-      [v10 performDeviceRegistrationForReason:@"ProvisoningController" brokerURL:0 completion:v15];
+      [targetDevice performDeviceRegistrationForReason:@"ProvisoningController" brokerURL:0 completion:v15];
     }
 
     else
@@ -997,16 +997,16 @@ void __51__PKPaymentProvisioningController__registerDevice___block_invoke_5(uint
   dispatch_async(MEMORY[0x1E69E96A0], v11);
 }
 
-- (void)validatePreconditionsAndRegister:(id)a3
+- (void)validatePreconditionsAndRegister:(id)register
 {
-  v4 = a3;
+  registerCopy = register;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__PKPaymentProvisioningController_validatePreconditionsAndRegister___block_invoke;
   v6[3] = &unk_1E79C4A68;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = registerCopy;
+  v5 = registerCopy;
   [(PKPaymentProvisioningController *)self validatePreconditions:v6];
 }
 
@@ -1045,11 +1045,11 @@ uint64_t __68__PKPaymentProvisioningController_validatePreconditionsAndRegister_
   return result;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(PKPaymentProvisioningController *)self _hasSetupConfiguration];
-  if (v4)
+  completionCopy = completion;
+  _hasSetupConfiguration = [(PKPaymentProvisioningController *)self _hasSetupConfiguration];
+  if (_hasSetupConfiguration)
   {
     v5 = 493;
   }
@@ -1059,7 +1059,7 @@ uint64_t __68__PKPaymentProvisioningController_validatePreconditionsAndRegister_
     v5 = 1007;
   }
 
-  if (v4)
+  if (_hasSetupConfiguration)
   {
     v6 = 493;
   }
@@ -1069,12 +1069,12 @@ uint64_t __68__PKPaymentProvisioningController_validatePreconditionsAndRegister_
     v6 = 263;
   }
 
-  [(PKPaymentProvisioningController *)self preflightWithRequirements:v5 completionRequirements:v6 completion:v7];
+  [(PKPaymentProvisioningController *)self preflightWithRequirements:v5 completionRequirements:v6 completion:completionCopy];
 }
 
-- (void)preflightWithRequirements:(unint64_t)a3 completionRequirements:(unint64_t)a4 completion:(id)a5
+- (void)preflightWithRequirements:(unint64_t)requirements completionRequirements:(unint64_t)completionRequirements completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
@@ -1084,12 +1084,12 @@ uint64_t __68__PKPaymentProvisioningController_validatePreconditionsAndRegister_
   v10[2] = __95__PKPaymentProvisioningController_preflightWithRequirements_completionRequirements_completion___block_invoke;
   v10[3] = &unk_1E79D6608;
   v12 = v15;
-  v13 = a3;
+  requirementsCopy = requirements;
   v10[4] = self;
-  v14 = a4;
-  v9 = v8;
+  completionRequirementsCopy = completionRequirements;
+  v9 = completionCopy;
   v11 = v9;
-  [(PKPaymentProvisioningController *)self preflightWithRequirements:a3 update:v10];
+  [(PKPaymentProvisioningController *)self preflightWithRequirements:requirements update:v10];
 
   _Block_object_dispose(v15, 8);
 }
@@ -1142,20 +1142,20 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)preflightWithRequirements:(unint64_t)a3 update:(id)a4
+- (void)preflightWithRequirements:(unint64_t)requirements update:(id)update
 {
-  v6 = a4;
+  updateCopy = update;
   v7 = MEMORY[0x1E69E96A0];
   v8 = MEMORY[0x1E69E96A0];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__PKPaymentProvisioningController_preflightWithRequirements_update___block_invoke;
   v10[3] = &unk_1E79C4A90;
-  v12 = v6;
-  v13 = a3;
+  v12 = updateCopy;
+  requirementsCopy = requirements;
   v10[4] = self;
   v11 = v7;
-  v9 = v6;
+  v9 = updateCopy;
   dispatch_async(v7, v10);
 }
 
@@ -2126,9 +2126,9 @@ uint64_t __68__PKPaymentProvisioningController_preflightWithRequirements_update_
   return result;
 }
 
-- (void)_updatePreflightRequirement:(unint64_t)a3 displayableError:(id)a4
+- (void)_updatePreflightRequirement:(unint64_t)requirement displayableError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = MEMORY[0x1E69E96A0];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v8 = [(NSMutableArray *)self->_preflighUpdateHandlers copy];
@@ -2136,12 +2136,12 @@ uint64_t __68__PKPaymentProvisioningController_preflightWithRequirements_update_
   v11[1] = 3221225472;
   v11[2] = __80__PKPaymentProvisioningController__updatePreflightRequirement_displayableError___block_invoke;
   v11[3] = &unk_1E79D6948;
-  v12 = v6;
-  v13 = self;
+  v12 = errorCopy;
+  selfCopy = self;
   v14 = v8;
-  v15 = a3;
+  requirementCopy = requirement;
   v9 = v8;
-  v10 = v6;
+  v10 = errorCopy;
   dispatch_async(v7, v11);
 }
 
@@ -2199,14 +2199,14 @@ uint64_t __80__PKPaymentProvisioningController__updatePreflightRequirement_displ
   return [*(a1 + 40) _preflightRequirementsUpdated:*(*(a1 + 40) + 392) displayableError:{*(a1 + 32), v10}];
 }
 
-- (id)_doesDisplayableErrorConstitutePreflightFailure:(id)a3
+- (id)_doesDisplayableErrorConstitutePreflightFailure:(id)failure
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  failureCopy = failure;
+  v4 = failureCopy;
+  if (failureCopy)
   {
-    v5 = [v3 userInfo];
-    v6 = [v5 objectForKey:*MEMORY[0x1E696AA08]];
+    userInfo = [failureCopy userInfo];
+    v6 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
     if (v6 && [v6 code] == -1009)
     {
@@ -2227,10 +2227,10 @@ uint64_t __80__PKPaymentProvisioningController__updatePreflightRequirement_displ
   return v7;
 }
 
-- (void)performDeviceCheckInIfNeeded:(id)a3
+- (void)performDeviceCheckInIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self->_webService targetDevice];
+  neededCopy = needed;
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   v6 = objc_opt_respondsToSelector();
   v7 = PKLogFacilityTypeGetObject(7uLL);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -2260,8 +2260,8 @@ uint64_t __80__PKPaymentProvisioningController__updatePreflightRequirement_displ
     v12[2] = __64__PKPaymentProvisioningController_performDeviceCheckInIfNeeded___block_invoke;
     v12[3] = &unk_1E79C4568;
     v12[4] = self;
-    v13 = v4;
-    [v5 performDeviceCheckInWithCompletion:v12];
+    v13 = neededCopy;
+    [targetDevice performDeviceCheckInWithCompletion:v12];
   }
 
   else
@@ -2272,9 +2272,9 @@ uint64_t __80__PKPaymentProvisioningController__updatePreflightRequirement_displ
       _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Target Device does not support check in", buf, 2u);
     }
 
-    if (v4)
+    if (neededCopy)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(neededCopy + 2))(neededCopy, 0, 0);
     }
   }
 }
@@ -2326,9 +2326,9 @@ uint64_t __64__PKPaymentProvisioningController_performDeviceCheckInIfNeeded___bl
   return result;
 }
 
-- (void)retrieveRemoteCredentials:(id)a3
+- (void)retrieveRemoteCredentials:(id)credentials
 {
-  v4 = a3;
+  credentialsCopy = credentials;
   if (PKShowFakeRemoteCredentials())
   {
     v5 = PKLogFacilityTypeGetObject(7uLL);
@@ -2343,7 +2343,7 @@ uint64_t __64__PKPaymentProvisioningController_performDeviceCheckInIfNeeded___bl
     block[1] = 3221225472;
     block[2] = __61__PKPaymentProvisioningController_retrieveRemoteCredentials___block_invoke;
     block[3] = &unk_1E79C44A0;
-    v7 = v4;
+    v7 = credentialsCopy;
     v23 = v6;
     v24 = v7;
     v8 = v6;
@@ -2372,7 +2372,7 @@ uint64_t __64__PKPaymentProvisioningController_performDeviceCheckInIfNeeded___bl
     v15[2] = __61__PKPaymentProvisioningController_retrieveRemoteCredentials___block_invoke_2;
     v15[3] = &unk_1E79D6A10;
     v15[4] = self;
-    v16 = v4;
+    v16 = credentialsCopy;
     v17 = buf;
     v12 = [(PKPaymentWebService *)webService remotePaymentCredentialsForRequest:v8 completion:v15];
     *(v19 + 3) = v12;
@@ -2726,10 +2726,10 @@ void __61__PKPaymentProvisioningController_retrieveRemoteCredentials___block_inv
 
   if (![(NSSet *)supportedFeatureIdentifierStrings count])
   {
-    v6 = [(PKPaymentWebService *)self->_webService targetDevice];
+    targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 supportedFeatureIdentifiersWithPaymentWebService:self->_webService];
+      v7 = [targetDevice supportedFeatureIdentifiersWithPaymentWebService:self->_webService];
       v8 = [v7 mutableCopy];
 
       v9 = PKLogFacilityTypeGetObject(0xEuLL);
@@ -2802,18 +2802,18 @@ LABEL_17:
   {
     if (![(NSSet *)supportedFeatureIdentifierStringsForAccountProvisioning count])
     {
-      v6 = [(PKPaymentWebService *)self->_webService targetDevice];
+      targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
       if (objc_opt_respondsToSelector())
       {
-        v7 = [v6 supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:self->_webService];
+        v7 = [targetDevice supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:self->_webService];
         v8 = [v7 mutableCopy];
 
-        v9 = PKLogFacilityTypeGetObject(0xEuLL);
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+        _supportedFeatureIdentifierStrings = PKLogFacilityTypeGetObject(0xEuLL);
+        if (os_log_type_enabled(_supportedFeatureIdentifierStrings, OS_LOG_TYPE_DEFAULT))
         {
           v15 = 138412290;
           v16 = v8;
-          _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Target device supports account provisioning features: %@", &v15, 0xCu);
+          _os_log_impl(&dword_1AD337000, _supportedFeatureIdentifierStrings, OS_LOG_TYPE_DEFAULT, "Target device supports account provisioning features: %@", &v15, 0xCu);
         }
       }
 
@@ -2826,8 +2826,8 @@ LABEL_17:
           _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Target device does not implement supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService: Falling back to more restrictive _supportedFeatureIdentifierStrings.", &v15, 2u);
         }
 
-        v9 = [(PKPaymentProvisioningController *)self _supportedFeatureIdentifierStrings];
-        v8 = [v9 mutableCopy];
+        _supportedFeatureIdentifierStrings = [(PKPaymentProvisioningController *)self _supportedFeatureIdentifierStrings];
+        v8 = [_supportedFeatureIdentifierStrings mutableCopy];
       }
 
       if (v8 && self->_allowedFeatureIdentifiers)
@@ -2855,13 +2855,13 @@ LABEL_17:
   return v5;
 }
 
-- (void)setAllowedFeatureIdentifiers:(id)a3
+- (void)setAllowedFeatureIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  if (self->_allowedFeatureIdentifiers != v5)
+  identifiersCopy = identifiers;
+  if (self->_allowedFeatureIdentifiers != identifiersCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_allowedFeatureIdentifiers, a3);
+    v8 = identifiersCopy;
+    objc_storeStrong(&self->_allowedFeatureIdentifiers, identifiers);
     supportedFeatureIdentifierStrings = self->_supportedFeatureIdentifierStrings;
     self->_supportedFeatureIdentifierStrings = 0;
 
@@ -2871,7 +2871,7 @@ LABEL_17:
     [(NSMutableSet *)self->_analyticsFeaturesToReport removeAllObjects];
     [(NSMutableSet *)self->_analyticsFeaturesToReport unionSet:v8];
     [(PKPaymentProvisioningController *)self _beginReportingIfNecessary];
-    v5 = v8;
+    identifiersCopy = v8;
   }
 }
 
@@ -2890,13 +2890,13 @@ LABEL_17:
   return analyticsReporter;
 }
 
-- (void)setAnalyticsReporter:(id)a3
+- (void)setAnalyticsReporter:(id)reporter
 {
-  v4 = a3;
-  v5 = v4;
+  reporterCopy = reporter;
+  v5 = reporterCopy;
   if (self->_analyticsReporter)
   {
-    [(PKProvisioningAnalyticsSessionPreflightReporter *)v4 affiliateReporter:?];
+    [(PKProvisioningAnalyticsSessionPreflightReporter *)reporterCopy affiliateReporter:?];
     analyticsReporter = self->_analyticsReporter;
   }
 
@@ -2908,10 +2908,10 @@ LABEL_17:
   self->_analyticsReporter = v5;
 }
 
-- (void)retrieveAccountCredentials:(id)a3
+- (void)retrieveAccountCredentials:(id)credentials
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self->_webService targetDevice];
+  credentialsCopy = credentials;
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   if (objc_opt_respondsToSelector())
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -2919,8 +2919,8 @@ LABEL_17:
     v8[2] = __62__PKPaymentProvisioningController_retrieveAccountCredentials___block_invoke;
     v8[3] = &unk_1E79C48D8;
     v8[4] = self;
-    v9 = v4;
-    [v5 updatedAccountsForProvisioningWithCompletion:v8];
+    v9 = credentialsCopy;
+    [targetDevice updatedAccountsForProvisioningWithCompletion:v8];
   }
 
   else
@@ -2932,9 +2932,9 @@ LABEL_17:
       _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Target device does not implement updatedAccountsForProvisioningWithCompletion", v7, 2u);
     }
 
-    if (v4)
+    if (credentialsCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(credentialsCopy + 2))(credentialsCopy, 0);
     }
   }
 }
@@ -3028,20 +3028,20 @@ void __62__PKPaymentProvisioningController_retrieveAccountCredentials___block_in
   }
 }
 
-- (id)_fetchOrCreateProductsForIdentifier:(unint64_t)a3
+- (id)_fetchOrCreateProductsForIdentifier:(unint64_t)identifier
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v5 = [(PKPaymentSetupProductModel *)self->_paymentSetupProductModel productsForFeatureIdentifier:?];
   v6 = [v5 count];
-  if (a3 == 4 || v6)
+  if (identifier == 4 || v6)
   {
     v10 = v5;
   }
 
   else
   {
-    v7 = [[PKPaymentSetupProduct alloc] initWithFeatureIdentifier:a3];
-    v8 = [(PKPaymentProvisioningController *)self _accountsForFeatureIdentifier:a3];
+    v7 = [[PKPaymentSetupProduct alloc] initWithFeatureIdentifier:identifier];
+    v8 = [(PKPaymentProvisioningController *)self _accountsForFeatureIdentifier:identifier];
     [(PKPaymentSetupProduct *)v7 setAccounts:v8];
     v12[0] = v7;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
@@ -3056,15 +3056,15 @@ void __62__PKPaymentProvisioningController_retrieveAccountCredentials___block_in
   return v10;
 }
 
-- (void)_setupFeatureApplications:(id)a3
+- (void)_setupFeatureApplications:(id)applications
 {
   v54 = *MEMORY[0x1E69E9840];
-  v30 = a3;
+  applicationsCopy = applications;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v26 = self;
+  selfCopy = self;
   obj = [(PKPaymentProvisioningController *)self _supportedFeatureIdentifierStrings];
   v27 = [obj countByEnumeratingWithState:&v43 objects:v53 count:16];
   if (v27)
@@ -3082,7 +3082,7 @@ void __62__PKPaymentProvisioningController_retrieveAccountCredentials___block_in
 
         v28 = v4;
         v5 = PKFeatureIdentifierFromString(*(*(&v43 + 1) + 8 * v4));
-        v6 = [(PKPaymentProvisioningController *)v26 _fetchOrCreateProductsForIdentifier:v5];
+        v6 = [(PKPaymentProvisioningController *)selfCopy _fetchOrCreateProductsForIdentifier:v5];
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
@@ -3109,7 +3109,7 @@ void __62__PKPaymentProvisioningController_retrieveAccountCredentials___block_in
               v36 = 0u;
               v37 = 0u;
               v38 = 0u;
-              v9 = v30;
+              v9 = applicationsCopy;
               v10 = [v9 countByEnumeratingWithState:&v35 objects:v51 count:16];
               if (v10)
               {
@@ -3130,26 +3130,26 @@ void __62__PKPaymentProvisioningController_retrieveAccountCredentials___block_in
                       v16 = PKLogFacilityTypeGetObject(0xEuLL);
                       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
                       {
-                        v20 = [v14 applicationIdentifier];
+                        applicationIdentifier = [v14 applicationIdentifier];
                         *buf = 138543362;
-                        v48 = v20;
+                        v48 = applicationIdentifier;
                         _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Application :%{public}@ not supported by device", buf, 0xCu);
                       }
 
                       goto LABEL_26;
                     }
 
-                    v15 = [v14 applicationState];
+                    applicationState = [v14 applicationState];
                     v16 = PKLogFacilityTypeGetObject(0xEuLL);
                     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-                    if (v15 > 0x10 || ((0x101F0u >> v15) & 1) == 0)
+                    if (applicationState > 0x10 || ((0x101F0u >> applicationState) & 1) == 0)
                     {
                       if (v17)
                       {
-                        v21 = [v14 applicationIdentifier];
+                        applicationIdentifier2 = [v14 applicationIdentifier];
                         v22 = PKFeatureApplicationStateToString([v14 applicationState]);
                         *buf = 138543618;
-                        v48 = v21;
+                        v48 = applicationIdentifier2;
                         v49 = 2114;
                         v50 = v22;
                         _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Application: %{public}@ in state: %{public}@ not being offered", buf, 0x16u);
@@ -3162,10 +3162,10 @@ LABEL_26:
 
                     if (v17)
                     {
-                      v18 = [v14 applicationIdentifier];
+                      applicationIdentifier3 = [v14 applicationIdentifier];
                       v19 = PKFeatureApplicationStateToString([v14 applicationState]);
                       *buf = 138543618;
-                      v48 = v18;
+                      v48 = applicationIdentifier3;
                       v49 = 2114;
                       v50 = v19;
                       _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Application: %{public}@ in state: %{public}@ is being offered", buf, 0x16u);
@@ -3310,14 +3310,14 @@ LABEL_26:
   }
 }
 
-- (id)_accountsForFeatureIdentifier:(unint64_t)a3
+- (id)_accountsForFeatureIdentifier:(unint64_t)identifier
 {
   accounts = self->_accounts;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PKPaymentProvisioningController__accountsForFeatureIdentifier___block_invoke;
   v6[3] = &__block_descriptor_40_e26_B32__0__PKAccount_8Q16_B24l;
-  v6[4] = a3;
+  v6[4] = identifier;
   v4 = [(NSArray *)accounts pk_objectsPassingTest:v6];
 
   return v4;
@@ -3348,10 +3348,10 @@ uint64_t __65__PKPaymentProvisioningController__accountsForFeatureIdentifier___b
   return v5 & 1;
 }
 
-- (void)_updatePaymentSetupProductModelWithAvailability:(unint64_t)a3 activeConfigurations:(id)a4
+- (void)_updatePaymentSetupProductModelWithAvailability:(unint64_t)availability activeConfigurations:(id)configurations
 {
   v62 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  configurationsCopy = configurations;
   v7 = [(PKPaymentSetupProductModel *)self->_paymentSetupProductModel setupProductsOfType:10];
   v55 = 0u;
   v56 = 0u;
@@ -3380,14 +3380,14 @@ uint64_t __65__PKPaymentProvisioningController__accountsForFeatureIdentifier___b
     while (v9);
   }
 
-  if (a3 == 1)
+  if (availability == 1)
   {
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v37 = v6;
-    obj = v6;
+    v37 = configurationsCopy;
+    obj = configurationsCopy;
     v41 = [obj countByEnumeratingWithState:&v50 objects:v60 count:16];
     if (!v41)
     {
@@ -3432,12 +3432,12 @@ uint64_t __65__PKPaymentProvisioningController__accountsForFeatureIdentifier___b
               }
 
               v21 = *(*(&v46 + 1) + 8 * v20);
-              v22 = [v21 clientInfo];
+              clientInfo = [v21 clientInfo];
               if ([v15 target] == 1)
               {
-                v23 = [v15 country];
-                v24 = [v22 objectForKey:v13];
-                v25 = v23;
+                country = [v15 country];
+                v24 = [clientInfo objectForKey:v13];
+                v25 = country;
                 v26 = v24;
                 v27 = v26;
                 if (v25 == v26)
@@ -3464,9 +3464,9 @@ LABEL_41:
                 }
 
                 v29 = v13;
-                v30 = [v15 state];
-                v31 = [v22 objectForKey:@"administrativeArea"];
-                v32 = v30;
+                state = [v15 state];
+                v31 = [clientInfo objectForKey:@"administrativeArea"];
+                v32 = state;
                 v33 = v31;
                 v34 = v33;
                 if (v32 == v33)
@@ -3498,15 +3498,15 @@ LABEL_41:
                   }
                 }
 
-                v35 = [v15 status];
-                if (v35 > 0xC)
+                status = [v15 status];
+                if (status > 0xC)
                 {
                   v36 = 0;
                 }
 
                 else
                 {
-                  v36 = qword_1ADB9A8E8[v35];
+                  v36 = qword_1ADB9A8E8[status];
                 }
 
                 [v21 setProvisioningStatus:v36];
@@ -3534,13 +3534,13 @@ LABEL_44:
       {
 LABEL_48:
 
-        v6 = v37;
+        configurationsCopy = v37;
         goto LABEL_49;
       }
     }
   }
 
-  if (a3 == 2)
+  if (availability == 2)
   {
     v12 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -3555,10 +3555,10 @@ LABEL_48:
 LABEL_49:
 }
 
-- (void)retrieveAllAvailableCredentials:(id)a3
+- (void)retrieveAllAvailableCredentials:(id)credentials
 {
-  v4 = a3;
-  if (!v4)
+  credentialsCopy = credentials;
+  if (!credentialsCopy)
   {
     goto LABEL_19;
   }
@@ -3585,7 +3585,7 @@ LABEL_49:
   v43 = &unk_1ADC7D092;
   v44 = 0;
   v5 = dispatch_group_create();
-  v6 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   if (objc_opt_respondsToSelector())
   {
     dispatch_group_enter(v5);
@@ -3595,7 +3595,7 @@ LABEL_49:
     v38[3] = &unk_1E79CC728;
     v38[4] = self;
     v39 = v5;
-    [v6 retrievePendingProvisioningsWithType:0 completion:v38];
+    [targetDevice retrievePendingProvisioningsWithType:0 completion:v38];
   }
 
   dispatch_group_enter(v5);
@@ -3668,12 +3668,12 @@ LABEL_15:
   if (self->_includePendingVerificationCredentials && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v17 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{&unk_1F23B5018, &unk_1F23B5030, 0}];
-    v18 = [v6 passesWithPrimaryPaymentApplicationStates:v17];
+    v18 = [targetDevice passesWithPrimaryPaymentApplicationStates:v17];
     v19 = [v18 pk_setByApplyingBlock:&__block_literal_global_341];
     os_unfair_lock_lock(v41 + 8);
     v20 = v50[5];
-    v21 = [v19 allObjects];
-    [v20 addObjectsFromArray:v21];
+    allObjects = [v19 allObjects];
+    [v20 addObjectsFromArray:allObjects];
 
     os_unfair_lock_unlock(v41 + 8);
   }
@@ -3684,7 +3684,7 @@ LABEL_15:
   block[3] = &unk_1E79D6AF0;
   block[4] = self;
   v24 = &v49;
-  v23 = v4;
+  v23 = credentialsCopy;
   v25 = v47;
   v26 = v45;
   dispatch_group_notify(v10, MEMORY[0x1E69E96A0], block);
@@ -3844,9 +3844,9 @@ void __67__PKPaymentProvisioningController_retrieveAllAvailableCredentials___blo
   (*(v11 + 16))(v11, v9, v10, v12);
 }
 
-- (void)_retrieveFPANCredentialsWithCompletion:(id)a3
+- (void)_retrieveFPANCredentialsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2810000000;
@@ -3858,17 +3858,17 @@ void __67__PKPaymentProvisioningController_retrieveAllAvailableCredentials___blo
   v15 = __Block_byref_object_copy__39;
   v16 = __Block_byref_object_dispose__39;
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   if (objc_opt_respondsToSelector())
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __74__PKPaymentProvisioningController__retrieveFPANCredentialsWithCompletion___block_invoke;
     v7[3] = &unk_1E79D6B40;
-    v8 = v5;
+    v8 = targetDevice;
     v10 = v18;
     v11 = &v12;
-    v9 = v4;
+    v9 = completionCopy;
     [v8 activeFPANCardsWithOptions:0 completion:v7];
 
     v6 = v8;
@@ -3877,7 +3877,7 @@ void __67__PKPaymentProvisioningController_retrieveAllAvailableCredentials___blo
   else
   {
     v6 = [v13[5] copy];
-    (*(v4 + 2))(v4, v6);
+    (*(completionCopy + 2))(completionCopy, v6);
   }
 
   _Block_object_dispose(&v12, 8);
@@ -3972,13 +3972,13 @@ void __74__PKPaymentProvisioningController__retrieveFPANCredentialsWithCompletio
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)_filterFPANCredentials:(id)a3 forExistingCredentials:(id)a4
+- (id)_filterFPANCredentials:(id)credentials forExistingCredentials:(id)existingCredentials
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  existingCredentialsCopy = existingCredentials;
+  v7 = [credentials copy];
   v8 = [v7 pk_objectsPassingTest:&__block_literal_global_359];
 
-  v9 = [v6 pk_createSetBySafelyApplyingBlock:&__block_literal_global_362];
+  v9 = [existingCredentialsCopy pk_createSetBySafelyApplyingBlock:&__block_literal_global_362];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __81__PKPaymentProvisioningController__filterFPANCredentials_forExistingCredentials___block_invoke_3;
@@ -3997,11 +3997,11 @@ void __74__PKPaymentProvisioningController__retrieveFPANCredentialsWithCompletio
   v14 = [v11 pk_objectsPassingTest:&v23];
 
   v15 = [(PKPaymentWebService *)self->_webService targetDevice:v23];
-  v16 = [v15 deviceRegion];
+  deviceRegion = [v15 deviceRegion];
 
-  v17 = [(PKPaymentWebService *)self->_webService context];
-  v18 = [v17 configuration];
-  v19 = [v18 autofillForegroundEligibilityCheckMaxCount:v16];
+  context = [(PKPaymentWebService *)self->_webService context];
+  configuration = [context configuration];
+  v19 = [configuration autofillForegroundEligibilityCheckMaxCount:deviceRegion];
 
   if ([v14 count] <= v19)
   {
@@ -4081,10 +4081,10 @@ BOOL __81__PKPaymentProvisioningController__filterFPANCredentials_forExistingCre
   return v5;
 }
 
-- (void)_updateAllAssoicatedCredentialsMetadataWithCompletion:(id)a3
+- (void)_updateAllAssoicatedCredentialsMetadataWithCompletion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (PKShowFakeRemoteCredentials())
   {
     v5 = PKLogFacilityTypeGetObject(7uLL);
@@ -4100,26 +4100,26 @@ BOOL __81__PKPaymentProvisioningController__filterFPANCredentials_forExistingCre
   if (![(NSMutableArray *)self->_associatedCredentials count])
   {
 LABEL_25:
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_27;
   }
 
-  v23 = v4;
+  v23 = completionCopy;
   v6 = MEMORY[0x1E69E96A0];
   group = dispatch_group_create();
-  v7 = [(PKPaymentWebService *)self->_webService context];
-  v8 = [v7 configuration];
-  v9 = [v8 credentialTypesRequiringMetadata];
+  context = [(PKPaymentWebService *)self->_webService context];
+  configuration = [context configuration];
+  credentialTypesRequiringMetadata = [configuration credentialTypesRequiringMetadata];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v9;
+  obj = credentialTypesRequiringMetadata;
   v10 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v10)
   {
@@ -4134,7 +4134,7 @@ LABEL_25:
           objc_enumerationMutation(obj);
         }
 
-        v14 = [*(*(&v34 + 1) + 8 * i) integerValue];
+        integerValue = [*(*(&v34 + 1) + 8 * i) integerValue];
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
@@ -4154,16 +4154,16 @@ LABEL_25:
                 objc_enumerationMutation(v15);
               }
 
-              v20 = [*(*(&v30 + 1) + 8 * j) remoteCredential];
-              v21 = v20;
-              if (v20 && [v20 credentialType] == v14)
+              remoteCredential = [*(*(&v30 + 1) + 8 * j) remoteCredential];
+              v21 = remoteCredential;
+              if (remoteCredential && [remoteCredential credentialType] == integerValue)
               {
 
                 dispatch_group_enter(group);
                 v15 = objc_alloc_init(PKPaymentRemoteCredentialsRequest);
                 [(NSMutableArray *)v15 setIncludeMetadata:1];
                 [(NSMutableArray *)v15 setExcludeCredentialTransferDeviceInfo:1];
-                [(NSMutableArray *)v15 setCredentialType:v14];
+                [(NSMutableArray *)v15 setCredentialType:integerValue];
                 [(NSMutableArray *)v15 setTimeoutOverride:10.0];
                 v28[0] = MEMORY[0x1E69E9820];
                 v28[1] = 3221225472;
@@ -4199,7 +4199,7 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = __89__PKPaymentProvisioningController__updateAllAssoicatedCredentialsMetadataWithCompletion___block_invoke_2;
   block[3] = &unk_1E79C4428;
-  v4 = v23;
+  completionCopy = v23;
   v27 = v23;
   v22 = MEMORY[0x1E69E96A0];
   dispatch_group_notify(group, MEMORY[0x1E69E96A0], block);
@@ -4218,10 +4218,10 @@ uint64_t __89__PKPaymentProvisioningController__updateAllAssoicatedCredentialsMe
   return result;
 }
 
-- (void)updateRemoteCredentials:(id)a3 withCompletionHandler:(id)a4
+- (void)updateRemoteCredentials:(id)credentials withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  credentialsCopy = credentials;
+  handlerCopy = handler;
   PKTimeProfileBegin(0, @"update_creds");
   v8 = PKLogFacilityTypeGetObject(0x24uLL);
   v9 = os_signpost_id_make_with_pointer(v8, self);
@@ -4244,10 +4244,10 @@ uint64_t __89__PKPaymentProvisioningController__updateAllAssoicatedCredentialsMe
   v18 = 3221225472;
   v19 = __81__PKPaymentProvisioningController_updateRemoteCredentials_withCompletionHandler___block_invoke;
   v20 = &unk_1E79D6C48;
-  v12 = v6;
+  v12 = credentialsCopy;
   v21 = v12;
-  v22 = self;
-  v13 = v7;
+  selfCopy = self;
+  v13 = handlerCopy;
   v23 = v13;
   v24 = buf;
   v14 = [(PKPaymentWebService *)webService remotePaymentCredentialsUpdateForRequest:v12 completion:&v17];
@@ -4600,16 +4600,16 @@ void __81__PKPaymentProvisioningController_updateRemoteCredentials_withCompletio
   }
 }
 
-- (void)associateCredentials:(id)a3 withCompletionHandler:(id)a4
+- (void)associateCredentials:(id)credentials withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78__PKPaymentProvisioningController_associateCredentials_withCompletionHandler___block_invoke;
   v8[3] = &unk_1E79D6C70;
-  v9 = v6;
-  v7 = v6;
-  [(PKPaymentProvisioningController *)self _associateCredentials:a3 withCompletionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(PKPaymentProvisioningController *)self _associateCredentials:credentials withCompletionHandler:v8];
 }
 
 uint64_t __78__PKPaymentProvisioningController_associateCredentials_withCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -4623,11 +4623,11 @@ uint64_t __78__PKPaymentProvisioningController_associateCredentials_withCompleti
   return result;
 }
 
-- (void)_associateCredentials:(id)a3 withCompletionHandler:(id)a4
+- (void)_associateCredentials:(id)credentials withCompletionHandler:(id)handler
 {
   v59 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v25 = a4;
+  credentialsCopy = credentials;
+  handlerCopy = handler;
   PKTimeProfileBegin(0, @"associate_creds");
   v6 = PKLogFacilityTypeGetObject(0x24uLL);
   v7 = os_signpost_id_make_with_pointer(v6, self);
@@ -4655,14 +4655,14 @@ uint64_t __78__PKPaymentProvisioningController_associateCredentials_withCompleti
     v51 = __Block_byref_object_dispose__39;
     v52 = 0;
     v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11 = [(PKPaymentProvisioningController *)self _hasSetupConfiguration];
+    _hasSetupConfiguration = [(PKPaymentProvisioningController *)self _hasSetupConfiguration];
     v28 = [(NSMutableArray *)self->_associatedCredentials pk_arrayBySafelyApplyingBlock:&__block_literal_global_376];
     v12 = dispatch_group_create();
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = v24;
+    obj = credentialsCopy;
     v13 = [obj countByEnumeratingWithState:&v43 objects:v58 count:16];
     if (!v13)
     {
@@ -4680,23 +4680,23 @@ uint64_t __78__PKPaymentProvisioningController_associateCredentials_withCompleti
         }
 
         v16 = *(*(&v43 + 1) + 8 * i);
-        if (!v11 || [(PKPaymentProvisioningController *)self _credentialIsValidForSetupConfiguration:*(*(&v43 + 1) + 8 * i)])
+        if (!_hasSetupConfiguration || [(PKPaymentProvisioningController *)self _credentialIsValidForSetupConfiguration:*(*(&v43 + 1) + 8 * i)])
         {
-          v17 = [v16 remoteCredential];
-          v18 = [v17 serialNumber];
-          if (v18)
+          remoteCredential = [v16 remoteCredential];
+          serialNumber = [remoteCredential serialNumber];
+          if (serialNumber)
           {
 
             goto LABEL_18;
           }
 
-          v19 = [v16 localPassCredential];
-          v18 = [v19 serialNumber];
+          localPassCredential = [v16 localPassCredential];
+          serialNumber = [localPassCredential serialNumber];
 
-          if (v18)
+          if (serialNumber)
           {
 LABEL_18:
-            if ([v28 containsObject:v18])
+            if ([v28 containsObject:serialNumber])
             {
               v20 = PKLogFacilityTypeGetObject(7uLL);
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -4704,7 +4704,7 @@ LABEL_18:
                 *v54 = 138412546;
                 v55 = v16;
                 v56 = 2112;
-                v57 = v18;
+                v57 = serialNumber;
                 _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "PKPaymentProvisioningController: Skipping association of credential because one with a matching serial number is already associated. Skipped: %@, Serial: %@", v54, 0x16u);
               }
 
@@ -4722,7 +4722,7 @@ LABEL_18:
           v36 = v21;
           v37 = v26;
           v38 = v16;
-          v39 = self;
+          selfCopy = self;
           v41 = v53;
           v42 = buf;
           v40 = v12;
@@ -4746,7 +4746,7 @@ LABEL_25:
         block[3] = &unk_1E79D6D10;
         block[4] = self;
         v30 = v26;
-        v32 = v25;
+        v32 = handlerCopy;
         v31 = obj;
         v33 = v53;
         v34 = buf;
@@ -4768,7 +4768,7 @@ LABEL_25:
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "WARNING: Hiding cards on file", buf, 2u);
   }
 
-  (*(v25 + 2))(v25, 1, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 1, 0, 0);
 LABEL_26:
 }
 
@@ -4873,15 +4873,15 @@ void __79__PKPaymentProvisioningController__associateCredentials_withCompletionH
   return v3;
 }
 
-- (BOOL)_credentialIsValidForSetupConfiguration:(id)a3
+- (BOOL)_credentialIsValidForSetupConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (-[NSArray count](self->_allowedPaymentNetworks, "count") && (PKPaymentNetworkNameForPaymentCredentialType([v4 credentialType]), v5 = objc_claimAutoreleasedReturnValue(), v6 = -[NSArray containsObject:](self->_allowedPaymentNetworks, "containsObject:", v5), v5, !v6) || -[NSSet count](self->_allowedFeatureIdentifiers, "count") && (!objc_msgSend(v4, "isAccountCredential") || (objc_msgSend(v4, "accountCredential"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "account"), v8 = objc_claimAutoreleasedReturnValue(), PKFeatureIdentifierToString(objc_msgSend(v8, "feature")), v9 = objc_claimAutoreleasedReturnValue(), v8, LODWORD(v8) = -[NSSet containsObject:](self->_allowedFeatureIdentifiers, "containsObject:", v9), v9, v7, !v8)) || -[NSSet count](self->_allowedProductIdentifiers, "count") && objc_msgSend(v4, "isRemoteCredential") && (objc_msgSend(v4, "remoteCredential"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "productIdentifier"), v11 = objc_claimAutoreleasedReturnValue(), v10, LODWORD(v10) = -[NSSet containsObject:](self->_allowedProductIdentifiers, "containsObject:", v11), v11, !v10))
+  configurationCopy = configuration;
+  if (-[NSArray count](self->_allowedPaymentNetworks, "count") && (PKPaymentNetworkNameForPaymentCredentialType([configurationCopy credentialType]), v5 = objc_claimAutoreleasedReturnValue(), v6 = -[NSArray containsObject:](self->_allowedPaymentNetworks, "containsObject:", v5), v5, !v6) || -[NSSet count](self->_allowedFeatureIdentifiers, "count") && (!objc_msgSend(configurationCopy, "isAccountCredential") || (objc_msgSend(configurationCopy, "accountCredential"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "account"), v8 = objc_claimAutoreleasedReturnValue(), PKFeatureIdentifierToString(objc_msgSend(v8, "feature")), v9 = objc_claimAutoreleasedReturnValue(), v8, LODWORD(v8) = -[NSSet containsObject:](self->_allowedFeatureIdentifiers, "containsObject:", v9), v9, v7, !v8)) || -[NSSet count](self->_allowedProductIdentifiers, "count") && objc_msgSend(configurationCopy, "isRemoteCredential") && (objc_msgSend(configurationCopy, "remoteCredential"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "productIdentifier"), v11 = objc_claimAutoreleasedReturnValue(), v10, LODWORD(v10) = -[NSSet containsObject:](self->_allowedProductIdentifiers, "containsObject:", v11), v11, !v10))
   {
     LOBYTE(v14) = 0;
   }
 
-  else if (!-[NSArray count](self->_allowedCardTypes, "count") || (allowedCardTypes = self->_allowedCardTypes, [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "cardType")}], v13 = objc_claimAutoreleasedReturnValue(), v14 = -[NSArray containsObject:](allowedCardTypes, "containsObject:", v13), v13, v14))
+  else if (!-[NSArray count](self->_allowedCardTypes, "count") || (allowedCardTypes = self->_allowedCardTypes, [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(configurationCopy, "cardType")}], v13 = objc_claimAutoreleasedReturnValue(), v14 = -[NSArray containsObject:](allowedCardTypes, "containsObject:", v13), v13, v14))
   {
     LOBYTE(v14) = 1;
   }
@@ -4889,15 +4889,15 @@ void __79__PKPaymentProvisioningController__associateCredentials_withCompletionH
   return v14;
 }
 
-- (void)_associateCredential:(id)a3 withCompletionHandler:(id)a4
+- (void)_associateCredential:(id)credential withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  credentialCopy = credential;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ((PKShowFakeRemoteCredentials() & 1) != 0 || ([v6 isAccountCredential] & 1) != 0 || (objc_msgSend(v6, "isPeerPaymentCredential") & 1) != 0 || (objc_msgSend(v6, "isShareableCredential") & 1) != 0 || (objc_msgSend(v6, "isLocalAppletSubcredentialPassCredential") & 1) != 0 || (objc_msgSend(v6, "isHomeKeyCredential") & 1) != 0 || (objc_msgSend(v6, "isRequiresVerificationCredential") & 1) != 0 || objc_msgSend(v6, "isRemoteCredential") && (objc_msgSend(v6, "remoteCredential"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "status"), v8, v9 != 2))
+    if ((PKShowFakeRemoteCredentials() & 1) != 0 || ([credentialCopy isAccountCredential] & 1) != 0 || (objc_msgSend(credentialCopy, "isPeerPaymentCredential") & 1) != 0 || (objc_msgSend(credentialCopy, "isShareableCredential") & 1) != 0 || (objc_msgSend(credentialCopy, "isLocalAppletSubcredentialPassCredential") & 1) != 0 || (objc_msgSend(credentialCopy, "isHomeKeyCredential") & 1) != 0 || (objc_msgSend(credentialCopy, "isRequiresVerificationCredential") & 1) != 0 || objc_msgSend(credentialCopy, "isRemoteCredential") && (objc_msgSend(credentialCopy, "remoteCredential"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "status"), v8, v9 != 2))
     {
-      v7[2](v7, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
     }
 
     else
@@ -4907,8 +4907,8 @@ void __79__PKPaymentProvisioningController__associateCredentials_withCompletionH
       v10[2] = __78__PKPaymentProvisioningController__associateCredential_withCompletionHandler___block_invoke;
       v10[3] = &unk_1E79D1F40;
       v10[4] = self;
-      v11 = v6;
-      v12 = v7;
+      v11 = credentialCopy;
+      v12 = handlerCopy;
       [(PKPaymentProvisioningController *)self _queryRequirementsForCredential:v11 completion:v10];
     }
   }
@@ -4969,62 +4969,62 @@ void __78__PKPaymentProvisioningController__associateCredential_withCompletionHa
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_updateCredentialWithPaymentPass:(id)a3 completion:(id)a4
+- (void)_updateCredentialWithPaymentPass:(id)pass completion:(id)completion
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isRemoteCredential])
+  passCopy = pass;
+  completionCopy = completion;
+  if ([passCopy isRemoteCredential])
   {
-    v8 = [v6 remoteCredential];
-    v9 = [v8 passURL];
-    v10 = [v8 paymentPass];
+    remoteCredential = [passCopy remoteCredential];
+    passURL = [remoteCredential passURL];
+    paymentPass = [remoteCredential paymentPass];
   }
 
-  else if ([v6 isAccountCredential])
+  else if ([passCopy isAccountCredential])
   {
-    v8 = [v6 accountCredential];
-    v11 = [v8 account];
-    if ([v11 type] == 1)
+    remoteCredential = [passCopy accountCredential];
+    account = [remoteCredential account];
+    if ([account type] == 1)
     {
-      v12 = [v11 creditDetails];
-      v9 = [v12 associatedPassURL];
+      creditDetails = [account creditDetails];
+      passURL = [creditDetails associatedPassURL];
     }
 
     else
     {
-      v9 = 0;
+      passURL = 0;
     }
 
-    v10 = [v8 paymentPass];
+    paymentPass = [remoteCredential paymentPass];
   }
 
   else
   {
-    if ([v6 isLocalPassCredential])
+    if ([passCopy isLocalPassCredential])
     {
-      v8 = [v6 localPassCredential];
-      v13 = [v8 paymentPass];
+      remoteCredential = [passCopy localPassCredential];
+      paymentPass2 = [remoteCredential paymentPass];
     }
 
     else
     {
-      if (![v6 isLocalAppletSubcredentialPassCredential])
+      if (![passCopy isLocalAppletSubcredentialPassCredential])
       {
         goto LABEL_18;
       }
 
-      v8 = [v6 localAppletSubcredentialPassCredential];
-      v13 = [v8 paymentPass];
+      remoteCredential = [passCopy localAppletSubcredentialPassCredential];
+      paymentPass2 = [remoteCredential paymentPass];
     }
 
-    v10 = v13;
-    v9 = 0;
+    paymentPass = paymentPass2;
+    passURL = 0;
   }
 
-  if (!v10)
+  if (!paymentPass)
   {
-    if (v9)
+    if (passURL)
     {
       objc_initWeak(location, self);
       webService = self->_webService;
@@ -5033,43 +5033,43 @@ void __78__PKPaymentProvisioningController__associateCredential_withCompletionHa
       v18[2] = __79__PKPaymentProvisioningController__updateCredentialWithPaymentPass_completion___block_invoke;
       v18[3] = &unk_1E79D6D60;
       objc_copyWeak(&v21, location);
-      v19 = v6;
-      v20 = v7;
-      [(PKPaymentWebService *)webService passAtURL:v9 completion:v18];
+      v19 = passCopy;
+      v20 = completionCopy;
+      [(PKPaymentWebService *)webService passAtURL:passURL completion:v18];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(location);
 LABEL_26:
-      v10 = 0;
+      paymentPass = 0;
       goto LABEL_27;
     }
 
 LABEL_18:
-    v15 = [v6 remoteCredential];
-    v16 = v15;
-    if (!v15 || [v15 status] != 2)
+    remoteCredential2 = [passCopy remoteCredential];
+    v16 = remoteCredential2;
+    if (!remoteCredential2 || [remoteCredential2 status] != 2)
     {
       v17 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(location[0]) = 138412290;
-        *(location + 4) = v6;
+        *(location + 4) = passCopy;
         _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "Error: Unable to locate pass or a pass URL when attempting to update credential: %@", location, 0xCu);
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
-    v9 = 0;
+    passURL = 0;
     goto LABEL_26;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, v10);
+    (*(completionCopy + 2))(completionCopy, paymentPass);
   }
 
 LABEL_27:
@@ -5135,49 +5135,49 @@ LABEL_9:
   }
 }
 
-- (void)_updateCredentialWithPaymentPassAssets:(id)a3 completion:(id)a4
+- (void)_updateCredentialWithPaymentPassAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isRemoteCredential])
+  assetsCopy = assets;
+  completionCopy = completion;
+  if ([assetsCopy isRemoteCredential])
   {
-    v8 = [v6 remoteCredential];
+    remoteCredential = [assetsCopy remoteCredential];
   }
 
-  else if ([v6 isAccountCredential])
+  else if ([assetsCopy isAccountCredential])
   {
-    v8 = [v6 accountCredential];
+    remoteCredential = [assetsCopy accountCredential];
   }
 
-  else if ([v6 isLocalPassCredential])
+  else if ([assetsCopy isLocalPassCredential])
   {
-    v8 = [v6 localPassCredential];
+    remoteCredential = [assetsCopy localPassCredential];
   }
 
   else
   {
-    if (![v6 isLocalAppletSubcredentialPassCredential])
+    if (![assetsCopy isLocalAppletSubcredentialPassCredential])
     {
       goto LABEL_13;
     }
 
-    v8 = [v6 localAppletSubcredentialPassCredential];
+    remoteCredential = [assetsCopy localAppletSubcredentialPassCredential];
   }
 
-  v9 = v8;
-  v10 = [v8 paymentPass];
+  v9 = remoteCredential;
+  paymentPass = [remoteCredential paymentPass];
 
-  if (v10)
+  if (paymentPass)
   {
-    v11 = [(PKPaymentWebService *)self->_webService targetDevice];
-    v12 = [v11 secureElementIdentifiers];
-    v13 = [PKDownloadRemoteAssetConfiguration cardArtConfigurationWithSEIDs:v12];
+    targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+    secureElementIdentifiers = [targetDevice secureElementIdentifiers];
+    v13 = [PKDownloadRemoteAssetConfiguration cardArtConfigurationWithSEIDs:secureElementIdentifiers];
 
-    if ([v10 remoteAssetsDownloadedForConfiguration:v13])
+    if ([paymentPass remoteAssetsDownloadedForConfiguration:v13])
     {
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7);
+        completionCopy[2](completionCopy);
       }
     }
 
@@ -5187,17 +5187,17 @@ LABEL_9:
       v14[1] = 3221225472;
       v14[2] = __85__PKPaymentProvisioningController__updateCredentialWithPaymentPassAssets_completion___block_invoke;
       v14[3] = &unk_1E79C4428;
-      v15 = v7;
-      [(PKPaymentProvisioningController *)self _downloadRemoteAssetsForPaymentPass:v10 paymentCredential:v6 completion:v14];
+      v15 = completionCopy;
+      [(PKPaymentProvisioningController *)self _downloadRemoteAssetsForPaymentPass:paymentPass paymentCredential:assetsCopy completion:v14];
     }
 
     goto LABEL_17;
   }
 
 LABEL_13:
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_17:
@@ -5224,27 +5224,27 @@ uint64_t __85__PKPaymentProvisioningController__updateCredentialWithPaymentPassA
   return result;
 }
 
-- (void)_downloadRemoteAssetsForPaymentPass:(id)a3 paymentCredential:(id)a4 completion:(id)a5
+- (void)_downloadRemoteAssetsForPaymentPass:(id)pass paymentCredential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passCopy = pass;
+  credentialCopy = credential;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(PKPaymentWebService *)self->_webService targetDevice];
-  v12 = [v11 secureElementIdentifiers];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  secureElementIdentifiers = [targetDevice secureElementIdentifiers];
 
-  v13 = [PKDownloadRemoteAssetConfiguration cardArtConfigurationWithSEIDs:v12];
+  v13 = [PKDownloadRemoteAssetConfiguration cardArtConfigurationWithSEIDs:secureElementIdentifiers];
   [v13 setIgnoreRequiredAssetDownloadFailures:1];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __100__PKPaymentProvisioningController__downloadRemoteAssetsForPaymentPass_paymentCredential_completion___block_invoke;
   v16[3] = &unk_1E79D6D88;
   objc_copyWeak(&v19, &location);
-  v14 = v9;
+  v14 = credentialCopy;
   v17 = v14;
-  v15 = v10;
+  v15 = completionCopy;
   v18 = v15;
-  [v8 downloadRemoteAssetsWithConfiguration:v13 completion:v16];
+  [passCopy downloadRemoteAssetsWithConfiguration:v13 completion:v16];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -5283,20 +5283,20 @@ void __100__PKPaymentProvisioningController__downloadRemoteAssetsForPaymentPass_
   }
 }
 
-- (void)_informDelegatesOfPaymentPassUpdateOnCredential:(id)a3
+- (void)_informDelegatesOfPaymentPassUpdateOnCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   os_unfair_lock_lock(&self->_delegatesLock);
-  v5 = [(NSHashTable *)self->_delegates allObjects];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
   os_unfair_lock_unlock(&self->_delegatesLock);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __83__PKPaymentProvisioningController__informDelegatesOfPaymentPassUpdateOnCredential___block_invoke;
   v8[3] = &unk_1E79C4DD8;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = allObjects;
+  v10 = credentialCopy;
+  v6 = credentialCopy;
+  v7 = allObjects;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
@@ -5343,14 +5343,14 @@ void __83__PKPaymentProvisioningController__informDelegatesOfPaymentPassUpdateOn
 - (void)_metadataUpdatedOnCredentials
 {
   os_unfair_lock_lock(&self->_delegatesLock);
-  v3 = [(NSHashTable *)self->_delegates allObjects];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
   os_unfair_lock_unlock(&self->_delegatesLock);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PKPaymentProvisioningController__metadataUpdatedOnCredentials__block_invoke;
   block[3] = &unk_1E79C4E28;
-  v6 = v3;
-  v4 = v3;
+  v6 = allObjects;
+  v4 = allObjects;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -5394,21 +5394,21 @@ void __64__PKPaymentProvisioningController__metadataUpdatedOnCredentials__block_
   }
 }
 
-- (void)_preflightRequirementsUpdated:(unint64_t)a3 displayableError:(id)a4
+- (void)_preflightRequirementsUpdated:(unint64_t)updated displayableError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_delegatesLock);
-  v7 = [(NSHashTable *)self->_delegates allObjects];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
   os_unfair_lock_unlock(&self->_delegatesLock);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__PKPaymentProvisioningController__preflightRequirementsUpdated_displayableError___block_invoke;
   block[3] = &unk_1E79CBF50;
-  v12 = v6;
-  v13 = a3;
-  v11 = v7;
-  v8 = v6;
-  v9 = v7;
+  v12 = errorCopy;
+  updatedCopy = updated;
+  v11 = allObjects;
+  v8 = errorCopy;
+  v9 = allObjects;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -5455,15 +5455,15 @@ void __82__PKPaymentProvisioningController__preflightRequirementsUpdated_display
 - (void)_informDelegatesOfAccountsUpdated
 {
   os_unfair_lock_lock(&self->_delegatesLock);
-  v3 = [(NSHashTable *)self->_delegates allObjects];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
   os_unfair_lock_unlock(&self->_delegatesLock);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68__PKPaymentProvisioningController__informDelegatesOfAccountsUpdated__block_invoke;
   v5[3] = &unk_1E79C4DD8;
-  v6 = v3;
-  v7 = self;
-  v4 = v3;
+  v6 = allObjects;
+  selfCopy = self;
+  v4 = allObjects;
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
@@ -5507,9 +5507,9 @@ void __68__PKPaymentProvisioningController__informDelegatesOfAccountsUpdated__bl
   }
 }
 
-- (void)cachedPaymentSetupProductModelWithCompletion:(id)a3
+- (void)cachedPaymentSetupProductModelWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E69E96A0];
   v61[0] = 0;
   v61[1] = v61;
@@ -5541,8 +5541,8 @@ void __68__PKPaymentProvisioningController__informDelegatesOfAccountsUpdated__bl
   v53[3] = __Block_byref_object_copy__39;
   v53[4] = __Block_byref_object_dispose__39;
   v54 = 0;
-  v6 = [(PKPaymentWebService *)self->_webService targetDevice];
-  v7 = [v6 deviceRegion];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
   v8 = dispatch_group_create();
   dispatch_group_enter(v8);
   PKTimeProfileBegin(0, @"cached_products");
@@ -5576,7 +5576,7 @@ void __68__PKPaymentProvisioningController__informDelegatesOfAccountsUpdated__bl
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 productsWithRequest:v14 completion:v13];
+    [targetDevice productsWithRequest:v14 completion:v13];
   }
 
   else
@@ -5613,7 +5613,7 @@ void __68__PKPaymentProvisioningController__informDelegatesOfAccountsUpdated__bl
     v46 = v59;
     v44[4] = self;
     v45 = v12;
-    [v6 cachedFeatureApplicationsForProvisioningWithCompletion:v44];
+    [targetDevice cachedFeatureApplicationsForProvisioningWithCompletion:v44];
   }
 
   if (objc_opt_respondsToSelector())
@@ -5639,7 +5639,7 @@ void __68__PKPaymentProvisioningController__informDelegatesOfAccountsUpdated__bl
     v43 = v57;
     v41[4] = self;
     v42 = v12;
-    [v6 accountsWithCompletion:v41];
+    [targetDevice accountsWithCompletion:v41];
   }
 
   if (PKForceBrowseBankPartners())
@@ -5658,7 +5658,7 @@ void __68__PKPaymentProvisioningController__informDelegatesOfAccountsUpdated__bl
       }
     }
 
-    v25 = [[PKPaymentBrowseableBankAppsRequest alloc] initWithRegion:v7];
+    v25 = [[PKPaymentBrowseableBankAppsRequest alloc] initWithRegion:deviceRegion];
     [(PKWebServiceRequest *)v25 setCachePolicyOverride:3];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
@@ -5688,9 +5688,9 @@ void __68__PKPaymentProvisioningController__informDelegatesOfAccountsUpdated__bl
   v33 = v55;
   v34 = v53;
   v29[4] = self;
-  v30 = v4;
+  v30 = completionCopy;
   v35 = v61;
-  v27 = v4;
+  v27 = completionCopy;
   v28 = MEMORY[0x1E69E96A0];
   dispatch_group_notify(v26, MEMORY[0x1E69E96A0], v29);
 
@@ -5901,9 +5901,9 @@ LABEL_23:
   }
 }
 
-- (void)updatePaymentSetupProductModelWithCompletionHandler:(id)a3
+- (void)updatePaymentSetupProductModelWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x1E69E96A0];
   v84[0] = 0;
   v84[1] = v84;
@@ -5949,8 +5949,8 @@ LABEL_23:
   v71[3] = __Block_byref_object_copy__39;
   v71[4] = __Block_byref_object_dispose__39;
   v72 = 0;
-  v6 = [(PKPaymentWebService *)self->_webService targetDevice];
-  v7 = [v6 deviceRegion];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
   v8 = dispatch_group_create();
   PKTimeProfileBegin(0, @"products");
   v9 = PKLogFacilityTypeGetObject(0x24uLL);
@@ -6012,7 +6012,7 @@ LABEL_23:
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 productsWithRequest:v17 completion:v13];
+      [targetDevice productsWithRequest:v17 completion:v13];
       goto LABEL_16;
     }
 
@@ -6031,7 +6031,7 @@ LABEL_16:
   {
     if (self->_preflightedApplications)
     {
-      [v6 featureApplicationsForProvisioningWithCompletion:0];
+      [targetDevice featureApplicationsForProvisioningWithCompletion:0];
     }
 
     else
@@ -6057,7 +6057,7 @@ LABEL_16:
       v61 = v80;
       v59[4] = self;
       v60 = v12;
-      [v6 featureApplicationsForProvisioningWithCompletion:v59];
+      [targetDevice featureApplicationsForProvisioningWithCompletion:v59];
     }
   }
 
@@ -6065,7 +6065,7 @@ LABEL_16:
   {
     if (self->_preflightedAccounts)
     {
-      [v6 updatedAccountsForProvisioningWithCompletion:0];
+      [targetDevice updatedAccountsForProvisioningWithCompletion:0];
     }
 
     else
@@ -6091,7 +6091,7 @@ LABEL_16:
       v58 = v78;
       v56[4] = self;
       v57 = v12;
-      [v6 updatedAccountsForProvisioningWithCompletion:v56];
+      [targetDevice updatedAccountsForProvisioningWithCompletion:v56];
     }
   }
 
@@ -6123,7 +6123,7 @@ LABEL_16:
       }
     }
 
-    v31 = [[PKPaymentBrowseableBankAppsRequest alloc] initWithRegion:v7];
+    v31 = [[PKPaymentBrowseableBankAppsRequest alloc] initWithRegion:deviceRegion];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __87__PKPaymentProvisioningController_updatePaymentSetupProductModelWithCompletionHandler___block_invoke_465;
@@ -6147,10 +6147,10 @@ LABEL_16:
   v40 = v75;
   v41 = v73;
   block[4] = self;
-  v35 = v4;
+  v35 = handlerCopy;
   v42 = v84;
   v43 = v82;
-  v32 = v4;
+  v32 = handlerCopy;
   v33 = MEMORY[0x1E69E96A0];
   dispatch_group_notify(v27, MEMORY[0x1E69E96A0], block);
 
@@ -6423,9 +6423,9 @@ id __87__PKPaymentProvisioningController_updatePaymentSetupProductModelWithCompl
   return v5;
 }
 
-- (void)_identityConfigurationWithCompletion:(id)a3
+- (void)_identityConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E69E96A0];
   v6 = MEMORY[0x1E69E96A0];
   v37 = 0;
@@ -6462,8 +6462,8 @@ id __87__PKPaymentProvisioningController_updatePaymentSetupProductModelWithCompl
   v32 = &v37;
   v33 = v35;
   v29 = v5;
-  v30 = self;
-  v13 = v4;
+  selfCopy = self;
+  v13 = completionCopy;
   v31 = v13;
   v14 = _Block_copy(aBlock);
   v15 = v38[5];
@@ -6591,20 +6591,20 @@ uint64_t __72__PKPaymentProvisioningController__identityConfigurationWithComplet
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_applyIdentityConfiguration:(unint64_t)a3 activeConfigurations:(id)a4 completion:(id)a5
+- (void)_applyIdentityConfiguration:(unint64_t)configuration activeConfigurations:(id)configurations completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  configurationsCopy = configurations;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __95__PKPaymentProvisioningController__applyIdentityConfiguration_activeConfigurations_completion___block_invoke;
   v12[3] = &unk_1E79C4D88;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = configurationsCopy;
+  v14 = completionCopy;
+  configurationCopy = configuration;
+  v10 = completionCopy;
+  v11 = configurationsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 }
 
@@ -6658,9 +6658,9 @@ void __95__PKPaymentProvisioningController__applyIdentityConfiguration_activeCon
   }
 }
 
-- (void)_updatePaymentSetupProductModelExtensionsWithCompletion:(id)a3
+- (void)_updatePaymentSetupProductModelExtensionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   PKTimeProfileBegin(0, @"provisioning_extensions");
   v5 = PKLogFacilityTypeGetObject(0x24uLL);
   v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -6679,8 +6679,8 @@ void __95__PKPaymentProvisioningController__applyIdentityConfiguration_activeCon
   v9[2] = __91__PKPaymentProvisioningController__updatePaymentSetupProductModelExtensionsWithCompletion___block_invoke;
   v9[3] = &unk_1E79C4838;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(PKPaymentProvisioningController *)self provisioningExtensionProductsWithCompletionHandler:v9];
 }
 
@@ -6710,18 +6710,18 @@ void __91__PKPaymentProvisioningController__updatePaymentSetupProductModelExtens
   }
 }
 
-- (void)_browsableBanksWithRequest:(id)a3 completion:(id)a4
+- (void)_browsableBanksWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (PKMockBrowseBankPartners())
   {
-    v8 = [(PKPaymentProvisioningController *)self _mockBrowseBanksResponse];
-    v9 = v8;
-    if (v7)
+    _mockBrowseBanksResponse = [(PKPaymentProvisioningController *)self _mockBrowseBanksResponse];
+    v9 = _mockBrowseBanksResponse;
+    if (completionCopy)
     {
-      v10 = [v8 browseableBankApps];
-      v7[2](v7, 1, v10, 0);
+      browseableBankApps = [_mockBrowseBanksResponse browseableBankApps];
+      completionCopy[2](completionCopy, 1, browseableBankApps, 0);
     }
   }
 
@@ -6733,8 +6733,8 @@ void __91__PKPaymentProvisioningController__updatePaymentSetupProductModelExtens
     v12[2] = __73__PKPaymentProvisioningController__browsableBanksWithRequest_completion___block_invoke;
     v12[3] = &unk_1E79D7030;
     v12[4] = self;
-    v13 = v7;
-    [(PKPaymentWebService *)webService browseableBankAppsWithRequest:v6 completion:v12];
+    v13 = completionCopy;
+    [(PKPaymentWebService *)webService browseableBankAppsWithRequest:requestCopy completion:v12];
   }
 }
 
@@ -6783,10 +6783,10 @@ void __73__PKPaymentProvisioningController__browsableBanksWithRequest_completion
   }
 }
 
-- (void)_retrievePendingCarKeys:(id)a3
+- (void)_retrievePendingCarKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self->_webService targetDevice];
+  keysCopy = keys;
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   if (objc_opt_respondsToSelector())
   {
     v6[0] = MEMORY[0x1E69E9820];
@@ -6794,13 +6794,13 @@ void __73__PKPaymentProvisioningController__browsableBanksWithRequest_completion
     v6[2] = __59__PKPaymentProvisioningController__retrievePendingCarKeys___block_invoke;
     v6[3] = &unk_1E79C4838;
     v6[4] = self;
-    v7 = v4;
-    [v5 retrievePendingProvisioningsWithType:@"CarKey" completion:v6];
+    v7 = keysCopy;
+    [targetDevice retrievePendingProvisioningsWithType:@"CarKey" completion:v6];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(keysCopy + 2))(keysCopy, 0);
   }
 }
 
@@ -6902,29 +6902,29 @@ void __59__PKPaymentProvisioningController__retrievePendingCarKeys___block_invok
   return v3;
 }
 
-- (BOOL)_isExtensionSupported:(id)a3 usingUnsupportedProvisioningExtensions:(id)a4
+- (BOOL)_isExtensionSupported:(id)supported usingUnsupportedProvisioningExtensions:(id)extensions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a4)
+  supportedCopy = supported;
+  if (extensions)
   {
-    v6 = a4;
-    v7 = [v5 identifier];
-    v8 = [v6 PKDictionaryForKey:v7];
+    extensionsCopy = extensions;
+    identifier = [supportedCopy identifier];
+    v8 = [extensionsCopy PKDictionaryForKey:identifier];
 
     if (v8)
     {
-      v9 = [v5 version];
+      version = [supportedCopy version];
       v10 = [v8 PKArrayContaining:objc_opt_class() forKey:0];
-      if (([v10 containsObject:v9] & 1) != 0 || objc_msgSend(v10, "containsObject:", 0))
+      if (([v10 containsObject:version] & 1) != 0 || objc_msgSend(v10, "containsObject:", 0))
       {
         v11 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412546;
-          v15 = v7;
+          v15 = identifier;
           v16 = 2112;
-          v17 = v9;
+          v17 = version;
           _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Extension: %@ with version: %@ is unsupported", &v14, 0x16u);
         }
 
@@ -6959,11 +6959,11 @@ void __59__PKPaymentProvisioningController__retrievePendingCarKeys___block_invok
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ENTITLEMENT:%@", @"com.apple.developer.payment-pass-provisioning"];
   [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v4];
 
-  v5 = [(PKPaymentWebService *)self->_webService targetDevice];
-  v6 = [v5 appleAccountInformation];
-  v7 = [v6 isManagedAppleAccount];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  appleAccountInformation = [targetDevice appleAccountInformation];
+  isManagedAppleAccount = [appleAccountInformation isManagedAppleAccount];
 
-  if (v7)
+  if (isManagedAppleAccount)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ENTITLEMENT:%@", @"com.apple.developer.contactless-payment-pass-provisioning.maids"];
     [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v8];
@@ -6988,17 +6988,17 @@ void __59__PKPaymentProvisioningController__retrievePendingCarKeys___block_invok
 
   else
   {
-    v12 = [(PKPaymentWebService *)self->_webService context];
-    v13 = [v12 configuration];
-    v14 = [v13 unsupportedProvisioningExtensions];
+    context = [(PKPaymentWebService *)self->_webService context];
+    configuration = [context configuration];
+    unsupportedProvisioningExtensions = [configuration unsupportedProvisioningExtensions];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __67__PKPaymentProvisioningController__supportedProvisioningExtensions__block_invoke;
     v18[3] = &unk_1E79C9A68;
     v18[4] = self;
-    v19 = v14;
-    v15 = v14;
+    v19 = unsupportedProvisioningExtensions;
+    v15 = unsupportedProvisioningExtensions;
     v16 = [v9 pk_objectsPassingTest:v18];
   }
 
@@ -7007,16 +7007,16 @@ void __59__PKPaymentProvisioningController__retrievePendingCarKeys___block_invok
 
 - (unint64_t)countSupportedProvisioningExtensions
 {
-  v2 = [(PKPaymentProvisioningController *)self _supportedProvisioningExtensions];
-  v3 = [v2 count];
+  _supportedProvisioningExtensions = [(PKPaymentProvisioningController *)self _supportedProvisioningExtensions];
+  v3 = [_supportedProvisioningExtensions count];
 
   return v3;
 }
 
-- (void)provisioningExtensionProductsWithCompletionHandler:(id)a3
+- (void)provisioningExtensionProductsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v6[0] = MEMORY[0x1E69E9820];
@@ -7024,7 +7024,7 @@ void __59__PKPaymentProvisioningController__retrievePendingCarKeys___block_invok
     v6[2] = __86__PKPaymentProvisioningController_provisioningExtensionProductsWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E79C4A40;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     dispatch_async(v5, v6);
   }
 }
@@ -7322,10 +7322,10 @@ uint64_t __86__PKPaymentProvisioningController_provisioningExtensionProductsWith
   return v3;
 }
 
-- (id)pendingProvisioningForCredential:(id)a3
+- (id)pendingProvisioningForCredential:(id)credential
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  credentialCopy = credential;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -7345,7 +7345,7 @@ uint64_t __86__PKPaymentProvisioningController_provisioningExtensionProductsWith
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 representsCredential:{v4, v11}])
+        if ([v9 representsCredential:{credentialCopy, v11}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -7367,29 +7367,29 @@ LABEL_11:
   return v6;
 }
 
-- (void)requestProvisioningMethodMetadataForProduct:(id)a3 completionHandler:(id)a4
+- (void)requestProvisioningMethodMetadataForProduct:(id)product completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  productCopy = product;
+  handlerCopy = handler;
   v8 = dispatch_group_create();
-  v9 = [v6 setupProductMethods];
+  setupProductMethods = [productCopy setupProductMethods];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __97__PKPaymentProvisioningController_requestProvisioningMethodMetadataForProduct_completionHandler___block_invoke;
   v15[3] = &unk_1E79D7140;
-  v16 = v6;
+  v16 = productCopy;
   v17 = v8;
-  v18 = self;
+  selfCopy = self;
   v10 = v8;
-  v11 = v6;
-  [v9 enumerateObjectsUsingBlock:v15];
+  v11 = productCopy;
+  [setupProductMethods enumerateObjectsUsingBlock:v15];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __97__PKPaymentProvisioningController_requestProvisioningMethodMetadataForProduct_completionHandler___block_invoke_4;
   v13[3] = &unk_1E79C4428;
-  v14 = v7;
-  v12 = v7;
+  v14 = handlerCopy;
+  v12 = handlerCopy;
   dispatch_group_notify(v10, MEMORY[0x1E69E96A0], v13);
 }
 
@@ -7464,18 +7464,18 @@ uint64_t __97__PKPaymentProvisioningController_requestProvisioningMethodMetadata
   return result;
 }
 
-- (void)requestPurchasesForProduct:(id)a3 completionHandler:(id)a4
+- (void)requestPurchasesForProduct:(id)product completionHandler:(id)handler
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v27 = a4;
-  v33 = v6;
-  v28 = [v6 provisioningMethodMetadataForType:@"digitalIssuance"];
-  v34 = [v28 digitalIssuanceMetadata];
-  v7 = [(PKPaymentWebService *)self->_webService context];
-  v29 = [v7 regions];
+  productCopy = product;
+  handlerCopy = handler;
+  v33 = productCopy;
+  v28 = [productCopy provisioningMethodMetadataForType:@"digitalIssuance"];
+  digitalIssuanceMetadata = [v28 digitalIssuanceMetadata];
+  context = [(PKPaymentWebService *)self->_webService context];
+  regions = [context regions];
 
-  if (v34 && [v29 count])
+  if (digitalIssuanceMetadata && [regions count])
   {
     *v49 = 0;
     v50 = v49;
@@ -7488,7 +7488,7 @@ uint64_t __97__PKPaymentProvisioningController_requestProvisioningMethodMetadata
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = v29;
+    obj = regions;
     v9 = [obj countByEnumeratingWithState:&v45 objects:v58 count:16];
     if (v9)
     {
@@ -7512,19 +7512,19 @@ uint64_t __97__PKPaymentProvisioningController_requestProvisioningMethodMetadata
           }
 
           v13 = [PKPaymentServiceProviderPurchasesRequest alloc];
-          v14 = [v33 configuration];
-          v15 = [v14 productIdentifier];
-          v16 = [v34 action];
-          v17 = [v34 serviceProviderCountryCode];
-          v18 = [(PKPaymentServiceProviderPurchasesRequest *)v13 initWithPurchaseState:0 serviceProviderIdentifier:0 productIdentifier:v15 actionIdentifier:v16 serviceProviderCountryCode:v17];
+          configuration = [v33 configuration];
+          productIdentifier = [configuration productIdentifier];
+          action = [digitalIssuanceMetadata action];
+          serviceProviderCountryCode = [digitalIssuanceMetadata serviceProviderCountryCode];
+          v18 = [(PKPaymentServiceProviderPurchasesRequest *)v13 initWithPurchaseState:0 serviceProviderIdentifier:0 productIdentifier:productIdentifier actionIdentifier:action serviceProviderCountryCode:serviceProviderCountryCode];
 
           if (self->_isProvisioningForAltAccount)
           {
-            v19 = [(PKPaymentWebService *)self->_webService targetDevice];
-            v20 = [v19 trustedDeviceEnrollmentInfoForWebService:self->_webService];
+            targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+            v20 = [targetDevice trustedDeviceEnrollmentInfoForWebService:self->_webService];
 
-            v21 = [v20 deviceSerialNumber];
-            [(PKPaymentServiceProviderPurchasesRequest *)v18 setTargetDeviceSerialNumber:v21];
+            deviceSerialNumber = [v20 deviceSerialNumber];
+            [(PKPaymentServiceProviderPurchasesRequest *)v18 setTargetDeviceSerialNumber:deviceSerialNumber];
           }
 
           dispatch_group_enter(v8);
@@ -7555,8 +7555,8 @@ uint64_t __97__PKPaymentProvisioningController_requestProvisioningMethodMetadata
     v36 = v32;
     v23 = v32;
     objc_copyWeak(&v38, buf);
-    v37 = v27;
-    v24 = v27;
+    v37 = handlerCopy;
+    v24 = handlerCopy;
     dispatch_group_notify(v8, MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(&v38);
@@ -7578,8 +7578,8 @@ uint64_t __97__PKPaymentProvisioningController_requestProvisioningMethodMetadata
     v54[1] = 3221225472;
     v54[2] = __80__PKPaymentProvisioningController_requestPurchasesForProduct_completionHandler___block_invoke;
     v54[3] = &unk_1E79C4428;
-    v55 = v27;
-    v26 = v27;
+    v55 = handlerCopy;
+    v26 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v54);
   }
 }
@@ -7740,10 +7740,10 @@ void __80__PKPaymentProvisioningController_requestPurchasesForProduct_completion
   }
 }
 
-- (void)setupProductForProvisioning:(id)a3 includePurchases:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)setupProductForProvisioning:(id)provisioning includePurchases:(BOOL)purchases withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  provisioningCopy = provisioning;
+  handlerCopy = handler;
   v68[0] = 0;
   v68[1] = v68;
   v68[2] = 0x2020000000;
@@ -7757,16 +7757,16 @@ void __80__PKPaymentProvisioningController_requestPurchasesForProduct_completion
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v12 = &unk_1ADB86000;
-  if (v8)
+  if (provisioningCopy)
   {
-    v13 = [v8 configuration];
-    v14 = [v13 type];
-    if (v14 == 6)
+    configuration = [provisioningCopy configuration];
+    type = [configuration type];
+    if (type == 6)
     {
-      v16 = [v8 partnerIdentifier];
-      v17 = [v8 setupProductMethodOfType:4 withIdentifier:v16];
+      partnerIdentifier = [provisioningCopy partnerIdentifier];
+      v17 = [provisioningCopy setupProductMethodOfType:4 withIdentifier:partnerIdentifier];
 
-      v18 = [v17 provisioningExtension];
+      provisioningExtension = [v17 provisioningExtension];
       v60[0] = 0;
       v60[1] = v60;
       v60[2] = 0x3032000000;
@@ -7778,11 +7778,11 @@ void __80__PKPaymentProvisioningController_requestPurchasesForProduct_completion
       v54[2] = __102__PKPaymentProvisioningController_setupProductForProvisioning_includePurchases_withCompletionHandler___block_invoke_2;
       v54[3] = &unk_1E79D7230;
       v54[4] = self;
-      v19 = v18;
+      v19 = provisioningExtension;
       v55 = v19;
       v57 = v60;
       v58 = v68;
-      v56 = v8;
+      v56 = provisioningCopy;
       v59 = v66;
       [(PKAsyncUnaryOperationComposer *)v11 addOperation:v54];
       v48[0] = MEMORY[0x1E69E9820];
@@ -7804,7 +7804,7 @@ void __80__PKPaymentProvisioningController_requestPurchasesForProduct_completion
 
     else
     {
-      if (v14 == 10)
+      if (type == 10)
       {
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
@@ -7812,12 +7812,12 @@ void __80__PKPaymentProvisioningController_requestPurchasesForProduct_completion
         v35[3] = &unk_1E79D71B8;
         v38 = v68;
         v36 = v10;
-        v37 = self;
+        selfCopy = self;
         [(PKAsyncUnaryOperationComposer *)v11 addOperation:v35];
         v15 = v36;
       }
 
-      else if (v14 == 11)
+      else if (type == 11)
       {
         v62[0] = MEMORY[0x1E69E9820];
         v62[1] = 3221225472;
@@ -7825,7 +7825,7 @@ void __80__PKPaymentProvisioningController_requestPurchasesForProduct_completion
         v62[3] = &unk_1E79D71B8;
         v65 = v68;
         v63 = v10;
-        v64 = self;
+        selfCopy2 = self;
         [(PKAsyncUnaryOperationComposer *)v11 addOperation:v62];
         v15 = v63;
       }
@@ -7837,7 +7837,7 @@ void __80__PKPaymentProvisioningController_requestPurchasesForProduct_completion
         v45[2] = __102__PKPaymentProvisioningController_setupProductForProvisioning_includePurchases_withCompletionHandler___block_invoke_3_537;
         v45[3] = &unk_1E79CD838;
         v45[4] = self;
-        v21 = v8;
+        v21 = provisioningCopy;
         v46 = v21;
         v47 = v68;
         [(PKAsyncUnaryOperationComposer *)v11 addOperation:v45];
@@ -7846,9 +7846,9 @@ void __80__PKPaymentProvisioningController_requestPurchasesForProduct_completion
         v39[2] = __102__PKPaymentProvisioningController_setupProductForProvisioning_includePurchases_withCompletionHandler___block_invoke_5_539;
         v39[3] = &unk_1E79D7258;
         v43 = v68;
-        v44 = a4;
+        purchasesCopy = purchases;
         v40 = v21;
-        v41 = self;
+        selfCopy3 = self;
         v42 = v10;
         [(PKAsyncUnaryOperationComposer *)v11 addOperation:v39];
 
@@ -7865,23 +7865,23 @@ void __80__PKPaymentProvisioningController_requestPurchasesForProduct_completion
     v31[3] = &unk_1E79D71B8;
     v34 = v68;
     v32 = v10;
-    v33 = self;
+    selfCopy4 = self;
     [(PKAsyncUnaryOperationComposer *)v11 addOperation:v31];
-    v13 = v32;
+    configuration = v32;
   }
 
-  v22 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = v12[283];
   v26[2] = __102__PKPaymentProvisioningController_setupProductForProvisioning_includePurchases_withCompletionHandler___block_invoke_3_543;
   v26[3] = &unk_1E79D7280;
-  v23 = v9;
+  v23 = handlerCopy;
   v28 = v23;
   v29 = v68;
   v30 = v66;
   v24 = v10;
   v27 = v24;
-  v25 = [(PKAsyncUnaryOperationComposer *)v11 evaluateWithInput:v22 completion:v26];
+  v25 = [(PKAsyncUnaryOperationComposer *)v11 evaluateWithInput:null completion:v26];
 
   _Block_object_dispose(v66, 8);
   _Block_object_dispose(v68, 8);
@@ -8307,33 +8307,33 @@ void __102__PKPaymentProvisioningController_setupProductForProvisioning_includeP
   v7[2](v7, v11, 0);
 }
 
-- (void)setupAccountCredentialForProvisioning:(id)a3 completion:(id)a4
+- (void)setupAccountCredentialForProvisioning:(id)provisioning completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  provisioningCopy = provisioning;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (provisioningCopy)
   {
-    v9 = [(PKPaymentWebService *)self->_webService context];
-    v10 = [v9 primaryRegion];
+    context = [(PKPaymentWebService *)self->_webService context];
+    primaryRegion = [context primaryRegion];
 
     v11 = PKLogFacilityTypeGetObject(0xFuLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v10 accountServiceURL];
-      v13 = [v10 accountServicePushTopic];
+      accountServiceURL = [primaryRegion accountServiceURL];
+      accountServicePushTopic = [primaryRegion accountServicePushTopic];
       *buf = 138412546;
-      v22 = v12;
+      v22 = accountServiceURL;
       v23 = 2112;
-      v24 = v13;
+      v24 = accountServicePushTopic;
       _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "setupAccountCredentialForProvisioning accountServiceURL %@ accountServicePushTopic %@", buf, 0x16u);
     }
 
-    v14 = [v10 accountServiceURL];
-    if (v14 && (v15 = v14, [v10 accountServicePushTopic], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
+    accountServiceURL2 = [primaryRegion accountServiceURL];
+    if (accountServiceURL2 && (v15 = accountServiceURL2, [primaryRegion accountServicePushTopic], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
     {
-      [(PKPaymentProvisioningController *)self _setupAccountCredentialForProvisioning:v6 completion:v8];
+      [(PKPaymentProvisioningController *)self _setupAccountCredentialForProvisioning:provisioningCopy completion:v8];
     }
 
     else
@@ -8341,28 +8341,28 @@ void __102__PKPaymentProvisioningController_setupProductForProvisioning_includeP
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v22 = v10;
+        v22 = primaryRegion;
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "!!!! Missing account service URL or push topic, updating accounts before setting up account credential. Region: %@", buf, 0xCu);
       }
 
-      v17 = [(PKPaymentWebService *)self->_webService targetDevice];
+      targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __84__PKPaymentProvisioningController_setupAccountCredentialForProvisioning_completion___block_invoke;
       v18[3] = &unk_1E79D72A8;
       v18[4] = self;
-      v19 = v6;
+      v19 = provisioningCopy;
       v20 = v8;
-      [v17 updatedAccountsForProvisioningWithCompletion:v18];
+      [targetDevice updatedAccountsForProvisioningWithCompletion:v18];
     }
 
     goto LABEL_12;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = [(PKPaymentProvisioningController *)self displayableErrorForError:0];
-    (v8)[2](v8, 0, v10);
+    primaryRegion = [(PKPaymentProvisioningController *)self displayableErrorForError:0];
+    (v8)[2](v8, 0, primaryRegion);
 LABEL_12:
   }
 }
@@ -8385,21 +8385,21 @@ void __84__PKPaymentProvisioningController_setupAccountCredentialForProvisioning
   [*(a1 + 32) _setupAccountCredentialForProvisioning:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)_setupAccountCredentialForProvisioning:(id)a3 completion:(id)a4
+- (void)_setupAccountCredentialForProvisioning:(id)provisioning completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 account];
-  v9 = [v8 accountIdentifier];
-  v10 = PKFeatureIdentifierToString([v8 feature]);
-  v11 = [(PKPaymentProvisioningController *)self _supportedFeatureIdentifierStringsForAccountProvisioning];
-  if ([v11 containsObject:v10])
+  provisioningCopy = provisioning;
+  completionCopy = completion;
+  account = [provisioningCopy account];
+  accountIdentifier = [account accountIdentifier];
+  v10 = PKFeatureIdentifierToString([account feature]);
+  _supportedFeatureIdentifierStringsForAccountProvisioning = [(PKPaymentProvisioningController *)self _supportedFeatureIdentifierStringsForAccountProvisioning];
+  if ([_supportedFeatureIdentifierStringsForAccountProvisioning containsObject:v10])
   {
     v29 = v10;
-    v12 = [v6 passDetailsResponse];
-    v13 = v12;
-    if (v12 && [v12 status] != -1)
+    passDetailsResponse = [provisioningCopy passDetailsResponse];
+    v13 = passDetailsResponse;
+    if (passDetailsResponse && [passDetailsResponse status] != -1)
     {
       if ([v13 status] != 1 || (objc_msgSend(v13, "provisioningIdentifier"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v15))
       {
@@ -8407,14 +8407,14 @@ void __84__PKPaymentProvisioningController_setupAccountCredentialForProvisioning
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v41 = v9;
+          v41 = accountIdentifier;
           _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Account credential for account: %@ has already already setup for provisioning", buf, 0xCu);
         }
 
         v10 = v29;
-        if (v7)
+        if (completionCopy)
         {
-          v7[2](v7, 1, 0);
+          completionCopy[2](completionCopy, 1, 0);
         }
 
         goto LABEL_25;
@@ -8432,32 +8432,32 @@ void __84__PKPaymentProvisioningController_setupAccountCredentialForProvisioning
     aBlock[1] = 3221225472;
     aBlock[2] = __85__PKPaymentProvisioningController__setupAccountCredentialForProvisioning_completion___block_invoke;
     aBlock[3] = &unk_1E79D7320;
-    v19 = v7;
+    v19 = completionCopy;
     v39 = v19;
     aBlock[4] = self;
-    v20 = v6;
+    v20 = provisioningCopy;
     v38 = v20;
     v21 = _Block_copy(aBlock);
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __85__PKPaymentProvisioningController__setupAccountCredentialForProvisioning_completion___block_invoke_546;
     v30[3] = &unk_1E79D7398;
-    v28 = v9;
-    v31 = v9;
-    v32 = v8;
+    v28 = accountIdentifier;
+    v31 = accountIdentifier;
+    v32 = account;
     v22 = v20;
     v33 = v22;
-    v34 = self;
+    selfCopy = self;
     v35 = v19;
     v23 = v21;
     v36 = v23;
     v24 = _Block_copy(v30);
-    v25 = [(PKPaymentWebService *)self->_webService targetDevice];
+    targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v22 sharingInstanceIdentifier];
+      sharingInstanceIdentifier = [v22 sharingInstanceIdentifier];
 
-      if (v26)
+      if (sharingInstanceIdentifier)
       {
         v27 = 111;
       }
@@ -8467,7 +8467,7 @@ void __84__PKPaymentProvisioningController_setupAccountCredentialForProvisioning
         v27 = 255;
       }
 
-      [v25 paymentWebService:self->_webService deviceMetadataWithFields:v27 completion:v24];
+      [targetDevice paymentWebService:self->_webService deviceMetadataWithFields:v27 completion:v24];
     }
 
     else
@@ -8475,7 +8475,7 @@ void __84__PKPaymentProvisioningController_setupAccountCredentialForProvisioning
       v24[2](v24, 0);
     }
 
-    v9 = v28;
+    accountIdentifier = v28;
     v10 = v29;
 LABEL_25:
 
@@ -8486,14 +8486,14 @@ LABEL_25:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v41 = v9;
+    v41 = accountIdentifier;
     _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "Account credential for account: %@ is not supported by target device supported features", buf, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v13 = [(PKPaymentProvisioningController *)self displayableErrorForError:0];
-    (v7)[2](v7, 0, v13);
+    (completionCopy)[2](completionCopy, 0, v13);
     goto LABEL_25;
   }
 
@@ -8680,11 +8680,11 @@ void __85__PKPaymentProvisioningController__setupAccountCredentialForProvisionin
   }
 }
 
-- (id)_filteredPaymentSetupProductSections:(id)a3
+- (id)_filteredPaymentSetupProductSections:(id)sections
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  sectionsCopy = sections;
+  v5 = sectionsCopy;
   if (self->_isProvisioningForAltAccount)
   {
     v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -8714,8 +8714,8 @@ void __85__PKPaymentProvisioningController__setupAccountCredentialForProvisionin
           v25 = 0u;
           v26 = 0u;
           v22 = v7;
-          v9 = [v7 categories];
-          v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          categories = [v7 categories];
+          v10 = [categories countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v10)
           {
             v11 = v10;
@@ -8726,18 +8726,18 @@ void __85__PKPaymentProvisioningController__setupAccountCredentialForProvisionin
               {
                 if (*v24 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(categories);
                 }
 
                 v14 = *(*(&v23 + 1) + 8 * j);
-                v15 = [v14 identifier];
-                if (([v15 isEqualToString:@"creditDebit"] & 1) == 0 && (objc_msgSend(v15, "isEqualToString:", @"appExtensions") & 1) == 0)
+                identifier = [v14 identifier];
+                if (([identifier isEqualToString:@"creditDebit"] & 1) == 0 && (objc_msgSend(identifier, "isEqualToString:", @"appExtensions") & 1) == 0)
                 {
                   [v8 addObject:v14];
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v11 = [categories countByEnumeratingWithState:&v23 objects:v31 count:16];
             }
 
             while (v11);
@@ -8761,24 +8761,24 @@ void __85__PKPaymentProvisioningController__setupAccountCredentialForProvisionin
 
   else
   {
-    v19 = v4;
+    v19 = sectionsCopy;
   }
 
   return v19;
 }
 
-- (id)_filterPaymentSetupProducts:(id)a3
+- (id)_filterPaymentSetupProducts:(id)products
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  productsCopy = products;
   if (!self->_targetDeviceSupportsTypeF)
   {
-    v5 = [(PKPaymentWebService *)self->_webService targetDevice];
+    targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v5 felicaSecureElementIsAvailable];
+      felicaSecureElementIsAvailable = [targetDevice felicaSecureElementIsAvailable];
       v7 = 1;
-      if (!v6)
+      if (!felicaSecureElementIsAvailable)
       {
         v7 = 2;
       }
@@ -8793,18 +8793,18 @@ void __85__PKPaymentProvisioningController__setupAccountCredentialForProvisionin
   }
 
   v48 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v50 = [(PKPaymentProvisioningController *)self _supportedFeatureIdentifierStrings];
+  _supportedFeatureIdentifierStrings = [(PKPaymentProvisioningController *)self _supportedFeatureIdentifierStrings];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v8 = v4;
+  v8 = productsCopy;
   v9 = [v8 countByEnumeratingWithState:&v51 objects:v57 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v52;
-    v49 = self;
+    selfCopy = self;
     do
     {
       v12 = 0;
@@ -8816,39 +8816,39 @@ void __85__PKPaymentProvisioningController__setupAccountCredentialForProvisionin
         }
 
         v13 = *(*(&v51 + 1) + 8 * v12);
-        v14 = [v13 configuration];
-        [v14 state];
+        configuration = [v13 configuration];
+        [configuration state];
 
         if (self->_allowedPaymentNetworks)
         {
-          v15 = [v13 paymentOptions];
-          v16 = [v15 firstObject];
+          paymentOptions = [v13 paymentOptions];
+          firstObject = [paymentOptions firstObject];
 
-          v17 = PKPaymentNetworkNameForPaymentCredentialType([v16 cardType]);
+          v17 = PKPaymentNetworkNameForPaymentCredentialType([firstObject cardType]);
           if ([(NSArray *)self->_allowedPaymentNetworks containsObject:v17])
           {
             goto LABEL_17;
           }
 
-          v18 = [v13 configuration];
-          if ([v18 featureIdentifier] == 2)
+          configuration2 = [v13 configuration];
+          if ([configuration2 featureIdentifier] == 2)
           {
 
 LABEL_17:
             goto LABEL_18;
           }
 
-          v35 = [v13 configuration];
+          configuration3 = [v13 configuration];
           v36 = v10;
           v37 = v11;
           v38 = v8;
-          v39 = [v35 type];
+          type = [configuration3 type];
 
-          v40 = v39 == 5;
+          v40 = type == 5;
           v8 = v38;
           v11 = v37;
           v10 = v36;
-          self = v49;
+          self = selfCopy;
           if (!v40)
           {
             goto LABEL_25;
@@ -8858,13 +8858,13 @@ LABEL_17:
 LABEL_18:
         if ([(NSSet *)self->_requiredTransitNetworkIdentifiers count])
         {
-          v19 = [v13 supportedTransitNetworkIdentifiers];
-          v20 = v19;
-          if (!v19 || ![v19 count])
+          supportedTransitNetworkIdentifiers = [v13 supportedTransitNetworkIdentifiers];
+          v20 = supportedTransitNetworkIdentifiers;
+          if (!supportedTransitNetworkIdentifiers || ![supportedTransitNetworkIdentifiers count])
           {
 
 LABEL_25:
-            v23 = [v13 configuration];
+            configuration4 = [v13 configuration];
 LABEL_26:
             v24 = v13;
             v25 = 1;
@@ -8884,7 +8884,7 @@ LABEL_26:
         if (([v13 allSupportedProtocols] & 4) != 0)
         {
           targetDeviceSupportsTypeF = self->_targetDeviceSupportsTypeF;
-          v23 = [v13 configuration];
+          configuration4 = [v13 configuration];
           if (targetDeviceSupportsTypeF != 1)
           {
             goto LABEL_26;
@@ -8893,16 +8893,16 @@ LABEL_26:
 
         else
         {
-          v23 = [v13 configuration];
+          configuration4 = [v13 configuration];
         }
 
-        if ([v23 type] == 7)
+        if ([configuration4 type] == 7)
         {
-          v29 = [v23 featureIdentifier];
-          v30 = PKFeatureIdentifierToString(v29);
-          v31 = [v50 containsObject:v30];
+          featureIdentifier = [configuration4 featureIdentifier];
+          v30 = PKFeatureIdentifierToString(featureIdentifier);
+          v31 = [_supportedFeatureIdentifierStrings containsObject:v30];
 
-          if (!v31 || !PKDeviceSupportsApplicationForFeatureIdentifier(v29))
+          if (!v31 || !PKDeviceSupportsApplicationForFeatureIdentifier(featureIdentifier))
           {
             goto LABEL_26;
           }
@@ -8911,8 +8911,8 @@ LABEL_26:
         allowedProductIdentifiers = self->_allowedProductIdentifiers;
         if (allowedProductIdentifiers)
         {
-          v33 = [v13 productIdentifier];
-          v34 = [(NSSet *)allowedProductIdentifiers containsObject:v33];
+          productIdentifier = [v13 productIdentifier];
+          v34 = [(NSSet *)allowedProductIdentifiers containsObject:productIdentifier];
 
           if (!v34)
           {
@@ -8925,13 +8925,13 @@ LABEL_26:
           [v13 setMeetsAgeRequirements:1];
           if (!self->_isProvisioningForAltAccount || [v13 minimumTargetUserSupportedAge] < 13 || self->_isTargetUserUnder13 != 1)
           {
-            if ([v23 type] != 12)
+            if ([configuration4 type] != 12)
             {
               goto LABEL_51;
             }
 
-            v41 = [v13 criteriaIdentifier];
-            v42 = [(PKPaymentOffersController *)self->_paymentOffersController paymentOfferCriteriaForIdentifier:v41];
+            criteriaIdentifier = [v13 criteriaIdentifier];
+            v42 = [(PKPaymentOffersController *)self->_paymentOffersController paymentOfferCriteriaForIdentifier:criteriaIdentifier];
             if (v42)
             {
               objc_opt_class();
@@ -8947,7 +8947,7 @@ LABEL_51:
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v56 = v41;
+                v56 = criteriaIdentifier;
                 v44 = v43;
                 v45 = "Payment offers controller criteria %@ is not of type installments";
 LABEL_56:
@@ -8961,7 +8961,7 @@ LABEL_56:
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v56 = v41;
+                v56 = criteriaIdentifier;
                 v44 = v43;
                 v45 = "Payment offers controller doesnt have criteria for %@";
                 goto LABEL_56;
@@ -8980,9 +8980,9 @@ LABEL_28:
         v26 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v13 displayName];
+          displayName = [v13 displayName];
           *buf = 138412290;
-          v56 = v27;
+          v56 = displayName;
           _os_log_impl(&dword_1AD337000, v26, OS_LOG_TYPE_DEFAULT, "Product %@ is not supported by target device", buf, 0xCu);
         }
 
@@ -9001,43 +9001,43 @@ LABEL_31:
   return v48;
 }
 
-- (void)_queryRequirementsForCredential:(id)a3 completion:(id)a4
+- (void)_queryRequirementsForCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 state];
-  v9 = [v8 requirementsResponse];
+  credentialCopy = credential;
+  completionCopy = completion;
+  state = [credentialCopy state];
+  requirementsResponse = [state requirementsResponse];
 
-  if (v9)
+  if (requirementsResponse)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
-    v10 = [[PKPaymentRequirementsRequest alloc] initWithPaymentCredential:v6];
-    v11 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+    v10 = [[PKPaymentRequirementsRequest alloc] initWithPaymentCredential:credentialCopy];
+    referrerIdentifier = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
 
-    if (v11)
+    if (referrerIdentifier)
     {
-      v12 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
-      [(PKPaymentRequirementsRequest *)v10 setReferrerIdentifier:v12];
+      referrerIdentifier2 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+      [(PKPaymentRequirementsRequest *)v10 setReferrerIdentifier:referrerIdentifier2];
     }
 
-    v13 = [v6 state];
-    v14 = [v13 sid];
+    state2 = [credentialCopy state];
+    v14 = [state2 sid];
 
     utility = self->_utility;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __78__PKPaymentProvisioningController__queryRequirementsForCredential_completion___block_invoke;
     v16[3] = &unk_1E79D73C0;
-    v17 = v6;
-    v18 = self;
-    v19 = v7;
+    v17 = credentialCopy;
+    selfCopy = self;
+    v19 = completionCopy;
     [(PKProvisioningUtility *)utility requestRequirements:v10 sid:v14 completion:v16];
   }
 }
@@ -9082,30 +9082,30 @@ void __78__PKPaymentProvisioningController__queryRequirementsForCredential_compl
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)_queryEligibilityForCredential:(id)a3 completion:(id)a4
+- (void)_queryEligibilityForCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 state];
-  v9 = [v8 eligibilityResponse];
+  credentialCopy = credential;
+  completionCopy = completion;
+  state = [credentialCopy state];
+  eligibilityResponse = [state eligibilityResponse];
 
-  if (v9)
+  if (eligibilityResponse)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
-    v10 = [[PKPaymentEligibilityRequest alloc] initWithPaymentCredential:v6];
-    v11 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+    v10 = [[PKPaymentEligibilityRequest alloc] initWithPaymentCredential:credentialCopy];
+    referrerIdentifier = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
 
-    if (v11)
+    if (referrerIdentifier)
     {
-      v12 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
-      [(PKPaymentEligibilityRequest *)v10 setReferrerIdentifier:v12];
+      referrerIdentifier2 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+      [(PKPaymentEligibilityRequest *)v10 setReferrerIdentifier:referrerIdentifier2];
     }
 
     objc_opt_class();
@@ -9116,8 +9116,8 @@ void __78__PKPaymentProvisioningController__queryRequirementsForCredential_compl
       [(PKPaymentEligibilityRequest *)v10 setCardholderNameInputMethod:1];
     }
 
-    v13 = [v6 state];
-    v14 = [v13 sid];
+    state2 = [credentialCopy state];
+    v14 = [state2 sid];
 
     utility = self->_utility;
     v17[0] = MEMORY[0x1E69E9820];
@@ -9125,9 +9125,9 @@ void __78__PKPaymentProvisioningController__queryRequirementsForCredential_compl
     v17[2] = __77__PKPaymentProvisioningController__queryEligibilityForCredential_completion___block_invoke;
     v17[3] = &unk_1E79D73E8;
     v17[4] = self;
-    v18 = v6;
+    v18 = credentialCopy;
     v19 = v14;
-    v20 = v7;
+    v20 = completionCopy;
     v16 = v14;
     [(PKProvisioningUtility *)utility requestEligibility:v10 sid:v16 completion:v17];
   }
@@ -9201,16 +9201,16 @@ void __77__PKPaymentProvisioningController__queryEligibilityForCredential_comple
   }
 }
 
-- (void)requestRequirements:(id)a3 withCompletionHandler:(id)a4
+- (void)requestRequirements:(id)requirements withCompletionHandler:(id)handler
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  requirementsCopy = requirements;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   state = self->_state;
   if (state)
   {
-    if (v7)
+    if (handlerCopy)
     {
       v10 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -9227,51 +9227,51 @@ void __77__PKPaymentProvisioningController__queryEligibilityForCredential_comple
 
   else
   {
-    [(PKPaymentProvisioningController *)self _requestRequirements:v6 withCompletionHandler:v7];
+    [(PKPaymentProvisioningController *)self _requestRequirements:requirementsCopy withCompletionHandler:handlerCopy];
   }
 }
 
-- (void)_requestRequirements:(id)a3 withCompletionHandler:(id)a4
+- (void)_requestRequirements:(id)requirements withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requirementsCopy = requirements;
+  handlerCopy = handler;
   [(PKPaymentProvisioningController *)self _setLocalizedProgressDescription:0];
-  v8 = [v6 paymentCredential];
+  paymentCredential = [requirementsCopy paymentCredential];
   currentCredential = self->_currentCredential;
-  self->_currentCredential = v8;
+  self->_currentCredential = paymentCredential;
 
-  v10 = [(PKPaymentCredential *)self->_currentCredential state];
-  v11 = [v10 requirementsResponse];
+  state = [(PKPaymentCredential *)self->_currentCredential state];
+  requirementsResponse = [state requirementsResponse];
 
-  if (v11 && [v11 status] == 1)
+  if (requirementsResponse && [requirementsResponse status] == 1)
   {
-    [(PKSecureElementProvisioningState *)self->_provisioningState setRequirementsResponse:v11];
+    [(PKSecureElementProvisioningState *)self->_provisioningState setRequirementsResponse:requirementsResponse];
     [(PKPaymentProvisioningController *)self _setState:1 notify:1];
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, v11, 0);
+      handlerCopy[2](handlerCopy, requirementsResponse, 0);
     }
   }
 
   else
   {
-    v12 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+    referrerIdentifier = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
 
-    if (v12)
+    if (referrerIdentifier)
     {
-      v13 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
-      [v6 setReferrerIdentifier:v13];
+      referrerIdentifier2 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+      [requirementsCopy setReferrerIdentifier:referrerIdentifier2];
     }
 
-    v14 = [(PKPaymentProvisioningController *)self _effectiveSessionIdentifier];
+    _effectiveSessionIdentifier = [(PKPaymentProvisioningController *)self _effectiveSessionIdentifier];
     utility = self->_utility;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __78__PKPaymentProvisioningController__requestRequirements_withCompletionHandler___block_invoke;
     v16[3] = &unk_1E79D7410;
     v16[4] = self;
-    v17 = v7;
-    [(PKProvisioningUtility *)utility requestRequirements:v6 sid:v14 completion:v16];
+    v17 = handlerCopy;
+    [(PKProvisioningUtility *)utility requestRequirements:requirementsCopy sid:_effectiveSessionIdentifier completion:v16];
   }
 }
 
@@ -9320,63 +9320,63 @@ uint64_t __78__PKPaymentProvisioningController__requestRequirements_withCompleti
   return result;
 }
 
-- (void)resolveAmbiguousRequirementsWithProductIdentifier:(id)a3
+- (void)resolveAmbiguousRequirementsWithProductIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     if (!self->_state)
     {
-      v9 = v4;
-      v5 = [(PKSecureElementProvisioningState *)self->_provisioningState requirementsResponse];
-      v6 = [v5 status];
+      v9 = identifierCopy;
+      requirementsResponse = [(PKSecureElementProvisioningState *)self->_provisioningState requirementsResponse];
+      status = [requirementsResponse status];
 
-      v4 = v9;
-      if (v6 == 2)
+      identifierCopy = v9;
+      if (status == 2)
       {
         [(PKPaymentProvisioningController *)self _setState:1 notify:0];
         provisioningState = self->_provisioningState;
         v8 = [v9 copy];
         [(PKSecureElementProvisioningState *)provisioningState setProductIdentifier:v8];
 
-        v4 = v9;
+        identifierCopy = v9;
       }
     }
   }
 }
 
-- (void)resolveRequirementsUsingProduct:(id)a3
+- (void)resolveRequirementsUsingProduct:(id)product
 {
-  v4 = a3;
-  if (v4 && !self->_state)
+  productCopy = product;
+  if (productCopy && !self->_state)
   {
-    v6 = v4;
+    v6 = productCopy;
     [(PKPaymentProvisioningController *)self _setState:1 notify:0];
     v5 = [[PKPaymentRequirementsResponse alloc] initWithProduct:v6];
     [(PKSecureElementProvisioningState *)self->_provisioningState setRequirementsResponse:v5];
 
-    v4 = v6;
+    productCopy = v6;
   }
 }
 
-- (void)resolveRequirementsUsingProvisioningMethodMetadata:(id)a3
+- (void)resolveRequirementsUsingProvisioningMethodMetadata:(id)metadata
 {
-  v4 = a3;
-  if (v4 && !self->_state)
+  metadataCopy = metadata;
+  if (metadataCopy && !self->_state)
   {
-    v6 = v4;
+    v6 = metadataCopy;
     [(PKPaymentProvisioningController *)self _setState:1 notify:0];
     v5 = [[PKPaymentRequirementsResponse alloc] initWithProvisioningMethodMetadata:v6];
     [(PKSecureElementProvisioningState *)self->_provisioningState setRequirementsResponse:v5];
 
-    v4 = v6;
+    metadataCopy = v6;
   }
 }
 
-- (void)resolveRequirementsForShareableCredential:(id)a3
+- (void)resolveRequirementsForShareableCredential:(id)credential
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  credentialCopy = credential;
   v6 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -9389,7 +9389,7 @@ uint64_t __78__PKPaymentProvisioningController__requestRequirements_withCompleti
   if (!self->_state)
   {
     [(PKPaymentProvisioningController *)self _setState:1 notify:0];
-    objc_storeStrong(&self->_currentCredential, a3);
+    objc_storeStrong(&self->_currentCredential, credential);
     v8 = +[PKPaymentRequirementsResponse emptyRequirementsResponse];
     [(PKSecureElementProvisioningState *)self->_provisioningState setRequirementsResponse:v8];
   }
@@ -9403,10 +9403,10 @@ uint64_t __78__PKPaymentProvisioningController__requestRequirements_withCompleti
   }
 }
 
-- (void)resolveRequirementsForIssuerProvisioningExtensionCredential:(id)a3
+- (void)resolveRequirementsForIssuerProvisioningExtensionCredential:(id)credential
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  credentialCopy = credential;
   v6 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -9419,7 +9419,7 @@ uint64_t __78__PKPaymentProvisioningController__requestRequirements_withCompleti
   if (!self->_state)
   {
     [(PKPaymentProvisioningController *)self _setState:1 notify:0];
-    objc_storeStrong(&self->_currentCredential, a3);
+    objc_storeStrong(&self->_currentCredential, credential);
     v8 = +[PKPaymentRequirementsResponse emptyRequirementsResponse];
     [(PKSecureElementProvisioningState *)self->_provisioningState setRequirementsResponse:v8];
   }
@@ -9433,25 +9433,25 @@ uint64_t __78__PKPaymentProvisioningController__requestRequirements_withCompleti
   }
 }
 
-- (BOOL)setState:(int64_t)a3 forCredential:(id)a4
+- (BOOL)setState:(int64_t)state forCredential:(id)credential
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  credentialCopy = credential;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     currentCredential = self->_currentCredential;
     v16 = 67109378;
-    *v17 = a3;
+    *v17 = state;
     *&v17[4] = 2112;
     *&v17[6] = currentCredential;
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to set provisioning controller state to %d for credential %@", &v16, 0x12u);
   }
 
   v9 = 0;
-  if (a3 > 2)
+  if (state > 2)
   {
-    switch(a3)
+    switch(state)
     {
       case 3:
         state = self->_state;
@@ -9471,7 +9471,7 @@ uint64_t __78__PKPaymentProvisioningController__requestRequirements_withCompleti
 
   else
   {
-    switch(a3)
+    switch(state)
     {
       case 0:
         v9 = 1;
@@ -9490,9 +9490,9 @@ uint64_t __78__PKPaymentProvisioningController__requestRequirements_withCompleti
 LABEL_17:
   v9 = v10;
 LABEL_20:
-  if ([v6 isHomeKeyCredential] & 1) != 0 || ((objc_msgSend(v6, "isAppleBalanceCredential") | v9))
+  if ([credentialCopy isHomeKeyCredential] & 1) != 0 || ((objc_msgSend(credentialCopy, "isAppleBalanceCredential") | v9))
   {
-    [(PKPaymentProvisioningController *)self _setState:a3 notify:0];
+    [(PKPaymentProvisioningController *)self _setState:state notify:0];
     v12 = 1;
   }
 
@@ -9520,12 +9520,12 @@ LABEL_20:
   return v12;
 }
 
-- (void)resolveLocalEligibilityRequirementsForAppleBalanceCredential:(id)a3 withCompletion:(id)a4
+- (void)resolveLocalEligibilityRequirementsForAppleBalanceCredential:(id)credential withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isAppleBalanceCredential];
-  if (([v6 isRemoteCredential] & 1) != 0 || (v8 & 1) != 0 || objc_msgSend(v6, "isLocalPassCredential"))
+  credentialCopy = credential;
+  completionCopy = completion;
+  isAppleBalanceCredential = [credentialCopy isAppleBalanceCredential];
+  if (([credentialCopy isRemoteCredential] & 1) != 0 || (isAppleBalanceCredential & 1) != 0 || objc_msgSend(credentialCopy, "isLocalPassCredential"))
   {
     v9 = objc_alloc_init(PKAsyncUnaryOperationComposer);
     v20[0] = 0;
@@ -9548,25 +9548,25 @@ LABEL_20:
     v18[5] = v20;
     [(PKAsyncUnaryOperationComposer *)v9 addOperation:v18];
     objc_initWeak(&location, self);
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __111__PKPaymentProvisioningController_resolveLocalEligibilityRequirementsForAppleBalanceCredential_withCompletion___block_invoke_582;
     v12[3] = &unk_1E79D7528;
     v15 = v20;
     objc_copyWeak(&v16, &location);
-    v13 = v6;
-    v14 = v7;
-    v11 = [(PKAsyncUnaryOperationComposer *)v9 evaluateWithInput:v10 completion:v12];
+    v13 = credentialCopy;
+    v14 = completionCopy;
+    v11 = [(PKAsyncUnaryOperationComposer *)v9 evaluateWithInput:null completion:v12];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
     _Block_object_dispose(v20, 8);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -9656,10 +9656,10 @@ void __111__PKPaymentProvisioningController_resolveLocalEligibilityRequirementsF
   }
 }
 
-- (void)requestEligibility:(id)a3 withCompletionHandler:(id)a4
+- (void)requestEligibility:(id)eligibility withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  eligibilityCopy = eligibility;
+  handlerCopy = handler;
   state = self->_state;
   if (state == 1)
   {
@@ -9668,33 +9668,33 @@ void __111__PKPaymentProvisioningController_resolveLocalEligibilityRequirementsF
 
   if (!state)
   {
-    v9 = [v6 paymentCredential];
-    if (v9)
+    paymentCredential = [eligibilityCopy paymentCredential];
+    if (paymentCredential)
     {
 
       goto LABEL_5;
     }
 
-    v22 = [v6 issuerIdentifier];
-    if (v22)
+    issuerIdentifier = [eligibilityCopy issuerIdentifier];
+    if (issuerIdentifier)
     {
-      v23 = v22;
-      v24 = [v6 encryptedCardData];
+      v23 = issuerIdentifier;
+      encryptedCardData = [eligibilityCopy encryptedCardData];
 
-      if (v24)
+      if (encryptedCardData)
       {
 LABEL_5:
-        v10 = [v6 paymentCredential];
-        v11 = [v10 state];
-        v12 = [v11 eligibilityResponse];
+        paymentCredential2 = [eligibilityCopy paymentCredential];
+        state = [paymentCredential2 state];
+        eligibilityResponse = [state eligibilityResponse];
 
-        if (v12 && [v12 eligibilityStatus] == 1)
+        if (eligibilityResponse && [eligibilityResponse eligibilityStatus] == 1)
         {
-          [(PKSecureElementProvisioningState *)self->_provisioningState setEligibilityResponse:v12];
+          [(PKSecureElementProvisioningState *)self->_provisioningState setEligibilityResponse:eligibilityResponse];
           [(PKPaymentProvisioningController *)self _setState:2 notify:1];
-          if (v7)
+          if (handlerCopy)
           {
-            v7[2](v7, v12, 0);
+            handlerCopy[2](handlerCopy, eligibilityResponse, 0);
           }
 
 LABEL_30:
@@ -9713,17 +9713,17 @@ LABEL_30:
         v38[4] = &v39;
         v13 = PKBeginBackgroundTask(@"com.apple.passbook.cardChecking", v38);
         v40[3] = v13;
-        v14 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+        referrerIdentifier = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
 
-        if (v14)
+        if (referrerIdentifier)
         {
-          v15 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
-          [v6 setReferrerIdentifier:v15];
+          referrerIdentifier2 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+          [eligibilityCopy setReferrerIdentifier:referrerIdentifier2];
         }
 
-        v16 = [v6 addPaymentPassRequestConfiguration];
+        addPaymentPassRequestConfiguration = [eligibilityCopy addPaymentPassRequestConfiguration];
         currentAddPaymentPassRequestConfiguration = self->_currentAddPaymentPassRequestConfiguration;
-        self->_currentAddPaymentPassRequestConfiguration = v16;
+        self->_currentAddPaymentPassRequestConfiguration = addPaymentPassRequestConfiguration;
 
         if ([(PKPaymentProvisioningController *)self _isProvisioningPaymentAccount])
         {
@@ -9732,10 +9732,10 @@ LABEL_30:
 
         else
         {
-          v19 = [v6 paymentCredential];
-          v20 = [v19 credentialType];
+          paymentCredential3 = [eligibilityCopy paymentCredential];
+          credentialType = [paymentCredential3 credentialType];
 
-          if (v20 == 135)
+          if (credentialType == 135)
           {
             v21 = 0;
             goto LABEL_21;
@@ -9747,15 +9747,15 @@ LABEL_30:
         v21 = v18;
 LABEL_21:
         [(PKPaymentProvisioningController *)self _setLocalizedProgressDescription:v21];
-        if (-[PKSecureElementProvisioningState hasNonce](self->_provisioningState, "hasNonce") && [v6 requiresNonce])
+        if (-[PKSecureElementProvisioningState hasNonce](self->_provisioningState, "hasNonce") && [eligibilityCopy requiresNonce])
         {
-          v25 = [(PKSecureElementProvisioningState *)self->_provisioningState useNonce];
-          [v6 setNonce:v25];
+          useNonce = [(PKSecureElementProvisioningState *)self->_provisioningState useNonce];
+          [eligibilityCopy setNonce:useNonce];
         }
 
-        v26 = [v6 paymentCredential];
-        v27 = [v26 state];
-        v28 = [v27 sid];
+        paymentCredential4 = [eligibilityCopy paymentCredential];
+        state2 = [paymentCredential4 state];
+        v28 = [state2 sid];
         v29 = v28;
         if (v28)
         {
@@ -9781,9 +9781,9 @@ LABEL_21:
         v35[2] = __76__PKPaymentProvisioningController_requestEligibility_withCompletionHandler___block_invoke_2;
         v35[3] = &unk_1E79D7488;
         v35[4] = self;
-        v36 = v7;
+        v36 = handlerCopy;
         v37 = &v39;
-        [(PKProvisioningUtility *)utility requestEligibility:v6 sid:v30 completion:v35];
+        [(PKProvisioningUtility *)utility requestEligibility:eligibilityCopy sid:v30 completion:v35];
 
         _Block_object_dispose(&v39, 8);
         goto LABEL_30;
@@ -9791,9 +9791,9 @@ LABEL_21:
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
 LABEL_31:
@@ -9910,7 +9910,7 @@ void __76__PKPaymentProvisioningController_requestEligibility_withCompletionHand
   {
     self->_state = 1;
     [(PKSecureElementProvisioningState *)self->_provisioningState setEligibilityResponse:0];
-    v4 = [(PKSecureElementProvisioningState *)self->_provisioningState useNonce];
+    useNonce = [(PKSecureElementProvisioningState *)self->_provisioningState useNonce];
   }
 
   else
@@ -9926,14 +9926,14 @@ void __76__PKPaymentProvisioningController_requestEligibility_withCompletionHand
   }
 }
 
-- (void)resolveProvisioningForCredential:(id)a3
+- (void)resolveProvisioningForCredential:(id)credential
 {
   if (!self->_state)
   {
     associatedCredentials = self->_associatedCredentials;
-    v6 = a3;
-    [(NSMutableArray *)associatedCredentials removeObject:v6];
-    [(PKPaymentProvisioningControllerCredentialQueue *)self->_credentialProvisioningQueue removeCredential:v6];
+    credentialCopy = credential;
+    [(NSMutableArray *)associatedCredentials removeObject:credentialCopy];
+    [(PKPaymentProvisioningControllerCredentialQueue *)self->_credentialProvisioningQueue removeCredential:credentialCopy];
 
     currentCredential = self->_currentCredential;
     self->_currentCredential = 0;
@@ -9942,10 +9942,10 @@ void __76__PKPaymentProvisioningController_requestEligibility_withCompletionHand
   }
 }
 
-- (void)requestExternalizedAuthForWatchWithVisibleViewController:(id)a3 completion:(id)a4
+- (void)requestExternalizedAuthForWatchWithVisibleViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -9957,18 +9957,18 @@ void __76__PKPaymentProvisioningController_requestEligibility_withCompletionHand
   aBlock[1] = 3221225472;
   aBlock[2] = __103__PKPaymentProvisioningController_requestExternalizedAuthForWatchWithVisibleViewController_completion___block_invoke;
   aBlock[3] = &unk_1E79C4450;
-  v9 = v7;
+  v9 = completionCopy;
   v13 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   if (objc_opt_respondsToSelector())
   {
-    [v11 requestAndStoreExternalizedAuthWithVisibleViewController:v6 completion:v10];
+    [targetDevice requestAndStoreExternalizedAuthWithVisibleViewController:controllerCopy completion:v10];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v11 requestAndStoreExternalizedAuthWithCompletion:v10];
+    [targetDevice requestAndStoreExternalizedAuthWithCompletion:v10];
   }
 
   else
@@ -10031,27 +10031,27 @@ void __103__PKPaymentProvisioningController_requestExternalizedAuthForWatchWithV
   }
 }
 
-- (void)storeExternalizedAuth:(id)a3
+- (void)storeExternalizedAuth:(id)auth
 {
-  v5 = a3;
-  if (v5)
+  authCopy = auth;
+  if (authCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_externalizedAuth, a3);
-    v5 = v6;
+    v6 = authCopy;
+    objc_storeStrong(&self->_externalizedAuth, auth);
+    authCopy = v6;
   }
 }
 
-- (void)requestProvisioning:(id)a3 withCompletionHandler:(id)a4
+- (void)requestProvisioning:(id)provisioning withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __77__PKPaymentProvisioningController_requestProvisioning_withCompletionHandler___block_invoke;
   v8[3] = &unk_1E79D74B0;
-  v9 = v6;
-  v7 = v6;
-  [(PKPaymentProvisioningController *)self requestProvisioning:a3 withCompletion:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(PKPaymentProvisioningController *)self requestProvisioning:provisioning withCompletion:v8];
 }
 
 uint64_t __77__PKPaymentProvisioningController_requestProvisioning_withCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -10065,11 +10065,11 @@ uint64_t __77__PKPaymentProvisioningController_requestProvisioning_withCompletio
   return result;
 }
 
-- (void)requestProvisioning:(id)a3 withCompletion:(id)a4
+- (void)requestProvisioning:(id)provisioning withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  provisioningCopy = provisioning;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (self->_state == 4)
   {
     v9 = objc_alloc_init(PKAsyncUnaryOperationComposer);
@@ -10087,16 +10087,16 @@ uint64_t __77__PKPaymentProvisioningController_requestProvisioning_withCompletio
     objc_copyWeak(&v18, &location);
     v17[4] = v19;
     [(PKAsyncUnaryOperationComposer *)v9 addOperation:v17];
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __70__PKPaymentProvisioningController_requestProvisioning_withCompletion___block_invoke_3;
     v12[3] = &unk_1E79D7528;
     objc_copyWeak(&v16, &location);
-    v13 = v6;
+    v13 = provisioningCopy;
     v14 = v8;
     v15 = v19;
-    v11 = [(PKAsyncUnaryOperationComposer *)v9 evaluateWithInput:v10 completion:v12];
+    v11 = [(PKAsyncUnaryOperationComposer *)v9 evaluateWithInput:null completion:v12];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&v18);
@@ -10105,9 +10105,9 @@ uint64_t __77__PKPaymentProvisioningController_requestProvisioning_withCompletio
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
@@ -10310,11 +10310,11 @@ void __58__PKPaymentProvisioningController__noteProvisioningDidEnd__block_invoke
 {
   if ([(PKPaymentProvisioningController *)self _isProvisioningPaymentAccount]|| [(PKPaymentCredential *)self->_currentCredential credentialType]== 135)
   {
-    v3 = [(PKPaymentCredential *)self->_currentCredential longDescription];
-    v4 = v3;
-    if (v3)
+    longDescription = [(PKPaymentCredential *)self->_currentCredential longDescription];
+    v4 = longDescription;
+    if (longDescription)
     {
-      PKLocalizedAquamanString(&cfstr_ProgressSettin.isa, &stru_1F2281668.isa, v3);
+      PKLocalizedAquamanString(&cfstr_ProgressSettin.isa, &stru_1F2281668.isa, longDescription);
     }
 
     else
@@ -10332,27 +10332,27 @@ void __58__PKPaymentProvisioningController__noteProvisioningDidEnd__block_invoke
   return v5;
 }
 
-- (void)ingestSecureElementPassForCredential:(id)a3 completion:(id)a4
+- (void)ingestSecureElementPassForCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   currentCredential = self->_currentCredential;
-  self->_currentCredential = v6;
-  v9 = v6;
+  self->_currentCredential = credentialCopy;
+  v9 = credentialCopy;
 
-  v10 = [(PKPaymentProvisioningController *)self _effectiveSessionIdentifier];
-  v11 = [(PKPaymentProvisioningController *)self provisioningTracker];
+  _effectiveSessionIdentifier = [(PKPaymentProvisioningController *)self _effectiveSessionIdentifier];
+  provisioningTracker = [(PKPaymentProvisioningController *)self provisioningTracker];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__PKPaymentProvisioningController_ingestSecureElementPassForCredential_completion___block_invoke;
   v15[3] = &unk_1E79D75A0;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v18 = v7;
-  v12 = v11;
-  v13 = v10;
-  v14 = v7;
+  v16 = _effectiveSessionIdentifier;
+  v17 = provisioningTracker;
+  v18 = completionCopy;
+  v12 = provisioningTracker;
+  v13 = _effectiveSessionIdentifier;
+  v14 = completionCopy;
   [(PKPaymentProvisioningController *)self _updateCredentialWithPaymentPass:v9 completion:v15];
 }
 
@@ -10421,12 +10421,12 @@ uint64_t __83__PKPaymentProvisioningController_ingestSecureElementPassForCredent
   return result;
 }
 
-- (void)_requestProvisioning:(id)a3 withCompletionHandler:(id)a4
+- (void)_requestProvisioning:(id)provisioning withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentProvisioningController *)self provisioningTracker];
-  v26 = [(PKPaymentProvisioningController *)self _effectiveSessionIdentifier];
+  provisioningCopy = provisioning;
+  handlerCopy = handler;
+  provisioningTracker = [(PKPaymentProvisioningController *)self provisioningTracker];
+  _effectiveSessionIdentifier = [(PKPaymentProvisioningController *)self _effectiveSessionIdentifier];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__PKPaymentProvisioningController__requestProvisioning_withCompletionHandler___block_invoke;
@@ -10438,9 +10438,9 @@ uint64_t __83__PKPaymentProvisioningController_ingestSecureElementPassForCredent
   v34[2] = __78__PKPaymentProvisioningController__requestProvisioning_withCompletionHandler___block_invoke_3;
   v34[3] = &unk_1E79D75C8;
   v34[4] = self;
-  v9 = v7;
+  v9 = handlerCopy;
   v36 = v9;
-  v10 = v8;
+  v10 = provisioningTracker;
   v35 = v10;
   v11 = _Block_copy(v34);
   v30[0] = MEMORY[0x1E69E9820];
@@ -10448,28 +10448,28 @@ uint64_t __83__PKPaymentProvisioningController_ingestSecureElementPassForCredent
   v30[2] = __78__PKPaymentProvisioningController__requestProvisioning_withCompletionHandler___block_invoke_4;
   v30[3] = &unk_1E79D75F0;
   v30[4] = self;
-  v12 = v6;
+  v12 = provisioningCopy;
   v31 = v12;
   v13 = v9;
   v33 = v13;
   v14 = v10;
   v32 = v14;
   v15 = _Block_copy(v30);
-  v16 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+  referrerIdentifier = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
 
-  if (v16)
+  if (referrerIdentifier)
   {
-    v17 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
-    [v12 setReferrerIdentifier:v17];
+    referrerIdentifier2 = [(PKSecureElementProvisioningState *)self->_provisioningState referrerIdentifier];
+    [v12 setReferrerIdentifier:referrerIdentifier2];
   }
 
-  v18 = [(PKSecureElementProvisioningState *)self->_provisioningState useNonce];
-  [v12 setNonce:v18];
+  useNonce = [(PKSecureElementProvisioningState *)self->_provisioningState useNonce];
+  [v12 setNonce:useNonce];
 
   utility = self->_utility;
   externalizedAuth = self->_externalizedAuth;
   cloudStoreCoordinator = self->_cloudStoreCoordinator;
-  v22 = [(PKPaymentCredential *)self->_currentCredential isAppleBalanceCredential];
+  isAppleBalanceCredential = [(PKPaymentCredential *)self->_currentCredential isAppleBalanceCredential];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __78__PKPaymentProvisioningController__requestProvisioning_withCompletionHandler___block_invoke_647;
@@ -10478,7 +10478,7 @@ uint64_t __83__PKPaymentProvisioningController_ingestSecureElementPassForCredent
   v29 = v11;
   v23 = v11;
   v24 = v15;
-  [(PKProvisioningUtility *)utility requestProvisioning:v12 externalizedAuth:externalizedAuth cloudStoreCoordinatorDelegate:cloudStoreCoordinator onStartPassDownload:v25 sid:v26 requireZoneCreationSuccess:v22 completion:v27];
+  [(PKProvisioningUtility *)utility requestProvisioning:v12 externalizedAuth:externalizedAuth cloudStoreCoordinatorDelegate:cloudStoreCoordinator onStartPassDownload:v25 sid:_effectiveSessionIdentifier requireZoneCreationSuccess:isAppleBalanceCredential completion:v27];
 }
 
 void __78__PKPaymentProvisioningController__requestProvisioning_withCompletionHandler___block_invoke(uint64_t a1)
@@ -10670,50 +10670,50 @@ void __78__PKPaymentProvisioningController__requestProvisioning_withCompletionHa
   }
 }
 
-- (void)_deletePaymentPass:(id)a3
+- (void)_deletePaymentPass:(id)pass
 {
-  v4 = a3;
-  v5 = [[PKPaymentDeprovisionRequest alloc] initWithPaymentPass:v4];
+  passCopy = pass;
+  v5 = [[PKPaymentDeprovisionRequest alloc] initWithPaymentPass:passCopy];
 
   [(PKPaymentWebService *)self->_webService deprovisionForRequest:v5 completion:0];
 }
 
-- (void)verifyPassIsSupportedForExpressInLocalMarket:(id)a3 completion:(id)a4
+- (void)verifyPassIsSupportedForExpressInLocalMarket:(id)market completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v23 = [v6 paymentPass];
+  marketCopy = market;
+  completionCopy = completion;
+  paymentPass = [marketCopy paymentPass];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __91__PKPaymentProvisioningController_verifyPassIsSupportedForExpressInLocalMarket_completion___block_invoke;
   aBlock[3] = &unk_1E79D7640;
   objc_copyWeak(&v31, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v30 = v8;
   v9 = _Block_copy(aBlock);
   if (PKLocationServicesEnabled())
   {
-    v10 = [(PKPaymentWebService *)self->_webService context];
-    v11 = [v10 configuration];
-    v12 = [v11 marketsURL];
+    context = [(PKPaymentWebService *)self->_webService context];
+    configuration = [context configuration];
+    marketsURL = [configuration marketsURL];
 
-    if (v12)
+    if (marketsURL)
     {
-      v13 = [(PKPaymentWebService *)self->_webService targetDevice];
-      v14 = [v13 deviceClass];
-      v15 = [v13 deviceVersion];
+      targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+      deviceClass = [targetDevice deviceClass];
+      deviceVersion = [targetDevice deviceVersion];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __91__PKPaymentProvisioningController_verifyPassIsSupportedForExpressInLocalMarket_completion___block_invoke_653;
       v24[3] = &unk_1E79D76E0;
       objc_copyWeak(&v28, &location);
       v27 = v9;
-      v16 = v13;
+      v16 = targetDevice;
       v25 = v16;
-      v26 = v23;
-      [PKPaymentMarketsConfiguration paymentMarketsConfigurationWithURL:v12 forDeviceClass:v14 version:v15 completion:v24];
+      v26 = paymentPass;
+      [PKPaymentMarketsConfiguration paymentMarketsConfigurationWithURL:marketsURL forDeviceClass:deviceClass version:deviceVersion completion:v24];
 
       objc_destroyWeak(&v28);
     }
@@ -10983,16 +10983,16 @@ LABEL_14:
   return v15;
 }
 
-- (void)provisionHomeKeyCredential:(id)a3 completionHandler:(id)a4
+- (void)provisionHomeKeyCredential:(id)credential completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  credentialCopy = credential;
+  handlerCopy = handler;
   v9 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v7;
+    v28 = credentialCopy;
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Provisioning HomeKey credential %@", buf, 0xCu);
   }
 
@@ -11002,22 +11002,22 @@ LABEL_14:
     aBlock[1] = 3221225472;
     aBlock[2] = __80__PKPaymentProvisioningController_provisionHomeKeyCredential_completionHandler___block_invoke;
     aBlock[3] = &unk_1E79C4450;
-    v23 = v8;
+    v23 = handlerCopy;
     v10 = _Block_copy(aBlock);
-    objc_storeStrong(&self->_currentCredential, a3);
-    v11 = [(PKPaymentWebService *)self->_webService targetDevice];
+    objc_storeStrong(&self->_currentCredential, credential);
+    targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v7 serialNumber];
-      v24 = v12;
+      serialNumber = [credentialCopy serialNumber];
+      v24 = serialNumber;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __80__PKPaymentProvisioningController_provisionHomeKeyCredential_completionHandler___block_invoke_3;
       v18[3] = &unk_1E79D7708;
       v18[4] = self;
-      v19 = v7;
-      v20 = v11;
+      v19 = credentialCopy;
+      v20 = targetDevice;
       v21 = v10;
       [v20 provisionHomeKeyPassForSerialNumbers:v13 completionHandler:v18];
     }
@@ -11038,7 +11038,7 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     v14 = MEMORY[0x1E696ABC0];
     v25 = *MEMORY[0x1E696A278];
@@ -11046,7 +11046,7 @@ LABEL_14:
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v16 = [v14 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v15];
 
-    (*(v8 + 2))(v8, v16);
+    (*(handlerCopy + 2))(handlerCopy, v16);
 LABEL_12:
   }
 }
@@ -11169,9 +11169,9 @@ LABEL_19:
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_startLocationSearchWithTimeout:(double)a3 completion:(id)a4
+- (void)_startLocationSearchWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E69E96A0];
   v8 = MEMORY[0x1E69E96A0];
   v10[0] = MEMORY[0x1E69E9820];
@@ -11180,9 +11180,9 @@ LABEL_19:
   v10[3] = &unk_1E79C4D88;
   v10[4] = self;
   v11 = v7;
-  v12 = v6;
-  v13 = a3;
-  v9 = v6;
+  v12 = completionCopy;
+  timeoutCopy = timeout;
+  v9 = completionCopy;
   dispatch_async(v7, v10);
 }
 
@@ -11398,11 +11398,11 @@ void __78__PKPaymentProvisioningController__startLocationSearchWithTimeout_compl
   }
 }
 
-- (BOOL)_isValidLocation:(id)a3
+- (BOOL)_isValidLocation:(id)location
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v3 horizontalAccuracy];
+  locationCopy = location;
+  date = [MEMORY[0x1E695DF00] date];
+  [locationCopy horizontalAccuracy];
   if (v5 >= *MEMORY[0x1E6985CB8])
   {
     v8 = 0;
@@ -11410,26 +11410,26 @@ void __78__PKPaymentProvisioningController__startLocationSearchWithTimeout_compl
 
   else
   {
-    v6 = [v3 timestamp];
-    [v4 timeIntervalSinceDate:v6];
+    timestamp = [locationCopy timestamp];
+    [date timeIntervalSinceDate:timestamp];
     v8 = v7 < 300.0;
   }
 
   return v8;
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v8 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v23 = objc_opt_class();
     v24 = 2112;
-    v25 = v7;
+    v25 = locationsCopy;
     v9 = v23;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "%@: received locations:%@", buf, 0x16u);
   }
@@ -11441,7 +11441,7 @@ void __78__PKPaymentProvisioningController__startLocationSearchWithTimeout_compl
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v7;
+    v10 = locationsCopy;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -11505,16 +11505,16 @@ void __70__PKPaymentProvisioningController_locationManager_didUpdateLocations___
   }
 }
 
-- (id)_eligibleMarketNames:(id)a3
+- (id)_eligibleMarketNames:(id)names
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  namesCopy = names;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = namesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -11529,10 +11529,10 @@ void __70__PKPaymentProvisioningController_locationManager_didUpdateLocations___
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) analyticsReportingNameValue];
-        if ([v10 length])
+        analyticsReportingNameValue = [*(*(&v13 + 1) + 8 * i) analyticsReportingNameValue];
+        if ([analyticsReportingNameValue length])
         {
-          [v4 addObject:v10];
+          [v4 addObject:analyticsReportingNameValue];
         }
       }
 
@@ -11547,22 +11547,22 @@ void __70__PKPaymentProvisioningController_locationManager_didUpdateLocations___
   return v11;
 }
 
-- (void)_loadMoreInfoItemForMarket:(id)a3 eligibleMarkets:(id)a4 completionHandler:(id)a5
+- (void)_loadMoreInfoItemForMarket:(id)market eligibleMarkets:(id)markets completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 notificationAssetIdentifier];
+  marketCopy = market;
+  handlerCopy = handler;
+  notificationAssetIdentifier = [marketCopy notificationAssetIdentifier];
   v10 = +[PKMobileAssetManager sharedInstance];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __96__PKPaymentProvisioningController__loadMoreInfoItemForMarket_eligibleMarkets_completionHandler___block_invoke;
   v13[3] = &unk_1E79D7758;
-  v14 = v7;
-  v15 = v8;
+  v14 = marketCopy;
+  v15 = handlerCopy;
   v13[4] = self;
-  v11 = v7;
-  v12 = v8;
-  [v10 fetchMarketNotificationAssetsForIdentifier:v9 isDiscretionary:0 completionHandler:v13];
+  v11 = marketCopy;
+  v12 = handlerCopy;
+  [v10 fetchMarketNotificationAssetsForIdentifier:notificationAssetIdentifier isDiscretionary:0 completionHandler:v13];
 }
 
 void __96__PKPaymentProvisioningController__loadMoreInfoItemForMarket_eligibleMarkets_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -11604,19 +11604,19 @@ void __96__PKPaymentProvisioningController__loadMoreInfoItemForMarket_eligibleMa
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * v7) secureElementPass];
-        v9 = [v8 paymentPass];
+        secureElementPass = [*(*(&v14 + 1) + 8 * v7) secureElementPass];
+        paymentPass = [secureElementPass paymentPass];
 
-        if (v9)
+        if (paymentPass)
         {
-          v10 = [(PKPaymentWebService *)self->_webService targetDevice];
+          targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
           webService = self->_webService;
           v12[0] = MEMORY[0x1E69E9820];
           v12[1] = 3221225472;
           v12[2] = __58__PKPaymentProvisioningController_removeProvisionedPasses__block_invoke;
           v12[3] = &unk_1E79C9640;
-          v13 = v9;
-          [v10 paymentWebService:webService removePass:v13 withCompletionHandler:v12];
+          v13 = paymentPass;
+          [targetDevice paymentWebService:webService removePass:v13 withCompletionHandler:v12];
         }
 
         ++v7;
@@ -11660,72 +11660,72 @@ void __58__PKPaymentProvisioningController_removeProvisionedPasses__block_invoke
     _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "PKPaymentProvisioningController _passAlreadyProvisioned. Calling download all payment passes.", v5, 2u);
   }
 
-  v4 = [(PKPaymentWebService *)self->_webService targetDevice];
-  [v4 downloadAllPaymentPassesForPaymentWebService:self->_webService];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  [targetDevice downloadAllPaymentPassesForPaymentWebService:self->_webService];
 }
 
-- (void)_handleProvisioningError:(id)a3 forRequest:(id)a4 pass:(id)a5
+- (void)_handleProvisioningError:(id)error forRequest:(id)request pass:(id)pass
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 eligibilityResponse];
-  v10 = [v9 applicationIdentifier];
-  v11 = v10;
-  if (v10)
+  requestCopy = request;
+  passCopy = pass;
+  eligibilityResponse = [requestCopy eligibilityResponse];
+  applicationIdentifier = [eligibilityResponse applicationIdentifier];
+  v11 = applicationIdentifier;
+  if (applicationIdentifier)
   {
-    v12 = v10;
+    applicationIdentifier2 = applicationIdentifier;
   }
 
   else
   {
-    v12 = [v7 applicationIdentifier];
+    applicationIdentifier2 = [requestCopy applicationIdentifier];
   }
 
-  v13 = v12;
+  v13 = applicationIdentifier2;
 
-  v14 = [v7 subCredentialIdentifier];
+  subCredentialIdentifier = [requestCopy subCredentialIdentifier];
   v15 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412546;
     v19 = v13;
     v20 = 2112;
-    v21 = v14;
+    v21 = subCredentialIdentifier;
     _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "PKPaymentProvisioningController handling provisioning error for aid: %@ subcredentialId: %@", &v18, 0x16u);
   }
 
-  v16 = [(PKPaymentWebService *)self->_webService targetDevice];
-  v17 = v16;
-  if (v14)
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  v17 = targetDevice;
+  if (subCredentialIdentifier)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v17 deleteKeyMaterialForSubCredentialId:v14];
+      [v17 deleteKeyMaterialForSubCredentialId:subCredentialIdentifier];
     }
   }
 
   else if (v13)
   {
-    [v16 paymentWebService:self->_webService deleteApplicationWithAID:v13];
+    [targetDevice paymentWebService:self->_webService deleteApplicationWithAID:v13];
   }
 
-  if (v8)
+  if (passCopy)
   {
-    [(PKPaymentProvisioningController *)self _deletePaymentPass:v8];
+    [(PKPaymentProvisioningController *)self _deletePaymentPass:passCopy];
   }
 }
 
-- (void)_setLocalizedProgressDescription:(id)a3
+- (void)_setLocalizedProgressDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   localizedProgressDescription = self->_localizedProgressDescription;
   self->_localizedProgressDescription = v4;
   v6 = v4;
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v7 postNotificationName:@"PKPaymentProvisioningControllerLocalizedProgressDescriptionDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"PKPaymentProvisioningControllerLocalizedProgressDescriptionDidChangeNotification" object:self];
 }
 
 - (BOOL)_isProvisioningPaymentAccount
@@ -11740,25 +11740,25 @@ void __58__PKPaymentProvisioningController_removeProvisionedPasses__block_invoke
   return [(PKAddPaymentPassRequestConfiguration *)currentAddPaymentPassRequestConfiguration isPaymentAccount];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
+    delegateCopy = delegate;
     os_unfair_lock_lock(&self->_delegatesLock);
-    [(NSHashTable *)self->_delegates addObject:v4];
+    [(NSHashTable *)self->_delegates addObject:delegateCopy];
 
     os_unfair_lock_unlock(&self->_delegatesLock);
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
+    delegateCopy = delegate;
     os_unfair_lock_lock(&self->_delegatesLock);
-    [(NSHashTable *)self->_delegates removeObject:v4];
+    [(NSHashTable *)self->_delegates removeObject:delegateCopy];
 
     os_unfair_lock_unlock(&self->_delegatesLock);
   }
@@ -11844,12 +11844,12 @@ uint64_t __75__PKPaymentProvisioningController_associatedCredentialsForDefaultBe
 - (NSArray)allCredentials
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKPaymentProvisioningController *)self associatedCredentials];
-  v5 = v4;
+  associatedCredentials = [(PKPaymentProvisioningController *)self associatedCredentials];
+  v5 = associatedCredentials;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (associatedCredentials)
   {
-    v7 = v4;
+    v7 = associatedCredentials;
   }
 
   else
@@ -11859,11 +11859,11 @@ uint64_t __75__PKPaymentProvisioningController_associatedCredentialsForDefaultBe
 
   [v3 addObjectsFromArray:v7];
 
-  v8 = [(PKPaymentProvisioningController *)self purchaseCredentials];
-  v9 = v8;
-  if (v8)
+  purchaseCredentials = [(PKPaymentProvisioningController *)self purchaseCredentials];
+  v9 = purchaseCredentials;
+  if (purchaseCredentials)
   {
-    v10 = v8;
+    v10 = purchaseCredentials;
   }
 
   else
@@ -11876,17 +11876,17 @@ uint64_t __75__PKPaymentProvisioningController_associatedCredentialsForDefaultBe
   return v3;
 }
 
-- (id)associatedCredentialsForProductIdentifier:(id)a3
+- (id)associatedCredentialsForProductIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKPaymentProvisioningController *)self allCredentials];
+  identifierCopy = identifier;
+  allCredentials = [(PKPaymentProvisioningController *)self allCredentials];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __77__PKPaymentProvisioningController_associatedCredentialsForProductIdentifier___block_invoke;
   v9[3] = &unk_1E79C8588;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 pk_objectsPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [allCredentials pk_objectsPassingTest:v9];
 
   return v7;
 }
@@ -11902,17 +11902,17 @@ uint64_t __77__PKPaymentProvisioningController_associatedCredentialsForProductId
 
 - (BOOL)isPasscodeUpgradeRequired
 {
-  v3 = [(PKSecureElementProvisioningState *)self->_provisioningState eligibilityResponse];
-  v4 = [v3 region];
+  eligibilityResponse = [(PKSecureElementProvisioningState *)self->_provisioningState eligibilityResponse];
+  region = [eligibilityResponse region];
 
   if (PKEnforceUpgradedPasscodePolicyForAllRegions())
   {
     v5 = 1;
   }
 
-  else if (v4)
+  else if (region)
   {
-    v5 = [(PKPaymentWebService *)self->_webService isChinaRegionIdentifier:v4];
+    v5 = [(PKPaymentWebService *)self->_webService isChinaRegionIdentifier:region];
   }
 
   else
@@ -11923,9 +11923,9 @@ uint64_t __77__PKPaymentProvisioningController_associatedCredentialsForProductId
   return v5;
 }
 
-- (void)preflightPasscodeUpgradeWithCompletion:(id)a3
+- (void)preflightPasscodeUpgradeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v6 = self->_webService;
   v35[0] = 0;
@@ -11968,19 +11968,19 @@ uint64_t __77__PKPaymentProvisioningController_associatedCredentialsForProductId
   v21 = v35;
   v22 = v31;
   v19 = v9;
-  v20 = self;
+  selfCopy = self;
   [(PKAsyncUnaryOperationComposer *)v5 addOperation:v18];
-  v10 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__PKPaymentProvisioningController_preflightPasscodeUpgradeWithCompletion___block_invoke_7;
   v13[3] = &unk_1E79D7870;
-  v11 = v4;
+  v11 = completionCopy;
   v14 = v11;
   v15 = v35;
   v16 = v31;
   v17 = v33;
-  v12 = [(PKAsyncUnaryOperationComposer *)v5 evaluateWithInput:v10 completion:v13];
+  v12 = [(PKAsyncUnaryOperationComposer *)v5 evaluateWithInput:null completion:v13];
 
   _Block_object_dispose(v31, 8);
   _Block_object_dispose(v33, 8);
@@ -12137,11 +12137,11 @@ uint64_t __74__PKPaymentProvisioningController_preflightPasscodeUpgradeWithCompl
   return result;
 }
 
-- (void)passcodeUpgradeCompleted:(BOOL)a3
+- (void)passcodeUpgradeCompleted:(BOOL)completed
 {
   if (self->_state == 2)
   {
-    if (a3)
+    if (completed)
     {
       self->_state = 3;
       goto LABEL_8;
@@ -12151,42 +12151,42 @@ uint64_t __74__PKPaymentProvisioningController_preflightPasscodeUpgradeWithCompl
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!completed)
   {
 LABEL_7:
     [(PKPaymentProvisioningController *)self _endRequiringUpgradedPasscodeIfNecessary];
   }
 
 LABEL_8:
-  v4 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PKPaymentWebService *)self->_webService targetDevice];
-    [v6 notePasscodeUpgradeFlowDidEnd];
+    targetDevice2 = [(PKPaymentWebService *)self->_webService targetDevice];
+    [targetDevice2 notePasscodeUpgradeFlowDidEnd];
   }
 }
 
 - (void)_endRequiringUpgradedPasscodeIfNecessary
 {
-  v3 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKPaymentWebService *)self->_webService targetDevice];
-    [v5 endRequiringUpgradedPasscodeIfNecessary];
+    targetDevice2 = [(PKPaymentWebService *)self->_webService targetDevice];
+    [targetDevice2 endRequiringUpgradedPasscodeIfNecessary];
   }
 }
 
 - (int64_t)availableSecureElementPassSpaces
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentWebService *)self->_webService targetDevice];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  if (targetDevice && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 paymentWebService:self->_webService passesOfType:1];
+    v4 = [targetDevice paymentWebService:self->_webService passesOfType:1];
     v5 = [v4 pk_countObjectsPassingTest:&__block_literal_global_699_0];
   }
 
@@ -12203,7 +12203,7 @@ LABEL_8:
     }
 
     v5 = 0;
-    if (!v3)
+    if (!targetDevice)
     {
 LABEL_13:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -12215,14 +12215,14 @@ LABEL_13:
         _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "%@ - Target device did not respond to max payment cards. Assuming local maximum.", &v15, 0xCu);
       }
 
-      v9 = PKMaxPaymentCards();
-      if (!v9)
+      maximumPaymentCards = PKMaxPaymentCards();
+      if (!maximumPaymentCards)
       {
         goto LABEL_9;
       }
 
 LABEL_16:
-      v11 = v9 - v5;
+      v11 = maximumPaymentCards - v5;
       goto LABEL_17;
     }
   }
@@ -12233,8 +12233,8 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  v9 = [v3 maximumPaymentCards];
-  if (v9)
+  maximumPaymentCards = [targetDevice maximumPaymentCards];
+  if (maximumPaymentCards)
   {
     goto LABEL_16;
   }
@@ -12258,36 +12258,36 @@ LABEL_17:
   if (PKIsPairedWithWatch() && (v2 = objc_alloc_init(getNPKCompanionAgentConnectionClass_2[0]()), v3 = [v2 isIssuerAppProvisioningSupported], v2, v3))
   {
     v4 = objc_alloc_init(getNPKCompanionAgentConnectionClass_2[0]());
-    v5 = [v4 watchPaymentWebService];
+    watchPaymentWebService = [v4 watchPaymentWebService];
   }
 
   else
   {
-    v5 = 0;
+    watchPaymentWebService = 0;
   }
 
-  return v5;
+  return watchPaymentWebService;
 }
 
-- (void)cleanupTransferredCredentialFromSourceDevice:(id)a3 completion:(id)a4
+- (void)cleanupTransferredCredentialFromSourceDevice:(id)device completion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 localPassCredential];
-  v7 = [v6 paymentPass];
-  v8 = [v7 uniqueID];
-  v9 = [v8 copy];
+  completionCopy = completion;
+  localPassCredential = [device localPassCredential];
+  paymentPass = [localPassCredential paymentPass];
+  uniqueID = [paymentPass uniqueID];
+  v9 = [uniqueID copy];
 
-  if ([v7 isRemotePass])
+  if ([paymentPass isRemotePass])
   {
     v10 = objc_alloc_init(getNPKCompanionAgentConnectionClass_2[0]());
-    v11 = [v10 watchPaymentWebService];
-    v12 = [v11 targetDevice];
+    watchPaymentWebService = [v10 watchPaymentWebService];
+    targetDevice = [watchPaymentWebService targetDevice];
   }
 
   else
   {
-    v11 = +[PKPaymentWebService sharedService];
-    v12 = [v11 targetDevice];
+    watchPaymentWebService = +[PKPaymentWebService sharedService];
+    targetDevice = [watchPaymentWebService targetDevice];
   }
 
   if (objc_opt_respondsToSelector())
@@ -12297,8 +12297,8 @@ LABEL_17:
     v15[2] = __91__PKPaymentProvisioningController_cleanupTransferredCredentialFromSourceDevice_completion___block_invoke;
     v15[3] = &unk_1E79C4568;
     v16 = v9;
-    v17 = v5;
-    [v12 paymentWebService:v11 removePass:v7 withCompletionHandler:v15];
+    v17 = completionCopy;
+    [targetDevice paymentWebService:watchPaymentWebService removePass:paymentPass withCompletionHandler:v15];
   }
 
   else
@@ -12310,7 +12310,7 @@ LABEL_17:
       _os_log_error_impl(&dword_1AD337000, v13, OS_LOG_TYPE_ERROR, "Error: Target device does not support pass deletion", v14, 2u);
     }
 
-    (*(v5 + 2))(v5, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -12359,9 +12359,9 @@ uint64_t __91__PKPaymentProvisioningController_cleanupTransferredCredentialFromS
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)triggerWatchProvisioningForAppleBalanceCredential:(id)a3
+- (void)triggerWatchProvisioningForAppleBalanceCredential:(id)credential
 {
-  if ([a3 isAppleBalanceCredential] && PKIsPairedWithWatch())
+  if ([credential isAppleBalanceCredential] && PKIsPairedWithWatch())
   {
     v3 = objc_alloc_init(getNPKCompanionAgentConnectionClass_2[0]());
     [v3 provisionPassForRemoteCredentialWithType:135 andIdentifier:0 completion:&__block_literal_global_705_0];
@@ -12388,48 +12388,48 @@ void __85__PKPaymentProvisioningController_triggerWatchProvisioningForAppleBalan
   }
 }
 
-- (void)updateStateAfterProvisioning:(id)a3 credential:(id)a4 passes:(id)a5 moreInfoItems:(id)a6
+- (void)updateStateAfterProvisioning:(id)provisioning credential:(id)credential passes:(id)passes moreInfoItems:(id)items
 {
-  v25 = a4;
-  v10 = a6;
+  credentialCopy = credential;
+  itemsCopy = items;
   provisioningState = self->_provisioningState;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v13 requirementsResponse];
-  [(PKSecureElementProvisioningState *)provisioningState setRequirementsResponse:v14];
+  passesCopy = passes;
+  provisioningCopy = provisioning;
+  requirementsResponse = [provisioningCopy requirementsResponse];
+  [(PKSecureElementProvisioningState *)provisioningState setRequirementsResponse:requirementsResponse];
 
   v15 = self->_provisioningState;
-  v16 = [v13 eligibilityResponse];
-  [(PKSecureElementProvisioningState *)v15 setEligibilityResponse:v16];
+  eligibilityResponse = [provisioningCopy eligibilityResponse];
+  [(PKSecureElementProvisioningState *)v15 setEligibilityResponse:eligibilityResponse];
 
   v17 = self->_provisioningState;
-  v18 = [v13 provisioningResponse];
-  [(PKSecureElementProvisioningState *)v17 setProvisioningResponse:v18];
+  provisioningResponse = [provisioningCopy provisioningResponse];
+  [(PKSecureElementProvisioningState *)v17 setProvisioningResponse:provisioningResponse];
 
   v19 = self->_provisioningState;
-  v20 = [v13 productIdentifier];
-  [(PKSecureElementProvisioningState *)v19 setProductIdentifier:v20];
+  productIdentifier = [provisioningCopy productIdentifier];
+  [(PKSecureElementProvisioningState *)v19 setProductIdentifier:productIdentifier];
 
   v21 = self->_provisioningState;
-  v22 = [v13 referrerIdentifier];
+  referrerIdentifier = [provisioningCopy referrerIdentifier];
 
-  [(PKSecureElementProvisioningState *)v21 setReferrerIdentifier:v22];
-  v23 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:v12];
+  [(PKSecureElementProvisioningState *)v21 setReferrerIdentifier:referrerIdentifier];
+  v23 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:passesCopy];
 
   provisionedPasses = self->_provisionedPasses;
   self->_provisionedPasses = v23;
 
-  objc_storeStrong(&self->_moreInfoItems, a6);
-  if (v25)
+  objc_storeStrong(&self->_moreInfoItems, items);
+  if (credentialCopy)
   {
-    [(NSMutableArray *)self->_associatedCredentials removeObject:v25];
+    [(NSMutableArray *)self->_associatedCredentials removeObject:credentialCopy];
   }
 }
 
 - (id)_effectiveSessionIdentifier
 {
-  v3 = [(PKPaymentCredential *)self->_currentCredential state];
-  v4 = [v3 sid];
+  state = [(PKPaymentCredential *)self->_currentCredential state];
+  v4 = [state sid];
   v5 = v4;
   if (v4)
   {
@@ -12452,14 +12452,14 @@ void __85__PKPaymentProvisioningController_triggerWatchProvisioningForAppleBalan
   return v6;
 }
 
-- (void)finishOptionalExpressModeSetupForPass:(id)a3 withProvisioningTracker:(id)a4 completion:(id)a5
+- (void)finishOptionalExpressModeSetupForPass:(id)pass withProvisioningTracker:(id)tracker completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKPaymentWebService *)self->_webService targetDevice];
-  if (PKTargetDeviceSupportsExpress(v11))
+  passCopy = pass;
+  trackerCopy = tracker;
+  completionCopy = completion;
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+  if (PKTargetDeviceSupportsExpress(targetDevice))
   {
     objc_initWeak(location, self);
     webService = self->_webService;
@@ -12469,10 +12469,10 @@ void __85__PKPaymentProvisioningController_triggerWatchProvisioningForAppleBalan
     v14[3] = &unk_1E79D78B8;
     objc_copyWeak(&v18, location);
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
-    v17 = v10;
-    [v11 paymentWebService:webService handlePotentialExpressPass:v15 withCompletionHandler:v14];
+    v15 = passCopy;
+    v16 = trackerCopy;
+    v17 = completionCopy;
+    [targetDevice paymentWebService:webService handlePotentialExpressPass:v15 withCompletionHandler:v14];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(location);
@@ -12486,11 +12486,11 @@ void __85__PKPaymentProvisioningController_triggerWatchProvisioningForAppleBalan
       *location = 136315394;
       *&location[4] = "[PKPaymentProvisioningController finishOptionalExpressModeSetupForPass:withProvisioningTracker:completion:]";
       v20 = 2112;
-      v21 = v11;
+      v21 = targetDevice;
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "%s called for target device (%@) which does not support express. File a radar!", location, 0x16u);
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -12543,16 +12543,16 @@ uint64_t __108__PKPaymentProvisioningController_finishOptionalExpressModeSetupFo
   return result;
 }
 
-- (void)handleOptionalExpressModeSetupDidFinishForPass:(id)a3 withExpressModes:(id)a4 provisioningTracker:(id)a5 completion:(id)a6
+- (void)handleOptionalExpressModeSetupDidFinishForPass:(id)pass withExpressModes:(id)modes provisioningTracker:(id)tracker completion:(id)completion
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
-  v11 = [a3 serialNumber];
-  v12 = v11;
-  if (v11)
+  modesCopy = modes;
+  completionCopy = completion;
+  serialNumber = [pass serialNumber];
+  v12 = serialNumber;
+  if (serialNumber)
   {
-    v13 = v11;
+    v13 = serialNumber;
   }
 
   else
@@ -12562,10 +12562,10 @@ uint64_t __108__PKPaymentProvisioningController_finishOptionalExpressModeSetupFo
 
   v14 = v13;
 
-  if (v9)
+  if (modesCopy)
   {
-    v15 = [v9 allObjects];
-    v16 = [v15 componentsJoinedByString:{@", "}];
+    allObjects = [modesCopy allObjects];
+    v16 = [allObjects componentsJoinedByString:{@", "}];
     v17 = v16;
     if (v16)
     {
@@ -12596,17 +12596,17 @@ uint64_t __108__PKPaymentProvisioningController_finishOptionalExpressModeSetupFo
   self->_expressModeSetupOptional = 0;
   utility = self->_utility;
   provisioningState = self->_provisioningState;
-  v23 = self;
-  v24 = [(PKSecureElementProvisioningState *)provisioningState provisioningResponse];
-  v25 = [v24 moreInfoURLs];
+  selfCopy = self;
+  provisioningResponse = [(PKSecureElementProvisioningState *)provisioningState provisioningResponse];
+  moreInfoURLs = [provisioningResponse moreInfoURLs];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __130__PKPaymentProvisioningController_handleOptionalExpressModeSetupDidFinishForPass_withExpressModes_provisioningTracker_completion___block_invoke;
   v27[3] = &unk_1E79C4838;
-  v27[4] = v23;
-  v28 = v10;
-  v26 = v10;
-  [(PKProvisioningUtility *)utility downloadMoreInfoItemsFrom:v25 metadata:v20 sid:&stru_1F227FD28 completion:v27];
+  v27[4] = selfCopy;
+  v28 = completionCopy;
+  v26 = completionCopy;
+  [(PKProvisioningUtility *)utility downloadMoreInfoItemsFrom:moreInfoURLs metadata:v20 sid:&stru_1F227FD28 completion:v27];
 }
 
 void __130__PKPaymentProvisioningController_handleOptionalExpressModeSetupDidFinishForPass_withExpressModes_provisioningTracker_completion___block_invoke(uint64_t a1, void *a2)
@@ -12650,13 +12650,13 @@ void __130__PKPaymentProvisioningController_handleOptionalExpressModeSetupDidFin
 
 - (BOOL)hasPaymentPass
 {
-  v3 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PKPaymentWebService *)self->_webService targetDevice];
-    v6 = [v5 paymentWebService:self->_webService passesOfType:1];
+    targetDevice2 = [(PKPaymentWebService *)self->_webService targetDevice];
+    v6 = [targetDevice2 paymentWebService:self->_webService passesOfType:1];
   }
 
   else
@@ -12685,16 +12685,16 @@ void __130__PKPaymentProvisioningController_handleOptionalExpressModeSetupDidFin
   return v3;
 }
 
-- (id)_paymentPassWithPaymentMethodType:(unint64_t)a3
+- (id)_paymentPassWithPaymentMethodType:(unint64_t)type
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [(PKPaymentWebService *)self->_webService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PKPaymentWebService *)self->_webService targetDevice];
-    v8 = [v7 paymentWebService:self->_webService passesOfType:1];
+    targetDevice2 = [(PKPaymentWebService *)self->_webService targetDevice];
+    v8 = [targetDevice2 paymentWebService:self->_webService passesOfType:1];
   }
 
   else
@@ -12702,7 +12702,7 @@ void __130__PKPaymentProvisioningController_handleOptionalExpressModeSetupDidFin
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -12723,14 +12723,14 @@ void __130__PKPaymentProvisioningController_handleOptionalExpressModeSetupDidFin
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [v15 paymentPass];
-        v17 = [v16 devicePrimaryPaymentApplication];
-        v18 = [v17 paymentType];
+        paymentPass = [v15 paymentPass];
+        devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+        paymentType = [devicePrimaryPaymentApplication paymentType];
 
-        if (v18 == a3)
+        if (paymentType == type)
         {
-          v19 = [v15 paymentPass];
-          [v9 addObject:v19];
+          paymentPass2 = [v15 paymentPass];
+          [array addObject:paymentPass2];
         }
       }
 
@@ -12740,67 +12740,67 @@ void __130__PKPaymentProvisioningController_handleOptionalExpressModeSetupDidFin
     while (v12);
   }
 
-  v20 = [v9 copy];
+  v20 = [array copy];
 
   return v20;
 }
 
-- (id)_displayableErrorOverrideForUnderlyingError:(id)a3
+- (id)_displayableErrorOverrideForUnderlyingError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E696A978]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E696A978]];
 
   if (v5)
   {
-    v6 = PKDisplayableErrorForCommonType(2, v3);
+    v6 = PKDisplayableErrorForCommonType(2, errorCopy);
     goto LABEL_14;
   }
 
-  v7 = [v3 domain];
-  v8 = [v7 isEqualToString:@"PKWebServiceErrorDomain"];
+  domain2 = [errorCopy domain];
+  v8 = [domain2 isEqualToString:@"PKWebServiceErrorDomain"];
 
   if (v8)
   {
-    v9 = [v3 code];
-    if ((v9 - 2) < 4 || !v9)
+    code = [errorCopy code];
+    if ((code - 2) < 4 || !code)
     {
-      v10 = [v3 localizedFailureReason];
+      localizedFailureReason = [errorCopy localizedFailureReason];
 
-      if (!v10)
+      if (!localizedFailureReason)
       {
 LABEL_7:
-        v11 = PKCoreLocalizedString(&cfstr_CouldNotAddCar.isa, 0);
-        v12 = PKCoreLocalizedString(&cfstr_CouldNotAddCar_0.isa, 0);
+        localizedFailureReason2 = PKCoreLocalizedString(&cfstr_CouldNotAddCar.isa, 0);
+        localizedRecoverySuggestion = PKCoreLocalizedString(&cfstr_CouldNotAddCar_0.isa, 0);
 LABEL_11:
-        v16 = v12;
-        v6 = PKDisplayableErrorCustomWithType(-1, v11, v12, v3, 0);
+        v16 = localizedRecoverySuggestion;
+        v6 = PKDisplayableErrorCustomWithType(-1, localizedFailureReason2, localizedRecoverySuggestion, errorCopy, 0);
 
         goto LABEL_14;
       }
 
 LABEL_10:
-      v11 = [v3 localizedFailureReason];
-      v12 = [v3 localizedRecoverySuggestion];
+      localizedFailureReason2 = [errorCopy localizedFailureReason];
+      localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
       goto LABEL_11;
     }
   }
 
   else
   {
-    v13 = [v3 domain];
-    v14 = [v13 isEqualToString:@"PKPaymentWebServiceErrorDomain"];
+    domain3 = [errorCopy domain];
+    v14 = [domain3 isEqualToString:@"PKPaymentWebServiceErrorDomain"];
 
     if (v14)
     {
-      v15 = [v3 localizedFailureReason];
+      localizedFailureReason3 = [errorCopy localizedFailureReason];
 
-      if (v15)
+      if (localizedFailureReason3)
       {
         goto LABEL_10;
       }
 
-      if (![v3 code])
+      if (![errorCopy code])
       {
         goto LABEL_7;
       }
@@ -12813,26 +12813,26 @@ LABEL_14:
   return v6;
 }
 
-- (id)displayableErrorForError:(id)a3
+- (id)displayableErrorForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"PKDisplayableError"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"PKDisplayableError"];
 
   if (v6)
   {
-    v7 = v4;
+    v7 = errorCopy;
   }
 
   else
   {
-    v8 = [(PKPaymentProvisioningController *)self _displayableErrorOverrideForUnderlyingError:v4];
+    v8 = [(PKPaymentProvisioningController *)self _displayableErrorOverrideForUnderlyingError:errorCopy];
     if (v8)
     {
       goto LABEL_6;
     }
 
-    v7 = PKDisplayableErrorForCommonType(0, v4);
+    v7 = PKDisplayableErrorForCommonType(0, errorCopy);
   }
 
   v8 = v7;
@@ -12841,28 +12841,28 @@ LABEL_6:
   return v8;
 }
 
-- (id)displayableErrorForProvisioningError:(id)a3
+- (id)displayableErrorForProvisioningError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"PKDisplayableError"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"PKDisplayableError"];
 
   if (v6)
   {
-    v7 = v4;
+    v7 = errorCopy;
 LABEL_10:
     v10 = v7;
     goto LABEL_11;
   }
 
-  if (v4)
+  if (errorCopy)
   {
-    v8 = [v4 domain];
-    if ([v8 isEqualToString:@"PKWebServiceErrorDomain"])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:@"PKWebServiceErrorDomain"])
     {
-      v9 = [v4 code];
+      code = [errorCopy code];
 
-      if (v9 == 1)
+      if (code == 1)
       {
         v10 = 0;
         goto LABEL_11;
@@ -12874,10 +12874,10 @@ LABEL_10:
     }
   }
 
-  v10 = [(PKPaymentProvisioningController *)self _displayableErrorOverrideForUnderlyingError:v4];
+  v10 = [(PKPaymentProvisioningController *)self _displayableErrorOverrideForUnderlyingError:errorCopy];
   if (!v10)
   {
-    v7 = PKDisplayableErrorForCommonType(1, v4);
+    v7 = PKDisplayableErrorForCommonType(1, errorCopy);
     goto LABEL_10;
   }
 
@@ -12886,16 +12886,16 @@ LABEL_11:
   return v10;
 }
 
-- (void)accountAdded:(id)a3
+- (void)accountAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__PKPaymentProvisioningController_accountAdded___block_invoke;
   v6[3] = &unk_1E79C4DD8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = addedCopy;
+  selfCopy = self;
+  v5 = addedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -12940,18 +12940,18 @@ uint64_t __55__PKPaymentProvisioningController__reloadSetupProducts__block_invok
   return result;
 }
 
-- (void)featureApplicationAdded:(id)a3
+- (void)featureApplicationAdded:(id)added
 {
-  v4 = a3;
-  v5 = [v4 applicationState];
-  if ((v5 - 4) < 5 || v5 == 16)
+  addedCopy = added;
+  applicationState = [addedCopy applicationState];
+  if ((applicationState - 4) < 5 || applicationState == 16)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __59__PKPaymentProvisioningController_featureApplicationAdded___block_invoke;
     v7[3] = &unk_1E79C4DD8;
     v7[4] = self;
-    v8 = v4;
+    v8 = addedCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v7);
   }
 }
@@ -13050,16 +13050,16 @@ LABEL_17:
   }
 }
 
-- (void)featureApplicationRemoved:(id)a3
+- (void)featureApplicationRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__PKPaymentProvisioningController_featureApplicationRemoved___block_invoke;
   v6[3] = &unk_1E79C4DD8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = removedCopy;
+  v5 = removedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -13153,24 +13153,24 @@ void __61__PKPaymentProvisioningController_featureApplicationRemoved___block_inv
   }
 }
 
-- (void)featureApplicationChanged:(id)a3
+- (void)featureApplicationChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 applicationState];
-  if ((v5 - 4) < 5 || v5 == 16)
+  changedCopy = changed;
+  applicationState = [changedCopy applicationState];
+  if ((applicationState - 4) < 5 || applicationState == 16)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __61__PKPaymentProvisioningController_featureApplicationChanged___block_invoke;
     v7[3] = &unk_1E79C4DD8;
     v7[4] = self;
-    v8 = v4;
+    v8 = changedCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v7);
   }
 
   else
   {
-    [(PKPaymentProvisioningController *)self featureApplicationRemoved:v4];
+    [(PKPaymentProvisioningController *)self featureApplicationRemoved:changedCopy];
   }
 }
 
@@ -13266,16 +13266,16 @@ void __61__PKPaymentProvisioningController_featureApplicationChanged___block_inv
   }
 }
 
-- (void)didReceivePendingProvisioningUpdate:(id)a3
+- (void)didReceivePendingProvisioningUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__PKPaymentProvisioningController_didReceivePendingProvisioningUpdate___block_invoke;
   v6[3] = &unk_1E79C4DD8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = updateCopy;
+  selfCopy = self;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -13429,17 +13429,17 @@ LABEL_29:
   }
 }
 
-- (void)paymentWebService:(id)a3 didQueueTSMConnectionForTaskID:(unint64_t)a4
+- (void)paymentWebService:(id)service didQueueTSMConnectionForTaskID:(unint64_t)d
 {
-  v6 = a3;
+  serviceCopy = service;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__PKPaymentProvisioningController_paymentWebService_didQueueTSMConnectionForTaskID___block_invoke;
   block[3] = &unk_1E79CBF50;
-  v9 = v6;
-  v10 = self;
-  v11 = a4;
-  v7 = v6;
+  v9 = serviceCopy;
+  selfCopy = self;
+  dCopy = d;
+  v7 = serviceCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -13474,17 +13474,17 @@ void __84__PKPaymentProvisioningController_paymentWebService_didQueueTSMConnecti
   }
 }
 
-- (void)paymentWebService:(id)a3 didCompleteTSMConnectionForTaskID:(unint64_t)a4
+- (void)paymentWebService:(id)service didCompleteTSMConnectionForTaskID:(unint64_t)d
 {
-  v6 = a3;
+  serviceCopy = service;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__PKPaymentProvisioningController_paymentWebService_didCompleteTSMConnectionForTaskID___block_invoke;
   block[3] = &unk_1E79CBF50;
-  v9 = v6;
-  v10 = self;
-  v11 = a4;
-  v7 = v6;
+  v9 = serviceCopy;
+  selfCopy = self;
+  dCopy = d;
+  v7 = serviceCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -13512,23 +13512,23 @@ void __87__PKPaymentProvisioningController_paymentWebService_didCompleteTSMConne
   descriptionTimer = self->_descriptionTimer;
   self->_descriptionTimer = 0;
 
-  v4 = [(PKPaymentProvisioningController *)self _localizedProgressDescriptionForEnablingCard];
-  [(PKPaymentProvisioningController *)self _setLocalizedProgressDescription:v4];
+  _localizedProgressDescriptionForEnablingCard = [(PKPaymentProvisioningController *)self _localizedProgressDescriptionForEnablingCard];
+  [(PKPaymentProvisioningController *)self _setLocalizedProgressDescription:_localizedProgressDescriptionForEnablingCard];
 }
 
-- (void)proofingFlowManager:(id)a3 completedProofingWithError:(id)a4
+- (void)proofingFlowManager:(id)manager completedProofingWithError:(id)error
 {
   identityProofingManagerCompletionHandler = self->_identityProofingManagerCompletionHandler;
   if (identityProofingManagerCompletionHandler)
   {
-    identityProofingManagerCompletionHandler[2](identityProofingManagerCompletionHandler, a4);
+    identityProofingManagerCompletionHandler[2](identityProofingManagerCompletionHandler, error);
   }
 }
 
-- (void)proofingFlowManager:(id)a3 didChangeActiveConfigurations:(id)a4
+- (void)proofingFlowManager:(id)manager didChangeActiveConfigurations:(id)configurations
 {
-  v5 = a4;
-  -[PKPaymentProvisioningController _applyIdentityConfiguration:activeConfigurations:completion:](self, "_applyIdentityConfiguration:activeConfigurations:completion:", [v5 count] != 0, v5, &__block_literal_global_735);
+  configurationsCopy = configurations;
+  -[PKPaymentProvisioningController _applyIdentityConfiguration:activeConfigurations:completion:](self, "_applyIdentityConfiguration:activeConfigurations:completion:", [configurationsCopy count] != 0, configurationsCopy, &__block_literal_global_735);
 }
 
 void __85__PKPaymentProvisioningController_proofingFlowManager_didChangeActiveConfigurations___block_invoke()
@@ -13541,48 +13541,48 @@ void __85__PKPaymentProvisioningController_proofingFlowManager_didChangeActiveCo
   }
 }
 
-- (void)deleteCredential:(id)a3 completionHandler:(id)a4
+- (void)deleteCredential:(id)credential completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isDeletable])
+  credentialCopy = credential;
+  handlerCopy = handler;
+  if ([credentialCopy isDeletable])
   {
-    v8 = [(PKPaymentWebService *)self->_webService targetDevice];
-    if ([v6 isCarKeyTerminalPairingCredential] && objc_msgSend(v6, "credentialType") == 301 && (objc_opt_respondsToSelector() & 1) != 0)
+    targetDevice = [(PKPaymentWebService *)self->_webService targetDevice];
+    if ([credentialCopy isCarKeyTerminalPairingCredential] && objc_msgSend(credentialCopy, "credentialType") == 301 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v9 = [v6 configuration];
-      v10 = [PKPendingCarKeyProvisioning uniqueIdentifierForCarKeyConfiguration:v9];
+      configuration = [credentialCopy configuration];
+      v10 = [PKPendingCarKeyProvisioning uniqueIdentifierForCarKeyConfiguration:configuration];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __70__PKPaymentProvisioningController_deleteCredential_completionHandler___block_invoke;
       v26[3] = &unk_1E79D0850;
       v26[4] = self;
-      v27 = v6;
-      v28 = v7;
-      [v8 removePendingProvisioningOfType:@"CarKey" withUniqueIdentifier:v10 completion:v26];
+      v27 = credentialCopy;
+      v28 = handlerCopy;
+      [targetDevice removePendingProvisioningOfType:@"CarKey" withUniqueIdentifier:v10 completion:v26];
 
       v11 = v27;
     }
 
     else
     {
-      if (![v6 isFPANCredential] || (objc_opt_respondsToSelector() & 1) == 0)
+      if (![credentialCopy isFPANCredential] || (objc_opt_respondsToSelector() & 1) == 0)
       {
-        v14 = [v6 remoteCredential];
-        v9 = [v14 paymentPass];
+        remoteCredential = [credentialCopy remoteCredential];
+        configuration = [remoteCredential paymentPass];
 
-        if (v9)
+        if (configuration)
         {
-          v15 = [[PKPaymentDeleteRequest alloc] initWithPaymentPass:v9];
+          v15 = [[PKPaymentDeleteRequest alloc] initWithPaymentPass:configuration];
           webService = self->_webService;
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __70__PKPaymentProvisioningController_deleteCredential_completionHandler___block_invoke_744;
           v18[3] = &unk_1E79D7908;
-          v19 = v6;
-          v20 = self;
-          v21 = v7;
+          v19 = credentialCopy;
+          selfCopy = self;
+          v21 = handlerCopy;
           [(PKPaymentWebService *)webService deleteForRequest:v15 completion:v18];
         }
 
@@ -13592,35 +13592,35 @@ void __85__PKPaymentProvisioningController_proofingFlowManager_didChangeActiveCo
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v30 = v6;
+            v30 = credentialCopy;
             _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "Attempted to delete pass for credential %@, but missing pass", buf, 0xCu);
           }
 
-          if (!v7)
+          if (!handlerCopy)
           {
-            v9 = 0;
+            configuration = 0;
             goto LABEL_21;
           }
 
           v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPaymentErrorDomain" code:0 userInfo:0];
-          (*(v7 + 2))(v7, v15);
+          (*(handlerCopy + 2))(handlerCopy, v15);
         }
 
 LABEL_21:
         goto LABEL_22;
       }
 
-      v13 = [v6 fpanCredential];
-      v9 = [v13 descriptor];
+      fpanCredential = [credentialCopy fpanCredential];
+      configuration = [fpanCredential descriptor];
 
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __70__PKPaymentProvisioningController_deleteCredential_completionHandler___block_invoke_741;
       v22[3] = &unk_1E79D78E0;
-      v23 = v6;
-      v24 = self;
-      v25 = v7;
-      [v8 deleteFPANCardWithDescriptor:v9 completion:v22];
+      v23 = credentialCopy;
+      selfCopy2 = self;
+      v25 = handlerCopy;
+      [targetDevice deleteFPANCardWithDescriptor:configuration completion:v22];
 
       v11 = v23;
     }
@@ -13632,14 +13632,14 @@ LABEL_21:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v6;
+    v30 = credentialCopy;
     _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Attempted to delete credential %@, but it isn't deletable", buf, 0xCu);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPaymentErrorDomain" code:0 userInfo:0];
-    (*(v7 + 2))(v7, v8);
+    targetDevice = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPaymentErrorDomain" code:0 userInfo:0];
+    (*(handlerCopy + 2))(handlerCopy, targetDevice);
 LABEL_22:
   }
 }
@@ -13784,13 +13784,13 @@ uint64_t __70__PKPaymentProvisioningController_deleteCredential_completionHandle
   return result;
 }
 
-- (void)_addOrUpdateProvisonedPassData:(id)a3
+- (void)_addOrUpdateProvisonedPassData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v7 = v4;
-    v5 = [(NSMutableOrderedSet *)self->_provisionedPasses indexOfObject:v4];
+    v7 = dataCopy;
+    v5 = [(NSMutableOrderedSet *)self->_provisionedPasses indexOfObject:dataCopy];
     provisionedPasses = self->_provisionedPasses;
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -13802,29 +13802,29 @@ uint64_t __70__PKPaymentProvisioningController_deleteCredential_completionHandle
       [(NSMutableOrderedSet *)provisionedPasses replaceObjectAtIndex:v5 withObject:v7];
     }
 
-    v4 = v7;
+    dataCopy = v7;
   }
 }
 
 - (PKPaymentPass)provisionedPass
 {
-  v2 = [(NSMutableOrderedSet *)self->_provisionedPasses firstObject];
-  v3 = [v2 secureElementPass];
-  v4 = [v3 paymentPass];
+  firstObject = [(NSMutableOrderedSet *)self->_provisionedPasses firstObject];
+  secureElementPass = [firstObject secureElementPass];
+  paymentPass = [secureElementPass paymentPass];
 
-  return v4;
+  return paymentPass;
 }
 
 - (BOOL)suppressDefaultCardholderNameField
 {
-  v3 = [(PKPaymentProvisioningController *)self webService];
-  v4 = [v3 targetDevice];
-  v5 = [v4 deviceRegion];
+  webService = [(PKPaymentProvisioningController *)self webService];
+  targetDevice = [webService targetDevice];
+  deviceRegion = [targetDevice deviceRegion];
 
-  v6 = [(PKPaymentProvisioningController *)self webService];
-  v7 = [v6 context];
-  v8 = [v7 configuration];
-  v9 = [v8 suppressCardholderNameFieldForRegion:v5];
+  webService2 = [(PKPaymentProvisioningController *)self webService];
+  context = [webService2 context];
+  configuration = [context configuration];
+  v9 = [configuration suppressCardholderNameFieldForRegion:deviceRegion];
 
   return v9;
 }

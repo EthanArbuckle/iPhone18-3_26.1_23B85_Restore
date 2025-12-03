@@ -1,24 +1,24 @@
 @interface SBInteractiveScreenshotCommitWorkspaceTransaction
-- (SBInteractiveScreenshotCommitWorkspaceTransaction)initWithTransitionRequest:(id)a3 gestureSessionID:(id)a4;
+- (SBInteractiveScreenshotCommitWorkspaceTransaction)initWithTransitionRequest:(id)request gestureSessionID:(id)d;
 - (SBInteractiveScreenshotCommitWorkspaceTransactionDelegate)interactiveScreenshotCommitDelegate;
 - (void)_begin;
 - (void)_updateState;
-- (void)setHasFinishedFlashAnimation:(BOOL)a3;
-- (void)setHasFinishedSettlingAnimation:(BOOL)a3;
-- (void)setScreenshotMarkupTransientOverlayViewController:(id)a3;
+- (void)setHasFinishedFlashAnimation:(BOOL)animation;
+- (void)setHasFinishedSettlingAnimation:(BOOL)animation;
+- (void)setScreenshotMarkupTransientOverlayViewController:(id)controller;
 @end
 
 @implementation SBInteractiveScreenshotCommitWorkspaceTransaction
 
-- (SBInteractiveScreenshotCommitWorkspaceTransaction)initWithTransitionRequest:(id)a3 gestureSessionID:(id)a4
+- (SBInteractiveScreenshotCommitWorkspaceTransaction)initWithTransitionRequest:(id)request gestureSessionID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = SBInteractiveScreenshotCommitWorkspaceTransaction;
-  v7 = [(SBMainWorkspaceTransaction *)&v11 initWithTransitionRequest:a3];
+  v7 = [(SBMainWorkspaceTransaction *)&v11 initWithTransitionRequest:request];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     gestureSessionID = v7->_gestureSessionID;
     v7->_gestureSessionID = v8;
   }
@@ -61,40 +61,40 @@ void __59__SBInteractiveScreenshotCommitWorkspaceTransaction__begin__block_invok
   }
 }
 
-- (void)setHasFinishedFlashAnimation:(BOOL)a3
+- (void)setHasFinishedFlashAnimation:(BOOL)animation
 {
-  if (self->_hasFinishedFlashAnimation != a3)
+  if (self->_hasFinishedFlashAnimation != animation)
   {
-    self->_hasFinishedFlashAnimation = a3;
+    self->_hasFinishedFlashAnimation = animation;
     [(SBInteractiveScreenshotCommitWorkspaceTransaction *)self _updateState];
   }
 }
 
-- (void)setHasFinishedSettlingAnimation:(BOOL)a3
+- (void)setHasFinishedSettlingAnimation:(BOOL)animation
 {
-  if (self->_hasFinishedSettlingAnimation != a3)
+  if (self->_hasFinishedSettlingAnimation != animation)
   {
-    self->_hasFinishedSettlingAnimation = a3;
+    self->_hasFinishedSettlingAnimation = animation;
     [(SBInteractiveScreenshotCommitWorkspaceTransaction *)self _updateState];
   }
 }
 
-- (void)setScreenshotMarkupTransientOverlayViewController:(id)a3
+- (void)setScreenshotMarkupTransientOverlayViewController:(id)controller
 {
-  v5 = a3;
-  if (v5 && !self->_screenshotMarkupTransientOverlayViewController)
+  controllerCopy = controller;
+  if (controllerCopy && !self->_screenshotMarkupTransientOverlayViewController)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_screenshotMarkupTransientOverlayViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_screenshotMarkupTransientOverlayViewController, controller);
     [(SBInteractiveScreenshotCommitWorkspaceTransaction *)self _updateState];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
 - (void)_updateState
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBInteractiveScreenshotCommitWorkspaceTransaction.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"[transaction isKindOfClass:[SBTransientOverlayPresentWorkspaceTransaction class]]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBInteractiveScreenshotCommitWorkspaceTransaction.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"[transaction isKindOfClass:[SBTransientOverlayPresentWorkspaceTransaction class]]"}];
 }
 
 void __65__SBInteractiveScreenshotCommitWorkspaceTransaction__updateState__block_invoke(uint64_t a1, void *a2)

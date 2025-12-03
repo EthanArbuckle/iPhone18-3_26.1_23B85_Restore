@@ -1,18 +1,18 @@
 @interface EPPivotTableStyleFlattener
-- (BOOL)isObjectSupported:(id)a3;
-- (id)collectionFromWorksheet:(id)a3;
+- (BOOL)isObjectSupported:(id)supported;
+- (id)collectionFromWorksheet:(id)worksheet;
 - (id)keysInTheOrderTheyShouldBeApplied;
-- (id)newExtractedCellStyleElements:(id)a3 parentScope:(id)a4 row:(int)a5 column:(int)a6;
-- (id)newExtractedRowStyleElements:(id)a3 parentScope:(id)a4 row:(int)a5;
-- (id)styleFromObject:(id)a3;
-- (int)borderFlagsForStyleType:(int)a3 row:(int)a4 column:(int)a5;
-- (int)stripeOffset:(int)a3 row:(BOOL)a4;
-- (unsigned)constrainLevel:(unsigned int)a3;
-- (void)addColumnSubheadingLevel:(unsigned int)a3 to:(id)a4;
-- (void)addRowSubheadingLevel:(unsigned int)a3 to:(id)a4;
-- (void)addSubtotalColumnLevel:(unsigned int)a3 to:(id)a4;
-- (void)addSubtotalRowLevel:(unsigned int)a3 to:(id)a4;
-- (void)cacheSizes:(id)a3 inObject:(id)a4;
+- (id)newExtractedCellStyleElements:(id)elements parentScope:(id)scope row:(int)row column:(int)column;
+- (id)newExtractedRowStyleElements:(id)elements parentScope:(id)scope row:(int)row;
+- (id)styleFromObject:(id)object;
+- (int)borderFlagsForStyleType:(int)type row:(int)row column:(int)column;
+- (int)stripeOffset:(int)offset row:(BOOL)row;
+- (unsigned)constrainLevel:(unsigned int)level;
+- (void)addColumnSubheadingLevel:(unsigned int)level to:(id)to;
+- (void)addRowSubheadingLevel:(unsigned int)level to:(id)to;
+- (void)addSubtotalColumnLevel:(unsigned int)level to:(id)to;
+- (void)addSubtotalRowLevel:(unsigned int)level to:(id)to;
+- (void)cacheSizes:(id)sizes inObject:(id)object;
 - (void)clearCache;
 @end
 
@@ -71,38 +71,38 @@
   [(EPStyleFlattener *)&v4 clearCache];
 }
 
-- (BOOL)isObjectSupported:(id)a3
+- (BOOL)isObjectSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)collectionFromWorksheet:(id)a3
+- (id)collectionFromWorksheet:(id)worksheet
 {
-  v3 = [a3 pivotTables];
+  pivotTables = [worksheet pivotTables];
 
-  return v3;
+  return pivotTables;
 }
 
-- (id)styleFromObject:(id)a3
+- (id)styleFromObject:(id)object
 {
-  v3 = [a3 style];
+  style = [object style];
 
-  return v3;
+  return style;
 }
 
-- (id)newExtractedRowStyleElements:(id)a3 parentScope:(id)a4 row:(int)a5
+- (id)newExtractedRowStyleElements:(id)elements parentScope:(id)scope row:(int)row
 {
-  v8 = a3;
-  v9 = a4;
+  elementsCopy = elements;
+  scopeCopy = scope;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   mFirstRow = self->super.mFirstRow;
-  v12 = [(EDPivotTable *)self->mPivotTable showColumnHeaders];
-  v13 = a5 - mFirstRow;
-  v14 = v13 >= 0 && v12;
+  showColumnHeaders = [(EDPivotTable *)self->mPivotTable showColumnHeaders];
+  v13 = row - mFirstRow;
+  v14 = v13 >= 0 && showColumnHeaders;
   if (v14 && self->mFirstDataRow > v13)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithInt:2];
@@ -130,33 +130,33 @@ LABEL_13:
   }
 
 LABEL_14:
-  v17 = [(EPStyleFlattener *)self newExtractedKeys:v10 from:v8 parent:v9];
+  v17 = [(EPStyleFlattener *)self newExtractedKeys:v10 from:elementsCopy parent:scopeCopy];
 
   return v17;
 }
 
-- (id)newExtractedCellStyleElements:(id)a3 parentScope:(id)a4 row:(int)a5 column:(int)a6
+- (id)newExtractedCellStyleElements:(id)elements parentScope:(id)scope row:(int)row column:(int)column
 {
-  v43 = a3;
-  v42 = a4;
+  elementsCopy = elements;
+  scopeCopy = scope;
   v47 = objc_alloc_init(MEMORY[0x277CBEB18]);
   mFirstRow = self->super.mFirstRow;
   mFirstColumn = self->super.mFirstColumn;
   mFirstDataRow = self->mFirstDataRow;
   mFirstDataColumn = self->mFirstDataColumn;
-  v11 = [(EDPivotTable *)self->mPivotTable showRowHeaders];
-  v39 = [(EDPivotTable *)self->mPivotTable showColumnHeaders];
-  v44 = a5 - mFirstRow;
-  v40 = a6 - mFirstColumn;
-  v48 = a6 - mFirstColumn;
-  v12 = a5 - mFirstRow >= 0 && v11;
+  showRowHeaders = [(EDPivotTable *)self->mPivotTable showRowHeaders];
+  showColumnHeaders = [(EDPivotTable *)self->mPivotTable showColumnHeaders];
+  v44 = row - mFirstRow;
+  v40 = column - mFirstColumn;
+  v48 = column - mFirstColumn;
+  v12 = row - mFirstRow >= 0 && showRowHeaders;
   if (v12 && self->mFirstDataColumn > v40)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithInt:4];
     [v47 addObject:v13];
   }
 
-  v14 = a5 == mFirstRow && v11;
+  v14 = row == mFirstRow && showRowHeaders;
   if (v14 && self->mFirstDataColumn > v40)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithInt:10];
@@ -179,16 +179,16 @@ LABEL_14:
     [v47 addObject:v17];
   }
 
-  v18 = [(EDPivotTable *)self->mPivotTable rowItems];
-  v19 = v18;
+  rowItems = [(EDPivotTable *)self->mPivotTable rowItems];
+  v19 = rowItems;
   v20 = (v44 - mFirstDataRow);
-  if ((v20 & 0x80000000) == 0 && v20 < [v18 count])
+  if ((v20 & 0x80000000) == 0 && v20 < [rowItems count])
   {
     v21 = [v19 objectAtIndex:v20];
-    v22 = [v21 repeatedItemCounts];
-    v23 = [v21 type];
-    v24 = v23;
-    if (v23 == 1)
+    repeatedItemCounts = [v21 repeatedItemCounts];
+    type = [v21 type];
+    v24 = type;
+    if (type == 1)
     {
       v25 = [MEMORY[0x277CCABB0] numberWithInt:21];
       [v47 addObject:v25];
@@ -196,7 +196,7 @@ LABEL_14:
 
     else
     {
-      if (v23 != 6)
+      if (type != 6)
       {
         goto LABEL_27;
       }
@@ -208,8 +208,8 @@ LABEL_14:
 LABEL_27:
     if ([(EDPivotTable *)self->mPivotTable compact])
     {
-      v26 = v24 == 4 && v11;
-      if (!v26 || self->mRowFieldsCount <= (v22 + 1))
+      v26 = v24 == 4 && showRowHeaders;
+      if (!v26 || self->mRowFieldsCount <= (repeatedItemCounts + 1))
       {
         goto LABEL_54;
       }
@@ -221,22 +221,22 @@ LABEL_27:
       {
         if (![(EDPivotTable *)self->mPivotTable compact]&& ![(EDPivotTable *)self->mPivotTable outline])
         {
-          if (v11 && v48 + 1 < SLODWORD(self->mRowFieldsCount) && (v24 == 4 || v40 < v22))
+          if (showRowHeaders && v48 + 1 < SLODWORD(self->mRowFieldsCount) && (v24 == 4 || v40 < repeatedItemCounts))
           {
             [(EPPivotTableStyleFlattener *)self addRowSubheadingLevel:v40 to:v47];
           }
 
-          if (v24 == 5 && v40 >= v22)
+          if (v24 == 5 && v40 >= repeatedItemCounts)
           {
-            [(EPPivotTableStyleFlattener *)self addSubtotalRowLevel:v22 to:v47];
+            [(EPPivotTableStyleFlattener *)self addSubtotalRowLevel:repeatedItemCounts to:v47];
           }
         }
 
         goto LABEL_54;
       }
 
-      v27 = v24 == 4 && v11;
-      if (!v27 || (self->mRowFieldsCount > (v22 + 1) ? (v28 = v48 < v22) : (v28 = 1), v28))
+      v27 = v24 == 4 && showRowHeaders;
+      if (!v27 || (self->mRowFieldsCount > (repeatedItemCounts + 1) ? (v28 = v48 < repeatedItemCounts) : (v28 = 1), v28))
       {
 LABEL_54:
 
@@ -244,18 +244,18 @@ LABEL_54:
       }
     }
 
-    [(EPPivotTableStyleFlattener *)self addRowSubheadingLevel:v22 to:v47];
+    [(EPPivotTableStyleFlattener *)self addRowSubheadingLevel:repeatedItemCounts to:v47];
     goto LABEL_54;
   }
 
 LABEL_55:
-  v29 = [(EDPivotTable *)self->mPivotTable columnItems];
-  v30 = v29;
+  columnItems = [(EDPivotTable *)self->mPivotTable columnItems];
+  v30 = columnItems;
   if (v44 < 1)
   {
     if (v44 < 0)
     {
-      if (a6 == mFirstColumn)
+      if (column == mFirstColumn)
       {
         [MEMORY[0x277CCABB0] numberWithInt:28];
       }
@@ -273,21 +273,21 @@ LABEL_55:
   else
   {
     v31 = v40 - mFirstDataColumn;
-    if (v40 - mFirstDataColumn < [v29 count])
+    if (v40 - mFirstDataColumn < [columnItems count])
     {
       v32 = [v30 objectAtIndex:v31];
-      v33 = [v32 repeatedItemCounts];
-      v34 = [v32 type];
-      if (v34 == 6)
+      repeatedItemCounts2 = [v32 repeatedItemCounts];
+      type2 = [v32 type];
+      if (type2 == 6)
       {
         v35 = [MEMORY[0x277CCABB0] numberWithInt:5];
         [v47 addObject:v35];
       }
 
-      if (v39 && v44 <= SLODWORD(self->mColumnFieldsCount) && (v31 & 0x80000000) == 0 && v34 != 6)
+      if (showColumnHeaders && v44 <= SLODWORD(self->mColumnFieldsCount) && (v31 & 0x80000000) == 0 && type2 != 6)
       {
         v36 = (v44 - 1);
-        if (v34 == 4)
+        if (type2 == 4)
         {
           [(EPPivotTableStyleFlattener *)self addColumnSubheadingLevel:v36 to:v47];
 LABEL_77:
@@ -295,22 +295,22 @@ LABEL_77:
           goto LABEL_78;
         }
 
-        if (v44 <= v33)
+        if (v44 <= repeatedItemCounts2)
         {
           v36 = v36;
         }
 
         else
         {
-          v36 = v33;
+          v36 = repeatedItemCounts2;
         }
 
         [(EPPivotTableStyleFlattener *)self addColumnSubheadingLevel:v36 to:v47];
       }
 
-      if (v44 > v33 && v34 == 5)
+      if (v44 > repeatedItemCounts2 && type2 == 5)
       {
-        [(EPPivotTableStyleFlattener *)self addSubtotalColumnLevel:v33 to:v47];
+        [(EPPivotTableStyleFlattener *)self addSubtotalColumnLevel:repeatedItemCounts2 to:v47];
       }
 
       goto LABEL_77;
@@ -318,16 +318,16 @@ LABEL_77:
   }
 
 LABEL_78:
-  v37 = [(EPStyleFlattener *)self newExtractedKeys:v47 from:v43 parent:v42];
+  v37 = [(EPStyleFlattener *)self newExtractedKeys:v47 from:elementsCopy parent:scopeCopy];
 
   return v37;
 }
 
-- (int)borderFlagsForStyleType:(int)a3 row:(int)a4 column:(int)a5
+- (int)borderFlagsForStyleType:(int)type row:(int)row column:(int)column
 {
-  v53 = a5 - self->super.mFirstColumn;
-  v6 = a5 == self->super.mFirstColumn;
-  if (a5 == self->super.mFirstColumn)
+  v53 = column - self->super.mFirstColumn;
+  v6 = column == self->super.mFirstColumn;
+  if (column == self->super.mFirstColumn)
   {
     v7 = 3;
   }
@@ -338,13 +338,13 @@ LABEL_78:
   }
 
   mFirstRow = self->super.mFirstRow;
-  if (self->super.mLastColumn == a5)
+  if (self->super.mLastColumn == column)
   {
     v6 = v7;
   }
 
-  v9 = a4 - mFirstRow;
-  if (a4 == mFirstRow)
+  v9 = row - mFirstRow;
+  if (row == mFirstRow)
   {
     v10 = v6 | 4;
   }
@@ -355,7 +355,7 @@ LABEL_78:
   }
 
   v11 = v10 | 8;
-  if (self->super.mLastRow == a4)
+  if (self->super.mLastRow == row)
   {
     v12 = v10 | 8;
   }
@@ -367,21 +367,21 @@ LABEL_78:
 
   mFirstDataRow = self->mFirstDataRow;
   mFirstDataColumn = self->mFirstDataColumn;
-  v50 = [(EDPivotTable *)self->mPivotTable rowItems];
-  v55 = [(EDPivotTable *)self->mPivotTable columnItems];
+  rowItems = [(EDPivotTable *)self->mPivotTable rowItems];
+  columnItems = [(EDPivotTable *)self->mPivotTable columnItems];
   v48 = v9;
   v46 = v9 - mFirstDataRow;
-  v51 = [v50 objectAtIndex:v9 - mFirstDataRow];
-  v54 = [v55 objectAtIndex:v53 - mFirstDataColumn];
+  mFirstDataRow = [rowItems objectAtIndex:v9 - mFirstDataRow];
+  mFirstDataColumn = [columnItems objectAtIndex:v53 - mFirstDataColumn];
   v14 = 15;
-  switch(a3)
+  switch(type)
   {
     case 1:
       v14 = v12;
       if (v48 < 0)
       {
         v37 = self->super.mFirstRow;
-        if (v37 + ~LODWORD(self->mPageFieldsCount) == a4)
+        if (v37 + ~LODWORD(self->mPageFieldsCount) == row)
         {
           v38 = v12 | 4;
         }
@@ -391,7 +391,7 @@ LABEL_78:
           v38 = v12;
         }
 
-        if (v37 - 2 == a4)
+        if (v37 - 2 == row)
         {
           v39 = v38 | 8;
         }
@@ -426,7 +426,7 @@ LABEL_78:
 
       break;
     case 3:
-      if (*(&self->super.super.super.isa + v44) == a4)
+      if (*(&self->super.super.super.isa + v44) == row)
       {
         v14 = v12 | 4;
       }
@@ -523,7 +523,7 @@ LABEL_40:
     case 15:
     case 16:
     case 17:
-      if (v48 - 1 == [v54 repeatedItemCounts])
+      if (v48 - 1 == [mFirstDataColumn repeatedItemCounts])
       {
         v15 = 7;
       }
@@ -538,7 +538,7 @@ LABEL_40:
     case 19:
     case 20:
       v14 = v12 | 0xC;
-      if ((v46 & 0x80000000) == 0 && v53 == [v51 repeatedItemCounts])
+      if ((v46 & 0x80000000) == 0 && v53 == [mFirstDataRow repeatedItemCounts])
       {
         v14 = v12 | 0xD;
       }
@@ -549,18 +549,18 @@ LABEL_40:
     case 22:
     case 23:
     case 24:
-      if (v48 <= [v54 repeatedItemCounts])
+      if (v48 <= [mFirstDataColumn repeatedItemCounts])
       {
         v20 = v12 | 0xC;
       }
 
       else
       {
-        v16 = [v54 itemIndexes];
-        v17 = [v16 count];
-        v18 = [v54 repeatedItemCounts];
+        itemIndexes = [mFirstDataColumn itemIndexes];
+        v17 = [itemIndexes count];
+        repeatedItemCounts = [mFirstDataColumn repeatedItemCounts];
 
-        if (v48 == v18 + v17)
+        if (v48 == repeatedItemCounts + v17)
         {
           v19 = v12 | 4;
         }
@@ -570,7 +570,7 @@ LABEL_40:
           v19 = v12;
         }
 
-        if (v48 <= v18 + v17 - 1)
+        if (v48 <= repeatedItemCounts + v17 - 1)
         {
           v19 = v12 | 0xC;
         }
@@ -586,19 +586,19 @@ LABEL_40:
         }
       }
 
-      v32 = v53 == mFirstDataColumn || v48 > [v54 repeatedItemCounts];
+      v32 = v53 == mFirstDataColumn || v48 > [mFirstDataColumn repeatedItemCounts];
       v33 = v20 | v32;
-      if (self->super.mLastColumn == a5)
+      if (self->super.mLastColumn == column)
       {
         v14 = v33 | 2;
       }
 
       else
       {
-        v34 = [v55 objectAtIndex:v53 - mFirstDataColumn + 1];
-        v35 = [v34 repeatedItemCounts];
+        v34 = [columnItems objectAtIndex:v53 - mFirstDataColumn + 1];
+        repeatedItemCounts2 = [v34 repeatedItemCounts];
 
-        if (v48 <= v35)
+        if (v48 <= repeatedItemCounts2)
         {
           v14 = v33;
         }
@@ -621,7 +621,7 @@ LABEL_22:
 
       else if ([(EDPivotTable *)self->mPivotTable outline])
       {
-        if (v53 == [v51 repeatedItemCounts])
+        if (v53 == [mFirstDataRow repeatedItemCounts])
         {
           v15 = 13;
         }
@@ -648,13 +648,13 @@ LABEL_16:
           if (v48 == mFirstDataRow)
           {
             v14 = v12 | 7;
-            v40 = v50;
+            v40 = rowItems;
           }
 
           else
           {
-            v40 = v50;
-            v41 = [v50 objectAtIndex:v46 - 1];
+            v40 = rowItems;
+            v41 = [rowItems objectAtIndex:v46 - 1];
             v14 = v12 | 3;
             if ([v41 type] != 4 && v53 >= objc_msgSend(v41, "repeatedItemCounts"))
             {
@@ -662,7 +662,7 @@ LABEL_16:
             }
           }
 
-          if (*(&self->super.super.super.isa + v44) == a4)
+          if (*(&self->super.super.super.isa + v44) == row)
           {
             v14 |= 8u;
           }
@@ -682,7 +682,7 @@ LABEL_16:
     case 28:
     case 29:
       v29 = self->super.mFirstRow;
-      if (v29 + ~LODWORD(self->mPageFieldsCount) == a4)
+      if (v29 + ~LODWORD(self->mPageFieldsCount) == row)
       {
         v30 = 7;
       }
@@ -693,7 +693,7 @@ LABEL_16:
       }
 
       v31 = v30 | v12;
-      if (v29 - 2 == a4)
+      if (v29 - 2 == row)
       {
         v14 = v31 | 8;
       }
@@ -711,27 +711,27 @@ LABEL_16:
   return v14;
 }
 
-- (void)cacheSizes:(id)a3 inObject:(id)a4
+- (void)cacheSizes:(id)sizes inObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->mPivotTable, a4);
-  v8 = [(EDPivotTable *)self->mPivotTable pivotTableRange];
+  sizesCopy = sizes;
+  objectCopy = object;
+  objc_storeStrong(&self->mPivotTable, object);
+  pivotTableRange = [(EDPivotTable *)self->mPivotTable pivotTableRange];
   v18.receiver = self;
   v18.super_class = EPPivotTableStyleFlattener;
-  [(EPStyleFlattener *)&v18 cacheRange:v8];
+  [(EPStyleFlattener *)&v18 cacheRange:pivotTableRange];
 
   self->mFirstHeaderRow = [(EDPivotTable *)self->mPivotTable firstHeaderRow];
   self->mFirstDataRow = [(EDPivotTable *)self->mPivotTable firstDataRow];
   self->mFirstDataColumn = [(EDPivotTable *)self->mPivotTable firstDataColumn];
-  v9 = [(EDPivotTable *)self->mPivotTable rowFields];
-  self->mRowFieldsCount = [v9 count];
+  rowFields = [(EDPivotTable *)self->mPivotTable rowFields];
+  self->mRowFieldsCount = [rowFields count];
 
-  v10 = [(EDPivotTable *)self->mPivotTable columnFields];
-  self->mColumnFieldsCount = [v10 count];
+  columnFields = [(EDPivotTable *)self->mPivotTable columnFields];
+  self->mColumnFieldsCount = [columnFields count];
 
-  v11 = [(EDPivotTable *)self->mPivotTable pageFields];
-  self->mPageFieldsCount = [v11 count];
+  pageFields = [(EDPivotTable *)self->mPivotTable pageFields];
+  self->mPageFieldsCount = [pageFields count];
 
   mPageFieldsCount = self->mPageFieldsCount;
   if (mPageFieldsCount)
@@ -749,61 +749,61 @@ LABEL_16:
 
   v16.receiver = self;
   v16.super_class = EPPivotTableStyleFlattener;
-  [(EPStyleFlattener *)&v16 cacheSizes:v6 inObject:v7];
+  [(EPStyleFlattener *)&v16 cacheSizes:sizesCopy inObject:objectCopy];
 }
 
-- (int)stripeOffset:(int)a3 row:(BOOL)a4
+- (int)stripeOffset:(int)offset row:(BOOL)row
 {
   v4 = &OBJC_IVAR___EPPivotTableStyleFlattener_mFirstDataColumn;
-  if (a4)
+  if (row)
   {
     v4 = &OBJC_IVAR___EPPivotTableStyleFlattener_mFirstDataRow;
   }
 
   v5 = &OBJC_IVAR___EPStyleFlattener_mFirstColumnStripeSize;
-  if (a4)
+  if (row)
   {
     v5 = &OBJC_IVAR___EPStyleFlattener_mFirstRowStripeSize;
   }
 
   v6 = &OBJC_IVAR___EPStyleFlattener_mSecondRowStripeSize;
   v7 = *(&self->super.super.super.isa + *v4);
-  if (!a4)
+  if (!row)
   {
     v6 = &OBJC_IVAR___EPStyleFlattener_mSecondColumnStripeSize;
   }
 
-  return (a3 - v7) % (*(&self->super.super.super.isa + *v6) + *(&self->super.super.super.isa + *v5));
+  return (offset - v7) % (*(&self->super.super.super.isa + *v6) + *(&self->super.super.super.isa + *v5));
 }
 
-- (unsigned)constrainLevel:(unsigned int)a3
+- (unsigned)constrainLevel:(unsigned int)level
 {
-  if (a3 >= 3)
+  if (level >= 3)
   {
-    return 2 - (a3 & 1);
+    return 2 - (level & 1);
   }
 
   else
   {
-    return a3;
+    return level;
   }
 }
 
-- (void)addRowSubheadingLevel:(unsigned int)a3 to:(id)a4
+- (void)addRowSubheadingLevel:(unsigned int)level to:(id)to
 {
-  v4 = *&a3;
-  v8 = a4;
+  v4 = *&level;
+  toCopy = to;
   v6 = [(EPPivotTableStyleFlattener *)self constrainLevel:v4];
   if (v6 == 2)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInt:27];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
   else if (v6 == 1)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInt:26];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
   else
@@ -814,27 +814,27 @@ LABEL_16:
     }
 
     v7 = [MEMORY[0x277CCABB0] numberWithInt:25];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
 LABEL_8:
 }
 
-- (void)addColumnSubheadingLevel:(unsigned int)a3 to:(id)a4
+- (void)addColumnSubheadingLevel:(unsigned int)level to:(id)to
 {
-  v4 = *&a3;
-  v8 = a4;
+  v4 = *&level;
+  toCopy = to;
   v6 = [(EPPivotTableStyleFlattener *)self constrainLevel:v4];
   if (v6 == 2)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInt:24];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
   else if (v6 == 1)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInt:23];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
   else
@@ -845,27 +845,27 @@ LABEL_8:
     }
 
     v7 = [MEMORY[0x277CCABB0] numberWithInt:22];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
 LABEL_8:
 }
 
-- (void)addSubtotalRowLevel:(unsigned int)a3 to:(id)a4
+- (void)addSubtotalRowLevel:(unsigned int)level to:(id)to
 {
-  v4 = *&a3;
-  v8 = a4;
+  v4 = *&level;
+  toCopy = to;
   v6 = [(EPPivotTableStyleFlattener *)self constrainLevel:v4];
   if (v6 == 2)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInt:20];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
   else if (v6 == 1)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInt:19];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
   else
@@ -876,27 +876,27 @@ LABEL_8:
     }
 
     v7 = [MEMORY[0x277CCABB0] numberWithInt:18];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
 LABEL_8:
 }
 
-- (void)addSubtotalColumnLevel:(unsigned int)a3 to:(id)a4
+- (void)addSubtotalColumnLevel:(unsigned int)level to:(id)to
 {
-  v4 = *&a3;
-  v8 = a4;
+  v4 = *&level;
+  toCopy = to;
   v6 = [(EPPivotTableStyleFlattener *)self constrainLevel:v4];
   if (v6 == 2)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInt:17];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
   else if (v6 == 1)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithInt:16];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
   else
@@ -907,7 +907,7 @@ LABEL_8:
     }
 
     v7 = [MEMORY[0x277CCABB0] numberWithInt:15];
-    [v8 addObject:v7];
+    [toCopy addObject:v7];
   }
 
 LABEL_8:

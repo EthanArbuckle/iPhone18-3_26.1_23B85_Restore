@@ -8,10 +8,10 @@
 - (BOOL)ar_isEqualToParameters:()ARAdditions
 {
   v4 = a3;
-  v5 = [a1 aggregationSize];
-  if (v5 == [v4 aggregationSize])
+  aggregationSize = [self aggregationSize];
+  if (aggregationSize == [v4 aggregationSize])
   {
-    [a1 maxPointCloudAge];
+    [self maxPointCloudAge];
     v7 = v6;
     [v4 maxPointCloudAge];
     v9 = v7 == v8;
@@ -28,9 +28,9 @@
 - (id)copyWithZone:()ARAdditions
 {
   v2 = objc_alloc_init(MEMORY[0x1E698C150]);
-  [a1 maxPointCloudAge];
+  [self maxPointCloudAge];
   [v2 setMaxPointCloudAge:?];
-  [v2 setAggregationSize:{objc_msgSend(a1, "aggregationSize")}];
+  [v2 setAggregationSize:{objc_msgSend(self, "aggregationSize")}];
   return v2;
 }
 

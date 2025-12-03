@@ -1,13 +1,13 @@
 @interface CNVCardRangeFinder
-+ (id)allRangesInData:(id)a3;
-+ (id)rangesInData:(id)a3;
++ (id)allRangesInData:(id)data;
++ (id)rangesInData:(id)data;
 @end
 
 @implementation CNVCardRangeFinder
 
-+ (id)allRangesInData:(id)a3
++ (id)allRangesInData:(id)data
 {
-  v3 = [a1 rangesInData:a3];
+  v3 = [self rangesInData:data];
   v8 = 0;
   v4 = [v3 allObjects:&v8];
   v5 = v8;
@@ -17,14 +17,14 @@
   return v6;
 }
 
-+ (id)rangesInData:(id)a3
++ (id)rangesInData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = (*(*MEMORY[0x277CFBD00] + 16))();
   v5 = MEMORY[0x277CFBE60];
   if (v4)
   {
-    v6 = [MEMORY[0x277CFBE60] emptyObservable];
+    emptyObservable = [MEMORY[0x277CFBE60] emptyObservable];
   }
 
   else
@@ -33,11 +33,11 @@
     v8[1] = 3221225472;
     v8[2] = __35__CNVCardRangeFinder_rangesInData___block_invoke;
     v8[3] = &unk_27A710DF8;
-    v9 = v3;
-    v6 = [v5 observableWithBlock:v8];
+    v9 = dataCopy;
+    emptyObservable = [v5 observableWithBlock:v8];
   }
 
-  return v6;
+  return emptyObservable;
 }
 
 id __35__CNVCardRangeFinder_rangesInData___block_invoke(uint64_t a1, void *a2)

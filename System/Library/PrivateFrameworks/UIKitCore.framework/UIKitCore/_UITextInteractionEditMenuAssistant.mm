@@ -5,37 +5,37 @@
 - (BOOL)_editMenuIsVisibleOrDismissedRecently;
 - (BOOL)_editMenuPrefersPresentationInView;
 - (BOOL)_hasTextReplacements;
-- (BOOL)_isAffectedByScrollNotification:(id)a3;
-- (BOOL)_updateEditMenuPositionForPreferredArrowDirection:(int64_t)a3 replacements:(id)a4;
-- (CGRect)_clippedTargetRect:(CGRect)a3;
+- (BOOL)_isAffectedByScrollNotification:(id)notification;
+- (BOOL)_updateEditMenuPositionForPreferredArrowDirection:(int64_t)direction replacements:(id)replacements;
+- (CGRect)_clippedTargetRect:(CGRect)rect;
 - (CGRect)_editMenuRawTargetRect;
 - (CGRect)_editMenuTargetRect;
 - (CGRect)selectionBoundingBox;
-- (CGRect)selectionBoundingBoxForRects:(id)a3;
+- (CGRect)selectionBoundingBoxForRects:(id)rects;
 - (NSArray)_preferredLayoutRectsForEditMenu;
 - (UITextInteractionAssistant)interactionAssistant;
 - (UIView)_selectionView;
 - (UIWindow)_editMenuSourceWindow;
-- (_UITextInteractionEditMenuAssistant)initWithInteractionAssistant:(id)a3;
-- (id)_editMenuConfigurationForCurrentSelectionWithPreferredArrowDirection:(int64_t)a3;
+- (_UITextInteractionEditMenuAssistant)initWithInteractionAssistant:(id)assistant;
+- (id)_editMenuConfigurationForCurrentSelectionWithPreferredArrowDirection:(int64_t)direction;
 - (id)_screenCoordinateSpace;
 - (id)_selectionViewCoordinateSpace;
 - (id)_textViewCoordinateSpace;
 - (id)_windowCoordinateSpace;
-- (id)menuElementsForReplacements:(id)a3;
-- (void)_didReceiveSelectionDidScrollNotification:(id)a3;
-- (void)_didReceiveSelectionWillScrollNotification:(id)a3;
-- (void)_hideSelectionCommandsWithReason:(int64_t)a3;
-- (void)_presentEditMenuWithPreferredDirection:(int64_t)a3 replacements:(id)a4;
-- (void)_presentEditMenuWithPreferredDirection:(int64_t)a3 replacements:(id)a4 overrideMenu:(id)a5;
-- (void)_showCommandsWithReplacements:(id)a3 forDictation:(BOOL)a4 afterDelay:(double)a5;
-- (void)_showCommandsWithReplacements:(id)a3 isForContextMenu:(BOOL)a4 forDictation:(BOOL)a5 arrowDirection:(int64_t)a6;
-- (void)_showSelectionCommandsForContextMenu:(BOOL)a3;
-- (void)calculateReplacementsWithGenerator:(id)a3 andShowAfterDelay:(double)a4;
+- (id)menuElementsForReplacements:(id)replacements;
+- (void)_didReceiveSelectionDidScrollNotification:(id)notification;
+- (void)_didReceiveSelectionWillScrollNotification:(id)notification;
+- (void)_hideSelectionCommandsWithReason:(int64_t)reason;
+- (void)_presentEditMenuWithPreferredDirection:(int64_t)direction replacements:(id)replacements;
+- (void)_presentEditMenuWithPreferredDirection:(int64_t)direction replacements:(id)replacements overrideMenu:(id)menu;
+- (void)_showCommandsWithReplacements:(id)replacements forDictation:(BOOL)dictation afterDelay:(double)delay;
+- (void)_showCommandsWithReplacements:(id)replacements isForContextMenu:(BOOL)menu forDictation:(BOOL)dictation arrowDirection:(int64_t)direction;
+- (void)_showSelectionCommandsForContextMenu:(BOOL)menu;
+- (void)calculateReplacementsWithGenerator:(id)generator andShowAfterDelay:(double)delay;
 - (void)cancelDelayedCommandRequests;
-- (void)showCalloutBarAfterDelay:(double)a3;
-- (void)showReplacementsWithGenerator:(id)a3 forDictation:(BOOL)a4 afterDelay:(double)a5;
-- (void)showSelectionCommandsAfterDelay:(double)a3;
+- (void)showCalloutBarAfterDelay:(double)delay;
+- (void)showReplacementsWithGenerator:(id)generator forDictation:(BOOL)dictation afterDelay:(double)delay;
+- (void)showSelectionCommandsAfterDelay:(double)delay;
 @end
 
 @implementation _UITextInteractionEditMenuAssistant
@@ -56,27 +56,27 @@
 
 - (BOOL)_editMenuIsVisible
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
-  v3 = [v2 isDisplayingMenuForSelectionCommands];
+  menuInteraction = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
+  isDisplayingMenuForSelectionCommands = [menuInteraction isDisplayingMenuForSelectionCommands];
 
-  return v3;
+  return isDisplayingMenuForSelectionCommands;
 }
 
-- (_UITextInteractionEditMenuAssistant)initWithInteractionAssistant:(id)a3
+- (_UITextInteractionEditMenuAssistant)initWithInteractionAssistant:(id)assistant
 {
-  v4 = a3;
+  assistantCopy = assistant;
   v10.receiver = self;
   v10.super_class = _UITextInteractionEditMenuAssistant;
   v5 = [(_UITextInteractionEditMenuAssistant *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interactionAssistant, v4);
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel__didReceiveSelectionWillScrollNotification_ name:@"UITextSelectionWillScroll" object:0];
+    objc_storeWeak(&v5->_interactionAssistant, assistantCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__didReceiveSelectionWillScrollNotification_ name:@"UITextSelectionWillScroll" object:0];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v6 selector:sel__didReceiveSelectionDidScrollNotification_ name:@"UITextSelectionDidScroll" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__didReceiveSelectionDidScrollNotification_ name:@"UITextSelectionDidScroll" object:0];
   }
 
   return v6;
@@ -85,79 +85,79 @@
 - (UIView)_selectionView
 {
   v3 = +[UITextSelectionDisplayInteraction isModernSelectionViewEnabled];
-  v4 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-  v5 = v4;
+  interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+  v5 = interactionAssistant;
   if (v3)
   {
-    v6 = [v4 _selectionViewManager];
-    v7 = [v6 highlightView];
+    _selectionViewManager = [interactionAssistant _selectionViewManager];
+    highlightView = [_selectionViewManager highlightView];
   }
 
   else
   {
-    v7 = [v4 _legacySelectionView];
+    highlightView = [interactionAssistant _legacySelectionView];
   }
 
-  return v7;
+  return highlightView;
 }
 
 - (id)_selectionViewCoordinateSpace
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
-  v3 = [v2 coordinateSpace];
+  _selectionView = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
+  coordinateSpace = [_selectionView coordinateSpace];
 
-  return v3;
+  return coordinateSpace;
 }
 
 - (id)_textViewCoordinateSpace
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-  v3 = [v2 view];
-  v4 = [v3 textInputView];
+  interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+  view = [interactionAssistant view];
+  textInputView = [view textInputView];
 
-  return v4;
+  return textInputView;
 }
 
 - (id)_screenCoordinateSpace
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
-  v3 = [v2 _screen];
-  v4 = [v3 coordinateSpace];
+  _selectionView = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
+  _screen = [_selectionView _screen];
+  coordinateSpace = [_screen coordinateSpace];
 
-  return v4;
+  return coordinateSpace;
 }
 
 - (id)_windowCoordinateSpace
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
-  v3 = [v2 window];
+  _selectionView = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
+  window = [_selectionView window];
 
-  return v3;
+  return window;
 }
 
-- (void)_presentEditMenuWithPreferredDirection:(int64_t)a3 replacements:(id)a4
+- (void)_presentEditMenuWithPreferredDirection:(int64_t)direction replacements:(id)replacements
 {
-  v6 = a4;
-  v7 = [(_UITextInteractionEditMenuAssistant *)self menuElementsForReplacements:v6];
+  replacementsCopy = replacements;
+  v7 = [(_UITextInteractionEditMenuAssistant *)self menuElementsForReplacements:replacementsCopy];
   v8 = [UIMenu menuWithChildren:v7];
 
-  [(_UITextInteractionEditMenuAssistant *)self _presentEditMenuWithPreferredDirection:a3 replacements:v6 overrideMenu:v8];
+  [(_UITextInteractionEditMenuAssistant *)self _presentEditMenuWithPreferredDirection:direction replacements:replacementsCopy overrideMenu:v8];
 }
 
-- (void)_presentEditMenuWithPreferredDirection:(int64_t)a3 replacements:(id)a4 overrideMenu:(id)a5
+- (void)_presentEditMenuWithPreferredDirection:(int64_t)direction replacements:(id)replacements overrideMenu:(id)menu
 {
-  v32 = a4;
-  v9 = a5;
-  v10 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
-  v11 = [v10 window];
+  replacementsCopy = replacements;
+  menuCopy = menu;
+  _selectionView = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
+  window = [_selectionView window];
 
-  if (v11)
+  if (window)
   {
-    v12 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-    v13 = [v12 view];
+    interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+    view = [interactionAssistant view];
 
     interactionAssistantViewRespondsShouldShowEditMenu = self->_interactionAssistantViewRespondsShouldShowEditMenu;
-    if (!interactionAssistantViewRespondsShouldShowEditMenu && v13)
+    if (!interactionAssistantViewRespondsShouldShowEditMenu && view)
     {
       v15 = [MEMORY[0x1E696AD98] numberWithBool:objc_opt_respondsToSelector() & 1];
       v16 = self->_interactionAssistantViewRespondsShouldShowEditMenu;
@@ -166,7 +166,7 @@
       interactionAssistantViewRespondsShouldShowEditMenu = self->_interactionAssistantViewRespondsShouldShowEditMenu;
     }
 
-    if (!interactionAssistantViewRespondsShouldShowEditMenu || !-[NSNumber BOOLValue](interactionAssistantViewRespondsShouldShowEditMenu, "BOOLValue") || !v13 || [v13 _shouldShowEditMenu])
+    if (!interactionAssistantViewRespondsShouldShowEditMenu || !-[NSNumber BOOLValue](interactionAssistantViewRespondsShouldShowEditMenu, "BOOLValue") || !view || [view _shouldShowEditMenu])
     {
       [(_UITextInteractionEditMenuAssistant *)self _editMenuRawTargetRect];
       v18 = v17;
@@ -184,11 +184,11 @@
       v34.size.height = v24;
       if (CGRectIntersectsRect(v34, v35))
       {
-        objc_storeStrong(&self->_replacements, a4);
-        objc_storeStrong(&self->_overrideMenu, a5);
-        v29 = [(_UITextInteractionEditMenuAssistant *)self _editMenuConfigurationForCurrentSelectionWithPreferredArrowDirection:a3];
-        v30 = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
-        [v30 presentSelectionCommandsWithConfiguration:v29];
+        objc_storeStrong(&self->_replacements, replacements);
+        objc_storeStrong(&self->_overrideMenu, menu);
+        v29 = [(_UITextInteractionEditMenuAssistant *)self _editMenuConfigurationForCurrentSelectionWithPreferredArrowDirection:direction];
+        menuInteraction = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
+        [menuInteraction presentSelectionCommandsWithConfiguration:v29];
 
         v31 = +[UIKeyboardImpl activeInstance];
         [v31 _textSelectionEditMenuDidShow];
@@ -197,51 +197,51 @@
   }
 }
 
-- (id)_editMenuConfigurationForCurrentSelectionWithPreferredArrowDirection:(int64_t)a3
+- (id)_editMenuConfigurationForCurrentSelectionWithPreferredArrowDirection:(int64_t)direction
 {
-  v5 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
+  _selectionView = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
   [(_UITextInteractionEditMenuAssistant *)self _editMenuTargetRect];
   v8 = v7 + v6 * 0.5;
   v11 = v10 + v9 * 0.5;
-  v12 = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
-  v13 = [v12 view];
-  [v5 convertPoint:v13 toView:{v8, v11}];
+  menuInteraction = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
+  view = [menuInteraction view];
+  [_selectionView convertPoint:view toView:{v8, v11}];
   v15 = v14;
   v17 = v16;
 
   v18 = [UIEditMenuConfiguration configurationWithIdentifier:0x1EFBA7550 sourcePoint:v15, v17];
   [v18 set_ignoresPassthroughInView:1];
   [v18 set_prefersMenuPresentationInView:{-[_UITextInteractionEditMenuAssistant _editMenuPrefersPresentationInView](self, "_editMenuPrefersPresentationInView")}];
-  if ((a3 - 1) >= 4)
+  if ((direction - 1) >= 4)
   {
-    v19 = 0;
+    directionCopy = 0;
   }
 
   else
   {
-    v19 = a3;
+    directionCopy = direction;
   }
 
-  [v18 setPreferredArrowDirection:v19];
-  v20 = [(_UITextInteractionEditMenuAssistant *)self _editMenuSourceWindow];
-  [v18 set_overrideSourceWindow:v20];
+  [v18 setPreferredArrowDirection:directionCopy];
+  _editMenuSourceWindow = [(_UITextInteractionEditMenuAssistant *)self _editMenuSourceWindow];
+  [v18 set_overrideSourceWindow:_editMenuSourceWindow];
 
   return v18;
 }
 
 - (CGRect)selectionBoundingBox
 {
-  v3 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-  v4 = [v3 activeSelectionController];
-  v5 = [v4 selection];
+  interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+  activeSelectionController = [interactionAssistant activeSelectionController];
+  selection = [activeSelectionController selection];
 
-  v6 = [v5 selectedRange];
-  LOBYTE(v4) = [v6 _isRanged];
+  selectedRange = [selection selectedRange];
+  LOBYTE(activeSelectionController) = [selectedRange _isRanged];
 
-  if (v4)
+  if (activeSelectionController)
   {
-    v7 = [v5 selectionRects];
-    [(_UITextInteractionEditMenuAssistant *)self selectionBoundingBoxForRects:v7];
+    selectionRects = [selection selectionRects];
+    [(_UITextInteractionEditMenuAssistant *)self selectionBoundingBoxForRects:selectionRects];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -267,18 +267,18 @@
   return result;
 }
 
-- (CGRect)selectionBoundingBoxForRects:(id)a3
+- (CGRect)selectionBoundingBoxForRects:(id)rects
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rectsCopy = rects;
   *v42 = *MEMORY[0x1E695F058];
   *&v42[8] = *(MEMORY[0x1E695F058] + 8);
   *&v42[16] = *(MEMORY[0x1E695F058] + 16);
   *&v42[24] = *(MEMORY[0x1E695F058] + 24);
-  v5 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-  v6 = [v5 view];
-  v7 = [v6 textInputView];
-  [v7 visibleBounds];
+  interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+  view = [interactionAssistant view];
+  textInputView = [view textInputView];
+  [textInputView visibleBounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -288,7 +288,7 @@
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v16 = v4;
+  v16 = rectsCopy;
   v17 = [v16 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v17)
   {
@@ -317,11 +317,11 @@
         v50 = CGRectIntersection(v49, v53);
         if (!CGRectIsNull(v50))
         {
-          v26 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-          v27 = [v26 view];
-          v28 = [v27 textInputView];
-          v29 = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
-          [v28 convertRect:v29 toCoordinateSpace:{x, y, width, height}];
+          interactionAssistant2 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+          view2 = [interactionAssistant2 view];
+          textInputView2 = [view2 textInputView];
+          _selectionViewCoordinateSpace = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
+          [textInputView2 convertRect:_selectionViewCoordinateSpace toCoordinateSpace:{x, y, width, height}];
           v31 = v30;
           v33 = v32;
           v35 = v34;
@@ -368,31 +368,31 @@
   return result;
 }
 
-- (CGRect)_clippedTargetRect:(CGRect)a3
+- (CGRect)_clippedTargetRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (+[UIKeyboard isKeyboardProcess])
   {
     goto LABEL_29;
   }
 
-  v8 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-  v9 = [v8 view];
-  v10 = [v9 textInputView];
-  [v10 visibleBounds];
+  interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+  view = [interactionAssistant view];
+  textInputView = [view textInputView];
+  [textInputView visibleBounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
-  v20 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-  v21 = [v20 view];
-  v22 = [v21 textInputView];
-  [v19 convertRect:v22 fromCoordinateSpace:{v12, v14, v16, v18}];
+  _selectionViewCoordinateSpace = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
+  interactionAssistant2 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+  view2 = [interactionAssistant2 view];
+  textInputView2 = [view2 textInputView];
+  [_selectionViewCoordinateSpace convertRect:textInputView2 fromCoordinateSpace:{v12, v14, v16, v18}];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -411,19 +411,19 @@
   v32 = v131.origin.y;
   v33 = v131.size.width;
   v34 = v131.size.height;
-  v35 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
-  v36 = [v35 _scroller];
+  _selectionView = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
+  _scroller = [_selectionView _scroller];
 
-  if (v36 && ([v36 traitCollection], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "userInterfaceIdiom"), v37, v38 == 6))
+  if (_scroller && ([_scroller traitCollection], v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "userInterfaceIdiom"), v37, v38 == 6))
   {
-    v39 = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
-    [v36 bounds];
+    _selectionViewCoordinateSpace2 = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
+    [_scroller bounds];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
-    v48 = [v36 coordinateSpace];
-    [v39 convertRect:v48 fromCoordinateSpace:{v41, v43, v45, v47}];
+    coordinateSpace = [_scroller coordinateSpace];
+    [_selectionViewCoordinateSpace2 convertRect:coordinateSpace fromCoordinateSpace:{v41, v43, v45, v47}];
     v50 = v49;
     v52 = v51;
     v54 = v53;
@@ -438,25 +438,25 @@
 
   else
   {
-    v65 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
-    v66 = [v65 _screen];
-    [v66 bounds];
+    _selectionView2 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
+    _screen = [_selectionView2 _screen];
+    [_screen bounds];
     v68 = v67;
     v70 = v69;
     v72 = v71;
     v74 = v73;
 
-    v75 = [(_UITextInteractionEditMenuAssistant *)self _windowCoordinateSpace];
-    v76 = [(_UITextInteractionEditMenuAssistant *)self _screenCoordinateSpace];
-    [v75 convertRect:v76 fromCoordinateSpace:{v68, v70, v72, v74}];
+    _windowCoordinateSpace = [(_UITextInteractionEditMenuAssistant *)self _windowCoordinateSpace];
+    _screenCoordinateSpace = [(_UITextInteractionEditMenuAssistant *)self _screenCoordinateSpace];
+    [_windowCoordinateSpace convertRect:_screenCoordinateSpace fromCoordinateSpace:{v68, v70, v72, v74}];
     v78 = v77;
     v80 = v79;
     v82 = v81;
     v84 = v83;
 
-    v85 = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
-    v86 = [(_UITextInteractionEditMenuAssistant *)self _windowCoordinateSpace];
-    [v85 convertRect:v86 fromCoordinateSpace:{v78, v80, v82, v84}];
+    _selectionViewCoordinateSpace3 = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
+    _windowCoordinateSpace2 = [(_UITextInteractionEditMenuAssistant *)self _windowCoordinateSpace];
+    [_selectionViewCoordinateSpace3 convertRect:_windowCoordinateSpace2 fromCoordinateSpace:{v78, v80, v82, v84}];
     v58 = v87;
     v60 = v88;
     v62 = v89;
@@ -523,18 +523,18 @@ LABEL_17:
   y = v134.origin.y;
   width = v134.size.width;
   height = v134.size.height;
-  if (v36)
+  if (_scroller)
   {
-    v95 = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
-    [v36 bounds];
-    [v95 convertRect:v36 fromCoordinateSpace:?];
+    _selectionViewCoordinateSpace4 = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
+    [_scroller bounds];
+    [_selectionViewCoordinateSpace4 convertRect:_scroller fromCoordinateSpace:?];
     v97 = v96;
     v99 = v98;
     v101 = v100;
     v103 = v102;
 
-    v104 = [v36 traitCollection];
-    -[_UITextInteractionEditMenuAssistant _expandClippingArea:forIdiom:](self, "_expandClippingArea:forIdiom:", [v104 userInterfaceIdiom], v97, v99, v101, v103);
+    traitCollection = [_scroller traitCollection];
+    -[_UITextInteractionEditMenuAssistant _expandClippingArea:forIdiom:](self, "_expandClippingArea:forIdiom:", [traitCollection userInterfaceIdiom], v97, v99, v101, v103);
     v106 = v105;
     v108 = v107;
     v110 = v109;
@@ -573,15 +573,15 @@ LABEL_17:
     {
       if (height >= 40.0)
       {
-        v117 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-        v118 = [v117 view];
-        v119 = [v118 isEditing];
+        interactionAssistant3 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+        view3 = [interactionAssistant3 view];
+        isEditing = [view3 isEditing];
 
-        if (v119)
+        if (isEditing)
         {
           v120 = +[UIKeyboardImpl activeInstance];
-          v121 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
-          [v120 subtractKeyboardFrameFromRect:v121 inView:{v113, v114, v115, v116}];
+          _selectionView3 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
+          [v120 subtractKeyboardFrameFromRect:_selectionView3 inView:{v113, v114, v115, v116}];
           v113 = v122;
           v114 = v123;
           v115 = v124;
@@ -629,44 +629,44 @@ LABEL_29:
 
 - (UIWindow)_editMenuSourceWindow
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
-  v3 = [v2 keyboardSceneDelegate];
-  v4 = [v3 containerWindow];
+  _selectionView = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
+  keyboardSceneDelegate = [_selectionView keyboardSceneDelegate];
+  containerWindow = [keyboardSceneDelegate containerWindow];
 
-  v5 = [v2 window];
-  v6 = [v5 _isRemoteKeyboardWindow];
+  window = [_selectionView window];
+  _isRemoteKeyboardWindow = [window _isRemoteKeyboardWindow];
 
-  if (v6)
+  if (_isRemoteKeyboardWindow)
   {
-    v7 = [v2 window];
+    window2 = [_selectionView window];
 
-    v4 = v7;
+    containerWindow = window2;
   }
 
-  return v4;
+  return containerWindow;
 }
 
 - (CGRect)_editMenuRawTargetRect
 {
-  v3 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-  v4 = [v3 activeSelectionController];
-  v5 = [v4 selection];
+  interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+  activeSelectionController = [interactionAssistant activeSelectionController];
+  selection = [activeSelectionController selection];
 
-  v6 = [v5 selectedRange];
-  LODWORD(v4) = [v6 isEmpty];
+  selectedRange = [selection selectedRange];
+  LODWORD(activeSelectionController) = [selectedRange isEmpty];
 
-  if (v4)
+  if (activeSelectionController)
   {
-    [v5 caretRect];
+    [selection caretRect];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-    v16 = [v15 view];
-    v17 = [v16 textInputView];
-    v18 = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
-    [v17 convertRect:v18 toCoordinateSpace:{v8, v10, v12, v14}];
+    interactionAssistant2 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+    view = [interactionAssistant2 view];
+    textInputView = [view textInputView];
+    _selectionViewCoordinateSpace = [(_UITextInteractionEditMenuAssistant *)self _selectionViewCoordinateSpace];
+    [textInputView convertRect:_selectionViewCoordinateSpace toCoordinateSpace:{v8, v10, v12, v14}];
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -695,11 +695,11 @@ LABEL_29:
 
 - (NSArray)_preferredLayoutRectsForEditMenu
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-  v3 = [v2 _selectionViewManager];
-  v4 = [v3 _preferredLayoutRectsForEditMenu];
+  interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+  _selectionViewManager = [interactionAssistant _selectionViewManager];
+  _preferredLayoutRectsForEditMenu = [_selectionViewManager _preferredLayoutRectsForEditMenu];
 
-  return v4;
+  return _preferredLayoutRectsForEditMenu;
 }
 
 - (CGRect)_editMenuTargetRect
@@ -726,47 +726,47 @@ LABEL_29:
 
 - (BOOL)_editMenuDismissedRecently
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
-  v3 = [v2 dismissedRecently];
+  menuInteraction = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
+  dismissedRecently = [menuInteraction dismissedRecently];
 
-  return v3;
+  return dismissedRecently;
 }
 
 - (BOOL)_editMenuDismissedByActionSelection
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
-  v3 = [v2 dismissedByActionSelection];
+  menuInteraction = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
+  dismissedByActionSelection = [menuInteraction dismissedByActionSelection];
 
-  return v3;
+  return dismissedByActionSelection;
 }
 
 - (BOOL)_editMenuPrefersPresentationInView
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom] == 6;
+  _selectionView = [(_UITextInteractionEditMenuAssistant *)self _selectionView];
+  traitCollection = [_selectionView traitCollection];
+  v4 = [traitCollection userInterfaceIdiom] == 6;
 
   return v4;
 }
 
 - (BOOL)_hasTextReplacements
 {
-  v2 = [(_UITextInteractionEditMenuAssistant *)self replacements];
-  v3 = [v2 count] != 0;
+  replacements = [(_UITextInteractionEditMenuAssistant *)self replacements];
+  v3 = [replacements count] != 0;
 
   return v3;
 }
 
-- (id)menuElementsForReplacements:(id)a3
+- (id)menuElementsForReplacements:(id)replacements
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  replacementsCopy = replacements;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(replacementsCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = replacementsCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
@@ -782,13 +782,13 @@ LABEL_29:
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9 menuTitle];
+        menuTitle = [v9 menuTitle];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __67___UITextInteractionEditMenuAssistant_menuElementsForReplacements___block_invoke;
         v20[3] = &unk_1E70F4708;
         v20[4] = v9;
-        v11 = [UIAction actionWithTitle:v10 image:0 identifier:0 handler:v20];
+        v11 = [UIAction actionWithTitle:menuTitle image:0 identifier:0 handler:v20];
 
         if ([v9 _isNoReplacementsFoundItem])
         {
@@ -806,10 +806,10 @@ LABEL_29:
 
   if ([v4 count])
   {
-    v12 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-    v13 = [v12 view];
+    interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+    view = [interactionAssistant view];
 
-    if ([v13 _shouldDisplayWritingToolsCalloutBarItem])
+    if ([view _shouldDisplayWritingToolsCalloutBarItem])
     {
       v14 = [UICommand _defaultCommandForAction:sel_showWritingTools_];
       v25 = v14;
@@ -823,48 +823,48 @@ LABEL_29:
   return v4;
 }
 
-- (BOOL)_updateEditMenuPositionForPreferredArrowDirection:(int64_t)a3 replacements:(id)a4
+- (BOOL)_updateEditMenuPositionForPreferredArrowDirection:(int64_t)direction replacements:(id)replacements
 {
-  v6 = a4;
+  replacementsCopy = replacements;
   if ([(_UITextInteractionEditMenuAssistant *)self _editMenuIsVisible])
   {
-    [(_UITextInteractionEditMenuAssistant *)self _presentEditMenuWithPreferredDirection:a3 replacements:v6];
+    [(_UITextInteractionEditMenuAssistant *)self _presentEditMenuWithPreferredDirection:direction replacements:replacementsCopy];
   }
 
   return 1;
 }
 
-- (BOOL)_isAffectedByScrollNotification:(id)a3
+- (BOOL)_isAffectedByScrollNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
-  v6 = [v5 isDisplayingHandoffMenu];
+  notificationCopy = notification;
+  menuInteraction = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
+  isDisplayingHandoffMenu = [menuInteraction isDisplayingHandoffMenu];
 
-  if (v6)
+  if (isDisplayingHandoffMenu)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v4 object];
-    v9 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-    v10 = [v9 view];
-    v11 = [v10 textInputView];
+    object = [notificationCopy object];
+    interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+    view = [interactionAssistant view];
+    textInputView = [view textInputView];
 
     v7 = 0;
-    if (v8 && v11)
+    if (object && textInputView)
     {
-      v7 = [v8 containsView:v11];
+      v7 = [object containsView:textInputView];
     }
   }
 
   return v7;
 }
 
-- (void)_didReceiveSelectionWillScrollNotification:(id)a3
+- (void)_didReceiveSelectionWillScrollNotification:(id)notification
 {
-  if ([(_UITextInteractionEditMenuAssistant *)self _isAffectedByScrollNotification:a3])
+  if ([(_UITextInteractionEditMenuAssistant *)self _isAffectedByScrollNotification:notification])
   {
     v4 = self->_wasShowingEditMenuBeforeScroll || [(_UITextInteractionEditMenuAssistant *)self _editMenuIsVisible];
     self->_wasShowingEditMenuBeforeScroll = v4;
@@ -873,12 +873,12 @@ LABEL_29:
   }
 }
 
-- (void)_didReceiveSelectionDidScrollNotification:(id)a3
+- (void)_didReceiveSelectionDidScrollNotification:(id)notification
 {
-  if ([(_UITextInteractionEditMenuAssistant *)self _isAffectedByScrollNotification:a3])
+  if ([(_UITextInteractionEditMenuAssistant *)self _isAffectedByScrollNotification:notification])
   {
-    v4 = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
-    [v4 updateVisibleMenuPosition];
+    menuInteraction = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
+    [menuInteraction updateVisibleMenuPosition];
 
     if (self->_wasShowingEditMenuBeforeScroll)
     {
@@ -888,14 +888,14 @@ LABEL_29:
   }
 }
 
-- (void)_hideSelectionCommandsWithReason:(int64_t)a3
+- (void)_hideSelectionCommandsWithReason:(int64_t)reason
 {
   [(_UITextInteractionEditMenuAssistant *)self cancelDelayedCommandRequests];
-  v5 = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
-  [v5 dismissSelectionCommandsWithReason:a3];
+  menuInteraction = [(_UITextInteractionEditMenuAssistant *)self menuInteraction];
+  [menuInteraction dismissSelectionCommandsWithReason:reason];
 }
 
-- (void)showSelectionCommandsAfterDelay:(double)a3
+- (void)showSelectionCommandsAfterDelay:(double)delay
 {
   replacements = self->_replacements;
   self->_replacements = 0;
@@ -903,43 +903,43 @@ LABEL_29:
   overrideMenu = self->_overrideMenu;
   self->_overrideMenu = 0;
 
-  [(_UITextInteractionEditMenuAssistant *)self showCalloutBarAfterDelay:a3];
+  [(_UITextInteractionEditMenuAssistant *)self showCalloutBarAfterDelay:delay];
 }
 
-- (void)showCalloutBarAfterDelay:(double)a3
+- (void)showCalloutBarAfterDelay:(double)delay
 {
   WeakRetained = objc_loadWeakRetained(&self->_interactionAssistant);
-  v10 = [WeakRetained _editMenuAssistant];
+  _editMenuAssistant = [WeakRetained _editMenuAssistant];
 
-  if (![v10 _editMenuDismissedRecently] || objc_msgSend(v10, "_editMenuDismissedByActionSelection"))
+  if (![_editMenuAssistant _editMenuDismissedRecently] || objc_msgSend(_editMenuAssistant, "_editMenuDismissedByActionSelection"))
   {
     [(_UITextInteractionEditMenuAssistant *)self cancelDelayedCommandRequests];
-    v6 = [(_UITextInteractionEditMenuAssistant *)self replacements];
-    [(_UITextInteractionEditMenuAssistant *)self _showCommandsWithReplacements:v6 forDictation:0 afterDelay:a3];
+    replacements = [(_UITextInteractionEditMenuAssistant *)self replacements];
+    [(_UITextInteractionEditMenuAssistant *)self _showCommandsWithReplacements:replacements forDictation:0 afterDelay:delay];
 
-    v7 = [(_UITextInteractionEditMenuAssistant *)self replacements];
-    v8 = [v7 count] != 0;
+    replacements2 = [(_UITextInteractionEditMenuAssistant *)self replacements];
+    v8 = [replacements2 count] != 0;
 
     v9 = objc_loadWeakRetained(&self->_interactionAssistant);
     [v9 setSelectionHighlightMode:(2 * v8)];
   }
 }
 
-- (void)calculateReplacementsWithGenerator:(id)a3 andShowAfterDelay:(double)a4
+- (void)calculateReplacementsWithGenerator:(id)generator andShowAfterDelay:(double)delay
 {
-  v6 = [a3 replacements];
-  if ([v6 count])
+  replacements = [generator replacements];
+  if ([replacements count])
   {
-    [(_UITextInteractionEditMenuAssistant *)self _showCommandsWithReplacements:v6 forDictation:0 afterDelay:a4];
+    [(_UITextInteractionEditMenuAssistant *)self _showCommandsWithReplacements:replacements forDictation:0 afterDelay:delay];
   }
 }
 
-- (void)showReplacementsWithGenerator:(id)a3 forDictation:(BOOL)a4 afterDelay:(double)a5
+- (void)showReplacementsWithGenerator:(id)generator forDictation:(BOOL)dictation afterDelay:(double)delay
 {
-  v6 = a4;
-  v8 = a3;
+  dictationCopy = dictation;
+  generatorCopy = generator;
   [(_UITextInteractionEditMenuAssistant *)self cancelDelayedCommandRequests];
-  if (v6)
+  if (dictationCopy)
   {
     v9 = 0;
     v10 = 3;
@@ -947,9 +947,9 @@ LABEL_29:
 
   else
   {
-    v11 = [v8 isStringToReplaceMisspelled];
-    v9 = v11;
-    if (v11)
+    isStringToReplaceMisspelled = [generatorCopy isStringToReplaceMisspelled];
+    v9 = isStringToReplaceMisspelled;
+    if (isStringToReplaceMisspelled)
     {
       v10 = 2;
     }
@@ -963,50 +963,50 @@ LABEL_29:
   WeakRetained = objc_loadWeakRetained(&self->_interactionAssistant);
   [WeakRetained setSelectionHighlightMode:v10];
 
-  if ((v9 & 1) != 0 || v6)
+  if ((v9 & 1) != 0 || dictationCopy)
   {
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"UIKeyboardPredictionsAvailable" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"UIKeyboardPredictionsAvailable" object:0];
   }
 
   v14 = objc_loadWeakRetained(&self->_interactionAssistant);
-  v15 = [v14 viewConformsToAsynchronousInteractionProtocol];
+  viewConformsToAsynchronousInteractionProtocol = [v14 viewConformsToAsynchronousInteractionProtocol];
 
-  if (v15)
+  if (viewConformsToAsynchronousInteractionProtocol)
   {
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __93___UITextInteractionEditMenuAssistant_showReplacementsWithGenerator_forDictation_afterDelay___block_invoke;
     v23 = &unk_1E70FD1B8;
-    v24 = self;
-    v25 = v8;
+    selfCopy = self;
+    v25 = generatorCopy;
     v16 = _Block_copy(&v20);
     v17 = [UIKeyboardImpl sharedInstance:v20];
-    v18 = [v17 taskQueue];
-    v19 = [v18 scheduleTask:v16 timeInterval:0 repeats:a5];
+    taskQueue = [v17 taskQueue];
+    v19 = [taskQueue scheduleTask:v16 timeInterval:0 repeats:delay];
   }
 
   else
   {
-    [(_UITextInteractionEditMenuAssistant *)self calculateReplacementsWithGenerator:v8 andShowAfterDelay:a5];
+    [(_UITextInteractionEditMenuAssistant *)self calculateReplacementsWithGenerator:generatorCopy andShowAfterDelay:delay];
   }
 }
 
-- (void)_showSelectionCommandsForContextMenu:(BOOL)a3
+- (void)_showSelectionCommandsForContextMenu:(BOOL)menu
 {
-  v3 = a3;
+  menuCopy = menu;
   WeakRetained = objc_loadWeakRetained(&self->_interactionAssistant);
-  v6 = [WeakRetained activeSelectionController];
-  v7 = [v6 selection];
-  v8 = [v7 isCommitting];
+  activeSelectionController = [WeakRetained activeSelectionController];
+  selection = [activeSelectionController selection];
+  isCommitting = [selection isCommitting];
 
-  if (v8)
+  if (isCommitting)
   {
 
     [(_UITextInteractionEditMenuAssistant *)self showCommandsWithReplacements:0];
   }
 
-  else if (v3)
+  else if (menuCopy)
   {
 
     [(_UITextInteractionEditMenuAssistant *)self _showCommandsWithReplacements:0 isForContextMenu:1 forDictation:0 arrowDirection:0];
@@ -1014,41 +1014,41 @@ LABEL_29:
 
   else
   {
-    v9 = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
-    [v9 updateDisplayedSelection];
+    interactionAssistant = [(_UITextInteractionEditMenuAssistant *)self interactionAssistant];
+    [interactionAssistant updateDisplayedSelection];
 
     [(_UITextInteractionEditMenuAssistant *)self _showCommandsWithReplacements:0 forDictation:0 afterDelay:0.0];
   }
 }
 
-- (void)_showCommandsWithReplacements:(id)a3 forDictation:(BOOL)a4 afterDelay:(double)a5
+- (void)_showCommandsWithReplacements:(id)replacements forDictation:(BOOL)dictation afterDelay:(double)delay
 {
-  v8 = a3;
+  replacementsCopy = replacements;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __93___UITextInteractionEditMenuAssistant__showCommandsWithReplacements_forDictation_afterDelay___block_invoke;
   aBlock[3] = &unk_1E7104A08;
   aBlock[4] = self;
-  v14 = v8;
-  v15 = a4;
-  v9 = v8;
+  v14 = replacementsCopy;
+  dictationCopy = dictation;
+  v9 = replacementsCopy;
   v10 = _Block_copy(aBlock);
-  v11 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:0 repeats:v10 block:a5];
+  v11 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:0 repeats:v10 block:delay];
   delayedEditMenuTimer = self->_delayedEditMenuTimer;
   self->_delayedEditMenuTimer = v11;
 }
 
-- (void)_showCommandsWithReplacements:(id)a3 isForContextMenu:(BOOL)a4 forDictation:(BOOL)a5 arrowDirection:(int64_t)a6
+- (void)_showCommandsWithReplacements:(id)replacements isForContextMenu:(BOOL)menu forDictation:(BOOL)dictation arrowDirection:(int64_t)direction
 {
-  v7 = a5;
+  dictationCopy = dictation;
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (a4 || (-[_UITextInteractionEditMenuAssistant interactionAssistant](self, "interactionAssistant"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 shouldSuppressSelectionCommands], v11, (v12 & 1) == 0))
+  replacementsCopy = replacements;
+  if (menu || (-[_UITextInteractionEditMenuAssistant interactionAssistant](self, "interactionAssistant"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 shouldSuppressSelectionCommands], v11, (v12 & 1) == 0))
   {
     [(_UITextInteractionEditMenuAssistant *)self cancelDelayedCommandRequests];
     if ([(_UITextInteractionEditMenuAssistant *)self _editMenuIsVisible])
     {
-      if (![(_UITextInteractionEditMenuAssistant *)self _updateEditMenuPositionForPreferredArrowDirection:a6 replacements:v10])
+      if (![(_UITextInteractionEditMenuAssistant *)self _updateEditMenuPositionForPreferredArrowDirection:direction replacements:replacementsCopy])
       {
         [(_UITextInteractionEditMenuAssistant *)self hideSelectionCommands];
       }
@@ -1057,30 +1057,30 @@ LABEL_29:
     else
     {
       v13 = +[UIKeyboardImpl activeInstance];
-      v14 = [v13 hasMarkedText];
+      hasMarkedText = [v13 hasMarkedText];
 
-      if ((v14 & 1) == 0)
+      if ((hasMarkedText & 1) == 0)
       {
-        v15 = [v10 indexOfObjectPassingTest:&__block_literal_global_161];
+        v15 = [replacementsCopy indexOfObjectPassingTest:&__block_literal_global_161];
         v16 = +[UIKeyboardImpl activeInstance];
-        v17 = [v16 isPredictionViewControllerVisible];
+        isPredictionViewControllerVisible = [v16 isPredictionViewControllerVisible];
 
-        if (v7 && v15 == 0x7FFFFFFFFFFFFFFFLL)
+        if (dictationCopy && v15 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v18 = +[UIDevice currentDevice];
-          v19 = [v18 userInterfaceIdiom];
+          userInterfaceIdiom = [v18 userInterfaceIdiom];
 
-          if ((v19 & 0xFFFFFFFFFFFFFFFBLL) != 1 && (([v10 count] != 0) & v17) == 1)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && (([replacementsCopy count] != 0) & isPredictionViewControllerVisible) == 1)
           {
             v20 = +[UIKeyboardImpl activeInstance];
-            v29 = [v20 autocorrectionController];
+            autocorrectionController = [v20 autocorrectionController];
 
-            v21 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v30 = 0u;
             v31 = 0u;
             v32 = 0u;
             v33 = 0u;
-            v22 = v10;
+            v22 = replacementsCopy;
             v23 = [v22 countByEnumeratingWithState:&v30 objects:v34 count:16];
             if (v23)
             {
@@ -1096,7 +1096,7 @@ LABEL_29:
                   }
 
                   v27 = [UITextReplacementCandidate textReplacementCandidateForTextReplacement:*(*(&v30 + 1) + 8 * i)];
-                  [v21 addObject:v27];
+                  [array addObject:v27];
                 }
 
                 v24 = [v22 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -1105,12 +1105,12 @@ LABEL_29:
               while (v24);
             }
 
-            v28 = [MEMORY[0x1E69D9570] listWithAutocorrection:0 predictions:v21];
-            [v29 setAutocorrectionList:v28];
+            v28 = [MEMORY[0x1E69D9570] listWithAutocorrection:0 predictions:array];
+            [autocorrectionController setAutocorrectionList:v28];
           }
         }
 
-        [(_UITextInteractionEditMenuAssistant *)self _presentEditMenuWithPreferredDirection:a6 replacements:v10];
+        [(_UITextInteractionEditMenuAssistant *)self _presentEditMenuWithPreferredDirection:direction replacements:replacementsCopy];
       }
     }
   }

@@ -1,18 +1,18 @@
 @interface BPSFuture
 - (BOOL)completed;
-- (BPSFuture)initWithAttemptToFulfill:(id)a3;
+- (BPSFuture)initWithAttemptToFulfill:(id)fulfill;
 - (id)nextEvent;
-- (id)startWithSubscriber:(id)a3;
-- (void)disassociate:(int64_t)a3;
+- (id)startWithSubscriber:(id)subscriber;
+- (void)disassociate:(int64_t)disassociate;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSFuture
 
-- (BPSFuture)initWithAttemptToFulfill:(id)a3
+- (BPSFuture)initWithAttemptToFulfill:(id)fulfill
 {
-  v4 = a3;
+  fulfillCopy = fulfill;
   v15.receiver = self;
   v15.super_class = BPSFuture;
   v5 = [(BPSFuture *)&v15 init];
@@ -36,7 +36,7 @@
     objc_copyWeak(&v13, &location);
     v12 = v5;
     v9 = _Block_copy(aBlock);
-    v4[2](v4, v9);
+    fulfillCopy[2](fulfillCopy, v9);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -115,46 +115,46 @@ void __38__BPSFuture_initWithAttemptToFulfill___block_invoke(uint64_t a1, void *
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(BPSFuture *)self result];
-  if (v8)
+  result = [(BPSFuture *)self result];
+  if (result)
   {
     os_unfair_lock_unlock(&self->_lock);
-    v5 = [[_BPSInnerFutureConduit alloc] initWithParent:self downstream:v4];
-    [v4 receiveSubscription:v5];
+    v5 = [[_BPSInnerFutureConduit alloc] initWithParent:self downstream:subscribeCopy];
+    [subscribeCopy receiveSubscription:v5];
 
-    [(_BPSInnerFutureConduit *)v5 fulfill:v8];
+    [(_BPSInnerFutureConduit *)v5 fulfill:result];
   }
 
   else
   {
-    v5 = [[_BPSInnerFutureConduit alloc] initWithParent:self downstream:v4];
-    v6 = [(BPSFuture *)self downstreams];
-    v7 = [v6 appendElement:v5];
+    v5 = [[_BPSInnerFutureConduit alloc] initWithParent:self downstream:subscribeCopy];
+    downstreams = [(BPSFuture *)self downstreams];
+    v7 = [downstreams appendElement:v5];
 
     [(_BPSInnerFutureConduit *)v5 assignIdentity:v7];
     os_unfair_lock_unlock(&self->_lock);
-    [v4 receiveSubscription:v5];
+    [subscribeCopy receiveSubscription:v5];
   }
 }
 
-- (void)disassociate:(int64_t)a3
+- (void)disassociate:(int64_t)disassociate
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BPSFuture *)self downstreams];
-  [v5 removeTicket:a3];
+  downstreams = [(BPSFuture *)self downstreams];
+  [downstreams removeTicket:disassociate];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)startWithSubscriber:(id)a3
+- (id)startWithSubscriber:(id)subscriber
 {
-  v4 = a3;
+  subscriberCopy = subscriber;
   os_unfair_recursive_lock_lock_with_options();
-  [(BPSFuture *)self setSubscriber:v4];
+  [(BPSFuture *)self setSubscriber:subscriberCopy];
 
   os_unfair_recursive_lock_unlock();
   return 0;
@@ -165,32 +165,32 @@ void __38__BPSFuture_initWithAttemptToFulfill___block_invoke(uint64_t a1, void *
   os_unfair_recursive_lock_lock_with_options();
   if ([(BPSFuture *)self sentResult])
   {
-    v3 = 0;
+    result = 0;
   }
 
   else
   {
-    v3 = [(BPSFuture *)self result];
+    result = [(BPSFuture *)self result];
 
-    if (v3)
+    if (result)
     {
       [(BPSFuture *)self setSentResult:1];
-      v4 = [(BPSFuture *)self result];
-      v3 = [v4 value];
+      result2 = [(BPSFuture *)self result];
+      result = [result2 value];
     }
   }
 
   os_unfair_recursive_lock_unlock();
 
-  return v3;
+  return result;
 }
 
 - (BOOL)completed
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(BPSFuture *)self sentResult];
+  sentResult = [(BPSFuture *)self sentResult];
   os_unfair_recursive_lock_unlock();
-  return v3;
+  return sentResult;
 }
 
 - (void)reset

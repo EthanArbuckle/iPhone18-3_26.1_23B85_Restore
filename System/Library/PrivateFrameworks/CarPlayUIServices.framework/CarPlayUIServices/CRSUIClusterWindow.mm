@@ -5,10 +5,10 @@
 - (unint64_t)itemType;
 - (unint64_t)layoutJustification;
 - (unint64_t)speedLimitSetting;
-- (void)addClusterSettingsObserver:(id)a3;
+- (void)addClusterSettingsObserver:(id)observer;
 - (void)commonInit;
-- (void)handleZoomInDirection:(int64_t)a3;
-- (void)removeClusterSettingsObserver:(id)a3;
+- (void)handleZoomInDirection:(int64_t)direction;
+- (void)removeClusterSettingsObserver:(id)observer;
 @end
 
 @implementation CRSUIClusterWindow
@@ -23,11 +23,11 @@
   observers = self->_observers;
   self->_observers = v3;
 
-  v5 = [(CRSUIClusterWindow *)self windowScene];
+  windowScene = [(CRSUIClusterWindow *)self windowScene];
   v6 = [[CRSUIClusterZoomBSActionsHandler alloc] initWithDelegate:self];
   v31[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
-  [v5 _registerSceneActionsHandlerArray:v7 forKey:@"zoomActions"];
+  [windowScene _registerSceneActionsHandlerArray:v7 forKey:@"zoomActions"];
 
   v8 = objc_alloc_init(CRSUIInstrumentClusterSettingsDiffInspector);
   clusterSettingsDiffInspector = self->_clusterSettingsDiffInspector;
@@ -69,10 +69,10 @@
   v18[3] = &unk_278DA12D0;
   objc_copyWeak(&v19, &location);
   [(CRSUIInstrumentClusterSettingsDiffInspector *)v14 observeLayoutSpecificationWithBlock:v18];
-  v15 = [(CRSUIClusterWindow *)self windowScene];
-  v30 = self;
-  v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
-  [v15 _registerSettingsDiffActionArray:v16 forKey:@"clusterSettings"];
+  windowScene2 = [(CRSUIClusterWindow *)self windowScene];
+  selfCopy = self;
+  v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&selfCopy count:1];
+  [windowScene2 _registerSettingsDiffActionArray:v16 forKey:@"clusterSettings"];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&v21);
@@ -118,75 +118,75 @@ void __32__CRSUIClusterWindow_commonInit__block_invoke_5(uint64_t a1)
   [v1 clusterWindow:WeakRetained didChangeLayoutJustification:{objc_msgSend(WeakRetained, "layoutJustification")}];
 }
 
-- (void)addClusterSettingsObserver:(id)a3
+- (void)addClusterSettingsObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRSUIClusterWindow *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(CRSUIClusterWindow *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeClusterSettingsObserver:(id)a3
+- (void)removeClusterSettingsObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRSUIClusterWindow *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(CRSUIClusterWindow *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (unint64_t)etaSetting
 {
-  v2 = [(CRSUIClusterWindow *)self _clusterSettings];
-  v3 = [v2 showsETA];
+  _clusterSettings = [(CRSUIClusterWindow *)self _clusterSettings];
+  showsETA = [_clusterSettings showsETA];
 
-  return v3;
+  return showsETA;
 }
 
 - (unint64_t)compassSetting
 {
-  v2 = [(CRSUIClusterWindow *)self _clusterSettings];
-  v3 = [v2 showsCompass];
+  _clusterSettings = [(CRSUIClusterWindow *)self _clusterSettings];
+  showsCompass = [_clusterSettings showsCompass];
 
-  return v3;
+  return showsCompass;
 }
 
 - (unint64_t)speedLimitSetting
 {
-  v2 = [(CRSUIClusterWindow *)self _clusterSettings];
-  v3 = [v2 showsSpeedLimit];
+  _clusterSettings = [(CRSUIClusterWindow *)self _clusterSettings];
+  showsSpeedLimit = [_clusterSettings showsSpeedLimit];
 
-  return v3;
+  return showsSpeedLimit;
 }
 
 - (unint64_t)itemType
 {
-  v2 = [(CRSUIClusterWindow *)self _clusterSettings];
-  v3 = [v2 itemType];
+  _clusterSettings = [(CRSUIClusterWindow *)self _clusterSettings];
+  itemType = [_clusterSettings itemType];
 
-  return v3;
+  return itemType;
 }
 
 - (unint64_t)layoutJustification
 {
-  v2 = [(CRSUIClusterWindow *)self _clusterSettings];
-  v3 = [v2 layoutJustification];
+  _clusterSettings = [(CRSUIClusterWindow *)self _clusterSettings];
+  layoutJustification = [_clusterSettings layoutJustification];
 
-  return v3;
+  return layoutJustification;
 }
 
-- (void)handleZoomInDirection:(int64_t)a3
+- (void)handleZoomInDirection:(int64_t)direction
 {
-  v5 = [(CRSUIClusterWindow *)self observers];
-  [v5 clusterWindow:self didZoomInDirection:a3];
+  observers = [(CRSUIClusterWindow *)self observers];
+  [observers clusterWindow:self didZoomInDirection:direction];
 }
 
 - (id)_clusterSettings
 {
   objc_opt_class();
-  v3 = [(CRSUIClusterWindow *)self windowScene];
-  v4 = [v3 _FBSScene];
-  v5 = [v4 settings];
-  if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
+  windowScene = [(CRSUIClusterWindow *)self windowScene];
+  _FBSScene = [windowScene _FBSScene];
+  settings = [_FBSScene settings];
+  if (settings && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = v5;
+    v6 = settings;
   }
 
   else

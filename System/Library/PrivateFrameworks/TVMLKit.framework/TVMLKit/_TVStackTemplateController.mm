@@ -1,42 +1,42 @@
 @interface _TVStackTemplateController
-- (BOOL)_didExtendContentForPeekMetrics:(id *)a3 above:(BOOL)a4 initial:(BOOL)a5;
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4;
+- (BOOL)_didExtendContentForPeekMetrics:(id *)metrics above:(BOOL)above initial:(BOOL)initial;
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (CGSize)_maxContentSize;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForSectionAtIndex:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForSectionAtIndex:(int64_t)index;
 - (UIEdgeInsets)_scrollableBoundsInset;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (_TVStackTemplateController)init;
 - (double)_maxViewWidth;
-- (double)_offsetToScrollStop:(id)a3;
-- (id)_updateWithCollectionListElement:(id)a3 commits:(id *)a4 autoHighlightIndexPath:(id *)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
+- (double)_offsetToScrollStop:(id)stop;
+- (id)_updateWithCollectionListElement:(id)element commits:(id *)commits autoHighlightIndexPath:(id *)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
 - (id)scrollStopForShowcaseTransition;
 - (id)tabBarObservedScrollView;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)_adjustedContentOffsetForRowIndex:(int64_t)a3 targetContentOffset:(CGPoint *)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)_adjustedContentOffsetForRowIndex:(int64_t)index targetContentOffset:(CGPoint *)offset;
 - (void)_buildStackSections;
 - (void)_configureBackgroundTintView;
 - (void)_invalidateSectionMetricsIfNeeded;
 - (void)_preloadNext;
 - (void)_scheduleNextPreloadConditional;
-- (void)_scrollToTopAnimated:(BOOL)a3;
+- (void)_scrollToTopAnimated:(BOOL)animated;
 - (void)_updateBackgroundTintView;
 - (void)_updateBackgroundTintViewEffects;
 - (void)_updateFirstItemRowIndexes;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 showcaseFactorDidChangeForLayout:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view showcaseFactorDidChangeForLayout:(id)layout;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)didUpdateSupplementarySectionInfo;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setShowcaseInset:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setShowcaseInset:(double)inset;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateBackgroundAndBackdrop;
 - (void)updateBackgroundAndBackdropMaskFactor;
-- (void)updateCollectionViewControllersAndForceReload:(BOOL)a3;
+- (void)updateCollectionViewControllersAndForceReload:(BOOL)reload;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -59,9 +59,9 @@
 
 - (void)dealloc
 {
-  v3 = [(_TVStackCommonTemplateController *)self viewElement];
-  v4 = [v3 appDocument];
-  v5 = [TVTemplateFeaturesManager featuresManagerForAppDocument:v4];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  appDocument = [viewElement appDocument];
+  v5 = [TVTemplateFeaturesManager featuresManagerForAppDocument:appDocument];
 
   [v5 popContext:self forFeature:&unk_287EA0F28];
   v6.receiver = self;
@@ -69,39 +69,39 @@
   [(_TVStackCommonTemplateController *)&v6 dealloc];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v25.receiver = self;
   v25.super_class = _TVStackTemplateController;
-  [(_TVStackCommonTemplateController *)&v25 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
+  [(_TVStackCommonTemplateController *)&v25 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
   v7 = self->_lastFocusedIndexPath;
-  v8 = [v6 nextFocusedView];
-  v9 = [(_TVStackCommonTemplateController *)self collectionView];
-  v10 = [v8 isDescendantOfView:v9];
+  nextFocusedView = [contextCopy nextFocusedView];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  v10 = [nextFocusedView isDescendantOfView:collectionView];
 
   if (v10)
   {
-    v11 = [v6 nextFocusedView];
-    if (v11)
+    nextFocusedView2 = [contextCopy nextFocusedView];
+    if (nextFocusedView2)
     {
       do
       {
-        v12 = [v11 superview];
-        v13 = [(_TVStackCommonTemplateController *)self collectionView];
+        superview = [nextFocusedView2 superview];
+        collectionView2 = [(_TVStackCommonTemplateController *)self collectionView];
 
-        if (v12 == v13)
+        if (superview == collectionView2)
         {
           break;
         }
 
-        v14 = [v11 superview];
+        superview2 = [nextFocusedView2 superview];
 
-        v11 = v14;
+        nextFocusedView2 = superview2;
       }
 
-      while (v14);
+      while (superview2);
     }
 
     objc_opt_class();
@@ -110,18 +110,18 @@
       goto LABEL_10;
     }
 
-    v15 = [(_TVStackCommonTemplateController *)self collectionView];
-    v16 = [v15 indexPathForCell:v11];
+    collectionView3 = [(_TVStackCommonTemplateController *)self collectionView];
+    v16 = [collectionView3 indexPathForCell:nextFocusedView2];
 
     v7 = v16;
     goto LABEL_9;
   }
 
-  v17 = [(_TVStackCommonTemplateController *)self focusedSupplementaryViewController];
-  if (v17)
+  focusedSupplementaryViewController = [(_TVStackCommonTemplateController *)self focusedSupplementaryViewController];
+  if (focusedSupplementaryViewController)
   {
-    v15 = v17;
-    v11 = v7;
+    collectionView3 = focusedSupplementaryViewController;
+    nextFocusedView2 = v7;
     v7 = 0;
 LABEL_9:
 
@@ -129,14 +129,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v21 = [v6 nextFocusedView];
-  v22 = [(_TVStackTemplateController *)self tabBarController];
-  v23 = [v22 tabBar];
-  v24 = [v21 isDescendantOfView:v23];
+  nextFocusedView3 = [contextCopy nextFocusedView];
+  tabBarController = [(_TVStackTemplateController *)self tabBarController];
+  tabBar = [tabBarController tabBar];
+  v24 = [nextFocusedView3 isDescendantOfView:tabBar];
 
   if (v24)
   {
-    v11 = v7;
+    nextFocusedView2 = v7;
     v7 = 0;
     goto LABEL_10;
   }
@@ -173,18 +173,18 @@ LABEL_11:
   v35.super_class = _TVStackTemplateController;
   [(_TVStackTemplateController *)&v35 viewDidLoad];
   v3 = [_TVNeedsMoreContentEvaluator alloc];
-  v4 = [(_TVStackCommonTemplateController *)self collectionView];
-  v5 = [(_TVNeedsMoreContentEvaluator *)v3 initWithScrollView:v4 axis:2];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  v5 = [(_TVNeedsMoreContentEvaluator *)v3 initWithScrollView:collectionView axis:2];
   needsMoreContentEvaluator = self->_needsMoreContentEvaluator;
   self->_needsMoreContentEvaluator = v5;
 
   v7 = self->_needsMoreContentEvaluator;
-  v8 = [(_TVStackCommonTemplateController *)self viewElement];
-  [(_TVNeedsMoreContentEvaluator *)v7 setViewElement:v8];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  [(_TVNeedsMoreContentEvaluator *)v7 setViewElement:viewElement];
 
-  v9 = [(_TVStackCommonTemplateController *)self viewElement];
-  v10 = [v9 appDocument];
-  v11 = [TVTemplateFeaturesManager featuresManagerForAppDocument:v10];
+  viewElement2 = [(_TVStackCommonTemplateController *)self viewElement];
+  appDocument = [viewElement2 appDocument];
+  v11 = [TVTemplateFeaturesManager featuresManagerForAppDocument:appDocument];
 
   [v11 pushContext:self forFeature:&unk_287EA0F28];
   [(_TVStackTemplateController *)self didUpdateSupplementarySectionInfo];
@@ -231,18 +231,18 @@ LABEL_11:
     v19 = self->_lastFocusedIndexPath;
     if (v19)
     {
-      v20 = [(NSIndexPath *)v19 section];
-      if (v20 < [(NSArray *)self->_stackSections count])
+      section = [(NSIndexPath *)v19 section];
+      if (section < [(NSArray *)self->_stackSections count])
       {
-        v21 = [(_TVStackCommonTemplateController *)self collectionView];
-        [v21 contentOffset];
+        collectionView2 = [(_TVStackCommonTemplateController *)self collectionView];
+        [collectionView2 contentOffset];
         *buf = v22;
         *&buf[8] = v23;
 
-        v24 = [(NSArray *)self->_stackSections objectAtIndex:v20];
+        v24 = [(NSArray *)self->_stackSections objectAtIndex:section];
         -[_TVStackTemplateController _adjustedContentOffsetForRowIndex:targetContentOffset:](self, "_adjustedContentOffsetForRowIndex:targetContentOffset:", [v24 firstItemRowIndex], buf);
-        v25 = [(_TVStackCommonTemplateController *)self collectionView];
-        [v25 contentSize];
+        collectionView3 = [(_TVStackCommonTemplateController *)self collectionView];
+        [collectionView3 contentSize];
         v27 = v26;
         v29 = v28;
         v30 = MEMORY[0x277CBF3A8];
@@ -250,20 +250,20 @@ LABEL_11:
 
         if (v27 == v31 && v29 == *(v30 + 8))
         {
-          v32 = [(_TVStackCommonTemplateController *)self collectionView];
-          [v32 layoutBelowIfNeeded];
+          collectionView4 = [(_TVStackCommonTemplateController *)self collectionView];
+          [collectionView4 layoutBelowIfNeeded];
         }
 
-        v33 = [(_TVStackCommonTemplateController *)self collectionView];
-        [v33 setContentOffset:*buf];
+        collectionView5 = [(_TVStackCommonTemplateController *)self collectionView];
+        [collectionView5 setContentOffset:*buf];
       }
     }
   }
 
   if ([(_TVStackCommonTemplateController *)self _isBackdropNeeded])
   {
-    v34 = [(_TVStackCommonTemplateController *)self stackWrappingView];
-    [v34 setBackdropMaskFactor:1.0];
+    stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
+    [stackWrappingView setBackdropMaskFactor:1.0];
   }
 }
 
@@ -272,8 +272,8 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = _TVStackTemplateController;
   [(_TVStackTemplateController *)&v4 viewWillLayoutSubviews];
-  v3 = [(_TVStackCommonTemplateController *)self stackWrappingView];
-  [v3 setShouldAdjustForTabBarSafeAreaInsets:{-[_TVStackTemplateController shouldAdjustForTabBarSafeAreaInsets](self, "shouldAdjustForTabBarSafeAreaInsets")}];
+  stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
+  [stackWrappingView setShouldAdjustForTabBarSafeAreaInsets:{-[_TVStackTemplateController shouldAdjustForTabBarSafeAreaInsets](self, "shouldAdjustForTabBarSafeAreaInsets")}];
 }
 
 - (void)viewDidLayoutSubviews
@@ -284,13 +284,13 @@ LABEL_11:
   [(_TVStackTemplateController *)self _invalidateSectionMetricsIfNeeded];
   if ([(NSArray *)self->_stackSections count])
   {
-    v3 = [(_TVStackTemplateController *)self scrollStopForShowcaseTransition];
-    if (v3)
+    scrollStopForShowcaseTransition = [(_TVStackTemplateController *)self scrollStopForShowcaseTransition];
+    if (scrollStopForShowcaseTransition)
     {
-      [(_TVStackTemplateController *)self _offsetToScrollStop:v3];
+      [(_TVStackTemplateController *)self _offsetToScrollStop:scrollStopForShowcaseTransition];
       v5 = v4;
-      v6 = [(_TVStackCommonTemplateController *)self collectionView];
-      [v6 contentInset];
+      collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+      [collectionView contentInset];
       v8 = v5 + v7;
     }
 
@@ -305,8 +305,8 @@ LABEL_11:
     v8 = 0.0;
   }
 
-  v9 = [(_TVStackCommonTemplateController *)self _flowLayout];
-  [v9 setShowcaseHeight:v8];
+  _flowLayout = [(_TVStackCommonTemplateController *)self _flowLayout];
+  [_flowLayout setShowcaseHeight:v8];
 
   objc_initWeak(&location, self);
   v10 = MEMORY[0x277CD9FF0];
@@ -320,18 +320,18 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v3.receiver = self;
   v3.super_class = _TVStackTemplateController;
-  [(_TVStackCommonTemplateController *)&v3 traitCollectionDidChange:a3];
+  [(_TVStackCommonTemplateController *)&v3 traitCollectionDidChange:change];
 }
 
-- (void)setShowcaseInset:(double)a3
+- (void)setShowcaseInset:(double)inset
 {
-  if (self->_showcaseInset != a3)
+  if (self->_showcaseInset != inset)
   {
-    self->_showcaseInset = a3;
+    self->_showcaseInset = inset;
     if ([(_TVStackTemplateController *)self isViewLoaded])
     {
       [(_TVStackTemplateController *)self didUpdateSupplementarySectionInfo];
@@ -341,18 +341,18 @@ LABEL_11:
   }
 }
 
-- (void)updateCollectionViewControllersAndForceReload:(BOOL)a3
+- (void)updateCollectionViewControllersAndForceReload:(BOOL)reload
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = [(_TVStackCommonTemplateController *)self collectionListElement];
-  if (!a3)
+  collectionListElement = [(_TVStackCommonTemplateController *)self collectionListElement];
+  if (!reload)
   {
-    v6 = [(_TVStackCommonTemplateController *)self viewElement];
-    if ([v6 updateType])
+    viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+    if ([viewElement updateType])
     {
-      v7 = [v5 updateType];
+      updateType = [collectionListElement updateType];
 
-      if (!v7)
+      if (!updateType)
       {
         goto LABEL_55;
       }
@@ -363,7 +363,7 @@ LABEL_11:
     }
   }
 
-  v8 = [(_TVStackCommonTemplateController *)self collectionView];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -371,23 +371,23 @@ LABEL_11:
   v62 = __Block_byref_object_dispose__12;
   v63 = 0;
   v49 = [(NSArray *)self->_stackRows count];
-  v9 = [(_TVStackCommonTemplateController *)self collectionListElement];
+  collectionListElement2 = [(_TVStackCommonTemplateController *)self collectionListElement];
   v10 = v59 + 5;
   obj = v59[5];
   v57 = 0;
-  v11 = [(_TVStackTemplateController *)self _updateWithCollectionListElement:v9 commits:&v57 autoHighlightIndexPath:&obj];
+  v11 = [(_TVStackTemplateController *)self _updateWithCollectionListElement:collectionListElement2 commits:&v57 autoHighlightIndexPath:&obj];
   v12 = v57;
   objc_storeStrong(v10, obj);
 
-  v13 = [(_TVStackTemplateController *)self scrollStopForShowcaseTransition];
-  self->_requiresShowcasing = v13 != 0;
+  scrollStopForShowcaseTransition = [(_TVStackTemplateController *)self scrollStopForShowcaseTransition];
+  self->_requiresShowcasing = scrollStopForShowcaseTransition != 0;
 
   if (![(_TVStackTemplateController *)self isViewLoaded])
   {
     v12[2](v12);
     objc_storeStrong(&self->_lastFocusedIndexPath, v59[5]);
-    v20 = TVMLKitLogObject;
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+    view = TVMLKitLogObject;
+    if (os_log_type_enabled(view, OS_LOG_TYPE_INFO))
     {
       lastFocusedIndexPath = self->_lastFocusedIndexPath;
       if (lastFocusedIndexPath)
@@ -402,7 +402,7 @@ LABEL_11:
 
       *buf = 138412290;
       *&buf[4] = v22;
-      _os_log_impl(&dword_26CD9A000, v20, OS_LOG_TYPE_INFO, "LFIP: from auto highlight w/o view: %@", buf, 0xCu);
+      _os_log_impl(&dword_26CD9A000, view, OS_LOG_TYPE_INFO, "LFIP: from auto highlight w/o view: %@", buf, 0xCu);
       if (lastFocusedIndexPath)
       {
       }
@@ -411,16 +411,16 @@ LABEL_11:
     goto LABEL_53;
   }
 
-  v14 = [v5 attributes];
-  v15 = [v14 objectForKey:@"animationsEnabled"];
+  attributes = [collectionListElement attributes];
+  v15 = [attributes objectForKey:@"animationsEnabled"];
 
   if (v15)
   {
-    v16 = [v5 attributes];
-    v17 = [v16 objectForKey:@"animationsEnabled"];
-    v18 = [v17 BOOLValue];
+    attributes2 = [collectionListElement attributes];
+    v17 = [attributes2 objectForKey:@"animationsEnabled"];
+    bOOLValue = [v17 BOOLValue];
 
-    v19 = v18 ^ 1;
+    v19 = bOOLValue ^ 1;
     if (!v11)
     {
       goto LABEL_18;
@@ -462,9 +462,9 @@ LABEL_18:
         v27 = TVMLKitLogObject;
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
-          v28 = [(NSIndexPath *)self->_lastFocusedIndexPath section];
+          section = [(NSIndexPath *)self->_lastFocusedIndexPath section];
           *buf = 134217984;
-          *&buf[4] = v28;
+          *&buf[4] = section;
           _os_log_impl(&dword_26CD9A000, v27, OS_LOG_TYPE_INFO, "LFIP: from auto highlight w/o changeset: %ld", buf, 0xCu);
         }
       }
@@ -477,7 +477,7 @@ LABEL_18:
         }
 
         v29 = [(NSArray *)self->_viewControllers count];
-        v30 = [(NSIndexPath *)self->_lastFocusedIndexPath section];
+        section2 = [(NSIndexPath *)self->_lastFocusedIndexPath section];
         if (v29 < 1)
         {
           v32 = 0;
@@ -485,14 +485,14 @@ LABEL_18:
 
         else
         {
-          if (v30 >= v29 - 1)
+          if (section2 >= v29 - 1)
           {
             v31 = v29 - 1;
           }
 
           else
           {
-            v31 = v30;
+            v31 = section2;
           }
 
           v32 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:v31];
@@ -528,28 +528,28 @@ LABEL_44:
       v36 = self->_lastFocusedIndexPath;
       if (v36)
       {
-        v37 = [(NSIndexPath *)v36 section];
-        if (v37 < [(NSArray *)self->_stackSections count])
+        section3 = [(NSIndexPath *)v36 section];
+        if (section3 < [(NSArray *)self->_stackSections count])
         {
-          v38 = [(_TVStackCommonTemplateController *)self collectionView];
-          [v38 contentOffset];
+          collectionView2 = [(_TVStackCommonTemplateController *)self collectionView];
+          [collectionView2 contentOffset];
           *buf = v39;
           *&buf[8] = v40;
 
-          v41 = [(NSArray *)self->_stackSections objectAtIndex:v37];
+          v41 = [(NSArray *)self->_stackSections objectAtIndex:section3];
           -[_TVStackTemplateController _adjustedContentOffsetForRowIndex:targetContentOffset:](self, "_adjustedContentOffsetForRowIndex:targetContentOffset:", [v41 firstItemRowIndex], buf);
-          v42 = [(_TVStackCommonTemplateController *)self collectionView];
-          [v42 setContentOffset:*buf];
+          collectionView3 = [(_TVStackCommonTemplateController *)self collectionView];
+          [collectionView3 setContentOffset:*buf];
         }
       }
 
       self->_shouldInvalidateMetrics = 0;
-      [v8 reloadData];
+      [collectionView reloadData];
       goto LABEL_48;
     }
   }
 
-  if (a3 || (v19 & 1) != 0 || ![(NSArray *)self->_viewControllers count])
+  if (reload || (v19 & 1) != 0 || ![(NSArray *)self->_viewControllers count])
   {
     goto LABEL_18;
   }
@@ -562,7 +562,7 @@ LABEL_44:
   v51[4] = self;
   v52 = v11;
   v55 = &v58;
-  v53 = v8;
+  v53 = collectionView;
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __76___TVStackTemplateController_updateCollectionViewControllersAndForceReload___block_invoke_3;
@@ -571,22 +571,22 @@ LABEL_44:
   [v53 performBatchUpdates:v51 completion:v50];
 
 LABEL_48:
-  v43 = [(_TVStackCommonTemplateController *)self collectionView];
-  v44 = [v43 tv_isFocusOnNonOwnedCell];
+  collectionView4 = [(_TVStackCommonTemplateController *)self collectionView];
+  tv_isFocusOnNonOwnedCell = [collectionView4 tv_isFocusOnNonOwnedCell];
 
-  if ((v44 & 1) == 0)
+  if ((tv_isFocusOnNonOwnedCell & 1) == 0)
   {
     [(_TVStackTemplateController *)self setNeedsFocusUpdate];
   }
 
   needsMoreContentEvaluator = self->_needsMoreContentEvaluator;
-  v46 = [(_TVStackCommonTemplateController *)self viewElement];
-  [(_TVNeedsMoreContentEvaluator *)needsMoreContentEvaluator setViewElement:v46];
+  viewElement2 = [(_TVStackCommonTemplateController *)self viewElement];
+  [(_TVNeedsMoreContentEvaluator *)needsMoreContentEvaluator setViewElement:viewElement2];
 
   if ([(NSArray *)self->_stackRows count]== v49)
   {
-    v47 = [(_TVStackCommonTemplateController *)self collectionListElement];
-    v48 = [v47 updateType] > 2;
+    collectionListElement3 = [(_TVStackCommonTemplateController *)self collectionListElement];
+    v48 = [collectionListElement3 updateType] > 2;
 
     if (!v48)
     {
@@ -595,8 +595,8 @@ LABEL_48:
   }
 
   [(_TVNeedsMoreContentEvaluator *)self->_needsMoreContentEvaluator reset];
-  v20 = [(_TVStackTemplateController *)self view];
-  [v20 setNeedsLayout];
+  view = [(_TVStackTemplateController *)self view];
+  [view setNeedsLayout];
 LABEL_53:
 
 LABEL_54:
@@ -631,10 +631,10 @@ LABEL_55:
           }
 
           v7 = *(*(&v16 + 1) + 8 * i);
-          v8 = [v7 tv_associatedIKViewElement];
-          v9 = [v8 style];
-          v10 = [v9 tv_transition];
-          v11 = [v10 isEqualToString:@"dissolve"];
+          tv_associatedIKViewElement = [v7 tv_associatedIKViewElement];
+          style = [tv_associatedIKViewElement style];
+          tv_transition = [style tv_transition];
+          v11 = [tv_transition isEqualToString:@"dissolve"];
 
           if (v11)
           {
@@ -663,10 +663,10 @@ LABEL_55:
 
 - (void)updateBackgroundAndBackdrop
 {
-  v3 = [(_TVStackCommonTemplateController *)self bgImgElement];
-  v4 = [v3 style];
-  v5 = [v4 tv_imageTreatment];
-  if (![v5 isEqualToString:@"blurOverlay"])
+  bgImgElement = [(_TVStackCommonTemplateController *)self bgImgElement];
+  style = [bgImgElement style];
+  tv_imageTreatment = [style tv_imageTreatment];
+  if (![tv_imageTreatment isEqualToString:@"blurOverlay"])
   {
 
     goto LABEL_6;
@@ -683,28 +683,28 @@ LABEL_6:
     return;
   }
 
-  v10 = [(_TVStackCommonTemplateController *)self stackWrappingView];
-  v7 = [(_TVStackCommonTemplateController *)self mediaPlayer];
-  v8 = [v7 isPlaying];
+  stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
+  mediaPlayer = [(_TVStackCommonTemplateController *)self mediaPlayer];
+  isPlaying = [mediaPlayer isPlaying];
 
-  if (v8)
+  if (isPlaying)
   {
-    v9 = 4009;
+    _blurEffectStyle = 4009;
   }
 
   else if ([(_TVStackCommonTemplateController *)self _backgroundImageRequiresBlur])
   {
-    v9 = 0x8000000000000000;
+    _blurEffectStyle = 0x8000000000000000;
   }
 
   else
   {
-    v9 = [(_TVStackCommonTemplateController *)self _blurEffectStyle];
+    _blurEffectStyle = [(_TVStackCommonTemplateController *)self _blurEffectStyle];
   }
 
-  [v10 setBackdropBlurEffectStyle:v9];
-  [v10 setBackdropInitialPeek:540.0];
-  [v10 setBackdropPeekGradient:270.0];
+  [stackWrappingView setBackdropBlurEffectStyle:_blurEffectStyle];
+  [stackWrappingView setBackdropInitialPeek:540.0];
+  [stackWrappingView setBackdropPeekGradient:270.0];
 }
 
 - (void)updateBackgroundAndBackdropMaskFactor
@@ -712,9 +712,9 @@ LABEL_6:
   if (self->_requiresShowcasing)
   {
     [(_TVStackTemplateController *)self showcaseFactor];
-    v3 = [(_TVStackCommonTemplateController *)self stackWrappingView];
+    stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
     [(_TVStackTemplateController *)self showcaseFactor];
-    [v3 setBackdropMaskFactor:?];
+    [stackWrappingView setBackdropMaskFactor:?];
   }
 
   else
@@ -727,9 +727,9 @@ LABEL_6:
 
 - (id)scrollStopForShowcaseTransition
 {
-  v3 = [(_TVStackCommonTemplateController *)self viewElement];
-  v4 = [v3 style];
-  v5 = [v4 edgeFlagForStyle:@"tv-scrollable-bounds-inset"];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  style = [viewElement style];
+  v5 = [style edgeFlagForStyle:@"tv-scrollable-bounds-inset"];
 
   if (v5)
   {
@@ -748,26 +748,26 @@ LABEL_6:
   return v6;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   viewControllers = self->_viewControllers;
-  v5 = a3;
+  viewCopy = view;
   v6 = [(NSArray *)viewControllers count];
   v9.receiver = self;
   v9.super_class = _TVStackTemplateController;
-  v7 = [(_TVStackCommonTemplateController *)&v9 numberOfSectionsInCollectionView:v5];
+  v7 = [(_TVStackCommonTemplateController *)&v9 numberOfSectionsInCollectionView:viewCopy];
 
   return v7 + v6;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(NSArray *)self->_viewControllers count]<= a4)
+  viewCopy = view;
+  if ([(NSArray *)self->_viewControllers count]<= section)
   {
     v9.receiver = self;
     v9.super_class = _TVStackTemplateController;
-    v7 = [(_TVStackCommonTemplateController *)&v9 collectionView:v6 numberOfItemsInSection:a4];
+    v7 = [(_TVStackCommonTemplateController *)&v9 collectionView:viewCopy numberOfItemsInSection:section];
   }
 
   else
@@ -778,46 +778,46 @@ LABEL_6:
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 >= [(NSArray *)self->_viewControllers count])
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= [(NSArray *)self->_viewControllers count])
   {
     v24.receiver = self;
     v24.super_class = _TVStackTemplateController;
-    v10 = [(_TVStackCommonTemplateController *)&v24 collectionView:v6 cellForItemAtIndexPath:v7];
+    v10 = [(_TVStackCommonTemplateController *)&v24 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   }
 
   else
   {
-    v9 = [(_TVStackCommonTemplateController *)self collectionView];
-    v10 = [v9 dequeueReusableCellWithReuseIdentifier:@"TVStackViewCollectionCellIdentifier" forIndexPath:v7];
+    collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+    v10 = [collectionView dequeueReusableCellWithReuseIdentifier:@"TVStackViewCollectionCellIdentifier" forIndexPath:pathCopy];
 
-    v11 = -[NSArray objectAtIndex:](self->_viewControllers, "objectAtIndex:", [v7 section]);
-    v12 = [v11 view];
+    v11 = -[NSArray objectAtIndex:](self->_viewControllers, "objectAtIndex:", [pathCopy section]);
+    view = [v11 view];
     [v10 bounds];
-    [v12 setFrame:?];
-    v13 = [v11 tv_associatedIKViewElement];
-    v14 = [v13 attributes];
-    v15 = [v14 objectForKeyedSubscript:@"markBackgroundSegment"];
-    v16 = [v15 BOOLValue];
+    [view setFrame:?];
+    tv_associatedIKViewElement = [v11 tv_associatedIKViewElement];
+    attributes = [tv_associatedIKViewElement attributes];
+    v15 = [attributes objectForKeyedSubscript:@"markBackgroundSegment"];
+    bOOLValue = [v15 BOOLValue];
 
-    v17 = [MEMORY[0x277D75348] clearColor];
-    v18 = [v13 style];
-    v19 = [v18 tv_backgroundColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    style = [tv_associatedIKViewElement style];
+    tv_backgroundColor = [style tv_backgroundColor];
 
-    if (v19 && (v16 & 1) == 0)
+    if (tv_backgroundColor && (bOOLValue & 1) == 0)
     {
-      v20 = [v13 style];
-      v21 = [v20 tv_backgroundColor];
-      v22 = [v21 color];
+      style2 = [tv_associatedIKViewElement style];
+      tv_backgroundColor2 = [style2 tv_backgroundColor];
+      color = [tv_backgroundColor2 color];
 
-      v17 = v22;
+      clearColor = color;
     }
 
-    [v10 setBackgroundColor:v17];
+    [v10 setBackgroundColor:clearColor];
 
     [v10 setViewController:v11];
   }
@@ -825,11 +825,11 @@ LABEL_6:
   return v10;
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [(_TVStackCommonTemplateController *)self collectionView];
-  if ([v4 tv_isFocusOnNonOwnedCell])
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  if ([collectionView tv_isFocusOnNonOwnedCell])
   {
     lastFocusedIndexPath = 0;
   }
@@ -865,34 +865,34 @@ LABEL_6:
   return v6;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 section];
-  if (v11 >= [(NSArray *)self->_viewControllers count])
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= [(NSArray *)self->_viewControllers count])
   {
     v30.receiver = self;
     v30.super_class = _TVStackTemplateController;
-    [(_TVStackCommonTemplateController *)&v30 collectionView:v8 willDisplayCell:v9 forItemAtIndexPath:v10];
+    [(_TVStackCommonTemplateController *)&v30 collectionView:viewCopy willDisplayCell:cellCopy forItemAtIndexPath:pathCopy];
   }
 
   else
   {
-    v12 = [v9 viewController];
-    if (v12)
+    viewController = [cellCopy viewController];
+    if (viewController)
     {
-      v13 = [(_TVStackTemplateController *)self childViewControllers];
-      v14 = [v13 containsObject:v12];
+      childViewControllers = [(_TVStackTemplateController *)self childViewControllers];
+      v14 = [childViewControllers containsObject:viewController];
 
       if ((v14 & 1) == 0)
       {
-        [(_TVStackTemplateController *)self addChildViewController:v12];
-        [(UIViewController *)v12 didMoveToParentViewController:self];
-        [(NSMutableArray *)self->_preloadQueue removeObject:v12];
-        if (v12 == self->_backdropTintViewController)
+        [(_TVStackTemplateController *)self addChildViewController:viewController];
+        [(UIViewController *)viewController didMoveToParentViewController:self];
+        [(NSMutableArray *)self->_preloadQueue removeObject:viewController];
+        if (viewController == self->_backdropTintViewController)
         {
           [(_TVStackTemplateController *)self _updateBackgroundTintView];
         }
@@ -901,17 +901,17 @@ LABEL_6:
         v25 = 3221225472;
         v26 = __80___TVStackTemplateController_collectionView_willDisplayCell_forItemAtIndexPath___block_invoke;
         v27 = &unk_279D6E2F8;
-        v28 = v12;
-        v29 = v9;
+        v28 = viewController;
+        v29 = cellCopy;
         dispatch_async(MEMORY[0x277D85CD0], &v24);
       }
     }
 
     v15 = [(_TVStackCommonTemplateController *)self collectionView:v24];
-    v16 = [v15 collectionViewLayout];
+    collectionViewLayout = [v15 collectionViewLayout];
 
-    v17 = [v16 layoutAttributesForItemAtIndexPath:v10];
-    [v9 frame];
+    v17 = [collectionViewLayout layoutAttributesForItemAtIndexPath:pathCopy];
+    [cellCopy frame];
     v33 = CGRectIntegral(v32);
     x = v33.origin.x;
     y = v33.origin.y;
@@ -926,43 +926,43 @@ LABEL_6:
     if (!CGRectEqualToRect(v35, v36))
     {
       v22 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
-      v31[0] = v10;
+      v31[0] = pathCopy;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
       [v22 invalidateItemsAtIndexPaths:v23];
 
-      [v16 invalidateLayoutWithContext:v22];
+      [collectionViewLayout invalidateLayoutWithContext:v22];
     }
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 section];
-  if (v11 >= [(NSArray *)self->_viewControllers count])
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= [(NSArray *)self->_viewControllers count])
   {
     v16.receiver = self;
     v16.super_class = _TVStackTemplateController;
-    [(_TVStackCommonTemplateController *)&v16 collectionView:v8 willDisplayCell:v9 forItemAtIndexPath:v10];
+    [(_TVStackCommonTemplateController *)&v16 collectionView:viewCopy willDisplayCell:cellCopy forItemAtIndexPath:pathCopy];
   }
 
   else
   {
-    v12 = [v9 viewController];
-    if (v12)
+    viewController = [cellCopy viewController];
+    if (viewController)
     {
-      v13 = [(_TVStackTemplateController *)self childViewControllers];
-      if ([v13 containsObject:v12])
+      childViewControllers = [(_TVStackTemplateController *)self childViewControllers];
+      if ([childViewControllers containsObject:viewController])
       {
-        v14 = [v12 view];
-        v15 = [v14 isDescendantOfView:v9];
+        view = [viewController view];
+        v15 = [view isDescendantOfView:cellCopy];
 
         if (v15)
         {
-          [v12 willMoveToParentViewController:0];
-          [v12 removeFromParentViewController];
+          [viewController willMoveToParentViewController:0];
+          [viewController removeFromParentViewController];
         }
       }
 
@@ -973,62 +973,62 @@ LABEL_6:
   }
 }
 
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  v11 = a4;
+  offsetCopy = offset;
   lastFocusedIndexPath = self->_lastFocusedIndexPath;
   if (lastFocusedIndexPath)
   {
-    v6 = [(NSIndexPath *)lastFocusedIndexPath section];
-    if (v6 < [(NSArray *)self->_stackSections count])
+    section = [(NSIndexPath *)lastFocusedIndexPath section];
+    if (section < [(NSArray *)self->_stackSections count])
     {
-      v7 = [(NSArray *)self->_stackSections objectAtIndex:v6];
-      -[_TVStackTemplateController _adjustedContentOffsetForRowIndex:targetContentOffset:](self, "_adjustedContentOffsetForRowIndex:targetContentOffset:", [v7 firstItemRowIndex], &v11);
+      v7 = [(NSArray *)self->_stackSections objectAtIndex:section];
+      -[_TVStackTemplateController _adjustedContentOffsetForRowIndex:targetContentOffset:](self, "_adjustedContentOffsetForRowIndex:targetContentOffset:", [v7 firstItemRowIndex], &offsetCopy);
     }
 
     v8 = self->_lastFocusedIndexPath;
     self->_lastFocusedIndexPath = 0;
   }
 
-  x = v11.x;
-  y = v11.y;
+  x = offsetCopy.x;
+  y = offsetCopy.y;
   result.y = y;
   result.x = x;
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForSectionAtIndex:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForSectionAtIndex:(int64_t)index
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = [(_TVStackTemplateController *)self view:a3];
+  v7 = [(_TVStackTemplateController *)self view:view];
   [v7 bounds];
   v9 = v8;
-  v10 = [(NSArray *)self->_stackSections objectAtIndexedSubscript:a5];
+  v10 = [(NSArray *)self->_stackSections objectAtIndexedSubscript:index];
   [v10 sectionHeight];
   v12 = v11;
 
   if (self->_requiresShowcasing)
   {
-    v13 = [(NSArray *)self->_stackSections objectAtIndexedSubscript:a5];
+    v13 = [(NSArray *)self->_stackSections objectAtIndexedSubscript:index];
     [v13 showcaseSectionHeight];
     v15 = v14;
 
-    v16 = [(_TVStackCommonTemplateController *)self _flowLayout];
-    [v16 showcaseFactor];
+    _flowLayout = [(_TVStackCommonTemplateController *)self _flowLayout];
+    [_flowLayout showcaseFactor];
     v12 = v15 + (1.0 - v17) * (v12 - v15);
   }
 
   if (v9 < 0.0 || v12 < 0.0)
   {
-    v18 = [(_TVStackTemplateController *)self viewControllers];
-    v19 = [v18 objectAtIndexedSubscript:a5];
-    v20 = [v19 tv_associatedIKViewElement];
+    viewControllers = [(_TVStackTemplateController *)self viewControllers];
+    v19 = [viewControllers objectAtIndexedSubscript:index];
+    tv_associatedIKViewElement = [v19 tv_associatedIKViewElement];
 
     v21 = TVMLKitLogObject;
     if (os_log_type_enabled(TVMLKitLogObject, OS_LOG_TYPE_ERROR))
     {
       v24 = v21;
-      v25 = [v20 debugDescription];
+      v25 = [tv_associatedIKViewElement debugDescription];
       v26 = 134218498;
       v27 = v9;
       v28 = 2048;
@@ -1046,10 +1046,10 @@ LABEL_6:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = [(NSArray *)self->_stackSections objectAtIndexedSubscript:a5, a4];
-  [v7 sectionSpacing];
+  layout = [(NSArray *)self->_stackSections objectAtIndexedSubscript:index, layout];
+  [layout sectionSpacing];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1057,17 +1057,17 @@ LABEL_6:
 
   if (self->_requiresShowcasing)
   {
-    v16 = [(NSArray *)self->_stackSections objectAtIndexedSubscript:a5];
+    v16 = [(NSArray *)self->_stackSections objectAtIndexedSubscript:index];
     [v16 showcaseSectionSpacing];
     v18 = v17;
     v20 = v19;
 
-    v21 = [(_TVStackCommonTemplateController *)self _flowLayout];
-    [v21 showcaseFactor];
+    _flowLayout = [(_TVStackCommonTemplateController *)self _flowLayout];
+    [_flowLayout showcaseFactor];
     v9 = v18 + (1.0 - v22) * (v9 - v18);
 
-    v23 = [(_TVStackCommonTemplateController *)self _flowLayout];
-    [v23 showcaseFactor];
+    _flowLayout2 = [(_TVStackCommonTemplateController *)self _flowLayout];
+    [_flowLayout2 showcaseFactor];
     v13 = v20 + (1.0 - v24) * (v13 - v20);
   }
 
@@ -1082,9 +1082,9 @@ LABEL_6:
   return result;
 }
 
-- (void)collectionView:(id)a3 showcaseFactorDidChangeForLayout:(id)a4
+- (void)collectionView:(id)view showcaseFactorDidChangeForLayout:(id)layout
 {
-  v5 = [(_TVStackCommonTemplateController *)self _flowLayout:a3];
+  v5 = [(_TVStackCommonTemplateController *)self _flowLayout:view];
   [v5 showcaseFactor];
   v7 = v6;
 
@@ -1092,8 +1092,8 @@ LABEL_6:
   {
     self->_showcaseFactor = v7;
     [(_TVStackTemplateController *)self _scheduleNextPreloadConditional];
-    v8 = [(_TVStackCommonTemplateController *)self observableEventController];
-    [v8 dispatchEvent:@"TVShowcaseFactorDidChangeEvent" sender:self withUserInfo:0];
+    observableEventController = [(_TVStackCommonTemplateController *)self observableEventController];
+    [observableEventController dispatchEvent:@"TVShowcaseFactorDidChangeEvent" sender:self withUserInfo:0];
 
     [(_TVStackTemplateController *)self showcaseFactorDidChange];
   }
@@ -1101,34 +1101,34 @@ LABEL_6:
 
 - (id)tabBarObservedScrollView
 {
-  v2 = [(_TVStackCommonTemplateController *)self stackWrappingView];
-  v3 = [v2 stackView];
+  stackWrappingView = [(_TVStackCommonTemplateController *)self stackWrappingView];
+  stackView = [stackWrappingView stackView];
 
-  return v3;
+  return stackView;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4.receiver = self;
   v4.super_class = _TVStackTemplateController;
-  [(_TVStackCommonTemplateController *)&v4 scrollViewDidScroll:a3];
+  [(_TVStackCommonTemplateController *)&v4 scrollViewDidScroll:scroll];
   [(_TVNeedsMoreContentEvaluator *)self->_needsMoreContentEvaluator evaluateForState:2];
   [(_TVStackTemplateController *)self _updateBackgroundTintViewEffects];
 }
 
-- (void)_scrollToTopAnimated:(BOOL)a3
+- (void)_scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(_TVStackCommonTemplateController *)self collectionView];
-  [v5 contentInset];
-  [v5 setContentOffset:v3 animated:{0.0, -v6}];
-  v7 = [(_TVStackCommonTemplateController *)self _flowLayout];
-  [v5 bounds];
-  v8 = [v7 invalidationContextForBoundsChange:?];
-  [v7 invalidateLayoutWithContext:v8];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  [collectionView contentInset];
+  [collectionView setContentOffset:animatedCopy animated:{0.0, -v6}];
+  _flowLayout = [(_TVStackCommonTemplateController *)self _flowLayout];
+  [collectionView bounds];
+  v8 = [_flowLayout invalidationContextForBoundsChange:?];
+  [_flowLayout invalidateLayoutWithContext:v8];
 
-  if ([v5 numberOfSections] < 1 || objc_msgSend(v5, "numberOfItemsInSection:", 0) < 1)
+  if ([collectionView numberOfSections] < 1 || objc_msgSend(collectionView, "numberOfItemsInSection:", 0) < 1)
   {
     lastFocusedIndexPath = self->_lastFocusedIndexPath;
     self->_lastFocusedIndexPath = 0;
@@ -1177,43 +1177,43 @@ LABEL_6:
   }
 }
 
-- (id)_updateWithCollectionListElement:(id)a3 commits:(id *)a4 autoHighlightIndexPath:(id *)a5
+- (id)_updateWithCollectionListElement:(id)element commits:(id *)commits autoHighlightIndexPath:(id *)path
 {
   v113 = *MEMORY[0x277D85DE8];
-  v72 = a3;
-  v75 = self;
+  elementCopy = element;
+  selfCopy = self;
   v71 = self->_unfilteredViewControllers;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
-  v73 = [v72 unfilteredChildrenChangeSet];
-  if (v73 && v71)
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  unfilteredChildrenChangeSet = [elementCopy unfilteredChildrenChangeSet];
+  if (unfilteredChildrenChangeSet && v71)
   {
-    [v6 addObjectsFromArray:v71];
-    v8 = [v73 removedIndexes];
-    v9 = [v8 mutableCopy];
+    [array addObjectsFromArray:v71];
+    removedIndexes = [unfilteredChildrenChangeSet removedIndexes];
+    v9 = [removedIndexes mutableCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      indexSet = v9;
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet = [MEMORY[0x277CCAB58] indexSet];
     }
 
-    v21 = v11;
+    v21 = indexSet;
 
     v74 = v21;
-    v69 = [v6 objectsAtIndexes:v21];
+    v69 = [array objectsAtIndexes:v21];
     v107 = 0u;
     v108 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v22 = [v73 movedIndexesByNewIndex];
-    v23 = [v22 allValues];
+    movedIndexesByNewIndex = [unfilteredChildrenChangeSet movedIndexesByNewIndex];
+    allValues = [movedIndexesByNewIndex allValues];
 
-    v24 = [v23 countByEnumeratingWithState:&v105 objects:v112 count:16];
+    v24 = [allValues countByEnumeratingWithState:&v105 objects:v112 count:16];
     if (v24)
     {
       v25 = *v106;
@@ -1223,42 +1223,42 @@ LABEL_6:
         {
           if (*v106 != v25)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(allValues);
           }
 
           [v74 addIndex:{objc_msgSend(*(*(&v105 + 1) + 8 * i), "integerValue")}];
         }
 
-        v24 = [v23 countByEnumeratingWithState:&v105 objects:v112 count:16];
+        v24 = [allValues countByEnumeratingWithState:&v105 objects:v112 count:16];
       }
 
       while (v24);
     }
 
-    [v6 removeObjectsAtIndexes:v74];
-    v27 = [v73 addedIndexes];
-    v28 = [v27 mutableCopy];
+    [array removeObjectsAtIndexes:v74];
+    addedIndexes = [unfilteredChildrenChangeSet addedIndexes];
+    v28 = [addedIndexes mutableCopy];
     v29 = v28;
     if (v28)
     {
-      v30 = v28;
+      indexSet2 = v28;
     }
 
     else
     {
-      v30 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet2 = [MEMORY[0x277CCAB58] indexSet];
     }
 
-    v31 = v30;
+    v31 = indexSet2;
 
     v103 = 0u;
     v104 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v32 = [v73 movedIndexesByNewIndex];
-    v33 = [v32 allKeys];
+    movedIndexesByNewIndex2 = [unfilteredChildrenChangeSet movedIndexesByNewIndex];
+    allKeys = [movedIndexesByNewIndex2 allKeys];
 
-    v34 = [v33 countByEnumeratingWithState:&v101 objects:v111 count:16];
+    v34 = [allKeys countByEnumeratingWithState:&v101 objects:v111 count:16];
     if (v34)
     {
       v35 = *v102;
@@ -1268,44 +1268,44 @@ LABEL_6:
         {
           if (*v102 != v35)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(allKeys);
           }
 
           [v31 addIndex:{objc_msgSend(*(*(&v101 + 1) + 8 * j), "integerValue")}];
         }
 
-        v34 = [v33 countByEnumeratingWithState:&v101 objects:v111 count:16];
+        v34 = [allKeys countByEnumeratingWithState:&v101 objects:v111 count:16];
       }
 
       while (v34);
     }
 
-    v37 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v93[0] = MEMORY[0x277D85DD0];
     v93[1] = 3221225472;
     v93[2] = __94___TVStackTemplateController__updateWithCollectionListElement_commits_autoHighlightIndexPath___block_invoke_2;
     v93[3] = &unk_279D71700;
-    v38 = v72;
+    v38 = elementCopy;
     v94 = v38;
-    v39 = v73;
+    v39 = unfilteredChildrenChangeSet;
     v95 = v39;
-    v66 = v37;
+    v66 = array3;
     v96 = v66;
     v100 = &__block_literal_global_47;
     v97 = v71;
-    v98 = v75;
-    v70 = v7;
+    v98 = selfCopy;
+    v70 = array2;
     v99 = v70;
     [v31 enumerateIndexesUsingBlock:v93];
-    [v6 insertObjects:v66 atIndexes:v31];
+    [array insertObjects:v66 atIndexes:v31];
     v91 = 0u;
     v92 = 0u;
     v89 = 0u;
     v90 = 0u;
-    v40 = [v39 updatedIndexesByNewIndex];
-    v41 = [v40 allKeys];
+    updatedIndexesByNewIndex = [v39 updatedIndexesByNewIndex];
+    allKeys2 = [updatedIndexesByNewIndex allKeys];
 
-    v42 = [v41 countByEnumeratingWithState:&v89 objects:v110 count:16];
+    v42 = [allKeys2 countByEnumeratingWithState:&v89 objects:v110 count:16];
     if (v42)
     {
       v43 = *v90;
@@ -1315,19 +1315,19 @@ LABEL_6:
         {
           if (*v90 != v43)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(allKeys2);
           }
 
-          v45 = [*(*(&v89 + 1) + 8 * k) integerValue];
-          v46 = [v38 unfilteredChildren];
-          v47 = [v46 objectAtIndexedSubscript:v45];
+          integerValue = [*(*(&v89 + 1) + 8 * k) integerValue];
+          unfilteredChildren = [v38 unfilteredChildren];
+          v47 = [unfilteredChildren objectAtIndexedSubscript:integerValue];
 
-          v48 = [v6 objectAtIndexedSubscript:v45];
+          v48 = [array objectAtIndexedSubscript:integerValue];
           v49 = __94___TVStackTemplateController__updateWithCollectionListElement_commits_autoHighlightIndexPath___block_invoke(v48, v47);
-          v50 = [(_TVStackCommonTemplateController *)v75 viewControllerWithElement:v47 layout:v49 existingController:v48];
+          v50 = [(_TVStackCommonTemplateController *)selfCopy viewControllerWithElement:v47 layout:v49 existingController:v48];
         }
 
-        v42 = [v41 countByEnumeratingWithState:&v89 objects:v110 count:16];
+        v42 = [allKeys2 countByEnumeratingWithState:&v89 objects:v110 count:16];
       }
 
       while (v42);
@@ -1340,8 +1340,8 @@ LABEL_6:
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v12 = [v72 unfilteredChildren];
-    v13 = [v12 countByEnumeratingWithState:&v85 objects:v109 count:16];
+    unfilteredChildren2 = [elementCopy unfilteredChildren];
+    v13 = [unfilteredChildren2 countByEnumeratingWithState:&v85 objects:v109 count:16];
     v14 = v13;
     if (v13)
     {
@@ -1353,91 +1353,91 @@ LABEL_6:
         {
           if (*v86 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(unfilteredChildren2);
           }
 
           v17 = *(*(&v85 + 1) + 8 * v16);
           v18 = __94___TVStackTemplateController__updateWithCollectionListElement_commits_autoHighlightIndexPath___block_invoke(v13, v17);
-          v19 = [(_TVStackCommonTemplateController *)v75 viewControllerWithElement:v17 layout:v18 existingController:0];
+          v19 = [(_TVStackCommonTemplateController *)selfCopy viewControllerWithElement:v17 layout:v18 existingController:0];
           if (v19)
           {
-            [v6 addObject:v19];
+            [array addObject:v19];
           }
 
           else
           {
             v20 = objc_opt_new();
-            [v6 addObject:v20];
+            [array addObject:v20];
           }
 
           ++v16;
         }
 
         while (v14 != v16);
-        v13 = [v12 countByEnumeratingWithState:&v85 objects:v109 count:16];
+        v13 = [unfilteredChildren2 countByEnumeratingWithState:&v85 objects:v109 count:16];
         v14 = v13;
       }
 
       while (v13);
     }
 
-    v70 = v6;
+    v70 = array;
     v69 = v71;
   }
 
-  v51 = [(_TVStackCommonTemplateController *)v75 viewElement];
-  v52 = [v51 attributes];
-  v53 = [v52 objectForKeyedSubscript:@"preloading"];
+  viewElement = [(_TVStackCommonTemplateController *)selfCopy viewElement];
+  attributes = [viewElement attributes];
+  v53 = [attributes objectForKeyedSubscript:@"preloading"];
 
   if (v53 && ![v53 BOOLValue])
   {
-    [(NSMutableArray *)v75->_preloadQueue removeAllObjects];
+    [(NSMutableArray *)selfCopy->_preloadQueue removeAllObjects];
   }
 
   else
   {
-    if (!v75->_preloadQueue)
+    if (!selfCopy->_preloadQueue)
     {
-      v54 = [MEMORY[0x277CBEB18] array];
-      preloadQueue = v75->_preloadQueue;
-      v75->_preloadQueue = v54;
+      array4 = [MEMORY[0x277CBEB18] array];
+      preloadQueue = selfCopy->_preloadQueue;
+      selfCopy->_preloadQueue = array4;
     }
 
     if ([(NSArray *)v69 count])
     {
-      [(NSMutableArray *)v75->_preloadQueue removeObjectsInArray:v69];
+      [(NSMutableArray *)selfCopy->_preloadQueue removeObjectsInArray:v69];
     }
 
     v56 = [v70 indexesOfObjectsPassingTest:&__block_literal_global_126];
-    v57 = v75->_preloadQueue;
+    v57 = selfCopy->_preloadQueue;
     v58 = [v70 objectsAtIndexes:v56];
     [(NSMutableArray *)v57 addObjectsFromArray:v58];
   }
 
-  [(_TVStackTemplateController *)v75 _scheduleNextPreloadConditional];
-  if (a5)
+  [(_TVStackTemplateController *)selfCopy _scheduleNextPreloadConditional];
+  if (path)
   {
     v81 = 0;
     v82 = &v81;
     v83 = 0x2020000000;
     v84 = 0x7FFFFFFFFFFFFFFFLL;
-    v59 = [v72 unfilteredChildren];
+    unfilteredChildren3 = [elementCopy unfilteredChildren];
     v80[0] = MEMORY[0x277D85DD0];
     v80[1] = 3221225472;
     v80[2] = __94___TVStackTemplateController__updateWithCollectionListElement_commits_autoHighlightIndexPath___block_invoke_4;
     v80[3] = &unk_279D71748;
     v80[4] = &v81;
-    [v59 enumerateObjectsUsingBlock:v80];
+    [unfilteredChildren3 enumerateObjectsUsingBlock:v80];
 
     if (v82[3] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      *a5 = 0;
+      *path = 0;
     }
 
     else
     {
       v60 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:?];
-      *a5 = v60;
+      *path = v60;
     }
 
     _Block_object_dispose(&v81, 8);
@@ -1448,15 +1448,15 @@ LABEL_6:
   v76[2] = __94___TVStackTemplateController__updateWithCollectionListElement_commits_autoHighlightIndexPath___block_invoke_5;
   v76[3] = &unk_279D6F5D0;
   v77 = v69;
-  v78 = v75;
-  v79 = v6;
-  v61 = v6;
+  v78 = selfCopy;
+  v79 = array;
+  v61 = array;
   v62 = v69;
-  *a4 = MEMORY[0x26D6AFBB0](v76);
+  *commits = MEMORY[0x26D6AFBB0](v76);
   v63 = v79;
-  v64 = v73;
+  v64 = unfilteredChildrenChangeSet;
 
-  return v73;
+  return unfilteredChildrenChangeSet;
 }
 
 - (void)_scheduleNextPreloadConditional
@@ -1484,50 +1484,50 @@ LABEL_6:
 
 - (void)_preloadNext
 {
-  v3 = [(NSMutableArray *)self->_preloadQueue firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_preloadQueue firstObject];
+  if (firstObject)
   {
-    v10 = v3;
+    v10 = firstObject;
     [(NSMutableArray *)self->_preloadQueue removeObjectAtIndex:0];
-    v4 = [(_TVStackCommonTemplateController *)self viewElement];
-    v5 = [v4 appDocument];
-    [v5 tv_adjustedWindowSize];
+    viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+    appDocument = [viewElement appDocument];
+    [appDocument tv_adjustedWindowSize];
     v7 = v6;
     v9 = v8;
 
     [v10 preloadCellsInRect:{0.0, 0.0, v7, v9}];
     [(_TVStackTemplateController *)self _scheduleNextPreloadConditional];
-    v3 = v10;
+    firstObject = v10;
   }
 }
 
-- (void)_adjustedContentOffsetForRowIndex:(int64_t)a3 targetContentOffset:(CGPoint *)a4
+- (void)_adjustedContentOffsetForRowIndex:(int64_t)index targetContentOffset:(CGPoint *)offset
 {
   v7 = [(NSArray *)self->_stackRows objectAtIndexedSubscript:?];
-  v8 = [(_TVStackCommonTemplateController *)self collectionView];
-  v9 = [v8 tv_isFocusOnNonOwnedCell];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  tv_isFocusOnNonOwnedCell = [collectionView tv_isFocusOnNonOwnedCell];
 
-  if (v9)
+  if (tv_isFocusOnNonOwnedCell)
   {
     goto LABEL_84;
   }
 
-  v10 = [(_TVStackCommonTemplateController *)self collectionView];
-  [v10 bounds];
+  collectionView2 = [(_TVStackCommonTemplateController *)self collectionView];
+  [collectionView2 bounds];
   v92 = v11;
-  [v10 contentInset];
+  [collectionView2 contentInset];
   v13 = v12;
   v15 = v14;
-  v16 = [(_TVStackCommonTemplateController *)self collectionView];
-  [v16 contentOffset];
+  collectionView3 = [(_TVStackCommonTemplateController *)self collectionView];
+  [collectionView3 contentOffset];
   v18 = v17;
 
   contentHeight = self->_contentHeight;
-  x = a4->x;
-  y = a4->y;
-  v91 = a4;
-  v22 = a3 - 1;
-  if (a3 < 1)
+  x = offset->x;
+  y = offset->y;
+  offsetCopy = offset;
+  v22 = index - 1;
+  if (index < 1)
   {
     v24 = 0.0;
   }
@@ -1561,10 +1561,10 @@ LABEL_6:
       ++v23;
     }
 
-    while (a3 != v23);
+    while (index != v23);
   }
 
-  v28 = [(NSArray *)self->_stackRows objectAtIndexedSubscript:a3];
+  v28 = [(NSArray *)self->_stackRows objectAtIndexedSubscript:index];
   v29 = v28;
   if (v28)
   {
@@ -1592,10 +1592,10 @@ LABEL_6:
     while (1)
     {
       v33 = [(NSArray *)self->_stackSections objectAtIndexedSubscript:v32];
-      if ([v33 firstRowIndex] <= a3)
+      if ([v33 firstRowIndex] <= index)
       {
-        v34 = [v33 firstRowIndex];
-        if ([v33 rowCount] + v34 > a3)
+        firstRowIndex = [v33 firstRowIndex];
+        if ([v33 rowCount] + firstRowIndex > index)
         {
           break;
         }
@@ -1615,9 +1615,9 @@ LABEL_6:
 
     else
     {
-      v36 = [v33 firstRowIndex] != a3;
-      v37 = [v33 firstRowIndex];
-      v88 = v37 + [v33 rowCount] - 1 != a3;
+      v36 = [v33 firstRowIndex] != index;
+      firstRowIndex2 = [v33 firstRowIndex];
+      v88 = firstRowIndex2 + [v33 rowCount] - 1 != index;
     }
 
     v35 = y;
@@ -1642,7 +1642,7 @@ LABEL_18:
   {
     [v7 rowMetrics];
     *&v130 = *(&v124 + 1);
-    *(&v130 + 1) = a3;
+    *(&v130 + 1) = index;
     v131 = 1;
     [v7 rowMetrics];
     [v7 rowMetrics];
@@ -1681,7 +1681,7 @@ LABEL_18:
     v105 = 0uLL;
     v40 = 0.0;
     v39 = 0.0;
-    *(&v130 + 1) = a3;
+    *(&v130 + 1) = index;
     v131 = 1;
   }
 
@@ -1691,7 +1691,7 @@ LABEL_18:
   v44 = v43 - v18;
   v45 = v92 * 0.5;
   v85 = v43 - v18 < v92 * 0.5;
-  v46 = v91->y;
+  v46 = offsetCopy->y;
   if (v46 == v90)
   {
     v47 = v42;
@@ -1733,7 +1733,7 @@ LABEL_18:
     v51 = v44 >= v45 || v88;
     if (v51)
     {
-      v52 = 0;
+      scrollStopForShowcaseTransition = 0;
       v53 = x;
       goto LABEL_47;
     }
@@ -1747,13 +1747,13 @@ LABEL_18:
   }
 
   v53 = x;
-  v52 = [(_TVStackTemplateController *)self scrollStopForEnteringSectionAtIndex:v32 fromEdge:v54];
+  scrollStopForShowcaseTransition = [(_TVStackTemplateController *)self scrollStopForEnteringSectionAtIndex:v32 fromEdge:v54];
 LABEL_47:
   v55 = v35;
-  if (v52 == 0 && v41)
+  if (scrollStopForShowcaseTransition == 0 && v41)
   {
     v56 = [(NSArray *)self->_stackSections objectAtIndexedSubscript:v32];
-    if ([v56 firstRowIndex] != a3)
+    if ([v56 firstRowIndex] != index)
     {
 
       goto LABEL_59;
@@ -1778,12 +1778,12 @@ LABEL_47:
       }
     }
 
-    v52 = [(_TVStackTemplateController *)self scrollStopForShowcaseTransition];
+    scrollStopForShowcaseTransition = [(_TVStackTemplateController *)self scrollStopForShowcaseTransition];
   }
 
-  if (v52)
+  if (scrollStopForShowcaseTransition)
   {
-    [(_TVStackTemplateController *)self _offsetToScrollStop:v52];
+    [(_TVStackTemplateController *)self _offsetToScrollStop:scrollStopForShowcaseTransition];
     v63 = 0.0;
     if (v62 > v43)
     {
@@ -1799,11 +1799,11 @@ LABEL_59:
   if (!v41)
   {
 LABEL_72:
-    v64 = v91;
+    v64 = offsetCopy;
     goto LABEL_73;
   }
 
-  v64 = v91;
+  v64 = offsetCopy;
   if (![v7 isHosted])
   {
     goto LABEL_73;
@@ -1920,9 +1920,9 @@ LABEL_98:
 LABEL_73:
   [(_TVStackTemplateController *)self _scrollableBoundsInset];
   v70 = v69;
-  v71 = [(_TVStackCommonTemplateController *)self viewElement];
-  v72 = [v71 style];
-  if (([v72 edgeFlagForStyle:@"tv-scrollable-bounds-inset"] & 1) != 0 && v55 < v92 - v89)
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  style = [viewElement style];
+  if (([style edgeFlagForStyle:@"tv-scrollable-bounds-inset"] & 1) != 0 && v55 < v92 - v89)
   {
 
     if (v92 - v89 + -45.0 >= v24 + v87)
@@ -1935,12 +1935,12 @@ LABEL_73:
   {
   }
 
-  v73 = [(_TVStackCommonTemplateController *)self viewElement];
-  v74 = [v73 style];
-  if (([v74 edgeFlagForStyle:@"tv-scrollable-bounds-inset"] & 4) != 0 && v92 + v55 > v92 + v47 - v70)
+  viewElement2 = [(_TVStackCommonTemplateController *)self viewElement];
+  style2 = [viewElement2 style];
+  if (([style2 edgeFlagForStyle:@"tv-scrollable-bounds-inset"] & 4) != 0 && v92 + v55 > v92 + v47 - v70)
   {
 
-    v75 = v10;
+    v75 = collectionView2;
     if (v47 + 45.0 <= v24)
     {
       v55 = v47;
@@ -1950,7 +1950,7 @@ LABEL_73:
   else
   {
 
-    v75 = v10;
+    v75 = collectionView2;
   }
 
   v64->x = v53;
@@ -1961,9 +1961,9 @@ LABEL_84:
 
 - (UIEdgeInsets)_scrollableBoundsInset
 {
-  v2 = [(_TVStackCommonTemplateController *)self viewElement];
-  v3 = [v2 style];
-  [v3 tv_scrollableBoundsInset];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  style = [viewElement style];
+  [style tv_scrollableBoundsInset];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1980,11 +1980,11 @@ LABEL_84:
   return result;
 }
 
-- (BOOL)_didExtendContentForPeekMetrics:(id *)a3 above:(BOOL)a4 initial:(BOOL)a5
+- (BOOL)_didExtendContentForPeekMetrics:(id *)metrics above:(BOOL)above initial:(BOOL)initial
 {
-  v23 = a5;
-  v5 = a4;
-  if (a4)
+  initialCopy = initial;
+  aboveCopy = above;
+  if (above)
   {
     v8 = -1;
   }
@@ -1994,16 +1994,16 @@ LABEL_84:
     v8 = 1;
   }
 
-  location = a3->var3.location;
-  if (!a4)
+  location = metrics->var3.location;
+  if (!above)
   {
-    location = location + a3->var3.length - 1;
+    location = location + metrics->var3.length - 1;
   }
 
   v10 = [(NSArray *)self->_stackRows objectAtIndexedSubscript:location];
   v11 = v10;
   v12 = 0.0;
-  if (!v23)
+  if (!initialCopy)
   {
     if (v10)
     {
@@ -2027,11 +2027,11 @@ LABEL_84:
         [v16 rowMetrics];
       }
 
-      v18 = a3->var3.location;
-      if (v5)
+      v18 = metrics->var3.location;
+      if (aboveCopy)
       {
-        v19 = v15 + v18 + a3->var3.length;
-        a3->var3.location = v14;
+        v19 = v15 + v18 + metrics->var3.length;
+        metrics->var3.location = v14;
       }
 
       else
@@ -2039,23 +2039,23 @@ LABEL_84:
         v19 = v14 - v18 + 1;
       }
 
-      a3->var3.length = v19;
-      if (!v23 || ![v11 isBounded] || (v20 = objc_msgSend(v11, "sectionIndex"), v20 != objc_msgSend(v17, "sectionIndex")))
+      metrics->var3.length = v19;
+      if (!initialCopy || ![v11 isBounded] || (v20 = objc_msgSend(v11, "sectionIndex"), v20 != objc_msgSend(v17, "sectionIndex")))
       {
-        a3->var2 = a3->var2 + v12 + 0.0;
+        metrics->var2 = metrics->var2 + v12 + 0.0;
         v21 = 8;
-        if (v5)
+        if (aboveCopy)
         {
           v21 = 0;
         }
 
-        *(&a3->var0 + v21) = 0.0 - (0.0 + 0.0);
+        *(&metrics->var0 + v21) = 0.0 - (0.0 + 0.0);
 
         v13 = 1;
         break;
       }
 
-      a3->var2 = a3->var2 + v12 + 0.0;
+      metrics->var2 = metrics->var2 + v12 + 0.0;
       v13 = 1;
       v12 = 0.0;
 
@@ -2073,9 +2073,9 @@ LABEL_84:
 
 - (double)_maxViewWidth
 {
-  v2 = [(_TVStackCommonTemplateController *)self viewElement];
-  v3 = [v2 appDocument];
-  [v3 tv_adjustedWindowSize];
+  viewElement = [(_TVStackCommonTemplateController *)self viewElement];
+  appDocument = [viewElement appDocument];
+  [appDocument tv_adjustedWindowSize];
   v5 = v4;
 
   return v5;
@@ -2088,9 +2088,9 @@ LABEL_84:
     self->_shouldInvalidateMetrics = 0;
     v6 = objc_alloc_init(_TVStackViewFlowLayoutInvalidationContext);
     [(_TVStackViewFlowLayoutInvalidationContext *)v6 setInvalidateSectionMetrics:1];
-    v4 = [(_TVStackCommonTemplateController *)self collectionView];
-    v5 = [v4 collectionViewLayout];
-    [v5 invalidateLayoutWithContext:v6];
+    collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayoutWithContext:v6];
 
     [(_TVStackTemplateController *)self _updateBackgroundTintView];
   }
@@ -2107,7 +2107,7 @@ LABEL_84:
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](v6, "count")}];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{(2 * -[NSArray count](v6, "count")) | 1}];
   v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](v6, "count")}];
-  v10 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](v6, "count")}];
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](v6, "count")}];
   v92[0] = MEMORY[0x277D85DD0];
@@ -2133,7 +2133,7 @@ LABEL_84:
   v96 = v16;
   v17 = v7;
   v97 = v17;
-  v18 = v10;
+  v18 = indexSet;
   v98 = v18;
   v74 = v6;
   [(NSArray *)v6 enumerateObjectsUsingBlock:v92];
@@ -2145,7 +2145,7 @@ LABEL_84:
   v72 = v15;
   v21 = [v15 copy];
   viewControllers = self->_viewControllers;
-  v75 = self;
+  selfCopy = self;
   self->_viewControllers = v21;
 
   v23 = objc_alloc_init(_TVStackRow);
@@ -2178,14 +2178,14 @@ LABEL_84:
   v86 = v29;
   v30 = v16;
   v87 = v30;
-  v88 = self;
+  selfCopy2 = self;
   v68 = v25;
   v89 = v68;
   v67 = v27;
   v90 = v67;
   [(NSArray *)v28 enumerateObjectsUsingBlock:v85];
-  v66 = [(_TVStackCommonTemplateController *)self collectionView];
-  [v66 bounds];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  [collectionView bounds];
   v32 = v31;
   v81 = 0u;
   v82 = 0u;
@@ -2212,20 +2212,20 @@ LABEL_84:
         }
 
         v39 = *(*(&v81 + 1) + 8 * v38);
-        v40 = [v39 firstRowIndex];
+        firstRowIndex = [v39 firstRowIndex];
         v80 = v39;
-        v41 = [v39 rowCount];
-        if (v41 >= 2)
+        rowCount = [v39 rowCount];
+        if (rowCount >= 2)
         {
-          v42 = v41;
-          v43 = [v30 objectAtIndexedSubscript:v40];
-          v44 = [v43 isBounded];
+          v42 = rowCount;
+          v43 = [v30 objectAtIndexedSubscript:firstRowIndex];
+          isBounded = [v43 isBounded];
 
-          if (v44)
+          if (isBounded)
           {
             [v80 sectionHeight];
             v46 = v45;
-            v47 = v40 - 1;
+            v47 = firstRowIndex - 1;
             v48 = -1;
             do
             {
@@ -2285,10 +2285,10 @@ LABEL_84:
             {
               do
               {
-                v56 = [v30 objectAtIndexedSubscript:v40];
+                v56 = [v30 objectAtIndexedSubscript:firstRowIndex];
                 [v56 setBounded:0];
 
-                ++v40;
+                ++firstRowIndex;
                 --v42;
               }
 
@@ -2318,18 +2318,18 @@ LABEL_84:
     v37 = 0.0;
   }
 
-  v75->_shouldInvalidateMetrics = ![(NSArray *)v75->_stackRows isEqualToArray:v30];
-  v75->_contentHeight = v37;
+  selfCopy->_shouldInvalidateMetrics = ![(NSArray *)selfCopy->_stackRows isEqualToArray:v30];
+  selfCopy->_contentHeight = v37;
   v62 = [v33 copy];
-  stackSections = v75->_stackSections;
-  v75->_stackSections = v62;
+  stackSections = selfCopy->_stackSections;
+  selfCopy->_stackSections = v62;
 
   v64 = [v30 copy];
-  stackRows = v75->_stackRows;
-  v75->_stackRows = v64;
+  stackRows = selfCopy->_stackRows;
+  selfCopy->_stackRows = v64;
 
-  [(_TVStackTemplateController *)v75 didUpdateSectionInfo];
-  [(_TVStackTemplateController *)v75 _configureBackgroundTintView];
+  [(_TVStackTemplateController *)selfCopy didUpdateSectionInfo];
+  [(_TVStackTemplateController *)selfCopy _configureBackgroundTintView];
 }
 
 - (void)_updateFirstItemRowIndexes
@@ -2345,17 +2345,17 @@ LABEL_84:
   [(NSArray *)viewControllers enumerateObjectsUsingBlock:v5];
 }
 
-- (double)_offsetToScrollStop:(id)a3
+- (double)_offsetToScrollStop:(id)stop
 {
-  v4 = a3;
-  if ([v4 sectionIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  stopCopy = stop;
+  if ([stopCopy sectionIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(_TVStackCommonTemplateController *)self collectionView];
-    [v5 contentInset];
+    collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+    [collectionView contentInset];
     v7 = v6;
     v9 = v8;
 
-    if ([v4 edge])
+    if ([stopCopy edge])
     {
       contentHeight = self->_contentHeight;
     }
@@ -2365,21 +2365,21 @@ LABEL_84:
       contentHeight = 0.0;
     }
 
-    v19 = [v4 edge];
+    edge = [stopCopy edge];
     v20 = -v9;
-    if (!v19)
+    if (!edge)
     {
       v20 = v7;
     }
 
     v21 = contentHeight - v20;
-    [v4 offset];
+    [stopCopy offset];
     v23 = v22 + v21;
   }
 
   else
   {
-    if ([v4 sectionIndex] < 1)
+    if ([stopCopy sectionIndex] < 1)
     {
       v12 = 0.0;
     }
@@ -2401,13 +2401,13 @@ LABEL_84:
         ++v11;
       }
 
-      while (v11 < [v4 sectionIndex]);
+      while (v11 < [stopCopy sectionIndex]);
     }
 
-    v24 = -[NSArray objectAtIndexedSubscript:](self->_stackSections, "objectAtIndexedSubscript:", [v4 sectionIndex]);
+    v24 = -[NSArray objectAtIndexedSubscript:](self->_stackSections, "objectAtIndexedSubscript:", [stopCopy sectionIndex]);
     [v24 sectionSpacing];
     v26 = v25;
-    if ([v4 edge] == 1)
+    if ([stopCopy edge] == 1)
     {
       [v24 sectionHeight];
       v28 = v27;
@@ -2447,7 +2447,7 @@ LABEL_84:
     }
 
     v31 = v26 + v30;
-    [v4 offset];
+    [stopCopy offset];
     v23 = v12 + v31 + v32;
   }
 
@@ -2456,25 +2456,25 @@ LABEL_84:
 
 - (void)_configureBackgroundTintView
 {
-  v2 = self;
+  selfCopy = self;
   v30 = *MEMORY[0x277D85DE8];
   v3 = 1264;
   backdropTintViewController = self->_backdropTintViewController;
   self->_backdropTintViewController = 0;
 
-  if ([(NSArray *)v2->_viewControllers count])
+  if ([(NSArray *)selfCopy->_viewControllers count])
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v5 = v2->_viewControllers;
+    v5 = selfCopy->_viewControllers;
     v6 = [(NSArray *)v5 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v6)
     {
       v7 = v6;
       v23 = 1264;
-      v24 = v2;
+      v24 = selfCopy;
       v8 = *v26;
       while (2)
       {
@@ -2486,15 +2486,15 @@ LABEL_84:
           }
 
           v10 = *(*(&v25 + 1) + 8 * i);
-          v11 = [v10 tv_associatedIKViewElement];
-          v12 = [v11 attributes];
-          v13 = [v12 objectForKeyedSubscript:@"markBackgroundSegment"];
-          v14 = [v13 BOOLValue];
+          tv_associatedIKViewElement = [v10 tv_associatedIKViewElement];
+          attributes = [tv_associatedIKViewElement attributes];
+          v13 = [attributes objectForKeyedSubscript:@"markBackgroundSegment"];
+          bOOLValue = [v13 BOOLValue];
 
-          if (v14)
+          if (bOOLValue)
           {
             v3 = v23;
-            v2 = v24;
+            selfCopy = v24;
             objc_storeStrong((&v24->super.super.super.super.super.isa + v23), v10);
             goto LABEL_13;
           }
@@ -2509,57 +2509,57 @@ LABEL_84:
         break;
       }
 
-      v11 = 0;
+      tv_associatedIKViewElement = 0;
       v3 = v23;
-      v2 = v24;
+      selfCopy = v24;
     }
 
     else
     {
-      v11 = 0;
+      tv_associatedIKViewElement = 0;
     }
 
 LABEL_13:
 
-    if (*(&v2->super.super.super.super.super.isa + v3))
+    if (*(&selfCopy->super.super.super.super.super.isa + v3))
     {
-      if (v2->_backdropTintView)
+      if (selfCopy->_backdropTintView)
       {
-        [(_TVStackTemplateController *)v2 _updateBackgroundTintView];
+        [(_TVStackTemplateController *)selfCopy _updateBackgroundTintView];
       }
 
       else
       {
         v15 = objc_alloc(MEMORY[0x277D75D18]);
         v16 = [v15 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-        backdropTintView = v2->_backdropTintView;
-        v2->_backdropTintView = v16;
+        backdropTintView = selfCopy->_backdropTintView;
+        selfCopy->_backdropTintView = v16;
 
-        [(UIView *)v2->_backdropTintView setAutoresizingMask:50];
-        [(UIView *)v2->_backdropTintView setUserInteractionEnabled:0];
-        if ([(_TVStackTemplateController *)v2 isViewLoaded])
+        [(UIView *)selfCopy->_backdropTintView setAutoresizingMask:50];
+        [(UIView *)selfCopy->_backdropTintView setUserInteractionEnabled:0];
+        if ([(_TVStackTemplateController *)selfCopy isViewLoaded])
         {
-          v18 = [(_TVStackCommonTemplateController *)v2 collectionView];
-          [v18 insertSubview:v2->_backdropTintView atIndex:0];
+          collectionView = [(_TVStackCommonTemplateController *)selfCopy collectionView];
+          [collectionView insertSubview:selfCopy->_backdropTintView atIndex:0];
         }
       }
 
-      v19 = v2->_backdropTintView;
-      v20 = [v11 style];
-      v21 = [v20 tv_backgroundColor];
-      v22 = [v21 color];
+      v19 = selfCopy->_backdropTintView;
+      style = [tv_associatedIKViewElement style];
+      tv_backgroundColor = [style tv_backgroundColor];
+      color = [tv_backgroundColor color];
 
-      if (!v22)
+      if (!color)
       {
-        v22 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+        color = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
       }
 
-      [(UIView *)v19 setBackgroundColor:v22];
+      [(UIView *)v19 setBackgroundColor:color];
     }
 
     else
     {
-      [(_TVStackTemplateController *)v2 _updateBackgroundTintView];
+      [(_TVStackTemplateController *)selfCopy _updateBackgroundTintView];
     }
   }
 }
@@ -2582,13 +2582,13 @@ LABEL_13:
     else
     {
       v21 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:v3];
-      v6 = [(_TVStackCommonTemplateController *)self collectionView];
-      [v6 frame];
+      collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+      [collectionView frame];
       v8 = v7;
       v10 = v9;
 
-      v11 = [(_TVStackCommonTemplateController *)self collectionView];
-      v12 = [v11 layoutAttributesForItemAtIndexPath:v21];
+      collectionView2 = [(_TVStackCommonTemplateController *)self collectionView];
+      v12 = [collectionView2 layoutAttributesForItemAtIndexPath:v21];
 
       [v12 frame];
       v14 = v13;
@@ -2597,18 +2597,18 @@ LABEL_13:
       v16 = self->_backdropTintView;
       if (v16)
       {
-        v17 = [(_TVStackCommonTemplateController *)self collectionView];
-        v18 = [(UIView *)v16 isDescendantOfView:v17];
+        collectionView3 = [(_TVStackCommonTemplateController *)self collectionView];
+        v18 = [(UIView *)v16 isDescendantOfView:collectionView3];
 
         if (!v18)
         {
-          v19 = [(_TVStackCommonTemplateController *)self collectionView];
-          [v19 insertSubview:self->_backdropTintView atIndex:0];
+          collectionView4 = [(_TVStackCommonTemplateController *)self collectionView];
+          [collectionView4 insertSubview:self->_backdropTintView atIndex:0];
         }
       }
 
-      v20 = [(_TVStackCommonTemplateController *)self collectionView];
-      [v20 sendSubviewToBack:self->_backdropTintView];
+      collectionView5 = [(_TVStackCommonTemplateController *)self collectionView];
+      [collectionView5 sendSubviewToBack:self->_backdropTintView];
 
       [(_TVStackTemplateController *)self _updateBackgroundTintViewEffects];
       backdropTintView = v21;
@@ -2638,24 +2638,24 @@ LABEL_13:
     v13 = fmax(v11 - v12, 0.0);
     if (v13 > 0.0)
     {
-      v14 = [(_TVStackCommonTemplateController *)self collectionView];
-      [v14 contentSize];
+      collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+      [collectionView contentSize];
       v16 = v15;
-      v17 = [(_TVStackCommonTemplateController *)self collectionView];
-      [v17 bounds];
+      collectionView2 = [(_TVStackCommonTemplateController *)self collectionView];
+      [collectionView2 bounds];
       v19 = v16 - v18;
-      v20 = [(_TVStackCommonTemplateController *)self collectionView];
-      [v20 contentInset];
+      collectionView3 = [(_TVStackCommonTemplateController *)self collectionView];
+      [collectionView3 contentInset];
       v22 = v19 - v21;
 
-      v23 = [(_TVStackCommonTemplateController *)self collectionView];
-      [v23 contentOffset];
+      collectionView4 = [(_TVStackCommonTemplateController *)self collectionView];
+      [collectionView4 contentOffset];
       v25 = v24;
 
       if (v25 > v22)
       {
-        v26 = [(_TVStackCommonTemplateController *)self collectionView];
-        [v26 contentOffset];
+        collectionView5 = [(_TVStackCommonTemplateController *)self collectionView];
+        [collectionView5 contentOffset];
         v13 = v13 + v27 - v22;
       }
     }
@@ -2668,12 +2668,12 @@ LABEL_13:
 
 - (CGSize)_maxContentSize
 {
-  v3 = [(_TVStackCommonTemplateController *)self collectionView];
-  [v3 contentSize];
+  collectionView = [(_TVStackCommonTemplateController *)self collectionView];
+  [collectionView contentSize];
   v5 = v4;
 
-  v6 = [(_TVStackTemplateController *)self view];
-  [v6 bounds];
+  view = [(_TVStackTemplateController *)self view];
+  [view bounds];
   v8 = v7;
 
   if (v5 < v8)
@@ -2681,12 +2681,12 @@ LABEL_13:
     v5 = v8;
   }
 
-  v9 = [(_TVStackCommonTemplateController *)self collectionView];
-  [v9 contentSize];
+  collectionView2 = [(_TVStackCommonTemplateController *)self collectionView];
+  [collectionView2 contentSize];
   v11 = v10;
 
-  v12 = [(_TVStackTemplateController *)self view];
-  [v12 bounds];
+  view2 = [(_TVStackTemplateController *)self view];
+  [view2 bounds];
   v14 = v13;
 
   if (v11 >= v14)

@@ -1,5 +1,5 @@
 @interface RequestBroker
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (RequestBroker)init;
 @end
 
@@ -34,10 +34,10 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v35 = a3;
-  v5 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -56,13 +56,13 @@ LABEL_3:
       }
 
       v8 = *(*(&v43 + 1) + 8 * v7);
-      v9 = v5;
+      v9 = connectionCopy;
       v10 = v8;
       objc_opt_self();
-      v11 = [v9 processIdentifier];
+      processIdentifier = [v9 processIdentifier];
       *location = 0u;
       v49 = 0u;
-      if (v5)
+      if (connectionCopy)
       {
         [v9 auditToken];
       }
@@ -83,7 +83,7 @@ LABEL_3:
           *&token[12] = 2112;
           *&token[14] = v10;
           *&token[22] = 1024;
-          *&token[24] = v11;
+          *&token[24] = processIdentifier;
           *&token[28] = 2112;
           *&token[30] = error;
           v22 = v21;
@@ -102,7 +102,7 @@ LABEL_3:
             *&token[12] = 2112;
             *&token[14] = v10;
             *&token[22] = 1024;
-            *&token[24] = v11;
+            *&token[24] = processIdentifier;
             *&token[28] = 1024;
             *&token[30] = v16;
             v20 = v19;
@@ -115,16 +115,16 @@ LABEL_3:
           if (v16)
           {
             v25 = sub_1003ED3B4([RequestBrokerClient alloc], v9);
-            v26 = self;
-            objc_sync_enter(v26);
-            [(NSMutableSet *)v26->_clients addObject:v25];
-            objc_sync_exit(v26);
+            selfCopy = self;
+            objc_sync_enter(selfCopy);
+            [(NSMutableSet *)selfCopy->_clients addObject:v25];
+            objc_sync_exit(selfCopy);
 
             [v9 setExportedObject:v25];
             v27 = +[ASDRequestBroker interface];
             [v9 setExportedInterface:v27];
 
-            objc_initWeak(location, v26);
+            objc_initWeak(location, selfCopy);
             objc_initWeak(&error, v25);
             v40[0] = _NSConcreteStackBlock;
             v40[1] = 3221225472;
@@ -178,7 +178,7 @@ LABEL_3:
         *&token[12] = 2112;
         *&token[14] = v10;
         *&token[22] = 1024;
-        *&token[24] = v11;
+        *&token[24] = processIdentifier;
         v18 = v17;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "[%@]: No task for entitlement: %@ pid: %i", token, 0x1Cu);
       }
@@ -197,14 +197,14 @@ LABEL_23:
     }
   }
 
-  v23 = [v5 processIdentifier];
+  processIdentifier2 = [connectionCopy processIdentifier];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     v32 = objc_opt_class();
     *token = 138412546;
     *&token[4] = v32;
     *&token[12] = 1024;
-    *&token[14] = v23;
+    *&token[14] = processIdentifier2;
     v33 = v32;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "[%@]: Connection denied for pid: %i for non entitled client", token, 0x12u);
   }

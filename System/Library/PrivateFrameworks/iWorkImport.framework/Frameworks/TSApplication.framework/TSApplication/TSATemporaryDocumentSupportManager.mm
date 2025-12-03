@@ -1,7 +1,7 @@
 @interface TSATemporaryDocumentSupportManager
 + (id)baseDirectoryURL;
 + (id)sharedManager;
-- (id)newDirectoryForDocumentUUID:(id)a3;
+- (id)newDirectoryForDocumentUUID:(id)d;
 @end
 
 @implementation TSATemporaryDocumentSupportManager
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_27610A324;
   block[3] = &unk_27A6B0F50;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A428D8 != -1)
   {
     dispatch_once(&qword_280A428D8, block);
@@ -40,9 +40,9 @@
   return v2;
 }
 
-- (id)newDirectoryForDocumentUUID:(id)a3
+- (id)newDirectoryForDocumentUUID:(id)d
 {
-  v5 = objc_msgSend_UUIDString(a3, a2, a3, v3);
+  v5 = objc_msgSend_UUIDString(d, a2, d, v3);
   v8 = objc_msgSend_newDirectoryWithFilename_(self, v6, v5, v7);
 
   return v8;

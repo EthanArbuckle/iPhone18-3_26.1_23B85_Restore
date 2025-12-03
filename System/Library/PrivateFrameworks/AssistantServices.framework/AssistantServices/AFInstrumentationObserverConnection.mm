@@ -1,23 +1,23 @@
 @interface AFInstrumentationObserverConnection
-- (AFInstrumentationObserverConnection)initWithObservation:(id)a3 filterByInstrumentationTypes:(id)a4;
-- (void)flushWithCompletion:(id)a3;
+- (AFInstrumentationObserverConnection)initWithObservation:(id)observation filterByInstrumentationTypes:(id)types;
+- (void)flushWithCompletion:(id)completion;
 @end
 
 @implementation AFInstrumentationObserverConnection
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (AFInstrumentationObserverConnection)initWithObservation:(id)a3 filterByInstrumentationTypes:(id)a4
+- (AFInstrumentationObserverConnection)initWithObservation:(id)observation filterByInstrumentationTypes:(id)types
 {
   v5.receiver = self;
   v5.super_class = AFInstrumentationObserverConnection;
-  return [(AFInstrumentationObserverConnection *)&v5 init:a3];
+  return [(AFInstrumentationObserverConnection *)&v5 init:observation];
 }
 
 @end

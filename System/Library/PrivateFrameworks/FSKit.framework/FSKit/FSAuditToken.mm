@@ -1,13 +1,13 @@
 @interface FSAuditToken
 + ($115C4C562B26FF47E01F9F4EA65B5887)getOurToken;
 + (id)token;
-+ (id)tokenWithData:(id)a3;
-+ (id)tokenWithToken:(id *)a3;
++ (id)tokenWithData:(id)data;
++ (id)tokenWithToken:(id *)token;
 - ($115C4C562B26FF47E01F9F4EA65B5887)audit_token;
 - (FSAuditToken)init;
-- (FSAuditToken)initWithCoder:(id)a3;
-- (FSAuditToken)initWithToken:(id *)a3;
-- (FSAuditToken)tokenWithRuid:(unsigned int)a3;
+- (FSAuditToken)initWithCoder:(id)coder;
+- (FSAuditToken)initWithToken:(id *)token;
+- (FSAuditToken)tokenWithRuid:(unsigned int)ruid;
 - (int)pid;
 - (int)pidversion;
 - (unsigned)egid;
@@ -55,7 +55,7 @@ uint64_t __27__FSAuditToken_getOurToken__block_invoke()
   return result;
 }
 
-- (FSAuditToken)initWithToken:(id *)a3
+- (FSAuditToken)initWithToken:(id *)token
 {
   v8.receiver = self;
   v8.super_class = FSAuditToken;
@@ -63,8 +63,8 @@ uint64_t __27__FSAuditToken_getOurToken__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v6 = *a3->var0;
-    *(v4 + 24) = *&a3->var0[4];
+    v6 = *token->var0;
+    *(v4 + 24) = *&token->var0[4];
     *(v4 + 8) = v6;
     if ((didSetup & 1) == 0)
     {
@@ -96,24 +96,24 @@ uint64_t __27__FSAuditToken_getOurToken__block_invoke()
 
 + (id)token
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)tokenWithToken:(id *)a3
++ (id)tokenWithToken:(id *)token
 {
-  v3 = [[a1 alloc] initWithToken:a3];
+  v3 = [[self alloc] initWithToken:token];
 
   return v3;
 }
 
-+ (id)tokenWithData:(id)a3
++ (id)tokenWithData:(id)data
 {
-  v4 = a3;
-  if ([v4 length] == 32)
+  dataCopy = data;
+  if ([dataCopy length] == 32)
   {
-    v5 = [[a1 alloc] initWithToken:{objc_msgSend(v4, "bytes")}];
+    v5 = [[self alloc] initWithToken:{objc_msgSend(dataCopy, "bytes")}];
   }
 
   else
@@ -124,10 +124,10 @@ uint64_t __27__FSAuditToken_getOurToken__block_invoke()
   return v5;
 }
 
-- (FSAuditToken)tokenWithRuid:(unsigned int)a3
+- (FSAuditToken)tokenWithRuid:(unsigned int)ruid
 {
   v4 = [objc_alloc(objc_opt_class()) initWithToken:&self->_token];
-  v4[5] = a3;
+  v4[5] = ruid;
 
   return v4;
 }
@@ -188,16 +188,16 @@ uint64_t __27__FSAuditToken_getOurToken__block_invoke()
   return self;
 }
 
-- (FSAuditToken)initWithCoder:(id)a3
+- (FSAuditToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10 = 0;
   v9.receiver = self;
   v9.super_class = FSAuditToken;
   v5 = [(FSAuditToken *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeBytesForKey:@"FSAuditToken.token" returnedLength:&v10];
+    v6 = [coderCopy decodeBytesForKey:@"FSAuditToken.token" returnedLength:&v10];
     if (v10 == 32)
     {
       v7 = *v6;

@@ -1,14 +1,14 @@
 @interface RamrodOSMessagePlist
-- (RamrodOSMessagePlist)initWithPropertyList:(id)a3 error:(id *)a4;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (RamrodOSMessagePlist)initWithPropertyList:(id)list error:(id *)error;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (void)dealloc;
 @end
 
 @implementation RamrodOSMessagePlist
 
-- (RamrodOSMessagePlist)initWithPropertyList:(id)a3 error:(id *)a4
+- (RamrodOSMessagePlist)initWithPropertyList:(id)list error:(id *)error
 {
-  v6 = a3;
+  listCopy = list;
   v17.receiver = self;
   v17.super_class = RamrodOSMessagePlist;
   v7 = [(RamrodOSMessagePlist *)&v17 init];
@@ -23,14 +23,14 @@
   v7->_chunks = v9;
 
   v16 = 0;
-  v11 = [NSPropertyListSerialization writePropertyList:v6 toStream:v7 format:200 options:0 error:&v16];
+  v11 = [NSPropertyListSerialization writePropertyList:listCopy toStream:v7 format:200 options:0 error:&v16];
   v12 = v16;
   v7->_length = v11;
   objc_autoreleasePoolPop(v8);
-  if (a4 && v12)
+  if (error && v12)
   {
     v13 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   length = v7->_length;
@@ -52,10 +52,10 @@ LABEL_6:
   [(RamrodOSMessagePlist *)&v3 dealloc];
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
-  v4 = a4;
-  v6 = [[NSData alloc] initWithBytes:a3 length:a4];
+  lengthCopy = length;
+  v6 = [[NSData alloc] initWithBytes:write length:length];
   if (v6)
   {
     [(NSMutableArray *)self->_chunks addObject:v6];
@@ -67,10 +67,10 @@ LABEL_6:
     streamError = self->_streamError;
     self->_streamError = v7;
 
-    v4 = -1;
+    lengthCopy = -1;
   }
 
-  return v4;
+  return lengthCopy;
 }
 
 @end

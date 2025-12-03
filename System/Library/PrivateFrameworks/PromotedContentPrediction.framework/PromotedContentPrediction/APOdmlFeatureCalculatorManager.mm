@@ -1,26 +1,26 @@
 @interface APOdmlFeatureCalculatorManager
-- (APOdmlFeatureCalculatorManager)initWithActivity:(id)a3;
-- (id)parseErrorInfo:(id)a3 calculator:(id)a4;
+- (APOdmlFeatureCalculatorManager)initWithActivity:(id)activity;
+- (id)parseErrorInfo:(id)info calculator:(id)calculator;
 - (id)taskDeferred;
-- (void)calculateAllFeatures:(id)a3;
-- (void)iterateThroughCalculators:(id)a3;
-- (void)runFeatureCalculator:(id)a3;
+- (void)calculateAllFeatures:(id)features;
+- (void)iterateThroughCalculators:(id)calculators;
+- (void)runFeatureCalculator:(id)calculator;
 @end
 
 @implementation APOdmlFeatureCalculatorManager
 
-- (APOdmlFeatureCalculatorManager)initWithActivity:(id)a3
+- (APOdmlFeatureCalculatorManager)initWithActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v38.receiver = self;
   v38.super_class = APOdmlFeatureCalculatorManager;
   v6 = [(APOdmlFeatureCalculatorManager *)&v38 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpc_activity, a3);
+    objc_storeStrong(&v6->_xpc_activity, activity);
     v8 = [APOdmlXpcLifecycleHandler alloc];
-    v10 = objc_msgSend_initWithActivity_(v8, v9, v5);
+    v10 = objc_msgSend_initWithActivity_(v8, v9, activityCopy);
     lifeCycleHandler = v7->_lifeCycleHandler;
     v7->_lifeCycleHandler = v10;
 
@@ -55,10 +55,10 @@
   return v7;
 }
 
-- (void)calculateAllFeatures:(id)a3
+- (void)calculateAllFeatures:(id)features
 {
   v61 = *MEMORY[0x277D85DE8];
-  v44 = a3;
+  featuresCopy = features;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
@@ -134,16 +134,16 @@
     v49[1] = 3221225472;
     v49[2] = sub_260EEBA60;
     v49[3] = &unk_279AC6380;
-    v40 = v44;
-    v50 = v44;
+    v40 = featuresCopy;
+    v50 = featuresCopy;
     objc_msgSend_addOperationWithBlock_(v39, v41, v49);
   }
 
   else
   {
-    v42 = self;
-    v40 = v44;
-    objc_msgSend_iterateThroughCalculators_(v42, v36, v44);
+    selfCopy = self;
+    v40 = featuresCopy;
+    objc_msgSend_iterateThroughCalculators_(selfCopy, v36, featuresCopy);
   }
 
   v43 = *MEMORY[0x277D85DE8];
@@ -224,10 +224,10 @@ LABEL_12:
   return v16;
 }
 
-- (void)iterateThroughCalculators:(id)a3
+- (void)iterateThroughCalculators:(id)calculators
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  calculatorsCopy = calculators;
   v7 = objc_msgSend_validFeatureCalculators(self, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9);
 
@@ -247,7 +247,7 @@ LABEL_12:
     v25[1] = 3221225472;
     v25[2] = sub_260EEBE58;
     v25[3] = &unk_279AC6380;
-    v26 = v4;
+    v26 = calculatorsCopy;
     objc_msgSend_addOperationWithBlock_(v17, v18, v25);
   }
 
@@ -257,17 +257,17 @@ LABEL_12:
   v23[2] = sub_260EEBE70;
   v23[3] = &unk_279AC63F8;
   v23[4] = self;
-  v24 = v4;
-  v20 = v4;
+  v24 = calculatorsCopy;
+  v20 = calculatorsCopy;
   objc_msgSend_enumerateObjectsUsingBlock_(v19, v21, v23);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runFeatureCalculator:(id)a3
+- (void)runFeatureCalculator:(id)calculator
 {
   v92 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  calculatorCopy = calculator;
   v7 = 0;
   *&v8 = 138478595;
   v78 = v8;
@@ -280,7 +280,7 @@ LABEL_12:
     {
       v14 = objc_msgSend_userInfo(v10, v11, v12);
       v17 = objc_msgSend_mutableCopy(v14, v15, v16);
-      v19 = objc_msgSend_parseErrorInfo_calculator_(self, v18, v17, v6);
+      v19 = objc_msgSend_parseErrorInfo_calculator_(self, v18, v17, calculatorCopy);
 
       v22 = objc_msgSend_calculatorErrors(self, v20, v21);
       v23 = *(v9 + 2488);
@@ -292,7 +292,7 @@ LABEL_12:
 
     else
     {
-      v19 = objc_msgSend_createAndSaveVector_(v6, v11, v7);
+      v19 = objc_msgSend_createAndSaveVector_(calculatorCopy, v11, v7);
       v33 = OdmlLogForCategory(3uLL);
       v34 = v33;
       if (v19)
@@ -301,8 +301,8 @@ LABEL_12:
         {
           v35 = objc_opt_class();
           v79 = v35;
-          v38 = objc_msgSend_placementType(v6, v36, v37);
-          v41 = objc_msgSend_assetManagerType(v6, v39, v40);
+          v38 = objc_msgSend_placementType(calculatorCopy, v36, v37);
+          v41 = objc_msgSend_assetManagerType(calculatorCopy, v39, v40);
           v44 = objc_msgSend_debugDescription(v19, v42, v43);
           *buf = 138478851;
           v83 = v35;
@@ -320,7 +320,7 @@ LABEL_12:
 
         v47 = objc_msgSend_userInfo(v19, v45, v46);
         v50 = objc_msgSend_mutableCopy(v47, v48, v49);
-        v22 = objc_msgSend_parseErrorInfo_calculator_(self, v51, v50, v6);
+        v22 = objc_msgSend_parseErrorInfo_calculator_(self, v51, v50, calculatorCopy);
 
         v54 = objc_msgSend_calculatorErrors(self, v52, v53);
         v55 = *(v9 + 2488);
@@ -338,8 +338,8 @@ LABEL_12:
         {
           v65 = objc_opt_class();
           v66 = v65;
-          v69 = objc_msgSend_placementType(v6, v67, v68);
-          v72 = objc_msgSend_assetManagerType(v6, v70, v71);
+          v69 = objc_msgSend_placementType(calculatorCopy, v67, v68);
+          v72 = objc_msgSend_assetManagerType(calculatorCopy, v70, v71);
           *buf = v78;
           v83 = v65;
           v84 = 2048;
@@ -357,7 +357,7 @@ LABEL_12:
         v80[1] = 3221225472;
         v80[2] = sub_260EEC5DC;
         v80[3] = &unk_279AC6188;
-        v81 = v6;
+        v81 = calculatorCopy;
         objc_msgSend_addOperationWithBlock_(v75, v76, v80);
 
         v22 = v81;
@@ -372,21 +372,21 @@ LABEL_12:
   v77 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parseErrorInfo:(id)a3 calculator:(id)a4
+- (id)parseErrorInfo:(id)info calculator:(id)calculator
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v6 = v5;
+    v6 = infoCopy;
     v7 = MEMORY[0x277CCABB0];
-    v8 = a4;
-    v11 = objc_msgSend_placementType(v8, v9, v10);
+    calculatorCopy = calculator;
+    v11 = objc_msgSend_placementType(calculatorCopy, v9, v10);
     v13 = objc_msgSend_numberWithUnsignedLong_(v7, v12, v11);
     objc_msgSend_setObject_forKey_(v6, v14, v13, @"placementType");
 
     v15 = MEMORY[0x277CCABB0];
-    v18 = objc_msgSend_assetManagerType(v8, v16, v17);
+    v18 = objc_msgSend_assetManagerType(calculatorCopy, v16, v17);
 
     v20 = objc_msgSend_numberWithUnsignedLong_(v15, v19, v18);
     objc_msgSend_setObject_forKey_(v6, v21, v20, @"assetManagerType");
@@ -395,16 +395,16 @@ LABEL_12:
   else
   {
     v22 = MEMORY[0x277CBEB38];
-    v23 = a4;
+    calculatorCopy2 = calculator;
     v24 = [v22 alloc];
     v41[0] = @"placementType";
     v25 = MEMORY[0x277CCABB0];
-    v28 = objc_msgSend_placementType(v23, v26, v27);
+    v28 = objc_msgSend_placementType(calculatorCopy2, v26, v27);
     v20 = objc_msgSend_numberWithUnsignedLong_(v25, v29, v28);
     v42[0] = v20;
     v41[1] = @"assetManagerType";
     v30 = MEMORY[0x277CCABB0];
-    v33 = objc_msgSend_assetManagerType(v23, v31, v32);
+    v33 = objc_msgSend_assetManagerType(calculatorCopy2, v31, v32);
 
     v35 = objc_msgSend_numberWithUnsignedLong_(v30, v34, v33);
     v42[1] = v35;

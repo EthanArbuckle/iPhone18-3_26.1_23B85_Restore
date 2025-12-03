@@ -1,27 +1,27 @@
 @interface TSTMergeAction
-+ (TSKUIDStructTract)cellUIDRangeFromMergeFormula:(SEL)a3 calcEngine:(id)a4;
-+ (id)mergeActionForGrowingRange:(const void *)a3 coveringRange:(const void *)a4 inTable:(id)a5;
-+ (id)mergeActionForInsertingRange:(const void *)a3 inTable:(id)a4;
-+ (id)mergeActionForRemovingRanges:(const void *)a3 inTable:(id)a4;
-+ (id)stringForMergeType:(int)a3;
++ (TSKUIDStructTract)cellUIDRangeFromMergeFormula:(SEL)formula calcEngine:(id)engine;
++ (id)mergeActionForGrowingRange:(const void *)range coveringRange:(const void *)coveringRange inTable:(id)table;
++ (id)mergeActionForInsertingRange:(const void *)range inTable:(id)table;
++ (id)mergeActionForRemovingRanges:(const void *)ranges inTable:(id)table;
++ (id)stringForMergeType:(int)type;
 - (BOOL)hasMultiRowMerge;
-- (TSTMergeAction)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSTMergeAction)initWithType:(int)a3;
-- (TSTMergeAction)initWithType:(int)a3 uidRange:(const void *)a4;
-- (TSTMergeAction)initWithType:(int)a3 uidRanges:(const void *)a4;
+- (TSTMergeAction)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSTMergeAction)initWithType:(int)type;
+- (TSTMergeAction)initWithType:(int)type uidRange:(const void *)range;
+- (TSTMergeAction)initWithType:(int)type uidRanges:(const void *)ranges;
 - (id).cxx_construct;
-- (id)actionByExpandingWithAction:(id)a3;
-- (id)cellRegionForTable:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)remapUIDsByColumnMap:(const void *)a3 rowMap:(const void *)a4 ownerMap:(const void *)a5;
+- (id)actionByExpandingWithAction:(id)action;
+- (id)cellRegionForTable:(id)table;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)remapUIDsByColumnMap:(const void *)map rowMap:(const void *)rowMap ownerMap:(const void *)ownerMap;
 - (id)shrinkAction;
-- (void)addFormula:(id)a3;
-- (void)addFormulaIndex:(unint64_t)a3;
-- (void)enumerateMergeFormulasUsingBlock:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setMergeFormulaIndexes:(const void *)a3;
-- (void)setMergeFormulas:(const void *)a3;
-- (void)setUidRanges:(const void *)a3;
+- (void)addFormula:(id)formula;
+- (void)addFormulaIndex:(unint64_t)index;
+- (void)enumerateMergeFormulasUsingBlock:(id)block;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setMergeFormulaIndexes:(const void *)indexes;
+- (void)setMergeFormulas:(const void *)formulas;
+- (void)setUidRanges:(const void *)ranges;
 - (void)verify;
 @end
 
@@ -72,31 +72,31 @@ LABEL_2:
   objc_msgSend_logBacktraceThrottled(v21, v17, v18, v19, v20);
 }
 
-+ (id)stringForMergeType:(int)a3
++ (id)stringForMergeType:(int)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_2784642E8[a3];
+    return off_2784642E8[type];
   }
 }
 
-- (TSTMergeAction)initWithType:(int)a3 uidRange:(const void *)a4
+- (TSTMergeAction)initWithType:(int)type uidRange:(const void *)range
 {
-  v5 = *&a3;
+  v5 = *&type;
   v19 = *MEMORY[0x277D85DE8];
   v13 = 0;
   v14 = 0;
   v15 = 0;
-  sub_221086EBC(&v13, *a4, *(a4 + 1), (*(a4 + 1) - *a4) >> 4);
+  sub_221086EBC(&v13, *range, *(range + 1), (*(range + 1) - *range) >> 4);
   __p = 0;
   v17 = 0;
   v18 = 0;
-  sub_221086EBC(&__p, *(a4 + 3), *(a4 + 4), (*(a4 + 4) - *(a4 + 3)) >> 4);
+  sub_221086EBC(&__p, *(range + 3), *(range + 4), (*(range + 4) - *(range + 3)) >> 4);
   memset(v11, 0, sizeof(v11));
   sub_2212D8368(v11, &v13, &v19, 1uLL);
   v9 = objc_msgSend_initWithType_uidRanges_(self, v7, v5, v11, v8);
@@ -117,38 +117,38 @@ LABEL_2:
   return v9;
 }
 
-- (TSTMergeAction)initWithType:(int)a3
+- (TSTMergeAction)initWithType:(int)type
 {
   memset(v6, 0, sizeof(v6));
-  v4 = objc_msgSend_initWithType_uidRanges_(self, a2, *&a3, v6, v3);
+  v4 = objc_msgSend_initWithType_uidRanges_(self, a2, *&type, v6, v3);
   v7 = v6;
   sub_2210BC30C(&v7);
   return v4;
 }
 
-- (TSTMergeAction)initWithType:(int)a3 uidRanges:(const void *)a4
+- (TSTMergeAction)initWithType:(int)type uidRanges:(const void *)ranges
 {
-  v7 = objc_msgSend_init(self, a2, *&a3, a4, v4);
+  v7 = objc_msgSend_init(self, a2, *&type, ranges, v4);
   v8 = v7;
   if (v7)
   {
-    *(v7 + 8) = a3;
+    *(v7 + 8) = type;
     v9 = v7 + 16;
-    if (&v8->_uidRanges != a4)
+    if (&v8->_uidRanges != ranges)
     {
-      sub_2213C3D6C(v9, *a4, *(a4 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 4));
+      sub_2213C3D6C(v9, *ranges, *(ranges + 1), 0xAAAAAAAAAAAAAAABLL * ((*(ranges + 1) - *ranges) >> 4));
     }
   }
 
   return v8;
 }
 
-+ (TSKUIDStructTract)cellUIDRangeFromMergeFormula:(SEL)a3 calcEngine:(id)a4
++ (TSKUIDStructTract)cellUIDRangeFromMergeFormula:(SEL)formula calcEngine:(id)engine
 {
-  v7 = a4;
+  engineCopy = engine;
   memset(&v19, 0, sizeof(v19));
   TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v26, a5, &v19);
-  v12 = objc_msgSend_const_astNodeArray(v7, v8, v9, v10, v11);
+  v12 = objc_msgSend_const_astNodeArray(engineCopy, v8, v9, v10, v11);
   sub_2212BB9E8(&v19, v12, &v26, 1);
   TSCEASTStreamIterator::rewrite(&v19, v13, v14, v15, v16);
   if (v24 == __p || v22 == v21)
@@ -181,10 +181,10 @@ LABEL_2:
   return result;
 }
 
-+ (id)mergeActionForRemovingRanges:(const void *)a3 inTable:(id)a4
++ (id)mergeActionForRemovingRanges:(const void *)ranges inTable:(id)table
 {
-  v5 = a4;
-  if (*(a3 + 1) == *a3)
+  tableCopy = table;
+  if (*(ranges + 1) == *ranges)
   {
     v13 = 0;
   }
@@ -192,14 +192,14 @@ LABEL_2:
   else
   {
     v6 = [TSTMergeAction alloc];
-    v13 = objc_msgSend_initWithType_uidRanges_(v6, v7, 3, a3, v8);
-    v14 = *a3;
-    v15 = *(a3 + 1);
-    if (*a3 != v15)
+    v13 = objc_msgSend_initWithType_uidRanges_(v6, v7, 3, ranges, v8);
+    v14 = *ranges;
+    v15 = *(ranges + 1);
+    if (*ranges != v15)
     {
       do
       {
-        v23[0] = objc_msgSend_tableUID(v5, v9, v10, v11, v12);
+        v23[0] = objc_msgSend_tableUID(tableCopy, v9, v10, v11, v12);
         v23[1] = v16;
         v18 = objc_msgSend_createFormulaForUIDRange_tableUID_(TSTFormulaStore, v16, v14, v23, v17);
         objc_msgSend_addFormula_(v13, v19, v18, v20, v21);
@@ -214,33 +214,33 @@ LABEL_2:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v9 = objc_msgSend_type(self, v5, v6, v7, v8);
   objc_msgSend_setType_(v4, v10, v9, v11, v12);
-  v13 = self;
-  v18 = objc_msgSend_uidRanges(v13, v14, v15, v16, v17);
+  selfCopy = self;
+  v18 = objc_msgSend_uidRanges(selfCopy, v14, v15, v16, v17);
   objc_msgSend_setUidRanges_(v4, v19, v18, v20, v21);
-  v22 = self;
-  v27 = objc_msgSend_mergeFormulas(v22, v23, v24, v25, v26);
+  selfCopy2 = self;
+  v27 = objc_msgSend_mergeFormulas(selfCopy2, v23, v24, v25, v26);
   objc_msgSend_setMergeFormulas_(v4, v28, v27, v29, v30);
-  v31 = self;
-  v36 = objc_msgSend_mergeFormulaIndexes(v31, v32, v33, v34, v35);
+  selfCopy3 = self;
+  v36 = objc_msgSend_mergeFormulaIndexes(selfCopy3, v32, v33, v34, v35);
   objc_msgSend_setMergeFormulaIndexes_(v4, v37, v36, v38, v39);
   return v4;
 }
 
-+ (id)mergeActionForGrowingRange:(const void *)a3 coveringRange:(const void *)a4 inTable:(id)a5
++ (id)mergeActionForGrowingRange:(const void *)range coveringRange:(const void *)coveringRange inTable:(id)table
 {
-  v7 = a5;
-  if (((*(a4 + 4) - *(a4 + 3)) >> 4) * ((*(a4 + 1) - *a4) >> 4) && ((*(a3 + 4) - *(a3 + 3)) >> 4) * ((*(a3 + 1) - *a3) >> 4))
+  tableCopy = table;
+  if (((*(coveringRange + 4) - *(coveringRange + 3)) >> 4) * ((*(coveringRange + 1) - *coveringRange) >> 4) && ((*(range + 4) - *(range + 3)) >> 4) * ((*(range + 1) - *range) >> 4))
   {
     v8 = [TSTMergeAction alloc];
-    v11 = objc_msgSend_initWithType_uidRange_(v8, v9, 4, a4, v10);
-    v23[0] = objc_msgSend_tableUID(v7, v12, v13, v14, v15);
+    v11 = objc_msgSend_initWithType_uidRange_(v8, v9, 4, coveringRange, v10);
+    v23[0] = objc_msgSend_tableUID(tableCopy, v12, v13, v14, v15);
     v23[1] = v16;
-    v18 = objc_msgSend_createFormulaForUIDRange_tableUID_(TSTFormulaStore, v16, a3, v23, v17);
+    v18 = objc_msgSend_createFormulaForUIDRange_tableUID_(TSTFormulaStore, v16, range, v23, v17);
     objc_msgSend_addFormula_(v11, v19, v18, v20, v21);
   }
 
@@ -252,9 +252,9 @@ LABEL_2:
   return v11;
 }
 
-+ (id)mergeActionForInsertingRange:(const void *)a3 inTable:(id)a4
++ (id)mergeActionForInsertingRange:(const void *)range inTable:(id)table
 {
-  v4 = objc_msgSend_mergeActionForGrowingRange_coveringRange_inTable_(a1, a2, a3, a3, a4);
+  v4 = objc_msgSend_mergeActionForGrowingRange_coveringRange_inTable_(self, a2, range, range, table);
 
   return v4;
 }
@@ -303,13 +303,13 @@ LABEL_2:
   return v18;
 }
 
-- (void)addFormula:(id)a3
+- (void)addFormula:(id)formula
 {
-  v4 = a3;
-  sub_22139A5DC(&self->_mergeFormulas.__begin_, &v4);
+  formulaCopy = formula;
+  sub_22139A5DC(&self->_mergeFormulas.__begin_, &formulaCopy);
 }
 
-- (void)addFormulaIndex:(unint64_t)a3
+- (void)addFormulaIndex:(unint64_t)index
 {
   end = self->_mergeFormulaIndexes.__end_;
   cap = self->_mergeFormulaIndexes.__cap_;
@@ -345,7 +345,7 @@ LABEL_2:
     v15 = end - begin;
     v16 = (8 * v10);
     v17 = (8 * v10 - 8 * v15);
-    *v16 = a3;
+    *v16 = index;
     v7 = v16 + 1;
     memcpy(v17, begin, v9);
     v18 = self->_mergeFormulaIndexes.__begin_;
@@ -360,24 +360,24 @@ LABEL_2:
 
   else
   {
-    *end = a3;
+    *end = index;
     v7 = end + 1;
   }
 
   self->_mergeFormulaIndexes.__end_ = v7;
 }
 
-- (TSTMergeAction)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSTMergeAction)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v34 = a4;
+  unarchiverCopy = unarchiver;
   v39.receiver = self;
   v39.super_class = TSTMergeAction;
   v6 = [(TSTMergeAction *)&v39 init];
   v7 = v6;
   if (v6)
   {
-    v6->_type = *(a3 + 22);
-    v8 = *(a3 + 5);
+    v6->_type = *(archive + 22);
+    v8 = *(archive + 5);
     if (v8)
     {
       v9 = (v8 + 8);
@@ -388,7 +388,7 @@ LABEL_2:
       v9 = 0;
     }
 
-    v10 = *(a3 + 8);
+    v10 = *(archive + 8);
     if (v10)
     {
       v11 = 8 * v10;
@@ -417,7 +417,7 @@ LABEL_2:
       while (v11);
     }
 
-    v12 = *(a3 + 14);
+    v12 = *(archive + 14);
     sub_2213C3030(&v7->_mergeFormulas.__begin_, v12);
     if (v12 >= 1)
     {
@@ -425,7 +425,7 @@ LABEL_2:
       do
       {
         v14 = [TSCEFormulaObject alloc];
-        v38[0] = objc_msgSend_initWithArchive_isPreUFF_(v14, v15, *(*(a3 + 8) + v13), 0, v16);
+        v38[0] = objc_msgSend_initWithArchive_isPreUFF_(v14, v15, *(*(archive + 8) + v13), 0, v16);
         sub_22139A5DC(&v7->_mergeFormulas.__begin_, v38);
 
         v13 += 8;
@@ -435,7 +435,7 @@ LABEL_2:
       while (v12);
     }
 
-    v17 = *(a3 + 18);
+    v17 = *(archive + 18);
     sub_2211687C4(&v7->_mergeFormulaIndexes.__begin_, v17);
     if (v17 >= 1)
     {
@@ -444,7 +444,7 @@ LABEL_2:
       v20 = 4 * v17;
       do
       {
-        v21 = *(*(a3 + 10) + v18);
+        v21 = *(*(archive + 10) + v18);
         cap = v7->_mergeFormulaIndexes.__cap_;
         if (end >= cap)
         {
@@ -511,44 +511,44 @@ LABEL_2:
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v32 = a4;
+  archiverCopy = archiver;
   type = self->_type;
-  *(a3 + 4) |= 1u;
-  *(a3 + 22) = type;
+  *(archive + 4) |= 1u;
+  *(archive + 22) = type;
   begin = self->_uidRanges.__begin_;
   end = self->_uidRanges.__end_;
   while (begin != end)
   {
-    v9 = *(a3 + 5);
+    v9 = *(archive + 5);
     if (!v9)
     {
       goto LABEL_8;
     }
 
-    v10 = *(a3 + 8);
+    v10 = *(archive + 8);
     v11 = *v9;
     if (v10 < *v9)
     {
-      *(a3 + 8) = v10 + 1;
+      *(archive + 8) = v10 + 1;
       v12 = *&v9[2 * v10 + 2];
       goto LABEL_10;
     }
 
-    if (v11 == *(a3 + 9))
+    if (v11 == *(archive + 9))
     {
 LABEL_8:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-      v9 = *(a3 + 5);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+      v9 = *(archive + 5);
       v11 = *v9;
     }
 
     *v9 = v11 + 1;
-    v12 = MEMORY[0x223DA0320](*(a3 + 3));
-    v13 = *(a3 + 8);
-    v14 = *(a3 + 5) + 8 * v13;
-    *(a3 + 8) = v13 + 1;
+    v12 = MEMORY[0x223DA0320](*(archive + 3));
+    v13 = *(archive + 8);
+    v14 = *(archive + 5) + 8 * v13;
+    *(archive + 8) = v13 + 1;
     *(v14 + 8) = v12;
 LABEL_10:
     TSKUIDStructTract::saveToMessage(begin++, v12);
@@ -559,36 +559,36 @@ LABEL_10:
   while (v15 != var0)
   {
     v19 = *v15;
-    v20 = *(a3 + 8);
+    v20 = *(archive + 8);
     if (!v20)
     {
       goto LABEL_18;
     }
 
-    v21 = *(a3 + 14);
+    v21 = *(archive + 14);
     v22 = *v20;
     if (v21 < *v20)
     {
-      *(a3 + 14) = v21 + 1;
-      objc_msgSend_encodeToArchive_archiver_(v19, v17, *&v20[2 * v21 + 2], v32, v18);
+      *(archive + 14) = v21 + 1;
+      objc_msgSend_encodeToArchive_archiver_(v19, v17, *&v20[2 * v21 + 2], archiverCopy, v18);
       goto LABEL_20;
     }
 
-    if (v22 == *(a3 + 15))
+    if (v22 == *(archive + 15))
     {
 LABEL_18:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 48));
-      v20 = *(a3 + 8);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 48));
+      v20 = *(archive + 8);
       v22 = *v20;
     }
 
     *v20 = v22 + 1;
-    v23 = google::protobuf::Arena::CreateMaybeMessage<TSCE::FormulaArchive>(*(a3 + 6));
-    v24 = *(a3 + 14);
-    v25 = *(a3 + 8) + 8 * v24;
-    *(a3 + 14) = v24 + 1;
+    v23 = google::protobuf::Arena::CreateMaybeMessage<TSCE::FormulaArchive>(*(archive + 6));
+    v24 = *(archive + 14);
+    v25 = *(archive + 8) + 8 * v24;
+    *(archive + 14) = v24 + 1;
     *(v25 + 8) = v23;
-    objc_msgSend_encodeToArchive_archiver_(v19, v26, v23, v32, v27);
+    objc_msgSend_encodeToArchive_archiver_(v19, v26, v23, archiverCopy, v27);
 LABEL_20:
 
     ++v15;
@@ -598,17 +598,17 @@ LABEL_20:
   v29 = self->_mergeFormulaIndexes.__end_;
   if (v28 != v29)
   {
-    v30 = *(a3 + 18);
+    v30 = *(archive + 18);
     do
     {
       v31 = *v28;
-      if (v30 == *(a3 + 19))
+      if (v30 == *(archive + 19))
       {
-        sub_2210BBC64(a3 + 18, v30 + 1);
+        sub_2210BBC64(archive + 18, v30 + 1);
       }
 
-      *(*(a3 + 10) + 4 * v30++) = v31;
-      *(a3 + 18) = v30;
+      *(*(archive + 10) + 4 * v30++) = v31;
+      *(archive + 18) = v30;
       ++v28;
     }
 
@@ -616,9 +616,9 @@ LABEL_20:
   }
 }
 
-- (void)enumerateMergeFormulasUsingBlock:(id)a3
+- (void)enumerateMergeFormulasUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0;
   begin = self->_mergeFormulas.__begin_;
   var0 = self->_mergeFormulas.var0;
@@ -628,7 +628,7 @@ LABEL_20:
     do
     {
       v8 = *(v7 - 1);
-      v4[2](v4, v8, &v11);
+      blockCopy[2](blockCopy, v8, &v11);
       v9 = v11;
 
       if (v9)
@@ -641,16 +641,16 @@ LABEL_20:
   }
 }
 
-- (id)remapUIDsByColumnMap:(const void *)a3 rowMap:(const void *)a4 ownerMap:(const void *)a5
+- (id)remapUIDsByColumnMap:(const void *)map rowMap:(const void *)rowMap ownerMap:(const void *)ownerMap
 {
   memset(v33, 0, sizeof(v33));
-  v9 = self;
-  v14 = objc_msgSend_uidRanges(v9, v10, v11, v12, v13);
+  selfCopy = self;
+  v14 = objc_msgSend_uidRanges(selfCopy, v10, v11, v12, v13);
   v15 = *v14;
   v16 = *(v14 + 8);
   while (v15 != v16)
   {
-    TSKUIDStructTract::remap(v30, v15, a3, a4);
+    TSKUIDStructTract::remap(v30, v15, map, rowMap);
     sub_221398734(v33, v30);
     if (__p)
     {
@@ -674,7 +674,7 @@ LABEL_20:
   while (begin != var0)
   {
     v23 = *begin;
-    v25 = objc_msgSend_copyByRemappingUids_rowMap_ownerMap_clearIfMissing_(v23, v24, a3, a4, a5, 1);
+    v25 = objc_msgSend_copyByRemappingUids_rowMap_ownerMap_clearIfMissing_(v23, v24, map, rowMap, ownerMap, 1);
     objc_msgSend_addFormula_(v20, v26, v25, v27, v28);
 
     ++begin;
@@ -686,9 +686,9 @@ LABEL_20:
   return v20;
 }
 
-- (id)cellRegionForTable:(id)a3
+- (id)cellRegionForTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v9 = objc_msgSend_invalidRegion(TSTCellRegion, v5, v6, v7, v8);
   v14 = v9;
   begin = self->_uidRanges.__begin_;
@@ -702,7 +702,7 @@ LABEL_20:
   {
     do
     {
-      v17 = objc_msgSend_cellRegionForUIDRange_(v4, v10, begin, v12, v13);
+      v17 = objc_msgSend_cellRegionForUIDRange_(tableCopy, v10, begin, v12, v13);
       v21 = objc_msgSend_regionByAddingRegion_(v14, v18, v17, v19, v20);
 
       ++begin;
@@ -724,10 +724,10 @@ LABEL_20:
     do
     {
       v24 = *v22;
-      v25 = objc_msgSend_calcEngine(v4, v10, v11, v12, v13);
+      v25 = objc_msgSend_calcEngine(tableCopy, v10, v11, v12, v13);
       objc_msgSend_cellUIDRangeFromMergeFormula_calcEngine_(TSTMergeAction, v26, v24, v25, v27);
 
-      v31 = objc_msgSend_cellRegionForUIDRange_(v4, v28, v39, v29, v30);
+      v31 = objc_msgSend_cellRegionForUIDRange_(tableCopy, v28, v39, v29, v30);
       v35 = objc_msgSend_regionByAddingRegion_(v21, v32, v31, v33, v34);
 
       if (__p)
@@ -772,11 +772,11 @@ LABEL_20:
   return v6;
 }
 
-- (id)actionByExpandingWithAction:(id)a3
+- (id)actionByExpandingWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v9 = objc_msgSend_copy(self, v5, v6, v7, v8);
-  if (objc_msgSend_hasMergeFormulas(v4, v10, v11, v12, v13))
+  if (objc_msgSend_hasMergeFormulas(actionCopy, v10, v11, v12, v13))
   {
     v14 = v9;
     v19 = objc_msgSend_uidRanges(v14, v15, v16, v17, v18);
@@ -784,7 +784,7 @@ LABEL_20:
     v89 = 0;
     v90 = 0;
     sub_2210BC83C(&v88, *v19, v19[1], 0xAAAAAAAAAAAAAAABLL * ((v19[1] - *v19) >> 4));
-    v20 = v4;
+    v20 = actionCopy;
     v25 = objc_msgSend_uidRanges(v20, v21, v22, v23, v24);
     sub_2213C3FCC(&v88, v89, *v25, *(v25 + 8), 0xAAAAAAAAAAAAAAABLL * ((*(v25 + 8) - *v25) >> 4));
     v26 = [TSTMergeAction alloc];
@@ -831,8 +831,8 @@ LABEL_20:
       TSCEASTStreamIterator::~TSCEASTStreamIterator(v79, v47);
     }
 
-    v48 = v4;
-    v77 = v4;
+    v48 = actionCopy;
+    v77 = actionCopy;
     v53 = objc_msgSend_mergeFormulas(v48, v49, v50, v51, v52);
     v54 = *v53;
     v55 = *(v53 + 8);
@@ -938,7 +938,7 @@ LABEL_27:
     sub_2210BC30C(v79);
     v79[0] = &v88;
     sub_2210BC30C(v79);
-    v4 = v77;
+    actionCopy = v77;
   }
 
   else
@@ -949,30 +949,30 @@ LABEL_27:
   return v29;
 }
 
-- (void)setUidRanges:(const void *)a3
+- (void)setUidRanges:(const void *)ranges
 {
   p_uidRanges = &self->_uidRanges;
-  if (p_uidRanges != a3)
+  if (p_uidRanges != ranges)
   {
-    sub_2213C3D6C(p_uidRanges, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 4));
+    sub_2213C3D6C(p_uidRanges, *ranges, *(ranges + 1), 0xAAAAAAAAAAAAAAABLL * ((*(ranges + 1) - *ranges) >> 4));
   }
 }
 
-- (void)setMergeFormulas:(const void *)a3
+- (void)setMergeFormulas:(const void *)formulas
 {
   p_mergeFormulas = &self->_mergeFormulas;
-  if (p_mergeFormulas != a3)
+  if (p_mergeFormulas != formulas)
   {
-    sub_22116CF34(p_mergeFormulas, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+    sub_22116CF34(p_mergeFormulas, *formulas, *(formulas + 1), (*(formulas + 1) - *formulas) >> 3);
   }
 }
 
-- (void)setMergeFormulaIndexes:(const void *)a3
+- (void)setMergeFormulaIndexes:(const void *)indexes
 {
   p_mergeFormulaIndexes = &self->_mergeFormulaIndexes;
-  if (p_mergeFormulaIndexes != a3)
+  if (p_mergeFormulaIndexes != indexes)
   {
-    sub_22128026C(p_mergeFormulaIndexes, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+    sub_22128026C(p_mergeFormulaIndexes, *indexes, *(indexes + 1), (*(indexes + 1) - *indexes) >> 3);
   }
 }
 

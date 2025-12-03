@@ -1,80 +1,80 @@
 @interface THPaginatedPageController
-- ($D6031A91289B01F4EEA92D3AF6491109)p_stubHintAtRelativePageIndex:(SEL)a3;
+- ($D6031A91289B01F4EEA92D3AF6491109)p_stubHintAtRelativePageIndex:(SEL)index;
 - (BOOL)allowsDescendersToClip;
-- (BOOL)needsAnnotationSourceForLayout:(id)a3;
-- (BOOL)p_generateHintForPageIndex:(unint64_t)a3;
+- (BOOL)needsAnnotationSourceForLayout:(id)layout;
+- (BOOL)p_generateHintForPageIndex:(unint64_t)index;
 - (BOOL)shouldAllowFinishingPartionedAttachmentLayout;
-- (CGPoint)originOfCharacterIndex:(unint64_t)a3 forRelativePageIndex:(unint64_t)a4;
-- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)a3 pageFrame:(CGRect)a4;
+- (CGPoint)originOfCharacterIndex:(unint64_t)index forRelativePageIndex:(unint64_t)pageIndex;
+- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)index pageFrame:(CGRect)frame;
 - (CGRect)i_rectForSectionLayout;
-- (CGSize)desiredPageSizeForRelativePageIndex:(unint64_t)a3;
+- (CGSize)desiredPageSizeForRelativePageIndex:(unint64_t)index;
 - (THPageHintController)pageHints;
 - (THPagePositionController)pagePositionController;
-- (THPaginatedPageController)initWithDelegate:(id)a3 contentNode:(id)a4 paginationController:(id)a5 presentationType:(id)a6;
+- (THPaginatedPageController)initWithDelegate:(id)delegate contentNode:(id)node paginationController:(id)controller presentationType:(id)type;
 - (THWPStorage)bodyStorage;
-- (_NSRange)p_anchoredRangeForRelativePageIndex:(unint64_t)a3 forceLayout:(BOOL)a4 allowAfterLayoutPoint:(BOOL)a5;
-- (_NSRange)p_bodyRangeForRelativePageIndex:(unint64_t)a3 forceLayout:(BOOL)a4 allowAfterLayoutPoint:(BOOL)a5;
+- (_NSRange)p_anchoredRangeForRelativePageIndex:(unint64_t)index forceLayout:(BOOL)layout allowAfterLayoutPoint:(BOOL)point;
+- (_NSRange)p_bodyRangeForRelativePageIndex:(unint64_t)index forceLayout:(BOOL)layout allowAfterLayoutPoint:(BOOL)point;
 - (_NSRange)p_layoutEndAnchoredRange;
 - (_NSRange)p_layoutEndRange;
-- (const)i_topicHintsAfterPageIndex:(unint64_t)a3;
-- (const)i_topicHintsPriorToPageIndex:(unint64_t)a3;
+- (const)i_topicHintsAfterPageIndex:(unint64_t)index;
+- (const)i_topicHintsPriorToPageIndex:(unint64_t)index;
 - (id).cxx_construct;
-- (id)bodyInfoForAnchoredCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4;
-- (id)bodyInfoForCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4;
-- (id)i_columnAfterPageIndex:(unint64_t)a3;
-- (id)i_columnPriorToPageIndex:(unint64_t)a3;
-- (id)i_firstChildHintAfterPageIndex:(unint64_t)a3;
-- (id)i_pageHintForPageIndex:(unint64_t)a3;
-- (id)lineHintsForTarget:(id)a3;
-- (id)p_cachedPageLayoutForPageIndex:(unint64_t)a3 preferredLayoutController:(id)a4;
+- (id)bodyInfoForAnchoredCharIndex:(unint64_t)index forceLayout:(BOOL)layout;
+- (id)bodyInfoForCharIndex:(unint64_t)index forceLayout:(BOOL)layout;
+- (id)i_columnAfterPageIndex:(unint64_t)index;
+- (id)i_columnPriorToPageIndex:(unint64_t)index;
+- (id)i_firstChildHintAfterPageIndex:(unint64_t)index;
+- (id)i_pageHintForPageIndex:(unint64_t)index;
+- (id)lineHintsForTarget:(id)target;
+- (id)p_cachedPageLayoutForPageIndex:(unint64_t)index preferredLayoutController:(id)controller;
 - (id)p_lastValidPageHint;
 - (id)p_layoutManager;
-- (id)p_pageHintForRelativePageIndex:(unint64_t)a3 forceLayout:(BOOL)a4 allowAfterLayoutPoint:(BOOL)a5;
-- (id)p_pageInfoForPageAtRelativeIndex:(unint64_t)a3;
-- (id)p_updateHintAtIndex:(unint64_t)a3 withBodyTargets:(id)a4;
-- (id)pageInfoForRelativePageIndex:(unint64_t)a3;
-- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)a3 forRelativePageIndex:(unint64_t)a4;
-- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)a3 forString:(id)a4 options:(unint64_t)a5 inDirection:(unint64_t)a6;
-- (unint64_t)p_lastPageIndexWithBodyAfterPageIndex:(unint64_t)a3;
-- (unint64_t)p_nextRootSearchTargetIndexFromIndex:(unint64_t)a3 forString:(id)a4 options:(unint64_t)a5;
-- (unint64_t)p_previousRootSearchTargetIndexFromIndex:(unint64_t)a3 forString:(id)a4 options:(unint64_t)a5;
-- (unint64_t)p_relativePageIndexFollowingRelativePageIndex:(unint64_t)a3;
-- (unint64_t)p_relativePageIndexForAnchoredCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4 searchAfterLayoutPoint:(BOOL)a5;
-- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)a3 caretAffinity:(int)a4 forceLayout:(BOOL)a5 searchAfterLayoutPoint:(BOOL)a6;
-- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)a3 scanBackwardsFromPageIndex:(unint64_t)a4;
-- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)a3 scanForwardsFromPageIndex:(unint64_t)a4;
-- (unint64_t)p_relativePageIndexPrecedingRelativePageIndex:(unint64_t)a3;
+- (id)p_pageHintForRelativePageIndex:(unint64_t)index forceLayout:(BOOL)layout allowAfterLayoutPoint:(BOOL)point;
+- (id)p_pageInfoForPageAtRelativeIndex:(unint64_t)index;
+- (id)p_updateHintAtIndex:(unint64_t)index withBodyTargets:(id)targets;
+- (id)pageInfoForRelativePageIndex:(unint64_t)index;
+- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)rect forRelativePageIndex:(unint64_t)index;
+- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)index forString:(id)string options:(unint64_t)options inDirection:(unint64_t)direction;
+- (unint64_t)p_lastPageIndexWithBodyAfterPageIndex:(unint64_t)index;
+- (unint64_t)p_nextRootSearchTargetIndexFromIndex:(unint64_t)index forString:(id)string options:(unint64_t)options;
+- (unint64_t)p_previousRootSearchTargetIndexFromIndex:(unint64_t)index forString:(id)string options:(unint64_t)options;
+- (unint64_t)p_relativePageIndexFollowingRelativePageIndex:(unint64_t)index;
+- (unint64_t)p_relativePageIndexForAnchoredCharIndex:(unint64_t)index forceLayout:(BOOL)layout searchAfterLayoutPoint:(BOOL)point;
+- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)index caretAffinity:(int)affinity forceLayout:(BOOL)layout searchAfterLayoutPoint:(BOOL)point;
+- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)index scanBackwardsFromPageIndex:(unint64_t)pageIndex;
+- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)index scanForwardsFromPageIndex:(unint64_t)pageIndex;
+- (unint64_t)p_relativePageIndexPrecedingRelativePageIndex:(unint64_t)index;
 - (unint64_t)pageCount;
-- (unint64_t)relativePageIndexForAnchoredCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4;
-- (unint64_t)relativePageIndexForCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4;
-- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)a3;
+- (unint64_t)relativePageIndexForAnchoredCharIndex:(unint64_t)index forceLayout:(BOOL)layout;
+- (unint64_t)relativePageIndexForCharIndex:(unint64_t)index forceLayout:(BOOL)layout;
+- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)index;
 - (void)clearLayout;
 - (void)dealloc;
-- (void)i_inflateColumnsInBodyLayout:(id)a3;
-- (void)i_registerPageLayout:(id)a3;
-- (void)i_setPageHintSize:(CGSize)a3 forRelativePageIndex:(unint64_t)a4;
-- (void)i_trimPageAtIndex:(unint64_t)a3 toCharIndex:(unint64_t)a4 inTarget:(id)a5 removeAutoNumberFootnoteCount:(unint64_t)a6;
-- (void)i_unregisterPageLayout:(id)a3;
-- (void)layoutManager:(id)a3 didClearDirtyRangeWithDelta:(int64_t)a4 afterCharIndex:(unint64_t)a5;
-- (void)layoutManagerNeedsLayout:(id)a3;
-- (void)layoutThroughRelativePageIndex:(unint64_t)a3 layoutController:(id)a4;
-- (void)p_bodyLayoutDidLayout:(id)a3;
+- (void)i_inflateColumnsInBodyLayout:(id)layout;
+- (void)i_registerPageLayout:(id)layout;
+- (void)i_setPageHintSize:(CGSize)size forRelativePageIndex:(unint64_t)index;
+- (void)i_trimPageAtIndex:(unint64_t)index toCharIndex:(unint64_t)charIndex inTarget:(id)target removeAutoNumberFootnoteCount:(unint64_t)count;
+- (void)i_unregisterPageLayout:(id)layout;
+- (void)layoutManager:(id)manager didClearDirtyRangeWithDelta:(int64_t)delta afterCharIndex:(unint64_t)index;
+- (void)layoutManagerNeedsLayout:(id)layout;
+- (void)layoutThroughRelativePageIndex:(unint64_t)index layoutController:(id)controller;
+- (void)p_bodyLayoutDidLayout:(id)layout;
 - (void)p_clearOffscreenLayouts;
 - (void)p_destroyBodyLayoutState;
 - (void)p_didLayout;
-- (void)p_insertPageLayoutIntoCache:(id)a3;
-- (void)p_invalidateBodyLayoutOnPageIndex:(unint64_t)a3;
-- (void)p_layoutNextPageForLayoutController:(id)a3;
-- (void)p_layoutThroughPageIndex:(unint64_t)a3 forLayoutController:(id)a4 clearOffscreenInfos:(BOOL)a5;
-- (void)p_layoutWithPageLayout:(id)a3 outDidSync:(BOOL *)a4;
-- (void)p_performBlock:(id)a3 withPageLayoutAtRelativeIndex:(unint64_t)a4;
-- (void)p_performBlock:(id)a3 withPageLayoutAtRelativeIndex:(unint64_t)a4 preferredLayoutController:(id)a5;
-- (void)p_processWidowsAndInflationForLayoutController:(id)a3;
+- (void)p_insertPageLayoutIntoCache:(id)cache;
+- (void)p_invalidateBodyLayoutOnPageIndex:(unint64_t)index;
+- (void)p_layoutNextPageForLayoutController:(id)controller;
+- (void)p_layoutThroughPageIndex:(unint64_t)index forLayoutController:(id)controller clearOffscreenInfos:(BOOL)infos;
+- (void)p_layoutWithPageLayout:(id)layout outDidSync:(BOOL *)sync;
+- (void)p_performBlock:(id)block withPageLayoutAtRelativeIndex:(unint64_t)index;
+- (void)p_performBlock:(id)block withPageLayoutAtRelativeIndex:(unint64_t)index preferredLayoutController:(id)controller;
+- (void)p_processWidowsAndInflationForLayoutController:(id)controller;
 - (void)p_removeOrphanedLayoutsFromCache;
-- (void)p_removePageLayoutFromCache:(id)a3;
-- (void)p_setNeedsLayoutOnPageIndex:(unint64_t)a3;
+- (void)p_removePageLayoutFromCache:(id)cache;
+- (void)p_setNeedsLayoutOnPageIndex:(unint64_t)index;
 - (void)p_updateWithPaginationResults;
-- (void)setPresentationType:(id)a3;
+- (void)setPresentationType:(id)type;
 - (void)teardown;
 @end
 
@@ -88,7 +88,7 @@
   return v3;
 }
 
-- (THPaginatedPageController)initWithDelegate:(id)a3 contentNode:(id)a4 paginationController:(id)a5 presentationType:(id)a6
+- (THPaginatedPageController)initWithDelegate:(id)delegate contentNode:(id)node paginationController:(id)controller presentationType:(id)type
 {
   v14.receiver = self;
   v14.super_class = THPaginatedPageController;
@@ -96,10 +96,10 @@
   v11 = v10;
   if (v10)
   {
-    [(THPaginatedPageController *)v10 setDelegate:a3];
-    [(THPaginatedPageController *)v11 setContentNode:a4];
-    [(THPaginatedPageController *)v11 setPaginationController:a5];
-    v11->mPresentationType = [a6 copyFixingSize];
+    [(THPaginatedPageController *)v10 setDelegate:delegate];
+    [(THPaginatedPageController *)v11 setContentNode:node];
+    [(THPaginatedPageController *)v11 setPaginationController:controller];
+    v11->mPresentationType = [type copyFixingSize];
     [(THPaginatedPageController *)v11 setWrapController:objc_alloc_init(THBodyTextWrapController)];
     v11->_drawablesLayoutController = [[THOffscreenLayoutController alloc] initWithCanvas:0];
     [(THOffscreenLayoutController *)v11->_drawablesLayoutController setLayoutIsCompactWidth:[(THPresentationType *)[(THPaginatedPageController *)v11 presentationType] isCompactWidth]];
@@ -237,8 +237,8 @@
           v6 = [(THPaginatedPageController *)self pageInfoForRelativePageIndex:v5];
           v7 = [v10 objectAtIndexedSubscript:v5];
           [v6 setPageStartCharIndex:{objc_msgSend(v7, "range")}];
-          v8 = [v7 range];
-          [v6 setPageEndCharIndex:&v8[v9]];
+          range = [v7 range];
+          [v6 setPageEndCharIndex:&range[v9]];
           [v7 range];
           ++v5;
         }
@@ -262,13 +262,13 @@
   self->_bodyLayoutManager = 0;
 }
 
-- (void)setPresentationType:(id)a3
+- (void)setPresentationType:(id)type
 {
-  if (([a3 isEqualIncludingSize:{-[THPaginatedPageController presentationType](self, "presentationType")}] & 1) == 0)
+  if (([type isEqualIncludingSize:{-[THPaginatedPageController presentationType](self, "presentationType")}] & 1) == 0)
   {
     objc_sync_enter(self);
 
-    self->mPresentationType = [a3 copyFixingSize];
+    self->mPresentationType = [type copyFixingSize];
     [(THPaginatedPageController *)self clearLayout];
 
     objc_sync_exit(self);
@@ -277,45 +277,45 @@
 
 - (THPagePositionController)pagePositionController
 {
-  v3 = [(THPaginatedPageController *)self delegate];
+  delegate = [(THPaginatedPageController *)self delegate];
 
-  return [(THPageControllerDelegate *)v3 pagePositionControllerForPageController:self];
+  return [(THPageControllerDelegate *)delegate pagePositionControllerForPageController:self];
 }
 
-- (void)layoutThroughRelativePageIndex:(unint64_t)a3 layoutController:(id)a4
+- (void)layoutThroughRelativePageIndex:(unint64_t)index layoutController:(id)controller
 {
   objc_sync_enter(self);
   [(THPaginatedPageController *)self p_updateWithPaginationResults];
-  [(THPaginatedPageController *)self p_layoutThroughPageIndex:a3 forLayoutController:a4 clearOffscreenInfos:1];
+  [(THPaginatedPageController *)self p_layoutThroughPageIndex:index forLayoutController:controller clearOffscreenInfos:1];
 
   objc_sync_exit(self);
 }
 
-- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)a3 scanBackwardsFromPageIndex:(unint64_t)a4
+- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)index scanBackwardsFromPageIndex:(unint64_t)pageIndex
 {
-  if (!a3)
+  if (!index)
   {
     return 0;
   }
 
-  v7 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
-  if (v7 - 1 < a4)
+  pageCount = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
+  if (pageCount - 1 < pageIndex)
   {
-    a4 = v7 - 1;
+    pageIndex = pageCount - 1;
   }
 
-  v8 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a4 < v7)
+  pageIndexCopy2 = 0x7FFFFFFFFFFFFFFFLL;
+  if (pageIndex < pageCount)
   {
-    v9 = v7;
+    v9 = pageCount;
     while (1)
     {
-      v10 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:a4];
+      v10 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:pageIndex];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 range];
-        if (!a4)
+        range = [v10 range];
+        if (!pageIndex)
         {
           break;
         }
@@ -323,133 +323,133 @@
 
       else
       {
-        v11 = NSInvalidRange[0];
+        range = NSInvalidRange[0];
         v12 = NSInvalidRange[1];
-        if (!a4)
+        if (!pageIndex)
         {
           break;
         }
       }
 
-      if (v11 == NSInvalidRange[0] && v12 == NSInvalidRange[1])
+      if (range == NSInvalidRange[0] && v12 == NSInvalidRange[1])
       {
         break;
       }
 
-      v14 = a3 - v11;
-      if (a3 == v11)
+      v14 = index - range;
+      if (index == range)
       {
-        v8 = a4;
+        pageIndexCopy2 = pageIndex;
       }
 
       else
       {
-        v16 = a3 < v11 || v14 >= v12;
-        LODWORD(v14) = v8 != 0x7FFFFFFFFFFFFFFFLL && v16;
+        v16 = index < range || v14 >= v12;
+        LODWORD(v14) = pageIndexCopy2 != 0x7FFFFFFFFFFFFFFFLL && v16;
         if (!v16)
         {
-          v8 = a4;
+          pageIndexCopy2 = pageIndex;
         }
       }
 
-      if (--a4 >= v9 || v14)
+      if (--pageIndex >= v9 || v14)
       {
-        return v8;
+        return pageIndexCopy2;
       }
     }
 
-    if (a3 == v11)
+    if (index == range)
     {
-      return a4;
+      return pageIndex;
     }
 
-    if (a3 >= v11 && a3 - v11 < v12)
+    if (index >= range && index - range < v12)
     {
-      return a4;
+      return pageIndex;
     }
   }
 
-  return v8;
+  return pageIndexCopy2;
 }
 
-- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)a3 scanForwardsFromPageIndex:(unint64_t)a4
+- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)index scanForwardsFromPageIndex:(unint64_t)pageIndex
 {
-  if (!(a4 | a3))
+  if (!(pageIndex | index))
   {
     return 0;
   }
 
-  v4 = a4;
-  v7 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
-  if (v7 <= v4)
+  pageIndexCopy = pageIndex;
+  pageCount = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
+  if (pageCount <= pageIndexCopy)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v8 = v7;
+  v8 = pageCount;
   while (1)
   {
-    v9 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:v4];
+    v9 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:pageIndexCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 range];
+      range = [v9 range];
     }
 
     else
     {
-      v10 = NSInvalidRange[0];
+      range = NSInvalidRange[0];
       v11 = NSInvalidRange[1];
     }
 
-    if (a3 == v10)
+    if (index == range)
     {
       break;
     }
 
-    if (a3 >= v10 && a3 - v10 < v11)
+    if (index >= range && index - range < v11)
     {
       break;
     }
 
-    if (++v4 >= v8)
+    if (++pageIndexCopy >= v8)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
-  return v4;
+  return pageIndexCopy;
 }
 
-- (unint64_t)relativePageIndexForAnchoredCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4
+- (unint64_t)relativePageIndexForAnchoredCharIndex:(unint64_t)index forceLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   objc_sync_enter(self);
-  v7 = [(THPaginatedPageController *)self p_relativePageIndexForAnchoredCharIndex:a3 forceLayout:v4 searchAfterLayoutPoint:0];
+  v7 = [(THPaginatedPageController *)self p_relativePageIndexForAnchoredCharIndex:index forceLayout:layoutCopy searchAfterLayoutPoint:0];
   objc_sync_exit(self);
   return v7;
 }
 
-- (unint64_t)relativePageIndexForCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4
+- (unint64_t)relativePageIndexForCharIndex:(unint64_t)index forceLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   objc_sync_enter(self);
-  v7 = [(THPaginatedPageController *)self p_relativePageIndexForCharIndex:a3 caretAffinity:0 forceLayout:v4 searchAfterLayoutPoint:1];
+  v7 = [(THPaginatedPageController *)self p_relativePageIndexForCharIndex:index caretAffinity:0 forceLayout:layoutCopy searchAfterLayoutPoint:1];
   objc_sync_exit(self);
   return v7;
 }
 
-- (id)pageInfoForRelativePageIndex:(unint64_t)a3
+- (id)pageInfoForRelativePageIndex:(unint64_t)index
 {
   objc_sync_enter(self);
-  v5 = [(THPaginatedPageController *)self p_pageInfoForPageAtRelativeIndex:a3];
+  v5 = [(THPaginatedPageController *)self p_pageInfoForPageAtRelativeIndex:index];
   objc_sync_exit(self);
   return v5;
 }
 
-- (id)bodyInfoForCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4
+- (id)bodyInfoForCharIndex:(unint64_t)index forceLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   v7 = [THPaginatedPageController relativePageIndexForCharIndex:"relativePageIndexForCharIndex:forceLayout:" forceLayout:?];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -458,7 +458,7 @@
 
   v9 = v7;
   objc_sync_enter(self);
-  v10 = [(THPaginatedPageController *)self p_pageHintForRelativePageIndex:v9 forceLayout:v4 allowAfterLayoutPoint:0];
+  v10 = [(THPaginatedPageController *)self p_pageHintForRelativePageIndex:v9 forceLayout:layoutCopy allowAfterLayoutPoint:0];
   if (v10 && (v11 = [-[THPaginatedPageController p_pageInfoForPageAtRelativeIndex:](self p_pageInfoForPageAtRelativeIndex:{v9), "modelBodyInfos"}], (v12 = objc_msgSend(v10, "bodyCount")) != 0))
   {
     v13 = 0;
@@ -469,7 +469,7 @@
       v15 = [v10 rangeForBodyIndex:v13];
     }
 
-    while ((a3 - v15 >= v16 || a3 < v15) && v14 != v13++);
+    while ((index - v15 >= v16 || index < v15) && v14 != v13++);
   }
 
   else
@@ -481,9 +481,9 @@
   return v8;
 }
 
-- (id)bodyInfoForAnchoredCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4
+- (id)bodyInfoForAnchoredCharIndex:(unint64_t)index forceLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   v7 = [THPaginatedPageController relativePageIndexForAnchoredCharIndex:"relativePageIndexForAnchoredCharIndex:forceLayout:" forceLayout:?];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -492,7 +492,7 @@
 
   v9 = v7;
   objc_sync_enter(self);
-  v10 = [(THPaginatedPageController *)self p_pageHintForRelativePageIndex:v9 forceLayout:v4 allowAfterLayoutPoint:0];
+  v10 = [(THPaginatedPageController *)self p_pageHintForRelativePageIndex:v9 forceLayout:layoutCopy allowAfterLayoutPoint:0];
   if (v10 && (v11 = [-[THPaginatedPageController p_pageInfoForPageAtRelativeIndex:](self p_pageInfoForPageAtRelativeIndex:{v9), "modelBodyInfos"}], (v12 = objc_msgSend(v10, "bodyCount")) != 0))
   {
     v13 = 0;
@@ -503,7 +503,7 @@
       v15 = [v10 anchoredRangeForBodyIndex:v13];
     }
 
-    while ((a3 - v15 >= v16 || a3 < v15) && v14 != v13++);
+    while ((index - v15 >= v16 || index < v15) && v14 != v13++);
   }
 
   else
@@ -515,24 +515,24 @@
   return v8;
 }
 
-- (void)p_performBlock:(id)a3 withPageLayoutAtRelativeIndex:(unint64_t)a4
+- (void)p_performBlock:(id)block withPageLayoutAtRelativeIndex:(unint64_t)index
 {
   objc_sync_enter(self);
-  [(THPaginatedPageController *)self p_layoutThroughPageIndex:a4 forLayoutController:[(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] layoutControllerForPageController:self] clearOffscreenInfos:0];
-  [(THPaginatedPageController *)self p_performBlock:a3 withPageLayoutAtRelativeIndex:a4 preferredLayoutController:0];
+  [(THPaginatedPageController *)self p_layoutThroughPageIndex:index forLayoutController:[(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] layoutControllerForPageController:self] clearOffscreenInfos:0];
+  [(THPaginatedPageController *)self p_performBlock:block withPageLayoutAtRelativeIndex:index preferredLayoutController:0];
 
   objc_sync_exit(self);
 }
 
 - (unint64_t)pageCount
 {
-  v3 = [(THPaginatedPageController *)self delegate];
-  v4 = [(THPaginatedPageController *)self presentationType];
+  delegate = [(THPaginatedPageController *)self delegate];
+  presentationType = [(THPaginatedPageController *)self presentationType];
 
-  return [(THPageControllerDelegate *)v3 pageCountForPageController:self presentationType:v4];
+  return [(THPageControllerDelegate *)delegate pageCountForPageController:self presentationType:presentationType];
 }
 
-- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)a3 forRelativePageIndex:(unint64_t)a4
+- (unint64_t)firstBodyCharacterIndexOverlappingPageRect:(CGRect)rect forRelativePageIndex:(unint64_t)index
 {
   v12 = 0;
   v13 = &v12;
@@ -543,18 +543,18 @@
   v10[2] = sub_3C5B0;
   v10[3] = &unk_45B980;
   v10[4] = &v12;
-  v11 = a3;
-  [(THPaginatedPageController *)self p_performBlock:v10 withPageLayoutAtRelativeIndex:a4];
+  rectCopy = rect;
+  [(THPaginatedPageController *)self p_performBlock:v10 withPageLayoutAtRelativeIndex:index];
   v6 = v13[3];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     objc_sync_enter(self);
-    v7 = *([-[THPaginatedPageController p_pageHintForRelativePageIndex:forceLayout:allowAfterLayoutPoint:](self p_pageHintForRelativePageIndex:a4 forceLayout:1 allowAfterLayoutPoint:{1), "firstHint"}] + 4);
+    v7 = *([-[THPaginatedPageController p_pageHintForRelativePageIndex:forceLayout:allowAfterLayoutPoint:](self p_pageHintForRelativePageIndex:index forceLayout:1 allowAfterLayoutPoint:{1), "firstHint"}] + 4);
     v8 = v13;
     v13[3] = v7;
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (a4)
+      if (index)
       {
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
         v8 = v13;
@@ -571,7 +571,7 @@
   return v6;
 }
 
-- (CGPoint)originOfCharacterIndex:(unint64_t)a3 forRelativePageIndex:(unint64_t)a4
+- (CGPoint)originOfCharacterIndex:(unint64_t)index forRelativePageIndex:(unint64_t)pageIndex
 {
   v9 = 0;
   v10 = &v9;
@@ -585,8 +585,8 @@
   v8[2] = sub_3C700;
   v8[3] = &unk_45B9A8;
   v8[4] = &v9;
-  v8[5] = a3;
-  [(THPaginatedPageController *)self p_performBlock:v8 withPageLayoutAtRelativeIndex:a4];
+  v8[5] = index;
+  [(THPaginatedPageController *)self p_performBlock:v8 withPageLayoutAtRelativeIndex:pageIndex];
   v4 = v10[6];
   v5 = v10[7];
   _Block_object_dispose(&v9, 8);
@@ -597,9 +597,9 @@
   return result;
 }
 
-- (CGSize)desiredPageSizeForRelativePageIndex:(unint64_t)a3
+- (CGSize)desiredPageSizeForRelativePageIndex:(unint64_t)index
 {
-  v3 = [-[THPaginatedPageController pageInfoForRelativePageIndex:](self pageInfoForRelativePageIndex:{a3), "geometry"}];
+  v3 = [-[THPaginatedPageController pageInfoForRelativePageIndex:](self pageInfoForRelativePageIndex:{index), "geometry"}];
 
   [v3 size];
   result.height = v5;
@@ -607,10 +607,10 @@
   return result;
 }
 
-- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)a3 pageFrame:(CGRect)a4
+- (CGPoint)pageOriginForRelativePageIndex:(unint64_t)index pageFrame:(CGRect)frame
 {
-  width = a4.size.width;
-  [(THPagePositionController *)[(THPaginatedPageController *)self pagePositionController:a4.origin.x] pageOriginForRelativePageIndex:a3];
+  width = frame.size.width;
+  [(THPagePositionController *)[(THPaginatedPageController *)self pagePositionController:frame.origin.x] pageOriginForRelativePageIndex:index];
   v7 = v6;
   v9 = v8;
   if ([(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] displaySinglePageChapterSeparatelyForPageController:self]&& [(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] isTwoUpForNavigationUnitForPageController:self]&& [(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] pageCountForNavigationUnitForPageController:self]== &dword_0 + 1)
@@ -626,16 +626,16 @@
   return result;
 }
 
-- (void)layoutManagerNeedsLayout:(id)a3
+- (void)layoutManagerNeedsLayout:(id)layout
 {
   objc_sync_enter(self);
   [(THPaginatedPageController *)self p_updateWithPaginationResults];
-  v5 = [a3 dirtyRange];
-  v6 = v5;
+  dirtyRange = [layout dirtyRange];
+  v6 = dirtyRange;
   v8 = v7;
-  if (v5)
+  if (dirtyRange)
   {
-    v9 = v5 - 1;
+    v9 = dirtyRange - 1;
   }
 
   else
@@ -662,9 +662,9 @@
 
   if (self->_firstPageIndexNeedingLayout)
   {
-    v13 = [(THPaginatedPageController *)self p_layoutEndCharIndex];
-    v14 = [objc_msgSend(a3 "storage")];
-    if (v6 == v13 && v8 == &v14[-v13])
+    p_layoutEndCharIndex = [(THPaginatedPageController *)self p_layoutEndCharIndex];
+    v14 = [objc_msgSend(layout "storage")];
+    if (v6 == p_layoutEndCharIndex && v8 == &v14[-p_layoutEndCharIndex])
     {
       firstPageIndexNeedingLayout = self->_firstPageIndexNeedingLayout;
       if (firstPageIndexNeedingLayout != [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount])
@@ -689,41 +689,41 @@ LABEL_14:
   objc_sync_exit(self);
 }
 
-- (id)lineHintsForTarget:(id)a3
+- (id)lineHintsForTarget:(id)target
 {
   objc_opt_class();
   result = TSUDynamicCast();
   if (result)
   {
-    v4 = [result info];
+    info = [result info];
 
-    return [v4 lineHints];
+    return [info lineHints];
   }
 
   return result;
 }
 
-- (void)layoutManager:(id)a3 didClearDirtyRangeWithDelta:(int64_t)a4 afterCharIndex:(unint64_t)a5
+- (void)layoutManager:(id)manager didClearDirtyRangeWithDelta:(int64_t)delta afterCharIndex:(unint64_t)index
 {
   if (!self->_doingLayout)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler currentHandler];
   }
 
-  if (a4)
+  if (delta)
   {
     firstPageIndexNeedingLayout = self->_firstPageIndexNeedingLayout;
-    v8 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints:a3] pageCount];
+    pageCount = [(THPageHintController *)[(THPaginatedPageController *)self pageHints:manager] pageCount];
     v9 = firstPageIndexNeedingLayout + 1;
-    if (v9 < v8)
+    if (v9 < pageCount)
     {
-      v10 = v8;
+      v10 = pageCount;
       do
       {
         v11 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:v9];
         if (v11 != +[NSNull null])
         {
-          [(NSNull *)v11 offsetStartCharIndicesBy:a4];
+          [(NSNull *)v11 offsetStartCharIndicesBy:delta];
         }
 
         ++v9;
@@ -736,22 +736,22 @@ LABEL_14:
 
 - (BOOL)shouldAllowFinishingPartionedAttachmentLayout
 {
-  v3 = [(THPaginatedPageController *)self delegate];
+  delegate = [(THPaginatedPageController *)self delegate];
 
-  return [(THPageControllerDelegate *)v3 shouldAllowFinishingPartionedAttachmentLayoutForPageController:self];
+  return [(THPageControllerDelegate *)delegate shouldAllowFinishingPartionedAttachmentLayoutForPageController:self];
 }
 
-- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)a3
+- (unint64_t)rootSearchTargetCountThroughIndex:(unint64_t)index
 {
-  [(THPaginatedPageController *)self layoutThroughRelativePageIndex:a3 layoutController:[(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] layoutControllerForPageController:self]];
+  [(THPaginatedPageController *)self layoutThroughRelativePageIndex:index layoutController:[(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] layoutControllerForPageController:self]];
 
   return [(THPaginatedPageController *)self pageCount];
 }
 
-- (unint64_t)p_nextRootSearchTargetIndexFromIndex:(unint64_t)a3 forString:(id)a4 options:(unint64_t)a5
+- (unint64_t)p_nextRootSearchTargetIndexFromIndex:(unint64_t)index forString:(id)string options:(unint64_t)options
 {
   v8 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
     v10 = 0;
@@ -759,7 +759,7 @@ LABEL_14:
 
   else
   {
-    v10 = a3 + 1;
+    v10 = index + 1;
     v11 = [THPaginatedPageController p_bodyRangeForRelativePageIndex:"p_bodyRangeForRelativePageIndex:forceLayout:allowAfterLayoutPoint:" forceLayout:? allowAfterLayoutPoint:?];
     v9 = &v11[v12];
     if (&v11[v12] == 0x7FFFFFFFFFFFFFFFLL)
@@ -769,8 +769,8 @@ LABEL_14:
     }
   }
 
-  v13 = [(THPaginatedPageController *)self bodyStorage];
-  v14 = [(THWPStorage *)v13 length];
+  bodyStorage = [(THPaginatedPageController *)self bodyStorage];
+  v14 = [(THWPStorage *)bodyStorage length];
   if (v9 <= v14)
   {
     v15 = v14;
@@ -791,13 +791,13 @@ LABEL_14:
     v16 = v9;
   }
 
-  v17 = [-[THWPStorage string](v13 string];
-  if (v17 != 0x7FFFFFFFFFFFFFFFLL)
+  string = [-[THWPStorage string](bodyStorage string];
+  if (string != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(THPaginatedPageController *)self relativePageIndexForCharIndex:v17 forceLayout:1];
+    v8 = [(THPaginatedPageController *)self relativePageIndexForCharIndex:string forceLayout:1];
   }
 
-  v18 = [(THWPStorage *)v13 length];
+  v18 = [(THWPStorage *)bodyStorage length];
   if (v9 <= v18)
   {
     v19 = v18;
@@ -818,14 +818,14 @@ LABEL_14:
     v20 = v9;
   }
 
-  [(THWPStorage *)v13 attachmentIndexRangeForTextRange:v20, v19 - v20];
+  [(THWPStorage *)bodyStorage attachmentIndexRangeForTextRange:v20, v19 - v20];
   if (v21 && v10 < THMinIndex([(THPaginatedPageController *)self pageCount], v8))
   {
     v22 = v10;
     do
     {
       v23 = [(THPaginatedPageController *)self p_anchoredRangeForRelativePageIndex:v22 forceLayout:1 allowAfterLayoutPoint:0];
-      if (THSearchModelsForString([(THWPStorage *)v13 childEnumeratorForRange:v23, v24], a4, a5))
+      if (THSearchModelsForString([(THWPStorage *)bodyStorage childEnumeratorForRange:v23, v24], string, options))
       {
         v8 = v22;
         break;
@@ -839,7 +839,7 @@ LABEL_14:
 
   while (v10 < THMinIndex([(THPaginatedPageController *)self pageCount], v8))
   {
-    if (THSearchModelChildrenForString([(THPaginatedPageController *)self pageInfoForRelativePageIndex:v10], a4, a5))
+    if (THSearchModelChildrenForString([(THPaginatedPageController *)self pageInfoForRelativePageIndex:v10], string, options))
     {
       return v10;
     }
@@ -850,20 +850,20 @@ LABEL_14:
   return v8;
 }
 
-- (unint64_t)p_previousRootSearchTargetIndexFromIndex:(unint64_t)a3 forString:(id)a4 options:(unint64_t)a5
+- (unint64_t)p_previousRootSearchTargetIndexFromIndex:(unint64_t)index forString:(id)string options:(unint64_t)options
 {
-  v9 = [(THPaginatedPageController *)self pageCount];
+  pageCount = [(THPaginatedPageController *)self pageCount];
   v10 = [(THWPStorage *)[(THPaginatedPageController *)self bodyStorage] length];
   v11 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = v10;
-    a3 = v9;
+    index = pageCount;
   }
 
   else
   {
-    v13 = [(THPaginatedPageController *)self p_bodyRangeForRelativePageIndex:a3 forceLayout:0 allowAfterLayoutPoint:0];
+    v13 = [(THPaginatedPageController *)self p_bodyRangeForRelativePageIndex:index forceLayout:0 allowAfterLayoutPoint:0];
     if (v13 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -876,14 +876,14 @@ LABEL_14:
     }
   }
 
-  v14 = [(THPaginatedPageController *)self bodyStorage];
-  v15 = [-[THWPStorage string](v14 string];
-  if (v15 != 0x7FFFFFFFFFFFFFFFLL)
+  bodyStorage = [(THPaginatedPageController *)self bodyStorage];
+  string = [-[THWPStorage string](bodyStorage string];
+  if (string != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [(THPaginatedPageController *)self relativePageIndexForCharIndex:v15 forceLayout:1];
+    v11 = [(THPaginatedPageController *)self relativePageIndexForCharIndex:string forceLayout:1];
   }
 
-  [(THWPStorage *)v14 attachmentIndexRangeForTextRange:0, v12];
+  [(THWPStorage *)bodyStorage attachmentIndexRangeForTextRange:0, v12];
   if (v16)
   {
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
@@ -896,57 +896,57 @@ LABEL_14:
       v17 = v11 + 1;
     }
 
-    v18 = a3;
-    while (v18 > v17)
+    indexCopy = index;
+    while (indexCopy > v17)
     {
-      v19 = [(THPaginatedPageController *)self p_anchoredRangeForRelativePageIndex:--v18 forceLayout:1 allowAfterLayoutPoint:0];
-      if (THSearchModelsForString([(THWPStorage *)v14 childEnumeratorForRange:v19, v20], a4, a5))
+      v19 = [(THPaginatedPageController *)self p_anchoredRangeForRelativePageIndex:--indexCopy forceLayout:1 allowAfterLayoutPoint:0];
+      if (THSearchModelsForString([(THWPStorage *)bodyStorage childEnumeratorForRange:v19, v20], string, options))
       {
         goto LABEL_17;
       }
     }
   }
 
-  v18 = v11;
+  indexCopy = v11;
 LABEL_17:
-  if (v18 == 0x7FFFFFFFFFFFFFFFLL)
+  if (indexCopy == 0x7FFFFFFFFFFFFFFFLL)
   {
     v21 = 0;
   }
 
   else
   {
-    v21 = v18 + 1;
+    v21 = indexCopy + 1;
   }
 
-  while (a3 > v21)
+  while (index > v21)
   {
-    if (THSearchModelChildrenForString([(THPaginatedPageController *)self pageInfoForRelativePageIndex:--a3], a4, a5))
+    if (THSearchModelChildrenForString([(THPaginatedPageController *)self pageInfoForRelativePageIndex:--index], string, options))
     {
-      return a3;
+      return index;
     }
   }
 
-  return v18;
+  return indexCopy;
 }
 
-- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)a3 forString:(id)a4 options:(unint64_t)a5 inDirection:(unint64_t)a6
+- (unint64_t)nextRootSearchTargetIndexFromIndex:(unint64_t)index forString:(id)string options:(unint64_t)options inDirection:(unint64_t)direction
 {
   objc_sync_enter(self);
-  if (a6 == 1)
+  if (direction == 1)
   {
-    v11 = [(THPaginatedPageController *)self p_previousRootSearchTargetIndexFromIndex:a3 forString:a4 options:a5];
+    v11 = [(THPaginatedPageController *)self p_previousRootSearchTargetIndexFromIndex:index forString:string options:options];
   }
 
   else
   {
-    if (a6)
+    if (direction)
     {
       v12 = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_7;
     }
 
-    v11 = [(THPaginatedPageController *)self p_nextRootSearchTargetIndexFromIndex:a3 forString:a4 options:a5];
+    v11 = [(THPaginatedPageController *)self p_nextRootSearchTargetIndexFromIndex:index forString:string options:options];
   }
 
   v12 = v11;
@@ -957,10 +957,10 @@ LABEL_7:
 
 - (THWPStorage)bodyStorage
 {
-  v3 = [(THPaginatedPageController *)self delegate];
-  v4 = [(THPaginatedPageController *)self presentationType];
+  delegate = [(THPaginatedPageController *)self delegate];
+  presentationType = [(THPaginatedPageController *)self presentationType];
 
-  return [(THPageControllerDelegate *)v3 bodyStorageForPageController:self presentationType:v4];
+  return [(THPageControllerDelegate *)delegate bodyStorageForPageController:self presentationType:presentationType];
 }
 
 - (void)p_clearOffscreenLayouts
@@ -984,25 +984,25 @@ LABEL_7:
   return result;
 }
 
-- (void)p_setNeedsLayoutOnPageIndex:(unint64_t)a3
+- (void)p_setNeedsLayoutOnPageIndex:(unint64_t)index
 {
-  [(THPaginatedPageController *)self p_invalidateBodyLayoutOnPageIndex:a3];
-  v4 = [(THPaginatedPageController *)self delegate];
+  [(THPaginatedPageController *)self p_invalidateBodyLayoutOnPageIndex:index];
+  delegate = [(THPaginatedPageController *)self delegate];
 
-  [(THPageControllerDelegate *)v4 pageControllerNeedsLayout:self];
+  [(THPageControllerDelegate *)delegate pageControllerNeedsLayout:self];
 }
 
-- (void)p_invalidateBodyLayoutOnPageIndex:(unint64_t)a3
+- (void)p_invalidateBodyLayoutOnPageIndex:(unint64_t)index
 {
-  if (self->_firstPageIndexNeedingLayout > a3)
+  if (self->_firstPageIndexNeedingLayout > index)
   {
-    self->_firstPageIndexNeedingLayout = a3;
+    self->_firstPageIndexNeedingLayout = index;
     [(THPaginatedPageController *)self p_destroyBodyLayoutState];
   }
 
-  v5 = [(THPaginatedPageController *)self pageHints];
+  pageHints = [(THPaginatedPageController *)self pageHints];
 
-  [(THPageHintController *)v5 clearHintsOnRelativePageIndex:a3];
+  [(THPageHintController *)pageHints clearHintsOnRelativePageIndex:index];
 }
 
 - (void)p_destroyBodyLayoutState
@@ -1087,14 +1087,14 @@ LABEL_7:
   return result;
 }
 
-- ($D6031A91289B01F4EEA92D3AF6491109)p_stubHintAtRelativePageIndex:(SEL)a3
+- ($D6031A91289B01F4EEA92D3AF6491109)p_stubHintAtRelativePageIndex:(SEL)index
 {
-  v4 = self;
+  selfCopy = self;
   v6 = a4 - 1;
   v7 = a4 + 1;
   while (--v7)
   {
-    self = [objc_msgSend(-[$D6031A91289B01F4EEA92D3AF6491109 pageHints](v4 "pageHints")];
+    self = [objc_msgSend(-[$D6031A91289B01F4EEA92D3AF6491109 pageHints](selfCopy "pageHints")];
     if (self)
     {
       v8 = self->var1.length + self->var1.location;
@@ -1118,44 +1118,44 @@ LABEL_6:
   return self;
 }
 
-- (id)p_updateHintAtIndex:(unint64_t)a3 withBodyTargets:(id)a4
+- (id)p_updateHintAtIndex:(unint64_t)index withBodyTargets:(id)targets
 {
-  if (self->_firstPageIndexNeedingLayout != a3)
+  if (self->_firstPageIndexNeedingLayout != index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v6 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
-  v7 = [(THPaginatedPageController *)self pageHints];
-  v8 = a3;
-  if (v6 <= a3)
+  pageCount = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
+  pageHints = [(THPaginatedPageController *)self pageHints];
+  indexCopy2 = index;
+  if (pageCount <= index)
   {
-    if ([(THPageHintController *)v7 pageCount]!= a3)
+    if ([(THPageHintController *)pageHints pageCount]!= index)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
     v9 = 0;
-    v8 = a3;
+    indexCopy2 = index;
   }
 
   else
   {
-    v9 = [(THPageHintController *)v7 hintForRelativePageIndex:a3];
+    v9 = [(THPageHintController *)pageHints hintForRelativePageIndex:index];
   }
 
-  v21 = [(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] pageInfoForPageController:self pageIndex:v8 presentationType:[(THPaginatedPageController *)self presentationType]];
+  v21 = [(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] pageInfoForPageController:self pageIndex:indexCopy2 presentationType:[(THPaginatedPageController *)self presentationType]];
   if (!v9 || v9 == +[NSNull null])
   {
     v9 = [[THPageHint alloc] initWithPageInfo:v21];
-    [(THPageHintController *)[(THPaginatedPageController *)self pageHints] setHint:v9 forRelativePageIndex:v8];
+    [(THPageHintController *)[(THPaginatedPageController *)self pageHints] setHint:v9 forRelativePageIndex:indexCopy2];
   }
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = [a4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  v10 = [targets countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (!v10)
   {
     [(THPageHint *)v9 setNonEmptyBodyCount:0];
@@ -1170,7 +1170,7 @@ LABEL_13:
   {
     if (*v35 != v12)
     {
-      objc_enumerationMutation(a4);
+      objc_enumerationMutation(targets);
     }
 
     v14 = *(*(&v34 + 1) + 8 * v13);
@@ -1205,7 +1205,7 @@ LABEL_13:
     ++v11;
     if (v10 == v13)
     {
-      v10 = [a4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v10 = [targets countByEnumeratingWithState:&v34 objects:v40 count:16];
       if (v10)
       {
         goto LABEL_13;
@@ -1236,7 +1236,7 @@ LABEL_28:
     }
 
 LABEL_27:
-    [(THPaginatedPageController *)self p_stubHintAtRelativePageIndex:a3];
+    [(THPaginatedPageController *)self p_stubHintAtRelativePageIndex:index];
     goto LABEL_28;
   }
 
@@ -1256,8 +1256,8 @@ LABEL_29:
     }
 
     [v21 setPageStartCharIndex:{-[THPageHint range](v9, "range")}];
-    v18 = [(THPageHint *)v9 range];
-    [v21 setPageEndCharIndex:&v18[v19]];
+    range = [(THPageHint *)v9 range];
+    [v21 setPageEndCharIndex:&range[v19]];
   }
 
   if (!v9)
@@ -1271,7 +1271,7 @@ LABEL_29:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if ([(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount]<= a3)
+  if ([(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount]<= index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -1279,22 +1279,22 @@ LABEL_29:
   return v9;
 }
 
-- (BOOL)p_generateHintForPageIndex:(unint64_t)a3
+- (BOOL)p_generateHintForPageIndex:(unint64_t)index
 {
-  v4 = self;
+  selfCopy = self;
   v5 = [(THPaginatedPageController *)self p_pageInfoForPageAtRelativeIndex:?];
   v6 = [[THPageHint alloc] initWithPageInfo:v5];
-  v7 = [v5 modelBodyInfos];
-  if (![v7 count])
+  modelBodyInfos = [v5 modelBodyInfos];
+  if (![modelBodyInfos count])
   {
     goto LABEL_9;
   }
 
-  v8 = [v7 objectAtIndex:{0, v4}];
-  v9 = [v8 lineHints];
-  if (!v9 || (v10 = v9, ([v9 valid] & 1) == 0))
+  v8 = [modelBodyInfos objectAtIndex:{0, selfCopy}];
+  lineHints = [v8 lineHints];
+  if (!lineHints || (v10 = lineHints, ([lineHints valid] & 1) == 0))
   {
-    v4 = v16;
+    selfCopy = v16;
     v12 = [(THReflowablePaginationController *)[(THPaginatedPageController *)v16 paginationController] paginationResultForContentNode:[(THPaginatedPageController *)v16 contentNode]];
     if (!v12)
     {
@@ -1302,9 +1302,9 @@ LABEL_29:
       goto LABEL_10;
     }
 
-    v13 = [v12 pageHints];
+    pageHints = [v12 pageHints];
 
-    v6 = [v13 objectAtIndexedSubscript:a3];
+    v6 = [pageHints objectAtIndexedSubscript:index];
 LABEL_9:
     v11 = 1;
     goto LABEL_10;
@@ -1322,9 +1322,9 @@ LABEL_9:
   }
 
   v11 = 1;
-  v4 = v16;
+  selfCopy = v16;
 LABEL_10:
-  if ([v7 count])
+  if ([modelBodyInfos count])
   {
     if (!v11)
     {
@@ -1334,9 +1334,9 @@ LABEL_10:
 
   else
   {
-    if (v4)
+    if (selfCopy)
     {
-      [(THPaginatedPageController *)v4 p_stubHintAtRelativePageIndex:a3];
+      [(THPaginatedPageController *)selfCopy p_stubHintAtRelativePageIndex:index];
     }
 
     else
@@ -1357,10 +1357,10 @@ LABEL_10:
   }
 
   TSWPTopicNumberHints::TSWPTopicNumberHints();
-  if (a3)
+  if (index)
   {
     objc_opt_class();
-    [(THPageHintController *)[(THPaginatedPageController *)v4 pageHints] hintForRelativePageIndex:a3 - 1];
+    [(THPageHintController *)[(THPaginatedPageController *)selfCopy pageHints] hintForRelativePageIndex:index - 1];
     v14 = TSUDynamicCast();
     if (v14)
     {
@@ -1369,23 +1369,23 @@ LABEL_10:
     }
   }
 
-  TSWPTopicNumberHints::advanceToCharIndex(&__p, *([(THPageHint *)v6 firstHint]+ 4), [(THPaginatedPageController *)v4 bodyStorage]);
+  TSWPTopicNumberHints::advanceToCharIndex(&__p, *([(THPageHint *)v6 firstHint]+ 4), [(THPaginatedPageController *)selfCopy bodyStorage]);
   [(THPageHint *)v6 setTopicNumbers:&__p];
-  [(THPageHintController *)[(THPaginatedPageController *)v4 pageHints] setHint:v6 forRelativePageIndex:a3];
+  [(THPageHintController *)[(THPaginatedPageController *)selfCopy pageHints] setHint:v6 forRelativePageIndex:index];
   TSWPTopicNumberHints::~TSWPTopicNumberHints(&__p);
 LABEL_21:
 
   return v11;
 }
 
-- (void)p_insertPageLayoutIntoCache:(id)a3
+- (void)p_insertPageLayoutIntoCache:(id)cache
 {
-  if (![a3 layoutController])
+  if (![cache layoutController])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [objc_msgSend(a3 "info")];
+  [objc_msgSend(cache "info")];
   if (self->_pageLayoutCache.__tree_.__size_ >= 0x10)
   {
     [(THPaginatedPageController *)self p_clearOffscreenLayouts];
@@ -1504,9 +1504,9 @@ LABEL_21:
   }
 }
 
-- (void)p_removePageLayoutFromCache:(id)a3
+- (void)p_removePageLayoutFromCache:(id)cache
 {
-  v5 = [objc_msgSend(a3 "info")];
+  v5 = [objc_msgSend(cache "info")];
   left = self->_pageLayoutCache.__tree_.__end_node_.__left_;
   p_end_node = &self->_pageLayoutCache.__tree_.__end_node_;
   v6 = left;
@@ -1531,7 +1531,7 @@ LABEL_21:
     {
       while (v5 == v9[4].__left_)
       {
-        if (v9[5].__left_ == a3)
+        if (v9[5].__left_ == cache)
         {
           sub_40D0C(&p_end_node[-1], v9);
 
@@ -1573,7 +1573,7 @@ LABEL_21:
   }
 }
 
-- (id)p_cachedPageLayoutForPageIndex:(unint64_t)a3 preferredLayoutController:(id)a4
+- (id)p_cachedPageLayoutForPageIndex:(unint64_t)index preferredLayoutController:(id)controller
 {
   p_end_node = &self->_pageLayoutCache.__tree_.__end_node_;
   left = self->_pageLayoutCache.__tree_.__end_node_.__left_;
@@ -1586,8 +1586,8 @@ LABEL_21:
   do
   {
     v9 = *(left + 4);
-    v10 = v9 >= a3;
-    v11 = v9 < a3;
+    v10 = v9 >= index;
+    v11 = v9 < index;
     if (v10)
     {
       v8 = left;
@@ -1597,7 +1597,7 @@ LABEL_21:
   }
 
   while (left);
-  if (v8 == p_end_node || v8[4].__left_ != a3)
+  if (v8 == p_end_node || v8[4].__left_ != index)
   {
     return 0;
   }
@@ -1605,7 +1605,7 @@ LABEL_21:
   do
   {
     v12 = v8[5].__left_;
-    if (!a4 || [v8[5].__left_ layoutController] == a4)
+    if (!controller || [v8[5].__left_ layoutController] == controller)
     {
       break;
     }
@@ -1636,18 +1636,18 @@ LABEL_21:
     }
   }
 
-  while (v8 != p_end_node && v8[4].__left_ == a3);
+  while (v8 != p_end_node && v8[4].__left_ == index);
   return v12;
 }
 
-- (void)p_performBlock:(id)a3 withPageLayoutAtRelativeIndex:(unint64_t)a4 preferredLayoutController:(id)a5
+- (void)p_performBlock:(id)block withPageLayoutAtRelativeIndex:(unint64_t)index preferredLayoutController:(id)controller
 {
-  if (self->_firstPageIndexNeedingLayout < a4 && (![(THPaginatedPageController *)self p_isLayoutComplete]|| [(THPaginatedPageController *)self pageCount]< a4))
+  if (self->_firstPageIndexNeedingLayout < index && (![(THPaginatedPageController *)self p_isLayoutComplete]|| [(THPaginatedPageController *)self pageCount]< index))
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v9 = [(THPaginatedPageController *)self p_cachedPageLayoutForPageIndex:a4 preferredLayoutController:a5];
+  v9 = [(THPaginatedPageController *)self p_cachedPageLayoutForPageIndex:index preferredLayoutController:controller];
   if (v9)
   {
     v10 = v9;
@@ -1660,14 +1660,14 @@ LABEL_21:
     [(THPaginatedPageController *)self p_removeOrphanedLayoutsFromCache];
   }
 
-  v11 = [(THPaginatedPageController *)self p_pageInfoForPageAtRelativeIndex:a4];
+  v11 = [(THPaginatedPageController *)self p_pageInfoForPageAtRelativeIndex:index];
   if (v11)
   {
     [(THSectionInfo *)self->mOffscreenSectionInfo setPages:[NSArray arrayWithObject:v11]];
     [(THOffscreenLayoutController *)self->_drawablesLayoutController setInfos:[NSArray arrayWithObject:self->mOffscreenSectionInfo]];
     [(THPaginatedPageController *)self p_removeOrphanedLayoutsFromCache];
     [(THOffscreenLayoutController *)self->_drawablesLayoutController validateLayouts];
-    v12 = [(THPaginatedPageController *)self p_cachedPageLayoutForPageIndex:a4 preferredLayoutController:0];
+    v12 = [(THPaginatedPageController *)self p_cachedPageLayoutForPageIndex:index preferredLayoutController:0];
     if (v12)
     {
       v10 = v12;
@@ -1685,7 +1685,7 @@ LABEL_21:
     }
   }
 
-  else if (![(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] pageInfoForPageController:self pageIndex:a4 presentationType:[(THPaginatedPageController *)self presentationType]])
+  else if (![(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] pageInfoForPageController:self pageIndex:index presentationType:[(THPaginatedPageController *)self presentationType]])
   {
     return;
   }
@@ -1693,27 +1693,27 @@ LABEL_21:
   [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   v10 = 0;
 LABEL_16:
-  v15 = *(a3 + 2);
+  v15 = *(block + 2);
 
-  v15(a3, v10);
+  v15(block, v10);
 }
 
-- (id)p_pageInfoForPageAtRelativeIndex:(unint64_t)a3
+- (id)p_pageInfoForPageAtRelativeIndex:(unint64_t)index
 {
-  v5 = [(THPaginatedPageController *)self delegate];
-  v6 = [(THPaginatedPageController *)self presentationType];
+  delegate = [(THPaginatedPageController *)self delegate];
+  presentationType = [(THPaginatedPageController *)self presentationType];
 
-  return [(THPageControllerDelegate *)v5 pageInfoForPageController:self pageIndex:a3 presentationType:v6];
+  return [(THPageControllerDelegate *)delegate pageInfoForPageController:self pageIndex:index presentationType:presentationType];
 }
 
-- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)a3 caretAffinity:(int)a4 forceLayout:(BOOL)a5 searchAfterLayoutPoint:(BOOL)a6
+- (unint64_t)p_relativePageIndexForCharIndex:(unint64_t)index caretAffinity:(int)affinity forceLayout:(BOOL)layout searchAfterLayoutPoint:(BOOL)point
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = [(THPaginatedPageController *)self bodyStorage];
-  if (a3 && (v12 = v11, [(THWPStorage *)v11 length]> a3))
+  pointCopy = point;
+  layoutCopy = layout;
+  bodyStorage = [(THPaginatedPageController *)self bodyStorage];
+  if (index && (v12 = bodyStorage, [(THWPStorage *)bodyStorage length]> index))
   {
-    v13 = [(THWPStorage *)v12 characterAtIndex:a3 - 1];
+    v13 = [(THWPStorage *)v12 characterAtIndex:index - 1];
     v14 = IsParagraphBreakingCharacter();
     if (v13 == 8232)
     {
@@ -1733,10 +1733,10 @@ LABEL_16:
 
   v16 = 0;
   v17 = 0;
-  v25 = (a4 != 1) | v15;
+  v25 = (affinity != 1) | v15;
   while (1)
   {
-    v18 = [(THPaginatedPageController *)self p_bodyRangeForRelativePageIndex:v17 forceLayout:v7 allowAfterLayoutPoint:v6];
+    v18 = [(THPaginatedPageController *)self p_bodyRangeForRelativePageIndex:v17 forceLayout:layoutCopy allowAfterLayoutPoint:pointCopy];
     v19 = v18;
     v21 = v20;
     if (v18 | v20)
@@ -1744,13 +1744,13 @@ LABEL_16:
       if (v18 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v22 = 0x7FFFFFFFFFFFFFFFLL;
-        if (!v6)
+        if (!pointCopy)
         {
           return v22;
         }
 
-        v23 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
-        if (a3 < 0x7FFFFFFFFFFFFFFFLL || v17 >= v23)
+        pageCount = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
+        if (index < 0x7FFFFFFFFFFFFFFFLL || v17 >= pageCount)
         {
           return v22;
         }
@@ -1764,12 +1764,12 @@ LABEL_16:
       return 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (v19 > a3 && !v6)
+    if (v19 > index && !pointCopy)
     {
       break;
     }
 
-    if (v19 > a3)
+    if (v19 > index)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -1777,15 +1777,15 @@ LABEL_16:
 LABEL_19:
     v16 += v21;
     v22 = v17;
-    if (v19 + v21 <= a3)
+    if (v19 + v21 <= index)
     {
-      v22 = v19 + v21 == a3 ? v17 : 0x7FFFFFFFFFFFFFFFLL;
-      if (((v19 + v21 == a3) & v25) == 1)
+      v22 = v19 + v21 == index ? v17 : 0x7FFFFFFFFFFFFFFFLL;
+      if (((v19 + v21 == index) & v25) == 1)
       {
         if ([(THPaginatedPageController *)self p_isLayoutComplete]&& v17 == [(THPaginatedPageController *)self p_lastPageIndexWithBodyAfterPageIndex:v17])
         {
           v22 = v17;
-          if (!(v16 | a3))
+          if (!(v16 | index))
           {
             return 0;
           }
@@ -1809,51 +1809,51 @@ LABEL_19:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (unint64_t)p_lastPageIndexWithBodyAfterPageIndex:(unint64_t)a3
+- (unint64_t)p_lastPageIndexWithBodyAfterPageIndex:(unint64_t)index
 {
-  v4 = [(THPaginatedPageController *)self pageHints];
-  v5 = [(THPageHintController *)v4 pageCount];
+  pageHints = [(THPaginatedPageController *)self pageHints];
+  pageCount = [(THPageHintController *)pageHints pageCount];
   do
   {
-    if (v5 <= a3)
+    if (pageCount <= index)
     {
       break;
     }
 
-    --v5;
+    --pageCount;
   }
 
-  while (![-[THPageHintController hintForRelativePageIndex:](v4 hintForRelativePageIndex:{v5), "bodyCount"}]);
-  return v5;
+  while (![-[THPageHintController hintForRelativePageIndex:](pageHints hintForRelativePageIndex:{pageCount), "bodyCount"}]);
+  return pageCount;
 }
 
-- (id)p_pageHintForRelativePageIndex:(unint64_t)a3 forceLayout:(BOOL)a4 allowAfterLayoutPoint:(BOOL)a5
+- (id)p_pageHintForRelativePageIndex:(unint64_t)index forceLayout:(BOOL)layout allowAfterLayoutPoint:(BOOL)point
 {
-  v5 = a5;
-  if (a4)
+  pointCopy = point;
+  if (layout)
   {
-    [(THPaginatedPageController *)self layoutThroughRelativePageIndex:a3 layoutController:[(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] layoutControllerForPageController:self]];
+    [(THPaginatedPageController *)self layoutThroughRelativePageIndex:index layoutController:[(THPageControllerDelegate *)[(THPaginatedPageController *)self delegate] layoutControllerForPageController:self]];
   }
 
-  if (self->_firstPageIndexNeedingLayout <= a3 && !v5)
+  if (self->_firstPageIndexNeedingLayout <= index && !pointCopy)
   {
     return 0;
   }
 
-  if (!v5 && [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount]<= a3)
+  if (!pointCopy && [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount]<= index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if ([(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount]<= a3)
+  if ([(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount]<= index)
   {
     return 0;
   }
 
   objc_opt_class();
-  [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:a3];
+  [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:index];
   result = TSUDynamicCast();
-  if (!v5 && !result)
+  if (!pointCopy && !result)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     return 0;
@@ -1862,9 +1862,9 @@ LABEL_19:
   return result;
 }
 
-- (_NSRange)p_bodyRangeForRelativePageIndex:(unint64_t)a3 forceLayout:(BOOL)a4 allowAfterLayoutPoint:(BOOL)a5
+- (_NSRange)p_bodyRangeForRelativePageIndex:(unint64_t)index forceLayout:(BOOL)layout allowAfterLayoutPoint:(BOOL)point
 {
-  v5 = [(THPaginatedPageController *)self p_pageHintForRelativePageIndex:a3 forceLayout:a4 allowAfterLayoutPoint:a5];
+  v5 = [(THPaginatedPageController *)self p_pageHintForRelativePageIndex:index forceLayout:layout allowAfterLayoutPoint:point];
   if (!v5)
   {
     v15 = 0;
@@ -1873,10 +1873,10 @@ LABEL_19:
   }
 
   v6 = v5;
-  v7 = [v5 firstHint];
-  v8 = [v6 lastHint];
-  v9 = v8;
-  if (!v7)
+  firstHint = [v5 firstHint];
+  lastHint = [v6 lastHint];
+  v9 = lastHint;
+  if (!firstHint)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     if (v9)
@@ -1889,13 +1889,13 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  if (!v8)
+  if (!lastHint)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  v10 = v7[4];
+  v10 = firstHint[4];
   v11 = v9[5];
   v12 = v11 + v9[4];
   if (v10 <= v12)
@@ -1905,7 +1905,7 @@ LABEL_4:
 
   else
   {
-    v13 = v7[4];
+    v13 = firstHint[4];
   }
 
   if (v10 >= v12)
@@ -1915,7 +1915,7 @@ LABEL_4:
 
   else
   {
-    v14 = v7[4];
+    v14 = firstHint[4];
   }
 
   v15 = v13 - v14;
@@ -1925,9 +1925,9 @@ LABEL_14:
   return result;
 }
 
-- (_NSRange)p_anchoredRangeForRelativePageIndex:(unint64_t)a3 forceLayout:(BOOL)a4 allowAfterLayoutPoint:(BOOL)a5
+- (_NSRange)p_anchoredRangeForRelativePageIndex:(unint64_t)index forceLayout:(BOOL)layout allowAfterLayoutPoint:(BOOL)point
 {
-  v5 = [(THPaginatedPageController *)self p_pageHintForRelativePageIndex:a3 forceLayout:a4 allowAfterLayoutPoint:a5];
+  v5 = [(THPaginatedPageController *)self p_pageHintForRelativePageIndex:index forceLayout:layout allowAfterLayoutPoint:point];
   if (!v5)
   {
     v15 = 0;
@@ -1936,10 +1936,10 @@ LABEL_14:
   }
 
   v6 = v5;
-  v7 = [v5 firstHint];
-  v8 = [v6 lastHint];
-  v9 = v8;
-  if (!v7)
+  firstHint = [v5 firstHint];
+  lastHint = [v6 lastHint];
+  v9 = lastHint;
+  if (!firstHint)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     if (v9)
@@ -1952,13 +1952,13 @@ LABEL_13:
     goto LABEL_4;
   }
 
-  if (!v8)
+  if (!lastHint)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  v10 = v7[7];
+  v10 = firstHint[7];
   v11 = v9[8];
   v12 = v11 + v9[7];
   if (v10 <= v12)
@@ -1968,7 +1968,7 @@ LABEL_4:
 
   else
   {
-    v13 = v7[7];
+    v13 = firstHint[7];
   }
 
   if (v10 >= v12)
@@ -1978,7 +1978,7 @@ LABEL_4:
 
   else
   {
-    v14 = v7[7];
+    v14 = firstHint[7];
   }
 
   v15 = v13 - v14;
@@ -1988,25 +1988,25 @@ LABEL_14:
   return result;
 }
 
-- (unint64_t)p_relativePageIndexForAnchoredCharIndex:(unint64_t)a3 forceLayout:(BOOL)a4 searchAfterLayoutPoint:(BOOL)a5
+- (unint64_t)p_relativePageIndexForAnchoredCharIndex:(unint64_t)index forceLayout:(BOOL)layout searchAfterLayoutPoint:(BOOL)point
 {
-  v5 = a5;
-  v6 = a4;
+  pointCopy = point;
+  layoutCopy = layout;
   for (i = 0; ; ++i)
   {
-    v10 = [(THPaginatedPageController *)self p_anchoredRangeForRelativePageIndex:i forceLayout:v6 allowAfterLayoutPoint:v5];
+    v10 = [(THPaginatedPageController *)self p_anchoredRangeForRelativePageIndex:i forceLayout:layoutCopy allowAfterLayoutPoint:pointCopy];
     v11 = v10;
     v13 = v12;
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = 0x7FFFFFFFFFFFFFFFLL;
-      if (!v5)
+      if (!pointCopy)
       {
         return v14;
       }
 
-      v15 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
-      if (a3 < 0x7FFFFFFFFFFFFFFFLL || i >= v15)
+      pageCount = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
+      if (index < 0x7FFFFFFFFFFFFFFFLL || i >= pageCount)
       {
         return v14;
       }
@@ -2014,21 +2014,21 @@ LABEL_14:
       goto LABEL_10;
     }
 
-    if (v10 > a3 && !v5)
+    if (v10 > index && !pointCopy)
     {
       break;
     }
 
-    if (v10 > a3)
+    if (v10 > index)
     {
       return 0x7FFFFFFFFFFFFFFFLL;
     }
 
 LABEL_10:
     v14 = i;
-    if (&v11[v13] <= a3)
+    if (&v11[v13] <= index)
     {
-      if (&v11[v13] == a3 && [(THPaginatedPageController *)self p_isLayoutComplete])
+      if (&v11[v13] == index && [(THPaginatedPageController *)self p_isLayoutComplete])
       {
         if (i == self->_firstPageIndexNeedingLayout - 1)
         {
@@ -2057,9 +2057,9 @@ LABEL_10:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)p_processWidowsAndInflationForLayoutController:(id)a3
+- (void)p_processWidowsAndInflationForLayoutController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
     begin_node = self->_pageLayoutCache.__tree_.__begin_node_;
     p_end_node = &self->_pageLayoutCache.__tree_.__end_node_;
@@ -2073,14 +2073,14 @@ LABEL_10:
         }
 
         mWrapController = begin_node->mWrapController;
-        if ([(THBodyTextWrapController *)mWrapController layoutController]== a3)
+        if ([(THBodyTextWrapController *)mWrapController layoutController]== controller)
         {
           v17 = 0u;
           v18 = 0u;
           v15 = 0u;
           v16 = 0u;
-          v8 = [(THBodyTextWrapController *)mWrapController bodyLayouts];
-          v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          bodyLayouts = [(THBodyTextWrapController *)mWrapController bodyLayouts];
+          v9 = [bodyLayouts countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v9)
           {
             v10 = *v16;
@@ -2090,13 +2090,13 @@ LABEL_10:
               {
                 if (*v16 != v10)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(bodyLayouts);
                 }
 
                 [*(*(&v15 + 1) + 8 * i) processWidowAndInflation];
               }
 
-              v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+              v9 = [bodyLayouts countByEnumeratingWithState:&v15 objects:v19 count:16];
             }
 
             while (v9);
@@ -2135,24 +2135,24 @@ LABEL_10:
   }
 }
 
-- (void)p_layoutThroughPageIndex:(unint64_t)a3 forLayoutController:(id)a4 clearOffscreenInfos:(BOOL)a5
+- (void)p_layoutThroughPageIndex:(unint64_t)index forLayoutController:(id)controller clearOffscreenInfos:(BOOL)infos
 {
   if (self->_doingLayout)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler currentHandler];
   }
 
-  [(THPaginatedPageController *)self p_processWidowsAndInflationForLayoutController:a4, a4, a5];
-  if (![(THPaginatedPageController *)self p_isLayoutComplete]&& self->_firstPageIndexNeedingLayout <= a3)
+  [(THPaginatedPageController *)self p_processWidowsAndInflationForLayoutController:controller, controller, infos];
+  if (![(THPaginatedPageController *)self p_isLayoutComplete]&& self->_firstPageIndexNeedingLayout <= index)
   {
-    v8 = [(THPaginatedPageController *)self p_isLayoutComplete];
-    if ((v8 & 1) == 0)
+    p_isLayoutComplete = [(THPaginatedPageController *)self p_isLayoutComplete];
+    if ((p_isLayoutComplete & 1) == 0)
     {
-      v9 = v8;
+      v9 = p_isLayoutComplete;
       while (1)
       {
-        [(THPaginatedPageController *)self p_layoutNextPageForLayoutController:a4];
-        if (self->_firstPageIndexNeedingLayout > a3)
+        [(THPaginatedPageController *)self p_layoutNextPageForLayoutController:controller];
+        if (self->_firstPageIndexNeedingLayout > index)
         {
           break;
         }
@@ -2169,7 +2169,7 @@ LABEL_10:
       }
 
       [(THPaginatedPageController *)self p_clearOffscreenLayouts];
-      [(THPaginatedPageController *)self p_processWidowsAndInflationForLayoutController:a4];
+      [(THPaginatedPageController *)self p_processWidowsAndInflationForLayoutController:controller];
       [(THPaginatedPageController *)self p_didLayout];
     }
   }
@@ -2204,7 +2204,7 @@ LABEL_11:
         {
           do
           {
-            if (v14[4].__left_ > a3)
+            if (v14[4].__left_ > index)
             {
               break;
             }
@@ -2244,26 +2244,26 @@ LABEL_11:
   }
 }
 
-- (void)p_bodyLayoutDidLayout:(id)a3
+- (void)p_bodyLayoutDidLayout:(id)layout
 {
-  v5 = [a3 bodyIndexInPageLayout];
-  [objc_msgSend(a3 "geometry")];
+  bodyIndexInPageLayout = [layout bodyIndexInPageLayout];
+  [objc_msgSend(layout "geometry")];
   v7 = v6;
   v9 = v8;
-  v10 = -[THPaginatedPageController p_pageHintForRelativePageIndex:forceLayout:allowAfterLayoutPoint:](self, "p_pageHintForRelativePageIndex:forceLayout:allowAfterLayoutPoint:", [objc_msgSend(a3 "parent")], 0, 1);
+  v10 = -[THPaginatedPageController p_pageHintForRelativePageIndex:forceLayout:allowAfterLayoutPoint:](self, "p_pageHintForRelativePageIndex:forceLayout:allowAfterLayoutPoint:", [objc_msgSend(layout "parent")], 0, 1);
 
-  [v10 setSize:v5 forBodyIndex:{v7, v9}];
+  [v10 setSize:bodyIndexInPageLayout forBodyIndex:{v7, v9}];
 }
 
-- (void)p_layoutWithPageLayout:(id)a3 outDidSync:(BOOL *)a4
+- (void)p_layoutWithPageLayout:(id)layout outDidSync:(BOOL *)sync
 {
-  v7 = [a3 bodyLayouts];
-  v8 = [(THPaginatedPageController *)self p_layoutManager];
+  bodyLayouts = [layout bodyLayouts];
+  p_layoutManager = [(THPaginatedPageController *)self p_layoutManager];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  v9 = [bodyLayouts countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v9)
   {
     v10 = *v41;
@@ -2273,16 +2273,16 @@ LABEL_3:
     {
       if (*v41 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(bodyLayouts);
       }
 
       v12 = *(*(&v40 + 1) + 8 * v11);
       v39 = 0;
-      v13 = [v8 layoutIntoTarget:v12 withLayoutState:self->_bodyLayoutState outSync:&v39];
+      v13 = [p_layoutManager layoutIntoTarget:v12 withLayoutState:self->_bodyLayoutState outSync:&v39];
       self->_bodyLayoutState = v13;
       if (v39 == 1)
       {
-        *a4 = 1;
+        *sync = 1;
       }
 
       if (!v13)
@@ -2292,7 +2292,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v40 objects:v46 count:16];
+        v9 = [bodyLayouts countByEnumeratingWithState:&v40 objects:v46 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -2303,12 +2303,12 @@ LABEL_3:
     }
   }
 
-  [(THPaginatedPageController *)self p_updateHintAtIndex:self->_firstPageIndexNeedingLayout withBodyTargets:v7];
+  [(THPaginatedPageController *)self p_updateHintAtIndex:self->_firstPageIndexNeedingLayout withBodyTargets:bodyLayouts];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v14 = [v7 countByEnumeratingWithState:&v35 objects:v45 count:16];
+  v14 = [bodyLayouts countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v14)
   {
     v15 = *v36;
@@ -2318,13 +2318,13 @@ LABEL_3:
       {
         if (*v36 != v15)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(bodyLayouts);
         }
 
         [(THPaginatedPageController *)self p_bodyLayoutDidLayout:*(*(&v35 + 1) + 8 * i)];
       }
 
-      v14 = [v7 countByEnumeratingWithState:&v35 objects:v45 count:16];
+      v14 = [bodyLayouts countByEnumeratingWithState:&v35 objects:v45 count:16];
     }
 
     while (v14);
@@ -2359,14 +2359,14 @@ LABEL_3:
           break;
         }
 
-        if (v20[5].__left_ != a3)
+        if (v20[5].__left_ != layout)
         {
           v33 = 0u;
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v24 = [v20[5].__left_ bodyLayouts];
-          v25 = [v24 countByEnumeratingWithState:&v31 objects:v44 count:16];
+          bodyLayouts2 = [v20[5].__left_ bodyLayouts];
+          v25 = [bodyLayouts2 countByEnumeratingWithState:&v31 objects:v44 count:16];
           if (v25)
           {
             v26 = *v32;
@@ -2376,13 +2376,13 @@ LABEL_3:
               {
                 if (*v32 != v26)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(bodyLayouts2);
                 }
 
                 [*(*(&v31 + 1) + 8 * j) killColumns];
               }
 
-              v25 = [v24 countByEnumeratingWithState:&v31 objects:v44 count:16];
+              v25 = [bodyLayouts2 countByEnumeratingWithState:&v31 objects:v44 count:16];
             }
 
             while (v25);
@@ -2426,17 +2426,17 @@ LABEL_3:
   }
 }
 
-- (void)p_layoutNextPageForLayoutController:(id)a3
+- (void)p_layoutNextPageForLayoutController:(id)controller
 {
   v5 = objc_alloc_init(NSAutoreleasePool);
-  v6 = [(THPaginatedPageController *)self p_cachedPageLayoutForPageIndex:self->_firstPageIndexNeedingLayout preferredLayoutController:a3];
+  v6 = [(THPaginatedPageController *)self p_cachedPageLayoutForPageIndex:self->_firstPageIndexNeedingLayout preferredLayoutController:controller];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v6 bodyLayouts];
+  bodyLayouts = [v6 bodyLayouts];
   v8 = 0;
-  v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [bodyLayouts countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = *v19;
@@ -2446,13 +2446,13 @@ LABEL_3:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(bodyLayouts);
         }
 
         v8 |= [*(*(&v18 + 1) + 8 * i) needsInflation] ^ 1;
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [bodyLayouts countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -2464,10 +2464,10 @@ LABEL_3:
     {
       if (self->_firstPageIndexNeedingLayout)
       {
-        v12 = [(THPaginatedPageController *)self p_lastValidPageHint];
-        if (v12)
+        p_lastValidPageHint = [(THPaginatedPageController *)self p_lastValidPageHint];
+        if (p_lastValidPageHint)
         {
-          v13 = [(THPaginatedPageController *)self p_layoutManager];
+          p_layoutManager = [(THPaginatedPageController *)self p_layoutManager];
           if ([objc_msgSend(v6 "bodyLayouts")])
           {
             v14 = [objc_msgSend(v6 "bodyLayouts")];
@@ -2478,7 +2478,7 @@ LABEL_3:
             v14 = 0;
           }
 
-          self->_bodyLayoutState = [v13 layoutStateForLayoutTarget:v14 afterHint:objc_msgSend(v12 childHint:"lastHint") topicNumbers:objc_msgSend(v12 textIsVertical:{"lastChildHint"), objc_msgSend(v12, "topicNumbers"), 0}];
+          self->_bodyLayoutState = [p_layoutManager layoutStateForLayoutTarget:v14 afterHint:objc_msgSend(p_lastValidPageHint childHint:"lastHint") topicNumbers:objc_msgSend(p_lastValidPageHint textIsVertical:{"lastChildHint"), objc_msgSend(p_lastValidPageHint, "topicNumbers"), 0}];
         }
       }
     }
@@ -2499,7 +2499,7 @@ LABEL_3:
     v15[3] = &unk_45B9D0;
     v15[4] = self;
     v15[5] = v16;
-    [(THPaginatedPageController *)self p_performBlock:v15 withPageLayoutAtRelativeIndex:self->_firstPageIndexNeedingLayout preferredLayoutController:a3];
+    [(THPaginatedPageController *)self p_performBlock:v15 withPageLayoutAtRelativeIndex:self->_firstPageIndexNeedingLayout preferredLayoutController:controller];
     self->_doingLayout = 0;
     _Block_object_dispose(v16, 8);
   }
@@ -2517,13 +2517,13 @@ LABEL_3:
   if ([(THPaginatedPageController *)self p_isLayoutComplete])
   {
     firstPageIndexNeedingLayout = self->_firstPageIndexNeedingLayout;
-    v4 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
-    if (firstPageIndexNeedingLayout > v4)
+    pageCount = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount];
+    if (firstPageIndexNeedingLayout > pageCount)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    if (firstPageIndexNeedingLayout < v4)
+    if (firstPageIndexNeedingLayout < pageCount)
     {
       [(THPageHintController *)[(THPaginatedPageController *)self pageHints] clearHintsOnRelativePageIndex:firstPageIndexNeedingLayout];
     }
@@ -2556,8 +2556,8 @@ LABEL_3:
           v22 = 0u;
           v19 = 0u;
           v20 = 0u;
-          v12 = [v8[5].__left_ bodyLayouts];
-          v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          bodyLayouts = [v8[5].__left_ bodyLayouts];
+          v13 = [bodyLayouts countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v13)
           {
             v14 = *v20;
@@ -2567,13 +2567,13 @@ LABEL_3:
               {
                 if (*v20 != v14)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(bodyLayouts);
                 }
 
                 [*(*(&v19 + 1) + 8 * i) killColumns];
               }
 
-              v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+              v13 = [bodyLayouts countByEnumeratingWithState:&v19 objects:v23 count:16];
             }
 
             while (v13);
@@ -2612,19 +2612,19 @@ LABEL_3:
   }
 }
 
-- (id)i_pageHintForPageIndex:(unint64_t)a3
+- (id)i_pageHintForPageIndex:(unint64_t)index
 {
-  if ([(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount]<= a3)
+  if ([(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount]<= index)
   {
     return 0;
   }
 
-  if ([(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount]<= a3)
+  if ([(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount]<= index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:a3];
+  v5 = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:index];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 && v5)
   {
@@ -2634,40 +2634,40 @@ LABEL_3:
   return v5;
 }
 
-- (void)i_setPageHintSize:(CGSize)a3 forRelativePageIndex:(unint64_t)a4
+- (void)i_setPageHintSize:(CGSize)size forRelativePageIndex:(unint64_t)index
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_sync_enter(self);
-  [-[THPaginatedPageController i_pageHintForPageIndex:](self i_pageHintForPageIndex:{a4), "setSize:", width, height}];
+  [-[THPaginatedPageController i_pageHintForPageIndex:](self i_pageHintForPageIndex:{index), "setSize:", width, height}];
 
   objc_sync_exit(self);
 }
 
-- (void)i_trimPageAtIndex:(unint64_t)a3 toCharIndex:(unint64_t)a4 inTarget:(id)a5 removeAutoNumberFootnoteCount:(unint64_t)a6
+- (void)i_trimPageAtIndex:(unint64_t)index toCharIndex:(unint64_t)charIndex inTarget:(id)target removeAutoNumberFootnoteCount:(unint64_t)count
 {
   firstPageIndexNeedingLayout = self->_firstPageIndexNeedingLayout;
-  if (firstPageIndexNeedingLayout <= a3)
+  if (firstPageIndexNeedingLayout <= index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     firstPageIndexNeedingLayout = self->_firstPageIndexNeedingLayout;
   }
 
-  if (firstPageIndexNeedingLayout - 1 != a3)
+  if (firstPageIndexNeedingLayout - 1 != index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
   v12 = [-[THPageHintController hintForRelativePageIndex:](-[THPaginatedPageController pageHints](self "pageHints")];
 
-  [v12 trimToCharIndex:a4 inTarget:a5 removeAutoNumberFootnoteCount:a6];
+  [v12 trimToCharIndex:charIndex inTarget:target removeAutoNumberFootnoteCount:count];
 }
 
-- (id)i_columnPriorToPageIndex:(unint64_t)a3
+- (id)i_columnPriorToPageIndex:(unint64_t)index
 {
-  if (self->_firstPageIndexNeedingLayout >= a3)
+  if (self->_firstPageIndexNeedingLayout >= index)
   {
-    if (!a3)
+    if (!index)
     {
       return 0;
     }
@@ -2678,7 +2678,7 @@ LABEL_3:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = a3 - 1;
+  v5 = index - 1;
   if (![(THPaginatedPageController *)self p_cachedPageLayoutForPageIndex:v5 preferredLayoutController:0]|| ![(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:v5]|| (result = [[THVisibleColumnProxy alloc] initWithPageIndex:v5 pageController:self]) == 0)
   {
     result = [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:v5];
@@ -2692,14 +2692,14 @@ LABEL_3:
   return result;
 }
 
-- (id)i_columnAfterPageIndex:(unint64_t)a3
+- (id)i_columnAfterPageIndex:(unint64_t)index
 {
-  if (self->_firstPageIndexNeedingLayout < a3)
+  if (self->_firstPageIndexNeedingLayout < index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = a3 + 1;
+  v5 = index + 1;
   if (v5 >= [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount])
   {
     return 0;
@@ -2714,14 +2714,14 @@ LABEL_3:
   return [(NSNull *)v6 firstColumn];
 }
 
-- (id)i_firstChildHintAfterPageIndex:(unint64_t)a3
+- (id)i_firstChildHintAfterPageIndex:(unint64_t)index
 {
-  if (self->_firstPageIndexNeedingLayout < a3)
+  if (self->_firstPageIndexNeedingLayout < index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = a3 + 1;
+  v5 = index + 1;
   if (v5 >= [(THPageHintController *)[(THPaginatedPageController *)self pageHints] pageCount])
   {
     return 0;
@@ -2736,28 +2736,28 @@ LABEL_3:
   return [(NSNull *)v6 firstChildHint];
 }
 
-- (void)i_inflateColumnsInBodyLayout:(id)a3
+- (void)i_inflateColumnsInBodyLayout:(id)layout
 {
   objc_sync_enter(self);
   if (!self->_doingLayout)
   {
-    v5 = [a3 pageIndex];
-    if (self->_firstPageIndexNeedingLayout <= v5 && [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:v5])
+    pageIndex = [layout pageIndex];
+    if (self->_firstPageIndexNeedingLayout <= pageIndex && [(THPageHintController *)[(THPaginatedPageController *)self pageHints] hintForRelativePageIndex:pageIndex])
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
     else
     {
-      v6 = [(THPaginatedPageController *)self i_pageHintForPageIndex:v5];
+      v6 = [(THPaginatedPageController *)self i_pageHintForPageIndex:pageIndex];
       if (!v6)
       {
         [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
       }
 
-      if (v5)
+      if (pageIndex)
       {
-        v7 = [(THPaginatedPageController *)self i_pageHintForPageIndex:v5 - 1];
+        v7 = [(THPaginatedPageController *)self i_pageHintForPageIndex:pageIndex - 1];
       }
 
       else
@@ -2765,14 +2765,14 @@ LABEL_3:
         v7 = 0;
       }
 
-      v8 = [a3 bodyIndexInPageLayout];
-      if (v8 < [v6 nonEmptyBodyCount])
+      bodyIndexInPageLayout = [layout bodyIndexInPageLayout];
+      if (bodyIndexInPageLayout < [v6 nonEmptyBodyCount])
       {
-        v9 = [v6 anchoredAttachmentPositionsForBodyChildAtIndex:v8];
-        v10 = [(THPaginatedPageController *)self p_layoutManager];
+        v9 = [v6 anchoredAttachmentPositionsForBodyChildAtIndex:bodyIndexInPageLayout];
+        p_layoutManager = [(THPaginatedPageController *)self p_layoutManager];
         if (v6)
         {
-          [v6 hintsForBodyIndex:v8];
+          [v6 hintsForBodyIndex:bodyIndexInPageLayout];
         }
 
         else
@@ -2782,7 +2782,7 @@ LABEL_3:
           v13 = 0;
         }
 
-        [v10 inflateTarget:a3 fromHints:&__p childHint:objc_msgSend(v7 anchoredAttachmentPositions:"lastChildHint") topicNumbers:{v9, objc_msgSend(v6, "topicNumbers")}];
+        [p_layoutManager inflateTarget:layout fromHints:&__p childHint:objc_msgSend(v7 anchoredAttachmentPositions:"lastChildHint") topicNumbers:{v9, objc_msgSend(v6, "topicNumbers")}];
         if (__p)
         {
           v12 = __p;
@@ -2790,41 +2790,41 @@ LABEL_3:
         }
 
         [(THPaginatedPageController *)self p_validatePageHints];
-        if (![objc_msgSend(a3 "columns")])
+        if (![objc_msgSend(layout "columns")])
         {
           [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
         }
       }
 
-      [(THPaginatedPageController *)self p_bodyLayoutDidLayout:a3];
+      [(THPaginatedPageController *)self p_bodyLayoutDidLayout:layout];
     }
   }
 
   objc_sync_exit(self);
 }
 
-- (void)i_registerPageLayout:(id)a3
+- (void)i_registerPageLayout:(id)layout
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!layout)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [(THPaginatedPageController *)self p_insertPageLayoutIntoCache:a3];
+  [(THPaginatedPageController *)self p_insertPageLayoutIntoCache:layout];
 
   objc_sync_exit(self);
 }
 
-- (void)i_unregisterPageLayout:(id)a3
+- (void)i_unregisterPageLayout:(id)layout
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!layout)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [(THPaginatedPageController *)self p_removePageLayoutFromCache:a3];
+  [(THPaginatedPageController *)self p_removePageLayoutFromCache:layout];
 
   objc_sync_exit(self);
 }
@@ -2835,15 +2835,15 @@ LABEL_3:
   [v3 pageSizeWithZeroInPagingDirection];
   v5 = v4;
   v7 = v6;
-  v8 = [(THPaginatedPageController *)self pageCount];
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+  pageCount = [(THPaginatedPageController *)self pageCount];
+  if (pageCount == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v8;
+    v9 = pageCount;
   }
 
   if (v9)
@@ -2886,25 +2886,25 @@ LABEL_3:
   return result;
 }
 
-- (BOOL)needsAnnotationSourceForLayout:(id)a3
+- (BOOL)needsAnnotationSourceForLayout:(id)layout
 {
-  v5 = [(THPaginatedPageController *)self delegate];
+  delegate = [(THPaginatedPageController *)self delegate];
 
-  return [(THPageControllerDelegate *)v5 pageController:self needsAnnotationSourceForLayout:a3];
+  return [(THPageControllerDelegate *)delegate pageController:self needsAnnotationSourceForLayout:layout];
 }
 
 - (BOOL)allowsDescendersToClip
 {
-  v3 = [(THPaginatedPageController *)self delegate];
+  delegate = [(THPaginatedPageController *)self delegate];
 
-  return [(THPageControllerDelegate *)v3 allowsDescendersToClipForPageController:self];
+  return [(THPageControllerDelegate *)delegate allowsDescendersToClipForPageController:self];
 }
 
-- (unint64_t)p_relativePageIndexPrecedingRelativePageIndex:(unint64_t)a3
+- (unint64_t)p_relativePageIndexPrecedingRelativePageIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    return a3 - 1;
+    return index - 1;
   }
 
   else
@@ -2913,11 +2913,11 @@ LABEL_3:
   }
 }
 
-- (unint64_t)p_relativePageIndexFollowingRelativePageIndex:(unint64_t)a3
+- (unint64_t)p_relativePageIndexFollowingRelativePageIndex:(unint64_t)index
 {
-  if (a3 + 1 < [(THPaginatedPageController *)self pageCount])
+  if (index + 1 < [(THPaginatedPageController *)self pageCount])
   {
-    return a3 + 1;
+    return index + 1;
   }
 
   else
@@ -2926,14 +2926,14 @@ LABEL_3:
   }
 }
 
-- (const)i_topicHintsPriorToPageIndex:(unint64_t)a3
+- (const)i_topicHintsPriorToPageIndex:(unint64_t)index
 {
-  if (self->_firstPageIndexNeedingLayout < a3)
+  if (self->_firstPageIndexNeedingLayout < index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THPaginatedPageController *)self p_relativePageIndexPrecedingRelativePageIndex:a3];
+  v5 = [(THPaginatedPageController *)self p_relativePageIndexPrecedingRelativePageIndex:index];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -2944,9 +2944,9 @@ LABEL_3:
   return [v7 topicNumbers];
 }
 
-- (const)i_topicHintsAfterPageIndex:(unint64_t)a3
+- (const)i_topicHintsAfterPageIndex:(unint64_t)index
 {
-  v4 = [(THPaginatedPageController *)self p_relativePageIndexFollowingRelativePageIndex:a3];
+  v4 = [(THPaginatedPageController *)self p_relativePageIndexFollowingRelativePageIndex:index];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;

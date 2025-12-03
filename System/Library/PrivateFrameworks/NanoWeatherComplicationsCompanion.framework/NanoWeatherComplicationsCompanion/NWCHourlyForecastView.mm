@@ -1,10 +1,10 @@
 @interface NWCHourlyForecastView
 + (void)initialize;
-- (NWCHourlyForecastView)initWithDevice:(id)a3;
-- (void)_applyConstraintsWithConstants:(id)a3;
-- (void)_applyDate:(id)a3 timeZone:(id)a4;
-- (void)applyNonAccentFilters:(id)a3;
-- (void)applySimpleEntryModel:(id)a3;
+- (NWCHourlyForecastView)initWithDevice:(id)device;
+- (void)_applyConstraintsWithConstants:(id)constants;
+- (void)_applyDate:(id)date timeZone:(id)zone;
+- (void)applyNonAccentFilters:(id)filters;
+- (void)applySimpleEntryModel:(id)model;
 @end
 
 @implementation NWCHourlyForecastView
@@ -39,23 +39,23 @@ void __35__NWCHourlyForecastView_initialize__block_invoke()
   FixedDateFormatter = v4;
 }
 
-- (NWCHourlyForecastView)initWithDevice:(id)a3
+- (NWCHourlyForecastView)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v35.receiver = self;
   v35.super_class = NWCHourlyForecastView;
   v6 = [(NWCHourlyForecastView *)&v35 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBBAE8] currentDevice];
-    ___LayoutConstants_block_invoke(v7, v7);
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+    ___LayoutConstants_block_invoke(currentDevice, currentDevice);
     v8 = *&_LayoutConstants_constants_0;
     v9 = *&_LayoutConstants_constants_1;
     v10 = *&_LayoutConstants_constants_2;
     v11 = *&_LayoutConstants_constants_3;
 
-    objc_storeStrong(&v6->_device, a3);
-    LOBYTE(v7) = [v5 supportsCapability:GossamerCapability];
+    objc_storeStrong(&v6->_device, device);
+    LOBYTE(currentDevice) = [deviceCopy supportsCapability:GossamerCapability];
     v12 = objc_opt_new();
     v13 = *MEMORY[0x277D74420];
     v14 = MEMORY[0x277CBB6C0];
@@ -67,7 +67,7 @@ void __35__NWCHourlyForecastView_initialize__block_invoke()
     [(UILabel *)v12 setContentHuggingPriority:0 forAxis:v16];
     LODWORD(v17) = 1148846080;
     [(UILabel *)v12 setContentCompressionResistancePriority:0 forAxis:v17];
-    if (v7)
+    if (currentDevice)
     {
       [MEMORY[0x277D75348] whiteColor];
     }
@@ -129,53 +129,53 @@ void __35__NWCHourlyForecastView_initialize__block_invoke()
   return v6;
 }
 
-- (void)applySimpleEntryModel:(id)a3
+- (void)applySimpleEntryModel:(id)model
 {
-  v8 = a3;
-  v4 = [v8 bottomString];
+  modelCopy = model;
+  bottomString = [modelCopy bottomString];
 
-  if (v4)
+  if (bottomString)
   {
     v5 = FixedDateFormatter;
-    v6 = [v8 bottomString];
-    v4 = [v5 dateFromString:v6];
+    bottomString2 = [modelCopy bottomString];
+    bottomString = [v5 dateFromString:bottomString2];
   }
 
-  v7 = [v8 timeZone];
-  [(NWCHourlyForecastView *)self _applyDate:v4 timeZone:v7];
+  timeZone = [modelCopy timeZone];
+  [(NWCHourlyForecastView *)self _applyDate:bottomString timeZone:timeZone];
 }
 
-- (void)_applyDate:(id)a3 timeZone:(id)a4
+- (void)_applyDate:(id)date timeZone:(id)zone
 {
-  v25 = a3;
-  v6 = a4;
-  if (v25)
+  dateCopy = date;
+  zoneCopy = zone;
+  if (dateCopy)
   {
     if (_applyDate_timeZone__onceToken != -1)
     {
       [NWCHourlyForecastView _applyDate:timeZone:];
     }
 
-    v7 = [MEMORY[0x277CBEAF8] currentLocale];
-    v8 = _applyDate_timeZone__RegularFormatTemplate;
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    timeLabel4 = _applyDate_timeZone__RegularFormatTemplate;
     v9 = _applyDate_timeZone__SpecialFormatLanguages;
-    v10 = [v7 languageCode];
-    LODWORD(v9) = [v9 containsObject:v10];
+    languageCode = [currentLocale languageCode];
+    LODWORD(v9) = [v9 containsObject:languageCode];
 
     if (v9)
     {
       v11 = _applyDate_timeZone__SpecialFormatTemplate;
 
-      v8 = v11;
+      timeLabel4 = v11;
     }
 
-    v12 = [MEMORY[0x277CCA968] dateFormatFromTemplate:v8 options:0 locale:v7];
+    v12 = [MEMORY[0x277CCA968] dateFormatFromTemplate:timeLabel4 options:0 locale:currentLocale];
     [DateFormatter setDateFormat:v12];
 
-    [DateFormatter setTimeZone:v6];
-    v13 = [DateFormatter stringFromDate:v25];
-    v14 = [v7 languageCode];
-    v15 = [@"hi" isEqualToString:v14];
+    [DateFormatter setTimeZone:zoneCopy];
+    v13 = [DateFormatter stringFromDate:dateCopy];
+    languageCode2 = [currentLocale languageCode];
+    v15 = [@"hi" isEqualToString:languageCode2];
 
     if ((v15 & 1) == 0)
     {
@@ -184,38 +184,38 @@ void __35__NWCHourlyForecastView_initialize__block_invoke()
       v13 = v16;
     }
 
-    v17 = [v13 uppercaseStringWithLocale:v7];
-    v18 = [(NWCHourlyForecastView *)self timeLabel];
-    [v18 setText:v17];
+    v17 = [v13 uppercaseStringWithLocale:currentLocale];
+    timeLabel = [(NWCHourlyForecastView *)self timeLabel];
+    [timeLabel setText:v17];
 
-    v19 = [(NWCHourlyForecastView *)self device];
-    LODWORD(v18) = [v19 supportsCapability:GossamerCapability];
+    device = [(NWCHourlyForecastView *)self device];
+    LODWORD(timeLabel) = [device supportsCapability:GossamerCapability];
 
-    if (v18)
+    if (timeLabel)
     {
       v20 = +[NWCColor systemGrayTextColor];
-      v21 = [(NWCHourlyForecastView *)self timeLabel];
-      [v21 setTextColor:v20];
+      timeLabel2 = [(NWCHourlyForecastView *)self timeLabel];
+      [timeLabel2 setTextColor:v20];
     }
   }
 
   else
   {
     v22 = NWCLocalizedString(@"TIME_NOW");
-    v23 = [(NWCHourlyForecastView *)self timeLabel];
-    [v23 setText:v22];
+    timeLabel3 = [(NWCHourlyForecastView *)self timeLabel];
+    [timeLabel3 setText:v22];
 
-    v24 = [(NWCHourlyForecastView *)self device];
-    LODWORD(v23) = [v24 supportsCapability:GossamerCapability];
+    device2 = [(NWCHourlyForecastView *)self device];
+    LODWORD(timeLabel3) = [device2 supportsCapability:GossamerCapability];
 
-    if (!v23)
+    if (!timeLabel3)
     {
       goto LABEL_14;
     }
 
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    v8 = [(NWCHourlyForecastView *)self timeLabel];
-    [v8 setTextColor:v7];
+    currentLocale = [MEMORY[0x277D75348] whiteColor];
+    timeLabel4 = [(NWCHourlyForecastView *)self timeLabel];
+    [timeLabel4 setTextColor:currentLocale];
   }
 
 LABEL_14:
@@ -234,120 +234,120 @@ uint64_t __45__NWCHourlyForecastView__applyDate_timeZone___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)applyNonAccentFilters:(id)a3
+- (void)applyNonAccentFilters:(id)filters
 {
-  v4 = a3;
-  v6 = [(NWCHourlyForecastView *)self middleLabel];
-  v5 = [v6 layer];
-  [v5 setFilters:v4];
+  filtersCopy = filters;
+  middleLabel = [(NWCHourlyForecastView *)self middleLabel];
+  layer = [middleLabel layer];
+  [layer setFilters:filtersCopy];
 }
 
-- (void)_applyConstraintsWithConstants:(id)a3
+- (void)_applyConstraintsWithConstants:(id)constants
 {
-  var3 = a3.var3;
-  var1 = a3.var1;
+  var3 = constants.var3;
+  var1 = constants.var1;
   v83[15] = *MEMORY[0x277D85DE8];
-  v82 = [(NWCHourlyForecastView *)self middleImageView:a3.var0];
-  v81 = [v82 centerXAnchor];
-  v80 = [(NWCHourlyForecastView *)self centerXAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  v82 = [(NWCHourlyForecastView *)self middleImageView:constants.var0];
+  centerXAnchor = [v82 centerXAnchor];
+  centerXAnchor2 = [(NWCHourlyForecastView *)self centerXAnchor];
+  v79 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v83[0] = v79;
-  v6 = [(NWCHourlyForecastView *)self middleImageView];
-  v7 = [v6 leadingAnchor];
-  v8 = [(NWCHourlyForecastView *)self leadingAnchor];
-  v9 = [v7 constraintGreaterThanOrEqualToAnchor:v8 constant:var3];
+  middleImageView = [(NWCHourlyForecastView *)self middleImageView];
+  leadingAnchor = [middleImageView leadingAnchor];
+  leadingAnchor2 = [(NWCHourlyForecastView *)self leadingAnchor];
+  v9 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:var3];
 
   v78 = v9;
   LODWORD(v10) = 1144750080;
   [v9 setPriority:v10];
   v83[1] = v9;
-  v11 = [(NWCHourlyForecastView *)self trailingAnchor];
-  v12 = [(NWCHourlyForecastView *)self middleImageView];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintGreaterThanOrEqualToAnchor:v13 constant:var3];
+  trailingAnchor = [(NWCHourlyForecastView *)self trailingAnchor];
+  middleImageView2 = [(NWCHourlyForecastView *)self middleImageView];
+  trailingAnchor2 = [middleImageView2 trailingAnchor];
+  v14 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:var3];
 
   v77 = v14;
   LODWORD(v15) = 1144750080;
   [v14 setPriority:v15];
   v83[2] = v14;
-  v76 = [(NWCHourlyForecastView *)self middleImageView];
-  v75 = [v76 centerYAnchor];
-  v74 = [(NWCHourlyForecastView *)self centerYAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74];
+  middleImageView3 = [(NWCHourlyForecastView *)self middleImageView];
+  centerYAnchor = [middleImageView3 centerYAnchor];
+  centerYAnchor2 = [(NWCHourlyForecastView *)self centerYAnchor];
+  v73 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v83[3] = v73;
-  v72 = [(NWCHourlyForecastView *)self middleLabel];
-  v70 = [v72 centerXAnchor];
-  v71 = [(NWCHourlyForecastView *)self middleImageView];
-  v69 = [v71 centerXAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  middleLabel = [(NWCHourlyForecastView *)self middleLabel];
+  centerXAnchor3 = [middleLabel centerXAnchor];
+  middleImageView4 = [(NWCHourlyForecastView *)self middleImageView];
+  centerXAnchor4 = [middleImageView4 centerXAnchor];
+  v68 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v83[4] = v68;
-  v16 = [(NWCHourlyForecastView *)self middleLabel];
-  v17 = [v16 leadingAnchor];
-  v18 = [(NWCHourlyForecastView *)self leadingAnchor];
-  v19 = [v17 constraintGreaterThanOrEqualToAnchor:v18 constant:var3];
+  middleLabel2 = [(NWCHourlyForecastView *)self middleLabel];
+  leadingAnchor3 = [middleLabel2 leadingAnchor];
+  leadingAnchor4 = [(NWCHourlyForecastView *)self leadingAnchor];
+  v19 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:var3];
 
   v67 = v19;
   LODWORD(v20) = 1144750080;
   [v19 setPriority:v20];
   v83[5] = v19;
-  v21 = [(NWCHourlyForecastView *)self trailingAnchor];
-  v22 = [(NWCHourlyForecastView *)self middleLabel];
-  v23 = [v22 trailingAnchor];
-  v24 = [v21 constraintGreaterThanOrEqualToAnchor:v23 constant:var3];
+  trailingAnchor3 = [(NWCHourlyForecastView *)self trailingAnchor];
+  middleLabel3 = [(NWCHourlyForecastView *)self middleLabel];
+  trailingAnchor4 = [middleLabel3 trailingAnchor];
+  v24 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:var3];
 
   v66 = v24;
   LODWORD(v25) = 1144750080;
   [v24 setPriority:v25];
   v83[6] = v24;
-  v65 = [(NWCHourlyForecastView *)self middleLabel];
-  v63 = [v65 centerYAnchor];
-  v64 = [(NWCHourlyForecastView *)self middleImageView];
-  v62 = [v64 centerYAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  middleLabel4 = [(NWCHourlyForecastView *)self middleLabel];
+  centerYAnchor3 = [middleLabel4 centerYAnchor];
+  middleImageView5 = [(NWCHourlyForecastView *)self middleImageView];
+  centerYAnchor4 = [middleImageView5 centerYAnchor];
+  v61 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v83[7] = v61;
-  v60 = [(NWCHourlyForecastView *)self topLabel];
-  v58 = [v60 centerXAnchor];
-  v59 = [(NWCHourlyForecastView *)self middleImageView];
-  v57 = [v59 centerXAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  topLabel = [(NWCHourlyForecastView *)self topLabel];
+  centerXAnchor5 = [topLabel centerXAnchor];
+  middleImageView6 = [(NWCHourlyForecastView *)self middleImageView];
+  centerXAnchor6 = [middleImageView6 centerXAnchor];
+  v56 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v83[8] = v56;
-  v26 = [(NWCHourlyForecastView *)self topLabel];
-  v27 = [v26 leadingAnchor];
-  v28 = [(NWCHourlyForecastView *)self leadingAnchor];
-  v29 = [v27 constraintGreaterThanOrEqualToAnchor:v28 constant:var3];
+  topLabel2 = [(NWCHourlyForecastView *)self topLabel];
+  leadingAnchor5 = [topLabel2 leadingAnchor];
+  leadingAnchor6 = [(NWCHourlyForecastView *)self leadingAnchor];
+  v29 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6 constant:var3];
 
   v55 = v29;
   LODWORD(v30) = 1144750080;
   [v29 setPriority:v30];
   v83[9] = v29;
-  v31 = [(NWCHourlyForecastView *)self trailingAnchor];
-  v32 = [(NWCHourlyForecastView *)self topLabel];
-  v33 = [v32 trailingAnchor];
-  v34 = [v31 constraintGreaterThanOrEqualToAnchor:v33 constant:var3];
+  trailingAnchor5 = [(NWCHourlyForecastView *)self trailingAnchor];
+  topLabel3 = [(NWCHourlyForecastView *)self topLabel];
+  trailingAnchor6 = [topLabel3 trailingAnchor];
+  v34 = [trailingAnchor5 constraintGreaterThanOrEqualToAnchor:trailingAnchor6 constant:var3];
 
   v53 = v34;
   LODWORD(v35) = 1144750080;
   [v34 setPriority:v35];
   v83[10] = v34;
-  v52 = [(NWCHourlyForecastView *)self topLabel];
-  v51 = [v52 firstBaselineAnchor];
-  v50 = [(NWCHourlyForecastView *)self topAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50 constant:var1];
+  topLabel4 = [(NWCHourlyForecastView *)self topLabel];
+  firstBaselineAnchor = [topLabel4 firstBaselineAnchor];
+  topAnchor = [(NWCHourlyForecastView *)self topAnchor];
+  v49 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:var1];
   v83[11] = v49;
-  v48 = [(NWCHourlyForecastView *)self timeLabel];
-  v47 = [v48 leadingAnchor];
-  v36 = [(NWCHourlyForecastView *)self leadingAnchor];
-  v37 = [v47 constraintEqualToAnchor:v36 constant:var3];
+  timeLabel = [(NWCHourlyForecastView *)self timeLabel];
+  leadingAnchor7 = [timeLabel leadingAnchor];
+  leadingAnchor8 = [(NWCHourlyForecastView *)self leadingAnchor];
+  v37 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:var3];
   v83[12] = v37;
-  v38 = [(NWCHourlyForecastView *)self trailingAnchor];
-  v39 = [(NWCHourlyForecastView *)self timeLabel];
-  v40 = [v39 trailingAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40 constant:var3];
+  trailingAnchor7 = [(NWCHourlyForecastView *)self trailingAnchor];
+  timeLabel2 = [(NWCHourlyForecastView *)self timeLabel];
+  trailingAnchor8 = [timeLabel2 trailingAnchor];
+  v41 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:var3];
   v83[13] = v41;
-  v42 = [(NWCHourlyForecastView *)self bottomAnchor];
-  v43 = [(NWCHourlyForecastView *)self timeLabel];
-  v44 = [v43 firstBaselineAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  bottomAnchor = [(NWCHourlyForecastView *)self bottomAnchor];
+  timeLabel3 = [(NWCHourlyForecastView *)self timeLabel];
+  firstBaselineAnchor2 = [timeLabel3 firstBaselineAnchor];
+  v45 = [bottomAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v83[14] = v45;
   v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:15];
 

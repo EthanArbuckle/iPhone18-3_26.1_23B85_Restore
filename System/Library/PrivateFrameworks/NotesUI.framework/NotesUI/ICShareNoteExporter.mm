@@ -1,8 +1,8 @@
 @interface ICShareNoteExporter
 - (NSURL)exportDirectory;
-- (id)exportRTFDFileFromNote:(id)a3;
-- (id)fileWrapperForNote:(id)a3;
-- (id)filenameFromTitle:(id)a3;
+- (id)exportRTFDFileFromNote:(id)note;
+- (id)fileWrapperForNote:(id)note;
+- (id)filenameFromTitle:(id)title;
 - (void)cleanUpExportedFiles;
 @end
 
@@ -18,9 +18,9 @@
     v6 = [v4 fileURLWithPath:v5];
     v7 = [v6 URLByAppendingPathComponent:@"export" isDirectory:1];
 
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
-    v10 = [v7 URLByAppendingPathComponent:v9 isDirectory:1];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v10 = [v7 URLByAppendingPathComponent:uUIDString isDirectory:1];
     v11 = self->_exportDirectory;
     self->_exportDirectory = v10;
 
@@ -30,13 +30,13 @@
   return exportDirectory;
 }
 
-- (id)exportRTFDFileFromNote:(id)a3
+- (id)exportRTFDFileFromNote:(id)note
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  noteCopy = note;
+  v5 = noteCopy;
+  if (noteCopy)
   {
-    if ([v4 isSharable])
+    if ([noteCopy isSharable])
     {
       v31 = 0;
       v32 = &v31;
@@ -44,17 +44,17 @@
       v34 = __Block_byref_object_copy__38;
       v35 = __Block_byref_object_dispose__38;
       v36 = 0;
-      v6 = [MEMORY[0x1E69B7800] sharedContext];
-      v7 = [v6 snapshotManagedObjectContext];
+      mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+      snapshotManagedObjectContext = [mEMORY[0x1E69B7800] snapshotManagedObjectContext];
 
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __46__ICShareNoteExporter_exportRTFDFileFromNote___block_invoke;
       v26[3] = &unk_1E846A2B0;
       v27 = v5;
-      v8 = v7;
+      v8 = snapshotManagedObjectContext;
       v28 = v8;
-      v29 = self;
+      selfCopy = self;
       v30 = &v31;
       [v8 performBlockAndWait:v26];
       v9 = v32[5];
@@ -141,24 +141,24 @@ void __46__ICShareNoteExporter_exportRTFDFileFromNote___block_invoke(uint64_t a1
 
 - (void)cleanUpExportedFiles
 {
-  v6 = [a1 exportDirectory];
+  exportDirectory = [self exportDirectory];
   OUTLINED_FUNCTION_1_3();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x16u);
 }
 
-- (id)fileWrapperForNote:(id)a3
+- (id)fileWrapperForNote:(id)note
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 textStorage];
-  v5 = [v4 filterSubstringAttributes];
-  [v4 setFilterSubstringAttributes:1];
-  v6 = [v3 textStorage];
-  v7 = [v6 length];
+  noteCopy = note;
+  textStorage = [noteCopy textStorage];
+  filterSubstringAttributes = [textStorage filterSubstringAttributes];
+  [textStorage setFilterSubstringAttributes:1];
+  textStorage2 = [noteCopy textStorage];
+  v7 = [textStorage2 length];
 
-  [v3 filterAttachmentsInTextStorage:v4 range:{0, v7}];
-  v8 = [v4 attributedSubstringFromRange:{0, v7}];
-  [v4 setFilterSubstringAttributes:v5];
+  [noteCopy filterAttachmentsInTextStorage:textStorage range:{0, v7}];
+  v8 = [textStorage attributedSubstringFromRange:{0, v7}];
+  [textStorage setFilterSubstringAttributes:filterSubstringAttributes];
   v9 = [v8 length];
   v16 = *MEMORY[0x1E69DB628];
   v17[0] = *MEMORY[0x1E69DB698];
@@ -179,10 +179,10 @@ void __46__ICShareNoteExporter_exportRTFDFileFromNote___block_invoke(uint64_t a1
   return v11;
 }
 
-- (id)filenameFromTitle:(id)a3
+- (id)filenameFromTitle:(id)title
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  titleCopy = title;
   if (!filenameFromTitle__invalidCharacters)
   {
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"/", @":", 0}];
@@ -190,7 +190,7 @@ void __46__ICShareNoteExporter_exportRTFDFileFromNote___block_invoke(uint64_t a1
     filenameFromTitle__invalidCharacters = v4;
   }
 
-  v6 = [v3 mutableCopy];
+  v6 = [titleCopy mutableCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -210,7 +210,7 @@ void __46__ICShareNoteExporter_exportRTFDFileFromNote___block_invoke(uint64_t a1
           objc_enumerationMutation(v7);
         }
 
-        [v6 replaceOccurrencesOfString:*(*(&v17 + 1) + 8 * i) withString:@" " options:0 range:{0, objc_msgSend(v3, "length")}];
+        [v6 replaceOccurrencesOfString:*(*(&v17 + 1) + 8 * i) withString:@" " options:0 range:{0, objc_msgSend(titleCopy, "length")}];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];

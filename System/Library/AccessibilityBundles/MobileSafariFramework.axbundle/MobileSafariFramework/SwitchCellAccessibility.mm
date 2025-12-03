@@ -1,5 +1,5 @@
 @interface SwitchCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityValue;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,11 +7,11 @@
 
 @implementation SwitchCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFBrowsingAssistantSwitchCell" hasSwiftField:@"switch" withSwiftType:"UISwitch"];
-  [v3 validateClass:@"UISwitch" hasInstanceVariable:@"_on" withType:"BOOL"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFBrowsingAssistantSwitchCell" hasSwiftField:@"switch" withSwiftType:"UISwitch"];
+  [validationsCopy validateClass:@"UISwitch" hasInstanceVariable:@"_on" withType:"BOOL"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -44,9 +44,9 @@
 - (id)accessibilityValue
 {
   v2 = [(SwitchCellAccessibility *)self safeSwiftValueForKey:@"switch"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

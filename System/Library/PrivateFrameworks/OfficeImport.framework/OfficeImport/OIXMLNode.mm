@@ -1,79 +1,79 @@
 @interface OIXMLNode
-+ (void)_escapeCharacters:(const unsigned __int16 *)a3 amount:(unsigned int)a4 escapeWhiteSpaces:(BOOL)a5 inString:(id)a6 appendingToString:(__CFString *)a7;
-+ (void)_escapeHTMLAttributeCharacters:(id)a3 withQuote:(unsigned __int16)a4 appendingToString:(__CFString *)a5;
++ (void)_escapeCharacters:(const unsigned __int16 *)characters amount:(unsigned int)amount escapeWhiteSpaces:(BOOL)spaces inString:(id)string appendingToString:(__CFString *)toString;
++ (void)_escapeHTMLAttributeCharacters:(id)characters withQuote:(unsigned __int16)quote appendingToString:(__CFString *)string;
 - (NSString)XMLString;
 - (NSString)name;
 - (NSString)stringValue;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_appendXMLStringToString:(__CFString *)a3 level:(int)a4;
-- (void)setStringValue:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_appendXMLStringToString:(__CFString *)string level:(int)level;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation OIXMLNode
 
 - (NSString)name
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"OIXMLNode.m" lineNumber:26 description:{@"Please override -[%@ %@]", v5, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"OIXMLNode.m" lineNumber:26 description:{@"Please override -[%@ %@]", v5, v6}];
 
   return 0;
 }
 
 - (NSString)XMLString
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [(OIXMLNode *)self _appendXMLStringToString:v3 level:0];
+  string = [MEMORY[0x277CCAB68] string];
+  [(OIXMLNode *)self _appendXMLStringToString:string level:0];
 
-  return v3;
+  return string;
 }
 
 - (NSString)stringValue
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"OIXMLNode.m" lineNumber:32 description:{@"Please override -[%@ %@]", v5, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"OIXMLNode.m" lineNumber:32 description:{@"Please override -[%@ %@]", v5, v6}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"OIXMLNode.m" lineNumber:20 description:{@"Please override -[%@ %@]", v6, v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"OIXMLNode.m" lineNumber:20 description:{@"Please override -[%@ %@]", v6, v7}];
 
   return 0;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(a2);
-  [v7 handleFailureInMethod:a2 object:self file:@"OIXMLNode.m" lineNumber:38 description:{@"Please override -[%@ %@]", v5, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"OIXMLNode.m" lineNumber:38 description:{@"Please override -[%@ %@]", v5, v6}];
 }
 
-+ (void)_escapeHTMLAttributeCharacters:(id)a3 withQuote:(unsigned __int16)a4 appendingToString:(__CFString *)a5
++ (void)_escapeHTMLAttributeCharacters:(id)characters withQuote:(unsigned __int16)quote appendingToString:(__CFString *)string
 {
-  v7 = a3;
-  Length = CFStringGetLength(a5);
+  charactersCopy = characters;
+  Length = CFStringGetLength(string);
   v9[0] = 38;
-  v9[1] = a4;
-  [OIXMLNode _escapeCharacters:v9 amount:2 escapeWhiteSpaces:0 inString:v7 appendingToString:a5];
+  v9[1] = quote;
+  [OIXMLNode _escapeCharacters:v9 amount:2 escapeWhiteSpaces:0 inString:charactersCopy appendingToString:string];
 
-  v10.length = CFStringGetLength(a5) - Length;
+  v10.length = CFStringGetLength(string) - Length;
   v10.location = Length;
-  CFStringFindAndReplace(a5, @"&amp;{", @"&{", v10, 0);
+  CFStringFindAndReplace(string, @"&amp;{", @"&{", v10, 0);
 }
 
-+ (void)_escapeCharacters:(const unsigned __int16 *)a3 amount:(unsigned int)a4 escapeWhiteSpaces:(BOOL)a5 inString:(id)a6 appendingToString:(__CFString *)a7
++ (void)_escapeCharacters:(const unsigned __int16 *)characters amount:(unsigned int)amount escapeWhiteSpaces:(BOOL)spaces inString:(id)string appendingToString:(__CFString *)toString
 {
-  v8 = a5;
-  theString = a6;
+  spacesCopy = spaces;
+  theString = string;
   if (!theString)
   {
     goto LABEL_42;
@@ -159,7 +159,7 @@
       v18 = buffer[v14 - v25];
     }
 
-    if (!v8)
+    if (!spacesCopy)
     {
       goto LABEL_18;
     }
@@ -168,22 +168,22 @@
     {
       v16 = 0;
 LABEL_18:
-      v20 = a4;
-      v21 = a3;
-      if (!a4)
+      amountCopy = amount;
+      charactersCopy = characters;
+      if (!amount)
       {
         goto LABEL_25;
       }
 
       while (1)
       {
-        v22 = *v21++;
+        v22 = *charactersCopy++;
         if (v22 == v18)
         {
           break;
         }
 
-        if (!--v20)
+        if (!--amountCopy)
         {
           goto LABEL_25;
         }
@@ -192,10 +192,10 @@ LABEL_18:
       v47.length = v14 - v15;
       v47.location = v15;
       v23 = CFStringCreateWithSubstring(0, theString, v47);
-      CFStringAppend(a7, v23);
+      CFStringAppend(toString, v23);
       CFRelease(v23);
       v24 = NSMapGet(_MergedGlobals_1, v18);
-      CFStringAppend(a7, v24);
+      CFStringAppend(toString, v24);
 LABEL_23:
       v15 = v14 + 1;
       goto LABEL_25;
@@ -206,9 +206,9 @@ LABEL_23:
       v46.length = v14 - v15;
       v46.location = v15;
       v19 = CFStringCreateWithSubstring(0, theString, v46);
-      CFStringAppend(a7, v19);
+      CFStringAppend(toString, v19);
       CFRelease(v19);
-      CFStringAppend(a7, @"&nbsp;");
+      CFStringAppend(toString, @"&nbsp;");
       v16 = 0;
       goto LABEL_23;
     }
@@ -221,7 +221,7 @@ LABEL_25:
   while (v14 != v11);
   if (!v15)
   {
-    CFStringAppend(a7, theString);
+    CFStringAppend(toString, theString);
     goto LABEL_42;
   }
 
@@ -232,7 +232,7 @@ LABEL_40:
   if (v27)
   {
     v28 = v27;
-    CFStringAppend(a7, v27);
+    CFStringAppend(toString, v27);
     CFRelease(v28);
   }
 
@@ -263,12 +263,12 @@ void __83__OIXMLNode__escapeCharacters_amount_escapeWhiteSpaces_inString_appendi
   NSMapInsert(_MergedGlobals_1, 0xF0B7, @"&bull;");
 }
 
-- (void)_appendXMLStringToString:(__CFString *)a3 level:(int)a4
+- (void)_appendXMLStringToString:(__CFString *)string level:(int)level
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
-  [v8 handleFailureInMethod:a2 object:self file:@"OIXMLNode.m" lineNumber:158 description:{@"Please override -[%@ %@]", v6, v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"OIXMLNode.m" lineNumber:158 description:{@"Please override -[%@ %@]", v6, v7}];
 }
 
 @end

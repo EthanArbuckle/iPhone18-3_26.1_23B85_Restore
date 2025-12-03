@@ -1,21 +1,21 @@
 @interface FMDCommandHandlerAccessoryConfiguration
-- (FMDCommandHandlerAccessoryConfiguration)initWithParams:(id)a3 supportedAccessoryRegistry:(id)a4;
+- (FMDCommandHandlerAccessoryConfiguration)initWithParams:(id)params supportedAccessoryRegistry:(id)registry;
 - (FMDSupportedAccessoryRegistry)supportedAccessoryRegistry;
 - (void)handleCommand;
 @end
 
 @implementation FMDCommandHandlerAccessoryConfiguration
 
-- (FMDCommandHandlerAccessoryConfiguration)initWithParams:(id)a3 supportedAccessoryRegistry:(id)a4
+- (FMDCommandHandlerAccessoryConfiguration)initWithParams:(id)params supportedAccessoryRegistry:(id)registry
 {
-  v6 = a4;
+  registryCopy = registry;
   v10.receiver = self;
   v10.super_class = FMDCommandHandlerAccessoryConfiguration;
-  v7 = [(FMDCommandHandler *)&v10 initWithParams:a3 provider:0];
+  v7 = [(FMDCommandHandler *)&v10 initWithParams:params provider:0];
   v8 = v7;
   if (v7)
   {
-    [(FMDCommandHandlerAccessoryConfiguration *)v7 setSupportedAccessoryRegistry:v6];
+    [(FMDCommandHandlerAccessoryConfiguration *)v7 setSupportedAccessoryRegistry:registryCopy];
   }
 
   return v8;
@@ -23,11 +23,11 @@
 
 - (void)handleCommand
 {
-  v3 = [(FMDCommandHandler *)self commandParams];
-  v5 = [v3 objectForKeyedSubscript:@"supportedAccessories"];
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v5 = [commandParams objectForKeyedSubscript:@"supportedAccessories"];
 
-  v4 = [(FMDCommandHandlerAccessoryConfiguration *)self supportedAccessoryRegistry];
-  [v4 updateSupportedAccessories:v5 completion:0];
+  supportedAccessoryRegistry = [(FMDCommandHandlerAccessoryConfiguration *)self supportedAccessoryRegistry];
+  [supportedAccessoryRegistry updateSupportedAccessories:v5 completion:0];
 }
 
 - (FMDSupportedAccessoryRegistry)supportedAccessoryRegistry

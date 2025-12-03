@@ -1,5 +1,5 @@
 @interface HMDCoreDataCloudKitSetupActivity
-- (HMDCoreDataCloudKitSetupActivity)initWithDictionary:(id)a3;
+- (HMDCoreDataCloudKitSetupActivity)initWithDictionary:(id)dictionary;
 - (id)description;
 - (void)dealloc;
 @end
@@ -9,9 +9,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDCoreDataCloudKitSetupActivity *)self activityType];
-  v5 = [(HMDCoreDataCloudKitSetupActivity *)self phase];
-  v6 = [v3 stringWithFormat:@"activityType: %@ phase: %@ succeeded: %{BOOL}d", v4, v5, -[HMDCoreDataCloudKitSetupActivity succeeded](self, "succeeded")];
+  activityType = [(HMDCoreDataCloudKitSetupActivity *)self activityType];
+  phase = [(HMDCoreDataCloudKitSetupActivity *)self phase];
+  v6 = [v3 stringWithFormat:@"activityType: %@ phase: %@ succeeded: %{BOOL}d", activityType, phase, -[HMDCoreDataCloudKitSetupActivity succeeded](self, "succeeded")];
 
   return v6;
 }
@@ -23,12 +23,12 @@
   [(HMDCoreDataCloudKitSetupActivity *)&v2 dealloc];
 }
 
-- (HMDCoreDataCloudKitSetupActivity)initWithDictionary:(id)a3
+- (HMDCoreDataCloudKitSetupActivity)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v5 = v4;
+    v5 = dictionaryCopy;
     v27.receiver = self;
     v27.super_class = HMDCoreDataCloudKitSetupActivity;
     v6 = [(HMDCoreDataCloudKitSetupActivity *)&v27 init];

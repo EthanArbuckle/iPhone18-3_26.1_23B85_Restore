@@ -1,27 +1,27 @@
 @interface NSAKDeserializer
-- (id)deserializeData:(id)a3;
-- (id)deserializeList:(id)a3;
+- (id)deserializeData:(id)data;
+- (id)deserializeList:(id)list;
 - (id)deserializeNewData;
 - (id)deserializeNewKeyString;
 - (id)deserializeNewList;
 - (id)deserializeNewObject;
 - (id)deserializeNewPList;
 - (id)deserializeNewString;
-- (id)deserializePList:(id)a3;
-- (id)deserializeString:(id)a3;
-- (id)initForDeserializerStream:(id)a3;
+- (id)deserializePList:(id)list;
+- (id)deserializeString:(id)string;
+- (id)initForDeserializerStream:(id)stream;
 - (void)dealloc;
 @end
 
 @implementation NSAKDeserializer
 
-- (id)initForDeserializerStream:(id)a3
+- (id)initForDeserializerStream:(id)stream
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSAKDeserializer;
   v4 = [(NSAKDeserializer *)&v6 init];
-  v4->ds = a3;
+  v4->ds = stream;
   return v4;
 }
 
@@ -36,10 +36,10 @@
 
 - (id)deserializeNewObject
 {
-  v3 = [self->ds readInt];
-  if (v3 > 2)
+  readInt = [self->ds readInt];
+  if (readInt > 2)
   {
-    if (v3 == 3)
+    if (readInt == 3)
     {
 
       return [(NSAKDeserializer *)self deserializeNewPList];
@@ -47,7 +47,7 @@
 
     else
     {
-      if (v3 != 4)
+      if (readInt != 4)
       {
         return 0;
       }
@@ -58,9 +58,9 @@
 
   else
   {
-    if (v3 != 1)
+    if (readInt != 1)
     {
-      if (v3 == 2)
+      if (readInt == 2)
       {
 
         return [(NSAKDeserializer *)self deserializeNewList];
@@ -80,13 +80,13 @@
   return [(NSAKDeserializer *)self deserializeData:v3];
 }
 
-- (id)deserializeData:(id)a3
+- (id)deserializeData:(id)data
 {
-  v5 = [self->ds readAlignedDataSize];
-  v6 = NSAllocateMemoryPages(v5);
-  [self->ds readData:v6 length:v5];
-  v7 = [a3 initWithBytes:v6 length:v5];
-  NSDeallocateMemoryPages(v6, v5);
+  readAlignedDataSize = [self->ds readAlignedDataSize];
+  v6 = NSAllocateMemoryPages(readAlignedDataSize);
+  [self->ds readData:v6 length:readAlignedDataSize];
+  v7 = [data initWithBytes:v6 length:readAlignedDataSize];
+  NSDeallocateMemoryPages(v6, readAlignedDataSize);
   return v7;
 }
 
@@ -104,13 +104,13 @@
   return [(NSAKDeserializer *)self deserializeString:v3];
 }
 
-- (id)deserializeString:(id)a3
+- (id)deserializeString:(id)string
 {
-  v5 = [self->ds readAlignedDataSize];
-  v6 = allocate(v5);
-  [self->ds readData:v6 length:v5];
-  v7 = [a3 initWithBytes:v6 length:v5 encoding:4];
-  unallocate(v6, v5);
+  readAlignedDataSize = [self->ds readAlignedDataSize];
+  v6 = allocate(readAlignedDataSize);
+  [self->ds readData:v6 length:readAlignedDataSize];
+  v7 = [string initWithBytes:v6 length:readAlignedDataSize encoding:4];
+  unallocate(v6, readAlignedDataSize);
   return v7;
 }
 
@@ -121,18 +121,18 @@
   return [(NSAKDeserializer *)self deserializeList:v3];
 }
 
-- (id)deserializeList:(id)a3
+- (id)deserializeList:(id)list
 {
-  v5 = [self->ds readInt];
-  if (v5 < 0)
+  readInt = [self->ds readInt];
+  if (readInt < 0)
   {
     v15 = MEMORY[0x1E695DF30];
     v16 = @"count too large";
     goto LABEL_11;
   }
 
-  v6 = v5;
-  v7 = malloc_type_malloc(8 * v5, 0x100004000313F17uLL);
+  v6 = readInt;
+  v7 = malloc_type_malloc(8 * readInt, 0x100004000313F17uLL);
   if (!v7)
   {
     v15 = MEMORY[0x1E695DF30];
@@ -142,7 +142,7 @@ LABEL_11:
   }
 
   v8 = v7;
-  v9 = [a3 init];
+  v9 = [list init];
   if (v6)
   {
     v10 = v8;
@@ -172,18 +172,18 @@ LABEL_11:
   return [(NSAKDeserializer *)self deserializePList:v3];
 }
 
-- (id)deserializePList:(id)a3
+- (id)deserializePList:(id)list
 {
-  v4 = [a3 init];
-  v5 = [self->ds readInt];
-  v6 = v5;
-  if (v5 < 0)
+  v4 = [list init];
+  readInt = [self->ds readInt];
+  v6 = readInt;
+  if (readInt < 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:@"NSDeserializeException" reason:@"count too large" userInfo:0]);
   }
 
-  v7 = v5;
-  v8 = malloc_type_malloc(8 * v5, 0x100004000313F17uLL);
+  v7 = readInt;
+  v8 = malloc_type_malloc(8 * readInt, 0x100004000313F17uLL);
   v9 = malloc_default_zone();
   v10 = malloc_type_zone_calloc(v9, 1uLL, 8 * v6, 0x2C221C3EuLL);
   v11 = v10;

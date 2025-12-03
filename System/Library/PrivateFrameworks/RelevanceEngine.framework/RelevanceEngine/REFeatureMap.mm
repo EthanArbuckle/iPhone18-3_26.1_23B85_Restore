@@ -1,36 +1,36 @@
 @interface REFeatureMap
-- (BOOL)hasValueForFeature:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasValueForFeature:(id)feature;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)loggingValues;
 - (NSSet)allFeatures;
 - (NSSet)featureNames;
-- (REFeatureMap)initWithFeatureMap:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)featureValueForFeature:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (REFeatureMap)initWithFeatureMap:(id)map;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)featureValueForFeature:(id)feature;
+- (id)featureValueForName:(id)name;
 - (unint64_t)populatedFeatureCount;
-- (unint64_t)valueForFeature:(id)a3;
+- (unint64_t)valueForFeature:(id)feature;
 - (void)dealloc;
-- (void)enumerateBoolFeaturesUsingBlock:(id)a3;
-- (void)enumerateDoubleFeaturesUsingBlock:(id)a3;
-- (void)enumerateEmptyFeaturesUsingBlock:(id)a3;
-- (void)enumerateFeatureValuesUsingBlock:(id)a3;
-- (void)enumerateFeaturesUsingBlock:(id)a3;
-- (void)enumerateInt64FeaturesUsingBlock:(id)a3;
-- (void)enumerateInt64FeaturesUsingIndexedBlock:(id)a3 emptyFeatureBlock:(id)a4;
-- (void)enumerateStringFeaturesUsingBlock:(id)a3;
+- (void)enumerateBoolFeaturesUsingBlock:(id)block;
+- (void)enumerateDoubleFeaturesUsingBlock:(id)block;
+- (void)enumerateEmptyFeaturesUsingBlock:(id)block;
+- (void)enumerateFeatureValuesUsingBlock:(id)block;
+- (void)enumerateFeaturesUsingBlock:(id)block;
+- (void)enumerateInt64FeaturesUsingBlock:(id)block;
+- (void)enumerateInt64FeaturesUsingIndexedBlock:(id)block emptyFeatureBlock:(id)featureBlock;
+- (void)enumerateStringFeaturesUsingBlock:(id)block;
 - (void)logAllValues;
 - (void)removeAllValues;
-- (void)removeValueForFeature:(id)a3;
-- (void)setFeatureValue:(id)a3 forFeature:(id)a4;
-- (void)setValue:(unint64_t)a3 forFeature:(id)a4;
+- (void)removeValueForFeature:(id)feature;
+- (void)setFeatureValue:(id)value forFeature:(id)feature;
+- (void)setValue:(unint64_t)value forFeature:(id)feature;
 @end
 
 @implementation REFeatureMap
 
-- (REFeatureMap)initWithFeatureMap:(id)a3
+- (REFeatureMap)initWithFeatureMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   v9.receiver = self;
   v9.super_class = REFeatureMap;
   v6 = [(REFeatureMap *)&v9 init];
@@ -38,7 +38,7 @@
   if (v6)
   {
     v6->_hash = 0;
-    objc_storeStrong(&v6->_indices, a3);
+    objc_storeStrong(&v6->_indices, map);
     v7->_values = malloc_type_calloc([(REFeatureMap *)v7 _count], 8uLL, 0x100004000313F17uLL);
   }
 
@@ -72,10 +72,10 @@
   [(REFeatureMap *)&v5 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -85,9 +85,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(REFeatureMap *)self _count];
-      if (self->_indices == v5->_indices && (v7 = v6, v8 = [(REFeatureMap *)self _count], v8 == [(REFeatureMap *)v5 _count]))
+      v5 = equalCopy;
+      _count = [(REFeatureMap *)self _count];
+      if (self->_indices == v5->_indices && (v7 = _count, v8 = [(REFeatureMap *)self _count], v8 == [(REFeatureMap *)v5 _count]))
       {
         if (v7)
         {
@@ -135,15 +135,15 @@ LABEL_16:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 8) = self->_hash;
   *(v4 + 16) = malloc_type_calloc([(REFeatureMap *)self _count], 8uLL, 0x100004000313F17uLL);
-  v5 = [(REFeatureMap *)self _count];
-  if (v5)
+  _count = [(REFeatureMap *)self _count];
+  if (_count)
   {
-    v6 = v5;
+    v6 = _count;
     for (i = 0; i != v6; ++i)
     {
       v8 = REFeatureValueForTaggedPointer(self->_values[i]);
@@ -155,17 +155,17 @@ LABEL_16:
   return v4;
 }
 
-- (void)setValue:(unint64_t)a3 forFeature:(id)a4
+- (void)setValue:(unint64_t)value forFeature:(id)feature
 {
-  v6 = a4;
-  v7 = [(NSDictionary *)self->_indices objectForKeyedSubscript:v6];
+  featureCopy = feature;
+  v7 = [(NSDictionary *)self->_indices objectForKeyedSubscript:featureCopy];
   if (!v7)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __36__REFeatureMap_setValue_forFeature___block_invoke;
     block[3] = &unk_2785F9AB8;
-    v17 = v6;
+    v17 = featureCopy;
     if (setValue_forFeature__onceToken != -1)
     {
       dispatch_once(&setValue_forFeature__onceToken, block);
@@ -175,17 +175,17 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (value)
   {
-    v8 = REFeatureValueTypeForTaggedPointer(a3);
-    if ((REValidFeatureValueTypeForFeatureType(v8, [v6 featureType]) & 1) == 0)
+    v8 = REFeatureValueTypeForTaggedPointer(value);
+    if ((REValidFeatureValueTypeForFeatureType(v8, [featureCopy featureType]) & 1) == 0)
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __36__REFeatureMap_setValue_forFeature___block_invoke_2;
       v13[3] = &unk_2785F9C80;
-      v14 = v6;
-      v15 = a3;
+      v14 = featureCopy;
+      valueCopy = value;
       if (setValue_forFeature__onceToken_20 != -1)
       {
         dispatch_once(&setValue_forFeature__onceToken_20, v13);
@@ -198,14 +198,14 @@ LABEL_11:
     }
   }
 
-  RERetainFeatureValueTaggedPointer(a3);
-  v9 = [v7 unsignedIntegerValue];
-  v10 = REFeatureValueHashForTaggedPointer(self->_values[v9]);
+  RERetainFeatureValueTaggedPointer(value);
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  v10 = REFeatureValueHashForTaggedPointer(self->_values[unsignedIntegerValue]);
   values = self->_values;
   self->_hash ^= v10;
-  REReleaseFeatureValueTaggedPointer(values[v9]);
-  self->_values[v9] = a3;
-  self->_hash ^= REFeatureValueHashForTaggedPointer(a3);
+  REReleaseFeatureValueTaggedPointer(values[unsignedIntegerValue]);
+  self->_values[unsignedIntegerValue] = value;
+  self->_hash ^= REFeatureValueHashForTaggedPointer(value);
 LABEL_12:
 }
 
@@ -224,28 +224,28 @@ void __36__REFeatureMap_setValue_forFeature___block_invoke_2(uint64_t a1)
   RERaiseInternalException(v2, @"Feature %@ does not support value %@", v3, v4, v5, v6, v7, v8, v10);
 }
 
-- (void)setFeatureValue:(id)a3 forFeature:(id)a4
+- (void)setFeatureValue:(id)value forFeature:(id)feature
 {
-  v6 = a4;
-  v7 = RECreateFeatureValueTaggedPointer(a3);
-  [(REFeatureMap *)self setValue:v7 forFeature:v6];
+  featureCopy = feature;
+  v7 = RECreateFeatureValueTaggedPointer(value);
+  [(REFeatureMap *)self setValue:v7 forFeature:featureCopy];
 
   REReleaseFeatureValueTaggedPointer(v7);
 }
 
-- (void)removeValueForFeature:(id)a3
+- (void)removeValueForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_indices objectForKeyedSubscript:v4];
+  featureCopy = feature;
+  v5 = [(NSDictionary *)self->_indices objectForKeyedSubscript:featureCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
-    v8 = REFeatureValueHashForTaggedPointer(self->_values[v7]);
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    v8 = REFeatureValueHashForTaggedPointer(self->_values[unsignedIntegerValue]);
     values = self->_values;
     self->_hash ^= v8;
-    REReleaseFeatureValueTaggedPointer(values[v7]);
-    self->_values[v7] = 0;
+    REReleaseFeatureValueTaggedPointer(values[unsignedIntegerValue]);
+    self->_values[unsignedIntegerValue] = 0;
   }
 
   else
@@ -254,7 +254,7 @@ void __36__REFeatureMap_setValue_forFeature___block_invoke_2(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __38__REFeatureMap_removeValueForFeature___block_invoke;
     block[3] = &unk_2785F9AB8;
-    v11 = v4;
+    v11 = featureCopy;
     if (removeValueForFeature__onceToken != -1)
     {
       dispatch_once(&removeValueForFeature__onceToken, block);
@@ -285,17 +285,17 @@ void __38__REFeatureMap_removeValueForFeature___block_invoke(uint64_t a1)
   }
 }
 
-- (id)featureValueForFeature:(id)a3
+- (id)featureValueForFeature:(id)feature
 {
-  v3 = [(REFeatureMap *)self valueForFeature:a3];
+  v3 = [(REFeatureMap *)self valueForFeature:feature];
 
   return REFeatureValueForTaggedPointer(v3);
 }
 
-- (unint64_t)valueForFeature:(id)a3
+- (unint64_t)valueForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_indices objectForKeyedSubscript:v4];
+  featureCopy = feature;
+  v5 = [(NSDictionary *)self->_indices objectForKeyedSubscript:featureCopy];
   v6 = v5;
   if (v5)
   {
@@ -309,7 +309,7 @@ void __38__REFeatureMap_removeValueForFeature___block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __32__REFeatureMap_valueForFeature___block_invoke;
     block[3] = &unk_2785F9AB8;
-    v11 = v4;
+    v11 = featureCopy;
     if (valueForFeature__onceToken != -1)
     {
       dispatch_once(&valueForFeature__onceToken, block);
@@ -328,14 +328,14 @@ void __32__REFeatureMap_valueForFeature___block_invoke(uint64_t a1)
   RERaiseInternalException(v1, @"Relevance Engine is not configured to support feature: %@", v2, v3, v4, v5, v6, v7, v8);
 }
 
-- (BOOL)hasValueForFeature:(id)a3
+- (BOOL)hasValueForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_indices objectForKeyedSubscript:v4];
+  featureCopy = feature;
+  v5 = [(NSDictionary *)self->_indices objectForKeyedSubscript:featureCopy];
 
   if (v5)
   {
-    v6 = [(REFeatureMap *)self valueForFeature:v4]!= 0;
+    v6 = [(REFeatureMap *)self valueForFeature:featureCopy]!= 0;
   }
 
   else
@@ -346,17 +346,17 @@ void __32__REFeatureMap_valueForFeature___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)enumerateFeaturesUsingBlock:(id)a3
+- (void)enumerateFeaturesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   indices = self->_indices;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__REFeatureMap_enumerateFeaturesUsingBlock___block_invoke;
   v7[3] = &unk_2785F9CA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSDictionary *)indices enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -366,15 +366,15 @@ void __44__REFeatureMap_enumerateFeaturesUsingBlock___block_invoke(uint64_t a1, 
   (*(*(a1 + 40) + 16))(*(a1 + 40), v5, *(*(*(a1 + 32) + 16) + 8 * [a3 unsignedIntegerValue]));
 }
 
-- (void)enumerateBoolFeaturesUsingBlock:(id)a3
+- (void)enumerateBoolFeaturesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__REFeatureMap_enumerateBoolFeaturesUsingBlock___block_invoke;
   v6[3] = &unk_2785F9CD0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(REFeatureMap *)self enumerateFeaturesUsingBlock:v6];
 }
 
@@ -399,15 +399,15 @@ uint64_t __48__REFeatureMap_enumerateBoolFeaturesUsingBlock___block_invoke(uint6
   return MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)enumerateInt64FeaturesUsingBlock:(id)a3
+- (void)enumerateInt64FeaturesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__REFeatureMap_enumerateInt64FeaturesUsingBlock___block_invoke;
   v6[3] = &unk_2785F9CD0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(REFeatureMap *)self enumerateFeaturesUsingBlock:v6];
 }
 
@@ -429,15 +429,15 @@ void __49__REFeatureMap_enumerateInt64FeaturesUsingBlock___block_invoke(uint64_t
   }
 }
 
-- (void)enumerateDoubleFeaturesUsingBlock:(id)a3
+- (void)enumerateDoubleFeaturesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__REFeatureMap_enumerateDoubleFeaturesUsingBlock___block_invoke;
   v6[3] = &unk_2785F9CD0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(REFeatureMap *)self enumerateFeaturesUsingBlock:v6];
 }
 
@@ -459,15 +459,15 @@ void __50__REFeatureMap_enumerateDoubleFeaturesUsingBlock___block_invoke(uint64_
   }
 }
 
-- (void)enumerateStringFeaturesUsingBlock:(id)a3
+- (void)enumerateStringFeaturesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__REFeatureMap_enumerateStringFeaturesUsingBlock___block_invoke;
   v6[3] = &unk_2785F9CD0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(REFeatureMap *)self enumerateFeaturesUsingBlock:v6];
 }
 
@@ -490,15 +490,15 @@ void __50__REFeatureMap_enumerateStringFeaturesUsingBlock___block_invoke(uint64_
   }
 }
 
-- (void)enumerateEmptyFeaturesUsingBlock:(id)a3
+- (void)enumerateEmptyFeaturesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__REFeatureMap_enumerateEmptyFeaturesUsingBlock___block_invoke;
   v6[3] = &unk_2785F9CD0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(REFeatureMap *)self enumerateFeaturesUsingBlock:v6];
 }
 
@@ -512,15 +512,15 @@ uint64_t __49__REFeatureMap_enumerateEmptyFeaturesUsingBlock___block_invoke(uint
   return result;
 }
 
-- (void)enumerateFeatureValuesUsingBlock:(id)a3
+- (void)enumerateFeatureValuesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__REFeatureMap_enumerateFeatureValuesUsingBlock___block_invoke;
   v6[3] = &unk_2785F9CD0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(REFeatureMap *)self enumerateFeaturesUsingBlock:v6];
 }
 
@@ -600,8 +600,8 @@ void __29__REFeatureMap_loggingValues__block_invoke(uint64_t a1, void *a2, void 
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(REFeatureMap *)self loggingValues];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+    loggingValues = [(REFeatureMap *)self loggingValues];
+    v7 = [loggingValues countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -613,7 +613,7 @@ void __29__REFeatureMap_loggingValues__block_invoke(uint64_t a1, void *a2, void 
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(loggingValues);
           }
 
           v11 = *(*(&v14 + 1) + 8 * v10);
@@ -629,7 +629,7 @@ void __29__REFeatureMap_loggingValues__block_invoke(uint64_t a1, void *a2, void 
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+        v8 = [loggingValues countByEnumeratingWithState:&v14 objects:v20 count:16];
       }
 
       while (v8);
@@ -660,10 +660,10 @@ uint64_t __47__REFeatureMap_REFeatureProvider__featureNames__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  if ([a3 isEqualToString:@"RootFeature"])
+  if ([name isEqualToString:@"RootFeature"])
   {
     v4 = objc_alloc(MEMORY[0x277CBFF48]);
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[REFeatureMap featureCount](self, "featureCount")}];
@@ -755,11 +755,11 @@ uint64_t __56__REFeatureMap_REFeatureProvider__populatedFeatureCount__block_invo
   return result;
 }
 
-- (void)enumerateInt64FeaturesUsingIndexedBlock:(id)a3 emptyFeatureBlock:(id)a4
+- (void)enumerateInt64FeaturesUsingIndexedBlock:(id)block emptyFeatureBlock:(id)featureBlock
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  blockCopy = block;
+  featureBlockCopy = featureBlock;
+  if (blockCopy)
   {
     indices = self->_indices;
     v9[0] = MEMORY[0x277D85DD0];
@@ -767,8 +767,8 @@ uint64_t __56__REFeatureMap_REFeatureProvider__populatedFeatureCount__block_invo
     v9[2] = __93__REFeatureMap_REFeatureProvider__enumerateInt64FeaturesUsingIndexedBlock_emptyFeatureBlock___block_invoke;
     v9[3] = &unk_2785F9DA0;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = blockCopy;
+    v11 = featureBlockCopy;
     [(NSDictionary *)indices enumerateKeysAndObjectsUsingBlock:v9];
   }
 }

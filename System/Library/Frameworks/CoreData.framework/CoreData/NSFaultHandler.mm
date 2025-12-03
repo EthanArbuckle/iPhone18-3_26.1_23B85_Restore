@@ -1,13 +1,13 @@
 @interface NSFaultHandler
 + (void)initialize;
-- (id)fulfillFault:(id)a3 withContext:(id)a4 forIndex:(unint64_t)a5;
-- (id)fulfillFault:(uint64_t)a3 withContext:;
-- (id)fulfillFault:(uint64_t)a3 withContext:(id *)a4 error:;
+- (id)fulfillFault:(id)fault withContext:(id)context forIndex:(unint64_t)index;
+- (id)fulfillFault:(uint64_t)fault withContext:;
+- (id)fulfillFault:(uint64_t)fault withContext:(id *)context error:;
 - (id)initWithPersistenceStore:(id)result;
-- (id)retainedFulfillAggregateFaultForObject:(void *)a3 andRelationship:(uint64_t)a4 withContext:;
-- (uint64_t)retainedOrderedFaultInformationForAggregateFaultForObject:(void *)a3 andRelationship:(uint64_t)a4 withContext:(id *)a5 error:;
-- (void)_fireFirstAndSecondLevelFaultsForObject:(uint64_t)a1 withContext:(void *)a2;
-- (void)turnObject:(uint64_t)a3 intoFaultWithContext:;
+- (id)retainedFulfillAggregateFaultForObject:(void *)object andRelationship:(uint64_t)relationship withContext:;
+- (uint64_t)retainedOrderedFaultInformationForAggregateFaultForObject:(void *)object andRelationship:(uint64_t)relationship withContext:(id *)context error:;
+- (void)_fireFirstAndSecondLevelFaultsForObject:(uint64_t)object withContext:(void *)context;
+- (void)turnObject:(uint64_t)object intoFaultWithContext:;
 @end
 
 @implementation NSFaultHandler
@@ -50,71 +50,71 @@
   return result;
 }
 
-- (id)fulfillFault:(uint64_t)a3 withContext:(id *)a4 error:
+- (id)fulfillFault:(uint64_t)fault withContext:(id *)context error:
 {
   if (result)
   {
     if (_PF_Threading_Debugging_level)
     {
-      _PFAssertSafeMultiThreadedAccess_impl(a3, sel_fulfillFault_withContext_error_);
+      _PFAssertSafeMultiThreadedAccess_impl(fault, sel_fulfillFault_withContext_error_);
     }
 
-    return _PFFaultHandlerLookupRow(a2, a3, a4, 0, 0x7FFFFFFFFFFFFFFFLL);
+    return _PFFaultHandlerLookupRow(a2, fault, context, 0, 0x7FFFFFFFFFFFFFFFLL);
   }
 
   return result;
 }
 
-- (id)fulfillFault:(uint64_t)a3 withContext:
+- (id)fulfillFault:(uint64_t)fault withContext:
 {
   if (result)
   {
     if (_PF_Threading_Debugging_level)
     {
-      _PFAssertSafeMultiThreadedAccess_impl(a3, sel_fulfillFault_withContext_);
+      _PFAssertSafeMultiThreadedAccess_impl(fault, sel_fulfillFault_withContext_);
     }
 
-    return _PFFaultHandlerLookupRow(a2, a3, 0, 1, 0x7FFFFFFFFFFFFFFFLL);
+    return _PFFaultHandlerLookupRow(a2, fault, 0, 1, 0x7FFFFFFFFFFFFFFFLL);
   }
 
   return result;
 }
 
-- (id)fulfillFault:(id)a3 withContext:(id)a4 forIndex:(unint64_t)a5
+- (id)fulfillFault:(id)fault withContext:(id)context forIndex:(unint64_t)index
 {
   if (_PF_Threading_Debugging_level)
   {
-    _PFAssertSafeMultiThreadedAccess_impl(a4, a2);
+    _PFAssertSafeMultiThreadedAccess_impl(context, a2);
   }
 
-  return _PFFaultHandlerLookupRow(a3, a4, 0, 1, a5);
+  return _PFFaultHandlerLookupRow(fault, context, 0, 1, index);
 }
 
-- (id)retainedFulfillAggregateFaultForObject:(void *)a3 andRelationship:(uint64_t)a4 withContext:
+- (id)retainedFulfillAggregateFaultForObject:(void *)object andRelationship:(uint64_t)relationship withContext:
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_15;
   }
 
   if (_PF_Threading_Debugging_level)
   {
-    _PFAssertSafeMultiThreadedAccess_impl(a4, sel_retainedFulfillAggregateFaultForObject_andRelationship_withContext_);
+    _PFAssertSafeMultiThreadedAccess_impl(relationship, sel_retainedFulfillAggregateFaultForObject_andRelationship_withContext_);
   }
 
-  v7 = [a3 _propertyType];
-  if (a4)
+  _propertyType = [object _propertyType];
+  if (relationship)
   {
-    if (v7 == 3)
+    if (_propertyType == 3)
     {
       v38 = 0;
-      v8 = [objc_msgSend(a3 "fetchRequest")];
-      v9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a2, @"FETCH_SOURCE", a3, @"FETCHED_PROPERTY", 0}];
+      v8 = [objc_msgSend(object "fetchRequest")];
+      v9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a2, @"FETCH_SOURCE", object, @"FETCHED_PROPERTY", 0}];
       v10 = [objc_msgSend(v8 "predicate")];
       [v8 setPredicate:v10];
       [v10 allowEvaluation];
-      v11 = [a4 executeFetchRequest:v8 error:&v38];
+      v11 = [relationship executeFetchRequest:v8 error:&v38];
 
       if (!v38)
       {
@@ -125,9 +125,9 @@ LABEL_17:
       }
 
       v23 = *MEMORY[0x1E696A778];
-      v24 = [v38 code];
+      code = [v38 code];
       v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CoreData could not fulfill a fetched property because '%@'", objc_msgSend(v38, "localizedDescription")];
-      v26 = +[_NSCoreDataException exceptionWithName:code:reason:userInfo:](_NSCoreDataException, v23, v24, v25, [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v38, *MEMORY[0x1E696AA08], objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObject:", a2), @"NSAffectedObjectsErrorKey", a3, @"Fetched Property", 0}]);
+      v26 = +[_NSCoreDataException exceptionWithName:code:reason:userInfo:](_NSCoreDataException, v23, code, v25, [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v38, *MEMORY[0x1E696AA08], objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObject:", a2), @"NSAffectedObjectsErrorKey", object, @"Fetched Property", 0}]);
       v27 = objc_autoreleasePoolPush();
       if (_NSCoreDataIsOSLogEnabled(2))
       {
@@ -139,14 +139,14 @@ LABEL_17:
             goto LABEL_26;
           }
 
-          v32 = [v38 code];
-          v33 = [v26 userInfo];
+          code2 = [v38 code];
+          userInfo = [v26 userInfo];
           *v39 = 138412802;
           *&v39[4] = v26;
           v40 = 2048;
-          v41 = v32;
+          v41 = code2;
           v42 = 2112;
-          v43 = v33;
+          v43 = userInfo;
           v31 = "CoreData: error: CoreData Debug Logging: Exception = %@ with error code = %ld and userInfo = %@\n";
         }
 
@@ -158,14 +158,14 @@ LABEL_17:
             goto LABEL_26;
           }
 
-          v29 = [v38 code];
-          v30 = [v26 userInfo];
+          code3 = [v38 code];
+          userInfo2 = [v26 userInfo];
           *v39 = 138412802;
           *&v39[4] = v26;
           v40 = 2048;
-          v41 = v29;
+          v41 = code3;
           v42 = 2112;
-          v43 = v30;
+          v43 = userInfo2;
           v31 = "CoreData: warning: CoreData Debug Logging: Exception = %@ with error code = %ld and userInfo = %@\n";
         }
 
@@ -174,38 +174,38 @@ LABEL_17:
 
 LABEL_26:
       v34 = _pflogging_catastrophic_mode;
-      v35 = [v38 code];
-      v36 = [v26 userInfo];
+      code4 = [v38 code];
+      userInfo3 = [v26 userInfo];
       v37 = 1;
       if (!v34)
       {
         v37 = 2;
       }
 
-      _NSCoreDataLog_console(v37, "CoreData Debug Logging: Exception = %@ with error code = %ld and userInfo = %@", v26, v35, v36);
+      _NSCoreDataLog_console(v37, "CoreData Debug Logging: Exception = %@ with error code = %ld and userInfo = %@", v26, code4, userInfo3);
       objc_autoreleasePoolPop(v27);
       objc_exception_throw(v26);
     }
 
     *v39 = 0;
-    v16 = [a2 objectID];
-    v17 = v16;
-    v18 = atomic_load((a4 + 48));
+    objectID = [a2 objectID];
+    v17 = objectID;
+    v18 = atomic_load((relationship + 48));
     if (v18)
     {
       v19 = objc_autoreleasePoolPush();
-      v12 = [*(a4 + 32) newValueForRelationship:a3 forObjectWithID:v17 withContext:a4 error:v39];
+      v12 = [*(relationship + 32) newValueForRelationship:object forObjectWithID:v17 withContext:relationship error:v39];
       v20 = *v39;
       objc_autoreleasePoolPop(v19);
       v21 = *v39;
       goto LABEL_17;
     }
 
-    if ([v16 persistentStore] && (objc_msgSend(a2, "isInserted") & 1) == 0 && (objc_msgSend(a3, "isTransient") & 1) == 0)
+    if ([objectID persistentStore] && (objc_msgSend(a2, "isInserted") & 1) == 0 && (objc_msgSend(object, "isTransient") & 1) == 0)
     {
-      [(NSManagedObjectContext *)a4 lockObjectStore];
-      v12 = [*(a4 + 32) newValueForRelationship:a3 forObjectWithID:v17 withContext:a4 error:v39];
-      [(NSManagedObjectContext *)a4 unlockObjectStore];
+      [(NSManagedObjectContext *)relationship lockObjectStore];
+      v12 = [*(relationship + 32) newValueForRelationship:object forObjectWithID:v17 withContext:relationship error:v39];
+      [(NSManagedObjectContext *)relationship unlockObjectStore];
       goto LABEL_17;
     }
 
@@ -220,48 +220,48 @@ LABEL_15:
   return v13;
 }
 
-- (uint64_t)retainedOrderedFaultInformationForAggregateFaultForObject:(void *)a3 andRelationship:(uint64_t)a4 withContext:(id *)a5 error:
+- (uint64_t)retainedOrderedFaultInformationForAggregateFaultForObject:(void *)object andRelationship:(uint64_t)relationship withContext:(id *)context error:
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_14;
   }
 
   if (_PF_Threading_Debugging_level)
   {
-    _PFAssertSafeMultiThreadedAccess_impl(a4, sel_retainedOrderedFaultInformationForAggregateFaultForObject_andRelationship_withContext_error_);
+    _PFAssertSafeMultiThreadedAccess_impl(relationship, sel_retainedOrderedFaultInformationForAggregateFaultForObject_andRelationship_withContext_error_);
   }
 
-  v9 = [a3 _propertyType];
-  if (a4)
+  _propertyType = [object _propertyType];
+  if (relationship)
   {
-    if (v9 == 4 && [a3 isOrdered])
+    if (_propertyType == 4 && [object isOrdered])
     {
-      v10 = [a2 objectID];
-      v11 = v10;
-      v12 = atomic_load((a4 + 48));
+      objectID = [a2 objectID];
+      v11 = objectID;
+      v12 = atomic_load((relationship + 48));
       if (v12)
       {
         v23 = 0;
         v20 = objc_autoreleasePoolPush();
-        v18 = [*(a4 + 32) _newOrderedRelationshipInformationForRelationship:a3 forObjectWithID:v11 withContext:a4 error:&v23];
+        v18 = [*(relationship + 32) _newOrderedRelationshipInformationForRelationship:object forObjectWithID:v11 withContext:relationship error:&v23];
         v21 = v23;
         objc_autoreleasePoolPop(v20);
         v22 = v23;
-        if (a5 && v23)
+        if (context && v23)
         {
-          *a5 = v23;
+          *context = v23;
         }
 
         goto LABEL_15;
       }
 
-      if ([v10 persistentStore] && (objc_msgSend(a2, "isInserted") & 1) == 0 && (objc_msgSend(a3, "isTransient") & 1) == 0)
+      if ([objectID persistentStore] && (objc_msgSend(a2, "isInserted") & 1) == 0 && (objc_msgSend(object, "isTransient") & 1) == 0)
       {
-        [(NSManagedObjectContext *)a4 lockObjectStore];
-        v13 = [*(a4 + 32) _newOrderedRelationshipInformationForRelationship:a3 forObjectWithID:v11 withContext:a4 error:a5];
-        [(NSManagedObjectContext *)a4 unlockObjectStore];
+        [(NSManagedObjectContext *)relationship lockObjectStore];
+        v13 = [*(relationship + 32) _newOrderedRelationshipInformationForRelationship:object forObjectWithID:v11 withContext:relationship error:context];
+        [(NSManagedObjectContext *)relationship unlockObjectStore];
         v14 = *MEMORY[0x1E69E9840];
         return v13;
       }
@@ -270,7 +270,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  if (!a5)
+  if (!context)
   {
 LABEL_14:
     v18 = 0;
@@ -280,21 +280,21 @@ LABEL_14:
   v16 = MEMORY[0x1E696ABC0];
   v17 = *MEMORY[0x1E696A250];
   v24 = @"message";
-  v25[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"failed to retrieve ordering information from fault for object %@ and relationship %@ due to nil NSManagedObjectContext", objc_msgSend(a2, "objectID"), objc_msgSend(a3, "name")];
+  v25[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"failed to retrieve ordering information from fault for object %@ and relationship %@ due to nil NSManagedObjectContext", objc_msgSend(a2, "objectID"), objc_msgSend(object, "name")];
   v18 = 0;
-  *a5 = [v16 errorWithDomain:v17 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v25, &v24, 1)}];
+  *context = [v16 errorWithDomain:v17 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v25, &v24, 1)}];
 LABEL_15:
   v19 = *MEMORY[0x1E69E9840];
   return v18;
 }
 
-- (void)turnObject:(uint64_t)a3 intoFaultWithContext:
+- (void)turnObject:(uint64_t)object intoFaultWithContext:
 {
-  if (a1)
+  if (self)
   {
     if (_PF_Threading_Debugging_level)
     {
-      _PFAssertSafeMultiThreadedAccess_impl(a3, sel_turnObject_intoFaultWithContext_);
+      _PFAssertSafeMultiThreadedAccess_impl(object, sel_turnObject_intoFaultWithContext_);
     }
 
     v5 = (*(a2 + 16) >> 15) & 7;
@@ -327,9 +327,9 @@ LABEL_15:
             v24 = v14 == 0;
             if (v14)
             {
-              if (a3)
+              if (object)
               {
-                ++*(a3 + 46);
+                ++*(object + 46);
               }
 
               *(a2 + 16) = v12 | 0x1000;
@@ -404,9 +404,9 @@ LABEL_25:
         {
           [a2 _didChangeValuesForKeys:v23];
           *(a2 + 16) &= ~0x1000u;
-          if (a3)
+          if (object)
           {
-            --*(a3 + 46);
+            --*(object + 46);
           }
         }
 
@@ -418,15 +418,15 @@ LABEL_25:
   }
 }
 
-- (void)_fireFirstAndSecondLevelFaultsForObject:(uint64_t)a1 withContext:(void *)a2
+- (void)_fireFirstAndSecondLevelFaultsForObject:(uint64_t)object withContext:(void *)context
 {
-  if (a1)
+  if (object)
   {
-    [a2 willAccessValueForKey:0];
-    v3 = [a2 entity];
-    v4 = v3[14];
-    v5 = *(v3[13] + 40);
-    v6 = _kvcPropertysPrimitiveGetters(v3);
+    [context willAccessValueForKey:0];
+    entity = [context entity];
+    v4 = entity[14];
+    v5 = *(entity[13] + 40);
+    v6 = _kvcPropertysPrimitiveGetters(entity);
     for (i = 0; i != 4; ++i)
     {
       v8 = (v4 + 16 * __const__fireFirstAndSecondLevelFaultsForObject_withContext__rangeIndices[i]);
@@ -436,7 +436,7 @@ LABEL_25:
       {
         do
         {
-          _PF_Handler_Primitive_GetProperty(a2, v9, *(v5 + 8 * v9), *(v6 + 8 * v9));
+          _PF_Handler_Primitive_GetProperty(context, v9, *(v5 + 8 * v9), *(v6 + 8 * v9));
           if (i >= 2)
           {
             [v11 willRead];

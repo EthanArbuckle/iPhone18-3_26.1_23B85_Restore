@@ -1,18 +1,18 @@
 @interface PHRecentsPhoneHeaderView
-- (id)newSummaryViewForRecentCall:(id)a3 occurrenceDate:(id)a4 status:(unsigned int)a5 duration:(double)a6 type:(unsigned int)a7 dataUsage:(int64_t)a8;
+- (id)newSummaryViewForRecentCall:(id)call occurrenceDate:(id)date status:(unsigned int)status duration:(double)duration type:(unsigned int)type dataUsage:(int64_t)usage;
 @end
 
 @implementation PHRecentsPhoneHeaderView
 
-- (id)newSummaryViewForRecentCall:(id)a3 occurrenceDate:(id)a4 status:(unsigned int)a5 duration:(double)a6 type:(unsigned int)a7 dataUsage:(int64_t)a8
+- (id)newSummaryViewForRecentCall:(id)call occurrenceDate:(id)date status:(unsigned int)status duration:(double)duration type:(unsigned int)type dataUsage:(int64_t)usage
 {
-  v8 = *&a7;
-  v10 = *&a5;
-  v14 = a3;
-  v15 = a4;
+  v8 = *&type;
+  v10 = *&status;
+  callCopy = call;
+  dateCopy = date;
   if ((kCHCallTypeTelephony & v8) != 0)
   {
-    v16 = [[PHRecentsPhoneHeaderSummaryView alloc] initWithFrame:v14 recentCall:v15 occurrenceDate:v10 status:v8 duration:CGRectZero.origin.x type:CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height, a6];
+    duration = [[PHRecentsPhoneHeaderSummaryView alloc] initWithFrame:callCopy recentCall:dateCopy occurrenceDate:v10 status:v8 duration:CGRectZero.origin.x type:CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height, duration];
   }
 
   else
@@ -26,10 +26,10 @@
       [v18 handleFailureInMethod:a2 object:self file:@"PHRecentsPhoneHeaderView.m" lineNumber:44 description:@"PHRecentsPersonPhoneHeaderView only handles telephony calls"];
     }
 
-    v16 = 0;
+    duration = 0;
   }
 
-  return v16;
+  return duration;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface HDDevicelessProfile
-- (HDDevicelessProfile)initWithDirectoryPath:(id)a3 medicalIDDirectoryPath:(id)a4 daemon:(id)a5 profileIdentifier:(id)a6;
+- (HDDevicelessProfile)initWithDirectoryPath:(id)path medicalIDDirectoryPath:(id)directoryPath daemon:(id)daemon profileIdentifier:(id)identifier;
 @end
 
 @implementation HDDevicelessProfile
 
-- (HDDevicelessProfile)initWithDirectoryPath:(id)a3 medicalIDDirectoryPath:(id)a4 daemon:(id)a5 profileIdentifier:(id)a6
+- (HDDevicelessProfile)initWithDirectoryPath:(id)path medicalIDDirectoryPath:(id)directoryPath daemon:(id)daemon profileIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HDDevicelessProfile;
-  return [(HDProfile *)&v7 initWithDirectoryPath:a3 medicalIDDirectoryPath:a4 daemon:a5 profileIdentifier:a6];
+  return [(HDProfile *)&v7 initWithDirectoryPath:path medicalIDDirectoryPath:directoryPath daemon:daemon profileIdentifier:identifier];
 }
 
 @end

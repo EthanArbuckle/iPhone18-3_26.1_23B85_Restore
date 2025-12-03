@@ -1,20 +1,20 @@
 @interface APOneshotObserverAdapter
-- (APOneshotObserverAdapter)initWithController:(id)a3 completionHandler:(id)a4;
+- (APOneshotObserverAdapter)initWithController:(id)controller completionHandler:(id)handler;
 @end
 
 @implementation APOneshotObserverAdapter
 
-- (APOneshotObserverAdapter)initWithController:(id)a3 completionHandler:(id)a4
+- (APOneshotObserverAdapter)initWithController:(id)controller completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = APOneshotObserverAdapter;
   v9 = [(APOneshotObserverAdapter *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_controller, a3);
+    objc_storeStrong(&v9->_controller, controller);
     v21[0] = 0;
     v21[1] = v21;
     v21[2] = 0x3032000000;
@@ -26,13 +26,13 @@
     v16 = 3221225472;
     v17 = __65__APOneshotObserverAdapter_initWithController_completionHandler___block_invoke;
     v18 = &unk_1E7A41EE8;
-    v19 = v8;
+    v19 = handlerCopy;
     v20 = v21;
     v12 = [&v15 copy];
     completion = v11->_completion;
     v11->_completion = v12;
 
-    [v7 registerObserver:{v11, v15, v16, v17, v18}];
+    [controllerCopy registerObserver:{v11, v15, v16, v17, v18}];
     _Block_object_dispose(v21, 8);
   }
 

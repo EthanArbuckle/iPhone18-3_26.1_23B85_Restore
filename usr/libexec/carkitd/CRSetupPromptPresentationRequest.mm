@@ -1,24 +1,24 @@
 @interface CRSetupPromptPresentationRequest
-- (CRSetupPromptPresentationRequest)initWithPresentationHandler:(id)a3 errorHandler:(id)a4;
+- (CRSetupPromptPresentationRequest)initWithPresentationHandler:(id)handler errorHandler:(id)errorHandler;
 - (void)invalidate;
 @end
 
 @implementation CRSetupPromptPresentationRequest
 
-- (CRSetupPromptPresentationRequest)initWithPresentationHandler:(id)a3 errorHandler:(id)a4
+- (CRSetupPromptPresentationRequest)initWithPresentationHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v14.receiver = self;
   v14.super_class = CRSetupPromptPresentationRequest;
   v8 = [(CRSetupPromptPresentationRequest *)&v14 init];
   if (v8)
   {
-    v9 = objc_retainBlock(v6);
+    v9 = objc_retainBlock(handlerCopy);
     presentationHandler = v8->_presentationHandler;
     v8->_presentationHandler = v9;
 
-    v11 = objc_retainBlock(v7);
+    v11 = objc_retainBlock(errorHandlerCopy);
     errorHandler = v8->_errorHandler;
     v8->_errorHandler = v11;
   }

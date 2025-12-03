@@ -1,6 +1,6 @@
 @interface MessageActivityViewController
 + (OS_os_log)log;
-- (MessageActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4;
+- (MessageActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities;
 @end
 
 @implementation MessageActivityViewController
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __36__MessageActivityViewController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_0 != -1)
   {
     dispatch_once(&log_onceToken_0, block);
@@ -30,14 +30,14 @@ void __36__MessageActivityViewController_log__block_invoke(uint64_t a1)
   log_log_0 = v1;
 }
 
-- (MessageActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4
+- (MessageActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  activitiesCopy = activities;
   v12.receiver = self;
   v12.super_class = MessageActivityViewController;
-  v8 = [(MessageActivityViewController *)&v12 initWithActivityItems:v6 applicationActivities:v7];
+  v8 = [(MessageActivityViewController *)&v12 initWithActivityItems:itemsCopy applicationActivities:activitiesCopy];
   if (v8)
   {
     v13[0] = *MEMORY[0x277D54780];

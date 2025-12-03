@@ -1,34 +1,34 @@
 @interface MLRTrialDediscoRecipe
-- (MLRTrialDediscoRecipe)initWithAssetURL:(id)a3 configOverride:(id)a4 error:(id *)a5;
+- (MLRTrialDediscoRecipe)initWithAssetURL:(id)l configOverride:(id)override error:(id *)error;
 - (id)description;
 - (id)mlrDediscoMetadata;
 @end
 
 @implementation MLRTrialDediscoRecipe
 
-- (MLRTrialDediscoRecipe)initWithAssetURL:(id)a3 configOverride:(id)a4 error:(id *)a5
+- (MLRTrialDediscoRecipe)initWithAssetURL:(id)l configOverride:(id)override error:(id *)error
 {
   v77[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!(v8 | v9))
+  lCopy = l;
+  overrideCopy = override;
+  if (!(lCopy | overrideCopy))
   {
     v58 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"assetURL and configOverride cannot be both nil" userInfo:0];
     objc_exception_throw(v58);
   }
 
-  v10 = v9;
+  v10 = overrideCopy;
   v67.receiver = self;
   v67.super_class = MLRTrialDediscoRecipe;
   v11 = [(MLRTrialDediscoRecipe *)&v67 init];
   if (v11)
   {
-    v12 = [MEMORY[0x277CBEB38] dictionary];
-    if (v8)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    if (lCopy)
     {
-      v63 = a5;
+      errorCopy = error;
       v66 = 0;
-      v13 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v8 options:8 error:&v66];
+      v13 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:8 error:&v66];
       v14 = v66;
       if (v13)
       {
@@ -48,13 +48,13 @@
             v19 = [v15 objectForKeyedSubscript:@"dediscoConfig"];
             v20 = [v19 mutableCopy];
 
-            v12 = v20;
+            dictionary = v20;
             v21 = v61;
-            a5 = v63;
+            error = errorCopy;
             if (!v10)
             {
 LABEL_12:
-              v23 = [v12 objectForKeyedSubscript:@"encodingSchema"];
+              v23 = [dictionary objectForKeyedSubscript:@"encodingSchema"];
               encodingSchema = v11->_encodingSchema;
               v11->_encodingSchema = v23;
 
@@ -62,7 +62,7 @@ LABEL_12:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v26 = [v12 objectForKeyedSubscript:@"baseKey"];
+                v26 = [dictionary objectForKeyedSubscript:@"baseKey"];
                 baseKeyFormat = v11->_baseKeyFormat;
                 v11->_baseKeyFormat = v26;
 
@@ -70,11 +70,11 @@ LABEL_12:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v29 = [v12 objectForKeyedSubscript:@"DifferentialPrivacyParameters"];
+                  v29 = [dictionary objectForKeyedSubscript:@"DifferentialPrivacyParameters"];
                   dpConfig = v11->_dpConfig;
                   v11->_dpConfig = v29;
 
-                  v31 = [v12 objectForKeyedSubscript:@"DediscoTaskConfig"];
+                  v31 = [dictionary objectForKeyedSubscript:@"DediscoTaskConfig"];
                   dediscoTaskConfig = v11->_dediscoTaskConfig;
                   v11->_dediscoTaskConfig = v31;
 
@@ -85,7 +85,7 @@ LABEL_29:
                   goto LABEL_30;
                 }
 
-                v64 = v12;
+                v64 = dictionary;
                 v34 = MEMORY[0x277CCA9B8];
                 v35 = v21;
                 v36 = *MEMORY[0x277D05640];
@@ -99,7 +99,7 @@ LABEL_29:
 
               else
               {
-                v64 = v12;
+                v64 = dictionary;
                 v34 = MEMORY[0x277CCA9B8];
                 v35 = v21;
                 v36 = *MEMORY[0x277D05640];
@@ -114,11 +114,11 @@ LABEL_29:
               v49 = [v38 dictionaryWithObjects:v39 forKeys:v40 count:1];
               v33 = [v34 errorWithDomain:v36 code:5007 userInfo:v49];
 
-              if (a5)
+              if (error)
               {
                 v50 = v33;
                 v22 = 0;
-                *a5 = v33;
+                *error = v33;
               }
 
               else
@@ -126,12 +126,12 @@ LABEL_29:
                 v22 = 0;
               }
 
-              v12 = v64;
+              dictionary = v64;
               goto LABEL_29;
             }
 
 LABEL_11:
-            [v12 addEntriesFromDictionary:v10];
+            [dictionary addEntriesFromDictionary:v10];
             goto LABEL_12;
           }
 
@@ -151,18 +151,18 @@ LABEL_11:
           v62 = MEMORY[0x277CCA9B8];
           v46 = *MEMORY[0x277D05640];
           v74[0] = *MEMORY[0x277CCA450];
-          v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to decode recipe from path=%@", v8];
+          lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to decode recipe from path=%@", lCopy];
           v74[1] = *MEMORY[0x277CCA7E8];
-          v75[0] = v47;
+          v75[0] = lCopy;
           v75[1] = v16;
           v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:2];
           v33 = [v62 errorWithDomain:v46 code:5007 userInfo:v48];
         }
 
-        if (v63)
+        if (errorCopy)
         {
           v55 = v33;
-          *v63 = v33;
+          *errorCopy = v33;
         }
       }
 
@@ -171,18 +171,18 @@ LABEL_11:
         v41 = MEMORY[0x277CCA9B8];
         v42 = *MEMORY[0x277D05640];
         v76[0] = *MEMORY[0x277CCA450];
-        v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to read recipe with path=%@", v8];
+        lCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fail to read recipe with path=%@", lCopy];
         v76[1] = *MEMORY[0x277CCA7E8];
-        v77[0] = v43;
+        v77[0] = lCopy2;
         v77[1] = v14;
         v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v77 forKeys:v76 count:2];
         v33 = [v41 errorWithDomain:v42 code:5007 userInfo:v44];
 
-        if (v63)
+        if (errorCopy)
         {
           v45 = v33;
           v22 = 0;
-          *v63 = v33;
+          *errorCopy = v33;
           goto LABEL_29;
         }
       }
@@ -212,40 +212,40 @@ LABEL_30:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLRTrialDediscoRecipe *)self baseKeyFormat];
-  v7 = [(MLRTrialDediscoRecipe *)self encodingSchema];
-  v8 = [(MLRTrialDediscoRecipe *)self dpConfig];
-  v9 = [(MLRTrialDediscoRecipe *)self dediscoTaskConfig];
-  v10 = [v3 stringWithFormat:@"%@\n(%@, %@, %@, %@)\n", v5, v6, v7, v8, v9];
+  baseKeyFormat = [(MLRTrialDediscoRecipe *)self baseKeyFormat];
+  encodingSchema = [(MLRTrialDediscoRecipe *)self encodingSchema];
+  dpConfig = [(MLRTrialDediscoRecipe *)self dpConfig];
+  dediscoTaskConfig = [(MLRTrialDediscoRecipe *)self dediscoTaskConfig];
+  v10 = [v3 stringWithFormat:@"%@\n(%@, %@, %@, %@)\n", v5, baseKeyFormat, encodingSchema, dpConfig, dediscoTaskConfig];
 
   return v10;
 }
 
 - (id)mlrDediscoMetadata
 {
-  v3 = [(MLRTrialDediscoRecipe *)self dpConfig];
+  dpConfig = [(MLRTrialDediscoRecipe *)self dpConfig];
 
-  if (v3)
+  if (dpConfig)
   {
-    v4 = [(MLRTrialDediscoRecipe *)self dediscoTaskConfig];
+    dediscoTaskConfig = [(MLRTrialDediscoRecipe *)self dediscoTaskConfig];
 
-    if (v4)
+    if (dediscoTaskConfig)
     {
       v5 = MEMORY[0x277CBEB38];
-      v6 = [(MLRTrialDediscoRecipe *)self dpConfig];
-      v3 = [v5 dictionaryWithDictionary:v6];
+      dpConfig2 = [(MLRTrialDediscoRecipe *)self dpConfig];
+      dpConfig = [v5 dictionaryWithDictionary:dpConfig2];
 
-      v7 = [(MLRTrialDediscoRecipe *)self dediscoTaskConfig];
-      [v3 setObject:v7 forKeyedSubscript:@"DediscoTaskConfig"];
+      dediscoTaskConfig2 = [(MLRTrialDediscoRecipe *)self dediscoTaskConfig];
+      [dpConfig setObject:dediscoTaskConfig2 forKeyedSubscript:@"DediscoTaskConfig"];
     }
 
     else
     {
-      v3 = [(MLRTrialDediscoRecipe *)self dpConfig];
+      dpConfig = [(MLRTrialDediscoRecipe *)self dpConfig];
     }
   }
 
-  return v3;
+  return dpConfig;
 }
 
 @end

@@ -3,52 +3,52 @@
 - (BOOL)isLoading;
 - (BOOL)isPictureInPictureActive;
 - (BOOL)isPlaying;
-- (BOOL)playbackAllowedForPlaybackCoordinator:(id)a3;
-- (BOOL)playerViewController:(id)a3 shouldExitFullScreenWithReason:(int64_t)a4;
+- (BOOL)playbackAllowedForPlaybackCoordinator:(id)coordinator;
+- (BOOL)playerViewController:(id)controller shouldExitFullScreenWithReason:(int64_t)reason;
 - (SVVideoPlayerViewController)init;
 - (SVVideoPlayerViewControllerDataSource)dataSource;
 - (SVVideoPlayerViewControllerDelegate)delegate;
 - (UIViewController)viewControllerForModalPresentation;
 - (int)calculatePlayerWidth;
-- (void)adSkipButtonTapped:(id)a3;
-- (void)addDebuggerAction:(id)a3;
+- (void)adSkipButtonTapped:(id)tapped;
+- (void)addDebuggerAction:(id)action;
 - (void)advance;
 - (void)dealloc;
 - (void)embedVideoPlayerIfNeeded;
-- (void)enterFullscreenWithCompletionBlock:(id)a3;
-- (void)exitFullscreenWithCompletionBlock:(id)a3;
+- (void)enterFullscreenWithCompletionBlock:(id)block;
+- (void)exitFullscreenWithCompletionBlock:(id)block;
 - (void)finished;
-- (void)fullscreenBehaviorManagerRequiresFullscreenPlayback:(id)a3;
-- (void)learnMoreButtonTapped:(id)a3;
+- (void)fullscreenBehaviorManagerRequiresFullscreenPlayback:(id)playback;
+- (void)learnMoreButtonTapped:(id)tapped;
 - (void)loadView;
 - (void)pause;
-- (void)playbackCoordinator:(id)a3 timeElapsed:(double)a4 duration:(double)a5;
-- (void)playbackCoordinatorFinishedLoadingVideoURL:(id)a3;
-- (void)playbackCoordinatorPausedPlayback:(id)a3;
-- (void)playbackCoordinatorResumedPlayback:(id)a3;
-- (void)playbackCoordinatorStartedPlayback:(id)a3;
-- (void)playbackCoordinatorStateChanged:(id)a3;
-- (void)playerViewController:(id)a3 metricsCollectionEventOccured:(int64_t)a4;
-- (void)playerViewController:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4;
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5;
-- (void)playerViewControllerDidStartPictureInPicture:(id)a3;
-- (void)playerViewControllerDidStopPictureInPicture:(id)a3;
-- (void)playerViewControllerWillStartPictureInPicture:(id)a3;
-- (void)playerViewControllerWillStopPictureInPicture:(id)a3;
-- (void)refreshControlsForPlaybackCoordinator:(id)a3;
+- (void)playbackCoordinator:(id)coordinator timeElapsed:(double)elapsed duration:(double)duration;
+- (void)playbackCoordinatorFinishedLoadingVideoURL:(id)l;
+- (void)playbackCoordinatorPausedPlayback:(id)playback;
+- (void)playbackCoordinatorResumedPlayback:(id)playback;
+- (void)playbackCoordinatorStartedPlayback:(id)playback;
+- (void)playbackCoordinatorStateChanged:(id)changed;
+- (void)playerViewController:(id)controller metricsCollectionEventOccured:(int64_t)occured;
+- (void)playerViewController:(id)controller restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler;
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator;
+- (void)playerViewControllerDidStartPictureInPicture:(id)picture;
+- (void)playerViewControllerDidStopPictureInPicture:(id)picture;
+- (void)playerViewControllerWillStartPictureInPicture:(id)picture;
+- (void)playerViewControllerWillStopPictureInPicture:(id)picture;
+- (void)refreshControlsForPlaybackCoordinator:(id)coordinator;
 - (void)removeVideoPlayerIfNeeded;
-- (void)setFullscreenBehavior:(unint64_t)a3;
+- (void)setFullscreenBehavior:(unint64_t)behavior;
 - (void)setupQueueIfNeeded;
 - (void)startPictureInPictureIfPossible;
-- (void)startPlaybackForCoordinatorIfAllowed:(id)a3;
+- (void)startPlaybackForCoordinatorIfAllowed:(id)allowed;
 - (void)stopPictureInPicture;
 - (void)tapped;
-- (void)transitionToCoordinator:(id)a3;
+- (void)transitionToCoordinator:(id)coordinator;
 - (void)updateAdsButtonsVisibility;
 - (void)updatePlayerWidthIfNeeded;
-- (void)updateSkipButtonWithThreshold:(unint64_t)a3 time:(double)a4;
+- (void)updateSkipButtonWithThreshold:(unint64_t)threshold time:(double)time;
 - (void)updateViewConstraints;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -159,8 +159,8 @@ void __35__SVVideoPlayerViewController_init__block_invoke(uint64_t a1, uint64_t 
 
 - (void)dealloc
 {
-  v3 = [(SVVideoPlayerViewController *)self coordinator];
-  [v3 setHost:0];
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  [coordinator setHost:0];
 
   v4.receiver = self;
   v4.super_class = SVVideoPlayerViewController;
@@ -172,64 +172,64 @@ void __35__SVVideoPlayerViewController_init__block_invoke(uint64_t a1, uint64_t 
   v33.receiver = self;
   v33.super_class = SVVideoPlayerViewController;
   [(SVVideoPlayerViewController *)&v33 viewDidLoad];
-  v3 = [(SVVideoPlayerViewController *)self playerViewController];
-  [(SVVideoPlayerViewController *)self addChildViewController:v3];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  [(SVVideoPlayerViewController *)self addChildViewController:playerViewController];
 
-  v4 = [(SVVideoPlayerViewController *)self view];
-  v5 = [(SVVideoPlayerViewController *)self playerViewController];
-  v6 = [v5 view];
-  [v4 addSubview:v6];
+  view = [(SVVideoPlayerViewController *)self view];
+  playerViewController2 = [(SVVideoPlayerViewController *)self playerViewController];
+  view2 = [playerViewController2 view];
+  [view addSubview:view2];
 
-  v7 = [(SVVideoPlayerViewController *)self playerViewController];
-  v8 = [v7 view];
-  [v8 setHidden:1];
+  playerViewController3 = [(SVVideoPlayerViewController *)self playerViewController];
+  view3 = [playerViewController3 view];
+  [view3 setHidden:1];
 
-  v9 = [(SVVideoPlayerViewController *)self playerViewController];
-  v10 = [v9 view];
-  v11 = [(SVVideoPlayerViewController *)self view];
-  [v11 bounds];
-  [v10 setFrame:?];
+  playerViewController4 = [(SVVideoPlayerViewController *)self playerViewController];
+  view4 = [playerViewController4 view];
+  view5 = [(SVVideoPlayerViewController *)self view];
+  [view5 bounds];
+  [view4 setFrame:?];
 
-  v12 = [(SVVideoPlayerViewController *)self playerViewController];
-  [v12 didMoveToParentViewController:self];
+  playerViewController5 = [(SVVideoPlayerViewController *)self playerViewController];
+  [playerViewController5 didMoveToParentViewController:self];
 
-  v13 = [(SVVideoPlayerViewController *)self playerViewController];
-  [v13 setShowsPlaybackControls:0];
+  playerViewController6 = [(SVVideoPlayerViewController *)self playerViewController];
+  [playerViewController6 setShowsPlaybackControls:0];
 
-  v14 = [(SVVideoPlayerViewController *)self view];
-  v15 = [MEMORY[0x277D75348] blackColor];
-  [v14 setBackgroundColor:v15];
+  view6 = [(SVVideoPlayerViewController *)self view];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [view6 setBackgroundColor:blackColor];
 
-  v16 = [(SVVideoPlayerViewController *)self view];
-  v17 = [(SVVideoPlayerViewController *)self activityIndicatorView];
-  [v16 addSubview:v17];
+  view7 = [(SVVideoPlayerViewController *)self view];
+  activityIndicatorView = [(SVVideoPlayerViewController *)self activityIndicatorView];
+  [view7 addSubview:activityIndicatorView];
 
-  v18 = [(SVVideoPlayerViewController *)self playerViewController];
-  v19 = [v18 view];
-  v20 = [(SVVideoPlayerViewController *)self tapGesture];
-  [v19 addGestureRecognizer:v20];
+  playerViewController7 = [(SVVideoPlayerViewController *)self playerViewController];
+  view8 = [playerViewController7 view];
+  tapGesture = [(SVVideoPlayerViewController *)self tapGesture];
+  [view8 addGestureRecognizer:tapGesture];
 
-  v21 = [(SVVideoPlayerViewController *)self playerViewController];
-  v22 = [v21 customControlsView];
-  v23 = [(SVVideoPlayerViewController *)self learnMoreButton];
-  [v22 addSubview:v23];
+  playerViewController8 = [(SVVideoPlayerViewController *)self playerViewController];
+  customControlsView = [playerViewController8 customControlsView];
+  learnMoreButton = [(SVVideoPlayerViewController *)self learnMoreButton];
+  [customControlsView addSubview:learnMoreButton];
 
-  v24 = [(SVVideoPlayerViewController *)self playerViewController];
-  v25 = [v24 customControlsView];
-  v26 = [(SVVideoPlayerViewController *)self skipButton];
-  [v25 addSubview:v26];
+  playerViewController9 = [(SVVideoPlayerViewController *)self playerViewController];
+  customControlsView2 = [playerViewController9 customControlsView];
+  skipButton = [(SVVideoPlayerViewController *)self skipButton];
+  [customControlsView2 addSubview:skipButton];
 
-  v27 = [(SVVideoPlayerViewController *)self playerViewController];
-  v28 = [v27 contentOverlayView];
-  v29 = [(SVVideoPlayerViewController *)self adGradientView];
-  [v28 addSubview:v29];
+  playerViewController10 = [(SVVideoPlayerViewController *)self playerViewController];
+  contentOverlayView = [playerViewController10 contentOverlayView];
+  adGradientView = [(SVVideoPlayerViewController *)self adGradientView];
+  [contentOverlayView addSubview:adGradientView];
 
-  v30 = [(SVVideoPlayerViewController *)self playerViewController];
-  v31 = [v30 customControlsView];
-  [v31 setAccessibilityElementsHidden:0];
+  playerViewController11 = [(SVVideoPlayerViewController *)self playerViewController];
+  customControlsView3 = [playerViewController11 customControlsView];
+  [customControlsView3 setAccessibilityElementsHidden:0];
 
-  v32 = [(SVVideoPlayerViewController *)self view];
-  [v32 setNeedsUpdateConstraints];
+  view9 = [(SVVideoPlayerViewController *)self view];
+  [view9 setNeedsUpdateConstraints];
 }
 
 - (void)viewDidLayoutSubviews
@@ -237,34 +237,34 @@ void __35__SVVideoPlayerViewController_init__block_invoke(uint64_t a1, uint64_t 
   v18.receiver = self;
   v18.super_class = SVVideoPlayerViewController;
   [(SVVideoPlayerViewController *)&v18 viewDidLayoutSubviews];
-  v3 = [(SVVideoPlayerViewController *)self playerViewController];
-  v4 = [v3 view];
-  v5 = [v4 superview];
-  v6 = [(SVVideoPlayerViewController *)self view];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  view = [playerViewController view];
+  superview = [view superview];
+  view2 = [(SVVideoPlayerViewController *)self view];
 
-  if (v5 == v6)
+  if (superview == view2)
   {
-    v7 = [(SVVideoPlayerViewController *)self view];
-    [v7 bounds];
+    view3 = [(SVVideoPlayerViewController *)self view];
+    [view3 bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(SVVideoPlayerViewController *)self playerViewController];
-    v17 = [v16 view];
-    [v17 setFrame:{v9, v11, v13, v15}];
+    playerViewController2 = [(SVVideoPlayerViewController *)self playerViewController];
+    view4 = [playerViewController2 view];
+    [view4 setFrame:{v9, v11, v13, v15}];
   }
 }
 
 - (void)updateViewConstraints
 {
-  v3 = [(SVVideoPlayerViewController *)self playerViewController];
-  v4 = [v3 customControlsView];
-  v5 = [v4 animatedUnobscuredCenterAreaLayoutGuide];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  customControlsView = [playerViewController customControlsView];
+  animatedUnobscuredCenterAreaLayoutGuide = [customControlsView animatedUnobscuredCenterAreaLayoutGuide];
 
-  v6 = [(SVVideoPlayerViewController *)self playerViewController];
-  v7 = [v6 customControlsView];
-  v8 = [v7 transportControlsAreaLayoutGuide];
+  playerViewController2 = [(SVVideoPlayerViewController *)self playerViewController];
+  customControlsView2 = [playerViewController2 customControlsView];
+  transportControlsAreaLayoutGuide = [customControlsView2 transportControlsAreaLayoutGuide];
 
   v9 = _UISolariumFeatureFlagEnabled();
   v10 = 0.0;
@@ -278,25 +278,25 @@ void __35__SVVideoPlayerViewController_init__block_invoke(uint64_t a1, uint64_t 
     v11 = -4.0;
   }
 
-  v12 = [(SVVideoPlayerViewController *)self adPrivacyButton];
+  adPrivacyButton = [(SVVideoPlayerViewController *)self adPrivacyButton];
 
-  if (v12)
+  if (adPrivacyButton)
   {
     if (!v9)
     {
       v10 = -2.0;
     }
 
-    v13 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-    v14 = [v13 leadingAnchor];
-    v15 = [v8 leadingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    adPrivacyButton2 = [(SVVideoPlayerViewController *)self adPrivacyButton];
+    leadingAnchor = [adPrivacyButton2 leadingAnchor];
+    leadingAnchor2 = [transportControlsAreaLayoutGuide leadingAnchor];
+    v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v16 setActive:1];
 
-    v17 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-    v18 = [v17 bottomAnchor];
-    v19 = [v5 bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:v10];
+    adPrivacyButton3 = [(SVVideoPlayerViewController *)self adPrivacyButton];
+    bottomAnchor = [adPrivacyButton3 bottomAnchor];
+    bottomAnchor2 = [animatedUnobscuredCenterAreaLayoutGuide bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v10];
     [v20 setActive:1];
 
     if (_UISolariumFeatureFlagEnabled())
@@ -309,76 +309,76 @@ void __35__SVVideoPlayerViewController_init__block_invoke(uint64_t a1, uint64_t 
       v21 = 3.0;
     }
 
-    v22 = [(SVVideoPlayerViewController *)self learnMoreButton];
-    v23 = [v22 leadingAnchor];
-    v24 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-    v25 = [v24 trailingAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25 constant:v21];
+    learnMoreButton = [(SVVideoPlayerViewController *)self learnMoreButton];
+    leadingAnchor3 = [learnMoreButton leadingAnchor];
+    adPrivacyButton4 = [(SVVideoPlayerViewController *)self adPrivacyButton];
+    trailingAnchor = [adPrivacyButton4 trailingAnchor];
+    v26 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:v21];
     [v26 setActive:1];
 
-    v27 = [(SVVideoPlayerViewController *)self learnMoreButton];
-    v28 = [v27 bottomAnchor];
-    v29 = [v5 bottomAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 constant:v11];
+    learnMoreButton2 = [(SVVideoPlayerViewController *)self learnMoreButton];
+    bottomAnchor3 = [learnMoreButton2 bottomAnchor];
+    bottomAnchor4 = [animatedUnobscuredCenterAreaLayoutGuide bottomAnchor];
+    v30 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v11];
     [v30 setActive:1];
   }
 
-  v31 = [(SVVideoPlayerViewController *)self skipButton];
-  v32 = [v31 trailingAnchor];
-  v33 = [v8 trailingAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  skipButton = [(SVVideoPlayerViewController *)self skipButton];
+  trailingAnchor2 = [skipButton trailingAnchor];
+  trailingAnchor3 = [transportControlsAreaLayoutGuide trailingAnchor];
+  v34 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   [v34 setActive:1];
 
-  v35 = [(SVVideoPlayerViewController *)self skipButton];
-  v36 = [v35 bottomAnchor];
-  v37 = [v5 bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37 constant:v11];
+  skipButton2 = [(SVVideoPlayerViewController *)self skipButton];
+  bottomAnchor5 = [skipButton2 bottomAnchor];
+  bottomAnchor6 = [animatedUnobscuredCenterAreaLayoutGuide bottomAnchor];
+  v38 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:v11];
   [v38 setActive:1];
 
-  v39 = [(SVVideoPlayerViewController *)self activityIndicatorView];
-  v40 = [v39 centerXAnchor];
-  v41 = [(SVVideoPlayerViewController *)self view];
-  v42 = [v41 centerXAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
+  activityIndicatorView = [(SVVideoPlayerViewController *)self activityIndicatorView];
+  centerXAnchor = [activityIndicatorView centerXAnchor];
+  view = [(SVVideoPlayerViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v43 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v43 setActive:1];
 
-  v44 = [(SVVideoPlayerViewController *)self activityIndicatorView];
-  v45 = [v44 centerYAnchor];
-  v46 = [(SVVideoPlayerViewController *)self view];
-  v47 = [v46 centerYAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47];
+  activityIndicatorView2 = [(SVVideoPlayerViewController *)self activityIndicatorView];
+  centerYAnchor = [activityIndicatorView2 centerYAnchor];
+  view2 = [(SVVideoPlayerViewController *)self view];
+  centerYAnchor2 = [view2 centerYAnchor];
+  v48 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v48 setActive:1];
 
-  v49 = [(SVVideoPlayerViewController *)self adGradientView];
-  v50 = [v49 leadingAnchor];
-  v51 = [(SVVideoPlayerViewController *)self playerViewController];
-  v52 = [v51 contentOverlayView];
-  v53 = [v52 leadingAnchor];
-  v54 = [v50 constraintEqualToAnchor:v53];
+  adGradientView = [(SVVideoPlayerViewController *)self adGradientView];
+  leadingAnchor4 = [adGradientView leadingAnchor];
+  playerViewController3 = [(SVVideoPlayerViewController *)self playerViewController];
+  contentOverlayView = [playerViewController3 contentOverlayView];
+  leadingAnchor5 = [contentOverlayView leadingAnchor];
+  v54 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   [v54 setActive:1];
 
-  v55 = [(SVVideoPlayerViewController *)self adGradientView];
-  v56 = [v55 trailingAnchor];
-  v57 = [(SVVideoPlayerViewController *)self playerViewController];
-  v58 = [v57 contentOverlayView];
-  v59 = [v58 trailingAnchor];
-  v60 = [v56 constraintEqualToAnchor:v59];
+  adGradientView2 = [(SVVideoPlayerViewController *)self adGradientView];
+  trailingAnchor4 = [adGradientView2 trailingAnchor];
+  playerViewController4 = [(SVVideoPlayerViewController *)self playerViewController];
+  contentOverlayView2 = [playerViewController4 contentOverlayView];
+  trailingAnchor5 = [contentOverlayView2 trailingAnchor];
+  v60 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   [v60 setActive:1];
 
-  v61 = [(SVVideoPlayerViewController *)self adGradientView];
-  v62 = [v61 topAnchor];
-  v63 = [(SVVideoPlayerViewController *)self playerViewController];
-  v64 = [v63 contentOverlayView];
-  v65 = [v64 topAnchor];
-  v66 = [v62 constraintEqualToAnchor:v65];
+  adGradientView3 = [(SVVideoPlayerViewController *)self adGradientView];
+  topAnchor = [adGradientView3 topAnchor];
+  playerViewController5 = [(SVVideoPlayerViewController *)self playerViewController];
+  contentOverlayView3 = [playerViewController5 contentOverlayView];
+  topAnchor2 = [contentOverlayView3 topAnchor];
+  v66 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v66 setActive:1];
 
-  v67 = [(SVVideoPlayerViewController *)self adGradientView];
-  v68 = [v67 bottomAnchor];
-  v69 = [(SVVideoPlayerViewController *)self playerViewController];
-  v70 = [v69 contentOverlayView];
-  v71 = [v70 bottomAnchor];
-  v72 = [v68 constraintEqualToAnchor:v71];
+  adGradientView4 = [(SVVideoPlayerViewController *)self adGradientView];
+  bottomAnchor7 = [adGradientView4 bottomAnchor];
+  playerViewController6 = [(SVVideoPlayerViewController *)self playerViewController];
+  contentOverlayView4 = [playerViewController6 contentOverlayView];
+  bottomAnchor8 = [contentOverlayView4 bottomAnchor];
+  v72 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   [v72 setActive:1];
 
   v73.receiver = self;
@@ -388,31 +388,31 @@ void __35__SVVideoPlayerViewController_init__block_invoke(uint64_t a1, uint64_t 
 
 - (void)pause
 {
-  v3 = [(SVVideoPlayerViewController *)self coordinator];
-  v4 = [(SVVideoPlayerViewController *)self playerViewController];
-  [v3 setHost:v4];
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  [coordinator setHost:playerViewController];
 
-  v5 = [(SVVideoPlayerViewController *)self coordinator];
-  [v5 pause];
+  coordinator2 = [(SVVideoPlayerViewController *)self coordinator];
+  [coordinator2 pause];
 }
 
-- (void)enterFullscreenWithCompletionBlock:(id)a3
+- (void)enterFullscreenWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (![(SVVideoPlayerViewController *)self isFullscreen])
   {
-    v5 = [(SVVideoPlayerViewController *)self view];
-    [v5 layoutIfNeeded];
+    view = [(SVVideoPlayerViewController *)self view];
+    [view layoutIfNeeded];
 
     objc_initWeak(&location, self);
-    v6 = [(SVVideoPlayerViewController *)self playerViewController];
+    playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __66__SVVideoPlayerViewController_enterFullscreenWithCompletionBlock___block_invoke;
     v7[3] = &unk_279BC6080;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
-    [v6 enterFullScreenAnimated:1 completionHandler:v7];
+    v8 = blockCopy;
+    [playerViewController enterFullScreenAnimated:1 completionHandler:v7];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -434,23 +434,23 @@ void __66__SVVideoPlayerViewController_enterFullscreenWithCompletionBlock___bloc
   }
 }
 
-- (void)exitFullscreenWithCompletionBlock:(id)a3
+- (void)exitFullscreenWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(SVVideoPlayerViewController *)self isFullscreen])
   {
-    v5 = [(SVVideoPlayerViewController *)self view];
-    [v5 layoutIfNeeded];
+    view = [(SVVideoPlayerViewController *)self view];
+    [view layoutIfNeeded];
 
     objc_initWeak(&location, self);
-    v6 = [(SVVideoPlayerViewController *)self playerViewController];
+    playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __65__SVVideoPlayerViewController_exitFullscreenWithCompletionBlock___block_invoke;
     v7[3] = &unk_279BC6080;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
-    [v6 exitFullScreenAnimated:1 completionHandler:v7];
+    v8 = blockCopy;
+    [playerViewController exitFullScreenAnimated:1 completionHandler:v7];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -474,33 +474,33 @@ void __65__SVVideoPlayerViewController_exitFullscreenWithCompletionBlock___block
 
 - (void)startPictureInPictureIfPossible
 {
-  v7 = [(SVVideoPlayerViewController *)self playerViewController];
-  if ([v7 isPictureInPictureActive])
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  if ([playerViewController isPictureInPictureActive])
   {
 LABEL_2:
 
     return;
   }
 
-  v3 = [(SVVideoPlayerViewController *)self isPlaying];
+  isPlaying = [(SVVideoPlayerViewController *)self isPlaying];
 
-  if (!v3 || [(SVVideoPlayerViewController *)self isFullscreen])
+  if (!isPlaying || [(SVVideoPlayerViewController *)self isFullscreen])
   {
     return;
   }
 
   if ([MEMORY[0x277CB85D0] isPictureInPictureSupported])
   {
-    v4 = [(SVVideoPlayerViewController *)self playerViewController];
-    if ([v4 allowsPictureInPicturePlayback] && -[SVVideoPlayerViewController enablePictureInPictureBehaviors](self, "enablePictureInPictureBehaviors") && -[SVVideoPlayerViewController mode](self, "mode") != 1)
+    playerViewController2 = [(SVVideoPlayerViewController *)self playerViewController];
+    if ([playerViewController2 allowsPictureInPicturePlayback] && -[SVVideoPlayerViewController enablePictureInPictureBehaviors](self, "enablePictureInPictureBehaviors") && -[SVVideoPlayerViewController mode](self, "mode") != 1)
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v6 != 5)
+      if (userInterfaceIdiom != 5)
       {
-        v7 = [(SVVideoPlayerViewController *)self playerViewController];
-        [v7 startPictureInPicture];
+        playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+        [playerViewController startPictureInPicture];
         goto LABEL_2;
       }
     }
@@ -515,44 +515,44 @@ LABEL_2:
 
 - (void)stopPictureInPicture
 {
-  v2 = [(SVVideoPlayerViewController *)self playerViewController];
-  [v2 stopPictureInPicture];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  [playerViewController stopPictureInPicture];
 }
 
 - (BOOL)isPlaying
 {
-  v2 = [(SVVideoPlayerViewController *)self coordinator];
-  v3 = [v2 state] == 3;
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  v3 = [coordinator state] == 3;
 
   return v3;
 }
 
 - (BOOL)isLoading
 {
-  v2 = [(SVVideoPlayerViewController *)self coordinator];
-  v3 = [v2 state] == 1;
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  v3 = [coordinator state] == 1;
 
   return v3;
 }
 
 - (BOOL)isPictureInPictureActive
 {
-  v2 = [(SVVideoPlayerViewController *)self playerViewController];
-  v3 = [v2 isPictureInPictureActive];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  isPictureInPictureActive = [playerViewController isPictureInPictureActive];
 
-  return v3;
+  return isPictureInPictureActive;
 }
 
-- (void)addDebuggerAction:(id)a3
+- (void)addDebuggerAction:(id)action
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CB85A8];
-  v5 = a3;
+  actionCopy = action;
   v6 = [[v4 alloc] initWithTitle:@"Debugger" type:0];
   v7 = [MEMORY[0x277D755B8] systemImageNamed:@"ant.circle"];
   [v6 setImage:v7];
 
-  [v6 setAction:v5];
+  [v6 setAction:actionCopy];
   v10[0] = v6;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   [(AVPlayerViewController *)self->_playerViewController setCustomControlItems:v8];
@@ -562,76 +562,76 @@ LABEL_2:
 
 - (void)embedVideoPlayerIfNeeded
 {
-  v3 = [(SVVideoPlayerViewController *)self playerViewController];
-  v4 = [v3 parentViewController];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  parentViewController = [playerViewController parentViewController];
 
-  if (v4 != self)
+  if (parentViewController != self)
   {
-    v5 = [(SVVideoPlayerViewController *)self playerViewController];
-    [(SVVideoPlayerViewController *)self addChildViewController:v5];
+    playerViewController2 = [(SVVideoPlayerViewController *)self playerViewController];
+    [(SVVideoPlayerViewController *)self addChildViewController:playerViewController2];
 
-    v6 = [(SVVideoPlayerViewController *)self view];
-    v7 = [(SVVideoPlayerViewController *)self playerViewController];
-    v8 = [v7 view];
-    [v6 addSubview:v8];
+    view = [(SVVideoPlayerViewController *)self view];
+    playerViewController3 = [(SVVideoPlayerViewController *)self playerViewController];
+    view2 = [playerViewController3 view];
+    [view addSubview:view2];
 
-    v9 = [(SVVideoPlayerViewController *)self playerViewController];
-    v10 = [v9 view];
-    v11 = [(SVVideoPlayerViewController *)self view];
-    [v11 bounds];
-    [v10 setFrame:?];
+    playerViewController4 = [(SVVideoPlayerViewController *)self playerViewController];
+    view3 = [playerViewController4 view];
+    view4 = [(SVVideoPlayerViewController *)self view];
+    [view4 bounds];
+    [view3 setFrame:?];
 
-    v12 = [(SVVideoPlayerViewController *)self playerViewController];
-    [v12 didMoveToParentViewController:self];
+    playerViewController5 = [(SVVideoPlayerViewController *)self playerViewController];
+    [playerViewController5 didMoveToParentViewController:self];
 
-    v13 = [(SVVideoPlayerViewController *)self view];
-    [v13 layoutIfNeeded];
+    view5 = [(SVVideoPlayerViewController *)self view];
+    [view5 layoutIfNeeded];
   }
 }
 
 - (void)removeVideoPlayerIfNeeded
 {
-  v3 = [(SVVideoPlayerViewController *)self playerViewController];
-  v4 = [v3 parentViewController];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  parentViewController = [playerViewController parentViewController];
 
-  if (v4)
+  if (parentViewController)
   {
-    v5 = [(SVVideoPlayerViewController *)self playerViewController];
-    [v5 willMoveToParentViewController:0];
+    playerViewController2 = [(SVVideoPlayerViewController *)self playerViewController];
+    [playerViewController2 willMoveToParentViewController:0];
 
-    v6 = [(SVVideoPlayerViewController *)self playerViewController];
-    v7 = [v6 view];
-    [v7 removeFromSuperview];
+    playerViewController3 = [(SVVideoPlayerViewController *)self playerViewController];
+    view = [playerViewController3 view];
+    [view removeFromSuperview];
 
-    v8 = [(SVVideoPlayerViewController *)self playerViewController];
-    [v8 removeFromParentViewController];
+    playerViewController4 = [(SVVideoPlayerViewController *)self playerViewController];
+    [playerViewController4 removeFromParentViewController];
   }
 }
 
 - (void)willUnload
 {
-  v2 = [(SVVideoPlayerViewController *)self videoAd];
-  [v2 willUnload];
+  videoAd = [(SVVideoPlayerViewController *)self videoAd];
+  [videoAd willUnload];
 }
 
 - (BOOL)isFullscreenInProgress
 {
-  v3 = [(SVVideoPlayerViewController *)self presentedViewController];
+  presentedViewController = [(SVVideoPlayerViewController *)self presentedViewController];
 
-  if (!v3)
+  if (!presentedViewController)
   {
     return 0;
   }
 
-  v4 = [(SVVideoPlayerViewController *)self presentedViewController];
+  presentedViewController2 = [(SVVideoPlayerViewController *)self presentedViewController];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
 
-  LOBYTE(v4) = [v6 isEqualToString:@"AVFullScreenViewController"];
-  return v4;
+  LOBYTE(presentedViewController2) = [v6 isEqualToString:@"AVFullScreenViewController"];
+  return presentedViewController2;
 }
 
-- (void)fullscreenBehaviorManagerRequiresFullscreenPlayback:(id)a3
+- (void)fullscreenBehaviorManagerRequiresFullscreenPlayback:(id)playback
 {
   if (![(SVVideoPlayerViewController *)self isFullscreen]&& [(SVVideoPlayerViewController *)self isPlaying])
   {
@@ -640,22 +640,22 @@ LABEL_2:
   }
 }
 
-- (void)setFullscreenBehavior:(unint64_t)a3
+- (void)setFullscreenBehavior:(unint64_t)behavior
 {
-  if (self->_fullscreenBehavior != a3)
+  if (self->_fullscreenBehavior != behavior)
   {
-    self->_fullscreenBehavior = a3;
-    v5 = [(SVVideoPlayerViewController *)self fullscreenBehaviorManager];
-    [v5 setBehavior:a3];
+    self->_fullscreenBehavior = behavior;
+    fullscreenBehaviorManager = [(SVVideoPlayerViewController *)self fullscreenBehaviorManager];
+    [fullscreenBehaviorManager setBehavior:behavior];
   }
 }
 
-- (BOOL)playerViewController:(id)a3 shouldExitFullScreenWithReason:(int64_t)a4
+- (BOOL)playerViewController:(id)controller shouldExitFullScreenWithReason:(int64_t)reason
 {
-  v5 = [(SVVideoPlayerViewController *)self fullscreenBehaviorManager:a3];
-  v6 = [v5 fullscreenPlaybackRequiredForCurrentConditions];
+  v5 = [(SVVideoPlayerViewController *)self fullscreenBehaviorManager:controller];
+  fullscreenPlaybackRequiredForCurrentConditions = [v5 fullscreenPlaybackRequiredForCurrentConditions];
 
-  if (v6)
+  if (fullscreenPlaybackRequiredForCurrentConditions)
   {
     [(SVVideoPlayerViewController *)self pause];
   }
@@ -663,21 +663,21 @@ LABEL_2:
   return 1;
 }
 
-- (void)playerViewController:(id)a3 willTransitionToVisibilityOfPlaybackControls:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)playerViewController:(id)controller willTransitionToVisibilityOfPlaybackControls:(BOOL)controls withAnimationCoordinator:(id)coordinator
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __122__SVVideoPlayerViewController_playerViewController_willTransitionToVisibilityOfPlaybackControls_withAnimationCoordinator___block_invoke;
   v7[3] = &unk_279BC60A8;
-  v8 = a4;
+  controlsCopy = controls;
   v7[4] = self;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __122__SVVideoPlayerViewController_playerViewController_willTransitionToVisibilityOfPlaybackControls_withAnimationCoordinator___block_invoke_2;
   v5[3] = &unk_279BC60D0;
   v5[4] = self;
-  v6 = a4;
-  [a5 addCoordinatedAnimations:v7 completion:v5];
+  controlsCopy2 = controls;
+  [coordinator addCoordinatedAnimations:v7 completion:v5];
 }
 
 void __122__SVVideoPlayerViewController_playerViewController_willTransitionToVisibilityOfPlaybackControls_withAnimationCoordinator___block_invoke(uint64_t a1)
@@ -706,45 +706,45 @@ uint64_t __122__SVVideoPlayerViewController_playerViewController_willTransitionT
   return result;
 }
 
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = [(SVVideoPlayerViewController *)self playerViewController];
-  [v6 resignFirstResponder];
+  coordinatorCopy = coordinator;
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  [playerViewController resignFirstResponder];
 
-  v7 = [(SVVideoPlayerViewController *)self delegate];
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SVVideoPlayerViewController *)self delegate];
-    [v9 videoPlayerViewControllerWillExitFullscreen:self];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    [delegate2 videoPlayerViewControllerWillExitFullscreen:self];
   }
 
-  v10 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-  [v10 setHidden:1];
+  adPrivacyButton = [(SVVideoPlayerViewController *)self adPrivacyButton];
+  [adPrivacyButton setHidden:1];
 
-  v11 = [(SVVideoPlayerViewController *)self learnMoreButton];
-  [v11 setHidden:1];
+  learnMoreButton = [(SVVideoPlayerViewController *)self learnMoreButton];
+  [learnMoreButton setHidden:1];
 
-  v12 = [(SVVideoPlayerViewController *)self skipButton];
-  [v12 setHidden:1];
+  skipButton = [(SVVideoPlayerViewController *)self skipButton];
+  [skipButton setHidden:1];
 
-  v13 = [(SVVideoPlayerViewController *)self adGradientView];
-  [v13 setHidden:1];
+  adGradientView = [(SVVideoPlayerViewController *)self adGradientView];
+  [adGradientView setHidden:1];
 
-  v14 = [(SVVideoPlayerViewController *)self playerState];
-  [v14 setIsFullScreen:0];
+  playerState = [(SVVideoPlayerViewController *)self playerState];
+  [playerState setIsFullScreen:0];
 
-  v15 = [(SVVideoPlayerViewController *)self videoAd];
-  [v15 setFullScreen:0];
+  videoAd = [(SVVideoPlayerViewController *)self videoAd];
+  [videoAd setFullScreen:0];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __106__SVVideoPlayerViewController_playerViewController_willEndFullScreenPresentationWithAnimationCoordinator___block_invoke;
   v16[3] = &unk_279BC60F8;
   v16[4] = self;
-  [v5 animateAlongsideTransition:0 completion:v16];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v16];
 }
 
 uint64_t __106__SVVideoPlayerViewController_playerViewController_willEndFullScreenPresentationWithAnimationCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -774,42 +774,42 @@ uint64_t __106__SVVideoPlayerViewController_playerViewController_willEndFullScre
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = [(SVVideoPlayerViewController *)self delegate];
+  coordinatorCopy = coordinator;
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SVVideoPlayerViewController *)self delegate];
-    [v8 videoPlayerViewControllerWillEnterFullscreen:self];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    [delegate2 videoPlayerViewControllerWillEnterFullscreen:self];
   }
 
-  v9 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-  [v9 setHidden:1];
+  adPrivacyButton = [(SVVideoPlayerViewController *)self adPrivacyButton];
+  [adPrivacyButton setHidden:1];
 
-  v10 = [(SVVideoPlayerViewController *)self learnMoreButton];
-  [v10 setHidden:1];
+  learnMoreButton = [(SVVideoPlayerViewController *)self learnMoreButton];
+  [learnMoreButton setHidden:1];
 
-  v11 = [(SVVideoPlayerViewController *)self skipButton];
-  [v11 setHidden:1];
+  skipButton = [(SVVideoPlayerViewController *)self skipButton];
+  [skipButton setHidden:1];
 
-  v12 = [(SVVideoPlayerViewController *)self adGradientView];
-  [v12 setHidden:1];
+  adGradientView = [(SVVideoPlayerViewController *)self adGradientView];
+  [adGradientView setHidden:1];
 
-  v13 = [(SVVideoPlayerViewController *)self playerState];
-  [v13 setIsFullScreen:1];
+  playerState = [(SVVideoPlayerViewController *)self playerState];
+  [playerState setIsFullScreen:1];
 
-  v14 = [(SVVideoPlayerViewController *)self videoAd];
-  [v14 setFullScreen:1];
+  videoAd = [(SVVideoPlayerViewController *)self videoAd];
+  [videoAd setFullScreen:1];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __108__SVVideoPlayerViewController_playerViewController_willBeginFullScreenPresentationWithAnimationCoordinator___block_invoke;
   v15[3] = &unk_279BC60F8;
   v15[4] = self;
-  [v5 animateAlongsideTransition:0 completion:v15];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v15];
 }
 
 void __108__SVVideoPlayerViewController_playerViewController_willBeginFullScreenPresentationWithAnimationCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -828,289 +828,289 @@ void __108__SVVideoPlayerViewController_playerViewController_willBeginFullScreen
   }
 }
 
-- (void)playerViewControllerWillStartPictureInPicture:(id)a3
+- (void)playerViewControllerWillStartPictureInPicture:(id)picture
 {
-  v4 = [(SVVideoPlayerViewController *)self delegate];
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SVVideoPlayerViewController *)self delegate];
-    [v6 videoPlayerViewControllerWillStartPictureInPicture:self];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    [delegate2 videoPlayerViewControllerWillStartPictureInPicture:self];
   }
 }
 
-- (void)playerViewControllerDidStartPictureInPicture:(id)a3
+- (void)playerViewControllerDidStartPictureInPicture:(id)picture
 {
-  v4 = [(SVVideoPlayerViewController *)self delegate];
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SVVideoPlayerViewController *)self delegate];
-    [v6 videoPlayerViewControllerDidStartPictureInPicture:self];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    [delegate2 videoPlayerViewControllerDidStartPictureInPicture:self];
   }
 
-  v7 = [(SVVideoPlayerViewController *)self coordinator];
-  v10 = [v7 video];
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  video = [coordinator video];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(SVVideoPlayerViewController *)self coordinator];
-    v9 = [v8 video];
-    [v9 startedPictureInPicture];
+    coordinator2 = [(SVVideoPlayerViewController *)self coordinator];
+    video2 = [coordinator2 video];
+    [video2 startedPictureInPicture];
   }
 }
 
-- (void)playerViewControllerWillStopPictureInPicture:(id)a3
+- (void)playerViewControllerWillStopPictureInPicture:(id)picture
 {
-  v4 = [(SVVideoPlayerViewController *)self delegate];
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SVVideoPlayerViewController *)self delegate];
-    [v6 videoPlayerViewControllerWillStopPictureInPicture:self];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    [delegate2 videoPlayerViewControllerWillStopPictureInPicture:self];
   }
 }
 
-- (void)playerViewControllerDidStopPictureInPicture:(id)a3
+- (void)playerViewControllerDidStopPictureInPicture:(id)picture
 {
-  v4 = [(SVVideoPlayerViewController *)self delegate];
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SVVideoPlayerViewController *)self delegate];
-    [v6 videoPlayerViewControllerDidStopPictureInPicture:self];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    [delegate2 videoPlayerViewControllerDidStopPictureInPicture:self];
   }
 
-  v7 = [(SVVideoPlayerViewController *)self coordinator];
-  v10 = [v7 video];
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  video = [coordinator video];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(SVVideoPlayerViewController *)self coordinator];
-    v9 = [v8 video];
-    [v9 stoppedPictureInPicture];
+    coordinator2 = [(SVVideoPlayerViewController *)self coordinator];
+    video2 = [coordinator2 video];
+    [video2 stoppedPictureInPicture];
   }
 }
 
-- (void)playerViewController:(id)a3 restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)a4
+- (void)playerViewController:(id)controller restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v5 = [(SVVideoPlayerViewController *)self delegate];
+  handlerCopy = handler;
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SVVideoPlayerViewController *)self delegate];
-    [v7 videoPlayerViewController:self restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:v8];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    [delegate2 videoPlayerViewController:self restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v8[2](v8, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (void)playerViewController:(id)a3 metricsCollectionEventOccured:(int64_t)a4
+- (void)playerViewController:(id)controller metricsCollectionEventOccured:(int64_t)occured
 {
-  v6 = a3;
-  if (a4 == 5)
+  controllerCopy = controller;
+  if (occured == 5)
   {
-    v12 = v6;
+    v12 = controllerCopy;
     [(SVVideoPlayerViewController *)self setFullscreen:0];
-    v11 = [(SVVideoPlayerViewController *)self coordinator];
-    v8 = [v11 video];
+    coordinator = [(SVVideoPlayerViewController *)self coordinator];
+    video = [coordinator video];
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(SVVideoPlayerViewController *)self coordinator];
-      v10 = [v9 video];
-      [v10 exitedFullscreen];
+      coordinator2 = [(SVVideoPlayerViewController *)self coordinator];
+      video2 = [coordinator2 video];
+      [video2 exitedFullscreen];
       goto LABEL_7;
     }
   }
 
   else
   {
-    if (a4 != 4)
+    if (occured != 4)
     {
       goto LABEL_9;
     }
 
-    v12 = v6;
+    v12 = controllerCopy;
     [(SVVideoPlayerViewController *)self setFullscreen:1];
-    v7 = [(SVVideoPlayerViewController *)self coordinator];
-    v8 = [v7 video];
+    coordinator3 = [(SVVideoPlayerViewController *)self coordinator];
+    video = [coordinator3 video];
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(SVVideoPlayerViewController *)self coordinator];
-      v10 = [v9 video];
-      [v10 enteredFullscreen];
+      coordinator2 = [(SVVideoPlayerViewController *)self coordinator];
+      video2 = [coordinator2 video];
+      [video2 enteredFullscreen];
 LABEL_7:
     }
   }
 
-  v6 = v12;
+  controllerCopy = v12;
 LABEL_9:
 }
 
-- (void)playbackCoordinatorStartedPlayback:(id)a3
+- (void)playbackCoordinatorStartedPlayback:(id)playback
 {
-  v13 = a3;
-  v4 = [v13 video];
-  v5 = [(SVVideoPlayerViewController *)self videoAd];
+  playbackCopy = playback;
+  video = [playbackCopy video];
+  videoAd = [(SVVideoPlayerViewController *)self videoAd];
 
-  if (v4 != v5)
+  if (video != videoAd)
   {
-    v6 = [(SVVideoPlayerViewController *)self videoAd];
-    [v6 nextVideoStartedPlaying];
+    videoAd2 = [(SVVideoPlayerViewController *)self videoAd];
+    [videoAd2 nextVideoStartedPlaying];
 
-    v7 = [(SVVideoPlayerViewController *)self videoAd];
-    v8 = [v7 metricsView];
-    [v8 removeFromSuperview];
+    videoAd3 = [(SVVideoPlayerViewController *)self videoAd];
+    metricsView = [videoAd3 metricsView];
+    [metricsView removeFromSuperview];
 
     [(SVVideoPlayerViewController *)self setVideoAd:0];
   }
 
-  [(SVVideoPlayerViewController *)self refreshControlsForPlaybackCoordinator:v13];
-  v9 = [(SVVideoPlayerViewController *)self delegate];
+  [(SVVideoPlayerViewController *)self refreshControlsForPlaybackCoordinator:playbackCopy];
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(SVVideoPlayerViewController *)self delegate];
-    v12 = [v13 video];
-    [v11 videoPlayerViewController:self startedPlaybackOfVideo:v12];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    video2 = [playbackCopy video];
+    [delegate2 videoPlayerViewController:self startedPlaybackOfVideo:video2];
   }
 }
 
-- (void)playbackCoordinatorPausedPlayback:(id)a3
+- (void)playbackCoordinatorPausedPlayback:(id)playback
 {
-  v8 = a3;
+  playbackCopy = playback;
   [(SVVideoPlayerViewController *)self refreshControlsForPlaybackCoordinator:?];
-  v4 = [(SVVideoPlayerViewController *)self delegate];
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SVVideoPlayerViewController *)self delegate];
-    v7 = [v8 video];
-    [v6 videoPlayerViewController:self pausedPlaybackOfVideo:v7];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    video = [playbackCopy video];
+    [delegate2 videoPlayerViewController:self pausedPlaybackOfVideo:video];
   }
 }
 
-- (void)playbackCoordinatorResumedPlayback:(id)a3
+- (void)playbackCoordinatorResumedPlayback:(id)playback
 {
-  v8 = a3;
-  v4 = [(SVVideoPlayerViewController *)self delegate];
+  playbackCopy = playback;
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SVVideoPlayerViewController *)self delegate];
-    v7 = [v8 video];
-    [v6 videoPlayerViewController:self resumedPlaybackOfVideo:v7];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    video = [playbackCopy video];
+    [delegate2 videoPlayerViewController:self resumedPlaybackOfVideo:video];
   }
 }
 
-- (void)playbackCoordinator:(id)a3 timeElapsed:(double)a4 duration:(double)a5
+- (void)playbackCoordinator:(id)coordinator timeElapsed:(double)elapsed duration:(double)duration
 {
-  v10 = a3;
-  v7 = [v10 video];
-  v8 = [v7 conformsToProtocol:&unk_2877E0EB8];
+  coordinatorCopy = coordinator;
+  video = [coordinatorCopy video];
+  v8 = [video conformsToProtocol:&unk_2877E0EB8];
 
   if (v8)
   {
-    v9 = [v10 video];
-    -[SVVideoPlayerViewController updateSkipButtonWithThreshold:time:](self, "updateSkipButtonWithThreshold:time:", [v9 skipThreshold], a4);
+    video2 = [coordinatorCopy video];
+    -[SVVideoPlayerViewController updateSkipButtonWithThreshold:time:](self, "updateSkipButtonWithThreshold:time:", [video2 skipThreshold], elapsed);
   }
 }
 
-- (void)playbackCoordinatorStateChanged:(id)a3
+- (void)playbackCoordinatorStateChanged:(id)changed
 {
-  v7 = a3;
-  if ([v7 state] == 2)
+  changedCopy = changed;
+  if ([changedCopy state] == 2)
   {
-    [(SVVideoPlayerViewController *)self refreshControlsForPlaybackCoordinator:v7];
-    v4 = [v7 video];
-    v5 = [v4 conformsToProtocol:&unk_2877E0EB8];
+    [(SVVideoPlayerViewController *)self refreshControlsForPlaybackCoordinator:changedCopy];
+    video = [changedCopy video];
+    v5 = [video conformsToProtocol:&unk_2877E0EB8];
 
     if (v5)
     {
-      v6 = [v7 video];
-      -[SVVideoPlayerViewController updateSkipButtonWithThreshold:time:](self, "updateSkipButtonWithThreshold:time:", [v6 skipThreshold], 0.0);
+      video2 = [changedCopy video];
+      -[SVVideoPlayerViewController updateSkipButtonWithThreshold:time:](self, "updateSkipButtonWithThreshold:time:", [video2 skipThreshold], 0.0);
     }
 
-    if ([(SVVideoPlayerViewController *)self playbackAllowedForPlaybackCoordinator:v7])
+    if ([(SVVideoPlayerViewController *)self playbackAllowedForPlaybackCoordinator:changedCopy])
     {
-      [v7 playWithButtonTapped:{-[SVVideoPlayerViewController playButtonTapped](self, "playButtonTapped")}];
+      [changedCopy playWithButtonTapped:{-[SVVideoPlayerViewController playButtonTapped](self, "playButtonTapped")}];
     }
 
     else
     {
-      [v7 pause];
+      [changedCopy pause];
     }
   }
 }
 
-- (void)playbackCoordinatorFinishedLoadingVideoURL:(id)a3
+- (void)playbackCoordinatorFinishedLoadingVideoURL:(id)l
 {
-  v8 = a3;
-  v4 = [(SVVideoPlayerViewController *)self coordinator];
+  lCopy = l;
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
 
-  if (v4 == v8)
+  if (coordinator == lCopy)
   {
-    v5 = [(SVVideoPlayerViewController *)self playerViewController];
-    [v8 setHost:v5];
+    playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+    [lCopy setHost:playerViewController];
 
-    v6 = [(SVVideoPlayerViewController *)self playerViewController];
-    v7 = [v6 view];
-    [v7 setHidden:0];
+    playerViewController2 = [(SVVideoPlayerViewController *)self playerViewController];
+    view = [playerViewController2 view];
+    [view setHidden:0];
   }
 }
 
-- (void)learnMoreButtonTapped:(id)a3
+- (void)learnMoreButtonTapped:(id)tapped
 {
-  v4 = [(SVVideoPlayerViewController *)self coordinator];
-  v5 = [v4 video];
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  video = [coordinator video];
 
-  [v5 presentAction];
+  [video presentAction];
   [(SVVideoPlayerViewController *)self pause];
 }
 
-- (void)adSkipButtonTapped:(id)a3
+- (void)adSkipButtonTapped:(id)tapped
 {
-  v4 = [(SVVideoPlayerViewController *)self coordinator];
-  v7 = [v4 video];
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  video = [coordinator video];
 
-  if ([v7 conformsToProtocol:&unk_2877E0EB8])
+  if ([video conformsToProtocol:&unk_2877E0EB8])
   {
-    v5 = [(SVVideoPlayerViewController *)self coordinator];
-    v6 = [v5 video];
+    coordinator2 = [(SVVideoPlayerViewController *)self coordinator];
+    video2 = [coordinator2 video];
 
-    [v6 skipped];
+    [video2 skipped];
     [(SVVideoPlayerViewController *)self advance];
   }
 }
 
-- (void)refreshControlsForPlaybackCoordinator:(id)a3
+- (void)refreshControlsForPlaybackCoordinator:(id)coordinator
 {
-  v24 = a3;
-  v4 = [v24 state] == 1 || !objc_msgSend(v24, "state") || objc_msgSend(v24, "state") == 2;
-  v5 = [v24 state] == 3 || objc_msgSend(v24, "state") == 4 || objc_msgSend(v24, "state") == 5;
-  v6 = [v24 video];
-  v7 = [v6 conformsToProtocol:&unk_2877E0EB8];
+  coordinatorCopy = coordinator;
+  v4 = [coordinatorCopy state] == 1 || !objc_msgSend(coordinatorCopy, "state") || objc_msgSend(coordinatorCopy, "state") == 2;
+  v5 = [coordinatorCopy state] == 3 || objc_msgSend(coordinatorCopy, "state") == 4 || objc_msgSend(coordinatorCopy, "state") == 5;
+  video = [coordinatorCopy video];
+  v7 = [video conformsToProtocol:&unk_2877E0EB8];
 
   if (v7)
   {
-    v8 = [v24 video];
-    v9 = [v24 state] != 3 && objc_msgSend(v24, "state") != 4;
+    video2 = [coordinatorCopy video];
+    v9 = [coordinatorCopy state] != 3 && objc_msgSend(coordinatorCopy, "state") != 4;
     v10 = 1;
-    if ([v8 hasAction] && !v9)
+    if ([video2 hasAction] && !v9)
     {
       v10 = [(SVVideoPlayerViewController *)self playerWidth]== 1;
     }
@@ -1122,57 +1122,57 @@ LABEL_9:
     v9 = 1;
   }
 
-  v11 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-  [v11 setHidden:v9 withShowDelay:0.1];
+  adPrivacyButton = [(SVVideoPlayerViewController *)self adPrivacyButton];
+  [adPrivacyButton setHidden:v9 withShowDelay:0.1];
 
-  v12 = [(SVVideoPlayerViewController *)self learnMoreButton];
-  [v12 setHidden:v10 withShowDelay:0.1];
+  learnMoreButton = [(SVVideoPlayerViewController *)self learnMoreButton];
+  [learnMoreButton setHidden:v10 withShowDelay:0.1];
 
-  v13 = [(SVVideoPlayerViewController *)self skipButton];
-  [v13 setHidden:v9 withShowDelay:0.1];
+  skipButton = [(SVVideoPlayerViewController *)self skipButton];
+  [skipButton setHidden:v9 withShowDelay:0.1];
 
-  v14 = [(SVVideoPlayerViewController *)self adGradientView];
-  [v14 setHidden:v9 withShowDelay:0.1];
+  adGradientView = [(SVVideoPlayerViewController *)self adGradientView];
+  [adGradientView setHidden:v9 withShowDelay:0.1];
 
-  v15 = [(SVVideoPlayerViewController *)self activityIndicatorView];
-  v16 = v15;
+  activityIndicatorView = [(SVVideoPlayerViewController *)self activityIndicatorView];
+  v16 = activityIndicatorView;
   if (v4)
   {
-    [v15 startAnimating];
+    [activityIndicatorView startAnimating];
   }
 
   else
   {
-    [v15 stopAnimating];
+    [activityIndicatorView stopAnimating];
   }
 
-  v17 = [(SVVideoPlayerViewController *)self playerViewController];
-  [v17 setShowsPlaybackControls:v5];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  [playerViewController setShowsPlaybackControls:v5];
 
-  v18 = [(SVVideoPlayerViewController *)self playerViewController];
-  [v18 setRequiresLinearPlayback:v7];
+  playerViewController2 = [(SVVideoPlayerViewController *)self playerViewController];
+  [playerViewController2 setRequiresLinearPlayback:v7];
 
   if ((v7 & 1) != 0 || !self->_enablePictureInPictureBehaviors)
   {
-    v23 = [(SVVideoPlayerViewController *)self playerViewController];
-    [v23 setAllowsPictureInPicturePlayback:0];
+    playerViewController3 = [(SVVideoPlayerViewController *)self playerViewController];
+    [playerViewController3 setAllowsPictureInPicturePlayback:0];
 
-    v20 = [(SVVideoPlayerViewController *)self playerViewController];
-    v21 = v20;
+    playerViewController4 = [(SVVideoPlayerViewController *)self playerViewController];
+    v21 = playerViewController4;
     v22 = 0;
   }
 
   else
   {
-    v19 = [(SVVideoPlayerViewController *)self playerViewController];
-    [v19 setAllowsPictureInPicturePlayback:1];
+    playerViewController5 = [(SVVideoPlayerViewController *)self playerViewController];
+    [playerViewController5 setAllowsPictureInPicturePlayback:1];
 
-    v20 = [(SVVideoPlayerViewController *)self playerViewController];
-    v21 = v20;
+    playerViewController4 = [(SVVideoPlayerViewController *)self playerViewController];
+    v21 = playerViewController4;
     v22 = 1;
   }
 
-  [v20 setCanStartPictureInPictureAutomaticallyFromInline:v22];
+  [playerViewController4 setCanStartPictureInPictureAutomaticallyFromInline:v22];
 
   UIAccessibilityPostNotification(*MEMORY[0x277D76488], 0);
 }
@@ -1180,59 +1180,59 @@ LABEL_9:
 - (void)setupQueueIfNeeded
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v3 = [(SVVideoPlayerViewController *)self queue];
+  queue = [(SVVideoPlayerViewController *)self queue];
 
-  if (!v3)
+  if (!queue)
   {
     v4 = objc_alloc_init(SVVideoPlaybackQueue);
-    v5 = [(SVVideoPlayerViewController *)self dataSource];
+    dataSource = [(SVVideoPlayerViewController *)self dataSource];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(SVVideoPlayerViewController *)self dataSource];
-      v8 = [v7 videoAdForVideoPlayerViewController:self];
+      dataSource2 = [(SVVideoPlayerViewController *)self dataSource];
+      v8 = [dataSource2 videoAdForVideoPlayerViewController:self];
 
       if (v8)
       {
-        v9 = [v8 metricsView];
+        metricsView = [v8 metricsView];
 
-        if (v9)
+        if (metricsView)
         {
-          v10 = [v8 metricsView];
-          v11 = [(SVVideoPlayerViewController *)self playerViewController];
-          v12 = [v11 contentOverlayView];
-          [v12 bounds];
-          [v10 setFrame:?];
+          metricsView2 = [v8 metricsView];
+          playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+          contentOverlayView = [playerViewController contentOverlayView];
+          [contentOverlayView bounds];
+          [metricsView2 setFrame:?];
 
-          v13 = [v8 metricsView];
-          [v13 setAutoresizingMask:18];
+          metricsView3 = [v8 metricsView];
+          [metricsView3 setAutoresizingMask:18];
 
-          v14 = [v8 metricsView];
-          [v14 setUserInteractionEnabled:0];
+          metricsView4 = [v8 metricsView];
+          [metricsView4 setUserInteractionEnabled:0];
 
-          v15 = [(SVVideoPlayerViewController *)self playerViewController];
-          v16 = [v15 contentOverlayView];
-          v17 = [v8 metricsView];
-          [v16 addSubview:v17];
+          playerViewController2 = [(SVVideoPlayerViewController *)self playerViewController];
+          contentOverlayView2 = [playerViewController2 contentOverlayView];
+          metricsView5 = [v8 metricsView];
+          [contentOverlayView2 addSubview:metricsView5];
         }
 
-        v18 = [v8 privacyMarker];
-        [(SVVideoPlayerViewController *)self setAdPrivacyButton:v18];
+        privacyMarker = [v8 privacyMarker];
+        [(SVVideoPlayerViewController *)self setAdPrivacyButton:privacyMarker];
 
-        v19 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-        [v19 setHidden:1];
+        adPrivacyButton = [(SVVideoPlayerViewController *)self adPrivacyButton];
+        [adPrivacyButton setHidden:1];
 
-        v20 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-        [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+        adPrivacyButton2 = [(SVVideoPlayerViewController *)self adPrivacyButton];
+        [adPrivacyButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v21 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-        [v21 addTarget:self action:sel_pause forControlEvents:64];
+        adPrivacyButton3 = [(SVVideoPlayerViewController *)self adPrivacyButton];
+        [adPrivacyButton3 addTarget:self action:sel_pause forControlEvents:64];
 
-        v22 = [(SVVideoPlayerViewController *)self playerViewController];
-        v23 = [v22 customControlsView];
-        v24 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-        [v23 addSubview:v24];
+        playerViewController3 = [(SVVideoPlayerViewController *)self playerViewController];
+        customControlsView = [playerViewController3 customControlsView];
+        adPrivacyButton4 = [(SVVideoPlayerViewController *)self adPrivacyButton];
+        [customControlsView addSubview:adPrivacyButton4];
 
         [(SVVideoPlayerViewController *)self updateViewConstraints];
         v25 = [SVAVURLAssetFactory alloc];
@@ -1252,13 +1252,13 @@ LABEL_9:
       }
     }
 
-    v32 = [(SVVideoPlayerViewController *)self dataSource];
+    dataSource3 = [(SVVideoPlayerViewController *)self dataSource];
     v33 = objc_opt_respondsToSelector();
 
     if (v33)
     {
-      v34 = [(SVVideoPlayerViewController *)self dataSource];
-      v35 = [v34 videoForVideoPlayerViewController:self];
+      dataSource4 = [(SVVideoPlayerViewController *)self dataSource];
+      v35 = [dataSource4 videoForVideoPlayerViewController:self];
 
       v36 = [SVAVURLAssetFactory alloc];
       v44 = *MEMORY[0x277CE6278];
@@ -1270,8 +1270,8 @@ LABEL_9:
       v40 = [[SVAVPlayerFactory alloc] initWithAudioMode:1 playerItemFactory:v39];
       v41 = [[SVPlaybackCoordinator alloc] initWithVideo:v35 playerFactory:v40];
       [(SVVideoPlaybackQueue *)v4 appendItem:v41];
-      v42 = [(SVVideoPlayerViewController *)self playerViewController];
-      [(SVPlaybackCoordinator *)v41 setHost:v42];
+      playerViewController4 = [(SVVideoPlayerViewController *)self playerViewController];
+      [(SVPlaybackCoordinator *)v41 setHost:playerViewController4];
 
       [(SVVideoPlayerViewController *)self setPrimaryContentCoordinator:v41];
     }
@@ -1284,41 +1284,41 @@ LABEL_9:
 
 - (void)advance
 {
-  v3 = [(SVVideoPlayerViewController *)self queue];
-  v15 = [v3 advance];
+  queue = [(SVVideoPlayerViewController *)self queue];
+  advance = [queue advance];
 
-  if (v15)
+  if (advance)
   {
-    v4 = [(SVVideoPlayerViewController *)self delegate];
+    delegate = [(SVVideoPlayerViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(SVVideoPlayerViewController *)self delegate];
-      v7 = [v15 video];
-      [v6 videoPlayerViewController:self initiatedPlaybackOfVideo:v7];
+      delegate2 = [(SVVideoPlayerViewController *)self delegate];
+      video = [advance video];
+      [delegate2 videoPlayerViewController:self initiatedPlaybackOfVideo:video];
     }
 
-    [(SVVideoPlayerViewController *)self transitionToCoordinator:v15];
-    [(SVVideoPlayerViewController *)self startPlaybackForCoordinatorIfAllowed:v15];
+    [(SVVideoPlayerViewController *)self transitionToCoordinator:advance];
+    [(SVVideoPlayerViewController *)self startPlaybackForCoordinatorIfAllowed:advance];
   }
 
   else
   {
-    v8 = [(SVVideoPlayerViewController *)self coordinator];
-    v9 = [v8 state];
+    coordinator = [(SVVideoPlayerViewController *)self coordinator];
+    state = [coordinator state];
 
-    if (v9 == 5)
+    if (state == 5)
     {
-      v10 = [(SVVideoPlayerViewController *)self coordinator];
-      [v10 pause];
+      coordinator2 = [(SVVideoPlayerViewController *)self coordinator];
+      [coordinator2 pause];
 
-      v11 = [(SVVideoPlayerViewController *)self coordinator];
-      v12 = [(SVVideoPlayerViewController *)self playerViewController];
-      [v11 setHost:v12];
+      coordinator3 = [(SVVideoPlayerViewController *)self coordinator];
+      playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+      [coordinator3 setHost:playerViewController];
 
-      v13 = [(SVVideoPlayerViewController *)self coordinator];
-      [(SVVideoPlayerViewController *)self refreshControlsForPlaybackCoordinator:v13];
+      coordinator4 = [(SVVideoPlayerViewController *)self coordinator];
+      [(SVVideoPlayerViewController *)self refreshControlsForPlaybackCoordinator:coordinator4];
     }
 
     else
@@ -1329,62 +1329,62 @@ LABEL_9:
 
   if ([(SVVideoPlayerViewController *)self mode]!= 1)
   {
-    v14 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-    [v14 removeFromSuperview];
+    adPrivacyButton = [(SVVideoPlayerViewController *)self adPrivacyButton];
+    [adPrivacyButton removeFromSuperview];
 
     [(SVVideoPlayerViewController *)self setAdPrivacyButton:0];
   }
 }
 
-- (void)transitionToCoordinator:(id)a3
+- (void)transitionToCoordinator:(id)coordinator
 {
-  v4 = a3;
-  [(SVVideoPlayerViewController *)self refreshControlsForPlaybackCoordinator:v4];
-  v5 = [(SVVideoPlayerViewController *)self coordinator];
-  [v5 setHost:0];
+  coordinatorCopy = coordinator;
+  [(SVVideoPlayerViewController *)self refreshControlsForPlaybackCoordinator:coordinatorCopy];
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  [coordinator setHost:0];
 
-  v6 = [(SVVideoPlayerViewController *)self coordinator];
-  [v6 removePlaybackObserver:self];
+  coordinator2 = [(SVVideoPlayerViewController *)self coordinator];
+  [coordinator2 removePlaybackObserver:self];
 
-  v7 = [(SVVideoPlayerViewController *)self coordinator];
-  v8 = [(SVVideoPlayerViewController *)self fullscreenBehaviorManager];
-  [v7 removePlaybackObserver:v8];
+  coordinator3 = [(SVVideoPlayerViewController *)self coordinator];
+  fullscreenBehaviorManager = [(SVVideoPlayerViewController *)self fullscreenBehaviorManager];
+  [coordinator3 removePlaybackObserver:fullscreenBehaviorManager];
 
-  [v4 addPlaybackObserver:self];
-  v9 = [(SVVideoPlayerViewController *)self fullscreenBehaviorManager];
-  [v4 addPlaybackObserver:v9];
+  [coordinatorCopy addPlaybackObserver:self];
+  fullscreenBehaviorManager2 = [(SVVideoPlayerViewController *)self fullscreenBehaviorManager];
+  [coordinatorCopy addPlaybackObserver:fullscreenBehaviorManager2];
 
-  [(SVVideoPlayerViewController *)self setCoordinator:v4];
-  v10 = [v4 video];
-  v11 = [v10 conformsToProtocol:&unk_2877E0EB8];
-  LOBYTE(v8) = v11;
+  [(SVVideoPlayerViewController *)self setCoordinator:coordinatorCopy];
+  video = [coordinatorCopy video];
+  v11 = [video conformsToProtocol:&unk_2877E0EB8];
+  LOBYTE(fullscreenBehaviorManager) = v11;
   v12 = v11;
 
   [(SVVideoPlayerViewController *)self setMode:v12];
-  if ((v8 & 1) == 0)
+  if ((fullscreenBehaviorManager & 1) == 0)
   {
-    v13 = [(SVVideoPlayerViewController *)self coordinator];
-    v14 = [(SVVideoPlayerViewController *)self playerViewController];
-    [v13 setHost:v14];
+    coordinator4 = [(SVVideoPlayerViewController *)self coordinator];
+    playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+    [coordinator4 setHost:playerViewController];
 
-    v15 = [(SVVideoPlayerViewController *)self playerViewController];
-    v16 = [v15 view];
-    [v16 setHidden:0];
+    playerViewController2 = [(SVVideoPlayerViewController *)self playerViewController];
+    view = [playerViewController2 view];
+    [view setHidden:0];
   }
 
   v17 = [SVVideoVolumeObserver alloc];
-  v18 = [MEMORY[0x277CB83F8] sharedInstance];
-  v19 = [(SVVideoVolumeObserver *)v17 initWithPlaybackCoordinator:v4 audioSession:v18];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  v19 = [(SVVideoVolumeObserver *)v17 initWithPlaybackCoordinator:coordinatorCopy audioSession:mEMORY[0x277CB83F8]];
   [(SVVideoPlayerViewController *)self setVolumeObserver:v19];
 
-  v20 = [(SVVideoPlayerViewController *)self volumeObserver];
+  volumeObserver = [(SVVideoPlayerViewController *)self volumeObserver];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __55__SVVideoPlayerViewController_transitionToCoordinator___block_invoke;
   v22[3] = &unk_279BC6120;
-  v23 = v4;
-  v21 = v4;
-  [v20 onMuteStateChange:v22];
+  v23 = coordinatorCopy;
+  v21 = coordinatorCopy;
+  [volumeObserver onMuteStateChange:v22];
 }
 
 void __55__SVVideoPlayerViewController_transitionToCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -1403,31 +1403,31 @@ void __55__SVVideoPlayerViewController_transitionToCoordinator___block_invoke(ui
 
 - (void)finished
 {
-  v3 = [(SVVideoPlayerViewController *)self coordinator];
-  [v3 seekToTime:0 withCompletionBlock:0.0];
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  [coordinator seekToTime:0 withCompletionBlock:0.0];
 
-  v4 = [(SVVideoPlayerViewController *)self delegate];
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SVVideoPlayerViewController *)self delegate];
-    [v6 videoPlayerViewControllerFinishedVideoPlayback:self];
+    delegate2 = [(SVVideoPlayerViewController *)self delegate];
+    [delegate2 videoPlayerViewControllerFinishedVideoPlayback:self];
   }
 }
 
-- (void)startPlaybackForCoordinatorIfAllowed:(id)a3
+- (void)startPlaybackForCoordinatorIfAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   if ([(SVVideoPlayerViewController *)self playbackAllowedForPlaybackCoordinator:?])
   {
-    [v4 playWithButtonTapped:{-[SVVideoPlayerViewController playButtonTapped](self, "playButtonTapped")}];
+    [allowedCopy playWithButtonTapped:{-[SVVideoPlayerViewController playButtonTapped](self, "playButtonTapped")}];
   }
 }
 
-- (BOOL)playbackAllowedForPlaybackCoordinator:(id)a3
+- (BOOL)playbackAllowedForPlaybackCoordinator:(id)coordinator
 {
-  v4 = [(SVVideoPlayerViewController *)self delegate];
+  delegate = [(SVVideoPlayerViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -1435,23 +1435,23 @@ void __55__SVVideoPlayerViewController_transitionToCoordinator___block_invoke(ui
     return 1;
   }
 
-  v6 = [(SVVideoPlayerViewController *)self delegate];
-  v7 = [v6 videoPlayerViewControllerShouldStartPlayback:self];
+  delegate2 = [(SVVideoPlayerViewController *)self delegate];
+  v7 = [delegate2 videoPlayerViewControllerShouldStartPlayback:self];
 
   return v7;
 }
 
-- (void)updateSkipButtonWithThreshold:(unint64_t)a3 time:(double)a4
+- (void)updateSkipButtonWithThreshold:(unint64_t)threshold time:(double)time
 {
-  v4 = vcvtad_u64_f64(a4);
-  v5 = a3 >= v4;
-  v6 = a3 - v4;
+  v4 = vcvtad_u64_f64(time);
+  v5 = threshold >= v4;
+  v6 = threshold - v4;
   if (!v5)
   {
     v6 = 0;
   }
 
-  if (a3 - 1 >= 0xFFFFFFFFFFFFFFFELL)
+  if (threshold - 1 >= 0xFFFFFFFFFFFFFFFELL)
   {
     v7 = 0;
   }
@@ -1461,35 +1461,35 @@ void __55__SVVideoPlayerViewController_transitionToCoordinator___block_invoke(ui
     v7 = v6;
   }
 
-  v8 = [(SVVideoPlayerViewController *)self skipButton];
-  [v8 setSkipDuration:v7];
+  skipButton = [(SVVideoPlayerViewController *)self skipButton];
+  [skipButton setSkipDuration:v7];
 }
 
 - (void)updateAdsButtonsVisibility
 {
-  v3 = [(SVVideoPlayerViewController *)self coordinator];
-  v4 = [v3 video];
-  v5 = [v4 conformsToProtocol:&unk_2877E0EB8];
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  video = [coordinator video];
+  v5 = [video conformsToProtocol:&unk_2877E0EB8];
 
   if (v5)
   {
-    v6 = [(SVVideoPlayerViewController *)self coordinator];
-    v7 = [v6 video];
+    coordinator2 = [(SVVideoPlayerViewController *)self coordinator];
+    video2 = [coordinator2 video];
 
-    v8 = [(SVVideoPlayerViewController *)self coordinator];
-    if ([v8 state] == 3)
+    coordinator3 = [(SVVideoPlayerViewController *)self coordinator];
+    if ([coordinator3 state] == 3)
     {
       v9 = 0;
     }
 
     else
     {
-      v11 = [(SVVideoPlayerViewController *)self coordinator];
-      v9 = [v11 state] != 4;
+      coordinator4 = [(SVVideoPlayerViewController *)self coordinator];
+      v9 = [coordinator4 state] != 4;
     }
 
     v10 = 1;
-    if ([v7 hasAction] && !v9)
+    if ([video2 hasAction] && !v9)
     {
       v10 = [(SVVideoPlayerViewController *)self playerWidth]== 1;
     }
@@ -1501,35 +1501,35 @@ void __55__SVVideoPlayerViewController_transitionToCoordinator___block_invoke(ui
     v9 = 1;
   }
 
-  v12 = [(SVVideoPlayerViewController *)self adPrivacyButton];
-  [v12 setHidden:v9 withShowDelay:0.1];
+  adPrivacyButton = [(SVVideoPlayerViewController *)self adPrivacyButton];
+  [adPrivacyButton setHidden:v9 withShowDelay:0.1];
 
-  v13 = [(SVVideoPlayerViewController *)self learnMoreButton];
-  [v13 setHidden:v10 withShowDelay:0.1];
+  learnMoreButton = [(SVVideoPlayerViewController *)self learnMoreButton];
+  [learnMoreButton setHidden:v10 withShowDelay:0.1];
 
-  v14 = [(SVVideoPlayerViewController *)self skipButton];
-  [v14 setHidden:v9 withShowDelay:0.1];
+  skipButton = [(SVVideoPlayerViewController *)self skipButton];
+  [skipButton setHidden:v9 withShowDelay:0.1];
 
-  v15 = [(SVVideoPlayerViewController *)self adGradientView];
-  [v15 setHidden:v9 withShowDelay:0.1];
+  adGradientView = [(SVVideoPlayerViewController *)self adGradientView];
+  [adGradientView setHidden:v9 withShowDelay:0.1];
 }
 
 - (UIViewController)viewControllerForModalPresentation
 {
-  v2 = [(SVVideoPlayerViewController *)self playerViewController];
-  v3 = [v2 viewControllerForFullScreenPresentation];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  viewControllerForFullScreenPresentation = [playerViewController viewControllerForFullScreenPresentation];
 
-  return v3;
+  return viewControllerForFullScreenPresentation;
 }
 
 - (void)tapped
 {
-  v3 = [(SVVideoPlayerViewController *)self coordinator];
-  v4 = [v3 video];
+  coordinator = [(SVVideoPlayerViewController *)self coordinator];
+  video = [coordinator video];
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 tappedToToggleControlVisibility:{-[SVVideoPlayerViewController showsPlaybackControls](self, "showsPlaybackControls")}];
+    [video tappedToToggleControlVisibility:{-[SVVideoPlayerViewController showsPlaybackControls](self, "showsPlaybackControls")}];
   }
 }
 
@@ -1537,19 +1537,19 @@ void __55__SVVideoPlayerViewController_transitionToCoordinator___block_invoke(ui
 {
   if (_UISolariumFeatureFlagEnabled())
   {
-    v3 = [(SVVideoPlayerViewController *)self videoAd];
+    videoAd = [(SVVideoPlayerViewController *)self videoAd];
 
-    if (v3)
+    if (videoAd)
     {
-      v4 = [(SVVideoPlayerViewController *)self calculatePlayerWidth];
-      if (v4 != [(SVVideoPlayerViewController *)self playerWidth])
+      calculatePlayerWidth = [(SVVideoPlayerViewController *)self calculatePlayerWidth];
+      if (calculatePlayerWidth != [(SVVideoPlayerViewController *)self playerWidth])
       {
-        [(SVVideoPlayerViewController *)self setPlayerWidth:v4];
-        if ((v4 - 1) <= 2)
+        [(SVVideoPlayerViewController *)self setPlayerWidth:calculatePlayerWidth];
+        if ((calculatePlayerWidth - 1) <= 2)
         {
-          v5 = dword_2660A9868[(v4 - 1)];
-          v6 = [(SVVideoPlayerViewController *)self skipButton];
-          [v6 setMode:v5];
+          v5 = dword_2660A9868[(calculatePlayerWidth - 1)];
+          skipButton = [(SVVideoPlayerViewController *)self skipButton];
+          [skipButton setMode:v5];
         }
       }
     }
@@ -1558,16 +1558,16 @@ void __55__SVVideoPlayerViewController_transitionToCoordinator___block_invoke(ui
 
 - (int)calculatePlayerWidth
 {
-  v2 = [(SVVideoPlayerViewController *)self playerViewController];
-  [v2 videoBounds];
+  playerViewController = [(SVVideoPlayerViewController *)self playerViewController];
+  [playerViewController videoBounds];
   v4 = v3;
 
   if (v4 > 0.0)
   {
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 preferredLocalizations];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    preferredLocalizations = [mainBundle preferredLocalizations];
 
-    if ([v6 count] && ((objc_msgSend(v6, "objectAtIndexedSubscript:", 0), v7 = objc_claimAutoreleasedReturnValue(), v7 == @"fr") || (v8 = v7, v9 = -[__CFString hasPrefix:](v7, "hasPrefix:", @"fr-"), v8, v9)))
+    if ([preferredLocalizations count] && ((objc_msgSend(preferredLocalizations, "objectAtIndexedSubscript:", 0), v7 = objc_claimAutoreleasedReturnValue(), v7 == @"fr") || (v8 = v7, v9 = -[__CFString hasPrefix:](v7, "hasPrefix:", @"fr-"), v8, v9)))
     {
       if (v4 <= 383.0)
       {

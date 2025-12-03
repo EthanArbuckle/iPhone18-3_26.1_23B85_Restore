@@ -1,11 +1,11 @@
 @interface NTKLeghornPickerCollectionViewCellLayer
 - (CALayer)labelLayer;
-- (void)setTransform:(CATransform3D *)a3;
+- (void)setTransform:(CATransform3D *)transform;
 @end
 
 @implementation NTKLeghornPickerCollectionViewCellLayer
 
-- (void)setTransform:(CATransform3D *)a3
+- (void)setTransform:(CATransform3D *)transform
 {
   v14.receiver = self;
   v14.super_class = NTKLeghornPickerCollectionViewCellLayer;
@@ -22,8 +22,8 @@
   *&v13.m21 = *(MEMORY[0x277CD9DE8] + 32);
   *&v13.m23 = v8;
   [(NTKLeghornPickerCollectionViewCellLayer *)&v14 setTransform:&v13];
-  v12 = *a3;
-  v10 = objc_msgSend_labelLayer(self, v9, a3->m21);
+  v12 = *transform;
+  v10 = objc_msgSend_labelLayer(self, v9, transform->m21);
   v13 = v12;
   objc_msgSend_setTransform_(v10, v11, v12.m21, &v13);
 }

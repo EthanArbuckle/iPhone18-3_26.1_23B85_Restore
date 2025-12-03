@@ -1,19 +1,19 @@
 @interface NULivePhotoRenderRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)livePhotoRenderResultFromPhotoResponse:(id)a3 videoResponse:(id)a4 propertiesResponse:(id)a5 error:(id *)a6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)livePhotoRenderResultFromPhotoResponse:(id)response videoResponse:(id)videoResponse propertiesResponse:(id)propertiesResponse error:(id *)error;
 - (void)_commonInit;
-- (void)submit:(id)a3;
+- (void)submit:(id)submit;
 @end
 
 @implementation NULivePhotoRenderRequest
 
-- (id)livePhotoRenderResultFromPhotoResponse:(id)a3 videoResponse:(id)a4 propertiesResponse:(id)a5 error:(id *)a6
+- (id)livePhotoRenderResultFromPhotoResponse:(id)response videoResponse:(id)videoResponse propertiesResponse:(id)propertiesResponse error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!a6)
+  responseCopy = response;
+  videoResponseCopy = videoResponse;
+  propertiesResponseCopy = propertiesResponse;
+  if (!error)
   {
     v20 = NUAssertLogger_31796();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -34,8 +34,8 @@
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v27;
         *&buf[12] = 2114;
@@ -46,8 +46,8 @@
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -56,24 +56,24 @@
     _NUAssertFailHandler("[NULivePhotoRenderRequest livePhotoRenderResultFromPhotoResponse:videoResponse:propertiesResponse:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/LivePhoto/NULivePhotoRenderRequest.m", 118, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "error != NULL");
   }
 
-  v12 = v11;
-  v13 = [v9 result:a6];
+  v12 = propertiesResponseCopy;
+  v13 = [responseCopy result:error];
   if (v13)
   {
-    v14 = [v10 result:a6];
+    v14 = [videoResponseCopy result:error];
     if (v14)
     {
-      v15 = [v12 result:a6];
+      v15 = [v12 result:error];
       if (v15)
       {
-        v16 = [v14 avAsset];
-        v36 = [v14 videoComposition];
+        avAsset = [v14 avAsset];
+        videoComposition = [v14 videoComposition];
         memset(buf, 0, sizeof(buf));
-        v17 = [v15 properties];
-        v18 = v17;
-        if (v17)
+        properties = [v15 properties];
+        v18 = properties;
+        if (properties)
         {
-          [v17 livePhotoKeyFrameTime];
+          [properties livePhotoKeyFrameTime];
         }
 
         else
@@ -81,7 +81,7 @@
           memset(buf, 0, sizeof(buf));
         }
 
-        *a6 = [NUError errorWithCode:3 reason:@"Failed to extract time for live photo" object:v16];
+        *error = [NUError errorWithCode:3 reason:@"Failed to extract time for live photo" object:avAsset];
       }
     }
   }
@@ -89,9 +89,9 @@
   return 0;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
-  v28 = a3;
+  submitCopy = submit;
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v5 = dispatch_queue_create("NULivePhotoRenderRequest", v4);
 
@@ -116,16 +116,16 @@
   +[NURenderTransaction begin];
   v6 = [(NURenderRequest *)[NUBufferRenderRequest alloc] initWithRequest:self];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(NURenderRequest *)self name];
-  v9 = [v7 stringWithFormat:@"%@-stillFrame", v8];
+  name = [(NURenderRequest *)self name];
+  v9 = [v7 stringWithFormat:@"%@-stillFrame", name];
   [(NURenderRequest *)v6 setName:v9];
 
   [(NURenderRequest *)v6 setRenderContext:self->_stillBufferRenderContext];
-  v10 = [(NULivePhotoRenderRequest *)self scalePolicy];
-  [(NUImageRenderRequest *)v6 setScalePolicy:v10];
+  scalePolicy = [(NULivePhotoRenderRequest *)self scalePolicy];
+  [(NUImageRenderRequest *)v6 setScalePolicy:scalePolicy];
 
-  v11 = [(NULivePhotoRenderRequest *)self colorSpace];
-  [(NUImageRenderRequest *)v6 setColorSpace:v11];
+  colorSpace = [(NULivePhotoRenderRequest *)self colorSpace];
+  [(NUImageRenderRequest *)v6 setColorSpace:colorSpace];
 
   [(NURenderRequest *)v6 setResponseQueue:v5];
   v36[0] = MEMORY[0x1E69E9820];
@@ -136,16 +136,16 @@
   [(NUBufferRenderRequest *)v6 submit:v36];
   v12 = [(NURenderRequest *)[NUVideoRenderRequest alloc] initWithRequest:self];
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [(NURenderRequest *)self name];
-  v15 = [v13 stringWithFormat:@"%@-NUVideoRenderRequest", v14];
+  name2 = [(NURenderRequest *)self name];
+  v15 = [v13 stringWithFormat:@"%@-NUVideoRenderRequest", name2];
   [(NURenderRequest *)v12 setName:v15];
 
   v16 = [NUPriority alloc];
-  v17 = [(NURenderRequest *)self priority];
-  v18 = [v17 level];
-  v19 = [(NURenderRequest *)self priority];
-  [v19 order];
-  v21 = [(NUPriority *)v16 initWithLevel:v18 order:v20 + 0.00999999978];
+  priority = [(NURenderRequest *)self priority];
+  level = [priority level];
+  priority2 = [(NURenderRequest *)self priority];
+  [priority2 order];
+  v21 = [(NUPriority *)v16 initWithLevel:level order:v20 + 0.00999999978];
   [(NURenderRequest *)v12 setPriority:v21];
 
   [(NURenderRequest *)v12 setResponseQueue:v5];
@@ -156,13 +156,13 @@
   v35[4] = v41;
   [(NUVideoRenderRequest *)v12 submit:v35];
   v22 = [(NURenderRequest *)[NUVideoPropertiesRequest alloc] initWithRequest:self];
-  v23 = [(NURenderRequest *)v12 priority];
-  [(NURenderRequest *)v22 setPriority:v23];
+  priority3 = [(NURenderRequest *)v12 priority];
+  [(NURenderRequest *)v22 setPriority:priority3];
 
   [(NURenderRequest *)v22 setResponseQueue:v5];
   v24 = MEMORY[0x1E696AEC0];
-  v25 = [(NURenderRequest *)self name];
-  v26 = [v24 stringWithFormat:@"%@-videoProperties", v25];
+  name3 = [(NURenderRequest *)self name];
+  v26 = [v24 stringWithFormat:@"%@-videoProperties", name3];
   [(NURenderRequest *)v22 setName:v26];
 
   v34[0] = MEMORY[0x1E69E9820];
@@ -179,7 +179,7 @@
   v33 = v37;
   v31 = v39;
   v29[4] = self;
-  v27 = v28;
+  v27 = submitCopy;
   v30 = v27;
   [NURenderTransaction commitAndNotifyOnQueue:v5 withBlock:v29];
 
@@ -223,11 +223,11 @@ void __35__NULivePhotoRenderRequest_submit___block_invoke_4(uint64_t a1)
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NULivePhotoRenderRequest;
-  v4 = [(NURenderRequest *)&v6 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v6 copyWithZone:zone];
   [v4 setColorSpace:self->_colorSpace];
   [v4 setScalePolicy:self->_scalePolicy];
   objc_storeStrong(v4 + 20, self->_stillBufferRenderContext);

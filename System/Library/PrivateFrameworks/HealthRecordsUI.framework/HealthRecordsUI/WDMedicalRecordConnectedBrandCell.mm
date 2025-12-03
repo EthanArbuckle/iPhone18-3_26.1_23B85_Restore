@@ -1,15 +1,15 @@
 @interface WDMedicalRecordConnectedBrandCell
-- (WDMedicalRecordConnectedBrandCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WDMedicalRecordConnectedBrandCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)setupSubviews;
 @end
 
 @implementation WDMedicalRecordConnectedBrandCell
 
-- (WDMedicalRecordConnectedBrandCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WDMedicalRecordConnectedBrandCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = WDMedicalRecordConnectedBrandCell;
-  v4 = [(WDMedicalRecordBrandLogoCell *)&v6 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WDMedicalRecordBrandLogoCell *)&v6 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     [MEMORY[0x1E69DCAE0] smallLogoViewDimension];
@@ -24,8 +24,8 @@
   v4.receiver = self;
   v4.super_class = WDMedicalRecordConnectedBrandCell;
   [(WDMedicalRecordBrandLogoCell *)&v4 setupSubviews];
-  v3 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  [v3 setDirectionalLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  [pillBackgroundView setDirectionalLayoutMargins:{16.0, 16.0, 16.0, 16.0}];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MPPlaybackArchiveConfiguration
 - (CGSize)preferredArtworkSize;
-- (MPPlaybackArchiveConfiguration)initWithCoder:(id)a3;
-- (MPPlaybackArchiveConfiguration)initWithPreferredArtworkSize:(CGSize)a3;
+- (MPPlaybackArchiveConfiguration)initWithCoder:(id)coder;
+- (MPPlaybackArchiveConfiguration)initWithPreferredArtworkSize:(CGSize)size;
 @end
 
 @implementation MPPlaybackArchiveConfiguration
@@ -15,17 +15,17 @@
   return result;
 }
 
-- (MPPlaybackArchiveConfiguration)initWithCoder:(id)a3
+- (MPPlaybackArchiveConfiguration)initWithCoder:(id)coder
 {
-  [a3 decodeCGSizeForKey:@"s"];
+  [coder decodeCGSizeForKey:@"s"];
 
   return [(MPPlaybackArchiveConfiguration *)self initWithPreferredArtworkSize:?];
 }
 
-- (MPPlaybackArchiveConfiguration)initWithPreferredArtworkSize:(CGSize)a3
+- (MPPlaybackArchiveConfiguration)initWithPreferredArtworkSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = MPPlaybackArchiveConfiguration;
   result = [(MPPlaybackArchiveConfiguration *)&v6 init];

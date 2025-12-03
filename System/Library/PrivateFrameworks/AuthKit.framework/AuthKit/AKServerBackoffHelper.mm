@@ -1,12 +1,12 @@
 @interface AKServerBackoffHelper
 - (AKServerBackoffHelper)init;
 - (BOOL)isBackoffSupported;
-- (BOOL)shouldBackoffRequest:(id)a3;
-- (id)_backoffContextFromRequest:(id)a3;
-- (id)serverBackoffInfoForRequest:(id)a3;
-- (id)urlAtKey:(id)a3;
-- (void)configureFromHeaderFields:(id)a3;
-- (void)reportTelemetryForRequest:(id)a3 backoffType:(unint64_t)a4;
+- (BOOL)shouldBackoffRequest:(id)request;
+- (id)_backoffContextFromRequest:(id)request;
+- (id)serverBackoffInfoForRequest:(id)request;
+- (id)urlAtKey:(id)key;
+- (void)configureFromHeaderFields:(id)fields;
+- (void)reportTelemetryForRequest:(id)request backoffType:(unint64_t)type;
 @end
 
 @implementation AKServerBackoffHelper
@@ -35,16 +35,16 @@
 
 - (BOOL)isBackoffSupported
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v5 = +[AKFeatureManager sharedManager];
   v10 = 0;
-  v6 = 1;
+  isClientBackoffDisabled = 1;
   if ([v5 isServerBackoffEnabled])
   {
     v11 = +[AKURLBag sharedBag];
     v10 = 1;
-    v6 = [v11 isClientBackoffDisabled];
+    isClientBackoffDisabled = [v11 isClientBackoffDisabled];
   }
 
   if (v10)
@@ -53,7 +53,7 @@
   }
 
   MEMORY[0x1E69E5920](v5);
-  if ((v6 & 1) == 0)
+  if ((isClientBackoffDisabled & 1) == 0)
   {
     return 1;
   }
@@ -72,38 +72,38 @@
   return 0;
 }
 
-- (void)configureFromHeaderFields:(id)a3
+- (void)configureFromHeaderFields:(id)fields
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKServerBackoffController *)v4->_serverBackoffController configureFromHeaderFields:location[0]];
+  objc_storeStrong(location, fields);
+  [(AKServerBackoffController *)selfCopy->_serverBackoffController configureFromHeaderFields:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)shouldBackoffRequest:(id)a3
+- (BOOL)shouldBackoffRequest:(id)request
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  serverBackoffController = v8->_serverBackoffController;
-  v5 = [(AKServerBackoffHelper *)v8 _backoffContextFromRequest:location[0]];
+  objc_storeStrong(location, request);
+  serverBackoffController = selfCopy->_serverBackoffController;
+  v5 = [(AKServerBackoffHelper *)selfCopy _backoffContextFromRequest:location[0]];
   v6 = [(AKServerBackoffController *)serverBackoffController shouldBackoffContext:?];
   MEMORY[0x1E69E5920](v5);
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (id)serverBackoffInfoForRequest:(id)a3
+- (id)serverBackoffInfoForRequest:(id)request
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  serverBackoffController = v8->_serverBackoffController;
-  v5 = [(AKServerBackoffHelper *)v8 _backoffContextFromRequest:location[0]];
+  objc_storeStrong(location, request);
+  serverBackoffController = selfCopy->_serverBackoffController;
+  v5 = [(AKServerBackoffHelper *)selfCopy _backoffContextFromRequest:location[0]];
   v6 = [(AKServerBackoffController *)serverBackoffController serverBackoffInfoForContext:?];
   MEMORY[0x1E69E5920](v5);
   objc_storeStrong(location, 0);
@@ -111,25 +111,25 @@
   return v6;
 }
 
-- (void)reportTelemetryForRequest:(id)a3 backoffType:(unint64_t)a4
+- (void)reportTelemetryForRequest:(id)request backoffType:(unint64_t)type
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  serverBackoffController = v7->_serverBackoffController;
-  v5 = [(AKServerBackoffHelper *)v7 _backoffContextFromRequest:location[0]];
+  objc_storeStrong(location, request);
+  serverBackoffController = selfCopy->_serverBackoffController;
+  v5 = [(AKServerBackoffHelper *)selfCopy _backoffContextFromRequest:location[0]];
   [AKServerBackoffController reportTelemetryForContext:"reportTelemetryForContext:backoffType:" backoffType:?];
   MEMORY[0x1E69E5920](v5);
   objc_storeStrong(location, 0);
 }
 
-- (id)urlAtKey:(id)a3
+- (id)urlAtKey:(id)key
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v4 = +[AKURLBag sharedBag];
   v5 = [v4 urlAtKey:location[0]];
   MEMORY[0x1E69E5920](v4);
@@ -138,29 +138,29 @@
   return v5;
 }
 
-- (id)_backoffContextFromRequest:(id)a3
+- (id)_backoffContextFromRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v14 = objc_alloc_init(AKServerBackoffContext);
   v4 = objc_opt_class();
-  v7 = [location[0] allHTTPHeaderFields];
-  v6 = [v7 objectForKeyedSubscript:@"X-Apple-I-Client-Bundle-Id"];
+  allHTTPHeaderFields = [location[0] allHTTPHeaderFields];
+  v6 = [allHTTPHeaderFields objectForKeyedSubscript:@"X-Apple-I-Client-Bundle-Id"];
   v5 = _AKSafeCast(v4, v6);
   [(AKServerBackoffContext *)v14 setClientBundleID:?];
   MEMORY[0x1E69E5920](v5);
   MEMORY[0x1E69E5920](v6);
-  MEMORY[0x1E69E5920](v7);
+  MEMORY[0x1E69E5920](allHTTPHeaderFields);
   v8 = objc_opt_class();
-  v11 = [location[0] allHTTPHeaderFields];
-  v10 = [v11 objectForKeyedSubscript:@"X-Apple-I-Proxied-Bundle-Id"];
+  allHTTPHeaderFields2 = [location[0] allHTTPHeaderFields];
+  v10 = [allHTTPHeaderFields2 objectForKeyedSubscript:@"X-Apple-I-Proxied-Bundle-Id"];
   v9 = _AKSafeCast(v8, v10);
   [(AKServerBackoffContext *)v14 setProxiedAppBundleID:?];
   MEMORY[0x1E69E5920](v9);
   MEMORY[0x1E69E5920](v10);
-  MEMORY[0x1E69E5920](v11);
+  MEMORY[0x1E69E5920](allHTTPHeaderFields2);
   v12 = [location[0] URL];
   [(AKServerBackoffContext *)v14 setUrl:?];
   MEMORY[0x1E69E5920](v12);

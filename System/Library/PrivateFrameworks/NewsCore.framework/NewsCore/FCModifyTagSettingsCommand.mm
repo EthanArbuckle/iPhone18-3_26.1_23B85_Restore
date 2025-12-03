@@ -1,56 +1,56 @@
 @interface FCModifyTagSettingsCommand
-- (BOOL)mergeLocalRecord:(id)a3 withRemoteRecord:(id)a4;
+- (BOOL)mergeLocalRecord:(id)record withRemoteRecord:(id)remoteRecord;
 @end
 
 @implementation FCModifyTagSettingsCommand
 
-- (BOOL)mergeLocalRecord:(id)a3 withRemoteRecord:(id)a4
+- (BOOL)mergeLocalRecord:(id)record withRemoteRecord:(id)remoteRecord
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"tagID"];
-  v8 = [v6 objectForKeyedSubscript:@"tagID"];
+  recordCopy = record;
+  remoteRecordCopy = remoteRecord;
+  v7 = [recordCopy objectForKeyedSubscript:@"tagID"];
+  v8 = [remoteRecordCopy objectForKeyedSubscript:@"tagID"];
   if ([v7 isEqualToString:v8])
   {
     v38 = v7;
-    v9 = [v5 objectForKeyedSubscript:@"fontMultiplier"];
-    v10 = [v6 objectForKeyedSubscript:@"fontMultiplier"];
-    v11 = [v9 intValue];
+    v9 = [recordCopy objectForKeyedSubscript:@"fontMultiplier"];
+    v10 = [remoteRecordCopy objectForKeyedSubscript:@"fontMultiplier"];
+    intValue = [v9 intValue];
     v36 = v10;
-    v12 = [v10 intValue];
-    v13 = v11 != v12;
-    if (v11 != v12)
+    intValue2 = [v10 intValue];
+    v13 = intValue != intValue2;
+    if (intValue != intValue2)
     {
-      [v6 setObject:v9 forKeyedSubscript:@"fontMultiplier"];
+      [remoteRecordCopy setObject:v9 forKeyedSubscript:@"fontMultiplier"];
     }
 
     v37 = v9;
-    v14 = [v5 objectForKeyedSubscript:@"fontMultiplierMacOS"];
-    v15 = [v6 objectForKeyedSubscript:@"fontMultiplierMacOS"];
-    v16 = [v14 intValue];
+    v14 = [recordCopy objectForKeyedSubscript:@"fontMultiplierMacOS"];
+    v15 = [remoteRecordCopy objectForKeyedSubscript:@"fontMultiplierMacOS"];
+    intValue3 = [v14 intValue];
     v34 = v15;
-    if (v16 != [v15 intValue])
+    if (intValue3 != [v15 intValue])
     {
-      [v6 setObject:v14 forKeyedSubscript:@"fontMultiplierMacOS"];
+      [remoteRecordCopy setObject:v14 forKeyedSubscript:@"fontMultiplierMacOS"];
       v13 = 1;
     }
 
     v35 = v14;
-    v17 = [v5 objectForKeyedSubscript:@"contentScale"];
-    v18 = [v6 objectForKeyedSubscript:@"contentScale"];
-    v19 = [v17 intValue];
-    if (v19 != [v18 intValue])
+    v17 = [recordCopy objectForKeyedSubscript:@"contentScale"];
+    v18 = [remoteRecordCopy objectForKeyedSubscript:@"contentScale"];
+    intValue4 = [v17 intValue];
+    if (intValue4 != [v18 intValue])
     {
-      [v6 setObject:v17 forKeyedSubscript:@"contentScale"];
+      [remoteRecordCopy setObject:v17 forKeyedSubscript:@"contentScale"];
       v13 = 1;
     }
 
-    v20 = [v5 objectForKeyedSubscript:@"contentScaleMacOS"];
-    v21 = [v6 objectForKeyedSubscript:@"contentScaleMacOS"];
-    v22 = [v20 intValue];
-    if (v22 != [v21 intValue])
+    v20 = [recordCopy objectForKeyedSubscript:@"contentScaleMacOS"];
+    v21 = [remoteRecordCopy objectForKeyedSubscript:@"contentScaleMacOS"];
+    intValue5 = [v20 intValue];
+    if (intValue5 != [v21 intValue])
     {
-      [v6 setObject:v20 forKeyedSubscript:@"contentScaleMacOS"];
+      [remoteRecordCopy setObject:v20 forKeyedSubscript:@"contentScaleMacOS"];
       v13 = 1;
     }
 
@@ -62,8 +62,8 @@
     v13 = 0;
   }
 
-  v23 = [v5 objectForKeyedSubscript:@"accessToken"];
-  v24 = [v6 objectForKeyedSubscript:@"accessToken"];
+  v23 = [recordCopy objectForKeyedSubscript:@"accessToken"];
+  v24 = [remoteRecordCopy objectForKeyedSubscript:@"accessToken"];
   if ([v7 isEqualToString:v8])
   {
     if (v23)
@@ -81,12 +81,12 @@
       if (!v23 || ([v23 isEqualToString:v24] & 1) != 0)
       {
 LABEL_22:
-        v28 = [v5 objectForKeyedSubscript:@"webAccessOptIn"];
-        v29 = [v6 objectForKeyedSubscript:@"webAccessOptIn"];
+        v28 = [recordCopy objectForKeyedSubscript:@"webAccessOptIn"];
+        v29 = [remoteRecordCopy objectForKeyedSubscript:@"webAccessOptIn"];
         v30 = v29;
         if (v28)
         {
-          v31 = v6;
+          v31 = remoteRecordCopy;
           v32 = v28;
         }
 
@@ -99,7 +99,7 @@ LABEL_27:
             goto LABEL_28;
           }
 
-          v31 = v6;
+          v31 = remoteRecordCopy;
           v32 = 0;
         }
 
@@ -108,13 +108,13 @@ LABEL_27:
         goto LABEL_27;
       }
 
-      v26 = v6;
+      v26 = remoteRecordCopy;
       v27 = v23;
     }
 
     else
     {
-      v26 = v6;
+      v26 = remoteRecordCopy;
       v27 = 0;
     }
 

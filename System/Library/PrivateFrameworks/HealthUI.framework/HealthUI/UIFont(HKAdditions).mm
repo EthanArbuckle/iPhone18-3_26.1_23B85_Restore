@@ -44,7 +44,7 @@
 
 + (id)hk_preferredFontForTextStyle:()HKAdditions symbolicTraits:maximumContentSizeCategory:
 {
-  v6 = [a1 _preferredFontForTextStyle:a3 maximumContentSizeCategory:a5];
+  v6 = [self _preferredFontForTextStyle:a3 maximumContentSizeCategory:a5];
   v7 = [v6 hk_fontByAddingSymbolicTraits:a4];
 
   return v7;
@@ -86,23 +86,23 @@
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
-        v15 = [v14 text];
+        text = [v14 text];
         v37 = v11;
-        v16 = [v14 font];
-        v38 = v16;
+        font = [v14 font];
+        v38 = font;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-        [v15 boundingRectWithSize:0 options:v17 attributes:0 context:{3.40282347e38, 3.40282347e38}];
+        [text boundingRectWithSize:0 options:v17 attributes:0 context:{3.40282347e38, 3.40282347e38}];
         v19 = v18;
 
-        v20 = v19 - a1;
+        v20 = v19 - self;
         if (v20 > 0.00000011920929 && v20 > v12)
         {
-          v22 = [v14 text];
+          text2 = [v14 text];
 
-          v23 = [v14 font];
+          font2 = [v14 font];
 
-          v8 = v23;
-          v9 = v22;
+          v8 = font2;
+          v9 = text2;
           v12 = v20;
         }
       }
@@ -124,7 +124,7 @@
         [v9 boundingRectWithSize:0 options:v26 attributes:0 context:{3.40282347e38, 3.40282347e38}];
         v28 = v27;
 
-        if (v28 <= a1)
+        if (v28 <= self)
         {
           break;
         }
@@ -164,7 +164,7 @@
 
 + (id)hk_titleLabelFontScaledBy:()HKAdditions
 {
-  v3 = [a1 hk_defaultFontWithUIFontTextStyle:*MEMORY[0x1E69DDD40] symbolicTraits:0x8000 attributes:0];
+  v3 = [self hk_defaultFontWithUIFontTextStyle:*MEMORY[0x1E69DDD40] symbolicTraits:0x8000 attributes:0];
   v4 = v3;
   if (a2 != 1.0)
   {
@@ -179,7 +179,7 @@
 
 + (id)hk_unitLabelFontScaledBy:()HKAdditions
 {
-  v3 = [a1 hk_defaultFontWithUIFontTextStyle:*MEMORY[0x1E69DDD40] symbolicTraits:0x8000 attributes:0];
+  v3 = [self hk_defaultFontWithUIFontTextStyle:*MEMORY[0x1E69DDD40] symbolicTraits:0x8000 attributes:0];
   v4 = [v3 fontWithSize:a2 * 15.0];
 
   return v4;
@@ -206,7 +206,7 @@
   v18[0] = *MEMORY[0x1E69DB940];
   v18[1] = v11;
   v19[0] = v9;
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a1];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:self];
   v19[1] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
   v21[0] = v13;
@@ -221,7 +221,7 @@
 + (id)hk_roundedSystemFontWithSize:()HKAdditions weight:textStyle:
 {
   v8 = a5;
-  v9 = [a1 hk_roundedSystemFontWithSize:a2 weight:a3];
+  v9 = [self hk_roundedSystemFontWithSize:a2 weight:a3];
   v10 = [objc_alloc(MEMORY[0x1E69DCA40]) initForTextStyle:v8];
 
   v11 = [v10 scaledFontForFont:v9];
@@ -231,7 +231,7 @@
 
 + (id)hk_preferredRoundedFontForTextStyle:()HKAdditions additionalSymbolicTraits:
 {
-  v5 = [a1 hk_preferredRoundedFontForTextStyle:?];
+  v5 = [self hk_preferredRoundedFontForTextStyle:?];
   v6 = [v5 hk_fontByAddingSymbolicTraits:a4];
 
   return v6;
@@ -253,11 +253,11 @@
   v14 = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
-  v7 = [a1 fontDescriptor];
-  v8 = [v7 fontDescriptorByAddingAttributes:v6];
+  fontDescriptor = [self fontDescriptor];
+  v8 = [fontDescriptor fontDescriptorByAddingAttributes:v6];
 
   v9 = MEMORY[0x1E69DB878];
-  [a1 pointSize];
+  [self pointSize];
   v10 = [v9 fontWithDescriptor:v8 size:?];
 
   return v10;
@@ -266,7 +266,7 @@
 + (id)hk_scalableFontForTextStyle:()HKAdditions symbolicTraits:
 {
   v6 = a3;
-  v7 = [a1 hk_staticPreferredFontForTextStyle:v6 symbolicTraits:a4];
+  v7 = [self hk_staticPreferredFontForTextStyle:v6 symbolicTraits:a4];
   v8 = [objc_alloc(MEMORY[0x1E69DCA40]) initForTextStyle:v6];
 
   v9 = [v8 scaledFontForFont:v7];
@@ -281,7 +281,7 @@
   v5[2] = __53__UIFont_HKAdditions__hk_fontByAddingSymbolicTraits___block_invoke;
   v5[3] = &__block_descriptor_36_e8_I12__0I8l;
   v6 = a3;
-  v3 = [a1 _hk_fontByModifyingSymbolicTraits:v5];
+  v3 = [self _hk_fontByModifyingSymbolicTraits:v5];
 
   return v3;
 }
@@ -293,7 +293,7 @@
   v5[2] = __55__UIFont_HKAdditions__hk_fontByRemovingSymbolicTraits___block_invoke;
   v5[3] = &__block_descriptor_36_e8_I12__0I8l;
   v6 = a3;
-  v3 = [a1 _hk_fontByModifyingSymbolicTraits:v5];
+  v3 = [self _hk_fontByModifyingSymbolicTraits:v5];
 
   return v3;
 }
@@ -301,11 +301,11 @@
 - (id)_hk_fontByModifyingSymbolicTraits:()HKAdditions
 {
   v4 = a3;
-  v5 = [a1 fontDescriptor];
-  v6 = [a1 fontDescriptor];
-  v7 = v4[2](v4, [v6 symbolicTraits]);
+  fontDescriptor = [self fontDescriptor];
+  fontDescriptor2 = [self fontDescriptor];
+  v7 = v4[2](v4, [fontDescriptor2 symbolicTraits]);
 
-  v8 = [v5 fontDescriptorWithSymbolicTraits:v7];
+  v8 = [fontDescriptor fontDescriptorWithSymbolicTraits:v7];
   v9 = [MEMORY[0x1E69DB878] fontWithDescriptor:v8 size:0.0];
 
   return v9;

@@ -1,18 +1,18 @@
 @interface LNOpenURLRequest
-- (LNOpenURLRequest)initWithCoder:(id)a3;
-- (LNOpenURLRequest)initWithIdentifier:(id)a3 url:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)respondWithError:(id)a3;
+- (LNOpenURLRequest)initWithCoder:(id)coder;
+- (LNOpenURLRequest)initWithIdentifier:(id)identifier url:(id)url;
+- (void)encodeWithCoder:(id)coder;
+- (void)respondWithError:(id)error;
 - (void)respondWithSuccess;
 @end
 
 @implementation LNOpenURLRequest
 
-- (LNOpenURLRequest)initWithCoder:(id)a3
+- (LNOpenURLRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
 
   if (v5)
   {
@@ -26,37 +26,37 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNOpenURLRequest *)self initWithIdentifier:v5 url:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNOpenURLRequest *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(LNOpenURLRequest *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
   v6 = [(LNOpenURLRequest *)self url];
-  [v4 encodeObject:v6 forKey:@"url"];
+  [coderCopy encodeObject:v6 forKey:@"url"];
 }
 
-- (void)respondWithError:(id)a3
+- (void)respondWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    v6 = [(LNRequest *)self responseContext];
-    v7 = [v4 errorWithResponseContext:v6];
+    responseContext = [(LNRequest *)self responseContext];
+    v7 = [errorCopy errorWithResponseContext:responseContext];
     completionHandler[2](completionHandler, 0, v7);
 
     v8 = self->_completionHandler;
@@ -69,11 +69,11 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
-      v11 = [(LNOpenURLRequest *)self identifier];
+      identifier = [(LNOpenURLRequest *)self identifier];
       v13 = 138543618;
       v14 = v10;
       v15 = 2114;
-      v16 = v11;
+      v16 = identifier;
     }
   }
 
@@ -86,9 +86,9 @@
   if (self->_completionHandler)
   {
     v3 = [LNOpenURLResponse alloc];
-    v4 = [(LNOpenURLRequest *)self identifier];
-    v5 = [(LNRequest *)self responseContext];
-    v12 = [(LNResponse *)v3 initWithIdentifier:v4 context:v5];
+    identifier = [(LNOpenURLRequest *)self identifier];
+    responseContext = [(LNRequest *)self responseContext];
+    v12 = [(LNResponse *)v3 initWithIdentifier:identifier context:responseContext];
 
     (*(self->_completionHandler + 2))();
     completionHandler = self->_completionHandler;
@@ -103,25 +103,25 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = objc_opt_class();
-      v10 = [(LNOpenURLRequest *)self identifier];
+      identifier2 = [(LNOpenURLRequest *)self identifier];
       *buf = 138543618;
       v14 = v9;
       v15 = 2114;
-      v16 = v10;
+      v16 = identifier2;
     }
 
     v11 = *MEMORY[0x1E69E9840];
   }
 }
 
-- (LNOpenURLRequest)initWithIdentifier:(id)a3 url:(id)a4
+- (LNOpenURLRequest)initWithIdentifier:(id)identifier url:(id)url
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  urlCopy = url;
+  if (!identifierCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNOpenURLRequest.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNOpenURLRequest.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v17.receiver = self;
@@ -130,8 +130,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_identifier, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_identifier, identifier);
+    v12 = [urlCopy copy];
     url = v11->_url;
     v11->_url = v12;
 

@@ -1,77 +1,77 @@
 @interface PSConfirmationSpecifier
-+ (id)preferenceSpecifierNamed:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9;
-+ (id)specifierWithSpecifier:(id)a3;
++ (id)preferenceSpecifierNamed:(id)named target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit;
++ (id)specifierWithSpecifier:(id)specifier;
 - (BOOL)isAlternateDestructive;
 - (BOOL)isDestructive;
-- (BOOL)isEqualToSpecifier:(id)a3;
-- (void)setupWithDictionary:(id)a3;
+- (BOOL)isEqualToSpecifier:(id)specifier;
+- (void)setupWithDictionary:(id)dictionary;
 @end
 
 @implementation PSConfirmationSpecifier
 
-+ (id)preferenceSpecifierNamed:(id)a3 target:(id)a4 set:(SEL)a5 get:(SEL)a6 detail:(Class)a7 cell:(int64_t)a8 edit:(Class)a9
++ (id)preferenceSpecifierNamed:(id)named target:(id)target set:(SEL)set get:(SEL)get detail:(Class)detail cell:(int64_t)cell edit:(Class)edit
 {
-  v14 = a4;
-  v15 = a3;
+  targetCopy = target;
+  namedCopy = named;
   v16 = objc_alloc_init(PSConfirmationSpecifier);
-  [(PSSpecifier *)v16 setName:v15];
+  [(PSSpecifier *)v16 setName:namedCopy];
 
-  objc_storeWeak(&v16->super.target, v14);
-  v16->super.getter = a6;
-  v16->super.setter = a5;
-  v16->super.detailControllerClass = a7;
-  v16->super.cellType = a8;
-  v16->super.editPaneClass = a9;
+  objc_storeWeak(&v16->super.target, targetCopy);
+  v16->super.getter = get;
+  v16->super.setter = set;
+  v16->super.detailControllerClass = detail;
+  v16->super.cellType = cell;
+  v16->super.editPaneClass = edit;
 
   return v16;
 }
 
-+ (id)specifierWithSpecifier:(id)a3
++ (id)specifierWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v13.receiver = a1;
+  specifierCopy = specifier;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___PSConfirmationSpecifier;
-  v5 = objc_msgSendSuper2(&v13, sel_specifierWithSpecifier_, v4);
+  v5 = objc_msgSendSuper2(&v13, sel_specifierWithSpecifier_, specifierCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v7 = [v6 title];
-    [v5 setTitle:v7];
+    v6 = specifierCopy;
+    title = [v6 title];
+    [v5 setTitle:title];
 
-    v8 = [v6 prompt];
-    [v5 setPrompt:v8];
+    prompt = [v6 prompt];
+    [v5 setPrompt:prompt];
 
-    v9 = [v6 okButton];
-    [v5 setOkButton:v9];
+    okButton = [v6 okButton];
+    [v5 setOkButton:okButton];
 
-    v10 = [v6 alternateButton];
-    [v5 setAlternateButton:v10];
+    alternateButton = [v6 alternateButton];
+    [v5 setAlternateButton:alternateButton];
 
-    v11 = [v6 cancelButton];
+    cancelButton = [v6 cancelButton];
 
-    [v5 setCancelButton:v11];
+    [v5 setCancelButton:cancelButton];
   }
 
   return v5;
 }
 
-- (void)setupWithDictionary:(id)a3
+- (void)setupWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"title"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"title"];
   [(PSConfirmationSpecifier *)self setTitle:v5];
 
-  v6 = [v4 objectForKey:@"prompt"];
+  v6 = [dictionaryCopy objectForKey:@"prompt"];
   [(PSConfirmationSpecifier *)self setPrompt:v6];
 
-  v7 = [v4 objectForKey:@"okTitle"];
+  v7 = [dictionaryCopy objectForKey:@"okTitle"];
   [(PSConfirmationSpecifier *)self setOkButton:v7];
 
-  v8 = [v4 objectForKey:@"altTitle"];
+  v8 = [dictionaryCopy objectForKey:@"altTitle"];
   [(PSConfirmationSpecifier *)self setAlternateButton:v8];
 
-  v9 = [v4 objectForKey:@"cancelTitle"];
+  v9 = [dictionaryCopy objectForKey:@"cancelTitle"];
 
   [(PSConfirmationSpecifier *)self setCancelButton:v9];
 }
@@ -79,27 +79,27 @@
 - (BOOL)isDestructive
 {
   v2 = [(PSSpecifier *)self propertyForKey:@"isDestructive"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isAlternateDestructive
 {
   v2 = [(PSSpecifier *)self propertyForKey:@"isAlternateDestructive"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (BOOL)isEqualToSpecifier:(id)a3
+- (BOOL)isEqualToSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v19.receiver = self;
   v19.super_class = PSConfirmationSpecifier;
-  if ([(PSSpecifier *)&v19 isEqualToSpecifier:v4])
+  if ([(PSSpecifier *)&v19 isEqualToSpecifier:specifierCopy])
   {
-    v5 = v4;
+    v5 = specifierCopy;
     v6 = v5;
     if (self->_title)
     {
@@ -111,8 +111,8 @@
       title = &stru_1EFE45030;
     }
 
-    v8 = [v5 title];
-    if ([(__CFString *)title isEqualToString:v8])
+    title = [v5 title];
+    if ([(__CFString *)title isEqualToString:title])
     {
       if (self->_prompt)
       {
@@ -124,8 +124,8 @@
         prompt = &stru_1EFE45030;
       }
 
-      v10 = [v6 prompt];
-      if ([(__CFString *)prompt isEqualToString:v10])
+      prompt = [v6 prompt];
+      if ([(__CFString *)prompt isEqualToString:prompt])
       {
         if (self->_okButton)
         {
@@ -137,8 +137,8 @@
           okButton = &stru_1EFE45030;
         }
 
-        v12 = [v6 okButton];
-        if ([(__CFString *)okButton isEqualToString:v12])
+        okButton = [v6 okButton];
+        if ([(__CFString *)okButton isEqualToString:okButton])
         {
           if (self->_alternateButton)
           {
@@ -150,8 +150,8 @@
             alternateButton = &stru_1EFE45030;
           }
 
-          v14 = [v6 alternateButton];
-          if ([(__CFString *)alternateButton isEqualToString:v14])
+          alternateButton = [v6 alternateButton];
+          if ([(__CFString *)alternateButton isEqualToString:alternateButton])
           {
             if (self->_cancelButton)
             {
@@ -163,8 +163,8 @@
               cancelButton = &stru_1EFE45030;
             }
 
-            v16 = [v6 cancelButton];
-            v17 = [(__CFString *)cancelButton isEqualToString:v16];
+            cancelButton = [v6 cancelButton];
+            v17 = [(__CFString *)cancelButton isEqualToString:cancelButton];
           }
 
           else

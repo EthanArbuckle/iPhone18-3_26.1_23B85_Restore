@@ -1,7 +1,7 @@
 @interface FigCaptureSessionParsedPreviewSinkConfiguration
 - (NSString)sinkID;
 - (void)dealloc;
-- (void)initWithParsedCameraSourceConfiguration:(int)a3 sourceDeviceType:;
+- (void)initWithParsedCameraSourceConfiguration:(int)configuration sourceDeviceType:;
 @end
 
 @implementation FigCaptureSessionParsedPreviewSinkConfiguration
@@ -44,14 +44,14 @@
   [(FigCaptureSessionParsedPreviewSinkConfiguration *)&v3 dealloc];
 }
 
-- (void)initWithParsedCameraSourceConfiguration:(int)a3 sourceDeviceType:
+- (void)initWithParsedCameraSourceConfiguration:(int)configuration sourceDeviceType:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v32.receiver = a1;
+  v32.receiver = self;
   v32.super_class = FigCaptureSessionParsedPreviewSinkConfiguration;
   v5 = objc_msgSendSuper2(&v32, sel_init);
   if (!v5)
@@ -60,23 +60,23 @@
   }
 
   v6 = v5;
-  *(v5 + 22) = a3;
-  v7 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType([a2 metadataObjectConnectionConfigurations], a3);
+  *(v5 + 22) = configuration;
+  v7 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType([a2 metadataObjectConnectionConfigurations], configuration);
   v6[8] = v7;
   v29 = FigCaptureMetadataObjectConfigurationRequiresFaceTracking(v7);
   v28 = FigCaptureMetadataObjectConfigurationRequiresSceneClassification(v7);
-  if ([objc_msgSend(a2 "stillImageConnectionConfiguration")] == a3)
+  if ([objc_msgSend(a2 "stillImageConnectionConfiguration")] == configuration)
   {
-    v8 = [a2 stillImageConnectionConfiguration];
+    stillImageConnectionConfiguration = [a2 stillImageConnectionConfiguration];
   }
 
   else
   {
-    v8 = 0;
+    stillImageConnectionConfiguration = 0;
   }
 
-  v6[9] = v8;
-  v9 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType([a2 previewDerivedConnectionConfigurations], a3);
+  v6[9] = stillImageConnectionConfiguration;
+  v9 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType([a2 previewDerivedConnectionConfigurations], configuration);
   v10 = [objc_msgSend(v9 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", &__block_literal_global_44)), "count"}];
   if (!v10)
   {
@@ -170,9 +170,9 @@ LABEL_24:
 
   while (v13);
 LABEL_27:
-  v21 = [a2 cameraConfiguration];
+  cameraConfiguration = [a2 cameraConfiguration];
   v22 = v24;
-  v24[10] = v21;
+  v24[10] = cameraConfiguration;
   return v22;
 }
 

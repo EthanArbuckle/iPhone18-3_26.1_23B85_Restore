@@ -1,13 +1,13 @@
 @interface ChromeContextOperation
-- (ChromeContextOperation)initWithChromeViewController:(id)a3 fallbackCoordinationBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ChromeContextOperation)initWithChromeViewController:(id)controller fallbackCoordinationBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_completeOperation;
-- (void)addCompletionBlock:(id)a3;
-- (void)addContextCoordinationBlock:(id)a3;
+- (void)addCompletionBlock:(id)block;
+- (void)addContextCoordinationBlock:(id)block;
 - (void)dealloc;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFallbackCoordinationBlock:(id)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFallbackCoordinationBlock:(id)block;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
@@ -20,7 +20,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v83 = self;
+    selfCopy10 = self;
     v84 = 2112;
     v85 = WeakRetained;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] [%@] starting", buf, 0x16u);
@@ -32,7 +32,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 134349314;
-      v83 = self;
+      selfCopy10 = self;
       v84 = 2112;
       v85 = 0;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] [%@] will not process coordination blocks, no chrome", buf, 0x16u);
@@ -49,7 +49,7 @@
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         *buf = 134349314;
-        v83 = self;
+        selfCopy10 = self;
         v84 = 2112;
         v85 = WeakRetained;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] [%@] will not process coordination blocks, already locked", buf, 0x16u);
@@ -59,8 +59,8 @@
     }
 
     v68 = 1;
-    v5 = [WeakRetained contexts];
-    v6 = [v5 copy];
+    contexts = [WeakRetained contexts];
+    v6 = [contexts copy];
 
     do
     {
@@ -71,7 +71,7 @@
       {
         v9 = [v7 count];
         *buf = 134349570;
-        v83 = self;
+        selfCopy10 = self;
         v84 = 2112;
         v85 = WeakRetained;
         v86 = 2048;
@@ -130,7 +130,7 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 134349314;
-      v83 = self;
+      selfCopy10 = self;
       v84 = 2112;
       v85 = WeakRetained;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "[%{public}p] [%@] finished processing coordination blocks", buf, 0x16u);
@@ -150,7 +150,7 @@
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 134349314;
-        v83 = self;
+        selfCopy10 = self;
         v84 = 2112;
         v85 = WeakRetained;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[%{public}p] [%@] no contexts from coordination blocks, using fallback block", buf, 0x16u);
@@ -170,7 +170,7 @@
       if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315906;
-        v83 = "[ChromeContextOperation start]";
+        selfCopy10 = "[ChromeContextOperation start]";
         v84 = 2080;
         v85 = "ChromeContextCoordinationScheduler.m";
         v86 = 1024;
@@ -187,7 +187,7 @@
         {
           v46 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v83 = v46;
+          selfCopy10 = v46;
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -199,7 +199,7 @@
       if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
       {
         *buf = 134349314;
-        v83 = self;
+        selfCopy10 = self;
         v84 = 2112;
         v85 = WeakRetained;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_FAULT, "[%{public}p] [%@] no contexts after coordination", buf, 0x16u);
@@ -229,8 +229,8 @@
     v60 = v52;
     v62 = v68;
     v51 = objc_retainBlock(v57);
-    v25 = [v50 contexts];
-    v26 = [v52 isEqualToArray:v25];
+    contexts2 = [v50 contexts];
+    v26 = [v52 isEqualToArray:contexts2];
 
     log = sub_100018D38();
     v27 = os_log_type_enabled(log, OS_LOG_TYPE_INFO);
@@ -239,7 +239,7 @@
       if (v27)
       {
         *buf = 134349314;
-        v83 = self;
+        selfCopy10 = self;
         v84 = 2112;
         v85 = WeakRetained;
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "[%{public}p] [%@] contexts after coordination identical to existing contexts, just stop here", buf, 0x16u);
@@ -345,7 +345,7 @@ LABEL_70:
       v43 = v29;
 
       *v73 = 134349826;
-      v74 = self;
+      selfCopy9 = self;
       v75 = 2112;
       v76 = WeakRetained;
       v77 = 2048;
@@ -369,7 +369,7 @@ LABEL_74:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v83 = self;
+    selfCopy10 = self;
     v84 = 2112;
     v85 = WeakRetained;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] [%@] will not process coordination blocks, cancelled", buf, 0x16u);
@@ -388,7 +388,7 @@ LABEL_75:
   {
     WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
     v5 = 134349314;
-    v6 = self;
+    selfCopy = self;
     v7 = 2112;
     v8 = WeakRetained;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] [%@] setComplete", &v5, 0x16u);
@@ -409,7 +409,7 @@ LABEL_75:
   {
     WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
     *buf = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
     v9 = WeakRetained;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] [%@] deallocating", buf, 0x16u);
@@ -420,66 +420,66 @@ LABEL_75:
   [(ChromeContextOperation *)&v5 dealloc];
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  if (self->_finished != a3)
+  if (self->_finished != finished)
   {
-    v3 = a3;
+    finishedCopy = finished;
     v5 = sub_100018D38();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
       v7 = 134349570;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
       v10 = WeakRetained;
       v11 = 1024;
-      v12 = v3;
+      v12 = finishedCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] [%@] setFinished:%d", &v7, 0x1Cu);
     }
 
     [(ChromeContextOperation *)self willChangeValueForKey:@"isFinished"];
-    self->_finished = v3;
+    self->_finished = finishedCopy;
     [(ChromeContextOperation *)self didChangeValueForKey:@"isFinished"];
   }
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  if (self->_executing != a3)
+  if (self->_executing != executing)
   {
-    v3 = a3;
+    executingCopy = executing;
     v5 = sub_100018D38();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
       v7 = 134349570;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
       v10 = WeakRetained;
       v11 = 1024;
-      v12 = v3;
+      v12 = executingCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] [%@] setExecuting:%d", &v7, 0x1Cu);
     }
 
     [(ChromeContextOperation *)self willChangeValueForKey:@"isExecuting"];
-    self->_executing = v3;
+    self->_executing = executingCopy;
     [(ChromeContextOperation *)self didChangeValueForKey:@"isExecuting"];
   }
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(ChromeContextOperation *)self isExecuting])
   {
     v9 = sub_10006D178();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-      v11 = [NSString stringWithFormat:@"[%p][%@] you should not try to add completion blocks to a locked coordination operation", self, WeakRetained];
+      weakRetained = [NSString stringWithFormat:@"[%p][%@] you should not try to add completion blocks to a locked coordination operation", self, WeakRetained];
       *buf = 136316162;
-      v15 = "[ChromeContextOperation addCompletionBlock:]";
+      selfCopy = "[ChromeContextOperation addCompletionBlock:]";
       v16 = 2080;
       v17 = "ChromeContextCoordinationScheduler.m";
       v18 = 1024;
@@ -487,7 +487,7 @@ LABEL_75:
       v20 = 2080;
       v21 = "!self.isExecuting";
       v22 = 2112;
-      v23 = v11;
+      v23 = weakRetained;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion: (%s) '%@'", buf, 0x30u);
     }
 
@@ -498,62 +498,62 @@ LABEL_75:
       {
         v13 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v15 = v13;
+        selfCopy = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
   }
 
-  if (v4 && ![(ChromeContextOperation *)self isExecuting])
+  if (blockCopy && ![(ChromeContextOperation *)self isExecuting])
   {
     v5 = sub_100018D38();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = objc_loadWeakRetained(&self->_chromeViewController);
       *buf = 134349314;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] [%@] will add completion block", buf, 0x16u);
     }
 
     completionBlocks = self->_completionBlocks;
-    v8 = [v4 copy];
+    v8 = [blockCopy copy];
     [(NSMutableArray *)completionBlocks addObject:v8];
   }
 }
 
-- (void)setFallbackCoordinationBlock:(id)a3
+- (void)setFallbackCoordinationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = sub_100018D38();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
     v9 = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = WeakRetained;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] [%@] will add fallback coordination block", &v9, 0x16u);
   }
 
-  v7 = [v4 copy];
+  v7 = [blockCopy copy];
   fallbackBlock = self->_fallbackBlock;
   self->_fallbackBlock = v7;
 }
 
-- (void)addContextCoordinationBlock:(id)a3
+- (void)addContextCoordinationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(ChromeContextOperation *)self isExecuting])
   {
     v9 = sub_10006D178();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-      v11 = [NSString stringWithFormat:@"[%p][%@] you should not try to add coordination blocks to a locked coordination operation", self, WeakRetained];
+      weakRetained = [NSString stringWithFormat:@"[%p][%@] you should not try to add coordination blocks to a locked coordination operation", self, WeakRetained];
       *buf = 136316162;
-      v15 = "[ChromeContextOperation addContextCoordinationBlock:]";
+      selfCopy = "[ChromeContextOperation addContextCoordinationBlock:]";
       v16 = 2080;
       v17 = "ChromeContextCoordinationScheduler.m";
       v18 = 1024;
@@ -561,7 +561,7 @@ LABEL_75:
       v20 = 2080;
       v21 = "!self.isExecuting";
       v22 = 2112;
-      v23 = v11;
+      v23 = weakRetained;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion: (%s) '%@'", buf, 0x30u);
     }
 
@@ -572,35 +572,35 @@ LABEL_75:
       {
         v13 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v15 = v13;
+        selfCopy = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
   }
 
-  if (v4 && ![(ChromeContextOperation *)self isExecuting])
+  if (blockCopy && ![(ChromeContextOperation *)self isExecuting])
   {
     v5 = sub_100018D38();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = objc_loadWeakRetained(&self->_chromeViewController);
       *buf = 134349314;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] [%@] will add coordination block", buf, 0x16u);
     }
 
     coordinationBlocks = self->_coordinationBlocks;
-    v8 = [v4 copy];
+    v8 = [blockCopy copy];
     [(NSMutableArray *)coordinationBlocks addObject:v8];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
   v7 = [v5 initWithChromeViewController:WeakRetained fallbackCoordinationBlock:self->_fallbackBlock];
 
@@ -617,11 +617,11 @@ LABEL_75:
   return v7;
 }
 
-- (ChromeContextOperation)initWithChromeViewController:(id)a3 fallbackCoordinationBlock:(id)a4
+- (ChromeContextOperation)initWithChromeViewController:(id)controller fallbackCoordinationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  controllerCopy = controller;
+  blockCopy = block;
+  if (!controllerCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -661,11 +661,11 @@ LABEL_75:
       *buf = 134349314;
       v22 = v8;
       v23 = 2112;
-      v24 = v6;
+      v24 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] [%@] initializing", buf, 0x16u);
     }
 
-    objc_storeWeak(&v8->_chromeViewController, v6);
+    objc_storeWeak(&v8->_chromeViewController, controllerCopy);
     v10 = [[NSMutableArray alloc] initWithCapacity:2];
     coordinationBlocks = v8->_coordinationBlocks;
     v8->_coordinationBlocks = v10;
@@ -674,7 +674,7 @@ LABEL_75:
     completionBlocks = v8->_completionBlocks;
     v8->_completionBlocks = v12;
 
-    v14 = [v7 copy];
+    v14 = [blockCopy copy];
     fallbackBlock = v8->_fallbackBlock;
     v8->_fallbackBlock = v14;
   }

@@ -1,7 +1,7 @@
 @interface FCCPauseRingsClient
 - (FCCPauseRingsClient)init;
-- (FCCPauseRingsClient)initWithQueue:(id)a3 xpcClient:(id)a4;
-- (void)_postNotificationWithRequest:(id)a3 completion:(id)a4;
+- (FCCPauseRingsClient)initWithQueue:(id)queue xpcClient:(id)client;
+- (void)_postNotificationWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation FCCPauseRingsClient
@@ -15,28 +15,28 @@
   return v5;
 }
 
-- (FCCPauseRingsClient)initWithQueue:(id)a3 xpcClient:(id)a4
+- (FCCPauseRingsClient)initWithQueue:(id)queue xpcClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  clientCopy = client;
   v12.receiver = self;
   v12.super_class = FCCPauseRingsClient;
   v9 = [(FCCPauseRingsClient *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dispatchQueue, a3);
-    objc_storeStrong(&v10->_xpcClient, a4);
+    objc_storeStrong(&v9->_dispatchQueue, queue);
+    objc_storeStrong(&v10->_xpcClient, client);
   }
 
   return v10;
 }
 
-- (void)_postNotificationWithRequest:(id)a3 completion:(id)a4
+- (void)_postNotificationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 transportData];
-  [(FCCXPCClient *)self->_xpcClient transportMessage:10 data:v7 completion:v6];
+  completionCopy = completion;
+  transportData = [request transportData];
+  [(FCCXPCClient *)self->_xpcClient transportMessage:10 data:transportData completion:completionCopy];
 }
 
 @end

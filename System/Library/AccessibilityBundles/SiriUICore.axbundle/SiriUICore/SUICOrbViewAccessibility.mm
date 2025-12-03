@@ -1,24 +1,24 @@
 @interface SUICOrbViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (void)accessibilityElementDidLoseFocus;
 @end
 
 @implementation SUICOrbViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
+  validationsCopy = validations;
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"AFUISiriCompactView"];
+    [validationsCopy validateClass:@"AFUISiriCompactView"];
   }
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(SUICOrbViewAccessibility *)self accessibilityIdentification];
-  v3 = [v2 isEqualToString:@"EnrollmentSetupIntroView"];
+  accessibilityIdentification = [(SUICOrbViewAccessibility *)self accessibilityIdentification];
+  v3 = [accessibilityIdentification isEqualToString:@"EnrollmentSetupIntroView"];
 
   return v3 ^ 1;
 }

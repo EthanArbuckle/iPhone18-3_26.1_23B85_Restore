@@ -1,34 +1,34 @@
 @interface SBPerformTransitionSwitcherEventResponse
-- (SBPerformTransitionSwitcherEventResponse)initWithTransitionRequest:(id)a3 gestureInitiated:(BOOL)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBPerformTransitionSwitcherEventResponse)initWithTransitionRequest:(id)request gestureInitiated:(BOOL)initiated;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBPerformTransitionSwitcherEventResponse
 
-- (SBPerformTransitionSwitcherEventResponse)initWithTransitionRequest:(id)a3 gestureInitiated:(BOOL)a4
+- (SBPerformTransitionSwitcherEventResponse)initWithTransitionRequest:(id)request gestureInitiated:(BOOL)initiated
 {
-  v7 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = SBPerformTransitionSwitcherEventResponse;
   v8 = [(SBChainableModifierEventResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_transitionRequest, a3);
-    v9->_gestureInitiated = a4;
+    objc_storeStrong(&v8->_transitionRequest, request);
+    v9->_gestureInitiated = initiated;
   }
 
   return v9;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v10.receiver = self;
   v10.super_class = SBPerformTransitionSwitcherEventResponse;
-  v4 = a3;
-  v5 = [(SBChainableModifierEventResponse *)&v10 descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(SBChainableModifierEventResponse *)&v10 descriptionBuilderWithMultilinePrefix:prefixCopy];
   v6 = [v5 appendBool:self->_gestureInitiated withName:{@"gestureInitiated", v10.receiver, v10.super_class}];
-  v7 = [(SBSwitcherTransitionRequest *)self->_transitionRequest descriptionWithMultilinePrefix:v4];
+  v7 = [(SBSwitcherTransitionRequest *)self->_transitionRequest descriptionWithMultilinePrefix:prefixCopy];
 
   v8 = [v5 appendObject:v7 withName:@"request"];
 

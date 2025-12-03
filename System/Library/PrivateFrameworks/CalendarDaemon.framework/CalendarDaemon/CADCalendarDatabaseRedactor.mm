@@ -1,26 +1,26 @@
 @interface CADCalendarDatabaseRedactor
-- (BOOL)_redactOmatic:(sqlite3 *)a3;
-- (BOOL)_specialRedactions:(sqlite3 *)a3;
+- (BOOL)_redactOmatic:(sqlite3 *)omatic;
+- (BOOL)_specialRedactions:(sqlite3 *)redactions;
 - (BOOL)redact;
-- (CADCalendarDatabaseRedactor)initWithPath:(id)a3 context:(id)a4;
+- (CADCalendarDatabaseRedactor)initWithPath:(id)path context:(id)context;
 @end
 
 @implementation CADCalendarDatabaseRedactor
 
-- (CADCalendarDatabaseRedactor)initWithPath:(id)a3 context:(id)a4
+- (CADCalendarDatabaseRedactor)initWithPath:(id)path context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = CADCalendarDatabaseRedactor;
   v8 = [(CADCalendarDatabaseRedactor *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [pathCopy copy];
     path = v8->_path;
     v8->_path = v9;
 
-    objc_storeStrong(&v8->_context, a4);
+    objc_storeStrong(&v8->_context, context);
   }
 
   return v8;
@@ -28,16 +28,16 @@
 
 - (BOOL)redact
 {
-  v3 = [(CADCalendarDatabaseRedactor *)self path];
-  v4 = [v3 fileSystemRepresentation];
+  path = [(CADCalendarDatabaseRedactor *)self path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  if (!v4)
+  if (!fileSystemRepresentation)
   {
     return 0;
   }
 
   ppDb = 0;
-  v5 = sqlite3_open_v2(v4, &ppDb, 2, 0);
+  v5 = sqlite3_open_v2(fileSystemRepresentation, &ppDb, 2, 0);
   if (v5)
   {
     [(CADDiagnosticLogContext *)self->_context logError:@"Sqlite error opening database: %d\n", v5];
@@ -58,11 +58,11 @@
   return v6;
 }
 
-- (BOOL)_redactOmatic:(sqlite3 *)a3
+- (BOOL)_redactOmatic:(sqlite3 *)omatic
 {
   v5 = strdup("SELECT rowid");
   v6 = strdup(" ");
-  sqlite3_exec(a3, "BEGIN", 0, 0, 0);
+  sqlite3_exec(omatic, "BEGIN", 0, 0, 0);
   v7 = &dbRedactionActions;
   v8 = &qword_28180D860;
   v9 = qword_28180D860 == 0;
@@ -96,14 +96,14 @@
     free(v6);
     pStmt = 0;
     ppStmt = 0;
-    v12 = sqlite3_prepare_v2(a3, zSql, -1, &ppStmt, 0);
+    v12 = sqlite3_prepare_v2(omatic, zSql, -1, &ppStmt, 0);
     if (v12)
     {
       [(CADDiagnosticLogContext *)self->_context logError:@"Select Prep Error: %d, statement: %s", v12, zSql];
       return 0;
     }
 
-    v13 = sqlite3_prepare_v2(a3, v27, -1, &pStmt, 0);
+    v13 = sqlite3_prepare_v2(omatic, v27, -1, &pStmt, 0);
     if (v13)
     {
       [(CADDiagnosticLogContext *)self->_context logError:@"Update Prep Error: %d, statement: %s", v13, v27];
@@ -116,14 +116,14 @@
     }
 
 LABEL_15:
-    sqlite3_exec(a3, "COMMIT", 0, 0, 0);
+    sqlite3_exec(omatic, "COMMIT", 0, 0, 0);
     sqlite3_finalize(ppStmt);
     sqlite3_finalize(pStmt);
     free(zSql);
     free(v27);
     v5 = strdup("SELECT rowid");
     v6 = strdup(" ");
-    sqlite3_exec(a3, "BEGIN", 0, 0, 0);
+    sqlite3_exec(omatic, "BEGIN", 0, 0, 0);
     v7 = v10;
 LABEL_16:
     v8 = v10 + 3;
@@ -133,7 +133,7 @@ LABEL_16:
     {
       free(v5);
       free(v6);
-      sqlite3_exec(a3, "COMMIT", 0, 0, 0);
+      sqlite3_exec(omatic, "COMMIT", 0, 0, 0);
       return 1;
     }
   }
@@ -181,17 +181,17 @@ LABEL_16:
   return 0;
 }
 
-- (BOOL)_specialRedactions:(sqlite3 *)a3
+- (BOOL)_specialRedactions:(sqlite3 *)redactions
 {
   v15 = *MEMORY[0x277D85DE8];
-  sqlite3_exec(a3, "BEGIN", 0, 0, 0);
-  sqlite3_exec(a3, "UPDATE location SET latitude = 0, longitude = 0", 0, 0, 0);
+  sqlite3_exec(redactions, "BEGIN", 0, 0, 0);
+  sqlite3_exec(redactions, "UPDATE location SET latitude = 0, longitude = 0", 0, 0, 0);
   v4 = strdup("SELECT rowid, key from _SqliteDatabaseProperties where key like '%-CalDAVInfo'");
   v5 = strdup("UPDATE _SqliteDatabaseProperties SET key = ? where rowid = ?");
   pStmt = 0;
   ppStmt = 0;
-  sqlite3_prepare_v2(a3, v4, -1, &ppStmt, 0);
-  sqlite3_prepare_v2(a3, v5, -1, &pStmt, 0);
+  sqlite3_prepare_v2(redactions, v4, -1, &ppStmt, 0);
+  sqlite3_prepare_v2(redactions, v5, -1, &pStmt, 0);
   while (sqlite3_step(ppStmt) == 100)
   {
     v6 = sqlite3_column_int(ppStmt, 0);
@@ -210,7 +210,7 @@ LABEL_16:
   sqlite3_finalize(pStmt);
   free(v4);
   free(v5);
-  sqlite3_exec(a3, "COMMIT", 0, 0, 0);
+  sqlite3_exec(redactions, "COMMIT", 0, 0, 0);
   v10 = *MEMORY[0x277D85DE8];
   return 1;
 }

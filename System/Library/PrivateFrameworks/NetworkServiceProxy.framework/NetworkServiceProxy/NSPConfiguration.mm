@@ -1,46 +1,46 @@
 @interface NSPConfiguration
-+ (BOOL)fetchDate:(id)a3 isWithinStart:(id)a4 end:(id)a5 etag:(id)a6;
-+ (BOOL)validatePrivacyProxyConfiguration:(id)a3;
++ (BOOL)fetchDate:(id)date isWithinStart:(id)start end:(id)end etag:(id)etag;
++ (BOOL)validatePrivacyProxyConfiguration:(id)configuration;
 + (id)defaultConfiguration;
-+ (id)proxyAccountTypeToString:(id)a3;
-+ (id)proxyTrafficStateToString:(id)a3;
-+ (void)verifyConfigurationSignature:(id)a3 configuration:(id)a4 host:(id)a5 validateCert:(BOOL)a6 completionHandler:(id)a7;
-- (BOOL)fetchDateIsWithinStart:(id)a3 end:(id)a4;
++ (id)proxyAccountTypeToString:(id)string;
++ (id)proxyTrafficStateToString:(id)string;
++ (void)verifyConfigurationSignature:(id)signature configuration:(id)configuration host:(id)host validateCert:(BOOL)cert completionHandler:(id)handler;
+- (BOOL)fetchDateIsWithinStart:(id)start end:(id)end;
 - (BOOL)isDead;
 - (BOOL)saveToPreferences;
-- (NSPConfiguration)initWithCoder:(id)a3;
-- (NSPConfiguration)initWithTimestamp:(id)a3 fromDictionary:(id)a4;
+- (NSPConfiguration)initWithCoder:(id)coder;
+- (NSPConfiguration)initWithTimestamp:(id)timestamp fromDictionary:(id)dictionary;
 - (NSString)configServerHost;
 - (id)copyTLVData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createConfigFetchURLWithPath;
 - (id)description;
 - (id)diagnostics;
 - (id)initFromPreferences;
-- (id)initFromTLVs:(id)a3;
+- (id)initFromTLVs:(id)vs;
 - (id)tierToString;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)incrementSessionCountersOnFirstLaunch;
-- (void)merge:(id)a3;
-- (void)saveInternalOptions:(id)a3;
+- (void)merge:(id)merge;
+- (void)saveInternalOptions:(id)options;
 - (void)saveToKeychain;
 - (void)setupNSURLSession;
 @end
 
 @implementation NSPConfiguration
 
-+ (id)proxyTrafficStateToString:(id)a3
++ (id)proxyTrafficStateToString:(id)string
 {
-  v3 = [a3 unsignedLongLongValue];
+  unsignedLongLongValue = [string unsignedLongLongValue];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = v4;
-  if (v3)
+  if (unsignedLongLongValue)
   {
     [v4 addObject:@"Safari Unencrypted"];
-    if ((v3 & 2) == 0)
+    if ((unsignedLongLongValue & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((unsignedLongLongValue & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -49,16 +49,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((unsignedLongLongValue & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"Safari DNS"];
-  if ((v3 & 4) == 0)
+  if ((unsignedLongLongValue & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((unsignedLongLongValue & 8) == 0)
     {
       goto LABEL_5;
     }
@@ -68,10 +68,10 @@ LABEL_4:
 
 LABEL_34:
   [v5 addObject:@"Safari Trackers"];
-  if ((v3 & 8) == 0)
+  if ((unsignedLongLongValue & 8) == 0)
   {
 LABEL_5:
-    if ((v3 & 0x10) == 0)
+    if ((unsignedLongLongValue & 0x10) == 0)
     {
       goto LABEL_6;
     }
@@ -81,10 +81,10 @@ LABEL_5:
 
 LABEL_35:
   [v5 addObject:@"Safari All"];
-  if ((v3 & 0x10) == 0)
+  if ((unsignedLongLongValue & 0x10) == 0)
   {
 LABEL_6:
-    if ((v3 & 0x40000) == 0)
+    if ((unsignedLongLongValue & 0x40000) == 0)
     {
       goto LABEL_7;
     }
@@ -94,10 +94,10 @@ LABEL_6:
 
 LABEL_36:
   [v5 addObject:@"Safari HTTP"];
-  if ((v3 & 0x40000) == 0)
+  if ((unsignedLongLongValue & 0x40000) == 0)
   {
 LABEL_7:
-    if ((v3 & 0x80000) == 0)
+    if ((unsignedLongLongValue & 0x80000) == 0)
     {
       goto LABEL_8;
     }
@@ -107,10 +107,10 @@ LABEL_7:
 
 LABEL_37:
   [v5 addObject:@"Safari Unencrypted (Private)"];
-  if ((v3 & 0x80000) == 0)
+  if ((unsignedLongLongValue & 0x80000) == 0)
   {
 LABEL_8:
-    if ((v3 & 0x100000) == 0)
+    if ((unsignedLongLongValue & 0x100000) == 0)
     {
       goto LABEL_9;
     }
@@ -120,10 +120,10 @@ LABEL_8:
 
 LABEL_38:
   [v5 addObject:@"Safari DNS (Private)"];
-  if ((v3 & 0x100000) == 0)
+  if ((unsignedLongLongValue & 0x100000) == 0)
   {
 LABEL_9:
-    if ((v3 & 0x200000) == 0)
+    if ((unsignedLongLongValue & 0x200000) == 0)
     {
       goto LABEL_10;
     }
@@ -133,10 +133,10 @@ LABEL_9:
 
 LABEL_39:
   [v5 addObject:@"Safari All (Private)"];
-  if ((v3 & 0x200000) == 0)
+  if ((unsignedLongLongValue & 0x200000) == 0)
   {
 LABEL_10:
-    if ((v3 & 0x20) == 0)
+    if ((unsignedLongLongValue & 0x20) == 0)
     {
       goto LABEL_11;
     }
@@ -146,10 +146,10 @@ LABEL_10:
 
 LABEL_40:
   [v5 addObject:@"Safari Metrics"];
-  if ((v3 & 0x20) == 0)
+  if ((unsignedLongLongValue & 0x20) == 0)
   {
 LABEL_11:
-    if ((v3 & 0x40) == 0)
+    if ((unsignedLongLongValue & 0x40) == 0)
     {
       goto LABEL_12;
     }
@@ -159,10 +159,10 @@ LABEL_11:
 
 LABEL_41:
   [v5 addObject:@"Mail Trackers"];
-  if ((v3 & 0x40) == 0)
+  if ((unsignedLongLongValue & 0x40) == 0)
   {
 LABEL_12:
-    if ((v3 & 0x80) == 0)
+    if ((unsignedLongLongValue & 0x80) == 0)
     {
       goto LABEL_13;
     }
@@ -172,10 +172,10 @@ LABEL_12:
 
 LABEL_42:
   [v5 addObject:@"Any Unencrypted"];
-  if ((v3 & 0x80) == 0)
+  if ((unsignedLongLongValue & 0x80) == 0)
   {
 LABEL_13:
-    if ((v3 & 0x100) == 0)
+    if ((unsignedLongLongValue & 0x100) == 0)
     {
       goto LABEL_14;
     }
@@ -185,10 +185,10 @@ LABEL_13:
 
 LABEL_43:
   [v5 addObject:@"Any DNS"];
-  if ((v3 & 0x100) == 0)
+  if ((unsignedLongLongValue & 0x100) == 0)
   {
 LABEL_14:
-    if ((v3 & 0x200) == 0)
+    if ((unsignedLongLongValue & 0x200) == 0)
     {
       goto LABEL_15;
     }
@@ -198,10 +198,10 @@ LABEL_14:
 
 LABEL_44:
   [v5 addObject:@"Known Trackers"];
-  if ((v3 & 0x200) == 0)
+  if ((unsignedLongLongValue & 0x200) == 0)
   {
 LABEL_15:
-    if ((v3 & 0x400) == 0)
+    if ((unsignedLongLongValue & 0x400) == 0)
     {
       goto LABEL_16;
     }
@@ -211,10 +211,10 @@ LABEL_15:
 
 LABEL_45:
   [v5 addObject:@"Any App Trackers"];
-  if ((v3 & 0x400) == 0)
+  if ((unsignedLongLongValue & 0x400) == 0)
   {
 LABEL_16:
-    if ((v3 & 0x800) == 0)
+    if ((unsignedLongLongValue & 0x800) == 0)
     {
       goto LABEL_17;
     }
@@ -224,10 +224,10 @@ LABEL_16:
 
 LABEL_46:
   [v5 addObject:@"News URL Resolution"];
-  if ((v3 & 0x800) == 0)
+  if ((unsignedLongLongValue & 0x800) == 0)
   {
 LABEL_17:
-    if ((v3 & 0x1000) == 0)
+    if ((unsignedLongLongValue & 0x1000) == 0)
     {
       goto LABEL_18;
     }
@@ -237,10 +237,10 @@ LABEL_17:
 
 LABEL_47:
   [v5 addObject:@"Exposure Notifications"];
-  if ((v3 & 0x1000) == 0)
+  if ((unsignedLongLongValue & 0x1000) == 0)
   {
 LABEL_18:
-    if ((v3 & 0x2000) == 0)
+    if ((unsignedLongLongValue & 0x2000) == 0)
     {
       goto LABEL_19;
     }
@@ -250,10 +250,10 @@ LABEL_18:
 
 LABEL_48:
   [v5 addObject:@"Apple Certificates"];
-  if ((v3 & 0x2000) == 0)
+  if ((unsignedLongLongValue & 0x2000) == 0)
   {
 LABEL_19:
-    if ((v3 & 0x4000) == 0)
+    if ((unsignedLongLongValue & 0x4000) == 0)
     {
       goto LABEL_20;
     }
@@ -263,10 +263,10 @@ LABEL_19:
 
 LABEL_49:
   [v5 addObject:@"Network Tools"];
-  if ((v3 & 0x4000) == 0)
+  if ((unsignedLongLongValue & 0x4000) == 0)
   {
 LABEL_20:
-    if ((v3 & 0x8000) == 0)
+    if ((unsignedLongLongValue & 0x8000) == 0)
     {
       goto LABEL_21;
     }
@@ -276,10 +276,10 @@ LABEL_20:
 
 LABEL_50:
   [v5 addObject:@"Metrics Upload"];
-  if ((v3 & 0x8000) == 0)
+  if ((unsignedLongLongValue & 0x8000) == 0)
   {
 LABEL_21:
-    if ((v3 & 0x10000) == 0)
+    if ((unsignedLongLongValue & 0x10000) == 0)
     {
       goto LABEL_22;
     }
@@ -289,10 +289,10 @@ LABEL_21:
 
 LABEL_51:
   [v5 addObject:@"Branded Calling"];
-  if ((v3 & 0x10000) == 0)
+  if ((unsignedLongLongValue & 0x10000) == 0)
   {
 LABEL_22:
-    if ((v3 & 0x20000) == 0)
+    if ((unsignedLongLongValue & 0x20000) == 0)
     {
       goto LABEL_23;
     }
@@ -302,10 +302,10 @@ LABEL_22:
 
 LABEL_52:
   [v5 addObject:@"News Embedded Content"];
-  if ((v3 & 0x20000) == 0)
+  if ((unsignedLongLongValue & 0x20000) == 0)
   {
 LABEL_23:
-    if ((v3 & 0x400000) == 0)
+    if ((unsignedLongLongValue & 0x400000) == 0)
     {
       goto LABEL_24;
     }
@@ -315,10 +315,10 @@ LABEL_23:
 
 LABEL_53:
   [v5 addObject:@"App Metrics"];
-  if ((v3 & 0x400000) == 0)
+  if ((unsignedLongLongValue & 0x400000) == 0)
   {
 LABEL_24:
-    if ((v3 & 0x800000) == 0)
+    if ((unsignedLongLongValue & 0x800000) == 0)
     {
       goto LABEL_25;
     }
@@ -328,10 +328,10 @@ LABEL_24:
 
 LABEL_54:
   [v5 addObject:@"Promoted Content"];
-  if ((v3 & 0x800000) == 0)
+  if ((unsignedLongLongValue & 0x800000) == 0)
   {
 LABEL_25:
-    if ((v3 & 0x1000000) == 0)
+    if ((unsignedLongLongValue & 0x1000000) == 0)
     {
       goto LABEL_26;
     }
@@ -341,10 +341,10 @@ LABEL_25:
 
 LABEL_55:
   [v5 addObject:@"Postback Fetch"];
-  if ((v3 & 0x1000000) == 0)
+  if ((unsignedLongLongValue & 0x1000000) == 0)
   {
 LABEL_26:
-    if ((v3 & 0x2000000) == 0)
+    if ((unsignedLongLongValue & 0x2000000) == 0)
     {
       goto LABEL_27;
     }
@@ -354,10 +354,10 @@ LABEL_26:
 
 LABEL_56:
   [v5 addObject:@"Password Manager Icon Fetching"];
-  if ((v3 & 0x2000000) == 0)
+  if ((unsignedLongLongValue & 0x2000000) == 0)
   {
 LABEL_27:
-    if ((v3 & 0x4000000) == 0)
+    if ((unsignedLongLongValue & 0x4000000) == 0)
     {
       goto LABEL_29;
     }
@@ -367,7 +367,7 @@ LABEL_27:
 
 LABEL_57:
   [v5 addObject:@"Launch Warning Details"];
-  if ((v3 & 0x4000000) != 0)
+  if ((unsignedLongLongValue & 0x4000000) != 0)
   {
 LABEL_28:
     [v5 addObject:@"Podcasts Link Presentation"];
@@ -378,15 +378,15 @@ LABEL_29:
   return v5;
 }
 
-+ (id)proxyAccountTypeToString:(id)a3
++ (id)proxyAccountTypeToString:(id)string
 {
-  v3 = a3;
-  if ([v3 unsignedIntegerValue] == 1)
+  stringCopy = string;
+  if ([stringCopy unsignedIntegerValue] == 1)
   {
     v4 = @"Free";
   }
 
-  else if ([v3 unsignedIntegerValue] == 2)
+  else if ([stringCopy unsignedIntegerValue] == 2)
   {
     v4 = @"Subscriber";
   }
@@ -403,110 +403,110 @@ LABEL_29:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = MEMORY[0x1E696AB78];
-  v5 = [(NSPConfiguration *)self resurrectionDate];
-  v6 = [v4 localizedStringFromDate:v5 dateStyle:1 timeStyle:2];
+  resurrectionDate = [(NSPConfiguration *)self resurrectionDate];
+  v6 = [v4 localizedStringFromDate:resurrectionDate dateStyle:1 timeStyle:2];
   [v3 setObject:v6 forKeyedSubscript:@"resurrectionDate"];
 
-  v7 = [(NSPConfiguration *)self etag];
-  [v3 setObject:v7 forKeyedSubscript:@"Etag"];
+  etag = [(NSPConfiguration *)self etag];
+  [v3 setObject:etag forKeyedSubscript:@"Etag"];
 
-  v8 = [(NSPConfiguration *)self epoch];
-  [v3 setObject:v8 forKeyedSubscript:@"Epoch"];
+  epoch = [(NSPConfiguration *)self epoch];
+  [v3 setObject:epoch forKeyedSubscript:@"Epoch"];
 
-  v9 = [(NSPConfiguration *)self proxyTrafficState];
-  v10 = [NSPConfiguration proxyTrafficStateToString:v9];
+  proxyTrafficState = [(NSPConfiguration *)self proxyTrafficState];
+  v10 = [NSPConfiguration proxyTrafficStateToString:proxyTrafficState];
   [v3 setObject:v10 forKeyedSubscript:@"ProxyTrafficState"];
 
   v11 = MEMORY[0x1E696AB78];
-  v12 = [(NSPConfiguration *)self anyAppEnabledDate];
-  v13 = [v11 localizedStringFromDate:v12 dateStyle:1 timeStyle:2];
+  anyAppEnabledDate = [(NSPConfiguration *)self anyAppEnabledDate];
+  v13 = [v11 localizedStringFromDate:anyAppEnabledDate dateStyle:1 timeStyle:2];
   [v3 setObject:v13 forKeyedSubscript:@"AnyAppEnabledDate"];
 
   v14 = MEMORY[0x1E696AB78];
-  v15 = [(NSPConfiguration *)self configurationFetchDate];
-  v16 = [v14 localizedStringFromDate:v15 dateStyle:1 timeStyle:2];
+  configurationFetchDate = [(NSPConfiguration *)self configurationFetchDate];
+  v16 = [v14 localizedStringFromDate:configurationFetchDate dateStyle:1 timeStyle:2];
   [v3 setObject:v16 forKeyedSubscript:@"PrivacyProxyConfigurationFetchDate"];
 
-  v17 = [(NSPConfiguration *)self willResetSubscriberTierTomorrow];
-  [v3 setObject:v17 forKeyedSubscript:@"WillResetSubscriberTierTomorrow"];
+  willResetSubscriberTierTomorrow = [(NSPConfiguration *)self willResetSubscriberTierTomorrow];
+  [v3 setObject:willResetSubscriberTierTomorrow forKeyedSubscript:@"WillResetSubscriberTierTomorrow"];
 
   v18 = MEMORY[0x1E696AB78];
-  v19 = [(NSPConfiguration *)self resetTomorrowDate];
-  v20 = [v18 localizedStringFromDate:v19 dateStyle:1 timeStyle:2];
+  resetTomorrowDate = [(NSPConfiguration *)self resetTomorrowDate];
+  v20 = [v18 localizedStringFromDate:resetTomorrowDate dateStyle:1 timeStyle:2];
   [v3 setObject:v20 forKeyedSubscript:@"ResetTomorrowDate"];
 
-  v21 = [(NSPConfiguration *)self geohashSharingEnabledStatus];
-  [v3 setObject:v21 forKeyedSubscript:@"GeohashSharingEnabled"];
+  geohashSharingEnabledStatus = [(NSPConfiguration *)self geohashSharingEnabledStatus];
+  [v3 setObject:geohashSharingEnabledStatus forKeyedSubscript:@"GeohashSharingEnabled"];
 
-  v22 = [(NSPConfiguration *)self preferredPathRoutingEnabledStatus];
-  [v3 setObject:v22 forKeyedSubscript:@"PreferredPathRoutingEnabled"];
+  preferredPathRoutingEnabledStatus = [(NSPConfiguration *)self preferredPathRoutingEnabledStatus];
+  [v3 setObject:preferredPathRoutingEnabledStatus forKeyedSubscript:@"PreferredPathRoutingEnabled"];
 
-  v23 = [(NSPConfiguration *)self privateAccessTokensEnabledStatus];
-  [v3 setObject:v23 forKeyedSubscript:@"PrivateAccessTokensEnabled"];
+  privateAccessTokensEnabledStatus = [(NSPConfiguration *)self privateAccessTokensEnabledStatus];
+  [v3 setObject:privateAccessTokensEnabledStatus forKeyedSubscript:@"PrivateAccessTokensEnabled"];
 
-  v24 = [(NSPConfiguration *)self privateAccessTokensAllowTools];
-  [v3 setObject:v24 forKeyedSubscript:@"PrivateAccessTokensAllowTools"];
+  privateAccessTokensAllowTools = [(NSPConfiguration *)self privateAccessTokensAllowTools];
+  [v3 setObject:privateAccessTokensAllowTools forKeyedSubscript:@"PrivateAccessTokensAllowTools"];
 
-  v25 = [(NSPConfiguration *)self inProcessFlowDivert];
-  [v3 setObject:v25 forKeyedSubscript:@"InProcessFlowDivert"];
+  inProcessFlowDivert = [(NSPConfiguration *)self inProcessFlowDivert];
+  [v3 setObject:inProcessFlowDivert forKeyedSubscript:@"InProcessFlowDivert"];
 
-  v26 = [(NSPConfiguration *)self configServerEnabled];
-  [v3 setObject:v26 forKeyedSubscript:@"PrivacyProxyConfigurationServerEnabled"];
+  configServerEnabled = [(NSPConfiguration *)self configServerEnabled];
+  [v3 setObject:configServerEnabled forKeyedSubscript:@"PrivacyProxyConfigurationServerEnabled"];
 
-  v27 = [(NSPConfiguration *)self configServerHost];
-  [v3 setObject:v27 forKeyedSubscript:@"PrivacyProxyConfigurationServerHost"];
+  configServerHost = [(NSPConfiguration *)self configServerHost];
+  [v3 setObject:configServerHost forKeyedSubscript:@"PrivacyProxyConfigurationServerHost"];
 
-  v28 = [(NSPConfiguration *)self userTier];
-  v29 = [v28 intValue];
-  if (v29 >= 3)
+  userTier = [(NSPConfiguration *)self userTier];
+  intValue = [userTier intValue];
+  if (intValue >= 3)
   {
-    v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v29];
+    v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", intValue];
   }
 
   else
   {
-    v30 = off_1E7A31240[v29];
+    v30 = off_1E7A31240[intValue];
   }
 
   [v3 setObject:v30 forKeyedSubscript:@"UserTier"];
 
-  v31 = [(NSPConfiguration *)self proxyAccountType];
-  v32 = [NSPConfiguration proxyAccountTypeToString:v31];
+  proxyAccountType = [(NSPConfiguration *)self proxyAccountType];
+  v32 = [NSPConfiguration proxyAccountTypeToString:proxyAccountType];
   [v3 setObject:v32 forKeyedSubscript:@"ProxyAccountType"];
 
-  v33 = [(NSPConfiguration *)self proxyAccountUnlimited];
-  [v3 setObject:v33 forKeyedSubscript:@"ProxyAccountUnlimited"];
+  proxyAccountUnlimited = [(NSPConfiguration *)self proxyAccountUnlimited];
+  [v3 setObject:proxyAccountUnlimited forKeyedSubscript:@"ProxyAccountUnlimited"];
 
   v34 = MEMORY[0x1E696AD98];
-  v35 = [(NSPConfiguration *)self proxyConfiguration];
-  v36 = [v34 numberWithBool:{objc_msgSend(v35, "enabled")}];
+  proxyConfiguration = [(NSPConfiguration *)self proxyConfiguration];
+  v36 = [v34 numberWithBool:{objc_msgSend(proxyConfiguration, "enabled")}];
   [v3 setObject:v36 forKeyedSubscript:@"TokenFetchEnabled"];
 
-  v37 = [(NSPConfiguration *)self enabled];
-  [v3 setObject:v37 forKeyedSubscript:@"enabled"];
+  enabled = [(NSPConfiguration *)self enabled];
+  [v3 setObject:enabled forKeyedSubscript:@"enabled"];
 
-  v38 = [(NSPConfiguration *)self version];
-  [v3 setObject:v38 forKeyedSubscript:@"version"];
+  version = [(NSPConfiguration *)self version];
+  [v3 setObject:version forKeyedSubscript:@"version"];
 
-  v39 = [(NSPConfiguration *)self userPreferredTier];
-  v40 = [v39 intValue];
-  if (v40 >= 3)
+  userPreferredTier = [(NSPConfiguration *)self userPreferredTier];
+  intValue2 = [userPreferredTier intValue];
+  if (intValue2 >= 3)
   {
-    v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v40];
+    v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", intValue2];
   }
 
   else
   {
-    v41 = off_1E7A31240[v40];
+    v41 = off_1E7A31240[intValue2];
   }
 
   [v3 setObject:v41 forKeyedSubscript:@"UserPreferredTier"];
 
-  v42 = [(NSPConfiguration *)self subscriberEnabledFromNonSettingsApp];
-  [v3 setObject:v42 forKeyedSubscript:@"SubscriberEnabledFromNonSettingsApp"];
+  subscriberEnabledFromNonSettingsApp = [(NSPConfiguration *)self subscriberEnabledFromNonSettingsApp];
+  [v3 setObject:subscriberEnabledFromNonSettingsApp forKeyedSubscript:@"SubscriberEnabledFromNonSettingsApp"];
 
-  v43 = [(NSPConfiguration *)self trialConfigVersion];
-  [v3 setObject:v43 forKeyedSubscript:@"TrialConfigVersion"];
+  trialConfigVersion = [(NSPConfiguration *)self trialConfigVersion];
+  [v3 setObject:trialConfigVersion forKeyedSubscript:@"TrialConfigVersion"];
 
   return v3;
 }
@@ -516,22 +516,22 @@ LABEL_29:
   if (self)
   {
     v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:0];
-    v4 = [(NSPConfiguration *)self version];
-    [(NSMutableString *)v3 appendPrettyObject:v4 withName:@"Configuration Version" andIndent:0 options:14];
+    version = [(NSPConfiguration *)self version];
+    [(NSMutableString *)v3 appendPrettyObject:version withName:@"Configuration Version" andIndent:0 options:14];
 
-    v5 = [(NSPConfiguration *)self enabled];
-    [(NSMutableString *)v3 appendPrettyObject:v5 withName:@"Enabled" andIndent:0 options:14];
+    enabled = [(NSPConfiguration *)self enabled];
+    [(NSMutableString *)v3 appendPrettyObject:enabled withName:@"Enabled" andIndent:0 options:14];
 
-    v6 = [(NSPConfiguration *)self userTier];
-    v7 = [v6 intValue];
-    if (v7 >= 3)
+    userTier = [(NSPConfiguration *)self userTier];
+    intValue = [userTier intValue];
+    if (intValue >= 3)
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v7];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", intValue];
     }
 
     else
     {
-      v8 = off_1E7A31240[v7];
+      v8 = off_1E7A31240[intValue];
     }
 
     [(NSMutableString *)v3 appendPrettyObject:v8 withName:@"User Tier" andIndent:0 options:14];
@@ -539,30 +539,30 @@ LABEL_29:
     v9 = +[NSPConfiguration defaultConfiguration];
     v10 = [v9 copy];
 
-    v11 = [(NSPConfiguration *)self configServerPath];
-    if (v11)
+    configServerPath = [(NSPConfiguration *)self configServerPath];
+    if (configServerPath)
     {
-      v12 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v12 = v10;
+      selfCopy = v10;
     }
 
-    v13 = [(NSPConfiguration *)v12 configServerPath];
+    configServerPath2 = [(NSPConfiguration *)selfCopy configServerPath];
 
     if (os_variant_allows_internal_security_policies())
     {
-      v14 = [(NSPConfiguration *)self configServerHost];
+      configServerHost = [(NSPConfiguration *)self configServerHost];
       v15 = @"Configuration Server";
-      if (v14)
+      if (configServerHost)
       {
-        v16 = v14;
-        v17 = [(NSPConfiguration *)self configServerHost];
+        v16 = configServerHost;
+        configServerHost2 = [(NSPConfiguration *)self configServerHost];
         v18 = v10;
-        v19 = [(NSPConfiguration *)v10 configServerHost];
-        v20 = [v17 isEqualToString:v19];
+        configServerHost3 = [(NSPConfiguration *)v10 configServerHost];
+        v20 = [configServerHost2 isEqualToString:configServerHost3];
 
         if (!v20)
         {
@@ -575,14 +575,14 @@ LABEL_29:
         v18 = v10;
       }
 
-      v22 = [(NSPConfiguration *)self overrideConfigServerPath];
+      overrideConfigServerPath = [(NSPConfiguration *)self overrideConfigServerPath];
 
-      if (v22)
+      if (overrideConfigServerPath)
       {
-        v23 = [(NSPConfiguration *)self overrideConfigServerPath];
+        overrideConfigServerPath2 = [(NSPConfiguration *)self overrideConfigServerPath];
 
         v21 = @"Configuration Server Path (user-overridden)";
-        v13 = v23;
+        configServerPath2 = overrideConfigServerPath2;
       }
 
       else
@@ -599,115 +599,115 @@ LABEL_29:
       v15 = @"Configuration Server";
     }
 
-    v24 = [(NSPConfiguration *)self configServerHost];
-    [(NSMutableString *)v3 appendPrettyObject:v24 withName:v15 andIndent:0 options:14];
+    configServerHost4 = [(NSPConfiguration *)self configServerHost];
+    [(NSMutableString *)v3 appendPrettyObject:configServerHost4 withName:v15 andIndent:0 options:14];
 
-    [(NSMutableString *)v3 appendPrettyObject:v13 withName:v21 andIndent:0 options:14];
-    v25 = [(NSPConfiguration *)self configServerHeaders];
+    [(NSMutableString *)v3 appendPrettyObject:configServerPath2 withName:v21 andIndent:0 options:14];
+    configServerHeaders = [(NSPConfiguration *)self configServerHeaders];
 
-    if (v25)
+    if (configServerHeaders)
     {
-      v26 = [(NSPConfiguration *)self configServerHeaders];
-      [(NSMutableString *)v3 appendPrettyObject:v26 withName:@"Configuration Server Headers (user-overriden)" andIndent:0 options:14];
+      configServerHeaders2 = [(NSPConfiguration *)self configServerHeaders];
+      [(NSMutableString *)v3 appendPrettyObject:configServerHeaders2 withName:@"Configuration Server Headers (user-overriden)" andIndent:0 options:14];
     }
 
-    v27 = [(NSPConfiguration *)self resurrectionDate];
-    [(NSMutableString *)v3 appendPrettyObject:v27 withName:@"Resurrection Date" andIndent:0 options:14];
+    resurrectionDate = [(NSPConfiguration *)self resurrectionDate];
+    [(NSMutableString *)v3 appendPrettyObject:resurrectionDate withName:@"Resurrection Date" andIndent:0 options:14];
 
-    v28 = [(NSPConfiguration *)self configServerEnabled];
-    [(NSMutableString *)v3 appendPrettyObject:v28 withName:@"Config Server Enabled" andIndent:0 options:14];
+    configServerEnabled = [(NSPConfiguration *)self configServerEnabled];
+    [(NSMutableString *)v3 appendPrettyObject:configServerEnabled withName:@"Config Server Enabled" andIndent:0 options:14];
 
     [(NSMutableString *)v3 appendPrettyBOOL:@"Ignore Invalid Certs" withName:0 andIndent:14 options:?];
     [(NSMutableString *)v3 appendPrettyBOOL:@"Ignore Config Signature" withName:0 andIndent:14 options:?];
     [(NSMutableString *)v3 appendPrettyBOOL:@"Ignore Platform Binary" withName:0 andIndent:14 options:?];
-    v29 = [(NSPConfiguration *)self proxyConfigurationData];
-    [(NSMutableString *)v3 appendPrettyObject:v29 withName:@"Proxy configuration received data" andIndent:0 options:14];
+    proxyConfigurationData = [(NSPConfiguration *)self proxyConfigurationData];
+    [(NSMutableString *)v3 appendPrettyObject:proxyConfigurationData withName:@"Proxy configuration received data" andIndent:0 options:14];
 
-    v30 = [(NSPConfiguration *)self proxyConfiguration];
-    v31 = [v30 data];
-    [(NSMutableString *)v3 appendPrettyObject:v31 withName:@"Proxy configuration stored data" andIndent:0 options:14];
+    proxyConfiguration = [(NSPConfiguration *)self proxyConfiguration];
+    data = [proxyConfiguration data];
+    [(NSMutableString *)v3 appendPrettyObject:data withName:@"Proxy configuration stored data" andIndent:0 options:14];
 
-    v32 = [(NSPConfiguration *)self proxyConfiguration];
-    [(NSMutableString *)v3 appendPrettyObject:v32 withName:@"Proxy configuration" andIndent:0 options:14];
+    proxyConfiguration2 = [(NSPConfiguration *)self proxyConfiguration];
+    [(NSMutableString *)v3 appendPrettyObject:proxyConfiguration2 withName:@"Proxy configuration" andIndent:0 options:14];
 
-    v33 = [(NSPConfiguration *)self etag];
-    [(NSMutableString *)v3 appendPrettyObject:v33 withName:@"ETag" andIndent:0 options:14];
+    etag = [(NSPConfiguration *)self etag];
+    [(NSMutableString *)v3 appendPrettyObject:etag withName:@"ETag" andIndent:0 options:14];
 
-    v34 = [(NSPConfiguration *)self epoch];
-    [(NSMutableString *)v3 appendPrettyObject:v34 withName:@"Epoch" andIndent:0 options:14];
+    epoch = [(NSPConfiguration *)self epoch];
+    [(NSMutableString *)v3 appendPrettyObject:epoch withName:@"Epoch" andIndent:0 options:14];
 
-    v35 = [(NSPConfiguration *)self proxyTrafficState];
-    v36 = [NSPConfiguration proxyTrafficStateToString:v35];
+    proxyTrafficState = [(NSPConfiguration *)self proxyTrafficState];
+    v36 = [NSPConfiguration proxyTrafficStateToString:proxyTrafficState];
 
     [(NSMutableString *)v3 appendPrettyObject:v36 withName:@"Proxy Traffic" andIndent:0 options:14];
     v37 = MEMORY[0x1E696AB78];
-    v38 = [(NSPConfiguration *)self anyAppEnabledDate];
-    v39 = [v37 localizedStringFromDate:v38 dateStyle:1 timeStyle:2];
+    anyAppEnabledDate = [(NSPConfiguration *)self anyAppEnabledDate];
+    v39 = [v37 localizedStringFromDate:anyAppEnabledDate dateStyle:1 timeStyle:2];
     [(NSMutableString *)v3 appendPrettyObject:v39 withName:@"Any App Enabled Date" andIndent:0 options:14];
 
     v40 = MEMORY[0x1E696AB78];
-    v41 = [(NSPConfiguration *)self configurationFetchDate];
-    v42 = [v40 localizedStringFromDate:v41 dateStyle:1 timeStyle:2];
+    configurationFetchDate = [(NSPConfiguration *)self configurationFetchDate];
+    v42 = [v40 localizedStringFromDate:configurationFetchDate dateStyle:1 timeStyle:2];
     [(NSMutableString *)v3 appendPrettyObject:v42 withName:@"Configuration Fetch Date" andIndent:0 options:14];
 
-    v43 = [(NSPConfiguration *)self willResetSubscriberTierTomorrow];
-    [(NSMutableString *)v3 appendPrettyObject:v43 withName:@"Will Reset Subscriber Tier Tomorrow" andIndent:0 options:14];
+    willResetSubscriberTierTomorrow = [(NSPConfiguration *)self willResetSubscriberTierTomorrow];
+    [(NSMutableString *)v3 appendPrettyObject:willResetSubscriberTierTomorrow withName:@"Will Reset Subscriber Tier Tomorrow" andIndent:0 options:14];
 
     v44 = MEMORY[0x1E696AB78];
-    v45 = [(NSPConfiguration *)self resetTomorrowDate];
-    v46 = [v44 localizedStringFromDate:v45 dateStyle:1 timeStyle:2];
+    resetTomorrowDate = [(NSPConfiguration *)self resetTomorrowDate];
+    v46 = [v44 localizedStringFromDate:resetTomorrowDate dateStyle:1 timeStyle:2];
     [(NSMutableString *)v3 appendPrettyObject:v46 withName:@"Tomorrow Reset Date" andIndent:0 options:14];
 
-    v47 = [(NSPConfiguration *)self cloudSubscriptionCheckEnabled];
-    [(NSMutableString *)v3 appendPrettyObject:v47 withName:@"Cloud Subscription Check Enabled" andIndent:0 options:14];
+    cloudSubscriptionCheckEnabled = [(NSPConfiguration *)self cloudSubscriptionCheckEnabled];
+    [(NSMutableString *)v3 appendPrettyObject:cloudSubscriptionCheckEnabled withName:@"Cloud Subscription Check Enabled" andIndent:0 options:14];
 
-    v48 = [(NSPConfiguration *)self geohashSharingEnabledStatus];
-    [(NSMutableString *)v3 appendPrettyObject:v48 withName:@"Geohash Sharing Enabled" andIndent:0 options:14];
+    geohashSharingEnabledStatus = [(NSPConfiguration *)self geohashSharingEnabledStatus];
+    [(NSMutableString *)v3 appendPrettyObject:geohashSharingEnabledStatus withName:@"Geohash Sharing Enabled" andIndent:0 options:14];
 
-    v49 = [(NSPConfiguration *)self geohashOverride];
-    [(NSMutableString *)v3 appendPrettyObject:v49 withName:@"Geohash Override" andIndent:0 options:14];
+    geohashOverride = [(NSPConfiguration *)self geohashOverride];
+    [(NSMutableString *)v3 appendPrettyObject:geohashOverride withName:@"Geohash Override" andIndent:0 options:14];
 
-    v50 = [(NSPConfiguration *)self preferredPathRoutingEnabledStatus];
-    [(NSMutableString *)v3 appendPrettyObject:v50 withName:@"Preferred Path Routing Enabled" andIndent:0 options:14];
+    preferredPathRoutingEnabledStatus = [(NSPConfiguration *)self preferredPathRoutingEnabledStatus];
+    [(NSMutableString *)v3 appendPrettyObject:preferredPathRoutingEnabledStatus withName:@"Preferred Path Routing Enabled" andIndent:0 options:14];
 
-    v51 = [(NSPConfiguration *)self privateAccessTokensEnabledStatus];
-    [(NSMutableString *)v3 appendPrettyObject:v51 withName:@"Private Access Tokens Enabled" andIndent:0 options:14];
+    privateAccessTokensEnabledStatus = [(NSPConfiguration *)self privateAccessTokensEnabledStatus];
+    [(NSMutableString *)v3 appendPrettyObject:privateAccessTokensEnabledStatus withName:@"Private Access Tokens Enabled" andIndent:0 options:14];
 
-    v52 = [(NSPConfiguration *)self privateAccessTokensAllowTools];
-    [(NSMutableString *)v3 appendPrettyObject:v52 withName:@"Private Access Tokens Allow Tools" andIndent:0 options:14];
+    privateAccessTokensAllowTools = [(NSPConfiguration *)self privateAccessTokensAllowTools];
+    [(NSMutableString *)v3 appendPrettyObject:privateAccessTokensAllowTools withName:@"Private Access Tokens Allow Tools" andIndent:0 options:14];
 
-    v53 = [(NSPConfiguration *)self inProcessFlowDivert];
-    [(NSMutableString *)v3 appendPrettyObject:v53 withName:@"In-Process Flow Divert" andIndent:0 options:14];
+    inProcessFlowDivert = [(NSPConfiguration *)self inProcessFlowDivert];
+    [(NSMutableString *)v3 appendPrettyObject:inProcessFlowDivert withName:@"In-Process Flow Divert" andIndent:0 options:14];
 
-    v54 = [(NSPConfiguration *)self proxyAccountType];
-    v55 = [NSPConfiguration proxyAccountTypeToString:v54];
+    proxyAccountType = [(NSPConfiguration *)self proxyAccountType];
+    v55 = [NSPConfiguration proxyAccountTypeToString:proxyAccountType];
     [(NSMutableString *)v3 appendPrettyObject:v55 withName:@"Proxy Account Type" andIndent:0 options:14];
 
-    v56 = [(NSPConfiguration *)self proxyAccountUnlimited];
-    [(NSMutableString *)v3 appendPrettyObject:v56 withName:@"Proxy Account Unlimited" andIndent:0 options:14];
+    proxyAccountUnlimited = [(NSPConfiguration *)self proxyAccountUnlimited];
+    [(NSMutableString *)v3 appendPrettyObject:proxyAccountUnlimited withName:@"Proxy Account Unlimited" andIndent:0 options:14];
 
-    v57 = [(NSPConfiguration *)self userPreferredTier];
-    v58 = [v57 intValue];
-    if (v58 >= 3)
+    userPreferredTier = [(NSPConfiguration *)self userPreferredTier];
+    intValue2 = [userPreferredTier intValue];
+    if (intValue2 >= 3)
     {
-      v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v58];
+      v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", intValue2];
     }
 
     else
     {
-      v59 = off_1E7A31240[v58];
+      v59 = off_1E7A31240[intValue2];
     }
 
     [(NSMutableString *)v3 appendPrettyObject:v59 withName:@"User preferred Tier" andIndent:0 options:14];
 
-    v60 = [(NSPConfiguration *)self subscriberEnabledFromNonSettingsApp];
-    -[NSMutableString appendPrettyBOOL:withName:andIndent:options:](v3, [v60 BOOLValue], @"Subscriber Enabled from Non-Settings App", 0, 14);
+    subscriberEnabledFromNonSettingsApp = [(NSPConfiguration *)self subscriberEnabledFromNonSettingsApp];
+    -[NSMutableString appendPrettyBOOL:withName:andIndent:options:](v3, [subscriberEnabledFromNonSettingsApp BOOLValue], @"Subscriber Enabled from Non-Settings App", 0, 14);
 
-    v61 = [(NSPConfiguration *)self trialConfigVersion];
-    [(NSMutableString *)v3 appendPrettyObject:v61 withName:@"Trial Config Version" andIndent:0 options:14];
+    trialConfigVersion = [(NSPConfiguration *)self trialConfigVersion];
+    [(NSMutableString *)v3 appendPrettyObject:trialConfigVersion withName:@"Trial Config Version" andIndent:0 options:14];
 
-    v62 = [(NSPConfiguration *)self lastPrivateCloudComputeEnvironment];
-    [(NSMutableString *)v3 appendPrettyObject:v62 withName:@"Last PrivateCloudCompute environment" andIndent:0 options:14];
+    lastPrivateCloudComputeEnvironment = [(NSPConfiguration *)self lastPrivateCloudComputeEnvironment];
+    [(NSMutableString *)v3 appendPrettyObject:lastPrivateCloudComputeEnvironment withName:@"Last PrivateCloudCompute environment" andIndent:0 options:14];
   }
 
   else
@@ -745,162 +745,162 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
   }
 }
 
-- (NSPConfiguration)initWithCoder:(id)a3
+- (NSPConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v77.receiver = self;
   v77.super_class = NSPConfiguration;
   v5 = [(NSPConfiguration *)&v77 init];
   if (v5)
   {
-    v5->_diskVersion = [v4 decodeIntegerForKey:@"diskVersion"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v5->_diskVersion = [coderCopy decodeIntegerForKey:@"diskVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     version = v5->_version;
     v5->_version = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enabled"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enabled"];
     enabled = v5->_enabled;
     v5->_enabled = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resurrectionDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resurrectionDate"];
     resurrectionDate = v5->_resurrectionDate;
     v5->_resurrectionDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationServerEnabled"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationServerEnabled"];
     configServerEnabled = v5->_configServerEnabled;
     v5->_configServerEnabled = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationServerHost"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationServerHost"];
     configServerHost = v5->_configServerHost;
     v5->_configServerHost = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationServerPort"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationServerPort"];
     configServerPort = v5->_configServerPort;
     v5->_configServerPort = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationServerPath"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationServerPath"];
     configServerPath = v5->_configServerPath;
     v5->_configServerPath = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationOverrideServerPath"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationOverrideServerPath"];
     overrideConfigServerPath = v5->_overrideConfigServerPath;
     v5->_overrideConfigServerPath = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationServerHeaders"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationServerHeaders"];
     configServerHeaders = v5->_configServerHeaders;
     v5->_configServerHeaders = v24;
 
-    v5->_ignoreSignature = [v4 decodeBoolForKey:@"ProxyConfigurationIgnoreSignature"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlRequestTimeout"];
+    v5->_ignoreSignature = [coderCopy decodeBoolForKey:@"ProxyConfigurationIgnoreSignature"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlRequestTimeout"];
     urlRequestTimeout = v5->_urlRequestTimeout;
     v5->_urlRequestTimeout = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persist-metrics"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persist-metrics"];
     persistMetrics = v5->_persistMetrics;
     v5->_persistMetrics = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProxyConfiguration"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProxyConfiguration"];
     proxyConfiguration = v5->_proxyConfiguration;
     v5->_proxyConfiguration = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProxyConfigurationData"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProxyConfigurationData"];
     proxyConfigurationData = v5->_proxyConfigurationData;
     v5->_proxyConfigurationData = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserTier"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserTier"];
     userTier = v5->_userTier;
     v5->_userTier = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Etag"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Etag"];
     etag = v5->_etag;
     v5->_etag = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Epoch"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Epoch"];
     epoch = v5->_epoch;
     v5->_epoch = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProxyTrafficState"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProxyTrafficState"];
     proxyTrafficState = v5->_proxyTrafficState;
     v5->_proxyTrafficState = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnyAppEnabledDate"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnyAppEnabledDate"];
     anyAppEnabledDate = v5->_anyAppEnabledDate;
     v5->_anyAppEnabledDate = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationFetchDate"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivacyProxyConfigurationFetchDate"];
     configurationFetchDate = v5->_configurationFetchDate;
     v5->_configurationFetchDate = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ResetTomorrowDate"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ResetTomorrowDate"];
     resetTomorrowDate = v5->_resetTomorrowDate;
     v5->_resetTomorrowDate = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WillResetSubscriberTierTomorrow"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WillResetSubscriberTierTomorrow"];
     willResetSubscriberTierTomorrow = v5->_willResetSubscriberTierTomorrow;
     v5->_willResetSubscriberTierTomorrow = v48;
 
     if (os_variant_allows_internal_security_policies())
     {
-      v5->_ignoreInvalidCerts = [v4 decodeBoolForKey:@"IgnoreInvalidCerts"];
-      v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CloudSubscriptionCheckEnabled"];
+      v5->_ignoreInvalidCerts = [coderCopy decodeBoolForKey:@"IgnoreInvalidCerts"];
+      v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CloudSubscriptionCheckEnabled"];
       cloudSubscriptionCheckEnabled = v5->_cloudSubscriptionCheckEnabled;
       v5->_cloudSubscriptionCheckEnabled = v50;
 
-      v5->_ignoreSignature = [v4 decodeBoolForKey:@"ProxyConfigurationIgnoreSignature"];
-      v5->_ignorePlatformBinary = [v4 decodeBoolForKey:@"IgnorePlatformBinary"];
+      v5->_ignoreSignature = [coderCopy decodeBoolForKey:@"ProxyConfigurationIgnoreSignature"];
+      v5->_ignorePlatformBinary = [coderCopy decodeBoolForKey:@"IgnorePlatformBinary"];
     }
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GeohashSharingEnabled"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GeohashSharingEnabled"];
     geohashSharingEnabledStatus = v5->_geohashSharingEnabledStatus;
     v5->_geohashSharingEnabledStatus = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GeohashOverride"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GeohashOverride"];
     geohashOverride = v5->_geohashOverride;
     v5->_geohashOverride = v54;
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PreferredPathRoutingEnabled"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PreferredPathRoutingEnabled"];
     preferredPathRoutingEnabledStatus = v5->_preferredPathRoutingEnabledStatus;
     v5->_preferredPathRoutingEnabledStatus = v56;
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivateAccessTokensEnabled"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivateAccessTokensEnabled"];
     privateAccessTokensEnabledStatus = v5->_privateAccessTokensEnabledStatus;
     v5->_privateAccessTokensEnabledStatus = v58;
 
-    v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrivateAccessTokensAllowTools"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrivateAccessTokensAllowTools"];
     privateAccessTokensAllowTools = v5->_privateAccessTokensAllowTools;
     v5->_privateAccessTokensAllowTools = v60;
 
-    v62 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"InProcessFlowDivert"];
+    v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InProcessFlowDivert"];
     inProcessFlowDivert = v5->_inProcessFlowDivert;
     v5->_inProcessFlowDivert = v62;
 
-    v64 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProxyAccountType"];
+    v64 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProxyAccountType"];
     proxyAccountType = v5->_proxyAccountType;
     v5->_proxyAccountType = v64;
 
-    v66 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProxyAccountUnlimited"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProxyAccountUnlimited"];
     proxyAccountUnlimited = v5->_proxyAccountUnlimited;
     v5->_proxyAccountUnlimited = v66;
 
-    v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserPreferredTier"];
+    v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserPreferredTier"];
     userPreferredTier = v5->_userPreferredTier;
     v5->_userPreferredTier = v68;
 
-    v70 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SubscriberEnabledFromNonSettingsApp"];
+    v70 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SubscriberEnabledFromNonSettingsApp"];
     subscriberEnabledFromNonSettingsApp = v5->_subscriberEnabledFromNonSettingsApp;
     v5->_subscriberEnabledFromNonSettingsApp = v70;
 
-    v72 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TrialConfigVersion"];
+    v72 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TrialConfigVersion"];
     trialConfigVersion = v5->_trialConfigVersion;
     v5->_trialConfigVersion = v72;
 
     if (os_variant_has_internal_content())
     {
-      v74 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastPrivateCloudComputeEnvironment"];
+      v74 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastPrivateCloudComputeEnvironment"];
       lastPrivateCloudComputeEnvironment = v5->_lastPrivateCloudComputeEnvironment;
       v5->_lastPrivateCloudComputeEnvironment = v74;
     }
@@ -909,17 +909,17 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v58 = a3;
-  [v58 encodeInteger:23 forKey:@"diskVersion"];
-  v4 = [(NSPConfiguration *)self version];
-  [v58 encodeObject:v4 forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:23 forKey:@"diskVersion"];
+  version = [(NSPConfiguration *)self version];
+  [coderCopy encodeObject:version forKey:@"version"];
 
-  v5 = [(NSPConfiguration *)self timestamp];
-  [v58 encodeObject:v5 forKey:@"timestamp"];
+  timestamp = [(NSPConfiguration *)self timestamp];
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
 
-  v7 = [(NSPConfiguration *)self enabled];
+  enabled = [(NSPConfiguration *)self enabled];
   if (self)
   {
     Property = objc_getProperty(self, v6, 328, 1);
@@ -930,137 +930,137 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
     Property = 0;
   }
 
-  v9 = [Property enabled];
-  IsEqual = myIsEqual(v7, v9);
+  enabled2 = [Property enabled];
+  IsEqual = myIsEqual(enabled, enabled2);
 
   if ((IsEqual & 1) == 0)
   {
-    v11 = [(NSPConfiguration *)self enabled];
-    [v58 encodeObject:v11 forKey:@"enabled"];
+    enabled3 = [(NSPConfiguration *)self enabled];
+    [coderCopy encodeObject:enabled3 forKey:@"enabled"];
   }
 
-  v12 = [(NSPConfiguration *)self resurrectionDate];
-  [v58 encodeObject:v12 forKey:@"resurrectionDate"];
+  resurrectionDate = [(NSPConfiguration *)self resurrectionDate];
+  [coderCopy encodeObject:resurrectionDate forKey:@"resurrectionDate"];
 
-  v13 = [(NSPConfiguration *)self configServerEnabled];
-  [v58 encodeObject:v13 forKey:@"PrivacyProxyConfigurationServerEnabled"];
+  configServerEnabled = [(NSPConfiguration *)self configServerEnabled];
+  [coderCopy encodeObject:configServerEnabled forKey:@"PrivacyProxyConfigurationServerEnabled"];
 
   if (!self || (v15 = objc_getProperty(self, v14, 328, 1)) == 0 || (v17 = v15, configServerHost = self->_configServerHost, v19 = objc_getProperty(self, v16, 328, 1), LOBYTE(configServerHost) = myIsEqual(configServerHost, v19[1]), v17, (configServerHost & 1) == 0))
   {
-    [v58 encodeObject:self->_configServerHost forKey:@"PrivacyProxyConfigurationServerHost"];
+    [coderCopy encodeObject:self->_configServerHost forKey:@"PrivacyProxyConfigurationServerHost"];
   }
 
   v21 = objc_getProperty(self, v20, 328, 1);
   if (!v21 || (v23 = v21, configServerPort = self->_configServerPort, v25 = objc_getProperty(self, v22, 328, 1), LOBYTE(configServerPort) = myIsEqual(configServerPort, v25[10]), v23, (configServerPort & 1) == 0))
   {
-    [v58 encodeObject:self->_configServerPort forKey:@"PrivacyProxyConfigurationServerPort"];
+    [coderCopy encodeObject:self->_configServerPort forKey:@"PrivacyProxyConfigurationServerPort"];
   }
 
-  v26 = [(NSPConfiguration *)self overrideConfigServerPath];
-  [v58 encodeObject:v26 forKey:@"PrivacyProxyConfigurationOverrideServerPath"];
+  overrideConfigServerPath = [(NSPConfiguration *)self overrideConfigServerPath];
+  [coderCopy encodeObject:overrideConfigServerPath forKey:@"PrivacyProxyConfigurationOverrideServerPath"];
 
-  v27 = [(NSPConfiguration *)self configServerHeaders];
+  configServerHeaders = [(NSPConfiguration *)self configServerHeaders];
 
-  if (v27)
+  if (configServerHeaders)
   {
-    v28 = [(NSPConfiguration *)self configServerHeaders];
-    [v58 encodeObject:v28 forKey:@"PrivacyProxyConfigurationServerHeaders"];
+    configServerHeaders2 = [(NSPConfiguration *)self configServerHeaders];
+    [coderCopy encodeObject:configServerHeaders2 forKey:@"PrivacyProxyConfigurationServerHeaders"];
   }
 
-  v29 = [(NSPConfiguration *)self urlRequestTimeout];
+  urlRequestTimeout = [(NSPConfiguration *)self urlRequestTimeout];
   v31 = [objc_getProperty(self v30];
-  v32 = myIsEqual(v29, v31);
+  v32 = myIsEqual(urlRequestTimeout, v31);
 
   if ((v32 & 1) == 0)
   {
-    v33 = [(NSPConfiguration *)self urlRequestTimeout];
-    [v58 encodeObject:v33 forKey:@"urlRequestTimeout"];
+    urlRequestTimeout2 = [(NSPConfiguration *)self urlRequestTimeout];
+    [coderCopy encodeObject:urlRequestTimeout2 forKey:@"urlRequestTimeout"];
   }
 
-  v34 = [(NSPConfiguration *)self persistMetrics];
-  [v58 encodeObject:v34 forKey:@"persist-metrics"];
+  persistMetrics = [(NSPConfiguration *)self persistMetrics];
+  [coderCopy encodeObject:persistMetrics forKey:@"persist-metrics"];
 
-  v35 = [(NSPConfiguration *)self proxyConfiguration];
-  [v58 encodeObject:v35 forKey:@"ProxyConfiguration"];
+  proxyConfiguration = [(NSPConfiguration *)self proxyConfiguration];
+  [coderCopy encodeObject:proxyConfiguration forKey:@"ProxyConfiguration"];
 
-  v36 = [(NSPConfiguration *)self proxyConfigurationData];
-  [v58 encodeObject:v36 forKey:@"ProxyConfigurationData"];
+  proxyConfigurationData = [(NSPConfiguration *)self proxyConfigurationData];
+  [coderCopy encodeObject:proxyConfigurationData forKey:@"ProxyConfigurationData"];
 
-  v37 = [(NSPConfiguration *)self userTier];
-  [v58 encodeObject:v37 forKey:@"UserTier"];
+  userTier = [(NSPConfiguration *)self userTier];
+  [coderCopy encodeObject:userTier forKey:@"UserTier"];
 
-  v38 = [(NSPConfiguration *)self proxyTrafficState];
-  [v58 encodeObject:v38 forKey:@"ProxyTrafficState"];
+  proxyTrafficState = [(NSPConfiguration *)self proxyTrafficState];
+  [coderCopy encodeObject:proxyTrafficState forKey:@"ProxyTrafficState"];
 
-  v39 = [(NSPConfiguration *)self anyAppEnabledDate];
-  [v58 encodeObject:v39 forKey:@"AnyAppEnabledDate"];
+  anyAppEnabledDate = [(NSPConfiguration *)self anyAppEnabledDate];
+  [coderCopy encodeObject:anyAppEnabledDate forKey:@"AnyAppEnabledDate"];
 
-  v40 = [(NSPConfiguration *)self etag];
-  [v58 encodeObject:v40 forKey:@"Etag"];
+  etag = [(NSPConfiguration *)self etag];
+  [coderCopy encodeObject:etag forKey:@"Etag"];
 
-  v41 = [(NSPConfiguration *)self epoch];
-  [v58 encodeObject:v41 forKey:@"Epoch"];
+  epoch = [(NSPConfiguration *)self epoch];
+  [coderCopy encodeObject:epoch forKey:@"Epoch"];
 
-  v42 = [(NSPConfiguration *)self configurationFetchDate];
-  [v58 encodeObject:v42 forKey:@"PrivacyProxyConfigurationFetchDate"];
+  configurationFetchDate = [(NSPConfiguration *)self configurationFetchDate];
+  [coderCopy encodeObject:configurationFetchDate forKey:@"PrivacyProxyConfigurationFetchDate"];
 
-  v43 = [(NSPConfiguration *)self resetTomorrowDate];
-  [v58 encodeObject:v43 forKey:@"ResetTomorrowDate"];
+  resetTomorrowDate = [(NSPConfiguration *)self resetTomorrowDate];
+  [coderCopy encodeObject:resetTomorrowDate forKey:@"ResetTomorrowDate"];
 
-  v44 = [(NSPConfiguration *)self willResetSubscriberTierTomorrow];
-  [v58 encodeObject:v44 forKey:@"WillResetSubscriberTierTomorrow"];
+  willResetSubscriberTierTomorrow = [(NSPConfiguration *)self willResetSubscriberTierTomorrow];
+  [coderCopy encodeObject:willResetSubscriberTierTomorrow forKey:@"WillResetSubscriberTierTomorrow"];
 
   if (os_variant_allows_internal_security_policies())
   {
-    [v58 encodeBool:-[NSPConfiguration ignoreInvalidCerts](self forKey:{"ignoreInvalidCerts"), @"IgnoreInvalidCerts"}];
-    v45 = [(NSPConfiguration *)self cloudSubscriptionCheckEnabled];
-    [v58 encodeObject:v45 forKey:@"CloudSubscriptionCheckEnabled"];
+    [coderCopy encodeBool:-[NSPConfiguration ignoreInvalidCerts](self forKey:{"ignoreInvalidCerts"), @"IgnoreInvalidCerts"}];
+    cloudSubscriptionCheckEnabled = [(NSPConfiguration *)self cloudSubscriptionCheckEnabled];
+    [coderCopy encodeObject:cloudSubscriptionCheckEnabled forKey:@"CloudSubscriptionCheckEnabled"];
 
-    [v58 encodeBool:-[NSPConfiguration ignoreSignature](self forKey:{"ignoreSignature"), @"ProxyConfigurationIgnoreSignature"}];
-    [v58 encodeBool:-[NSPConfiguration ignorePlatformBinary](self forKey:{"ignorePlatformBinary"), @"IgnorePlatformBinary"}];
+    [coderCopy encodeBool:-[NSPConfiguration ignoreSignature](self forKey:{"ignoreSignature"), @"ProxyConfigurationIgnoreSignature"}];
+    [coderCopy encodeBool:-[NSPConfiguration ignorePlatformBinary](self forKey:{"ignorePlatformBinary"), @"IgnorePlatformBinary"}];
   }
 
-  v46 = [(NSPConfiguration *)self geohashSharingEnabledStatus];
-  [v58 encodeObject:v46 forKey:@"GeohashSharingEnabled"];
+  geohashSharingEnabledStatus = [(NSPConfiguration *)self geohashSharingEnabledStatus];
+  [coderCopy encodeObject:geohashSharingEnabledStatus forKey:@"GeohashSharingEnabled"];
 
-  v47 = [(NSPConfiguration *)self geohashOverride];
-  [v58 encodeObject:v47 forKey:@"GeohashOverride"];
+  geohashOverride = [(NSPConfiguration *)self geohashOverride];
+  [coderCopy encodeObject:geohashOverride forKey:@"GeohashOverride"];
 
-  v48 = [(NSPConfiguration *)self preferredPathRoutingEnabledStatus];
-  [v58 encodeObject:v48 forKey:@"PreferredPathRoutingEnabled"];
+  preferredPathRoutingEnabledStatus = [(NSPConfiguration *)self preferredPathRoutingEnabledStatus];
+  [coderCopy encodeObject:preferredPathRoutingEnabledStatus forKey:@"PreferredPathRoutingEnabled"];
 
-  v49 = [(NSPConfiguration *)self privateAccessTokensEnabledStatus];
-  [v58 encodeObject:v49 forKey:@"PrivateAccessTokensEnabled"];
+  privateAccessTokensEnabledStatus = [(NSPConfiguration *)self privateAccessTokensEnabledStatus];
+  [coderCopy encodeObject:privateAccessTokensEnabledStatus forKey:@"PrivateAccessTokensEnabled"];
 
-  v50 = [(NSPConfiguration *)self privateAccessTokensAllowTools];
-  [v58 encodeObject:v50 forKey:@"PrivateAccessTokensAllowTools"];
+  privateAccessTokensAllowTools = [(NSPConfiguration *)self privateAccessTokensAllowTools];
+  [coderCopy encodeObject:privateAccessTokensAllowTools forKey:@"PrivateAccessTokensAllowTools"];
 
-  v51 = [(NSPConfiguration *)self inProcessFlowDivert];
-  [v58 encodeObject:v51 forKey:@"InProcessFlowDivert"];
+  inProcessFlowDivert = [(NSPConfiguration *)self inProcessFlowDivert];
+  [coderCopy encodeObject:inProcessFlowDivert forKey:@"InProcessFlowDivert"];
 
-  v52 = [(NSPConfiguration *)self proxyAccountType];
-  [v58 encodeObject:v52 forKey:@"ProxyAccountType"];
+  proxyAccountType = [(NSPConfiguration *)self proxyAccountType];
+  [coderCopy encodeObject:proxyAccountType forKey:@"ProxyAccountType"];
 
-  v53 = [(NSPConfiguration *)self proxyAccountUnlimited];
-  [v58 encodeObject:v53 forKey:@"ProxyAccountUnlimited"];
+  proxyAccountUnlimited = [(NSPConfiguration *)self proxyAccountUnlimited];
+  [coderCopy encodeObject:proxyAccountUnlimited forKey:@"ProxyAccountUnlimited"];
 
-  v54 = [(NSPConfiguration *)self userPreferredTier];
-  [v58 encodeObject:v54 forKey:@"UserPreferredTier"];
+  userPreferredTier = [(NSPConfiguration *)self userPreferredTier];
+  [coderCopy encodeObject:userPreferredTier forKey:@"UserPreferredTier"];
 
-  v55 = [(NSPConfiguration *)self subscriberEnabledFromNonSettingsApp];
-  [v58 encodeObject:v55 forKey:@"SubscriberEnabledFromNonSettingsApp"];
+  subscriberEnabledFromNonSettingsApp = [(NSPConfiguration *)self subscriberEnabledFromNonSettingsApp];
+  [coderCopy encodeObject:subscriberEnabledFromNonSettingsApp forKey:@"SubscriberEnabledFromNonSettingsApp"];
 
-  v56 = [(NSPConfiguration *)self trialConfigVersion];
-  [v58 encodeObject:v56 forKey:@"TrialConfigVersion"];
+  trialConfigVersion = [(NSPConfiguration *)self trialConfigVersion];
+  [coderCopy encodeObject:trialConfigVersion forKey:@"TrialConfigVersion"];
 
   if (os_variant_has_internal_content())
   {
-    v57 = [(NSPConfiguration *)self lastPrivateCloudComputeEnvironment];
-    [v58 encodeObject:v57 forKey:@"LastPrivateCloudComputeEnvironment"];
+    lastPrivateCloudComputeEnvironment = [(NSPConfiguration *)self lastPrivateCloudComputeEnvironment];
+    [coderCopy encodeObject:lastPrivateCloudComputeEnvironment forKey:@"LastPrivateCloudComputeEnvironment"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPConfiguration allocWithZone:?]];
   v5 = v4;
@@ -1075,160 +1075,160 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
   }
 
   v4->_diskVersion = diskVersion;
-  v7 = [(NSPConfiguration *)self version];
-  objc_setProperty_atomic(v5, v8, v7, 24);
+  version = [(NSPConfiguration *)self version];
+  objc_setProperty_atomic(v5, v8, version, 24);
 
-  v9 = [(NSPConfiguration *)self timestamp];
+  timestamp = [(NSPConfiguration *)self timestamp];
   timestamp = v5->_timestamp;
-  v5->_timestamp = v9;
+  v5->_timestamp = timestamp;
 
-  v11 = [(NSPConfiguration *)self enabled];
-  [(NSPConfiguration *)v5 setEnabled:v11];
+  enabled = [(NSPConfiguration *)self enabled];
+  [(NSPConfiguration *)v5 setEnabled:enabled];
 
-  v12 = [(NSPConfiguration *)self resurrectionDate];
-  [(NSPConfiguration *)v5 setResurrectionDate:v12];
+  resurrectionDate = [(NSPConfiguration *)self resurrectionDate];
+  [(NSPConfiguration *)v5 setResurrectionDate:resurrectionDate];
 
   objc_storeStrong(&v5->_configServerHost, self->_configServerHost);
   objc_storeStrong(&v5->_configServerPort, self->_configServerPort);
-  v13 = [(NSPConfiguration *)self configServerPath];
-  [(NSPConfiguration *)v5 setConfigServerPath:v13];
+  configServerPath = [(NSPConfiguration *)self configServerPath];
+  [(NSPConfiguration *)v5 setConfigServerPath:configServerPath];
 
-  v14 = [(NSPConfiguration *)self overrideConfigServerPath];
-  [(NSPConfiguration *)v5 setOverrideConfigServerPath:v14];
+  overrideConfigServerPath = [(NSPConfiguration *)self overrideConfigServerPath];
+  [(NSPConfiguration *)v5 setOverrideConfigServerPath:overrideConfigServerPath];
 
-  v15 = [(NSPConfiguration *)self configServerHeaders];
-  [(NSPConfiguration *)v5 setConfigServerHeaders:v15];
+  configServerHeaders = [(NSPConfiguration *)self configServerHeaders];
+  [(NSPConfiguration *)v5 setConfigServerHeaders:configServerHeaders];
 
-  v16 = [(NSPConfiguration *)self urlRequestTimeout];
-  [(NSPConfiguration *)v5 setUrlRequestTimeout:v16];
+  urlRequestTimeout = [(NSPConfiguration *)self urlRequestTimeout];
+  [(NSPConfiguration *)v5 setUrlRequestTimeout:urlRequestTimeout];
 
-  v17 = [(NSPConfiguration *)self configServerEnabled];
-  [(NSPConfiguration *)v5 setConfigServerEnabled:v17];
+  configServerEnabled = [(NSPConfiguration *)self configServerEnabled];
+  [(NSPConfiguration *)v5 setConfigServerEnabled:configServerEnabled];
 
   [(NSPConfiguration *)v5 setIgnoreInvalidCerts:[(NSPConfiguration *)self ignoreInvalidCerts]];
   [(NSPConfiguration *)v5 setIgnoreSignature:[(NSPConfiguration *)self ignoreSignature]];
   [(NSPConfiguration *)v5 setIgnorePlatformBinary:[(NSPConfiguration *)self ignorePlatformBinary]];
-  v18 = [(NSPConfiguration *)self persistMetrics];
-  [(NSPConfiguration *)v5 setPersistMetrics:v18];
+  persistMetrics = [(NSPConfiguration *)self persistMetrics];
+  [(NSPConfiguration *)v5 setPersistMetrics:persistMetrics];
 
-  v19 = [(NSPConfiguration *)self proxyConfiguration];
-  [(NSPConfiguration *)v5 setProxyConfiguration:v19];
+  proxyConfiguration = [(NSPConfiguration *)self proxyConfiguration];
+  [(NSPConfiguration *)v5 setProxyConfiguration:proxyConfiguration];
 
-  v20 = [(NSPConfiguration *)self userTier];
-  [(NSPConfiguration *)v5 setUserTier:v20];
+  userTier = [(NSPConfiguration *)self userTier];
+  [(NSPConfiguration *)v5 setUserTier:userTier];
 
-  v21 = [(NSPConfiguration *)self proxyTrafficState];
-  [(NSPConfiguration *)v5 setProxyTrafficState:v21];
+  proxyTrafficState = [(NSPConfiguration *)self proxyTrafficState];
+  [(NSPConfiguration *)v5 setProxyTrafficState:proxyTrafficState];
 
-  v22 = [(NSPConfiguration *)self anyAppEnabledDate];
-  [(NSPConfiguration *)v5 setAnyAppEnabledDate:v22];
+  anyAppEnabledDate = [(NSPConfiguration *)self anyAppEnabledDate];
+  [(NSPConfiguration *)v5 setAnyAppEnabledDate:anyAppEnabledDate];
 
-  v23 = [(NSPConfiguration *)self etag];
-  [(NSPConfiguration *)v5 setEtag:v23];
+  etag = [(NSPConfiguration *)self etag];
+  [(NSPConfiguration *)v5 setEtag:etag];
 
-  v24 = [(NSPConfiguration *)self epoch];
-  [(NSPConfiguration *)v5 setEpoch:v24];
+  epoch = [(NSPConfiguration *)self epoch];
+  [(NSPConfiguration *)v5 setEpoch:epoch];
 
-  v25 = [(NSPConfiguration *)self configurationFetchDate];
-  [(NSPConfiguration *)v5 setConfigurationFetchDate:v25];
+  configurationFetchDate = [(NSPConfiguration *)self configurationFetchDate];
+  [(NSPConfiguration *)v5 setConfigurationFetchDate:configurationFetchDate];
 
-  v26 = [(NSPConfiguration *)self resetTomorrowDate];
-  [(NSPConfiguration *)v5 setResetTomorrowDate:v26];
+  resetTomorrowDate = [(NSPConfiguration *)self resetTomorrowDate];
+  [(NSPConfiguration *)v5 setResetTomorrowDate:resetTomorrowDate];
 
-  v27 = [(NSPConfiguration *)self willResetSubscriberTierTomorrow];
-  [(NSPConfiguration *)v5 setWillResetSubscriberTierTomorrow:v27];
+  willResetSubscriberTierTomorrow = [(NSPConfiguration *)self willResetSubscriberTierTomorrow];
+  [(NSPConfiguration *)v5 setWillResetSubscriberTierTomorrow:willResetSubscriberTierTomorrow];
 
-  v28 = [(NSPConfiguration *)self cloudSubscriptionCheckEnabled];
-  [(NSPConfiguration *)v5 setCloudSubscriptionCheckEnabled:v28];
+  cloudSubscriptionCheckEnabled = [(NSPConfiguration *)self cloudSubscriptionCheckEnabled];
+  [(NSPConfiguration *)v5 setCloudSubscriptionCheckEnabled:cloudSubscriptionCheckEnabled];
 
-  v29 = [(NSPConfiguration *)self geohashSharingEnabledStatus];
-  [(NSPConfiguration *)v5 setGeohashSharingEnabledStatus:v29];
+  geohashSharingEnabledStatus = [(NSPConfiguration *)self geohashSharingEnabledStatus];
+  [(NSPConfiguration *)v5 setGeohashSharingEnabledStatus:geohashSharingEnabledStatus];
 
-  v30 = [(NSPConfiguration *)self geohashOverride];
-  [(NSPConfiguration *)v5 setGeohashOverride:v30];
+  geohashOverride = [(NSPConfiguration *)self geohashOverride];
+  [(NSPConfiguration *)v5 setGeohashOverride:geohashOverride];
 
-  v31 = [(NSPConfiguration *)self preferredPathRoutingEnabledStatus];
-  [(NSPConfiguration *)v5 setPreferredPathRoutingEnabledStatus:v31];
+  preferredPathRoutingEnabledStatus = [(NSPConfiguration *)self preferredPathRoutingEnabledStatus];
+  [(NSPConfiguration *)v5 setPreferredPathRoutingEnabledStatus:preferredPathRoutingEnabledStatus];
 
-  v32 = [(NSPConfiguration *)self privateAccessTokensEnabledStatus];
-  [(NSPConfiguration *)v5 setPrivateAccessTokensEnabledStatus:v32];
+  privateAccessTokensEnabledStatus = [(NSPConfiguration *)self privateAccessTokensEnabledStatus];
+  [(NSPConfiguration *)v5 setPrivateAccessTokensEnabledStatus:privateAccessTokensEnabledStatus];
 
-  v33 = [(NSPConfiguration *)self privateAccessTokensAllowTools];
-  [(NSPConfiguration *)v5 setPrivateAccessTokensAllowTools:v33];
+  privateAccessTokensAllowTools = [(NSPConfiguration *)self privateAccessTokensAllowTools];
+  [(NSPConfiguration *)v5 setPrivateAccessTokensAllowTools:privateAccessTokensAllowTools];
 
-  v34 = [(NSPConfiguration *)self inProcessFlowDivert];
-  [(NSPConfiguration *)v5 setInProcessFlowDivert:v34];
+  inProcessFlowDivert = [(NSPConfiguration *)self inProcessFlowDivert];
+  [(NSPConfiguration *)v5 setInProcessFlowDivert:inProcessFlowDivert];
 
-  v35 = [(NSPConfiguration *)self proxyAccountType];
-  [(NSPConfiguration *)v5 setProxyAccountType:v35];
+  proxyAccountType = [(NSPConfiguration *)self proxyAccountType];
+  [(NSPConfiguration *)v5 setProxyAccountType:proxyAccountType];
 
-  v36 = [(NSPConfiguration *)self proxyAccountUnlimited];
-  [(NSPConfiguration *)v5 setProxyAccountUnlimited:v36];
+  proxyAccountUnlimited = [(NSPConfiguration *)self proxyAccountUnlimited];
+  [(NSPConfiguration *)v5 setProxyAccountUnlimited:proxyAccountUnlimited];
 
-  v37 = [(NSPConfiguration *)self userPreferredTier];
-  [(NSPConfiguration *)v5 setUserPreferredTier:v37];
+  userPreferredTier = [(NSPConfiguration *)self userPreferredTier];
+  [(NSPConfiguration *)v5 setUserPreferredTier:userPreferredTier];
 
-  v38 = [(NSPConfiguration *)self subscriberEnabledFromNonSettingsApp];
-  [(NSPConfiguration *)v5 setSubscriberEnabledFromNonSettingsApp:v38];
+  subscriberEnabledFromNonSettingsApp = [(NSPConfiguration *)self subscriberEnabledFromNonSettingsApp];
+  [(NSPConfiguration *)v5 setSubscriberEnabledFromNonSettingsApp:subscriberEnabledFromNonSettingsApp];
 
-  v39 = [(NSPConfiguration *)self trialConfigVersion];
-  [(NSPConfiguration *)v5 setTrialConfigVersion:v39];
+  trialConfigVersion = [(NSPConfiguration *)self trialConfigVersion];
+  [(NSPConfiguration *)v5 setTrialConfigVersion:trialConfigVersion];
 
-  v40 = [(NSPConfiguration *)self lastPrivateCloudComputeEnvironment];
-  [(NSPConfiguration *)v5 setLastPrivateCloudComputeEnvironment:v40];
+  lastPrivateCloudComputeEnvironment = [(NSPConfiguration *)self lastPrivateCloudComputeEnvironment];
+  [(NSPConfiguration *)v5 setLastPrivateCloudComputeEnvironment:lastPrivateCloudComputeEnvironment];
 
   return v5;
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
   v90 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 version];
+  mergeCopy = merge;
+  version = [mergeCopy version];
 
-  if (v5)
+  if (version)
   {
-    v6 = [v4 version];
+    version2 = [mergeCopy version];
     version = self->_version;
-    self->_version = v6;
+    self->_version = version2;
   }
 
-  v8 = [v4 timestamp];
+  timestamp = [mergeCopy timestamp];
 
-  if (v8)
+  if (timestamp)
   {
-    v9 = [v4 timestamp];
+    timestamp2 = [mergeCopy timestamp];
     timestamp = self->_timestamp;
-    self->_timestamp = v9;
+    self->_timestamp = timestamp2;
   }
 
-  self->_ignoreInvalidCerts = [v4 ignoreInvalidCerts];
-  self->_ignoreSignature = [v4 ignoreSignature];
-  self->_ignorePlatformBinary = [v4 ignorePlatformBinary];
-  v11 = [v4 enabled];
+  self->_ignoreInvalidCerts = [mergeCopy ignoreInvalidCerts];
+  self->_ignoreSignature = [mergeCopy ignoreSignature];
+  self->_ignorePlatformBinary = [mergeCopy ignorePlatformBinary];
+  enabled = [mergeCopy enabled];
 
-  if (v11)
+  if (enabled)
   {
-    v12 = [v4 enabled];
+    enabled2 = [mergeCopy enabled];
     enabled = self->_enabled;
-    self->_enabled = v12;
+    self->_enabled = enabled2;
   }
 
-  v14 = [v4 resurrectionDate];
+  resurrectionDate = [mergeCopy resurrectionDate];
 
-  if (v14)
+  if (resurrectionDate)
   {
-    v15 = [v4 resurrectionDate];
-    [(NSPConfiguration *)self setResurrectionDate:v15];
+    resurrectionDate2 = [mergeCopy resurrectionDate];
+    [(NSPConfiguration *)self setResurrectionDate:resurrectionDate2];
   }
 
   v16 = +[NSPConfiguration defaultConfiguration];
-  v17 = [v4 configServerHost];
+  configServerHost = [mergeCopy configServerHost];
 
-  if (v17)
+  if (configServerHost)
   {
-    v18 = [v4 configServerHost];
-    v19 = [v18 isEqualToString:@"none"];
+    configServerHost2 = [mergeCopy configServerHost];
+    v19 = [configServerHost2 isEqualToString:@"none"];
 
     if (v19)
     {
@@ -1237,36 +1237,36 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
 
     else
     {
-      v20 = v4;
+      v20 = mergeCopy;
     }
 
-    v21 = [v20 configServerHost];
-    [(NSPConfiguration *)self setConfigServerHost:v21];
+    configServerHost3 = [v20 configServerHost];
+    [(NSPConfiguration *)self setConfigServerHost:configServerHost3];
 
     v22 = nplog_obj();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v4 configServerHost];
+      configServerHost4 = [mergeCopy configServerHost];
       v88 = 138412290;
-      v89 = v23;
+      v89 = configServerHost4;
       _os_log_impl(&dword_1AE7E2000, v22, OS_LOG_TYPE_INFO, "Set configServerHost to %@", &v88, 0xCu);
     }
   }
 
-  v24 = [v4 configServerPort];
+  configServerPort = [mergeCopy configServerPort];
 
-  if (v24)
+  if (configServerPort)
   {
-    v25 = [v4 configServerPort];
-    [(NSPConfiguration *)self setConfigServerPort:v25];
+    configServerPort2 = [mergeCopy configServerPort];
+    [(NSPConfiguration *)self setConfigServerPort:configServerPort2];
   }
 
-  v26 = [v4 overrideConfigServerPath];
+  overrideConfigServerPath = [mergeCopy overrideConfigServerPath];
 
-  if (v26)
+  if (overrideConfigServerPath)
   {
-    v27 = [v4 overrideConfigServerPath];
-    v28 = [v27 isEqualToString:@"none"];
+    overrideConfigServerPath2 = [mergeCopy overrideConfigServerPath];
+    v28 = [overrideConfigServerPath2 isEqualToString:@"none"];
 
     if (v28)
     {
@@ -1275,16 +1275,16 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
 
     else
     {
-      v29 = [v4 overrideConfigServerPath];
-      [(NSPConfiguration *)self setOverrideConfigServerPath:v29];
+      overrideConfigServerPath3 = [mergeCopy overrideConfigServerPath];
+      [(NSPConfiguration *)self setOverrideConfigServerPath:overrideConfigServerPath3];
     }
 
     v30 = nplog_obj();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
-      v31 = [v4 overrideConfigServerPath];
+      overrideConfigServerPath4 = [mergeCopy overrideConfigServerPath];
       v88 = 138412290;
-      v89 = v31;
+      v89 = overrideConfigServerPath4;
       _os_log_impl(&dword_1AE7E2000, v30, OS_LOG_TYPE_INFO, "Set overrideConfigServerPath to %@", &v88, 0xCu);
     }
   }
@@ -1294,12 +1294,12 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
     [(NSPConfiguration *)self setOverrideConfigServerPath:0];
   }
 
-  v32 = [v4 configServerHeaders];
+  configServerHeaders = [mergeCopy configServerHeaders];
 
-  if (v32)
+  if (configServerHeaders)
   {
-    v33 = [v4 configServerHeaders];
-    v34 = [v33 isEqualToString:@"none"];
+    configServerHeaders2 = [mergeCopy configServerHeaders];
+    v34 = [configServerHeaders2 isEqualToString:@"none"];
 
     if (v34)
     {
@@ -1308,258 +1308,258 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
 
     else
     {
-      v35 = [v4 configServerHeaders];
-      [(NSPConfiguration *)self setConfigServerHeaders:v35];
+      configServerHeaders3 = [mergeCopy configServerHeaders];
+      [(NSPConfiguration *)self setConfigServerHeaders:configServerHeaders3];
     }
 
     v36 = nplog_obj();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
-      v37 = [v4 configServerHeaders];
+      configServerHeaders4 = [mergeCopy configServerHeaders];
       v88 = 138412290;
-      v89 = v37;
+      v89 = configServerHeaders4;
       _os_log_impl(&dword_1AE7E2000, v36, OS_LOG_TYPE_INFO, "Set configServerPath to %@", &v88, 0xCu);
     }
   }
 
-  v38 = [v4 urlRequestTimeout];
+  urlRequestTimeout = [mergeCopy urlRequestTimeout];
 
-  if (v38)
+  if (urlRequestTimeout)
   {
-    v39 = [v4 urlRequestTimeout];
-    [(NSPConfiguration *)self setUrlRequestTimeout:v39];
+    urlRequestTimeout2 = [mergeCopy urlRequestTimeout];
+    [(NSPConfiguration *)self setUrlRequestTimeout:urlRequestTimeout2];
   }
 
-  v40 = [v4 configServerEnabled];
+  configServerEnabled = [mergeCopy configServerEnabled];
 
-  if (v40)
+  if (configServerEnabled)
   {
-    v41 = [v4 configServerEnabled];
-    [(NSPConfiguration *)self setConfigServerEnabled:v41];
+    configServerEnabled2 = [mergeCopy configServerEnabled];
+    [(NSPConfiguration *)self setConfigServerEnabled:configServerEnabled2];
   }
 
-  v42 = [v4 persistMetrics];
+  persistMetrics = [mergeCopy persistMetrics];
 
-  if (v42)
+  if (persistMetrics)
   {
-    v43 = [v4 persistMetrics];
-    [(NSPConfiguration *)self setPersistMetrics:v43];
+    persistMetrics2 = [mergeCopy persistMetrics];
+    [(NSPConfiguration *)self setPersistMetrics:persistMetrics2];
   }
 
-  v44 = [v4 proxyConfiguration];
+  proxyConfiguration = [mergeCopy proxyConfiguration];
 
-  if (v44)
+  if (proxyConfiguration)
   {
-    v45 = [v4 proxyConfiguration];
-    [(NSPConfiguration *)self setProxyConfiguration:v45];
+    proxyConfiguration2 = [mergeCopy proxyConfiguration];
+    [(NSPConfiguration *)self setProxyConfiguration:proxyConfiguration2];
   }
 
-  v46 = [v4 proxyConfigurationData];
+  proxyConfigurationData = [mergeCopy proxyConfigurationData];
 
-  if (v46)
+  if (proxyConfigurationData)
   {
-    v47 = [v4 proxyConfigurationData];
-    [(NSPConfiguration *)self setProxyConfigurationData:v47];
+    proxyConfigurationData2 = [mergeCopy proxyConfigurationData];
+    [(NSPConfiguration *)self setProxyConfigurationData:proxyConfigurationData2];
   }
 
-  v48 = [v4 userTier];
+  userTier = [mergeCopy userTier];
 
-  if (v48)
+  if (userTier)
   {
-    v49 = [v4 userTier];
-    [(NSPConfiguration *)self setUserTier:v49];
+    userTier2 = [mergeCopy userTier];
+    [(NSPConfiguration *)self setUserTier:userTier2];
   }
 
-  v50 = [v4 proxyTrafficState];
+  proxyTrafficState = [mergeCopy proxyTrafficState];
 
-  if (v50)
+  if (proxyTrafficState)
   {
-    v51 = [v4 proxyTrafficState];
-    [(NSPConfiguration *)self setProxyTrafficState:v51];
+    proxyTrafficState2 = [mergeCopy proxyTrafficState];
+    [(NSPConfiguration *)self setProxyTrafficState:proxyTrafficState2];
   }
 
-  v52 = [v4 anyAppEnabledDate];
+  anyAppEnabledDate = [mergeCopy anyAppEnabledDate];
 
-  if (v52)
+  if (anyAppEnabledDate)
   {
-    v53 = [v4 anyAppEnabledDate];
-    [(NSPConfiguration *)self setAnyAppEnabledDate:v53];
+    anyAppEnabledDate2 = [mergeCopy anyAppEnabledDate];
+    [(NSPConfiguration *)self setAnyAppEnabledDate:anyAppEnabledDate2];
   }
 
-  v54 = [v4 etag];
+  etag = [mergeCopy etag];
 
-  if (v54)
+  if (etag)
   {
-    v55 = [v4 etag];
-    [(NSPConfiguration *)self setEtag:v55];
+    etag2 = [mergeCopy etag];
+    [(NSPConfiguration *)self setEtag:etag2];
   }
 
-  v56 = [v4 epoch];
+  epoch = [mergeCopy epoch];
 
-  if (v56)
+  if (epoch)
   {
-    v57 = [v4 epoch];
-    [(NSPConfiguration *)self setEpoch:v57];
+    epoch2 = [mergeCopy epoch];
+    [(NSPConfiguration *)self setEpoch:epoch2];
   }
 
-  v58 = [v4 configurationFetchDate];
+  configurationFetchDate = [mergeCopy configurationFetchDate];
 
-  if (v58)
+  if (configurationFetchDate)
   {
-    v59 = [v4 configurationFetchDate];
-    [(NSPConfiguration *)self setConfigurationFetchDate:v59];
+    configurationFetchDate2 = [mergeCopy configurationFetchDate];
+    [(NSPConfiguration *)self setConfigurationFetchDate:configurationFetchDate2];
   }
 
-  v60 = [v4 willResetSubscriberTierTomorrow];
+  willResetSubscriberTierTomorrow = [mergeCopy willResetSubscriberTierTomorrow];
 
-  if (v60)
+  if (willResetSubscriberTierTomorrow)
   {
-    v61 = [v4 willResetSubscriberTierTomorrow];
-    [(NSPConfiguration *)self setWillResetSubscriberTierTomorrow:v61];
+    willResetSubscriberTierTomorrow2 = [mergeCopy willResetSubscriberTierTomorrow];
+    [(NSPConfiguration *)self setWillResetSubscriberTierTomorrow:willResetSubscriberTierTomorrow2];
 
-    v62 = [v4 resetTomorrowDate];
-    [(NSPConfiguration *)self setResetTomorrowDate:v62];
+    resetTomorrowDate = [mergeCopy resetTomorrowDate];
+    [(NSPConfiguration *)self setResetTomorrowDate:resetTomorrowDate];
   }
 
-  v63 = [v4 cloudSubscriptionCheckEnabled];
+  cloudSubscriptionCheckEnabled = [mergeCopy cloudSubscriptionCheckEnabled];
 
-  if (v63)
+  if (cloudSubscriptionCheckEnabled)
   {
-    v64 = [v4 cloudSubscriptionCheckEnabled];
-    [(NSPConfiguration *)self setCloudSubscriptionCheckEnabled:v64];
+    cloudSubscriptionCheckEnabled2 = [mergeCopy cloudSubscriptionCheckEnabled];
+    [(NSPConfiguration *)self setCloudSubscriptionCheckEnabled:cloudSubscriptionCheckEnabled2];
   }
 
-  v65 = [v4 geohashSharingEnabledStatus];
+  geohashSharingEnabledStatus = [mergeCopy geohashSharingEnabledStatus];
 
-  if (v65)
+  if (geohashSharingEnabledStatus)
   {
-    v66 = [v4 geohashSharingEnabledStatus];
-    [(NSPConfiguration *)self setGeohashSharingEnabledStatus:v66];
+    geohashSharingEnabledStatus2 = [mergeCopy geohashSharingEnabledStatus];
+    [(NSPConfiguration *)self setGeohashSharingEnabledStatus:geohashSharingEnabledStatus2];
   }
 
-  v67 = [v4 geohashOverride];
-  [(NSPConfiguration *)self setGeohashOverride:v67];
+  geohashOverride = [mergeCopy geohashOverride];
+  [(NSPConfiguration *)self setGeohashOverride:geohashOverride];
 
-  v68 = [v4 preferredPathRoutingEnabledStatus];
+  preferredPathRoutingEnabledStatus = [mergeCopy preferredPathRoutingEnabledStatus];
 
-  if (v68)
+  if (preferredPathRoutingEnabledStatus)
   {
-    v69 = [v4 preferredPathRoutingEnabledStatus];
-    [(NSPConfiguration *)self setPreferredPathRoutingEnabledStatus:v69];
+    preferredPathRoutingEnabledStatus2 = [mergeCopy preferredPathRoutingEnabledStatus];
+    [(NSPConfiguration *)self setPreferredPathRoutingEnabledStatus:preferredPathRoutingEnabledStatus2];
   }
 
-  v70 = [v4 privateAccessTokensEnabledStatus];
+  privateAccessTokensEnabledStatus = [mergeCopy privateAccessTokensEnabledStatus];
 
-  if (v70)
+  if (privateAccessTokensEnabledStatus)
   {
-    v71 = [v4 privateAccessTokensEnabledStatus];
-    [(NSPConfiguration *)self setPrivateAccessTokensEnabledStatus:v71];
+    privateAccessTokensEnabledStatus2 = [mergeCopy privateAccessTokensEnabledStatus];
+    [(NSPConfiguration *)self setPrivateAccessTokensEnabledStatus:privateAccessTokensEnabledStatus2];
   }
 
-  v72 = [v4 privateAccessTokensAllowTools];
+  privateAccessTokensAllowTools = [mergeCopy privateAccessTokensAllowTools];
 
-  if (v72)
+  if (privateAccessTokensAllowTools)
   {
-    v73 = [v4 privateAccessTokensAllowTools];
-    [(NSPConfiguration *)self setPrivateAccessTokensAllowTools:v73];
+    privateAccessTokensAllowTools2 = [mergeCopy privateAccessTokensAllowTools];
+    [(NSPConfiguration *)self setPrivateAccessTokensAllowTools:privateAccessTokensAllowTools2];
   }
 
-  v74 = [v4 inProcessFlowDivert];
+  inProcessFlowDivert = [mergeCopy inProcessFlowDivert];
 
-  if (v74)
+  if (inProcessFlowDivert)
   {
-    v75 = [v4 inProcessFlowDivert];
-    [(NSPConfiguration *)self setInProcessFlowDivert:v75];
+    inProcessFlowDivert2 = [mergeCopy inProcessFlowDivert];
+    [(NSPConfiguration *)self setInProcessFlowDivert:inProcessFlowDivert2];
   }
 
-  v76 = [v4 proxyAccountType];
+  proxyAccountType = [mergeCopy proxyAccountType];
 
-  if (v76)
+  if (proxyAccountType)
   {
-    v77 = [v4 proxyAccountType];
-    [(NSPConfiguration *)self setProxyAccountType:v77];
+    proxyAccountType2 = [mergeCopy proxyAccountType];
+    [(NSPConfiguration *)self setProxyAccountType:proxyAccountType2];
   }
 
-  v78 = [v4 proxyAccountUnlimited];
+  proxyAccountUnlimited = [mergeCopy proxyAccountUnlimited];
 
-  if (v78)
+  if (proxyAccountUnlimited)
   {
-    v79 = [v4 proxyAccountUnlimited];
-    [(NSPConfiguration *)self setProxyAccountUnlimited:v79];
+    proxyAccountUnlimited2 = [mergeCopy proxyAccountUnlimited];
+    [(NSPConfiguration *)self setProxyAccountUnlimited:proxyAccountUnlimited2];
   }
 
-  v80 = [v4 userPreferredTier];
+  userPreferredTier = [mergeCopy userPreferredTier];
 
-  if (v80)
+  if (userPreferredTier)
   {
-    v81 = [v4 userPreferredTier];
-    [(NSPConfiguration *)self setUserPreferredTier:v81];
+    userPreferredTier2 = [mergeCopy userPreferredTier];
+    [(NSPConfiguration *)self setUserPreferredTier:userPreferredTier2];
   }
 
-  v82 = [v4 subscriberEnabledFromNonSettingsApp];
+  subscriberEnabledFromNonSettingsApp = [mergeCopy subscriberEnabledFromNonSettingsApp];
 
-  if (v82)
+  if (subscriberEnabledFromNonSettingsApp)
   {
-    v83 = [v4 subscriberEnabledFromNonSettingsApp];
-    [(NSPConfiguration *)self setSubscriberEnabledFromNonSettingsApp:v83];
+    subscriberEnabledFromNonSettingsApp2 = [mergeCopy subscriberEnabledFromNonSettingsApp];
+    [(NSPConfiguration *)self setSubscriberEnabledFromNonSettingsApp:subscriberEnabledFromNonSettingsApp2];
   }
 
-  v84 = [v4 trialConfigVersion];
+  trialConfigVersion = [mergeCopy trialConfigVersion];
 
-  if (v84)
+  if (trialConfigVersion)
   {
-    v85 = [v4 trialConfigVersion];
-    [(NSPConfiguration *)self setTrialConfigVersion:v85];
+    trialConfigVersion2 = [mergeCopy trialConfigVersion];
+    [(NSPConfiguration *)self setTrialConfigVersion:trialConfigVersion2];
   }
 
-  v86 = [v4 lastPrivateCloudComputeEnvironment];
-  [(NSPConfiguration *)self setLastPrivateCloudComputeEnvironment:v86];
+  lastPrivateCloudComputeEnvironment = [mergeCopy lastPrivateCloudComputeEnvironment];
+  [(NSPConfiguration *)self setLastPrivateCloudComputeEnvironment:lastPrivateCloudComputeEnvironment];
 
   v87 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveInternalOptions:(id)a3
+- (void)saveInternalOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 overrideConfigServerPath];
-  [(NSPConfiguration *)self setOverrideConfigServerPath:v5];
+  optionsCopy = options;
+  overrideConfigServerPath = [optionsCopy overrideConfigServerPath];
+  [(NSPConfiguration *)self setOverrideConfigServerPath:overrideConfigServerPath];
 
-  v6 = [v4 configServerHeaders];
-  [(NSPConfiguration *)self setConfigServerHeaders:v6];
+  configServerHeaders = [optionsCopy configServerHeaders];
+  [(NSPConfiguration *)self setConfigServerHeaders:configServerHeaders];
 
-  v7 = [v4 geohashOverride];
-  [(NSPConfiguration *)self setGeohashOverride:v7];
+  geohashOverride = [optionsCopy geohashOverride];
+  [(NSPConfiguration *)self setGeohashOverride:geohashOverride];
 
-  -[NSPConfiguration setIgnoreInvalidCerts:](self, "setIgnoreInvalidCerts:", [v4 ignoreInvalidCerts]);
-  -[NSPConfiguration setIgnoreSignature:](self, "setIgnoreSignature:", [v4 ignoreSignature]);
-  v8 = [v4 ignorePlatformBinary];
+  -[NSPConfiguration setIgnoreInvalidCerts:](self, "setIgnoreInvalidCerts:", [optionsCopy ignoreInvalidCerts]);
+  -[NSPConfiguration setIgnoreSignature:](self, "setIgnoreSignature:", [optionsCopy ignoreSignature]);
+  ignorePlatformBinary = [optionsCopy ignorePlatformBinary];
 
-  [(NSPConfiguration *)self setIgnorePlatformBinary:v8];
+  [(NSPConfiguration *)self setIgnorePlatformBinary:ignorePlatformBinary];
 }
 
-- (NSPConfiguration)initWithTimestamp:(id)a3 fromDictionary:(id)a4
+- (NSPConfiguration)initWithTimestamp:(id)timestamp fromDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a4;
+  timestampCopy = timestamp;
+  dictionaryCopy = dictionary;
   v74.receiver = self;
   v74.super_class = NSPConfiguration;
   v9 = [(NSPConfiguration *)&v74 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_timestamp, a3);
-    v11 = [v8 objectForKeyedSubscript:@"version"];
+    objc_storeStrong(&v9->_timestamp, timestamp);
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [v8 objectForKeyedSubscript:@"version"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"version"];
       version = v10->_version;
       v10->_version = v13;
     }
 
-    v15 = [v8 objectForKeyedSubscript:@"global"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"global"];
     objc_opt_class();
     v16 = objc_opt_isKindOfClass();
 
@@ -1568,7 +1568,7 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
       goto LABEL_60;
     }
 
-    v17 = [v8 objectForKeyedSubscript:@"global"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"global"];
     v18 = [(NSDictionary *)v17 objectForPlatformSpecificKey:?];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1704,7 +1704,7 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
       objc_storeStrong(&v10->_geohashOverride, v41);
     }
 
-    v42 = v7;
+    v42 = timestampCopy;
     v43 = [(NSDictionary *)v17 objectForPlatformSpecificKey:?];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1723,7 +1723,7 @@ void __40__NSPConfiguration_defaultConfiguration__block_invoke()
     v63 = v38;
     v45 = [(NSDictionary *)v17 objectForPlatformSpecificKey:?];
     objc_opt_class();
-    v7 = v42;
+    timestampCopy = v42;
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v10->_privateAccessTokensAllowTools, v45);
@@ -1773,7 +1773,7 @@ LABEL_53:
 
     if (os_variant_has_internal_content())
     {
-      v54 = v7;
+      v54 = timestampCopy;
       v55 = [(NSDictionary *)v17 objectForPlatformSpecificKey:?];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1781,7 +1781,7 @@ LABEL_53:
         objc_storeStrong(&v10->_lastPrivateCloudComputeEnvironment, v55);
       }
 
-      v7 = v54;
+      timestampCopy = v54;
       v49 = v73;
     }
 
@@ -1806,8 +1806,8 @@ LABEL_60:
 
   v7 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [(NSPConfiguration *)self encodeWithCoder:v7];
-  v5 = [v7 encodedData];
-  [NPUtilities saveDataToKeychain:v5 withIdentifier:@"com.apple.NetworkServiceProxy.Configuration" accountName:@"configuration"];
+  encodedData = [v7 encodedData];
+  [NPUtilities saveDataToKeychain:encodedData withIdentifier:@"com.apple.NetworkServiceProxy.Configuration" accountName:@"configuration"];
 
   if (self)
   {
@@ -1819,10 +1819,10 @@ LABEL_60:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF88]);
   v7 = 0;
-  v4 = [(NSPConfiguration *)self persistMetrics];
-  v5 = [v4 BOOLValue];
+  persistMetrics = [(NSPConfiguration *)self persistMetrics];
+  bOOLValue = [persistMetrics BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v7 = 4;
   }
@@ -1831,15 +1831,15 @@ LABEL_60:
   return v3;
 }
 
-- (id)initFromTLVs:(id)a3
+- (id)initFromTLVs:(id)vs
 {
-  v4 = a3;
+  vsCopy = vs;
   v10.receiver = self;
   v10.super_class = NSPConfiguration;
   v5 = [(NSPConfiguration *)&v10 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [vsCopy mutableCopy];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __33__NSPConfiguration_initFromTLVs___block_invoke;
@@ -1876,85 +1876,85 @@ uint64_t __33__NSPConfiguration_initFromTLVs___block_invoke(uint64_t a1, int a2,
 - (void)setupNSURLSession
 {
   v19 = objc_alloc_init(NSURLSessionDelegate);
-  v3 = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
-  v4 = [v3 _socketStreamProperties];
+  ephemeralSessionConfiguration = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
+  _socketStreamProperties = [ephemeralSessionConfiguration _socketStreamProperties];
   v5 = MEMORY[0x1E695DF90];
-  if (v4)
+  if (_socketStreamProperties)
   {
-    v6 = [v3 _socketStreamProperties];
-    v7 = [v5 dictionaryWithDictionary:v6];
+    _socketStreamProperties2 = [ephemeralSessionConfiguration _socketStreamProperties];
+    dictionary = [v5 dictionaryWithDictionary:_socketStreamProperties2];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  [v7 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695AD38]];
-  [v3 set_socketStreamProperties:v7];
-  v8 = [(NSPConfiguration *)self urlRequestTimeout];
-  [v8 doubleValue];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695AD38]];
+  [ephemeralSessionConfiguration set_socketStreamProperties:dictionary];
+  urlRequestTimeout = [(NSPConfiguration *)self urlRequestTimeout];
+  [urlRequestTimeout doubleValue];
   v10 = v9;
 
   if (v10 <= 0.0)
   {
-    [v3 setTimeoutIntervalForResource:30.0];
+    [ephemeralSessionConfiguration setTimeoutIntervalForResource:30.0];
   }
 
   else
   {
-    v11 = [(NSPConfiguration *)self urlRequestTimeout];
-    [v11 doubleValue];
-    [v3 setTimeoutIntervalForResource:?];
+    urlRequestTimeout2 = [(NSPConfiguration *)self urlRequestTimeout];
+    [urlRequestTimeout2 doubleValue];
+    [ephemeralSessionConfiguration setTimeoutIntervalForResource:?];
   }
 
-  v12 = [(NSPConfiguration *)self configServerHost];
-  [(NSURLSessionDelegate *)v19 setValidationHostname:v12];
+  configServerHost = [(NSPConfiguration *)self configServerHost];
+  [(NSURLSessionDelegate *)v19 setValidationHostname:configServerHost];
 
   [(NSURLSessionDelegate *)v19 setIgnoreInvalidCerts:[(NSPConfiguration *)self ignoreInvalidCerts]];
-  v13 = [(NSPConfiguration *)self privacyProxyURLSession];
+  privacyProxyURLSession = [(NSPConfiguration *)self privacyProxyURLSession];
 
-  if (v13)
+  if (privacyProxyURLSession)
   {
-    v14 = [(NSPConfiguration *)self privacyProxyURLSession];
-    [v14 invalidateAndCancel];
+    privacyProxyURLSession2 = [(NSPConfiguration *)self privacyProxyURLSession];
+    [privacyProxyURLSession2 invalidateAndCancel];
   }
 
   v15 = MEMORY[0x1E696AF78];
-  v16 = [MEMORY[0x1E696ADC8] mainQueue];
-  v17 = [v15 sessionWithConfiguration:v3 delegate:v19 delegateQueue:v16];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+  v17 = [v15 sessionWithConfiguration:ephemeralSessionConfiguration delegate:v19 delegateQueue:mainQueue];
   [(NSPConfiguration *)self setPrivacyProxyURLSession:v17];
 
-  v18 = [(NSPConfiguration *)self privacyProxyURLSession];
-  [v18 setSessionDescription:@"PrivacyProxy"];
+  privacyProxyURLSession3 = [(NSPConfiguration *)self privacyProxyURLSession];
+  [privacyProxyURLSession3 setSessionDescription:@"PrivacyProxy"];
 }
 
 - (id)createConfigFetchURLWithPath
 {
-  v3 = [(NSPConfiguration *)self configServerHost];
-  v4 = [(NSPConfiguration *)self configServerPort];
-  v5 = [(NSPConfiguration *)self configServerPath];
+  configServerHost = [(NSPConfiguration *)self configServerHost];
+  configServerPort = [(NSPConfiguration *)self configServerPort];
+  configServerPath = [(NSPConfiguration *)self configServerPath];
   if (os_variant_allows_internal_security_policies())
   {
-    v6 = [(NSPConfiguration *)self overrideConfigServerPath];
+    overrideConfigServerPath = [(NSPConfiguration *)self overrideConfigServerPath];
 
-    if (v6)
+    if (overrideConfigServerPath)
     {
-      v7 = [(NSPConfiguration *)self overrideConfigServerPath];
+      overrideConfigServerPath2 = [(NSPConfiguration *)self overrideConfigServerPath];
 
-      v5 = v7;
+      configServerPath = overrideConfigServerPath2;
     }
   }
 
   v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-  if (v4)
+  if (configServerPort)
   {
-    v9 = [v8 initWithFormat:@"https://%@:%@/%@", v3, v4, v5];
+    v9 = [v8 initWithFormat:@"https://%@:%@/%@", configServerHost, configServerPort, configServerPath];
   }
 
   else
   {
-    v9 = [v8 initWithFormat:@"https://%@/%@", v3, v5, v13];
+    v9 = [v8 initWithFormat:@"https://%@/%@", configServerHost, configServerPath, v13];
   }
 
   v10 = v9;
@@ -1965,11 +1965,11 @@ uint64_t __33__NSPConfiguration_initFromTLVs___block_invoke(uint64_t a1, int a2,
 
 - (BOOL)isDead
 {
-  v3 = [(NSPConfiguration *)self resurrectionDate];
-  if (v3)
+  resurrectionDate = [(NSPConfiguration *)self resurrectionDate];
+  if (resurrectionDate)
   {
-    v4 = [(NSPConfiguration *)self resurrectionDate];
-    [v4 timeIntervalSinceNow];
+    resurrectionDate2 = [(NSPConfiguration *)self resurrectionDate];
+    [resurrectionDate2 timeIntervalSinceNow];
     v6 = v5 > 0.0;
   }
 
@@ -1999,23 +1999,23 @@ uint64_t __33__NSPConfiguration_initFromTLVs___block_invoke(uint64_t a1, int a2,
   v4[1] = v4;
   v4[2] = 0x2020000000;
   v5 = 0;
-  v2 = [MEMORY[0x1E6977F98] sharedMaintainer];
+  mEMORY[0x1E6977F98] = [MEMORY[0x1E6977F98] sharedMaintainer];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__NSPConfiguration_incrementSessionCountersOnFirstLaunch__block_invoke;
   v3[3] = &unk_1E7A311B0;
   v3[4] = v4;
-  [v2 iterateFileHandlesWithBlock:v3];
+  [mEMORY[0x1E6977F98] iterateFileHandlesWithBlock:v3];
 
   _Block_object_dispose(v4, 8);
 }
 
-+ (BOOL)validatePrivacyProxyConfiguration:(id)a3
++ (BOOL)validatePrivacyProxyConfiguration:(id)configuration
 {
   v113 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  configurationCopy = configuration;
+  v4 = configurationCopy;
+  if (!configurationCopy)
   {
     v11 = nplog_obj();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -2028,7 +2028,7 @@ uint64_t __33__NSPConfiguration_initFromTLVs___block_invoke(uint64_t a1, int a2,
     goto LABEL_34;
   }
 
-  if ([v3 version] != 1)
+  if ([configurationCopy version] != 1)
   {
     v11 = nplog_obj();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -2047,24 +2047,24 @@ uint64_t __33__NSPConfiguration_initFromTLVs___block_invoke(uint64_t a1, int a2,
     goto LABEL_36;
   }
 
-  v5 = [v4 authInfo];
-  if (![v5 authType])
+  authInfo = [v4 authInfo];
+  if (![authInfo authType])
   {
 
 LABEL_14:
     v11 = nplog_obj();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v4 authInfo];
-      v17 = [v16 authType];
-      if (v17 >= 5)
+      authInfo2 = [v4 authInfo];
+      authType = [authInfo2 authType];
+      if (authType >= 5)
       {
-        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v17];
+        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", authType];
       }
 
       else
       {
-        v18 = off_1E7A311F8[v17];
+        v18 = off_1E7A311F8[authType];
       }
 
       *buf = 138412290;
@@ -2075,46 +2075,46 @@ LABEL_14:
     goto LABEL_34;
   }
 
-  v6 = [v4 authInfo];
-  v7 = [v6 authType];
+  authInfo3 = [v4 authInfo];
+  authType2 = [authInfo3 authType];
 
-  if (v7 >= 4)
+  if (authType2 >= 4)
   {
     goto LABEL_14;
   }
 
   v8 = MEMORY[0x1E695DFF8];
-  v9 = [v4 authInfo];
-  v10 = [v9 authURL];
-  v11 = [v8 URLWithString:v10];
+  authInfo4 = [v4 authInfo];
+  authURL = [authInfo4 authURL];
+  v11 = [v8 URLWithString:authURL];
 
   if (!v11)
   {
     goto LABEL_32;
   }
 
-  v12 = [v11 host];
-  if (!v12)
+  host = [v11 host];
+  if (!host)
   {
     goto LABEL_32;
   }
 
-  v13 = v12;
-  v14 = [v11 scheme];
-  if ([v14 isEqualToString:@"https"])
+  v13 = host;
+  scheme = [v11 scheme];
+  if ([scheme isEqualToString:@"https"])
   {
 
     goto LABEL_18;
   }
 
-  v19 = [v11 scheme];
-  v20 = [v19 isEqualToString:@"http"];
+  scheme2 = [v11 scheme];
+  v20 = [scheme2 isEqualToString:@"http"];
 
   if ((v20 & 1) == 0)
   {
 LABEL_32:
-    v23 = nplog_obj();
-    if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    policyTierMaps3 = nplog_obj();
+    if (!os_log_type_enabled(policyTierMaps3, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_33;
     }
@@ -2122,27 +2122,27 @@ LABEL_32:
     *buf = 138412290;
     *v111 = v11;
     v34 = "Bad authentication url format %@";
-    v38 = v23;
+    v38 = policyTierMaps3;
     v39 = 12;
     goto LABEL_48;
   }
 
 LABEL_18:
-  v21 = [v4 policyTierMaps];
-  v22 = [v21 count];
+  policyTierMaps = [v4 policyTierMaps];
+  v22 = [policyTierMaps count];
 
   if (v22 != 2)
   {
-    v23 = nplog_obj();
-    if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    policyTierMaps3 = nplog_obj();
+    if (!os_log_type_enabled(policyTierMaps3, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_33;
     }
 
-    v37 = [v4 policyTierMaps];
+    policyTierMaps2 = [v4 policyTierMaps];
     *buf = 134217984;
-    *v111 = [v37 count];
-    _os_log_error_impl(&dword_1AE7E2000, v23, OS_LOG_TYPE_ERROR, "Invalid policy tier count %lu", buf, 0xCu);
+    *v111 = [policyTierMaps2 count];
+    _os_log_error_impl(&dword_1AE7E2000, policyTierMaps3, OS_LOG_TYPE_ERROR, "Invalid policy tier count %lu", buf, 0xCu);
     goto LABEL_40;
   }
 
@@ -2150,14 +2150,14 @@ LABEL_18:
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v23 = [v4 policyTierMaps];
-  v24 = [v23 countByEnumeratingWithState:&v106 objects:v112 count:16];
+  policyTierMaps3 = [v4 policyTierMaps];
+  v24 = [policyTierMaps3 countByEnumeratingWithState:&v106 objects:v112 count:16];
   if (!v24)
   {
 
 LABEL_44:
-    v23 = nplog_obj();
-    if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    policyTierMaps3 = nplog_obj();
+    if (!os_log_type_enabled(policyTierMaps3, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_33;
     }
@@ -2165,7 +2165,7 @@ LABEL_44:
     *buf = 0;
     v34 = "configuration should contain policies for both tiers";
 LABEL_46:
-    v38 = v23;
+    v38 = policyTierMaps3;
     v39 = 2;
 LABEL_48:
     _os_log_error_impl(&dword_1AE7E2000, v38, OS_LOG_TYPE_ERROR, v34, buf, v39);
@@ -2182,44 +2182,44 @@ LABEL_48:
     {
       if (*v107 != v28)
       {
-        objc_enumerationMutation(v23);
+        objc_enumerationMutation(policyTierMaps3);
       }
 
       v30 = *(*(&v106 + 1) + 8 * i);
       if (![v30 tier] || objc_msgSend(v30, "tier") >= 3)
       {
-        v37 = nplog_obj();
-        if (!os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+        policyTierMaps2 = nplog_obj();
+        if (!os_log_type_enabled(policyTierMaps2, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_40;
         }
 
-        v40 = [v30 tier];
-        if (v40 >= 3)
+        tier = [v30 tier];
+        if (tier >= 3)
         {
-          v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v40];
+          v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", tier];
         }
 
         else
         {
-          v41 = off_1E7A31240[v40];
+          v41 = off_1E7A31240[tier];
         }
 
         *buf = 138412290;
         *v111 = v41;
         v42 = "bad policy tier type %@";
-        v43 = v37;
+        v43 = policyTierMaps2;
 LABEL_55:
         v44 = 12;
         goto LABEL_56;
       }
 
-      v31 = [v30 tier];
-      v26 |= v31 != 1;
-      v27 |= v31 == 1;
+      tier2 = [v30 tier];
+      v26 |= tier2 != 1;
+      v27 |= tier2 == 1;
     }
 
-    v25 = [v23 countByEnumeratingWithState:&v106 objects:v112 count:16];
+    v25 = [policyTierMaps3 countByEnumeratingWithState:&v106 objects:v112 count:16];
   }
 
   while (v25);
@@ -2229,13 +2229,13 @@ LABEL_55:
     goto LABEL_44;
   }
 
-  v32 = [v4 proxies];
-  v33 = [v32 count];
+  proxies = [v4 proxies];
+  v33 = [proxies count];
 
   if (v33 < 2)
   {
-    v23 = nplog_obj();
-    if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    policyTierMaps3 = nplog_obj();
+    if (!os_log_type_enabled(policyTierMaps3, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_33;
     }
@@ -2248,8 +2248,8 @@ LABEL_55:
   if (![v4 proxiesCount])
   {
 LABEL_105:
-    v23 = nplog_obj();
-    if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    policyTierMaps3 = nplog_obj();
+    if (!os_log_type_enabled(policyTierMaps3, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_33;
     }
@@ -2263,54 +2263,54 @@ LABEL_105:
   v105 = 0;
   while (2)
   {
-    v23 = [v4 proxiesAtIndex:v105];
-    if (![v23 proxyHop]&& [v23 proxyHop]>= 3)
+    policyTierMaps3 = [v4 proxiesAtIndex:v105];
+    if (![policyTierMaps3 proxyHop]&& [policyTierMaps3 proxyHop]>= 3)
     {
-      v37 = nplog_obj();
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+      policyTierMaps2 = nplog_obj();
+      if (os_log_type_enabled(policyTierMaps2, OS_LOG_TYPE_ERROR))
       {
-        v89 = [v23 proxyHop];
-        if (v89 >= 4)
+        proxyHop = [policyTierMaps3 proxyHop];
+        if (proxyHop >= 4)
         {
-          v90 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v89];
+          v90 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", proxyHop];
         }
 
         else
         {
-          v90 = off_1E7A31220[v89];
+          v90 = off_1E7A31220[proxyHop];
         }
 
         *buf = 134218242;
         *v111 = v105;
         *&v111[8] = 2112;
         *&v111[10] = v90;
-        _os_log_error_impl(&dword_1AE7E2000, v37, OS_LOG_TYPE_ERROR, "proxy hop at %lu has invalid hop type %@", buf, 0x16u);
+        _os_log_error_impl(&dword_1AE7E2000, policyTierMaps2, OS_LOG_TYPE_ERROR, "proxy hop at %lu has invalid hop type %@", buf, 0x16u);
       }
 
       goto LABEL_40;
     }
 
-    v45 = [v23 proxyHop];
-    v46 = v45 == 1;
-    v47 = v45 != 1;
+    proxyHop2 = [policyTierMaps3 proxyHop];
+    v46 = proxyHop2 == 1;
+    v47 = proxyHop2 != 1;
     v48 = MEMORY[0x1E695DFF8];
-    v49 = [v23 proxyURL];
-    v37 = [v48 URLWithString:v49];
+    proxyURL = [policyTierMaps3 proxyURL];
+    policyTierMaps2 = [v48 URLWithString:proxyURL];
 
-    if (!v37)
+    if (!policyTierMaps2)
     {
       goto LABEL_107;
     }
 
-    v50 = [v37 host];
-    if (!v50 || (v51 = v50, -[NSObject scheme](v37, "scheme"), v52 = objc_claimAutoreleasedReturnValue(), v53 = [v52 isEqualToString:@"https"], v52, v51, (v53 & 1) == 0))
+    host2 = [policyTierMaps2 host];
+    if (!host2 || (v51 = host2, -[NSObject scheme](policyTierMaps2, "scheme"), v52 = objc_claimAutoreleasedReturnValue(), v53 = [v52 isEqualToString:@"https"], v52, v51, (v53 & 1) == 0))
     {
 LABEL_107:
       v41 = nplog_obj();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *v111 = v37;
+        *v111 = policyTierMaps2;
         v42 = "Bad proxy url format %@";
         goto LABEL_113;
       }
@@ -2321,8 +2321,8 @@ LABEL_40:
       goto LABEL_33;
     }
 
-    v54 = [v23 proxyKeyInfos];
-    v55 = [v54 count];
+    proxyKeyInfos = [policyTierMaps3 proxyKeyInfos];
+    v55 = [proxyKeyInfos count];
 
     if (!v55)
     {
@@ -2333,22 +2333,22 @@ LABEL_40:
       }
 
       *buf = 138412290;
-      *v111 = v37;
+      *v111 = policyTierMaps2;
       v42 = "Proxy %@ needs proxy keys";
 LABEL_113:
       v43 = v41;
       goto LABEL_55;
     }
 
-    v56 = [v23 proxyKeyInfos];
-    v57 = [v56 count];
+    proxyKeyInfos2 = [policyTierMaps3 proxyKeyInfos];
+    v57 = [proxyKeyInfos2 count];
 
     if (v57)
     {
       v58 = 0;
       while (1)
       {
-        v59 = [v23 proxyKeyInfoAtIndex:v58];
+        v59 = [policyTierMaps3 proxyKeyInfoAtIndex:v58];
 
         if (!v59)
         {
@@ -2356,8 +2356,8 @@ LABEL_113:
         }
 
         ++v58;
-        v60 = [v23 proxyKeyInfos];
-        v61 = [v60 count];
+        proxyKeyInfos3 = [policyTierMaps3 proxyKeyInfos];
+        v61 = [proxyKeyInfos3 count];
 
         if (v58 >= v61)
         {
@@ -2374,7 +2374,7 @@ LABEL_113:
       *buf = 134218242;
       *v111 = v58;
       *&v111[8] = 2112;
-      *&v111[10] = v37;
+      *&v111[10] = policyTierMaps2;
       v42 = "proxy key info for index %lu is nil for proxy %@";
       v43 = v41;
       v44 = 22;
@@ -2384,9 +2384,9 @@ LABEL_56:
     }
 
 LABEL_70:
-    v62 = [v23 tokenKeyInfo];
+    tokenKeyInfo = [policyTierMaps3 tokenKeyInfo];
 
-    if (!v62)
+    if (!tokenKeyInfo)
     {
       v41 = nplog_obj();
       if (!os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -2395,7 +2395,7 @@ LABEL_70:
       }
 
       *buf = 138412290;
-      *v111 = v37;
+      *v111 = policyTierMaps2;
       v42 = "token issuance key is nil for proxy %@";
       goto LABEL_113;
     }
@@ -2416,13 +2416,13 @@ LABEL_70:
     goto LABEL_105;
   }
 
-  v63 = [v4 pathWeights];
-  v64 = [v63 count];
+  pathWeights = [v4 pathWeights];
+  v64 = [pathWeights count];
 
   if (!v64)
   {
-    v23 = nplog_obj();
-    if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    policyTierMaps3 = nplog_obj();
+    if (!os_log_type_enabled(policyTierMaps3, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_33;
     }
@@ -2432,21 +2432,21 @@ LABEL_70:
     goto LABEL_46;
   }
 
-  v65 = [v4 pathWeights];
-  v66 = [v65 count];
+  pathWeights2 = [v4 pathWeights];
+  v66 = [pathWeights2 count];
 
   if (v66)
   {
     v67 = 0;
     while (1)
     {
-      v23 = [v4 pathWeightsAtIndex:v67];
-      if ([v23 weight]>= 0x65)
+      policyTierMaps3 = [v4 pathWeightsAtIndex:v67];
+      if ([policyTierMaps3 weight]>= 0x65)
       {
         break;
       }
 
-      if ([v23 proxiesCount]!= 2)
+      if ([policyTierMaps3 proxiesCount]!= 2)
       {
         v70 = nplog_obj();
         if (!os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
@@ -2460,8 +2460,8 @@ LABEL_70:
         goto LABEL_142;
       }
 
-      v68 = [v23 proxiesAtIndex:0];
-      v69 = [v23 proxiesAtIndex:1];
+      v68 = [policyTierMaps3 proxiesAtIndex:0];
+      v69 = [policyTierMaps3 proxiesAtIndex:1];
       if ([v4 proxiesCount] < v68)
       {
         v70 = nplog_obj();
@@ -2526,8 +2526,8 @@ LABEL_148:
       }
 
       ++v67;
-      v72 = [v4 pathWeights];
-      v73 = [v72 count];
+      pathWeights3 = [v4 pathWeights];
+      v73 = [pathWeights3 count];
 
       if (v67 >= v73)
       {
@@ -2551,8 +2551,8 @@ LABEL_142:
   }
 
 LABEL_83:
-  v74 = [v4 fallbackPathWeights];
-  v75 = [v74 count];
+  fallbackPathWeights = [v4 fallbackPathWeights];
+  v75 = [fallbackPathWeights count];
 
   if (!v75)
   {
@@ -2566,32 +2566,32 @@ LABEL_94:
     v81 = 0;
     while (1)
     {
-      v23 = [v4 resolversAtIndex:v81];
+      policyTierMaps3 = [v4 resolversAtIndex:v81];
       v82 = MEMORY[0x1E695DFF8];
-      v83 = [v23 dohURL];
-      v37 = [v82 URLWithString:v83];
+      dohURL = [policyTierMaps3 dohURL];
+      policyTierMaps2 = [v82 URLWithString:dohURL];
 
-      if (!v37)
+      if (!policyTierMaps2)
       {
         break;
       }
 
-      v84 = [v37 host];
-      if (!v84)
+      host3 = [policyTierMaps2 host];
+      if (!host3)
       {
         break;
       }
 
-      v85 = v84;
-      v86 = [v37 scheme];
-      if ([v86 isEqualToString:@"https"])
+      v85 = host3;
+      scheme3 = [policyTierMaps2 scheme];
+      if ([scheme3 isEqualToString:@"https"])
       {
       }
 
       else
       {
-        v87 = [v37 scheme];
-        v88 = [v87 isEqualToString:@"http"];
+        scheme4 = [policyTierMaps2 scheme];
+        v88 = [scheme4 isEqualToString:@"http"];
 
         if ((v88 & 1) == 0)
         {
@@ -2614,7 +2614,7 @@ LABEL_94:
     }
 
     *buf = 138412290;
-    *v111 = v37;
+    *v111 = policyTierMaps2;
     v42 = "Bad resolver url format %@";
     goto LABEL_113;
   }
@@ -2622,8 +2622,8 @@ LABEL_94:
   v76 = 0;
   while (1)
   {
-    v23 = [v4 fallbackPathWeightsAtIndex:v76];
-    if ([v23 weight]>= 0x65)
+    policyTierMaps3 = [v4 fallbackPathWeightsAtIndex:v76];
+    if ([policyTierMaps3 weight]>= 0x65)
     {
       v70 = nplog_obj();
       if (!os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
@@ -2637,7 +2637,7 @@ LABEL_94:
       goto LABEL_142;
     }
 
-    if ([v23 proxiesCount]!= 2)
+    if ([policyTierMaps3 proxiesCount]!= 2)
     {
       v70 = nplog_obj();
       if (!os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
@@ -2651,8 +2651,8 @@ LABEL_94:
       goto LABEL_142;
     }
 
-    v77 = [v23 proxiesAtIndex:0];
-    v78 = [v23 proxiesAtIndex:1];
+    v77 = [policyTierMaps3 proxiesAtIndex:0];
+    v78 = [policyTierMaps3 proxiesAtIndex:1];
     if ([v4 proxiesCount] < v77)
     {
       v70 = nplog_obj();
@@ -2744,8 +2744,8 @@ LABEL_160:
     }
 
     ++v76;
-    v79 = [v4 fallbackPathWeights];
-    v80 = [v79 count];
+    fallbackPathWeights2 = [v4 fallbackPathWeights];
+    v80 = [fallbackPathWeights2 count];
 
     if (v76 >= v80)
     {
@@ -2783,21 +2783,21 @@ LABEL_36:
   return v15;
 }
 
-+ (void)verifyConfigurationSignature:(id)a3 configuration:(id)a4 host:(id)a5 validateCert:(BOOL)a6 completionHandler:(id)a7
++ (void)verifyConfigurationSignature:(id)signature configuration:(id)configuration host:(id)host validateCert:(BOOL)cert completionHandler:(id)handler
 {
-  v47 = a6;
+  certCopy = cert;
   v65 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v50 = a7;
+  signatureCopy = signature;
+  configurationCopy = configuration;
+  hostCopy = host;
+  handlerCopy = handler;
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v14 = [v10 certificates];
-  v15 = [v14 countByEnumeratingWithState:&v57 objects:v64 count:16];
+  certificates = [signatureCopy certificates];
+  v15 = [certificates countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (v15)
   {
     v17 = v15;
@@ -2805,8 +2805,8 @@ LABEL_36:
     v19 = *MEMORY[0x1E695E480];
     *&v16 = 138412290;
     v45 = v16;
-    v48 = v12;
-    v49 = v11;
+    v48 = hostCopy;
+    v49 = configurationCopy;
     while (2)
     {
       v20 = 0;
@@ -2814,7 +2814,7 @@ LABEL_36:
       {
         if (*v58 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(certificates);
         }
 
         v21 = SecCertificateCreateWithData(v19, *(*(&v57 + 1) + 8 * v20));
@@ -2822,14 +2822,14 @@ LABEL_36:
         v23 = v22;
         if (!v21)
         {
-          v12 = v48;
+          hostCopy = v48;
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
             *buf = 0;
             _os_log_error_impl(&dword_1AE7E2000, v23, OS_LOG_TYPE_ERROR, "SecCertificateCreateWithData failed", buf, 2u);
           }
 
-          v11 = v49;
+          configurationCopy = v49;
           goto LABEL_32;
         }
 
@@ -2863,11 +2863,11 @@ LABEL_36:
           }
 
           CFRelease(v21);
-          v12 = v48;
-          v11 = v49;
+          hostCopy = v48;
+          configurationCopy = v49;
 LABEL_32:
-          v28 = v50;
-          (*(v50 + 2))(v50, 0);
+          v28 = handlerCopy;
+          (*(handlerCopy + 2))(handlerCopy, 0);
 
           goto LABEL_48;
         }
@@ -2878,9 +2878,9 @@ LABEL_32:
       }
 
       while (v17 != v20);
-      v17 = [v14 countByEnumeratingWithState:&v57 objects:v64 count:16];
-      v12 = v48;
-      v11 = v49;
+      v17 = [certificates countByEnumeratingWithState:&v57 objects:v64 count:16];
+      hostCopy = v48;
+      configurationCopy = v49;
       if (v17)
       {
         continue;
@@ -2893,7 +2893,7 @@ LABEL_32:
   if (![v13 count])
   {
     v38 = nplog_obj();
-    v28 = v50;
+    v28 = handlerCopy;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
@@ -2904,7 +2904,7 @@ LABEL_32:
   }
 
   ApplePinned = SecPolicyCreateApplePinned();
-  v28 = v50;
+  v28 = handlerCopy;
   if (!ApplePinned)
   {
     v38 = nplog_obj();
@@ -2914,7 +2914,7 @@ LABEL_32:
     }
 
     *buf = 138412290;
-    *&buf[4] = v12;
+    *&buf[4] = hostCopy;
     v39 = "SecPolicyCreateApplePinned failed for %@ host";
     v40 = buf;
     v41 = v38;
@@ -2923,7 +2923,7 @@ LABEL_50:
     _os_log_error_impl(&dword_1AE7E2000, v41, OS_LOG_TYPE_ERROR, v39, v40, v42);
 LABEL_35:
 
-    (*(v50 + 2))(v50, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
     goto LABEL_48;
   }
 
@@ -2954,7 +2954,7 @@ LABEL_35:
     goto LABEL_50;
   }
 
-  if (!v47)
+  if (!certCopy)
   {
     v43 = nplog_obj();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
@@ -2963,7 +2963,7 @@ LABEL_35:
       _os_log_impl(&dword_1AE7E2000, v43, OS_LOG_TYPE_INFO, "Ignoring validation for Signed configuration", v61, 2u);
     }
 
-    (*(v50 + 2))(v50, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
     if (*buf)
     {
       CFRelease(*buf);
@@ -2973,24 +2973,24 @@ LABEL_35:
     goto LABEL_47;
   }
 
-  v32 = v12;
+  v32 = hostCopy;
   v33 = NPGetInternalQueue();
   result[0] = MEMORY[0x1E69E9820];
   result[1] = 3221225472;
   result[2] = __99__NSPConfiguration_verifyConfigurationSignature_configuration_host_validateCert_completionHandler___block_invoke;
   result[3] = &unk_1E7A311D8;
   v55 = *buf;
-  v56 = a1;
-  v52 = v10;
-  v53 = v11;
-  v34 = v50;
+  selfCopy = self;
+  v52 = signatureCopy;
+  v53 = configurationCopy;
+  v34 = handlerCopy;
   v54 = v34;
   v35 = SecTrustEvaluateAsyncWithError(v31, v33, result);
 
   if (!v35)
   {
 
-    v12 = v32;
+    hostCopy = v32;
 LABEL_47:
     CFRelease(v29);
     goto LABEL_48;
@@ -3012,7 +3012,7 @@ LABEL_47:
 
   (*(v34 + 2))(v34, 0);
 
-  v12 = v32;
+  hostCopy = v32;
 LABEL_48:
 
   v44 = *MEMORY[0x1E69E9840];
@@ -3189,13 +3189,13 @@ LABEL_11:
   v8 = *MEMORY[0x1E695E8B8];
   v9 = *MEMORY[0x1E695E8B0];
   _CFPreferencesSetFileProtectionClass();
-  v10 = [v3 encodedData];
-  CFPreferencesSetAppValue(@"NSPConfiguration", v10, v7);
+  encodedData = [v3 encodedData];
+  CFPreferencesSetAppValue(@"NSPConfiguration", encodedData, v7);
 
-  LODWORD(v10) = CFPreferencesAppSynchronize(v7);
+  LODWORD(encodedData) = CFPreferencesAppSynchronize(v7);
   v11 = nplog_obj();
   v12 = v11;
-  if (!v10)
+  if (!encodedData)
   {
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -3253,7 +3253,7 @@ LABEL_9:
 
       CFRelease(v4);
 LABEL_9:
-      v10 = 0;
+      selfCopy = 0;
 LABEL_48:
 
       goto LABEL_49;
@@ -3302,66 +3302,66 @@ LABEL_48:
         objc_storeStrong(&v12->_userPreferredTier, v12->_userTier);
       }
 
-      v16 = [(NSNumber *)self->_proxyTrafficState unsignedLongLongValue];
+      unsignedLongLongValue = [(NSNumber *)self->_proxyTrafficState unsignedLongLongValue];
       v17 = self->_diskVersion;
-      v18 = v16 | 0x7000;
+      v18 = unsignedLongLongValue | 0x7000;
       if (v17 >= 11)
       {
-        v18 = v16;
+        v18 = unsignedLongLongValue;
       }
 
       v19 = v18 | 0x8000;
       if (v17 >= 12)
       {
-        v19 = v16;
+        v19 = unsignedLongLongValue;
       }
 
       v20 = v19 | 0x10000;
       if (v17 >= 13)
       {
-        v20 = v16;
+        v20 = unsignedLongLongValue;
       }
 
       v21 = v20 | 0x1C0000;
       if (v17 >= 14)
       {
-        v21 = v16;
+        v21 = unsignedLongLongValue;
       }
 
       v22 = v21 | 0x200000;
       if (v17 >= 15)
       {
-        v22 = v16;
+        v22 = unsignedLongLongValue;
       }
 
       v23 = v22 | 0x400000;
       if (v17 >= 16)
       {
-        v23 = v16;
+        v23 = unsignedLongLongValue;
       }
 
       v24 = v23 | 0x800000;
       if (v17 >= 17)
       {
-        v24 = v16;
+        v24 = unsignedLongLongValue;
       }
 
       v25 = v24 | 0x1000000;
       if (v17 >= 18)
       {
-        v25 = v16;
+        v25 = unsignedLongLongValue;
       }
 
       v26 = v25 | 0x2000000;
       if (v17 >= 19)
       {
-        v26 = v16;
+        v26 = unsignedLongLongValue;
       }
 
       v27 = v26 | 0x4000000;
       if (v17 >= 22)
       {
-        v28 = v16;
+        v28 = unsignedLongLongValue;
       }
 
       else
@@ -3380,7 +3380,7 @@ LABEL_48:
     }
 
     self = self;
-    v10 = self;
+    selfCopy = self;
     goto LABEL_48;
   }
 
@@ -3391,44 +3391,44 @@ LABEL_48:
     _os_log_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_INFO, "no saved configuration", buf, 2u);
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_49:
 
   v31 = *MEMORY[0x1E69E9840];
-  return v10;
+  return selfCopy;
 }
 
 - (id)tierToString
 {
-  v2 = [(NSPConfiguration *)self userTier];
-  v3 = [v2 intValue];
-  if (v3 >= 3)
+  userTier = [(NSPConfiguration *)self userTier];
+  intValue = [userTier intValue];
+  if (intValue >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", intValue];
   }
 
   else
   {
-    v4 = off_1E7A31240[v3];
+    v4 = off_1E7A31240[intValue];
   }
 
   return v4;
 }
 
-+ (BOOL)fetchDate:(id)a3 isWithinStart:(id)a4 end:(id)a5 etag:(id)a6
++ (BOOL)fetchDate:(id)date isWithinStart:(id)start end:(id)end etag:(id)etag
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v9)
+  dateCopy = date;
+  startCopy = start;
+  endCopy = end;
+  etagCopy = etag;
+  if (!dateCopy)
   {
     v18 = nplog_obj();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v26 = 138412290;
-      v27 = v12;
+      v27 = etagCopy;
       v23 = "Configuration (etag %@) has no fetch time, so cannot check validity";
       v24 = v18;
       v25 = 12;
@@ -3442,9 +3442,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  [v9 timeIntervalSinceDate:v10];
+  [dateCopy timeIntervalSinceDate:startCopy];
   v14 = v13;
-  [v11 timeIntervalSinceDate:v9];
+  [endCopy timeIntervalSinceDate:dateCopy];
   v16 = v15;
   if (v14 < 0.0 || v15 < 0.0)
   {
@@ -3482,13 +3482,13 @@ LABEL_16:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v26 = 138413058;
-      v27 = v9;
+      v27 = dateCopy;
       v28 = 2112;
-      v29 = v12;
+      v29 = etagCopy;
       v30 = 2112;
-      v31 = v10;
+      v31 = startCopy;
       v32 = 2112;
-      v33 = v11;
+      v33 = endCopy;
       v23 = "Configuration fetch time %@ (etag %@) is not within start time (%@) and end time (%@)";
       v24 = v18;
       v25 = 42;
@@ -3507,13 +3507,13 @@ LABEL_18:
   return v17;
 }
 
-- (BOOL)fetchDateIsWithinStart:(id)a3 end:(id)a4
+- (BOOL)fetchDateIsWithinStart:(id)start end:(id)end
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSPConfiguration *)self configurationFetchDate];
-  v9 = [(NSPConfiguration *)self etag];
-  v10 = [NSPConfiguration fetchDate:v8 isWithinStart:v7 end:v6 etag:v9];
+  endCopy = end;
+  startCopy = start;
+  configurationFetchDate = [(NSPConfiguration *)self configurationFetchDate];
+  etag = [(NSPConfiguration *)self etag];
+  v10 = [NSPConfiguration fetchDate:configurationFetchDate isWithinStart:startCopy end:endCopy etag:etag];
 
   return v10;
 }

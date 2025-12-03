@@ -1,14 +1,14 @@
 @interface VCPTask
 - (BOOL)isCancelled;
-- (VCPTask)initWithPhotoLibrary:(id)a3;
+- (VCPTask)initWithPhotoLibrary:(id)library;
 - (void)main;
 @end
 
 @implementation VCPTask
 
-- (VCPTask)initWithPhotoLibrary:(id)a3
+- (VCPTask)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v10.receiver = self;
   v10.super_class = VCPTask;
   v6 = [(VCPTask *)&v10 init];
@@ -19,7 +19,7 @@
     v6->_cancel = &stru_100288918;
 
     v7->_error = 0;
-    objc_storeStrong(&v7->_photoLibrary, a3);
+    objc_storeStrong(&v7->_photoLibrary, library);
   }
 
   return v7;

@@ -1,45 +1,45 @@
 @interface HearingModeUIService
-+ (BOOL)shouldShowFeatureForDevice:(id)a3;
++ (BOOL)shouldShowFeatureForDevice:(id)device;
 - (BOOL)_getHearingAssist;
 - (BOOL)_showOcclusionDetectionPlacard;
 - (BOOL)featureCapable;
 - (BOOL)shouldShowHearingAid;
 - (BOOL)shouldShowHearingProtection;
 - (BOOL)shouldShowHearingTest;
-- (HearingModeUIService)initWithDevice:(id)a3;
-- (HearingModeUIService)initWithDeviceAddress:(id)a3;
+- (HearingModeUIService)initWithDevice:(id)device;
+- (HearingModeUIService)initWithDeviceAddress:(id)address;
 - (HearingModeUIServiceDelegate)delegate;
-- (id)_getHearingAssistPayload:(id)a3 device:(id)a4 inUsecase:(int64_t)a5;
-- (id)decoratedSpecifiers:(id)a3 device:(id)a4;
+- (id)_getHearingAssistPayload:(id)payload device:(id)device inUsecase:(int64_t)usecase;
+- (id)decoratedSpecifiers:(id)specifiers device:(id)device;
 - (id)enrollmentViewController;
-- (id)getHearingAidLink:(id)a3;
+- (id)getHearingAidLink:(id)link;
 - (id)getHearingAidMode;
 - (id)getHearingAidModeString;
-- (id)getHearingAidString:(id)a3;
+- (id)getHearingAidString:(id)string;
 - (id)occlusionDetectionSpecifiers;
 - (id)specifiers;
 - (void)_showOcclusionTutorial;
 - (void)configHearingModeClient;
 - (void)dealloc;
 - (void)hearingTestTapped;
-- (void)presentCapabilityAlertForHearingAssistance:(BOOL)a3 device:(id)a4;
+- (void)presentCapabilityAlertForHearingAssistance:(BOOL)assistance device:(id)device;
 - (void)presentHearingAssistWelcomeFlow;
-- (void)setHearingAidMode:(id)a3;
-- (void)setTopLevelCellClass:(id)a3;
-- (void)submitHADeviceAnalyticsWithEnrolled:(int64_t)a3;
-- (void)userDidTapHearingHealthLearnMore:(id)a3;
+- (void)setHearingAidMode:(id)mode;
+- (void)setTopLevelCellClass:(id)class;
+- (void)submitHADeviceAnalyticsWithEnrolled:(int64_t)enrolled;
+- (void)userDidTapHearingHealthLearnMore:(id)more;
 @end
 
 @implementation HearingModeUIService
 
-+ (BOOL)shouldShowFeatureForDevice:(id)a3
++ (BOOL)shouldShowFeatureForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (_os_feature_enabled_impl())
   {
-    v4 = v3;
-    v5 = [v4 hearingAidSupport];
-    if (v5)
+    v4 = deviceCopy;
+    hearingAidSupport = [v4 hearingAidSupport];
+    if (hearingAidSupport)
     {
       v6 = "YES";
     }
@@ -49,28 +49,28 @@
       v6 = "NO";
     }
 
-    v7 = [v4 address];
+    address = [v4 address];
 
-    NSLog(&cfstr_HearingAidShou.isa, v6, v7, v6, "YES");
+    NSLog(&cfstr_HearingAidShou.isa, v6, address, v6, "YES");
   }
 
   else
   {
     NSLog(&cfstr_HearingAidFeat.isa);
-    LOBYTE(v5) = 0;
+    LOBYTE(hearingAidSupport) = 0;
   }
 
-  return v5;
+  return hearingAidSupport;
 }
 
 - (BOOL)featureCapable
 {
-  v3 = [(HearingModeUIService *)self shouldShowHearingAid];
-  v4 = [(HearingModeUIService *)self shouldShowHearingProtection];
-  v5 = [(HearingModeUIService *)self shouldShowHearingTest];
-  v6 = v5;
+  shouldShowHearingAid = [(HearingModeUIService *)self shouldShowHearingAid];
+  shouldShowHearingProtection = [(HearingModeUIService *)self shouldShowHearingProtection];
+  shouldShowHearingTest = [(HearingModeUIService *)self shouldShowHearingTest];
+  v6 = shouldShowHearingTest;
   v7 = "NO";
-  if (v3)
+  if (shouldShowHearingAid)
   {
     v8 = "YES";
   }
@@ -80,7 +80,7 @@
     v8 = "NO";
   }
 
-  if (v4)
+  if (shouldShowHearingProtection)
   {
     v9 = "YES";
   }
@@ -90,18 +90,18 @@
     v9 = "NO";
   }
 
-  if (v5)
+  if (shouldShowHearingTest)
   {
     v7 = "YES";
   }
 
   NSLog(&cfstr_Featurecapable.isa, self->_address, v8, v9, v7);
-  return v3 || v4 || v6;
+  return shouldShowHearingAid || shouldShowHearingProtection || v6;
 }
 
-- (HearingModeUIService)initWithDevice:(id)a3
+- (HearingModeUIService)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v24.receiver = self;
   v24.super_class = HearingModeUIService;
   v6 = [(HearingModeUIService *)&v24 init];
@@ -109,29 +109,29 @@
   {
     NSLog(&cfstr_HearingAidHkCh.isa);
     [MEMORY[0x277CCD258] checkCurrentCountry];
-    objc_storeStrong(&v6->_device, a3);
-    v7 = [(BluetoothDevice *)v6->_device address];
+    objc_storeStrong(&v6->_device, device);
+    address = [(BluetoothDevice *)v6->_device address];
     address = v6->_address;
-    v6->_address = v7;
+    v6->_address = address;
 
     v9 = objc_alloc_init(_TtC21HearingModeSettingsUI20HMHearingTestService);
     hearingTestService = v6->_hearingTestService;
     v6->_hearingTestService = v9;
 
     [(HearingModeUIService *)v6 configHearingModeClient];
-    v11 = [(BluetoothDevice *)v6->_device address];
-    v12 = [v11 stringByReplacingOccurrencesOfString:@":" withString:@"-"];
+    address2 = [(BluetoothDevice *)v6->_device address];
+    v12 = [address2 stringByReplacingOccurrencesOfString:@":" withString:@"-"];
 
-    v13 = [MEMORY[0x277D0FC08] shared];
-    v14 = [v13 connectedHeadphones];
-    v15 = [v14 objectForKeyedSubscript:v12];
+    mEMORY[0x277D0FC08] = [MEMORY[0x277D0FC08] shared];
+    connectedHeadphones = [mEMORY[0x277D0FC08] connectedHeadphones];
+    v15 = [connectedHeadphones objectForKeyedSubscript:v12];
     headphoneDevice = v6->_headphoneDevice;
     v6->_headphoneDevice = v15;
 
     v17 = [_TtC21HearingModeSettingsUI27HearingAssistFlowController alloc];
     v18 = v6->_headphoneDevice;
-    v19 = [(HearingModeUIService *)v6 hmsClient];
-    v20 = [(HearingAssistFlowController *)v17 initWithDevice:v18 serviceClient:v19 flow:0];
+    hmsClient = [(HearingModeUIService *)v6 hmsClient];
+    v20 = [(HearingAssistFlowController *)v17 initWithDevice:v18 serviceClient:hmsClient flow:0];
     hearingAssistFlowController = v6->_hearingAssistFlowController;
     v6->_hearingAssistFlowController = v20;
 
@@ -150,18 +150,18 @@ LABEL_6:
   return v22;
 }
 
-- (HearingModeUIService)initWithDeviceAddress:(id)a3
+- (HearingModeUIService)initWithDeviceAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v12.receiver = self;
   v12.super_class = HearingModeUIService;
   v6 = [(HearingModeUIService *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_address, a3);
-    v8 = [MEMORY[0x277CF3248] sharedInstance];
-    v9 = [v8 deviceFromAddressString:v5];
+    objc_storeStrong(&v6->_address, address);
+    mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+    v9 = [mEMORY[0x277CF3248] deviceFromAddressString:addressCopy];
     device = v7->_device;
     v7->_device = v9;
   }
@@ -209,12 +209,12 @@ LABEL_6:
 - (id)specifiers
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HearingModeUIService *)self shouldShowHearingAid];
-  v4 = [(HearingModeUIService *)self shouldShowHearingProtection];
-  v5 = [(HearingModeUIService *)self shouldShowHearingTest];
-  v6 = v5;
+  shouldShowHearingAid = [(HearingModeUIService *)self shouldShowHearingAid];
+  shouldShowHearingProtection = [(HearingModeUIService *)self shouldShowHearingProtection];
+  shouldShowHearingTest = [(HearingModeUIService *)self shouldShowHearingTest];
+  v6 = shouldShowHearingTest;
   v7 = "NO";
-  if (v3)
+  if (shouldShowHearingAid)
   {
     v8 = "YES";
   }
@@ -224,7 +224,7 @@ LABEL_6:
     v8 = "NO";
   }
 
-  if (v4)
+  if (shouldShowHearingProtection)
   {
     v9 = "YES";
   }
@@ -234,14 +234,14 @@ LABEL_6:
     v9 = "NO";
   }
 
-  if (v5)
+  if (shouldShowHearingTest)
   {
     v7 = "YES";
   }
 
   NSLog(&cfstr_SpecifiersForS.isa, self->_address, v8, v9, v7);
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (!v3 && !v4 && !v6)
+  if (!shouldShowHearingAid && !shouldShowHearingProtection && !v6)
   {
     NSLog(&cfstr_HearingAidRetu.isa, self->_address);
     v11 = v10;
@@ -273,7 +273,7 @@ LABEL_6:
   [v15 setProperty:@"userDidTapHearingHealthLearnMore:" forKey:*MEMORY[0x277D3FF50]];
   [v15 setIdentifier:@"HEARING_GROUP_ID"];
   [v10 addObject:v15];
-  if (v4)
+  if (shouldShowHearingProtection)
   {
     v34 = MEMORY[0x277D3FAD8];
     v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -286,7 +286,7 @@ LABEL_6:
     [v37 setUserInfo:v38];
 
     [v10 addObject:v37];
-    if (!v3)
+    if (!shouldShowHearingAid)
     {
 LABEL_15:
       if (!v6)
@@ -298,14 +298,14 @@ LABEL_15:
     }
   }
 
-  else if (!v3)
+  else if (!shouldShowHearingAid)
   {
     goto LABEL_15;
   }
 
-  v39 = [(BluetoothDevice *)self->_device hearingAidEnrolled];
+  hearingAidEnrolled = [(BluetoothDevice *)self->_device hearingAidEnrolled];
   v40 = "NO";
-  if (v39)
+  if (hearingAidEnrolled)
   {
     v40 = "YES";
   }
@@ -314,7 +314,7 @@ LABEL_15:
   v41 = MEMORY[0x277D3FAD8];
   v42 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v43 = [v42 localizedStringForKey:@"Hearing Assistance" value:&stru_28643BDD8 table:0];
-  if (v39)
+  if (hearingAidEnrolled)
   {
     v22 = 0x277D3F000;
     v44 = [v41 preferenceSpecifierNamed:v43 target:self set:0 get:sel_getHearingAidModeString detail:objc_opt_class() cell:-1 edit:0];
@@ -339,7 +339,7 @@ LABEL_15:
 
   [v10 addObject:v44];
 
-  [(HearingModeUIService *)self submitHADeviceAnalyticsWithEnrolled:v39];
+  [(HearingModeUIService *)self submitHADeviceAnalyticsWithEnrolled:hearingAidEnrolled];
   if (!v6)
   {
     goto LABEL_17;
@@ -380,13 +380,13 @@ LABEL_21:
   return v11;
 }
 
-- (void)userDidTapHearingHealthLearnMore:(id)a3
+- (void)userDidTapHearingHealthLearnMore:(id)more
 {
-  v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v4 = MEMORY[0x277CBEBC0];
   v5 = [(HearingModeUIService *)self getHearingAidLink:self->_address];
   v6 = [v4 URLWithString:v5];
-  [v7 openSensitiveURL:v6 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v6 withOptions:0];
 }
 
 - (BOOL)shouldShowHearingAid
@@ -405,8 +405,8 @@ LABEL_21:
       v3 = "NO";
     }
 
-    v5 = [(BluetoothDevice *)self->_device address];
-    NSLog(&cfstr_HearingAidShou_0.isa, v3, v5);
+    address = [(BluetoothDevice *)self->_device address];
+    NSLog(&cfstr_HearingAidShou_0.isa, v3, address);
   }
 
   else
@@ -420,9 +420,9 @@ LABEL_21:
 
 - (id)getHearingAidModeString
 {
-  v2 = [(HearingModeUIService *)self _getHearingAssist];
+  _getHearingAssist = [(HearingModeUIService *)self _getHearingAssist];
   v3 = "Disabled";
-  if (v2)
+  if (_getHearingAssist)
   {
     v3 = "Enabled";
     v4 = @"On";
@@ -442,9 +442,9 @@ LABEL_21:
 
 - (id)getHearingAidMode
 {
-  v2 = [(HearingModeUIService *)self _getHearingAssist];
+  _getHearingAssist = [(HearingModeUIService *)self _getHearingAssist];
   v3 = "Disabled";
-  if (v2)
+  if (_getHearingAssist)
   {
     v3 = "Enabled";
   }
@@ -452,20 +452,20 @@ LABEL_21:
   NSLog(&cfstr_HearingAidGetH.isa, v3);
   v4 = MEMORY[0x277CCABB0];
 
-  return [v4 numberWithBool:v2];
+  return [v4 numberWithBool:_getHearingAssist];
 }
 
-- (void)setHearingAidMode:(id)a3
+- (void)setHearingAidMode:(id)mode
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [mode BOOLValue];
   v5 = "Disabled";
-  if (v4)
+  if (bOOLValue)
   {
     v5 = "Enabled";
   }
 
   NSLog(&cfstr_HearingAidSetH.isa, v5);
-  [(BluetoothDevice *)self->_device setHearingAidEnabled:v4];
+  [(BluetoothDevice *)self->_device setHearingAidEnabled:bOOLValue];
   device = self->_device;
 
   [(BluetoothDevice *)device setListeningMode:3];
@@ -473,16 +473,16 @@ LABEL_21:
 
 - (void)presentHearingAssistWelcomeFlow
 {
-  v3 = [(HearingModeUIService *)self delegate];
+  delegate = [(HearingModeUIService *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
     if (([(BluetoothDevice *)self->_device hearingAidSupport]& 1) != 0)
     {
-      v7 = [(HearingModeUIService *)self delegate];
-      v5 = [(HearingAssistFlowController *)self->_hearingAssistFlowController flowContainerController];
-      [v7 presentViewController:v5];
+      delegate2 = [(HearingModeUIService *)self delegate];
+      flowContainerController = [(HearingAssistFlowController *)self->_hearingAssistFlowController flowContainerController];
+      [delegate2 presentViewController:flowContainerController];
     }
 
     else
@@ -510,8 +510,8 @@ LABEL_21:
       v3 = "NO";
     }
 
-    v5 = [(BluetoothDevice *)self->_device address];
-    NSLog(&cfstr_HearingTestSho.isa, v3, v5);
+    address = [(BluetoothDevice *)self->_device address];
+    NSLog(&cfstr_HearingTestSho.isa, v3, address);
   }
 
   else
@@ -526,8 +526,8 @@ LABEL_21:
 - (id)enrollmentViewController
 {
   v3 = objc_alloc(MEMORY[0x277D12C18]);
-  v4 = [(BluetoothDevice *)self->_device address];
-  v5 = [v3 initWithDeviceAddress:v4 withAudiogramSample:0];
+  address = [(BluetoothDevice *)self->_device address];
+  v5 = [v3 initWithDeviceAddress:address withAudiogramSample:0];
 
   v6 = [objc_alloc(MEMORY[0x277D37660]) initWithRootViewController:v5];
 
@@ -552,16 +552,16 @@ LABEL_21:
 
 - (void)configHearingModeClient
 {
-  v2 = self;
+  selfCopy = self;
   HearingModeUIService.configHearingModeClient()();
 }
 
-- (id)decoratedSpecifiers:(id)a3 device:(id)a4
+- (id)decoratedSpecifiers:(id)specifiers device:(id)device
 {
   sub_251FD6770(0, &qword_27F4C69B8, 0x277D3FAD8);
   v6 = sub_2520047B0();
-  v7 = a4;
-  v8 = self;
+  deviceCopy = device;
+  selfCopy = self;
   HearingModeUIService.decoratedSpecifiers(_:device:)(v6);
 
   v9 = sub_2520047A0();
@@ -571,19 +571,19 @@ LABEL_21:
 
 - (BOOL)_showOcclusionDetectionPlacard
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HearingModeUIService._showOcclusionDetectionPlacard()();
 
   return v3;
 }
 
-- (id)_getHearingAssistPayload:(id)a3 device:(id)a4 inUsecase:(int64_t)a5
+- (id)_getHearingAssistPayload:(id)payload device:(id)device inUsecase:(int64_t)usecase
 {
   v8 = sub_2520046E0();
   v10 = v9;
-  v11 = a4;
-  v12 = self;
-  HearingModeUIService._getHearingAssistPayload(_:device:inUsecase:)(v8, v10, v11, a5);
+  deviceCopy = device;
+  selfCopy = self;
+  HearingModeUIService._getHearingAssistPayload(_:device:inUsecase:)(v8, v10, deviceCopy, usecase);
 
   v13 = sub_252004600();
 
@@ -592,43 +592,43 @@ LABEL_21:
 
 - (void)_showOcclusionTutorial
 {
-  v2 = self;
+  selfCopy = self;
   HearingModeUIService._showOcclusionTutorial()();
 }
 
 - (void)hearingTestTapped
 {
-  v2 = self;
+  selfCopy = self;
   HearingModeUIService.hearingTestTapped()();
 }
 
 - (BOOL)_getHearingAssist
 {
-  v2 = self;
+  selfCopy = self;
   Hearing = HearingModeUIService._getHearingAssist()();
 
   return Hearing;
 }
 
-- (void)presentCapabilityAlertForHearingAssistance:(BOOL)a3 device:(id)a4
+- (void)presentCapabilityAlertForHearingAssistance:(BOOL)assistance device:(id)device
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = self;
-  HearingModeUIService.presentCapabilityAlert(forHearingAssistance:device:)(v4, v6);
+  assistanceCopy = assistance;
+  deviceCopy = device;
+  selfCopy = self;
+  HearingModeUIService.presentCapabilityAlert(forHearingAssistance:device:)(assistanceCopy, deviceCopy);
 }
 
-- (void)submitHADeviceAnalyticsWithEnrolled:(int64_t)a3
+- (void)submitHADeviceAnalyticsWithEnrolled:(int64_t)enrolled
 {
-  v4 = self;
-  HearingModeUIService.submitHADeviceAnalytics(enrolled:)(a3);
+  selfCopy = self;
+  HearingModeUIService.submitHADeviceAnalytics(enrolled:)(enrolled);
 }
 
-- (id)getHearingAidString:(id)a3
+- (id)getHearingAidString:(id)string
 {
   v4 = sub_2520046E0();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   HearingModeUIService.getHearingAidString(_:)(v8);
@@ -638,10 +638,10 @@ LABEL_21:
   return v9;
 }
 
-- (id)getHearingAidLink:(id)a3
+- (id)getHearingAidLink:(id)link
 {
   sub_2520046E0();
-  v4 = self;
+  selfCopy = self;
   _sSo20HearingModeUIServiceC0aB10SettingsUIE03getA7AidLinkyS2SF_0();
 
   v5 = sub_2520046B0();
@@ -649,20 +649,20 @@ LABEL_21:
   return v5;
 }
 
-- (void)setTopLevelCellClass:(id)a3
+- (void)setTopLevelCellClass:(id)class
 {
   sub_2520042F0();
-  v5 = a3;
-  v6 = self;
+  classCopy = class;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F4C6AC0, &unk_2520077E0);
-  [v5 setProperty:sub_252004BB0() forKey:*MEMORY[0x277D3FE58]];
+  [classCopy setProperty:sub_252004BB0() forKey:*MEMORY[0x277D3FE58]];
 
   swift_unknownObjectRelease();
 }
 
 - (BOOL)shouldShowHearingProtection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HearingModeUIService.shouldShowHearingProtection()();
 
   return v3;

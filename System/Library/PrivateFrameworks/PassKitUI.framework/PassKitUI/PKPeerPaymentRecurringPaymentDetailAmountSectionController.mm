@@ -1,20 +1,20 @@
 @interface PKPeerPaymentRecurringPaymentDetailAmountSectionController
-- (PKPeerPaymentRecurringPaymentDetailAmountSectionController)initWithAmount:(id)a3 currency:(id)a4 delegate:(id)a5;
-- (id)cellRegistrationForItem:(id)a3;
+- (PKPeerPaymentRecurringPaymentDetailAmountSectionController)initWithAmount:(id)amount currency:(id)currency delegate:(id)delegate;
+- (id)cellRegistrationForItem:(id)item;
 - (id)identifiers;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_decorateListCell:(id)a3 forItem:(id)a4;
-- (void)didSelectItem:(id)a3;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_decorateListCell:(id)cell forItem:(id)item;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentDetailAmountSectionController
 
-- (PKPeerPaymentRecurringPaymentDetailAmountSectionController)initWithAmount:(id)a3 currency:(id)a4 delegate:(id)a5
+- (PKPeerPaymentRecurringPaymentDetailAmountSectionController)initWithAmount:(id)amount currency:(id)currency delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  amountCopy = amount;
+  currencyCopy = currency;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = PKPeerPaymentRecurringPaymentDetailAmountSectionController;
   v11 = [(PKPeerPaymentRecurringPaymentDetailAmountSectionController *)&v17 init];
@@ -28,7 +28,7 @@
     v15 = PKCurrencyAmountMake();
     [(PKPeerPaymentRecurringPaymentAmountDetailRowItem *)v14 setCurrencyAmount:v15];
 
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
   }
 
   return v11;
@@ -43,7 +43,7 @@
   return v2;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
@@ -54,9 +54,9 @@
   return v5;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC800];
   v6 = objc_opt_class();
@@ -80,41 +80,41 @@ void __86__PKPeerPaymentRecurringPaymentDetailAmountSectionController_cellRegist
   [WeakRetained _decorateListCell:v7 forItem:v6];
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69DC7E0];
-  v5 = a3;
+  environmentCopy = environment;
   v6 = [[v4 alloc] initWithAppearance:2];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
-  v8 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:v5];
+  v8 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:environmentCopy];
 
   return v8;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didSelectAmountSection];
 }
 
-- (void)_decorateListCell:(id)a3 forItem:(id)a4
+- (void)_decorateListCell:(id)cell forItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
-  v16 = [v6 defaultBackgroundConfiguration];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v16 setBackgroundColor:v7];
+  itemCopy = item;
+  cellCopy = cell;
+  defaultBackgroundConfiguration = [cellCopy defaultBackgroundConfiguration];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [defaultBackgroundConfiguration setBackgroundColor:clearColor];
 
-  [v6 setBackgroundConfiguration:v16];
-  v8 = [MEMORY[0x1E69DCC28] cellConfiguration];
-  v9 = [v5 currencyAmount];
+  [cellCopy setBackgroundConfiguration:defaultBackgroundConfiguration];
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
+  currencyAmount = [itemCopy currencyAmount];
 
-  v10 = [v9 minimalFormattedStringValue];
-  [v8 setText:v10];
+  minimalFormattedStringValue = [currencyAmount minimalFormattedStringValue];
+  [cellConfiguration setText:minimalFormattedStringValue];
 
-  if ([v6 pkui_userInterfaceIdiomSupportsLargeLayouts])
+  if ([cellCopy pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
     v11 = 100.0;
   }
@@ -124,17 +124,17 @@ void __86__PKPeerPaymentRecurringPaymentDetailAmountSectionController_cellRegist
     v11 = 80.0;
   }
 
-  v12 = [v8 textProperties];
+  textProperties = [cellConfiguration textProperties];
   v13 = [MEMORY[0x1E69DB878] pk_peerPaymentChiseledCashFontOfSize:v11];
-  v14 = [v13 pk_fixedWidthFont];
-  [v12 setFont:v14];
+  pk_fixedWidthFont = [v13 pk_fixedWidthFont];
+  [textProperties setFont:pk_fixedWidthFont];
 
   v15 = +[PKPeerPaymentTheme primaryTextColor];
-  [v12 setColor:v15];
+  [textProperties setColor:v15];
 
-  [v12 setAlignment:1];
-  [v12 setAdjustsFontSizeToFitWidth:1];
-  [v6 setContentConfiguration:v8];
+  [textProperties setAlignment:1];
+  [textProperties setAdjustsFontSizeToFitWidth:1];
+  [cellCopy setContentConfiguration:cellConfiguration];
 }
 
 @end

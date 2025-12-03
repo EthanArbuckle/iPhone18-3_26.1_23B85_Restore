@@ -1,13 +1,13 @@
 @interface SBRecordingIndicatorLayer
 - (SBRecordingIndicatorLayer)init;
-- (SBRecordingIndicatorLayer)initWithCoder:(id)a3;
-- (SBRecordingIndicatorLayer)initWithLayer:(id)a3;
+- (SBRecordingIndicatorLayer)initWithCoder:(id)coder;
+- (SBRecordingIndicatorLayer)initWithLayer:(id)layer;
 - (void)_applyCornerRadius;
 - (void)_resetSecureIndicatorLayerIndicatorType;
 - (void)layoutSublayers;
-- (void)setBlurRadius:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setIndicatorType:(unint64_t)a3;
+- (void)setBlurRadius:(double)radius;
+- (void)setBounds:(CGRect)bounds;
+- (void)setIndicatorType:(unint64_t)type;
 @end
 
 @implementation SBRecordingIndicatorLayer
@@ -15,10 +15,10 @@
 - (void)_resetSecureIndicatorLayerIndicatorType
 {
   v5 = CAPrivacyIndicatorTypeForIndicatorType(self->_indicatorType);
-  v3 = [(CASecureIndicatorLayer *)self privacyIndicatorType];
+  privacyIndicatorType = [(CASecureIndicatorLayer *)self privacyIndicatorType];
 
   v4 = v5;
-  if (v5 != v3)
+  if (v5 != privacyIndicatorType)
   {
     [(CASecureIndicatorLayer *)self setPrivacyIndicatorType:v5];
     v4 = v5;
@@ -39,11 +39,11 @@
   return v3;
 }
 
-- (SBRecordingIndicatorLayer)initWithCoder:(id)a3
+- (SBRecordingIndicatorLayer)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SBRecordingIndicatorLayer;
-  v3 = [(SBRecordingIndicatorLayer *)&v6 initWithCoder:a3];
+  v3 = [(SBRecordingIndicatorLayer *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -53,11 +53,11 @@
   return v4;
 }
 
-- (SBRecordingIndicatorLayer)initWithLayer:(id)a3
+- (SBRecordingIndicatorLayer)initWithLayer:(id)layer
 {
   v6.receiver = self;
   v6.super_class = SBRecordingIndicatorLayer;
-  v3 = [(SBRecordingIndicatorLayer *)&v6 initWithLayer:a3];
+  v3 = [(SBRecordingIndicatorLayer *)&v6 initWithLayer:layer];
   v4 = v3;
   if (v3)
   {
@@ -67,12 +67,12 @@
   return v4;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SBRecordingIndicatorLayer *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -103,14 +103,14 @@
   [(SBRecordingIndicatorLayer *)self _applyCornerRadius];
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  if (self->_blurRadius != a3)
+  if (self->_blurRadius != radius)
   {
-    self->_blurRadius = a3;
-    v4 = [(SBRecordingIndicatorLayer *)self filters];
-    v5 = [v4 bs_containsObjectPassingTest:&__block_literal_global_308];
+    self->_blurRadius = radius;
+    filters = [(SBRecordingIndicatorLayer *)self filters];
+    v5 = [filters bs_containsObjectPassingTest:&__block_literal_global_308];
 
     if (v5)
     {
@@ -150,13 +150,13 @@ uint64_t __43__SBRecordingIndicatorLayer_setBlurRadius___block_invoke(uint64_t a
   return v5;
 }
 
-- (void)setIndicatorType:(unint64_t)a3
+- (void)setIndicatorType:(unint64_t)type
 {
   v11 = *MEMORY[0x277D85DE8];
   indicatorType = self->_indicatorType;
-  if (indicatorType != a3)
+  if (indicatorType != type)
   {
-    self->_indicatorType = a3;
+    self->_indicatorType = type;
     v6 = SBLogStatusBarish();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -168,7 +168,7 @@ uint64_t __43__SBRecordingIndicatorLayer_setBlurRadius___block_invoke(uint64_t a
 
     [(SBRecordingIndicatorLayer *)self _resetSecureIndicatorLayerIndicatorType];
     IsCircular = SBRecordingIndicatorTypeIsCircular(indicatorType);
-    if (IsCircular != SBRecordingIndicatorTypeIsCircular(a3))
+    if (IsCircular != SBRecordingIndicatorTypeIsCircular(type))
     {
       [(SBRecordingIndicatorLayer *)self setNeedsLayout];
       [(SBRecordingIndicatorLayer *)self layoutIfNeeded];

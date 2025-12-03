@@ -1,34 +1,34 @@
 @interface DNSAgent
-- (DNSAgent)initWithParameters:(id)a3;
+- (DNSAgent)initWithParameters:(id)parameters;
 - (id)getAgentName;
 - (id)getAgentUUID;
-- (void)setAgentDescription:(id)a3;
-- (void)setAgentUUID:(id)a3;
-- (void)setInternalAgentName:(id)a3;
+- (void)setAgentDescription:(id)description;
+- (void)setAgentUUID:(id)d;
+- (void)setInternalAgentName:(id)name;
 @end
 
 @implementation DNSAgent
 
-- (DNSAgent)initWithParameters:(id)a3
+- (DNSAgent)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v19.receiver = self;
   v19.super_class = DNSAgent;
-  v5 = [(ConfigAgent *)&v19 initWithParameters:v4];
+  v5 = [(ConfigAgent *)&v19 initWithParameters:parametersCopy];
   if (!v5)
   {
     goto LABEL_10;
   }
 
-  v6 = [v4 valueForKey:@"EntityName"];
-  v7 = [v4 valueForKey:@"AgentSubType"];
-  v8 = [objc_opt_class() agentType];
+  v6 = [parametersCopy valueForKey:@"EntityName"];
+  v7 = [parametersCopy valueForKey:@"AgentSubType"];
+  agentType = [objc_opt_class() agentType];
   if ([v7 unsignedIntegerValue] == 7)
   {
     v9 = @"DNSAgent(m)";
 LABEL_6:
 
-    v8 = v9;
+    agentType = v9;
     goto LABEL_7;
   }
 
@@ -39,7 +39,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v10 = [NSString stringWithFormat:@"%@-%@", v8, v6];
+  v10 = [NSString stringWithFormat:@"%@-%@", agentType, v6];
   internalAgentName = v5->_internalAgentName;
   v5->_internalAgentName = v10;
 
@@ -78,23 +78,23 @@ LABEL_10:
   return agentUUID;
 }
 
-- (void)setAgentUUID:(id)a3
+- (void)setAgentUUID:(id)d
 {
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 80);
+  objc_setProperty_nonatomic_copy(self, a2, d, 80);
 }
 
-- (void)setAgentDescription:(id)a3
+- (void)setAgentDescription:(id)description
 {
 
-  objc_setProperty_nonatomic_copy(self, a2, a3, 88);
+  objc_setProperty_nonatomic_copy(self, a2, description, 88);
 }
 
-- (void)setInternalAgentName:(id)a3
+- (void)setInternalAgentName:(id)name
 {
   p_internalAgentName = &self->_internalAgentName;
 
-  objc_storeStrong(p_internalAgentName, a3);
+  objc_storeStrong(p_internalAgentName, name);
 }
 
 @end

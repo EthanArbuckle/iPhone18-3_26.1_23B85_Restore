@@ -7,9 +7,9 @@
 - (void)setGenerationReport:()GenerationReport
 {
   v4 = a3;
-  v5 = [a1 generationReport];
+  generationReport = [self generationReport];
 
-  if (v4 && v5)
+  if (v4 && generationReport)
   {
     v6 = _ISDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -20,7 +20,7 @@
 
   else
   {
-    objc_setAssociatedObject(a1, &_ISImageGenerationReportKey, v4, 1);
+    objc_setAssociatedObject(self, &_ISImageGenerationReportKey, v4, 1);
   }
 }
 

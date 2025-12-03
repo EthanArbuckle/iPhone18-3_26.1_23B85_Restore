@@ -1,17 +1,17 @@
 @interface SKUIInfoListViewElement
-- (SKUIInfoListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIInfoListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)pageComponentType;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SKUIInfoListViewElement
 
-- (SKUIInfoListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIInfoListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIInfoListViewElement initWithDOMElement:parent:elementFactory:];
@@ -19,42 +19,42 @@
 
   v14.receiver = self;
   v14.super_class = SKUIInfoListViewElement;
-  v11 = [(SKUIViewElement *)&v14 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v14 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"type"];
+    v12 = [elementCopy getAttribute:@"type"];
     v11->_infoListType = [v12 isEqualToString:@"titleAbove"];
   }
 
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SKUIInfoListViewElement;
-  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v8 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_infoListType = [(SKUIInfoListViewElement *)v4 infoListType];
+    self->_infoListType = [(SKUIInfoListViewElement *)elementCopy infoListType];
   }
 
   return v6;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SKUIInfoListViewElement_enumerateChildrenUsingBlock___block_invoke;
   v7[3] = &unk_2781FA298;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = SKUIInfoListViewElement;
-  v5 = v4;
+  v5 = blockCopy;
   [(SKUIViewElement *)&v6 enumerateChildrenUsingBlock:v7];
 }
 

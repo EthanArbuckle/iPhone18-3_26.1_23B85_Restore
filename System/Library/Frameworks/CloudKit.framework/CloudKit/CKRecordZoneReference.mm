@@ -1,10 +1,10 @@
 @interface CKRecordZoneReference
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKRecordZoneID)zoneID;
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKRecordZoneReference
@@ -16,17 +16,17 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CKRecordZoneReference.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CKRecordZoneReference.encode(with:)(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  CKRecordZoneReference.copy(with:)(v3, v6);
+  selfCopy = self;
+  CKRecordZoneReference.copy(with:)(selfCopy, v6);
 
   sub_188400B68(v6, v6[3]);
   v4 = _bridgeAnythingToObjectiveC<A>(_:)();
@@ -34,11 +34,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -47,7 +47,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CKRecordZoneReference.isEqual(_:)(v8);
@@ -58,7 +58,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKRecordZoneReference.hash.getter();
 
   return v3;
@@ -66,7 +66,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKRecordZoneReference.description.getter();
   v5 = v4;
 

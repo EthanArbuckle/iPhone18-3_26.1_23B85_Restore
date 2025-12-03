@@ -1,35 +1,35 @@
 @interface UIDebuggingSpecViewController
-- (BOOL)startMediaBrowserFromViewController:(id)a3;
+- (BOOL)startMediaBrowserFromViewController:(id)controller;
 - (CGPoint)origin;
-- (UIDebuggingSpecViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)gotDeleteGesture:(id)a3;
-- (void)gotPanGesture:(id)a3;
+- (UIDebuggingSpecViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)gotDeleteGesture:(id)gesture;
+- (void)gotPanGesture:(id)gesture;
 - (void)hideImage;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
 - (void)prepareForMediaBrowser;
 - (void)viewDidLoad;
 @end
 
 @implementation UIDebuggingSpecViewController
 
-- (UIDebuggingSpecViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIDebuggingSpecViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v17.receiver = self;
   v17.super_class = UIDebuggingSpecViewController;
-  v4 = [(UIViewController *)&v17 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v17 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
-    v6 = [(UIViewController *)v4 navigationItem];
+    navigationItem = [(UIViewController *)v4 navigationItem];
     v7 = [[UIBarButtonItem alloc] initWithTitle:@"Add" style:2 target:v5 action:sel_prepareForMediaBrowser];
-    [v6 setRightBarButtonItem:v7];
-    v8 = [MEMORY[0x1E695DF70] array];
+    [navigationItem setRightBarButtonItem:v7];
+    array = [MEMORY[0x1E695DF70] array];
     specImages = v5->_specImages;
-    v5->_specImages = v8;
+    v5->_specImages = array;
 
     v10 = objc_alloc_init(UICollectionViewFlowLayout);
     flowLayout = v5->_flowLayout;
@@ -57,85 +57,85 @@
   v23.receiver = self;
   v23.super_class = UIDebuggingSpecViewController;
   [(UIViewController *)&v23 viewDidLoad];
-  v3 = [(UIViewController *)self view];
-  [v3 frame];
+  view = [(UIViewController *)self view];
+  [view frame];
   v5 = v4;
   [(UICollectionViewFlowLayout *)self->_flowLayout minimumInteritemSpacing];
   v7 = (v5 + v6 * -4.0) / 3.0;
 
   [(UICollectionViewFlowLayout *)self->_flowLayout setItemSize:v7, v7];
-  v8 = [(UIDebuggingSpecViewController *)self collectionView];
-  [v8 setAutoresizingMask:18];
+  collectionView = [(UIDebuggingSpecViewController *)self collectionView];
+  [collectionView setAutoresizingMask:18];
 
-  v9 = [(UIViewController *)self view];
-  [v9 frame];
+  view2 = [(UIViewController *)self view];
+  [view2 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(UIDebuggingSpecViewController *)self collectionView];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  collectionView2 = [(UIDebuggingSpecViewController *)self collectionView];
+  [collectionView2 setFrame:{v11, v13, v15, v17}];
 
-  v19 = [(UIViewController *)self view];
-  v20 = [(UIDebuggingSpecViewController *)self collectionView];
-  [v19 addSubview:v20];
+  view3 = [(UIViewController *)self view];
+  collectionView3 = [(UIDebuggingSpecViewController *)self collectionView];
+  [view3 addSubview:collectionView3];
 
   v21 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:sel_gotDeleteGesture_];
   [(UILongPressGestureRecognizer *)v21 setMinimumPressDuration:0.5];
-  v22 = [(UIDebuggingSpecViewController *)self collectionView];
-  [v22 addGestureRecognizer:v21];
+  collectionView4 = [(UIDebuggingSpecViewController *)self collectionView];
+  [collectionView4 addGestureRecognizer:v21];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(UIDebuggingSpecViewController *)self specImages:a3];
+  v4 = [(UIDebuggingSpecViewController *)self specImages:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"specCell" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"specCell" forIndexPath:pathCopy];
   v8 = [UIImageView alloc];
-  v9 = [(UIDebuggingSpecViewController *)self specImages];
-  v10 = [v6 row];
+  specImages = [(UIDebuggingSpecViewController *)self specImages];
+  v10 = [pathCopy row];
 
-  v11 = [v9 objectAtIndexedSubscript:v10];
+  v11 = [specImages objectAtIndexedSubscript:v10];
   v12 = [(UIImageView *)v8 initWithImage:v11];
 
   [v7 bounds];
   [(UIImageView *)v12 setFrame:?];
   [(UIImageView *)v12 setContentMode:2];
   [(UIView *)v12 setClipsToBounds:1];
-  v13 = [v7 contentView];
-  [v13 addSubview:v12];
+  contentView = [v7 contentView];
+  [contentView addSubview:v12];
 
   [(UIView *)v12 setAutoresizingMask:18];
 
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [UIImageView alloc];
-  v7 = [(UIViewController *)self view];
-  v8 = [v7 window];
-  [v8 frame];
+  view = [(UIViewController *)self view];
+  window = [view window];
+  [window frame];
   v26 = [(UIImageView *)v6 initWithFrame:?];
 
-  v9 = [(UIDebuggingSpecViewController *)self specImages];
-  v10 = [v5 row];
+  specImages = [(UIDebuggingSpecViewController *)self specImages];
+  v10 = [pathCopy row];
 
-  v11 = [v9 objectAtIndexedSubscript:v10];
+  v11 = [specImages objectAtIndexedSubscript:v10];
   [(UIImageView *)v26 setImage:v11];
 
   v12 = [UIView alloc];
-  v13 = [(UIViewController *)self view];
-  v14 = [v13 window];
-  [v14 frame];
+  view2 = [(UIViewController *)self view];
+  window2 = [view2 window];
+  [window2 frame];
   v15 = [(UIView *)v12 initWithFrame:?];
 
   [(UIView *)v15 addSubview:v26];
@@ -150,30 +150,30 @@
   [v18 setTouchCaptureEnabled:1];
 
   v19 = +[UIDebuggingInformationOverlay overlay];
-  v20 = [v19 rootViewController];
-  v21 = [v20 view];
-  v22 = [(UIDebuggingSpecViewController *)self spec];
-  [v21 addSubview:v22];
+  rootViewController = [v19 rootViewController];
+  view3 = [rootViewController view];
+  spec = [(UIDebuggingSpecViewController *)self spec];
+  [view3 addSubview:spec];
 
   v23 = +[UIDebuggingInformationOverlay overlay];
-  v24 = [v23 overlayViewController];
+  overlayViewController = [v23 overlayViewController];
 
-  v25 = [v24 containerView];
-  [v25 setHidden:1];
+  containerView = [overlayViewController containerView];
+  [containerView setHidden:1];
 }
 
-- (void)gotDeleteGesture:(id)a3
+- (void)gotDeleteGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 3)
   {
-    v5 = [(UIDebuggingSpecViewController *)self collectionView];
-    [v4 locationInView:v5];
+    collectionView = [(UIDebuggingSpecViewController *)self collectionView];
+    [gestureCopy locationInView:collectionView];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(UIDebuggingSpecViewController *)self collectionView];
-    v11 = [v10 indexPathForItemAtPoint:{v7, v9}];
+    collectionView2 = [(UIDebuggingSpecViewController *)self collectionView];
+    v11 = [collectionView2 indexPathForItemAtPoint:{v7, v9}];
 
     if (v11)
     {
@@ -182,10 +182,10 @@
       v15 = 3221225472;
       v16 = __50__UIDebuggingSpecViewController_gotDeleteGesture___block_invoke;
       v17 = &unk_1E711D8D0;
-      v18 = self;
+      selfCopy = self;
       v19 = v11;
       v13 = [UIAlertAction actionWithTitle:@"Remove" style:2 handler:&v14];
-      [v12 addAction:{v13, v14, v15, v16, v17, v18}];
+      [v12 addAction:{v13, v14, v15, v16, v17, selfCopy}];
       [(UIViewController *)self presentViewController:v12 animated:1 completion:0];
     }
   }
@@ -200,26 +200,26 @@ void __50__UIDebuggingSpecViewController_gotDeleteGesture___block_invoke(uint64_
   [v3 reloadData];
 }
 
-- (void)gotPanGesture:(id)a3
+- (void)gotPanGesture:(id)gesture
 {
-  v27 = a3;
-  if ([v27 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
-    v4 = [(UIDebuggingSpecViewController *)self spec];
-    v5 = [v4 subviews];
-    v6 = [v5 objectAtIndexedSubscript:0];
-    v7 = [v6 layer];
-    [v7 opacity];
+    spec = [(UIDebuggingSpecViewController *)self spec];
+    subviews = [spec subviews];
+    v6 = [subviews objectAtIndexedSubscript:0];
+    layer = [v6 layer];
+    [layer opacity];
     [(UIDebuggingSpecViewController *)self setOriginalOpacity:v8];
 
-    [v27 locationInView:0];
+    [gestureCopy locationInView:0];
     [(UIDebuggingSpecViewController *)self setOrigin:?];
     goto LABEL_13;
   }
 
-  if ([v27 state] == 2)
+  if ([gestureCopy state] == 2)
   {
-    [v27 locationInView:0];
+    [gestureCopy locationInView:0];
     v10 = v9;
     [(UIDebuggingSpecViewController *)self origin];
     v12 = v10 - v11;
@@ -228,12 +228,12 @@ void __50__UIDebuggingSpecViewController_gotDeleteGesture___block_invoke(uint64_
     if (v12 > 0.0)
     {
       v15 = v14;
-      v16 = [(UIDebuggingSpecViewController *)self spec];
-      v17 = [v16 subviews];
-      v18 = [v17 objectAtIndexedSubscript:0];
-      v19 = [v18 layer];
+      spec2 = [(UIDebuggingSpecViewController *)self spec];
+      subviews2 = [spec2 subviews];
+      v18 = [subviews2 objectAtIndexedSubscript:0];
+      layer2 = [v18 layer];
       *&v20 = v15;
-      [v19 setOpacity:v20];
+      [layer2 setOpacity:v20];
 
       if (v12 <= 250.0)
       {
@@ -251,15 +251,15 @@ LABEL_9:
     }
 
     v21 = v14;
-    v22 = [(UIDebuggingSpecViewController *)self spec];
-    v23 = [v22 subviews];
-    v24 = [v23 objectAtIndexedSubscript:0];
-    v25 = [v24 layer];
+    spec3 = [(UIDebuggingSpecViewController *)self spec];
+    subviews3 = [spec3 subviews];
+    v24 = [subviews3 objectAtIndexedSubscript:0];
+    layer3 = [v24 layer];
     *&v26 = v21;
-    [v25 setOpacity:v26];
+    [layer3 setOpacity:v26];
   }
 
-  else if ([v27 state] == 4 || objc_msgSend(v27, "state") == 5)
+  else if ([gestureCopy state] == 4 || objc_msgSend(gestureCopy, "state") == 5)
   {
     goto LABEL_9;
   }
@@ -269,27 +269,27 @@ LABEL_13:
 
 - (void)hideImage
 {
-  v3 = [(UIDebuggingSpecViewController *)self spec];
-  [v3 removeFromSuperview];
+  spec = [(UIDebuggingSpecViewController *)self spec];
+  [spec removeFromSuperview];
 
   [(UIDebuggingSpecViewController *)self setSpec:0];
   v4 = +[UIDebuggingInformationOverlay overlay];
   [v4 setTouchCaptureEnabled:0];
 
   v5 = +[UIDebuggingInformationOverlay overlay];
-  v6 = [v5 overlayViewController];
-  v7 = [v6 containerView];
+  overlayViewController = [v5 overlayViewController];
+  containerView = [overlayViewController containerView];
 
-  v8 = [v7 layer];
-  [v8 setOpacity:0.0];
+  layer = [containerView layer];
+  [layer setOpacity:0.0];
 
-  [v7 setHidden:0];
+  [containerView setHidden:0];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__UIDebuggingSpecViewController_hideImage__block_invoke;
   v10[3] = &unk_1E70F3590;
-  v11 = v7;
-  v9 = v7;
+  v11 = containerView;
+  v9 = containerView;
   [UIView animateWithDuration:v10 animations:0.2];
 }
 
@@ -308,9 +308,9 @@ void __42__UIDebuggingSpecViewController_hideImage__block_invoke(uint64_t a1)
   [(UIDebuggingSpecViewController *)self startMediaBrowserFromViewController:self];
 }
 
-- (BOOL)startMediaBrowserFromViewController:(id)a3
+- (BOOL)startMediaBrowserFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [UIImagePickerController isSourceTypeAvailable:2];
   if (v5)
   {
@@ -318,28 +318,28 @@ void __42__UIDebuggingSpecViewController_hideImage__block_invoke(uint64_t a1)
     [(UIImagePickerController *)v6 setSourceType:2];
     [(UIImagePickerController *)v6 setAllowsEditing:0];
     [(UINavigationController *)v6 setDelegate:self];
-    [v4 presentViewController:v6 animated:1 completion:0];
+    [controllerCopy presentViewController:v6 animated:1 completion:0];
   }
 
   return v5;
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v5 = a4;
-  v6 = [(UIDebuggingSpecViewController *)self specImages];
-  v7 = [v5 objectForKeyedSubscript:@"UIImagePickerControllerOriginalImage"];
+  infoCopy = info;
+  specImages = [(UIDebuggingSpecViewController *)self specImages];
+  v7 = [infoCopy objectForKeyedSubscript:@"UIImagePickerControllerOriginalImage"];
 
-  [v6 addObject:v7];
-  v8 = [(UIDebuggingSpecViewController *)self collectionView];
-  [v8 reloadData];
+  [specImages addObject:v7];
+  collectionView = [(UIDebuggingSpecViewController *)self collectionView];
+  [collectionView reloadData];
 
   [(UIViewController *)self dismissViewControllerAnimated:1 completion:0];
   v9 = +[UIDebuggingInformationOverlay overlay];
   [v9 setTouchCaptureEnabled:0];
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
   [(UIViewController *)self dismissViewControllerAnimated:1 completion:0];
   v3 = +[UIDebuggingInformationOverlay overlay];

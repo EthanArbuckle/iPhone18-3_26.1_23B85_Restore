@@ -1,19 +1,19 @@
 @interface HangHUDLine
-- (HangHUDLine)initWithQueue:(id)a3 processName:(id)a4 theme:(id)a5 fontSize:(double)a6 lineDelegate:(id)a7;
-- (int64_t)statusForHangWithDuration:(double)a3 timedOut:(BOOL)a4;
+- (HangHUDLine)initWithQueue:(id)queue processName:(id)name theme:(id)theme fontSize:(double)size lineDelegate:(id)delegate;
+- (int64_t)statusForHangWithDuration:(double)duration timedOut:(BOOL)out;
 - (void)nilifyCALayers;
-- (void)setFontSize:(double)a3;
-- (void)update:(id)a3 options:(unint64_t)a4;
+- (void)setFontSize:(double)size;
+- (void)update:(id)update options:(unint64_t)options;
 @end
 
 @implementation HangHUDLine
 
-- (HangHUDLine)initWithQueue:(id)a3 processName:(id)a4 theme:(id)a5 fontSize:(double)a6 lineDelegate:(id)a7
+- (HangHUDLine)initWithQueue:(id)queue processName:(id)name theme:(id)theme fontSize:(double)size lineDelegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  queueCopy = queue;
+  nameCopy = name;
+  themeCopy = theme;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = HangHUDLine;
   v16 = [(HUDLine *)&v22 init];
@@ -31,10 +31,10 @@
     }
 
     [(CATextLayer *)v16->_processNameLayer setFont:qword_100067A28];
-    [(CATextLayer *)v16->_processNameLayer setFontSize:a6];
+    [(CATextLayer *)v16->_processNameLayer setFontSize:size];
     [(HUDLine *)v16 contentScaleForTexts];
     [(CATextLayer *)v16->_processNameLayer setContentsScale:?];
-    [(CATextLayer *)v16->_processNameLayer setString:v13];
+    [(CATextLayer *)v16->_processNameLayer setString:nameCopy];
     [(HUDLine *)v16 setVibrancyFilter:v16->_processNameLayer];
     v19 = +[HUDDurationLayer layer];
     durationLayer = v16->_durationLayer;
@@ -46,16 +46,16 @@
     }
 
     [(HUDDurationLayer *)v16->_durationLayer setFont:qword_100067A38];
-    [(HUDDurationLayer *)v16->_durationLayer setFontSize:a6];
+    [(HUDDurationLayer *)v16->_durationLayer setFontSize:size];
     [(HUDLine *)v16 contentScaleForTexts];
     [(HUDDurationLayer *)v16->_durationLayer setContentsScale:?];
     [(HUDDurationLayer *)v16->_durationLayer setAlignmentMode:kCAAlignmentRight];
-    [(HUDDurationLayer *)v16->_durationLayer setQueue:v12];
+    [(HUDDurationLayer *)v16->_durationLayer setQueue:queueCopy];
     [(HUDLine *)v16 setVibrancyFilter:v16->_durationLayer];
     [(HangHUDLine *)v16 addSublayer:v16->_processNameLayer];
     [(HangHUDLine *)v16 addSublayer:v16->_durationLayer];
-    objc_storeStrong(&v16->_currentTheme, a5);
-    [(HUDLine *)v16 setLineDelegate:v15];
+    objc_storeStrong(&v16->_currentTheme, theme);
+    [(HUDLine *)v16 setLineDelegate:delegateCopy];
     [(HUDLine *)v16 setKeyLayer:v16->_processNameLayer];
     [(HUDLine *)v16 setValueLayer:v16->_durationLayer];
   }
@@ -72,17 +72,17 @@
   self->_durationLayer = 0;
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
   [(CATextLayer *)self->_processNameLayer setFontSize:?];
   durationLayer = self->_durationLayer;
 
-  [(HUDDurationLayer *)durationLayer setFontSize:a3];
+  [(HUDDurationLayer *)durationLayer setFontSize:size];
 }
 
-- (int64_t)statusForHangWithDuration:(double)a3 timedOut:(BOOL)a4
+- (int64_t)statusForHangWithDuration:(double)duration timedOut:(BOOL)out
 {
-  if (a4)
+  if (out)
   {
     return 3;
   }
@@ -99,25 +99,25 @@
     +[HTPrefs sharedPrefs];
   }
   v12 = ;
-  v13 = [v12 runloopHangTimeoutDurationMSec];
+  runloopHangTimeoutDurationMSec = [v12 runloopHangTimeoutDurationMSec];
 
-  if (v13 * 0.555555556 <= a3)
+  if (runloopHangTimeoutDurationMSec * 0.555555556 <= duration)
   {
     return 2;
   }
 
   else
   {
-    return v13 * 0.222222222 <= a3;
+    return runloopHangTimeoutDurationMSec * 0.222222222 <= duration;
   }
 }
 
-- (void)update:(id)a3 options:(unint64_t)a4
+- (void)update:(id)update options:(unint64_t)options
 {
-  v6 = a3;
+  updateCopy = update;
   if (![(HUDLine *)self updatesComplete])
   {
-    v7 = v6;
+    v7 = updateCopy;
     v8 = [(CATextLayer *)self->_processNameLayer animationForKey:@"foreground-color-fade-animation"];
     if (v8)
     {
@@ -137,11 +137,11 @@
       [(HUDDurationLayer *)self->_durationLayer hangDuration];
       [(HUDDurationLayer *)durationLayer setHangDuration:v13 > 0.0 animated:v12];
       [v7 hangDurationMS];
-      v14 = [(HangHUDLine *)self statusForHangWithDuration:(a4 >> 1) & 1 timedOut:?];
+      v14 = [(HangHUDLine *)self statusForHangWithDuration:(options >> 1) & 1 timedOut:?];
       v15 = [(HUDTheme *)self->_currentTheme currentHangTextColorForStatus:v14];
       [(CATextLayer *)self->_processNameLayer setForegroundColor:v15];
       [(HUDDurationLayer *)self->_durationLayer setForegroundColor:v15];
-      if (a4)
+      if (options)
       {
 LABEL_12:
 

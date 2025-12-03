@@ -1,19 +1,19 @@
 @interface IDSRapportClient
 + (IDSRapportClient)sharedInstance;
-- (BOOL)isDeviceDiscovered:(id)a3;
+- (BOOL)isDeviceDiscovered:(id)discovered;
 - (IDSRapportClient)init;
-- (id)_deviceWithIdentifier:(id)a3 error:(id *)a4;
+- (id)_deviceWithIdentifier:(id)identifier error:(id *)error;
 - (id)_newCompanionLinkClient;
-- (void)_companionLinkClientForDeviceIdentifier:(id)a3 completion:(id)a4;
-- (void)_handleDiscoveredDevice:(id)a3;
-- (void)_handleIncomingIDSMessageEvent:(id)a3 options:(id)a4;
-- (void)_handleLostDevice:(id)a3;
-- (void)_notifyDelegatesWithBlock:(id)a3;
-- (void)addDelegate:(id)a3;
+- (void)_companionLinkClientForDeviceIdentifier:(id)identifier completion:(id)completion;
+- (void)_handleDiscoveredDevice:(id)device;
+- (void)_handleIncomingIDSMessageEvent:(id)event options:(id)options;
+- (void)_handleLostDevice:(id)device;
+- (void)_notifyDelegatesWithBlock:(id)block;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
-- (void)sendMessage:(id)a3 toDeviceIdentifier:(id)a4 completionBlock:(id)a5;
-- (void)ttlCache:(id)a3 willReturnCachedObject:(id)a4 forKey:(id)a5 completion:(id)a6;
+- (void)removeDelegate:(id)delegate;
+- (void)sendMessage:(id)message toDeviceIdentifier:(id)identifier completionBlock:(id)block;
+- (void)ttlCache:(id)cache willReturnCachedObject:(id)object forKey:(id)key completion:(id)completion;
 @end
 
 @implementation IDSRapportClient
@@ -62,9 +62,9 @@
     }
 
     objc_initWeak(&location, v2);
-    v15 = [(IDSRapportClient *)v2 _newCompanionLinkClient];
+    _newCompanionLinkClient = [(IDSRapportClient *)v2 _newCompanionLinkClient];
     companionLinkClient = v2->_companionLinkClient;
-    v2->_companionLinkClient = v15;
+    v2->_companionLinkClient = _newCompanionLinkClient;
 
     v17 = v2->_companionLinkClient;
     v18 = im_primary_queue();
@@ -170,9 +170,9 @@
   [(IDSRapportClient *)&v4 dealloc];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v7 = a3;
+  delegateCopy = delegate;
   [(NSRecursiveLock *)self->_lock lock];
   delegateMap = self->_delegateMap;
   if (!delegateMap)
@@ -184,20 +184,20 @@
     delegateMap = self->_delegateMap;
   }
 
-  if (![(NSHashTable *)delegateMap containsObject:v7])
+  if (![(NSHashTable *)delegateMap containsObject:delegateCopy])
   {
-    [(NSHashTable *)self->_delegateMap addObject:v7];
+    [(NSHashTable *)self->_delegateMap addObject:delegateCopy];
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   lock = self->_lock;
-  v5 = a3;
+  delegateCopy = delegate;
   [(NSRecursiveLock *)lock lock];
-  [(NSHashTable *)self->_delegateMap removeObject:v5];
+  [(NSHashTable *)self->_delegateMap removeObject:delegateCopy];
 
   if (![(NSHashTable *)self->_delegateMap count])
   {
@@ -210,29 +210,29 @@
   [(NSRecursiveLock *)v7 unlock];
 }
 
-- (BOOL)isDeviceDiscovered:(id)a3
+- (BOOL)isDeviceDiscovered:(id)discovered
 {
   lock = self->_lock;
-  v5 = a3;
+  discoveredCopy = discovered;
   [(NSRecursiveLock *)lock lock];
-  LOBYTE(lock) = [(NSMutableSet *)self->_discoveredDevices containsObject:v5];
+  LOBYTE(lock) = [(NSMutableSet *)self->_discoveredDevices containsObject:discoveredCopy];
 
   [(NSRecursiveLock *)self->_lock unlock];
   return lock;
 }
 
-- (void)sendMessage:(id)a3 toDeviceIdentifier:(id)a4 completionBlock:(id)a5
+- (void)sendMessage:(id)message toDeviceIdentifier:(id)identifier completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  blockCopy = block;
   v11 = +[IDSFoundationLog delivery];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v9;
+    v20 = identifierCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = messageCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "outgoing IDS Message {deviceIentifier: %@, event: %@}", buf, 0x16u);
   }
 
@@ -240,48 +240,48 @@
   v15[1] = 3221225472;
   v15[2] = sub_100550BF4;
   v15[3] = &unk_100BE0118;
-  v17 = v8;
-  v18 = v10;
-  v16 = v9;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v17 = messageCopy;
+  v18 = blockCopy;
+  v16 = identifierCopy;
+  v12 = messageCopy;
+  v13 = blockCopy;
+  v14 = identifierCopy;
   [(IDSRapportClient *)self _companionLinkClientForDeviceIdentifier:v14 completion:v15];
 }
 
-- (void)ttlCache:(id)a3 willReturnCachedObject:(id)a4 forKey:(id)a5 completion:(id)a6
+- (void)ttlCache:(id)cache willReturnCachedObject:(id)object forKey:(id)key completion:(id)completion
 {
-  v9 = a6;
-  v10 = v9;
-  if (a4)
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (object)
   {
-    (*(v9 + 2))(v9, a4);
+    (*(completionCopy + 2))(completionCopy, object);
   }
 
   else
   {
     v21 = 0;
-    v11 = [(IDSRapportClient *)self _deviceWithIdentifier:a5 error:&v21];
+    v11 = [(IDSRapportClient *)self _deviceWithIdentifier:key error:&v21];
     v12 = v21;
     if (v11)
     {
-      v13 = [(IDSRapportClient *)self _newCompanionLinkClient];
-      [v13 setDestinationDevice:v11];
+      _newCompanionLinkClient = [(IDSRapportClient *)self _newCompanionLinkClient];
+      [_newCompanionLinkClient setDestinationDevice:v11];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_100551064;
       v18[3] = &unk_100BDA9A0;
-      v19 = v13;
+      v19 = _newCompanionLinkClient;
       v20 = v10;
-      v14 = v13;
+      v14 = _newCompanionLinkClient;
       [v14 activateWithCompletion:v18];
     }
 
     else
     {
       v15 = [CUTResult alloc];
-      v16 = [(IDSRapportClient *)self companionLinkClient];
-      v17 = [v15 initWithSuccess:v16];
+      companionLinkClient = [(IDSRapportClient *)self companionLinkClient];
+      v17 = [v15 initWithSuccess:companionLinkClient];
 
       (v10)[2](v10, v17);
       v14 = v12;
@@ -290,17 +290,17 @@
   }
 }
 
-- (void)_notifyDelegatesWithBlock:(id)a3
+- (void)_notifyDelegatesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(NSRecursiveLock *)self->_lock lock];
-  v5 = [(NSHashTable *)self->_delegateMap allObjects];
+  allObjects = [(NSHashTable *)self->_delegateMap allObjects];
   [(NSRecursiveLock *)self->_lock unlock];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -316,7 +316,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v10));
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10));
         v10 = v10 + 1;
       }
 
@@ -328,29 +328,29 @@
   }
 }
 
-- (void)_handleDiscoveredDevice:(id)a3
+- (void)_handleDiscoveredDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[IDSFoundationLog delivery];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Discovered device %@", buf, 0xCu);
   }
 
-  v6 = [v4 idsDeviceIdentifier];
-  if (v6)
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+  if (idsDeviceIdentifier)
   {
-    v7 = v6;
-    v8 = [(IDSRapportClient *)self _isDiscoveredOverWiFi:v4];
+    v7 = idsDeviceIdentifier;
+    v8 = [(IDSRapportClient *)self _isDiscoveredOverWiFi:deviceCopy];
 
     if (v8)
     {
       [(NSRecursiveLock *)self->_lock lock];
       discoveredDevices = self->_discoveredDevices;
-      v10 = [v4 idsDeviceIdentifier];
-      [(NSMutableSet *)discoveredDevices addObject:v10];
+      idsDeviceIdentifier2 = [deviceCopy idsDeviceIdentifier];
+      [(NSMutableSet *)discoveredDevices addObject:idsDeviceIdentifier2];
 
       [(NSRecursiveLock *)self->_lock unlock];
       v11[0] = _NSConcreteStackBlock;
@@ -358,35 +358,35 @@
       v11[2] = sub_1005513C0;
       v11[3] = &unk_100BE0140;
       v11[4] = self;
-      v12 = v4;
+      v12 = deviceCopy;
       [(IDSRapportClient *)self _notifyDelegatesWithBlock:v11];
     }
   }
 }
 
-- (void)_handleLostDevice:(id)a3
+- (void)_handleLostDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[IDSFoundationLog delivery];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Lost device %@", buf, 0xCu);
   }
 
-  v6 = [v4 idsDeviceIdentifier];
-  if (v6)
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+  if (idsDeviceIdentifier)
   {
-    v7 = v6;
-    v8 = [(IDSRapportClient *)self _isDiscoveredOverWiFi:v4];
+    v7 = idsDeviceIdentifier;
+    v8 = [(IDSRapportClient *)self _isDiscoveredOverWiFi:deviceCopy];
 
     if (v8)
     {
       [(NSRecursiveLock *)self->_lock lock];
       discoveredDevices = self->_discoveredDevices;
-      v10 = [v4 idsDeviceIdentifier];
-      [(NSMutableSet *)discoveredDevices removeObject:v10];
+      idsDeviceIdentifier2 = [deviceCopy idsDeviceIdentifier];
+      [(NSMutableSet *)discoveredDevices removeObject:idsDeviceIdentifier2];
 
       [(NSRecursiveLock *)self->_lock unlock];
       v11[0] = _NSConcreteStackBlock;
@@ -394,23 +394,23 @@
       v11[2] = sub_1005515BC;
       v11[3] = &unk_100BE0140;
       v11[4] = self;
-      v12 = v4;
+      v12 = deviceCopy;
       [(IDSRapportClient *)self _notifyDelegatesWithBlock:v11];
     }
   }
 }
 
-- (void)_handleIncomingIDSMessageEvent:(id)a3 options:(id)a4
+- (void)_handleIncomingIDSMessageEvent:(id)event options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  optionsCopy = options;
   v8 = +[IDSFoundationLog delivery];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = eventCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "incoming IDS Message {event: %@, options: %@}", buf, 0x16u);
   }
 
@@ -422,7 +422,7 @@
   v9 = qword_100CBEFD0;
   if (v9)
   {
-    v10 = [v7 objectForKeyedSubscript:v9];
+    v10 = [optionsCopy objectForKeyedSubscript:v9];
     if ([v10 length])
     {
       v11 = [NSString stringWithFormat:@"guest-device:%@", v10];
@@ -431,7 +431,7 @@
       v13[2] = sub_100551864;
       v13[3] = &unk_100BE0168;
       v13[4] = self;
-      v14 = v6;
+      v14 = eventCopy;
       v15 = v11;
       v12 = v11;
       [(IDSRapportClient *)self _notifyDelegatesWithBlock:v13];
@@ -457,34 +457,34 @@
   }
 }
 
-- (void)_companionLinkClientForDeviceIdentifier:(id)a3 completion:(id)a4
+- (void)_companionLinkClientForDeviceIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSRapportClient *)self ttlCache];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  ttlCache = [(IDSRapportClient *)self ttlCache];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1005519A4;
   v11[3] = &unk_100BE0190;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [v8 fetchCachedObjectForKey:v9 completion:v11];
+  v9 = identifierCopy;
+  v10 = completionCopy;
+  [ttlCache fetchCachedObjectForKey:v9 completion:v11];
 }
 
-- (id)_deviceWithIdentifier:(id)a3 error:(id *)a4
+- (id)_deviceWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(IDSRapportClient *)self companionLinkClient];
-  v8 = [v7 activeDevices];
+  companionLinkClient = [(IDSRapportClient *)self companionLinkClient];
+  activeDevices = [companionLinkClient activeDevices];
 
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  v9 = [activeDevices countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -495,12 +495,12 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(activeDevices);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 effectiveIdentifier];
-        v15 = [v14 isEqualToString:v6];
+        effectiveIdentifier = [v13 effectiveIdentifier];
+        v15 = [effectiveIdentifier isEqualToString:identifierCopy];
 
         if (v15)
         {
@@ -509,7 +509,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v10 = [activeDevices countByEnumeratingWithState:&v19 objects:v25 count:16];
       if (v10)
       {
         continue;
@@ -519,14 +519,14 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
     v16 = IDSSendErrorDomain;
     v23 = NSDebugDescriptionErrorKey;
     v24 = @"We failed to find a rapport destination for the provided deviceIdentifier";
-    v8 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    [NSError errorWithDomain:v16 code:1 userInfo:v8];
-    *a4 = v17 = 0;
+    activeDevices = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
+    [NSError errorWithDomain:v16 code:1 userInfo:activeDevices];
+    *error = v17 = 0;
 LABEL_12:
   }
 

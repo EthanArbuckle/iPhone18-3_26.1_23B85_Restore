@@ -9,16 +9,16 @@
 
 - (id)unreadCriterion
 {
-  v2 = [(MuteThreadsMailboxController *)self criterion];
+  criterion = [(MuteThreadsMailboxController *)self criterion];
   v3 = +[NSUserDefaults em_userDefaults];
   v4 = [v3 BOOLForKey:DisableThreadingKey];
 
   if ((v4 & 1) == 0)
   {
-    [v2 setIncludeRelatedMessages:1];
+    [criterion setIncludeRelatedMessages:1];
   }
 
-  return v2;
+  return criterion;
 }
 
 - (id)unscopedCountPredicate

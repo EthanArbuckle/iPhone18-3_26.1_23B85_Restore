@@ -1,5 +1,5 @@
 @interface MUPlacePhotoGalleryViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLabelAttributionButton;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)downloadImageForVisibleViews;
@@ -7,23 +7,23 @@
 
 @implementation MUPlacePhotoGalleryViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUPlacePhotoGalleryViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MKMapItemPhoto" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKMapItemPhoto" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceVariable:@"_photoViews" withType:"NSArray"];
-  [v3 validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceVariable:@"_photos" withType:"NSArray"];
-  [v3 validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceMethod:@"rapBarButtonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceMethod:@"currentPhoto" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKMapItemPhoto" hasInstanceMethod:@"attribution" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_MKMapItemPhotosAttribution" isKindOfClass:@"_MKMapItemAttribution"];
-  [v3 validateClass:@"_MKMapItemAttribution" hasInstanceMethod:@"providerName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceMethod:@"attributionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUPlacePhotoGalleryAttributionView" hasInstanceMethod:@"accessoryButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceMethod:@"downloadImageForVisibleViews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUPlacePhotoGalleryViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MKMapItemPhoto" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKMapItemPhoto" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceVariable:@"_photoViews" withType:"NSArray"];
+  [validationsCopy validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceVariable:@"_photos" withType:"NSArray"];
+  [validationsCopy validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceMethod:@"rapBarButtonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceMethod:@"currentPhoto" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKMapItemPhoto" hasInstanceMethod:@"attribution" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_MKMapItemPhotosAttribution" isKindOfClass:@"_MKMapItemAttribution"];
+  [validationsCopy validateClass:@"_MKMapItemAttribution" hasInstanceMethod:@"providerName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceMethod:@"attributionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUPlacePhotoGalleryAttributionView" hasInstanceMethod:@"accessoryButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUPlacePhotoGalleryViewController" hasInstanceMethod:@"downloadImageForVisibleViews" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

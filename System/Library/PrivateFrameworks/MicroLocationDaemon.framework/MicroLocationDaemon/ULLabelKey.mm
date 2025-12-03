@@ -1,51 +1,51 @@
 @interface ULLabelKey
-- (BOOL)isEqual:(id)a3;
-- (ULLabelKey)initWithName:(id)a3 contextLayer:(unint64_t)a4 mapItemType:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULLabelKey)initWithName:(id)name contextLayer:(unint64_t)layer mapItemType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation ULLabelKey
 
-- (ULLabelKey)initWithName:(id)a3 contextLayer:(unint64_t)a4 mapItemType:(id)a5
+- (ULLabelKey)initWithName:(id)name contextLayer:(unint64_t)layer mapItemType:(id)type
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = ULLabelKey;
   v10 = [(ULLabelKey *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(ULLabelKey *)v10 setName:v8];
-    [(ULLabelKey *)v11 setContextLayer:a4];
-    [(ULLabelKey *)v11 setMapItemType:v9];
+    [(ULLabelKey *)v10 setName:nameCopy];
+    [(ULLabelKey *)v11 setContextLayer:layer];
+    [(ULLabelKey *)v11 setMapItemType:typeCopy];
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v5 = [(ULLabelKey *)self name];
-  v6 = [v4 name];
-  if ([v5 isEqual:v6])
+  name = [(ULLabelKey *)self name];
+  name2 = [equalCopy name];
+  if ([name isEqual:name2])
   {
   }
 
   else
   {
-    v7 = [(ULLabelKey *)self name];
-    v8 = [v4 name];
+    name3 = [(ULLabelKey *)self name];
+    name4 = [equalCopy name];
 
-    if (v7 != v8)
+    if (name3 != name4)
     {
 LABEL_8:
       v12 = 0;
@@ -53,15 +53,15 @@ LABEL_8:
     }
   }
 
-  v9 = [(ULLabelKey *)self contextLayer];
-  if (v9 != [v4 contextLayer])
+  contextLayer = [(ULLabelKey *)self contextLayer];
+  if (contextLayer != [equalCopy contextLayer])
   {
     goto LABEL_8;
   }
 
-  v10 = [(ULLabelKey *)self mapItemType];
-  v11 = [v4 mapItemType];
-  if ([v10 isEqual:v11])
+  mapItemType = [(ULLabelKey *)self mapItemType];
+  mapItemType2 = [equalCopy mapItemType];
+  if ([mapItemType isEqual:mapItemType2])
   {
 
     v12 = 1;
@@ -69,9 +69,9 @@ LABEL_8:
 
   else
   {
-    v14 = [(ULLabelKey *)self mapItemType];
-    v15 = [v4 mapItemType];
-    v12 = v14 == v15;
+    mapItemType3 = [(ULLabelKey *)self mapItemType];
+    mapItemType4 = [equalCopy mapItemType];
+    v12 = mapItemType3 == mapItemType4;
   }
 
 LABEL_9:
@@ -86,13 +86,13 @@ LABEL_9:
   return v3 ^ contextLayer ^ [(NSString *)self->_mapItemType hash]^ 0x1F;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(ULLabelKey *)self name];
-  v6 = [(ULLabelKey *)self contextLayer];
-  v7 = [(ULLabelKey *)self mapItemType];
-  v8 = [v4 initWithName:v5 contextLayer:v6 mapItemType:v7];
+  name = [(ULLabelKey *)self name];
+  contextLayer = [(ULLabelKey *)self contextLayer];
+  mapItemType = [(ULLabelKey *)self mapItemType];
+  v8 = [v4 initWithName:name contextLayer:contextLayer mapItemType:mapItemType];
 
   return v8;
 }

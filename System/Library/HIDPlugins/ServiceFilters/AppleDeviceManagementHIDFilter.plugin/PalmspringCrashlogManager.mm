@@ -1,25 +1,25 @@
 @interface PalmspringCrashlogManager
-- (BOOL)startWithDispatchQueue:(id)a3;
-- (PalmspringCrashlogManager)initWithDevice:(id)a3;
-- (id)extractCrashlogWithInfoEntry:(id)a3 payload:(unsigned int)a4 err:(id *)a5;
-- (id)getInfoReportWithError:(id *)a3;
-- (int)clearFirmwareCrashlogWithID:(unsigned __int8)a3 error:(id *)a4;
-- (int)collectErrorStatsWithError:(id *)a3;
-- (int)extractCrashlogsWithError:(id *)a3;
-- (int)getPayloadSize:(unsigned int *)a3 error:(id *)a4;
-- (int)setCommandForReportID:(int)a3 command:(unsigned __int8)a4 error:(id *)a5;
-- (int)setReadOffset:(unsigned __int8)a3 offset:(unsigned int)a4 error:(id *)a5;
+- (BOOL)startWithDispatchQueue:(id)queue;
+- (PalmspringCrashlogManager)initWithDevice:(id)device;
+- (id)extractCrashlogWithInfoEntry:(id)entry payload:(unsigned int)payload err:(id *)err;
+- (id)getInfoReportWithError:(id *)error;
+- (int)clearFirmwareCrashlogWithID:(unsigned __int8)d error:(id *)error;
+- (int)collectErrorStatsWithError:(id *)error;
+- (int)extractCrashlogsWithError:(id *)error;
+- (int)getPayloadSize:(unsigned int *)size error:(id *)error;
+- (int)setCommandForReportID:(int)d command:(unsigned __int8)command error:(id *)error;
+- (int)setReadOffset:(unsigned __int8)offset offset:(unsigned int)a4 error:(id *)error;
 - (void)dealloc;
-- (void)inputReportHandler:(id)a3 timestamp:(unint64_t)a4 type:(int64_t)a5 reportID:(int64_t)a6 report:(id)a7;
+- (void)inputReportHandler:(id)handler timestamp:(unint64_t)timestamp type:(int64_t)type reportID:(int64_t)d report:(id)report;
 - (void)stop;
 @end
 
 @implementation PalmspringCrashlogManager
 
-- (PalmspringCrashlogManager)initWithDevice:(id)a3
+- (PalmspringCrashlogManager)initWithDevice:(id)device
 {
-  v6 = a3;
-  if (!v6)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     sub_467C(a2, self);
   }
@@ -42,7 +42,7 @@
       sub_46F8(v13, a2);
     }
 
-    objc_storeStrong(&v7->_device, a3);
+    objc_storeStrong(&v7->_device, device);
     [(HIDDevice *)v7->_device open];
     v28 = 0;
     v14 = [(PalmspringCrashlogManager *)v7 getInfoReportWithError:&v28];
@@ -59,7 +59,7 @@
 
       *&location[4] = v24;
       v31 = 2112;
-      v32 = v6;
+      v32 = deviceCopy;
       v33 = 2112;
       v34 = v15;
       _os_log_debug_impl(&dword_0, v16, OS_LOG_TYPE_DEBUG, "device %s crashlogs: device %@, err %@", location, 0x20u);
@@ -104,7 +104,7 @@ LABEL_15:
   return v23;
 }
 
-- (id)getInfoReportWithError:(id *)a3
+- (id)getInfoReportWithError:(id *)error
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -115,7 +115,7 @@ LABEL_15:
   v6 = +[PalmspringCrashlogInfo maxInfoReportSize];
   v7 = &v12 - ((v6 + 15) & 0x1FFFFFFF0);
   v12 = v6;
-  if (([(HIDDevice *)self->_device getReport:v7 reportLength:&v12 withIdentifier:13 forType:2 error:a3]& 1) != 0)
+  if (([(HIDDevice *)self->_device getReport:v7 reportLength:&v12 withIdentifier:13 forType:2 error:error]& 1) != 0)
   {
     v8 = [PalmspringCrashlogInfo alloc];
     v9 = [NSData dataWithBytes:v7 length:v12];
@@ -126,7 +126,7 @@ LABEL_15:
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
-      sub_4830(a3);
+      sub_4830(error);
     }
 
     v10 = 0;
@@ -135,23 +135,23 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)startWithDispatchQueue:(id)a3
+- (BOOL)startWithDispatchQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     sub_47A0(log);
-    if (v5)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (v5)
+  else if (queueCopy)
   {
 LABEL_3:
-    objc_storeStrong(&self->_queue, a3);
+    objc_storeStrong(&self->_queue, queue);
     [(HIDDevice *)self->_device setDispatchQueue:self->_queue];
     [(HIDDevice *)self->_device activate];
     goto LABEL_7;
@@ -164,7 +164,7 @@ LABEL_3:
 
 LABEL_7:
 
-  return v5 != 0;
+  return queueCopy != 0;
 }
 
 - (void)stop
@@ -195,23 +195,23 @@ LABEL_7:
   [(PalmspringCrashlogManager *)&v4 dealloc];
 }
 
-- (void)inputReportHandler:(id)a3 timestamp:(unint64_t)a4 type:(int64_t)a5 reportID:(int64_t)a6 report:(id)a7
+- (void)inputReportHandler:(id)handler timestamp:(unint64_t)timestamp type:(int64_t)type reportID:(int64_t)d report:(id)report
 {
-  v10 = a3;
-  v11 = a7;
+  handlerCopy = handler;
+  reportCopy = report;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     sub_47A0(log);
   }
 
-  if (a6 == 12)
+  if (d == 12)
   {
-    v13 = [v11 bytes];
+    bytes = [reportCopy bytes];
     v14 = self->_log;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = v13[1];
+      v15 = bytes[1];
       *buf = 67109120;
       v19 = v15;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "HID Crashlog input report, info received: 0x%02x", buf, 8u);
@@ -230,7 +230,7 @@ LABEL_7:
   }
 }
 
-- (int)extractCrashlogsWithError:(id *)a3
+- (int)extractCrashlogsWithError:(id *)error
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -239,8 +239,8 @@ LABEL_7:
   }
 
   v6 = -536870198;
-  v43 = a3;
-  v7 = [(PalmspringCrashlogManager *)self getInfoReportWithError:a3];
+  errorCopy = error;
+  v7 = [(PalmspringCrashlogManager *)self getInfoReportWithError:error];
   if (v7)
   {
     v44 = v7;
@@ -313,15 +313,15 @@ LABEL_7:
             }
 
             v65[0] = @"crashlogData";
-            v17 = [v13 data];
-            v66[0] = v17;
+            data = [v13 data];
+            v66[0] = data;
             v65[1] = @"crashlogName";
-            v18 = [v13 info];
-            v19 = [v18 name];
-            v66[1] = v19;
+            info = [v13 info];
+            name = [info name];
+            v66[1] = name;
             v65[2] = @"crashlogType";
-            v20 = [v13 info];
-            v21 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v20 type]);
+            info2 = [v13 info];
+            v21 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [info2 type]);
             v66[2] = v21;
             v22 = [NSDictionary dictionaryWithObjects:v66 forKeys:v65 count:3];
             [(PalmspringCrashlogManager *)self setLastCrashlog:v22];
@@ -329,9 +329,9 @@ LABEL_7:
             v13 = v52;
             DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
             CFNotificationCenterPostNotificationWithOptions(DarwinNotifyCenter, @"com.apple.hidswdebug.AppleDeviceManagementHIDFilter.CrashlogExtracted", 0, 0, 2uLL);
-            v24 = [v12 uniqueID];
+            uniqueID = [v12 uniqueID];
             v53 = 0;
-            v25 = [(PalmspringCrashlogManager *)self clearFirmwareCrashlogWithID:v24 error:&v53];
+            v25 = [(PalmspringCrashlogManager *)self clearFirmwareCrashlogWithID:uniqueID error:&v53];
             v26 = v53;
           }
 
@@ -345,9 +345,9 @@ LABEL_7:
           v27 = [NSString stringWithFormat:@"%@", v12];
           v64[0] = v27;
           v63[1] = @"Crashlog";
-          v28 = [v13 blobVersion];
-          v29 = [v13 data];
-          v30 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Blob version: %d, length: %lu", v28, [v29 length]);
+          blobVersion = [v13 blobVersion];
+          data2 = [v13 data];
+          v30 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Blob version: %d, length: %lu", blobVersion, [data2 length]);
           v64[1] = v30;
           v63[2] = @"Timestamp";
           v31 = +[NSDate date];
@@ -400,10 +400,10 @@ LABEL_7:
     v51 = 0;
 LABEL_29:
 
-    if (v43)
+    if (errorCopy)
     {
       v37 = v9;
-      *v43 = v9;
+      *errorCopy = v9;
     }
 
     v38 = self->_log;
@@ -427,29 +427,29 @@ LABEL_29:
   return v6;
 }
 
-- (id)extractCrashlogWithInfoEntry:(id)a3 payload:(unsigned int)a4 err:(id *)a5
+- (id)extractCrashlogWithInfoEntry:(id)entry payload:(unsigned int)payload err:(id *)err
 {
-  v9 = a3;
+  entryCopy = entry;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     sub_49D4(log, a2);
   }
 
-  if (-[PalmspringCrashlogManager setReadOffset:offset:error:](self, "setReadOffset:offset:error:", [v9 uniqueID], 0, a5))
+  if (-[PalmspringCrashlogManager setReadOffset:offset:error:](self, "setReadOffset:offset:error:", [entryCopy uniqueID], 0, err))
   {
     v11 = 0;
     goto LABEL_36;
   }
 
   v38 = &v35;
-  v12 = a4 + 1;
+  v12 = payload + 1;
   v13 = objc_alloc_init(NSMutableData);
   v14 = [v13 length];
-  if (v14 >= [v9 headerAndRawBlobSize])
+  if (v14 >= [entryCopy headerAndRawBlobSize])
   {
 LABEL_30:
-    v11 = [[PalmspringCrashlog alloc] initWithInfoEntry:v9 data:v13];
+    v11 = [[PalmspringCrashlog alloc] initWithInfoEntry:entryCopy data:v13];
     goto LABEL_35;
   }
 
@@ -462,7 +462,7 @@ LABEL_30:
   while (1)
   {
     v39 = v12;
-    v17 = [(HIDDevice *)self->_device getReport:&v35 - ((v12 + 15) & 0x1FFFFFFF0) reportLength:&v39 withIdentifier:12 forType:2 error:a5, v35];
+    v17 = [(HIDDevice *)self->_device getReport:&v35 - ((v12 + 15) & 0x1FFFFFFF0) reportLength:&v39 withIdentifier:12 forType:2 error:err, v35];
     if (v17)
     {
       v18 = v39 < 2;
@@ -481,17 +481,17 @@ LABEL_30:
       {
         v26 = v39 - 1;
         v27 = v22;
-        v28 = [v9 uniqueID];
+        uniqueID = [entryCopy uniqueID];
         v29 = [v13 length];
-        v30 = [v9 headerAndRawBlobSize];
+        headerAndRawBlobSize = [entryCopy headerAndRawBlobSize];
         *buf = v35;
         *v43 = v26;
         *&v43[8] = 1024;
-        *&v43[10] = v28;
+        *&v43[10] = uniqueID;
         v44 = 2048;
         v45 = v29;
         v46 = 1024;
-        v47 = v30;
+        v47 = headerAndRawBlobSize;
         _os_log_debug_impl(&dword_0, v27, OS_LOG_TYPE_DEBUG, "Extracted %ld bytes of crashlog %d (%ld / %d)", buf, 0x22u);
       }
 
@@ -500,26 +500,26 @@ LABEL_30:
     }
 
     v19 = v17 ^ 1;
-    if (!a5)
+    if (!err)
     {
       v19 = 1;
     }
 
-    if ((v19 & 1) == 0 && !*a5)
+    if ((v19 & 1) == 0 && !*err)
     {
       v40 = v37;
       v41 = @"get report for crashlog information returned no crashlog data";
       v20 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-      *a5 = [[NSError alloc] initWithDomain:@"PalmspringCrashlogManager" code:-536870166 userInfo:v20];
+      *err = [[NSError alloc] initWithDomain:@"PalmspringCrashlogManager" code:-536870166 userInfo:v20];
     }
 
     ++v16;
     v21 = self->_log;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      if (a5)
+      if (err)
       {
-        v25 = *a5;
+        v25 = *err;
       }
 
       else
@@ -539,14 +539,14 @@ LABEL_30:
       break;
     }
 
-    if (-[PalmspringCrashlogManager setReadOffset:offset:error:](self, "setReadOffset:offset:error:", [v9 uniqueID], objc_msgSend(v13, "length"), a5))
+    if (-[PalmspringCrashlogManager setReadOffset:offset:error:](self, "setReadOffset:offset:error:", [entryCopy uniqueID], objc_msgSend(v13, "length"), err))
     {
       v31 = self->_log;
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        if (a5)
+        if (err)
         {
-          v34 = *a5;
+          v34 = *err;
         }
 
         else
@@ -564,7 +564,7 @@ LABEL_30:
 
 LABEL_24:
     v24 = [v13 length];
-    if (v24 >= [v9 headerAndRawBlobSize])
+    if (v24 >= [entryCopy headerAndRawBlobSize])
     {
       goto LABEL_30;
     }
@@ -584,7 +584,7 @@ LABEL_36:
   return v11;
 }
 
-- (int)clearFirmwareCrashlogWithID:(unsigned __int8)a3 error:(id *)a4
+- (int)clearFirmwareCrashlogWithID:(unsigned __int8)d error:(id *)error
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -593,8 +593,8 @@ LABEL_36:
   }
 
   v12 = -500;
-  v13 = a3;
-  if (([(HIDDevice *)self->_device setReport:&v12 reportLength:3 withIdentifier:12 forType:2 error:a4]& 1) != 0)
+  dCopy = d;
+  if (([(HIDDevice *)self->_device setReport:&v12 reportLength:3 withIdentifier:12 forType:2 error:error]& 1) != 0)
   {
     return 0;
   }
@@ -603,44 +603,44 @@ LABEL_36:
   v10 = self->_log;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    sub_4B7C(a3, a4, v10);
+    sub_4B7C(d, error, v10);
   }
 
   return v9;
 }
 
-- (int)getPayloadSize:(unsigned int *)a3 error:(id *)a4
+- (int)getPayloadSize:(unsigned int *)size error:(id *)error
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     sub_47A0(log);
-    if (a3)
+    if (size)
     {
       goto LABEL_3;
     }
   }
 
-  else if (a3)
+  else if (size)
   {
     goto LABEL_3;
   }
 
   sub_4C08(a2, self);
 LABEL_3:
-  v9 = [(PalmspringCrashlogManager *)self setCommandForReportID:12 command:4 error:a4];
+  v9 = [(PalmspringCrashlogManager *)self setCommandForReportID:12 command:4 error:error];
   if (!v9)
   {
     memset(v12, 0, 5);
     v11 = 5;
-    if (([(HIDDevice *)self->_device getReport:v12 reportLength:&v11 withIdentifier:12 forType:2 error:a4]& 1) != 0)
+    if (([(HIDDevice *)self->_device getReport:v12 reportLength:&v11 withIdentifier:12 forType:2 error:error]& 1) != 0)
     {
       if (v11 == 5)
       {
         if (*(v12 + 1) <= 0x4000u)
         {
           v9 = 0;
-          *a3 = *(v12 + 1);
+          *size = *(v12 + 1);
         }
 
         else
@@ -677,9 +677,9 @@ LABEL_3:
   return v9;
 }
 
-- (int)setReadOffset:(unsigned __int8)a3 offset:(unsigned int)a4 error:(id *)a5
+- (int)setReadOffset:(unsigned __int8)offset offset:(unsigned int)a4 error:(id *)error
 {
-  v7 = a3;
+  offsetCopy = offset;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -688,16 +688,16 @@ LABEL_3:
     *buf = 138412802;
     *v21 = v15;
     *&v21[8] = 1024;
-    *v22 = v7;
+    *v22 = offsetCopy;
     *&v22[4] = 1024;
     *&v22[6] = a4;
     _os_log_debug_impl(&dword_0, v14, OS_LOG_TYPE_DEBUG, "%@, crashlog ID %u, offset %u", buf, 0x18u);
   }
 
   v17 = -244;
-  v18 = v7;
+  v18 = offsetCopy;
   v19 = a4;
-  if (([(HIDDevice *)self->_device setReport:&v17 reportLength:7 withIdentifier:12 forType:2 error:a5]& 1) != 0)
+  if (([(HIDDevice *)self->_device setReport:&v17 reportLength:7 withIdentifier:12 forType:2 error:error]& 1) != 0)
   {
     return 0;
   }
@@ -706,9 +706,9 @@ LABEL_3:
   v12 = self->_log;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    if (a5)
+    if (error)
     {
-      v16 = *a5;
+      v16 = *error;
     }
 
     else
@@ -719,7 +719,7 @@ LABEL_3:
     *buf = 67109634;
     *v21 = a4;
     *&v21[4] = 1024;
-    *&v21[6] = v7;
+    *&v21[6] = offsetCopy;
     *v22 = 2112;
     *&v22[2] = v16;
     _os_log_error_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "set report failed when trying to set read offset to %d for crashlog with ID %d: error %@", buf, 0x18u);
@@ -728,9 +728,9 @@ LABEL_3:
   return v11;
 }
 
-- (int)setCommandForReportID:(int)a3 command:(unsigned __int8)a4 error:(id *)a5
+- (int)setCommandForReportID:(int)d command:(unsigned __int8)command error:(id *)error
 {
-  v6 = a4;
+  commandCopy = command;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
@@ -739,15 +739,15 @@ LABEL_3:
     *buf = 138412802;
     *v19 = v15;
     *&v19[8] = 1024;
-    *v20 = a3;
+    *v20 = d;
     *&v20[4] = 1024;
-    *&v20[6] = v6;
+    *&v20[6] = commandCopy;
     _os_log_debug_impl(&dword_0, v14, OS_LOG_TYPE_DEBUG, "%@, report ID %u, command %u", buf, 0x18u);
   }
 
-  v17[0] = a3;
-  v17[1] = v6;
-  if (([(HIDDevice *)self->_device setReport:v17 reportLength:2 withIdentifier:a3 forType:2 error:a5]& 1) != 0)
+  v17[0] = d;
+  v17[1] = commandCopy;
+  if (([(HIDDevice *)self->_device setReport:v17 reportLength:2 withIdentifier:d forType:2 error:error]& 1) != 0)
   {
     return 0;
   }
@@ -756,9 +756,9 @@ LABEL_3:
   v12 = self->_log;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    if (a5)
+    if (error)
     {
-      v16 = *a5;
+      v16 = *error;
     }
 
     else
@@ -767,9 +767,9 @@ LABEL_3:
     }
 
     *buf = 67109634;
-    *v19 = a3;
+    *v19 = d;
     *&v19[4] = 1024;
-    *&v19[6] = v6;
+    *&v19[6] = commandCopy;
     *v20 = 2112;
     *&v20[2] = v16;
     _os_log_error_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "set report failed to set command for report ID %d to %d: error %@", buf, 0x18u);
@@ -778,7 +778,7 @@ LABEL_3:
   return v11;
 }
 
-- (int)collectErrorStatsWithError:(id *)a3
+- (int)collectErrorStatsWithError:(id *)error
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
@@ -786,7 +786,7 @@ LABEL_3:
     sub_47A0(log);
   }
 
-  return [(PalmspringCrashlogManager *)self setCommandForReportID:14 command:238 error:a3];
+  return [(PalmspringCrashlogManager *)self setCommandForReportID:14 command:238 error:error];
 }
 
 @end

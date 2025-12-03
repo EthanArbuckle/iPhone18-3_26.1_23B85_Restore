@@ -1,5 +1,5 @@
 @interface NTKFaceSnapshotCacheRequestOptions
-- (NTKFaceSnapshotCacheRequestOptions)initWithPriority:(unint64_t)a3;
+- (NTKFaceSnapshotCacheRequestOptions)initWithPriority:(unint64_t)priority;
 - (id)ntk_asDictionaryOptions;
 @end
 
@@ -18,14 +18,14 @@
   return v6;
 }
 
-- (NTKFaceSnapshotCacheRequestOptions)initWithPriority:(unint64_t)a3
+- (NTKFaceSnapshotCacheRequestOptions)initWithPriority:(unint64_t)priority
 {
   v5.receiver = self;
   v5.super_class = NTKFaceSnapshotCacheRequestOptions;
   result = [(NTKFaceSnapshotCacheRequestOptions *)&v5 init];
   if (result)
   {
-    result->_priority = a3;
+    result->_priority = priority;
   }
 
   return result;

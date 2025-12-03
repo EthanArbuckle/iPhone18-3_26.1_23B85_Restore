@@ -1,40 +1,40 @@
 @interface SpotlightKnowledge
-+ (BOOL)processLegacyPipelinesReportWithCancelBlock:(id)a3;
++ (BOOL)processLegacyPipelinesReportWithCancelBlock:(id)block;
 + (void)initialize;
-+ (void)runWithJobContext:(id)a3 group:(id)a4 delegate:(id)a5;
-+ (void)runWithJobContext:(id)a3 queue:(id)a4 group:(id)a5 progressBlock:(id)a6 checkpointBlock:(id)a7 completeBlock:(id)a8 cancelBlock:(id)a9 deferBlock:(id)a10;
-- (BOOL)addProcessedItem:(id)a3 cancelBlock:(id)a4;
-- (BOOL)addProcessedPerson:(id)a3 group:(id)a4 cancelBlock:(id)a5;
-- (BOOL)analyzeGraphWithCancelBlock:(id)a3;
-- (BOOL)canProcessItemAttributes:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5;
-- (BOOL)flushGraphWithGroup:(id)a3 cancelBlock:(id)a4;
++ (void)runWithJobContext:(id)context group:(id)group delegate:(id)delegate;
++ (void)runWithJobContext:(id)context queue:(id)queue group:(id)group progressBlock:(id)block checkpointBlock:(id)checkpointBlock completeBlock:(id)completeBlock cancelBlock:(id)cancelBlock deferBlock:(id)self0;
+- (BOOL)addProcessedItem:(id)item cancelBlock:(id)block;
+- (BOOL)addProcessedPerson:(id)person group:(id)group cancelBlock:(id)block;
+- (BOOL)analyzeGraphWithCancelBlock:(id)block;
+- (BOOL)canProcessItemAttributes:(id)attributes bundleIdentifier:(id)identifier protectionClass:(id)class;
+- (BOOL)flushGraphWithGroup:(id)group cancelBlock:(id)block;
 - (BOOL)graphNeedsAnalysis;
-- (BOOL)loadGraphWithGroup:(id)a3 cancelBlock:(id)a4;
-- (BOOL)processAttributesWithJobContext:(id)a3 group:(id)a4 cancelBlock:(id)a5;
-- (BOOL)processCSArchivesWithGroup:(id)a3 protectionClasses:(id)a4 shouldRemove:(BOOL)a5 archiverNextPathBlock:(id)a6 processedPathBlock:(id)a7 processedItemsBlock:(id)a8 errorLogBlock:(id)a9 cancelBlock:(id)a10;
-- (BOOL)processCSJournalsWithGroup:(id)a3 protectionClasses:(id)a4 includeEmbeddings:(BOOL)a5 includeKeyphrases:(BOOL)a6 shouldRemove:(BOOL)a7 readerNextPathBlock:(id)a8 deletedReferencesBlock:(id)a9 processedPathBlock:(id)a10 processedItemsBlock:(id)a11 errorLogBlock:(id)a12 cancelBlock:(id)a13;
-- (BOOL)processDeletesWithJobContext:(id)a3 group:(id)a4 cancelBlock:(id)a5;
-- (BOOL)processDocumentUnderstandingReportWithJobContext:(id)a3 cancelBlock:(id)a4;
-- (BOOL)processEmbeddingsReportWithJobContext:(id)a3 progressBlock:(id)a4 checkpointBlock:(id)a5 cancelBlock:(id)a6;
-- (BOOL)processGraphWithGroup:(id)a3 cancelBlock:(id)a4;
-- (BOOL)processPeopleWithGroup:(id)a3 cancelBlock:(id)a4;
-- (BOOL)processSuggestedEventsReportWithJobContext:(id)a3 cancelBlock:(id)a4;
-- (BOOL)processTextWithJobContext:(id)a3 group:(id)a4 cancelBlock:(id)a5;
-- (BOOL)removeGraphEntitiesWithCancelBlock:(id)a3;
-- (BOOL)removeGraphPeopleWithCancelBlock:(id)a3;
-- (BOOL)removeReferences:(id)a3 bundleIdentifier:(id)a4 cancelBlock:(id)a5;
-- (BOOL)scoreGraphWithCancelBlock:(id)a3;
-- (BOOL)updateSpotlightContactsWithJobContext:(id)a3 group:(id)a4 cancelBlock:(id)a5;
-- (SpotlightKnowledge)initWithJobContext:(id)a3;
-- (id)coreSpotlightIndexWithBundleIdentifier:(id)a3 protectionClass:(id)a4;
-- (id)coreSpotlightItemWithAttributes:(id)a3 referenceIdentifier:(id)a4 bundleIdentifier:(id)a5;
-- (id)peopleAttributesWithProcessedItem:(id)a3;
-- (id)timerWithBlock:(id)a3;
-- (void)runWithGroup:(id)a3 delegate:(id)a4;
-- (void)runWithQueue:(id)a3 group:(id)a4 progressBlock:(id)a5 checkpointBlock:(id)a6 completeBlock:(id)a7 cancelBlock:(id)a8 deferBlock:(id)a9;
+- (BOOL)loadGraphWithGroup:(id)group cancelBlock:(id)block;
+- (BOOL)processAttributesWithJobContext:(id)context group:(id)group cancelBlock:(id)block;
+- (BOOL)processCSArchivesWithGroup:(id)group protectionClasses:(id)classes shouldRemove:(BOOL)remove archiverNextPathBlock:(id)block processedPathBlock:(id)pathBlock processedItemsBlock:(id)itemsBlock errorLogBlock:(id)logBlock cancelBlock:(id)self0;
+- (BOOL)processCSJournalsWithGroup:(id)group protectionClasses:(id)classes includeEmbeddings:(BOOL)embeddings includeKeyphrases:(BOOL)keyphrases shouldRemove:(BOOL)remove readerNextPathBlock:(id)block deletedReferencesBlock:(id)referencesBlock processedPathBlock:(id)self0 processedItemsBlock:(id)self1 errorLogBlock:(id)self2 cancelBlock:(id)self3;
+- (BOOL)processDeletesWithJobContext:(id)context group:(id)group cancelBlock:(id)block;
+- (BOOL)processDocumentUnderstandingReportWithJobContext:(id)context cancelBlock:(id)block;
+- (BOOL)processEmbeddingsReportWithJobContext:(id)context progressBlock:(id)block checkpointBlock:(id)checkpointBlock cancelBlock:(id)cancelBlock;
+- (BOOL)processGraphWithGroup:(id)group cancelBlock:(id)block;
+- (BOOL)processPeopleWithGroup:(id)group cancelBlock:(id)block;
+- (BOOL)processSuggestedEventsReportWithJobContext:(id)context cancelBlock:(id)block;
+- (BOOL)processTextWithJobContext:(id)context group:(id)group cancelBlock:(id)block;
+- (BOOL)removeGraphEntitiesWithCancelBlock:(id)block;
+- (BOOL)removeGraphPeopleWithCancelBlock:(id)block;
+- (BOOL)removeReferences:(id)references bundleIdentifier:(id)identifier cancelBlock:(id)block;
+- (BOOL)scoreGraphWithCancelBlock:(id)block;
+- (BOOL)updateSpotlightContactsWithJobContext:(id)context group:(id)group cancelBlock:(id)block;
+- (SpotlightKnowledge)initWithJobContext:(id)context;
+- (id)coreSpotlightIndexWithBundleIdentifier:(id)identifier protectionClass:(id)class;
+- (id)coreSpotlightItemWithAttributes:(id)attributes referenceIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (id)peopleAttributesWithProcessedItem:(id)item;
+- (id)timerWithBlock:(id)block;
+- (void)runWithGroup:(id)group delegate:(id)delegate;
+- (void)runWithQueue:(id)queue group:(id)group progressBlock:(id)block checkpointBlock:(id)checkpointBlock completeBlock:(id)completeBlock cancelBlock:(id)cancelBlock deferBlock:(id)deferBlock;
 - (void)sendAnalytics;
-- (void)unloadGraphWithGroup:(id)a3 cancelBlock:(id)a4;
-- (void)updateCoreSpotlightWithItems:(id)a3 index:(id)a4 group:(id)a5 cancelBlock:(id)a6;
+- (void)unloadGraphWithGroup:(id)group cancelBlock:(id)block;
+- (void)updateCoreSpotlightWithItems:(id)items index:(id)index group:(id)group cancelBlock:(id)block;
 @end
 
 @implementation SpotlightKnowledge
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __32__SpotlightKnowledge_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken_0 != -1)
   {
     dispatch_once(&initialize_onceToken_0, block);
@@ -64,34 +64,34 @@ void __32__SpotlightKnowledge_initialize__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)runWithJobContext:(id)a3 queue:(id)a4 group:(id)a5 progressBlock:(id)a6 checkpointBlock:(id)a7 completeBlock:(id)a8 cancelBlock:(id)a9 deferBlock:(id)a10
++ (void)runWithJobContext:(id)context queue:(id)queue group:(id)group progressBlock:(id)block checkpointBlock:(id)checkpointBlock completeBlock:(id)completeBlock cancelBlock:(id)cancelBlock deferBlock:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  v24 = [[SpotlightKnowledge alloc] initWithJobContext:v23];
+  deferBlockCopy = deferBlock;
+  cancelBlockCopy = cancelBlock;
+  completeBlockCopy = completeBlock;
+  checkpointBlockCopy = checkpointBlock;
+  blockCopy = block;
+  groupCopy = group;
+  queueCopy = queue;
+  contextCopy = context;
+  v24 = [[SpotlightKnowledge alloc] initWithJobContext:contextCopy];
 
-  [(SpotlightKnowledge *)v24 runWithQueue:v22 group:v21 progressBlock:v20 checkpointBlock:v19 completeBlock:v18 cancelBlock:v17 deferBlock:v16];
+  [(SpotlightKnowledge *)v24 runWithQueue:queueCopy group:groupCopy progressBlock:blockCopy checkpointBlock:checkpointBlockCopy completeBlock:completeBlockCopy cancelBlock:cancelBlockCopy deferBlock:deferBlockCopy];
 }
 
-+ (void)runWithJobContext:(id)a3 group:(id)a4 delegate:(id)a5
++ (void)runWithJobContext:(id)context group:(id)group delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[SpotlightKnowledge alloc] initWithJobContext:v9];
+  delegateCopy = delegate;
+  groupCopy = group;
+  contextCopy = context;
+  v10 = [[SpotlightKnowledge alloc] initWithJobContext:contextCopy];
 
-  [(SpotlightKnowledge *)v10 runWithGroup:v8 delegate:v7];
+  [(SpotlightKnowledge *)v10 runWithGroup:groupCopy delegate:delegateCopy];
 }
 
-- (SpotlightKnowledge)initWithJobContext:(id)a3
+- (SpotlightKnowledge)initWithJobContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = SpotlightKnowledge;
   v6 = [(SpotlightKnowledge *)&v10 init];
@@ -101,83 +101,83 @@ void __32__SpotlightKnowledge_initialize__block_invoke(uint64_t a1)
     spotlightGraph = v6->_spotlightGraph;
     v6->_spotlightGraph = 0;
 
-    objc_storeStrong(&v7->_spotlightContext, a3);
+    objc_storeStrong(&v7->_spotlightContext, context);
   }
 
   return v7;
 }
 
-- (BOOL)loadGraphWithGroup:(id)a3 cancelBlock:(id)a4
+- (BOOL)loadGraphWithGroup:(id)group cancelBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  blockCopy = block;
   spotlightGraph = self->_spotlightGraph;
   if (spotlightGraph)
   {
-    [(SpotlightGraph *)spotlightGraph closeWithCancelBlock:v7];
+    [(SpotlightGraph *)spotlightGraph closeWithCancelBlock:blockCopy];
     v9 = self->_spotlightGraph;
     self->_spotlightGraph = 0;
   }
 
-  v10 = [(SpotlightKnowledge *)self spotlightContext];
-  v11 = [v10 spotlightKnowledgeGraphConfigPath];
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v12 fileExistsAtPath:v11];
+  spotlightContext = [(SpotlightKnowledge *)self spotlightContext];
+  spotlightKnowledgeGraphConfigPath = [spotlightContext spotlightKnowledgeGraphConfigPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v13 = [defaultManager fileExistsAtPath:spotlightKnowledgeGraphConfigPath];
 
   v14 = [SKGConfig alloc];
   v15 = v14;
   if (v13)
   {
-    v16 = [(SKGConfig *)v14 initWithConfigPath:v11];
+    v16 = [(SKGConfig *)v14 initWithConfigPath:spotlightKnowledgeGraphConfigPath];
   }
 
   else
   {
-    v17 = [v10 spotlightKnowledgeGraphPath];
-    v16 = -[SKGConfig initWithConfigPath:resourceDirectoryPath:resourceVersion:](v15, "initWithConfigPath:resourceDirectoryPath:resourceVersion:", v11, v17, [v10 graphVersion]);
+    spotlightKnowledgeGraphPath = [spotlightContext spotlightKnowledgeGraphPath];
+    v16 = -[SKGConfig initWithConfigPath:resourceDirectoryPath:resourceVersion:](v15, "initWithConfigPath:resourceDirectoryPath:resourceVersion:", spotlightKnowledgeGraphConfigPath, spotlightKnowledgeGraphPath, [spotlightContext graphVersion]);
   }
 
   v18 = [[SpotlightGraph alloc] initWithConfig:v16];
   v19 = self->_spotlightGraph;
   self->_spotlightGraph = v18;
 
-  [(SpotlightGraph *)self->_spotlightGraph openWithCancelBlock:v7];
+  [(SpotlightGraph *)self->_spotlightGraph openWithCancelBlock:blockCopy];
   if (![(SpotlightGraph *)self->_spotlightGraph available])
   {
-    v20 = [(SpotlightKnowledge *)self spotlightContext];
-    [v20 logError:4 message:@"graph unavailable"];
+    spotlightContext2 = [(SpotlightKnowledge *)self spotlightContext];
+    [spotlightContext2 logError:4 message:@"graph unavailable"];
 
     v21 = self->_spotlightGraph;
     self->_spotlightGraph = 0;
   }
 
-  v22 = [(SpotlightKnowledge *)self spotlightGraphAvailable];
+  spotlightGraphAvailable = [(SpotlightKnowledge *)self spotlightGraphAvailable];
 
-  return v22;
+  return spotlightGraphAvailable;
 }
 
-- (void)unloadGraphWithGroup:(id)a3 cancelBlock:(id)a4
+- (void)unloadGraphWithGroup:(id)group cancelBlock:(id)block
 {
   spotlightGraph = self->_spotlightGraph;
   if (spotlightGraph)
   {
-    [(SpotlightGraph *)spotlightGraph closeWithCancelBlock:a4];
+    [(SpotlightGraph *)spotlightGraph closeWithCancelBlock:block];
     v6 = self->_spotlightGraph;
     self->_spotlightGraph = 0;
   }
 }
 
-- (id)peopleAttributesWithProcessedItem:(id)a3
+- (id)peopleAttributesWithProcessedItem:(id)item
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = MEMORY[0x277CCABB0];
-  v6 = [MEMORY[0x277D657A0] sharedContext];
-  v7 = [v5 numberWithInteger:{objc_msgSend(v6, "knowledgeVersion")}];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  v7 = [v5 numberWithInteger:{objc_msgSend(mEMORY[0x277D657A0], "knowledgeVersion")}];
   [v4 setObject:v7 forKey:@"_kMDItemKnowledgeIndexVersion"];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(SpotlightKnowledge *)self spotlightContext];
-  v10 = [v8 numberWithInteger:{objc_msgSend(v9, "graphVersion")}];
+  spotlightContext = [(SpotlightKnowledge *)self spotlightContext];
+  v10 = [v8 numberWithInteger:{objc_msgSend(spotlightContext, "graphVersion")}];
   [v4 setObject:v10 forKey:@"_kMDItemKnowledgeUpdaterVersion"];
 
   v11 = objc_alloc_init(MEMORY[0x277CC34B8]);
@@ -186,52 +186,52 @@ void __32__SpotlightKnowledge_initialize__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (id)coreSpotlightItemWithAttributes:(id)a3 referenceIdentifier:(id)a4 bundleIdentifier:(id)a5
+- (id)coreSpotlightItemWithAttributes:(id)attributes referenceIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
   v7 = MEMORY[0x277CC34B0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithUniqueIdentifier:v9 domainIdentifier:0 attributeSet:v10];
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  attributesCopy = attributes;
+  v11 = [[v7 alloc] initWithUniqueIdentifier:identifierCopy domainIdentifier:0 attributeSet:attributesCopy];
 
-  [v11 setBundleID:v8];
+  [v11 setBundleID:bundleIdentifierCopy];
   [v11 setIsUpdate:1];
 
   return v11;
 }
 
-- (id)coreSpotlightIndexWithBundleIdentifier:(id)a3 protectionClass:(id)a4
+- (id)coreSpotlightIndexWithBundleIdentifier:(id)identifier protectionClass:(id)class
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  classCopy = class;
   if (coreSpotlightIndexWithBundleIdentifier_protectionClass__onceIndexToken != -1)
   {
     [SpotlightKnowledge coreSpotlightIndexWithBundleIdentifier:protectionClass:];
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = [coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes objectForKeyedSubscript:v5];
+  v8 = [coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes objectForKeyedSubscript:identifierCopy];
 
   if (!v8)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
-    [coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes setObject:v9 forKeyedSubscript:v5];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes setObject:dictionary forKeyedSubscript:identifierCopy];
   }
 
-  v10 = [coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes objectForKeyedSubscript:v5];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  v10 = [coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes objectForKeyedSubscript:identifierCopy];
+  v11 = [v10 objectForKeyedSubscript:classCopy];
 
   if (v11)
   {
-    v12 = [coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes objectForKeyedSubscript:v5];
-    v13 = [v12 objectForKeyedSubscript:v6];
+    v12 = [coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes objectForKeyedSubscript:identifierCopy];
+    v13 = [v12 objectForKeyedSubscript:classCopy];
   }
 
   else
   {
-    v13 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:@"KnowledgeIndex" protectionClass:v6 bundleIdentifier:v5];
-    v12 = [coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes objectForKeyedSubscript:v5];
-    [v12 setObject:v13 forKey:v6];
+    v13 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:@"KnowledgeIndex" protectionClass:classCopy bundleIdentifier:identifierCopy];
+    v12 = [coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes objectForKeyedSubscript:identifierCopy];
+    [v12 setObject:v13 forKey:classCopy];
   }
 
   objc_autoreleasePoolPop(v7);
@@ -246,29 +246,29 @@ void __77__SpotlightKnowledge_coreSpotlightIndexWithBundleIdentifier_protectionC
   coreSpotlightIndexWithBundleIdentifier_protectionClass__sIndexes = v0;
 }
 
-- (void)updateCoreSpotlightWithItems:(id)a3 index:(id)a4 group:(id)a5 cancelBlock:(id)a6
+- (void)updateCoreSpotlightWithItems:(id)items index:(id)index group:(id)group cancelBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v10 && [v9 count])
+  itemsCopy = items;
+  indexCopy = index;
+  groupCopy = group;
+  blockCopy = block;
+  if (indexCopy && [itemsCopy count])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v17 = [v9 count];
+      v17 = [itemsCopy count];
       _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: indexing %lu items", buf, 0xCu);
     }
 
-    dispatch_group_enter(v11);
+    dispatch_group_enter(groupCopy);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __75__SpotlightKnowledge_updateCoreSpotlightWithItems_index_group_cancelBlock___block_invoke;
     v14[3] = &unk_27893E840;
-    v15 = v11;
-    [v10 indexSearchableItems:v9 completionHandler:v14];
+    v15 = groupCopy;
+    [indexCopy indexSearchableItems:itemsCopy completionHandler:v14];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -285,76 +285,76 @@ void __75__SpotlightKnowledge_updateCoreSpotlightWithItems_index_group_cancelBlo
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (BOOL)addProcessedItem:(id)a3 cancelBlock:(id)a4
+- (BOOL)addProcessedItem:(id)item cancelBlock:(id)block
 {
-  if (!a3)
+  if (!item)
   {
     return 1;
   }
 
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SpotlightKnowledge *)self spotlightGraph];
-  v9 = [v8 addItem:v7 cancelBlock:v6];
+  blockCopy = block;
+  itemCopy = item;
+  spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
+  v9 = [spotlightGraph addItem:itemCopy cancelBlock:blockCopy];
 
   return v9;
 }
 
-- (BOOL)addProcessedPerson:(id)a3 group:(id)a4 cancelBlock:(id)a5
+- (BOOL)addProcessedPerson:(id)person group:(id)group cancelBlock:(id)block
 {
-  if (!a3)
+  if (!person)
   {
     return 1;
   }
 
-  v7 = a5;
-  v8 = a3;
-  v9 = [(SpotlightKnowledge *)self spotlightGraph];
-  v10 = [v9 addPerson:v8 cancelBlock:v7];
+  blockCopy = block;
+  personCopy = person;
+  spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
+  v10 = [spotlightGraph addPerson:personCopy cancelBlock:blockCopy];
 
   return v10;
 }
 
-- (BOOL)canProcessItemAttributes:(id)a3 bundleIdentifier:(id)a4 protectionClass:(id)a5
+- (BOOL)canProcessItemAttributes:(id)attributes bundleIdentifier:(id)identifier protectionClass:(id)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] && (objc_msgSend(MEMORY[0x277D65798], "sharedProcessor"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "recordIsValid:", v8), v11, v12))
+  attributesCopy = attributes;
+  identifierCopy = identifier;
+  classCopy = class;
+  if ([attributesCopy count] && (objc_msgSend(MEMORY[0x277D65798], "sharedProcessor"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "recordIsValid:", attributesCopy), v11, v12))
   {
-    v13 = [MEMORY[0x277D65798] sharedProcessor];
-    v14 = [v13 copyReferenceIdentifierFromRecord:v8];
+    mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+    v14 = [mEMORY[0x277D65798] copyReferenceIdentifierFromRecord:attributesCopy];
 
     if (v14)
     {
-      if (v10)
+      if (classCopy)
       {
-        v15 = v10;
+        v15 = classCopy;
       }
 
       else
       {
-        v17 = [MEMORY[0x277D65798] sharedProcessor];
-        v15 = [v17 copyProtectionClassFromRecord:v8];
+        mEMORY[0x277D65798]2 = [MEMORY[0x277D65798] sharedProcessor];
+        v15 = [mEMORY[0x277D65798]2 copyProtectionClassFromRecord:attributesCopy];
       }
 
       if ([v15 length])
       {
-        if (v9)
+        if (identifierCopy)
         {
-          v18 = v9;
+          v18 = identifierCopy;
         }
 
         else
         {
-          v19 = [MEMORY[0x277D65798] sharedProcessor];
-          v18 = [v19 copyBundleIdentifierFromRecord:v8];
+          mEMORY[0x277D65798]3 = [MEMORY[0x277D65798] sharedProcessor];
+          v18 = [mEMORY[0x277D65798]3 copyBundleIdentifierFromRecord:attributesCopy];
         }
 
         if ([v18 length])
         {
-          v20 = [(SpotlightKnowledge *)self spotlightGraph];
-          v16 = [v20 containsReference:v14 personaIdentifier:0 protectionClass:v15 domainIdentifier:v18] ^ 1;
+          spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
+          v16 = [spotlightGraph containsReference:v14 personaIdentifier:0 protectionClass:v15 domainIdentifier:v18] ^ 1;
         }
 
         else
@@ -383,17 +383,17 @@ void __75__SpotlightKnowledge_updateCoreSpotlightWithItems_index_group_cancelBlo
   return v16;
 }
 
-- (BOOL)removeReferences:(id)a3 bundleIdentifier:(id)a4 cancelBlock:(id)a5
+- (BOOL)removeReferences:(id)references bundleIdentifier:(id)identifier cancelBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && [v8 count])
+  referencesCopy = references;
+  identifierCopy = identifier;
+  blockCopy = block;
+  if (identifierCopy && [referencesCopy count])
   {
-    v11 = [(SpotlightKnowledge *)self spotlightGraph];
-    if ([v11 available])
+    spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
+    if ([spotlightGraph available])
     {
-      v12 = [v11 deleteReferences:v8 domainIdentifier:v9 cancelBlock:v10];
+      v12 = [spotlightGraph deleteReferences:referencesCopy domainIdentifier:identifierCopy cancelBlock:blockCopy];
     }
 
     else
@@ -410,56 +410,56 @@ void __75__SpotlightKnowledge_updateCoreSpotlightWithItems_index_group_cancelBlo
   return v12;
 }
 
-- (BOOL)removeGraphPeopleWithCancelBlock:(id)a3
+- (BOOL)removeGraphPeopleWithCancelBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SpotlightKnowledge *)self spotlightGraph];
-  v6 = [v5 deletePeopleWithCancelBlock:v4];
+  blockCopy = block;
+  spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
+  v6 = [spotlightGraph deletePeopleWithCancelBlock:blockCopy];
 
   return v6;
 }
 
-- (BOOL)removeGraphEntitiesWithCancelBlock:(id)a3
+- (BOOL)removeGraphEntitiesWithCancelBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SpotlightKnowledge *)self spotlightGraph];
-  v6 = [v5 deleteEntitiesWithCancelBlock:v4];
+  blockCopy = block;
+  spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
+  v6 = [spotlightGraph deleteEntitiesWithCancelBlock:blockCopy];
 
   return v6;
 }
 
 - (BOOL)graphNeedsAnalysis
 {
-  v2 = [(SpotlightKnowledge *)self spotlightGraph];
-  v3 = [v2 hasPeople];
+  spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
+  hasPeople = [spotlightGraph hasPeople];
 
-  return v3 ^ 1;
+  return hasPeople ^ 1;
 }
 
-- (BOOL)analyzeGraphWithCancelBlock:(id)a3
+- (BOOL)analyzeGraphWithCancelBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SpotlightKnowledge *)self spotlightGraph];
-  v6 = [v5 analyzePeopleWithCancelBlock:v4];
+  blockCopy = block;
+  spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
+  v6 = [spotlightGraph analyzePeopleWithCancelBlock:blockCopy];
 
   return v6;
 }
 
-- (BOOL)scoreGraphWithCancelBlock:(id)a3
+- (BOOL)scoreGraphWithCancelBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SpotlightKnowledge *)self spotlightGraph];
-  v6 = [v5 scorePeopleWithCancelBlock:v4];
+  blockCopy = block;
+  spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
+  v6 = [spotlightGraph scorePeopleWithCancelBlock:blockCopy];
 
   return v6;
 }
 
-- (BOOL)updateSpotlightContactsWithJobContext:(id)a3 group:(id)a4 cancelBlock:(id)a5
+- (BOOL)updateSpotlightContactsWithJobContext:(id)context group:(id)group cancelBlock:(id)block
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v26 = a4;
-  v9 = a5;
+  contextCopy = context;
+  groupCopy = group;
+  blockCopy = block;
   if (updateSpotlightContactsWithJobContext_group_cancelBlock__onceToken != -1)
   {
     [SpotlightKnowledge updateSpotlightContactsWithJobContext:group:cancelBlock:];
@@ -472,8 +472,8 @@ void __75__SpotlightKnowledge_updateCoreSpotlightWithItems_index_group_cancelBlo
   v10 = objc_autoreleasePoolPush();
   v11 = *MEMORY[0x277CCA1A0];
   v12 = objc_alloc(MEMORY[0x277CC34A8]);
-  v13 = [v8 knowledgeIndexIdentifier];
-  v14 = [v12 initWithName:@"KnowledgeIndex" protectionClass:v11 bundleIdentifier:v13];
+  knowledgeIndexIdentifier = [contextCopy knowledgeIndexIdentifier];
+  v14 = [v12 initWithName:@"KnowledgeIndex" protectionClass:v11 bundleIdentifier:knowledgeIndexIdentifier];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -495,7 +495,7 @@ void __75__SpotlightKnowledge_updateCoreSpotlightWithItems_index_group_cancelBlo
     v36 = __Block_byref_object_copy__24;
     v37 = __Block_byref_object_dispose__24;
     v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v15 = [(SpotlightKnowledge *)self spotlightGraph];
+    spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __78__SpotlightKnowledge_updateSpotlightContactsWithJobContext_group_cancelBlock___block_invoke_37;
@@ -504,15 +504,15 @@ void __75__SpotlightKnowledge_updateCoreSpotlightWithItems_index_group_cancelBlo
     v27[4] = self;
     v16 = v14;
     v28 = v16;
-    v17 = v26;
+    v17 = groupCopy;
     v29 = v17;
-    v18 = v9;
+    v18 = blockCopy;
     v30 = v18;
     v32 = &v40;
-    [v15 enumeratePeopleUsingBlock:v27];
+    [spotlightGraph enumeratePeopleUsingBlock:v27];
     if (*(v41 + 24) == 1 && [*(v34 + 5) count])
     {
-      v25 = v9;
+      v25 = blockCopy;
       v19 = MEMORY[0x277D86220];
       v20 = MEMORY[0x277D86220];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -523,7 +523,7 @@ void __75__SpotlightKnowledge_updateCoreSpotlightWithItems_index_group_cancelBlo
         _os_log_impl(&dword_231B25000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "SKG: indexing %lu items", v44, 0xCu);
       }
 
-      v9 = v25;
+      blockCopy = v25;
       [(SpotlightKnowledge *)self updateCoreSpotlightWithItems:*(v34 + 5) index:v16 group:v17 cancelBlock:v18];
     }
 
@@ -950,13 +950,13 @@ uint64_t __78__SpotlightKnowledge_updateSpotlightContactsWithJobContext_group_ca
   }
 }
 
-- (BOOL)flushGraphWithGroup:(id)a3 cancelBlock:(id)a4
+- (BOOL)flushGraphWithGroup:(id)group cancelBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(SpotlightKnowledge *)self spotlightGraph];
-  if ([v6 available])
+  blockCopy = block;
+  spotlightGraph = [(SpotlightKnowledge *)self spotlightGraph];
+  if ([spotlightGraph available])
   {
-    v7 = [v6 flushWithCancelBlock:v5];
+    v7 = [spotlightGraph flushWithCancelBlock:blockCopy];
   }
 
   else
@@ -967,20 +967,20 @@ uint64_t __78__SpotlightKnowledge_updateSpotlightContactsWithJobContext_group_ca
   return v7;
 }
 
-- (BOOL)processCSJournalsWithGroup:(id)a3 protectionClasses:(id)a4 includeEmbeddings:(BOOL)a5 includeKeyphrases:(BOOL)a6 shouldRemove:(BOOL)a7 readerNextPathBlock:(id)a8 deletedReferencesBlock:(id)a9 processedPathBlock:(id)a10 processedItemsBlock:(id)a11 errorLogBlock:(id)a12 cancelBlock:(id)a13
+- (BOOL)processCSJournalsWithGroup:(id)group protectionClasses:(id)classes includeEmbeddings:(BOOL)embeddings includeKeyphrases:(BOOL)keyphrases shouldRemove:(BOOL)remove readerNextPathBlock:(id)block deletedReferencesBlock:(id)referencesBlock processedPathBlock:(id)self0 processedItemsBlock:(id)self1 errorLogBlock:(id)self2 cancelBlock:(id)self3
 {
-  v55 = a7;
+  removeCopy = remove;
   v92 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v16 = a4;
-  v17 = a8;
-  v59 = a9;
-  v18 = v17;
-  v56 = a10;
-  v61 = a11;
-  v51 = a12;
-  v19 = a13;
-  v60 = [(SpotlightKnowledge *)self spotlightContext];
+  groupCopy = group;
+  classesCopy = classes;
+  blockCopy = block;
+  referencesBlockCopy = referencesBlock;
+  v18 = blockCopy;
+  pathBlockCopy = pathBlock;
+  itemsBlockCopy = itemsBlock;
+  logBlockCopy = logBlock;
+  cancelBlockCopy = cancelBlock;
+  spotlightContext = [(SpotlightKnowledge *)self spotlightContext];
   context = objc_autoreleasePoolPush();
   v87 = 0;
   v88 = &v87;
@@ -990,7 +990,7 @@ uint64_t __78__SpotlightKnowledge_updateSpotlightContactsWithJobContext_group_ca
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  obj = v16;
+  obj = classesCopy;
   v20 = [obj countByEnumeratingWithState:&v83 objects:v91 count:16];
   if (v20)
   {
@@ -1012,7 +1012,7 @@ LABEL_3:
       }
 
       v62 = *(*(&v83 + 1) + 8 * v22);
-      if (v19[2](v19, @"processCSJournalsWithQueryID:protectionClass"))
+      if (cancelBlockCopy[2](cancelBlockCopy, @"processCSJournalsWithQueryID:protectionClass"))
       {
         *(v88 + 24) = 0;
         break;
@@ -1027,42 +1027,42 @@ LABEL_3:
           v25 = v24;
           if (v24)
           {
-            v26 = [(SKGJournalReader *)v24 journalPaths];
+            journalPaths = [(SKGJournalReader *)v24 journalPaths];
           }
 
           else
           {
-            v26 = 0;
+            journalPaths = 0;
           }
         }
 
         else
         {
-          v26 = 0;
+          journalPaths = 0;
           v25 = 0;
         }
       }
 
       else
       {
-        v26 = 0;
+        journalPaths = 0;
         v25 = 0;
         v23 = 0;
       }
 
       v52 = v22;
       v53 = v23;
-      v54 = v26;
-      if ([v26 count])
+      v54 = journalPaths;
+      if ([journalPaths count])
       {
-        v27 = [v26 keysSortedByValueUsingSelector:sel_compare_];
-        v28 = [v27 mutableCopy];
+        firstObject = [journalPaths keysSortedByValueUsingSelector:sel_compare_];
+        v28 = [firstObject mutableCopy];
         v21 = 1;
 LABEL_17:
 
         while ([v28 count])
         {
-          if (v19[2](v19, @"processCSJournalsWithQueryID:journal"))
+          if (cancelBlockCopy[2](cancelBlockCopy, @"processCSJournalsWithQueryID:journal"))
           {
             *(v88 + 24) = 0;
             break;
@@ -1076,20 +1076,20 @@ LABEL_17:
           v80 = __Block_byref_object_copy__24;
           v81 = __Block_byref_object_dispose__24;
           v82 = 0;
-          v27 = [v28 firstObject];
+          firstObject = [v28 firstObject];
           v69[0] = MEMORY[0x277D85DD0];
           v69[1] = 3221225472;
           v69[2] = __224__SpotlightKnowledge_processCSJournalsWithGroup_protectionClasses_includeEmbeddings_includeKeyphrases_shouldRemove_readerNextPathBlock_deletedReferencesBlock_processedPathBlock_processedItemsBlock_errorLogBlock_cancelBlock___block_invoke;
           v69[3] = &unk_27893F250;
-          v75 = a5;
-          v76 = a6;
+          embeddingsCopy = embeddings;
+          keyphrasesCopy = keyphrases;
           v73 = &v87;
           v74 = &v77;
           v69[4] = v62;
-          v31 = v19;
+          v31 = cancelBlockCopy;
           v71 = v31;
-          v70 = v60;
-          v32 = v61;
+          v70 = spotlightContext;
+          v32 = itemsBlockCopy;
           v72 = v32;
           v66[0] = MEMORY[0x277D85DD0];
           v66[1] = 3221225472;
@@ -1103,11 +1103,11 @@ LABEL_17:
           v63[2] = __224__SpotlightKnowledge_processCSJournalsWithGroup_protectionClasses_includeEmbeddings_includeKeyphrases_shouldRemove_readerNextPathBlock_deletedReferencesBlock_processedPathBlock_processedItemsBlock_errorLogBlock_cancelBlock___block_invoke_4;
           v63[3] = &unk_27893F2A0;
           v65 = &v87;
-          v64 = v59;
-          v21 = [(SKGJournalReader *)v25 enumerateItemsOfJournalAtPath:v27 itemAdds:v69 itemUpdates:v66 itemDeletes:v63 cancelBlock:v33];
+          v64 = referencesBlockCopy;
+          v21 = [(SKGJournalReader *)v25 enumerateItemsOfJournalAtPath:firstObject itemAdds:v69 itemUpdates:v66 itemDeletes:v63 cancelBlock:v33];
           if ([v78[5] count])
           {
-            v34 = (*(v61 + 2))(v32, v78[5]);
+            v34 = (*(itemsBlockCopy + 2))(v32, v78[5]);
             *(v88 + 24) = v34;
             v35 = v78[5];
             v78[5] = 0;
@@ -1120,18 +1120,18 @@ LABEL_17:
           if ((v21 & 1) == 0)
           {
             v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"could not read journal path for %@", v62];
-            v41 = v51[2](v51, 8, v40);
+            v41 = logBlockCopy[2](logBlockCopy, 8, v40);
             *(v88 + 24) = v41;
 
-            [v28 removeObject:v27];
+            [v28 removeObject:firstObject];
             goto LABEL_17;
           }
 
           v36 = *(v88 + 24);
-          if (v36 == 1 && v27)
+          if (v36 == 1 && firstObject)
           {
-            v37 = [v27 lastPathComponent];
-            v38 = v56[2](v56, v62, v37);
+            lastPathComponent = [firstObject lastPathComponent];
+            v38 = pathBlockCopy[2](pathBlockCopy, v62, lastPathComponent);
             *(v88 + 24) = v38;
 
             if ((v88[3] & 1) == 0)
@@ -1142,13 +1142,13 @@ LABEL_37:
               break;
             }
 
-            if (v55 && ![(SKGJournalReader *)v25 removeJournalPath:v27 error:0])
+            if (removeCopy && ![(SKGJournalReader *)v25 removeJournalPath:firstObject error:0])
             {
-              v39 = v51[2](v51, 9, @"could not delete journal path");
+              v39 = logBlockCopy[2](logBlockCopy, 9, @"could not delete journal path");
               *(v88 + 24) = v39;
             }
 
-            [v28 removeObject:v27];
+            [v28 removeObject:firstObject];
             LOBYTE(v36) = *(v88 + 24);
           }
 
@@ -1340,24 +1340,24 @@ uint64_t __224__SpotlightKnowledge_processCSJournalsWithGroup_protectionClasses_
   return result;
 }
 
-- (BOOL)processCSArchivesWithGroup:(id)a3 protectionClasses:(id)a4 shouldRemove:(BOOL)a5 archiverNextPathBlock:(id)a6 processedPathBlock:(id)a7 processedItemsBlock:(id)a8 errorLogBlock:(id)a9 cancelBlock:(id)a10
+- (BOOL)processCSArchivesWithGroup:(id)group protectionClasses:(id)classes shouldRemove:(BOOL)remove archiverNextPathBlock:(id)block processedPathBlock:(id)pathBlock processedItemsBlock:(id)itemsBlock errorLogBlock:(id)logBlock cancelBlock:(id)self0
 {
-  v57 = a5;
+  removeCopy = remove;
   v102 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v15 = a4;
-  v61 = a6;
-  v67 = a7;
-  v16 = a8;
-  v69 = a9;
-  v77 = a10;
-  v78 = [(SpotlightKnowledge *)self spotlightContext];
+  groupCopy = group;
+  classesCopy = classes;
+  blockCopy = block;
+  pathBlockCopy = pathBlock;
+  itemsBlockCopy = itemsBlock;
+  logBlockCopy = logBlock;
+  cancelBlockCopy = cancelBlock;
+  spotlightContext = [(SpotlightKnowledge *)self spotlightContext];
   v56 = objc_autoreleasePoolPush();
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  obj = v15;
+  obj = classesCopy;
   v62 = [obj countByEnumeratingWithState:&v96 objects:v101 count:16];
   if (v62)
   {
@@ -1375,34 +1375,34 @@ uint64_t __224__SpotlightKnowledge_processCSJournalsWithGroup_protectionClasses_
         }
 
         v76 = *(*(&v96 + 1) + 8 * v65);
-        if (v77[2](v77, @"processCSArchivesWithGroup:protectionClass"))
+        if (cancelBlockCopy[2](cancelBlockCopy, @"processCSArchivesWithGroup:protectionClass"))
         {
 LABEL_71:
           v52 = 0;
           goto LABEL_72;
         }
 
-        v18 = v61;
-        if (!v61)
+        archivePaths = blockCopy;
+        if (!blockCopy)
         {
           goto LABEL_12;
         }
 
-        v68 = v61[2]();
+        v68 = blockCopy[2]();
         if (!v68)
         {
-          v18 = 0;
+          archivePaths = 0;
 LABEL_12:
           v66 = 0;
           v68 = 0;
           goto LABEL_13;
         }
 
-        v18 = [[SKGArchiver alloc] initWithResourceDirectoryPath:v68];
-        v66 = v18;
-        if (v18)
+        archivePaths = [[SKGArchiver alloc] initWithResourceDirectoryPath:v68];
+        v66 = archivePaths;
+        if (archivePaths)
         {
-          v18 = [(SKGArchiver *)v18 archivePaths];
+          archivePaths = [(SKGArchiver *)archivePaths archivePaths];
           v19 = 1;
           goto LABEL_14;
         }
@@ -1411,14 +1411,14 @@ LABEL_12:
 LABEL_13:
         v19 = 0;
 LABEL_14:
-        v64 = v18;
-        if ([(SKGArchiver *)v18 count])
+        v64 = archivePaths;
+        if ([(SKGArchiver *)archivePaths count])
         {
           v20 = [(SKGArchiver *)v64 keysSortedByValueUsingSelector:v58];
           v73 = [v20 mutableCopy];
 
           v21 = 0;
-          v63 = v19 & v57;
+          v63 = v19 & removeCopy;
           while (1)
           {
             if (![v73 count])
@@ -1427,7 +1427,7 @@ LABEL_14:
               break;
             }
 
-            if (v77 && (v77[2](v77, @"processCSArchivesWithGroup:archive") & 1) != 0)
+            if (cancelBlockCopy && (cancelBlockCopy[2](cancelBlockCopy, @"processCSArchivesWithGroup:archive") & 1) != 0)
             {
               goto LABEL_62;
             }
@@ -1439,17 +1439,17 @@ LABEL_14:
             v93 = __Block_byref_object_copy__24;
             v94 = __Block_byref_object_dispose__24;
             v95 = 0;
-            v22 = [v73 lastObject];
+            lastObject = [v73 lastObject];
             v89 = v21;
-            v74 = v22;
+            v74 = lastObject;
             v75 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:? options:? error:?];
             v72 = v89;
 
             if (!v75)
             {
-              if (v69)
+              if (logBlockCopy)
               {
-                v50 = v69[2]();
+                v50 = logBlockCopy[2]();
               }
 
               else
@@ -1482,34 +1482,34 @@ LABEL_14:
                   objc_enumerationMutation(v24);
                 }
 
-                v28 = [*(*(&v85 + 1) + 8 * i) attributeSet];
-                v29 = [v28 attributeDictionary];
+                attributeSet = [*(*(&v85 + 1) + 8 * i) attributeSet];
+                attributeDictionary = [attributeSet attributeDictionary];
 
-                v30 = [MEMORY[0x277D65798] sharedProcessor];
-                v31 = [v30 recordIsValid:v29];
+                mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+                v31 = [mEMORY[0x277D65798] recordIsValid:attributeDictionary];
 
                 if (v31)
                 {
-                  v32 = [MEMORY[0x277D65798] sharedProcessor];
-                  v33 = [v32 needsPeopleForRecord:v29];
+                  mEMORY[0x277D65798]2 = [MEMORY[0x277D65798] sharedProcessor];
+                  v33 = [mEMORY[0x277D65798]2 needsPeopleForRecord:attributeDictionary];
 
-                  v34 = [MEMORY[0x277D65798] sharedProcessor];
-                  v35 = [v34 shouldGeneratePeopleForRecord:v29];
+                  mEMORY[0x277D65798]3 = [MEMORY[0x277D65798] sharedProcessor];
+                  v35 = [mEMORY[0x277D65798]3 shouldGeneratePeopleForRecord:attributeDictionary];
 
-                  v36 = [MEMORY[0x277D65798] sharedProcessor];
+                  mEMORY[0x277D65798]4 = [MEMORY[0x277D65798] sharedProcessor];
                   v37 = (v33 & v35) != 0 ? 8 : 0;
                   v82[0] = MEMORY[0x277D85DD0];
                   v82[1] = 3221225472;
                   v82[2] = __167__SpotlightKnowledge_processCSArchivesWithGroup_protectionClasses_shouldRemove_archiverNextPathBlock_processedPathBlock_processedItemsBlock_errorLogBlock_cancelBlock___block_invoke;
                   v82[3] = &unk_27893F228;
                   v84 = &v90;
-                  v83 = v77;
+                  v83 = cancelBlockCopy;
                   v80[0] = MEMORY[0x277D85DD0];
                   v80[1] = 3221225472;
                   v80[2] = __167__SpotlightKnowledge_processCSArchivesWithGroup_protectionClasses_shouldRemove_archiverNextPathBlock_processedPathBlock_processedItemsBlock_errorLogBlock_cancelBlock___block_invoke_2;
                   v80[3] = &unk_27893CC50;
                   v81 = v83;
-                  v38 = [v36 enumerateProcessedItemsFromRecord:v29 referenceIdentifier:0 bundleIdentifier:0 protectionClass:v76 processorFlags:v37 processedItemBlock:v82 cancelBlock:{v80, v55, v56}];
+                  v38 = [mEMORY[0x277D65798]4 enumerateProcessedItemsFromRecord:attributeDictionary referenceIdentifier:0 bundleIdentifier:0 protectionClass:v76 processorFlags:v37 processedItemBlock:v82 cancelBlock:{v80, groupCopy, v56}];
 
                   if ((v38 & 1) == 0)
                   {
@@ -1520,13 +1520,13 @@ LABEL_53:
                 }
 
                 v39 = [v91[5] count];
-                if (v39 < [v78 maxItemCountPerBatch])
+                if (v39 < [spotlightContext maxItemCountPerBatch])
                 {
                   goto LABEL_35;
                 }
 
                 v40 = v91[5];
-                if (!v16)
+                if (!itemsBlockCopy)
                 {
                   v91[5] = 0;
 
@@ -1534,7 +1534,7 @@ LABEL_35:
                   continue;
                 }
 
-                v41 = v16[2](v16, v40);
+                v41 = itemsBlockCopy[2](itemsBlockCopy, v40);
                 v42 = v91[5];
                 v91[5] = 0;
 
@@ -1556,18 +1556,18 @@ LABEL_35:
 LABEL_38:
 
             v43 = [v91[5] count];
-            if (v43 >= [v78 maxItemCountPerBatch])
+            if (v43 >= [spotlightContext maxItemCountPerBatch])
             {
-              if (v16)
+              if (itemsBlockCopy)
               {
-                v16[2](v16, v91[5]);
+                itemsBlockCopy[2](itemsBlockCopy, v91[5]);
               }
 
               v44 = v91[5];
               v91[5] = 0;
             }
 
-            if (v67 && ([v74 lastPathComponent], v45 = objc_claimAutoreleasedReturnValue(), v46 = v67[2](v67, v76, v45), v45, !v46))
+            if (pathBlockCopy && ([v74 lastPathComponent], v45 = objc_claimAutoreleasedReturnValue(), v46 = pathBlockCopy[2](pathBlockCopy, v76, v45), v45, !v46))
             {
 LABEL_54:
               v50 = 0;
@@ -1584,7 +1584,7 @@ LABEL_54:
 
                 if (v48)
                 {
-                  v49 = v69 == 0;
+                  v49 = logBlockCopy == 0;
                 }
 
                 else
@@ -1599,7 +1599,7 @@ LABEL_54:
 
                 else
                 {
-                  v50 = (v69[2])(v69, 9, @"could not delete archive file");
+                  v50 = (logBlockCopy[2])(logBlockCopy, 9, @"could not delete archive file");
                 }
 
                 objc_autoreleasePoolPop(v47);
@@ -1688,32 +1688,32 @@ uint64_t __167__SpotlightKnowledge_processCSArchivesWithGroup_protectionClasses_
   return result;
 }
 
-- (BOOL)processDeletesWithJobContext:(id)a3 group:(id)a4 cancelBlock:(id)a5
+- (BOOL)processDeletesWithJobContext:(id)context group:(id)group cancelBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 startDeletes];
+  contextCopy = context;
+  groupCopy = group;
+  blockCopy = block;
+  [contextCopy startDeletes];
   context = objc_autoreleasePoolPush();
-  v11 = [v8 protectionClasses];
+  protectionClasses = [contextCopy protectionClasses];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __69__SpotlightKnowledge_processDeletesWithJobContext_group_cancelBlock___block_invoke;
   v31[3] = &unk_27893F2C8;
-  v32 = v8;
+  v32 = contextCopy;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __69__SpotlightKnowledge_processDeletesWithJobContext_group_cancelBlock___block_invoke_2;
   v28[3] = &unk_27893F2F0;
   v28[4] = self;
-  v30 = v10;
+  v30 = blockCopy;
   v29 = v32;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __69__SpotlightKnowledge_processDeletesWithJobContext_group_cancelBlock___block_invoke_3;
   v24[3] = &unk_27893F318;
   v24[4] = self;
-  v12 = v9;
+  v12 = groupCopy;
   v25 = v12;
   v27 = v30;
   v26 = v29;
@@ -1728,14 +1728,14 @@ uint64_t __167__SpotlightKnowledge_processCSArchivesWithGroup_protectionClasses_
   v19[3] = &unk_27893F368;
   v13 = v26;
   v20 = v13;
-  v21 = self;
+  selfCopy = self;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __69__SpotlightKnowledge_processDeletesWithJobContext_group_cancelBlock___block_invoke_6;
   v17[3] = &unk_27893CC50;
   v14 = v23;
   v18 = v14;
-  [(SpotlightKnowledge *)self processCSJournalsWithGroup:v12 protectionClasses:v11 includeEmbeddings:0 includeKeyphrases:0 shouldRemove:1 readerNextPathBlock:v31 deletedReferencesBlock:v28 processedPathBlock:v24 processedItemsBlock:v22 errorLogBlock:v19 cancelBlock:v17];
+  [(SpotlightKnowledge *)self processCSJournalsWithGroup:v12 protectionClasses:protectionClasses includeEmbeddings:0 includeKeyphrases:0 shouldRemove:1 readerNextPathBlock:v31 deletedReferencesBlock:v28 processedPathBlock:v24 processedItemsBlock:v22 errorLogBlock:v19 cancelBlock:v17];
 
   objc_autoreleasePoolPop(context);
   [v13 finishedDeletes];
@@ -1790,26 +1790,26 @@ uint64_t __69__SpotlightKnowledge_processDeletesWithJobContext_group_cancelBlock
   return [v4 spotlightGraphAvailable];
 }
 
-- (BOOL)processAttributesWithJobContext:(id)a3 group:(id)a4 cancelBlock:(id)a5
+- (BOOL)processAttributesWithJobContext:(id)context group:(id)group cancelBlock:(id)block
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v24 = a4;
-  v28 = a5;
-  [v7 startTextProcessingJob];
+  contextCopy = context;
+  groupCopy = group;
+  blockCopy = block;
+  [contextCopy startTextProcessingJob];
   v23 = objc_autoreleasePoolPush();
   context = objc_autoreleasePoolPush();
-  v27 = [[SKGJob alloc] initWithJobContext:v7];
-  [v7 startTextQueries];
+  v27 = [[SKGJob alloc] initWithJobContext:contextCopy];
+  [contextCopy startTextQueries];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v8 = +[SKGProcessorTaskManager sharedManager];
-  v9 = [v8 tasks];
+  tasks = [v8 tasks];
 
-  v10 = v9;
-  v11 = [v9 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  v10 = tasks;
+  v11 = [tasks countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1826,14 +1826,14 @@ uint64_t __69__SpotlightKnowledge_processDeletesWithJobContext_group_cancelBlock
         }
 
         v15 = *(*(&v37 + 1) + 8 * i);
-        if ([v15 supportsEvent:{4, context, v23, v24, v25, v26}])
+        if ([v15 supportsEvent:{4, context, v23, groupCopy, v25, v26}])
         {
-          v16 = [v7 protectionClasses];
+          protectionClasses = [contextCopy protectionClasses];
           v34[0] = MEMORY[0x277D85DD0];
           v34[1] = 3221225472;
           v35[0] = __72__SpotlightKnowledge_processAttributesWithJobContext_group_cancelBlock___block_invoke;
           v35[1] = &unk_27893D2C0;
-          v36 = v7;
+          v36 = contextCopy;
           v31[0] = MEMORY[0x277D85DD0];
           v31[1] = 3221225472;
           v32[0] = __72__SpotlightKnowledge_processAttributesWithJobContext_group_cancelBlock___block_invoke_2;
@@ -1844,8 +1844,8 @@ uint64_t __69__SpotlightKnowledge_processDeletesWithJobContext_group_cancelBlock
           v29[1] = 3221225472;
           v29[2] = __72__SpotlightKnowledge_processAttributesWithJobContext_group_cancelBlock___block_invoke_3;
           v29[3] = &unk_27893D270;
-          v30 = v28;
-          v18 = [(SKGJob *)v27 requestCSProcessingWithProtectionClasses:v16 task:v15 batchProcessedBlock:v34 batchUpdatedBlock:v31 cancelBlock:v29];
+          v30 = blockCopy;
+          v18 = [(SKGJob *)v27 requestCSProcessingWithProtectionClasses:protectionClasses task:v15 batchProcessedBlock:v34 batchUpdatedBlock:v31 cancelBlock:v29];
 
           if (!v18)
           {
@@ -1868,13 +1868,13 @@ uint64_t __69__SpotlightKnowledge_processDeletesWithJobContext_group_cancelBlock
     }
   }
 
-  [v7 finishedTextQueries];
+  [contextCopy finishedTextQueries];
   objc_autoreleasePoolPop(context);
-  [v7 logFlag:25 message:@"processing all done"];
+  [contextCopy logFlag:25 message:@"processing all done"];
   v19 = 0;
 LABEL_12:
   objc_autoreleasePoolPop(v23);
-  [v7 finishedTextProcessingJob];
+  [contextCopy finishedTextProcessingJob];
 
   v20 = *MEMORY[0x277D85DE8];
   return v19;
@@ -1910,14 +1910,14 @@ void __72__SpotlightKnowledge_processAttributesWithJobContext_group_cancelBlock_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)processLegacyPipelinesReportWithCancelBlock:(id)a3
++ (BOOL)processLegacyPipelinesReportWithCancelBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__SpotlightKnowledge_processLegacyPipelinesReportWithCancelBlock___block_invoke;
   aBlock[3] = &unk_27893CC50;
-  v4 = v3;
+  v4 = blockCopy;
   v11 = v4;
   v5 = _Block_copy(aBlock);
   v6 = [SKGJobContext defaultJobContextWithDeviceUnlocked:1];
@@ -1976,32 +1976,32 @@ void __66__SpotlightKnowledge_processLegacyPipelinesReportWithCancelBlock___bloc
   }
 }
 
-- (BOOL)processEmbeddingsReportWithJobContext:(id)a3 progressBlock:(id)a4 checkpointBlock:(id)a5 cancelBlock:(id)a6
+- (BOOL)processEmbeddingsReportWithJobContext:(id)context progressBlock:(id)block checkpointBlock:(id)checkpointBlock cancelBlock:(id)cancelBlock
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x277D657A0] sharedContext];
-  v14 = [v13 enableEmbeddings];
+  contextCopy = context;
+  blockCopy = block;
+  checkpointBlockCopy = checkpointBlock;
+  cancelBlockCopy = cancelBlock;
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableEmbeddings = [mEMORY[0x277D657A0] enableEmbeddings];
 
-  if (v14)
+  if (enableEmbeddings)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = [[SKGJob alloc] initWithJobContext:v9];
+    v16 = [[SKGJob alloc] initWithJobContext:contextCopy];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __102__SpotlightKnowledge_processEmbeddingsReportWithJobContext_progressBlock_checkpointBlock_cancelBlock___block_invoke_235;
     v26[3] = &unk_27893F3D0;
-    v17 = v9;
+    v17 = contextCopy;
     v27 = v17;
-    v28 = v11;
-    v29 = v10;
+    v28 = checkpointBlockCopy;
+    v29 = blockCopy;
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __102__SpotlightKnowledge_processEmbeddingsReportWithJobContext_progressBlock_checkpointBlock_cancelBlock___block_invoke_248;
     v24 = &unk_27893D270;
-    v25 = v12;
+    v25 = cancelBlockCopy;
     v18 = [(SKGJob *)v16 requestCSEmbeddingsProgressReport:v26 cancelBlock:&v21];
     if (v18)
     {
@@ -2223,26 +2223,26 @@ void __102__SpotlightKnowledge_processEmbeddingsReportWithJobContext_progressBlo
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)processSuggestedEventsReportWithJobContext:(id)a3 cancelBlock:(id)a4
+- (BOOL)processSuggestedEventsReportWithJobContext:(id)context cancelBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D657A0] sharedContext];
-  v8 = [v7 enableSuggestedEvents];
+  contextCopy = context;
+  blockCopy = block;
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableSuggestedEvents = [mEMORY[0x277D657A0] enableSuggestedEvents];
 
-  if (v8)
+  if (enableSuggestedEvents)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [[SKGJob alloc] initWithJobContext:v5];
+    v10 = [[SKGJob alloc] initWithJobContext:contextCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __77__SpotlightKnowledge_processSuggestedEventsReportWithJobContext_cancelBlock___block_invoke_3;
     v14[3] = &unk_27893D270;
-    v15 = v6;
+    v15 = blockCopy;
     v11 = [(SKGJob *)v10 requestCSSuggestedEventsProgressReport:&__block_literal_global_259 cancelBlock:v14];
     if (v11)
     {
-      [v5 logFlag:28 message:@"completed reporting progress for suggested events pre-extraction"];
+      [contextCopy logFlag:28 message:@"completed reporting progress for suggested events pre-extraction"];
     }
 
     v12 = !v11;
@@ -2334,26 +2334,26 @@ void __77__SpotlightKnowledge_processSuggestedEventsReportWithJobContext_cancelB
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)processDocumentUnderstandingReportWithJobContext:(id)a3 cancelBlock:(id)a4
+- (BOOL)processDocumentUnderstandingReportWithJobContext:(id)context cancelBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D657A0] sharedContext];
-  v8 = [v7 enableDocumentUnderstanding];
+  contextCopy = context;
+  blockCopy = block;
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableDocumentUnderstanding = [mEMORY[0x277D657A0] enableDocumentUnderstanding];
 
-  if (v8)
+  if (enableDocumentUnderstanding)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [[SKGJob alloc] initWithJobContext:v5];
+    v10 = [[SKGJob alloc] initWithJobContext:contextCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __83__SpotlightKnowledge_processDocumentUnderstandingReportWithJobContext_cancelBlock___block_invoke_3;
     v14[3] = &unk_27893D270;
-    v15 = v6;
+    v15 = blockCopy;
     v11 = [(SKGJob *)v10 requestCSDocumentUnderstandingProgressReport:&__block_literal_global_278_0 cancelBlock:v14];
     if (v11)
     {
-      [v5 logFlag:28 message:@"completed reporting progress for DocumentUnderstanding pre-extraction"];
+      [contextCopy logFlag:28 message:@"completed reporting progress for DocumentUnderstanding pre-extraction"];
     }
 
     v12 = !v11;
@@ -2445,48 +2445,48 @@ void __83__SpotlightKnowledge_processDocumentUnderstandingReportWithJobContext_c
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)processTextWithJobContext:(id)a3 group:(id)a4 cancelBlock:(id)a5
+- (BOOL)processTextWithJobContext:(id)context group:(id)group cancelBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 startTextProcessingJob];
-  if (![v8 doJournals])
+  contextCopy = context;
+  groupCopy = group;
+  blockCopy = block;
+  [contextCopy startTextProcessingJob];
+  if (![contextCopy doJournals])
   {
     goto LABEL_6;
   }
 
-  v11 = [MEMORY[0x277D657A0] sharedContext];
-  v12 = [v11 enableEventUpdater];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  enableEventUpdater = [mEMORY[0x277D657A0] enableEventUpdater];
 
-  if (v12)
+  if (enableEventUpdater)
   {
     goto LABEL_6;
   }
 
-  v13 = [MEMORY[0x277D657A0] sharedContext];
-  v14 = [v13 enableKeyphrases];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  enableKeyphrases = [mEMORY[0x277D657A0]2 enableKeyphrases];
 
-  v15 = [MEMORY[0x277D657A0] sharedContext];
-  v16 = [v15 enableEmbeddings];
+  mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+  enableEmbeddings = [mEMORY[0x277D657A0]3 enableEmbeddings];
 
-  if ((v16 & 1) == 0 && (v14 & 1) == 0)
+  if ((enableEmbeddings & 1) == 0 && (enableKeyphrases & 1) == 0)
   {
-    [v8 finishedTextProcessingJob];
+    [contextCopy finishedTextProcessingJob];
 LABEL_6:
     v17 = 1;
     goto LABEL_7;
   }
 
-  if (v14)
+  if (enableKeyphrases)
   {
-    v19 = [MEMORY[0x277D65798] sharedProcessor];
-    v20 = [v19 loadKeyphraser];
+    mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+    loadKeyphraser = [mEMORY[0x277D65798] loadKeyphraser];
 
-    if (v20)
+    if (loadKeyphraser)
     {
       v21 = 1;
-      if (!v16)
+      if (!enableEmbeddings)
       {
         goto LABEL_18;
       }
@@ -2494,28 +2494,28 @@ LABEL_6:
       goto LABEL_14;
     }
 
-    if (v10[2](v10, @"tried loading keyphrase model"))
+    if (blockCopy[2](blockCopy, @"tried loading keyphrase model"))
     {
 LABEL_17:
-      [v8 finishedTextProcessingJob];
+      [contextCopy finishedTextProcessingJob];
       v17 = 0;
       goto LABEL_7;
     }
   }
 
   v21 = 0;
-  if (!v16)
+  if (!enableEmbeddings)
   {
     goto LABEL_18;
   }
 
 LABEL_14:
-  v22 = [MEMORY[0x277D65798] sharedProcessor];
-  v23 = [v22 loadEmbedder];
+  mEMORY[0x277D65798]2 = [MEMORY[0x277D65798] sharedProcessor];
+  loadEmbedder = [mEMORY[0x277D65798]2 loadEmbedder];
 
-  if ((v23 & 1) == 0)
+  if ((loadEmbedder & 1) == 0)
   {
-    if (v10[2](v10, @"tried loading embedding model"))
+    if (blockCopy[2](blockCopy, @"tried loading embedding model"))
     {
       goto LABEL_17;
     }
@@ -2529,18 +2529,18 @@ LABEL_18:
 LABEL_19:
   v29 = objc_autoreleasePoolPush();
   context = objc_autoreleasePoolPush();
-  [v8 startJournals];
-  v27 = [v8 protectionClasses];
+  [contextCopy startJournals];
+  protectionClasses = [contextCopy protectionClasses];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __66__SpotlightKnowledge_processTextWithJobContext_group_cancelBlock___block_invoke;
   v46[3] = &unk_27893F2C8;
-  v47 = v8;
+  v47 = contextCopy;
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __66__SpotlightKnowledge_processTextWithJobContext_group_cancelBlock___block_invoke_2;
   v44[3] = &unk_27893F418;
-  v45 = v10;
+  v45 = blockCopy;
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __66__SpotlightKnowledge_processTextWithJobContext_group_cancelBlock___block_invoke_3;
@@ -2556,7 +2556,7 @@ LABEL_19:
   v35[4] = self;
   v36 = v42;
   v38 = v43;
-  v37 = v9;
+  v37 = groupCopy;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __66__SpotlightKnowledge_processTextWithJobContext_group_cancelBlock___block_invoke_313;
@@ -2569,7 +2569,7 @@ LABEL_19:
   v30[2] = __66__SpotlightKnowledge_processTextWithJobContext_group_cancelBlock___block_invoke_2_314;
   v30[3] = &unk_27893CC50;
   v31 = v34;
-  v26 = [(SpotlightKnowledge *)self processCSJournalsWithGroup:v37 protectionClasses:v27 includeEmbeddings:v24 includeKeyphrases:v21 shouldRemove:1 readerNextPathBlock:v46 deletedReferencesBlock:v44 processedPathBlock:v41 processedItemsBlock:v35 errorLogBlock:v32 cancelBlock:v30];
+  v26 = [(SpotlightKnowledge *)self processCSJournalsWithGroup:v37 protectionClasses:protectionClasses includeEmbeddings:v24 includeKeyphrases:v21 shouldRemove:1 readerNextPathBlock:v46 deletedReferencesBlock:v44 processedPathBlock:v41 processedItemsBlock:v35 errorLogBlock:v32 cancelBlock:v30];
 
   [v25 finishedJournals];
   objc_autoreleasePoolPop(context);
@@ -2868,34 +2868,34 @@ uint64_t __66__SpotlightKnowledge_processTextWithJobContext_group_cancelBlock___
   return a2 ^ 1;
 }
 
-- (BOOL)processPeopleWithGroup:(id)a3 cancelBlock:(id)a4
+- (BOOL)processPeopleWithGroup:(id)group cancelBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SpotlightKnowledge *)self spotlightContext];
-  [v8 startPeopleIndexingJob];
-  v9 = [v8 doArchiving];
+  groupCopy = group;
+  blockCopy = block;
+  spotlightContext = [(SpotlightKnowledge *)self spotlightContext];
+  [spotlightContext startPeopleIndexingJob];
+  doArchiving = [spotlightContext doArchiving];
   v10 = objc_autoreleasePoolPush();
-  if (v9)
+  if (doArchiving)
   {
     goto LABEL_3;
   }
 
-  [v8 startPeopleArchives];
-  v19 = [v8 protectionClasses];
+  [spotlightContext startPeopleArchives];
+  protectionClasses = [spotlightContext protectionClasses];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __57__SpotlightKnowledge_processPeopleWithGroup_cancelBlock___block_invoke;
   v45[3] = &unk_27893F4B8;
   v45[4] = self;
-  v47 = v7;
-  v46 = v8;
+  v47 = blockCopy;
+  v46 = spotlightContext;
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __57__SpotlightKnowledge_processPeopleWithGroup_cancelBlock___block_invoke_2;
   v41[3] = &unk_27893F318;
   v41[4] = self;
-  v42 = v6;
+  v42 = groupCopy;
   v44 = v47;
   v43 = v46;
   v37[0] = MEMORY[0x277D85DD0];
@@ -2919,25 +2919,25 @@ uint64_t __66__SpotlightKnowledge_processTextWithJobContext_group_cancelBlock___
   v32[3] = &unk_27893CC50;
   v33 = v36;
   v12 = 1;
-  v13 = [(SpotlightKnowledge *)self processCSArchivesWithGroup:v39 protectionClasses:v19 shouldRemove:1 archiverNextPathBlock:v45 processedPathBlock:v41 processedItemsBlock:v37 errorLogBlock:v34 cancelBlock:v32];
+  v13 = [(SpotlightKnowledge *)self processCSArchivesWithGroup:v39 protectionClasses:protectionClasses shouldRemove:1 archiverNextPathBlock:v45 processedPathBlock:v41 processedItemsBlock:v37 errorLogBlock:v34 cancelBlock:v32];
 
   [v11 finishedPeopleArchives];
   if (v13)
   {
 LABEL_3:
-    [v8 startPeopleQueries];
+    [spotlightContext startPeopleQueries];
     v30[0] = 0;
     v30[1] = v30;
     v30[2] = 0x2020000000;
     v31 = 0;
-    v14 = [[SKGJob alloc] initWithJobContext:v8];
+    v14 = [[SKGJob alloc] initWithJobContext:spotlightContext];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __57__SpotlightKnowledge_processPeopleWithGroup_cancelBlock___block_invoke_6;
     v26[3] = &unk_27893F508;
     v26[4] = self;
-    v28 = v7;
-    v27 = v8;
+    v28 = blockCopy;
+    v27 = spotlightContext;
     v29 = v30;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -2957,7 +2957,7 @@ LABEL_3:
     v16 = v28;
     v21 = v16;
     v17 = [(SKGJob *)v14 requestCSProcessingWithProcessedItemBlock:v26 batchArchivedBlock:v24 batchUpdatedBlock:v22 cancelBlock:v20 errorBlock:&__block_literal_global_331];
-    if (![(SpotlightKnowledge *)self flushGraphWithGroup:v6 cancelBlock:v16])
+    if (![(SpotlightKnowledge *)self flushGraphWithGroup:groupCopy cancelBlock:v16])
     {
       [v15 logError:4 message:@"graph unavailable"];
       v17 = 0;
@@ -2979,7 +2979,7 @@ LABEL_3:
   }
 
   objc_autoreleasePoolPop(v10);
-  [v8 finishedPeopleIndexingJob];
+  [spotlightContext finishedPeopleIndexingJob];
 
   return v12;
 }
@@ -3334,47 +3334,47 @@ void __57__SpotlightKnowledge_processPeopleWithGroup_cancelBlock___block_invoke_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)processGraphWithGroup:(id)a3 cancelBlock:(id)a4
+- (BOOL)processGraphWithGroup:(id)group cancelBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  blockCopy = block;
   if ([(SpotlightKnowledge *)self spotlightGraphAvailable])
   {
-    v8 = [(SpotlightKnowledge *)self spotlightContext];
-    [v8 startGraphAnalysisJob];
+    spotlightContext = [(SpotlightKnowledge *)self spotlightContext];
+    [spotlightContext startGraphAnalysisJob];
     v9 = objc_autoreleasePoolPush();
     if ([(SpotlightKnowledge *)self graphNeedsAnalysis])
     {
       objc_autoreleasePoolPop(v9);
-      v10 = [MEMORY[0x277D657A0] sharedContext];
-      v11 = [v10 enableMegadomePeople];
+      mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+      enableMegadomePeople = [mEMORY[0x277D657A0] enableMegadomePeople];
 
-      if (v11)
+      if (enableMegadomePeople)
       {
-        [v8 startMegadomeIndexing];
+        [spotlightContext startMegadomeIndexing];
         v12 = objc_autoreleasePoolPush();
-        if ([(SpotlightKnowledge *)self removeGraphEntitiesWithCancelBlock:v7])
+        if ([(SpotlightKnowledge *)self removeGraphEntitiesWithCancelBlock:blockCopy])
         {
           v27 = 0;
           v28 = &v27;
           v29 = 0x2020000000;
           v30 = 1;
-          v13 = [MEMORY[0x277D65798] sharedProcessor];
+          mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
           v19 = MEMORY[0x277D85DD0];
           v20 = 3221225472;
           v21 = __56__SpotlightKnowledge_processGraphWithGroup_cancelBlock___block_invoke;
           v22 = &unk_27893F550;
-          v23 = self;
-          v24 = v6;
-          v25 = v7;
+          selfCopy = self;
+          v24 = groupCopy;
+          v25 = blockCopy;
           v26 = &v27;
-          [v13 generateMegadomePeopleUsingBlock:&v19 cancelBlock:v25];
+          [mEMORY[0x277D65798] generateMegadomePeopleUsingBlock:&v19 cancelBlock:v25];
 
-          LODWORD(v13) = *(v28 + 24);
+          LODWORD(mEMORY[0x277D65798]) = *(v28 + 24);
           _Block_object_dispose(&v27, 8);
           objc_autoreleasePoolPop(v12);
-          [v8 finishedMegadomeIndexing];
-          if (v13 != 1)
+          [spotlightContext finishedMegadomeIndexing];
+          if (mEMORY[0x277D65798] != 1)
           {
 LABEL_14:
             v14 = 1;
@@ -3385,42 +3385,42 @@ LABEL_14:
         else
         {
           objc_autoreleasePoolPop(v12);
-          [v8 finishedMegadomeIndexing];
+          [spotlightContext finishedMegadomeIndexing];
         }
       }
 
-      [v8 startGraphAnalysis];
-      v16 = [(SpotlightKnowledge *)self analyzeGraphWithCancelBlock:v7];
-      [v8 finishedGraphAnalysis];
+      [spotlightContext startGraphAnalysis];
+      v16 = [(SpotlightKnowledge *)self analyzeGraphWithCancelBlock:blockCopy];
+      [spotlightContext finishedGraphAnalysis];
       if (!v16)
       {
         goto LABEL_14;
       }
 
-      [v8 startGraphScoring];
-      v17 = [(SpotlightKnowledge *)self scoreGraphWithCancelBlock:v7];
-      [v8 finishedGraphScoring];
+      [spotlightContext startGraphScoring];
+      v17 = [(SpotlightKnowledge *)self scoreGraphWithCancelBlock:blockCopy];
+      [spotlightContext finishedGraphScoring];
       if (!v17)
       {
         goto LABEL_14;
       }
 
       v9 = objc_autoreleasePoolPush();
-      [(SpotlightKnowledge *)self updateSpotlightContactsWithJobContext:v8 group:v6 cancelBlock:v7];
+      [(SpotlightKnowledge *)self updateSpotlightContactsWithJobContext:spotlightContext group:groupCopy cancelBlock:blockCopy];
     }
 
     else
     {
       v15 = objc_autoreleasePoolPush();
-      [(SpotlightKnowledge *)self updateSpotlightContactsWithJobContext:v8 group:v6 cancelBlock:v7];
+      [(SpotlightKnowledge *)self updateSpotlightContactsWithJobContext:spotlightContext group:groupCopy cancelBlock:blockCopy];
       objc_autoreleasePoolPop(v15);
     }
 
     objc_autoreleasePoolPop(v9);
-    [v8 logFlag:27 message:@"completed graph analysis"];
+    [spotlightContext logFlag:27 message:@"completed graph analysis"];
     v14 = 0;
 LABEL_15:
-    [v8 finishedGraphAnalysisJob];
+    [spotlightContext finishedGraphAnalysisJob];
 
     goto LABEL_16;
   }
@@ -3451,15 +3451,15 @@ void __56__SpotlightKnowledge_processGraphWithGroup_cancelBlock___block_invoke(u
 {
   v28 = *MEMORY[0x277D85DE8];
   empty = xpc_dictionary_create_empty();
-  v22 = [(SpotlightKnowledge *)self spotlightContext];
-  v4 = [v22 feedback];
-  v5 = [v4 feedbackData];
+  spotlightContext = [(SpotlightKnowledge *)self spotlightContext];
+  feedback = [spotlightContext feedback];
+  feedbackData = [feedback feedbackData];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v5;
+  v6 = feedbackData;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -3483,17 +3483,17 @@ void __56__SpotlightKnowledge_processGraphWithGroup_cancelBlock___block_invoke(u
           if (([v11 hasPrefix:@"should"] & 1) != 0 || (objc_msgSend(v11, "hasPrefix:", @"did") & 1) != 0 || objc_msgSend(v11, "hasPrefix:", @"invalid"))
           {
             v13 = [v6 objectForKeyedSubscript:v11];
-            v14 = [v13 BOOLValue];
+            bOOLValue = [v13 BOOLValue];
 
-            xpc_dictionary_set_BOOL(empty, [v11 UTF8String], v14);
+            xpc_dictionary_set_BOOL(empty, [v11 UTF8String], bOOLValue);
           }
 
           else if (([v11 hasPrefix:@"num"] & 1) != 0 || (objc_msgSend(v11, "hasSuffix:", @"Size") & 1) != 0 || objc_msgSend(v11, "hasSuffix:", @"Count"))
           {
             v15 = [v6 objectForKeyedSubscript:v11];
-            v16 = [v15 intValue];
+            intValue = [v15 intValue];
 
-            xpc_dictionary_set_int64(empty, [v11 UTF8String], v16);
+            xpc_dictionary_set_int64(empty, [v11 UTF8String], intValue);
           }
 
           else if ([v11 hasSuffix:@"time"])
@@ -3521,41 +3521,41 @@ void __56__SpotlightKnowledge_processGraphWithGroup_cancelBlock___block_invoke(u
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)timerWithBlock:(id)a3
+- (id)timerWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = [SKGTimer alloc];
-  v5 = [(SKGTimer *)v4 initWithTimeIntervalSinceNow:gTimerQueue tolerance:v3 queue:5.0 block:2.0];
+  v5 = [(SKGTimer *)v4 initWithTimeIntervalSinceNow:gTimerQueue tolerance:blockCopy queue:5.0 block:2.0];
 
   return v5;
 }
 
-- (void)runWithQueue:(id)a3 group:(id)a4 progressBlock:(id)a5 checkpointBlock:(id)a6 completeBlock:(id)a7 cancelBlock:(id)a8 deferBlock:(id)a9
+- (void)runWithQueue:(id)queue group:(id)group progressBlock:(id)block checkpointBlock:(id)checkpointBlock completeBlock:(id)completeBlock cancelBlock:(id)cancelBlock deferBlock:(id)deferBlock
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  groupCopy = group;
+  blockCopy = block;
+  checkpointBlockCopy = checkpointBlock;
+  completeBlockCopy = completeBlock;
+  cancelBlockCopy = cancelBlock;
+  deferBlockCopy = deferBlock;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __108__SpotlightKnowledge_runWithQueue_group_progressBlock_checkpointBlock_completeBlock_cancelBlock_deferBlock___block_invoke;
   block[3] = &unk_27893F5A0;
   block[4] = self;
-  v28 = v15;
-  v29 = v19;
-  v30 = v20;
-  v31 = v18;
-  v32 = v16;
-  v33 = v17;
-  v21 = v17;
-  v22 = v16;
-  v23 = v18;
-  v24 = v20;
-  v25 = v19;
-  v26 = v15;
-  dispatch_group_async(v26, a3, block);
+  v28 = groupCopy;
+  v29 = cancelBlockCopy;
+  v30 = deferBlockCopy;
+  v31 = completeBlockCopy;
+  v32 = blockCopy;
+  v33 = checkpointBlockCopy;
+  v21 = checkpointBlockCopy;
+  v22 = blockCopy;
+  v23 = completeBlockCopy;
+  v24 = deferBlockCopy;
+  v25 = cancelBlockCopy;
+  v26 = groupCopy;
+  dispatch_group_async(v26, queue, block);
 }
 
 void __108__SpotlightKnowledge_runWithQueue_group_progressBlock_checkpointBlock_completeBlock_cancelBlock_deferBlock___block_invoke(uint64_t a1)
@@ -3757,44 +3757,44 @@ uint64_t __108__SpotlightKnowledge_runWithQueue_group_progressBlock_checkpointBl
   return [*(*(*(a1 + 32) + 8) + 40) reset];
 }
 
-- (void)runWithGroup:(id)a3 delegate:(id)a4
+- (void)runWithGroup:(id)group delegate:(id)delegate
 {
-  v5 = a3;
-  v6 = [(SpotlightKnowledge *)self spotlightContext];
-  [v6 start];
-  if ([v6 shouldReportProgress])
+  groupCopy = group;
+  spotlightContext = [(SpotlightKnowledge *)self spotlightContext];
+  [spotlightContext start];
+  if ([spotlightContext shouldReportProgress])
   {
-    [(SpotlightKnowledge *)self processEmbeddingsReportWithJobContext:v6 progressBlock:0 checkpointBlock:0 cancelBlock:&__block_literal_global_369];
-    [(SpotlightKnowledge *)self processSuggestedEventsReportWithJobContext:v6 cancelBlock:&__block_literal_global_369];
-    [(SpotlightKnowledge *)self processDocumentUnderstandingReportWithJobContext:v6 cancelBlock:&__block_literal_global_369];
+    [(SpotlightKnowledge *)self processEmbeddingsReportWithJobContext:spotlightContext progressBlock:0 checkpointBlock:0 cancelBlock:&__block_literal_global_369];
+    [(SpotlightKnowledge *)self processSuggestedEventsReportWithJobContext:spotlightContext cancelBlock:&__block_literal_global_369];
+    [(SpotlightKnowledge *)self processDocumentUnderstandingReportWithJobContext:spotlightContext cancelBlock:&__block_literal_global_369];
   }
 
-  if ([v6 shouldProcessText])
+  if ([spotlightContext shouldProcessText])
   {
-    [(SpotlightKnowledge *)self processTextWithJobContext:v6 group:v5 cancelBlock:&__block_literal_global_369];
+    [(SpotlightKnowledge *)self processTextWithJobContext:spotlightContext group:groupCopy cancelBlock:&__block_literal_global_369];
   }
 
-  if ([v6 shouldProcessAttributes])
+  if ([spotlightContext shouldProcessAttributes])
   {
-    [(SpotlightKnowledge *)self processAttributesWithJobContext:v6 group:v5 cancelBlock:&__block_literal_global_369];
+    [(SpotlightKnowledge *)self processAttributesWithJobContext:spotlightContext group:groupCopy cancelBlock:&__block_literal_global_369];
   }
 
-  if ((([v6 shouldIndexPeople] & 1) != 0 || objc_msgSend(v6, "shouldAnalyzeGraph")) && -[SpotlightKnowledge loadGraphWithGroup:cancelBlock:](self, "loadGraphWithGroup:cancelBlock:", v5, &__block_literal_global_369))
+  if ((([spotlightContext shouldIndexPeople] & 1) != 0 || objc_msgSend(spotlightContext, "shouldAnalyzeGraph")) && -[SpotlightKnowledge loadGraphWithGroup:cancelBlock:](self, "loadGraphWithGroup:cancelBlock:", groupCopy, &__block_literal_global_369))
   {
-    if ([v6 shouldIndexPeople])
+    if ([spotlightContext shouldIndexPeople])
     {
-      [(SpotlightKnowledge *)self processPeopleWithGroup:v5 cancelBlock:&__block_literal_global_369];
+      [(SpotlightKnowledge *)self processPeopleWithGroup:groupCopy cancelBlock:&__block_literal_global_369];
     }
 
-    if ([v6 shouldAnalyzeGraph])
+    if ([spotlightContext shouldAnalyzeGraph])
     {
-      [(SpotlightKnowledge *)self processGraphWithGroup:v5 cancelBlock:&__block_literal_global_369];
+      [(SpotlightKnowledge *)self processGraphWithGroup:groupCopy cancelBlock:&__block_literal_global_369];
     }
 
-    [(SpotlightKnowledge *)self unloadGraphWithGroup:v5 cancelBlock:&__block_literal_global_369];
+    [(SpotlightKnowledge *)self unloadGraphWithGroup:groupCopy cancelBlock:&__block_literal_global_369];
   }
 
-  [v6 end];
+  [spotlightContext end];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;

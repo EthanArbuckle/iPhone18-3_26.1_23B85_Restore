@@ -1,26 +1,26 @@
 @interface SXTextStyleAttributes
-+ (id)attributesWithRange:(_NSRange)a3;
++ (id)attributesWithRange:(_NSRange)range;
 - (NSDictionary)attributes;
-- (SXTextStyleAttributes)initWithRange:(_NSRange)a3;
+- (SXTextStyleAttributes)initWithRange:(_NSRange)range;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addAttribute:(id)a3 value:(id)a4;
+- (void)addAttribute:(id)attribute value:(id)value;
 @end
 
 @implementation SXTextStyleAttributes
 
-+ (id)attributesWithRange:(_NSRange)a3
++ (id)attributesWithRange:(_NSRange)range
 {
-  v3 = [[SXTextStyleAttributes alloc] initWithRange:a3.location, a3.length];
+  v3 = [[SXTextStyleAttributes alloc] initWithRange:range.location, range.length];
 
   return v3;
 }
 
-- (SXTextStyleAttributes)initWithRange:(_NSRange)a3
+- (SXTextStyleAttributes)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v10.receiver = self;
   v10.super_class = SXTextStyleAttributes;
   v5 = [(SXTextStyleAttributes *)&v10 init];
@@ -29,40 +29,40 @@
   {
     v5->_range.location = location;
     v5->_range.length = length;
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     mutableAttributes = v6->_mutableAttributes;
-    v6->_mutableAttributes = v7;
+    v6->_mutableAttributes = dictionary;
   }
 
   return v6;
 }
 
-- (void)addAttribute:(id)a3 value:(id)a4
+- (void)addAttribute:(id)attribute value:(id)value
 {
-  if (a3 && a4)
+  if (attribute && value)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(SXTextStyleAttributes *)self mutableAttributes];
-    [v8 setObject:v6 forKey:v7];
+    valueCopy = value;
+    attributeCopy = attribute;
+    mutableAttributes = [(SXTextStyleAttributes *)self mutableAttributes];
+    [mutableAttributes setObject:valueCopy forKey:attributeCopy];
   }
 }
 
 - (NSDictionary)attributes
 {
-  v2 = [(SXTextStyleAttributes *)self mutableAttributes];
-  v3 = [v2 copy];
+  mutableAttributes = [(SXTextStyleAttributes *)self mutableAttributes];
+  v3 = [mutableAttributes copy];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   v5[2] = [(SXTextStyleAttributes *)self range];
   v5[3] = v6;
-  v7 = [(SXTextStyleAttributes *)self mutableAttributes];
-  v8 = [v7 copyWithZone:a3];
+  mutableAttributes = [(SXTextStyleAttributes *)self mutableAttributes];
+  v8 = [mutableAttributes copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -79,8 +79,8 @@
   v6 = [v3 initWithFormat:@"<%@: %p; range: %@", v4, self, v5];
 
   [v6 appendString:@" attributes(%d)"];
-  v7 = [(SXTextStyleAttributes *)self mutableAttributes];
-  v8 = [v7 count];
+  mutableAttributes = [(SXTextStyleAttributes *)self mutableAttributes];
+  v8 = [mutableAttributes count];
 
   if (v8)
   {
@@ -89,8 +89,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [(SXTextStyleAttributes *)self mutableAttributes];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    mutableAttributes2 = [(SXTextStyleAttributes *)self mutableAttributes];
+    v10 = [mutableAttributes2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -101,16 +101,16 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(mutableAttributes2);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          v15 = [(SXTextStyleAttributes *)self mutableAttributes];
-          v16 = [v15 objectForKey:v14];
+          mutableAttributes3 = [(SXTextStyleAttributes *)self mutableAttributes];
+          v16 = [mutableAttributes3 objectForKey:v14];
           [v6 appendFormat:@"key: %@ value: %@\n", v14, v16];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [mutableAttributes2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);

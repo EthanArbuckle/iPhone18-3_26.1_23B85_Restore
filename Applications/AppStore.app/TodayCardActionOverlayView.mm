@@ -1,13 +1,13 @@
 @interface TodayCardActionOverlayView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore26TodayCardActionOverlayView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore26TodayCardActionOverlayView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TodayCardActionOverlayView
 
-- (_TtC8AppStore26TodayCardActionOverlayView)initWithCoder:(id)a3
+- (_TtC8AppStore26TodayCardActionOverlayView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore26TodayCardActionOverlayView_accessoryView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore26TodayCardActionOverlayView_isExpanded) = 0;
@@ -17,10 +17,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1001A68F8(width);
   v7 = v6;
 
@@ -33,15 +33,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A6BF0();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1001A6F8C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1001A6F8C(change);
 }
 
 @end

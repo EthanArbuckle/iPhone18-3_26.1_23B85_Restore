@@ -1,72 +1,72 @@
 @interface PKPaymentNotificationAppURLHelper
-+ (BOOL)applicationExistsToHandleNotificationsForPaymentPass:(id)a3;
-+ (id)_appURLForNotificationOfType:(id)a3 paymentPass:(id)a4 serviceIdentifier:(id)a5 appLaunchToken:(id)a6 pathSuffix:(id)a7 usingDeviceAccountNumber:(BOOL)a8;
-+ (id)appURLForMessageNotification:(id)a3 pass:(id)a4 appLaunchToken:(id)a5;
-+ (id)appURLForTransactionNotification:(id)a3 excludeTransactionIdentifier:(BOOL)a4 pass:(id)a5 pathSuffix:(id)a6 appLaunchToken:(id)a7;
-+ (id)appURLForTransactionNotification:(id)a3 pass:(id)a4 appLaunchToken:(id)a5;
++ (BOOL)applicationExistsToHandleNotificationsForPaymentPass:(id)pass;
++ (id)_appURLForNotificationOfType:(id)type paymentPass:(id)pass serviceIdentifier:(id)identifier appLaunchToken:(id)token pathSuffix:(id)suffix usingDeviceAccountNumber:(BOOL)number;
++ (id)appURLForMessageNotification:(id)notification pass:(id)pass appLaunchToken:(id)token;
++ (id)appURLForTransactionNotification:(id)notification excludeTransactionIdentifier:(BOOL)identifier pass:(id)pass pathSuffix:(id)suffix appLaunchToken:(id)token;
++ (id)appURLForTransactionNotification:(id)notification pass:(id)pass appLaunchToken:(id)token;
 @end
 
 @implementation PKPaymentNotificationAppURLHelper
 
-+ (id)appURLForMessageNotification:(id)a3 pass:(id)a4 appLaunchToken:(id)a5
++ (id)appURLForMessageNotification:(id)notification pass:(id)pass appLaunchToken:(id)token
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 serviceIdentifier];
-  v12 = [v10 hasAssociatedPaymentApplication];
+  tokenCopy = token;
+  passCopy = pass;
+  notificationCopy = notification;
+  serviceIdentifier = [notificationCopy serviceIdentifier];
+  hasAssociatedPaymentApplication = [notificationCopy hasAssociatedPaymentApplication];
 
-  v13 = [a1 _appURLForNotificationOfType:@"messages" paymentPass:v9 serviceIdentifier:v11 appLaunchToken:v8 pathSuffix:0 usingDeviceAccountNumber:v12];
+  v13 = [self _appURLForNotificationOfType:@"messages" paymentPass:passCopy serviceIdentifier:serviceIdentifier appLaunchToken:tokenCopy pathSuffix:0 usingDeviceAccountNumber:hasAssociatedPaymentApplication];
 
   return v13;
 }
 
-+ (id)appURLForTransactionNotification:(id)a3 pass:(id)a4 appLaunchToken:(id)a5
++ (id)appURLForTransactionNotification:(id)notification pass:(id)pass appLaunchToken:(id)token
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 serviceIdentifier];
-  v12 = [v10 hasAssociatedPaymentApplication];
+  tokenCopy = token;
+  passCopy = pass;
+  notificationCopy = notification;
+  serviceIdentifier = [notificationCopy serviceIdentifier];
+  hasAssociatedPaymentApplication = [notificationCopy hasAssociatedPaymentApplication];
 
-  v13 = [a1 _appURLForNotificationOfType:@"transactions" paymentPass:v9 serviceIdentifier:v11 appLaunchToken:v8 pathSuffix:0 usingDeviceAccountNumber:v12];
+  v13 = [self _appURLForNotificationOfType:@"transactions" paymentPass:passCopy serviceIdentifier:serviceIdentifier appLaunchToken:tokenCopy pathSuffix:0 usingDeviceAccountNumber:hasAssociatedPaymentApplication];
 
   return v13;
 }
 
-+ (id)appURLForTransactionNotification:(id)a3 excludeTransactionIdentifier:(BOOL)a4 pass:(id)a5 pathSuffix:(id)a6 appLaunchToken:(id)a7
++ (id)appURLForTransactionNotification:(id)notification excludeTransactionIdentifier:(BOOL)identifier pass:(id)pass pathSuffix:(id)suffix appLaunchToken:(id)token
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (a4)
+  notificationCopy = notification;
+  passCopy = pass;
+  suffixCopy = suffix;
+  tokenCopy = token;
+  if (identifier)
   {
-    v16 = 0;
+    serviceIdentifier = 0;
   }
 
   else
   {
-    v16 = [v12 serviceIdentifier];
+    serviceIdentifier = [notificationCopy serviceIdentifier];
   }
 
-  v17 = [a1 _appURLForNotificationOfType:@"transactions" paymentPass:v13 serviceIdentifier:v16 appLaunchToken:v15 pathSuffix:v14 usingDeviceAccountNumber:{objc_msgSend(v12, "hasAssociatedPaymentApplication")}];
+  v17 = [self _appURLForNotificationOfType:@"transactions" paymentPass:passCopy serviceIdentifier:serviceIdentifier appLaunchToken:tokenCopy pathSuffix:suffixCopy usingDeviceAccountNumber:{objc_msgSend(notificationCopy, "hasAssociatedPaymentApplication")}];
 
   return v17;
 }
 
-+ (BOOL)applicationExistsToHandleNotificationsForPaymentPass:(id)a3
++ (BOOL)applicationExistsToHandleNotificationsForPaymentPass:(id)pass
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 appURLScheme];
+  passCopy = pass;
+  appURLScheme = [passCopy appURLScheme];
   v5 = MEMORY[0x1E695DFF8];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://", v4];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://", appURLScheme];
   v7 = [v5 URLWithString:v6];
 
-  v8 = [v3 associatedApplicationIdentifiers];
-  v9 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v10 = [v9 applicationsAvailableForOpeningURL:v7];
+  associatedApplicationIdentifiers = [passCopy associatedApplicationIdentifiers];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v10 = [defaultWorkspace applicationsAvailableForOpeningURL:v7];
 
   v28 = 0u;
   v29 = 0u;
@@ -78,8 +78,8 @@
   {
     v13 = v12;
     v23 = v7;
-    v24 = v4;
-    v25 = v3;
+    v24 = appURLScheme;
+    v25 = passCopy;
     v14 = *v27;
     while (2)
     {
@@ -92,12 +92,12 @@
 
         v16 = *(*(&v26 + 1) + 8 * i);
         v17 = MEMORY[0x1E696AEC0];
-        v18 = [v16 teamID];
-        v19 = [v16 bundleIdentifier];
-        v20 = [v17 stringWithFormat:@"%@.%@", v18, v19];
+        teamID = [v16 teamID];
+        bundleIdentifier = [v16 bundleIdentifier];
+        v20 = [v17 stringWithFormat:@"%@.%@", teamID, bundleIdentifier];
 
-        LOBYTE(v19) = [v8 containsObject:v20];
-        if (v19)
+        LOBYTE(bundleIdentifier) = [associatedApplicationIdentifiers containsObject:v20];
+        if (bundleIdentifier)
         {
           v21 = 1;
           goto LABEL_11;
@@ -115,8 +115,8 @@
 
     v21 = 0;
 LABEL_11:
-    v4 = v24;
-    v3 = v25;
+    appURLScheme = v24;
+    passCopy = v25;
     v7 = v23;
   }
 
@@ -128,51 +128,51 @@ LABEL_11:
   return v21;
 }
 
-+ (id)_appURLForNotificationOfType:(id)a3 paymentPass:(id)a4 serviceIdentifier:(id)a5 appLaunchToken:(id)a6 pathSuffix:(id)a7 usingDeviceAccountNumber:(BOOL)a8
++ (id)_appURLForNotificationOfType:(id)type paymentPass:(id)pass serviceIdentifier:(id)identifier appLaunchToken:(id)token pathSuffix:(id)suffix usingDeviceAccountNumber:(BOOL)number
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if ([a1 applicationExistsToHandleNotificationsForPaymentPass:v15])
+  typeCopy = type;
+  passCopy = pass;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  suffixCopy = suffix;
+  if ([self applicationExistsToHandleNotificationsForPaymentPass:passCopy])
   {
-    v19 = [v15 appURLScheme];
-    if (v19)
+    appURLScheme = [passCopy appURLScheme];
+    if (appURLScheme)
     {
-      if (a8)
+      if (number)
       {
-        v20 = [v15 deviceAccountIdentifier];
+        deviceAccountIdentifier = [passCopy deviceAccountIdentifier];
         v21 = @"dpan";
       }
 
       else
       {
-        v20 = [v15 primaryAccountIdentifier];
+        deviceAccountIdentifier = [passCopy primaryAccountIdentifier];
         v21 = @"fpan";
       }
 
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@/%@/%@", v19, v21, v20, v14];
-      v24 = v23;
-      if (v16)
+      typeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@://%@/%@/%@", appURLScheme, v21, deviceAccountIdentifier, typeCopy];
+      v24 = typeCopy;
+      if (identifierCopy)
       {
-        v25 = [v23 stringByAppendingFormat:@"/%@", v16];
+        identifierCopy = [typeCopy stringByAppendingFormat:@"/%@", identifierCopy];
 
-        v24 = v25;
+        v24 = identifierCopy;
       }
 
-      if (v18)
+      if (suffixCopy)
       {
-        v26 = [v24 stringByAppendingString:v18];
+        v26 = [v24 stringByAppendingString:suffixCopy];
 
         v24 = v26;
       }
 
-      if (v17)
+      if (tokenCopy)
       {
-        v27 = [v24 stringByAppendingFormat:@"?token=%@", v17];
+        tokenCopy = [v24 stringByAppendingFormat:@"?token=%@", tokenCopy];
 
-        v24 = v27;
+        v24 = tokenCopy;
       }
 
       v22 = [MEMORY[0x1E695DFF8] URLWithString:v24];

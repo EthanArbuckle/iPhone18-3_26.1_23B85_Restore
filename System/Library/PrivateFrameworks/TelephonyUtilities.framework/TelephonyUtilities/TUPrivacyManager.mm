@@ -1,18 +1,18 @@
 @interface TUPrivacyManager
 + (TUPrivacyManager)sharedPrivacyManager;
-- (BOOL)isIncomingCommunicationBlockedForBusinessID:(id)a3;
-- (BOOL)isIncomingCommunicationBlockedForEmailAddress:(id)a3;
-- (BOOL)isIncomingCommunicationBlockedForHandle:(id)a3;
-- (BOOL)isIncomingCommunicationBlockedForPhoneNumber:(id)a3;
+- (BOOL)isIncomingCommunicationBlockedForBusinessID:(id)d;
+- (BOOL)isIncomingCommunicationBlockedForEmailAddress:(id)address;
+- (BOOL)isIncomingCommunicationBlockedForHandle:(id)handle;
+- (BOOL)isIncomingCommunicationBlockedForPhoneNumber:(id)number;
 - (NSArray)privacyRules;
 - (TUPrivacyManager)init;
-- (void)_handleBlockListChanged:(id)a3;
-- (void)addRule:(id)a3;
+- (void)_handleBlockListChanged:(id)changed;
+- (void)addRule:(id)rule;
 - (void)dealloc;
-- (void)removeRule:(id)a3;
-- (void)setBlockIncomingCommunication:(BOOL)a3 forBusinessID:(id)a4;
-- (void)setBlockIncomingCommunication:(BOOL)a3 forEmailAddress:(id)a4;
-- (void)setBlockIncomingCommunication:(BOOL)a3 forPhoneNumber:(id)a4;
+- (void)removeRule:(id)rule;
+- (void)setBlockIncomingCommunication:(BOOL)communication forBusinessID:(id)d;
+- (void)setBlockIncomingCommunication:(BOOL)communication forEmailAddress:(id)address;
+- (void)setBlockIncomingCommunication:(BOOL)communication forPhoneNumber:(id)number;
 @end
 
 @implementation TUPrivacyManager
@@ -31,8 +31,8 @@ uint64_t __40__TUPrivacyManager_sharedPrivacyManager__block_invoke()
   v2 = [(TUPrivacyManager *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleBlockListChanged_ name:*MEMORY[0x1E6995900] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleBlockListChanged_ name:*MEMORY[0x1E6995900] object:0];
   }
 
   return v2;
@@ -52,15 +52,15 @@ uint64_t __40__TUPrivacyManager_sharedPrivacyManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TUPrivacyManager;
   [(TUPrivacyManager *)&v4 dealloc];
 }
 
-- (void)_handleBlockListChanged:(id)a3
+- (void)_handleBlockListChanged:(id)changed
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -76,18 +76,18 @@ void __44__TUPrivacyManager__handleBlockListChanged___block_invoke(uint64_t a1)
   [v2 postNotificationName:@"com.apple.TelephonyUtilities.TUPrivacyManager.RulesChanged" object:*(a1 + 32) userInfo:0];
 }
 
-- (void)setBlockIncomingCommunication:(BOOL)a3 forPhoneNumber:(id)a4
+- (void)setBlockIncomingCommunication:(BOOL)communication forPhoneNumber:(id)number
 {
-  v4 = a3;
+  communicationCopy = communication;
   v12 = *MEMORY[0x1E69E9840];
-  [a4 phoneNumberRef];
+  [number phoneNumberRef];
   v5 = CMFItemCreateWithPhoneNumber();
   if (v5)
   {
     v6 = v5;
     v7 = TUDefaultLog();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (communicationCopy)
     {
       if (v8)
       {
@@ -117,9 +117,9 @@ void __44__TUPrivacyManager__handleBlockListChanged___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setBlockIncomingCommunication:(BOOL)a3 forEmailAddress:(id)a4
+- (void)setBlockIncomingCommunication:(BOOL)communication forEmailAddress:(id)address
 {
-  v4 = a3;
+  communicationCopy = communication;
   v12 = *MEMORY[0x1E69E9840];
   v5 = CMFItemCreateWithEmailAddress();
   if (v5)
@@ -127,7 +127,7 @@ void __44__TUPrivacyManager__handleBlockListChanged___block_invoke(uint64_t a1)
     v6 = v5;
     v7 = TUDefaultLog();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (communicationCopy)
     {
       if (v8)
       {
@@ -157,9 +157,9 @@ void __44__TUPrivacyManager__handleBlockListChanged___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setBlockIncomingCommunication:(BOOL)a3 forBusinessID:(id)a4
+- (void)setBlockIncomingCommunication:(BOOL)communication forBusinessID:(id)d
 {
-  v4 = a3;
+  communicationCopy = communication;
   v12 = *MEMORY[0x1E69E9840];
   v5 = CMFItemCreateWithBusinessID();
   if (v5)
@@ -167,7 +167,7 @@ void __44__TUPrivacyManager__handleBlockListChanged___block_invoke(uint64_t a1)
     v6 = v5;
     v7 = TUDefaultLog();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (communicationCopy)
     {
       if (v8)
       {
@@ -197,71 +197,71 @@ void __44__TUPrivacyManager__handleBlockListChanged___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRule:(id)a3
+- (void)addRule:(id)rule
 {
-  v6 = a3;
-  v4 = [v6 type];
-  if (v4 == 2)
+  ruleCopy = rule;
+  type = [ruleCopy type];
+  if (type == 2)
   {
-    v5 = [v6 businessID];
-    [(TUPrivacyManager *)self setBlockIncomingCommunication:1 forBusinessID:v5];
+    businessID = [ruleCopy businessID];
+    [(TUPrivacyManager *)self setBlockIncomingCommunication:1 forBusinessID:businessID];
   }
 
-  else if (v4 == 1)
+  else if (type == 1)
   {
-    v5 = [v6 email];
-    [(TUPrivacyManager *)self setBlockIncomingCommunication:1 forEmailAddress:v5];
+    businessID = [ruleCopy email];
+    [(TUPrivacyManager *)self setBlockIncomingCommunication:1 forEmailAddress:businessID];
   }
 
   else
   {
-    if (v4)
+    if (type)
     {
       goto LABEL_8;
     }
 
-    v5 = [v6 phoneNumber];
-    [(TUPrivacyManager *)self setBlockIncomingCommunication:1 forPhoneNumber:v5];
+    businessID = [ruleCopy phoneNumber];
+    [(TUPrivacyManager *)self setBlockIncomingCommunication:1 forPhoneNumber:businessID];
   }
 
 LABEL_8:
 }
 
-- (void)removeRule:(id)a3
+- (void)removeRule:(id)rule
 {
-  v6 = a3;
-  v4 = [v6 type];
-  if (v4 == 2)
+  ruleCopy = rule;
+  type = [ruleCopy type];
+  if (type == 2)
   {
-    v5 = [v6 businessID];
-    [(TUPrivacyManager *)self setBlockIncomingCommunication:0 forBusinessID:v5];
+    businessID = [ruleCopy businessID];
+    [(TUPrivacyManager *)self setBlockIncomingCommunication:0 forBusinessID:businessID];
   }
 
-  else if (v4 == 1)
+  else if (type == 1)
   {
-    v5 = [v6 email];
-    [(TUPrivacyManager *)self setBlockIncomingCommunication:0 forEmailAddress:v5];
+    businessID = [ruleCopy email];
+    [(TUPrivacyManager *)self setBlockIncomingCommunication:0 forEmailAddress:businessID];
   }
 
   else
   {
-    if (v4)
+    if (type)
     {
       goto LABEL_8;
     }
 
-    v5 = [v6 phoneNumber];
-    [(TUPrivacyManager *)self setBlockIncomingCommunication:0 forPhoneNumber:v5];
+    businessID = [ruleCopy phoneNumber];
+    [(TUPrivacyManager *)self setBlockIncomingCommunication:0 forPhoneNumber:businessID];
   }
 
 LABEL_8:
 }
 
-- (BOOL)isIncomingCommunicationBlockedForPhoneNumber:(id)a3
+- (BOOL)isIncomingCommunicationBlockedForPhoneNumber:(id)number
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 phoneNumberRef], (v5 = CMFItemCreateWithPhoneNumber()) != 0))
+  numberCopy = number;
+  v4 = numberCopy;
+  if (numberCopy && ([numberCopy phoneNumberRef], (v5 = CMFItemCreateWithPhoneNumber()) != 0))
   {
     v6 = v5;
     v7 = CMFBlockListIsItemBlocked() != 0;
@@ -276,10 +276,10 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)isIncomingCommunicationBlockedForEmailAddress:(id)a3
+- (BOOL)isIncomingCommunicationBlockedForEmailAddress:(id)address
 {
-  v3 = a3;
-  if (v3 && (v4 = CMFItemCreateWithEmailAddress()) != 0)
+  addressCopy = address;
+  if (addressCopy && (v4 = CMFItemCreateWithEmailAddress()) != 0)
   {
     v5 = v4;
     v6 = CMFBlockListIsItemBlocked() != 0;
@@ -294,10 +294,10 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isIncomingCommunicationBlockedForBusinessID:(id)a3
+- (BOOL)isIncomingCommunicationBlockedForBusinessID:(id)d
 {
-  v3 = a3;
-  if (v3 && (v4 = CMFItemCreateWithBusinessID()) != 0)
+  dCopy = d;
+  if (dCopy && (v4 = CMFItemCreateWithBusinessID()) != 0)
   {
     v5 = v4;
     v6 = CMFBlockListIsItemBlocked() != 0;
@@ -312,11 +312,11 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isIncomingCommunicationBlockedForHandle:(id)a3
+- (BOOL)isIncomingCommunicationBlockedForHandle:(id)handle
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 value], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "_stripFZIDPrefix"), CMFItemFromString = CreateCMFItemFromString(), v5, CMFItemFromString))
+  handleCopy = handle;
+  v4 = handleCopy;
+  if (handleCopy && ([handleCopy value], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "_stripFZIDPrefix"), CMFItemFromString = CreateCMFItemFromString(), v5, CMFItemFromString))
   {
     v7 = CMFBlockListIsItemBlocked() != 0;
     CFRelease(CMFItemFromString);
@@ -338,7 +338,7 @@ LABEL_8:
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__12;
   v14 = __Block_byref_object_dispose__12;
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9[7] = 0;
   CMFBlockListCopyItemsForAllServicesService();
   v4 = [MEMORY[0x1E695DEC8] arrayWithArray:0];

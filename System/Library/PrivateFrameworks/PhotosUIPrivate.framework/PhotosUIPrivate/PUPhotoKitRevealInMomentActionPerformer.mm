@@ -1,20 +1,20 @@
 @interface PUPhotoKitRevealInMomentActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
 @end
 
 @implementation PUPhotoKitRevealInMomentActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 isHidden] & 1) != 0 || (objc_msgSend(v4, "isTrashed") & 1) != 0 || (objc_msgSend(v4, "px_isSharedAlbumAsset"))
+  assetCopy = asset;
+  if ([assetCopy isHidden] & 1) != 0 || (objc_msgSend(assetCopy, "isTrashed") & 1) != 0 || (objc_msgSend(assetCopy, "px_isSharedAlbumAsset"))
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = [v4 px_isSyndicatedAsset] ^ 1;
+    v5 = [assetCopy px_isSyndicatedAsset] ^ 1;
   }
 
   return v5;

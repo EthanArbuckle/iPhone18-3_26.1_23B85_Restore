@@ -8,17 +8,17 @@
 {
   v37.receiver = self;
   v37.super_class = AAProximityPairingStatusPayloadB515;
-  v3 = [(AAProximityPairingStatusPayloadGeneral *)&v37 describeProperties];
-  v36 = v3;
-  v4 = [(AAProximityPairingStatusPayloadB515 *)self primaryLocation];
-  if (v4 > 3)
+  describeProperties = [(AAProximityPairingStatusPayloadGeneral *)&v37 describeProperties];
+  v36 = describeProperties;
+  primaryLocation = [(AAProximityPairingStatusPayloadB515 *)self primaryLocation];
+  if (primaryLocation > 3)
   {
     v5 = "?";
   }
 
   else
   {
-    v5 = off_278CDE210[v4];
+    v5 = off_278CDE210[primaryLocation];
   }
 
   v22 = v5;
@@ -41,7 +41,7 @@
   v8 = v35;
 
   v34 = v8;
-  v24 = [(AAProximityPairingStatusPayloadB515 *)self lidOpenCount];
+  lidOpenCount = [(AAProximityPairingStatusPayloadB515 *)self lidOpenCount];
   NSAppendPrintF_safe();
   v9 = v8;
 
@@ -61,15 +61,15 @@
   v11 = v33;
 
   v32 = v11;
-  v12 = [(AAProximityPairingStatusPayloadB515 *)self caseLedColor];
-  if (v12 > 3)
+  caseLedColor = [(AAProximityPairingStatusPayloadB515 *)self caseLedColor];
+  if (caseLedColor > 3)
   {
     v13 = "?";
   }
 
   else
   {
-    v13 = off_278CDE1F0[v12];
+    v13 = off_278CDE1F0[caseLedColor];
   }
 
   v26 = v13;
@@ -92,7 +92,7 @@
   v16 = v31;
 
   v30[1] = v16;
-  v28 = [(AAProximityPairingStatusPayloadB515 *)self cupColor];
+  cupColor = [(AAProximityPairingStatusPayloadB515 *)self cupColor];
   NSAppendPrintF_safe();
   v17 = v16;
 

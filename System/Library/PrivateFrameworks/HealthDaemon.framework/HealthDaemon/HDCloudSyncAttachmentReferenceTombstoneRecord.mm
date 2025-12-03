@@ -1,24 +1,24 @@
 @interface HDCloudSyncAttachmentReferenceTombstoneRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isAttachmentReferenceTombstoneRecord:(id)a3;
-+ (BOOL)isAttachmentReferenceTombstoneRecordID:(id)a3;
-+ (id)recordIDForOwnerIdentifier:(id)a3 recordIndex:(int64_t)a4 zoneID:(id)a5;
-- (HDCloudSyncAttachmentReferenceTombstoneRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
-- (HDCloudSyncAttachmentReferenceTombstoneRecord)initWithOwnerIdentifier:(id)a3 recordIndex:(int64_t)a4 zoneID:(id)a5;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isAttachmentReferenceTombstoneRecord:(id)record;
++ (BOOL)isAttachmentReferenceTombstoneRecordID:(id)d;
++ (id)recordIDForOwnerIdentifier:(id)identifier recordIndex:(int64_t)index zoneID:(id)d;
+- (HDCloudSyncAttachmentReferenceTombstoneRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
+- (HDCloudSyncAttachmentReferenceTombstoneRecord)initWithOwnerIdentifier:(id)identifier recordIndex:(int64_t)index zoneID:(id)d;
 - (NSArray)attachmentReferenceTombstones;
 - (NSString)ownerIdentifier;
 - (int64_t)attachmentReferenceTombstoneCount;
 - (int64_t)recordIndex;
-- (void)addAttachmentReferenceTombstone:(id)a3;
+- (void)addAttachmentReferenceTombstone:(id)tombstone;
 @end
 
 @implementation HDCloudSyncAttachmentReferenceTombstoneRecord
 
-- (HDCloudSyncAttachmentReferenceTombstoneRecord)initWithOwnerIdentifier:(id)a3 recordIndex:(int64_t)a4 zoneID:(id)a5
+- (HDCloudSyncAttachmentReferenceTombstoneRecord)initWithOwnerIdentifier:(id)identifier recordIndex:(int64_t)index zoneID:(id)d
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [objc_opt_class() recordIDForOwnerIdentifier:v9 recordIndex:a4 zoneID:v8];
+  dCopy = d;
+  identifierCopy = identifier;
+  v10 = [objc_opt_class() recordIDForOwnerIdentifier:identifierCopy recordIndex:index zoneID:dCopy];
 
   v11 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"CloudSyncReferenceTombstoneRecord" recordID:v10];
   v12 = [(HDCloudSyncAttachmentReferenceTombstoneRecord *)self initWithCKRecord:v11 schemaVersion:1];
@@ -26,19 +26,19 @@
   return v12;
 }
 
-- (HDCloudSyncAttachmentReferenceTombstoneRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncAttachmentReferenceTombstoneRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v15.receiver = self;
   v15.super_class = HDCloudSyncAttachmentReferenceTombstoneRecord;
-  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:a3 schemaVersion:a4];
+  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:record schemaVersion:version];
   v5 = v4;
   if (!v4)
   {
     goto LABEL_9;
   }
 
-  v6 = [(HDCloudSyncRecord *)v4 underlyingMessage];
-  if (!v6)
+  underlyingMessage = [(HDCloudSyncRecord *)v4 underlyingMessage];
+  if (!underlyingMessage)
   {
     v11 = objc_alloc_init(HDCloudSyncCodableAttachmentReferenceTombstones);
     underlyingReferenceTombstones = v5->_underlyingReferenceTombstones;
@@ -47,7 +47,7 @@
     goto LABEL_8;
   }
 
-  v7 = [[HDCloudSyncCodableAttachmentReferenceTombstones alloc] initWithData:v6];
+  v7 = [[HDCloudSyncCodableAttachmentReferenceTombstones alloc] initWithData:underlyingMessage];
   v8 = v5->_underlyingReferenceTombstones;
   v5->_underlyingReferenceTombstones = v7;
 
@@ -74,20 +74,20 @@ LABEL_10:
   return v10;
 }
 
-+ (id)recordIDForOwnerIdentifier:(id)a3 recordIndex:(int64_t)a4 zoneID:(id)a5
++ (id)recordIDForOwnerIdentifier:(id)identifier recordIndex:(int64_t)index zoneID:(id)d
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  v9 = [v7 stringWithFormat:@"%@%@%@%@%lld", @"CloudSyncReferenceTombstone", @"/", a3, @"/", a4];
-  v10 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v9 zoneID:v8];
+  dCopy = d;
+  index = [v7 stringWithFormat:@"%@%@%@%@%lld", @"CloudSyncReferenceTombstone", @"/", identifier, @"/", index];
+  v10 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:index zoneID:dCopy];
 
   return v10;
 }
 
-+ (BOOL)isAttachmentReferenceTombstoneRecordID:(id)a3
++ (BOOL)isAttachmentReferenceTombstoneRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 componentsSeparatedByString:@"/"];
+  recordName = [d recordName];
+  v4 = [recordName componentsSeparatedByString:@"/"];
 
   if ([v4 count] == 3)
   {
@@ -103,20 +103,20 @@ LABEL_10:
   return v6;
 }
 
-+ (BOOL)isAttachmentReferenceTombstoneRecord:(id)a3
++ (BOOL)isAttachmentReferenceTombstoneRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"CloudSyncReferenceTombstoneRecord"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"CloudSyncReferenceTombstoneRecord"];
 
   return v4;
 }
 
 - (NSString)ownerIdentifier
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 recordID];
-  v4 = [v3 recordName];
-  v5 = [v4 componentsSeparatedByString:@"/"];
+  record = [(HDCloudSyncRecord *)self record];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
+  v5 = [recordName componentsSeparatedByString:@"/"];
 
   v6 = [v5 objectAtIndexedSubscript:1];
 
@@ -125,29 +125,29 @@ LABEL_10:
 
 - (int64_t)recordIndex
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 recordID];
-  v4 = [v3 recordName];
-  v5 = [v4 componentsSeparatedByString:@"/"];
+  record = [(HDCloudSyncRecord *)self record];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
+  v5 = [recordName componentsSeparatedByString:@"/"];
 
   v6 = [v5 objectAtIndexedSubscript:2];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 - (int64_t)attachmentReferenceTombstoneCount
 {
-  v2 = [(HDCloudSyncCodableAttachmentReferenceTombstones *)self->_underlyingReferenceTombstones attachmentReferenceTombstones];
-  v3 = [v2 count];
+  attachmentReferenceTombstones = [(HDCloudSyncCodableAttachmentReferenceTombstones *)self->_underlyingReferenceTombstones attachmentReferenceTombstones];
+  v3 = [attachmentReferenceTombstones count];
 
   return v3;
 }
 
 - (NSArray)attachmentReferenceTombstones
 {
-  v2 = [(HDCloudSyncCodableAttachmentReferenceTombstones *)self->_underlyingReferenceTombstones attachmentReferenceTombstones];
-  v3 = [v2 hk_map:&__block_literal_global_158];
+  attachmentReferenceTombstones = [(HDCloudSyncCodableAttachmentReferenceTombstones *)self->_underlyingReferenceTombstones attachmentReferenceTombstones];
+  v3 = [attachmentReferenceTombstones hk_map:&__block_literal_global_158];
 
   return v3;
 }
@@ -168,28 +168,28 @@ HDAttachmentReference *__78__HDCloudSyncAttachmentReferenceTombstoneRecord_attac
   return v9;
 }
 
-- (void)addAttachmentReferenceTombstone:(id)a3
+- (void)addAttachmentReferenceTombstone:(id)tombstone
 {
-  v4 = a3;
+  tombstoneCopy = tombstone;
   v9 = objc_alloc_init(HDCloudSyncCodableAttachmentReferenceTombstone);
-  v5 = [v4 identifier];
-  v6 = [v5 UUIDString];
-  [(HDCloudSyncCodableAttachmentReferenceTombstone *)v9 setReferenceIdentifier:v6];
+  identifier = [tombstoneCopy identifier];
+  uUIDString = [identifier UUIDString];
+  [(HDCloudSyncCodableAttachmentReferenceTombstone *)v9 setReferenceIdentifier:uUIDString];
 
-  v7 = [v4 schemaIdentifier];
-  [(HDCloudSyncCodableAttachmentReferenceTombstone *)v9 setSchemaIdentifier:v7];
+  schemaIdentifier = [tombstoneCopy schemaIdentifier];
+  [(HDCloudSyncCodableAttachmentReferenceTombstone *)v9 setSchemaIdentifier:schemaIdentifier];
 
-  v8 = [v4 creationDate];
+  creationDate = [tombstoneCopy creationDate];
 
-  [v8 timeIntervalSinceReferenceDate];
+  [creationDate timeIntervalSinceReferenceDate];
   [(HDCloudSyncCodableAttachmentReferenceTombstone *)v9 setCreationDate:?];
 
   [(HDCloudSyncCodableAttachmentReferenceTombstones *)self->_underlyingReferenceTombstones addAttachmentReferenceTombstone:v9];
 }
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 objectForKeyedSubscript:@"Version"];
+  v3 = [schema objectForKeyedSubscript:@"Version"];
   v4 = v3;
   v5 = v3 && [v3 integerValue] > 1;
 

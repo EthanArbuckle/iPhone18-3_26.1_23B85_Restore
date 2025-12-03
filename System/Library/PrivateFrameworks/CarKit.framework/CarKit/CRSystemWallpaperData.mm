@@ -1,9 +1,9 @@
 @interface CRSystemWallpaperData
-- (BOOL)isEqual:(id)a3;
-- (CRSystemWallpaperData)initWithBSXPCCoder:(id)a3;
-- (CRSystemWallpaperData)initWithCoder:(id)a3;
-- (CRSystemWallpaperData)initWithDictionary:(id)a3;
-- (CRSystemWallpaperData)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRSystemWallpaperData)initWithBSXPCCoder:(id)coder;
+- (CRSystemWallpaperData)initWithCoder:(id)coder;
+- (CRSystemWallpaperData)initWithDictionary:(id)dictionary;
+- (CRSystemWallpaperData)initWithIdentifier:(id)identifier;
 - (NSString)description;
 - (id)asDictionary;
 - (void)asDictionary;
@@ -11,15 +11,15 @@
 
 @implementation CRSystemWallpaperData
 
-- (CRSystemWallpaperData)initWithIdentifier:(id)a3
+- (CRSystemWallpaperData)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = CRSystemWallpaperData;
   v5 = [(CRSystemWallpaperData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -27,11 +27,11 @@
   return v5;
 }
 
-- (CRSystemWallpaperData)initWithDictionary:(id)a3
+- (CRSystemWallpaperData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v5 = [v4 objectForKey:@"systemWallpaperIdentifier"];
+  v5 = [dictionaryCopy objectForKey:@"systemWallpaperIdentifier"];
 
   v6 = v5;
   if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
@@ -47,34 +47,34 @@
   if (v7)
   {
     self = [(CRSystemWallpaperData *)self initWithIdentifier:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)asDictionary
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CRSystemWallpaperData *)self identifier];
+  identifier = [(CRSystemWallpaperData *)self identifier];
 
-  if (v3)
+  if (identifier)
   {
     v7 = @"systemWallpaperIdentifier";
-    v4 = [(CRSystemWallpaperData *)self identifier];
-    v8[0] = v4;
+    identifier2 = [(CRSystemWallpaperData *)self identifier];
+    v8[0] = identifier2;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 
   else
   {
-    v4 = CarGeneralLogging();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
+    identifier2 = CarGeneralLogging();
+    if (os_log_type_enabled(identifier2, OS_LOG_TYPE_FAULT))
     {
       [(CRSystemWallpaperData *)self asDictionary];
     }
@@ -85,16 +85,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = [(CRSystemWallpaperData *)self identifier];
-    v7 = [v5 identifier];
-    v8 = [v6 isEqualToString:v7];
+    identifier = [(CRSystemWallpaperData *)self identifier];
+    identifier2 = [v5 identifier];
+    v8 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -111,55 +111,55 @@
   v8.receiver = self;
   v8.super_class = CRSystemWallpaperData;
   v4 = [(CRSystemWallpaperData *)&v8 description];
-  v5 = [(CRSystemWallpaperData *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ {identifier: %@}", v4, v5];
+  identifier = [(CRSystemWallpaperData *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ {identifier: %@}", v4, identifier];
 
   return v6;
 }
 
-- (CRSystemWallpaperData)initWithCoder:(id)a3
+- (CRSystemWallpaperData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemWallpaperIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemWallpaperIdentifier"];
 
   if (v5)
   {
     self = [(CRSystemWallpaperData *)self initWithIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (CRSystemWallpaperData)initWithBSXPCCoder:(id)a3
+- (CRSystemWallpaperData)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemWallpaperIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemWallpaperIdentifier"];
 
   if (v5)
   {
     self = [(CRSystemWallpaperData *)self initWithIdentifier:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)asDictionary
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1C81FC000, a2, OS_LOG_TYPE_FAULT, "Unable to serialize wallpaper: %@", &v2, 0xCu);
 }
 

@@ -1,50 +1,50 @@
 @interface RIOTextureConversionEstimate
-+ (id)conversionEstimatesFromTextureDescriptions:(id)a3 toFitAvailableMemory:(unint64_t)a4 withConverters:(id)a5 preferredMaxTextureSize:(int64_t *)a6 outcome:;
-+ (id)heaviestConversionEstimate:(id)a3 withMinimumDestinationSize:;
-+ (id)textureDescription:(id)a3 downsampledToTryAndFitDestinationWithinSize:;
-+ (unint64_t)peakMemoryForConversionEstimates:(id)a3;
++ (id)conversionEstimatesFromTextureDescriptions:(id)descriptions toFitAvailableMemory:(unint64_t)memory withConverters:(id)converters preferredMaxTextureSize:(int64_t *)size outcome:;
++ (id)heaviestConversionEstimate:(id)estimate withMinimumDestinationSize:;
++ (id)textureDescription:(id)description downsampledToTryAndFitDestinationWithinSize:;
++ (unint64_t)peakMemoryForConversionEstimates:(id)estimates;
 - ($7DEDF3842AEFB7F1E6DF5AF62E424A02)estimatedMemoryDelta;
-- (RIOTextureConversionEstimate)initWithTextureDescription:(id)a3 converter:(id)a4;
+- (RIOTextureConversionEstimate)initWithTextureDescription:(id)description converter:(id)converter;
 - (id)debugDescription;
 - (unint64_t)weight;
-- (void)updateFromConverter:(id)a3;
+- (void)updateFromConverter:(id)converter;
 @end
 
 @implementation RIOTextureConversionEstimate
 
-- (RIOTextureConversionEstimate)initWithTextureDescription:(id)a3 converter:(id)a4
+- (RIOTextureConversionEstimate)initWithTextureDescription:(id)description converter:(id)converter
 {
-  v22 = a4;
-  v6 = a3;
-  v7 = [v6 name];
-  [v6 originalSize];
+  converterCopy = converter;
+  descriptionCopy = description;
+  name = [descriptionCopy name];
+  [descriptionCopy originalSize];
   v9 = v8;
-  v10 = [v6 originalPixelFormat];
+  originalPixelFormat = [descriptionCopy originalPixelFormat];
   v12 = v11;
-  v13 = [v6 destinationPixelFormat];
+  destinationPixelFormat = [descriptionCopy destinationPixelFormat];
   v15 = v14;
-  v16 = [v6 downsamplingFactor];
-  v17 = [v6 fileType];
-  v18 = [v6 generateMipmaps];
+  downsamplingFactor = [descriptionCopy downsamplingFactor];
+  fileType = [descriptionCopy fileType];
+  generateMipmaps = [descriptionCopy generateMipmaps];
 
   v23.receiver = self;
   v23.super_class = RIOTextureConversionEstimate;
-  v21 = v18;
-  v19 = [(RIOTextureDescription *)&v23 initWithName:v7 originalSize:v10 originalPixelFormat:v12 destinationPixelFormat:v13 downsamplingFactor:v15 fileType:v16 generateMipmaps:v9, v17, v21];
+  v21 = generateMipmaps;
+  v19 = [(RIOTextureDescription *)&v23 initWithName:name originalSize:originalPixelFormat originalPixelFormat:v12 destinationPixelFormat:destinationPixelFormat downsamplingFactor:v15 fileType:downsamplingFactor generateMipmaps:v9, fileType, v21];
 
   if (v19)
   {
-    [(RIOTextureConversionEstimate *)v19 updateFromConverter:v22];
+    [(RIOTextureConversionEstimate *)v19 updateFromConverter:converterCopy];
   }
 
   return v19;
 }
 
-- (void)updateFromConverter:(id)a3
+- (void)updateFromConverter:(id)converter
 {
-  v4 = a3;
-  -[RIOTextureConversionEstimate setConverterType:](self, "setConverterType:", [v4 converterType]);
-  v5 = [v4 estimatedMemoryDeltaForTextureWithDescription:self];
+  converterCopy = converter;
+  -[RIOTextureConversionEstimate setConverterType:](self, "setConverterType:", [converterCopy converterType]);
+  v5 = [converterCopy estimatedMemoryDeltaForTextureWithDescription:self];
   v7 = v6;
 
   [(RIOTextureConversionEstimate *)self setEstimatedMemoryDelta:v5, v7];
@@ -56,8 +56,8 @@
   v9 = v3;
   [(RIOTextureDescription *)self destinationSize];
   v5 = v4 * v9;
-  v6 = [(RIOTextureDescription *)self destinationPixelFormat];
-  return v5 * [RIOTextureDescription bytesPerPixelForPixelFormat:v6, v7];
+  destinationPixelFormat = [(RIOTextureDescription *)self destinationPixelFormat];
+  return v5 * [RIOTextureDescription bytesPerPixelForPixelFormat:destinationPixelFormat, v7];
 }
 
 - (id)debugDescription
@@ -66,19 +66,19 @@
   v9.receiver = self;
   v9.super_class = RIOTextureConversionEstimate;
   v4 = [(RIOTextureDescription *)&v9 debugDescription];
-  v5 = [(RIOTextureConversionEstimate *)self converterType];
+  converterType = [(RIOTextureConversionEstimate *)self converterType];
   [(RIOTextureConversionEstimate *)self estimatedMemoryDelta];
-  v7 = [v3 stringWithFormat:@"%@ [converterType: %d, estimated: peak %llu / footprint %llu, weight: %lu]", v4, v5, v6, -[RIOTextureConversionEstimate estimatedMemoryDelta](self, "estimatedMemoryDelta"), -[RIOTextureConversionEstimate weight](self, "weight")];
+  v7 = [v3 stringWithFormat:@"%@ [converterType: %d, estimated: peak %llu / footprint %llu, weight: %lu]", v4, converterType, v6, -[RIOTextureConversionEstimate estimatedMemoryDelta](self, "estimatedMemoryDelta"), -[RIOTextureConversionEstimate weight](self, "weight")];
 
   return v7;
 }
 
-+ (id)textureDescription:(id)a3 downsampledToTryAndFitDestinationWithinSize:
++ (id)textureDescription:(id)description downsampledToTryAndFitDestinationWithinSize:
 {
   v27 = v3;
-  v4 = a3;
-  v5 = v4;
-  if (v27.i32[0] && v27.i32[1] && (([v4 destinationSize], (vcgt_s32(v6, v27).u8[0] & 1) != 0) || (objc_msgSend(v5, "destinationSize"), (vcgt_s32(v7, v27).i32[1] & 1) != 0)))
+  descriptionCopy = description;
+  v5 = descriptionCopy;
+  if (v27.i32[0] && v27.i32[1] && (([descriptionCopy destinationSize], (vcgt_s32(v6, v27).u8[0] & 1) != 0) || (objc_msgSend(v5, "destinationSize"), (vcgt_s32(v7, v27).i32[1] & 1) != 0)))
   {
     for (i = [v5 downsamplingFactor]; ; i *= 2)
     {
@@ -93,16 +93,16 @@
     }
 
     v14 = [RIOTextureDescription alloc];
-    v15 = [v5 name];
+    name = [v5 name];
     [v5 originalSize];
     v17 = v16;
-    v18 = [v5 originalPixelFormat];
+    originalPixelFormat = [v5 originalPixelFormat];
     v20 = v19;
-    v21 = [v5 destinationPixelFormat];
+    destinationPixelFormat = [v5 destinationPixelFormat];
     v23 = v22;
-    v24 = [v5 fileType];
+    fileType = [v5 fileType];
     LOBYTE(v26) = [v5 generateMipmaps];
-    v13 = [(RIOTextureDescription *)v14 initWithName:v15 originalSize:v18 originalPixelFormat:v20 destinationPixelFormat:v21 downsamplingFactor:v23 fileType:i generateMipmaps:v17, v24, v26];
+    v13 = [(RIOTextureDescription *)v14 initWithName:name originalSize:originalPixelFormat originalPixelFormat:v20 destinationPixelFormat:destinationPixelFormat downsamplingFactor:v23 fileType:i generateMipmaps:v17, fileType, v26];
   }
 
   else
@@ -113,31 +113,31 @@
   return v13;
 }
 
-+ (id)conversionEstimatesFromTextureDescriptions:(id)a3 toFitAvailableMemory:(unint64_t)a4 withConverters:(id)a5 preferredMaxTextureSize:(int64_t *)a6 outcome:
++ (id)conversionEstimatesFromTextureDescriptions:(id)descriptions toFitAvailableMemory:(unint64_t)memory withConverters:(id)converters preferredMaxTextureSize:(int64_t *)size outcome:
 {
   v68 = v6;
   v86 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v71 = a5;
-  if (a6)
+  descriptionsCopy = descriptions;
+  convertersCopy = converters;
+  if (size)
   {
-    *a6 = 1;
+    *size = 1;
   }
 
-  v70 = a6;
-  v61 = v9;
-  if ([v9 count])
+  sizeCopy = size;
+  v61 = descriptionsCopy;
+  if ([descriptionsCopy count])
   {
-    if ([v71 count])
+    if ([convertersCopy count])
     {
       v67 = objc_opt_new();
       v76 = 0u;
       v77 = 0u;
       v78 = 0u;
       v79 = 0u;
-      v10 = v9;
+      v10 = descriptionsCopy;
       v11 = [v10 countByEnumeratingWithState:&v76 objects:v85 count:16];
-      v12 = a6;
+      sizeCopy2 = size;
       if (v11)
       {
         v13 = v11;
@@ -157,9 +157,9 @@
             {
               v18 = [RIOTextureConversionEstimate textureDescription:v17 downsampledToTryAndFitDestinationWithinSize:*&v68];
               v19 = v18;
-              if (v12 && [v18 requiresDownsampling])
+              if (sizeCopy2 && [v18 requiresDownsampling])
               {
-                *v12 = 2;
+                *sizeCopy2 = 2;
               }
             }
 
@@ -168,13 +168,13 @@
               v19 = v17;
             }
 
-            v20 = [RIOTextureConverter preferredConverterFromConverters:v71 forTextureDescription:v19];
+            v20 = [RIOTextureConverter preferredConverterFromConverters:convertersCopy forTextureDescription:v19];
             if (v20)
             {
               v21 = [[RIOTextureConversionEstimate alloc] initWithTextureDescription:v19 converter:v20];
               [v67 addObject:v21];
 
-              v12 = v70;
+              sizeCopy2 = sizeCopy;
             }
           }
 
@@ -185,7 +185,7 @@
       }
 
       v22 = [v67 copy];
-      v23 = [a1 conversionEstimatesSortedByPeakMemoryUsage:v22];
+      v23 = [self conversionEstimatesSortedByPeakMemoryUsage:v22];
 
       v24 = [RIOTextureConversionEstimate peakMemoryForConversionEstimates:v23];
       v25 = memoryConstraintLogObject();
@@ -194,13 +194,13 @@
         *buf = 134218240;
         v82 = v24;
         v83 = 2048;
-        v84 = a4;
+        memoryCopy = memory;
         _os_log_impl(&dword_26187B000, v25, OS_LOG_TYPE_DEFAULT, "peakMemory: %lu, availableMemory: %lu", buf, 0x16u);
       }
 
       v26 = memoryConstraintLogObject();
       v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
-      if (a4 && v24 > a4)
+      if (memory && v24 > memory)
       {
         if (v27)
         {
@@ -229,17 +229,17 @@
 
               v29 = *(*(&v72 + 1) + 8 * j);
               v30 = [RIOTextureDescription alloc];
-              v31 = [v29 name];
+              name = [v29 name];
               [v29 originalSize];
               v33 = v32;
-              v34 = [v29 originalPixelFormat];
+              originalPixelFormat = [v29 originalPixelFormat];
               v36 = v35;
-              v37 = [v29 destinationPixelFormat];
+              destinationPixelFormat = [v29 destinationPixelFormat];
               v39 = v38;
-              v40 = [v29 downsamplingFactor];
-              v41 = [v29 fileType];
+              downsamplingFactor = [v29 downsamplingFactor];
+              fileType = [v29 fileType];
               LOBYTE(v60) = [v29 generateMipmaps];
-              v42 = [(RIOTextureDescription *)v30 initWithName:v31 originalSize:v34 originalPixelFormat:v36 destinationPixelFormat:v37 downsamplingFactor:v39 fileType:v40 generateMipmaps:v33, v41, v60];
+              v42 = [(RIOTextureDescription *)v30 initWithName:name originalSize:originalPixelFormat originalPixelFormat:v36 destinationPixelFormat:destinationPixelFormat downsamplingFactor:v39 fileType:downsamplingFactor generateMipmaps:v33, fileType, v60];
 
               [(RIOTextureDescription *)v42 destinationSize];
               if (v43 >= 17)
@@ -259,7 +259,7 @@
                 while (v45 > 16);
               }
 
-              v46 = [RIOTextureConverter preferredConverterFromConverters:v71 forTextureDescription:v42];
+              v46 = [RIOTextureConverter preferredConverterFromConverters:convertersCopy forTextureDescription:v42];
               v47 = [[RIOTextureConversionEstimate alloc] initWithTextureDescription:v42 converter:v46];
               [v66 addObject:v47];
             }
@@ -270,8 +270,8 @@
           while (v69);
         }
 
-        v48 = [a1 conversionEstimatesSortedByPeakMemoryUsage:v66];
-        if ([RIOTextureConversionEstimate peakMemoryForConversionEstimates:v48]> a4)
+        v48 = [self conversionEstimatesSortedByPeakMemoryUsage:v66];
+        if ([RIOTextureConversionEstimate peakMemoryForConversionEstimates:v48]> memory)
         {
 LABEL_48:
           v56 = 0;
@@ -292,18 +292,18 @@ LABEL_48:
 
             v52 = v51;
             [v51 setDownsamplingFactor:{2 * objc_msgSend(v51, "downsamplingFactor")}];
-            v53 = [RIOTextureConverter preferredConverterFromConverters:v71 forTextureDescription:v52];
+            v53 = [RIOTextureConverter preferredConverterFromConverters:convertersCopy forTextureDescription:v52];
             [v52 updateFromConverter:v53];
-            v54 = [a1 conversionEstimatesSortedByPeakMemoryUsage:v50];
+            v54 = [self conversionEstimatesSortedByPeakMemoryUsage:v50];
 
             v55 = [RIOTextureConversionEstimate peakMemoryForConversionEstimates:v54];
             v49 = v54;
           }
 
-          while (v55 > a4);
-          if (v70)
+          while (v55 > memory);
+          if (sizeCopy)
           {
-            *v70 = 3;
+            *sizeCopy = 3;
           }
 
           v56 = v54;
@@ -342,15 +342,15 @@ LABEL_48:
   return v56;
 }
 
-+ (unint64_t)peakMemoryForConversionEstimates:(id)a3
++ (unint64_t)peakMemoryForConversionEstimates:(id)estimates
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  estimatesCopy = estimates;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [estimatesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -363,7 +363,7 @@ LABEL_48:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(estimatesCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -376,7 +376,7 @@ LABEL_48:
         v6 += [v10 estimatedMemoryDelta];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [estimatesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -391,16 +391,16 @@ LABEL_48:
   return v7;
 }
 
-+ (id)heaviestConversionEstimate:(id)a3 withMinimumDestinationSize:
++ (id)heaviestConversionEstimate:(id)estimate withMinimumDestinationSize:
 {
   v4 = v3;
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  estimateCopy = estimate;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v6 = [estimateCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -413,14 +413,14 @@ LABEL_48:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(estimateCopy);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 weight];
-        if (v13 > v8)
+        weight = [v12 weight];
+        if (weight > v8)
         {
-          v14 = v13;
+          v14 = weight;
           [v12 destinationSize];
           if ((vcgt_s32(v4, v15).u8[0] & 1) == 0)
           {
@@ -436,7 +436,7 @@ LABEL_48:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [estimateCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v7);

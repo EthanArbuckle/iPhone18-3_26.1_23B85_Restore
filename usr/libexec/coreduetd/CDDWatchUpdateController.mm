@@ -1,38 +1,38 @@
 @interface CDDWatchUpdateController
-- (CDDWatchUpdateController)initWithCDDinstance:(id)a3;
-- (id)formatDate:(id)a3;
+- (CDDWatchUpdateController)initWithCDDinstance:(id)dinstance;
+- (id)formatDate:(id)date;
 - (id)nextResetTime;
 - (id)watchUpdateLog;
-- (int64_t)hoursBetween:(id)a3 and:(id)a4;
+- (int64_t)hoursBetween:(id)between and:(id)and;
 - (void)dailyResetTimer;
 - (void)dealloc;
 - (void)loadDefaults;
-- (void)receiveWatchfaceInfo:(id)a3 device:(id)a4;
+- (void)receiveWatchfaceInfo:(id)info device:(id)device;
 - (void)resetPushLimits;
-- (void)setupNextResetTimer:(id)a3;
-- (void)timeZoneOrTimeChanged:(id)a3;
+- (void)setupNextResetTimer:(id)timer;
+- (void)timeZoneOrTimeChanged:(id)changed;
 @end
 
 @implementation CDDWatchUpdateController
 
-- (CDDWatchUpdateController)initWithCDDinstance:(id)a3
+- (CDDWatchUpdateController)initWithCDDinstance:(id)dinstance
 {
-  v5 = a3;
+  dinstanceCopy = dinstance;
   v17.receiver = self;
   v17.super_class = CDDWatchUpdateController;
   v6 = [(CDDWatchUpdateController *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->cdd, a3);
+    objc_storeStrong(&v6->cdd, dinstance);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.watchUpdates", v8);
     watchupdateQueue = v7->watchupdateQueue;
     v7->watchupdateQueue = v9;
 
-    v11 = [(CDDWatchUpdateController *)v7 watchUpdateLog];
+    watchUpdateLog = [(CDDWatchUpdateController *)v7 watchUpdateLog];
     log = v7->log;
-    v7->log = v11;
+    v7->log = watchUpdateLog;
 
     timer = v7->timer;
     v7->timer = 0;
@@ -78,22 +78,22 @@
   return v3;
 }
 
-- (int64_t)hoursBetween:(id)a3 and:(id)a4
+- (int64_t)hoursBetween:(id)between and:(id)and
 {
-  v5 = a4;
-  v6 = a3;
+  andCopy = and;
+  betweenCopy = between;
   v7 = +[NSCalendar currentCalendar];
-  v8 = [v7 components:32 fromDate:v6 toDate:v5 options:0];
+  v8 = [v7 components:32 fromDate:betweenCopy toDate:andCopy options:0];
 
-  v9 = [v8 hour];
-  if (v9 >= 0)
+  hour = [v8 hour];
+  if (hour >= 0)
   {
-    v10 = v9;
+    v10 = hour;
   }
 
   else
   {
-    v10 = -v9;
+    v10 = -hour;
   }
 
   return v10;
@@ -111,15 +111,15 @@
     v6 = [(NSUserDefaults *)v5 objectForKey:@"lastResetDate"];
     if (v6)
     {
-      v7 = [(NSUserDefaults *)self->pushLimits dictionaryRepresentation];
-      v8 = [(CDDWatchUpdateController *)self nextResetTime];
+      dictionaryRepresentation = [(NSUserDefaults *)self->pushLimits dictionaryRepresentation];
+      nextResetTime = [(CDDWatchUpdateController *)self nextResetTime];
       log = self->log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {
         v10 = log;
         v11 = [(CDDWatchUpdateController *)self formatDate:v6];
-        v12 = [(CDDWatchUpdateController *)self formatDate:v8];
-        v13 = [v7 objectForKey:@"complicationPushLimits"];
+        v12 = [(CDDWatchUpdateController *)self formatDate:nextResetTime];
+        v13 = [dictionaryRepresentation objectForKey:@"complicationPushLimits"];
         v19 = 138412802;
         v20 = v11;
         v21 = 2112;
@@ -144,7 +144,7 @@
         [(CDDWatchUpdateController *)self resetPushLimits];
       }
 
-      [(CDDWatchUpdateController *)self setupNextResetTimer:v8];
+      [(CDDWatchUpdateController *)self setupNextResetTimer:nextResetTime];
     }
 
     else
@@ -157,8 +157,8 @@
       }
 
       [(CDDWatchUpdateController *)self resetPushLimits];
-      v7 = [(CDDWatchUpdateController *)self nextResetTime];
-      [(CDDWatchUpdateController *)self setupNextResetTimer:v7];
+      dictionaryRepresentation = [(CDDWatchUpdateController *)self nextResetTime];
+      [(CDDWatchUpdateController *)self setupNextResetTimer:dictionaryRepresentation];
     }
   }
 
@@ -196,20 +196,20 @@
   return v8;
 }
 
-- (id)formatDate:(id)a3
+- (id)formatDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_alloc_init(NSDateFormatter);
   [v4 setDateFormat:@"yyyy-LLL-dd HH:mm:ss ZZZZ"];
   v5 = +[NSTimeZone systemTimeZone];
   [v4 setTimeZone:v5];
 
-  v6 = [v4 stringFromDate:v3];
+  v6 = [v4 stringFromDate:dateCopy];
 
   return v6;
 }
 
-- (void)timeZoneOrTimeChanged:(id)a3
+- (void)timeZoneOrTimeChanged:(id)changed
 {
   watchupdateQueue = self->watchupdateQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -230,10 +230,10 @@
   dispatch_async(v5, block);
 }
 
-- (void)setupNextResetTimer:(id)a3
+- (void)setupNextResetTimer:(id)timer
 {
-  v4 = a3;
-  [v4 timeIntervalSince1970];
+  timerCopy = timer;
+  [timerCopy timeIntervalSince1970];
   when.tv_sec = v5;
   when.tv_nsec = 0;
   timer = self->timer;
@@ -263,7 +263,7 @@
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v14 = log;
-    v15 = [(CDDWatchUpdateController *)self formatDate:v4];
+    v15 = [(CDDWatchUpdateController *)self formatDate:timerCopy];
     *buf = 138412290;
     v19 = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Next reset time: %@\n", buf, 0xCu);
@@ -313,11 +313,11 @@
   notify_post(kComplicationPushLimitsResetNotification);
 }
 
-- (void)receiveWatchfaceInfo:(id)a3 device:(id)a4
+- (void)receiveWatchfaceInfo:(id)info device:(id)device
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:&off_10003EF78];
-  v7 = [v5 objectForKey:&off_10003EF90];
+  infoCopy = info;
+  v6 = [infoCopy objectForKey:&off_10003EF78];
+  v7 = [infoCopy objectForKey:&off_10003EF90];
 
   if ([v6 integerValue] >= 90 && objc_msgSend(v7, "BOOLValue"))
   {

@@ -1,9 +1,9 @@
 @interface CNContactCardFieldPickerCell
-+ (double)estimatedHeightDisplayingValue:(BOOL)a3;
++ (double)estimatedHeightDisplayingValue:(BOOL)value;
 - (CNContactCardFieldPickerCell)init;
 - (id)attributedDisplayText;
 - (void)setConfiguration;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation CNContactCardFieldPickerCell
@@ -13,17 +13,17 @@
   v33[2] = *MEMORY[0x1E69E9840];
   v29 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   v5 = *MEMORY[0x1E69DB650];
   v32[0] = *MEMORY[0x1E69DB648];
   v32[1] = v5;
   v33[0] = v3;
-  v33[1] = v4;
+  v33[1] = secondaryLabelColor;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
   v7 = *MEMORY[0x1E6996570];
-  v8 = [(CNContactCardFieldPickerCell *)self item];
-  v9 = [v8 displayLabel];
-  v10 = (*(v7 + 16))(v7, v9);
+  item = [(CNContactCardFieldPickerCell *)self item];
+  displayLabel = [item displayLabel];
+  v10 = (*(v7 + 16))(v7, displayLabel);
 
   if ((v10 & 1) == 0)
   {
@@ -36,9 +36,9 @@ LABEL_6:
     }
 
 LABEL_12:
-    v28 = [(CNContactCardFieldPickerCell *)self item];
+    item2 = [(CNContactCardFieldPickerCell *)self item];
     *buf = 138543362;
-    v31 = v28;
+    v31 = item2;
     _os_log_error_impl(&dword_199A75000, v17, OS_LOG_TYPE_ERROR, "Contact card field picker failed to display item %{public}@", buf, 0xCu);
 
     goto LABEL_6;
@@ -46,25 +46,25 @@ LABEL_12:
 
   if ([(CNContactCardFieldPickerCell *)self displaysValue])
   {
-    v11 = [(CNContactCardFieldPickerCell *)self item];
-    v12 = [v11 displayValue];
-    v13 = (*(v7 + 16))(v7, v12);
+    item3 = [(CNContactCardFieldPickerCell *)self item];
+    displayValue = [item3 displayValue];
+    v13 = (*(v7 + 16))(v7, displayValue);
 
     if (v13)
     {
       v14 = objc_alloc(MEMORY[0x1E696AD40]);
-      v15 = [(CNContactCardFieldPickerCell *)self item];
-      v16 = [v15 displayLabel];
-      v17 = [v14 initWithString:v16 attributes:v6];
+      item4 = [(CNContactCardFieldPickerCell *)self item];
+      displayLabel2 = [item4 displayLabel];
+      v17 = [v14 initWithString:displayLabel2 attributes:v6];
 
       v18 = v29;
       [v29 appendAttributedString:v17];
       v19 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n" attributes:v6];
       [v29 appendAttributedString:v19];
       v20 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v21 = [(CNContactCardFieldPickerCell *)self item];
-      v22 = [v21 displayValue];
-      v23 = [v20 initWithString:v22 attributes:MEMORY[0x1E695E0F8]];
+      item5 = [(CNContactCardFieldPickerCell *)self item];
+      displayValue2 = [item5 displayValue];
+      v23 = [v20 initWithString:displayValue2 attributes:MEMORY[0x1E695E0F8]];
 
       [v29 appendAttributedString:v23];
       goto LABEL_8;
@@ -80,9 +80,9 @@ LABEL_12:
   }
 
   v24 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v25 = [(CNContactCardFieldPickerCell *)self item];
-  v26 = [v25 displayLabel];
-  v17 = [v24 initWithString:v26 attributes:MEMORY[0x1E695E0F8]];
+  item6 = [(CNContactCardFieldPickerCell *)self item];
+  displayLabel3 = [item6 displayLabel];
+  v17 = [v24 initWithString:displayLabel3 attributes:MEMORY[0x1E695E0F8]];
 
   v18 = v29;
   [v29 appendAttributedString:v17];
@@ -93,7 +93,7 @@ LABEL_8:
 
 - (void)setConfiguration
 {
-  v6 = [(CNContactCardFieldPickerCell *)self defaultContentConfiguration];
+  defaultContentConfiguration = [(CNContactCardFieldPickerCell *)self defaultContentConfiguration];
   if ([(CNContactCardFieldPickerCell *)self isSelected])
   {
     v3 = @"checkmark.circle.fill";
@@ -105,19 +105,19 @@ LABEL_8:
   }
 
   v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:v3];
-  [v6 setImage:v4];
+  [defaultContentConfiguration setImage:v4];
 
-  v5 = [(CNContactCardFieldPickerCell *)self attributedDisplayText];
-  [v6 setAttributedText:v5];
+  attributedDisplayText = [(CNContactCardFieldPickerCell *)self attributedDisplayText];
+  [defaultContentConfiguration setAttributedText:attributedDisplayText];
 
-  [(CNContactCardFieldPickerCell *)self setContentConfiguration:v6];
+  [(CNContactCardFieldPickerCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = CNContactCardFieldPickerCell;
-  [(CNContactCardFieldPickerCell *)&v5 setSelected:a3 animated:a4];
+  [(CNContactCardFieldPickerCell *)&v5 setSelected:selected animated:animated];
   [(CNContactCardFieldPickerCell *)self setConfiguration];
 }
 
@@ -136,18 +136,18 @@ LABEL_8:
   return v3;
 }
 
-+ (double)estimatedHeightDisplayingValue:(BOOL)a3
++ (double)estimatedHeightDisplayingValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v5 = [MEMORY[0x1E69DCC28] cellConfiguration];
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
   [v4 lineHeight];
   v7 = ceil(v6);
-  [v5 directionalLayoutMargins];
+  [cellConfiguration directionalLayoutMargins];
   v9 = v7 + v8;
-  [v5 directionalLayoutMargins];
+  [cellConfiguration directionalLayoutMargins];
   v11 = v9 + v10;
-  if (v3)
+  if (valueCopy)
   {
     v12 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
     [v12 lineHeight];

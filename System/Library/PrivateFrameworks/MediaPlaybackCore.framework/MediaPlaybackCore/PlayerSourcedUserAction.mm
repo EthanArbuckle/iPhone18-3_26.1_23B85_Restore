@@ -1,6 +1,6 @@
 @interface PlayerSourcedUserAction
 - (id)timeStamp;
-- (uint64_t)setTimeStamp:(uint64_t)a3;
+- (uint64_t)setTimeStamp:(uint64_t)stamp;
 @end
 
 @implementation PlayerSourcedUserAction
@@ -12,9 +12,9 @@
   return v0;
 }
 
-- (uint64_t)setTimeStamp:(uint64_t)a3
+- (uint64_t)setTimeStamp:(uint64_t)stamp
 {
-  *(a1 + 40) = a3;
+  *(self + 40) = stamp;
   swift_unknownObjectRetain();
 
   return swift_unknownObjectRelease();

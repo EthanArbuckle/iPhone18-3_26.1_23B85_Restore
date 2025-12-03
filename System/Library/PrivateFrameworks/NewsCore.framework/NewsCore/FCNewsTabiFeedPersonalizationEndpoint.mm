@@ -1,5 +1,5 @@
 @interface FCNewsTabiFeedPersonalizationEndpoint
-- (FCNewsTabiFeedPersonalizationEndpoint)initWithDictionary:(id)a3;
+- (FCNewsTabiFeedPersonalizationEndpoint)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,31 +8,31 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiFeedPersonalizationEndpoint *)self packageAssetID];
-  [v3 appendFormat:@"\n\tpackageAssetID: %@;", v4];
+  packageAssetID = [(FCNewsTabiFeedPersonalizationEndpoint *)self packageAssetID];
+  [v3 appendFormat:@"\n\tpackageAssetID: %@;", packageAssetID];
 
-  v5 = [(FCNewsTabiFeedPersonalizationEndpoint *)self configuration];
-  v6 = [v5 indentedDescription];
-  [v3 appendFormat:@"\n\tconfiguration: %@;", v6];
+  configuration = [(FCNewsTabiFeedPersonalizationEndpoint *)self configuration];
+  indentedDescription = [configuration indentedDescription];
+  [v3 appendFormat:@"\n\tconfiguration: %@;", indentedDescription];
 
-  v7 = [(FCNewsTabiFeedPersonalizationEndpoint *)self eventAggregationOutputs];
-  v8 = [v7 indentedDescription];
-  [v3 appendFormat:@"\n\teventAggregationOutputs: %@;", v8];
+  eventAggregationOutputs = [(FCNewsTabiFeedPersonalizationEndpoint *)self eventAggregationOutputs];
+  indentedDescription2 = [eventAggregationOutputs indentedDescription];
+  [v3 appendFormat:@"\n\teventAggregationOutputs: %@;", indentedDescription2];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiFeedPersonalizationEndpoint)initWithDictionary:(id)a3
+- (FCNewsTabiFeedPersonalizationEndpoint)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"packageAssetID", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"packageAssetID", 0);
   v6 = v5;
   if (v5)
   {
     v7 = v5;
-    v8 = [[FCNewsTabiFeedPersonalizationConfiguration alloc] initWithDictionary:v4];
+    v8 = [[FCNewsTabiFeedPersonalizationConfiguration alloc] initWithDictionary:dictionaryCopy];
     v9 = v8;
     if (v8)
     {
@@ -45,7 +45,7 @@
       {
         objc_storeStrong(&v11->_packageAssetID, v6);
         objc_storeStrong(&v12->_configuration, v9);
-        v13 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"eventAggregationOutputs", 0);
+        v13 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"eventAggregationOutputs", 0);
         if (v13)
         {
           v14 = [[FCNewsTabiEventAggregationOutputsConfiguration alloc] initWithDictionary:v13];
@@ -55,7 +55,7 @@
       }
 
       self = v12;
-      v16 = self;
+      selfCopy = self;
     }
 
     else
@@ -64,8 +64,8 @@
       v19[1] = 3221225472;
       v19[2] = __60__FCNewsTabiFeedPersonalizationEndpoint_initWithDictionary___block_invoke_5;
       v19[3] = &unk_1E7C36F98;
-      v20 = v4;
-      v16 = __60__FCNewsTabiFeedPersonalizationEndpoint_initWithDictionary___block_invoke_5(v19);
+      v20 = dictionaryCopy;
+      selfCopy = __60__FCNewsTabiFeedPersonalizationEndpoint_initWithDictionary___block_invoke_5(v19);
       v10 = v20;
     }
   }
@@ -76,12 +76,12 @@
     v21[1] = 3221225472;
     v21[2] = __60__FCNewsTabiFeedPersonalizationEndpoint_initWithDictionary___block_invoke;
     v21[3] = &unk_1E7C36F98;
-    v22 = v4;
-    v16 = __60__FCNewsTabiFeedPersonalizationEndpoint_initWithDictionary___block_invoke(v21);
+    v22 = dictionaryCopy;
+    selfCopy = __60__FCNewsTabiFeedPersonalizationEndpoint_initWithDictionary___block_invoke(v21);
     v7 = v22;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 uint64_t __60__FCNewsTabiFeedPersonalizationEndpoint_initWithDictionary___block_invoke(uint64_t a1)

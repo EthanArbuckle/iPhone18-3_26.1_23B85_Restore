@@ -3,22 +3,22 @@
 - (BPSPassThroughSubject)init;
 - (id)bookmark;
 - (id)nextEvent;
-- (id)startWithSubscriber:(id)a3;
-- (id)validateBookmark:(id)a3;
-- (int64_t)receiveInput:(id)a3;
+- (id)startWithSubscriber:(id)subscriber;
+- (id)validateBookmark:(id)bookmark;
+- (int64_t)receiveInput:(id)input;
 - (void)acknowledgeDownstreamDemand;
-- (void)applyBookmark:(id)a3;
+- (void)applyBookmark:(id)bookmark;
 - (void)cancel;
 - (void)dealloc;
-- (void)disassociate:(int64_t)a3;
-- (void)receiveCompletion:(id)a3;
+- (void)disassociate:(int64_t)disassociate;
+- (void)receiveCompletion:(id)completion;
 - (void)reset;
 - (void)sendCompletion;
-- (void)sendCompletion:(id)a3;
-- (void)sendEvent:(id)a3;
-- (void)sendSubscription:(id)a3;
-- (void)sendValue:(id)a3;
-- (void)subscribe:(id)a3;
+- (void)sendCompletion:(id)completion;
+- (void)sendEvent:(id)event;
+- (void)sendSubscription:(id)subscription;
+- (void)sendValue:(id)value;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSPassThroughSubject
@@ -96,16 +96,16 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendSubscription:(id)a3
+- (void)sendSubscription:(id)subscription
 {
-  v5 = a3;
+  subscriptionCopy = subscription;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_upstreamSubscriptions addObject:v5];
-  v4 = [(BPSPassThroughSubject *)self hasAnyDownstreamDemand];
+  [(NSMutableArray *)self->_upstreamSubscriptions addObject:subscriptionCopy];
+  hasAnyDownstreamDemand = [(BPSPassThroughSubject *)self hasAnyDownstreamDemand];
   os_unfair_lock_unlock(&self->_lock);
-  if (v4)
+  if (hasAnyDownstreamDemand)
   {
-    [v5 requestDemand:0x7FFFFFFFFFFFFFFFLL];
+    [subscriptionCopy requestDemand:0x7FFFFFFFFFFFFFFFLL];
   }
 }
 
@@ -123,13 +123,13 @@
   else
   {
     [(BPSPassThroughSubject *)self setHasAnyDownstreamDemand:1];
-    v4 = [(BPSPassThroughSubject *)self upstreamSubscriptions];
+    upstreamSubscriptions = [(BPSPassThroughSubject *)self upstreamSubscriptions];
     os_unfair_lock_unlock(&self->_lock);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v4;
+    v5 = upstreamSubscriptions;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -157,56 +157,56 @@
   }
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   os_unfair_lock_lock(&self->_lock);
   if ([(BPSPassThroughSubject *)self active])
   {
-    v9 = [[_BPSInnerConduit alloc] initWithParent:self downstream:v4];
-    v5 = [(BPSPassThroughSubject *)self downstreams];
-    v6 = [v5 appendElement:v9];
+    completion2 = [[_BPSInnerConduit alloc] initWithParent:self downstream:subscribeCopy];
+    downstreams = [(BPSPassThroughSubject *)self downstreams];
+    v6 = [downstreams appendElement:completion2];
 
-    [(_BPSInnerConduit *)v9 assignIdentity:v6];
+    [(_BPSInnerConduit *)completion2 assignIdentity:v6];
     os_unfair_lock_unlock(&self->_lock);
-    [v4 receiveSubscription:v9];
+    [subscribeCopy receiveSubscription:completion2];
   }
 
   else
   {
-    v7 = [(BPSPassThroughSubject *)self completion];
+    completion = [(BPSPassThroughSubject *)self completion];
 
-    if (!v7)
+    if (!completion)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Terminal will always be set when not active"];
     }
 
     os_unfair_lock_unlock(&self->_lock);
     v8 = objc_opt_new();
-    [v4 receiveSubscription:v8];
+    [subscribeCopy receiveSubscription:v8];
 
-    v9 = [(BPSPassThroughSubject *)self completion];
-    [v4 receiveCompletion:?];
+    completion2 = [(BPSPassThroughSubject *)self completion];
+    [subscribeCopy receiveCompletion:?];
   }
 }
 
-- (void)sendValue:(id)a3
+- (void)sendValue:(id)value
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  os_unfair_lock_lock(&v5->_lock);
-  if ([(BPSPassThroughSubject *)v5 active])
+  valueCopy = value;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSPassThroughSubject *)selfCopy active])
   {
-    v6 = [(BPSPassThroughSubject *)v5 downstreams];
-    v7 = [v6 items];
+    downstreams = [(BPSPassThroughSubject *)selfCopy downstreams];
+    items = [downstreams items];
 
-    os_unfair_lock_unlock(&v5->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v7;
+    v8 = items;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
@@ -222,7 +222,7 @@
             objc_enumerationMutation(v8);
           }
 
-          [*(*(&v14 + 1) + 8 * v12++) offerInput:{v4, v14}];
+          [*(*(&v14 + 1) + 8 * v12++) offerInput:{valueCopy, v14}];
         }
 
         while (v10 != v12);
@@ -235,32 +235,32 @@
 
   else
   {
-    os_unfair_lock_unlock(&v5->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendCompletion:(id)a3
+- (void)sendCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  os_unfair_lock_lock(&v5->_lock);
-  if ([(BPSPassThroughSubject *)v5 active])
+  completionCopy = completion;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSPassThroughSubject *)selfCopy active])
   {
-    [(BPSPassThroughSubject *)v5 setActive:0];
-    [(BPSPassThroughSubject *)v5 setCompletion:v4];
-    v6 = [(BPSPassThroughSubject *)v5 downstreams];
-    v7 = [v6 claimAll];
+    [(BPSPassThroughSubject *)selfCopy setActive:0];
+    [(BPSPassThroughSubject *)selfCopy setCompletion:completionCopy];
+    downstreams = [(BPSPassThroughSubject *)selfCopy downstreams];
+    claimAll = [downstreams claimAll];
 
-    [(BPSPassThroughSubject *)v5 setUpstreamSubscriptions:0];
-    os_unfair_lock_unlock(&v5->_lock);
+    [(BPSPassThroughSubject *)selfCopy setUpstreamSubscriptions:0];
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v7;
+    v8 = claimAll;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
@@ -276,7 +276,7 @@
             objc_enumerationMutation(v8);
           }
 
-          [*(*(&v14 + 1) + 8 * v12++) finishWithCompletion:{v4, v14}];
+          [*(*(&v14 + 1) + 8 * v12++) finishWithCompletion:{completionCopy, v14}];
         }
 
         while (v10 != v12);
@@ -289,34 +289,34 @@
 
   else
   {
-    os_unfair_lock_unlock(&v5->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)disassociate:(int64_t)a3
+- (void)disassociate:(int64_t)disassociate
 {
   os_unfair_lock_lock(&self->_lock);
   if ([(BPSPassThroughSubject *)self active])
   {
-    v5 = [(BPSPassThroughSubject *)self downstreams];
-    [v5 removeTicket:a3];
+    downstreams = [(BPSPassThroughSubject *)self downstreams];
+    [downstreams removeTicket:disassociate];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v4 = self;
-  [(BPSPassThroughSubject *)v4 sendCompletion:a3];
+  selfCopy = self;
+  [(BPSPassThroughSubject *)selfCopy sendCompletion:completion];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = self;
-  [(BPSPassThroughSubject *)v4 sendValue:a3];
+  selfCopy = self;
+  [(BPSPassThroughSubject *)selfCopy sendValue:input];
 
   return 0;
 }
@@ -324,16 +324,16 @@
 - (void)cancel
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  os_unfair_lock_lock(&v2->_lock);
-  if ([(BPSPassThroughSubject *)v2 active])
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSPassThroughSubject *)selfCopy active])
   {
-    [(BPSPassThroughSubject *)v2 setActive:0];
-    v3 = [(BPSPassThroughSubject *)v2 upstreamSubscriptions];
-    v4 = [v3 copy];
+    [(BPSPassThroughSubject *)selfCopy setActive:0];
+    upstreamSubscriptions = [(BPSPassThroughSubject *)selfCopy upstreamSubscriptions];
+    v4 = [upstreamSubscriptions copy];
 
-    [(BPSPassThroughSubject *)v2 setUpstreamSubscriptions:0];
-    os_unfair_lock_unlock(&v2->_lock);
+    [(BPSPassThroughSubject *)selfCopy setUpstreamSubscriptions:0];
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -367,17 +367,17 @@
 
   else
   {
-    os_unfair_lock_unlock(&v2->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)startWithSubscriber:(id)a3
+- (id)startWithSubscriber:(id)subscriber
 {
-  v4 = a3;
+  subscriberCopy = subscriber;
   os_unfair_recursive_lock_lock_with_options();
-  [(BPSPassThroughSubject *)self setSubscriber:v4];
+  [(BPSPassThroughSubject *)self setSubscriber:subscriberCopy];
 
   os_unfair_recursive_lock_unlock();
   return 0;
@@ -386,16 +386,16 @@
 - (id)nextEvent
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(BPSPassThroughSubject *)self nextEvents];
-  v4 = [v3 count];
+  nextEvents = [(BPSPassThroughSubject *)self nextEvents];
+  v4 = [nextEvents count];
 
   if (v4)
   {
-    v5 = [(BPSPassThroughSubject *)self nextEvents];
-    v6 = [v5 objectAtIndex:0];
+    nextEvents2 = [(BPSPassThroughSubject *)self nextEvents];
+    v6 = [nextEvents2 objectAtIndex:0];
 
-    v7 = [(BPSPassThroughSubject *)self nextEvents];
-    [v7 removeObjectAtIndex:0];
+    nextEvents3 = [(BPSPassThroughSubject *)self nextEvents];
+    [nextEvents3 removeObjectAtIndex:0];
   }
 
   else
@@ -414,8 +414,8 @@
   v3 = 0;
   if ([(BPSPassThroughSubject *)self complete])
   {
-    v4 = [(BPSPassThroughSubject *)self nextEvents];
-    v3 = [v4 count] == 0;
+    nextEvents = [(BPSPassThroughSubject *)self nextEvents];
+    v3 = [nextEvents count] == 0;
   }
 
   os_unfair_recursive_lock_unlock();
@@ -427,8 +427,8 @@
   os_unfair_recursive_lock_lock_with_options();
   [(BPSPassThroughSubject *)self setComplete:0];
   [(BPSPassThroughSubject *)self setSubscriber:0];
-  v3 = [(BPSPassThroughSubject *)self nextEvents];
-  [v3 removeAllObjects];
+  nextEvents = [(BPSPassThroughSubject *)self nextEvents];
+  [nextEvents removeAllObjects];
 
   os_unfair_recursive_lock_unlock();
 }
@@ -436,16 +436,16 @@
 - (id)bookmark
 {
   os_unfair_recursive_lock_lock_with_options();
-  v3 = [(BPSPassThroughSubject *)self nextEvents];
+  nextEvents = [(BPSPassThroughSubject *)self nextEvents];
   os_unfair_recursive_lock_unlock();
 
-  return v3;
+  return nextEvents;
 }
 
-- (id)validateBookmark:(id)a3
+- (id)validateBookmark:(id)bookmark
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  bookmarkCopy = bookmark;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -456,10 +456,10 @@
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = objc_opt_class();
-    v7 = [v5 initWithFormat:@"%@ expected bookmark of class %@, but received %@", v6, objc_opt_class(), v3];
+    bookmarkCopy = [v5 initWithFormat:@"%@ expected bookmark of class %@, but received %@", v6, objc_opt_class(), bookmarkCopy];
     v8 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E696A578];
-    v13[0] = v7;
+    v13[0] = bookmarkCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v4 = [v8 errorWithDomain:@"BiomePubSubError" code:2 userInfo:v9];
   }
@@ -469,11 +469,11 @@
   return v4;
 }
 
-- (void)applyBookmark:(id)a3
+- (void)applyBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   os_unfair_recursive_lock_lock_with_options();
-  [(BPSPassThroughSubject *)self setNextEvents:v4];
+  [(BPSPassThroughSubject *)self setNextEvents:bookmarkCopy];
 
   os_unfair_recursive_lock_unlock();
 }
@@ -482,21 +482,21 @@
 {
   os_unfair_recursive_lock_lock_with_options();
   [(BPSPassThroughSubject *)self setComplete:1];
-  v3 = [(BPSPassThroughSubject *)self subscriber];
-  [v3 requestNextEvents];
+  subscriber = [(BPSPassThroughSubject *)self subscriber];
+  [subscriber requestNextEvents];
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [(BPSPassThroughSubject *)self nextEvents];
-  [v5 addObject:v4];
+  nextEvents = [(BPSPassThroughSubject *)self nextEvents];
+  [nextEvents addObject:eventCopy];
 
-  v6 = [(BPSPassThroughSubject *)self subscriber];
-  [v6 requestNextEvents];
+  subscriber = [(BPSPassThroughSubject *)self subscriber];
+  [subscriber requestNextEvents];
 
   os_unfair_recursive_lock_unlock();
 }

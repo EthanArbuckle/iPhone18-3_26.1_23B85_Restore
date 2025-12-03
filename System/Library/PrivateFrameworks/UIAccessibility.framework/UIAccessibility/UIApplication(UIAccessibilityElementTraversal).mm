@@ -23,16 +23,16 @@
 {
   v33 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = a4;
-  if (!v7)
+  _accessibilityMainWindow = a4;
+  if (!_accessibilityMainWindow)
   {
-    v7 = [a1 _accessibilityMainWindow];
+    _accessibilityMainWindow = [self _accessibilityMainWindow];
   }
 
-  v8 = [MEMORY[0x1E695DF70] array];
-  v24 = v7;
-  v25 = a1;
-  v9 = [a1 _accessibilityElementWindowsWithOptions:v6 referenceWindow:v7];
+  array = [MEMORY[0x1E695DF70] array];
+  v24 = _accessibilityMainWindow;
+  selfCopy = self;
+  v9 = [self _accessibilityElementWindowsWithOptions:v6 referenceWindow:_accessibilityMainWindow];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -57,7 +57,7 @@
         {
           if ([v6 shouldReturnScannerGroups] && objc_msgSend(v9, "count") >= 2)
           {
-            v16 = v8;
+            v16 = array;
             v17 = MEMORY[0x1E695DF90];
             v30 = @"GroupElements";
             v31 = v15;
@@ -65,16 +65,16 @@
             v19 = [v17 dictionaryWithDictionary:v18];
 
             [v19 setObject:&unk_1F1DC2650 forKeyedSubscript:@"GroupTraits"];
-            v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(v25, "_accessibilityScanningBehaviorTraits") | 0x10}];
+            v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(selfCopy, "_accessibilityScanningBehaviorTraits") | 0x10}];
             [v19 setObject:v20 forKeyedSubscript:@"GroupScanBehaviorTraits"];
 
-            v21 = [v25 _accessibilityGroupIdentifier];
-            if (v21)
+            _accessibilityGroupIdentifier = [selfCopy _accessibilityGroupIdentifier];
+            if (_accessibilityGroupIdentifier)
             {
-              [v19 setObject:v21 forKeyedSubscript:@"GroupIdentifier"];
+              [v19 setObject:_accessibilityGroupIdentifier forKeyedSubscript:@"GroupIdentifier"];
             }
 
-            v8 = v16;
+            array = v16;
             [v16 addObject:v19];
 
             v12 = 0x1E69DD000;
@@ -82,7 +82,7 @@
 
           else
           {
-            [v8 axSafelyAddObjectsFromArray:v15];
+            [array axSafelyAddObjectsFromArray:v15];
           }
         }
       }
@@ -99,7 +99,7 @@
     [UIApplication(UIAccessibilityElementTraversal) _accessibilityViewChildrenWithOptions:referenceWindow:];
   }
 
-  return v8;
+  return array;
 }
 
 - (void)_accessibilityAddKeyboardWindowToArray:()UIAccessibilityElementTraversal forModalWindow:
@@ -124,8 +124,8 @@
   v2 = objc_opt_new();
   v3 = +[UIAccessibilityElementTraversalOptions options];
   [v3 setShouldIncludeStatusBarWindow:1];
-  v4 = [a1 _accessibilityMainWindow];
-  v5 = [a1 _accessibilityElementWindowsWithOptions:v3 referenceWindow:v4];
+  _accessibilityMainWindow = [self _accessibilityMainWindow];
+  v5 = [self _accessibilityElementWindowsWithOptions:v3 referenceWindow:_accessibilityMainWindow];
 
   v14 = 0u;
   v15 = 0u;
@@ -169,7 +169,7 @@
   v14 = __Block_byref_object_dispose__0;
   v15 = 0;
   AXPerformSafeBlock();
-  v8 = [a1 _accessibilityElementWindowsWithOptions:v6 referenceWindow:v7 allWindows:v11[5]];
+  v8 = [self _accessibilityElementWindowsWithOptions:v6 referenceWindow:v7 allWindows:v11[5]];
   _Block_object_dispose(&v10, 8);
 
   return v8;
@@ -181,7 +181,7 @@
   v8 = a3;
   v9 = a4;
   v73 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (!_TextEffectsWindow)
   {
     _TextEffectsWindow = NSClassFromString(&cfstr_Uitexteffectsw.isa);
@@ -196,7 +196,7 @@
   if ([v9 _accessibilityIsIsolatedWindow])
   {
     v11 = [MEMORY[0x1E695DF70] arrayWithObject:v9];
-    [v10 addObject:v11];
+    [array addObject:v11];
 
     goto LABEL_95;
   }
@@ -212,16 +212,16 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 accessibilityViewIsModal])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
-    [a1 _accessibilityAddKeyboardWindowToArray:v13 forModalWindow:v9];
-    [v13 addObject:v9];
-    [v10 addObject:v13];
+    array2 = [MEMORY[0x1E695DF70] array];
+    [self _accessibilityAddKeyboardWindowToArray:array2 forModalWindow:v9];
+    [array2 addObject:v9];
+    [array addObject:array2];
     goto LABEL_94;
   }
 
-  v13 = [MEMORY[0x1E695DFA8] set];
-  v14 = [v72 allKeys];
-  v15 = [v14 mutableCopy];
+  array2 = [MEMORY[0x1E695DFA8] set];
+  allKeys = [v72 allKeys];
+  v15 = [allKeys mutableCopy];
 
   v98 = 0u;
   v99 = 0u;
@@ -235,7 +235,7 @@
   }
 
   v69 = *v97;
-  v70 = v10;
+  v70 = array;
   v71 = v9;
   do
   {
@@ -250,17 +250,17 @@
       v77 = v16;
       v75 = *(*(&v96 + 1) + 8 * v16);
       v17 = [v72 objectForKeyedSubscript:?];
-      v18 = [MEMORY[0x1E695DF70] array];
-      v78 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
+      array4 = [MEMORY[0x1E695DF70] array];
       v92 = 0u;
       v93 = 0u;
       v94 = 0u;
       v95 = 0u;
       v76 = v17;
-      v19 = [v17 reverseObjectEnumerator];
-      v20 = [v19 allObjects];
+      reverseObjectEnumerator = [v17 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
-      v21 = [v20 countByEnumeratingWithState:&v92 objects:v105 count:16];
+      v21 = [allObjects countByEnumeratingWithState:&v92 objects:v105 count:16];
       if (v21)
       {
         v22 = v21;
@@ -273,7 +273,7 @@
           {
             if (*v93 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(allObjects);
             }
 
             v26 = *(*(&v92 + 1) + 8 * v25);
@@ -310,9 +310,9 @@
               goto LABEL_26;
             }
 
-            v33 = [v26 _accessibilityIsIsolatedWindow];
-            v34 = v33;
-            if (v33 && (![v8 shouldIncludeStatusBarWindow] || (objc_opt_isKindOfClass() & 1) == 0))
+            _accessibilityIsIsolatedWindow = [v26 _accessibilityIsIsolatedWindow];
+            v34 = _accessibilityIsIsolatedWindow;
+            if (_accessibilityIsIsolatedWindow && (![v8 shouldIncludeStatusBarWindow] || (objc_opt_isKindOfClass() & 1) == 0))
             {
               goto LABEL_39;
             }
@@ -336,12 +336,12 @@
                   [v26 windowLevel];
                   if (v35 > v24)
                   {
-                    [v78 removeAllObjects];
+                    [array4 removeAllObjects];
                   }
 
                   [v26 windowLevel];
                   v24 = v36;
-                  [v78 addObject:v26];
+                  [array4 addObject:v26];
                 }
 
 LABEL_26:
@@ -357,22 +357,22 @@ LABEL_26:
               if ((v30 | [v26 _accessibilityWindowVisible]) == 1)
               {
 LABEL_32:
-                [v18 addObject:v26];
+                [array3 addObject:v26];
               }
 
               if (objc_opt_class() == _SBBannerWindow)
               {
-                [v18 insertObject:v26 atIndex:0];
+                [array3 insertObject:v26 atIndex:0];
               }
 
               if (objc_opt_class() == _SSScreenshotsWindow)
               {
-                v31 = [MEMORY[0x1E69898B0] server];
-                v32 = [v31 isScreenshotWindowVisible];
+                server = [MEMORY[0x1E69898B0] server];
+                isScreenshotWindowVisible = [server isScreenshotWindowVisible];
 
-                if (v32)
+                if (isScreenshotWindowVisible)
                 {
-                  [v18 insertObject:v26 atIndex:0];
+                  [array3 insertObject:v26 atIndex:0];
                 }
               }
 
@@ -384,13 +384,13 @@ LABEL_32:
               goto LABEL_39;
             }
 
-            v37 = [v26 subviews];
-            v38 = [v37 count];
+            subviews = [v26 subviews];
+            v38 = [subviews count];
 
             if (v38)
             {
 LABEL_45:
-              [v18 addObject:v26];
+              [array3 addObject:v26];
             }
 
 LABEL_39:
@@ -398,7 +398,7 @@ LABEL_39:
           }
 
           while (v22 != v25);
-          v39 = [v20 countByEnumeratingWithState:&v92 objects:v105 count:16];
+          v39 = [allObjects countByEnumeratingWithState:&v92 objects:v105 count:16];
           v22 = v39;
         }
 
@@ -407,17 +407,17 @@ LABEL_39:
 
 LABEL_59:
 
-      [v13 addObjectsFromArray:v18];
+      [array2 addObjectsFromArray:array3];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __117__UIApplication_UIAccessibilityElementTraversal___accessibilityElementWindowsWithOptions_referenceWindow_allWindows___block_invoke_2;
       aBlock[3] = &unk_1E78AAA10;
       aBlock[4] = v75;
       v40 = _Block_copy(aBlock);
-      v41 = [*MEMORY[0x1E69DDA98] keyWindow];
-      if ([v73 containsObject:v41])
+      keyWindow = [*MEMORY[0x1E69DDA98] keyWindow];
+      if ([v73 containsObject:keyWindow])
       {
-        v42 = v41;
+        v42 = keyWindow;
       }
 
       else
@@ -427,14 +427,14 @@ LABEL_59:
 
       v43 = v42;
 
-      v44 = v78;
-      if (v43 && (![v78 count] || (objc_msgSend(v78, "containsObject:", v43) & 1) == 0) && (objc_msgSend(v13, "containsObject:", v43) & 1) == 0)
+      v44 = array4;
+      if (v43 && (![array4 count] || (objc_msgSend(array4, "containsObject:", v43) & 1) == 0) && (objc_msgSend(array2, "containsObject:", v43) & 1) == 0)
       {
         v89 = 0u;
         v90 = 0u;
         v87 = 0u;
         v88 = 0u;
-        v45 = v78;
+        v45 = array4;
         v46 = [v45 countByEnumeratingWithState:&v87 objects:v104 count:16];
         if (v46)
         {
@@ -452,7 +452,7 @@ LABEL_59:
               if ([*(*(&v87 + 1) + 8 * i) accessibilityViewIsModal])
               {
 
-                v44 = v78;
+                v44 = array4;
                 goto LABEL_78;
               }
             }
@@ -467,11 +467,11 @@ LABEL_59:
           }
         }
 
-        v44 = v78;
+        v44 = array4;
         if (([v43 accessibilityElementsHidden] & 1) == 0 && v40[2](v40, v43))
         {
-          [v18 addObject:v43];
-          [v13 addObject:v43];
+          [array3 addObject:v43];
+          [array2 addObject:v43];
         }
       }
 
@@ -496,10 +496,10 @@ LABEL_78:
             }
 
             v55 = *(*(&v83 + 1) + 8 * j);
-            if (([v13 containsObject:v55] & 1) == 0)
+            if (([array2 containsObject:v55] & 1) == 0)
             {
-              [v18 addObject:v55];
-              [v13 addObject:v55];
+              [array3 addObject:v55];
+              [array2 addObject:v55];
             }
           }
 
@@ -510,15 +510,15 @@ LABEL_78:
       }
 
       v9 = v71;
-      if (v71 && ([v13 containsObject:v71] & 1) == 0 && v40[2](v40, v71))
+      if (v71 && ([array2 containsObject:v71] & 1) == 0 && v40[2](v40, v71))
       {
-        [v18 addObject:v71];
-        [v13 addObject:v71];
+        [array3 addObject:v71];
+        [array2 addObject:v71];
       }
 
-      [v13 addObjectsFromArray:v18];
-      v10 = v70;
-      [v70 addObject:v18];
+      [array2 addObjectsFromArray:array3];
+      array = v70;
+      [v70 addObject:array3];
 
       v16 = v77 + 1;
     }
@@ -536,7 +536,7 @@ LABEL_95:
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v56 = v10;
+  v56 = array;
   v57 = [v56 countByEnumeratingWithState:&v79 objects:v102 count:16];
   if (v57)
   {

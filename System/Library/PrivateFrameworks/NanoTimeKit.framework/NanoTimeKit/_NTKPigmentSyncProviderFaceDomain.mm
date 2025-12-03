@@ -1,21 +1,21 @@
 @interface _NTKPigmentSyncProviderFaceDomain
-- (_NTKPigmentSyncProviderFaceDomain)initWithFace:(id)a3 domain:(id)a4;
+- (_NTKPigmentSyncProviderFaceDomain)initWithFace:(id)face domain:(id)domain;
 @end
 
 @implementation _NTKPigmentSyncProviderFaceDomain
 
-- (_NTKPigmentSyncProviderFaceDomain)initWithFace:(id)a3 domain:(id)a4
+- (_NTKPigmentSyncProviderFaceDomain)initWithFace:(id)face domain:(id)domain
 {
-  v7 = a3;
-  v8 = a4;
+  faceCopy = face;
+  domainCopy = domain;
   v14.receiver = self;
   v14.super_class = _NTKPigmentSyncProviderFaceDomain;
   v9 = [(_NTKPigmentSyncProviderFaceDomain *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_face, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_face, face);
+    v11 = [domainCopy copy];
     domain = v10->_domain;
     v10->_domain = v11;
   }

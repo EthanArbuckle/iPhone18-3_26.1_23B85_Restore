@@ -1,16 +1,16 @@
 @interface _NSAttributedStringAgent
-- (void)readFromData:(id)a3 orFileURL:(id)a4 options:(id)a5 extensionTokens:(id)a6 withReply:(id)a7;
-- (void)renderHTML:(id)a3 options:(id)a4 extensionTokens:(id)a5 withReply:(id)a6;
+- (void)readFromData:(id)data orFileURL:(id)l options:(id)options extensionTokens:(id)tokens withReply:(id)reply;
+- (void)renderHTML:(id)l options:(id)options extensionTokens:(id)tokens withReply:(id)reply;
 @end
 
 @implementation _NSAttributedStringAgent
 
-- (void)renderHTML:(id)a3 options:(id)a4 extensionTokens:(id)a5 withReply:(id)a6
+- (void)renderHTML:(id)l options:(id)options extensionTokens:(id)tokens withReply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  optionsCopy = options;
+  tokensCopy = tokens;
+  replyCopy = reply;
   if (!sub_1000016D8())
   {
     [NSException raise:NSInternalInconsistencyException format:@"Failed to load WebKit."];
@@ -21,7 +21,7 @@
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v14 = v11;
+  v14 = tokensCopy;
   v15 = [v14 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v15)
   {
@@ -57,21 +57,21 @@
   v34[3] = &unk_100004228;
   v20 = v13;
   v35 = v20;
-  v21 = v12;
+  v21 = replyCopy;
   v36 = v21;
   v22 = objc_retainBlock(v34);
-  v23 = [v10 objectForKeyedSubscript:@"DocumentType"];
+  v23 = [optionsCopy objectForKeyedSubscript:@"DocumentType"];
   v24 = [v23 isEqualToString:@"NSWebArchive"];
 
   if (v24)
   {
-    v25 = [v10 objectForKeyedSubscript:@"BaseURL"];
+    v25 = [optionsCopy objectForKeyedSubscript:@"BaseURL"];
     if (!v25)
     {
       v25 = objc_alloc_init(NSURL);
     }
 
-    v26 = [v10 objectForKey:@"TextEncodingName"];
+    v26 = [optionsCopy objectForKey:@"TextEncodingName"];
     if (v26)
     {
       v27 = v26;
@@ -86,27 +86,27 @@
     v30[1] = 3221225472;
     v30[2] = sub_100001904;
     v30[3] = &unk_100004250;
-    v31 = v9;
+    v31 = lCopy;
     v32 = v27;
     v33 = v25;
     v28 = v25;
     v29 = v27;
-    [NSAttributedString _loadFromHTMLWithOptions:v10 contentLoader:v30 completionHandler:v22];
+    [NSAttributedString _loadFromHTMLWithOptions:optionsCopy contentLoader:v30 completionHandler:v22];
   }
 
   else
   {
-    [NSAttributedString loadFromHTMLWithData:v9 options:v10 completionHandler:v22];
+    [NSAttributedString loadFromHTMLWithData:lCopy options:optionsCopy completionHandler:v22];
   }
 }
 
-- (void)readFromData:(id)a3 orFileURL:(id)a4 options:(id)a5 extensionTokens:(id)a6 withReply:(id)a7
+- (void)readFromData:(id)data orFileURL:(id)l options:(id)options extensionTokens:(id)tokens withReply:(id)reply
 {
-  v28 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dataCopy = data;
+  lCopy = l;
+  optionsCopy = options;
+  tokensCopy = tokens;
+  replyCopy = reply;
   if (!sub_1000016D8())
   {
     [NSException raise:NSInternalInconsistencyException format:@"Failed to load WebKit."];
@@ -117,7 +117,7 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v16 = v13;
+  v16 = tokensCopy;
   v17 = [v16 countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v17)
   {
@@ -148,11 +148,11 @@
   v29[3] = &unk_100004278;
   v21 = v15;
   v30 = v21;
-  v22 = v14;
+  v22 = replyCopy;
   v31 = v22;
-  v23 = v11;
-  v24 = v28;
-  v25 = v12;
+  v23 = lCopy;
+  v24 = dataCopy;
+  v25 = optionsCopy;
   v26 = v29;
   v37 = 0;
   v38 = &v37;

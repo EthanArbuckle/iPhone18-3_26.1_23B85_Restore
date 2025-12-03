@@ -1,10 +1,10 @@
 @interface CLPCUtils
-+ (unint64_t)mach_time_to_ns:(uint64_t)a1;
++ (unint64_t)mach_time_to_ns:(uint64_t)mach_time_to_ns;
 @end
 
 @implementation CLPCUtils
 
-+ (unint64_t)mach_time_to_ns:(uint64_t)a1
++ (unint64_t)mach_time_to_ns:(uint64_t)mach_time_to_ns
 {
   objc_opt_self();
   if (get_mach_timebase_info(void)::pred != -1)

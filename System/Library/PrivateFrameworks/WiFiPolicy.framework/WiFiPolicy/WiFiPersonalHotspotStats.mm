@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (WiFiPersonalHotspotStats)init;
 - (void)__resetWiFiPersonalHotspotStats;
-- (void)__submitWiFiPersonalHotspotStats:(double)a3 end:(double)a4 latencyType:(id)a5;
-- (void)setJoinEndedEvent:(double)a3 successfulJoinAttempt:(BOOL)a4 joinFailureCode:(int64_t)a5 failureReporter:(id)a6 band:(int64_t)a7 deviceName:(id)a8;
-- (void)setJoinStartedEvent:(double)a3 withReason:(unint64_t)a4 deviceName:(id)a5;
+- (void)__submitWiFiPersonalHotspotStats:(double)stats end:(double)end latencyType:(id)type;
+- (void)setJoinEndedEvent:(double)event successfulJoinAttempt:(BOOL)attempt joinFailureCode:(int64_t)code failureReporter:(id)reporter band:(int64_t)band deviceName:(id)name;
+- (void)setJoinStartedEvent:(double)event withReason:(unint64_t)reason deviceName:(id)name;
 @end
 
 @implementation WiFiPersonalHotspotStats
@@ -62,30 +62,30 @@ uint64_t __42__WiFiPersonalHotspotStats_sharedInstance__block_invoke()
   self->_band = 0;
 }
 
-- (void)setJoinStartedEvent:(double)a3 withReason:(unint64_t)a4 deviceName:(id)a5
+- (void)setJoinStartedEvent:(double)event withReason:(unint64_t)reason deviceName:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   [(WiFiPersonalHotspotStats *)self __resetWiFiPersonalHotspotStats];
-  self->_joinStartedAt = a3;
-  v9 = [WiFiUsageSession joinReasonString:a4];
+  self->_joinStartedAt = event;
+  v9 = [WiFiUsageSession joinReasonString:reason];
   joinReason = self->_joinReason;
   self->_joinReason = v9;
 
   deviceName = self->_deviceName;
-  self->_deviceName = v8;
+  self->_deviceName = nameCopy;
 }
 
-- (void)setJoinEndedEvent:(double)a3 successfulJoinAttempt:(BOOL)a4 joinFailureCode:(int64_t)a5 failureReporter:(id)a6 band:(int64_t)a7 deviceName:(id)a8
+- (void)setJoinEndedEvent:(double)event successfulJoinAttempt:(BOOL)attempt joinFailureCode:(int64_t)code failureReporter:(id)reporter band:(int64_t)band deviceName:(id)name
 {
-  v17 = a6;
-  v15 = a8;
-  if (![(NSString *)self->_joinReason isEqualToString:@"Auto"]&& ![(NSString *)self->_joinReason isEqualToString:@"AskToJoin"]&& self->_joinStartedAt != 0.0 && self->_latency == 0.0 && [(NSString *)self->_deviceName isEqualToString:v15])
+  reporterCopy = reporter;
+  nameCopy = name;
+  if (![(NSString *)self->_joinReason isEqualToString:@"Auto"]&& ![(NSString *)self->_joinReason isEqualToString:@"AskToJoin"]&& self->_joinStartedAt != 0.0 && self->_latency == 0.0 && [(NSString *)self->_deviceName isEqualToString:nameCopy])
   {
-    self->_joinEndedAt = a3;
-    self->_successfulJoinAttempt = a4;
-    self->_joinFailureCode = a5;
-    objc_storeStrong(&self->_failureReporter, a6);
-    self->_band = a7;
+    self->_joinEndedAt = event;
+    self->_successfulJoinAttempt = attempt;
+    self->_joinFailureCode = code;
+    objc_storeStrong(&self->_failureReporter, reporter);
+    self->_band = band;
     personalHotspotDiscoveryEndedAt = self->_personalHotspotDiscoveryEndedAt;
     self->_latency = self->_joinEndedAt - self->_joinStartedAt;
     [WiFiPersonalHotspotStats __submitWiFiPersonalHotspotStats:"__submitWiFiPersonalHotspotStats:end:latencyType:" end:@"PH Enablement" latencyType:?];
@@ -94,19 +94,19 @@ uint64_t __42__WiFiPersonalHotspotStats_sharedInstance__block_invoke()
   }
 }
 
-- (void)__submitWiFiPersonalHotspotStats:(double)a3 end:(double)a4 latencyType:(id)a5
+- (void)__submitWiFiPersonalHotspotStats:(double)stats end:(double)end latencyType:(id)type
 {
-  v8 = a5;
+  typeCopy = type;
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (a3 != 0.0 && a4 != 0.0)
+  if (stats != 0.0 && end != 0.0)
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithDouble:a4 - a3];
-    [v9 setObject:v10 forKeyedSubscript:@"latency"];
+    stats = [MEMORY[0x277CCABB0] numberWithDouble:end - stats];
+    [v9 setObject:stats forKeyedSubscript:@"latency"];
   }
 
-  if (v8)
+  if (typeCopy)
   {
-    [v9 setObject:v8 forKeyedSubscript:@"latencyType"];
+    [v9 setObject:typeCopy forKeyedSubscript:@"latencyType"];
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_successfulJoinAttempt];

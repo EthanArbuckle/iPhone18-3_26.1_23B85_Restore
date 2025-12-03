@@ -2,13 +2,13 @@
 + (id)defaultManager;
 - (TPSDEventsProviderManagerDelegate)delegate;
 - (TPSEventsProviderManager)init;
-- (int64_t)_dataTypeForDataProvider:(id)a3;
-- (void)dataProvider:(id)a3 didFinishQueryWithResults:(id)a4;
-- (void)dataProvider:(id)a3 didReceiveCallbackWithResult:(id)a4;
-- (void)queryEvents:(id)a3 type:(int64_t)a4;
-- (void)registerCallbackForEvents:(id)a3 type:(int64_t)a4;
-- (void)registerWakingCallbackForEvents:(id)a3 type:(int64_t)a4 clientIdentifier:(id)a5;
-- (void)setDelegate:(id)a3;
+- (int64_t)_dataTypeForDataProvider:(id)provider;
+- (void)dataProvider:(id)provider didFinishQueryWithResults:(id)results;
+- (void)dataProvider:(id)provider didReceiveCallbackWithResult:(id)result;
+- (void)queryEvents:(id)events type:(int64_t)type;
+- (void)registerCallbackForEvents:(id)events type:(int64_t)type;
+- (void)registerWakingCallbackForEvents:(id)events type:(int64_t)type clientIdentifier:(id)identifier;
+- (void)setDelegate:(id)delegate;
 - (void)unregisterAllWakingEvents;
 @end
 
@@ -57,9 +57,9 @@ uint64_t __42__TPSEventsProviderManager_defaultManager__block_invoke()
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -70,9 +70,9 @@ uint64_t __42__TPSEventsProviderManager_defaultManager__block_invoke()
   }
 }
 
-- (int64_t)_dataTypeForDataProvider:(id)a3
+- (int64_t)_dataTypeForDataProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -96,18 +96,18 @@ uint64_t __42__TPSEventsProviderManager_defaultManager__block_invoke()
   return v4;
 }
 
-- (void)queryEvents:(id)a3 type:(int64_t)a4
+- (void)queryEvents:(id)events type:(int64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 2)
+  eventsCopy = events;
+  v7 = eventsCopy;
+  if (type == 2)
   {
     v8 = 16;
   }
 
   else
   {
-    if (a4 != 3)
+    if (type != 3)
     {
       goto LABEL_6;
     }
@@ -115,27 +115,27 @@ uint64_t __42__TPSEventsProviderManager_defaultManager__block_invoke()
     v8 = 24;
   }
 
-  v9 = v6;
-  v6 = [*(&self->super.isa + v8) queryEvents:v6];
+  v9 = eventsCopy;
+  eventsCopy = [*(&self->super.isa + v8) queryEvents:eventsCopy];
   v7 = v9;
 LABEL_6:
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](eventsCopy, v7);
 }
 
-- (void)registerCallbackForEvents:(id)a3 type:(int64_t)a4
+- (void)registerCallbackForEvents:(id)events type:(int64_t)type
 {
-  if (a4 == 3)
+  if (type == 3)
   {
-    [(TPSBiomeEventsProvider *)self->_biomeEventsProvider registerEventsForCallback:a3];
+    [(TPSBiomeEventsProvider *)self->_biomeEventsProvider registerEventsForCallback:events];
   }
 }
 
-- (void)registerWakingCallbackForEvents:(id)a3 type:(int64_t)a4 clientIdentifier:(id)a5
+- (void)registerWakingCallbackForEvents:(id)events type:(int64_t)type clientIdentifier:(id)identifier
 {
-  if (a4 == 3)
+  if (type == 3)
   {
-    [(TPSBiomeEventsProvider *)self->_biomeEventsProvider registerEventsForWakingCallback:a3 clientIdentifier:a5];
+    [(TPSBiomeEventsProvider *)self->_biomeEventsProvider registerEventsForWakingCallback:events clientIdentifier:identifier];
   }
 }
 
@@ -148,25 +148,25 @@ LABEL_6:
   }
 }
 
-- (void)dataProvider:(id)a3 didFinishQueryWithResults:(id)a4
+- (void)dataProvider:(id)provider didFinishQueryWithResults:(id)results
 {
   if (self->_respondsToDidFinishQueryWithResults)
   {
-    v7 = a4;
-    v8 = [(TPSEventsProviderManager *)self _dataTypeForDataProvider:a3];
+    resultsCopy = results;
+    v8 = [(TPSEventsProviderManager *)self _dataTypeForDataProvider:provider];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained dataProviderManager:self didFinishQueryWithResults:v7 type:v8];
+    [WeakRetained dataProviderManager:self didFinishQueryWithResults:resultsCopy type:v8];
   }
 }
 
-- (void)dataProvider:(id)a3 didReceiveCallbackWithResult:(id)a4
+- (void)dataProvider:(id)provider didReceiveCallbackWithResult:(id)result
 {
   if (self->_respondsToDidReceiveCallbackWithResult)
   {
-    v7 = a4;
-    v8 = [(TPSEventsProviderManager *)self _dataTypeForDataProvider:a3];
+    resultCopy = result;
+    v8 = [(TPSEventsProviderManager *)self _dataTypeForDataProvider:provider];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained dataProviderManager:self didReceiveCallbackWithResult:v7 type:v8];
+    [WeakRetained dataProviderManager:self didReceiveCallbackWithResult:resultCopy type:v8];
   }
 }
 

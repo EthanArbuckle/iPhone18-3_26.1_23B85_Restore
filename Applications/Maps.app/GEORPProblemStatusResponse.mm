@@ -1,28 +1,28 @@
 @interface GEORPProblemStatusResponse
-+ (GEORPProblemStatusResponse)problemStatusResponseWithNotificationID:(id)a3;
-- (BOOL)getSingleServerSideAlertTitle:(id *)a3 message:(id *)a4 messageIsSameAsNotificationTitle:(BOOL *)a5;
-- (BOOL)writeToDisk:(id)a3 error:(id *)a4;
-- (void)_displayDedicatedFixedProblemViewController:(id)a3;
-- (void)displayAdditionalUIOnViewController:(id)a3;
-- (void)getDefaultAlertTitle:(id *)a3 alertMessage:(id *)a4;
++ (GEORPProblemStatusResponse)problemStatusResponseWithNotificationID:(id)d;
+- (BOOL)getSingleServerSideAlertTitle:(id *)title message:(id *)message messageIsSameAsNotificationTitle:(BOOL *)notificationTitle;
+- (BOOL)writeToDisk:(id)disk error:(id *)error;
+- (void)_displayDedicatedFixedProblemViewController:(id)controller;
+- (void)displayAdditionalUIOnViewController:(id)controller;
+- (void)getDefaultAlertTitle:(id *)title alertMessage:(id *)message;
 @end
 
 @implementation GEORPProblemStatusResponse
 
-- (void)_displayDedicatedFixedProblemViewController:(id)a3
+- (void)_displayDedicatedFixedProblemViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (MapsFeature_IsEnabled_RAPSydney())
   {
     v5 = [_TtC4Maps31RAPNotificationDetailsViewModel alloc];
-    v6 = [(GEORPProblemStatusResponse *)self problemStatus];
-    v7 = [v6 firstObject];
-    v8 = [(RAPNotificationDetailsViewModel *)v5 initWithProblemStatus:v7];
+    problemStatus = [(GEORPProblemStatusResponse *)self problemStatus];
+    firstObject = [problemStatus firstObject];
+    v8 = [(RAPNotificationDetailsViewModel *)v5 initWithProblemStatus:firstObject];
 
     v9 = [[RAPNotificationDetailsViewController alloc] initWithViewModel:v8 report:0 question:0];
     v10 = [[UINavigationController alloc] initWithRootViewController:v9];
     [v10 setModalPresentationStyle:2];
-    [v4 _maps_topMostPresentViewController:v10 animated:1 completion:0];
+    [controllerCopy _maps_topMostPresentViewController:v10 animated:1 completion:0];
   }
 
   else
@@ -36,93 +36,93 @@
     v14 = &unk_101661B98;
     objc_copyWeak(&v15, &location);
     [(RAPNotificationDetailsViewModel *)v8 setDoneHandler:&v11];
-    [v4 _maps_topMostPresentViewController:v8 animated:1 completion:{0, v11, v12, v13, v14}];
+    [controllerCopy _maps_topMostPresentViewController:v8 animated:1 completion:{0, v11, v12, v13, v14}];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)displayAdditionalUIOnViewController:(id)a3
+- (void)displayAdditionalUIOnViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(GEORPProblemStatusResponse *)self canDisplayAdditionalUI]&& [(GEORPProblemStatusResponse *)self problemStatusCount]== 1)
   {
-    [(GEORPProblemStatusResponse *)self _displayDedicatedFixedProblemViewController:v4];
+    [(GEORPProblemStatusResponse *)self _displayDedicatedFixedProblemViewController:controllerCopy];
   }
 }
 
-- (BOOL)getSingleServerSideAlertTitle:(id *)a3 message:(id *)a4 messageIsSameAsNotificationTitle:(BOOL *)a5
+- (BOOL)getSingleServerSideAlertTitle:(id *)title message:(id *)message messageIsSameAsNotificationTitle:(BOOL *)notificationTitle
 {
   if ([(GEORPProblemStatusResponse *)self problemStatusCount]== 1)
   {
     v9 = [(GEORPProblemStatusResponse *)self problemStatusAtIndex:0];
-    v10 = [v9 notification];
-    v11 = [v10 localizedText];
+    notification = [v9 notification];
+    localizedText = [notification localizedText];
 
-    v12 = [v11 length];
+    v12 = [localizedText length];
     v13 = v12 != 0;
     if (v12)
     {
-      if (a3)
+      if (title)
       {
-        v14 = [v9 notification];
-        *a3 = [v14 localizedTitle];
+        notification2 = [v9 notification];
+        *title = [notification2 localizedTitle];
       }
 
-      if (a4)
+      if (message)
       {
-        v15 = v11;
-        *a4 = v11;
+        v15 = localizedText;
+        *message = localizedText;
       }
 
-      if (a5)
+      if (notificationTitle)
       {
-        v16 = [v9 notification];
-        v17 = [v16 localizedText];
-        *a5 = [v11 isEqual:v17];
+        notification3 = [v9 notification];
+        localizedText2 = [notification3 localizedText];
+        *notificationTitle = [localizedText isEqual:localizedText2];
       }
     }
   }
 
   else
   {
-    if (a5)
+    if (notificationTitle)
     {
-      *a5 = 0;
+      *notificationTitle = 0;
     }
 
-    if (a3)
+    if (title)
     {
-      *a3 = 0;
+      *title = 0;
     }
 
     v13 = 0;
-    if (a4)
+    if (message)
     {
-      *a4 = 0;
+      *message = 0;
     }
   }
 
   return v13;
 }
 
-- (void)getDefaultAlertTitle:(id *)a3 alertMessage:(id *)a4
+- (void)getDefaultAlertTitle:(id *)title alertMessage:(id *)message
 {
-  if (a3)
+  if (title)
   {
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Your Reported Issues [push]" value:@"localized string not found" table:0];
 
     v9 = v8;
-    *a3 = v8;
+    *title = v8;
   }
 
-  if (!a4)
+  if (!message)
   {
     return;
   }
 
-  v57 = a4;
+  messageCopy = message;
   v60 = +[NSMutableArray array];
   v59 = +[NSMutableArray array];
   v58 = +[NSMutableArray array];
@@ -130,8 +130,8 @@
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v10 = [(GEORPProblemStatusResponse *)self problemStatus];
-  v11 = [v10 countByEnumeratingWithState:&v61 objects:v65 count:16];
+  problemStatus = [(GEORPProblemStatusResponse *)self problemStatus];
+  v11 = [problemStatus countByEnumeratingWithState:&v61 objects:v65 count:16];
   if (v11)
   {
     v12 = v11;
@@ -142,24 +142,24 @@
       {
         if (*v62 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(problemStatus);
         }
 
         v15 = *(*(&v61 + 1) + 8 * i);
         v16 = +[MKMapService sharedService];
-        v17 = [v15 details];
-        v18 = [v16 mapItemsForPlacesInDetails:v17];
+        details = [v15 details];
+        v18 = [v16 mapItemsForPlacesInDetails:details];
 
-        v19 = [v18 firstObject];
-        if (v19)
+        firstObject = [v18 firstObject];
+        if (firstObject)
         {
-          [v60 addObject:v19];
-          v20 = [v19 name];
+          [v60 addObject:firstObject];
+          name = [firstObject name];
 
-          if (v20)
+          if (name)
           {
-            v21 = [v19 name];
-            [v59 addObject:v21];
+            name2 = [firstObject name];
+            [v59 addObject:name2];
           }
         }
 
@@ -175,33 +175,33 @@
           }
         }
 
-        if (a3)
+        if (title)
         {
-          v25 = [v15 details];
-          v26 = [v25 localizedTitle];
+          details2 = [v15 details];
+          localizedTitle = [details2 localizedTitle];
 
-          if (v26)
+          if (localizedTitle)
           {
-            v27 = [v15 notification];
-            *a3 = [v27 localizedTitle];
+            notification = [v15 notification];
+            *title = [notification localizedTitle];
           }
 
-          v28 = [v15 notification];
-          v29 = [v28 localizedText];
+          notification2 = [v15 notification];
+          localizedText = [notification2 localizedText];
 
-          if (v29)
+          if (localizedText)
           {
-            v37 = [v15 notification];
-            *v57 = [v37 localizedText];
+            notification3 = [v15 notification];
+            *messageCopy = [notification3 localizedText];
 
             v30 = v58;
-            v36 = v10;
+            v36 = problemStatus;
             goto LABEL_48;
           }
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v61 objects:v65 count:16];
+      v12 = [problemStatus countByEnumeratingWithState:&v61 objects:v65 count:16];
       if (v12)
       {
         continue;
@@ -241,8 +241,8 @@
     {
       v38 = +[NSBundle mainBundle];
       v39 = [v38 localizedStringForKey:@" and <date>" value:@"localized string not found" table:0];
-      v40 = [v58 lastObject];
-      v41 = [v36 stringByAppendingFormat:v39, v40];
+      lastObject = [v58 lastObject];
+      v41 = [v36 stringByAppendingFormat:v39, lastObject];
 
       v36 = v41;
     }
@@ -299,7 +299,7 @@ LABEL_39:
       v18 = [NSString stringWithFormat:v44, v45];
 LABEL_46:
 
-      v50 = v57;
+      v50 = messageCopy;
       goto LABEL_47;
     }
 
@@ -308,7 +308,7 @@ LABEL_46:
 
   v48 = [v58 count];
   v49 = [v60 count];
-  v50 = v57;
+  v50 = messageCopy;
   if (v48)
   {
     v51 = +[NSBundle mainBundle];
@@ -351,39 +351,39 @@ LABEL_47:
 LABEL_48:
 }
 
-- (BOOL)writeToDisk:(id)a3 error:(id *)a4
+- (BOOL)writeToDisk:(id)disk error:(id *)error
 {
-  v6 = a3;
-  if ([RAPNotification isValidNotificationID:v6])
+  diskCopy = disk;
+  if ([RAPNotification isValidNotificationID:diskCopy])
   {
-    v7 = [RAPNotification filenameForNotificationID:v6];
+    v7 = [RAPNotification filenameForNotificationID:diskCopy];
     v8 = +[RAPNotification notificationCachePath];
     v9 = [v8 stringByAppendingPathComponent:v7];
 
     if (v9)
     {
-      v10 = [(GEORPProblemStatusResponse *)self data];
-      v11 = [v10 writeToFile:v9 options:1 error:a4];
+      data = [(GEORPProblemStatusResponse *)self data];
+      v11 = [data writeToFile:v9 options:1 error:error];
     }
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v11 = 0;
         goto LABEL_9;
       }
 
-      v10 = +[RAPNotification errorDomain];
-      [NSError errorWithDomain:v10 code:-1 userInfo:0];
-      *a4 = v11 = 0;
+      data = +[RAPNotification errorDomain];
+      [NSError errorWithDomain:data code:-1 userInfo:0];
+      *error = v11 = 0;
     }
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!error)
   {
     v11 = 0;
     goto LABEL_11;
@@ -391,19 +391,19 @@ LABEL_9:
 
   v7 = +[RAPNotification errorDomain];
   [NSError errorWithDomain:v7 code:-2 userInfo:0];
-  *a4 = v11 = 0;
+  *error = v11 = 0;
 LABEL_10:
 
 LABEL_11:
   return v11;
 }
 
-+ (GEORPProblemStatusResponse)problemStatusResponseWithNotificationID:(id)a3
++ (GEORPProblemStatusResponse)problemStatusResponseWithNotificationID:(id)d
 {
-  v3 = a3;
-  if ([RAPNotification isValidNotificationID:v3])
+  dCopy = d;
+  if ([RAPNotification isValidNotificationID:dCopy])
   {
-    v4 = [RAPNotification filenameForNotificationID:v3];
+    v4 = [RAPNotification filenameForNotificationID:dCopy];
     v5 = +[RAPNotification notificationCachePath];
     v6 = [v5 stringByAppendingPathComponent:v4];
 

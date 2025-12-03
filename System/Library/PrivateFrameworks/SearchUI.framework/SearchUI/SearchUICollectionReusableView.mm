@@ -1,22 +1,22 @@
 @interface SearchUICollectionReusableView
-- (SearchUICollectionReusableView)initWithFrame:(CGRect)a3;
+- (SearchUICollectionReusableView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SearchUICollectionReusableView
 
-- (SearchUICollectionReusableView)initWithFrame:(CGRect)a3
+- (SearchUICollectionReusableView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SearchUICollectionReusableView;
-  v3 = [(SearchUICollectionReusableView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SearchUICollectionReusableView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SearchUICollectionReusableView *)v3 contentView];
-    if (v5)
+    contentView = [(SearchUICollectionReusableView *)v3 contentView];
+    if (contentView)
     {
-      [(SearchUICollectionReusableView *)v4 addSubview:v5];
-      [SearchUIAutoLayout fillContainerWithView:v5];
+      [(SearchUICollectionReusableView *)v4 addSubview:contentView];
+      [SearchUIAutoLayout fillContainerWithView:contentView];
     }
   }
 

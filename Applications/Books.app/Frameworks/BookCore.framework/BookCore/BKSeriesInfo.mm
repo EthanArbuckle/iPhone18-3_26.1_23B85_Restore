@@ -1,6 +1,6 @@
 @interface BKSeriesInfo
-+ (id)seriesInfoWithDictionary:(id)a3;
-- (BKSeriesInfo)initWithDictionary:(id)a3;
++ (id)seriesInfoWithDictionary:(id)dictionary;
+- (BKSeriesInfo)initWithDictionary:(id)dictionary;
 - (BOOL)isAudiobook;
 - (BOOL)isContainer;
 - (BOOL)isExplicit;
@@ -10,33 +10,33 @@
 
 @implementation BKSeriesInfo
 
-- (BKSeriesInfo)initWithDictionary:(id)a3
+- (BKSeriesInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = BKSeriesInfo;
   v5 = [(BKSeriesInfo *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(BKSeriesInfo *)v5 setInfoDictionary:v4];
+    [(BKSeriesInfo *)v5 setInfoDictionary:dictionaryCopy];
   }
 
   return v6;
 }
 
-+ (id)seriesInfoWithDictionary:(id)a3
++ (id)seriesInfoWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithDictionary:dictionaryCopy];
 
   return v4;
 }
 
 - (NSString)description
 {
-  v3 = [(BKSeriesInfo *)self infoDictionary];
-  v4 = [NSString stringWithFormat:@"<BKSeriesInfo: %p> data: %@", self, v3];
+  infoDictionary = [(BKSeriesInfo *)self infoDictionary];
+  v4 = [NSString stringWithFormat:@"<BKSeriesInfo: %p> data: %@", self, infoDictionary];
 
   return v4;
 }
@@ -44,25 +44,25 @@
 - (BOOL)isExplicit
 {
   v2 = [(NSDictionary *)self->_infoDictionary objectForKey:@"isExplicit"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isAudiobook
 {
   v2 = [(NSDictionary *)self->_infoDictionary objectForKey:@"isAudiobook"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isContainer
 {
   v2 = [(NSDictionary *)self->_infoDictionary objectForKey:@"isContainer"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (float)popularity

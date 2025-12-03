@@ -2,18 +2,18 @@
 - (NSString)name;
 - (REMColor)color;
 - (REMListBadge)badge;
-- (REMSmartListCustomContextChangeItem)initWithSmartListChangeItem:(id)a3;
-- (void)setBadge:(id)a3;
-- (void)setColor:(id)a3;
-- (void)setName:(id)a3;
+- (REMSmartListCustomContextChangeItem)initWithSmartListChangeItem:(id)item;
+- (void)setBadge:(id)badge;
+- (void)setColor:(id)color;
+- (void)setName:(id)name;
 @end
 
 @implementation REMSmartListCustomContextChangeItem
 
-- (REMSmartListCustomContextChangeItem)initWithSmartListChangeItem:(id)a3
+- (REMSmartListCustomContextChangeItem)initWithSmartListChangeItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "smartListChangeItem");
   }
@@ -24,67 +24,67 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_smartListChangeItem, a3);
+    objc_storeStrong(&v6->_smartListChangeItem, item);
   }
 
   return v7;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
-  [v5 setName:v4];
+  nameCopy = name;
+  smartListChangeItem = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
+  [smartListChangeItem setName:nameCopy];
 }
 
 - (NSString)name
 {
-  v3 = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
-  v4 = [v3 name];
-  if (v4)
+  smartListChangeItem = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
+  name = [smartListChangeItem name];
+  if (name)
   {
-    v5 = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
-    v6 = [v5 name];
+    smartListChangeItem2 = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
+    name2 = [smartListChangeItem2 name];
   }
 
   else
   {
-    v6 = &stru_1F0D67F00;
+    name2 = &stru_1F0D67F00;
   }
 
-  return v6;
+  return name2;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
-  v5 = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
-  [v5 setColor:v4];
+  colorCopy = color;
+  smartListChangeItem = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
+  [smartListChangeItem setColor:colorCopy];
 }
 
 - (REMColor)color
 {
-  v2 = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
-  v3 = [v2 color];
+  smartListChangeItem = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
+  color = [smartListChangeItem color];
 
-  return v3;
+  return color;
 }
 
-- (void)setBadge:(id)a3
+- (void)setBadge:(id)badge
 {
-  v5 = [a3 rawValue];
-  v4 = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
-  [v4 setBadgeEmblem:v5];
+  rawValue = [badge rawValue];
+  smartListChangeItem = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
+  [smartListChangeItem setBadgeEmblem:rawValue];
 }
 
 - (REMListBadge)badge
 {
-  v2 = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
-  v3 = [v2 badgeEmblem];
+  smartListChangeItem = [(REMSmartListCustomContextChangeItem *)self smartListChangeItem];
+  badgeEmblem = [smartListChangeItem badgeEmblem];
 
-  if (v3)
+  if (badgeEmblem)
   {
-    v4 = [[REMListBadge alloc] initWithRawValue:v3];
+    v4 = [[REMListBadge alloc] initWithRawValue:badgeEmblem];
   }
 
   else

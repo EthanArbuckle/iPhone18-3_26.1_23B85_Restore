@@ -1,22 +1,22 @@
 @interface AXTrampoline
 + (id)methodNotFoundSentinal;
-+ (id)trampolineWithCaller:(id)a3 targetClass:(Class)a4;
-- (AXTrampoline)initWithCaller:(id)a3 targetClass:(Class)a4;
++ (id)trampolineWithCaller:(id)caller targetClass:(Class)class;
+- (AXTrampoline)initWithCaller:(id)caller targetClass:(Class)class;
 - (BOOL)callerIsClass;
 - (Class)targetClass;
 - (id)caller;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)_findIMPForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)_findIMPForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation AXTrampoline
 
-+ (id)trampolineWithCaller:(id)a3 targetClass:(Class)a4
++ (id)trampolineWithCaller:(id)caller targetClass:(Class)class
 {
-  v5 = a3;
-  v6 = [[AXTrampoline alloc] initWithCaller:v5 targetClass:a4];
+  callerCopy = caller;
+  v6 = [[AXTrampoline alloc] initWithCaller:callerCopy targetClass:class];
 
   return v6;
 }
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __38__AXTrampoline_methodNotFoundSentinal__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (methodNotFoundSentinal_onceToken != -1)
   {
     dispatch_once(&methodNotFoundSentinal_onceToken, block);
@@ -45,17 +45,17 @@ uint64_t __38__AXTrampoline_methodNotFoundSentinal__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (AXTrampoline)initWithCaller:(id)a3 targetClass:(Class)a4
+- (AXTrampoline)initWithCaller:(id)caller targetClass:(Class)class
 {
-  v6 = a3;
+  callerCopy = caller;
   v10.receiver = self;
   v10.super_class = AXTrampoline;
   v7 = [(AXTrampoline *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_caller, v6);
-    objc_storeWeak(&v8->_targetClass, a4);
+    objc_storeWeak(&v7->_caller, callerCopy);
+    objc_storeWeak(&v8->_targetClass, class);
   }
 
   return v8;
@@ -64,8 +64,8 @@ uint64_t __38__AXTrampoline_methodNotFoundSentinal__block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXTrampoline *)self caller];
-  v5 = [v3 stringWithFormat:@"AXTrampoline:<%p>. caller:%@ target:%@", self, v4, -[AXTrampoline targetClass](self, "targetClass")];
+  caller = [(AXTrampoline *)self caller];
+  v5 = [v3 stringWithFormat:@"AXTrampoline:<%p>. caller:%@ target:%@", self, caller, -[AXTrampoline targetClass](self, "targetClass")];
 
   return v5;
 }
@@ -79,13 +79,13 @@ uint64_t __38__AXTrampoline_methodNotFoundSentinal__block_invoke(uint64_t a1)
   return isMetaClass;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v12 = a3;
-  v4 = [v12 methodSignature];
+  invocationCopy = invocation;
+  methodSignature = [invocationCopy methodSignature];
   v5 = +[AXTrampoline methodNotFoundSentinal];
 
-  if (v4 == v5)
+  if (methodSignature == v5)
   {
     if ([(AXTrampoline *)self warnAboutUnknownSelectors])
     {
@@ -95,19 +95,19 @@ uint64_t __38__AXTrampoline_methodNotFoundSentinal__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = -[AXTrampoline _findIMPForSelector:](self, "_findIMPForSelector:", [v12 selector]);
+    v6 = -[AXTrampoline _findIMPForSelector:](self, "_findIMPForSelector:", [invocationCopy selector]);
     if (v6)
     {
       v7 = v6;
-      v8 = [(AXTrampoline *)self caller];
-      [v12 setTarget:v8];
+      caller = [(AXTrampoline *)self caller];
+      [invocationCopy setTarget:caller];
 
-      [v12 invokeUsingIMP:v7];
+      [invocationCopy invokeUsingIMP:v7];
     }
 
     else if ([(AXTrampoline *)self warnAboutUnknownSelectors])
     {
-      v9 = NSStringFromSelector([v12 selector]);
+      v9 = NSStringFromSelector([invocationCopy selector]);
       WeakRetained = objc_loadWeakRetained(&self->_caller);
       v11 = objc_loadWeakRetained(&self->_targetClass);
       _AXLogWithFacility(1, 0, 1, 0, 0, 0, 0, 0.0, 0, 1, @"An IMP could not be found for the invocation with selector:%@. caller:%@ target:%@");
@@ -115,15 +115,15 @@ uint64_t __38__AXTrampoline_methodNotFoundSentinal__block_invoke(uint64_t a1)
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v5 = [(AXTrampoline *)self caller];
-  v6 = [v5 methodSignatureForSelector:a3];
+  caller = [(AXTrampoline *)self caller];
+  v6 = [caller methodSignatureForSelector:selector];
   if (!v6)
   {
     if ([(AXTrampoline *)self warnAboutUnknownSelectors])
     {
-      v8 = NSStringFromSelector(a3);
+      v8 = NSStringFromSelector(selector);
       _AXLogWithFacility(1, 0, 1, 0, 0, 0, 0, 0.0, 0, 1, @"A methodSignature could not be found for selector:%@, on caller:%@. You probably should not be trampolining this method");
     }
 
@@ -133,15 +133,15 @@ uint64_t __38__AXTrampoline_methodNotFoundSentinal__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)_findIMPForSelector:(SEL)a3
+- (void)_findIMPForSelector:(SEL)selector
 {
   outCount = 0;
-  v5 = [(AXTrampoline *)self targetClass];
-  v6 = [(AXTrampoline *)self callerIsClass];
-  Class = v5;
-  if (v6)
+  targetClass = [(AXTrampoline *)self targetClass];
+  callerIsClass = [(AXTrampoline *)self callerIsClass];
+  Class = targetClass;
+  if (callerIsClass)
   {
-    Class = object_getClass(v5);
+    Class = object_getClass(targetClass);
   }
 
   v8 = class_copyMethodList(Class, &outCount);
@@ -151,7 +151,7 @@ uint64_t __38__AXTrampoline_methodNotFoundSentinal__block_invoke(uint64_t a1)
     if (outCount)
     {
       v10 = 0;
-      while (method_getName(v9[v10]) != a3)
+      while (method_getName(v9[v10]) != selector)
       {
         if (++v10 >= outCount)
         {

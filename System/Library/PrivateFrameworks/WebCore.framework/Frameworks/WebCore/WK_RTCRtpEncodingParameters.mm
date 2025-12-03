@@ -1,9 +1,9 @@
 @interface WK_RTCRtpEncodingParameters
-+ (int)nativePriorityFromPriority:(int64_t)a3;
-+ (int64_t)priorityFromNativePriority:(int)a3;
++ (int)nativePriorityFromPriority:(int64_t)priority;
++ (int64_t)priorityFromNativePriority:(int)priority;
 - (RtpEncodingParameters)nativeParameters;
 - (WK_RTCRtpEncodingParameters)init;
-- (WK_RTCRtpEncodingParameters)initWithNativeParameters:(const void *)a3;
+- (WK_RTCRtpEncodingParameters)initWithNativeParameters:(const void *)parameters;
 @end
 
 @implementation WK_RTCRtpEncodingParameters
@@ -15,68 +15,68 @@
   return [(WK_RTCRtpEncodingParameters *)&v3 init];
 }
 
-- (WK_RTCRtpEncodingParameters)initWithNativeParameters:(const void *)a3
+- (WK_RTCRtpEncodingParameters)initWithNativeParameters:(const void *)parameters
 {
   v4 = [(WK_RTCRtpEncodingParameters *)self init];
   if (v4)
   {
-    v5 = *(a3 + 151);
+    v5 = *(parameters + 151);
     if ((v5 & 0x80u) != 0)
     {
-      v5 = *(a3 + 17);
+      v5 = *(parameters + 17);
     }
 
     if (v5)
     {
-      v6 = [MEMORY[0x277CCACA8] rtcStringForStdString:a3 + 128];
+      v6 = [MEMORY[0x277CCACA8] rtcStringForStdString:parameters + 128];
       rid = v4->_rid;
       v4->_rid = v6;
     }
 
-    v4->_isActive = *(a3 + 124);
-    if (*(a3 + 24) == 1)
+    v4->_isActive = *(parameters + 124);
+    if (*(parameters + 24) == 1)
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithInt:*(a3 + 5)];
+      v8 = [MEMORY[0x277CCABB0] numberWithInt:*(parameters + 5)];
       maxBitrateBps = v4->_maxBitrateBps;
       v4->_maxBitrateBps = v8;
     }
 
-    if (*(a3 + 32) == 1)
+    if (*(parameters + 32) == 1)
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithInt:*(a3 + 7)];
+      v10 = [MEMORY[0x277CCABB0] numberWithInt:*(parameters + 7)];
       minBitrateBps = v4->_minBitrateBps;
       v4->_minBitrateBps = v10;
     }
 
-    if (*(a3 + 48) == 1)
+    if (*(parameters + 48) == 1)
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithInt:*(a3 + 5)];
+      v12 = [MEMORY[0x277CCABB0] numberWithInt:*(parameters + 5)];
       maxFramerate = v4->_maxFramerate;
       v4->_maxFramerate = v12;
     }
 
-    if (*(a3 + 60) == 1)
+    if (*(parameters + 60) == 1)
     {
-      v14 = [MEMORY[0x277CCABB0] numberWithInt:*(a3 + 14)];
+      v14 = [MEMORY[0x277CCABB0] numberWithInt:*(parameters + 14)];
       numTemporalLayers = v4->_numTemporalLayers;
       v4->_numTemporalLayers = v14;
     }
 
-    if (*(a3 + 72) == 1)
+    if (*(parameters + 72) == 1)
     {
-      v16 = [MEMORY[0x277CCABB0] numberWithDouble:*(a3 + 8)];
+      v16 = [MEMORY[0x277CCABB0] numberWithDouble:*(parameters + 8)];
       scaleResolutionDownBy = v4->_scaleResolutionDownBy;
       v4->_scaleResolutionDownBy = v16;
     }
 
-    if (*(a3 + 4) == 1)
+    if (*(parameters + 4) == 1)
     {
-      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:*a3];
+      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:*parameters];
       ssrc = v4->_ssrc;
       v4->_ssrc = v18;
     }
 
-    v4->_networkPriority = [WK_RTCRtpEncodingParameters priorityFromNativePriority:*(a3 + 4)];
+    v4->_networkPriority = [WK_RTCRtpEncodingParameters priorityFromNativePriority:*(parameters + 4)];
   }
 
   return v4;
@@ -166,11 +166,11 @@
   return result;
 }
 
-+ (int)nativePriorityFromPriority:(int64_t)a3
++ (int)nativePriorityFromPriority:(int64_t)priority
 {
-  if ((a3 - 1) < 3)
+  if ((priority - 1) < 3)
   {
-    return a3;
+    return priority;
   }
 
   else
@@ -179,9 +179,9 @@
   }
 }
 
-+ (int64_t)priorityFromNativePriority:(int)a3
++ (int64_t)priorityFromNativePriority:(int)priority
 {
-  v3 = (a3 - 1);
+  v3 = (priority - 1);
   if (v3 < 3)
   {
     return v3 + 1;

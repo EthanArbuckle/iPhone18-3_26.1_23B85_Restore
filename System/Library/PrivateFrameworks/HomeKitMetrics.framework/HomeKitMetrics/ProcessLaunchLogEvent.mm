@@ -1,6 +1,6 @@
 @interface ProcessLaunchLogEvent
 - (_TtC14HomeKitMetrics21ProcessLaunchLogEvent)init;
-- (_TtC14HomeKitMetrics21ProcessLaunchLogEvent)initWithStartTime:(double)a3;
+- (_TtC14HomeKitMetrics21ProcessLaunchLogEvent)initWithStartTime:(double)time;
 @end
 
 @implementation ProcessLaunchLogEvent
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (_TtC14HomeKitMetrics21ProcessLaunchLogEvent)initWithStartTime:(double)a3
+- (_TtC14HomeKitMetrics21ProcessLaunchLogEvent)initWithStartTime:(double)time
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

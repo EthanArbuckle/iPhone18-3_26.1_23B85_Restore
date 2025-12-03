@@ -1,14 +1,14 @@
 @interface MFPImageBrush
-- (MFPImageBrush)initWithPhoneImage:(id)a3;
-- (void)fillPath:(id)a3;
+- (MFPImageBrush)initWithPhoneImage:(id)image;
+- (void)fillPath:(id)path;
 @end
 
 @implementation MFPImageBrush
 
-- (MFPImageBrush)initWithPhoneImage:(id)a3
+- (MFPImageBrush)initWithPhoneImage:(id)image
 {
-  v5 = a3;
-  if (v5)
+  imageCopy = image;
+  if (imageCopy)
   {
     v12.receiver = self;
     v12.super_class = MFPImageBrush;
@@ -16,32 +16,32 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->mPhoneImage, a3);
+      objc_storeStrong(&v6->mPhoneImage, image);
       v8 = [OITSUColor colorWithPatternImage:v7->mPhoneImage];
       mPhonePatternColor = v7->mPhonePatternColor;
       v7->mPhonePatternColor = v8;
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)fillPath:(id)a3
+- (void)fillPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   mPhonePatternColor = self->mPhonePatternColor;
   if (mPhonePatternColor)
   {
     [(OITSUColor *)mPhonePatternColor set];
-    [v5 fill];
+    [pathCopy fill];
   }
 }
 

@@ -1,73 +1,73 @@
 @interface PXMutableIndexPathSet
-- (void)addIndexPath:(PXSimpleIndexPath *)a3;
-- (void)minusIndexPathSet:(id)a3;
-- (void)modifyItemIndexSetForDataSourceIdentifier:(int64_t)a3 section:(int64_t)a4 usingBlock:(id)a5;
-- (void)modifySectionIndexSetForDataSourceIdentifier:(int64_t)a3 usingBlock:(id)a4;
-- (void)modifySubitemIndexSetForDataSourceIdentifier:(int64_t)a3 section:(int64_t)a4 item:(int64_t)a5 usingBlock:(id)a6;
+- (void)addIndexPath:(PXSimpleIndexPath *)path;
+- (void)minusIndexPathSet:(id)set;
+- (void)modifyItemIndexSetForDataSourceIdentifier:(int64_t)identifier section:(int64_t)section usingBlock:(id)block;
+- (void)modifySectionIndexSetForDataSourceIdentifier:(int64_t)identifier usingBlock:(id)block;
+- (void)modifySubitemIndexSetForDataSourceIdentifier:(int64_t)identifier section:(int64_t)section item:(int64_t)item usingBlock:(id)block;
 - (void)removeAllIndexPaths;
-- (void)removeIndexPath:(PXSimpleIndexPath *)a3;
-- (void)unionIndexPathSet:(id)a3;
+- (void)removeIndexPath:(PXSimpleIndexPath *)path;
+- (void)unionIndexPathSet:(id)set;
 @end
 
 @implementation PXMutableIndexPathSet
 
 - (void)removeAllIndexPaths
 {
-  v3 = [(PXIndexPathSet *)self _sectionIndexesByDataSourceIdentifier];
-  [v3 removeAllObjects];
+  _sectionIndexesByDataSourceIdentifier = [(PXIndexPathSet *)self _sectionIndexesByDataSourceIdentifier];
+  [_sectionIndexesByDataSourceIdentifier removeAllObjects];
 
-  v4 = [(PXIndexPathSet *)self _indexesForSectionsWithItemsByDataSourceIdentifier];
-  [v4 removeAllObjects];
+  _indexesForSectionsWithItemsByDataSourceIdentifier = [(PXIndexPathSet *)self _indexesForSectionsWithItemsByDataSourceIdentifier];
+  [_indexesForSectionsWithItemsByDataSourceIdentifier removeAllObjects];
 
-  v5 = [(PXIndexPathSet *)self _itemIndexesBySectionByDataSourceIdentifier];
-  [v5 removeAllObjects];
+  _itemIndexesBySectionByDataSourceIdentifier = [(PXIndexPathSet *)self _itemIndexesBySectionByDataSourceIdentifier];
+  [_itemIndexesBySectionByDataSourceIdentifier removeAllObjects];
 
-  v6 = [(PXIndexPathSet *)self _indexesForItemsWithSubitemsBySectionByDataSourceIdentifier];
-  [v6 removeAllObjects];
+  _indexesForItemsWithSubitemsBySectionByDataSourceIdentifier = [(PXIndexPathSet *)self _indexesForItemsWithSubitemsBySectionByDataSourceIdentifier];
+  [_indexesForItemsWithSubitemsBySectionByDataSourceIdentifier removeAllObjects];
 
-  v7 = [(PXIndexPathSet *)self _subitemIndexesByItemBySectionByDataSourceIdentifier];
-  [v7 removeAllObjects];
+  _subitemIndexesByItemBySectionByDataSourceIdentifier = [(PXIndexPathSet *)self _subitemIndexesByItemBySectionByDataSourceIdentifier];
+  [_subitemIndexesByItemBySectionByDataSourceIdentifier removeAllObjects];
 }
 
-- (void)modifySubitemIndexSetForDataSourceIdentifier:(int64_t)a3 section:(int64_t)a4 item:(int64_t)a5 usingBlock:(id)a6
+- (void)modifySubitemIndexSetForDataSourceIdentifier:(int64_t)identifier section:(int64_t)section item:(int64_t)item usingBlock:(id)block
 {
-  v22 = a6;
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v11 = [(PXIndexPathSet *)self _subitemIndexesByItemBySectionByDataSourceIdentifier];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  blockCopy = block;
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
+  _subitemIndexesByItemBySectionByDataSourceIdentifier = [(PXIndexPathSet *)self _subitemIndexesByItemBySectionByDataSourceIdentifier];
+  dictionary = [_subitemIndexesByItemBySectionByDataSourceIdentifier objectForKeyedSubscript:v10];
 
-  if (!v12)
+  if (!dictionary)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    v13 = [(PXIndexPathSet *)self _subitemIndexesByItemBySectionByDataSourceIdentifier];
-    [v13 setObject:v12 forKeyedSubscript:v10];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    _subitemIndexesByItemBySectionByDataSourceIdentifier2 = [(PXIndexPathSet *)self _subitemIndexesByItemBySectionByDataSourceIdentifier];
+    [_subitemIndexesByItemBySectionByDataSourceIdentifier2 setObject:dictionary forKeyedSubscript:v10];
   }
 
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v15 = [v12 objectForKeyedSubscript:v14];
-  if (!v15)
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:section];
+  dictionary2 = [dictionary objectForKeyedSubscript:v14];
+  if (!dictionary2)
   {
-    v15 = [MEMORY[0x1E695DF90] dictionary];
-    [v12 setObject:v15 forKeyedSubscript:v14];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary2 forKeyedSubscript:v14];
   }
 
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-  v17 = [v15 objectForKeyedSubscript:v16];
-  if (!v17)
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:item];
+  indexSet = [dictionary2 objectForKeyedSubscript:v16];
+  if (!indexSet)
   {
-    v17 = [MEMORY[0x1E696AD50] indexSet];
-    [v15 setObject:v17 forKeyedSubscript:v16];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    [dictionary2 setObject:indexSet forKeyedSubscript:v16];
   }
 
-  v22[2](v22, v17);
-  v18 = [(PXIndexPathSet *)self _indexesForItemsWithSubitemsBySectionByDataSourceIdentifier];
-  v19 = [v18 objectForKeyedSubscript:v10];
+  blockCopy[2](blockCopy, indexSet);
+  _indexesForItemsWithSubitemsBySectionByDataSourceIdentifier = [(PXIndexPathSet *)self _indexesForItemsWithSubitemsBySectionByDataSourceIdentifier];
+  v19 = [_indexesForItemsWithSubitemsBySectionByDataSourceIdentifier objectForKeyedSubscript:v10];
 
   if (!v19)
   {
     v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v20 = [(PXIndexPathSet *)self _indexesForItemsWithSubitemsBySectionByDataSourceIdentifier];
-    [v20 setObject:v19 forKeyedSubscript:v10];
+    _indexesForItemsWithSubitemsBySectionByDataSourceIdentifier2 = [(PXIndexPathSet *)self _indexesForItemsWithSubitemsBySectionByDataSourceIdentifier];
+    [_indexesForItemsWithSubitemsBySectionByDataSourceIdentifier2 setObject:v19 forKeyedSubscript:v10];
   }
 
   v21 = [v19 objectForKeyedSubscript:v14];
@@ -77,99 +77,99 @@
     [v19 setObject:v21 forKeyedSubscript:v14];
   }
 
-  if ([v17 count])
+  if ([indexSet count])
   {
-    [v21 addIndex:a5];
+    [v21 addIndex:item];
   }
 
   else
   {
-    [v21 removeIndex:a5];
+    [v21 removeIndex:item];
   }
 }
 
-- (void)modifyItemIndexSetForDataSourceIdentifier:(int64_t)a3 section:(int64_t)a4 usingBlock:(id)a5
+- (void)modifyItemIndexSetForDataSourceIdentifier:(int64_t)identifier section:(int64_t)section usingBlock:(id)block
 {
-  v17 = a5;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v9 = [(PXIndexPathSet *)self _itemIndexesBySectionByDataSourceIdentifier];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  blockCopy = block;
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
+  _itemIndexesBySectionByDataSourceIdentifier = [(PXIndexPathSet *)self _itemIndexesBySectionByDataSourceIdentifier];
+  dictionary = [_itemIndexesBySectionByDataSourceIdentifier objectForKeyedSubscript:v8];
 
-  if (!v10)
+  if (!dictionary)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    v11 = [(PXIndexPathSet *)self _itemIndexesBySectionByDataSourceIdentifier];
-    [v11 setObject:v10 forKeyedSubscript:v8];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    _itemIndexesBySectionByDataSourceIdentifier2 = [(PXIndexPathSet *)self _itemIndexesBySectionByDataSourceIdentifier];
+    [_itemIndexesBySectionByDataSourceIdentifier2 setObject:dictionary forKeyedSubscript:v8];
   }
 
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v13 = [v10 objectForKeyedSubscript:v12];
-  if (!v13)
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:section];
+  indexSet = [dictionary objectForKeyedSubscript:v12];
+  if (!indexSet)
   {
-    v13 = [MEMORY[0x1E696AD50] indexSet];
-    [v10 setObject:v13 forKeyedSubscript:v12];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    [dictionary setObject:indexSet forKeyedSubscript:v12];
   }
 
-  v17[2](v17, v13);
-  v14 = [(PXIndexPathSet *)self _indexesForSectionsWithItemsByDataSourceIdentifier];
-  v15 = [v14 objectForKeyedSubscript:v8];
+  blockCopy[2](blockCopy, indexSet);
+  _indexesForSectionsWithItemsByDataSourceIdentifier = [(PXIndexPathSet *)self _indexesForSectionsWithItemsByDataSourceIdentifier];
+  v15 = [_indexesForSectionsWithItemsByDataSourceIdentifier objectForKeyedSubscript:v8];
 
   if (!v15)
   {
     v15 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v16 = [(PXIndexPathSet *)self _indexesForSectionsWithItemsByDataSourceIdentifier];
-    [v16 setObject:v15 forKeyedSubscript:v8];
+    _indexesForSectionsWithItemsByDataSourceIdentifier2 = [(PXIndexPathSet *)self _indexesForSectionsWithItemsByDataSourceIdentifier];
+    [_indexesForSectionsWithItemsByDataSourceIdentifier2 setObject:v15 forKeyedSubscript:v8];
   }
 
-  if ([v13 count])
+  if ([indexSet count])
   {
-    [v15 addIndex:a4];
+    [v15 addIndex:section];
   }
 
   else
   {
-    [v15 removeIndex:a4];
+    [v15 removeIndex:section];
   }
 }
 
-- (void)modifySectionIndexSetForDataSourceIdentifier:(int64_t)a3 usingBlock:(id)a4
+- (void)modifySectionIndexSetForDataSourceIdentifier:(int64_t)identifier usingBlock:(id)block
 {
-  v10 = a4;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [(PXIndexPathSet *)self _sectionIndexesByDataSourceIdentifier];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  blockCopy = block;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
+  _sectionIndexesByDataSourceIdentifier = [(PXIndexPathSet *)self _sectionIndexesByDataSourceIdentifier];
+  indexSet = [_sectionIndexesByDataSourceIdentifier objectForKeyedSubscript:v6];
 
-  if (!v8)
+  if (!indexSet)
   {
-    v8 = [MEMORY[0x1E696AD50] indexSet];
-    v9 = [(PXIndexPathSet *)self _sectionIndexesByDataSourceIdentifier];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    _sectionIndexesByDataSourceIdentifier2 = [(PXIndexPathSet *)self _sectionIndexesByDataSourceIdentifier];
+    [_sectionIndexesByDataSourceIdentifier2 setObject:indexSet forKeyedSubscript:v6];
   }
 
-  v10[2](v10, v8);
+  blockCopy[2](blockCopy, indexSet);
 }
 
-- (void)minusIndexPathSet:(id)a3
+- (void)minusIndexPathSet:(id)set
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__PXMutableIndexPathSet_minusIndexPathSet___block_invoke;
   v7[3] = &unk_1E7BB5BE8;
   v7[4] = self;
-  v4 = a3;
-  [v4 enumerateSectionIndexSetsUsingBlock:v7];
+  setCopy = set;
+  [setCopy enumerateSectionIndexSetsUsingBlock:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__PXMutableIndexPathSet_minusIndexPathSet___block_invoke_2;
   v6[3] = &unk_1E7BB60B8;
   v6[4] = self;
-  [v4 enumerateItemIndexSetsUsingBlock:v6];
+  [setCopy enumerateItemIndexSetsUsingBlock:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __43__PXMutableIndexPathSet_minusIndexPathSet___block_invoke_3;
   v5[3] = &unk_1E7BB5C10;
   v5[4] = self;
-  [v4 enumerateSubitemIndexSetsUsingBlock:v5];
+  [setCopy enumerateSubitemIndexSetsUsingBlock:v5];
 }
 
 void __43__PXMutableIndexPathSet_minusIndexPathSet___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -208,27 +208,27 @@ void __43__PXMutableIndexPathSet_minusIndexPathSet___block_invoke_3(uint64_t a1,
   [v15 removeIndexes:v9];
 }
 
-- (void)unionIndexPathSet:(id)a3
+- (void)unionIndexPathSet:(id)set
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__PXMutableIndexPathSet_unionIndexPathSet___block_invoke;
   v7[3] = &unk_1E7BB5BE8;
   v7[4] = self;
-  v4 = a3;
-  [v4 enumerateSectionIndexSetsUsingBlock:v7];
+  setCopy = set;
+  [setCopy enumerateSectionIndexSetsUsingBlock:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__PXMutableIndexPathSet_unionIndexPathSet___block_invoke_3;
   v6[3] = &unk_1E7BB60B8;
   v6[4] = self;
-  [v4 enumerateItemIndexSetsUsingBlock:v6];
+  [setCopy enumerateItemIndexSetsUsingBlock:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __43__PXMutableIndexPathSet_unionIndexPathSet___block_invoke_5;
   v5[3] = &unk_1E7BB5C10;
   v5[4] = self;
-  [v4 enumerateSubitemIndexSetsUsingBlock:v5];
+  [setCopy enumerateSubitemIndexSetsUsingBlock:v5];
 }
 
 void __43__PXMutableIndexPathSet_unionIndexPathSet___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -270,17 +270,17 @@ void __43__PXMutableIndexPathSet_unionIndexPathSet___block_invoke_5(uint64_t a1,
   [v10 modifySubitemIndexSetForDataSourceIdentifier:a2 section:a3 item:a4 usingBlock:v12];
 }
 
-- (void)removeIndexPath:(PXSimpleIndexPath *)a3
+- (void)removeIndexPath:(PXSimpleIndexPath *)path
 {
-  if (!a3->dataSourceIdentifier)
+  if (!path->dataSourceIdentifier)
   {
     return;
   }
 
-  item = a3->item;
-  if (a3->section == 0x7FFFFFFFFFFFFFFFLL)
+  item = path->item;
+  if (path->section == 0x7FFFFFFFFFFFFFFFLL)
   {
-    subitem = a3->subitem;
+    subitem = path->subitem;
     if (item == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (subitem == 0x7FFFFFFFFFFFFFFFLL)
@@ -294,51 +294,51 @@ void __43__PXMutableIndexPathSet_unionIndexPathSet___block_invoke_5(uint64_t a1,
 LABEL_9:
     if (subitem == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = [(PXIndexPathSet *)self _itemIndexesBySectionByDataSourceIdentifier];
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3->dataSourceIdentifier];
-      v7 = [v12 objectForKeyedSubscript:v6];
-      v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3->section];
+      _itemIndexesBySectionByDataSourceIdentifier = [(PXIndexPathSet *)self _itemIndexesBySectionByDataSourceIdentifier];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:path->dataSourceIdentifier];
+      v7 = [_itemIndexesBySectionByDataSourceIdentifier objectForKeyedSubscript:v6];
+      v8 = [MEMORY[0x1E696AD98] numberWithInteger:path->section];
       v9 = [v7 objectForKeyedSubscript:v8];
-      [v9 removeIndex:a3->item];
+      [v9 removeIndex:path->item];
 LABEL_12:
 
       goto LABEL_13;
     }
 
 LABEL_11:
-    v12 = [(PXIndexPathSet *)self _subitemIndexesByItemBySectionByDataSourceIdentifier];
-    v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3->dataSourceIdentifier];
-    v7 = [v12 objectForKeyedSubscript:v6];
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3->section];
+    _itemIndexesBySectionByDataSourceIdentifier = [(PXIndexPathSet *)self _subitemIndexesByItemBySectionByDataSourceIdentifier];
+    v6 = [MEMORY[0x1E696AD98] numberWithInteger:path->dataSourceIdentifier];
+    v7 = [_itemIndexesBySectionByDataSourceIdentifier objectForKeyedSubscript:v6];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:path->section];
     v9 = [v7 objectForKeyedSubscript:v8];
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3->item];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:path->item];
     v11 = [v9 objectForKeyedSubscript:v10];
-    [v11 removeIndex:a3->subitem];
+    [v11 removeIndex:path->subitem];
 
     goto LABEL_12;
   }
 
   if (item != 0x7FFFFFFFFFFFFFFFLL)
   {
-    subitem = a3->subitem;
+    subitem = path->subitem;
     goto LABEL_9;
   }
 
-  v12 = [(PXIndexPathSet *)self _sectionIndexesByDataSourceIdentifier];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3->dataSourceIdentifier];
-  v7 = [v12 objectForKeyedSubscript:v6];
-  [v7 removeIndex:a3->section];
+  _itemIndexesBySectionByDataSourceIdentifier = [(PXIndexPathSet *)self _sectionIndexesByDataSourceIdentifier];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:path->dataSourceIdentifier];
+  v7 = [_itemIndexesBySectionByDataSourceIdentifier objectForKeyedSubscript:v6];
+  [v7 removeIndex:path->section];
 LABEL_13:
 }
 
-- (void)addIndexPath:(PXSimpleIndexPath *)a3
+- (void)addIndexPath:(PXSimpleIndexPath *)path
 {
-  if (a3->dataSourceIdentifier)
+  if (path->dataSourceIdentifier)
   {
-    item = a3->item;
-    if (a3->section == 0x7FFFFFFFFFFFFFFFLL)
+    item = path->item;
+    if (path->section == 0x7FFFFFFFFFFFFFFFLL)
     {
-      subitem = a3->subitem;
+      subitem = path->subitem;
       if (item == 0x7FFFFFFFFFFFFFFFLL)
       {
         if (subitem == 0x7FFFFFFFFFFFFFFFLL)
@@ -347,7 +347,7 @@ LABEL_13:
         }
 
 LABEL_11:
-        [(PXMutableIndexPathSet *)self modifySubitemIndexSetForDataSourceIdentifier:MEMORY[0x1E69E9820] section:3221225472 item:__38__PXMutableIndexPathSet_addIndexPath___block_invoke_3 usingBlock:&__block_descriptor_64_e27_v16__0__NSMutableIndexSet_8l, *&a3->dataSourceIdentifier, a3->item, a3->subitem];
+        [(PXMutableIndexPathSet *)self modifySubitemIndexSetForDataSourceIdentifier:MEMORY[0x1E69E9820] section:3221225472 item:__38__PXMutableIndexPathSet_addIndexPath___block_invoke_3 usingBlock:&__block_descriptor_64_e27_v16__0__NSMutableIndexSet_8l, *&path->dataSourceIdentifier, path->item, path->subitem];
         return;
       }
     }
@@ -360,7 +360,7 @@ LABEL_11:
         return;
       }
 
-      subitem = a3->subitem;
+      subitem = path->subitem;
     }
 
     if (subitem == 0x7FFFFFFFFFFFFFFFLL)

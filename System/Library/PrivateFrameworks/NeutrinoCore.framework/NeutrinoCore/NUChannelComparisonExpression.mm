@@ -1,11 +1,11 @@
 @interface NUChannelComparisonExpression
-- (id)evaluateWithComparisonResult:(int64_t)a3 error:(id *)a4;
-- (id)evaluateWithLeftData:(id)a3 rightData:(id)a4 error:(id *)a5;
+- (id)evaluateWithComparisonResult:(int64_t)result error:(id *)error;
+- (id)evaluateWithLeftData:(id)data rightData:(id)rightData error:(id *)error;
 @end
 
 @implementation NUChannelComparisonExpression
 
-- (id)evaluateWithComparisonResult:(int64_t)a3 error:(id *)a4
+- (id)evaluateWithComparisonResult:(int64_t)result error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -50,8 +50,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -67,8 +67,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -82,12 +82,12 @@ LABEL_14:
   _NUAssertFailHandler("[NUChannelComparisonExpression evaluateWithComparisonResult:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3461, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v25, v26, v27, v28, v24);
 }
 
-- (id)evaluateWithLeftData:(id)a3 rightData:(id)a4 error:(id *)a5
+- (id)evaluateWithLeftData:(id)data rightData:(id)rightData error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dataCopy = data;
+  rightDataCopy = rightData;
+  if (!dataCopy)
   {
     v16 = NUAssertLogger_4187();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -108,8 +108,8 @@ LABEL_14:
         v30 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v31 = MEMORY[0x1E696AF00];
         v32 = v30;
-        v33 = [v31 callStackSymbols];
-        v34 = [v33 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v31 callStackSymbols];
+        v34 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v51 = v30;
         v52 = 2114;
@@ -120,8 +120,8 @@ LABEL_14:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v51 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -130,8 +130,8 @@ LABEL_14:
     _NUAssertFailHandler("[NUChannelComparisonExpression evaluateWithLeftData:rightData:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3441, @"Invalid parameter not satisfying: %s", v35, v36, v37, v38, "leftData != nil");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = rightDataCopy;
+  if (!rightDataCopy)
   {
     v23 = NUAssertLogger_4187();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -152,8 +152,8 @@ LABEL_14:
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v40 callStackSymbols];
+        v43 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v51 = v39;
         v52 = 2114;
@@ -164,8 +164,8 @@ LABEL_14:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v51 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -174,14 +174,14 @@ LABEL_14:
     _NUAssertFailHandler("[NUChannelComparisonExpression evaluateWithLeftData:rightData:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3442, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "rightData != nil");
   }
 
-  v11 = [v8 compare:v9];
+  v11 = [dataCopy compare:rightDataCopy];
   if (v11 == -1)
   {
-    v49[0] = v8;
+    v49[0] = dataCopy;
     v49[1] = v10;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
     [NUError mismatchError:@"Cannot compare values" object:v13];
-    *a5 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -197,7 +197,7 @@ LABEL_14:
     else
     {
       [NUError errorWithCode:1 reason:@"Failed to evaluate comparison expresssion" object:self underlyingError:v13];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
     }
   }
 

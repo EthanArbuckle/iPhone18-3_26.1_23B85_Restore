@@ -14,7 +14,7 @@
   v12[3] = &unk_2798B7B68;
   objc_copyWeak(v13, &location);
   v13[1] = a4;
-  v10 = [a1 addObserverForName:a5 object:a6 queue:0 usingBlock:v12];
+  v10 = [self addObserverForName:a5 object:a6 queue:0 usingBlock:v12];
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
   return v10;
@@ -42,7 +42,7 @@
           objc_enumerationMutation(a3);
         }
 
-        [a1 removeObserver:*(*(&v10 + 1) + 8 * v8++)];
+        [self removeObserver:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);

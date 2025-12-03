@@ -1,49 +1,49 @@
 @interface RDDaemon
 + (void)initialize;
-- (BOOL)isAuthorizedForSensor:(id)a3 bundleIdentifier:(id)a4;
-- (BOOL)validateBundleRecord:(id)a3 withFilters:(id)a4;
+- (BOOL)isAuthorizedForSensor:(id)sensor bundleIdentifier:(id)identifier;
+- (BOOL)validateBundleRecord:(id)record withFilters:(id)filters;
 - (NSDictionary)currentRecordingStatesForAnalytics:(NSDictionary *)result;
-- (id)authorizedAndInterestedClientsForSensor:(id)a3;
-- (int64_t)cacheDelete:(id)a3 purgeWithUrgency:(int64_t)a4 dryRun:(BOOL)a5;
-- (int64_t)prerequisitesStatusForAnalytics:(id)a3;
-- (void)authorizationBroadcaster:(id)a3 didSetDataCollectionEnabled:(BOOL)a4;
-- (void)authorizationStore:(id)a3 didDetermineInitialAuthorizationValues:(id)a4;
-- (void)authorizationStore:(id)a3 didUpdateAuthorizationsForBundleId:(id)a4 sensors:(id)a5;
-- (void)autoEnableRecordingForSensors:(id)a3 bundleId:(id)a4;
+- (id)authorizedAndInterestedClientsForSensor:(id)sensor;
+- (int64_t)cacheDelete:(id)delete purgeWithUrgency:(int64_t)urgency dryRun:(BOOL)run;
+- (int64_t)prerequisitesStatusForAnalytics:(id)analytics;
+- (void)authorizationBroadcaster:(id)broadcaster didSetDataCollectionEnabled:(BOOL)enabled;
+- (void)authorizationStore:(id)store didDetermineInitialAuthorizationValues:(id)values;
+- (void)authorizationStore:(id)store didUpdateAuthorizationsForBundleId:(id)id sensors:(id)sensors;
+- (void)autoEnableRecordingForSensors:(id)sensors bundleId:(id)id;
 - (void)dealloc;
-- (void)dumpClientsWithReply:(id)a3;
-- (void)dumpConfigurationsWithReply:(id)a3;
-- (void)dumpDefaultsWithReply:(id)a3;
-- (void)dumpStateCacheWithReply:(id)a3;
-- (void)fetchAllDevices:(id)a3 reply:(id)a4;
-- (void)fetchDeviceInformationForDeviceIdentifiers:(id)a3 reply:(id)a4;
-- (void)fetchEligibilityStatusForBundleIdentifier:(id)a3 reply:(id)a4;
-- (void)fetchEligibilityStatusForBundleIdentifier:(id)a3 sensor:(id)a4 reply:(id)a5;
-- (void)fetchReaderMetadata:(id)a3 reply:(id)a4;
-- (void)gizmoSync:(id)a3 didSyncRTCOffset:(double)a4 timeBeforeUpdate:(double)a5;
-- (void)gizmoSync:(id)a3 didSyncState:(id)a4 deviceID:(id)a5;
-- (void)gizmoSyncConnectedDevicesAdded:(id)a3;
-- (void)launchEventCheckInActivity:(id)a3;
-- (void)launchEventRunActivity:(id)a3;
-- (void)launchEventXPCEventReceived:(id)a3;
-- (void)listDatastoreWithReply:(id)a3;
-- (void)removeAllSamplesForAllSensorsWithReply:(id)a3;
-- (void)removeAllSamplesForCurrentSensorWithReply:(id)a3;
-- (void)requestFileHandleForPruningAfterSegment:(id)a3 reply:(id)a4;
-- (void)requestFileHandleForPruningSample:(double)a3 reply:(id)a4;
-- (void)requestFileHandleForReading:(id)a3 afterSegment:(id)a4 reply:(id)a5;
-- (void)requestFileHandleForWritingWithReply:(id)a3;
-- (void)setWriterService:(id)a3 enabled:(BOOL)a4;
-- (void)startPruningForSensor:(id)a3 deviceId:(id)a4;
-- (void)startRecording:(id)a3 reply:(id)a4;
-- (void)startWritingForSensor:(id)a3;
+- (void)dumpClientsWithReply:(id)reply;
+- (void)dumpConfigurationsWithReply:(id)reply;
+- (void)dumpDefaultsWithReply:(id)reply;
+- (void)dumpStateCacheWithReply:(id)reply;
+- (void)fetchAllDevices:(id)devices reply:(id)reply;
+- (void)fetchDeviceInformationForDeviceIdentifiers:(id)identifiers reply:(id)reply;
+- (void)fetchEligibilityStatusForBundleIdentifier:(id)identifier reply:(id)reply;
+- (void)fetchEligibilityStatusForBundleIdentifier:(id)identifier sensor:(id)sensor reply:(id)reply;
+- (void)fetchReaderMetadata:(id)metadata reply:(id)reply;
+- (void)gizmoSync:(id)sync didSyncRTCOffset:(double)offset timeBeforeUpdate:(double)update;
+- (void)gizmoSync:(id)sync didSyncState:(id)state deviceID:(id)d;
+- (void)gizmoSyncConnectedDevicesAdded:(id)added;
+- (void)launchEventCheckInActivity:(id)activity;
+- (void)launchEventRunActivity:(id)activity;
+- (void)launchEventXPCEventReceived:(id)received;
+- (void)listDatastoreWithReply:(id)reply;
+- (void)removeAllSamplesForAllSensorsWithReply:(id)reply;
+- (void)removeAllSamplesForCurrentSensorWithReply:(id)reply;
+- (void)requestFileHandleForPruningAfterSegment:(id)segment reply:(id)reply;
+- (void)requestFileHandleForPruningSample:(double)sample reply:(id)reply;
+- (void)requestFileHandleForReading:(id)reading afterSegment:(id)segment reply:(id)reply;
+- (void)requestFileHandleForWritingWithReply:(id)reply;
+- (void)setWriterService:(id)service enabled:(BOOL)enabled;
+- (void)startPruningForSensor:(id)sensor deviceId:(id)id;
+- (void)startRecording:(id)recording reply:(id)reply;
+- (void)startWritingForSensor:(id)sensor;
 @end
 
 @implementation RDDaemon
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071B30 = os_log_create("com.apple.SensorKit", "Daemon");
   }
@@ -265,24 +265,24 @@ LABEL_37:
   [(RDDaemon *)&v41 dealloc];
 }
 
-- (id)authorizedAndInterestedClientsForSensor:(id)a3
+- (id)authorizedAndInterestedClientsForSensor:(id)sensor
 {
   v5 = +[NSMutableSet set];
   v6 = objc_autoreleasePoolPush();
-  v7 = [SRSensorDescription sensorDescriptionForSensor:a3];
+  v7 = [SRSensorDescription sensorDescriptionForSensor:sensor];
   if ([objc_msgSend(v7 "legacyName")])
   {
     v8 = qword_100071B30;
     if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v27 = a3;
+      sensorCopy3 = sensor;
       v28 = 2114;
-      v29 = [v7 name];
+      name = [v7 name];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Converting authorization query for legacy name %{public}@ to new name %{public}@", buf, 0x16u);
     }
 
-    a3 = [v7 name];
+    sensor = [v7 name];
   }
 
   if (self)
@@ -290,7 +290,7 @@ LABEL_37:
     clientInterest = self->_clientInterest;
     if (clientInterest)
     {
-      v10 = [(NSCache *)clientInterest->_clientInterestCache rd_objectsForSensor:a3 fallbackURL:sub_10001AAE4(clientInterest->_fileURLs, a3)];
+      v10 = [(NSCache *)clientInterest->_clientInterestCache rd_objectsForSensor:sensor fallbackURL:sub_10001AAE4(clientInterest->_fileURLs, sensor)];
       v11 = qword_100071B30;
       if (!os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO))
       {
@@ -307,9 +307,9 @@ LABEL_37:
   {
 LABEL_8:
     *buf = 138543619;
-    v27 = a3;
+    sensorCopy3 = sensor;
     v28 = 2113;
-    v29 = v10;
+    name = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Found interested clients for %{public}@: %{private}@", buf, 0x16u);
   }
 
@@ -324,7 +324,7 @@ LABEL_9:
     authStore = 0;
   }
 
-  v13 = [(SRAuthorizationStore *)authStore readerAuthorizationValues];
+  readerAuthorizationValues = [(SRAuthorizationStore *)authStore readerAuthorizationValues];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -344,7 +344,7 @@ LABEL_9:
         }
 
         v18 = *(*(&v21 + 1) + 8 * i);
-        if ([objc_msgSend(-[NSDictionary objectForKeyedSubscript:](v13 objectForKeyedSubscript:{v18), "objectForKeyedSubscript:", a3), "BOOLValue"}])
+        if ([objc_msgSend(-[NSDictionary objectForKeyedSubscript:](readerAuthorizationValues objectForKeyedSubscript:{v18), "objectForKeyedSubscript:", sensor), "BOOLValue"}])
         {
           [v5 addObject:v18];
         }
@@ -360,9 +360,9 @@ LABEL_9:
   if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO))
   {
     *buf = 138543619;
-    v27 = a3;
+    sensorCopy3 = sensor;
     v28 = 2113;
-    v29 = v5;
+    name = v5;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Found authorized clients for %{public}@: %{private}@", buf, 0x16u);
   }
 
@@ -370,14 +370,14 @@ LABEL_9:
   return v5;
 }
 
-- (void)setWriterService:(id)a3 enabled:(BOOL)a4
+- (void)setWriterService:(id)service enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v6 = qword_100071B30;
   if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"Disabling";
-    if (v4)
+    if (enabledCopy)
     {
       v7 = @"Enabling";
     }
@@ -385,17 +385,17 @@ LABEL_9:
     v11 = 138412546;
     v12 = v7;
     v13 = 2114;
-    v14 = a3;
+    serviceCopy2 = service;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ on-demand writer service %{public}@", &v11, 0x16u);
   }
 
-  [a3 UTF8String];
+  [service UTF8String];
   if (launch_set_system_service_enabled())
   {
     v8 = qword_100071B30;
     if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_FAULT))
     {
-      if (v4)
+      if (enabledCopy)
       {
         v9 = @"enable";
       }
@@ -409,7 +409,7 @@ LABEL_9:
       v11 = 138412802;
       v12 = v9;
       v13 = 2114;
-      v14 = a3;
+      serviceCopy2 = service;
       v15 = 2082;
       v16 = v10;
       _os_log_fault_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "Failed to %@ service %{public}@ because %{public}s", &v11, 0x20u);
@@ -417,11 +417,11 @@ LABEL_9:
   }
 }
 
-- (void)requestFileHandleForReading:(id)a3 afterSegment:(id)a4 reply:(id)a5
+- (void)requestFileHandleForReading:(id)reading afterSegment:(id)segment reply:(id)reply
 {
   dispatch_assert_queue_V2(self->_q);
   v62 = 0.0;
-  if ((sub_10002B8BC(+[NSXPCConnection currentConnection], a3, &self->_defaults->super.isa, self, &v62) & 1) == 0)
+  if ((sub_10002B8BC(+[NSXPCConnection currentConnection], reading, &self->_defaults->super.isa, self, &v62) & 1) == 0)
   {
     v11 = qword_100071B30;
     if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_DEFAULT))
@@ -438,11 +438,11 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [a3 deviceIdentifier];
-  if (!v9)
+  deviceIdentifier = [reading deviceIdentifier];
+  if (!deviceIdentifier)
   {
     objc_opt_self();
-    v9 = qword_100071B88;
+    deviceIdentifier = qword_100071B88;
     if (!qword_100071B88)
     {
       v71 = @"error";
@@ -450,29 +450,29 @@ LABEL_9:
       v12 = &v72;
       v13 = &v71;
 LABEL_9:
-      (*(a5 + 2))(a5, [NSDictionary dictionaryWithObjects:v12 forKeys:v13 count:1]);
+      (*(reply + 2))(reply, [NSDictionary dictionaryWithObjects:v12 forKeys:v13 count:1]);
       return;
     }
   }
 
   context = objc_autoreleasePoolPush();
-  v59 = [a3 sensor];
-  if ([a4 length])
+  sensor = [reading sensor];
+  if ([segment length])
   {
-    [a4 doubleValue];
+    [segment doubleValue];
   }
 
   else
   {
-    [a3 from];
+    [reading from];
   }
 
   v14 = v10;
   *&v15 = COERCE_DOUBLE(+[NSXPCConnection currentConnection]);
-  v16 = [a3 sensor];
+  sensor2 = [reading sensor];
   if (*&v15 != 0.0)
   {
-    v17 = v16;
+    v17 = sensor2;
     v18 = [@"com.apple.private.sensorkit.export.allow-all" isEqualToString:@"com.apple.sensorkit.reader.allow"];
     if ([(NSXPCConnection *)v15 _sr_hasEntitlement:@"com.apple.private.sensorkit.export.allow-all" sensor:v17 valueProvider:self]|| (!v18 ? (v19 = 0) : (v19 = @"com.apple.developer.sensorkit.reader.allow"), [(NSXPCConnection *)v15 _sr_hasEntitlement:v19 sensor:v17 valueProvider:self]))
     {
@@ -480,11 +480,11 @@ LABEL_9:
       v21 = v14;
       if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO))
       {
-        v22 = [a3 sensor];
+        sensor3 = [reading sensor];
         *buf = 138543618;
         v64 = *&v15;
         v65 = 2114;
-        v66 = v22;
+        v66 = sensor3;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Connection %{public}@ has entitlement to bypass authorization time data access restriction for %{public}@", buf, 0x16u);
         v21 = v14;
       }
@@ -499,8 +499,8 @@ LABEL_9:
   }
 
   v26 = objc_autoreleasePoolPush();
-  v27 = COERCE_DOUBLE([a3 bundleIdentifier]);
-  v28 = [+[SRSensorDescription sensorDescriptionForSensor:](SRSensorDescription sensorDescriptionForSensor:{objc_msgSend(objc_msgSend(a3, "sensor"), "sr_sensorByDeletingDeletionRecord")), "authorizationService"}];
+  v27 = COERCE_DOUBLE([reading bundleIdentifier]);
+  v28 = [+[SRSensorDescription sensorDescriptionForSensor:](SRSensorDescription sensorDescriptionForSensor:{objc_msgSend(objc_msgSend(reading, "sensor"), "sr_sensorByDeletingDeletionRecord")), "authorizationService"}];
   stateCache = self->_stateCache;
   if (stateCache)
   {
@@ -545,11 +545,11 @@ LABEL_35:
   v33 = qword_100071B30;
   if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_ERROR))
   {
-    v34 = [a3 sensor];
+    sensor4 = [reading sensor];
     *buf = 138543618;
     v64 = v27;
     v65 = 2114;
-    v66 = v34;
+    v66 = sensor4;
     _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "No last authorized time found for bundle %{public}@, sensor %{public}@", buf, 0x16u);
   }
 
@@ -561,20 +561,20 @@ LABEL_20:
     v23 = qword_100071B30;
     if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [a3 bundleIdentifier];
+      bundleIdentifier = [reading bundleIdentifier];
       *buf = 134349826;
       v64 = v14;
       v65 = 2114;
-      v66 = v24;
+      v66 = bundleIdentifier;
       v67 = 2114;
-      v68 = v59;
+      v68 = sensor;
       v69 = 2050;
       v70 = v21;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Requested start time %{public}f before the last authorized time for bundle %{public}@, sensor %{public}@. Adjusting start time to %{public}f", buf, 0x2Au);
     }
 
-    a4 = [(NSURL *)sub_10001ADB4(v21) lastPathComponent];
-    [a3 to];
+    segment = [(NSURL *)sub_10001ADB4(v21) lastPathComponent];
+    [reading to];
     if (v21 > v25)
     {
       goto LABEL_38;
@@ -585,7 +585,7 @@ LABEL_20:
 
 LABEL_36:
   v21 = v14;
-  [a3 to];
+  [reading to];
   if (v14 > v35)
   {
     goto LABEL_38;
@@ -594,22 +594,22 @@ LABEL_36:
 LABEL_37:
   if (!__isinfd())
   {
-    v37 = sub_10003A3D8(v59, v9, self->_fileURLs, self->_defaults, [a3 bundleIdentifier]);
+    v37 = sub_10003A3D8(sensor, deviceIdentifier, self->_fileURLs, self->_defaults, [reading bundleIdentifier]);
     v38 = sub_10000ACCC([RDReadableDatastore alloc], &v37->super.isa);
     v61 = 0;
-    if ([a4 length])
+    if ([segment length])
     {
-      v39 = sub_10000B6C0(v38, a4, &v61);
+      v39 = sub_10000B6C0(v38, segment, &v61);
 
       v40 = +[NSXPCConnection currentConnection];
       if (!v40)
       {
 LABEL_48:
-        v42 = sub_10003A3D8([a3 sensor], objc_msgSend(a3, "deviceIdentifier"), self->_fileURLs, self->_defaults, objc_msgSend(a3, "bundleIdentifier"));
+        v42 = sub_10003A3D8([reading sensor], objc_msgSend(reading, "deviceIdentifier"), self->_fileURLs, self->_defaults, objc_msgSend(reading, "bundleIdentifier"));
         v43 = sub_10001C870([RDReader alloc], v42);
         v44 = sub_10001CE08(v43, v39);
 
-        v45 = sub_10002A764(&self->_defaults->super.isa, [a3 sensor]);
+        v45 = sub_10002A764(&self->_defaults->super.isa, [reading sensor]);
         v46 = mach_continuous_time();
         if (qword_100071B60 != -1)
         {
@@ -640,7 +640,7 @@ LABEL_48:
 
 LABEL_55:
         v52 = [NSMutableDictionary dictionaryWithDictionary:v39];
-        v53 = [NSMutableDictionary dictionaryWithDictionary:sub_10002A88C(self->_defaults, v59)];
+        v53 = [NSMutableDictionary dictionaryWithDictionary:sub_10002A88C(self->_defaults, sensor)];
         v54 = self->_stateCache;
         if (v54)
         {
@@ -670,7 +670,7 @@ LABEL_55:
           [(NSMutableDictionary *)v52 setObject:v61 forKeyedSubscript:@"error"];
         }
 
-        (*(a5 + 2))(a5, v52);
+        (*(reply + 2))(reply, v52);
         goto LABEL_41;
       }
     }
@@ -687,7 +687,7 @@ LABEL_55:
     }
 
     v41 = v40;
-    if ([a3 bypassHoldingPeriod] && -[NSXPCConnection sr_hasHoldingPeriodBypassEntitlement:](v41, "sr_hasHoldingPeriodBypassEntitlement:", self))
+    if ([reading bypassHoldingPeriod] && -[NSXPCConnection sr_hasHoldingPeriodBypassEntitlement:](v41, "sr_hasHoldingPeriodBypassEntitlement:", self))
     {
       goto LABEL_55;
     }
@@ -699,7 +699,7 @@ LABEL_38:
   v36 = qword_100071B30;
   if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_ERROR))
   {
-    [a3 to];
+    [reading to];
     *buf = 134349312;
     v64 = v21;
     v65 = 2050;
@@ -708,41 +708,41 @@ LABEL_38:
   }
 
 LABEL_40:
-  (*(a5 + 2))(a5, &__NSDictionary0__struct);
+  (*(reply + 2))(reply, &__NSDictionary0__struct);
 LABEL_41:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)startRecording:(id)a3 reply:(id)a4
+- (void)startRecording:(id)recording reply:(id)reply
 {
-  if ([a3 configurationDecodeError])
+  if ([recording configurationDecodeError])
   {
     v7 = qword_100071B30;
     if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_ERROR))
     {
       v9 = 138543362;
-      v10 = [a3 configurationDecodeError];
+      configurationDecodeError = [recording configurationDecodeError];
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Invalid requested configuration: %{public}@", &v9, 0xCu);
     }
 
-    (*(a4 + 2))(a4, [SRError errorWithCode:0x4000]);
+    (*(reply + 2))(reply, [SRError errorWithCode:0x4000]);
   }
 
   else
   {
-    v8 = [a3 sensorConfiguration];
+    sensorConfiguration = [recording sensorConfiguration];
 
-    sub_1000332B8(self, 1, a3, v8, a4);
+    sub_1000332B8(self, 1, recording, sensorConfiguration, reply);
   }
 }
 
-- (void)fetchReaderMetadata:(id)a3 reply:(id)a4
+- (void)fetchReaderMetadata:(id)metadata reply:(id)reply
 {
   v21 = 0;
-  if (sub_10002B8BC(+[NSXPCConnection currentConnection], a3, &self->_defaults->super.isa, self, &v21))
+  if (sub_10002B8BC(+[NSXPCConnection currentConnection], metadata, &self->_defaults->super.isa, self, &v21))
   {
-    v7 = [a3 sensor];
-    v8 = sub_10002A764(&self->_defaults->super.isa, v7);
+    sensor = [metadata sensor];
+    v8 = sub_10002A764(&self->_defaults->super.isa, sensor);
     v9 = mach_continuous_time();
     if (qword_100071B60 != -1)
     {
@@ -759,7 +759,7 @@ LABEL_41:
     }
 
     v14 = v11 - v8 + v12 + v13;
-    v15 = [SRSensorDescription sensorDescriptionForSensor:v7];
+    v15 = [SRSensorDescription sensorDescriptionForSensor:sensor];
     stateCache = self->_stateCache;
     if (stateCache)
     {
@@ -786,7 +786,7 @@ LABEL_41:
     v22[1] = @"EarliestEligibleTimestamp";
     v23[0] = v19;
     v23[1] = [NSNumber numberWithDouble:v14];
-    (*(a4 + 2))(a4, [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2]);
+    (*(reply + 2))(reply, [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2]);
   }
 
   else
@@ -799,22 +799,22 @@ LABEL_41:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Connection not valid because %{public}@", buf, 0xCu);
     }
 
-    (*(a4 + 2))(a4, &__NSDictionary0__struct);
+    (*(reply + 2))(reply, &__NSDictionary0__struct);
   }
 }
 
-- (void)fetchAllDevices:(id)a3 reply:(id)a4
+- (void)fetchAllDevices:(id)devices reply:(id)reply
 {
   dispatch_assert_queue_V2(self->_q);
   v12 = 0;
-  if (sub_10002B8BC(+[NSXPCConnection currentConnection], a3, &self->_defaults->super.isa, self, &v12))
+  if (sub_10002B8BC(+[NSXPCConnection currentConnection], devices, &self->_defaults->super.isa, self, &v12))
   {
-    v7 = sub_10003A334([a3 sensor], 0, self->_fileURLs, self->_defaults);
+    v7 = sub_10003A334([devices sensor], 0, self->_fileURLs, self->_defaults);
     v8 = sub_10000D068([RDInformingDatastore alloc], v7);
     v9 = sub_10000D2B8(v8);
 
     v10 = sub_1000339B8(self, [(NSSet *)v9 allObjects]);
-    (*(a4 + 2))(a4, v10, 0);
+    (*(reply + 2))(reply, v10, 0);
   }
 
   else
@@ -827,11 +827,11 @@ LABEL_41:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Connection not valid because %{public}@", buf, 0xCu);
     }
 
-    (*(a4 + 2))(a4, &__NSArray0__struct, v12);
+    (*(reply + 2))(reply, &__NSArray0__struct, v12);
   }
 }
 
-- (void)startWritingForSensor:(id)a3
+- (void)startWritingForSensor:(id)sensor
 {
   v5 = +[NSXPCConnection currentConnection];
   objc_opt_self();
@@ -855,7 +855,7 @@ LABEL_41:
   }
 
   dispatch_assert_queue_V2(self->_q);
-  if (!a3)
+  if (!sensor)
   {
     v14 = qword_100071B30;
     if (!os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_ERROR))
@@ -873,7 +873,7 @@ LABEL_16:
   v16 = 0;
   if (v5)
   {
-    if (sub_10002BB64(v5, @"com.apple.sensorkit.writer.allow", a3, 0, 0, &self->_defaults->super.isa, self, &v16))
+    if (sub_10002BB64(v5, @"com.apple.sensorkit.writer.allow", sensor, 0, 0, &self->_defaults->super.isa, self, &v16))
     {
       goto LABEL_9;
     }
@@ -909,19 +909,19 @@ LABEL_7:
   }
 
 LABEL_9:
-  v9 = sub_10003A334(a3, v6, self->_fileURLs, self->_defaults);
+  v9 = sub_10003A334(sensor, v6, self->_fileURLs, self->_defaults);
   sub_100008190(self->_writerListener, v5, v9);
-  v10 = sub_1000316F0(self, a3);
+  v10 = sub_1000316F0(self, sensor);
   *buf = _NSConcreteStackBlock;
   *&buf[8] = 3221225472;
   *&buf[16] = sub_100033DA0;
   v18 = &unk_1000611D0;
-  v19 = a3;
+  sensorCopy = sensor;
   v11 = [(NSXPCConnection *)v5 remoteObjectProxyWithErrorHandler:buf];
   clientInterest = self->_clientInterest;
   if (clientInterest)
   {
-    v13 = [(NSCache *)clientInterest->_sensorConfigurationCache rd_objectsForSensor:a3 fallbackURL:sub_10001AB2C(clientInterest->_fileURLs, a3)];
+    v13 = [(NSCache *)clientInterest->_sensorConfigurationCache rd_objectsForSensor:sensor fallbackURL:sub_10001AB2C(clientInterest->_fileURLs, sensor)];
   }
 
   else
@@ -932,7 +932,7 @@ LABEL_9:
   [v11 setMonitoring:v10 withRequestedConfigurations:{objc_msgSend(v13, "allObjects")}];
 }
 
-- (void)requestFileHandleForWritingWithReply:(id)a3
+- (void)requestFileHandleForWritingWithReply:(id)reply
 {
   dispatch_assert_queue_V2(self->_q);
   v5 = +[NSXPCConnection currentConnection];
@@ -980,7 +980,7 @@ LABEL_34:
       v42 = &v69;
       v43 = &v68;
 LABEL_56:
-      (*(a3 + 2))(a3, [NSDictionary dictionaryWithObjects:v42 forKeys:v43 count:1]);
+      (*(reply + 2))(reply, [NSDictionary dictionaryWithObjects:v42 forKeys:v43 count:1]);
       return;
     }
 
@@ -1185,12 +1185,12 @@ LABEL_18:
     }
   }
 
-  v48 = [(NSURL *)sub_10001ADB4(v40) lastPathComponent];
-  v49 = [(NSURL *)sub_10001ADB4(v40 + 0.000000999999997) lastPathComponent];
-  v50 = [(NSURL *)sub_10001ADB4(v40 + 0.000000999999997) lastPathComponent];
+  lastPathComponent = [(NSURL *)sub_10001ADB4(v40) lastPathComponent];
+  lastPathComponent2 = [(NSURL *)sub_10001ADB4(v40 + 0.000000999999997) lastPathComponent];
+  lastPathComponent3 = [(NSURL *)sub_10001ADB4(v40 + 0.000000999999997) lastPathComponent];
   v51 = objc_autoreleasePoolPush();
   *buf = 0;
-  v52 = sub_10000AA38(v26, v48, v49, v50, buf);
+  v52 = sub_10000AA38(v26, lastPathComponent, lastPathComponent2, lastPathComponent3, buf);
 
   v53 = [NSMutableDictionary dictionaryWithDictionary:v52];
   v54 = [NSMutableDictionary dictionaryWithDictionary:sub_10002A88C(self->_defaults, v11)];
@@ -1212,11 +1212,11 @@ LABEL_18:
     [(NSMutableDictionary *)v53 setObject:*buf forKeyedSubscript:@"error"];
   }
 
-  (*(a3 + 2))(a3, v53);
+  (*(reply + 2))(reply, v53);
   objc_autoreleasePoolPop(v51);
 }
 
-- (void)fetchEligibilityStatusForBundleIdentifier:(id)a3 reply:(id)a4
+- (void)fetchEligibilityStatusForBundleIdentifier:(id)identifier reply:(id)reply
 {
   v7 = +[NSXPCConnection currentConnection];
   writerListener = self->_writerListener;
@@ -1234,7 +1234,7 @@ LABEL_18:
           v12 = Property;
           if (sub_10002BB64(v7, @"com.apple.sensorkit.writer.allow", Property, 0, 0, &self->_defaults->super.isa, self, &v16))
           {
-            sub_100034B50(self, a3, v12, a4);
+            sub_100034B50(self, identifier, v12, reply);
             return;
           }
 
@@ -1263,7 +1263,7 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ not valid because %{public}@", buf, 0x16u);
         v14 = v16;
 LABEL_12:
-        (*(a4 + 2))(a4, 0, v14);
+        (*(reply + 2))(reply, 0, v14);
         return;
       }
     }
@@ -1277,16 +1277,16 @@ LABEL_12:
     _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}@ is not connected as a writer", buf, 0xCu);
   }
 
-  (*(a4 + 2))(a4, 0, +[SRError connectionNotFoundError]);
+  (*(reply + 2))(reply, 0, +[SRError connectionNotFoundError]);
 }
 
-- (BOOL)validateBundleRecord:(id)a3 withFilters:(id)a4
+- (BOOL)validateBundleRecord:(id)record withFilters:(id)filters
 {
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [a4 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v5 = [filters countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1297,25 +1297,25 @@ LABEL_3:
     {
       if (*v23 != v7)
       {
-        objc_enumerationMutation(a4);
+        objc_enumerationMutation(filters);
       }
 
       v9 = *(*(&v22 + 1) + 8 * v8);
       if ([v9 isEqualToString:@"TelephonyApp"])
       {
-        v10 = [a3 sr_supportsVOIP];
+        sr_supportsVOIP = [record sr_supportsVOIP];
         v11 = qword_100071B30;
         if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO))
         {
-          v12 = [a3 bundleIdentifier];
+          bundleIdentifier = [record bundleIdentifier];
           *buf = 138543618;
           v13 = @"does not support";
-          if (v10)
+          if (sr_supportsVOIP)
           {
             v13 = @"supports";
           }
 
-          v27 = v12;
+          v27 = bundleIdentifier;
           v28 = 2114;
           v29 = v13;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ VoIP", buf, 0x16u);
@@ -1324,7 +1324,7 @@ LABEL_3:
 
       else
       {
-        v10 = 1;
+        sr_supportsVOIP = 1;
       }
 
       if (![v9 isEqualToString:@"MessagingApp"])
@@ -1332,9 +1332,9 @@ LABEL_3:
         goto LABEL_22;
       }
 
-      if ([a3 sr_supportsMessagingIntents])
+      if ([record sr_supportsMessagingIntents])
       {
-        v10 = [a3 sr_isSocialNetworking];
+        sr_supportsVOIP = [record sr_isSocialNetworking];
         v14 = qword_100071B30;
         if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO))
         {
@@ -1344,20 +1344,20 @@ LABEL_3:
 
       else
       {
-        v10 = 0;
+        sr_supportsVOIP = 0;
         v14 = qword_100071B30;
         if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO))
         {
 LABEL_19:
-          v15 = [a3 bundleIdentifier];
+          bundleIdentifier2 = [record bundleIdentifier];
           *buf = 138543618;
           v16 = @"does not support";
-          if (v10)
+          if (sr_supportsVOIP)
           {
             v16 = @"supports";
           }
 
-          v27 = v15;
+          v27 = bundleIdentifier2;
           v28 = 2114;
           v29 = v16;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ messaging intents", buf, 0x16u);
@@ -1365,34 +1365,34 @@ LABEL_19:
       }
 
 LABEL_22:
-      if ([v9 isEqualToString:@"DeveloperOptOut"] && (v10 = objc_msgSend(a3, "sr_supportsDataGeneration"), v17 = qword_100071B30, os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO)))
+      if ([v9 isEqualToString:@"DeveloperOptOut"] && (sr_supportsVOIP = objc_msgSend(record, "sr_supportsDataGeneration"), v17 = qword_100071B30, os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO)))
       {
-        v18 = [a3 bundleIdentifier];
+        bundleIdentifier3 = [record bundleIdentifier];
         *buf = 138543618;
         v19 = @"does not support";
-        if (v10)
+        if (sr_supportsVOIP)
         {
           v19 = @"supports";
         }
 
-        v27 = v18;
+        v27 = bundleIdentifier3;
         v28 = 2114;
         v29 = v19;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ data generation", buf, 0x16u);
-        if ((v10 & 1) == 0)
+        if ((sr_supportsVOIP & 1) == 0)
         {
           return 0;
         }
       }
 
-      else if (!v10)
+      else if (!sr_supportsVOIP)
       {
         return 0;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [a4 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v6 = [filters countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -1406,10 +1406,10 @@ LABEL_22:
   return 1;
 }
 
-- (void)startPruningForSensor:(id)a3 deviceId:(id)a4
+- (void)startPruningForSensor:(id)sensor deviceId:(id)id
 {
   dispatch_assert_queue_V2(self->_q);
-  if (!a3)
+  if (!sensor)
   {
     v12 = qword_100071B30;
     if (!os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_ERROR))
@@ -1429,7 +1429,7 @@ LABEL_12:
   v14 = 0;
   if (v7)
   {
-    if (sub_10002BB64(v7, @"com.apple.sensorkit.pruner.allow", a3, 0, 0, &self->_defaults->super.isa, self, &v14))
+    if (sub_10002BB64(v7, @"com.apple.sensorkit.pruner.allow", sensor, 0, 0, &self->_defaults->super.isa, self, &v14))
     {
       goto LABEL_7;
     }
@@ -1465,9 +1465,9 @@ LABEL_5:
   }
 
 LABEL_7:
-  if (a4 || (objc_opt_self(), (a4 = qword_100071B88) != 0))
+  if (id || (objc_opt_self(), (id = qword_100071B88) != 0))
   {
-    v11 = sub_10003A334(a3, a4, self->_fileURLs, self->_defaults);
+    v11 = sub_10003A334(sensor, id, self->_fileURLs, self->_defaults);
     sub_100008190(self->_prunerListener, v8, v11);
     return;
   }
@@ -1481,7 +1481,7 @@ LABEL_7:
   }
 }
 
-- (void)requestFileHandleForPruningSample:(double)a3 reply:(id)a4
+- (void)requestFileHandleForPruningSample:(double)sample reply:(id)reply
 {
   dispatch_assert_queue_V2(self->_q);
   v7 = +[NSXPCConnection currentConnection];
@@ -1529,7 +1529,7 @@ LABEL_18:
       v22 = &v28;
       v23 = &v27;
 LABEL_19:
-      (*(a4 + 2))(a4, [NSDictionary dictionaryWithObjects:v22 forKeys:v23 count:1]);
+      (*(reply + 2))(reply, [NSDictionary dictionaryWithObjects:v22 forKeys:v23 count:1]);
       return;
     }
 
@@ -1546,11 +1546,11 @@ LABEL_17:
   v14 = objc_autoreleasePoolPush();
   v15 = sub_10000BC68([RDPruneableDatastore alloc], v11);
   *buf = 0;
-  v16 = sub_10000CEF0(v15, buf, a3);
+  v16 = sub_10000CEF0(v15, buf, sample);
 
   if ([(NSDictionary *)v16 objectForKeyedSubscript:@"samples"])
   {
-    *(v11 + 6) = a3;
+    *(v11 + 6) = sample;
   }
 
   v17 = [NSMutableDictionary dictionaryWithDictionary:v16];
@@ -1573,11 +1573,11 @@ LABEL_17:
     [(NSMutableDictionary *)v17 setObject:*buf forKeyedSubscript:@"error"];
   }
 
-  (*(a4 + 2))(a4, v17);
+  (*(reply + 2))(reply, v17);
   objc_autoreleasePoolPop(v14);
 }
 
-- (void)requestFileHandleForPruningAfterSegment:(id)a3 reply:(id)a4
+- (void)requestFileHandleForPruningAfterSegment:(id)segment reply:(id)reply
 {
   v7 = +[NSXPCConnection currentConnection];
   prunerListener = self->_prunerListener;
@@ -1625,7 +1625,7 @@ LABEL_28:
       v42 = &v48;
       v43 = &v47;
 LABEL_29:
-      (*(a4 + 2))(a4, [NSDictionary dictionaryWithObjects:v42 forKeys:v43 count:1]);
+      (*(reply + 2))(reply, [NSDictionary dictionaryWithObjects:v42 forKeys:v43 count:1]);
       return;
     }
 
@@ -1633,7 +1633,7 @@ LABEL_27:
     *buf = 138543618;
     v50 = v7;
     v51 = 2114;
-    v52 = v44;
+    segmentCopy = v44;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ not valid because %{public}@", buf, 0x16u);
     v44 = v46;
     goto LABEL_28;
@@ -1644,24 +1644,24 @@ LABEL_27:
     *buf = 138543618;
     v50 = v13;
     v51 = 2114;
-    v52 = a3;
+    segmentCopy = segment;
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Sending pruning file handles for sensor %{public}@ segment %{public}@", buf, 0x16u);
   }
 
   v16 = objc_autoreleasePoolPush();
   v17 = sub_10000BC68([RDPruneableDatastore alloc], v11);
   v45 = 0;
-  v18 = sub_10000CFB0(v17, a3, &v45);
+  v18 = sub_10000CFB0(v17, segment, &v45);
 
   if (![(NSDictionary *)v18 objectForKeyedSubscript:@"samples"])
   {
-    [a3 doubleValue];
+    [segment doubleValue];
     v20 = [SRDeletionRecord tombstoneWithStartTime:0 endTime:*(v11 + 6) reason:v19];
-    v21 = [v13 sr_sensorForDeletionRecordsFromSensor];
+    sr_sensorForDeletionRecordsFromSensor = [v13 sr_sensorForDeletionRecordsFromSensor];
     v23 = objc_getProperty(v11, v22, 32, 1);
     v25 = objc_getProperty(v11, v24, 8, 1);
     v27 = objc_getProperty(v11, v26, 16, 1);
-    v28 = sub_10003A334(v21, v23, v25, v27);
+    v28 = sub_10003A334(sr_sensorForDeletionRecordsFromSensor, v23, v25, v27);
     v29 = sub_1000013C0([RDWriter alloc], v28);
     if (v29)
     {
@@ -1716,11 +1716,11 @@ LABEL_27:
     [(NSMutableDictionary *)v37 setObject:v45 forKeyedSubscript:@"error"];
   }
 
-  (*(a4 + 2))(a4, v37);
+  (*(reply + 2))(reply, v37);
   objc_autoreleasePoolPop(v16);
 }
 
-- (void)removeAllSamplesForCurrentSensorWithReply:(id)a3
+- (void)removeAllSamplesForCurrentSensorWithReply:(id)reply
 {
   if (!self)
   {
@@ -1808,12 +1808,12 @@ LABEL_27:
   }
 
 LABEL_20:
-  v21 = *(a3 + 2);
+  v21 = *(reply + 2);
 
-  v21(a3, 0);
+  v21(reply, 0);
 }
 
-- (void)removeAllSamplesForAllSensorsWithReply:(id)a3
+- (void)removeAllSamplesForAllSensorsWithReply:(id)reply
 {
   dispatch_assert_queue_V2(self->_q);
   v5 = +[NSXPCConnection currentConnection];
@@ -1853,20 +1853,20 @@ LABEL_5:
   sub_10003606C(self, 0, 0);
   v7 = 0;
 LABEL_6:
-  (*(a3 + 2))(a3, v7);
+  (*(reply + 2))(reply, v7);
 }
 
-- (BOOL)isAuthorizedForSensor:(id)a3 bundleIdentifier:(id)a4
+- (BOOL)isAuthorizedForSensor:(id)sensor bundleIdentifier:(id)identifier
 {
   if (self)
   {
     self = self->_authStore;
   }
 
-  return [(RDDaemon *)self sensorHasReaderAuthorization:a3 forBundleId:a4];
+  return [(RDDaemon *)self sensorHasReaderAuthorization:sensor forBundleId:identifier];
 }
 
-- (void)authorizationStore:(id)a3 didDetermineInitialAuthorizationValues:(id)a4
+- (void)authorizationStore:(id)store didDetermineInitialAuthorizationValues:(id)values
 {
   q = self->_q;
   block[0] = _NSConcreteStackBlock;
@@ -1946,7 +1946,7 @@ LABEL_6:
   }
 }
 
-- (void)authorizationStore:(id)a3 didUpdateAuthorizationsForBundleId:(id)a4 sensors:(id)a5
+- (void)authorizationStore:(id)store didUpdateAuthorizationsForBundleId:(id)id sensors:(id)sensors
 {
   if (self)
   {
@@ -1956,21 +1956,21 @@ LABEL_6:
     block[2] = sub_100036AE8;
     block[3] = &unk_100061718;
     block[4] = self;
-    block[5] = a5;
-    block[6] = a4;
+    block[5] = sensors;
+    block[6] = id;
     dispatch_async(q, block);
   }
 }
 
-- (void)autoEnableRecordingForSensors:(id)a3 bundleId:(id)a4
+- (void)autoEnableRecordingForSensors:(id)sensors bundleId:(id)id
 {
   v7 = qword_100071B30;
   if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO))
   {
     *buf = 138478083;
-    v24 = a3;
+    idCopy2 = sensors;
     v25 = 2113;
-    v26 = a4;
+    idCopy = id;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Enabling recording for %{private}@ from bundle %{private}@ after enrollment", buf, 0x16u);
   }
 
@@ -1978,7 +1978,7 @@ LABEL_6:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v19 objects:v29 count:16];
+  v8 = [sensors countByEnumeratingWithState:&v19 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1989,7 +1989,7 @@ LABEL_6:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(sensors);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
@@ -2002,7 +2002,7 @@ LABEL_6:
 
         v14 = [(NSCache *)clientInterest->_clientInterestCache rd_objectsForSensor:v12 fallbackURL:sub_10001AAE4(clientInterest->_fileURLs, v12)];
         v15 = [v14 mutableCopy];
-        [v15 addObject:a4];
+        [v15 addObject:id];
         if ([v14 isEqualToSet:v15])
         {
 
@@ -2019,9 +2019,9 @@ LABEL_14:
           if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_ERROR))
           {
             *buf = 138478339;
-            v24 = a4;
+            idCopy2 = id;
             v25 = 2114;
-            v26 = v12;
+            idCopy = v12;
             v27 = 2114;
             v28 = v18;
             _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to set interest for bundle %{private}@ for sensor %{public}@ because %{public}@", buf, 0x20u);
@@ -2029,30 +2029,30 @@ LABEL_14:
         }
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v19 objects:v29 count:16];
+      v9 = [sensors countByEnumeratingWithState:&v19 objects:v29 count:16];
     }
 
     while (v9);
   }
 
-  sub_1000318E8(self, a3);
+  sub_1000318E8(self, sensors);
 }
 
-- (void)authorizationBroadcaster:(id)a3 didSetDataCollectionEnabled:(BOOL)a4
+- (void)authorizationBroadcaster:(id)broadcaster didSetDataCollectionEnabled:(BOOL)enabled
 {
-  v20 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_authStore;
   }
 
-  v4 = [(RDDaemon *)self readerAuthorizationValues];
+  readerAuthorizationValues = [(RDDaemon *)self readerAuthorizationValues];
   v5 = objc_alloc_init(NSMutableSet);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [v4 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v6 = [readerAuthorizationValues countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2063,7 +2063,7 @@ LABEL_14:
       {
         if (*v28 != v21)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(readerAuthorizationValues);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
@@ -2071,7 +2071,7 @@ LABEL_14:
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v10 = [v4 objectForKeyedSubscript:v9];
+        v10 = [readerAuthorizationValues objectForKeyedSubscript:v9];
         v11 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v11)
         {
@@ -2087,7 +2087,7 @@ LABEL_14:
               }
 
               v15 = *(*(&v23 + 1) + 8 * j);
-              if ([objc_msgSend(objc_msgSend(v4 objectForKeyedSubscript:{v9), "objectForKeyedSubscript:", v15), "BOOLValue"}])
+              if ([objc_msgSend(objc_msgSend(readerAuthorizationValues objectForKeyedSubscript:{v9), "objectForKeyedSubscript:", v15), "BOOLValue"}])
               {
                 [v5 addObject:v15];
               }
@@ -2100,17 +2100,17 @@ LABEL_14:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v7 = [readerAuthorizationValues countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v7);
   }
 
-  sub_1000318E8(v20, v5);
+  sub_1000318E8(selfCopy, v5);
 
   v16 = qword_100071B30;
   v17 = os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_DEFAULT);
-  if (a4)
+  if (enabled)
   {
     if (v17)
     {
@@ -2118,7 +2118,7 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Data collection enabled, telling any authorized writers to start writing again", buf, 2u);
     }
 
-    sub_100034628(v20, v18);
+    sub_100034628(selfCopy, v18);
   }
 
   else
@@ -2129,18 +2129,18 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Data collection disabled, removing all samples", buf, 2u);
     }
 
-    if (v20)
+    if (selfCopy)
     {
-      sub_10003606C(v20, 0, 0);
+      sub_10003606C(selfCopy, 0, 0);
     }
   }
 }
 
-- (void)launchEventRunActivity:(id)a3
+- (void)launchEventRunActivity:(id)activity
 {
-  v4 = self;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_q);
-  stateCache = v4->_stateCache;
+  stateCache = selfCopy->_stateCache;
   if (stateCache)
   {
     v6 = mach_continuous_time();
@@ -2164,27 +2164,27 @@ LABEL_14:
     }
   }
 
-  [(RDGizmoSyncing *)v4->_gizmoSync validatePreferWifiAssertion];
+  [(RDGizmoSyncing *)selfCopy->_gizmoSync validatePreferWifiAssertion];
   v11 = qword_100071B30;
   if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v87 = a3;
+    activityCopy = activity;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Running %{public}@ activity", buf, 0xCu);
   }
 
-  v69 = a3;
-  if (a3)
+  activityCopy2 = activity;
+  if (activity)
   {
-    if ([*(a3 + 1) isEqualToString:@"com.apple.sensorkit.updateCompanionWithSamples"])
+    if ([*(activity + 1) isEqualToString:@"com.apple.sensorkit.updateCompanionWithSamples"])
     {
       goto LABEL_12;
     }
 
-    if ([*(a3 + 1) isEqualToString:@"com.apple.sensorkit.prepareArchives"])
+    if ([*(activity + 1) isEqualToString:@"com.apple.sensorkit.prepareArchives"])
     {
 LABEL_19:
-      gizmoSyncService = v4->_gizmoSyncService;
+      gizmoSyncService = selfCopy->_gizmoSyncService;
       if (gizmoSyncService)
       {
         side = gizmoSyncService->_side;
@@ -2195,9 +2195,9 @@ LABEL_19:
             v13 = qword_100071B30;
             if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_ERROR))
             {
-              if (a3)
+              if (activity)
               {
-                v17 = *(a3 + 1);
+                v17 = *(activity + 1);
               }
 
               else
@@ -2206,20 +2206,20 @@ LABEL_19:
               }
 
               *buf = 138543362;
-              v87 = v17;
+              activityCopy = v17;
               goto LABEL_26;
             }
 
 LABEL_80:
-            v60 = a3;
+            activityCopy3 = activity;
 LABEL_103:
-            [v60 markCompleted];
+            [activityCopy3 markCompleted];
             return;
           }
 
 LABEL_56:
-          gizmoSync = v4->_gizmoSync;
-          v45 = sub_10003A2C0(v4->_fileURLs, v4->_defaults);
+          gizmoSync = selfCopy->_gizmoSync;
+          v45 = sub_10003A2C0(selfCopy->_fileURLs, selfCopy->_defaults);
           v75 = 0u;
           v76 = 0u;
           v77 = 0u;
@@ -2241,7 +2241,7 @@ LABEL_56:
                 }
 
                 v51 = *(*(&v75 + 1) + 8 * i);
-                if ([a3 deferIfNeeded])
+                if ([activity deferIfNeeded])
                 {
 
                   return;
@@ -2260,13 +2260,13 @@ LABEL_56:
                   if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138543362;
-                    v87 = v51;
+                    activityCopy = v51;
                     _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_INFO, "Not preparing archive for unknown sensor, %{public}@", buf, 0xCu);
                   }
                 }
 
                 objc_autoreleasePoolPop(v52);
-                a3 = v69;
+                activity = activityCopy2;
               }
 
               v48 = [v46 countByEnumeratingWithState:&v75 objects:v84 count:16];
@@ -2283,7 +2283,7 @@ LABEL_56:
         }
       }
 
-      v41 = v4->_stateCache;
+      v41 = selfCopy->_stateCache;
       if (v41 && v41->_timeSyncTimestamp != 0.0)
       {
         goto LABEL_56;
@@ -2302,13 +2302,13 @@ LABEL_79:
       goto LABEL_80;
     }
 
-    if ([*(a3 + 1) isEqualToString:@"com.apple.sensorkit.removeOldData"])
+    if ([*(activity + 1) isEqualToString:@"com.apple.sensorkit.removeOldData"])
     {
 LABEL_30:
-      if (sub_10001A2B8(v4->_fileURLs))
+      if (sub_10001A2B8(selfCopy->_fileURLs))
       {
-        sub_1000306A0(v4, a3, 2, 0);
-        sub_100034628(v4, v24);
+        sub_1000306A0(selfCopy, activity, 2, 0);
+        sub_100034628(selfCopy, v24);
         return;
       }
 
@@ -2323,10 +2323,10 @@ LABEL_30:
       goto LABEL_79;
     }
 
-    if ([*(a3 + 1) isEqualToString:@"com.apple.sensorkit.postMetric"])
+    if ([*(activity + 1) isEqualToString:@"com.apple.sensorkit.postMetric"])
     {
 LABEL_43:
-      v29 = sub_10003A2C0(v4->_fileURLs, v4->_defaults);
+      v29 = sub_10003A2C0(selfCopy->_fileURLs, selfCopy->_defaults);
       v30 = sub_10000DB60([RDTopLevelInformingDatastore alloc], v29);
       v71 = 0u;
       v72 = 0u;
@@ -2364,12 +2364,12 @@ LABEL_45:
               v36 = *(*(&v71 + 1) + 8 * j);
               v37 = objc_autoreleasePoolPush();
               objc_opt_self();
-              v38 = v4;
-              v39 = sub_10003A334(v36, qword_100071B88, v4->_fileURLs, v4->_defaults);
+              v38 = selfCopy;
+              v39 = sub_10003A334(v36, qword_100071B88, selfCopy->_fileURLs, selfCopy->_defaults);
               v70 = sub_10000D068([RDInformingDatastore alloc], v39);
               AnalyticsSendEventLazy();
 
-              v4 = v38;
+              selfCopy = v38;
               objc_autoreleasePoolPop(v37);
             }
 
@@ -2384,11 +2384,11 @@ LABEL_45:
       goto LABEL_102;
     }
 
-    if (([*(a3 + 1) isEqualToString:@"com.apple.sensorkit.syncCompanionStateToGizmo"] & 1) != 0 || objc_msgSend(*(a3 + 1), "isEqualToString:", @"com.apple.sensorkit.syncCompanionStateToGizmoLocked"))
+    if (([*(activity + 1) isEqualToString:@"com.apple.sensorkit.syncCompanionStateToGizmo"] & 1) != 0 || objc_msgSend(*(activity + 1), "isEqualToString:", @"com.apple.sensorkit.syncCompanionStateToGizmoLocked"))
     {
 LABEL_72:
-      sub_1000321C4(v4);
-      notifier = v4->_notifier;
+      sub_1000321C4(selfCopy);
+      notifier = selfCopy->_notifier;
       v55 = mach_continuous_time();
       if (qword_100071B60 != -1)
       {
@@ -2408,22 +2408,22 @@ LABEL_72:
       goto LABEL_80;
     }
 
-    if ([*(a3 + 1) isEqualToString:@"com.apple.sensorkit.decryptArchives"])
+    if ([*(activity + 1) isEqualToString:@"com.apple.sensorkit.decryptArchives"])
     {
 LABEL_82:
-      v61 = v4->_gizmoSyncService;
+      v61 = selfCopy->_gizmoSyncService;
       if (v61 && v61->_side)
       {
-        [(RDGizmoSyncing *)v4->_gizmoSync decryptArchivesWithActivity:a3];
+        [(RDGizmoSyncing *)selfCopy->_gizmoSync decryptArchivesWithActivity:activity];
         return;
       }
 
       v63 = qword_100071B30;
       if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_FAULT))
       {
-        if (a3)
+        if (activity)
         {
-          v64 = *(a3 + 1);
+          v64 = *(activity + 1);
         }
 
         else
@@ -2432,14 +2432,14 @@ LABEL_82:
         }
 
         *buf = 138543362;
-        v87 = v64;
+        activityCopy = v64;
         _os_log_fault_impl(&_mh_execute_header, v63, OS_LOG_TYPE_FAULT, "Shouldn't be running %{public}@ on the watch", buf, 0xCu);
       }
 
       goto LABEL_80;
     }
 
-    v62 = *(a3 + 1);
+    v62 = *(activity + 1);
   }
 
   else
@@ -2447,15 +2447,15 @@ LABEL_82:
     if ([0 isEqualToString:@"com.apple.sensorkit.updateCompanionWithSamples"])
     {
 LABEL_12:
-      v12 = v4->_gizmoSyncService;
+      v12 = selfCopy->_gizmoSyncService;
       if (v12 && v12->_side == 1)
       {
         v13 = qword_100071B30;
         if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_ERROR))
         {
-          if (a3)
+          if (activity)
           {
-            v14 = *(a3 + 1);
+            v14 = *(activity + 1);
           }
 
           else
@@ -2464,7 +2464,7 @@ LABEL_12:
           }
 
           *buf = 138543362;
-          v87 = v14;
+          activityCopy = v14;
 LABEL_26:
           _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "This activity should not be called on the companion side. %{public}@", buf, 0xCu);
           goto LABEL_80;
@@ -2473,8 +2473,8 @@ LABEL_26:
         goto LABEL_80;
       }
 
-      v18 = v4->_gizmoSync;
-      v19 = sub_10003A2C0(v4->_fileURLs, v4->_defaults);
+      v18 = selfCopy->_gizmoSync;
+      v19 = sub_10003A2C0(selfCopy->_fileURLs, selfCopy->_defaults);
       v79 = 0u;
       v80 = 0u;
       v81 = 0u;
@@ -2501,7 +2501,7 @@ LABEL_33:
           {
             objc_opt_self();
             [(RDGizmoSyncing *)v18 sendSnapshotForSensor:v26 deviceId:qword_100071B88];
-            if ([v69 deferIfNeeded])
+            if ([activityCopy2 deferIfNeeded])
             {
 
               objc_autoreleasePoolPop(v27);
@@ -2515,7 +2515,7 @@ LABEL_33:
             if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_INFO))
             {
               *buf = 138543362;
-              v87 = v26;
+              activityCopy = v26;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Not sending archive for unknown sensor, %{public}@", buf, 0xCu);
             }
           }
@@ -2537,7 +2537,7 @@ LABEL_33:
       v40 = v66;
 LABEL_102:
 
-      v60 = v69;
+      activityCopy3 = activityCopy2;
       goto LABEL_103;
     }
 
@@ -2571,13 +2571,13 @@ LABEL_102:
 
   if ([v62 isEqualToString:@"com.apple.sensorkit.gcKeys"])
   {
-    sub_10002FDB0(v4, a3);
+    sub_10002FDB0(selfCopy, activity);
   }
 }
 
-- (void)launchEventXPCEventReceived:(id)a3
+- (void)launchEventXPCEventReceived:(id)received
 {
-  v4 = [NSString stringWithUTF8String:xpc_dictionary_get_string(a3, _xpc_event_key_name)];
+  v4 = [NSString stringWithUTF8String:xpc_dictionary_get_string(received, _xpc_event_key_name)];
   v5 = qword_100071B30;
   if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_DEFAULT))
   {
@@ -2596,11 +2596,11 @@ LABEL_102:
   }
 }
 
-- (void)launchEventCheckInActivity:(id)a3
+- (void)launchEventCheckInActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
-    if (![*(a3 + 1) isEqualToString:@"com.apple.sensorkit.updateCompanionWithSamples"])
+    if (![*(activity + 1) isEqualToString:@"com.apple.sensorkit.updateCompanionWithSamples"])
     {
       return;
     }
@@ -2615,13 +2615,13 @@ LABEL_102:
   if (gizmoSyncService && gizmoSyncService->_side == 1)
   {
 
-    sub_100023664(a3);
+    sub_100023664(activity);
   }
 }
 
-- (int64_t)cacheDelete:(id)a3 purgeWithUrgency:(int64_t)a4 dryRun:(BOOL)a5
+- (int64_t)cacheDelete:(id)delete purgeWithUrgency:(int64_t)urgency dryRun:(BOOL)run
 {
-  v61 = a5;
+  runCopy = run;
   dispatch_assert_queue_V2(self->_q);
   v7 = sub_10003A2C0(self->_fileURLs, self->_defaults);
   v8 = sub_10000DB60([RDTopLevelInformingDatastore alloc], v7);
@@ -2671,7 +2671,7 @@ LABEL_102:
     v22 = *v68;
     v58 = v8;
     v54 = v19;
-    v55 = a4;
+    urgencyCopy = urgency;
     v53 = *v68;
     do
     {
@@ -2688,7 +2688,7 @@ LABEL_102:
         v25 = objc_autoreleasePoolPush();
         v26 = sub_10003A334(v24, 0, self->_fileURLs, self->_defaults);
         v60 = sub_10000D068([RDInformingDatastore alloc], v26);
-        v27 = sub_10002A010(self->_defaults, a4, v24);
+        v27 = sub_10002A010(self->_defaults, urgency, v24);
         v28 = mach_continuous_time();
         context = v25;
         if (v10[364] != -1)
@@ -2734,7 +2734,7 @@ LABEL_102:
               v41 = objc_autoreleasePoolPush();
               v42 = sub_10003A334(v24, v40, self->_fileURLs, self->_defaults);
               v43 = sub_10000BC68([RDPruneableDatastore alloc], &v42->super.isa);
-              v44 = sub_10000BE00(v43, 1, 0, v61, v37, v21);
+              v44 = sub_10000BE00(v43, 1, 0, runCopy, v37, v21);
 
               v45 = __OFADD__(v20, v44);
               v20 += v44;
@@ -2769,7 +2769,7 @@ LABEL_102:
         v23 = v57 + 1;
         v8 = v58;
         v19 = v54;
-        a4 = v55;
+        urgency = urgencyCopy;
         v10 = &off_100071000;
         v11 = &off_100071000;
         v13 = &off_100071000;
@@ -2785,7 +2785,7 @@ LABEL_102:
 
   v46 = +[NSFileManager defaultManager];
   v47 = sub_10001AD14();
-  v48 = sub_1000186E4(v46, v47, v61);
+  v48 = sub_1000186E4(v46, v47, runCopy);
   v45 = __OFADD__(v20, v48);
   v20 += v48;
   if (v45)
@@ -2799,7 +2799,7 @@ LABEL_102:
   }
 
 LABEL_35:
-  if (!v61 && v20 >= 1)
+  if (!runCopy && v20 >= 1)
   {
     sub_100034628(self, v49);
   }
@@ -2849,13 +2849,13 @@ LABEL_35:
 
             v9 = *(*(&v20 + 1) + 8 * v8);
             v10 = objc_autoreleasePoolPush();
-            v11 = [v9 name];
-            v12 = [objc_msgSend(v1 authorizedAndInterestedClientsForSensor:{v11), "count"}];
-            [v2 setObject:+[NSNumber numberWithBool:](NSNumber forKeyedSubscript:{"numberWithBool:", v12 != 0), v11}];
-            v13 = [v9 legacyName];
-            if (v13)
+            name = [v9 name];
+            v12 = [objc_msgSend(v1 authorizedAndInterestedClientsForSensor:{name), "count"}];
+            [v2 setObject:+[NSNumber numberWithBool:](NSNumber forKeyedSubscript:{"numberWithBool:", v12 != 0), name}];
+            legacyName = [v9 legacyName];
+            if (legacyName)
             {
-              [v2 setObject:+[NSNumber numberWithBool:](NSNumber forKeyedSubscript:{"numberWithBool:", v12 != 0), v13}];
+              [v2 setObject:+[NSNumber numberWithBool:](NSNumber forKeyedSubscript:{"numberWithBool:", v12 != 0), legacyName}];
             }
 
             objc_autoreleasePoolPop(v10);
@@ -2884,10 +2884,10 @@ LABEL_35:
             v15 = *(*(&v20 + 1) + 8 * v14);
             v16 = objc_autoreleasePoolPush();
             [v2 setObject:+[NSNumber numberWithBool:](NSNumber forKeyedSubscript:{"numberWithBool:", 0), objc_msgSend(v15, "name", context)}];
-            v17 = [v15 legacyName];
-            if (v17)
+            legacyName2 = [v15 legacyName];
+            if (legacyName2)
             {
-              [v2 setObject:+[NSNumber numberWithBool:](NSNumber forKeyedSubscript:{"numberWithBool:", 0), v17}];
+              [v2 setObject:+[NSNumber numberWithBool:](NSNumber forKeyedSubscript:{"numberWithBool:", 0), legacyName2}];
             }
 
             objc_autoreleasePoolPop(v16);
@@ -2909,7 +2909,7 @@ LABEL_35:
   return result;
 }
 
-- (void)gizmoSyncConnectedDevicesAdded:(id)a3
+- (void)gizmoSyncConnectedDevicesAdded:(id)added
 {
   dispatch_assert_queue_V2(self->_q);
   gizmoSyncService = self->_gizmoSyncService;
@@ -2926,7 +2926,7 @@ LABEL_35:
   }
 }
 
-- (void)gizmoSync:(id)a3 didSyncState:(id)a4 deviceID:(id)a5
+- (void)gizmoSync:(id)sync didSyncState:(id)state deviceID:(id)d
 {
   gizmoSyncService = self->_gizmoSyncService;
   if (gizmoSyncService)
@@ -2953,10 +2953,10 @@ LABEL_35:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ state received", buf, 0xCu);
   }
 
-  v11 = sub_10001C00C(a4);
+  v11 = sub_10001C00C(state);
   v12 = sub_10003A2C0(self->_fileURLs, self->_defaults);
   v13 = sub_100013A44([RDGizmoStateDatastore alloc], v12);
-  sub_100013AF8(v13, v11, a5);
+  sub_100013AF8(v13, v11, d);
 
   if (v8)
   {
@@ -2967,33 +2967,33 @@ LABEL_35:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Companion state received", buf, 2u);
     }
 
-    v15 = a4;
-    if (a4)
+    stateCopy = state;
+    if (state)
     {
-      v15 = *(a4 + 3);
+      stateCopy = *(state + 3);
     }
 
     stateCache = self->_stateCache;
     if (stateCache)
     {
       isa = stateCache[6].super.isa;
-      if (isa != v15)
+      if (isa != stateCopy)
       {
-        stateCache[6].super.isa = v15;
+        stateCache[6].super.isa = stateCopy;
       }
 
       sub_100027584(stateCache);
     }
 
-    v18 = a4;
-    if (a4)
+    stateCopy3 = state;
+    if (state)
     {
-      sub_10002B1B0(&self->_defaults->super.isa, *(a4 + 4));
+      sub_10002B1B0(&self->_defaults->super.isa, *(state + 4));
       v104 = 0u;
       v105 = 0u;
       v102 = 0u;
       v103 = 0u;
-      v19 = *(a4 + 2);
+      v19 = *(state + 2);
       v20 = [v19 countByEnumeratingWithState:&v102 objects:v121 count:16];
       if (v20)
       {
@@ -3011,9 +3011,9 @@ LABEL_18:
             }
 
             v23 = *(*(&v102 + 1) + 8 * i);
-            if (v18)
+            if (stateCopy3)
             {
-              v24 = v18[2];
+              v24 = stateCopy3[2];
             }
 
             else
@@ -3069,9 +3069,9 @@ LABEL_21:
             }
 
             [(NSCache *)clientInterest->_clientInterestCache setObject:v31 forKey:v23];
-            v32 = [(NSCache *)clientInterest->_clientInterestCache rd_writeObject:v31 forKey:v23 toURL:sub_10001AAE4(clientInterest->_fileURLs error:v23), v123];
+            v123 = [(NSCache *)clientInterest->_clientInterestCache rd_writeObject:v31 forKey:v23 toURL:sub_10001AAE4(clientInterest->_fileURLs error:v23), v123];
 
-            if ((v32 & 1) == 0)
+            if ((v123 & 1) == 0)
             {
 LABEL_37:
               v33 = qword_100071B30;
@@ -3088,7 +3088,7 @@ LABEL_37:
             }
 
 LABEL_22:
-            v18 = a4;
+            stateCopy3 = state;
           }
 
           v21 = [obj countByEnumeratingWithState:&v102 objects:v121 count:16];
@@ -3113,9 +3113,9 @@ LABEL_22:
       }
     }
 
-    if (v18)
+    if (stateCopy3)
     {
-      v18 = v18[5];
+      stateCopy3 = stateCopy3[5];
     }
 
     v89 = +[NSMutableSet set];
@@ -3123,9 +3123,9 @@ LABEL_22:
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v80 = v18;
+    v80 = stateCopy3;
     v34 = &IDSCopyIDForDevice_ptr;
-    v78 = [v18 countByEnumeratingWithState:&v110 objects:v123 count:16];
+    v78 = [stateCopy3 countByEnumeratingWithState:&v110 objects:v123 count:16];
     if (v78)
     {
       v76 = *v111;
@@ -3303,9 +3303,9 @@ LABEL_48:
     v99 = 0u;
     v100 = 0u;
     v101 = 0u;
-    if (a4)
+    if (state)
     {
-      v56 = *(a4 + 5);
+      v56 = *(state + 5);
     }
 
     else
@@ -3387,9 +3387,9 @@ LABEL_48:
           v93 = 0u;
           v90 = 0u;
           v91 = 0u;
-          if (a4)
+          if (state)
           {
-            v67 = *(a4 + 5);
+            v67 = *(state + 5);
           }
 
           else
@@ -3447,9 +3447,9 @@ LABEL_48:
       while (v81);
     }
 
-    if (a4)
+    if (state)
     {
-      v75 = *(a4 + 2);
+      v75 = *(state + 2);
     }
 
     else
@@ -3462,7 +3462,7 @@ LABEL_48:
   }
 }
 
-- (void)gizmoSync:(id)a3 didSyncRTCOffset:(double)a4 timeBeforeUpdate:(double)a5
+- (void)gizmoSync:(id)sync didSyncRTCOffset:(double)offset timeBeforeUpdate:(double)update
 {
   gizmoSyncService = self->_gizmoSyncService;
   if (gizmoSyncService && gizmoSyncService->_side == 1)
@@ -3482,7 +3482,7 @@ LABEL_48:
   if (stateCache)
   {
     timeSyncTimestamp = stateCache->_timeSyncTimestamp;
-    stateCache->_remoteRTCOffset = a4;
+    stateCache->_remoteRTCOffset = offset;
     v13 = mach_continuous_time();
     if (qword_100071B60 != -1)
     {
@@ -3535,13 +3535,13 @@ LABEL_13:
   }
 
   v25 = v24 + v23;
-  v26 = v24 + v23 - a5;
+  v26 = v24 + v23 - update;
   v27 = v11 - timeSyncTimestamp;
   v28 = qword_100071B30;
   if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_DEFAULT))
   {
     v35 = 134350336;
-    v36 = a5;
+    updateCopy = update;
     v37 = 2050;
     v38 = v25;
     v39 = 2050;
@@ -3578,11 +3578,11 @@ LABEL_13:
   else if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     v35 = 134217984;
-    v36 = v26;
+    updateCopy = v26;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Difference in time update (%f) was not deemed significant. Updating locally but not notifying writers", &v35, 0xCu);
   }
 
-  [(RDAnalyticsEventListener *)self->_analyticsEventListener gizmoSyncDidSyncTime:a3];
+  [(RDAnalyticsEventListener *)self->_analyticsEventListener gizmoSyncDidSyncTime:sync];
   if (v26 < 0.0 && v29 > sub_10002B538(&self->_defaults->super.isa))
   {
     v34 = qword_100071B30;
@@ -3596,7 +3596,7 @@ LABEL_13:
   }
 }
 
-- (int64_t)prerequisitesStatusForAnalytics:(id)a3
+- (int64_t)prerequisitesStatusForAnalytics:(id)analytics
 {
   if (self)
   {
@@ -3606,7 +3606,7 @@ LABEL_13:
   return sub_10002B090(self);
 }
 
-- (void)dumpClientsWithReply:(id)a3
+- (void)dumpClientsWithReply:(id)reply
 {
   dispatch_assert_queue_V2(self->_q);
   v5 = +[NSXPCConnection currentConnection];
@@ -3621,7 +3621,7 @@ LABEL_13:
   v28 = 0;
   if (sub_10002BB64(v5, @"com.apple.private.sensorkit.diagnostics.allow", 0, 0, @"com.apple.private.sensorkit.debugging.allow", &self->_defaults->super.isa, self, &v28))
   {
-    v23 = a3;
+    replyCopy = reply;
     v7 = +[NSMutableDictionary dictionary];
     context = objc_autoreleasePoolPush();
     v24 = 0u;
@@ -3646,11 +3646,11 @@ LABEL_13:
 
           v14 = *(*(&v24 + 1) + 8 * i);
           v15 = objc_autoreleasePoolPush();
-          v16 = [v14 name];
+          name = [v14 name];
           clientInterest = self->_clientInterest;
           if (clientInterest)
           {
-            v18 = [(NSCache *)clientInterest->_clientInterestCache rd_objectsForSensor:v16 fallbackURL:sub_10001AAE4(clientInterest->_fileURLs, v16)];
+            v18 = [(NSCache *)clientInterest->_clientInterestCache rd_objectsForSensor:name fallbackURL:sub_10001AAE4(clientInterest->_fileURLs, name)];
           }
 
           else
@@ -3658,13 +3658,13 @@ LABEL_13:
             v18 = 0;
           }
 
-          [v7 setObject:objc_msgSend(v18 forKeyedSubscript:{"allObjects"), v16}];
+          [v7 setObject:objc_msgSend(v18 forKeyedSubscript:{"allObjects"), name}];
           v19 = qword_100071B30;
           if (os_log_type_enabled(qword_100071B30, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v7 objectForKeyedSubscript:v16];
+            v20 = [v7 objectForKeyedSubscript:name];
             *buf = 138543618;
-            v31 = v16;
+            v31 = name;
             v32 = 2114;
             v33 = v20;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "clients for %{public}@: %{public}@", buf, 0x16u);
@@ -3680,7 +3680,7 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(context);
-    v23[2](v23, v7, 0);
+    replyCopy[2](replyCopy, v7, 0);
   }
 
   else
@@ -3695,18 +3695,18 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ not valid because %{public}@", buf, 0x16u);
     }
 
-    (*(a3 + 2))(a3, &__NSDictionary0__struct, v28);
+    (*(reply + 2))(reply, &__NSDictionary0__struct, v28);
   }
 }
 
-- (void)dumpStateCacheWithReply:(id)a3
+- (void)dumpStateCacheWithReply:(id)reply
 {
   v5 = +[NSXPCConnection currentConnection];
   v8 = 0;
   if (sub_10002BB64(v5, @"com.apple.private.sensorkit.diagnostics.allow", 0, 0, @"com.apple.private.sensorkit.debugging.allow", &self->_defaults->super.isa, self, &v8))
   {
     v6 = sub_100027B10(self->_stateCache);
-    (*(a3 + 2))(a3, v6, 0);
+    (*(reply + 2))(reply, v6, 0);
   }
 
   else
@@ -3721,11 +3721,11 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ not valid because %{public}@", buf, 0x16u);
     }
 
-    (*(a3 + 2))(a3, &__NSDictionary0__struct, v8);
+    (*(reply + 2))(reply, &__NSDictionary0__struct, v8);
   }
 }
 
-- (void)listDatastoreWithReply:(id)a3
+- (void)listDatastoreWithReply:(id)reply
 {
   v5 = +[NSXPCConnection currentConnection];
   v11 = 0;
@@ -3739,7 +3739,7 @@ LABEL_13:
     sub_10000DD48(v9, v7);
 
     [v7 close];
-    (*(a3 + 2))(a3, [(NSURL *)v6 path], 0);
+    (*(reply + 2))(reply, [(NSURL *)v6 path], 0);
   }
 
   else
@@ -3754,11 +3754,11 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ not valid because %{public}@", buf, 0x16u);
     }
 
-    (*(a3 + 2))(a3, 0, v11);
+    (*(reply + 2))(reply, 0, v11);
   }
 }
 
-- (void)dumpConfigurationsWithReply:(id)a3
+- (void)dumpConfigurationsWithReply:(id)reply
 {
   dispatch_assert_queue_V2(self->_q);
   v5 = +[NSXPCConnection currentConnection];
@@ -3790,11 +3790,11 @@ LABEL_13:
 
           v13 = *(*(&v20 + 1) + 8 * v12);
           v14 = objc_autoreleasePoolPush();
-          v15 = [v13 name];
+          name = [v13 name];
           clientInterest = self->_clientInterest;
           if (clientInterest)
           {
-            v17 = [(NSCache *)clientInterest->_sensorConfigurationCache rd_objectsForSensor:v15 fallbackURL:sub_10001AB2C(clientInterest->_fileURLs, v15)];
+            v17 = [(NSCache *)clientInterest->_sensorConfigurationCache rd_objectsForSensor:name fallbackURL:sub_10001AB2C(clientInterest->_fileURLs, name)];
           }
 
           else
@@ -3802,7 +3802,7 @@ LABEL_13:
             v17 = 0;
           }
 
-          [v6 setObject:objc_msgSend(v17 forKeyedSubscript:{"allObjects"), v15}];
+          [v6 setObject:objc_msgSend(v17 forKeyedSubscript:{"allObjects"), name}];
           objc_autoreleasePoolPop(v14);
           v12 = v12 + 1;
         }
@@ -3815,7 +3815,7 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(context);
-    (*(a3 + 2))(a3, v6, 0);
+    (*(reply + 2))(reply, v6, 0);
   }
 
   else
@@ -3830,11 +3830,11 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ not valid because %{public}@", buf, 0x16u);
     }
 
-    (*(a3 + 2))(a3, &__NSDictionary0__struct, v24);
+    (*(reply + 2))(reply, &__NSDictionary0__struct, v24);
   }
 }
 
-- (void)dumpDefaultsWithReply:(id)a3
+- (void)dumpDefaultsWithReply:(id)reply
 {
   dispatch_assert_queue_V2(self->_q);
   v5 = +[NSXPCConnection currentConnection];
@@ -3845,7 +3845,7 @@ LABEL_13:
     if (defaults)
     {
       v7 = [NSDictionary dictionaryWithDictionary:[(NSUserDefaults *)defaults->_defaults dictionaryRepresentation]];
-      v8 = *(a3 + 2);
+      v8 = *(reply + 2);
     }
 
     else
@@ -3857,11 +3857,11 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "No defaults to display", buf, 2u);
       }
 
-      v8 = *(a3 + 2);
+      v8 = *(reply + 2);
       v7 = &__NSDictionary0__struct;
     }
 
-    v8(a3, v7, 0);
+    v8(reply, v7, 0);
   }
 
   else
@@ -3876,17 +3876,17 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ not valid because %{public}@", buf, 0x16u);
     }
 
-    (*(a3 + 2))(a3, &__NSDictionary0__struct, v11);
+    (*(reply + 2))(reply, &__NSDictionary0__struct, v11);
   }
 }
 
-- (void)fetchEligibilityStatusForBundleIdentifier:(id)a3 sensor:(id)a4 reply:(id)a5
+- (void)fetchEligibilityStatusForBundleIdentifier:(id)identifier sensor:(id)sensor reply:(id)reply
 {
   v9 = +[NSXPCConnection currentConnection];
   v11 = 0;
   if (sub_10002BB64(v9, @"com.apple.private.sensorkit.diagnostics.allow", 0, 0, @"com.apple.private.sensorkit.debugging.allow", &self->_defaults->super.isa, self, &v11))
   {
-    sub_100034B50(self, a3, a4, a5);
+    sub_100034B50(self, identifier, sensor, reply);
   }
 
   else
@@ -3901,25 +3901,25 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ not valid because %{public}@", buf, 0x16u);
     }
 
-    (*(a5 + 2))(a5, 0, v11);
+    (*(reply + 2))(reply, 0, v11);
   }
 }
 
-- (void)fetchDeviceInformationForDeviceIdentifiers:(id)a3 reply:(id)a4
+- (void)fetchDeviceInformationForDeviceIdentifiers:(id)identifiers reply:(id)reply
 {
   v7 = +[NSXPCConnection currentConnection];
   v10 = 0;
   if (sub_10002BB64(v7, @"com.apple.private.sensorkit.diagnostics.allow", 0, 0, @"com.apple.private.sensorkit.debugging.allow", &self->_defaults->super.isa, self, &v10))
   {
-    if (!a3)
+    if (!identifiers)
     {
       objc_opt_self();
       v11 = qword_100071B88;
-      a3 = [NSArray arrayWithObjects:&v11 count:1];
+      identifiers = [NSArray arrayWithObjects:&v11 count:1];
     }
 
-    v8 = sub_1000339B8(self, a3);
-    (*(a4 + 2))(a4, v8, 0);
+    v8 = sub_1000339B8(self, identifiers);
+    (*(reply + 2))(reply, v8, 0);
   }
 
   else
@@ -3934,7 +3934,7 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Connection %{public}@ not valid because %{public}@", buf, 0x16u);
     }
 
-    (*(a4 + 2))(a4, &__NSArray0__struct, v10);
+    (*(reply + 2))(reply, &__NSArray0__struct, v10);
   }
 }
 

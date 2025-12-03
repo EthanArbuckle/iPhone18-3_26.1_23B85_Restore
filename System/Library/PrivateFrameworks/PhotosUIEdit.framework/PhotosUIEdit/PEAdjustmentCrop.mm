@@ -1,7 +1,7 @@
 @interface PEAdjustmentCrop
 - (CGSize)aspectRatio;
-- (PEAdjustmentCrop)initWithModifier:(id)a3;
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7;
+- (PEAdjustmentCrop)initWithModifier:(id)modifier;
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation PEAdjustmentCrop
@@ -15,29 +15,29 @@
   return result;
 }
 
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler
 {
   v66 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a7;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v11 = objc_alloc(MEMORY[0x277D2CFB0]);
-  v12 = [v9 composition];
-  v13 = [v11 initWithComposition:v12];
+  composition = [controllerCopy composition];
+  v13 = [v11 initWithComposition:composition];
 
   v59 = 0;
   v14 = [v13 submitSynchronous:&v59];
-  v15 = [v14 geometry];
+  geometry = [v14 geometry];
 
-  if (v15)
+  if (geometry)
   {
-    [v15 extent];
+    [geometry extent];
     NUPixelRectToCGRect();
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(PEAdjustmentCrop *)self modifier];
-    v25 = v24[2](v21, v23);
+    modifier = [(PEAdjustmentCrop *)self modifier];
+    v25 = modifier[2](v21, v23);
     v27 = v26;
 
     if (v21 == 0.0 || v23 == 0.0 || (v21 == *MEMORY[0x277D3A858] ? (v28 = v23 == *(MEMORY[0x277D3A858] + 8)) : (v28 = 0), v28))
@@ -90,7 +90,7 @@
       v36 = v35;
       v37 = v31 + v33 * -0.5;
       v38 = v32 + v35 * -0.5;
-      [v15 orientation];
+      [geometry orientation];
       NUOrientationInverse();
       if (NUOrientationIsValid())
       {
@@ -102,8 +102,8 @@
         v36 = v42;
       }
 
-      v43 = [v9 cropAdjustmentController];
-      [v43 cropRect];
+      cropAdjustmentController = [controllerCopy cropAdjustmentController];
+      [cropAdjustmentController cropRect];
       v45 = v44;
       v47 = v46;
 
@@ -118,9 +118,9 @@
       height = v68.size.height;
       if ((v25 | v57) < 0)
       {
-        v55 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v56 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NUPixelSize NUPixelSizeMake(NSInteger, NSInteger)"}];
-        [v55 handleFailureInFunction:v56 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
+        [currentHandler handleFailureInFunction:v56 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
       }
 
       v52 = NUOrientationTransformImageSize();
@@ -135,10 +135,10 @@
       *&v58[7] = height;
       v58[8] = v52;
       v58[9] = v54;
-      [v9 modifyAdjustmentWithKey:v53 modificationBlock:v58];
+      [controllerCopy modifyAdjustmentWithKey:v53 modificationBlock:v58];
     }
 
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
@@ -156,15 +156,15 @@ void __119__PEAdjustmentCrop_applyToCompositionController_valuesCalculator_asset
   [v7 setEnabled:1];
 }
 
-- (PEAdjustmentCrop)initWithModifier:(id)a3
+- (PEAdjustmentCrop)initWithModifier:(id)modifier
 {
-  v4 = a3;
+  modifierCopy = modifier;
   v9.receiver = self;
   v9.super_class = PEAdjustmentCrop;
   v5 = [(PEAdjustmentCrop *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(modifierCopy);
     modifier = v5->_modifier;
     v5->_modifier = v6;
   }

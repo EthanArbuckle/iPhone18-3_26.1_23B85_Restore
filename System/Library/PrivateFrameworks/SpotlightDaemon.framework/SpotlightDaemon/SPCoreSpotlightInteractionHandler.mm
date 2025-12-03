@@ -1,30 +1,30 @@
 @interface SPCoreSpotlightInteractionHandler
-- (id)attributeForIntent:(id)a3 direction:(int64_t)a4;
-- (id)interestingContactIdentifiersFromIntent:(id)a3;
-- (void)handleInteraction:(id)a3 bundleID:(id)a4 protectionClass:(id)a5;
+- (id)attributeForIntent:(id)intent direction:(int64_t)direction;
+- (id)interestingContactIdentifiersFromIntent:(id)intent;
+- (void)handleInteraction:(id)interaction bundleID:(id)d protectionClass:(id)class;
 @end
 
 @implementation SPCoreSpotlightInteractionHandler
 
-- (id)interestingContactIdentifiersFromIntent:(id)a3
+- (id)interestingContactIdentifiersFromIntent:(id)intent
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  intentCopy = intent;
   v4 = objc_opt_new();
   [v4 setNumberStyle:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = [v3 contacts];
+    contacts = [intentCopy contacts];
 LABEL_4:
-    v6 = v5;
+    v6 = contacts;
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 recipients];
+    contacts = [intentCopy recipients];
     goto LABEL_4;
   }
 
@@ -50,10 +50,10 @@ LABEL_5:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) contactIdentifier];
-        if (v13)
+        contactIdentifier = [*(*(&v16 + 1) + 8 * i) contactIdentifier];
+        if (contactIdentifier)
         {
-          [v7 addObject:v13];
+          [v7 addObject:contactIdentifier];
         }
       }
 
@@ -68,22 +68,22 @@ LABEL_5:
   return v7;
 }
 
-- (id)attributeForIntent:(id)a3 direction:(int64_t)a4
+- (id)attributeForIntent:(id)intent direction:(int64_t)direction
 {
-  v5 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (a4 == 2)
+      if (direction == 2)
       {
         v6 = MEMORY[0x277CC2C38];
         goto LABEL_14;
       }
 
-      if (a4 == 1)
+      if (direction == 1)
       {
         v6 = MEMORY[0x277CC2E40];
         goto LABEL_14;
@@ -105,13 +105,13 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (a4 == 2)
+  if (direction == 2)
   {
     v6 = MEMORY[0x277CC2C08];
     goto LABEL_14;
   }
 
-  if (a4 != 1)
+  if (direction != 1)
   {
     goto LABEL_11;
   }
@@ -124,14 +124,14 @@ LABEL_15:
   return v7;
 }
 
-- (void)handleInteraction:(id)a3 bundleID:(id)a4 protectionClass:(id)a5
+- (void)handleInteraction:(id)interaction bundleID:(id)d protectionClass:(id)class
 {
-  v6 = a3;
-  v7 = [v6 intent];
-  v8 = [(SPCoreSpotlightInteractionHandler *)self interestingContactIdentifiersFromIntent:v7];
+  interactionCopy = interaction;
+  intent = [interactionCopy intent];
+  v8 = [(SPCoreSpotlightInteractionHandler *)self interestingContactIdentifiersFromIntent:intent];
   if (v8)
   {
-    v9 = -[SPCoreSpotlightInteractionHandler attributeForIntent:direction:](self, "attributeForIntent:direction:", v7, [v6 direction]);
+    v9 = -[SPCoreSpotlightInteractionHandler attributeForIntent:direction:](self, "attributeForIntent:direction:", intent, [interactionCopy direction]);
     if (v9)
     {
       if (handleInteraction_bundleID_protectionClass__onceToken != -1)
@@ -144,7 +144,7 @@ LABEL_15:
       block[1] = 3221225472;
       block[2] = __80__SPCoreSpotlightInteractionHandler_handleInteraction_bundleID_protectionClass___block_invoke_2;
       block[3] = &unk_278934130;
-      v12 = v6;
+      v12 = interactionCopy;
       v13 = v9;
       v14 = v8;
       dispatch_async(v10, block);

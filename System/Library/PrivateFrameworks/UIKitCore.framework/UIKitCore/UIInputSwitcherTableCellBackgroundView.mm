@@ -1,13 +1,13 @@
 @interface UIInputSwitcherTableCellBackgroundView
-- (void)drawRect:(CGRect)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation UIInputSwitcherTableCellBackgroundView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(UIView *)self bounds:a3.origin.x];
+  [(UIView *)self bounds:rect.origin.x];
   x = v4;
   y = v6;
   width = v8;
@@ -24,8 +24,8 @@
   }
 
   CGContextSaveGState(v13);
-  v14 = [objc_opt_self() mainScreen];
-  [v14 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v16 = v15;
 
   v17 = 1.0 / v16;
@@ -35,9 +35,9 @@
     y = y + v17;
   }
 
-  v18 = [(UIView *)self _inheritedRenderConfig];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
   v19 = 24.0;
-  if (([v18 colorAdaptiveBackground] & 1) == 0)
+  if (([_inheritedRenderConfig colorAdaptiveBackground] & 1) == 0)
   {
     if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
@@ -76,8 +76,8 @@
 
   if (!_MergedGlobals_23_3[0])
   {
-    v20 = [(UIView *)self _inheritedRenderConfig];
-    if ([v20 colorAdaptiveBackground])
+    _inheritedRenderConfig2 = [(UIView *)self _inheritedRenderConfig];
+    if ([_inheritedRenderConfig2 colorAdaptiveBackground])
     {
       +[UIColor tertiarySystemFillColor];
     }
@@ -103,8 +103,8 @@
       goto LABEL_28;
     }
 
-    v23 = [(UIView *)self _inheritedRenderConfig];
-    if ([v23 colorAdaptiveBackground])
+    _inheritedRenderConfig3 = [(UIView *)self _inheritedRenderConfig];
+    if ([_inheritedRenderConfig3 colorAdaptiveBackground])
     {
       +[UIColor clearColor];
     }
@@ -189,9 +189,9 @@ LABEL_46:
 
     else
     {
-      v35 = [(UIInputSwitcherTableCellBackgroundView *)self usesDarkTheme];
+      usesDarkTheme = [(UIInputSwitcherTableCellBackgroundView *)self usesDarkTheme];
       v36 = 8;
-      if (v35)
+      if (usesDarkTheme)
       {
         v36 = 7;
       }
@@ -206,11 +206,11 @@ LABEL_46:
   CGContextRestoreGState(v13);
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(UIView *)self setNeedsDisplay];
   }
 }

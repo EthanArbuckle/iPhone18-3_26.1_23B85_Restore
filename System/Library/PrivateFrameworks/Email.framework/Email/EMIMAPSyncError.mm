@@ -1,14 +1,14 @@
 @interface EMIMAPSyncError
-- (EMIMAPSyncError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
+- (EMIMAPSyncError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
 - (NSDictionary)userInfo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMIMAPSyncError
 
 - (NSDictionary)userInfo
 {
-  v2 = self;
+  selfCopy = self;
   EMIMAPSyncError.userInfo.getter();
 
   v3 = sub_1C672580C();
@@ -16,22 +16,22 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  EMIMAPSyncError.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  EMIMAPSyncError.encode(with:)(coderCopy);
 }
 
-- (EMIMAPSyncError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (EMIMAPSyncError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
-  if (a5)
+  if (info)
   {
     sub_1C672581C();
     v8 = (self + OBJC_IVAR___EMIMAPSyncError__underlying);
     *v8 = 0u;
     v8[1] = 0u;
-    v9 = a3;
+    domainCopy = domain;
     v10 = sub_1C672580C();
   }
 
@@ -40,13 +40,13 @@
     v11 = (self + OBJC_IVAR___EMIMAPSyncError__underlying);
     *v11 = 0u;
     v11[1] = 0u;
-    v12 = a3;
+    domainCopy2 = domain;
     v10 = 0;
   }
 
   v15.receiver = self;
   v15.super_class = EMIMAPSyncError;
-  v13 = [(EMIMAPSyncError *)&v15 initWithDomain:a3 code:a4 userInfo:v10];
+  v13 = [(EMIMAPSyncError *)&v15 initWithDomain:domain code:code userInfo:v10];
 
   return v13;
 }

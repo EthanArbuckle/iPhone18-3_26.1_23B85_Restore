@@ -3,9 +3,9 @@
 - (PBFFocusCheckboxView)init;
 - (void)_updateAccessibilityAttributes;
 - (void)_updateColors;
-- (void)setAssociatedPosterIdentifier:(id)a3;
-- (void)setOn:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAssociatedPosterIdentifier:(id)identifier;
+- (void)setOn:(BOOL)on;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PBFFocusCheckboxView
@@ -27,21 +27,21 @@
     [(PBFCircleView *)v3->_circleView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PBFCircleView *)v3->_circleView setStrokeWidth:3.0];
     v6 = v3->_circleView;
-    v7 = [MEMORY[0x277D75348] systemGray3Color];
-    [(PBFCircleView *)v6 setStrokeColor:v7];
+    systemGray3Color = [MEMORY[0x277D75348] systemGray3Color];
+    [(PBFCircleView *)v6 setStrokeColor:systemGray3Color];
 
     v8 = v3->_circleView;
-    v9 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(PBFCircleView *)v8 setFillColor:v9];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(PBFCircleView *)v8 setFillColor:systemBackgroundColor];
 
-    v10 = [(PBFCircleView *)v3->_circleView layer];
-    [v10 setShadowOpacity:0.0];
+    layer = [(PBFCircleView *)v3->_circleView layer];
+    [layer setShadowOpacity:0.0];
 
-    v11 = [(PBFCircleView *)v3->_circleView layer];
-    [v11 setShadowRadius:2.0];
+    layer2 = [(PBFCircleView *)v3->_circleView layer];
+    [layer2 setShadowRadius:2.0];
 
-    v12 = [(PBFCircleView *)v3->_circleView layer];
-    [v12 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    layer3 = [(PBFCircleView *)v3->_circleView layer];
+    [layer3 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
 
     [(PBFFocusCheckboxView *)v3 addSubview:v3->_circleView];
     v39 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:15.0];
@@ -53,34 +53,34 @@
     [(UIImageView *)v3->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_imageView setHidden:1];
     v15 = v3->_imageView;
-    v16 = [MEMORY[0x277D75348] whiteColor];
-    [(UIImageView *)v15 setTintColor:v16];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIImageView *)v15 setTintColor:whiteColor];
 
     [(PBFFocusCheckboxView *)v3 addSubview:v3->_imageView];
     v31 = MEMORY[0x277CCAAD0];
-    v37 = [(PBFCircleView *)v3->_circleView leadingAnchor];
-    v36 = [(PBFFocusCheckboxView *)v3 leadingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36 constant:4.0];
+    leadingAnchor = [(PBFCircleView *)v3->_circleView leadingAnchor];
+    leadingAnchor2 = [(PBFFocusCheckboxView *)v3 leadingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
     v41[0] = v35;
-    v34 = [(PBFCircleView *)v3->_circleView trailingAnchor];
-    v33 = [(PBFFocusCheckboxView *)v3 trailingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:-4.0];
+    trailingAnchor = [(PBFCircleView *)v3->_circleView trailingAnchor];
+    trailingAnchor2 = [(PBFFocusCheckboxView *)v3 trailingAnchor];
+    v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-4.0];
     v41[1] = v32;
-    v30 = [(PBFCircleView *)v3->_circleView topAnchor];
-    v29 = [(PBFFocusCheckboxView *)v3 topAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29 constant:4.0];
+    topAnchor = [(PBFCircleView *)v3->_circleView topAnchor];
+    topAnchor2 = [(PBFFocusCheckboxView *)v3 topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
     v41[2] = v28;
-    v27 = [(PBFCircleView *)v3->_circleView bottomAnchor];
-    v17 = [(PBFFocusCheckboxView *)v3 bottomAnchor];
-    v18 = [v27 constraintEqualToAnchor:v17 constant:-4.0];
+    bottomAnchor = [(PBFCircleView *)v3->_circleView bottomAnchor];
+    bottomAnchor2 = [(PBFFocusCheckboxView *)v3 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
     v41[3] = v18;
-    v19 = [(UIImageView *)v3->_imageView centerXAnchor];
-    v20 = [(PBFFocusCheckboxView *)v3 centerXAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    centerXAnchor = [(UIImageView *)v3->_imageView centerXAnchor];
+    centerXAnchor2 = [(PBFFocusCheckboxView *)v3 centerXAnchor];
+    v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v41[4] = v21;
-    v22 = [(UIImageView *)v3->_imageView centerYAnchor];
-    v23 = [(PBFFocusCheckboxView *)v3 centerYAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    centerYAnchor = [(UIImageView *)v3->_imageView centerYAnchor];
+    centerYAnchor2 = [(PBFFocusCheckboxView *)v3 centerYAnchor];
+    v24 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v41[5] = v24;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:6];
     [v31 activateConstraints:v25];
@@ -89,20 +89,20 @@
   return v3;
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
-    self->_on = a3;
-    v4 = [(PBFCircleView *)self->_circleView layer];
-    v5 = v4;
+    self->_on = on;
+    layer = [(PBFCircleView *)self->_circleView layer];
+    v5 = layer;
     LODWORD(v6) = 1046562734;
     if (!self->_on)
     {
       *&v6 = 0.0;
     }
 
-    [v4 setShadowOpacity:v6];
+    [layer setShadowOpacity:v6];
 
     [(UIImageView *)self->_imageView setHidden:!self->_on];
     [(PBFFocusCheckboxView *)self _updateColors];
@@ -115,11 +115,11 @@
 {
   if (self->_on)
   {
-    v3 = [(PBFFocusCheckboxView *)self traitCollection];
-    v4 = [v3 userInterfaceStyle];
+    traitCollection = [(PBFFocusCheckboxView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
     circleView = self->_circleView;
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
       [MEMORY[0x277D75348] systemGray3Color];
     }
@@ -132,31 +132,31 @@
     [(PBFCircleView *)circleView setStrokeColor:v10];
 
     v8 = self->_circleView;
-    v9 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
   }
 
   else
   {
     v6 = self->_circleView;
-    v7 = [MEMORY[0x277D75348] systemGray3Color];
-    [(PBFCircleView *)v6 setStrokeColor:v7];
+    systemGray3Color = [MEMORY[0x277D75348] systemGray3Color];
+    [(PBFCircleView *)v6 setStrokeColor:systemGray3Color];
 
     v8 = self->_circleView;
-    v9 = [MEMORY[0x277D75348] systemBackgroundColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBackgroundColor];
   }
 
-  v11 = v9;
+  v11 = systemBlueColor;
   [(PBFCircleView *)v8 setFillColor:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = PBFFocusCheckboxView;
-  v4 = a3;
-  [(PBFFocusCheckboxView *)&v7 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PBFFocusCheckboxView *)&v7 traitCollectionDidChange:changeCopy];
   v5 = [(PBFFocusCheckboxView *)self traitCollection:v7.receiver];
-  v6 = [v5 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+  v6 = [v5 hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
   if (v6)
   {
@@ -164,12 +164,12 @@
   }
 }
 
-- (void)setAssociatedPosterIdentifier:(id)a3
+- (void)setAssociatedPosterIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     associatedPosterIdentifier = self->_associatedPosterIdentifier;
     self->_associatedPosterIdentifier = v4;
 

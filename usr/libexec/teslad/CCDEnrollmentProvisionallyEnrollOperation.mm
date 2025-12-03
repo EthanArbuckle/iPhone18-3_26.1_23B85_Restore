@@ -1,17 +1,17 @@
 @interface CCDEnrollmentProvisionallyEnrollOperation
-- (BOOL)_validateEnrollmentResponse:(id)a3 error:(id *)a4;
-- (id)errorForStatusCode:(int64_t)a3 responseData:(id)a4;
-- (id)responseWithResponseData:(id)a3 contentType:(id)a4 outError:(id *)a5;
+- (BOOL)_validateEnrollmentResponse:(id)response error:(id *)error;
+- (id)errorForStatusCode:(int64_t)code responseData:(id)data;
+- (id)responseWithResponseData:(id)data contentType:(id)type outError:(id *)error;
 @end
 
 @implementation CCDEnrollmentProvisionallyEnrollOperation
 
-- (id)errorForStatusCode:(int64_t)a3 responseData:(id)a4
+- (id)errorForStatusCode:(int64_t)code responseData:(id)data
 {
-  v5 = a4;
-  if (a3 == 403 || a3 == 401)
+  dataCopy = data;
+  if (code == 403 || code == 401)
   {
-    v6 = [CCDError cloudConfigErrorInResponse:v5];
+    v6 = [CCDError cloudConfigErrorInResponse:dataCopy];
     v7 = v6;
     if (v6)
     {
@@ -28,7 +28,7 @@
 
   else
   {
-    if (a3 == 400)
+    if (code == 400)
     {
       +[CCDError invalidDeviceError];
     }
@@ -43,21 +43,21 @@
   return v9;
 }
 
-- (id)responseWithResponseData:(id)a3 contentType:(id)a4 outError:(id *)a5
+- (id)responseWithResponseData:(id)data contentType:(id)type outError:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   v8 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = v8;
-    v10 = [[NSString alloc] initWithData:v7 encoding:4];
+    v10 = [[NSString alloc] initWithData:dataCopy encoding:4];
     *buf = 138543362;
     v19 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Enrollment Response: %{public}@", buf, 0xCu);
   }
 
   v17 = 0;
-  v11 = [NSJSONSerialization JSONObjectWithData:v7 options:1 error:&v17];
+  v11 = [NSJSONSerialization JSONObjectWithData:dataCopy options:1 error:&v17];
   v12 = v17;
   if (v12)
   {
@@ -69,10 +69,10 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Error: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       +[CCDError badFormatError];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -83,7 +83,7 @@
 
   else
   {
-    if ([(CCDEnrollmentProvisionallyEnrollOperation *)self _validateEnrollmentResponse:v11 error:a5])
+    if ([(CCDEnrollmentProvisionallyEnrollOperation *)self _validateEnrollmentResponse:v11 error:error])
     {
       v15 = v11;
     }
@@ -99,9 +99,9 @@
   return v14;
 }
 
-- (BOOL)_validateEnrollmentResponse:(id)a3 error:(id *)a4
+- (BOOL)_validateEnrollmentResponse:(id)response error:(id *)error
 {
-  v5 = a3;
+  responseCopy = response;
   v6 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -109,7 +109,7 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Validating enrollment response", v24, 2u);
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"enrollment_type"];
+  v7 = [responseCopy objectForKeyedSubscript:@"enrollment_type"];
   v8 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -159,7 +159,7 @@ LABEL_20:
       v19 = +[CCDError deviceAlreadyEnrolledError];
 LABEL_21:
       v11 = v19;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_29;
       }
@@ -179,7 +179,7 @@ LABEL_21:
     goto LABEL_20;
   }
 
-  v10 = [v5 objectForKeyedSubscript:@"ce_expiry_ts"];
+  v10 = [responseCopy objectForKeyedSubscript:@"ce_expiry_ts"];
   if (v10)
   {
     v11 = 0;
@@ -197,13 +197,13 @@ LABEL_21:
     v11 = +[CCDError badFormatError];
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_27:
     if (v11)
     {
       v21 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 

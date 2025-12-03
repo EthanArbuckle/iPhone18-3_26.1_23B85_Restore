@@ -1,23 +1,23 @@
 @interface TPSContextualCondition
-+ (id)eventsForConditionDictionary:(id)a3;
-- (TPSContextualCondition)initWithCoder:(id)a3;
-- (TPSContextualCondition)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)eventsForConditionDictionary:(id)dictionary;
+- (TPSContextualCondition)initWithCoder:(id)coder;
+- (TPSContextualCondition)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)eventIdentifiers;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)restartTracking;
 @end
 
 @implementation TPSContextualCondition
 
-+ (id)eventsForConditionDictionary:(id)a3
++ (id)eventsForConditionDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 TPSSafeArrayForKey:@"rules"];
+  v3 = [dictionary TPSSafeArrayForKey:@"rules"];
   if ([v3 count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -40,7 +40,7 @@
           v10 = [TPSContextualRule eventsForRuleDictionary:*(*(&v13 + 1) + 8 * i), v13];
           if (v10)
           {
-            [v4 addObjectsFromArray:v10];
+            [array addObjectsFromArray:v10];
           }
         }
 
@@ -53,29 +53,29 @@
 
   else
   {
-    v4 = 0;
+    array = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
-- (TPSContextualCondition)initWithDictionary:(id)a3
+- (TPSContextualCondition)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = TPSContextualCondition;
-  v5 = [(TPSSerializableObject *)&v27 initWithDictionary:v4];
+  v5 = [(TPSSerializableObject *)&v27 initWithDictionary:dictionaryCopy];
   if (!v5)
   {
     goto LABEL_16;
   }
 
-  v6 = [v4 TPSSafeStringForKey:@"joinType"];
+  v6 = [dictionaryCopy TPSSafeStringForKey:@"joinType"];
   v5->_joinType = [v6 isEqualToString:@"AND"] ^ 1;
-  v7 = [v4 TPSSafeArrayForKey:@"rules"];
+  v7 = [dictionaryCopy TPSSafeArrayForKey:@"rules"];
   v8 = 0x1EBE05000;
   if ([v7 count])
   {
@@ -145,24 +145,24 @@ LABEL_16:
   return v19;
 }
 
-- (TPSContextualCondition)initWithCoder:(id)a3
+- (TPSContextualCondition)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = TPSContextualCondition;
-  v5 = [(TPSSerializableObject *)&v14 initWithCoder:v4];
+  v5 = [(TPSSerializableObject *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntForKey:@"type"];
-    v5->_joinType = [v4 decodeIntForKey:@"joinType"];
+    v5->_type = [coderCopy decodeIntForKey:@"type"];
+    v5->_joinType = [coderCopy decodeIntForKey:@"joinType"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"rules"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"rules"];
     rules = v5->_rules;
     v5->_rules = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchedDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchedDate"];
     matchedDate = v5->_matchedDate;
     v5->_matchedDate = v11;
   }
@@ -170,23 +170,23 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TPSContextualCondition;
-  v4 = a3;
-  [(TPSSerializableObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_joinType forKey:@"joinType"];
-  [v4 encodeObject:self->_rules forKey:@"rules"];
-  [v4 encodeObject:self->_matchedDate forKey:@"matchedDate"];
+  coderCopy = coder;
+  [(TPSSerializableObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_joinType forKey:@"joinType"];
+  [coderCopy encodeObject:self->_rules forKey:@"rules"];
+  [coderCopy encodeObject:self->_matchedDate forKey:@"matchedDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TPSContextualCondition;
-  v4 = [(TPSSerializableObject *)&v6 copyWithZone:a3];
+  v4 = [(TPSSerializableObject *)&v6 copyWithZone:zone];
   [v4 setType:self->_type];
   [v4 setJoinType:self->_joinType];
   [v4 setRules:self->_rules];
@@ -197,7 +197,7 @@ LABEL_16:
 - (id)eventIdentifiers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -217,8 +217,8 @@ LABEL_16:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) eventIdentifiers];
-        [v3 addObjectsFromArray:v9];
+        eventIdentifiers = [*(*(&v12 + 1) + 8 * i) eventIdentifiers];
+        [array addObjectsFromArray:eventIdentifiers];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -229,7 +229,7 @@ LABEL_16:
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 - (void)restartTracking

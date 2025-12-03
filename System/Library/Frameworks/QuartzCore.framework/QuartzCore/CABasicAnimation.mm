@@ -1,5 +1,5 @@
 @interface CABasicAnimation
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4;
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer;
 - (BOOL)roundsToInteger;
 - (double)endAngle;
 - (double)startAngle;
@@ -7,13 +7,13 @@
 - (id)fromValue;
 - (id)toValue;
 - (void)CA_prepareRenderValue;
-- (void)_copyRenderAnimationForLayer:(id)a3;
-- (void)applyForTime:(double)a3 presentationObject:(id)a4 modelObject:(id)a5;
+- (void)_copyRenderAnimationForLayer:(id)layer;
+- (void)applyForTime:(double)time presentationObject:(id)object modelObject:(id)modelObject;
 - (void)setByValue:(id)byValue;
-- (void)setEndAngle:(double)a3;
+- (void)setEndAngle:(double)angle;
 - (void)setFromValue:(id)fromValue;
-- (void)setRoundsToInteger:(BOOL)a3;
-- (void)setStartAngle:(double)a3;
+- (void)setRoundsToInteger:(BOOL)integer;
+- (void)setStartAngle:(double)angle;
 - (void)setToValue:(id)toValue;
 @end
 
@@ -31,9 +31,9 @@
 {
   [-[CABasicAnimation fromValue](self "fromValue")];
   [-[CABasicAnimation toValue](self "toValue")];
-  v3 = [(CABasicAnimation *)self byValue];
+  byValue = [(CABasicAnimation *)self byValue];
 
-  [v3 CA_prepareRenderValue];
+  [byValue CA_prepareRenderValue];
 }
 
 - (id)fromValue
@@ -76,68 +76,68 @@
   return v3;
 }
 
-- (void)applyForTime:(double)a3 presentationObject:(id)a4 modelObject:(id)a5
+- (void)applyForTime:(double)time presentationObject:(id)object modelObject:(id)modelObject
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v43[0] = a3;
+  v43[0] = time;
   if (![(CAAnimation *)self isEnabled])
   {
     return;
   }
 
-  v8 = [(CAPropertyAnimation *)self keyPath];
-  if (!v8)
+  keyPath = [(CAPropertyAnimation *)self keyPath];
+  if (!keyPath)
   {
     return;
   }
 
-  v9 = v8;
+  v9 = keyPath;
   v42 = 0;
   if (!mapAnimationTime(&self->super.super, v43, &v42))
   {
     return;
   }
 
-  v10 = [(CABasicAnimation *)self fromValue];
-  v11 = [(CABasicAnimation *)self toValue];
-  v12 = [(CABasicAnimation *)self byValue];
-  v13 = v12;
-  if (v10 && v11)
+  fromValue = [(CABasicAnimation *)self fromValue];
+  toValue = [(CABasicAnimation *)self toValue];
+  byValue = [(CABasicAnimation *)self byValue];
+  v13 = byValue;
+  if (fromValue && toValue)
   {
     goto LABEL_18;
   }
 
-  if (!v10 || !v12)
+  if (!fromValue || !byValue)
   {
-    if (v11 && v12)
+    if (toValue && byValue)
     {
-      v16 = [(objc_object *)v11 CA_addValue:v12 multipliedBy:0xFFFFFFFFLL];
+      v16 = [(objc_object *)toValue CA_addValue:byValue multipliedBy:0xFFFFFFFFLL];
     }
 
     else
     {
-      if (v10)
+      if (fromValue)
       {
-        v15 = [a5 valueForKeyPath:v9];
+        v15 = [modelObject valueForKeyPath:v9];
         goto LABEL_17;
       }
 
-      if (!v11)
+      if (!toValue)
       {
-        if (!v12)
+        if (!byValue)
         {
           return;
         }
 
-        v14 = [a4 valueForKeyPath:v9];
-        v10 = v14;
+        v14 = [object valueForKeyPath:v9];
+        fromValue = v14;
         goto LABEL_9;
       }
 
-      v16 = [a4 valueForKeyPath:v9];
+      v16 = [object valueForKeyPath:v9];
     }
 
-    v10 = v16;
+    fromValue = v16;
     if (!v16)
     {
       return;
@@ -146,31 +146,31 @@
     goto LABEL_19;
   }
 
-  v14 = v10;
+  v14 = fromValue;
 LABEL_9:
   v15 = [(objc_object *)v14 CA_addValue:v13 multipliedBy:1];
 LABEL_17:
-  v11 = v15;
+  toValue = v15;
 LABEL_18:
-  if (!v10)
+  if (!fromValue)
   {
     return;
   }
 
 LABEL_19:
-  if (!v11)
+  if (!toValue)
   {
     return;
   }
 
   v17 = v43[0];
-  v18 = v10;
+  v18 = fromValue;
   if (v43[0] <= 0.0)
   {
     goto LABEL_30;
   }
 
-  v18 = v11;
+  v18 = toValue;
   if (v43[0] >= 1.0)
   {
     goto LABEL_30;
@@ -183,13 +183,13 @@ LABEL_19:
   v22 = v21;
   [(CABasicAnimation *)self endAngle];
   v24 = v23;
-  if (v22 != 0.0 || v23 != 0.0) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (v25 = [(objc_object *)v10 objCType]) != 0 && !strcmp(v25, "{CGPoint=dd}"))
+  if (v22 != 0.0 || v23 != 0.0) && (objc_opt_class(), (objc_opt_isKindOfClass()) && (v25 = [(objc_object *)fromValue objCType]) != 0 && !strcmp(v25, "{CGPoint=dd}"))
   {
-    v29 = [(objc_object *)v10 objCType];
+    objCType = [(objc_object *)fromValue objCType];
     v30 = MEMORY[0x1E696AA78];
-    if (v29 && !strcmp(v29, "{CGPoint=dd}"))
+    if (objCType && !strcmp(objCType, "{CGPoint=dd}"))
     {
-      [(objc_object *)v10 pointValue];
+      [(objc_object *)fromValue pointValue];
       v31.f64[1] = v32;
     }
 
@@ -198,10 +198,10 @@ LABEL_19:
       v31 = *v30;
     }
 
-    v33 = [(objc_object *)v11 objCType];
-    if (v33 && !strcmp(v33, "{CGPoint=dd}"))
+    objCType2 = [(objc_object *)toValue objCType];
+    if (objCType2 && !strcmp(objCType2, "{CGPoint=dd}"))
     {
-      [(objc_object *)v11 pointValue];
+      [(objc_object *)toValue pointValue];
       v37.f64[0] = v38;
       v37.f64[1] = v39;
     }
@@ -219,13 +219,13 @@ LABEL_19:
   else
   {
     *&v23 = v20;
-    v18 = [(objc_object *)v10 CA_interpolateValue:v11 byFraction:v23];
+    v18 = [(objc_object *)fromValue CA_interpolateValue:toValue byFraction:v23];
     if (![(CABasicAnimation *)self roundsToInteger])
     {
       goto LABEL_30;
     }
 
-    v26 = [(objc_object *)v18 CA_roundToIntegerFromValue:v10];
+    v26 = [(objc_object *)v18 CA_roundToIntegerFromValue:fromValue];
   }
 
   v18 = v26;
@@ -234,29 +234,29 @@ LABEL_30:
   {
     if ([(CAAnimation *)self autoreverses])
     {
-      v27 = v10;
+      v27 = fromValue;
     }
 
     else
     {
-      v27 = v11;
+      v27 = toValue;
     }
 
     v18 = [(objc_object *)v18 CA_addValue:v27 multipliedBy:v42];
   }
 
-  v28 = [(CAPropertyAnimation *)self valueFunction];
-  if (v28)
+  valueFunction = [(CAPropertyAnimation *)self valueFunction];
+  if (valueFunction)
   {
-    v18 = applyValueFunction(v28, v18, &self->super, a4);
+    v18 = applyValueFunction(valueFunction, v18, &self->super, object);
   }
 
   if ([(CAPropertyAnimation *)self isAdditive])
   {
-    v18 = [objc_msgSend(a4 valueForKeyPath:{v9), "CA_addValue:multipliedBy:", v18, 1}];
+    v18 = [objc_msgSend(object valueForKeyPath:{v9), "CA_addValue:multipliedBy:", v18, 1}];
   }
 
-  [a4 setValue:v18 forKeyPath:v9];
+  [object setValue:v18 forKeyPath:v9];
 }
 
 - (void)setByValue:(id)byValue
@@ -280,7 +280,7 @@ LABEL_30:
   CAAnimation_setter(self, 0x113, 2, v3);
 }
 
-- (void)_copyRenderAnimationForLayer:(id)a3
+- (void)_copyRenderAnimationForLayer:(id)layer
 {
   if (x_malloc_get_zone::once != -1)
   {
@@ -307,7 +307,7 @@ LABEL_30:
     *(v5 + 3) = 5;
     ++dword_1ED4EAA4C;
     *v5 = &unk_1EF202EB8;
-    if (![(CABasicAnimation *)self _setCARenderAnimation:v5 layer:a3])
+    if (![(CABasicAnimation *)self _setCARenderAnimation:v5 layer:layer])
     {
       if (atomic_fetch_add(v6 + 2, 0xFFFFFFFF) == 1)
       {
@@ -320,53 +320,53 @@ LABEL_30:
 
   else
   {
-    [(CABasicAnimation *)self _setCARenderAnimation:0 layer:a3];
+    [(CABasicAnimation *)self _setCARenderAnimation:0 layer:layer];
   }
 
   return v6;
 }
 
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer
 {
   v21 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = CABasicAnimation;
-  v6 = [(CAPropertyAnimation *)&v20 _setCARenderAnimation:a3 layer:a4];
+  v6 = [(CAPropertyAnimation *)&v20 _setCARenderAnimation:animation layer:layer];
   if (v6)
   {
-    v7 = [(CABasicAnimation *)self fromValue];
-    if (v7)
+    fromValue = [(CABasicAnimation *)self fromValue];
+    if (fromValue)
     {
-      v8 = [v7 CA_copyRenderValue];
-      CA::Render::BasicAnimation0::set_from(a3, v8);
-      if (v8)
+      cA_copyRenderValue = [fromValue CA_copyRenderValue];
+      CA::Render::BasicAnimation0::set_from(animation, cA_copyRenderValue);
+      if (cA_copyRenderValue)
       {
-        if (atomic_fetch_add(v8 + 2, 0xFFFFFFFF) == 1)
+        if (atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF) == 1)
         {
-          (*(*v8 + 16))(v8);
+          (*(*cA_copyRenderValue + 16))(cA_copyRenderValue);
         }
       }
     }
 
-    v9 = [(CABasicAnimation *)self toValue];
-    if (v9)
+    toValue = [(CABasicAnimation *)self toValue];
+    if (toValue)
     {
-      v10 = [v9 CA_copyRenderValue];
-      v11 = *(a3 + 15);
-      if (v11 != v10)
+      cA_copyRenderValue2 = [toValue CA_copyRenderValue];
+      v11 = *(animation + 15);
+      if (v11 != cA_copyRenderValue2)
       {
         if (v11 && atomic_fetch_add(v11 + 2, 0xFFFFFFFF) == 1)
         {
           (*(*v11 + 16))(v11);
         }
 
-        if (v10)
+        if (cA_copyRenderValue2)
         {
-          v12 = v10;
-          if (!atomic_fetch_add(v10 + 2, 1u))
+          v12 = cA_copyRenderValue2;
+          if (!atomic_fetch_add(cA_copyRenderValue2 + 2, 1u))
           {
             v12 = 0;
-            atomic_fetch_add(v10 + 2, 0xFFFFFFFF);
+            atomic_fetch_add(cA_copyRenderValue2 + 2, 0xFFFFFFFF);
           }
         }
 
@@ -375,34 +375,34 @@ LABEL_30:
           v12 = 0;
         }
 
-        *(a3 + 15) = v12;
+        *(animation + 15) = v12;
       }
 
-      if (v10 && atomic_fetch_add(v10 + 2, 0xFFFFFFFF) == 1)
+      if (cA_copyRenderValue2 && atomic_fetch_add(cA_copyRenderValue2 + 2, 0xFFFFFFFF) == 1)
       {
-        (*(*v10 + 16))(v10);
+        (*(*cA_copyRenderValue2 + 16))(cA_copyRenderValue2);
       }
     }
 
-    v13 = [(CABasicAnimation *)self byValue];
-    if (v13)
+    byValue = [(CABasicAnimation *)self byValue];
+    if (byValue)
     {
-      v14 = [v13 CA_copyRenderValue];
-      v15 = *(a3 + 16);
-      if (v15 != v14)
+      cA_copyRenderValue3 = [byValue CA_copyRenderValue];
+      v15 = *(animation + 16);
+      if (v15 != cA_copyRenderValue3)
       {
         if (v15 && atomic_fetch_add(v15 + 2, 0xFFFFFFFF) == 1)
         {
           (*(*v15 + 16))(v15);
         }
 
-        if (v14)
+        if (cA_copyRenderValue3)
         {
-          v16 = v14;
-          if (!atomic_fetch_add(v14 + 2, 1u))
+          v16 = cA_copyRenderValue3;
+          if (!atomic_fetch_add(cA_copyRenderValue3 + 2, 1u))
           {
             v16 = 0;
-            atomic_fetch_add(v14 + 2, 0xFFFFFFFF);
+            atomic_fetch_add(cA_copyRenderValue3 + 2, 0xFFFFFFFF);
           }
         }
 
@@ -411,57 +411,57 @@ LABEL_30:
           v16 = 0;
         }
 
-        *(a3 + 16) = v16;
+        *(animation + 16) = v16;
       }
 
-      if (v14 && atomic_fetch_add(v14 + 2, 0xFFFFFFFF) == 1)
+      if (cA_copyRenderValue3 && atomic_fetch_add(cA_copyRenderValue3 + 2, 0xFFFFFFFF) == 1)
       {
-        (*(*v14 + 16))(v14);
+        (*(*cA_copyRenderValue3 + 16))(cA_copyRenderValue3);
       }
     }
 
     if ([(CABasicAnimation *)self roundsToInteger])
     {
-      *(a3 + 3) |= 0x2000000u;
+      *(animation + 3) |= 0x2000000u;
     }
 
     [(CABasicAnimation *)self startAngle];
     if (v17 != 0.0)
     {
-      *(a3 + 17) = v17;
+      *(animation + 17) = v17;
     }
 
     [(CABasicAnimation *)self endAngle];
     if (v18 != 0.0)
     {
-      *(a3 + 18) = v18;
+      *(animation + 18) = v18;
     }
   }
 
   return v6;
 }
 
-- (void)setEndAngle:(double)a3
+- (void)setEndAngle:(double)angle
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  angleCopy = angle;
+  v4 = angleCopy;
   CAAnimation_setter(self, 0xEC, 17, &v4);
 }
 
-- (void)setStartAngle:(double)a3
+- (void)setStartAngle:(double)angle
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  angleCopy = angle;
+  v4 = angleCopy;
   CAAnimation_setter(self, 0x2AA, 17, &v4);
 }
 
-- (void)setRoundsToInteger:(BOOL)a3
+- (void)setRoundsToInteger:(BOOL)integer
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0x26B, 6, &v3);
+  integerCopy = integer;
+  CAAnimation_setter(self, 0x26B, 6, &integerCopy);
 }
 
 @end

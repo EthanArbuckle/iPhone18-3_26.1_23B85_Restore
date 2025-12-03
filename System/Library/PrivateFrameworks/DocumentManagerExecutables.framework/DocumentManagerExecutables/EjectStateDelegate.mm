@@ -9,7 +9,7 @@
 - (void)ejectionStateDidChange
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC26DocumentManagerExecutablesP33_3BE26F1974CD6E1EBDD377CC4F0D2DE918EjectStateDelegate_stateDidChange);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 

@@ -1,11 +1,11 @@
 @interface AXPointerControllerZoomOptionsController
 + (id)currentZoomStyleTitle;
-+ (id)localizedDescriptionForPanningStyle:(unint64_t)a3;
-+ (id)localizedTitleForPanningStyle:(unint64_t)a3;
++ (id)localizedDescriptionForPanningStyle:(unint64_t)style;
++ (id)localizedTitleForPanningStyle:(unint64_t)style;
 + (unint64_t)currentZoomPanningStyle;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AXPointerControllerZoomOptionsController
@@ -45,62 +45,62 @@
 
 + (id)currentZoomStyleTitle
 {
-  v3 = [a1 currentZoomPanningStyle];
+  currentZoomPanningStyle = [self currentZoomPanningStyle];
 
-  return [a1 localizedTitleForPanningStyle:v3];
+  return [self localizedTitleForPanningStyle:currentZoomPanningStyle];
 }
 
 + (unint64_t)currentZoomPanningStyle
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 laserZoomPanningStyle];
+  laserZoomPanningStyle = [v2 laserZoomPanningStyle];
 
-  return v3;
+  return laserZoomPanningStyle;
 }
 
-+ (id)localizedTitleForPanningStyle:(unint64_t)a3
++ (id)localizedTitleForPanningStyle:(unint64_t)style
 {
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    a1 = settingsLocString(*(&off_258C70 + a3), @"Accessibility-hello");
+    self = settingsLocString(*(&off_258C70 + style), @"Accessibility-hello");
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)localizedDescriptionForPanningStyle:(unint64_t)a3
++ (id)localizedDescriptionForPanningStyle:(unint64_t)style
 {
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    a1 = settingsLocString(*(&off_258C88 + a3), @"Accessibility-hello");
+    self = settingsLocString(*(&off_258C88 + style), @"Accessibility-hello");
   }
 
-  return a1;
+  return self;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = AXPointerControllerZoomOptionsController;
-  v6 = a4;
-  v7 = [(AXPointerControllerZoomOptionsController *)&v10 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(AXPointerControllerZoomOptionsController *)self _panningStyleForIndexPath:v6, v10.receiver, v10.super_class];
+  pathCopy = path;
+  v7 = [(AXPointerControllerZoomOptionsController *)&v10 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(AXPointerControllerZoomOptionsController *)self _panningStyleForIndexPath:pathCopy, v10.receiver, v10.super_class];
 
   [v7 setChecked:{v8 == objc_msgSend(objc_opt_class(), "currentZoomPanningStyle")}];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXPointerControllerZoomOptionsController *)self _panningStyleForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(AXPointerControllerZoomOptionsController *)self _panningStyleForIndexPath:pathCopy];
   v9 = +[AXSettings sharedInstance];
   [v9 setLaserZoomPanningStyle:v8];
 
-  [(AXPointerControllerZoomOptionsController *)self updateTableCheckedSelection:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [(AXPointerControllerZoomOptionsController *)self updateTableCheckedSelection:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
   v11 = [(AXPointerControllerZoomOptionsController *)self specifierForID:@"kAXZoomGroupSpecifierId"];
   v10 = [objc_opt_class() localizedDescriptionForPanningStyle:v8];

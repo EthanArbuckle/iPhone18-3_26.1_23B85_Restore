@@ -1,14 +1,14 @@
 @interface PNSpatial3DGeneratorUtils
-+ (BOOL)hasSpatial3DWidgetResourceForAsset:(id)a3;
-+ (void)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
++ (BOOL)hasSpatial3DWidgetResourceForAsset:(id)asset;
++ (void)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
 @end
 
 @implementation PNSpatial3DGeneratorUtils
 
-+ (BOOL)hasSpatial3DWidgetResourceForAsset:(id)a3
++ (BOOL)hasSpatial3DWidgetResourceForAsset:(id)asset
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69786D8] assetResourcesForAsset:a3 includeDerivatives:1];
+  v3 = [MEMORY[0x1E69786D8] assetResourcesForAsset:asset includeDerivatives:1];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -49,22 +49,22 @@
   return v6 & 1;
 }
 
-+ (void)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
++ (void)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a7;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   v13 = MEMORY[0x1E6978860];
-  v14 = a6;
-  v15 = a3;
-  v16 = [v13 defaultManager];
+  optionsCopy = options;
+  assetCopy = asset;
+  defaultManager = [v13 defaultManager];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __95__PNSpatial3DGeneratorUtils_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   v18[3] = &unk_1E82A1CC0;
-  v19 = v12;
-  v17 = v12;
-  [v16 requestNewCGImageForAsset:v15 targetSize:a5 contentMode:v14 options:v18 resultHandler:{width, height}];
+  v19 = handlerCopy;
+  v17 = handlerCopy;
+  [defaultManager requestNewCGImageForAsset:assetCopy targetSize:mode contentMode:optionsCopy options:v18 resultHandler:{width, height}];
 }
 
 void __95__PNSpatial3DGeneratorUtils_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke(uint64_t a1, const void *a2, void *a3)

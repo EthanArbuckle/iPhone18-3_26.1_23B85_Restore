@@ -1,19 +1,19 @@
 @interface UIIndexBarVisualStyle_LegacyiOS
 - (BOOL)canBecomeFocused;
-- (BOOL)updateSectionForTouch:(id)a3 withEvent:(id)a4;
-- (CGRect)_visibleBoundsForRect:(CGRect)a3 stride:(double *)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UIIndexBarVisualStyle_LegacyiOS)initWithView:(id)a3;
+- (BOOL)updateSectionForTouch:(id)touch withEvent:(id)event;
+- (CGRect)_visibleBoundsForRect:(CGRect)rect stride:(double *)stride;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UIIndexBarVisualStyle_LegacyiOS)initWithView:(id)view;
 - (double)_lineSpacingForCurrentIdiom;
 - (double)indexWidth;
 - (double)lineSpacing;
 - (double)minLineHeight;
-- (double)renderingHeightForDisplayEntry:(id)a3;
+- (double)renderingHeightForDisplayEntry:(id)entry;
 - (double)trackingChangeHysteresis;
-- (id)displayEntryFromEntry:(id)a3;
+- (id)displayEntryFromEntry:(id)entry;
 - (id)font;
 - (void)displayEntriesUpdated;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)indexColorUpdated;
 - (void)sizeUpdated;
 @end
@@ -22,10 +22,10 @@
 
 - (double)indexWidth
 {
-  v2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v3 = [v2 traitCollection];
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  traitCollection = [indexBarView traitCollection];
 
-  v4 = _UIDefaultIndexBarWidthForTraitCollection(v3);
+  v4 = _UIDefaultIndexBarWidthForTraitCollection(traitCollection);
   return v4;
 }
 
@@ -34,29 +34,29 @@
   v2 = *MEMORY[0x1E695F060];
   self->_cachedSizeToFit = *MEMORY[0x1E695F060];
   self->_cachedSize = v2;
-  v3 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  [v3 setNeedsDisplay];
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  [indexBarView setNeedsDisplay];
 }
 
 - (void)displayEntriesUpdated
 {
   self->_cachedSizeToFit = *MEMORY[0x1E695F060];
-  v2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  [v2 setNeedsDisplay];
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  [indexBarView setNeedsDisplay];
 }
 
 - (double)minLineHeight
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v4 = [v3 traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  traitCollection = [indexBarView traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 == 3)
+  if (userInterfaceIdiom == 3)
   {
     [(UIIndexBarVisualStyle_LegacyiOS *)self _lineSpacingForCurrentIdiom];
-    v6 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-    UIRoundToViewScale(v6);
+    indexBarView2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+    UIRoundToViewScale(indexBarView2);
     v8 = v7;
 
     return v8;
@@ -68,8 +68,8 @@
     if (verticalTextHeightEstimate == 0.0)
     {
       v17 = *off_1E70EC918;
-      v11 = [(UIIndexBarVisualStyle_LegacyiOS *)self font];
-      v18[0] = v11;
+      font = [(UIIndexBarVisualStyle_LegacyiOS *)self font];
+      v18[0] = font;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
 
       v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:0x1EFBB7A10 attributes:v12];
@@ -92,9 +92,9 @@
 
 - (id)font
 {
-  v2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v3 = [v2 traitCollection];
-  [v3 userInterfaceIdiom];
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  traitCollection = [indexBarView traitCollection];
+  [traitCollection userInterfaceIdiom];
 
   v4 = [off_1E70ECC18 boldSystemFontOfSize:11.0];
 
@@ -103,16 +103,16 @@
 
 - (double)_lineSpacingForCurrentIdiom
 {
-  v2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  traitCollection = [indexBarView traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   v5 = 6.0;
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v5 = 9.0;
   }
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v6 = 16.0;
   }
@@ -127,16 +127,16 @@
 
 - (double)lineSpacing
 {
-  v2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  traitCollection = [indexBarView traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   v5 = 6.0;
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v5 = 9.0;
   }
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v6 = 16.0;
   }
@@ -151,48 +151,48 @@
 
 - (void)indexColorUpdated
 {
-  v2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  [v2 setNeedsDisplay];
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  [indexBarView setNeedsDisplay];
 }
 
-- (UIIndexBarVisualStyle_LegacyiOS)initWithView:(id)a3
+- (UIIndexBarVisualStyle_LegacyiOS)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = UIIndexBarVisualStyle_LegacyiOS;
-  v5 = [(UIIndexBarVisualStyle_Base *)&v8 initWithView:v4];
+  v5 = [(UIIndexBarVisualStyle_Base *)&v8 initWithView:viewCopy];
   if (v5)
   {
-    [v4 setOpaque:0];
-    [v4 setDeliversTouchesForGesturesToSuperview:0];
-    [v4 setExclusiveTouch:1];
+    [viewCopy setOpaque:0];
+    [viewCopy setDeliversTouchesForGesturesToSuperview:0];
+    [viewCopy setExclusiveTouch:1];
     v6 = *MEMORY[0x1E695F060];
     v5->_cachedSize = *MEMORY[0x1E695F060];
     v5->_cachedSizeToFit = v6;
-    [v4 setClipsToBounds:0];
-    [v4 setBackgroundColor:0];
+    [viewCopy setClipsToBounds:0];
+    [viewCopy setBackgroundColor:0];
   }
 
   return v5;
 }
 
-- (id)displayEntryFromEntry:(id)a3
+- (id)displayEntryFromEntry:(id)entry
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entryCopy = entry;
   v5 = objc_alloc_init(UIIndexBarDisplayEntry_LegacyIOS);
-  [(UIIndexBarDisplayEntry *)v5 setEntry:v4];
-  v6 = [v4 type];
-  if (v6 > 1)
+  [(UIIndexBarDisplayEntry *)v5 setEntry:entryCopy];
+  type = [entryCopy type];
+  if (type > 1)
   {
-    if (v6 == 2)
+    if (type == 2)
     {
       v9 = @"UISectionListPoundSign";
     }
 
     else
     {
-      if (v6 != 3)
+      if (type != 3)
       {
         goto LABEL_12;
       }
@@ -200,24 +200,24 @@
       v9 = @"UITableViewIndexSearchGlyph";
     }
 
-    v7 = _UIImageWithName(v9);
-    [(UIIndexBarDisplayEntry_LegacyIOS *)v5 setImage:v7];
+    indexBarView = _UIImageWithName(v9);
+    [(UIIndexBarDisplayEntry_LegacyIOS *)v5 setImage:indexBarView];
   }
 
   else
   {
-    if (!v6)
+    if (!type)
     {
       v22[0] = *off_1E70EC918;
-      v10 = [(UIIndexBarVisualStyle_LegacyiOS *)self font];
+      font = [(UIIndexBarVisualStyle_LegacyiOS *)self font];
       v22[1] = *MEMORY[0x1E69659E0];
-      v23[0] = v10;
+      v23[0] = font;
       v23[1] = *MEMORY[0x1E695E4D0];
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
 
       v12 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v13 = [v4 title];
-      v14 = [v12 initWithString:v13 attributes:v11];
+      title = [entryCopy title];
+      v14 = [v12 initWithString:title attributes:v11];
 
       v15 = CTLineCreateWithAttributedString(v14);
       [(UIIndexBarDisplayEntry_LegacyIOS *)v5 setLine:v15];
@@ -230,20 +230,20 @@
       goto LABEL_12;
     }
 
-    if (v6 != 1)
+    if (type != 1)
     {
       goto LABEL_12;
     }
 
-    v7 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-    v8 = [UIIndexBarEntry _dotImageInView:v7];
+    indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+    v8 = [UIIndexBarEntry _dotImageInView:indexBarView];
     [(UIIndexBarDisplayEntry_LegacyIOS *)v5 setImage:v8];
   }
 
   v16 = *MEMORY[0x1E695EFF8];
   v17 = *(MEMORY[0x1E695EFF8] + 8);
-  v18 = [v4 image];
-  [v18 size];
+  image = [entryCopy image];
+  [image size];
   [(UIIndexBarDisplayEntry_LegacyIOS *)v5 setBounds:v16, v17, v19, v20];
 
   [(UIIndexBarDisplayEntry_LegacyIOS *)v5 bounds];
@@ -253,36 +253,36 @@ LABEL_12:
   return v5;
 }
 
-- (double)renderingHeightForDisplayEntry:(id)a3
+- (double)renderingHeightForDisplayEntry:(id)entry
 {
-  [a3 typeBounds];
+  [entry typeBounds];
 
   return CGRectGetHeight(*&v3);
 }
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v4 = [v3 traitCollection];
-  if ([v4 userInterfaceIdiom] == 3)
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  traitCollection = [indexBarView traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
-    v5 = 0;
+    canBecomeFocused = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIIndexBarVisualStyle_LegacyiOS;
-    v5 = [(UIIndexBarVisualStyle_Base *)&v7 canBecomeFocused];
+    canBecomeFocused = [(UIIndexBarVisualStyle_Base *)&v7 canBecomeFocused];
   }
 
-  return v5;
+  return canBecomeFocused;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v36 = *MEMORY[0x1E69E9840];
   p_cachedSize = &self->_cachedSize;
   v7 = self->_cachedSize.width;
@@ -294,10 +294,10 @@ LABEL_12:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-    v12 = [v11 displayEntries];
+    indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+    displayEntries = [indexBarView displayEntries];
 
-    v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v13 = [displayEntries countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v13)
     {
       v14 = v13;
@@ -310,7 +310,7 @@ LABEL_12:
         {
           if (*v32 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(displayEntries);
           }
 
           v19 = *(*(&v31 + 1) + 8 * i);
@@ -328,7 +328,7 @@ LABEL_12:
           v16 = v16 + v21 + v23 + v23;
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v14 = [displayEntries countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v14);
@@ -343,8 +343,8 @@ LABEL_12:
     self->_bottomPadding = v26;
     self->_topPadding = v26;
     [(UIIndexBarVisualStyle_LegacyiOS *)self indexWidth];
-    v27 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-    UICeilToViewScale(v27);
+    indexBarView2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+    UICeilToViewScale(indexBarView2);
     v29 = v28;
 
     if (v29 > width)
@@ -372,20 +372,20 @@ LABEL_12:
 
 - (double)trackingChangeHysteresis
 {
-  v3 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v4 = [v3 traitCollection];
-  if ([v4 userInterfaceIdiom] == 1)
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  traitCollection = [indexBarView traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
   }
 
   else
   {
-    v5 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-    v6 = [v5 traitCollection];
-    v7 = [v6 userInterfaceIdiom];
+    indexBarView2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+    traitCollection2 = [indexBarView2 traitCollection];
+    userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
     result = 0.0;
-    if (v7)
+    if (userInterfaceIdiom)
     {
       return result;
     }
@@ -394,16 +394,16 @@ LABEL_12:
   return 11.0;
 }
 
-- (CGRect)_visibleBoundsForRect:(CGRect)a3 stride:(double *)a4
+- (CGRect)_visibleBoundsForRect:(CGRect)rect stride:(double *)stride
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v46 = *MEMORY[0x1E69E9840];
-  v10 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v11 = [v10 displayEntries];
-  v12 = [v11 count];
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  displayEntries = [indexBarView displayEntries];
+  v12 = [displayEntries count];
 
   if (v12)
   {
@@ -413,10 +413,10 @@ LABEL_12:
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v15 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-    v16 = [v15 displayEntries];
+    indexBarView2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+    displayEntries2 = [indexBarView2 displayEntries];
 
-    v17 = [v16 countByEnumeratingWithState:&v41 objects:v45 count:16];
+    v17 = [displayEntries2 countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v17)
     {
       v18 = v17;
@@ -428,16 +428,16 @@ LABEL_12:
         {
           if (*v42 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(displayEntries2);
           }
 
           [*(*(&v41 + 1) + 8 * i) typeBounds];
-          v22 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-          UIRoundToViewScale(v22);
+          indexBarView3 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+          UIRoundToViewScale(indexBarView3);
           v20 = v20 + v23;
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v41 objects:v45 count:16];
+        v18 = [displayEntries2 countByEnumeratingWithState:&v41 objects:v45 count:16];
       }
 
       while (v18);
@@ -448,15 +448,15 @@ LABEL_12:
       v20 = 0.0;
     }
 
-    v26 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-    v27 = [v26 displayEntries];
-    v28 = [v27 count];
+    indexBarView4 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+    displayEntries3 = [indexBarView4 displayEntries];
+    v28 = [displayEntries3 count];
 
     v29 = v28 - 1;
     v30 = v20 + v14 * (v28 - 1);
-    v31 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-    v32 = [v31 displayEntries];
-    v33 = [v32 objectAtIndexedSubscript:v29];
+    indexBarView5 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+    displayEntries4 = [indexBarView5 displayEntries];
+    v33 = [displayEntries4 objectAtIndexedSubscript:v29];
 
     [v33 typeBounds];
     v25 = v30 - v34;
@@ -470,13 +470,13 @@ LABEL_12:
     v48.size.width = width;
     v48.size.height = height;
     CGRectGetHeight(v48);
-    v35 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-    UIRoundToViewScale(v35);
+    indexBarView6 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+    UIRoundToViewScale(indexBarView6);
     v24 = v36;
 
-    if (a4)
+    if (stride)
     {
-      *a4 = v14;
+      *stride = v14;
     }
   }
 
@@ -499,9 +499,9 @@ LABEL_12:
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(UIIndexBarVisualStyle_Base *)self indexBarView:a3.origin.x];
+  v4 = [(UIIndexBarVisualStyle_Base *)self indexBarView:rect.origin.x];
   [v4 effectiveBounds];
   v6 = v5;
   v8 = v7;
@@ -519,17 +519,17 @@ LABEL_12:
     v14 = ContextStack[3 * (*ContextStack - 1) + 1];
   }
 
-  v15 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v16 = [v15 backgroundColor];
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  backgroundColor = [indexBarView backgroundColor];
 
-  if (v16)
+  if (backgroundColor)
   {
     goto LABEL_5;
   }
 
-  v16 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v17 = [v16 traitCollection];
-  if ([v17 userInterfaceIdiom] == 3)
+  backgroundColor = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  traitCollection = [backgroundColor traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 3)
   {
 
     goto LABEL_8;
@@ -542,9 +542,9 @@ LABEL_12:
     v63 = [UIColor colorWithWhite:1.0 alpha:0.9];
     if (v63)
     {
-      v16 = v63;
+      backgroundColor = v63;
 LABEL_5:
-      [v16 set];
+      [backgroundColor set];
       v67.origin.x = v6;
       v67.origin.y = v8;
       v67.size.width = v10;
@@ -560,34 +560,34 @@ LABEL_8:
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v27 = [v26 indexColor];
+  indexBarView2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  indexColor = [indexBarView2 indexColor];
 
-  [v27 set];
-  v28 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v29 = [v28 displayEntries];
-  v30 = [v29 count];
+  [indexColor set];
+  indexBarView3 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  displayEntries = [indexBarView3 displayEntries];
+  v30 = [displayEntries count];
 
   if (v30)
   {
     for (i = 0; i != v30; ++i)
     {
-      v32 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-      v33 = [v32 displayEntries];
-      v34 = [v33 objectAtIndexedSubscript:i];
+      indexBarView4 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+      displayEntries2 = [indexBarView4 displayEntries];
+      v34 = [displayEntries2 objectAtIndexedSubscript:i];
 
       [v34 bounds];
       v36 = v35;
       v38 = v37;
       v40 = v39;
       v42 = v41;
-      [(UIIndexBarVisualStyle_LegacyiOS *)self willDrawEntryAtIndex:i indexBounds:v14 entryBounds:v27 context:v19 originalColor:v21, v23, v25, v35, v37, v39, v41];
-      v43 = [v34 image];
+      [(UIIndexBarVisualStyle_LegacyiOS *)self willDrawEntryAtIndex:i indexBounds:v14 entryBounds:indexColor context:v19 originalColor:v21, v23, v25, v35, v37, v39, v41];
+      image = [v34 image];
 
-      if (v43)
+      if (image)
       {
-        v44 = [v34 image];
-        v45 = [v44 imageWithTintColor:v27 renderingMode:1];
+        image2 = [v34 image];
+        v45 = [image2 imageWithTintColor:indexColor renderingMode:1];
 
         v68.origin.x = v19;
         v68.origin.y = v21;
@@ -601,16 +601,16 @@ LABEL_8:
         v69.size.width = v23;
         v69.size.height = v25;
         CGRectGetWidth(v69);
-        v47 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-        UIRoundToViewScale(v47);
+        indexBarView5 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+        UIRoundToViewScale(indexBarView5);
         v49 = v48;
         v70.origin.x = v19;
         v70.origin.y = v21;
         v70.size.width = v23;
         v70.size.height = v25;
         CGRectGetMinY(v70);
-        v50 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-        UIRoundToViewScale(v50);
+        indexBarView6 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+        UIRoundToViewScale(indexBarView6);
         v52 = v51;
 
         v53 = v49;
@@ -623,9 +623,9 @@ LABEL_8:
 
       else
       {
-        v54 = [v34 line];
+        line = [v34 line];
 
-        if (v54)
+        if (line)
         {
           CGContextSaveGState(v14);
           v71.origin.x = v19;
@@ -639,8 +639,8 @@ LABEL_8:
           v72.size.width = v23;
           v72.size.height = v25;
           CGRectGetWidth(v72);
-          v55 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-          UIRoundToViewScale(v55);
+          indexBarView7 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+          UIRoundToViewScale(indexBarView7);
           v57 = v56;
           v73.origin.x = v19;
           v73.origin.y = v21;
@@ -648,8 +648,8 @@ LABEL_8:
           v73.size.height = v25;
           CGRectGetMinY(v73);
           [v34 typeBounds];
-          v58 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-          UIRoundToViewScale(v58);
+          indexBarView8 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+          UIRoundToViewScale(indexBarView8);
           v60 = v59;
 
           v65.b = 0.0;
@@ -660,39 +660,39 @@ LABEL_8:
           v65.ty = v60;
           v36 = v64;
           CGContextSetTextMatrix(v14, &v65);
-          v61 = [v34 line];
-          CTLineDraw(v61, v14);
+          line2 = [v34 line];
+          CTLineDraw(line2, v14);
 
           CGContextRestoreGState(v14);
           v25 = v60 - v21;
         }
       }
 
-      [(UIIndexBarVisualStyle_LegacyiOS *)self didDrawEntryAtIndex:i indexBounds:v14 entryBounds:v27 context:v19 originalColor:v21, v23, v25, v36, v38, v40, v42, *&v64];
+      [(UIIndexBarVisualStyle_LegacyiOS *)self didDrawEntryAtIndex:i indexBounds:v14 entryBounds:indexColor context:v19 originalColor:v21, v23, v25, v36, v38, v40, v42, *&v64];
       v21 = v21 + v25 + v66;
     }
   }
 }
 
-- (BOOL)updateSectionForTouch:(id)a3 withEvent:(id)a4
+- (BOOL)updateSectionForTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  [v6 effectiveBounds];
+  touchCopy = touch;
+  indexBarView = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  [indexBarView effectiveBounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  [v5 locationInView:v15];
+  indexBarView2 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  [touchCopy locationInView:indexBarView2];
   v17 = v16;
   v19 = v18;
 
-  v20 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-  v21 = [v20 entries];
+  indexBarView3 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+  entries = [indexBarView3 entries];
 
-  if ([v21 count] >= 1)
+  if ([entries count] >= 1)
   {
     v22 = [(UIIndexBarVisualStyle_Base *)self _indexForEntryAtPoint:v17, v19];
     v26.origin.x = v8;
@@ -707,9 +707,9 @@ LABEL_8:
       v27.size.height = v14;
       if (v19 <= CGRectGetMaxY(v27) && v22 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v23 = [v21 objectAtIndexedSubscript:v22];
-        v24 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
-        [v24 _didSelectEntry:v23 atIndex:v22 location:{v17, v19}];
+        v23 = [entries objectAtIndexedSubscript:v22];
+        indexBarView4 = [(UIIndexBarVisualStyle_Base *)self indexBarView];
+        [indexBarView4 _didSelectEntry:v23 atIndex:v22 location:{v17, v19}];
       }
     }
   }

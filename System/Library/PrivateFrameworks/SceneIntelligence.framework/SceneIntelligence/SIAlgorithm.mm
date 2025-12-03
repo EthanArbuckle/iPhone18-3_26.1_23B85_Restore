@@ -1,14 +1,14 @@
 @interface SIAlgorithm
 + (Class)inputDataClass;
 + (Class)outputDataClass;
-+ (id)initWithNetworkConfiguration:(id)a3;
++ (id)initWithNetworkConfiguration:(id)configuration;
 - (CGSize)getInputResolution;
 - (CGSize)getOutputResolution;
-- (SIAlgorithm)initWithNetworkConfiguration:(id)a3;
+- (SIAlgorithm)initWithNetworkConfiguration:(id)configuration;
 - (id)createEmptyInputDataWithExpectedFormat;
-- (int64_t)_runWithInput:(id)a3 output:(id)a4;
-- (int64_t)runWithInput:(id)a3 output:(id)a4 resolutionConfiguration:(int64_t)a5;
-- (int64_t)switchConfiguration:(unint64_t)a3;
+- (int64_t)_runWithInput:(id)input output:(id)output;
+- (int64_t)runWithInput:(id)input output:(id)output resolutionConfiguration:(int64_t)configuration;
+- (int64_t)switchConfiguration:(unint64_t)configuration;
 @end
 
 @implementation SIAlgorithm
@@ -47,15 +47,15 @@
   return 0;
 }
 
-+ (id)initWithNetworkConfiguration:(id)a3
++ (id)initWithNetworkConfiguration:(id)configuration
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 algorithmClassName];
-  v5 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  algorithmClassName = [configurationCopy algorithmClassName];
+  v5 = algorithmClassName;
+  if (algorithmClassName)
   {
-    v6 = [objc_alloc(NSClassFromString(v4)) initWithNetworkConfiguration:v3];
+    v6 = [objc_alloc(NSClassFromString(algorithmClassName)) initWithNetworkConfiguration:configurationCopy];
   }
 
   else
@@ -78,27 +78,27 @@
   return v6;
 }
 
-- (SIAlgorithm)initWithNetworkConfiguration:(id)a3
+- (SIAlgorithm)initWithNetworkConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = SIAlgorithm;
   v6 = [(SIAlgorithm *)&v17 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_networkConfiguration, a3);
+    objc_storeStrong(&v6->_networkConfiguration, configuration);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = [v9 substringToIndex:{objc_msgSend(v9, "length") - 20}];
 
-    v11 = [objc_alloc(NSClassFromString(v10)) initWithNetworkConfiguration:v5];
+    v11 = [objc_alloc(NSClassFromString(v10)) initWithNetworkConfiguration:configurationCopy];
     v12 = p_isa[2];
     p_isa[2] = v11;
 
-    [p_isa[2] setMappingId:{objc_msgSend(v5, "signpostMappingID")}];
-    if (p_isa[2] || ([v5 allowDryRunWithoutModel] & 1) != 0)
+    [p_isa[2] setMappingId:{objc_msgSend(configurationCopy, "signpostMappingID")}];
+    if (p_isa[2] || ([configurationCopy allowDryRunWithoutModel] & 1) != 0)
     {
       v13 = p_isa;
     }
@@ -144,11 +144,11 @@
   return result;
 }
 
-- (int64_t)_runWithInput:(id)a3 output:(id)a4
+- (int64_t)_runWithInput:(id)input output:(id)output
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  outputCopy = output;
   [(SIModel *)self->_model setFrameTimestamp:CFAbsoluteTimeGetCurrent()];
   [objc_opt_class() inputDataClass];
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -158,8 +158,8 @@
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [objc_opt_class() inputDataClass];
-      v13 = NSStringFromClass(v12);
+      inputDataClass = [objc_opt_class() inputDataClass];
+      v13 = NSStringFromClass(inputDataClass);
       v19 = 136381443;
       v20 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIAlgorithm.m";
       v21 = 1025;
@@ -187,8 +187,8 @@ LABEL_11:
     {
       v15 = objc_opt_class();
       v11 = NSStringFromClass(v15);
-      v16 = [objc_opt_class() outputDataClass];
-      v13 = NSStringFromClass(v16);
+      outputDataClass = [objc_opt_class() outputDataClass];
+      v13 = NSStringFromClass(outputDataClass);
       v19 = 136381443;
       v20 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/SIAlgorithm.m";
       v21 = 1025;
@@ -207,7 +207,7 @@ LABEL_11:
   [(SIModel *)self->_model algorithmNameHash];
   [(SIModel *)self->_model mappingId];
   kdebug_trace();
-  v8 = [(SIAlgorithm *)self _preprocessingInputData:v6];
+  v8 = [(SIAlgorithm *)self _preprocessingInputData:inputCopy];
   [(SIModel *)self->_model algorithmNameHash];
   [(SIModel *)self->_model mappingId];
   kdebug_trace();
@@ -216,7 +216,7 @@ LABEL_11:
     [(SIModel *)self->_model algorithmNameHash];
     [(SIModel *)self->_model mappingId];
     kdebug_trace();
-    v8 = [(SIAlgorithm *)self _inferenceWithInput:v6 output:v7];
+    v8 = [(SIAlgorithm *)self _inferenceWithInput:inputCopy output:outputCopy];
     [(SIModel *)self->_model algorithmNameHash];
     [(SIModel *)self->_model mappingId];
     kdebug_trace();
@@ -225,7 +225,7 @@ LABEL_11:
       [(SIModel *)self->_model algorithmNameHash];
       [(SIModel *)self->_model mappingId];
       kdebug_trace();
-      v8 = [(SIAlgorithm *)self _postprocessingOutput:v7];
+      v8 = [(SIAlgorithm *)self _postprocessingOutput:outputCopy];
       [(SIModel *)self->_model algorithmNameHash];
       [(SIModel *)self->_model mappingId];
       kdebug_trace();
@@ -238,17 +238,17 @@ LABEL_12:
   return v8;
 }
 
-- (int64_t)runWithInput:(id)a3 output:(id)a4 resolutionConfiguration:(int64_t)a5
+- (int64_t)runWithInput:(id)input output:(id)output resolutionConfiguration:(int64_t)configuration
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  inputCopy = input;
+  outputCopy = output;
   [(SIModel *)self->_model algorithmNameHash];
   [(SIModel *)self->_model mappingId];
   kdebug_trace();
-  if (a5 < 0 || ([(SIModel *)self->_model algorithmNameHash], [(SIModel *)self->_model mappingId], kdebug_trace(), v10 = [(SIAlgorithm *)self switchConfiguration:a5], [(SIModel *)self->_model algorithmNameHash], [(SIModel *)self->_model mappingId], kdebug_trace(), !v10))
+  if (configuration < 0 || ([(SIModel *)self->_model algorithmNameHash], [(SIModel *)self->_model mappingId], kdebug_trace(), v10 = [(SIAlgorithm *)self switchConfiguration:configuration], [(SIModel *)self->_model algorithmNameHash], [(SIModel *)self->_model mappingId], kdebug_trace(), !v10))
   {
-    v10 = [(SIAlgorithm *)self _runWithInput:v8 output:v9];
+    v10 = [(SIAlgorithm *)self _runWithInput:inputCopy output:outputCopy];
     [(SIModel *)self->_model algorithmNameHash];
     [(SIModel *)self->_model mappingId];
     kdebug_trace();
@@ -271,10 +271,10 @@ LABEL_12:
   return v10;
 }
 
-- (int64_t)switchConfiguration:(unint64_t)a3
+- (int64_t)switchConfiguration:(unint64_t)configuration
 {
   v10 = *MEMORY[0x277D85DE8];
-  result = [(SIModel *)self->_model switchNetworkConfiguration:a3];
+  result = [(SIModel *)self->_model switchNetworkConfiguration:configuration];
   if (result)
   {
     v4 = __SceneIntelligenceLogSharedInstance();

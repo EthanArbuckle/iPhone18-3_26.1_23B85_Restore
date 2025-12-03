@@ -1,81 +1,81 @@
 @interface DemotedApplication
-- (DemotedApplication)initWithApplication:(id)a3;
-- (DemotedApplication)initWithDictionaryRepresentation:(id)a3;
+- (DemotedApplication)initWithApplication:(id)application;
+- (DemotedApplication)initWithDictionaryRepresentation:(id)representation;
 - (NSDictionary)dictionaryRepresentation;
 - (RestoreDownloadItem)restoreDownloadItem;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DemotedApplication
 
-- (DemotedApplication)initWithApplication:(id)a3
+- (DemotedApplication)initWithApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v24.receiver = self;
   v24.super_class = DemotedApplication;
   v5 = [(DemotedApplication *)&v24 init];
   if (v5)
   {
-    v6 = [v4 applicationDSID];
+    applicationDSID = [applicationCopy applicationDSID];
     accountIdentifier = v5->_accountIdentifier;
-    v5->_accountIdentifier = v6;
+    v5->_accountIdentifier = applicationDSID;
 
-    v8 = [v4 downloaderDSID];
+    downloaderDSID = [applicationCopy downloaderDSID];
     downloaderIdentifier = v5->_downloaderIdentifier;
-    v5->_downloaderIdentifier = v8;
+    v5->_downloaderIdentifier = downloaderDSID;
 
-    v10 = [v4 externalVersionIdentifier];
+    externalVersionIdentifier = [applicationCopy externalVersionIdentifier];
     externalVersionIdentifier = v5->_externalVersionIdentifier;
-    v5->_externalVersionIdentifier = v10;
+    v5->_externalVersionIdentifier = externalVersionIdentifier;
 
-    v12 = [v4 familyID];
+    familyID = [applicationCopy familyID];
     familyIdentifier = v5->_familyIdentifier;
-    v5->_familyIdentifier = v12;
+    v5->_familyIdentifier = familyID;
 
-    v14 = [v4 itemID];
+    itemID = [applicationCopy itemID];
     itemIdentifier = v5->_itemIdentifier;
-    v5->_itemIdentifier = v14;
+    v5->_itemIdentifier = itemID;
 
-    v16 = [v4 purchaserDSID];
+    purchaserDSID = [applicationCopy purchaserDSID];
     purchaserIdentifier = v5->_purchaserIdentifier;
-    v5->_purchaserIdentifier = v16;
+    v5->_purchaserIdentifier = purchaserDSID;
 
-    v18 = [v4 storeFront];
+    storeFront = [applicationCopy storeFront];
     storeFrontIdentifier = v5->_storeFrontIdentifier;
-    v5->_storeFrontIdentifier = v18;
+    v5->_storeFrontIdentifier = storeFront;
 
-    v20 = [v4 deviceIdentifierForVendor];
-    v21 = [v20 UUIDString];
+    deviceIdentifierForVendor = [applicationCopy deviceIdentifierForVendor];
+    uUIDString = [deviceIdentifierForVendor UUIDString];
     vendorIdentifier = v5->_vendorIdentifier;
-    v5->_vendorIdentifier = v21;
+    v5->_vendorIdentifier = uUIDString;
   }
 
   return v5;
 }
 
-- (DemotedApplication)initWithDictionaryRepresentation:(id)a3
+- (DemotedApplication)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v15.receiver = self;
   v15.super_class = DemotedApplication;
   v5 = [(DemotedApplication *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"accountId"];
+    v6 = [representationCopy objectForKey:@"accountId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v5->_accountIdentifier, v6);
     }
 
-    v7 = [v4 objectForKey:@"downloaderId"];
+    v7 = [representationCopy objectForKey:@"downloaderId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeStrong(&v5->_downloaderIdentifier, v7);
     }
 
-    v8 = [v4 objectForKey:@"softwareVersionExternalIdentifier"];
+    v8 = [representationCopy objectForKey:@"softwareVersionExternalIdentifier"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -83,7 +83,7 @@
       objc_storeStrong(&v5->_externalVersionIdentifier, v8);
     }
 
-    v9 = [v4 objectForKey:@"familyId"];
+    v9 = [representationCopy objectForKey:@"familyId"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -91,7 +91,7 @@
       objc_storeStrong(&v5->_familyIdentifier, v9);
     }
 
-    v10 = [v4 objectForKey:@"itemId"];
+    v10 = [representationCopy objectForKey:@"itemId"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -99,7 +99,7 @@
       objc_storeStrong(&v5->_itemIdentifier, v10);
     }
 
-    v11 = [v4 objectForKey:@"purchaserId"];
+    v11 = [representationCopy objectForKey:@"purchaserId"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -107,7 +107,7 @@
       objc_storeStrong(&v5->_purchaserIdentifier, v11);
     }
 
-    v12 = [v4 objectForKey:@"s"];
+    v12 = [representationCopy objectForKey:@"s"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -115,7 +115,7 @@
       objc_storeStrong(&v5->_storeFrontIdentifier, v12);
     }
 
-    v13 = [v4 objectForKey:@"vid"];
+    v13 = [representationCopy objectForKey:@"vid"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -188,12 +188,12 @@
   [(RestoreDownloadItem *)v3 setDownloadKind:SSDownloadKindSoftwareApplication];
   [(RestoreDownloadItem *)v3 setHasRestoreData:0];
   [(RestoreDownloadItem *)v3 setRestoreDataSize:0];
-  v4 = [(NSNumber *)self->_storeFrontIdentifier stringValue];
-  [(RestoreDownloadItem *)v3 setStoreFrontID:v4];
+  stringValue = [(NSNumber *)self->_storeFrontIdentifier stringValue];
+  [(RestoreDownloadItem *)v3 setStoreFrontID:stringValue];
 
   [(RestoreDownloadItem *)v3 setStoreItemID:self->_itemIdentifier];
-  v5 = [(NSNumber *)self->_externalVersionIdentifier stringValue];
-  [(RestoreDownloadItem *)v3 setStoreSoftwareVersionID:v5];
+  stringValue2 = [(NSNumber *)self->_externalVersionIdentifier stringValue];
+  [(RestoreDownloadItem *)v3 setStoreSoftwareVersionID:stringValue2];
 
   [(RestoreDownloadItem *)v3 setVendorIdentifier:self->_vendorIdentifier];
   if ([(NSNumber *)self->_familyIdentifier longLongValue])
@@ -211,9 +211,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAccountIdentifier:self->_accountIdentifier];
   [v4 setDownloaderIdentifier:self->_downloaderIdentifier];
   [v4 setExternalVersionIdentifier:self->_externalVersionIdentifier];

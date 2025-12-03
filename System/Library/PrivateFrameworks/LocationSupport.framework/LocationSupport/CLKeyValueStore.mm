@@ -1,20 +1,20 @@
 @interface CLKeyValueStore
 + (id)store;
-+ (id)storeWithDictionary:(id)a3;
-- (BOOL)BOOLForKey:(id)a3 defaultValue:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (CLKeyValueStore)initWithDictionary:(id)a3;
-- (double)doubleForKey:(id)a3 defaultValue:(double)a4;
-- (float)floatForKey:(id)a3 defaultValue:(float)a4;
-- (id)arrayForKey:(id)a3 defaultValue:(id)a4;
-- (id)dataForKey:(id)a3 defaultValue:(id)a4;
++ (id)storeWithDictionary:(id)dictionary;
+- (BOOL)BOOLForKey:(id)key defaultValue:(BOOL)value;
+- (BOOL)isEqual:(id)equal;
+- (CLKeyValueStore)initWithDictionary:(id)dictionary;
+- (double)doubleForKey:(id)key defaultValue:(double)value;
+- (float)floatForKey:(id)key defaultValue:(float)value;
+- (id)arrayForKey:(id)key defaultValue:(id)value;
+- (id)dataForKey:(id)key defaultValue:(id)value;
 - (id)dictionary;
-- (id)dictionaryForKey:(id)a3 defaultValue:(id)a4;
-- (id)storeForKey:(id)a3 defaultValue:(id)a4;
-- (id)stringForKey:(id)a3 defaultValue:(id)a4;
-- (int)intForKey:(id)a3 defaultValue:(int)a4;
-- (int64_t)longForKey:(id)a3 defaultValue:(int64_t)a4;
-- (signed)shortForKey:(id)a3 defaultValue:(signed __int16)a4;
+- (id)dictionaryForKey:(id)key defaultValue:(id)value;
+- (id)storeForKey:(id)key defaultValue:(id)value;
+- (id)stringForKey:(id)key defaultValue:(id)value;
+- (int)intForKey:(id)key defaultValue:(int)value;
+- (int64_t)longForKey:(id)key defaultValue:(int64_t)value;
+- (signed)shortForKey:(id)key defaultValue:(signed __int16)value;
 - (void)dealloc;
 @end
 
@@ -31,27 +31,27 @@
 - (id)dictionary
 {
   v2 = MEMORY[0x1E695DF20];
-  v3 = [(CLKeyValueStore *)self underlyingDictionary];
+  underlyingDictionary = [(CLKeyValueStore *)self underlyingDictionary];
 
-  return [v2 dictionaryWithDictionary:v3];
+  return [v2 dictionaryWithDictionary:underlyingDictionary];
 }
 
 + (id)store
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithDictionary:MEMORY[0x1E695E0F8]];
 
   return v3;
 }
 
-+ (id)storeWithDictionary:(id)a3
++ (id)storeWithDictionary:(id)dictionary
 {
-  v3 = [[a1 alloc] initWithDictionary:a3];
+  v3 = [[self alloc] initWithDictionary:dictionary];
 
   return v3;
 }
 
-- (CLKeyValueStore)initWithDictionary:(id)a3
+- (CLKeyValueStore)initWithDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = CLKeyValueStore;
@@ -59,95 +59,95 @@
   v5 = v4;
   if (v4)
   {
-    [(CLKeyValueStore *)v4 setUnderlyingDictionary:a3];
+    [(CLKeyValueStore *)v4 setUnderlyingDictionary:dictionary];
   }
 
   return v5;
 }
 
-- (id)storeForKey:(id)a3 defaultValue:(id)a4
+- (id)storeForKey:(id)key defaultValue:(id)value
 {
-  [self->_internal objectForKeyedSubscript:a3];
+  [self->_internal objectForKeyedSubscript:key];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
   return MEMORY[0x1EEE66B58](CLKeyValueStore, sel_storeWithDictionary_);
 }
 
-- (BOOL)BOOLForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)BOOLForKey:(id)key defaultValue:(BOOL)value
 {
-  v5 = [self->_internal objectForKeyedSubscript:a3];
+  v5 = [self->_internal objectForKeyedSubscript:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
   return MEMORY[0x1EEE66B58](v5, sel_BOOLValue);
 }
 
-- (signed)shortForKey:(id)a3 defaultValue:(signed __int16)a4
+- (signed)shortForKey:(id)key defaultValue:(signed __int16)value
 {
-  v5 = [self->_internal objectForKeyedSubscript:a3];
+  v5 = [self->_internal objectForKeyedSubscript:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
   return MEMORY[0x1EEE66B58](v5, sel_shortValue);
 }
 
-- (int)intForKey:(id)a3 defaultValue:(int)a4
+- (int)intForKey:(id)key defaultValue:(int)value
 {
-  v5 = [self->_internal objectForKeyedSubscript:a3];
+  v5 = [self->_internal objectForKeyedSubscript:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
   return [v5 intValue];
 }
 
-- (int64_t)longForKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)longForKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [self->_internal objectForKeyedSubscript:a3];
+  v5 = [self->_internal objectForKeyedSubscript:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
   return MEMORY[0x1EEE66B58](v5, sel_longValue);
 }
 
-- (float)floatForKey:(id)a3 defaultValue:(float)a4
+- (float)floatForKey:(id)key defaultValue:(float)value
 {
-  v5 = [self->_internal objectForKeyedSubscript:a3];
+  v5 = [self->_internal objectForKeyedSubscript:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
   MEMORY[0x1EEE66B58](v5, sel_floatValue);
   return result;
 }
 
-- (double)doubleForKey:(id)a3 defaultValue:(double)a4
+- (double)doubleForKey:(id)key defaultValue:(double)value
 {
-  v5 = [self->_internal objectForKeyedSubscript:a3];
+  v5 = [self->_internal objectForKeyedSubscript:key];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
   MEMORY[0x1EEE66B58](v5, sel_doubleValue);
   return result;
 }
 
-- (id)stringForKey:(id)a3 defaultValue:(id)a4
+- (id)stringForKey:(id)key defaultValue:(id)value
 {
-  v5 = [self->_internal objectForKey:a3];
+  v5 = [self->_internal objectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -164,17 +164,17 @@
 
   else
   {
-    return a4;
+    return value;
   }
 }
 
-- (id)arrayForKey:(id)a3 defaultValue:(id)a4
+- (id)arrayForKey:(id)key defaultValue:(id)value
 {
-  [self->_internal objectForKey:a3];
+  [self->_internal objectForKey:key];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
   v5 = MEMORY[0x1E695DEC8];
@@ -182,13 +182,13 @@
   return MEMORY[0x1EEE66B58](v5, sel_arrayWithArray_);
 }
 
-- (id)dictionaryForKey:(id)a3 defaultValue:(id)a4
+- (id)dictionaryForKey:(id)key defaultValue:(id)value
 {
-  v5 = [self->_internal objectForKey:a3];
+  v5 = [self->_internal objectForKey:key];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
   v6 = MEMORY[0x1E695DF20];
@@ -196,13 +196,13 @@
   return [v6 dictionaryWithDictionary:v5];
 }
 
-- (id)dataForKey:(id)a3 defaultValue:(id)a4
+- (id)dataForKey:(id)key defaultValue:(id)value
 {
-  [self->_internal objectForKey:a3];
+  [self->_internal objectForKey:key];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    return a4;
+    return value;
   }
 
   v5 = MEMORY[0x1E695DEF0];
@@ -210,9 +210,9 @@
   return MEMORY[0x1EEE66B58](v5, sel_dataWithData_);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -224,9 +224,9 @@
   }
 
   internal = self->_internal;
-  v6 = [a3 underlyingDictionary];
+  underlyingDictionary = [equal underlyingDictionary];
 
-  return [internal isEqual:v6];
+  return [internal isEqual:underlyingDictionary];
 }
 
 @end

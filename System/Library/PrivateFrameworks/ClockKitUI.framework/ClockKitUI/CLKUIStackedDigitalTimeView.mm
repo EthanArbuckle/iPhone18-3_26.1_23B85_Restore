@@ -1,48 +1,48 @@
 @interface CLKUIStackedDigitalTimeView
-- (CLKUIStackedDigitalTimeView)initWithDevice:(id)a3 clockTimer:(id)a4;
-- (void)enumerateLabelsWithBlock:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (CLKUIStackedDigitalTimeView)initWithDevice:(id)device clockTimer:(id)timer;
+- (void)enumerateLabelsWithBlock:(id)block;
+- (void)setConfiguration:(id)configuration;
+- (void)setOverrideDate:(id)date;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation CLKUIStackedDigitalTimeView
 
-- (CLKUIStackedDigitalTimeView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (CLKUIStackedDigitalTimeView)initWithDevice:(id)device clockTimer:(id)timer
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  timerCopy = timer;
   v20.receiver = self;
   v20.super_class = CLKUIStackedDigitalTimeView;
-  v8 = [(CLKUITimeView *)&v20 initWithDevice:v6 clockTimer:v7];
+  v8 = [(CLKUITimeView *)&v20 initWithDevice:deviceCopy clockTimer:timerCopy];
   if (v8)
   {
-    v9 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:1024 forDevice:v6 clockTimer:v7];
+    v9 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:1024 forDevice:deviceCopy clockTimer:timerCopy];
     hourLabel = v8->_hourLabel;
     v8->_hourLabel = v9;
 
     [(CLKUIStackedDigitalTimeView *)v8 addSubview:v8->_hourLabel];
-    v11 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:2048 forDevice:v6 clockTimer:v7];
+    v11 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:2048 forDevice:deviceCopy clockTimer:timerCopy];
     minuteLabel = v8->_minuteLabel;
     v8->_minuteLabel = v11;
 
-    v13 = [(CLKUITimeLabel *)v8->_minuteLabel timeFormatter];
-    [v13 setIncludeSeparatorInTimeSubstringFromSeparatorText:0];
+    timeFormatter = [(CLKUITimeLabel *)v8->_minuteLabel timeFormatter];
+    [timeFormatter setIncludeSeparatorInTimeSubstringFromSeparatorText:0];
 
     [(CLKUIStackedDigitalTimeView *)v8 addSubview:v8->_minuteLabel];
-    v14 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:1024 forDevice:v6 clockTimer:v7];
+    v14 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:1024 forDevice:deviceCopy clockTimer:timerCopy];
     inactiveHourLabel = v8->_inactiveHourLabel;
     v8->_inactiveHourLabel = v14;
 
     [(CLKUITimeLabel *)v8->_inactiveHourLabel setAlpha:0.0];
     [(CLKUIStackedDigitalTimeView *)v8 addSubview:v8->_inactiveHourLabel];
-    v16 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:2048 forDevice:v6 clockTimer:v7];
+    v16 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:2048 forDevice:deviceCopy clockTimer:timerCopy];
     inactiveMinuteLabel = v8->_inactiveMinuteLabel;
     v8->_inactiveMinuteLabel = v16;
 
     [(CLKUITimeLabel *)v8->_inactiveMinuteLabel setAlpha:0.0];
-    v18 = [(CLKUITimeLabel *)v8->_inactiveMinuteLabel timeFormatter];
-    [v18 setIncludeSeparatorInTimeSubstringFromSeparatorText:0];
+    timeFormatter2 = [(CLKUITimeLabel *)v8->_inactiveMinuteLabel timeFormatter];
+    [timeFormatter2 setIncludeSeparatorInTimeSubstringFromSeparatorText:0];
 
     [(CLKUIStackedDigitalTimeView *)v8 addSubview:v8->_inactiveMinuteLabel];
   }
@@ -50,67 +50,67 @@
   return v8;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v23.receiver = self;
   v23.super_class = CLKUIStackedDigitalTimeView;
-  [(CLKUITimeView *)&v23 setConfiguration:v4];
-  v5 = [v4 timeLabelFont];
+  [(CLKUITimeView *)&v23 setConfiguration:configurationCopy];
+  timeLabelFont = [configurationCopy timeLabelFont];
 
-  if (v5)
+  if (timeLabelFont)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __48__CLKUIStackedDigitalTimeView_setConfiguration___block_invoke;
     v21[3] = &unk_1E8762928;
-    v22 = v4;
+    v22 = configurationCopy;
     [(CLKUIStackedDigitalTimeView *)self enumerateLabelsWithBlock:v21];
   }
 
-  v6 = [v4 timeLabelColor];
+  timeLabelColor = [configurationCopy timeLabelColor];
 
-  if (v6)
+  if (timeLabelColor)
   {
-    v7 = [v4 timeLabelColor];
-    [(CLKUITimeLabel *)self->_hourLabel setTextColor:v7];
+    timeLabelColor2 = [configurationCopy timeLabelColor];
+    [(CLKUITimeLabel *)self->_hourLabel setTextColor:timeLabelColor2];
 
-    v8 = [v4 timeLabelColor];
-    [(CLKUITimeLabel *)self->_minuteLabel setTextColor:v8];
+    timeLabelColor3 = [configurationCopy timeLabelColor];
+    [(CLKUITimeLabel *)self->_minuteLabel setTextColor:timeLabelColor3];
   }
 
-  v9 = [v4 forcedNumberSystem];
+  forcedNumberSystem = [configurationCopy forcedNumberSystem];
 
-  if (v9)
+  if (forcedNumberSystem)
   {
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __48__CLKUIStackedDigitalTimeView_setConfiguration___block_invoke_2;
     v19 = &unk_1E8762928;
-    v20 = v4;
+    v20 = configurationCopy;
     [(CLKUIStackedDigitalTimeView *)self enumerateLabelsWithBlock:&v16];
   }
 
-  v10 = [v4 minuteTimeLabelAttributes];
+  minuteTimeLabelAttributes = [configurationCopy minuteTimeLabelAttributes];
 
-  if (v10)
+  if (minuteTimeLabelAttributes)
   {
-    v11 = [v4 minuteTimeLabelAttributes];
-    [(CLKUITimeLabel *)self->_minuteLabel setStringAttributes:v11];
+    minuteTimeLabelAttributes2 = [configurationCopy minuteTimeLabelAttributes];
+    [(CLKUITimeLabel *)self->_minuteLabel setStringAttributes:minuteTimeLabelAttributes2];
 
-    v12 = [v4 minuteTimeLabelAttributes];
-    [(CLKUITimeLabel *)self->_inactiveMinuteLabel setStringAttributes:v12];
+    minuteTimeLabelAttributes3 = [configurationCopy minuteTimeLabelAttributes];
+    [(CLKUITimeLabel *)self->_inactiveMinuteLabel setStringAttributes:minuteTimeLabelAttributes3];
   }
 
-  v13 = [v4 hourTimeLabelAttributes];
+  hourTimeLabelAttributes = [configurationCopy hourTimeLabelAttributes];
 
-  if (v13)
+  if (hourTimeLabelAttributes)
   {
-    v14 = [v4 hourTimeLabelAttributes];
-    [(CLKUITimeLabel *)self->_hourLabel setStringAttributes:v14];
+    hourTimeLabelAttributes2 = [configurationCopy hourTimeLabelAttributes];
+    [(CLKUITimeLabel *)self->_hourLabel setStringAttributes:hourTimeLabelAttributes2];
 
-    v15 = [v4 hourTimeLabelAttributes];
-    [(CLKUITimeLabel *)self->_inactiveHourLabel setStringAttributes:v15];
+    hourTimeLabelAttributes3 = [configurationCopy hourTimeLabelAttributes];
+    [(CLKUITimeLabel *)self->_inactiveHourLabel setStringAttributes:hourTimeLabelAttributes3];
   }
 }
 
@@ -130,14 +130,14 @@ void __48__CLKUIStackedDigitalTimeView_setConfiguration___block_invoke_2(uint64_
   [v3 setForcedNumberSystem:{objc_msgSend(v4, "unsignedIntegerValue")}];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v6.receiver = self;
   v6.super_class = CLKUIStackedDigitalTimeView;
   [(CLKUITimeView *)&v6 setState:?];
-  if (a3)
+  if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -153,18 +153,18 @@ void __48__CLKUIStackedDigitalTimeView_setConfiguration___block_invoke_2(uint64_
   [(CLKUIStackedDigitalTimeView *)self enumerateLabelsWithBlock:v5];
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = CLKUIStackedDigitalTimeView;
-  [(CLKUITimeView *)&v8 setOverrideDate:v4];
+  [(CLKUITimeView *)&v8 setOverrideDate:dateCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__CLKUIStackedDigitalTimeView_setOverrideDate___block_invoke;
   v6[3] = &unk_1E8762928;
-  v7 = v4;
-  v5 = v4;
+  v7 = dateCopy;
+  v5 = dateCopy;
   [(CLKUIStackedDigitalTimeView *)self enumerateLabelsWithBlock:v6];
 }
 
@@ -175,15 +175,15 @@ void __47__CLKUIStackedDigitalTimeView_setOverrideDate___block_invoke(uint64_t a
   [v3 setOverrideDate:v2];
 }
 
-- (void)enumerateLabelsWithBlock:(id)a3
+- (void)enumerateLabelsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_minuteLabel);
-  (*v4)(v6, self->_inactiveHourLabel);
-  (*v4)(v6, self->_inactiveMinuteLabel);
+  (*v4)(blockCopy, self->_minuteLabel);
+  (*v4)(blockCopy, self->_inactiveHourLabel);
+  (*v4)(blockCopy, self->_inactiveMinuteLabel);
 }
 
 @end

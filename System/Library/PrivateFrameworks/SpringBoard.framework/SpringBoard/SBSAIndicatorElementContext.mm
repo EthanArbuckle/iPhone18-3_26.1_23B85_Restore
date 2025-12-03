@@ -1,61 +1,61 @@
 @interface SBSAIndicatorElementContext
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)indicatorSize;
 - (NSDirectionalEdgeInsets)preferredEdgeOutsets;
 - (NSString)description;
-- (SBSAIndicatorElementContext)initWithSystemApertureElementContext:(id)a3;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSAIndicatorElementContext)initWithSystemApertureElementContext:(id)context;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSAIndicatorElementContext
 
-- (SBSAIndicatorElementContext)initWithSystemApertureElementContext:(id)a3
+- (SBSAIndicatorElementContext)initWithSystemApertureElementContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = SBSAIndicatorElementContext;
   v5 = [(SBSAIndicatorElementContext *)&v19 init];
   if (v5)
   {
-    v6 = [v4 clientIdentifier];
-    v7 = [v6 copy];
+    clientIdentifier = [contextCopy clientIdentifier];
+    v7 = [clientIdentifier copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v7;
 
-    v9 = [v4 elementIdentifier];
-    v10 = [v9 copy];
+    elementIdentifier = [contextCopy elementIdentifier];
+    v10 = [elementIdentifier copy];
     elementIdentifier = v5->_elementIdentifier;
     v5->_elementIdentifier = v10;
 
-    v5->_interfaceOrientation = [v4 interfaceOrientation];
-    v5->_indicatorNeedsDisplayWellKnownLocation = [v4 indicatorNeedsDisplayWellKnownLocation];
-    [v4 indicatorSize];
+    v5->_interfaceOrientation = [contextCopy interfaceOrientation];
+    v5->_indicatorNeedsDisplayWellKnownLocation = [contextCopy indicatorNeedsDisplayWellKnownLocation];
+    [contextCopy indicatorSize];
     v5->_indicatorSize.width = v12;
     v5->_indicatorSize.height = v13;
-    [v4 preferredEdgeOutsets];
+    [contextCopy preferredEdgeOutsets];
     v5->_preferredEdgeOutsets.top = v14;
     v5->_preferredEdgeOutsets.leading = v15;
     v5->_preferredEdgeOutsets.bottom = v16;
     v5->_preferredEdgeOutsets.trailing = v17;
-    v5->_supportsMicroIndicatorPosition = [v4 supportsMicroIndicatorPosition];
+    v5->_supportsMicroIndicatorPosition = [contextCopy supportsMicroIndicatorPosition];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   clientIdentifier = self->_clientIdentifier;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __39__SBSAIndicatorElementContext_isEqual___block_invoke;
   v38[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = equalCopy;
   v39 = v7;
   v8 = [v5 appendObject:clientIdentifier counterpart:v38];
   elementIdentifier = self->_elementIdentifier;
@@ -134,8 +134,8 @@ BOOL __39__SBSAIndicatorElementContext_isEqual___block_invoke_6(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v15 = [MEMORY[0x277CF0C40] builder];
-  v14 = [v15 appendObject:self->_clientIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v14 = [builder appendObject:self->_clientIdentifier];
   v3 = [v14 appendObject:self->_elementIdentifier];
   v4 = [v3 appendBool:self->_supportsMicroIndicatorPosition];
   v5 = [v4 appendBool:self->_indicatorNeedsDisplayWellKnownLocation];
@@ -184,30 +184,30 @@ BOOL __39__SBSAIndicatorElementContext_isEqual___block_invoke_6(uint64_t a1)
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithSystemApertureElementContext:self];
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAIndicatorElementContext *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;

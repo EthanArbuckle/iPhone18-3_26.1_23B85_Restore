@@ -1,6 +1,6 @@
 @interface NTKGreenfieldPlaceholderImageProvider
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NTKGreenfieldPlaceholderImageProvider
@@ -12,19 +12,19 @@ NTKGreenfieldPlaceholderView *__49__NTKGreenfieldPlaceholderImageProvider_provid
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [v5 progress];
     if (CLKFloatEqualsFloat())
     {
       appIcon = self->_appIcon;
-      v7 = [v5 appIcon];
-      v8 = NTKEqualObjects(appIcon, v7);
+      appIcon = [v5 appIcon];
+      v8 = NTKEqualObjects(appIcon, appIcon);
     }
 
     else
@@ -41,11 +41,11 @@ NTKGreenfieldPlaceholderView *__49__NTKGreenfieldPlaceholderImageProvider_provid
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NTKGreenfieldPlaceholderImageProvider;
-  v4 = [(CLKImageProvider *)&v7 copyWithZone:a3];
+  v4 = [(CLKImageProvider *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

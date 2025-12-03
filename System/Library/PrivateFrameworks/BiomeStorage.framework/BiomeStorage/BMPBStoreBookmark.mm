@@ -1,20 +1,20 @@
 @interface BMPBStoreBookmark
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOffset:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOffset:(BOOL)offset;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBStoreBookmark
 
-- (void)setHasOffset:(BOOL)a3
+- (void)setHasOffset:(BOOL)offset
 {
-  if (a3)
+  if (offset)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = BMPBStoreBookmark;
   v4 = [(BMPBStoreBookmark *)&v8 description];
-  v5 = [(BMPBStoreBookmark *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBStoreBookmark *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   streamId = self->_streamId;
   if (streamId)
   {
-    [v3 setObject:streamId forKey:@"streamId"];
+    [dictionary setObject:streamId forKey:@"streamId"];
   }
 
   segmentName = self->_segmentName;
@@ -73,20 +73,20 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_streamId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_segmentName)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -94,7 +94,7 @@
   {
     iterationStartTime = self->_iterationStartTime;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -102,49 +102,49 @@
   {
     offset = self->_offset;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_streamId)
   {
-    [v4 setStreamId:?];
-    v4 = v6;
+    [toCopy setStreamId:?];
+    toCopy = v6;
   }
 
   if (self->_segmentName)
   {
     [v6 setSegmentName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_iterationStartTime;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_iterationStartTime;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_offset;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 4) = self->_offset;
+    *(toCopy + 40) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_streamId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_streamId copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_segmentName copyWithZone:a3];
+  v8 = [(NSString *)self->_segmentName copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -165,16 +165,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   streamId = self->_streamId;
-  if (streamId | *(v4 + 4))
+  if (streamId | *(equalCopy + 4))
   {
     if (![(NSString *)streamId isEqual:?])
     {
@@ -183,7 +183,7 @@
   }
 
   segmentName = self->_segmentName;
-  if (segmentName | *(v4 + 3))
+  if (segmentName | *(equalCopy + 3))
   {
     if (![(NSString *)segmentName isEqual:?])
     {
@@ -193,23 +193,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_iterationStartTime != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_iterationStartTime != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_15:
     v7 = 0;
     goto LABEL_16;
   }
 
-  v7 = (*(v4 + 40) & 2) == 0;
+  v7 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_offset != *(v4 + 4))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_offset != *(equalCopy + 4))
     {
       goto LABEL_15;
     }
@@ -272,33 +272,33 @@ LABEL_16:
   return v4 ^ v3 ^ v7 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(BMPBStoreBookmark *)self setStreamId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBStoreBookmark *)self setSegmentName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_iterationStartTime = *(v4 + 1);
+    self->_iterationStartTime = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_offset = *(v4 + 4);
+    self->_offset = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 }

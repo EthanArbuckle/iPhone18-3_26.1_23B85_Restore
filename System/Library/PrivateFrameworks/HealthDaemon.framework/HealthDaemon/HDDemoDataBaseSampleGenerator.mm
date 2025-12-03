@@ -1,6 +1,6 @@
 @interface HDDemoDataBaseSampleGenerator
 - (HDDemoDataBaseSampleGenerator)init;
-- (HDDemoDataBaseSampleGenerator)initWithCoder:(id)a3;
+- (HDDemoDataBaseSampleGenerator)initWithCoder:(id)coder;
 - (HDDemoDataGenerator)demoDataGenerator;
 - (HDProfile)profile;
 @end
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (HDDemoDataBaseSampleGenerator)initWithCoder:(id)a3
+- (HDDemoDataBaseSampleGenerator)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HDDemoDataBaseSampleGenerator;

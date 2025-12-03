@@ -1,10 +1,10 @@
 @interface STSizeDict
 - (STSizeDict)init;
-- (STSizeDict)initWithDictionary:(id)a3;
+- (STSizeDict)initWithDictionary:(id)dictionary;
 - (STSizeVector)total;
-- (id)get:(id)a3;
-- (id)plus:(id)a3;
-- (id)remapKeys:(id)a3 removeMissing:(BOOL)a4;
+- (id)get:(id)get;
+- (id)plus:(id)plus;
+- (id)remapKeys:(id)keys removeMissing:(BOOL)missing;
 @end
 
 @implementation STSizeDict
@@ -16,33 +16,33 @@
   v2 = [(STSizeDict *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dictionary = v2->_dictionary;
-    v2->_dictionary = v3;
+    v2->_dictionary = dictionary;
   }
 
   return v2;
 }
 
-- (STSizeDict)initWithDictionary:(id)a3
+- (STSizeDict)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = STSizeDict;
   v6 = [(STSizeDict *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
   }
 
   return v7;
 }
 
-- (id)remapKeys:(id)a3 removeMissing:(BOOL)a4
+- (id)remapKeys:(id)keys removeMissing:(BOOL)missing
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  keysCopy = keys;
   v7 = objc_alloc_init(STMutableSizeDict);
   v18 = 0u;
   v19 = 0u;
@@ -64,8 +64,8 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v6 objectForKeyedSubscript:{v13, v18}];
-        if (!v14 && !a4)
+        v14 = [keysCopy objectForKeyedSubscript:{v13, v18}];
+        if (!v14 && !missing)
         {
           v14 = v13;
         }
@@ -95,10 +95,10 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(STSizeDict *)self dictionary];
-  v3 = [v2 allValues];
+  dictionary = [(STSizeDict *)self dictionary];
+  allValues = [dictionary allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -112,7 +112,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -121,7 +121,7 @@
         v7 += [v11 purgeable];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -140,19 +140,19 @@
   return v12;
 }
 
-- (id)plus:(id)a3
+- (id)plus:(id)plus
 {
-  v4 = a3;
+  plusCopy = plus;
   v5 = objc_alloc_init(STMutableSizeDict);
   [(STMutableSizeDict *)v5 plusEquals:self];
-  [(STMutableSizeDict *)v5 plusEquals:v4];
+  [(STMutableSizeDict *)v5 plusEquals:plusCopy];
 
   return v5;
 }
 
-- (id)get:(id)a3
+- (id)get:(id)get
 {
-  v3 = [(NSDictionary *)self->_dictionary objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_dictionary objectForKeyedSubscript:get];
   v4 = v3;
   if (v3)
   {

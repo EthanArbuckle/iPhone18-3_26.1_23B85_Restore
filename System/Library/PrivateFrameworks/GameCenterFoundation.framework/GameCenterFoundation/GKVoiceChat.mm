@@ -1,33 +1,33 @@
 @interface GKVoiceChat
 + (BOOL)isVoIPAllowed;
 - (BOOL)isActive;
-- (GKVoiceChat)initWithViceroyVoiceChat:(id)a3 players:(id)a4;
+- (GKVoiceChat)initWithViceroyVoiceChat:(id)chat players:(id)players;
 - (NSArray)playerIDs;
 - (NSString)name;
 - (float)volume;
 - (void)playerIDs;
 - (void)setVolume:(float)volume;
 - (void)start;
-- (void)stateUpdate:(int64_t)a3 forPlayerID:(id)a4;
+- (void)stateUpdate:(int64_t)update forPlayerID:(id)d;
 - (void)stop;
 @end
 
 @implementation GKVoiceChat
 
-- (GKVoiceChat)initWithViceroyVoiceChat:(id)a3 players:(id)a4
+- (GKVoiceChat)initWithViceroyVoiceChat:(id)chat players:(id)players
 {
-  v7 = a3;
-  v8 = a4;
+  chatCopy = chat;
+  playersCopy = players;
   v14.receiver = self;
   v14.super_class = GKVoiceChat;
   v9 = [(GKVoiceChat *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_gkVoiceChat, a3);
+    objc_storeStrong(&v9->_gkVoiceChat, chat);
     [(GKViceroyVoiceChat *)v10->_gkVoiceChat setStateUpdateDelegate:v10];
-    [v8 _gkValidatePlayersForReturnFromAPI];
-    objc_storeStrong(&v10->_players, a4);
+    [playersCopy _gkValidatePlayersForReturnFromAPI];
+    objc_storeStrong(&v10->_players, players);
   }
 
   v11 = +[GKReporter reporter];
@@ -41,55 +41,55 @@
 
 - (void)start
 {
-  v2 = [(GKVoiceChat *)self gkVoiceChat];
-  [v2 start];
+  gkVoiceChat = [(GKVoiceChat *)self gkVoiceChat];
+  [gkVoiceChat start];
 }
 
 - (void)stop
 {
-  v2 = [(GKVoiceChat *)self gkVoiceChat];
-  [v2 stop];
+  gkVoiceChat = [(GKVoiceChat *)self gkVoiceChat];
+  [gkVoiceChat stop];
 }
 
 - (NSString)name
 {
-  v2 = [(GKVoiceChat *)self gkVoiceChat];
-  v3 = [v2 name];
+  gkVoiceChat = [(GKVoiceChat *)self gkVoiceChat];
+  name = [gkVoiceChat name];
 
-  return v3;
+  return name;
 }
 
 - (BOOL)isActive
 {
-  v2 = [(GKVoiceChat *)self gkVoiceChat];
-  v3 = [v2 isActive];
+  gkVoiceChat = [(GKVoiceChat *)self gkVoiceChat];
+  isActive = [gkVoiceChat isActive];
 
-  return v3;
+  return isActive;
 }
 
 - (void)setVolume:(float)volume
 {
-  v5 = [(GKVoiceChat *)self gkVoiceChat];
+  gkVoiceChat = [(GKVoiceChat *)self gkVoiceChat];
   *&v4 = volume;
-  [v5 setVolume:v4];
+  [gkVoiceChat setVolume:v4];
 }
 
 - (float)volume
 {
-  v2 = [(GKVoiceChat *)self gkVoiceChat];
-  [v2 volume];
+  gkVoiceChat = [(GKVoiceChat *)self gkVoiceChat];
+  [gkVoiceChat volume];
   v4 = v3;
 
   return v4;
 }
 
-- (void)stateUpdate:(int64_t)a3 forPlayerID:(id)a4
+- (void)stateUpdate:(int64_t)update forPlayerID:(id)d
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(GKVoiceChat *)self playerVoiceChatStateDidChangeHandler];
+  dCopy = d;
+  playerVoiceChatStateDidChangeHandler = [(GKVoiceChat *)self playerVoiceChatStateDidChangeHandler];
 
-  if (v7)
+  if (playerVoiceChatStateDidChangeHandler)
   {
     v22 = 0;
     v23 = &v22;
@@ -97,20 +97,20 @@
     v25 = __Block_byref_object_copy__0;
     v26 = __Block_byref_object_dispose__0;
     v27 = 0;
-    v8 = [(GKVoiceChat *)self players];
+    players = [(GKVoiceChat *)self players];
     v16 = MEMORY[0x277D85DD0];
     v17 = 3221225472;
     v18 = __39__GKVoiceChat_stateUpdate_forPlayerID___block_invoke;
     v19 = &unk_2785DD658;
-    v9 = v6;
+    v9 = dCopy;
     v20 = v9;
     v21 = &v22;
-    [v8 enumerateObjectsUsingBlock:&v16];
+    [players enumerateObjectsUsingBlock:&v16];
 
     if (v23[5])
     {
       v10 = [(GKVoiceChat *)self playerVoiceChatStateDidChangeHandler:v16];
-      (v10[2].isa)(v10, v23[5], a3);
+      (v10[2].isa)(v10, v23[5], update);
     }
 
     else
@@ -137,12 +137,12 @@
 
   else
   {
-    v11 = [(GKVoiceChat *)self playerStateUpdateHandler];
+    playerStateUpdateHandler = [(GKVoiceChat *)self playerStateUpdateHandler];
 
-    if (v11)
+    if (playerStateUpdateHandler)
     {
-      v12 = [(GKVoiceChat *)self playerStateUpdateHandler];
-      (v12)[2](v12, v6, a3);
+      playerStateUpdateHandler2 = [(GKVoiceChat *)self playerStateUpdateHandler];
+      (playerStateUpdateHandler2)[2](playerStateUpdateHandler2, dCopy, update);
     }
   }
 
@@ -202,8 +202,8 @@ void __39__GKVoiceChat_stateUpdate_forPlayerID___block_invoke(uint64_t a1, void 
 
   else
   {
-    v6 = [(GKVoiceChat *)self players];
-    v5 = [v6 _gkMapWithBlock:&__block_literal_global_0];
+    players = [(GKVoiceChat *)self players];
+    v5 = [players _gkMapWithBlock:&__block_literal_global_0];
   }
 
   v7 = *MEMORY[0x277D85DE8];

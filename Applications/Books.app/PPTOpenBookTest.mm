@@ -6,9 +6,9 @@
 
 - (void)startTest
 {
-  v3 = [(PPTBasicTest *)self asset];
+  asset = [(PPTBasicTest *)self asset];
 
-  if (v3)
+  if (asset)
   {
     v17.receiver = self;
     v17.super_class = PPTOpenBookTest;
@@ -21,8 +21,8 @@
       [v4 setObject:@"slide" forKey:@"BKPageTurnStyle"];
     }
 
-    v6 = [(PPTBasicTest *)self bookshelf];
-    if (!v6)
+    bookshelf = [(PPTBasicTest *)self bookshelf];
+    if (!bookshelf)
     {
       v7 = sub_1001E65B0();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -35,30 +35,30 @@
     v8 = sub_1001E65B0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v6 dataSourceAdaptor];
-      v10 = [v9 booksDataSource];
-      v11 = [v10 totalNumberOfItems];
+      dataSourceAdaptor = [bookshelf dataSourceAdaptor];
+      booksDataSource = [dataSourceAdaptor booksDataSource];
+      totalNumberOfItems = [booksDataSource totalNumberOfItems];
       *buf = 134217984;
-      v19 = v11;
+      v19 = totalNumberOfItems;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Bookshelf has %ld books", buf, 0xCu);
     }
 
     objc_opt_class();
-    v12 = [(PPTBasicTest *)self asset];
+    asset2 = [(PPTBasicTest *)self asset];
     v13 = BUDynamicCast();
 
-    v14 = [v6 dataSourceAdaptor];
-    v15 = [v14 booksDataSource];
-    v16 = [v15 indexPathForRepresentedObject:v13];
+    dataSourceAdaptor2 = [bookshelf dataSourceAdaptor];
+    booksDataSource2 = [dataSourceAdaptor2 booksDataSource];
+    v16 = [booksDataSource2 indexPathForRepresentedObject:v13];
 
     if (v16)
     {
-      [v6 bookTapped:v16 completion:0];
+      [bookshelf bookTapped:v16 completion:0];
 
       return;
     }
 
-    sub_10078B2F8(v13, v6);
+    sub_10078B2F8(v13, bookshelf);
   }
 
   else

@@ -1,31 +1,31 @@
 @interface TVRUIHintsStyle
-+ (id)styleProviderForUserInterfaceIdiom:(int64_t)a3 hasHomeButton:(BOOL)a4;
-- (TVRUIHintsStyle)initWithHomeButton:(BOOL)a3;
++ (id)styleProviderForUserInterfaceIdiom:(int64_t)idiom hasHomeButton:(BOOL)button;
+- (TVRUIHintsStyle)initWithHomeButton:(BOOL)button;
 - (double)activationAnimationDismissalDelay;
 @end
 
 @implementation TVRUIHintsStyle
 
-+ (id)styleProviderForUserInterfaceIdiom:(int64_t)a3 hasHomeButton:(BOOL)a4
++ (id)styleProviderForUserInterfaceIdiom:(int64_t)idiom hasHomeButton:(BOOL)button
 {
-  if (a3 == 1)
+  if (idiom == 1)
   {
     v5 = TVRUIHintsStylePad;
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!idiom)
   {
     v5 = TVRUIHintsStylePhone;
 LABEL_5:
-    v6 = [[v5 alloc] initWithHomeButton:a4];
+    v6 = [[v5 alloc] initWithHomeButton:button];
     goto LABEL_9;
   }
 
   v7 = _TVRUIHintsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
   {
-    [TVRUIHintsStyle styleProviderForUserInterfaceIdiom:a3 hasHomeButton:v7];
+    [TVRUIHintsStyle styleProviderForUserInterfaceIdiom:idiom hasHomeButton:v7];
   }
 
   v6 = objc_alloc_init(TVRUIHintsStylePhone);
@@ -34,7 +34,7 @@ LABEL_9:
   return v6;
 }
 
-- (TVRUIHintsStyle)initWithHomeButton:(BOOL)a3
+- (TVRUIHintsStyle)initWithHomeButton:(BOOL)button
 {
   v7.receiver = self;
   v7.super_class = TVRUIHintsStyle;
@@ -42,7 +42,7 @@ LABEL_9:
   v5 = v4;
   if (v4)
   {
-    v4->_hasHomeButton = a3;
+    v4->_hasHomeButton = button;
     v4->_supportsSBHints = SBSUIHardwareButtonHintViewsSupported();
   }
 
@@ -51,9 +51,9 @@ LABEL_9:
 
 - (double)activationAnimationDismissalDelay
 {
-  v2 = [(TVRUIHintsStyle *)self supportsSBHints];
+  supportsSBHints = [(TVRUIHintsStyle *)self supportsSBHints];
   result = 0.13;
-  if (v2)
+  if (supportsSBHints)
   {
     return 0.25;
   }

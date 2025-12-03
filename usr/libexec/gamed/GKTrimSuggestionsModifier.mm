@@ -1,43 +1,43 @@
 @interface GKTrimSuggestionsModifier
-- (GKTrimSuggestionsModifier)initWithSettings:(id)a3;
-- (id)trimSuggestions:(id)a3;
+- (GKTrimSuggestionsModifier)initWithSettings:(id)settings;
+- (id)trimSuggestions:(id)suggestions;
 @end
 
 @implementation GKTrimSuggestionsModifier
 
-- (GKTrimSuggestionsModifier)initWithSettings:(id)a3
+- (GKTrimSuggestionsModifier)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = GKTrimSuggestionsModifier;
   v6 = [(GKTrimSuggestionsModifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
   }
 
   return v7;
 }
 
-- (id)trimSuggestions:(id)a3
+- (id)trimSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [(GKTrimSuggestionsModifier *)self settings];
-  v6 = [v5 suggestionsLimit];
+  suggestionsCopy = suggestions;
+  settings = [(GKTrimSuggestionsModifier *)self settings];
+  suggestionsLimit = [settings suggestionsLimit];
 
-  v7 = [v4 count];
-  if (v6 >= v7)
+  v7 = [suggestionsCopy count];
+  if (suggestionsLimit >= v7)
   {
     v8 = v7;
   }
 
   else
   {
-    v8 = v6;
+    v8 = suggestionsLimit;
   }
 
-  v9 = [v4 subarrayWithRange:{0, v8}];
+  v9 = [suggestionsCopy subarrayWithRange:{0, v8}];
 
   if (!os_log_GKGeneral)
   {

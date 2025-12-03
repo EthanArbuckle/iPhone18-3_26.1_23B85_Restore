@@ -1,20 +1,20 @@
 @interface WFHomeScreenController
 + (WFHomeScreenController)sharedInstance;
-+ (id)iconImageForIcon:(id)a3;
-+ (void)migrateOpenAppWebClipsIfNeededWithDatabaseAccessor:(id)a3;
++ (id)iconImageForIcon:(id)icon;
++ (void)migrateOpenAppWebClipsIfNeededWithDatabaseAccessor:(id)accessor;
 + (void)migratePreYukonWebClipsIfNeeded;
-+ (void)migrateWebClipsIfNeededWithDatabaseAccessor:(id)a3;
-- (BOOL)addAppShortcutToHomeScreen:(id)a3 withName:(id)a4 symbolName:(id)a5 backgroundColor:(id)a6 error:(id *)a7;
-- (BOOL)addTopHitToHomeScreen:(id)a3 withName:(id)a4 symbolName:(id)a5 backgroundColor:(id)a6 error:(id *)a7;
-- (BOOL)addWorkflowToHomeScreen:(id)a3 withName:(id)a4 icon:(id)a5 error:(id *)a6;
-- (BOOL)addWorkflowToHomeScreen:(id)a3 withName:(id)a4 symbolName:(id)a5 backgroundColor:(id)a6 error:(id *)a7;
-- (BOOL)createHomeScreenShortcutForAppShortcut:(id)a3 title:(id)a4 image:(id)a5 darkImage:(id)a6 tintableImage:(id)a7 error:(id *)a8;
-- (BOOL)createHomeScreenShortcutForWorkflow:(id)a3 name:(id)a4 image:(id)a5 darkImage:(id)a6 tintableImage:(id)a7 error:(id *)a8;
++ (void)migrateWebClipsIfNeededWithDatabaseAccessor:(id)accessor;
+- (BOOL)addAppShortcutToHomeScreen:(id)screen withName:(id)name symbolName:(id)symbolName backgroundColor:(id)color error:(id *)error;
+- (BOOL)addTopHitToHomeScreen:(id)screen withName:(id)name symbolName:(id)symbolName backgroundColor:(id)color error:(id *)error;
+- (BOOL)addWorkflowToHomeScreen:(id)screen withName:(id)name icon:(id)icon error:(id *)error;
+- (BOOL)addWorkflowToHomeScreen:(id)screen withName:(id)name symbolName:(id)symbolName backgroundColor:(id)color error:(id *)error;
+- (BOOL)createHomeScreenShortcutForAppShortcut:(id)shortcut title:(id)title image:(id)image darkImage:(id)darkImage tintableImage:(id)tintableImage error:(id *)error;
+- (BOOL)createHomeScreenShortcutForWorkflow:(id)workflow name:(id)name image:(id)image darkImage:(id)darkImage tintableImage:(id)tintableImage error:(id *)error;
 - (WFHomeScreenController)init;
-- (void)databaseDidChange:(id)a3 modified:(id)a4 inserted:(id)a5 removed:(id)a6;
-- (void)getHomeScreenShortcutIDsWithCompletionHandler:(id)a3;
+- (void)databaseDidChange:(id)change modified:(id)modified inserted:(id)inserted removed:(id)removed;
+- (void)getHomeScreenShortcutIDsWithCompletionHandler:(id)handler;
 - (void)startListeningForDatabaseChanges;
-- (void)updateWebClipIfNeeded:(id)a3;
+- (void)updateWebClipIfNeeded:(id)needed;
 @end
 
 @implementation WFHomeScreenController
@@ -53,9 +53,9 @@ void __40__WFHomeScreenController_sharedInstance__block_invoke()
 - (void)startListeningForDatabaseChanges
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(WFHomeScreenController *)self database];
+  database = [(WFHomeScreenController *)self database];
 
-  if (v3)
+  if (database)
   {
     v4 = getWFHomescreenLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -81,16 +81,16 @@ void __40__WFHomeScreenController_sharedInstance__block_invoke()
         _os_log_impl(&dword_1CA256000, v6, OS_LOG_TYPE_DEFAULT, "%s Starting to observe database changes", buf, 0xCu);
       }
 
-      v7 = [(WFHomeScreenController *)self queue];
+      queue = [(WFHomeScreenController *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __58__WFHomeScreenController_startListeningForDatabaseChanges__block_invoke;
       block[3] = &unk_1E837FA70;
       block[4] = self;
-      dispatch_async(v7, block);
+      dispatch_async(queue, block);
 
-      v8 = [(WFHomeScreenController *)self database];
-      [v8 addObjectObserver:self];
+      database2 = [(WFHomeScreenController *)self database];
+      [database2 addObjectObserver:self];
     }
 
     else
@@ -185,20 +185,20 @@ void __58__WFHomeScreenController_startListeningForDatabaseChanges__block_invoke
   return v3;
 }
 
-- (void)databaseDidChange:(id)a3 modified:(id)a4 inserted:(id)a5 removed:(id)a6
+- (void)databaseDidChange:(id)change modified:(id)modified inserted:(id)inserted removed:(id)removed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if ([v7 count])
+  modifiedCopy = modified;
+  if ([modifiedCopy count])
   {
-    v8 = [(WFHomeScreenController *)self queue];
+    queue = [(WFHomeScreenController *)self queue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __70__WFHomeScreenController_databaseDidChange_modified_inserted_removed___block_invoke;
     v11[3] = &unk_1E837F870;
-    v12 = v7;
-    v13 = self;
-    dispatch_async(v8, v11);
+    v12 = modifiedCopy;
+    selfCopy = self;
+    dispatch_async(queue, v11);
 
     v9 = v12;
   }
@@ -342,49 +342,49 @@ void __70__WFHomeScreenController_databaseDidChange_modified_inserted_removed___
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateWebClipIfNeeded:(id)a3
+- (void)updateWebClipIfNeeded:(id)needed
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFHomeScreenController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  neededCopy = needed;
+  queue = [(WFHomeScreenController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 shortcutIdentifier];
-  v7 = [(WFHomeScreenController *)self database];
-  v8 = WFUpdateWebClipForShortcutIfNeeded(v4, v6, v7);
+  shortcutIdentifier = [neededCopy shortcutIdentifier];
+  database = [(WFHomeScreenController *)self database];
+  v8 = WFUpdateWebClipForShortcutIfNeeded(neededCopy, shortcutIdentifier, database);
 
   if (v8)
   {
     v9 = getWFHomescreenLogObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v4 identifier];
+      identifier = [neededCopy identifier];
       v14 = 136315394;
       v15 = "[WFHomeScreenController updateWebClipIfNeeded:]";
       v16 = 2112;
-      v17 = v10;
+      v17 = identifier;
       _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_INFO, "%s Updated web clip %@, pinging SpringBoard", &v14, 0x16u);
     }
 
     SBSWebClipServiceClass = getSBSWebClipServiceClass();
-    v12 = [v4 identifier];
-    [(objc_class *)SBSWebClipServiceClass updateWebClipPropertiesWithIdentifier:v12];
+    identifier2 = [neededCopy identifier];
+    [(objc_class *)SBSWebClipServiceClass updateWebClipPropertiesWithIdentifier:identifier2];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getHomeScreenShortcutIDsWithCompletionHandler:(id)a3
+- (void)getHomeScreenShortcutIDsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFHomeScreenController *)self queue];
+  handlerCopy = handler;
+  queue = [(WFHomeScreenController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__WFHomeScreenController_getHomeScreenShortcutIDsWithCompletionHandler___block_invoke;
   block[3] = &unk_1E837F4E8;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __72__WFHomeScreenController_getHomeScreenShortcutIDsWithCompletionHandler___block_invoke(uint64_t a1)
@@ -431,23 +431,23 @@ void __72__WFHomeScreenController_getHomeScreenShortcutIDsWithCompletionHandler_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)createHomeScreenShortcutForAppShortcut:(id)a3 title:(id)a4 image:(id)a5 darkImage:(id)a6 tintableImage:(id)a7 error:(id *)a8
+- (BOOL)createHomeScreenShortcutForAppShortcut:(id)shortcut title:(id)title image:(id)image darkImage:(id)darkImage tintableImage:(id)tintableImage error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [a3 base64ArchivedData];
-  if ([v17 length])
+  titleCopy = title;
+  imageCopy = image;
+  darkImageCopy = darkImage;
+  tintableImageCopy = tintableImage;
+  base64ArchivedData = [shortcut base64ArchivedData];
+  if ([base64ArchivedData length])
   {
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", *MEMORY[0x1E69E1210], v17];
-    v19 = [MEMORY[0x1E696AFB0] UUID];
-    v20 = [v19 UUIDString];
-    v21 = [v20 stringByReplacingOccurrencesOfString:@"-" withString:&stru_1F4A1C408];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", *MEMORY[0x1E69E1210], base64ArchivedData];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v21 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_1F4A1C408];
 
     v22 = objc_alloc_init(getUIWebClipClass());
-    [v22 setTitle:v13];
+    [v22 setTitle:titleCopy];
     [v22 setIdentifier:v21];
     [v22 setShortcutIdentifier:v18];
     v23 = [MEMORY[0x1E695DFF8] URLWithString:@"shortcuts://run-app-shortcut"];
@@ -455,72 +455,72 @@ void __72__WFHomeScreenController_getHomeScreenShortcutIDsWithCompletionHandler_
 
     [v22 setApplicationBundleIdentifier:*MEMORY[0x1E69E0F60]];
     [v22 setFullScreen:1];
-    if (v14)
+    if (imageCopy)
     {
-      [v22 setIconImage:v14 isPrecomposed:0];
+      [v22 setIconImage:imageCopy isPrecomposed:0];
     }
 
-    if (v15)
+    if (darkImageCopy)
     {
-      [v22 setDarkIconImage:v15];
+      [v22 setDarkIconImage:darkImageCopy];
     }
 
-    if (v16)
+    if (tintableImageCopy)
     {
-      [v22 setTintableIconImage:v16];
+      [v22 setTintableIconImage:tintableImageCopy];
     }
 
-    v42 = v15;
-    v24 = v14;
+    v42 = darkImageCopy;
+    v24 = imageCopy;
     if ([v22 createOnDisk])
     {
       v25 = softLinkSBSSpringBoardServerPort();
       v26 = [v21 cStringUsingEncoding:4];
       v27 = softLinkSBAddWebClipToHomeScreen(v25, v26);
-      v28 = a8;
-      LOBYTE(a8) = v27 == 0;
-      if (!v28 || !v27)
+      errorCopy = error;
+      LOBYTE(error) = v27 == 0;
+      if (!errorCopy || !v27)
       {
         goto LABEL_19;
       }
 
-      v29 = v28;
-      v41 = v13;
+      errorCopy3 = errorCopy;
+      v41 = titleCopy;
       v30 = MEMORY[0x1E696ABC0];
       v43 = *MEMORY[0x1E696A578];
-      a8 = WFLocalizedString(@"Unable to add Home Screen icon.");
-      v44 = a8;
-      v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
+      error = WFLocalizedString(@"Unable to add Home Screen icon.");
+      errorCopy2 = error;
+      v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy2 forKeys:&v43 count:1];
       v32 = v30;
       v33 = 2;
     }
 
     else
     {
-      if (!a8)
+      if (!error)
       {
 LABEL_19:
 
-        v14 = v24;
-        v15 = v42;
+        imageCopy = v24;
+        darkImageCopy = v42;
         goto LABEL_20;
       }
 
-      v29 = a8;
-      v41 = v13;
+      errorCopy3 = error;
+      v41 = titleCopy;
       v38 = MEMORY[0x1E696ABC0];
       v45 = *MEMORY[0x1E696A578];
-      a8 = WFLocalizedString(@"Unable to save Home Screen icon.");
-      v46 = a8;
-      v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
+      error = WFLocalizedString(@"Unable to save Home Screen icon.");
+      errorCopy4 = error;
+      v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy4 forKeys:&v45 count:1];
       v32 = v38;
       v33 = 1;
     }
 
-    *v29 = [v32 errorWithDomain:@"WFAddToHomeScreenErrorDomain" code:v33 userInfo:v31];
+    *errorCopy3 = [v32 errorWithDomain:@"WFAddToHomeScreenErrorDomain" code:v33 userInfo:v31];
 
-    LOBYTE(a8) = 0;
-    v13 = v41;
+    LOBYTE(error) = 0;
+    titleCopy = v41;
     goto LABEL_19;
   }
 
@@ -532,7 +532,7 @@ LABEL_19:
     _os_log_impl(&dword_1CA256000, v34, OS_LOG_TYPE_ERROR, "%s Could not get base64 encoding for the auto shortcut", buf, 0xCu);
   }
 
-  if (a8)
+  if (error)
   {
     v35 = MEMORY[0x1E696ABC0];
     v47 = *MEMORY[0x1E696A578];
@@ -540,43 +540,43 @@ LABEL_19:
     v48 = v18;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v36 = [v35 errorWithDomain:@"WFAddToHomeScreenErrorDomain" code:2 userInfo:v21];
-    v37 = a8;
-    LOBYTE(a8) = 0;
-    *v37 = v36;
+    errorCopy5 = error;
+    LOBYTE(error) = 0;
+    *errorCopy5 = v36;
 LABEL_20:
   }
 
   v39 = *MEMORY[0x1E69E9840];
-  return a8;
+  return error;
 }
 
-- (BOOL)addAppShortcutToHomeScreen:(id)a3 withName:(id)a4 symbolName:(id)a5 backgroundColor:(id)a6 error:(id *)a7
+- (BOOL)addAppShortcutToHomeScreen:(id)screen withName:(id)name symbolName:(id)symbolName backgroundColor:(id)color error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [objc_opt_class() iconImageWithSymbolName:v13 backgroundColor:v12 roundCorners:0];
+  colorCopy = color;
+  symbolNameCopy = symbolName;
+  nameCopy = name;
+  screenCopy = screen;
+  v16 = [objc_opt_class() iconImageWithSymbolName:symbolNameCopy backgroundColor:colorCopy roundCorners:0];
 
-  LOBYTE(a7) = [(WFHomeScreenController *)self addAppShortcutToHomeScreen:v15 withName:v14 image:v16 error:a7];
-  return a7;
+  LOBYTE(error) = [(WFHomeScreenController *)self addAppShortcutToHomeScreen:screenCopy withName:nameCopy image:v16 error:error];
+  return error;
 }
 
-- (BOOL)addTopHitToHomeScreen:(id)a3 withName:(id)a4 symbolName:(id)a5 backgroundColor:(id)a6 error:(id *)a7
+- (BOOL)addTopHitToHomeScreen:(id)screen withName:(id)name symbolName:(id)symbolName backgroundColor:(id)color error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (a7)
+  screenCopy = screen;
+  nameCopy = name;
+  symbolNameCopy = symbolName;
+  colorCopy = color;
+  if (error)
   {
     v15 = MEMORY[0x1E696ABC0];
     v23 = *MEMORY[0x1E696A578];
     v16 = WFLocalizedString(@"An internal error occurred.");
     v24[0] = v16;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-    *a7 = [v15 errorWithDomain:@"WFAddToHomeScreenErrorDomain" code:2 userInfo:v17];
+    *error = [v15 errorWithDomain:@"WFAddToHomeScreenErrorDomain" code:2 userInfo:v17];
   }
 
   v18 = getWFAppIntentsLogObject();
@@ -591,30 +591,30 @@ LABEL_20:
   return 0;
 }
 
-- (BOOL)createHomeScreenShortcutForWorkflow:(id)a3 name:(id)a4 image:(id)a5 darkImage:(id)a6 tintableImage:(id)a7 error:(id *)a8
+- (BOOL)createHomeScreenShortcutForWorkflow:(id)workflow name:(id)name image:(id)image darkImage:(id)darkImage tintableImage:(id)tintableImage error:(id *)error
 {
   v59[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v52 = a4;
-  v15 = a5;
-  v53 = a6;
-  v16 = a7;
-  v17 = [MEMORY[0x1E696AFB0] UUID];
-  v18 = [v17 UUIDString];
-  v19 = [v18 stringByReplacingOccurrencesOfString:@"-" withString:&stru_1F4A1C408];
+  workflowCopy = workflow;
+  nameCopy = name;
+  imageCopy = image;
+  darkImageCopy = darkImage;
+  tintableImageCopy = tintableImage;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v19 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_1F4A1C408];
 
   v20 = +[WFDatabase defaultDatabase];
-  v21 = [WFWorkflow workflowWithReference:v14 database:v20 error:a8];
+  v21 = [WFWorkflow workflowWithReference:workflowCopy database:v20 error:error];
 
   if (v21)
   {
     v22 = WFFastPathBundleIdentifierIfApplicable(v21);
-    v23 = [v14 identifier];
+    identifier = [workflowCopy identifier];
     v24 = objc_alloc_init(getUIWebClipClass());
-    [v24 setTitle:v52];
+    [v24 setTitle:nameCopy];
     [v24 setIdentifier:v19];
-    v51 = v23;
-    [v24 setShortcutIdentifier:v23];
+    v51 = identifier;
+    [v24 setShortcutIdentifier:identifier];
     if (v22)
     {
       [v24 setPageURL:0];
@@ -622,19 +622,19 @@ LABEL_20:
 
     else
     {
-      [v14 externalURLForRunningWithSource:*MEMORY[0x1E69E1398]];
-      v25 = self;
-      v26 = a8;
+      [workflowCopy externalURLForRunningWithSource:*MEMORY[0x1E69E1398]];
+      selfCopy = self;
+      errorCopy = error;
       v27 = v19;
-      v28 = v16;
-      v30 = v29 = v15;
+      v28 = tintableImageCopy;
+      v30 = v29 = imageCopy;
       [v24 setPageURL:v30];
 
-      v15 = v29;
-      v16 = v28;
+      imageCopy = v29;
+      tintableImageCopy = v28;
       v19 = v27;
-      a8 = v26;
-      self = v25;
+      error = errorCopy;
+      self = selfCopy;
     }
 
     v31 = *MEMORY[0x1E69E0F60];
@@ -650,86 +650,86 @@ LABEL_20:
 
     [v24 setApplicationBundleIdentifier:v32];
     [v24 setFullScreen:1];
-    [v24 setIconImage:v15 isPrecomposed:0];
-    if (v53)
+    [v24 setIconImage:imageCopy isPrecomposed:0];
+    if (darkImageCopy)
     {
-      [v24 setDarkIconImage:v53];
+      [v24 setDarkIconImage:darkImageCopy];
     }
 
-    if (v16)
+    if (tintableImageCopy)
     {
-      [v24 setTintableIconImage:v16];
+      [v24 setTintableIconImage:tintableImageCopy];
     }
 
     if ([v24 createOnDisk])
     {
-      v49 = v15;
+      v49 = imageCopy;
       v33 = softLinkSBSSpringBoardServerPort();
       v34 = [v19 cStringUsingEncoding:4];
       if (softLinkSBAddWebClipToHomeScreen(v33, v34))
       {
-        if (a8)
+        if (error)
         {
           v35 = MEMORY[0x1E696ABC0];
           v56 = *MEMORY[0x1E696A578];
           WFLocalizedString(@"Unable to add Home Screen icon.");
-          v36 = v48 = v16;
+          v36 = v48 = tintableImageCopy;
           v57 = v36;
           v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-          *a8 = [v35 errorWithDomain:@"WFAddToHomeScreenErrorDomain" code:2 userInfo:v37];
+          *error = [v35 errorWithDomain:@"WFAddToHomeScreenErrorDomain" code:2 userInfo:v37];
 
-          v16 = v48;
-          LOBYTE(a8) = 0;
+          tintableImageCopy = v48;
+          LOBYTE(error) = 0;
         }
       }
 
       else
       {
-        v45 = [(WFHomeScreenController *)self queue];
+        queue = [(WFHomeScreenController *)self queue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __103__WFHomeScreenController_createHomeScreenShortcutForWorkflow_name_image_darkImage_tintableImage_error___block_invoke;
         block[3] = &unk_1E837F870;
         block[4] = self;
         v55 = v51;
-        dispatch_async(v45, block);
+        dispatch_async(queue, block);
 
-        LOBYTE(a8) = 1;
+        LOBYTE(error) = 1;
       }
 
-      v15 = v49;
+      imageCopy = v49;
     }
 
-    else if (a8)
+    else if (error)
     {
-      v50 = v15;
+      v50 = imageCopy;
       v38 = MEMORY[0x1E696ABC0];
       v58 = *MEMORY[0x1E696A578];
       v39 = WFLocalizedString(@"Unable to save Home Screen icon.");
       v59[0] = v39;
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:&v58 count:1];
-      v40 = v14;
+      v40 = workflowCopy;
       v41 = v19;
-      v43 = v42 = v16;
+      v43 = v42 = tintableImageCopy;
       v44 = v38;
-      v15 = v50;
-      *a8 = [v44 errorWithDomain:@"WFAddToHomeScreenErrorDomain" code:1 userInfo:v43];
+      imageCopy = v50;
+      *error = [v44 errorWithDomain:@"WFAddToHomeScreenErrorDomain" code:1 userInfo:v43];
 
-      v16 = v42;
+      tintableImageCopy = v42;
       v19 = v41;
-      v14 = v40;
+      workflowCopy = v40;
 
-      LOBYTE(a8) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a8) = 0;
+    LOBYTE(error) = 0;
   }
 
   v46 = *MEMORY[0x1E69E9840];
-  return a8;
+  return error;
 }
 
 void __103__WFHomeScreenController_createHomeScreenShortcutForWorkflow_name_image_darkImage_tintableImage_error___block_invoke(uint64_t a1)
@@ -738,33 +738,33 @@ void __103__WFHomeScreenController_createHomeScreenShortcutForWorkflow_name_imag
   [v2 addObject:*(a1 + 40)];
 }
 
-- (BOOL)addWorkflowToHomeScreen:(id)a3 withName:(id)a4 symbolName:(id)a5 backgroundColor:(id)a6 error:(id *)a7
+- (BOOL)addWorkflowToHomeScreen:(id)screen withName:(id)name symbolName:(id)symbolName backgroundColor:(id)color error:(id *)error
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [objc_opt_class() iconImageWithSymbolName:v13 backgroundColor:v12 roundCorners:0];
+  colorCopy = color;
+  symbolNameCopy = symbolName;
+  nameCopy = name;
+  screenCopy = screen;
+  v16 = [objc_opt_class() iconImageWithSymbolName:symbolNameCopy backgroundColor:colorCopy roundCorners:0];
 
-  LOBYTE(a7) = [(WFHomeScreenController *)self createHomeScreenShortcutForWorkflow:v15 name:v14 image:v16 darkImage:0 tintableImage:0 error:a7];
-  return a7;
+  LOBYTE(error) = [(WFHomeScreenController *)self createHomeScreenShortcutForWorkflow:screenCopy name:nameCopy image:v16 darkImage:0 tintableImage:0 error:error];
+  return error;
 }
 
-- (BOOL)addWorkflowToHomeScreen:(id)a3 withName:(id)a4 icon:(id)a5 error:(id *)a6
+- (BOOL)addWorkflowToHomeScreen:(id)screen withName:(id)name icon:(id)icon error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_opt_class() iconImageForIcon:v10];
+  iconCopy = icon;
+  nameCopy = name;
+  screenCopy = screen;
+  v13 = [objc_opt_class() iconImageForIcon:iconCopy];
 
-  LOBYTE(a6) = [(WFHomeScreenController *)self createHomeScreenShortcutForWorkflow:v12 name:v11 image:v13 darkImage:0 tintableImage:0 error:a6];
-  return a6;
+  LOBYTE(error) = [(WFHomeScreenController *)self createHomeScreenShortcutForWorkflow:screenCopy name:nameCopy image:v13 darkImage:0 tintableImage:0 error:error];
+  return error;
 }
 
-+ (id)iconImageForIcon:(id)a3
++ (id)iconImageForIcon:(id)icon
 {
   v3 = getISImageDescriptorClass;
-  v4 = a3;
+  iconCopy = icon;
   v5 = v3();
   v6 = getkISImageDescriptorHomeScreen();
   v7 = [(objc_class *)v5 imageDescriptorNamed:v6];
@@ -775,21 +775,21 @@ void __103__WFHomeScreenController_createHomeScreenShortcutForWorkflow_name_imag
   [v7 scale];
   CGAffineTransformMakeScale(&v18, v10, v10);
   v17 = vmlaq_n_f64(vmulq_n_f64(*&v18.c, v15), *&v18.a, v16);
-  v11 = [objc_alloc(MEMORY[0x1E69E0E08]) initWithHomeScreenIcon:v4];
+  v11 = [objc_alloc(MEMORY[0x1E69E0E08]) initWithHomeScreenIcon:iconCopy];
 
   [v11 setRounded:0];
   v12 = [v11 imageWithSize:*&v17];
-  v13 = [v12 UIImage];
+  uIImage = [v12 UIImage];
 
-  return v13;
+  return uIImage;
 }
 
-+ (void)migrateOpenAppWebClipsIfNeededWithDatabaseAccessor:(id)a3
++ (void)migrateOpenAppWebClipsIfNeededWithDatabaseAccessor:(id)accessor
 {
   v56 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v5 = [v4 BOOLForKey:@"WFOpenAppWebClipsMigratedToFastPath"];
+  accessorCopy = accessor;
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v5 = [systemShortcutsUserDefaults BOOLForKey:@"WFOpenAppWebClipsMigratedToFastPath"];
 
   if ((v5 & 1) == 0)
   {
@@ -801,10 +801,10 @@ void __103__WFHomeScreenController_createHomeScreenShortcutForWorkflow_name_imag
       _os_log_impl(&dword_1CA256000, v6, OS_LOG_TYPE_DEFAULT, "%s Migrating Open App web clips to the fast path...", buf, 0xCu);
     }
 
-    v40 = v3[2](v3);
+    v40 = accessorCopy[2](accessorCopy);
     if (v40)
     {
-      v39 = v3;
+      v39 = accessorCopy;
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
@@ -836,26 +836,26 @@ void __103__WFHomeScreenController_createHomeScreenShortcutForWorkflow_name_imag
           v14 = getWFHomescreenLogObject();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
-            v15 = [v12 title];
-            v16 = [v12 pageURL];
+            title = [v12 title];
+            pageURL = [v12 pageURL];
             *buf = 136315650;
             v50 = "+[WFHomeScreenController migrateOpenAppWebClipsIfNeededWithDatabaseAccessor:]";
             v51 = 2112;
-            v52 = v15;
+            v52 = title;
             v53 = 2112;
-            v54 = v16;
+            v54 = pageURL;
             _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_INFO, "%s Considering web clip with title, URL: %@, %@", buf, 0x20u);
           }
 
-          v17 = [v12 applicationBundleIdentifier];
-          v18 = v17;
-          if (v17 == v10)
+          applicationBundleIdentifier = [v12 applicationBundleIdentifier];
+          v18 = applicationBundleIdentifier;
+          if (applicationBundleIdentifier == v10)
           {
           }
 
           else
           {
-            if (v17)
+            if (applicationBundleIdentifier)
             {
               v19 = v10 == 0;
             }
@@ -872,7 +872,7 @@ LABEL_39:
               goto LABEL_40;
             }
 
-            v20 = [v17 isEqualToString:v10];
+            v20 = [applicationBundleIdentifier isEqualToString:v10];
 
             if (!v20)
             {
@@ -880,12 +880,12 @@ LABEL_39:
             }
           }
 
-          v21 = [v12 pageURL];
-          v22 = [v21 scheme];
-          v23 = v22;
-          if (v22 != @"shortcuts")
+          pageURL2 = [v12 pageURL];
+          scheme = [pageURL2 scheme];
+          v23 = scheme;
+          if (scheme != @"shortcuts")
           {
-            if (!v22 || (v24 = [(__CFString *)v22 isEqualToString:@"shortcuts"], v23, !v24))
+            if (!scheme || (v24 = [(__CFString *)scheme isEqualToString:@"shortcuts"], v23, !v24))
             {
 
               goto LABEL_39;
@@ -893,9 +893,9 @@ LABEL_39:
           }
 
           v25 = v9;
-          v26 = [v12 pageURL];
-          v27 = [v26 host];
-          if (v27 == @"x-callback-url")
+          pageURL3 = [v12 pageURL];
+          host = [pageURL3 host];
+          if (host == @"x-callback-url")
           {
 
             v10 = v42;
@@ -903,20 +903,20 @@ LABEL_30:
             v29 = getWFHomescreenLogObject();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
             {
-              v30 = [v12 title];
-              v31 = [v12 pageURL];
+              title2 = [v12 title];
+              pageURL4 = [v12 pageURL];
               *buf = 136315650;
               v50 = "+[WFHomeScreenController migrateOpenAppWebClipsIfNeededWithDatabaseAccessor:]";
               v51 = 2112;
-              v52 = v30;
+              v52 = title2;
               v53 = 2112;
-              v54 = v31;
+              v54 = pageURL4;
               _os_log_impl(&dword_1CA256000, v29, OS_LOG_TYPE_INFO, "%s Web clip with title, URL is coming from shortcuts, checking if we need to migrate: %@, %@", buf, 0x20u);
             }
 
-            v32 = [v12 pageURL];
-            v33 = [v32 dc_queryDictionary];
-            v18 = [v33 objectForKeyedSubscript:@"id"];
+            pageURL5 = [v12 pageURL];
+            dc_queryDictionary = [pageURL5 dc_queryDictionary];
+            v18 = [dc_queryDictionary objectForKeyedSubscript:@"id"];
 
             if (v18)
             {
@@ -928,11 +928,11 @@ LABEL_30:
               v34 = getWFHomescreenLogObject();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
               {
-                v35 = [v12 pageURL];
+                pageURL6 = [v12 pageURL];
                 *buf = 136315394;
                 v50 = "+[WFHomeScreenController migrateOpenAppWebClipsIfNeededWithDatabaseAccessor:]";
                 v51 = 2112;
-                v52 = v35;
+                v52 = pageURL6;
                 _os_log_impl(&dword_1CA256000, v34, OS_LOG_TYPE_ERROR, "%s Can't migrate web clip with page URL %@ -- couldn't extract shortcut identifier", buf, 0x16u);
               }
 
@@ -942,8 +942,8 @@ LABEL_30:
             goto LABEL_38;
           }
 
-          v28 = v27;
-          if (!v27)
+          v28 = host;
+          if (!host)
           {
 
             v9 = v25;
@@ -953,7 +953,7 @@ LABEL_38:
             goto LABEL_39;
           }
 
-          v41 = [(__CFString *)v27 isEqualToString:@"x-callback-url"];
+          v41 = [(__CFString *)host isEqualToString:@"x-callback-url"];
 
           v9 = v25;
           v10 = v42;
@@ -982,20 +982,20 @@ LABEL_42:
             _os_log_impl(&dword_1CA256000, v36, OS_LOG_TYPE_DEFAULT, "%s Open App web clip fast path migration complete.", buf, 0xCu);
           }
 
-          v37 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-          [v37 setBool:1 forKey:@"WFOpenAppWebClipsMigratedToFastPath"];
-          v3 = v39;
+          systemShortcutsUserDefaults2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+          [systemShortcutsUserDefaults2 setBool:1 forKey:@"WFOpenAppWebClipsMigratedToFastPath"];
+          accessorCopy = v39;
           goto LABEL_47;
         }
       }
     }
 
-    v37 = getWFHomescreenLogObject();
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+    systemShortcutsUserDefaults2 = getWFHomescreenLogObject();
+    if (os_log_type_enabled(systemShortcutsUserDefaults2, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315138;
       v50 = "+[WFHomeScreenController migrateOpenAppWebClipsIfNeededWithDatabaseAccessor:]";
-      _os_log_impl(&dword_1CA256000, v37, OS_LOG_TYPE_ERROR, "%s Couldn't access database for Open App migration... bailing out", buf, 0xCu);
+      _os_log_impl(&dword_1CA256000, systemShortcutsUserDefaults2, OS_LOG_TYPE_ERROR, "%s Couldn't access database for Open App migration... bailing out", buf, 0xCu);
     }
 
 LABEL_47:
@@ -1007,8 +1007,8 @@ LABEL_47:
 + (void)migratePreYukonWebClipsIfNeeded
 {
   v57 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] workflowUserDefaults];
-  v3 = [v2 BOOLForKey:@"WFWebClipsMigratedToDirectLaunch"];
+  workflowUserDefaults = [MEMORY[0x1E695E000] workflowUserDefaults];
+  v3 = [workflowUserDefaults BOOLForKey:@"WFWebClipsMigratedToDirectLaunch"];
 
   if ((v3 & 1) == 0)
   {
@@ -1048,8 +1048,8 @@ LABEL_47:
 
           v11 = *(*(&v46 + 1) + 8 * v10);
           v12 = objc_autoreleasePoolPush();
-          v13 = [v11 applicationBundleIdentifier];
-          v14 = [v13 isEqualToString:v45];
+          applicationBundleIdentifier = [v11 applicationBundleIdentifier];
+          v14 = [applicationBundleIdentifier isEqualToString:v45];
 
           if (v14)
           {
@@ -1065,12 +1065,12 @@ LABEL_47:
             goto LABEL_40;
           }
 
-          v15 = [v11 pageURL];
-          v16 = [v15 absoluteString];
+          pageURL = [v11 pageURL];
+          absoluteString = [pageURL absoluteString];
 
-          if ([v16 hasPrefix:{@"data:text/html;base64, "}])
+          if ([absoluteString hasPrefix:{@"data:text/html;base64, "}])
           {
-            v17 = [v16 substringFromIndex:{objc_msgSend(@"data:text/htmlbase64, ", "length")}];;
+            v17 = [absoluteString substringFromIndex:{objc_msgSend(@"data:text/htmlbase64, ", "length")}];;
             v18 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v17 options:1];
             if (v18)
             {
@@ -1090,11 +1090,11 @@ LABEL_47:
                     v26 = getWFHomescreenLogObject();
                     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
                     {
-                      v27 = [v11 identifier];
+                      identifier = [v11 identifier];
                       *buf = 136315394;
                       v51 = "+[WFHomeScreenController migratePreYukonWebClipsIfNeeded]";
                       v52 = 2114;
-                      v53 = v27;
+                      v53 = identifier;
                       _os_log_impl(&dword_1CA256000, v26, OS_LOG_TYPE_DEFAULT, "%s Updating page URL and bundle ID for web clip: %{public}@", buf, 0x16u);
                     }
 
@@ -1112,11 +1112,11 @@ LABEL_47:
                     v34 = getWFHomescreenLogObject();
                     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
                     {
-                      v35 = [v11 identifier];
+                      identifier2 = [v11 identifier];
                       *buf = 136315650;
                       v51 = "+[WFHomeScreenController migratePreYukonWebClipsIfNeeded]";
                       v52 = 2114;
-                      v53 = v35;
+                      v53 = identifier2;
                       v54 = 2112;
                       v55 = v25;
                       _os_log_impl(&dword_1CA256000, v34, OS_LOG_TYPE_DEFAULT, "%s Skipping web clip migration for web clip: %{public}@, with link: %@", buf, 0x20u);
@@ -1131,11 +1131,11 @@ LABEL_47:
                   v25 = getWFHomescreenLogObject();
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                   {
-                    v33 = [v11 identifier];
+                    identifier3 = [v11 identifier];
                     *buf = 136315394;
                     v51 = "+[WFHomeScreenController migratePreYukonWebClipsIfNeeded]";
                     v52 = 2114;
-                    v53 = v33;
+                    v53 = identifier3;
                     _os_log_impl(&dword_1CA256000, v25, OS_LOG_TYPE_DEFAULT, "%s Skipping web clip migration due to no regex match for web clip: %{public}@", buf, 0x16u);
                   }
                 }
@@ -1146,11 +1146,11 @@ LABEL_47:
                 v22 = getWFHomescreenLogObject();
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                 {
-                  v32 = [v11 identifier];
+                  identifier4 = [v11 identifier];
                   *buf = 136315394;
                   v51 = "+[WFHomeScreenController migratePreYukonWebClipsIfNeeded]";
                   v52 = 2114;
-                  v53 = v32;
+                  v53 = identifier4;
                   _os_log_impl(&dword_1CA256000, v22, OS_LOG_TYPE_DEFAULT, "%s Skipping web clip migration because it was not created by shortcuts: %{public}@", buf, 0x16u);
                 }
               }
@@ -1163,11 +1163,11 @@ LABEL_47:
               v30 = getWFHomescreenLogObject();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
               {
-                v31 = [v11 identifier];
+                identifier5 = [v11 identifier];
                 *buf = 136315394;
                 v51 = "+[WFHomeScreenController migratePreYukonWebClipsIfNeeded]";
                 v52 = 2114;
-                v53 = v31;
+                v53 = identifier5;
                 _os_log_impl(&dword_1CA256000, v30, OS_LOG_TYPE_DEFAULT, "%s Skipping web clip migration because it contained invalid base64-encoded data in its URL: %{public}@", buf, 0x16u);
               }
             }
@@ -1180,11 +1180,11 @@ LABEL_47:
             v17 = getWFHomescreenLogObject();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v29 = [v11 identifier];
+              identifier6 = [v11 identifier];
               *buf = 136315394;
               v51 = "+[WFHomeScreenController migratePreYukonWebClipsIfNeeded]";
               v52 = 2114;
-              v53 = v29;
+              v53 = identifier6;
               _os_log_impl(&dword_1CA256000, v17, OS_LOG_TYPE_DEFAULT, "%s Skipping web clip migration because it isn't a base64-encoded data URL: %{public}@", buf, 0x16u);
             }
           }
@@ -1214,18 +1214,18 @@ LABEL_40:
       _os_log_impl(&dword_1CA256000, v37, OS_LOG_TYPE_DEFAULT, "%s Web clip migration complete.", buf, 0xCu);
     }
 
-    v38 = [MEMORY[0x1E695E000] workflowUserDefaults];
-    [v38 setBool:1 forKey:@"WFWebClipsMigratedToDirectLaunch"];
+    workflowUserDefaults2 = [MEMORY[0x1E695E000] workflowUserDefaults];
+    [workflowUserDefaults2 setBool:1 forKey:@"WFWebClipsMigratedToDirectLaunch"];
   }
 
   v39 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)migrateWebClipsIfNeededWithDatabaseAccessor:(id)a3
++ (void)migrateWebClipsIfNeededWithDatabaseAccessor:(id)accessor
 {
-  v4 = a3;
-  [a1 migratePreYukonWebClipsIfNeeded];
-  [a1 migrateOpenAppWebClipsIfNeededWithDatabaseAccessor:v4];
+  accessorCopy = accessor;
+  [self migratePreYukonWebClipsIfNeeded];
+  [self migrateOpenAppWebClipsIfNeededWithDatabaseAccessor:accessorCopy];
 }
 
 @end

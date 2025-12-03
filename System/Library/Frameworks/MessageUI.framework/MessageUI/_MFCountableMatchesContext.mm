@@ -1,6 +1,6 @@
 @interface _MFCountableMatchesContext
 - (_MFCountableMatchesContext)init;
-- (void)countInstances:(id)a3 usingPredicate:(id)a4;
+- (void)countInstances:(id)instances usingPredicate:(id)predicate;
 - (void)dealloc;
 @end
 
@@ -37,16 +37,16 @@
   [(_MFCountableMatchesContext *)&v4 dealloc];
 }
 
-- (void)countInstances:(id)a3 usingPredicate:(id)a4
+- (void)countInstances:(id)instances usingPredicate:(id)predicate
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  instancesCopy = instances;
+  predicateCopy = predicate;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = instancesCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -61,7 +61,7 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = v7[2](v7, v12);
+        v13 = predicateCopy[2](predicateCopy, v12);
         if (v13)
         {
           v14 = CFDictionaryGetValue(self->_peopleCount, v12) + v13;

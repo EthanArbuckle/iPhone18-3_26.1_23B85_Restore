@@ -1,15 +1,15 @@
 @interface WebBookmarksXPCListener
 - (WebBookmarksXPCConnectionDelegate)delegate;
-- (id)initListenerForMachService:(const char *)a3;
-- (void)_handleIncomingConnection:(id)a3;
-- (void)connection:(id)a3 didCloseWithError:(id)a4;
-- (void)setHandler:(id)a3 forMessageNamed:(const char *)a4;
-- (void)setMessageHandlers:(id)a3;
+- (id)initListenerForMachService:(const char *)service;
+- (void)_handleIncomingConnection:(id)connection;
+- (void)connection:(id)connection didCloseWithError:(id)error;
+- (void)setHandler:(id)handler forMessageNamed:(const char *)named;
+- (void)setMessageHandlers:(id)handlers;
 @end
 
 @implementation WebBookmarksXPCListener
 
-- (id)initListenerForMachService:(const char *)a3
+- (id)initListenerForMachService:(const char *)service
 {
   v19.receiver = self;
   v19.super_class = WebBookmarksXPCListener;
@@ -27,7 +27,7 @@
 
     v9 = MEMORY[0x277D85CD0];
     v10 = MEMORY[0x277D85CD0];
-    mach_service = xpc_connection_create_mach_service(a3, v9, 1uLL);
+    mach_service = xpc_connection_create_mach_service(service, v9, 1uLL);
     listenerConnection = v4->_listenerConnection;
     v4->_listenerConnection = mach_service;
 
@@ -56,14 +56,14 @@ void __54__WebBookmarksXPCListener_initListenerForMachService___block_invoke(uin
   [WeakRetained _handleIncomingConnection:v3];
 }
 
-- (void)_handleIncomingConnection:(id)a3
+- (void)_handleIncomingConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  if (connectionCopy)
   {
-    v6 = MEMORY[0x2743D6E50](v4);
+    v6 = MEMORY[0x2743D6E50](connectionCopy);
     if (v6 == MEMORY[0x277D86450])
     {
       v11 = [[WebBookmarksXPCConnection alloc] initWithConnection:v5];
@@ -99,17 +99,17 @@ void __54__WebBookmarksXPCListener_initListenerForMachService___block_invoke(uin
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setHandler:(id)a3 forMessageNamed:(const char *)a4
+- (void)setHandler:(id)handler forMessageNamed:(const char *)named
 {
   messageHandlers = self->_messageHandlers;
-  v7 = MEMORY[0x2743D6830](a3, a2);
-  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:a4];
+  v7 = MEMORY[0x2743D6830](handler, a2);
+  v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:named];
   [(NSMutableDictionary *)messageHandlers setObject:v7 forKey:v6];
 }
 
-- (void)setMessageHandlers:(id)a3
+- (void)setMessageHandlers:(id)handlers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [handlers mutableCopy];
   messageHandlers = self->_messageHandlers;
   self->_messageHandlers = v4;
 
@@ -123,15 +123,15 @@ void __54__WebBookmarksXPCListener_initListenerForMachService___block_invoke(uin
   }
 }
 
-- (void)connection:(id)a3 didCloseWithError:(id)a4
+- (void)connection:(id)connection didCloseWithError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
+  errorCopy = error;
+  connectionCopy = connection;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained connection:v8 didCloseWithError:v6];
+  [WeakRetained connection:connectionCopy didCloseWithError:errorCopy];
 
-  [v8 setDelegate:0];
-  [(NSMutableArray *)self->_clientConnections removeObject:v8];
+  [connectionCopy setDelegate:0];
+  [(NSMutableArray *)self->_clientConnections removeObject:connectionCopy];
 }
 
 - (WebBookmarksXPCConnectionDelegate)delegate

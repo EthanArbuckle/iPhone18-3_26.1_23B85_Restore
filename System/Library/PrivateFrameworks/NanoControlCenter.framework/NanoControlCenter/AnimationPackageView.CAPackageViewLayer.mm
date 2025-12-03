@@ -1,7 +1,7 @@
 @interface AnimationPackageView.CAPackageViewLayer
 - (_TtCV17NanoControlCenter20AnimationPackageViewP33_BAF0D071F2C9015A0B315C0F79AC2BC918CAPackageViewLayer)init;
-- (_TtCV17NanoControlCenter20AnimationPackageViewP33_BAF0D071F2C9015A0B315C0F79AC2BC918CAPackageViewLayer)initWithCoder:(id)a3;
-- (_TtCV17NanoControlCenter20AnimationPackageViewP33_BAF0D071F2C9015A0B315C0F79AC2BC918CAPackageViewLayer)initWithLayer:(id)a3;
+- (_TtCV17NanoControlCenter20AnimationPackageViewP33_BAF0D071F2C9015A0B315C0F79AC2BC918CAPackageViewLayer)initWithCoder:(id)coder;
+- (_TtCV17NanoControlCenter20AnimationPackageViewP33_BAF0D071F2C9015A0B315C0F79AC2BC918CAPackageViewLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_25AF40BA8();
 }
 
@@ -21,7 +21,7 @@
   return [(AnimationPackageView.CAPackageViewLayer *)&v3 init];
 }
 
-- (_TtCV17NanoControlCenter20AnimationPackageViewP33_BAF0D071F2C9015A0B315C0F79AC2BC918CAPackageViewLayer)initWithLayer:(id)a3
+- (_TtCV17NanoControlCenter20AnimationPackageViewP33_BAF0D071F2C9015A0B315C0F79AC2BC918CAPackageViewLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_25B005E34();
@@ -37,13 +37,13 @@
   return v5;
 }
 
-- (_TtCV17NanoControlCenter20AnimationPackageViewP33_BAF0D071F2C9015A0B315C0F79AC2BC918CAPackageViewLayer)initWithCoder:(id)a3
+- (_TtCV17NanoControlCenter20AnimationPackageViewP33_BAF0D071F2C9015A0B315C0F79AC2BC918CAPackageViewLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtCV17NanoControlCenter20AnimationPackageViewP33_BAF0D071F2C9015A0B315C0F79AC2BC918CAPackageViewLayer_packageLayer) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for AnimationPackageView.CAPackageViewLayer();
-  v4 = a3;
-  v5 = [(AnimationPackageView.CAPackageViewLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AnimationPackageView.CAPackageViewLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

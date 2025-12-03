@@ -1,10 +1,10 @@
 @interface DaemonLongRunningProcessOracle
-- (void)debuggingInfoRequestedWithNote:(id)a3;
+- (void)debuggingInfoRequestedWithNote:(id)note;
 @end
 
 @implementation DaemonLongRunningProcessOracle
 
-- (void)debuggingInfoRequestedWithNote:(id)a3
+- (void)debuggingInfoRequestedWithNote:(id)note
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

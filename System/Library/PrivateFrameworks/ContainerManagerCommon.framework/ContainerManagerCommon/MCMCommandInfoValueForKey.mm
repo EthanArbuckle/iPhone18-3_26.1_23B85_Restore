@@ -6,9 +6,9 @@
 - (BOOL)includedPath;
 - (BOOL)includedUserManagedAssetsPath;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandInfoValueForKey)infoValueForKeyWithError:(unint64_t *)a3;
-- (MCMCommandInfoValueForKey)initWithKey:(id)a3 concreteContainerIdentity:(id)a4 context:(id)a5 resultPromise:(id)a6;
-- (MCMCommandInfoValueForKey)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandInfoValueForKey)infoValueForKeyWithError:(unint64_t *)error;
+- (MCMCommandInfoValueForKey)initWithKey:(id)key concreteContainerIdentity:(id)identity context:(id)context resultPromise:(id)promise;
+- (MCMCommandInfoValueForKey)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMConcreteContainerIdentity)concreteContainerIdentity;
 - (NSString)key;
 - (void)execute;
@@ -64,10 +64,10 @@
   return result;
 }
 
-- (MCMCommandInfoValueForKey)infoValueForKeyWithError:(unint64_t *)a3
+- (MCMCommandInfoValueForKey)infoValueForKeyWithError:(unint64_t *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v23 = [(MCMCommandInfoValueForKey *)self concreteContainerIdentity];
+  concreteContainerIdentity = [(MCMCommandInfoValueForKey *)self concreteContainerIdentity];
   v4 = [(MCMCommandInfoValueForKey *)self key];
   objc_opt_class();
   v5 = v4;
@@ -97,10 +97,10 @@
     goto LABEL_17;
   }
 
-  v7 = [(MCMCommand *)self context];
-  v8 = [v7 containerCache];
+  context = [(MCMCommand *)self context];
+  containerCache = [context containerCache];
   v25 = 0;
-  v9 = [v8 entryForContainerIdentity:v23 error:&v25];
+  v9 = [containerCache entryForContainerIdentity:concreteContainerIdentity error:&v25];
   v10 = v25;
 
   v24 = v10;
@@ -115,7 +115,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v27 = v23;
+      v27 = concreteContainerIdentity;
       _os_log_error_impl(&dword_1DF2C3000, v17, OS_LOG_TYPE_ERROR, "No Container with identity: %@", buf, 0xCu);
     }
 
@@ -123,8 +123,8 @@
     goto LABEL_17;
   }
 
-  v13 = [v11 info];
-  v14 = [v13 objectForKeyedSubscript:v5];
+  info = [v11 info];
+  v14 = [info objectForKeyedSubscript:v5];
 
   if (!v14)
   {
@@ -145,9 +145,9 @@ LABEL_17:
 
   v15 = v12;
 LABEL_18:
-  if (a3 && v15)
+  if (error && v15)
   {
-    *a3 = [(MCMError *)v15 type];
+    *error = [(MCMError *)v15 type];
   }
 
   v19 = v14;
@@ -174,8 +174,8 @@ LABEL_18:
     v5 = [(MCMResultBase *)[MCMResultInfoValueForKey alloc] initWithError:v7];
   }
 
-  v8 = [(MCMCommand *)self resultPromise];
-  [v8 completeWithResult:v5];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v5];
 
   objc_autoreleasePoolPop(v3);
   v9 = *MEMORY[0x1E69E9840];
@@ -184,28 +184,28 @@ LABEL_18:
 - (BOOL)preflightClientAllowed
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
 
-  LOBYTE(v2) = [v3 isAllowedToAccessInfoMetadata];
+  LOBYTE(context) = [clientIdentity isAllowedToAccessInfoMetadata];
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return context;
 }
 
-- (MCMCommandInfoValueForKey)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandInfoValueForKey)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v16.receiver = self;
   v16.super_class = MCMCommandInfoValueForKey;
-  v9 = [(MCMCommand *)&v16 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v16 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 concreteContainerIdentity];
+    concreteContainerIdentity = [messageCopy concreteContainerIdentity];
     concreteContainerIdentity = v9->_concreteContainerIdentity;
-    v9->_concreteContainerIdentity = v10;
+    v9->_concreteContainerIdentity = concreteContainerIdentity;
 
-    v12 = [v8 key];
+    v12 = [messageCopy key];
     key = v9->_key;
     v9->_key = v12;
   }
@@ -214,19 +214,19 @@ LABEL_18:
   return v9;
 }
 
-- (MCMCommandInfoValueForKey)initWithKey:(id)a3 concreteContainerIdentity:(id)a4 context:(id)a5 resultPromise:(id)a6
+- (MCMCommandInfoValueForKey)initWithKey:(id)key concreteContainerIdentity:(id)identity context:(id)context resultPromise:(id)promise
 {
   v18 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  keyCopy = key;
+  identityCopy = identity;
   v17.receiver = self;
   v17.super_class = MCMCommandInfoValueForKey;
-  v13 = [(MCMCommand *)&v17 initWithContext:a5 resultPromise:a6];
+  v13 = [(MCMCommand *)&v17 initWithContext:context resultPromise:promise];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_key, a3);
-    objc_storeStrong(&v14->_concreteContainerIdentity, a4);
+    objc_storeStrong(&v13->_key, key);
+    objc_storeStrong(&v14->_concreteContainerIdentity, identity);
   }
 
   v15 = *MEMORY[0x1E69E9840];

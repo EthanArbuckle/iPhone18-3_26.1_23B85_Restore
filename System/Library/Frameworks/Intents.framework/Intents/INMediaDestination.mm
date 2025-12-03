@@ -1,47 +1,47 @@
 @interface INMediaDestination
 + (INMediaDestination)libraryDestination;
 + (INMediaDestination)playlistDestinationWithName:(NSString *)playlistName;
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INMediaDestination)initWithCoder:(id)a3;
-- (INMediaDestination)initWithMediaDestinationType:(int64_t)a3 playlistName:(id)a4;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INMediaDestination)initWithCoder:(id)coder;
+- (INMediaDestination)initWithMediaDestinationType:(int64_t)type playlistName:(id)name;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INMediaDestination
 
-- (id)_intents_readableTitleWithLocalizer:(id)a3 metadata:(id)a4
+- (id)_intents_readableTitleWithLocalizer:(id)localizer metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = [(INMediaDestination *)self mediaDestinationType];
-  if (v7 >= INMediaDestinationTypePlaylist)
+  localizerCopy = localizer;
+  mediaDestinationType = [(INMediaDestination *)self mediaDestinationType];
+  if (mediaDestinationType >= INMediaDestinationTypePlaylist)
   {
-    if (v7 == INMediaDestinationTypePlaylist)
+    if (mediaDestinationType == INMediaDestinationTypePlaylist)
     {
-      v8 = [(INMediaDestination *)self playlistName];
-      if ([v8 length])
+      playlistName = [(INMediaDestination *)self playlistName];
+      if ([playlistName length])
       {
         v9 = MEMORY[0x1E696AEC0];
-        v10 = INLocalizedStringWithLocalizer(@"“%@”", @"“%@”", v6);
-        v11 = [(INMediaDestination *)self playlistName];
-        v4 = [v9 stringWithFormat:v10, v11];
+        v10 = INLocalizedStringWithLocalizer(@"“%@”", @"“%@”", localizerCopy);
+        playlistName2 = [(INMediaDestination *)self playlistName];
+        v4 = [v9 stringWithFormat:v10, playlistName2];
       }
 
       else
       {
-        v4 = INLocalizedStringWithLocalizer(@"a playlist", @"a playlist", v6);
+        v4 = INLocalizedStringWithLocalizer(@"a playlist", @"a playlist", localizerCopy);
       }
     }
   }
 
   else
   {
-    v4 = INLocalizedStringWithLocalizer(@"library", @"library", v6);
+    v4 = INLocalizedStringWithLocalizer(@"library", @"library", localizerCopy);
   }
 
   return v4;
@@ -55,13 +55,13 @@
   v9[1] = @"playlistName";
   v10[0] = v3;
   playlistName = self->_playlistName;
-  v5 = playlistName;
+  null = playlistName;
   if (!playlistName)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v10[1] = v5;
+  v10[1] = null;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
   if (!playlistName)
   {
@@ -72,24 +72,24 @@
   return v6;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INMediaDestination;
   v6 = [(INMediaDestination *)&v11 description];
-  v7 = [(INMediaDestination *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INMediaDestination *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
   mediaDestinationType = self->_mediaDestinationType;
   v9 = @"unknown";
   if (mediaDestinationType == 2)
@@ -108,37 +108,37 @@
   }
 
   v11 = v10;
-  [v7 if_setObjectIfNonNil:v11 forKey:@"mediaDestinationType"];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"mediaDestinationType"];
 
-  v12 = [v6 encodeObject:self->_playlistName];
+  v12 = [encoderCopy encodeObject:self->_playlistName];
 
-  [v7 if_setObjectIfNonNil:v12 forKey:@"playlistName"];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"playlistName"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mediaDestinationType = self->_mediaDestinationType;
-  v5 = a3;
-  [v5 encodeInteger:mediaDestinationType forKey:@"mediaDestinationType"];
-  [v5 encodeObject:self->_playlistName forKey:@"playlistName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:mediaDestinationType forKey:@"mediaDestinationType"];
+  [coderCopy encodeObject:self->_playlistName forKey:@"playlistName"];
 }
 
-- (INMediaDestination)initWithCoder:(id)a3
+- (INMediaDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"mediaDestinationType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playlistName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"mediaDestinationType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playlistName"];
 
   v7 = [(INMediaDestination *)self initWithMediaDestinationType:v5 playlistName:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -148,7 +148,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v7 = 0;
       if (self->_mediaDestinationType == v5->_mediaDestinationType)
       {
@@ -178,17 +178,17 @@
   return v5 ^ v4;
 }
 
-- (INMediaDestination)initWithMediaDestinationType:(int64_t)a3 playlistName:(id)a4
+- (INMediaDestination)initWithMediaDestinationType:(int64_t)type playlistName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = INMediaDestination;
   v7 = [(INMediaDestination *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_mediaDestinationType = a3;
-    v9 = [v6 copy];
+    v7->_mediaDestinationType = type;
+    v9 = [nameCopy copy];
     playlistName = v8->_playlistName;
     v8->_playlistName = v9;
   }
@@ -196,21 +196,21 @@
   return v8;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 objectForKeyedSubscript:@"mediaDestinationType"];
+    v9 = [fromCopy objectForKeyedSubscript:@"mediaDestinationType"];
     v10 = INMediaDestinationTypeWithString(v9);
 
     v11 = objc_opt_class();
-    v12 = [v8 objectForKeyedSubscript:@"playlistName"];
-    v13 = [v7 decodeObjectOfClass:v11 from:v12];
+    v12 = [fromCopy objectForKeyedSubscript:@"playlistName"];
+    v13 = [decoderCopy decodeObjectOfClass:v11 from:v12];
 
-    v14 = [[a1 alloc] initWithMediaDestinationType:v10 playlistName:v13];
+    v14 = [[self alloc] initWithMediaDestinationType:v10 playlistName:v13];
   }
 
   else
@@ -224,14 +224,14 @@
 + (INMediaDestination)playlistDestinationWithName:(NSString *)playlistName
 {
   v4 = playlistName;
-  v5 = [[a1 alloc] initWithMediaDestinationType:2 playlistName:v4];
+  v5 = [[self alloc] initWithMediaDestinationType:2 playlistName:v4];
 
   return v5;
 }
 
 + (INMediaDestination)libraryDestination
 {
-  v2 = [[a1 alloc] initWithMediaDestinationType:1 playlistName:0];
+  v2 = [[self alloc] initWithMediaDestinationType:1 playlistName:0];
 
   return v2;
 }

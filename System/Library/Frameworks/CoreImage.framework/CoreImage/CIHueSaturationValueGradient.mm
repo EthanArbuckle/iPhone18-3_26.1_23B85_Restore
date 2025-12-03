@@ -92,7 +92,7 @@
     v12 = ceil(v5 + v5);
     if (v9 >= 0.01)
     {
-      v13 = [(CIHueSaturationValueGradient *)self _kernelD];
+      _kernelD = [(CIHueSaturationValueGradient *)self _kernelD];
       v17[1] = [MEMORY[0x1E696AD98] numberWithDouble:{v9 * 0.00390625, v11}];
       v14 = MEMORY[0x1E695DEC8];
       v15 = v17;
@@ -101,14 +101,14 @@
 
     else
     {
-      v13 = [(CIHueSaturationValueGradient *)self _kernel];
+      _kernelD = [(CIHueSaturationValueGradient *)self _kernel];
       v18[0] = v11;
       v14 = MEMORY[0x1E695DEC8];
       v15 = v18;
       v16 = 1;
     }
 
-    result = [v13 applyWithExtent:objc_msgSend(v14 arguments:{"arrayWithObjects:count:", v15, v16), 0.0, 0.0, v12, v12}];
+    result = [_kernelD applyWithExtent:objc_msgSend(v14 arguments:{"arrayWithObjects:count:", v15, v16), 0.0, 0.0, v12, v12}];
     if (self->inputColorSpace)
     {
       return [result imageByColorMatchingColorSpaceToWorkingSpace:?];

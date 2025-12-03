@@ -1,35 +1,35 @@
 @interface PUCropButtonTileViewController
-+ (BOOL)shouldShowCropButtonTileForAsset:(id)a3;
++ (BOOL)shouldShowCropButtonTileForAsset:(id)asset;
 - (BOOL)_canShowButton;
 - (BOOL)_hasUserZoomedIn;
-- (CGSize)oneUpCropButtonBoundingSize:(id)a3;
-- (CGSize)oneUpCropButtonCurrentAspectRatio:(id)a3;
-- (CGSize)oneUpCropButtonOriginalAspectRatio:(id)a3;
+- (CGSize)oneUpCropButtonBoundingSize:(id)size;
+- (CGSize)oneUpCropButtonCurrentAspectRatio:(id)ratio;
+- (CGSize)oneUpCropButtonOriginalAspectRatio:(id)ratio;
 - (PUCropButtonTileViewControllerDelegate)delegate;
 - (UIView)cropButton;
-- (void)_3DToggleDidChange:(id)a3;
+- (void)_3DToggleDidChange:(id)change;
 - (void)_createButtonIfNeeded;
-- (void)_didChangeChromeVisible:(BOOL)a3;
+- (void)_didChangeChromeVisible:(BOOL)visible;
 - (void)_didChangeCurrentAsset;
-- (void)_didChangeModelTileTransform:(id)a3;
+- (void)_didChangeModelTileTransform:(id)transform;
 - (void)_dismissButtonAfterDelay;
 - (void)_invalidateTimers;
 - (void)_layoutSubviews;
-- (void)_showButton:(BOOL)a3 animated:(BOOL)a4;
+- (void)_showButton:(BOOL)button animated:(BOOL)animated;
 - (void)_updateApplyEDRGainToButton;
-- (void)_updatePreventDismissalReason:(unint64_t)a3 activate:(BOOL)a4;
+- (void)_updatePreventDismissalReason:(unint64_t)reason activate:(BOOL)activate;
 - (void)_updatePreventDismissalReasons;
 - (void)becomeReusable;
 - (void)dealloc;
 - (void)didChangeVisibleRect;
-- (void)oneUpCropButton:(id)a3 didSelectAspectRatio:(CGSize)a4;
-- (void)setAssetViewModel:(id)a3;
-- (void)setBrowsingViewModel:(id)a3;
-- (void)setPresentingTip:(BOOL)a3;
-- (void)setPreventDismissal:(BOOL)a3;
-- (void)setPreventDismissalReasons:(unint64_t)a3;
+- (void)oneUpCropButton:(id)button didSelectAspectRatio:(CGSize)ratio;
+- (void)setAssetViewModel:(id)model;
+- (void)setBrowsingViewModel:(id)model;
+- (void)setPresentingTip:(BOOL)tip;
+- (void)setPreventDismissal:(BOOL)dismissal;
+- (void)setPreventDismissalReasons:(unint64_t)reasons;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUCropButtonTileViewController
@@ -41,22 +41,22 @@
   return WeakRetained;
 }
 
-- (CGSize)oneUpCropButtonOriginalAspectRatio:(id)a3
+- (CGSize)oneUpCropButtonOriginalAspectRatio:(id)ratio
 {
-  v4 = a3;
-  v5 = [(PUCropButtonTileViewController *)self assetViewModel];
-  v6 = [v5 asset];
+  ratioCopy = ratio;
+  assetViewModel = [(PUCropButtonTileViewController *)self assetViewModel];
+  asset = [assetViewModel asset];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = asset;
     [v7 fetchPropertySetsIfNeeded];
-    v8 = [v7 originalMetadataProperties];
+    originalMetadataProperties = [v7 originalMetadataProperties];
 
-    [v8 originalWidth];
-    [v8 originalHeight];
-    [v8 originalExifOrientation];
+    [originalMetadataProperties originalWidth];
+    [originalMetadataProperties originalHeight];
+    [originalMetadataProperties originalExifOrientation];
     PLOrientationTransformImageSize();
     v10 = v9;
     v12 = v11;
@@ -64,7 +64,7 @@
 
   else
   {
-    [(PUCropButtonTileViewController *)self oneUpCropButtonCurrentAspectRatio:v4];
+    [(PUCropButtonTileViewController *)self oneUpCropButtonCurrentAspectRatio:ratioCopy];
     v10 = v13;
     v12 = v14;
   }
@@ -76,25 +76,25 @@
   return result;
 }
 
-- (CGSize)oneUpCropButtonCurrentAspectRatio:(id)a3
+- (CGSize)oneUpCropButtonCurrentAspectRatio:(id)ratio
 {
-  v3 = [(PUCropButtonTileViewController *)self assetViewModel];
-  v4 = [v3 asset];
+  assetViewModel = [(PUCropButtonTileViewController *)self assetViewModel];
+  asset = [assetViewModel asset];
 
-  v5 = [v4 pixelWidth];
-  v6 = [v4 pixelHeight];
+  pixelWidth = [asset pixelWidth];
+  pixelHeight = [asset pixelHeight];
 
-  v7 = v5;
-  v8 = v6;
+  v7 = pixelWidth;
+  v8 = pixelHeight;
   result.height = v8;
   result.width = v7;
   return result;
 }
 
-- (CGSize)oneUpCropButtonBoundingSize:(id)a3
+- (CGSize)oneUpCropButtonBoundingSize:(id)size
 {
-  v3 = [(PUTileController *)self tilingView];
-  [v3 frame];
+  tilingView = [(PUTileController *)self tilingView];
+  [tilingView frame];
   v5 = v4;
   v7 = v6;
 
@@ -105,65 +105,65 @@
   return result;
 }
 
-- (void)oneUpCropButton:(id)a3 didSelectAspectRatio:(CGSize)a4
+- (void)oneUpCropButton:(id)button didSelectAspectRatio:(CGSize)ratio
 {
-  height = a4.height;
-  width = a4.width;
+  height = ratio.height;
+  width = ratio.width;
   v14[1] = *MEMORY[0x1E69E9840];
   if ([(PUCropButtonTileViewController *)self presentMenuForTip])
   {
     [(PUCropButtonTileViewController *)self setPresentMenuForTip:0];
-    v12 = [(PUCropButtonTileViewController *)self button];
-    [v12 presentMenu];
+    button = [(PUCropButtonTileViewController *)self button];
+    [button presentMenu];
   }
 
   else
   {
     v7 = MEMORY[0x1E6991F28];
     v13 = *MEMORY[0x1E6991E18];
-    v8 = [(PUCropButtonTileViewController *)self assetViewModel];
-    v9 = [v8 asset];
-    v14[0] = v9;
+    assetViewModel = [(PUCropButtonTileViewController *)self assetViewModel];
+    asset = [assetViewModel asset];
+    v14[0] = asset;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     [v7 sendEvent:@"com.apple.photos.CPAnalytics.cropButtonPressed" withPayload:v10];
 
     [(PUCropButtonTileViewController *)self _showButton:0 animated:0];
-    v11 = [(PUCropButtonTileViewController *)self delegate];
-    [v11 cropButtonTileViewController:self didSelectAspectRatio:{width, height}];
+    delegate = [(PUCropButtonTileViewController *)self delegate];
+    [delegate cropButtonTileViewController:self didSelectAspectRatio:{width, height}];
   }
 }
 
-- (void)setPreventDismissal:(BOOL)a3
+- (void)setPreventDismissal:(BOOL)dismissal
 {
-  if (self->_preventDismissal != a3)
+  if (self->_preventDismissal != dismissal)
   {
-    self->_preventDismissal = a3;
-    if (!a3)
+    self->_preventDismissal = dismissal;
+    if (!dismissal)
     {
       [(PUCropButtonTileViewController *)self _dismissButtonAfterDelay];
     }
   }
 }
 
-- (void)setPreventDismissalReasons:(unint64_t)a3
+- (void)setPreventDismissalReasons:(unint64_t)reasons
 {
-  if (self->_preventDismissalReasons != a3)
+  if (self->_preventDismissalReasons != reasons)
   {
-    self->_preventDismissalReasons = a3;
-    [(PUCropButtonTileViewController *)self setPreventDismissal:a3 != 0];
+    self->_preventDismissalReasons = reasons;
+    [(PUCropButtonTileViewController *)self setPreventDismissal:reasons != 0];
   }
 }
 
-- (void)_updatePreventDismissalReason:(unint64_t)a3 activate:(BOOL)a4
+- (void)_updatePreventDismissalReason:(unint64_t)reason activate:(BOOL)activate
 {
-  if (a4)
+  if (activate)
   {
-    v5 = [(PUCropButtonTileViewController *)self preventDismissalReasons]| a3;
+    v5 = [(PUCropButtonTileViewController *)self preventDismissalReasons]| reason;
   }
 
   else
   {
-    v5 = [(PUCropButtonTileViewController *)self preventDismissalReasons]& ~a3;
+    v5 = [(PUCropButtonTileViewController *)self preventDismissalReasons]& ~reason;
   }
 
   [(PUCropButtonTileViewController *)self setPreventDismissalReasons:v5];
@@ -171,30 +171,30 @@
 
 - (void)_updatePreventDismissalReasons
 {
-  v3 = [(PUCropButtonTileViewController *)self button];
-  -[PUCropButtonTileViewController _updatePreventDismissalReason:activate:](self, "_updatePreventDismissalReason:activate:", 1, [v3 presentingMenu]);
+  button = [(PUCropButtonTileViewController *)self button];
+  -[PUCropButtonTileViewController _updatePreventDismissalReason:activate:](self, "_updatePreventDismissalReason:activate:", 1, [button presentingMenu]);
 
-  v4 = [(PUCropButtonTileViewController *)self button];
-  -[PUCropButtonTileViewController _updatePreventDismissalReason:activate:](self, "_updatePreventDismissalReason:activate:", 2, [v4 targeted]);
+  button2 = [(PUCropButtonTileViewController *)self button];
+  -[PUCropButtonTileViewController _updatePreventDismissalReason:activate:](self, "_updatePreventDismissalReason:activate:", 2, [button2 targeted]);
 
-  v5 = [(PUCropButtonTileViewController *)self presentingTip];
+  presentingTip = [(PUCropButtonTileViewController *)self presentingTip];
 
-  [(PUCropButtonTileViewController *)self _updatePreventDismissalReason:4 activate:v5];
+  [(PUCropButtonTileViewController *)self _updatePreventDismissalReason:4 activate:presentingTip];
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(PUCropButtonTileViewController *)self assetViewModel];
-  v8 = [(PUCropButtonTileViewController *)self browsingViewModel];
-  if (v7 == v18)
+  modelCopy = model;
+  changeCopy = change;
+  assetViewModel = [(PUCropButtonTileViewController *)self assetViewModel];
+  browsingViewModel = [(PUCropButtonTileViewController *)self browsingViewModel];
+  if (assetViewModel == modelCopy)
   {
-    v16 = v6;
+    v16 = changeCopy;
     if ([v16 modelTileTransformChanged])
     {
-      v17 = [v7 modelTileTransform];
-      [(PUCropButtonTileViewController *)self _didChangeModelTileTransform:v17];
+      modelTileTransform = [assetViewModel modelTileTransform];
+      [(PUCropButtonTileViewController *)self _didChangeModelTileTransform:modelTileTransform];
     }
 
     if ([v16 isIrisPlayingChanged])
@@ -205,26 +205,26 @@
 
   else
   {
-    if (v8 != v18)
+    if (browsingViewModel != modelCopy)
     {
       goto LABEL_14;
     }
 
-    v9 = v6;
-    v10 = [v8 currentAssetReference];
-    v11 = [v10 asset];
-    v12 = [v11 uuid];
+    v9 = changeCopy;
+    currentAssetReference = [browsingViewModel currentAssetReference];
+    asset = [currentAssetReference asset];
+    uuid = [asset uuid];
 
-    v13 = [v8 assetBeforeLastViewedAssetReference];
-    v14 = [v13 asset];
-    v15 = [v14 uuid];
+    assetBeforeLastViewedAssetReference = [browsingViewModel assetBeforeLastViewedAssetReference];
+    asset2 = [assetBeforeLastViewedAssetReference asset];
+    uuid2 = [asset2 uuid];
 
     if ([v9 chromeVisibilityDidChange])
     {
-      -[PUCropButtonTileViewController _didChangeChromeVisible:](self, "_didChangeChromeVisible:", [v8 isChromeVisible]);
+      -[PUCropButtonTileViewController _didChangeChromeVisible:](self, "_didChangeChromeVisible:", [browsingViewModel isChromeVisible]);
     }
 
-    else if ([v9 currentAssetDidChange] && (objc_msgSend(v12, "isEqualToString:", v15) & 1) == 0)
+    else if ([v9 currentAssetDidChange] && (objc_msgSend(uuid, "isEqualToString:", uuid2) & 1) == 0)
     {
       [(PUCropButtonTileViewController *)self _didChangeCurrentAsset];
     }
@@ -241,9 +241,9 @@ LABEL_14:
   [(PUCropButtonTileViewController *)self setPresentMenuForTip:0];
 }
 
-- (void)_didChangeChromeVisible:(BOOL)a3
+- (void)_didChangeChromeVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     [(PUCropButtonTileViewController *)self _showButton:0 animated:1];
   }
@@ -290,18 +290,18 @@ void __58__PUCropButtonTileViewController__dismissButtonAfterDelay__block_invoke
   }
 }
 
-- (void)_3DToggleDidChange:(id)a3
+- (void)_3DToggleDidChange:(id)change
 {
-  v5 = [(PUCropButtonTileViewController *)self assetViewModel];
-  v4 = [v5 modelTileTransform];
-  [(PUCropButtonTileViewController *)self _didChangeModelTileTransform:v4];
+  assetViewModel = [(PUCropButtonTileViewController *)self assetViewModel];
+  modelTileTransform = [assetViewModel modelTileTransform];
+  [(PUCropButtonTileViewController *)self _didChangeModelTileTransform:modelTileTransform];
 }
 
-- (void)_didChangeModelTileTransform:(id)a3
+- (void)_didChangeModelTileTransform:(id)transform
 {
-  v6 = a3;
-  v4 = [(PUCropButtonTileViewController *)self assetViewModel];
-  if ([v4 isUserTransformingTile] && (objc_msgSend(v6, "isZoomedOut") & 1) == 0)
+  transformCopy = transform;
+  assetViewModel = [(PUCropButtonTileViewController *)self assetViewModel];
+  if ([assetViewModel isUserTransformingTile] && (objc_msgSend(transformCopy, "isZoomedOut") & 1) == 0)
   {
     v5 = [MEMORY[0x1E69C3740] enabled] ^ 1;
   }
@@ -318,17 +318,17 @@ void __58__PUCropButtonTileViewController__dismissButtonAfterDelay__block_invoke
 
 - (void)_updateApplyEDRGainToButton
 {
-  v5 = [(PUCropButtonTileViewController *)self assetViewModel];
-  v3 = [v5 isHDR];
-  v4 = [(PUCropButtonTileViewController *)self button];
-  [v4 setApplyEDRBoost:v3];
+  assetViewModel = [(PUCropButtonTileViewController *)self assetViewModel];
+  isHDR = [assetViewModel isHDR];
+  button = [(PUCropButtonTileViewController *)self button];
+  [button setApplyEDRBoost:isHDR];
 }
 
 - (BOOL)_hasUserZoomedIn
 {
-  v2 = [(PUCropButtonTileViewController *)self assetViewModel];
-  v3 = [v2 modelTileTransform];
-  [v3 scale];
+  assetViewModel = [(PUCropButtonTileViewController *)self assetViewModel];
+  modelTileTransform = [assetViewModel modelTileTransform];
+  [modelTileTransform scale];
   v5 = v4 > 1.4;
 
   return v5;
@@ -336,66 +336,66 @@ void __58__PUCropButtonTileViewController__dismissButtonAfterDelay__block_invoke
 
 - (BOOL)_canShowButton
 {
-  v3 = [(PUCropButtonTileViewController *)self browsingViewModel];
-  v4 = ([v3 isChromeVisible] & 1) == 0 && -[PUCropButtonTileViewController _hasUserZoomedIn](self, "_hasUserZoomedIn");
+  browsingViewModel = [(PUCropButtonTileViewController *)self browsingViewModel];
+  v4 = ([browsingViewModel isChromeVisible] & 1) == 0 && -[PUCropButtonTileViewController _hasUserZoomedIn](self, "_hasUserZoomedIn");
 
   return v4;
 }
 
 - (void)_invalidateTimers
 {
-  v3 = [(PUCropButtonTileViewController *)self invisibilityTimer];
-  [v3 invalidate];
+  invisibilityTimer = [(PUCropButtonTileViewController *)self invisibilityTimer];
+  [invisibilityTimer invalidate];
 
   [(PUCropButtonTileViewController *)self setInvisibilityTimer:0];
 }
 
-- (void)_showButton:(BOOL)a3 animated:(BOOL)a4
+- (void)_showButton:(BOOL)button animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  buttonCopy = button;
   [(PUCropButtonTileViewController *)self _invalidateTimers];
-  if ((!v5 || [(PUCropButtonTileViewController *)self _canShowButton]) && [(PUCropButtonTileViewController *)self isShowingButton]!= v5)
+  if ((!buttonCopy || [(PUCropButtonTileViewController *)self _canShowButton]) && [(PUCropButtonTileViewController *)self isShowingButton]!= buttonCopy)
   {
-    v7 = [(PUCropButtonTileViewController *)self button];
-    v8 = v7;
-    if (v5 || v7)
+    button = [(PUCropButtonTileViewController *)self button];
+    v8 = button;
+    if (buttonCopy || button)
     {
-      if (v5)
+      if (buttonCopy)
       {
         [(PUCropButtonTileViewController *)self _createButtonIfNeeded];
         [(PUCropButtonTileViewController *)self _updateApplyEDRGainToButton];
       }
 
       [(PUCropButtonTileViewController *)self _layoutSubviews];
-      [(PUCropButtonTileViewController *)self setShowingButton:v5];
-      v9 = [(PUTileViewController *)self view];
-      [v9 setUserInteractionEnabled:v5];
+      [(PUCropButtonTileViewController *)self setShowingButton:buttonCopy];
+      view = [(PUTileViewController *)self view];
+      [view setUserInteractionEnabled:buttonCopy];
 
-      v10 = [(PUCropButtonTileViewController *)self button];
+      button2 = [(PUCropButtonTileViewController *)self button];
 
-      [v10 setEnabled:v5];
+      [button2 setEnabled:buttonCopy];
       objc_initWeak(&location, self);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __55__PUCropButtonTileViewController__showButton_animated___block_invoke;
       aBlock[3] = &unk_1E7B77048;
       objc_copyWeak(&v22, &location);
-      v23 = v5;
+      v23 = buttonCopy;
       v11 = _Block_copy(aBlock);
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __55__PUCropButtonTileViewController__showButton_animated___block_invoke_2;
       v18[3] = &unk_1E7B7FF98;
-      v12 = v10;
+      v12 = button2;
       v19 = v12;
-      v20 = v5;
+      v20 = buttonCopy;
       v13 = _Block_copy(v18);
       v14 = v13;
-      if (v4)
+      if (animatedCopy)
       {
         +[PUOneUpSettings sharedInstance];
-        if (v5)
+        if (buttonCopy)
           v15 = {;
           [v15 quickCropFadeIn];
         }
@@ -474,14 +474,14 @@ uint64_t __55__PUCropButtonTileViewController__showButton_animated___block_invok
 
 - (void)_createButtonIfNeeded
 {
-  v3 = [(PUCropButtonTileViewController *)self button];
+  button = [(PUCropButtonTileViewController *)self button];
 
-  if (!v3)
+  if (!button)
   {
-    v5 = [(PUTileViewController *)self view];
+    view = [(PUTileViewController *)self view];
     v4 = objc_alloc_init(PUOneUpCropButton);
     [(PUOneUpCropButton *)v4 setDelegate:self];
-    [v5 addSubview:v4];
+    [view addSubview:v4];
     [(PUCropButtonTileViewController *)self setButton:v4];
     [(PUCropButtonTileViewController *)self setShowingButton:1];
     [(PUCropButtonTileViewController *)self _showButton:0 animated:0];
@@ -501,16 +501,16 @@ uint64_t __55__PUCropButtonTileViewController__showButton_animated___block_invok
 
 - (void)_layoutSubviews
 {
-  v13 = [(PUTileViewController *)self view];
-  v3 = [v13 window];
-  [PUOneUpCropButton frameForWindow:v3];
-  [v3 convertRect:v13 toView:?];
+  view = [(PUTileViewController *)self view];
+  window = [view window];
+  [PUOneUpCropButton frameForWindow:window];
+  [window convertRect:view toView:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(PUCropButtonTileViewController *)self button];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  button = [(PUCropButtonTileViewController *)self button];
+  [button setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)didChangeVisibleRect
@@ -538,26 +538,26 @@ uint64_t __55__PUCropButtonTileViewController__showButton_animated___block_invok
   v6.receiver = self;
   v6.super_class = PUCropButtonTileViewController;
   [(PUTileViewController *)&v6 viewDidLoad];
-  v3 = [(PUTileViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(PUTileViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v5 = [MEMORY[0x1E69C3740] notificationName3DBadgeToggled];
-  [v4 addObserver:self selector:sel__3DToggleDidChange_ name:v5 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  notificationName3DBadgeToggled = [MEMORY[0x1E69C3740] notificationName3DBadgeToggled];
+  [defaultCenter addObserver:self selector:sel__3DToggleDidChange_ name:notificationName3DBadgeToggled object:0];
 }
 
-- (void)setPresentingTip:(BOOL)a3
+- (void)setPresentingTip:(BOOL)tip
 {
-  if (self->_presentingTip != a3)
+  if (self->_presentingTip != tip)
   {
-    self->_presentingTip = a3;
+    self->_presentingTip = tip;
     [(PUCropButtonTileViewController *)self _updatePreventDismissalReasons];
-    if (!a3)
+    if (!tip)
     {
-      v5 = [(PUCropButtonTileViewController *)self button];
-      v6 = [v5 isBeingTouched];
+      button = [(PUCropButtonTileViewController *)self button];
+      isBeingTouched = [button isBeingTouched];
 
-      if (v6)
+      if (isBeingTouched)
       {
 
         [(PUCropButtonTileViewController *)self setPresentMenuForTip:1];
@@ -570,74 +570,74 @@ uint64_t __55__PUCropButtonTileViewController__showButton_animated___block_invok
 {
   if ([(PUCropButtonTileViewController *)self isShowingButton])
   {
-    v3 = [(PUCropButtonTileViewController *)self button];
+    button = [(PUCropButtonTileViewController *)self button];
   }
 
   else
   {
-    v3 = 0;
+    button = 0;
   }
 
-  return v3;
+  return button;
 }
 
-- (void)setBrowsingViewModel:(id)a3
+- (void)setBrowsingViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   browsingViewModel = self->_browsingViewModel;
-  if (browsingViewModel != v5)
+  if (browsingViewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PUBrowsingViewModel *)browsingViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_browsingViewModel, a3);
+    objc_storeStrong(&self->_browsingViewModel, model);
     browsingViewModel = [(PUBrowsingViewModel *)self->_browsingViewModel registerChangeObserver:self];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](browsingViewModel, v5);
+  MEMORY[0x1EEE66BB8](browsingViewModel, modelCopy);
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   assetViewModel = self->_assetViewModel;
-  if (assetViewModel != v5)
+  if (assetViewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PUAssetViewModel *)assetViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_assetViewModel, a3);
+    objc_storeStrong(&self->_assetViewModel, model);
     assetViewModel = [(PUAssetViewModel *)self->_assetViewModel registerChangeObserver:self];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](assetViewModel, v5);
+  MEMORY[0x1EEE66BB8](assetViewModel, modelCopy);
 }
 
-+ (BOOL)shouldShowCropButtonTileForAsset:(id)a3
++ (BOOL)shouldShowCropButtonTileForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = +[PUPhotoEditProtoSettings sharedInstance];
-  v5 = [v4 enableSpatialMediaEditing];
+  enableSpatialMediaEditing = [v4 enableSpatialMediaEditing];
 
-  v6 = [v3 mediaType] == 1 || objc_msgSend(v3, "mediaType") == 2;
-  v7 = v6 & ~[v3 px_isSharedAlbumAsset];
-  v8 = v7 & ([v3 isAnimatedGIF] ^ 1);
-  if (v5 && [v3 mediaType] == 1)
+  v6 = [assetCopy mediaType] == 1 || objc_msgSend(assetCopy, "mediaType") == 2;
+  v7 = v6 & ~[assetCopy px_isSharedAlbumAsset];
+  v8 = v7 & ([assetCopy isAnimatedGIF] ^ 1);
+  if (enableSpatialMediaEditing && [assetCopy mediaType] == 1)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [v3 isSpatialMedia] ^ 1;
+    v9 = [assetCopy isSpatialMedia] ^ 1;
   }
 
   v10 = v8 & v9;
-  v11 = [v3 canPerformEditOperation:2];
+  v11 = [assetCopy canPerformEditOperation:2];
   v12 = 0;
   if (v10 == 1 && v11)
   {
-    v12 = [MEMORY[0x1E69C4320] canPerformEditOnAsset:v3];
+    v12 = [MEMORY[0x1E69C4320] canPerformEditOnAsset:assetCopy];
   }
 
   return v12;

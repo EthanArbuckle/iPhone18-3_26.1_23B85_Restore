@@ -1,7 +1,7 @@
 @interface _UIStatusBarImageProvider
 + (id)sharedProvider;
-- (UIEdgeInsets)_alignmentInsetsForImageNamed:(id)a3 styleAttributes:(id)a4;
-- (id)imageNamed:(id)a3 styleAttributes:(id)a4;
+- (UIEdgeInsets)_alignmentInsetsForImageNamed:(id)named styleAttributes:(id)attributes;
+- (id)imageNamed:(id)named styleAttributes:(id)attributes;
 @end
 
 @implementation _UIStatusBarImageProvider
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __43___UIStatusBarImageProvider_sharedProvider__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_1287 != -1)
   {
     dispatch_once(&_MergedGlobals_1287, block);
@@ -23,18 +23,18 @@
   return v2;
 }
 
-- (id)imageNamed:(id)a3 styleAttributes:(id)a4
+- (id)imageNamed:(id)named styleAttributes:(id)attributes
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  namedCopy = named;
+  attributesCopy = attributes;
+  v7 = namedCopy;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [v6 imageNamePrefixes];
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  imageNamePrefixes = [attributesCopy imageNamePrefixes];
+  v9 = [imageNamePrefixes countByEnumeratingWithState:&v28 objects:v34 count:16];
   v10 = v7;
   if (v9)
   {
@@ -49,13 +49,13 @@
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(imageNamePrefixes);
         }
 
         v10 = [*(*(&v28 + 1) + 8 * v13) stringByAppendingString:v7];
 
-        v15 = [v6 traitCollection];
-        v16 = [_UIStatusBarImage _kitImageNamed:v10 withTrait:v15];
+        traitCollection = [attributesCopy traitCollection];
+        v16 = [_UIStatusBarImage _kitImageNamed:v10 withTrait:traitCollection];
 
         if (v16)
         {
@@ -68,7 +68,7 @@
       }
 
       while (v11 != v13);
-      v11 = [v8 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v11 = [imageNamePrefixes countByEnumeratingWithState:&v28 objects:v34 count:16];
       if (v11)
       {
         continue;
@@ -79,25 +79,25 @@
   }
 
   v17 = v7;
-  v18 = [v6 traitCollection];
-  v16 = [_UIStatusBarImage _kitImageNamed:v17 withTrait:v18];
+  traitCollection2 = [attributesCopy traitCollection];
+  v16 = [_UIStatusBarImage _kitImageNamed:v17 withTrait:traitCollection2];
 
   v10 = v17;
   if (v16)
   {
 LABEL_12:
-    [(_UIStatusBarImageProvider *)self _alignmentInsetsForImageNamed:v10 styleAttributes:v6];
+    [(_UIStatusBarImageProvider *)self _alignmentInsetsForImageNamed:v10 styleAttributes:attributesCopy];
     if (v22 == 0.0 && v19 == 0.0 && v21 == 0.0 && v20 == 0.0 || ([v16 imageWithAlignmentRectInsets:?], v23 = objc_claimAutoreleasedReturnValue(), v16, (v16 = v23) != 0))
     {
-      if (![(_UIStatusBarImageProvider *)self _suppressHairlineThickeningForImageName:v10 styleAttributes:v6])
+      if (![(_UIStatusBarImageProvider *)self _suppressHairlineThickeningForImageName:v10 styleAttributes:attributesCopy])
       {
         goto LABEL_22;
       }
 
-      v24 = [v16 _imageThatSuppressesAccessibilityHairlineThickening];
+      _imageThatSuppressesAccessibilityHairlineThickening = [v16 _imageThatSuppressesAccessibilityHairlineThickening];
 
-      v16 = v24;
-      if (v24)
+      v16 = _imageThatSuppressesAccessibilityHairlineThickening;
+      if (_imageThatSuppressesAccessibilityHairlineThickening)
       {
         goto LABEL_22;
       }
@@ -118,14 +118,14 @@ LABEL_22:
   return v16;
 }
 
-- (UIEdgeInsets)_alignmentInsetsForImageNamed:(id)a3 styleAttributes:(id)a4
+- (UIEdgeInsets)_alignmentInsetsForImageNamed:(id)named styleAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"Large_Bolt"])
+  namedCopy = named;
+  attributesCopy = attributes;
+  if ([namedCopy isEqualToString:@"Large_Bolt"])
   {
-    v7 = [v6 effectiveLayoutDirection];
-    if (v7 == 1)
+    effectiveLayoutDirection = [attributesCopy effectiveLayoutDirection];
+    if (effectiveLayoutDirection == 1)
     {
       v8 = 0.0;
     }
@@ -135,7 +135,7 @@ LABEL_22:
       v8 = -1.33333333;
     }
 
-    if (v7 == 1)
+    if (effectiveLayoutDirection == 1)
     {
       v9 = -1.33333333;
     }
@@ -151,7 +151,7 @@ LABEL_22:
   else
   {
     v9 = 0.0;
-    if ([v5 isEqualToString:@"Split_SOS"])
+    if ([namedCopy isEqualToString:@"Split_SOS"])
     {
       v10 = -0.666666667;
     }
@@ -164,8 +164,8 @@ LABEL_22:
     v8 = 0.0;
   }
 
-  v11 = [v6 traitCollection];
-  [v11 displayScale];
+  traitCollection = [attributesCopy traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   if (v13 == 3.0)

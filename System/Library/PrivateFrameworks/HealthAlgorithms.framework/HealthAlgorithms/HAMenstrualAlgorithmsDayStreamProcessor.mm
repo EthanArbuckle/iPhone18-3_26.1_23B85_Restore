@@ -1,15 +1,15 @@
 @interface HAMenstrualAlgorithmsDayStreamProcessor
-- (HAMenstrualAlgorithmsDayStreamProcessor)initWithConfig:(id)a3;
-- (void)appendDay:(id)a3;
+- (HAMenstrualAlgorithmsDayStreamProcessor)initWithConfig:(id)config;
+- (void)appendDay:(id)day;
 - (void)dealloc;
 @end
 
 @implementation HAMenstrualAlgorithmsDayStreamProcessor
 
-- (HAMenstrualAlgorithmsDayStreamProcessor)initWithConfig:(id)a3
+- (HAMenstrualAlgorithmsDayStreamProcessor)initWithConfig:(id)config
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configCopy = config;
   v5 = ha_get_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -41,8 +41,8 @@
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:3];
     v14 = [v12 setWithArray:v13];
 
-    v15 = [(NSXPCConnection *)v6->_connectionToService remoteObjectInterface];
-    [v15 setClasses:v14 forSelector:sel_finishSessionWithMostRecentMenstrualFlowJulianDayUpdated_withReply_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface = [(NSXPCConnection *)v6->_connectionToService remoteObjectInterface];
+    [remoteObjectInterface setClasses:v14 forSelector:sel_finishSessionWithMostRecentMenstrualFlowJulianDayUpdated_withReply_ argumentIndex:0 ofReply:1];
 
     objc_initWeak(buf, v6);
     v24[0] = MEMORY[0x277D85DD0];
@@ -58,12 +58,12 @@
     objc_copyWeak(&v23, buf);
     [(NSXPCConnection *)v6->_connectionToService setInterruptionHandler:v22];
     [(NSXPCConnection *)v6->_connectionToService resume];
-    v16 = [(NSXPCConnection *)v6->_connectionToService remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)v6->_connectionToService remoteObjectProxy];
     remoteObjectProxy = v6->_remoteObjectProxy;
-    v6->_remoteObjectProxy = v16;
+    v6->_remoteObjectProxy = remoteObjectProxy;
 
-    v18 = [(HAMenstrualAlgorithmsDayStreamProcessor *)v6 remoteObjectProxy];
-    [v18 beginSessionWithConfig:v4];
+    remoteObjectProxy2 = [(HAMenstrualAlgorithmsDayStreamProcessor *)v6 remoteObjectProxy];
+    [remoteObjectProxy2 beginSessionWithConfig:configCopy];
 
     v19 = v6;
     objc_destroyWeak(&v23);
@@ -112,8 +112,8 @@ void __58__HAMenstrualAlgorithmsDayStreamProcessor_initWithConfig___block_invoke
     _os_log_impl(&dword_251282000, v3, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  v4 = [(HAMenstrualAlgorithmsDayStreamProcessor *)self connectionToService];
-  [v4 invalidate];
+  connectionToService = [(HAMenstrualAlgorithmsDayStreamProcessor *)self connectionToService];
+  [connectionToService invalidate];
 
   v6.receiver = self;
   v6.super_class = HAMenstrualAlgorithmsDayStreamProcessor;
@@ -121,23 +121,23 @@ void __58__HAMenstrualAlgorithmsDayStreamProcessor_initWithConfig___block_invoke
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendDay:(id)a3
+- (void)appendDay:(id)day
 {
-  v10 = a3;
-  v4 = [(HAMenstrualAlgorithmsDayStreamProcessor *)self dayInputBuffer];
-  [v4 addObject:v10];
+  dayCopy = day;
+  dayInputBuffer = [(HAMenstrualAlgorithmsDayStreamProcessor *)self dayInputBuffer];
+  [dayInputBuffer addObject:dayCopy];
 
-  v5 = [(HAMenstrualAlgorithmsDayStreamProcessor *)self dayInputBuffer];
-  v6 = [v5 count];
+  dayInputBuffer2 = [(HAMenstrualAlgorithmsDayStreamProcessor *)self dayInputBuffer];
+  v6 = [dayInputBuffer2 count];
 
   if (v6 == 100)
   {
-    v7 = [(HAMenstrualAlgorithmsDayStreamProcessor *)self remoteObjectProxy];
-    v8 = [(HAMenstrualAlgorithmsDayStreamProcessor *)self dayInputBuffer];
-    [v7 appendDays:v8];
+    remoteObjectProxy = [(HAMenstrualAlgorithmsDayStreamProcessor *)self remoteObjectProxy];
+    dayInputBuffer3 = [(HAMenstrualAlgorithmsDayStreamProcessor *)self dayInputBuffer];
+    [remoteObjectProxy appendDays:dayInputBuffer3];
 
-    v9 = [(HAMenstrualAlgorithmsDayStreamProcessor *)self dayInputBuffer];
-    [v9 removeAllObjects];
+    dayInputBuffer4 = [(HAMenstrualAlgorithmsDayStreamProcessor *)self dayInputBuffer];
+    [dayInputBuffer4 removeAllObjects];
   }
 }
 

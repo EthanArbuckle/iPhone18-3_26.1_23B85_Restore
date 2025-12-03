@@ -1,7 +1,7 @@
 @interface EKEventDetailExtendedTextViewController
-- (EKEventDetailExtendedTextViewController)initWithText:(id)a3 title:(id)a4 event:(id)a5 textForCopyAction:(id)a6;
+- (EKEventDetailExtendedTextViewController)initWithText:(id)text title:(id)title event:(id)event textForCopyAction:(id)action;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_share:(id)a3;
+- (void)_share:(id)_share;
 - (void)_updateConstraints;
 - (void)loadTextView;
 - (void)updateTextView;
@@ -11,27 +11,27 @@
 
 @implementation EKEventDetailExtendedTextViewController
 
-- (EKEventDetailExtendedTextViewController)initWithText:(id)a3 title:(id)a4 event:(id)a5 textForCopyAction:(id)a6
+- (EKEventDetailExtendedTextViewController)initWithText:(id)text title:(id)title event:(id)event textForCopyAction:(id)action
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  textCopy = text;
+  titleCopy = title;
+  eventCopy = event;
+  actionCopy = action;
   v20.receiver = self;
   v20.super_class = EKEventDetailExtendedTextViewController;
   v15 = [(EKEventDetailExtendedTextViewController *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    [(EKEventDetailExtendedTextViewController *)v15 setTitle:v12];
-    objc_storeStrong(&v16->_text, a3);
-    objc_storeStrong(&v16->_textToCopy, a6);
-    objc_storeStrong(&v16->_event, a5);
+    [(EKEventDetailExtendedTextViewController *)v15 setTitle:titleCopy];
+    objc_storeStrong(&v16->_text, text);
+    objc_storeStrong(&v16->_textToCopy, action);
+    objc_storeStrong(&v16->_event, event);
     v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:9 target:v16 action:sel__share_];
-    v18 = [(EKEventDetailExtendedTextViewController *)v16 navigationItem];
-    [v18 setRightBarButtonItem:v17];
+    navigationItem = [(EKEventDetailExtendedTextViewController *)v16 navigationItem];
+    [navigationItem setRightBarButtonItem:v17];
 
-    [(UIResponder *)v16 EKUI_setDataOwnersFromEvent:v13];
+    [(UIResponder *)v16 EKUI_setDataOwnersFromEvent:eventCopy];
   }
 
   return v16;
@@ -42,12 +42,12 @@
   v5.receiver = self;
   v5.super_class = EKEventDetailExtendedTextViewController;
   [(EKEventDetailExtendedTextViewController *)&v5 viewDidLoad];
-  v3 = [(EKEventDetailExtendedTextViewController *)self view];
-  [v3 setAutoresizesSubviews:1];
+  view = [(EKEventDetailExtendedTextViewController *)self view];
+  [view setAutoresizesSubviews:1];
 
   [(EKEventDetailExtendedTextViewController *)self loadTextView];
-  v4 = [(EKEventDetailExtendedTextViewController *)self view];
-  [v4 addSubview:self->_textView];
+  view2 = [(EKEventDetailExtendedTextViewController *)self view];
+  [view2 addSubview:self->_textView];
 
   [(EKEventDetailExtendedTextViewController *)self _updateConstraints];
 }
@@ -57,11 +57,11 @@
   v8.receiver = self;
   v8.super_class = EKEventDetailExtendedTextViewController;
   [(EKEventDetailExtendedTextViewController *)&v8 viewSafeAreaInsetsDidChange];
-  v3 = [(EKEventDetailExtendedTextViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(EKEventDetailExtendedTextViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4 + 7.0;
-  v6 = [(EKEventDetailExtendedTextViewController *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(EKEventDetailExtendedTextViewController *)self view];
+  [view2 safeAreaInsets];
   [(UITextView *)self->_textView setContentInset:4.0, v5, 4.0, v7 + 7.0];
 }
 
@@ -73,11 +73,11 @@
   v14 = @"textView";
   v15[0] = textView;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  v5 = [(EKEventDetailExtendedTextViewController *)self view];
-  [v5 safeAreaInsets];
+  view = [(EKEventDetailExtendedTextViewController *)self view];
+  [view safeAreaInsets];
   v7 = v6 + 7.0;
-  v8 = [(EKEventDetailExtendedTextViewController *)self view];
-  [v8 safeAreaInsets];
+  view2 = [(EKEventDetailExtendedTextViewController *)self view];
+  [view2 safeAreaInsets];
   [(UITextView *)self->_textView setContentInset:4.0, v7, 4.0, v9 + 7.0];
 
   v10 = MEMORY[0x1E696ACD8];
@@ -91,8 +91,8 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(EKEventDetailExtendedTextViewController *)self view];
-  IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v2);
+  view = [(EKEventDetailExtendedTextViewController *)self view];
+  IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view);
 
   if (IsRegularInViewHierarchy)
   {
@@ -108,15 +108,15 @@
 - (void)loadTextView
 {
   v3 = objc_alloc(MEMORY[0x1E69DD168]);
-  v4 = [(EKEventDetailExtendedTextViewController *)self view];
-  [v4 frame];
+  view = [(EKEventDetailExtendedTextViewController *)self view];
+  [view frame];
   v5 = [v3 initWithFrame:?];
   textView = self->_textView;
   self->_textView = v5;
 
   [(EKEventDetailExtendedTextViewController *)self updateTextView];
-  v7 = [(UITextView *)self->_textView textLayoutManager];
-  [v7 setLimitsLayoutForSuspiciousContents:1];
+  textLayoutManager = [(UITextView *)self->_textView textLayoutManager];
+  [textLayoutManager setLimitsLayoutForSuspiciousContents:1];
 
   v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [(UITextView *)self->_textView setFont:v8];
@@ -138,25 +138,25 @@
   }
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKEventDetailExtendedTextViewController *)self navigationController];
-  if (v5)
+  _shareCopy = _share;
+  navigationController = [(EKEventDetailExtendedTextViewController *)self navigationController];
+  if (navigationController)
   {
     v6 = objc_alloc(MEMORY[0x1E69CD9F8]);
     v11[0] = self->_textToCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     v8 = [v6 initWithActivityItems:v7 applicationActivities:0];
 
-    v9 = [v8 popoverPresentationController];
-    [v9 setBarButtonItem:v4];
+    popoverPresentationController = [v8 popoverPresentationController];
+    [popoverPresentationController setBarButtonItem:_shareCopy];
 
-    v10 = [(EKEvent *)self->_event calendar];
-    [v8 setIsContentManaged:{objc_msgSend(v10, "isManaged")}];
+    calendar = [(EKEvent *)self->_event calendar];
+    [v8 setIsContentManaged:{objc_msgSend(calendar, "isManaged")}];
 
-    [v5 presentViewController:v8 animated:1 completion:0];
+    [navigationController presentViewController:v8 animated:1 completion:0];
   }
 }
 

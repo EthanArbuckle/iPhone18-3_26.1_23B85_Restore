@@ -2,8 +2,8 @@
 - (NSError)streamError;
 - (NSOutputStream)outputStream;
 - (NSString)dataDigestForStream;
-- (_TtC7parsecd22CompressedOutputStream)initWithURL:(id)a3 append:(BOOL)a4;
-- (int64_t)write:(const char *)a3 maxLength:(int64_t)a4;
+- (_TtC7parsecd22CompressedOutputStream)initWithURL:(id)l append:(BOOL)append;
+- (int64_t)write:(const char *)write maxLength:(int64_t)length;
 - (void)close;
 - (void)open;
 @end
@@ -19,7 +19,7 @@
 
 - (NSString)dataDigestForStream
 {
-  v2 = self;
+  selfCopy = self;
   sub_100058420();
 
   v3 = String._bridgeToObjectiveC()();
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(int64_t)a4
+- (int64_t)write:(const char *)write maxLength:(int64_t)length
 {
-  v6 = self;
-  sub_1000585D0(a3, a4);
+  selfCopy = self;
+  sub_1000585D0(write, length);
   v8 = v7;
 
   return v8;
@@ -38,7 +38,7 @@
 
 - (NSError)streamError
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000588D8();
 
   if (v3)
@@ -56,17 +56,17 @@
 
 - (void)open
 {
-  v2 = self;
+  selfCopy = self;
   sub_100058950();
 }
 
 - (void)close
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000589B0();
 }
 
-- (_TtC7parsecd22CompressedOutputStream)initWithURL:(id)a3 append:(BOOL)a4
+- (_TtC7parsecd22CompressedOutputStream)initWithURL:(id)l append:(BOOL)append
 {
   v4 = type metadata accessor for URL();
   v5 = *(*(v4 - 8) + 64);

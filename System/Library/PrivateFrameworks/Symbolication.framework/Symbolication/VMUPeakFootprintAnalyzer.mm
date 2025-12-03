@@ -1,20 +1,20 @@
 @interface VMUPeakFootprintAnalyzer
-- (id)analysisSummaryWithError:(id *)a3;
+- (id)analysisSummaryWithError:(id *)error;
 @end
 
 @implementation VMUPeakFootprintAnalyzer
 
-- (id)analysisSummaryWithError:(id *)a3
+- (id)analysisSummaryWithError:(id *)error
 {
-  v4 = [(VMUProcessObjectGraph *)self->super._graph physicalFootprint];
-  v5 = [(VMUProcessObjectGraph *)self->super._graph physicalFootprintPeak];
+  physicalFootprint = [(VMUProcessObjectGraph *)self->super._graph physicalFootprint];
+  physicalFootprintPeak = [(VMUProcessObjectGraph *)self->super._graph physicalFootprintPeak];
   v6 = objc_opt_new();
-  v7 = [[VMUAnalyzerSummaryField alloc] initWithKey:@"Physical footprint" numericalValue:v4 objectValue:0 fieldType:2];
+  v7 = [[VMUAnalyzerSummaryField alloc] initWithKey:@"Physical footprint" numericalValue:physicalFootprint objectValue:0 fieldType:2];
   [v6 addObject:v7];
-  v8 = [[VMUAnalyzerSummaryField alloc] initWithKey:@"Physical footprint (peak)" numericalValue:v5 objectValue:0 fieldType:2];
+  v8 = [[VMUAnalyzerSummaryField alloc] initWithKey:@"Physical footprint (peak)" numericalValue:physicalFootprintPeak objectValue:0 fieldType:2];
 
   [v6 addObject:v8];
-  v9 = v5 / v4;
+  v9 = physicalFootprintPeak / physicalFootprint;
   if (v9 > 1.25)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Peak physical footprint was %.2f times higher than current -- past memory use was much higher. This can be analyzed with the Allocations instrument", v9];

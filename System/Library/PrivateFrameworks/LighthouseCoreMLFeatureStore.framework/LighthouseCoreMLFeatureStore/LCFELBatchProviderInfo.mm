@@ -1,22 +1,22 @@
 @interface LCFELBatchProviderInfo
-+ (id)meanOf:(id)a3;
-+ (id)standardDeviationOf:(id)a3;
-- (id)init:(id)a3 labelFeatureName:(id)a4;
++ (id)meanOf:(id)of;
++ (id)standardDeviationOf:(id)of;
+- (id)init:(id)init labelFeatureName:(id)name;
 @end
 
 @implementation LCFELBatchProviderInfo
 
-+ (id)meanOf:(id)a3
++ (id)meanOf:(id)of
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = v3;
+    v4 = ofCopy;
     v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
@@ -47,28 +47,28 @@
       v8 = 0.0;
     }
 
-    v11 = [MEMORY[0x277CCABB0] numberWithDouble:{v8 / objc_msgSend(v4, "count")}];
+    notANumber = [MEMORY[0x277CCABB0] numberWithDouble:{v8 / objc_msgSend(v4, "count")}];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCA980] notANumber];
+    notANumber = [MEMORY[0x277CCA980] notANumber];
   }
 
-  v12 = v11;
+  v12 = notANumber;
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)standardDeviationOf:(id)a3
++ (id)standardDeviationOf:(id)of
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
-    v4 = [LCFELBatchProviderInfo meanOf:v3];
+    v4 = [LCFELBatchProviderInfo meanOf:ofCopy];
     [v4 doubleValue];
     v6 = v5;
 
@@ -76,7 +76,7 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v3;
+    v7 = ofCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -107,26 +107,26 @@
       v11 = 0.0;
     }
 
-    v14 = [MEMORY[0x277CCABB0] numberWithDouble:{sqrt(v11 / objc_msgSend(v7, "count"))}];
+    notANumber = [MEMORY[0x277CCABB0] numberWithDouble:{sqrt(v11 / objc_msgSend(v7, "count"))}];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCA980] notANumber];
+    notANumber = [MEMORY[0x277CCA980] notANumber];
   }
 
-  v15 = v14;
+  v15 = notANumber;
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (id)init:(id)a3 labelFeatureName:(id)a4
+- (id)init:(id)init labelFeatureName:(id)name
 {
   v148 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v108 = a4;
+  initCopy = init;
+  nameCopy = name;
   v142.receiver = self;
   v142.super_class = LCFELBatchProviderInfo;
   v7 = [(LCFELBatchProviderInfo *)&v142 init];
@@ -139,23 +139,23 @@
   contextId = v7->_contextId;
   v7->_contextId = v8;
 
-  v10 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   eventId = v7->_eventId;
-  v7->_eventId = v10;
+  v7->_eventId = uUID;
 
-  v12 = [v6 featureStoreKey];
+  featureStoreKey = [initCopy featureStoreKey];
   featureStoreKey = v7->_featureStoreKey;
-  v7->_featureStoreKey = v12;
+  v7->_featureStoreKey = featureStoreKey;
 
   v14 = MEMORY[0x277CCABB0];
-  v15 = [v6 timeLast];
-  v16 = [v6 timeFirst];
-  [v15 timeIntervalSinceDate:v16];
+  timeLast = [initCopy timeLast];
+  timeFirst = [initCopy timeFirst];
+  [timeLast timeIntervalSinceDate:timeFirst];
   v17 = [v14 numberWithDouble:?];
   timeRange = v7->_timeRange;
   v7->_timeRange = v17;
 
-  v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "count")}];
+  v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(initCopy, "count")}];
   featureCount = v7->_featureCount;
   v105 = v7;
   v7->_featureCount = v19;
@@ -167,8 +167,8 @@
   v139 = 0u;
   v140 = 0u;
   v141 = 0u;
-  v104 = v6;
-  obj = [v6 featureProviders];
+  v104 = initCopy;
+  obj = [initCopy featureProviders];
   v121 = v21;
   v109 = [obj countByEnumeratingWithState:&v138 objects:v147 count:16];
   if (!v109)
@@ -189,13 +189,13 @@
 
       v114 = v22;
       v23 = [LCFCoreMLFeatureProvider fromMLProvider:*(*(&v138 + 1) + 8 * v22)];
-      v24 = [v23 featureValues];
-      v25 = [v24 objectForKeyedSubscript:v108];
+      featureValues = [v23 featureValues];
+      v25 = [featureValues objectForKeyedSubscript:nameCopy];
 
       v111 = v25;
-      v26 = [v25 int64Value];
+      int64Value = [v25 int64Value];
       v27 = v118;
-      if (v26 <= 0)
+      if (int64Value <= 0)
       {
         v27 = v117;
       }
@@ -205,11 +205,11 @@
       v135 = 0u;
       v136 = 0u;
       v137 = 0u;
-      v29 = [v23 featureValues];
-      v30 = [v29 allKeys];
+      featureValues2 = [v23 featureValues];
+      allKeys = [featureValues2 allKeys];
 
-      v119 = v30;
-      v31 = [v30 countByEnumeratingWithState:&v134 objects:v146 count:16];
+      v119 = allKeys;
+      v31 = [allKeys countByEnumeratingWithState:&v134 objects:v146 count:16];
       if (v31)
       {
         v32 = v31;
@@ -224,8 +224,8 @@
             }
 
             v35 = *(*(&v134 + 1) + 8 * i);
-            v36 = [v28 allKeys];
-            v37 = [v36 containsObject:v35];
+            allKeys2 = [v28 allKeys];
+            v37 = [allKeys2 containsObject:v35];
 
             if ((v37 & 1) == 0)
             {
@@ -233,8 +233,8 @@
               [v28 setObject:v38 forKeyedSubscript:v35];
             }
 
-            v39 = [v21 allKeys];
-            v40 = [v39 containsObject:v35];
+            allKeys3 = [v21 allKeys];
+            v40 = [allKeys3 containsObject:v35];
 
             if ((v40 & 1) == 0)
             {
@@ -242,11 +242,11 @@
               [v21 setObject:v41 forKeyedSubscript:v35];
             }
 
-            v42 = [v23 featureValues];
-            v43 = [v42 objectForKeyedSubscript:v35];
+            featureValues3 = [v23 featureValues];
+            v43 = [featureValues3 objectForKeyedSubscript:v35];
 
-            v44 = [v43 type];
-            if (v44 == 2)
+            type = [v43 type];
+            if (type == 2)
             {
               v49 = [v28 objectForKeyedSubscript:v35];
               v50 = MEMORY[0x277CCABB0];
@@ -263,7 +263,7 @@
 
             else
             {
-              if (v44 != 1)
+              if (type != 1)
               {
                 goto LABEL_23;
               }
@@ -304,8 +304,8 @@ LABEL_27:
   v131 = 0u;
   v132 = 0u;
   v133 = 0u;
-  v115 = [v118 allKeys];
-  v54 = [v115 countByEnumeratingWithState:&v130 objects:v145 count:16];
+  allKeys4 = [v118 allKeys];
+  v54 = [allKeys4 countByEnumeratingWithState:&v130 objects:v145 count:16];
   if (v54)
   {
     v55 = v54;
@@ -316,7 +316,7 @@ LABEL_27:
       {
         if (*v131 != v56)
         {
-          objc_enumerationMutation(v115);
+          objc_enumerationMutation(allKeys4);
         }
 
         v58 = *(*(&v130 + 1) + 8 * j);
@@ -335,7 +335,7 @@ LABEL_27:
         [v120 addObject:v67];
       }
 
-      v55 = [v115 countByEnumeratingWithState:&v130 objects:v145 count:16];
+      v55 = [allKeys4 countByEnumeratingWithState:&v130 objects:v145 count:16];
     }
 
     while (v55);
@@ -350,8 +350,8 @@ LABEL_27:
   v127 = 0u;
   v128 = 0u;
   v129 = 0u;
-  v112 = [v117 allKeys];
-  v70 = [v112 countByEnumeratingWithState:&v126 objects:v144 count:16];
+  allKeys5 = [v117 allKeys];
+  v70 = [allKeys5 countByEnumeratingWithState:&v126 objects:v144 count:16];
   if (v70)
   {
     v71 = v70;
@@ -362,7 +362,7 @@ LABEL_27:
       {
         if (*v127 != v72)
         {
-          objc_enumerationMutation(v112);
+          objc_enumerationMutation(allKeys5);
         }
 
         v74 = *(*(&v126 + 1) + 8 * k);
@@ -381,7 +381,7 @@ LABEL_27:
         [v116 addObject:v83];
       }
 
-      v71 = [v112 countByEnumeratingWithState:&v126 objects:v144 count:16];
+      v71 = [allKeys5 countByEnumeratingWithState:&v126 objects:v144 count:16];
     }
 
     while (v71);
@@ -396,8 +396,8 @@ LABEL_27:
   v123 = 0u;
   v124 = 0u;
   v125 = 0u;
-  v110 = [v121 allKeys];
-  v86 = [v110 countByEnumeratingWithState:&v122 objects:v143 count:16];
+  allKeys6 = [v121 allKeys];
+  v86 = [allKeys6 countByEnumeratingWithState:&v122 objects:v143 count:16];
   if (v86)
   {
     v87 = v86;
@@ -408,7 +408,7 @@ LABEL_27:
       {
         if (*v123 != v88)
         {
-          objc_enumerationMutation(v110);
+          objc_enumerationMutation(allKeys6);
         }
 
         v90 = *(*(&v122 + 1) + 8 * m);
@@ -427,7 +427,7 @@ LABEL_27:
         [v113 setObject:v99 forKeyedSubscript:v90];
       }
 
-      v87 = [v110 countByEnumeratingWithState:&v122 objects:v143 count:16];
+      v87 = [allKeys6 countByEnumeratingWithState:&v122 objects:v143 count:16];
     }
 
     while (v87);
@@ -438,7 +438,7 @@ LABEL_27:
   totalFeatureStatistics = v105->_totalFeatureStatistics;
   v105->_totalFeatureStatistics = v100;
 
-  v6 = v104;
+  initCopy = v104;
 LABEL_49:
 
   v102 = *MEMORY[0x277D85DE8];

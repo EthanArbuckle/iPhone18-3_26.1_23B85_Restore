@@ -1,10 +1,10 @@
 @interface SBDefaultIconModelStore
 + (SBDefaultIconModelStore)sharedInstance;
-- (BOOL)deleteDesiredIconStateWithOptions:(unint64_t)a3 error:(id *)a4;
-- (BOOL)saveDesiredIconState:(id)a3 error:(id *)a4;
+- (BOOL)deleteDesiredIconStateWithOptions:(unint64_t)options error:(id *)error;
+- (BOOL)saveDesiredIconState:(id)state error:(id *)error;
 - (SBDefaultIconModelStore)init;
-- (id)loadCurrentIconState:(id *)a3;
-- (id)loadDesiredIconState:(id *)a3;
+- (id)loadCurrentIconState:(id *)state;
+- (id)loadDesiredIconState:(id *)state;
 - (void)_deleteLegacyState;
 @end
 
@@ -35,21 +35,21 @@ uint64_t __41__SBDefaultIconModelStore_sharedInstance__block_invoke()
 - (SBDefaultIconModelStore)init
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [@"~/Library/SpringBoard/IconState.plist" stringByExpandingTildeInPath];
-  v5 = [v3 fileURLWithPath:v4];
+  stringByExpandingTildeInPath = [@"~/Library/SpringBoard/IconState.plist" stringByExpandingTildeInPath];
+  v5 = [v3 fileURLWithPath:stringByExpandingTildeInPath];
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [@"~/Library/SpringBoard/DesiredIconState.plist" stringByExpandingTildeInPath];
-  v8 = [v6 fileURLWithPath:v7];
+  stringByExpandingTildeInPath2 = [@"~/Library/SpringBoard/DesiredIconState.plist" stringByExpandingTildeInPath];
+  v8 = [v6 fileURLWithPath:stringByExpandingTildeInPath2];
   v9 = [(SBIconModelPropertyListFileStore *)self initWithIconStateURL:v5 desiredIconStateURL:v8];
 
   return v9;
 }
 
-- (id)loadCurrentIconState:(id *)a3
+- (id)loadCurrentIconState:(id *)state
 {
   v7.receiver = self;
   v7.super_class = SBDefaultIconModelStore;
-  v3 = [(SBIconModelPropertyListFileStore *)&v7 loadCurrentIconState:a3];
+  v3 = [(SBIconModelPropertyListFileStore *)&v7 loadCurrentIconState:state];
   if (v3)
   {
     v4 = SBLogCommon();
@@ -63,11 +63,11 @@ uint64_t __41__SBDefaultIconModelStore_sharedInstance__block_invoke()
   return v3;
 }
 
-- (BOOL)deleteDesiredIconStateWithOptions:(unint64_t)a3 error:(id *)a4
+- (BOOL)deleteDesiredIconStateWithOptions:(unint64_t)options error:(id *)error
 {
   v7.receiver = self;
   v7.super_class = SBDefaultIconModelStore;
-  v5 = [(SBIconModelPropertyListFileStore *)&v7 deleteDesiredIconStateWithOptions:a3 error:a4];
+  v5 = [(SBIconModelPropertyListFileStore *)&v7 deleteDesiredIconStateWithOptions:options error:error];
   if (v5)
   {
     [(SBDefaultIconModelStore *)self _deleteLegacyState];
@@ -76,11 +76,11 @@ uint64_t __41__SBDefaultIconModelStore_sharedInstance__block_invoke()
   return v5;
 }
 
-- (BOOL)saveDesiredIconState:(id)a3 error:(id *)a4
+- (BOOL)saveDesiredIconState:(id)state error:(id *)error
 {
   v7.receiver = self;
   v7.super_class = SBDefaultIconModelStore;
-  v5 = [(SBIconModelPropertyListFileStore *)&v7 saveDesiredIconState:a3 error:a4];
+  v5 = [(SBIconModelPropertyListFileStore *)&v7 saveDesiredIconState:state error:error];
   if (v5)
   {
     [(SBDefaultIconModelStore *)self _deleteLegacyState];
@@ -89,13 +89,13 @@ uint64_t __41__SBDefaultIconModelStore_sharedInstance__block_invoke()
   return v5;
 }
 
-- (id)loadDesiredIconState:(id *)a3
+- (id)loadDesiredIconState:(id *)state
 {
   v5 = +[SBDefaults localDefaults];
-  v6 = [v5 iconDefaults];
-  v7 = [v6 legacyIconState];
+  iconDefaults = [v5 iconDefaults];
+  legacyIconState = [iconDefaults legacyIconState];
 
-  if (v7)
+  if (legacyIconState)
   {
     v8 = SBLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -110,10 +110,10 @@ LABEL_10:
   else
   {
     v10 = +[SBDefaults localDefaults];
-    v11 = [v10 iconDefaults];
-    v7 = [v11 legacyIconState2];
+    iconDefaults2 = [v10 iconDefaults];
+    legacyIconState = [iconDefaults2 legacyIconState2];
 
-    if (v7)
+    if (legacyIconState)
     {
       v8 = SBLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -128,8 +128,8 @@ LABEL_10:
     {
       v13.receiver = self;
       v13.super_class = SBDefaultIconModelStore;
-      v7 = [(SBIconModelPropertyListFileStore *)&v13 loadDesiredIconState:a3];
-      if (!v7)
+      legacyIconState = [(SBIconModelPropertyListFileStore *)&v13 loadDesiredIconState:state];
+      if (!legacyIconState)
       {
         goto LABEL_12;
       }
@@ -146,14 +146,14 @@ LABEL_10:
 
 LABEL_12:
 
-  return v7;
+  return legacyIconState;
 }
 
 - (void)_deleteLegacyState
 {
   v3 = +[SBDefaults localDefaults];
-  v2 = [v3 iconDefaults];
-  [v2 clearLegacyDefaults];
+  iconDefaults = [v3 iconDefaults];
+  [iconDefaults clearLegacyDefaults];
 }
 
 @end

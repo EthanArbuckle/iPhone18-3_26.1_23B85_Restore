@@ -1,13 +1,13 @@
 @interface ArcadeFloatingBannerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18ASMessagesProvider24ArcadeFloatingBannerView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider24ArcadeFloatingBannerView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18ASMessagesProvider24ArcadeFloatingBannerView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider24ArcadeFloatingBannerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ArcadeFloatingBannerView
 
-- (_TtC18ASMessagesProvider24ArcadeFloatingBannerView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider24ArcadeFloatingBannerView)initWithCoder:(id)coder
 {
   result = sub_76A840();
   __break(1u);
@@ -25,14 +25,14 @@
   [v3 setFrame:{v4.receiver, v4.super_class}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider24ArcadeFloatingBannerView_lockupView);
-  v4 = self;
-  [(ArcadeFloatingBannerView *)v4 layoutMargins];
+  selfCopy = self;
+  [(ArcadeFloatingBannerView *)selfCopy layoutMargins];
   sub_769DA0();
   [v3 sizeThatFits:?];
-  [(ArcadeFloatingBannerView *)v4 layoutMargins];
+  [(ArcadeFloatingBannerView *)selfCopy layoutMargins];
   sub_769DC0();
   v6 = v5;
   v8 = v7;
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (_TtC18ASMessagesProvider24ArcadeFloatingBannerView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider24ArcadeFloatingBannerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

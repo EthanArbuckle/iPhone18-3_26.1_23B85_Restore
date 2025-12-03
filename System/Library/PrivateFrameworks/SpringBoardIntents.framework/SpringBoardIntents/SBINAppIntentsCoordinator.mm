@@ -2,7 +2,7 @@
 + (SBINAppIntentsCoordinator)sharedSystemCoordinator;
 - (SBINAppIntentsCoordinator)init;
 - (SBINAppIntentsCoordinatorDelegate)delegate;
-- (void)performAppIntent:(id)a3 withCompletion:(id)a4;
+- (void)performAppIntent:(id)intent withCompletion:(id)completion;
 @end
 
 @implementation SBINAppIntentsCoordinator
@@ -33,21 +33,21 @@ uint64_t __52__SBINAppIntentsCoordinator_sharedSystemCoordinator__block_invoke()
   return [(SBINAppIntentsCoordinator *)&v3 init];
 }
 
-- (void)performAppIntent:(id)a3 withCompletion:(id)a4
+- (void)performAppIntent:(id)intent withCompletion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  intentCopy = intent;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  v7 = [(SBINAppIntentsCoordinator *)self delegate];
-  v8 = v7;
-  if (v7)
+  delegate = [(SBINAppIntentsCoordinator *)self delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    [v7 appIntentsCoordinator:self performAppIntent:v9 withCompletion:v6];
+    [delegate appIntentsCoordinator:self performAppIntent:intentCopy withCompletion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 

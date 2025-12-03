@@ -1,36 +1,36 @@
 @interface PKEducationViewController
-+ (BOOL)shouldPresentForPass:(id)a3 inEducationContext:(unint64_t)a4 reason:(id *)a5;
-- (PKEducationViewController)initWithPaymentPass:(id)a3 setupContext:(int64_t)a4 educationContext:(unint64_t)a5;
++ (BOOL)shouldPresentForPass:(id)pass inEducationContext:(unint64_t)context reason:(id *)reason;
+- (PKEducationViewController)initWithPaymentPass:(id)pass setupContext:(int64_t)context educationContext:(unint64_t)educationContext;
 - (id)_heroPadImage;
 - (void)dealloc;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)invalidate;
 - (void)loadView;
 - (void)performContinue;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKEducationViewController
 
-+ (BOOL)shouldPresentForPass:(id)a3 inEducationContext:(unint64_t)a4 reason:(id *)a5
++ (BOOL)shouldPresentForPass:(id)pass inEducationContext:(unint64_t)context reason:(id *)reason
 {
-  v7 = a3;
+  passCopy = pass;
   v8 = PKForceCardEducation();
   v9 = 1;
-  if (!a4 && (v8 & 1) == 0)
+  if (!context && (v8 & 1) == 0)
   {
     if (PKHasSeenApplePayEducation())
     {
-      if (a5)
+      if (reason)
       {
         v9 = 0;
         v10 = @"user has already seen education";
 LABEL_20:
-        *a5 = v10;
+        *reason = v10;
         goto LABEL_31;
       }
     }
@@ -40,9 +40,9 @@ LABEL_20:
       v11 = PKIsPhone();
       if (v11 & 1) != 0 || PKIsPad() && (PKPearlIsAvailable())
       {
-        if ([v7 isTransitPass])
+        if ([passCopy isTransitPass])
         {
-          if (a5)
+          if (reason)
           {
             v9 = 0;
             v10 = @"pass is transit pass";
@@ -50,9 +50,9 @@ LABEL_20:
           }
         }
 
-        else if ([v7 isAccessPass])
+        else if ([passCopy isAccessPass])
         {
-          if (a5)
+          if (reason)
           {
             v9 = 0;
             v10 = @"pass is access pass";
@@ -62,15 +62,15 @@ LABEL_20:
 
         else
         {
-          if (![v7 isAppleBalancePass])
+          if (![passCopy isAppleBalancePass])
           {
             if (v11)
             {
-              v12 = [v7 devicePrimaryContactlessPaymentApplication];
+              devicePrimaryContactlessPaymentApplication = [passCopy devicePrimaryContactlessPaymentApplication];
 
-              if (!v12)
+              if (!devicePrimaryContactlessPaymentApplication)
               {
-                if (a5)
+                if (reason)
                 {
                   v9 = 0;
                   v10 = @"pass doesn't support contactless transaction";
@@ -80,12 +80,12 @@ LABEL_20:
                 goto LABEL_30;
               }
 
-              v13 = [v7 issuerCountryCode];
-              v14 = [v13 isEqualToString:@"JP"];
+              issuerCountryCode = [passCopy issuerCountryCode];
+              v14 = [issuerCountryCode isEqualToString:@"JP"];
 
-              if (a5 && v14)
+              if (reason && v14)
               {
-                *a5 = @"pass has Japan issuer";
+                *reason = @"pass has Japan issuer";
               }
 
               if (v14)
@@ -98,7 +98,7 @@ LABEL_20:
             goto LABEL_31;
           }
 
-          if (a5)
+          if (reason)
           {
             v9 = 0;
             v10 = @"pass is apple balance";
@@ -107,7 +107,7 @@ LABEL_20:
         }
       }
 
-      else if (a5)
+      else if (reason)
       {
         v9 = 0;
         v10 = @"device does not have expected biometric authentication type";
@@ -124,17 +124,17 @@ LABEL_31:
   return v9;
 }
 
-- (PKEducationViewController)initWithPaymentPass:(id)a3 setupContext:(int64_t)a4 educationContext:(unint64_t)a5
+- (PKEducationViewController)initWithPaymentPass:(id)pass setupContext:(int64_t)context educationContext:(unint64_t)educationContext
 {
-  v9 = a3;
+  passCopy = pass;
   v17.receiver = self;
   v17.super_class = PKEducationViewController;
-  v10 = [(PKExplanationViewController *)&v17 initWithContext:a4];
+  v10 = [(PKExplanationViewController *)&v17 initWithContext:context];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_paymentPass, a3);
-    v11->_educationContext = a5;
+    objc_storeStrong(&v10->_paymentPass, pass);
+    v11->_educationContext = educationContext;
     IsAvailable = PKPearlIsAvailable();
     biometricAuthenticationType = v11->_biometricAuthenticationType;
     if (IsAvailable)
@@ -147,8 +147,8 @@ LABEL_31:
       if (biometricAuthenticationType)
       {
 LABEL_7:
-        v15 = [(PKEducationViewController *)v11 navigationItem];
-        [v15 setHidesBackButton:1 animated:0];
+        navigationItem = [(PKEducationViewController *)v11 navigationItem];
+        [navigationItem setHidesBackButton:1 animated:0];
 
         [(PKExplanationViewController *)v11 setShowDoneButton:0];
         [(PKExplanationViewController *)v11 setShowCancelButton:0];
@@ -181,11 +181,11 @@ LABEL_8:
   v57.receiver = self;
   v57.super_class = PKEducationViewController;
   [(PKExplanationViewController *)&v57 loadView];
-  v3 = [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
-  if (v3)
+  pkui_userInterfaceIdiomSupportsLargeLayouts = [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
+  if (pkui_userInterfaceIdiomSupportsLargeLayouts)
   {
-    v4 = [(PKEducationViewController *)self traitCollection];
-    v5 = [v4 userInterfaceIdiom] != 6;
+    traitCollection = [(PKEducationViewController *)self traitCollection];
+    v5 = [traitCollection userInterfaceIdiom] != 6;
   }
 
   else
@@ -193,16 +193,16 @@ LABEL_8:
     v5 = 0;
   }
 
-  v6 = [(PKExplanationViewController *)self explanationView];
-  [v6 setDelegate:self];
-  [v6 setShowPrivacyView:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setDelegate:self];
+  [explanationView setShowPrivacyView:0];
   v7 = objc_alloc_init(PKEducationPhone);
   educationBodyView = self->_educationBodyView;
   self->_educationBodyView = v7;
 
   if (self->_educationContext)
   {
-    if (v3)
+    if (pkui_userInterfaceIdiomSupportsLargeLayouts)
     {
       goto LABEL_24;
     }
@@ -210,11 +210,11 @@ LABEL_8:
     goto LABEL_21;
   }
 
-  [v6 setTopLogoPadding:25.0];
+  [explanationView setTopLogoPadding:25.0];
   v9 = PKLocalizedPaymentString(&cfstr_ApplePayEducat.isa);
-  [v6 setTitleText:v9];
+  [explanationView setTitleText:v9];
 
-  [v6 setTitleImage:0];
+  [explanationView setTitleImage:0];
   v54 = *MEMORY[0x1E69DB650];
   v60[0] = *MEMORY[0x1E69DB650];
   v10 = PKOBKBodyTextColor();
@@ -273,45 +273,45 @@ LABEL_13:
   v24 = v12;
   [v18 appendAttributedString:v22];
 
-  if (v3)
+  if (pkui_userInterfaceIdiomSupportsLargeLayouts)
   {
     v25 = objc_alloc_init(MEMORY[0x1E69DD250]);
     largeLayoutHeroBackground = self->_largeLayoutHeroBackground;
     self->_largeLayoutHeroBackground = v25;
 
     v27 = self->_largeLayoutHeroBackground;
-    v28 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(UIView *)v27 setBackgroundColor:v28];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(UIView *)v27 setBackgroundColor:secondarySystemBackgroundColor];
 
     v29 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v30 = [(PKEducationViewController *)self _heroPadImage];
-    v31 = [v29 initWithImage:v30];
+    _heroPadImage = [(PKEducationViewController *)self _heroPadImage];
+    v31 = [v29 initWithImage:_heroPadImage];
     largeLayoutHeroImageView = self->_largeLayoutHeroImageView;
     self->_largeLayoutHeroImageView = v31;
 
     [(UIImageView *)self->_largeLayoutHeroImageView setContentMode:1];
     [(UIView *)self->_largeLayoutHeroBackground addSubview:self->_largeLayoutHeroImageView];
-    v33 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v6 setTopBackgroundColor:v33];
+    secondarySystemBackgroundColor2 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [explanationView setTopBackgroundColor:secondarySystemBackgroundColor2];
 
-    [v6 setTopMargin:44.0];
-    [v6 setHeroView:self->_largeLayoutHeroBackground];
+    [explanationView setTopMargin:44.0];
+    [explanationView setHeroView:self->_largeLayoutHeroBackground];
   }
 
   else
   {
-    [v6 setBodyView:self->_educationBodyView];
-    [v6 setHeroView:0];
-    [v6 setImage:0];
-    [v6 setBodyViewPadding:0.0];
+    [explanationView setBodyView:self->_educationBodyView];
+    [explanationView setHeroView:0];
+    [explanationView setImage:0];
+    [explanationView setBodyViewPadding:0.0];
     [(PKExplanationViewController *)self context];
     if ((PKPaymentSetupContextIsSetupAssistant() & 1) == 0)
     {
       v53 = objc_alloc(MEMORY[0x1E696AAB0]);
       v34 = PKLocalizedPaymentString(&cfstr_LearnMoreLink.isa);
       v58[0] = v54;
-      v35 = [MEMORY[0x1E69DC888] linkColor];
-      v59[0] = v35;
+      linkColor = [MEMORY[0x1E69DC888] linkColor];
+      v59[0] = linkColor;
       v58[1] = *MEMORY[0x1E69DB670];
       [MEMORY[0x1E695DFF8] URLWithString:@"https://support.apple.com/HT201239"];
       v36 = v55 = v24;
@@ -328,9 +328,9 @@ LABEL_13:
   }
 
   v39 = [v18 copy];
-  [v6 setAttributedBodyText:v39];
+  [explanationView setAttributedBodyText:v39];
 
-  if (!v3)
+  if (!pkui_userInterfaceIdiomSupportsLargeLayouts)
   {
 LABEL_21:
     paymentPass = self->_paymentPass;
@@ -346,26 +346,26 @@ LABEL_21:
 
     else
     {
-      v41 = [MEMORY[0x1E69B8C10] defaultImages];
-      v42 = [v41 pk_shuffledArray];
-      v43 = [v42 firstObject];
+      defaultImages = [MEMORY[0x1E69B8C10] defaultImages];
+      pk_shuffledArray = [defaultImages pk_shuffledArray];
+      firstObject = [pk_shuffledArray firstObject];
 
       v44 = self->_educationBodyView;
       v45 = MEMORY[0x1E69DCAB8];
-      v46 = [v43 imageWithScale:PKUIScreenScale()];
+      v46 = [firstObject imageWithScale:PKUIScreenScale()];
       v47 = [v45 imageWithData:v46];
       [(PKEducationPhone *)v44 setPassImage:v47];
     }
   }
 
 LABEL_24:
-  v48 = [v6 dockView];
-  v49 = [v48 primaryButton];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
   v50 = PKLocalizedPaymentString(&cfstr_Continue.isa);
-  [v49 setTitle:v50 forState:0];
+  [primaryButton setTitle:v50 forState:0];
 
-  v51 = [v48 footerView];
-  [v51 setSetUpLaterButton:0];
+  footerView = [dockView footerView];
+  [footerView setSetUpLaterButton:0];
 }
 
 uint64_t __37__PKEducationViewController_loadView__block_invoke(uint64_t a1)
@@ -407,15 +407,15 @@ void __37__PKEducationViewController_loadView__block_invoke_3(uint64_t a1)
   [(PKExplanationViewController *)&v9 viewWillLayoutSubviews];
   if (self->_largeLayoutHeroBackground && self->_largeLayoutHeroImageView)
   {
-    v3 = [(PKEducationViewController *)self traitCollection];
-    if ([v3 userInterfaceIdiom] != 6)
+    traitCollection = [(PKEducationViewController *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom] != 6)
     {
-      v4 = [(PKEducationViewController *)self traitCollection];
-      [v4 verticalSizeClass];
+      traitCollection2 = [(PKEducationViewController *)self traitCollection];
+      [traitCollection2 verticalSizeClass];
     }
 
-    v5 = [(PKEducationViewController *)self view];
-    [v5 bounds];
+    view = [(PKEducationViewController *)self view];
+    [view bounds];
     Width = CGRectGetWidth(v10);
 
     [(UIImageView *)self->_largeLayoutHeroImageView frame];
@@ -429,11 +429,11 @@ void __37__PKEducationViewController_loadView__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKEducationViewController;
-  [(PKEducationViewController *)&v6 viewDidAppear:a3];
+  [(PKEducationViewController *)&v6 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
   v4 = dispatch_time(0, 2000000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -444,51 +444,51 @@ void __37__PKEducationViewController_loadView__block_invoke_3(uint64_t a1)
   dispatch_after(v4, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = PKEducationViewController;
-  [(PKEducationViewController *)&v10 viewWillAppear:a3];
-  v4 = [(PKEducationViewController *)self navigationController];
-  v5 = [(PKEducationViewController *)self navigationItem];
+  [(PKEducationViewController *)&v10 viewWillAppear:appear];
+  navigationController = [(PKEducationViewController *)self navigationController];
+  navigationItem = [(PKEducationViewController *)self navigationItem];
   v6 = 0.0;
   if (![(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
-    v7 = [v5 leftBarButtonItem];
-    if (v7)
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    if (leftBarButtonItem)
     {
     }
 
     else
     {
-      v8 = [v5 rightBarButtonItem];
+      rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-      if (!v8)
+      if (!rightBarButtonItem)
       {
-        self->_wasNavigationBarHidden = [v4 isNavigationBarHidden];
-        [v4 setNavigationBarHidden:1];
+        self->_wasNavigationBarHidden = [navigationController isNavigationBarHidden];
+        [navigationController setNavigationBarHidden:1];
         v6 = 20.0;
       }
     }
   }
 
-  v9 = [(PKExplanationViewController *)self explanationView];
-  [v9 setTopMargin:v6];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setTopMargin:v6];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKEducationViewController;
-  [(PKEducationViewController *)&v5 viewWillDisappear:a3];
+  [(PKEducationViewController *)&v5 viewWillDisappear:disappear];
   if (![(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
-    v4 = [(PKEducationViewController *)self navigationController];
-    [v4 setNavigationBarHidden:self->_wasNavigationBarHidden];
+    navigationController = [(PKEducationViewController *)self navigationController];
+    [navigationController setNavigationBarHidden:self->_wasNavigationBarHidden];
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v7[1] = *MEMORY[0x1E69E9840];
   reporter = self->_reporter;
@@ -545,7 +545,7 @@ void __44__PKEducationViewController_performContinue__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 134349056;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKFieldDetectEducationViewController (%{public}p): invalidated.", &v4, 0xCu);
     }
 
@@ -568,13 +568,13 @@ void __44__PKEducationViewController_performContinue__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(PKEducationViewController *)self view:a3];
-  [v6 setUserInteractionEnabled:v4 ^ 1];
+  iCopy = i;
+  v6 = [(PKEducationViewController *)self view:i];
+  [v6 setUserInteractionEnabled:iCopy ^ 1];
 
-  [(PKExplanationViewController *)self showSpinner:v4];
+  [(PKExplanationViewController *)self showSpinner:iCopy];
 }
 
 @end

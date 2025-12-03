@@ -3,18 +3,18 @@
 - (NSString)description;
 - (NSString)name;
 - (_TtC13HomeDataModel18MockTriggerBuilder)init;
-- (void)addActionSet:(id)a3;
-- (void)addEndEvent:(id)a3;
-- (void)addEvent:(id)a3;
-- (void)removeActionSet:(id)a3;
-- (void)removeEndEvent:(id)a3;
-- (void)removeEvent:(id)a3;
-- (void)setName:(id)a3;
-- (void)setName:(id)a3 isConfigured:(BOOL)a4;
-- (void)setPolicy:(id)a3;
-- (void)setPredicate:(id)a3;
-- (void)setRecurrences:(id)a3;
-- (void)setTriggerOwnedActionSet:(id)a3;
+- (void)addActionSet:(id)set;
+- (void)addEndEvent:(id)event;
+- (void)addEvent:(id)event;
+- (void)removeActionSet:(id)set;
+- (void)removeEndEvent:(id)event;
+- (void)removeEvent:(id)event;
+- (void)setName:(id)name;
+- (void)setName:(id)name isConfigured:(BOOL)configured;
+- (void)setPolicy:(id)policy;
+- (void)setPredicate:(id)predicate;
+- (void)setRecurrences:(id)recurrences;
+- (void)setTriggerOwnedActionSet:(id)set;
 @end
 
 @implementation MockTriggerBuilder
@@ -37,9 +37,9 @@
   return v4;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_1D1E6781C();
   }
@@ -73,9 +73,9 @@
   return v2;
 }
 
-- (void)setRecurrences:(id)a3
+- (void)setRecurrences:(id)recurrences
 {
-  if (a3)
+  if (recurrences)
   {
     sub_1D1E662EC();
     v4 = sub_1D1E67C1C();
@@ -90,30 +90,30 @@
   *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_recurrences) = v4;
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
   v4 = *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_predicate);
-  *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_predicate) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_predicate) = predicate;
+  predicateCopy = predicate;
 }
 
-- (void)setPolicy:(id)a3
+- (void)setPolicy:(id)policy
 {
   v4 = *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_policy);
-  *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_policy) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_policy) = policy;
+  policyCopy = policy;
 }
 
-- (void)setTriggerOwnedActionSet:(id)a3
+- (void)setTriggerOwnedActionSet:(id)set
 {
   v4 = *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_triggerOwnedActionSet);
-  *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_triggerOwnedActionSet) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_triggerOwnedActionSet) = set;
+  setCopy = set;
 }
 
-- (void)setName:(id)a3 isConfigured:(BOOL)a4
+- (void)setName:(id)name isConfigured:(BOOL)configured
 {
-  if (a3)
+  if (name)
   {
     v6 = sub_1D1E6781C();
   }
@@ -128,56 +128,56 @@
   v9 = *(self + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_name + 8);
   *v8 = v6;
   v8[1] = v7;
-  v10 = self;
+  selfCopy = self;
 
-  *(v10 + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_nameIsConfigured) = a4;
+  *(selfCopy + OBJC_IVAR____TtC13HomeDataModel18MockTriggerBuilder_nameIsConfigured) = configured;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D179DA30(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1D179DA30(eventCopy);
 }
 
-- (void)removeEvent:(id)a3
+- (void)removeEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D179DAA4(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1D179DAA4(eventCopy);
 }
 
-- (void)addEndEvent:(id)a3
+- (void)addEndEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D179DB2C(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1D179DB2C(eventCopy);
 }
 
-- (void)removeEndEvent:(id)a3
+- (void)removeEndEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D179DBA0(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_1D179DBA0(eventCopy);
 }
 
-- (void)addActionSet:(id)a3
+- (void)addActionSet:(id)set
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D179DDBC(v4);
+  setCopy = set;
+  selfCopy = self;
+  sub_1D179DDBC(setCopy);
 }
 
-- (void)removeActionSet:(id)a3
+- (void)removeActionSet:(id)set
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D179DEF0(v4);
+  setCopy = set;
+  selfCopy = self;
+  sub_1D179DEF0(setCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D179DFE0();
 
   v3 = sub_1D1E677EC();

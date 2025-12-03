@@ -1,15 +1,15 @@
 @interface _LTLoggingRequestHandler
 - (FTBlazarService)mtAppService;
-- (id)combineFeedbackCategory:(int64_t)a3 andErrors:(id)a4;
-- (void)startLoggingRequest:(id)a3;
-- (void)startSafariFeedbackRequest:(id)a3;
-- (void)startSafariLatencyLoggingRequest:(id)a3;
-- (void)startSpeechLIDRequest:(id)a3;
-- (void)startSpeechSensesLoggingRequest:(id)a3;
-- (void)streamDidReceiveBatchTranslationStreamingResponse:(id)a3;
-- (void)streamDidReceiveSpeechTranslationStreamingResponse:(id)a3;
-- (void)streamFailVerifyBatchTranslationStreamingResponse:(id)a3;
-- (void)streamFailVerifySpeechTranslationStreamingResponse:(id)a3;
+- (id)combineFeedbackCategory:(int64_t)category andErrors:(id)errors;
+- (void)startLoggingRequest:(id)request;
+- (void)startSafariFeedbackRequest:(id)request;
+- (void)startSafariLatencyLoggingRequest:(id)request;
+- (void)startSpeechLIDRequest:(id)request;
+- (void)startSpeechSensesLoggingRequest:(id)request;
+- (void)streamDidReceiveBatchTranslationStreamingResponse:(id)response;
+- (void)streamDidReceiveSpeechTranslationStreamingResponse:(id)response;
+- (void)streamFailVerifyBatchTranslationStreamingResponse:(id)response;
+- (void)streamFailVerifySpeechTranslationStreamingResponse:(id)response;
 @end
 
 @implementation _LTLoggingRequestHandler
@@ -29,13 +29,13 @@
   return mtAppService;
 }
 
-- (void)startLoggingRequest:(id)a3
+- (void)startLoggingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_LTLoggingRequestHandler *)self startSpeechLIDRequest:v4];
+    [(_LTLoggingRequestHandler *)self startSpeechLIDRequest:requestCopy];
   }
 
   else
@@ -43,7 +43,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_LTLoggingRequestHandler *)self startSpeechSensesLoggingRequest:v4];
+      [(_LTLoggingRequestHandler *)self startSpeechSensesLoggingRequest:requestCopy];
     }
 
     else
@@ -51,7 +51,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(_LTLoggingRequestHandler *)self startSafariLatencyLoggingRequest:v4];
+        [(_LTLoggingRequestHandler *)self startSafariLatencyLoggingRequest:requestCopy];
       }
 
       else
@@ -59,17 +59,17 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(_LTLoggingRequestHandler *)self startSafariFeedbackRequest:v4];
+          [(_LTLoggingRequestHandler *)self startSafariFeedbackRequest:requestCopy];
         }
       }
     }
   }
 }
 
-- (void)startSpeechLIDRequest:(id)a3
+- (void)startSpeechLIDRequest:(id)request
 {
   v53 = *MEMORY[0x277D85DE8];
-  v44 = a3;
+  requestCopy = request;
   v5 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -77,46 +77,46 @@
     _os_log_impl(&dword_232E53000, v5, OS_LOG_TYPE_INFO, "Start Speech LID logging request", buf, 2u);
   }
 
-  v6 = [(_LTLoggingRequestHandler *)self mtAppService];
+  mtAppService = [(_LTLoggingRequestHandler *)self mtAppService];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __50___LTLoggingRequestHandler_startSpeechLIDRequest___block_invoke_2;
   v49[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v49[4] = a2;
-  v43 = [v6 performSpeechTranslationWithDelegate:self requestBuilder:&__block_literal_global_20 completion:v49];
+  v43 = [mtAppService performSpeechTranslationWithDelegate:self requestBuilder:&__block_literal_global_20 completion:v49];
 
   v7 = objc_alloc_init(FTMutableTranslationLocalePair);
-  v8 = [v44 targetLocale];
-  v9 = [v8 localeIdentifier];
-  [(FTMutableTranslationLocalePair *)v7 setTarget_locale:v9];
+  targetLocale = [requestCopy targetLocale];
+  localeIdentifier = [targetLocale localeIdentifier];
+  [(FTMutableTranslationLocalePair *)v7 setTarget_locale:localeIdentifier];
 
-  v10 = [v44 localePair];
-  v11 = [v44 targetLocale];
-  v12 = [v10 oppositeToLocale:v11];
-  v13 = [v12 localeIdentifier];
+  localePair = [requestCopy localePair];
+  targetLocale2 = [requestCopy targetLocale];
+  v12 = [localePair oppositeToLocale:targetLocale2];
+  localeIdentifier2 = [v12 localeIdentifier];
   v42 = v7;
-  [(FTMutableTranslationLocalePair *)v7 setSource_locale:v13];
+  [(FTMutableTranslationLocalePair *)v7 setSource_locale:localeIdentifier2];
 
   v14 = objc_alloc_init(FTMutableLanguageDetected);
-  v15 = [v44 lidResult];
-  v16 = [v15 dominantLanguage];
-  v17 = [v16 localeIdentifier];
+  lidResult = [requestCopy lidResult];
+  dominantLanguage = [lidResult dominantLanguage];
+  localeIdentifier3 = [dominantLanguage localeIdentifier];
   v41 = v14;
-  [(FTMutableLanguageDetected *)v14 setDetected_locale:v17];
+  [(FTMutableLanguageDetected *)v14 setDetected_locale:localeIdentifier3];
 
-  v18 = [v44 lidResult];
-  v19 = [v18 confidences];
+  lidResult2 = [requestCopy lidResult];
+  confidences = [lidResult2 confidences];
 
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v21 = [v44 localePair];
-  v51[0] = v21;
-  v22 = [v44 localePair];
-  v23 = [v22 reversedPair];
-  v51[1] = v23;
+  localePair2 = [requestCopy localePair];
+  v51[0] = localePair2;
+  localePair3 = [requestCopy localePair];
+  reversedPair = [localePair3 reversedPair];
+  v51[1] = reversedPair;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
 
   v25 = [v24 countByEnumeratingWithState:&v45 objects:v52 count:16];
@@ -134,18 +134,18 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v45 + 1) + 8 * v28) sourceLocale];
-        v30 = [v19 objectForKeyedSubscript:v29];
+        sourceLocale = [*(*(&v45 + 1) + 8 * v28) sourceLocale];
+        v30 = [confidences objectForKeyedSubscript:sourceLocale];
         if (v30)
         {
           v31 = objc_alloc_init(FTMutableLanguageDetectionPrediction);
-          v32 = [v29 localeIdentifier];
-          [(FTMutableLanguageDetectionPrediction *)v31 setLocale:v32];
+          localeIdentifier4 = [sourceLocale localeIdentifier];
+          [(FTMutableLanguageDetectionPrediction *)v31 setLocale:localeIdentifier4];
 
           [v30 floatValue];
           [(FTMutableLanguageDetectionPrediction *)v31 setConfidence:?];
-          v33 = [v44 lidResult];
-          -[FTMutableLanguageDetectionPrediction setIs_low_confidence:](v31, "setIs_low_confidence:", [v33 isConfident] ^ 1);
+          lidResult3 = [requestCopy lidResult];
+          -[FTMutableLanguageDetectionPrediction setIs_low_confidence:](v31, "setIs_low_confidence:", [lidResult3 isConfident] ^ 1);
 
           [v20 addObject:v31];
         }
@@ -162,15 +162,15 @@
 
   [(FTMutableLanguageDetected *)v41 setPredictions:v20];
   v34 = objc_alloc_init(FTMutableStartSpeechTranslationLoggingRequest);
-  v35 = [v44 conversationID];
-  [(FTMutableStartSpeechTranslationLoggingRequest *)v34 setConversation_id:v35];
+  conversationID = [requestCopy conversationID];
+  [(FTMutableStartSpeechTranslationLoggingRequest *)v34 setConversation_id:conversationID];
 
-  v36 = [v44 requestID];
-  [(FTMutableStartSpeechTranslationLoggingRequest *)v34 setRequest_id:v36];
+  requestID = [requestCopy requestID];
+  [(FTMutableStartSpeechTranslationLoggingRequest *)v34 setRequest_id:requestID];
 
-  v37 = [v44 selectedLocale];
-  v38 = [v37 localeIdentifier];
-  [(FTMutableStartSpeechTranslationLoggingRequest *)v34 setUser_selected_locale:v38];
+  selectedLocale = [requestCopy selectedLocale];
+  localeIdentifier5 = [selectedLocale localeIdentifier];
+  [(FTMutableStartSpeechTranslationLoggingRequest *)v34 setUser_selected_locale:localeIdentifier5];
 
   [(FTMutableStartSpeechTranslationLoggingRequest *)v34 setDetected_locale:v41];
   [(FTMutableStartSpeechTranslationLoggingRequest *)v34 setTranslation_locale_pair:v42];
@@ -182,9 +182,9 @@
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSpeechSensesLoggingRequest:(id)a3
+- (void)startSpeechSensesLoggingRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -192,43 +192,43 @@
     _os_log_impl(&dword_232E53000, v6, OS_LOG_TYPE_INFO, "Start speech senses logging request", buf, 2u);
   }
 
-  v7 = [(_LTLoggingRequestHandler *)self mtAppService];
+  mtAppService = [(_LTLoggingRequestHandler *)self mtAppService];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __60___LTLoggingRequestHandler_startSpeechSensesLoggingRequest___block_invoke_2;
   v19[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v19[4] = a2;
-  v8 = [v7 performSpeechTranslationWithDelegate:self requestBuilder:&__block_literal_global_14 completion:v19];
+  v8 = [mtAppService performSpeechTranslationWithDelegate:self requestBuilder:&__block_literal_global_14 completion:v19];
 
   v9 = objc_alloc_init(FTMutableStartSpeechTranslationLoggingRequest);
-  v10 = [v5 conversationID];
-  [(FTMutableStartSpeechTranslationLoggingRequest *)v9 setConversation_id:v10];
+  conversationID = [requestCopy conversationID];
+  [(FTMutableStartSpeechTranslationLoggingRequest *)v9 setConversation_id:conversationID];
 
-  v11 = [v5 requestID];
-  [(FTMutableStartSpeechTranslationLoggingRequest *)v9 setRequest_id:v11];
+  requestID = [requestCopy requestID];
+  [(FTMutableStartSpeechTranslationLoggingRequest *)v9 setRequest_id:requestID];
 
-  v12 = [v5 senses];
-  [(FTMutableStartSpeechTranslationLoggingRequest *)v9 setSenses:v12];
+  senses = [requestCopy senses];
+  [(FTMutableStartSpeechTranslationLoggingRequest *)v9 setSenses:senses];
 
-  v13 = [v5 userInteractedSenses];
-  v14 = [v13 count];
+  userInteractedSenses = [requestCopy userInteractedSenses];
+  v14 = [userInteractedSenses count];
 
   if (v14)
   {
-    v15 = [v5 userInteractedSenses];
-    [v15 lastObject];
+    userInteractedSenses2 = [requestCopy userInteractedSenses];
+    [userInteractedSenses2 lastObject];
   }
 
   else
   {
-    v15 = [v5 senses];
-    [v15 objectAtIndexedSubscript:0];
+    userInteractedSenses2 = [requestCopy senses];
+    [userInteractedSenses2 objectAtIndexedSubscript:0];
   }
   v16 = ;
   [(FTMutableStartSpeechTranslationLoggingRequest *)v9 setUser_selected_sense:v16];
 
-  v17 = [v5 userInteractedSenses];
-  [(FTMutableStartSpeechTranslationLoggingRequest *)v9 setUser_interacted_senses:v17];
+  userInteractedSenses3 = [requestCopy userInteractedSenses];
+  [(FTMutableStartSpeechTranslationLoggingRequest *)v9 setUser_interacted_senses:userInteractedSenses3];
 
   v18 = objc_alloc_init(FTMutableSpeechTranslationStreamingRequest);
   [(FTMutableSpeechTranslationStreamingRequest *)v18 setContentAsFTStartSpeechTranslationLoggingRequest:v9];
@@ -236,9 +236,9 @@
   [v8 closeStream];
 }
 
-- (void)startSafariLatencyLoggingRequest:(id)a3
+- (void)startSafariLatencyLoggingRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -246,15 +246,15 @@
     _os_log_impl(&dword_232E53000, v4, OS_LOG_TYPE_INFO, "Start Safari latency logging request", buf, 2u);
   }
 
-  v6 = v3;
-  v5 = v3;
+  v6 = requestCopy;
+  v5 = requestCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)startSafariFeedbackRequest:(id)a3
+- (void)startSafariFeedbackRequest:(id)request
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestCopy = request;
   v6 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -262,52 +262,52 @@
     _os_log_impl(&dword_232E53000, v6, OS_LOG_TYPE_INFO, "Start Safari feedback request", buf, 2u);
   }
 
-  v7 = [(_LTLoggingRequestHandler *)self mtAppService];
+  mtAppService = [(_LTLoggingRequestHandler *)self mtAppService];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __55___LTLoggingRequestHandler_startSafariFeedbackRequest___block_invoke_2;
   v32[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v32[4] = a2;
-  v8 = [v7 performBatchTranslationWithDelegate:self requestBuilder:&__block_literal_global_18 completion:v32];
+  v8 = [mtAppService performBatchTranslationWithDelegate:self requestBuilder:&__block_literal_global_18 completion:v32];
 
   v9 = objc_alloc_init(FTMutableBatchTranslationFeedbackRequest);
-  v10 = [v5 sourceContentAsJSON];
-  [(FTMutableBatchTranslationFeedbackRequest *)v9 setSource_content:v10];
+  sourceContentAsJSON = [requestCopy sourceContentAsJSON];
+  [(FTMutableBatchTranslationFeedbackRequest *)v9 setSource_content:sourceContentAsJSON];
 
-  v11 = [v5 targetContentAsJSON];
-  [(FTMutableBatchTranslationFeedbackRequest *)v9 setTranslated_content:v11];
+  targetContentAsJSON = [requestCopy targetContentAsJSON];
+  [(FTMutableBatchTranslationFeedbackRequest *)v9 setTranslated_content:targetContentAsJSON];
 
-  v12 = [v5 webpageURL];
-  v13 = [v12 absoluteString];
-  [(FTMutableBatchTranslationFeedbackRequest *)v9 setUrl:v13];
+  webpageURL = [requestCopy webpageURL];
+  absoluteString = [webpageURL absoluteString];
+  [(FTMutableBatchTranslationFeedbackRequest *)v9 setUrl:absoluteString];
 
-  v14 = [v5 category];
-  v15 = [v5 errorsAsJSON];
-  v16 = [(_LTLoggingRequestHandler *)self combineFeedbackCategory:v14 andErrors:v15];
+  category = [requestCopy category];
+  errorsAsJSON = [requestCopy errorsAsJSON];
+  v16 = [(_LTLoggingRequestHandler *)self combineFeedbackCategory:category andErrors:errorsAsJSON];
   [(FTMutableBatchTranslationFeedbackRequest *)v9 setErrors:v16];
 
-  v17 = [v5 sessionID];
-  [(FTMutableBatchTranslationFeedbackRequest *)v9 setSession_id:v17];
+  sessionID = [requestCopy sessionID];
+  [(FTMutableBatchTranslationFeedbackRequest *)v9 setSession_id:sessionID];
 
-  v18 = [v5 localePair];
-  v19 = [v18 sourceLocale];
-  v20 = [v19 localeIdentifier];
-  [(FTMutableBatchTranslationFeedbackRequest *)v9 setSource_language:v20];
+  localePair = [requestCopy localePair];
+  sourceLocale = [localePair sourceLocale];
+  localeIdentifier = [sourceLocale localeIdentifier];
+  [(FTMutableBatchTranslationFeedbackRequest *)v9 setSource_language:localeIdentifier];
 
-  v21 = [v5 localePair];
-  v22 = [v21 targetLocale];
-  v23 = [v22 localeIdentifier];
-  [(FTMutableBatchTranslationFeedbackRequest *)v9 setTarget_language:v23];
+  localePair2 = [requestCopy localePair];
+  targetLocale = [localePair2 targetLocale];
+  localeIdentifier2 = [targetLocale localeIdentifier];
+  [(FTMutableBatchTranslationFeedbackRequest *)v9 setTarget_language:localeIdentifier2];
 
-  v24 = [v5 safariVersion];
-  [(FTMutableBatchTranslationFeedbackRequest *)v9 setSafari_version:v24];
+  safariVersion = [requestCopy safariVersion];
+  [(FTMutableBatchTranslationFeedbackRequest *)v9 setSafari_version:safariVersion];
 
-  v25 = [v5 clientBundleID];
+  clientBundleID = [requestCopy clientBundleID];
 
-  [(FTMutableBatchTranslationFeedbackRequest *)v9 setApp_id:v25];
-  v26 = [MEMORY[0x277CCAC38] processInfo];
-  v27 = [v26 operatingSystemVersionString];
-  [(FTMutableBatchTranslationFeedbackRequest *)v9 setOs_version:v27];
+  [(FTMutableBatchTranslationFeedbackRequest *)v9 setApp_id:clientBundleID];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  operatingSystemVersionString = [processInfo operatingSystemVersionString];
+  [(FTMutableBatchTranslationFeedbackRequest *)v9 setOs_version:operatingSystemVersionString];
 
   v31 = 4096;
   sysctlbyname("hw.machine", buf, &v31, 0, 0);
@@ -322,11 +322,11 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)combineFeedbackCategory:(int64_t)a3 andErrors:(id)a4
+- (id)combineFeedbackCategory:(int64_t)category andErrors:(id)errors
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [v4 dataUsingEncoding:4];
+  errorsCopy = errors;
+  v5 = [errorsCopy dataUsingEncoding:4];
   v19 = 0;
   v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v5 options:0 error:&v19];
   v7 = v19;
@@ -339,7 +339,7 @@
       [_LTLoggingRequestHandler combineFeedbackCategory:andErrors:];
     }
 
-    v10 = v4;
+    v10 = errorsCopy;
   }
 
   else
@@ -361,7 +361,7 @@
         [_LTLoggingRequestHandler combineFeedbackCategory:andErrors:];
       }
 
-      v15 = v4;
+      v15 = errorsCopy;
     }
 
     else
@@ -377,23 +377,23 @@
   return v10;
 }
 
-- (void)streamDidReceiveSpeechTranslationStreamingResponse:(id)a3
+- (void)streamDidReceiveSpeechTranslationStreamingResponse:(id)response
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 content_type] == 6)
+  responseCopy = response;
+  if ([responseCopy content_type] == 6)
   {
-    v4 = [v3 contentAsFTFinalBlazarResponse];
+    contentAsFTFinalBlazarResponse = [responseCopy contentAsFTFinalBlazarResponse];
     v5 = _LTOSLogTranslationEngine();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = v5;
-      v7 = [v4 return_code];
-      v8 = [v4 return_str];
+      return_code = [contentAsFTFinalBlazarResponse return_code];
+      return_str = [contentAsFTFinalBlazarResponse return_str];
       v11[0] = 67109378;
-      v11[1] = v7;
+      v11[1] = return_code;
       v12 = 2112;
-      v13 = v8;
+      v13 = return_str;
       _os_log_impl(&dword_232E53000, v6, OS_LOG_TYPE_INFO, "Received speech logging request response: [%d] %@", v11, 0x12u);
     }
   }
@@ -410,9 +410,9 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamFailVerifySpeechTranslationStreamingResponse:(id)a3
+- (void)streamFailVerifySpeechTranslationStreamingResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -420,26 +420,26 @@
   }
 
   v6 = NSStringFromSelector(a2);
-  _LTSendErrorEvent(v4, v6);
+  _LTSendErrorEvent(responseCopy, v6);
 }
 
-- (void)streamDidReceiveBatchTranslationStreamingResponse:(id)a3
+- (void)streamDidReceiveBatchTranslationStreamingResponse:(id)response
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 content_type] == 2)
+  responseCopy = response;
+  if ([responseCopy content_type] == 2)
   {
-    v4 = [v3 contentAsFTFinalBlazarResponse];
+    contentAsFTFinalBlazarResponse = [responseCopy contentAsFTFinalBlazarResponse];
     v5 = _LTOSLogTranslationEngine();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = v5;
-      v7 = [v4 return_code];
-      v8 = [v4 return_str];
+      return_code = [contentAsFTFinalBlazarResponse return_code];
+      return_str = [contentAsFTFinalBlazarResponse return_str];
       v11[0] = 67109378;
-      v11[1] = v7;
+      v11[1] = return_code;
       v12 = 2112;
-      v13 = v8;
+      v13 = return_str;
       _os_log_impl(&dword_232E53000, v6, OS_LOG_TYPE_INFO, "Received safari feedback request response: [%d] %@", v11, 0x12u);
     }
   }
@@ -456,9 +456,9 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamFailVerifyBatchTranslationStreamingResponse:(id)a3
+- (void)streamFailVerifyBatchTranslationStreamingResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -466,7 +466,7 @@
   }
 
   v6 = NSStringFromSelector(a2);
-  _LTSendErrorEvent(v4, v6);
+  _LTSendErrorEvent(responseCopy, v6);
 }
 
 - (void)combineFeedbackCategory:andErrors:.cold.1()

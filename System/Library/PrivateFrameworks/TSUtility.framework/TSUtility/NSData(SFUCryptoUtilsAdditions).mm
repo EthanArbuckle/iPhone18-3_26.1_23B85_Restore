@@ -19,7 +19,7 @@
   if (v8)
   {
     v10 = v8;
-    [v8 writeBuffer:objc_msgSend(a1 size:{"bytes"), objc_msgSend(a1, "length")}];
+    [v8 writeBuffer:objc_msgSend(self size:{"bytes"), objc_msgSend(self, "length")}];
   }
 
   return v9;

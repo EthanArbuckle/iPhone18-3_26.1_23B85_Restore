@@ -1,29 +1,29 @@
 @interface PUAccessoryVisibilityInteractionController
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGPoint)_initialContentOffset;
 - (PHPhotoLibrary)pausedPhotoLibrary;
 - (PUAccessoryVisibilityInteractionController)init;
 - (PUAccessoryVisibilityInteractionControllerDelegate)delegate;
 - (id)_currentAssetViewModel;
-- (void)_handlePanGestureRecognizer:(id)a3;
+- (void)_handlePanGestureRecognizer:(id)recognizer;
 - (void)_pauseLibraryChangesDelivery;
-- (void)_performChanges:(id)a3;
+- (void)_performChanges:(id)changes;
 - (void)_resumeLibraryChangesDelivery;
-- (void)_setAccessoryVisible:(BOOL)a3;
-- (void)_setAssetViewModel:(id)a3;
-- (void)_setContentOffsetOverrideFactor:(id)a3;
+- (void)_setAccessoryVisible:(BOOL)visible;
+- (void)_setAssetViewModel:(id)model;
+- (void)_setContentOffsetOverrideFactor:(id)factor;
 - (void)_setNeedsUpdate;
-- (void)_setOverridingContentOffsetY:(id)a3;
+- (void)_setOverridingContentOffsetY:(id)y;
 - (void)_updateContentOffsetIfNeeded;
 - (void)_updateGestureRecognizers;
 - (void)_updateIfNeeded;
 - (void)dealloc;
 - (void)invalidateViewHostingGestureRecognizers;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setBrowsingSession:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setBrowsingSession:(id)session;
+- (void)setDelegate:(id)delegate;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUAccessoryVisibilityInteractionController
@@ -51,9 +51,9 @@
   return WeakRetained;
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  if ([a4 currentAssetDidChange])
+  if ([change currentAssetDidChange])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -64,16 +64,16 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUAccessoryVisibilityInteractionController *)self panGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  panGestureRecognizer = [(PUAccessoryVisibilityInteractionController *)self panGestureRecognizer];
 
-  if (v8 == v6)
+  if (panGestureRecognizer == recognizerCopy)
   {
-    v10 = [(PUAccessoryVisibilityInteractionController *)self verticalSwipeGestureRecognizerHelper];
-    v9 = [v10 verticalSwipeGestureRecognizer:v6 shouldBeRequiredToFailByGestureRecognizer:v7];
+    verticalSwipeGestureRecognizerHelper = [(PUAccessoryVisibilityInteractionController *)self verticalSwipeGestureRecognizerHelper];
+    v9 = [verticalSwipeGestureRecognizerHelper verticalSwipeGestureRecognizer:recognizerCopy shouldBeRequiredToFailByGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -84,30 +84,30 @@
   return v9;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(PUAccessoryVisibilityInteractionController *)self panGestureRecognizer];
-  if (v5 == v4)
+  beginCopy = begin;
+  panGestureRecognizer = [(PUAccessoryVisibilityInteractionController *)self panGestureRecognizer];
+  if (panGestureRecognizer == beginCopy)
   {
-    v7 = [(PUAccessoryVisibilityInteractionController *)self verticalSwipeGestureRecognizerHelper];
-    v8 = [v7 verticalSwipeGestureRecognizerShouldBegin:v4];
+    verticalSwipeGestureRecognizerHelper = [(PUAccessoryVisibilityInteractionController *)self verticalSwipeGestureRecognizerHelper];
+    isAccessoryViewVisible = [verticalSwipeGestureRecognizerHelper verticalSwipeGestureRecognizerShouldBegin:beginCopy];
 
-    v9 = [v5 view];
-    [v5 velocityInView:v9];
+    view = [panGestureRecognizer view];
+    [panGestureRecognizer velocityInView:view];
     v11 = v10;
 
-    if (v8 && v11 >= 0.0)
+    if (isAccessoryViewVisible && v11 >= 0.0)
     {
-      v12 = [(PUAccessoryVisibilityInteractionController *)self _currentAssetViewModel];
-      v8 = [v12 isAccessoryViewVisible];
+      _currentAssetViewModel = [(PUAccessoryVisibilityInteractionController *)self _currentAssetViewModel];
+      isAccessoryViewVisible = [_currentAssetViewModel isAccessoryViewVisible];
     }
 
-    v6 = !self->_delegateFlags.respondsToCanBeginAtLocationFromProvider & v8;
-    if (self->_delegateFlags.respondsToCanBeginAtLocationFromProvider && v8)
+    v6 = !self->_delegateFlags.respondsToCanBeginAtLocationFromProvider & isAccessoryViewVisible;
+    if (self->_delegateFlags.respondsToCanBeginAtLocationFromProvider && isAccessoryViewVisible)
     {
-      v13 = [(PUAccessoryVisibilityInteractionController *)self delegate];
-      v6 = [v13 accessoryVisibilityInteractionController:self canBeginAtLocationFromProvider:v5];
+      delegate = [(PUAccessoryVisibilityInteractionController *)self delegate];
+      v6 = [delegate accessoryVisibilityInteractionController:self canBeginAtLocationFromProvider:panGestureRecognizer];
     }
   }
 
@@ -119,32 +119,32 @@
   return v6 & 1;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v14 = a3;
+  changeCopy = change;
+  observableCopy = observable;
   v9 = PUOverridingContentOffsetYObservationContext;
-  if (PUOverridingContentOffsetYObservationContext != a5 && PUContentOffsetOverrideFactorObservationContext != a5)
+  if (PUOverridingContentOffsetYObservationContext != context && PUContentOffsetOverrideFactorObservationContext != context)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PUAccessoryVisibilityInteractionController.m" lineNumber:379 description:@"unknown observation context"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAccessoryVisibilityInteractionController.m" lineNumber:379 description:@"unknown observation context"];
 
     abort();
   }
 
-  if ((v6 & 2) != 0)
+  if ((changeCopy & 2) != 0)
   {
     [(PUAccessoryVisibilityInteractionController *)self _invalidateContentOffset];
     [(PUAccessoryVisibilityInteractionController *)self _updateIfNeeded];
     v9 = PUOverridingContentOffsetYObservationContext;
   }
 
-  if ((v6 & 4) != 0 && v9 == a5)
+  if ((changeCopy & 4) != 0 && v9 == context)
   {
-    v11 = [(PUAccessoryVisibilityInteractionController *)self _overridingContentOffsetY];
-    v12 = [v11 isAnimating];
+    _overridingContentOffsetY = [(PUAccessoryVisibilityInteractionController *)self _overridingContentOffsetY];
+    isAnimating = [_overridingContentOffsetY isAnimating];
 
-    if ((v12 & 1) == 0)
+    if ((isAnimating & 1) == 0)
     {
       [(PUAccessoryVisibilityInteractionController *)self _resumeLibraryChangesDelivery];
     }
@@ -160,23 +160,23 @@
     v21 = v2;
     v22 = v3;
     self->_needsUpdateFlags.contentOffset = 0;
-    v7 = [(PUAccessoryVisibilityInteractionController *)self _overridingContentOffsetY];
-    [v7 presentationValue];
+    _overridingContentOffsetY = [(PUAccessoryVisibilityInteractionController *)self _overridingContentOffsetY];
+    [_overridingContentOffsetY presentationValue];
     v9 = v8;
 
-    v10 = [(PUAccessoryVisibilityInteractionController *)self _contentOffsetOverrideFactor];
-    [v10 presentationValue];
+    _contentOffsetOverrideFactor = [(PUAccessoryVisibilityInteractionController *)self _contentOffsetOverrideFactor];
+    [_contentOffsetOverrideFactor presentationValue];
     v12 = v11;
 
-    v13 = [(PUAccessoryVisibilityInteractionController *)self _assetViewModel];
+    _assetViewModel = [(PUAccessoryVisibilityInteractionController *)self _assetViewModel];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __74__PUAccessoryVisibilityInteractionController__updateContentOffsetIfNeeded__block_invoke;
     v15[3] = &unk_1E7B7C518;
-    v16 = v13;
+    v16 = _assetViewModel;
     v17 = v9;
     v18 = v12;
-    v14 = v13;
+    v14 = _assetViewModel;
     [v14 performChanges:v15];
   }
 }
@@ -224,136 +224,136 @@ void __61__PUAccessoryVisibilityInteractionController__setNeedsUpdate__block_inv
     self->_isPerformingUpdates = isPerformingUpdates;
     if ([(PUAccessoryVisibilityInteractionController *)self _needsUpdate])
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PUAccessoryVisibilityInteractionController.m" lineNumber:323 description:@"update still needed after update pass"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUAccessoryVisibilityInteractionController.m" lineNumber:323 description:@"update still needed after update pass"];
     }
   }
 }
 
-- (void)_performChanges:(id)a3
+- (void)_performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  v6 = v4;
-  if (v4)
+  v6 = changesCopy;
+  if (changesCopy)
   {
-    v4[2](v4);
-    v4 = v6;
+    changesCopy[2](changesCopy);
+    changesCopy = v6;
   }
 
   self->_isPerformingChanges = isPerformingChanges;
   if (!isPerformingChanges)
   {
     [(PUAccessoryVisibilityInteractionController *)self _updateIfNeeded];
-    v4 = v6;
+    changesCopy = v6;
   }
 }
 
-- (void)_setAssetViewModel:(id)a3
+- (void)_setAssetViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   p_assetViewModel = &self->__assetViewModel;
-  if (self->__assetViewModel != v5)
+  if (self->__assetViewModel != modelCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_assetViewModel, a3);
+    v7 = modelCopy;
+    objc_storeStrong(p_assetViewModel, model);
     p_assetViewModel = [(PUAccessoryVisibilityInteractionController *)self _invalidateContentOffset];
-    v5 = v7;
+    modelCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_assetViewModel, v5);
+  MEMORY[0x1EEE66BB8](p_assetViewModel, modelCopy);
 }
 
-- (void)_setContentOffsetOverrideFactor:(id)a3
+- (void)_setContentOffsetOverrideFactor:(id)factor
 {
-  v5 = a3;
+  factorCopy = factor;
   contentOffsetOverrideFactor = self->__contentOffsetOverrideFactor;
-  if (contentOffsetOverrideFactor != v5)
+  if (contentOffsetOverrideFactor != factorCopy)
   {
-    v7 = v5;
+    v7 = factorCopy;
     [(PXNumberAnimator *)contentOffsetOverrideFactor unregisterChangeObserver:self context:PUContentOffsetOverrideFactorObservationContext];
-    objc_storeStrong(&self->__contentOffsetOverrideFactor, a3);
+    objc_storeStrong(&self->__contentOffsetOverrideFactor, factor);
     [(PXNumberAnimator *)self->__contentOffsetOverrideFactor registerChangeObserver:self context:PUContentOffsetOverrideFactorObservationContext];
     contentOffsetOverrideFactor = [(PUAccessoryVisibilityInteractionController *)self _invalidateContentOffset];
-    v5 = v7;
+    factorCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](contentOffsetOverrideFactor, v5);
+  MEMORY[0x1EEE66BB8](contentOffsetOverrideFactor, factorCopy);
 }
 
-- (void)_setOverridingContentOffsetY:(id)a3
+- (void)_setOverridingContentOffsetY:(id)y
 {
-  v5 = a3;
+  yCopy = y;
   overridingContentOffsetY = self->__overridingContentOffsetY;
-  if (overridingContentOffsetY != v5)
+  if (overridingContentOffsetY != yCopy)
   {
-    v7 = v5;
+    v7 = yCopy;
     [(PXNumberAnimator *)overridingContentOffsetY unregisterChangeObserver:self context:PUOverridingContentOffsetYObservationContext];
-    objc_storeStrong(&self->__overridingContentOffsetY, a3);
+    objc_storeStrong(&self->__overridingContentOffsetY, y);
     [(PXNumberAnimator *)self->__overridingContentOffsetY registerChangeObserver:self context:PUOverridingContentOffsetYObservationContext];
     overridingContentOffsetY = [(PUAccessoryVisibilityInteractionController *)self _invalidateContentOffset];
-    v5 = v7;
+    yCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](overridingContentOffsetY, v5);
+  MEMORY[0x1EEE66BB8](overridingContentOffsetY, yCopy);
 }
 
 - (id)_currentAssetViewModel
 {
-  v2 = [(PUAccessoryVisibilityInteractionController *)self browsingSession];
-  v3 = [v2 viewModel];
+  browsingSession = [(PUAccessoryVisibilityInteractionController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v4 = [v3 currentAssetReference];
-  v5 = [v3 assetViewModelForAssetReference:v4];
+  currentAssetReference = [viewModel currentAssetReference];
+  v5 = [viewModel assetViewModelForAssetReference:currentAssetReference];
 
   return v5;
 }
 
-- (void)_setAccessoryVisible:(BOOL)a3
+- (void)_setAccessoryVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if (self->_delegateFlags.respondsToSetAccessoryVisibleChangeReason)
   {
-    v7 = [(PUAccessoryVisibilityInteractionController *)self delegate];
-    [v7 accessoryVisibilityInteractionController:self setAccessoryVisible:v3 changeReason:2];
+    delegate = [(PUAccessoryVisibilityInteractionController *)self delegate];
+    [delegate accessoryVisibilityInteractionController:self setAccessoryVisible:visibleCopy changeReason:2];
   }
 
   else
   {
-    v5 = [(PUAccessoryVisibilityInteractionController *)self _assetViewModel];
+    _assetViewModel = [(PUAccessoryVisibilityInteractionController *)self _assetViewModel];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __67__PUAccessoryVisibilityInteractionController__setAccessoryVisible___block_invoke;
     v8[3] = &unk_1E7B7FA58;
-    v11 = v3;
-    v9 = v5;
+    v11 = visibleCopy;
+    v9 = _assetViewModel;
     v10 = 2;
-    v6 = v5;
+    v6 = _assetViewModel;
     [v6 performChanges:v8];
   }
 }
 
 - (void)_resumeLibraryChangesDelivery
 {
-  v3 = [(PUAccessoryVisibilityInteractionController *)self changesPauseToken];
-  if (v3)
+  changesPauseToken = [(PUAccessoryVisibilityInteractionController *)self changesPauseToken];
+  if (changesPauseToken)
   {
   }
 
   else
   {
-    v4 = [(PUAccessoryVisibilityInteractionController *)self pausedPhotoLibrary];
+    pausedPhotoLibrary = [(PUAccessoryVisibilityInteractionController *)self pausedPhotoLibrary];
 
-    if (!v4)
+    if (!pausedPhotoLibrary)
     {
       return;
     }
   }
 
-  v5 = [(PUAccessoryVisibilityInteractionController *)self pausedPhotoLibrary];
-  v6 = [(PUAccessoryVisibilityInteractionController *)self changesPauseToken];
-  [v5 px_endPausingChanges:v6];
+  pausedPhotoLibrary2 = [(PUAccessoryVisibilityInteractionController *)self pausedPhotoLibrary];
+  changesPauseToken2 = [(PUAccessoryVisibilityInteractionController *)self changesPauseToken];
+  [pausedPhotoLibrary2 px_endPausingChanges:changesPauseToken2];
 
   [(PUAccessoryVisibilityInteractionController *)self setChangesPauseToken:0];
 
@@ -362,14 +362,14 @@ void __61__PUAccessoryVisibilityInteractionController__setNeedsUpdate__block_inv
 
 - (void)_pauseLibraryChangesDelivery
 {
-  v9 = [(PUAccessoryVisibilityInteractionController *)self pausedPhotoLibrary];
-  v3 = [(PUAccessoryVisibilityInteractionController *)self changesPauseToken];
-  v4 = [(PUAccessoryVisibilityInteractionController *)self _assetViewModel];
-  v5 = [v4 asset];
+  pausedPhotoLibrary = [(PUAccessoryVisibilityInteractionController *)self pausedPhotoLibrary];
+  changesPauseToken = [(PUAccessoryVisibilityInteractionController *)self changesPauseToken];
+  _assetViewModel = [(PUAccessoryVisibilityInteractionController *)self _assetViewModel];
+  asset = [_assetViewModel asset];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = v5;
+    v6 = asset;
   }
 
   else
@@ -377,30 +377,30 @@ void __61__PUAccessoryVisibilityInteractionController__setNeedsUpdate__block_inv
     v6 = 0;
   }
 
-  v7 = [v6 photoLibrary];
+  photoLibrary = [v6 photoLibrary];
 
-  v8 = [v7 px_beginPausingChangesWithTimeout:@"pause_for_swipe_info_panel_vertical" identifier:30.0];
+  v8 = [photoLibrary px_beginPausingChangesWithTimeout:@"pause_for_swipe_info_panel_vertical" identifier:30.0];
   [(PUAccessoryVisibilityInteractionController *)self setChangesPauseToken:v8];
 
-  [(PUAccessoryVisibilityInteractionController *)self setPausedPhotoLibrary:v7];
-  if (v9 && v3)
+  [(PUAccessoryVisibilityInteractionController *)self setPausedPhotoLibrary:photoLibrary];
+  if (pausedPhotoLibrary && changesPauseToken)
   {
-    [v9 px_endPausingChanges:v3];
+    [pausedPhotoLibrary px_endPausingChanges:changesPauseToken];
   }
 }
 
-- (void)_handlePanGestureRecognizer:(id)a3
+- (void)_handlePanGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [v4 state];
-  v6 = v5;
-  if ((v5 - 3) < 3)
+  recognizerCopy = recognizer;
+  state = [recognizerCopy state];
+  v6 = state;
+  if ((state - 3) < 3)
   {
-    v7 = [(PUAccessoryVisibilityInteractionController *)self _assetViewModel];
-    [(PUChangeDirectionValueFilter *)v7 preferredContentOffset];
+    _assetViewModel = [(PUAccessoryVisibilityInteractionController *)self _assetViewModel];
+    [(PUChangeDirectionValueFilter *)_assetViewModel preferredContentOffset];
     v9 = v8;
-    v10 = [(PUAccessoryVisibilityInteractionController *)self _verticalDirectionValueFilter];
-    [v10 outputValue];
+    _verticalDirectionValueFilter = [(PUAccessoryVisibilityInteractionController *)self _verticalDirectionValueFilter];
+    [_verticalDirectionValueFilter outputValue];
     if (v6 == 3 && v11 != 0.0)
     {
       if (v11 > 0.0)
@@ -411,40 +411,40 @@ void __61__PUAccessoryVisibilityInteractionController__setNeedsUpdate__block_inv
       [(PUAccessoryVisibilityInteractionController *)self _setAccessoryVisible:v11 <= 0.0];
     }
 
-    v12 = [v4 view];
-    v13 = [v12 window];
-    [v4 velocityInView:v13];
+    view = [recognizerCopy view];
+    window = [view window];
+    [recognizerCopy velocityInView:window];
     v15 = v14;
 
-    v16 = [(PUAccessoryVisibilityInteractionController *)self _overridingContentOffsetY];
+    _overridingContentOffsetY = [(PUAccessoryVisibilityInteractionController *)self _overridingContentOffsetY];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __74__PUAccessoryVisibilityInteractionController__handlePanGestureRecognizer___block_invoke_4;
     v28[3] = &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l;
     *&v28[4] = v9;
-    [v16 performChangesUsingDefaultSpringAnimationWithInitialVelocity:v28 changes:v15];
+    [_overridingContentOffsetY performChangesUsingDefaultSpringAnimationWithInitialVelocity:v28 changes:v15];
 
-    v17 = [(PUAccessoryVisibilityInteractionController *)self _contentOffsetOverrideFactor];
-    [v17 performChangesUsingDefaultSpringAnimationWithInitialVelocity:&__block_literal_global_2010 changes:0.0];
+    _contentOffsetOverrideFactor = [(PUAccessoryVisibilityInteractionController *)self _contentOffsetOverrideFactor];
+    [_contentOffsetOverrideFactor performChangesUsingDefaultSpringAnimationWithInitialVelocity:&__block_literal_global_2010 changes:0.0];
 
     [(PUAccessoryVisibilityInteractionController *)self _setVerticalDirectionValueFilter:0];
     [(PUAccessoryVisibilityInteractionController *)self _setSwipeDirectionValueFilter:0];
     if (v6 == 3 && self->_delegateFlags.respondsToDidEnd)
     {
-      v18 = [(PUAccessoryVisibilityInteractionController *)self delegate];
-      [v18 accessoryVisibilityInteractionControllerDidEnd:self];
+      delegate = [(PUAccessoryVisibilityInteractionController *)self delegate];
+      [delegate accessoryVisibilityInteractionControllerDidEnd:self];
     }
 
     goto LABEL_15;
   }
 
-  if (v5 == 2)
+  if (state == 2)
   {
     [(PUAccessoryVisibilityInteractionController *)self _initialContentOffset];
     v21 = v20;
-    v22 = [v4 view];
-    v23 = [v22 window];
-    [v4 translationInView:v23];
+    view2 = [recognizerCopy view];
+    window2 = [view2 window];
+    [recognizerCopy translationInView:window2];
     v25 = v24;
 
     v29[0] = MEMORY[0x1E69E9820];
@@ -455,16 +455,16 @@ void __61__PUAccessoryVisibilityInteractionController__setNeedsUpdate__block_inv
     v29[4] = self;
     *&v29[5] = v26;
     [(PUAccessoryVisibilityInteractionController *)self _performChanges:v29];
-    v27 = [(PUAccessoryVisibilityInteractionController *)self _verticalDirectionValueFilter];
-    [v27 setInputValue:v25];
+    _verticalDirectionValueFilter2 = [(PUAccessoryVisibilityInteractionController *)self _verticalDirectionValueFilter];
+    [_verticalDirectionValueFilter2 setInputValue:v25];
 
-    v7 = [(PUAccessoryVisibilityInteractionController *)self _swipeDirectionValueFilter];
-    [(PUValueFilter *)v7 setInputValue:v25];
+    _assetViewModel = [(PUAccessoryVisibilityInteractionController *)self _swipeDirectionValueFilter];
+    [(PUValueFilter *)_assetViewModel setInputValue:v25];
     [(PUAccessoryVisibilityInteractionController *)self _setAccessoryVisible:v26 < 0.0];
     goto LABEL_15;
   }
 
-  if (v5 == 1)
+  if (state == 1)
   {
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -473,9 +473,9 @@ void __61__PUAccessoryVisibilityInteractionController__setNeedsUpdate__block_inv
     v30[4] = self;
     [(PUAccessoryVisibilityInteractionController *)self _performChanges:v30];
     [(PUAccessoryVisibilityInteractionController *)self _pauseLibraryChangesDelivery];
-    v7 = objc_alloc_init(PUChangeDirectionValueFilter);
-    [(PUChangeDirectionValueFilter *)v7 setMinimumChangeValue:5.0];
-    [(PUAccessoryVisibilityInteractionController *)self _setVerticalDirectionValueFilter:v7];
+    _assetViewModel = objc_alloc_init(PUChangeDirectionValueFilter);
+    [(PUChangeDirectionValueFilter *)_assetViewModel setMinimumChangeValue:5.0];
+    [(PUAccessoryVisibilityInteractionController *)self _setVerticalDirectionValueFilter:_assetViewModel];
     v19 = objc_alloc_init(PUChangeDirectionValueFilter);
     [(PUChangeDirectionValueFilter *)v19 setMinimumChangeValue:80.0];
     [(PUAccessoryVisibilityInteractionController *)self _setSwipeDirectionValueFilter:v19];
@@ -512,8 +512,8 @@ void __74__PUAccessoryVisibilityInteractionController__handlePanGestureRecognize
 
 - (void)_updateGestureRecognizers
 {
-  v3 = [(PUAccessoryVisibilityInteractionController *)self delegate];
-  v4 = [v3 accessoryVisibilityInteractionControllerViewHostingGestureRecognizers:self];
+  delegate = [(PUAccessoryVisibilityInteractionController *)self delegate];
+  v4 = [delegate accessoryVisibilityInteractionControllerViewHostingGestureRecognizers:self];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -522,8 +522,8 @@ void __74__PUAccessoryVisibilityInteractionController__handlePanGestureRecognize
   v9 = v4;
   v5 = v4;
   v6 = _Block_copy(aBlock);
-  v7 = [(PUAccessoryVisibilityInteractionController *)self panGestureRecognizer];
-  v6[2](v6, v7);
+  panGestureRecognizer = [(PUAccessoryVisibilityInteractionController *)self panGestureRecognizer];
+  v6[2](v6, panGestureRecognizer);
 }
 
 void __71__PUAccessoryVisibilityInteractionController__updateGestureRecognizers__block_invoke(uint64_t a1, void *a2)
@@ -548,29 +548,29 @@ void __71__PUAccessoryVisibilityInteractionController__updateGestureRecognizers_
   [(PUAccessoryVisibilityInteractionController *)self _updateGestureRecognizers];
 }
 
-- (void)setBrowsingSession:(id)a3
+- (void)setBrowsingSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   browsingSession = self->_browsingSession;
-  if (browsingSession != v5)
+  if (browsingSession != sessionCopy)
   {
-    v9 = v5;
-    v7 = [(PUBrowsingSession *)browsingSession viewModel];
-    [v7 unregisterChangeObserver:self];
+    v9 = sessionCopy;
+    viewModel = [(PUBrowsingSession *)browsingSession viewModel];
+    [viewModel unregisterChangeObserver:self];
 
-    objc_storeStrong(&self->_browsingSession, a3);
-    v8 = [(PUBrowsingSession *)self->_browsingSession viewModel];
-    [v8 registerChangeObserver:self];
+    objc_storeStrong(&self->_browsingSession, session);
+    viewModel2 = [(PUBrowsingSession *)self->_browsingSession viewModel];
+    [viewModel2 registerChangeObserver:self];
 
-    v5 = v9;
+    sessionCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](browsingSession, v5);
+  MEMORY[0x1EEE66BB8](browsingSession, sessionCopy);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)

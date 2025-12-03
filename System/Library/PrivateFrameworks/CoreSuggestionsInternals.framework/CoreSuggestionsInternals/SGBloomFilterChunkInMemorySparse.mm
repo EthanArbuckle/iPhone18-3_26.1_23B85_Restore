@@ -1,24 +1,24 @@
 @interface SGBloomFilterChunkInMemorySparse
-- (BOOL)exists:(id)a3;
+- (BOOL)exists:(id)exists;
 - (SGBloomFilterChunkInMemorySparse)init;
-- (void)add:(id)a3;
+- (void)add:(id)add;
 @end
 
 @implementation SGBloomFilterChunkInMemorySparse
 
-- (BOOL)exists:(id)a3
+- (BOOL)exists:(id)exists
 {
   hashes = self->_hashes;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3.var0];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:exists.var0];
   LOBYTE(hashes) = [(NSMutableSet *)hashes containsObject:v4];
 
   return hashes;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
   hashes = self->_hashes;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3.var0];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:add.var0];
   [(NSMutableSet *)hashes addObject:v4];
 }
 

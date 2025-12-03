@@ -1,12 +1,12 @@
 @interface FigCaptureMicSourcePipeline
-- (char)addPipelineOutputs:(uint64_t)a3 toParentNodeOutput:(int)a4 withAudioChannelLayoutTag:(int)a5 atPosition:;
-- (id)nextOutputForMicSourcePosition:(int)a3 forAudioChannelLayoutTag:;
-- (uint64_t)_buildMicSourcePipelineWithConfiguration:(void *)a3 graph:(uint64_t)a4 audioSession:(uint64_t)a5 cmSession:(char)a6 isAppAudioSession:(char)a7 audioSessionIsProxy:(int)a8 audioIsPlayingToBuiltinSpeaker:(int)a9 numberOfCinematicStereoAudioOutputs:(int)a10 numberOfCinematicFOAAudioOutputs:(char)a11 audioSessionActivatedByBWGraph:(uint64_t)a12 renderDelegate:;
+- (char)addPipelineOutputs:(uint64_t)outputs toParentNodeOutput:(int)output withAudioChannelLayoutTag:(int)tag atPosition:;
+- (id)nextOutputForMicSourcePosition:(int)position forAudioChannelLayoutTag:;
+- (uint64_t)_buildMicSourcePipelineWithConfiguration:(void *)configuration graph:(uint64_t)graph audioSession:(uint64_t)session cmSession:(char)cmSession isAppAudioSession:(char)audioSession audioSessionIsProxy:(int)proxy audioIsPlayingToBuiltinSpeaker:(int)speaker numberOfCinematicStereoAudioOutputs:(int)self0 numberOfCinematicFOAAudioOutputs:(char)self1 audioSessionActivatedByBWGraph:(uint64_t)self2 renderDelegate:;
 - (uint64_t)clock;
 - (uint64_t)sourceNode;
-- (uint64_t)updateWithAudioSession:(_OWORD *)a3 clientAuditToken:;
+- (uint64_t)updateWithAudioSession:(_OWORD *)session clientAuditToken:;
 - (void)dealloc;
-- (void)initWithConfiguration:(void *)a3 graph:(uint64_t)a4 name:(uint64_t)a5 audioSession:(uint64_t)a6 cmSession:(char)a7 isAppAudioSession:(char)a8 audioSessionIsProxy:(unsigned __int8)a9 audioIsPlayingToBuiltinSpeaker:(int)a10 numberOfCinematicStereoAudioOutputs:(int)a11 numberOfCinematicFOAAudioOutputs:(char)a12 audioSessionActivatedByBWGraph:(uint64_t)a13 renderDelegate:(_DWORD *)a14 outErr:;
+- (void)initWithConfiguration:(void *)configuration graph:(uint64_t)graph name:(uint64_t)name audioSession:(uint64_t)session cmSession:(char)cmSession isAppAudioSession:(char)audioSession audioSessionIsProxy:(unsigned __int8)proxy audioIsPlayingToBuiltinSpeaker:(int)self0 numberOfCinematicStereoAudioOutputs:(int)self1 numberOfCinematicFOAAudioOutputs:(char)self2 audioSessionActivatedByBWGraph:(uint64_t)self3 renderDelegate:(_DWORD *)self4 outErr:;
 @end
 
 @implementation FigCaptureMicSourcePipeline
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (uint64_t)_buildMicSourcePipelineWithConfiguration:(void *)a3 graph:(uint64_t)a4 audioSession:(uint64_t)a5 cmSession:(char)a6 isAppAudioSession:(char)a7 audioSessionIsProxy:(int)a8 audioIsPlayingToBuiltinSpeaker:(int)a9 numberOfCinematicStereoAudioOutputs:(int)a10 numberOfCinematicFOAAudioOutputs:(char)a11 audioSessionActivatedByBWGraph:(uint64_t)a12 renderDelegate:
+- (uint64_t)_buildMicSourcePipelineWithConfiguration:(void *)configuration graph:(uint64_t)graph audioSession:(uint64_t)session cmSession:(char)cmSession isAppAudioSession:(char)audioSession audioSessionIsProxy:(int)proxy audioIsPlayingToBuiltinSpeaker:(int)speaker numberOfCinematicStereoAudioOutputs:(int)self0 numberOfCinematicFOAAudioOutputs:(char)self1 audioSessionActivatedByBWGraph:(uint64_t)self2 renderDelegate:
 {
   if (!result)
   {
@@ -40,7 +40,7 @@
 
   v97 = 0;
   v96 = 0;
-  if (a5)
+  if (session)
   {
     [FigCaptureMicSourcePipeline _buildMicSourcePipelineWithConfiguration:graph:audioSession:cmSession:isAppAudioSession:audioSessionIsProxy:audioIsPlayingToBuiltinSpeaker:numberOfCinematicStereoAudioOutputs:numberOfCinematicFOAAudioOutputs:audioSessionActivatedByBWGraph:renderDelegate:];
   }
@@ -58,7 +58,7 @@
     v18 = 0;
   }
 
-  v19 = [v18 source];
+  source = [v18 source];
   v20 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (!v20)
   {
@@ -67,7 +67,7 @@
   }
 
   v21 = *MEMORY[0x1E695E480];
-  v97 = v20(v19, @"AttributesDictionary", *MEMORY[0x1E695E480], &v95);
+  v97 = v20(source, @"AttributesDictionary", *MEMORY[0x1E695E480], &v95);
   if (v97)
   {
 LABEL_88:
@@ -87,11 +87,11 @@ LABEL_88:
       v22 = 0;
     }
 
-    v23 = [v22 source];
+    source2 = [v22 source];
     v24 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     if (v24)
     {
-      v97 = v24(v23, @"Clock", v21, &cf);
+      v97 = v24(source2, @"Clock", v21, &cf);
       if (!v97)
       {
         goto LABEL_15;
@@ -107,7 +107,7 @@ LABEL_88:
     goto LABEL_91;
   }
 
-  if (!a4)
+  if (!graph)
   {
     [FigCaptureMicSourcePipeline _buildMicSourcePipelineWithConfiguration:graph:audioSession:cmSession:isAppAudioSession:audioSessionIsProxy:audioIsPlayingToBuiltinSpeaker:numberOfCinematicStereoAudioOutputs:numberOfCinematicFOAAudioOutputs:audioSessionActivatedByBWGraph:renderDelegate:];
     goto LABEL_91;
@@ -121,8 +121,8 @@ LABEL_88:
   }
 
 LABEL_15:
-  v77 = a3;
-  v87 = a6;
+  configurationCopy = configuration;
+  cmSessionCopy = cmSession;
   if (a2)
   {
     v25 = *(a2 + 16);
@@ -133,7 +133,7 @@ LABEL_15:
     v25 = 0;
   }
 
-  v85 = a4;
+  graphCopy = graph;
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
@@ -178,7 +178,7 @@ LABEL_15:
   }
 
 LABEL_32:
-  v83 = a7;
+  audioSessionCopy = audioSession;
   v90 = v17;
   v80 = v95;
   v89 = a2;
@@ -195,8 +195,8 @@ LABEL_32:
     v99 = v36;
     v37 = *(a2 + 120);
     v38 = *(a2 + 72);
-    v39 = [*(a2 + 8) clientAudioClockDeviceUID];
-    v40 = [*(a2 + 8) preferredIOBufferDuration];
+    clientAudioClockDeviceUID = [*(a2 + 8) clientAudioClockDeviceUID];
+    preferredIOBufferDuration = [*(a2 + 8) preferredIOBufferDuration];
     v41 = *(a2 + 16);
     v42 = *(a2 + 108);
     v43 = *(a2 + 112);
@@ -207,8 +207,8 @@ LABEL_32:
     v79 = cf;
     v98 = 0u;
     v99 = 0u;
-    v39 = [0 clientAudioClockDeviceUID];
-    v40 = [0 preferredIOBufferDuration];
+    clientAudioClockDeviceUID = [0 clientAudioClockDeviceUID];
+    preferredIOBufferDuration = [0 preferredIOBufferDuration];
     v42 = 0;
     v38 = 0;
     v34 = 0;
@@ -224,12 +224,12 @@ LABEL_32:
   BYTE1(v76) = v42 & 1;
   LOBYTE(v76) = v31;
   LOBYTE(v75) = v38 & 1;
-  BYTE4(v74) = a11;
-  BYTE3(v74) = a8;
-  BYTE2(v74) = v83;
+  BYTE4(v74) = audioOutputs;
+  BYTE3(v74) = proxy;
+  BYTE2(v74) = audioSessionCopy;
   BYTE1(v74) = v35 & 1;
-  LOBYTE(v74) = v87;
-  v44 = [BWAudioSourceNode audioSourceNodeWithAttributes:"audioSourceNodeWithAttributes:sessionPreset:clock:doConfigureAudio:doMixWithOthers:doAllowHQBluetoothRecording:audioSession:isAppAudioSession:doEndInterruption:audioSessionIsProxy:audioIsPlayingToBuiltinSpeaker:audioSessionActivatedByBWGraph:clientAuditToken:clientSDKVersionToken:clientOSVersionSupportsDecoupledIO:clientAudioClockDeviceUID:preferredIOBufferDuration:audioCaptureConnectionConfigurations:isConfiguredForContinuityCapture:isAudioOnlyRecordingSession:remoteIOOutputFormat:outErr:" sessionPreset:v80 clock:v78 doConfigureAudio:v79 doMixWithOthers:v32 & 1 doAllowHQBluetoothRecording:v33 & 1 audioSession:v34 & 1 isAppAudioSession:v85 doEndInterruption:v74 audioSessionIsProxy:&v98 audioIsPlayingToBuiltinSpeaker:v37 audioSessionActivatedByBWGraph:v75 clientAuditToken:v39 clientSDKVersionToken:v40 clientOSVersionSupportsDecoupledIO:v41 clientAudioClockDeviceUID:v76 preferredIOBufferDuration:v43 audioCaptureConnectionConfigurations:&v97 isConfiguredForContinuityCapture:? isAudioOnlyRecordingSession:? remoteIOOutputFormat:? outErr:?];
+  LOBYTE(v74) = cmSessionCopy;
+  v44 = [BWAudioSourceNode audioSourceNodeWithAttributes:"audioSourceNodeWithAttributes:sessionPreset:clock:doConfigureAudio:doMixWithOthers:doAllowHQBluetoothRecording:audioSession:isAppAudioSession:doEndInterruption:audioSessionIsProxy:audioIsPlayingToBuiltinSpeaker:audioSessionActivatedByBWGraph:clientAuditToken:clientSDKVersionToken:clientOSVersionSupportsDecoupledIO:clientAudioClockDeviceUID:preferredIOBufferDuration:audioCaptureConnectionConfigurations:isConfiguredForContinuityCapture:isAudioOnlyRecordingSession:remoteIOOutputFormat:outErr:" sessionPreset:v80 clock:v78 doConfigureAudio:v79 doMixWithOthers:v32 & 1 doAllowHQBluetoothRecording:v33 & 1 audioSession:v34 & 1 isAppAudioSession:graphCopy doEndInterruption:v74 audioSessionIsProxy:&v98 audioIsPlayingToBuiltinSpeaker:v37 audioSessionActivatedByBWGraph:v75 clientAuditToken:clientAudioClockDeviceUID clientSDKVersionToken:preferredIOBufferDuration clientOSVersionSupportsDecoupledIO:v41 clientAudioClockDeviceUID:v76 preferredIOBufferDuration:v43 audioCaptureConnectionConfigurations:&v97 isConfiguredForContinuityCapture:? isAudioOnlyRecordingSession:? remoteIOOutputFormat:? outErr:?];
   if (cf)
   {
     CFRelease(cf);
@@ -256,7 +256,7 @@ LABEL_32:
 
   else
   {
-    [(BWNode *)v44 setRenderDelegate:a12];
+    [(BWNode *)v44 setRenderDelegate:wGraph];
     if (a2)
     {
       v47 = *(a2 + 16);
@@ -311,7 +311,7 @@ LABEL_64:
         v64 = v44;
         v65 = 0;
         v46[5] = v64;
-        v67 = a9 > 2 || a10 > 2;
+        v67 = speaker > 2 || outputs > 2;
         while (1)
         {
           v68 = [-[FigCaptureMicSourcePipelineConfiguration micConnectionConfigurationsForMicSourcePosition:](v45 v65)];
@@ -336,7 +336,7 @@ LABEL_64:
                 goto LABEL_91;
               }
 
-              if (([v77 connectOutput:objc_msgSend(v46[5] toInput:"outputForMicSourcePosition:" pipelineStage:{v65), -[BWNode input](v69, "input"), 0}] & 1) == 0)
+              if (([configurationCopy connectOutput:objc_msgSend(v46[5] toInput:"outputForMicSourcePosition:" pipelineStage:{v65), -[BWNode input](v69, "input"), 0}] & 1) == 0)
               {
                 [FigCaptureMicSourcePipeline _buildMicSourcePipelineWithConfiguration:graph:audioSession:cmSession:isAppAudioSession:audioSessionIsProxy:audioIsPlayingToBuiltinSpeaker:numberOfCinematicStereoAudioOutputs:numberOfCinematicFOAAudioOutputs:audioSessionActivatedByBWGraph:renderDelegate:];
                 goto LABEL_91;
@@ -351,14 +351,14 @@ LABEL_64:
               }
 
               v46 = v90;
-              v97 = [(FigCaptureMicSourcePipeline *)v90 addPipelineOutputs:a9 toParentNodeOutput:v71 withAudioChannelLayoutTag:6619138 atPosition:v65];
+              v97 = [(FigCaptureMicSourcePipeline *)v90 addPipelineOutputs:speaker toParentNodeOutput:v71 withAudioChannelLayoutTag:6619138 atPosition:v65];
               if (v97)
               {
                 [FigCaptureMicSourcePipeline _buildMicSourcePipelineWithConfiguration:graph:audioSession:cmSession:isAppAudioSession:audioSessionIsProxy:audioIsPlayingToBuiltinSpeaker:numberOfCinematicStereoAudioOutputs:numberOfCinematicFOAAudioOutputs:audioSessionActivatedByBWGraph:renderDelegate:];
                 goto LABEL_91;
               }
 
-              v97 = [(FigCaptureMicSourcePipeline *)v90 addPipelineOutputs:a10 toParentNodeOutput:v73 withAudioChannelLayoutTag:12451844 atPosition:v65];
+              v97 = [(FigCaptureMicSourcePipeline *)v90 addPipelineOutputs:outputs toParentNodeOutput:v73 withAudioChannelLayoutTag:12451844 atPosition:v65];
               v63 = &classRef_BWStillImageSmartStyleAttachmentTransferNode;
               if (v97)
               {
@@ -396,7 +396,7 @@ LABEL_64:
     v51 = 0;
     v52 = 0;
     v53 = 0;
-    v54 = 0;
+    audioCaptureMode = 0;
     v55 = *v101;
     do
     {
@@ -417,7 +417,7 @@ LABEL_64:
           v53 |= [v57 windNoiseRemovalEnabled];
           if ([v57 audioCaptureMode])
           {
-            v54 = [v57 audioCaptureMode];
+            audioCaptureMode = [v57 audioCaptureMode];
           }
         }
       }
@@ -426,8 +426,8 @@ LABEL_64:
     }
 
     while (v50);
-    v59 = a8 ^ 1;
-    if (v54 != 2)
+    v59 = proxy ^ 1;
+    if (audioCaptureMode != 2)
     {
       v59 = 1;
     }
@@ -436,7 +436,7 @@ LABEL_64:
     {
       if (v59)
       {
-        v60 = v54;
+        v60 = audioCaptureMode;
       }
 
       else
@@ -496,16 +496,16 @@ LABEL_91:
   [(FigCaptureSourcePipeline *)&v5 dealloc];
 }
 
-- (void)initWithConfiguration:(void *)a3 graph:(uint64_t)a4 name:(uint64_t)a5 audioSession:(uint64_t)a6 cmSession:(char)a7 isAppAudioSession:(char)a8 audioSessionIsProxy:(unsigned __int8)a9 audioIsPlayingToBuiltinSpeaker:(int)a10 numberOfCinematicStereoAudioOutputs:(int)a11 numberOfCinematicFOAAudioOutputs:(char)a12 audioSessionActivatedByBWGraph:(uint64_t)a13 renderDelegate:(_DWORD *)a14 outErr:
+- (void)initWithConfiguration:(void *)configuration graph:(uint64_t)graph name:(uint64_t)name audioSession:(uint64_t)session cmSession:(char)cmSession isAppAudioSession:(char)audioSession audioSessionIsProxy:(unsigned __int8)proxy audioIsPlayingToBuiltinSpeaker:(int)self0 numberOfCinematicStereoAudioOutputs:(int)self1 numberOfCinematicFOAAudioOutputs:(char)self2 audioSessionActivatedByBWGraph:(uint64_t)self3 renderDelegate:(_DWORD *)self4 outErr:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (a5 && a6)
+  if (name && session)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"*** AVAudioSession and CMSession arguments cannot both be non-nil -- AVAudioSession: %@, CMSession: %@", a5, a6}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"*** AVAudioSession and CMSession arguments cannot both be non-nil -- AVAudioSession: %@, CMSession: %@", name, session}];
   }
 
   if (a2)
@@ -518,22 +518,22 @@ LABEL_91:
     v22 = 0;
   }
 
-  v28.receiver = a1;
+  v28.receiver = self;
   v28.super_class = FigCaptureMicSourcePipeline;
-  v23 = objc_msgSendSuper2(&v28, sel_initWithGraph_name_sourceID_, a3, a4, [v22 sourceID]);
+  v23 = objc_msgSendSuper2(&v28, sel_initWithGraph_name_sourceID_, configuration, graph, [v22 sourceID]);
   if (v23)
   {
     v24 = a2 ? *(a2 + 32) : 0;
     v23[9] = v24;
-    v25 = [(FigCaptureMicSourcePipeline *)v23 _buildMicSourcePipelineWithConfiguration:a2 graph:a3 audioSession:a5 cmSession:a6 isAppAudioSession:a7 audioSessionIsProxy:a8 audioIsPlayingToBuiltinSpeaker:a9 numberOfCinematicStereoAudioOutputs:a10 numberOfCinematicFOAAudioOutputs:a11 audioSessionActivatedByBWGraph:a12 renderDelegate:a13];
+    v25 = [(FigCaptureMicSourcePipeline *)v23 _buildMicSourcePipelineWithConfiguration:a2 graph:configuration audioSession:name cmSession:session isAppAudioSession:cmSession audioSessionIsProxy:audioSession audioIsPlayingToBuiltinSpeaker:proxy numberOfCinematicStereoAudioOutputs:speaker numberOfCinematicFOAAudioOutputs:outputs audioSessionActivatedByBWGraph:audioOutputs renderDelegate:wGraph];
     if (v25)
     {
       v27 = v25;
       fig_log_get_emitter();
       FigDebugAssert3();
-      if (a14)
+      if (delegate)
       {
-        *a14 = v27;
+        *delegate = v27;
       }
 
       return 0;
@@ -543,14 +543,14 @@ LABEL_91:
   return v23;
 }
 
-- (id)nextOutputForMicSourcePosition:(int)a3 forAudioChannelLayoutTag:
+- (id)nextOutputForMicSourcePosition:(int)position forAudioChannelLayoutTag:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v3 = *(a1 + 48 + 8 * a2);
+  v3 = *(self + 48 + 8 * a2);
   if (!v3)
   {
     fig_log_get_emitter();
@@ -564,7 +564,7 @@ LABEL_9:
   v9[1] = 3221225472;
   v9[2] = __87__FigCaptureMicSourcePipeline_nextOutputForMicSourcePosition_forAudioChannelLayoutTag___block_invoke;
   v9[3] = &__block_descriptor_36_e50_B32__0__FigCaptureMicSourcePipelineOutput_8Q16_B24l;
-  v10 = a3;
+  positionCopy = position;
   v4 = [v3 indexOfObjectPassingTest:v9];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4, (v6 = [v3 objectAtIndex:v4]) == 0))
   {
@@ -593,13 +593,13 @@ BOOL __87__FigCaptureMicSourcePipeline_nextOutputForMicSourcePosition_forAudioCh
   return v2 == *(a1 + 32);
 }
 
-- (uint64_t)updateWithAudioSession:(_OWORD *)a3 clientAuditToken:
+- (uint64_t)updateWithAudioSession:(_OWORD *)session clientAuditToken:
 {
   if (result)
   {
     v3 = *(result + 40);
-    v4 = a3[1];
-    v5[0] = *a3;
+    v4 = session[1];
+    v5[0] = *session;
     v5[1] = v4;
     return [v3 updateWithAudioSession:a2 clientAuditToken:v5];
   }
@@ -607,7 +607,7 @@ BOOL __87__FigCaptureMicSourcePipeline_nextOutputForMicSourcePosition_forAudioCh
   return result;
 }
 
-- (char)addPipelineOutputs:(uint64_t)a3 toParentNodeOutput:(int)a4 withAudioChannelLayoutTag:(int)a5 atPosition:
+- (char)addPipelineOutputs:(uint64_t)outputs toParentNodeOutput:(int)output withAudioChannelLayoutTag:(int)tag atPosition:
 {
   if (result)
   {
@@ -618,22 +618,22 @@ BOOL __87__FigCaptureMicSourcePipeline_nextOutputForMicSourcePosition_forAudioCh
     }
 
     v9 = result;
-    v10 = [MEMORY[0x1E695DF70] array];
-    v11 = v10;
+    array = [MEMORY[0x1E695DF70] array];
+    v11 = array;
     if (a2 == 1)
     {
-      v12 = [v10 addObject:a3];
+      v12 = [array addObject:outputs];
     }
 
     else
     {
       v20 = @"Unknown";
-      if (a4 == 12451844)
+      if (output == 12451844)
       {
         v20 = @"FOA";
       }
 
-      if (a4 == 6619138)
+      if (output == 6619138)
       {
         v21 = @"Stereo";
       }
@@ -646,7 +646,7 @@ BOOL __87__FigCaptureMicSourcePipeline_nextOutputForMicSourcePosition_forAudioCh
       v22 = [[BWFanOutNode alloc] initWithFanOutCount:a2 mediaType:1936684398];
       v23 = MEMORY[0x1E696AEC0];
       v39 = v21;
-      v41 = BWCaptureDevicePositionToString(a5);
+      v41 = BWCaptureDevicePositionToString(tag);
       -[BWNode setName:](v22, "setName:", [v23 stringWithFormat:@"%@ Audio BWFanOutNode (%@)"]);
       v76.receiver = v9;
       v76.super_class = FigCaptureMicSourcePipeline;
@@ -668,11 +668,11 @@ LABEL_24:
       v12 = [v11 addObjectsFromArray:{-[BWNode outputs](v22, "outputs")}];
     }
 
-    v24 = a5;
-    if (!*&v9[8 * a5 + 48])
+    tagCopy = tag;
+    if (!*&v9[8 * tag + 48])
     {
       v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      *&v9[8 * a5 + 48] = v12;
+      *&v9[8 * tag + 48] = v12;
     }
 
     v25 = OUTLINED_FUNCTION_1_2(v12, v13, v14, v15, v16, v17, v18, v19, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, 0);
@@ -680,7 +680,7 @@ LABEL_24:
     {
       v26 = v25;
       v27 = MEMORY[0];
-      v28 = &v9[8 * v24];
+      v28 = &v9[8 * tagCopy];
       do
       {
         for (i = 0; i != v26; ++i)
@@ -690,7 +690,7 @@ LABEL_24:
             objc_enumerationMutation(v11);
           }
 
-          v30 = [[FigCaptureMicSourcePipelineOutput alloc] initWithOutput:a4 forAudioChannelLayoutTag:?];
+          v30 = [[FigCaptureMicSourcePipelineOutput alloc] initWithOutput:output forAudioChannelLayoutTag:?];
           [v28[6] addObject:v30];
         }
 

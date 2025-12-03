@@ -1,10 +1,10 @@
 @interface QuickNoteAlertManager
 + (id)sharedInstance;
-- (void)_cleanupRemoteAlertHandle:(id)a3;
+- (void)_cleanupRemoteAlertHandle:(id)handle;
 - (void)activateRemoteAlert;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation QuickNoteAlertManager
@@ -36,7 +36,7 @@
   }
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v3 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -45,32 +45,32 @@
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100069E54(v5);
   }
 
-  [(QuickNoteAlertManager *)self _cleanupRemoteAlertHandle:v4];
+  [(QuickNoteAlertManager *)self _cleanupRemoteAlertHandle:deactivateCopy];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 domain];
-  if ([v8 isEqualToString:SBSRemoteAlertHandleInvalidationErrorDomain])
+  errorCopy = error;
+  handleCopy = handle;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:SBSRemoteAlertHandleInvalidationErrorDomain])
   {
-    if (![v6 code] || objc_msgSend(v6, "code") == 5)
+    if (![errorCopy code] || objc_msgSend(errorCopy, "code") == 5)
     {
 
       goto LABEL_11;
     }
 
-    v9 = [v6 code] == 4;
+    v9 = [errorCopy code] == 4;
   }
 
   else
@@ -78,13 +78,13 @@
     v9 = 0;
   }
 
-  if (!v6 || v9)
+  if (!errorCopy || v9)
   {
 LABEL_11:
     v10 = os_log_create("com.apple.notes", "SystemPaper");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      sub_100069F10(v6, v10);
+      sub_100069F10(errorCopy, v10);
     }
 
     goto LABEL_13;
@@ -93,23 +93,23 @@ LABEL_11:
   v10 = os_log_create("com.apple.notes", "SystemPaper");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    sub_100069E98(v6, v10);
+    sub_100069E98(errorCopy, v10);
   }
 
 LABEL_13:
 
-  [(QuickNoteAlertManager *)self _cleanupRemoteAlertHandle:v7];
+  [(QuickNoteAlertManager *)self _cleanupRemoteAlertHandle:handleCopy];
 }
 
-- (void)_cleanupRemoteAlertHandle:(id)a3
+- (void)_cleanupRemoteAlertHandle:(id)handle
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000275C;
   v5[3] = &unk_100092338;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  handleCopy = handle;
+  selfCopy = self;
+  v4 = handleCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 

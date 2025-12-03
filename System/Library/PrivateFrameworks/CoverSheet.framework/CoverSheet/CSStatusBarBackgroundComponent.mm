@@ -1,6 +1,6 @@
 @interface CSStatusBarBackgroundComponent
 - (CSStatusBarBackgroundComponent)init;
-- (void)setShowBackgroundWhileTransitioning:(int64_t)a3;
+- (void)setShowBackgroundWhileTransitioning:(int64_t)transitioning;
 @end
 
 @implementation CSStatusBarBackgroundComponent
@@ -20,12 +20,12 @@
   return v3;
 }
 
-- (void)setShowBackgroundWhileTransitioning:(int64_t)a3
+- (void)setShowBackgroundWhileTransitioning:(int64_t)transitioning
 {
-  if ([(CSComponent *)self flag]!= a3)
+  if ([(CSComponent *)self flag]!= transitioning)
   {
 
-    [(CSComponent *)self setFlag:a3];
+    [(CSComponent *)self setFlag:transitioning];
   }
 }
 

@@ -1,29 +1,29 @@
 @interface RKRankingDataManager
-- (RKRankingDataManager)initWithDatabaseFilename:(id)a3;
-- (RKRankingDataManager)initWithLanguageID:(id)a3;
-- (id)fetchRankingInfoForCategory:(id)a3;
+- (RKRankingDataManager)initWithDatabaseFilename:(id)filename;
+- (RKRankingDataManager)initWithLanguageID:(id)d;
+- (id)fetchRankingInfoForCategory:(id)category;
 - (id)fetchRankingInfoFromDB;
 - (unint64_t)getNumberOfEntriesInDB;
 - (void)fetchRankingInfoFromDB;
 - (void)flushRankingData;
-- (void)insertRankingInfoFromDictionary:(id)a3;
-- (void)insertRankingInfoFromDictionary:(id)a3 withDate:(id)a4;
+- (void)insertRankingInfoFromDictionary:(id)dictionary;
+- (void)insertRankingInfoFromDictionary:(id)dictionary withDate:(id)date;
 - (void)pruneUserDatabase;
 - (void)resetRankingData;
 @end
 
 @implementation RKRankingDataManager
 
-- (RKRankingDataManager)initWithLanguageID:(id)a3
+- (RKRankingDataManager)initWithLanguageID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = RKRankingDataManager;
   v5 = [(RKRankingDataManager *)&v10 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/var/mobile/Library/ResponseKit/"];
-    v7 = [v4 stringByAppendingString:@"-learned.db"];
+    v7 = [dCopy stringByAppendingString:@"-learned.db"];
     v8 = [v6 URLByAppendingPathComponent:v7];
     v5 = [(RKRankingDataManager *)v5 initWithDatabaseFilename:v8];
   }
@@ -31,10 +31,10 @@
   return v5;
 }
 
-- (RKRankingDataManager)initWithDatabaseFilename:(id)a3
+- (RKRankingDataManager)initWithDatabaseFilename:(id)filename
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filenameCopy = filename;
   v23.receiver = self;
   v23.super_class = RKRankingDataManager;
   v5 = [(RKRankingDataManager *)&v23 init];
@@ -77,7 +77,7 @@
   v25[0] = MEMORY[0x277CBEC28];
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   v22 = 0;
-  v16 = [(NSPersistentStoreCoordinator *)v13 addPersistentStoreWithType:v14 configuration:0 URL:v4 options:v15 error:&v22];
+  v16 = [(NSPersistentStoreCoordinator *)v13 addPersistentStoreWithType:v14 configuration:0 URL:filenameCopy options:v15 error:&v22];
   v17 = v22;
   persistentStore = v5->_persistentStore;
   v5->_persistentStore = v16;
@@ -102,44 +102,44 @@ LABEL_15:
   return v19;
 }
 
-- (void)insertRankingInfoFromDictionary:(id)a3
+- (void)insertRankingInfoFromDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  [(RKRankingDataManager *)self insertRankingInfoFromDictionary:v5 withDate:v6];
+  dictionaryCopy = dictionary;
+  date = [v4 date];
+  [(RKRankingDataManager *)self insertRankingInfoFromDictionary:dictionaryCopy withDate:date];
 }
 
-- (void)insertRankingInfoFromDictionary:(id)a3 withDate:(id)a4
+- (void)insertRankingInfoFromDictionary:(id)dictionary withDate:(id)date
 {
   v6 = MEMORY[0x277CBE408];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(RKRankingDataManager *)self managedObjectContext];
-  v17 = [v6 insertNewObjectForEntityForName:@"RankingInfo" inManagedObjectContext:v9];
+  dateCopy = date;
+  dictionaryCopy = dictionary;
+  managedObjectContext = [(RKRankingDataManager *)self managedObjectContext];
+  v17 = [v6 insertNewObjectForEntityForName:@"RankingInfo" inManagedObjectContext:managedObjectContext];
 
-  v10 = [v8 objectForKeyedSubscript:@"message"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"message"];
   [v17 setMessage:v10];
 
-  v11 = [v8 objectForKeyedSubscript:@"response"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"response"];
   [v17 setResponse:v11];
 
-  v12 = [v8 objectForKeyedSubscript:@"source"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"source"];
   [v17 setSource:{objc_msgSend(v12, "integerValue")}];
 
-  v13 = [v8 objectForKeyedSubscript:@"recipient"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"recipient"];
   [v17 setRecipientId:v13];
 
-  v14 = [v8 objectForKeyedSubscript:@"inputmethod"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"inputmethod"];
   [v17 setInputMethod:{objc_msgSend(v14, "integerValue")}];
 
-  v15 = [v8 objectForKeyedSubscript:@"rankedlist"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"rankedlist"];
   [v17 setRankedList:v15];
 
-  v16 = [v8 objectForKeyedSubscript:@"category"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"category"];
 
   [v17 setCategory:v16];
-  [v17 setTimestamp:v7];
+  [v17 setTimestamp:dateCopy];
 
   [(RKRankingDataManager *)self flushRankingData];
 }
@@ -147,9 +147,9 @@ LABEL_15:
 - (id)fetchRankingInfoFromDB
 {
   v3 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"RankingInfo"];
-  v4 = [(RKRankingDataManager *)self managedObjectContext];
+  managedObjectContext = [(RKRankingDataManager *)self managedObjectContext];
   v9 = 0;
-  v5 = [v4 executeFetchRequest:v3 error:&v9];
+  v5 = [managedObjectContext executeFetchRequest:v3 error:&v9];
   v6 = v9;
 
   if (v5)
@@ -165,11 +165,11 @@ LABEL_15:
   return v5;
 }
 
-- (id)fetchRankingInfoForCategory:(id)a3
+- (id)fetchRankingInfoForCategory:(id)category
 {
   v12[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"Unknown"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"Unknown"])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -182,12 +182,12 @@ LABEL_15:
   else
   {
     v6 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"RankingInfo"];
-    v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"category == %@", v4];
-    [v6 setPredicate:v7];
+    categoryCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"category == %@", categoryCopy];
+    [v6 setPredicate:categoryCopy];
 
-    v8 = [(RKRankingDataManager *)self managedObjectContext];
+    managedObjectContext = [(RKRankingDataManager *)self managedObjectContext];
     v12[0] = 0;
-    v5 = [v8 executeFetchRequest:v6 error:v12];
+    v5 = [managedObjectContext executeFetchRequest:v6 error:v12];
     v9 = v12[0];
 
     if (!v5)
@@ -209,9 +209,9 @@ LABEL_15:
 - (unint64_t)getNumberOfEntriesInDB
 {
   v3 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"RankingInfo"];
-  v4 = [(RKRankingDataManager *)self managedObjectContext];
+  managedObjectContext = [(RKRankingDataManager *)self managedObjectContext];
   v8 = 0;
-  v5 = [v4 countForFetchRequest:v3 error:&v8];
+  v5 = [managedObjectContext countForFetchRequest:v3 error:&v8];
   v6 = v8;
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -224,19 +224,19 @@ LABEL_15:
 
 - (void)pruneUserDatabase
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v3 dateByAddingTimeInterval:-7776000.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [date dateByAddingTimeInterval:-7776000.0];
 
   v5 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"RankingInfo"];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"timestamp < %@", v4];
   [v5 setPredicate:v6];
 
   v7 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v5];
-  v8 = [(RKRankingDataManager *)self managedObjectContext];
-  v9 = [v8 persistentStoreCoordinator];
-  v10 = [(RKRankingDataManager *)self managedObjectContext];
+  managedObjectContext = [(RKRankingDataManager *)self managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+  managedObjectContext2 = [(RKRankingDataManager *)self managedObjectContext];
   v13 = 0;
-  v11 = [v9 executeRequest:v7 withContext:v10 error:&v13];
+  v11 = [persistentStoreCoordinator executeRequest:v7 withContext:managedObjectContext2 error:&v13];
   v12 = v13;
 
   if (v12 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -249,11 +249,11 @@ LABEL_15:
 {
   v3 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"RankingInfo"];
   v4 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v3];
-  v5 = [(RKRankingDataManager *)self managedObjectContext];
-  v6 = [v5 persistentStoreCoordinator];
-  v7 = [(RKRankingDataManager *)self managedObjectContext];
+  managedObjectContext = [(RKRankingDataManager *)self managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+  managedObjectContext2 = [(RKRankingDataManager *)self managedObjectContext];
   v10 = 0;
-  v8 = [v6 executeRequest:v4 withContext:v7 error:&v10];
+  v8 = [persistentStoreCoordinator executeRequest:v4 withContext:managedObjectContext2 error:&v10];
   v9 = v10;
 
   if (v9 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -264,9 +264,9 @@ LABEL_15:
 
 - (void)flushRankingData
 {
-  v2 = [(RKRankingDataManager *)self managedObjectContext];
+  managedObjectContext = [(RKRankingDataManager *)self managedObjectContext];
   v3 = 0;
-  [v2 save:&v3];
+  [managedObjectContext save:&v3];
 }
 
 - (void)initWithDatabaseFilename:(uint64_t)a1 .cold.1(uint64_t a1)
@@ -302,9 +302,9 @@ LABEL_15:
 - (void)fetchRankingInfoFromDB
 {
   v10 = *MEMORY[0x277D85DE8];
-  [a1 localizedDescription];
+  [self localizedDescription];
   objc_claimAutoreleasedReturnValue();
-  v2 = [OUTLINED_FUNCTION_2() userInfo];
+  userInfo = [OUTLINED_FUNCTION_2() userInfo];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1(&dword_2620A2000, MEMORY[0x277D86220], v3, "Error fetching RankingInfo objects: %@\n%@", v4, v5, v6, v7, v9);
 

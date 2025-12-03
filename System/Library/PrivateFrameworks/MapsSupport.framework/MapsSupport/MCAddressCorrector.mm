@@ -1,9 +1,9 @@
 @interface MCAddressCorrector
 - (MCAddressCorrector)init;
 - (void)_finishProcessing;
-- (void)_sendUpdateRequest:(id)a3;
-- (void)_startAddressCorrectionWithToken:(id)a3 personId:(id)a4;
-- (void)startProcessingWithCompletionQueue:(id)a3 completionBlock:(id)a4;
+- (void)_sendUpdateRequest:(id)request;
+- (void)_startAddressCorrectionWithToken:(id)token personId:(id)id;
+- (void)startProcessingWithCompletionQueue:(id)queue completionBlock:(id)block;
 @end
 
 @implementation MCAddressCorrector
@@ -30,25 +30,25 @@
   return v2;
 }
 
-- (void)startProcessingWithCompletionQueue:(id)a3 completionBlock:(id)a4
+- (void)startProcessingWithCompletionQueue:(id)queue completionBlock:(id)block
 {
-  v7 = a3;
+  queueCopy = queue;
   processingLock = self->_processingLock;
-  v9 = a4;
+  blockCopy = block;
   if ([(NSLock *)processingLock tryLock])
   {
-    objc_storeStrong(&self->_completionQueue, a3);
-    v10 = [v9 copy];
+    objc_storeStrong(&self->_completionQueue, queue);
+    v10 = [blockCopy copy];
 
     completionBlock = self->_completionBlock;
     self->_completionBlock = v10;
 
-    v9 = +[MCPolarisUtils sharedUtils];
-    if ([v9 hasSufficientLocationAuth])
+    blockCopy = +[MCPolarisUtils sharedUtils];
+    if ([blockCopy hasSufficientLocationAuth])
     {
-      if (![v9 isMultiUserMode])
+      if (![blockCopy isMultiUserMode])
       {
-        if ([v9 isManagedAppleAccount])
+        if ([blockCopy isManagedAppleAccount])
         {
           v12 = GEOFindOrCreateLog();
           if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -60,9 +60,9 @@
           v13 = "startProcessing - failed. Not available for managed Apple Accounts.";
         }
 
-        else if ([v9 isUserOptedIn])
+        else if ([blockCopy isUserOptedIn])
         {
-          if ([v9 isAddressCorrectionAdministrativelyDisabled])
+          if ([blockCopy isAddressCorrectionAdministrativelyDisabled])
           {
             v12 = GEOFindOrCreateLog();
             if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -103,11 +103,11 @@
               }
             }
 
-            if ([v9 hasPrimaryAppleAccount])
+            if ([blockCopy hasPrimaryAppleAccount])
             {
-              v21 = [v9 appleAccountMapsToken];
+              appleAccountMapsToken = [blockCopy appleAccountMapsToken];
 
-              if (v21)
+              if (appleAccountMapsToken)
               {
                 v22 = objc_alloc_init(MCRoutineHelper);
                 routineHelper = self->_routineHelper;
@@ -120,8 +120,8 @@
                 v26[2] = sub_10000347C;
                 v26[3] = &unk_10001C7A8;
                 v26[4] = self;
-                v9 = v9;
-                v27 = v9;
+                blockCopy = blockCopy;
+                v27 = blockCopy;
                 [(MCRoutineHelper *)v24 findSignificantLocationWithCompletionQueue:workQueue completionHandler:v26];
 
                 goto LABEL_14;
@@ -204,7 +204,7 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "startProcessing called but already processing", buf, 2u);
   }
 
-  dispatch_async(v7, v9);
+  dispatch_async(queueCopy, blockCopy);
 LABEL_14:
 }
 
@@ -226,14 +226,14 @@ LABEL_14:
   [(NSLock *)self->_processingLock unlock];
 }
 
-- (void)_startAddressCorrectionWithToken:(id)a3 personId:(id)a4
+- (void)_startAddressCorrectionWithToken:(id)token personId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
+  idCopy = id;
+  tokenCopy = token;
   v8 = objc_alloc_init(GEOAddressCorrectionInitRequest);
-  [v8 setPersonID:v6];
+  [v8 setPersonID:idCopy];
 
-  [v8 setToken:v7];
+  [v8 setToken:tokenCopy];
   [v8 setSupportsMultipleAddresses:1];
   [v8 setSupportsCollectionByRegion:1];
   v14[0] = _NSConcreteStackBlock;
@@ -260,9 +260,9 @@ LABEL_14:
   [v12 startAddressCorrectionInitRequest:v8 finished:v9 error:v10];
 }
 
-- (void)_sendUpdateRequest:(id)a3
+- (void)_sendUpdateRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000040D4;
@@ -279,12 +279,12 @@ LABEL_14:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138477827;
-    v12 = v4;
+    v12 = requestCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "_sendUpdateResponse updateRequest : %{private}@", buf, 0xCu);
   }
 
   v8 = +[GEOAddressCorrectionRequester sharedRequester];
-  [v8 startAddressCorrectionUpdateRequest:v4 finished:v5 error:v6];
+  [v8 startAddressCorrectionUpdateRequest:requestCopy finished:v5 error:v6];
 }
 
 @end

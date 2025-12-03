@@ -1,46 +1,46 @@
 @interface MFConversationViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityMailSwipeActions;
 - (id)_accessibilityMessageIndexDescription;
 - (id)accessibilityCustomActions;
-- (void)_accessibilityPerformMailSwipeAction:(id)a3;
+- (void)_accessibilityPerformMailSwipeAction:(id)action;
 @end
 
 @implementation MFConversationViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFConversationViewCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"MFConversationViewCell" hasInstanceMethod:@"itemID" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_MFConversationViewCollectionView" isKindOfClass:@"UICollectionView"];
-  [v3 validateClass:@"UIContextualAction" hasInstanceMethod:@"executePreHandlerWithView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIContextualAction" hasInstanceMethod:@"executeHandlerWithView:completionHandler:" withFullSignature:{"v", "@", "@?", 0}];
-  [v3 validateClass:@"MFSwipableCollectionViewLayout" isKindOfClass:@"UICollectionViewFlowLayout"];
-  [v3 validateClass:@"MFSwipableCollectionViewLayout" hasInstanceMethod:@"swipeController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFSwipableCollectionViewLayout" hasInstanceMethod:@"swipeActionController:leadingSwipeConfigurationForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"MFSwipableCollectionViewLayout" hasInstanceMethod:@"swipeActionController:trailingSwipeConfigurationForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"ConversationViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ConversationViewController" hasInstanceMethod:@"collectionViewDataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewControllerBase" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"countOfMessages" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"UICollectionViewDiffableDataSource" hasInstanceMethod:@"snapshot" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NSDiffableDataSourceSnapshot" hasInstanceMethod:@"itemIdentifiers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFGeneratedSummaryCollectionItemID"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFConversationViewCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"MFConversationViewCell" hasInstanceMethod:@"itemID" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_MFConversationViewCollectionView" isKindOfClass:@"UICollectionView"];
+  [validationsCopy validateClass:@"UIContextualAction" hasInstanceMethod:@"executePreHandlerWithView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIContextualAction" hasInstanceMethod:@"executeHandlerWithView:completionHandler:" withFullSignature:{"v", "@", "@?", 0}];
+  [validationsCopy validateClass:@"MFSwipableCollectionViewLayout" isKindOfClass:@"UICollectionViewFlowLayout"];
+  [validationsCopy validateClass:@"MFSwipableCollectionViewLayout" hasInstanceMethod:@"swipeController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFSwipableCollectionViewLayout" hasInstanceMethod:@"swipeActionController:leadingSwipeConfigurationForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"MFSwipableCollectionViewLayout" hasInstanceMethod:@"swipeActionController:trailingSwipeConfigurationForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ConversationViewController" hasInstanceMethod:@"collectionViewDataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ConversationViewControllerBase" hasInstanceMethod:@"countOfMessages" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"UICollectionViewDiffableDataSource" hasInstanceMethod:@"snapshot" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NSDiffableDataSourceSnapshot" hasInstanceMethod:@"itemIdentifiers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFGeneratedSummaryCollectionItemID"];
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(MFConversationViewCellAccessibility *)self _accessibilityMailSwipeActions];
+  array = [MEMORY[0x29EDB8DE8] array];
+  _accessibilityMailSwipeActions = [(MFConversationViewCellAccessibility *)self _accessibilityMailSwipeActions];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __65__MFConversationViewCellAccessibility_accessibilityCustomActions__block_invoke;
   v8[3] = &unk_29F2D4100;
-  v5 = v3;
+  v5 = array;
   v9 = v5;
-  v10 = self;
-  [v4 enumerateObjectsUsingBlock:v8];
+  selfCopy = self;
+  [_accessibilityMailSwipeActions enumerateObjectsUsingBlock:v8];
 
   v6 = v5;
   return v5;
@@ -97,21 +97,21 @@ BOOL __76__MFConversationViewCellAccessibility__accessibilityMessageIndexDescrip
 - (id)_accessibilityMailSwipeActions
 {
   v3 = [(MFConversationViewCellAccessibility *)self _accessibilityViewAncestorIsKindOf:objc_opt_class()];
-  v4 = [v3 collectionViewLayout];
+  collectionViewLayout = [v3 collectionViewLayout];
 
   NSClassFromString(&cfstr_Mfswipablecoll_0.isa);
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
-    v6 = [(MFConversationViewCellAccessibility *)self _accessibilityIndexPath];
-    v7 = [v4 safeValueForKey:@"swipeController"];
+    array = [MEMORY[0x29EDB8DE8] array];
+    _accessibilityIndexPath = [(MFConversationViewCellAccessibility *)self _accessibilityIndexPath];
+    v7 = [collectionViewLayout safeValueForKey:@"swipeController"];
     v13 = MEMORY[0x29EDCA5F8];
-    v14 = v4;
+    v14 = collectionViewLayout;
     v15 = v7;
-    v16 = v6;
-    v17 = v5;
-    v8 = v5;
-    v9 = v6;
+    v16 = _accessibilityIndexPath;
+    v17 = array;
+    v8 = array;
+    v9 = _accessibilityIndexPath;
     v10 = v7;
     AXPerformSafeBlock();
     v11 = [v8 axFilterObjectsUsingBlock:{&__block_literal_global_377, v13, 3221225472, __69__MFConversationViewCellAccessibility__accessibilityMailSwipeActions__block_invoke, &unk_29F2D4148}];
@@ -209,18 +209,18 @@ BOOL __69__MFConversationViewCellAccessibility__accessibilityMailSwipeActions__b
   return v3;
 }
 
-- (void)_accessibilityPerformMailSwipeAction:(id)a3
+- (void)_accessibilityPerformMailSwipeAction:(id)action
 {
-  v4 = a3;
-  v5 = [(MFConversationViewCellAccessibility *)self _accessibilityMailSwipeActions];
+  actionCopy = action;
+  _accessibilityMailSwipeActions = [(MFConversationViewCellAccessibility *)self _accessibilityMailSwipeActions];
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __76__MFConversationViewCellAccessibility__accessibilityPerformMailSwipeAction___block_invoke;
   v7[3] = &unk_29F2D4100;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = actionCopy;
+  selfCopy = self;
+  v6 = actionCopy;
+  [_accessibilityMailSwipeActions enumerateObjectsUsingBlock:v7];
 }
 
 void __76__MFConversationViewCellAccessibility__accessibilityPerformMailSwipeAction___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)

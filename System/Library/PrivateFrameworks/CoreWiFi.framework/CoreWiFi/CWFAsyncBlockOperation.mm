@@ -18,9 +18,9 @@
 
 - (BOOL)isExecuting
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v6.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6.receiver = selfCopy;
   v6.super_class = CWFAsyncBlockOperation;
   if ([(CWFAsyncBlockOperation *)&v6 isExecuting])
   {
@@ -29,27 +29,27 @@
 
   else
   {
-    v5.receiver = v2;
+    v5.receiver = selfCopy;
     v5.super_class = CWFAsyncBlockOperation;
-    v3 = [(CWFAsyncBlockOperation *)&v5 isFinished]&& [(CWFAsyncBlockOperation *)v2 didStartOperation]&& [(CWFAsyncBlockOperation *)v2 completionCounter]> 0;
+    v3 = [(CWFAsyncBlockOperation *)&v5 isFinished]&& [(CWFAsyncBlockOperation *)selfCopy didStartOperation]&& [(CWFAsyncBlockOperation *)selfCopy completionCounter]> 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isFinished
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5.receiver = selfCopy;
   v5.super_class = CWFAsyncBlockOperation;
   if ([(CWFAsyncBlockOperation *)&v5 isFinished])
   {
-    if ([(CWFAsyncBlockOperation *)v2 completionCounter])
+    if ([(CWFAsyncBlockOperation *)selfCopy completionCounter])
     {
-      v3 = ![(CWFAsyncBlockOperation *)v2 didStartOperation];
+      v3 = ![(CWFAsyncBlockOperation *)selfCopy didStartOperation];
     }
 
     else
@@ -63,7 +63,7 @@
     LOBYTE(v3) = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

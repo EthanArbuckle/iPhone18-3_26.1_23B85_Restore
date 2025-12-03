@@ -1,17 +1,17 @@
 @interface KeyboardShortcutsManager
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSArray)keyCommands;
 - (_TtC5Music24KeyboardShortcutsManager)init;
-- (void)find:(id)a3;
-- (void)newPlaylistAction:(id)a3;
-- (void)playPauseAction:(id)a3;
+- (void)find:(id)find;
+- (void)newPlaylistAction:(id)action;
+- (void)playPauseAction:(id)action;
 @end
 
 @implementation KeyboardShortcutsManager
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005A4128();
 
   sub_10043F470();
@@ -20,11 +20,11 @@
   return v3.super.isa;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -33,20 +33,20 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_1005A4808(a3, v10);
+  v8 = sub_1005A4808(action, v10);
 
   sub_1000095E8(v10, &unk_101183F30);
   return v8 & 1;
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
-  if (a3)
+  if (find)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -55,7 +55,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1005A4B7C();
@@ -63,17 +63,17 @@
   sub_1000095E8(v6, &unk_101183F30);
 }
 
-- (void)newPlaylistAction:(id)a3
+- (void)newPlaylistAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_1005A54D4();
 }
 
-- (void)playPauseAction:(id)a3
+- (void)playPauseAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_1005A5734();
 }
 

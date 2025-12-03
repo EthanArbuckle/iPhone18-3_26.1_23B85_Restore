@@ -6,7 +6,7 @@
 
 - (id)viewPrintFormatter
 {
-  v1 = [objc_alloc(objc_msgSend(a1 "_printFormatterClass"))];
+  v1 = [objc_alloc(objc_msgSend(self "_printFormatterClass"))];
 
   return v1;
 }

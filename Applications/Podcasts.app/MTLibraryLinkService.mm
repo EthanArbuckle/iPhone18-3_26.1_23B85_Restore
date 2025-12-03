@@ -1,9 +1,9 @@
 @interface MTLibraryLinkService
 - (MTLibraryLinkService)init;
 - (id)urlRequest;
-- (void)performRequest:(id)a3;
-- (void)requestWithParams:(id)a3 callback:(id)a4;
-- (void)updateAdamIdForPodcast:(id)a3 withFeedURLs:(id)a4;
+- (void)performRequest:(id)request;
+- (void)requestWithParams:(id)params callback:(id)callback;
+- (void)updateAdamIdForPodcast:(id)podcast withFeedURLs:(id)ls;
 @end
 
 @implementation MTLibraryLinkService
@@ -22,8 +22,8 @@
   if (v4)
   {
     v5 = [NSURL URLWithString:v4];
-    v6 = [(MTLibraryLinkService *)self requestParams];
-    v7 = [v5 pf_URLByAppendingQueryString:v6];
+    requestParams = [(MTLibraryLinkService *)self requestParams];
+    v7 = [v5 pf_URLByAppendingQueryString:requestParams];
   }
 
   else
@@ -36,34 +36,34 @@
   return v8;
 }
 
-- (void)performRequest:(id)a3
+- (void)performRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(MTLibraryLinkService *)self urlRequest];
-  [(MTLibraryLinkService *)self performUrlRequest:v5 callback:v4];
+  requestCopy = request;
+  urlRequest = [(MTLibraryLinkService *)self urlRequest];
+  [(MTLibraryLinkService *)self performUrlRequest:urlRequest callback:requestCopy];
 }
 
-- (void)requestWithParams:(id)a3 callback:(id)a4
+- (void)requestWithParams:(id)params callback:(id)callback
 {
-  v6 = a4;
-  [(MTLibraryLinkService *)self setRequestParams:a3];
+  callbackCopy = callback;
+  [(MTLibraryLinkService *)self setRequestParams:params];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10015B2E8;
   v8[3] = &unk_1004DD1D8;
-  v9 = v6;
-  v7 = v6;
+  v9 = callbackCopy;
+  v7 = callbackCopy;
   [(MTLibraryLinkService *)self performRequest:v8];
 }
 
-- (void)updateAdamIdForPodcast:(id)a3 withFeedURLs:(id)a4
+- (void)updateAdamIdForPodcast:(id)podcast withFeedURLs:(id)ls
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  podcastCopy = podcast;
+  lsCopy = ls;
+  v8 = lsCopy;
+  if (podcastCopy)
   {
-    if ([v7 count])
+    if ([lsCopy count])
     {
       v9 = [v8 objectAtIndexedSubscript:0];
 
@@ -79,7 +79,7 @@
         v12[1] = 3221225472;
         v12[2] = sub_10015B59C;
         v12[3] = &unk_1004DDD40;
-        v13 = v6;
+        v13 = podcastCopy;
         v14 = v8;
         [(MTLibraryLinkService *)self requestWithParams:v11 callback:v12];
       }

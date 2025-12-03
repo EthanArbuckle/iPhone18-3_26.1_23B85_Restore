@@ -1,52 +1,52 @@
 @interface ATXPBRequestForIntentSuggestions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBundleIds:(id)a3;
-- (void)addIntentClassNames:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBundleIds:(id)ids;
+- (void)addIntentClassNames:(id)names;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBRequestForIntentSuggestions
 
-- (void)addBundleIds:(id)a3
+- (void)addBundleIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   bundleIds = self->_bundleIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!bundleIds)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_bundleIds;
     self->_bundleIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     bundleIds = self->_bundleIds;
   }
 
-  [(NSMutableArray *)bundleIds addObject:v4];
+  [(NSMutableArray *)bundleIds addObject:idsCopy];
 }
 
-- (void)addIntentClassNames:(id)a3
+- (void)addIntentClassNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   intentClassNames = self->_intentClassNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!intentClassNames)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_intentClassNames;
     self->_intentClassNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     intentClassNames = self->_intentClassNames;
   }
 
-  [(NSMutableArray *)intentClassNames addObject:v4];
+  [(NSMutableArray *)intentClassNames addObject:namesCopy];
 }
 
 - (id)description
@@ -55,47 +55,47 @@
   v8.receiver = self;
   v8.super_class = ATXPBRequestForIntentSuggestions;
   v4 = [(ATXPBRequestForIntentSuggestions *)&v8 description];
-  v5 = [(ATXPBRequestForIntentSuggestions *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBRequestForIntentSuggestions *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   base = self->_base;
   if (base)
   {
-    v5 = [(ATXPBRequestForSuggestions *)base dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"base"];
+    dictionaryRepresentation = [(ATXPBRequestForSuggestions *)base dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"base"];
   }
 
   bundleIds = self->_bundleIds;
   if (bundleIds)
   {
-    [v3 setObject:bundleIds forKey:@"bundleIds"];
+    [dictionary setObject:bundleIds forKey:@"bundleIds"];
   }
 
   intentClassNames = self->_intentClassNames;
   if (intentClassNames)
   {
-    [v3 setObject:intentClassNames forKey:@"intentClassNames"];
+    [dictionary setObject:intentClassNames forKey:@"intentClassNames"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:self->_limit];
-    [v3 setObject:v8 forKey:@"limit"];
+    [dictionary setObject:v8 forKey:@"limit"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_base)
   {
     PBDataWriterWriteSubmessage();
@@ -174,56 +174,56 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_base)
   {
-    [v12 setBase:?];
+    [toCopy setBase:?];
   }
 
   if ([(ATXPBRequestForIntentSuggestions *)self bundleIdsCount])
   {
-    [v12 clearBundleIds];
-    v4 = [(ATXPBRequestForIntentSuggestions *)self bundleIdsCount];
-    if (v4)
+    [toCopy clearBundleIds];
+    bundleIdsCount = [(ATXPBRequestForIntentSuggestions *)self bundleIdsCount];
+    if (bundleIdsCount)
     {
-      v5 = v4;
+      v5 = bundleIdsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXPBRequestForIntentSuggestions *)self bundleIdsAtIndex:i];
-        [v12 addBundleIds:v7];
+        [toCopy addBundleIds:v7];
       }
     }
   }
 
   if ([(ATXPBRequestForIntentSuggestions *)self intentClassNamesCount])
   {
-    [v12 clearIntentClassNames];
-    v8 = [(ATXPBRequestForIntentSuggestions *)self intentClassNamesCount];
-    if (v8)
+    [toCopy clearIntentClassNames];
+    intentClassNamesCount = [(ATXPBRequestForIntentSuggestions *)self intentClassNamesCount];
+    if (intentClassNamesCount)
     {
-      v9 = v8;
+      v9 = intentClassNamesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ATXPBRequestForIntentSuggestions *)self intentClassNamesAtIndex:j];
-        [v12 addIntentClassNames:v11];
+        [toCopy addIntentClassNames:v11];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v12 + 8) = self->_limit;
-    *(v12 + 36) |= 1u;
+    *(toCopy + 8) = self->_limit;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ATXPBRequestForSuggestions *)self->_base copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ATXPBRequestForSuggestions *)self->_base copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -247,7 +247,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addBundleIds:v13];
 
         ++v12;
@@ -280,7 +280,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addIntentClassNames:v19];
 
         ++v18;
@@ -303,16 +303,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   base = self->_base;
-  if (base | *(v4 + 1))
+  if (base | *(equalCopy + 1))
   {
     if (![(ATXPBRequestForSuggestions *)base isEqual:?])
     {
@@ -321,7 +321,7 @@
   }
 
   bundleIds = self->_bundleIds;
-  if (bundleIds | *(v4 + 2))
+  if (bundleIds | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)bundleIds isEqual:?])
     {
@@ -330,7 +330,7 @@
   }
 
   intentClassNames = self->_intentClassNames;
-  if (intentClassNames | *(v4 + 3))
+  if (intentClassNames | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)intentClassNames isEqual:?])
     {
@@ -338,10 +338,10 @@
     }
   }
 
-  v8 = (*(v4 + 36) & 1) == 0;
+  v8 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) != 0 && self->_limit == *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) != 0 && self->_limit == *(equalCopy + 8))
     {
       v8 = 1;
       goto LABEL_13;
@@ -374,12 +374,12 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   base = self->_base;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (base)
   {
     if (v6)
@@ -397,7 +397,7 @@ LABEL_13:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
@@ -425,7 +425,7 @@ LABEL_13:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 3);
+  v12 = *(fromCopy + 3);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -449,9 +449,9 @@ LABEL_13:
     while (v14);
   }
 
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_limit = *(v4 + 8);
+    self->_limit = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 

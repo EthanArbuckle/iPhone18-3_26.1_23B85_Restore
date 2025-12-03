@@ -1,21 +1,21 @@
 @interface TSDeviceInfoCell
-- (TSDeviceInfoCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (TSDeviceInfoCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation TSDeviceInfoCell
 
-- (TSDeviceInfoCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TSDeviceInfoCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = TSDeviceInfoCell;
-  v4 = [(TSDeviceInfoCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TSDeviceInfoCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(TSDeviceInfoCell *)v4 contentView];
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v6 setBackgroundColor:v7];
+    contentView = [(TSDeviceInfoCell *)v4 contentView];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [contentView setBackgroundColor:systemBackgroundColor];
   }
 
   return v5;
@@ -26,24 +26,24 @@
   v16.receiver = self;
   v16.super_class = TSDeviceInfoCell;
   [(TSDeviceInfoCell *)&v16 layoutSubviews];
-  v3 = [(TSDeviceInfoCell *)self contentView];
-  [v3 bounds];
+  contentView = [(TSDeviceInfoCell *)self contentView];
+  [contentView bounds];
   v5 = v4 * 0.5;
 
-  v6 = [(TSDeviceInfoCell *)self contentView];
-  [v6 bounds];
+  contentView2 = [(TSDeviceInfoCell *)self contentView];
+  [contentView2 bounds];
   v8 = v7 * 0.5;
 
-  v9 = [(TSDeviceInfoCell *)self imageView];
-  [v9 frame];
+  imageView = [(TSDeviceInfoCell *)self imageView];
+  [imageView frame];
   v11 = v10;
 
-  v12 = [(TSDeviceInfoCell *)self imageView];
-  [v12 frame];
+  imageView2 = [(TSDeviceInfoCell *)self imageView];
+  [imageView2 frame];
   v14 = v13;
 
-  v15 = [(TSDeviceInfoCell *)self imageView];
-  [v15 setFrame:{round(v5 - v11 * 0.5), round(v8 - v14 * 0.5), v11, v14}];
+  imageView3 = [(TSDeviceInfoCell *)self imageView];
+  [imageView3 setFrame:{round(v5 - v11 * 0.5), round(v8 - v14 * 0.5), v11, v14}];
 }
 
 @end

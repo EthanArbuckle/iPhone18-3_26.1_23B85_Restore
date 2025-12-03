@@ -1,5 +1,5 @@
 @interface UpdatesLockupCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityCustomContent;
 - (unint64_t)accessibilityTraits;
@@ -7,25 +7,25 @@
 
 @implementation UpdatesLockupCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ProductPageExtension.UpdatesLockupCollectionViewCell" hasInstanceMethod:@"accessibilitytLockupView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ProductPageExtension.UpdatesLockupCollectionViewCell" hasInstanceMethod:@"accessibilityExpandableTextView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ProductPageExtension.UpdatesLockupCollectionViewCell" hasInstanceMethod:@"accessibilityVersionMetadata" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ProductPageExtension.UpdatesLockupCollectionViewCell" hasInstanceMethod:@"accessibilitytLockupView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.UpdatesLockupCollectionViewCell" hasInstanceMethod:@"accessibilityExpandableTextView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.UpdatesLockupCollectionViewCell" hasInstanceMethod:@"accessibilityVersionMetadata" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityCustomContent
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(UpdatesLockupCollectionViewCellAccessibility *)self _accessibilityStringForLabelKeyValues:@"accessibilityExpandableTextView"];
   if ([v4 length])
   {
     v5 = [MEMORY[0x29EDB8058] customContentWithLabel:&stru_2A22AEB68 value:v4];
-    [v3 axSafelyAddObject:v5];
+    [array axSafelyAddObject:v5];
   }
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)accessibilityTraits
@@ -37,20 +37,20 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(UpdatesLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilitytLockupView"];
-  v5 = [v4 _accessibilitySupplementaryFooterViews];
+  _accessibilitySupplementaryFooterViews = [v4 _accessibilitySupplementaryFooterViews];
 
-  if ([v5 count])
+  if ([_accessibilitySupplementaryFooterViews count])
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
-    [v3 axSafelyAddObject:v6];
+    v6 = [_accessibilitySupplementaryFooterViews objectAtIndexedSubscript:0];
+    [array axSafelyAddObject:v6];
   }
 
   v7 = [(UpdatesLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityExpandableTextView"];
-  [v3 axSafelyAddObject:v7];
+  [array axSafelyAddObject:v7];
 
-  return v3;
+  return array;
 }
 
 @end

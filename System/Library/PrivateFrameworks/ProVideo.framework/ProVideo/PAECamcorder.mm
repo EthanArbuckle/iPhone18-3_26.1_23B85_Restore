@@ -1,18 +1,18 @@
 @interface PAECamcorder
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAECamcorder)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAECamcorder)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAECamcorder
 
-- (PAECamcorder)initWithAPIManager:(id)a3
+- (PAECamcorder)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAECamcorder;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -52,7 +52,7 @@
   return v12 & v14 & [v4 addToggleButtonWithName:objc_msgSend(v5 parmId:"localizedStringForKey:value:table:" defaultValue:@"Camcorder::Blur Blue" parmFlags:{0, 0), 12, 0, 0}];
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v8)
@@ -67,18 +67,18 @@
     v31 = 0.0;
     v30 = 0;
     v29 = 0;
-    [v8 getFloatValue:&v37 fromParm:1 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v36 fromParm:2 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v35 fromParm:4 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v34 fromParm:5 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v33 fromParm:7 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v32 fromParm:8 atFxTime:a5->var0.var1];
-    [v9 getFloatValue:&v31 fromParm:9 atFxTime:a5->var0.var1];
-    [v9 getBoolValue:&v30 + 1 fromParm:10 atFxTime:a5->var0.var1];
-    [v9 getBoolValue:&v30 fromParm:11 atFxTime:a5->var0.var1];
-    [v9 getBoolValue:&v29 fromParm:12 atFxTime:a5->var0.var1];
-    var3 = a5->var3;
-    var4 = a5->var4;
+    [v8 getFloatValue:&v37 fromParm:1 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v36 fromParm:2 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v35 fromParm:4 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v34 fromParm:5 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v33 fromParm:7 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v32 fromParm:8 atFxTime:info->var0.var1];
+    [v9 getFloatValue:&v31 fromParm:9 atFxTime:info->var0.var1];
+    [v9 getBoolValue:&v30 + 1 fromParm:10 atFxTime:info->var0.var1];
+    [v9 getBoolValue:&v30 fromParm:11 atFxTime:info->var0.var1];
+    [v9 getBoolValue:&v29 fromParm:12 atFxTime:info->var0.var1];
+    var3 = info->var3;
+    var4 = info->var4;
     v36 = var4 * v36;
     v37 = var3 * v37;
     v34 = var4 * v34;
@@ -86,9 +86,9 @@
     v32 = var4 * v32;
     v33 = var3 * v33;
     v28 = 0;
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -150,7 +150,7 @@
     v25 = *v24;
     v28 = v24;
     (*(v25 + 16))(v24);
-    [a3 setHeliumRef:&v28];
+    [output setHeliumRef:&v28];
     (*(*v24 + 24))(v24);
     (*(*v19 + 24))(v19);
     (*(*v12 + 24))(v12);
@@ -168,15 +168,15 @@
   return 1;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

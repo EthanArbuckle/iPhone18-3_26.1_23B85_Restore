@@ -1,15 +1,15 @@
 @interface OOPASpinnerTitle
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (OOPASpinnerTitle)initWithTitle:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (OOPASpinnerTitle)initWithTitle:(id)title;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation OOPASpinnerTitle
 
-- (OOPASpinnerTitle)initWithTitle:(id)a3
+- (OOPASpinnerTitle)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v12.receiver = self;
   v12.super_class = OOPASpinnerTitle;
   v5 = [(OOPASpinnerTitle *)&v12 initWithFrame:0.0, 0.0, 0.0, 22.0];
@@ -19,7 +19,7 @@
     titleView = v5->_titleView;
     v5->_titleView = v6;
 
-    [(UILabel *)v5->_titleView setText:v4];
+    [(UILabel *)v5->_titleView setText:titleCopy];
     v8 = [UIFont boldSystemFontOfSize:18.0];
     [(UILabel *)v5->_titleView setFont:v8];
 
@@ -42,9 +42,9 @@
   [(OOPASpinnerTitle *)&v3 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_titleView sizeToFit:a3.width];
+  [(UILabel *)self->_titleView sizeToFit:fits.width];
   [(UIActivityIndicatorView *)self->_spinner sizeToFit];
   [(UILabel *)self->_titleView frame];
   v5 = v4;

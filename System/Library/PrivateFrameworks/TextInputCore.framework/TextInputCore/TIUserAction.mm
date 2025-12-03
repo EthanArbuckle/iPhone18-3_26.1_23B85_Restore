@@ -1,8 +1,8 @@
 @interface TIUserAction
-- (TIUserAction)initWithCoder:(id)a3;
-- (TIUserAction)initWithTIKeyboardState:(id)a3;
+- (TIUserAction)initWithCoder:(id)coder;
+- (TIUserAction)initWithTIKeyboardState:(id)state;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIUserAction
@@ -10,45 +10,45 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(TIUserAction *)self documentState];
-  v4 = [v3 contextBeforeInput];
-  v5 = [v2 stringWithFormat:@"%@<>", v4];
+  documentState = [(TIUserAction *)self documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
+  v5 = [v2 stringWithFormat:@"%@<>", contextBeforeInput];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startTime = self->_startTime;
-  v5 = a3;
-  [v5 encodeDouble:@"startTime" forKey:startTime];
-  [v5 encodeDouble:@"endTime" forKey:self->_endTime];
-  [v5 encodeDouble:@"occurenceTime" forKey:self->_occurenceTime];
-  [v5 encodeInt:self->_actionType forKey:@"actionType"];
-  [v5 encodeObject:self->_documentState forKey:@"documentState"];
-  [v5 encodeObject:self->_keyboardState forKey:@"keyboardState"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"startTime" forKey:startTime];
+  [coderCopy encodeDouble:@"endTime" forKey:self->_endTime];
+  [coderCopy encodeDouble:@"occurenceTime" forKey:self->_occurenceTime];
+  [coderCopy encodeInt:self->_actionType forKey:@"actionType"];
+  [coderCopy encodeObject:self->_documentState forKey:@"documentState"];
+  [coderCopy encodeObject:self->_keyboardState forKey:@"keyboardState"];
 }
 
-- (TIUserAction)initWithCoder:(id)a3
+- (TIUserAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = TIUserAction;
   v5 = [(TIUserAction *)&v14 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"startTime"];
+    [coderCopy decodeDoubleForKey:@"startTime"];
     v5->_startTime = v6;
-    [v4 decodeDoubleForKey:@"endTime"];
+    [coderCopy decodeDoubleForKey:@"endTime"];
     v5->_endTime = v7;
-    [v4 decodeDoubleForKey:@"occurenceTime"];
+    [coderCopy decodeDoubleForKey:@"occurenceTime"];
     v5->_occurenceTime = v8;
-    v5->_actionType = [v4 decodeIntForKey:@"actionType"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentState"];
+    v5->_actionType = [coderCopy decodeIntForKey:@"actionType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentState"];
     documentState = v5->_documentState;
     v5->_documentState = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
     keyboardState = v5->_keyboardState;
     v5->_keyboardState = v11;
   }
@@ -56,16 +56,16 @@
   return v5;
 }
 
-- (TIUserAction)initWithTIKeyboardState:(id)a3
+- (TIUserAction)initWithTIKeyboardState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = TIUserAction;
   v6 = [(TIUserAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyboardState, a3);
+    objc_storeStrong(&v6->_keyboardState, state);
     v7->_occurenceTime = -1.0;
   }
 

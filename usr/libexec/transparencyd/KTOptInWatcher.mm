@@ -1,10 +1,10 @@
 @interface KTOptInWatcher
-- (KTOptInWatcher)initWithTargetState:(unint64_t)a3;
+- (KTOptInWatcher)initWithTargetState:(unint64_t)state;
 @end
 
 @implementation KTOptInWatcher
 
-- (KTOptInWatcher)initWithTargetState:(unint64_t)a3
+- (KTOptInWatcher)initWithTargetState:(unint64_t)state
 {
   v8.receiver = self;
   v8.super_class = KTOptInWatcher;
@@ -14,7 +14,7 @@
     v5 = objc_alloc_init(KTCondition);
     [(KTOptInWatcher *)v4 setTargetResolved:v5];
 
-    [(KTOptInWatcher *)v4 setTargetState:a3];
+    [(KTOptInWatcher *)v4 setTargetState:state];
     v6 = v4;
   }
 

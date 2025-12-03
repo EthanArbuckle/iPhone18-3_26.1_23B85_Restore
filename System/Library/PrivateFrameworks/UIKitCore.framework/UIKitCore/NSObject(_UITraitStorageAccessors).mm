@@ -12,10 +12,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a1 _traitStorageList];
-  v6 = [v5 traitStorages];
+  _traitStorageList = [self _traitStorageList];
+  traitStorages = [_traitStorageList traitStorages];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [traitStorages countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -27,14 +27,14 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(traitStorages);
         }
 
         [*(*(&v11 + 1) + 8 * v10++) applyRecordsMatchingTraitCollection:v4];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [traitStorages countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);

@@ -1,25 +1,25 @@
 @interface _CATIDSServiceTransportSendMessageOperation
-- (_CATIDSServiceTransportSendMessageOperation)initWithConnection:(id)a3 message:(id)a4;
+- (_CATIDSServiceTransportSendMessageOperation)initWithConnection:(id)connection message:(id)message;
 - (void)cancel;
-- (void)didSendDataWithError:(id)a3;
+- (void)didSendDataWithError:(id)error;
 - (void)main;
 - (void)sendData;
 @end
 
 @implementation _CATIDSServiceTransportSendMessageOperation
 
-- (_CATIDSServiceTransportSendMessageOperation)initWithConnection:(id)a3 message:(id)a4
+- (_CATIDSServiceTransportSendMessageOperation)initWithConnection:(id)connection message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = _CATIDSServiceTransportSendMessageOperation;
   v9 = [(CATOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mConnection, a3);
-    objc_storeStrong(&v10->mMessage, a4);
+    objc_storeStrong(&v9->mConnection, connection);
+    objc_storeStrong(&v10->mMessage, message);
   }
 
   return v10;
@@ -92,17 +92,17 @@
   }
 }
 
-- (void)didSendDataWithError:(id)a3
+- (void)didSendDataWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
   if ([(CATOperation *)self isExecuting])
   {
-    if (v5)
+    if (errorCopy)
     {
-      [(CATOperation *)self endOperationWithError:v5];
+      [(CATOperation *)self endOperationWithError:errorCopy];
     }
 
     else

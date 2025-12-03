@@ -1,5 +1,5 @@
 @interface PXSharedLibraryAssistantCameraHeaderView
-- (PXSharedLibraryAssistantCameraHeaderView)initWithFrame:(CGRect)a3;
+- (PXSharedLibraryAssistantCameraHeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -36,17 +36,17 @@
   [(UIView *)self->_cameraView setFrame:50.0, v8, v4, v5];
 }
 
-- (PXSharedLibraryAssistantCameraHeaderView)initWithFrame:(CGRect)a3
+- (PXSharedLibraryAssistantCameraHeaderView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = PXSharedLibraryAssistantCameraHeaderView;
-  v3 = [(PXSharedLibraryAssistantCameraHeaderView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXSharedLibraryAssistantCameraHeaderView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (PLPhysicalDeviceIsIPad())
     {
       v4 = MEMORY[0x1E69DCAB8];
-      v5 = [MEMORY[0x1E696AAE8] px_sharedLibraryBundle];
+      px_sharedLibraryBundle = [MEMORY[0x1E696AAE8] px_sharedLibraryBundle];
       v6 = @"SharedLibraryAssistantCameraPad";
     }
 
@@ -54,7 +54,7 @@
     {
       v7 = PLHasHomeButton();
       v4 = MEMORY[0x1E69DCAB8];
-      v5 = [MEMORY[0x1E696AAE8] px_sharedLibraryBundle];
+      px_sharedLibraryBundle = [MEMORY[0x1E696AAE8] px_sharedLibraryBundle];
       if (v7)
       {
         v6 = @"SharedLibraryAssistantCameraLegacy";
@@ -66,7 +66,7 @@
       }
     }
 
-    v8 = [v4 px_imageNamed:v6 bundle:v5];
+    v8 = [v4 px_imageNamed:v6 bundle:px_sharedLibraryBundle];
 
     v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
     v10 = objc_alloc(MEMORY[0x1E69DD250]);

@@ -1,32 +1,32 @@
 @interface ICRemoteDocCamViewController
-- (ICRemoteDocCamViewController)initWithImageCache:(id)a3;
+- (ICRemoteDocCamViewController)initWithImageCache:(id)cache;
 - (ICRemoteDocCamViewControllerDelegate)delegate;
-- (id)makeAlertControllerForError:(id)a3;
+- (id)makeAlertControllerForError:(id)error;
 - (id)makeDevicesAlertController;
 - (id)makeNoDevicesAlertController;
-- (id)makeProgressAlertControllerForDevice:(id)a3;
-- (id)progressAlertMessageForDevice:(id)a3;
+- (id)makeProgressAlertControllerForDevice:(id)device;
+- (id)progressAlertMessageForDevice:(id)device;
 - (uint64_t)viewDidLoad;
 - (void)cancelSidecarRequest;
-- (void)makeSidecarRequestToDevice:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)makeSidecarRequestToDevice:(id)device;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)sidecarRequestDidFinish;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation ICRemoteDocCamViewController
 
-- (ICRemoteDocCamViewController)initWithImageCache:(id)a3
+- (ICRemoteDocCamViewController)initWithImageCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v9.receiver = self;
   v9.super_class = ICRemoteDocCamViewController;
   v6 = [(ICRemoteDocCamViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageCache, a3);
+    objc_storeStrong(&v6->_imageCache, cache);
   }
 
   return v7;
@@ -77,9 +77,9 @@
   _Block_object_dispose(&v17, 8);
   if (!v5)
   {
-    v10 = [ICRemoteDocCamViewController viewDidLoad];
+    viewDidLoad = [ICRemoteDocCamViewController viewDidLoad];
     _Block_object_dispose(&v17, 8);
-    _Unwind_Resume(v10);
+    _Unwind_Resume(viewDidLoad);
   }
 
   v8 = *v5;
@@ -87,9 +87,9 @@
   [(ICRemoteDocCamViewController *)self setSidecarService:v9];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -98,7 +98,7 @@
 
   v7.receiver = self;
   v7.super_class = ICRemoteDocCamViewController;
-  [(ICRemoteDocCamViewController *)&v7 viewDidAppear:v3];
+  [(ICRemoteDocCamViewController *)&v7 viewDidAppear:appearCopy];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__ICRemoteDocCamViewController_viewDidAppear___block_invoke;
@@ -185,12 +185,12 @@ void __60__ICRemoteDocCamViewController_makeNoDevicesAlertController__block_invo
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = self;
-  v7 = [(ICRemoteDocCamViewController *)self sidecarService];
-  v8 = [v7 devices];
+  selfCopy = self;
+  sidecarService = [(ICRemoteDocCamViewController *)self sidecarService];
+  devices = [sidecarService devices];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  obj = devices;
+  v9 = [devices countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -207,14 +207,14 @@ void __60__ICRemoteDocCamViewController_makeNoDevicesAlertController__block_invo
 
         v14 = *(*(&v27 + 1) + 8 * i);
         v15 = MEMORY[0x277D750F8];
-        v16 = [v14 name];
+        name = [v14 name];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __58__ICRemoteDocCamViewController_makeDevicesAlertController__block_invoke;
         v26[3] = &unk_278F92DC0;
-        v26[4] = v6;
+        v26[4] = selfCopy;
         v26[5] = v14;
-        v17 = [v15 actionWithTitle:v16 style:0 handler:v26];
+        v17 = [v15 actionWithTitle:name style:0 handler:v26];
         v4 = v13;
         [v13 addAction:v17];
       }
@@ -231,19 +231,19 @@ void __60__ICRemoteDocCamViewController_makeNoDevicesAlertController__block_invo
   v25[1] = 3221225472;
   v25[2] = __58__ICRemoteDocCamViewController_makeDevicesAlertController__block_invoke_2;
   v25[3] = &unk_278F92E60;
-  v25[4] = v6;
+  v25[4] = selfCopy;
   v20 = [v18 actionWithTitle:v19 style:1 handler:v25];
   [v4 addAction:v20];
 
   return v4;
 }
 
-- (id)progressAlertMessageForDevice:(id)a3
+- (id)progressAlertMessageForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 deviceType];
+  deviceCopy = device;
+  deviceType = [deviceCopy deviceType];
   v5 = [MEMORY[0x277CE1CB8] importedTypeWithIdentifier:@"com.apple.iphone"];
-  v6 = [v4 conformsToType:v5];
+  v6 = [deviceType conformsToType:v5];
 
   if (v6)
   {
@@ -252,9 +252,9 @@ void __60__ICRemoteDocCamViewController_makeNoDevicesAlertController__block_invo
 
   else
   {
-    v8 = [v3 deviceType];
+    deviceType2 = [deviceCopy deviceType];
     v9 = [MEMORY[0x277CE1CB8] importedTypeWithIdentifier:@"com.apple.ipad"];
-    v10 = [v8 conformsToType:v9];
+    v10 = [deviceType2 conformsToType:v9];
 
     if (v10)
     {
@@ -263,9 +263,9 @@ void __60__ICRemoteDocCamViewController_makeNoDevicesAlertController__block_invo
 
     else
     {
-      v11 = [v3 deviceType];
+      deviceType3 = [deviceCopy deviceType];
       v12 = [MEMORY[0x277CE1CB8] importedTypeWithIdentifier:@"com.apple.ipod"];
-      v13 = [v11 conformsToType:v12];
+      v13 = [deviceType3 conformsToType:v12];
 
       if (v13)
       {
@@ -284,15 +284,15 @@ void __60__ICRemoteDocCamViewController_makeNoDevicesAlertController__block_invo
   return v14;
 }
 
-- (id)makeProgressAlertControllerForDevice:(id)a3
+- (id)makeProgressAlertControllerForDevice:(id)device
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [DCLocalization localizedStringForKey:@"Scanning Document with “%@”…" value:@"Scanning Document with “%@”…" table:@"Localizable"];
-  v7 = [v5 name];
-  v8 = [v4 localizedStringWithFormat:v6, v7];
+  name = [deviceCopy name];
+  v8 = [v4 localizedStringWithFormat:v6, name];
 
-  v9 = [(ICRemoteDocCamViewController *)self progressAlertMessageForDevice:v5];
+  v9 = [(ICRemoteDocCamViewController *)self progressAlertMessageForDevice:deviceCopy];
 
   v10 = [MEMORY[0x277D75110] alertControllerWithTitle:v8 message:v9 preferredStyle:1];
   v11 = [MEMORY[0x277D755B8] systemImageNamed:@"ipad.and.iphone"];
@@ -317,12 +317,12 @@ void __69__ICRemoteDocCamViewController_makeProgressAlertControllerForDevice___b
   [v2 remoteDocumentCameraControllerDidCancel:*(a1 + 32)];
 }
 
-- (id)makeAlertControllerForError:(id)a3
+- (id)makeAlertControllerForError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277D75110];
-  v6 = [v4 localizedDescription];
-  v7 = [v5 alertControllerWithTitle:v6 message:0 preferredStyle:1];
+  localizedDescription = [errorCopy localizedDescription];
+  v7 = [v5 alertControllerWithTitle:localizedDescription message:0 preferredStyle:1];
 
   v8 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle"];
   [v7 setImage:v8];
@@ -333,11 +333,11 @@ void __69__ICRemoteDocCamViewController_makeProgressAlertControllerForDevice___b
   v15 = 3221225472;
   v16 = __60__ICRemoteDocCamViewController_makeAlertControllerForError___block_invoke;
   v17 = &unk_278F92DC0;
-  v18 = self;
-  v19 = v4;
-  v11 = v4;
+  selfCopy = self;
+  v19 = errorCopy;
+  v11 = errorCopy;
   v12 = [v9 actionWithTitle:v10 style:1 handler:&v14];
-  [v7 addAction:{v12, v14, v15, v16, v17, v18}];
+  [v7 addAction:{v12, v14, v15, v16, v17, selfCopy}];
 
   return v7;
 }
@@ -348,23 +348,23 @@ void __60__ICRemoteDocCamViewController_makeAlertControllerForError___block_invo
   [v2 remoteDocumentCameraController:*(a1 + 32) didFailWithError:*(a1 + 40)];
 }
 
-- (void)makeSidecarRequestToDevice:(id)a3
+- (void)makeSidecarRequestToDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICRemoteDocCamViewController makeSidecarRequestToDevice:];
   }
 
-  v6 = [(ICRemoteDocCamViewController *)self makeProgressAlertControllerForDevice:v4];
+  v6 = [(ICRemoteDocCamViewController *)self makeProgressAlertControllerForDevice:deviceCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__ICRemoteDocCamViewController_makeSidecarRequestToDevice___block_invoke;
   v8[3] = &unk_278F92DE8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = deviceCopy;
+  v7 = deviceCopy;
   [(ICRemoteDocCamViewController *)self presentViewController:v6 animated:1 completion:v8];
 }
 
@@ -390,7 +390,7 @@ void __59__ICRemoteDocCamViewController_makeSidecarRequestToDevice___block_invok
 
 - (void)cancelSidecarRequest
 {
-  v1 = [a1 sidecarRequest];
+  sidecarRequest = [self sidecarRequest];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_1(&dword_249253000, v2, v3, "Canceling sidecar request… {request: %@}", v4, v5, v6, v7, v8);
 }
@@ -413,8 +413,8 @@ void __52__ICRemoteDocCamViewController_cancelSidecarRequest__block_invoke(uint6
 
 - (void)sidecarRequestDidFinish
 {
-  v1 = [a1 sidecarRequest];
-  v2 = [v1 error];
+  sidecarRequest = [self sidecarRequest];
+  error = [sidecarRequest error];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_1(&dword_249253000, v3, v4, "Sidecar request finished {error: %@}", v5, v6, v7, v8, v9);
 }
@@ -486,17 +486,17 @@ void __55__ICRemoteDocCamViewController_sidecarRequestDidFinish__block_invoke_69
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (a6 == &ICRemoteViewControllerKVOContext)
+  pathCopy = path;
+  if (context == &ICRemoteViewControllerKVOContext)
   {
-    v12 = a4;
-    v13 = [(ICRemoteDocCamViewController *)self sidecarRequest];
+    objectCopy = object;
+    sidecarRequest = [(ICRemoteDocCamViewController *)self sidecarRequest];
 
-    if (v13 == v12)
+    if (sidecarRequest == objectCopy)
     {
-      v14 = [v10 isEqualToString:@"finished"];
+      v14 = [pathCopy isEqualToString:@"finished"];
 
       if (v14)
       {
@@ -518,8 +518,8 @@ void __55__ICRemoteDocCamViewController_sidecarRequestDidFinish__block_invoke_69
   {
     v15.receiver = self;
     v15.super_class = ICRemoteDocCamViewController;
-    v11 = a4;
-    [(ICRemoteDocCamViewController *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:a5 context:a6];
+    objectCopy2 = object;
+    [(ICRemoteDocCamViewController *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy2 change:change context:context];
   }
 }
 

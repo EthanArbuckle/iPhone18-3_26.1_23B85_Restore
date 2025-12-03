@@ -1,30 +1,30 @@
 @interface CTSubscriberAuthDataHolder
-- (BOOL)isEqual:(id)a3;
-- (CTSubscriberAuthDataHolder)initWithCoder:(id)a3;
-- (CTSubscriberAuthDataHolder)initWithData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CTSubscriberAuthDataHolder)initWithCoder:(id)coder;
+- (CTSubscriberAuthDataHolder)initWithData:(id)data;
 @end
 
 @implementation CTSubscriberAuthDataHolder
 
-- (CTSubscriberAuthDataHolder)initWithData:(id)a3
+- (CTSubscriberAuthDataHolder)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = CTSubscriberAuthDataHolder;
   v6 = [(CTSubscriberAuthDataHolder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dict, a3);
+    objc_storeStrong(&v6->_dict, data);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -34,18 +34,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CTSubscriberAuthDataHolder *)self dict];
-      v6 = [(CTSubscriberAuthDataHolder *)v4 dict];
-      if (v5 == v6)
+      dict = [(CTSubscriberAuthDataHolder *)self dict];
+      dict2 = [(CTSubscriberAuthDataHolder *)equalCopy dict];
+      if (dict == dict2)
       {
         v9 = 1;
       }
 
       else
       {
-        v7 = [(CTSubscriberAuthDataHolder *)self dict];
-        v8 = [(CTSubscriberAuthDataHolder *)v4 dict];
-        v9 = [v7 isEqualToDictionary:v8];
+        dict3 = [(CTSubscriberAuthDataHolder *)self dict];
+        dict4 = [(CTSubscriberAuthDataHolder *)equalCopy dict];
+        v9 = [dict3 isEqualToDictionary:dict4];
       }
     }
 
@@ -58,9 +58,9 @@
   return v9;
 }
 
-- (CTSubscriberAuthDataHolder)initWithCoder:(id)a3
+- (CTSubscriberAuthDataHolder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CTSubscriberAuthDataHolder *)self initWithData:0];
   if (v5)
   {
@@ -68,7 +68,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"dict"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"dict"];
     dict = v5->_dict;
     v5->_dict = v10;
   }

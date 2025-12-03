@@ -1,23 +1,23 @@
 @interface JFXFaceTrackingPlaybackUtilities
-+ (void)arDataForPlaybackElement:(id)a3 atPlaybackTime:(id *)a4 completion:(id)a5;
++ (void)arDataForPlaybackElement:(id)element atPlaybackTime:(id *)time completion:(id)completion;
 @end
 
 @implementation JFXFaceTrackingPlaybackUtilities
 
-+ (void)arDataForPlaybackElement:(id)a3 atPlaybackTime:(id *)a4 completion:(id)a5
++ (void)arDataForPlaybackElement:(id)element atPlaybackTime:(id *)time completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  completionCopy = completion;
   v9 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__JFXFaceTrackingPlaybackUtilities_arDataForPlaybackElement_atPlaybackTime_completion___block_invoke;
   block[3] = &unk_278D7A0C8;
-  v13 = v7;
-  v14 = v8;
-  v15 = *a4;
-  v10 = v8;
-  v11 = v7;
+  v13 = elementCopy;
+  v14 = completionCopy;
+  v15 = *time;
+  v10 = completionCopy;
+  v11 = elementCopy;
   dispatch_async(v9, block);
 }
 

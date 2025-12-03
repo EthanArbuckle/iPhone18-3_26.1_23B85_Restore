@@ -8,9 +8,9 @@
 {
   v3 = objc_opt_new();
   [v3 setScheme:@"tel"];
-  v4 = [(SearchUICommandHandler *)self command];
-  v5 = [v4 phoneNumber];
-  [v3 setPath:v5];
+  command = [(SearchUICommandHandler *)self command];
+  phoneNumber = [command phoneNumber];
+  [v3 setPath:phoneNumber];
 
   v6 = MEMORY[0x1E69CA320];
   v7 = [v3 URL];

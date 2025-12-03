@@ -1,34 +1,34 @@
 @interface CMFBlockedContactsCache
-- (BOOL)isItemBlocked:(id)a3;
+- (BOOL)isItemBlocked:(id)blocked;
 - (CMFBlockedContactsCache)init;
-- (CMFBlockedContactsCache)initWithBlocklist:(id)a3;
-- (id)associatedContacts:(id)a3;
+- (CMFBlockedContactsCache)initWithBlocklist:(id)blocklist;
+- (id)associatedContacts:(id)contacts;
 - (id)getBlockedCache;
-- (void)updateCacheWithBlocklist:(id)a3;
+- (void)updateCacheWithBlocklist:(id)blocklist;
 @end
 
 @implementation CMFBlockedContactsCache
 
-- (CMFBlockedContactsCache)initWithBlocklist:(id)a3
+- (CMFBlockedContactsCache)initWithBlocklist:(id)blocklist
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(blocklist);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   return sub_10000480C(sub_10000A2C8, v4);
 }
 
-- (void)updateCacheWithBlocklist:(id)a3
+- (void)updateCacheWithBlocklist:(id)blocklist
 {
   sub_10000A2D0(0, &qword_10001CFF8, CommunicationFilterItem_ptr);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1000056DC(v4);
 }
 
-- (BOOL)isItemBlocked:(id)a3
+- (BOOL)isItemBlocked:(id)blocked
 {
-  v4 = a3;
-  v5 = self;
+  blockedCopy = blocked;
+  selfCopy = self;
   LOBYTE(self) = sub_1000062DC();
 
   return self & 1;
@@ -36,7 +36,7 @@
 
 - (id)getBlockedCache
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000064A4();
 
   sub_10000A2D0(0, &qword_10001CFF8, CommunicationFilterItem_ptr);
@@ -52,11 +52,11 @@
   return result;
 }
 
-- (id)associatedContacts:(id)a3
+- (id)associatedContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000072D0(v4);
+  contactsCopy = contacts;
+  selfCopy = self;
+  sub_1000072D0(contactsCopy);
   v7 = v6;
 
   return v7;

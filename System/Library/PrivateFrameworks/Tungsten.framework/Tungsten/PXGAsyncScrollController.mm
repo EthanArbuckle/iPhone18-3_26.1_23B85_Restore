@@ -5,16 +5,16 @@
 - (CGSize)presentedContentSize;
 - (CGSize)referenceSize;
 - (PXGAsyncScrollController)init;
-- (PXGAsyncScrollController)initWithQueue:(id)a3;
+- (PXGAsyncScrollController)initWithQueue:(id)queue;
 - (PXScrollControllerUpdateDelegate)updateDelegate;
 - (UIEdgeInsets)contentInset;
 - (void)didScroll;
-- (void)setIsActive:(BOOL)a3;
+- (void)setIsActive:(BOOL)active;
 - (void)setNeedsUpdate;
-- (void)setReferenceSize:(CGSize)a3;
-- (void)setUpdateDelegate:(id)a3;
-- (void)setVisibleOrigin:(CGPoint)a3;
-- (void)setVisibleRect:(CGRect)a3;
+- (void)setReferenceSize:(CGSize)size;
+- (void)setUpdateDelegate:(id)delegate;
+- (void)setVisibleOrigin:(CGPoint)origin;
+- (void)setVisibleRect:(CGRect)rect;
 - (void)updateIfNeeded;
 @end
 
@@ -101,8 +101,8 @@
 {
   if (self->_delegateRespondsToDidScroll)
   {
-    v4 = [(PXGAsyncScrollController *)self updateDelegate];
-    [v4 px_scrollControllerDidScroll:self];
+    updateDelegate = [(PXGAsyncScrollController *)self updateDelegate];
+    [updateDelegate px_scrollControllerDidScroll:self];
   }
 }
 
@@ -111,8 +111,8 @@
   if (self->_needsUpdate && [(PXGAsyncScrollController *)self isActive])
   {
     self->_needsUpdate = 0;
-    v3 = [(PXGAsyncScrollController *)self updateDelegate];
-    [v3 px_scrollControllerDidUpdate:self];
+    updateDelegate = [(PXGAsyncScrollController *)self updateDelegate];
+    [updateDelegate px_scrollControllerDidUpdate:self];
   }
 }
 
@@ -137,13 +137,13 @@ void __42__PXGAsyncScrollController_setNeedsUpdate__block_invoke(uint64_t a1)
   [WeakRetained updateIfNeeded];
 }
 
-- (void)setVisibleRect:(CGRect)a3
+- (void)setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_visibleRect, a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(self->_visibleRect, rect))
   {
     self->_visibleRect.origin.x = x;
     self->_visibleRect.origin.y = y;
@@ -154,29 +154,29 @@ void __42__PXGAsyncScrollController_setNeedsUpdate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setVisibleOrigin:(CGPoint)a3
+- (void)setVisibleOrigin:(CGPoint)origin
 {
-  y = a3.y;
-  x = a3.x;
+  y = origin.y;
+  x = origin.x;
   [(PXGAsyncScrollController *)self visibleRect];
 
   [(PXGAsyncScrollController *)self setVisibleRect:x, y];
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     [(PXGAsyncScrollController *)self setNeedsUpdate];
   }
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  if (self->_referenceSize.width != a3.width || self->_referenceSize.height != a3.height)
+  if (self->_referenceSize.width != size.width || self->_referenceSize.height != size.height)
   {
-    self->_referenceSize = a3;
+    self->_referenceSize = size;
     [(PXGAsyncScrollController *)self visibleRect];
     [(PXGAsyncScrollController *)self setVisibleRect:?];
 
@@ -184,9 +184,9 @@ void __42__PXGAsyncScrollController_setNeedsUpdate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setUpdateDelegate:(id)a3
+- (void)setUpdateDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_updateDelegate);
 
   if (WeakRetained != obj)
@@ -198,22 +198,22 @@ void __42__PXGAsyncScrollController_setNeedsUpdate__block_invoke(uint64_t a1)
 
 - (PXGAsyncScrollController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGAsyncScrollController.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXGAsyncScrollController init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAsyncScrollController.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXGAsyncScrollController init]"}];
 
   abort();
 }
 
-- (PXGAsyncScrollController)initWithQueue:(id)a3
+- (PXGAsyncScrollController)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = PXGAsyncScrollController;
   v6 = [(PXGAsyncScrollController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v7->_isActive = 1;
   }
 

@@ -1,9 +1,9 @@
 @interface PBBProtoGizmoActivationFailed
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
+- (void)mergeFrom:(id)from;
 @end
 
 @implementation PBBProtoGizmoActivationFailed
@@ -14,42 +14,42 @@
   v8.receiver = self;
   v8.super_class = PBBProtoGizmoActivationFailed;
   v4 = [(PBBProtoGizmoActivationFailed *)&v8 description];
-  v5 = [(PBBProtoGizmoActivationFailed *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoGizmoActivationFailed *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   failureDescription = self->_failureDescription;
   if (failureDescription)
   {
-    [v3 setObject:failureDescription forKey:@"failureDescription"];
+    [dictionary setObject:failureDescription forKey:@"failureDescription"];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_failureDescription copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_failureDescription copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     failureDescription = self->_failureDescription;
-    if (failureDescription | v4[1])
+    if (failureDescription | equalCopy[1])
     {
       v6 = [(NSString *)failureDescription isEqual:?];
     }
@@ -68,9 +68,9 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(PBBProtoGizmoActivationFailed *)self setFailureDescription:?];
   }

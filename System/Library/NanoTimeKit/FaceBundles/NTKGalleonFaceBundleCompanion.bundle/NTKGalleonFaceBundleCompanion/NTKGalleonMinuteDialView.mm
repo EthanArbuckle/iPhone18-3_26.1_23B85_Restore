@@ -1,16 +1,16 @@
 @interface NTKGalleonMinuteDialView
-+ (id)_newLabelViewWithDevice:(id)a3;
-- (NTKGalleonMinuteDialView)initWithDevice:(id)a3;
-- (void)galleon_setPalette:(id)a3;
-- (void)galleon_setProgress:(double)a3;
++ (id)_newLabelViewWithDevice:(id)device;
+- (NTKGalleonMinuteDialView)initWithDevice:(id)device;
+- (void)galleon_setPalette:(id)palette;
+- (void)galleon_setProgress:(double)progress;
 @end
 
 @implementation NTKGalleonMinuteDialView
 
-- (NTKGalleonMinuteDialView)initWithDevice:(id)a3
+- (NTKGalleonMinuteDialView)initWithDevice:(id)device
 {
-  v5 = a3;
-  objc_storeStrong(&self->_device, a3);
+  deviceCopy = device;
+  objc_storeStrong(&self->_device, device);
   v81 = 0;
   v79 = 0u;
   v80 = 0u;
@@ -75,24 +75,24 @@
   return v10;
 }
 
-- (void)galleon_setPalette:(id)a3
+- (void)galleon_setPalette:(id)palette
 {
-  v4 = a3;
-  v28 = objc_msgSend_outerTimeLabelColor(v4, v5, v6, v7);
+  paletteCopy = palette;
+  v28 = objc_msgSend_outerTimeLabelColor(paletteCopy, v5, v6, v7);
   objc_msgSend_setTintColor_(self->_labelView, v8, v28, v9);
-  v13 = objc_msgSend_outerTimeMajorTickColor(v4, v10, v11, v12);
+  v13 = objc_msgSend_outerTimeMajorTickColor(paletteCopy, v10, v11, v12);
   objc_msgSend_setTintColor_(self->_labelTickView, v14, v13, v15);
-  v19 = objc_msgSend_outerTimeMinorTickColor(v4, v16, v17, v18);
+  v19 = objc_msgSend_outerTimeMinorTickColor(paletteCopy, v16, v17, v18);
   objc_msgSend_setTintColor_(self->_minorTickView, v20, v19, v21);
-  v25 = objc_msgSend_outerTimeMedialTickColor(v4, v22, v23, v24);
+  v25 = objc_msgSend_outerTimeMedialTickColor(paletteCopy, v22, v23, v24);
 
   objc_msgSend_setTintColor_(self->_majorTickView, v26, v25, v27);
 }
 
-- (void)galleon_setProgress:(double)a3
+- (void)galleon_setProgress:(double)progress
 {
-  v6 = 1.0 - a3;
-  objc_msgSend_galleon_setProgress_(self->_minorTickView, a2, v3, v4, 1.0 - a3);
+  v6 = 1.0 - progress;
+  objc_msgSend_galleon_setProgress_(self->_minorTickView, a2, v3, v4, 1.0 - progress);
   objc_msgSend_galleon_setProgress_(self->_majorTickView, v7, v8, v9, v6);
   objc_msgSend_galleon_setProgress_(self->_labelTickView, v10, v11, v12, v6);
   labelView = self->_labelView;
@@ -100,10 +100,10 @@
   objc_msgSend_galleon_setProgress_(labelView, v13, v14, v15, v6);
 }
 
-+ (id)_newLabelViewWithDevice:(id)a3
++ (id)_newLabelViewWithDevice:(id)device
 {
   v62 = *MEMORY[0x277D85DE8];
-  v51 = a3;
+  deviceCopy = device;
   v3 = objc_opt_new();
   objc_msgSend_setMinimumIntegerDigits_(v3, v4, 2, v5);
   v53 = objc_msgSend_stringFromNumber_(v3, v6, &unk_284EA7A88, v7);
@@ -139,7 +139,7 @@
   v55 = 0u;
   v56 = 0u;
   memset(v54, 0, sizeof(v54));
-  _NTKGalleonLayoutConstants(v51, v54);
+  _NTKGalleonLayoutConstants(deviceCopy, v54);
 
   v41 = *v54;
   v42 = *(&v55 + 1);

@@ -1,13 +1,13 @@
 @interface PKProvisioningAssetManager
 + (id)sharedInstance;
 - (PKProvisioningAssetManager)init;
-- (id)_assetNameWithScreenScalingSuffix:(id)a3;
-- (id)_carPairingImageFromBundle:(id)a3 darkMode:(BOOL)a4;
-- (id)provisioningString:(id)a3 templateIdentifier:(id)a4;
-- (void)_defaultCarPairingImage:(unint64_t)a3 darkMode:(BOOL)a4 completion:(id)a5;
-- (void)_defaultCardArtwork:(id)a3;
-- (void)carPairingImageForRadioTechnology:(unint64_t)a3 templateIdentifier:(id)a4 darkMode:(BOOL)a5 completion:(id)a6;
-- (void)cardArtworkForTemplateIdentifier:(id)a3 completion:(id)a4;
+- (id)_assetNameWithScreenScalingSuffix:(id)suffix;
+- (id)_carPairingImageFromBundle:(id)bundle darkMode:(BOOL)mode;
+- (id)provisioningString:(id)string templateIdentifier:(id)identifier;
+- (void)_defaultCarPairingImage:(unint64_t)image darkMode:(BOOL)mode completion:(id)completion;
+- (void)_defaultCardArtwork:(id)artwork;
+- (void)carPairingImageForRadioTechnology:(unint64_t)technology templateIdentifier:(id)identifier darkMode:(BOOL)mode completion:(id)completion;
+- (void)cardArtworkForTemplateIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation PKProvisioningAssetManager
@@ -46,14 +46,14 @@ void __44__PKProvisioningAssetManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)carPairingImageForRadioTechnology:(unint64_t)a3 templateIdentifier:(id)a4 darkMode:(BOOL)a5 completion:(id)a6
+- (void)carPairingImageForRadioTechnology:(unint64_t)technology templateIdentifier:(id)identifier darkMode:(BOOL)mode completion:(id)completion
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  if (v10)
+  modeCopy = mode;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (identifierCopy)
   {
-    if ((a3 & 2) != 0)
+    if ((technology & 2) != 0)
     {
       v12 = @"CarPairingUWB";
     }
@@ -70,15 +70,15 @@ void __44__PKProvisioningAssetManager_sharedInstance__block_invoke()
     v15[2] = __103__PKProvisioningAssetManager_carPairingImageForRadioTechnology_templateIdentifier_darkMode_completion___block_invoke;
     v15[3] = &unk_1E79D0138;
     v15[4] = self;
-    v18 = v7;
-    v16 = v11;
-    v17 = a3;
-    [v14 dynamicAssetWithIdentifier:v10 mappedIdentifierPrefix:v13 parameters:0 timeout:10 completion:v15];
+    v18 = modeCopy;
+    v16 = completionCopy;
+    technologyCopy = technology;
+    [v14 dynamicAssetWithIdentifier:identifierCopy mappedIdentifierPrefix:v13 parameters:0 timeout:10 completion:v15];
   }
 
   else
   {
-    [(PKProvisioningAssetManager *)self _defaultCarPairingImage:a3 darkMode:v7 completion:v11];
+    [(PKProvisioningAssetManager *)self _defaultCarPairingImage:technology darkMode:modeCopy completion:completionCopy];
   }
 }
 
@@ -96,25 +96,25 @@ void __103__PKProvisioningAssetManager_carPairingImageForRadioTechnology_templat
   }
 }
 
-- (void)cardArtworkForTemplateIdentifier:(id)a3 completion:(id)a4
+- (void)cardArtworkForTemplateIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (identifier)
   {
-    v7 = [@"CardArtwork" stringByAppendingFormat:@"_%@", a3];
+    identifier = [@"CardArtwork" stringByAppendingFormat:@"_%@", identifier];
     v8 = _mobileAssetManager;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __74__PKProvisioningAssetManager_cardArtworkForTemplateIdentifier_completion___block_invoke;
     v9[3] = &unk_1E79C84E0;
     v9[4] = self;
-    v10 = v6;
-    [v8 dynamicAssetWithIdentifier:v7 parameters:0 timeout:10 completion:v9];
+    v10 = completionCopy;
+    [v8 dynamicAssetWithIdentifier:identifier parameters:0 timeout:10 completion:v9];
   }
 
   else
   {
-    [(PKProvisioningAssetManager *)self _defaultCardArtwork:v6];
+    [(PKProvisioningAssetManager *)self _defaultCardArtwork:completionCopy];
   }
 }
 
@@ -141,16 +141,16 @@ void __74__PKProvisioningAssetManager_cardArtworkForTemplateIdentifier_completio
   }
 }
 
-- (id)provisioningString:(id)a3 templateIdentifier:(id)a4
+- (id)provisioningString:(id)string templateIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  stringCopy = string;
+  identifierCopy = identifier;
+  if (stringCopy)
   {
     v7 = [_mobileAssetManager cachedStringsBundleWithIdentifier:@"Provisioning"];
-    if (!v6 || ([(NSString *)v5 stringByAppendingFormat:@"_%@", v6], v8 = objc_claimAutoreleasedReturnValue(), PKLocalizedStringInMobileAssetsStringsBundle(v8, v7, 0), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+    if (!identifierCopy || ([(NSString *)stringCopy stringByAppendingFormat:@"_%@", identifierCopy], v8 = objc_claimAutoreleasedReturnValue(), PKLocalizedStringInMobileAssetsStringsBundle(v8, v7, 0), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
     {
-      v9 = PKLocalizedStringInMobileAssetsStringsBundle(v5, v7, 0);
+      v9 = PKLocalizedStringInMobileAssetsStringsBundle(stringCopy, v7, 0);
     }
   }
 
@@ -162,17 +162,17 @@ void __74__PKProvisioningAssetManager_cardArtworkForTemplateIdentifier_completio
   return v9;
 }
 
-- (void)_defaultCarPairingImage:(unint64_t)a3 darkMode:(BOOL)a4 completion:(id)a5
+- (void)_defaultCarPairingImage:(unint64_t)image darkMode:(BOOL)mode completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
+  imageCopy = image;
+  completionCopy = completion;
   v9 = _mobileAssetManager;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__PKProvisioningAssetManager__defaultCarPairingImage_darkMode_completion___block_invoke;
   v12[3] = &unk_1E79D0160;
-  v14 = a4;
-  if ((v6 & 2) != 0)
+  modeCopy = mode;
+  if ((imageCopy & 2) != 0)
   {
     v10 = @"CarPairingUWB";
   }
@@ -183,8 +183,8 @@ void __74__PKProvisioningAssetManager_cardArtworkForTemplateIdentifier_completio
   }
 
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [v9 dynamicAssetWithIdentifier:v10 parameters:0 timeout:10 completion:v12];
 }
 
@@ -200,16 +200,16 @@ void __74__PKProvisioningAssetManager__defaultCarPairingImage_darkMode_completio
   }
 }
 
-- (void)_defaultCardArtwork:(id)a3
+- (void)_defaultCardArtwork:(id)artwork
 {
-  v3 = a3;
+  artworkCopy = artwork;
   v4 = _mobileAssetManager;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__PKProvisioningAssetManager__defaultCardArtwork___block_invoke;
   v6[3] = &unk_1E79D0188;
-  v7 = v3;
-  v5 = v3;
+  v7 = artworkCopy;
+  v5 = artworkCopy;
   [v4 dynamicAssetWithIdentifier:@"GenericCardArtwork" parameters:0 timeout:10 completion:v6];
 }
 
@@ -237,11 +237,11 @@ void __50__PKProvisioningAssetManager__defaultCardArtwork___block_invoke(uint64_
   }
 }
 
-- (id)_carPairingImageFromBundle:(id)a3 darkMode:(BOOL)a4
+- (id)_carPairingImageFromBundle:(id)bundle darkMode:(BOOL)mode
 {
-  if (a3)
+  if (bundle)
   {
-    if (a4)
+    if (mode)
     {
       v5 = @"dark";
     }
@@ -251,9 +251,9 @@ void __50__PKProvisioningAssetManager__defaultCardArtwork___block_invoke(uint64_
       v5 = @"light";
     }
 
-    v6 = a3;
+    bundleCopy = bundle;
     v7 = [(PKProvisioningAssetManager *)self _assetNameWithScreenScalingSuffix:v5];
-    v8 = [v6 URLForResource:v7 withExtension:@"png"];
+    v8 = [bundleCopy URLForResource:v7 withExtension:@"png"];
   }
 
   else
@@ -264,9 +264,9 @@ void __50__PKProvisioningAssetManager__defaultCardArtwork___block_invoke(uint64_
   return v8;
 }
 
-- (id)_assetNameWithScreenScalingSuffix:(id)a3
+- (id)_assetNameWithScreenScalingSuffix:(id)suffix
 {
-  v3 = a3;
+  suffixCopy = suffix;
   v4 = PKScreenScale();
   v5 = @"@2x";
   if (v4 < 2.0)
@@ -284,7 +284,7 @@ void __50__PKProvisioningAssetManager__defaultCardArtwork___block_invoke(uint64_
     v6 = v5;
   }
 
-  v7 = [v3 stringByAppendingString:v6];
+  v7 = [suffixCopy stringByAppendingString:v6];
 
   return v7;
 }

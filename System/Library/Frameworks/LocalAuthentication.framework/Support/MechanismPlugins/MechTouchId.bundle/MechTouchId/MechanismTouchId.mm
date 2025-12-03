@@ -1,55 +1,55 @@
 @interface MechanismTouchId
 - (BOOL)_exceededFailureLimit;
 - (BOOL)_shouldShowUIBeforeFailure;
-- (BOOL)isAvailableForPurpose:(int64_t)a3 error:(id *)a4;
+- (BOOL)isAvailableForPurpose:(int64_t)purpose error:(id *)error;
 - (LACRemoteUI)remoteUiDelegate;
-- (MechanismTouchId)initWithParams:(id)a3 request:(id)a4;
+- (MechanismTouchId)initWithParams:(id)params request:(id)request;
 - (id)currentMatchingOperationUserId;
-- (void)_cancelOperation:(id)a3;
+- (void)_cancelOperation:(id)operation;
 - (void)_finishFingerDetectPhase;
-- (void)_matchOperation:(id)a3 matchedWithResult:(id)a4;
-- (void)_operation:(id)a3 finishedWithReason:(int64_t)a4;
-- (void)_operation:(id)a3 presenceStateChanged:(BOOL)a4;
-- (void)_operation:(id)a3 stateChanged:(int64_t)a4;
+- (void)_matchOperation:(id)operation matchedWithResult:(id)result;
+- (void)_operation:(id)_operation finishedWithReason:(int64_t)reason;
+- (void)_operation:(id)_operation presenceStateChanged:(BOOL)changed;
+- (void)_operation:(id)_operation stateChanged:(int64_t)changed;
 - (void)_setFingerDetectTimeout;
 - (void)_startBiometry;
 - (void)_startFingerDetectPhase;
 - (void)_startMatching;
-- (void)matchOperation:(id)a3 matchedWithResult:(id)a4;
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4;
-- (void)operation:(id)a3 presenceStateChanged:(BOOL)a4;
-- (void)operation:(id)a3 stateChanged:(int64_t)a4;
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5;
-- (void)unEnrolledWithError:(id)a3;
+- (void)matchOperation:(id)operation matchedWithResult:(id)result;
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason;
+- (void)operation:(id)operation presenceStateChanged:(BOOL)changed;
+- (void)operation:(id)operation stateChanged:(int64_t)changed;
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply;
+- (void)unEnrolledWithError:(id)error;
 @end
 
 @implementation MechanismTouchId
 
-- (MechanismTouchId)initWithParams:(id)a3 request:(id)a4
+- (MechanismTouchId)initWithParams:(id)params request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"AcmContextRecord"];
-  v9 = [v7 objectForKeyedSubscript:@"EvaluationMode"];
-  v10 = [v9 integerValue];
-  v11 = [v7 objectForKeyedSubscript:@"UserId"];
+  requestCopy = request;
+  paramsCopy = params;
+  v8 = [paramsCopy objectForKeyedSubscript:@"AcmContextRecord"];
+  v9 = [paramsCopy objectForKeyedSubscript:@"EvaluationMode"];
+  integerValue = [v9 integerValue];
+  v11 = [paramsCopy objectForKeyedSubscript:@"UserId"];
 
   v14.receiver = self;
   v14.super_class = MechanismTouchId;
-  v12 = [(MechanismTouchId *)&v14 initWithEventIdentifier:1 remoteViewController:1 acmContextRecord:v8 request:v6 evaluationMode:v10 userId:v11];
+  v12 = [(MechanismTouchId *)&v14 initWithEventIdentifier:1 remoteViewController:1 acmContextRecord:v8 request:requestCopy evaluationMode:integerValue userId:v11];
 
   return v12;
 }
 
-- (BOOL)isAvailableForPurpose:(int64_t)a3 error:(id *)a4
+- (BOOL)isAvailableForPurpose:(int64_t)purpose error:(id *)error
 {
-  v7 = [(MechanismTouchId *)self evaluationMode];
-  if (v7)
+  evaluationMode = [(MechanismTouchId *)self evaluationMode];
+  if (evaluationMode)
   {
-    if (v7 == &dword_0 + 1)
+    if (evaluationMode == &dword_0 + 1)
     {
       v8 = +[BiometryHelper touchIdInstance];
-      v9 = [v8 isAnyUserEnrolledWithAdminRole:0 error:a4];
+      v9 = [v8 isAnyUserEnrolledWithAdminRole:0 error:error];
 
       if (!v9)
       {
@@ -57,8 +57,8 @@
       }
 
       v10 = +[BiometryHelper touchIdInstance];
-      v11 = [(MechanismTouchId *)self request];
-      v12 = [v10 isNotLockedOutForAnyUserWithAdminRole:0 request:v11 error:a4];
+      request = [(MechanismTouchId *)self request];
+      v12 = [v10 isNotLockedOutForAnyUserWithAdminRole:0 request:request error:error];
 
       if (v12)
       {
@@ -70,8 +70,8 @@
   else
   {
     v13 = +[BiometryHelper touchIdInstance];
-    v14 = [(MechanismTouchId *)self userId];
-    v15 = [v13 isEnrolled:v14 error:a4];
+    userId = [(MechanismTouchId *)self userId];
+    v15 = [v13 isEnrolled:userId error:error];
 
     if (!v15)
     {
@@ -79,9 +79,9 @@
     }
 
     v16 = +[BiometryHelper touchIdInstance];
-    v17 = [(MechanismTouchId *)self userId];
-    v18 = [(MechanismTouchId *)self request];
-    v19 = [v16 isLockedOutForUser:v17 request:v18 error:a4];
+    userId2 = [(MechanismTouchId *)self userId];
+    request2 = [(MechanismTouchId *)self request];
+    v19 = [v16 isLockedOutForUser:userId2 request:request2 error:error];
 
     if (v19)
     {
@@ -90,50 +90,50 @@
   }
 
   v20 = +[LAPasscodeHelper sharedInstance];
-  v21 = [(MechanismTouchId *)self userId];
-  v22 = [v20 isPasscodeSetForUser:objc_msgSend(v21 error:{"unsignedIntValue"), a4}];
+  userId3 = [(MechanismTouchId *)self userId];
+  v22 = [v20 isPasscodeSetForUser:objc_msgSend(userId3 error:{"unsignedIntValue"), error}];
 
   if (v22)
   {
     v24.receiver = self;
     v24.super_class = MechanismTouchId;
-    return [(MechanismTouchId *)&v24 isAvailableForPurpose:a3 error:a4];
+    return [(MechanismTouchId *)&v24 isAvailableForPurpose:purpose error:error];
   }
 
   return 0;
 }
 
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if (![(MechanismTouchId *)self _containsAHPModeFUS:v10])
+  replyCopy = reply;
+  delegateCopy = delegate;
+  hintsCopy = hints;
+  if (![(MechanismTouchId *)self _containsAHPModeFUS:hintsCopy])
   {
-    v11 = [(MechanismTouchId *)self fenceReplyWithTouchIdAssertions:v8];
+    v11 = [(MechanismTouchId *)self fenceReplyWithTouchIdAssertions:replyCopy];
 
-    v8 = v11;
+    replyCopy = v11;
   }
 
-  v12 = objc_retainBlock(v8);
+  v12 = objc_retainBlock(replyCopy);
 
   v19.receiver = self;
   v19.super_class = MechanismTouchId;
-  [(MechanismTouchId *)&v19 runWithHints:v10 eventsDelegate:v9 reply:v12];
+  [(MechanismTouchId *)&v19 runWithHints:hintsCopy eventsDelegate:delegateCopy reply:v12];
 
   v13 = +[BiometryHelper touchIdInstance];
-  v14 = [v13 device];
+  device = [v13 device];
   touchIdDevice = self->_touchIdDevice;
-  self->_touchIdDevice = v14;
+  self->_touchIdDevice = device;
 
   [(MechanismTouchId *)self setFailures:0];
-  v16 = [(MechanismTouchId *)self policyOptions];
-  v17 = [v16 objectForKey:&off_8500];
+  policyOptions = [(MechanismTouchId *)self policyOptions];
+  v17 = [policyOptions objectForKey:&off_8500];
   [(MechanismTouchId *)self setFailureLimit:v17];
 
-  v18 = [(MechanismTouchId *)self failureLimit];
+  failureLimit = [(MechanismTouchId *)self failureLimit];
 
-  if (!v18)
+  if (!failureLimit)
   {
     [(MechanismTouchId *)self setFailureLimit:&off_8518];
   }
@@ -143,61 +143,61 @@
 
 - (BOOL)_exceededFailureLimit
 {
-  v3 = [(MechanismTouchId *)self failureLimit];
+  failureLimit = [(MechanismTouchId *)self failureLimit];
 
-  if (!v3)
+  if (!failureLimit)
   {
     return 0;
   }
 
   v4 = [(MechanismTouchId *)self failures]+ 1;
   [(MechanismTouchId *)self setFailures:v4];
-  v5 = [(MechanismTouchId *)self failureLimit];
-  v6 = v4 > [v5 unsignedIntegerValue];
+  failureLimit2 = [(MechanismTouchId *)self failureLimit];
+  v6 = v4 > [failureLimit2 unsignedIntegerValue];
 
   return v6;
 }
 
 - (BOOL)_shouldShowUIBeforeFailure
 {
-  v3 = [(MechanismTouchId *)self isBiometryRequiredForPolicy];
-  if (v3)
+  isBiometryRequiredForPolicy = [(MechanismTouchId *)self isBiometryRequiredForPolicy];
+  if (isBiometryRequiredForPolicy)
   {
-    v3 = [(MechanismTouchId *)self hasUI];
-    if (v3)
+    isBiometryRequiredForPolicy = [(MechanismTouchId *)self hasUI];
+    if (isBiometryRequiredForPolicy)
     {
-      v4 = [(MechanismTouchId *)self policyOptions];
-      v5 = [v4 objectForKeyedSubscript:&off_8530];
-      v6 = [v5 BOOLValue];
+      policyOptions = [(MechanismTouchId *)self policyOptions];
+      v5 = [policyOptions objectForKeyedSubscript:&off_8530];
+      bOOLValue = [v5 BOOLValue];
 
-      if (v6)
+      if (bOOLValue)
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(isBiometryRequiredForPolicy) = 0;
       }
 
       else
       {
-        LOBYTE(v3) = [(MechanismTouchId *)self isFallbackVisible]^ 1;
+        LOBYTE(isBiometryRequiredForPolicy) = [(MechanismTouchId *)self isFallbackVisible]^ 1;
       }
     }
   }
 
-  return v3;
+  return isBiometryRequiredForPolicy;
 }
 
-- (void)matchOperation:(id)a3 matchedWithResult:(id)a4
+- (void)matchOperation:(id)operation matchedWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  resultCopy = result;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1400;
   v10[3] = &unk_81C0;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = operationCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = resultCopy;
   v12 = v9;
   [(MechanismTouchId *)self dispatchAsyncOnServerQueueIfRunning:v10];
 
@@ -205,17 +205,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_matchOperation:(id)a3 matchedWithResult:(id)a4
+- (void)_matchOperation:(id)operation matchedWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identity];
+  operationCopy = operation;
+  resultCopy = result;
+  identity = [resultCopy identity];
 
-  v9 = [(MechanismTouchId *)self request];
-  v10 = [v9 log];
+  request = [(MechanismTouchId *)self request];
+  v10 = [request log];
 
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (identity)
   {
     if (!v11)
     {
@@ -223,15 +223,15 @@
     }
 
     *buf = 138544386;
-    v80 = self;
+    selfCopy2 = self;
     v81 = 2112;
-    v82 = v6;
+    v82 = operationCopy;
     v83 = 1024;
-    v84 = [v7 unlocked];
+    unlocked = [resultCopy unlocked];
     v85 = 1024;
-    v86 = [v7 credentialAdded];
+    credentialAdded = [resultCopy credentialAdded];
     v87 = 1024;
-    v88 = [v7 resultIgnored];
+    resultIgnored = [resultCopy resultIgnored];
     v12 = "%{public}@ has matched by %@ (unlocked:%d, credential:%d, resultIgnored:%d)";
     v13 = v10;
     v14 = 40;
@@ -245,11 +245,11 @@
     }
 
     *buf = 138543874;
-    v80 = self;
+    selfCopy2 = self;
     v81 = 2112;
-    v82 = v6;
+    v82 = operationCopy;
     v83 = 1024;
-    v84 = [v7 lockoutState];
+    unlocked = [resultCopy lockoutState];
     v12 = "%{public}@ has received no-match from %@ (lockout state:%d)";
     v13 = v10;
     v14 = 28;
@@ -258,22 +258,22 @@
   _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, v12, buf, v14);
 LABEL_7:
 
-  v15 = [(MechanismTouchId *)self request];
-  v16 = [v15 analytics];
-  v17 = [v7 identity];
-  [v16 authenticationAttempt:v17 == 0 event:{-[MechanismTouchId eventIdentifier](self, "eventIdentifier")}];
+  request2 = [(MechanismTouchId *)self request];
+  analytics = [request2 analytics];
+  identity2 = [resultCopy identity];
+  [analytics authenticationAttempt:identity2 == 0 event:{-[MechanismTouchId eventIdentifier](self, "eventIdentifier")}];
 
   v77 = &off_8548;
-  v18 = [v7 resultIgnored];
-  if (v18)
+  resultIgnored2 = [resultCopy resultIgnored];
+  if (resultIgnored2)
   {
     v19 = 10;
   }
 
   else
   {
-    v17 = [v7 identity];
-    if (v17)
+    identity2 = [resultCopy identity];
+    if (identity2)
     {
       v19 = 2;
     }
@@ -289,17 +289,17 @@ LABEL_7:
   v21 = [NSDictionary dictionaryWithObjects:&v78 forKeys:&v77 count:1];
   v22 = [NSMutableDictionary dictionaryWithDictionary:v21];
 
-  if ((v18 & 1) == 0)
+  if ((resultIgnored2 & 1) == 0)
   {
   }
 
-  v72 = v6;
-  v23 = -[MechanismTouchId checkLockoutState:isEffectiveLockoutForMatchWithPurpose:](self, "checkLockoutState:isEffectiveLockoutForMatchWithPurpose:", [v7 lockoutState], -[BKMatchTouchIDOperation purpose](self->_matchOperation, "purpose"));
+  v72 = operationCopy;
+  v23 = -[MechanismTouchId checkLockoutState:isEffectiveLockoutForMatchWithPurpose:](self, "checkLockoutState:isEffectiveLockoutForMatchWithPurpose:", [resultCopy lockoutState], -[BKMatchTouchIDOperation purpose](self->_matchOperation, "purpose"));
   v24 = [(BKMatchTouchIDOperation *)self->_matchOperation purpose]== &dword_0 + 2 || [(BKMatchTouchIDOperation *)self->_matchOperation purpose]== &dword_4;
-  v25 = [(BKMatchTouchIDOperation *)self->_matchOperation userID];
-  if (!v25)
+  userID = [(BKMatchTouchIDOperation *)self->_matchOperation userID];
+  if (!userID)
   {
-    if ((([v7 lockoutState] == &dword_4 + 2) & v23) == 1)
+    if ((([resultCopy lockoutState] == &dword_4 + 2) & v23) == 1)
     {
       goto LABEL_19;
     }
@@ -317,9 +317,9 @@ LABEL_21:
 
 LABEL_19:
   v26 = +[BiometryHelper touchIdInstance];
-  v27 = [v7 lockoutState];
-  v28 = [(MechanismTouchId *)self userId];
-  v29 = [v26 lockoutErrorForState:v27 userId:v28];
+  lockoutState = [resultCopy lockoutState];
+  userId = [(MechanismTouchId *)self userId];
+  v29 = [v26 lockoutErrorForState:lockoutState userId:userId];
 
   v70 = v29;
   [v22 setObject:v29 forKey:&off_8560];
@@ -327,22 +327,22 @@ LABEL_19:
 LABEL_22:
   [(MechanismTouchId *)self setBiolockout:v30, v70];
   [(MechanismTouchId *)self noResponseEventWithParams:v22];
-  v31 = [v7 identity];
-  if (!v31 || (v32 = v31, v33 = [v7 resultIgnored], v32, (v33 & 1) != 0))
+  identity3 = [resultCopy identity];
+  if (!identity3 || (v32 = identity3, v33 = [resultCopy resultIgnored], v32, (v33 & 1) != 0))
   {
-    v34 = [(MechanismTouchId *)self _exceededFailureLimit];
-    v35 = [(MechanismTouchId *)self request];
-    v36 = [v35 analyticsData];
-    [v36 authenticationAttemptFailedForEvent:LACEventTouchID];
+    _exceededFailureLimit = [(MechanismTouchId *)self _exceededFailureLimit];
+    request3 = [(MechanismTouchId *)self request];
+    analyticsData = [request3 analyticsData];
+    [analyticsData authenticationAttemptFailedForEvent:LACEventTouchID];
 
     if (v30)
     {
       if ([(MechanismTouchId *)self _shouldShowUIBeforeFailure])
       {
-        v37 = [(MechanismTouchId *)self remoteUiDelegate];
+        remoteUiDelegate = [(MechanismTouchId *)self remoteUiDelegate];
         v38 = v71;
         v39 = [(MechanismTouchId *)self failuresInfoDictionaryWithError:v71];
-        [v37 mechanismEvent:7 value:v39 reply:&stru_8220];
+        [remoteUiDelegate mechanismEvent:7 value:v39 reply:&stru_8220];
 
         v40 = v72;
         [(MechanismTouchId *)self _cancelOperation:v72];
@@ -358,11 +358,11 @@ LABEL_22:
       goto LABEL_57;
     }
 
-    if (v34)
+    if (_exceededFailureLimit)
     {
       if ([(MechanismTouchId *)self _shouldFailForUnboundMatches])
       {
-        if ([v7 resultIgnored])
+        if ([resultCopy resultIgnored])
         {
           v41 = -1022;
         }
@@ -382,9 +382,9 @@ LABEL_22:
       v38 = v71;
       if ([(MechanismTouchId *)self _shouldShowUIBeforeFailure])
       {
-        v56 = [(MechanismTouchId *)self remoteUiDelegate];
-        v57 = -[MechanismTouchId failuresInfoDictionaryWithError:unboundMatch:](self, "failuresInfoDictionaryWithError:unboundMatch:", v55, [v7 resultIgnored]);
-        [v56 mechanismEvent:1 value:v57 reply:&stru_8240];
+        remoteUiDelegate2 = [(MechanismTouchId *)self remoteUiDelegate];
+        v57 = -[MechanismTouchId failuresInfoDictionaryWithError:unboundMatch:](self, "failuresInfoDictionaryWithError:unboundMatch:", v55, [resultCopy resultIgnored]);
+        [remoteUiDelegate2 mechanismEvent:1 value:v57 reply:&stru_8240];
 
         v40 = v72;
         [(MechanismTouchId *)self _cancelOperation:v72];
@@ -403,9 +403,9 @@ LABEL_51:
       v38 = v71;
       if (v58)
       {
-        v59 = [(MechanismTouchId *)self remoteUiDelegate];
-        v60 = -[MechanismTouchId failuresInfoDictionaryWithError:unboundMatch:](self, "failuresInfoDictionaryWithError:unboundMatch:", 0, [v7 resultIgnored]);
-        [v59 mechanismEvent:1 value:v60 reply:&stru_8260];
+        remoteUiDelegate3 = [(MechanismTouchId *)self remoteUiDelegate];
+        v60 = -[MechanismTouchId failuresInfoDictionaryWithError:unboundMatch:](self, "failuresInfoDictionaryWithError:unboundMatch:", 0, [resultCopy resultIgnored]);
+        [remoteUiDelegate3 mechanismEvent:1 value:v60 reply:&stru_8260];
 
 LABEL_50:
         v40 = v72;
@@ -418,16 +418,16 @@ LABEL_50:
   }
 
   v42 = [NSMutableDictionary dictionaryWithObject:&__kCFBooleanTrue forKey:&off_8578];
-  v43 = [v7 identity];
-  v44 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v43 userID]);
+  identity4 = [resultCopy identity];
+  v44 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [identity4 userID]);
   [v42 setObject:v44 forKey:&off_8590];
 
-  v45 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 credentialAdded]);
+  v45 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [resultCopy credentialAdded]);
   [v42 setObject:v45 forKey:&off_85A8];
 
   if (v24)
   {
-    v46 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 unlocked]);
+    v46 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [resultCopy unlocked]);
     [v42 setObject:v46 forKey:&off_85C0];
   }
 
@@ -436,14 +436,14 @@ LABEL_50:
     [v42 setObject:&__kCFBooleanTrue forKey:&off_85D8];
   }
 
-  v47 = [(MechanismTouchId *)self policyOptions];
-  v48 = [v47 objectForKeyedSubscript:&off_85F0];
+  policyOptions = [(MechanismTouchId *)self policyOptions];
+  v48 = [policyOptions objectForKeyedSubscript:&off_85F0];
 
   if (!v48 || [v48 BOOLValue])
   {
     v49 = +[BiometryHelper touchIdInstance];
-    v50 = [v7 identity];
-    v51 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v50 userID]);
+    identity5 = [resultCopy identity];
+    v51 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [identity5 userID]);
     v74 = 0;
     v52 = [v49 biometryDatabaseHashForUser:v51 error:&v74];
     v53 = v74;
@@ -455,76 +455,76 @@ LABEL_50:
 
     else
     {
-      v61 = [(MechanismTouchId *)self request];
-      v62 = [v61 log];
+      request4 = [(MechanismTouchId *)self request];
+      v62 = [request4 log];
 
       if (os_log_type_enabled(v62, OS_LOG_TYPE_FAULT))
       {
-        sub_3518(v7, v53, v62);
+        sub_3518(resultCopy, v53, v62);
       }
     }
   }
 
-  v63 = [(MechanismTouchId *)self remoteUiDelegate];
-  [v63 mechanismEvent:2 reply:&stru_8200];
+  remoteUiDelegate4 = [(MechanismTouchId *)self remoteUiDelegate];
+  [remoteUiDelegate4 mechanismEvent:2 reply:&stru_8200];
 
   v75 = @"Result";
   v76 = v42;
   v64 = [NSDictionary dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-  v65 = [v7 identity];
-  v66 = [v65 uuid];
-  v67 = [(MechanismTouchId *)self mergeResult:v64 withUpdateOfIdentityUUID:v66];
+  identity6 = [resultCopy identity];
+  uuid = [identity6 uuid];
+  v67 = [(MechanismTouchId *)self mergeResult:v64 withUpdateOfIdentityUUID:uuid];
   [(MechanismTouchId *)self succeedAuthenticationWithResult:v67];
 
   v68 = +[MechanismContext sharedInstance];
-  v69 = [v68 backoffCounter];
-  [v69 actionSuccess];
+  backoffCounter = [v68 backoffCounter];
+  [backoffCounter actionSuccess];
 
   v38 = v71;
   v40 = v72;
 LABEL_57:
 }
 
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason
 {
-  v6 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1E70;
   v8[3] = &unk_8288;
   objc_copyWeak(v10, &location);
-  v7 = v6;
+  v7 = operationCopy;
   v9 = v7;
-  v10[1] = a4;
+  v10[1] = reason;
   [(MechanismTouchId *)self dispatchAsyncOnServerQueueIfRunning:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_operation:(id)a3 finishedWithReason:(int64_t)a4
+- (void)_operation:(id)_operation finishedWithReason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [(MechanismTouchId *)self request];
-  v8 = [v7 log];
+  _operationCopy = _operation;
+  request = [(MechanismTouchId *)self request];
+  v8 = [request log];
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v6;
+    v17 = _operationCopy;
     v18 = 1024;
-    v19 = a4;
+    reasonCopy = reason;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ has been finished by %{public}@, reason:%d", &v14, 0x1Cu);
   }
 
-  if (a4 == 3)
+  if (reason == 3)
   {
-    v9 = [(MechanismTouchId *)self request];
-    v10 = [v9 analytics];
-    [v10 authenticationAttempt:3 event:{-[MechanismTouchId eventIdentifier](self, "eventIdentifier")}];
+    request2 = [(MechanismTouchId *)self request];
+    analytics = [request2 analytics];
+    [analytics authenticationAttempt:3 event:{-[MechanismTouchId eventIdentifier](self, "eventIdentifier")}];
 
     v11 = [LAErrorHelper errorWithCode:-1 message:@"Biometric operation failed"];
     [(MechanismTouchId *)self failAuthenticationWithError:v11];
@@ -532,48 +532,48 @@ LABEL_57:
 
   p_matchOperation = &self->_matchOperation;
   matchOperation = self->_matchOperation;
-  if (matchOperation == v6 || (p_matchOperation = &self->_detectOperation, matchOperation = self->_detectOperation, matchOperation == v6))
+  if (matchOperation == _operationCopy || (p_matchOperation = &self->_detectOperation, matchOperation = self->_detectOperation, matchOperation == _operationCopy))
   {
     *p_matchOperation = 0;
   }
 }
 
-- (void)operation:(id)a3 stateChanged:(int64_t)a4
+- (void)operation:(id)operation stateChanged:(int64_t)changed
 {
-  v6 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_2150;
   v8[3] = &unk_8288;
   objc_copyWeak(v10, &location);
-  v7 = v6;
+  v7 = operationCopy;
   v9 = v7;
-  v10[1] = a4;
+  v10[1] = changed;
   [(MechanismTouchId *)self dispatchAsyncOnServerQueueIfRunning:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_operation:(id)a3 stateChanged:(int64_t)a4
+- (void)_operation:(id)_operation stateChanged:(int64_t)changed
 {
-  v6 = a3;
-  v7 = [(MechanismTouchId *)self request];
-  v8 = [v7 log];
+  _operationCopy = _operation;
+  request = [(MechanismTouchId *)self request];
+  v8 = [request log];
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v22 = self;
+    selfCopy = self;
     v23 = 1024;
-    v24 = a4;
+    changedCopy = changed;
     v25 = 2114;
-    v26 = v6;
+    v26 = _operationCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ state has changed to %d on %{public}@", buf, 0x1Cu);
   }
 
-  switch(a4)
+  switch(changed)
   {
     case 5:
       v19 = &off_8548;
@@ -582,15 +582,15 @@ LABEL_57:
       [(MechanismTouchId *)self noResponseEventWithParams:v10];
       goto LABEL_13;
     case 4:
-      if ((self->_matchOperation != v6 || self->_expectingEndOfMatching) && (self->_detectOperation != v6 || self->_expectingEndOfDetection))
+      if ((self->_matchOperation != _operationCopy || self->_expectingEndOfMatching) && (self->_detectOperation != _operationCopy || self->_expectingEndOfDetection))
       {
         break;
       }
 
       v10 = +[BiometryHelper touchIdInstance];
-      v11 = [(MechanismTouchId *)self userId];
-      v12 = [(MechanismTouchId *)self request];
-      v13 = [v10 biometryLostErrorForUser:v11 request:v12];
+      userId = [(MechanismTouchId *)self userId];
+      request2 = [(MechanismTouchId *)self request];
+      v13 = [v10 biometryLostErrorForUser:userId request:request2];
       [(MechanismTouchId *)self failAuthenticationWithError:v13];
 
 LABEL_13:
@@ -599,14 +599,14 @@ LABEL_13:
       v9 = [LAErrorHelper errorWithCode:-4 message:@"Preempted by another biometric operation."];
       [(MechanismTouchId *)self failAuthenticationWithError:v9];
 
-      [(MechanismTouchId *)self _cancelOperation:v6];
+      [(MechanismTouchId *)self _cancelOperation:_operationCopy];
       break;
   }
 
-  if ((a4 == 2) == (self->_state != 2))
+  if ((changed == 2) == (self->_state != 2))
   {
     v17 = &off_8548;
-    if (a4 == 2)
+    if (changed == 2)
     {
       v14 = 11;
     }
@@ -622,54 +622,54 @@ LABEL_13:
     [(MechanismTouchId *)self noResponseEventWithParams:v16];
   }
 
-  self->_state = a4;
+  self->_state = changed;
 }
 
-- (void)operation:(id)a3 presenceStateChanged:(BOOL)a4
+- (void)operation:(id)operation presenceStateChanged:(BOOL)changed
 {
-  v6 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_2568;
   v8[3] = &unk_82B0;
   objc_copyWeak(&v10, &location);
-  v7 = v6;
+  v7 = operationCopy;
   v9 = v7;
-  v11 = a4;
+  changedCopy = changed;
   [(MechanismTouchId *)self dispatchAsyncOnServerQueueIfRunning:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_operation:(id)a3 presenceStateChanged:(BOOL)a4
+- (void)_operation:(id)_operation presenceStateChanged:(BOOL)changed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MechanismTouchId *)self request];
-  v8 = [v7 log];
+  changedCopy = changed;
+  _operationCopy = _operation;
+  request = [(MechanismTouchId *)self request];
+  v8 = [request log];
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"off";
     *buf = 138543874;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    if (v4)
+    if (changedCopy)
     {
       v9 = @"on";
     }
 
     v19 = v9;
     v20 = 2114;
-    v21 = v6;
+    v21 = _operationCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ has received finger-%{public}@ from %{public}@", buf, 0x20u);
   }
 
   if (self->_detectOperation)
   {
-    v10 = !v4;
+    v10 = !changedCopy;
   }
 
   else
@@ -687,7 +687,7 @@ LABEL_13:
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  if (v4)
+  if (changedCopy)
   {
     v11 = &off_8638;
   }
@@ -704,17 +704,17 @@ LABEL_13:
   [(MechanismTouchId *)self noResponseEventWithParams:v12];
 }
 
-- (void)_cancelOperation:(id)a3
+- (void)_cancelOperation:(id)operation
 {
-  v4 = a3;
-  if (self->_matchOperation == v4)
+  operationCopy = operation;
+  if (self->_matchOperation == operationCopy)
   {
     v5 = &OBJC_IVAR___MechanismTouchId__expectingEndOfMatching;
   }
 
   else
   {
-    if (self->_detectOperation != v4)
+    if (self->_detectOperation != operationCopy)
     {
       goto LABEL_6;
     }
@@ -723,16 +723,16 @@ LABEL_13:
   }
 
   self->MechanismBiometry_opaque[*v5] = 1;
-  v6 = v4;
-  [(BKPresenceDetectOperation *)v4 cancel];
-  v4 = v6;
+  v6 = operationCopy;
+  [(BKPresenceDetectOperation *)operationCopy cancel];
+  operationCopy = v6;
 LABEL_6:
 }
 
 - (void)_startBiometry
 {
-  v3 = [(MechanismTouchId *)self policyOptions];
-  v4 = [v3 objectForKey:&off_8650];
+  policyOptions = [(MechanismTouchId *)self policyOptions];
+  v4 = [policyOptions objectForKey:&off_8650];
   fingerDetectTimeout = self->_fingerDetectTimeout;
   self->_fingerDetectTimeout = v4;
 
@@ -751,16 +751,16 @@ LABEL_6:
 
 - (void)_startMatching
 {
-  v4 = [(MechanismTouchId *)self request];
-  v5 = [v4 log];
+  request = [(MechanismTouchId *)self request];
+  v5 = [request log];
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MechanismTouchId *)self userId];
-    if (v6)
+    userId = [(MechanismTouchId *)self userId];
+    if (userId)
     {
-      v2 = [(MechanismTouchId *)self userId];
-      v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"user %d", [v2 intValue]);
+      userId2 = [(MechanismTouchId *)self userId];
+      v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"user %d", [userId2 intValue]);
     }
 
     else
@@ -769,11 +769,11 @@ LABEL_6:
     }
 
     *buf = 138543618;
-    v35 = self;
+    selfCopy = self;
     v36 = 2114;
     v37 = v7;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ will start matching %{public}@", buf, 0x16u);
-    if (v6)
+    if (userId)
     {
     }
   }
@@ -788,17 +788,17 @@ LABEL_6:
 
   [(BKMatchTouchIDOperation *)self->_matchOperation setDelegate:self];
   v12 = self->_matchOperation;
-  v13 = [(MechanismTouchId *)self externalizedContext];
-  [(BKMatchTouchIDOperation *)v12 setCredentialSet:v13];
+  externalizedContext = [(MechanismTouchId *)self externalizedContext];
+  [(BKMatchTouchIDOperation *)v12 setCredentialSet:externalizedContext];
 
   [(BKMatchTouchIDOperation *)self->_matchOperation setPriority:50];
   [(BKMatchTouchIDOperation *)self->_matchOperation setStopOnSuccess:1];
   v14 = self->_matchOperation;
-  v15 = [(MechanismTouchId *)self identityUUIDs];
-  [(BKMatchTouchIDOperation *)v14 setSelectedIdentities:v15];
+  identityUUIDs = [(MechanismTouchId *)self identityUUIDs];
+  [(BKMatchTouchIDOperation *)v14 setSelectedIdentities:identityUUIDs];
 
-  v16 = [(MechanismTouchId *)self policyOptions];
-  v17 = [v16 objectForKeyedSubscript:&off_8668];
+  policyOptions = [(MechanismTouchId *)self policyOptions];
+  v17 = [policyOptions objectForKeyedSubscript:&off_8668];
   if ([v17 BOOLValue])
   {
   }
@@ -816,14 +816,14 @@ LABEL_6:
   [(BKMatchTouchIDOperation *)self->_matchOperation setRequireFingerOff:1];
 LABEL_12:
   v19 = self->_matchOperation;
-  v20 = [(MechanismTouchId *)self userId];
-  [(BKMatchTouchIDOperation *)v19 setUserID:v20];
+  userId3 = [(MechanismTouchId *)self userId];
+  [(BKMatchTouchIDOperation *)v19 setUserID:userId3];
 
-  v21 = [(MechanismTouchId *)self policyOptions];
-  v22 = [v21 objectForKeyedSubscript:&off_8680];
-  v23 = [v22 BOOLValue];
+  policyOptions2 = [(MechanismTouchId *)self policyOptions];
+  v22 = [policyOptions2 objectForKeyedSubscript:&off_8680];
+  bOOLValue = [v22 BOOLValue];
 
-  if (v23)
+  if (bOOLValue)
   {
     v24 = 4;
   }
@@ -841,10 +841,10 @@ LABEL_12:
 
   else
   {
-    v26 = [(MechanismTouchId *)self request];
-    v27 = [v26 isPurposeInAppPayment];
+    request2 = [(MechanismTouchId *)self request];
+    isPurposeInAppPayment = [request2 isPurposeInAppPayment];
 
-    if (!v27)
+    if (!isPurposeInAppPayment)
     {
       goto LABEL_20;
     }
@@ -868,13 +868,13 @@ LABEL_20:
 
 - (void)_startFingerDetectPhase
 {
-  v3 = [(MechanismTouchId *)self request];
-  v4 = [v3 log];
+  request = [(MechanismTouchId *)self request];
+  v4 = [request log];
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ is starting finger detect phase", buf, 0xCu);
   }
 
@@ -908,13 +908,13 @@ LABEL_20:
 
 - (void)_finishFingerDetectPhase
 {
-  v3 = [(MechanismTouchId *)self request];
-  v4 = [v3 log];
+  request = [(MechanismTouchId *)self request];
+  v4 = [request log];
 
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ will finish finger detect phase", buf, 0xCu);
   }
 
@@ -949,11 +949,11 @@ LABEL_20:
 
 - (id)currentMatchingOperationUserId
 {
-  v2 = [(MechanismTouchId *)self userId];
-  v3 = v2;
-  if (v2)
+  userId = [(MechanismTouchId *)self userId];
+  v3 = userId;
+  if (userId)
   {
-    v4 = v2;
+    v4 = userId;
   }
 
   else
@@ -966,30 +966,30 @@ LABEL_20:
   return v4;
 }
 
-- (void)unEnrolledWithError:(id)a3
+- (void)unEnrolledWithError:(id)error
 {
-  v8 = a3;
-  v4 = self;
-  if (([(MechanismTouchId *)v4 isRunning]& 1) != 0 || ([(MechanismTouchId *)v4 parent], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  errorCopy = error;
+  selfCopy = self;
+  if (([(MechanismTouchId *)selfCopy isRunning]& 1) != 0 || ([(MechanismTouchId *)selfCopy parent], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    v6 = v4;
+    parent = selfCopy;
   }
 
   else
   {
     do
     {
-      v6 = [(MechanismTouchId *)v4 parent];
+      parent = [(MechanismTouchId *)selfCopy parent];
 
-      v7 = [(MechanismTouchId *)v6 parent];
+      v6Parent = [(MechanismTouchId *)parent parent];
 
-      v4 = v6;
+      selfCopy = parent;
     }
 
-    while (v7);
+    while (v6Parent);
   }
 
-  [(MechanismTouchId *)v6 failAuthenticationWithError:v8];
+  [(MechanismTouchId *)parent failAuthenticationWithError:errorCopy];
 }
 
 - (LACRemoteUI)remoteUiDelegate

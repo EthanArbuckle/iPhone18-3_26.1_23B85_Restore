@@ -1,42 +1,42 @@
 @interface CPLEngineScope
-- (CPLEngineScope)initWithPrequeliteDictionary:(id)a3 base:(id)a4;
+- (CPLEngineScope)initWithPrequeliteDictionary:(id)dictionary base:(id)base;
 @end
 
 @implementation CPLEngineScope
 
-- (CPLEngineScope)initWithPrequeliteDictionary:(id)a3 base:(id)a4
+- (CPLEngineScope)initWithPrequeliteDictionary:(id)dictionary base:(id)base
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 scopeIdentifierVar];
-  v10 = [v7 objectForKeyedSubscript:v9];
+  dictionaryCopy = dictionary;
+  baseCopy = base;
+  scopeIdentifierVar = [baseCopy scopeIdentifierVar];
+  v10 = [dictionaryCopy objectForKeyedSubscript:scopeIdentifierVar];
 
   if (!v10)
   {
     sub_1001B6FF4(a2, self);
   }
 
-  v11 = [v8 scopeTypeVar];
-  v12 = [v7 objectForKeyedSubscript:v11];
-  v13 = [v12 integerValue];
+  scopeTypeVar = [baseCopy scopeTypeVar];
+  v12 = [dictionaryCopy objectForKeyedSubscript:scopeTypeVar];
+  integerValue = [v12 integerValue];
 
-  v14 = [(CPLEngineScope *)self initWithScopeIdentifier:v10 scopeType:v13];
+  v14 = [(CPLEngineScope *)self initWithScopeIdentifier:v10 scopeType:integerValue];
   if (v14)
   {
-    v15 = [v8 localIndexVar];
-    v16 = [v7 objectForKeyedSubscript:v15];
+    localIndexVar = [baseCopy localIndexVar];
+    v16 = [dictionaryCopy objectForKeyedSubscript:localIndexVar];
     -[CPLEngineScope setLocalIndex:](v14, "setLocalIndex:", [v16 integerValue]);
 
-    v17 = [v8 cloudIndexVar];
-    v18 = [v7 objectForKeyedSubscript:v17];
+    cloudIndexVar = [baseCopy cloudIndexVar];
+    v18 = [dictionaryCopy objectForKeyedSubscript:cloudIndexVar];
     -[CPLEngineScope setCloudIndex:](v14, "setCloudIndex:", [v18 integerValue]);
 
-    v19 = [v8 stableIndexVar];
-    v20 = [v7 objectForKeyedSubscript:v19];
+    stableIndexVar = [baseCopy stableIndexVar];
+    v20 = [dictionaryCopy objectForKeyedSubscript:stableIndexVar];
     -[CPLEngineScope setStableIndex:](v14, "setStableIndex:", [v20 integerValue]);
 
-    v21 = [v8 creationDateVar];
-    v22 = [v7 objectForKeyedSubscript:v21];
+    creationDateVar = [baseCopy creationDateVar];
+    v22 = [dictionaryCopy objectForKeyedSubscript:creationDateVar];
     [(CPLEngineScope *)v14 setCreationDate:v22];
   }
 

@@ -1,12 +1,12 @@
 @interface PreferencesAssistantGetVoiceControl
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PreferencesAssistantGetVoiceControl
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[PSCommandAndControlSettingsDetail isEnabled];
   v5 = objc_alloc_init(SASettingBooleanEntity);
   [v5 setValue:v4];
@@ -26,8 +26,8 @@
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "########## PreferencesAssistantGetVoiceControl (%@)", &v10, 0xCu);
   }
 
-  v9 = [v6 dictionary];
-  v3[2](v3, v9);
+  dictionary = [v6 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

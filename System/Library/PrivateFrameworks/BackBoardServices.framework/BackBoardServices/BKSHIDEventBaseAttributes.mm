@@ -1,18 +1,18 @@
 @interface BKSHIDEventBaseAttributes
-+ (Class)_classForAttributeType:(unsigned __int8)a3;
-+ (id)baseAttributesFromProvider:(id)a3;
-+ (id)deserializeFromBytes:(const char *)a3 byteCount:(int64_t)a4;
++ (Class)_classForAttributeType:(unsigned __int8)type;
++ (id)baseAttributesFromProvider:(id)provider;
++ (id)deserializeFromBytes:(const char *)bytes byteCount:(int64_t)count;
 + (id)protobufSchema;
 - (BKSHIDEventDeferringChangeBasis)changeBasis;
 - (BKSHIDEventProvenance)provenance;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)serializedData;
 - (id)succinctDescription;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)setProvenance:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)setProvenance:(id)provenance;
 @end
 
 @implementation BKSHIDEventBaseAttributes
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __43__BKSHIDEventBaseAttributes_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_184 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_184, block);
@@ -53,25 +53,25 @@ uint64_t __43__BKSHIDEventBaseAttributes_protobufSchema__block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   authenticationMessage = self->_authenticationMessage;
-  v17 = v4;
+  v17 = formatterCopy;
   if (authenticationMessage)
   {
-    v6 = [v4 appendObject:authenticationMessage withName:@"authenticationMessage"];
-    v4 = v17;
+    v6 = [formatterCopy appendObject:authenticationMessage withName:@"authenticationMessage"];
+    formatterCopy = v17;
   }
 
   simpleProvenance = self->_simpleProvenance;
   if (simpleProvenance)
   {
     v8 = [v17 appendObject:simpleProvenance withName:@"simpleProvenance"];
-    v4 = v17;
+    formatterCopy = v17;
   }
 
-  v9 = [v4 appendObject:self->_environment withName:@"environment"];
+  v9 = [formatterCopy appendObject:self->_environment withName:@"environment"];
   display = self->_display;
   if (display)
   {
@@ -91,37 +91,37 @@ uint64_t __43__BKSHIDEventBaseAttributes_protobufSchema__block_invoke(uint64_t a
   [v17 appendString:v16 withName:@"options"];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKSHIDEventBaseAttributes *)self succinctDescriptionBuilder];
-  [(BKSHIDEventBaseAttributes *)self appendDescriptionToFormatter:v4];
+  succinctDescriptionBuilder = [(BKSHIDEventBaseAttributes *)self succinctDescriptionBuilder];
+  [(BKSHIDEventBaseAttributes *)self appendDescriptionToFormatter:succinctDescriptionBuilder];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKSHIDEventBaseAttributes *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKSHIDEventBaseAttributes *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BKSHIDEventBaseAttributes *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKSHIDEventBaseAttributes *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     authenticationMessage = self->_authenticationMessage;
     v7 = v5[3];
     if (!BSEqualObjects())
@@ -158,9 +158,9 @@ LABEL_10:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 24), self->_authenticationMessage);
   objc_storeStrong((v4 + 8), self->_simpleProvenance);
   objc_storeStrong((v4 + 32), self->_environment);
@@ -204,17 +204,17 @@ LABEL_10:
   return v4;
 }
 
-- (void)setProvenance:(id)a3
+- (void)setProvenance:(id)provenance
 {
   v28 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  provenanceCopy = provenance;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     authenticationMessage = self->_authenticationMessage;
     self->_authenticationMessage = 0;
 
-    v7 = v15;
+    v7 = provenanceCopy;
     simpleProvenance = self->_simpleProvenance;
     self->_simpleProvenance = v7;
 LABEL_8:
@@ -227,14 +227,14 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_authenticationMessage, a3);
+    objc_storeStrong(&self->_authenticationMessage, provenance);
 LABEL_7:
     simpleProvenance = self->_simpleProvenance;
     self->_simpleProvenance = 0;
     goto LABEL_8;
   }
 
-  if (!v15)
+  if (!provenanceCopy)
   {
     v9 = self->_authenticationMessage;
     self->_authenticationMessage = 0;
@@ -253,7 +253,7 @@ LABEL_7:
     v18 = 2114;
     v19 = v14;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = @"BKSHIDEventAttributes.m";
     v24 = 1024;
@@ -271,8 +271,8 @@ LABEL_7:
 - (BKSHIDEventDeferringChangeBasis)changeBasis
 {
   v3 = [BKSHIDEventDeferringChangeBasis alloc];
-  v4 = [(BKSHIDEventBaseAttributes *)self provenance];
-  v5 = [(BKSHIDEventDeferringChangeBasis *)v3 initWithEventProvenance:v4];
+  provenance = [(BKSHIDEventBaseAttributes *)self provenance];
+  v5 = [(BKSHIDEventDeferringChangeBasis *)v3 initWithEventProvenance:provenance];
 
   return v5;
 }
@@ -288,10 +288,10 @@ LABEL_7:
   return authenticationMessage;
 }
 
-+ (id)deserializeFromBytes:(const char *)a3 byteCount:(int64_t)a4
++ (id)deserializeFromBytes:(const char *)bytes byteCount:(int64_t)count
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a4 <= 7)
+  if (count <= 7)
   {
     v4 = BKLogEventDelivery();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -306,7 +306,7 @@ LABEL_25:
     goto LABEL_6;
   }
 
-  if (a4 - 8 < *(a3 + 1))
+  if (count - 8 < *(bytes + 1))
   {
     v4 = BKLogEventDelivery();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -323,11 +323,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [a1 _classForAttributeType:*a3];
+  v11 = [self _classForAttributeType:*bytes];
   if (v11)
   {
     v12 = v11;
-    v4 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:a3 + 8 length:*(a3 + 1) freeWhenDone:0];
+    v4 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:bytes + 8 length:*(bytes + 1) freeWhenDone:0];
     v17 = 0;
     v13 = [MEMORY[0x1E698E750] decodeObjectOfClass:v12 fromData:v4 error:&v17];
     v14 = v17;
@@ -346,7 +346,7 @@ LABEL_23:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v19 = a1;
+        selfCopy = self;
         v20 = 2114;
         v21 = v12;
         _os_log_error_impl(&dword_186345000, v16, OS_LOG_TYPE_ERROR, "requested attributes from %{public}@, but decoded %{public}@", buf, 0x16u);
@@ -359,7 +359,7 @@ LABEL_23:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v19 = v14;
+        selfCopy = v14;
         _os_log_error_impl(&dword_186345000, v15, OS_LOG_TYPE_ERROR, "could not decode attributes:%{public}@", buf, 0xCu);
       }
     }
@@ -375,19 +375,19 @@ LABEL_8:
   return v7;
 }
 
-+ (Class)_classForAttributeType:(unsigned __int8)a3
++ (Class)_classForAttributeType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v9 = *MEMORY[0x1E69E9840];
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 == 1 || a3 == 2 || a3 == 3)
+    if (type == 1 || type == 2 || type == 3)
     {
       goto LABEL_14;
     }
   }
 
-  else if (a3 <= 6 || a3 == 7)
+  else if (type <= 6 || type == 7)
   {
 LABEL_14:
     v5 = objc_opt_class();
@@ -398,7 +398,7 @@ LABEL_14:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     v8[0] = 67109120;
-    v8[1] = v3;
+    v8[1] = typeCopy;
     _os_log_error_impl(&dword_186345000, v4, OS_LOG_TYPE_ERROR, "unsupported type for attribute decode:%d", v8, 8u);
   }
 
@@ -409,19 +409,19 @@ LABEL_15:
   return v5;
 }
 
-+ (id)baseAttributesFromProvider:(id)a3
++ (id)baseAttributesFromProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v3 environment];
-  [v4 setEnvironment:v5];
+  environment = [providerCopy environment];
+  [v4 setEnvironment:environment];
 
-  v6 = [v3 display];
-  [v4 setDisplay:v6];
+  display = [providerCopy display];
+  [v4 setDisplay:display];
 
-  v7 = [v3 token];
+  token = [providerCopy token];
 
-  [v4 setToken:v7];
+  [v4 setToken:token];
 
   return v4;
 }

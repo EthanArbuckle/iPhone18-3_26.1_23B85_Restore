@@ -1,21 +1,21 @@
 @interface STListData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)objects;
 - (STListData)init;
-- (STListData)initWithCoder:(id)a3;
-- (STListData)initWithObjects:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)initWithListData:(void *)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (STListData)initWithCoder:(id)coder;
+- (STListData)initWithObjects:(id)objects;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)initWithListData:(void *)data;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation STListData
@@ -29,16 +29,16 @@
 
 - (STListData)init
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(STListData *)self initWithObjects:v3];
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = [(STListData *)self initWithObjects:array];
 
   return v4;
 }
 
 - (unint64_t)count
 {
-  v2 = [(STListData *)self objects];
-  v3 = [v2 count];
+  objects = [(STListData *)self objects];
+  v3 = [objects count];
 
   return v3;
 }
@@ -68,77 +68,77 @@ uint64_t __35__STListData__encodableObjectTypes__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)initWithListData:(void *)a1
+- (id)initWithListData:(void *)data
 {
-  v2 = a1;
-  if (a1)
+  dataCopy = data;
+  if (data)
   {
-    v3 = [a2 objects];
-    v2 = [v2 initWithObjects:v3];
+    objects = [a2 objects];
+    dataCopy = [dataCopy initWithObjects:objects];
   }
 
-  return v2;
+  return dataCopy;
 }
 
-- (STListData)initWithObjects:(id)a3
+- (STListData)initWithObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v11.receiver = self;
   v11.super_class = STListData;
   v5 = [(STListData *)&v11 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [objectsCopy mutableCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = v6;
+      array = v6;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
     objects = v5->_objects;
-    v5->_objects = v8;
+    v5->_objects = array;
   }
 
   return v5;
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(STListData *)self objects];
+    objects = [(STListData *)self objects];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __41__STListData_enumerateObjectsUsingBlock___block_invoke;
     v6[3] = &unk_1E85DECC0;
-    v7 = v4;
-    [v5 enumerateObjectsUsingBlock:v6];
+    v7 = blockCopy;
+    [objects enumerateObjectsUsingBlock:v6];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = objc_alloc(MEMORY[0x1E696AB50]);
-  v7 = [(STListData *)self objects];
-  v8 = [v6 initWithArray:v7];
+  objects = [(STListData *)self objects];
+  v8 = [v6 initWithArray:objects];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __22__STListData_isEqual___block_invoke;
   v12[3] = &unk_1E85DECE8;
-  v13 = v4;
-  v9 = v4;
+  v13 = equalCopy;
+  v9 = equalCopy;
   v10 = [v5 appendObject:v8 counterpart:v12];
 
-  LOBYTE(v7) = [v5 isEqual];
-  return v7;
+  LOBYTE(objects) = [v5 isEqual];
+  return objects;
 }
 
 id __22__STListData_isEqual___block_invoke(uint64_t a1)
@@ -152,76 +152,76 @@ id __22__STListData_isEqual___block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
+  builder = [MEMORY[0x1E698E6B8] builder];
   v4 = objc_alloc(MEMORY[0x1E696AB50]);
-  v5 = [(STListData *)self objects];
-  v6 = [v4 initWithArray:v5];
-  v7 = [v3 appendObject:v6];
+  objects = [(STListData *)self objects];
+  v6 = [v4 initWithArray:objects];
+  v7 = [builder appendObject:v6];
 
-  v8 = [v3 hash];
+  v8 = [builder hash];
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableListData allocWithZone:a3];
+  v4 = [STMutableListData allocWithZone:zone];
 
   return [(STListData *)v4 initWithListData:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STListData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STListData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STListData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STListData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STListData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STListData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
 
-    [v6 setUseDebugDescription:a3];
-    v7 = [a1 objects];
-    v8 = [v6 activeMultilinePrefix];
-    [v6 appendArraySection:v7 withName:0 multilinePrefix:v8 skipIfEmpty:1];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    objects = [self objects];
+    activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
+    [succinctDescriptionBuilder appendArraySection:objects withName:0 multilinePrefix:activeMultilinePrefix skipIfEmpty:1];
   }
 
   else
   {
-    v6 = 0;
+    succinctDescriptionBuilder = 0;
   }
 
-  return v6;
+  return succinctDescriptionBuilder;
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STListDataDiff diffFromListData:v4 toListData:self];
+    v5 = [STListDataDiff diffFromListData:dataCopy toListData:self];
   }
 
   else
@@ -232,13 +232,13 @@ id __22__STListData_isEqual___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STListData *)self copy];
     }
@@ -246,7 +246,7 @@ id __22__STListData_isEqual___block_invoke(uint64_t a1)
     else
     {
       v5 = [(STListData *)self mutableCopy];
-      [v4 applyToMutableListData:v5];
+      [diffCopy applyToMutableListData:v5];
     }
   }
 
@@ -258,16 +258,16 @@ id __22__STListData_isEqual___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STListData *)self objects];
-  [v4 encodeObject:v5 forKey:@"objects"];
+  coderCopy = coder;
+  objects = [(STListData *)self objects];
+  [coderCopy encodeObject:objects forKey:@"objects"];
 }
 
-- (STListData)initWithCoder:(id)a3
+- (STListData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_self();
   if (qword_1ED7F5D28 != -1)
   {
@@ -275,7 +275,7 @@ id __22__STListData_isEqual___block_invoke(uint64_t a1)
   }
 
   v5 = _MergedGlobals_12;
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"objects"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"objects"];
 
   v7 = v6;
   objc_opt_class();
@@ -292,7 +292,7 @@ id __22__STListData_isEqual___block_invoke(uint64_t a1)
   if (v8)
   {
     self = [(STListData *)self initWithObjects:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -304,10 +304,10 @@ id __22__STListData_isEqual___block_invoke(uint64_t a1)
       _os_log_error_impl(&dword_1DA9C2000, v10, OS_LOG_TYPE_ERROR, "decoded invalid list data", v12, 2u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

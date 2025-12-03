@@ -1,23 +1,23 @@
 @interface ScrollToTopView
-- (ScrollToTopView)initWithFrame:(CGRect)a3;
-- (ScrollToTopView)initWithTargetBlock:(id)a3;
+- (ScrollToTopView)initWithFrame:(CGRect)frame;
+- (ScrollToTopView)initWithTargetBlock:(id)block;
 - (double)defaultHeight;
 - (id)_targetScrollView;
 - (void)_showBars;
-- (void)_tappedScrollToTopView:(id)a3;
+- (void)_tappedScrollToTopView:(id)view;
 @end
 
 @implementation ScrollToTopView
 
-- (ScrollToTopView)initWithTargetBlock:(id)a3
+- (ScrollToTopView)initWithTargetBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = ScrollToTopView;
   v5 = [(ScrollToTopView *)&v10 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     targetBlock = v5->_targetBlock;
     v5->_targetBlock = v6;
 
@@ -27,11 +27,11 @@
   return v5;
 }
 
-- (ScrollToTopView)initWithFrame:(CGRect)a3
+- (ScrollToTopView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = ScrollToTopView;
-  v3 = [(ScrollToTopView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ScrollToTopView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v3 action:sel__tappedScrollToTopView_];
@@ -43,15 +43,15 @@
   return v3;
 }
 
-- (void)_tappedScrollToTopView:(id)a3
+- (void)_tappedScrollToTopView:(id)view
 {
-  v4 = [(ScrollToTopView *)self _targetScrollView];
+  _targetScrollView = [(ScrollToTopView *)self _targetScrollView];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__ScrollToTopView__tappedScrollToTopView___block_invoke;
   v5[3] = &unk_2781D4B18;
   v5[4] = self;
-  [v4 _scrollToTopFromTouchAtScreenLocation:v5 resultHandler:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  [_targetScrollView _scrollToTopFromTouchAtScreenLocation:v5 resultHandler:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 }
 
 uint64_t __42__ScrollToTopView__tappedScrollToTopView___block_invoke(uint64_t result, int a2)
@@ -87,11 +87,11 @@ uint64_t __42__ScrollToTopView__tappedScrollToTopView___block_invoke(uint64_t re
 
 - (double)defaultHeight
 {
-  v2 = [(ScrollToTopView *)self window];
-  v3 = [v2 windowScene];
+  window = [(ScrollToTopView *)self window];
+  windowScene = [window windowScene];
 
-  v4 = [v3 statusBarManager];
-  [v4 defaultStatusBarHeightInOrientation:{objc_msgSend(v3, "interfaceOrientation")}];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager defaultStatusBarHeightInOrientation:{objc_msgSend(windowScene, "interfaceOrientation")}];
   v6 = v5;
 
   return fmax(v6, 20.0);

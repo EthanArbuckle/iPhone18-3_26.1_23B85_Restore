@@ -6,12 +6,12 @@
 + (double)defaultSideMarginForDoubleButton;
 + (double)defaultWidth;
 + (double)defaultYOffsetForBottomButtons;
-- (BOOL)animateFromState:(int64_t)a3 toState:(int64_t)a4 completion:(id)a5;
+- (BOOL)animateFromState:(int64_t)state toState:(int64_t)toState completion:(id)completion;
 - (BOOL)callScreeningAvailable;
 - (BOOL)currentCallIsMuted;
-- (BOOL)isSizeValidLandscape:(CGSize)a3;
-- (BOOL)liveReplyAvailableForCall:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)isSizeValidLandscape:(CGSize)landscape;
+- (BOOL)liveReplyAvailableForCall:(id)call;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)shouldShowActionTypeAudioRoute;
 - (BOOL)shouldShowActionTypeCameraFlip;
 - (BOOL)shouldShowActionTypeEffects;
@@ -21,16 +21,16 @@
 - (BOOL)shouldShowAnswerRTTButton;
 - (BOOL)shouldShowUseRTTButton;
 - (BOOL)shouldUseLayoutAsCallScreening;
-- (BOOL)updatedSelectedStateForActionType:(int64_t)a3;
-- (CGRect)frameForControlWithActionType:(int64_t)a3;
+- (BOOL)updatedSelectedStateForActionType:(int64_t)type;
+- (CGRect)frameForControlWithActionType:(int64_t)type;
 - (CGSize)effectiveSize;
 - (CGSize)intrinsicContentSize;
 - (CGSize)rotatedTargetSizeOfParent;
 - (CGSize)trackSize;
 - (NSArray)buttonsForAmbientTransition;
-- (PHBottomBar)initWithCallDisplayStyleManager:(id)a3;
-- (PHBottomBar)initWithCallDisplayStyleManager:(id)a3 isAudioCall:(BOOL)a4;
-- (PHBottomBar)initWithFrame:(CGRect)a3;
+- (PHBottomBar)initWithCallDisplayStyleManager:(id)manager;
+- (PHBottomBar)initWithCallDisplayStyleManager:(id)manager isAudioCall:(BOOL)call;
+- (PHBottomBar)initWithFrame:(CGRect)frame;
 - (PHBottomBarDelegateProtocol)delegate;
 - (UIButton)useRTTButton;
 - (UIView)mainButtonLayoutGuide;
@@ -41,59 +41,59 @@
 - (double)sideMarginForFaceTimeInCallButtons;
 - (id)_supplementalBottomLeftButtonLayoutConstraints;
 - (id)_supplementalBottomRightButtonLayoutConstraints;
-- (id)audioRouteImageWithColor:(id)a3;
+- (id)audioRouteImageWithColor:(id)color;
 - (id)buttonsConstraintsForIPad;
-- (id)constraintsForState:(int64_t)a3;
-- (id)controlForActionType:(int64_t)a3;
-- (id)customTitleStringForActionType:(int64_t)a3 givenDefaultTitle:(id)a4;
-- (id)makeButtonWithType:(int64_t)a3 title:(id)a4 image:(id)a5 color:(id)a6 font:(id)a7 fontColor:(id)a8;
-- (id)makeButtonWithType:(int64_t)a3 title:(id)a4 image:(id)a5 color:(id)a6 font:(id)a7 fontColor:(id)a8 diameter:(double)a9;
-- (id)makeCaptureButtonWithDiameter:(double)a3;
-- (id)makeSlidingButtonWithType:(int)a3;
-- (id)nameForActionType:(int64_t)a3;
-- (id)updatedImageForActionType:(int64_t)a3 givenDefaultImage:(id)a4;
-- (id)updatedSelectedImageForActionType:(int64_t)a3 givenDefaultSelectedImage:(id)a4;
+- (id)constraintsForState:(int64_t)state;
+- (id)controlForActionType:(int64_t)type;
+- (id)customTitleStringForActionType:(int64_t)type givenDefaultTitle:(id)title;
+- (id)makeButtonWithType:(int64_t)type title:(id)title image:(id)image color:(id)color font:(id)font fontColor:(id)fontColor;
+- (id)makeButtonWithType:(int64_t)type title:(id)title image:(id)image color:(id)color font:(id)font fontColor:(id)fontColor diameter:(double)diameter;
+- (id)makeCaptureButtonWithDiameter:(double)diameter;
+- (id)makeSlidingButtonWithType:(int)type;
+- (id)nameForActionType:(int64_t)type;
+- (id)updatedImageForActionType:(int64_t)type givenDefaultImage:(id)image;
+- (id)updatedSelectedImageForActionType:(int64_t)type givenDefaultSelectedImage:(id)image;
 - (id)viewLabels;
-- (int64_t)_gestureStateToCompletionState:(int64_t)a3;
+- (int64_t)_gestureStateToCompletionState:(int64_t)state;
 - (int64_t)currentBottomBarCallState;
-- (int64_t)updatedActionTypeForActionType:(int64_t)a3;
+- (int64_t)updatedActionTypeForActionType:(int64_t)type;
 - (void)_startShopDemoMode;
-- (void)addSubview:(id)a3;
-- (void)ambientAnimateFromIncomingCallStateToCallScreeningStateWithCompletion:(id)a3;
-- (void)animateFromFaceTimeOutgoingStateToFaceTimeInCallState:(int64_t)a3 withCompletion:(id)a4;
-- (void)animateFromIncomingCallStateToFaceTimeInCallState:(int64_t)a3 withCompletion:(id)a4;
-- (void)animateFromIncomingCallStateToInCallState:(int64_t)a3 withCompletion:(id)a4;
-- (void)animateFromOutgoingStateToCallbackAndMessageUIToState:(int64_t)a3 withCompletion:(id)a4;
-- (void)animateFromOutgoingStateToInCallStateWithCompletion:(id)a3;
-- (void)animateInSupplementalBottomRightButton:(id)a3 WithCompletion:(id)a4;
-- (void)animateOutSupplementalBottomLeftButtonToState:(int64_t)a3 withCompletion:(id)a4;
-- (void)buttonLongPressed:(id)a3;
-- (void)buttonPressed:(id)a3;
+- (void)addSubview:(id)subview;
+- (void)ambientAnimateFromIncomingCallStateToCallScreeningStateWithCompletion:(id)completion;
+- (void)animateFromFaceTimeOutgoingStateToFaceTimeInCallState:(int64_t)state withCompletion:(id)completion;
+- (void)animateFromIncomingCallStateToFaceTimeInCallState:(int64_t)state withCompletion:(id)completion;
+- (void)animateFromIncomingCallStateToInCallState:(int64_t)state withCompletion:(id)completion;
+- (void)animateFromOutgoingStateToCallbackAndMessageUIToState:(int64_t)state withCompletion:(id)completion;
+- (void)animateFromOutgoingStateToInCallStateWithCompletion:(id)completion;
+- (void)animateInSupplementalBottomRightButton:(id)button WithCompletion:(id)completion;
+- (void)animateOutSupplementalBottomLeftButtonToState:(int64_t)state withCompletion:(id)completion;
+- (void)buttonLongPressed:(id)pressed;
+- (void)buttonPressed:(id)pressed;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareButtonsForAnimationBegin;
 - (void)prepareButtonsForAnimationEnd;
-- (void)refreshCustomizedActionTypeTitleForButton:(id)a3;
+- (void)refreshCustomizedActionTypeTitleForButton:(id)button;
 - (void)refreshCustomizedActionTypeTitles;
 - (void)refreshEndCallButton;
 - (void)refreshUseRTTButton;
 - (void)removeAllButtons;
-- (void)setAction:(int64_t)a3 enabled:(BOOL)a4;
-- (void)setAction:(int64_t)a3 selected:(BOOL)a4;
-- (void)setAnimating:(BOOL)a3;
-- (void)setCurrentState:(int64_t)a3 animated:(BOOL)a4 animationCompletionBlock:(id)a5;
-- (void)setDeclineAndMessageIsAvailable:(BOOL)a3;
-- (void)setDeclineAndRemindIsAvailable:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setPrefersWhiteButtonTextColor:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setUsesLowerButtons:(BOOL)a3;
+- (void)setAction:(int64_t)action enabled:(BOOL)enabled;
+- (void)setAction:(int64_t)action selected:(BOOL)selected;
+- (void)setAnimating:(BOOL)animating;
+- (void)setCurrentState:(int64_t)state animated:(BOOL)animated animationCompletionBlock:(id)block;
+- (void)setDeclineAndMessageIsAvailable:(BOOL)available;
+- (void)setDeclineAndRemindIsAvailable:(BOOL)available;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setPrefersWhiteButtonTextColor:(BOOL)color;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setUsesLowerButtons:(BOOL)buttons;
 - (void)setupCallScreeningMoreButton;
-- (void)slidingButton:(id)a3 didSlideToProportion:(double)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)slidingButton:(id)button didSlideToProportion:(double)proportion;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateMainButtonLayoutGuide;
 - (void)updateTopLayoutGuide;
-- (void)willFinishSlideForSlidingButton:(id)a3;
+- (void)willFinishSlideForSlidingButton:(id)button;
 @end
 
 @implementation PHBottomBar
@@ -101,10 +101,10 @@
 - (BOOL)callScreeningAvailable
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 frontmostAudioOrVideoCall];
+  frontmostAudioOrVideoCall = [v2 frontmostAudioOrVideoCall];
 
-  v4 = [v3 provider];
-  if ([v4 isFaceTimeProvider])
+  provider = [frontmostAudioOrVideoCall provider];
+  if ([provider isFaceTimeProvider])
   {
     v5 = +[TUCallCenter sharedInstance];
     v6 = [v5 currentCallCount] < 2;
@@ -116,13 +116,13 @@
   }
 
   v7 = +[CNKFeatures sharedInstance];
-  v8 = [v7 lvmEverywhereEnabled];
+  lvmEverywhereEnabled = [v7 lvmEverywhereEnabled];
 
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
-  if (v10)
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
+  if (userInterfaceIdiom)
   {
-    v11 = v8;
+    v11 = lvmEverywhereEnabled;
   }
 
   else
@@ -130,7 +130,7 @@
     v11 = 1;
   }
 
-  if (v8 && v10)
+  if (lvmEverywhereEnabled && userInterfaceIdiom)
   {
     v12 = +[UIDevice currentDevice];
     v11 = [v12 userInterfaceIdiom] == 1;
@@ -140,11 +140,11 @@
   if (TUCallScreeningEnabledM3() && v11)
   {
     v14 = +[UIApplication sharedApplication];
-    v15 = [v14 delegate];
-    if ([v15 isAnsweringMachineAvailable] && objc_msgSend(v3, "isEligibleForManualScreening"))
+    delegate = [v14 delegate];
+    if ([delegate isAnsweringMachineAvailable] && objc_msgSend(frontmostAudioOrVideoCall, "isEligibleForManualScreening"))
     {
-      v16 = [v3 provider];
-      v13 = [v16 isSystemProvider] & v6;
+      provider2 = [frontmostAudioOrVideoCall provider];
+      v13 = [provider2 isSystemProvider] & v6;
     }
 
     else
@@ -209,8 +209,8 @@
     return 2;
   }
 
-  v4 = [(PHBottomBar *)self delegate];
-  v5 = [v4 bottomBarCallStateInBar:self];
+  delegate = [(PHBottomBar *)self delegate];
+  v5 = [delegate bottomBarCallStateInBar:self];
 
   return v5;
 }
@@ -219,10 +219,10 @@
 {
   v3 = sub_10001A58C();
   v4 = +[TUCallCenter sharedInstance];
-  v5 = [v4 frontmostCall];
+  frontmostCall = [v4 frontmostCall];
 
-  v6 = [v5 localSenderIdentityUUID];
-  v7 = [v3 rttDisplayName:0 forSubscriptionContextUUID:v6];
+  localSenderIdentityUUID = [frontmostCall localSenderIdentityUUID];
+  v7 = [v3 rttDisplayName:0 forSubscriptionContextUUID:localSenderIdentityUUID];
   v8 = +[PHUIConfiguration inCallBottomBarSpacing];
   v9 = 15.0;
   if (!v8)
@@ -239,19 +239,19 @@
 
 - (BOOL)shouldShowUseRTTButton
 {
-  v3 = [(PHBottomBar *)self delegate];
+  delegate = [(PHBottomBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(PHBottomBar *)self delegate];
-    v5 = [v4 shouldShowUseRTT];
+    delegate2 = [(PHBottomBar *)self delegate];
+    shouldShowUseRTT = [delegate2 shouldShowUseRTT];
   }
 
   else
   {
-    v5 = 0;
+    shouldShowUseRTT = 0;
   }
 
-  return v5;
+  return shouldShowUseRTT;
 }
 
 - (id)viewLabels
@@ -317,8 +317,8 @@
 
 - (double)sideMarginForDoubleButton
 {
-  v3 = [(PHBottomBar *)self callDisplayStyleManager];
-  if ([v3 usesLargeFormatUI])
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager usesLargeFormatUI])
   {
     isAudioCall = self->_isAudioCall;
 
@@ -387,8 +387,8 @@
 
 - (double)sideMarginForFaceTimeInCallButtons
 {
-  v3 = [(PHBottomBar *)self callDisplayStyleManager];
-  if ([v3 usesLargeFormatUI])
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager usesLargeFormatUI])
   {
     isAudioCall = self->_isAudioCall;
 
@@ -458,12 +458,12 @@
 - (BOOL)shouldUseLayoutAsCallScreening
 {
   v3 = +[PHInCallUtilities sharedInstance];
-  v4 = [v3 isIPadIdiom];
+  isIPadIdiom = [v3 isIPadIdiom];
 
-  if (v4)
+  if (isIPadIdiom)
   {
-    v5 = [(PHBottomBar *)self callDisplayStyleManager];
-    if ([v5 usesLargeFormatUI])
+    callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager usesLargeFormatUI])
     {
       v6 = !self->_isAudioCall;
     }
@@ -485,9 +485,9 @@
 - (id)_supplementalBottomLeftButtonLayoutConstraints
 {
   v3 = +[NSMutableArray array];
-  v4 = [(PHBottomBar *)self centerXAnchor];
-  v5 = [(PHBottomBar *)self supplementalBottomLeftButton];
-  v6 = [v5 centerXAnchor];
+  centerXAnchor = [(PHBottomBar *)self centerXAnchor];
+  supplementalBottomLeftButton = [(PHBottomBar *)self supplementalBottomLeftButton];
+  centerXAnchor2 = [supplementalBottomLeftButton centerXAnchor];
   +[PHInCallNumberPadButton defaultSize];
   v8 = v7;
   v9 = sub_10001AD34();
@@ -497,15 +497,15 @@
     v10 = 12.0;
   }
 
-  v11 = [v4 constraintEqualToAnchor:v6 constant:v8 + v10];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:v8 + v10];
 
   [v11 setIdentifier:@"supplementalBottomLeftButtonCenterXAnchorLayoutConstraint"];
   [v3 addObject:v11];
-  v12 = [(PHBottomBar *)self supplementalBottomLeftButton];
-  v13 = [v12 centerYAnchor];
-  v14 = [(PHBottomBar *)self mainLeftButton];
-  v15 = [v14 centerYAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  supplementalBottomLeftButton2 = [(PHBottomBar *)self supplementalBottomLeftButton];
+  centerYAnchor = [supplementalBottomLeftButton2 centerYAnchor];
+  mainLeftButton = [(PHBottomBar *)self mainLeftButton];
+  centerYAnchor2 = [mainLeftButton centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   [v16 setIdentifier:@"supplementalBottomLeftButtonCenterYAnchorLayoutConstraint"];
   [v3 addObject:v16];
@@ -516,9 +516,9 @@
 - (id)_supplementalBottomRightButtonLayoutConstraints
 {
   v3 = +[NSMutableArray array];
-  v4 = [(PHBottomBar *)self supplementalBottomRightButton];
-  v5 = [v4 centerXAnchor];
-  v6 = [(PHBottomBar *)self centerXAnchor];
+  supplementalBottomRightButton = [(PHBottomBar *)self supplementalBottomRightButton];
+  centerXAnchor = [supplementalBottomRightButton centerXAnchor];
+  centerXAnchor2 = [(PHBottomBar *)self centerXAnchor];
   +[PHInCallNumberPadButton defaultSize];
   v8 = v7;
   v9 = sub_10001AD34();
@@ -528,15 +528,15 @@
     v10 = 12.0;
   }
 
-  v11 = [v5 constraintEqualToAnchor:v6 constant:v8 + v10];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:v8 + v10];
 
   [v11 setIdentifier:@"supplementalBottomRightButtonCenterXAnchorLayoutConstraint"];
   [v3 addObject:v11];
-  v12 = [(PHBottomBar *)self supplementalBottomRightButton];
-  v13 = [v12 centerYAnchor];
-  v14 = [(PHBottomBar *)self mainLeftButton];
-  v15 = [v14 centerYAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  supplementalBottomRightButton2 = [(PHBottomBar *)self supplementalBottomRightButton];
+  centerYAnchor = [supplementalBottomRightButton2 centerYAnchor];
+  mainLeftButton = [(PHBottomBar *)self mainLeftButton];
+  centerYAnchor2 = [mainLeftButton centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   [v16 setIdentifier:@"supplementalBottomRightButtonCenterYAnchorLayoutConstraint"];
   [v3 addObject:v16];
@@ -576,8 +576,8 @@
   v6 = v5 * 0.5;
   v30 = 0u;
   v31 = 0u;
-  v7 = [(PHBottomBar *)self subviews];
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  subviews = [(PHBottomBar *)self subviews];
+  v8 = [subviews countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
     v10 = v8;
@@ -589,7 +589,7 @@
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
@@ -623,7 +623,7 @@
         }
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v28 objects:v32 count:{16, v9}];
+      v10 = [subviews countByEnumeratingWithState:&v28 objects:v32 count:{16, v9}];
     }
 
     while (v10);
@@ -821,10 +821,10 @@ LABEL_14:
 + (double)defaultYOffsetForBottomButtons
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
   result = 0.0;
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v5 = +[PHUIConfiguration inCallBottomBarSpacing];
     result = 40.0;
@@ -837,11 +837,11 @@ LABEL_14:
   return result;
 }
 
-- (PHBottomBar)initWithFrame:(CGRect)a3
+- (PHBottomBar)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = PHBottomBar;
-  v3 = [(PHBottomBar *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHBottomBar *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -851,8 +851,8 @@ LABEL_14:
     [(PHBottomBar *)v4 setBackgroundColor:v5];
 
     [(PHBottomBar *)v4 setOpaque:0];
-    v6 = [(PHBottomBar *)v4 layer];
-    [v6 setHitTestsAsOpaque:1];
+    layer = [(PHBottomBar *)v4 layer];
+    [layer setHitTestsAsOpaque:1];
 
     +[PHBottomBar defaultBottomMargin];
     [(PHBottomBar *)v4 setBottomMargin:?];
@@ -860,11 +860,11 @@ LABEL_14:
     [(PHBottomBar *)v4 setYOffsetForLoweredButtons:?];
     v4->_blursBackground = 1;
     v4->_currentState = -1;
-    v7 = [(PHBottomBar *)v4 layer];
-    [v7 setAllowsGroupOpacity:0];
+    layer2 = [(PHBottomBar *)v4 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
-    v8 = [(PHBottomBar *)v4 layer];
-    [v8 setAllowsGroupBlending:0];
+    layer3 = [(PHBottomBar *)v4 layer];
+    [layer3 setAllowsGroupBlending:0];
 
     v9 = +[NSMutableArray array];
     pendingStateBlocks = v4->_pendingStateBlocks;
@@ -879,25 +879,25 @@ LABEL_14:
 
     if ([(PHBottomBar *)v4 callScreeningAvailable]|| [(PHBottomBar *)v4 shouldUseLayoutAsCallScreening])
     {
-      v14 = [(PHBottomBar *)v4 captureView];
+      captureView = [(PHBottomBar *)v4 captureView];
 
-      if (!v14)
+      if (!captureView)
       {
         v15 = objc_alloc_init(_UIVisualEffectBackdropView);
         [(PHBottomBar *)v4 setCaptureView:v15];
 
-        v16 = [(PHBottomBar *)v4 captureView];
-        [v16 setAutoresizingMask:18];
+        captureView2 = [(PHBottomBar *)v4 captureView];
+        [captureView2 setAutoresizingMask:18];
 
-        v17 = [(PHBottomBar *)v4 captureView];
-        [(PHBottomBar *)v4 insertSubview:v17 atIndex:0];
+        captureView3 = [(PHBottomBar *)v4 captureView];
+        [(PHBottomBar *)v4 insertSubview:captureView3 atIndex:0];
 
-        v18 = [(PHBottomBar *)v4 captureView];
-        [v18 setRenderMode:1];
+        captureView4 = [(PHBottomBar *)v4 captureView];
+        [captureView4 setRenderMode:1];
 
-        v19 = [(PHBottomBar *)v4 captureView];
-        v20 = [v19 captureGroup];
-        [v20 setGroupName:@"PHBottomBarButtonCaptureGroup"];
+        captureView5 = [(PHBottomBar *)v4 captureView];
+        captureGroup = [captureView5 captureGroup];
+        [captureGroup setGroupName:@"PHBottomBarButtonCaptureGroup"];
       }
     }
   }
@@ -905,25 +905,25 @@ LABEL_14:
   return v4;
 }
 
-- (PHBottomBar)initWithCallDisplayStyleManager:(id)a3
+- (PHBottomBar)initWithCallDisplayStyleManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v6 = [(PHBottomBar *)self initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callDisplayStyleManager, a3);
+    objc_storeStrong(&v6->_callDisplayStyleManager, manager);
   }
 
   return v7;
 }
 
-- (PHBottomBar)initWithCallDisplayStyleManager:(id)a3 isAudioCall:(BOOL)a4
+- (PHBottomBar)initWithCallDisplayStyleManager:(id)manager isAudioCall:(BOOL)call
 {
-  result = [(PHBottomBar *)self initWithCallDisplayStyleManager:a3];
+  result = [(PHBottomBar *)self initWithCallDisplayStyleManager:manager];
   if (result)
   {
-    result->_isAudioCall = a4;
+    result->_isAudioCall = call;
   }
 
   return result;
@@ -939,8 +939,8 @@ LABEL_14:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PHBottomBar *)self callDisplayStyleManager];
-  if ([v3 usesLargeFormatUI])
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager usesLargeFormatUI])
   {
     isAudioCall = self->_isAudioCall;
 
@@ -959,15 +959,15 @@ LABEL_14:
   {
   }
 
-  v9 = [(PHBottomBar *)self callDisplayStyleManager];
-  v10 = [v9 callDisplayStyle];
+  callDisplayStyleManager2 = [(PHBottomBar *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-  if (v10 == 3)
+  if (callDisplayStyle == 3)
   {
     +[PHBottomBar ambientWidth];
     v6 = v11;
-    v12 = [(PHBottomBar *)self callDisplayStyleManager];
-    if ([v12 callDisplayStyle] == 3)
+    callDisplayStyleManager3 = [(PHBottomBar *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager3 callDisplayStyle] == 3)
     {
       +[PHUIConfiguration ambientInCallControlSize];
       v8 = v13;
@@ -975,8 +975,8 @@ LABEL_14:
 
     else
     {
-      v22 = [(PHBottomBar *)self callDisplayStyleManager];
-      if ([v22 usesLargeFormatUI] && self->_isAudioCall)
+      callDisplayStyleManager4 = [(PHBottomBar *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager4 usesLargeFormatUI] && self->_isAudioCall)
       {
         +[PHBottomBar buttonHeightWithoutDefaultPadding];
       }
@@ -1008,9 +1008,9 @@ LABEL_14:
   }
 
   v19 = +[PHInCallUtilities sharedInstance];
-  v20 = [v19 isIPadIdiom];
+  isIPadIdiom = [v19 isIPadIdiom];
 
-  if (v20)
+  if (isIPadIdiom)
   {
     p_rotatedTargetSizeOfParent = &self->_rotatedTargetSizeOfParent;
     if ([(PHBottomBar *)self isSizeValidLandscape:self->_rotatedTargetSizeOfParent.width, self->_rotatedTargetSizeOfParent.height])
@@ -1046,16 +1046,16 @@ LABEL_14:
   {
     +[PHUIConfiguration inComingCallSupplementalButtonAndMainButtonSpacingRatio];
     v25 = height * v24;
-    v26 = [(PHBottomBar *)self callDisplayStyleManager];
-    if ([v26 callDisplayStyle] == 3)
+    callDisplayStyleManager5 = [(PHBottomBar *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager5 callDisplayStyle] == 3)
     {
       +[PHUIConfiguration ambientInCallControlSize];
     }
 
     else
     {
-      v27 = [(PHBottomBar *)self callDisplayStyleManager];
-      if ([v27 usesLargeFormatUI] && self->_isAudioCall)
+      callDisplayStyleManager6 = [(PHBottomBar *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager6 usesLargeFormatUI] && self->_isAudioCall)
       {
         +[PHBottomBar buttonHeightWithoutDefaultPadding];
       }
@@ -1086,15 +1086,15 @@ LABEL_14:
 
   else
   {
-    v38 = [(PHBottomBar *)self callDisplayStyleManager];
-    if ([v38 usesLargeFormatUI])
+    callDisplayStyleManager7 = [(PHBottomBar *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager7 usesLargeFormatUI])
     {
       v39 = self->_isAudioCall;
 
       if (v39)
       {
-        v40 = [(PHBottomBar *)self callDisplayStyleManager];
-        if ([v40 callDisplayStyle] == 3)
+        callDisplayStyleManager8 = [(PHBottomBar *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager8 callDisplayStyle] == 3)
         {
           +[PHUIConfiguration ambientInCallControlSize];
           v8 = v41;
@@ -1102,8 +1102,8 @@ LABEL_14:
 
         else
         {
-          v42 = [(PHBottomBar *)self callDisplayStyleManager];
-          if ([v42 usesLargeFormatUI] && self->_isAudioCall)
+          callDisplayStyleManager9 = [(PHBottomBar *)self callDisplayStyleManager];
+          if ([callDisplayStyleManager9 usesLargeFormatUI] && self->_isAudioCall)
           {
             +[PHBottomBar buttonHeightWithoutDefaultPadding];
           }
@@ -1167,27 +1167,27 @@ LABEL_39:
   return v7 * 0.065;
 }
 
-- (BOOL)isSizeValidLandscape:(CGSize)a3
+- (BOOL)isSizeValidLandscape:(CGSize)landscape
 {
-  v3 = a3.width != CGSizeZero.width;
-  if (a3.height != CGSizeZero.height)
+  v3 = landscape.width != CGSizeZero.width;
+  if (landscape.height != CGSizeZero.height)
   {
     v3 = 1;
   }
 
-  return a3.width > a3.height && v3;
+  return landscape.width > landscape.height && v3;
 }
 
-- (BOOL)liveReplyAvailableForCall:(id)a3
+- (BOOL)liveReplyAvailableForCall:(id)call
 {
-  v3 = a3;
+  callCopy = call;
   v4 = objc_opt_new();
-  if (TUReceptionistAvailable() && (+[PHInCallUIUtilities shouldHideSensitiveUI](PHInCallUIUtilities, "shouldHideSensitiveUI") & 1) == 0 && [v3 isReceptionistCapable])
+  if (TUReceptionistAvailable() && (+[PHInCallUIUtilities shouldHideSensitiveUI](PHInCallUIUtilities, "shouldHideSensitiveUI") & 1) == 0 && [callCopy isReceptionistCapable])
   {
-    v5 = [v3 contactIdentifier];
-    if (v5)
+    contactIdentifier = [callCopy contactIdentifier];
+    if (contactIdentifier)
     {
-      v6 = [v3 isThumper] ^ 1;
+      v6 = [callCopy isThumper] ^ 1;
     }
 
     else
@@ -1211,20 +1211,20 @@ LABEL_39:
   v6 = v5;
   if (*&self->_supplementalTopLeftButton == 0)
   {
-    v7 = [(PHBottomBar *)self callDisplayStyleManager];
-    v8 = [v7 callDisplayStyle];
+    callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-    if (v8 != 3)
+    if (callDisplayStyle != 3)
     {
       if (self->_sideButtonLeft || self->_sideButtonRight)
       {
-        v9 = [(PHBottomBar *)self usesLowerButtons];
-        v10 = [(PHBottomBar *)self callDisplayStyleManager];
-        v11 = [v10 callDisplayStyle];
-        v12 = v11;
-        if (v9)
+        usesLowerButtons = [(PHBottomBar *)self usesLowerButtons];
+        callDisplayStyleManager2 = [(PHBottomBar *)self callDisplayStyleManager];
+        callDisplayStyle2 = [callDisplayStyleManager2 callDisplayStyle];
+        v12 = callDisplayStyle2;
+        if (usesLowerButtons)
         {
-          if (v11 == 3)
+          if (callDisplayStyle2 == 3)
           {
             +[PHUIConfiguration ambientInCallControlSize];
             v14 = v13;
@@ -1232,8 +1232,8 @@ LABEL_39:
 
           else
           {
-            v9 = [(PHBottomBar *)self callDisplayStyleManager];
-            if ([v9 usesLargeFormatUI] && self->_isAudioCall)
+            usesLowerButtons = [(PHBottomBar *)self callDisplayStyleManager];
+            if ([usesLowerButtons usesLargeFormatUI] && self->_isAudioCall)
             {
               +[PHBottomBar buttonHeightWithoutDefaultPadding];
             }
@@ -1269,7 +1269,7 @@ LABEL_39:
 
         else
         {
-          if (v11 == 3)
+          if (callDisplayStyle2 == 3)
           {
             +[PHUIConfiguration ambientInCallControlSize];
             v16 = v15;
@@ -1277,8 +1277,8 @@ LABEL_39:
 
           else
           {
-            v9 = [(PHBottomBar *)self callDisplayStyleManager];
-            if ([v9 usesLargeFormatUI] && self->_isAudioCall)
+            usesLowerButtons = [(PHBottomBar *)self callDisplayStyleManager];
+            if ([usesLowerButtons usesLargeFormatUI] && self->_isAudioCall)
             {
               +[PHBottomBar buttonHeightWithoutDefaultPadding];
             }
@@ -1317,8 +1317,8 @@ LABEL_39:
 
       else
       {
-        v10 = [(PHBottomBar *)self callDisplayStyleManager];
-        if ([v10 callDisplayStyle] == 3)
+        callDisplayStyleManager2 = [(PHBottomBar *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager2 callDisplayStyle] == 3)
         {
           +[PHUIConfiguration ambientInCallControlSize];
           v27 = v36;
@@ -1326,8 +1326,8 @@ LABEL_39:
 
         else
         {
-          v37 = [(PHBottomBar *)self callDisplayStyleManager];
-          if ([v37 usesLargeFormatUI] && self->_isAudioCall)
+          callDisplayStyleManager3 = [(PHBottomBar *)self callDisplayStyleManager];
+          if ([callDisplayStyleManager3 usesLargeFormatUI] && self->_isAudioCall)
           {
             +[PHBottomBar buttonHeightWithoutDefaultPadding];
           }
@@ -1388,17 +1388,17 @@ LABEL_39:
   return v5;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(PHBottomBar *)self subviews];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  subviews = [(PHBottomBar *)self subviews];
+  v9 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1410,18 +1410,18 @@ LABEL_39:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
         if (([v14 isHidden] & 1) == 0 && objc_msgSend(v14, "isUserInteractionEnabled"))
         {
           [(PHBottomBar *)self convertPoint:v14 toView:x, y];
-          v11 |= [v14 pointInside:v7 withEvent:?];
+          v11 |= [v14 pointInside:eventCopy withEvent:?];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -1435,40 +1435,40 @@ LABEL_39:
   return v11 & 1;
 }
 
-- (void)setAction:(int64_t)a3 selected:(BOOL)a4
+- (void)setAction:(int64_t)action selected:(BOOL)selected
 {
-  v4 = a4;
-  v5 = [(PHBottomBar *)self controlForActionType:a3];
-  [v5 setSelected:v4];
+  selectedCopy = selected;
+  v5 = [(PHBottomBar *)self controlForActionType:action];
+  [v5 setSelected:selectedCopy];
 }
 
-- (void)setAction:(int64_t)a3 enabled:(BOOL)a4
+- (void)setAction:(int64_t)action enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v6 = [(PHBottomBar *)self controlForActionType:?];
   v7 = v6;
-  if (a3 == 33)
+  if (action == 33)
   {
-    [v6 setShowDisabled:v4 ^ 1];
+    [v6 setShowDisabled:enabledCopy ^ 1];
     v6 = v7;
   }
 
-  [v6 setEnabled:v4];
+  [v6 setEnabled:enabledCopy];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(PHBottomBar *)self isUserInteractionEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(PHBottomBar *)self isUserInteractionEnabled]!= enabled)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(PHBottomBar *)self viewLabels];
-    v6 = [v5 allValues];
+    viewLabels = [(PHBottomBar *)self viewLabels];
+    allValues = [viewLabels allValues];
 
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1480,15 +1480,15 @@ LABEL_39:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
-          [*(*(&v12 + 1) + 8 * v10) setEnabled:v3];
+          [*(*(&v12 + 1) + 8 * v10) setEnabled:enabledCopy];
           v10 = v10 + 1;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -1497,18 +1497,18 @@ LABEL_39:
 
   v11.receiver = self;
   v11.super_class = PHBottomBar;
-  [(PHBottomBar *)&v11 setUserInteractionEnabled:v3];
+  [(PHBottomBar *)&v11 setUserInteractionEnabled:enabledCopy];
 }
 
-- (void)setDeclineAndMessageIsAvailable:(BOOL)a3
+- (void)setDeclineAndMessageIsAvailable:(BOOL)available
 {
-  v3 = a3;
+  availableCopy = available;
   v5 = +[TUCallCenter sharedInstance];
-  v11 = [v5 frontmostAudioOrVideoCall];
+  frontmostAudioOrVideoCall = [v5 frontmostAudioOrVideoCall];
 
-  if (v3)
+  if (availableCopy)
   {
-    v6 = [v11 isBranded] ^ 1;
+    v6 = [frontmostAudioOrVideoCall isBranded] ^ 1;
   }
 
   else
@@ -1523,32 +1523,32 @@ LABEL_39:
   [v8 setEnabled:v6];
 
   v9 = [(PHBottomBar *)self controlForActionType:12];
-  [v9 setHidden:!v3];
+  [v9 setHidden:!availableCopy];
 
   v10 = [(PHBottomBar *)self controlForActionType:9];
-  [v10 setHidden:!v3];
+  [v10 setHidden:!availableCopy];
 
-  self->_declineAndMessageIsAvailable = v3;
+  self->_declineAndMessageIsAvailable = availableCopy;
 }
 
-- (void)setDeclineAndRemindIsAvailable:(BOOL)a3
+- (void)setDeclineAndRemindIsAvailable:(BOOL)available
 {
-  v3 = a3;
+  availableCopy = available;
   v5 = [(PHBottomBar *)self controlForActionType:13];
-  [v5 setHidden:!v3];
+  [v5 setHidden:!availableCopy];
 
-  self->_declineAndRemindIsAvailable = v3;
+  self->_declineAndRemindIsAvailable = availableCopy;
 }
 
-- (int64_t)_gestureStateToCompletionState:(int64_t)a3
+- (int64_t)_gestureStateToCompletionState:(int64_t)state
 {
   v3 = 1;
-  if (a3 == 4)
+  if (state == 4)
   {
     v3 = 2;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     return 0;
   }
@@ -1584,70 +1584,70 @@ LABEL_39:
   v21 = v10;
   v11 = [NSArray arrayWithObjects:&v21 count:1, v15, v16, v17, v18];
   v12 = [UIMenu menuWithChildren:v11];
-  v13 = [(PHBottomBar *)self supplementalTopRightButton];
-  [v13 setMenu:v12];
+  supplementalTopRightButton = [(PHBottomBar *)self supplementalTopRightButton];
+  [supplementalTopRightButton setMenu:v12];
 
-  v14 = [(PHBottomBar *)self supplementalTopRightButton];
-  [v14 setShowsMenuAsPrimaryAction:1];
+  supplementalTopRightButton2 = [(PHBottomBar *)self supplementalTopRightButton];
+  [supplementalTopRightButton2 setShowsMenuAsPrimaryAction:1];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
 }
 
-- (void)setCurrentState:(int64_t)a3 animated:(BOOL)a4 animationCompletionBlock:(id)a5
+- (void)setCurrentState:(int64_t)state animated:(BOOL)animated animationCompletionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  blockCopy = block;
   if (![(PHBottomBar *)self animating])
   {
     v12 = +[TUCallCenter sharedInstance];
-    v13 = [v12 frontmostAudioOrVideoCall];
+    frontmostAudioOrVideoCall = [v12 frontmostAudioOrVideoCall];
 
-    v14 = [(PHBottomBar *)self callScreeningAvailable];
+    callScreeningAvailable = [(PHBottomBar *)self callScreeningAvailable];
     v15 = sub_100004F84();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v242 = self;
+      stateCopy2 = self;
       v243 = 2048;
-      v244 = a3;
+      stateCopy = state;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "BottomBar (%@) set to state: %ld", buf, 0x16u);
     }
 
-    if ([(PHBottomBar *)self currentState]== a3)
+    if ([(PHBottomBar *)self currentState]== state)
     {
       goto LABEL_90;
     }
 
-    if (v5 && [(PHBottomBar *)self animateFromState:self->_currentState toState:a3 completion:v8])
+    if (animatedCopy && [(PHBottomBar *)self animateFromState:self->_currentState toState:state completion:blockCopy])
     {
       v16 = 1;
       goto LABEL_69;
     }
 
     [(PHBottomBar *)self removeAllButtons];
-    if (a3)
+    if (state)
     {
-      if (a3 == 11)
+      if (state == 11)
       {
         v17 = [(PHBottomBar *)self makeButtonWithType:15 title:0 image:0 color:0 font:0 fontColor:0];
         [(PHBottomBar *)self setMainLeftButton:v17];
 
-        v18 = [(PHBottomBar *)self delegate];
+        delegate = [(PHBottomBar *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          v19 = [(PHBottomBar *)self delegate];
-          v20 = [v19 shouldShowHardPauseNumbers];
+          delegate2 = [(PHBottomBar *)self delegate];
+          shouldShowHardPauseNumbers = [delegate2 shouldShowHardPauseNumbers];
 
-          if (!v20)
+          if (!shouldShowHardPauseNumbers)
           {
 LABEL_19:
-            v25 = [(PHBottomBar *)self useRTTButton];
-            [(PHBottomBar *)self setSupplementalBottomRightButton:v25];
+            useRTTButton = [(PHBottomBar *)self useRTTButton];
+            [(PHBottomBar *)self setSupplementalBottomRightButton:useRTTButton];
 
-            v26 = [(PHBottomBar *)self shouldShowUseRTTButton];
-            v27 = [(PHBottomBar *)self supplementalBottomRightButton];
-            [v27 setAlpha:v26];
+            shouldShowUseRTTButton = [(PHBottomBar *)self shouldShowUseRTTButton];
+            supplementalBottomRightButton = [(PHBottomBar *)self supplementalBottomRightButton];
+            [supplementalBottomRightButton setAlpha:shouldShowUseRTTButton];
 
             goto LABEL_63;
           }
@@ -1659,21 +1659,21 @@ LABEL_19:
             v22 = 14.0;
           }
 
-          v18 = [UIFont systemFontOfSize:v22];
+          delegate = [UIFont systemFontOfSize:v22];
           v23 = +[UIColor whiteColor];
-          v24 = [(PHBottomBar *)self makeButtonWithType:23 title:&stru_100361FD0 image:0 color:0 font:v18 fontColor:v23];
+          v24 = [(PHBottomBar *)self makeButtonWithType:23 title:&stru_100361FD0 image:0 color:0 font:delegate fontColor:v23];
           [(PHBottomBar *)self setSupplementalBottomLeftButton:v24];
         }
 
         goto LABEL_19;
       }
 
-      if ((a3 - 1) <= 2)
+      if ((state - 1) <= 2)
       {
         v32 = [(PHBottomBar *)self makeButtonWithType:8 title:0 image:0 color:0 font:0 fontColor:0];
         [(PHBottomBar *)self setMainLeftButton:v32];
 
-        if (a3 == 1)
+        if (state == 1)
         {
           v33 = 3;
         }
@@ -1686,24 +1686,24 @@ LABEL_19:
         v34 = [(PHBottomBar *)self makeButtonWithType:v33 title:0 image:0 color:0 font:0 fontColor:0];
         [(PHBottomBar *)self setMainRightButton:v34];
 
-        v35 = [(PHBottomBar *)self callDisplayStyleManager];
-        v36 = [v35 callDisplayStyle] == 3;
+        callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+        v36 = [callDisplayStyleManager callDisplayStyle] == 3;
 
         if (v36)
         {
-          if (v14)
+          if (callScreeningAvailable)
           {
             v37 = [(PHBottomBar *)self makeButtonWithType:25 title:0 image:0 color:0 font:0 fontColor:0];
             [(PHBottomBar *)self setSideButtonLeft:v37];
           }
         }
 
-        else if (v14)
+        else if (callScreeningAvailable)
         {
           v55 = +[CNKFeatures sharedInstance];
-          v56 = [v55 receptionistEnabled];
+          receptionistEnabled = [v55 receptionistEnabled];
 
-          if (v56)
+          if (receptionistEnabled)
           {
             v57 = [(PHBottomBar *)self makeButtonWithType:26 title:0 image:0 color:0 font:0 fontColor:0 diameter:44.0];
             [(PHBottomBar *)self setSupplementalTopLeftButton:v57];
@@ -1747,9 +1747,9 @@ LABEL_178:
         goto LABEL_63;
       }
 
-      if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 4)
+      if ((state & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
-        if (!v14)
+        if (!callScreeningAvailable)
         {
           if ([(PHBottomBar *)self shouldUseLayoutAsCallScreening])
           {
@@ -1775,7 +1775,7 @@ LABEL_178:
         v38 = +[CNKFeatures sharedInstance];
         if ([v38 receptionistEnabled])
         {
-          v39 = [(PHBottomBar *)self liveReplyAvailableForCall:v13];
+          v39 = [(PHBottomBar *)self liveReplyAvailableForCall:frontmostAudioOrVideoCall];
 
           if (v39)
           {
@@ -1784,7 +1784,7 @@ LABEL_178:
 
             [(PHBottomBar *)self setupCallScreeningMoreButton];
 LABEL_95:
-            v118 = [(PHBottomBar *)self makeSlidingButtonWithType:a3 == 5];
+            v118 = [(PHBottomBar *)self makeSlidingButtonWithType:state == 5];
             [(PHBottomBar *)self setSlidingButton:v118];
 
             if (![(PHBottomBar *)self shouldShowAnswerRTTButton])
@@ -1797,9 +1797,9 @@ LABEL_95:
 
             if (v31)
             {
-              v120 = [(PHBottomBar *)self slidingButton];
-              v121 = [v120 acceptButton];
-              [v121 setKnobImage:v31];
+              slidingButton = [(PHBottomBar *)self slidingButton];
+              acceptButton = [slidingButton acceptButton];
+              [acceptButton setKnobImage:v31];
             }
 
             goto LABEL_62;
@@ -1819,11 +1819,11 @@ LABEL_95:
         goto LABEL_95;
       }
 
-      switch(a3)
+      switch(state)
       {
         case 6:
-          v50 = [(PHBottomBar *)self callDisplayStyleManager];
-          v51 = [v50 callDisplayStyle] == 3;
+          callDisplayStyleManager2 = [(PHBottomBar *)self callDisplayStyleManager];
+          v51 = [callDisplayStyleManager2 callDisplayStyle] == 3;
 
           if (v51)
           {
@@ -1885,10 +1885,10 @@ LABEL_95:
           v145 = [(PHBottomBar *)self makeButtonWithType:v144 title:0 image:0 color:0 font:0 fontColor:0];
           [(PHBottomBar *)self setMainLeftButton:v145];
 
-          v146 = [(PHBottomBar *)self callCenter];
-          v147 = [v146 isEndAndAnswerAllowed];
+          callCenter = [(PHBottomBar *)self callCenter];
+          isEndAndAnswerAllowed = [callCenter isEndAndAnswerAllowed];
 
-          if (v147)
+          if (isEndAndAnswerAllowed)
           {
             v148 = [(PHBottomBar *)self makeButtonWithType:4 title:0 image:0 color:0 font:0 fontColor:0];
             [(PHBottomBar *)self setSideButtonLeft:v148];
@@ -1905,8 +1905,8 @@ LABEL_95:
           v197 = [(PHBottomBar *)self makeButtonWithType:6 title:0 image:0 color:0 font:0 fontColor:0];
           [(PHBottomBar *)self setSideButtonRight:v197];
 
-          v198 = [(PHBottomBar *)self callDisplayStyleManager];
-          v199 = [v198 callDisplayStyle] == 3;
+          callDisplayStyleManager3 = [(PHBottomBar *)self callDisplayStyleManager];
+          v199 = [callDisplayStyleManager3 callDisplayStyle] == 3;
 
           if (!v199)
           {
@@ -1933,10 +1933,10 @@ LABEL_95:
           v159 = [(PHBottomBar *)self makeButtonWithType:v158 title:0 image:0 color:0 font:0 fontColor:0];
           [(PHBottomBar *)self setMainLeftButton:v159];
 
-          v160 = [(PHBottomBar *)self callCenter];
-          v161 = [v160 isEndAndAnswerAllowed];
+          callCenter2 = [(PHBottomBar *)self callCenter];
+          isEndAndAnswerAllowed2 = [callCenter2 isEndAndAnswerAllowed];
 
-          if (v161)
+          if (isEndAndAnswerAllowed2)
           {
             v162 = [(PHBottomBar *)self makeButtonWithType:4 title:0 image:0 color:0 font:0 fontColor:0];
             [(PHBottomBar *)self setSideButtonLeft:v162];
@@ -1953,8 +1953,8 @@ LABEL_95:
           v202 = [(PHBottomBar *)self makeButtonWithType:5 title:0 image:0 color:0 font:0 fontColor:0];
           [(PHBottomBar *)self setSideButtonRight:v202];
 
-          v203 = [(PHBottomBar *)self callDisplayStyleManager];
-          v204 = [v203 callDisplayStyle] == 3;
+          callDisplayStyleManager4 = [(PHBottomBar *)self callDisplayStyleManager];
+          v204 = [callDisplayStyleManager4 callDisplayStyle] == 3;
 
           if (!v204)
           {
@@ -1968,10 +1968,10 @@ LABEL_95:
 
           goto LABEL_63;
         case 9:
-          v155 = [(PHBottomBar *)self callCenter];
-          v156 = [v155 isEndAndAnswerAllowed];
+          callCenter3 = [(PHBottomBar *)self callCenter];
+          isEndAndAnswerAllowed3 = [callCenter3 isEndAndAnswerAllowed];
 
-          if (v156)
+          if (isEndAndAnswerAllowed3)
           {
             v157 = [(PHBottomBar *)self makeButtonWithType:4 title:0 image:0 color:0 font:0 fontColor:0];
             [(PHBottomBar *)self setMainRightButton:v157];
@@ -1988,8 +1988,8 @@ LABEL_95:
           v184 = [(PHBottomBar *)self makeButtonWithType:7 title:0 image:0 color:0 font:0 fontColor:0];
           [(PHBottomBar *)self setMainLeftButton:v184];
 
-          v185 = [(PHBottomBar *)self callDisplayStyleManager];
-          v186 = [v185 callDisplayStyle] == 3;
+          callDisplayStyleManager5 = [(PHBottomBar *)self callDisplayStyleManager];
+          v186 = [callDisplayStyleManager5 callDisplayStyle] == 3;
 
           if (!v186)
           {
@@ -2063,8 +2063,8 @@ LABEL_95:
 
           if ([(PHBottomBar *)self shouldShowActionTypePunchOut])
           {
-            v175 = [(PHBottomBar *)self delegate];
-            v176 = [v175 imageForItemInBar:self withActionType:31];
+            delegate3 = [(PHBottomBar *)self delegate];
+            v176 = [delegate3 imageForItemInBar:self withActionType:31];
             v177 = +[UIColor whiteColor];
             v178 = [(PHBottomBar *)self makeButtonWithType:31 title:0 image:v176 color:v177 font:0 fontColor:0];
             [(PHBottomBar *)self setSideButtonLeft:v178];
@@ -2117,10 +2117,10 @@ LABEL_95:
           goto LABEL_63;
         case 19:
           v134 = +[CNKFeatures sharedInstance];
-          v135 = [v134 isDialPadEnabled];
+          isDialPadEnabled = [v134 isDialPadEnabled];
 
           v136 = [(PHBottomBar *)self makeButtonWithType:15 title:0 image:0 color:0 font:0 fontColor:0];
-          if (v135)
+          if (isDialPadEnabled)
           {
             [(PHBottomBar *)self setSupplementalBottomLeftButton:v136];
 
@@ -2198,9 +2198,9 @@ LABEL_95:
 
           goto LABEL_63;
         default:
-          if (a3 <= 24)
+          if (state <= 24)
           {
-            if (a3 == 22)
+            if (state == 22)
             {
               v227 = [(PHBottomBar *)self makeButtonWithType:39 title:0 image:0 color:0 font:0 fontColor:0];
               [(PHBottomBar *)self setMainLeftButton:v227];
@@ -2208,45 +2208,45 @@ LABEL_95:
               v228 = [(PHBottomBar *)self makeButtonWithType:38 title:0 image:0 color:0 font:0 fontColor:0];
               [(PHBottomBar *)self setMainRightButton:v228];
 
-              v229 = [(PHBottomBar *)self alertFeedbackGenerator];
-              [v229 notificationOccurred:0];
+              alertFeedbackGenerator = [(PHBottomBar *)self alertFeedbackGenerator];
+              [alertFeedbackGenerator notificationOccurred:0];
 
               goto LABEL_63;
             }
 
-            if (a3 != 23)
+            if (state != 23)
             {
 LABEL_63:
-              v66 = [(PHBottomBar *)self mainRightButton];
-              [(PHBottomBar *)self addSubview:v66];
+              mainRightButton = [(PHBottomBar *)self mainRightButton];
+              [(PHBottomBar *)self addSubview:mainRightButton];
 
-              v67 = [(PHBottomBar *)self mainLeftButton];
-              [(PHBottomBar *)self addSubview:v67];
+              mainLeftButton = [(PHBottomBar *)self mainLeftButton];
+              [(PHBottomBar *)self addSubview:mainLeftButton];
 
-              v68 = [(PHBottomBar *)self supplementalTopLeftButton];
-              [(PHBottomBar *)self addSubview:v68];
+              supplementalTopLeftButton = [(PHBottomBar *)self supplementalTopLeftButton];
+              [(PHBottomBar *)self addSubview:supplementalTopLeftButton];
 
-              v69 = [(PHBottomBar *)self supplementalTopRightButton];
-              [(PHBottomBar *)self addSubview:v69];
+              supplementalTopRightButton = [(PHBottomBar *)self supplementalTopRightButton];
+              [(PHBottomBar *)self addSubview:supplementalTopRightButton];
 
-              v70 = [(PHBottomBar *)self supplementalBottomLeftButton];
-              [(PHBottomBar *)self addSubview:v70];
+              supplementalBottomLeftButton = [(PHBottomBar *)self supplementalBottomLeftButton];
+              [(PHBottomBar *)self addSubview:supplementalBottomLeftButton];
 
-              v71 = [(PHBottomBar *)self supplementalBottomRightButton];
-              [(PHBottomBar *)self addSubview:v71];
+              supplementalBottomRightButton2 = [(PHBottomBar *)self supplementalBottomRightButton];
+              [(PHBottomBar *)self addSubview:supplementalBottomRightButton2];
 
-              v72 = [(PHBottomBar *)self slidingButton];
-              [(PHBottomBar *)self addSubview:v72];
+              slidingButton2 = [(PHBottomBar *)self slidingButton];
+              [(PHBottomBar *)self addSubview:slidingButton2];
 
-              v73 = [(PHBottomBar *)self sideButtonLeft];
-              [(PHBottomBar *)self addSubview:v73];
+              sideButtonLeft = [(PHBottomBar *)self sideButtonLeft];
+              [(PHBottomBar *)self addSubview:sideButtonLeft];
 
-              v74 = [(PHBottomBar *)self sideButtonRight];
-              [(PHBottomBar *)self addSubview:v74];
+              sideButtonRight = [(PHBottomBar *)self sideButtonRight];
+              [(PHBottomBar *)self addSubview:sideButtonRight];
 
               if ([(PHBottomBar *)self declineAndMessageIsAvailable])
               {
-                v75 = [v13 isBranded] ^ 1;
+                v75 = [frontmostAudioOrVideoCall isBranded] ^ 1;
               }
 
               else
@@ -2260,37 +2260,37 @@ LABEL_63:
               v77 = [(PHBottomBar *)self controlForActionType:9];
               [v77 setEnabled:v75];
 
-              v78 = [(PHBottomBar *)self declineAndMessageIsAvailable];
+              declineAndMessageIsAvailable = [(PHBottomBar *)self declineAndMessageIsAvailable];
               v79 = [(PHBottomBar *)self controlForActionType:12];
-              [v79 setHidden:v78 ^ 1];
+              [v79 setHidden:declineAndMessageIsAvailable ^ 1];
 
-              v80 = [(PHBottomBar *)self declineAndMessageIsAvailable];
+              declineAndMessageIsAvailable2 = [(PHBottomBar *)self declineAndMessageIsAvailable];
               v81 = [(PHBottomBar *)self controlForActionType:9];
-              [v81 setHidden:v80 ^ 1];
+              [v81 setHidden:declineAndMessageIsAvailable2 ^ 1];
 
-              v82 = [(PHBottomBar *)self declineAndRemindIsAvailable];
+              declineAndRemindIsAvailable = [(PHBottomBar *)self declineAndRemindIsAvailable];
               v83 = [(PHBottomBar *)self controlForActionType:13];
-              [v83 setHidden:v82 ^ 1];
+              [v83 setHidden:declineAndRemindIsAvailable ^ 1];
 
-              v84 = [(PHBottomBar *)self buttonLayoutConstraints];
+              buttonLayoutConstraints = [(PHBottomBar *)self buttonLayoutConstraints];
 
-              if (v84)
+              if (buttonLayoutConstraints)
               {
-                v85 = [(PHBottomBar *)self buttonLayoutConstraints];
-                [(PHBottomBar *)self removeConstraints:v85];
+                buttonLayoutConstraints2 = [(PHBottomBar *)self buttonLayoutConstraints];
+                [(PHBottomBar *)self removeConstraints:buttonLayoutConstraints2];
               }
 
-              v86 = [(PHBottomBar *)self constraintsForState:a3];
+              v86 = [(PHBottomBar *)self constraintsForState:state];
               [(PHBottomBar *)self setButtonLayoutConstraints:v86];
 
-              v87 = [(PHBottomBar *)self buttonLayoutConstraints];
-              [(PHBottomBar *)self addConstraints:v87];
+              buttonLayoutConstraints3 = [(PHBottomBar *)self buttonLayoutConstraints];
+              [(PHBottomBar *)self addConstraints:buttonLayoutConstraints3];
 
               v16 = 0;
 LABEL_69:
-              self->_currentState = a3;
+              self->_currentState = state;
               [(PHBottomBar *)self setNeedsLayout];
-              if (v8)
+              if (blockCopy)
               {
                 v88 = v16;
               }
@@ -2302,24 +2302,24 @@ LABEL_69:
 
               if ((v88 & 1) == 0)
               {
-                v8[2](v8, 1);
+                blockCopy[2](blockCopy, 1);
               }
 
-              v89 = [(PHBottomBar *)self statusChangedHandler];
+              statusChangedHandler = [(PHBottomBar *)self statusChangedHandler];
 
-              if (v89)
+              if (statusChangedHandler)
               {
-                v90 = [(PHBottomBar *)self statusChangedHandler];
-                v90[2]();
+                statusChangedHandler2 = [(PHBottomBar *)self statusChangedHandler];
+                statusChangedHandler2[2]();
               }
 
-              if (!v5)
+              if (!animatedCopy)
               {
                 [(PHBottomBar *)self layoutIfNeeded];
               }
 
-              v91 = [(PHBottomBar *)self captureView];
-              if (!v91)
+              captureView = [(PHBottomBar *)self captureView];
+              if (!captureView)
               {
                 goto LABEL_90;
               }
@@ -2330,9 +2330,9 @@ LABEL_69:
 
               else
               {
-                v92 = [(PHBottomBar *)self shouldUseLayoutAsCallScreening];
+                shouldUseLayoutAsCallScreening = [(PHBottomBar *)self shouldUseLayoutAsCallScreening];
 
-                if ((v92 & 1) == 0)
+                if ((shouldUseLayoutAsCallScreening & 1) == 0)
                 {
 LABEL_90:
 
@@ -2340,57 +2340,57 @@ LABEL_90:
                 }
               }
 
-              v93 = [(PHBottomBar *)self slidingButton];
+              slidingButton3 = [(PHBottomBar *)self slidingButton];
 
-              if (v93)
+              if (slidingButton3)
               {
-                v94 = [(PHBottomBar *)self slidingButton];
-                v95 = [v94 acceptButton];
-                v96 = [v95 trackSolidViewBackDropVisualEffectView];
-                [v96 _setGroupName:@"PHBottomBarButtonCaptureGroup"];
+                slidingButton4 = [(PHBottomBar *)self slidingButton];
+                acceptButton2 = [slidingButton4 acceptButton];
+                trackSolidViewBackDropVisualEffectView = [acceptButton2 trackSolidViewBackDropVisualEffectView];
+                [trackSolidViewBackDropVisualEffectView _setGroupName:@"PHBottomBarButtonCaptureGroup"];
 
-                v97 = [(PHBottomBar *)self captureView];
-                v98 = [(PHBottomBar *)self slidingButton];
-                v99 = [v98 acceptButton];
-                v100 = [v99 trackSolidViewBackDropVisualEffectView];
-                [v100 _setCaptureView:v97];
+                captureView2 = [(PHBottomBar *)self captureView];
+                slidingButton5 = [(PHBottomBar *)self slidingButton];
+                acceptButton3 = [slidingButton5 acceptButton];
+                trackSolidViewBackDropVisualEffectView2 = [acceptButton3 trackSolidViewBackDropVisualEffectView];
+                [trackSolidViewBackDropVisualEffectView2 _setCaptureView:captureView2];
               }
 
-              v101 = [(PHBottomBar *)self supplementalTopLeftButton];
-              if (v101)
+              supplementalTopLeftButton2 = [(PHBottomBar *)self supplementalTopLeftButton];
+              if (supplementalTopLeftButton2)
               {
-                v102 = [(PHBottomBar *)self supplementalTopLeftButton];
+                supplementalTopLeftButton3 = [(PHBottomBar *)self supplementalTopLeftButton];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v104 = [(PHBottomBar *)self supplementalTopLeftButton];
-                  v105 = [v104 effectView];
-                  [v105 _setGroupName:@"PHBottomBarButtonCaptureGroup"];
+                  supplementalTopLeftButton4 = [(PHBottomBar *)self supplementalTopLeftButton];
+                  effectView = [supplementalTopLeftButton4 effectView];
+                  [effectView _setGroupName:@"PHBottomBarButtonCaptureGroup"];
 
-                  v106 = [(PHBottomBar *)self captureView];
-                  v107 = [v104 effectView];
-                  [v107 _setCaptureView:v106];
+                  captureView3 = [(PHBottomBar *)self captureView];
+                  effectView2 = [supplementalTopLeftButton4 effectView];
+                  [effectView2 _setCaptureView:captureView3];
                 }
               }
 
-              v108 = [(PHBottomBar *)self supplementalTopRightButton];
-              if (v108)
+              supplementalTopRightButton2 = [(PHBottomBar *)self supplementalTopRightButton];
+              if (supplementalTopRightButton2)
               {
-                v109 = [(PHBottomBar *)self supplementalTopRightButton];
+                supplementalTopRightButton3 = [(PHBottomBar *)self supplementalTopRightButton];
                 objc_opt_class();
                 v110 = objc_opt_isKindOfClass();
 
                 if (v110)
                 {
-                  v111 = [(PHBottomBar *)self supplementalTopRightButton];
-                  v112 = [v111 effectView];
-                  [v112 _setGroupName:@"PHBottomBarButtonCaptureGroup"];
+                  supplementalTopRightButton4 = [(PHBottomBar *)self supplementalTopRightButton];
+                  effectView3 = [supplementalTopRightButton4 effectView];
+                  [effectView3 _setGroupName:@"PHBottomBarButtonCaptureGroup"];
 
-                  v113 = [(PHBottomBar *)self captureView];
-                  v114 = [v111 effectView];
-                  [v114 _setCaptureView:v113];
+                  captureView4 = [(PHBottomBar *)self captureView];
+                  effectView4 = [supplementalTopRightButton4 effectView];
+                  [effectView4 _setCaptureView:captureView4];
                 }
               }
 
@@ -2400,7 +2400,7 @@ LABEL_90:
 
           else
           {
-            if (a3 == 28)
+            if (state == 28)
             {
               v223 = [NSBundle bundleForClass:objc_opt_class()];
               v224 = [v223 localizedStringForKey:@"END" value:&stru_100361FD0 table:@"BottomBar"];
@@ -2413,30 +2413,30 @@ LABEL_90:
               goto LABEL_63;
             }
 
-            if (a3 == 26)
+            if (state == 26)
             {
               goto LABEL_188;
             }
 
-            if (a3 != 25)
+            if (state != 25)
             {
               goto LABEL_63;
             }
           }
 
           v208 = +[CNKFeatures sharedInstance];
-          v209 = [v208 lvm_stopEnabled];
+          lvm_stopEnabled = [v208 lvm_stopEnabled];
 
           v210 = [NSBundle bundleForClass:objc_opt_class()];
           v211 = v210;
-          if (v209)
+          if (lvm_stopEnabled)
           {
             v212 = [v210 localizedStringForKey:@"SCREENING_STOP" value:&stru_100361FD0 table:@"BottomBar"];
             v213 = [(PHBottomBar *)self makeButtonWithType:11 title:v212 image:0 color:0 font:0 fontColor:0];
             [(PHBottomBar *)self setMainLeftButton:v213];
 
-            v214 = [(PHBottomBar *)self callDisplayStyleManager];
-            v215 = [v214 callDisplayStyle] == 3 && a3 == 25;
+            callDisplayStyleManager6 = [(PHBottomBar *)self callDisplayStyleManager];
+            v215 = [callDisplayStyleManager6 callDisplayStyle] == 3 && state == 25;
 
             if (!v215)
             {
@@ -2451,7 +2451,7 @@ LABEL_90:
 
           else
           {
-            if (a3 == 25)
+            if (state == 25)
             {
               v216 = [v210 localizedStringForKey:@"SCREENING_BLOCK" value:&stru_100361FD0 table:@"BottomBar"];
               [(PHBottomBar *)self makeButtonWithType:10 title:v216 image:0 color:0 font:0 fontColor:0];
@@ -2512,17 +2512,17 @@ LABEL_188:
     v41 = [(PHBottomBar *)self makeButtonWithType:1 title:0 image:v31 color:0 font:0 fontColor:0];
     [(PHBottomBar *)self setMainRightButton:v41];
 
-    v42 = [(PHBottomBar *)self callDisplayStyleManager];
-    v43 = [v42 callDisplayStyle] == 3;
+    callDisplayStyleManager7 = [(PHBottomBar *)self callDisplayStyleManager];
+    v43 = [callDisplayStyleManager7 callDisplayStyle] == 3;
 
     if (v43)
     {
-      v44 = [v13 provider];
-      v45 = [v44 isSystemProvider];
+      provider = [frontmostAudioOrVideoCall provider];
+      isSystemProvider = [provider isSystemProvider];
 
-      if (v45)
+      if (isSystemProvider)
       {
-        if (v14)
+        if (callScreeningAvailable)
         {
           v46 = [(PHBottomBar *)self makeButtonWithType:25 title:0 image:0 color:0 font:0 fontColor:0];
           [(PHBottomBar *)self setSideButtonLeft:v46];
@@ -2538,7 +2538,7 @@ LABEL_188:
       goto LABEL_62;
     }
 
-    if (!v14)
+    if (!callScreeningAvailable)
     {
       if ([(PHBottomBar *)self shouldUseLayoutAsCallScreening])
       {
@@ -2564,7 +2564,7 @@ LABEL_188:
     v47 = +[CNKFeatures sharedInstance];
     if ([v47 receptionistEnabled])
     {
-      v48 = [(PHBottomBar *)self liveReplyAvailableForCall:v13];
+      v48 = [(PHBottomBar *)self liveReplyAvailableForCall:frontmostAudioOrVideoCall];
 
       if (v48)
       {
@@ -2595,22 +2595,22 @@ LABEL_62:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v242 = a3;
+    stateCopy2 = state;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Bottom bar is currently animating, we will pend this bottom bar state change to state %ld until that's over", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v10 = [(PHBottomBar *)self pendingStateBlocks];
+  pendingStateBlocks = [(PHBottomBar *)self pendingStateBlocks];
   v234 = _NSConcreteStackBlock;
   v235 = 3221225472;
   v236 = sub_100136750;
   v237 = &unk_100359EC0;
   objc_copyWeak(v239, buf);
-  v239[1] = a3;
-  v240 = v5;
-  v238 = v8;
+  v239[1] = state;
+  v240 = animatedCopy;
+  v238 = blockCopy;
   v11 = objc_retainBlock(&v234);
-  [v10 addObject:{v11, v234, v235, v236, v237}];
+  [pendingStateBlocks addObject:{v11, v234, v235, v236, v237}];
 
   objc_destroyWeak(v239);
   objc_destroyWeak(buf);
@@ -2656,7 +2656,7 @@ LABEL_91:
   supplementalTopLeftButton = self->_supplementalTopLeftButton;
   v154 = v4;
   v155 = v3;
-  v158 = self;
+  selfCopy = self;
   if (!supplementalTopLeftButton)
   {
     supplementalTopLeftButton = self->_supplementalTopRightButton;
@@ -2673,34 +2673,34 @@ LABEL_91:
 
 LABEL_51:
         v57 = [v4 objectAtIndexedSubscript:0];
-        v61 = [v57 topAnchor];
-        v62 = self;
-        v58 = v61;
-        v59 = [(PHBottomBar *)v62 topAnchor];
-        v63 = [v58 constraintEqualToAnchor:v59];
+        topAnchor = [v57 topAnchor];
+        selfCopy2 = self;
+        topAnchor10 = topAnchor;
+        topAnchor2 = [(PHBottomBar *)selfCopy2 topAnchor];
+        v63 = [topAnchor10 constraintEqualToAnchor:topAnchor2];
         v16 = 0;
         goto LABEL_55;
       }
 
-      v23 = [(PHSlidingButton *)slidingButton topAnchor];
-      v24 = self;
-      v25 = v23;
-      v26 = [(PHBottomBar *)v24 topAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      topAnchor3 = [(PHSlidingButton *)slidingButton topAnchor];
+      selfCopy3 = self;
+      topAnchor9 = topAnchor3;
+      topAnchor4 = [(PHBottomBar *)selfCopy3 topAnchor];
+      v27 = [topAnchor9 constraintEqualToAnchor:topAnchor4];
       v156 = 0;
       goto LABEL_46;
     }
   }
 
   v156 = supplementalTopLeftButton;
-  v11 = [(UIButton *)v156 topAnchor];
-  v12 = [(PHBottomBar *)v158 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor5 = [(UIButton *)v156 topAnchor];
+  topAnchor6 = [(PHBottomBar *)selfCopy topAnchor];
+  v13 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
 
   [v3 addObject:v13];
-  if (v158->_supplementalTopLeftButton && v158->_supplementalTopRightButton)
+  if (selfCopy->_supplementalTopLeftButton && selfCopy->_supplementalTopRightButton)
   {
-    v14 = v158->_sideButtonLeft;
+    v14 = selfCopy->_sideButtonLeft;
     if (v14)
     {
       v15 = v14;
@@ -2708,7 +2708,7 @@ LABEL_51:
 
     else
     {
-      v15 = v158->_mainLeftButton;
+      v15 = selfCopy->_mainLeftButton;
       if (!v15)
       {
         v150 = 0;
@@ -2719,30 +2719,30 @@ LABEL_51:
     v150 = v15;
     if ([v4 count] >= 2)
     {
-      v28 = [(UIButton *)v158->_supplementalTopLeftButton centerXAnchor];
-      v29 = [(UIButton *)v15 centerXAnchor];
+      centerXAnchor = [(UIButton *)selfCopy->_supplementalTopLeftButton centerXAnchor];
+      centerXAnchor2 = [(UIButton *)v15 centerXAnchor];
       goto LABEL_27;
     }
 
 LABEL_24:
-    v30 = v158->_slidingButton;
+    v30 = selfCopy->_slidingButton;
     if (v30)
     {
       [(PHSlidingButton *)v30 trackSize];
       v32 = v31 * 0.5;
-      v28 = [(UIButton *)v158->_supplementalTopLeftButton centerXAnchor];
-      [(PHSlidingButton *)v158->_slidingButton leadingAnchor];
-      v34 = v33 = v158;
-      v146 = [v28 constraintEqualToAnchor:v34 constant:v32];
+      centerXAnchor = [(UIButton *)selfCopy->_supplementalTopLeftButton centerXAnchor];
+      [(PHSlidingButton *)selfCopy->_slidingButton leadingAnchor];
+      v34 = v33 = selfCopy;
+      v146 = [centerXAnchor constraintEqualToAnchor:v34 constant:v32];
       goto LABEL_28;
     }
 
-    v28 = [(UIButton *)v158->_supplementalTopLeftButton leadingAnchor];
-    v29 = [(PHBottomBar *)v158 leadingAnchor];
+    centerXAnchor = [(UIButton *)selfCopy->_supplementalTopLeftButton leadingAnchor];
+    centerXAnchor2 = [(PHBottomBar *)selfCopy leadingAnchor];
 LABEL_27:
-    v33 = v158;
-    v34 = v29;
-    v146 = [v28 constraintEqualToAnchor:v29];
+    v33 = selfCopy;
+    v34 = centerXAnchor2;
+    v146 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v32 = 0.0;
 LABEL_28:
 
@@ -2766,8 +2766,8 @@ LABEL_28:
     v139 = v36;
     if ([v4 count] >= 2)
     {
-      v37 = [(UIButton *)v33->_supplementalTopRightButton centerXAnchor];
-      v38 = [(UIButton *)v36 centerXAnchor];
+      centerXAnchor3 = [(UIButton *)v33->_supplementalTopRightButton centerXAnchor];
+      centerXAnchor4 = [(UIButton *)v36 centerXAnchor];
       goto LABEL_37;
     }
 
@@ -2775,17 +2775,17 @@ LABEL_34:
     supplementalTopRightButton = v33->_supplementalTopRightButton;
     if (v33->_slidingButton)
     {
-      v37 = [(UIButton *)supplementalTopRightButton centerXAnchor];
-      v40 = [(PHSlidingButton *)v33->_slidingButton acceptButton];
-      v41 = [v40 trailingAnchor];
-      v42 = [v37 constraintEqualToAnchor:v41 constant:-v32];
+      centerXAnchor3 = [(UIButton *)supplementalTopRightButton centerXAnchor];
+      acceptButton = [(PHSlidingButton *)v33->_slidingButton acceptButton];
+      trailingAnchor = [acceptButton trailingAnchor];
+      v42 = [centerXAnchor3 constraintEqualToAnchor:trailingAnchor constant:-v32];
 
 LABEL_38:
       v164[0] = v146;
       v164[1] = v42;
-      v43 = [(UIButton *)v33->_supplementalTopRightButton topAnchor];
-      v44 = [(UIButton *)v33->_supplementalTopLeftButton topAnchor];
-      v45 = [v43 constraintEqualToAnchor:v44];
+      topAnchor7 = [(UIButton *)v33->_supplementalTopRightButton topAnchor];
+      topAnchor8 = [(UIButton *)v33->_supplementalTopLeftButton topAnchor];
+      v45 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
       v164[2] = v45;
       v46 = [NSArray arrayWithObjects:v164 count:3];
       [v155 addObjectsFromArray:v46];
@@ -2795,19 +2795,19 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v37 = [(UIButton *)supplementalTopRightButton trailingAnchor];
-    v38 = [(PHBottomBar *)v33 trailingAnchor];
+    centerXAnchor3 = [(UIButton *)supplementalTopRightButton trailingAnchor];
+    centerXAnchor4 = [(PHBottomBar *)v33 trailingAnchor];
 LABEL_37:
-    v40 = v38;
-    v42 = [v37 constraintEqualToAnchor:v38];
+    acceptButton = centerXAnchor4;
+    v42 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     goto LABEL_38;
   }
 
   v16 = v156;
-  v17 = [(UIButton *)v156 centerXAnchor];
-  [(PHBottomBar *)v158 centerXAnchor];
-  v19 = v18 = v158;
-  v20 = [v17 constraintEqualToAnchor:v19];
+  centerXAnchor5 = [(UIButton *)v156 centerXAnchor];
+  [(PHBottomBar *)selfCopy centerXAnchor];
+  v19 = v18 = selfCopy;
+  v20 = [centerXAnchor5 constraintEqualToAnchor:v19];
   [v3 addObject:v20];
 
 LABEL_39:
@@ -2819,8 +2819,8 @@ LABEL_39:
     goto LABEL_47;
   }
 
-  v25 = [(PHSlidingButton *)v47 topAnchor];
-  v26 = [(PHSlidingButton *)v16 bottomAnchor];
+  topAnchor9 = [(PHSlidingButton *)v47 topAnchor];
+  topAnchor4 = [(PHSlidingButton *)v16 bottomAnchor];
   if (+[PHUIConfiguration inCallBottomBarSpacing]== 6)
   {
     v48 = 90.0;
@@ -2836,19 +2836,19 @@ LABEL_39:
     }
   }
 
-  v27 = [v25 constraintEqualToAnchor:v26 constant:v48];
+  v27 = [topAnchor9 constraintEqualToAnchor:topAnchor4 constant:v48];
 LABEL_46:
   v151 = v27;
 
   v163[0] = v27;
-  v50 = [(PHSlidingButton *)*p_slidingButton leadingAnchor];
-  self = v158;
-  v51 = [(PHBottomBar *)v158 leadingAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  leadingAnchor = [(PHSlidingButton *)*p_slidingButton leadingAnchor];
+  self = selfCopy;
+  leadingAnchor2 = [(PHBottomBar *)selfCopy leadingAnchor];
+  v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v163[1] = v52;
-  v53 = [(PHSlidingButton *)*p_slidingButton trailingAnchor];
-  v54 = [(PHBottomBar *)v158 trailingAnchor];
-  v55 = [v53 constraintEqualToAnchor:v54];
+  trailingAnchor2 = [(PHSlidingButton *)*p_slidingButton trailingAnchor];
+  trailingAnchor3 = [(PHBottomBar *)selfCopy trailingAnchor];
+  v55 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v163[2] = v55;
   v56 = [NSArray arrayWithObjects:v163 count:3];
   v3 = v155;
@@ -2868,8 +2868,8 @@ LABEL_47:
   }
 
   v57 = [v4 objectAtIndexedSubscript:0];
-  v58 = [v57 topAnchor];
-  v59 = [(PHSlidingButton *)v16 bottomAnchor];
+  topAnchor10 = [v57 topAnchor];
+  topAnchor2 = [(PHSlidingButton *)v16 bottomAnchor];
   if (+[PHUIConfiguration inCallBottomBarSpacing]== 6)
   {
     v60 = 90.0;
@@ -2885,17 +2885,17 @@ LABEL_47:
     }
   }
 
-  v63 = [v58 constraintEqualToAnchor:v59 constant:v60];
+  v63 = [topAnchor10 constraintEqualToAnchor:topAnchor2 constant:v60];
 LABEL_55:
 
   if ([v4 count] == 1)
   {
     v162[0] = v63;
     v65 = [v4 objectAtIndexedSubscript:0];
-    v66 = [v65 centerXAnchor];
-    self = v158;
-    v67 = [(PHBottomBar *)v158 centerXAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67];
+    centerXAnchor6 = [v65 centerXAnchor];
+    self = selfCopy;
+    centerXAnchor7 = [(PHBottomBar *)selfCopy centerXAnchor];
+    v68 = [centerXAnchor6 constraintEqualToAnchor:centerXAnchor7];
     v162[1] = v68;
     v69 = [NSArray arrayWithObjects:v162 count:2];
     [v3 addObjectsFromArray:v69];
@@ -2910,107 +2910,107 @@ LABEL_55:
       {
         v160[0] = v63;
         v148 = [v4 objectAtIndexedSubscript:0];
-        v141 = [v148 leadingAnchor];
-        v134 = [(PHBottomBar *)v158 leadingAnchor];
-        v144 = [v141 constraintEqualToAnchor:v134];
+        leadingAnchor3 = [v148 leadingAnchor];
+        leadingAnchor4 = [(PHBottomBar *)selfCopy leadingAnchor];
+        v144 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v160[1] = v144;
         v153 = 1;
         v137 = [v4 objectAtIndexedSubscript:1];
-        v131 = [v137 centerXAnchor];
-        v129 = [(PHBottomBar *)v158 centerXAnchor];
-        v127 = [v131 constraintEqualToAnchor:v129];
+        centerXAnchor8 = [v137 centerXAnchor];
+        centerXAnchor9 = [(PHBottomBar *)selfCopy centerXAnchor];
+        v127 = [centerXAnchor8 constraintEqualToAnchor:centerXAnchor9];
         v160[2] = v127;
         v125 = [v4 objectAtIndexedSubscript:1];
-        v121 = [v125 centerYAnchor];
+        centerYAnchor = [v125 centerYAnchor];
         v123 = [v4 objectAtIndexedSubscript:0];
-        v119 = [v123 centerYAnchor];
-        v117 = [v121 constraintEqualToAnchor:v119];
+        centerYAnchor2 = [v123 centerYAnchor];
+        v117 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v160[3] = v117;
         v115 = [v4 objectAtIndexedSubscript:2];
-        v113 = [v115 trailingAnchor];
-        v111 = [(PHBottomBar *)v158 trailingAnchor];
-        v80 = [v113 constraintEqualToAnchor:v111];
+        trailingAnchor4 = [v115 trailingAnchor];
+        trailingAnchor5 = [(PHBottomBar *)selfCopy trailingAnchor];
+        v80 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
         v160[4] = v80;
         v81 = [v4 objectAtIndexedSubscript:2];
-        v82 = [v81 centerYAnchor];
+        centerYAnchor3 = [v81 centerYAnchor];
         v83 = [v4 objectAtIndexedSubscript:0];
-        v84 = [v83 centerYAnchor];
-        v85 = [v82 constraintEqualToAnchor:v84];
+        centerYAnchor4 = [v83 centerYAnchor];
+        v85 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
         v160[5] = v85;
         v86 = [NSArray arrayWithObjects:v160 count:6];
         [v155 addObjectsFromArray:v86];
 
         v3 = v155;
-        v67 = v134;
+        centerXAnchor7 = leadingAnchor4;
 
-        v66 = v141;
+        centerXAnchor6 = leadingAnchor3;
         v65 = v148;
 
         v69 = v137;
         v68 = v144;
 
-        self = v158;
-        v87 = v131;
+        self = selfCopy;
+        v87 = centerXAnchor8;
       }
 
       else
       {
         v159[0] = v63;
         v149 = [v4 objectAtIndexedSubscript:0];
-        v142 = [v149 leadingAnchor];
-        v135 = [(PHBottomBar *)v158 leadingAnchor];
-        v145 = [v142 constraintEqualToAnchor:v135];
+        leadingAnchor5 = [v149 leadingAnchor];
+        leadingAnchor6 = [(PHBottomBar *)selfCopy leadingAnchor];
+        v145 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
         v159[1] = v145;
         v153 = 1;
         v138 = [v4 objectAtIndexedSubscript:1];
-        v130 = [v138 leadingAnchor];
+        leadingAnchor7 = [v138 leadingAnchor];
         v132 = [v4 objectAtIndexedSubscript:0];
-        v128 = [v132 trailingAnchor];
-        v126 = [v130 constraintEqualToAnchor:v128];
+        trailingAnchor6 = [v132 trailingAnchor];
+        v126 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor6];
         v159[2] = v126;
         v124 = [v4 objectAtIndexedSubscript:1];
-        v120 = [v124 centerYAnchor];
+        centerYAnchor5 = [v124 centerYAnchor];
         v122 = [v4 objectAtIndexedSubscript:0];
-        v118 = [v122 centerYAnchor];
-        v116 = [v120 constraintEqualToAnchor:v118];
+        centerYAnchor6 = [v122 centerYAnchor];
+        v116 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
         v159[3] = v116;
         v114 = [v4 objectAtIndexedSubscript:2];
-        v110 = [v114 trailingAnchor];
+        trailingAnchor7 = [v114 trailingAnchor];
         v112 = [v4 objectAtIndexedSubscript:3];
-        v109 = [v112 leadingAnchor];
-        v108 = [v110 constraintEqualToAnchor:v109];
+        leadingAnchor8 = [v112 leadingAnchor];
+        v108 = [trailingAnchor7 constraintEqualToAnchor:leadingAnchor8];
         v159[4] = v108;
         v107 = [v4 objectAtIndexedSubscript:2];
-        v105 = [v107 centerYAnchor];
+        centerYAnchor7 = [v107 centerYAnchor];
         v106 = [v4 objectAtIndexedSubscript:0];
-        v104 = [v106 centerYAnchor];
-        v103 = [v105 constraintEqualToAnchor:v104];
+        centerYAnchor8 = [v106 centerYAnchor];
+        v103 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
         v159[5] = v103;
         v102 = [v4 objectAtIndexedSubscript:3];
-        v101 = [v102 trailingAnchor];
-        v100 = [(PHBottomBar *)v158 trailingAnchor];
-        v88 = [v101 constraintEqualToAnchor:v100];
+        trailingAnchor8 = [v102 trailingAnchor];
+        trailingAnchor9 = [(PHBottomBar *)selfCopy trailingAnchor];
+        v88 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
         v159[6] = v88;
         v89 = [v4 objectAtIndexedSubscript:3];
-        v90 = [v89 centerYAnchor];
+        centerYAnchor9 = [v89 centerYAnchor];
         v91 = [v4 objectAtIndexedSubscript:0];
-        v92 = [v91 centerYAnchor];
-        v93 = [v90 constraintEqualToAnchor:v92];
+        centerYAnchor10 = [v91 centerYAnchor];
+        v93 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10];
         v159[7] = v93;
         v94 = [NSArray arrayWithObjects:v159 count:8];
         [v155 addObjectsFromArray:v94];
 
         v3 = v155;
-        v67 = v135;
+        centerXAnchor7 = leadingAnchor6;
 
-        v66 = v142;
+        centerXAnchor6 = leadingAnchor5;
         v65 = v149;
 
         v69 = v138;
         v68 = v145;
 
-        self = v158;
-        v87 = v130;
+        self = selfCopy;
+        v87 = leadingAnchor7;
       }
 
       v16 = v157;
@@ -3020,29 +3020,29 @@ LABEL_55:
     v70 = v63;
     v161[0] = v63;
     v147 = [v4 objectAtIndexedSubscript:0];
-    v140 = [v147 leadingAnchor];
-    v71 = [(PHBottomBar *)v158 leadingAnchor];
-    v143 = [v140 constraintEqualToAnchor:v71];
+    leadingAnchor9 = [v147 leadingAnchor];
+    leadingAnchor10 = [(PHBottomBar *)selfCopy leadingAnchor];
+    v143 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     v161[1] = v143;
     v136 = [v4 objectAtIndexedSubscript:1];
-    v152 = [v136 trailingAnchor];
-    v72 = [(PHBottomBar *)v158 trailingAnchor];
-    v73 = [v152 constraintEqualToAnchor:v72];
+    trailingAnchor10 = [v136 trailingAnchor];
+    trailingAnchor11 = [(PHBottomBar *)selfCopy trailingAnchor];
+    v73 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11];
     v161[2] = v73;
     v74 = [v4 objectAtIndexedSubscript:1];
     [v74 centerYAnchor];
     v75 = v133 = v70;
     v76 = [v4 objectAtIndexedSubscript:0];
-    v77 = [v76 centerYAnchor];
-    v78 = [v75 constraintEqualToAnchor:v77];
+    centerYAnchor11 = [v76 centerYAnchor];
+    v78 = [v75 constraintEqualToAnchor:centerYAnchor11];
     v161[3] = v78;
     v79 = [NSArray arrayWithObjects:v161 count:4];
     [v155 addObjectsFromArray:v79];
 
-    v67 = v71;
+    centerXAnchor7 = leadingAnchor10;
     v3 = v155;
 
-    v66 = v140;
+    centerXAnchor6 = leadingAnchor9;
     v65 = v147;
 
     v16 = v157;
@@ -3051,7 +3051,7 @@ LABEL_55:
     v69 = v136;
     v68 = v143;
 
-    self = v158;
+    self = selfCopy;
   }
 
   v153 = 0;
@@ -3063,9 +3063,9 @@ LABEL_64:
 LABEL_65:
   if (v16)
   {
-    v96 = [(PHSlidingButton *)v16 bottomAnchor];
-    v97 = [(PHBottomBar *)self bottomAnchor];
-    v98 = [v96 constraintEqualToAnchor:v97];
+    bottomAnchor = [(PHSlidingButton *)v16 bottomAnchor];
+    bottomAnchor2 = [(PHBottomBar *)self bottomAnchor];
+    v98 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v3 addObject:v98];
 
     v4 = v154;
@@ -3076,11 +3076,11 @@ LABEL_67:
   return v3;
 }
 
-- (id)constraintsForState:(int64_t)a3
+- (id)constraintsForState:(int64_t)state
 {
   v4 = +[NSMutableArray array];
-  v295 = [(PHBottomBar *)self callScreeningAvailable];
-  v5 = [(PHBottomBar *)self viewLabels];
+  callScreeningAvailable = [(PHBottomBar *)self callScreeningAvailable];
+  viewLabels = [(PHBottomBar *)self viewLabels];
   v307[0] = @"SideMarginForDoubleButton";
   [(PHBottomBar *)self sideMarginForDoubleButton];
   v292 = [NSNumber numberWithDouble:?];
@@ -3094,14 +3094,14 @@ LABEL_67:
   v289 = [NSNumber numberWithDouble:?];
   v308[2] = v289;
   v307[3] = @"TopMarginForFaceTimeButtons";
-  v6 = [(PHBottomBar *)self usesLowerButtons];
-  v287 = [(PHBottomBar *)self callDisplayStyleManager];
-  v7 = [v287 callDisplayStyle];
-  v8 = v7 != 3;
-  v288 = v6;
-  if (v6)
+  usesLowerButtons = [(PHBottomBar *)self usesLowerButtons];
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
+  v8 = callDisplayStyle != 3;
+  v288 = usesLowerButtons;
+  if (usesLowerButtons)
   {
-    if (v7 == 3)
+    if (callDisplayStyle == 3)
     {
       +[PHUIConfiguration ambientInCallControlSize];
       v12 = v11;
@@ -3109,8 +3109,8 @@ LABEL_67:
 
     else
     {
-      v277 = [(PHBottomBar *)self callDisplayStyleManager];
-      if ([v277 usesLargeFormatUI] && self->_isAudioCall)
+      callDisplayStyleManager2 = [(PHBottomBar *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager2 usesLargeFormatUI] && self->_isAudioCall)
       {
         +[PHBottomBar buttonHeightWithoutDefaultPadding];
       }
@@ -3149,7 +3149,7 @@ LABEL_67:
 
   else
   {
-    if (v7 == 3)
+    if (callDisplayStyle == 3)
     {
       +[PHUIConfiguration ambientInCallControlSize];
       v14 = v13;
@@ -3157,8 +3157,8 @@ LABEL_67:
 
     else
     {
-      v276 = [(PHBottomBar *)self callDisplayStyleManager];
-      if ([v276 usesLargeFormatUI] && self->_isAudioCall)
+      callDisplayStyleManager3 = [(PHBottomBar *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager3 usesLargeFormatUI] && self->_isAudioCall)
       {
         +[PHBottomBar buttonHeightWithoutDefaultPadding];
       }
@@ -3207,7 +3207,7 @@ LABEL_67:
 
   v285 = v23;
   v286 = v8;
-  v299 = v5;
+  v299 = viewLabels;
   v283 = [NSNumber numberWithFloat:v29];
   v308[4] = v283;
   v307[5] = @"AmbientButtonSpacing";
@@ -3236,9 +3236,9 @@ LABEL_67:
   v308[8] = &off_10036AFE0;
   v307[8] = @"TopSupplementalButtonSpacing";
   v307[9] = @"HeightOfAButtonPlusButtonSpacing";
-  v35 = [(PHBottomBar *)self callDisplayStyleManager];
-  v36 = [v35 callDisplayStyle];
-  if (v36 == 3)
+  callDisplayStyleManager4 = [(PHBottomBar *)self callDisplayStyleManager];
+  callDisplayStyle2 = [callDisplayStyleManager4 callDisplayStyle];
+  if (callDisplayStyle2 == 3)
   {
     +[PHUIConfiguration ambientInCallControlSize];
     v38 = v37;
@@ -3246,8 +3246,8 @@ LABEL_67:
 
   else
   {
-    v278 = [(PHBottomBar *)self callDisplayStyleManager];
-    if ([v278 usesLargeFormatUI] && self->_isAudioCall)
+    callDisplayStyleManager5 = [(PHBottomBar *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager5 usesLargeFormatUI] && self->_isAudioCall)
     {
       +[PHBottomBar buttonHeightWithoutDefaultPadding];
     }
@@ -3296,7 +3296,7 @@ LABEL_67:
   v49 = [NSNumber numberWithDouble:?];
   v308[11] = v49;
   v307[12] = @"HeightOfCallScreeningButton";
-  v301 = self;
+  selfCopy = self;
   [(PHBottomBar *)self heightOfCallScreeningButton];
   v50 = [NSNumber numberWithDouble:?];
   v308[12] = v50;
@@ -3317,22 +3317,22 @@ LABEL_67:
   v308[13] = v54;
   v55 = [NSDictionary dictionaryWithObjects:v308 forKeys:v307 count:14];
 
-  if (v36 != 3)
+  if (callDisplayStyle2 != 3)
   {
   }
 
-  v56 = v301;
+  callDisplayStyleManager11 = selfCopy;
   if ((v288 & 1) == 0)
   {
   }
 
-  v57 = v5;
+  v57 = viewLabels;
   v58 = v300;
   if (v284)
   {
   }
 
-  v59 = v287;
+  v59 = callDisplayStyleManager;
   if (v288)
   {
 
@@ -3347,14 +3347,14 @@ LABEL_67:
   {
   }
 
-  supplementalTopLeftButton = v301->_supplementalTopLeftButton;
+  supplementalTopLeftButton = selfCopy->_supplementalTopLeftButton;
   if (!supplementalTopLeftButton)
   {
-    supplementalTopLeftButton = v301->_supplementalTopRightButton;
+    supplementalTopLeftButton = selfCopy->_supplementalTopRightButton;
   }
 
   v61 = supplementalTopLeftButton;
-  if ((v295 & 1) != 0 || [(PHBottomBar *)v301 shouldUseLayoutAsCallScreening])
+  if ((callScreeningAvailable & 1) != 0 || [(PHBottomBar *)selfCopy shouldUseLayoutAsCallScreening])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -3382,14 +3382,14 @@ LABEL_67:
     }
   }
 
-  v72 = [(PHBottomBar *)v301 callDisplayStyleManager];
-  if ([v72 usesLargeFormatUI])
+  callDisplayStyleManager6 = [(PHBottomBar *)selfCopy callDisplayStyleManager];
+  if ([callDisplayStyleManager6 usesLargeFormatUI])
   {
-    isAudioCall = v301->_isAudioCall;
+    isAudioCall = selfCopy->_isAudioCall;
 
     if (isAudioCall)
     {
-      v74 = [(PHBottomBar *)v301 buttonsConstraintsForIPad];
+      buttonsConstraintsForIPad = [(PHBottomBar *)selfCopy buttonsConstraintsForIPad];
       goto LABEL_136;
     }
   }
@@ -3398,7 +3398,7 @@ LABEL_67:
   {
   }
 
-  switch(a3)
+  switch(state)
   {
     case 0:
     case 1:
@@ -3410,26 +3410,26 @@ LABEL_67:
     case 5:
       goto LABEL_105;
     case 6:
-      v179 = [(PHBottomBar *)v301 callDisplayStyleManager];
-      v180 = [v179 callDisplayStyle];
+      callDisplayStyleManager7 = [(PHBottomBar *)selfCopy callDisplayStyleManager];
+      callDisplayStyle3 = [callDisplayStyleManager7 callDisplayStyle];
 
-      if (v180 != 3)
+      if (callDisplayStyle3 != 3)
       {
 LABEL_105:
-        v181 = [(PHBottomBar *)v301 slidingButton];
-        v182 = [NSLayoutConstraint constraintWithItem:v181 attribute:9 relatedBy:0 toItem:v301 attribute:9 multiplier:1.0 constant:0.0];
+        slidingButton = [(PHBottomBar *)selfCopy slidingButton];
+        v182 = [NSLayoutConstraint constraintWithItem:slidingButton attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:0.0];
         [v300 addObject:v182];
 
-        if ((v295 & 1) != 0 || [(PHBottomBar *)v301 shouldUseLayoutAsCallScreening])
+        if ((callScreeningAvailable & 1) != 0 || [(PHBottomBar *)selfCopy shouldUseLayoutAsCallScreening])
         {
-          v183 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|[_supplementalTopLeftButton]-(ButtonSliderSpacingCallScreeningSlider)-[_slidingButton]", 0, v55, v5);
+          v183 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|[_supplementalTopLeftButton]-(ButtonSliderSpacingCallScreeningSlider)-[_slidingButton]", 0, v55, viewLabels);
           [v300 addObjectsFromArray:v183];
 
-          v184 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|[_supplementalTopRightButton]-(ButtonSliderSpacingCallScreeningSlider)-[_slidingButton]", 0, v55, v5);
+          v184 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|[_supplementalTopRightButton]-(ButtonSliderSpacingCallScreeningSlider)-[_slidingButton]", 0, v55, viewLabels);
           [v300 addObjectsFromArray:v184];
 
-          v185 = [(PHBottomBar *)v301 slidingButton];
-          [v185 knobWidth];
+          slidingButton2 = [(PHBottomBar *)selfCopy slidingButton];
+          [slidingButton2 knobWidth];
           v187 = v186;
 
           v188 = (v187 + -44.0) * 0.5 + 6.0;
@@ -3437,123 +3437,123 @@ LABEL_105:
 
         else
         {
-          v231 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|[_supplementalTopLeftButton]-(ButtonSliderSpacing)-[_slidingButton]", 0, v55, v5);
+          v231 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|[_supplementalTopLeftButton]-(ButtonSliderSpacing)-[_slidingButton]", 0, v55, viewLabels);
           [v300 addObjectsFromArray:v231];
 
-          v232 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|[_supplementalTopRightButton]-(ButtonSliderSpacing)-[_slidingButton]", 0, v55, v5);
+          v232 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|[_supplementalTopRightButton]-(ButtonSliderSpacing)-[_slidingButton]", 0, v55, viewLabels);
           [v300 addObjectsFromArray:v232];
 
           v188 = 0.0;
         }
 
-        v233 = [(PHBottomBar *)v301 supplementalTopLeftButton];
-        v234 = [(PHBottomBar *)v301 slidingButton];
-        v235 = [NSLayoutConstraint constraintWithItem:v233 attribute:5 relatedBy:0 toItem:v234 attribute:5 multiplier:1.0 constant:v188];
+        supplementalTopLeftButton = [(PHBottomBar *)selfCopy supplementalTopLeftButton];
+        slidingButton3 = [(PHBottomBar *)selfCopy slidingButton];
+        v235 = [NSLayoutConstraint constraintWithItem:supplementalTopLeftButton attribute:5 relatedBy:0 toItem:slidingButton3 attribute:5 multiplier:1.0 constant:v188];
         [v300 addObject:v235];
 
-        v117 = [(PHBottomBar *)v301 supplementalTopRightButton];
-        v119 = [(PHBottomBar *)v301 slidingButton];
+        supplementalTopRightButton = [(PHBottomBar *)selfCopy supplementalTopRightButton];
+        slidingButton4 = [(PHBottomBar *)selfCopy slidingButton];
         v121 = -v188;
         v120 = 1.0;
-        v122 = v117;
+        v122 = supplementalTopRightButton;
         v123 = 6;
-        v124 = v119;
+        v124 = slidingButton4;
         v125 = 6;
         goto LABEL_132;
       }
 
 LABEL_71:
-      v75 = [(PHBottomBar *)v301 callDisplayStyleManager];
-      v76 = [v75 callDisplayStyle];
+      callDisplayStyleManager8 = [(PHBottomBar *)selfCopy callDisplayStyleManager];
+      callDisplayStyle4 = [callDisplayStyleManager8 callDisplayStyle];
 
-      if (v76 == 3)
+      if (callDisplayStyle4 == 3)
       {
         v296 = v61;
-        v77 = [(PHBottomBar *)v301 sideButtonLeft];
+        sideButtonLeft = [(PHBottomBar *)selfCopy sideButtonLeft];
 
         v293 = v55;
-        if (v77)
+        if (sideButtonLeft)
         {
-          v78 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|[_sideButtonLeft]-(AmbientButtonSpacing)-[_mainLeftButton]-(AmbientButtonSpacing)-[_mainRightButton]|", 0, v55, v5);
+          v78 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|[_sideButtonLeft]-(AmbientButtonSpacing)-[_mainLeftButton]-(AmbientButtonSpacing)-[_mainRightButton]|", 0, v55, viewLabels);
           [v300 addObjectsFromArray:v78];
 
-          v79 = [(PHBottomBar *)v301 mainLeftButton];
-          v80 = [v79 centerXAnchor];
-          v81 = [(PHBottomBar *)v301 centerXAnchor];
-          v82 = [v80 constraintEqualToAnchor:v81];
+          mainLeftButton = [(PHBottomBar *)selfCopy mainLeftButton];
+          centerXAnchor = [mainLeftButton centerXAnchor];
+          centerXAnchor2 = [(PHBottomBar *)selfCopy centerXAnchor];
+          v82 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
           v303[0] = v82;
-          v83 = [(PHBottomBar *)v301 sideButtonLeft];
-          [v83 topAnchor];
+          sideButtonLeft2 = [(PHBottomBar *)selfCopy sideButtonLeft];
+          [sideButtonLeft2 topAnchor];
           v85 = v84 = v300;
-          v86 = [(PHBottomBar *)v301 topAnchor];
-          v87 = [v85 constraintEqualToAnchor:v86];
+          topAnchor = [(PHBottomBar *)selfCopy topAnchor];
+          v87 = [v85 constraintEqualToAnchor:topAnchor];
           v303[1] = v87;
           v88 = [NSArray arrayWithObjects:v303 count:2];
           [v300 addObjectsFromArray:v88];
 
-          v56 = v301;
+          callDisplayStyleManager11 = selfCopy;
         }
 
         else
         {
-          v79 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-(>=0)-[_mainLeftButton]-(AmbientButtonSpacing)-[_mainRightButton]-|", 0, v55, v5);
-          [v300 addObjectsFromArray:v79];
+          mainLeftButton = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-(>=0)-[_mainLeftButton]-(AmbientButtonSpacing)-[_mainRightButton]-|", 0, v55, viewLabels);
+          [v300 addObjectsFromArray:mainLeftButton];
           v84 = v300;
         }
 
-        v144 = [v56 mainLeftButton];
-        v145 = [v144 topAnchor];
-        v146 = [v56 topAnchor];
-        v147 = [v145 constraintEqualToAnchor:v146];
+        mainLeftButton2 = [callDisplayStyleManager11 mainLeftButton];
+        topAnchor2 = [mainLeftButton2 topAnchor];
+        topAnchor3 = [callDisplayStyleManager11 topAnchor];
+        v147 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
         v302[0] = v147;
-        v148 = [v56 mainRightButton];
-        v149 = [v148 topAnchor];
-        v150 = [v56 topAnchor];
-        v151 = [v149 constraintEqualToAnchor:v150];
+        mainRightButton = [callDisplayStyleManager11 mainRightButton];
+        topAnchor4 = [mainRightButton topAnchor];
+        topAnchor5 = [callDisplayStyleManager11 topAnchor];
+        v151 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
         v302[1] = v151;
         v152 = v302;
         goto LABEL_141;
       }
 
-      v109 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-(SideMarginForDoubleButton)-[_mainLeftButton]-(>=0)-[_mainRightButton]-(SideMarginForDoubleButton)-|", 0, v55, v5);
+      v109 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-(SideMarginForDoubleButton)-[_mainLeftButton]-(>=0)-[_mainRightButton]-(SideMarginForDoubleButton)-|", 0, v55, viewLabels);
       [v300 addObjectsFromArray:v109];
 
       v110 = @"V:|[_supplementalTopRightButton]-(ButtonSpacingCallScreening)-[_mainRightButton]";
       v111 = @"V:|[_supplementalTopLeftButton]-(ButtonSpacingCallScreening)-[_mainLeftButton]";
-      if ((v295 & 1) == 0 && ![(PHBottomBar *)v301 shouldUseLayoutAsCallScreening])
+      if ((callScreeningAvailable & 1) == 0 && ![(PHBottomBar *)selfCopy shouldUseLayoutAsCallScreening])
       {
         v111 = @"V:|[_supplementalTopLeftButton]-(ButtonSpacing)-[_mainLeftButton]";
         v110 = @"V:|[_supplementalTopRightButton]-(ButtonSpacing)-[_mainRightButton]";
       }
 
-      v112 = [NSLayoutConstraint constraintsWithVisualFormat:v111 options:0 metrics:v55 views:v5];
+      v112 = [NSLayoutConstraint constraintsWithVisualFormat:v111 options:0 metrics:v55 views:viewLabels];
       [v300 addObjectsFromArray:v112];
 
-      v113 = [NSLayoutConstraint constraintsWithVisualFormat:v110 options:0 metrics:v55 views:v5];
+      v113 = [NSLayoutConstraint constraintsWithVisualFormat:v110 options:0 metrics:v55 views:viewLabels];
       [v300 addObjectsFromArray:v113];
 
-      v114 = [(PHBottomBar *)v301 supplementalTopLeftButton];
-      v115 = [(PHBottomBar *)v301 mainLeftButton];
-      v116 = [NSLayoutConstraint constraintWithItem:v114 attribute:9 relatedBy:0 toItem:v115 attribute:9 multiplier:1.0 constant:0.0];
+      supplementalTopLeftButton2 = [(PHBottomBar *)selfCopy supplementalTopLeftButton];
+      mainLeftButton3 = [(PHBottomBar *)selfCopy mainLeftButton];
+      v116 = [NSLayoutConstraint constraintWithItem:supplementalTopLeftButton2 attribute:9 relatedBy:0 toItem:mainLeftButton3 attribute:9 multiplier:1.0 constant:0.0];
       [v300 addObject:v116];
 
-      v117 = [(PHBottomBar *)v301 supplementalTopRightButton];
-      v118 = [(PHBottomBar *)v301 mainRightButton];
+      supplementalTopRightButton = [(PHBottomBar *)selfCopy supplementalTopRightButton];
+      mainRightButton2 = [(PHBottomBar *)selfCopy mainRightButton];
       goto LABEL_84;
     case 11:
     case 18:
     case 21:
-      v89 = [(PHBottomBar *)v301 mainLeftButton];
-      v90 = [v89 centerXAnchor];
-      v91 = [(PHBottomBar *)v301 centerXAnchor];
-      v92 = [v90 constraintEqualToAnchor:v91];
+      mainLeftButton4 = [(PHBottomBar *)selfCopy mainLeftButton];
+      centerXAnchor3 = [mainLeftButton4 centerXAnchor];
+      centerXAnchor4 = [(PHBottomBar *)selfCopy centerXAnchor];
+      v92 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
       [v92 setIdentifier:@"mainLeftButtonCenterXAnchorLayoutConstraint"];
       [v300 addObject:v92];
-      v93 = [(PHBottomBar *)v301 callDisplayStyleManager];
-      if ([v93 usesLargeFormatUI])
+      callDisplayStyleManager9 = [(PHBottomBar *)selfCopy callDisplayStyleManager];
+      if ([callDisplayStyleManager9 usesLargeFormatUI])
       {
-        v94 = v301->_isAudioCall;
+        v94 = selfCopy->_isAudioCall;
 
         if (v94)
         {
@@ -3568,12 +3568,12 @@ LABEL_71:
 
       v294 = v55;
       v297 = v61;
-      v134 = [(PHBottomBar *)v301 mainLeftButton];
-      v135 = [v134 topAnchor];
-      v136 = [(PHBottomBar *)v301 topAnchor];
-      v137 = [(PHBottomBar *)v301 callDisplayStyleManager];
-      v138 = [v137 callDisplayStyle];
-      if (v138 == 3)
+      mainLeftButton5 = [(PHBottomBar *)selfCopy mainLeftButton];
+      topAnchor6 = [mainLeftButton5 topAnchor];
+      topAnchor7 = [(PHBottomBar *)selfCopy topAnchor];
+      callDisplayStyleManager10 = [(PHBottomBar *)selfCopy callDisplayStyleManager];
+      callDisplayStyle5 = [callDisplayStyleManager10 callDisplayStyle];
+      if (callDisplayStyle5 == 3)
       {
         +[PHUIConfiguration ambientInCallControlSize];
         v140 = v139;
@@ -3581,8 +3581,8 @@ LABEL_71:
 
       else
       {
-        v56 = [(PHBottomBar *)v301 callDisplayStyleManager];
-        if ([v56 usesLargeFormatUI] && v301->_isAudioCall)
+        callDisplayStyleManager11 = [(PHBottomBar *)selfCopy callDisplayStyleManager];
+        if ([callDisplayStyleManager11 usesLargeFormatUI] && selfCopy->_isAudioCall)
         {
           +[PHBottomBar buttonHeightWithoutDefaultPadding];
         }
@@ -3611,9 +3611,9 @@ LABEL_71:
       *&v224 = v224;
       v225 = [NSNumber numberWithFloat:v224];
       [v225 floatValue];
-      v95 = [v135 constraintEqualToAnchor:v136 constant:v226];
+      v95 = [topAnchor6 constraintEqualToAnchor:topAnchor7 constant:v226];
 
-      if (v138 != 3)
+      if (callDisplayStyle5 != 3)
       {
       }
 
@@ -3622,58 +3622,58 @@ LABEL_71:
       [v300 addObject:v95];
       v55 = v294;
       v61 = v297;
-      v56 = v301;
+      callDisplayStyleManager11 = selfCopy;
 LABEL_126:
-      v227 = [v56 supplementalBottomLeftButton];
+      supplementalBottomLeftButton = [callDisplayStyleManager11 supplementalBottomLeftButton];
 
-      if (v227)
+      if (supplementalBottomLeftButton)
       {
-        v228 = [v56 _supplementalBottomLeftButtonLayoutConstraints];
-        [v58 addObjectsFromArray:v228];
+        _supplementalBottomLeftButtonLayoutConstraints = [callDisplayStyleManager11 _supplementalBottomLeftButtonLayoutConstraints];
+        [v58 addObjectsFromArray:_supplementalBottomLeftButtonLayoutConstraints];
       }
 
-      v229 = [v56 supplementalBottomRightButton];
+      supplementalBottomRightButton = [callDisplayStyleManager11 supplementalBottomRightButton];
 
-      if (v229)
+      if (supplementalBottomRightButton)
       {
-        v230 = [v56 _supplementalBottomRightButtonLayoutConstraints];
-        [v58 addObjectsFromArray:v230];
+        _supplementalBottomRightButtonLayoutConstraints = [callDisplayStyleManager11 _supplementalBottomRightButtonLayoutConstraints];
+        [v58 addObjectsFromArray:_supplementalBottomRightButtonLayoutConstraints];
       }
 
       goto LABEL_135;
     case 12:
     case 16:
       v132 = [NSString stringWithFormat:@"|[_slidingButton]|"];
-      v133 = [NSLayoutConstraint constraintsWithVisualFormat:v132 options:0 metrics:0 views:v5];
+      v133 = [NSLayoutConstraint constraintsWithVisualFormat:v132 options:0 metrics:0 views:viewLabels];
       [v300 addObjectsFromArray:v133];
 
       v131 = @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_slidingButton]";
       goto LABEL_103;
     case 13:
     case 22:
-      v126 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_mainLeftButton]", 0, v55, v5);
+      v126 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_mainLeftButton]", 0, v55, viewLabels);
       [v300 addObjectsFromArray:v126];
 
       v127 = @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_mainRightButton]";
       goto LABEL_92;
     case 17:
     case 27:
-      v128 = [NSLayoutConstraint constraintWithItem:v301->_mainLeftButton attribute:9 relatedBy:0 toItem:v301 attribute:9 multiplier:1.0 constant:0.0];
+      v128 = [NSLayoutConstraint constraintWithItem:selfCopy->_mainLeftButton attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:0.0];
       [v300 addObject:v128];
 
-      v129 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"[_sideButtonLeft]-(SideMarginForFaceTimeButtons)-[_mainLeftButton]-(SideMarginForFaceTimeButtons)-[_sideButtonRight]", 24, v55, v5);
+      v129 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"[_sideButtonLeft]-(SideMarginForFaceTimeButtons)-[_mainLeftButton]-(SideMarginForFaceTimeButtons)-[_sideButtonRight]", 24, v55, viewLabels);
       [v300 addObjectsFromArray:v129];
 
-      v130 = [NSLayoutConstraint constraintWithItem:v301->_sideButtonLeft attribute:7 relatedBy:0 toItem:v301->_sideButtonRight attribute:7 multiplier:1.0 constant:0.0];
+      v130 = [NSLayoutConstraint constraintWithItem:selfCopy->_sideButtonLeft attribute:7 relatedBy:0 toItem:selfCopy->_sideButtonRight attribute:7 multiplier:1.0 constant:0.0];
       [v300 addObject:v130];
 
       v131 = @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_mainLeftButton]";
       goto LABEL_103;
     case 19:
       v189 = +[CNKFeatures sharedInstance];
-      v190 = [v189 isDialPadEnabled];
+      isDialPadEnabled = [v189 isDialPadEnabled];
 
-      if (v190)
+      if (isDialPadEnabled)
       {
         v191 = +[UIScreen mainScreen];
         [v191 bounds];
@@ -3697,43 +3697,43 @@ LABEL_126:
 
         +[PHUIConfiguration inComingCallAndInCallControlsBottomPaddingRatio];
         v198 = v197;
-        v199 = [NSLayoutConstraint constraintsWithVisualFormat:@"[_mainRightButton]" options:0 metrics:v55 views:v5];
+        v199 = [NSLayoutConstraint constraintsWithVisualFormat:@"[_mainRightButton]" options:0 metrics:v55 views:viewLabels];
         [v300 addObjectsFromArray:v199];
 
-        v200 = [(PHBottomBar *)v301 supplementalBottomLeftButton];
-        v201 = [NSLayoutConstraint constraintWithItem:v200 attribute:4 relatedBy:0 toItem:v301 attribute:4 multiplier:1.0 constant:-(v198 * v195)];
+        supplementalBottomLeftButton2 = [(PHBottomBar *)selfCopy supplementalBottomLeftButton];
+        v201 = [NSLayoutConstraint constraintWithItem:supplementalBottomLeftButton2 attribute:4 relatedBy:0 toItem:selfCopy attribute:4 multiplier:1.0 constant:-(v198 * v195)];
         [v300 addObject:v201];
 
-        v202 = [(PHBottomBar *)v301 mainRightButton];
-        v203 = [NSLayoutConstraint constraintWithItem:v202 attribute:6 relatedBy:0 toItem:v301 attribute:6 multiplier:1.0 constant:v196 * -0.102];
+        mainRightButton3 = [(PHBottomBar *)selfCopy mainRightButton];
+        v203 = [NSLayoutConstraint constraintWithItem:mainRightButton3 attribute:6 relatedBy:0 toItem:selfCopy attribute:6 multiplier:1.0 constant:v196 * -0.102];
         [v300 addObject:v203];
 
-        v204 = [(PHBottomBar *)v301 mainRightButton];
-        v205 = [(PHBottomBar *)v301 supplementalBottomLeftButton];
-        v206 = [NSLayoutConstraint constraintWithItem:v204 attribute:10 relatedBy:0 toItem:v205 attribute:10 multiplier:1.0 constant:0.0];
+        mainRightButton4 = [(PHBottomBar *)selfCopy mainRightButton];
+        supplementalBottomLeftButton3 = [(PHBottomBar *)selfCopy supplementalBottomLeftButton];
+        v206 = [NSLayoutConstraint constraintWithItem:mainRightButton4 attribute:10 relatedBy:0 toItem:supplementalBottomLeftButton3 attribute:10 multiplier:1.0 constant:0.0];
         [v300 addObject:v206];
 
-        v207 = [NSLayoutConstraint constraintWithItem:v301->_supplementalBottomLeftButton attribute:9 relatedBy:0 toItem:v301 attribute:9 multiplier:1.0 constant:0.0];
+        v207 = [NSLayoutConstraint constraintWithItem:selfCopy->_supplementalBottomLeftButton attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:0.0];
         [v300 addObject:v207];
 
-        supplementalBottomLeftButton = v301->_supplementalBottomLeftButton;
-        v209 = [(PHBottomBar *)v301 mainRightButton];
-        v210 = [NSLayoutConstraint constraintWithItem:supplementalBottomLeftButton attribute:6 relatedBy:-1 toItem:v209 attribute:5 multiplier:1.0 constant:-8.0];
+        supplementalBottomLeftButton = selfCopy->_supplementalBottomLeftButton;
+        mainRightButton5 = [(PHBottomBar *)selfCopy mainRightButton];
+        v210 = [NSLayoutConstraint constraintWithItem:supplementalBottomLeftButton attribute:6 relatedBy:-1 toItem:mainRightButton5 attribute:5 multiplier:1.0 constant:-8.0];
         [v300 addObject:v210];
 
         LODWORD(v211) = 1132068864;
-        [(UIButton *)v301->_mainRightButton setContentCompressionResistancePriority:0 forAxis:v211];
+        [(UIButton *)selfCopy->_mainRightButton setContentCompressionResistancePriority:0 forAxis:v211];
         goto LABEL_134;
       }
 
-      v239 = [NSLayoutConstraint constraintsWithVisualFormat:@"[_mainLeftButton]" options:0 metrics:v55 views:v5];
+      v239 = [NSLayoutConstraint constraintsWithVisualFormat:@"[_mainLeftButton]" options:0 metrics:v55 views:viewLabels];
       [v300 addObjectsFromArray:v239];
 
-      v240 = [NSLayoutConstraint constraintWithItem:v301->_mainLeftButton attribute:9 relatedBy:0 toItem:v301 attribute:9 multiplier:1.0 constant:0.0];
+      v240 = [NSLayoutConstraint constraintWithItem:selfCopy->_mainLeftButton attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:0.0];
       [v300 addObject:v240];
 
-      v241 = [(PHBottomBar *)v301 supplementalBottomRightButton];
-      v242 = [NSLayoutConstraint constraintWithItem:v241 attribute:10 relatedBy:0 toItem:v301->_mainLeftButton attribute:10 multiplier:1.0 constant:0.0];
+      supplementalBottomRightButton2 = [(PHBottomBar *)selfCopy supplementalBottomRightButton];
+      v242 = [NSLayoutConstraint constraintWithItem:supplementalBottomRightButton2 attribute:10 relatedBy:0 toItem:selfCopy->_mainLeftButton attribute:10 multiplier:1.0 constant:0.0];
       [v300 addObject:v242];
 
       +[TPNumberPadButton defaultSize];
@@ -3746,18 +3746,18 @@ LABEL_126:
       }
 
       v247 = v244 + v246;
-      v117 = [(PHBottomBar *)v301 supplementalBottomRightButton];
-      v248 = [NSLayoutConstraint constraintWithItem:v117 attribute:9 relatedBy:0 toItem:v301 attribute:9 multiplier:1.0 constant:v247];
+      supplementalTopRightButton = [(PHBottomBar *)selfCopy supplementalBottomRightButton];
+      v248 = [NSLayoutConstraint constraintWithItem:supplementalTopRightButton attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:v247];
       [v300 addObject:v248];
       goto LABEL_145;
     case 20:
-      v153 = [NSLayoutConstraint constraintsWithVisualFormat:@"[_mainLeftButton]" options:0 metrics:v55 views:v5];
+      v153 = [NSLayoutConstraint constraintsWithVisualFormat:@"[_mainLeftButton]" options:0 metrics:v55 views:viewLabels];
       [v300 addObjectsFromArray:v153];
 
-      v154 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_mainLeftButton]-(BottomSupplementalButtonSpacing)-[_supplementalBottomLeftButton]", 0, v55, v5);
+      v154 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_mainLeftButton]-(BottomSupplementalButtonSpacing)-[_supplementalBottomLeftButton]", 0, v55, viewLabels);
       [v300 addObjectsFromArray:v154];
 
-      v155 = [NSLayoutConstraint constraintWithItem:v301->_mainLeftButton attribute:9 relatedBy:0 toItem:v301 attribute:9 multiplier:1.0 constant:0.0];
+      v155 = [NSLayoutConstraint constraintWithItem:selfCopy->_mainLeftButton attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:0.0];
       [v300 addObject:v155];
 
       +[TPNumberPadButton defaultSize];
@@ -3770,8 +3770,8 @@ LABEL_126:
       }
 
       v160 = v157 + v159;
-      v161 = [(PHBottomBar *)v301 supplementalBottomLeftButton];
-      v162 = [NSLayoutConstraint constraintWithItem:v161 attribute:9 relatedBy:0 toItem:v301 attribute:9 multiplier:1.0 constant:-v160];
+      supplementalBottomLeftButton4 = [(PHBottomBar *)selfCopy supplementalBottomLeftButton];
+      v162 = [NSLayoutConstraint constraintWithItem:supplementalBottomLeftButton4 attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:-v160];
       [v300 addObject:v162];
 
       v131 = @"|-[_supplementalBottomLeftButton]";
@@ -3779,17 +3779,17 @@ LABEL_126:
     case 23:
     case 25:
     case 28:
-      v96 = [(PHBottomBar *)v301 callDisplayStyleManager];
-      v97 = [v96 callDisplayStyle];
+      callDisplayStyleManager12 = [(PHBottomBar *)selfCopy callDisplayStyleManager];
+      callDisplayStyle6 = [callDisplayStyleManager12 callDisplayStyle];
 
-      if (v97 != 3)
+      if (callDisplayStyle6 != 3)
       {
-        v141 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfCallScreeningButtonPlusButtonSpacing)-[_mainLeftButton]", 0, v55, v5);
+        v141 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfCallScreeningButtonPlusButtonSpacing)-[_mainLeftButton]", 0, v55, viewLabels);
         [v300 addObjectsFromArray:v141];
 
         v127 = @"V:|-(HeightOfCallScreeningButtonPlusButtonSpacing)-[_mainRightButton]";
 LABEL_92:
-        v142 = [NSLayoutConstraint constraintsWithVisualFormat:v127 options:0 metrics:v55 views:v5];
+        v142 = [NSLayoutConstraint constraintsWithVisualFormat:v127 options:0 metrics:v55 views:viewLabels];
         [v300 addObjectsFromArray:v142];
 
         v131 = @"|-(SideMarginForDoubleButton)-[_mainLeftButton]-(>=0)-[_mainRightButton]-(SideMarginForDoubleButton)-|";
@@ -3797,47 +3797,47 @@ LABEL_92:
       }
 
       v296 = v61;
-      v98 = [(PHBottomBar *)v301 sideButtonLeft];
+      sideButtonLeft3 = [(PHBottomBar *)selfCopy sideButtonLeft];
 
       v293 = v55;
-      if (v98)
+      if (sideButtonLeft3)
       {
-        v99 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|[_sideButtonLeft]-(AmbientButtonSpacing)-[_mainLeftButton]-(AmbientButtonSpacing)-[_mainRightButton]|", 0, v55, v5);
+        v99 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|[_sideButtonLeft]-(AmbientButtonSpacing)-[_mainLeftButton]-(AmbientButtonSpacing)-[_mainRightButton]|", 0, v55, viewLabels);
         [v300 addObjectsFromArray:v99];
 
-        v100 = [(PHBottomBar *)v301 mainLeftButton];
-        v101 = [v100 centerXAnchor];
-        v102 = [(PHBottomBar *)v301 centerXAnchor];
-        v103 = [v101 constraintEqualToAnchor:v102];
+        mainLeftButton6 = [(PHBottomBar *)selfCopy mainLeftButton];
+        centerXAnchor5 = [mainLeftButton6 centerXAnchor];
+        centerXAnchor6 = [(PHBottomBar *)selfCopy centerXAnchor];
+        v103 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
         v306[0] = v103;
-        v104 = [(PHBottomBar *)v301 sideButtonLeft];
-        [v104 topAnchor];
+        sideButtonLeft4 = [(PHBottomBar *)selfCopy sideButtonLeft];
+        [sideButtonLeft4 topAnchor];
         v105 = v84 = v300;
-        v106 = [(PHBottomBar *)v301 topAnchor];
-        v107 = [v105 constraintEqualToAnchor:v106];
+        topAnchor8 = [(PHBottomBar *)selfCopy topAnchor];
+        v107 = [v105 constraintEqualToAnchor:topAnchor8];
         v306[1] = v107;
         v108 = [NSArray arrayWithObjects:v306 count:2];
         [v300 addObjectsFromArray:v108];
 
-        v56 = v301;
+        callDisplayStyleManager11 = selfCopy;
       }
 
       else
       {
-        v100 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-(>=0)-[_mainLeftButton]-(AmbientButtonSpacing)-[_mainRightButton]-|", 0, v55, v5);
-        [v300 addObjectsFromArray:v100];
+        mainLeftButton6 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-(>=0)-[_mainLeftButton]-(AmbientButtonSpacing)-[_mainRightButton]-|", 0, v55, viewLabels);
+        [v300 addObjectsFromArray:mainLeftButton6];
         v84 = v300;
       }
 
-      v144 = [v56 mainLeftButton];
-      v145 = [v144 topAnchor];
-      v146 = [v56 topAnchor];
-      v147 = [v145 constraintEqualToAnchor:v146];
+      mainLeftButton2 = [callDisplayStyleManager11 mainLeftButton];
+      topAnchor2 = [mainLeftButton2 topAnchor];
+      topAnchor3 = [callDisplayStyleManager11 topAnchor];
+      v147 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
       v305[0] = v147;
-      v148 = [v56 mainRightButton];
-      v149 = [v148 topAnchor];
-      v150 = [v56 topAnchor];
-      v151 = [v149 constraintEqualToAnchor:v150];
+      mainRightButton = [callDisplayStyleManager11 mainRightButton];
+      topAnchor4 = [mainRightButton topAnchor];
+      topAnchor5 = [callDisplayStyleManager11 topAnchor];
+      v151 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
       v305[1] = v151;
       v152 = v305;
 LABEL_141:
@@ -3852,7 +3852,7 @@ LABEL_141:
       goto LABEL_135;
     case 24:
       v176 = [NSString stringWithFormat:@"|[_slidingButton]|"];
-      v177 = [NSLayoutConstraint constraintsWithVisualFormat:v176 options:0 metrics:0 views:v5];
+      v177 = [NSLayoutConstraint constraintsWithVisualFormat:v176 options:0 metrics:0 views:viewLabels];
       [v300 addObjectsFromArray:v177];
 
       v131 = @"V:|-(HeightOfCallScreeningButtonPlusButtonSpacing)-[_slidingButton]";
@@ -3862,16 +3862,16 @@ LABEL_141:
       v164 = v163;
       +[PHUIConfiguration ambientInCallControlSpacing];
       v166 = v164 + v165;
-      v298 = [(PHBottomBar *)v301 mainRightButton];
-      v291 = [v298 topAnchor];
-      v167 = [(PHBottomBar *)v301 topAnchor];
-      v168 = [v291 constraintEqualToAnchor:v167];
+      mainRightButton6 = [(PHBottomBar *)selfCopy mainRightButton];
+      topAnchor9 = [mainRightButton6 topAnchor];
+      topAnchor10 = [(PHBottomBar *)selfCopy topAnchor];
+      v168 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
       v304[0] = v168;
-      v169 = [(PHBottomBar *)v301 mainRightButton];
-      v170 = [v169 centerXAnchor];
-      [(PHBottomBar *)v301 centerXAnchor];
+      mainRightButton7 = [(PHBottomBar *)selfCopy mainRightButton];
+      centerXAnchor7 = [mainRightButton7 centerXAnchor];
+      [(PHBottomBar *)selfCopy centerXAnchor];
       v172 = v171 = v55;
-      [v170 constraintEqualToAnchor:v172 constant:v166];
+      [centerXAnchor7 constraintEqualToAnchor:v172 constant:v166];
       v174 = v173 = v61;
       v304[1] = v174;
       v175 = [NSArray arrayWithObjects:v304 count:2];
@@ -3883,39 +3883,39 @@ LABEL_141:
       v58 = v300;
       goto LABEL_134;
     default:
-      if ((a3 - 7) <= 1)
+      if ((state - 7) <= 1)
       {
-        v212 = [(PHBottomBar *)v301 callDisplayStyleManager];
-        v213 = [v212 callDisplayStyle];
+        callDisplayStyleManager13 = [(PHBottomBar *)selfCopy callDisplayStyleManager];
+        callDisplayStyle7 = [callDisplayStyleManager13 callDisplayStyle];
 
-        v214 = [(PHBottomBar *)v301 mainLeftButton];
-        v215 = [NSLayoutConstraint constraintWithItem:v214 attribute:9 relatedBy:0 toItem:v301 attribute:9 multiplier:1.0 constant:0.0];
+        mainLeftButton7 = [(PHBottomBar *)selfCopy mainLeftButton];
+        v215 = [NSLayoutConstraint constraintWithItem:mainLeftButton7 attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:0.0];
         [v300 addObject:v215];
 
-        if (v213 == 3)
+        if (callDisplayStyle7 == 3)
         {
-          v216 = [(PHBottomBar *)v301 mainLeftButton];
-          v217 = [v216 topAnchor];
-          v218 = [(PHBottomBar *)v301 topAnchor];
-          v219 = [v217 constraintEqualToAnchor:v218];
+          mainLeftButton8 = [(PHBottomBar *)selfCopy mainLeftButton];
+          topAnchor11 = [mainLeftButton8 topAnchor];
+          topAnchor12 = [(PHBottomBar *)selfCopy topAnchor];
+          v219 = [topAnchor11 constraintEqualToAnchor:topAnchor12];
           [v300 addObject:v219];
 
           v220 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-[_sideButtonLeft]-(>=0)-[_mainLeftButton]-(>=0)-[_sideButtonRight]-|", 24, v55, v299);
           [v300 addObjectsFromArray:v220];
 
-          v117 = [(PHBottomBar *)v301 sideButtonLeft];
-          v119 = [(PHBottomBar *)v301 sideButtonRight];
+          supplementalTopRightButton = [(PHBottomBar *)selfCopy sideButtonLeft];
+          slidingButton4 = [(PHBottomBar *)selfCopy sideButtonRight];
           v120 = 1.0;
           v121 = 0.0;
-          v122 = v117;
+          v122 = supplementalTopRightButton;
           v123 = 7;
-          v124 = v119;
+          v124 = slidingButton4;
           v125 = 7;
         }
 
         else
         {
-          if ([(PHBottomBar *)v301 shouldUseLayoutAsCallScreening])
+          if ([(PHBottomBar *)selfCopy shouldUseLayoutAsCallScreening])
           {
             v249 = @"V:|-(HeightOfCallScreeningButtonPlusButtonSpacing)-[_mainLeftButton]";
           }
@@ -3931,13 +3931,13 @@ LABEL_141:
           v251 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"[_sideButtonLeft]-(SideMarginForFaceTimeButtons)-[_mainLeftButton]-(SideMarginForFaceTimeButtons)-[_sideButtonRight]", 24, v55, v299);
           [v300 addObjectsFromArray:v251];
 
-          v252 = [(PHBottomBar *)v301 sideButtonLeft];
-          v253 = [(PHBottomBar *)v301 sideButtonRight];
-          v254 = [NSLayoutConstraint constraintWithItem:v252 attribute:7 relatedBy:0 toItem:v253 attribute:7 multiplier:1.0 constant:0.0];
+          sideButtonLeft5 = [(PHBottomBar *)selfCopy sideButtonLeft];
+          sideButtonRight = [(PHBottomBar *)selfCopy sideButtonRight];
+          v254 = [NSLayoutConstraint constraintWithItem:sideButtonLeft5 attribute:7 relatedBy:0 toItem:sideButtonRight attribute:7 multiplier:1.0 constant:0.0];
           [v300 addObject:v254];
 
-          v255 = [(PHBottomBar *)v301 shouldUseLayoutAsCallScreening];
-          if (v255)
+          shouldUseLayoutAsCallScreening = [(PHBottomBar *)selfCopy shouldUseLayoutAsCallScreening];
+          if (shouldUseLayoutAsCallScreening)
           {
             v256 = @"V:|[_supplementalTopLeftButton]-(ButtonSpacingCallScreening)-[_mainLeftButton]";
           }
@@ -3947,7 +3947,7 @@ LABEL_141:
             v256 = @"V:|[_supplementalTopLeftButton]-(ButtonSpacing)-[_mainLeftButton]";
           }
 
-          if (v255)
+          if (shouldUseLayoutAsCallScreening)
           {
             v257 = @"V:|[_supplementalTopRightButton]-(ButtonSpacingCallScreening)-[_mainLeftButton]";
           }
@@ -3963,20 +3963,20 @@ LABEL_141:
           v259 = [NSLayoutConstraint constraintsWithVisualFormat:v257 options:0 metrics:v55 views:v299];
           [v300 addObjectsFromArray:v259];
 
-          v260 = [(PHBottomBar *)v301 supplementalTopLeftButton];
-          v261 = [(PHBottomBar *)v301 sideButtonLeft];
-          v262 = [NSLayoutConstraint constraintWithItem:v260 attribute:9 relatedBy:0 toItem:v261 attribute:9 multiplier:1.0 constant:0.0];
+          supplementalTopLeftButton3 = [(PHBottomBar *)selfCopy supplementalTopLeftButton];
+          sideButtonLeft6 = [(PHBottomBar *)selfCopy sideButtonLeft];
+          v262 = [NSLayoutConstraint constraintWithItem:supplementalTopLeftButton3 attribute:9 relatedBy:0 toItem:sideButtonLeft6 attribute:9 multiplier:1.0 constant:0.0];
           [v300 addObject:v262];
 
-          v117 = [(PHBottomBar *)v301 supplementalTopRightButton];
-          v118 = [(PHBottomBar *)v301 sideButtonRight];
+          supplementalTopRightButton = [(PHBottomBar *)selfCopy supplementalTopRightButton];
+          mainRightButton2 = [(PHBottomBar *)selfCopy sideButtonRight];
 LABEL_84:
-          v119 = v118;
+          slidingButton4 = mainRightButton2;
           v120 = 1.0;
           v121 = 0.0;
-          v122 = v117;
+          v122 = supplementalTopRightButton;
           v123 = 9;
-          v124 = v118;
+          v124 = mainRightButton2;
           v125 = 9;
         }
 
@@ -3988,56 +3988,56 @@ LABEL_133:
         goto LABEL_134;
       }
 
-      switch(a3)
+      switch(state)
       {
         case 10:
-          v266 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_slidingButton]", 0, v55, v5);
+          v266 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_slidingButton]", 0, v55, viewLabels);
           [v300 addObjectsFromArray:v266];
 
-          v117 = [NSString stringWithFormat:@"|[_slidingButton]|"];
-          v248 = [NSLayoutConstraint constraintsWithVisualFormat:v117 options:0 metrics:0 views:v5];
+          supplementalTopRightButton = [NSString stringWithFormat:@"|[_slidingButton]|"];
+          v248 = [NSLayoutConstraint constraintsWithVisualFormat:supplementalTopRightButton options:0 metrics:0 views:viewLabels];
           [v300 addObjectsFromArray:v248];
 LABEL_145:
 
           goto LABEL_133;
         case 14:
-          if ([(PHBottomBar *)v301 shouldShowActionTypeCameraFlip])
+          if ([(PHBottomBar *)selfCopy shouldShowActionTypeCameraFlip])
           {
 LABEL_163:
-            v263 = [NSLayoutConstraint constraintWithItem:v301->_mainLeftButton attribute:9 relatedBy:0 toItem:v301 attribute:9 multiplier:1.0 constant:0.0];
+            v263 = [NSLayoutConstraint constraintWithItem:selfCopy->_mainLeftButton attribute:9 relatedBy:0 toItem:selfCopy attribute:9 multiplier:1.0 constant:0.0];
             [v300 addObject:v263];
 
-            v264 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"[_sideButtonLeft]-(SideMarginForFaceTimeInCallButtons)-[_mainLeftButton]-(SideMarginForFaceTimeInCallButtons)-[_sideButtonRight]", 1024, v55, v5);
+            v264 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"[_sideButtonLeft]-(SideMarginForFaceTimeInCallButtons)-[_mainLeftButton]-(SideMarginForFaceTimeInCallButtons)-[_sideButtonRight]", 1024, v55, viewLabels);
             [v300 addObjectsFromArray:v264];
 
-            v265 = [NSLayoutConstraint constraintWithItem:v301->_sideButtonLeft attribute:7 relatedBy:0 toItem:v301->_sideButtonRight attribute:7 multiplier:1.0 constant:0.0];
-            [v300 addObject:v265];
+            sideButtonRight2 = [NSLayoutConstraint constraintWithItem:selfCopy->_sideButtonLeft attribute:7 relatedBy:0 toItem:selfCopy->_sideButtonRight attribute:7 multiplier:1.0 constant:0.0];
+            [v300 addObject:sideButtonRight2];
             break;
           }
 
-          v265 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-(SideMarginForDoubleButton)-[_mainLeftButton]-(>=0)-[_mainRightButton]-(SideMarginForDoubleButton)-|", 0, v55, v5);
-          [v300 addObjectsFromArray:v265];
+          sideButtonRight2 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-(SideMarginForDoubleButton)-[_mainLeftButton]-(>=0)-[_mainRightButton]-(SideMarginForDoubleButton)-|", 0, v55, viewLabels);
+          [v300 addObjectsFromArray:sideButtonRight2];
           break;
         case 15:
-          if ([(PHBottomBar *)v301 shouldShowActionTypePhotoCapture]|| [(PHBottomBar *)v301 shouldShowActionTypeEffects])
+          if ([(PHBottomBar *)selfCopy shouldShowActionTypePhotoCapture]|| [(PHBottomBar *)selfCopy shouldShowActionTypeEffects])
           {
             goto LABEL_163;
           }
 
-          v267 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"[_mainLeftButton]-(SideMarginForFaceTimeInCallButtons)-[_sideButtonRight]", 0, v55, v5);
+          v267 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"[_mainLeftButton]-(SideMarginForFaceTimeInCallButtons)-[_sideButtonRight]", 0, v55, viewLabels);
           [v300 addObjectsFromArray:v267];
 
-          v268 = [(PHBottomBar *)v301 mainLeftButton];
-          v269 = [v268 centerXAnchor];
-          v270 = [(PHBottomBar *)v301 centerXAnchor];
-          v271 = [v269 constraintEqualToAnchor:v270];
+          mainLeftButton9 = [(PHBottomBar *)selfCopy mainLeftButton];
+          centerXAnchor8 = [mainLeftButton9 centerXAnchor];
+          centerXAnchor9 = [(PHBottomBar *)selfCopy centerXAnchor];
+          v271 = [centerXAnchor8 constraintEqualToAnchor:centerXAnchor9];
           [v300 addObject:v271];
 
-          v265 = [(PHBottomBar *)v301 sideButtonRight];
-          v272 = [v265 centerYAnchor];
-          v273 = [(PHBottomBar *)v301 mainLeftButton];
-          v274 = [v273 centerYAnchor];
-          v275 = [v272 constraintEqualToAnchor:v274];
+          sideButtonRight2 = [(PHBottomBar *)selfCopy sideButtonRight];
+          centerYAnchor = [sideButtonRight2 centerYAnchor];
+          mainLeftButton10 = [(PHBottomBar *)selfCopy mainLeftButton];
+          centerYAnchor2 = [mainLeftButton10 centerYAnchor];
+          v275 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
           [v300 addObject:v275];
 
           break;
@@ -4053,43 +4053,43 @@ LABEL_103:
 LABEL_134:
       v95 = 0;
 LABEL_135:
-      v74 = v58;
+      buttonsConstraintsForIPad = v58;
 
 LABEL_136:
 
-      return v74;
+      return buttonsConstraintsForIPad;
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
     v13 = v4;
     v14 = v3;
-    self->_orientation = a3;
+    self->_orientation = orientation;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(UIButton *)self->_mainLeftButton setOrientation:a3];
+      [(UIButton *)self->_mainLeftButton setOrientation:orientation];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(UIButton *)self->_mainRightButton setOrientation:a3];
+      [(UIButton *)self->_mainRightButton setOrientation:orientation];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(UIButton *)self->_sideButtonLeft setOrientation:a3];
+      [(UIButton *)self->_sideButtonLeft setOrientation:orientation];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(UIButton *)self->_sideButtonRight setOrientation:a3];
+      [(UIButton *)self->_sideButtonRight setOrientation:orientation];
     }
 
     [(PHBottomBar *)self setNeedsLayout:v8];
@@ -4098,24 +4098,24 @@ LABEL_136:
   }
 }
 
-- (void)setUsesLowerButtons:(BOOL)a3
+- (void)setUsesLowerButtons:(BOOL)buttons
 {
-  if (self->_usesLowerButtons != a3)
+  if (self->_usesLowerButtons != buttons)
   {
-    self->_usesLowerButtons = a3;
-    v5 = [(PHBottomBar *)self buttonLayoutConstraints];
+    self->_usesLowerButtons = buttons;
+    buttonLayoutConstraints = [(PHBottomBar *)self buttonLayoutConstraints];
 
-    if (v5)
+    if (buttonLayoutConstraints)
     {
-      v6 = [(PHBottomBar *)self buttonLayoutConstraints];
-      [(PHBottomBar *)self removeConstraints:v6];
+      buttonLayoutConstraints2 = [(PHBottomBar *)self buttonLayoutConstraints];
+      [(PHBottomBar *)self removeConstraints:buttonLayoutConstraints2];
     }
 
     v7 = [(PHBottomBar *)self constraintsForState:[(PHBottomBar *)self currentState]];
     [(PHBottomBar *)self setButtonLayoutConstraints:v7];
 
-    v8 = [(PHBottomBar *)self buttonLayoutConstraints];
-    [(PHBottomBar *)self addConstraints:v8];
+    buttonLayoutConstraints3 = [(PHBottomBar *)self buttonLayoutConstraints];
+    [(PHBottomBar *)self addConstraints:buttonLayoutConstraints3];
 
     [(PHBottomBar *)self setNeedsLayout];
 
@@ -4125,7 +4125,7 @@ LABEL_136:
 
 - (BOOL)shouldShowActionTypeCameraFlip
 {
-  v3 = [(PHBottomBar *)self delegate];
+  delegate = [(PHBottomBar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -4133,15 +4133,15 @@ LABEL_136:
     return 1;
   }
 
-  v5 = [(PHBottomBar *)self delegate];
-  v6 = [v5 shouldShowActionTypeCameraFlip];
+  delegate2 = [(PHBottomBar *)self delegate];
+  shouldShowActionTypeCameraFlip = [delegate2 shouldShowActionTypeCameraFlip];
 
-  return v6;
+  return shouldShowActionTypeCameraFlip;
 }
 
 - (BOOL)shouldShowActionTypeAudioRoute
 {
-  v3 = [(PHBottomBar *)self delegate];
+  delegate = [(PHBottomBar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -4149,15 +4149,15 @@ LABEL_136:
     return 0;
   }
 
-  v5 = [(PHBottomBar *)self delegate];
-  v6 = [v5 shouldShowActionTypeAudioRoute];
+  delegate2 = [(PHBottomBar *)self delegate];
+  shouldShowActionTypeAudioRoute = [delegate2 shouldShowActionTypeAudioRoute];
 
-  return v6;
+  return shouldShowActionTypeAudioRoute;
 }
 
 - (BOOL)shouldShowActionTypeSendToVoicemail
 {
-  v3 = [(PHBottomBar *)self delegate];
+  delegate = [(PHBottomBar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -4165,15 +4165,15 @@ LABEL_136:
     return 1;
   }
 
-  v5 = [(PHBottomBar *)self delegate];
-  v6 = [v5 shouldShowActionTypeSendToVoicemail];
+  delegate2 = [(PHBottomBar *)self delegate];
+  shouldShowActionTypeSendToVoicemail = [delegate2 shouldShowActionTypeSendToVoicemail];
 
-  return v6;
+  return shouldShowActionTypeSendToVoicemail;
 }
 
 - (BOOL)shouldShowActionTypePunchOut
 {
-  v3 = [(PHBottomBar *)self delegate];
+  delegate = [(PHBottomBar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -4181,15 +4181,15 @@ LABEL_136:
     return 0;
   }
 
-  v5 = [(PHBottomBar *)self delegate];
-  v6 = [v5 shouldShowActionTypePunchOut];
+  delegate2 = [(PHBottomBar *)self delegate];
+  shouldShowActionTypePunchOut = [delegate2 shouldShowActionTypePunchOut];
 
-  return v6;
+  return shouldShowActionTypePunchOut;
 }
 
 - (BOOL)shouldShowActionTypePhotoCapture
 {
-  v3 = [(PHBottomBar *)self delegate];
+  delegate = [(PHBottomBar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -4197,15 +4197,15 @@ LABEL_136:
     return 0;
   }
 
-  v5 = [(PHBottomBar *)self delegate];
-  v6 = [v5 shouldShowActionTypePhotoCapture];
+  delegate2 = [(PHBottomBar *)self delegate];
+  shouldShowActionTypePhotoCapture = [delegate2 shouldShowActionTypePhotoCapture];
 
-  return v6;
+  return shouldShowActionTypePhotoCapture;
 }
 
 - (BOOL)shouldShowActionTypeEffects
 {
-  v3 = [(PHBottomBar *)self delegate];
+  delegate = [(PHBottomBar *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -4213,39 +4213,39 @@ LABEL_136:
     return 0;
   }
 
-  v5 = [(PHBottomBar *)self delegate];
-  v6 = [v5 shouldShowActionTypeEffects];
+  delegate2 = [(PHBottomBar *)self delegate];
+  shouldShowActionTypeEffects = [delegate2 shouldShowActionTypeEffects];
 
-  return v6;
+  return shouldShowActionTypeEffects;
 }
 
 - (BOOL)currentCallIsMuted
 {
-  v2 = [(PHBottomBar *)self callCenter];
-  v3 = [v2 audioOrVideoCallWithStatus:1];
-  v4 = [v3 isUplinkMuted];
+  callCenter = [(PHBottomBar *)self callCenter];
+  v3 = [callCenter audioOrVideoCallWithStatus:1];
+  isUplinkMuted = [v3 isUplinkMuted];
 
-  return v4;
+  return isUplinkMuted;
 }
 
-- (id)makeButtonWithType:(int64_t)a3 title:(id)a4 image:(id)a5 color:(id)a6 font:(id)a7 fontColor:(id)a8
+- (id)makeButtonWithType:(int64_t)type title:(id)title image:(id)image color:(id)color font:(id)font fontColor:(id)fontColor
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = [(PHBottomBar *)self callDisplayStyleManager];
-  if ([v19 callDisplayStyle] == 3)
+  fontColorCopy = fontColor;
+  fontCopy = font;
+  colorCopy = color;
+  imageCopy = image;
+  titleCopy = title;
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
     +[PHUIConfiguration ambientInCallControlSize];
-    v20 = [(PHBottomBar *)self makeButtonWithType:a3 title:v18 image:v17 color:v16 font:v15 fontColor:v14 diameter:?];
+    v20 = [(PHBottomBar *)self makeButtonWithType:type title:titleCopy image:imageCopy color:colorCopy font:fontCopy fontColor:fontColorCopy diameter:?];
   }
 
   else
   {
-    v21 = [(PHBottomBar *)self callDisplayStyleManager];
-    if ([v21 usesLargeFormatUI] && self->_isAudioCall)
+    callDisplayStyleManager2 = [(PHBottomBar *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager2 usesLargeFormatUI] && self->_isAudioCall)
     {
       +[PHBottomBar buttonHeightWithoutDefaultPadding];
     }
@@ -4255,31 +4255,31 @@ LABEL_136:
       +[PHBottomBarButtonConfiguration defaultHeight];
     }
 
-    v20 = [(PHBottomBar *)self makeButtonWithType:a3 title:v18 image:v17 color:v16 font:v15 fontColor:v14 diameter:?];
+    v20 = [(PHBottomBar *)self makeButtonWithType:type title:titleCopy image:imageCopy color:colorCopy font:fontCopy fontColor:fontColorCopy diameter:?];
 
-    v14 = v15;
-    v15 = v16;
-    v16 = v17;
-    v17 = v18;
-    v18 = v21;
+    fontColorCopy = fontCopy;
+    fontCopy = colorCopy;
+    colorCopy = imageCopy;
+    imageCopy = titleCopy;
+    titleCopy = callDisplayStyleManager2;
   }
 
   return v20;
 }
 
-- (id)makeButtonWithType:(int64_t)a3 title:(id)a4 image:(id)a5 color:(id)a6 font:(id)a7 fontColor:(id)a8 diameter:(double)a9
+- (id)makeButtonWithType:(int64_t)type title:(id)title image:(id)image color:(id)color font:(id)font fontColor:(id)fontColor diameter:(double)diameter
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(PHBottomBar *)self customTitleStringForActionType:a3 givenDefaultTitle:a4];
+  imageCopy = image;
+  colorCopy = color;
+  fontCopy = font;
+  fontColorCopy = fontColor;
+  v20 = [(PHBottomBar *)self customTitleStringForActionType:type givenDefaultTitle:title];
   v21 = [PHBottomBarButtonConfiguration alloc];
-  v22 = [(PHBottomBar *)self currentBottomBarCallState];
-  v23 = [(PHBottomBar *)self captureView];
-  v24 = [v21 initWithAction:a3 diameter:v22 callState:v23 captureView:a9];
+  currentBottomBarCallState = [(PHBottomBar *)self currentBottomBarCallState];
+  captureView = [(PHBottomBar *)self captureView];
+  v24 = [v21 initWithAction:type diameter:currentBottomBarCallState callState:captureView captureView:diameter];
 
-  if (a3 == 21)
+  if (type == 21)
   {
     v25 = PHBottomBarMuteButton;
 LABEL_3:
@@ -4287,12 +4287,12 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFBLL) == 9)
+  if ((type & 0xFFFFFFFFFFFFFFFBLL) == 9)
   {
-    v28 = [(PHBottomBar *)self callDisplayStyleManager];
-    v29 = [v28 callDisplayStyle];
+    callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-    if (v29 != 3)
+    if (callDisplayStyle != 3)
     {
       if ([(PHBottomBar *)self shouldUseLayoutAsCallScreening])
       {
@@ -4300,7 +4300,7 @@ LABEL_3:
         goto LABEL_3;
       }
 
-      v26 = [[PHBottomBarSupplementalButton alloc] initWithAction:a3];
+      v26 = [[PHBottomBarSupplementalButton alloc] initWithAction:type];
 LABEL_4:
       v27 = v26;
       if (!v20)
@@ -4325,9 +4325,9 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  if (a3 == 33)
+  if (type == 33)
   {
-    v26 = [(PHBottomBar *)self makeCaptureButtonWithDiameter:a9];
+    v26 = [(PHBottomBar *)self makeCaptureButtonWithDiameter:diameter];
     goto LABEL_4;
   }
 
@@ -4339,13 +4339,13 @@ LABEL_18:
   [v27 setTitleColor:v30 forState:2];
 LABEL_15:
 
-  if (a3 == 17)
+  if (type == 17)
   {
-    v33 = [v27 titleLabel];
-    [v33 setNumberOfLines:2];
+    titleLabel = [v27 titleLabel];
+    [titleLabel setNumberOfLines:2];
 
-    v34 = [v27 titleLabel];
-    [v34 setTextAlignment:1];
+    titleLabel2 = [v27 titleLabel];
+    [titleLabel2 setTextAlignment:1];
   }
 
   if (v20)
@@ -4354,37 +4354,37 @@ LABEL_15:
   }
 
 LABEL_19:
-  if (v18)
+  if (fontCopy)
   {
-    v35 = [v27 titleLabel];
-    [v35 setFont:v18];
+    titleLabel3 = [v27 titleLabel];
+    [titleLabel3 setFont:fontCopy];
   }
 
-  if (v19)
+  if (fontColorCopy)
   {
-    [v27 setTitleColor:v19 forState:0];
+    [v27 setTitleColor:fontColorCopy forState:0];
   }
 
-  if (v17)
+  if (colorCopy)
   {
-    [v27 setBackgroundColor:v17];
+    [v27 setBackgroundColor:colorCopy];
   }
 
-  if (v16)
+  if (imageCopy)
   {
-    [v27 setImage:v16 forState:0];
+    [v27 setImage:imageCopy forState:0];
     [v27 setAdjustsImageWhenDisabled:0];
     [v27 setAdjustsImageWhenHighlighted:0];
   }
 
-  [v27 setAction:a3];
+  [v27 setAction:type];
   [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v27 addTarget:self action:"buttonPressed:" forControlEvents:64];
 
   return v27;
 }
 
-- (id)makeCaptureButtonWithDiameter:(double)a3
+- (id)makeCaptureButtonWithDiameter:(double)diameter
 {
   v4 = +[CUShutterButton smallShutterButton];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -4395,9 +4395,9 @@ LABEL_19:
   return v4;
 }
 
-- (id)makeSlidingButtonWithType:(int)a3
+- (id)makeSlidingButtonWithType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   if (_UISolariumEnabled())
   {
     v5 = 2;
@@ -4414,9 +4414,9 @@ LABEL_19:
   }
 
   v6 = [PHSlidingButton alloc];
-  v7 = [(PHBottomBar *)self currentBottomBarCallState];
-  v8 = [(PHBottomBar *)self callDisplayStyleManager];
-  if ([v8 usesLargeFormatUI])
+  currentBottomBarCallState = [(PHBottomBar *)self currentBottomBarCallState];
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager usesLargeFormatUI])
   {
     isAudioCall = self->_isAudioCall;
   }
@@ -4426,7 +4426,7 @@ LABEL_19:
     isAudioCall = 0;
   }
 
-  v10 = [(PHSlidingButton *)v6 initWithSlidingButtonType:v3 appearanceType:v5 callState:v7 usesLargeFormatUI:isAudioCall];
+  v10 = [(PHSlidingButton *)v6 initWithSlidingButtonType:v3 appearanceType:v5 callState:currentBottomBarCallState usesLargeFormatUI:isAudioCall];
 
   [(PHSlidingButton *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PHSlidingButton *)v10 setDelegate:self];
@@ -4434,37 +4434,37 @@ LABEL_19:
   return v10;
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
-  v5 = [v4 superview];
+  subviewCopy = subview;
+  superview = [subviewCopy superview];
 
-  if (v4 && v5 != self)
+  if (subviewCopy && superview != self)
   {
     v6.receiver = self;
     v6.super_class = PHBottomBar;
-    [(PHBottomBar *)&v6 addSubview:v4];
+    [(PHBottomBar *)&v6 addSubview:subviewCopy];
   }
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
-    if (!a3)
+    self->_animating = animating;
+    if (!animating)
     {
-      v4 = [(PHBottomBar *)self pendingStateBlocks];
-      v5 = [v4 count];
+      pendingStateBlocks = [(PHBottomBar *)self pendingStateBlocks];
+      v5 = [pendingStateBlocks count];
 
       if (v5)
       {
         v6 = sub_100004F84();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = [(PHBottomBar *)self pendingStateBlocks];
+          pendingStateBlocks2 = [(PHBottomBar *)self pendingStateBlocks];
           *buf = 134217984;
-          v20 = [v7 count];
+          v20 = [pendingStateBlocks2 count];
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Bottom bar has %ld pending state block(s) waiting for the animation to finish, we'll run those now", buf, 0xCu);
         }
 
@@ -4472,8 +4472,8 @@ LABEL_19:
         v17 = 0u;
         v14 = 0u;
         v15 = 0u;
-        v8 = [(PHBottomBar *)self pendingStateBlocks];
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        pendingStateBlocks3 = [(PHBottomBar *)self pendingStateBlocks];
+        v9 = [pendingStateBlocks3 countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           v10 = v9;
@@ -4484,77 +4484,77 @@ LABEL_19:
             {
               if (*v15 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(pendingStateBlocks3);
               }
 
               (*(*(*(&v14 + 1) + 8 * i) + 16))();
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+            v10 = [pendingStateBlocks3 countByEnumeratingWithState:&v14 objects:v18 count:16];
           }
 
           while (v10);
         }
 
-        v13 = [(PHBottomBar *)self pendingStateBlocks];
-        [v13 removeAllObjects];
+        pendingStateBlocks4 = [(PHBottomBar *)self pendingStateBlocks];
+        [pendingStateBlocks4 removeAllObjects];
       }
     }
   }
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [(PHBottomBar *)self delegate];
+  pressedCopy = pressed;
+  delegate = [(PHBottomBar *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    if ([v4 action] == 32)
+    if ([pressedCopy action] == 32)
     {
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_10013A9F0;
       v8[3] = &unk_100356988;
-      v9 = v4;
+      v9 = pressedCopy;
       [UIView animateWithDuration:v8 animations:0 completion:0.25];
     }
 
-    v7 = [(PHBottomBar *)self delegate];
-    [v7 bottomBarActionPerformed:objc_msgSend(v4 withCompletionState:"action") fromBar:{1, self}];
+    delegate2 = [(PHBottomBar *)self delegate];
+    [delegate2 bottomBarActionPerformed:objc_msgSend(pressedCopy withCompletionState:"action") fromBar:{1, self}];
   }
 }
 
-- (void)buttonLongPressed:(id)a3
+- (void)buttonLongPressed:(id)pressed
 {
-  v9 = a3;
-  v4 = [(PHBottomBar *)self delegate];
+  pressedCopy = pressed;
+  delegate = [(PHBottomBar *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v9 view];
-    v7 = [v6 action];
+    view = [pressedCopy view];
+    action = [view action];
 
-    if (v7 == 15)
+    if (action == 15)
     {
-      v8 = [(PHBottomBar *)self delegate];
-      [v8 bottomBarActionPerformed:16 withCompletionState:1 fromBar:self];
+      delegate2 = [(PHBottomBar *)self delegate];
+      [delegate2 bottomBarActionPerformed:16 withCompletionState:1 fromBar:self];
     }
   }
 }
 
-- (void)willFinishSlideForSlidingButton:(id)a3
+- (void)willFinishSlideForSlidingButton:(id)button
 {
   [(PHBottomBar *)self setAnimating:1];
-  v4 = [(PHBottomBar *)self delegate];
+  delegate = [(PHBottomBar *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PHBottomBar *)self delegate];
-    [v6 bottomBarActionPerformed:1 withCompletionState:1 fromBar:self];
+    delegate2 = [(PHBottomBar *)self delegate];
+    [delegate2 bottomBarActionPerformed:1 withCompletionState:1 fromBar:self];
   }
 
   v7[0] = _NSConcreteStackBlock;
@@ -4565,22 +4565,22 @@ LABEL_19:
   [UIView animateWithDuration:v7 animations:0 completion:0.200000003];
 }
 
-- (void)slidingButton:(id)a3 didSlideToProportion:(double)a4
+- (void)slidingButton:(id)button didSlideToProportion:(double)proportion
 {
-  v6 = [(PHBottomBar *)self delegate];
+  delegate = [(PHBottomBar *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v9 = [(PHBottomBar *)self delegate];
-    *&v8 = a4;
-    [v9 sliderActionFromBar:self slidToProportion:v8];
+    delegate2 = [(PHBottomBar *)self delegate];
+    *&v8 = proportion;
+    [delegate2 sliderActionFromBar:self slidToProportion:v8];
   }
 }
 
-- (CGRect)frameForControlWithActionType:(int64_t)a3
+- (CGRect)frameForControlWithActionType:(int64_t)type
 {
-  v3 = [(PHBottomBar *)self controlForActionType:a3];
+  v3 = [(PHBottomBar *)self controlForActionType:type];
   v4 = v3;
   if (v3)
   {
@@ -4610,16 +4610,16 @@ LABEL_19:
   return result;
 }
 
-- (id)controlForActionType:(int64_t)a3
+- (id)controlForActionType:(int64_t)type
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PHBottomBar *)self viewLabels];
-  v5 = [v4 allValues];
+  viewLabels = [(PHBottomBar *)self viewLabels];
+  allValues = [viewLabels allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4630,18 +4630,18 @@ LABEL_19:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 action] == a3)
+        if ([v10 action] == type)
         {
           v11 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -4657,62 +4657,62 @@ LABEL_11:
   return v11;
 }
 
-- (id)customTitleStringForActionType:(int64_t)a3 givenDefaultTitle:(id)a4
+- (id)customTitleStringForActionType:(int64_t)type givenDefaultTitle:(id)title
 {
-  v6 = a4;
-  v7 = [(PHBottomBar *)self delegate];
+  titleCopy = title;
+  delegate = [(PHBottomBar *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PHBottomBar *)self delegate];
-    v10 = [v9 customizedTitleForItemInBar:self withActionType:a3];
+    delegate2 = [(PHBottomBar *)self delegate];
+    v10 = [delegate2 customizedTitleForItemInBar:self withActionType:type];
 
     if (v10)
     {
       v11 = v10;
 
-      v6 = v11;
+      titleCopy = v11;
     }
   }
 
-  return v6;
+  return titleCopy;
 }
 
-- (id)updatedImageForActionType:(int64_t)a3 givenDefaultImage:(id)a4
+- (id)updatedImageForActionType:(int64_t)type givenDefaultImage:(id)image
 {
-  v6 = a4;
-  if ((a3 - 21) <= 1)
+  imageCopy = image;
+  if ((type - 21) <= 1)
   {
     v7 = [PHBottomBarButtonConfiguration imageColorForState:0];
     v8 = [(PHBottomBar *)self audioRouteImageWithColor:v7];
 
-    v6 = v8;
+    imageCopy = v8;
   }
 
-  return v6;
+  return imageCopy;
 }
 
-- (id)updatedSelectedImageForActionType:(int64_t)a3 givenDefaultSelectedImage:(id)a4
+- (id)updatedSelectedImageForActionType:(int64_t)type givenDefaultSelectedImage:(id)image
 {
-  v6 = a4;
-  if ((a3 - 21) <= 1)
+  imageCopy = image;
+  if ((type - 21) <= 1)
   {
     v7 = [PHBottomBarButtonConfiguration imageColorForState:4];
     v8 = [(PHBottomBar *)self audioRouteImageWithColor:v7];
 
-    v6 = v8;
+    imageCopy = v8;
   }
 
-  return v6;
+  return imageCopy;
 }
 
-- (id)audioRouteImageWithColor:(id)a3
+- (id)audioRouteImageWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PHBottomBar *)self shouldShowActionTypeAudioRoute];
-  v6 = [(PHBottomBar *)self currentBottomBarCallState];
-  if (v5)
+  colorCopy = color;
+  shouldShowActionTypeAudioRoute = [(PHBottomBar *)self shouldShowActionTypeAudioRoute];
+  currentBottomBarCallState = [(PHBottomBar *)self currentBottomBarCallState];
+  if (shouldShowActionTypeAudioRoute)
   {
     v7 = 22;
   }
@@ -4722,15 +4722,15 @@ LABEL_11:
     v7 = 21;
   }
 
-  v8 = [PHBottomBarButtonConfiguration imageForAction:v7 callState:v6];
-  v9 = [v8 _flatImageWithColor:v4];
+  v8 = [PHBottomBarButtonConfiguration imageForAction:v7 callState:currentBottomBarCallState];
+  v9 = [v8 _flatImageWithColor:colorCopy];
 
   return v9;
 }
 
-- (BOOL)updatedSelectedStateForActionType:(int64_t)a3
+- (BOOL)updatedSelectedStateForActionType:(int64_t)type
 {
-  if (a3 == 21)
+  if (type == 21)
   {
     if ([(PHBottomBar *)self shouldShowActionTypeAudioRoute])
     {
@@ -4747,15 +4747,15 @@ LABEL_11:
   else
   {
     v5 = [(PHBottomBar *)self controlForActionType:?];
-    v6 = [v5 isSelected];
+    isSelected = [v5 isSelected];
 
-    return v6;
+    return isSelected;
   }
 }
 
-- (int64_t)updatedActionTypeForActionType:(int64_t)a3
+- (int64_t)updatedActionTypeForActionType:(int64_t)type
 {
-  if ((a3 - 21) <= 1)
+  if ((type - 21) <= 1)
   {
     if ([(PHBottomBar *)self shouldShowActionTypeAudioRoute:v3])
     {
@@ -4768,83 +4768,83 @@ LABEL_11:
     }
   }
 
-  return a3;
+  return type;
 }
 
 - (void)refreshCustomizedActionTypeTitles
 {
-  v3 = [(PHBottomBar *)self mainLeftButton];
-  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:v3];
+  mainLeftButton = [(PHBottomBar *)self mainLeftButton];
+  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:mainLeftButton];
 
-  v4 = [(PHBottomBar *)self mainRightButton];
-  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:v4];
+  mainRightButton = [(PHBottomBar *)self mainRightButton];
+  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:mainRightButton];
 
-  v5 = [(PHBottomBar *)self sideButtonLeft];
-  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:v5];
+  sideButtonLeft = [(PHBottomBar *)self sideButtonLeft];
+  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:sideButtonLeft];
 
-  v6 = [(PHBottomBar *)self sideButtonRight];
-  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:v6];
+  sideButtonRight = [(PHBottomBar *)self sideButtonRight];
+  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:sideButtonRight];
 
-  v7 = [(PHBottomBar *)self supplementalBottomLeftButton];
-  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:v7];
+  supplementalBottomLeftButton = [(PHBottomBar *)self supplementalBottomLeftButton];
+  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:supplementalBottomLeftButton];
 
-  v8 = [(PHBottomBar *)self supplementalBottomRightButton];
-  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:v8];
+  supplementalBottomRightButton = [(PHBottomBar *)self supplementalBottomRightButton];
+  [(PHBottomBar *)self refreshCustomizedActionTypeTitleForButton:supplementalBottomRightButton];
 }
 
-- (void)refreshCustomizedActionTypeTitleForButton:(id)a3
+- (void)refreshCustomizedActionTypeTitleForButton:(id)button
 {
-  v11 = a3;
-  if (v11)
+  buttonCopy = button;
+  if (buttonCopy)
   {
-    v4 = [v11 action];
-    v5 = [v11 titleForState:0];
-    v6 = [(PHBottomBar *)self customTitleStringForActionType:v4 givenDefaultTitle:v5];
+    action = [buttonCopy action];
+    v5 = [buttonCopy titleForState:0];
+    v6 = [(PHBottomBar *)self customTitleStringForActionType:action givenDefaultTitle:v5];
 
-    [v11 setTitle:v6 forState:0];
-    v7 = [v11 imageForState:0];
-    v8 = [(PHBottomBar *)self updatedImageForActionType:v4 givenDefaultImage:v7];
+    [buttonCopy setTitle:v6 forState:0];
+    v7 = [buttonCopy imageForState:0];
+    v8 = [(PHBottomBar *)self updatedImageForActionType:action givenDefaultImage:v7];
 
-    [v11 setImage:v8 forState:0];
-    v9 = [v11 imageForState:4];
-    v10 = [(PHBottomBar *)self updatedSelectedImageForActionType:v4 givenDefaultSelectedImage:v9];
+    [buttonCopy setImage:v8 forState:0];
+    v9 = [buttonCopy imageForState:4];
+    v10 = [(PHBottomBar *)self updatedSelectedImageForActionType:action givenDefaultSelectedImage:v9];
 
     if (v10)
     {
-      [v11 setImage:v10 forState:4];
+      [buttonCopy setImage:v10 forState:4];
     }
 
-    [v11 setAction:{-[PHBottomBar updatedActionTypeForActionType:](self, "updatedActionTypeForActionType:", objc_msgSend(v11, "action"))}];
-    [v11 setSelected:{-[PHBottomBar updatedSelectedStateForActionType:](self, "updatedSelectedStateForActionType:", v4)}];
+    [buttonCopy setAction:{-[PHBottomBar updatedActionTypeForActionType:](self, "updatedActionTypeForActionType:", objc_msgSend(buttonCopy, "action"))}];
+    [buttonCopy setSelected:{-[PHBottomBar updatedSelectedStateForActionType:](self, "updatedSelectedStateForActionType:", action)}];
   }
 }
 
 - (void)refreshEndCallButton
 {
-  v3 = [(PHBottomBar *)self mainLeftButton];
-  [v3 refreshForCallState:{-[PHBottomBar currentBottomBarCallState](self, "currentBottomBarCallState")}];
+  mainLeftButton = [(PHBottomBar *)self mainLeftButton];
+  [mainLeftButton refreshForCallState:{-[PHBottomBar currentBottomBarCallState](self, "currentBottomBarCallState")}];
 }
 
 - (BOOL)shouldShowAnswerRTTButton
 {
-  v3 = [(PHBottomBar *)self delegate];
+  delegate = [(PHBottomBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(PHBottomBar *)self delegate];
-    v5 = [v4 shouldShowAnswerRTT];
+    delegate2 = [(PHBottomBar *)self delegate];
+    shouldShowAnswerRTT = [delegate2 shouldShowAnswerRTT];
   }
 
   else
   {
-    v5 = 0;
+    shouldShowAnswerRTT = 0;
   }
 
-  return v5;
+  return shouldShowAnswerRTT;
 }
 
-- (void)setPrefersWhiteButtonTextColor:(BOOL)a3
+- (void)setPrefersWhiteButtonTextColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     +[UIColor whiteColor];
   }
@@ -4854,37 +4854,37 @@ LABEL_11:
     +[UIColor blackColor];
   }
   v14 = ;
-  v4 = [(PHBottomBar *)self supplementalTopLeftButton];
+  supplementalTopLeftButton = [(PHBottomBar *)self supplementalTopLeftButton];
 
-  if (v4)
+  if (supplementalTopLeftButton)
   {
-    v5 = [(PHBottomBar *)self supplementalTopLeftButton];
-    [v5 setTitleColor:v14 forState:0];
+    supplementalTopLeftButton2 = [(PHBottomBar *)self supplementalTopLeftButton];
+    [supplementalTopLeftButton2 setTitleColor:v14 forState:0];
   }
 
-  v6 = [(PHBottomBar *)self supplementalTopRightButton];
+  supplementalTopRightButton = [(PHBottomBar *)self supplementalTopRightButton];
 
-  if (v6)
+  if (supplementalTopRightButton)
   {
-    v7 = [(PHBottomBar *)self supplementalTopRightButton];
-    [v7 setTitleColor:v14 forState:0];
+    supplementalTopRightButton2 = [(PHBottomBar *)self supplementalTopRightButton];
+    [supplementalTopRightButton2 setTitleColor:v14 forState:0];
   }
 
-  v8 = [(PHBottomBar *)self mainLeftButton];
+  mainLeftButton = [(PHBottomBar *)self mainLeftButton];
 
-  if (v8)
+  if (mainLeftButton)
   {
-    v9 = [(PHBottomBar *)self mainLeftButton];
-    [v9 setTitleColor:v14 forState:0];
+    mainLeftButton2 = [(PHBottomBar *)self mainLeftButton];
+    [mainLeftButton2 setTitleColor:v14 forState:0];
   }
 
-  v10 = [(PHBottomBar *)self mainRightButton];
+  mainRightButton = [(PHBottomBar *)self mainRightButton];
 
   v12 = v14;
-  if (v10)
+  if (mainRightButton)
   {
-    v13 = [(PHBottomBar *)self mainRightButton];
-    [v13 setTitleColor:v14 forState:0];
+    mainRightButton2 = [(PHBottomBar *)self mainRightButton];
+    [mainRightButton2 setTitleColor:v14 forState:0];
 
     v12 = v14;
   }
@@ -4898,10 +4898,10 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(PHBottomBar *)self viewLabels];
-  v3 = [v2 allValues];
+  viewLabels = [(PHBottomBar *)self viewLabels];
+  allValues = [viewLabels allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4912,7 +4912,7 @@ LABEL_11:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -4922,7 +4922,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -4935,10 +4935,10 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(PHBottomBar *)self viewLabels];
-  v3 = [v2 allValues];
+  viewLabels = [(PHBottomBar *)self viewLabels];
+  allValues = [viewLabels allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4949,7 +4949,7 @@ LABEL_11:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -4959,24 +4959,24 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (BOOL)animateFromState:(int64_t)a3 toState:(int64_t)a4 completion:(id)a5
+- (BOOL)animateFromState:(int64_t)state toState:(int64_t)toState completion:(id)completion
 {
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10013BBBC;
   v26[3] = &unk_100357E30;
   v26[4] = self;
-  v27 = a5;
+  completionCopy = completion;
   v8 = objc_retainBlock(v26);
   v9 = objc_retainBlock(v8);
-  if (!a3 && a4 == 11)
+  if (!state && toState == 11)
   {
     [(PHBottomBar *)self animateFromIncomingCallStateToInCallState:11 withCompletion:v9];
 LABEL_35:
@@ -4984,7 +4984,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (a4 == 19 && (a3 == 20 || a3 == 11))
+  if (toState == 19 && (state == 20 || state == 11))
   {
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"HIDE" value:&stru_100361FD0 table:@"BottomBar"];
@@ -5003,62 +5003,62 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v18 = a4 == 11 || a4 == 20;
-  if (a3 == 19 && v18)
+  v18 = toState == 11 || toState == 20;
+  if (state == 19 && v18)
   {
-    v19 = [(PHBottomBar *)self useRTTButton];
-    [(PHBottomBar *)self animateInSupplementalBottomRightButton:v19 WithCompletion:v9];
+    useRTTButton = [(PHBottomBar *)self useRTTButton];
+    [(PHBottomBar *)self animateInSupplementalBottomRightButton:useRTTButton WithCompletion:v9];
 
     goto LABEL_35;
   }
 
-  if (!a3 && a4 == 15)
+  if (!state && toState == 15)
   {
     [(PHBottomBar *)self animateFromIncomingCallStateToFaceTimeInCallState:15 withCompletion:v9];
     goto LABEL_35;
   }
 
-  if (a3 == 20 && a4 == 11)
+  if (state == 20 && toState == 11)
   {
     [(PHBottomBar *)self animateOutSupplementalBottomLeftButtonToState:11 withCompletion:v9];
     goto LABEL_35;
   }
 
-  if (a3 == 21 && a4 == 11)
+  if (state == 21 && toState == 11)
   {
     [(PHBottomBar *)self animateFromOutgoingStateToInCallStateWithCompletion:v9];
     goto LABEL_35;
   }
 
-  if (a3 == 15 && a4 == 17)
+  if (state == 15 && toState == 17)
   {
-    v20 = self;
+    selfCopy2 = self;
     v21 = 17;
 LABEL_34:
-    [(PHBottomBar *)v20 animateFromOutgoingStateToCallbackAndMessageUIToState:v21 withCompletion:v9];
+    [(PHBottomBar *)selfCopy2 animateFromOutgoingStateToCallbackAndMessageUIToState:v21 withCompletion:v9];
     goto LABEL_35;
   }
 
-  if (a3 == 15 && a4 == 27)
+  if (state == 15 && toState == 27)
   {
-    v20 = self;
+    selfCopy2 = self;
     v21 = 27;
     goto LABEL_34;
   }
 
-  if (a3 == 14 && a4 == 15)
+  if (state == 14 && toState == 15)
   {
     [(PHBottomBar *)self animateFromFaceTimeOutgoingStateToFaceTimeInCallState:15 withCompletion:v9];
     goto LABEL_35;
   }
 
   v22 = 0;
-  if (!a3 && a4 == 23)
+  if (!state && toState == 23)
   {
-    v24 = [(PHBottomBar *)self callDisplayStyleManager];
-    v25 = [v24 callDisplayStyle];
+    callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-    if (v25 != 3)
+    if (callDisplayStyle != 3)
     {
       v22 = 0;
       goto LABEL_36;
@@ -5073,13 +5073,13 @@ LABEL_36:
   return v22;
 }
 
-- (void)animateFromOutgoingStateToInCallStateWithCompletion:(id)a3
+- (void)animateFromOutgoingStateToInCallStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PHBottomBar *)self callDisplayStyleManager];
-  v6 = [v5 callDisplayStyle];
+  completionCopy = completion;
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v6 != 3)
+  if (callDisplayStyle != 3)
   {
     [(PHBottomBar *)self prepareButtonsForAnimationBegin];
     v7 = [CASpringAnimation animationWithKeyPath:@"transform.rotation.z"];
@@ -5092,13 +5092,13 @@ LABEL_36:
     [v7 setRemovedOnCompletion:0];
     v8 = [CAKeyframeAnimation animationWithKeyPath:@"backgroundColor"];
     v9 = +[UIColor systemGreenColor];
-    v10 = [v9 CGColor];
+    cGColor = [v9 CGColor];
 
     v11 = +[UIColor systemRedColor];
-    v12 = [v11 CGColor];
+    cGColor2 = [v11 CGColor];
 
-    v31[0] = v10;
-    v31[1] = v12;
+    v31[0] = cGColor;
+    v31[1] = cGColor2;
     v13 = [NSArray arrayWithObjects:v31 count:2];
     [v8 setValues:v13];
 
@@ -5106,68 +5106,68 @@ LABEL_36:
     [v8 setDuration:0.254999995];
     [v8 setFillMode:kCAFillModeForwards];
     [v8 setRemovedOnCompletion:0];
-    v14 = [(PHBottomBar *)self mainLeftButton];
-    v15 = [v14 imageView];
-    [v15 setClipsToBounds:0];
+    mainLeftButton = [(PHBottomBar *)self mainLeftButton];
+    imageView = [mainLeftButton imageView];
+    [imageView setClipsToBounds:0];
 
-    v16 = [(PHBottomBar *)self mainLeftButton];
-    v17 = [v16 imageView];
-    [v17 setContentMode:4];
+    mainLeftButton2 = [(PHBottomBar *)self mainLeftButton];
+    imageView2 = [mainLeftButton2 imageView];
+    [imageView2 setContentMode:4];
 
     +[CATransaction begin];
     v26 = _NSConcreteStackBlock;
     v27 = 3221225472;
     v28 = sub_10013BFC0;
     v29 = &unk_100356D38;
-    v30 = v4;
+    v30 = completionCopy;
     [CATransaction setCompletionBlock:&v26];
     v18 = [(PHBottomBar *)self mainLeftButton:v26];
-    v19 = [v18 imageView];
-    v20 = [v19 layer];
-    [v20 addAnimation:v7 forKey:@"rollButtonAnimation"];
+    imageView3 = [v18 imageView];
+    layer = [imageView3 layer];
+    [layer addAnimation:v7 forKey:@"rollButtonAnimation"];
 
-    v21 = [(PHBottomBar *)self mainLeftButton];
+    mainLeftButton3 = [(PHBottomBar *)self mainLeftButton];
     objc_opt_class();
-    LOBYTE(v19) = objc_opt_isKindOfClass();
+    LOBYTE(imageView3) = objc_opt_isKindOfClass();
 
-    v22 = [(PHBottomBar *)self mainLeftButton];
-    v23 = v22;
-    if (v19)
+    mainLeftButton4 = [(PHBottomBar *)self mainLeftButton];
+    v23 = mainLeftButton4;
+    if (imageView3)
     {
-      v24 = [v22 roundView];
-      v25 = [v24 layer];
-      [v25 addAnimation:v8 forKey:@"buttonColorAnimation"];
+      roundView = [mainLeftButton4 roundView];
+      layer2 = [roundView layer];
+      [layer2 addAnimation:v8 forKey:@"buttonColorAnimation"];
     }
 
     else
     {
-      v24 = [v22 layer];
-      [v24 addAnimation:v8 forKey:@"buttonColorAnimation"];
+      roundView = [mainLeftButton4 layer];
+      [roundView addAnimation:v8 forKey:@"buttonColorAnimation"];
     }
 
     +[CATransaction commit];
   }
 }
 
-- (void)animateInSupplementalBottomRightButton:(id)a3 WithCompletion:(id)a4
+- (void)animateInSupplementalBottomRightButton:(id)button WithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHBottomBar *)self callDisplayStyleManager];
-  v9 = [v8 callDisplayStyle];
+  buttonCopy = button;
+  completionCopy = completion;
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v9 != 3)
+  if (callDisplayStyle != 3)
   {
-    v90 = [(PHBottomBar *)self supplementalBottomRightButton];
-    [(PHBottomBar *)self setSupplementalBottomRightButton:v6];
-    v10 = [(PHBottomBar *)self supplementalBottomRightButton];
-    [v10 setAlpha:0.0];
+    supplementalBottomRightButton = [(PHBottomBar *)self supplementalBottomRightButton];
+    [(PHBottomBar *)self setSupplementalBottomRightButton:buttonCopy];
+    supplementalBottomRightButton2 = [(PHBottomBar *)self supplementalBottomRightButton];
+    [supplementalBottomRightButton2 setAlpha:0.0];
 
-    v11 = [(PHBottomBar *)self supplementalBottomRightButton];
-    [(PHBottomBar *)self addSubview:v11];
+    supplementalBottomRightButton3 = [(PHBottomBar *)self supplementalBottomRightButton];
+    [(PHBottomBar *)self addSubview:supplementalBottomRightButton3];
 
     v92 = +[NSMutableArray array];
-    v91 = [(PHBottomBar *)self viewLabels];
+    viewLabels = [(PHBottomBar *)self viewLabels];
     v102[0] = @"SideMarginForDoubleButton";
     [(PHBottomBar *)self sideMarginForDoubleButton];
     v89 = [NSNumber numberWithDouble:?];
@@ -5181,14 +5181,14 @@ LABEL_36:
     v87 = [NSNumber numberWithDouble:?];
     v103[2] = v87;
     v102[3] = @"TopMarginForFaceTimeButtons";
-    v12 = [(PHBottomBar *)self usesLowerButtons];
-    v85 = [(PHBottomBar *)self callDisplayStyleManager];
-    v13 = [v85 callDisplayStyle];
-    v14 = v13 != 3;
-    v86 = v12;
-    if (v12)
+    usesLowerButtons = [(PHBottomBar *)self usesLowerButtons];
+    callDisplayStyleManager2 = [(PHBottomBar *)self callDisplayStyleManager];
+    callDisplayStyle2 = [callDisplayStyleManager2 callDisplayStyle];
+    v14 = callDisplayStyle2 != 3;
+    v86 = usesLowerButtons;
+    if (usesLowerButtons)
     {
-      if (v13 == 3)
+      if (callDisplayStyle2 == 3)
       {
         +[PHUIConfiguration ambientInCallControlSize];
         v18 = v17;
@@ -5196,8 +5196,8 @@ LABEL_36:
 
       else
       {
-        v75 = [(PHBottomBar *)self callDisplayStyleManager];
-        if ([v75 usesLargeFormatUI] && self->_isAudioCall)
+        callDisplayStyleManager3 = [(PHBottomBar *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager3 usesLargeFormatUI] && self->_isAudioCall)
         {
           +[PHBottomBar buttonHeightWithoutDefaultPadding];
         }
@@ -5237,7 +5237,7 @@ LABEL_36:
 
     else
     {
-      if (v13 == 3)
+      if (callDisplayStyle2 == 3)
       {
         +[PHUIConfiguration ambientInCallControlSize];
         v20 = v19;
@@ -5245,8 +5245,8 @@ LABEL_36:
 
       else
       {
-        v74 = [(PHBottomBar *)self callDisplayStyleManager];
-        if ([v74 usesLargeFormatUI] && self->_isAudioCall)
+        callDisplayStyleManager4 = [(PHBottomBar *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager4 usesLargeFormatUI] && self->_isAudioCall)
         {
           +[PHBottomBar buttonHeightWithoutDefaultPadding];
         }
@@ -5292,8 +5292,8 @@ LABEL_36:
     }
 
     v82 = v29;
-    v93 = v7;
-    v94 = v6;
+    v93 = completionCopy;
+    v94 = buttonCopy;
     v81 = [NSNumber numberWithFloat:v35];
     v103[4] = v81;
     v102[5] = @"AmbientButtonSpacing";
@@ -5322,9 +5322,9 @@ LABEL_36:
     v103[8] = &off_10036AFE0;
     v102[8] = @"TopSupplementalButtonSpacing";
     v102[9] = @"HeightOfAButtonPlusButtonSpacing";
-    v40 = [(PHBottomBar *)self callDisplayStyleManager];
-    v41 = [v40 callDisplayStyle];
-    if (v41 == 3)
+    callDisplayStyleManager5 = [(PHBottomBar *)self callDisplayStyleManager];
+    callDisplayStyle3 = [callDisplayStyleManager5 callDisplayStyle];
+    if (callDisplayStyle3 == 3)
     {
       +[PHUIConfiguration ambientInCallControlSize];
       v43 = v42;
@@ -5332,8 +5332,8 @@ LABEL_36:
 
     else
     {
-      v76 = [(PHBottomBar *)self callDisplayStyleManager];
-      if ([v76 usesLargeFormatUI] && self->_isAudioCall)
+      callDisplayStyleManager6 = [(PHBottomBar *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager6 usesLargeFormatUI] && self->_isAudioCall)
       {
         +[PHBottomBar buttonHeightWithoutDefaultPadding];
       }
@@ -5403,7 +5403,7 @@ LABEL_36:
     v103[13] = v59;
     v60 = [NSDictionary dictionaryWithObjects:v103 forKeys:v102 count:14];
 
-    if (v41 != 3)
+    if (callDisplayStyle3 != 3)
     {
     }
 
@@ -5415,7 +5415,7 @@ LABEL_36:
     {
     }
 
-    v61 = v85;
+    v61 = callDisplayStyleManager2;
     if (v86)
     {
 
@@ -5430,11 +5430,11 @@ LABEL_36:
     {
     }
 
-    v62 = [NSLayoutConstraint constraintsWithVisualFormat:@"[_mainLeftButton]" options:0 metrics:v60 views:v91];
+    v62 = [NSLayoutConstraint constraintsWithVisualFormat:@"[_mainLeftButton]" options:0 metrics:v60 views:viewLabels];
     [v92 addObjectsFromArray:v62];
 
-    v63 = [(PHBottomBar *)self supplementalBottomRightButton];
-    v64 = [NSLayoutConstraint constraintWithItem:v63 attribute:10 relatedBy:0 toItem:self->_mainLeftButton attribute:10 multiplier:1.0 constant:0.0];
+    supplementalBottomRightButton4 = [(PHBottomBar *)self supplementalBottomRightButton];
+    v64 = [NSLayoutConstraint constraintWithItem:supplementalBottomRightButton4 attribute:10 relatedBy:0 toItem:self->_mainLeftButton attribute:10 multiplier:1.0 constant:0.0];
     [v92 addObject:v64];
 
     v65 = [NSLayoutConstraint constraintWithItem:self->_mainLeftButton attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
@@ -5450,8 +5450,8 @@ LABEL_36:
     }
 
     v70 = v67 + v69;
-    v71 = [(PHBottomBar *)self supplementalBottomRightButton];
-    v72 = [NSLayoutConstraint constraintWithItem:v71 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:v70];
+    supplementalBottomRightButton5 = [(PHBottomBar *)self supplementalBottomRightButton];
+    v72 = [NSLayoutConstraint constraintWithItem:supplementalBottomRightButton5 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:v70];
     [v92 addObject:v72];
 
     [(PHBottomBar *)self addConstraints:v92];
@@ -5460,15 +5460,15 @@ LABEL_36:
     v98[1] = 3221225472;
     v98[2] = sub_10013C978;
     v98[3] = &unk_100357318;
-    v6 = v94;
+    buttonCopy = v94;
     v99 = v94;
-    v100 = self;
-    v101 = v90;
+    selfCopy = self;
+    v101 = supplementalBottomRightButton;
     v95[0] = _NSConcreteStackBlock;
     v95[1] = 3221225472;
     v95[2] = sub_10013CA54;
     v95[3] = &unk_100359EE8;
-    v7 = v93;
+    completionCopy = v93;
     v96 = v101;
     v97 = v93;
     v73 = v101;
@@ -5476,18 +5476,18 @@ LABEL_36:
   }
 }
 
-- (void)animateOutSupplementalBottomLeftButtonToState:(int64_t)a3 withCompletion:(id)a4
+- (void)animateOutSupplementalBottomLeftButtonToState:(int64_t)state withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PHBottomBar *)self callDisplayStyleManager];
-  v8 = [v7 callDisplayStyle];
+  completionCopy = completion;
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v8 != 3)
+  if (callDisplayStyle != 3)
   {
-    v83 = v6;
-    v79 = [(PHBottomBar *)self supplementalBottomLeftButton];
+    v83 = completionCopy;
+    supplementalBottomLeftButton = [(PHBottomBar *)self supplementalBottomLeftButton];
     v82 = +[NSMutableArray array];
-    v81 = [(PHBottomBar *)self viewLabels];
+    viewLabels = [(PHBottomBar *)self viewLabels];
     v90[0] = @"SideMarginForDoubleButton";
     [(PHBottomBar *)self sideMarginForDoubleButton];
     v78 = [NSNumber numberWithDouble:?];
@@ -5501,14 +5501,14 @@ LABEL_36:
     v76 = [NSNumber numberWithDouble:?];
     v91[2] = v76;
     v90[3] = @"TopMarginForFaceTimeButtons";
-    v9 = [(PHBottomBar *)self usesLowerButtons];
-    v74 = [(PHBottomBar *)self callDisplayStyleManager];
-    v10 = [v74 callDisplayStyle];
-    v11 = v10 != 3;
-    v75 = v9;
-    if (v9)
+    usesLowerButtons = [(PHBottomBar *)self usesLowerButtons];
+    callDisplayStyleManager2 = [(PHBottomBar *)self callDisplayStyleManager];
+    callDisplayStyle2 = [callDisplayStyleManager2 callDisplayStyle];
+    v11 = callDisplayStyle2 != 3;
+    v75 = usesLowerButtons;
+    if (usesLowerButtons)
     {
-      if (v10 == 3)
+      if (callDisplayStyle2 == 3)
       {
         +[PHUIConfiguration ambientInCallControlSize];
         v15 = v14;
@@ -5516,8 +5516,8 @@ LABEL_36:
 
       else
       {
-        v64 = [(PHBottomBar *)self callDisplayStyleManager];
-        if ([v64 usesLargeFormatUI] && self->_isAudioCall)
+        callDisplayStyleManager3 = [(PHBottomBar *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager3 usesLargeFormatUI] && self->_isAudioCall)
         {
           +[PHBottomBar buttonHeightWithoutDefaultPadding];
         }
@@ -5557,7 +5557,7 @@ LABEL_36:
 
     else
     {
-      if (v10 == 3)
+      if (callDisplayStyle2 == 3)
       {
         +[PHUIConfiguration ambientInCallControlSize];
         v17 = v16;
@@ -5565,8 +5565,8 @@ LABEL_36:
 
       else
       {
-        v63 = [(PHBottomBar *)self callDisplayStyleManager];
-        if ([v63 usesLargeFormatUI] && self->_isAudioCall)
+        callDisplayStyleManager4 = [(PHBottomBar *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager4 usesLargeFormatUI] && self->_isAudioCall)
         {
           +[PHBottomBar buttonHeightWithoutDefaultPadding];
         }
@@ -5611,7 +5611,7 @@ LABEL_36:
       }
     }
 
-    v80 = a3;
+    stateCopy = state;
     v70 = [NSNumber numberWithFloat:v32];
     v91[4] = v70;
     v90[5] = @"AmbientButtonSpacing";
@@ -5640,9 +5640,9 @@ LABEL_36:
     v91[8] = &off_10036AFE0;
     v90[8] = @"TopSupplementalButtonSpacing";
     v90[9] = @"HeightOfAButtonPlusButtonSpacing";
-    v37 = [(PHBottomBar *)self callDisplayStyleManager];
-    v38 = [v37 callDisplayStyle];
-    if (v38 == 3)
+    callDisplayStyleManager5 = [(PHBottomBar *)self callDisplayStyleManager];
+    callDisplayStyle3 = [callDisplayStyleManager5 callDisplayStyle];
+    if (callDisplayStyle3 == 3)
     {
       +[PHUIConfiguration ambientInCallControlSize];
       v40 = v39;
@@ -5650,8 +5650,8 @@ LABEL_36:
 
     else
     {
-      v65 = [(PHBottomBar *)self callDisplayStyleManager];
-      if ([v65 usesLargeFormatUI] && self->_isAudioCall)
+      callDisplayStyleManager6 = [(PHBottomBar *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager6 usesLargeFormatUI] && self->_isAudioCall)
       {
         +[PHBottomBar buttonHeightWithoutDefaultPadding];
       }
@@ -5722,11 +5722,11 @@ LABEL_36:
     v91[13] = v56;
     v57 = [NSDictionary dictionaryWithObjects:v91 forKeys:v90 count:14];
 
-    if (v38 != 3)
+    if (callDisplayStyle3 != 3)
     {
     }
 
-    v6 = v83;
+    completionCopy = v83;
     if ((v75 & 1) == 0)
     {
     }
@@ -5735,7 +5735,7 @@ LABEL_36:
     {
     }
 
-    v58 = v74;
+    v58 = callDisplayStyleManager2;
     if (v75)
     {
 
@@ -5751,10 +5751,10 @@ LABEL_36:
     }
 
     [(PHBottomBar *)self setSupplementalBottomLeftButton:0];
-    v59 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_mainLeftButton]", 0, v57, v81);
+    v59 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_mainLeftButton]", 0, v57, viewLabels);
     [v82 addObjectsFromArray:v59];
 
-    v60 = [NSLayoutConstraint constraintsWithVisualFormat:@"[_mainLeftButton]" options:0 metrics:v57 views:v81];
+    v60 = [NSLayoutConstraint constraintsWithVisualFormat:@"[_mainLeftButton]" options:0 metrics:v57 views:viewLabels];
     [v82 addObjectsFromArray:v60];
 
     v61 = [NSLayoutConstraint constraintWithItem:self->_mainLeftButton attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
@@ -5765,12 +5765,12 @@ LABEL_36:
     v88[1] = 3221225472;
     v88[2] = sub_10013D358;
     v88[3] = &unk_100356988;
-    v89 = v79;
+    v89 = supplementalBottomLeftButton;
     v84[0] = _NSConcreteStackBlock;
     v84[1] = 3221225472;
     v84[2] = sub_10013D364;
     v84[3] = &unk_100359F10;
-    v87 = v80;
+    v87 = stateCopy;
     v84[4] = self;
     v85 = v89;
     v86 = v83;
@@ -5779,40 +5779,40 @@ LABEL_36:
   }
 }
 
-- (void)ambientAnimateFromIncomingCallStateToCallScreeningStateWithCompletion:(id)a3
+- (void)ambientAnimateFromIncomingCallStateToCallScreeningStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PHBottomBar *)self sideButtonLeft];
+  completionCopy = completion;
+  sideButtonLeft = [(PHBottomBar *)self sideButtonLeft];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10013D57C;
   v13[3] = &unk_1003569B0;
   v13[4] = self;
-  [_TtC13InCallService27AmbientAnimationCoordinator hide:v5 completion:v13];
+  [_TtC13InCallService27AmbientAnimationCoordinator hide:sideButtonLeft completion:v13];
 
-  v6 = [(PHBottomBar *)self mainLeftButton];
+  mainLeftButton = [(PHBottomBar *)self mainLeftButton];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10013D5C8;
   v11[3] = &unk_100357E30;
   v11[4] = self;
-  v12 = v4;
-  v7 = v4;
-  [_TtC13InCallService27AmbientAnimationCoordinator hide:v6 completion:v11];
+  v12 = completionCopy;
+  v7 = completionCopy;
+  [_TtC13InCallService27AmbientAnimationCoordinator hide:mainLeftButton completion:v11];
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"ACCEPT" value:&stru_100361FD0 table:@"BottomBar"];
-  v10 = [(PHBottomBar *)self mainRightButton];
-  [v10 setTitle:v9];
+  mainRightButton = [(PHBottomBar *)self mainRightButton];
+  [mainRightButton setTitle:v9];
 }
 
-- (void)animateFromFaceTimeOutgoingStateToFaceTimeInCallState:(int64_t)a3 withCompletion:(id)a4
+- (void)animateFromFaceTimeOutgoingStateToFaceTimeInCallState:(int64_t)state withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PHBottomBar *)self callDisplayStyleManager];
-  v8 = [v7 callDisplayStyle];
+  completionCopy = completion;
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v8 != 3)
+  if (callDisplayStyle != 3)
   {
     if ([(PHBottomBar *)self shouldShowActionTypeEffects])
     {
@@ -5827,22 +5827,22 @@ LABEL_36:
     +[PHBottomBarButtonConfiguration smallHeight];
     v10 = [(PHBottomBar *)self makeButtonWithType:v9 title:0 image:0 color:0 font:0 fontColor:0 diameter:?];
     [v10 setAlpha:0.0];
-    v11 = [(PHBottomBar *)self sideButtonLeft];
+    sideButtonLeft = [(PHBottomBar *)self sideButtonLeft];
     [(PHBottomBar *)self setSideButtonLeft:v10];
     [(PHBottomBar *)self addSubview:self->_sideButtonLeft];
-    v12 = [(PHBottomBar *)self buttonLayoutConstraints];
+    buttonLayoutConstraints = [(PHBottomBar *)self buttonLayoutConstraints];
 
-    if (v12)
+    if (buttonLayoutConstraints)
     {
-      v13 = [(PHBottomBar *)self buttonLayoutConstraints];
-      [(PHBottomBar *)self removeConstraints:v13];
+      buttonLayoutConstraints2 = [(PHBottomBar *)self buttonLayoutConstraints];
+      [(PHBottomBar *)self removeConstraints:buttonLayoutConstraints2];
     }
 
     v14 = [(PHBottomBar *)self constraintsForState:15];
     [(PHBottomBar *)self setButtonLayoutConstraints:v14];
 
-    v15 = [(PHBottomBar *)self buttonLayoutConstraints];
-    [(PHBottomBar *)self addConstraints:v15];
+    buttonLayoutConstraints3 = [(PHBottomBar *)self buttonLayoutConstraints];
+    [(PHBottomBar *)self addConstraints:buttonLayoutConstraints3];
 
     [(PHBottomBar *)self setNeedsLayout];
     [(PHBottomBar *)self layoutIfNeeded];
@@ -5850,29 +5850,29 @@ LABEL_36:
     v22[1] = 3221225472;
     v22[2] = sub_10013D8A0;
     v22[3] = &unk_100357110;
-    v23 = v11;
+    v23 = sideButtonLeft;
     v24 = v10;
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10013D8E4;
     v18[3] = &unk_100359F10;
-    v21 = a3;
+    stateCopy = state;
     v18[4] = self;
     v19 = v23;
-    v20 = v6;
+    v20 = completionCopy;
     v16 = v23;
     v17 = v10;
     [UIView animateWithDuration:v22 animations:v18 completion:0.25];
   }
 }
 
-- (void)animateFromOutgoingStateToCallbackAndMessageUIToState:(int64_t)a3 withCompletion:(id)a4
+- (void)animateFromOutgoingStateToCallbackAndMessageUIToState:(int64_t)state withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PHBottomBar *)self callDisplayStyleManager];
-  v8 = [v7 callDisplayStyle];
+  completionCopy = completion;
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v8 != 3)
+  if (callDisplayStyle != 3)
   {
     v9 = [(PHBottomBar *)self makeButtonWithType:18 title:0 image:0 color:0 font:0 fontColor:0];
     v10 = [(PHBottomBar *)self makeButtonWithType:19 title:0 image:0 color:0 font:0 fontColor:0];
@@ -5893,8 +5893,8 @@ LABEL_36:
     v16 = v10;
     v17 = v11;
     v18 = v9;
-    v20 = a3;
-    v19 = v6;
+    stateCopy = state;
+    v19 = completionCopy;
     v12 = v9;
     v13 = v11;
     v14 = v10;
@@ -5902,13 +5902,13 @@ LABEL_36:
   }
 }
 
-- (void)animateFromIncomingCallStateToInCallState:(int64_t)a3 withCompletion:(id)a4
+- (void)animateFromIncomingCallStateToInCallState:(int64_t)state withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PHBottomBar *)self callDisplayStyleManager];
-  v8 = [v7 callDisplayStyle];
+  completionCopy = completion;
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v8 != 3)
+  if (callDisplayStyle != 3)
   {
     v9 = [(PHBottomBar *)self currentBottomBarCallState]== 2 || [(PHBottomBar *)self currentBottomBarCallState]== 4;
     [(PHBottomBar *)self prepareButtonsForAnimationBegin];
@@ -5927,36 +5927,36 @@ LABEL_36:
 
     else
     {
-      v12 = [(PHBottomBar *)self mainRightButton];
-      v13 = [v12 imageView];
-      v14 = [v13 image];
-      v15 = [v14 CGImage];
+      mainRightButton = [(PHBottomBar *)self mainRightButton];
+      imageView = [mainRightButton imageView];
+      image = [imageView image];
+      cGImage = [image CGImage];
       v16 = [PHBottomBarButtonConfiguration imageForAction:15 callState:1];
-      v71 = +[PHBottomBarAnimations crossFadeAnimationFromImage:toImage:](PHBottomBarAnimations, "crossFadeAnimationFromImage:toImage:", v15, [v16 CGImage]);
+      v71 = +[PHBottomBarAnimations crossFadeAnimationFromImage:toImage:](PHBottomBarAnimations, "crossFadeAnimationFromImage:toImage:", cGImage, [v16 CGImage]);
     }
 
-    v17 = [(PHBottomBar *)self mainRightButton];
-    v18 = [v17 backgroundColor];
-    v19 = [v18 CGColor];
-    if (!v19)
+    mainRightButton2 = [(PHBottomBar *)self mainRightButton];
+    backgroundColor = [mainRightButton2 backgroundColor];
+    cGColor = [backgroundColor CGColor];
+    if (!cGColor)
     {
       v20 = +[UIColor clearColor];
-      v19 = [v20 CGColor];
+      cGColor = [v20 CGColor];
     }
 
     v21 = +[UIColor systemRedColor];
-    v22 = [v21 CGColor];
+    cGColor2 = [v21 CGColor];
 
-    v68 = v22;
-    v70 = [PHBottomBarAnimations backgroundColorAnimationFromColor:v19 toColor:v22];
+    v68 = cGColor2;
+    v70 = [PHBottomBarAnimations backgroundColorAnimationFromColor:cGColor toColor:cGColor2];
     v23 = [CASpringAnimation animationWithKeyPath:@"position.x"];
     [v23 setMass:2.0];
     [v23 setStiffness:300.0];
     [v23 setDamping:50.0];
     [v23 setDuration:0.910000026];
-    v24 = [(PHBottomBar *)self mainRightButton];
-    v25 = [v24 layer];
-    [v25 position];
+    mainRightButton3 = [(PHBottomBar *)self mainRightButton];
+    layer = [mainRightButton3 layer];
+    [layer position];
     v26 = [NSNumber numberWithDouble:?];
     [v23 setFromValue:v26];
 
@@ -5964,8 +5964,8 @@ LABEL_36:
     v28 = [NSNumber numberWithDouble:v27 * 0.5];
     [v23 setToValue:v28];
 
-    v29 = [(PHBottomBar *)self supplementalTopLeftButton];
-    v30 = [(PHBottomBar *)self supplementalTopRightButton];
+    supplementalTopLeftButton = [(PHBottomBar *)self supplementalTopLeftButton];
+    supplementalTopRightButton = [(PHBottomBar *)self supplementalTopRightButton];
     v79[0] = _NSConcreteStackBlock;
     v79[1] = 3221225472;
     v79[2] = sub_10013E770;
@@ -5976,17 +5976,17 @@ LABEL_36:
     v74[2] = sub_10013E7FC;
     v74[3] = &unk_100359F60;
     v74[4] = self;
-    v78 = a3;
-    v31 = v29;
+    stateCopy = state;
+    v31 = supplementalTopLeftButton;
     v75 = v31;
-    v32 = v30;
+    v32 = supplementalTopRightButton;
     v76 = v32;
-    v77 = v6;
+    v77 = completionCopy;
     [UIView animateWithDuration:0x20000 delay:v79 options:v74 animations:0.25 completion:0.0];
     v33 = [PHBottomBarButtonConfiguration alloc];
-    v34 = [(PHBottomBar *)self callDisplayStyleManager];
-    v35 = [v34 callDisplayStyle];
-    if (v35 == 3)
+    callDisplayStyleManager2 = [(PHBottomBar *)self callDisplayStyleManager];
+    callDisplayStyle2 = [callDisplayStyleManager2 callDisplayStyle];
+    if (callDisplayStyle2 == 3)
     {
       +[PHUIConfiguration ambientInCallControlSize];
       v37 = v36;
@@ -5994,8 +5994,8 @@ LABEL_36:
 
     else
     {
-      v30 = [(PHBottomBar *)self callDisplayStyleManager];
-      if ([v30 usesLargeFormatUI] && self->_isAudioCall)
+      supplementalTopRightButton = [(PHBottomBar *)self callDisplayStyleManager];
+      if ([supplementalTopRightButton usesLargeFormatUI] && self->_isAudioCall)
       {
         +[PHBottomBar buttonHeightWithoutDefaultPadding];
       }
@@ -6009,88 +6009,88 @@ LABEL_36:
     }
 
     v39 = [v33 initWithAction:1 diameter:-[PHBottomBar currentBottomBarCallState](self callState:{"currentBottomBarCallState"), v37}];
-    if (v35 != 3)
+    if (callDisplayStyle2 != 3)
     {
     }
 
-    v40 = [(PHBottomBar *)self mainRightButton];
-    v41 = [v39 icon];
-    [v40 setImage:v41 forState:0];
+    mainRightButton4 = [(PHBottomBar *)self mainRightButton];
+    icon = [v39 icon];
+    [mainRightButton4 setImage:icon forState:0];
 
-    v42 = [(PHBottomBar *)self mainRightButton];
-    v43 = [v42 imageView];
-    [v43 setClipsToBounds:0];
+    mainRightButton5 = [(PHBottomBar *)self mainRightButton];
+    imageView2 = [mainRightButton5 imageView];
+    [imageView2 setClipsToBounds:0];
 
-    v44 = [(PHBottomBar *)self mainRightButton];
-    v45 = [v44 imageView];
-    [v45 setContentMode:4];
+    mainRightButton6 = [(PHBottomBar *)self mainRightButton];
+    imageView3 = [mainRightButton6 imageView];
+    [imageView3 setContentMode:4];
 
-    v46 = [(PHBottomBar *)self mainRightButton];
-    v47 = [v46 titleLabel];
-    v48 = [v47 layer];
-    [v48 addAnimation:v10 forKey:@"acceptTitleAnimation"];
+    mainRightButton7 = [(PHBottomBar *)self mainRightButton];
+    titleLabel = [mainRightButton7 titleLabel];
+    layer2 = [titleLabel layer];
+    [layer2 addAnimation:v10 forKey:@"acceptTitleAnimation"];
 
-    v49 = [(PHBottomBar *)self mainRightButton];
-    v50 = [v49 imageView];
-    v51 = [v50 layer];
-    [v51 addAnimation:v71 forKey:@"mainRightButtonAnimation"];
+    mainRightButton8 = [(PHBottomBar *)self mainRightButton];
+    imageView4 = [mainRightButton8 imageView];
+    layer3 = [imageView4 layer];
+    [layer3 addAnimation:v71 forKey:@"mainRightButtonAnimation"];
 
-    v52 = [(PHBottomBar *)self mainRightButton];
-    v53 = [v52 layer];
-    [v53 addAnimation:v23 forKey:@"buttonSlideAnimation"];
+    mainRightButton9 = [(PHBottomBar *)self mainRightButton];
+    layer4 = [mainRightButton9 layer];
+    [layer4 addAnimation:v23 forKey:@"buttonSlideAnimation"];
 
-    v54 = [(PHBottomBar *)self mainRightButton];
+    mainRightButton10 = [(PHBottomBar *)self mainRightButton];
     objc_opt_class();
-    LOBYTE(v53) = objc_opt_isKindOfClass();
+    LOBYTE(layer4) = objc_opt_isKindOfClass();
 
-    v55 = [(PHBottomBar *)self mainRightButton];
-    v56 = v55;
-    if (v53)
+    mainRightButton11 = [(PHBottomBar *)self mainRightButton];
+    v56 = mainRightButton11;
+    if (layer4)
     {
-      v57 = [v55 roundView];
-      v58 = [v57 layer];
-      [v58 addAnimation:v70 forKey:@"buttonColorAnimation"];
+      roundView = [mainRightButton11 roundView];
+      layer5 = [roundView layer];
+      [layer5 addAnimation:v70 forKey:@"buttonColorAnimation"];
     }
 
     else
     {
-      v57 = [v55 layer];
-      [v57 addAnimation:v70 forKey:@"buttonColorAnimation"];
+      roundView = [mainRightButton11 layer];
+      [roundView addAnimation:v70 forKey:@"buttonColorAnimation"];
     }
 
-    v59 = [(PHBottomBar *)self mainRightButton];
-    [v59 setAction:15];
+    mainRightButton12 = [(PHBottomBar *)self mainRightButton];
+    [mainRightButton12 setAction:15];
 
-    v60 = [(PHBottomBar *)self mainRightButton];
-    v61 = [v60 titleLabel];
-    v62 = [v61 layer];
-    [v62 setOpacity:0.0];
+    mainRightButton13 = [(PHBottomBar *)self mainRightButton];
+    titleLabel2 = [mainRightButton13 titleLabel];
+    layer6 = [titleLabel2 layer];
+    [layer6 setOpacity:0.0];
 
-    v63 = [(PHBottomBar *)self mainRightButton];
+    mainRightButton14 = [(PHBottomBar *)self mainRightButton];
     v64 = [UIColor colorWithCGColor:v68];
-    [v63 setBackgroundColor:v64];
+    [mainRightButton14 setBackgroundColor:v64];
 
     if (v69)
     {
       CATransform3DMakeRotation(&v73, 2.35619449, 0.0, 0.0, 1.0);
-      v65 = [(PHBottomBar *)self mainRightButton];
-      v66 = [v65 imageView];
-      v67 = [v66 layer];
+      mainRightButton15 = [(PHBottomBar *)self mainRightButton];
+      imageView5 = [mainRightButton15 imageView];
+      layer7 = [imageView5 layer];
       v72 = v73;
-      [v67 setTransform:&v72];
+      [layer7 setTransform:&v72];
     }
   }
 }
 
-- (void)animateFromIncomingCallStateToFaceTimeInCallState:(int64_t)a3 withCompletion:(id)a4
+- (void)animateFromIncomingCallStateToFaceTimeInCallState:(int64_t)state withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PHBottomBar *)self callDisplayStyleManager];
-  v8 = [v7 callDisplayStyle];
+  completionCopy = completion;
+  callDisplayStyleManager = [(PHBottomBar *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v8 != 3)
+  if (callDisplayStyle != 3)
   {
-    v132 = a3;
+    stateCopy = state;
     if ([(PHBottomBar *)self shouldShowActionTypePhotoCapture])
     {
       +[PHBottomBarButtonConfiguration smallHeight];
@@ -6122,7 +6122,7 @@ LABEL_36:
     [(PHBottomBar *)self addSubview:self->_sideButtonRight];
     [(PHBottomBar *)self addSubview:self->_sideButtonLeft];
     v135 = +[NSMutableArray array];
-    v134 = [(PHBottomBar *)self viewLabels];
+    viewLabels = [(PHBottomBar *)self viewLabels];
     v148[0] = @"SideMarginForDoubleButton";
     [(PHBottomBar *)self sideMarginForDoubleButton];
     v130 = [NSNumber numberWithDouble:?];
@@ -6136,14 +6136,14 @@ LABEL_36:
     v127 = [NSNumber numberWithDouble:?];
     v149[2] = v127;
     v148[3] = @"TopMarginForFaceTimeButtons";
-    v12 = [(PHBottomBar *)self usesLowerButtons];
-    v125 = [(PHBottomBar *)self callDisplayStyleManager];
-    v13 = [v125 callDisplayStyle];
-    v14 = v13 != 3;
-    v126 = v12;
-    if (v12)
+    usesLowerButtons = [(PHBottomBar *)self usesLowerButtons];
+    callDisplayStyleManager2 = [(PHBottomBar *)self callDisplayStyleManager];
+    callDisplayStyle2 = [callDisplayStyleManager2 callDisplayStyle];
+    v14 = callDisplayStyle2 != 3;
+    v126 = usesLowerButtons;
+    if (usesLowerButtons)
     {
-      if (v13 == 3)
+      if (callDisplayStyle2 == 3)
       {
         +[PHUIConfiguration ambientInCallControlSize];
         v18 = v17;
@@ -6151,8 +6151,8 @@ LABEL_36:
 
       else
       {
-        v115 = [(PHBottomBar *)self callDisplayStyleManager];
-        if ([v115 usesLargeFormatUI] && self->_isAudioCall)
+        callDisplayStyleManager3 = [(PHBottomBar *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager3 usesLargeFormatUI] && self->_isAudioCall)
         {
           +[PHBottomBar buttonHeightWithoutDefaultPadding];
         }
@@ -6191,7 +6191,7 @@ LABEL_36:
 
     else
     {
-      if (v13 == 3)
+      if (callDisplayStyle2 == 3)
       {
         +[PHUIConfiguration ambientInCallControlSize];
         v20 = v19;
@@ -6199,8 +6199,8 @@ LABEL_36:
 
       else
       {
-        v114 = [(PHBottomBar *)self callDisplayStyleManager];
-        if ([v114 usesLargeFormatUI] && self->_isAudioCall)
+        callDisplayStyleManager4 = [(PHBottomBar *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager4 usesLargeFormatUI] && self->_isAudioCall)
         {
           +[PHBottomBar buttonHeightWithoutDefaultPadding];
         }
@@ -6247,7 +6247,7 @@ LABEL_36:
     }
 
     v124 = v14;
-    v136 = v6;
+    v136 = completionCopy;
     v121 = [NSNumber numberWithFloat:v35];
     v149[4] = v121;
     v148[5] = @"AmbientButtonSpacing";
@@ -6276,9 +6276,9 @@ LABEL_36:
     v149[8] = &off_10036AFE0;
     v148[8] = @"TopSupplementalButtonSpacing";
     v148[9] = @"HeightOfAButtonPlusButtonSpacing";
-    v40 = [(PHBottomBar *)self callDisplayStyleManager];
-    v41 = [v40 callDisplayStyle];
-    if (v41 == 3)
+    callDisplayStyleManager5 = [(PHBottomBar *)self callDisplayStyleManager];
+    callDisplayStyle3 = [callDisplayStyleManager5 callDisplayStyle];
+    if (callDisplayStyle3 == 3)
     {
       +[PHUIConfiguration ambientInCallControlSize];
       v43 = v42;
@@ -6286,8 +6286,8 @@ LABEL_36:
 
     else
     {
-      v116 = [(PHBottomBar *)self callDisplayStyleManager];
-      if ([v116 usesLargeFormatUI] && self->_isAudioCall)
+      callDisplayStyleManager6 = [(PHBottomBar *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager6 usesLargeFormatUI] && self->_isAudioCall)
       {
         +[PHBottomBar buttonHeightWithoutDefaultPadding];
       }
@@ -6357,7 +6357,7 @@ LABEL_36:
     v149[13] = v59;
     v60 = [NSDictionary dictionaryWithObjects:v149 forKeys:v148 count:14];
 
-    if (v41 != 3)
+    if (callDisplayStyle3 != 3)
     {
     }
 
@@ -6369,7 +6369,7 @@ LABEL_36:
     {
     }
 
-    v61 = v125;
+    v61 = callDisplayStyleManager2;
     if (v126)
     {
 
@@ -6385,16 +6385,16 @@ LABEL_36:
     }
 
     v131 = v60;
-    v62 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_mainRightButton]", 0, v60, v134);
+    v62 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeightOfAButtonPlusButtonSpacing)-[_mainRightButton]", 0, v60, viewLabels);
     [v135 addObjectsFromArray:v62];
 
-    v63 = [(PHBottomBar *)self mainRightButton];
-    v64 = [v63 centerXAnchor];
-    v65 = [(PHBottomBar *)self centerXAnchor];
-    v66 = [v64 constraintEqualToAnchor:v65];
+    mainRightButton = [(PHBottomBar *)self mainRightButton];
+    centerXAnchor = [mainRightButton centerXAnchor];
+    centerXAnchor2 = [(PHBottomBar *)self centerXAnchor];
+    v66 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v135 addObject:v66];
 
-    v67 = [(PHBottomBar *)self constraintsForState:v132];
+    v67 = [(PHBottomBar *)self constraintsForState:stateCopy];
     [v135 addObjectsFromArray:v67];
 
     [(PHBottomBar *)self prepareButtonsForAnimationBegin];
@@ -6414,14 +6414,14 @@ LABEL_36:
     [v70 setRemovedOnCompletion:0];
     v71 = [CAKeyframeAnimation animationWithKeyPath:@"backgroundColor"];
     v72 = +[UIColor systemGreenColor];
-    v73 = [v72 CGColor];
+    cGColor = [v72 CGColor];
 
     v74 = +[UIColor systemRedColor];
-    v75 = [v74 CGColor];
+    cGColor2 = [v74 CGColor];
 
-    v147[0] = v73;
-    v129 = v75;
-    v147[1] = v75;
+    v147[0] = cGColor;
+    v129 = cGColor2;
+    v147[1] = cGColor2;
     v76 = [NSArray arrayWithObjects:v147 count:2];
     [v71 setValues:v76];
 
@@ -6434,9 +6434,9 @@ LABEL_36:
     [v77 setDamping:50.0];
     [v77 setDuration:0.50999999];
     [v77 setKeyPath:@"position.x"];
-    v78 = [(PHBottomBar *)self mainRightButton];
-    v79 = [v78 layer];
-    [v79 position];
+    mainRightButton2 = [(PHBottomBar *)self mainRightButton];
+    layer = [mainRightButton2 layer];
+    [layer position];
     v80 = [NSNumber numberWithDouble:?];
     [v77 setFromValue:v80];
 
@@ -6444,15 +6444,15 @@ LABEL_36:
     v82 = [NSNumber numberWithDouble:v81 * 0.5];
     [v77 setToValue:v82];
 
-    v83 = [(PHBottomBar *)self mainLeftButton];
-    v84 = [(PHBottomBar *)self mainRightButton];
-    [v83 setAlpha:0.0];
+    mainLeftButton = [(PHBottomBar *)self mainLeftButton];
+    mainRightButton3 = [(PHBottomBar *)self mainRightButton];
+    [mainLeftButton setAlpha:0.0];
     v145[0] = _NSConcreteStackBlock;
     v145[1] = 3221225472;
     v145[2] = sub_10013F9EC;
     v145[3] = &unk_100357110;
     v145[4] = self;
-    v85 = v83;
+    v85 = mainLeftButton;
     v146 = v85;
     v144[0] = _NSConcreteStackBlock;
     v144[1] = 3221225472;
@@ -6462,13 +6462,13 @@ LABEL_36:
     [UIView animateWithDuration:0x20000 delay:v145 options:v144 animations:0.25 completion:0.0];
     [(PHBottomBar *)self setSupplementalTopLeftButton:0];
     [(PHBottomBar *)self setSupplementalTopRightButton:0];
-    v86 = [(PHBottomBar *)self mainRightButton];
-    v87 = [v86 imageView];
-    [v87 setClipsToBounds:0];
+    mainRightButton4 = [(PHBottomBar *)self mainRightButton];
+    imageView = [mainRightButton4 imageView];
+    [imageView setClipsToBounds:0];
 
-    v88 = [(PHBottomBar *)self mainRightButton];
-    v89 = [v88 imageView];
-    [v89 setContentMode:4];
+    mainRightButton5 = [(PHBottomBar *)self mainRightButton];
+    imageView2 = [mainRightButton5 imageView];
+    [imageView2 setContentMode:4];
 
     +[CATransaction begin];
     v139[0] = _NSConcreteStackBlock;
@@ -6476,76 +6476,76 @@ LABEL_36:
     v139[2] = sub_10013FAC8;
     v139[3] = &unk_100359F88;
     v139[4] = self;
-    v143 = v132;
+    v143 = stateCopy;
     v142 = v136;
-    v133 = v84;
+    v133 = mainRightButton3;
     v140 = v133;
     v90 = v85;
     v141 = v90;
     [CATransaction setCompletionBlock:v139];
-    v91 = [(PHBottomBar *)self mainRightButton];
-    v92 = [v91 titleLabel];
-    v93 = [v92 layer];
-    [v93 addAnimation:v68 forKey:@"acceptTitleAnimation"];
+    mainRightButton6 = [(PHBottomBar *)self mainRightButton];
+    titleLabel = [mainRightButton6 titleLabel];
+    layer2 = [titleLabel layer];
+    [layer2 addAnimation:v68 forKey:@"acceptTitleAnimation"];
 
-    v94 = [(PHBottomBar *)self mainRightButton];
-    v95 = [v94 imageView];
-    v96 = [v95 layer];
-    [v96 addAnimation:v70 forKey:@"rollButtonAnimation"];
+    mainRightButton7 = [(PHBottomBar *)self mainRightButton];
+    imageView3 = [mainRightButton7 imageView];
+    layer3 = [imageView3 layer];
+    [layer3 addAnimation:v70 forKey:@"rollButtonAnimation"];
 
-    v97 = [(PHBottomBar *)self mainRightButton];
-    v98 = [v97 layer];
-    [v98 addAnimation:v77 forKey:@"buttonSlideAnimation"];
+    mainRightButton8 = [(PHBottomBar *)self mainRightButton];
+    layer4 = [mainRightButton8 layer];
+    [layer4 addAnimation:v77 forKey:@"buttonSlideAnimation"];
 
-    v99 = [(PHBottomBar *)self mainRightButton];
+    mainRightButton9 = [(PHBottomBar *)self mainRightButton];
     objc_opt_class();
-    LOBYTE(v98) = objc_opt_isKindOfClass();
+    LOBYTE(layer4) = objc_opt_isKindOfClass();
 
-    v100 = [(PHBottomBar *)self mainRightButton];
-    v101 = v100;
-    if (v98)
+    mainRightButton10 = [(PHBottomBar *)self mainRightButton];
+    v101 = mainRightButton10;
+    if (layer4)
     {
-      v102 = [v100 roundView];
-      v103 = [v102 layer];
-      [v103 addAnimation:v71 forKey:@"buttonColorAnimation"];
+      roundView = [mainRightButton10 roundView];
+      layer5 = [roundView layer];
+      [layer5 addAnimation:v71 forKey:@"buttonColorAnimation"];
     }
 
     else
     {
-      v102 = [v100 layer];
-      [v102 addAnimation:v71 forKey:@"buttonColorAnimation"];
+      roundView = [mainRightButton10 layer];
+      [roundView addAnimation:v71 forKey:@"buttonColorAnimation"];
     }
 
     +[CATransaction commit];
-    v104 = [(PHBottomBar *)self mainRightButton];
-    v105 = [v104 titleLabel];
-    v106 = [v105 layer];
-    [v106 setOpacity:0.0];
+    mainRightButton11 = [(PHBottomBar *)self mainRightButton];
+    titleLabel2 = [mainRightButton11 titleLabel];
+    layer6 = [titleLabel2 layer];
+    [layer6 setOpacity:0.0];
 
-    v107 = [(PHBottomBar *)self mainRightButton];
+    mainRightButton12 = [(PHBottomBar *)self mainRightButton];
     v108 = [UIColor colorWithCGColor:v129];
-    [v107 setBackgroundColor:v108];
+    [mainRightButton12 setBackgroundColor:v108];
 
     CATransform3DMakeRotation(&v138, 2.35619449, 0.0, 0.0, 1.0);
-    v109 = [(PHBottomBar *)self mainRightButton];
-    v110 = [v109 imageView];
-    v111 = [v110 layer];
+    mainRightButton13 = [(PHBottomBar *)self mainRightButton];
+    imageView4 = [mainRightButton13 imageView];
+    layer7 = [imageView4 layer];
     v137 = v138;
-    [v111 setTransform:&v137];
+    [layer7 setTransform:&v137];
 
-    v112 = [(PHBottomBar *)self buttonLayoutConstraints];
-    [(PHBottomBar *)self removeConstraints:v112];
+    buttonLayoutConstraints = [(PHBottomBar *)self buttonLayoutConstraints];
+    [(PHBottomBar *)self removeConstraints:buttonLayoutConstraints];
 
     [(PHBottomBar *)self setButtonLayoutConstraints:v135];
-    v113 = [(PHBottomBar *)self buttonLayoutConstraints];
-    [(PHBottomBar *)self addConstraints:v113];
+    buttonLayoutConstraints2 = [(PHBottomBar *)self buttonLayoutConstraints];
+    [(PHBottomBar *)self addConstraints:buttonLayoutConstraints2];
 
     [(PHBottomBar *)self setNeedsLayout];
     [(PHBottomBar *)self layoutIfNeeded];
     [(PHBottomBar *)self setNeedsDisplay];
     [(PHBottomBar *)self forceDisplayIfNeeded];
 
-    v6 = v136;
+    completionCopy = v136;
   }
 }
 
@@ -6567,44 +6567,44 @@ LABEL_36:
   [(PHBottomBar *)self performSelector:"_startShopDemoMode" withObject:0 afterDelay:1.0];
 }
 
-- (id)nameForActionType:(int64_t)a3
+- (id)nameForActionType:(int64_t)type
 {
-  v4 = a3 - 1;
-  if (a3 - 1) < 0x29 && ((0x1FFFFFFFBFFuLL >> v4))
+  v4 = type - 1;
+  if (type - 1) < 0x29 && ((0x1FFFFFFFBFFuLL >> v4))
   {
-    v5 = off_100359FE8[v4];
+    type = off_100359FE8[v4];
   }
 
   else
   {
-    v5 = [NSString stringWithFormat:@"Unknown (%ld)", a3];
+    type = [NSString stringWithFormat:@"Unknown (%ld)", type];
   }
 
-  return v5;
+  return type;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = PHBottomBar;
-  v4 = a3;
-  [(PHBottomBar *)&v11 traitCollectionDidChange:v4];
-  v5 = [v4 _backlightLuminance];
+  changeCopy = change;
+  [(PHBottomBar *)&v11 traitCollectionDidChange:changeCopy];
+  _backlightLuminance = [changeCopy _backlightLuminance];
 
-  v6 = [(PHBottomBar *)self traitCollection];
-  v7 = [v6 _backlightLuminance];
+  traitCollection = [(PHBottomBar *)self traitCollection];
+  _backlightLuminance2 = [traitCollection _backlightLuminance];
 
-  if (v5 != v7)
+  if (_backlightLuminance != _backlightLuminance2)
   {
-    v8 = [(PHBottomBar *)self traitCollection];
-    v9 = [v8 _backlightLuminance];
+    traitCollection2 = [(PHBottomBar *)self traitCollection];
+    _backlightLuminance3 = [traitCollection2 _backlightLuminance];
 
-    [(PHBottomBar *)self setUserInteractionEnabled:v9 != 1];
+    [(PHBottomBar *)self setUserInteractionEnabled:_backlightLuminance3 != 1];
     v10 = sub_100004F84();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v13 = v9 != 1;
+      v13 = _backlightLuminance3 != 1;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Setting userInteractionEnabled of bottom bar to %d because of back light change", buf, 8u);
     }
   }
@@ -6661,12 +6661,12 @@ LABEL_36:
 
 - (CGSize)trackSize
 {
-  v3 = [(PHBottomBar *)self slidingButton];
+  slidingButton = [(PHBottomBar *)self slidingButton];
 
-  if (v3)
+  if (slidingButton)
   {
-    v4 = [(PHBottomBar *)self slidingButton];
-    [v4 trackSize];
+    slidingButton2 = [(PHBottomBar *)self slidingButton];
+    [slidingButton2 trackSize];
     width = v5;
     height = v7;
   }

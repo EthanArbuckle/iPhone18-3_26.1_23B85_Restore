@@ -1,12 +1,12 @@
 @interface OADDrawable
-- (OADDrawable)initWithPropertiesClass:(Class)a3;
+- (OADDrawable)initWithPropertiesClass:(Class)class;
 - (OADDrawableContainer)parent;
-- (id)createOrientedBoundsWithBounds:(CGRect)a3;
-- (id)createWordClientDataWithTextType:(int)a3;
+- (id)createOrientedBoundsWithBounds:(CGRect)bounds;
+- (id)createWordClientDataWithTextType:(int)type;
 - (id)description;
-- (id)ensureClientDataOfClass:(Class)a3;
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3;
-- (void)setParentTextListStyle:(id)a3;
+- (id)ensureClientDataOfClass:(Class)class;
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values;
+- (void)setParentTextListStyle:(id)style;
 @end
 
 @implementation OADDrawable
@@ -18,7 +18,7 @@
   return WeakRetained;
 }
 
-- (OADDrawable)initWithPropertiesClass:(Class)a3
+- (OADDrawable)initWithPropertiesClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = OADDrawable;
@@ -27,7 +27,7 @@
   if (v4)
   {
     *(v4 + 12) = -1;
-    v6 = objc_alloc_init(a3);
+    v6 = objc_alloc_init(class);
     mDrawableProperties = v5->mDrawableProperties;
     v5->mDrawableProperties = v6;
   }
@@ -35,12 +35,12 @@
   return v5;
 }
 
-- (id)ensureClientDataOfClass:(Class)a3
+- (id)ensureClientDataOfClass:(Class)class
 {
   mClientData = self->mClientData;
   if (!mClientData)
   {
-    v5 = objc_alloc_init(a3);
+    v5 = objc_alloc_init(class);
     v6 = self->mClientData;
     self->mClientData = v5;
 
@@ -50,9 +50,9 @@
   return mClientData;
 }
 
-- (void)setParentTextListStyle:(id)a3
+- (void)setParentTextListStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADDrawable setParentTextListStyle:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADDrawable.mm"];
   v6 = objc_opt_class();
@@ -71,9 +71,9 @@
   objc_exception_throw(v13);
 }
 
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADDrawable changeParentTextListStylePreservingEffectiveValues:]"];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADDrawable.mm"];
   v6 = objc_opt_class();
@@ -92,13 +92,13 @@
   objc_exception_throw(v13);
 }
 
-- (id)createOrientedBoundsWithBounds:(CGRect)a3
+- (id)createOrientedBoundsWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(OADProperties *)self->mDrawableProperties isMergedWithParent];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  isMergedWithParent = [(OADProperties *)self->mDrawableProperties isMergedWithParent];
   [(OADProperties *)self->mDrawableProperties setMergedWithParent:0];
   if ([(OADDrawableProperties *)self->mDrawableProperties hasOrientedBounds])
   {
@@ -109,12 +109,12 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  [(OADProperties *)self->mDrawableProperties setMergedWithParent:v8];
-  v11 = [[OADOrientedBounds alloc] initWithBounds:x, y, width, height];
-  v12 = [(OADDrawable *)self drawableProperties];
-  [v12 setOrientedBounds:v11];
+  [(OADProperties *)self->mDrawableProperties setMergedWithParent:isMergedWithParent];
+  height = [[OADOrientedBounds alloc] initWithBounds:x, y, width, height];
+  drawableProperties = [(OADDrawable *)self drawableProperties];
+  [drawableProperties setOrientedBounds:height];
 
-  return v11;
+  return height;
 }
 
 - (id)description
@@ -126,9 +126,9 @@
   return v2;
 }
 
-- (id)createWordClientDataWithTextType:(int)a3
+- (id)createWordClientDataWithTextType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v5 = objc_alloc_init(WDAContent);
   objc_storeStrong(&self->mClientData, v5);
   [(WDAContent *)v5 setTextType:v3];

@@ -1,6 +1,6 @@
 @interface AAUIOBSpinnerViewController
 - (AAUIOBSpinnerViewController)init;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation AAUIOBSpinnerViewController
@@ -16,11 +16,11 @@
   return v5;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = AAUIOBSpinnerViewController;
-  [(OBBaseWelcomeController *)&v6 viewDidAppear:a3];
+  [(OBBaseWelcomeController *)&v6 viewDidAppear:appear];
   if (self->_actionBlock)
   {
     v4 = dispatch_get_global_queue(33, 0);

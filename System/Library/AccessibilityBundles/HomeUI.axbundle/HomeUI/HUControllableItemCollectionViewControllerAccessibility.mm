@@ -1,35 +1,35 @@
 @interface HUControllableItemCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axOpenControls:(id)a3;
+- (void)_axOpenControls:(id)controls;
 - (void)viewDidLoad;
 @end
 
 @implementation HUControllableItemCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUControllableItemCollectionViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"HUControllableItemCollectionViewController" hasInstanceVariable:@"_quickControlPresentationCoordinator" withType:"HUQuickControlPresentationCoordinator"];
-  [v3 validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"setPresentationContext:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"setPresentationContext:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"_preparePressedItemContextForItem:startApplier:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"_beginControlPresentationAnimated:" withFullSignature:{"@", "B", 0}];
-  [v3 validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"_pressGestureDidBeginWithLocation:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"_pressGestureDidEnd:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"HUQuickControlPresentationCoordinatorDelegate" hasMethod:@"presentationCoordinator:contextForPresentationAtPoint:" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"HUGridServiceCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridServiceCell" isKindOfClass:@"HUGridCell"];
-  [v3 validateClass:@"HUGridCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"UICollectionViewCell" isKindOfClass:@"UICollectionReusableView"];
-  [v3 validateClass:@"UICollectionReusableView" hasInstanceVariable:@"_collectionView" withType:"UICollectionView"];
-  [v3 validateClass:@"HFAbstractControlStatusItem"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUControllableItemCollectionViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"HUControllableItemCollectionViewController" hasInstanceVariable:@"_quickControlPresentationCoordinator" withType:"HUQuickControlPresentationCoordinator"];
+  [validationsCopy validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"setPresentationContext:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"setPresentationContext:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"_preparePressedItemContextForItem:startApplier:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"_beginControlPresentationAnimated:" withFullSignature:{"@", "B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"_pressGestureDidBeginWithLocation:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"_pressGestureDidEnd:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"HUQuickControlPresentationCoordinatorDelegate" hasMethod:@"presentationCoordinator:contextForPresentationAtPoint:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"HUGridServiceCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridServiceCell" isKindOfClass:@"HUGridCell"];
+  [validationsCopy validateClass:@"HUGridCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"UICollectionViewCell" isKindOfClass:@"UICollectionReusableView"];
+  [validationsCopy validateClass:@"UICollectionReusableView" hasInstanceVariable:@"_collectionView" withType:"UICollectionView"];
+  [validationsCopy validateClass:@"HFAbstractControlStatusItem"];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v5 = [(HUControllableItemCollectionViewControllerAccessibility *)self safeValueForKey:@"collectionView"];
   v6 = v5;
@@ -38,15 +38,15 @@
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (scroll == 1)
   {
-    v7 = [v5 accessibilityScrollRightPage];
+    accessibilityScrollRightPage = [v5 accessibilityScrollRightPage];
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (scroll == 2)
   {
-    v7 = [v5 accessibilityScrollLeftPage];
+    accessibilityScrollRightPage = [v5 accessibilityScrollLeftPage];
   }
 
   else
@@ -54,11 +54,11 @@
 LABEL_5:
     v10.receiver = self;
     v10.super_class = HUControllableItemCollectionViewControllerAccessibility;
-    v7 = [(HUControllableItemCollectionViewControllerAccessibility *)&v10 accessibilityScroll:a3];
+    accessibilityScrollRightPage = [(HUControllableItemCollectionViewControllerAccessibility *)&v10 accessibilityScroll:scroll];
   }
 
 LABEL_7:
-  v8 = v7;
+  v8 = accessibilityScrollRightPage;
 
   return v8;
 }
@@ -68,11 +68,11 @@ LABEL_7:
   v5.receiver = self;
   v5.super_class = HUControllableItemCollectionViewControllerAccessibility;
   [(HUControllableItemCollectionViewControllerAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:AXOpenControlsNotification object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:AXOpenControlsNotification object:0];
 
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v4 addObserver:self selector:sel__axOpenControls_ name:AXOpenControlsNotification object:0];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__axOpenControls_ name:AXOpenControlsNotification object:0];
 }
 
 - (void)viewDidLoad
@@ -83,11 +83,11 @@ LABEL_7:
   [(HUControllableItemCollectionViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_axOpenControls:(id)a3
+- (void)_axOpenControls:(id)controls
 {
-  v4 = a3;
+  controlsCopy = controls;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [controlsCopy object];
   v6 = __UIAccessibilityCastAsClass();
 
   v7 = [v6 safeValueForKeyPath:@"_collectionView.delegate"];

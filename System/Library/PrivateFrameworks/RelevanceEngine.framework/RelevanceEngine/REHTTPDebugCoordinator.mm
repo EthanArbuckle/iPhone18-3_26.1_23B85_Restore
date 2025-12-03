@@ -1,46 +1,46 @@
 @interface REHTTPDebugCoordinator
-- (REHTTPDebugCoordinator)initWithSimulator:(id)a3;
-- (id)_createContentItemWithTitle:(id)a3 content:(id)a4;
-- (id)_createHTMLTableFromDictionary:(id)a3;
-- (id)_createHTMLTableRowFromArray:(id)a3 itemElementTag:(id)a4;
-- (id)_createTableWithItems:(id)a3 itemFormatBlock:(id)a4 valueBlock:(id)a5;
-- (id)_linkElementForTableItem:(id)a3 paths:(id)a4;
-- (id)_linkToPaths:(id)a3;
-- (id)_stringElementForObject:(id)a3;
-- (id)_stringForObject:(id)a3;
-- (id)_urlFromPaths:(id)a3;
-- (void)generateDiagnosticsForPaths:(id)a3 completion:(id)a4;
+- (REHTTPDebugCoordinator)initWithSimulator:(id)simulator;
+- (id)_createContentItemWithTitle:(id)title content:(id)content;
+- (id)_createHTMLTableFromDictionary:(id)dictionary;
+- (id)_createHTMLTableRowFromArray:(id)array itemElementTag:(id)tag;
+- (id)_createTableWithItems:(id)items itemFormatBlock:(id)block valueBlock:(id)valueBlock;
+- (id)_linkElementForTableItem:(id)item paths:(id)paths;
+- (id)_linkToPaths:(id)paths;
+- (id)_stringElementForObject:(id)object;
+- (id)_stringForObject:(id)object;
+- (id)_urlFromPaths:(id)paths;
+- (void)generateDiagnosticsForPaths:(id)paths completion:(id)completion;
 @end
 
 @implementation REHTTPDebugCoordinator
 
-- (REHTTPDebugCoordinator)initWithSimulator:(id)a3
+- (REHTTPDebugCoordinator)initWithSimulator:(id)simulator
 {
-  v5 = a3;
+  simulatorCopy = simulator;
   v9.receiver = self;
   v9.super_class = REHTTPDebugCoordinator;
   v6 = [(REHTTPDebugCoordinator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_simulator, a3);
+    objc_storeStrong(&v6->_simulator, simulator);
   }
 
   return v7;
 }
 
-- (id)_urlFromPaths:(id)a3
+- (id)_urlFromPaths:(id)paths
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RETrainingSimulator *)self->_simulator relevanceEngineName];
-  v6 = [@"/" stringByAppendingString:v5];
+  pathsCopy = paths;
+  relevanceEngineName = [(RETrainingSimulator *)self->_simulator relevanceEngineName];
+  v6 = [@"/" stringByAppendingString:relevanceEngineName];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v4;
+  v7 = pathsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -75,11 +75,11 @@
   return v6;
 }
 
-- (id)_linkElementForTableItem:(id)a3 paths:(id)a4
+- (id)_linkElementForTableItem:(id)item paths:(id)paths
 {
-  v6 = a4;
-  v7 = [(REHTTPDebugCoordinator *)self _stringElementForObject:a3];
-  v8 = [(REHTTPDebugCoordinator *)self _urlFromPaths:v6];
+  pathsCopy = paths;
+  v7 = [(REHTTPDebugCoordinator *)self _stringElementForObject:item];
+  v8 = [(REHTTPDebugCoordinator *)self _urlFromPaths:pathsCopy];
 
   v9 = [REHTMLElement link:v8 title:&stru_283B97458];
 
@@ -88,36 +88,36 @@
   return v10;
 }
 
-- (id)_linkToPaths:(id)a3
+- (id)_linkToPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [v4 lastObject];
-  v6 = REDisplayStringForPropertyName(v5);
+  pathsCopy = paths;
+  lastObject = [pathsCopy lastObject];
+  v6 = REDisplayStringForPropertyName(lastObject);
 
-  v7 = [(REHTTPDebugCoordinator *)self _urlFromPaths:v4];
+  v7 = [(REHTTPDebugCoordinator *)self _urlFromPaths:pathsCopy];
 
   v8 = [REHTMLElement link:v7 title:v6];
 
   return v8;
 }
 
-- (id)_stringForObject:(id)a3
+- (id)_stringForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (TypeID = CFBooleanGetTypeID(), TypeID == CFGetTypeID(v3)))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (TypeID = CFBooleanGetTypeID(), TypeID == CFGetTypeID(objectCopy)))
     {
-      v6 = [v3 BOOLValue];
+      bOOLValue = [objectCopy BOOLValue];
       v7 = @"NO";
-      if (v6)
+      if (bOOLValue)
       {
         v7 = @"YES";
       }
@@ -127,7 +127,7 @@
 
     else
     {
-      v4 = [v3 description];
+      v4 = [objectCopy description];
     }
   }
 
@@ -143,32 +143,32 @@
   return v10;
 }
 
-- (id)_stringElementForObject:(id)a3
+- (id)_stringElementForObject:(id)object
 {
-  v3 = [(REHTTPDebugCoordinator *)self _stringForObject:a3];
+  v3 = [(REHTTPDebugCoordinator *)self _stringForObject:object];
   v4 = [REHTMLElement elementWithHTMLString:v3];
 
   return v4;
 }
 
-- (void)generateDiagnosticsForPaths:(id)a3 completion:(id)a4
+- (void)generateDiagnosticsForPaths:(id)paths completion:(id)completion
 {
   v158 = *MEMORY[0x277D85DE8];
-  v119 = a3;
-  v5 = a4;
-  if (v5)
+  pathsCopy = paths;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v108 = v5;
+    v108 = completionCopy;
     v6 = RELogForDomain(21);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v119 componentsJoinedByString:@"->"];
+      v7 = [pathsCopy componentsJoinedByString:@"->"];
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v7;
       _os_log_impl(&dword_22859F000, v6, OS_LOG_TYPE_INFO, "Loading diagnostics for object path %@", &buf, 0xCu);
     }
 
-    v109 = [(RETrainingSimulator *)self->_simulator encodedObjectAtPath:v119];
+    v109 = [(RETrainingSimulator *)self->_simulator encodedObjectAtPath:pathsCopy];
     v110 = [v109 dataUsingEncoding:4];
     v8 = RELogForDomain(21);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -176,12 +176,12 @@
       [REHTTPDebugCoordinator generateDiagnosticsForPaths:v109 completion:v8];
     }
 
-    v9 = [v119 lastObject];
-    v111 = REDisplayStringForPropertyName(v9);
+    lastObject = [pathsCopy lastObject];
+    v111 = REDisplayStringForPropertyName(lastObject);
 
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:{-[__CFString integerValue](v111, "integerValue")}];
-    v11 = [v10 stringValue];
-    v107 = [v11 isEqualToString:v111];
+    stringValue = [v10 stringValue];
+    v107 = [stringValue isEqualToString:v111];
 
     if (v110 && ([MEMORY[0x277CCAAA0] JSONObjectWithData:v110 options:4 error:0], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
     {
@@ -189,13 +189,13 @@
       if (objc_opt_isKindOfClass())
       {
         v120 = v12;
-        v13 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v150 = 0u;
         v151 = 0u;
         v148 = 0u;
         v149 = 0u;
-        v14 = [v120 keyEnumerator];
-        v16 = [v14 countByEnumeratingWithState:&v148 objects:&buf count:16];
+        keyEnumerator = [v120 keyEnumerator];
+        v16 = [keyEnumerator countByEnumeratingWithState:&v148 objects:&buf count:16];
         if (v16)
         {
           v17 = *v149;
@@ -205,7 +205,7 @@
             {
               if (*v149 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(keyEnumerator);
               }
 
               v19 = *(*(&v148 + 1) + 8 * i);
@@ -213,17 +213,17 @@
               {
                 v20 = [v120 objectForKeyedSubscript:v19];
                 v21 = REPropertyNameFromInternalAttribute(v19);
-                [v13 setObject:v20 forKeyedSubscript:v21];
+                [dictionary setObject:v20 forKeyedSubscript:v21];
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v148 objects:&buf count:16];
+            v16 = [keyEnumerator countByEnumeratingWithState:&v148 objects:&buf count:16];
           }
 
           while (v16);
         }
 
-        v105 = [v13 copy];
+        v105 = [dictionary copy];
         v22 = [v105 objectForKeyedSubscript:@"type"];
         v23 = [v22 isEqualToString:@"table"];
 
@@ -244,8 +244,8 @@
           v151 = 0u;
           v148 = 0u;
           v149 = 0u;
-          v71 = [v116 keyEnumerator];
-          v73 = [v71 countByEnumeratingWithState:&v148 objects:&buf count:16];
+          keyEnumerator2 = [v116 keyEnumerator];
+          v73 = [keyEnumerator2 countByEnumeratingWithState:&v148 objects:&buf count:16];
           if (v73)
           {
             v74 = *v149;
@@ -255,7 +255,7 @@
               {
                 if (*v149 != v74)
                 {
-                  objc_enumerationMutation(v71);
+                  objc_enumerationMutation(keyEnumerator2);
                 }
 
                 v76 = *(*(&v148 + 1) + 8 * j);
@@ -265,7 +265,7 @@
                 }
               }
 
-              v73 = [v71 countByEnumeratingWithState:&v148 objects:&buf count:16];
+              v73 = [keyEnumerator2 countByEnumeratingWithState:&v148 objects:&buf count:16];
             }
 
             while (v73);
@@ -289,7 +289,7 @@
                 }
 
                 v78 = *(*(&v144 + 1) + 8 * k);
-                v79 = [v119 arrayByAddingObject:v78];
+                v79 = [pathsCopy arrayByAddingObject:v78];
                 v125 = [(REHTTPDebugCoordinator *)self _linkToPaths:v79];
                 v80 = [v116 objectForKeyedSubscript:v78];
                 objc_opt_class();
@@ -301,8 +301,8 @@
                   v151 = 0u;
                   v148 = 0u;
                   v149 = 0u;
-                  v83 = [v81 keyEnumerator];
-                  v85 = [v83 countByEnumeratingWithState:&v148 objects:&buf count:16];
+                  keyEnumerator3 = [v81 keyEnumerator];
+                  v85 = [keyEnumerator3 countByEnumeratingWithState:&v148 objects:&buf count:16];
                   if (v85)
                   {
                     v86 = *v149;
@@ -312,7 +312,7 @@
                       {
                         if (*v149 != v86)
                         {
-                          objc_enumerationMutation(v83);
+                          objc_enumerationMutation(keyEnumerator3);
                         }
 
                         v88 = *(*(&v148 + 1) + 8 * m);
@@ -322,7 +322,7 @@
                         }
                       }
 
-                      v85 = [v83 countByEnumeratingWithState:&v148 objects:&buf count:16];
+                      v85 = [keyEnumerator3 countByEnumeratingWithState:&v148 objects:&buf count:16];
                     }
 
                     while (v85);
@@ -343,7 +343,7 @@
                   v139[2] = __65__REHTTPDebugCoordinator_generateDiagnosticsForPaths_completion___block_invoke_2;
                   v139[3] = &unk_2785FBB58;
                   v140 = v81;
-                  v141 = self;
+                  selfCopy = self;
                   v91 = [(REHTTPDebugCoordinator *)self _createTableWithItems:v89 itemFormatBlock:v142 valueBlock:v139];
                 }
 
@@ -482,7 +482,7 @@ LABEL_120:
         v106 = v12;
         if ([v106 count])
         {
-          v26 = [v106 firstObject];
+          firstObject = [v106 firstObject];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -509,13 +509,13 @@ LABEL_120:
                   }
 
                   v29 = *(*(&v132 + 1) + 8 * n);
-                  v30 = [MEMORY[0x277CBEB38] dictionary];
+                  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
                   v150 = 0u;
                   v151 = 0u;
                   v148 = 0u;
                   v149 = 0u;
-                  v31 = [v29 keyEnumerator];
-                  v33 = [v31 countByEnumeratingWithState:&v148 objects:&buf count:16];
+                  keyEnumerator4 = [v29 keyEnumerator];
+                  v33 = [keyEnumerator4 countByEnumeratingWithState:&v148 objects:&buf count:16];
                   if (v33)
                   {
                     v34 = *v149;
@@ -525,7 +525,7 @@ LABEL_120:
                       {
                         if (*v149 != v34)
                         {
-                          objc_enumerationMutation(v31);
+                          objc_enumerationMutation(keyEnumerator4);
                         }
 
                         v36 = *(*(&v148 + 1) + 8 * ii);
@@ -533,17 +533,17 @@ LABEL_120:
                         {
                           v37 = [v29 objectForKeyedSubscript:v36];
                           v38 = REPropertyNameFromInternalAttribute(v36);
-                          [v30 setObject:v37 forKeyedSubscript:v38];
+                          [dictionary2 setObject:v37 forKeyedSubscript:v38];
                         }
                       }
 
-                      v33 = [v31 countByEnumeratingWithState:&v148 objects:&buf count:16];
+                      v33 = [keyEnumerator4 countByEnumeratingWithState:&v148 objects:&buf count:16];
                     }
 
                     while (v33);
                   }
 
-                  v123 = [v30 copy];
+                  v123 = [dictionary2 copy];
                   v39 = [v123 objectForKeyedSubscript:@"type"];
                   v40 = [v39 isEqualToString:@"table"];
 
@@ -560,8 +560,8 @@ LABEL_120:
                     v151 = 0u;
                     v148 = 0u;
                     v149 = 0u;
-                    v44 = [v42 keyEnumerator];
-                    v46 = [v44 countByEnumeratingWithState:&v148 objects:&buf count:16];
+                    keyEnumerator5 = [v42 keyEnumerator];
+                    v46 = [keyEnumerator5 countByEnumeratingWithState:&v148 objects:&buf count:16];
                     if (v46)
                     {
                       v47 = *v149;
@@ -571,7 +571,7 @@ LABEL_120:
                         {
                           if (*v149 != v47)
                           {
-                            objc_enumerationMutation(v44);
+                            objc_enumerationMutation(keyEnumerator5);
                           }
 
                           v49 = *(*(&v148 + 1) + 8 * jj);
@@ -581,7 +581,7 @@ LABEL_120:
                           }
                         }
 
-                        v46 = [v44 countByEnumeratingWithState:&v148 objects:&buf count:16];
+                        v46 = [keyEnumerator5 countByEnumeratingWithState:&v148 objects:&buf count:16];
                       }
 
                       while (v46);
@@ -596,7 +596,7 @@ LABEL_120:
                     v129[2] = __65__REHTTPDebugCoordinator_generateDiagnosticsForPaths_completion___block_invoke_4;
                     v129[3] = &unk_2785FBBA8;
                     v129[4] = self;
-                    v130 = v119;
+                    v130 = pathsCopy;
                     v131 = v124;
                     v128[0] = v51;
                     v128[1] = 3221225472;
@@ -632,10 +632,10 @@ LABEL_120:
 
                           v59 = [(REHTTPDebugCoordinator *)self _stringForObject:v57];
                           v60 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v124];
-                          v61 = [v60 stringValue];
-                          v152 = v61;
+                          stringValue2 = [v60 stringValue];
+                          v152 = stringValue2;
                           v62 = [MEMORY[0x277CBEA60] arrayWithObjects:&v152 count:1];
-                          v63 = [v119 arrayByAddingObjectsFromArray:v62];
+                          v63 = [pathsCopy arrayByAddingObjectsFromArray:v62];
                           v58 = [(REHTTPDebugCoordinator *)self _linkElementForTableItem:v59 paths:v63];
 
                           goto LABEL_63;
@@ -731,7 +731,7 @@ LABEL_63:
     v24 = v111;
 LABEL_22:
 
-    v5 = v108;
+    completionCopy = v108;
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -849,16 +849,16 @@ id __65__REHTTPDebugCoordinator_generateDiagnosticsForPaths_completion___block_i
   return v4;
 }
 
-- (id)_createContentItemWithTitle:(id)a3 content:(id)a4
+- (id)_createContentItemWithTitle:(id)title content:(id)content
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  titleCopy = title;
+  contentCopy = content;
+  if (titleCopy)
   {
     v7 = +[REHTMLElement div];
     v8 = [v7 elementByAddingClass:@"section"];
 
-    v9 = [v8 addChild:v5];
+    v9 = [v8 addChild:titleCopy];
   }
 
   else
@@ -876,9 +876,9 @@ id __65__REHTTPDebugCoordinator_generateDiagnosticsForPaths_completion___block_i
     v11 = v12;
   }
 
-  if (v6)
+  if (contentCopy)
   {
-    v13 = [v11 addChild:v6];
+    v13 = [v11 addChild:contentCopy];
 
     v11 = v13;
   }
@@ -886,11 +886,11 @@ id __65__REHTTPDebugCoordinator_generateDiagnosticsForPaths_completion___block_i
   return v11;
 }
 
-- (id)_createHTMLTableRowFromArray:(id)a3 itemElementTag:(id)a4
+- (id)_createHTMLTableRowFromArray:(id)array itemElementTag:(id)tag
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  tagCopy = tag;
   v7 = [REHTMLElement htmlElementWithTag:@"tr" content:0];
   if (_createHTMLTableRowFromArray_itemElementTag__onceToken != -1)
   {
@@ -901,7 +901,7 @@ id __65__REHTTPDebugCoordinator_generateDiagnosticsForPaths_completion___block_i
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = arrayCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -930,7 +930,7 @@ id __65__REHTTPDebugCoordinator_generateDiagnosticsForPaths_completion___block_i
           v15 = [v16 length] == 0;
         }
 
-        v17 = [REHTMLElement htmlElementWithTag:v6 content:v14];
+        v17 = [REHTMLElement htmlElementWithTag:tagCopy content:v14];
         v18 = v17;
         if (v15)
         {
@@ -966,17 +966,17 @@ uint64_t __70__REHTTPDebugCoordinator__createHTMLTableRowFromArray_itemElementTa
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (id)_createHTMLTableFromDictionary:(id)a3
+- (id)_createHTMLTableFromDictionary:(id)dictionary
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = [v4 keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  keyEnumerator = [dictionaryCopy keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v7)
   {
     v9 = v7;
@@ -987,32 +987,32 @@ uint64_t __70__REHTTPDebugCoordinator__createHTMLTableRowFromArray_itemElementTa
       {
         if (*v38 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v12 = *(*(&v37 + 1) + 8 * i);
         if (REPropertyIsInternalAttribute(v12, v8))
         {
-          v13 = [v4 objectForKeyedSubscript:v12];
+          v13 = [dictionaryCopy objectForKeyedSubscript:v12];
           v14 = REPropertyNameFromInternalAttribute(v12);
-          [v5 setObject:v13 forKeyedSubscript:v14];
+          [dictionary setObject:v13 forKeyedSubscript:v14];
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [v5 copy];
+  v15 = [dictionary copy];
   v16 = [v15 objectForKeyedSubscript:@"sortable"];
-  v17 = [v16 BOOLValue];
+  bOOLValue = [v16 BOOLValue];
 
   v18 = [REHTMLElement htmlElementWithTag:@"table" content:0];
   v19 = v18;
   v36 = v15;
-  if (v17)
+  if (bOOLValue)
   {
     v20 = [v18 elementByAddingClasses:&unk_283BBD9B0];
 
@@ -1020,7 +1020,7 @@ uint64_t __70__REHTTPDebugCoordinator__createHTMLTableRowFromArray_itemElementTa
   }
 
   v21 = [REHTMLElement htmlElementWithTag:@"thead" content:0];
-  v22 = [v4 objectForKeyedSubscript:@"header"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"header"];
   v23 = [(REHTTPDebugCoordinator *)self _createHTMLTableRowFromArray:v22 itemElementTag:@"th"];
   v24 = [v21 addChild:v23];
 
@@ -1028,7 +1028,7 @@ uint64_t __70__REHTTPDebugCoordinator__createHTMLTableRowFromArray_itemElementTa
 
   v25 = [REHTMLElement htmlElementWithTag:@"tbody" content:0];
   v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 0];
-  v27 = [v4 objectForKeyedSubscript:v26];
+  v27 = [dictionaryCopy objectForKeyedSubscript:v26];
 
   if (v27)
   {
@@ -1039,7 +1039,7 @@ uint64_t __70__REHTTPDebugCoordinator__createHTMLTableRowFromArray_itemElementTa
       v30 = [v25 addChild:v29];
 
       v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v28];
-      v27 = [v4 objectForKeyedSubscript:v31];
+      v27 = [dictionaryCopy objectForKeyedSubscript:v31];
 
       ++v28;
       v25 = v30;
@@ -1060,21 +1060,21 @@ uint64_t __70__REHTTPDebugCoordinator__createHTMLTableRowFromArray_itemElementTa
   return v32;
 }
 
-- (id)_createTableWithItems:(id)a3 itemFormatBlock:(id)a4 valueBlock:(id)a5
+- (id)_createTableWithItems:(id)items itemFormatBlock:(id)block valueBlock:(id)valueBlock
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  blockCopy = block;
+  valueBlockCopy = valueBlock;
   v10 = +[REHTMLElement div];
   v11 = [v10 elementByAddingClass:@"content-table"];
 
-  v31 = [v7 count];
+  v31 = [itemsCopy count];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v7;
+  obj = itemsCopy;
   v34 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v34)
   {
@@ -1093,16 +1093,16 @@ uint64_t __70__REHTTPDebugCoordinator__createHTMLTableRowFromArray_itemElementTa
         v15 = +[REHTMLElement div];
         v16 = [v15 elementByAddingClass:@"table-item"];
 
-        v17 = v8[2](v8, v14);
+        v17 = blockCopy[2](blockCopy, v14);
         v18 = +[REHTMLElement div];
         v19 = [v18 elementByAddingClass:@"item-key"];
         v20 = [v19 addChild:v17];
 
         v21 = [v16 addChild:v20];
 
-        if (v9)
+        if (valueBlockCopy)
         {
-          v22 = v9[2](v9, v14);
+          v22 = valueBlockCopy[2](valueBlockCopy, v14);
           if (v22)
           {
             v23 = v22;

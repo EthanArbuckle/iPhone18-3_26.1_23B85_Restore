@@ -20,17 +20,17 @@
 
 - (void)_gkResetContents
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &off_2861B9F48;
   objc_msgSendSuper2(&v7, sel__gkResetContents);
-  v2 = [a1 viewControllers];
-  v3 = [v2 count];
+  viewControllers = [self viewControllers];
+  v3 = [viewControllers count];
 
   if (v3)
   {
-    v4 = [a1 popToRootViewControllerAnimated:0];
-    v5 = [a1 viewControllers];
-    v6 = [v5 objectAtIndex:0];
+    v4 = [self popToRootViewControllerAnimated:0];
+    viewControllers2 = [self viewControllers];
+    v6 = [viewControllers2 objectAtIndex:0];
 
     [v6 _gkResetContents];
   }
@@ -38,33 +38,33 @@
 
 - (id)_gkUpdateContentsWithCompletionHandlerAndError:()GKAdditions
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &off_2861B9F48;
   return objc_msgSendSuper2(&v2, sel__gkUpdateContentsWithCompletionHandlerAndError_);
 }
 
 - (void)_gkForceNextContentUpdate
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_2861B9F48;
   objc_msgSendSuper2(&v8, sel__gkForceNextContentUpdate);
-  v2 = [a1 viewControllers];
-  v3 = [v2 count];
+  viewControllers = [self viewControllers];
+  v3 = [viewControllers count];
 
   if (v3)
   {
-    v4 = [a1 viewControllers];
-    v5 = [v4 objectAtIndex:0];
+    viewControllers2 = [self viewControllers];
+    v5 = [viewControllers2 objectAtIndex:0];
 
-    v6 = [a1 topViewController];
+    topViewController = [self topViewController];
 
-    if (v5 == v6)
+    if (v5 == topViewController)
     {
       [v5 _gkForceNextContentUpdate];
     }
 
-    v7 = [a1 topViewController];
-    [v7 _gkForceNextContentUpdate];
+    topViewController2 = [self topViewController];
+    [topViewController2 _gkForceNextContentUpdate];
   }
 }
 
@@ -72,11 +72,11 @@
 {
   v11 = a3;
   v6 = a4;
-  v7 = [a1 viewControllers];
-  if ([v7 count])
+  viewControllers = [self viewControllers];
+  if ([viewControllers count])
   {
-    v8 = [a1 viewControllers];
-    v9 = [v8 objectAtIndex:0];
+    viewControllers2 = [self viewControllers];
+    v9 = [viewControllers2 objectAtIndex:0];
   }
 
   else
@@ -86,7 +86,7 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = [a1 popToRootViewControllerAnimated:0];
+    v10 = [self popToRootViewControllerAnimated:0];
     [v9 _gkHandleURLPathComponents:v11 query:v6];
   }
 }
@@ -94,28 +94,28 @@
 - (void)_gkRefreshContentsForDataType:()GKAdditions userInfo:
 {
   v6 = a4;
-  v7 = [a1 topViewController];
-  [v7 _gkRefreshContentsForDataType:a3 userInfo:v6];
+  topViewController = [self topViewController];
+  [topViewController _gkRefreshContentsForDataType:a3 userInfo:v6];
 }
 
 - (uint64_t)_gkShouldRefreshContentsForDataType:()GKAdditions userInfo:
 {
   v6 = a4;
-  v7 = [a1 topViewController];
-  v8 = [v7 _gkShouldRefreshContentsForDataType:a3 userInfo:v6];
+  topViewController = [self topViewController];
+  v8 = [topViewController _gkShouldRefreshContentsForDataType:a3 userInfo:v6];
 
   return v8;
 }
 
 - (void)makeNavigationBarBackgroundTranslucent
 {
-  v2 = [a1 topViewController];
-  v3 = [v2 navigationItem];
-  [v3 _setAutoScrollEdgeTransitionDistance:40.0];
+  topViewController = [self topViewController];
+  navigationItem = [topViewController navigationItem];
+  [navigationItem _setAutoScrollEdgeTransitionDistance:40.0];
 
-  v5 = [a1 topViewController];
-  v4 = [v5 navigationItem];
-  [v4 _setManualScrollEdgeAppearanceEnabled:1];
+  topViewController2 = [self topViewController];
+  navigationItem2 = [topViewController2 navigationItem];
+  [navigationItem2 _setManualScrollEdgeAppearanceEnabled:1];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface PDSlideLayout
-- (PDSlideLayout)initWithSlideMaster:(id)a3;
+- (PDSlideLayout)initWithSlideMaster:(id)master;
 - (PDSlideMaster)slideMaster;
 - (id)background;
 - (id)defaultTheme;
 - (id)description;
-- (id)masterGraphicForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5;
-- (id)parentShapePropertiesForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5;
-- (id)parentTextBodyPropertiesForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5;
-- (id)parentTextStyleForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 defaultTextListStyle:(id)a5 overrideIndex:(BOOL)a6;
+- (id)masterGraphicForPlaceholderType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex;
+- (id)parentShapePropertiesForPlaceholderType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex;
+- (id)parentTextBodyPropertiesForPlaceholderType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex;
+- (id)parentTextStyleForPlaceholderType:(int)type placeholderTypeIndex:(int)index defaultTextListStyle:(id)style overrideIndex:(BOOL)overrideIndex;
 - (id)parentTextStyleForTables;
 - (id)transition;
 - (void)doneWithContent;
@@ -41,29 +41,29 @@
 
 - (id)defaultTheme
 {
-  v2 = [(PDSlideLayout *)self slideMaster];
-  v3 = [v2 theme];
+  slideMaster = [(PDSlideLayout *)self slideMaster];
+  theme = [slideMaster theme];
 
-  return v3;
+  return theme;
 }
 
 - (id)parentTextStyleForTables
 {
-  v2 = [(PDSlideLayout *)self slideMaster];
-  v3 = [v2 parentTextStyleForTables];
+  slideMaster = [(PDSlideLayout *)self slideMaster];
+  parentTextStyleForTables = [slideMaster parentTextStyleForTables];
 
-  return v3;
+  return parentTextStyleForTables;
 }
 
-- (PDSlideLayout)initWithSlideMaster:(id)a3
+- (PDSlideLayout)initWithSlideMaster:(id)master
 {
-  v4 = a3;
+  masterCopy = master;
   v5 = [(PDSlideChild *)self init];
   v6 = v5;
   if (v5)
   {
     LODWORD(v5->super.mColorMapOverride) = 0;
-    objc_storeWeak(&v5->mSlideLayoutType, v4);
+    objc_storeWeak(&v5->mSlideLayoutType, masterCopy);
   }
 
   return v6;
@@ -86,71 +86,71 @@
   return WeakRetained;
 }
 
-- (id)parentTextBodyPropertiesForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5
+- (id)parentTextBodyPropertiesForPlaceholderType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex
 {
-  v5 = a5;
-  v6 = *&a4;
-  v7 = *&a3;
+  overrideIndexCopy = overrideIndex;
+  v6 = *&index;
+  v7 = *&type;
   v9 = objc_opt_class();
-  v10 = [(PDSlideLayout *)self slideMaster];
-  v11 = [v10 placeholderWithType:v7 placeholderTypeIndex:v6 overrideIndex:v5];
+  slideMaster = [(PDSlideLayout *)self slideMaster];
+  v11 = [slideMaster placeholderWithType:v7 placeholderTypeIndex:v6 overrideIndex:overrideIndexCopy];
   v12 = TSUDynamicCast(v9, v11);
 
-  v13 = [v12 textBody];
-  v14 = [v13 properties];
+  textBody = [v12 textBody];
+  properties = [textBody properties];
 
-  return v14;
+  return properties;
 }
 
-- (id)parentTextStyleForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 defaultTextListStyle:(id)a5 overrideIndex:(BOOL)a6
+- (id)parentTextStyleForPlaceholderType:(int)type placeholderTypeIndex:(int)index defaultTextListStyle:(id)style overrideIndex:(BOOL)overrideIndex
 {
-  v6 = a6;
-  v7 = *&a4;
-  v8 = *&a3;
-  v10 = a5;
+  overrideIndexCopy = overrideIndex;
+  v7 = *&index;
+  v8 = *&type;
+  styleCopy = style;
   v11 = objc_opt_class();
-  v12 = [(PDSlideLayout *)self slideMaster];
-  v13 = [v12 placeholderWithType:v8 placeholderTypeIndex:v7 overrideIndex:v6];
+  slideMaster = [(PDSlideLayout *)self slideMaster];
+  v13 = [slideMaster placeholderWithType:v8 placeholderTypeIndex:v7 overrideIndex:overrideIndexCopy];
   v14 = TSUDynamicCast(v11, v13);
 
-  v15 = [v14 textBody];
-  v16 = [v15 textListStyle];
+  textBody = [v14 textBody];
+  textListStyle = [textBody textListStyle];
 
-  if (v16)
+  if (textListStyle)
   {
-    v17 = v16;
+    v17 = textListStyle;
   }
 
   else
   {
-    v18 = [(PDSlideLayout *)self slideMaster];
-    v17 = [v18 parentTextStyleForPlaceholderType:v8 placeholderTypeIndex:v7 defaultTextListStyle:v10 overrideIndex:v6];
+    slideMaster2 = [(PDSlideLayout *)self slideMaster];
+    v17 = [slideMaster2 parentTextStyleForPlaceholderType:v8 placeholderTypeIndex:v7 defaultTextListStyle:styleCopy overrideIndex:overrideIndexCopy];
   }
 
   return v17;
 }
 
-- (id)parentShapePropertiesForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5
+- (id)parentShapePropertiesForPlaceholderType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex
 {
-  v5 = a5;
-  v6 = *&a4;
-  v7 = *&a3;
+  overrideIndexCopy = overrideIndex;
+  v6 = *&index;
+  v7 = *&type;
   v9 = objc_opt_class();
-  v10 = [(PDSlideLayout *)self slideMaster];
-  v11 = [v10 placeholderWithType:v7 placeholderTypeIndex:v6 overrideIndex:v5];
+  slideMaster = [(PDSlideLayout *)self slideMaster];
+  v11 = [slideMaster placeholderWithType:v7 placeholderTypeIndex:v6 overrideIndex:overrideIndexCopy];
   v12 = TSUDynamicCast(v9, v11);
-  v13 = [v12 shapeProperties];
+  shapeProperties = [v12 shapeProperties];
 
-  return v13;
+  return shapeProperties;
 }
 
-- (id)masterGraphicForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 overrideIndex:(BOOL)a5
+- (id)masterGraphicForPlaceholderType:(int)type placeholderTypeIndex:(int)index overrideIndex:(BOOL)overrideIndex
 {
-  v5 = a5;
-  v6 = *&a4;
-  v7 = *&a3;
-  v8 = [(PDSlideLayout *)self slideMaster];
-  v9 = [v8 placeholderWithType:v7 placeholderTypeIndex:v6 overrideIndex:v5];
+  overrideIndexCopy = overrideIndex;
+  v6 = *&index;
+  v7 = *&type;
+  slideMaster = [(PDSlideLayout *)self slideMaster];
+  v9 = [slideMaster placeholderWithType:v7 placeholderTypeIndex:v6 overrideIndex:overrideIndexCopy];
 
   return v9;
 }

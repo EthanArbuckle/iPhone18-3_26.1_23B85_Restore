@@ -1,25 +1,25 @@
 @interface UICollectionViewAnimation
-- (UICollectionViewAnimation)initWithView:(id)a3 viewType:(int64_t)a4 finalLayoutAttributes:(id)a5 startFraction:(double)a6 endFraction:(double)a7 animateFromCurrentPostion:(BOOL)a8 deleteAfterAnimation:(BOOL)a9 customAnimations:(id)a10;
+- (UICollectionViewAnimation)initWithView:(id)view viewType:(int64_t)type finalLayoutAttributes:(id)attributes startFraction:(double)fraction endFraction:(double)endFraction animateFromCurrentPostion:(BOOL)postion deleteAfterAnimation:(BOOL)animation customAnimations:(id)self0;
 - (id)description;
-- (void)addCompletionHandler:(id)a3;
-- (void)addStartupHandler:(id)a3;
-- (void)setRasterizeAfterAnimation:(BOOL)a3;
-- (void)setResetRasterizationAfterAnimation:(BOOL)a3;
-- (void)startWithAnimator:(id)a3;
+- (void)addCompletionHandler:(id)handler;
+- (void)addStartupHandler:(id)handler;
+- (void)setRasterizeAfterAnimation:(BOOL)animation;
+- (void)setResetRasterizationAfterAnimation:(BOOL)animation;
+- (void)startWithAnimator:(id)animator;
 @end
 
 @implementation UICollectionViewAnimation
 
-- (UICollectionViewAnimation)initWithView:(id)a3 viewType:(int64_t)a4 finalLayoutAttributes:(id)a5 startFraction:(double)a6 endFraction:(double)a7 animateFromCurrentPostion:(BOOL)a8 deleteAfterAnimation:(BOOL)a9 customAnimations:(id)a10
+- (UICollectionViewAnimation)initWithView:(id)view viewType:(int64_t)type finalLayoutAttributes:(id)attributes startFraction:(double)fraction endFraction:(double)endFraction animateFromCurrentPostion:(BOOL)postion deleteAfterAnimation:(BOOL)animation customAnimations:(id)self0
 {
-  v11 = a9;
-  v19 = a3;
-  v20 = a5;
-  v21 = a10;
-  if (!v19)
+  animationCopy = animation;
+  viewCopy = view;
+  attributesCopy = attributes;
+  animationsCopy = animations;
+  if (!viewCopy)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"UICollectionView_InternalHelperClasses.m" lineNumber:255 description:@"attempt to create view animation for nil view"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionView_InternalHelperClasses.m" lineNumber:255 description:@"attempt to create view animation for nil view"];
   }
 
   v36.receiver = self;
@@ -30,22 +30,22 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v23 = [v19 layer];
+      layer = [viewCopy layer];
     }
 
     else
     {
-      v23 = v19;
+      layer = viewCopy;
     }
 
     view = v22->_view;
-    v22->_view = v23;
+    v22->_view = layer;
 
-    v22->_viewType = a4;
-    objc_storeStrong(&v22->_finalLayoutAttributes, a5);
-    v22->_startFraction = a6;
-    v22->_endFraction = a7;
-    if (v11)
+    v22->_viewType = type;
+    objc_storeStrong(&v22->_finalLayoutAttributes, attributes);
+    v22->_startFraction = fraction;
+    v22->_endFraction = endFraction;
+    if (animationCopy)
     {
       v25 = 2;
     }
@@ -55,10 +55,10 @@
       v25 = 0;
     }
 
-    *&v22->_collectionViewAnimationFlags = v25 | a8 | *&v22->_collectionViewAnimationFlags & 0xFC;
-    v26 = [v19 _layoutAttributes];
-    v27 = [v26 zIndex];
-    *&v22->_collectionViewAnimationFlags = *&v22->_collectionViewAnimationFlags & 0xEF | (16 * (v27 != [v20 zIndex]));
+    *&v22->_collectionViewAnimationFlags = v25 | postion | *&v22->_collectionViewAnimationFlags & 0xFC;
+    _layoutAttributes = [viewCopy _layoutAttributes];
+    zIndex = [_layoutAttributes zIndex];
+    *&v22->_collectionViewAnimationFlags = *&v22->_collectionViewAnimationFlags & 0xEF | (16 * (zIndex != [attributesCopy zIndex]));
 
     v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
     completionHandlers = v22->_completionHandlers;
@@ -68,7 +68,7 @@
     startupHandlers = v22->_startupHandlers;
     v22->_startupHandlers = v30;
 
-    v32 = [v21 copy];
+    v32 = [animationsCopy copy];
     animationBlock = v22->_animationBlock;
     v22->_animationBlock = v32;
   }
@@ -86,9 +86,9 @@
   return v4;
 }
 
-- (void)setRasterizeAfterAnimation:(BOOL)a3
+- (void)setRasterizeAfterAnimation:(BOOL)animation
 {
-  if (a3)
+  if (animation)
   {
     v3 = 4;
   }
@@ -101,9 +101,9 @@
   *&self->_collectionViewAnimationFlags = *&self->_collectionViewAnimationFlags & 0xFB | v3;
 }
 
-- (void)setResetRasterizationAfterAnimation:(BOOL)a3
+- (void)setResetRasterizationAfterAnimation:(BOOL)animation
 {
-  if (a3)
+  if (animation)
   {
     v3 = 8;
   }
@@ -116,15 +116,15 @@
   *&self->_collectionViewAnimationFlags = *&self->_collectionViewAnimationFlags & 0xF7 | v3;
 }
 
-- (void)startWithAnimator:(id)a3
+- (void)startWithAnimator:(id)animator
 {
   v75 = *MEMORY[0x1E69E9840];
-  v36 = a3;
+  animatorCopy = animator;
   if ([(UICollectionViewAnimation *)self parentInCollectionViewDuringAnimation])
   {
-    v5 = [(UIView *)self->_view superview];
-    v6 = [(UICollectionReusableView *)self->_view _collectionView];
-    v7 = v5 != v6;
+    superview = [(UIView *)self->_view superview];
+    _collectionView = [(UICollectionReusableView *)self->_view _collectionView];
+    v7 = superview != _collectionView;
   }
 
   else
@@ -132,7 +132,7 @@
     v7 = 0;
   }
 
-  v8 = [(UICollectionReusableView *)self->_view _collectionView];
+  _collectionView2 = [(UICollectionReusableView *)self->_view _collectionView];
   v9 = self->_view;
   v70[0] = MEMORY[0x1E69E9820];
   v70[1] = 3221225472;
@@ -141,7 +141,7 @@
   v10 = v9;
   v71 = v10;
   v73 = v7;
-  v11 = v8;
+  v11 = _collectionView2;
   v72 = v11;
   [UIView performWithoutAnimation:v70];
   collectionViewAnimationFlags = self->_collectionViewAnimationFlags;
@@ -231,8 +231,8 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"UICollectionView_InternalHelperClasses.m" lineNumber:355 description:@"Collection View no longer support raw layer or view animations."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionView_InternalHelperClasses.m" lineNumber:355 description:@"Collection View no longer support raw layer or view animations."];
   }
 
   if (self->_animationBlock)
@@ -243,21 +243,21 @@
     v56 = 3221225472;
     v57 = __47__UICollectionViewAnimation_startWithAnimator___block_invoke_102;
     v58 = &unk_1E70F5AC0;
-    v59 = self;
+    selfCopy = self;
     animationBlock[2]();
     [(UICollectionReusableView *)v10 applyLayoutAttributes:self->_finalLayoutAttributes];
   }
 
   else
   {
-    if (v36)
+    if (animatorCopy)
     {
-      v26 = [v36 shouldLayoutSubviews];
+      shouldLayoutSubviews = [animatorCopy shouldLayoutSubviews];
     }
 
     else
     {
-      v26 = 1;
+      shouldLayoutSubviews = 1;
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -266,12 +266,12 @@
     aBlock[3] = &unk_1E7100220;
     v27 = v10;
     v49 = v27;
-    v50 = self;
+    selfCopy2 = self;
     v52 = buf;
     v53 = v60;
     v28 = v11;
     v51 = v28;
-    v54 = v26;
+    v54 = shouldLayoutSubviews;
     v29 = _Block_copy(aBlock);
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
@@ -282,22 +282,22 @@
     v46 = v60;
     v47 = v7;
     v43 = v28;
-    v44 = self;
+    selfCopy3 = self;
     v30 = _Block_copy(v41);
-    if (v36)
+    if (animatorCopy)
     {
-      [v36 addAnimations:v29];
+      [animatorCopy addAnimations:v29];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __47__UICollectionViewAnimation_startWithAnimator___block_invoke_4;
       v39[3] = &unk_1E70FFB68;
       v40 = v30;
-      [v36 addCompletion:v39];
-      if (([v36 isRunning] & 1) == 0)
+      [animatorCopy addCompletion:v39];
+      if (([animatorCopy isRunning] & 1) == 0)
       {
         if (v20 <= 0.0)
         {
-          [v36 startAnimation];
+          [animatorCopy startAnimation];
         }
 
         else
@@ -307,7 +307,7 @@
           block[1] = 3221225472;
           block[2] = __47__UICollectionViewAnimation_startWithAnimator___block_invoke_5;
           block[3] = &unk_1E70F3590;
-          v38 = v36;
+          v38 = animatorCopy;
           dispatch_after(v31, MEMORY[0x1E69E96A0], block);
         }
       }
@@ -541,22 +541,22 @@ uint64_t __47__UICollectionViewAnimation_startWithAnimator___block_invoke_3(uint
   return [*(*(a1 + 48) + 48) removeAllObjects];
 }
 
-- (void)addCompletionHandler:(id)a3
+- (void)addCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     completionHandlers = self->_completionHandlers;
-    v4 = [a3 copy];
+    v4 = [handler copy];
     [(NSMutableArray *)completionHandlers addObject:v4];
   }
 }
 
-- (void)addStartupHandler:(id)a3
+- (void)addStartupHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     startupHandlers = self->_startupHandlers;
-    v4 = [a3 copy];
+    v4 = [handler copy];
     [(NSMutableArray *)startupHandlers addObject:v4];
   }
 }

@@ -1,38 +1,38 @@
 @interface HMDUserAccessorySettingsDataController
 - (BOOL)assistantAccessControlActivityNotificationsEnabledForPersonalRequests;
-- (HMDUserAccessorySettingsDataController)initWithUserModelID:(id)a3 managedObjectContext:(id)a4;
+- (HMDUserAccessorySettingsDataController)initWithUserModelID:(id)d managedObjectContext:(id)context;
 - (NSArray)assistantAccessControlAccessoriesToEncode;
 - (NSArray)mediaContentProfileAccessControlAccessoriesToEncode;
 - (NSArray)userListeningHistoryUpdateControlModelAccessoriesToEncode;
-- (id)_updatedAccessorySetFromAccessoryUUIDs:(id)a3 currentAccessories:(id)a4 error:(id *)a5;
-- (void)enableUserListeningHistoryForAccessory:(id)a3;
-- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)a3 activityNotificationsEnabledForPersonalRequests:(BOOL)a4 completion:(id)a5;
-- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4;
-- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4;
+- (id)_updatedAccessorySetFromAccessoryUUIDs:(id)ds currentAccessories:(id)accessories error:(id *)error;
+- (void)enableUserListeningHistoryForAccessory:(id)accessory;
+- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)updated activityNotificationsEnabledForPersonalRequests:(BOOL)requests completion:(id)completion;
+- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion;
+- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation HMDUserAccessorySettingsDataController
 
-- (id)_updatedAccessorySetFromAccessoryUUIDs:(id)a3 currentAccessories:(id)a4 error:(id *)a5
+- (id)_updatedAccessorySetFromAccessoryUUIDs:(id)ds currentAccessories:(id)accessories error:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 na_map:&__block_literal_global_15_132246];
+  dsCopy = ds;
+  accessoriesCopy = accessories;
+  v9 = [accessoriesCopy na_map:&__block_literal_global_15_132246];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __106__HMDUserAccessorySettingsDataController__updatedAccessorySetFromAccessoryUUIDs_currentAccessories_error___block_invoke_2;
   v45[3] = &unk_27868A1B0;
   v35 = v9;
   v46 = v35;
-  v10 = [v7 na_filter:v45];
+  v10 = [dsCopy na_filter:v45];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __106__HMDUserAccessorySettingsDataController__updatedAccessorySetFromAccessoryUUIDs_currentAccessories_error___block_invoke_3;
   v43[3] = &unk_27867A048;
-  v34 = v7;
+  v34 = dsCopy;
   v44 = v34;
-  v11 = [v8 na_filter:v43];
+  v11 = [accessoriesCopy na_filter:v43];
   v12 = [v11 mutableCopy];
 
   v41 = 0u;
@@ -44,7 +44,7 @@
   if (v14)
   {
     v15 = v14;
-    v33 = a5;
+    errorCopy = error;
     v16 = 0;
     v17 = *v40;
     obj = v13;
@@ -60,9 +60,9 @@
         }
 
         v20 = *(*(&v39 + 1) + 8 * v18);
-        v21 = [(HMCContext *)self->_context managedObjectContext];
+        managedObjectContext = [(HMCContext *)self->_context managedObjectContext];
         v38 = v19;
-        v22 = [(_MKFModel *)_MKFAccessory modelWithModelID:v20 context:v21 error:&v38];
+        v22 = [(_MKFModel *)_MKFAccessory modelWithModelID:v20 context:managedObjectContext error:&v38];
         v16 = v38;
 
         if (!v22)
@@ -75,7 +75,7 @@
           }
 
           v25 = objc_autoreleasePoolPush();
-          v26 = self;
+          selfCopy = self;
           v27 = HMFGetOSLogHandle();
           v13 = obj;
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -91,10 +91,10 @@
           }
 
           objc_autoreleasePoolPop(v25);
-          if (v33)
+          if (errorCopy)
           {
             v29 = v16;
-            *v33 = v16;
+            *errorCopy = v16;
           }
 
           v30 = 0;
@@ -141,22 +141,22 @@ uint64_t __106__HMDUserAccessorySettingsDataController__updatedAccessorySetFromA
   return v4;
 }
 
-- (void)enableUserListeningHistoryForAccessory:(id)a3
+- (void)enableUserListeningHistoryForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = self->_userModelID;
-  v6 = [(HMCContext *)self->_context managedObjectContext];
+  managedObjectContext = [(HMCContext *)self->_context managedObjectContext];
   context = self->_context;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__HMDUserAccessorySettingsDataController_enableUserListeningHistoryForAccessory___block_invoke;
   v11[3] = &unk_2786891E0;
   v12 = v5;
-  v13 = v6;
-  v14 = self;
-  v15 = v4;
-  v8 = v4;
-  v9 = v6;
+  v13 = managedObjectContext;
+  selfCopy = self;
+  v15 = accessoryCopy;
+  v8 = accessoryCopy;
+  v9 = managedObjectContext;
   v10 = v5;
   [(HMCContext *)context performBlock:v11];
 }
@@ -269,25 +269,25 @@ LABEL_17:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4
+- (void)handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = self->_userModelID;
-  v9 = [(HMCContext *)self->_context managedObjectContext];
+  managedObjectContext = [(HMCContext *)self->_context managedObjectContext];
   context = self->_context;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __114__HMDUserAccessorySettingsDataController_handleUserListeningHistoryUpdateControlUpdatedAccessoryUUIDs_completion___block_invoke;
   v15[3] = &unk_278688978;
   v16 = v8;
-  v17 = v9;
-  v19 = v6;
-  v20 = v7;
-  v18 = self;
-  v11 = v6;
-  v12 = v7;
-  v13 = v9;
+  v17 = managedObjectContext;
+  v19 = dsCopy;
+  v20 = completionCopy;
+  selfCopy = self;
+  v11 = dsCopy;
+  v12 = completionCopy;
+  v13 = managedObjectContext;
   v14 = v8;
   [(HMCContext *)context performBlock:v15];
 }
@@ -397,25 +397,25 @@ void __114__HMDUserAccessorySettingsDataController_handleUserListeningHistoryUpd
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)a3 completion:(id)a4
+- (void)handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = self->_userModelID;
-  v9 = [(HMCContext *)self->_context managedObjectContext];
+  managedObjectContext = [(HMCContext *)self->_context managedObjectContext];
   context = self->_context;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __113__HMDUserAccessorySettingsDataController_handleMediaContentProfileAccessControlUpdatedAccessoryUUIDs_completion___block_invoke;
   v15[3] = &unk_278688978;
   v16 = v8;
-  v17 = v9;
-  v19 = v6;
-  v20 = v7;
-  v18 = self;
-  v11 = v6;
-  v12 = v7;
-  v13 = v9;
+  v17 = managedObjectContext;
+  v19 = dsCopy;
+  v20 = completionCopy;
+  selfCopy = self;
+  v11 = dsCopy;
+  v12 = completionCopy;
+  v13 = managedObjectContext;
   v14 = v8;
   [(HMCContext *)context performBlock:v15];
 }
@@ -525,26 +525,26 @@ void __113__HMDUserAccessorySettingsDataController_handleMediaContentProfileAcce
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)a3 activityNotificationsEnabledForPersonalRequests:(BOOL)a4 completion:(id)a5
+- (void)handleAssistantAccessControlAccessoryUUIDsUpdated:(id)updated activityNotificationsEnabledForPersonalRequests:(BOOL)requests completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  updatedCopy = updated;
+  completionCopy = completion;
   v10 = self->_userModelID;
-  v11 = [(HMCContext *)self->_context managedObjectContext];
+  managedObjectContext = [(HMCContext *)self->_context managedObjectContext];
   context = self->_context;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __151__HMDUserAccessorySettingsDataController_handleAssistantAccessControlAccessoryUUIDsUpdated_activityNotificationsEnabledForPersonalRequests_completion___block_invoke;
   v17[3] = &unk_27867A020;
   v18 = v10;
-  v19 = v11;
-  v21 = v8;
-  v22 = v9;
-  v23 = a4;
-  v20 = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = v11;
+  v19 = managedObjectContext;
+  v21 = updatedCopy;
+  v22 = completionCopy;
+  requestsCopy = requests;
+  selfCopy = self;
+  v13 = updatedCopy;
+  v14 = completionCopy;
+  v15 = managedObjectContext;
   v16 = v10;
   [(HMCContext *)context performBlock:v17];
 }
@@ -666,7 +666,7 @@ void __151__HMDUserAccessorySettingsDataController_handleAssistantAccessControlA
   v24 = __Block_byref_object_dispose__132267;
   v25 = 0;
   v3 = self->_userModelID;
-  v4 = [(HMCContext *)self->_context managedObjectContext];
+  managedObjectContext = [(HMCContext *)self->_context managedObjectContext];
   context = self->_context;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
@@ -674,23 +674,23 @@ void __151__HMDUserAccessorySettingsDataController_handleAssistantAccessControlA
   v15 = &unk_278689D20;
   v6 = v3;
   v16 = v6;
-  v7 = v4;
+  v7 = managedObjectContext;
   v17 = v7;
-  v18 = self;
+  selfCopy = self;
   v19 = &v20;
   [(HMCContext *)context unsafeSynchronousBlock:&v12];
   v8 = v21[5];
   if (v8)
   {
-    v9 = v8;
+    array = v8;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v10 = v9;
+  v10 = array;
 
   _Block_object_dispose(&v20, 8);
 
@@ -748,7 +748,7 @@ void __99__HMDUserAccessorySettingsDataController_userListeningHistoryUpdateCont
   v24 = __Block_byref_object_dispose__132267;
   v25 = 0;
   v3 = self->_userModelID;
-  v4 = [(HMCContext *)self->_context managedObjectContext];
+  managedObjectContext = [(HMCContext *)self->_context managedObjectContext];
   context = self->_context;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
@@ -756,23 +756,23 @@ void __99__HMDUserAccessorySettingsDataController_userListeningHistoryUpdateCont
   v15 = &unk_278689D20;
   v6 = v3;
   v16 = v6;
-  v7 = v4;
+  v7 = managedObjectContext;
   v17 = v7;
-  v18 = self;
+  selfCopy = self;
   v19 = &v20;
   [(HMCContext *)context unsafeSynchronousBlock:&v12];
   v8 = v21[5];
   if (v8)
   {
-    v9 = v8;
+    array = v8;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v10 = v9;
+  v10 = array;
 
   _Block_object_dispose(&v20, 8);
 
@@ -830,7 +830,7 @@ void __93__HMDUserAccessorySettingsDataController_mediaContentProfileAccessContr
   v24 = __Block_byref_object_dispose__132267;
   v25 = 0;
   v3 = self->_userModelID;
-  v4 = [(HMCContext *)self->_context managedObjectContext];
+  managedObjectContext = [(HMCContext *)self->_context managedObjectContext];
   context = self->_context;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
@@ -838,23 +838,23 @@ void __93__HMDUserAccessorySettingsDataController_mediaContentProfileAccessContr
   v15 = &unk_278689D20;
   v6 = v3;
   v16 = v6;
-  v7 = v4;
+  v7 = managedObjectContext;
   v17 = v7;
-  v18 = self;
+  selfCopy = self;
   v19 = &v20;
   [(HMCContext *)context unsafeSynchronousBlock:&v12];
   v8 = v21[5];
   if (v8)
   {
-    v9 = v8;
+    array = v8;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v10 = v9;
+  v10 = array;
 
   _Block_object_dispose(&v20, 8);
 
@@ -905,29 +905,29 @@ void __83__HMDUserAccessorySettingsDataController_assistantAccessControlAccessor
 
 - (BOOL)assistantAccessControlActivityNotificationsEnabledForPersonalRequests
 {
-  v2 = self;
+  selfCopy = self;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
   v3 = self->_userModelID;
-  v4 = [(HMCContext *)v2->_context managedObjectContext];
-  context = v2->_context;
+  managedObjectContext = [(HMCContext *)selfCopy->_context managedObjectContext];
+  context = selfCopy->_context;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __111__HMDUserAccessorySettingsDataController_assistantAccessControlActivityNotificationsEnabledForPersonalRequests__block_invoke;
   v9[3] = &unk_278689D20;
   v6 = v3;
   v10 = v6;
-  v7 = v4;
+  v7 = managedObjectContext;
   v11 = v7;
-  v12 = v2;
+  v12 = selfCopy;
   v13 = &v14;
   [(HMCContext *)context unsafeSynchronousBlock:v9];
-  LOBYTE(v2) = *(v15 + 24);
+  LOBYTE(selfCopy) = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __111__HMDUserAccessorySettingsDataController_assistantAccessControlActivityNotificationsEnabledForPersonalRequests__block_invoke(uint64_t a1)
@@ -968,18 +968,18 @@ void __111__HMDUserAccessorySettingsDataController_assistantAccessControlActivit
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDUserAccessorySettingsDataController)initWithUserModelID:(id)a3 managedObjectContext:(id)a4
+- (HMDUserAccessorySettingsDataController)initWithUserModelID:(id)d managedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = HMDUserAccessorySettingsDataController;
   v9 = [(HMDUserAccessorySettingsDataController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userModelID, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_userModelID, d);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v10;

@@ -1,22 +1,22 @@
 @interface ICASReferralData
-- (ICASReferralData)initWithReferringApplication:(id)a3 referringInboundUrl:(id)a4;
+- (ICASReferralData)initWithReferringApplication:(id)application referringInboundUrl:(id)url;
 - (id)toDict;
 @end
 
 @implementation ICASReferralData
 
-- (ICASReferralData)initWithReferringApplication:(id)a3 referringInboundUrl:(id)a4
+- (ICASReferralData)initWithReferringApplication:(id)application referringInboundUrl:(id)url
 {
-  v7 = a3;
-  v8 = a4;
+  applicationCopy = application;
+  urlCopy = url;
   v12.receiver = self;
   v12.super_class = ICASReferralData;
   v9 = [(ICASReferralData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_referringApplication, a3);
-    objc_storeStrong(&v10->_referringInboundUrl, a4);
+    objc_storeStrong(&v9->_referringApplication, application);
+    objc_storeStrong(&v10->_referringInboundUrl, url);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"referringApplication";
-  v3 = [(ICASReferralData *)self referringApplication];
-  if (v3)
+  referringApplication = [(ICASReferralData *)self referringApplication];
+  if (referringApplication)
   {
-    v4 = [(ICASReferralData *)self referringApplication];
+    referringApplication2 = [(ICASReferralData *)self referringApplication];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    referringApplication2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = referringApplication2;
   v12[1] = @"referringInboundUrl";
-  v13[0] = v4;
-  v6 = [(ICASReferralData *)self referringInboundUrl];
-  if (v6)
+  v13[0] = referringApplication2;
+  referringInboundUrl = [(ICASReferralData *)self referringInboundUrl];
+  if (referringInboundUrl)
   {
-    v7 = [(ICASReferralData *)self referringInboundUrl];
+    referringInboundUrl2 = [(ICASReferralData *)self referringInboundUrl];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    referringInboundUrl2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = referringInboundUrl2;
+  v13[1] = referringInboundUrl2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

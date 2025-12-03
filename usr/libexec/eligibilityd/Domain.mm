@@ -18,7 +18,7 @@
 
 - (unint64_t)answer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000D58C();
 
   return v3;
@@ -26,7 +26,7 @@
 
 - (NSDictionary)status
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000D94C();
 
   if (v3)

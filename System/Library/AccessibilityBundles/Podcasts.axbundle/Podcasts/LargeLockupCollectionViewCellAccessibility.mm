@@ -1,5 +1,5 @@
 @interface LargeLockupCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
@@ -8,13 +8,13 @@
 
 @implementation LargeLockupCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.LargeLockupCollectionViewCell" hasInstanceMethod:@"accessibilityEmbeddedView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.LargeLockupCollectionViewCell" hasSwiftField:@"deletionButton" withSwiftType:"Optional<MTMPButton>"];
-  [v3 validateClass:@"ShelfKitCollectionViews.LargeLockupView" hasSwiftField:@"explicitLabel" withSwiftType:"Optional<UILabel>"];
-  [v3 validateClass:@"MTMPButton" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.LargeLockupCollectionViewCell" hasInstanceMethod:@"accessibilityEmbeddedView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.LargeLockupCollectionViewCell" hasSwiftField:@"deletionButton" withSwiftType:"Optional<MTMPButton>"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.LargeLockupView" hasSwiftField:@"explicitLabel" withSwiftType:"Optional<UILabel>"];
+  [validationsCopy validateClass:@"MTMPButton" isKindOfClass:@"UIView"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -33,9 +33,9 @@
 
   if (v5)
   {
-    v6 = [v5 isHidden];
+    isHidden = [v5 isHidden];
     v7 = [(LargeLockupCollectionViewCellAccessibility *)self _accessibilityStringForLabelKeyValues:@"accessibilityEmbeddedView"];
-    if (!v6)
+    if (!isHidden)
     {
       v10 = accessibilityLocalizedString(@"explicit");
       v8 = __UIAXStringForVariables();
@@ -59,8 +59,8 @@ LABEL_6:
 {
   v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v4 = [(LargeLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityEmbeddedView"];
-  v5 = [v4 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v5];
+  accessibilityCustomActions = [v4 accessibilityCustomActions];
+  [v3 axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
   v6 = [(LargeLockupCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"deletionButton"];
   [v6 alpha];
@@ -106,9 +106,9 @@ uint64_t __72__LargeLockupCollectionViewCellAccessibility_accessibilityCustomAct
 - (id)accessibilityUserInputLabels
 {
   v2 = [(LargeLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityEmbeddedView"];
-  v3 = [v2 accessibilityUserInputLabels];
+  accessibilityUserInputLabels = [v2 accessibilityUserInputLabels];
 
-  return v3;
+  return accessibilityUserInputLabels;
 }
 
 @end

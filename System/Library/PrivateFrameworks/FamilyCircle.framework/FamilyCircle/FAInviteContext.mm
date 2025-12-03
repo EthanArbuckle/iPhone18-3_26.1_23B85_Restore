@@ -1,40 +1,40 @@
 @interface FAInviteContext
-- (FAInviteContext)initWithResults:(id)a3;
-- (id)buildInviteMessageBubbleURL:(id)a3;
+- (FAInviteContext)initWithResults:(id)results;
+- (id)buildInviteMessageBubbleURL:(id)l;
 - (id)description;
 - (id)privacySafeInvitees;
-- (unint64_t)_validatonFromString:(id)a3 eventType:(id)a4;
-- (void)_parseResultsDictionary:(id)a3;
+- (unint64_t)_validatonFromString:(id)string eventType:(id)type;
+- (void)_parseResultsDictionary:(id)dictionary;
 @end
 
 @implementation FAInviteContext
 
-- (FAInviteContext)initWithResults:(id)a3
+- (FAInviteContext)initWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = [(FAInviteContext *)self init];
   v6 = v5;
   if (v5)
   {
-    [(FAInviteContext *)v5 _parseResultsDictionary:v4];
+    [(FAInviteContext *)v5 _parseResultsDictionary:resultsCopy];
   }
 
   return v6;
 }
 
-- (unint64_t)_validatonFromString:(id)a3 eventType:(id)a4
+- (unint64_t)_validatonFromString:(id)string eventType:(id)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 || ([v6 isEqualToString:@"familyInvite"] & 1) == 0)
+  stringCopy = string;
+  typeCopy = type;
+  v7 = typeCopy;
+  if (stringCopy || ([typeCopy isEqualToString:@"familyInvite"] & 1) == 0)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [v5 componentsSeparatedByString:{@", ", 0}];
+    v9 = [stringCopy componentsSeparatedByString:{@", ", 0}];
     v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
@@ -77,45 +77,45 @@
   return v8;
 }
 
-- (void)_parseResultsDictionary:(id)a3
+- (void)_parseResultsDictionary:(id)dictionary
 {
-  v123 = a3;
-  v4 = [v123 objectForKeyedSubscript:@"eventType"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
   eventType = self->_eventType;
   self->_eventType = v4;
 
-  v6 = [v123 objectForKeyedSubscript:@"title"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
   title = self->_title;
   self->_title = v6;
 
-  v8 = [v123 objectForKeyedSubscript:@"secondaryTitle"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"secondaryTitle"];
   secondaryTitle = self->_secondaryTitle;
   self->_secondaryTitle = v8;
 
-  v10 = [v123 objectForKeyedSubscript:@"description"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"description"];
   subtitle = self->_subtitle;
   self->_subtitle = v10;
 
-  v12 = [v123 objectForKeyedSubscript:@"recipientsEditable"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"recipientsEditable"];
   self->_canEditRecipients = [v12 BOOLValue];
 
-  v13 = [v123 objectForKeyedSubscript:@"actionLabel"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"actionLabel"];
   action = self->_action;
   self->_action = v13;
 
-  v15 = [v123 objectForKeyedSubscript:@"invitees"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"invitees"];
   v16 = [v15 componentsSeparatedByString:{@", "}];
   invitees = self->_invitees;
   self->_invitees = v16;
 
-  v18 = [v123 objectForKeyedSubscript:@"overlaidTextColor"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"overlaidTextColor"];
   overlaidTextColorString = self->_overlaidTextColorString;
   self->_overlaidTextColorString = v18;
 
-  v20 = [v123 objectForKeyedSubscript:@"validate"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"validate"];
   self->_validation = [(FAInviteContext *)self _validatonFromString:v20 eventType:self->_eventType];
 
-  v21 = [v123 objectForKeyedSubscript:@"inviteUrl"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"inviteUrl"];
   if (v21)
   {
     v22 = [MEMORY[0x1E695DFF8] URLWithString:v21];
@@ -123,7 +123,7 @@
     self->_inviteURL = v22;
   }
 
-  v24 = [v123 objectForKeyedSubscript:@"backgroundImageUrl"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"backgroundImageUrl"];
   if (v24)
   {
     v25 = [MEMORY[0x1E695DFF8] URLWithString:v24];
@@ -131,7 +131,7 @@
     self->_imageURL = v25;
   }
 
-  v27 = [v123 objectForKeyedSubscript:@"iconUrl"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"iconUrl"];
   if (v27)
   {
     v28 = [MEMORY[0x1E695DFF8] URLWithString:v27];
@@ -139,7 +139,7 @@
     self->_iconURL = v28;
   }
 
-  v30 = [v123 objectForKeyedSubscript:@"reportInviteeDetailsUrl"];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"reportInviteeDetailsUrl"];
   if (v30)
   {
     v31 = [MEMORY[0x1E695DFF8] URLWithString:v30];
@@ -147,7 +147,7 @@
     self->_reportInviteeDetailsUrl = v31;
   }
 
-  v33 = [v123 objectForKeyedSubscript:@"messageBubbleInviteAcceptLink"];
+  v33 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteAcceptLink"];
   if (v33)
   {
     v34 = [MEMORY[0x1E695DFF8] URLWithString:v33];
@@ -155,7 +155,7 @@
     self->_messageBubbleAcceptInviteURL = v34;
   }
 
-  v36 = [v123 objectForKeyedSubscript:@"messageBubbleInviteDeclineLink"];
+  v36 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteDeclineLink"];
   if (v36)
   {
     v37 = [MEMORY[0x1E695DFF8] URLWithString:v36];
@@ -163,73 +163,73 @@
     self->_messageBubbleDeclineInviteURL = v37;
   }
 
-  v39 = [v123 objectForKeyedSubscript:@"remainingFamilySpots"];
-  v40 = [v39 integerValue];
+  v39 = [dictionaryCopy objectForKeyedSubscript:@"remainingFamilySpots"];
+  integerValue = [v39 integerValue];
 
   v41 = 5;
-  if (v40)
+  if (integerValue)
   {
-    v41 = v40;
+    v41 = integerValue;
   }
 
   self->_remainingFamilySpots = v41;
-  v42 = [v123 objectForKeyedSubscript:@"mailLinkTitle"];
+  v42 = [dictionaryCopy objectForKeyedSubscript:@"mailLinkTitle"];
   mailLinkTitle = self->_mailLinkTitle;
   self->_mailLinkTitle = v42;
 
-  v44 = [v123 objectForKeyedSubscript:@"mailLinkSubtitle"];
+  v44 = [dictionaryCopy objectForKeyedSubscript:@"mailLinkSubtitle"];
   mailLinkSubtitle = self->_mailLinkSubtitle;
   self->_mailLinkSubtitle = v44;
 
-  v46 = [v123 objectForKeyedSubscript:@"mailMessageSubject"];
+  v46 = [dictionaryCopy objectForKeyedSubscript:@"mailMessageSubject"];
   mailMessageSubject = self->_mailMessageSubject;
   self->_mailMessageSubject = v46;
 
-  v48 = [v123 objectForKeyedSubscript:@"mailMessageBodyHTML"];
+  v48 = [dictionaryCopy objectForKeyedSubscript:@"mailMessageBodyHTML"];
   mailMessageBodyHTML = self->_mailMessageBodyHTML;
   self->_mailMessageBodyHTML = v48;
 
-  v50 = [v123 objectForKeyedSubscript:@"messageBubbleTitle"];
+  v50 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleTitle"];
   messageBubbleTitle = self->_messageBubbleTitle;
   self->_messageBubbleTitle = v50;
 
-  v52 = [v123 objectForKeyedSubscript:@"messageBubbleSubTitle"];
+  v52 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleSubTitle"];
   messageBubbleSubTitle = self->_messageBubbleSubTitle;
   self->_messageBubbleSubTitle = v52;
 
-  v54 = [v123 objectForKeyedSubscript:@"messageBubbleSubTitleTeen"];
+  v54 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleSubTitleTeen"];
   messageBubbleSubTitleTeen = self->_messageBubbleSubTitleTeen;
   self->_messageBubbleSubTitleTeen = v54;
 
-  v56 = [v123 objectForKeyedSubscript:@"messageBubbleViewInvitationButtonLabel"];
+  v56 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleViewInvitationButtonLabel"];
   messageBubbleViewInvitationButtonLabel = self->_messageBubbleViewInvitationButtonLabel;
   self->_messageBubbleViewInvitationButtonLabel = v56;
 
-  v58 = [v123 objectForKeyedSubscript:@"messageBubbleLearnMoreLinkLabel"];
+  v58 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleLearnMoreLinkLabel"];
   messageBubbleLearnMoreLinkLabel = self->_messageBubbleLearnMoreLinkLabel;
   self->_messageBubbleLearnMoreLinkLabel = v58;
 
-  v60 = [v123 objectForKeyedSubscript:@"messageBubbleInviteAcceptButtonLabel"];
+  v60 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteAcceptButtonLabel"];
   messageBubbleInviteAcceptButtonLabel = self->_messageBubbleInviteAcceptButtonLabel;
   self->_messageBubbleInviteAcceptButtonLabel = v60;
 
-  v62 = [v123 objectForKeyedSubscript:@"messageBubbleInviteDeclineButtonLabel"];
+  v62 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteDeclineButtonLabel"];
   messageBubbleInviteDeclineButtonLabel = self->_messageBubbleInviteDeclineButtonLabel;
   self->_messageBubbleInviteDeclineButtonLabel = v62;
 
-  v64 = [v123 objectForKeyedSubscript:@"messageBubbleSubscriptionsList"];
+  v64 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleSubscriptionsList"];
   messageBubbleSubscriptionsList = self->_messageBubbleSubscriptionsList;
   self->_messageBubbleSubscriptionsList = v64;
 
-  v66 = [v123 objectForKeyedSubscript:@"messageBubbleFamilySettingsLinkLabel"];
+  v66 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleFamilySettingsLinkLabel"];
   messageBubbleFamilySettingsLinkLabel = self->_messageBubbleFamilySettingsLinkLabel;
   self->_messageBubbleFamilySettingsLinkLabel = v66;
 
-  v68 = [v123 objectForKeyedSubscript:@"messageBubbleAppleIDSettingsLinkLabel"];
+  v68 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleAppleIDSettingsLinkLabel"];
   messageBubbleAppleIDSettingsLinkLabel = self->_messageBubbleAppleIDSettingsLinkLabel;
   self->_messageBubbleAppleIDSettingsLinkLabel = v68;
 
-  v70 = [v123 objectForKeyedSubscript:@"messageBubbleLoadingLabel"];
+  v70 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleLoadingLabel"];
   messageBubbleInviteLoadingLabel = self->_messageBubbleInviteLoadingLabel;
   self->_messageBubbleInviteLoadingLabel = v70;
 
@@ -241,79 +241,79 @@
     self->_messageBubbleInviteLoadingLabel = v73;
   }
 
-  v75 = [v123 objectForKeyedSubscript:@"messageBubbleInvitePendingTitle"];
+  v75 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInvitePendingTitle"];
   messageBubbleInvitePendingTitle = self->_messageBubbleInvitePendingTitle;
   self->_messageBubbleInvitePendingTitle = v75;
 
-  v77 = [v123 objectForKeyedSubscript:@"messageBubbleInvitePendingSubTitle"];
+  v77 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInvitePendingSubTitle"];
   messageBubbleInvitePendingSubTitle = self->_messageBubbleInvitePendingSubTitle;
   self->_messageBubbleInvitePendingSubTitle = v77;
 
-  v79 = [v123 objectForKeyedSubscript:@"messageBubbleInvitePendingIcon"];
+  v79 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInvitePendingIcon"];
   messageBubbleInvitePendingIcon = self->_messageBubbleInvitePendingIcon;
   self->_messageBubbleInvitePendingIcon = v79;
 
-  v81 = [v123 objectForKeyedSubscript:@"messageBubbleInviteAcceptedTitleSender"];
+  v81 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteAcceptedTitleSender"];
   messageBubbleInviteAcceptedTitleSender = self->_messageBubbleInviteAcceptedTitleSender;
   self->_messageBubbleInviteAcceptedTitleSender = v81;
 
-  v83 = [v123 objectForKeyedSubscript:@"messageBubbleInviteAcceptedTitleReceiver"];
+  v83 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteAcceptedTitleReceiver"];
   messageBubbleInviteAcceptedTitleReceiver = self->_messageBubbleInviteAcceptedTitleReceiver;
   self->_messageBubbleInviteAcceptedTitleReceiver = v83;
 
-  v85 = [v123 objectForKeyedSubscript:@"messageBubbleInviteAcceptedSubTitleSender"];
+  v85 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteAcceptedSubTitleSender"];
   messageBubbleInviteAcceptedSubTitleSender = self->_messageBubbleInviteAcceptedSubTitleSender;
   self->_messageBubbleInviteAcceptedSubTitleSender = v85;
 
-  v87 = [v123 objectForKeyedSubscript:@"messageBubbleInviteAcceptedSubTitleReceiver"];
+  v87 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteAcceptedSubTitleReceiver"];
   messageBubbleInviteAcceptedSubTitleReceiver = self->_messageBubbleInviteAcceptedSubTitleReceiver;
   self->_messageBubbleInviteAcceptedSubTitleReceiver = v87;
 
-  v89 = [v123 objectForKeyedSubscript:@"messageBubbleInviteAcceptedIcon"];
+  v89 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteAcceptedIcon"];
   messageBubbleInviteAcceptedIcon = self->_messageBubbleInviteAcceptedIcon;
   self->_messageBubbleInviteAcceptedIcon = v89;
 
-  v91 = [v123 objectForKeyedSubscript:@"messageBubbleInviteExpiredTitleSender"];
+  v91 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteExpiredTitleSender"];
   messageBubbleInviteExpiredTitleSender = self->_messageBubbleInviteExpiredTitleSender;
   self->_messageBubbleInviteExpiredTitleSender = v91;
 
-  v93 = [v123 objectForKeyedSubscript:@"messageBubbleInviteExpiredTitleReceiver"];
+  v93 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteExpiredTitleReceiver"];
   messageBubbleInviteExpiredTitleReceiver = self->_messageBubbleInviteExpiredTitleReceiver;
   self->_messageBubbleInviteExpiredTitleReceiver = v93;
 
-  v95 = [v123 objectForKeyedSubscript:@"messageBubbleInviteExpiredSubTitleSender"];
+  v95 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteExpiredSubTitleSender"];
   messageBubbleInviteExpiredSubTitleSender = self->_messageBubbleInviteExpiredSubTitleSender;
   self->_messageBubbleInviteExpiredSubTitleSender = v95;
 
-  v97 = [v123 objectForKeyedSubscript:@"messageBubbleInviteExpiredSubTitleReceiver"];
+  v97 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteExpiredSubTitleReceiver"];
   messageBubbleInviteExpiredSubTitleReceiver = self->_messageBubbleInviteExpiredSubTitleReceiver;
   self->_messageBubbleInviteExpiredSubTitleReceiver = v97;
 
-  v99 = [v123 objectForKeyedSubscript:@"messageBubbleInviteExpiredIcon"];
+  v99 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteExpiredIcon"];
   messageBubbleInviteExpiredIcon = self->_messageBubbleInviteExpiredIcon;
   self->_messageBubbleInviteExpiredIcon = v99;
 
-  v101 = [v123 objectForKeyedSubscript:@"messageBubbleInviteDeclinedTitleSender"];
+  v101 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteDeclinedTitleSender"];
   messageBubbleInviteDeclinedTitleSender = self->_messageBubbleInviteDeclinedTitleSender;
   self->_messageBubbleInviteDeclinedTitleSender = v101;
 
-  v103 = [v123 objectForKeyedSubscript:@"messageBubbleInviteDeclinedTitleReceiver"];
+  v103 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteDeclinedTitleReceiver"];
   messageBubbleInviteDeclinedTitleReceiver = self->_messageBubbleInviteDeclinedTitleReceiver;
   self->_messageBubbleInviteDeclinedTitleReceiver = v103;
 
-  v105 = [v123 objectForKeyedSubscript:@"messageBubbleInviteDeclinedSubTitleSender"];
+  v105 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteDeclinedSubTitleSender"];
   messageBubbleInviteDeclinedSubTitleSender = self->_messageBubbleInviteDeclinedSubTitleSender;
   self->_messageBubbleInviteDeclinedSubTitleSender = v105;
 
-  v107 = [v123 objectForKeyedSubscript:@"messageBubbleInviteDeclinedSubTitleReceiver"];
+  v107 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteDeclinedSubTitleReceiver"];
   messageBubbleInviteDeclinedSubTitleReceiver = self->_messageBubbleInviteDeclinedSubTitleReceiver;
   self->_messageBubbleInviteDeclinedSubTitleReceiver = v107;
 
-  v109 = [v123 objectForKeyedSubscript:@"messageBubbleInviteDeclinedIcon"];
+  v109 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteDeclinedIcon"];
   messageBubbleInviteDeclinedIcon = self->_messageBubbleInviteDeclinedIcon;
   self->_messageBubbleInviteDeclinedIcon = v109;
 
-  v111 = [v123 objectForKeyedSubscript:@"messageBubbleInviteDeclineAlertSheetTitle"];
+  v111 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteDeclineAlertSheetTitle"];
   v112 = v111;
   if (v111)
   {
@@ -330,7 +330,7 @@
     self->_messageBubbleInviteDeclineAlertSheetTitle = v115;
   }
 
-  v117 = [v123 objectForKeyedSubscript:@"messageBubbleInviteDeclineAlertSheetMessage"];
+  v117 = [dictionaryCopy objectForKeyedSubscript:@"messageBubbleInviteDeclineAlertSheetMessage"];
   v118 = v117;
   if (v117)
   {
@@ -350,8 +350,8 @@
 
 - (id)privacySafeInvitees
 {
-  v2 = [(FAInviteContext *)self invitees];
-  v3 = [FAHandlePrivacyResolver privacySafeInvitees:v2];
+  invitees = [(FAInviteContext *)self invitees];
+  v3 = [FAHandlePrivacyResolver privacySafeInvitees:invitees];
 
   return v3;
 }
@@ -360,22 +360,22 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FAInviteContext *)self title];
-  v6 = [(FAInviteContext *)self subtitle];
-  v7 = [(FAInviteContext *)self action];
-  v8 = [(FAInviteContext *)self inviteURL];
-  v9 = [v8 absoluteString];
-  v10 = [(FAInviteContext *)self invitees];
-  v11 = [v3 stringWithFormat:@"%@ - title: %@ subtitle: %@ action: %@ inviteURL: %@ invitees: %@ canEditRecipients: %d", v4, v5, v6, v7, v9, v10, -[FAInviteContext canEditRecipients](self, "canEditRecipients")];
+  title = [(FAInviteContext *)self title];
+  subtitle = [(FAInviteContext *)self subtitle];
+  action = [(FAInviteContext *)self action];
+  inviteURL = [(FAInviteContext *)self inviteURL];
+  absoluteString = [inviteURL absoluteString];
+  invitees = [(FAInviteContext *)self invitees];
+  v11 = [v3 stringWithFormat:@"%@ - title: %@ subtitle: %@ action: %@ inviteURL: %@ invitees: %@ canEditRecipients: %d", v4, title, subtitle, action, absoluteString, invitees, -[FAInviteContext canEditRecipients](self, "canEditRecipients")];
 
   return v11;
 }
 
-- (id)buildInviteMessageBubbleURL:(id)a3
+- (id)buildInviteMessageBubbleURL:(id)l
 {
   v74 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AF20];
-  v5 = a3;
+  lCopy = l;
   v71 = objc_alloc_init(v4);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"messageTitle" value:self->_messageBubbleTitle];
@@ -400,8 +400,8 @@
   [v6 addObject:v13];
 
   v14 = objc_alloc(MEMORY[0x1E696AF60]);
-  v15 = [(NSURL *)self->_inviteURL absoluteString];
-  v16 = [v14 initWithName:@"inviteUrl" value:v15];
+  absoluteString = [(NSURL *)self->_inviteURL absoluteString];
+  v16 = [v14 initWithName:@"inviteUrl" value:absoluteString];
   [v6 addObject:v16];
 
   v17 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"subscriptionList" value:self->_messageBubbleSubscriptionsList];
@@ -416,14 +416,14 @@
   v20 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"inviteLoadingLabel" value:self->_messageBubbleInviteLoadingLabel];
   [v6 addObject:v20];
 
-  v21 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"receiverHandle" value:v5];
+  v21 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"receiverHandle" value:lCopy];
   [v6 addObject:v21];
 
-  v22 = [MEMORY[0x1E6959A48] defaultStore];
-  v23 = [v22 aa_primaryAppleAccount];
-  v24 = [v23 username];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  username = [aa_primaryAppleAccount username];
 
-  v25 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"senderHandle" value:v24];
+  v25 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"senderHandle" value:username];
   [v6 addObject:v25];
 
   v26 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"pendingTitle" value:self->_messageBubbleInvitePendingTitle];
@@ -451,8 +451,8 @@
   [v6 addObject:v33];
 
   v34 = objc_alloc(MEMORY[0x1E696AF60]);
-  v35 = [(NSURL *)self->_messageBubbleAcceptInviteURL absoluteString];
-  v36 = [v34 initWithName:@"acceptInviteUrl" value:v35];
+  absoluteString2 = [(NSURL *)self->_messageBubbleAcceptInviteURL absoluteString];
+  v36 = [v34 initWithName:@"acceptInviteUrl" value:absoluteString2];
   [v6 addObject:v36];
 
   v37 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"expiredTitleSender" value:self->_messageBubbleInviteExpiredTitleSender];
@@ -486,8 +486,8 @@
   [v6 addObject:v46];
 
   v47 = objc_alloc(MEMORY[0x1E696AF60]);
-  v48 = [(NSURL *)self->_messageBubbleDeclineInviteURL absoluteString];
-  v49 = [v47 initWithName:@"declineInviteUrl" value:v48];
+  absoluteString3 = [(NSURL *)self->_messageBubbleDeclineInviteURL absoluteString];
+  v49 = [v47 initWithName:@"declineInviteUrl" value:absoluteString3];
   [v6 addObject:v49];
 
   v50 = objc_alloc_init(MEMORY[0x1E696AB78]);

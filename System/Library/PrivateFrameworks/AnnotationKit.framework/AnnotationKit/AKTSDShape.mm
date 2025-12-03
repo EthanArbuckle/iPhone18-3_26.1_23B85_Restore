@@ -7,9 +7,9 @@
 - (id)clippedPathForLineEnds;
 - (id)strokeHeadLineEnd;
 - (id)strokeTailLineEnd;
-- (void)drawInContext:(CGContext *)a3;
-- (void)p_computeAngle:(double *)a3 point:(CGPoint *)a4 cutSegment:(int64_t *)a5 cutT:(double *)a6 forLineEndAtHead:(BOOL)a7;
-- (void)p_drawLineEndForHead:(BOOL)a3 withDelta:(CGPoint)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6;
+- (void)drawInContext:(CGContext *)context;
+- (void)p_computeAngle:(double *)angle point:(CGPoint *)point cutSegment:(int64_t *)segment cutT:(double *)t forLineEndAtHead:(BOOL)head;
+- (void)p_drawLineEndForHead:(BOOL)head withDelta:(CGPoint)delta inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
 - (void)p_invalidateClippedPath;
 - (void)p_validateHeadAndTail;
 - (void)p_validateHeadLineEnd;
@@ -31,26 +31,26 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v5 = [(AKTSDShape *)self stroke];
-  v6 = [(AKTSDShape *)self clippedPathForLineEnds];
-  [v5 brushPath:v6 inContext:a3];
+  stroke = [(AKTSDShape *)self stroke];
+  clippedPathForLineEnds = [(AKTSDShape *)self clippedPathForLineEnds];
+  [stroke brushPath:clippedPathForLineEnds inContext:context];
 
   v7 = *MEMORY[0x277CBF348];
   v8 = *(MEMORY[0x277CBF348] + 8);
-  [(AKTSDShape *)self p_drawLineEndForHead:1 withDelta:a3 inContext:0 useFastDrawing:*MEMORY[0x277CBF348], v8];
+  [(AKTSDShape *)self p_drawLineEndForHead:1 withDelta:context inContext:0 useFastDrawing:*MEMORY[0x277CBF348], v8];
 
-  [(AKTSDShape *)self p_drawLineEndForHead:0 withDelta:a3 inContext:0 useFastDrawing:v7, v8];
+  [(AKTSDShape *)self p_drawLineEndForHead:0 withDelta:context inContext:0 useFastDrawing:v7, v8];
 }
 
-- (void)p_drawLineEndForHead:(BOOL)a3 withDelta:(CGPoint)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6
+- (void)p_drawLineEndForHead:(BOOL)head withDelta:(CGPoint)delta inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  v6 = a6;
-  x = a4.x;
-  if (a3)
+  drawingCopy = drawing;
+  x = delta.x;
+  if (head)
   {
-    v10 = [(AKTSDShape *)self strokeHeadLineEnd:a4.x];
+    v10 = [(AKTSDShape *)self strokeHeadLineEnd:delta.x];
     if (!v10)
     {
       return;
@@ -65,7 +65,7 @@
 
   else
   {
-    v16 = [(AKTSDShape *)self strokeTailLineEnd:a4.x];
+    v16 = [(AKTSDShape *)self strokeTailLineEnd:delta.x];
     if (!v16)
     {
       return;
@@ -81,19 +81,19 @@
   v19 = v15;
   v20 = sub_23F4659C4(v12, v14, x);
   v22 = v21;
-  v23 = [(AKTSDShape *)self stroke];
+  stroke = [(AKTSDShape *)self stroke];
   [(AKTSDShape *)self lineEndScale];
-  [v23 paintLineEnd:v25 atPoint:a5 atAngle:v6 withScale:v20 inContext:v22 useFastDrawing:{v19, v24}];
+  [stroke paintLineEnd:v25 atPoint:context atAngle:drawingCopy withScale:v20 inContext:v22 useFastDrawing:{v19, v24}];
 }
 
 - (id)strokeHeadLineEnd
 {
-  v3 = [(AKTSDShape *)self headLineEnd];
-  if (v3)
+  headLineEnd = [(AKTSDShape *)self headLineEnd];
+  if (headLineEnd)
   {
-    v4 = [(AKTSDShape *)self stroke];
-    v5 = [(AKTSDShape *)self headLineEnd];
-    v6 = [v4 strokeLineEnd:v5];
+    stroke = [(AKTSDShape *)self stroke];
+    headLineEnd2 = [(AKTSDShape *)self headLineEnd];
+    v6 = [stroke strokeLineEnd:headLineEnd2];
   }
 
   else
@@ -106,12 +106,12 @@
 
 - (id)strokeTailLineEnd
 {
-  v3 = [(AKTSDShape *)self tailLineEnd];
-  if (v3)
+  tailLineEnd = [(AKTSDShape *)self tailLineEnd];
+  if (tailLineEnd)
   {
-    v4 = [(AKTSDShape *)self stroke];
-    v5 = [(AKTSDShape *)self tailLineEnd];
-    v6 = [v4 strokeLineEnd:v5];
+    stroke = [(AKTSDShape *)self stroke];
+    tailLineEnd2 = [(AKTSDShape *)self tailLineEnd];
+    v6 = [stroke strokeLineEnd:tailLineEnd2];
   }
 
   else
@@ -124,8 +124,8 @@
 
 - (double)lineEndScale
 {
-  v2 = [(AKTSDShape *)self stroke];
-  [v2 width];
+  stroke = [(AKTSDShape *)self stroke];
+  [stroke width];
   v4 = v3;
 
   result = (v4 + -1.0) * 0.6 + 1.0;
@@ -161,9 +161,9 @@
 {
   if ((*&self->mShapeInvalidFlags & 0x200) != 0)
   {
-    v3 = [(AKTSDShape *)self _newClippedPath];
+    _newClippedPath = [(AKTSDShape *)self _newClippedPath];
     mCachedClippedPath = self->mCachedClippedPath;
-    self->mCachedClippedPath = v3;
+    self->mCachedClippedPath = _newClippedPath;
 
     *&self->mShapeInvalidFlags &= ~0x200u;
   }
@@ -186,8 +186,8 @@
   if ((mShapeInvalidFlags & 0x40) != 0)
   {
     *&self->mShapeInvalidFlags = mShapeInvalidFlags & 0xFFBF;
-    v5 = [(AKTSDShape *)self path];
-    [v5 getStartPoint:&self->mTailPoint andEndPoint:&self->mHeadPoint];
+    path = [(AKTSDShape *)self path];
+    [path getStartPoint:&self->mTailPoint andEndPoint:&self->mHeadPoint];
   }
 }
 
@@ -212,25 +212,25 @@
   }
 }
 
-- (void)p_computeAngle:(double *)a3 point:(CGPoint *)a4 cutSegment:(int64_t *)a5 cutT:(double *)a6 forLineEndAtHead:(BOOL)a7
+- (void)p_computeAngle:(double *)angle point:(CGPoint *)point cutSegment:(int64_t *)segment cutT:(double *)t forLineEndAtHead:(BOOL)head
 {
-  v7 = a7;
+  headCopy = head;
   [(AKTSDShape *)self p_validateHeadAndTail];
   v13 = 40;
-  if (v7)
+  if (headCopy)
   {
     v13 = 24;
   }
 
   v14 = 32;
-  if (v7)
+  if (headCopy)
   {
     v14 = 16;
   }
 
   v15 = *(&self->super.isa + v14);
   v16 = *(&self->super.isa + v13);
-  if (v7)
+  if (headCopy)
   {
     [(AKTSDShape *)self strokeHeadLineEnd];
   }
@@ -255,13 +255,13 @@
     v22 = v21 * v20;
     v23 = [AKTSDBezierPath bezierPathWithOvalInRect:v15 - v22, v16 - v22, v22 + v22, v22 + v22];
     v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v25 = [(AKTSDShape *)self path];
-    [v25 addIntersectionsWithPath:v23 to:v24 allIntersections:0 reversed:v7];
+    path = [(AKTSDShape *)self path];
+    [path addIntersectionsWithPath:v23 to:v24 allIntersections:0 reversed:headCopy];
 
     if ([v24 count])
     {
       [v24 sortUsingSelector:sel_compareSegmentAndT_];
-      if (v7)
+      if (headCopy)
       {
         [v24 lastObject];
       }
@@ -276,7 +276,7 @@
       y = v30;
     }
 
-    else if (v7)
+    else if (headCopy)
     {
       v26 = 0;
       x = self->mTailPoint.x;
@@ -291,7 +291,7 @@
     }
 
     v31 = sub_23F4659D0(v15, v16, x);
-    *a3 = sub_23F465A48(v31, v32) + -1.57079633;
+    *angle = sub_23F465A48(v31, v32) + -1.57079633;
     v33 = sub_23F4659D0(x, y, v15);
     v35 = *MEMORY[0x277CBF348];
     if (v33 != *MEMORY[0x277CBF348] || v34 != *(MEMORY[0x277CBF348] + 8))
@@ -300,30 +300,30 @@
       v35 = sub_23F4659DC(v36, v37, v22);
     }
 
-    a4->x = sub_23F4659C4(v15, v16, v35);
-    a4->y = v38;
+    point->x = sub_23F4659C4(v15, v16, v35);
+    point->y = v38;
     if (v26)
     {
-      *a5 = [v26 segment];
+      *segment = [v26 segment];
       [v26 t];
     }
 
     else
     {
-      *a5 = 0;
+      *segment = 0;
       v39 = 0;
     }
 
-    *a6 = v39;
+    *t = v39;
   }
 
   else
   {
-    *a3 = 1.57079633;
-    a4->x = v15;
-    a4->y = v16;
-    *a5 = -1;
-    *a6 = 0.0;
+    *angle = 1.57079633;
+    point->x = v15;
+    point->y = v16;
+    *segment = -1;
+    *t = 0.0;
   }
 
   MEMORY[0x2821F96F8]();
@@ -335,8 +335,8 @@
   [(AKTSDShape *)self p_validateTailLineEnd];
   if ((self->mHeadCutSegment & 0x8000000000000000) == 0 || (self->mTailCutSegment & 0x8000000000000000) == 0)
   {
-    v3 = [(AKTSDShape *)self stroke];
-    [v3 width];
+    stroke = [(AKTSDShape *)self stroke];
+    [stroke width];
     v5 = v4;
 
     v6 = objc_alloc_init(AKTSDBezierPath);
@@ -371,8 +371,8 @@
         [(AKTSDBezierPath *)v6 lineToPoint:self->mTailLineEndPoint.x, self->mTailLineEndPoint.y];
       }
 
-      v24 = [(AKTSDShape *)self path];
-      [(AKTSDBezierPath *)v6 appendBezierPath:v24 fromSegment:self->mTailCutSegment t:self->mHeadCutSegment toSegment:1 t:self->mTailCutT withoutMove:self->mHeadCutT];
+      path = [(AKTSDShape *)self path];
+      [(AKTSDBezierPath *)v6 appendBezierPath:path fromSegment:self->mTailCutSegment t:self->mHeadCutSegment toSegment:1 t:self->mTailCutT withoutMove:self->mHeadCutT];
 
       if (self->mHeadCutSegment < 0)
       {

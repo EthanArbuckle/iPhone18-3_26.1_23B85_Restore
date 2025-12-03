@@ -1,23 +1,23 @@
 @interface CreditInstallmentPlanPayment
-+ (id)_paymentsWithQuery:(id)a3;
++ (id)_paymentsWithQuery:(id)query;
 + (id)_propertySetters;
-+ (id)_propertyValuesForInstallmentPlanPayment:(id)a3;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)insertOrUpdatePayments:(id)a3 forInstallmentPlanPID:(id)a4 inDatabase:(id)a5;
-+ (id)paymentWithIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)paymentsForInstallmentPlanPID:(id)a3 inDatabase:(id)a4;
-+ (void)deletePaymentsForInstallmentPlanPID:(id)a3 inDatabase:(id)a4;
++ (id)_propertyValuesForInstallmentPlanPayment:(id)payment;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)insertOrUpdatePayments:(id)payments forInstallmentPlanPID:(id)d inDatabase:(id)database;
++ (id)paymentWithIdentifier:(id)identifier inDatabase:(id)database;
++ (id)paymentsForInstallmentPlanPID:(id)d inDatabase:(id)database;
++ (void)deletePaymentsForInstallmentPlanPID:(id)d inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
-- (CreditInstallmentPlanPayment)initWithInstallmentPlanPayment:(id)a3 forInstallmentPlanPID:(id)a4 inDatabase:(id)a5;
+- (CreditInstallmentPlanPayment)initWithInstallmentPlanPayment:(id)payment forInstallmentPlanPID:(id)d inDatabase:(id)database;
 - (id)payment;
-- (void)updateWithPayment:(id)a3;
+- (void)updateWithPayment:(id)payment;
 @end
 
 @implementation CreditInstallmentPlanPayment
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"a";
   }
@@ -28,56 +28,56 @@
   }
 }
 
-- (CreditInstallmentPlanPayment)initWithInstallmentPlanPayment:(id)a3 forInstallmentPlanPID:(id)a4 inDatabase:(id)a5
+- (CreditInstallmentPlanPayment)initWithInstallmentPlanPayment:(id)payment forInstallmentPlanPID:(id)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() _propertyValuesForInstallmentPlanPayment:v10];
-  v12 = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:v8];
-  [(SQLiteEntity *)v12 setValue:v9 forProperty:@"a"];
+  databaseCopy = database;
+  dCopy = d;
+  paymentCopy = payment;
+  v11 = [objc_opt_class() _propertyValuesForInstallmentPlanPayment:paymentCopy];
+  v12 = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:databaseCopy];
+  [(SQLiteEntity *)v12 setValue:dCopy forProperty:@"a"];
 
   v13 = [NSNumber numberWithLongLong:[(SQLiteEntity *)v12 persistentID]];
-  v14 = [v10 lineItems];
+  lineItems = [paymentCopy lineItems];
 
-  v15 = [CreditInstallmentPlanLineItem insertOrUpdateLineItems:v14 forInstallmentPlanPaymentPID:v13 inDatabase:v8];
+  v15 = [CreditInstallmentPlanLineItem insertOrUpdateLineItems:lineItems forInstallmentPlanPaymentPID:v13 inDatabase:databaseCopy];
   return v12;
 }
 
-+ (id)paymentsForInstallmentPlanPID:(id)a3 inDatabase:(id)a4
++ (id)paymentsForInstallmentPlanPID:(id)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForInstallmentPlanPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForInstallmentPlanPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _paymentsWithQuery:v8];
+  v9 = [self _paymentsWithQuery:v8];
 
   return v9;
 }
 
-+ (id)paymentWithIdentifier:(id)a3 inDatabase:(id)a4
++ (id)paymentWithIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForIdentifier:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForIdentifier:identifier];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 payment];
+  payment = [v8 payment];
 
-  return v9;
+  return payment;
 }
 
-+ (id)insertOrUpdatePayments:(id)a3 forInstallmentPlanPID:(id)a4 inDatabase:(id)a5
++ (id)insertOrUpdatePayments:(id)payments forInstallmentPlanPID:(id)d inDatabase:(id)database
 {
-  v8 = a3;
-  v27 = a4;
-  v9 = a5;
+  paymentsCopy = payments;
+  dCopy = d;
+  databaseCopy = database;
   v29 = objc_alloc_init(NSMutableSet);
   v10 = objc_alloc_init(NSMutableSet);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v8;
+  obj = paymentsCopy;
   v11 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v11)
   {
@@ -93,9 +93,9 @@
         }
 
         v15 = *(*(&v30 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        v17 = [a1 _predicateForIdentifier:v16];
-        v18 = [a1 anyInDatabase:v9 predicate:v17];
+        identifier = [v15 identifier];
+        v17 = [self _predicateForIdentifier:identifier];
+        v18 = [self anyInDatabase:databaseCopy predicate:v17];
         if (v18)
         {
           v19 = v18;
@@ -104,10 +104,10 @@
 
         else
         {
-          v19 = [[a1 alloc] initWithInstallmentPlanPayment:v15 forInstallmentPlanPID:v27 inDatabase:v9];
+          v19 = [[self alloc] initWithInstallmentPlanPayment:v15 forInstallmentPlanPID:dCopy inDatabase:databaseCopy];
         }
 
-        [v29 addObject:v16];
+        [v29 addObject:identifier];
         [v10 addObject:v19];
       }
 
@@ -119,12 +119,12 @@
 
   v20 = [SQLiteContainsPredicate doesNotContainPredicateWithProperty:@"b" values:v29];
   v34[0] = v20;
-  v21 = [a1 _predicateForInstallmentPlanPID:v27];
+  v21 = [self _predicateForInstallmentPlanPID:dCopy];
   v34[1] = v21;
   v22 = [NSArray arrayWithObjects:v34 count:2];
   v23 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v22];
 
-  v24 = [a1 queryWithDatabase:v9 predicate:v23];
+  v24 = [self queryWithDatabase:databaseCopy predicate:v23];
   [v24 deleteAllEntities];
   if ([v10 count])
   {
@@ -139,45 +139,45 @@
   return v25;
 }
 
-- (void)updateWithPayment:(id)a3
+- (void)updateWithPayment:(id)payment
 {
-  v4 = a3;
-  v9 = [objc_opt_class() _propertyValuesForInstallmentPlanPayment:v4];
+  paymentCopy = payment;
+  v9 = [objc_opt_class() _propertyValuesForInstallmentPlanPayment:paymentCopy];
   [(SQLiteEntity *)self setValuesWithDictionary:v9];
   v5 = [NSNumber numberWithLongLong:[(SQLiteEntity *)self persistentID]];
-  v6 = [(SQLiteEntity *)self database];
-  v7 = [v4 lineItems];
+  database = [(SQLiteEntity *)self database];
+  lineItems = [paymentCopy lineItems];
 
-  v8 = [CreditInstallmentPlanLineItem insertOrUpdateLineItems:v7 forInstallmentPlanPaymentPID:v5 inDatabase:v6];
+  v8 = [CreditInstallmentPlanLineItem insertOrUpdateLineItems:lineItems forInstallmentPlanPaymentPID:v5 inDatabase:database];
 }
 
 - (id)payment
 {
-  v3 = [objc_opt_class() _propertySetters];
+  _propertySetters = [objc_opt_class() _propertySetters];
   v4 = objc_alloc_init(PKCreditInstallmentPlanPayment);
-  v5 = [v3 allKeys];
+  allKeys = [_propertySetters allKeys];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000195D8;
   v16[3] = &unk_10083BEE0;
   v16[4] = self;
-  v6 = v3;
+  v6 = _propertySetters;
   v17 = v6;
   v7 = v4;
   v18 = v7;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v16];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v16];
 
   v8 = [NSNumber numberWithLongLong:[(SQLiteEntity *)self persistentID]];
-  v9 = [(SQLiteEntity *)self database];
-  v10 = [CreditInstallmentPlanLineItem lineItemsForInstallmentPlanPaymentPID:v8 inDatabase:v9];
+  database = [(SQLiteEntity *)self database];
+  v10 = [CreditInstallmentPlanLineItem lineItemsForInstallmentPlanPaymentPID:v8 inDatabase:database];
   [v7 setLineItems:v10];
   v11 = [(SQLiteEntity *)self valueForProperty:@"c"];
   if (v11)
   {
-    v12 = [CreditAccountStatement creditAccountStatementWithIdentifier:v11 inDatabase:v9];
-    v13 = [v12 creditAccountStatement];
+    v12 = [CreditAccountStatement creditAccountStatementWithIdentifier:v11 inDatabase:database];
+    creditAccountStatement = [v12 creditAccountStatement];
 
-    [v7 setStatement:v13];
+    [v7 setStatement:creditAccountStatement];
   }
 
   v14 = v7;
@@ -185,46 +185,46 @@
   return v7;
 }
 
-+ (void)deletePaymentsForInstallmentPlanPID:(id)a3 inDatabase:(id)a4
++ (void)deletePaymentsForInstallmentPlanPID:(id)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForInstallmentPlanPID:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForInstallmentPlanPID:d];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
 - (BOOL)deleteFromDatabase
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [NSNumber numberWithLongLong:[(SQLiteEntity *)self persistentID]];
-  v4 = [(SQLiteEntity *)v2 database];
-  [CreditInstallmentPlanLineItem deleteLineItemsForInstallmentPlanPaymentPID:v3 inDatabase:v4];
-  v6.receiver = v2;
+  database = [(SQLiteEntity *)selfCopy database];
+  [CreditInstallmentPlanLineItem deleteLineItemsForInstallmentPlanPaymentPID:v3 inDatabase:database];
+  v6.receiver = selfCopy;
   v6.super_class = CreditInstallmentPlanPayment;
-  LOBYTE(v2) = [(SQLiteEntity *)&v6 deleteFromDatabase];
+  LOBYTE(selfCopy) = [(SQLiteEntity *)&v6 deleteFromDatabase];
 
-  return v2;
+  return selfCopy;
 }
 
-+ (id)_paymentsWithQuery:(id)a3
++ (id)_paymentsWithQuery:(id)query
 {
-  v4 = a3;
-  v5 = [a1 _propertySetters];
+  queryCopy = query;
+  _propertySetters = [self _propertySetters];
   v6 = objc_alloc_init(NSMutableSet);
-  v7 = [v5 allKeys];
+  allKeys = [_propertySetters allKeys];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1000198E4;
   v16 = &unk_10083BF08;
-  v20 = a1;
-  v17 = v5;
-  v18 = v4;
+  selfCopy = self;
+  v17 = _propertySetters;
+  v18 = queryCopy;
   v8 = v6;
   v19 = v8;
-  v9 = v4;
-  v10 = v5;
-  [v9 enumeratePersistentIDsAndProperties:v7 usingBlock:&v13];
+  v9 = queryCopy;
+  v10 = _propertySetters;
+  [v9 enumeratePersistentIDsAndProperties:allKeys usingBlock:&v13];
 
   if ([v8 count])
   {
@@ -239,49 +239,49 @@
   return v11;
 }
 
-+ (id)_propertyValuesForInstallmentPlanPayment:(id)a3
++ (id)_propertyValuesForInstallmentPlanPayment:(id)payment
 {
-  v3 = a3;
+  paymentCopy = payment;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 identifier];
-  [v4 setObjectOrNull:v5 forKey:@"b"];
+  identifier = [paymentCopy identifier];
+  [v4 setObjectOrNull:identifier forKey:@"b"];
 
-  v6 = [v3 statementIdentifier];
-  [v4 setObjectOrNull:v6 forKey:@"c"];
+  statementIdentifier = [paymentCopy statementIdentifier];
+  [v4 setObjectOrNull:statementIdentifier forKey:@"c"];
 
-  v7 = [v3 currencyCode];
-  [v4 setObjectOrNull:v7 forKey:@"d"];
+  currencyCode = [paymentCopy currencyCode];
+  [v4 setObjectOrNull:currencyCode forKey:@"d"];
 
-  v8 = [v3 amountDue];
+  amountDue = [paymentCopy amountDue];
   v9 = PKCurrencyDecimalToStorageNumber();
   [v4 setObjectOrNull:v9 forKey:@"e"];
 
-  v10 = [v3 amountPaid];
+  amountPaid = [paymentCopy amountPaid];
   v11 = PKCurrencyDecimalToStorageNumber();
   [v4 setObjectOrNull:v11 forKey:@"f"];
 
-  v12 = [v3 dueDate];
+  dueDate = [paymentCopy dueDate];
   v13 = _SQLValueForDate();
   [v4 setObjectOrNull:v13 forKey:@"g"];
 
-  v14 = [v3 statementDate];
+  statementDate = [paymentCopy statementDate];
   v15 = _SQLValueForDate();
   [v4 setObjectOrNull:v15 forKey:@"k"];
 
-  v16 = [v3 originalAmountDue];
+  originalAmountDue = [paymentCopy originalAmountDue];
   v17 = PKCurrencyDecimalToStorageNumber();
   [v4 setObjectOrNull:v17 forKey:@"h"];
 
-  v18 = [v3 paymentNumber];
-  if (v18)
+  paymentNumber = [paymentCopy paymentNumber];
+  if (paymentNumber)
   {
-    [v4 setInteger:v18 forKey:@"i"];
+    [v4 setInteger:paymentNumber forKey:@"i"];
   }
 
-  v19 = [v3 paymentCount];
-  if (v19)
+  paymentCount = [paymentCopy paymentCount];
+  if (paymentCount)
   {
-    [v4 setInteger:v19 forKey:@"j"];
+    [v4 setInteger:paymentCount forKey:@"j"];
   }
 
   v20 = [v4 copy];

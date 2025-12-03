@@ -1,5 +1,5 @@
 @interface HMDBackingStoreLogChangesExistFetchOperation
-- (HMDBackingStoreLogChangesExistFetchOperation)initWithNeedsPushTo:(unint64_t)a3 result:(id)a4;
+- (HMDBackingStoreLogChangesExistFetchOperation)initWithNeedsPushTo:(unint64_t)to result:(id)result;
 - (id)mainReturningError;
 @end
 
@@ -7,8 +7,8 @@
 
 - (id)mainReturningError
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -19,37 +19,37 @@
   v21[1] = v21;
   v21[2] = 0x2020000000;
   v21[3] = 0;
-  v5 = [(HMDBackingStoreOperation *)self store];
-  v6 = [v5 local];
-  v7 = [(HMDBackingStoreLogChangesExistFetchOperation *)self maskValue];
-  v8 = [(HMDBackingStoreLogChangesExistFetchOperation *)self compareValue];
+  store = [(HMDBackingStoreOperation *)self store];
+  local = [store local];
+  maskValue = [(HMDBackingStoreLogChangesExistFetchOperation *)self maskValue];
+  compareValue = [(HMDBackingStoreLogChangesExistFetchOperation *)self compareValue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__HMDBackingStoreLogChangesExistFetchOperation_mainReturningError__block_invoke;
   v15[3] = &unk_27867F380;
   v19 = &v22;
-  v9 = v3;
+  v9 = dictionary;
   v20 = v21;
   v16 = v9;
-  v17 = self;
-  v10 = v4;
+  selfCopy = self;
+  v10 = array;
   v18 = v10;
-  [v6 _selectLogWithMask:v7 compare:v8 callback:v15];
+  [local _selectLogWithMask:maskValue compare:compareValue callback:v15];
 
-  v11 = [(HMDBackingStoreLogChangesExistFetchOperation *)self fetchBlock];
+  fetchBlock = [(HMDBackingStoreLogChangesExistFetchOperation *)self fetchBlock];
 
-  if (v11)
+  if (fetchBlock)
   {
     if (v23[5])
     {
-      v12 = [(HMDBackingStoreLogChangesExistFetchOperation *)self fetchBlock];
-      v12[2](v12, 0, 0, v23[5]);
+      fetchBlock2 = [(HMDBackingStoreLogChangesExistFetchOperation *)self fetchBlock];
+      fetchBlock2[2](fetchBlock2, 0, 0, v23[5]);
     }
 
     else
     {
-      v12 = [(HMDBackingStoreLogChangesExistFetchOperation *)self fetchBlock];
-      (v12)[2](v12, v9, v10, 0);
+      fetchBlock2 = [(HMDBackingStoreLogChangesExistFetchOperation *)self fetchBlock];
+      (fetchBlock2)[2](fetchBlock2, v9, v10, 0);
     }
   }
 
@@ -112,20 +112,20 @@ LABEL_4:
   return v11 != 0;
 }
 
-- (HMDBackingStoreLogChangesExistFetchOperation)initWithNeedsPushTo:(unint64_t)a3 result:(id)a4
+- (HMDBackingStoreLogChangesExistFetchOperation)initWithNeedsPushTo:(unint64_t)to result:(id)result
 {
-  v6 = a4;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = HMDBackingStoreLogChangesExistFetchOperation;
   v7 = [(HMDBackingStoreOperation *)&v12 init];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(resultCopy);
     fetchBlock = v7->_fetchBlock;
     v7->_fetchBlock = v8;
 
-    v7->_maskValue = a3 | (a3 << 16);
-    v7->_compareValue = a3;
+    v7->_maskValue = to | (to << 16);
+    v7->_compareValue = to;
     v10 = v7;
   }
 

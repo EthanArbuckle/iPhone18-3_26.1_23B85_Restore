@@ -1,25 +1,25 @@
 @interface SISensitiveConditionsSet
-+ (id)fromDeviceSensitivityState:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (SISensitiveConditionsSet)initWithBitMask:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)differenceSetFrom:(id)a3;
-- (id)intersectionSetWith:(id)a3;
-- (id)unionSetWith:(id)a3;
++ (id)fromDeviceSensitivityState:(int)state;
+- (BOOL)isEqual:(id)equal;
+- (SISensitiveConditionsSet)initWithBitMask:(unint64_t)mask;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)differenceSetFrom:(id)from;
+- (id)intersectionSetWith:(id)with;
+- (id)unionSetWith:(id)with;
 @end
 
 @implementation SISensitiveConditionsSet
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SISensitiveConditionsSet *)self isEqualToConditionsSet:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SISensitiveConditionsSet *)self isEqualToConditionsSet:equalCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SISensitiveConditionsSet alloc];
   bitmask = self->_bitmask;
@@ -27,45 +27,45 @@
   return [(SISensitiveConditionsSet *)v4 initWithBitMask:bitmask];
 }
 
-- (id)intersectionSetWith:(id)a3
+- (id)intersectionSetWith:(id)with
 {
-  v3 = [[SISensitiveConditionsSet alloc] initWithBitMask:*(a3 + 1) & self->_bitmask];
+  v3 = [[SISensitiveConditionsSet alloc] initWithBitMask:*(with + 1) & self->_bitmask];
 
   return v3;
 }
 
-- (id)differenceSetFrom:(id)a3
+- (id)differenceSetFrom:(id)from
 {
-  v3 = [[SISensitiveConditionsSet alloc] initWithBitMask:self->_bitmask & ~*(a3 + 1)];
+  v3 = [[SISensitiveConditionsSet alloc] initWithBitMask:self->_bitmask & ~*(from + 1)];
 
   return v3;
 }
 
-- (id)unionSetWith:(id)a3
+- (id)unionSetWith:(id)with
 {
-  v3 = [[SISensitiveConditionsSet alloc] initWithBitMask:*(a3 + 1) | self->_bitmask];
+  v3 = [[SISensitiveConditionsSet alloc] initWithBitMask:*(with + 1) | self->_bitmask];
 
   return v3;
 }
 
-- (SISensitiveConditionsSet)initWithBitMask:(unint64_t)a3
+- (SISensitiveConditionsSet)initWithBitMask:(unint64_t)mask
 {
   v5.receiver = self;
   v5.super_class = SISensitiveConditionsSet;
   result = [(SISensitiveConditionsSet *)&v5 init];
   if (result)
   {
-    result->_bitmask = a3;
+    result->_bitmask = mask;
   }
 
   return result;
 }
 
-+ (id)fromDeviceSensitivityState:(int)a3
++ (id)fromDeviceSensitivityState:(int)state
 {
-  v3 = [[SISensitiveConditionsSet alloc] initWithBitMask:1 << a3];
+  state = [[SISensitiveConditionsSet alloc] initWithBitMask:1 << state];
 
-  return v3;
+  return state;
 }
 
 @end

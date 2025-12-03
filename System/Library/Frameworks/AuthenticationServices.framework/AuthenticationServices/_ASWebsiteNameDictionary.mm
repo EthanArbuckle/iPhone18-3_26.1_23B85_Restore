@@ -1,31 +1,31 @@
 @interface _ASWebsiteNameDictionary
-+ (id)sanitizedDataFromDeserializedData:(id)a3;
++ (id)sanitizedDataFromDeserializedData:(id)data;
 - (NSString)description;
-- (_ASWebsiteNameDictionary)initWithSnapshotData:(id)a3 error:(id *)a4;
-- (id)websiteNameForDomain:(id)a3;
+- (_ASWebsiteNameDictionary)initWithSnapshotData:(id)data error:(id *)error;
+- (id)websiteNameForDomain:(id)domain;
 @end
 
 @implementation _ASWebsiteNameDictionary
 
-- (id)websiteNameForDomain:(id)a3
+- (id)websiteNameForDomain:(id)domain
 {
-  v3 = [(NSDictionary *)self->_websiteNameDictionary objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_websiteNameDictionary objectForKeyedSubscript:domain];
 
   return v3;
 }
 
-- (_ASWebsiteNameDictionary)initWithSnapshotData:(id)a3 error:(id *)a4
+- (_ASWebsiteNameDictionary)initWithSnapshotData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = _ASWebsiteNameDictionary;
   v6 = [(_ASWebsiteNameDictionary *)&v14 init];
   v7 = v6;
   v8 = 0;
-  if (v5 && v6)
+  if (dataCopy && v6)
   {
     v9 = objc_opt_class();
-    v10 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v5 options:24 error:0];
+    v10 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:24 error:0];
     v11 = [v9 sanitizedDataFromDeserializedData:v10];
     websiteNameDictionary = v7->_websiteNameDictionary;
     v7->_websiteNameDictionary = v11;
@@ -44,9 +44,9 @@
   return v8;
 }
 
-+ (id)sanitizedDataFromDeserializedData:(id)a3
++ (id)sanitizedDataFromDeserializedData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -54,7 +54,7 @@
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 1;
-    v4 = v3;
+    v4 = dataCopy;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __62___ASWebsiteNameDictionary_sanitizedDataFromDeserializedData___block_invoke;

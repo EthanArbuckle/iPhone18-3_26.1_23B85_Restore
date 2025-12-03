@@ -1,8 +1,8 @@
 @interface QSSTextToSpeechRequestDebug
 - (BOOL)disable_cache;
 - (BOOL)force_use_tts_service;
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestDebug>)addObjectToBuffer:(void *)a3;
-- (QSSTextToSpeechRequestDebug)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestDebug *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestDebug>)addObjectToBuffer:(void *)buffer;
+- (QSSTextToSpeechRequestDebug)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestDebug *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -37,19 +37,19 @@ flatbuffers::DetachedBuffer *__43__QSSTextToSpeechRequestDebug_flatbuffData__blo
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechRequestDebug>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechRequestDebug>)addObjectToBuffer:(void *)buffer
 {
-  v4 = self;
-  v5 = [(QSSTextToSpeechRequestDebug *)self force_use_tts_service];
-  LODWORD(v4) = [(QSSTextToSpeechRequestDebug *)v4 disable_cache];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v6 = *(a3 + 10);
-  v7 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 6, v4);
+  selfCopy = self;
+  force_use_tts_service = [(QSSTextToSpeechRequestDebug *)self force_use_tts_service];
+  LODWORD(selfCopy) = [(QSSTextToSpeechRequestDebug *)selfCopy disable_cache];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v6 = *(buffer + 10);
+  v7 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, force_use_tts_service);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 6, selfCopy);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v7 + v6);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v7 + v6);
 }
 
 - (BOOL)disable_cache
@@ -66,42 +66,42 @@ flatbuffers::DetachedBuffer *__43__QSSTextToSpeechRequestDebug_flatbuffData__blo
   return *v3->var0 >= 5u && (v4 = *v3[4].var0) != 0 && root[v4].var0[0] != 0;
 }
 
-- (QSSTextToSpeechRequestDebug)initWithFlatbuffData:(id)a3 root:(const TextToSpeechRequestDebug *)a4 verify:(BOOL)a5
+- (QSSTextToSpeechRequestDebug)initWithFlatbuffData:(id)data root:(const TextToSpeechRequestDebug *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSTextToSpeechRequestDebug;
   v10 = [(QSSTextToSpeechRequestDebug *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -123,9 +123,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

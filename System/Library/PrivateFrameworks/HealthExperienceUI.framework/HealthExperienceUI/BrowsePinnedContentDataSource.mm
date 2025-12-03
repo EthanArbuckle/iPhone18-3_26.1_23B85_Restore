@@ -1,10 +1,10 @@
 @interface BrowsePinnedContentDataSource
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5;
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated;
 @end
 
 @implementation BrowsePinnedContentDataSource
 
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated
 {
   sub_1B9F12538();
   v7 = v6;
@@ -15,7 +15,7 @@
   v13 = v12;
   sub_1BA4A45C8();
 
-  sub_1BA3D94E4(v11, v13, v14, a5);
+  sub_1BA3D94E4(v11, v13, v14, animated);
 
   (*(v8 + 8))(v10, v7);
 }

@@ -1,30 +1,30 @@
 @interface MBProtectionClassUtils
-+ (BOOL)isContentUnavailableDueToCxExpiration:(id)a3 error:(id *)a4;
-+ (int)_openRawEncryptedWithPathFSR:(const char *)a3 error:(id *)a4;
-+ (unsigned)getWithFD:(int)a3 error:(id *)a4;
-+ (unsigned)getWithPath:(id)a3 error:(id *)a4;
-+ (unsigned)getWithPathFSR:(const char *)a3 error:(id *)a4;
++ (BOOL)isContentUnavailableDueToCxExpiration:(id)expiration error:(id *)error;
++ (int)_openRawEncryptedWithPathFSR:(const char *)r error:(id *)error;
++ (unsigned)getWithFD:(int)d error:(id *)error;
++ (unsigned)getWithPath:(id)path error:(id *)error;
++ (unsigned)getWithPathFSR:(const char *)r error:(id *)error;
 @end
 
 @implementation MBProtectionClassUtils
 
-+ (unsigned)getWithPath:(id)a3 error:(id *)a4
++ (unsigned)getWithPath:(id)path error:(id *)error
 {
-  v5 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  return [MBProtectionClassUtils getWithPathFSR:v5 error:a4];
+  return [MBProtectionClassUtils getWithPathFSR:fileSystemRepresentation error:error];
 }
 
-+ (BOOL)isContentUnavailableDueToCxExpiration:(id)a3 error:(id *)a4
++ (BOOL)isContentUnavailableDueToCxExpiration:(id)expiration error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 fileSystemRepresentation];
-  if ([a1 getWithPathFSR:v7 error:a4] != 7)
+  expirationCopy = expiration;
+  fileSystemRepresentation = [expirationCopy fileSystemRepresentation];
+  if ([self getWithPathFSR:fileSystemRepresentation error:error] != 7)
   {
     goto LABEL_7;
   }
 
-  v8 = open(v7, 256);
+  v8 = open(fileSystemRepresentation, 256);
   v9 = __error();
   if ((v8 & 0x80000000) == 0)
   {
@@ -40,9 +40,9 @@ LABEL_7:
   }
 
   v10 = 1;
-  if (a4)
+  if (error)
   {
-    *a4 = [MBError errorWithErrno:1 code:240 path:v6 format:@"File content unavailable with protection class %d", 7];
+    *error = [MBError errorWithErrno:1 code:240 path:expirationCopy format:@"File content unavailable with protection class %d", 7];
   }
 
 LABEL_8:
@@ -50,41 +50,41 @@ LABEL_8:
   return v10;
 }
 
-+ (unsigned)getWithPathFSR:(const char *)a3 error:(id *)a4
++ (unsigned)getWithPathFSR:(const char *)r error:(id *)error
 {
-  v5 = [a1 _openRawEncryptedWithPathFSR:a3 error:?];
+  v5 = [self _openRawEncryptedWithPathFSR:r error:?];
   if ((v5 & 0x80000000) != 0)
   {
     return -1;
   }
 
   v6 = v5;
-  v7 = [MBProtectionClassUtils getWithFD:v5 error:a4];
+  v7 = [MBProtectionClassUtils getWithFD:v5 error:error];
   close(v6);
   return v7;
 }
 
-+ (int)_openRawEncryptedWithPathFSR:(const char *)a3 error:(id *)a4
++ (int)_openRawEncryptedWithPathFSR:(const char *)r error:(id *)error
 {
-  result = open_dprotected_np(a3, 256, 0, 1, 0);
+  result = open_dprotected_np(r, 256, 0, 1, 0);
   if (result < 0)
   {
     v7 = *__error();
-    if (a4)
+    if (error)
     {
-      v8 = [NSString mb_stringWithFileSystemRepresentation:a3];
-      *a4 = [MBError posixErrorWithPath:v8 format:@"open_dprotected_np error"];
+      v8 = [NSString mb_stringWithFileSystemRepresentation:r];
+      *error = [MBError posixErrorWithPath:v8 format:@"open_dprotected_np error"];
     }
 
     v9 = MBGetDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       buf.st_dev = 136315394;
-      *&buf.st_mode = a3;
+      *&buf.st_mode = r;
       WORD2(buf.st_ino) = 1024;
       *(&buf.st_ino + 6) = v7;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "=pc= open_dprotected_np failed at %s: %{errno}d", &buf, 0x12u);
-      _MBLog(@"E ", "=pc= open_dprotected_np failed at %s: %{errno}d", v10, v11, v12, v13, v14, v15, a3);
+      _MBLog(@"E ", "=pc= open_dprotected_np failed at %s: %{errno}d", v10, v11, v12, v13, v14, v15, r);
     }
 
     if (v7 == 22)
@@ -103,14 +103,14 @@ LABEL_8:
       }
 
       memset(&buf, 0, sizeof(buf));
-      v16 = lstat(a3, &buf);
+      v16 = lstat(r, &buf);
       if (v16 | buf.st_flags & 0x20)
       {
         return -1;
       }
     }
 
-    v17 = [NSString mb_stringWithFileSystemRepresentation:a3];
+    v17 = [NSString mb_stringWithFileSystemRepresentation:r];
     MBDiagnoseFile(v17, v7, "open_dprotected_np");
     v18 = MBGetDefaultLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
@@ -129,14 +129,14 @@ LABEL_8:
   return result;
 }
 
-+ (unsigned)getWithFD:(int)a3 error:(id *)a4
++ (unsigned)getWithFD:(int)d error:(id *)error
 {
-  v5 = fcntl(a3, 63);
+  v5 = fcntl(d, 63);
   if (v5 < 0)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MBError posixErrorWithFormat:@"fcntl error getting protection class"];
+      *error = [MBError posixErrorWithFormat:@"fcntl error getting protection class"];
     }
 
     LOBYTE(v5) = -1;

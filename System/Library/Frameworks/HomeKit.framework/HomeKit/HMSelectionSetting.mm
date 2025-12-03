@@ -1,18 +1,18 @@
 @interface HMSelectionSetting
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (id)internalValue;
-- (id)valueForUpdate:(id)a3;
+- (id)valueForUpdate:(id)update;
 @end
 
 @implementation HMSelectionSetting
 
-- (id)valueForUpdate:(id)a3
+- (id)valueForUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = updateCopy;
   }
 
   else
@@ -29,29 +29,29 @@
   }
 
   v6 = [HMSettingValue alloc];
-  v7 = [v5 identifier];
-  v8 = [v5 title];
-  v9 = [(HMSettingValue *)v6 initWithType:4 stringValue:0 numberValue:0 dataValue:0 selectionIdentifier:v7 selectionValue:v8];
+  identifier = [v5 identifier];
+  title = [v5 title];
+  v9 = [(HMSettingValue *)v6 initWithType:4 stringValue:0 numberValue:0 dataValue:0 selectionIdentifier:identifier selectionValue:title];
 
   return v9;
 }
 
 - (id)internalValue
 {
-  v2 = [(HMSetting *)self value];
+  value = [(HMSetting *)self value];
   v3 = [HMSettingValue alloc];
-  v4 = [v2 identifier];
-  v5 = [v2 title];
-  v6 = [(HMSettingValue *)v3 initWithType:4 stringValue:0 numberValue:0 dataValue:0 selectionIdentifier:v4 selectionValue:v5];
+  identifier = [value identifier];
+  title = [value title];
+  v6 = [(HMSettingValue *)v3 initWithType:4 stringValue:0 numberValue:0 dataValue:0 selectionIdentifier:identifier selectionValue:title];
 
   return v6;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = HMSelectionSetting;
-  return [(HMSelectionSetting *)&v5 isKindOfClass:?]|| objc_opt_class() == a3;
+  return [(HMSelectionSetting *)&v5 isKindOfClass:?]|| objc_opt_class() == class;
 }
 
 @end

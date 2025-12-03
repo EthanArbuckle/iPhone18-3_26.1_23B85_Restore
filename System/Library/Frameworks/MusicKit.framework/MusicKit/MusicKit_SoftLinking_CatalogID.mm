@@ -1,23 +1,23 @@
 @interface MusicKit_SoftLinking_CatalogID
-- (MusicKit_SoftLinking_CatalogID)initWithValue:(id)a3 kind:(int64_t)a4;
+- (MusicKit_SoftLinking_CatalogID)initWithValue:(id)value kind:(int64_t)kind;
 - (id)description;
 @end
 
 @implementation MusicKit_SoftLinking_CatalogID
 
-- (MusicKit_SoftLinking_CatalogID)initWithValue:(id)a3 kind:(int64_t)a4
+- (MusicKit_SoftLinking_CatalogID)initWithValue:(id)value kind:(int64_t)kind
 {
-  v6 = a3;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = MusicKit_SoftLinking_CatalogID;
   v7 = [(MusicKit_SoftLinking_CatalogID *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [valueCopy copy];
     value = v7->_value;
     v7->_value = v8;
 
-    v7->_kind = a4;
+    v7->_kind = kind;
   }
 
   return v7;

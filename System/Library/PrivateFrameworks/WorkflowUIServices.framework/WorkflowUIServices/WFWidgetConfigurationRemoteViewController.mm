@@ -1,12 +1,12 @@
 @interface WFWidgetConfigurationRemoteViewController
 - (WFWidgetConfigurationRemoteViewControllerDelegate)delegate;
 - (void)intentConfigurationWasCancelled;
-- (void)intentWasConfigured:(id)a3;
-- (void)preferredCardSizeDidUpdate:(CGSize)a3;
+- (void)intentWasConfigured:(id)configured;
+- (void)preferredCardSizeDidUpdate:(CGSize)update;
 - (void)requestViewControllerCancel;
 - (void)requestViewControllerDismissal;
-- (void)setConfigurationCardViewFrame:(CGRect)a3;
-- (void)startConfigurationWithRequest:(id)a3 completion:(id)a4;
+- (void)setConfigurationCardViewFrame:(CGRect)frame;
+- (void)startConfigurationWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation WFWidgetConfigurationRemoteViewController
@@ -20,78 +20,78 @@
 
 - (void)intentConfigurationWasCancelled
 {
-  v3 = [(WFWidgetConfigurationRemoteViewController *)self delegate];
+  delegate = [(WFWidgetConfigurationRemoteViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFWidgetConfigurationRemoteViewController *)self delegate];
-    [v5 widgetConfigurationRemoteViewControllerCancelled:self];
+    delegate2 = [(WFWidgetConfigurationRemoteViewController *)self delegate];
+    [delegate2 widgetConfigurationRemoteViewControllerCancelled:self];
   }
 }
 
-- (void)preferredCardSizeDidUpdate:(CGSize)a3
+- (void)preferredCardSizeDidUpdate:(CGSize)update
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(WFWidgetConfigurationRemoteViewController *)self delegate];
+  height = update.height;
+  width = update.width;
+  delegate = [(WFWidgetConfigurationRemoteViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(WFWidgetConfigurationRemoteViewController *)self delegate];
-    [v8 widgetConfigurationRemoteViewController:self preferredContentSizeDidChange:{width, height}];
+    delegate2 = [(WFWidgetConfigurationRemoteViewController *)self delegate];
+    [delegate2 widgetConfigurationRemoteViewController:self preferredContentSizeDidChange:{width, height}];
   }
 }
 
-- (void)intentWasConfigured:(id)a3
+- (void)intentWasConfigured:(id)configured
 {
-  v7 = a3;
-  v4 = [(WFWidgetConfigurationRemoteViewController *)self delegate];
+  configuredCopy = configured;
+  delegate = [(WFWidgetConfigurationRemoteViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFWidgetConfigurationRemoteViewController *)self delegate];
-    [v6 widgetConfigurationRemoteViewController:self didReceiveConfiguredIntent:v7];
+    delegate2 = [(WFWidgetConfigurationRemoteViewController *)self delegate];
+    [delegate2 widgetConfigurationRemoteViewController:self didReceiveConfiguredIntent:configuredCopy];
   }
 }
 
 - (void)requestViewControllerCancel
 {
-  v2 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v2 requestViewControllerCancel];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy requestViewControllerCancel];
 }
 
 - (void)requestViewControllerDismissal
 {
-  v2 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v2 requestViewControllerDismissal];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy requestViewControllerDismissal];
 }
 
-- (void)setConfigurationCardViewFrame:(CGRect)a3
+- (void)setConfigurationCardViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v7 setConfigurationCardViewFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy setConfigurationCardViewFrame:{x, y, width, height}];
 }
 
-- (void)startConfigurationWithRequest:(id)a3 completion:(id)a4
+- (void)startConfigurationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_5179];
+  completionCopy = completion;
+  requestCopy = request;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  v9 = [serviceViewControllerProxy remoteObjectProxyWithErrorHandler:&__block_literal_global_5179];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __86__WFWidgetConfigurationRemoteViewController_startConfigurationWithRequest_completion___block_invoke_50;
   v11[3] = &unk_1E8308720;
-  v12 = v6;
-  v10 = v6;
-  [v9 startConfigurationWithRequest:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v9 startConfigurationWithRequest:requestCopy completion:v11];
 }
 
 void __86__WFWidgetConfigurationRemoteViewController_startConfigurationWithRequest_completion___block_invoke_50(uint64_t a1, void *a2)

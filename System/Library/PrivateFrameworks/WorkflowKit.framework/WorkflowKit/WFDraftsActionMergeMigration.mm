@@ -1,16 +1,16 @@
 @interface WFDraftsActionMergeMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFDraftsActionMergeMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"128") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"128") == 3)
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"com.agiletortoise.Drafts4.create", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"com.agiletortoise.Drafts4.create", migrationCopy);
   }
 
   else
@@ -28,8 +28,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -40,21 +40,21 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v10 = [v8 objectForKey:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v10 = [v8 objectForKey:actionIdentifierKey];
         v11 = [v10 isEqualToString:@"com.agiletortoise.Drafts4.create"];
 
         if (v11)
         {
-          v12 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          [v8 setObject:@"com.agiletortoise.Drafts4.addto" forKeyedSubscript:v12];
+          actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+          [v8 setObject:@"com.agiletortoise.Drafts4.addto" forKeyedSubscript:actionIdentifierKey2];
 
-          v13 = [(WFWorkflowMigration *)self actionParametersKey];
-          v14 = [v8 objectForKeyedSubscript:v13];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v14 = [v8 objectForKeyedSubscript:actionParametersKey];
           v15 = v14;
           if (v14)
           {
@@ -69,12 +69,12 @@
           v17 = v16;
 
           [v17 setObject:@"Create" forKeyedSubscript:@"DraftsAddMode"];
-          v18 = [(WFWorkflowMigration *)self actionParametersKey];
-          [v8 setObject:v17 forKeyedSubscript:v18];
+          actionParametersKey2 = [(WFWorkflowMigration *)self actionParametersKey];
+          [v8 setObject:v17 forKeyedSubscript:actionParametersKey2];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [actions countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);

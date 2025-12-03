@@ -1,17 +1,17 @@
 @interface CLMediatorSubmersionClient
-- (CLMediatorSubmersionClient)initWithMediator:(void *)a3;
+- (CLMediatorSubmersionClient)initWithMediator:(void *)mediator;
 @end
 
 @implementation CLMediatorSubmersionClient
 
-- (CLMediatorSubmersionClient)initWithMediator:(void *)a3
+- (CLMediatorSubmersionClient)initWithMediator:(void *)mediator
 {
   v5.receiver = self;
   v5.super_class = CLMediatorSubmersionClient;
   result = [(CLMediatorSubmersionClient *)&v5 init];
   if (result)
   {
-    result->_client = a3;
+    result->_client = mediator;
     result->_valid = 1;
   }
 

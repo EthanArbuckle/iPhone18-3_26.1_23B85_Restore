@@ -1,12 +1,12 @@
 @interface NSMethodSignature
-- (int64_t)getArgumentIndexForClass:(Class)a3;
+- (int64_t)getArgumentIndexForClass:(Class)class;
 @end
 
 @implementation NSMethodSignature
 
-- (int64_t)getArgumentIndexForClass:(Class)a3
+- (int64_t)getArgumentIndexForClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v5 = [NSString stringWithFormat:@"@%@", v4];
 
   if ([(NSMethodSignature *)self numberOfArguments])

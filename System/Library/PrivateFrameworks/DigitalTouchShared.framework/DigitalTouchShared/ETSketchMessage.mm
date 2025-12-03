@@ -1,15 +1,15 @@
 @interface ETSketchMessage
-- (BOOL)_decodeWithDoodle:(id)a3;
+- (BOOL)_decodeWithDoodle:(id)doodle;
 - (ETSketchMessage)init;
-- (ETSketchMessage)initWithArchiveData:(id)a3;
+- (ETSketchMessage)initWithArchiveData:(id)data;
 - (double)messageDuration;
 - (id)archiveData;
-- (void)addSketchPoint:(CGPoint)a3;
-- (void)addStrokeWithColor:(id)a3;
+- (void)addSketchPoint:(CGPoint)point;
+- (void)addStrokeWithColor:(id)color;
 - (void)convertToSimulatedPlaybackSpeed;
 - (void)didEndWisp;
 - (void)didReachRendererLimit;
-- (void)setParentMessage:(id)a3;
+- (void)setParentMessage:(id)message;
 - (void)willBeginWisp;
 @end
 
@@ -22,13 +22,13 @@
   v2 = [(ETMessage *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     strokes = v2->_strokes;
-    v2->_strokes = v3;
+    v2->_strokes = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     colorsInMessage = v2->_colorsInMessage;
-    v2->_colorsInMessage = v5;
+    v2->_colorsInMessage = array2;
 
     v7 = v2;
   }
@@ -38,71 +38,71 @@
 
 - (void)didReachRendererLimit
 {
-  v3 = [(ETMessage *)self delegate];
-  [v3 messageWillReachSizeLimit:self];
+  delegate = [(ETMessage *)self delegate];
+  [delegate messageWillReachSizeLimit:self];
 }
 
-- (void)addStrokeWithColor:(id)a3
+- (void)addStrokeWithColor:(id)color
 {
-  v4 = a3;
-  [(ETMessage *)self setColor:v4];
-  [(NSMutableArray *)self->_colorsInMessage addObject:v4];
+  colorCopy = color;
+  [(ETMessage *)self setColor:colorCopy];
+  [(NSMutableArray *)self->_colorsInMessage addObject:colorCopy];
 
   strokes = self->_strokes;
-  v6 = [MEMORY[0x277CBEB18] array];
-  [(NSMutableArray *)strokes addObject:v6];
+  array = [MEMORY[0x277CBEB18] array];
+  [(NSMutableArray *)strokes addObject:array];
 }
 
-- (void)addSketchPoint:(CGPoint)a3
+- (void)addSketchPoint:(CGPoint)point
 {
-  v4 = (a3.x + 1.0) * 32767.0;
+  v4 = (point.x + 1.0) * 32767.0;
   v5 = llroundf(v4);
-  v6 = (a3.y + 1.0) * 32767.0;
+  v6 = (point.y + 1.0) * 32767.0;
   v11 = v5 | (llroundf(v6) << 16);
-  v7 = [(ETMessage *)self timeSource];
-  [v7 elapsedTimeSinceStartOfMessage:self];
+  timeSource = [(ETMessage *)self timeSource];
+  [timeSource elapsedTimeSinceStartOfMessage:self];
   v12 = llround(v8 * 1000.0);
 
-  v9 = [(NSMutableArray *)self->_strokes lastObject];
+  lastObject = [(NSMutableArray *)self->_strokes lastObject];
   v10 = [MEMORY[0x277CCAE60] valueWithBytes:&v11 objCType:"{?={?=SS}{?=S}}"];
-  [v9 addObject:v10];
+  [lastObject addObject:v10];
 }
 
-- (BOOL)_decodeWithDoodle:(id)a3
+- (BOOL)_decodeWithDoodle:(id)doodle
 {
-  v4 = a3;
-  v40 = [v4 doodleCount];
-  v5 = [v4 doodleData];
-  v6 = [v5 bytes];
-  v33 = v5;
-  v7 = [v5 length] >> 1;
-  v8 = [v4 colorData];
-  v36 = [v8 bytes];
-  v32 = v8;
-  v9 = [v8 length];
+  doodleCopy = doodle;
+  doodleCount = [doodleCopy doodleCount];
+  doodleData = [doodleCopy doodleData];
+  bytes = [doodleData bytes];
+  v33 = doodleData;
+  v7 = [doodleData length] >> 1;
+  colorData = [doodleCopy colorData];
+  bytes2 = [colorData bytes];
+  v32 = colorData;
+  v9 = [colorData length];
   v38 = v9 >> 2;
   self->_hasMultipleColors = v9 > 7;
-  v34 = v4;
-  v10 = [v4 pointTimeDeltaData];
-  v41 = [v10 bytes];
-  v31 = v10;
+  v34 = doodleCopy;
+  pointTimeDeltaData = [doodleCopy pointTimeDeltaData];
+  bytes3 = [pointTimeDeltaData bytes];
+  v31 = pointTimeDeltaData;
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  v14 = [v10 length] >> 1;
-  v37 = v6 + 2;
-  v35 = v6 + 6;
-  v39 = self;
+  v14 = [pointTimeDeltaData length] >> 1;
+  v37 = bytes + 2;
+  v35 = bytes + 6;
+  selfCopy = self;
   do
   {
     v15 = v11;
-    if (v11 == v40)
+    if (v11 == doodleCount)
     {
       break;
     }
 
-    v16 = [MEMORY[0x277CBEB18] array];
-    [(NSMutableArray *)self->_strokes addObject:v16];
+    array = [MEMORY[0x277CBEB18] array];
+    [(NSMutableArray *)self->_strokes addObject:array];
     v17 = v13 + 2;
     if (v13 + 2 > v7)
     {
@@ -118,7 +118,7 @@
 
     else
     {
-      v19 = *(v36 + 4 * v11);
+      v19 = *(bytes2 + 4 * v11);
     }
 
     v20 = *(v37 + 2 * v13);
@@ -138,11 +138,11 @@
         v43 = 0;
         if (v12 < v14)
         {
-          v43 = *(v41 + 2 * v12);
+          v43 = *(bytes3 + 2 * v12);
         }
 
         v27 = [MEMORY[0x277CCAE60] valueWithBytes:&v42 objCType:"{?={?=SS}{?=S}}"];
-        [v16 addObject:v27];
+        [array addObject:v27];
 
         ++v12;
         ++v24;
@@ -165,20 +165,20 @@
     v15 = v11++;
 
     v13 = v17;
-    self = v39;
+    self = selfCopy;
   }
 
   while (v23);
 
-  return v15 >= v40;
+  return v15 >= doodleCount;
 }
 
-- (ETSketchMessage)initWithArchiveData:(id)a3
+- (ETSketchMessage)initWithArchiveData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = ETSketchMessage;
-  v5 = [(ETMessage *)&v9 initWithArchiveData:v4];
+  v5 = [(ETMessage *)&v9 initWithArchiveData:dataCopy];
   if (!v5)
   {
 LABEL_4:
@@ -186,7 +186,7 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v6 = [[ETPDoodle alloc] initWithData:v4];
+  v6 = [[ETPDoodle alloc] initWithData:dataCopy];
   if (v6)
   {
     v7 = [(ETSketchMessage *)v5 _decodeWithDoodle:v6];
@@ -214,7 +214,7 @@ LABEL_6:
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v44 = self;
+  selfCopy = self;
   v5 = self->_strokes;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v6)
@@ -246,23 +246,23 @@ LABEL_6:
   }
 
   [(ETPDoodle *)v3 setDoodleCount:v4];
-  v11 = [MEMORY[0x277CBEB28] data];
-  [v11 setLength:4 * (v8 + v4)];
-  v43 = [v11 mutableBytes];
-  v12 = [MEMORY[0x277CBEB28] data];
-  [v12 setLength:4 * v4];
-  v42 = [v12 mutableBytes];
-  v38 = v11;
+  data = [MEMORY[0x277CBEB28] data];
+  [data setLength:4 * (v8 + v4)];
+  mutableBytes = [data mutableBytes];
+  data2 = [MEMORY[0x277CBEB28] data];
+  [data2 setLength:4 * v4];
+  mutableBytes2 = [data2 mutableBytes];
+  v38 = data;
   v39 = v3;
-  v37 = v12;
-  if ([(ETMessage *)v44 supportsPlaybackTimeOffset])
+  v37 = data2;
+  if ([(ETMessage *)selfCopy supportsPlaybackTimeOffset])
   {
-    v13 = [MEMORY[0x277CBEB28] data];
-    v14 = v13;
-    if (v13)
+    data3 = [MEMORY[0x277CBEB28] data];
+    v14 = data3;
+    if (data3)
     {
-      [v13 setLength:2 * v8];
-      v15 = [v14 mutableBytes];
+      [data3 setLength:2 * v8];
+      mutableBytes3 = [v14 mutableBytes];
       goto LABEL_15;
     }
   }
@@ -272,11 +272,11 @@ LABEL_6:
     v14 = 0;
   }
 
-  v15 = 0;
+  mutableBytes3 = 0;
 LABEL_15:
   v36 = v14;
   v16 = [v14 length];
-  v41 = [(NSMutableArray *)v44->_strokes count];
+  v41 = [(NSMutableArray *)selfCopy->_strokes count];
   if (v41)
   {
     v17 = 0;
@@ -286,8 +286,8 @@ LABEL_15:
     v40 = vdupq_n_s64(0x406FE00000000000uLL);
     do
     {
-      v21 = [(NSMutableArray *)v44->_strokes objectAtIndexedSubscript:v18];
-      v22 = [(NSMutableArray *)v44->_colorsInMessage objectAtIndexedSubscript:v18];
+      v21 = [(NSMutableArray *)selfCopy->_strokes objectAtIndexedSubscript:v18];
+      v22 = [(NSMutableArray *)selfCopy->_colorsInMessage objectAtIndexedSubscript:v18];
       v51 = 0.0;
       v52 = 0.0;
       v49 = 0.0;
@@ -300,9 +300,9 @@ LABEL_15:
       *&v25.f64[0] = vshl_u32(vcvt_s32_f32(vrnda_f32(vcvt_f32_f64(vmulq_f64(v25, v40)))), 0x800000018);
       v26 = LODWORD(v25.f64[0]);
       *v25.f64 = v52 * 255.0;
-      *(v42 + 4 * v18) = v26 | (v24 << 16) | llroundf(*v25.f64) | HIDWORD(v25.f64[0]);
+      *(mutableBytes2 + 4 * v18) = v26 | (v24 << 16) | llroundf(*v25.f64) | HIDWORD(v25.f64[0]);
 
-      v27 = (v43 + 2 * v17);
+      v27 = (mutableBytes + 2 * v17);
       *v27 = 0;
       v27[1] = [v21 count];
       v28 = [v21 count];
@@ -311,7 +311,7 @@ LABEL_15:
       {
         v30 = v28;
         v31 = 0;
-        v32 = v43 + 6 + 2 * v17;
+        v32 = mutableBytes + 6 + 2 * v17;
         do
         {
           WORD2(v52) = 0;
@@ -319,9 +319,9 @@ LABEL_15:
           v33 = [v21 objectAtIndexedSubscript:v31];
           [v33 getValue:&v52];
 
-          if (v15 && v19 < v20)
+          if (mutableBytes3 && v19 < v20)
           {
-            *(v15 + 2 * v19++) = WORD2(v52);
+            *(mutableBytes3 + 2 * v19++) = WORD2(v52);
           }
 
           *(v32 - 2) = LODWORD(v52);
@@ -343,9 +343,9 @@ LABEL_15:
   [(ETPDoodle *)v39 setDoodleData:v38];
   [(ETPDoodle *)v39 setColorData:v37];
   [(ETPDoodle *)v39 setPointTimeDeltaData:v36];
-  v34 = [(ETPDoodle *)v39 data];
+  data4 = [(ETPDoodle *)v39 data];
 
-  return v34;
+  return data4;
 }
 
 - (void)willBeginWisp
@@ -353,27 +353,27 @@ LABEL_15:
   self->_didDrawPoints = 1;
   if ([(ETMessage *)self delayWisp])
   {
-    v3 = [(ETMessage *)self parentMessage];
-    [v3 childMessageDidDelayWisp:self];
+    parentMessage = [(ETMessage *)self parentMessage];
+    [parentMessage childMessageDidDelayWisp:self];
   }
 
-  v4 = [(ETMessage *)self delegate];
-  [v4 messageWillStopPlaying:self];
+  delegate = [(ETMessage *)self delegate];
+  [delegate messageWillStopPlaying:self];
 }
 
 - (void)didEndWisp
 {
   self->_didEndWisping = 1;
-  v3 = [(ETMessage *)self delegate];
-  [v3 messageDidStopPlaying:self];
+  delegate = [(ETMessage *)self delegate];
+  [delegate messageDidStopPlaying:self];
 }
 
-- (void)setParentMessage:(id)a3
+- (void)setParentMessage:(id)message
 {
   v5.receiver = self;
   v5.super_class = ETSketchMessage;
   [(ETMessage *)&v5 setParentMessage:?];
-  [(ETMessage *)self setDelayWisp:a3 != 0];
+  [(ETMessage *)self setDelayWisp:message != 0];
 }
 
 - (void)convertToSimulatedPlaybackSpeed
@@ -385,7 +385,7 @@ LABEL_15:
   v30 = 0u;
   v31 = 0u;
   v17 = 96;
-  v18 = self;
+  selfCopy = self;
   obj = self->_strokes;
   v3 = [(NSMutableArray *)obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v3)
@@ -403,7 +403,7 @@ LABEL_15:
         }
 
         v7 = *(*(&v28 + 1) + 8 * i);
-        v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count", v17, v18)}];
+        v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count", v17, selfCopy)}];
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
@@ -450,10 +450,10 @@ LABEL_15:
     while (v4);
   }
 
-  v16 = *(&v18->super.super.isa + v17);
-  *(&v18->super.super.isa + v17) = v21;
+  v16 = *(&selfCopy->super.super.isa + v17);
+  *(&selfCopy->super.super.isa + v17) = v21;
 
-  [(ETMessage *)v18 setSupportsPlaybackTimeOffset:1];
+  [(ETMessage *)selfCopy setSupportsPlaybackTimeOffset:1];
 }
 
 - (double)messageDuration
@@ -461,14 +461,14 @@ LABEL_15:
   v20 = *MEMORY[0x277D85DE8];
   if ([(ETMessage *)self supportsPlaybackTimeOffset])
   {
-    v3 = [(NSMutableArray *)self->_strokes lastObject];
-    v4 = [v3 lastObject];
+    lastObject = [(NSMutableArray *)self->_strokes lastObject];
+    v3LastObject = [lastObject lastObject];
 
-    if (v4)
+    if (v3LastObject)
     {
       v18 = 0;
       v17 = 0;
-      [(NSMutableArray *)v4 getValue:&v17];
+      [(NSMutableArray *)v3LastObject getValue:&v17];
       LOWORD(v5) = v18;
       v6 = v5 / 1000.0 + 3.0;
     }
@@ -485,8 +485,8 @@ LABEL_15:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = self->_strokes;
-    v7 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+    v3LastObject = self->_strokes;
+    v7 = [(NSMutableArray *)v3LastObject countByEnumeratingWithState:&v13 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -498,13 +498,13 @@ LABEL_15:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(v3LastObject);
           }
 
           v10 = v10 + [*(*(&v13 + 1) + 8 * i) count] * 0.01666 + 0.3;
         }
 
-        v8 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
+        v8 = [(NSMutableArray *)v3LastObject countByEnumeratingWithState:&v13 objects:v19 count:16];
       }
 
       while (v8);

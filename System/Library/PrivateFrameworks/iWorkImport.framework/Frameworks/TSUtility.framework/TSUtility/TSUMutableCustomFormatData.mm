@@ -1,6 +1,6 @@
 @interface TSUMutableCustomFormatData
 + (id)customFormatData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSUMutableCustomFormatData
@@ -12,7 +12,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TSUCustomFormatData allocWithZone:?]];
   [(TSUCustomFormatData *)self p_copySelfTo:v4];

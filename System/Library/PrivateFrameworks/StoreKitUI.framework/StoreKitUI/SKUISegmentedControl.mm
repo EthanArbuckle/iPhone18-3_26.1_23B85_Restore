@@ -1,11 +1,11 @@
 @interface SKUISegmentedControl
-- (CGRect)frameForSegmentAtIndex:(int64_t)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (CGRect)frameForSegmentAtIndex:(int64_t)index;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation SKUISegmentedControl
 
-- (CGRect)frameForSegmentAtIndex:(int64_t)a3
+- (CGRect)frameForSegmentAtIndex:(int64_t)index
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -16,7 +16,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = v7 / [(SKUISegmentedControl *)self numberOfSegments]* a3;
+  v11 = v7 / [(SKUISegmentedControl *)self numberOfSegments]* index;
   v12 = v8 / [(SKUISegmentedControl *)self numberOfSegments];
   v13 = v11;
   v14 = v6;
@@ -28,10 +28,10 @@
   return result;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISegmentedControl touchesEnded:withEvent:];
@@ -39,7 +39,7 @@
 
   v8.receiver = self;
   v8.super_class = SKUISegmentedControl;
-  [(SKUISegmentedControl *)&v8 touchesEnded:v6 withEvent:v7];
+  [(SKUISegmentedControl *)&v8 touchesEnded:endedCopy withEvent:eventCopy];
   [(SKUISegmentedControl *)self sendActionsForControlEvents:4096];
 }
 

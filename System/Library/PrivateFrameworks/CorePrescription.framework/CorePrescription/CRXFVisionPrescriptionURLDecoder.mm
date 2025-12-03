@@ -1,15 +1,15 @@
 @interface CRXFVisionPrescriptionURLDecoder
-- (CRXFVisionPrescriptionURLDecoder)initWithDeviceModel:(id)a3;
-- (id)prescriptionFromURL:(id)a3 withDescription:(id)a4;
-- (unsigned)computeCRC16ForString:(id)a3;
-- (unsigned)computeURLChecksum:(id)a3;
+- (CRXFVisionPrescriptionURLDecoder)initWithDeviceModel:(id)model;
+- (id)prescriptionFromURL:(id)l withDescription:(id)description;
+- (unsigned)computeCRC16ForString:(id)string;
+- (unsigned)computeURLChecksum:(id)checksum;
 @end
 
 @implementation CRXFVisionPrescriptionURLDecoder
 
-- (CRXFVisionPrescriptionURLDecoder)initWithDeviceModel:(id)a3
+- (CRXFVisionPrescriptionURLDecoder)initWithDeviceModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v23.receiver = self;
   v23.super_class = CRXFVisionPrescriptionURLDecoder;
   v5 = [(CRXFVisionPrescriptionURLDecoder *)&v23 init];
@@ -19,26 +19,26 @@
     log = v5->_log;
     v5->_log = v6;
 
-    v8 = [v4 copy];
+    v8 = [modelCopy copy];
     deviceModel = v5->_deviceModel;
     v5->_deviceModel = v8;
 
-    v10 = [MEMORY[0x277CCDAB0] diopterUnit];
+    diopterUnit = [MEMORY[0x277CCDAB0] diopterUnit];
     v11 = HKQuantityRangeInclusive();
     sphereRange = v5->_sphereRange;
     v5->_sphereRange = v11;
 
-    v13 = [MEMORY[0x277CCDAB0] diopterUnit];
+    diopterUnit2 = [MEMORY[0x277CCDAB0] diopterUnit];
     v14 = HKQuantityRangeInclusive();
     cylinderRange = v5->_cylinderRange;
     v5->_cylinderRange = v14;
 
-    v16 = [MEMORY[0x277CCDAB0] degreeAngleUnit];
+    degreeAngleUnit = [MEMORY[0x277CCDAB0] degreeAngleUnit];
     v17 = HKQuantityRangeInclusive();
     axisRange = v5->_axisRange;
     v5->_axisRange = v17;
 
-    v19 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+    prismDiopterUnit = [MEMORY[0x277CCDAB0] prismDiopterUnit];
     v20 = HKQuantityRangeInclusive();
     prismRange = v5->_prismRange;
     v5->_prismRange = v20;
@@ -47,12 +47,12 @@
   return v5;
 }
 
-- (id)prescriptionFromURL:(id)a3 withDescription:(id)a4
+- (id)prescriptionFromURL:(id)l withDescription:(id)description
 {
   v176 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v6 resolvingAgainstBaseURL:0];
+  lCopy = l;
+  descriptionCopy = description;
+  v8 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
   v9 = v8;
   if (!v8)
   {
@@ -69,8 +69,8 @@
   v154 = 0u;
   v151 = 0u;
   v152 = 0u;
-  v10 = [v8 queryItems];
-  v11 = [v10 countByEnumeratingWithState:&v151 objects:v175 count:16];
+  queryItems = [v8 queryItems];
+  v11 = [queryItems countByEnumeratingWithState:&v151 objects:v175 count:16];
   if (!v11)
   {
     v77 = 0;
@@ -189,9 +189,9 @@ LABEL_98:
         v99 = v98;
         v100 = @"Lenses";
         v101 = *MEMORY[0x277CCC4A8];
-        if (v7)
+        if (descriptionCopy)
         {
-          v100 = v7;
+          v100 = descriptionCopy;
         }
 
         v156[2] = v98;
@@ -199,8 +199,8 @@ LABEL_98:
         v102 = *MEMORY[0x277CCC520];
         v155[3] = v101;
         v155[4] = v102;
-        v103 = [MEMORY[0x277CCAD78] UUID];
-        [v103 UUIDString];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        [uUID UUIDString];
         v105 = v104 = v88;
         v155[5] = *MEMORY[0x277CCC528];
         v156[4] = v105;
@@ -208,9 +208,9 @@ LABEL_98:
         v106 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v156 forKeys:v155 count:6];
 
         v107 = MEMORY[0x277CCD488];
-        v108 = [MEMORY[0x277CBEAA8] date];
-        v109 = [MEMORY[0x277CCD2E8] localDevice];
-        v79 = [v107 prescriptionWithRightEyeSpecification:v94 leftEyeSpecification:v95 dateIssued:v108 expirationDate:0 device:v109 metadata:v106];
+        date = [MEMORY[0x277CBEAA8] date];
+        localDevice = [MEMORY[0x277CCD2E8] localDevice];
+        v79 = [v107 prescriptionWithRightEyeSpecification:v94 leftEyeSpecification:v95 dateIssued:date expirationDate:0 device:localDevice metadata:v106];
 
         v82 = v137;
         v81 = v147;
@@ -237,8 +237,8 @@ LABEL_98:
 
   v12 = v11;
   v128 = v9;
-  v122 = v7;
-  v123 = v6;
+  v122 = descriptionCopy;
+  v123 = lCopy;
   v124 = 0;
   v13 = 0;
   v120 = 0;
@@ -256,7 +256,7 @@ LABEL_98:
   v137 = 0;
   v138 = 0;
   v147 = 0;
-  v148 = self;
+  selfCopy = self;
   v149 = 0;
   v14 = *v152;
   v117 = 0;
@@ -277,20 +277,20 @@ LABEL_98:
     {
       if (*v152 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(queryItems);
       }
 
       v16 = *(*(&v151 + 1) + 8 * v15);
-      v17 = [v16 name];
-      v18 = [v16 value];
-      if (v18)
+      name = [v16 name];
+      value = [v16 value];
+      if (value)
       {
-        if ([v17 isEqualToString:@"ls"])
+        if ([name isEqualToString:@"ls"])
         {
           v19 = MEMORY[0x277CCD7E8];
-          v20 = [MEMORY[0x277CCDAB0] diopterUnit];
-          [v18 doubleValue];
-          v21 = [v19 quantityWithUnit:v20 doubleValue:?];
+          diopterUnit = [MEMORY[0x277CCDAB0] diopterUnit];
+          [value doubleValue];
+          v21 = [v19 quantityWithUnit:diopterUnit doubleValue:?];
 
           if ([(HKQuantityRange *)self->_sphereRange containsQuantity:v21])
           {
@@ -302,15 +302,15 @@ LABEL_98:
           goto LABEL_27;
         }
 
-        if ([v17 isEqualToString:@"lc"])
+        if ([name isEqualToString:@"lc"])
         {
           v23 = MEMORY[0x277CCD7E8];
-          v24 = [MEMORY[0x277CCDAB0] diopterUnit];
-          [v18 doubleValue];
-          v21 = [v23 quantityWithUnit:v24 doubleValue:?];
+          diopterUnit2 = [MEMORY[0x277CCDAB0] diopterUnit];
+          [value doubleValue];
+          v21 = [v23 quantityWithUnit:diopterUnit2 doubleValue:?];
 
-          self = v148;
-          if ([(HKQuantityRange *)v148->_cylinderRange containsQuantity:v21])
+          self = selfCopy;
+          if ([(HKQuantityRange *)selfCopy->_cylinderRange containsQuantity:v21])
           {
             v25 = v21;
 
@@ -320,18 +320,18 @@ LABEL_98:
           goto LABEL_27;
         }
 
-        if ([v17 isEqualToString:@"la"])
+        if ([name isEqualToString:@"la"])
         {
-          [v18 doubleValue];
+          [value doubleValue];
           if (v26 != 0.0)
           {
             v27 = v26;
             v28 = MEMORY[0x277CCD7E8];
-            v29 = [MEMORY[0x277CCDAB0] degreeAngleUnit];
-            v21 = [v28 quantityWithUnit:v29 doubleValue:v27];
+            degreeAngleUnit = [MEMORY[0x277CCDAB0] degreeAngleUnit];
+            v21 = [v28 quantityWithUnit:degreeAngleUnit doubleValue:v27];
 
-            self = v148;
-            if ([(HKQuantityRange *)v148->_axisRange containsQuantity:v21])
+            self = selfCopy;
+            if ([(HKQuantityRange *)selfCopy->_axisRange containsQuantity:v21])
             {
               v30 = v21;
 
@@ -349,16 +349,16 @@ LABEL_98:
           goto LABEL_28;
         }
 
-        if ([v17 isEqualToString:@"lhp"])
+        if ([name isEqualToString:@"lhp"])
         {
-          [v18 doubleValue];
+          [value doubleValue];
           v32 = v31;
           v33 = MEMORY[0x277CCD7E8];
-          v34 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
-          v21 = [v33 quantityWithUnit:v34 doubleValue:v32];
+          prismDiopterUnit = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+          v21 = [v33 quantityWithUnit:prismDiopterUnit doubleValue:v32];
 
-          self = v148;
-          if ([(HKQuantityRange *)v148->_prismRange containsQuantity:v21])
+          self = selfCopy;
+          if ([(HKQuantityRange *)selfCopy->_prismRange containsQuantity:v21])
           {
             v35 = v21;
 
@@ -373,12 +373,12 @@ LABEL_98:
           goto LABEL_27;
         }
 
-        if ([v17 isEqualToString:@"lhpd"])
+        if ([name isEqualToString:@"lhpd"])
         {
-          v36 = [v18 integerValue];
-          if (v36)
+          integerValue = [value integerValue];
+          if (integerValue)
           {
-            if (v36 != 1)
+            if (integerValue != 1)
             {
               v140 = 0;
               goto LABEL_28;
@@ -398,16 +398,16 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        if ([v17 isEqualToString:@"lvp"])
+        if ([name isEqualToString:@"lvp"])
         {
-          [v18 doubleValue];
+          [value doubleValue];
           v39 = v38;
           v40 = MEMORY[0x277CCD7E8];
-          v41 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
-          v21 = [v40 quantityWithUnit:v41 doubleValue:v39];
+          prismDiopterUnit2 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+          v21 = [v40 quantityWithUnit:prismDiopterUnit2 doubleValue:v39];
 
-          self = v148;
-          if ([(HKQuantityRange *)v148->_prismRange containsQuantity:v21])
+          self = selfCopy;
+          if ([(HKQuantityRange *)selfCopy->_prismRange containsQuantity:v21])
           {
             v42 = v21;
 
@@ -422,13 +422,13 @@ LABEL_28:
           goto LABEL_27;
         }
 
-        if ([v17 isEqualToString:@"lvpd"])
+        if ([name isEqualToString:@"lvpd"])
         {
-          v43 = [v18 integerValue];
-          if (v43)
+          integerValue2 = [value integerValue];
+          if (integerValue2)
           {
-            self = v148;
-            if (v43 == 1)
+            self = selfCopy;
+            if (integerValue2 == 1)
             {
               v136 = 2;
             }
@@ -442,21 +442,21 @@ LABEL_28:
           else
           {
             v136 = 1;
-            self = v148;
+            self = selfCopy;
           }
 
           goto LABEL_28;
         }
 
-        if ([v17 isEqualToString:@"rs"])
+        if ([name isEqualToString:@"rs"])
         {
           v44 = MEMORY[0x277CCD7E8];
-          v45 = [MEMORY[0x277CCDAB0] diopterUnit];
-          [v18 doubleValue];
-          v21 = [v44 quantityWithUnit:v45 doubleValue:?];
+          diopterUnit3 = [MEMORY[0x277CCDAB0] diopterUnit];
+          [value doubleValue];
+          v21 = [v44 quantityWithUnit:diopterUnit3 doubleValue:?];
 
-          self = v148;
-          if ([(HKQuantityRange *)v148->_sphereRange containsQuantity:v21])
+          self = selfCopy;
+          if ([(HKQuantityRange *)selfCopy->_sphereRange containsQuantity:v21])
           {
             v46 = v21;
 
@@ -468,15 +468,15 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        if ([v17 isEqualToString:@"rc"])
+        if ([name isEqualToString:@"rc"])
         {
           v47 = MEMORY[0x277CCD7E8];
-          v48 = [MEMORY[0x277CCDAB0] diopterUnit];
-          [v18 doubleValue];
-          v21 = [v47 quantityWithUnit:v48 doubleValue:?];
+          diopterUnit4 = [MEMORY[0x277CCDAB0] diopterUnit];
+          [value doubleValue];
+          v21 = [v47 quantityWithUnit:diopterUnit4 doubleValue:?];
 
-          self = v148;
-          if ([(HKQuantityRange *)v148->_cylinderRange containsQuantity:v21])
+          self = selfCopy;
+          if ([(HKQuantityRange *)selfCopy->_cylinderRange containsQuantity:v21])
           {
             v49 = v21;
 
@@ -486,10 +486,10 @@ LABEL_27:
           goto LABEL_27;
         }
 
-        if ([v17 isEqualToString:@"ra"])
+        if ([name isEqualToString:@"ra"])
         {
-          [v18 doubleValue];
-          self = v148;
+          [value doubleValue];
+          self = selfCopy;
           if (v50 == 0.0)
           {
             goto LABEL_28;
@@ -497,10 +497,10 @@ LABEL_27:
 
           v51 = v50;
           v52 = MEMORY[0x277CCD7E8];
-          v53 = [MEMORY[0x277CCDAB0] degreeAngleUnit];
-          v54 = [v52 quantityWithUnit:v53 doubleValue:v51];
+          degreeAngleUnit2 = [MEMORY[0x277CCDAB0] degreeAngleUnit];
+          v54 = [v52 quantityWithUnit:degreeAngleUnit2 doubleValue:v51];
 
-          if ([(HKQuantityRange *)v148->_axisRange containsQuantity:v54])
+          if ([(HKQuantityRange *)selfCopy->_axisRange containsQuantity:v54])
           {
             v55 = v54;
             v56 = v54;
@@ -514,16 +514,16 @@ LABEL_27:
 
         else
         {
-          self = v148;
-          if ([v17 isEqualToString:@"rhp"])
+          self = selfCopy;
+          if ([name isEqualToString:@"rhp"])
           {
-            [v18 doubleValue];
+            [value doubleValue];
             v58 = v57;
             v59 = MEMORY[0x277CCD7E8];
-            v60 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
-            v54 = [v59 quantityWithUnit:v60 doubleValue:v58];
+            prismDiopterUnit3 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+            v54 = [v59 quantityWithUnit:prismDiopterUnit3 doubleValue:v58];
 
-            if (![(HKQuantityRange *)v148->_prismRange containsQuantity:v54])
+            if (![(HKQuantityRange *)selfCopy->_prismRange containsQuantity:v54])
             {
               v127 = 0;
               goto LABEL_64;
@@ -537,12 +537,12 @@ LABEL_27:
 
           else
           {
-            if ([v17 isEqualToString:@"rhpd"])
+            if ([name isEqualToString:@"rhpd"])
             {
-              v62 = [v18 integerValue];
-              if (v62)
+              integerValue3 = [value integerValue];
+              if (integerValue3)
               {
-                if (v62 != 1)
+                if (integerValue3 != 1)
                 {
                   v126 = 0;
                   goto LABEL_28;
@@ -560,33 +560,33 @@ LABEL_27:
               goto LABEL_28;
             }
 
-            if (![v17 isEqualToString:@"rvp"])
+            if (![name isEqualToString:@"rvp"])
             {
-              if (![v17 isEqualToString:@"rvpd"])
+              if (![name isEqualToString:@"rvpd"])
               {
-                if ([v17 isEqualToString:@"acc"])
+                if ([name isEqualToString:@"acc"])
                 {
-                  if ([v18 length] == 38 || objc_msgSend(v18, "length") == 32)
+                  if ([value length] == 38 || objc_msgSend(value, "length") == 32)
                   {
-                    v71 = [MEMORY[0x277CBEA90] crxu_dataWithHexString:v18];
+                    v71 = [MEMORY[0x277CBEA90] crxu_dataWithHexString:value];
 
                     v135 = v71;
                   }
                 }
 
-                else if ([v17 isEqualToString:@"cc"])
+                else if ([name isEqualToString:@"cc"])
                 {
-                  v121 = strtoul([v18 UTF8String], 0, 10);
+                  v121 = strtoul([value UTF8String], 0, 10);
                 }
 
-                else if ([v17 isEqualToString:@"c"])
+                else if ([name isEqualToString:@"c"])
                 {
-                  v72 = [v128 queryItems];
-                  v73 = [v72 count] - 1;
+                  queryItems2 = [v128 queryItems];
+                  v73 = [queryItems2 count] - 1;
 
                   if (v13 == v73)
                   {
-                    v117 = strtoul([v18 UTF8String], 0, 16);
+                    v117 = strtoul([value UTF8String], 0, 16);
                     v124 = 1;
                   }
                 }
@@ -594,10 +594,10 @@ LABEL_27:
                 goto LABEL_28;
               }
 
-              v69 = [v18 integerValue];
-              if (v69)
+              integerValue4 = [value integerValue];
+              if (integerValue4)
               {
-                if (v69 != 1)
+                if (integerValue4 != 1)
                 {
                   v118 = 0;
                   goto LABEL_28;
@@ -615,13 +615,13 @@ LABEL_27:
               goto LABEL_28;
             }
 
-            [v18 doubleValue];
+            [value doubleValue];
             v65 = v64;
             v66 = MEMORY[0x277CCD7E8];
-            v67 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
-            v54 = [v66 quantityWithUnit:v67 doubleValue:v65];
+            prismDiopterUnit4 = [MEMORY[0x277CCDAB0] prismDiopterUnit];
+            v54 = [v66 quantityWithUnit:prismDiopterUnit4 doubleValue:v65];
 
-            if (![(HKQuantityRange *)v148->_prismRange containsQuantity:v54])
+            if (![(HKQuantityRange *)selfCopy->_prismRange containsQuantity:v54])
             {
               v125 = 0;
               goto LABEL_64;
@@ -648,7 +648,7 @@ LABEL_29:
     }
 
     while (v12 != v15);
-    v74 = [v10 countByEnumeratingWithState:&v151 objects:v175 count:16];
+    v74 = [queryItems countByEnumeratingWithState:&v151 objects:v175 count:16];
     v12 = v74;
   }
 
@@ -656,20 +656,20 @@ LABEL_29:
 
   if ((v124 & 1) == 0)
   {
-    v7 = v122;
-    v6 = v123;
+    descriptionCopy = v122;
+    lCopy = v123;
     v9 = v128;
     v77 = v149;
     v78 = v118;
     goto LABEL_98;
   }
 
-  v6 = v123;
-  v75 = [v123 absoluteString];
-  v10 = [v75 substringToIndex:{objc_msgSend(v75, "length") - 7}];
+  lCopy = v123;
+  absoluteString = [v123 absoluteString];
+  queryItems = [absoluteString substringToIndex:{objc_msgSend(absoluteString, "length") - 7}];
 
-  v76 = [(CRXFVisionPrescriptionURLDecoder *)self computeCRC16ForString:v10];
-  v7 = v122;
+  v76 = [(CRXFVisionPrescriptionURLDecoder *)self computeCRC16ForString:queryItems];
+  descriptionCopy = v122;
   v9 = v128;
   v77 = v149;
   if (v76 == v117)
@@ -696,20 +696,20 @@ LABEL_136:
   return v79;
 }
 
-- (unsigned)computeURLChecksum:(id)a3
+- (unsigned)computeURLChecksum:(id)checksum
 {
-  v4 = [a3 absoluteString];
-  if ([v4 length] >= 7)
+  absoluteString = [checksum absoluteString];
+  if ([absoluteString length] >= 7)
   {
-    v6 = [v4 substringWithRange:{objc_msgSend(v4, "length") - 7, 3}];
+    v6 = [absoluteString substringWithRange:{objc_msgSend(absoluteString, "length") - 7, 3}];
     if ([v6 isEqualToString:@"&c="])
     {
-      v7 = [v4 substringToIndex:{objc_msgSend(v4, "length") - 7}];
+      v7 = [absoluteString substringToIndex:{objc_msgSend(absoluteString, "length") - 7}];
 
-      v4 = v7;
+      absoluteString = v7;
     }
 
-    v5 = [(CRXFVisionPrescriptionURLDecoder *)self computeCRC16ForString:v4];
+    v5 = [(CRXFVisionPrescriptionURLDecoder *)self computeCRC16ForString:absoluteString];
   }
 
   else
@@ -720,11 +720,11 @@ LABEL_136:
   return v5;
 }
 
-- (unsigned)computeCRC16ForString:(id)a3
+- (unsigned)computeCRC16ForString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 dataUsingEncoding:4];
-  v5 = [v4 bytes];
+  stringCopy = string;
+  v4 = [stringCopy dataUsingEncoding:4];
+  bytes = [v4 bytes];
   v6 = [v4 length];
   if (v6 < 1)
   {
@@ -733,16 +733,16 @@ LABEL_136:
 
   else
   {
-    v7 = &v5[v6];
+    v7 = &bytes[v6];
     v8 = -1;
     do
     {
-      v9 = *v5++;
+      v9 = *bytes++;
       v10 = v9 ^ HIBYTE(v8) ^ ((v9 ^ HIBYTE(v8)) >> 4);
       v8 = (v10 | (v8 << 8)) ^ (v10 << 12) ^ (32 * v10);
     }
 
-    while (v5 < v7);
+    while (bytes < v7);
   }
 
   return v8;

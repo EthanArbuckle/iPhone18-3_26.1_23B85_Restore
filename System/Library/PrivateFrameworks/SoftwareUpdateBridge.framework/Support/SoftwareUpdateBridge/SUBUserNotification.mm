@@ -1,57 +1,57 @@
 @interface SUBUserNotification
 + (BOOL)activeWatchShouldOfferUnpair;
-- (id)internalMessageFromDenialInfo:(id)a3;
+- (id)internalMessageFromDenialInfo:(id)info;
 - (void)postSpaceNotificationWithUnpair;
-- (void)showDownloadAndPrepareError:(id)a3;
-- (void)showDuetConditions:(id)a3;
-- (void)showInstallationError:(id)a3;
-- (void)showUserNotificationHeader:(id)a3 message:(id)a4 internalMessage:(id)a5 defButton:(id)a6 altButton:(id)a7 bridgePane:(id)a8 showOnLockLockScreen:(BOOL)a9 dismissalHandler:(id)a10;
+- (void)showDownloadAndPrepareError:(id)error;
+- (void)showDuetConditions:(id)conditions;
+- (void)showInstallationError:(id)error;
+- (void)showUserNotificationHeader:(id)header message:(id)message internalMessage:(id)internalMessage defButton:(id)button altButton:(id)altButton bridgePane:(id)pane showOnLockLockScreen:(BOOL)screen dismissalHandler:(id)self0;
 @end
 
 @implementation SUBUserNotification
 
-- (void)showUserNotificationHeader:(id)a3 message:(id)a4 internalMessage:(id)a5 defButton:(id)a6 altButton:(id)a7 bridgePane:(id)a8 showOnLockLockScreen:(BOOL)a9 dismissalHandler:(id)a10
+- (void)showUserNotificationHeader:(id)header message:(id)message internalMessage:(id)internalMessage defButton:(id)button altButton:(id)altButton bridgePane:(id)pane showOnLockLockScreen:(BOOL)screen dismissalHandler:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v34 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
+  headerCopy = header;
+  messageCopy = message;
+  internalMessageCopy = internalMessage;
+  buttonCopy = button;
+  altButtonCopy = altButton;
+  paneCopy = pane;
+  handlerCopy = handler;
   v21 = [[SUBTransaction alloc] initWithName:@"ShowingUserNotification"];
   v22 = objc_opt_new();
   v23 = v22;
-  if (v15)
+  if (headerCopy)
   {
-    [v22 setObject:v15 forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
+    [v22 setObject:headerCopy forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
   }
 
-  if (v16)
+  if (messageCopy)
   {
-    v24 = v16;
+    v24 = messageCopy;
     v25 = MGGetBoolAnswer();
-    if (v34 && v25)
+    if (internalMessageCopy && v25)
     {
-      v26 = [NSString stringWithFormat:@"%@\n[Internal Only : %@]", v24, v34];
+      internalMessageCopy = [NSString stringWithFormat:@"%@\n[Internal Only : %@]", v24, internalMessageCopy];
 
-      v24 = v26;
+      v24 = internalMessageCopy;
     }
 
     [v23 setObject:v24 forKeyedSubscript:kCFUserNotificationAlertMessageKey];
   }
 
-  if (v17)
+  if (buttonCopy)
   {
-    [v23 setObject:v17 forKeyedSubscript:kCFUserNotificationDefaultButtonTitleKey];
+    [v23 setObject:buttonCopy forKeyedSubscript:kCFUserNotificationDefaultButtonTitleKey];
   }
 
-  if (v18)
+  if (altButtonCopy)
   {
-    [v23 setObject:v18 forKeyedSubscript:kCFUserNotificationAlternateButtonTitleKey];
+    [v23 setObject:altButtonCopy forKeyedSubscript:kCFUserNotificationAlternateButtonTitleKey];
   }
 
-  if (a9)
+  if (screen)
   {
     [v23 setObject:&__kCFBooleanTrue forKeyedSubscript:kCFUserNotificationAlertTopMostKey];
     [v23 setObject:&__kCFBooleanTrue forKeyedSubscript:SBUserNotificationDontDismissOnUnlock];
@@ -74,14 +74,14 @@
       CFRelease(v27);
     }
 
-    if (v20)
+    if (handlerCopy)
     {
       v29 = dispatch_get_global_queue(0, 0);
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000018F4;
       block[3] = &unk_10002C750;
-      v42 = v20;
+      v42 = handlerCopy;
       v41 = v21;
       dispatch_async(v29, block);
     }
@@ -92,29 +92,29 @@
   v35[1] = 3221225472;
   v35[2] = sub_100001938;
   v35[3] = &unk_10002C778;
-  v38 = v20;
+  v38 = handlerCopy;
   v39 = v27;
-  v36 = v19;
+  v36 = paneCopy;
   v37 = v21;
   v31 = v21;
-  v32 = v20;
-  v33 = v19;
+  v32 = handlerCopy;
+  v33 = paneCopy;
   dispatch_async(v30, v35);
 }
 
-- (void)showDownloadAndPrepareError:(id)a3
+- (void)showDownloadAndPrepareError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKey:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v7 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
-    v8 = [v5 code];
-    if (v8 <= 9)
+    code = [v5 code];
+    if (code <= 9)
     {
-      if ((v8 - 7) < 3)
+      if ((code - 7) < 3)
       {
         v52 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateBridge.framework"];
         v48 = [v52 localizedStringForKey:@"GENERIC_DOWNLOAD_HEADER" value:&stru_10002D9A0 table:@"SoftwareUpdateBridge"];
@@ -136,13 +136,13 @@ LABEL_10:
 
     else
     {
-      if (v8 > 24)
+      if (code > 24)
       {
-        if (v8 == 25)
+        if (code == 25)
         {
-          v31 = [v5 userInfo];
+          userInfo2 = [v5 userInfo];
           v32 = [NSString stringWithUTF8String:SUBMessageRequiredDiskSpaceKey[0]];
-          v33 = [v31 objectForKeyedSubscript:v32];
+          v33 = [userInfo2 objectForKeyedSubscript:v32];
 
           if ([v33 unsignedLongLongValue])
           {
@@ -174,7 +174,7 @@ LABEL_10:
           }
         }
 
-        else if (v8 == 54)
+        else if (code == 54)
         {
           v18 = [v5 description];
           v49 = [NSString stringWithFormat:@"Unable to determine free space on device: %@", v18];
@@ -195,9 +195,9 @@ LABEL_10:
         goto LABEL_21;
       }
 
-      if (v8 != 10)
+      if (code != 10)
       {
-        if (v8 == 23)
+        if (code == 23)
         {
           v9 = softwareupdatebridge_log;
           if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
@@ -210,8 +210,8 @@ LABEL_10:
         goto LABEL_21;
       }
 
-      v25 = [v7 domain];
-      v26 = [v25 isEqualToString:kCFErrorDomainMobileSoftwareUpdate];
+      domain = [v7 domain];
+      v26 = [domain isEqualToString:kCFErrorDomainMobileSoftwareUpdate];
 
       if (v26)
       {
@@ -237,27 +237,27 @@ LABEL_21:
   }
 }
 
-- (void)showInstallationError:(id)a3
+- (void)showInstallationError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v50 = v4;
-    if ([v4 code] == 25)
+    v50 = errorCopy;
+    if ([errorCopy code] == 25)
     {
-      v5 = [v50 userInfo];
+      userInfo = [v50 userInfo];
       v6 = [NSString stringWithUTF8String:SUBMessageRequiredDiskSpaceKey[0]];
-      v7 = [v5 objectForKeyedSubscript:v6];
+      v7 = [userInfo objectForKeyedSubscript:v6];
 
       if (![v7 unsignedLongLongValue])
       {
 LABEL_8:
 
-        v4 = v50;
+        errorCopy = v50;
         goto LABEL_9;
       }
 
-      v44 = self;
+      selfCopy = self;
       v43 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateBridge.framework"];
       v46 = [v43 localizedStringForKey:@"INSTALL_DISK_SPACE_HEADER" value:&stru_10002D9A0 table:@"SoftwareUpdateBridge"];
       v42 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateBridge.framework"];
@@ -273,7 +273,7 @@ LABEL_8:
       v15 = v46;
       v16 = [v14 localizedStringForKey:@"CLOSE_BUTTON" value:&stru_10002D9A0 table:@"SoftwareUpdateBridge"];
       LOBYTE(v40) = 1;
-      [(SUBUserNotification *)v44 showUserNotificationHeader:v46 message:v10 internalMessage:v11 defButton:v13 altButton:v16 bridgePane:@"bridge:tab=SETTINGS&root=GENERAL_LINK&path=USAGE_LINK" showOnLockLockScreen:v40 dismissalHandler:0];
+      [(SUBUserNotification *)selfCopy showUserNotificationHeader:v46 message:v10 internalMessage:v11 defButton:v13 altButton:v16 bridgePane:@"bridge:tab=SETTINGS&root=GENERAL_LINK&path=USAGE_LINK" showOnLockLockScreen:v40 dismissalHandler:0];
 
       v17 = v8;
       v19 = v42;
@@ -289,7 +289,7 @@ LABEL_7:
       v20 = [v50 description];
       v49 = [NSString stringWithFormat:@"Unable to determine free space on device: %@", v20];
 
-      v45 = self;
+      selfCopy2 = self;
       v21 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateBridge.framework"];
       v47 = [v21 localizedStringForKey:@"INSTALL_DISK_SPACE_HEADER" value:&stru_10002D9A0 table:@"SoftwareUpdateBridge"];
       v22 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateBridge.framework"];
@@ -303,31 +303,31 @@ LABEL_7:
       v15 = v47;
       v24 = [v12 localizedStringForKey:@"CLOSE_BUTTON" value:&stru_10002D9A0 table:@"SoftwareUpdateBridge"];
       LOBYTE(v41) = 1;
-      [(SUBUserNotification *)v45 showUserNotificationHeader:v47 message:v9 internalMessage:v49 defButton:v11 altButton:v24 bridgePane:@"https://support.apple.com/kb/HT211283" showOnLockLockScreen:v41 dismissalHandler:0];
+      [(SUBUserNotification *)selfCopy2 showUserNotificationHeader:v47 message:v9 internalMessage:v49 defButton:v11 altButton:v24 bridgePane:@"https://support.apple.com/kb/HT211283" showOnLockLockScreen:v41 dismissalHandler:0];
 
       v17 = v23;
       goto LABEL_7;
     }
 
     v25 = [v50 code] == 24;
-    v4 = v50;
+    errorCopy = v50;
     if (!v25)
     {
       v25 = [v50 code] == 18;
-      v4 = v50;
+      errorCopy = v50;
       if (!v25)
       {
-        v26 = [v50 userInfo];
-        v27 = [v26 objectForKey:NSUnderlyingErrorKey];
+        userInfo2 = [v50 userInfo];
+        v27 = [userInfo2 objectForKey:NSUnderlyingErrorKey];
 
-        v28 = [v27 domain];
+        domain = [v27 domain];
         v48 = v27;
-        v29 = self;
-        if ([v28 isEqualToString:kCFErrorDomainMobileSoftwareUpdate])
+        selfCopy3 = self;
+        if ([domain isEqualToString:kCFErrorDomainMobileSoftwareUpdate])
         {
-          v30 = [v27 code];
+          code = [v27 code];
 
-          if (v30 == 2)
+          if (code == 2)
           {
             v31 = @"VERIFICATION_MESSAGE";
             v32 = @"VERIFICATION_HEADER";
@@ -349,7 +349,7 @@ LABEL_19:
         v18 = [v34 localizedStringForKey:v31 value:&stru_10002D9A0 table:@"SoftwareUpdateBridge"];
 
         v19 = MGCopyAnswer();
-        v35 = v29;
+        v35 = selfCopy3;
         if ([v19 isEqualToString:@"Internal"] && v48)
         {
           v36 = [v48 description];
@@ -375,13 +375,13 @@ LABEL_19:
 LABEL_9:
 }
 
-- (id)internalMessageFromDenialInfo:(id)a3
+- (id)internalMessageFromDenialInfo:(id)info
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  infoCopy = info;
+  v4 = infoCopy;
+  if (infoCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"ChargerRequiredForApply"];
+    v5 = [infoCopy objectForKeyedSubscript:@"ChargerRequiredForApply"];
     if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v6 = softwareupdatebridge_log;
@@ -469,21 +469,21 @@ LABEL_9:
   return v15;
 }
 
-- (void)showDuetConditions:(id)a3
+- (void)showDuetConditions:(id)conditions
 {
-  v4 = a3;
-  v5 = [v4 denialReasons];
+  conditionsCopy = conditions;
+  denialReasons = [conditionsCopy denialReasons];
 
-  if (!v5)
+  if (!denialReasons)
   {
     goto LABEL_48;
   }
 
-  v6 = [v4 denialReasons];
-  v7 = [v6 userInfo];
+  denialReasons2 = [conditionsCopy denialReasons];
+  userInfo = [denialReasons2 userInfo];
 
-  v46 = self;
-  if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  selfCopy = self;
+  if (!userInfo || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v13 = softwareupdatebridge_log;
     if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
@@ -492,8 +492,8 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[DenialReasons]: Invalid denialInfo passed to showDuetConditions. Showing default alert", buf, 2u);
     }
 
-    v14 = [v4 denialReasons];
-    v15 = [v14 description];
+    denialReasons3 = [conditionsCopy denialReasons];
+    v15 = [denialReasons3 description];
 
     v16 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateBridge.framework"];
     v12 = v16;
@@ -501,21 +501,21 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v8 = [v7 objectForKeyedSubscript:@"RichDenialReasonsSupported"];
+  v8 = [userInfo objectForKeyedSubscript:@"RichDenialReasonsSupported"];
 
   v9 = softwareupdatebridge_log;
   v10 = os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT);
   if (v8)
   {
-    v47 = v4;
+    v47 = conditionsCopy;
     if (v10)
     {
       *buf = 138412290;
-      v50 = v7;
+      v50 = userInfo;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[DenialReasons]: DenialReasons passed in using new format : %@", buf, 0xCu);
     }
 
-    v11 = [v7 objectForKeyedSubscript:@"MinNeededBatteryLevelWithoutChargerForApply"];
+    v11 = [userInfo objectForKeyedSubscript:@"MinNeededBatteryLevelWithoutChargerForApply"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v12 = v11;
@@ -534,7 +534,7 @@ LABEL_9:
       }
     }
 
-    v20 = [v7 objectForKeyedSubscript:@"MinNeededBatteryLevelWithChargerForApply"];
+    v20 = [userInfo objectForKeyedSubscript:@"MinNeededBatteryLevelWithChargerForApply"];
     if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v21 = v20;
@@ -553,7 +553,7 @@ LABEL_9:
       }
     }
 
-    v23 = [v7 objectForKeyedSubscript:@"ChargerRequiredForApply"];
+    v23 = [userInfo objectForKeyedSubscript:@"ChargerRequiredForApply"];
     if (!v23 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v24 = softwareupdatebridge_log;
@@ -566,8 +566,8 @@ LABEL_9:
       v23 = &__kCFBooleanTrue;
     }
 
-    v25 = [v7 objectForKeyedSubscript:@"ChargerConnected"];
-    v15 = [(SUBUserNotification *)self internalMessageFromDenialInfo:v7];
+    v25 = [userInfo objectForKeyedSubscript:@"ChargerConnected"];
+    v15 = [(SUBUserNotification *)self internalMessageFromDenialInfo:userInfo];
     if ([v23 BOOLValue])
     {
       if (v25 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v25 BOOLValue] & 1) == 0)
@@ -617,7 +617,7 @@ LABEL_9:
       v36 = [NSString stringWithFormat:@"%@", v35];
       v18 = [NSString localizedUserNotificationStringForKey:v36 arguments:0];
 
-      v4 = v47;
+      conditionsCopy = v47;
       v25 = v45;
     }
 
@@ -630,14 +630,14 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[DenialReasons]: DenialReasons passed in using legacy format", buf, 2u);
   }
 
-  v15 = [v7 valueForKey:@"ChargerConnected"];
+  v15 = [userInfo valueForKey:@"ChargerConnected"];
   if (!v15)
   {
     goto LABEL_49;
   }
 
-  v30 = [v4 denialReasons];
-  v31 = [v30 code];
+  denialReasons4 = [conditionsCopy denialReasons];
+  code = [denialReasons4 code];
 
   if (![v15 BOOLValue])
   {
@@ -645,7 +645,7 @@ LABEL_9:
     goto LABEL_51;
   }
 
-  if ((*&v31 & 0x10000) == 0)
+  if ((*&code & 0x10000) == 0)
   {
 LABEL_49:
     v18 = 0;
@@ -666,15 +666,15 @@ LABEL_45:
   {
     v37 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateBridge.framework"];
     v38 = [v37 localizedStringForKey:@"INSTALLATION_PAUSED_HEADER" value:&stru_10002D9A0 table:@"SoftwareUpdateBridge"];
-    [v4 denialReasons];
-    v39 = v48 = v4;
+    [conditionsCopy denialReasons];
+    v39 = v48 = conditionsCopy;
     v40 = [v39 description];
     v41 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateBridge.framework"];
     v42 = [v41 localizedStringForKey:@"OK_BUTTON" value:&stru_10002D9A0 table:@"SoftwareUpdateBridge"];
     LOBYTE(v44) = 1;
-    [(SUBUserNotification *)v46 showUserNotificationHeader:v38 message:v18 internalMessage:v40 defButton:v42 altButton:0 bridgePane:0 showOnLockLockScreen:v44 dismissalHandler:0];
+    [(SUBUserNotification *)selfCopy showUserNotificationHeader:v38 message:v18 internalMessage:v40 defButton:v42 altButton:0 bridgePane:0 showOnLockLockScreen:v44 dismissalHandler:0];
 
-    v4 = v48;
+    conditionsCopy = v48;
   }
 
 LABEL_48:
@@ -685,8 +685,8 @@ LABEL_48:
   v2 = SUBActiveNRDevice();
   v3 = [v2 valueForProperty:NRDevicePropertyProductType];
   v4 = [NSSet setWithArray:&off_10002F538];
-  v5 = [v3 lowercaseString];
-  v6 = [v4 containsObject:v5];
+  lowercaseString = [v3 lowercaseString];
+  v6 = [v4 containsObject:lowercaseString];
 
   return v6;
 }

@@ -1,5 +1,5 @@
 @interface HROnboardingElectrocardiogramUpdateAvailabilityViewController
-+ (void)markElectrocardiogramUpdateAsViewed:(id)a3;
++ (void)markElectrocardiogramUpdateAsViewed:(id)viewed;
 - (double)_bodyBottomToLocationTop;
 - (double)_locationFooterLastBaselineToContinueButton;
 - (double)_titleBottomToBodyTop;
@@ -9,31 +9,31 @@
 - (id)buttonTitleString;
 - (id)deviceNotSupportedBodyString;
 - (id)featureDisabledBodyString;
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
 - (id)locationFeatureIneligiblePromptBodyString;
 - (id)locationNotFoundPromptBodyString;
 - (id)locationNotFoundPromptTitleString;
 - (id)watchOSVersionTooLowBodyString;
 - (void)_setUpStackedButtonView;
-- (void)continueAndCheckForUpdateAvailability:(id)a3;
+- (void)continueAndCheckForUpdateAvailability:(id)availability;
 - (void)setUpConstraints;
 - (void)setUpUI;
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation HROnboardingElectrocardiogramUpdateAvailabilityViewController
 
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
-  v4 = a3;
+  onboardingCopy = onboarding;
   v10.receiver = self;
   v10.super_class = HROnboardingElectrocardiogramUpdateAvailabilityViewController;
-  v5 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)&v10 initForOnboarding:a3 upgradingFromAlgorithmVersion:a4];
+  v5 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)&v10 initForOnboarding:onboarding upgradingFromAlgorithmVersion:version];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (onboardingCopy)
     {
       [v5 setRightButtonType:2];
     }
@@ -46,14 +46,14 @@
   return v6;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HROnboardingElectrocardiogramUpdateAvailabilityViewController;
-  [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)&v6 viewDidAppear:a3];
-  v4 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self delegate];
-  v5 = [v4 healthStore];
-  [HROnboardingElectrocardiogramUpdateAvailabilityViewController markElectrocardiogramUpdateAsViewed:v5];
+  [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)&v6 viewDidAppear:appear];
+  delegate = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self delegate];
+  healthStore = [delegate healthStore];
+  [HROnboardingElectrocardiogramUpdateAvailabilityViewController markElectrocardiogramUpdateAsViewed:healthStore];
 }
 
 - (void)setUpUI
@@ -67,9 +67,9 @@
   [(HROnboardingWristImageView *)v3 setTimeRemaining:26.0];
   [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self setHeroView:v3];
 
-  v4 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
-  v5 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self heroView];
-  [v4 addSubview:v5];
+  contentView = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
+  heroView = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self heroView];
+  [contentView addSubview:heroView];
 
   v6 = objc_alloc(MEMORY[0x277D756B8]);
   v7 = *MEMORY[0x277CBF3A0];
@@ -77,41 +77,41 @@
   v9 = *(MEMORY[0x277CBF3A0] + 16);
   v10 = *(MEMORY[0x277CBF3A0] + 24);
   v11 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], v8, v9, v10}];
-  v12 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleString];
-  [v11 setText:v12];
+  titleString = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleString];
+  [v11 setText:titleString];
 
   [v11 setTextAlignment:4];
-  v13 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _titleFont];
-  [v11 setFont:v13];
+  _titleFont = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _titleFont];
+  [v11 setFont:_titleFont];
 
   [v11 setAdjustsFontForContentSizeCategory:1];
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v11 setNumberOfLines:0];
   [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self setTitleLabel:v11];
 
-  v14 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
-  v15 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
-  [v14 addSubview:v15];
+  contentView2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
+  titleLabel = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
+  [contentView2 addSubview:titleLabel];
 
   v16 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v7, v8, v9, v10}];
-  v17 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self bodyString];
-  [v16 setText:v17];
+  bodyString = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self bodyString];
+  [v16 setText:bodyString];
 
   [v16 setTextAlignment:4];
-  v18 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v16 setTextColor:v18];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v16 setTextColor:secondaryLabelColor];
 
-  v19 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _bodyFont];
-  [v16 setFont:v19];
+  _bodyFont = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _bodyFont];
+  [v16 setFont:_bodyFont];
 
   [v16 setAdjustsFontForContentSizeCategory:1];
   [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v16 setNumberOfLines:0];
   [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self setBodyLabel:v16];
 
-  v20 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
-  v21 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self bodyLabel];
-  [v20 addSubview:v21];
+  contentView3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
+  bodyLabel = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self bodyLabel];
+  [contentView3 addSubview:bodyLabel];
 
   [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _setUpStackedButtonView];
 }
@@ -121,80 +121,80 @@
   v38.receiver = self;
   v38.super_class = HROnboardingElectrocardiogramUpdateAvailabilityViewController;
   [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)&v38 setUpConstraints];
-  v3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self heroView];
-  v4 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
-  [v3 hk_alignHorizontalConstraintsWithView:v4 margin:0.0];
+  heroView = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self heroView];
+  contentView = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
+  [heroView hk_alignHorizontalConstraintsWithView:contentView margin:0.0];
 
-  v5 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self heroView];
-  v6 = [v5 topAnchor];
-  v7 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  heroView2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self heroView];
+  topAnchor = [heroView2 topAnchor];
+  contentView2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
-  v11 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
+  titleLabel = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
+  contentView3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v10 hrui_alignHorizontalConstraintsWithView:v11 insets:?];
+  [titleLabel hrui_alignHorizontalConstraintsWithView:contentView3 insets:?];
 
-  v12 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
-  v13 = [v12 topAnchor];
-  v14 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self heroView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:29.0];
+  titleLabel2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
+  topAnchor3 = [titleLabel2 topAnchor];
+  heroView3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self heroView];
+  bottomAnchor = [heroView3 bottomAnchor];
+  v16 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:29.0];
   [v16 setActive:1];
 
-  v17 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self bodyLabel];
-  v18 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
-  [v17 hk_alignHorizontalConstraintsWithView:v18 margin:0.0];
+  bodyLabel = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self bodyLabel];
+  titleLabel3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
+  [bodyLabel hk_alignHorizontalConstraintsWithView:titleLabel3 margin:0.0];
 
-  v19 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self bodyLabel];
-  v20 = [v19 topAnchor];
-  v21 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
-  v22 = [v21 bottomAnchor];
+  bodyLabel2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self bodyLabel];
+  topAnchor4 = [bodyLabel2 topAnchor];
+  titleLabel4 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
+  bottomAnchor2 = [titleLabel4 bottomAnchor];
   [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _titleBottomToBodyTop];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:?];
+  v23 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:?];
   [v23 setActive:1];
 
-  v24 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
-  v25 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
-  [v24 hk_alignHorizontalConstraintsWithView:v25 margin:0.0];
+  stackedButtonView = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
+  titleLabel5 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self titleLabel];
+  [stackedButtonView hk_alignHorizontalConstraintsWithView:titleLabel5 margin:0.0];
 
-  v26 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
-  v27 = [v26 topAnchor];
-  v28 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self bodyLabel];
-  v29 = [v28 bottomAnchor];
+  stackedButtonView2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
+  topAnchor5 = [stackedButtonView2 topAnchor];
+  bodyLabel3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self bodyLabel];
+  bottomAnchor3 = [bodyLabel3 bottomAnchor];
   [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _locationFooterLastBaselineToContinueButton];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:?];
+  v30 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:?];
   [v30 setActive:1];
 
-  v31 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
-  v32 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
-  [v31 alignBlurViewHorizontalConstraintsWithView:v32];
+  stackedButtonView3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
+  contentView4 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
+  [stackedButtonView3 alignBlurViewHorizontalConstraintsWithView:contentView4];
 
-  v33 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
-  v34 = [v33 bottomAnchor];
-  v35 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
-  v36 = [v35 bottomAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  contentView5 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
+  bottomAnchor4 = [contentView5 bottomAnchor];
+  stackedButtonView4 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
+  bottomAnchor5 = [stackedButtonView4 bottomAnchor];
+  v37 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   [v37 setActive:1];
 }
 
-+ (void)markElectrocardiogramUpdateAsViewed:(id)a3
++ (void)markElectrocardiogramUpdateAsViewed:(id)viewed
 {
   v5 = MEMORY[0x277CBEAA8];
-  v6 = a3;
-  v7 = [v5 date];
-  v8 = [MEMORY[0x277CCD570] safetyDefaultsDomainWithHealthStore:v6];
+  viewedCopy = viewed;
+  date = [v5 date];
+  v8 = [MEMORY[0x277CCD570] safetyDefaultsDomainWithHealthStore:viewedCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __101__HROnboardingElectrocardiogramUpdateAvailabilityViewController_markElectrocardiogramUpdateAsViewed___block_invoke;
   v10[3] = &unk_2796FB9F0;
-  v12 = a1;
+  selfCopy = self;
   v13 = a2;
-  v11 = v7;
-  v9 = v7;
+  v11 = date;
+  v9 = date;
   [v8 setDate:v9 forKey:@"ElectrocardiogramUpdateDateViewed" completion:v10];
 }
 
@@ -247,63 +247,63 @@ LABEL_6:
 - (void)_setUpStackedButtonView
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self buttonTitleString];
-  v12[0] = v3;
+  buttonTitleString = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self buttonTitleString];
+  v12[0] = buttonTitleString;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v5 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self locationFooterString];
-  v6 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v4 footerText:v5 boldFooterText:0 delegate:self];
+  locationFooterString = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self locationFooterString];
+  v6 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v4 footerText:locationFooterString boldFooterText:0 delegate:self];
   [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self setStackedButtonView:v6];
 
-  v7 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
-  [v7 setFixedBottomButtonSpacing:1];
+  stackedButtonView = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
+  [stackedButtonView setFixedBottomButtonSpacing:1];
 
-  v8 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackedButtonView2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
+  [stackedButtonView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
-  [v9 setBlurHidden:1];
+  stackedButtonView3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
+  [stackedButtonView3 setBlurHidden:1];
 
-  v10 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
-  v11 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
-  [v10 addSubview:v11];
+  contentView = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self contentView];
+  stackedButtonView4 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self stackedButtonView];
+  [contentView addSubview:stackedButtonView4];
 }
 
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index
 {
-  if (!a4)
+  if (!index)
   {
-    v6 = [a3 buttons];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    buttons = [view buttons];
+    v7 = [buttons objectAtIndexedSubscript:0];
 
     [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self continueAndCheckForUpdateAvailability:v7];
   }
 }
 
-- (void)continueAndCheckForUpdateAvailability:(id)a3
+- (void)continueAndCheckForUpdateAvailability:(id)availability
 {
-  v5 = a3;
-  [v5 setEnabled:0];
-  v6 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self onboardingAvailabilityDeterminer];
+  availabilityCopy = availability;
+  [availabilityCopy setEnabled:0];
+  onboardingAvailabilityDeterminer = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self onboardingAvailabilityDeterminer];
 
-  if (!v6)
+  if (!onboardingAvailabilityDeterminer)
   {
     v7 = [HRElectrocardiogramCurrentLocationOnboardingDeterminer alloc];
-    v8 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self delegate];
-    v9 = [v8 healthStore];
-    v10 = [(HRElectrocardiogramCurrentLocationOnboardingDeterminer *)v7 initWithHealthStore:v9];
+    delegate = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self delegate];
+    healthStore = [delegate healthStore];
+    v10 = [(HRElectrocardiogramCurrentLocationOnboardingDeterminer *)v7 initWithHealthStore:healthStore];
     [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self setOnboardingAvailabilityDeterminer:v10];
   }
 
-  v11 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self onboardingAvailabilityDeterminer];
+  onboardingAvailabilityDeterminer2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self onboardingAvailabilityDeterminer];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __103__HROnboardingElectrocardiogramUpdateAvailabilityViewController_continueAndCheckForUpdateAvailability___block_invoke;
   v13[3] = &unk_2796FB750;
-  v14 = v5;
-  v15 = self;
+  v14 = availabilityCopy;
+  selfCopy = self;
   v16 = a2;
-  v12 = v5;
-  [v11 isElectrocardiogramOnboardingAvailableInCurrentLocationForActiveWatch:v13];
+  v12 = availabilityCopy;
+  [onboardingAvailabilityDeterminer2 isElectrocardiogramOnboardingAvailableInCurrentLocationForActiveWatch:v13];
 }
 
 void __103__HROnboardingElectrocardiogramUpdateAvailabilityViewController_continueAndCheckForUpdateAvailability___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -506,8 +506,8 @@ LABEL_9:
 - (id)_titleFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _titleFontTextStyle];
-  v4 = [v2 hk_scalableFontForTextStyle:v3 symbolicTraits:2];
+  _titleFontTextStyle = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _titleFontTextStyle];
+  v4 = [v2 hk_scalableFontForTextStyle:_titleFontTextStyle symbolicTraits:2];
 
   return v4;
 }
@@ -515,8 +515,8 @@ LABEL_9:
 - (id)_bodyFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _bodyFontTextStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _bodyFontTextStyle = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _bodyFontTextStyle];
+  v4 = [v2 preferredFontForTextStyle:_bodyFontTextStyle];
 
   return v4;
 }
@@ -524,16 +524,16 @@ LABEL_9:
 - (id)_footnoteFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _footnoteTextStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _footnoteTextStyle = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _footnoteTextStyle];
+  v4 = [v2 preferredFontForTextStyle:_footnoteTextStyle];
 
   return v4;
 }
 
 - (double)_titleBottomToBodyTop
 {
-  v2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:15.0];
+  _bodyFont = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:15.0];
   v4 = v3;
 
   return v4;
@@ -541,8 +541,8 @@ LABEL_9:
 
 - (double)_bodyBottomToLocationTop
 {
-  v2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:37.0];
+  _bodyFont = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:37.0];
   v4 = v3;
 
   return v4;
@@ -550,8 +550,8 @@ LABEL_9:
 
 - (double)_locationFooterLastBaselineToContinueButton
 {
-  v2 = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:6.0];
+  _bodyFont = [(HROnboardingElectrocardiogramUpdateAvailabilityViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:6.0];
   v4 = v3;
 
   return v4;

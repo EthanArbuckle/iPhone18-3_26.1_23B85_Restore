@@ -1,22 +1,22 @@
 @interface GTServiceProviderXPCDispatcher
-- (GTServiceProviderXPCDispatcher)initWithService:(id)a3 properties:(id)a4;
-- (void)allServices:(id)a3 replyConnection:(id)a4;
-- (void)broadcastDisconnect:(id)a3 replyConnection:(id)a4;
-- (void)deregisterObserver_:(id)a3 replyConnection:(id)a4;
-- (void)deregisterService_:(id)a3 replyConnection:(id)a4;
-- (void)registerObserver_:(id)a3 replyConnection:(id)a4;
-- (void)registerService_forProcess_:(id)a3 replyConnection:(id)a4;
-- (void)waitForService_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)waitForService_error_:(id)a3 replyConnection:(id)a4;
+- (GTServiceProviderXPCDispatcher)initWithService:(id)service properties:(id)properties;
+- (void)allServices:(id)services replyConnection:(id)connection;
+- (void)broadcastDisconnect:(id)disconnect replyConnection:(id)connection;
+- (void)deregisterObserver_:(id)observer_ replyConnection:(id)connection;
+- (void)deregisterService_:(id)service_ replyConnection:(id)connection;
+- (void)registerObserver_:(id)observer_ replyConnection:(id)connection;
+- (void)registerService_forProcess_:(id)process_ replyConnection:(id)connection;
+- (void)waitForService_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)waitForService_error_:(id)service_error_ replyConnection:(id)connection;
 @end
 
 @implementation GTServiceProviderXPCDispatcher
 
-- (GTServiceProviderXPCDispatcher)initWithService:(id)a3 properties:(id)a4
+- (GTServiceProviderXPCDispatcher)initWithService:(id)service properties:(id)properties
 {
-  v7 = a3;
-  v8 = [a4 protocolMethods];
-  v9 = [v8 mutableCopy];
+  serviceCopy = service;
+  protocolMethods = [properties protocolMethods];
+  v9 = [protocolMethods mutableCopy];
 
   [v9 addObject:@"broadcastDisconnect"];
   v13.receiver = self;
@@ -25,28 +25,28 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_serviceProvider, a3);
+    objc_storeStrong(&v10->_serviceProvider, service);
   }
 
   return v11;
 }
 
-- (void)allServices:(id)a3 replyConnection:(id)a4
+- (void)allServices:(id)services replyConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GTServiceProvider *)self->_serviceProvider allServices];
-  v9 = gt_xpc_dictionary_create_reply(v6);
-  if (([v7 isTrusted] & 1) == 0)
+  servicesCopy = services;
+  connectionCopy = connection;
+  allServices = [(GTServiceProvider *)self->_serviceProvider allServices];
+  v9 = gt_xpc_dictionary_create_reply(servicesCopy);
+  if (([connectionCopy isTrusted] & 1) == 0)
   {
-    v10 = [[NSArray alloc] initWithArray:v8 copyItems:1];
+    v10 = [[NSArray alloc] initWithArray:allServices copyItems:1];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v10;
-    v11 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allServices = v10;
+    v11 = [allServices countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -58,38 +58,38 @@
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allServices);
           }
 
-          v15 = [*(*(&v16 + 1) + 8 * v14) serviceProperties];
-          [v15 setDeviceUDID:0];
+          serviceProperties = [*(*(&v16 + 1) + 8 * v14) serviceProperties];
+          [serviceProperties setDeviceUDID:0];
 
           v14 = v14 + 1;
         }
 
         while (v12 != v14);
-        v12 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [allServices countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
     }
   }
 
-  xpc_dictionary_set_nsobject(v9, "returnValue", v8);
-  [v7 sendMessage:v9];
+  xpc_dictionary_set_nsobject(v9, "returnValue", allServices);
+  [connectionCopy sendMessage:v9];
 }
 
-- (void)registerService_forProcess_:(id)a3 replyConnection:(id)a4
+- (void)registerService_forProcess_:(id)process_ replyConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = gt_xpc_dictionary_create_reply(v6);
+  process_Copy = process_;
+  connectionCopy = connection;
+  v8 = gt_xpc_dictionary_create_reply(process_Copy);
   v9 = objc_opt_class();
-  nsobject = xpc_dictionary_get_nsobject(v6, "serviceProperties", v9);
+  nsobject = xpc_dictionary_get_nsobject(process_Copy, "serviceProperties", v9);
   if (nsobject)
   {
     v11 = objc_opt_class();
-    v12 = xpc_dictionary_get_nsobject(v6, "processInfo", v11);
+    v12 = xpc_dictionary_get_nsobject(process_Copy, "processInfo", v11);
     if (!v12)
     {
       v21 = NSLocalizedDescriptionKey;
@@ -99,7 +99,7 @@
       v20 = [NSError errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v19];
 
       xpc_dictionary_set_nserror(v8, "error", v20);
-      [v7 sendMessage:v8];
+      [connectionCopy sendMessage:v8];
 
       goto LABEL_7;
     }
@@ -107,10 +107,10 @@
     [(GTServiceProvider *)self->_serviceProvider registerService:nsobject forProcess:v12];
     registeredConnections = self->_registeredConnections;
     v14 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [nsobject servicePort]);
-    [(NSMutableDictionary *)registeredConnections setObject:v7 forKeyedSubscript:v14];
+    [(NSMutableDictionary *)registeredConnections setObject:connectionCopy forKeyedSubscript:v14];
 
-    v15 = [nsobject deviceUDID];
-    xpc_dictionary_set_string(v8, "deviceUDID", [v15 UTF8String]);
+    deviceUDID = [nsobject deviceUDID];
+    xpc_dictionary_set_string(v8, "deviceUDID", [deviceUDID UTF8String]);
 
     xpc_dictionary_set_uint64(v8, "servicePort", [nsobject servicePort]);
   }
@@ -126,16 +126,16 @@
     xpc_dictionary_set_nserror(v8, "error", v12);
   }
 
-  [v7 sendMessage:v8];
+  [connectionCopy sendMessage:v8];
 LABEL_7:
 }
 
-- (void)waitForService_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)waitForService_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = gt_xpc_dictionary_create_reply(v7);
-  string = xpc_dictionary_get_string(v7, "protocolName");
+  connectionCopy = connection;
+  handler_Copy = handler_;
+  v8 = gt_xpc_dictionary_create_reply(handler_Copy);
+  string = xpc_dictionary_get_string(handler_Copy, "protocolName");
 
   if (string)
   {
@@ -148,18 +148,18 @@ LABEL_7:
   v13[2] = sub_100009F70;
   v13[3] = &unk_100040BC0;
   v14 = v8;
-  v15 = v6;
-  v11 = v6;
+  v15 = connectionCopy;
+  v11 = connectionCopy;
   v12 = v8;
   [(GTServiceProvider *)serviceProvider waitForService:string completionHandler:v13];
 }
 
-- (void)waitForService_error_:(id)a3 replyConnection:(id)a4
+- (void)waitForService_error_:(id)service_error_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = gt_xpc_dictionary_create_reply(v7);
-  string = xpc_dictionary_get_string(v7, "protocolName");
+  connectionCopy = connection;
+  service_error_Copy = service_error_;
+  v8 = gt_xpc_dictionary_create_reply(service_error_Copy);
+  string = xpc_dictionary_get_string(service_error_Copy, "protocolName");
 
   if (string)
   {
@@ -172,48 +172,48 @@ LABEL_7:
   v13[2] = sub_10000A0D4;
   v13[3] = &unk_100040BC0;
   v14 = v8;
-  v15 = v6;
-  v11 = v6;
+  v15 = connectionCopy;
+  v11 = connectionCopy;
   v12 = v8;
   [(GTServiceProvider *)serviceProvider waitForService:string completionHandler:v13];
 }
 
-- (void)deregisterService_:(id)a3 replyConnection:(id)a4
+- (void)deregisterService_:(id)service_ replyConnection:(id)connection
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "servicePort");
+  uint64 = xpc_dictionary_get_uint64(service_, "servicePort");
   [(GTServiceProvider *)self->_serviceProvider deregisterService:uint64];
   registeredConnections = self->_registeredConnections;
   v7 = [NSNumber numberWithUnsignedLongLong:uint64];
   [(NSMutableDictionary *)registeredConnections removeObjectForKey:v7];
 }
 
-- (void)registerObserver_:(id)a3 replyConnection:(id)a4
+- (void)registerObserver_:(id)observer_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(GTServiceObserver *)[GTServiceProviderObserver alloc] initWithMessage:v7 notifyConnection:v6];
+  connectionCopy = connection;
+  observer_Copy = observer_;
+  v10 = [(GTServiceObserver *)[GTServiceProviderObserver alloc] initWithMessage:observer_Copy notifyConnection:connectionCopy];
   v8 = [(GTServiceProvider *)self->_serviceProvider registerObserver:v10];
-  v9 = gt_xpc_dictionary_create_reply(v7);
+  v9 = gt_xpc_dictionary_create_reply(observer_Copy);
 
   xpc_dictionary_set_uint64(v9, "observerId", v8);
-  [v6 sendMessage:v9];
+  [connectionCopy sendMessage:v9];
 }
 
-- (void)deregisterObserver_:(id)a3 replyConnection:(id)a4
+- (void)deregisterObserver_:(id)observer_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  [(GTServiceProvider *)self->_serviceProvider deregisterObserver:xpc_dictionary_get_uint64(v7, "observerId")];
-  v8 = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  observer_Copy = observer_;
+  [(GTServiceProvider *)self->_serviceProvider deregisterObserver:xpc_dictionary_get_uint64(observer_Copy, "observerId")];
+  v8 = gt_xpc_dictionary_create_reply(observer_Copy);
 
-  [v6 sendMessage:v8];
+  [connectionCopy sendMessage:v8];
 }
 
-- (void)broadcastDisconnect:(id)a3 replyConnection:(id)a4
+- (void)broadcastDisconnect:(id)disconnect replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = xpc_dictionary_get_array(a3, "_pathHistory");
-  [(GTServiceProvider *)self->_serviceProvider deregisterObserversForConnection:v6 path:v7];
+  connectionCopy = connection;
+  v7 = xpc_dictionary_get_array(disconnect, "_pathHistory");
+  [(GTServiceProvider *)self->_serviceProvider deregisterObserversForConnection:connectionCopy path:v7];
 }
 
 @end

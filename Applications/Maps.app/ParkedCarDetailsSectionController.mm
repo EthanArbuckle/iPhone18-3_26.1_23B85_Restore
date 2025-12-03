@@ -1,14 +1,14 @@
 @interface ParkedCarDetailsSectionController
-- (ParkedCarDetailsSectionController)initWithParkedCar:(id)a3;
+- (ParkedCarDetailsSectionController)initWithParkedCar:(id)car;
 - (ParkedCarDetailsSectionControllerDelegate)detailsDelegate;
 - (id)sectionHeaderViewModel;
 - (void)_commonInit;
 - (void)_scheduleTimestampUpdateTimerIfNecessary;
 - (void)_updateTimestamp;
-- (void)photoCarouselController:(id)a3 didSelectImageWithIdentifier:(id)a4;
-- (void)photoCarouselController:(id)a3 requestsRemovingImageForIdentifier:(id)a4 completion:(id)a5;
-- (void)photoCarouselControllerRequestsAddingNewPhoto:(id)a3;
-- (void)setActive:(BOOL)a3;
+- (void)photoCarouselController:(id)controller didSelectImageWithIdentifier:(id)identifier;
+- (void)photoCarouselController:(id)controller requestsRemovingImageForIdentifier:(id)identifier completion:(id)completion;
+- (void)photoCarouselControllerRequestsAddingNewPhoto:(id)photo;
+- (void)setActive:(BOOL)active;
 - (void)updateFromParkedCar;
 @end
 
@@ -34,9 +34,9 @@
   }
 
   v5 = +[NSDate date];
-  v6 = [(ParkedCarSectionController *)self parkedCar];
-  v7 = [v6 date];
-  [v5 timeIntervalSinceDate:v7];
+  parkedCar = [(ParkedCarSectionController *)self parkedCar];
+  date = [parkedCar date];
+  [v5 timeIntervalSinceDate:date];
   v9 = v8;
 
   if (v9 >= 21600.0)
@@ -83,11 +83,11 @@
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v5.receiver = self;
   v5.super_class = ParkedCarDetailsSectionController;
-  [(ParkedCarDetailsSectionController *)&v5 setActive:a3];
+  [(ParkedCarDetailsSectionController *)&v5 setActive:active];
   if ([(ParkedCarDetailsSectionController *)self isActive])
   {
     [(ParkedCarDetailsSectionController *)self _scheduleTimestampUpdateTimerIfNecessary];
@@ -101,47 +101,47 @@
   }
 }
 
-- (void)photoCarouselController:(id)a3 didSelectImageWithIdentifier:(id)a4
+- (void)photoCarouselController:(id)controller didSelectImageWithIdentifier:(id)identifier
 {
-  if ([a4 isEqualToString:@"ParkedCarImageIdentifier"])
+  if ([identifier isEqualToString:@"ParkedCarImageIdentifier"])
   {
-    v5 = [(ParkedCarDetailsSectionController *)self detailsDelegate];
-    [v5 parkedCarDetailsSectionControllerDidTapViewPhoto:self];
+    detailsDelegate = [(ParkedCarDetailsSectionController *)self detailsDelegate];
+    [detailsDelegate parkedCarDetailsSectionControllerDidTapViewPhoto:self];
   }
 }
 
-- (void)photoCarouselControllerRequestsAddingNewPhoto:(id)a3
+- (void)photoCarouselControllerRequestsAddingNewPhoto:(id)photo
 {
-  v4 = [(ParkedCarDetailsSectionController *)self detailsDelegate];
-  [v4 parkedCarDetailsSectionControllerDidTapAddPhotos:self];
+  detailsDelegate = [(ParkedCarDetailsSectionController *)self detailsDelegate];
+  [detailsDelegate parkedCarDetailsSectionControllerDidTapAddPhotos:self];
 }
 
-- (void)photoCarouselController:(id)a3 requestsRemovingImageForIdentifier:(id)a4 completion:(id)a5
+- (void)photoCarouselController:(id)controller requestsRemovingImageForIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
-  v6 = [(ParkedCarDetailsSectionController *)self detailsDelegate];
-  [v6 parkedCarDetailsSectionControllerDidRemovePhoto:self];
+  completionCopy = completion;
+  detailsDelegate = [(ParkedCarDetailsSectionController *)self detailsDelegate];
+  [detailsDelegate parkedCarDetailsSectionControllerDidRemovePhoto:self];
 
-  v7[2](v7, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
 - (void)updateFromParkedCar
 {
-  v3 = [(ParkedCarSectionController *)self parkedCar];
+  parkedCar = [(ParkedCarSectionController *)self parkedCar];
 
-  if (v3)
+  if (parkedCar)
   {
     [(ParkedCarDetailsSectionController *)self _updateTimestamp];
     [(ParkedCarDetailsSectionController *)self _scheduleTimestampUpdateTimerIfNecessary];
-    v4 = [(ParkedCarSectionController *)self parkedCar];
-    v5 = [v4 image];
+    parkedCar2 = [(ParkedCarSectionController *)self parkedCar];
+    image = [parkedCar2 image];
 
     photoCarouselController = self->_photoCarouselController;
-    if (v5)
+    if (image)
     {
-      v7 = [(ParkedCarSectionController *)self parkedCar];
-      v8 = [v7 image];
-      [(UGCPhotoCarouselController *)photoCarouselController addImage:v8 forIdentifier:@"ParkedCarImageIdentifier"];
+      parkedCar3 = [(ParkedCarSectionController *)self parkedCar];
+      image2 = [parkedCar3 image];
+      [(UGCPhotoCarouselController *)photoCarouselController addImage:image2 forIdentifier:@"ParkedCarImageIdentifier"];
 
       goto LABEL_7;
     }
@@ -159,9 +159,9 @@ LABEL_7:
   if (([(MULabeledValueActionTextFieldRowView *)self->_notesRowView isEditing]& 1) == 0)
   {
     notesRowView = self->_notesRowView;
-    v12 = [(ParkedCarSectionController *)self parkedCar];
-    v11 = [v12 notes];
-    [(MULabeledValueActionTextFieldRowView *)notesRowView setCurrentTextFieldValueIfNeeded:v11];
+    parkedCar4 = [(ParkedCarSectionController *)self parkedCar];
+    notes = [parkedCar4 notes];
+    [(MULabeledValueActionTextFieldRowView *)notesRowView setCurrentTextFieldValueIfNeeded:notes];
   }
 }
 
@@ -211,12 +211,12 @@ LABEL_7:
     self->_photoCarouselController = v16;
 
     v18 = [[MULabeledValueActionRowView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    v19 = [[UGCPhotoCarouselCell alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    [(UGCPhotoCarouselCell *)v19 setSectionInset:16.0, kMUPlacePlatterPadding, 16.0, kMUPlacePlatterPadding];
-    [(UGCPhotoCarouselCell *)v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UGCPhotoCarouselCell *)v19 setCarouselController:self->_photoCarouselController];
-    [v18 addSubview:v19];
-    v20 = [(UGCPhotoCarouselCell *)v19 _maps_constraintsForCenteringInView:v18];
+    height = [[UGCPhotoCarouselCell alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    [(UGCPhotoCarouselCell *)height setSectionInset:16.0, kMUPlacePlatterPadding, 16.0, kMUPlacePlatterPadding];
+    [(UGCPhotoCarouselCell *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UGCPhotoCarouselCell *)height setCarouselController:self->_photoCarouselController];
+    [v18 addSubview:height];
+    v20 = [(UGCPhotoCarouselCell *)height _maps_constraintsForCenteringInView:v18];
     [NSLayoutConstraint activateConstraints:v20];
 
     [v26 addObject:v18];
@@ -226,17 +226,17 @@ LABEL_7:
   v22 = [v26 copy];
   [v21 setRowViews:v22];
 
-  v23 = [(ParkedCarDetailsSectionController *)self sectionHeaderViewModel];
-  v24 = [MUPlaceSectionView insetPlatterSectionViewForContentView:v21 sectionHeaderViewModel:v23 sectionFooterViewModel:0];
+  sectionHeaderViewModel = [(ParkedCarDetailsSectionController *)self sectionHeaderViewModel];
+  v24 = [MUPlaceSectionView insetPlatterSectionViewForContentView:v21 sectionHeaderViewModel:sectionHeaderViewModel sectionFooterViewModel:0];
   sectionView = self->_sectionView;
   self->_sectionView = v24;
 }
 
-- (ParkedCarDetailsSectionController)initWithParkedCar:(id)a3
+- (ParkedCarDetailsSectionController)initWithParkedCar:(id)car
 {
   v6.receiver = self;
   v6.super_class = ParkedCarDetailsSectionController;
-  v3 = [(ParkedCarSectionController *)&v6 initWithParkedCar:a3];
+  v3 = [(ParkedCarSectionController *)&v6 initWithParkedCar:car];
   v4 = v3;
   if (v3)
   {

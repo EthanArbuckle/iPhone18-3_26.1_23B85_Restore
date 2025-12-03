@@ -1,59 +1,59 @@
 @interface CLPInstSchemaServiceNodeComparatorResult
-- (BOOL)isEqual:(id)a3;
-- (CLPInstSchemaServiceNodeComparatorResult)initWithDictionary:(id)a3;
-- (CLPInstSchemaServiceNodeComparatorResult)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLPInstSchemaServiceNodeComparatorResult)initWithDictionary:(id)dictionary;
+- (CLPInstSchemaServiceNodeComparatorResult)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (unint64_t)mismatchedFieldsAtIndex:(unint64_t)a3;
-- (void)addMismatchedFields:(unint64_t)a3;
-- (void)setHasIsMatched:(BOOL)a3;
-- (void)setHasIsValidOriginalItem:(BOOL)a3;
-- (void)setHasIsValidReplayedItem:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (unint64_t)mismatchedFieldsAtIndex:(unint64_t)index;
+- (void)addMismatchedFields:(unint64_t)fields;
+- (void)setHasIsMatched:(BOOL)matched;
+- (void)setHasIsValidOriginalItem:(BOOL)item;
+- (void)setHasIsValidReplayedItem:(BOOL)item;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CLPInstSchemaServiceNodeComparatorResult
 
-- (CLPInstSchemaServiceNodeComparatorResult)initWithDictionary:(id)a3
+- (CLPInstSchemaServiceNodeComparatorResult)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = CLPInstSchemaServiceNodeComparatorResult;
   v5 = [(CLPInstSchemaServiceNodeComparatorResult *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"comparatorName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"comparatorName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaServiceNodeComparatorResult setComparatorName:](v5, "setComparatorName:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isValidOriginalItem"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isValidOriginalItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaServiceNodeComparatorResult setIsValidOriginalItem:](v5, "setIsValidOriginalItem:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isValidReplayedItem"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isValidReplayedItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaServiceNodeComparatorResult setIsValidReplayedItem:](v5, "setIsValidReplayedItem:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isMatched"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isMatched"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CLPInstSchemaServiceNodeComparatorResult setIsMatched:](v5, "setIsMatched:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"mismatchedFields"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"mismatchedFields"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,30 +108,30 @@
   return v5;
 }
 
-- (CLPInstSchemaServiceNodeComparatorResult)initWithJSON:(id)a3
+- (CLPInstSchemaServiceNodeComparatorResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CLPInstSchemaServiceNodeComparatorResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CLPInstSchemaServiceNodeComparatorResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CLPInstSchemaServiceNodeComparatorResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -144,7 +144,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -159,14 +159,14 @@
       v6 = off_1E78D2AF0[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"comparatorName"];
+    [dictionary setObject:v6 forKeyedSubscript:@"comparatorName"];
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[CLPInstSchemaServiceNodeComparatorResult isMatched](self, "isMatched")}];
-    [v3 setObject:v11 forKeyedSubscript:@"isMatched"];
+    [dictionary setObject:v11 forKeyedSubscript:@"isMatched"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -187,26 +187,26 @@ LABEL_8:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[CLPInstSchemaServiceNodeComparatorResult isValidOriginalItem](self, "isValidOriginalItem")}];
-  [v3 setObject:v12 forKeyedSubscript:@"isValidOriginalItem"];
+  [dictionary setObject:v12 forKeyedSubscript:@"isValidOriginalItem"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_9:
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[CLPInstSchemaServiceNodeComparatorResult isValidReplayedItem](self, "isValidReplayedItem")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isValidReplayedItem"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isValidReplayedItem"];
   }
 
 LABEL_10:
   if ([(NSArray *)self->_mismatchedFields count])
   {
-    v8 = [(CLPInstSchemaServiceNodeComparatorResult *)self mismatchedFields];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"mismatchedFields"];
+    mismatchedFields = [(CLPInstSchemaServiceNodeComparatorResult *)self mismatchedFields];
+    v9 = [mismatchedFields copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"mismatchedFields"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -263,16 +263,16 @@ LABEL_5:
   return v7 ^ v6 ^ v8 ^ v9 ^ [(NSArray *)self->_mismatchedFields hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -281,13 +281,13 @@ LABEL_5:
   if (*&has)
   {
     comparatorName = self->_comparatorName;
-    if (comparatorName != [v4 comparatorName])
+    if (comparatorName != [equalCopy comparatorName])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -296,13 +296,13 @@ LABEL_5:
     if (v8)
     {
       isValidOriginalItem = self->_isValidOriginalItem;
-      if (isValidOriginalItem != [v4 isValidOriginalItem])
+      if (isValidOriginalItem != [equalCopy isValidOriginalItem])
       {
         goto LABEL_22;
       }
 
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -311,27 +311,27 @@ LABEL_5:
       if (v10)
       {
         isValidReplayedItem = self->_isValidReplayedItem;
-        if (isValidReplayedItem != [v4 isValidReplayedItem])
+        if (isValidReplayedItem != [equalCopy isValidReplayedItem])
         {
           goto LABEL_22;
         }
 
         has = self->_has;
-        v6 = v4[24];
+        v6 = equalCopy[24];
       }
 
       v12 = (*&has >> 3) & 1;
       if (v12 == ((v6 >> 3) & 1))
       {
-        if (!v12 || (isMatched = self->_isMatched, isMatched == [v4 isMatched]))
+        if (!v12 || (isMatched = self->_isMatched, isMatched == [equalCopy isMatched]))
         {
-          v14 = [(CLPInstSchemaServiceNodeComparatorResult *)self mismatchedFields];
-          v15 = [v4 mismatchedFields];
-          v16 = v15;
-          if ((v14 != 0) != (v15 == 0))
+          mismatchedFields = [(CLPInstSchemaServiceNodeComparatorResult *)self mismatchedFields];
+          mismatchedFields2 = [equalCopy mismatchedFields];
+          v16 = mismatchedFields2;
+          if ((mismatchedFields != 0) != (mismatchedFields2 == 0))
           {
-            v17 = [(CLPInstSchemaServiceNodeComparatorResult *)self mismatchedFields];
-            if (!v17)
+            mismatchedFields3 = [(CLPInstSchemaServiceNodeComparatorResult *)self mismatchedFields];
+            if (!mismatchedFields3)
             {
 
 LABEL_25:
@@ -339,10 +339,10 @@ LABEL_25:
               goto LABEL_23;
             }
 
-            v18 = v17;
-            v19 = [(CLPInstSchemaServiceNodeComparatorResult *)self mismatchedFields];
-            v20 = [v4 mismatchedFields];
-            v21 = [v19 isEqual:v20];
+            v18 = mismatchedFields3;
+            mismatchedFields4 = [(CLPInstSchemaServiceNodeComparatorResult *)self mismatchedFields];
+            mismatchedFields5 = [equalCopy mismatchedFields];
+            v21 = [mismatchedFields4 isEqual:mismatchedFields5];
 
             if (v21)
             {
@@ -365,10 +365,10 @@ LABEL_23:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -443,33 +443,33 @@ LABEL_6:
   }
 }
 
-- (unint64_t)mismatchedFieldsAtIndex:(unint64_t)a3
+- (unint64_t)mismatchedFieldsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_mismatchedFields objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSArray *)self->_mismatchedFields objectAtIndexedSubscript:index];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)addMismatchedFields:(unint64_t)a3
+- (void)addMismatchedFields:(unint64_t)fields
 {
   mismatchedFields = self->_mismatchedFields;
   if (!mismatchedFields)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_mismatchedFields;
-    self->_mismatchedFields = v6;
+    self->_mismatchedFields = array;
 
     mismatchedFields = self->_mismatchedFields;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:fields];
   [(NSArray *)mismatchedFields addObject:v8];
 }
 
-- (void)setHasIsMatched:(BOOL)a3
+- (void)setHasIsMatched:(BOOL)matched
 {
-  if (a3)
+  if (matched)
   {
     v3 = 8;
   }
@@ -482,9 +482,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsValidReplayedItem:(BOOL)a3
+- (void)setHasIsValidReplayedItem:(BOOL)item
 {
-  if (a3)
+  if (item)
   {
     v3 = 4;
   }
@@ -497,9 +497,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsValidOriginalItem:(BOOL)a3
+- (void)setHasIsValidOriginalItem:(BOOL)item
 {
-  if (a3)
+  if (item)
   {
     v3 = 2;
   }

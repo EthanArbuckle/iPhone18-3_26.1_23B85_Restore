@@ -1,29 +1,29 @@
 @interface WBSLeadImageCacheResponse
-+ (id)responseWithURL:(id)a3 thumbnail:(id)a4;
-- (WBSLeadImageCacheResponse)initWithURL:(id)a3 thumbnail:(id)a4;
++ (id)responseWithURL:(id)l thumbnail:(id)thumbnail;
+- (WBSLeadImageCacheResponse)initWithURL:(id)l thumbnail:(id)thumbnail;
 @end
 
 @implementation WBSLeadImageCacheResponse
 
-+ (id)responseWithURL:(id)a3 thumbnail:(id)a4
++ (id)responseWithURL:(id)l thumbnail:(id)thumbnail
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithURL:v7 thumbnail:v6];
+  thumbnailCopy = thumbnail;
+  lCopy = l;
+  v8 = [[self alloc] initWithURL:lCopy thumbnail:thumbnailCopy];
 
   return v8;
 }
 
-- (WBSLeadImageCacheResponse)initWithURL:(id)a3 thumbnail:(id)a4
+- (WBSLeadImageCacheResponse)initWithURL:(id)l thumbnail:(id)thumbnail
 {
-  v7 = a4;
+  thumbnailCopy = thumbnail;
   v12.receiver = self;
   v12.super_class = WBSLeadImageCacheResponse;
-  v8 = [(WBSSiteMetadataResponse *)&v12 initWithURL:a3];
+  v8 = [(WBSSiteMetadataResponse *)&v12 initWithURL:l];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_thumbnail, a4);
+    objc_storeStrong(&v8->_thumbnail, thumbnail);
     v10 = v9;
   }
 

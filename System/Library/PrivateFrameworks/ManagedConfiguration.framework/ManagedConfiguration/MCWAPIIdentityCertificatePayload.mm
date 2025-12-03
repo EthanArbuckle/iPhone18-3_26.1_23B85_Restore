@@ -1,22 +1,22 @@
 @interface MCWAPIIdentityCertificatePayload
-- (MCWAPIIdentityCertificatePayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCWAPIIdentityCertificatePayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (__SecCertificate)copyCertificate;
 - (id)verboseDescription;
 @end
 
 @implementation MCWAPIIdentityCertificatePayload
 
-- (MCWAPIIdentityCertificatePayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCWAPIIdentityCertificatePayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v28.receiver = self;
   v28.super_class = MCWAPIIdentityCertificatePayload;
-  v10 = [(MCCertificatePayload *)&v28 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCCertificatePayload *)&v28 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (v10)
   {
-    if ([v9 isStub])
+    if ([profileCopy isStub])
     {
       v11 = 0;
     }
@@ -24,23 +24,23 @@
     else
     {
       v27 = 0;
-      v12 = [MCProfile removeRequiredObjectInDictionary:v8 key:@"PEMData" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v27];
+      v12 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"PEMData" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v27];
       v11 = v27;
       pemData = v10->_pemData;
       v10->_pemData = v12;
     }
 
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
       v14 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v15 = v14;
-        v16 = [(MCPayload *)v10 friendlyName];
+        friendlyName = [(MCPayload *)v10 friendlyName];
         *buf = 138543618;
-        v30 = v16;
+        v30 = friendlyName;
         v31 = 2114;
-        v32 = v8;
+        v32 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_INFO, "Payload “%{public}@” has fields that we are ignoring. They are: %{public}@", buf, 0x16u);
       }
     }
@@ -49,10 +49,10 @@
     {
       v17 = [(MCPayload *)v10 malformedPayloadErrorWithError:v11];
       v18 = v17;
-      if (a5)
+      if (error)
       {
         v19 = v17;
-        *a5 = v18;
+        *error = v18;
       }
 
       v20 = _MCLogObjects;
@@ -61,11 +61,11 @@
         v21 = v20;
         v22 = objc_opt_class();
         v23 = v22;
-        v24 = [v18 MCVerboseDescription];
+        mCVerboseDescription = [v18 MCVerboseDescription];
         *buf = 138543618;
         v30 = v22;
         v31 = 2114;
-        v32 = v24;
+        v32 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v21, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
@@ -103,12 +103,12 @@
   v3 = MEMORY[0x1E696AD60];
   v8.receiver = self;
   v8.super_class = MCWAPIIdentityCertificatePayload;
-  v4 = [(MCCertificatePayload *)&v8 verboseDescription];
-  v5 = [v3 stringWithString:v4];
+  verboseDescription = [(MCCertificatePayload *)&v8 verboseDescription];
+  v5 = [v3 stringWithString:verboseDescription];
 
-  v6 = [(MCWAPIIdentityCertificatePayload *)self pemData];
+  pemData = [(MCWAPIIdentityCertificatePayload *)self pemData];
 
-  if (v6)
+  if (pemData)
   {
     [v5 appendFormat:@"PEM Data    : Present\n"];
   }

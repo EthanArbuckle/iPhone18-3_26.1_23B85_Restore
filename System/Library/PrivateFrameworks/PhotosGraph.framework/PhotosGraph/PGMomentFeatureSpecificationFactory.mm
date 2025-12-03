@@ -1,26 +1,26 @@
 @interface PGMomentFeatureSpecificationFactory
-- (BOOL)_vskIndexIsFullClusteredForCurrentEmbeddingVersionWithPhotoLibrary:(id)a3;
-- (PGMomentFeatureSpecificationFactory)initWithSceneTaxonomy:(id)a3 photoLibrary:(id)a4 loggingConnection:(id)a5;
-- (id)_CLIPTrendsSpecificationsWithProgress:(id)a3;
+- (BOOL)_vskIndexIsFullClusteredForCurrentEmbeddingVersionWithPhotoLibrary:(id)library;
+- (PGMomentFeatureSpecificationFactory)initWithSceneTaxonomy:(id)taxonomy photoLibrary:(id)library loggingConnection:(id)connection;
+- (id)_CLIPTrendsSpecificationsWithProgress:(id)progress;
 - (id)_beachROISpecification;
 - (id)_excitementAudioSpecification;
 - (id)_foodSpecification;
-- (id)_generateSceneAssetFilterForTrendsConfiguration:(id)a3;
+- (id)_generateSceneAssetFilterForTrendsConfiguration:(id)configuration;
 - (id)_mountainROISpecification;
 - (id)_natureROISpecification;
 - (id)_peopleSpecification;
-- (id)_performRetrievalSearchWithQueries:(id)a3 retrievalThreshold:(int64_t)a4;
+- (id)_performRetrievalSearchWithQueries:(id)queries retrievalThreshold:(int64_t)threshold;
 - (id)_petPersonSpecification;
 - (id)_petSpecification;
 - (id)_socialGroupSpecification;
 - (id)_trendsSpecifications;
-- (id)_unifiedSearchTrendsFeatureSpecificationsForTrendsConfigurations:(id)a3 withProgress:(id)a4;
+- (id)_unifiedSearchTrendsFeatureSpecificationsForTrendsConfigurations:(id)configurations withProgress:(id)progress;
 - (id)_urbanROISpecification;
-- (id)_v3TrendsFeatureSpecificationsForTrendsConfigurations:(id)a3 withProgress:(id)a4;
+- (id)_v3TrendsFeatureSpecificationsForTrendsConfigurations:(id)configurations withProgress:(id)progress;
 - (id)_waterROISpecification;
 - (id)allSupportedFeatureTypes;
 - (id)defaultPeopleAssetFilter;
-- (id)specificationsForFeatureType:(unint64_t)a3 progressReporter:(id)a4;
+- (id)specificationsForFeatureType:(unint64_t)type progressReporter:(id)reporter;
 @end
 
 @implementation PGMomentFeatureSpecificationFactory
@@ -119,8 +119,8 @@
   v3 = [PGAssetCollectionFeatureDefinition alloc];
   v4 = +[PGPeopleAssetFilter name];
   v14 = v4;
-  v5 = [(PGMomentFeatureSpecificationFactory *)self defaultPeopleAssetFilter];
-  v15[0] = v5;
+  defaultPeopleAssetFilter = [(PGMomentFeatureSpecificationFactory *)self defaultPeopleAssetFilter];
+  v15[0] = defaultPeopleAssetFilter;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v7 = [(PGAssetCollectionFeatureDefinition *)v3 initWithAssetFilterByName:v6];
 
@@ -360,33 +360,33 @@
   return v10;
 }
 
-- (BOOL)_vskIndexIsFullClusteredForCurrentEmbeddingVersionWithPhotoLibrary:(id)a3
+- (BOOL)_vskIndexIsFullClusteredForCurrentEmbeddingVersionWithPhotoLibrary:(id)library
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CD9878];
-  v5 = a3;
+  libraryCopy = library;
   v6 = objc_alloc_init(v4);
   [v6 setUseJustInTimeGraphAvailability:0];
   v13 = 0;
-  v7 = [v5 featureAvailabilityForFeature:1 readOptions:v6 error:&v13];
+  v7 = [libraryCopy featureAvailabilityForFeature:1 readOptions:v6 error:&v13];
 
   v8 = v13;
   if (v7)
   {
     if ([v7 vuIndexIsFullClustered])
     {
-      v9 = [v7 hasConsistentMediaAnalysisImageVersion];
+      hasConsistentMediaAnalysisImageVersion = [v7 hasConsistentMediaAnalysisImageVersion];
     }
 
     else
     {
-      v9 = 0;
+      hasConsistentMediaAnalysisImageVersion = 0;
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v15) = v9;
+      LODWORD(v15) = hasConsistentMediaAnalysisImageVersion;
       _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "VSK Search Index is clustered with embeddings matching the most recent MAD model version = %d", buf, 8u);
     }
   }
@@ -401,42 +401,42 @@
       _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGMemoryProcessedScenesAndFacesCache] Failed to read feature availability with error: %@", buf, 0xCu);
     }
 
-    LOBYTE(v9) = 0;
+    LOBYTE(hasConsistentMediaAnalysisImageVersion) = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v9;
+  return hasConsistentMediaAnalysisImageVersion;
 }
 
-- (id)_generateSceneAssetFilterForTrendsConfiguration:(id)a3
+- (id)_generateSceneAssetFilterForTrendsConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 positiveScenes];
-  v6 = [v4 negativeScenes];
+  configurationCopy = configuration;
+  positiveScenes = [configurationCopy positiveScenes];
+  negativeScenes = [configurationCopy negativeScenes];
 
   v7 = [PGSceneAssetFilter alloc];
-  v8 = [(PGSceneAssetFilter *)v7 initWithPositiveScenes:v5 positiveSceneCustomSignalModelBlock:&__block_literal_global_221 secondaryPositiveScenes:MEMORY[0x277CBEBF8] positiveDominantScenes:MEMORY[0x277CBEBF8] positiveDominantSceneCustomSignalModelBlock:&__block_literal_global_221 positiveSemDevScenes:MEMORY[0x277CBEBF8] negativeScenes:v6 sceneTaxonomy:self->_sceneTaxonomy];
+  v8 = [(PGSceneAssetFilter *)v7 initWithPositiveScenes:positiveScenes positiveSceneCustomSignalModelBlock:&__block_literal_global_221 secondaryPositiveScenes:MEMORY[0x277CBEBF8] positiveDominantScenes:MEMORY[0x277CBEBF8] positiveDominantSceneCustomSignalModelBlock:&__block_literal_global_221 positiveSemDevScenes:MEMORY[0x277CBEBF8] negativeScenes:negativeScenes sceneTaxonomy:self->_sceneTaxonomy];
 
   return v8;
 }
 
-- (id)_v3TrendsFeatureSpecificationsForTrendsConfigurations:(id)a3 withProgress:(id)a4
+- (id)_v3TrendsFeatureSpecificationsForTrendsConfigurations:(id)configurations withProgress:(id)progress
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v57 = a4;
-  v7 = [v6 count];
+  configurationsCopy = configurations;
+  progressCopy = progress;
+  v7 = [configurationsCopy count];
   if (v7)
   {
     v8 = v7;
     v9 = 0x277CBE000uLL;
-    v55 = v6;
+    v55 = configurationsCopy;
     v56 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v10 = v6;
+    v10 = configurationsCopy;
     v11 = [v10 countByEnumeratingWithState:&v69 objects:v77 count:16];
     if (v11)
     {
@@ -460,22 +460,22 @@ LABEL_4:
 
         v18 = *(*(&v69 + 1) + 8 * v17);
         v19 = objc_autoreleasePoolPush();
-        v20 = [v18 featureLabel];
-        v21 = [v18 positiveQueries];
-        v22 = v21;
-        if (!v20 || ![v21 count])
+        featureLabel = [v18 featureLabel];
+        positiveQueries = [v18 positiveQueries];
+        v22 = positiveQueries;
+        if (!featureLabel || ![positiveQueries count])
         {
           goto LABEL_37;
         }
 
-        v63 = v20;
+        v63 = featureLabel;
         v64 = v22;
         context = v19;
         v23 = objc_alloc_init(*(v9 + 2840));
-        v24 = [v18 useAveragedEmbeddingAsNumber];
-        v25 = [v24 BOOLValue];
+        useAveragedEmbeddingAsNumber = [v18 useAveragedEmbeddingAsNumber];
+        bOOLValue = [useAveragedEmbeddingAsNumber BOOLValue];
 
-        if (!v25)
+        if (!bOOLValue)
         {
           break;
         }
@@ -489,7 +489,7 @@ LABEL_4:
 LABEL_22:
 
           v16 = v14 + v16;
-          if ([v57 isCancelledWithProgress:v16])
+          if ([progressCopy isCancelledWithProgress:v16])
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
@@ -502,19 +502,19 @@ LABEL_22:
 
             objc_autoreleasePoolPop(context);
             v50 = 0;
-            v6 = v55;
+            configurationsCopy = v55;
             v49 = v56;
             goto LABEL_49;
           }
 
-          v61 = [v18 cosineSimilarityThresholdByVersion];
-          v36 = [objc_alloc(*(v27 + 1704)) initWithPositiveQueryEmbeddings:v23 cosineSimilarityThresholdByVersion:v61];
+          cosineSimilarityThresholdByVersion = [v18 cosineSimilarityThresholdByVersion];
+          v36 = [objc_alloc(*(v27 + 1704)) initWithPositiveQueryEmbeddings:v23 cosineSimilarityThresholdByVersion:cosineSimilarityThresholdByVersion];
           if (v36)
           {
             v37 = [(PGMomentFeatureSpecificationFactory *)self _generateSceneAssetFilterForTrendsConfiguration:v18];
             v38 = [PGAssetCollectionFeatureDefinition alloc];
-            v39 = [*(v27 + 1704) name];
-            v74[0] = v39;
+            name = [*(v27 + 1704) name];
+            v74[0] = name;
             v75[0] = v36;
             v40 = +[PGSceneAssetFilter name];
             v74[1] = v40;
@@ -549,7 +549,7 @@ LABEL_22:
             }
           }
 
-          v20 = v63;
+          featureLabel = v63;
           v9 = 0x277CBE000;
           v10 = v60;
           goto LABEL_36;
@@ -564,7 +564,7 @@ LABEL_22:
 
 LABEL_32:
         v19 = context;
-        v20 = v63;
+        featureLabel = v63;
 LABEL_36:
 
         v22 = v64;
@@ -647,7 +647,7 @@ LABEL_39:
 
     v49 = v56;
     v50 = v56;
-    v6 = v55;
+    configurationsCopy = v55;
 LABEL_49:
   }
 
@@ -660,7 +660,7 @@ LABEL_49:
       _os_log_error_impl(&dword_22F0FC000, v51, OS_LOG_TYPE_ERROR, "[PGMomentFeatureSpecificationFactory] No CLIP Trends configurations returned", buf, 2u);
     }
 
-    if ([v57 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+    if ([progressCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 67109378;
       *v79 = 406;
@@ -677,10 +677,10 @@ LABEL_49:
   return v50;
 }
 
-- (id)_performRetrievalSearchWithQueries:(id)a3 retrievalThreshold:(int64_t)a4
+- (id)_performRetrievalSearchWithQueries:(id)queries retrievalThreshold:(int64_t)threshold
 {
-  v6 = a3;
-  if ([v6 count])
+  queriesCopy = queries;
+  if ([queriesCopy count])
   {
     v19 = 0;
     v20 = &v19;
@@ -696,11 +696,11 @@ LABEL_49:
     v15[2] = __93__PGMomentFeatureSpecificationFactory__performRetrievalSearchWithQueries_retrievalThreshold___block_invoke;
     v15[3] = &unk_278885430;
     v17 = &v19;
-    v18 = a4;
+    thresholdCopy = threshold;
     v15[4] = self;
     v9 = v7;
     v16 = v9;
-    [(PNBackgroundMemoriesEmbeddingSearcher *)embeddingsBasedAssetFetcher performSearchWithQueries:v6 retrievalThreshold:a4 completionHandler:v15];
+    [(PNBackgroundMemoriesEmbeddingSearcher *)embeddingsBasedAssetFetcher performSearchWithQueries:queriesCopy retrievalThreshold:threshold completionHandler:v15];
     v10 = dispatch_time(0, maximumCLIPTrendsEmbeddingsSearchRetrievalTime);
     if (dispatch_group_wait(v9, v10))
     {
@@ -769,28 +769,28 @@ void __93__PGMomentFeatureSpecificationFactory__performRetrievalSearchWithQuerie
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_unifiedSearchTrendsFeatureSpecificationsForTrendsConfigurations:(id)a3 withProgress:(id)a4
+- (id)_unifiedSearchTrendsFeatureSpecificationsForTrendsConfigurations:(id)configurations withProgress:(id)progress
 {
   v104 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  configurationsCopy = configurations;
+  progressCopy = progress;
+  v8 = [configurationsCopy count];
   if (v8)
   {
     v78 = v8;
-    v83 = self;
-    v70 = v7;
+    selfCopy = self;
+    v70 = progressCopy;
     v71 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v9 = [MEMORY[0x277CBEB18] array];
-    v82 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
     v95 = 0u;
-    v69 = v6;
-    v10 = v6;
+    v69 = configurationsCopy;
+    v10 = configurationsCopy;
     v11 = [v10 countByEnumeratingWithState:&v92 objects:v103 count:16];
-    v81 = v9;
+    v81 = array;
     if (v11)
     {
       v12 = v11;
@@ -809,20 +809,20 @@ void __93__PGMomentFeatureSpecificationFactory__performRetrievalSearchWithQuerie
           if (v16 == 2)
           {
             v17 = @"PNBackgroundMemoriesEmbeddingSearcherRetrievalThresholdMCHighPrecision";
-            v18 = v82;
+            v18 = array2;
           }
 
           else if (v16 == 1)
           {
             v17 = @"PNBackgroundMemoriesEmbeddingSearcherRetrievalThresholdMCDefault";
-            v18 = v9;
+            v18 = array;
           }
 
           else
           {
-            v19 = [v15 useHighPrecisionRetrievalThresholdForEmbeddingSearch];
+            useHighPrecisionRetrievalThresholdForEmbeddingSearch = [v15 useHighPrecisionRetrievalThresholdForEmbeddingSearch];
 
-            if (v19)
+            if (useHighPrecisionRetrievalThresholdForEmbeddingSearch)
             {
               v17 = @"PNBackgroundMemoriesEmbeddingSearcherRetrievalThresholdMCHighPrecision";
             }
@@ -832,30 +832,30 @@ void __93__PGMomentFeatureSpecificationFactory__performRetrievalSearchWithQuerie
               v17 = @"PNBackgroundMemoriesEmbeddingSearcherRetrievalThresholdMCDefault";
             }
 
-            v18 = v82;
-            if (!v19)
+            v18 = array2;
+            if (!useHighPrecisionRetrievalThresholdForEmbeddingSearch)
             {
-              v18 = v9;
+              v18 = array;
             }
           }
 
           v20 = v18;
-          loggingConnection = v83->_loggingConnection;
+          loggingConnection = selfCopy->_loggingConnection;
           if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
           {
             v23 = loggingConnection;
-            v24 = [v15 featureLabel];
+            featureLabel = [v15 featureLabel];
             *buf = 138412546;
             *v102 = v17;
             *&v102[8] = 2112;
-            *&v102[10] = v24;
+            *&v102[10] = featureLabel;
             _os_log_debug_impl(&dword_22F0FC000, v23, OS_LOG_TYPE_DEBUG, "[PGMomentFeatureSpecificationFactory] Using %@ retrieval threshold for %@ trend.", buf, 0x16u);
 
-            v9 = v81;
+            array = v81;
           }
 
-          v22 = [v15 positiveQueries];
-          [v20 addObjectsFromArray:v22];
+          positiveQueries = [v15 positiveQueries];
+          [v20 addObjectsFromArray:positiveQueries];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v92 objects:v103 count:16];
@@ -864,21 +864,21 @@ void __93__PGMomentFeatureSpecificationFactory__performRetrievalSearchWithQuerie
       while (v12);
     }
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
-    v26 = [(PGMomentFeatureSpecificationFactory *)v83 _performRetrievalSearchWithQueries:v82 retrievalThreshold:1];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v26 = [(PGMomentFeatureSpecificationFactory *)selfCopy _performRetrievalSearchWithQueries:array2 retrievalThreshold:1];
     if (v26)
     {
-      [v25 addEntriesFromDictionary:v26];
+      [dictionary addEntriesFromDictionary:v26];
     }
 
-    v27 = [(PGMomentFeatureSpecificationFactory *)v83 _performRetrievalSearchWithQueries:v81 retrievalThreshold:0];
+    v27 = [(PGMomentFeatureSpecificationFactory *)selfCopy _performRetrievalSearchWithQueries:v81 retrievalThreshold:0];
     if (v27)
     {
-      [v25 addEntriesFromDictionary:v27];
+      [dictionary addEntriesFromDictionary:v27];
     }
 
-    v7 = v70;
-    if ([v25 count])
+    progressCopy = v70;
+    if ([dictionary count])
     {
       v67 = v27;
       v68 = v26;
@@ -910,12 +910,12 @@ LABEL_27:
 
           v35 = *(*(&v88 + 1) + 8 * v34);
           v36 = objc_autoreleasePoolPush();
-          v37 = [v35 featureLabel];
-          v38 = [v35 positiveQueries];
-          v39 = v38;
-          if (v37 && [v38 count])
+          featureLabel2 = [v35 featureLabel];
+          positiveQueries2 = [v35 positiveQueries];
+          v39 = positiveQueries2;
+          if (featureLabel2 && [positiveQueries2 count])
           {
-            v79 = v37;
+            v79 = featureLabel2;
             context = v36;
             v40 = objc_alloc_init(MEMORY[0x277CBEB58]);
             v84 = 0u;
@@ -937,7 +937,7 @@ LABEL_27:
                     objc_enumerationMutation(v39);
                   }
 
-                  v45 = [v25 objectForKeyedSubscript:{*(*(&v84 + 1) + 8 * j), v66}];
+                  v45 = [dictionary objectForKeyedSubscript:{*(*(&v84 + 1) + 8 * j), v66}];
                   [v40 addObjectsFromArray:v45];
                 }
 
@@ -951,7 +951,7 @@ LABEL_27:
             if (v46)
             {
               v47 = v46;
-              v48 = [(PGMomentFeatureSpecificationFactory *)v83 _generateSceneAssetFilterForTrendsConfiguration:v35];
+              v48 = [(PGMomentFeatureSpecificationFactory *)selfCopy _generateSceneAssetFilterForTrendsConfiguration:v35];
               v49 = [PGAssetCollectionFeatureDefinition alloc];
               v50 = +[PGAllowlistAssetFilter name];
               v97[0] = v50;
@@ -1013,9 +1013,9 @@ LABEL_27:
               goto LABEL_53;
             }
 
-            v60 = v83->_loggingConnection;
+            v60 = selfCopy->_loggingConnection;
             v30 = v73;
-            v37 = v79;
+            featureLabel2 = v79;
             if (os_log_type_enabled(v60, OS_LOG_TYPE_FAULT))
             {
               *buf = v66;
@@ -1047,7 +1047,7 @@ LABEL_53:
 LABEL_64:
       v27 = v67;
       v26 = v68;
-      v7 = v70;
+      progressCopy = v70;
     }
 
     else
@@ -1056,7 +1056,7 @@ LABEL_64:
       v62 = v71;
     }
 
-    v6 = v69;
+    configurationsCopy = v69;
   }
 
   else
@@ -1068,7 +1068,7 @@ LABEL_64:
       _os_log_error_impl(&dword_22F0FC000, v63, OS_LOG_TYPE_ERROR, "[PGMomentFeatureSpecificationFactory] No CLIP Trends configurations returned", buf, 2u);
     }
 
-    if ([v7 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+    if ([progressCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 67109378;
       *v102 = 291;
@@ -1085,11 +1085,11 @@ LABEL_64:
   return v62;
 }
 
-- (id)_CLIPTrendsSpecificationsWithProgress:(id)a3
+- (id)_CLIPTrendsSpecificationsWithProgress:(id)progress
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isCancelledWithProgress:0.0])
+  progressCopy = progress;
+  if ([progressCopy isCancelledWithProgress:0.0])
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1138,8 +1138,8 @@ LABEL_4:
   }
 
   v9 = +[PGCLIPTrendsMemoryGenerator CLIPTrendsConfigurations];
-  v10 = [v4 childProgressReporterFromStart:0.1 toEnd:1.0];
-  if ([v4 isCancelledWithProgress:0.1])
+  v10 = [progressCopy childProgressReporterFromStart:0.1 toEnd:1.0];
+  if ([progressCopy isCancelledWithProgress:0.1])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1198,7 +1198,7 @@ LABEL_4:
       _os_log_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
     }
 
-    if ([v4 isCancelledWithProgress:1.0])
+    if ([progressCopy isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -1248,13 +1248,13 @@ LABEL_34:
         }
 
         v4 = *(*(&v44 + 1) + 8 * i);
-        v5 = [v4 featureLabel];
-        v6 = [v4 positiveScenes];
-        v7 = v6;
+        featureLabel = [v4 featureLabel];
+        positiveScenes = [v4 positiveScenes];
+        v7 = positiveScenes;
         v8 = MEMORY[0x277CBEBF8];
-        if (v6)
+        if (positiveScenes)
         {
-          v9 = v6;
+          v9 = positiveScenes;
         }
 
         else
@@ -1264,11 +1264,11 @@ LABEL_34:
 
         v10 = v9;
 
-        v11 = [v4 secondaryPositiveScenes];
-        v12 = v11;
-        if (v11)
+        secondaryPositiveScenes = [v4 secondaryPositiveScenes];
+        v12 = secondaryPositiveScenes;
+        if (secondaryPositiveScenes)
         {
-          v13 = v11;
+          v13 = secondaryPositiveScenes;
         }
 
         else
@@ -1278,11 +1278,11 @@ LABEL_34:
 
         v14 = v13;
 
-        v15 = [v4 positiveDominantScenes];
-        v16 = v15;
-        if (v15)
+        positiveDominantScenes = [v4 positiveDominantScenes];
+        v16 = positiveDominantScenes;
+        if (positiveDominantScenes)
         {
-          v17 = v15;
+          v17 = positiveDominantScenes;
         }
 
         else
@@ -1292,11 +1292,11 @@ LABEL_34:
 
         v18 = v17;
 
-        v19 = [v4 positiveSemDevScenes];
-        v20 = v19;
-        if (v19)
+        positiveSemDevScenes = [v4 positiveSemDevScenes];
+        v20 = positiveSemDevScenes;
+        if (positiveSemDevScenes)
         {
-          v21 = v19;
+          v21 = positiveSemDevScenes;
         }
 
         else
@@ -1306,11 +1306,11 @@ LABEL_34:
 
         v22 = v21;
 
-        v23 = [v4 negativeScenes];
-        v24 = v23;
-        if (v23)
+        negativeScenes = [v4 negativeScenes];
+        v24 = negativeScenes;
+        if (negativeScenes)
         {
-          v25 = v23;
+          v25 = negativeScenes;
         }
 
         else
@@ -1326,8 +1326,8 @@ LABEL_34:
         if (v27)
         {
           v28 = [PGAssetCollectionFeatureDefinition alloc];
-          v29 = [(__objc2_class *)v2[467] name];
-          v49 = v29;
+          name = [(__objc2_class *)v2[467] name];
+          v49 = name;
           v50 = v27;
           v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
           v31 = [(PGAssetCollectionFeatureDefinition *)v28 initWithAssetFilterByName:v30];
@@ -1335,7 +1335,7 @@ LABEL_34:
           v32 = [PGAssetCollectionFeatureSpecification alloc];
           v48 = v31;
           v33 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
-          v34 = [(PGAssetCollectionFeatureSpecification *)v32 initWithFeatureType:9 featureLabel:v5 featureDefinitions:v33 shouldRunAtMomentIngest:1 shouldCreateFeatureNodeIfNeeded:1];
+          v34 = [(PGAssetCollectionFeatureSpecification *)v32 initWithFeatureType:9 featureLabel:featureLabel featureDefinitions:v33 shouldRunAtMomentIngest:1 shouldCreateFeatureNodeIfNeeded:1];
 
           v2 = off_27887B000;
           [v39 addObject:v34];
@@ -1347,7 +1347,7 @@ LABEL_34:
           if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_FAULT))
           {
             *buf = 138412290;
-            v52 = v5;
+            v52 = featureLabel;
             _os_log_fault_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_FAULT, "Trend configuration '%@' has an invalid scene asset filter, disabling", buf, 0xCu);
           }
         }
@@ -1364,11 +1364,11 @@ LABEL_34:
   return v39;
 }
 
-- (id)specificationsForFeatureType:(unint64_t)a3 progressReporter:(id)a4
+- (id)specificationsForFeatureType:(unint64_t)type progressReporter:(id)reporter
 {
-  v6 = a4;
+  reporterCopy = reporter;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
       loggingConnection = self->_loggingConnection;
@@ -1380,47 +1380,47 @@ LABEL_34:
 
       break;
     case 1uLL:
-      v9 = [(PGMomentFeatureSpecificationFactory *)self _peopleSpecification];
+      _peopleSpecification = [(PGMomentFeatureSpecificationFactory *)self _peopleSpecification];
       goto LABEL_16;
     case 2uLL:
-      v9 = [(PGMomentFeatureSpecificationFactory *)self _socialGroupSpecification];
+      _peopleSpecification = [(PGMomentFeatureSpecificationFactory *)self _socialGroupSpecification];
       goto LABEL_16;
     case 3uLL:
-      v10 = [(PGMomentFeatureSpecificationFactory *)self _beachROISpecification];
+      _beachROISpecification = [(PGMomentFeatureSpecificationFactory *)self _beachROISpecification];
       goto LABEL_21;
     case 4uLL:
-      v10 = [(PGMomentFeatureSpecificationFactory *)self _mountainROISpecification];
+      _beachROISpecification = [(PGMomentFeatureSpecificationFactory *)self _mountainROISpecification];
       goto LABEL_21;
     case 5uLL:
-      v10 = [(PGMomentFeatureSpecificationFactory *)self _natureROISpecification];
+      _beachROISpecification = [(PGMomentFeatureSpecificationFactory *)self _natureROISpecification];
       goto LABEL_21;
     case 6uLL:
-      v10 = [(PGMomentFeatureSpecificationFactory *)self _urbanROISpecification];
+      _beachROISpecification = [(PGMomentFeatureSpecificationFactory *)self _urbanROISpecification];
       goto LABEL_21;
     case 7uLL:
-      v10 = [(PGMomentFeatureSpecificationFactory *)self _waterROISpecification];
+      _beachROISpecification = [(PGMomentFeatureSpecificationFactory *)self _waterROISpecification];
       goto LABEL_21;
     case 8uLL:
-      v10 = [(PGMomentFeatureSpecificationFactory *)self _petSpecification];
+      _beachROISpecification = [(PGMomentFeatureSpecificationFactory *)self _petSpecification];
 LABEL_21:
-      v13 = v10;
-      if (v10)
+      v13 = _beachROISpecification;
+      if (_beachROISpecification)
       {
         goto LABEL_22;
       }
 
       goto LABEL_23;
     case 9uLL:
-      v11 = [(PGMomentFeatureSpecificationFactory *)self _trendsSpecifications];
-      if (v11)
+      _trendsSpecifications = [(PGMomentFeatureSpecificationFactory *)self _trendsSpecifications];
+      if (_trendsSpecifications)
       {
-        v12 = [(PGMomentFeatureSpecificationFactory *)self _trendsSpecifications];
-        [v7 addObjectsFromArray:v12];
+        _trendsSpecifications2 = [(PGMomentFeatureSpecificationFactory *)self _trendsSpecifications];
+        [v7 addObjectsFromArray:_trendsSpecifications2];
       }
 
       break;
     case 0xAuLL:
-      v13 = [(PGMomentFeatureSpecificationFactory *)self _CLIPTrendsSpecificationsWithProgress:v6];
+      v13 = [(PGMomentFeatureSpecificationFactory *)self _CLIPTrendsSpecificationsWithProgress:reporterCopy];
       if (v13)
       {
         [v7 addObjectsFromArray:v13];
@@ -1428,15 +1428,15 @@ LABEL_21:
 
       goto LABEL_23;
     case 0xBuLL:
-      v9 = [(PGMomentFeatureSpecificationFactory *)self _petPersonSpecification];
+      _peopleSpecification = [(PGMomentFeatureSpecificationFactory *)self _petPersonSpecification];
       goto LABEL_16;
     case 0xCuLL:
-      v9 = [(PGMomentFeatureSpecificationFactory *)self _excitementAudioSpecification];
+      _peopleSpecification = [(PGMomentFeatureSpecificationFactory *)self _excitementAudioSpecification];
       goto LABEL_16;
     case 0xDuLL:
-      v9 = [(PGMomentFeatureSpecificationFactory *)self _foodSpecification];
+      _peopleSpecification = [(PGMomentFeatureSpecificationFactory *)self _foodSpecification];
 LABEL_16:
-      v13 = v9;
+      v13 = _peopleSpecification;
 LABEL_22:
       [v7 addObject:v13];
 LABEL_23:
@@ -1451,29 +1451,29 @@ LABEL_23:
 
 - (id)allSupportedFeatureTypes
 {
-  v2 = [MEMORY[0x277CCAB58] indexSet];
-  [v2 addIndex:1];
-  [v2 addIndex:2];
-  [v2 addIndex:3];
-  [v2 addIndex:4];
-  [v2 addIndex:5];
-  [v2 addIndex:7];
-  [v2 addIndex:8];
-  [v2 addIndex:13];
-  [v2 addIndex:9];
-  [v2 addIndex:10];
-  [v2 addIndex:11];
-  [v2 addIndex:12];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  [indexSet addIndex:1];
+  [indexSet addIndex:2];
+  [indexSet addIndex:3];
+  [indexSet addIndex:4];
+  [indexSet addIndex:5];
+  [indexSet addIndex:7];
+  [indexSet addIndex:8];
+  [indexSet addIndex:13];
+  [indexSet addIndex:9];
+  [indexSet addIndex:10];
+  [indexSet addIndex:11];
+  [indexSet addIndex:12];
 
-  return v2;
+  return indexSet;
 }
 
-- (PGMomentFeatureSpecificationFactory)initWithSceneTaxonomy:(id)a3 photoLibrary:(id)a4 loggingConnection:(id)a5
+- (PGMomentFeatureSpecificationFactory)initWithSceneTaxonomy:(id)taxonomy photoLibrary:(id)library loggingConnection:(id)connection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  taxonomyCopy = taxonomy;
+  libraryCopy = library;
+  connectionCopy = connection;
   v30.receiver = self;
   v30.super_class = PGMomentFeatureSpecificationFactory;
   v12 = [(PGMomentFeatureSpecificationFactory *)&v30 init];
@@ -1483,9 +1483,9 @@ LABEL_23:
     goto LABEL_17;
   }
 
-  objc_storeStrong(&v12->_sceneTaxonomy, a3);
-  objc_storeStrong(&v13->_photoLibrary, a4);
-  objc_storeStrong(&v13->_loggingConnection, a5);
+  objc_storeStrong(&v12->_sceneTaxonomy, taxonomy);
+  objc_storeStrong(&v13->_photoLibrary, library);
+  objc_storeStrong(&v13->_loggingConnection, connection);
   if (![(PGMomentFeatureSpecificationFactory *)v13 _isUnifiedEmbeddingModelAvailable])
   {
     v29 = 0;

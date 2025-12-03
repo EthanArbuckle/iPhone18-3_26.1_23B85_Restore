@@ -1,35 +1,35 @@
 @interface NTKUltraCubeSegmentation
-+ (CGImage)maskImageFromAuxiliaryDictionary:(id)a3;
-+ (id)dataFromAuxiliaryDictionary:(id)a3;
-+ (id)descriptionFromAuxiliaryDictionary:(id)a3;
-- (NTKUltraCubeSegmentation)initWithType:(unint64_t)a3 dictionary:(id)a4;
++ (CGImage)maskImageFromAuxiliaryDictionary:(id)dictionary;
++ (id)dataFromAuxiliaryDictionary:(id)dictionary;
++ (id)descriptionFromAuxiliaryDictionary:(id)dictionary;
+- (NTKUltraCubeSegmentation)initWithType:(unint64_t)type dictionary:(id)dictionary;
 @end
 
 @implementation NTKUltraCubeSegmentation
 
-- (NTKUltraCubeSegmentation)initWithType:(unint64_t)a3 dictionary:(id)a4
+- (NTKUltraCubeSegmentation)initWithType:(unint64_t)type dictionary:(id)dictionary
 {
-  v7 = a4;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = NTKUltraCubeSegmentation;
   v8 = [(NTKUltraCubeSegmentation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_auxiliaryDictionary, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_auxiliaryDictionary, dictionary);
   }
 
   return v9;
 }
 
-+ (CGImage)maskImageFromAuxiliaryDictionary:(id)a3
++ (CGImage)maskImageFromAuxiliaryDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [a1 dataFromAuxiliaryDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [self dataFromAuxiliaryDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [a1 descriptionFromAuxiliaryDictionary:v4];
+    v6 = [self descriptionFromAuxiliaryDictionary:dictionaryCopy];
     if (!v6)
     {
       v10 = 0;
@@ -59,7 +59,7 @@ LABEL_14:
           v17 = 1024;
           v18 = [v6 format] >> 8;
           v19 = 1024;
-          v20 = [v6 format];
+          format = [v6 format];
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "createMask: unknown pixel format '%c%c%c%c'", buf, 0x1Au);
         }
 
@@ -84,9 +84,9 @@ LABEL_15:
   return v10;
 }
 
-+ (id)dataFromAuxiliaryDictionary:(id)a3
++ (id)dataFromAuxiliaryDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:kCGImageAuxiliaryDataInfoData];
+  v3 = [dictionary objectForKeyedSubscript:kCGImageAuxiliaryDataInfoData];
   if (v3)
   {
     v4 = _NTKLoggingObjectForDomain();
@@ -103,11 +103,11 @@ LABEL_15:
   return v3;
 }
 
-+ (id)descriptionFromAuxiliaryDictionary:(id)a3
++ (id)descriptionFromAuxiliaryDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v3 = [a3 objectForKeyedSubscript:kCGImageAuxiliaryDataInfoDataDescription];
+    v3 = [dictionary objectForKeyedSubscript:kCGImageAuxiliaryDataInfoDataDescription];
     if (v3)
     {
       v4 = objc_alloc_init(NTKUltraCubeAuxiliaryDataDescription);

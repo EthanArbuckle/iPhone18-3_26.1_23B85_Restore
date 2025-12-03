@@ -1,25 +1,25 @@
 @interface HAPAccessoryServer
 - (BOOL)hasAdvertisement;
 - (BOOL)hasPairings;
-- (BOOL)isAccessoryAssociatedWithControllerKey:(id)a3;
+- (BOOL)isAccessoryAssociatedWithControllerKey:(id)key;
 - (BOOL)isPaired;
 - (BOOL)isReachable;
 - (BOOL)isSecuritySessionOpen;
 - (BOOL)isSessionRestoreActive;
-- (BOOL)matchesSetupID:(id)a3;
-- (BOOL)matchesSetupID:(id)a3 serverIdentifier:(id)a4;
-- (BOOL)notifyClients:(unint64_t)a3 withDictionary:(id)a4;
+- (BOOL)matchesSetupID:(id)d;
+- (BOOL)matchesSetupID:(id)d serverIdentifier:(id)identifier;
+- (BOOL)notifyClients:(unint64_t)clients withDictionary:(id)dictionary;
 - (BOOL)reachabilityPingEnabled;
-- (BOOL)removePairingForCurrentControllerOnQueue:(id)a3 completion:(id)a4;
-- (BOOL)requiresTimedWrite:(id)a3;
-- (BOOL)securitySessionWillCloseWithResponseData:(id)a3 error:(id *)a4;
+- (BOOL)removePairingForCurrentControllerOnQueue:(id)queue completion:(id)completion;
+- (BOOL)requiresTimedWrite:(id)write;
+- (BOOL)securitySessionWillCloseWithResponseData:(id)data error:(id *)error;
 - (BOOL)shouldDisconnectOnIdle;
-- (BOOL)shouldRetryPVDueToAuthenticationError:(id)a3;
-- (BOOL)stopPairingWithError:(id *)a3;
-- (BOOL)tryPairingPassword:(id)a3 onboardingSetupPayloadString:(id)a4 error:(id *)a5;
+- (BOOL)shouldRetryPVDueToAuthenticationError:(id)error;
+- (BOOL)stopPairingWithError:(id *)error;
+- (BOOL)tryPairingPassword:(id)password onboardingSetupPayloadString:(id)string error:(id *)error;
 - (BOOL)useHH2;
 - (HAPAccessoryServer)init;
-- (HAPAccessoryServer)initWithKeystore:(id)a3;
+- (HAPAccessoryServer)initWithKeystore:(id)keystore;
 - (HAPAccessoryServerDelegate)delegate;
 - (HAPDeviceID)deviceID;
 - (HAPKeyStore)keyStore;
@@ -35,7 +35,7 @@
 - (NSString)productData;
 - (NSString)reachabilityChangedReason;
 - (OS_dispatch_queue)delegateQueue;
-- (id)getControllerPairingIdentityWithError:(id *)a3;
+- (id)getControllerPairingIdentityWithError:(id *)error;
 - (id)getControllerUserName;
 - (id)shortDescription;
 - (unint64_t)authMethod;
@@ -45,69 +45,69 @@
 - (unint64_t)pendingRemovePairing;
 - (unint64_t)stateNumber;
 - (unint64_t)wakeNumber;
-- (void)addInternalDelegate:(id)a3;
-- (void)addPairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)associateAccessoryWithControllerKey:(id)a3 usingAccessoryPublicKey:(id)a4;
-- (void)associateAccessoryWithControllerKeyUsingAccessoryIdentifier:(id)a3;
-- (void)associateAccessoryWithControllerKeyUsingAccessoryPublicKey:(id)a3;
+- (void)addInternalDelegate:(id)delegate;
+- (void)addPairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler;
+- (void)associateAccessoryWithControllerKey:(id)key usingAccessoryPublicKey:(id)publicKey;
+- (void)associateAccessoryWithControllerKeyUsingAccessoryIdentifier:(id)identifier;
+- (void)associateAccessoryWithControllerKeyUsingAccessoryPublicKey:(id)key;
 - (void)authenticateAccessory;
 - (void)clearPairingMetrics;
-- (void)continueAuthAfterValidation:(BOOL)a3;
+- (void)continueAuthAfterValidation:(BOOL)validation;
 - (void)continuePairingAfterAuthPrompt;
 - (void)continuePairingUsingWAC;
-- (void)disassociateAccessoryWithControllerKeyUsingAccessoryIdentifier:(id)a3;
+- (void)disassociateAccessoryWithControllerKeyUsingAccessoryIdentifier:(id)identifier;
 - (void)disconnect;
-- (void)disconnectWithError:(id)a3;
+- (void)disconnectWithError:(id)error;
 - (void)discoverAccessories;
-- (void)enableEvents:(BOOL)a3 forCharacteristics:(id)a4 withCompletionHandler:(id)a5 queue:(id)a6;
-- (void)enumerateInternalDelegatesUsingBlock:(id)a3;
-- (void)handleUpdatesForCharacteristics:(id)a3 stateNumber:(id)a4;
-- (void)identifyWithCompletion:(id)a3;
+- (void)enableEvents:(BOOL)events forCharacteristics:(id)characteristics withCompletionHandler:(id)handler queue:(id)queue;
+- (void)enumerateInternalDelegatesUsingBlock:(id)block;
+- (void)handleUpdatesForCharacteristics:(id)characteristics stateNumber:(id)number;
+- (void)identifyWithCompletion:(id)completion;
 - (void)incrementFailedPing;
 - (void)incrementSuccessfulPing;
 - (void)initializeKeyBagIfNecessary;
-- (void)listPairingsWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)provisionToken:(id)a3;
-- (void)readCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7;
+- (void)listPairingsWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)provisionToken:(id)token;
+- (void)readCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler;
 - (void)refreshKeyBag;
-- (void)registerForNotifications:(id)a3;
-- (void)removeInternalDelegate:(id)a3;
-- (void)removePairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)removePairingIdentifier:(id)a3 pairingPublicKey:(id)a4 completionQueue:(id)a5 completionHandler:(id)a6;
-- (void)setAccessories:(id)a3;
-- (void)setAuthMethod:(unint64_t)a3;
-- (void)setCategory:(id)a3;
-- (void)setCompatibilityFeatures:(unint64_t)a3;
-- (void)setConfigNumber:(unint64_t)a3;
-- (void)setConnectionStartTime:(id)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setHasAdvertisement:(BOOL)a3;
-- (void)setHasPairings:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPairSetupType:(unint64_t)a3;
-- (void)setPairingMetricWithKey:(id)a3 value:(id)a4;
-- (void)setPendingRemovePairing:(unint64_t)a3;
-- (void)setProductData:(id)a3;
-- (void)setReachabilityChangedReason:(id)a3;
-- (void)setReachabilityPingEnabled:(BOOL)a3;
-- (void)setSecuritySessionOpen:(BOOL)a3;
-- (void)setSessionRestoreActive:(BOOL)a3;
-- (void)setSetupHash:(id)a3;
-- (void)setShouldDisconnectOnIdle:(BOOL)a3;
-- (void)setStateNumber:(unint64_t)a3;
-- (void)setSuspendedAccessory:(id)a3;
-- (void)setVersion:(id)a3;
-- (void)setWakeNumber:(unint64_t)a3;
-- (void)startPairingWithConsentRequired:(BOOL)a3 config:(id)a4 ownershipToken:(id)a5;
+- (void)registerForNotifications:(id)notifications;
+- (void)removeInternalDelegate:(id)delegate;
+- (void)removePairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler;
+- (void)removePairingIdentifier:(id)identifier pairingPublicKey:(id)key completionQueue:(id)queue completionHandler:(id)handler;
+- (void)setAccessories:(id)accessories;
+- (void)setAuthMethod:(unint64_t)method;
+- (void)setCategory:(id)category;
+- (void)setCompatibilityFeatures:(unint64_t)features;
+- (void)setConfigNumber:(unint64_t)number;
+- (void)setConnectionStartTime:(id)time;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setHasAdvertisement:(BOOL)advertisement;
+- (void)setHasPairings:(BOOL)pairings;
+- (void)setIdentifier:(id)identifier;
+- (void)setName:(id)name;
+- (void)setPairSetupType:(unint64_t)type;
+- (void)setPairingMetricWithKey:(id)key value:(id)value;
+- (void)setPendingRemovePairing:(unint64_t)pairing;
+- (void)setProductData:(id)data;
+- (void)setReachabilityChangedReason:(id)reason;
+- (void)setReachabilityPingEnabled:(BOOL)enabled;
+- (void)setSecuritySessionOpen:(BOOL)open;
+- (void)setSessionRestoreActive:(BOOL)active;
+- (void)setSetupHash:(id)hash;
+- (void)setShouldDisconnectOnIdle:(BOOL)idle;
+- (void)setStateNumber:(unint64_t)number;
+- (void)setSuspendedAccessory:(id)accessory;
+- (void)setVersion:(id)version;
+- (void)setWakeNumber:(unint64_t)number;
+- (void)startPairingWithConsentRequired:(BOOL)required config:(id)config ownershipToken:(id)token;
 - (void)startPing;
 - (void)stopPing;
-- (void)submitPairVerifyMetricWithError:(id)a3;
+- (void)submitPairVerifyMetricWithError:(id)error;
 - (void)tearDownSessionOnAuthCompletion;
-- (void)unregisterForNotifications:(id)a3;
-- (void)updateAccessoryInfoDictionary:(id)a3;
-- (void)validatePairingAuthMethod:(id)a3;
-- (void)writeCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7;
+- (void)unregisterForNotifications:(id)notifications;
+- (void)updateAccessoryInfoDictionary:(id)dictionary;
+- (void)validatePairingAuthMethod:(id)method;
+- (void)writeCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation HAPAccessoryServer
@@ -141,16 +141,16 @@
   return HAPIsHH2Enabled_hh2Enabled;
 }
 
-- (BOOL)securitySessionWillCloseWithResponseData:(id)a3 error:(id *)a4
+- (BOOL)securitySessionWillCloseWithResponseData:(id)data error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    if ([v6 length])
+    if ([dataCopy length])
     {
-      v8 = *a4;
+      v8 = *error;
       v9 = [MEMORY[0x277CCA9B8] errorWithOSStatus:4294960542];
       LOBYTE(v8) = [v8 isEqual:v9];
 
@@ -159,13 +159,13 @@
         v13 = [HAPTLVParser parserWithData:v7];
         v14 = [v13 parseResponseForNumber:6];
         v15 = [v13 parseResponseForNumber:7];
-        v16 = *a4;
+        v16 = *error;
         v17 = [MEMORY[0x277CCA9B8] errorWithOSStatus:4294960596];
         if ([v16 isEqual:v17])
         {
-          v18 = [v14 unsignedCharValue];
+          unsignedCharValue = [v14 unsignedCharValue];
 
-          if (v18 == 3)
+          if (unsignedCharValue == 3)
           {
             goto LABEL_17;
           }
@@ -175,7 +175,7 @@
         {
         }
 
-        v19 = *a4;
+        v19 = *error;
         v20 = [MEMORY[0x277CCA9B8] errorWithOSStatus:4294960569];
         LODWORD(v19) = [v19 isEqual:v20];
 
@@ -206,12 +206,12 @@ LABEL_21:
         {
 LABEL_17:
           v21 = objc_autoreleasePoolPush();
-          v22 = self;
+          selfCopy = self;
           v23 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
           {
             v24 = HMFGetLogIdentifier();
-            v25 = *a4;
+            v25 = *error;
             v26 = 138543618;
             v27 = v24;
             v28 = 2112;
@@ -221,7 +221,7 @@ LABEL_17:
 
           objc_autoreleasePoolPop(v21);
           [MEMORY[0x277CCA9B8] errorWithOSStatus:4294960542];
-          *a4 = v10 = 0;
+          *error = v10 = 0;
           goto LABEL_21;
         }
 
@@ -237,29 +237,29 @@ LABEL_5:
   return v10;
 }
 
-- (void)disassociateAccessoryWithControllerKeyUsingAccessoryIdentifier:(id)a3
+- (void)disassociateAccessoryWithControllerKeyUsingAccessoryIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(HAPAccessoryServer *)self useHH2])
   {
     [(HAPAccessoryServer *)self initializeKeyBagIfNecessary];
-    v5 = [(HAPAccessoryServer *)self keyBag];
-    v6 = [v5 currentIdentity];
-    v7 = [v6 identifier];
-    v8 = [(HAPAccessoryServer *)self isAccessoryAssociatedWithControllerKey:v7];
+    keyBag = [(HAPAccessoryServer *)self keyBag];
+    currentIdentity = [keyBag currentIdentity];
+    identifier = [currentIdentity identifier];
+    v8 = [(HAPAccessoryServer *)self isAccessoryAssociatedWithControllerKey:identifier];
 
     if (v8)
     {
-      v9 = [(HAPAccessoryServer *)self keyStore];
+      keyStore = [(HAPAccessoryServer *)self keyStore];
       v17 = 0;
-      v10 = [v9 readPublicKeyForAccessoryName:v4 registeredWithHomeKit:0 error:&v17];
+      v10 = [keyStore readPublicKeyForAccessoryName:identifierCopy registeredWithHomeKit:0 error:&v17];
       v11 = v17;
 
       if (!v10 || v11)
       {
         v12 = objc_autoreleasePoolPush();
-        v13 = self;
+        selfCopy = self;
         v14 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
@@ -285,46 +285,46 @@ LABEL_5:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)associateAccessoryWithControllerKeyUsingAccessoryIdentifier:(id)a3
+- (void)associateAccessoryWithControllerKeyUsingAccessoryIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(HAPAccessoryServer *)self useHH2])
   {
     [(HAPAccessoryServer *)self initializeKeyBagIfNecessary];
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = HMFGetLogIdentifier();
-      v9 = [(HAPAccessoryServer *)v6 keyBag];
-      v10 = [v9 currentIdentity];
-      v11 = [v10 identifier];
+      keyBag = [(HAPAccessoryServer *)selfCopy keyBag];
+      currentIdentity = [keyBag currentIdentity];
+      identifier = [currentIdentity identifier];
       *buf = 138543618;
       v26 = v8;
       v27 = 2114;
-      v28 = v11;
+      v28 = identifier;
       _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_INFO, "%{public}@PV Succeeded using [%{public}@]", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v5);
-    v12 = [(HAPAccessoryServer *)v6 keyBag];
-    v13 = [v12 currentIdentity];
-    v14 = [v13 identifier];
-    v15 = [(HAPAccessoryServer *)v6 isAccessoryAssociatedWithControllerKey:v14];
+    keyBag2 = [(HAPAccessoryServer *)selfCopy keyBag];
+    currentIdentity2 = [keyBag2 currentIdentity];
+    identifier2 = [currentIdentity2 identifier];
+    v15 = [(HAPAccessoryServer *)selfCopy isAccessoryAssociatedWithControllerKey:identifier2];
 
     if (!v15)
     {
-      v16 = [(HAPAccessoryServer *)v6 keyStore];
+      keyStore = [(HAPAccessoryServer *)selfCopy keyStore];
       v24 = 0;
-      v17 = [v16 readPublicKeyForAccessoryName:v4 registeredWithHomeKit:0 error:&v24];
+      v17 = [keyStore readPublicKeyForAccessoryName:identifierCopy registeredWithHomeKit:0 error:&v24];
       v18 = v24;
 
       if (!v17 || v18)
       {
         v19 = objc_autoreleasePoolPush();
-        v20 = v6;
+        v20 = selfCopy;
         v21 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
@@ -341,7 +341,7 @@ LABEL_5:
 
       else
       {
-        [(HAPAccessoryServer *)v6 associateAccessoryWithControllerKeyUsingAccessoryPublicKey:v17];
+        [(HAPAccessoryServer *)selfCopy associateAccessoryWithControllerKeyUsingAccessoryPublicKey:v17];
       }
     }
   }
@@ -349,47 +349,47 @@ LABEL_5:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)associateAccessoryWithControllerKeyUsingAccessoryPublicKey:(id)a3
+- (void)associateAccessoryWithControllerKeyUsingAccessoryPublicKey:(id)key
 {
-  v9 = a3;
+  keyCopy = key;
   if ([(HAPAccessoryServer *)self useHH2])
   {
     [(HAPAccessoryServer *)self initializeKeyBagIfNecessary];
-    v4 = [(HAPAccessoryServer *)self pairingRequest];
-    v5 = [v4 pairingIdentity];
-    if (v5)
+    pairingRequest = [(HAPAccessoryServer *)self pairingRequest];
+    pairingIdentity = [pairingRequest pairingIdentity];
+    if (pairingIdentity)
     {
-      v6 = v5;
+      currentIdentity = pairingIdentity;
     }
 
     else
     {
-      v7 = [(HAPAccessoryServer *)self keyBag];
-      v6 = [v7 currentIdentity];
+      keyBag = [(HAPAccessoryServer *)self keyBag];
+      currentIdentity = [keyBag currentIdentity];
 
-      if (!v6)
+      if (!currentIdentity)
       {
         goto LABEL_6;
       }
     }
 
-    v8 = [v6 identifier];
-    [(HAPAccessoryServer *)self associateAccessoryWithControllerKey:v8 usingAccessoryPublicKey:v9];
+    identifier = [currentIdentity identifier];
+    [(HAPAccessoryServer *)self associateAccessoryWithControllerKey:identifier usingAccessoryPublicKey:keyCopy];
   }
 
 LABEL_6:
 }
 
-- (void)associateAccessoryWithControllerKey:(id)a3 usingAccessoryPublicKey:(id)a4
+- (void)associateAccessoryWithControllerKey:(id)key usingAccessoryPublicKey:(id)publicKey
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  publicKeyCopy = publicKey;
   if ([(HAPAccessoryServer *)self useHH2])
   {
     [(HAPAccessoryServer *)self initializeKeyBagIfNecessary];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -397,25 +397,25 @@ LABEL_6:
       *buf = 138543618;
       v27 = v11;
       v28 = 2112;
-      v29 = v6;
+      v29 = keyCopy;
       _os_log_impl(&dword_22AADC000, v10, OS_LOG_TYPE_INFO, "%{public}@Establishing relationship with controller key: [%@]", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
     v12 = [HAPPairingIdentity alloc];
-    v13 = [(HAPAccessoryServer *)v9 identifier];
-    v14 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:v7];
-    v15 = [(HAPPairingIdentity *)v12 initWithIdentifier:v13 controllerKeyIdentifier:v6 publicKey:v14 privateKey:0 permissions:0];
+    identifier = [(HAPAccessoryServer *)selfCopy identifier];
+    v14 = [objc_alloc(MEMORY[0x277D0F8B0]) initWithPairingKeyData:publicKeyCopy];
+    v15 = [(HAPPairingIdentity *)v12 initWithIdentifier:identifier controllerKeyIdentifier:keyCopy publicKey:v14 privateKey:0 permissions:0];
 
-    v16 = [(HAPAccessoryServer *)v9 keyStore];
+    keyStore = [(HAPAccessoryServer *)selfCopy keyStore];
     v25 = 0;
-    v17 = [v16 establishRelationshipBetweenAccessoryAndControllerKey:v15 error:&v25];
+    v17 = [keyStore establishRelationshipBetweenAccessoryAndControllerKey:v15 error:&v25];
     v18 = v25;
 
     if (!v17 || v18)
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = v9;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -432,11 +432,11 @@ LABEL_6:
 
     else
     {
-      v19 = [(HAPAccessoryServer *)v9 pairingRequest];
+      pairingRequest = [(HAPAccessoryServer *)selfCopy pairingRequest];
 
-      if (v19)
+      if (pairingRequest)
       {
-        [(HAPAccessoryServer *)v9 refreshKeyBag];
+        [(HAPAccessoryServer *)selfCopy refreshKeyBag];
       }
     }
   }
@@ -444,18 +444,18 @@ LABEL_6:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAccessoryAssociatedWithControllerKey:(id)a3
+- (BOOL)isAccessoryAssociatedWithControllerKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServer *)self keyStore];
-  v6 = [(HAPAccessoryServer *)self identifier];
+  keyCopy = key;
+  keyStore = [(HAPAccessoryServer *)self keyStore];
+  identifier = [(HAPAccessoryServer *)self identifier];
   v11 = 0;
-  v7 = [v5 isAccessoryAssociatedWithControllerKey:v6 controllerID:&v11];
+  v7 = [keyStore isAccessoryAssociatedWithControllerKey:identifier controllerID:&v11];
   v8 = v11;
 
   if (v7)
   {
-    v9 = [v4 isEqualToString:v8];
+    v9 = [keyCopy isEqualToString:v8];
   }
 
   else
@@ -466,13 +466,13 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)shouldRetryPVDueToAuthenticationError:(id)a3
+- (BOOL)shouldRetryPVDueToAuthenticationError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(HAPAccessoryServer *)self useHH2])
   {
-    v5 = [(HAPAccessoryServer *)self keyBag];
-    v6 = [v5 shouldRetryPVDueToAuthenticationError:v4];
+    keyBag = [(HAPAccessoryServer *)self keyBag];
+    v6 = [keyBag shouldRetryPVDueToAuthenticationError:errorCopy];
   }
 
   else
@@ -485,8 +485,8 @@ LABEL_6:
 
 - (void)refreshKeyBag
 {
-  v2 = [(HAPAccessoryServer *)self keyBag];
-  [v2 refreshKeys];
+  keyBag = [(HAPAccessoryServer *)self keyBag];
+  [keyBag refreshKeys];
 }
 
 - (void)initializeKeyBagIfNecessary
@@ -512,13 +512,13 @@ LABEL_6:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)getControllerPairingIdentityWithError:(id *)a3
+- (id)getControllerPairingIdentityWithError:(id *)error
 {
   if (!-[HAPAccessoryServer useHH2](self, "useHH2") || (-[HAPAccessoryServer keyBag](self, "keyBag"), v5 = objc_claimAutoreleasedReturnValue(), [v5 currentIdentity], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
-    v7 = [(HAPAccessoryServer *)self keyStore];
-    v8 = [(HAPAccessoryServer *)self identifier];
-    v6 = [v7 readControllerPairingKeyForAccessory:v8 error:a3];
+    keyStore = [(HAPAccessoryServer *)self keyStore];
+    identifier = [(HAPAccessoryServer *)self identifier];
+    v6 = [keyStore readControllerPairingKeyForAccessory:identifier error:error];
   }
 
   return v6;
@@ -530,14 +530,14 @@ LABEL_6:
   v12 = 0;
   v3 = [(HAPAccessoryServer *)self getControllerPairingIdentityWithError:&v12];
   v4 = v12;
-  v5 = 0;
+  identifier = 0;
   if (!v4)
   {
-    v5 = [v3 identifier];
+    identifier = [v3 identifier];
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -545,14 +545,14 @@ LABEL_6:
     *buf = 138543618;
     v14 = v9;
     v15 = 2112;
-    v16 = v5;
+    v16 = identifier;
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%{public}@Using default controller username : %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v10 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return identifier;
 }
 
 - (void)disconnect
@@ -568,9 +568,9 @@ LABEL_6:
   objc_exception_throw(v7);
 }
 
-- (void)disconnectWithError:(id)a3
+- (void)disconnectWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -582,21 +582,21 @@ LABEL_6:
   objc_exception_throw(v10);
 }
 
-- (void)submitPairVerifyMetricWithError:(id)a3
+- (void)submitPairVerifyMetricWithError:(id)error
 {
-  v12 = a3;
+  errorCopy = error;
   if ([(HAPAccessoryServer *)self metric_pairVerifyDurationInMS])
   {
-    v4 = [(HAPAccessoryServer *)self metric_pairVerifyReason];
+    metric_pairVerifyReason = [(HAPAccessoryServer *)self metric_pairVerifyReason];
 
-    if (v4)
+    if (metric_pairVerifyReason)
     {
       v5 = [HAPMetricsPairVerifyEvent alloc];
       v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HAPAccessoryServer linkType](self, "linkType")}];
-      v7 = [(HAPAccessoryServer *)self metric_pairVerifyDurationInMS];
-      v8 = [(HAPAccessoryServer *)self metric_pairVerifyReason];
-      v9 = [(HAPAccessoryServer *)self metric_pairVerifyConnectionEstablishedBy];
-      v10 = [(HAPMetricsPairVerifyEvent *)v5 initWithAccessory:self forLinkType:v6 durationInMS:v7 reason:v8 connectionEstablishedUsing:v9 pvError:v12];
+      metric_pairVerifyDurationInMS = [(HAPAccessoryServer *)self metric_pairVerifyDurationInMS];
+      metric_pairVerifyReason2 = [(HAPAccessoryServer *)self metric_pairVerifyReason];
+      metric_pairVerifyConnectionEstablishedBy = [(HAPAccessoryServer *)self metric_pairVerifyConnectionEstablishedBy];
+      v10 = [(HAPMetricsPairVerifyEvent *)v5 initWithAccessory:self forLinkType:v6 durationInMS:metric_pairVerifyDurationInMS reason:metric_pairVerifyReason2 connectionEstablishedUsing:metric_pairVerifyConnectionEstablishedBy pvError:errorCopy];
 
       v11 = +[HAPMetricsDispatcher sharedInstance];
       [v11 submitLogEvent:v10];
@@ -607,35 +607,35 @@ LABEL_6:
   [(HAPAccessoryServer *)self setMetric_pairVerifyReason:0];
 }
 
-- (void)updateAccessoryInfoDictionary:(id)a3
+- (void)updateAccessoryInfoDictionary:(id)dictionary
 {
-  v10 = a3;
+  dictionaryCopy = dictionary;
   os_unfair_lock_lock_with_options();
   if ([(NSArray *)self->_accessories count])
   {
     v4 = [(NSArray *)self->_accessories objectAtIndexedSubscript:0];
-    v5 = [v4 manufacturer];
-    v6 = [v4 productData];
+    manufacturer = [v4 manufacturer];
+    productData = [v4 productData];
     v7 = self->_category;
-    v8 = [v4 firmwareVersion];
+    firmwareVersion = [v4 firmwareVersion];
 
     os_unfair_lock_unlock(&self->_lock);
-    if (v5)
+    if (manufacturer)
     {
-      [v10 setObject:v5 forKey:@"manufacturer"];
+      [dictionaryCopy setObject:manufacturer forKey:@"manufacturer"];
     }
 
-    v9 = v10;
-    if (v6)
+    v9 = dictionaryCopy;
+    if (productData)
     {
-      [v10 setObject:v6 forKey:@"product"];
-      v9 = v10;
+      [dictionaryCopy setObject:productData forKey:@"product"];
+      v9 = dictionaryCopy;
     }
 
-    if (v8)
+    if (firmwareVersion)
     {
-      [v10 setObject:v8 forKey:@"firmwareVersion"];
-      v9 = v10;
+      [dictionaryCopy setObject:firmwareVersion forKey:@"firmwareVersion"];
+      v9 = dictionaryCopy;
     }
 
     if (v7)
@@ -648,9 +648,9 @@ LABEL_6:
   {
     os_unfair_lock_unlock(&self->_lock);
     v7 = 0;
-    v8 = 0;
-    v6 = 0;
-    v5 = 0;
+    firmwareVersion = 0;
+    productData = 0;
+    manufacturer = 0;
   }
 }
 
@@ -670,10 +670,10 @@ LABEL_6:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setSuspendedAccessory:(id)a3
+- (void)setSuspendedAccessory:(id)accessory
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  accessoryCopy = accessory;
   os_unfair_lock_lock_with_options();
   suspendedAccessory = self->_suspendedAccessory;
   if (HMFEqualObjects())
@@ -683,10 +683,10 @@ LABEL_6:
 
   else
   {
-    objc_storeStrong(&self->_suspendedAccessory, a3);
+    objc_storeStrong(&self->_suspendedAccessory, accessory);
     os_unfair_lock_unlock(&self->_lock);
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -694,7 +694,7 @@ LABEL_6:
       v12 = 138543618;
       v13 = v10;
       v14 = 2112;
-      v15 = v5;
+      v15 = accessoryCopy;
       _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "%{public}@Updating the server's suspended accessory to: '%@'", &v12, 0x16u);
     }
 
@@ -704,10 +704,10 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)notifyClients:(unint64_t)a3 withDictionary:(id)a4
+- (BOOL)notifyClients:(unint64_t)clients withDictionary:(id)dictionary
 {
   v47 = *MEMORY[0x277D85DE8];
-  v33 = a4;
+  dictionaryCopy = dictionary;
   os_unfair_lock_lock_with_options();
   notificationClients = self->_notificationClients;
   if (notificationClients)
@@ -717,13 +717,13 @@ LABEL_6:
     if (v6)
     {
       v7 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v9 = HMFGetLogIdentifier();
         v10 = [v6 count];
-        v11 = [HAPNotification typeToString:a3];
+        v11 = [HAPNotification typeToString:clients];
         *buf = 138543874;
         v42 = v9;
         v43 = 2048;
@@ -734,9 +734,9 @@ LABEL_6:
       }
 
       objc_autoreleasePoolPop(v7);
-      if (v33)
+      if (dictionaryCopy)
       {
-        v12 = [v33 hmf_numberForKey:@"HAPAccessoryInstanceID"];
+        v12 = [dictionaryCopy hmf_numberForKey:@"HAPAccessoryInstanceID"];
       }
 
       else
@@ -768,16 +768,16 @@ LABEL_6:
             v20 = *(*(&v36 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              v21 = [v20 hapInstanceId];
+              hapInstanceId = [v20 hapInstanceId];
             }
 
             else
             {
-              v21 = 0;
+              hapInstanceId = 0;
             }
 
             v22 = objc_autoreleasePoolPush();
-            v23 = v35;
+            v23 = selfCopy;
             v24 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
@@ -787,14 +787,14 @@ LABEL_6:
               v43 = 2112;
               v44 = v12;
               v45 = 2112;
-              v46 = v21;
+              v46 = hapInstanceId;
               _os_log_impl(&dword_22AADC000, v24, OS_LOG_TYPE_INFO, "%{public}@Attempt to notify client dictionary instanceID %@ clientInstanceId %@", buf, 0x20u);
             }
 
             objc_autoreleasePoolPop(v22);
-            if (v21 == 0 || v12 == 0 || (v26 = [v21 intValue], v26 == objc_msgSend(v12, "intValue")))
+            if (hapInstanceId == 0 || v12 == 0 || (v26 = [hapInstanceId intValue], v26 == objc_msgSend(v12, "intValue")))
             {
-              [v20 indicateNotificationFromServer:v23 notifyType:a3 withDictionary:{v33, v29}];
+              [v20 indicateNotificationFromServer:v23 notifyType:clients withDictionary:{dictionaryCopy, v29}];
               v32 = 1;
             }
           }
@@ -820,7 +820,7 @@ LABEL_6:
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy2 = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -838,20 +838,20 @@ LABEL_30:
   return v32 & 1;
 }
 
-- (void)unregisterForNotifications:(id)a3
+- (void)unregisterForNotifications:(id)notifications
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationsCopy = notifications;
   os_unfair_lock_lock_with_options();
   notificationClients = self->_notificationClients;
   if (notificationClients)
   {
-    [(NSHashTable *)notificationClients removeObject:v4];
+    [(NSHashTable *)notificationClients removeObject:notificationsCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -859,7 +859,7 @@ LABEL_30:
     v11 = 138543618;
     v12 = v9;
     v13 = 2112;
-    v14 = v4;
+    v14 = notificationsCopy;
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%{public}@Removing client from accessory server notification %@", &v11, 0x16u);
   }
 
@@ -867,18 +867,18 @@ LABEL_30:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForNotifications:(id)a3
+- (void)registerForNotifications:(id)notifications
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationsCopy = notifications;
   os_unfair_lock_lock_with_options();
   notificationClients = self->_notificationClients;
   if (notificationClients)
   {
-    [(NSHashTable *)notificationClients addObject:v4];
+    [(NSHashTable *)notificationClients addObject:notificationsCopy];
     os_unfair_lock_unlock(&self->_lock);
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -886,7 +886,7 @@ LABEL_30:
       v11 = 138543618;
       v12 = v9;
       v13 = 2112;
-      v14 = v4;
+      v14 = notificationsCopy;
       _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "%{public}@Registering client for accessory server notification %@", &v11, 0x16u);
     }
 
@@ -905,7 +905,7 @@ LABEL_30:
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -923,7 +923,7 @@ LABEL_30:
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -937,18 +937,18 @@ LABEL_30:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateInternalDelegatesUsingBlock:(id)a3
+- (void)enumerateInternalDelegatesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServer *)self internalDelegateQueue];
+  blockCopy = block;
+  internalDelegateQueue = [(HAPAccessoryServer *)self internalDelegateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HAPAccessoryServer_enumerateInternalDelegatesUsingBlock___block_invoke;
   v7[3] = &unk_2786D65D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(internalDelegateQueue, v7);
 }
 
 void __59__HAPAccessoryServer_enumerateInternalDelegatesUsingBlock___block_invoke(uint64_t a1)
@@ -1002,18 +1002,18 @@ void __59__HAPAccessoryServer_enumerateInternalDelegatesUsingBlock___block_invok
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeInternalDelegate:(id)a3
+- (void)removeInternalDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServer *)self internalDelegateQueue];
+  delegateCopy = delegate;
+  internalDelegateQueue = [(HAPAccessoryServer *)self internalDelegateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__HAPAccessoryServer_removeInternalDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(internalDelegateQueue, v7);
 }
 
 void __45__HAPAccessoryServer_removeInternalDelegate___block_invoke(uint64_t a1)
@@ -1022,18 +1022,18 @@ void __45__HAPAccessoryServer_removeInternalDelegate___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)addInternalDelegate:(id)a3
+- (void)addInternalDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServer *)self internalDelegateQueue];
+  delegateCopy = delegate;
+  internalDelegateQueue = [(HAPAccessoryServer *)self internalDelegateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HAPAccessoryServer_addInternalDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(internalDelegateQueue, v7);
 }
 
 void __42__HAPAccessoryServer_addInternalDelegate___block_invoke(uint64_t a1)
@@ -1042,29 +1042,29 @@ void __42__HAPAccessoryServer_addInternalDelegate___block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 40)];
 }
 
-- (BOOL)requiresTimedWrite:(id)a3
+- (BOOL)requiresTimedWrite:(id)write
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  writeCopy = write;
   if ([(HAPAccessoryServer *)self supportsTimedWrite])
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v4;
+    obj = writeCopy;
     v5 = [obj countByEnumeratingWithState:&v26 objects:v36 count:16];
     if (v5)
     {
       v6 = v5;
-      v24 = v4;
-      v7 = 0;
-      v8 = 0;
+      v24 = writeCopy;
+      instanceID = 0;
+      characteristic = 0;
       v9 = *v27;
 LABEL_4:
       v10 = 0;
-      v11 = v7;
-      v12 = v8;
+      v11 = instanceID;
+      v12 = characteristic;
       while (1)
       {
         if (*v27 != v9)
@@ -1073,28 +1073,28 @@ LABEL_4:
         }
 
         v13 = *(*(&v26 + 1) + 8 * v10);
-        v8 = [v13 characteristic];
+        characteristic = [v13 characteristic];
 
-        v14 = [v8 service];
-        v15 = [v14 accessory];
-        v7 = [v15 instanceID];
+        service = [characteristic service];
+        accessory = [service accessory];
+        instanceID = [accessory instanceID];
 
-        if (!v8 || v7 == 0)
+        if (!characteristic || instanceID == 0)
         {
           break;
         }
 
-        if (([v13 timedWrite] & 1) != 0 || (objc_msgSend(v8, "properties") & 0x20) != 0)
+        if (([v13 timedWrite] & 1) != 0 || (objc_msgSend(characteristic, "properties") & 0x20) != 0)
         {
           v17 = 1;
 LABEL_18:
-          v4 = v24;
+          writeCopy = v24;
           goto LABEL_23;
         }
 
         ++v10;
-        v11 = v7;
-        v12 = v8;
+        v11 = instanceID;
+        v12 = characteristic;
         if (v6 == v10)
         {
           v6 = [obj countByEnumeratingWithState:&v26 objects:v36 count:16];
@@ -1109,18 +1109,18 @@ LABEL_18:
       }
 
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy = self;
       v20 = HMFGetOSLogHandle();
-      v4 = v24;
+      writeCopy = v24;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v21 = HMFGetLogIdentifier();
         *buf = 138543874;
         v31 = v21;
         v32 = 2112;
-        v33 = v8;
+        v33 = characteristic;
         v34 = 2112;
-        v35 = v7;
+        v35 = instanceID;
         _os_log_impl(&dword_22AADC000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to check prepare characteristic write requests for characteristic '%@' with an accessory instance ID of '%@'", buf, 0x20u);
       }
 
@@ -1144,10 +1144,10 @@ LABEL_23:
   return v17;
 }
 
-- (void)handleUpdatesForCharacteristics:(id)a3 stateNumber:(id)a4
+- (void)handleUpdatesForCharacteristics:(id)characteristics stateNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicsCopy = characteristics;
+  numberCopy = number;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -1159,9 +1159,9 @@ LABEL_23:
   objc_exception_throw(v13);
 }
 
-- (void)identifyWithCompletion:(id)a3
+- (void)identifyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -1173,11 +1173,11 @@ LABEL_23:
   objc_exception_throw(v10);
 }
 
-- (void)enableEvents:(BOOL)a3 forCharacteristics:(id)a4 withCompletionHandler:(id)a5 queue:(id)a6
+- (void)enableEvents:(BOOL)events forCharacteristics:(id)characteristics withCompletionHandler:(id)handler queue:(id)queue
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  characteristicsCopy = characteristics;
+  handlerCopy = handler;
+  queueCopy = queue;
   v12 = MEMORY[0x277CBEAD8];
   v13 = *MEMORY[0x277CBE658];
   v14 = MEMORY[0x277CCACA8];
@@ -1189,12 +1189,12 @@ LABEL_23:
   objc_exception_throw(v17);
 }
 
-- (void)writeCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7
+- (void)writeCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  valuesCopy = values;
+  expiryCopy = expiry;
+  queueCopy = queue;
+  handlerCopy = handler;
   v15 = MEMORY[0x277CBEAD8];
   v16 = *MEMORY[0x277CBE658];
   v17 = MEMORY[0x277CCACA8];
@@ -1206,12 +1206,12 @@ LABEL_23:
   objc_exception_throw(v20);
 }
 
-- (void)readCharacteristicValues:(id)a3 timeout:(double)a4 expiry:(id)a5 completionQueue:(id)a6 completionHandler:(id)a7
+- (void)readCharacteristicValues:(id)values timeout:(double)timeout expiry:(id)expiry completionQueue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  valuesCopy = values;
+  expiryCopy = expiry;
+  queueCopy = queue;
+  handlerCopy = handler;
   v15 = MEMORY[0x277CBEAD8];
   v16 = *MEMORY[0x277CBE658];
   v17 = MEMORY[0x277CCACA8];
@@ -1236,32 +1236,32 @@ LABEL_23:
   objc_exception_throw(v7);
 }
 
-- (void)removePairingIdentifier:(id)a3 pairingPublicKey:(id)a4 completionQueue:(id)a5 completionHandler:(id)a6
+- (void)removePairingIdentifier:(id)identifier pairingPublicKey:(id)key completionQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(HAPAccessoryServer *)self keyBag];
-  v15 = [v14 currentIdentity];
-  v16 = [v15 identifier];
-  v17 = [v16 isEqualToString:v13];
+  queueCopy = queue;
+  handlerCopy = handler;
+  keyCopy = key;
+  identifierCopy = identifier;
+  keyBag = [(HAPAccessoryServer *)self keyBag];
+  currentIdentity = [keyBag currentIdentity];
+  identifier = [currentIdentity identifier];
+  v17 = [identifier isEqualToString:identifierCopy];
 
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __97__HAPAccessoryServer_removePairingIdentifier_pairingPublicKey_completionQueue_completionHandler___block_invoke;
   v27 = &unk_2786D5290;
-  v29 = self;
-  v30 = v11;
+  selfCopy = self;
+  v30 = handlerCopy;
   v31 = v17;
-  v28 = v10;
-  v18 = v11;
-  v19 = v10;
+  v28 = queueCopy;
+  v18 = handlerCopy;
+  v19 = queueCopy;
   v20 = MEMORY[0x231885210](&v24);
   v21 = objc_alloc(MEMORY[0x277D0F8B0]);
-  v22 = [v21 initWithPairingKeyData:{v12, v24, v25, v26, v27}];
+  v22 = [v21 initWithPairingKeyData:{keyCopy, v24, v25, v26, v27}];
 
-  v23 = [[HAPPairingIdentity alloc] initWithIdentifier:v13 publicKey:v22 privateKey:0 permissions:0];
+  v23 = [[HAPPairingIdentity alloc] initWithIdentifier:identifierCopy publicKey:v22 privateKey:0 permissions:0];
   [(HAPAccessoryServer *)self removePairing:v23 completionQueue:v19 completionHandler:v20];
 }
 
@@ -1284,10 +1284,10 @@ void __97__HAPAccessoryServer_removePairingIdentifier_pairingPublicKey_completio
   }
 }
 
-- (void)listPairingsWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)listPairingsWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -1299,10 +1299,10 @@ void __97__HAPAccessoryServer_removePairingIdentifier_pairingPublicKey_completio
   objc_exception_throw(v13);
 }
 
-- (BOOL)removePairingForCurrentControllerOnQueue:(id)a3 completion:(id)a4
+- (BOOL)removePairingForCurrentControllerOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -1314,11 +1314,11 @@ void __97__HAPAccessoryServer_removePairingIdentifier_pairingPublicKey_completio
   objc_exception_throw(v13);
 }
 
-- (void)removePairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)removePairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pairingCopy = pairing;
+  queueCopy = queue;
+  handlerCopy = handler;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -1330,11 +1330,11 @@ void __97__HAPAccessoryServer_removePairingIdentifier_pairingPublicKey_completio
   objc_exception_throw(v16);
 }
 
-- (void)addPairing:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)addPairing:(id)pairing completionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pairingCopy = pairing;
+  queueCopy = queue;
+  handlerCopy = handler;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -1346,7 +1346,7 @@ void __97__HAPAccessoryServer_removePairingIdentifier_pairingPublicKey_completio
   objc_exception_throw(v16);
 }
 
-- (BOOL)stopPairingWithError:(id *)a3
+- (BOOL)stopPairingWithError:(id *)error
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -1359,10 +1359,10 @@ void __97__HAPAccessoryServer_removePairingIdentifier_pairingPublicKey_completio
   objc_exception_throw(v8);
 }
 
-- (BOOL)tryPairingPassword:(id)a3 onboardingSetupPayloadString:(id)a4 error:(id *)a5
+- (BOOL)tryPairingPassword:(id)password onboardingSetupPayloadString:(id)string error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  passwordCopy = password;
+  stringCopy = string;
   v9 = MEMORY[0x277CBEAD8];
   v10 = *MEMORY[0x277CBE658];
   v11 = MEMORY[0x277CCACA8];
@@ -1374,10 +1374,10 @@ void __97__HAPAccessoryServer_removePairingIdentifier_pairingPublicKey_completio
   objc_exception_throw(v14);
 }
 
-- (void)startPairingWithConsentRequired:(BOOL)a3 config:(id)a4 ownershipToken:(id)a5
+- (void)startPairingWithConsentRequired:(BOOL)required config:(id)config ownershipToken:(id)token
 {
-  v7 = a4;
-  v8 = a5;
+  configCopy = config;
+  tokenCopy = token;
   v9 = MEMORY[0x277CBEAD8];
   v10 = *MEMORY[0x277CBE658];
   v11 = MEMORY[0x277CCACA8];
@@ -1415,14 +1415,14 @@ void __97__HAPAccessoryServer_removePairingIdentifier_pairingPublicKey_completio
   objc_exception_throw(v7);
 }
 
-- (BOOL)matchesSetupID:(id)a3 serverIdentifier:(id)a4
+- (BOOL)matchesSetupID:(id)d serverIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dCopy = d;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (!dCopy)
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_6;
     }
@@ -1432,7 +1432,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (![(HAPAccessoryServer *)self matchesSetupID:v6])
+  if (![(HAPAccessoryServer *)self matchesSetupID:dCopy])
   {
     goto LABEL_7;
   }
@@ -1440,7 +1440,7 @@ LABEL_7:
   if (v8)
   {
 LABEL_6:
-    v10 = [(HAPAccessoryServer *)self identifier];
+    identifier = [(HAPAccessoryServer *)self identifier];
     v9 = HMFEqualObjects();
 
     goto LABEL_8;
@@ -1452,12 +1452,12 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)matchesSetupID:(id)a3
+- (BOOL)matchesSetupID:(id)d
 {
-  v4 = a3;
-  v5 = [(HAPAccessoryServer *)self setupHash];
-  v6 = [(HAPAccessoryServer *)self identifier];
-  v7 = HAPValidateSetupHash(v5, v6, v4);
+  dCopy = d;
+  setupHash = [(HAPAccessoryServer *)self setupHash];
+  identifier = [(HAPAccessoryServer *)self identifier];
+  v7 = HAPValidateSetupHash(setupHash, identifier, dCopy);
 
   return v7;
 }
@@ -1475,12 +1475,12 @@ LABEL_8:
   objc_exception_throw(v7);
 }
 
-- (void)validatePairingAuthMethod:(id)a3
+- (void)validatePairingAuthMethod:(id)method
 {
   v3 = MEMORY[0x277CCA9B8];
-  v4 = a3;
+  methodCopy = method;
   v6 = [v3 hapErrorWithCode:3 description:@"Base class HAPAccessoryServer does not implement validatePairingAuthMethod" reason:0 suggestion:0 underlyingError:0 marker:209];
-  v5 = MEMORY[0x231885210](v4);
+  v5 = MEMORY[0x231885210](methodCopy);
 
   if (v5)
   {
@@ -1501,9 +1501,9 @@ LABEL_8:
   objc_exception_throw(v7);
 }
 
-- (void)provisionToken:(id)a3
+- (void)provisionToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -1515,7 +1515,7 @@ LABEL_8:
   objc_exception_throw(v10);
 }
 
-- (void)continueAuthAfterValidation:(BOOL)a3
+- (void)continueAuthAfterValidation:(BOOL)validation
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -1546,17 +1546,17 @@ LABEL_8:
   if (HAPIsInternalBuild())
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(HAPAccessoryServer *)self identifier];
-    v5 = [(HAPAccessoryServer *)self name];
-    v6 = [v3 stringWithFormat:@"%@/%@", v4, v5];
+    identifier = [(HAPAccessoryServer *)self identifier];
+    name = [(HAPAccessoryServer *)self name];
+    identifier2 = [v3 stringWithFormat:@"%@/%@", identifier, name];
   }
 
   else
   {
-    v6 = [(HAPAccessoryServer *)self identifier];
+    identifier2 = [(HAPAccessoryServer *)self identifier];
   }
 
-  return v6;
+  return identifier2;
 }
 
 - (NSDictionary)pairingMetricDictionary
@@ -1576,12 +1576,12 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_metriclock);
 }
 
-- (void)setPairingMetricWithKey:(id)a3 value:(id)a4
+- (void)setPairingMetricWithKey:(id)key value:(id)value
 {
-  v7 = a3;
-  v6 = a4;
+  keyCopy = key;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_localPairingMetricDictionary setObject:v6 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_localPairingMetricDictionary setObject:valueCopy forKeyedSubscript:keyCopy];
   os_unfair_lock_unlock(&self->_metriclock);
 }
 
@@ -1594,22 +1594,22 @@ LABEL_8:
   return v3;
 }
 
-- (void)setConnectionStartTime:(id)a3
+- (void)setConnectionStartTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   os_unfair_lock_lock_with_options();
   connectionStartTime = self->_connectionStartTime;
-  self->_connectionStartTime = v4;
+  self->_connectionStartTime = timeCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setReachabilityChangedReason:(id)a3
+- (void)setReachabilityChangedReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock_with_options();
   reachabilityChangedReason = self->_reachabilityChangedReason;
-  self->_reachabilityChangedReason = v4;
+  self->_reachabilityChangedReason = reasonCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1623,10 +1623,10 @@ LABEL_8:
   return v3;
 }
 
-- (void)setHasAdvertisement:(BOOL)a3
+- (void)setHasAdvertisement:(BOOL)advertisement
 {
   os_unfair_lock_lock_with_options();
-  self->_hasAdvertisement = a3;
+  self->_hasAdvertisement = advertisement;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1647,10 +1647,10 @@ LABEL_8:
   return pairSetupType;
 }
 
-- (void)setPairSetupType:(unint64_t)a3
+- (void)setPairSetupType:(unint64_t)type
 {
   os_unfair_lock_lock_with_options();
-  self->_pairSetupType = a3;
+  self->_pairSetupType = type;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1664,12 +1664,12 @@ LABEL_8:
   return v3;
 }
 
-- (void)setVersion:(id)a3
+- (void)setVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   os_unfair_lock_lock_with_options();
   version = self->_version;
-  self->_version = v4;
+  self->_version = versionCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1682,10 +1682,10 @@ LABEL_8:
   return compatibilityFeatures;
 }
 
-- (void)setCompatibilityFeatures:(unint64_t)a3
+- (void)setCompatibilityFeatures:(unint64_t)features
 {
   os_unfair_lock_lock_with_options();
-  self->_compatibilityFeatures = a3;
+  self->_compatibilityFeatures = features;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1698,10 +1698,10 @@ LABEL_8:
   return stateNumber;
 }
 
-- (void)setStateNumber:(unint64_t)a3
+- (void)setStateNumber:(unint64_t)number
 {
   os_unfair_lock_lock_with_options();
-  self->_stateNumber = a3;
+  self->_stateNumber = number;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1714,10 +1714,10 @@ LABEL_8:
   return wakeNumber;
 }
 
-- (void)setWakeNumber:(unint64_t)a3
+- (void)setWakeNumber:(unint64_t)number
 {
   os_unfair_lock_lock_with_options();
-  self->_wakeNumber = a3;
+  self->_wakeNumber = number;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1730,10 +1730,10 @@ LABEL_8:
   return configNumber;
 }
 
-- (void)setConfigNumber:(unint64_t)a3
+- (void)setConfigNumber:(unint64_t)number
 {
   os_unfair_lock_lock_with_options();
-  self->_configNumber = a3;
+  self->_configNumber = number;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1747,45 +1747,45 @@ LABEL_8:
   return v3;
 }
 
-- (void)setProductData:(id)a3
+- (void)setProductData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock_with_options();
   productData = self->_productData;
-  self->_productData = v4;
+  self->_productData = dataCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
-  v5 = a3;
+  categoryCopy = category;
   os_unfair_lock_lock_with_options();
-  v6 = [(NSNumber *)self->_category isEqual:v5];
+  v6 = [(NSNumber *)self->_category isEqual:categoryCopy];
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_category, a3);
+    objc_storeStrong(&self->_category, category);
   }
 
   os_unfair_lock_unlock(&self->_lock);
   if ((([(HAPAccessoryServer *)self communicationProtocol]!= 2) & v6) == 0)
   {
-    v7 = [(HAPAccessoryServer *)self delegate];
-    if (v7)
+    delegate = [(HAPAccessoryServer *)self delegate];
+    if (delegate)
     {
-      v8 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
 
-      if (v8)
+      if (delegateQueue)
       {
-        v9 = [(HAPAccessoryServer *)self delegateQueue];
+        delegateQueue2 = [(HAPAccessoryServer *)self delegateQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __34__HAPAccessoryServer_setCategory___block_invoke;
         block[3] = &unk_2786D7078;
-        v11 = v7;
-        v12 = self;
-        v13 = v5;
-        dispatch_async(v9, block);
+        v11 = delegate;
+        selfCopy = self;
+        v13 = categoryCopy;
+        dispatch_async(delegateQueue2, block);
       }
     }
   }
@@ -1800,12 +1800,12 @@ LABEL_8:
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  nameCopy = name;
+  v5 = [nameCopy copy];
   os_unfair_lock_lock_with_options();
-  if ([(NSString *)self->_name isEqualToString:v4])
+  if ([(NSString *)self->_name isEqualToString:nameCopy])
   {
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -1814,22 +1814,22 @@ LABEL_8:
   {
     objc_storeStrong(&self->_name, v5);
     os_unfair_lock_unlock(&self->_lock);
-    v6 = [(HAPAccessoryServer *)self delegate];
-    if (v6)
+    delegate = [(HAPAccessoryServer *)self delegate];
+    if (delegate)
     {
-      v7 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
 
-      if (v7)
+      if (delegateQueue)
       {
-        v8 = [(HAPAccessoryServer *)self delegateQueue];
+        delegateQueue2 = [(HAPAccessoryServer *)self delegateQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __30__HAPAccessoryServer_setName___block_invoke;
         block[3] = &unk_2786D7078;
-        v10 = v6;
-        v11 = self;
+        v10 = delegate;
+        selfCopy = self;
         v12 = v5;
-        dispatch_async(v8, block);
+        dispatch_async(delegateQueue2, block);
       }
     }
   }
@@ -1844,10 +1844,10 @@ LABEL_8:
   return v3;
 }
 
-- (void)setAuthMethod:(unint64_t)a3
+- (void)setAuthMethod:(unint64_t)method
 {
   os_unfair_lock_lock_with_options();
-  self->_authMethod = a3;
+  self->_authMethod = method;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1860,11 +1860,11 @@ LABEL_8:
   return authMethod;
 }
 
-- (void)setSetupHash:(id)a3
+- (void)setSetupHash:(id)hash
 {
-  v6 = a3;
+  hashCopy = hash;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [hashCopy copy];
   setupHash = self->_setupHash;
   self->_setupHash = v4;
 
@@ -1880,11 +1880,11 @@ LABEL_8:
   return v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [identifierCopy copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
@@ -1903,20 +1903,20 @@ LABEL_8:
 - (HAPDeviceID)deviceID
 {
   v3 = [HAPDeviceID alloc];
-  v4 = [(HAPAccessoryServer *)self identifier];
-  v5 = [(HAPDeviceID *)v3 initWithDeviceIDString:v4];
+  identifier = [(HAPAccessoryServer *)self identifier];
+  v5 = [(HAPDeviceID *)v3 initWithDeviceIDString:identifier];
 
   return v5;
 }
 
-- (void)setHasPairings:(BOOL)a3
+- (void)setHasPairings:(BOOL)pairings
 {
-  v3 = a3;
+  pairingsCopy = pairings;
   os_unfair_lock_lock_with_options();
   hasPairings = self->_hasPairings;
-  if (hasPairings != v3)
+  if (hasPairings != pairingsCopy)
   {
-    self->_hasPairings = v3;
+    self->_hasPairings = pairingsCopy;
   }
 
   if (self->_pendingRemovePairing)
@@ -1928,28 +1928,28 @@ LABEL_8:
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    if (hasPairings == v3)
+    if (hasPairings == pairingsCopy)
     {
       return;
     }
   }
 
-  v6 = [(HAPAccessoryServer *)self delegate];
-  if (v6)
+  delegate = [(HAPAccessoryServer *)self delegate];
+  if (delegate)
   {
-    v7 = [(HAPAccessoryServer *)self delegateQueue];
+    delegateQueue = [(HAPAccessoryServer *)self delegateQueue];
 
-    if (v7)
+    if (delegateQueue)
     {
-      v8 = [(HAPAccessoryServer *)self delegateQueue];
+      delegateQueue2 = [(HAPAccessoryServer *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __37__HAPAccessoryServer_setHasPairings___block_invoke;
       block[3] = &unk_2786D5268;
-      v10 = v6;
-      v11 = self;
-      v12 = v3;
-      dispatch_async(v8, block);
+      v10 = delegate;
+      selfCopy = self;
+      v12 = pairingsCopy;
+      dispatch_async(delegateQueue2, block);
     }
   }
 }
@@ -1962,10 +1962,10 @@ LABEL_8:
   return hasPairings;
 }
 
-- (void)setPendingRemovePairing:(unint64_t)a3
+- (void)setPendingRemovePairing:(unint64_t)pairing
 {
   os_unfair_lock_lock_with_options();
-  self->_pendingRemovePairing = a3;
+  self->_pendingRemovePairing = pairing;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1978,10 +1978,10 @@ LABEL_8:
   return pendingRemovePairing;
 }
 
-- (void)setSecuritySessionOpen:(BOOL)a3
+- (void)setSecuritySessionOpen:(BOOL)open
 {
   os_unfair_lock_lock_with_options();
-  self->_securitySessionOpen = a3;
+  self->_securitySessionOpen = open;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -1994,10 +1994,10 @@ LABEL_8:
   return securitySessionOpen;
 }
 
-- (void)setSessionRestoreActive:(BOOL)a3
+- (void)setSessionRestoreActive:(BOOL)active
 {
   os_unfair_lock_lock_with_options();
-  self->_sessionRestoreActive = a3;
+  self->_sessionRestoreActive = active;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2010,10 +2010,10 @@ LABEL_8:
   return sessionRestoreActive;
 }
 
-- (void)setReachabilityPingEnabled:(BOOL)a3
+- (void)setReachabilityPingEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock_with_options();
-  self->_reachabilityPingEnabled = a3;
+  self->_reachabilityPingEnabled = enabled;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2035,12 +2035,12 @@ LABEL_8:
   return v3;
 }
 
-- (void)setAccessories:(id)a3
+- (void)setAccessories:(id)accessories
 {
-  v4 = a3;
+  accessoriesCopy = accessories;
   os_unfair_lock_lock_with_options();
   accessories = self->_accessories;
-  self->_accessories = v4;
+  self->_accessories = accessoriesCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2053,11 +2053,11 @@ LABEL_8:
   return shouldDisconnectOnIdle;
 }
 
-- (void)setShouldDisconnectOnIdle:(BOOL)a3
+- (void)setShouldDisconnectOnIdle:(BOOL)idle
 {
-  v3 = a3;
+  idleCopy = idle;
   os_unfair_lock_lock_with_options();
-  if (self->_shouldDisconnectOnIdle == v3)
+  if (self->_shouldDisconnectOnIdle == idleCopy)
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -2065,7 +2065,7 @@ LABEL_8:
 
   else
   {
-    self->_shouldDisconnectOnIdle = v3;
+    self->_shouldDisconnectOnIdle = idleCopy;
     os_unfair_lock_unlock(&self->_lock);
 
     [(HAPAccessoryServer *)self disconnectOnIdleUpdated];
@@ -2098,15 +2098,15 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  obj = a3;
-  v6 = a4;
+  obj = delegate;
+  queueCopy = queue;
   os_unfair_lock_lock_with_options();
-  if (obj && v6)
+  if (obj && queueCopy)
   {
     objc_storeWeak(&self->_delegate, obj);
-    v7 = v6;
+    v7 = queueCopy;
     delegateQueue = self->_delegateQueue;
     self->_delegateQueue = v7;
   }
@@ -2121,9 +2121,9 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (HAPAccessoryServer)initWithKeystore:(id)a3
+- (HAPAccessoryServer)initWithKeystore:(id)keystore
 {
-  v4 = a3;
+  keystoreCopy = keystore;
   v24.receiver = self;
   v24.super_class = HAPAccessoryServer;
   v5 = [(HAPAccessoryServer *)&v24 init];
@@ -2143,10 +2143,10 @@ LABEL_8:
     internalDelegateQueue = v6->_internalDelegateQueue;
     v6->_internalDelegateQueue = v14;
 
-    objc_storeWeak(&v6->_keyStore, v4);
-    v16 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeWeak(&v6->_keyStore, keystoreCopy);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     internalDelegates = v6->_internalDelegates;
-    v6->_internalDelegates = v16;
+    v6->_internalDelegates = weakObjectsHashTable;
 
     *&v6->_reachable = 1;
     v6->_authMethod = 5;

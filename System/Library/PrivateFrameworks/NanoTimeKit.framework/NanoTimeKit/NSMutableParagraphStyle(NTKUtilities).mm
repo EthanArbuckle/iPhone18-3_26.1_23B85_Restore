@@ -8,13 +8,13 @@
 {
   v2 = objc_alloc_init(MEMORY[0x277D74240]);
   v3 = v2;
-  v4 = a1;
-  if (a1 < 0.0)
+  selfCopy = self;
+  if (self < 0.0)
   {
-    v4 = 0.0;
+    selfCopy = 0.0;
   }
 
-  v5 = fmin(v4, 1.0);
+  v5 = fmin(selfCopy, 1.0);
   *&v5 = v5;
   [v2 setHyphenationFactor:v5];
   [v3 setAllowsDefaultTighteningForTruncation:1];

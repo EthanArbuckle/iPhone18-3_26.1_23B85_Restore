@@ -1,29 +1,29 @@
 @interface SUUIProductPagePlaceholderScrollView
 - (void)layoutSubviews;
-- (void)setPlaceholderView:(id)a3;
+- (void)setPlaceholderView:(id)view;
 @end
 
 @implementation SUUIProductPagePlaceholderScrollView
 
-- (void)setPlaceholderView:(id)a3
+- (void)setPlaceholderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   placeholderView = self->_placeholderView;
-  if (placeholderView != v5)
+  if (placeholderView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)placeholderView removeFromSuperview];
-    objc_storeStrong(&self->_placeholderView, a3);
+    objc_storeStrong(&self->_placeholderView, view);
     if (self->_placeholderView)
     {
       [(SUUIProductPagePlaceholderScrollView *)self addSubview:?];
     }
 
     placeholderView = [(SUUIProductPagePlaceholderScrollView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](placeholderView, v5);
+  MEMORY[0x2821F96F8](placeholderView, viewCopy);
 }
 
 - (void)layoutSubviews

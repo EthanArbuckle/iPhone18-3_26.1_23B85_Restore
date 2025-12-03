@@ -1,16 +1,16 @@
 @interface BSUIRelativeDateLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation BSUIRelativeDateLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BSUIRelativeDateLabel" hasInstanceVariable:@"_value" withType:"NSUInteger"];
-  [v3 validateClass:@"BSUIRelativeDateLabel" hasInstanceVariable:@"_resolution" withType:"Q"];
-  [v3 validateClass:@"BSUIRelativeDateLabel" hasInstanceVariable:@"_comparedToNow" withType:"q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BSUIRelativeDateLabel" hasInstanceVariable:@"_value" withType:"NSUInteger"];
+  [validationsCopy validateClass:@"BSUIRelativeDateLabel" hasInstanceVariable:@"_resolution" withType:"Q"];
+  [validationsCopy validateClass:@"BSUIRelativeDateLabel" hasInstanceVariable:@"_comparedToNow" withType:"q"];
 }
 
 - (id)accessibilityLabel

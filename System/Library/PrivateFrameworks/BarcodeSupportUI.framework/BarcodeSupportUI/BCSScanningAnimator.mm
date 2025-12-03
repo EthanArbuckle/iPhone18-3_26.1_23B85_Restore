@@ -2,28 +2,28 @@
 - (CGPoint)_appclipCodeScaleFactor;
 - (CGPoint)_qrImagePopScaleFactor;
 - (CGPoint)_restPosition;
-- (CGRect)_platterInitialFrameWithDefaultSize:(double)a3;
+- (CGRect)_platterInitialFrameWithDefaultSize:(double)size;
 - (CGRect)_restRect;
-- (id)_meshTransform:(BOOL)a3;
+- (id)_meshTransform:(BOOL)transform;
 - (void)_animateCircularReveal;
 - (void)_performSquareMeshTransformWithoutAnimating;
 - (void)_revealCircularView;
 - (void)_setUpBlurViewIfNeeded;
-- (void)animateAppClipCodeBounceWithCompletion:(id)a3 shouldAnimate:(BOOL)a4;
-- (void)animatePopWithAppImageBlock:(id)a3 completion:(id)a4;
-- (void)animatePushWithCompletion:(id)a3 shouldAnimate:(BOOL)a4;
+- (void)animateAppClipCodeBounceWithCompletion:(id)completion shouldAnimate:(BOOL)animate;
+- (void)animatePopWithAppImageBlock:(id)block completion:(id)completion;
+- (void)animatePushWithCompletion:(id)completion shouldAnimate:(BOOL)animate;
 - (void)reset;
 - (void)showCoverView;
 @end
 
 @implementation BCSScanningAnimator
 
-- (id)_meshTransform:(BOOL)a3
+- (id)_meshTransform:(BOOL)transform
 {
-  v5 = [MEMORY[0x277CD9F18] meshTransform];
+  meshTransform = [MEMORY[0x277CD9F18] meshTransform];
   v6 = [(BCSImageQuad *)self->_imageQuad copy];
   [v6 adjustOrientationInImageSpace:0];
-  if (a3)
+  if (transform)
   {
     v7 = 0.0;
     v8 = 1.0;
@@ -59,31 +59,31 @@
   v30 = v14;
   v31 = v13;
   v32 = 0;
-  [v5 addVertex:&v29];
+  [meshTransform addVertex:&v29];
   v29 = xmmword_241A06580;
   v30 = v12;
   v31 = v11;
   v32 = 0;
-  [v5 addVertex:&v29];
+  [meshTransform addVertex:&v29];
   __asm { FMOV            V0.2D, #1.0 }
 
   v29 = _Q0;
   v30 = v10;
   v31 = v9;
   v32 = 0;
-  [v5 addVertex:&v29];
+  [meshTransform addVertex:&v29];
   v29 = xmmword_241A06590;
   v30 = v7;
   v31 = v8;
   v32 = 0;
-  [v5 addVertex:&v29];
+  [meshTransform addVertex:&v29];
   v29 = xmmword_241A065A0;
   v30 = 0.0;
   v31 = 0.0;
-  [v5 addFace:&v29];
-  [v5 setSubdivisionSteps:0];
+  [meshTransform addFace:&v29];
+  [meshTransform setSubdivisionSteps:0];
 
-  return v5;
+  return meshTransform;
 }
 
 - (CGPoint)_restPosition
@@ -142,7 +142,7 @@
   return result;
 }
 
-- (CGRect)_platterInitialFrameWithDefaultSize:(double)a3
+- (CGRect)_platterInitialFrameWithDefaultSize:(double)size
 {
   _bcs_deviceIsPad();
   [(UIImageView *)self->_targetQRImage frame];
@@ -213,8 +213,8 @@
   v3 = self->_focusIndicator;
   _bcs_mainScreenScale();
   v5 = v4;
-  v6 = [(UIImageView *)self->_targetQRImage layer];
-  [v6 setRasterizationScale:v5];
+  layer = [(UIImageView *)self->_targetQRImage layer];
+  [layer setRasterizationScale:v5];
 
   [(BCSImageQuad *)self->_imageQuad bounds];
   Width = CGRectGetWidth(v44);
@@ -241,14 +241,14 @@
   v28 = v41;
   [(UIView *)v3 setTransform:&v28];
   v16 = [(BCSScanningAnimator *)self _meshTransform:0];
-  v17 = [(UIView *)v3 layer];
-  [v17 setMeshTransform:v16];
+  layer2 = [(UIView *)v3 layer];
+  [layer2 setMeshTransform:v16];
 
   [(BCSScanningAnimator *)self _restPosition];
   v19 = v18;
   v21 = v20;
-  v22 = [(BCSDissolveEffectView *)self->_platterView layer];
-  [v22 setPosition:{v19, v21}];
+  layer3 = [(BCSDissolveEffectView *)self->_platterView layer];
+  [layer3 setPosition:{v19, v21}];
 
   v23 = *(MEMORY[0x277CD9DE8] + 80);
   v36 = *(MEMORY[0x277CD9DE8] + 64);
@@ -262,14 +262,14 @@
   v26 = *(MEMORY[0x277CD9DE8] + 48);
   *&v34.tx = *(MEMORY[0x277CD9DE8] + 32);
   v35 = v26;
-  v27 = [(BCSDissolveEffectView *)self->_platterView layer];
+  layer4 = [(BCSDissolveEffectView *)self->_platterView layer];
   v30 = v36;
   v31 = v37;
   v32 = v38;
   v33 = v39;
   v28 = v34;
   v29 = v35;
-  [v27 setTransform:&v28];
+  [layer4 setTransform:&v28];
 }
 
 - (void)_revealCircularView
@@ -283,19 +283,19 @@
   MidX = CGRectGetMidX(v36);
   [(UIView *)self->_circularContainerView bounds];
   [v5 setPosition:{MidX, CGRectGetMidY(v37)}];
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  [v5 setBackgroundColor:v7];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v5 setBackgroundColor:whiteColor];
 
-  v8 = [v5 layer];
-  [v8 setCornerRadius:Width * 0.5];
+  layer = [v5 layer];
+  [layer setCornerRadius:Width * 0.5];
 
   objc_storeStrong(p_backgroundView, v5);
   [(UIView *)self->_circularContainerView insertSubview:v5 below:self->_circularEffectView];
   [(BCSScanningAnimator *)self _restPosition];
   v10 = v9;
   v12 = v11;
-  v13 = [(UIView *)self->_circularContainerView layer];
-  [v13 setPosition:{v10, v12}];
+  layer2 = [(UIView *)self->_circularContainerView layer];
+  [layer2 setPosition:{v10, v12}];
 
   v14 = *(MEMORY[0x277CD9DE8] + 80);
   v31 = *(MEMORY[0x277CD9DE8] + 64);
@@ -309,14 +309,14 @@
   v17 = *(MEMORY[0x277CD9DE8] + 48);
   *&v29.tx = *(MEMORY[0x277CD9DE8] + 32);
   v30 = v17;
-  v18 = [(UIView *)self->_circularContainerView layer];
+  layer3 = [(UIView *)self->_circularContainerView layer];
   v25 = v31;
   v26 = v32;
   v27 = v33;
   v28 = v34;
   v23 = v29;
   v24 = v30;
-  [v18 setTransform:&v23];
+  [layer3 setTransform:&v23];
 
   [(BCSScanningAnimator *)self _appclipCodeScaleFactor];
   CGAffineTransformMakeScale(&v22, v19, v20);
@@ -353,19 +353,19 @@
   v9 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
   [v4 setTimingFunction:v9];
 
-  v10 = [(UIImageView *)self->_targetQRImage layer];
-  [v10 addAnimation:v4 forKey:@"meshTransform"];
+  layer = [(UIImageView *)self->_targetQRImage layer];
+  [layer addAnimation:v4 forKey:@"meshTransform"];
 
   v11 = [(BCSScanningAnimator *)self _meshTransform:1];
-  v12 = [(UIImageView *)self->_targetQRImage layer];
-  [v12 setMeshTransform:v11];
+  layer2 = [(UIImageView *)self->_targetQRImage layer];
+  [layer2 setMeshTransform:v11];
 
-  v13 = [(UIView *)self->_backgroundView layer];
-  [v13 addAnimation:v4 forKey:@"meshTransform"];
+  layer3 = [(UIView *)self->_backgroundView layer];
+  [layer3 addAnimation:v4 forKey:@"meshTransform"];
 
   v14 = [(BCSScanningAnimator *)self _meshTransform:1];
-  v15 = [(UIView *)self->_backgroundView layer];
-  [v15 setMeshTransform:v14];
+  layer4 = [(UIView *)self->_backgroundView layer];
+  [layer4 setMeshTransform:v14];
 
   [(BCSScanningAnimator *)self _appclipCodeScaleFactor];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -393,8 +393,8 @@
   [v21 setDamping:27.0];
   [v21 setStiffness:225.0];
   v22 = MEMORY[0x277CCAE60];
-  v23 = [(UIView *)self->_circularContainerView layer];
-  [v23 position];
+  layer5 = [(UIView *)self->_circularContainerView layer];
+  [layer5 position];
   v24 = [v22 valueWithCGPoint:?];
   [v21 setFromValue:v24];
 
@@ -409,16 +409,16 @@
   v27 = [MEMORY[0x277CD9EF8] functionWithName:v8];
   [v21 setTimingFunction:v27];
 
-  v28 = [(UIView *)self->_circularContainerView layer];
-  [v28 addAnimation:v21 forKey:@"position"];
+  layer6 = [(UIView *)self->_circularContainerView layer];
+  [layer6 addAnimation:v21 forKey:@"position"];
 
   [MEMORY[0x277CD9FF0] commit];
   [(BCSCircularEffectView *)self->_circularEffectView animateCenterGlyphAndRings];
   [(BCSScanningAnimator *)self _restPosition];
   v30 = v29;
   v32 = v31;
-  v33 = [(UIView *)self->_circularContainerView layer];
-  [v33 setPosition:{v30, v32}];
+  layer7 = [(UIView *)self->_circularContainerView layer];
+  [layer7 setPosition:{v30, v32}];
 
   v34 = *(MEMORY[0x277CD9DE8] + 80);
   v44 = *(MEMORY[0x277CD9DE8] + 64);
@@ -432,7 +432,7 @@
   v37 = *(MEMORY[0x277CD9DE8] + 48);
   v42 = *(MEMORY[0x277CD9DE8] + 32);
   v43 = v37;
-  v38 = [(UIView *)self->_circularContainerView layer];
+  layer8 = [(UIView *)self->_circularContainerView layer];
   v39[4] = v44;
   v39[5] = v45;
   v39[6] = v46;
@@ -441,7 +441,7 @@
   v39[1] = v41;
   v39[2] = v42;
   v39[3] = v43;
-  [v38 setTransform:v39];
+  [layer8 setTransform:v39];
 }
 
 void __45__BCSScanningAnimator__animateCircularReveal__block_invoke(uint64_t a1)
@@ -543,7 +543,7 @@ void __45__BCSScanningAnimator__animateCircularReveal__block_invoke_2(uint64_t a
   v25[4] = *MEMORY[0x277D85DE8];
   if (!self->_blurView)
   {
-    v3 = [(UIView *)self->_focusIndicator superview];
+    superview = [(UIView *)self->_focusIndicator superview];
     platterView = self->_platterView;
     if (!platterView)
     {
@@ -560,23 +560,23 @@ void __45__BCSScanningAnimator__animateCircularReveal__block_invoke_2(uint64_t a
     v7 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
     [(UIVisualEffectView *)self->_blurView setBackgroundColor:v7];
 
-    [v3 insertSubview:self->_blurView below:v23];
+    [superview insertSubview:self->_blurView below:v23];
     v8 = MEMORY[0x277CCAAD0];
-    v22 = [(UIVisualEffectView *)self->_blurView topAnchor];
-    v20 = [v3 topAnchor];
-    v19 = [v22 constraintEqualToAnchor:?];
+    topAnchor = [(UIVisualEffectView *)self->_blurView topAnchor];
+    topAnchor2 = [superview topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:?];
     v25[0] = v19;
-    v21 = [(UIVisualEffectView *)self->_blurView bottomAnchor];
-    v18 = [v3 bottomAnchor];
-    v17 = [v21 constraintEqualToAnchor:?];
+    bottomAnchor = [(UIVisualEffectView *)self->_blurView bottomAnchor];
+    bottomAnchor2 = [superview bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:?];
     v25[1] = v17;
-    v9 = [(UIVisualEffectView *)self->_blurView leftAnchor];
-    v10 = [v3 leftAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    leftAnchor = [(UIVisualEffectView *)self->_blurView leftAnchor];
+    leftAnchor2 = [superview leftAnchor];
+    v11 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v25[2] = v11;
-    v12 = [(UIVisualEffectView *)self->_blurView rightAnchor];
-    v13 = [v3 rightAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    rightAnchor = [(UIVisualEffectView *)self->_blurView rightAnchor];
+    rightAnchor2 = [superview rightAnchor];
+    v14 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v25[3] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:4];
     [v8 activateConstraints:v15];
@@ -587,10 +587,10 @@ void __45__BCSScanningAnimator__animateCircularReveal__block_invoke_2(uint64_t a
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)animatePushWithCompletion:(id)a3 shouldAnimate:(BOOL)a4
+- (void)animatePushWithCompletion:(id)completion shouldAnimate:(BOOL)animate
 {
-  v6 = a3;
-  v7 = [(UIView *)self->_focusIndicator superview];
+  completionCopy = completion;
+  superview = [(UIView *)self->_focusIndicator superview];
   if (!self->_platterView)
   {
     v8 = [BCSDissolveEffectView alloc];
@@ -606,21 +606,21 @@ void __45__BCSScanningAnimator__animateCircularReveal__block_invoke_2(uint64_t a
     [(BCSDissolveEffectView *)self->_platterView bounds];
     [(UIImageView *)self->_targetQRImage setPosition:MidX, CGRectGetMidY(v17)];
     [(BCSDissolveEffectView *)self->_platterView addSubview:self->_targetQRImage];
-    [v7 insertSubview:self->_platterView below:self->_focusIndicator];
+    [superview insertSubview:self->_platterView below:self->_focusIndicator];
   }
 
   v12 = [(BCSScanningAnimator *)self _meshTransform:0];
-  v13 = [(UIImageView *)self->_targetQRImage layer];
-  [v13 setMeshTransform:v12];
+  layer = [(UIImageView *)self->_targetQRImage layer];
+  [layer setMeshTransform:v12];
 
   [(BCSScanningAnimator *)self _setUpBlurViewIfNeeded];
-  if (a4)
+  if (animate)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __63__BCSScanningAnimator_animatePushWithCompletion_shouldAnimate___block_invoke;
     v14[3] = &unk_278D02048;
-    v15 = v6;
+    v15 = completionCopy;
     [(BCSScanningAnimator *)self _performSquareMeshTransform:0 completion:v14];
   }
 
@@ -628,23 +628,23 @@ void __45__BCSScanningAnimator__animateCircularReveal__block_invoke_2(uint64_t a
   {
     [(BCSScanningAnimator *)self _performSquareMeshTransformWithoutAnimating];
     [(UIVisualEffectView *)self->_blurView setAlpha:1.0];
-    (*(v6 + 2))(v6, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (void)animatePopWithAppImageBlock:(id)a3 completion:(id)a4
+- (void)animatePopWithAppImageBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__BCSScanningAnimator_animatePopWithAppImageBlock_completion___block_invoke;
   v10[3] = &unk_278D02098;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = blockCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = blockCopy;
   [(BCSScanningAnimator *)self _performSquareMeshTransform:1 completion:v10];
 }
 
@@ -661,10 +661,10 @@ void __62__BCSScanningAnimator_animatePopWithAppImageBlock_completion___block_in
   [v4 startAnimationWithDuration:v3 appImageBlock:v5 completion:0.4];
 }
 
-- (void)animateAppClipCodeBounceWithCompletion:(id)a3 shouldAnimate:(BOOL)a4
+- (void)animateAppClipCodeBounceWithCompletion:(id)completion shouldAnimate:(BOOL)animate
 {
-  v6 = a3;
-  v7 = [(UIView *)self->_focusIndicator superview];
+  completionCopy = completion;
+  superview = [(UIView *)self->_focusIndicator superview];
   if (!self->_circularContainerView)
   {
     v8 = objc_alloc(MEMORY[0x277D75D18]);
@@ -680,24 +680,24 @@ void __62__BCSScanningAnimator_animatePopWithAppImageBlock_completion___block_in
     [(UIView *)self->_circularContainerView bounds];
     [(UIImageView *)self->_targetQRImage setPosition:MidX, CGRectGetMidY(v39)];
     [(UIView *)self->_circularContainerView addSubview:self->_targetQRImage];
-    [v7 insertSubview:self->_circularContainerView below:self->_focusIndicator];
+    [superview insertSubview:self->_circularContainerView below:self->_focusIndicator];
   }
 
   v12 = [(BCSScanningAnimator *)self _meshTransform:0];
-  v13 = [(UIImageView *)self->_targetQRImage layer];
-  [v13 setMeshTransform:v12];
+  layer = [(UIImageView *)self->_targetQRImage layer];
+  [layer setMeshTransform:v12];
 
   [(UIImageView *)self->_targetQRImage bounds];
   Width = CGRectGetWidth(v40);
   v15 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, Width, Width}];
   [(UIImageView *)self->_targetQRImage position];
   [v15 setPosition:?];
-  v16 = [MEMORY[0x277D75348] whiteColor];
-  [v15 setBackgroundColor:v16];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v15 setBackgroundColor:whiteColor];
 
-  v17 = [v15 layer];
+  layer2 = [v15 layer];
   v18 = Width * 0.5;
-  [v17 setCornerRadius:v18];
+  [layer2 setCornerRadius:v18];
 
   targetQRImage = self->_targetQRImage;
   if (targetQRImage)
@@ -717,24 +717,24 @@ void __62__BCSScanningAnimator_animatePopWithAppImageBlock_completion___block_in
   v20 = objc_alloc(MEMORY[0x277D75D18]);
   [v15 bounds];
   v21 = [v20 initWithFrame:?];
-  v22 = [v21 layer];
-  [v22 setCornerRadius:v18];
+  layer3 = [v21 layer];
+  [layer3 setCornerRadius:v18];
 
-  v23 = [MEMORY[0x277D75348] whiteColor];
-  [v21 setBackgroundColor:v23];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [v21 setBackgroundColor:whiteColor2];
 
   [v15 addSubview:v21];
   v24 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA310]];
-  v25 = [v21 layer];
-  [v25 setCompositingFilter:v24];
+  layer4 = [v21 layer];
+  [layer4 setCompositingFilter:v24];
 
-  v26 = [v21 layer];
+  layer5 = [v21 layer];
   ringLayer = self->_ringLayer;
-  self->_ringLayer = v26;
+  self->_ringLayer = layer5;
 
   v28 = [(BCSScanningAnimator *)self _meshTransform:0];
-  v29 = [v15 layer];
-  [v29 setMeshTransform:v28];
+  layer6 = [v15 layer];
+  [layer6 setMeshTransform:v28];
 
   v30 = [BCSCircularEffectView alloc];
   [(UIImageView *)self->_targetQRImage bounds];
@@ -746,14 +746,14 @@ void __62__BCSScanningAnimator_animatePopWithAppImageBlock_completion___block_in
   [(UIImageView *)self->_targetQRImage position];
   [(BCSCircularEffectView *)self->_circularEffectView setPosition:?];
   [(BCSScanningAnimator *)self _setUpBlurViewIfNeeded];
-  if (a4)
+  if (animate)
   {
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __76__BCSScanningAnimator_animateAppClipCodeBounceWithCompletion_shouldAnimate___block_invoke;
     v34[3] = &unk_278D020C0;
     v34[4] = self;
-    v35 = v6;
+    v35 = completionCopy;
     [(BCSScanningAnimator *)self _performCircularMeshTransform:0 completion:v34];
   }
 
@@ -764,7 +764,7 @@ void __62__BCSScanningAnimator_animatePopWithAppImageBlock_completion___block_in
     v37[0] = v36;
     [(UIView *)focusIndicator setTransform:v37];
     [(BCSScanningAnimator *)self _revealCircularView];
-    (*(v6 + 2))(v6, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -786,7 +786,7 @@ void __76__BCSScanningAnimator_animateAppClipCodeBounceWithCompletion_shouldAnim
 {
   if (!self->_coverView && !self->_suppressCoverView)
   {
-    v3 = [(UIView *)self->_focusIndicator superview];
+    superview = [(UIView *)self->_focusIndicator superview];
     v4 = [MEMORY[0x277D75210] _effectWithBlurRadius:10.0 scale:0.35];
     v5 = objc_alloc(MEMORY[0x277D75D68]);
     v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -796,7 +796,7 @@ void __76__BCSScanningAnimator_animateAppClipCodeBounceWithCompletion_shouldAnim
     [(UIVisualEffectView *)self->_coverView setAutoresizingMask:18];
     [(UIVisualEffectView *)self->_blurView frame];
     [(UIVisualEffectView *)self->_coverView setFrame:?];
-    [v3 addSubview:self->_coverView];
+    [superview addSubview:self->_coverView];
     v8 = MEMORY[0x277D75D18];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;

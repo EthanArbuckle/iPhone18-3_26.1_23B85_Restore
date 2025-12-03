@@ -1,16 +1,16 @@
 @interface HFAnalyticsFaceRecognitionNamedPersonEvent
-- (HFAnalyticsFaceRecognitionNamedPersonEvent)initWithData:(id)a3;
+- (HFAnalyticsFaceRecognitionNamedPersonEvent)initWithData:(id)data;
 - (id)payload;
-- (unint64_t)_namedPersonTypeForPerson:(id)a3;
+- (unint64_t)_namedPersonTypeForPerson:(id)person;
 @end
 
 @implementation HFAnalyticsFaceRecognitionNamedPersonEvent
 
-- (HFAnalyticsFaceRecognitionNamedPersonEvent)initWithData:(id)a3
+- (HFAnalyticsFaceRecognitionNamedPersonEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"isNewPerson"];
+  v5 = [dataCopy objectForKeyedSubscript:@"isNewPerson"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -29,7 +29,7 @@
   }
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"person"];
+  v8 = [dataCopy objectForKeyedSubscript:@"person"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -53,7 +53,7 @@
     objc_storeStrong(&v13->_isNewPerson, v6);
     objc_storeStrong(&v14->_personType, v12);
     objc_opt_class();
-    v15 = [v4 objectForKeyedSubscript:@"error"];
+    v15 = [dataCopy objectForKeyedSubscript:@"error"];
     if (objc_opt_isKindOfClass())
     {
       v16 = v15;
@@ -66,11 +66,11 @@
 
     v17 = v16;
 
-    v18 = [v17 domain];
-    v19 = v18;
-    if (v18)
+    domain = [v17 domain];
+    v19 = domain;
+    if (domain)
     {
-      v20 = v18;
+      v20 = domain;
     }
 
     else
@@ -81,9 +81,9 @@
     objc_storeStrong(&v14->_errorDomain, v20);
 
     v21 = MEMORY[0x277CCABB0];
-    v22 = [v17 code];
+    code = [v17 code];
 
-    v23 = [v21 numberWithInteger:v22];
+    v23 = [v21 numberWithInteger:code];
     errorCode = v14->_errorCode;
     v14->_errorCode = v23;
   }
@@ -95,47 +95,47 @@
 {
   v10.receiver = self;
   v10.super_class = HFAnalyticsFaceRecognitionNamedPersonEvent;
-  v3 = [(HFAnalyticsEvent *)&v10 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v10 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsFaceRecognitionNamedPersonEvent *)self isNewPerson];
-  [v4 na_safeSetObject:v5 forKey:@"namedPersonIsNew"];
+  isNewPerson = [(HFAnalyticsFaceRecognitionNamedPersonEvent *)self isNewPerson];
+  [v4 na_safeSetObject:isNewPerson forKey:@"namedPersonIsNew"];
 
-  v6 = [(HFAnalyticsFaceRecognitionNamedPersonEvent *)self personType];
-  [v4 na_safeSetObject:v6 forKey:@"namedPersonType"];
+  personType = [(HFAnalyticsFaceRecognitionNamedPersonEvent *)self personType];
+  [v4 na_safeSetObject:personType forKey:@"namedPersonType"];
 
-  v7 = [(HFAnalyticsFaceRecognitionNamedPersonEvent *)self errorDomain];
-  [v4 na_safeSetObject:v7 forKey:@"errorDomain"];
+  errorDomain = [(HFAnalyticsFaceRecognitionNamedPersonEvent *)self errorDomain];
+  [v4 na_safeSetObject:errorDomain forKey:@"errorDomain"];
 
-  v8 = [(HFAnalyticsFaceRecognitionNamedPersonEvent *)self errorCode];
-  [v4 na_safeSetObject:v8 forKey:@"errorCode"];
+  errorCode = [(HFAnalyticsFaceRecognitionNamedPersonEvent *)self errorCode];
+  [v4 na_safeSetObject:errorCode forKey:@"errorCode"];
 
   return v4;
 }
 
-- (unint64_t)_namedPersonTypeForPerson:(id)a3
+- (unint64_t)_namedPersonTypeForPerson:(id)person
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  personCopy = person;
+  v4 = personCopy;
+  if (personCopy)
   {
-    v5 = [v3 name];
+    name = [personCopy name];
 
-    if (v5)
+    if (name)
     {
-      v6 = [v4 name];
-      NSLog(&cfstr_ExpectedHmpers.isa, v4, v6);
+      name2 = [v4 name];
+      NSLog(&cfstr_ExpectedHmpers.isa, v4, name2);
 
-      v5 = 0;
+      name = 0;
     }
   }
 
   else
   {
-    v5 = 1;
+    name = 1;
   }
 
-  return v5;
+  return name;
 }
 
 @end

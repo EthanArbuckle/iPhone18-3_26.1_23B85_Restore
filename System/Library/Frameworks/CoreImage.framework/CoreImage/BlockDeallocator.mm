@@ -1,18 +1,18 @@
 @interface BlockDeallocator
-- (BlockDeallocator)initWithBlock:(id)a3;
+- (BlockDeallocator)initWithBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation BlockDeallocator
 
-- (BlockDeallocator)initWithBlock:(id)a3
+- (BlockDeallocator)initWithBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = BlockDeallocator;
   v4 = [(BlockDeallocator *)&v6 init];
   if (v4)
   {
-    v4->_block = _Block_copy(a3);
+    v4->_block = _Block_copy(block);
   }
 
   return v4;

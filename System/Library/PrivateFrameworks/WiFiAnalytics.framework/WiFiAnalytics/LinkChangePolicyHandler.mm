@@ -1,15 +1,15 @@
 @interface LinkChangePolicyHandler
-+ (BOOL)processJoinEvent:(id)a3;
-+ (BOOL)processLeaveEvent:(id)a3;
-- (LinkChangePolicyHandler)initWithAnalyticsStore:(id)a3;
++ (BOOL)processJoinEvent:(id)event;
++ (BOOL)processLeaveEvent:(id)event;
+- (LinkChangePolicyHandler)initWithAnalyticsStore:(id)store;
 @end
 
 @implementation LinkChangePolicyHandler
 
-- (LinkChangePolicyHandler)initWithAnalyticsStore:(id)a3
+- (LinkChangePolicyHandler)initWithAnalyticsStore:(id)store
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = LinkChangePolicyHandler;
   v6 = [(LinkChangePolicyHandler *)&v12 init];
@@ -21,7 +21,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_storeMOHandler, a3);
+  objc_storeStrong(&v6->_storeMOHandler, store);
   if (!v7->_storeMOHandler)
   {
     v9 = WALogCategoryDeviceStoreHandle();
@@ -44,12 +44,12 @@ LABEL_8:
   return v8;
 }
 
-+ (BOOL)processLeaveEvent:(id)a3
++ (BOOL)processLeaveEvent:(id)event
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 bss];
-  if (!v3)
+  eventCopy = event;
+  v4 = [eventCopy bss];
+  if (!eventCopy)
   {
     v6 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -87,26 +87,26 @@ LABEL_42:
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v3 reason];
-    v8 = [v3 rssi];
-    v9 = [v4 bssid];
+    reason = [eventCopy reason];
+    rssi = [eventCopy rssi];
+    bssid = [v4 bssid];
     v31 = 136447234;
     v32 = "+[LinkChangePolicyHandler processLeaveEvent:]";
     v33 = 1024;
     v34 = 54;
     v35 = 1024;
-    *v36 = v7;
+    *v36 = reason;
     *&v36[4] = 1024;
-    *&v36[6] = v8;
+    *&v36[6] = rssi;
     *&v36[10] = 2112;
-    *&v36[12] = v9;
+    *&v36[12] = bssid;
     _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_DEBUG, "%{public}s::%d:reason:%d rssi:%hd on %@", &v31, 0x28u);
   }
 
-  v10 = [v3 reason];
-  if (v10 > 999)
+  reason2 = [eventCopy reason];
+  if (reason2 > 999)
   {
-    if (v10 == 1000)
+    if (reason2 == 1000)
     {
       if ([v4 disTrgDisCount] == 0x7FFF)
       {
@@ -124,13 +124,13 @@ LABEL_42:
       goto LABEL_27;
     }
 
-    if (v10 != 1011)
+    if (reason2 != 1011)
     {
       goto LABEL_27;
     }
 
 LABEL_11:
-    if ([v3 rssi] <= -75)
+    if ([eventCopy rssi] <= -75)
     {
       if ([v4 disUsrForcedInWeakRssiCount] == 0x7FFF)
       {
@@ -148,27 +148,27 @@ LABEL_11:
         v16 = WALogCategoryDeviceStoreHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v17 = [v3 rssi];
-          v18 = [v4 bssid];
+          rssi2 = [eventCopy rssi];
+          bssid2 = [v4 bssid];
           v31 = 136446978;
           v32 = "+[LinkChangePolicyHandler processLeaveEvent:]";
           v33 = 1024;
           v34 = 85;
           v35 = 1024;
-          *v36 = v17;
+          *v36 = rssi2;
           *&v36[4] = 2112;
-          *&v36[6] = v18;
+          *&v36[6] = bssid2;
           _os_log_impl(&dword_1C8460000, v16, OS_LOG_TYPE_INFO, "%{public}s::%d:Setting autoLeaveRssi to %d on %@", &v31, 0x22u);
         }
 
-        [v4 setAutoLeaveRssi:{objc_msgSend(v3, "rssi")}];
+        [v4 setAutoLeaveRssi:{objc_msgSend(eventCopy, "rssi")}];
       }
     }
 
     goto LABEL_27;
   }
 
-  if (v10 == 2)
+  if (reason2 == 2)
   {
     if ([v4 disBcnLossCount] == 0x7FFF)
     {
@@ -186,7 +186,7 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  if (v10 == 5)
+  if (reason2 == 5)
   {
     goto LABEL_11;
   }
@@ -197,13 +197,13 @@ LABEL_27:
     v19 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [v4 bssid];
+      bssid3 = [v4 bssid];
       v31 = 136446722;
       v32 = "+[LinkChangePolicyHandler processLeaveEvent:]";
       v33 = 1024;
       v34 = 99;
       v35 = 2112;
-      *v36 = v20;
+      *v36 = bssid3;
       _os_log_impl(&dword_1C8460000, v19, OS_LOG_TYPE_INFO, "%{public}s::%d:Setting isEdgeForLeave on %@", &v31, 0x1Cu);
     }
 
@@ -213,28 +213,28 @@ LABEL_27:
   v6 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v21 = [v4 disBcnLossCount];
-    v22 = [v4 disTrgDisCount];
-    v23 = [v4 disUsrForcedInWeakRssiCount];
-    v24 = [v4 autoLeaveRssi];
-    v25 = [v4 isEdgeForLeave];
-    v26 = [v4 manualJoinAfterAutoLeave];
+    disBcnLossCount = [v4 disBcnLossCount];
+    disTrgDisCount = [v4 disTrgDisCount];
+    disUsrForcedInWeakRssiCount = [v4 disUsrForcedInWeakRssiCount];
+    autoLeaveRssi = [v4 autoLeaveRssi];
+    isEdgeForLeave = [v4 isEdgeForLeave];
+    manualJoinAfterAutoLeave = [v4 manualJoinAfterAutoLeave];
     v31 = 136448002;
     v32 = "+[LinkChangePolicyHandler processLeaveEvent:]";
     v33 = 1024;
     v34 = 103;
     v35 = 1024;
-    *v36 = v21;
+    *v36 = disBcnLossCount;
     *&v36[4] = 1024;
-    *&v36[6] = v22;
+    *&v36[6] = disTrgDisCount;
     *&v36[10] = 1024;
-    *&v36[12] = v23;
+    *&v36[12] = disUsrForcedInWeakRssiCount;
     *&v36[16] = 1024;
-    *&v36[18] = v24;
+    *&v36[18] = autoLeaveRssi;
     v37 = 1024;
-    v38 = v25;
+    v38 = isEdgeForLeave;
     v39 = 1024;
-    v40 = v26;
+    v40 = manualJoinAfterAutoLeave;
     _os_log_impl(&dword_1C8460000, v6, OS_LOG_TYPE_DEBUG, "%{public}s::%d:disBcnLossCount:%d disTrgDisCount:%d disUsrForcedInWeakRssiCount:%d autoLeaveRssi:%d isEdgeForLeave:%d, manualJoinAfterAutoLeave:%d", &v31, 0x36u);
   }
 
@@ -245,13 +245,13 @@ LABEL_36:
   return v27;
 }
 
-+ (BOOL)processJoinEvent:(id)a3
++ (BOOL)processJoinEvent:(id)event
 {
   v25[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 bss];
+  eventCopy = event;
+  v4 = [eventCopy bss];
   v5 = v4;
-  if (!v3)
+  if (!eventCopy)
   {
     v16 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -287,7 +287,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([v3 reason] == 1 && (objc_msgSend(v3, "subReason") == 0x40000 || objc_msgSend(v3, "subReason") == 0x80000))
+  if ([eventCopy reason] == 1 && (objc_msgSend(eventCopy, "subReason") == 0x40000 || objc_msgSend(eventCopy, "subReason") == 0x80000))
   {
     if ([v5 autoLeaveRssi])
     {
@@ -295,10 +295,10 @@ LABEL_18:
       v6 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v5, "autoLeaveRssi")}];
       v25[0] = v6;
       v24[1] = @"reason";
-      v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "reason")}];
+      v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(eventCopy, "reason")}];
       v25[1] = v7;
       v24[2] = @"subReason";
-      v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "subReason")}];
+      v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(eventCopy, "subReason")}];
       v25[2] = v8;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
@@ -309,13 +309,13 @@ LABEL_18:
       v11 = WALogCategoryDeviceStoreHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [v5 bssid];
+        bssid = [v5 bssid];
         *buf = 136446722;
         v19 = "+[LinkChangePolicyHandler processJoinEvent:]";
         v20 = 1024;
         v21 = 129;
         v22 = 2112;
-        v23 = v12;
+        v23 = bssid;
         _os_log_impl(&dword_1C8460000, v11, OS_LOG_TYPE_INFO, "%{public}s::%d:Resetting autoLeaveRssi and isEdgeForLeave on %@", buf, 0x1Cu);
       }
 

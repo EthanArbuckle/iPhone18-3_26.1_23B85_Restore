@@ -1,19 +1,19 @@
 @interface ADSearchObjectNativeAdTracker
-+ (void)beginTrackingWithAdverts:(id)a3;
-+ (void)endTrackingFor:(id)a3;
++ (void)beginTrackingWithAdverts:(id)adverts;
++ (void)endTrackingFor:(id)for;
 - (ADSearchObjectNativeAdTracker)init;
 @end
 
 @implementation ADSearchObjectNativeAdTracker
 
-+ (void)beginTrackingWithAdverts:(id)a3
++ (void)beginTrackingWithAdverts:(id)adverts
 {
   sub_264E52098();
   v3 = sub_264E563D4();
   _s9SearchAds0A21ObjectNativeAdTrackerC13beginTracking7advertsySaySo18ADAppAdvertisementCG_tFZ_0(v3);
 }
 
-+ (void)endTrackingFor:(id)a3
++ (void)endTrackingFor:(id)for
 {
   v3 = sub_264E563D4();
   v4 = *(v3 + 16);

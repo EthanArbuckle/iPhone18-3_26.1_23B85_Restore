@@ -1,25 +1,25 @@
 @interface SBItemResizeTransitionSwitcherModifier
-- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBItemResizeTransitionSwitcherModifier)initWithTransitionID:(id)a3 selectedAppLayout:(id)a4 selectedLayoutRole:(int64_t)a5;
+- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBItemResizeTransitionSwitcherModifier)initWithTransitionID:(id)d selectedAppLayout:(id)layout selectedLayoutRole:(int64_t)role;
 - (double)fadeInDelayForSplitViewHandles;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners;
 @end
 
 @implementation SBItemResizeTransitionSwitcherModifier
 
-- (SBItemResizeTransitionSwitcherModifier)initWithTransitionID:(id)a3 selectedAppLayout:(id)a4 selectedLayoutRole:(int64_t)a5
+- (SBItemResizeTransitionSwitcherModifier)initWithTransitionID:(id)d selectedAppLayout:(id)layout selectedLayoutRole:(int64_t)role
 {
-  v9 = a4;
+  layoutCopy = layout;
   v15.receiver = self;
   v15.super_class = SBItemResizeTransitionSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v15 initWithTransitionID:a3];
+  v10 = [(SBTransitionSwitcherModifier *)&v15 initWithTransitionID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_selectedAppLayout, a4);
-    v12 = [v9 itemForLayoutRole:a5];
+    objc_storeStrong(&v10->_selectedAppLayout, layout);
+    v12 = [layoutCopy itemForLayoutRole:role];
     selectedDisplayItem = v11->_selectedDisplayItem;
     v11->_selectedDisplayItem = v12;
   }
@@ -27,7 +27,7 @@
   return v11;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v29.receiver = self;
   v29.super_class = SBItemResizeTransitionSwitcherModifier;
@@ -36,13 +36,13 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBItemResizeTransitionSwitcherModifier *)self appLayouts];
-  v14 = [v13 objectAtIndex:a3];
+  appLayouts = [(SBItemResizeTransitionSwitcherModifier *)self appLayouts];
+  v14 = [appLayouts objectAtIndex:index];
   if ([v14 isOrContainsAppLayout:self->_selectedAppLayout])
   {
     v28.receiver = self;
     v28.super_class = SBItemResizeTransitionSwitcherModifier;
-    [(SBItemResizeTransitionSwitcherModifier *)&v28 frameForIndex:a3];
+    [(SBItemResizeTransitionSwitcherModifier *)&v28 frameForIndex:index];
     v16 = v15;
     v18 = v17;
     [(SBItemResizeTransitionSwitcherModifier *)self containerViewBounds];
@@ -71,36 +71,36 @@
   return result;
 }
 
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners
 {
-  v8 = a4;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = SBItemResizeTransitionSwitcherModifier;
-  v9 = [(SBTransitionSwitcherModifier *)&v17 maskedCornersForLayoutRole:a3 inAppLayout:v8 withMaskedCorners:a5];
-  v10 = [v8 itemForLayoutRole:a3];
+  v9 = [(SBTransitionSwitcherModifier *)&v17 maskedCornersForLayoutRole:role inAppLayout:layoutCopy withMaskedCorners:corners];
+  v10 = [layoutCopy itemForLayoutRole:role];
   v11 = v10;
-  if (v10 && ([(SBDisplayItem *)v10 isEqualToItem:?]& 1) == 0 && [(SBAppLayout *)self->_selectedAppLayout isOrContainsAppLayout:v8])
+  if (v10 && ([(SBDisplayItem *)v10 isEqualToItem:?]& 1) == 0 && [(SBAppLayout *)self->_selectedAppLayout isOrContainsAppLayout:layoutCopy])
   {
-    v12 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v8];
+    v12 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
     v13 = [v12 flexibleAutoLayoutItemForDisplayItem:v11];
-    v14 = [v13 intersectedDisplayRectCorners];
+    intersectedDisplayRectCorners = [v13 intersectedDisplayRectCorners];
     v15 = v9 & 0xFFFFFFFFFFFFFFFELL;
-    if ((v14 & 1) == 0)
+    if ((intersectedDisplayRectCorners & 1) == 0)
     {
       v15 = v9;
     }
 
-    if ((v14 & 2) != 0)
+    if ((intersectedDisplayRectCorners & 2) != 0)
     {
       v15 &= ~2uLL;
     }
 
-    if ((v14 & 4) != 0)
+    if ((intersectedDisplayRectCorners & 4) != 0)
     {
       v15 &= ~4uLL;
     }
 
-    if ((v14 & 8) != 0)
+    if ((intersectedDisplayRectCorners & 8) != 0)
     {
       v9 = v15 & 0xFFFFFFFFFFFFFFF7;
     }
@@ -114,20 +114,20 @@
   return v9;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = SBItemResizeTransitionSwitcherModifier;
-  v5 = [(SBTransitionSwitcherModifier *)&v13 animationAttributesForLayoutElement:v4];
+  v5 = [(SBTransitionSwitcherModifier *)&v13 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
-  if ([v4 switcherLayoutElementType] || !objc_msgSend(v4, "isOrContainsAppLayout:", self->_selectedAppLayout))
+  if ([elementCopy switcherLayoutElementType] || !objc_msgSend(elementCopy, "isOrContainsAppLayout:", self->_selectedAppLayout))
   {
-    if ([v4 isAppLayout])
+    if ([elementCopy isAppLayout])
     {
-      v10 = [v4 appLayout];
-      v11 = [(SBItemResizeTransitionSwitcherModifier *)self prioritizesSortOrderForAppLayout:v10];
+      appLayout = [elementCopy appLayout];
+      v11 = [(SBItemResizeTransitionSwitcherModifier *)self prioritizesSortOrderForAppLayout:appLayout];
 
       if (v11)
       {
@@ -140,19 +140,19 @@
   else
   {
     [v6 setLayoutUpdateMode:3];
-    v7 = [(SBItemResizeTransitionSwitcherModifier *)self switcherSettings];
-    v8 = [v7 windowingSettings];
-    v9 = [v8 liveResizeAfterReleaseLayoutAnimationSettings];
-    [v6 setLayoutSettings:v9];
+    switcherSettings = [(SBItemResizeTransitionSwitcherModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    liveResizeAfterReleaseLayoutAnimationSettings = [windowingSettings liveResizeAfterReleaseLayoutAnimationSettings];
+    [v6 setLayoutSettings:liveResizeAfterReleaseLayoutAnimationSettings];
   }
 
   return v6;
 }
 
-- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)a3
+- (BOOL)wantsSceneResizesHostedContextForAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([v4 isOrContainsAppLayout:self->_selectedAppLayout])
+  layoutCopy = layout;
+  if ([layoutCopy isOrContainsAppLayout:self->_selectedAppLayout])
   {
     v5 = 1;
   }
@@ -161,7 +161,7 @@
   {
     v7.receiver = self;
     v7.super_class = SBItemResizeTransitionSwitcherModifier;
-    v5 = [(SBItemResizeTransitionSwitcherModifier *)&v7 wantsSceneResizesHostedContextForAppLayout:v4];
+    v5 = [(SBItemResizeTransitionSwitcherModifier *)&v7 wantsSceneResizesHostedContextForAppLayout:layoutCopy];
   }
 
   return v5;
@@ -169,13 +169,13 @@
 
 - (double)fadeInDelayForSplitViewHandles
 {
-  v2 = [(SBItemResizeTransitionSwitcherModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  [v3 percentageOfTransitionForSplitViewHandleFadeInDelay];
+  switcherSettings = [(SBItemResizeTransitionSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  [windowingSettings percentageOfTransitionForSplitViewHandleFadeInDelay];
   v5 = v4;
-  v6 = [v2 animationSettings];
-  v7 = [v6 layoutSettings];
-  [v7 settlingDuration];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v9 = v5 * v8;
 
   return v9;

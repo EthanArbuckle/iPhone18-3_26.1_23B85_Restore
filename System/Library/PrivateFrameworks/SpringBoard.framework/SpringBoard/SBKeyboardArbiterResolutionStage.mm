@@ -1,17 +1,17 @@
 @interface SBKeyboardArbiterResolutionStage
 - (SBKeyboardArbiterResolutionStageDelegate)delegate;
 - (SBKeyboardFocusResolutionStageSceneProviding)sceneProvider;
-- (void)resolveKeyboardFocusPolicy:(id)a3 context:(id)a4 stop:(BOOL *)a5;
+- (void)resolveKeyboardFocusPolicy:(id)policy context:(id)context stop:(BOOL *)stop;
 @end
 
 @implementation SBKeyboardArbiterResolutionStage
 
-- (void)resolveKeyboardFocusPolicy:(id)a3 context:(id)a4 stop:(BOOL *)a5
+- (void)resolveKeyboardFocusPolicy:(id)policy context:(id)context stop:(BOOL *)stop
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = [v22 auditHistory];
-  [v9 addItemWithFormat:@"-- SBKeyboardArbiterResolutionStage --"];
+  policyCopy = policy;
+  contextCopy = context;
+  auditHistory = [policyCopy auditHistory];
+  [auditHistory addItemWithFormat:@"-- SBKeyboardArbiterResolutionStage --"];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!WeakRetained)
@@ -20,49 +20,49 @@
   }
 
   v11 = WeakRetained;
-  v12 = [v22 keyboardFocusTarget];
-  v13 = [v12 sceneIdentityToken];
-  v14 = [v11 shouldPreventFocusForSceneWithIdentityToken:v13];
+  keyboardFocusTarget = [policyCopy keyboardFocusTarget];
+  sceneIdentityToken = [keyboardFocusTarget sceneIdentityToken];
+  v14 = [v11 shouldPreventFocusForSceneWithIdentityToken:sceneIdentityToken];
 
   if (v14)
   {
-    v15 = [v22 auditHistory];
-    [v15 addItemWithFormat:@"preventFocusForTarget, falling back to caches"];
+    auditHistory2 = [policyCopy auditHistory];
+    [auditHistory2 addItemWithFormat:@"preventFocusForTarget, falling back to caches"];
 
-    v16 = [v11 mostRecentKeyboardArbiterSuggestedTarget];
-    v17 = [v12 isEqual:v16];
+    mostRecentKeyboardArbiterSuggestedTarget = [v11 mostRecentKeyboardArbiterSuggestedTarget];
+    v17 = [keyboardFocusTarget isEqual:mostRecentKeyboardArbiterSuggestedTarget];
   }
 
   else
   {
-    if (v12)
+    if (keyboardFocusTarget)
     {
       goto LABEL_11;
     }
 
-    v16 = [v11 mostRecentKeyboardArbiterSuggestedTarget];
+    mostRecentKeyboardArbiterSuggestedTarget = [v11 mostRecentKeyboardArbiterSuggestedTarget];
     v17 = 0;
   }
 
-  v18 = [v22 auditHistory];
-  v19 = v18;
-  if (!v16 || (v17 & 1) != 0)
+  auditHistory3 = [policyCopy auditHistory];
+  v19 = auditHistory3;
+  if (!mostRecentKeyboardArbiterSuggestedTarget || (v17 & 1) != 0)
   {
-    [v18 addItemWithFormat:@"no keyboard arbiter suggestion, falling back to SB scene"];
+    [auditHistory3 addItemWithFormat:@"no keyboard arbiter suggestion, falling back to SB scene"];
 
     v20 = objc_loadWeakRetained(&self->_sceneProvider);
-    v21 = [v20 springBoardSceneFocusTarget];
-    [v22 setKeyboardFocusTarget:v21];
+    springBoardSceneFocusTarget = [v20 springBoardSceneFocusTarget];
+    [policyCopy setKeyboardFocusTarget:springBoardSceneFocusTarget];
   }
 
   else
   {
-    [v18 addItemWithFormat:@"no keyboard arbiter suggestion, falling back to MRU suggestion"];
+    [auditHistory3 addItemWithFormat:@"no keyboard arbiter suggestion, falling back to MRU suggestion"];
 
-    [v22 setKeyboardFocusTarget:v16];
+    [policyCopy setKeyboardFocusTarget:mostRecentKeyboardArbiterSuggestedTarget];
   }
 
-  [v22 setAdvicePolicy:2];
+  [policyCopy setAdvicePolicy:2];
 
 LABEL_11:
 }

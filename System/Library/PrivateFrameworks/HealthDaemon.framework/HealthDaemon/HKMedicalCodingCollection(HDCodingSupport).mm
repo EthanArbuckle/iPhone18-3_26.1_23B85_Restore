@@ -34,8 +34,8 @@
 - (id)codableRepresentationForSync
 {
   v1 = MEMORY[0x277CCD5C0];
-  v2 = [a1 codings];
-  v3 = [(HKMedicalCoding *)v1 _codeableRepresentationForMedicalCodings:v2];
+  codings = [self codings];
+  v3 = [(HKMedicalCoding *)v1 _codeableRepresentationForMedicalCodings:codings];
 
   return v3;
 }

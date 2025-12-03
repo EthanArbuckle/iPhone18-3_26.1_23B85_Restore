@@ -1,5 +1,5 @@
 @interface MPMediaKitEntityPayloadTransformer
-- (MPMediaKitEntityPayloadTransformer)initWithType:(id)a3 transformedType:(id)a4;
+- (MPMediaKitEntityPayloadTransformer)initWithType:(id)type transformedType:(id)transformedType;
 - (NSDictionary)transformedPayload;
 @end
 
@@ -18,14 +18,14 @@
   return v3;
 }
 
-- (MPMediaKitEntityPayloadTransformer)initWithType:(id)a3 transformedType:(id)a4
+- (MPMediaKitEntityPayloadTransformer)initWithType:(id)type transformedType:(id)transformedType
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  typeCopy = type;
+  transformedTypeCopy = transformedType;
+  if (!typeCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"MPMediaKitEntityTranslator.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"type"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaKitEntityTranslator.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"type"}];
   }
 
   v20.receiver = self;
@@ -34,19 +34,19 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_type, a3);
-    objc_storeStrong(&v11->_transformedType, a4);
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v10->_type, type);
+    objc_storeStrong(&v11->_transformedType, transformedType);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     attributes = v11->_attributes;
-    v11->_attributes = v12;
+    v11->_attributes = dictionary;
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     meta = v11->_meta;
-    v11->_meta = v14;
+    v11->_meta = dictionary2;
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     relationships = v11->_relationships;
-    v11->_relationships = v16;
+    v11->_relationships = dictionary3;
   }
 
   return v11;

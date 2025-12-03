@@ -1,22 +1,22 @@
 @interface BWSubjectSelectionNode
 + (void)initialize;
-- (BWSubjectSelectionNode)initWithOutputDimensions:(id)a3 cameraInfoByPortType:(id)a4 horizontalSensorBinningFactor:(int)a5 verticalSensorBinningFactor:(int)a6 deviceOrientationCorrectionEnabled:(BOOL)a7 portTypes:(id)a8 cameraHasDistortionCoefficients:(BOOL)a9 cameraHasCalibrationValidMaxRadius:(BOOL)a10 centerStageFramingMode:(int)a11 gazeSelectionEnabled:(BOOL)a12;
+- (BWSubjectSelectionNode)initWithOutputDimensions:(id)dimensions cameraInfoByPortType:(id)type horizontalSensorBinningFactor:(int)factor verticalSensorBinningFactor:(int)binningFactor deviceOrientationCorrectionEnabled:(BOOL)enabled portTypes:(id)types cameraHasDistortionCoefficients:(BOOL)coefficients cameraHasCalibrationValidMaxRadius:(BOOL)self0 centerStageFramingMode:(int)self1 gazeSelectionEnabled:(BOOL)self2;
 - (uint64_t)_initSubjectSelectionSession;
-- (void)_addInputAndOutputWithOutputDrivingInputIndex:(uint64_t)a3 mapToPortType:;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_addInputAndOutputWithOutputDrivingInputIndex:(uint64_t)index mapToPortType:;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didChangeCenterStageFramingMode:(int)a3;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
+- (void)didChangeCenterStageFramingMode:(int)mode;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWSubjectSelectionNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -41,13 +41,13 @@
   [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor start];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(BWNode *)self outputs:a3];
+  v5 = [(BWNode *)self outputs:format];
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v6)
   {
@@ -63,7 +63,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setFormat:a3];
+        [*(*(&v11 + 1) + 8 * v9++) setFormat:format];
       }
 
       while (v7 != v9);
@@ -74,14 +74,14 @@
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  v5 = [(NSMutableDictionary *)self->_videoCaptureOutputsByPortType objectForKeyedSubscript:BWUtilitiesGetPortTypeForInputFromInputByPortTypes(a5, self->_videoCaptureInputsByPortType)];
+  v5 = [(NSMutableDictionary *)self->_videoCaptureOutputsByPortType objectForKeyedSubscript:BWUtilitiesGetPortTypeForInputFromInputByPortTypes(input, self->_videoCaptureInputsByPortType)];
 
   [v5 makeConfiguredFormatLive];
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
   if ([-[NSMutableDictionary allValues](self->_videoCaptureInputsByPortType "allValues")])
@@ -90,7 +90,7 @@
   }
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
-  [-[NSMutableDictionary objectForKeyedSubscript:](self->_videoCaptureOutputsByPortType objectForKeyedSubscript:{BWUtilitiesGetPortTypeForInputFromInputByPortTypes(a3, self->_videoCaptureInputsByPortType)), "markEndOfLiveOutput"}];
+  [-[NSMutableDictionary objectForKeyedSubscript:](self->_videoCaptureOutputsByPortType objectForKeyedSubscript:{BWUtilitiesGetPortTypeForInputFromInputByPortTypes(input, self->_videoCaptureInputsByPortType)), "markEndOfLiveOutput"}];
   endOfDataInputsCount = self->_endOfDataInputsCount;
   if ([-[NSMutableDictionary allValues](self->_videoCaptureInputsByPortType "allValues")] == endOfDataInputsCount)
   {
@@ -99,24 +99,24 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  v7 = [(NSMutableDictionary *)self->_videoCaptureOutputsByPortType objectForKeyedSubscript:BWUtilitiesGetPortTypeForInputFromInputByPortTypes(a4, self->_videoCaptureInputsByPortType)];
-  v8 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v7 = [(NSMutableDictionary *)self->_videoCaptureOutputsByPortType objectForKeyedSubscript:BWUtilitiesGetPortTypeForInputFromInputByPortTypes(input, self->_videoCaptureInputsByPortType)];
+  v8 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   Value = CFDictionaryGetValue(v8, *off_1E798A420);
   memset(&v46, 0, sizeof(v46));
   CMTimeMakeFromDictionary(&v46, Value);
-  v10 = CMGetAttachment(a3, @"OriginalCameraIntrinsicMatrix", 0);
+  v10 = CMGetAttachment(buffer, @"OriginalCameraIntrinsicMatrix", 0);
   if (v10)
   {
     v11 = v10;
-    v12 = CMGetAttachment(a3, @"OriginalCameraIntrinsicMatrixReferenceDimensions", 0);
+    v12 = CMGetAttachment(buffer, @"OriginalCameraIntrinsicMatrixReferenceDimensions", 0);
     if (v12)
     {
       v13 = v12;
       v40 = v7;
-      ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+      ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
       Width = CVPixelBufferGetWidth(ImageBuffer);
       Height = CVPixelBufferGetHeight(ImageBuffer);
       cameraInfoByPortType = self->_cameraInfoByPortType;
@@ -194,12 +194,12 @@
           v7 = v40;
           if ([v36 count])
           {
-            CMSetAttachment(a3, *off_1E798A308, v36, 1u);
+            CMSetAttachment(buffer, *off_1E798A308, v36, 1u);
           }
 
           if ([v37 count])
           {
-            CMSetAttachment(a3, *off_1E798A300, v37, 1u);
+            CMSetAttachment(buffer, *off_1E798A300, v37, 1u);
           }
         }
       }
@@ -222,20 +222,20 @@
     [BWSubjectSelectionNode renderSampleBuffer:forInput:];
   }
 
-  [v7 emitSampleBuffer:a3];
+  [v7 emitSampleBuffer:buffer];
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)didChangeCenterStageFramingMode:(int)a3
+- (void)didChangeCenterStageFramingMode:(int)mode
 {
-  self->_centerStageFramingMode = a3;
+  self->_centerStageFramingMode = mode;
   os_unfair_lock_lock(&self->_bufferServicingLock);
   [(SubjectSelectionSession *)self->_subjectSelectionSession setSingleSubjectSelection:self->_centerStageFramingMode != 0];
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (BWSubjectSelectionNode)initWithOutputDimensions:(id)a3 cameraInfoByPortType:(id)a4 horizontalSensorBinningFactor:(int)a5 verticalSensorBinningFactor:(int)a6 deviceOrientationCorrectionEnabled:(BOOL)a7 portTypes:(id)a8 cameraHasDistortionCoefficients:(BOOL)a9 cameraHasCalibrationValidMaxRadius:(BOOL)a10 centerStageFramingMode:(int)a11 gazeSelectionEnabled:(BOOL)a12
+- (BWSubjectSelectionNode)initWithOutputDimensions:(id)dimensions cameraInfoByPortType:(id)type horizontalSensorBinningFactor:(int)factor verticalSensorBinningFactor:(int)binningFactor deviceOrientationCorrectionEnabled:(BOOL)enabled portTypes:(id)types cameraHasDistortionCoefficients:(BOOL)coefficients cameraHasCalibrationValidMaxRadius:(BOOL)self0 centerStageFramingMode:(int)self1 gazeSelectionEnabled:(BOOL)self2
 {
   v79.receiver = self;
   v79.super_class = BWSubjectSelectionNode;
@@ -244,25 +244,25 @@
   {
     v18->_videoCaptureInputsByPortType = objc_alloc_init(MEMORY[0x1E695DF90]);
     v18->_videoCaptureOutputsByPortType = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v18->_portTypes = a8;
-    v18->_outputDimensions = a3;
-    v18->_cameraInfoByPortType = a4;
-    if ((a5 - 3) < 0xFFFFFFFE)
+    v18->_portTypes = types;
+    v18->_outputDimensions = dimensions;
+    v18->_cameraInfoByPortType = type;
+    if ((factor - 3) < 0xFFFFFFFE)
     {
       return 0;
     }
 
-    v18->_horizontalSensorBinningFactor = a5;
-    if ((a6 - 3) < 0xFFFFFFFE)
+    v18->_horizontalSensorBinningFactor = factor;
+    if ((binningFactor - 3) < 0xFFFFFFFE)
     {
       return 0;
     }
 
     else
     {
-      HIDWORD(v44) = a12;
-      v18->_verticalSensorBinningFactor = a6;
-      v18->_deviceOrientationCorrectionEnabled = a7;
+      HIDWORD(v44) = selectionEnabled;
+      v18->_verticalSensorBinningFactor = binningFactor;
+      v18->_deviceOrientationCorrectionEnabled = enabled;
       v19 = objc_alloc_init(BWDeviceOrientationMonitor);
       v18->_deviceOrientationMonitor = v19;
       v27 = OUTLINED_FUNCTION_1_2(v19, v20, v21, v22, v23, v24, v25, v26, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, v64, v66, v68, v70, v72, v74, v76, 0);
@@ -279,7 +279,7 @@
           {
             if (MEMORY[0] != v30)
             {
-              objc_enumerationMutation(a8);
+              objc_enumerationMutation(types);
             }
 
             v29 = (v32 + 1);
@@ -296,9 +296,9 @@
 
       v18->_minLuxLevelNeeded = 5;
       v18->_endOfDataInputsCount = 0;
-      v18->_centerStageFramingMode = a11;
-      v18->_cameraHasDistortionCoefficients = a9;
-      v18->_cameraHasCalibrationValidMaxRadius = a10;
+      v18->_centerStageFramingMode = mode;
+      v18->_cameraHasDistortionCoefficients = coefficients;
+      v18->_cameraHasCalibrationValidMaxRadius = radius;
       v18->_gazeSelectionEnabled = BYTE4(v45);
     }
   }
@@ -306,22 +306,22 @@
   return v18;
 }
 
-- (void)_addInputAndOutputWithOutputDrivingInputIndex:(uint64_t)a3 mapToPortType:
+- (void)_addInputAndOutputWithOutputDrivingInputIndex:(uint64_t)index mapToPortType:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:a1];
+    v6 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:self];
     [(BWNodeInput *)v6 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeInput *)v6 setPassthroughMode:1];
-    [a1 addInput:v6];
-    [a1[16] setObject:v6 forKeyedSubscript:a3];
+    [self addInput:v6];
+    [self[16] setObject:v6 forKeyedSubscript:index];
 
-    v7 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:a1];
+    v7 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:self];
     [(BWNodeOutput *)v7 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeOutput *)v7 setPassthroughMode:1];
     [(BWNodeOutput *)v7 setIndexOfInputWhichDrivesThisOutput:a2];
-    [a1 addOutput:v7];
-    [a1[17] setObject:v7 forKeyedSubscript:a3];
+    [self addOutput:v7];
+    [self[17] setObject:v7 forKeyedSubscript:index];
   }
 }
 

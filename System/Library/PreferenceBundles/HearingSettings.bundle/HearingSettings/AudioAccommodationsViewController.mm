@@ -1,28 +1,28 @@
 @interface AudioAccommodationsViewController
 - (AudioAccommodationsViewController)init;
-- (id)currentTransparencyMode:(id)a3;
-- (id)personalAudioEnabled:(id)a3;
-- (id)personalAudioEnabledForType:(id)a3;
-- (id)personalAudioShape:(id)a3;
+- (id)currentTransparencyMode:(id)mode;
+- (id)personalAudioEnabled:(id)enabled;
+- (id)personalAudioEnabledForType:(id)type;
+- (id)personalAudioShape:(id)shape;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_setShapeFooterForSpecifier:(id)a3;
-- (void)confirmationViewAcceptedForSpecifier:(id)a3;
-- (void)confirmationViewCancelledForSpecifier:(id)a3;
-- (void)levelSliderDidChange:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_setShapeFooterForSpecifier:(id)specifier;
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier;
+- (void)confirmationViewCancelledForSpecifier:(id)specifier;
+- (void)levelSliderDidChange:(id)change;
 - (void)mediaServerDied;
 - (void)registerNotifications;
 - (void)reloadSpecifiers;
 - (void)saveNewConfiguration;
-- (void)setPersonalAudioEnabled:(id)a3 specifier:(id)a4;
-- (void)setPersonalAudioEnabledForType:(id)a3 specifier:(id)a4;
+- (void)setPersonalAudioEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPersonalAudioEnabledForType:(id)type specifier:(id)specifier;
 - (void)showAudioAccommodationsLearnMore;
-- (void)showConfigurationConfirmationAndReload:(BOOL)a3;
+- (void)showConfigurationConfirmationAndReload:(BOOL)reload;
 - (void)showHeadphoneCheckConfirmationIfNeeded;
 - (void)showHearingAssistConfirmationIfNeeded;
 - (void)stopPlayingSample;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)toggleSample:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)toggleSample:(id)sample;
 - (void)updateHeadphoneStatus;
 - (void)updateLevelAndShape;
 - (void)updateShapeFooter;
@@ -139,8 +139,8 @@
   v5.super_class = AudioAccommodationsViewController;
   [(AudioAccommodationsViewController *)&v5 willBecomeActive];
   v3 = +[PASettings sharedInstance];
-  v4 = [(PersonalAudioEnrollmentViewController *)self->_enrollmentController enrollment];
-  [v3 setCurrentEnrollmentProgress:{objc_msgSend(v4, "progress")}];
+  enrollment = [(PersonalAudioEnrollmentViewController *)self->_enrollmentController enrollment];
+  [v3 setCurrentEnrollmentProgress:{objc_msgSend(enrollment, "progress")}];
 
   [(AudioAccommodationsViewController *)self reloadSpecifiers];
 }
@@ -164,14 +164,14 @@
   {
     [(AudioAccommodationsViewController *)self updateLevelAndShape];
     v5 = +[PASettings sharedInstance];
-    v6 = [v5 personalMediaEnabled];
+    personalMediaEnabled = [v5 personalMediaEnabled];
 
     v7 = [objc_allocWithZone(NSMutableArray) init];
     v8 = +[PSSpecifier emptyGroupSpecifier];
     v9 = +[PASettings sharedInstance];
-    v10 = [v9 configurationCameFromUser];
+    configurationCameFromUser = [v9 configurationCameFromUser];
 
-    if (v10)
+    if (configurationCameFromUser)
     {
       v11 = accessibilityHearingAidSupportBundle();
       v12 = [v11 localizedStringForKey:@"PersonalAudioSetupFooter" value:@"PersonalAudioSetupFooter" table:@"HearingProtection-Yodel"];
@@ -203,7 +203,7 @@
     [v18 setButtonAction:"startPMEEnrollment:"];
     [v18 setIdentifier:@"AXPAPersonalAudioSetupSpecID"];
     [v7 addObject:v18];
-    if (!v6)
+    if (!personalMediaEnabled)
     {
       goto LABEL_48;
     }
@@ -216,9 +216,9 @@
     else
     {
       v20 = +[PASettings sharedInstance];
-      v21 = [v20 personalMediaConfiguration];
+      personalMediaConfiguration = [v20 personalMediaConfiguration];
 
-      if (!v21)
+      if (!personalMediaConfiguration)
       {
 LABEL_48:
         v75 = [v7 copy];
@@ -284,10 +284,10 @@ LABEL_48:
     }
 
     v35 = +[PASettings sharedInstance];
-    v36 = [v35 personalMediaConfiguration];
-    v37 = [v36 level];
+    personalMediaConfiguration2 = [v35 personalMediaConfiguration];
+    level = [personalMediaConfiguration2 level];
 
-    if (v37 == &dword_C)
+    if (level == &dword_C)
     {
       v38 = v27;
     }
@@ -299,8 +299,8 @@ LABEL_48:
       [v39 setProperty:v40 forKey:v79];
 
       [v27 addObject:v39];
-      v41 = [(AudioAccommodationsViewController *)self view];
-      [v41 bounds];
+      view = [(AudioAccommodationsViewController *)self view];
+      [view bounds];
       LODWORD(v40) = [(HearingSettingsValueSliderCell *)AAStrengthSliderCell shouldAppearAsListForWidth:CGRectGetWidth(v84)];
 
       if (v40)
@@ -382,9 +382,9 @@ LABEL_48:
     if ((v51 & 1) == 0)
     {
       v56 = +[PAStimulus musicStimulus];
-      v57 = [v56 isPlaying];
+      isPlaying = [v56 isPlaying];
 
-      if (v57)
+      if (isPlaying)
       {
         [(AudioAccommodationsViewController *)self stopPlayingSample];
       }
@@ -397,10 +397,10 @@ LABEL_48:
     v3 = v80;
     if ([v60 personalSoundVisible])
     {
-      v61 = [(AudioAccommodationsViewController *)self pairedDeviceSupportsPSE];
+      pairedDeviceSupportsPSE = [(AudioAccommodationsViewController *)self pairedDeviceSupportsPSE];
 
       v62 = &__AXStringForVariables_ptr;
-      if (!v61)
+      if (!pairedDeviceSupportsPSE)
       {
         goto LABEL_40;
       }
@@ -439,20 +439,20 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    v69 = [(AudioAccommodationsViewController *)self availablePSEDevices];
-    if ([v69 count] == &dword_0 + 1)
+    availablePSEDevices = [(AudioAccommodationsViewController *)self availablePSEDevices];
+    if ([availablePSEDevices count] == &dword_0 + 1)
     {
       v70 = paLocString();
       v71 = [PSSpecifier preferenceSpecifierNamed:v70 target:self set:0 get:"currentTransparencyMode:" detail:objc_opt_class() cell:2 edit:0];
 
-      v72 = [v69 allKeys];
-      v73 = [v72 firstObject];
-      [v71 setUserInfo:v73];
+      allKeys = [availablePSEDevices allKeys];
+      firstObject = [allKeys firstObject];
+      [v71 setUserInfo:firstObject];
     }
 
     else
     {
-      if ([v69 count] < 2)
+      if ([availablePSEDevices count] < 2)
       {
 LABEL_46:
 
@@ -462,7 +462,7 @@ LABEL_46:
       v74 = paLocString();
       v71 = [PSSpecifier preferenceSpecifierNamed:v74 target:self set:0 get:"currentTransparencyMode:" detail:objc_opt_class() cell:2 edit:0];
 
-      [v71 setUserInfo:v69];
+      [v71 setUserInfo:availablePSEDevices];
     }
 
     v18 = v71;
@@ -485,14 +485,14 @@ LABEL_49:
 - (void)updateLevelAndShape
 {
   v3 = +[PASettings sharedInstance];
-  v5 = [v3 personalMediaConfiguration];
+  personalMediaConfiguration = [v3 personalMediaConfiguration];
 
-  self->_currentLevel = [v5 level];
-  v4 = [v5 shape];
-  self->_currentShape = v4;
+  self->_currentLevel = [personalMediaConfiguration level];
+  shape = [personalMediaConfiguration shape];
+  self->_currentShape = shape;
   if (self->_currentLevel)
   {
-    if (v4)
+    if (shape)
     {
       goto LABEL_3;
     }
@@ -511,12 +511,12 @@ LABEL_49:
 LABEL_3:
 }
 
-- (void)_setShapeFooterForSpecifier:(id)a3
+- (void)_setShapeFooterForSpecifier:(id)specifier
 {
   currentShape = self->_currentShape;
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = paLocString();
-  [v4 setProperty:v5 forKey:PSFooterTextGroupKey];
+  [specifierCopy setProperty:v5 forKey:PSFooterTextGroupKey];
 }
 
 - (void)updateShapeFooter
@@ -526,13 +526,13 @@ LABEL_3:
   [(AudioAccommodationsViewController *)self reloadSpecifier:v3];
 }
 
-- (void)setPersonalAudioEnabled:(id)a3 specifier:(id)a4
+- (void)setPersonalAudioEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[PASettings sharedInstance];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setPersonalMediaEnabled:v7];
+  [v6 setPersonalMediaEnabled:bOOLValue];
   [(AudioAccommodationsViewController *)self updateLevelAndShape];
   [(AudioAccommodationsViewController *)self saveNewConfiguration];
   [(AudioAccommodationsViewController *)self stopPlayingSample];
@@ -540,7 +540,7 @@ LABEL_3:
   [(AudioAccommodationsViewController *)self reloadSpecifiers];
 }
 
-- (id)personalAudioEnabled:(id)a3
+- (id)personalAudioEnabled:(id)enabled
 {
   v3 = +[PASettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 personalMediaEnabled]);
@@ -548,16 +548,16 @@ LABEL_3:
   return v4;
 }
 
-- (void)setPersonalAudioEnabledForType:(id)a3 specifier:(id)a4
+- (void)setPersonalAudioEnabledForType:(id)type specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 propertyForKey:@"AXPATypePropertyKey"];
+  typeCopy = type;
+  v7 = [specifier propertyForKey:@"AXPATypePropertyKey"];
   [v7 unsignedIntegerValue];
 
   v8 = +[PASettings sharedInstance];
   [v8 personalAudioAccommodationTypes];
 
-  LODWORD(v8) = [v6 BOOLValue];
+  LODWORD(v8) = [typeCopy BOOLValue];
   if (v8)
   {
     v9 = compoundAttributeByAddingAttribute();
@@ -574,9 +574,9 @@ LABEL_3:
   [v11 setPersonalAudioAccommodationTypes:v10];
 }
 
-- (id)personalAudioEnabledForType:(id)a3
+- (id)personalAudioEnabledForType:(id)type
 {
-  v3 = [a3 propertyForKey:@"AXPATypePropertyKey"];
+  v3 = [type propertyForKey:@"AXPATypePropertyKey"];
   [v3 unsignedIntegerValue];
 
   v4 = +[PASettings sharedInstance];
@@ -586,7 +586,7 @@ LABEL_3:
   return v5;
 }
 
-- (id)currentTransparencyMode:(id)a3
+- (id)currentTransparencyMode:(id)mode
 {
   v4 = paLocString();
   if ([(AudioAccommodationsViewController *)self transparencyCustomized])
@@ -599,9 +599,9 @@ LABEL_3:
   return v4;
 }
 
-- (id)personalAudioShape:(id)a3
+- (id)personalAudioShape:(id)shape
 {
-  v4 = [a3 propertyForKey:@"AXPAShapePropertyKey"];
+  v4 = [shape propertyForKey:@"AXPAShapePropertyKey"];
   v5 = v4;
   if (v4)
   {
@@ -715,9 +715,9 @@ LABEL_3:
   UIAccessibilityPostNotification(0x42Fu, &__kCFBooleanFalse);
 }
 
-- (void)toggleSample:(id)a3
+- (void)toggleSample:(id)sample
 {
-  v11 = a3;
+  sampleCopy = sample;
   if (self->_playingMedia || (+[PAStimulus musicStimulus](PAStimulus, "musicStimulus"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isPlaying], v4, v5))
   {
     self->_playingMedia = 0;
@@ -741,19 +741,19 @@ LABEL_3:
   }
 
   v10 = paLocString();
-  [v11 setName:v10];
+  [sampleCopy setName:v10];
 
-  [(AudioAccommodationsViewController *)self reloadSpecifier:v11];
+  [(AudioAccommodationsViewController *)self reloadSpecifier:sampleCopy];
 }
 
-- (void)confirmationViewAcceptedForSpecifier:(id)a3
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier
 {
   [(AudioAccommodationsViewController *)self saveNewConfiguration];
 
   [(AudioAccommodationsViewController *)self reloadSpecifiers];
 }
 
-- (void)confirmationViewCancelledForSpecifier:(id)a3
+- (void)confirmationViewCancelledForSpecifier:(id)specifier
 {
   v4 = HCLogAudioAccommodations();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -765,13 +765,13 @@ LABEL_3:
   [(AudioAccommodationsViewController *)self reloadSpecifiers];
 }
 
-- (void)showConfigurationConfirmationAndReload:(BOOL)a3
+- (void)showConfigurationConfirmationAndReload:(BOOL)reload
 {
-  v3 = a3;
+  reloadCopy = reload;
   v5 = +[PASettings sharedInstance];
-  v6 = [v5 configurationCameFromEnrollment];
+  configurationCameFromEnrollment = [v5 configurationCameFromEnrollment];
 
-  if (v6)
+  if (configurationCameFromEnrollment)
   {
     v12 = objc_alloc_init(PSConfirmationSpecifier);
     v7 = +[HCUtilities deviceIsPad];
@@ -801,7 +801,7 @@ LABEL_3:
   else
   {
     [(AudioAccommodationsViewController *)self saveNewConfiguration];
-    if (v3)
+    if (reloadCopy)
     {
 
       [(AudioAccommodationsViewController *)self reloadSpecifiers];
@@ -815,9 +815,9 @@ LABEL_3:
   if (self->_currentShape == 12)
   {
     v3 = +[PASettings sharedInstance];
-    v4 = [v3 audiogramConfiguration];
+    audiogramConfiguration = [v3 audiogramConfiguration];
 
-    v8 = v4;
+    v8 = audiogramConfiguration;
   }
 
   v5 = +[PASettings sharedInstance];
@@ -830,9 +830,9 @@ LABEL_3:
   [v7 setConfigurationCameFromUser:1];
 }
 
-- (void)levelSliderDidChange:(id)a3
+- (void)levelSliderDidChange:(id)change
 {
-  [a3 floatValue];
+  [change floatValue];
   v5 = 2;
   v6 = 1;
   if (v4 > 0.5)
@@ -850,13 +850,13 @@ LABEL_3:
   [(AudioAccommodationsViewController *)self showConfigurationConfirmationAndReload:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = AudioAccommodationsViewController;
-  v6 = a4;
-  [(AudioAccommodationsViewController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AudioAccommodationsViewController *)self specifierAtIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  [(AudioAccommodationsViewController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AudioAccommodationsViewController *)self specifierAtIndexPath:pathCopy, v11.receiver, v11.super_class];
 
   v8 = [v7 propertyForKey:@"AXPAShapePropertyKey"];
   v9 = [v7 propertyForKey:@"AXPALevelPropertyKey"];
@@ -880,21 +880,21 @@ LABEL_6:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = AudioAccommodationsViewController;
-  v6 = a4;
-  v7 = [(AudioAccommodationsViewController *)&v12 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(AudioAccommodationsViewController *)self specifierAtIndexPath:v6, v12.receiver, v12.super_class];
+  pathCopy = path;
+  v7 = [(AudioAccommodationsViewController *)&v12 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(AudioAccommodationsViewController *)self specifierAtIndexPath:pathCopy, v12.receiver, v12.super_class];
 
   v9 = [v8 propertyForKey:PSIDKey];
-  LODWORD(v6) = [v9 isEqualToString:@"AXPAEnableSpecID"];
+  LODWORD(pathCopy) = [v9 isEqualToString:@"AXPAEnableSpecID"];
 
-  if (v6)
+  if (pathCopy)
   {
-    v10 = [v7 textLabel];
-    [v10 setNumberOfLines:0];
+    textLabel = [v7 textLabel];
+    [textLabel setNumberOfLines:0];
   }
 
   return v7;

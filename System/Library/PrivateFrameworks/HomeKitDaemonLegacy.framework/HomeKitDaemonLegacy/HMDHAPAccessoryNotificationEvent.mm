@@ -1,8 +1,8 @@
 @interface HMDHAPAccessoryNotificationEvent
-- (BOOL)isThreadAccessory:(id)a3;
+- (BOOL)isThreadAccessory:(id)accessory;
 - (HMDCharacteristic)characteristic;
 - (HMDHAPAccessory)accessory;
-- (HMDHAPAccessoryNotificationEvent)initWithAccessory:(id)a3 characteristic:(id)a4;
+- (HMDHAPAccessoryNotificationEvent)initWithAccessory:(id)accessory characteristic:(id)characteristic;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)accessoryIdentifier;
 @end
@@ -25,24 +25,24 @@
 
 - (NSString)accessoryIdentifier
 {
-  v2 = [(HMDHAPAccessoryNotificationEvent *)self accessory];
-  v3 = [v2 identifier];
+  accessory = [(HMDHAPAccessoryNotificationEvent *)self accessory];
+  identifier = [accessory identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(HMDHAPAccessoryNotificationEvent *)self accessory];
-  v5 = [(HMDHAPAccessoryNotificationEvent *)self characteristic];
-  v6 = [(HMDHAPAccessoryNotificationEvent *)self isThreadAccessory:v4];
-  if ([v4 hasIPLink])
+  accessory = [(HMDHAPAccessoryNotificationEvent *)self accessory];
+  characteristic = [(HMDHAPAccessoryNotificationEvent *)self characteristic];
+  v6 = [(HMDHAPAccessoryNotificationEvent *)self isThreadAccessory:accessory];
+  if ([accessory hasIPLink])
   {
     v7 = @"IP";
   }
 
-  else if ([v4 hasBTLELink])
+  else if ([accessory hasBTLELink])
   {
     v7 = @"BLE";
   }
@@ -52,12 +52,12 @@
     v7 = @"unknown link type";
   }
 
-  v8 = [v5 type];
-  [v3 setObject:v8 forKeyedSubscript:@"characteristicType"];
+  type = [characteristic type];
+  [v3 setObject:type forKeyedSubscript:@"characteristicType"];
 
-  v9 = [v5 service];
-  v10 = [v9 type];
-  [v3 setObject:v10 forKeyedSubscript:@"serviceType"];
+  service = [characteristic service];
+  type2 = [service type];
+  [v3 setObject:type2 forKeyedSubscript:@"serviceType"];
 
   [v3 setObject:v7 forKey:@"linkType"];
   v11 = [MEMORY[0x277CCABB0] numberWithBool:v6];
@@ -68,11 +68,11 @@
   return v12;
 }
 
-- (BOOL)isThreadAccessory:(id)a3
+- (BOOL)isThreadAccessory:(id)accessory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 transportInformationInstances];
+  accessoryCopy = accessory;
+  [accessoryCopy transportInformationInstances];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -91,13 +91,13 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v17 + 1) + 8 * i) hapAccessory];
-        v10 = [v9 server];
+        hapAccessory = [*(*(&v17 + 1) + 8 * i) hapAccessory];
+        server = [hapAccessory server];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = v10;
+          v11 = server;
         }
 
         else
@@ -115,7 +115,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v13 = [v3 findServiceWithServiceType:@"00000701-0000-1000-8000-0026BB765291"];
+        v13 = [accessoryCopy findServiceWithServiceType:@"00000701-0000-1000-8000-0026BB765291"];
 
         if (v13)
         {
@@ -145,18 +145,18 @@ LABEL_17:
   return v14;
 }
 
-- (HMDHAPAccessoryNotificationEvent)initWithAccessory:(id)a3 characteristic:(id)a4
+- (HMDHAPAccessoryNotificationEvent)initWithAccessory:(id)accessory characteristic:(id)characteristic
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  characteristicCopy = characteristic;
   v11.receiver = self;
   v11.super_class = HMDHAPAccessoryNotificationEvent;
   v8 = [(HMMLogEvent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_accessory, v6);
-    objc_storeWeak(&v9->_characteristic, v7);
+    objc_storeWeak(&v8->_accessory, accessoryCopy);
+    objc_storeWeak(&v9->_characteristic, characteristicCopy);
   }
 
   return v9;

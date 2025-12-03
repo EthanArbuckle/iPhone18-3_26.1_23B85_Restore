@@ -1,6 +1,6 @@
 @interface AVTAvatarAttributeEditorSection
-- (AVTAvatarAttributeEditorSection)initWithSectionItems:(id)a3 localizedName:(id)a4 identifier:(id)a5 intendedDestination:(unint64_t)a6 options:(id)a7;
-- (BOOL)shouldDisplaySeparatorBeforeSection:(id)a3;
+- (AVTAvatarAttributeEditorSection)initWithSectionItems:(id)items localizedName:(id)name identifier:(id)identifier intendedDestination:(unint64_t)destination options:(id)options;
+- (BOOL)shouldDisplaySeparatorBeforeSection:(id)section;
 - (BOOL)shouldDisplayTitle;
 - (NSArray)sections;
 - (NSString)description;
@@ -9,31 +9,31 @@
 
 @implementation AVTAvatarAttributeEditorSection
 
-- (AVTAvatarAttributeEditorSection)initWithSectionItems:(id)a3 localizedName:(id)a4 identifier:(id)a5 intendedDestination:(unint64_t)a6 options:(id)a7
+- (AVTAvatarAttributeEditorSection)initWithSectionItems:(id)items localizedName:(id)name identifier:(id)identifier intendedDestination:(unint64_t)destination options:(id)options
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  itemsCopy = items;
+  nameCopy = name;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v24.receiver = self;
   v24.super_class = AVTAvatarAttributeEditorSection;
   v16 = [(AVTAvatarAttributeEditorSection *)&v24 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [itemsCopy copy];
     sectionItems = v16->_sectionItems;
     v16->_sectionItems = v17;
 
-    v19 = [v13 copy];
+    v19 = [nameCopy copy];
     localizedName = v16->_localizedName;
     v16->_localizedName = v19;
 
-    v21 = [v14 copy];
+    v21 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v21;
 
-    objc_storeStrong(&v16->_options, a7);
-    v16->_intendedDestination = a6;
+    objc_storeStrong(&v16->_options, options);
+    v16->_intendedDestination = destination;
   }
 
   return v16;
@@ -46,27 +46,27 @@
   v3 = [(AVTAvatarAttributeEditorSection *)&v16 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTAvatarAttributeEditorSection *)self localizedName];
-  v6 = [(AVTAvatarAttributeEditorSection *)self identifier];
-  v7 = [(AVTAvatarAttributeEditorSection *)self sectionItems];
-  v8 = [v7 avt_description];
-  [v4 appendFormat:@" name: %@, identifier: %@, sectionItems: %@", v5, v6, v8];
+  localizedName = [(AVTAvatarAttributeEditorSection *)self localizedName];
+  identifier = [(AVTAvatarAttributeEditorSection *)self identifier];
+  sectionItems = [(AVTAvatarAttributeEditorSection *)self sectionItems];
+  avt_description = [sectionItems avt_description];
+  [v4 appendFormat:@" name: %@, identifier: %@, sectionItems: %@", localizedName, identifier, avt_description];
 
-  v9 = [(AVTAvatarAttributeEditorSection *)self supplementalPicker];
+  supplementalPicker = [(AVTAvatarAttributeEditorSection *)self supplementalPicker];
 
-  if (v9)
+  if (supplementalPicker)
   {
-    v10 = [(AVTAvatarAttributeEditorSection *)self supplementalPicker];
-    v11 = [v10 localizedTitle];
-    [v4 appendFormat:@", supplemental picker: %@", v11];
+    supplementalPicker2 = [(AVTAvatarAttributeEditorSection *)self supplementalPicker];
+    localizedTitle = [supplementalPicker2 localizedTitle];
+    [v4 appendFormat:@", supplemental picker: %@", localizedTitle];
   }
 
-  v12 = [(AVTAvatarAttributeEditorSection *)self options];
+  options = [(AVTAvatarAttributeEditorSection *)self options];
 
-  if (v12)
+  if (options)
   {
-    v13 = [(AVTAvatarAttributeEditorSection *)self options];
-    [v4 appendFormat:@", options: %@", v13];
+    options2 = [(AVTAvatarAttributeEditorSection *)self options];
+    [v4 appendFormat:@", options: %@", options2];
   }
 
   v14 = [v4 copy];
@@ -76,11 +76,11 @@
 
 - (BOOL)shouldDisplayTitle
 {
-  v3 = [(AVTAvatarAttributeEditorSection *)self localizedName];
-  if (v3)
+  localizedName = [(AVTAvatarAttributeEditorSection *)self localizedName];
+  if (localizedName)
   {
-    v4 = [(AVTAvatarAttributeEditorSection *)self localizedName];
-    v5 = [v4 length] != 0;
+    localizedName2 = [(AVTAvatarAttributeEditorSection *)self localizedName];
+    v5 = [localizedName2 length] != 0;
   }
 
   else
@@ -91,25 +91,25 @@
   return v5;
 }
 
-- (BOOL)shouldDisplaySeparatorBeforeSection:(id)a3
+- (BOOL)shouldDisplaySeparatorBeforeSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   if ([(AVTAvatarAttributeEditorSection *)self shouldDisplayInsetSeparatorAfterSection])
   {
-    v5 = 1;
+    shouldDisplayTitle = 1;
   }
 
-  else if (v4)
+  else if (sectionCopy)
   {
-    v5 = [v4 shouldDisplayTitle];
+    shouldDisplayTitle = [sectionCopy shouldDisplayTitle];
   }
 
   else
   {
-    v5 = 0;
+    shouldDisplayTitle = 0;
   }
 
-  return v5;
+  return shouldDisplayTitle;
 }
 
 - (UIEdgeInsets)separatorInsets

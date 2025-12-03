@@ -1,20 +1,20 @@
 @interface IdleLatencyURLSessionDelegate
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)executeTaskWithRequest:(id)a3 completionHandler:(id)a4;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)executeTaskWithRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation IdleLatencyURLSessionDelegate
 
-- (void)executeTaskWithRequest:(id)a3 completionHandler:(id)a4
+- (void)executeTaskWithRequest:(id)request completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = MEMORY[0x25F873620](a4);
+  requestCopy = request;
+  v8 = MEMORY[0x25F873620](handler);
   completionHandler = self->super._completionHandler;
   self->super._completionHandler = v8;
 
-  objc_storeStrong(&self->super._request, a3);
+  objc_storeStrong(&self->super._request, request);
   if (self->super._parallel)
   {
     v11 = 0;
@@ -22,10 +22,10 @@
     v17 = v10;
     do
     {
-      v12 = [(NetworkQualityExecutions *)self->super._execution createDefaultNSURLSessionConfiguration];
-      v13 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v12 delegate:self delegateQueue:self->super._queue];
+      createDefaultNSURLSessionConfiguration = [(NetworkQualityExecutions *)self->super._execution createDefaultNSURLSessionConfiguration];
+      v13 = [MEMORY[0x277CCAD30] sessionWithConfiguration:createDefaultNSURLSessionConfiguration delegate:self delegateQueue:self->super._queue];
       [(NSMutableArray *)self->super._sessions addObject:v13];
-      v14 = [v13 dataTaskWithRequest:v7];
+      v14 = [v13 dataTaskWithRequest:requestCopy];
       [v14 set_hostOverride:self->super._testEndpoint];
       [(NSMutableArray *)self->super._tasks addObject:v14];
       netqual_log_init();
@@ -54,21 +54,21 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10)
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (!errorCopy)
   {
     p_tasks = &self->super._tasks;
-    [(NSMutableArray *)self->super._tasks removeObject:v9];
+    [(NSMutableArray *)self->super._tasks removeObject:taskCopy];
     goto LABEL_7;
   }
 
-  v12 = [v10 domain];
-  if ([v12 isEqualToString:*MEMORY[0x277CCA738]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA738]])
   {
     v13 = [v11 code] == -999;
   }
@@ -79,7 +79,7 @@
   }
 
   p_tasks = &self->super._tasks;
-  [(NSMutableArray *)self->super._tasks removeObject:v9];
+  [(NSMutableArray *)self->super._tasks removeObject:taskCopy];
   if (v13)
   {
 LABEL_7:
@@ -103,7 +103,7 @@ LABEL_14:
 
   if (!self->super._canceled)
   {
-    objc_storeStrong(&self->super._error, a5);
+    objc_storeStrong(&self->super._error, error);
     completionHandler = self->super._completionHandler;
     error = self->super._error;
     goto LABEL_14;
@@ -112,76 +112,76 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(LatencyURLSessionDelegate *)self didFinishCollectingMetrics:v10 task:v9];
+  sessionCopy = session;
+  taskCopy = task;
+  metricsCopy = metrics;
+  v11 = [(LatencyURLSessionDelegate *)self didFinishCollectingMetrics:metricsCopy task:taskCopy];
   if (v11 < 0)
   {
     goto LABEL_59;
   }
 
   v12 = v11;
-  v13 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
-  v14 = [v13 valueForKey:self->super._tcpKey];
+  idleLatencyResults = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
+  v14 = [idleLatencyResults valueForKey:self->super._tcpKey];
 
   if (!v14)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v15 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
-    [v15 setObject:v14 forKey:self->super._tcpKey];
+    idleLatencyResults2 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
+    [idleLatencyResults2 setObject:v14 forKey:self->super._tcpKey];
   }
 
-  v16 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
-  v17 = [v16 valueForKey:self->super._tlsKey];
+  idleLatencyResults3 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
+  v17 = [idleLatencyResults3 valueForKey:self->super._tlsKey];
 
   if (!v17)
   {
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v18 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
-    [v18 setObject:v17 forKey:self->super._tlsKey];
+    idleLatencyResults4 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
+    [idleLatencyResults4 setObject:v17 forKey:self->super._tlsKey];
   }
 
-  v19 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
-  v20 = [v19 valueForKey:self->super._reqrespKey];
+  idleLatencyResults5 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
+  v20 = [idleLatencyResults5 valueForKey:self->super._reqrespKey];
 
   v112 = v20;
   if (!v20)
   {
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v22 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
+    idleLatencyResults6 = [(NetworkQualityExecutionsResult *)self->super._results idleLatencyResults];
     v112 = v21;
-    [v22 setObject:v21 forKey:self->super._reqrespKey];
+    [idleLatencyResults6 setObject:v21 forKey:self->super._reqrespKey];
   }
 
-  v23 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-  v24 = [v23 valueForKey:@"ecn_values"];
+  mutableOtherValues = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+  v24 = [mutableOtherValues valueForKey:@"ecn_values"];
 
   v110 = v24;
   if (!v24)
   {
     v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v26 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+    mutableOtherValues2 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
     v110 = v25;
-    [v26 setObject:v25 forKey:@"ecn_values"];
+    [mutableOtherValues2 setObject:v25 forKey:@"ecn_values"];
   }
 
-  v27 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-  v28 = [v27 valueForKey:@"l4s_enablement"];
+  mutableOtherValues3 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+  v28 = [mutableOtherValues3 valueForKey:@"l4s_enablement"];
 
   v109 = v28;
   if (!v28)
   {
     v29 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v30 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+    mutableOtherValues4 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
     v109 = v29;
-    [v30 setObject:v29 forKey:@"l4s_enablement"];
+    [mutableOtherValues4 setObject:v29 forKey:@"l4s_enablement"];
   }
 
-  v31 = [v10 transactionMetrics];
-  v32 = [v31 objectAtIndex:v12];
+  transactionMetrics = [metricsCopy transactionMetrics];
+  v32 = [transactionMetrics objectAtIndex:v12];
 
   report = [v32 _establishmentReport];
   if (report)
@@ -210,7 +210,7 @@ LABEL_15:
     enumerate_block[3] = &unk_2799695D8;
     v117 = &v133;
     v118 = &v129;
-    v116 = v10;
+    v116 = metricsCopy;
     v119 = &v125;
     v120 = &v121;
     nw_establishment_report_enumerate_protocols(report, enumerate_block);
@@ -260,19 +260,19 @@ LABEL_20:
   }
 
 LABEL_21:
-  v108 = v10;
-  v39 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-  v40 = [v39 objectForKey:@"protocols_seen"];
+  v108 = metricsCopy;
+  mutableOtherValues5 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+  v40 = [mutableOtherValues5 objectForKey:@"protocols_seen"];
 
   if (!v40)
   {
     v40 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v41 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-    [v41 setValue:v40 forKey:@"protocols_seen"];
+    mutableOtherValues6 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+    [mutableOtherValues6 setValue:v40 forKey:@"protocols_seen"];
   }
 
-  v42 = [v32 networkProtocolName];
-  v43 = [v40 objectForKey:v42];
+  networkProtocolName = [v32 networkProtocolName];
+  v43 = [v40 objectForKey:networkProtocolName];
   if (v43)
   {
     v44 = v43;
@@ -285,22 +285,22 @@ LABEL_21:
 
   v45 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v44, "intValue") + 1}];
 
-  [v40 setObject:v45 forKey:v42];
-  v46 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-  v47 = [v46 objectForKey:@"proxy_state"];
+  [v40 setObject:v45 forKey:networkProtocolName];
+  mutableOtherValues7 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+  v47 = [mutableOtherValues7 objectForKey:@"proxy_state"];
 
   if (!v47)
   {
     v47 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v48 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-    [v48 setValue:v47 forKey:@"proxy_state"];
+    mutableOtherValues8 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+    [mutableOtherValues8 setValue:v47 forKey:@"proxy_state"];
   }
 
   v106 = v17;
   v107 = v14;
-  v49 = [v32 isProxyConnection];
+  isProxyConnection = [v32 isProxyConnection];
   v50 = @"not_proxied";
-  if (v49)
+  if (isProxyConnection)
   {
     v50 = @"proxied";
   }
@@ -320,19 +320,19 @@ LABEL_21:
   v54 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v53, "intValue") + 1}];
 
   [v47 setObject:v54 forKey:v51];
-  v55 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-  v56 = [v55 objectForKey:@"interface-type"];
+  mutableOtherValues9 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+  v56 = [mutableOtherValues9 objectForKey:@"interface-type"];
 
   v57 = &unk_286D22CA0;
   if (!v56)
   {
     v56 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v58 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-    [v58 setValue:v56 forKey:@"interface-type"];
+    mutableOtherValues10 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+    [mutableOtherValues10 setValue:v56 forKey:@"interface-type"];
   }
 
-  v59 = [v32 _interfaceName];
-  [v59 UTF8String];
+  _interfaceName = [v32 _interfaceName];
+  [_interfaceName UTF8String];
   v60 = nw_interface_create_with_name();
 
   v61 = MEMORY[0x277CCACA8];
@@ -347,14 +347,14 @@ LABEL_21:
   v65 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v57, "intValue") + 1}];
 
   [v56 setObject:v65 forKey:v63];
-  v66 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-  v67 = [v66 objectForKey:@"rat"];
+  mutableOtherValues11 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+  v67 = [mutableOtherValues11 objectForKey:@"rat"];
 
   if (!v67)
   {
     v67 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v68 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-    [v68 setValue:v67 forKey:@"rat"];
+    mutableOtherValues12 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+    [mutableOtherValues12 setValue:v67 forKey:@"rat"];
   }
 
   if (nw_interface_get_radio_type())
@@ -382,20 +382,20 @@ LABEL_21:
   v72 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v71, "intValue") + 1}];
 
   [v67 setObject:v72 forKey:v69];
-  v73 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-  v74 = [v73 objectForKey:@"multipath"];
+  mutableOtherValues13 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+  v74 = [mutableOtherValues13 objectForKey:@"multipath"];
 
   v75 = &unk_286D22CA0;
   if (!v74)
   {
     v74 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v76 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-    [v76 setValue:v74 forKey:@"multipath"];
+    mutableOtherValues14 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+    [mutableOtherValues14 setValue:v74 forKey:@"multipath"];
   }
 
-  v77 = [v32 isMultipath];
+  isMultipath = [v32 isMultipath];
   v78 = @"disabled";
-  if (v77)
+  if (isMultipath)
   {
     v78 = @"enabled";
   }
@@ -411,9 +411,9 @@ LABEL_21:
 
   [v74 setObject:v81 forKey:v79];
   v82 = MEMORY[0x277CCABB0];
-  v83 = [v32 responseEndDate];
-  v84 = [v32 requestStartDate];
-  [v83 timeIntervalSinceDate:v84];
+  responseEndDate = [v32 responseEndDate];
+  requestStartDate = [v32 requestStartDate];
+  [responseEndDate timeIntervalSinceDate:requestStartDate];
   v86 = v85 * 1000.0;
   *&v86 = v86;
   v87 = [v82 numberWithFloat:v86];
@@ -426,13 +426,13 @@ LABEL_21:
   v89 = MEMORY[0x277CCABB0];
   *&v90 = get_average(v88);
   v91 = [v89 numberWithFloat:v90];
-  v92 = [(NetworkQualityResult *)self->super._results latency];
-  [v92 setValue:v91];
+  latency = [(NetworkQualityResult *)self->super._results latency];
+  [latency setValue:v91];
 
-  v93 = [(NetworkQualityResult *)self->super._results latency];
-  [v93 updateConfidence:3];
+  latency2 = [(NetworkQualityResult *)self->super._results latency];
+  [latency2 updateConfidence:3];
 
-  v10 = v108;
+  metricsCopy = v108;
   if ([v107 count])
   {
     v94 = MEMORY[0x277CCABB0];
@@ -440,8 +440,8 @@ LABEL_21:
     v96 = [v94 numberWithFloat:v95];
     [(NetworkQualityResult *)self->super._results setTcpLatency:v96];
 
-    v97 = [(NetworkQualityResult *)self->super._results tcpLatency];
-    [v97 floatValue];
+    tcpLatency = [(NetworkQualityResult *)self->super._results tcpLatency];
+    [tcpLatency floatValue];
     if (fabsf(v98) >= 0.00000011921)
     {
     }

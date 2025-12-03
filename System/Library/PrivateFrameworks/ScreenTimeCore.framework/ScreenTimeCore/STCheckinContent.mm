@@ -1,29 +1,29 @@
 @interface STCheckinContent
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCheckinContent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCheckinContent:(id)content;
 - (NSString)description;
-- (STCheckinContent)initWithCoder:(id)a3;
-- (STCheckinContent)initWithUserID:(id)a3 deviceID:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (STCheckinContent)initWithCoder:(id)coder;
+- (STCheckinContent)initWithUserID:(id)d deviceID:(id)iD;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STCheckinContent
 
-- (STCheckinContent)initWithUserID:(id)a3 deviceID:(id)a4
+- (STCheckinContent)initWithUserID:(id)d deviceID:(id)iD
 {
   v13.receiver = self;
   v13.super_class = STCheckinContent;
-  v5 = a4;
-  v6 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v7 = [(STCheckinContent *)&v13 init];
-  v8 = [v6 copy];
+  v8 = [dCopy copy];
 
   userID = v7->_userID;
   v7->_userID = v8;
 
-  v10 = [v5 copy];
+  v10 = [iDCopy copy];
   deviceID = v7->_deviceID;
   v7->_deviceID = v10;
 
@@ -33,46 +33,46 @@
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(STCheckinContent *)self userID];
-  v5 = [(STCheckinContent *)self deviceID];
-  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ { User: %@, Device: %@, Type: %ld }>", v3, v4, v5, [objc_opt_class() contentType]);
+  userID = [(STCheckinContent *)self userID];
+  deviceID = [(STCheckinContent *)self deviceID];
+  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ { User: %@, Device: %@, Type: %ld }>", v3, userID, deviceID, [objc_opt_class() contentType]);
 
   return v6;
 }
 
-- (STCheckinContent)initWithCoder:(id)a3
+- (STCheckinContent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
 
   v7 = [(STCheckinContent *)self initWithUserID:v5 deviceID:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STCheckinContent *)self userID];
-  [v4 encodeObject:v5 forKey:@"userID"];
+  coderCopy = coder;
+  userID = [(STCheckinContent *)self userID];
+  [coderCopy encodeObject:userID forKey:@"userID"];
 
-  v6 = [(STCheckinContent *)self deviceID];
-  [v4 encodeObject:v6 forKey:@"deviceID"];
+  deviceID = [(STCheckinContent *)self deviceID];
+  [coderCopy encodeObject:deviceID forKey:@"deviceID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   userID = self->_userID;
   deviceID = self->_deviceID;
 
   return [v4 initWithUserID:userID deviceID:deviceID];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -82,7 +82,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STCheckinContent *)self isEqualToCheckinContent:v4];
+      v5 = [(STCheckinContent *)self isEqualToCheckinContent:equalCopy];
     }
 
     else
@@ -94,23 +94,23 @@
   return v5;
 }
 
-- (BOOL)isEqualToCheckinContent:(id)a3
+- (BOOL)isEqualToCheckinContent:(id)content
 {
-  v4 = a3;
-  if (v4 == self)
+  contentCopy = content;
+  if (contentCopy == self)
   {
     v9 = 1;
   }
 
   else
   {
-    v5 = [(STCheckinContent *)self userID];
-    v6 = [(STCheckinContent *)v4 userID];
-    if ([v5 isEqualToUserID:v6])
+    userID = [(STCheckinContent *)self userID];
+    userID2 = [(STCheckinContent *)contentCopy userID];
+    if ([userID isEqualToUserID:userID2])
     {
-      v7 = [(STCheckinContent *)self deviceID];
-      v8 = [(STCheckinContent *)v4 deviceID];
-      v9 = [v7 isEqualToDeviceID:v8];
+      deviceID = [(STCheckinContent *)self deviceID];
+      deviceID2 = [(STCheckinContent *)contentCopy deviceID];
+      v9 = [deviceID isEqualToDeviceID:deviceID2];
     }
 
     else
@@ -124,10 +124,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(STCheckinContent *)self userID];
-  v4 = [v3 hash];
-  v5 = [(STCheckinContent *)self deviceID];
-  v6 = [v5 hash];
+  userID = [(STCheckinContent *)self userID];
+  v4 = [userID hash];
+  deviceID = [(STCheckinContent *)self deviceID];
+  v6 = [deviceID hash];
 
   return v6 ^ v4;
 }

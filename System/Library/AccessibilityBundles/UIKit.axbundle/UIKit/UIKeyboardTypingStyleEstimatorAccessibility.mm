@@ -1,19 +1,19 @@
 @interface UIKeyboardTypingStyleEstimatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)beganContinuousPath;
 - (void)endedContinuousPath;
 @end
 
 @implementation UIKeyboardTypingStyleEstimatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIKeyboardTypingStyleEstimator";
   v4 = "v";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -23,22 +23,22 @@
 
 - (void)beganContinuousPath
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIKeyboardTypingStyleEstimatorAccessibility;
   [(UIKeyboardTypingStyleEstimatorAccessibility *)&v2 beganContinuousPath];
-  [(UIKeyboardTypingStyleEstimatorAccessibility *)v4 _accessibilitySetBoolValue:1 forKey:@"ContinuousPath"];
+  [(UIKeyboardTypingStyleEstimatorAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:@"ContinuousPath"];
 }
 
 - (void)endedContinuousPath
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIKeyboardTypingStyleEstimatorAccessibility;
   [(UIKeyboardTypingStyleEstimatorAccessibility *)&v2 endedContinuousPath];
-  [(UIKeyboardTypingStyleEstimatorAccessibility *)v4 _accessibilitySetBoolValue:0 forKey:@"ContinuousPath"];
+  [(UIKeyboardTypingStyleEstimatorAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"ContinuousPath"];
 }
 
 @end

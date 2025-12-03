@@ -1,8 +1,8 @@
 @interface PKPaymentBarcodeViewController
 - ($3CC2805F0189FCCE51047C0D2B5A52A9)_barcodePadding;
 - (CGSize)_barcodeSize;
-- (PKPaymentBarcodeViewController)initWithPass:(id)a3;
-- (void)_closeButtonPressed:(id)a3;
+- (PKPaymentBarcodeViewController)initWithPass:(id)pass;
+- (void)_closeButtonPressed:(id)pressed;
 - (void)invalidate;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -10,16 +10,16 @@
 
 @implementation PKPaymentBarcodeViewController
 
-- (PKPaymentBarcodeViewController)initWithPass:(id)a3
+- (PKPaymentBarcodeViewController)initWithPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v9.receiver = self;
   v9.super_class = PKPaymentBarcodeViewController;
   v6 = [(PKPaymentBarcodeViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
+    objc_storeStrong(&v6->_pass, pass);
   }
 
   return v7;
@@ -35,11 +35,11 @@
   *&self->_viewSizeInfo.barcodeTopPadding = *location;
   *&self->_viewSizeInfo.disclaimerSidePadding = v3;
   self->_viewSizeInfo.altTextInset = v39;
-  v4 = [(PKPaymentBarcodeViewController *)self view];
+  view = [(PKPaymentBarcodeViewController *)self view];
   v5 = MEMORY[0x1E69DC740];
   v6 = [MEMORY[0x1E69DCAB8] imageNamed:@"xmark.circle.fill"];
-  v7 = [MEMORY[0x1E69DC888] labelColor];
-  v8 = [v5 pkui_plainConfigurationWithImage:v6 imageConfiguration:0 foregroundColor:v7];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v8 = [v5 pkui_plainConfigurationWithImage:v6 imageConfiguration:0 foregroundColor:labelColor];
 
   objc_initWeak(location, self);
   v9 = MEMORY[0x1E69DC628];
@@ -53,9 +53,9 @@
   closeButton = self->_closeButton;
   self->_closeButton = v11;
 
-  [v4 addSubview:self->_closeButton];
-  v13 = [MEMORY[0x1E69DC888] whiteColor];
-  [v4 setBackgroundColor:v13];
+  [view addSubview:self->_closeButton];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [view setBackgroundColor:whiteColor];
 
   [(PKPaymentBarcodeViewController *)self setOverrideUserInterfaceStyle:1];
   v14 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -66,7 +66,7 @@
   v17 = PKLocalizedAquamanString(&cfstr_AquamanFraudWa.isa);
   [(UILabel *)v16 setText:v17];
 
-  [v4 addSubview:self->_disclaimerText];
+  [view addSubview:self->_disclaimerText];
   [(UILabel *)self->_disclaimerText setNumberOfLines:0];
   [(UILabel *)self->_disclaimerText setTextAlignment:1];
   v18 = self->_disclaimerText;
@@ -74,8 +74,8 @@
   [(UILabel *)v18 setFont:v19];
 
   v20 = self->_disclaimerText;
-  v21 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UILabel *)v20 setTextColor:v21];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UILabel *)v20 setTextColor:systemGrayColor];
 
   v22 = objc_alloc_init(MEMORY[0x1E69B86B0]);
   [v22 setFormat:4];
@@ -106,16 +106,16 @@
     [(UIView *)self->_barcodeView pkui_setExcludedFromScreenCapture:1 andBroadcasting:1];
   }
 
-  v30 = [(PKPaymentPass *)self->_pass compactBankLogoDarkImage];
+  compactBankLogoDarkImage = [(PKPaymentPass *)self->_pass compactBankLogoDarkImage];
   v31 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  v32 = [MEMORY[0x1E69DCAB8] imageWithPKImage:v30];
+  v32 = [MEMORY[0x1E69DCAB8] imageWithPKImage:compactBankLogoDarkImage];
   v33 = [v31 initWithImage:v32];
   compactBankLogoView = self->_compactBankLogoView;
   self->_compactBankLogoView = v33;
 
   [(UIImageView *)self->_compactBankLogoView setContentMode:1];
-  [v4 addSubview:self->_compactBankLogoView];
-  [v4 addSubview:self->_barcodeView];
+  [view addSubview:self->_compactBankLogoView];
+  [view addSubview:self->_barcodeView];
 
   objc_destroyWeak(&v36);
   objc_destroyWeak(location);
@@ -135,8 +135,8 @@ void __45__PKPaymentBarcodeViewController_viewDidLoad__block_invoke(uint64_t a1,
   v27.receiver = self;
   v27.super_class = PKPaymentBarcodeViewController;
   [(PKPaymentBarcodeViewController *)&v27 viewWillLayoutSubviews];
-  v3 = [(PKPaymentBarcodeViewController *)self view];
-  [v3 bounds];
+  view = [(PKPaymentBarcodeViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -186,8 +186,8 @@ void __45__PKPaymentBarcodeViewController_viewDidLoad__block_invoke(uint64_t a1,
   barcodeView = self->_barcodeView;
   if (barcodeView)
   {
-    v22 = [(PKRightAngleRotatingView *)barcodeView rotatedView];
-    [v22 sizeThatFits:{v13, 1.79769313e308}];
+    rotatedView = [(PKRightAngleRotatingView *)barcodeView rotatedView];
+    [rotatedView sizeThatFits:{v13, 1.79769313e308}];
     v24 = v23;
 
     CGRectDivide(v25, &slice, &v25, v13, CGRectMinYEdge);
@@ -219,10 +219,10 @@ void __44__PKPaymentBarcodeViewController_invalidate__block_invoke_2(uint64_t a1
   *(v2 + 992) = 0;
 }
 
-- (void)_closeButtonPressed:(id)a3
+- (void)_closeButtonPressed:(id)pressed
 {
-  v3 = [(PKPaymentBarcodeViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKPaymentBarcodeViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - ($3CC2805F0189FCCE51047C0D2B5A52A9)_barcodePadding

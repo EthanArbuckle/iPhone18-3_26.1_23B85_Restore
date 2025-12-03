@@ -1,6 +1,6 @@
 @interface MTROTASoftwareUpdateRequestorClusterStateTransitionEvent
 - (MTROTASoftwareUpdateRequestorClusterStateTransitionEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent);
-  v5 = [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)self previousState];
-  [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)v4 setPreviousState:v5];
+  previousState = [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)self previousState];
+  [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)v4 setPreviousState:previousState];
 
-  v6 = [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)self getNewState];
-  [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)v4 setNewState:v6];
+  getNewState = [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)self getNewState];
+  [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)v4 setNewState:getNewState];
 
-  v7 = [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)self reason];
-  [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)v4 setReason:v7];
+  reason = [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)self reason];
+  [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)v4 setReason:reason];
 
-  v8 = [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)self targetSoftwareVersion];
-  [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)v4 setTargetSoftwareVersion:v8];
+  targetSoftwareVersion = [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)self targetSoftwareVersion];
+  [(MTROTASoftwareUpdateRequestorClusterStateTransitionEvent *)v4 setTargetSoftwareVersion:targetSoftwareVersion];
 
   return v4;
 }

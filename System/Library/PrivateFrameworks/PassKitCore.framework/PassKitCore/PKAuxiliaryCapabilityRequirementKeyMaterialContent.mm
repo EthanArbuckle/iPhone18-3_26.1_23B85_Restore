@@ -1,11 +1,11 @@
 @interface PKAuxiliaryCapabilityRequirementKeyMaterialContent
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAuxiliaryCapabilityRequirementKey:(id)a3;
-- (PKAuxiliaryCapabilityRequirementKeyMaterialContent)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAuxiliaryCapabilityRequirementKey:(id)key;
+- (PKAuxiliaryCapabilityRequirementKeyMaterialContent)initWithCoder:(id)coder;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAuxiliaryCapabilityRequirementKeyMaterialContent
@@ -92,33 +92,33 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAuxiliaryCapabilityRequirementKeyMaterialContent *)self isEqualToAuxiliaryCapabilityRequirementKey:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAuxiliaryCapabilityRequirementKeyMaterialContent *)self isEqualToAuxiliaryCapabilityRequirementKey:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAuxiliaryCapabilityRequirementKey:(id)a3
+- (BOOL)isEqualToAuxiliaryCapabilityRequirementKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     goto LABEL_52;
   }
 
   publicKey = self->_publicKey;
-  v6 = v4[1];
+  v6 = keyCopy[1];
   if (publicKey)
   {
     v7 = v6 == 0;
@@ -143,7 +143,7 @@
   }
 
   publicKeyIdentifier = self->_publicKeyIdentifier;
-  v9 = v4[2];
+  v9 = keyCopy[2];
   if (publicKeyIdentifier && v9)
   {
     if (([(NSString *)publicKeyIdentifier isEqual:?]& 1) == 0)
@@ -158,7 +158,7 @@
   }
 
   attestation = self->_attestation;
-  v11 = v4[3];
+  v11 = keyCopy[3];
   if (attestation && v11)
   {
     if (([(NSArray *)attestation isEqual:?]& 1) == 0)
@@ -173,7 +173,7 @@
   }
 
   secondaryAttestation = self->_secondaryAttestation;
-  v13 = v4[4];
+  v13 = keyCopy[4];
   if (secondaryAttestation && v13)
   {
     if (([(NSArray *)secondaryAttestation isEqual:?]& 1) == 0)
@@ -188,7 +188,7 @@
   }
 
   authorization = self->_authorization;
-  v15 = v4[5];
+  v15 = keyCopy[5];
   if (authorization && v15)
   {
     if (([(NSData *)authorization isEqual:?]& 1) == 0)
@@ -203,7 +203,7 @@
   }
 
   signature = self->_signature;
-  v17 = v4[6];
+  v17 = keyCopy[6];
   if (signature && v17)
   {
     if (([(NSData *)signature isEqual:?]& 1) == 0)
@@ -218,7 +218,7 @@
   }
 
   certificateChain = self->_certificateChain;
-  v19 = v4[7];
+  v19 = keyCopy[7];
   if (certificateChain && v19)
   {
     if (([(NSArray *)certificateChain isEqual:?]& 1) == 0)
@@ -233,7 +233,7 @@
   }
 
   keyReferenceIdentifier = self->_keyReferenceIdentifier;
-  v21 = v4[8];
+  v21 = keyCopy[8];
   if (keyReferenceIdentifier && v21)
   {
     if (([(NSString *)keyReferenceIdentifier isEqual:?]& 1) == 0)
@@ -248,7 +248,7 @@
   }
 
   applicationIdentifier = self->_applicationIdentifier;
-  v23 = v4[9];
+  v23 = keyCopy[9];
   if (!applicationIdentifier || !v23)
   {
     if (applicationIdentifier == v23)
@@ -268,7 +268,7 @@ LABEL_52:
 
 LABEL_48:
   securityAccessControl = self->_securityAccessControl;
-  v25 = v4[10];
+  v25 = keyCopy[10];
   if (securityAccessControl && v25)
   {
     v26 = [(NSData *)securityAccessControl isEqual:?];
@@ -311,9 +311,9 @@ LABEL_53:
   v11 = [(NSString *)self->_keyReferenceIdentifier copy];
   [v3 setObject:v11 forKeyedSubscript:@"keyReferenceIdentifier"];
 
-  v12 = [(NSData *)self->_applicationIdentifier hexEncoding];
-  v13 = [v12 uppercaseString];
-  [v3 setObject:v13 forKeyedSubscript:@"applicationIdentifier"];
+  hexEncoding = [(NSData *)self->_applicationIdentifier hexEncoding];
+  uppercaseString = [hexEncoding uppercaseString];
+  [v3 setObject:uppercaseString forKeyedSubscript:@"applicationIdentifier"];
 
   v14 = [(NSData *)self->_securityAccessControl base64EncodedStringWithOptions:0];
   [v3 setObject:v14 forKeyedSubscript:@"securityAccessControl"];
@@ -323,36 +323,36 @@ LABEL_53:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   publicKey = self->_publicKey;
-  v5 = a3;
-  [v5 encodeObject:publicKey forKey:@"publicKey"];
-  [v5 encodeObject:self->_publicKeyIdentifier forKey:@"publicKeyIdentifier"];
-  [v5 encodeObject:self->_attestation forKey:@"attestation"];
-  [v5 encodeObject:self->_secondaryAttestation forKey:@"secondaryAttestation"];
-  [v5 encodeObject:self->_authorization forKey:@"authorization"];
-  [v5 encodeObject:self->_signature forKey:@"signature"];
-  [v5 encodeObject:self->_certificateChain forKey:@"certificateChain"];
-  [v5 encodeObject:self->_keyReferenceIdentifier forKey:@"keyReferenceIdentifier"];
-  [v5 encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
-  [v5 encodeObject:self->_securityAccessControl forKey:@"securityAccessControl"];
+  coderCopy = coder;
+  [coderCopy encodeObject:publicKey forKey:@"publicKey"];
+  [coderCopy encodeObject:self->_publicKeyIdentifier forKey:@"publicKeyIdentifier"];
+  [coderCopy encodeObject:self->_attestation forKey:@"attestation"];
+  [coderCopy encodeObject:self->_secondaryAttestation forKey:@"secondaryAttestation"];
+  [coderCopy encodeObject:self->_authorization forKey:@"authorization"];
+  [coderCopy encodeObject:self->_signature forKey:@"signature"];
+  [coderCopy encodeObject:self->_certificateChain forKey:@"certificateChain"];
+  [coderCopy encodeObject:self->_keyReferenceIdentifier forKey:@"keyReferenceIdentifier"];
+  [coderCopy encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
+  [coderCopy encodeObject:self->_securityAccessControl forKey:@"securityAccessControl"];
 }
 
-- (PKAuxiliaryCapabilityRequirementKeyMaterialContent)initWithCoder:(id)a3
+- (PKAuxiliaryCapabilityRequirementKeyMaterialContent)initWithCoder:(id)coder
 {
   v39[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = PKAuxiliaryCapabilityRequirementKeyMaterialContent;
   v5 = [(PKAuxiliaryCapabilityRequirementKeyMaterialContent *)&v36 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKey"];
     publicKey = v5->_publicKey;
     v5->_publicKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyIdentifier"];
     publicKeyIdentifier = v5->_publicKeyIdentifier;
     v5->_publicKeyIdentifier = v8;
 
@@ -361,7 +361,7 @@ LABEL_53:
     v39[1] = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"attestation"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"attestation"];
     attestation = v5->_attestation;
     v5->_attestation = v13;
 
@@ -370,15 +370,15 @@ LABEL_53:
     v38[1] = objc_opt_class();
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
     v17 = [v15 setWithArray:v16];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"secondaryAttestation"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"secondaryAttestation"];
     secondaryAttestation = v5->_secondaryAttestation;
     v5->_secondaryAttestation = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorization"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorization"];
     authorization = v5->_authorization;
     v5->_authorization = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     signature = v5->_signature;
     v5->_signature = v22;
 
@@ -387,19 +387,19 @@ LABEL_53:
     v37[1] = objc_opt_class();
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
     v26 = [v24 setWithArray:v25];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"certificateChain"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"certificateChain"];
     certificateChain = v5->_certificateChain;
     v5->_certificateChain = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyReferenceIdentifier"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyReferenceIdentifier"];
     keyReferenceIdentifier = v5->_keyReferenceIdentifier;
     v5->_keyReferenceIdentifier = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"securityAccessControl"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"securityAccessControl"];
     securityAccessControl = v5->_securityAccessControl;
     v5->_securityAccessControl = v33;
   }

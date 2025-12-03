@@ -1,20 +1,20 @@
 @interface PLQuestion
-+ (id)insertIntoPhotoLibrary:(id)a3 withUUID:(id)a4;
++ (id)insertIntoPhotoLibrary:(id)library withUUID:(id)d;
 - (void)delete;
 @end
 
 @implementation PLQuestion
 
-+ (id)insertIntoPhotoLibrary:(id)a3 withUUID:(id)a4
++ (id)insertIntoPhotoLibrary:(id)library withUUID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 managedObjectContext];
-  v8 = [a1 entityName];
-  v9 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v8, v7, 0);
+  dCopy = d;
+  managedObjectContext = [library managedObjectContext];
+  entityName = [self entityName];
+  v9 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, managedObjectContext, 0);
 
   if (v9)
   {
-    [v9 setUuid:v6];
+    [v9 setUuid:dCopy];
   }
 
   return v9;
@@ -22,8 +22,8 @@
 
 - (void)delete
 {
-  v3 = [(PLQuestion *)self managedObjectContext];
-  [v3 deleteObject:self];
+  managedObjectContext = [(PLQuestion *)self managedObjectContext];
+  [managedObjectContext deleteObject:self];
 }
 
 @end

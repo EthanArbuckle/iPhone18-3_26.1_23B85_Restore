@@ -1,22 +1,22 @@
 @interface RPFileTransferResumeState
-- (BOOL)addActiveFile:(id)a3;
-- (BOOL)addFinishedFile:(id)a3;
+- (BOOL)addActiveFile:(id)file;
+- (BOOL)addFinishedFile:(id)file;
 - (BOOL)flushStateFile;
 - (BOOL)isEmpty;
 - (BOOL)loadStateFile;
-- (BOOL)removeActiveFile:(id)a3;
+- (BOOL)removeActiveFile:(id)file;
 - (BOOL)removeAllActiveAndFinishedFileItems;
-- (BOOL)removeFinishedFile:(id)a3;
+- (BOOL)removeFinishedFile:(id)file;
 - (BOOL)removeStateFile;
 - (BOOL)removeUnusableOutputFileItems;
 - (BOOL)removeUnusableSourceFileItems;
 - (BOOL)scheduleStateFileFlush;
 - (RPFileTransferResumeState)init;
-- (RPFileTransferResumeState)initWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (RPFileTransferResumeState)initWithDispatchQueue:(id)a3;
-- (id)activeFileWithFileName:(id)a3;
+- (RPFileTransferResumeState)initWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (RPFileTransferResumeState)initWithDispatchQueue:(id)queue;
+- (id)activeFileWithFileName:(id)name;
 - (id)activeFiles;
-- (id)finishedFileWithFileName:(id)a3;
+- (id)finishedFileWithFileName:(id)name;
 - (id)finishedFiles;
 - (void)dealloc;
 - (void)invalidate;
@@ -53,23 +53,23 @@
   return v3;
 }
 
-- (RPFileTransferResumeState)initWithDispatchQueue:(id)a3
+- (RPFileTransferResumeState)initWithDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [(RPFileTransferResumeState *)self init];
   v6 = v5;
   if (v5)
   {
-    [(RPFileTransferResumeState *)v5 setDispatchQueue:v4];
+    [(RPFileTransferResumeState *)v5 setDispatchQueue:queueCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (RPFileTransferResumeState)initWithDictionaryRepresentation:(id)a3 error:(id *)a4
+- (RPFileTransferResumeState)initWithDictionaryRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
+  representationCopy = representation;
   v18.receiver = self;
   v18.super_class = RPFileTransferResumeState;
   v7 = [(RPFileTransferResumeState *)&v18 init];
@@ -82,14 +82,14 @@
 
   [(RPFileTransferResumeState *)v7 setIsPlaceholder:0];
   [(RPFileTransferResumeState *)v8 setDispatchQueue:0];
-  v9 = [v6 objectForKey:@"version"];
-  v10 = [v6 objectForKey:@"fileInfo"];
+  v9 = [representationCopy objectForKey:@"version"];
+  v10 = [representationCopy objectForKey:@"fileInfo"];
   v11 = [v10 objectForKey:@"activeFiles"];
   v12 = [v10 objectForKey:@"finishedFiles"];
   v13 = v12;
   if (!v9)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -99,7 +99,7 @@
 
   if (!v10)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -109,7 +109,7 @@
 
   if (!v11)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -119,11 +119,11 @@
 
   if (!v12)
   {
-    if (a4)
+    if (error)
     {
 LABEL_17:
       RPErrorF();
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_7;
     }
 
@@ -132,7 +132,7 @@ LABEL_18:
     goto LABEL_7;
   }
 
-  v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v6];
+  v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:representationCopy];
   stateInfo = v8->_stateInfo;
   v8->_stateInfo = v14;
 
@@ -158,12 +158,12 @@ LABEL_9:
     [(RPFileTransferResumeState *)self flushStateFile];
   }
 
-  v3 = [(RPFileTransferResumeState *)self flushTimer];
+  flushTimer = [(RPFileTransferResumeState *)self flushTimer];
 
-  if (v3)
+  if (flushTimer)
   {
-    v4 = [(RPFileTransferResumeState *)self flushTimer];
-    dispatch_source_cancel(v4);
+    flushTimer2 = [(RPFileTransferResumeState *)self flushTimer];
+    dispatch_source_cancel(flushTimer2);
 
     [(RPFileTransferResumeState *)self setFlushTimer:0];
   }
@@ -175,9 +175,9 @@ LABEL_9:
 
 - (BOOL)isEmpty
 {
-  v3 = [(RPFileTransferResumeState *)self activeFiles];
-  v4 = [(RPFileTransferResumeState *)self finishedFiles];
-  v5 = ![v3 count] && !objc_msgSend(v4, "count");
+  activeFiles = [(RPFileTransferResumeState *)self activeFiles];
+  finishedFiles = [(RPFileTransferResumeState *)self finishedFiles];
+  v5 = ![activeFiles count] && !objc_msgSend(finishedFiles, "count");
 
   return v5;
 }
@@ -198,11 +198,11 @@ LABEL_9:
   return v3;
 }
 
-- (id)activeFileWithFileName:(id)a3
+- (id)activeFileWithFileName:(id)name
 {
-  v4 = a3;
-  v5 = [(RPFileTransferResumeState *)self activeFiles];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  activeFiles = [(RPFileTransferResumeState *)self activeFiles];
+  v6 = [activeFiles objectForKey:nameCopy];
 
   if (v6)
   {
@@ -217,42 +217,42 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)addActiveFile:(id)a3
+- (BOOL)addActiveFile:(id)file
 {
-  v4 = a3;
-  v5 = [(RPFileTransferResumeState *)self activeFiles];
-  v6 = [v4 fileName];
-  v7 = [v5 objectForKey:v6];
-  v8 = [v4 fileInfo];
+  fileCopy = file;
+  activeFiles = [(RPFileTransferResumeState *)self activeFiles];
+  fileName = [fileCopy fileName];
+  v7 = [activeFiles objectForKey:fileName];
+  fileInfo = [fileCopy fileInfo];
 
-  if (v6 && v8)
+  if (fileName && fileInfo)
   {
-    [v5 setValue:v8 forKey:v6];
+    [activeFiles setValue:fileInfo forKey:fileName];
   }
 
   return v7 == 0;
 }
 
-- (BOOL)removeActiveFile:(id)a3
+- (BOOL)removeActiveFile:(id)file
 {
-  v4 = a3;
-  v5 = [(RPFileTransferResumeState *)self activeFiles];
-  v6 = [v4 fileName];
+  fileCopy = file;
+  activeFiles = [(RPFileTransferResumeState *)self activeFiles];
+  fileName = [fileCopy fileName];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [activeFiles objectForKey:fileName];
   if (v7)
   {
-    [v5 setValue:0 forKey:v6];
+    [activeFiles setValue:0 forKey:fileName];
   }
 
   return v7 != 0;
 }
 
-- (id)finishedFileWithFileName:(id)a3
+- (id)finishedFileWithFileName:(id)name
 {
-  v4 = a3;
-  v5 = [(RPFileTransferResumeState *)self finishedFiles];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  finishedFiles = [(RPFileTransferResumeState *)self finishedFiles];
+  v6 = [finishedFiles objectForKey:nameCopy];
 
   if (v6)
   {
@@ -267,31 +267,31 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)addFinishedFile:(id)a3
+- (BOOL)addFinishedFile:(id)file
 {
-  v4 = a3;
-  v5 = [(RPFileTransferResumeState *)self finishedFiles];
-  v6 = [v4 fileName];
-  v7 = [v5 objectForKey:v6];
-  v8 = [v4 fileInfo];
+  fileCopy = file;
+  finishedFiles = [(RPFileTransferResumeState *)self finishedFiles];
+  fileName = [fileCopy fileName];
+  v7 = [finishedFiles objectForKey:fileName];
+  fileInfo = [fileCopy fileInfo];
 
-  [v8 setValue:0 forKey:@"fileOffset"];
-  [v8 setValue:0 forKey:@"bytesWritten"];
-  [v5 setValue:v8 forKey:v6];
+  [fileInfo setValue:0 forKey:@"fileOffset"];
+  [fileInfo setValue:0 forKey:@"bytesWritten"];
+  [finishedFiles setValue:fileInfo forKey:fileName];
 
   return v7 == 0;
 }
 
-- (BOOL)removeFinishedFile:(id)a3
+- (BOOL)removeFinishedFile:(id)file
 {
-  v4 = a3;
-  v5 = [(RPFileTransferResumeState *)self finishedFiles];
-  v6 = [v4 fileName];
+  fileCopy = file;
+  finishedFiles = [(RPFileTransferResumeState *)self finishedFiles];
+  fileName = [fileCopy fileName];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [finishedFiles objectForKey:fileName];
   if (v7)
   {
-    [v5 setValue:0 forKey:v6];
+    [finishedFiles setValue:0 forKey:fileName];
   }
 
   return v7 != 0;
@@ -299,34 +299,34 @@ LABEL_9:
 
 - (BOOL)scheduleStateFileFlush
 {
-  v3 = [(RPFileTransferResumeState *)self needsFlushing];
+  needsFlushing = [(RPFileTransferResumeState *)self needsFlushing];
   [(RPFileTransferResumeState *)self setNeedsFlushing:1];
-  v4 = [(RPFileTransferResumeState *)self flushTimer];
+  flushTimer = [(RPFileTransferResumeState *)self flushTimer];
 
-  if (!v4)
+  if (!flushTimer)
   {
-    v5 = [(RPFileTransferResumeState *)self dispatchQueue];
-    v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v5);
+    dispatchQueue = [(RPFileTransferResumeState *)self dispatchQueue];
+    v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, dispatchQueue);
     [(RPFileTransferResumeState *)self setFlushTimer:v6];
 
-    v7 = [(RPFileTransferResumeState *)self flushTimer];
+    flushTimer2 = [(RPFileTransferResumeState *)self flushTimer];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __51__RPFileTransferResumeState_scheduleStateFileFlush__block_invoke;
     handler[3] = &unk_1E7C92CE8;
     handler[4] = self;
-    dispatch_source_set_event_handler(v7, handler);
+    dispatch_source_set_event_handler(flushTimer2, handler);
 
-    v8 = [(RPFileTransferResumeState *)self flushTimer];
+    flushTimer3 = [(RPFileTransferResumeState *)self flushTimer];
     [(RPFileTransferResumeState *)self flushInterval];
     [(RPFileTransferResumeState *)self flushInterval];
     CUDispatchTimerSet();
 
-    v9 = [(RPFileTransferResumeState *)self flushTimer];
-    dispatch_activate(v9);
+    flushTimer4 = [(RPFileTransferResumeState *)self flushTimer];
+    dispatch_activate(flushTimer4);
   }
 
-  return !v3;
+  return !needsFlushing;
 }
 
 uint64_t __51__RPFileTransferResumeState_scheduleStateFileFlush__block_invoke(uint64_t a1)
@@ -352,29 +352,29 @@ uint64_t __51__RPFileTransferResumeState_scheduleStateFileFlush__block_invoke(ui
 
 - (BOOL)flushStateFile
 {
-  v3 = [(RPFileTransferResumeState *)self needsFlushing];
-  if (v3)
+  needsFlushing = [(RPFileTransferResumeState *)self needsFlushing];
+  if (needsFlushing)
   {
-    v4 = [(RPFileTransferResumeState *)self dictionaryRepresentation];
-    v5 = [(RPFileTransferResumeState *)self stateFilePath];
-    v6 = [v4 writeToFile:v5 atomically:1];
+    dictionaryRepresentation = [(RPFileTransferResumeState *)self dictionaryRepresentation];
+    stateFilePath = [(RPFileTransferResumeState *)self stateFilePath];
+    v6 = [dictionaryRepresentation writeToFile:stateFilePath atomically:1];
 
     [(RPFileTransferResumeState *)self setNeedsFlushing:0];
-    LOBYTE(v3) = v6;
+    LOBYTE(needsFlushing) = v6;
   }
 
-  return v3;
+  return needsFlushing;
 }
 
 - (BOOL)loadStateFile
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [(RPFileTransferResumeState *)self stateFilePath];
-  v5 = [v3 fileURLWithPath:v4];
+  stateFilePath = [(RPFileTransferResumeState *)self stateFilePath];
+  v5 = [v3 fileURLWithPath:stateFilePath];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v5 path];
+  v8 = [defaultManager fileExistsAtPath:path];
 
   if (v8)
   {
@@ -413,28 +413,28 @@ uint64_t __51__RPFileTransferResumeState_scheduleStateFileFlush__block_invoke(ui
 - (BOOL)removeStateFile
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [(RPFileTransferResumeState *)self stateFilePath];
-  v5 = [v3 fileURLWithPath:v4];
+  stateFilePath = [(RPFileTransferResumeState *)self stateFilePath];
+  v5 = [v3 fileURLWithPath:stateFilePath];
 
-  v6 = [(RPFileTransferResumeState *)self flushTimer];
+  flushTimer = [(RPFileTransferResumeState *)self flushTimer];
 
-  if (v6)
+  if (flushTimer)
   {
-    v7 = [(RPFileTransferResumeState *)self flushTimer];
-    dispatch_source_cancel(v7);
+    flushTimer2 = [(RPFileTransferResumeState *)self flushTimer];
+    dispatch_source_cancel(flushTimer2);
 
     [(RPFileTransferResumeState *)self setFlushTimer:0];
   }
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v5 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v5 path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
   if (v10)
   {
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v15 = 0;
-    v12 = [v11 removeItemAtURL:v5 error:&v15];
+    v12 = [defaultManager2 removeItemAtURL:v5 error:&v15];
     v13 = v15;
 
     if ((v12 & 1) == 0 && *[(RPFileTransferResumeState *)self ucat]<= 30)
@@ -457,8 +457,8 @@ uint64_t __51__RPFileTransferResumeState_scheduleStateFileFlush__block_invoke(ui
 - (BOOL)removeUnusableSourceFileItems
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(RPFileTransferResumeState *)self activeFiles];
-  v3 = [v2 copy];
+  activeFiles = [(RPFileTransferResumeState *)self activeFiles];
+  v3 = [activeFiles copy];
 
   v19 = 0u;
   v20 = 0u;
@@ -482,10 +482,10 @@ uint64_t __51__RPFileTransferResumeState_scheduleStateFileFlush__block_invoke(ui
 
         v10 = [v4 objectForKey:*(*(&v17 + 1) + 8 * i)];
         v11 = [[RPFileTransferResumeStateItem alloc] initWithStateDict:v10];
-        v12 = [(RPFileTransferResumeStateItem *)v11 itemURL];
-        v13 = [v12 path];
+        itemURL = [(RPFileTransferResumeStateItem *)v11 itemURL];
+        path = [itemURL path];
 
-        if (v13 && ![(RPFileTransferResumeStateItem *)v11 sourceFileItemUsable:v13])
+        if (path && ![(RPFileTransferResumeStateItem *)v11 sourceFileItemUsable:path])
         {
           [(RPFileTransferResumeState *)self removeActiveFile:v11];
           v7 = 1;
@@ -510,8 +510,8 @@ uint64_t __51__RPFileTransferResumeState_scheduleStateFileFlush__block_invoke(ui
 - (BOOL)removeUnusableOutputFileItems
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(RPFileTransferResumeState *)self activeFiles];
-  v4 = [v3 copy];
+  activeFiles = [(RPFileTransferResumeState *)self activeFiles];
+  v4 = [activeFiles copy];
 
   v19 = 0u;
   v20 = 0u;
@@ -535,8 +535,8 @@ uint64_t __51__RPFileTransferResumeState_scheduleStateFileFlush__block_invoke(ui
 
         v10 = [v5 objectForKey:*(*(&v17 + 1) + 8 * i)];
         v11 = [[RPFileTransferResumeStateItem alloc] initWithStateDict:v10];
-        v12 = [(RPFileTransferResumeState *)self outputPath];
-        v13 = [(RPFileTransferResumeStateItem *)v11 outputFileItemUsable:v12];
+        outputPath = [(RPFileTransferResumeState *)self outputPath];
+        v13 = [(RPFileTransferResumeStateItem *)v11 outputFileItemUsable:outputPath];
 
         if (!v13)
         {
@@ -583,15 +583,15 @@ uint64_t __51__RPFileTransferResumeState_scheduleStateFileFlush__block_invoke(ui
 
 - (void)loadStateFile
 {
-  [a1 ucat];
-  v3 = [a2 path];
+  [self ucat];
+  path = [a2 path];
   LogPrintF();
 }
 
 - (void)removeStateFile
 {
-  [a1 ucat];
-  v3 = [a2 path];
+  [self ucat];
+  path = [a2 path];
   LogPrintF();
 }
 

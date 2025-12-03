@@ -1,16 +1,16 @@
 @interface _MLCCPUCompare
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
-- (_MLCCPUCompare)initWithDevice:(id)a3 operation:(int)a4;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (_MLCCPUCompare)initWithDevice:(id)device operation:(int)operation;
 @end
 
 @implementation _MLCCPUCompare
 
-- (_MLCCPUCompare)initWithDevice:(id)a3 operation:(int)a4
+- (_MLCCPUCompare)initWithDevice:(id)device operation:(int)operation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  deviceCopy = device;
   v7 = [MEMORY[0x277CBEBF8] mutableCopy];
-  if (a4 >= 0xC)
+  if (operation >= 0xC)
   {
     v9 = +[MLCLog framework];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -23,7 +23,7 @@
 
   else
   {
-    v8 = dword_238D45E5C[a4];
+    v8 = dword_238D45E5C[operation];
   }
 
   memset(v24, 0, 512);
@@ -42,7 +42,7 @@
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
   v16 = [MLCCPUDeviceOps deviceOpsWithType:42 params:v10 inDeltaData:v14 outDeltaData:v15 weightsDeltaData:0 biasDeltaData:0 weightsMomentumData:0 biasMomentumData:0];
 
-  [v16 setBinaryOperation:a4 != 8];
+  [v16 setBinaryOperation:operation != 8];
   if (v16)
   {
     [v7 addObject:v16];
@@ -51,64 +51,64 @@
   v17 = [v7 copy];
   v22.receiver = self;
   v22.super_class = _MLCCPUCompare;
-  v18 = [(_MLCCPULayer *)&v22 initWithDevice:v6 deviceOps:v17];
+  v18 = [(_MLCCPULayer *)&v22 initWithDevice:deviceCopy deviceOps:v17];
 
   v19 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v8 = a5;
-  v38 = a6;
-  v37 = [a4 objectAtIndexedSubscript:0];
-  v9 = [v37 params];
-  v10 = [v9 bytes];
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v37 = [ops objectAtIndexedSubscript:0];
+  params = [v37 params];
+  bytes = [params bytes];
 
-  v11 = [v8 objectAtIndexedSubscript:0];
-  v12 = [v11 descriptor];
-  v13 = [v12 shape];
-  v14 = [v8 objectAtIndexedSubscript:0];
-  v15 = [v14 descriptor];
-  v16 = [v15 stride];
-  v17 = [v8 objectAtIndexedSubscript:0];
-  v18 = [v17 descriptor];
-  v36 = v10;
-  MajorDescriptor = CPU_BuildBNNSNDArrayLastMajorDescriptor(v10 + 8, v13, v16, 0, [v18 dataType]);
+  v11 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor = [v11 descriptor];
+  shape = [descriptor shape];
+  v14 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor2 = [v14 descriptor];
+  stride = [descriptor2 stride];
+  v17 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor3 = [v17 descriptor];
+  v36 = bytes;
+  MajorDescriptor = CPU_BuildBNNSNDArrayLastMajorDescriptor(bytes + 8, shape, stride, 0, [descriptor3 dataType]);
 
   if (!MajorDescriptor)
   {
     goto LABEL_6;
   }
 
-  if ([v8 count] == 2)
+  if ([tensorsCopy count] == 2)
   {
-    v20 = [v8 objectAtIndexedSubscript:1];
-    v21 = [v20 descriptor];
-    v22 = [v21 shape];
-    v23 = [v8 objectAtIndexedSubscript:1];
-    v24 = [v23 descriptor];
-    v25 = [v24 stride];
-    v26 = [v8 objectAtIndexedSubscript:1];
-    v27 = [v26 descriptor];
-    v28 = CPU_BuildBNNSNDArrayLastMajorDescriptor(v36 + 184, v22, v25, 0, [v27 dataType]);
+    v20 = [tensorsCopy objectAtIndexedSubscript:1];
+    descriptor4 = [v20 descriptor];
+    shape2 = [descriptor4 shape];
+    v23 = [tensorsCopy objectAtIndexedSubscript:1];
+    descriptor5 = [v23 descriptor];
+    stride2 = [descriptor5 stride];
+    v26 = [tensorsCopy objectAtIndexedSubscript:1];
+    descriptor6 = [v26 descriptor];
+    v28 = CPU_BuildBNNSNDArrayLastMajorDescriptor(v36 + 184, shape2, stride2, 0, [descriptor6 dataType]);
 
     if (!v28)
     {
       LOBYTE(MajorDescriptor) = 0;
 LABEL_6:
-      v29 = v38;
+      v29 = tensorCopy;
       goto LABEL_7;
     }
   }
 
-  v29 = v38;
-  v30 = [v38 descriptor];
-  v31 = [v30 shape];
-  v32 = [v38 descriptor];
-  v33 = [v32 stride];
-  v34 = [v38 descriptor];
-  LOBYTE(MajorDescriptor) = CPU_BuildBNNSNDArrayLastMajorDescriptor(v36 + 360, v31, v33, 0, [v34 dataType]);
+  v29 = tensorCopy;
+  descriptor7 = [tensorCopy descriptor];
+  shape3 = [descriptor7 shape];
+  descriptor8 = [tensorCopy descriptor];
+  stride3 = [descriptor8 stride];
+  descriptor9 = [tensorCopy descriptor];
+  LOBYTE(MajorDescriptor) = CPU_BuildBNNSNDArrayLastMajorDescriptor(v36 + 360, shape3, stride3, 0, [descriptor9 dataType]);
 
 LABEL_7:
   return MajorDescriptor;

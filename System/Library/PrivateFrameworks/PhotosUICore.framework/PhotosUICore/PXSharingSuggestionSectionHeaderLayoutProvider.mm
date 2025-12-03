@@ -1,39 +1,39 @@
 @interface PXSharingSuggestionSectionHeaderLayoutProvider
-- (BOOL)wantsHeaderForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4;
+- (BOOL)wantsHeaderForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path;
 - (NSDateIntervalFormatter)dateIntervalFormatter;
 - (NSMutableSet)successfullySharedAssetCollections;
-- (id)actionTextForActionType:(int64_t)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5;
-- (id)primaryTextForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4;
-- (id)secondaryTextForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4;
-- (int64_t)actionTypeForHeaderLayout:(id)a3;
-- (void)_handleShareAssetCollectionCompletion:(id)a3 success:(BOOL)a4 error:(id)a5;
-- (void)sectionHeader:(id)a3 didPressButtonForActionType:(int64_t)a4 sender:(id)a5;
+- (id)actionTextForActionType:(int64_t)type dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path;
+- (id)primaryTextForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path;
+- (id)secondaryTextForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)actionTypeForHeaderLayout:(id)layout;
+- (void)_handleShareAssetCollectionCompletion:(id)completion success:(BOOL)success error:(id)error;
+- (void)sectionHeader:(id)header didPressButtonForActionType:(int64_t)type sender:(id)sender;
 @end
 
 @implementation PXSharingSuggestionSectionHeaderLayoutProvider
 
-- (void)_handleShareAssetCollectionCompletion:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_handleShareAssetCollectionCompletion:(id)completion success:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  successCopy = success;
   v20 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  completionCopy = completion;
+  errorCopy = error;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    if (v6)
+    if (successCopy)
     {
 LABEL_3:
-      if (v9)
+      if (completionCopy)
       {
-        v11 = [(PXSharingSuggestionSectionHeaderLayoutProvider *)self successfullySharedAssetCollections];
-        [v11 addObject:v9];
+        successfullySharedAssetCollections = [(PXSharingSuggestionSectionHeaderLayoutProvider *)self successfullySharedAssetCollections];
+        [successfullySharedAssetCollections addObject:completionCopy];
       }
 
-      v12 = [(PXActionableSectionHeaderLayoutProvider *)self topHeaderInvalidationDelegate];
-      [v12 photosSectionHeaderLayoutInvalidateConfiguredLayouts:self];
+      topHeaderInvalidationDelegate = [(PXActionableSectionHeaderLayoutProvider *)self topHeaderInvalidationDelegate];
+      [topHeaderInvalidationDelegate photosSectionHeaderLayoutInvalidateConfiguredLayouts:self];
 
-      v13 = [(PXActionableSectionHeaderLayoutProvider *)self invalidationDelegate];
-      [v13 photosSectionHeaderLayoutInvalidateConfiguredLayouts:self];
+      invalidationDelegate = [(PXActionableSectionHeaderLayoutProvider *)self invalidationDelegate];
+      [invalidationDelegate photosSectionHeaderLayoutInvalidateConfiguredLayouts:self];
 
       goto LABEL_10;
     }
@@ -41,10 +41,10 @@ LABEL_3:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSharingSuggestionSectionHeaderLayoutProvider.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"NSThread.isMainThread"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharingSuggestionSectionHeaderLayoutProvider.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"NSThread.isMainThread"}];
 
-    if (v6)
+    if (successCopy)
     {
       goto LABEL_3;
     }
@@ -54,27 +54,27 @@ LABEL_3:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v17 = v9;
+    v17 = completionCopy;
     v18 = 2112;
-    v19 = v10;
+    v19 = errorCopy;
     _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_ERROR, "Failed to move items to shared library in section %@, error:%@", buf, 0x16u);
   }
 
 LABEL_10:
 }
 
-- (void)sectionHeader:(id)a3 didPressButtonForActionType:(int64_t)a4 sender:(id)a5
+- (void)sectionHeader:(id)header didPressButtonForActionType:(int64_t)type sender:(id)sender
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 4)
+  headerCopy = header;
+  senderCopy = sender;
+  if (type == 4)
   {
-    v10 = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
-    v11 = [v10 currentDataSource];
-    if (v8)
+    viewModel = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
+    currentDataSource = [viewModel currentDataSource];
+    if (headerCopy)
     {
-      [v8 sectionIndexPath];
+      [headerCopy sectionIndexPath];
     }
 
     else
@@ -83,24 +83,24 @@ LABEL_10:
       v28 = 0u;
     }
 
-    v12 = [v11 assetCollectionAtSectionIndexPath:&buf];
+    v12 = [currentDataSource assetCollectionAtSectionIndexPath:&buf];
 
-    v13 = [v10 selectionManager];
+    selectionManager = [viewModel selectionManager];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __99__PXSharingSuggestionSectionHeaderLayoutProvider_sectionHeader_didPressButtonForActionType_sender___block_invoke;
     v25[3] = &unk_1E7744008;
-    v26 = v8;
-    [v13 performChanges:v25];
-    v14 = [v10 assetActionManager];
-    v15 = [v14 actionPerformerForActionType:*off_1E7721B18];
+    v26 = headerCopy;
+    [selectionManager performChanges:v25];
+    assetActionManager = [viewModel assetActionManager];
+    v15 = [assetActionManager actionPerformerForActionType:*off_1E7721B18];
 
     if (!v15)
     {
       PXAssertGetLog();
     }
 
-    v16 = [v10 dataSourceManager];
+    dataSourceManager = [viewModel dataSourceManager];
     *&buf = 0;
     *(&buf + 1) = &buf;
     *&v28 = 0x3032000000;
@@ -115,7 +115,7 @@ LABEL_10:
     objc_copyWeak(&v23, &location);
     v20 = v12;
     p_buf = &buf;
-    v17 = v16;
+    v17 = dataSourceManager;
     v21 = v17;
     [v15 performActionWithCompletionHandler:v19];
 
@@ -123,14 +123,14 @@ LABEL_10:
     objc_destroyWeak(&location);
     _Block_object_dispose(&buf, 8);
 
-    [v13 performChanges:&__block_literal_global_142557];
+    [selectionManager performChanges:&__block_literal_global_142557];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = PXSharingSuggestionSectionHeaderLayoutProvider;
-    [(PXActionableSectionHeaderLayoutProvider *)&v18 sectionHeader:v8 didPressButtonForActionType:a4 sender:v9];
+    [(PXActionableSectionHeaderLayoutProvider *)&v18 sectionHeader:headerCopy didPressButtonForActionType:type sender:senderCopy];
   }
 }
 
@@ -194,19 +194,19 @@ uint64_t __99__PXSharingSuggestionSectionHeaderLayoutProvider_sectionHeader_didP
   return [v1 performChanges:v3];
 }
 
-- (id)actionTextForActionType:(int64_t)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5
+- (id)actionTextForActionType:(int64_t)type dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v9 = a4;
-  if (a3 > 8)
+  sourceCopy = source;
+  if (type > 8)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXSharingSuggestionSectionHeaderLayoutProvider.m" lineNumber:111 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharingSuggestionSectionHeaderLayoutProvider.m" lineNumber:111 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (a3 == 4)
+  v10 = sourceCopy;
+  if (type == 4)
   {
     v12 = PXLocalizedSharedLibraryString(@"PXSharedLibrarySharingSuggestionHeaderMoveAction");
   }
@@ -215,10 +215,10 @@ uint64_t __99__PXSharingSuggestionSectionHeaderLayoutProvider_sectionHeader_didP
   {
     v17.receiver = self;
     v17.super_class = PXSharingSuggestionSectionHeaderLayoutProvider;
-    v11 = *&a5->item;
-    v16[0] = *&a5->dataSourceIdentifier;
+    v11 = *&path->item;
+    v16[0] = *&path->dataSourceIdentifier;
     v16[1] = v11;
-    v12 = [(PXActionableSectionHeaderLayoutProvider *)&v17 actionTextForActionType:a3 dataSource:v9 sectionIndexPath:v16];
+    v12 = [(PXActionableSectionHeaderLayoutProvider *)&v17 actionTextForActionType:type dataSource:sourceCopy sectionIndexPath:v16];
   }
 
   v13 = v12;
@@ -226,14 +226,14 @@ uint64_t __99__PXSharingSuggestionSectionHeaderLayoutProvider_sectionHeader_didP
   return v13;
 }
 
-- (int64_t)actionTypeForHeaderLayout:(id)a3
+- (int64_t)actionTypeForHeaderLayout:(id)layout
 {
-  v4 = a3;
-  if ([v4 isInSelectMode])
+  layoutCopy = layout;
+  if ([layoutCopy isInSelectMode])
   {
     v7.receiver = self;
     v7.super_class = PXSharingSuggestionSectionHeaderLayoutProvider;
-    v5 = [(PXActionableSectionHeaderLayoutProvider *)&v7 actionTypeForHeaderLayout:v4];
+    v5 = [(PXActionableSectionHeaderLayoutProvider *)&v7 actionTypeForHeaderLayout:layoutCopy];
   }
 
   else
@@ -244,34 +244,34 @@ uint64_t __99__PXSharingSuggestionSectionHeaderLayoutProvider_sectionHeader_didP
   return v5;
 }
 
-- (id)secondaryTextForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4
+- (id)secondaryTextForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = *&a4->item;
-  v8[0] = *&a4->dataSourceIdentifier;
+  v4 = *&path->item;
+  v8[0] = *&path->dataSourceIdentifier;
   v8[1] = v4;
-  v5 = [a3 assetCollectionAtSectionIndexPath:v8];
-  v6 = [v5 localizedSubtitle];
+  v5 = [source assetCollectionAtSectionIndexPath:v8];
+  localizedSubtitle = [v5 localizedSubtitle];
 
-  return v6;
+  return localizedSubtitle;
 }
 
-- (id)primaryTextForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4
+- (id)primaryTextForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = *&a4->item;
-  v8[0] = *&a4->dataSourceIdentifier;
+  v4 = *&path->item;
+  v8[0] = *&path->dataSourceIdentifier;
   v8[1] = v4;
-  v5 = [a3 assetCollectionAtSectionIndexPath:v8];
-  v6 = [v5 localizedTitle];
+  v5 = [source assetCollectionAtSectionIndexPath:v8];
+  localizedTitle = [v5 localizedTitle];
 
-  return v6;
+  return localizedTitle;
 }
 
-- (BOOL)wantsHeaderForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4
+- (BOOL)wantsHeaderForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = [a3 containerCollection];
-  v5 = [v4 px_isSharedLibrarySharingSuggestionsSmartAlbum];
+  containerCollection = [source containerCollection];
+  px_isSharedLibrarySharingSuggestionsSmartAlbum = [containerCollection px_isSharedLibrarySharingSuggestionsSmartAlbum];
 
-  return v5 ^ 1;
+  return px_isSharedLibrarySharingSuggestionsSmartAlbum ^ 1;
 }
 
 - (NSMutableSet)successfullySharedAssetCollections

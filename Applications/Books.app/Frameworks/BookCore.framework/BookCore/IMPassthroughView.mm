@@ -1,23 +1,23 @@
 @interface IMPassthroughView
 - (IMPassthroughViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation IMPassthroughView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = IMPassthroughView;
-  v8 = [(IMPassthroughView *)&v15 hitTest:v7 withEvent:x, y];
+  v8 = [(IMPassthroughView *)&v15 hitTest:eventCopy withEvent:x, y];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = WeakRetained;
   if (WeakRetained)
   {
-    LOBYTE(v11) = [WeakRetained passthroughView:self shouldAcceptHitAtPoint:v8 onView:v7 withEvent:{x, y}];
+    LOBYTE(v11) = [WeakRetained passthroughView:self shouldAcceptHitAtPoint:v8 onView:eventCopy withEvent:{x, y}];
   }
 
   else

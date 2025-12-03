@@ -1,17 +1,17 @@
 @interface MITestManager
 + (id)sharedInstance;
-- (BOOL)_onQueue_clearIsRunningInTestModeForProcessWithPID:(int)a3 withError:(id *)a4;
-- (BOOL)_onQueue_setIsRunningInTestModeForProcessWithPID:(int)a3 withError:(id *)a4;
-- (BOOL)clearIsRunningInTestModeForProcessWithPID:(int)a3 withError:(id *)a4;
-- (BOOL)isRunningInTestMode:(BOOL *)a3 outError:(id *)a4;
-- (BOOL)setIsRunningInTestModeForProcessWithPID:(int)a3 withError:(id *)a4;
-- (BOOL)testFlagsAreSet:(unint64_t)a3;
+- (BOOL)_onQueue_clearIsRunningInTestModeForProcessWithPID:(int)d withError:(id *)error;
+- (BOOL)_onQueue_setIsRunningInTestModeForProcessWithPID:(int)d withError:(id *)error;
+- (BOOL)clearIsRunningInTestModeForProcessWithPID:(int)d withError:(id *)error;
+- (BOOL)isRunningInTestMode:(BOOL *)mode outError:(id *)error;
+- (BOOL)setIsRunningInTestModeForProcessWithPID:(int)d withError:(id *)error;
+- (BOOL)testFlagsAreSet:(unint64_t)set;
 - (MITestManager)init;
 - (id)_testModeSentinelURL;
-- (void)_onQueue_clearTestFlags:(unint64_t)a3;
-- (void)_onQueue_setTestFlags:(unint64_t)a3;
-- (void)clearTestFlags:(unint64_t)a3;
-- (void)setTestFlags:(unint64_t)a3;
+- (void)_onQueue_clearTestFlags:(unint64_t)flags;
+- (void)_onQueue_setTestFlags:(unint64_t)flags;
+- (void)clearTestFlags:(unint64_t)flags;
+- (void)setTestFlags:(unint64_t)flags;
 @end
 
 @implementation MITestManager
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = __31__MITestManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -61,24 +61,24 @@ uint64_t __31__MITestManager_sharedInstance__block_invoke()
 - (id)_testModeSentinelURL
 {
   v2 = +[MIDaemonConfiguration sharedInstance];
-  v3 = [v2 dataDirectory];
-  v4 = [v3 URLByAppendingPathComponent:@"sMITestMode" isDirectory:0];
+  dataDirectory = [v2 dataDirectory];
+  v4 = [dataDirectory URLByAppendingPathComponent:@"sMITestMode" isDirectory:0];
 
   return v4;
 }
 
-- (BOOL)isRunningInTestMode:(BOOL *)a3 outError:(id *)a4
+- (BOOL)isRunningInTestMode:(BOOL *)mode outError:(id *)error
 {
-  v6 = [MIDaemonConfiguration sharedInstance:a3];
-  v7 = [v6 hasInternalContent];
+  v6 = [MIDaemonConfiguration sharedInstance:mode];
+  hasInternalContent = [v6 hasInternalContent];
 
-  if (v7)
+  if (hasInternalContent)
   {
-    v8 = [(MITestManager *)self _testModeSentinelURL];
+    _testModeSentinelURL = [(MITestManager *)self _testModeSentinelURL];
     v9 = +[MIFileManager defaultManager];
-    v10 = [v9 itemExistsAtURL:v8];
+    v10 = [v9 itemExistsAtURL:_testModeSentinelURL];
 
-    if (!a3)
+    if (!mode)
     {
       return 1;
     }
@@ -87,42 +87,42 @@ uint64_t __31__MITestManager_sharedInstance__block_invoke()
   }
 
   v10 = 0;
-  if (a3)
+  if (mode)
   {
 LABEL_5:
-    *a3 = v10;
+    *mode = v10;
   }
 
   return 1;
 }
 
-- (BOOL)_onQueue_setIsRunningInTestModeForProcessWithPID:(int)a3 withError:(id *)a4
+- (BOOL)_onQueue_setIsRunningInTestModeForProcessWithPID:(int)d withError:(id *)error
 {
-  v5 = *&a3;
-  v7 = [(MITestManager *)self testModeQueue];
-  dispatch_assert_queue_V2(v7);
+  v5 = *&d;
+  testModeQueue = [(MITestManager *)self testModeQueue];
+  dispatch_assert_queue_V2(testModeQueue);
 
-  v8 = [(MITestManager *)self _testModeSentinelURL];
+  _testModeSentinelURL = [(MITestManager *)self _testModeSentinelURL];
   v29 = 0;
-  v9 = [&stru_1F28762E8 writeToURL:v8 atomically:1 encoding:4 error:&v29];
+  v9 = [&stru_1F28762E8 writeToURL:_testModeSentinelURL atomically:1 encoding:4 error:&v29];
   v10 = v29;
   if (v9)
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 5)
     {
-      v20 = [v8 path];
+      path = [_testModeSentinelURL path];
       MOLogWrite();
     }
 
-    v11 = [(MITestManager *)self sourceForPID];
+    sourceForPID = [(MITestManager *)self sourceForPID];
     v12 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    v13 = [sourceForPID objectForKeyedSubscript:v12];
 
     if (!v13)
     {
       objc_initWeak(&location, self);
-      v14 = [(MITestManager *)self testModeQueue];
-      v15 = dispatch_source_create(MEMORY[0x1E69E96F0], v5, 0x80000000uLL, v14);
+      testModeQueue2 = [(MITestManager *)self testModeQueue];
+      v15 = dispatch_source_create(MEMORY[0x1E69E96F0], v5, 0x80000000uLL, testModeQueue2);
 
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
@@ -138,9 +138,9 @@ LABEL_5:
       objc_copyWeak(&v23, &location);
       v24 = v5;
       dispatch_source_set_cancel_handler(v15, v22);
-      v16 = [(MITestManager *)self sourceForPID];
+      sourceForPID2 = [(MITestManager *)self sourceForPID];
       v17 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-      [v16 setObject:v15 forKeyedSubscript:v17];
+      [sourceForPID2 setObject:v15 forKeyedSubscript:v17];
 
       dispatch_activate(v15);
       objc_destroyWeak(&v23);
@@ -154,14 +154,14 @@ LABEL_5:
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v21 = [v8 path];
+      path2 = [_testModeSentinelURL path];
       MOLogWrite();
     }
 
-    if (a4)
+    if (error)
     {
       v18 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -204,7 +204,7 @@ void __76__MITestManager__onQueue_setIsRunningInTestModeForProcessWithPID_withEr
   }
 }
 
-- (BOOL)setIsRunningInTestModeForProcessWithPID:(int)a3 withError:(id *)a4
+- (BOOL)setIsRunningInTestModeForProcessWithPID:(int)d withError:(id *)error
 {
   v24 = 0;
   v25 = &v24;
@@ -217,20 +217,20 @@ void __76__MITestManager__onQueue_setIsRunningInTestModeForProcessWithPID_withEr
   v22 = __Block_byref_object_dispose__8;
   v23 = 0;
   v7 = +[MIDaemonConfiguration sharedInstance];
-  v8 = [v7 hasInternalContent];
+  hasInternalContent = [v7 hasInternalContent];
 
-  if (v8)
+  if (hasInternalContent)
   {
-    v10 = [(MITestManager *)self testModeQueue];
+    testModeQueue = [(MITestManager *)self testModeQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __67__MITestManager_setIsRunningInTestModeForProcessWithPID_withError___block_invoke;
     v16[3] = &unk_1E7AE20A0;
     v16[4] = self;
     v16[5] = &v24;
-    v17 = a3;
+    dCopy = d;
     v16[6] = &v18;
-    dispatch_sync(v10, v16);
+    dispatch_sync(testModeQueue, v16);
 
     v11 = v25;
     if (*(v25 + 24) == 1)
@@ -249,9 +249,9 @@ void __76__MITestManager__onQueue_setIsRunningInTestModeForProcessWithPID_withEr
   }
 
   v14 = *(v11 + 24);
-  if (a4 && (v11[3] & 1) == 0)
+  if (error && (v11[3] & 1) == 0)
   {
-    *a4 = v19[5];
+    *error = v19[5];
     v14 = *(v25 + 24);
   }
 
@@ -272,20 +272,20 @@ void __67__MITestManager_setIsRunningInTestModeForProcessWithPID_withError___blo
   *(*(*(a1 + 40) + 8) + 24) = v5;
 }
 
-- (BOOL)_onQueue_clearIsRunningInTestModeForProcessWithPID:(int)a3 withError:(id *)a4
+- (BOOL)_onQueue_clearIsRunningInTestModeForProcessWithPID:(int)d withError:(id *)error
 {
-  v5 = *&a3;
-  v7 = [(MITestManager *)self testModeQueue];
-  dispatch_assert_queue_V2(v7);
+  v5 = *&d;
+  testModeQueue = [(MITestManager *)self testModeQueue];
+  dispatch_assert_queue_V2(testModeQueue);
 
-  v8 = [(MITestManager *)self sourceForPID];
+  sourceForPID = [(MITestManager *)self sourceForPID];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:v5];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [sourceForPID objectForKeyedSubscript:v9];
 
   v11 = +[MIFileManager defaultManager];
-  v12 = [(MITestManager *)self _testModeSentinelURL];
+  _testModeSentinelURL = [(MITestManager *)self _testModeSentinelURL];
   v19 = 0;
-  v13 = [v11 removeItemAtURL:v12 error:&v19];
+  v13 = [v11 removeItemAtURL:_testModeSentinelURL error:&v19];
   v14 = v19;
   if (v13)
   {
@@ -294,7 +294,7 @@ void __67__MITestManager_setIsRunningInTestModeForProcessWithPID_withError___blo
 
   else if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v18 = [v12 path];
+    path = [_testModeSentinelURL path];
     MOLogWrite();
   }
 
@@ -303,7 +303,7 @@ void __67__MITestManager_setIsRunningInTestModeForProcessWithPID_withError___blo
     dispatch_source_cancel(v10);
   }
 
-  if (a4)
+  if (error)
   {
     v15 = v13;
   }
@@ -316,13 +316,13 @@ void __67__MITestManager_setIsRunningInTestModeForProcessWithPID_withError___blo
   if ((v15 & 1) == 0)
   {
     v16 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   return v13;
 }
 
-- (BOOL)clearIsRunningInTestModeForProcessWithPID:(int)a3 withError:(id *)a4
+- (BOOL)clearIsRunningInTestModeForProcessWithPID:(int)d withError:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -335,20 +335,20 @@ void __67__MITestManager_setIsRunningInTestModeForProcessWithPID_withError___blo
   v19 = 0x2020000000;
   v20 = 0;
   v7 = +[MIDaemonConfiguration sharedInstance];
-  v8 = [v7 hasInternalContent];
+  hasInternalContent = [v7 hasInternalContent];
 
-  if (v8)
+  if (hasInternalContent)
   {
-    v10 = [(MITestManager *)self testModeQueue];
+    testModeQueue = [(MITestManager *)self testModeQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __69__MITestManager_clearIsRunningInTestModeForProcessWithPID_withError___block_invoke;
     v15[3] = &unk_1E7AE20A0;
     v15[4] = self;
     v15[5] = &v17;
-    v16 = a3;
+    dCopy = d;
     v15[6] = &v21;
-    dispatch_sync(v10, v15);
+    dispatch_sync(testModeQueue, v15);
 
     v11 = *(v18 + 24);
     if (v11 == 1)
@@ -367,9 +367,9 @@ void __67__MITestManager_setIsRunningInTestModeForProcessWithPID_withError___blo
     LOBYTE(v11) = *(v18 + 24);
   }
 
-  if (a4 && (v11 & 1) == 0)
+  if (error && (v11 & 1) == 0)
   {
-    *a4 = v22[5];
+    *error = v22[5];
     LOBYTE(v11) = *(v18 + 24);
   }
 
@@ -391,88 +391,88 @@ void __69__MITestManager_clearIsRunningInTestModeForProcessWithPID_withError___b
   *(*(*(a1 + 40) + 8) + 24) = v5;
 }
 
-- (void)_onQueue_setTestFlags:(unint64_t)a3
+- (void)_onQueue_setTestFlags:(unint64_t)flags
 {
-  v5 = [(MITestManager *)self testModeQueue];
-  dispatch_assert_queue_V2(v5);
+  testModeQueue = [(MITestManager *)self testModeQueue];
+  dispatch_assert_queue_V2(testModeQueue);
 
   testFlags = self->_testFlags;
-  self->_testFlags = testFlags | a3;
+  self->_testFlags = testFlags | flags;
   if (!gLogHandle || *(gLogHandle + 44) >= 5)
   {
     MOLogWrite();
   }
 
-  if ((a3 & 1) != 0 && (testFlags & 1) == 0)
+  if ((flags & 1) != 0 && (testFlags & 1) == 0)
   {
 
     MIReduceAvailableMemoryForValidationForTesting();
   }
 }
 
-- (void)setTestFlags:(unint64_t)a3
+- (void)setTestFlags:(unint64_t)flags
 {
-  v5 = [(MITestManager *)self testModeQueue];
+  testModeQueue = [(MITestManager *)self testModeQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__MITestManager_setTestFlags___block_invoke;
   v6[3] = &unk_1E7AE20C8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = flags;
+  dispatch_sync(testModeQueue, v6);
 }
 
-- (void)_onQueue_clearTestFlags:(unint64_t)a3
+- (void)_onQueue_clearTestFlags:(unint64_t)flags
 {
-  v5 = [(MITestManager *)self testModeQueue];
-  dispatch_assert_queue_V2(v5);
+  testModeQueue = [(MITestManager *)self testModeQueue];
+  dispatch_assert_queue_V2(testModeQueue);
 
   testFlags = self->_testFlags;
-  self->_testFlags = testFlags & ~a3;
+  self->_testFlags = testFlags & ~flags;
   if (!gLogHandle || *(gLogHandle + 44) >= 5)
   {
     MOLogWrite();
   }
 
-  if (a3 & 1) != 0 && (testFlags)
+  if (flags & 1) != 0 && (testFlags)
   {
 
     MIRestoreAvailableMemoryForValidationAfterTesting();
   }
 }
 
-- (void)clearTestFlags:(unint64_t)a3
+- (void)clearTestFlags:(unint64_t)flags
 {
-  v5 = [(MITestManager *)self testModeQueue];
+  testModeQueue = [(MITestManager *)self testModeQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__MITestManager_clearTestFlags___block_invoke;
   v6[3] = &unk_1E7AE20C8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = flags;
+  dispatch_sync(testModeQueue, v6);
 }
 
-- (BOOL)testFlagsAreSet:(unint64_t)a3
+- (BOOL)testFlagsAreSet:(unint64_t)set
 {
-  v4 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(MITestManager *)self testModeQueue];
+  testModeQueue = [(MITestManager *)self testModeQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__MITestManager_testFlagsAreSet___block_invoke;
   block[3] = &unk_1E7AE20F0;
   block[5] = &v8;
-  block[6] = a3;
-  block[4] = v4;
-  dispatch_sync(v5, block);
+  block[6] = set;
+  block[4] = selfCopy;
+  dispatch_sync(testModeQueue, block);
 
-  LOBYTE(v4) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v4;
+  return selfCopy;
 }
 
 uint64_t __33__MITestManager_testFlagsAreSet___block_invoke(uint64_t a1)

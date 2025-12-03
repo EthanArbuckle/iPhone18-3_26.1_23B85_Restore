@@ -25,48 +25,48 @@
 
 - (id)pinInstructionsPrompt
 {
-  v3 = [(PSViewController *)self specifier];
-  v4 = [v3 propertyForKey:@"screenTimePinEntry"];
-  v5 = [v4 BOOLValue];
+  specifier = [(PSViewController *)self specifier];
+  v4 = [specifier propertyForKey:@"screenTimePinEntry"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v6 = [(PSRestrictionsPINController *)self stringsBundle];
-    v7 = [(DevicePINController *)self stringsTable];
-    v8 = [v6 localizedStringForKey:@"PMENTER_SC_PROMPT" value:&stru_1EFE45030 table:v7];
+    stringsBundle = [(PSRestrictionsPINController *)self stringsBundle];
+    stringsTable = [(DevicePINController *)self stringsTable];
+    pinInstructionsPrompt = [stringsBundle localizedStringForKey:@"PMENTER_SC_PROMPT" value:&stru_1EFE45030 table:stringsTable];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = PSRestrictionsPINController;
-    v8 = [(DevicePINController *)&v10 pinInstructionsPrompt];
+    pinInstructionsPrompt = [(DevicePINController *)&v10 pinInstructionsPrompt];
   }
 
-  return v8;
+  return pinInstructionsPrompt;
 }
 
 - (id)title
 {
-  v3 = [(PSViewController *)self specifier];
-  v4 = [v3 propertyForKey:@"screenTimePinEntry"];
-  v5 = [v4 BOOLValue];
+  specifier = [(PSViewController *)self specifier];
+  v4 = [specifier propertyForKey:@"screenTimePinEntry"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v6 = [(PSRestrictionsPINController *)self stringsBundle];
-    v7 = [(DevicePINController *)self stringsTable];
-    v8 = [v6 localizedStringForKey:@"PMENTER_SC" value:&stru_1EFE45030 table:v7];
+    stringsBundle = [(PSRestrictionsPINController *)self stringsBundle];
+    stringsTable = [(DevicePINController *)self stringsTable];
+    title = [stringsBundle localizedStringForKey:@"PMENTER_SC" value:&stru_1EFE45030 table:stringsTable];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = PSRestrictionsPINController;
-    v8 = [(DevicePINController *)&v10 title];
+    title = [(DevicePINController *)&v10 title];
   }
 
-  return v8;
+  return title;
 }
 
 - (id)stringsBundle

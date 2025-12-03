@@ -3,26 +3,26 @@
 - (BOOL)isTrackingBrightnessSlider;
 - (BOOL)shouldShowGlobeKeyPreference;
 - (TIHardwareKeyboardController)init;
-- (id)capsLockSwitchSpecifiersFromModes:(id)a3;
-- (id)getBrightness:(id)a3;
+- (id)capsLockSwitchSpecifiersFromModes:(id)modes;
+- (id)getBrightness:(id)brightness;
 - (id)getCurrentKeyboardType;
 - (id)globeAsEmojiSpecifiers;
-- (id)globeKeyPreference:(id)a3;
+- (id)globeKeyPreference:(id)preference;
 - (id)keyboardBrightnessSpecifiers;
 - (id)keyboardTypeRemapSpecifiers;
 - (id)modifierRemapSpecifiers;
 - (id)newSpecifiers;
-- (id)readPreferenceControllerValue:(id)a3;
-- (id)readRomanCapsLockPreferenceValue:(id)a3;
+- (id)readPreferenceControllerValue:(id)value;
+- (id)readRomanCapsLockPreferenceValue:(id)value;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)hardwareKeyboardAvailabilityChanged;
-- (void)setBrightness:(id)a3 specifier:(id)a4;
-- (void)setPreferenceControllerValue:(id)a3 forSpecifier:(id)a4;
-- (void)setRomanCapsLockPreferenceValue:(id)a3 forSpecifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
-- (void)toggledGlobeKey:(id)a3 specifier:(id)a4;
+- (void)setBrightness:(id)brightness specifier:(id)specifier;
+- (void)setPreferenceControllerValue:(id)value forSpecifier:(id)specifier;
+- (void)setRomanCapsLockPreferenceValue:(id)value forSpecifier:(id)specifier;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
+- (void)toggledGlobeKey:(id)key specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -81,9 +81,9 @@
   result = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!result)
   {
-    v5 = [(TIHardwareKeyboardController *)self title];
+    title = [(TIHardwareKeyboardController *)self title];
     *&self->PSListController_opaque[v3] = [(TIHardwareKeyboardController *)self newSpecifiers];
-    [(TIHardwareKeyboardController *)self setTitle:v5];
+    [(TIHardwareKeyboardController *)self setTitle:title];
     return *&self->PSListController_opaque[v3];
   }
 
@@ -94,7 +94,7 @@
 {
   v3 = [+[UIKeyboardInputModeController sharedInputModeController](UIKeyboardInputModeController "sharedInputModeController")];
   v34 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
-  v4 = self;
+  selfCopy = self;
   v30 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
   v5 = +[NSMutableSet set];
   v6 = +[UIKeyboardInputModeController sharedInputModeController];
@@ -128,7 +128,7 @@
             [v5 addObject:NormalizedIdentifier];
             if ([UIKeyboardGetSupportedHardwareKeyboardsForInputMode() count])
             {
-              v14 = [PSSpecifier preferenceSpecifierNamed:0 target:v4 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+              v14 = [PSSpecifier preferenceSpecifierNamed:0 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
               [v14 setProperty:NormalizedIdentifier forKey:v31];
               [v14 setProperty:objc_opt_class() forKey:v10];
               v15 = v14;
@@ -153,13 +153,13 @@
   v16 = [PSSpecifier groupSpecifierWithID:@"HWKeyboardSettings"];
   [v16 setProperty:-[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle forKey:{"bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"PERIOD_SHORTCUT_DESCRIPTION_HWKB", &stru_49C80, @"Keyboard", PSFooterTextGroupKey}];
   [v34 addObject:v16];
-  v32 = v4;
-  v17 = [(TIHardwareKeyboardController *)v4 separateHWKeyboardSpecifiers];
+  v32 = selfCopy;
+  separateHWKeyboardSpecifiers = [(TIHardwareKeyboardController *)selfCopy separateHWKeyboardSpecifiers];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v18 = [v17 countByEnumeratingWithState:&v39 objects:v48 count:16];
+  v18 = [separateHWKeyboardSpecifiers countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v18)
   {
     v19 = v18;
@@ -170,20 +170,20 @@
       {
         if (*v40 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(separateHWKeyboardSpecifiers);
         }
 
         [*(*(&v39 + 1) + 8 * j) setName:{-[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", objc_msgSend(*(*(&v39 + 1) + 8 * j), "name"), &stru_49C80, @"Keyboard"}];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v39 objects:v48 count:16];
+      v19 = [separateHWKeyboardSpecifiers countByEnumeratingWithState:&v39 objects:v48 count:16];
     }
 
     while (v19);
   }
 
   v22 = v34;
-  [v34 addObjectsFromArray:v17];
+  [v34 addObjectsFromArray:separateHWKeyboardSpecifiers];
   if ([(NSMutableArray *)v30 count])
   {
     v23 = [PSSpecifier groupSpecifierWithID:@"LIVE_CONVERSION"];
@@ -237,14 +237,14 @@
   return v22;
 }
 
-- (id)capsLockSwitchSpecifiersFromModes:(id)a3
+- (id)capsLockSwitchSpecifiersFromModes:(id)modes
 {
   v5 = +[NSMutableArray array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  v6 = [modes countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v6)
   {
     v7 = v6;
@@ -257,7 +257,7 @@
       {
         if (*v37 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(modes);
         }
 
         v12 = *(*(&v36 + 1) + 8 * i);
@@ -272,7 +272,7 @@
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v7 = [modes countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v7);
@@ -383,35 +383,35 @@ LABEL_29:
   [(TIHardwareKeyboardController *)self setTitle:[[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"Hardware Keyboard", &stru_49C80, @"Keyboard"]];
 }
 
-- (id)readPreferenceControllerValue:(id)a3
+- (id)readPreferenceControllerValue:(id)value
 {
-  v3 = [a3 propertyForKey:PSKeyNameKey];
+  v3 = [value propertyForKey:PSKeyNameKey];
   v4 = +[TIPreferencesController sharedPreferencesController];
 
   return [v4 valueForPreferenceKey:v3];
 }
 
-- (void)setPreferenceControllerValue:(id)a3 forSpecifier:(id)a4
+- (void)setPreferenceControllerValue:(id)value forSpecifier:(id)specifier
 {
-  v5 = [a4 propertyForKey:PSKeyNameKey];
+  v5 = [specifier propertyForKey:PSKeyNameKey];
   v6 = +[TIPreferencesController sharedPreferencesController];
 
-  [v6 setValue:a3 forPreferenceKey:v5];
+  [v6 setValue:value forPreferenceKey:v5];
 }
 
-- (id)readRomanCapsLockPreferenceValue:(id)a3
+- (id)readRomanCapsLockPreferenceValue:(id)value
 {
-  v3 = [+[UIKeyboardImpl isCapsLockSwitchEnabled:a3]];
+  v3 = [+[UIKeyboardImpl isCapsLockSwitchEnabled:value]];
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setRomanCapsLockPreferenceValue:(id)a3 forSpecifier:(id)a4
+- (void)setRomanCapsLockPreferenceValue:(id)value forSpecifier:(id)specifier
 {
-  v5 = [TIPreferencesController sharedPreferencesController:a3];
+  v5 = [TIPreferencesController sharedPreferencesController:value];
   v6 = TIHWKeyboardCapsLockRomanSwitchPreference;
 
-  [v5 setValue:a3 forPreferenceKey:v6];
+  [v5 setValue:value forPreferenceKey:v6];
 }
 
 - (id)keyboardBrightnessSpecifiers
@@ -439,13 +439,13 @@ LABEL_29:
   return v3;
 }
 
-- (void)setBrightness:(id)a3 specifier:(id)a4
+- (void)setBrightness:(id)brightness specifier:(id)specifier
 {
-  v6 = [(TIHardwareKeyboardController *)self isTrackingBrightnessSlider:a3];
+  v6 = [(TIHardwareKeyboardController *)self isTrackingBrightnessSlider:brightness];
   keyboardBrightnessClient = self->_keyboardBrightnessClient;
   v8 = objc_opt_respondsToSelector();
   v9 = self->_keyboardBrightnessClient;
-  [a3 floatValue];
+  [brightness floatValue];
   if (v8)
   {
     v12 = kKBIDDefault;
@@ -461,7 +461,7 @@ LABEL_29:
   }
 }
 
-- (id)getBrightness:(id)a3
+- (id)getBrightness:(id)brightness
 {
   [(KeyboardBrightnessClient *)self->_keyboardBrightnessClient brightnessForKeyboard:kKBIDDefault];
   *&v3 = fminf(*&v3, 1.0);
@@ -498,29 +498,29 @@ LABEL_29:
   return v3;
 }
 
-- (id)globeKeyPreference:(id)a3
+- (id)globeKeyPreference:(id)preference
 {
   v4 = +[TIPreferencesController sharedPreferencesController];
   v5 = [v4 valueForPreferenceKey:TIHWKeyboardGlobeAsEmojiKeyPreference];
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = [(TIHardwareKeyboardController *)self defaultValueForGlobeAsEmojiKey];
+    bOOLValue = [(TIHardwareKeyboardController *)self defaultValueForGlobeAsEmojiKey];
   }
 
-  return [NSNumber numberWithBool:v6];
+  return [NSNumber numberWithBool:bOOLValue];
 }
 
-- (void)toggledGlobeKey:(id)a3 specifier:(id)a4
+- (void)toggledGlobeKey:(id)key specifier:(id)specifier
 {
-  v5 = [TIPreferencesController sharedPreferencesController:a3];
+  v5 = [TIPreferencesController sharedPreferencesController:key];
   v6 = TIHWKeyboardGlobeAsEmojiKeyPreference;
 
-  [v5 setValue:a3 forPreferenceKey:v6];
+  [v5 setValue:key forPreferenceKey:v6];
 }
 
 - (BOOL)shouldShowGlobeKeyPreference
@@ -559,13 +559,13 @@ LABEL_29:
 - (id)getCurrentKeyboardType
 {
   DeviceProperties = BKSHIDKeyboardGetDeviceProperties();
-  v3 = [DeviceProperties standardType];
+  standardType = [DeviceProperties standardType];
   result = &stru_49C80;
-  if (v3 <= 0)
+  if (standardType <= 0)
   {
-    if (v3 != -1)
+    if (standardType != -1)
     {
-      if (v3)
+      if (standardType)
       {
         return result;
       }
@@ -581,12 +581,12 @@ LABEL_29:
     return @"JIS";
   }
 
-  if (v3 == 1)
+  if (standardType == 1)
   {
     return @"ISO";
   }
 
-  if (v3 == 2)
+  if (standardType == 2)
   {
     return @"JIS";
   }
@@ -610,9 +610,9 @@ LABEL_29:
 
     if (![(TIHardwareKeyboardController *)self specifierForID:@"Keyboard Type"]&& ((BKSHIDKeyboardWantsStandardTypeOverride() & 1) != 0 || CFPreferencesGetAppBooleanValue(@"KeyboardTypeCustomization", @"com.apple.keyboard.preferences", 0)))
     {
-      v3 = [(TIHardwareKeyboardController *)self keyboardTypeRemapSpecifiers];
+      keyboardTypeRemapSpecifiers = [(TIHardwareKeyboardController *)self keyboardTypeRemapSpecifiers];
 
-      [(TIHardwareKeyboardController *)self addSpecifiersFromArray:v3 animated:1];
+      [(TIHardwareKeyboardController *)self addSpecifiersFromArray:keyboardTypeRemapSpecifiers animated:1];
     }
   }
 
@@ -625,12 +625,12 @@ LABEL_29:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = TIHardwareKeyboardController;
   v7 = [TIHardwareKeyboardController tableView:"tableView:cellForRowAtIndexPath:" cellForRowAtIndexPath:?];
-  v8 = [(TIHardwareKeyboardController *)self specifierAtIndexPath:a4];
+  v8 = [(TIHardwareKeyboardController *)self specifierAtIndexPath:path];
   v9 = [v8 propertyForKey:PSIDKey];
   if ([v9 isEqualToString:TIHWKeyboardGlobeAsEmojiKeyPreference])
   {
@@ -639,7 +639,7 @@ LABEL_29:
     {
       v12 = v10;
       v13 = v11;
-      v7 = [a3 dequeueReusableCellWithIdentifier:@"GlobeSwitchCell"];
+      v7 = [view dequeueReusableCellWithIdentifier:@"GlobeSwitchCell"];
       if (!v7)
       {
         v7 = [[PSCustomControlTableCell alloc] initWithStyle:0 reuseIdentifier:@"GlobeSwitchCell"];
@@ -653,19 +653,19 @@ LABEL_29:
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v6 = [objc_msgSend(a4 textLabel];
-  v7 = [v6 rangeOfString:@"<globe>"];
-  if (v6)
+  textLabel = [objc_msgSend(footerView textLabel];
+  v7 = [textLabel rangeOfString:@"<globe>"];
+  if (textLabel)
   {
     v9 = v7;
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = v8;
-      v11 = [[NSMutableAttributedString alloc] initWithString:v6];
+      v11 = [[NSMutableAttributedString alloc] initWithString:textLabel];
       [v11 replaceCharactersInRange:v9 withAttributedString:{v10, +[TIKeyboardListController attributedStringForSymbolName:](TIKeyboardListController, "attributedStringForSymbolName:", @"globe"}];
-      [objc_msgSend(a4 "textLabel")];
+      [objc_msgSend(footerView "textLabel")];
     }
   }
 }

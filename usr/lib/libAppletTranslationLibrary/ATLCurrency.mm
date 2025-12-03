@@ -1,13 +1,13 @@
 @interface ATLCurrency
 + (BOOL)checkSorted;
-+ (id)currencyCodeForNumber:(unint64_t)a3 exponentOut:(signed __int16 *)a4;
++ (id)currencyCodeForNumber:(unint64_t)number exponentOut:(signed __int16 *)out;
 @end
 
 @implementation ATLCurrency
 
-+ (id)currencyCodeForNumber:(unint64_t)a3 exponentOut:(signed __int16 *)a4
++ (id)currencyCodeForNumber:(unint64_t)number exponentOut:(signed __int16 *)out
 {
-  if (a3 <= 0x3E8)
+  if (number <= 0x3E8)
   {
     v8 = &countryEntries;
     v9 = 165;
@@ -18,7 +18,7 @@
       v13 = *v11;
       v12 = v11 + 4;
       v9 += ~(v9 >> 1);
-      if (v13 < a3)
+      if (v13 < number)
       {
         v8 = v12;
       }
@@ -30,16 +30,16 @@
     }
 
     while (v9);
-    if (v8 == &unk_22EFBB54E || *v8 != a3)
+    if (v8 == &unk_22EFBB54E || *v8 != number)
     {
       v6 = 0;
     }
 
     else
     {
-      if (a4)
+      if (out)
       {
-        *a4 = v8[1];
+        *out = v8[1];
       }
 
       v6 = [MEMORY[0x277CCACA8] stringWithCString:v8 + 2 encoding:{1, v4}];

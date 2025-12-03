@@ -1,16 +1,16 @@
 @interface BKSMutableTouchHitTestFilterParameters
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setContextIDs:(id)a3;
-- (void)setSenderDescriptors:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setContextIDs:(id)ds;
+- (void)setSenderDescriptors:(id)descriptors;
 @end
 
 @implementation BKSMutableTouchHitTestFilterParameters
 
-- (void)setContextIDs:(id)a3
+- (void)setContextIDs:(id)ds
 {
   v37 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  if (!v24)
+  dsCopy = ds;
+  if (!dsCopy)
   {
     v8 = MEMORY[0x1E696AEC0];
     v9 = objc_opt_class();
@@ -27,7 +27,7 @@
       v27 = 2114;
       v28 = v14;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSTouchHitTestFilterParameters.m";
       v33 = 1024;
@@ -47,13 +47,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [v24 classForCoder];
-    if (!v16)
+    classForCoder = [dsCopy classForCoder];
+    if (!classForCoder)
     {
-      v16 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v17 = NSStringFromClass(v16);
+    v17 = NSStringFromClass(classForCoder);
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     v20 = [v15 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"contextIDs", v17, v19];
@@ -68,7 +68,7 @@
       v27 = 2114;
       v28 = v23;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSTouchHitTestFilterParameters.m";
       v33 = 1024;
@@ -84,18 +84,18 @@
     JUMPOUT(0x18636F4C4);
   }
 
-  v5 = [v24 copy];
+  v5 = [dsCopy copy];
   contextIDs = self->super._contextIDs;
   self->super._contextIDs = v5;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSenderDescriptors:(id)a3
+- (void)setSenderDescriptors:(id)descriptors
 {
   v37 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  if (!v24)
+  descriptorsCopy = descriptors;
+  if (!descriptorsCopy)
   {
     v8 = MEMORY[0x1E696AEC0];
     v9 = objc_opt_class();
@@ -112,7 +112,7 @@
       v27 = 2114;
       v28 = v14;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSTouchHitTestFilterParameters.m";
       v33 = 1024;
@@ -132,13 +132,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [v24 classForCoder];
-    if (!v16)
+    classForCoder = [descriptorsCopy classForCoder];
+    if (!classForCoder)
     {
-      v16 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v17 = NSStringFromClass(v16);
+    v17 = NSStringFromClass(classForCoder);
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     v20 = [v15 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"senderDescriptors", v17, v19];
@@ -153,7 +153,7 @@
       v27 = 2114;
       v28 = v23;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSTouchHitTestFilterParameters.m";
       v33 = 1024;
@@ -169,14 +169,14 @@
     JUMPOUT(0x18636F7DCLL);
   }
 
-  v5 = [v24 copy];
+  v5 = [descriptorsCopy copy];
   senderDescriptors = self->super._senderDescriptors;
   self->super._senderDescriptors = v5;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSTouchHitTestFilterParameters alloc];
 

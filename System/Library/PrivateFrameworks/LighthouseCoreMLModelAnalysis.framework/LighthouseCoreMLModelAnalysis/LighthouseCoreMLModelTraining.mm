@@ -1,9 +1,9 @@
 @interface LighthouseCoreMLModelTraining
-+ (BOOL)trainModel:(id)a3 destModelUrl:(id)a4 modelConfiguration:(id)a5 dataBatch:(id)a6;
-+ (BOOL)trainModel:(id)a3 destModelUrl:(id)a4 modelConfiguration:(id)a5 dataBatch:(id)a6 labelFeatureName:(id)a7;
-+ (BOOL)validateModelFeatureName:(id)a3 modelConfiguration:(id)a4 dataBatch:(id)a5;
-+ (id)evaluateModel:(id)a3 modelConfiguration:(id)a4 dataBatch:(id)a5;
-+ (id)getLabelFeatureName:(id)a3 modelConfiguration:(id)a4;
++ (BOOL)trainModel:(id)model destModelUrl:(id)url modelConfiguration:(id)configuration dataBatch:(id)batch;
++ (BOOL)trainModel:(id)model destModelUrl:(id)url modelConfiguration:(id)configuration dataBatch:(id)batch labelFeatureName:(id)name;
++ (BOOL)validateModelFeatureName:(id)name modelConfiguration:(id)configuration dataBatch:(id)batch;
++ (id)evaluateModel:(id)model modelConfiguration:(id)configuration dataBatch:(id)batch;
++ (id)getLabelFeatureName:(id)name modelConfiguration:(id)configuration;
 + (void)initialize;
 @end
 
@@ -24,27 +24,27 @@ uint64_t __43__LighthouseCoreMLModelTraining_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)validateModelFeatureName:(id)a3 modelConfiguration:(id)a4 dataBatch:(id)a5
++ (BOOL)validateModelFeatureName:(id)name modelConfiguration:(id)configuration dataBatch:(id)batch
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 count])
+  nameCopy = name;
+  configurationCopy = configuration;
+  batchCopy = batch;
+  if ([batchCopy count])
   {
-    v10 = [v9 featuresAtIndex:0];
-    if (v8)
+    v10 = [batchCopy featuresAtIndex:0];
+    if (configurationCopy)
     {
       v39 = 0;
       v11 = &v39;
-      v12 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v7 configuration:v8 error:&v39];
+      v12 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:nameCopy configuration:configurationCopy error:&v39];
     }
 
     else
     {
       v40 = 0;
       v11 = &v40;
-      v12 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v7 error:&v40];
+      v12 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:nameCopy error:&v40];
     }
 
     v14 = v12;
@@ -53,20 +53,20 @@ uint64_t __43__LighthouseCoreMLModelTraining_initialize__block_invoke()
     if (v14)
     {
       v34 = v15;
-      v17 = [v14 modelDescription];
+      modelDescription = [v14 modelDescription];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v18 = [v10 featureNames];
-      v19 = [v18 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      featureNames = [v10 featureNames];
+      v19 = [featureNames countByEnumeratingWithState:&v35 objects:v41 count:16];
       if (v19)
       {
         v20 = v19;
         v30 = v14;
         v31 = v10;
-        v32 = v8;
-        v33 = v7;
+        v32 = configurationCopy;
+        v33 = nameCopy;
         v21 = *v36;
         while (2)
         {
@@ -74,26 +74,26 @@ uint64_t __43__LighthouseCoreMLModelTraining_initialize__block_invoke()
           {
             if (*v36 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(featureNames);
             }
 
             v23 = *(*(&v35 + 1) + 8 * i);
-            v24 = [v17 inputFeatureNames];
-            if ([v24 containsObject:v23])
+            inputFeatureNames = [modelDescription inputFeatureNames];
+            if ([inputFeatureNames containsObject:v23])
             {
             }
 
             else
             {
-              v25 = [v17 outputFeatureNames];
-              v26 = [v25 containsObject:v23];
+              outputFeatureNames = [modelDescription outputFeatureNames];
+              v26 = [outputFeatureNames containsObject:v23];
 
               if ((v26 & 1) == 0)
               {
                 v27 = trainingLog;
                 if (os_log_type_enabled(trainingLog, OS_LOG_TYPE_ERROR))
                 {
-                  [LighthouseCoreMLModelTraining validateModelFeatureName:v23 modelConfiguration:v27 dataBatch:v17];
+                  [LighthouseCoreMLModelTraining validateModelFeatureName:v23 modelConfiguration:v27 dataBatch:modelDescription];
                 }
 
                 v13 = 0;
@@ -102,7 +102,7 @@ uint64_t __43__LighthouseCoreMLModelTraining_initialize__block_invoke()
             }
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v35 objects:v41 count:16];
+          v20 = [featureNames countByEnumeratingWithState:&v35 objects:v41 count:16];
           if (v20)
           {
             continue;
@@ -113,8 +113,8 @@ uint64_t __43__LighthouseCoreMLModelTraining_initialize__block_invoke()
 
         v13 = 1;
 LABEL_26:
-        v8 = v32;
-        v7 = v33;
+        configurationCopy = v32;
+        nameCopy = v33;
         v14 = v30;
         v10 = v31;
       }
@@ -152,31 +152,31 @@ LABEL_26:
   return v13;
 }
 
-+ (id)getLabelFeatureName:(id)a3 modelConfiguration:(id)a4
++ (id)getLabelFeatureName:(id)name modelConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  nameCopy = name;
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v15 = 0;
     v7 = &v15;
-    v8 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v5 configuration:v6 error:&v15];
+    v8 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:nameCopy configuration:configurationCopy error:&v15];
   }
 
   else
   {
     v16 = 0;
     v7 = &v16;
-    v8 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v5 error:&v16];
+    v8 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:nameCopy error:&v16];
   }
 
   v9 = v8;
   v10 = *v7;
   if (v9)
   {
-    v11 = [v9 modelDescription];
-    v12 = [v11 inputFeatureNames];
-    v13 = [v12 objectAtIndexedSubscript:0];
+    modelDescription = [v9 modelDescription];
+    inputFeatureNames = [modelDescription inputFeatureNames];
+    v13 = [inputFeatureNames objectAtIndexedSubscript:0];
   }
 
   else
@@ -192,39 +192,39 @@ LABEL_26:
   return v13;
 }
 
-+ (BOOL)trainModel:(id)a3 destModelUrl:(id)a4 modelConfiguration:(id)a5 dataBatch:(id)a6
++ (BOOL)trainModel:(id)model destModelUrl:(id)url modelConfiguration:(id)configuration dataBatch:(id)batch
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [LighthouseCoreMLModelTraining getLabelFeatureName:v12 modelConfiguration:v10];
-  v14 = [LighthouseCoreMLModelTraining trainModel:v12 destModelUrl:v11 modelConfiguration:v10 dataBatch:v9 labelFeatureName:v13];
+  batchCopy = batch;
+  configurationCopy = configuration;
+  urlCopy = url;
+  modelCopy = model;
+  v13 = [LighthouseCoreMLModelTraining getLabelFeatureName:modelCopy modelConfiguration:configurationCopy];
+  v14 = [LighthouseCoreMLModelTraining trainModel:modelCopy destModelUrl:urlCopy modelConfiguration:configurationCopy dataBatch:batchCopy labelFeatureName:v13];
 
   return v14;
 }
 
-+ (BOOL)trainModel:(id)a3 destModelUrl:(id)a4 modelConfiguration:(id)a5 dataBatch:(id)a6 labelFeatureName:(id)a7
++ (BOOL)trainModel:(id)model destModelUrl:(id)url modelConfiguration:(id)configuration dataBatch:(id)batch labelFeatureName:(id)name
 {
   v65 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v41 = a4;
-  v12 = a5;
-  v13 = a6;
-  v40 = a7;
+  modelCopy = model;
+  urlCopy = url;
+  configurationCopy = configuration;
+  batchCopy = batch;
+  nameCopy = name;
   v14 = trainingLog;
   if (os_log_type_enabled(trainingLog, OS_LOG_TYPE_INFO))
   {
     v15 = v14;
-    v16 = [v11 absoluteURL];
+    absoluteURL = [modelCopy absoluteURL];
     *buf = 138412546;
-    *&buf[4] = v16;
+    *&buf[4] = absoluteURL;
     *&buf[12] = 2048;
-    *&buf[14] = [v13 count];
+    *&buf[14] = [batchCopy count];
     _os_log_impl(&dword_255F35000, v15, OS_LOG_TYPE_INFO, "Begin trainModel with model URL %@ and number of samples: %ld", buf, 0x16u);
   }
 
-  if ([LighthouseCoreMLModelTraining validateModelFeatureName:v11 modelConfiguration:v12 dataBatch:v13])
+  if ([LighthouseCoreMLModelTraining validateModelFeatureName:modelCopy modelConfiguration:configurationCopy dataBatch:batchCopy])
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -242,13 +242,13 @@ LABEL_26:
     v50 = &v49;
     v51 = 0x2020000000;
     v52 = 0;
-    v17 = v13;
+    v17 = batchCopy;
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __103__LighthouseCoreMLModelTraining_trainModel_destModelUrl_modelConfiguration_dataBatch_labelFeatureName___block_invoke_67;
     v43[3] = &unk_2798168E8;
-    v44 = v41;
-    v18 = v11;
+    v44 = urlCopy;
+    v18 = modelCopy;
     v45 = v18;
     v46 = &v49;
     v47 = buf;
@@ -269,15 +269,15 @@ LABEL_26:
       v21 = trainingLog;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v22 = [v12 parameters];
+        parameters = [configurationCopy parameters];
         *v59 = 138412290;
-        v60 = v22;
+        v60 = parameters;
         _os_log_impl(&dword_255F35000, v21, OS_LOG_TYPE_INFO, "Config: %@", v59, 0xCu);
       }
 
       v23 = *&buf[8];
       obj = *(*&buf[8] + 40);
-      v24 = [MEMORY[0x277CBFF88] updateTaskForModelAtURL:v18 trainingData:v17 configuration:v12 progressHandlers:v38 error:&obj];
+      v24 = [MEMORY[0x277CBFF88] updateTaskForModelAtURL:v18 trainingData:v17 configuration:configurationCopy progressHandlers:v38 error:&obj];
       objc_storeStrong((v23 + 40), obj);
       if (*(*&buf[8] + 40))
       {
@@ -316,12 +316,12 @@ LABEL_26:
 
     dispatch_semaphore_wait(v54[5], 0xFFFFFFFFFFFFFFFFLL);
     v29 = objc_alloc(MEMORY[0x277D23490]);
-    v30 = [v18 lastPathComponent];
+    lastPathComponent = [v18 lastPathComponent];
     v31 = objc_alloc(MEMORY[0x277D23468]);
     v32 = [MEMORY[0x277D23448] fromMLProvider:v17];
-    v33 = [v31 init:v32 labelFeatureName:v40];
+    v33 = [v31 init:v32 labelFeatureName:nameCopy];
     v34 = [MEMORY[0x277CCABB0] numberWithBool:*(v50 + 24)];
-    v24 = [v29 init:v30 batchProviderInfo:v33 succeeded:v34 trainingError:*(*&buf[8] + 40)];
+    v24 = [v29 init:lastPathComponent batchProviderInfo:v33 succeeded:v34 trainingError:*(*&buf[8] + 40)];
 
     [MEMORY[0x277D23470] emitModelTrainingEvent:v24];
 LABEL_18:
@@ -409,24 +409,24 @@ void __103__LighthouseCoreMLModelTraining_trainModel_destModelUrl_modelConfigura
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)evaluateModel:(id)a3 modelConfiguration:(id)a4 dataBatch:(id)a5
++ (id)evaluateModel:(id)model modelConfiguration:(id)configuration dataBatch:(id)batch
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  modelCopy = model;
+  configurationCopy = configuration;
+  batchCopy = batch;
+  if (configurationCopy)
   {
     v40 = 0;
     v10 = &v40;
-    v11 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v7 configuration:v8 error:&v40];
+    v11 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:modelCopy configuration:configurationCopy error:&v40];
   }
 
   else
   {
     v41 = 0;
     v10 = &v41;
-    v11 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v7 error:&v41];
+    v11 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:modelCopy error:&v41];
   }
 
   v12 = v11;
@@ -447,14 +447,14 @@ void __103__LighthouseCoreMLModelTraining_trainModel_destModelUrl_modelConfigura
     if (os_log_type_enabled(trainingLog, OS_LOG_TYPE_INFO))
     {
       v19 = v14;
-      v20 = [v7 absoluteString];
+      absoluteString = [modelCopy absoluteString];
       *buf = 138412290;
-      v43 = v20;
+      v43 = absoluteString;
       _os_log_impl(&dword_255F35000, v19, OS_LOG_TYPE_INFO, "Loaded ML Model at path %@", buf, 0xCu);
     }
 
     v39 = 0;
-    v21 = [v12 predictionsFromBatch:v9 error:&v39];
+    v21 = [v12 predictionsFromBatch:batchCopy error:&v39];
     v16 = v39;
     v22 = trainingLog;
     if (v16)
@@ -489,7 +489,7 @@ LABEL_28:
         goto LABEL_36;
       }
 
-      v38 = v8;
+      v38 = configurationCopy;
       v25 = 0;
       v26 = 0;
       while (1)
@@ -497,7 +497,7 @@ LABEL_28:
         v27 = [v21 featuresAtIndex:v26];
         v28 = [v27 objectForKeyedSubscript:@"WasShareRecipient"];
 
-        v29 = [v9 featuresAtIndex:v26];
+        v29 = [batchCopy featuresAtIndex:v26];
         v30 = [v29 featureValueForName:@"WasShareRecipient"];
 
         if (!v28)
@@ -507,7 +507,7 @@ LABEL_28:
 
         if (!v30)
         {
-          v8 = v38;
+          configurationCopy = v38;
           if (os_log_type_enabled(trainingLog, OS_LOG_TYPE_ERROR))
           {
             +[LighthouseCoreMLModelTraining evaluateModel:modelConfiguration:dataBatch:];
@@ -516,8 +516,8 @@ LABEL_28:
           goto LABEL_34;
         }
 
-        v31 = [v28 int64Value];
-        if (v31 == [v30 int64Value])
+        int64Value = [v28 int64Value];
+        if (int64Value == [v30 int64Value])
         {
           ++v25;
         }
@@ -528,12 +528,12 @@ LABEL_28:
         {
           v32 = v25;
           v33 = v26;
-          v8 = v38;
+          configurationCopy = v38;
           goto LABEL_28;
         }
       }
 
-      v8 = v38;
+      configurationCopy = v38;
       if (os_log_type_enabled(trainingLog, OS_LOG_TYPE_ERROR))
       {
         +[LighthouseCoreMLModelTraining evaluateModel:modelConfiguration:dataBatch:];
@@ -551,7 +551,7 @@ LABEL_36:
   v16 = v13;
   if (os_log_type_enabled(trainingLog, OS_LOG_TYPE_ERROR))
   {
-    [LighthouseCoreMLModelTraining evaluateModel:v14 modelConfiguration:v7 dataBatch:?];
+    [LighthouseCoreMLModelTraining evaluateModel:v14 modelConfiguration:modelCopy dataBatch:?];
   }
 
   v17 = 0;

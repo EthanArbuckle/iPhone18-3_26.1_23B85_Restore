@@ -1,8 +1,8 @@
 @interface AUDelayViewController
 - (void)modeControlChanged;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)zoomIn;
 - (void)zoomOut;
 @end
@@ -11,47 +11,47 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_23716E744();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4 = objc_opt_self();
-  v7 = self;
-  v5 = [v4 defaultCenter];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
   v6 = sub_23719653C();
-  [v5 addObserver:v7 selector:sel_auParameterValueChangedWithNotification_ name:v6 object:0];
+  [defaultCenter addObserver:selfCopy selector:sel_auParameterValueChangedWithNotification_ name:v6 object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = objc_opt_self();
-  v6 = self;
-  v7 = [v5 defaultCenter];
-  [v7 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v8.receiver = v6;
+  v8.receiver = selfCopy;
   v8.super_class = type metadata accessor for AUDelayViewController();
-  [(AUAppleViewControllerBase *)&v8 viewWillDisappear:v3];
+  [(AUAppleViewControllerBase *)&v8 viewWillDisappear:disappearCopy];
 }
 
 - (void)zoomIn
 {
-  v2 = self;
+  selfCopy = self;
   sub_2371708A0();
 }
 
 - (void)zoomOut
 {
-  v2 = self;
+  selfCopy = self;
   sub_237170988();
 }
 
 - (void)modeControlChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_237170A74();
 }
 

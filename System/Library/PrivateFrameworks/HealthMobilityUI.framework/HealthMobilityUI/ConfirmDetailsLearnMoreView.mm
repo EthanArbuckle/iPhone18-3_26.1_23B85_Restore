@@ -1,6 +1,6 @@
 @interface ConfirmDetailsLearnMoreView
-- (_TtC16HealthMobilityUI27ConfirmDetailsLearnMoreView)initWithCoder:(id)a3;
-- (_TtC16HealthMobilityUI27ConfirmDetailsLearnMoreView)initWithFrame:(CGRect)a3;
+- (_TtC16HealthMobilityUI27ConfirmDetailsLearnMoreView)initWithCoder:(id)coder;
+- (_TtC16HealthMobilityUI27ConfirmDetailsLearnMoreView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)learnMoreTapped;
 - (void)tintColorDidChange;
@@ -8,7 +8,7 @@
 
 @implementation ConfirmDetailsLearnMoreView
 
-- (_TtC16HealthMobilityUI27ConfirmDetailsLearnMoreView)initWithCoder:(id)a3
+- (_TtC16HealthMobilityUI27ConfirmDetailsLearnMoreView)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC16HealthMobilityUI27ConfirmDetailsLearnMoreView_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -23,12 +23,12 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2519A6A10();
   v4 = sub_2519A6C5C();
   [v3 removeGestureRecognizer_];
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for ConfirmDetailsLearnMoreView();
   [(ConfirmDetailsLearnMoreView *)&v5 dealloc];
 }
@@ -40,7 +40,7 @@
   v2 = v5.receiver;
   [(ConfirmDetailsLearnMoreView *)&v5 tintColorDidChange];
   v3 = sub_2519A6A10();
-  v4 = [v2 tintColor];
+  tintColor = [v2 tintColor];
   [v3 setTextColor_];
 }
 
@@ -52,13 +52,13 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 8);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC16HealthMobilityUI27ConfirmDetailsLearnMoreView)initWithFrame:(CGRect)a3
+- (_TtC16HealthMobilityUI27ConfirmDetailsLearnMoreView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

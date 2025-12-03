@@ -16,7 +16,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_20CD941CC();
 }
 
@@ -37,9 +37,9 @@
   ObjectType = swift_getObjectType();
   v11 = 5;
   v8 = *(v6 + 48);
-  v10 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
-  v8(&v11, v10, &protocol witness table for NoResultsViewController, ObjectType, v6);
+  v8(&v11, selfCopy, &protocol witness table for NoResultsViewController, ObjectType, v6);
   swift_unknownObjectRelease();
   v9 = *(&self->super.super.super.super.super.isa + v3);
   sub_20CDDE578(1);
@@ -62,9 +62,9 @@
   ObjectType = swift_getObjectType();
   v11 = 3;
   v8 = *(v6 + 48);
-  v10 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
-  v8(&v11, v10, &protocol witness table for NoResultsViewController, ObjectType, v6);
+  v8(&v11, selfCopy, &protocol witness table for NoResultsViewController, ObjectType, v6);
   swift_unknownObjectRelease();
   v9 = *(&self->super.super.super.super.super.isa + v3);
   sub_20CDDE960();

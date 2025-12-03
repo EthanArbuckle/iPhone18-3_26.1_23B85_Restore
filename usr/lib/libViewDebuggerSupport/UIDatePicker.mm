@@ -1,6 +1,6 @@
 @interface UIDatePicker
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UIDatePicker
@@ -54,42 +54,42 @@
   return v8;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"date"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"date"])
   {
-    v10 = [v9 date];
+    date = [objectCopy date];
 LABEL_3:
-    v11 = v10;
-    v12 = [v10 description];
+    locale = date;
+    localeIdentifier = [date description];
 LABEL_6:
-    a6 = v12;
+    error = localeIdentifier;
     goto LABEL_7;
   }
 
-  if ([v8 isEqualToString:@"localeIdentifier"])
+  if ([nameCopy isEqualToString:@"localeIdentifier"])
   {
-    v11 = [v9 locale];
-    v12 = [v11 localeIdentifier];
+    locale = [objectCopy locale];
+    localeIdentifier = [locale localeIdentifier];
     goto LABEL_6;
   }
 
-  if ([v8 isEqualToString:@"maximumDate"])
+  if ([nameCopy isEqualToString:@"maximumDate"])
   {
-    v10 = [v9 maximumDate];
+    date = [objectCopy maximumDate];
     goto LABEL_3;
   }
 
-  if ([v8 isEqualToString:@"minimumDate"])
+  if ([nameCopy isEqualToString:@"minimumDate"])
   {
-    v10 = [v9 minimumDate];
+    date = [objectCopy minimumDate];
     goto LABEL_3;
   }
 
-  v11 = v9;
-  v14 = v8;
+  locale = objectCopy;
+  v14 = nameCopy;
   if (![v14 length])
   {
     goto LABEL_26;
@@ -105,36 +105,36 @@ LABEL_6:
   {
     if ([v14 length] < 2)
     {
-      v19 = [v14 uppercaseString];
+      uppercaseString = [v14 uppercaseString];
     }
 
     else
     {
       v16 = [v14 substringToIndex:1];
-      v17 = [v16 uppercaseString];
+      uppercaseString2 = [v16 uppercaseString];
       v18 = [v14 substringFromIndex:1];
-      v19 = [v17 stringByAppendingString:v18];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v18];
     }
 
-    v20 = [@"is" stringByAppendingString:v19];
+    v20 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v20);
     v15 = (objc_opt_respondsToSelector() & 1) != 0 ? v20 : 0;
   }
 
   if (v15)
   {
-    a6 = [v11 valueForKey:v15];
+    error = [locale valueForKey:v15];
   }
 
   else
   {
 LABEL_26:
-    if (a6)
+    if (error)
     {
       v21 = v14;
-      if (v11)
+      if (locale)
       {
-        v22 = [NSString stringWithFormat:@"%@", v11];
+        v22 = [NSString stringWithFormat:@"%@", locale];
       }
 
       else
@@ -163,10 +163,10 @@ LABEL_26:
       v26 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v25];
 
       v27 = v26;
-      *a6 = v26;
+      *error = v26;
 
       v15 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -177,7 +177,7 @@ LABEL_26:
 
 LABEL_7:
 
-  return a6;
+  return error;
 }
 
 @end

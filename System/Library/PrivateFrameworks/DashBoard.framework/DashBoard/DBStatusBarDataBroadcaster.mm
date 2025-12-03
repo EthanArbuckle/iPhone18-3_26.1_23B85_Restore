@@ -1,9 +1,9 @@
 @interface DBStatusBarDataBroadcaster
 - (DBStatusBarReloadable)reloadable;
 - (NSDictionary)additionalEntriesByRelativePriority;
-- (id)imageForAvatarIdentifier:(id)a3;
-- (id)viewForAdditionalEntryWithIdentifier:(id)a3;
-- (void)setReloadable:(id)a3;
+- (id)imageForAvatarIdentifier:(id)identifier;
+- (id)viewForAdditionalEntryWithIdentifier:(id)identifier;
+- (void)setReloadable:(id)reloadable;
 @end
 
 @implementation DBStatusBarDataBroadcaster
@@ -16,21 +16,21 @@
   return Strong;
 }
 
-- (void)setReloadable:(id)a3
+- (void)setReloadable:(id)reloadable
 {
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_2482644E4();
   swift_unknownObjectRelease();
 }
 
 - (NSDictionary)additionalEntriesByRelativePriority
 {
-  v2 = self;
-  v3 = [(DBStatusBarDataBroadcaster *)v2 vehicleState];
-  (*((*MEMORY[0x277D85000] & v3->super.isa) + 0xC8))();
+  selfCopy = self;
+  vehicleState = [(DBStatusBarDataBroadcaster *)selfCopy vehicleState];
+  (*((*MEMORY[0x277D85000] & vehicleState->super.isa) + 0xC8))();
 
   sub_24814FB28(0, &qword_27EE90740);
   sub_248264E40();
@@ -39,20 +39,20 @@
   return v4;
 }
 
-- (id)viewForAdditionalEntryWithIdentifier:(id)a3
+- (id)viewForAdditionalEntryWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   v6 = sub_248264CE8();
 
   return v6;
 }
 
-- (id)imageForAvatarIdentifier:(id)a3
+- (id)imageForAvatarIdentifier:(id)identifier
 {
   v4 = sub_248383960();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_248264814(v4, v6);
 
   return v8;

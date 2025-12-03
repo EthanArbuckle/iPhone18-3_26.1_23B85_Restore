@@ -1,17 +1,17 @@
 @interface _LSLazyPropertyList
-+ (_LSAggregatePropertyList)lazyPropertyListWithLazyPropertyLists:(uint64_t)a1;
-+ (_LSDataBackedPropertyList)lazyPropertyListWithPropertyListData:(uint64_t)a1;
-+ (_LSDictionaryBackedPropertyList)lazyPropertyListWithPropertyList:(uint64_t)a1;
-+ (_LSLazyPropertyList)lazyPropertyListWithDatabase:(id)a3 unit:(unsigned int)a4;
-+ (id)lazyPropertyListWithPropertyListURL:(uint64_t)a1;
-+ (id)lazyPropertyListWithPropertyListURL:(uint64_t)a3 options:(uint64_t)a4 error:;
++ (_LSAggregatePropertyList)lazyPropertyListWithLazyPropertyLists:(uint64_t)lists;
++ (_LSDataBackedPropertyList)lazyPropertyListWithPropertyListData:(uint64_t)data;
++ (_LSDictionaryBackedPropertyList)lazyPropertyListWithPropertyList:(uint64_t)list;
++ (_LSLazyPropertyList)lazyPropertyListWithDatabase:(id)database unit:(unsigned int)unit;
++ (id)lazyPropertyListWithPropertyListURL:(uint64_t)l;
++ (id)lazyPropertyListWithPropertyListURL:(uint64_t)l options:(uint64_t)options error:;
 - (_LSLazyPropertyList)init;
-- (id)objectForKey:(id)a3 checkingKeyClass:(Class)a4 checkingValueClass:(Class)a5;
-- (id)objectForKey:(id)a3 ofClass:(Class)a4;
-- (id)objectForKey:(id)a3 ofClass:(Class)a4 valuesOfClass:(Class)a5;
-- (id)objectsForKeys:(id)a3;
+- (id)objectForKey:(id)key checkingKeyClass:(Class)class checkingValueClass:(Class)valueClass;
+- (id)objectForKey:(id)key ofClass:(Class)class;
+- (id)objectForKey:(id)key ofClass:(Class)class valuesOfClass:(Class)ofClass;
+- (id)objectsForKeys:(id)keys;
 - (id)propertyList;
-- (id)uncheckedObjectsForKeys:(id)a3;
+- (id)uncheckedObjectsForKeys:(id)keys;
 @end
 
 @implementation _LSLazyPropertyList
@@ -25,18 +25,18 @@
 
 - (id)propertyList
 {
-  if (a1)
+  if (self)
   {
     var8[0] = 0;
-    [a1 _getPropertyList:var8];
-    a1 = var8[0];
+    [self _getPropertyList:var8];
+    self = var8[0];
     v1 = var8[2];
   }
 
-  return a1;
+  return self;
 }
 
-+ (_LSDataBackedPropertyList)lazyPropertyListWithPropertyListData:(uint64_t)a1
++ (_LSDataBackedPropertyList)lazyPropertyListWithPropertyListData:(uint64_t)data
 {
   v2 = a2;
   objc_opt_self();
@@ -45,7 +45,7 @@
   return v3;
 }
 
-+ (id)lazyPropertyListWithPropertyListURL:(uint64_t)a1
++ (id)lazyPropertyListWithPropertyListURL:(uint64_t)l
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -73,11 +73,11 @@
   return v4;
 }
 
-+ (id)lazyPropertyListWithPropertyListURL:(uint64_t)a3 options:(uint64_t)a4 error:
++ (id)lazyPropertyListWithPropertyListURL:(uint64_t)l options:(uint64_t)options error:
 {
   v6 = a2;
   v7 = objc_opt_self();
-  v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v6 options:a3 error:a4];
+  v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v6 options:l error:options];
   if (v8)
   {
     v9 = [(_LSLazyPropertyList *)v7 lazyPropertyListWithPropertyListData:v8];
@@ -91,7 +91,7 @@
   return v9;
 }
 
-+ (_LSDictionaryBackedPropertyList)lazyPropertyListWithPropertyList:(uint64_t)a1
++ (_LSDictionaryBackedPropertyList)lazyPropertyListWithPropertyList:(uint64_t)list
 {
   v2 = a2;
   objc_opt_self();
@@ -110,7 +110,7 @@
   return v4;
 }
 
-+ (_LSAggregatePropertyList)lazyPropertyListWithLazyPropertyLists:(uint64_t)a1
++ (_LSAggregatePropertyList)lazyPropertyListWithLazyPropertyLists:(uint64_t)lists
 {
   v2 = a2;
   objc_opt_self();
@@ -119,22 +119,22 @@
   return v3;
 }
 
-- (id)uncheckedObjectsForKeys:(id)a3
+- (id)uncheckedObjectsForKeys:(id)keys
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  keysCopy = keys;
+  if (!keysCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LSLazyPropertyList.mm" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"keys != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSLazyPropertyList.mm" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"keys != nil"}];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = keysCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -168,45 +168,45 @@
   return v13;
 }
 
-- (id)objectsForKeys:(id)a3
+- (id)objectsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(_LSLazyPropertyList *)self uncheckedObjectsForKeys:v4];
-  v7 = [[LSBundleInfoCachedValues alloc] _initWithKeys:v4 forDictionary:v6];
+  v6 = [(_LSLazyPropertyList *)self uncheckedObjectsForKeys:keysCopy];
+  v7 = [[LSBundleInfoCachedValues alloc] _initWithKeys:keysCopy forDictionary:v6];
 
   objc_autoreleasePoolPop(v5);
 
   return v7;
 }
 
-- (id)objectForKey:(id)a3 ofClass:(Class)a4
+- (id)objectForKey:(id)key ofClass:(Class)class
 {
-  v4 = [(_LSLazyPropertyList *)self objectForKey:a3 checkingKeyClass:a4 checkingValueClass:0];
+  v4 = [(_LSLazyPropertyList *)self objectForKey:key checkingKeyClass:class checkingValueClass:0];
 
   return v4;
 }
 
-- (id)objectForKey:(id)a3 ofClass:(Class)a4 valuesOfClass:(Class)a5
+- (id)objectForKey:(id)key ofClass:(Class)class valuesOfClass:(Class)ofClass
 {
-  v5 = [(_LSLazyPropertyList *)self objectForKey:a3 checkingKeyClass:a4 checkingValueClass:a5];
+  v5 = [(_LSLazyPropertyList *)self objectForKey:key checkingKeyClass:class checkingValueClass:ofClass];
 
   return v5;
 }
 
-- (id)objectForKey:(id)a3 checkingKeyClass:(Class)a4 checkingValueClass:(Class)a5
+- (id)objectForKey:(id)key checkingKeyClass:(Class)class checkingValueClass:(Class)valueClass
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  keyCopy = key;
   v10 = objc_autoreleasePoolPush();
-  if (!v9)
+  if (!keyCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"LSLazyPropertyList.mm" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSLazyPropertyList.mm" lineNumber:204 description:{@"Invalid parameter not satisfying: %@", @"key != nil"}];
   }
 
   v26 = 0;
-  v11 = [(_LSLazyPropertyList *)self _getValue:&v26 forPropertyListKey:v9];
+  v11 = [(_LSLazyPropertyList *)self _getValue:&v26 forPropertyListKey:keyCopy];
   v12 = v26;
   v13 = v12;
   if (v12)
@@ -222,7 +222,7 @@
   if (v14)
   {
     v15 = v12;
-    if (a4 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (class && (objc_opt_isKindOfClass() & 1) == 0)
     {
       v13 = 0;
       v16 = v15;
@@ -232,7 +232,7 @@ LABEL_25:
     }
 
     v13 = v15;
-    if (a5)
+    if (valueClass)
     {
       if (_NSIsNSArray())
       {
@@ -280,7 +280,7 @@ LABEL_25:
         v31[1] = 3221225472;
         v31[2] = ___ZN14LaunchServices13PropertyListsL27filterValueFromPropertyListEP11objc_objectP10objc_classS4__block_invoke;
         v31[3] = &unk_1E6A1D1D8;
-        v33 = a5;
+        valueClassCopy = valueClass;
         v16 = v22;
         v32 = v16;
         [v15 enumerateKeysAndObjectsUsingBlock:v31];
@@ -303,11 +303,11 @@ LABEL_26:
   return v13;
 }
 
-+ (_LSLazyPropertyList)lazyPropertyListWithDatabase:(id)a3 unit:(unsigned int)a4
++ (_LSLazyPropertyList)lazyPropertyListWithDatabase:(id)database unit:(unsigned int)unit
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || !a4 || (_LSPlistGet(v6, a4), (v8 = objc_claimAutoreleasedReturnValue()) == 0) || ([(_LSLazyPropertyList *)a1 lazyPropertyListWithPropertyListData:v8], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  databaseCopy = database;
+  v7 = databaseCopy;
+  if (!databaseCopy || !unit || (_LSPlistGet(databaseCopy, unit), (v8 = objc_claimAutoreleasedReturnValue()) == 0) || ([(_LSLazyPropertyList *)self lazyPropertyListWithPropertyListData:v8], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
     v9 = +[_LSEmptyPropertyList sharedInstance];
   }

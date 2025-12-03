@@ -1,8 +1,8 @@
 @interface AVCustomDeviceRoute
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setDevice:(id)a3;
+- (void)setDevice:(id)device;
 @end
 
 @implementation AVCustomDeviceRoute
@@ -23,23 +23,23 @@
   [(AVCustomDeviceRoute *)&v4 dealloc];
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
   v18 = *MEMORY[0x1E69E9840];
 
-  self->_device = a3;
+  self->_device = device;
   networkEndpoint = self->_networkEndpoint;
   if (networkEndpoint)
   {
     nw_release(networkEndpoint);
   }
 
-  if ([a3 networkEndpoint])
+  if ([device networkEndpoint])
   {
-    self->_networkEndpoint = nw_retain([a3 networkEndpoint]);
+    self->_networkEndpoint = nw_retain([device networkEndpoint]);
   }
 
-  self->_bluetoothIdentifier = [a3 bluetoothIdentifier];
+  self->_bluetoothIdentifier = [device bluetoothIdentifier];
   v6 = _AVRoutingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -48,7 +48,7 @@
     v10 = 136315906;
     v11 = "[AVCustomDeviceRoute setDevice:]";
     v12 = 2112;
-    v13 = a3;
+    deviceCopy = device;
     v14 = 2112;
     v15 = v7;
     v16 = 2112;
@@ -59,7 +59,7 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -67,17 +67,17 @@
     return 0;
   }
 
-  v5 = [(DADevice *)self->_device identifier];
-  v6 = [objc_msgSend(a3 "device")];
+  identifier = [(DADevice *)self->_device identifier];
+  v6 = [objc_msgSend(equal "device")];
 
-  return [v5 isEqualToString:v6];
+  return [identifier isEqualToString:v6];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(DADevice *)self->_device identifier];
+  identifier = [(DADevice *)self->_device identifier];
 
-  return [v2 hash];
+  return [identifier hash];
 }
 
 @end

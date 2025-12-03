@@ -2,8 +2,8 @@
 + (id)entryKey;
 + (id)mergingDenyList;
 + (void)load;
-- (BOOL)canMergeWithEvent:(id)a3;
-- (PLAccountingPowerEventBackwardEntry)initWithRootNodeID:(id)a3 withPower:(double)a4 withEndDate:(id)a5;
+- (BOOL)canMergeWithEvent:(id)event;
+- (PLAccountingPowerEventBackwardEntry)initWithRootNodeID:(id)d withPower:(double)power withEndDate:(id)date;
 @end
 
 @implementation PLAccountingPowerEventBackwardEntry
@@ -34,7 +34,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingPowerEventBackwardEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -46,22 +46,22 @@ uint64_t __47__PLAccountingPowerEventBackwardEntry_entryKey__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (PLAccountingPowerEventBackwardEntry)initWithRootNodeID:(id)a3 withPower:(double)a4 withEndDate:(id)a5
+- (PLAccountingPowerEventBackwardEntry)initWithRootNodeID:(id)d withPower:(double)power withEndDate:(id)date
 {
-  v5 = a5;
-  if (a5)
+  selfCopy = date;
+  if (date)
   {
-    v8 = a3;
-    v9 = [PLAccountingRange rangeWithStartDate:0 withEndDate:v5];
+    dCopy = d;
+    v9 = [PLAccountingRange rangeWithStartDate:0 withEndDate:selfCopy];
     v12.receiver = self;
     v12.super_class = PLAccountingPowerEventBackwardEntry;
-    v10 = [(PLAccountingPowerEventEntry *)&v12 initWithRootNodeID:v8 withPower:v9 withRange:a4];
+    v10 = [(PLAccountingPowerEventEntry *)&v12 initWithRootNodeID:dCopy withPower:v9 withRange:power];
 
     self = v10;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 void __54__PLAccountingPowerEventBackwardEntry_mergingDenyList__block_invoke()
@@ -70,14 +70,14 @@ void __54__PLAccountingPowerEventBackwardEntry_mergingDenyList__block_invoke()
   mergingDenyList__mergingDenyList_0 = &unk_2870F8900;
 }
 
-- (BOOL)canMergeWithEvent:(id)a3
+- (BOOL)canMergeWithEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[PLAccountingPowerEventBackwardEntry mergingDenyList];
-  v5 = [v3 rootNodeID];
+  rootNodeID = [eventCopy rootNodeID];
 
-  LOBYTE(v3) = [v4 containsObject:v5];
-  return v3 ^ 1;
+  LOBYTE(eventCopy) = [v4 containsObject:rootNodeID];
+  return eventCopy ^ 1;
 }
 
 @end

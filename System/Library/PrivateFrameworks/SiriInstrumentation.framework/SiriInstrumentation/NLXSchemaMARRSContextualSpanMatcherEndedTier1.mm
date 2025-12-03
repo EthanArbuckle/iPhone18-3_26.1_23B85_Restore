@@ -1,27 +1,27 @@
 @interface NLXSchemaMARRSContextualSpanMatcherEndedTier1
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaMARRSContextualSpanMatcherEndedTier1)initWithDictionary:(id)a3;
-- (NLXSchemaMARRSContextualSpanMatcherEndedTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaMARRSContextualSpanMatcherEndedTier1)initWithDictionary:(id)dictionary;
+- (NLXSchemaMARRSContextualSpanMatcherEndedTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addContextualSpansTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContextualSpansTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaMARRSContextualSpanMatcherEndedTier1
 
-- (NLXSchemaMARRSContextualSpanMatcherEndedTier1)initWithDictionary:(id)a3
+- (NLXSchemaMARRSContextualSpanMatcherEndedTier1)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = NLXSchemaMARRSContextualSpanMatcherEndedTier1;
   v5 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contextualSpansTier1"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contextualSpansTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"linkId", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"linkId", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (NLXSchemaMARRSContextualSpanMatcherEndedTier1)initWithJSON:(id)a3
+- (NLXSchemaMARRSContextualSpanMatcherEndedTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,10 +116,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_contextualSpansTier1s count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -139,16 +139,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -158,52 +158,52 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"contextualSpansTier1"];
+    [dictionary setObject:array forKeyedSubscript:@"contextualSpansTier1"];
   }
 
   if (self->_linkId)
   {
-    v12 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    linkId = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
+    dictionaryRepresentation2 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"linkId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"linkId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self contextualSpansTier1s];
-  v6 = [v4 contextualSpansTier1s];
-  if ((v5 != 0) == (v6 == 0))
+  contextualSpansTier1s = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self contextualSpansTier1s];
+  contextualSpansTier1s2 = [equalCopy contextualSpansTier1s];
+  if ((contextualSpansTier1s != 0) == (contextualSpansTier1s2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self contextualSpansTier1s];
-  if (v7)
+  contextualSpansTier1s3 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self contextualSpansTier1s];
+  if (contextualSpansTier1s3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self contextualSpansTier1s];
-    v10 = [v4 contextualSpansTier1s];
-    v11 = [v9 isEqual:v10];
+    v8 = contextualSpansTier1s3;
+    contextualSpansTier1s4 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self contextualSpansTier1s];
+    contextualSpansTier1s5 = [equalCopy contextualSpansTier1s];
+    v11 = [contextualSpansTier1s4 isEqual:contextualSpansTier1s5];
 
     if (!v11)
     {
@@ -215,12 +215,12 @@
   {
   }
 
-  v5 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) != (v6 == 0))
+  contextualSpansTier1s = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
+  contextualSpansTier1s2 = [equalCopy linkId];
+  if ((contextualSpansTier1s != 0) != (contextualSpansTier1s2 == 0))
   {
-    v12 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
-    if (!v12)
+    linkId = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
+    if (!linkId)
     {
 
 LABEL_15:
@@ -228,10 +228,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
-    v15 = [v4 linkId];
-    v16 = [v14 isEqual:v15];
+    v13 = linkId;
+    linkId2 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
+    linkId3 = [equalCopy linkId];
+    v16 = [linkId2 isEqual:linkId3];
 
     if (v16)
     {
@@ -251,10 +251,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -286,48 +286,48 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
+  linkId = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
 
-  if (v10)
+  if (linkId)
   {
-    v11 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
+    linkId2 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addContextualSpansTier1:(id)a3
+- (void)addContextualSpansTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   contextualSpansTier1s = self->_contextualSpansTier1s;
-  v8 = v4;
+  v8 = tier1Copy;
   if (!contextualSpansTier1s)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contextualSpansTier1s;
-    self->_contextualSpansTier1s = v6;
+    self->_contextualSpansTier1s = array;
 
-    v4 = v8;
+    tier1Copy = v8;
     contextualSpansTier1s = self->_contextualSpansTier1s;
   }
 
-  [(NSArray *)contextualSpansTier1s addObject:v4];
+  [(NSArray *)contextualSpansTier1s addObject:tier1Copy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = NLXSchemaMARRSContextualSpanMatcherEndedTier1;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self contextualSpansTier1s:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self setContextualSpansTier1s:v7];
 
-  v8 = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  linkId = [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self linkId];
+  v9 = [linkId applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(NLXSchemaMARRSContextualSpanMatcherEndedTier1 *)self deleteLinkId];
   }

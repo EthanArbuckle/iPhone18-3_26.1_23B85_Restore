@@ -2,9 +2,9 @@
 - (NSArray)elements;
 - (NSString)description;
 - (PKIdentityNationalIDCardDescriptor)init;
-- (PKIdentityNationalIDCardDescriptor)initWithDIIdentityNationalIDCardDescriptor:(id)a3;
-- (id)intentToStoreForElement:(id)a3;
-- (void)addElements:(id)a3 withIntentToStore:(id)a4;
+- (PKIdentityNationalIDCardDescriptor)initWithDIIdentityNationalIDCardDescriptor:(id)descriptor;
+- (id)intentToStoreForElement:(id)element;
+- (void)addElements:(id)elements withIntentToStore:(id)store;
 @end
 
 @implementation PKIdentityNationalIDCardDescriptor
@@ -17,16 +17,16 @@
   return v4;
 }
 
-- (PKIdentityNationalIDCardDescriptor)initWithDIIdentityNationalIDCardDescriptor:(id)a3
+- (PKIdentityNationalIDCardDescriptor)initWithDIIdentityNationalIDCardDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v9.receiver = self;
   v9.super_class = PKIdentityNationalIDCardDescriptor;
   v6 = [(PKIdentityNationalIDCardDescriptor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrapped, a3);
+    objc_storeStrong(&v6->_wrapped, descriptor);
   }
 
   return v7;
@@ -36,16 +36,16 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKIdentityNationalIDCardDescriptor *)self elements];
-  if ([v4 count])
+  elements = [(PKIdentityNationalIDCardDescriptor *)self elements];
+  if ([elements count])
   {
     [v3 appendString:@"elements: ["];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v15 = v4;
-    obj = v4;
+    v15 = elements;
+    obj = elements;
     v5 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v5)
     {
@@ -78,7 +78,7 @@
     }
 
     [v3 appendString:@"] "];
-    v4 = v15;
+    elements = v15;
   }
 
   [v3 appendFormat:@">"];
@@ -90,13 +90,13 @@
 - (NSArray)elements
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(DIIdentityNationalIDCardDescriptor *)self->_wrapped elements];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  elements = [(DIIdentityNationalIDCardDescriptor *)self->_wrapped elements];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(elements, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v2;
+  v4 = elements;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -126,17 +126,17 @@
   return v3;
 }
 
-- (void)addElements:(id)a3 withIntentToStore:(id)a4
+- (void)addElements:(id)elements withIntentToStore:(id)store
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  elementsCopy = elements;
+  storeCopy = store;
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(elementsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = elementsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -152,8 +152,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * v13) asDIIdentityElement];
-        [v8 addObject:v14];
+        asDIIdentityElement = [*(*(&v16 + 1) + 8 * v13) asDIIdentityElement];
+        [v8 addObject:asDIIdentityElement];
 
         ++v13;
       }
@@ -165,14 +165,14 @@
     while (v11);
   }
 
-  v15 = [v7 asDIIdentityIntentToStore];
-  [(DIIdentityNationalIDCardDescriptor *)self->_wrapped addElements:v8 withIntentToStore:v15];
+  asDIIdentityIntentToStore = [storeCopy asDIIdentityIntentToStore];
+  [(DIIdentityNationalIDCardDescriptor *)self->_wrapped addElements:v8 withIntentToStore:asDIIdentityIntentToStore];
 }
 
-- (id)intentToStoreForElement:(id)a3
+- (id)intentToStoreForElement:(id)element
 {
-  v4 = [a3 asDIIdentityElement];
-  v5 = [(DIIdentityNationalIDCardDescriptor *)self->_wrapped intentToStoreForElement:v4];
+  asDIIdentityElement = [element asDIIdentityElement];
+  v5 = [(DIIdentityNationalIDCardDescriptor *)self->_wrapped intentToStoreForElement:asDIIdentityElement];
   v6 = [[PKIdentityIntentToStore alloc] initWithDIIdentityIntentToStore:v5];
 
   return v6;

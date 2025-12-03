@@ -1,10 +1,10 @@
 @interface SRAssetBundleQuery
 - (SRAssetBundleQuery)init;
-- (SRAssetBundleQuery)initWithXPCObject:(id)a3 isResult:(BOOL)a4;
+- (SRAssetBundleQuery)initWithXPCObject:(id)object isResult:(BOOL)result;
 - (id)xpcObject;
 - (unint64_t)count;
-- (void)addQueryEntriesForLanguage:(id)a3 assetType:(id)a4 deliveryTypes:(id)a5;
-- (void)enumerateEntriesForLanguage:(id)a3 block:(id)a4;
+- (void)addQueryEntriesForLanguage:(id)language assetType:(id)type deliveryTypes:(id)types;
+- (void)enumerateEntriesForLanguage:(id)language block:(id)block;
 - (void)xpcObject;
 @end
 
@@ -151,11 +151,11 @@ LABEL_5:
   xpc_array_append_value(*(a1 + 32), empty);
 }
 
-- (SRAssetBundleQuery)initWithXPCObject:(id)a3 isResult:(BOOL)a4
+- (SRAssetBundleQuery)initWithXPCObject:(id)object isResult:(BOOL)result
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && MEMORY[0x1B2705140](v6) == MEMORY[0x1E69E9E50])
+  objectCopy = object;
+  v7 = objectCopy;
+  if (objectCopy && MEMORY[0x1B2705140](objectCopy) == MEMORY[0x1E69E9E50])
   {
     v17.receiver = self;
     v17.super_class = SRAssetBundleQuery;
@@ -170,13 +170,13 @@ LABEL_5:
       v14[1] = 3221225472;
       v14[2] = __49__SRAssetBundleQuery_initWithXPCObject_isResult___block_invoke;
       v14[3] = &unk_1E7A2AD70;
-      v16 = a4;
+      resultCopy = result;
       v15 = v10;
       xpc_array_apply(v7, v14);
     }
 
     self = v10;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -187,10 +187,10 @@ LABEL_5:
       [SRAssetBundleQuery initWithXPCObject:v8 isResult:?];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 uint64_t __49__SRAssetBundleQuery_initWithXPCObject_isResult___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -279,12 +279,12 @@ uint64_t __49__SRAssetBundleQuery_initWithXPCObject_isResult___block_invoke(uint
   return v7;
 }
 
-- (void)addQueryEntriesForLanguage:(id)a3 assetType:(id)a4 deliveryTypes:(id)a5
+- (void)addQueryEntriesForLanguage:(id)language assetType:(id)type deliveryTypes:(id)types
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (assetTypeID(v9) == -1)
+  languageCopy = language;
+  typeCopy = type;
+  typesCopy = types;
+  if (assetTypeID(typeCopy) == -1)
   {
     v18 = SRLogCategoryAssets();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -295,34 +295,34 @@ uint64_t __49__SRAssetBundleQuery_initWithXPCObject_isResult___block_invoke(uint
 
   else
   {
-    v11 = [(NSMutableDictionary *)self->_queryEntries objectForKeyedSubscript:v8];
+    v11 = [(NSMutableDictionary *)self->_queryEntries objectForKeyedSubscript:languageCopy];
 
     if (!v11)
     {
       v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      [(NSMutableDictionary *)self->_queryEntries setObject:v12 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_queryEntries setObject:v12 forKeyedSubscript:languageCopy];
     }
 
-    v13 = [(NSMutableDictionary *)self->_queryEntries objectForKeyedSubscript:v8];
-    v14 = [v13 objectForKeyedSubscript:v9];
+    v13 = [(NSMutableDictionary *)self->_queryEntries objectForKeyedSubscript:languageCopy];
+    v14 = [v13 objectForKeyedSubscript:typeCopy];
 
     if (!v14)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v16 = [(NSMutableDictionary *)self->_queryEntries objectForKeyedSubscript:v8];
-      [v16 setObject:v15 forKeyedSubscript:v9];
+      v16 = [(NSMutableDictionary *)self->_queryEntries objectForKeyedSubscript:languageCopy];
+      [v16 setObject:v15 forKeyedSubscript:typeCopy];
     }
 
-    v17 = assetTypeID(v9);
+    v17 = assetTypeID(typeCopy);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __73__SRAssetBundleQuery_addQueryEntriesForLanguage_assetType_deliveryTypes___block_invoke;
     v19[3] = &unk_1E7A2AE10;
-    v20 = v8;
-    v21 = v9;
-    v22 = self;
+    v20 = languageCopy;
+    v21 = typeCopy;
+    selfCopy = self;
     v23 = v17;
-    [v10 enumerateObjectsUsingBlock:v19];
+    [typesCopy enumerateObjectsUsingBlock:v19];
 
     v18 = v20;
   }
@@ -344,16 +344,16 @@ void __73__SRAssetBundleQuery_addQueryEntriesForLanguage_assetType_deliveryTypes
   [v7 setObject:v5 forKeyedSubscript:v8];
 }
 
-- (void)enumerateEntriesForLanguage:(id)a3 block:(id)a4
+- (void)enumerateEntriesForLanguage:(id)language block:(id)block
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_queryEntries objectForKeyedSubscript:a3];
+  blockCopy = block;
+  v7 = [(NSMutableDictionary *)self->_queryEntries objectForKeyedSubscript:language];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__SRAssetBundleQuery_enumerateEntriesForLanguage_block___block_invoke;
   v9[3] = &unk_1E7A2AE60;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [v7 enumerateKeysAndObjectsUsingBlock:v9];
 }
 

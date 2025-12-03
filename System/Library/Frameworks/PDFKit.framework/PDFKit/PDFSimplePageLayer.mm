@@ -1,54 +1,54 @@
 @interface PDFSimplePageLayer
 - (BOOL)isVisible;
 - (CGAffineTransform)layerEffectTransform;
-- (PDFSimplePageLayer)initWithPage:(id)a3 geometryInterface:(id)a4 andRenderingProperties:(id)a5;
+- (PDFSimplePageLayer)initWithPage:(id)page geometryInterface:(id)interface andRenderingProperties:(id)properties;
 - (id)geometryInterface;
 - (id)page;
 - (id)renderingProperties;
 - (int64_t)displayBox;
-- (void)_pageDidRotate:(id)a3;
+- (void)_pageDidRotate:(id)rotate;
 - (void)_updateGeometry;
-- (void)_updateLayerEffect:(id)a3 withPageTransform:(CGAffineTransform *)a4;
-- (void)addPageLayerEffect:(id)a3;
+- (void)_updateLayerEffect:(id)effect withPageTransform:(CGAffineTransform *)transform;
+- (void)addPageLayerEffect:(id)effect;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)removePageLayerEffectForID:(id)a3;
-- (void)scalePageLayerEffects:(double)a3;
+- (void)drawInContext:(CGContext *)context;
+- (void)removePageLayerEffectForID:(id)d;
+- (void)scalePageLayerEffects:(double)effects;
 - (void)setNeedsTilesUpdate;
-- (void)updatePageLayerEffectForID:(id)a3;
+- (void)updatePageLayerEffectForID:(id)d;
 - (void)updatePageLayerEffects;
 @end
 
 @implementation PDFSimplePageLayer
 
-- (PDFSimplePageLayer)initWithPage:(id)a3 geometryInterface:(id)a4 andRenderingProperties:(id)a5
+- (PDFSimplePageLayer)initWithPage:(id)page geometryInterface:(id)interface andRenderingProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pageCopy = page;
+  interfaceCopy = interface;
+  propertiesCopy = properties;
   v28.receiver = self;
   v28.super_class = PDFSimplePageLayer;
   v11 = [(PDFSimplePageLayer *)&v28 init];
   if (v11)
   {
-    v12 = [v8 document];
-    objc_storeWeak(&v11->_page, v8);
-    objc_storeWeak(&v11->_geometryInterface, v9);
-    objc_storeWeak(&v11->_renderingProperties, v10);
+    document = [pageCopy document];
+    objc_storeWeak(&v11->_page, pageCopy);
+    objc_storeWeak(&v11->_geometryInterface, interfaceCopy);
+    objc_storeWeak(&v11->_renderingProperties, propertiesCopy);
     [(PDFSimplePageLayer *)v11 setValue:MEMORY[0x1E695E118] forKeyPath:@"separatedOptions.enableContext"];
-    [v8 boundsForBox:{objc_msgSend(v10, "displayBox")}];
+    [pageCopy boundsForBox:{objc_msgSend(propertiesCopy, "displayBox")}];
     v14 = v13;
     v16 = v15;
     PDFPointMake(0.0, 0.0);
     [(PDFSimplePageLayer *)v11 setFrame:PDFRectToCGRect(v17)];
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v11 selector:sel__pageDidRotate_ name:@"PDFPageDidRotate" object:v12];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__pageDidRotate_ name:@"PDFPageDidRotate" object:document];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v11 selector:sel__pageDidRotate_ name:@"PDFPageDidChangeBounds" object:v12];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v11 selector:sel__pageDidRotate_ name:@"PDFPageDidChangeBounds" object:document];
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v11 selector:sel__pageChangedPageRef_ name:@"PDFPagePageRefChanged" object:v8];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v11 selector:sel__pageChangedPageRef_ name:@"PDFPagePageRefChanged" object:pageCopy];
 
     v21 = objc_alloc_init(MEMORY[0x1E6979398]);
     effectsLayer = v11->_effectsLayer;
@@ -63,7 +63,7 @@
 
     [(PDFSimplePageLayer *)v11 setContentsScale:2.0];
     [(PDFSimplePageLayer *)v11 setMinificationFilter:*MEMORY[0x1E6979D68]];
-    v25 = [v12 indexForPage:v8];
+    v25 = [document indexForPage:pageCopy];
     v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PDFPageLayer, page index %d", v25];
     [(PDFSimplePageLayer *)v11 setName:v26];
   }
@@ -110,9 +110,9 @@
 - (int64_t)displayBox
 {
   WeakRetained = objc_loadWeakRetained(&self->_renderingProperties);
-  v3 = [WeakRetained displayBox];
+  displayBox = [WeakRetained displayBox];
 
-  return v3;
+  return displayBox;
 }
 
 - (BOOL)isVisible
@@ -143,56 +143,56 @@
   return v20;
 }
 
-- (void)addPageLayerEffect:(id)a3
+- (void)addPageLayerEffect:(id)effect
 {
-  v4 = a3;
-  if (v4)
+  effectCopy = effect;
+  if (effectCopy)
   {
-    v13 = v4;
+    v13 = effectCopy;
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     pageLayerEffects = self->_pageLayerEffects;
-    v6 = [v13 UUID];
-    v7 = [(NSMutableDictionary *)pageLayerEffects objectForKey:v6];
+    uUID = [v13 UUID];
+    v7 = [(NSMutableDictionary *)pageLayerEffects objectForKey:uUID];
 
     if (v7)
     {
       [v7 removeFromSuperlayer];
       v8 = self->_pageLayerEffects;
-      v9 = [v7 UUID];
-      [(NSMutableDictionary *)v8 removeObjectForKey:v9];
+      uUID2 = [v7 UUID];
+      [(NSMutableDictionary *)v8 removeObjectForKey:uUID2];
     }
 
     [(CALayer *)self->_effectsLayer addSublayer:v13];
     v10 = self->_pageLayerEffects;
-    v11 = [v13 UUID];
-    [(NSMutableDictionary *)v10 setObject:v13 forKey:v11];
+    uUID3 = [v13 UUID];
+    [(NSMutableDictionary *)v10 setObject:v13 forKey:uUID3];
 
-    v12 = [v13 UUID];
-    [(PDFSimplePageLayer *)self updatePageLayerEffectForID:v12];
+    uUID4 = [v13 UUID];
+    [(PDFSimplePageLayer *)self updatePageLayerEffectForID:uUID4];
 
     [MEMORY[0x1E6979518] commit];
-    v4 = v13;
+    effectCopy = v13;
   }
 }
 
-- (void)removePageLayerEffectForID:(id)a3
+- (void)removePageLayerEffectForID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = [(NSMutableDictionary *)self->_pageLayerEffects objectForKey:?];
   if (v4)
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     [v4 removeFromSuperlayer];
-    [(NSMutableDictionary *)self->_pageLayerEffects removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_pageLayerEffects removeObjectForKey:dCopy];
     [MEMORY[0x1E6979518] commit];
   }
 }
 
-- (void)updatePageLayerEffectForID:(id)a3
+- (void)updatePageLayerEffectForID:(id)d
 {
-  v4 = [(PDFSimplePageLayer *)self pageLayerEffectForID:a3];
+  v4 = [(PDFSimplePageLayer *)self pageLayerEffectForID:d];
   if (v4)
   {
     [MEMORY[0x1E6979518] begin];
@@ -212,12 +212,12 @@
   v16 = 0u;
   v14 = 0u;
   [(PDFSimplePageLayer *)self layerEffectTransform];
-  v3 = [(PDFSimplePageLayer *)self _pageLayerEffects];
+  _pageLayerEffects = [(PDFSimplePageLayer *)self _pageLayerEffects];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v17 count:16];
+  v4 = [_pageLayerEffects countByEnumeratingWithState:&v10 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -229,7 +229,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_pageLayerEffects);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -241,7 +241,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v17 count:16];
+      v5 = [_pageLayerEffects countByEnumeratingWithState:&v10 objects:v17 count:16];
     }
 
     while (v5);
@@ -259,10 +259,10 @@
   *&retstr->a = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_page);
   v7 = objc_loadWeakRetained(&self->_renderingProperties);
-  v8 = [v7 displayBox];
+  displayBox = [v7 displayBox];
   if (WeakRetained)
   {
-    [WeakRetained transformForBox:v8];
+    [WeakRetained transformForBox:displayBox];
   }
 
   else
@@ -275,32 +275,32 @@
   return [PDFPage setNativeRotationDrawingEnabledForThisThread:v5];
 }
 
-- (void)scalePageLayerEffects:(double)a3
+- (void)scalePageLayerEffects:(double)effects
 {
   [(CALayer *)self->_effectsLayer frame];
   v6 = v5;
   v8 = v7;
   effectsLayer = self->_effectsLayer;
-  CGAffineTransformMakeScale(&v10, a3, a3);
+  CGAffineTransformMakeScale(&v10, effects, effects);
   [(CALayer *)effectsLayer setAffineTransform:&v10];
   [(CALayer *)self->_effectsLayer setFrame:0.0, 0.0, v6, v8];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   [(PDFSimplePageLayer *)self frame];
   v8.b = 0.0;
   v8.c = 0.0;
   v8.a = 1.0;
   *&v8.d = xmmword_1C1D79E00;
   v8.ty = v5;
-  CGContextConcatCTM(a3, &v8);
+  CGContextConcatCTM(context, &v8);
   WeakRetained = objc_loadWeakRetained(&self->_page);
   v7 = objc_loadWeakRetained(&self->_renderingProperties);
-  [WeakRetained drawWithBox:objc_msgSend(v7 inContext:{"displayBox"), a3}];
+  [WeakRetained drawWithBox:objc_msgSend(v7 inContext:{"displayBox"), context}];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 - (void)_updateGeometry
@@ -315,48 +315,48 @@
   [(PDFSimplePageLayer *)self setNeedsDisplay];
 }
 
-- (void)_updateLayerEffect:(id)a3 withPageTransform:(CGAffineTransform *)a4
+- (void)_updateLayerEffect:(id)effect withPageTransform:(CGAffineTransform *)transform
 {
-  v6 = a3;
-  [v6 pageFrame];
+  effectCopy = effect;
+  [effectCopy pageFrame];
   v8 = v7;
   CenterPoint = PDFRectGetCenterPoint(v9, v10, v7);
   v13 = PDFPointToCGPoint(CenterPoint, v12);
-  v15 = vaddq_f64(*&a4->tx, vmlaq_n_f64(vmulq_n_f64(*&a4->c, v14), *&a4->a, v13));
+  v15 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v14), *&transform->a, v13));
   v16 = PDFPointFromCGPoint(v15.f64[0], v15.f64[1]);
   PDFRectMakeFromCenter(v16, v17, v8);
   WeakRetained = objc_loadWeakRetained(&self->_page);
-  v19 = [WeakRetained rotation];
+  rotation = [WeakRetained rotation];
   v20 = objc_loadWeakRetained(&self->_renderingProperties);
   [WeakRetained boundsForBox:{objc_msgSend(v20, "displayBox")}];
   v22 = v21;
   v24 = v23;
 
-  PDFRectRotate(v19, v22, v24);
+  PDFRectRotate(rotation, v22, v24);
   v25 = *(MEMORY[0x1E695EFD0] + 16);
   *&v27.a = *MEMORY[0x1E695EFD0];
   *&v27.c = v25;
   *&v27.tx = *(MEMORY[0x1E695EFD0] + 32);
-  [v6 setFrame:{PDFRectToCGRect(objc_msgSend(v6, "setAffineTransform:", &v27))}];
-  if ([v6 shouldRotateContent])
+  [effectCopy setFrame:{PDFRectToCGRect(objc_msgSend(effectCopy, "setAffineTransform:", &v27))}];
+  if ([effectCopy shouldRotateContent])
   {
-    v26 = PDFDegToRad(v19);
+    v26 = PDFDegToRad(rotation);
     CGAffineTransformMakeRotation(&v27, v26);
-    [v6 setAffineTransform:&v27];
+    [effectCopy setAffineTransform:&v27];
   }
 
-  [v6 update];
+  [effectCopy update];
 }
 
-- (void)_pageDidRotate:(id)a3
+- (void)_pageDidRotate:(id)rotate
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 objectForKeyedSubscript:@"page"];
+  userInfo = [rotate userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"page"];
 
-  v5 = [(PDFSimplePageLayer *)self page];
+  page = [(PDFSimplePageLayer *)self page];
 
   v6 = v8;
-  if (v8 == v5)
+  if (v8 == page)
   {
     WeakRetained = objc_loadWeakRetained(&self->_renderingProperties);
     [v8 boundsForBox:{objc_msgSend(WeakRetained, "displayBox")}];

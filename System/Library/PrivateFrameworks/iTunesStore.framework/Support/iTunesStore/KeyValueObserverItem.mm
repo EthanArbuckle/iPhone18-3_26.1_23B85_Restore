@@ -1,20 +1,20 @@
 @interface KeyValueObserverItem
-- (KeyValueObserverItem)initWithObject:(id)a3 keyPath:(id)a4 block:(id)a5;
+- (KeyValueObserverItem)initWithObject:(id)object keyPath:(id)path block:(id)block;
 - (void)dealloc;
 @end
 
 @implementation KeyValueObserverItem
 
-- (KeyValueObserverItem)initWithObject:(id)a3 keyPath:(id)a4 block:(id)a5
+- (KeyValueObserverItem)initWithObject:(id)object keyPath:(id)path block:(id)block
 {
   v10.receiver = self;
   v10.super_class = KeyValueObserverItem;
   v8 = [(KeyValueObserverItem *)&v10 init];
   if (v8)
   {
-    v8->_block = [a5 copy];
-    v8->_keyPath = [a4 copy];
-    v8->_object = a3;
+    v8->_block = [block copy];
+    v8->_keyPath = [path copy];
+    v8->_object = object;
   }
 
   return v8;

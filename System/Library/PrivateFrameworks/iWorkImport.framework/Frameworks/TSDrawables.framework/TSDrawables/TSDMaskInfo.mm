@@ -1,28 +1,28 @@
 @interface TSDMaskInfo
-- (BOOL)isEqualToMaskInfo:(id)a3;
-- (TSDMaskInfo)initWithContext:(id)a3 geometry:(id)a4 pathSource:(id)a5;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)objectForProperty:(int)a3;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setPathSource:(id)a3;
+- (BOOL)isEqualToMaskInfo:(id)info;
+- (TSDMaskInfo)initWithContext:(id)context geometry:(id)geometry pathSource:(id)source;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)objectForProperty:(int)property;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setGeometry:(id)geometry;
+- (void)setPathSource:(id)source;
 @end
 
 @implementation TSDMaskInfo
 
-- (TSDMaskInfo)initWithContext:(id)a3 geometry:(id)a4 pathSource:(id)a5
+- (TSDMaskInfo)initWithContext:(id)context geometry:(id)geometry pathSource:(id)source
 {
-  v8 = a5;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = TSDMaskInfo;
-  v10 = [(TSDDrawableInfo *)&v19 initWithContext:a3 geometry:a4];
+  v10 = [(TSDDrawableInfo *)&v19 initWithContext:context geometry:geometry];
   if (v10)
   {
-    if (!v8)
+    if (!sourceCopy)
     {
       v11 = MEMORY[0x277D81150];
       v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSDMaskInfo initWithContext:geometry:pathSource:]");
@@ -32,24 +32,24 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
     }
 
-    objc_msgSend_setPathSource_(v10, v9, v8);
+    objc_msgSend_setPathSource_(v10, v9, sourceCopy);
   }
 
   return v10;
 }
 
-- (BOOL)isEqualToMaskInfo:(id)a3
+- (BOOL)isEqualToMaskInfo:(id)info
 {
-  v6 = a3;
-  if (v6)
+  infoCopy = info;
+  if (infoCopy)
   {
     v7 = objc_msgSend_geometry(self, v4, v5);
-    v10 = objc_msgSend_geometry(v6, v8, v9);
+    v10 = objc_msgSend_geometry(infoCopy, v8, v9);
     if (objc_msgSend_isEqual_(v7, v11, v10))
     {
       v14 = objc_msgSend_pathSource(self, v12, v13);
       v17 = objc_msgSend_bezierPath(v14, v15, v16);
-      v20 = objc_msgSend_pathSource(v6, v18, v19);
+      v20 = objc_msgSend_pathSource(infoCopy, v18, v19);
       v23 = objc_msgSend_bezierPath(v20, v21, v22);
       isEqual = objc_msgSend_isEqual_(v17, v24, v23);
     }
@@ -68,15 +68,15 @@
   return isEqual;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v27.receiver = self;
   v27.super_class = TSDMaskInfo;
-  v4 = a3;
-  [(TSDDrawableInfo *)&v27 setGeometry:v4];
+  geometryCopy = geometry;
+  [(TSDDrawableInfo *)&v27 setGeometry:geometryCopy];
   v7 = objc_msgSend_geometry(self, v5, v6, v27.receiver, v27.super_class);
 
-  if (v7 == v4)
+  if (v7 == geometryCopy)
   {
     v10 = objc_msgSend_geometry(self, v8, v9);
     objc_msgSend_size(v10, v11, v12);
@@ -93,11 +93,11 @@
   }
 }
 
-- (void)setPathSource:(id)a3
+- (void)setPathSource:(id)source
 {
-  v4 = a3;
-  v44 = v4;
-  if (!v4)
+  sourceCopy = source;
+  v44 = sourceCopy;
+  if (!sourceCopy)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSDMaskInfo setPathSource:]");
@@ -105,10 +105,10 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v10, v7, v9, 77, 0, "invalid nil value for '%{public}s'", "newPathSource");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
-    v4 = 0;
+    sourceCopy = 0;
   }
 
-  if (self->_pathSource != v4)
+  if (self->_pathSource != sourceCopy)
   {
     objc_msgSend_willChangeProperty_(self, v5, 527);
     objc_msgSend_willModify(self, v13, v14);
@@ -121,7 +121,7 @@
     objc_msgSend_size(v23, v24, v25);
     v26 = TSUNearlyEqualSizes();
 
-    v4 = v44;
+    sourceCopy = v44;
     if ((v26 & 1) == 0)
     {
       v28 = MEMORY[0x277D81150];
@@ -135,15 +135,15 @@
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v28, v41, v29, v31, 85, 0, "Path source set on mask info that doesn't have a natural size that aligns with the mask's info geometry! Path Source Size: %{public}@ Geometry Size: %{public}@", v34, v40);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v42, v43);
-      v4 = v44;
+      sourceCopy = v44;
     }
   }
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  objectCopy = object;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
@@ -159,7 +159,7 @@
 
   v18 = objc_msgSend_geometry(self, v9, v10);
   v21 = objc_msgSend_geometry(v8, v19, v20);
-  v22 = TSDMixingTypeWithObjects(v18, v21, v6);
+  v22 = TSDMixingTypeWithObjects(v18, v21, contextCopy);
 
   if (v22 == 5)
   {
@@ -231,7 +231,7 @@ LABEL_26:
 LABEL_27:
   v99 = objc_msgSend_pathSource(self, v23, v24);
   v102 = objc_msgSend_pathSource(v8, v100, v101);
-  v103 = TSDMixingTypeWithObjects(v99, v102, v6);
+  v103 = TSDMixingTypeWithObjects(v99, v102, contextCopy);
   v98 = TSDMixingTypeBestFromMixingTypes(v25, v103);
 
 LABEL_28:
@@ -243,19 +243,19 @@ LABEL_28:
   return v98;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
 
   v10 = objc_msgSend_geometry(self, v8, v9);
   v13 = objc_msgSend_geometry(v7, v11, v12);
-  v14 = TSDMixingMixedObjectWithFraction(v10, v13, a3);
+  v14 = TSDMixingMixedObjectWithFraction(v10, v13, fraction);
 
   v17 = objc_msgSend_pathSource(self, v15, v16);
   v20 = objc_msgSend_pathSource(v7, v18, v19);
-  v21 = TSDMixingMixedObjectWithFraction(v17, v20, a3);
+  v21 = TSDMixingMixedObjectWithFraction(v17, v20, fraction);
 
   v22 = [TSDMaskInfo alloc];
   v25 = objc_msgSend_context(self, v23, v24);
@@ -264,11 +264,11 @@ LABEL_28:
   return v27;
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  if (a3 == 527)
+  if (property == 527)
   {
-    v3 = objc_msgSend_pathSource(self, a2, *&a3);
+    v3 = objc_msgSend_pathSource(self, a2, *&property);
   }
 
   else
@@ -281,21 +281,21 @@ LABEL_28:
   return v3;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812F5188[86]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F5188[86]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 3))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -305,10 +305,10 @@ LABEL_28:
 
   v11.receiver = self;
   v11.super_class = TSDMaskInfo;
-  [(TSDDrawableInfo *)&v11 loadFromArchive:v7 unarchiver:v6];
-  if (*(a3 + 4))
+  [(TSDDrawableInfo *)&v11 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  if (*(archive + 4))
   {
-    objc_msgSend_pathSourceWithArchive_(TSDPathSource, v8, *(a3 + 4));
+    objc_msgSend_pathSourceWithArchive_(TSDPathSource, v8, *(archive + 4));
   }
 
   else
@@ -319,40 +319,40 @@ LABEL_28:
   objc_msgSend_setPathSource_(self, v10, v9);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_27669EBC0, off_2812F5188[86]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_27669EBC0, off_2812F5188[86]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_27669EB38;
   v15[3] = &unk_27A6CC520;
-  v18 = a3;
-  v7 = v6;
+  archiveCopy = archive;
+  v7 = archiverCopy;
   v16 = v7;
-  v17 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v15);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, archive, v15);
   v12 = objc_msgSend_pathSource(self, v9, v10);
-  *(a3 + 4) |= 2u;
-  v13 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v13 = *(archive + 4);
   if (!v13)
   {
-    v14 = *(a3 + 1);
+    v14 = *(archive + 1);
     if (v14)
     {
       v14 = *(v14 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v13 = google::protobuf::Arena::CreateMaybeMessage<TSD::PathSourceArchive>(v14);
-    *(a3 + 4) = v13;
+    *(archive + 4) = v13;
   }
 
   objc_msgSend_saveToArchive_(v12, v11, v13);

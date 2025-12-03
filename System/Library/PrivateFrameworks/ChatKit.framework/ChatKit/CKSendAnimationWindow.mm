@@ -1,19 +1,19 @@
 @interface CKSendAnimationWindow
-- (CKSendAnimationWindow)initWithWindowScene:(id)a3 frame:(CGRect)a4;
+- (CKSendAnimationWindow)initWithWindowScene:(id)scene frame:(CGRect)frame;
 @end
 
 @implementation CKSendAnimationWindow
 
-- (CKSendAnimationWindow)initWithWindowScene:(id)a3 frame:(CGRect)a4
+- (CKSendAnimationWindow)initWithWindowScene:(id)scene frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sceneCopy = scene;
   v15.receiver = self;
   v15.super_class = CKSendAnimationWindow;
-  v10 = [(UIApplicationRotationFollowingWindow *)&v15 initWithWindowScene:v9];
+  v10 = [(UIApplicationRotationFollowingWindow *)&v15 initWithWindowScene:sceneCopy];
   v11 = v10;
   if (v10)
   {
@@ -24,7 +24,7 @@
     [(CKGradientReferenceView *)v13 setAutoresizingMask:18];
     [(CKSendAnimationWindow *)v11 setGradientReferenceView:v13];
     [(CKSendAnimationWindow *)v11 addSubview:v13];
-    -[UIAutoRotatingWindow updateForOrientation:](v11, "updateForOrientation:", [v9 interfaceOrientation]);
+    -[UIAutoRotatingWindow updateForOrientation:](v11, "updateForOrientation:", [sceneCopy interfaceOrientation]);
   }
 
   return v11;

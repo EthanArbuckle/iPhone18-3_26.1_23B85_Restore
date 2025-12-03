@@ -1,35 +1,35 @@
 @interface SXQuickLookInteractor
-- (SXQuickLookInteractor)initWithFile:(id)a3 service:(id)a4;
+- (SXQuickLookInteractor)initWithFile:(id)file service:(id)service;
 - (SXQuickLookInteractorDelegate)delegate;
-- (void)loadThumbnailWithSize:(CGSize)a3;
+- (void)loadThumbnailWithSize:(CGSize)size;
 @end
 
 @implementation SXQuickLookInteractor
 
-- (SXQuickLookInteractor)initWithFile:(id)a3 service:(id)a4
+- (SXQuickLookInteractor)initWithFile:(id)file service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  fileCopy = file;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = SXQuickLookInteractor;
   v9 = [(SXQuickLookInteractor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_file, a3);
-    objc_storeStrong(&v10->_service, a4);
+    objc_storeStrong(&v9->_file, file);
+    objc_storeStrong(&v10->_service, service);
   }
 
   return v10;
 }
 
-- (void)loadThumbnailWithSize:(CGSize)a3
+- (void)loadThumbnailWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_initWeak(&location, self);
-  v6 = [(SXQuickLookInteractor *)self service];
-  v7 = [(SXQuickLookInteractor *)self file];
+  service = [(SXQuickLookInteractor *)self service];
+  file = [(SXQuickLookInteractor *)self file];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__SXQuickLookInteractor_loadThumbnailWithSize___block_invoke;
@@ -40,7 +40,7 @@
   v8[2] = __47__SXQuickLookInteractor_loadThumbnailWithSize___block_invoke_2;
   v8[3] = &unk_1E8500610;
   objc_copyWeak(&v9, &location);
-  [v6 fetchThumbnailForFile:v7 size:v10 onCompletion:v8 onError:{width, height}];
+  [service fetchThumbnailForFile:file size:v10 onCompletion:v8 onError:{width, height}];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);

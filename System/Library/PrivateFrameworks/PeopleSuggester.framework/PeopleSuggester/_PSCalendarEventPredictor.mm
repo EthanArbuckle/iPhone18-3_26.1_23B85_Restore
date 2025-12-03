@@ -1,20 +1,20 @@
 @interface _PSCalendarEventPredictor
-+ (BOOL)currentUserIsEligibleForEvent:(id)a3;
-+ (BOOL)hasFaceTimeSignalInEvent:(id)a3;
-+ (BOOL)isCorecipientParticipant:(id)a3 seedRecipients:(id)a4 contactsMap:(id)a5;
-+ (BOOL)isEligibleParticipant:(id)a3 context:(id)a4 contactsMap:(id)a5;
-+ (BOOL)isMaybeFaceTimeEvent:(id)a3 earliestStartDate:(id)a4 latestStartDate:(id)a5 maxParticipants:(unint64_t)a6;
-+ (id)_handleFromParticipant:(id)a3;
-+ (id)createFinalSuggestions:(id)a3 context:(id)a4;
-+ (id)eventComparatorWithPredictionContext:(id)a3 contactsMap:(id)a4;
-+ (id)getZKWSuggestionForCalendarEvent:(id)a3 context:(id)a4 contactsMap:(id)a5;
-+ (id)participantComparatorWithContactsMap:(id)a3;
-+ (unint64_t)_numOfOtherParticipantsInEvent:(id)a3;
++ (BOOL)currentUserIsEligibleForEvent:(id)event;
++ (BOOL)hasFaceTimeSignalInEvent:(id)event;
++ (BOOL)isCorecipientParticipant:(id)participant seedRecipients:(id)recipients contactsMap:(id)map;
++ (BOOL)isEligibleParticipant:(id)participant context:(id)context contactsMap:(id)map;
++ (BOOL)isMaybeFaceTimeEvent:(id)event earliestStartDate:(id)date latestStartDate:(id)startDate maxParticipants:(unint64_t)participants;
++ (id)_handleFromParticipant:(id)participant;
++ (id)createFinalSuggestions:(id)suggestions context:(id)context;
++ (id)eventComparatorWithPredictionContext:(id)context contactsMap:(id)map;
++ (id)getZKWSuggestionForCalendarEvent:(id)event context:(id)context contactsMap:(id)map;
++ (id)participantComparatorWithContactsMap:(id)map;
++ (unint64_t)_numOfOtherParticipantsInEvent:(id)event;
 - (_PSCalendarEventPredictor)init;
-- (_PSCalendarEventPredictor)initWithEventStore:(id)a3 contactStore:(id)a4;
+- (_PSCalendarEventPredictor)initWithEventStore:(id)store contactStore:(id)contactStore;
 - (id)contactKeysToFetch;
-- (id)getParticipantContactsMapFromEvent:(id)a3;
-- (id)zkwSuggestionsFromCalendarWithPredictionContext:(id)a3 startDate:(id)a4 endDate:(id)a5 maxParticipants:(unint64_t)a6;
+- (id)getParticipantContactsMapFromEvent:(id)event;
+- (id)zkwSuggestionsFromCalendarWithPredictionContext:(id)context startDate:(id)date endDate:(id)endDate maxParticipants:(unint64_t)participants;
 @end
 
 @implementation _PSCalendarEventPredictor
@@ -67,82 +67,82 @@
   return v10;
 }
 
-- (_PSCalendarEventPredictor)initWithEventStore:(id)a3 contactStore:(id)a4
+- (_PSCalendarEventPredictor)initWithEventStore:(id)store contactStore:(id)contactStore
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  contactStoreCopy = contactStore;
   v12.receiver = self;
   v12.super_class = _PSCalendarEventPredictor;
   v9 = [(_PSCalendarEventPredictor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventStore, a3);
-    objc_storeStrong(&v10->_contactStore, a4);
+    objc_storeStrong(&v9->_eventStore, store);
+    objc_storeStrong(&v10->_contactStore, contactStore);
   }
 
   return v10;
 }
 
-+ (id)_handleFromParticipant:(id)a3
++ (id)_handleFromParticipant:(id)participant
 {
-  v3 = a3;
-  v4 = [v3 phoneNumber];
-  v5 = [v4 length];
+  participantCopy = participant;
+  phoneNumber = [participantCopy phoneNumber];
+  v5 = [phoneNumber length];
 
   if (v5)
   {
-    [v3 phoneNumber];
+    [participantCopy phoneNumber];
   }
 
   else
   {
-    [v3 emailAddress];
+    [participantCopy emailAddress];
   }
   v6 = ;
 
   return v6;
 }
 
-+ (BOOL)isCorecipientParticipant:(id)a3 seedRecipients:(id)a4 contactsMap:(id)a5
++ (BOOL)isCorecipientParticipant:(id)participant seedRecipients:(id)recipients contactsMap:(id)map
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count] && _os_feature_enabled_impl())
+  participantCopy = participant;
+  recipientsCopy = recipients;
+  mapCopy = map;
+  if ([recipientsCopy count] && _os_feature_enabled_impl())
   {
     v10 = objc_opt_new();
-    v11 = [v7 phoneNumber];
+    phoneNumber = [participantCopy phoneNumber];
 
-    if (v11)
+    if (phoneNumber)
     {
-      v12 = [v7 phoneNumber];
-      [v10 addObject:v12];
+      phoneNumber2 = [participantCopy phoneNumber];
+      [v10 addObject:phoneNumber2];
     }
 
-    v13 = [v7 emailAddress];
+    emailAddress = [participantCopy emailAddress];
 
-    if (v13)
+    if (emailAddress)
     {
-      v14 = [v7 emailAddress];
-      [v10 addObject:v14];
+      emailAddress2 = [participantCopy emailAddress];
+      [v10 addObject:emailAddress2];
     }
 
-    v15 = [v9 objectForKeyedSubscript:v7];
-    v16 = [v15 firstObject];
+    v15 = [mapCopy objectForKeyedSubscript:participantCopy];
+    firstObject = [v15 firstObject];
 
-    if (v16)
+    if (firstObject)
     {
-      v17 = [v16 identifier];
-      [v10 addObject:v17];
+      identifier = [firstObject identifier];
+      [v10 addObject:identifier];
 
       v41 = 0u;
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v18 = [v16 emailAddresses];
-      v19 = [v18 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      emailAddresses = [firstObject emailAddresses];
+      v19 = [emailAddresses countByEnumeratingWithState:&v39 objects:v44 count:16];
       if (v19)
       {
         v20 = v19;
@@ -153,14 +153,14 @@
           {
             if (*v40 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(emailAddresses);
             }
 
-            v23 = [*(*(&v39 + 1) + 8 * i) value];
-            [v10 addObject:v23];
+            value = [*(*(&v39 + 1) + 8 * i) value];
+            [v10 addObject:value];
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v39 objects:v44 count:16];
+          v20 = [emailAddresses countByEnumeratingWithState:&v39 objects:v44 count:16];
         }
 
         while (v20);
@@ -170,9 +170,9 @@
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v34 = v16;
-      v24 = [v16 phoneNumbers];
-      v25 = [v24 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v34 = firstObject;
+      phoneNumbers = [firstObject phoneNumbers];
+      v25 = [phoneNumbers countByEnumeratingWithState:&v35 objects:v43 count:16];
       if (v25)
       {
         v26 = v25;
@@ -183,28 +183,28 @@
           {
             if (*v36 != v27)
             {
-              objc_enumerationMutation(v24);
+              objc_enumerationMutation(phoneNumbers);
             }
 
-            v29 = [*(*(&v35 + 1) + 8 * j) value];
-            v30 = [v29 fullyQualifiedDigits];
+            value2 = [*(*(&v35 + 1) + 8 * j) value];
+            fullyQualifiedDigits = [value2 fullyQualifiedDigits];
 
-            if (v30)
+            if (fullyQualifiedDigits)
             {
-              [v10 addObject:v30];
+              [v10 addObject:fullyQualifiedDigits];
             }
           }
 
-          v26 = [v24 countByEnumeratingWithState:&v35 objects:v43 count:16];
+          v26 = [phoneNumbers countByEnumeratingWithState:&v35 objects:v43 count:16];
         }
 
         while (v26);
       }
 
-      v16 = v34;
+      firstObject = v34;
     }
 
-    v31 = [v10 intersectsSet:v8];
+    v31 = [v10 intersectsSet:recipientsCopy];
   }
 
   else
@@ -216,12 +216,12 @@
   return v31;
 }
 
-+ (BOOL)isEligibleParticipant:(id)a3 context:(id)a4 contactsMap:(id)a5
++ (BOOL)isEligibleParticipant:(id)participant context:(id)context contactsMap:(id)map
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 isCurrentUser])
+  participantCopy = participant;
+  contextCopy = context;
+  mapCopy = map;
+  if ([participantCopy isCurrentUser])
   {
     v10 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -230,15 +230,15 @@
     }
   }
 
-  else if ([v7 participantType] == 1)
+  else if ([participantCopy participantType] == 1)
   {
-    v11 = [v8 seedRecipients];
-    if ([v11 count] && (_os_feature_enabled_impl() & 1) != 0)
+    seedRecipients = [contextCopy seedRecipients];
+    if ([seedRecipients count] && (_os_feature_enabled_impl() & 1) != 0)
     {
       v12 = MEMORY[0x1E695DFD8];
-      v13 = [v8 seedRecipients];
-      v14 = [v12 setWithArray:v13];
-      v15 = [_PSCalendarEventPredictor isCorecipientParticipant:v7 seedRecipients:v14 contactsMap:v9];
+      seedRecipients2 = [contextCopy seedRecipients];
+      v14 = [v12 setWithArray:seedRecipients2];
+      v15 = [_PSCalendarEventPredictor isCorecipientParticipant:participantCopy seedRecipients:v14 contactsMap:mapCopy];
 
       if (v15)
       {
@@ -250,7 +250,7 @@
     {
     }
 
-    if ([v7 participantStatus] != 3)
+    if ([participantCopy participantStatus] != 3)
     {
       v16 = 1;
       goto LABEL_17;
@@ -279,38 +279,38 @@ LABEL_17:
   return v16;
 }
 
-+ (BOOL)hasFaceTimeSignalInEvent:(id)a3
++ (BOOL)hasFaceTimeSignalInEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v4 lowercaseString];
-  if ([v5 containsString:@"facetime"])
+  eventCopy = event;
+  title = [eventCopy title];
+  lowercaseString = [title lowercaseString];
+  if ([lowercaseString containsString:@"facetime"])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v3 location];
-    v8 = [v7 lowercaseString];
-    if ([v8 containsString:@"facetime"])
+    location = [eventCopy location];
+    lowercaseString2 = [location lowercaseString];
+    if ([lowercaseString2 containsString:@"facetime"])
     {
       v6 = 1;
     }
 
     else
     {
-      v9 = [v3 notes];
-      v10 = [v9 lowercaseString];
-      if ([v10 containsString:@"facetime"])
+      notes = [eventCopy notes];
+      lowercaseString3 = [notes lowercaseString];
+      if ([lowercaseString3 containsString:@"facetime"])
       {
         v6 = 1;
       }
 
       else
       {
-        v11 = [v3 location];
-        v6 = [v11 length] == 0;
+        location2 = [eventCopy location];
+        v6 = [location2 length] == 0;
       }
     }
   }
@@ -318,49 +318,49 @@ LABEL_17:
   return v6;
 }
 
-+ (id)eventComparatorWithPredictionContext:(id)a3 contactsMap:(id)a4
++ (id)eventComparatorWithPredictionContext:(id)context contactsMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  mapCopy = map;
   v7 = objc_opt_new();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78___PSCalendarEventPredictor_eventComparatorWithPredictionContext_contactsMap___block_invoke;
   v13[3] = &unk_1E7C26BD8;
-  v14 = v5;
+  v14 = contextCopy;
   v15 = v7;
-  v16 = v6;
-  v8 = v6;
+  v16 = mapCopy;
+  v8 = mapCopy;
   v9 = v7;
-  v10 = v5;
+  v10 = contextCopy;
   v11 = MEMORY[0x1B8C8C060](v13);
 
   return v11;
 }
 
-+ (id)participantComparatorWithContactsMap:(id)a3
++ (id)participantComparatorWithContactsMap:(id)map
 {
-  v3 = a3;
+  mapCopy = map;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66___PSCalendarEventPredictor_participantComparatorWithContactsMap___block_invoke;
   v7[3] = &unk_1E7C26C00;
-  v8 = v3;
-  v4 = v3;
+  v8 = mapCopy;
+  v4 = mapCopy;
   v5 = MEMORY[0x1B8C8C060](v7);
 
   return v5;
 }
 
-+ (unint64_t)_numOfOtherParticipantsInEvent:(id)a3
++ (unint64_t)_numOfOtherParticipantsInEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [a3 attendees];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  attendees = [event attendees];
+  v4 = [attendees countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -372,17 +372,17 @@ LABEL_3:
     {
       if (*v16 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(attendees);
       }
 
       v9 = *(*(&v15 + 1) + 8 * v8);
-      v10 = [v9 participantType];
-      if (v10 == 4)
+      participantType = [v9 participantType];
+      if (participantType == 4)
       {
         break;
       }
 
-      v11 = v10;
+      v11 = participantType;
       LODWORD(v12) = [v9 isCurrentUser] ^ 1;
       if (v11 == 1)
       {
@@ -397,7 +397,7 @@ LABEL_3:
       v6 += v12;
       if (v5 == ++v8)
       {
-        v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v5 = [attendees countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -415,19 +415,19 @@ LABEL_14:
   return v6;
 }
 
-+ (BOOL)currentUserIsEligibleForEvent:(id)a3
++ (BOOL)currentUserIsEligibleForEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  eventCopy = event;
+  v4 = eventCopy;
+  if (eventCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [v3 attendees];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    attendees = [eventCopy attendees];
+    v6 = [attendees countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -438,7 +438,7 @@ LABEL_4:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(attendees);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
@@ -449,7 +449,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v7 = [attendees countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -518,33 +518,33 @@ LABEL_23:
   return v12;
 }
 
-+ (BOOL)isMaybeFaceTimeEvent:(id)a3 earliestStartDate:(id)a4 latestStartDate:(id)a5 maxParticipants:(unint64_t)a6
++ (BOOL)isMaybeFaceTimeEvent:(id)event earliestStartDate:(id)date latestStartDate:(id)startDate maxParticipants:(unint64_t)participants
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  eventCopy = event;
+  dateCopy = date;
+  startDateCopy = startDate;
+  if (eventCopy)
   {
-    v12 = [v9 startDate];
-    if (v12)
+    startDate = [eventCopy startDate];
+    if (startDate)
     {
-      v13 = v12;
-      v14 = [v9 startDate];
-      if ([v14 compare:v10] == -1)
+      v13 = startDate;
+      startDate2 = [eventCopy startDate];
+      if ([startDate2 compare:dateCopy] == -1)
       {
       }
 
       else
       {
-        v15 = [v9 startDate];
-        v16 = [v15 compare:v11];
+        startDate3 = [eventCopy startDate];
+        v16 = [startDate3 compare:startDateCopy];
 
         if (v16 != 1)
         {
-          if ([v9 isAllDay])
+          if ([eventCopy isAllDay])
           {
-            v17 = +[_PSLogging generalChannel];
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+            lowercaseString = +[_PSLogging generalChannel];
+            if (os_log_type_enabled(lowercaseString, OS_LOG_TYPE_DEBUG))
             {
               +[_PSCalendarEventPredictor isMaybeFaceTimeEvent:earliestStartDate:latestStartDate:maxParticipants:];
             }
@@ -556,10 +556,10 @@ LABEL_13:
             goto LABEL_14;
           }
 
-          if ([v9 status] == 3)
+          if ([eventCopy status] == 3)
           {
-            v17 = +[_PSLogging generalChannel];
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+            lowercaseString = +[_PSLogging generalChannel];
+            if (os_log_type_enabled(lowercaseString, OS_LOG_TYPE_DEBUG))
             {
               +[_PSCalendarEventPredictor isMaybeFaceTimeEvent:earliestStartDate:latestStartDate:maxParticipants:];
             }
@@ -567,20 +567,20 @@ LABEL_13:
             goto LABEL_12;
           }
 
-          v20 = [v9 attendees];
-          if ([v20 count] < 2)
+          attendees = [eventCopy attendees];
+          if ([attendees count] < 2)
           {
 
             goto LABEL_21;
           }
 
-          v21 = [_PSCalendarEventPredictor _numOfOtherParticipantsInEvent:v9];
+          v21 = [_PSCalendarEventPredictor _numOfOtherParticipantsInEvent:eventCopy];
 
-          if (v21 > a6)
+          if (v21 > participants)
           {
 LABEL_21:
-            v17 = +[_PSLogging generalChannel];
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+            lowercaseString = +[_PSLogging generalChannel];
+            if (os_log_type_enabled(lowercaseString, OS_LOG_TYPE_DEBUG))
             {
               +[_PSCalendarEventPredictor isMaybeFaceTimeEvent:earliestStartDate:latestStartDate:maxParticipants:];
             }
@@ -588,43 +588,43 @@ LABEL_21:
             goto LABEL_12;
           }
 
-          v22 = [v9 virtualConference];
+          virtualConference = [eventCopy virtualConference];
 
-          if (v22)
+          if (virtualConference)
           {
-            v17 = +[_PSLogging generalChannel];
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+            lowercaseString = +[_PSLogging generalChannel];
+            if (os_log_type_enabled(lowercaseString, OS_LOG_TYPE_DEBUG))
             {
-              [_PSCalendarEventPredictor isMaybeFaceTimeEvent:v9 earliestStartDate:? latestStartDate:? maxParticipants:?];
+              [_PSCalendarEventPredictor isMaybeFaceTimeEvent:eventCopy earliestStartDate:? latestStartDate:? maxParticipants:?];
             }
 
             goto LABEL_12;
           }
 
-          v23 = [v9 location];
-          v17 = [v23 lowercaseString];
+          location = [eventCopy location];
+          lowercaseString = [location lowercaseString];
 
-          if (([v17 hasPrefix:@"http://"]& 1) != 0 || [v17 hasPrefix:@"https://"])
+          if (([lowercaseString hasPrefix:@"http://"]& 1) != 0 || [lowercaseString hasPrefix:@"https://"])
           {
-            v24 = +[_PSLogging generalChannel];
-            if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+            lowercaseString2 = +[_PSLogging generalChannel];
+            if (os_log_type_enabled(lowercaseString2, OS_LOG_TYPE_DEBUG))
             {
-              [_PSCalendarEventPredictor isMaybeFaceTimeEvent:v9 earliestStartDate:? latestStartDate:? maxParticipants:?];
+              [_PSCalendarEventPredictor isMaybeFaceTimeEvent:eventCopy earliestStartDate:? latestStartDate:? maxParticipants:?];
             }
 
             goto LABEL_30;
           }
 
-          v25 = [v9 URL];
-          v26 = [v25 scheme];
-          v24 = [v26 lowercaseString];
+          v25 = [eventCopy URL];
+          scheme = [v25 scheme];
+          lowercaseString2 = [scheme lowercaseString];
 
-          if (([v24 hasPrefix:@"http"]& 1) != 0 || [v24 hasPrefix:@"https"])
+          if (([lowercaseString2 hasPrefix:@"http"]& 1) != 0 || [lowercaseString2 hasPrefix:@"https"])
           {
             v27 = +[_PSLogging generalChannel];
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
             {
-              [_PSCalendarEventPredictor isMaybeFaceTimeEvent:v9 earliestStartDate:? latestStartDate:? maxParticipants:?];
+              [_PSCalendarEventPredictor isMaybeFaceTimeEvent:eventCopy earliestStartDate:? latestStartDate:? maxParticipants:?];
             }
 
             v18 = 0;
@@ -632,7 +632,7 @@ LABEL_21:
 
           else
           {
-            if (![_PSCalendarEventPredictor currentUserIsEligibleForEvent:v9])
+            if (![_PSCalendarEventPredictor currentUserIsEligibleForEvent:eventCopy])
             {
 LABEL_30:
               v18 = 0;
@@ -655,8 +655,8 @@ LABEL_37:
       }
     }
 
-    v17 = +[_PSLogging generalChannel];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    lowercaseString = +[_PSLogging generalChannel];
+    if (os_log_type_enabled(lowercaseString, OS_LOG_TYPE_DEBUG))
     {
       +[_PSCalendarEventPredictor isMaybeFaceTimeEvent:earliestStartDate:latestStartDate:maxParticipants:];
     }
@@ -670,19 +670,19 @@ LABEL_14:
   return v18;
 }
 
-+ (id)getZKWSuggestionForCalendarEvent:(id)a3 context:(id)a4 contactsMap:(id)a5
++ (id)getZKWSuggestionForCalendarEvent:(id)event context:(id)context contactsMap:(id)map
 {
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  eventCopy = event;
+  contextCopy = context;
+  mapCopy = map;
   v38 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v10 = [v7 attendees];
-  v11 = [v10 countByEnumeratingWithState:&v43 objects:v48 count:16];
+  attendees = [eventCopy attendees];
+  v11 = [attendees countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v11)
   {
     v12 = v11;
@@ -693,17 +693,17 @@ LABEL_14:
       {
         if (*v44 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(attendees);
         }
 
         v15 = *(*(&v43 + 1) + 8 * i);
-        if ([_PSCalendarEventPredictor isEligibleParticipant:v15 context:v8 contactsMap:v9])
+        if ([_PSCalendarEventPredictor isEligibleParticipant:v15 context:contextCopy contactsMap:mapCopy])
         {
           [v38 addObject:v15];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      v12 = [attendees countByEnumeratingWithState:&v43 objects:v48 count:16];
     }
 
     while (v12);
@@ -712,9 +712,9 @@ LABEL_14:
   v16 = v38;
   if ([v38 count])
   {
-    v35 = v8;
-    v36 = v7;
-    v17 = [_PSCalendarEventPredictor participantComparatorWithContactsMap:v9];
+    v35 = contextCopy;
+    v36 = eventCopy;
+    v17 = [_PSCalendarEventPredictor participantComparatorWithContactsMap:mapCopy];
     v18 = [v38 sortedArrayUsingComparator:v17];
 
     v19 = objc_opt_new();
@@ -739,11 +739,11 @@ LABEL_14:
 
           v24 = *(*(&v39 + 1) + 8 * j);
           v25 = [_PSCalendarEventPredictor _handleFromParticipant:v24];
-          v26 = [v24 name];
-          v27 = [v9 objectForKeyedSubscript:v24];
-          v28 = [v27 firstObject];
+          name = [v24 name];
+          v27 = [mapCopy objectForKeyedSubscript:v24];
+          firstObject = [v27 firstObject];
 
-          v29 = [[_PSRecipient alloc] initWithIdentifier:v25 handle:v25 displayName:v26 contact:v28];
+          v29 = [[_PSRecipient alloc] initWithIdentifier:v25 handle:v25 displayName:name contact:firstObject];
           [v19 addObject:v29];
         }
 
@@ -756,18 +756,18 @@ LABEL_14:
     if ([v19 count])
     {
       v30 = [_PSSuggestion alloc];
-      v8 = v35;
-      v31 = [v35 bundleID];
-      v32 = [(_PSSuggestion *)v30 initWithBundleID:v31 conversationIdentifier:0 groupName:0 recipients:v19 reason:@"Calendar Event Participants" reasonType:0];
-      v7 = v36;
+      contextCopy = v35;
+      bundleID = [v35 bundleID];
+      v32 = [(_PSSuggestion *)v30 initWithBundleID:bundleID conversationIdentifier:0 groupName:0 recipients:v19 reason:@"Calendar Event Participants" reasonType:0];
+      eventCopy = v36;
     }
 
     else
     {
-      v31 = +[_PSLogging generalChannel];
-      v8 = v35;
-      v7 = v36;
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
+      bundleID = +[_PSLogging generalChannel];
+      contextCopy = v35;
+      eventCopy = v36;
+      if (os_log_type_enabled(bundleID, OS_LOG_TYPE_DEBUG))
       {
         [_PSCalendarEventPredictor getZKWSuggestionForCalendarEvent:v36 context:? contactsMap:?];
       }
@@ -783,7 +783,7 @@ LABEL_14:
     obj = +[_PSLogging generalChannel];
     if (os_log_type_enabled(obj, OS_LOG_TYPE_DEBUG))
     {
-      [_PSCalendarEventPredictor getZKWSuggestionForCalendarEvent:v7 context:? contactsMap:?];
+      [_PSCalendarEventPredictor getZKWSuggestionForCalendarEvent:eventCopy context:? contactsMap:?];
     }
 
     v32 = 0;
@@ -794,12 +794,12 @@ LABEL_14:
   return v32;
 }
 
-+ (id)createFinalSuggestions:(id)a3 context:(id)a4
++ (id)createFinalSuggestions:(id)suggestions context:(id)context
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 seedRecipients];
-  if (![v6 count])
+  suggestionsCopy = suggestions;
+  seedRecipients = [context seedRecipients];
+  if (![seedRecipients count])
   {
 
     goto LABEL_21;
@@ -810,7 +810,7 @@ LABEL_14:
   if ((v7 & 1) == 0)
   {
 LABEL_21:
-    v33 = v5;
+    v33 = suggestionsCopy;
     goto LABEL_22;
   }
 
@@ -820,8 +820,8 @@ LABEL_21:
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v27 = v5;
-  obj = v5;
+  v27 = suggestionsCopy;
+  obj = suggestionsCopy;
   v30 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v30)
   {
@@ -844,8 +844,8 @@ LABEL_21:
         v39 = 0u;
         v40 = 0u;
         v34 = v10;
-        v36 = [v10 recipients];
-        v11 = [v36 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        recipients = [v10 recipients];
+        v11 = [recipients countByEnumeratingWithState:&v37 objects:v46 count:16];
         if (v11)
         {
           v12 = v11;
@@ -858,35 +858,35 @@ LABEL_21:
             {
               if (*v38 != v13)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(recipients);
               }
 
               v15 = *(*(&v37 + 1) + 8 * v14);
-              v16 = [v15 identifier];
-              if (([v8 containsObject:v16] & 1) == 0)
+              identifier = [v15 identifier];
+              if (([v8 containsObject:identifier] & 1) == 0)
               {
                 v17 = [_PSSuggestion alloc];
-                v18 = [v34 bundleID];
-                v19 = [v34 conversationIdentifier];
-                v20 = [v34 groupName];
+                bundleID = [v34 bundleID];
+                conversationIdentifier = [v34 conversationIdentifier];
+                groupName = [v34 groupName];
                 v45 = v15;
                 v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
-                v22 = [v34 reason];
-                v23 = [v34 reasonType];
-                v24 = [(_PSSuggestion *)v17 initWithBundleID:v18 conversationIdentifier:v19 groupName:v20 recipients:v21 reason:v22 reasonType:v23];
+                reason = [v34 reason];
+                reasonType = [v34 reasonType];
+                v24 = [(_PSSuggestion *)v17 initWithBundleID:bundleID conversationIdentifier:conversationIdentifier groupName:groupName recipients:v21 reason:reason reasonType:reasonType];
 
                 v12 = v35;
                 v8 = v32;
 
                 [v33 addObject:v24];
-                [v32 addObject:v16];
+                [v32 addObject:identifier];
               }
 
               ++v14;
             }
 
             while (v12 != v14);
-            v12 = [v36 countByEnumeratingWithState:&v37 objects:v46 count:16];
+            v12 = [recipients countByEnumeratingWithState:&v37 objects:v46 count:16];
           }
 
           while (v12);
@@ -902,7 +902,7 @@ LABEL_21:
     while (v30);
   }
 
-  v5 = v27;
+  suggestionsCopy = v27;
 LABEL_22:
 
   v25 = *MEMORY[0x1E69E9840];
@@ -910,17 +910,17 @@ LABEL_22:
   return v33;
 }
 
-- (id)getParticipantContactsMapFromEvent:(id)a3
+- (id)getParticipantContactsMapFromEvent:(id)event
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v20 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v19 = v4;
-  obj = [v4 attendees];
+  v19 = eventCopy;
+  obj = [eventCopy attendees];
   v5 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v5)
   {
@@ -937,10 +937,10 @@ LABEL_22:
 
         v9 = *(*(&v23 + 1) + 8 * i);
         contactStore = self->_contactStore;
-        v11 = [v9 contactPredicate];
-        v12 = [(_PSCalendarEventPredictor *)self contactKeysToFetch];
+        contactPredicate = [v9 contactPredicate];
+        contactKeysToFetch = [(_PSCalendarEventPredictor *)self contactKeysToFetch];
         v22 = 0;
-        v13 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v11 keysToFetch:v12 error:&v22];
+        v13 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:contactPredicate keysToFetch:contactKeysToFetch error:&v22];
         v14 = v22;
 
         if ([v13 count])
@@ -983,25 +983,25 @@ LABEL_22:
   return v20;
 }
 
-- (id)zkwSuggestionsFromCalendarWithPredictionContext:(id)a3 startDate:(id)a4 endDate:(id)a5 maxParticipants:(unint64_t)a6
+- (id)zkwSuggestionsFromCalendarWithPredictionContext:(id)context startDate:(id)date endDate:(id)endDate maxParticipants:(unint64_t)participants
 {
   v65 = *MEMORY[0x1E69E9840];
-  v47 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  dateCopy = date;
+  endDateCopy = endDate;
   v12 = [(EKEventStore *)self->_eventStore calendarsForEntityType:0];
-  v13 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:v10 endDate:v11 calendars:v12];
+  v13 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:dateCopy endDate:endDateCopy calendars:v12];
   v14 = objc_opt_new();
   eventStore = self->_eventStore;
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __111___PSCalendarEventPredictor_zkwSuggestionsFromCalendarWithPredictionContext_startDate_endDate_maxParticipants___block_invoke;
   v56[3] = &unk_1E7C26C28;
-  v46 = v10;
+  v46 = dateCopy;
   v57 = v46;
-  v16 = v11;
+  v16 = endDateCopy;
   v58 = v16;
-  v60 = a6;
+  participantsCopy = participants;
   v17 = v14;
   v59 = v17;
   [(EKEventStore *)eventStore enumerateEventsMatchingPredicate:v13 usingBlock:v56];
@@ -1016,7 +1016,7 @@ LABEL_22:
     v55 = 0u;
     v19 = v17;
     v20 = [v19 countByEnumeratingWithState:&v52 objects:v64 count:16];
-    v21 = v47;
+    v21 = contextCopy;
     if (v20)
     {
       v22 = v20;
@@ -1049,7 +1049,7 @@ LABEL_22:
       [_PSCalendarEventPredictor zkwSuggestionsFromCalendarWithPredictionContext:startDate:endDate:maxParticipants:];
     }
 
-    v27 = [_PSCalendarEventPredictor eventComparatorWithPredictionContext:v47 contactsMap:v18];
+    v27 = [_PSCalendarEventPredictor eventComparatorWithPredictionContext:contextCopy contactsMap:v18];
     v28 = [v19 sortedArrayUsingComparator:v27];
 
     v29 = objc_opt_new();
@@ -1087,7 +1087,7 @@ LABEL_22:
               [_PSCalendarEventPredictor zkwSuggestionsFromCalendarWithPredictionContext:v61 startDate:v35 endDate:&v62 maxParticipants:v37];
             }
 
-            v21 = v47;
+            v21 = contextCopy;
           }
         }
 
@@ -1116,7 +1116,7 @@ LABEL_22:
 
     v38 = MEMORY[0x1E695E0F0];
     v39 = v46;
-    v21 = v47;
+    v21 = contextCopy;
   }
 
   v40 = *MEMORY[0x1E69E9840];

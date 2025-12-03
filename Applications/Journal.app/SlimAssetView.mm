@@ -2,14 +2,14 @@
 - (BOOL)accessibilityActivate;
 - (BOOL)accessibilityElementsHidden;
 - (NSArray)accessibilityCustomActions;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)horizontalSizeClassChanged;
-- (void)setAccessibilityCustomActions:(id)a3;
-- (void)setAccessibilityElementsHidden:(BOOL)a3;
+- (void)setAccessibilityCustomActions:(id)actions;
+- (void)setAccessibilityElementsHidden:(BOOL)hidden;
 - (void)tapped;
 - (void)userInterfaceStyleChanged;
 @end
@@ -18,13 +18,13 @@
 
 - (void)horizontalSizeClassChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007FF930();
 }
 
 - (void)userInterfaceStyleChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_100803A34();
 }
 
@@ -36,7 +36,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 16);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -51,7 +51,7 @@
     v5 = *(v3 + 1);
     swift_getObjectType();
     v6 = *(v5 + 16);
-    v7 = self;
+    selfCopy = self;
     v6();
     swift_unknownObjectRelease();
   }
@@ -61,7 +61,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100806708();
 
   if (v3)
@@ -78,20 +78,20 @@
   return v4.super.isa;
 }
 
-- (void)setAccessibilityCustomActions:(id)a3
+- (void)setAccessibilityCustomActions:(id)actions
 {
-  isa = a3;
-  if (a3)
+  isa = actions;
+  if (actions)
   {
     sub_1000065A8(0, &qword_100AD86C0);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v5 = self;
+    selfCopy = self;
     isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -106,63 +106,63 @@
   return [(SlimAssetView *)&v3 accessibilityElementsHidden];
 }
 
-- (void)setAccessibilityElementsHidden:(BOOL)a3
+- (void)setAccessibilityElementsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = self;
-  [(SlimAssetView *)v4 setIsAccessibilityElement:v3 ^ 1];
-  v5.receiver = v4;
+  hiddenCopy = hidden;
+  selfCopy = self;
+  [(SlimAssetView *)selfCopy setIsAccessibilityElement:hiddenCopy ^ 1];
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for SlimAssetView();
-  [(SlimAssetView *)&v5 setAccessibilityElementsHidden:v3];
+  [(SlimAssetView *)&v5 setAccessibilityElementsHidden:hiddenCopy];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = sub_1008082F0();
 
   return v7;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1008084B4(v8, a5);
+  selfCopy = self;
+  sub_1008084B4(interactionCopy, animator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_1008085F4(a5);
+  selfCopy = self;
+  sub_1008085F4(animator);
 
   swift_unknownObjectRelease();
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   v6 = objc_allocWithZone(UIPreviewParameters);
-  v7 = self;
+  selfCopy = self;
   v8 = [v6 init];
-  v9 = [objc_opt_self() systemBackgroundColor];
-  [v8 setBackgroundColor:v9];
+  systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
+  [v8 setBackgroundColor:systemBackgroundColor];
 
-  v10 = [objc_allocWithZone(UITargetedPreview) initWithView:v7 parameters:v8];
+  v10 = [objc_allocWithZone(UITargetedPreview) initWithView:selfCopy parameters:v8];
 
   return v10;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier
 {
-  v5 = [(SlimAssetView *)self contextMenuInteraction:a3 configuration:a4 highlightPreviewForItemWithIdentifier:a5];
+  v5 = [(SlimAssetView *)self contextMenuInteraction:interaction configuration:configuration highlightPreviewForItemWithIdentifier:identifier];
 
   return v5;
 }

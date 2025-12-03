@@ -1,25 +1,25 @@
 @interface VKTextRange
 + (VKTextRange)emptyRange;
-+ (VKTextRange)rangeWithNSRange:(_NSRange)a3;
-+ (VKTextRange)rangeWithNSRanges:(id)a3;
-+ (VKTextRange)rangeWithStart:(id)a3 end:(id)a4;
-+ (VKTextRange)rangeWithStartOffset:(unint64_t)a3 endOffset:(unint64_t)a4;
-+ (VKTextRange)rangeWithVKRanges:(id)a3;
-+ (id)emptyRangeWithOffset:(unint64_t)a3;
-+ (id)emptyRangeWithPosition:(id)a3;
-- (BOOL)containsTextPosition:(id)a3;
-- (BOOL)intersectsNSRange:(_NSRange)a3;
++ (VKTextRange)rangeWithNSRange:(_NSRange)range;
++ (VKTextRange)rangeWithNSRanges:(id)ranges;
++ (VKTextRange)rangeWithStart:(id)start end:(id)end;
++ (VKTextRange)rangeWithStartOffset:(unint64_t)offset endOffset:(unint64_t)endOffset;
++ (VKTextRange)rangeWithVKRanges:(id)ranges;
++ (id)emptyRangeWithOffset:(unint64_t)offset;
++ (id)emptyRangeWithPosition:(id)position;
+- (BOOL)containsTextPosition:(id)position;
+- (BOOL)intersectsNSRange:(_NSRange)range;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNSNotFound;
 - (NSArray)nsRangeArray;
 - (NSArray)rangeArray;
 - (VKTextPosition)end;
 - (VKTextPosition)start;
-- (VKTextRange)initWithIndexSet:(id)a3;
-- (VKTextRange)initWithRange:(_NSRange)a3;
-- (VKTextRange)initWithStart:(id)a3 end:(id)a4;
-- (VKTextRange)initWithStartOffset:(unint64_t)a3 endOffset:(unint64_t)a4;
+- (VKTextRange)initWithIndexSet:(id)set;
+- (VKTextRange)initWithRange:(_NSRange)range;
+- (VKTextRange)initWithStart:(id)start end:(id)end;
+- (VKTextRange)initWithStartOffset:(unint64_t)offset endOffset:(unint64_t)endOffset;
 - (_NSRange)nsRange;
 - (id)summaryDescription;
 - (unint64_t)hash;
@@ -29,16 +29,16 @@
 
 @implementation VKTextRange
 
-- (VKTextRange)initWithStart:(id)a3 end:(id)a4
+- (VKTextRange)initWithStart:(id)start end:(id)end
 {
-  v6 = a4;
-  v7 = [a3 offset];
-  v8 = [v6 offset];
+  endCopy = end;
+  offset = [start offset];
+  offset2 = [endCopy offset];
 
-  return [(VKTextRange *)self initWithStartOffset:v7 endOffset:v8];
+  return [(VKTextRange *)self initWithStartOffset:offset endOffset:offset2];
 }
 
-- (VKTextRange)initWithStartOffset:(unint64_t)a3 endOffset:(unint64_t)a4
+- (VKTextRange)initWithStartOffset:(unint64_t)offset endOffset:(unint64_t)endOffset
 {
   v13.receiver = self;
   v13.super_class = VKTextRange;
@@ -46,53 +46,53 @@
   v7 = v6;
   if (v6)
   {
-    if (a3 >= a4)
+    if (offset >= endOffset)
     {
-      v8 = a4;
+      offsetCopy = endOffset;
     }
 
     else
     {
-      v8 = a3;
+      offsetCopy = offset;
     }
 
-    if (a3 <= a4)
+    if (offset <= endOffset)
     {
-      v9 = a4;
-    }
-
-    else
-    {
-      v9 = a3;
-    }
-
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL || v9 == 0x7FFFFFFFFFFFFFFFLL)
-    {
-      v10 = [MEMORY[0x1E696AC90] indexSet];
+      offsetCopy2 = endOffset;
     }
 
     else
     {
-      if (a4 == a3)
+      offsetCopy2 = offset;
+    }
+
+    if (offsetCopy == 0x7FFFFFFFFFFFFFFFLL || offsetCopy2 == 0x7FFFFFFFFFFFFFFFLL)
+    {
+      indexSet = [MEMORY[0x1E696AC90] indexSet];
+    }
+
+    else
+    {
+      if (endOffset == offset)
       {
-        v6->_emptyIndex = v8;
+        v6->_emptyIndex = offsetCopy;
         return v7;
       }
 
-      v10 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v8, v9 - v8}];
+      indexSet = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{offsetCopy, offsetCopy2 - offsetCopy}];
     }
 
     indexSet = v7->_indexSet;
-    v7->_indexSet = v10;
+    v7->_indexSet = indexSet;
   }
 
   return v7;
 }
 
-- (VKTextRange)initWithRange:(_NSRange)a3
+- (VKTextRange)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = VKTextRange;
   v5 = [(VKTextRange *)&v9 init];
@@ -111,15 +111,15 @@
   return v5;
 }
 
-- (VKTextRange)initWithIndexSet:(id)a3
+- (VKTextRange)initWithIndexSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9.receiver = self;
   v9.super_class = VKTextRange;
   v5 = [(VKTextRange *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [setCopy copy];
     indexSet = v5->_indexSet;
     v5->_indexSet = v6;
   }
@@ -127,59 +127,59 @@
   return v5;
 }
 
-+ (VKTextRange)rangeWithStart:(id)a3 end:(id)a4
++ (VKTextRange)rangeWithStart:(id)start end:(id)end
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithStart:v7 end:v6];
+  endCopy = end;
+  startCopy = start;
+  v8 = [[self alloc] initWithStart:startCopy end:endCopy];
 
   return v8;
 }
 
-+ (VKTextRange)rangeWithStartOffset:(unint64_t)a3 endOffset:(unint64_t)a4
++ (VKTextRange)rangeWithStartOffset:(unint64_t)offset endOffset:(unint64_t)endOffset
 {
-  v4 = [[a1 alloc] initWithStartOffset:a3 endOffset:a4];
+  v4 = [[self alloc] initWithStartOffset:offset endOffset:endOffset];
 
   return v4;
 }
 
-+ (id)emptyRangeWithPosition:(id)a3
++ (id)emptyRangeWithPosition:(id)position
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithStart:v4 end:v4];
+  positionCopy = position;
+  v5 = [[self alloc] initWithStart:positionCopy end:positionCopy];
 
   return v5;
 }
 
-+ (id)emptyRangeWithOffset:(unint64_t)a3
++ (id)emptyRangeWithOffset:(unint64_t)offset
 {
-  v3 = [[a1 alloc] initWithRange:{a3, 0}];
+  v3 = [[self alloc] initWithRange:{offset, 0}];
 
   return v3;
 }
 
-+ (VKTextRange)rangeWithNSRange:(_NSRange)a3
++ (VKTextRange)rangeWithNSRange:(_NSRange)range
 {
-  v3 = [[a1 alloc] initWithRange:{a3.location, a3.length}];
+  v3 = [[self alloc] initWithRange:{range.location, range.length}];
 
   return v3;
 }
 
-+ (VKTextRange)rangeWithNSRanges:(id)a3
++ (VKTextRange)rangeWithNSRanges:(id)ranges
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  rangesCopy = ranges;
+  if ([rangesCopy count] == 1)
   {
     v4 = [VKTextRange alloc];
-    v5 = [v3 firstObject];
-    v6 = [v5 rangeValue];
-    v8 = [(VKTextRange *)v4 initWithRange:v6, v7];
+    firstObject = [rangesCopy firstObject];
+    rangeValue = [firstObject rangeValue];
+    v8 = [(VKTextRange *)v4 initWithRange:rangeValue, v7];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  if ([v3 count] >= 2)
+  if ([rangesCopy count] >= 2)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AD50]);
     v11[0] = MEMORY[0x1E69E9820];
@@ -187,9 +187,9 @@ LABEL_5:
     v11[2] = __33__VKTextRange_rangeWithNSRanges___block_invoke;
     v11[3] = &unk_1E7BE4E88;
     v12 = v9;
-    v5 = v9;
-    [v3 enumerateObjectsUsingBlock:v11];
-    v8 = [[VKTextRange alloc] initWithIndexSet:v5];
+    firstObject = v9;
+    [rangesCopy enumerateObjectsUsingBlock:v11];
+    v8 = [[VKTextRange alloc] initWithIndexSet:firstObject];
 
     goto LABEL_5;
   }
@@ -208,21 +208,21 @@ uint64_t __33__VKTextRange_rangeWithNSRanges___block_invoke(uint64_t a1, void *a
   return [v2 addIndexesInRange:{v4, v3}];
 }
 
-+ (VKTextRange)rangeWithVKRanges:(id)a3
++ (VKTextRange)rangeWithVKRanges:(id)ranges
 {
-  v3 = a3;
-  v4 = [v3 count];
+  rangesCopy = ranges;
+  v4 = [rangesCopy count];
   if (v4 == 1)
   {
-    v5 = [v3 firstObject];
+    firstObject = [rangesCopy firstObject];
 LABEL_8:
-    v9 = v5;
+    v9 = firstObject;
     goto LABEL_9;
   }
 
   if (v4 < 2)
   {
-    v5 = +[VKTextRange emptyRange];
+    firstObject = +[VKTextRange emptyRange];
     goto LABEL_8;
   }
 
@@ -238,7 +238,7 @@ LABEL_8:
   v7 = v6;
   v15 = v7;
   v16 = &v17;
-  [v3 enumerateObjectsUsingBlock:&v11];
+  [rangesCopy enumerateObjectsUsingBlock:&v11];
   v8 = [VKTextRange alloc];
   v9 = [(VKTextRange *)v8 initWithIndexSet:v7, v11, v12, v13, v14];
   if ([(VKTextRange *)v9 isEmpty])
@@ -274,19 +274,19 @@ void __33__VKTextRange_rangeWithVKRanges___block_invoke(uint64_t a1, void *a2)
   *(*(*(a1 + 40) + 8) + 24) = v9;
 }
 
-- (BOOL)containsTextPosition:(id)a3
+- (BOOL)containsTextPosition:(id)position
 {
-  if (!a3)
+  if (!position)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(VKTextRange *)self indexSet];
-  v6 = [v4 offset];
+  positionCopy = position;
+  indexSet = [(VKTextRange *)self indexSet];
+  offset = [positionCopy offset];
 
-  LOBYTE(v4) = [v5 containsIndex:v6];
-  return v4;
+  LOBYTE(positionCopy) = [indexSet containsIndex:offset];
+  return positionCopy;
 }
 
 + (VKTextRange)emptyRange
@@ -298,34 +298,34 @@ void __33__VKTextRange_rangeWithVKRanges___block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)isEmpty
 {
-  v2 = [(VKTextRange *)self indexSet];
-  v3 = [v2 count] == 0;
+  indexSet = [(VKTextRange *)self indexSet];
+  v3 = [indexSet count] == 0;
 
   return v3;
 }
 
 - (_NSRange)nsRange
 {
-  v3 = [(VKTextRange *)self nsRangeArray];
-  if ([v3 count])
+  nsRangeArray = [(VKTextRange *)self nsRangeArray];
+  if ([nsRangeArray count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 rangeValue];
+    firstObject = [nsRangeArray firstObject];
+    rangeValue = [firstObject rangeValue];
 
-    v6 = [v3 lastObject];
-    v7 = [v6 rangeValue];
+    lastObject = [nsRangeArray lastObject];
+    rangeValue2 = [lastObject rangeValue];
     v9 = v8;
 
-    v10 = v9 - v5 + v7;
+    v10 = v9 - rangeValue + rangeValue2;
   }
 
   else
   {
-    v5 = [(VKTextRange *)self emptyIndex];
+    rangeValue = [(VKTextRange *)self emptyIndex];
     v10 = 0;
   }
 
-  v11 = v5;
+  v11 = rangeValue;
   v12 = v10;
   result.length = v12;
   result.location = v11;
@@ -339,19 +339,19 @@ void __33__VKTextRange_rangeWithVKRanges___block_invoke(uint64_t a1, void *a2)
   {
     if ([(VKTextRange *)self isEmpty])
     {
-      v3 = [MEMORY[0x1E696B098] valueWithRange:{-[VKTextRange emptyIndex](self, "emptyIndex"), 0}];
-      v8[0] = v3;
-      v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
+      indexSet = [MEMORY[0x1E696B098] valueWithRange:{-[VKTextRange emptyIndex](self, "emptyIndex"), 0}];
+      v8[0] = indexSet;
+      vk_rangeArray = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     }
 
     else
     {
-      v3 = [(VKTextRange *)self indexSet];
-      v4 = [v3 vk_rangeArray];
+      indexSet = [(VKTextRange *)self indexSet];
+      vk_rangeArray = [indexSet vk_rangeArray];
     }
 
     nsRangeArray = self->_nsRangeArray;
-    self->_nsRangeArray = v4;
+    self->_nsRangeArray = vk_rangeArray;
   }
 
   v6 = self->_nsRangeArray;
@@ -364,8 +364,8 @@ void __33__VKTextRange_rangeWithVKRanges___block_invoke(uint64_t a1, void *a2)
   rangeArray = self->_rangeArray;
   if (!rangeArray)
   {
-    v4 = [(VKTextRange *)self nsRangeArray];
-    v5 = [v4 vk_map:&__block_literal_global_7];
+    nsRangeArray = [(VKTextRange *)self nsRangeArray];
+    v5 = [nsRangeArray vk_map:&__block_literal_global_7];
     v6 = self->_rangeArray;
     self->_rangeArray = v5;
 
@@ -384,68 +384,68 @@ VKTextRange *__25__VKTextRange_rangeArray__block_invoke(uint64_t a1, void *a2)
 
 - (VKTextPosition)start
 {
-  v2 = [(VKTextRange *)self nsRange];
+  nsRange = [(VKTextRange *)self nsRange];
 
-  return [VKTextPosition positionWithOffset:v2];
+  return [VKTextPosition positionWithOffset:nsRange];
 }
 
 - (VKTextPosition)end
 {
-  v2 = [(VKTextRange *)self nsRange];
+  nsRange = [(VKTextRange *)self nsRange];
 
-  return [VKTextPosition positionWithOffset:v2 + v3];
+  return [VKTextPosition positionWithOffset:nsRange + v3];
 }
 
 - (BOOL)isNSNotFound
 {
-  v3 = [(VKTextRange *)self indexSet];
-  v4 = [v3 firstIndex] == 0x7FFFFFFFFFFFFFFFLL || -[NSIndexSet lastIndex](self->_indexSet, "lastIndex") == 0x7FFFFFFFFFFFFFFFLL;
+  indexSet = [(VKTextRange *)self indexSet];
+  v4 = [indexSet firstIndex] == 0x7FFFFFFFFFFFFFFFLL || -[NSIndexSet lastIndex](self->_indexSet, "lastIndex") == 0x7FFFFFFFFFFFFFFFLL;
 
   return v4;
 }
 
 - (unint64_t)rangeCount
 {
-  v2 = [(VKTextRange *)self indexSet];
-  v3 = [v2 rangeCount];
+  indexSet = [(VKTextRange *)self indexSet];
+  rangeCount = [indexSet rangeCount];
 
-  return v3;
+  return rangeCount;
 }
 
 - (unint64_t)length
 {
-  v2 = [(VKTextRange *)self indexSet];
-  v3 = [v2 count];
+  indexSet = [(VKTextRange *)self indexSet];
+  v3 = [indexSet count];
 
   return v3;
 }
 
-- (BOOL)intersectsNSRange:(_NSRange)a3
+- (BOOL)intersectsNSRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(VKTextRange *)self indexSet];
-  LOBYTE(length) = [v5 intersectsIndexesInRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  indexSet = [(VKTextRange *)self indexSet];
+  LOBYTE(length) = [indexSet intersectsIndexesInRange:{location, length}];
 
   return length;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if ([v4 isEmpty] && -[VKTextRange isEmpty](self, "isEmpty"))
+    if ([equalCopy isEmpty] && -[VKTextRange isEmpty](self, "isEmpty"))
     {
-      v5 = [(VKTextRange *)self emptyIndex];
-      v6 = v5 == [v4 emptyIndex];
+      emptyIndex = [(VKTextRange *)self emptyIndex];
+      v6 = emptyIndex == [equalCopy emptyIndex];
     }
 
     else
     {
-      v7 = [(VKTextRange *)self indexSet];
-      v8 = [v4 indexSet];
-      v6 = [v7 isEqualToIndexSet:v8];
+      indexSet = [(VKTextRange *)self indexSet];
+      indexSet2 = [equalCopy indexSet];
+      v6 = [indexSet isEqualToIndexSet:indexSet2];
     }
   }
 
@@ -459,8 +459,8 @@ VKTextRange *__25__VKTextRange_rangeArray__block_invoke(uint64_t a1, void *a2)
 
 - (unint64_t)hash
 {
-  v2 = [(VKTextRange *)self indexSet];
-  v3 = [v2 hash];
+  indexSet = [(VKTextRange *)self indexSet];
+  v3 = [indexSet hash];
 
   return v3;
 }
@@ -468,11 +468,11 @@ VKTextRange *__25__VKTextRange_rangeArray__block_invoke(uint64_t a1, void *a2)
 - (id)summaryDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(VKTextRange *)self startOffset];
-  v5 = [(VKTextRange *)self endOffset];
+  startOffset = [(VKTextRange *)self startOffset];
+  endOffset = [(VKTextRange *)self endOffset];
   v10.location = [(VKTextRange *)self nsRange];
   v6 = NSStringFromRange(v10);
-  v7 = [v3 stringWithFormat:@"Start: %ld End:%ld Range: %@", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"Start: %ld End:%ld Range: %@", startOffset, endOffset, v6];
 
   return v7;
 }

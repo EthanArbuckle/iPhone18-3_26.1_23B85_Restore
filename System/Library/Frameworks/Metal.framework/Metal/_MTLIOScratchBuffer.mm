@@ -1,11 +1,11 @@
 @interface _MTLIOScratchBuffer
-- (id)init:(MTLIOScratchBufferPrivate *)a3;
+- (id)init:(MTLIOScratchBufferPrivate *)init;
 - (void)dealloc;
 @end
 
 @implementation _MTLIOScratchBuffer
 
-- (id)init:(MTLIOScratchBufferPrivate *)a3
+- (id)init:(MTLIOScratchBufferPrivate *)init
 {
   v9.receiver = self;
   v9.super_class = _MTLIOScratchBuffer;
@@ -13,8 +13,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_priv = a3;
-    v6 = a3->var1;
+    v4->_priv = init;
+    v6 = init->var1;
     v7 = v5->_priv->var2;
   }
 

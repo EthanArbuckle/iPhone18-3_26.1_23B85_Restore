@@ -1,16 +1,16 @@
 @interface HFTemperatureFormatter
 - (HFTemperatureFormatter)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)measurementForObjectValue:(id)a3;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringForObjectValue:(id)a3 withUnit:(BOOL)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)measurementForObjectValue:(id)value;
+- (id)stringForObjectValue:(id)value;
+- (id)stringForObjectValue:(id)value withUnit:(BOOL)unit;
 - (unint64_t)maximumFractionDigits;
 - (unint64_t)minimumFractionDigits;
-- (void)setMaximumFractionDigits:(unint64_t)a3;
-- (void)setMinimumFractionDigits:(unint64_t)a3;
-- (void)setOutputIsCelsius:(BOOL)a3;
-- (void)setStepValue:(id)a3;
-- (void)temperatureUnitObserver:(id)a3 didChangeTemperatureUnit:(BOOL)a4;
+- (void)setMaximumFractionDigits:(unint64_t)digits;
+- (void)setMinimumFractionDigits:(unint64_t)digits;
+- (void)setOutputIsCelsius:(BOOL)celsius;
+- (void)setStepValue:(id)value;
+- (void)temperatureUnitObserver:(id)observer didChangeTemperatureUnit:(BOOL)unit;
 @end
 
 @implementation HFTemperatureFormatter
@@ -39,31 +39,31 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(NSMeasurementFormatter *)self locale];
-  [v4 setLocale:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  locale = [(NSMeasurementFormatter *)self locale];
+  [v4 setLocale:locale];
 
   [v4 setInputIsCelsius:{-[HFTemperatureFormatter inputIsCelsius](self, "inputIsCelsius")}];
   [v4 setOutputIsCelsius:{-[HFTemperatureFormatter outputIsCelsius](self, "outputIsCelsius")}];
   [v4 setMaximumFractionDigits:{-[HFTemperatureFormatter maximumFractionDigits](self, "maximumFractionDigits")}];
   [v4 setMinimumFractionDigits:{-[HFTemperatureFormatter minimumFractionDigits](self, "minimumFractionDigits")}];
   [v4 setUnitOptions:{-[NSMeasurementFormatter unitOptions](self, "unitOptions")}];
-  v6 = [(HFTemperatureFormatter *)self stepValue];
-  [v4 setStepValue:v6];
+  stepValue = [(HFTemperatureFormatter *)self stepValue];
+  [v4 setStepValue:stepValue];
 
-  v7 = [(HFTemperatureFormatter *)self fallbackTemperatureString];
-  [v4 setFallbackTemperatureString:v7];
+  fallbackTemperatureString = [(HFTemperatureFormatter *)self fallbackTemperatureString];
+  [v4 setFallbackTemperatureString:fallbackTemperatureString];
 
   return v4;
 }
 
-- (void)setOutputIsCelsius:(BOOL)a3
+- (void)setOutputIsCelsius:(BOOL)celsius
 {
-  self->_outputIsCelsius = a3;
-  v4 = a3;
-  if (a3)
+  self->_outputIsCelsius = celsius;
+  celsiusCopy = celsius;
+  if (celsius)
   {
     v5 = &unk_2825255C0;
   }
@@ -73,19 +73,19 @@
     v5 = &unk_2825255D0;
   }
 
-  [(HFTemperatureFormatter *)self setMaximumFractionDigits:a3];
-  [(HFTemperatureFormatter *)self setMinimumFractionDigits:v4];
+  [(HFTemperatureFormatter *)self setMaximumFractionDigits:celsius];
+  [(HFTemperatureFormatter *)self setMinimumFractionDigits:celsiusCopy];
 
   [(HFTemperatureFormatter *)self setStepValue:v5];
 }
 
-- (void)setStepValue:(id)a3
+- (void)setStepValue:(id)value
 {
-  v5 = a3;
-  v6 = self->_stepValue;
-  v7 = v5;
+  valueCopy = value;
+  numberFormatter = self->_stepValue;
+  v7 = valueCopy;
   v10 = v7;
-  if (v6 == v7)
+  if (numberFormatter == v7)
   {
 
 LABEL_8:
@@ -93,21 +93,21 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!numberFormatter)
   {
 
     goto LABEL_7;
   }
 
-  v8 = [(NSNumber *)v6 isEqual:v7];
+  v8 = [(NSNumber *)numberFormatter isEqual:v7];
 
   v9 = v10;
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_stepValue, a3);
-    v6 = [(NSMeasurementFormatter *)self numberFormatter];
-    [(NSNumber *)v6 setRoundingIncrement:v10];
+    objc_storeStrong(&self->_stepValue, value);
+    numberFormatter = [(NSMeasurementFormatter *)self numberFormatter];
+    [(NSNumber *)numberFormatter setRoundingIncrement:v10];
     goto LABEL_8;
   }
 
@@ -116,35 +116,35 @@ LABEL_9:
 
 - (unint64_t)maximumFractionDigits
 {
-  v2 = [(NSMeasurementFormatter *)self numberFormatter];
-  v3 = [v2 maximumFractionDigits];
+  numberFormatter = [(NSMeasurementFormatter *)self numberFormatter];
+  maximumFractionDigits = [numberFormatter maximumFractionDigits];
 
-  return v3;
+  return maximumFractionDigits;
 }
 
-- (void)setMaximumFractionDigits:(unint64_t)a3
+- (void)setMaximumFractionDigits:(unint64_t)digits
 {
-  v4 = [(NSMeasurementFormatter *)self numberFormatter];
-  [v4 setMaximumFractionDigits:a3];
+  numberFormatter = [(NSMeasurementFormatter *)self numberFormatter];
+  [numberFormatter setMaximumFractionDigits:digits];
 }
 
 - (unint64_t)minimumFractionDigits
 {
-  v2 = [(NSMeasurementFormatter *)self numberFormatter];
-  v3 = [v2 minimumFractionDigits];
+  numberFormatter = [(NSMeasurementFormatter *)self numberFormatter];
+  minimumFractionDigits = [numberFormatter minimumFractionDigits];
 
-  return v3;
+  return minimumFractionDigits;
 }
 
-- (void)setMinimumFractionDigits:(unint64_t)a3
+- (void)setMinimumFractionDigits:(unint64_t)digits
 {
-  v4 = [(NSMeasurementFormatter *)self numberFormatter];
-  [v4 setMinimumFractionDigits:a3];
+  numberFormatter = [(NSMeasurementFormatter *)self numberFormatter];
+  [numberFormatter setMinimumFractionDigits:digits];
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = [(HFTemperatureFormatter *)self measurementForObjectValue:a3];
+  v4 = [(HFTemperatureFormatter *)self measurementForObjectValue:value];
   if (v4)
   {
     v7.receiver = self;
@@ -160,17 +160,17 @@ LABEL_9:
   return v5;
 }
 
-- (void)temperatureUnitObserver:(id)a3 didChangeTemperatureUnit:(BOOL)a4
+- (void)temperatureUnitObserver:(id)observer didChangeTemperatureUnit:(BOOL)unit
 {
-  v5 = [a3 isCelsius];
+  isCelsius = [observer isCelsius];
 
-  [(HFTemperatureFormatter *)self setOutputIsCelsius:v5];
+  [(HFTemperatureFormatter *)self setOutputIsCelsius:isCelsius];
 }
 
-- (id)stringForObjectValue:(id)a3 withUnit:(BOOL)a4
+- (id)stringForObjectValue:(id)value withUnit:(BOOL)unit
 {
-  v6 = [(HFTemperatureFormatter *)self measurementForObjectValue:a3];
-  if (!a4)
+  v6 = [(HFTemperatureFormatter *)self measurementForObjectValue:value];
+  if (!unit)
   {
     v7 = objc_alloc(MEMORY[0x277CCAB10]);
     [v6 doubleValue];
@@ -209,14 +209,14 @@ void __56__HFTemperatureFormatter_stringForObjectValue_withUnit___block_invoke_2
   qword_27C84C4F8 = &stru_2824B1A78;
 }
 
-- (id)measurementForObjectValue:(id)a3
+- (id)measurementForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = valueCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -265,14 +265,14 @@ void __56__HFTemperatureFormatter_stringForObjectValue_withUnit___block_invoke_2
     v12 = ;
     if (v10)
     {
-      v13 = [v10 unit];
+      unit = [v10 unit];
 
       v14 = MEMORY[0x277CCABB0];
       [v10 doubleValue];
       v15 = [v14 numberWithDouble:?];
 
       v7 = v15;
-      v11 = v13;
+      v11 = unit;
     }
 
     v16 = objc_alloc(MEMORY[0x277CCAB10]);
@@ -300,8 +300,8 @@ void __56__HFTemperatureFormatter_stringForObjectValue_withUnit___block_invoke_2
       }
 
       v27 = objc_alloc(MEMORY[0x277CCAB10]);
-      v28 = [v18 unit];
-      v29 = [v27 initWithDoubleValue:v28 unit:v26];
+      unit2 = [v18 unit];
+      v29 = [v27 initWithDoubleValue:unit2 unit:v26];
 
       v18 = v29;
     }

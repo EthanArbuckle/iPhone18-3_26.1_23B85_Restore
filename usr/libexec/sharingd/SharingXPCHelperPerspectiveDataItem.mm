@@ -1,9 +1,9 @@
 @interface SharingXPCHelperPerspectiveDataItem
 - (CGSize)perspectiveDataSize;
 - (SharingXPCHelperPerspectiveDataItem)init;
-- (SharingXPCHelperPerspectiveDataItem)initWithCoder:(id)a3;
-- (SharingXPCHelperPerspectiveDataItem)initWithPerspectiveData:(id)a3 perspectiveDataSize:(CGSize)a4 CGImageData:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (SharingXPCHelperPerspectiveDataItem)initWithCoder:(id)coder;
+- (SharingXPCHelperPerspectiveDataItem)initWithPerspectiveData:(id)data perspectiveDataSize:(CGSize)size CGImageData:(id)imageData;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SharingXPCHelperPerspectiveDataItem
@@ -17,58 +17,58 @@
   return v5;
 }
 
-- (SharingXPCHelperPerspectiveDataItem)initWithPerspectiveData:(id)a3 perspectiveDataSize:(CGSize)a4 CGImageData:(id)a5
+- (SharingXPCHelperPerspectiveDataItem)initWithPerspectiveData:(id)data perspectiveDataSize:(CGSize)size CGImageData:(id)imageData
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  imageDataCopy = imageData;
   v15.receiver = self;
   v15.super_class = SharingXPCHelperPerspectiveDataItem;
   v12 = [(SharingXPCHelperPerspectiveDataItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_perspectiveData, a3);
+    objc_storeStrong(&v12->_perspectiveData, data);
     v13->_perspectiveDataSize.width = width;
     v13->_perspectiveDataSize.height = height;
-    objc_storeStrong(&v13->_CGImageData, a5);
+    objc_storeStrong(&v13->_CGImageData, imageData);
   }
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   perspectiveData = self->_perspectiveData;
   if (perspectiveData)
   {
-    [v9 encodeObject:perspectiveData forKey:@"SharingXPCHelperPerspectiveDataItem-PerspectiveData"];
+    [coderCopy encodeObject:perspectiveData forKey:@"SharingXPCHelperPerspectiveDataItem-PerspectiveData"];
   }
 
   [(SharingXPCHelperPerspectiveDataItem *)self perspectiveDataSize];
   *&v5 = v5;
-  [v9 encodeFloat:@"SharingXPCHelperPerspectiveDataItem-PerspectiveDataWidth" forKey:v5];
+  [coderCopy encodeFloat:@"SharingXPCHelperPerspectiveDataItem-PerspectiveDataWidth" forKey:v5];
   [(SharingXPCHelperPerspectiveDataItem *)self perspectiveDataSize];
   *&v7 = v6;
-  [v9 encodeFloat:@"SharingXPCHelperPerspectiveDataItem-PerspectiveDataHeight" forKey:v7];
+  [coderCopy encodeFloat:@"SharingXPCHelperPerspectiveDataItem-PerspectiveDataHeight" forKey:v7];
   CGImageData = self->_CGImageData;
   if (CGImageData)
   {
-    [v9 encodeObject:CGImageData forKey:@"SharingXPCHelperPerspectiveDataItem-CGImageData"];
+    [coderCopy encodeObject:CGImageData forKey:@"SharingXPCHelperPerspectiveDataItem-CGImageData"];
   }
 }
 
-- (SharingXPCHelperPerspectiveDataItem)initWithCoder:(id)a3
+- (SharingXPCHelperPerspectiveDataItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SharingXPCHelperPerspectiveDataItem;
   v5 = [(SharingXPCHelperPerspectiveDataItem *)&v12 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 

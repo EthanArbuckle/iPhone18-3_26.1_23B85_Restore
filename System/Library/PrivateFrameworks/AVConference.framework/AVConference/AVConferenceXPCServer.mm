@@ -1,32 +1,32 @@
 @interface AVConferenceXPCServer
-+ (BOOL)clientWithToken:(id *)a3 hasEntitlement:(id)a4;
++ (BOOL)clientWithToken:(id *)token hasEntitlement:(id)entitlement;
 + (id)AVConferenceXPCServerSingleton;
-+ (int64_t)entitlementStatusForToken:(id *)a3;
++ (int64_t)entitlementStatusForToken:(id *)token;
 - (AVConferenceXPCServer)init;
-- (id)_xpc_get_connection_from_list_for_connection:(id)a3;
-- (id)_xpc_get_connection_from_list_for_context:(id)a3;
-- (id)_xpc_get_connections_from_list_for_context:(id)a3;
+- (id)_xpc_get_connection_from_list_for_connection:(id)_xpc_get_connection_from_list_for_connection;
+- (id)_xpc_get_connection_from_list_for_context:(id)_xpc_get_connection_from_list_for_context;
+- (id)_xpc_get_connections_from_list_for_context:(id)_xpc_get_connections_from_list_for_context;
 - (id)authorizedTokenData;
-- (id)newNSDictionaryFromNSError:(id)a3;
-- (id)newNSDictionaryFromXPCDictionary:(id)a3;
-- (id)newNSDictionaryWidthNSDictionary:(id)a3;
-- (id)newNSErrorFromNSDictionary:(id)a3;
-- (id)newXPCDictionaryFromNSDictionary:(id)a3 forEvent:(id)a4;
-- (void)_xpc_add_connection_to_list:(id)a3;
-- (void)_xpc_handle_incoming_request:(id)a3;
-- (void)_xpc_remove_connection_from_list:(id)a3;
+- (id)newNSDictionaryFromNSError:(id)error;
+- (id)newNSDictionaryFromXPCDictionary:(id)dictionary;
+- (id)newNSDictionaryWidthNSDictionary:(id)dictionary;
+- (id)newNSErrorFromNSDictionary:(id)dictionary;
+- (id)newXPCDictionaryFromNSDictionary:(id)dictionary forEvent:(id)event;
+- (void)_xpc_add_connection_to_list:(id)_xpc_add_connection_to_list;
+- (void)_xpc_handle_incoming_request:(id)_xpc_handle_incoming_request;
+- (void)_xpc_remove_connection_from_list:(id)_xpc_remove_connection_from_list;
 - (void)_xpc_remove_connections_from_list;
 - (void)_xpc_start_listening_for_connections;
-- (void)appendClientAuditTokenToDictionary:(id)a3 clientAuditToken:(id *)a4;
-- (void)appendContextToDictionary:(id)a3 forConnection:(id)a4;
-- (void)appendPIDToDictionary:(id)a3 pid:(int)a4;
+- (void)appendClientAuditTokenToDictionary:(id)dictionary clientAuditToken:(id *)token;
+- (void)appendContextToDictionary:(id)dictionary forConnection:(id)connection;
+- (void)appendPIDToDictionary:(id)dictionary pid:(int)pid;
 - (void)dealloc;
-- (void)deregisterFromService:(const char *)a3;
-- (void)registerBlockForService:(const char *)a3 block:(id)a4 queue:(id)global_queue eventLogLevel:(int)a6 authorizationBlock:(id)a7 allowablePublicAPIs:(id)a8;
-- (void)sendMessageAsync:(char *)a3 arguments:(id)a4;
-- (void)sendMessageAsync:(char *)a3 arguments:(id)a4 toAllClientsWithContext:(id)a5;
-- (void)sendMessageAsync:(char *)a3 arguments:(id)a4 xpcArguments:(id)a5 context:(id)a6;
-- (void)sendMessageAsync:(const char *)a3 arguments:(id)a4 context:(id)a5;
+- (void)deregisterFromService:(const char *)service;
+- (void)registerBlockForService:(const char *)service block:(id)block queue:(id)global_queue eventLogLevel:(int)level authorizationBlock:(id)authorizationBlock allowablePublicAPIs:(id)is;
+- (void)sendMessageAsync:(char *)async arguments:(id)arguments;
+- (void)sendMessageAsync:(char *)async arguments:(id)arguments toAllClientsWithContext:(id)context;
+- (void)sendMessageAsync:(char *)async arguments:(id)arguments xpcArguments:(id)xpcArguments context:(id)context;
+- (void)sendMessageAsync:(const char *)async arguments:(id)arguments context:(id)context;
 @end
 
 @implementation AVConferenceXPCServer
@@ -37,7 +37,7 @@
   objc_sync_enter(v3);
   if (!_xpcServerSingleton)
   {
-    _xpcServerSingleton = objc_alloc_init(a1);
+    _xpcServerSingleton = objc_alloc_init(self);
   }
 
   objc_sync_exit(v3);
@@ -141,10 +141,10 @@ uint64_t __29__AVConferenceXPCServer_init__block_invoke(uint64_t a1, void *a2)
   [(AVConferenceXPCServer *)&v4 dealloc];
 }
 
-- (void)sendMessageAsync:(char *)a3 arguments:(id)a4
+- (void)sendMessageAsync:(char *)async arguments:(id)arguments
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (async)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
@@ -162,7 +162,7 @@ uint64_t __29__AVConferenceXPCServer_init__block_invoke(uint64_t a1, void *a2)
           v17 = 1024;
           v18 = 372;
           v19 = 2080;
-          v20 = a3;
+          asyncCopy = async;
           _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "AVConferenceXPCServer [%s] %s:%d VCXPCServer: preparing to send message to clients for service %s", buf, 0x26u);
         }
       }
@@ -173,8 +173,8 @@ uint64_t __29__AVConferenceXPCServer_init__block_invoke(uint64_t a1, void *a2)
       }
     }
 
-    v10 = [(AVConferenceXPCServer *)self newXPCDictionaryFromNSDictionary:a4 forEvent:0];
-    xpc_dictionary_set_string(v10, "API", a3);
+    v10 = [(AVConferenceXPCServer *)self newXPCDictionaryFromNSDictionary:arguments forEvent:0];
+    xpc_dictionary_set_string(v10, "API", async);
     clientConnectionsQueue = self->clientConnectionsQueue;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -220,10 +220,10 @@ void __52__AVConferenceXPCServer_sendMessageAsync_arguments___block_invoke(uint6
   xpc_release(*(a1 + 40));
 }
 
-- (void)sendMessageAsync:(char *)a3 arguments:(id)a4 xpcArguments:(id)a5 context:(id)a6
+- (void)sendMessageAsync:(char *)async arguments:(id)arguments xpcArguments:(id)xpcArguments context:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (async)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
@@ -241,7 +241,7 @@ void __52__AVConferenceXPCServer_sendMessageAsync_arguments___block_invoke(uint6
           v21 = 1024;
           v22 = 397;
           v23 = 2080;
-          v24 = a3;
+          asyncCopy = async;
           _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, "AVConferenceXPCServer [%s] %s:%d VCXPCServer: preparing to send message to clients for service %s", buf, 0x26u);
         }
       }
@@ -252,11 +252,11 @@ void __52__AVConferenceXPCServer_sendMessageAsync_arguments___block_invoke(uint6
       }
     }
 
-    v14 = [(AVConferenceXPCServer *)self newXPCDictionaryFromNSDictionary:a4 forEvent:0];
-    xpc_dictionary_set_string(v14, "API", a3);
-    if (a5)
+    v14 = [(AVConferenceXPCServer *)self newXPCDictionaryFromNSDictionary:arguments forEvent:0];
+    xpc_dictionary_set_string(v14, "API", async);
+    if (xpcArguments)
     {
-      xpc_dictionary_set_value(v14, "XPCARGUMENTS", a5);
+      xpc_dictionary_set_value(v14, "XPCARGUMENTS", xpcArguments);
     }
 
     clientConnectionsQueue = self->clientConnectionsQueue;
@@ -265,7 +265,7 @@ void __52__AVConferenceXPCServer_sendMessageAsync_arguments___block_invoke(uint6
     block[2] = __73__AVConferenceXPCServer_sendMessageAsync_arguments_xpcArguments_context___block_invoke;
     block[3] = &unk_1E85F3E30;
     block[4] = self;
-    block[5] = a6;
+    block[5] = context;
     block[6] = v14;
     dispatch_sync(clientConnectionsQueue, block);
   }
@@ -284,10 +284,10 @@ void __73__AVConferenceXPCServer_sendMessageAsync_arguments_xpcArguments_context
   xpc_release(v3);
 }
 
-- (void)sendMessageAsync:(const char *)a3 arguments:(id)a4 context:(id)a5
+- (void)sendMessageAsync:(const char *)async arguments:(id)arguments context:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3 && a5)
+  if (async && context)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
@@ -305,7 +305,7 @@ void __73__AVConferenceXPCServer_sendMessageAsync_arguments_xpcArguments_context
           v19 = 1024;
           v20 = 424;
           v21 = 2080;
-          v22 = a3;
+          asyncCopy = async;
           _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVConferenceXPCServer [%s] %s:%d VCXPCServer: sending notification to client for service %s", buf, 0x26u);
         }
       }
@@ -316,15 +316,15 @@ void __73__AVConferenceXPCServer_sendMessageAsync_arguments_xpcArguments_context
       }
     }
 
-    v12 = [(AVConferenceXPCServer *)self newXPCDictionaryFromNSDictionary:a4 forEvent:0];
-    xpc_dictionary_set_string(v12, "API", a3);
+    v12 = [(AVConferenceXPCServer *)self newXPCDictionaryFromNSDictionary:arguments forEvent:0];
+    xpc_dictionary_set_string(v12, "API", async);
     clientConnectionsQueue = self->clientConnectionsQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__AVConferenceXPCServer_sendMessageAsync_arguments_context___block_invoke;
     block[3] = &unk_1E85F3E30;
     block[4] = self;
-    block[5] = a5;
+    block[5] = context;
     block[6] = v12;
     dispatch_sync(clientConnectionsQueue, block);
   }
@@ -343,10 +343,10 @@ void __60__AVConferenceXPCServer_sendMessageAsync_arguments_context___block_invo
   xpc_release(v3);
 }
 
-- (void)sendMessageAsync:(char *)a3 arguments:(id)a4 toAllClientsWithContext:(id)a5
+- (void)sendMessageAsync:(char *)async arguments:(id)arguments toAllClientsWithContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3 && a5)
+  if (async && context)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
@@ -364,7 +364,7 @@ void __60__AVConferenceXPCServer_sendMessageAsync_arguments_context___block_invo
           v19 = 1024;
           v20 = 449;
           v21 = 2080;
-          v22 = a3;
+          asyncCopy = async;
           _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "AVConferenceXPCServer [%s] %s:%d VCXPCServer: sending notification to all clients for service %s", buf, 0x26u);
         }
       }
@@ -375,15 +375,15 @@ void __60__AVConferenceXPCServer_sendMessageAsync_arguments_context___block_invo
       }
     }
 
-    v12 = [(AVConferenceXPCServer *)self newXPCDictionaryFromNSDictionary:a4 forEvent:0];
-    xpc_dictionary_set_string(v12, "API", a3);
+    v12 = [(AVConferenceXPCServer *)self newXPCDictionaryFromNSDictionary:arguments forEvent:0];
+    xpc_dictionary_set_string(v12, "API", async);
     clientConnectionsQueue = self->clientConnectionsQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __76__AVConferenceXPCServer_sendMessageAsync_arguments_toAllClientsWithContext___block_invoke;
     block[3] = &unk_1E85F3E30;
     block[4] = self;
-    block[5] = a5;
+    block[5] = context;
     block[6] = v12;
     dispatch_sync(clientConnectionsQueue, block);
   }
@@ -443,12 +443,12 @@ void __76__AVConferenceXPCServer_sendMessageAsync_arguments_toAllClientsWithCont
   xpc_release(*(a1 + 48));
 }
 
-- (void)registerBlockForService:(const char *)a3 block:(id)a4 queue:(id)global_queue eventLogLevel:(int)a6 authorizationBlock:(id)a7 allowablePublicAPIs:(id)a8
+- (void)registerBlockForService:(const char *)service block:(id)block queue:(id)global_queue eventLogLevel:(int)level authorizationBlock:(id)authorizationBlock allowablePublicAPIs:(id)is
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (service && block)
   {
-    v11 = *&a6;
+    v11 = *&level;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v15 = VRTraceErrorLogLevelToCSTR();
@@ -462,25 +462,25 @@ void __76__AVConferenceXPCServer_sendMessageAsync_arguments_toAllClientsWithCont
         v28 = 1024;
         v29 = 489;
         v30 = 2080;
-        v31 = a3;
+        serviceCopy = service;
         _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, "AVConferenceXPCServer [%s] %s:%d VCXPCServer: Adding registered block for service %s", buf, 0x26u);
       }
     }
 
-    v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:a3 encoding:4];
-    if (a8)
+    v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:service encoding:4];
+    if (is)
     {
-      v18 = [a8 containsObject:v17];
+      v18 = [is containsObject:v17];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __114__AVConferenceXPCServer_registerBlockForService_block_queue_eventLogLevel_authorizationBlock_allowablePublicAPIs___block_invoke;
       v22[3] = &unk_1E85F87F0;
       v23 = v18;
-      v22[4] = a7;
-      a7 = [v22 copy];
+      v22[4] = authorizationBlock;
+      authorizationBlock = [v22 copy];
     }
 
-    v19 = [a4 copy];
+    v19 = [block copy];
     if (!global_queue)
     {
       global_queue = dispatch_get_global_queue(2, 0);
@@ -497,7 +497,7 @@ void __76__AVConferenceXPCServer_sendMessageAsync_arguments_toAllClientsWithCont
 
     [(VCXPCServerUser *)v21 setBlock:v19];
     [(VCXPCServerUser *)v21 setQueue:global_queue];
-    [(VCXPCServerUser *)v21 setAuthorizationBlock:a7];
+    [(VCXPCServerUser *)v21 setAuthorizationBlock:authorizationBlock];
     [(VCXPCServerUser *)v21 setEventLogLevel:v11];
     objc_sync_exit(registeredBlocks);
   }
@@ -535,10 +535,10 @@ uint64_t __114__AVConferenceXPCServer_registerBlockForService_block_queue_eventL
   return v5 & 1;
 }
 
-- (void)deregisterFromService:(const char *)a3
+- (void)deregisterFromService:(const char *)service
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (service)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -553,12 +553,12 @@ uint64_t __114__AVConferenceXPCServer_registerBlockForService_block_queue_eventL
         v13 = 1024;
         v14 = 540;
         v15 = 2080;
-        v16 = a3;
+        serviceCopy = service;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "AVConferenceXPCServer [%s] %s:%d VCXPCServer: Removing registered block for service %s", &v9, 0x26u);
       }
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:a3 encoding:4];
+    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:service encoding:4];
     registeredBlocks = self->registeredBlocks;
     objc_sync_enter(registeredBlocks);
     [(NSMutableDictionary *)self->registeredBlocks removeObjectForKey:v7];
@@ -566,9 +566,9 @@ uint64_t __114__AVConferenceXPCServer_registerBlockForService_block_queue_eventL
   }
 }
 
-- (id)newNSDictionaryFromXPCDictionary:(id)a3
+- (id)newNSDictionaryFromXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     return _CFXPCCreateCFObjectFromXPCObject();
   }
@@ -579,11 +579,11 @@ uint64_t __114__AVConferenceXPCServer_registerBlockForService_block_queue_eventL
   }
 }
 
-- (id)newXPCDictionaryFromNSDictionary:(id)a3 forEvent:(id)a4
+- (id)newXPCDictionaryFromNSDictionary:(id)dictionary forEvent:(id)event
 {
-  if (a4)
+  if (event)
   {
-    reply = xpc_dictionary_create_reply(a4);
+    reply = xpc_dictionary_create_reply(event);
   }
 
   else
@@ -592,7 +592,7 @@ uint64_t __114__AVConferenceXPCServer_registerBlockForService_block_queue_eventL
   }
 
   v6 = reply;
-  if (a3)
+  if (dictionary)
   {
     v7 = _CFXPCCreateXPCObjectFromCFObject();
     if (v7)
@@ -606,35 +606,35 @@ uint64_t __114__AVConferenceXPCServer_registerBlockForService_block_queue_eventL
   return v6;
 }
 
-- (id)newNSErrorFromNSDictionary:(id)a3
+- (id)newNSErrorFromNSDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     return 0;
   }
 
   v4 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v5 = [a3 objectForKeyedSubscript:@"ERROR_DOMAIN"];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ERROR_CODE", "intValue"}];
-  v7 = [a3 objectForKeyedSubscript:@"ERROR_USERINFO"];
+  v5 = [dictionary objectForKeyedSubscript:@"ERROR_DOMAIN"];
+  v6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"ERROR_CODE", "intValue"}];
+  v7 = [dictionary objectForKeyedSubscript:@"ERROR_USERINFO"];
 
   return [v4 initWithDomain:v5 code:v6 userInfo:v7];
 }
 
-- (id)newNSDictionaryFromNSError:(id)a3
+- (id)newNSDictionaryFromNSError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{objc_msgSend(a3, "code")}];
-  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{objc_msgSend(a3, "domain"), @"ERROR_DOMAIN", v4, @"ERROR_CODE", objc_msgSend(a3, "userInfo"), @"ERROR_USERINFO", 0}];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:{objc_msgSend(error, "code")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{objc_msgSend(error, "domain"), @"ERROR_DOMAIN", v4, @"ERROR_CODE", objc_msgSend(error, "userInfo"), @"ERROR_USERINFO", 0}];
 
   return v5;
 }
 
-- (id)newNSDictionaryWidthNSDictionary:(id)a3
+- (id)newNSDictionaryWidthNSDictionary:(id)dictionary
 {
   v9 = *MEMORY[0x1E69E9840];
   v7[0] = 0;
@@ -648,7 +648,7 @@ uint64_t __114__AVConferenceXPCServer_registerBlockForService_block_queue_eventL
   v6[3] = &unk_1E85F8818;
   v6[4] = v4;
   v6[5] = v7;
-  [a3 enumerateKeysAndObjectsUsingBlock:v6];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v6];
   _Block_object_dispose(v7, 8);
   return v4;
 }
@@ -666,28 +666,28 @@ uint64_t __58__AVConferenceXPCServer_newNSDictionaryWidthNSDictionary___block_in
   return [v6 setObject:a3 forKeyedSubscript:v9];
 }
 
-- (void)appendPIDToDictionary:(id)a3 pid:(int)a4
+- (void)appendPIDToDictionary:(id)dictionary pid:(int)pid
 {
-  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*&a4];
-  [a3 setObject:v5 forKeyedSubscript:@"CLIENTPID"];
+  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*&pid];
+  [dictionary setObject:v5 forKeyedSubscript:@"CLIENTPID"];
 }
 
-- (void)appendClientAuditTokenToDictionary:(id)a3 clientAuditToken:(id *)a4
+- (void)appendClientAuditTokenToDictionary:(id)dictionary clientAuditToken:(id *)token
 {
   v10 = *MEMORY[0x1E69E9840];
   v6 = [AVCAuditToken alloc];
-  v7 = *&a4->var0[4];
-  v9[0] = *a4->var0;
+  v7 = *&token->var0[4];
+  v9[0] = *token->var0;
   v9[1] = v7;
   v8 = [(AVCAuditToken *)v6 initWithAuditToken:v9];
-  [a3 setObject:v8 forKeyedSubscript:@"CLIENTAUDITTOKEN"];
+  [dictionary setObject:v8 forKeyedSubscript:@"CLIENTAUDITTOKEN"];
 }
 
-- (void)appendContextToDictionary:(id)a3 forConnection:(id)a4
+- (void)appendContextToDictionary:(id)dictionary forConnection:(id)connection
 {
   v8[7] = *MEMORY[0x1E69E9840];
-  [a3 setObject:0 forKeyedSubscript:@"CONTEXT"];
-  if (a4)
+  [dictionary setObject:0 forKeyedSubscript:@"CONTEXT"];
+  if (connection)
   {
     clientConnectionsQueue = self->clientConnectionsQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -695,8 +695,8 @@ uint64_t __58__AVConferenceXPCServer_newNSDictionaryWidthNSDictionary___block_in
     v8[2] = __65__AVConferenceXPCServer_appendContextToDictionary_forConnection___block_invoke;
     v8[3] = &unk_1E85F3E30;
     v8[4] = self;
-    v8[5] = a4;
-    v8[6] = a3;
+    v8[5] = connection;
+    v8[6] = dictionary;
     dispatch_sync(clientConnectionsQueue, v8);
   }
 }
@@ -836,21 +836,21 @@ uint64_t __44__AVConferenceXPCServer_authorizedTokenData__block_invoke(uint64_t 
   return result;
 }
 
-+ (BOOL)clientWithToken:(id *)a3 hasEntitlement:(id)a4
++ (BOOL)clientWithToken:(id *)token hasEntitlement:(id)entitlement
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (![a4 length])
+  if (![entitlement length])
   {
     return 0;
   }
 
   error = 0;
   v6 = *MEMORY[0x1E695E480];
-  v7 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v7 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v7;
   v8 = SecTaskCreateWithAuditToken(v6, &token);
-  v9 = SecTaskCopyValueForEntitlement(v8, a4, &error);
+  v9 = SecTaskCopyValueForEntitlement(v8, entitlement, &error);
   if (v9)
   {
     v10 = error == 0;
@@ -875,13 +875,13 @@ uint64_t __44__AVConferenceXPCServer_authorizedTokenData__block_invoke(uint64_t 
   return v11;
 }
 
-+ (int64_t)entitlementStatusForToken:(id *)a3
++ (int64_t)entitlementStatusForToken:(id *)token
 {
   v14 = *MEMORY[0x1E69E9840];
   error = 0;
   v3 = *MEMORY[0x1E695E480];
-  v4 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v4 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v4;
   v5 = SecTaskCreateWithAuditToken(v3, &token);
   v6 = v5;
@@ -940,7 +940,7 @@ LABEL_8:
   return v10;
 }
 
-- (void)_xpc_handle_incoming_request:(id)a3
+- (void)_xpc_handle_incoming_request:(id)_xpc_handle_incoming_request
 {
   v33 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -959,7 +959,7 @@ LABEL_8:
     }
   }
 
-  if (MEMORY[0x1E128D960](a3) == MEMORY[0x1E69E9E68])
+  if (MEMORY[0x1E128D960](_xpc_handle_incoming_request) == MEMORY[0x1E69E9E68])
   {
     *&v7 = 0xAAAAAAAAAAAAAAAALL;
     *(&v7 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -974,23 +974,23 @@ LABEL_8:
     v14 = [AVConferenceXPCServer entitlementStatusForToken:buf];
     if (v12[3])
     {
-      xpc_connection_set_target_queue(a3, self->incomingMessageQueue);
+      xpc_connection_set_target_queue(_xpc_handle_incoming_request, self->incomingMessageQueue);
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __69__AVConferenceXPCServer_XPCManagement___xpc_handle_incoming_request___block_invoke;
       handler[3] = &unk_1E85F8890;
       handler[4] = self;
-      handler[5] = a3;
+      handler[5] = _xpc_handle_incoming_request;
       v16 = v31;
       v17 = v32;
       handler[6] = &v11;
-      xpc_connection_set_event_handler(a3, handler);
-      xpc_connection_resume(a3);
+      xpc_connection_set_event_handler(_xpc_handle_incoming_request, handler);
+      xpc_connection_resume(_xpc_handle_incoming_request);
     }
 
     else
     {
-      pid = xpc_connection_get_pid(a3);
+      pid = xpc_connection_get_pid(_xpc_handle_incoming_request);
       bzero(&buf[3], 0x3FDuLL);
       memset(buf, 63, 3);
       proc_name(pid, buf, 0x400u);
@@ -1016,7 +1016,7 @@ LABEL_8:
         }
       }
 
-      xpc_connection_cancel(a3);
+      xpc_connection_cancel(_xpc_handle_incoming_request);
     }
 
     _Block_object_dispose(&v11, 8);
@@ -1672,10 +1672,10 @@ void __69__AVConferenceXPCServer_XPCManagement___xpc_handle_incoming_request___b
   v1 = (*(*(a1 + 40) + 16))(*(a1 + 40), *(a1 + 32), 0);
 }
 
-- (void)_xpc_add_connection_to_list:(id)a3
+- (void)_xpc_add_connection_to_list:(id)_xpc_add_connection_to_list
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (_xpc_add_connection_to_list)
   {
     clientConnectionsQueue = self->clientConnectionsQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1683,7 +1683,7 @@ void __69__AVConferenceXPCServer_XPCManagement___xpc_handle_incoming_request___b
     block[2] = __68__AVConferenceXPCServer_XPCManagement___xpc_add_connection_to_list___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = _xpc_add_connection_to_list;
     dispatch_barrier_sync(clientConnectionsQueue, block);
   }
 }
@@ -1720,10 +1720,10 @@ void __68__AVConferenceXPCServer_XPCManagement___xpc_add_connection_to_list___bl
   }
 }
 
-- (void)_xpc_remove_connection_from_list:(id)a3
+- (void)_xpc_remove_connection_from_list:(id)_xpc_remove_connection_from_list
 {
   block[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (_xpc_remove_connection_from_list)
   {
     clientConnectionsQueue = self->clientConnectionsQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1731,7 +1731,7 @@ void __68__AVConferenceXPCServer_XPCManagement___xpc_add_connection_to_list___bl
     block[2] = __73__AVConferenceXPCServer_XPCManagement___xpc_remove_connection_from_list___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = _xpc_remove_connection_from_list;
     dispatch_barrier_sync(clientConnectionsQueue, block);
   }
 }
@@ -1796,7 +1796,7 @@ uint64_t __73__AVConferenceXPCServer_XPCManagement___xpc_remove_connection_from_
   dispatch_barrier_sync(clientConnectionsQueue, block);
 }
 
-- (id)_xpc_get_connection_from_list_for_connection:(id)a3
+- (id)_xpc_get_connection_from_list_for_connection:(id)_xpc_get_connection_from_list_for_connection
 {
   v17 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->clientConnectionsQueue);
@@ -1823,7 +1823,7 @@ LABEL_3:
     }
 
     v10 = *(*(&v13 + 1) + 8 * v9);
-    if ([v10 connection] == a3)
+    if ([v10 connection] == _xpc_get_connection_from_list_for_connection)
     {
       return v10;
     }
@@ -1841,7 +1841,7 @@ LABEL_3:
   }
 }
 
-- (id)_xpc_get_connection_from_list_for_context:(id)a3
+- (id)_xpc_get_connection_from_list_for_context:(id)_xpc_get_connection_from_list_for_context
 {
   v17 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->clientConnectionsQueue);
@@ -1868,7 +1868,7 @@ LABEL_3:
     }
 
     v10 = *(*(&v13 + 1) + 8 * v9);
-    if ([a3 isEqual:{objc_msgSend(v10, "context")}])
+    if ([_xpc_get_connection_from_list_for_context isEqual:{objc_msgSend(v10, "context")}])
     {
       return v10;
     }
@@ -1886,7 +1886,7 @@ LABEL_3:
   }
 }
 
-- (id)_xpc_get_connections_from_list_for_context:(id)a3
+- (id)_xpc_get_connections_from_list_for_context:(id)_xpc_get_connections_from_list_for_context
 {
   v19 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->clientConnectionsQueue);
@@ -1911,7 +1911,7 @@ LABEL_3:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([a3 isEqual:{objc_msgSend(v11, "context")}])
+        if ([_xpc_get_connections_from_list_for_context isEqual:{objc_msgSend(v11, "context")}])
         {
           [v5 addObject:v11];
         }

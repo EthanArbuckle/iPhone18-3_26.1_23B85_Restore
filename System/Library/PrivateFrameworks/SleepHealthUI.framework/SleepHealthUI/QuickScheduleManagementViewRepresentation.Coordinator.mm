@@ -1,12 +1,12 @@
 @interface QuickScheduleManagementViewRepresentation.Coordinator
 - (_TtCV13SleepHealthUI41QuickScheduleManagementViewRepresentation11Coordinator)init;
-- (void)quickScheduleManagementViewController:(id)a3 didSave:(id)a4;
-- (void)quickScheduleManagementViewController:(id)a3 shouldPresent:(id)a4;
+- (void)quickScheduleManagementViewController:(id)controller didSave:(id)save;
+- (void)quickScheduleManagementViewController:(id)controller shouldPresent:(id)present;
 @end
 
 @implementation QuickScheduleManagementViewRepresentation.Coordinator
 
-- (void)quickScheduleManagementViewController:(id)a3 didSave:(id)a4
+- (void)quickScheduleManagementViewController:(id)controller didSave:(id)save
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -16,13 +16,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_269D505D0(a4);
+  controllerCopy = controller;
+  saveCopy = save;
+  selfCopy = self;
+  sub_269D505D0(save);
 }
 
-- (void)quickScheduleManagementViewController:(id)a3 shouldPresent:(id)a4
+- (void)quickScheduleManagementViewController:(id)controller shouldPresent:(id)present
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -32,10 +32,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_269D50968(v8);
+  controllerCopy = controller;
+  presentCopy = present;
+  selfCopy = self;
+  sub_269D50968(presentCopy);
 }
 
 - (_TtCV13SleepHealthUI41QuickScheduleManagementViewRepresentation11Coordinator)init

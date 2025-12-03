@@ -1,18 +1,18 @@
 @interface USBCAcePDAccess
-- (BOOL)attemptErrorRecovery:(id)a3 lastAttempt:(BOOL)a4;
-- (USBCAcePDAccess)initWithPDController:(id)a3;
-- (id)DeviceInAlternateMode:(BOOL *)a3;
-- (id)VerifyEmptyPortAndReset:(id)a3 blessCallback:(id)a4;
+- (BOOL)attemptErrorRecovery:(id)recovery lastAttempt:(BOOL)attempt;
+- (USBCAcePDAccess)initWithPDController:(id)controller;
+- (id)DeviceInAlternateMode:(BOOL *)mode;
+- (id)VerifyEmptyPortAndReset:(id)reset blessCallback:(id)callback;
 - (id)VerifyPowerRole;
 @end
 
 @implementation USBCAcePDAccess
 
-- (USBCAcePDAccess)initWithPDController:(id)a3
+- (USBCAcePDAccess)initWithPDController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = USBCAcePDAccess;
-  result = [(USBCPDAccess *)&v4 initWithPDController:a3];
+  result = [(USBCPDAccess *)&v4 initWithPDController:controller];
   if (result)
   {
     result->CurrentPowerRole = -1;
@@ -21,26 +21,26 @@
   return result;
 }
 
-- (BOOL)attemptErrorRecovery:(id)a3 lastAttempt:(BOOL)a4
+- (BOOL)attemptErrorRecovery:(id)recovery lastAttempt:(BOOL)attempt
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = 0;
+  attemptCopy = attempt;
+  recoveryCopy = recovery;
+  verifyPowerRole2 = 0;
   v57 = 0;
   v8 = 0;
   v60 = 0;
   v64 = 0;
   v9 = 1;
-  v10 = v4;
-  v58 = v4;
-  v61 = v6;
+  v10 = attemptCopy;
+  v58 = attemptCopy;
+  v61 = recoveryCopy;
   v11 = 1;
   while (1)
   {
     v59 = v9;
     v12 = [(USBCAcePDAccess *)self DeviceInAlternateMode:&v64];
 
-    v13 = v4;
+    v13 = attemptCopy;
     if (v12)
     {
       goto LABEL_3;
@@ -56,14 +56,14 @@
       {
         v14 = v30;
         LOBYTE(v11) = 0;
-        v13 = v4;
-        if ((v4 & 1) == 0)
+        v13 = attemptCopy;
+        if ((attemptCopy & 1) == 0)
         {
-          LOBYTE(v4) = 0;
+          LOBYTE(attemptCopy) = 0;
           goto LABEL_61;
         }
 
-        LOBYTE(v4) = 1;
+        LOBYTE(attemptCopy) = 1;
         goto LABEL_60;
       }
 
@@ -71,7 +71,7 @@
       {
         v10 = 1;
         v64 = 1;
-        v56 = (v59 == 0) | v4;
+        v56 = (v59 == 0) | attemptCopy;
         goto LABEL_7;
       }
 
@@ -81,7 +81,7 @@
 LABEL_3:
         LOBYTE(v11) = 0;
         v14 = v12;
-        if ((v4 & 1) == 0)
+        if ((attemptCopy & 1) == 0)
         {
           goto LABEL_61;
         }
@@ -92,29 +92,29 @@ LABEL_3:
       v11 = 0;
     }
 
-    v56 = v4;
+    v56 = attemptCopy;
 LABEL_7:
-    v15 = [(USBCAcePDAccess *)self VerifyPowerRole];
-    v16 = v15 != 0;
+    verifyPowerRole = [(USBCAcePDAccess *)self VerifyPowerRole];
+    v16 = verifyPowerRole != 0;
 
-    if (v6)
+    if (recoveryCopy)
     {
-      v55 = v4;
+      v55 = attemptCopy;
       while (1)
       {
-        v17 = [v6 userInfo];
-        v18 = [v6 code];
+        userInfo = [recoveryCopy userInfo];
+        code = [recoveryCopy code];
         if ([(USBCPDAccess *)self didFailErrorRecovery:v61])
         {
 LABEL_96:
 
-          v7 = 0;
+          verifyPowerRole2 = 0;
           v47 = 0;
           goto LABEL_103;
         }
 
-        v19 = v18 >> 8;
-        if (v18 >> 8 <= 23)
+        v19 = code >> 8;
+        if (code >> 8 <= 23)
         {
           v20 = v19 - 22;
           if (v19 == 21)
@@ -168,16 +168,16 @@ LABEL_96:
         {
           if ((v19 - 24) < 2)
           {
-            v26 = [v17 objectForKeyedSubscript:@"Error Code"];
+            v26 = [userInfo objectForKeyedSubscript:@"Error Code"];
             v27 = v26;
             if (v26)
             {
-              v28 = [v26 unsignedLongValue];
-              if (v28 <= 2)
+              unsignedLongValue = [v26 unsignedLongValue];
+              if (unsignedLongValue <= 2)
               {
-                if (v28)
+                if (unsignedLongValue)
                 {
-                  if (v28 != 2)
+                  if (unsignedLongValue != 2)
                   {
                     goto LABEL_41;
                   }
@@ -188,22 +188,22 @@ LABEL_96:
 
               else
               {
-                switch(v28)
+                switch(unsignedLongValue)
                 {
                   case 3:
-                    LOBYTE(v4) = 1;
+                    LOBYTE(attemptCopy) = 1;
                     v10 = 1;
                     break;
                   case 4:
                     v11 = 0;
                     break;
                   case 5:
-                    LOBYTE(v4) = v58 & v4;
+                    LOBYTE(attemptCopy) = v58 & attemptCopy;
                     goto LABEL_43;
                   default:
 LABEL_41:
                     v56 |= v59 == 0;
-                    LOBYTE(v4) = 1;
+                    LOBYTE(attemptCopy) = 1;
 LABEL_42:
                     v10 = 1;
 LABEL_43:
@@ -231,9 +231,9 @@ LABEL_43:
         }
 
 LABEL_49:
-        v29 = [v17 objectForKeyedSubscript:@"Previous Error Response"];
+        v29 = [userInfo objectForKeyedSubscript:@"Previous Error Response"];
 
-        v6 = v29;
+        recoveryCopy = v29;
         if (!v29)
         {
           goto LABEL_55;
@@ -241,12 +241,12 @@ LABEL_49:
       }
     }
 
-    v55 = v4;
+    v55 = attemptCopy;
 LABEL_55:
-    v13 = v8 & (v60 ^ 1) | v4;
+    v13 = v8 & (v60 ^ 1) | attemptCopy;
     if (v16)
     {
-      v6 = 0;
+      recoveryCopy = 0;
       v14 = 0;
     }
 
@@ -254,12 +254,12 @@ LABEL_55:
     {
       if ((v57 & 1) == 0)
       {
-        v6 = 0;
+        recoveryCopy = 0;
         v14 = 0;
         v57 = 0;
         v13 |= v60;
         v10 |= v60;
-        LOBYTE(v4) = v56;
+        LOBYTE(attemptCopy) = v56;
         if ((v55 & 1) == 0)
         {
           goto LABEL_61;
@@ -268,18 +268,18 @@ LABEL_55:
         goto LABEL_60;
       }
 
-      v6 = 0;
+      recoveryCopy = 0;
       v14 = 0;
       v13 &= v58;
       v57 = 1;
     }
 
     v10 = 1;
-    LOBYTE(v4) = v56;
+    LOBYTE(attemptCopy) = v56;
 LABEL_60:
     usleep(0x3D0900u);
 LABEL_61:
-    if (v13 & 1) != 0 || (v4)
+    if (v13 & 1) != 0 || (attemptCopy)
     {
       v31 = [(USBCPDAccess *)self LocalExecuteCommand:1414677057];
       if (v31)
@@ -297,9 +297,9 @@ LABEL_61:
       }
     }
 
-    if ((v4 & 1) == 0)
+    if ((attemptCopy & 1) == 0)
     {
-      v7 = v14;
+      verifyPowerRole2 = v14;
       if (v10)
       {
         goto LABEL_98;
@@ -328,18 +328,18 @@ LABEL_61:
       v14 = v39;
     }
 
-    v7 = [(USBCAcePDAccess *)self VerifyPowerRole];
+    verifyPowerRole2 = [(USBCAcePDAccess *)self VerifyPowerRole];
 
-    if (v7)
+    if (verifyPowerRole2)
     {
       v40 = 0;
       do
       {
-        v41 = v7;
+        v41 = verifyPowerRole2;
         usleep(0x3D0900u);
-        v7 = [(USBCAcePDAccess *)self VerifyPowerRole];
+        verifyPowerRole2 = [(USBCAcePDAccess *)self VerifyPowerRole];
 
-        v42 = v7 != 0;
+        v42 = verifyPowerRole2 != 0;
         if (v40 > 3)
         {
           break;
@@ -348,7 +348,7 @@ LABEL_61:
         ++v40;
       }
 
-      while (v7);
+      while (verifyPowerRole2);
     }
 
     else
@@ -363,12 +363,12 @@ LABEL_61:
       [v44 setObject:v43 forKeyedSubscript:@"Recovery Error Response"];
       if (v42)
       {
-        [v44 setObject:v7 forKeyedSubscript:@"Previous Error Response"];
+        [v44 setObject:verifyPowerRole2 forKeyedSubscript:@"Previous Error Response"];
       }
 
       v45 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13059 userInfo:v44];
 
-      v7 = v45;
+      verifyPowerRole2 = v45;
       goto LABEL_86;
     }
 
@@ -399,7 +399,7 @@ LABEL_86:
     v47 = 0;
     v10 |= v58;
     v9 = v59 - 1;
-    LOBYTE(v4) = 1;
+    LOBYTE(attemptCopy) = 1;
     if (!v59)
     {
       goto LABEL_103;
@@ -411,7 +411,7 @@ LABEL_86:
   v50 = v49;
   if (v42)
   {
-    [v49 setObject:v7 forKeyedSubscript:@"Previous Error Response"];
+    [v49 setObject:verifyPowerRole2 forKeyedSubscript:@"Previous Error Response"];
   }
 
   v51 = [NSNumber numberWithUnsignedLong:v48];
@@ -419,7 +419,7 @@ LABEL_86:
 
   v52 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:6148 userInfo:v50];
 
-  v7 = v52;
+  verifyPowerRole2 = v52;
   v47 = v11;
 LABEL_103:
 
@@ -513,10 +513,10 @@ LABEL_15:
   return v6;
 }
 
-- (id)VerifyEmptyPortAndReset:(id)a3 blessCallback:(id)a4
+- (id)VerifyEmptyPortAndReset:(id)reset blessCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  resetCopy = reset;
+  callbackCopy = callback;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
@@ -544,16 +544,16 @@ LABEL_43:
   v9 = v39 != 0;
 LABEL_6:
   v10 = !v9;
-  v11 = v6;
+  v11 = resetCopy;
   if (v11)
   {
     v12 = v11;
-    v33 = v7;
-    v13 = v6;
+    v33 = callbackCopy;
+    v13 = resetCopy;
     do
     {
       v14 = v12;
-      v15 = [v12 userInfo];
+      userInfo = [v12 userInfo];
       v16 = [v12 code] >> 8;
       v17 = v16 == 38 || v16 == 11;
       v18 = v17;
@@ -567,13 +567,13 @@ LABEL_6:
         v10 = 0;
       }
 
-      v12 = [v15 objectForKeyedSubscript:@"Previous Error Response"];
+      v12 = [userInfo objectForKeyedSubscript:@"Previous Error Response"];
     }
 
     while (v12 && !v18);
 
-    v6 = v13;
-    v7 = v33;
+    resetCopy = v13;
+    callbackCopy = v33;
   }
 
   if (v10)
@@ -581,9 +581,9 @@ LABEL_6:
     v19 = [(USBCPDAccess *)self LocalExecuteCommand:1414677057];
   }
 
-  if (v7 != 0 && v9)
+  if (callbackCopy != 0 && v9)
   {
-    v20 = v7[2](v7);
+    v20 = callbackCopy[2](callbackCopy);
     v21 = objc_alloc_init(NSMutableString);
     v34 = 0u;
     v35 = 0u;
@@ -643,7 +643,7 @@ LABEL_40:
   return v31;
 }
 
-- (id)DeviceInAlternateMode:(BOOL *)a3
+- (id)DeviceInAlternateMode:(BOOL *)mode
 {
   v18 = 0u;
   v19 = 0u;
@@ -712,9 +712,9 @@ LABEL_5:
   }
 
 LABEL_6:
-  if (a3)
+  if (mode)
   {
-    *a3 = v8;
+    *mode = v8;
   }
 
   if (v6)

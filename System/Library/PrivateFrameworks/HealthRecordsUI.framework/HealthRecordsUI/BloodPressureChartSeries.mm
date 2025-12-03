@@ -7,8 +7,8 @@
 
 - ($59C47D607893B286F305BF66D04A56BD)selectedPathRange
 {
-  v4 = self;
-  if ([(HKGraphSeries *)v4 allowsSelection])
+  selfCopy = self;
+  if ([(HKGraphSeries *)selfCopy allowsSelection])
   {
     HKGraphSeriesDataBlockPathMake(&v14);
     v20 = v14;

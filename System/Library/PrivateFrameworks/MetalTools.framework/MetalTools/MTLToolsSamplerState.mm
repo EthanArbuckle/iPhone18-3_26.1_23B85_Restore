@@ -1,6 +1,6 @@
 @interface MTLToolsSamplerState
 - (MTLResourceID)gpuResourceID;
-- (MTLToolsSamplerState)initWithSamplerState:(id)a3 descriptor:(id)a4 device:(id)a5;
+- (MTLToolsSamplerState)initWithSamplerState:(id)state descriptor:(id)descriptor device:(id)device;
 - (NSString)label;
 - (unint64_t)gpuAddress;
 - (unint64_t)gpuHandle;
@@ -12,11 +12,11 @@
 
 @implementation MTLToolsSamplerState
 
-- (MTLToolsSamplerState)initWithSamplerState:(id)a3 descriptor:(id)a4 device:(id)a5
+- (MTLToolsSamplerState)initWithSamplerState:(id)state descriptor:(id)descriptor device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MTLToolsSamplerState;
-  return [(MTLToolsObject *)&v6 initWithBaseObject:a3 parent:a5];
+  return [(MTLToolsObject *)&v6 initWithBaseObject:state parent:device];
 }
 
 - (void)dealloc
@@ -29,51 +29,51 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
 - (unint64_t)gpuAddress
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuAddress];
+  return [baseObject gpuAddress];
 }
 
 - (unint64_t)uniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 uniqueIdentifier];
+  return [baseObject uniqueIdentifier];
 }
 
 - (unint64_t)pixelFormat
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 pixelFormat];
+  return [baseObject pixelFormat];
 }
 
 - (unint64_t)gpuHandle
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuHandle];
+  return [baseObject gpuHandle];
 }
 
 - (MTLResourceID)gpuResourceID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
 @end

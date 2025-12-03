@@ -3,7 +3,7 @@
 - (AssistantDetailListController)init;
 - (UIImage)checkmarkImage;
 - (UIImage)transparentImage;
-- (void)setChecked:(BOOL)a3 forSpecifier:(id)a4;
+- (void)setChecked:(BOOL)checked forSpecifier:(id)specifier;
 @end
 
 @implementation AssistantDetailListController
@@ -36,31 +36,31 @@
   return v2;
 }
 
-- (void)setChecked:(BOOL)a3 forSpecifier:(id)a4
+- (void)setChecked:(BOOL)checked forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v12 = [v6 propertyForKey:*MEMORY[0x277D40148]];
-  v7 = [v12 imageView];
-  if (a3)
+  specifierCopy = specifier;
+  v12 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
+  imageView = [v12 imageView];
+  if (checked)
   {
-    v8 = [(AssistantDetailListController *)self checkmarkImage];
-    [v7 setImage:v8];
+    checkmarkImage = [(AssistantDetailListController *)self checkmarkImage];
+    [imageView setImage:checkmarkImage];
 
     [(AssistantDetailListController *)self checkmarkImage];
   }
 
   else
   {
-    v9 = [(AssistantDetailListController *)self transparentImage];
-    [v7 setImage:v9];
+    transparentImage = [(AssistantDetailListController *)self transparentImage];
+    [imageView setImage:transparentImage];
 
     [(AssistantDetailListController *)self transparentImage];
   }
   v10 = ;
-  [v6 setProperty:v10 forKey:*MEMORY[0x277D3FFC0]];
+  [specifierCopy setProperty:v10 forKey:*MEMORY[0x277D3FFC0]];
 
   checkedSpecifier = self->_checkedSpecifier;
-  self->_checkedSpecifier = v6;
+  self->_checkedSpecifier = specifierCopy;
 }
 
 - (UIImage)checkmarkImage
@@ -94,8 +94,8 @@
     v6 = [MEMORY[0x277D74300] fontWithDescriptor:v5 size:0.0];
     v7 = [MEMORY[0x277D755D0] configurationWithFont:v6 scale:2];
     v8 = MEMORY[0x277D755D0];
-    v9 = [MEMORY[0x277D75348] clearColor];
-    v10 = [v8 configurationWithHierarchicalColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    v10 = [v8 configurationWithHierarchicalColor:clearColor];
 
     v11 = [v7 configurationByApplyingConfiguration:v10];
     v12 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark" withConfiguration:v11];

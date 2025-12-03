@@ -1,29 +1,29 @@
 @interface OrgApacheLuceneUtilBitSetIterator
-+ (id)getFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3;
-+ (id)getSparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3;
-- (int)advanceWithInt:(int)a3;
++ (id)getFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
++ (id)getSparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
+- (int)advanceWithInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilBitSetIterator
 
-+ (id)getFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3
++ (id)getFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
   v4 = OrgApacheLuceneUtilFixedBitSet_class_();
 
-  return sub_100021FDC(a3, v4);
+  return sub_100021FDC(iterator, v4);
 }
 
-+ (id)getSparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3
++ (id)getSparseFixedBitSetOrNullWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
   v4 = OrgApacheLuceneUtilSparseFixedBitSet_class_();
 
-  return sub_100021FDC(a3, v4);
+  return sub_100021FDC(iterator, v4);
 }
 
-- (int)advanceWithInt:(int)a3
+- (int)advanceWithInt:(int)int
 {
-  if (self->length_ <= a3)
+  if (self->length_ <= int)
   {
     result = 0x7FFFFFFF;
   }

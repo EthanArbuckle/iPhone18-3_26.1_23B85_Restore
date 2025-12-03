@@ -1,32 +1,32 @@
 @interface ICSHeaderSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (ICSHeaderSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (ICSHeaderSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (NSArray)specifiers;
-- (id)_valueForStorageGraphSpecifier:(id)a3;
+- (id)_valueForStorageGraphSpecifier:(id)specifier;
 - (id)account;
-- (void)_fetchStorageSummary:(id)a3 completion:(id)a4;
+- (void)_fetchStorageSummary:(id)summary completion:(id)completion;
 - (void)_finishLoadingActiveSpecifier;
 - (void)_reloadStorageSpecifiers;
 - (void)_startObservingQuotaChangeNotifications;
 - (void)_stopObservingQuotaChangeNotifications;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ICSHeaderSpecifierProvider
 
-- (ICSHeaderSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4
+- (ICSHeaderSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = ICSHeaderSpecifierProvider;
   v9 = [(ICSHeaderSpecifierProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeWeak(&v10->_listController, v8);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeWeak(&v10->_listController, presenterCopy);
     [(ICSHeaderSpecifierProvider *)v10 _startObservingQuotaChangeNotifications];
   }
 
@@ -35,8 +35,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -49,11 +49,11 @@
   [(ICSHeaderSpecifierProvider *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
 - (NSArray)specifiers
@@ -67,8 +67,8 @@
   else
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v5 addObject:v6];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [v5 addObject:emptyGroupSpecifier];
 
     if (!self->_storageGraphSpecifier)
     {
@@ -97,53 +97,53 @@
   return v3;
 }
 
-- (id)_valueForStorageGraphSpecifier:(id)a3
+- (id)_valueForStorageGraphSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEC9E8]];
-  v6 = [v5 BOOLValue];
+  specifierCopy = specifier;
+  v5 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277CEC9E8]];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277CEC9F0]];
-  v8 = [v7 BOOLValue];
+  v7 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277CEC9F0]];
+  bOOLValue2 = [v7 BOOLValue];
 
   homeDataModel = self->_homeDataModel;
-  if (homeDataModel || (v6 & 1) != 0 || (v8 & 1) != 0)
+  if (homeDataModel || (bOOLValue & 1) != 0 || (bOOLValue2 & 1) != 0)
   {
     if (homeDataModel)
     {
-      v10 = [(ICSHomeDataModel *)homeDataModel headerCard];
-      v11 = [v10 storageSummary];
-      v12 = [v11 subscriptionLabel];
-      [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x277D40170]];
+      headerCard = [(ICSHomeDataModel *)homeDataModel headerCard];
+      storageSummary = [headerCard storageSummary];
+      subscriptionLabel = [storageSummary subscriptionLabel];
+      [specifierCopy setObject:subscriptionLabel forKeyedSubscript:*MEMORY[0x277D40170]];
 
       v13 = MEMORY[0x277CCABB0];
-      v14 = [(ICSHomeDataModel *)self->_homeDataModel headerCard];
-      v15 = [v14 storageSummary];
-      v16 = [v13 numberWithUnsignedLongLong:{objc_msgSend(v15, "totalStorageInBytes")}];
-      [v4 setObject:v16 forKeyedSubscript:*MEMORY[0x277CEC9D0]];
+      headerCard2 = [(ICSHomeDataModel *)self->_homeDataModel headerCard];
+      storageSummary2 = [headerCard2 storageSummary];
+      v16 = [v13 numberWithUnsignedLongLong:{objc_msgSend(storageSummary2, "totalStorageInBytes")}];
+      [specifierCopy setObject:v16 forKeyedSubscript:*MEMORY[0x277CEC9D0]];
 
       v17 = MEMORY[0x277CCABB0];
-      v18 = [(ICSHomeDataModel *)self->_homeDataModel headerCard];
-      v19 = [v18 storageSummary];
-      v20 = [v17 numberWithUnsignedLongLong:{objc_msgSend(v19, "usedStorageInBytes")}];
-      [v4 setObject:v20 forKeyedSubscript:*MEMORY[0x277CEC9E0]];
+      headerCard3 = [(ICSHomeDataModel *)self->_homeDataModel headerCard];
+      storageSummary3 = [headerCard3 storageSummary];
+      v20 = [v17 numberWithUnsignedLongLong:{objc_msgSend(storageSummary3, "usedStorageInBytes")}];
+      [specifierCopy setObject:v20 forKeyedSubscript:*MEMORY[0x277CEC9E0]];
     }
   }
 
   else
   {
-    [(ICSHeaderSpecifierProvider *)self _fetchStorageSummary:v4];
+    [(ICSHeaderSpecifierProvider *)self _fetchStorageSummary:specifierCopy];
   }
 
   return 0;
 }
 
-- (void)_fetchStorageSummary:(id)a3 completion:(id)a4
+- (void)_fetchStorageSummary:(id)summary completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  summaryCopy = summary;
+  completionCopy = completion;
   v8 = *MEMORY[0x277CEC9E8];
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277CEC9E8]];
+  v9 = [summaryCopy objectForKeyedSubscript:*MEMORY[0x277CEC9E8]];
   if ([v9 BOOLValue])
   {
 
@@ -158,20 +158,20 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277CEC9F0]];
-  v11 = [v10 BOOLValue];
+  v10 = [summaryCopy objectForKeyedSubscript:*MEMORY[0x277CEC9F0]];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     goto LABEL_4;
   }
 
-  if (v6)
+  if (summaryCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained specifierProvider:self willBeginLoadingSpecifier:v6];
+    [WeakRetained specifierProvider:self willBeginLoadingSpecifier:summaryCopy];
 
-    [v6 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v8];
+    [summaryCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v8];
   }
 
   objc_initWeak(&location, self);
@@ -181,8 +181,8 @@ LABEL_4:
   v26 = __Block_byref_object_copy_;
   v27 = __Block_byref_object_dispose_;
   v14 = [ICSHomeDataController alloc];
-  v15 = [(ICSHeaderSpecifierProvider *)self account];
-  v28 = [(ICSHomeDataController *)v14 initWithAccount:v15];
+  account = [(ICSHeaderSpecifierProvider *)self account];
+  v28 = [(ICSHomeDataController *)v14 initWithAccount:account];
 
   v16 = *(v24 + 5);
   v17[0] = MEMORY[0x277D85DD0];
@@ -191,9 +191,9 @@ LABEL_4:
   v17[3] = &unk_27A666538;
   objc_copyWeak(&v22, &location);
   v21 = buf;
-  v18 = v6;
-  v19 = self;
-  v20 = v7;
+  v18 = summaryCopy;
+  selfCopy = self;
+  v20 = completionCopy;
   [v16 fetchiCloudHomeDataModelAllowingCache:1 completion:v17];
 
   objc_destroyWeak(&v22);
@@ -291,9 +291,9 @@ void __62__ICSHeaderSpecifierProvider__fetchStorageSummary_completion___block_in
 {
   if (self->_storageGraphSpecifier)
   {
-    v4 = [(ICSHeaderSpecifierProvider *)self delegate];
-    v3 = [(PSSpecifier *)self->_storageGraphSpecifier identifier];
-    [v4 reloadSpecifierForProvider:self identifier:v3];
+    delegate = [(ICSHeaderSpecifierProvider *)self delegate];
+    identifier = [(PSSpecifier *)self->_storageGraphSpecifier identifier];
+    [delegate reloadSpecifierForProvider:self identifier:identifier];
   }
 }
 
@@ -314,14 +314,14 @@ void __62__ICSHeaderSpecifierProvider__fetchStorageSummary_completion___block_in
   if (!self->_quotaChangeNotificationObserver)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    v4 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __69__ICSHeaderSpecifierProvider__startObservingQuotaChangeNotifications__block_invoke;
     v7[3] = &unk_27A666378;
     objc_copyWeak(&v8, &location);
-    v5 = [v3 addObserverForName:@"QuotaDidChange" object:0 queue:v4 usingBlock:v7];
+    v5 = [defaultCenter addObserverForName:@"QuotaDidChange" object:0 queue:mainQueue usingBlock:v7];
     quotaChangeNotificationObserver = self->_quotaChangeNotificationObserver;
     self->_quotaChangeNotificationObserver = v5;
 
@@ -351,8 +351,8 @@ void __69__ICSHeaderSpecifierProvider__startObservingQuotaChangeNotifications__b
 {
   if (self->_quotaChangeNotificationObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_quotaChangeNotificationObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_quotaChangeNotificationObserver];
 
     quotaChangeNotificationObserver = self->_quotaChangeNotificationObserver;
     self->_quotaChangeNotificationObserver = 0;

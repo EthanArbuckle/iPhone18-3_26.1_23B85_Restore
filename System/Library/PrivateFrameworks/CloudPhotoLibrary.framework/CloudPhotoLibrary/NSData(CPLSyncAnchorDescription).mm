@@ -10,9 +10,9 @@
 - (id)cplQueryCursorDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 cplQueryCursorSimpleDescription];
-  v4 = [a1 base64EncodedStringWithOptions:0];
-  v5 = [v2 stringWithFormat:@"<%@ [%@]>", v3, v4];
+  cplQueryCursorSimpleDescription = [self cplQueryCursorSimpleDescription];
+  v4 = [self base64EncodedStringWithOptions:0];
+  v5 = [v2 stringWithFormat:@"<%@ [%@]>", cplQueryCursorSimpleDescription, v4];
 
   return v5;
 }
@@ -29,7 +29,7 @@
   v4[1] = 3221225472;
   v5 = __67__NSData_CPLSyncAnchorDescription__cplQueryCursorSimpleDescription__block_invoke;
   v6 = &unk_1E861A850;
-  v7 = a1;
+  selfCopy = self;
   v8 = &v9;
   v1 = v4;
   os_unfair_lock_lock(&anchorLock);
@@ -45,9 +45,9 @@
 - (id)cplSyncAnchorDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 cplSyncAnchorSimpleDescription];
-  v4 = [a1 base64EncodedStringWithOptions:0];
-  v5 = [v2 stringWithFormat:@"<%@ [%@]>", v3, v4];
+  cplSyncAnchorSimpleDescription = [self cplSyncAnchorSimpleDescription];
+  v4 = [self base64EncodedStringWithOptions:0];
+  v5 = [v2 stringWithFormat:@"<%@ [%@]>", cplSyncAnchorSimpleDescription, v4];
 
   return v5;
 }
@@ -64,7 +64,7 @@
   v4[1] = 3221225472;
   v5 = __66__NSData_CPLSyncAnchorDescription__cplSyncAnchorSimpleDescription__block_invoke;
   v6 = &unk_1E861A850;
-  v7 = a1;
+  selfCopy = self;
   v8 = &v9;
   v1 = v4;
   os_unfair_lock_lock(&anchorLock);

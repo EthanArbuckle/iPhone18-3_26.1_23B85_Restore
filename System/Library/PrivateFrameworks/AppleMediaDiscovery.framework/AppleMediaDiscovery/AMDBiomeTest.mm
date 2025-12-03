@@ -1,16 +1,16 @@
 @interface AMDBiomeTest
-+ (id)test:(id)a3;
++ (id)test:(id)test;
 @end
 
 @implementation AMDBiomeTest
 
-+ (id)test:(id)a3
++ (id)test:(id)test
 {
   v65 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, test);
   v58 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v57 = 0;
   memset(__b, 0, sizeof(__b));
@@ -60,10 +60,10 @@
           {
             v18 = v46;
             v19 = v45;
-            v20 = [v54 localizedDescription];
-            __os_log_helper_16_2_1_8_64(v62, v20);
+            localizedDescription = [v54 localizedDescription];
+            __os_log_helper_16_2_1_8_64(v62, localizedDescription);
             _os_log_error_impl(&dword_240CB9000, v18, v19, "Fetch error: %@", v62, 0xCu);
-            MEMORY[0x277D82BD8](v20);
+            MEMORY[0x277D82BD8](localizedDescription);
           }
 
           objc_storeStrong(&v46, 0);
@@ -98,10 +98,10 @@
           {
             v14 = v40;
             v15 = v39;
-            v16 = [v54 localizedDescription];
-            __os_log_helper_16_2_1_8_64(v61, v16);
+            localizedDescription2 = [v54 localizedDescription];
+            __os_log_helper_16_2_1_8_64(v61, localizedDescription2);
             _os_log_error_impl(&dword_240CB9000, v14, v15, "Insert error: %@", v61, 0xCu);
-            MEMORY[0x277D82BD8](v16);
+            MEMORY[0x277D82BD8](localizedDescription2);
           }
 
           objc_storeStrong(&v40, 0);
@@ -139,10 +139,10 @@
           {
             v8 = v35;
             v9 = v34;
-            v10 = [v54 localizedDescription];
-            __os_log_helper_16_2_1_8_64(v60, v10);
+            localizedDescription3 = [v54 localizedDescription];
+            __os_log_helper_16_2_1_8_64(v60, localizedDescription3);
             _os_log_error_impl(&dword_240CB9000, v8, v9, "Delete error: %@", v60, 0xCu);
-            MEMORY[0x277D82BD8](v10);
+            MEMORY[0x277D82BD8](localizedDescription3);
           }
 
           objc_storeStrong(&v35, 0);

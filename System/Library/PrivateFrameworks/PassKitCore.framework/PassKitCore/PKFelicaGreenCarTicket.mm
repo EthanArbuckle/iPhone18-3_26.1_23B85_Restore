@@ -1,38 +1,38 @@
 @interface PKFelicaGreenCarTicket
-- (PKFelicaGreenCarTicket)initWithCoder:(id)a3;
-- (PKFelicaGreenCarTicket)initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKFelicaGreenCarTicket)initWithCoder:(id)coder;
+- (PKFelicaGreenCarTicket)initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFelicaGreenCarTicket
 
-- (PKFelicaGreenCarTicket)initWithDictionary:(id)a3
+- (PKFelicaGreenCarTicket)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v20.receiver = self;
     v20.super_class = PKFelicaGreenCarTicket;
     v5 = [(PKFelicaGreenCarTicket *)&v20 init];
     if (v5)
     {
-      v6 = [v4 objectForKeyedSubscript:@"NFStartStationData"];
+      v6 = [dictionaryCopy objectForKeyedSubscript:@"NFStartStationData"];
       v7 = [v6 copy];
       originStation = v5->_originStation;
       v5->_originStation = v7;
 
-      v9 = [v4 objectForKeyedSubscript:@"NFEndStationData"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"NFEndStationData"];
       v10 = [v9 copy];
       destinationStation = v5->_destinationStation;
       v5->_destinationStation = v10;
 
       v12 = MEMORY[0x1E696AD98];
-      v13 = [v4 objectForKeyedSubscript:@"NFPurchaseDate"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"NFPurchaseDate"];
       v14 = [v12 numberWithInteger:IntegerFromFelicaDateFormat(v13)];
       validityStartDate = v5->_validityStartDate;
       v5->_validityStartDate = v14;
 
-      v16 = [v4 objectForKeyedSubscript:@"NFRefundMonth"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"NFRefundMonth"];
       if ([v16 unsignedIntegerValue])
       {
         v5->_refunded = 1;
@@ -40,57 +40,57 @@
 
       else
       {
-        v18 = [v4 objectForKeyedSubscript:@"NFRefundDay"];
+        v18 = [dictionaryCopy objectForKeyedSubscript:@"NFRefundDay"];
         v5->_refunded = [v18 unsignedIntegerValue] != 0;
       }
     }
 
     self = v5;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (PKFelicaGreenCarTicket)initWithCoder:(id)a3
+- (PKFelicaGreenCarTicket)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKFelicaGreenCarTicket;
   v5 = [(PKFelicaGreenCarTicket *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originStation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originStation"];
     originStation = v5->_originStation;
     v5->_originStation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationStation"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationStation"];
     destinationStation = v5->_destinationStation;
     v5->_destinationStation = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"validityStartDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"validityStartDate"];
     validityStartDate = v5->_validityStartDate;
     v5->_validityStartDate = v10;
 
-    v5->_refunded = [v4 decodeBoolForKey:@"refunded"];
+    v5->_refunded = [coderCopy decodeBoolForKey:@"refunded"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originStation = self->_originStation;
-  v5 = a3;
-  [v5 encodeObject:originStation forKey:@"originStation"];
-  [v5 encodeObject:self->_destinationStation forKey:@"destinationStation"];
-  [v5 encodeObject:self->_validityStartDate forKey:@"validityStartDate"];
-  [v5 encodeBool:self->_refunded forKey:@"refunded"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originStation forKey:@"originStation"];
+  [coderCopy encodeObject:self->_destinationStation forKey:@"destinationStation"];
+  [coderCopy encodeObject:self->_validityStartDate forKey:@"validityStartDate"];
+  [coderCopy encodeBool:self->_refunded forKey:@"refunded"];
 }
 
 @end

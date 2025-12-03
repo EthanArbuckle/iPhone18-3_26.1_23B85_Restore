@@ -1,7 +1,7 @@
 @interface CNSharingProfileOnboardingHeaderView
-- (CNSharingProfileOnboardingHeaderView)initWithTitle:(id)a3;
+- (CNSharingProfileOnboardingHeaderView)initWithTitle:(id)title;
 - (id)reuseIdentifier;
-- (void)setHeaderView:(id)a3;
+- (void)setHeaderView:(id)view;
 @end
 
 @implementation CNSharingProfileOnboardingHeaderView
@@ -13,11 +13,11 @@
   return [v2 reuseIdentifier];
 }
 
-- (CNSharingProfileOnboardingHeaderView)initWithTitle:(id)a3
+- (CNSharingProfileOnboardingHeaderView)initWithTitle:(id)title
 {
   v7.receiver = self;
   v7.super_class = CNSharingProfileOnboardingHeaderView;
-  v3 = [(CNSharingProfileOnboardingHeaderView *)&v7 initWithFrame:a3, 0.0, 0.0, 50.0, 50.0];
+  v3 = [(CNSharingProfileOnboardingHeaderView *)&v7 initWithFrame:title, 0.0, 0.0, 50.0, 50.0];
   v4 = v3;
   if (v3)
   {
@@ -27,27 +27,27 @@
   return v4;
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  if (headerView != v5)
+  if (headerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(OBHeaderView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_headerView, view);
+    viewCopy = v7;
     if (v7)
     {
       [(CNSharingProfileOnboardingHeaderView *)self bounds];
       [(OBHeaderView *)self->_headerView setFrame:?];
       [(OBHeaderView *)self->_headerView setAutoresizingMask:18];
       headerView = [(CNSharingProfileOnboardingHeaderView *)self addSubview:self->_headerView];
-      v5 = v7;
+      viewCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](headerView, v5);
+  MEMORY[0x1EEE66BB8](headerView, viewCopy);
 }
 
 @end

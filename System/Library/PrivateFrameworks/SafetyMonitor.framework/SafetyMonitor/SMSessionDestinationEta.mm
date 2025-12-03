@@ -1,51 +1,51 @@
 @interface SMSessionDestinationEta
-- (BOOL)isEqual:(id)a3;
-- (SMSessionDestinationEta)initWithCoder:(id)a3;
-- (SMSessionDestinationEta)initWithDictionary:(id)a3;
-- (SMSessionDestinationEta)initWithExpectedTravelTime:(double)a3 additionalTravelTime:(double)a4 transportType:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (SMSessionDestinationEta)initWithCoder:(id)coder;
+- (SMSessionDestinationEta)initWithDictionary:(id)dictionary;
+- (SMSessionDestinationEta)initWithExpectedTravelTime:(double)time additionalTravelTime:(double)travelTime transportType:(unint64_t)type;
 - (id)coarseEtaDate;
 - (id)description;
 - (id)etaDate;
 - (id)outputToDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSessionDestinationEta
 
-- (SMSessionDestinationEta)initWithExpectedTravelTime:(double)a3 additionalTravelTime:(double)a4 transportType:(unint64_t)a5
+- (SMSessionDestinationEta)initWithExpectedTravelTime:(double)time additionalTravelTime:(double)travelTime transportType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = SMSessionDestinationEta;
   result = [(SMSessionDestinationEta *)&v9 init];
   if (result)
   {
-    result->_expectedTravelTime = a3;
-    result->_additionalTravelTime = a4;
-    result->_transportType = a5;
+    result->_expectedTravelTime = time;
+    result->_additionalTravelTime = travelTime;
+    result->_transportType = type;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(SMSessionDestinationEta *)self expectedTravelTime];
-  [v4 encodeDouble:@"__kSMSessionDestinationEtaExpectedTravelTimeKey" forKey:?];
+  [coderCopy encodeDouble:@"__kSMSessionDestinationEtaExpectedTravelTimeKey" forKey:?];
   [(SMSessionDestinationEta *)self additionalTravelTime];
-  [v4 encodeDouble:@"__kSMSessionDestinationEtaAdditionalTravelTimeKey" forKey:?];
-  [v4 encodeInteger:-[SMSessionDestinationEta transportType](self forKey:{"transportType"), @"__kSMSessionDestinationEtaTransportTypeKey"}];
+  [coderCopy encodeDouble:@"__kSMSessionDestinationEtaAdditionalTravelTimeKey" forKey:?];
+  [coderCopy encodeInteger:-[SMSessionDestinationEta transportType](self forKey:{"transportType"), @"__kSMSessionDestinationEtaTransportTypeKey"}];
 }
 
-- (SMSessionDestinationEta)initWithCoder:(id)a3
+- (SMSessionDestinationEta)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"__kSMSessionDestinationEtaExpectedTravelTimeKey"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"__kSMSessionDestinationEtaExpectedTravelTimeKey"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"__kSMSessionDestinationEtaAdditionalTravelTimeKey"];
+  [coderCopy decodeDoubleForKey:@"__kSMSessionDestinationEtaAdditionalTravelTimeKey"];
   v8 = v7;
-  v9 = [v4 decodeIntForKey:@"__kSMSessionDestinationEtaTransportTypeKey"];
+  v9 = [coderCopy decodeIntForKey:@"__kSMSessionDestinationEtaTransportTypeKey"];
 
   return [(SMSessionDestinationEta *)self initWithExpectedTravelTime:v9 additionalTravelTime:v6 transportType:v8];
 }
@@ -58,10 +58,10 @@
   return v5 ^ v4 ^ [(SMSessionDestinationEta *)self transportType];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -71,7 +71,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(SMSessionDestinationEta *)self expectedTravelTime];
       v7 = v6;
       [(SMSessionDestinationEta *)v5 expectedTravelTime];
@@ -91,8 +91,8 @@
       [(SMSessionDestinationEta *)v5 additionalTravelTime];
       if (v13 == v14 || ([(SMSessionDestinationEta *)self additionalTravelTime], v16 = v15, [(SMSessionDestinationEta *)v5 additionalTravelTime], vabdd_f64(v16, v17) < 2.22044605e-16))
       {
-        v18 = [(SMSessionDestinationEta *)self transportType];
-        v19 = v18 == [(SMSessionDestinationEta *)v5 transportType];
+        transportType = [(SMSessionDestinationEta *)self transportType];
+        v19 = transportType == [(SMSessionDestinationEta *)v5 transportType];
       }
 
       else
@@ -111,33 +111,33 @@ LABEL_10:
   return v19;
 }
 
-- (SMSessionDestinationEta)initWithDictionary:(id)a3
+- (SMSessionDestinationEta)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"__kSMSessionDestinationEtaExpectedTravelTimeKey"];
-  if (v5)
+  dictionaryCopy = dictionary;
+  selfCopy = [dictionaryCopy objectForKey:@"__kSMSessionDestinationEtaExpectedTravelTimeKey"];
+  if (selfCopy)
   {
-    v6 = [v4 objectForKey:@"__kSMSessionDestinationEtaAdditionalTravelTimeKey"];
+    v6 = [dictionaryCopy objectForKey:@"__kSMSessionDestinationEtaAdditionalTravelTimeKey"];
     if (v6)
     {
       v7 = v6;
-      v8 = [v4 objectForKey:@"__kSMSessionDestinationEtaTransportTypeKey"];
+      v8 = [dictionaryCopy objectForKey:@"__kSMSessionDestinationEtaTransportTypeKey"];
 
       if (v8)
       {
-        v9 = [v4 valueForKey:@"__kSMSessionDestinationEtaExpectedTravelTimeKey"];
+        v9 = [dictionaryCopy valueForKey:@"__kSMSessionDestinationEtaExpectedTravelTimeKey"];
         [v9 doubleValue];
         v11 = v10;
 
-        v12 = [v4 valueForKey:@"__kSMSessionDestinationEtaAdditionalTravelTimeKey"];
+        v12 = [dictionaryCopy valueForKey:@"__kSMSessionDestinationEtaAdditionalTravelTimeKey"];
         [v12 doubleValue];
         v14 = v13;
 
-        v15 = [v4 valueForKey:@"__kSMSessionDestinationEtaTransportTypeKey"];
-        v16 = [v15 intValue];
+        v15 = [dictionaryCopy valueForKey:@"__kSMSessionDestinationEtaTransportTypeKey"];
+        intValue = [v15 intValue];
 
-        self = [(SMSessionDestinationEta *)self initWithExpectedTravelTime:v16 additionalTravelTime:v11 transportType:v14];
-        v5 = self;
+        self = [(SMSessionDestinationEta *)self initWithExpectedTravelTime:intValue additionalTravelTime:v11 transportType:v14];
+        selfCopy = self;
         goto LABEL_7;
       }
     }
@@ -146,12 +146,12 @@ LABEL_10:
     {
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
 LABEL_7:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)outputToDictionary
@@ -196,8 +196,8 @@ LABEL_7:
 - (id)coarseEtaDate
 {
   v2 = MEMORY[0x277CBEAA8];
-  v3 = [(SMSessionDestinationEta *)self etaDate];
-  v4 = [v2 roundingUpDate:v3 bucketDurationMinute:5];
+  etaDate = [(SMSessionDestinationEta *)self etaDate];
+  v4 = [v2 roundingUpDate:etaDate bucketDurationMinute:5];
 
   return v4;
 }

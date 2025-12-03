@@ -9,19 +9,19 @@
   if (objc_opt_respondsToSelector())
   {
 
-    return [a1 mutableCopy];
+    return [self mutableCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
 
-    return [a1 copy];
+    return [self copy];
   }
 
   else
   {
 
-    return a1;
+    return self;
   }
 }
 

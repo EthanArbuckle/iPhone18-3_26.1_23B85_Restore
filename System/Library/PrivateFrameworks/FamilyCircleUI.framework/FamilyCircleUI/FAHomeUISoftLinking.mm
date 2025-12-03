@@ -1,16 +1,16 @@
 @interface FAHomeUISoftLinking
 + (id)getURLScheme;
 + (uint64_t)getURLScheme;
-- (FAHomeUISoftLinking)initWithHome:(id)a3 notificationName:(id)a4;
-- (void)addPeopleViewController:(id)a3 didSendInvitations:(id)a4;
+- (FAHomeUISoftLinking)initWithHome:(id)home notificationName:(id)name;
+- (void)addPeopleViewController:(id)controller didSendInvitations:(id)invitations;
 @end
 
 @implementation FAHomeUISoftLinking
 
-- (FAHomeUISoftLinking)initWithHome:(id)a3 notificationName:(id)a4
+- (FAHomeUISoftLinking)initWithHome:(id)home notificationName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = FAHomeUISoftLinking;
   v8 = [(FAHomeUISoftLinking *)&v14 init];
@@ -34,12 +34,12 @@
 
     v10 = v9;
     _Block_object_dispose(&v16, 8);
-    v11 = [[v9 alloc] initWithHome:v6];
+    v11 = [[v9 alloc] initWithHome:homeCopy];
     addPeopleController = v8->_addPeopleController;
     v8->_addPeopleController = v11;
 
     [(HUAddPeopleViewController *)v8->_addPeopleController setDelegate:v8];
-    objc_storeStrong(&v8->_homeReloadSignal, a4);
+    objc_storeStrong(&v8->_homeReloadSignal, name);
   }
 
   return v8;
@@ -76,11 +76,11 @@
   return v3;
 }
 
-- (void)addPeopleViewController:(id)a3 didSendInvitations:(id)a4
+- (void)addPeopleViewController:(id)controller didSendInvitations:(id)invitations
 {
-  [a3 dismissViewControllerAnimated:1 completion:&__block_literal_global_24];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:self->_homeReloadSignal object:0];
+  [controller dismissViewControllerAnimated:1 completion:&__block_literal_global_24];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:self->_homeReloadSignal object:0];
 }
 
 + (uint64_t)getURLScheme

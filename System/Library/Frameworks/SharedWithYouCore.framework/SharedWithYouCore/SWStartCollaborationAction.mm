@@ -1,36 +1,36 @@
 @interface SWStartCollaborationAction
-+ (SWStartCollaborationAction)actionWithMetadata:(id)a3;
-- (BOOL)isEqualToAction:(id)a3;
-- (SWStartCollaborationAction)initWithCoder:(id)a3;
-- (SWStartCollaborationAction)initWithDestinationAction:(id)a3;
-- (SWStartCollaborationAction)initWithMetadata:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSActionSettings:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (SWStartCollaborationAction)actionWithMetadata:(id)metadata;
+- (BOOL)isEqualToAction:(id)action;
+- (SWStartCollaborationAction)initWithCoder:(id)coder;
+- (SWStartCollaborationAction)initWithDestinationAction:(id)action;
+- (SWStartCollaborationAction)initWithMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSActionSettings:(id)settings;
+- (void)encodeWithCoder:(id)coder;
 - (void)fulfillUsingURL:(NSURL *)url collaborationIdentifier:(SWCollaborationIdentifier)collaborationIdentifier;
-- (void)fulfillUsingURL:(id)a3 updatedMetadata:(id)a4;
+- (void)fulfillUsingURL:(id)l updatedMetadata:(id)metadata;
 @end
 
 @implementation SWStartCollaborationAction
 
-+ (SWStartCollaborationAction)actionWithMetadata:(id)a3
++ (SWStartCollaborationAction)actionWithMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMetadata:v4];
+  metadataCopy = metadata;
+  v5 = [[self alloc] initWithMetadata:metadataCopy];
 
   return v5;
 }
 
-- (SWStartCollaborationAction)initWithMetadata:(id)a3
+- (SWStartCollaborationAction)initWithMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v9.receiver = self;
   v9.super_class = SWStartCollaborationAction;
   v6 = [(SWAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collaborationMetadata, a3);
+    objc_storeStrong(&v6->_collaborationMetadata, metadata);
   }
 
   return v7;
@@ -40,25 +40,25 @@
 {
   v6 = collaborationIdentifier;
   v7 = url;
-  v8 = [(SWStartCollaborationAction *)self collaborationMetadata];
-  [v8 setCollaborationIdentifier:v6];
+  collaborationMetadata = [(SWStartCollaborationAction *)self collaborationMetadata];
+  [collaborationMetadata setCollaborationIdentifier:v6];
 
-  [(SWStartCollaborationAction *)self fulfillUsingURL:v7 updatedMetadata:v8];
+  [(SWStartCollaborationAction *)self fulfillUsingURL:v7 updatedMetadata:collaborationMetadata];
 }
 
-- (void)fulfillUsingURL:(id)a3 updatedMetadata:(id)a4
+- (void)fulfillUsingURL:(id)l updatedMetadata:(id)metadata
 {
-  v5 = [_SWStartCollaborationActionResponse responseWithURL:a3 updatedMetadata:a4];
+  v5 = [_SWStartCollaborationActionResponse responseWithURL:l updatedMetadata:metadata];
   [(SWAction *)self fulfillWithResponse:v5];
 }
 
-- (SWStartCollaborationAction)initWithCoder:(id)a3
+- (SWStartCollaborationAction)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SWStartCollaborationAction;
-  v5 = [(SWAction *)&v14 initWithCoder:v4];
+  v5 = [(SWAction *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -67,7 +67,7 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     v8 = [v6 setWithArray:v7];
     v9 = NSStringFromSelector(sel_collaborationMetadata);
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
     collaborationMetadata = v5->_collaborationMetadata;
     v5->_collaborationMetadata = v10;
   }
@@ -76,50 +76,50 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SWStartCollaborationAction;
-  v4 = a3;
-  [(SWAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(SWAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(SWStartCollaborationAction *)self collaborationMetadata:v7.receiver];
   v6 = NSStringFromSelector(sel_collaborationMetadata);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SWStartCollaborationAction;
-  v4 = [(SWAction *)&v7 copyWithZone:a3];
+  v4 = [(SWAction *)&v7 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(SWStartCollaborationAction *)self collaborationMetadata];
-    [v4 setCollaborationMetadata:v5];
+    collaborationMetadata = [(SWStartCollaborationAction *)self collaborationMetadata];
+    [v4 setCollaborationMetadata:collaborationMetadata];
   }
 
   return v4;
 }
 
-- (BOOL)isEqualToAction:(id)a3
+- (BOOL)isEqualToAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = SWStartCollaborationAction;
-  if ([(SWAction *)&v12 isEqualToAction:v5])
+  if ([(SWAction *)&v12 isEqualToAction:actionCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(SWStartCollaborationAction *)self collaborationMetadata];
-      if (v7 || ([v6 collaborationMetadata], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      v6 = actionCopy;
+      collaborationMetadata = [(SWStartCollaborationAction *)self collaborationMetadata];
+      if (collaborationMetadata || ([v6 collaborationMetadata], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v8 = [(SWStartCollaborationAction *)self collaborationMetadata];
-        v9 = [v6 collaborationMetadata];
-        v10 = [v8 isEqual:v9];
+        collaborationMetadata2 = [(SWStartCollaborationAction *)self collaborationMetadata];
+        collaborationMetadata3 = [v6 collaborationMetadata];
+        v10 = [collaborationMetadata2 isEqual:collaborationMetadata3];
 
-        if (v7)
+        if (collaborationMetadata)
         {
 LABEL_10:
 
@@ -142,12 +142,12 @@ LABEL_11:
   return v10;
 }
 
-- (SWStartCollaborationAction)initWithDestinationAction:(id)a3
+- (SWStartCollaborationAction)initWithDestinationAction:(id)action
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 info];
-  v6 = [v5 objectForSetting:2];
+  actionCopy = action;
+  info = [actionCopy info];
+  v6 = [info objectForSetting:2];
 
   v7 = MEMORY[0x1E696ACD0];
   v8 = MEMORY[0x1E695DFD8];
@@ -161,7 +161,7 @@ LABEL_11:
   {
     v17.receiver = self;
     v17.super_class = SWStartCollaborationAction;
-    v12 = [(SWAction *)&v17 initWithDestinationAction:v4];
+    v12 = [(SWAction *)&v17 initWithDestinationAction:actionCopy];
     v13 = v12;
     if (v12)
     {
@@ -169,29 +169,29 @@ LABEL_11:
     }
 
     self = v13;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithBSActionSettings:(id)a3
+- (void)encodeWithBSActionSettings:(id)settings
 {
   v8.receiver = self;
   v8.super_class = SWStartCollaborationAction;
-  v4 = a3;
-  [(SWAction *)&v8 encodeWithBSActionSettings:v4];
+  settingsCopy = settings;
+  [(SWAction *)&v8 encodeWithBSActionSettings:settingsCopy];
   v5 = MEMORY[0x1E696ACC8];
   v6 = [(SWStartCollaborationAction *)self collaborationMetadata:v8.receiver];
   v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
 
-  [v4 setObject:v7 forSetting:2];
+  [settingsCopy setObject:v7 forSetting:2];
 }
 
 @end

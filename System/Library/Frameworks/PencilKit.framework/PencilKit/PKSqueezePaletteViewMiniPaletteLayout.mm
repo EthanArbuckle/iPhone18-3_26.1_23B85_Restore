@@ -1,109 +1,109 @@
 @interface PKSqueezePaletteViewMiniPaletteLayout
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (PKSqueezePaletteView)paletteView;
 - (double)_defaultToolsContentClipIndicatorAngle;
-- (double)toolAngle:(id)a3;
+- (double)toolAngle:(id)angle;
 - (id)_selectedTool;
-- (id)initWithUndoButton:(void *)a3 redoButton:(void *)a4 drawingTools:(void *)a5 selectedToolIndex:(void *)a6 eraserToolIndex:(void *)a7 visibleToolsCount:(void *)a8 multicolorButton:(double)a9 moreButton:(void *)a10 startAngle:;
-- (uint64_t)_canSelectTool:(uint64_t)a3 atIndex:;
+- (id)initWithUndoButton:(void *)button redoButton:(void *)redoButton drawingTools:(void *)tools selectedToolIndex:(void *)index eraserToolIndex:(void *)toolIndex visibleToolsCount:(void *)count multicolorButton:(double)multicolorButton moreButton:(void *)self0 startAngle:;
+- (uint64_t)_canSelectTool:(uint64_t)tool atIndex:;
 - (uint64_t)_updateClipIndicatorView;
 - (uint64_t)_updateMoreButtonConstraints;
 - (uint64_t)_updateMulticolorButtonConstraints;
-- (void)_handlePanGesture:(id)a3;
-- (void)_performDrawingToolTapAction:(uint64_t)a1;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_performDrawingToolTapAction:(uint64_t)action;
 - (void)_performMoreButtonTapAction;
 - (void)_performMulticolorButtonTapAction;
-- (void)_selectTool:(uint64_t)a1;
+- (void)_selectTool:(uint64_t)tool;
 - (void)_updateColorUIStyle;
-- (void)expandedToolsLayout:(id)a3 didChangeDrawingTools:(id)a4;
-- (void)handlePencilInteractionDidTap:(int64_t)a3;
-- (void)setPaletteView:(id)a3;
+- (void)expandedToolsLayout:(id)layout didChangeDrawingTools:(id)tools;
+- (void)handlePencilInteractionDidTap:(int64_t)tap;
+- (void)setPaletteView:(id)view;
 - (void)setupUI;
 - (void)updateUI;
-- (void)willTransitionToLayout:(id)a3;
+- (void)willTransitionToLayout:(id)layout;
 @end
 
 @implementation PKSqueezePaletteViewMiniPaletteLayout
 
-- (id)initWithUndoButton:(void *)a3 redoButton:(void *)a4 drawingTools:(void *)a5 selectedToolIndex:(void *)a6 eraserToolIndex:(void *)a7 visibleToolsCount:(void *)a8 multicolorButton:(double)a9 moreButton:(void *)a10 startAngle:
+- (id)initWithUndoButton:(void *)button redoButton:(void *)redoButton drawingTools:(void *)tools selectedToolIndex:(void *)index eraserToolIndex:(void *)toolIndex visibleToolsCount:(void *)count multicolorButton:(double)multicolorButton moreButton:(void *)self0 startAngle:
 {
   v42 = a2;
-  v41 = a3;
-  v19 = a4;
-  v40 = a8;
-  v20 = a10;
-  if (a1)
+  buttonCopy = button;
+  redoButtonCopy = redoButton;
+  countCopy = count;
+  moreButtonCopy = moreButton;
+  if (self)
   {
-    v46.receiver = a1;
+    v46.receiver = self;
     v46.super_class = PKSqueezePaletteViewMiniPaletteLayout;
     v21 = objc_msgSendSuper2(&v46, sel_init);
-    a1 = v21;
+    self = v21;
     if (v21)
     {
-      *(v21 + 34) = a9;
+      *(v21 + 34) = multicolorButton;
       objc_storeStrong(v21 + 37, a2);
-      objc_storeStrong(a1 + 38, a3);
-      v22 = [[PKSqueezePaletteViewUndoRedoLayout alloc] initWithUndoButton:a1[38] redoButton:a9 startAngle:?];
-      v23 = a1[1];
-      a1[1] = v22;
+      objc_storeStrong(self + 38, button);
+      v22 = [[PKSqueezePaletteViewUndoRedoLayout alloc] initWithUndoButton:self[38] redoButton:multicolorButton startAngle:?];
+      v23 = self[1];
+      self[1] = v22;
 
-      v24 = a1[1];
+      v24 = self[1];
       if (v24)
       {
-        objc_storeWeak(v24 + 12, a1);
+        objc_storeWeak(v24 + 12, self);
       }
 
-      v25 = [v19 copy];
-      v26 = a1[39];
-      a1[39] = v25;
+      v25 = [redoButtonCopy copy];
+      v26 = self[39];
+      self[39] = v25;
 
-      a1[40] = a5;
-      a1[41] = a6;
-      a1[42] = a7;
-      objc_storeStrong(a1 + 43, a8);
-      objc_storeStrong(a1 + 44, a10);
+      self[40] = tools;
+      self[41] = index;
+      self[42] = toolIndex;
+      objc_storeStrong(self + 43, count);
+      objc_storeStrong(self + 44, moreButton);
       v27 = PKSqueezePaletteBeforeToolsSpacing;
-      a1[2] = PKSqueezePaletteButtonInterItemSpacing;
-      a1[3] = v27;
+      self[2] = PKSqueezePaletteButtonInterItemSpacing;
+      self[3] = v27;
       v28 = PKSqueezePaletteAfterToolsSpacing;
-      a1[4] = PKSqueezePaletteToolsInterItemSpacing;
-      a1[5] = v28;
-      v29 = -[PKFloatArray initWithCapacity:]([PKFloatArray alloc], [a1[39] count]);
-      v30 = a1[6];
-      a1[6] = v29;
+      self[4] = PKSqueezePaletteToolsInterItemSpacing;
+      self[5] = v28;
+      v29 = -[PKFloatArray initWithCapacity:]([PKFloatArray alloc], [self[39] count]);
+      v30 = self[6];
+      self[6] = v29;
 
-      *(a1 + 5) = vdupq_n_s64(0x4042800000000000uLL);
-      a1[12] = PKSqueezePaletteToolContainerWidth;
+      *(self + 5) = vdupq_n_s64(0x4042800000000000uLL);
+      self[12] = PKSqueezePaletteToolContainerWidth;
       v31 = objc_alloc_init(PKSqueezePaletteClipIndicatorView);
-      v32 = a1[22];
-      a1[22] = v31;
+      v32 = self[22];
+      self[22] = v31;
 
       v33 = objc_alloc_init(PKViewWithHitTestHandler);
-      v34 = a1[20];
-      a1[20] = v33;
+      v34 = self[20];
+      self[20] = v33;
 
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       newValue[0] = MEMORY[0x1E69E9820];
       newValue[1] = 3221225472;
       newValue[2] = __175__PKSqueezePaletteViewMiniPaletteLayout_initWithUndoButton_redoButton_drawingTools_selectedToolIndex_eraserToolIndex_visibleToolsCount_multicolorButton_moreButton_startAngle___block_invoke;
       newValue[3] = &unk_1E82D7970;
       objc_copyWeak(&v44, &location);
-      v36 = a1[20];
+      v36 = self[20];
       if (v36)
       {
         objc_setProperty_nonatomic_copy(v36, v35, newValue, 408);
       }
 
-      v37 = [MEMORY[0x1E69794A0] layer];
-      v38 = a1[21];
-      a1[21] = v37;
+      layer = [MEMORY[0x1E69794A0] layer];
+      v38 = self[21];
+      self[21] = layer;
 
       objc_destroyWeak(&v44);
       objc_destroyWeak(&location);
     }
   }
 
-  return a1;
+  return self;
 }
 
 id __175__PKSqueezePaletteViewMiniPaletteLayout_initWithUndoButton_redoButton_drawingTools_selectedToolIndex_eraserToolIndex_visibleToolsCount_multicolorButton_moreButton_startAngle___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -126,9 +126,9 @@ id __175__PKSqueezePaletteViewMiniPaletteLayout_initWithUndoButton_redoButton_dr
   return v14;
 }
 
-- (void)setPaletteView:(id)a3
+- (void)setPaletteView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_paletteView);
 
   if (WeakRetained != obj)
@@ -140,11 +140,11 @@ id __175__PKSqueezePaletteViewMiniPaletteLayout_initWithUndoButton_redoButton_dr
   }
 }
 
-- (void)_performDrawingToolTapAction:(uint64_t)a1
+- (void)_performDrawingToolTapAction:(uint64_t)action
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (action)
   {
     v4 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -154,31 +154,31 @@ id __175__PKSqueezePaletteViewMiniPaletteLayout_initWithUndoButton_redoButton_dr
       _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "drawing tool tapped: %{private}@", &v5, 0xCu);
     }
 
-    [(PKSqueezePaletteViewMiniPaletteLayout *)a1 _selectTool:v3];
+    [(PKSqueezePaletteViewMiniPaletteLayout *)action _selectTool:v3];
   }
 }
 
-- (void)_selectTool:(uint64_t)a1
+- (void)_selectTool:(uint64_t)tool
 {
   v42 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (-[PKSqueezePaletteViewMiniPaletteLayout _canSelectTool:atIndex:](a1, v3, [*(a1 + 312) indexOfObject:v3]))
+  if (-[PKSqueezePaletteViewMiniPaletteLayout _canSelectTool:atIndex:](tool, v3, [*(tool + 312) indexOfObject:v3]))
   {
-    v4 = [(PKSqueezePaletteViewMiniPaletteLayout *)a1 _selectedTool];
-    v5 = v4;
-    if (v4 && v4 == v3)
+    _selectedTool = [(PKSqueezePaletteViewMiniPaletteLayout *)tool _selectedTool];
+    v5 = _selectedTool;
+    if (_selectedTool && _selectedTool == v3)
     {
-      v6 = [(PKFloatArray *)*(a1 + 48) floatAtIndex:?];
+      v6 = [(PKFloatArray *)*(tool + 48) floatAtIndex:?];
       v7 = v3[102];
-      v8 = [v7 _barButtonItemsProvider];
+      _barButtonItemsProvider = [v7 _barButtonItemsProvider];
 
       v9 = v3[102];
-      v10 = [v9 _isEraserTool];
+      _isEraserTool = [v9 _isEraserTool];
 
-      if (v10)
+      if (_isEraserTool)
       {
-        v11 = [[PKSqueezePaletteViewExpandedEraserToolLayoutContext alloc] initWithDrawingTool:v3 toolAngle:a1 previousLayout:v6];
-        WeakRetained = objc_loadWeakRetained((a1 + 288));
+        v11 = [[PKSqueezePaletteViewExpandedEraserToolLayoutContext alloc] initWithDrawingTool:v3 toolAngle:tool previousLayout:v6];
+        WeakRetained = objc_loadWeakRetained((tool + 288));
         v13 = WeakRetained;
         if (WeakRetained)
         {
@@ -205,15 +205,15 @@ LABEL_9:
         _os_log_impl(&dword_1C7CCA000, v17, OS_LOG_TYPE_DEFAULT, v18, &v40, 2u);
 LABEL_10:
 
-        v19 = objc_loadWeakRetained((a1 + 288));
+        v19 = objc_loadWeakRetained((tool + 288));
         [(PKSqueezePaletteView *)v19 setCurrentLayout:v16];
         goto LABEL_37;
       }
 
-      if (v8)
+      if (_barButtonItemsProvider)
       {
         v25 = v3[102];
-        v11 = (v8)[2](v8, v25);
+        v11 = (_barButtonItemsProvider)[2](_barButtonItemsProvider, v25);
 
         if (![v11 count])
         {
@@ -222,8 +222,8 @@ LABEL_38:
           goto LABEL_39;
         }
 
-        v16 = [[PKSqueezePaletteViewExpandedLassoToolLayoutContext alloc] initWithDrawingTool:v3 toolAngle:v11 barButtonItems:a1 previousLayout:v6];
-        v26 = objc_loadWeakRetained((a1 + 288));
+        v16 = [[PKSqueezePaletteViewExpandedLassoToolLayoutContext alloc] initWithDrawingTool:v3 toolAngle:v11 barButtonItems:tool previousLayout:v6];
+        v26 = objc_loadWeakRetained((tool + 288));
         v27 = v26;
         if (v26)
         {
@@ -246,7 +246,7 @@ LABEL_38:
           _os_log_impl(&dword_1C7CCA000, v30, OS_LOG_TYPE_DEFAULT, "Navigate to expanded lasso tool layout, bar button items: %ld", &v40, 0xCu);
         }
 
-        v31 = objc_loadWeakRetained((a1 + 288));
+        v31 = objc_loadWeakRetained((tool + 288));
         [(PKSqueezePaletteView *)v31 setCurrentLayout:v19];
 
 LABEL_37:
@@ -254,14 +254,14 @@ LABEL_37:
       }
 
       v11 = v3[102];
-      v32 = [v11 _configuration];
-      v16 = v32;
-      if (v32 && [v32 supportsStrokeWeight] && v16[16] == 1)
+      _configuration = [v11 _configuration];
+      v16 = _configuration;
+      if (_configuration && [_configuration supportsStrokeWeight] && v16[16] == 1)
       {
 
 LABEL_32:
-        v11 = [[PKSqueezePaletteViewExpandedInkingToolLayoutContext alloc] initWithDrawingTool:v3 toolAngle:a1 previousLayout:v6];
-        v36 = objc_loadWeakRetained((a1 + 288));
+        v11 = [[PKSqueezePaletteViewExpandedInkingToolLayoutContext alloc] initWithDrawingTool:v3 toolAngle:tool previousLayout:v6];
+        v36 = objc_loadWeakRetained((tool + 288));
         v37 = v36;
         if (v36)
         {
@@ -288,9 +288,9 @@ LABEL_32:
       }
 
       v19 = v3[102];
-      v33 = [v19 _configuration];
-      v34 = v33;
-      if (!v33 || ![v33 supportsOpacity])
+      _configuration2 = [v19 _configuration];
+      v34 = _configuration2;
+      if (!_configuration2 || ![_configuration2 supportsOpacity])
       {
 
         goto LABEL_37;
@@ -317,15 +317,15 @@ LABEL_32:
       }
 
       v21 = v20;
-      v22 = [v21 _isRulerTool];
+      _isRulerTool = [v21 _isRulerTool];
 
-      if (!v22)
+      if (!_isRulerTool)
       {
         [(PKSqueezePaletteDrawingTool *)v5 setSelected:1 animated:0 completion:?];
-        *(a1 + 320) = [*(a1 + 312) indexOfObject:v3];
-        *(a1 + 256) = [(PKSqueezePaletteViewMiniPaletteLayout *)a1 _defaultToolsContentClipIndicatorAngle];
+        *(tool + 320) = [*(tool + 312) indexOfObject:v3];
+        *(tool + 256) = [(PKSqueezePaletteViewMiniPaletteLayout *)tool _defaultToolsContentClipIndicatorAngle];
         [(PKSqueezePaletteDrawingTool *)v3 setSelected:1 animated:0 completion:?];
-        v8 = objc_loadWeakRetained((a1 + 288));
+        _barButtonItemsProvider = objc_loadWeakRetained((tool + 288));
         if (v3)
         {
           v24 = v3[102];
@@ -337,13 +337,13 @@ LABEL_32:
         }
 
         v11 = v24;
-        [(PKSqueezePaletteView *)v8 _didSelectTool:v11 atIndex:*(a1 + 320)];
+        [(PKSqueezePaletteView *)_barButtonItemsProvider _didSelectTool:v11 atIndex:*(tool + 320)];
         goto LABEL_38;
       }
 
-      v8 = [[PKSqueezePaletteViewTapRulerAction alloc] initWithRulerTool:v3];
-      [(PKSqueezePaletteViewTapRulerAction *)v8 performAction];
-      v23 = objc_loadWeakRetained((a1 + 288));
+      _barButtonItemsProvider = [[PKSqueezePaletteViewTapRulerAction alloc] initWithRulerTool:v3];
+      [(PKSqueezePaletteViewTapRulerAction *)_barButtonItemsProvider performAction];
+      v23 = objc_loadWeakRetained((tool + 288));
       [(PKSqueezePaletteView *)v23 _didTapRuler];
     }
 
@@ -351,16 +351,16 @@ LABEL_39:
   }
 }
 
-- (uint64_t)_canSelectTool:(uint64_t)a3 atIndex:
+- (uint64_t)_canSelectTool:(uint64_t)tool atIndex:
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_13;
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (tool == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -377,7 +377,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 288));
+  WeakRetained = objc_loadWeakRetained((self + 288));
   if (v5)
   {
     v11 = v5[102];
@@ -389,7 +389,7 @@ LABEL_11:
   }
 
   v12 = v11;
-  v13 = [(PKSqueezePaletteView *)WeakRetained _canSelectTool:v12 atIndex:a3];
+  v13 = [(PKSqueezePaletteView *)WeakRetained _canSelectTool:v12 atIndex:tool];
 
   if ((v13 & 1) == 0)
   {
@@ -419,36 +419,36 @@ LABEL_14:
 
 - (id)_selectedTool
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 320) == 0x7FFFFFFFFFFFFFFFLL)
+    if (*(self + 320) == 0x7FFFFFFFFFFFFFFFLL)
     {
-      a1 = 0;
+      self = 0;
 
-      return a1;
+      return self;
     }
 
-    a1 = [*(a1 + 312) objectAtIndexedSubscript:v1];
+    self = [*(self + 312) objectAtIndexedSubscript:v1];
   }
 
-  return a1;
+  return self;
 }
 
 - (double)_defaultToolsContentClipIndicatorAngle
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = *(a1 + 336);
+  v2 = *(self + 336);
   if (!v2)
   {
     return 1.79769313e308;
   }
 
-  v3 = [(PKFloatArray *)*(a1 + 48) floatAtIndex:?];
-  if (*(a1 + 320) == 2)
+  v3 = [(PKFloatArray *)*(self + 48) floatAtIndex:?];
+  if (*(self + 320) == 2)
   {
     v4 = 17.0;
   }
@@ -458,7 +458,7 @@ LABEL_14:
     v4 = 10.0;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 288));
+  WeakRetained = objc_loadWeakRetained((self + 288));
   if (WeakRetained)
   {
     v6 = WeakRetained[62];
@@ -476,7 +476,7 @@ LABEL_14:
 
 - (void)_performMulticolorButtonTapAction
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -489,10 +489,10 @@ LABEL_14:
   }
 
   v3 = [PKSqueezePaletteViewExpandedColorsLayoutContext alloc];
-  v4 = [(PKSqueezePaletteViewMiniPaletteLayout *)a1 _selectedTool];
-  v5 = [(PKSqueezePaletteViewExpandedColorsLayoutContext *)&v3->super.isa initWithSelectedTool:v4 multicolorButton:*(a1 + 344) multicolorButtonAngle:a1 previousLayout:*(a1 + 104)];
+  _selectedTool = [(PKSqueezePaletteViewMiniPaletteLayout *)self _selectedTool];
+  v5 = [(PKSqueezePaletteViewExpandedColorsLayoutContext *)&v3->super.isa initWithSelectedTool:_selectedTool multicolorButton:*(self + 344) multicolorButtonAngle:self previousLayout:*(self + 104)];
 
-  WeakRetained = objc_loadWeakRetained((a1 + 288));
+  WeakRetained = objc_loadWeakRetained((self + 288));
   v7 = WeakRetained;
   if (WeakRetained)
   {
@@ -514,7 +514,7 @@ LABEL_14:
 LABEL_7:
   v11 = v10;
 
-  v12 = objc_loadWeakRetained((a1 + 288));
+  v12 = objc_loadWeakRetained((self + 288));
   v13 = v12;
   if (!v12)
   {
@@ -535,7 +535,7 @@ LABEL_17:
 LABEL_10:
   v17 = v16;
 
-  v18 = objc_loadWeakRetained((a1 + 288));
+  v18 = objc_loadWeakRetained((self + 288));
   v19 = v18;
   if (v18)
   {
@@ -550,13 +550,13 @@ LABEL_10:
   v21 = v20;
   v22 = [(PKSqueezePaletteViewLayoutFactory *)v21 makeExpandedColorsLayoutWithContext:v5 colors:v11 selectedColor:v17];
 
-  v23 = objc_loadWeakRetained((a1 + 288));
+  v23 = objc_loadWeakRetained((self + 288));
   [(PKSqueezePaletteView *)v23 setCurrentLayout:v22];
 }
 
 - (void)_performMoreButtonTapAction
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -565,15 +565,15 @@ LABEL_10:
       _os_log_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEFAULT, "more button tapped", v13, 2u);
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 288));
+    WeakRetained = objc_loadWeakRetained((self + 288));
     if (WeakRetained && (v4 = WeakRetained[72]) != 0)
     {
       v5 = *(v4 + 8);
 
       if (v5 == 1)
       {
-        v6 = [[PKSqueezePaletteViewExpandedOptionsLayoutContext alloc] initMoreButtonAngle:a1 previousLayout:*(a1 + 112)];
-        v7 = objc_loadWeakRetained((a1 + 288));
+        v6 = [[PKSqueezePaletteViewExpandedOptionsLayoutContext alloc] initMoreButtonAngle:self previousLayout:*(self + 112)];
+        v7 = objc_loadWeakRetained((self + 288));
         v8 = v7;
         if (v7)
         {
@@ -588,7 +588,7 @@ LABEL_10:
         v10 = v9;
         v11 = [(PKSqueezePaletteViewLayoutFactory *)v10 makeExpandedOptionsLayoutWithContext:v6];
 
-        v12 = objc_loadWeakRetained((a1 + 288));
+        v12 = objc_loadWeakRetained((self + 288));
         [(PKSqueezePaletteView *)v12 setCurrentLayout:v11];
 
         goto LABEL_12;
@@ -599,17 +599,17 @@ LABEL_10:
     {
     }
 
-    v6 = objc_loadWeakRetained((a1 + 288));
+    v6 = objc_loadWeakRetained((self + 288));
     [(PKSqueezePaletteView *)v6 _didTapMoreOptionsButton:?];
 LABEL_12:
   }
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_paletteView);
-  [v4 locationInView:WeakRetained];
+  [gestureCopy locationInView:WeakRetained];
   v7 = v6;
   v9 = v8;
 
@@ -643,8 +643,8 @@ LABEL_12:
     v18 = v15;
   }
 
-  v19 = [v4 state];
-  switch(v19)
+  state = [gestureCopy state];
+  switch(state)
   {
     case 3:
       self->_endPanGestureAngleOnArc = v18;
@@ -974,11 +974,11 @@ void __59__PKSqueezePaletteViewMiniPaletteLayout__handlePanGesture___block_invok
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_panGestureRecognizer == a3)
+  touchCopy = touch;
+  if (self->_panGestureRecognizer == recognizer)
   {
     visibleToolsCount = self->_visibleToolsCount;
     if (visibleToolsCount >= [(NSArray *)self->_drawingTools count])
@@ -989,7 +989,7 @@ void __59__PKSqueezePaletteViewMiniPaletteLayout__handlePanGesture___block_invok
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_paletteView);
-      [v6 locationInView:WeakRetained];
+      [touchCopy locationInView:WeakRetained];
       v11 = v10;
       v13 = v12;
 
@@ -1051,9 +1051,9 @@ LABEL_15:
   return v7;
 }
 
-- (void)expandedToolsLayout:(id)a3 didChangeDrawingTools:(id)a4
+- (void)expandedToolsLayout:(id)layout didChangeDrawingTools:(id)tools
 {
-  v5 = [a4 copy];
+  v5 = [tools copy];
   drawingTools = self->_drawingTools;
   self->_drawingTools = v5;
 }
@@ -1160,7 +1160,7 @@ LABEL_13:
   [v18 addSubview:self->_toolsContentView];
 
   v121 = MEMORY[0x1E696ACD8];
-  v128 = [(PKViewWithHitTestHandler *)self->_toolsContentView topAnchor];
+  topAnchor = [(PKViewWithHitTestHandler *)self->_toolsContentView topAnchor];
   v19 = objc_loadWeakRetained(&self->_paletteView);
   v132 = v19;
   if (v19)
@@ -1174,10 +1174,10 @@ LABEL_13:
   }
 
   v118 = v20;
-  v130 = [v118 topAnchor];
-  v127 = [v128 constraintEqualToAnchor:v130];
+  topAnchor2 = [v118 topAnchor];
+  v127 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v157[0] = v127;
-  v124 = [(PKViewWithHitTestHandler *)self->_toolsContentView leadingAnchor];
+  leadingAnchor = [(PKViewWithHitTestHandler *)self->_toolsContentView leadingAnchor];
   v21 = objc_loadWeakRetained(&self->_paletteView);
   v126 = v21;
   if (v21)
@@ -1191,10 +1191,10 @@ LABEL_13:
   }
 
   v119 = v22;
-  v125 = [v119 leadingAnchor];
-  v123 = [v124 constraintEqualToAnchor:v125];
+  leadingAnchor2 = [v119 leadingAnchor];
+  v123 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v157[1] = v123;
-  v122 = [(PKViewWithHitTestHandler *)self->_toolsContentView trailingAnchor];
+  trailingAnchor = [(PKViewWithHitTestHandler *)self->_toolsContentView trailingAnchor];
   v23 = objc_loadWeakRetained(&self->_paletteView);
   v24 = v23;
   if (v23)
@@ -1208,10 +1208,10 @@ LABEL_13:
   }
 
   v120 = v25;
-  v26 = [v120 trailingAnchor];
-  v27 = [v122 constraintEqualToAnchor:v26];
+  trailingAnchor2 = [v120 trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v157[2] = v27;
-  v28 = [(PKViewWithHitTestHandler *)self->_toolsContentView bottomAnchor];
+  bottomAnchor = [(PKViewWithHitTestHandler *)self->_toolsContentView bottomAnchor];
   v29 = objc_loadWeakRetained(&self->_paletteView);
   v30 = v29;
   if (v29)
@@ -1225,8 +1225,8 @@ LABEL_13:
   }
 
   v32 = v31;
-  v33 = [v32 bottomAnchor];
-  v34 = [v28 constraintEqualToAnchor:v33];
+  bottomAnchor2 = [v32 bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v157[3] = v34;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v157 count:4];
   [v121 activateConstraints:v35];
@@ -1311,17 +1311,17 @@ LABEL_13:
 
   [(NSLayoutConstraint *)self->_multicolorButtonCenterXConstraint setActive:0];
   [(NSLayoutConstraint *)self->_multicolorButtonCenterYConstraint setActive:0];
-  v55 = [(PKSqueezePaletteMulticolorSwatchButton *)self->_multicolorButton centerXAnchor];
+  centerXAnchor = [(PKSqueezePaletteMulticolorSwatchButton *)self->_multicolorButton centerXAnchor];
   v56 = objc_loadWeakRetained(&self->_paletteView);
-  v57 = [v56 centerXAnchor];
-  v58 = [v55 constraintEqualToAnchor:v57];
+  centerXAnchor2 = [v56 centerXAnchor];
+  v58 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   multicolorButtonCenterXConstraint = self->_multicolorButtonCenterXConstraint;
   self->_multicolorButtonCenterXConstraint = v58;
 
-  v60 = [(PKSqueezePaletteMulticolorSwatchButton *)self->_multicolorButton centerYAnchor];
+  centerYAnchor = [(PKSqueezePaletteMulticolorSwatchButton *)self->_multicolorButton centerYAnchor];
   v61 = objc_loadWeakRetained(&self->_paletteView);
-  v62 = [v61 centerYAnchor];
-  v63 = [v60 constraintEqualToAnchor:v62];
+  centerYAnchor2 = [v61 centerYAnchor];
+  v63 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   multicolorButtonCenterYConstraint = self->_multicolorButtonCenterYConstraint;
   self->_multicolorButtonCenterYConstraint = v63;
 
@@ -1360,17 +1360,17 @@ LABEL_13:
 
   [(NSLayoutConstraint *)self->_moreButtonCenterXConstraint setActive:0];
   [(NSLayoutConstraint *)self->_moreButtonCenterYConstraint setActive:0];
-  v73 = [(UIButton *)self->_moreButton centerXAnchor];
+  centerXAnchor3 = [(UIButton *)self->_moreButton centerXAnchor];
   v74 = objc_loadWeakRetained(&self->_paletteView);
-  v75 = [v74 centerXAnchor];
-  v76 = [v73 constraintEqualToAnchor:v75];
+  centerXAnchor4 = [v74 centerXAnchor];
+  v76 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   moreButtonCenterXConstraint = self->_moreButtonCenterXConstraint;
   self->_moreButtonCenterXConstraint = v76;
 
-  v78 = [(UIButton *)self->_moreButton centerYAnchor];
+  centerYAnchor3 = [(UIButton *)self->_moreButton centerYAnchor];
   v79 = objc_loadWeakRetained(&self->_paletteView);
-  v80 = [v79 centerYAnchor];
-  v81 = [v78 constraintEqualToAnchor:v80];
+  centerYAnchor4 = [v79 centerYAnchor];
+  v81 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   moreButtonCenterYConstraint = self->_moreButtonCenterYConstraint;
   self->_moreButtonCenterYConstraint = v81;
 
@@ -1392,21 +1392,21 @@ LABEL_13:
 
   [(PKSqueezePaletteViewMiniPaletteLayout *)self _updateMoreButtonConstraints];
   v129 = MEMORY[0x1E696ACD8];
-  v88 = [(PKSqueezePaletteMulticolorSwatchButton *)self->_multicolorButton heightAnchor];
-  v89 = [v88 constraintEqualToConstant:self->_buttonSize.height];
+  heightAnchor = [(PKSqueezePaletteMulticolorSwatchButton *)self->_multicolorButton heightAnchor];
+  v89 = [heightAnchor constraintEqualToConstant:self->_buttonSize.height];
   v156[0] = v89;
-  v90 = [(PKSqueezePaletteMulticolorSwatchButton *)self->_multicolorButton widthAnchor];
-  v91 = [v90 constraintEqualToConstant:self->_buttonSize.width];
+  widthAnchor = [(PKSqueezePaletteMulticolorSwatchButton *)self->_multicolorButton widthAnchor];
+  v91 = [widthAnchor constraintEqualToConstant:self->_buttonSize.width];
   v92 = self->_multicolorButtonCenterXConstraint;
   v93 = self->_multicolorButtonCenterYConstraint;
   v156[1] = v91;
   v156[2] = v92;
   v156[3] = v93;
-  v94 = [(UIButton *)self->_moreButton heightAnchor];
-  v95 = [v94 constraintEqualToConstant:self->_buttonSize.height];
+  heightAnchor2 = [(UIButton *)self->_moreButton heightAnchor];
+  v95 = [heightAnchor2 constraintEqualToConstant:self->_buttonSize.height];
   v156[4] = v95;
-  v96 = [(UIButton *)self->_moreButton widthAnchor];
-  v97 = [v96 constraintEqualToConstant:self->_buttonSize.width];
+  widthAnchor2 = [(UIButton *)self->_moreButton widthAnchor];
+  v97 = [widthAnchor2 constraintEqualToConstant:self->_buttonSize.width];
   v98 = self->_moreButtonCenterXConstraint;
   v99 = self->_moreButtonCenterYConstraint;
   v156[5] = v97;
@@ -1434,13 +1434,13 @@ LABEL_13:
 
   [(CAShapeLayer *)self->_toolsContentClippingShapeMask setLineCap:*MEMORY[0x1E6979E70]];
   [(CAShapeLayer *)self->_toolsContentClippingShapeMask setFillColor:0];
-  v104 = [MEMORY[0x1E69DC888] blackColor];
-  v105 = v104;
-  -[CAShapeLayer setStrokeColor:](self->_toolsContentClippingShapeMask, "setStrokeColor:", [v104 CGColor]);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v105 = blackColor;
+  -[CAShapeLayer setStrokeColor:](self->_toolsContentClippingShapeMask, "setStrokeColor:", [blackColor CGColor]);
 
   toolsContentClippingShapeMask = self->_toolsContentClippingShapeMask;
-  v107 = [(PKViewWithHitTestHandler *)self->_toolsContentView layer];
-  [v107 setMask:toolsContentClippingShapeMask];
+  layer = [(PKViewWithHitTestHandler *)self->_toolsContentView layer];
+  [layer setMask:toolsContentClippingShapeMask];
 
   [MEMORY[0x1E6979518] commit];
   v108 = objc_loadWeakRetained(&self->_paletteView);
@@ -1723,22 +1723,22 @@ void __48__PKSqueezePaletteViewMiniPaletteLayout_setupUI__block_invoke_5(uint64_
   [(PKSqueezePaletteViewMiniPaletteLayout *)self _updateClipIndicatorView];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v7 = [(PKViewWithHitTestHandler *)self->_toolsContentView layer];
-  v8 = [v7 mask];
+  layer = [(PKViewWithHitTestHandler *)self->_toolsContentView layer];
+  mask = [layer mask];
   toolsContentClippingShapeMask = self->_toolsContentClippingShapeMask;
 
   clipIndicatorViewVisible = self->_clipIndicatorViewVisible;
-  if (clipIndicatorViewVisible && v8 != toolsContentClippingShapeMask)
+  if (clipIndicatorViewVisible && mask != toolsContentClippingShapeMask)
   {
     v11 = self->_toolsContentClippingShapeMask;
 LABEL_8:
-    v12 = [(PKViewWithHitTestHandler *)self->_toolsContentView layer];
-    [v12 setMask:v11];
+    layer2 = [(PKViewWithHitTestHandler *)self->_toolsContentView layer];
+    [layer2 setMask:v11];
 
     goto LABEL_9;
   }
 
-  if (!clipIndicatorViewVisible && v8 == toolsContentClippingShapeMask)
+  if (!clipIndicatorViewVisible && mask == toolsContentClippingShapeMask)
   {
     v11 = 0;
     goto LABEL_8;
@@ -1747,8 +1747,8 @@ LABEL_8:
 LABEL_9:
   [(CAShapeLayer *)self->_toolsContentClippingShapeMask setStrokeEnd:self->_toolsContentClippingIndicatorAngle / 6.28318531 + 0.0];
   [MEMORY[0x1E6979518] commit];
-  v13 = [(PKSqueezePaletteViewMiniPaletteLayout *)self _selectedTool];
-  [v13 setSelected:1];
+  _selectedTool = [(PKSqueezePaletteViewMiniPaletteLayout *)self _selectedTool];
+  [_selectedTool setSelected:1];
 
   v14 = objc_loadWeakRetained(&self->_paletteView);
   v15 = v14;
@@ -1853,16 +1853,16 @@ LABEL_6:
 
 - (void)_updateColorUIStyle
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 312);
+    v2 = *(self + 312);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __60__PKSqueezePaletteViewMiniPaletteLayout__updateColorUIStyle__block_invoke;
     v7[3] = &unk_1E82D7998;
-    v7[4] = a1;
+    v7[4] = self;
     [v2 enumerateObjectsUsingBlock:v7];
-    WeakRetained = objc_loadWeakRetained((a1 + 288));
+    WeakRetained = objc_loadWeakRetained((self + 288));
     v4 = WeakRetained;
     if (WeakRetained)
     {
@@ -1874,7 +1874,7 @@ LABEL_6:
       v5 = 0;
     }
 
-    v6 = *(a1 + 344);
+    v6 = *(self + 344);
     if (v6)
     {
       if (*(v6 + 760) != v5)
@@ -1886,11 +1886,11 @@ LABEL_6:
   }
 }
 
-- (void)willTransitionToLayout:(id)a3
+- (void)willTransitionToLayout:(id)layout
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(PKSqueezePaletteViewUndoRedoLayout *)self->_undoRedoLayout willTransitionToLayout:v4];
+  layoutCopy = layout;
+  [(PKSqueezePaletteViewUndoRedoLayout *)self->_undoRedoLayout willTransitionToLayout:layoutCopy];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   undoButton = self->_undoButton;
@@ -1925,9 +1925,9 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4)
+    if (layoutCopy)
     {
-      v10 = v4[3];
+      v10 = layoutCopy[3];
     }
 
     else
@@ -1959,8 +1959,8 @@ LABEL_13:
 LABEL_14:
   self->_clipIndicatorViewVisible = 0;
   [(PKSqueezePaletteViewMiniPaletteLayout *)self _updateClipIndicatorView];
-  v12 = [(PKViewWithHitTestHandler *)self->_toolsContentView layer];
-  [v12 setMask:0];
+  layer = [(PKViewWithHitTestHandler *)self->_toolsContentView layer];
+  [layer setMask:0];
 
   v20 = 0u;
   v21 = 0u;
@@ -2004,17 +2004,17 @@ uint64_t __64__PKSqueezePaletteViewMiniPaletteLayout_willTransitionToLayout___bl
   }
 }
 
-- (void)handlePencilInteractionDidTap:(int64_t)a3
+- (void)handlePencilInteractionDidTap:(int64_t)tap
 {
   v38[1] = *MEMORY[0x1E69E9840];
   v5 = +[PKStatisticsManager sharedStatisticsManager];
   [PKStatisticsManager recordPencilAction:v5 doubleTap:?];
 
-  if (a3 > 2)
+  if (tap > 2)
   {
-    if (a3 != 3)
+    if (tap != 3)
     {
-      if (a3 == 4 && self)
+      if (tap == 4 && self)
       {
         v9 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2023,8 +2023,8 @@ uint64_t __64__PKSqueezePaletteViewMiniPaletteLayout_willTransitionToLayout___bl
           _os_log_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEFAULT, "Show ink attributes.", buf, 2u);
         }
 
-        v10 = [(PKSqueezePaletteViewMiniPaletteLayout *)self _selectedTool];
-        [(PKSqueezePaletteViewMiniPaletteLayout *)self _selectTool:v10];
+        _selectedTool = [(PKSqueezePaletteViewMiniPaletteLayout *)self _selectedTool];
+        [(PKSqueezePaletteViewMiniPaletteLayout *)self _selectTool:_selectedTool];
       }
 
       return;
@@ -2085,9 +2085,9 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  if (a3 != 1)
+  if (tap != 1)
   {
-    if (a3 == 2 && self)
+    if (tap == 2 && self)
     {
       if (self->_selectedToolIndex == 1)
       {
@@ -2235,9 +2235,9 @@ void __60__PKSqueezePaletteViewMiniPaletteLayout__updateColorUIStyle__block_invo
   }
 }
 
-- (double)toolAngle:(id)a3
+- (double)toolAngle:(id)angle
 {
-  v4 = [(NSArray *)self->_drawingTools indexOfObject:a3];
+  v4 = [(NSArray *)self->_drawingTools indexOfObject:angle];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0.0;

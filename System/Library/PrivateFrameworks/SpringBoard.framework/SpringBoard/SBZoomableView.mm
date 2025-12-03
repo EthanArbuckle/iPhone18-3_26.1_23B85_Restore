@@ -1,13 +1,13 @@
 @interface SBZoomableView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation SBZoomableView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"zPosition"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"zPosition"])
   {
     v5 = 1;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = SBZoomableView;
-    v5 = [(SBZoomableView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(SBZoomableView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

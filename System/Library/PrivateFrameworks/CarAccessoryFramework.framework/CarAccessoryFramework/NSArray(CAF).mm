@@ -12,8 +12,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,30 +24,30 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [v8 dictionaryRepresentation];
+          dictionaryRepresentation = [v8 dictionaryRepresentation];
 LABEL_10:
-          v10 = v9;
-          [v2 addObject:{v9, v13}];
+          v10 = dictionaryRepresentation;
+          [v2 addObject:{dictionaryRepresentation, v13}];
 
           continue;
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v9 = [v8 arrayRepresentation];
+          dictionaryRepresentation = [v8 arrayRepresentation];
           goto LABEL_10;
         }
 
         [v2 addObject:{v8, v13}];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

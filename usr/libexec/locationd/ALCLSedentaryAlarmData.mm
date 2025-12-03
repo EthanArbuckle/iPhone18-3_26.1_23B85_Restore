@@ -1,69 +1,69 @@
 @interface ALCLSedentaryAlarmData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCLSedentaryAlarmData
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3 >= 8)
+  if (string >= 8)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return *(&off_102457010 + a3);
+    return *(&off_102457010 + string);
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  if ([a3 isEqualToString:@"kAlarmTypeReminder"])
+  if ([type isEqualToString:@"kAlarmTypeReminder"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kAlarmTypeFinal"])
+  if ([type isEqualToString:@"kAlarmTypeFinal"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kAlarmTypeReset"])
+  if ([type isEqualToString:@"kAlarmTypeReset"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"kAlarmTypeActiveReminder"])
+  if ([type isEqualToString:@"kAlarmTypeActiveReminder"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kAlarmTypeDrivingReminder"])
+  if ([type isEqualToString:@"kAlarmTypeDrivingReminder"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"kAlarmTypeDeskReminder"])
+  if ([type isEqualToString:@"kAlarmTypeDeskReminder"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"kAlarmTypeTestSedentary"])
+  if ([type isEqualToString:@"kAlarmTypeTestSedentary"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"kAlarmTypeTestActive"])
+  if ([type isEqualToString:@"kAlarmTypeTestActive"])
   {
     return 7;
   }
@@ -104,7 +104,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteInt32Field();
@@ -117,23 +117,23 @@
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 1) = *&self->_firedTime;
-  *(a3 + 6) = self->_type;
-  *(a3 + 28) = self->_didWake;
+  *(to + 1) = *&self->_firedTime;
+  *(to + 6) = self->_type;
+  *(to + 28) = self->_didWake;
   if (*&self->_has)
   {
-    *(a3 + 2) = *&self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 2) = *&self->_timestamp;
+    *(to + 32) |= 1u;
   }
 
-  *(a3 + 29) = self->_regularEntry;
+  *(to + 29) = self->_regularEntry;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = *&self->_firedTime;
   *(result + 6) = self->_type;
   *(result + 28) = self->_didWake;
@@ -147,25 +147,25 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_firedTime != *(a3 + 1) || self->_type != *(a3 + 6))
+    if (self->_firedTime != *(equal + 1) || self->_type != *(equal + 6))
     {
       goto LABEL_14;
     }
 
     if (self->_didWake)
     {
-      if ((*(a3 + 28) & 1) == 0)
+      if ((*(equal + 28) & 1) == 0)
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
 LABEL_14:
       LOBYTE(v5) = 0;
@@ -174,18 +174,18 @@ LABEL_14:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
       goto LABEL_14;
     }
 
-    LOBYTE(v5) = self->_regularEntry == *(a3 + 29);
+    LOBYTE(v5) = self->_regularEntry == *(equal + 29);
   }
 
   return v5;
@@ -254,18 +254,18 @@ LABEL_14:
   return (2654435761 * self->_type) ^ (2654435761 * self->_didWake) ^ v13 ^ (2654435761 * self->_regularEntry) ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_firedTime = *(a3 + 1);
-  self->_type = *(a3 + 6);
-  self->_didWake = *(a3 + 28);
-  if (*(a3 + 32))
+  self->_firedTime = *(from + 1);
+  self->_type = *(from + 6);
+  self->_didWake = *(from + 28);
+  if (*(from + 32))
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 1u;
   }
 
-  self->_regularEntry = *(a3 + 29);
+  self->_regularEntry = *(from + 29);
 }
 
 @end

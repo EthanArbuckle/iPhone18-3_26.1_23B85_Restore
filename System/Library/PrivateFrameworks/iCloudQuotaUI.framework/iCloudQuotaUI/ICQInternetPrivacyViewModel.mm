@@ -51,29 +51,29 @@
 - (NSString)upgradeTitle;
 - (NSString)waitingTitle;
 - (id)country;
-- (id)issueTitle:(id)a3;
+- (id)issueTitle:(id)title;
 - (id)pausedPrivateRelayFooter;
-- (id)suggestionTitle:(id)a3;
-- (id)unsupportedTurnOffAlertTitleFor:(id)a3;
+- (id)suggestionTitle:(id)title;
+- (id)unsupportedTurnOffAlertTitleFor:(id)for;
 - (id)unsupportedTurnOffCellularAlertTitle;
 - (unint64_t)_statusForSubscriber;
-- (void)_addNetworkOutageBannerTo:(id)a3 withCompletion:(id)a4;
-- (void)_fetchAccountTypeWithCompletion:(id)a3;
-- (void)_fetchBannerModelsForPaidTier:(id)a3;
-- (void)_fetchUserTierWithCompletion:(id)a3;
-- (void)_refreshOverallStatusWithCompletion:(id)a3;
-- (void)_refreshServiceStatusWithCompletion:(id)a3;
-- (void)enableCellular:(BOOL)a3 onNetworkName:(id)a4 completion:(id)a5;
-- (void)enableDNS:(id)a3;
-- (void)enableLocationSharing:(BOOL)a3 completion:(id)a4;
-- (void)enableSafari:(id)a3;
-- (void)enableWifi:(BOOL)a3 onNetworkName:(id)a4 completion:(id)a5;
-- (void)fetchBannerModels:(id)a3;
-- (void)isLocationSharingEnabled:(id)a3;
-- (void)pausePrivateRelayUntilTomorrow:(id)a3;
-- (void)setEnabled:(BOOL)a3 completion:(id)a4;
-- (void)setStatusStringForPrefPane:(id)a3;
-- (void)updateStatusStringForBannerModels:(id)a3;
+- (void)_addNetworkOutageBannerTo:(id)to withCompletion:(id)completion;
+- (void)_fetchAccountTypeWithCompletion:(id)completion;
+- (void)_fetchBannerModelsForPaidTier:(id)tier;
+- (void)_fetchUserTierWithCompletion:(id)completion;
+- (void)_refreshOverallStatusWithCompletion:(id)completion;
+- (void)_refreshServiceStatusWithCompletion:(id)completion;
+- (void)enableCellular:(BOOL)cellular onNetworkName:(id)name completion:(id)completion;
+- (void)enableDNS:(id)s;
+- (void)enableLocationSharing:(BOOL)sharing completion:(id)completion;
+- (void)enableSafari:(id)safari;
+- (void)enableWifi:(BOOL)wifi onNetworkName:(id)name completion:(id)completion;
+- (void)fetchBannerModels:(id)models;
+- (void)isLocationSharingEnabled:(id)enabled;
+- (void)pausePrivateRelayUntilTomorrow:(id)tomorrow;
+- (void)setEnabled:(BOOL)enabled completion:(id)completion;
+- (void)setStatusStringForPrefPane:(id)pane;
+- (void)updateStatusStringForBannerModels:(id)models;
 @end
 
 @implementation ICQInternetPrivacyViewModel
@@ -94,20 +94,20 @@
 
 - (NSString)proxyUserTierDescription
 {
-  v2 = [(ICQInternetPrivacyViewModel *)self proxyUserTier];
-  if (v2 == 1)
+  proxyUserTier = [(ICQInternetPrivacyViewModel *)self proxyUserTier];
+  if (proxyUserTier == 1)
   {
     v3 = @"Free";
   }
 
-  else if (v2 == 2)
+  else if (proxyUserTier == 2)
   {
     v3 = @"Subscriber";
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown (%lu)", v2];
+    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown (%lu)", proxyUserTier];
   }
 
   return v3;
@@ -115,20 +115,20 @@
 
 - (NSString)proxyAccountTypeDescription
 {
-  v2 = [(ICQInternetPrivacyViewModel *)self proxyAccountType];
-  if (v2 == 1)
+  proxyAccountType = [(ICQInternetPrivacyViewModel *)self proxyAccountType];
+  if (proxyAccountType == 1)
   {
     v3 = @"Free";
   }
 
-  else if (v2 == 2)
+  else if (proxyAccountType == 2)
   {
     v3 = @"Subscriber";
   }
 
   else
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown (%lu)", v2];
+    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown (%lu)", proxyAccountType];
   }
 
   return v3;
@@ -136,15 +136,15 @@
 
 - (NSString)statusDescription
 {
-  v2 = [(ICQInternetPrivacyViewModel *)self status];
-  if (v2 - 1 > 7)
+  status = [(ICQInternetPrivacyViewModel *)self status];
+  if (status - 1 > 7)
   {
     return @"None";
   }
 
   else
   {
-    return &off_27A65C3F0[v2 - 1]->isa;
+    return &off_27A65C3F0[status - 1]->isa;
   }
 }
 
@@ -163,17 +163,17 @@
   return 2;
 }
 
-- (void)setEnabled:(BOOL)a3 completion:(id)a4
+- (void)setEnabled:(BOOL)enabled completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  completionCopy = completion;
   v7 = MEMORY[0x277D2CA68];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__ICQInternetPrivacyViewModel_setEnabled_completion___block_invoke;
   v10[3] = &unk_27A65C218;
-  v12 = v4;
-  if (v4)
+  v12 = enabledCopy;
+  if (enabledCopy)
   {
     v8 = 2;
   }
@@ -184,8 +184,8 @@
   }
 
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v7 setUserTier:v8 queue:MEMORY[0x277D85CD0] completionHandler:v10];
 }
 
@@ -228,16 +228,16 @@ void __53__ICQInternetPrivacyViewModel_setEnabled_completion___block_invoke(uint
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enableSafari:(id)a3
+- (void)enableSafari:(id)safari
 {
-  v3 = a3;
+  safariCopy = safari;
   v4 = MEMORY[0x277D2CA68];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__ICQInternetPrivacyViewModel_enableSafari___block_invoke;
   v6[3] = &unk_27A65C240;
-  v7 = v3;
-  v5 = v3;
+  v7 = safariCopy;
+  v5 = safariCopy;
   [v4 setTrafficState:12 proxyTraffic:12 queue:MEMORY[0x277D85CD0] completionHandler:v6];
 }
 
@@ -256,16 +256,16 @@ void __44__ICQInternetPrivacyViewModel_enableSafari___block_invoke(uint64_t a1, 
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)pausePrivateRelayUntilTomorrow:(id)a3
+- (void)pausePrivateRelayUntilTomorrow:(id)tomorrow
 {
-  v3 = a3;
+  tomorrowCopy = tomorrow;
   v4 = MEMORY[0x277D2CA68];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__ICQInternetPrivacyViewModel_pausePrivateRelayUntilTomorrow___block_invoke;
   v6[3] = &unk_27A65C240;
-  v7 = v3;
-  v5 = v3;
+  v7 = tomorrowCopy;
+  v5 = tomorrowCopy;
   [v4 setFreeUserTierUntilTomorrow:MEMORY[0x277D85CD0] completionHandler:v6];
 }
 
@@ -284,16 +284,16 @@ void __62__ICQInternetPrivacyViewModel_pausePrivateRelayUntilTomorrow___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)enableDNS:(id)a3
+- (void)enableDNS:(id)s
 {
-  v3 = a3;
+  sCopy = s;
   v4 = MEMORY[0x277D2CA68];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__ICQInternetPrivacyViewModel_enableDNS___block_invoke;
   v6[3] = &unk_27A65C240;
-  v7 = v3;
-  v5 = v3;
+  v7 = sCopy;
+  v5 = sCopy;
   [v4 setTrafficState:128 proxyTraffic:128 queue:MEMORY[0x277D85CD0] completionHandler:v6];
 }
 
@@ -312,22 +312,22 @@ void __41__ICQInternetPrivacyViewModel_enableDNS___block_invoke(uint64_t a1, voi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)enableWifi:(BOOL)a3 onNetworkName:(id)a4 completion:(id)a5
+- (void)enableWifi:(BOOL)wifi onNetworkName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
+  wifiCopy = wifi;
+  nameCopy = name;
+  completionCopy = completion;
   v9 = MEMORY[0x277D2CA68];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__ICQInternetPrivacyViewModel_enableWifi_onNetworkName_completion___block_invoke;
   v12[3] = &unk_27A65C218;
-  v15 = v6;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  [v9 reportWiFiNetworkStatus:v6 networkName:v11 queue:MEMORY[0x277D85CD0] completionHandler:v12];
+  v15 = wifiCopy;
+  v13 = nameCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = nameCopy;
+  [v9 reportWiFiNetworkStatus:wifiCopy networkName:v11 queue:MEMORY[0x277D85CD0] completionHandler:v12];
 }
 
 void __67__ICQInternetPrivacyViewModel_enableWifi_onNetworkName_completion___block_invoke(uint64_t a1, void *a2)
@@ -360,23 +360,23 @@ void __67__ICQInternetPrivacyViewModel_enableWifi_onNetworkName_completion___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)enableCellular:(BOOL)a3 onNetworkName:(id)a4 completion:(id)a5
+- (void)enableCellular:(BOOL)cellular onNetworkName:(id)name completion:(id)completion
 {
-  v6 = a3;
+  cellularCopy = cellular;
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  nameCopy = name;
+  completionCopy = completion;
+  if (nameCopy)
   {
     v9 = MEMORY[0x277D2CA68];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __71__ICQInternetPrivacyViewModel_enableCellular_onNetworkName_completion___block_invoke;
     v13[3] = &unk_27A65C218;
-    v14 = v7;
-    v16 = v6;
-    v15 = v8;
-    [v9 reportCellularNetworkStatus:v6 networkName:v14 queue:MEMORY[0x277D85CD0] completionHandler:v13];
+    v14 = nameCopy;
+    v16 = cellularCopy;
+    v15 = completionCopy;
+    [v9 reportCellularNetworkStatus:cellularCopy networkName:v14 queue:MEMORY[0x277D85CD0] completionHandler:v13];
 
     v10 = v14;
   }
@@ -395,7 +395,7 @@ void __67__ICQInternetPrivacyViewModel_enableWifi_onNetworkName_completion___blo
       _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "Porcupine on cellular named %@ error: %@", buf, 0x16u);
     }
 
-    (*(v8 + 2))(v8, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -429,16 +429,16 @@ void __71__ICQInternetPrivacyViewModel_enableCellular_onNetworkName_completion__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchBannerModels:(id)a3
+- (void)fetchBannerModels:(id)models
 {
-  v4 = a3;
+  modelsCopy = models;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__ICQInternetPrivacyViewModel_fetchBannerModels___block_invoke;
   v6[3] = &unk_27A65C290;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = modelsCopy;
+  v5 = modelsCopy;
   [(ICQInternetPrivacyViewModel *)self _refreshOverallStatusWithCompletion:v6];
 }
 
@@ -472,12 +472,12 @@ void __49__ICQInternetPrivacyViewModel_fetchBannerModels___block_invoke_2(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchBannerModelsForPaidTier:(id)a3
+- (void)_fetchBannerModelsForPaidTier:(id)tier
 {
   v156 = *MEMORY[0x277D85DE8];
-  v125 = a3;
+  tierCopy = tier;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v127 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v145 = 0;
   v146 = &v145;
   v147 = 0x3032000000;
@@ -511,11 +511,11 @@ void __49__ICQInternetPrivacyViewModel_fetchBannerModels___block_invoke_2(uint64
       _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Porcupine not available due to unsupported region", buf, 2u);
     }
 
-    v6 = [(ICQInternetPrivacyViewModel *)self country];
+    country = [(ICQInternetPrivacyViewModel *)self country];
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_REGION_MESSAGE" value:&stru_28844FC60 table:@"Localizable"];
-    v10 = [v7 stringWithFormat:v9, v6];
+    v10 = [v7 stringWithFormat:v9, country];
 
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"INTERNET_PRIVACY_LEARN_MORE_BUTTON_TITLE" value:&stru_28844FC60 table:@"Localizable"];
@@ -528,20 +528,20 @@ void __49__ICQInternetPrivacyViewModel_fetchBannerModels___block_invoke_2(uint64
     v146[5] = v16;
 
     self->_status = 6;
-    [v127 addObject:v146[5]];
-    v18 = [v127 copy];
-    v125[2](v125, v18);
+    [array addObject:v146[5]];
+    v18 = [array copy];
+    tierCopy[2](tierCopy, v18);
 LABEL_10:
 
     goto LABEL_27;
   }
 
-  v19 = self;
+  selfCopy2 = self;
   if (self->_serviceIsLimited)
   {
-    v20 = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus serviceStatus];
-    v19 = self;
-    if (v20)
+    serviceStatus = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus serviceStatus];
+    selfCopy2 = self;
+    if (serviceStatus)
     {
       v21 = _ICQGetLogSystem();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -563,14 +563,14 @@ LABEL_10:
       v146[5] = v28;
 
       self->_status = 1;
-      [v127 addObject:v146[5]];
-      v6 = [v127 copy];
-      v125[2](v125, v6);
+      [array addObject:v146[5]];
+      country = [array copy];
+      tierCopy[2](tierCopy, country);
       goto LABEL_27;
     }
   }
 
-  if ([(PrivacyProxyServiceStatus *)v19->_proxyServiceStatus serviceStatus]== 5)
+  if ([(PrivacyProxyServiceStatus *)selfCopy2->_proxyServiceStatus serviceStatus]== 5)
   {
     v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v30 localizedStringForKey:@"INTERNET_PRIVACY_LEARN_MORE_BUTTON_TITLE" value:&stru_28844FC60 table:@"Localizable"];
@@ -585,9 +585,9 @@ LABEL_10:
     v146[5] = v36;
 
     self->_status = 5;
-    [v127 addObject:v146[5]];
-    v6 = [v127 copy];
-    v125[2](v125, v6);
+    [array addObject:v146[5]];
+    country = [array copy];
+    tierCopy[2](tierCopy, country);
 LABEL_27:
 
 LABEL_28:
@@ -596,8 +596,8 @@ LABEL_28:
 
   if ([(PrivacyProxyServiceStatus *)self->_proxyServiceStatus serviceStatus]== 3)
   {
-    v38 = [MEMORY[0x277D75418] currentDevice];
-    v39 = [v38 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v39 = [currentDevice userInterfaceIdiom] == 1;
 
     v40 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     if (v39)
@@ -619,9 +619,9 @@ LABEL_28:
     v146[5] = v52;
 
     self->_status = 5;
-    [v127 addObject:v146[5]];
-    v6 = [v127 copy];
-    v125[2](v125, v6);
+    [array addObject:v146[5]];
+    country = [array copy];
+    tierCopy[2](tierCopy, country);
     goto LABEL_27;
   }
 
@@ -640,9 +640,9 @@ LABEL_28:
     v146[5] = v47;
 
     self->_status = 5;
-    [v127 addObject:v146[5]];
-    v6 = [v127 copy];
-    v125[2](v125, v6);
+    [array addObject:v146[5]];
+    country = [array copy];
+    tierCopy[2](tierCopy, country);
     goto LABEL_27;
   }
 
@@ -657,27 +657,27 @@ LABEL_28:
         _os_log_impl(&dword_275623000, v54, OS_LOG_TYPE_DEFAULT, "Free tier detected: skipping network statuses", buf, 2u);
       }
 
-      v12 = [v127 copy];
-      v125[2](v125, v12);
+      v12 = [array copy];
+      tierCopy[2](tierCopy, v12);
       goto LABEL_28;
     }
 
-    v124 = [MEMORY[0x277CBEB18] array];
-    v55 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v143 = 0u;
     v144 = 0u;
     v141 = 0u;
     v142 = 0u;
-    v56 = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus networkStatuses];
-    v57 = [v56 countByEnumeratingWithState:&v141 objects:v155 count:16];
-    v123 = v55;
+    networkStatuses = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus networkStatuses];
+    v57 = [networkStatuses countByEnumeratingWithState:&v141 objects:v155 count:16];
+    v123 = array3;
     if (!v57)
     {
       goto LABEL_85;
     }
 
     v128 = *v142;
-    obj = v56;
+    obj = networkStatuses;
 LABEL_36:
     v129 = v57;
     v58 = 0;
@@ -692,12 +692,12 @@ LABEL_36:
       v60 = _ICQGetLogSystem();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus serviceStatus];
-        v62 = [v59 networkStatus];
+        serviceStatus2 = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus serviceStatus];
+        networkStatus = [v59 networkStatus];
         *buf = 134218240;
-        v152 = v61;
+        v152 = serviceStatus2;
         v153 = 2048;
-        v154 = v62;
+        v154 = networkStatus;
         _os_log_impl(&dword_275623000, v60, OS_LOG_TYPE_DEFAULT, "Overall service status: %lu, network status: %lu", buf, 0x16u);
       }
 
@@ -709,14 +709,14 @@ LABEL_36:
       v63 = _ICQGetLogSystem();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
       {
-        v64 = [v59 networkName];
+        networkName = [v59 networkName];
         *buf = 138412290;
-        v152 = v64;
+        v152 = networkName;
         _os_log_impl(&dword_275623000, v63, OS_LOG_TYPE_DEFAULT, "Found cellular network name: %@", buf, 0xCu);
       }
 
-      v65 = [v59 networkName];
-      [(ICQInternetPrivacyViewModel *)self setCellularName:v65];
+      networkName2 = [v59 networkName];
+      [(ICQInternetPrivacyViewModel *)self setCellularName:networkName2];
 
       if ([v59 networkStatus] == 2 && -[PrivacyProxyServiceStatus serviceStatus](self->_proxyServiceStatus, "serviceStatus") == 1)
       {
@@ -728,19 +728,19 @@ LABEL_36:
         }
 
         v67 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v68 = [v67 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_CELLULAR_ON_TITLE" value:&stru_28844FC60 table:@"Localizable"];
+        v114 = [v67 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_CELLULAR_ON_TITLE" value:&stru_28844FC60 table:@"Localizable"];
 
         v69 = [ICQInternetPrivacyBannerModel alloc];
         v70 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v71 = [v70 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_CELLULAR_ON_MESSAGE" value:&stru_28844FC60 table:@"Localizable"];
         v72 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v73 = [v72 localizedStringForKey:@"INTERNET_PRIVACY_USE_WITHOUT_PRIVATE_RELAY_BUTTON_TITLE" value:&stru_28844FC60 table:@"Localizable"];
-        v74 = [v59 networkName];
-        v75 = [(ICQInternetPrivacyBannerModel *)v69 initWithTitle:v68 message:v71 buttonTitle:v73 status:4 networkName:v74];
+        networkName3 = [v59 networkName];
+        v75 = [(ICQInternetPrivacyBannerModel *)v69 initWithTitle:v114 message:v71 buttonTitle:v73 status:4 networkName:networkName3];
         v76 = v146[5];
         v146[5] = v75;
 
-        [v124 addObject:v146[5]];
+        [array2 addObject:v146[5]];
 LABEL_57:
         v93 = 0;
         goto LABEL_63;
@@ -761,7 +761,7 @@ LABEL_81:
 LABEL_82:
           v93 = 0;
           v103 = 0;
-          v68 = 0;
+          v114 = 0;
 LABEL_83:
 
           goto LABEL_78;
@@ -770,7 +770,7 @@ LABEL_83:
 LABEL_77:
         v93 = 0;
         v103 = 0;
-        v68 = 0;
+        v114 = 0;
         goto LABEL_78;
       }
 
@@ -785,24 +785,24 @@ LABEL_77:
       }
 
       v96 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v68 = [v96 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_CELLULAR_OFF_TITLE" value:&stru_28844FC60 table:@"Localizable"];
+      v114 = [v96 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_CELLULAR_OFF_TITLE" value:&stru_28844FC60 table:@"Localizable"];
 
       v97 = [ICQInternetPrivacyBannerModel alloc];
       v98 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v99 = [v98 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_CELLULAR_OFF_MESSAGE" value:&stru_28844FC60 table:@"Localizable"];
-      v100 = [v59 networkName];
-      v101 = [(ICQInternetPrivacyBannerModel *)v97 initWithTitle:v68 message:v99 buttonTitle:v93 status:8 networkName:v100];
+      networkName4 = [v59 networkName];
+      v101 = [(ICQInternetPrivacyBannerModel *)v97 initWithTitle:v114 message:v99 buttonTitle:v93 status:8 networkName:networkName4];
       v102 = v146[5];
       v146[5] = v101;
 
-      [v124 addObject:v146[5]];
+      [array2 addObject:v146[5]];
 LABEL_63:
       v103 = 0;
 LABEL_78:
 
       if (v129 == ++v58)
       {
-        v56 = obj;
+        networkStatuses = obj;
         v57 = [obj countByEnumeratingWithState:&v141 objects:v155 count:16];
         if (!v57)
         {
@@ -826,13 +826,13 @@ LABEL_85:
           block[1] = 3221225472;
           block[2] = __61__ICQInternetPrivacyViewModel__fetchBannerModelsForPaidTier___block_invoke_187;
           block[3] = &unk_27A65C2E0;
-          v132 = v124;
+          v132 = array2;
           v133 = v121;
-          v134 = self;
-          v135 = v127;
-          v136 = v125;
+          selfCopy3 = self;
+          v135 = array;
+          v136 = tierCopy;
           v10 = v121;
-          v6 = v124;
+          country = array2;
           v122 = MEMORY[0x277D85CD0];
           dispatch_group_notify(v12, MEMORY[0x277D85CD0], block);
 
@@ -852,14 +852,14 @@ LABEL_85:
     v77 = _ICQGetLogSystem();
     if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
     {
-      v78 = [v59 networkName];
+      networkName5 = [v59 networkName];
       *buf = 138412290;
-      v152 = v78;
+      v152 = networkName5;
       _os_log_impl(&dword_275623000, v77, OS_LOG_TYPE_DEFAULT, "Found WiFi network name: %@", buf, 0xCu);
     }
 
-    v79 = [v59 networkName];
-    [(ICQInternetPrivacyViewModel *)self setWiFiName:v79];
+    networkName6 = [v59 networkName];
+    [(ICQInternetPrivacyViewModel *)self setWiFiName:networkName6];
 
     if ([v59 networkStatus] != 2 || -[PrivacyProxyServiceStatus serviceStatus](self->_proxyServiceStatus, "serviceStatus") != 1)
     {
@@ -880,9 +880,9 @@ LABEL_85:
         }
 
         v104 = v107;
-        v108 = [MEMORY[0x277CCACA8] stringWithFormat:@"INTERNET_PRIVACY_UNSUPPORTED_%@_OFF_MESSAGE", v104];
+        v104 = [MEMORY[0x277CCACA8] stringWithFormat:@"INTERNET_PRIVACY_UNSUPPORTED_%@_OFF_MESSAGE", v104];
         v109 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v103 = [v109 localizedStringForKey:v108 value:&stru_28844FC60 table:@"Localizable"];
+        v103 = [v109 localizedStringForKey:v104 value:&stru_28844FC60 table:@"Localizable"];
 
         v110 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v93 = [v110 localizedStringForKey:@"INTERNET_PRIVACY_LEARN_MORE_BUTTON_TITLE" value:&stru_28844FC60 table:@"Localizable"];
@@ -890,16 +890,16 @@ LABEL_85:
         v111 = MEMORY[0x277CCACA8];
         v112 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v113 = [v112 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_NETWORK_OFF_TITLE" value:&stru_28844FC60 table:@"Localizable"];
-        v114 = [v59 networkName];
-        v68 = [v111 stringWithFormat:v113, v114];
+        networkName7 = [v59 networkName];
+        v114 = [v111 stringWithFormat:v113, networkName7];
 
         v115 = [ICQInternetPrivacyBannerModel alloc];
-        v116 = [v59 networkName];
-        v117 = [(ICQInternetPrivacyBannerModel *)v115 initWithTitle:v68 message:v103 buttonTitle:v93 status:2 networkName:v116];
+        networkName8 = [v59 networkName];
+        v117 = [(ICQInternetPrivacyBannerModel *)v115 initWithTitle:v114 message:v103 buttonTitle:v93 status:2 networkName:networkName8];
         v118 = v146[5];
         v146[5] = v117;
 
-        [v124 addObject:v146[5]];
+        [array2 addObject:v146[5]];
         goto LABEL_83;
       }
 
@@ -927,24 +927,24 @@ LABEL_85:
     v81 = MEMORY[0x277CCACA8];
     v82 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v83 = [v82 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_NETWORK_ON_TITLE" value:&stru_28844FC60 table:@"Localizable"];
-    v84 = [v59 networkName];
-    v68 = [v81 stringWithFormat:v83, v84];
+    networkName9 = [v59 networkName];
+    v114 = [v81 stringWithFormat:v83, networkName9];
 
     v85 = [ICQInternetPrivacyBannerModel alloc];
     v86 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v87 = [v86 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_WIFI_ON_MESSAGE" value:&stru_28844FC60 table:@"Localizable"];
     v88 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v89 = [v88 localizedStringForKey:@"INTERNET_PRIVACY_USE_WITHOUT_PRIVATE_RELAY_BUTTON_TITLE" value:&stru_28844FC60 table:@"Localizable"];
-    v90 = [v59 networkName];
-    v91 = [(ICQInternetPrivacyBannerModel *)v85 initWithTitle:v68 message:v87 buttonTitle:v89 status:1 networkName:v90];
+    networkName10 = [v59 networkName];
+    v91 = [(ICQInternetPrivacyBannerModel *)v85 initWithTitle:v114 message:v87 buttonTitle:v89 status:1 networkName:networkName10];
     v92 = v146[5];
     v146[5] = v91;
 
-    [v124 addObject:v146[5]];
+    [array2 addObject:v146[5]];
     goto LABEL_57;
   }
 
-  [(ICQInternetPrivacyViewModel *)self _addNetworkOutageBannerTo:v127 withCompletion:v125];
+  [(ICQInternetPrivacyViewModel *)self _addNetworkOutageBannerTo:array withCompletion:tierCopy];
 LABEL_29:
   _Block_object_dispose(&v145, 8);
 }
@@ -1070,15 +1070,15 @@ LABEL_7:
   (*(v12 + 16))(v12, v13);
 }
 
-- (void)updateStatusStringForBannerModels:(id)a3
+- (void)updateStatusStringForBannerModels:(id)models
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  modelsCopy = models;
+  v5 = [modelsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1090,7 +1090,7 @@ LABEL_7:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(modelsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -1140,7 +1140,7 @@ LABEL_25:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [modelsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       v11 = 0;
       if (v6)
       {
@@ -1178,15 +1178,15 @@ LABEL_26:
   return v3;
 }
 
-- (void)setStatusStringForPrefPane:(id)a3
+- (void)setStatusStringForPrefPane:(id)pane
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  paneCopy = pane;
   os_unfair_lock_lock(&self->_lock);
   v6 = self->_statusStringForPrefPane;
-  objc_storeStrong(&self->_statusStringForPrefPane, a3);
+  objc_storeStrong(&self->_statusStringForPrefPane, pane);
   os_unfair_lock_unlock(&self->_lock);
-  if (([v6 isEqualToString:v5] & 1) == 0 && v5 | v6)
+  if (([v6 isEqualToString:paneCopy] & 1) == 0 && paneCopy | v6)
   {
     v8 = _ICQGetLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1194,61 +1194,61 @@ LABEL_26:
       v9 = 138412546;
       v10 = v6;
       v11 = 2112;
-      v12 = v5;
+      v12 = paneCopy;
       _os_log_impl(&dword_275623000, v8, OS_LOG_TYPE_DEFAULT, "Private Relay status string has changed! old status: %@, new status: %@", &v9, 0x16u);
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"PorcupineStatusDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"PorcupineStatusDidChange" object:0];
   }
 
   else
   {
-    v7 = _ICQGetLogSystem();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    defaultCenter = _ICQGetLogSystem();
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_DEBUG))
     {
-      [ICQInternetPrivacyViewModel setStatusStringForPrefPane:v7];
+      [ICQInternetPrivacyViewModel setStatusStringForPrefPane:defaultCenter];
     }
   }
 }
 
 - (id)country
 {
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus details];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  details = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus details];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus details];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D2CA78]];
+    details2 = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus details];
+    v7 = [details2 objectForKeyedSubscript:*MEMORY[0x277D2CA78]];
     v8 = [v7 componentsSeparatedByString:@"-"];
     v9 = *MEMORY[0x277CBE690];
     v10 = [v8 objectAtIndexedSubscript:0];
-    v11 = [v3 displayNameForKey:v9 value:v10];
+    v11 = [currentLocale displayNameForKey:v9 value:v10];
   }
 
   else
   {
     v12 = *MEMORY[0x277CBE690];
-    v6 = [v3 objectForKey:*MEMORY[0x277CBE690]];
-    v11 = [v3 displayNameForKey:v12 value:v6];
+    details2 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
+    v11 = [currentLocale displayNameForKey:v12 value:details2];
   }
 
   return v11;
 }
 
-- (void)isLocationSharingEnabled:(id)a3
+- (void)isLocationSharingEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = MEMORY[0x277D2CA68];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__ICQInternetPrivacyViewModel_isLocationSharingEnabled___block_invoke;
   v6[3] = &unk_27A65C308;
-  v7 = v3;
-  v5 = v3;
+  v7 = enabledCopy;
+  v5 = enabledCopy;
   [v4 getGeohashSharingPreference:MEMORY[0x277D85CD0] completionHandler:v6];
 }
 
@@ -1275,16 +1275,16 @@ void __56__ICQInternetPrivacyViewModel_isLocationSharingEnabled___block_invoke(u
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)enableLocationSharing:(BOOL)a3 completion:(id)a4
+- (void)enableLocationSharing:(BOOL)sharing completion:(id)completion
 {
-  v4 = a3;
+  sharingCopy = sharing;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v4)
+    if (sharingCopy)
     {
       v7 = @"YES";
     }
@@ -1299,10 +1299,10 @@ void __56__ICQInternetPrivacyViewModel_isLocationSharingEnabled___block_invoke(u
   v10[1] = 3221225472;
   v10[2] = __64__ICQInternetPrivacyViewModel_enableLocationSharing_completion___block_invoke;
   v10[3] = &unk_27A65C330;
-  v12 = v4;
-  v11 = v5;
-  v9 = v5;
-  [v8 setGeohashSharingPreference:v4 queue:MEMORY[0x277D85CD0] completionHandler:v10];
+  v12 = sharingCopy;
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v8 setGeohashSharingPreference:sharingCopy queue:MEMORY[0x277D85CD0] completionHandler:v10];
 }
 
 void __64__ICQInternetPrivacyViewModel_enableLocationSharing_completion___block_invoke(uint64_t a1, void *a2)
@@ -1328,17 +1328,17 @@ void __64__ICQInternetPrivacyViewModel_enableLocationSharing_completion___block_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_fetchUserTierWithCompletion:(id)a3
+- (void)_fetchUserTierWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277D2CA68];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__ICQInternetPrivacyViewModel__fetchUserTierWithCompletion___block_invoke;
   v7[3] = &unk_27A65C358;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 getUserTierExtended:MEMORY[0x277D85CD0] completionHandler:v7];
 }
 
@@ -1390,17 +1390,17 @@ void __60__ICQInternetPrivacyViewModel__fetchUserTierWithCompletion___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchAccountTypeWithCompletion:(id)a3
+- (void)_fetchAccountTypeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CFB450];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__ICQInternetPrivacyViewModel__fetchAccountTypeWithCompletion___block_invoke;
   v7[3] = &unk_27A65C380;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 requestFeatureWithId:@"networking.privacy.subscriber" completion:v7];
 }
 
@@ -1455,17 +1455,17 @@ void __63__ICQInternetPrivacyViewModel__fetchAccountTypeWithCompletion___block_i
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_refreshServiceStatusWithCompletion:(id)a3
+- (void)_refreshServiceStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277D2CA68];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__ICQInternetPrivacyViewModel__refreshServiceStatusWithCompletion___block_invoke;
   v7[3] = &unk_27A65C3A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 getServiceStatus:MEMORY[0x277D85CD0] completionHandler:v7];
 }
 
@@ -1499,9 +1499,9 @@ void __67__ICQInternetPrivacyViewModel__refreshServiceStatusWithCompletion___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_refreshOverallStatusWithCompletion:(id)a3
+- (void)_refreshOverallStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
@@ -1540,10 +1540,10 @@ void __67__ICQInternetPrivacyViewModel__refreshServiceStatusWithCompletion___blo
   block[1] = 3221225472;
   block[2] = __67__ICQInternetPrivacyViewModel__refreshOverallStatusWithCompletion___block_invoke_4;
   block[3] = &unk_27A65AD90;
-  v11 = v4;
+  v11 = completionCopy;
   v12 = v22;
   block[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   dispatch_group_notify(v8, MEMORY[0x277D85CD0], block);
 
   _Block_object_dispose(v22, 8);
@@ -1665,17 +1665,17 @@ LABEL_7:
   }
 }
 
-- (void)_addNetworkOutageBannerTo:(id)a3 withCompletion:(id)a4
+- (void)_addNetworkOutageBannerTo:(id)to withCompletion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  toCopy = to;
+  completionCopy = completion;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus networkStatuses];
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  networkStatuses = [(PrivacyProxyServiceStatus *)self->_proxyServiceStatus networkStatuses];
+  v9 = [networkStatuses countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1686,15 +1686,15 @@ LABEL_3:
     {
       if (*v27 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(networkStatuses);
       }
 
       v13 = *(*(&v26 + 1) + 8 * v12);
       if ([v13 networkType] == 1)
       {
-        v14 = [v13 networkName];
+        networkName = [v13 networkName];
 
-        if (v14)
+        if (networkName)
         {
           break;
         }
@@ -1702,7 +1702,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v10 = [networkStatuses countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -1712,9 +1712,9 @@ LABEL_3:
       }
     }
 
-    v15 = [v13 networkName];
+    networkName2 = [v13 networkName];
 
-    if (v15)
+    if (networkName2)
     {
       goto LABEL_13;
     }
@@ -1726,13 +1726,13 @@ LABEL_10:
   }
 
   v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v15 = [v16 localizedStringForKey:@"INTERNET_PRIVACY_UNKOWN_NETWORK_NAME" value:&stru_28844FC60 table:@"Localizable"];
+  networkName2 = [v16 localizedStringForKey:@"INTERNET_PRIVACY_UNKOWN_NETWORK_NAME" value:&stru_28844FC60 table:@"Localizable"];
 
 LABEL_13:
   v17 = MEMORY[0x277CCACA8];
   v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v19 = [v18 localizedStringForKey:@"INTERNET_PRIVACY_NETWORK_OUTAGE_MESSAGE" value:&stru_28844FC60 table:@"Localizable"];
-  v20 = [v17 stringWithFormat:v19, v15];
+  v20 = [v17 stringWithFormat:v19, networkName2];
 
   v21 = [ICQInternetPrivacyBannerModel alloc];
   v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1740,9 +1740,9 @@ LABEL_13:
   v24 = [(ICQInternetPrivacyBannerModel *)v21 initWithTitle:v23 message:v20 buttonTitle:0 status:0x2000 networkName:0];
 
   self->_status = 5;
-  [v6 addObject:v24];
-  v25 = [v6 copy];
-  v7[2](v7, v25);
+  [toCopy addObject:v24];
+  v25 = [toCopy copy];
+  completionCopy[2](completionCopy, v25);
 }
 
 - (NSString)navTitle
@@ -1793,14 +1793,14 @@ LABEL_13:
   return v3;
 }
 
-- (id)issueTitle:(id)a3
+- (id)issueTitle:(id)title
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  titleCopy = title;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"ISSUE_COUNT_FORMAT" value:&stru_28844FC60 table:@"Localizable"];
-  [v5 doubleValue];
+  [titleCopy doubleValue];
   v9 = v8;
 
   v10 = [v3 localizedStringWithFormat:v7, v9];
@@ -1808,14 +1808,14 @@ LABEL_13:
   return v10;
 }
 
-- (id)suggestionTitle:(id)a3
+- (id)suggestionTitle:(id)title
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  titleCopy = title;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SUGGESTION_COUNT_FORMAT" value:&stru_28844FC60 table:@"Localizable"];
-  [v5 doubleValue];
+  [titleCopy doubleValue];
   v9 = v8;
 
   v10 = [v3 localizedStringWithFormat:v7, v9];
@@ -1983,16 +1983,16 @@ LABEL_13:
   return v3;
 }
 
-- (id)unsupportedTurnOffAlertTitleFor:(id)a3
+- (id)unsupportedTurnOffAlertTitleFor:(id)for
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  forCopy = for;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"INTERNET_PRIVACY_UNSUPPORTED_TURN_OFF_WIFI_ALERT_TITLE" value:&stru_28844FC60 table:@"Localizable"];
-  v8 = [v3 stringWithFormat:v7, v5];
+  forCopy = [v3 stringWithFormat:v7, forCopy];
 
-  return v8;
+  return forCopy;
 }
 
 - (id)unsupportedTurnOffCellularAlertTitle
@@ -2040,12 +2040,12 @@ LABEL_13:
 
 - (NSString)unsupportedSwitchOffAlertTitle
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = @"INTERNET_PRIVACY_SWITCH_OFF_UNSUPPORTED_ALERT_IPAD_TITLE";
   }
@@ -2062,12 +2062,12 @@ LABEL_13:
 
 - (NSString)unsupportedWifiSwitchOffAlertMessage
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = @"INTERNET_PRIVACY_SWITCH_OFF_UNSUPPORTED_ALERT_WIFI_IPAD_MESSAGE";
   }
@@ -2108,12 +2108,12 @@ LABEL_13:
 
 - (NSString)unsupportedSwitchOffCompletely
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = @"INTERNET_PRIVACY_SWITCH_OFF_UNSUPPORTED_ALERT_IPAD_COMPLETELY";
   }
@@ -2138,12 +2138,12 @@ LABEL_13:
 
 - (NSString)switchOffAlertTitle
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = @"INTERNET_PRIVACY_SWITCH_OFF_IPAD_ALERT_TITLE";
   }
@@ -2263,12 +2263,12 @@ LABEL_13:
           goto LABEL_22;
         }
 
-        v5 = [(ICQInternetPrivacyViewModel *)self onTitle];
+        onTitle = [(ICQInternetPrivacyViewModel *)self onTitle];
       }
 
       else
       {
-        v5 = [(ICQInternetPrivacyViewModel *)self upgradeTitle];
+        onTitle = [(ICQInternetPrivacyViewModel *)self upgradeTitle];
       }
 
       goto LABEL_21;
@@ -2276,12 +2276,12 @@ LABEL_13:
 
     if (status == 2)
     {
-      v5 = [(ICQInternetPrivacyViewModel *)self offTitle];
+      onTitle = [(ICQInternetPrivacyViewModel *)self offTitle];
       goto LABEL_21;
     }
 
-    v6 = [(ICQInternetPrivacyViewModel *)self issueOrSuggestionCount];
-    v7 = [(ICQInternetPrivacyViewModel *)self issueTitle:v6];
+    issueOrSuggestionCount = [(ICQInternetPrivacyViewModel *)self issueOrSuggestionCount];
+    v7 = [(ICQInternetPrivacyViewModel *)self issueTitle:issueOrSuggestionCount];
 LABEL_19:
     v2 = v7;
 
@@ -2293,13 +2293,13 @@ LABEL_19:
     switch(status)
     {
       case 6:
-        v5 = [(ICQInternetPrivacyViewModel *)self notSupportedTitle];
+        onTitle = [(ICQInternetPrivacyViewModel *)self notSupportedTitle];
         break;
       case 7:
-        v5 = [(ICQInternetPrivacyViewModel *)self waitingTitle];
+        onTitle = [(ICQInternetPrivacyViewModel *)self waitingTitle];
         break;
       case 8:
-        v5 = [(ICQInternetPrivacyViewModel *)self privateRelayPausedTitle];
+        onTitle = [(ICQInternetPrivacyViewModel *)self privateRelayPausedTitle];
         break;
       default:
         goto LABEL_22;
@@ -2310,14 +2310,14 @@ LABEL_19:
 
   if (status == 4)
   {
-    v6 = [(ICQInternetPrivacyViewModel *)self issueOrSuggestionCount];
-    v7 = [(ICQInternetPrivacyViewModel *)self suggestionTitle:v6];
+    issueOrSuggestionCount = [(ICQInternetPrivacyViewModel *)self issueOrSuggestionCount];
+    v7 = [(ICQInternetPrivacyViewModel *)self suggestionTitle:issueOrSuggestionCount];
     goto LABEL_19;
   }
 
-  v5 = [(ICQInternetPrivacyViewModel *)self unavailableTitle];
+  onTitle = [(ICQInternetPrivacyViewModel *)self unavailableTitle];
 LABEL_21:
-  v2 = v5;
+  v2 = onTitle;
 LABEL_22:
 
   return v2;

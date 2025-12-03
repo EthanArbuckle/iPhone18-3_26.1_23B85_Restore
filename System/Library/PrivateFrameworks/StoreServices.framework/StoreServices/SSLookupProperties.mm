@@ -1,11 +1,11 @@
 @interface SSLookupProperties
-- (SSLookupProperties)initWithXPCEncoding:(id)a3;
+- (SSLookupProperties)initWithXPCEncoding:(id)encoding;
 - (id)copyRequestParameters;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (id)valueForRequestParameter:(id)a3;
+- (id)valueForRequestParameter:(id)parameter;
 - (void)dealloc;
-- (void)setValue:(id)a3 forRequestParameter:(id)a4;
+- (void)setValue:(id)value forRequestParameter:(id)parameter;
 @end
 
 @implementation SSLookupProperties
@@ -75,14 +75,14 @@
   return v3;
 }
 
-- (void)setValue:(id)a3 forRequestParameter:(id)a4
+- (void)setValue:(id)value forRequestParameter:(id)parameter
 {
-  if (a3)
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v7 = [a3 copy];
+      v7 = [value copy];
       requestParameters = self->_requestParameters;
       v10 = v7;
       if (!requestParameters)
@@ -92,12 +92,12 @@
         self->_requestParameters = requestParameters;
       }
 
-      [(NSMutableDictionary *)requestParameters setObject:v7 forKey:a4];
+      [(NSMutableDictionary *)requestParameters setObject:v7 forKey:parameter];
     }
 
     else
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid parameter value: %@", a3}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid parameter value: %@", value}];
     }
   }
 
@@ -105,24 +105,24 @@
   {
     v9 = self->_requestParameters;
 
-    [(NSMutableDictionary *)v9 removeObjectForKey:a4];
+    [(NSMutableDictionary *)v9 removeObjectForKey:parameter];
   }
 }
 
-- (id)valueForRequestParameter:(id)a3
+- (id)valueForRequestParameter:(id)parameter
 {
-  v3 = [(NSMutableDictionary *)self->_requestParameters objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_requestParameters objectForKey:parameter];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   v5[2] = self->_localizationStyle;
-  v5[1] = [(CLLocation *)self->_location copyWithZone:a3];
-  v5[3] = [(NSMutableDictionary *)self->_requestParameters mutableCopyWithZone:a3];
-  v5[4] = [(NSNumber *)self->_timeoutInterval copyWithZone:a3];
+  v5[1] = [(CLLocation *)self->_location copyWithZone:zone];
+  v5[3] = [(NSMutableDictionary *)self->_requestParameters mutableCopyWithZone:zone];
+  v5[4] = [(NSNumber *)self->_timeoutInterval copyWithZone:zone];
   return v5;
 }
 
@@ -146,15 +146,15 @@
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
+      shouldLog = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog;
       }
 
       if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -187,25 +187,25 @@
   return v3;
 }
 
-- (SSLookupProperties)initWithXPCEncoding:(id)a3
+- (SSLookupProperties)initWithXPCEncoding:(id)encoding
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v26.receiver = self;
     v26.super_class = SSLookupProperties;
     v5 = [(SSLookupProperties *)&v26 init];
     if (v5)
     {
-      v5->_localizationStyle = xpc_dictionary_get_int64(a3, "0");
+      v5->_localizationStyle = xpc_dictionary_get_int64(encoding, "0");
       objc_opt_class();
-      v5->_timeoutInterval = SSXPCDictionaryCopyCFObjectWithClass(a3, "3");
+      v5->_timeoutInterval = SSXPCDictionaryCopyCFObjectWithClass(encoding, "3");
       objc_opt_class();
-      v7 = SSXPCDictionaryCopyCFObjectWithClass(a3, "2");
+      v7 = SSXPCDictionaryCopyCFObjectWithClass(encoding, "2");
       v5->_requestParameters = [(__CFArray *)v7 mutableCopy];
 
       objc_opt_class();
-      v8 = SSXPCDictionaryCopyCFObjectWithClass(a3, "1");
+      v8 = SSXPCDictionaryCopyCFObjectWithClass(encoding, "1");
       if (v8)
       {
         v9 = v8;
@@ -226,15 +226,15 @@
             v11 = +[SSLogConfig sharedConfig];
           }
 
-          v12 = [v11 shouldLog];
+          shouldLog = [v11 shouldLog];
           if ([v11 shouldLogToDisk])
           {
-            v13 = v12 | 2;
+            v13 = shouldLog | 2;
           }
 
           else
           {
-            v13 = v12;
+            v13 = shouldLog;
           }
 
           if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_ERROR))

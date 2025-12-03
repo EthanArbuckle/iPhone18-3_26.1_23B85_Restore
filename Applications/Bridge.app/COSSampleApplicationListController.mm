@@ -1,10 +1,10 @@
 @interface COSSampleApplicationListController
 - (id)applicationGroupSpecifiers;
-- (id)awesomeFeatureEnabled:(id)a3;
-- (id)linkListSelection:(id)a3;
+- (id)awesomeFeatureEnabled:(id)enabled;
+- (id)linkListSelection:(id)selection;
 - (id)localizedMirroringDetailFooter;
-- (void)setAwesomeFeatureEnabled:(id)a3 specifier:(id)a4;
-- (void)setLinkListSelection:(id)a3 specifier:(id)a4;
+- (void)setAwesomeFeatureEnabled:(id)enabled specifier:(id)specifier;
+- (void)setLinkListSelection:(id)selection specifier:(id)specifier;
 @end
 
 @implementation COSSampleApplicationListController
@@ -64,9 +64,9 @@
   return v3;
 }
 
-- (void)setAwesomeFeatureEnabled:(id)a3 specifier:(id)a4
+- (void)setAwesomeFeatureEnabled:(id)enabled specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"MyAwesomeFeatureKey", a3, @"com.apple.nano-sample-app");
+  CFPreferencesSetAppValue(@"MyAwesomeFeatureKey", enabled, @"com.apple.nano-sample-app");
   CFPreferencesAppSynchronize(@"com.apple.nano-sample-app");
   v6 = [UIAlertController alertControllerWithTitle:@"Bridge called your method!" message:&stru_10026E598 preferredStyle:1];
   v5 = [UIAlertAction actionWithTitle:@"Okay" style:1 handler:0];
@@ -75,21 +75,21 @@
   [(COSSampleApplicationListController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (id)awesomeFeatureEnabled:(id)a3
+- (id)awesomeFeatureEnabled:(id)enabled
 {
   v3 = CFPreferencesCopyAppValue(@"MyAwesomeFeatureKey", @"com.apple.nano-sample-app");
 
   return v3;
 }
 
-- (void)setLinkListSelection:(id)a3 specifier:(id)a4
+- (void)setLinkListSelection:(id)selection specifier:(id)specifier
 {
-  CFPreferencesSetAppValue(@"MyLinkListKey", a3, @"com.apple.nano-sample-app");
+  CFPreferencesSetAppValue(@"MyLinkListKey", selection, @"com.apple.nano-sample-app");
 
   CFPreferencesAppSynchronize(@"com.apple.nano-sample-app");
 }
 
-- (id)linkListSelection:(id)a3
+- (id)linkListSelection:(id)selection
 {
   v3 = CFPreferencesCopyAppValue(@"MyLinkListKey", @"com.apple.nano-sample-app");
   if (!v3)

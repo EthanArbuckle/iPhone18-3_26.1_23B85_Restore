@@ -1,9 +1,9 @@
 @interface AVCaptureFraming
-+ (AVCaptureFraming)framingWithAspectRatio:(id)a3 zoomFactor:(float)a4;
++ (AVCaptureFraming)framingWithAspectRatio:(id)ratio zoomFactor:(float)factor;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithAspectRatio:(id)a3 zoomFactor:(float)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithAspectRatio:(id)ratio zoomFactor:(float)factor;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (void)dealloc;
@@ -13,7 +13,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -22,24 +22,24 @@
   }
 }
 
-+ (AVCaptureFraming)framingWithAspectRatio:(id)a3 zoomFactor:(float)a4
++ (AVCaptureFraming)framingWithAspectRatio:(id)ratio zoomFactor:(float)factor
 {
   v6 = objc_alloc(objc_opt_class());
-  *&v7 = a4;
-  v8 = [v6 _initWithAspectRatio:a3 zoomFactor:v7];
+  *&v7 = factor;
+  v8 = [v6 _initWithAspectRatio:ratio zoomFactor:v7];
 
   return v8;
 }
 
-- (id)_initWithAspectRatio:(id)a3 zoomFactor:(float)a4
+- (id)_initWithAspectRatio:(id)ratio zoomFactor:(float)factor
 {
   v8.receiver = self;
   v8.super_class = AVCaptureFraming;
   v6 = [(AVCaptureFraming *)&v8 init];
   if (v6)
   {
-    v6->_aspectRatio = a3;
-    v6->_zoomFactor = a4;
+    v6->_aspectRatio = ratio;
+    v6->_zoomFactor = factor;
   }
 
   return v6;
@@ -55,9 +55,9 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AVCaptureFraming *)self aspectRatio];
+  aspectRatio = [(AVCaptureFraming *)self aspectRatio];
   [(AVCaptureFraming *)self zoomFactor];
-  return [v3 stringWithFormat:@"%@, %.2f", v4, v5];
+  return [v3 stringWithFormat:@"%@, %.2f", aspectRatio, v5];
 }
 
 - (id)description
@@ -67,9 +67,9 @@
   return [v3 stringWithFormat:@"<%@: %p %@>", NSStringFromClass(v4), self, -[AVCaptureFraming debugDescription](self, "debugDescription")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
@@ -79,12 +79,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = -[NSString isEqual:](-[AVCaptureFraming aspectRatio](self, "aspectRatio"), "isEqual:", [a3 aspectRatio]);
+      v5 = -[NSString isEqual:](-[AVCaptureFraming aspectRatio](self, "aspectRatio"), "isEqual:", [equal aspectRatio]);
       if (v5)
       {
         [(AVCaptureFraming *)self zoomFactor];
         v7 = v6;
-        [a3 zoomFactor];
+        [equal zoomFactor];
         LOBYTE(v5) = v7 == v8;
       }
     }
@@ -98,13 +98,13 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AVCaptureFraming *)self aspectRatio];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  aspectRatio = [(AVCaptureFraming *)self aspectRatio];
   [(AVCaptureFraming *)self zoomFactor];
 
-  return [v4 _initWithAspectRatio:v5 zoomFactor:?];
+  return [v4 _initWithAspectRatio:aspectRatio zoomFactor:?];
 }
 
 @end

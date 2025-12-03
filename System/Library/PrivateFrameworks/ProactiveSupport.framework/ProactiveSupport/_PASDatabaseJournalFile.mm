@@ -1,5 +1,5 @@
 @interface _PASDatabaseJournalFile
-- (_PASDatabaseJournalFile)initWithPath:(id)a3;
+- (_PASDatabaseJournalFile)initWithPath:(id)path;
 - (id)description;
 - (id)read;
 - (void)clear;
@@ -7,7 +7,7 @@
 - (void)destroy;
 - (void)destroyAndUnlinkIfEmpty;
 - (void)unlink;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation _PASDatabaseJournalFile
@@ -27,8 +27,8 @@
   v17 = *MEMORY[0x1E69E9840];
   if (self->_dead)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournalFile.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournalFile.m" lineNumber:199 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
   }
 
   fd = self->_fd;
@@ -68,8 +68,8 @@
 {
   if (self->_dead)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournalFile.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournalFile.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
   }
 
   if (self->_len)
@@ -92,8 +92,8 @@
 
   if (self->_dead)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournalFile.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournalFile.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
   }
 
   if (!self->_written)
@@ -157,14 +157,14 @@ LABEL_20:
     v16 = objc_alloc(MEMORY[0x1E695DF88]);
     v17 = [v16 initWithLength:HIDWORD(__buf)];
     fd = self->_fd;
-    v19 = [v17 mutableBytes];
-    v20 = pread(fd, v19, HIDWORD(__buf), self->_readCursor);
+    mutableBytes = [v17 mutableBytes];
+    v20 = pread(fd, mutableBytes, HIDWORD(__buf), self->_readCursor);
     v21 = HIDWORD(__buf);
     self->_readCursor += HIDWORD(__buf);
     if (v20 >= v21)
     {
-      v32 = [v17 bytes];
-      v33 = adler32(0, v32, HIDWORD(__buf));
+      bytes = [v17 bytes];
+      v33 = adler32(0, bytes, HIDWORD(__buf));
       v34 = v38;
       if (v38 == v33)
       {
@@ -243,30 +243,30 @@ LABEL_24:
   return v4;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 length] >> 32)
+  writeCopy = write;
+  if ([writeCopy length] >> 32)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournalFile.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"data.length <= UINT32_MAX"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournalFile.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"data.length <= UINT32_MAX"}];
   }
 
   if (self->_dead)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournalFile.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASDatabaseJournalFile.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"!_dead"}];
   }
 
-  v6 = adler32(0, [v5 bytes], objc_msgSend(v5, "length"));
+  v6 = adler32(0, [writeCopy bytes], objc_msgSend(writeCopy, "length"));
   v19[0] = -1347426410;
-  v19[1] = [v5 length];
+  v19[1] = [writeCopy length];
   v19[2] = v6;
   v27.iov_base = v19;
   v27.iov_len = 12;
-  v28 = [v5 bytes];
-  v7 = [v5 length];
+  bytes = [writeCopy bytes];
+  v7 = [writeCopy length];
 
   v29 = v7;
   if (writev(self->_fd, &v27, 2) < 0)
@@ -348,10 +348,10 @@ LABEL_24:
   self->_dead = 1;
 }
 
-- (_PASDatabaseJournalFile)initWithPath:(id)a3
+- (_PASDatabaseJournalFile)initWithPath:(id)path
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = _PASDatabaseJournalFile;
   v6 = [(_PASDatabaseJournalFile *)&v20 init];
@@ -361,8 +361,8 @@ LABEL_24:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v6->_path, a3);
-  v8 = open_dprotected_np([v5 UTF8String], 522, 2, 0, 384);
+  objc_storeStrong(&v6->_path, path);
+  v8 = open_dprotected_np([pathCopy UTF8String], 522, 2, 0, 384);
   v7->_fd = v8;
   if ((v8 & 0x80000000) == 0)
   {
@@ -376,7 +376,7 @@ LABEL_24:
         v14 = __error();
         v15 = strerror(*v14);
         *buf = 138412802;
-        v22 = path;
+        pathCopy2 = path;
         v23 = 1024;
         v24 = v13;
         v25 = 2080;

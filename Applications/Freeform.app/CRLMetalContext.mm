@@ -1,28 +1,28 @@
 @interface CRLMetalContext
 - (CGColorSpace)destinationColorSpace;
 - (CGSize)viewportSize;
-- (CRLMetalContext)initWithEnvironment:(id)a3;
+- (CRLMetalContext)initWithEnvironment:(id)environment;
 - (CRLMetalShader)shader;
 - (MTLCommandBuffer)commandBuffer;
 - (MTLCommandQueue)commandQueue;
 - (MTLDevice)device;
 - (MTLRenderCommandEncoder)renderEncoder;
 - (MTLRenderPassDescriptor)passDescriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CRLMetalContext
 
-- (CRLMetalContext)initWithEnvironment:(id)a3
+- (CRLMetalContext)initWithEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = CRLMetalContext;
   v6 = [(CRLMetalContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_environment, a3);
+    objc_storeStrong(&v6->_environment, environment);
   }
 
   return v7;
@@ -30,29 +30,29 @@
 
 - (MTLDevice)device
 {
-  v2 = [(CRLMetalContext *)self environment];
-  v3 = [v2 device];
+  environment = [(CRLMetalContext *)self environment];
+  device = [environment device];
 
-  return v3;
+  return device;
 }
 
 - (MTLCommandQueue)commandQueue
 {
-  v2 = [(CRLMetalContext *)self environment];
-  v3 = [v2 commandQueue];
+  environment = [(CRLMetalContext *)self environment];
+  commandQueue = [environment commandQueue];
 
-  return v3;
+  return commandQueue;
 }
 
 - (CGColorSpace)destinationColorSpace
 {
-  v2 = [(CRLMetalContext *)self environment];
-  v3 = [v2 destinationColorSpace];
+  environment = [(CRLMetalContext *)self environment];
+  destinationColorSpace = [environment destinationColorSpace];
 
-  return v3;
+  return destinationColorSpace;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CRLMetalContext alloc] initWithEnvironment:self->_environment];
   [(CRLMetalContext *)v4 setPixelFormat:self->_pixelFormat];

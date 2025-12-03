@@ -1,29 +1,29 @@
 @interface XRConstantEngineeringValue
-+ (id)engineeringValueOfType:(id)a3 value:(id)a4;
-+ (id)engineeringValueWithTypeID:(unsigned __int16)a3 value:(id)a4;
-- (BOOL)getLengthOfUint64Representation:(unint64_t *)a3;
-- (BOOL)getValue:(id *)a3 fieldIndex:(unsigned __int16)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConstantEngineeringValue:(id)a3;
-- (XRConstantEngineeringValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
++ (id)engineeringValueOfType:(id)type value:(id)value;
++ (id)engineeringValueWithTypeID:(unsigned __int16)d value:(id)value;
+- (BOOL)getLengthOfUint64Representation:(unint64_t *)representation;
+- (BOOL)getValue:(id *)value fieldIndex:(unsigned __int16)index;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConstantEngineeringValue:(id)value;
+- (XRConstantEngineeringValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateUint64Values:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateUint64Values:(id)values;
 @end
 
 @implementation XRConstantEngineeringValue
 
-- (XRConstantEngineeringValue)initWithCoder:(id)a3
+- (XRConstantEngineeringValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12 = objc_msgSend_init(self, v5, v6, v7, v8);
   if (v12)
   {
-    v12->_implClass = objc_msgSend_decodeIntForKey_(v4, v9, @"_implClass", v10, v11);
+    v12->_implClass = objc_msgSend_decodeIntForKey_(coderCopy, v9, @"_implClass", v10, v11);
     v13 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v13, @"_mnemonic", v15);
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v13, @"_mnemonic", v15);
     mnemonic = v12->_mnemonic;
     v12->_mnemonic = v16;
 
@@ -34,7 +34,7 @@
     v21 = objc_opt_class();
     v22 = objc_opt_class();
     v26 = objc_msgSend_setWithObjects_(v18, v23, v19, v24, v25, v20, v21, v22, 0);
-    v29 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v27, v26, @"_value", v28);
+    v29 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v27, v26, @"_value", v28);
     value = v12->_value;
     v12->_value = v29;
   }
@@ -42,42 +42,42 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   implClass = self->_implClass;
-  v11 = a3;
-  objc_msgSend_encodeInt_forKey_(v11, v5, implClass, @"_implClass", v6);
-  objc_msgSend_encodeObject_forKey_(v11, v7, self->_mnemonic, @"_mnemonic", v8);
-  objc_msgSend_encodeObject_forKey_(v11, v9, self->_value, @"_value", v10);
+  coderCopy = coder;
+  objc_msgSend_encodeInt_forKey_(coderCopy, v5, implClass, @"_implClass", v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_mnemonic, @"_mnemonic", v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->_value, @"_value", v10);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   resolvedEtypeID = self->_resolvedEtypeID;
-  v6 = objc_msgSend_copy(self->_value, a2, a3, v3, v4);
+  v6 = objc_msgSend_copy(self->_value, a2, zone, v3, v4);
   v9 = objc_msgSend_engineeringValueWithTypeID_value_(XRConstantEngineeringValue, v7, resolvedEtypeID, v6, v8);
 
   return v9;
 }
 
-+ (id)engineeringValueOfType:(id)a3 value:(id)a4
++ (id)engineeringValueOfType:(id)type value:(id)value
 {
-  v6 = a4;
-  v7 = XREngineeringTypeIDForMnemonic(a3);
-  v10 = objc_msgSend_engineeringValueWithTypeID_value_(a1, v8, v7, v6, v9);
+  valueCopy = value;
+  v7 = XREngineeringTypeIDForMnemonic(type);
+  v10 = objc_msgSend_engineeringValueWithTypeID_value_(self, v8, v7, valueCopy, v9);
 
   return v10;
 }
 
-+ (id)engineeringValueWithTypeID:(unsigned __int16)a3 value:(id)a4
++ (id)engineeringValueWithTypeID:(unsigned __int16)d value:(id)value
 {
-  v4 = a3;
-  v5 = a4;
+  dCopy = d;
+  valueCopy = value;
   v6 = objc_opt_new();
-  objc_storeStrong((v6 + 8), *(&XR_ENGINEERING_MNEMONIC_BY_ETYPE + v4));
-  *(v6 + 16) = v4;
-  *(v6 + 18) = XR_IMPLEMENTATION_CLASS_ID_BY_ETYPE[v4];
-  v11 = objc_msgSend_copy(v5, v7, v8, v9, v10);
+  objc_storeStrong((v6 + 8), *(&XR_ENGINEERING_MNEMONIC_BY_ETYPE + dCopy));
+  *(v6 + 16) = dCopy;
+  *(v6 + 18) = XR_IMPLEMENTATION_CLASS_ID_BY_ETYPE[dCopy];
+  v11 = objc_msgSend_copy(valueCopy, v7, v8, v9, v10);
 
   v12 = *(v6 + 24);
   *(v6 + 24) = v11;
@@ -85,9 +85,9 @@
   return v6;
 }
 
-- (BOOL)getValue:(id *)a3 fieldIndex:(unsigned __int16)a4
+- (BOOL)getValue:(id *)value fieldIndex:(unsigned __int16)index
 {
-  v4 = a4;
+  indexCopy = index;
   value = self->_value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -96,18 +96,18 @@
   }
 
   v8 = self->_value;
-  if (objc_msgSend_count(v8, v9, v10, v11, v12) <= v4)
+  if (objc_msgSend_count(v8, v9, v10, v11, v12) <= indexCopy)
   {
     v20 = 0;
   }
 
   else
   {
-    v16 = objc_msgSend_objectAtIndexedSubscript_(v8, v13, v4, v14, v15);
+    v16 = objc_msgSend_objectAtIndexedSubscript_(v8, v13, indexCopy, v14, v15);
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 || objc_msgSend_conformsToProtocol_(v16, v17, &unk_285A4AE00, v18, v19))
     {
-      objc_storeStrong(a3, v16);
+      objc_storeStrong(value, v16);
       v20 = 1;
     }
 
@@ -120,24 +120,24 @@
   return v20;
 }
 
-- (BOOL)getLengthOfUint64Representation:(unint64_t *)a3
+- (BOOL)getLengthOfUint64Representation:(unint64_t *)representation
 {
   value = self->_value;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v11 = isKindOfClass;
-  if (a3 && (isKindOfClass & 1) != 0)
+  if (representation && (isKindOfClass & 1) != 0)
   {
-    *a3 = objc_msgSend_count(self->_value, v7, v8, v9, v10);
+    *representation = objc_msgSend_count(self->_value, v7, v8, v9, v10);
   }
 
   return v11 & 1;
 }
 
-- (void)enumerateUint64Values:(id)a3
+- (void)enumerateUint64Values:(id)values
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   value = self->_value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -167,7 +167,7 @@
           if (objc_opt_respondsToSelector())
           {
             v18 = objc_msgSend_unsignedLongLongValue(v13, v14, v15, v16, v17);
-            v4[2](v4, v10, v18);
+            valuesCopy[2](valuesCopy, v10, v18);
           }
 
           ++v10;
@@ -185,10 +185,10 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqualToConstantEngineeringValue:(id)a3
+- (BOOL)isEqualToConstantEngineeringValue:(id)value
 {
-  v8 = a3;
-  if (self->_resolvedEtypeID == v8[8])
+  valueCopy = value;
+  if (self->_resolvedEtypeID == valueCopy[8])
   {
     v9 = objc_msgSend_implClass(self, v4, v5, v6, v7);
     v14 = 0;
@@ -197,7 +197,7 @@
       if (((1 << v9) & 0x46) != 0)
       {
         v15 = objc_msgSend_objectValue(self, v10, v11, v12, v13);
-        v20 = objc_msgSend_objectValue(v8, v25, v26, v27, v28);
+        v20 = objc_msgSend_objectValue(valueCopy, v25, v26, v27, v28);
         isEqualToNumber = objc_msgSend_isEqualToNumber_(v15, v29, v20, v30, v31);
         goto LABEL_10;
       }
@@ -205,7 +205,7 @@
       if (((1 << v9) & 0x30) != 0)
       {
         v15 = objc_msgSend_objectValue(self, v10, v11, v12, v13);
-        v20 = objc_msgSend_objectValue(v8, v16, v17, v18, v19);
+        v20 = objc_msgSend_objectValue(valueCopy, v16, v17, v18, v19);
         isEqualToNumber = objc_msgSend_isEqualToArray_(v15, v21, v20, v22, v23);
 LABEL_10:
         v14 = isEqualToNumber;
@@ -216,7 +216,7 @@ LABEL_10:
       if (v9 == 3)
       {
         v15 = objc_msgSend_objectValue(self, v10, v11, v12, v13);
-        v20 = objc_msgSend_objectValue(v8, v32, v33, v34, v35);
+        v20 = objc_msgSend_objectValue(valueCopy, v32, v33, v34, v35);
         isEqualToNumber = objc_msgSend_isEqualToString_(v15, v36, v20, v37, v38);
         goto LABEL_10;
       }
@@ -233,11 +233,11 @@ LABEL_11:
   return v14;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v9 = objc_msgSend_implClass(self, v5, v6, v7, v8);
-  v14 = objc_msgSend_implClass(v4, v10, v11, v12, v13);
+  v14 = objc_msgSend_implClass(compareCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_implClass(self, v15, v16, v17, v18);
   if (v9 == v14)
   {
@@ -252,7 +252,7 @@ LABEL_11:
       if (((1 << v19) & 0x30) != 0)
       {
         v25 = objc_msgSend_objectValue(self, v20, v21, v22, v23);
-        v30 = objc_msgSend_objectValue(v4, v26, v27, v28, v29);
+        v30 = objc_msgSend_objectValue(compareCopy, v26, v27, v28, v29);
         v35 = objc_msgSend_count(v25, v31, v32, v33, v34);
         v40 = objc_msgSend_count(v30, v36, v37, v38, v39);
         v45 = objc_msgSend_count(v25, v41, v42, v43, v44);
@@ -299,14 +299,14 @@ LABEL_11:
       {
 LABEL_17:
         v25 = objc_msgSend_objectValue(self, v20, v21, v22, v23);
-        v30 = objc_msgSend_objectValue(v4, v72, v73, v74, v75);
+        v30 = objc_msgSend_objectValue(compareCopy, v72, v73, v74, v75);
         v24 = objc_msgSend_compare_(v25, v76, v30, v77, v78);
 LABEL_18:
       }
     }
   }
 
-  else if (v19 == objc_msgSend_implClass(v4, v20, v21, v22, v23))
+  else if (v19 == objc_msgSend_implClass(compareCopy, v20, v21, v22, v23))
   {
     v24 = 0;
   }
@@ -314,7 +314,7 @@ LABEL_18:
   else
   {
     v67 = objc_msgSend_implClass(self, v63, v64, v65, v66);
-    if (v67 < objc_msgSend_implClass(v4, v68, v69, v70, v71))
+    if (v67 < objc_msgSend_implClass(compareCopy, v68, v69, v70, v71))
     {
       v24 = -1;
     }
@@ -328,10 +328,10 @@ LABEL_18:
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToConstantEngineeringValue = 1;
   }
@@ -341,7 +341,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      isEqualToConstantEngineeringValue = objc_msgSend_isEqualToConstantEngineeringValue_(self, v5, v4, v6, v7);
+      isEqualToConstantEngineeringValue = objc_msgSend_isEqualToConstantEngineeringValue_(self, v5, equalCopy, v6, v7);
     }
 
     else

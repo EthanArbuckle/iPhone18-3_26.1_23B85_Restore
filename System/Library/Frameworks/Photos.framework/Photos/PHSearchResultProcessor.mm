@@ -1,25 +1,25 @@
 @interface PHSearchResultProcessor
-+ (id)_embeddingLookupIdentifiersForMatchedEmbeddingIDs:(id)a3 assetEmbeddingIds:(id)a4;
-+ (id)searchResultsFromAssetUUIDs:(id)a3;
-+ (unint64_t)_searchResultTypeForSpotlightSearchableItem:(id)a3;
++ (id)_embeddingLookupIdentifiersForMatchedEmbeddingIDs:(id)ds assetEmbeddingIds:(id)ids;
++ (id)searchResultsFromAssetUUIDs:(id)ds;
++ (unint64_t)_searchResultTypeForSpotlightSearchableItem:(id)item;
 - ($94F468A8D4C62B317260615823C2B210)embeddingThresholds;
 - (BOOL)_isSyndicationLibrary;
-- (PHSearchResultProcessor)initWithSearchQueryOptions:(id)a3 scopedUUIDs:(id)a4 photoLibrary:(id)a5;
-- (id)_collectionResultsFromAssetResultsForQuery:(id)a3;
-- (id)_collectionResultsFromAssetResultsForResultType:(unint64_t)a3 query:(id)a4;
-- (id)_matchTypeFilteredResultsForResults:(id)a3 query:(id)a4;
-- (id)_popResultsFromResults:(id)a3 popCount:(unint64_t)a4;
-- (id)_rankSortedAssetSearchResultsFromResults:(id)a3 maxResults:(unint64_t)a4 query:(id)a5;
-- (id)_rankSortedCollectionSearchResultsFromResults:(id)a3 maxResults:(unint64_t)a4 query:(id)a5;
-- (void)_finalizePhotosResultsForQuery:(id)a3 resultHandler:(id)a4;
-- (void)_finalizeSyndicationResultsForQuery:(id)a3 resultHandler:(id)a4;
-- (void)_processSearchableItemForPhotosLibrary:(id)a3;
-- (void)_processSearchableItemForSyndicationLibrary:(id)a3;
-- (void)_processSpotlightItem:(id)a3;
-- (void)finalizeResultsForQuery:(id)a3 resultHandler:(id)a4;
-- (void)processSpotlightComputedAttribute:(id)a3 values:(id)a4;
-- (void)processSpotlightItems:(id)a3;
-- (void)setSpotlightAttributedQuery:(id)a3;
+- (PHSearchResultProcessor)initWithSearchQueryOptions:(id)options scopedUUIDs:(id)ds photoLibrary:(id)library;
+- (id)_collectionResultsFromAssetResultsForQuery:(id)query;
+- (id)_collectionResultsFromAssetResultsForResultType:(unint64_t)type query:(id)query;
+- (id)_matchTypeFilteredResultsForResults:(id)results query:(id)query;
+- (id)_popResultsFromResults:(id)results popCount:(unint64_t)count;
+- (id)_rankSortedAssetSearchResultsFromResults:(id)results maxResults:(unint64_t)maxResults query:(id)query;
+- (id)_rankSortedCollectionSearchResultsFromResults:(id)results maxResults:(unint64_t)maxResults query:(id)query;
+- (void)_finalizePhotosResultsForQuery:(id)query resultHandler:(id)handler;
+- (void)_finalizeSyndicationResultsForQuery:(id)query resultHandler:(id)handler;
+- (void)_processSearchableItemForPhotosLibrary:(id)library;
+- (void)_processSearchableItemForSyndicationLibrary:(id)library;
+- (void)_processSpotlightItem:(id)item;
+- (void)finalizeResultsForQuery:(id)query resultHandler:(id)handler;
+- (void)processSpotlightComputedAttribute:(id)attribute values:(id)values;
+- (void)processSpotlightItems:(id)items;
+- (void)setSpotlightAttributedQuery:(id)query;
 @end
 
 @implementation PHSearchResultProcessor
@@ -35,32 +35,32 @@
 
 - (BOOL)_isSyndicationLibrary
 {
-  v2 = [(PHSearchResultProcessor *)self photoLibrary];
-  v3 = [PHSearchUtility isSyndicationLibrary:v2];
+  photoLibrary = [(PHSearchResultProcessor *)self photoLibrary];
+  v3 = [PHSearchUtility isSyndicationLibrary:photoLibrary];
 
   return v3;
 }
 
-- (id)_popResultsFromResults:(id)a3 popCount:(unint64_t)a4
+- (id)_popResultsFromResults:(id)results popCount:(unint64_t)count
 {
-  v5 = a3;
-  v6 = [v5 count];
-  if (v6 < a4)
+  resultsCopy = results;
+  v6 = [resultsCopy count];
+  if (v6 < count)
   {
-    a4 = v6;
+    count = v6;
   }
 
-  v7 = [v5 subarrayWithRange:{0, a4}];
-  [v5 removeObjectsInRange:{0, a4}];
+  v7 = [resultsCopy subarrayWithRange:{0, count}];
+  [resultsCopy removeObjectsInRange:{0, count}];
 
   return v7;
 }
 
-- (id)_rankSortedCollectionSearchResultsFromResults:(id)a3 maxResults:(unint64_t)a4 query:(id)a5
+- (id)_rankSortedCollectionSearchResultsFromResults:(id)results maxResults:(unint64_t)maxResults query:(id)query
 {
   v82[4] = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v55 = a5;
+  resultsCopy = results;
+  queryCopy = query;
   v7 = PLPhotosSearchGetLog();
   v8 = os_signpost_id_generate(v7);
 
@@ -76,7 +76,7 @@
 
   v53 = v10;
 
-  if ([v56 count])
+  if ([resultsCopy count])
   {
     v51 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"collectionScore" ascending:0];
     v50 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"l2Score" ascending:0];
@@ -87,16 +87,16 @@
     v82[2] = v49;
     v82[3] = v48;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:4];
-    v12 = [v56 sortedArrayUsingDescriptors:v11];
+    v12 = [resultsCopy sortedArrayUsingDescriptors:v11];
 
-    if ([v12 count] <= a4)
+    if ([v12 count] <= maxResults)
     {
       v13 = v12;
     }
 
     else
     {
-      v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a4];
+      v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:maxResults];
       v59 = objc_opt_new();
       v58 = objc_opt_new();
       v61 = objc_opt_new();
@@ -120,10 +120,10 @@
             }
 
             v18 = *(*(&v70 + 1) + 8 * i);
-            v19 = [v18 type];
-            if (v19 > 2)
+            type = [v18 type];
+            if (type > 2)
             {
-              if (v19 == 3)
+              if (type == 3)
               {
                 v21 = v58;
 LABEL_23:
@@ -132,22 +132,22 @@ LABEL_23:
               }
 
               v21 = v61;
-              if (v19 == 4)
+              if (type == 4)
               {
                 goto LABEL_23;
               }
 
               v21 = v60;
-              if (v19 == 5)
+              if (type == 5)
               {
                 goto LABEL_23;
               }
             }
 
-            else if (v19 >= 2)
+            else if (type >= 2)
             {
               v21 = v59;
-              if (v19 == 2)
+              if (type == 2)
               {
                 goto LABEL_23;
               }
@@ -198,7 +198,7 @@ LABEL_23:
               objc_enumerationMutation(v24);
             }
 
-            v28 = [(PHSearchResultProcessor *)self _popResultsFromResults:*(*(&v66 + 1) + 8 * j) popCount:(a4 * 0.2)];
+            v28 = [(PHSearchResultProcessor *)self _popResultsFromResults:*(*(&v66 + 1) + 8 * j) popCount:(maxResults * 0.2)];
             [v13 addObjectsFromArray:v28];
           }
 
@@ -208,17 +208,17 @@ LABEL_23:
         while (v25);
       }
 
-      if (v57 + v23 + v46 + v45 >= a4)
+      if (v57 + v23 + v46 + v45 >= maxResults)
       {
-        v29 = a4;
+        maxResultsCopy = maxResults;
       }
 
       else
       {
-        v29 = v57 + v23 + v46 + v45;
+        maxResultsCopy = v57 + v23 + v46 + v45;
       }
 
-      while ([v13 count] < v29)
+      while ([v13 count] < maxResultsCopy)
       {
         v64 = 0u;
         v65 = 0u;
@@ -241,7 +241,7 @@ LABEL_39:
             v34 = [(PHSearchResultProcessor *)self _popResultsFromResults:*(*(&v62 + 1) + 8 * v33) popCount:1];
             [v13 addObjectsFromArray:v34];
 
-            if ([v13 count] >= v29)
+            if ([v13 count] >= maxResultsCopy)
             {
               break;
             }
@@ -271,14 +271,14 @@ LABEL_39:
   v36 = PLSearchBackendResultProcessingGetLog();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v55 batchIdentifier])
+    if ([queryCopy batchIdentifier])
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v55, "batchIdentifier"), objc_msgSend(v55, "queryIdentifier")];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(queryCopy, "batchIdentifier"), objc_msgSend(queryCopy, "queryIdentifier")];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v55, "queryIdentifier")];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(queryCopy, "queryIdentifier")];
     }
     v37 = ;
     v38 = [v35 count];
@@ -295,13 +295,13 @@ LABEL_39:
   v40 = v39;
   if (v52 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v39))
   {
-    v41 = [v55 queryIdentifier];
-    v42 = [v55 batchIdentifier];
-    v43 = [v56 count];
+    queryIdentifier = [queryCopy queryIdentifier];
+    batchIdentifier = [queryCopy batchIdentifier];
+    v43 = [resultsCopy count];
     *buf = 67109632;
-    *v75 = v41;
+    *v75 = queryIdentifier;
     *&v75[4] = 1024;
-    *&v75[6] = v42;
+    *&v75[6] = batchIdentifier;
     *v76 = 2048;
     *&v76[2] = v43;
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v40, OS_SIGNPOST_INTERVAL_END, spid, "PLSearchBackendQueryCollectionRanking", "Query: %d, Batch: %d, CollectionResults: %tu", buf, 0x18u);
@@ -310,11 +310,11 @@ LABEL_39:
   return v13;
 }
 
-- (id)_rankSortedAssetSearchResultsFromResults:(id)a3 maxResults:(unint64_t)a4 query:(id)a5
+- (id)_rankSortedAssetSearchResultsFromResults:(id)results maxResults:(unint64_t)maxResults query:(id)query
 {
   v35[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  resultsCopy = results;
+  queryCopy = query;
   v9 = PLPhotosSearchGetLog();
   v10 = os_signpost_id_generate(v9);
 
@@ -328,7 +328,7 @@ LABEL_39:
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v12, OS_SIGNPOST_INTERVAL_BEGIN, spid, "PLSearchBackendQueryAssetRanking", byte_19CB567AE, buf, 2u);
   }
 
-  if ([v7 count])
+  if ([resultsCopy count])
   {
     v14 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"l2Score" ascending:0];
     v15 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"l1Score" ascending:0];
@@ -337,11 +337,11 @@ LABEL_39:
     v35[1] = v15;
     v35[2] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:3];
-    v18 = [v7 sortedArrayUsingDescriptors:v17];
+    v18 = [resultsCopy sortedArrayUsingDescriptors:v17];
 
-    if ([v18 count] > a4)
+    if ([v18 count] > maxResults)
     {
-      v19 = [v18 subarrayWithRange:{0, a4}];
+      v19 = [v18 subarrayWithRange:{0, maxResults}];
 
       v18 = v19;
     }
@@ -356,14 +356,14 @@ LABEL_39:
   v21 = PLSearchBackendResultProcessingGetLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v8 batchIdentifier])
+    if ([queryCopy batchIdentifier])
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v8, "batchIdentifier"), objc_msgSend(v8, "queryIdentifier")];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(queryCopy, "batchIdentifier"), objc_msgSend(queryCopy, "queryIdentifier")];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v8, "queryIdentifier")];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(queryCopy, "queryIdentifier")];
     }
     v22 = ;
     v23 = [v20 count];
@@ -380,13 +380,13 @@ LABEL_39:
   v25 = v24;
   if (v13 < 0xFFFFFFFFFFFFFFFELL && os_signpost_enabled(v24))
   {
-    v26 = [v8 queryIdentifier];
-    v27 = [v8 batchIdentifier];
-    v28 = [v7 count];
+    queryIdentifier = [queryCopy queryIdentifier];
+    batchIdentifier = [queryCopy batchIdentifier];
+    v28 = [resultsCopy count];
     *buf = 67109632;
-    *v32 = v26;
+    *v32 = queryIdentifier;
     *&v32[4] = 1024;
-    *&v32[6] = v27;
+    *&v32[6] = batchIdentifier;
     *v33 = 2048;
     *&v33[2] = v28;
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v25, OS_SIGNPOST_INTERVAL_END, spid, "PLSearchBackendQueryAssetRanking", "Query: %d, Batch: %d, AssetResults: %tu", buf, 0x18u);
@@ -395,28 +395,28 @@ LABEL_39:
   return v18;
 }
 
-- (id)_matchTypeFilteredResultsForResults:(id)a3 query:(id)a4
+- (id)_matchTypeFilteredResultsForResults:(id)results query:(id)query
 {
   v85 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  queryCopy = query;
   [(PHSearchResultProcessor *)self embeddingThresholds];
   v9 = v8;
   [(PHSearchResultProcessor *)self embeddingThresholds];
   v11 = v10;
-  if ([v6 count])
+  if ([resultsCopy count])
   {
-    v12 = [v7 searchOptions];
-    v13 = [v12 matchType];
-    v14 = v13;
-    if (v13 > 3)
+    searchOptions = [queryCopy searchOptions];
+    matchType = [searchOptions matchType];
+    v14 = matchType;
+    if (matchType > 3)
     {
       v15 = @"Unknown";
     }
 
     else
     {
-      v15 = off_1E75A4368[v13];
+      v15 = off_1E75A4368[matchType];
     }
 
     v17 = v15;
@@ -426,14 +426,14 @@ LABEL_39:
       v19 = PLSearchBackendResultProcessingGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        if ([v7 batchIdentifier])
+        if ([queryCopy batchIdentifier])
         {
-          [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v7, "batchIdentifier"), objc_msgSend(v7, "queryIdentifier")];
+          [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(queryCopy, "batchIdentifier"), objc_msgSend(queryCopy, "queryIdentifier")];
         }
 
         else
         {
-          [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v7, "queryIdentifier"), v54];
+          [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(queryCopy, "queryIdentifier"), v54];
         }
         v36 = ;
         *buf = 138543618;
@@ -443,13 +443,13 @@ LABEL_39:
         _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Returning results of all match types for the query due to match type of: %@.", buf, 0x16u);
       }
 
-      v37 = v6;
+      v37 = resultsCopy;
       goto LABEL_78;
     }
 
     v57 = v17;
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([v12 enableEmbeddingOnlyResultsInExactMatches])
+    if ([searchOptions enableEmbeddingOnlyResultsInExactMatches])
     {
       v64 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -459,8 +459,8 @@ LABEL_39:
       v64 = 0;
     }
 
-    v58 = v7;
-    if ([v12 enableEmbeddingOnlyResultsInExactMatches])
+    v58 = queryCopy;
+    if ([searchOptions enableEmbeddingOnlyResultsInExactMatches])
     {
       v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -475,14 +475,14 @@ LABEL_39:
     v21 = fmaxf(v9, v11) <= 0.0;
     v66 = 0u;
     v67 = 0u;
-    obj = v6;
+    obj = resultsCopy;
     v22 = [obj countByEnumeratingWithState:&v66 objects:v84 count:16];
     if (v22)
     {
       v62 = 0;
       v63 = v20;
-      v55 = v12;
-      v56 = v6;
+      v55 = searchOptions;
+      v56 = resultsCopy;
       v23 = 0;
       v60 = v14;
       v61 = 0;
@@ -498,9 +498,9 @@ LABEL_39:
           }
 
           v27 = *(*(&v66 + 1) + 8 * i);
-          v28 = [v27 isExclusivelyExactOCRTextMatch];
-          v29 = [v27 matchType];
-          if (v29 == 2)
+          isExclusivelyExactOCRTextMatch = [v27 isExclusivelyExactOCRTextMatch];
+          matchType2 = [v27 matchType];
+          if (matchType2 == 2)
           {
             if (v60 == 2)
             {
@@ -510,19 +510,19 @@ LABEL_39:
             }
           }
 
-          else if (v29 == 1 && v25 <= 1)
+          else if (matchType2 == 1 && v25 <= 1)
           {
             [v63 addObject:v27];
             ++v61;
             goto LABEL_37;
           }
 
-          v31 = [v27 embeddingDistances];
-          v32 = [v31 firstObject];
+          embeddingDistances = [v27 embeddingDistances];
+          firstObject = [embeddingDistances firstObject];
 
-          if (v32 != 0 && !v21)
+          if (firstObject != 0 && !v21)
           {
-            [v32 doubleValue];
+            [firstObject doubleValue];
             v34 = v64;
             if (v33 <= v11 || (v34 = v59, v33 <= v9))
             {
@@ -531,7 +531,7 @@ LABEL_39:
           }
 
 LABEL_37:
-          v23 += v28;
+          v23 += isExclusivelyExactOCRTextMatch;
         }
 
         v22 = [obj countByEnumeratingWithState:&v66 objects:v84 count:16];
@@ -539,8 +539,8 @@ LABEL_37:
         {
           v22 = v62;
           v35 = v61 == 0;
-          v12 = v55;
-          v6 = v56;
+          searchOptions = v55;
+          resultsCopy = v56;
           v20 = v63;
           goto LABEL_44;
         }
@@ -551,7 +551,7 @@ LABEL_37:
     v35 = 1;
 LABEL_44:
 
-    v7 = v58;
+    queryCopy = v58;
     if ([v20 count])
     {
       if ([v20 count] == v23)
@@ -595,7 +595,7 @@ LABEL_75:
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
           {
             v41 = v20;
-            v42 = v12;
+            v42 = searchOptions;
             if ([v58 batchIdentifier])
             {
               [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v58, "batchIdentifier"), objc_msgSend(v58, "queryIdentifier")];
@@ -627,7 +627,7 @@ LABEL_75:
             _os_log_impl(&dword_19C86F000, v38, OS_LOG_TYPE_DEFAULT, "%{public}@ Filtered down to %tu asset results from %tu asset results returned from Spotlight. With %tu veryHighPrecision (%f) embedding results and %tu highPrecision (%f) embedding results.", buf, 0x48u);
 
             obj = v41;
-            v12 = v42;
+            searchOptions = v42;
             v20 = v41;
           }
 
@@ -705,14 +705,14 @@ LABEL_78:
   v16 = PLSearchBackendResultProcessingGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v7 batchIdentifier])
+    if ([queryCopy batchIdentifier])
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v7, "batchIdentifier"), objc_msgSend(v7, "queryIdentifier")];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(queryCopy, "batchIdentifier"), objc_msgSend(queryCopy, "queryIdentifier")];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v7, "queryIdentifier"), v54];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(queryCopy, "queryIdentifier"), v54];
     }
     v39 = ;
     *buf = 138543362;
@@ -720,51 +720,51 @@ LABEL_78:
     _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ No results available to filter by match type.", buf, 0xCu);
   }
 
-  v37 = v6;
+  v37 = resultsCopy;
 LABEL_79:
 
   return v37;
 }
 
-- (id)_collectionResultsFromAssetResultsForResultType:(unint64_t)a3 query:(id)a4
+- (id)_collectionResultsFromAssetResultsForResultType:(unint64_t)type query:(id)query
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  queryCopy = query;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(PHSearchResultProcessor *)self queryOptions];
-  [v8 collectionThreshold];
+  queryOptions = [(PHSearchResultProcessor *)self queryOptions];
+  [queryOptions collectionThreshold];
   v10 = v9;
 
   v11 = 0;
   v12 = MEMORY[0x1E695E0F0];
-  v42 = a3;
-  if (a3 <= 2)
+  typeCopy = type;
+  if (type <= 2)
   {
-    if (a3 < 2)
+    if (type < 2)
     {
       goto LABEL_42;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_11;
     }
 
-    v13 = [(PHSearchResultProcessor *)self assetMatchedAlbumUUIDs];
+    assetMatchedAlbumUUIDs = [(PHSearchResultProcessor *)self assetMatchedAlbumUUIDs];
     goto LABEL_10;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 3uLL:
       goto LABEL_42;
     case 4uLL:
-      v13 = [(PHSearchResultProcessor *)self assetMatchedMemoryUUIDs];
+      assetMatchedAlbumUUIDs = [(PHSearchResultProcessor *)self assetMatchedMemoryUUIDs];
       goto LABEL_10;
     case 5uLL:
-      v13 = [(PHSearchResultProcessor *)self assetMatchedHighlightUUIDs];
+      assetMatchedAlbumUUIDs = [(PHSearchResultProcessor *)self assetMatchedHighlightUUIDs];
 LABEL_10:
-      v11 = v13;
+      v11 = assetMatchedAlbumUUIDs;
       break;
   }
 
@@ -775,12 +775,12 @@ LABEL_11:
   v49 = 0u;
   v50 = 0u;
   v14 = v11;
-  v15 = a3;
+  typeCopy2 = type;
   v46 = [v14 countByEnumeratingWithState:&v47 objects:v63 count:16];
   if (v46)
   {
     v45 = *v48;
-    v43 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v46; ++i)
@@ -791,17 +791,17 @@ LABEL_11:
         }
 
         v17 = *(*(&v47 + 1) + 8 * i);
-        v18 = [(PHSearchResultProcessor *)self assetCountByCollectionUUID];
-        v19 = [v18 objectForKeyedSubscript:v17];
-        v20 = [v19 unsignedIntegerValue];
+        assetCountByCollectionUUID = [(PHSearchResultProcessor *)self assetCountByCollectionUUID];
+        v19 = [assetCountByCollectionUUID objectForKeyedSubscript:v17];
+        unsignedIntegerValue = [v19 unsignedIntegerValue];
 
         v21 = [v14 countForObject:v17];
-        v22 = v21 / v20;
+        v22 = v21 / unsignedIntegerValue;
         if (v22 >= v10)
         {
           v26 = [PHSearchResult alloc];
           v27 = [MEMORY[0x1E696AD98] numberWithDouble:v22];
-          v28 = [(PHSearchResult *)v26 initWithSearchResultType:v15 uuid:v17 retrievalType:0 hasOCRTextMatch:0 isSensitiveLocation:0 embeddingDistances:0 l1Score:0 l2Score:0 collectionScore:v27 creationDate:0 addedDate:0 matchedThumbnailIdentifier:0 bundleIdentifier:0];
+          v28 = [(PHSearchResult *)v26 initWithSearchResultType:typeCopy2 uuid:v17 retrievalType:0 hasOCRTextMatch:0 isSensitiveLocation:0 embeddingDistances:0 l1Score:0 l2Score:0 collectionScore:v27 creationDate:0 addedDate:0 matchedThumbnailIdentifier:0 bundleIdentifier:0];
 
           [v7 addObject:v28];
         }
@@ -813,15 +813,15 @@ LABEL_11:
           v25 = PLSearchBackendResultProcessingGetLog();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
           {
-            if ([v6 batchIdentifier])
+            if ([queryCopy batchIdentifier])
             {
-              v15 = v42;
-              [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v6, "batchIdentifier"), objc_msgSend(v6, "queryIdentifier")];
+              typeCopy2 = typeCopy;
+              [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(queryCopy, "batchIdentifier"), objc_msgSend(queryCopy, "queryIdentifier")];
             }
 
             else
             {
-              [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v6, "queryIdentifier"), v41];
+              [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(queryCopy, "queryIdentifier"), v41];
             }
             v29 = ;
             *buf = 138544642;
@@ -833,7 +833,7 @@ LABEL_11:
             v57 = 2048;
             v58 = v10;
             v59 = 2048;
-            v60 = v20;
+            v60 = unsignedIntegerValue;
             v61 = 2048;
             v62 = v23;
             _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_DEBUG, "%{public}@ Skipping collection below threshold. Collection: %@, confidence: %f, threshold: %f, collectionAssetCount: %tu, collectionAssetHitCount: %tu", buf, 0x3Eu);
@@ -841,7 +841,7 @@ LABEL_11:
 
           [v44 addObject:v17];
           v14 = v24;
-          self = v43;
+          self = selfCopy;
         }
       }
 
@@ -856,14 +856,14 @@ LABEL_11:
     v30 = PLSearchBackendResultProcessingGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      if ([v6 batchIdentifier])
+      if ([queryCopy batchIdentifier])
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v6, "batchIdentifier"), objc_msgSend(v6, "queryIdentifier")];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(queryCopy, "batchIdentifier"), objc_msgSend(queryCopy, "queryIdentifier")];
       }
 
       else
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v6, "queryIdentifier"), v41];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(queryCopy, "queryIdentifier"), v41];
       }
       v31 = ;
       v32 = [v44 count];
@@ -872,7 +872,7 @@ LABEL_11:
       v53 = 2048;
       v54 = v32;
       v55 = 2048;
-      v56 = *&v15;
+      v56 = *&typeCopy2;
       v57 = 2112;
       v58 = *&v44;
       _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ Found %tu collections of type %tu below threshold. Collection UUIDs: %@", buf, 0x2Au);
@@ -882,27 +882,27 @@ LABEL_11:
   v33 = PLSearchBackendResultProcessingGetLog();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v6 batchIdentifier])
+    if ([queryCopy batchIdentifier])
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v6, "batchIdentifier"), objc_msgSend(v6, "queryIdentifier")];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(queryCopy, "batchIdentifier"), objc_msgSend(queryCopy, "queryIdentifier")];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v6, "queryIdentifier"), v41];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(queryCopy, "queryIdentifier"), v41];
     }
     v34 = ;
     v35 = [v7 count];
-    if (v15 > 5)
+    if (typeCopy2 > 5)
     {
-      v37 = v6;
+      v37 = queryCopy;
       v38 = @"Unknown";
     }
 
     else
     {
-      v36 = v15;
-      v37 = v6;
+      v36 = typeCopy2;
+      v37 = queryCopy;
       v38 = off_1E75A4318[v36];
     }
 
@@ -915,7 +915,7 @@ LABEL_11:
     v56 = *&v39;
     _os_log_impl(&dword_19C86F000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ Added %tu %@ collections derived from assets.", buf, 0x20u);
 
-    v6 = v37;
+    queryCopy = v37;
   }
 
   v12 = v7;
@@ -924,70 +924,70 @@ LABEL_42:
   return v12;
 }
 
-- (id)_collectionResultsFromAssetResultsForQuery:(id)a3
+- (id)_collectionResultsFromAssetResultsForQuery:(id)query
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  queryCopy = query;
   v6 = objc_alloc_init(v4);
-  v7 = [(PHSearchResultProcessor *)self _collectionResultsFromAssetResultsForResultType:2 query:v5];
+  v7 = [(PHSearchResultProcessor *)self _collectionResultsFromAssetResultsForResultType:2 query:queryCopy];
   [v6 addObjectsFromArray:v7];
 
-  v8 = [(PHSearchResultProcessor *)self _collectionResultsFromAssetResultsForResultType:4 query:v5];
+  v8 = [(PHSearchResultProcessor *)self _collectionResultsFromAssetResultsForResultType:4 query:queryCopy];
   [v6 addObjectsFromArray:v8];
 
-  v9 = [(PHSearchResultProcessor *)self _collectionResultsFromAssetResultsForResultType:5 query:v5];
+  v9 = [(PHSearchResultProcessor *)self _collectionResultsFromAssetResultsForResultType:5 query:queryCopy];
 
   [v6 addObjectsFromArray:v9];
 
   return v6;
 }
 
-- (void)_processSearchableItemForSyndicationLibrary:(id)a3
+- (void)_processSearchableItemForSyndicationLibrary:(id)library
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bundleID];
-  v6 = [v4 uniqueIdentifier];
-  if ([v5 length])
+  libraryCopy = library;
+  bundleID = [libraryCopy bundleID];
+  uniqueIdentifier = [libraryCopy uniqueIdentifier];
+  if ([bundleID length])
   {
-    v7 = [(PHSearchResultProcessor *)self queryOptions];
+    queryOptions = [(PHSearchResultProcessor *)self queryOptions];
     v8 = +[PHSearchUtility syndicationLibraryBundleIdentifiers];
-    v9 = [v4 bundleID];
-    v10 = [v8 containsObject:v9];
+    bundleID2 = [libraryCopy bundleID];
+    v10 = [v8 containsObject:bundleID2];
 
     if (v10)
     {
-      v11 = [v4 attributeSet];
-      v12 = [v11 photosResultType];
-      v13 = [v12 isEqual:*MEMORY[0x1E69BF0F8]];
+      attributeSet = [libraryCopy attributeSet];
+      photosResultType = [attributeSet photosResultType];
+      v13 = [photosResultType isEqual:*MEMORY[0x1E69BF0F8]];
 
       if ((v13 & 1) == 0)
       {
         v28 = v8;
-        v14 = [v4 attributeSet];
-        v27 = [v14 attributeForKey:*MEMORY[0x1E6964D78]];
-        v31 = [v14 attributeForKey:*MEMORY[0x1E6964DB8]];
-        v15 = [v14 attributeForKey:*MEMORY[0x1E6964DC0]];
-        v16 = [v14 photosContentCreationDate];
-        v17 = [v14 photosContentAddedDate];
-        v18 = [v14 attributeForKey:*MEMORY[0x1E6964DB0]];
-        v26 = [v18 unsignedIntegerValue];
+        attributeSet2 = [libraryCopy attributeSet];
+        v27 = [attributeSet2 attributeForKey:*MEMORY[0x1E6964D78]];
+        v31 = [attributeSet2 attributeForKey:*MEMORY[0x1E6964DB8]];
+        v15 = [attributeSet2 attributeForKey:*MEMORY[0x1E6964DC0]];
+        photosContentCreationDate = [attributeSet2 photosContentCreationDate];
+        photosContentAddedDate = [attributeSet2 photosContentAddedDate];
+        v18 = [attributeSet2 attributeForKey:*MEMORY[0x1E6964DB0]];
+        unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-        v29 = v17;
-        v30 = v16;
-        v25 = v17;
+        v29 = photosContentAddedDate;
+        v30 = photosContentCreationDate;
+        v25 = photosContentAddedDate;
         v19 = v31;
-        v20 = [[PHSearchResult alloc] initWithSearchResultType:1 uuid:v6 retrievalType:v26 hasOCRTextMatch:0 isSensitiveLocation:0 embeddingDistances:v27 l1Score:v31 l2Score:v15 collectionScore:0 creationDate:v16 addedDate:v25 matchedThumbnailIdentifier:0 bundleIdentifier:v5];
-        if ([v7 maxRankedAssetSearchResults]>= 1 && v15)
+        v20 = [[PHSearchResult alloc] initWithSearchResultType:1 uuid:uniqueIdentifier retrievalType:unsignedIntegerValue hasOCRTextMatch:0 isSensitiveLocation:0 embeddingDistances:v27 l1Score:v31 l2Score:v15 collectionScore:0 creationDate:photosContentCreationDate addedDate:v25 matchedThumbnailIdentifier:0 bundleIdentifier:bundleID];
+        if ([queryOptions maxRankedAssetSearchResults]>= 1 && v15)
         {
-          v21 = [(PHSearchResultProcessor *)self topHitAssetSearchResultCandidates];
-          [v21 addObject:v20];
+          topHitAssetSearchResultCandidates = [(PHSearchResultProcessor *)self topHitAssetSearchResultCandidates];
+          [topHitAssetSearchResultCandidates addObject:v20];
 
           v19 = v31;
         }
 
-        v22 = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
-        [v22 addObject:v20];
+        unfilteredAssetSearchResults = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
+        [unfilteredAssetSearchResults addObject:v20];
 
         v8 = v28;
       }
@@ -998,11 +998,11 @@ LABEL_42:
       v23 = PLSearchBackendResultProcessingGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v4 bundleID];
+        bundleID3 = [libraryCopy bundleID];
         *buf = 138412546;
-        v33 = v24;
+        v33 = bundleID3;
         v34 = 2112;
-        v35 = v6;
+        v35 = uniqueIdentifier;
         _os_log_impl(&dword_19C86F000, v23, OS_LOG_TYPE_ERROR, "Invalid syndication bundle identifier (%@) for SearchableItem: %@", buf, 0x16u);
       }
     }
@@ -1010,52 +1010,52 @@ LABEL_42:
 
   else
   {
-    v7 = PLSearchBackendResultProcessingGetLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    queryOptions = PLSearchBackendResultProcessingGetLog();
+    if (os_log_type_enabled(queryOptions, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v33 = v6;
-      _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "Missing syndication bundle identifier for SearchableItem: %@, skipping", buf, 0xCu);
+      v33 = uniqueIdentifier;
+      _os_log_impl(&dword_19C86F000, queryOptions, OS_LOG_TYPE_ERROR, "Missing syndication bundle identifier for SearchableItem: %@, skipping", buf, 0xCu);
     }
   }
 }
 
-- (void)_processSearchableItemForPhotosLibrary:(id)a3
+- (void)_processSearchableItemForPhotosLibrary:(id)library
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHSearchResultProcessor *)self queryOptions];
-  v6 = [v4 uniqueIdentifier];
-  v7 = [(PHSearchResultProcessor *)self scopedUUIDs];
-  v8 = v7;
-  if (!v7 || [v7 containsObject:v6])
+  libraryCopy = library;
+  queryOptions = [(PHSearchResultProcessor *)self queryOptions];
+  uniqueIdentifier = [libraryCopy uniqueIdentifier];
+  scopedUUIDs = [(PHSearchResultProcessor *)self scopedUUIDs];
+  v8 = scopedUUIDs;
+  if (!scopedUUIDs || [scopedUUIDs containsObject:uniqueIdentifier])
   {
-    v9 = [v4 domainIdentifier];
-    v10 = [v9 isEqualToString:*MEMORY[0x1E69BF0C8]];
+    domainIdentifier = [libraryCopy domainIdentifier];
+    v10 = [domainIdentifier isEqualToString:*MEMORY[0x1E69BF0C8]];
 
     if ((v10 & 1) == 0)
     {
-      v16 = PLSearchBackendResultProcessingGetLog();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      attributeSet2 = PLSearchBackendResultProcessingGetLog();
+      if (os_log_type_enabled(attributeSet2, OS_LOG_TYPE_ERROR))
       {
-        v17 = [v4 domainIdentifier];
+        domainIdentifier2 = [libraryCopy domainIdentifier];
         *buf = 138412546;
-        v78 = v17;
+        v78 = domainIdentifier2;
         v79 = 2112;
-        v80 = v6;
-        _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_ERROR, "Invalid domain identifier (%@) for SearchableItem: %@", buf, 0x16u);
+        v80 = uniqueIdentifier;
+        _os_log_impl(&dword_19C86F000, attributeSet2, OS_LOG_TYPE_ERROR, "Invalid domain identifier (%@) for SearchableItem: %@", buf, 0x16u);
       }
 
       goto LABEL_11;
     }
 
-    v11 = [v4 attributeSet];
-    v12 = [v11 photosResultType];
-    v13 = [v12 isEqual:*MEMORY[0x1E69BF0F8]];
+    attributeSet = [libraryCopy attributeSet];
+    photosResultType = [attributeSet photosResultType];
+    v13 = [photosResultType isEqual:*MEMORY[0x1E69BF0F8]];
 
     if ((v13 & 1) == 0)
     {
-      v14 = [objc_opt_class() _searchResultTypeForSpotlightSearchableItem:v4];
+      v14 = [objc_opt_class() _searchResultTypeForSpotlightSearchableItem:libraryCopy];
       v15 = v14;
       if (v14 == 4)
       {
@@ -1067,45 +1067,45 @@ LABEL_42:
 
       else if (!v14)
       {
-        v16 = PLSearchBackendResultProcessingGetLog();
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        attributeSet2 = PLSearchBackendResultProcessingGetLog();
+        if (os_log_type_enabled(attributeSet2, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218242;
           v78 = 0;
           v79 = 2112;
-          v80 = v6;
-          _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_ERROR, "Invalid result type (%tu) for SearchableItem: %@", buf, 0x16u);
+          v80 = uniqueIdentifier;
+          _os_log_impl(&dword_19C86F000, attributeSet2, OS_LOG_TYPE_ERROR, "Invalid result type (%tu) for SearchableItem: %@", buf, 0x16u);
         }
 
         goto LABEL_11;
       }
 
-      v18 = [v5 searchQueryResultTypes];
-      if (v15 != 1 || (v18 & 1) != 0)
+      searchQueryResultTypes = [queryOptions searchQueryResultTypes];
+      if (v15 != 1 || (searchQueryResultTypes & 1) != 0)
       {
         v19 = [PHSearchResult isCollectionResultType:v15];
-        v20 = [v5 searchQueryResultTypes];
+        searchQueryResultTypes2 = [queryOptions searchQueryResultTypes];
         v21 = v19 ? &unk_1F102C9E0 : 0;
-        if (!v19 || (v20 & 2) != 0)
+        if (!v19 || (searchQueryResultTypes2 & 2) != 0)
         {
-          v59 = v20;
+          v59 = searchQueryResultTypes2;
           v58 = v19;
-          v16 = [v4 attributeSet];
-          v69 = [v16 attributeForKey:*MEMORY[0x1E6964D78]];
-          v22 = [(PHSearchResultProcessor *)self photosSensitiveLocationKey];
-          v23 = [v16 valueForCustomKey:v22];
-          v65 = [v23 BOOLValue];
+          attributeSet2 = [libraryCopy attributeSet];
+          v69 = [attributeSet2 attributeForKey:*MEMORY[0x1E6964D78]];
+          photosSensitiveLocationKey = [(PHSearchResultProcessor *)self photosSensitiveLocationKey];
+          v23 = [attributeSet2 valueForCustomKey:photosSensitiveLocationKey];
+          bOOLValue = [v23 BOOLValue];
 
-          v68 = [v16 attributeForKey:*MEMORY[0x1E6964DB8]];
-          v70 = [v16 attributeForKey:*MEMORY[0x1E6964DC0]];
+          v68 = [attributeSet2 attributeForKey:*MEMORY[0x1E6964DB8]];
+          v70 = [attributeSet2 attributeForKey:*MEMORY[0x1E6964DC0]];
           v64 = v21;
-          v67 = [v16 photosContentCreationDate];
-          v66 = [v16 photosContentAddedDate];
-          v24 = [v16 attributeForKey:*MEMORY[0x1E6964DC8]];
-          v63 = [v24 BOOLValue];
+          photosContentCreationDate = [attributeSet2 photosContentCreationDate];
+          photosContentAddedDate = [attributeSet2 photosContentAddedDate];
+          v24 = [attributeSet2 attributeForKey:*MEMORY[0x1E6964DC8]];
+          bOOLValue2 = [v24 BOOLValue];
 
-          v25 = [v16 attributeForKey:*MEMORY[0x1E6964DB0]];
-          v62 = [v25 unsignedIntegerValue];
+          v25 = [attributeSet2 attributeForKey:*MEMORY[0x1E6964DB0]];
+          unsignedIntegerValue = [v25 unsignedIntegerValue];
 
           if (v15 != 1)
           {
@@ -1114,11 +1114,11 @@ LABEL_42:
 
           if ((v59 & 2) != 0)
           {
-            v26 = [(PHSearchResultProcessor *)self photosAlbumIdentifiersKey];
-            v56 = [v16 valueForCustomKey:v26];
+            photosAlbumIdentifiersKey = [(PHSearchResultProcessor *)self photosAlbumIdentifiersKey];
+            v56 = [attributeSet2 valueForCustomKey:photosAlbumIdentifiersKey];
 
-            v27 = [(PHSearchResultProcessor *)self photosAlbumAssetCountsKey];
-            v28 = [v16 valueForCustomKey:v27];
+            photosAlbumAssetCountsKey = [(PHSearchResultProcessor *)self photosAlbumAssetCountsKey];
+            v28 = [attributeSet2 valueForCustomKey:photosAlbumAssetCountsKey];
 
             v75[0] = MEMORY[0x1E69E9820];
             v75[1] = 3221225472;
@@ -1128,11 +1128,11 @@ LABEL_42:
             v76 = v28;
             v60 = v28;
             [v56 enumerateObjectsUsingBlock:v75];
-            v29 = [(PHSearchResultProcessor *)self photosHighlightIdentifiersKey];
-            v53 = [v16 valueForCustomKey:v29];
+            photosHighlightIdentifiersKey = [(PHSearchResultProcessor *)self photosHighlightIdentifiersKey];
+            v53 = [attributeSet2 valueForCustomKey:photosHighlightIdentifiersKey];
 
-            v30 = [(PHSearchResultProcessor *)self photosHighlightAssetCountsKey];
-            v31 = [v16 valueForCustomKey:v30];
+            photosHighlightAssetCountsKey = [(PHSearchResultProcessor *)self photosHighlightAssetCountsKey];
+            v31 = [attributeSet2 valueForCustomKey:photosHighlightAssetCountsKey];
 
             v73[0] = MEMORY[0x1E69E9820];
             v73[1] = 3221225472;
@@ -1142,11 +1142,11 @@ LABEL_42:
             v74 = v31;
             v54 = v31;
             [v53 enumerateObjectsUsingBlock:v73];
-            v32 = [(PHSearchResultProcessor *)self photosMemoryIdentifiersKey];
-            v33 = [v16 valueForCustomKey:v32];
+            photosMemoryIdentifiersKey = [(PHSearchResultProcessor *)self photosMemoryIdentifiersKey];
+            v33 = [attributeSet2 valueForCustomKey:photosMemoryIdentifiersKey];
 
-            v34 = [(PHSearchResultProcessor *)self photosMemoryAssetCountsKey];
-            v35 = [v16 valueForCustomKey:v34];
+            photosMemoryAssetCountsKey = [(PHSearchResultProcessor *)self photosMemoryAssetCountsKey];
+            v35 = [attributeSet2 valueForCustomKey:photosMemoryAssetCountsKey];
 
             v71[0] = MEMORY[0x1E69E9820];
             v71[1] = 3221225472;
@@ -1158,29 +1158,29 @@ LABEL_42:
             [v33 enumerateObjectsUsingBlock:v71];
           }
 
-          if ([v5 fetchContextualThumbnails])
+          if ([queryOptions fetchContextualThumbnails])
           {
-            v37 = [(PHSearchResultProcessor *)self matchedLookupIdentifiers];
-            v38 = [v37 allObjects];
+            matchedLookupIdentifiers = [(PHSearchResultProcessor *)self matchedLookupIdentifiers];
+            allObjects = [matchedLookupIdentifiers allObjects];
 
-            v39 = [v16 attributeDictionary];
-            v40 = [v39 objectForKey:*MEMORY[0x1E6964D80]];
+            attributeDictionary = [attributeSet2 attributeDictionary];
+            v40 = [attributeDictionary objectForKey:*MEMORY[0x1E6964D80]];
 
-            [v16 photoEmbeddingVectorIds];
+            [attributeSet2 photoEmbeddingVectorIds];
             v57 = v61 = v40;
             v41 = [objc_opt_class() _embeddingLookupIdentifiersForMatchedEmbeddingIDs:v40 assetEmbeddingIds:v57];
             v55 = v41;
             if ([v41 count])
             {
-              v42 = [v38 arrayByAddingObjectsFromArray:v41];
+              v42 = [allObjects arrayByAddingObjectsFromArray:v41];
 
-              v38 = v42;
+              allObjects = v42;
             }
 
-            v43 = [v16 attributeForKey:*MEMORY[0x1E69BF0C0]];
+            v43 = [attributeSet2 attributeForKey:*MEMORY[0x1E69BF0C0]];
             if ([v43 length])
             {
-              v44 = [MEMORY[0x1E69BE7C8] earliestThumbnailIdentifierForLookupIdentifiers:v38 thumbnailMapData:v43];
+              v44 = [MEMORY[0x1E69BE7C8] earliestThumbnailIdentifierForLookupIdentifiers:allObjects thumbnailMapData:v43];
             }
 
             else
@@ -1196,24 +1196,24 @@ LABEL_29:
           }
 
           v45 = [PHSearchResult alloc];
-          v46 = [v4 bundleID];
-          v47 = [(PHSearchResult *)v45 initWithSearchResultType:v15 uuid:v6 retrievalType:v62 hasOCRTextMatch:v63 isSensitiveLocation:v65 embeddingDistances:v69 l1Score:v68 l2Score:v70 collectionScore:v64 creationDate:v67 addedDate:v66 matchedThumbnailIdentifier:v44 bundleIdentifier:v46];
+          bundleID = [libraryCopy bundleID];
+          v47 = [(PHSearchResult *)v45 initWithSearchResultType:v15 uuid:uniqueIdentifier retrievalType:unsignedIntegerValue hasOCRTextMatch:bOOLValue2 isSensitiveLocation:bOOLValue embeddingDistances:v69 l1Score:v68 l2Score:v70 collectionScore:v64 creationDate:photosContentCreationDate addedDate:photosContentAddedDate matchedThumbnailIdentifier:v44 bundleIdentifier:bundleID];
 
           if (v15 == 1)
           {
-            if (-[PHSearchResult isEligibleForSuggestions](v47, "isEligibleForSuggestions") || [v5 disableSemanticSearch])
+            if (-[PHSearchResult isEligibleForSuggestions](v47, "isEligibleForSuggestions") || [queryOptions disableSemanticSearch])
             {
-              v48 = [(PHSearchResultProcessor *)self assetUUIDsForSuggestions];
-              [v48 addObject:v6];
+              assetUUIDsForSuggestions = [(PHSearchResultProcessor *)self assetUUIDsForSuggestions];
+              [assetUUIDsForSuggestions addObject:uniqueIdentifier];
             }
 
-            if ([v5 maxRankedAssetSearchResults] >= 1 && v70)
+            if ([queryOptions maxRankedAssetSearchResults] >= 1 && v70)
             {
-              v49 = [(PHSearchResultProcessor *)self topHitAssetSearchResultCandidates];
-              [v49 addObject:v47];
+              topHitAssetSearchResultCandidates = [(PHSearchResultProcessor *)self topHitAssetSearchResultCandidates];
+              [topHitAssetSearchResultCandidates addObject:v47];
             }
 
-            v50 = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
+            unfilteredAssetSearchResults = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
           }
 
           else
@@ -1228,15 +1228,15 @@ LABEL_11:
 
             if ([(PHSearchResult *)v47 isEligibleForSuggestions])
             {
-              v51 = [(PHSearchResultProcessor *)self collectionUUIDsForSuggestions];
-              [v51 addObject:v6];
+              collectionUUIDsForSuggestions = [(PHSearchResultProcessor *)self collectionUUIDsForSuggestions];
+              [collectionUUIDsForSuggestions addObject:uniqueIdentifier];
             }
 
-            v50 = [(PHSearchResultProcessor *)self collectionResults];
+            unfilteredAssetSearchResults = [(PHSearchResultProcessor *)self collectionResults];
           }
 
-          v52 = v50;
-          [v50 addObject:v47];
+          v52 = unfilteredAssetSearchResults;
+          [unfilteredAssetSearchResults addObject:v47];
 
           goto LABEL_45;
         }
@@ -1283,152 +1283,152 @@ void __66__PHSearchResultProcessor__processSearchableItemForPhotosLibrary___bloc
   [v8 setObject:v9 forKeyedSubscript:v6];
 }
 
-- (void)_processSpotlightItem:(id)a3
+- (void)_processSpotlightItem:(id)item
 {
-  v6 = a3;
-  if (!v6)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PHSearchResultProcessor.m" lineNumber:343 description:{@"Invalid parameter not satisfying: %@", @"searchableItem"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchResultProcessor.m" lineNumber:343 description:{@"Invalid parameter not satisfying: %@", @"searchableItem"}];
   }
 
   if ([(PHSearchResultProcessor *)self _isSyndicationLibrary])
   {
-    [(PHSearchResultProcessor *)self _processSearchableItemForSyndicationLibrary:v6];
+    [(PHSearchResultProcessor *)self _processSearchableItemForSyndicationLibrary:itemCopy];
   }
 
   else
   {
-    [(PHSearchResultProcessor *)self _processSearchableItemForPhotosLibrary:v6];
+    [(PHSearchResultProcessor *)self _processSearchableItemForPhotosLibrary:itemCopy];
   }
 }
 
-- (void)_finalizeSyndicationResultsForQuery:(id)a3 resultHandler:(id)a4
+- (void)_finalizeSyndicationResultsForQuery:(id)query resultHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHSearchResultProcessor *)self queryOptions];
-  v9 = [(PHSearchResultProcessor *)self queryStringReceivedFromSpotlight];
-  v10 = [(PHSearchResultProcessor *)self photoLibrary];
-  v11 = [PHSearchQueryAnnotation annotatedQueryStringFromSpotlightAttributedQueryString:v9 forSearchQuery:v6 photoLibrary:v10];
+  queryCopy = query;
+  handlerCopy = handler;
+  queryOptions = [(PHSearchResultProcessor *)self queryOptions];
+  queryStringReceivedFromSpotlight = [(PHSearchResultProcessor *)self queryStringReceivedFromSpotlight];
+  photoLibrary = [(PHSearchResultProcessor *)self photoLibrary];
+  v11 = [PHSearchQueryAnnotation annotatedQueryStringFromSpotlightAttributedQueryString:queryStringReceivedFromSpotlight forSearchQuery:queryCopy photoLibrary:photoLibrary];
 
-  v12 = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
-  v13 = [v8 sortDescriptors];
-  v14 = [v13 count];
+  unfilteredAssetSearchResults = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
+  sortDescriptors = [queryOptions sortDescriptors];
+  v14 = [sortDescriptors count];
 
   if (v14)
   {
     v15 = PLSearchBackendResultProcessingGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      if ([v6 batchIdentifier])
+      if ([queryCopy batchIdentifier])
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v6, "batchIdentifier"), objc_msgSend(v6, "queryIdentifier")];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(queryCopy, "batchIdentifier"), objc_msgSend(queryCopy, "queryIdentifier")];
       }
 
       else
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v6, "queryIdentifier"), v26];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(queryCopy, "queryIdentifier"), v26];
       }
       v16 = ;
-      v17 = [v12 count];
-      v18 = [v8 sortDescriptors];
+      v17 = [unfilteredAssetSearchResults count];
+      sortDescriptors2 = [queryOptions sortDescriptors];
       *buf = 138543874;
       v29 = v16;
       v30 = 2048;
       v31 = v17;
       v32 = 2112;
-      v33 = v18;
+      v33 = sortDescriptors2;
       _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Sorting %tu asset results with SortDescriptors: %@", buf, 0x20u);
     }
 
-    v19 = [v8 sortDescriptors];
-    v20 = [v12 sortedArrayUsingDescriptors:v19];
+    sortDescriptors3 = [queryOptions sortDescriptors];
+    v20 = [unfilteredAssetSearchResults sortedArrayUsingDescriptors:sortDescriptors3];
 
-    v12 = v20;
+    unfilteredAssetSearchResults = v20;
   }
 
-  v21 = [(PHSearchResultProcessor *)self topHitAssetSearchResultCandidates];
-  v22 = [(PHSearchResultProcessor *)self queryOptions];
-  v23 = -[PHSearchResultProcessor _rankSortedAssetSearchResultsFromResults:maxResults:query:](self, "_rankSortedAssetSearchResultsFromResults:maxResults:query:", v21, [v22 maxRankedAssetSearchResults], v6);
+  topHitAssetSearchResultCandidates = [(PHSearchResultProcessor *)self topHitAssetSearchResultCandidates];
+  queryOptions2 = [(PHSearchResultProcessor *)self queryOptions];
+  v23 = -[PHSearchResultProcessor _rankSortedAssetSearchResultsFromResults:maxResults:query:](self, "_rankSortedAssetSearchResultsFromResults:maxResults:query:", topHitAssetSearchResultCandidates, [queryOptions2 maxRankedAssetSearchResults], queryCopy);
 
-  v24 = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
-  v25 = [(PHSearchResultProcessor *)self queryStringReceivedFromSpotlight];
-  v27 = [(PHSearchResultProcessor *)self isUnsafeQuery];
-  (*(v7 + 2))(v7, v12, v24, v23, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0], 0, v11, v25, v27);
+  unfilteredAssetSearchResults2 = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
+  queryStringReceivedFromSpotlight2 = [(PHSearchResultProcessor *)self queryStringReceivedFromSpotlight];
+  isUnsafeQuery = [(PHSearchResultProcessor *)self isUnsafeQuery];
+  (*(handlerCopy + 2))(handlerCopy, unfilteredAssetSearchResults, unfilteredAssetSearchResults2, v23, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0], 0, v11, queryStringReceivedFromSpotlight2, isUnsafeQuery);
 }
 
-- (void)_finalizePhotosResultsForQuery:(id)a3 resultHandler:(id)a4
+- (void)_finalizePhotosResultsForQuery:(id)query resultHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v44 = a4;
-  v7 = [(PHSearchResultProcessor *)self queryOptions];
-  v8 = [(PHSearchResultProcessor *)self queryStringReceivedFromSpotlight];
-  v9 = [(PHSearchResultProcessor *)self photoLibrary];
-  v10 = [PHSearchQueryAnnotation annotatedQueryStringFromSpotlightAttributedQueryString:v8 forSearchQuery:v6 photoLibrary:v9];
+  queryCopy = query;
+  handlerCopy = handler;
+  queryOptions = [(PHSearchResultProcessor *)self queryOptions];
+  queryStringReceivedFromSpotlight = [(PHSearchResultProcessor *)self queryStringReceivedFromSpotlight];
+  photoLibrary = [(PHSearchResultProcessor *)self photoLibrary];
+  v10 = [PHSearchQueryAnnotation annotatedQueryStringFromSpotlightAttributedQueryString:queryStringReceivedFromSpotlight forSearchQuery:queryCopy photoLibrary:photoLibrary];
 
-  v11 = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
-  v12 = [(PHSearchResultProcessor *)self _matchTypeFilteredResultsForResults:v11 query:v6];
+  unfilteredAssetSearchResults = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
+  v12 = [(PHSearchResultProcessor *)self _matchTypeFilteredResultsForResults:unfilteredAssetSearchResults query:queryCopy];
 
-  v13 = [v7 sortDescriptors];
-  v14 = [v13 count];
+  sortDescriptors = [queryOptions sortDescriptors];
+  v14 = [sortDescriptors count];
 
   if (v14)
   {
     v15 = PLSearchBackendResultProcessingGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      if ([v6 batchIdentifier])
+      if ([queryCopy batchIdentifier])
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v6, "batchIdentifier"), objc_msgSend(v6, "queryIdentifier")];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(queryCopy, "batchIdentifier"), objc_msgSend(queryCopy, "queryIdentifier")];
       }
 
       else
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v6, "queryIdentifier"), v37];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(queryCopy, "queryIdentifier"), v37];
       }
       v16 = ;
       v17 = [v12 count];
-      v18 = [v7 sortDescriptors];
+      sortDescriptors2 = [queryOptions sortDescriptors];
       *buf = 138543874;
       v47 = v16;
       v48 = 2048;
       v49 = v17;
       v50 = 2112;
-      v51 = v18;
+      v51 = sortDescriptors2;
       _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Sorting %tu asset results with SortDescriptors: %@", buf, 0x20u);
     }
 
-    v19 = [v7 sortDescriptors];
-    v20 = [v12 sortedArrayUsingDescriptors:v19];
+    sortDescriptors3 = [queryOptions sortDescriptors];
+    v20 = [v12 sortedArrayUsingDescriptors:sortDescriptors3];
 
     v12 = v20;
   }
 
-  v21 = [(PHSearchResultProcessor *)self topHitAssetSearchResultCandidates];
-  v22 = [(PHSearchResultProcessor *)self _matchTypeFilteredResultsForResults:v21 query:v6];
+  topHitAssetSearchResultCandidates = [(PHSearchResultProcessor *)self topHitAssetSearchResultCandidates];
+  v22 = [(PHSearchResultProcessor *)self _matchTypeFilteredResultsForResults:topHitAssetSearchResultCandidates query:queryCopy];
 
-  v23 = [(PHSearchResultProcessor *)self queryOptions];
-  v42 = -[PHSearchResultProcessor _rankSortedAssetSearchResultsFromResults:maxResults:query:](self, "_rankSortedAssetSearchResultsFromResults:maxResults:query:", v22, [v23 maxRankedAssetSearchResults], v6);
+  queryOptions2 = [(PHSearchResultProcessor *)self queryOptions];
+  v42 = -[PHSearchResultProcessor _rankSortedAssetSearchResultsFromResults:maxResults:query:](self, "_rankSortedAssetSearchResultsFromResults:maxResults:query:", v22, [queryOptions2 maxRankedAssetSearchResults], queryCopy);
 
-  v24 = [(PHSearchResultProcessor *)self _collectionResultsFromAssetResultsForQuery:v6];
-  v25 = [(PHSearchResultProcessor *)self collectionResults];
+  v24 = [(PHSearchResultProcessor *)self _collectionResultsFromAssetResultsForQuery:queryCopy];
+  collectionResults = [(PHSearchResultProcessor *)self collectionResults];
   v41 = v24;
-  v26 = [v25 arrayByAddingObjectsFromArray:v24];
+  v26 = [collectionResults arrayByAddingObjectsFromArray:v24];
 
-  -[PHSearchResultProcessor _rankSortedCollectionSearchResultsFromResults:maxResults:query:](self, "_rankSortedCollectionSearchResultsFromResults:maxResults:query:", v26, [v7 maxRankedCollectionSearchResults], v6);
+  -[PHSearchResultProcessor _rankSortedCollectionSearchResultsFromResults:maxResults:query:](self, "_rankSortedCollectionSearchResultsFromResults:maxResults:query:", v26, [queryOptions maxRankedCollectionSearchResults], queryCopy);
   v40 = v39 = v26;
   v43 = v12;
   v27 = [v12 arrayByAddingObjectsFromArray:v26];
-  v45 = v7;
-  if ([v7 enableQueryMatchDetails])
+  v45 = queryOptions;
+  if ([queryOptions enableQueryMatchDetails])
   {
-    v28 = [(PHSearchResultProcessor *)self queryEmbedding];
-    v29 = [(PHSearchResultProcessor *)self matchedPersonUUIDs];
-    v30 = [(PHSearchResultProcessor *)self matchedSceneIdentifierAndTypes];
-    v31 = +[PHSearchQueryMatchDetails queryMatchDetailsForSearchResults:queryText:queryEmbedding:matchedPersonUUIDs:matchedScenes:queryId:](PHSearchQueryMatchDetails, "queryMatchDetailsForSearchResults:queryText:queryEmbedding:matchedPersonUUIDs:matchedScenes:queryId:", v27, v10, v28, v29, v30, [v6 queryIdentifier]);
+    queryEmbedding = [(PHSearchResultProcessor *)self queryEmbedding];
+    matchedPersonUUIDs = [(PHSearchResultProcessor *)self matchedPersonUUIDs];
+    matchedSceneIdentifierAndTypes = [(PHSearchResultProcessor *)self matchedSceneIdentifierAndTypes];
+    v31 = +[PHSearchQueryMatchDetails queryMatchDetailsForSearchResults:queryText:queryEmbedding:matchedPersonUUIDs:matchedScenes:queryId:](PHSearchQueryMatchDetails, "queryMatchDetailsForSearchResults:queryText:queryEmbedding:matchedPersonUUIDs:matchedScenes:queryId:", v27, v10, queryEmbedding, matchedPersonUUIDs, matchedSceneIdentifierAndTypes, [queryCopy queryIdentifier]);
   }
 
   else
@@ -1437,44 +1437,44 @@ void __66__PHSearchResultProcessor__processSearchableItemForPhotosLibrary___bloc
   }
 
   v32 = v10;
-  v33 = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
-  v34 = [(PHSearchResultProcessor *)self assetUUIDsForSuggestions];
-  v35 = [(PHSearchResultProcessor *)self collectionUUIDsForSuggestions];
-  v36 = [(PHSearchResultProcessor *)self queryStringReceivedFromSpotlight];
-  v38 = [(PHSearchResultProcessor *)self isUnsafeQuery];
-  v44[2](v44, v27, v33, v42, v40, v34, v35, v31, v32, v36, v38);
+  unfilteredAssetSearchResults2 = [(PHSearchResultProcessor *)self unfilteredAssetSearchResults];
+  assetUUIDsForSuggestions = [(PHSearchResultProcessor *)self assetUUIDsForSuggestions];
+  collectionUUIDsForSuggestions = [(PHSearchResultProcessor *)self collectionUUIDsForSuggestions];
+  queryStringReceivedFromSpotlight2 = [(PHSearchResultProcessor *)self queryStringReceivedFromSpotlight];
+  isUnsafeQuery = [(PHSearchResultProcessor *)self isUnsafeQuery];
+  handlerCopy[2](handlerCopy, v27, unfilteredAssetSearchResults2, v42, v40, assetUUIDsForSuggestions, collectionUUIDsForSuggestions, v31, v32, queryStringReceivedFromSpotlight2, isUnsafeQuery);
 }
 
-- (void)finalizeResultsForQuery:(id)a3 resultHandler:(id)a4
+- (void)finalizeResultsForQuery:(id)query resultHandler:(id)handler
 {
-  v9 = a3;
-  v7 = a4;
-  if (!v7)
+  queryCopy = query;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PHSearchResultProcessor.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"resultsHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchResultProcessor.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"resultsHandler"}];
   }
 
   if ([(PHSearchResultProcessor *)self _isSyndicationLibrary])
   {
-    [(PHSearchResultProcessor *)self _finalizeSyndicationResultsForQuery:v9 resultHandler:v7];
+    [(PHSearchResultProcessor *)self _finalizeSyndicationResultsForQuery:queryCopy resultHandler:handlerCopy];
   }
 
   else
   {
-    [(PHSearchResultProcessor *)self _finalizePhotosResultsForQuery:v9 resultHandler:v7];
+    [(PHSearchResultProcessor *)self _finalizePhotosResultsForQuery:queryCopy resultHandler:handlerCopy];
   }
 }
 
-- (void)processSpotlightItems:(id)a3
+- (void)processSpotlightItems:(id)items
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1486,40 +1486,40 @@ void __66__PHSearchResultProcessor__processSearchableItemForPhotosLibrary___bloc
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         [(PHSearchResultProcessor *)self _processSpotlightItem:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)processSpotlightComputedAttribute:(id)a3 values:(id)a4
+- (void)processSpotlightComputedAttribute:(id)attribute values:(id)values
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHSearchResultProcessor *)self queryOptions];
-  v9 = [v8 fetchContextualThumbnails];
+  attributeCopy = attribute;
+  valuesCopy = values;
+  queryOptions = [(PHSearchResultProcessor *)self queryOptions];
+  fetchContextualThumbnails = [queryOptions fetchContextualThumbnails];
 
-  if ([*MEMORY[0x1E6964818] isEqualToString:v6])
+  if ([*MEMORY[0x1E6964818] isEqualToString:attributeCopy])
   {
-    v10 = [(PHSearchResultProcessor *)self matchedPersonUUIDs];
-    [v10 addObjectsFromArray:v7];
+    matchedPersonUUIDs = [(PHSearchResultProcessor *)self matchedPersonUUIDs];
+    [matchedPersonUUIDs addObjectsFromArray:valuesCopy];
 
-    if (v9)
+    if (fetchContextualThumbnails)
     {
-      v11 = [(PHSearchResultProcessor *)self matchedLookupIdentifiers];
-      v12 = [PHSearchQueryMatchDetails lookupIdentifiersForPersonUUIDs:v7];
+      matchedLookupIdentifiers = [(PHSearchResultProcessor *)self matchedLookupIdentifiers];
+      v12 = [PHSearchQueryMatchDetails lookupIdentifiersForPersonUUIDs:valuesCopy];
 LABEL_7:
       v14 = v12;
-      [v11 addObjectsFromArray:v12];
+      [matchedLookupIdentifiers addObjectsFromArray:v12];
 
 LABEL_10:
     }
@@ -1527,71 +1527,71 @@ LABEL_10:
 
   else
   {
-    if (![*MEMORY[0x1E6963B70] isEqualToString:v6])
+    if (![*MEMORY[0x1E6963B70] isEqualToString:attributeCopy])
     {
-      v11 = PLSearchBackendResultProcessingGetLog();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      matchedLookupIdentifiers = PLSearchBackendResultProcessingGetLog();
+      if (os_log_type_enabled(matchedLookupIdentifiers, OS_LOG_TYPE_ERROR))
       {
         v15 = 138412546;
-        v16 = v6;
+        v16 = attributeCopy;
         v17 = 2112;
-        v18 = v7;
-        _os_log_impl(&dword_19C86F000, v11, OS_LOG_TYPE_ERROR, "Unexpected attribute found in SpotlightComputedAttributes. Attribute: %@, values: %@", &v15, 0x16u);
+        v18 = valuesCopy;
+        _os_log_impl(&dword_19C86F000, matchedLookupIdentifiers, OS_LOG_TYPE_ERROR, "Unexpected attribute found in SpotlightComputedAttributes. Attribute: %@, values: %@", &v15, 0x16u);
       }
 
       goto LABEL_10;
     }
 
-    v13 = [(PHSearchResultProcessor *)self matchedSceneIdentifierAndTypes];
-    [v13 addObjectsFromArray:v7];
+    matchedSceneIdentifierAndTypes = [(PHSearchResultProcessor *)self matchedSceneIdentifierAndTypes];
+    [matchedSceneIdentifierAndTypes addObjectsFromArray:valuesCopy];
 
-    if (v9)
+    if (fetchContextualThumbnails)
     {
-      v11 = [(PHSearchResultProcessor *)self matchedLookupIdentifiers];
-      v12 = [PHSearchQueryMatchDetails lookupIdentifiersForSceneIdentifiersAndTypesTuple:v7];
+      matchedLookupIdentifiers = [(PHSearchResultProcessor *)self matchedLookupIdentifiers];
+      v12 = [PHSearchQueryMatchDetails lookupIdentifiersForSceneIdentifiersAndTypesTuple:valuesCopy];
       goto LABEL_7;
     }
   }
 }
 
-- (void)setSpotlightAttributedQuery:(id)a3
+- (void)setSpotlightAttributedQuery:(id)query
 {
-  v13 = a3;
-  v4 = [(PHSearchResultProcessor *)self queryOptions];
-  v5 = [v4 spotlightQUTypes];
+  queryCopy = query;
+  queryOptions = [(PHSearchResultProcessor *)self queryOptions];
+  spotlightQUTypes = [queryOptions spotlightQUTypes];
 
-  if (v5 == 1)
+  if (spotlightQUTypes == 1)
   {
     [(PHSearchResultProcessor *)self setQueryStringReceivedFromSpotlight:0];
   }
 
   else
   {
-    v6 = [v13 query];
-    [(PHSearchResultProcessor *)self setQueryStringReceivedFromSpotlight:v6];
+    query = [queryCopy query];
+    [(PHSearchResultProcessor *)self setQueryStringReceivedFromSpotlight:query];
   }
 
-  v7 = [v13 queryEmbedding];
-  [(PHSearchResultProcessor *)self setQueryEmbedding:v7];
+  queryEmbedding = [queryCopy queryEmbedding];
+  [(PHSearchResultProcessor *)self setQueryEmbedding:queryEmbedding];
 
-  -[PHSearchResultProcessor setIsUnsafeQuery:](self, "setIsUnsafeQuery:", [v13 isUnsafeQuery]);
-  [v13 highPrecisionDistanceThresh];
+  -[PHSearchResultProcessor setIsUnsafeQuery:](self, "setIsUnsafeQuery:", [queryCopy isUnsafeQuery]);
+  [queryCopy highPrecisionDistanceThresh];
   v9 = v8;
-  [v13 veryHighPrecisionDistanceThresh];
+  [queryCopy veryHighPrecisionDistanceThresh];
   LODWORD(v11) = v10;
   LODWORD(v12) = v9;
   [(PHSearchResultProcessor *)self setEmbeddingThresholds:v12, v11];
 }
 
-- (PHSearchResultProcessor)initWithSearchQueryOptions:(id)a3 scopedUUIDs:(id)a4 photoLibrary:(id)a5
+- (PHSearchResultProcessor)initWithSearchQueryOptions:(id)options scopedUUIDs:(id)ds photoLibrary:(id)library
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  optionsCopy = options;
+  dsCopy = ds;
+  libraryCopy = library;
+  if (!optionsCopy)
   {
-    v61 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v61 handleFailureInMethod:a2 object:self file:@"PHSearchResultProcessor.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"queryOptions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchResultProcessor.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"queryOptions"}];
   }
 
   v62.receiver = self;
@@ -1600,9 +1600,9 @@ LABEL_10:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_queryOptions, a3);
-    objc_storeStrong(&v14->_scopedUUIDs, a4);
-    objc_storeStrong(&v14->_photoLibrary, a5);
+    objc_storeStrong(&v13->_queryOptions, options);
+    objc_storeStrong(&v14->_scopedUUIDs, ds);
+    objc_storeStrong(&v14->_photoLibrary, library);
     v14->_embeddingThresholds = 0;
     v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     matchedPersonUUIDs = v14->_matchedPersonUUIDs;
@@ -1691,19 +1691,19 @@ LABEL_10:
   return v14;
 }
 
-+ (id)_embeddingLookupIdentifiersForMatchedEmbeddingIDs:(id)a3 assetEmbeddingIds:(id)a4
++ (id)_embeddingLookupIdentifiersForMatchedEmbeddingIDs:(id)ds assetEmbeddingIds:(id)ids
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  dsCopy = ds;
+  idsCopy = ids;
+  if ([dsCopy count] && objc_msgSend(idsCopy, "count"))
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v5;
+    v8 = dsCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -1718,7 +1718,7 @@ LABEL_10:
             objc_enumerationMutation(v8);
           }
 
-          if ([v6 indexOfObject:{*(*(&v15 + 1) + 8 * i), v15}] != 0x7FFFFFFFFFFFFFFFLL)
+          if ([idsCopy indexOfObject:{*(*(&v15 + 1) + 8 * i), v15}] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v13 = PLSearchEmbeddingIndexLookupIdentifier();
             [v7 addObject:v13];
@@ -1740,56 +1740,56 @@ LABEL_10:
   return v7;
 }
 
-+ (unint64_t)_searchResultTypeForSpotlightSearchableItem:(id)a3
++ (unint64_t)_searchResultTypeForSpotlightSearchableItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PHSearchResultProcessor.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"searchableItem"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchResultProcessor.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"searchableItem"}];
   }
 
-  v6 = [v5 attributeSet];
-  v7 = [v6 photosResultType];
+  attributeSet = [itemCopy attributeSet];
+  photosResultType = [attributeSet photosResultType];
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69BF0D8]])
+  if ([photosResultType isEqualToString:*MEMORY[0x1E69BF0D8]])
   {
     v8 = 1;
   }
 
-  else if ([v7 isEqualToString:*MEMORY[0x1E69BF0D0]])
+  else if ([photosResultType isEqualToString:*MEMORY[0x1E69BF0D0]])
   {
     v8 = 2;
   }
 
-  else if ([v7 isEqualToString:*MEMORY[0x1E69BF0E0]])
+  else if ([photosResultType isEqualToString:*MEMORY[0x1E69BF0E0]])
   {
     v8 = 3;
   }
 
-  else if ([v7 isEqualToString:*MEMORY[0x1E69BF0F0]])
+  else if ([photosResultType isEqualToString:*MEMORY[0x1E69BF0F0]])
   {
     v8 = 4;
   }
 
-  else if ([v7 isEqualToString:*MEMORY[0x1E69BF0E8]])
+  else if ([photosResultType isEqualToString:*MEMORY[0x1E69BF0E8]])
   {
     v8 = 5;
   }
 
   else
   {
-    [v7 isEqualToString:*MEMORY[0x1E69BF0F8]];
+    [photosResultType isEqualToString:*MEMORY[0x1E69BF0F8]];
     v8 = 0;
   }
 
   return v8;
 }
 
-+ (id)searchResultsFromAssetUUIDs:(id)a3
++ (id)searchResultsFromAssetUUIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 sortedArrayUsingSelector:sel_compare_];
+  v3 = [ds sortedArrayUsingSelector:sel_compare_];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;

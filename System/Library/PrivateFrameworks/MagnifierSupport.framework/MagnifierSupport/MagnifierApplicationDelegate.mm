@@ -1,36 +1,36 @@
 @interface MagnifierApplicationDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC16MagnifierSupport28MagnifierApplicationDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window;
 @end
 
 @implementation MagnifierApplicationDelegate
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = [a4 configuration];
+  configuration = [session configuration];
 
-  return v5;
+  return configuration;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_257C119A4();
     sub_257ECF3D0();
   }
 
-  v6 = a3;
-  v7 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v8 = _s16MagnifierSupport0A19ApplicationDelegateC11application_29didFinishLaunchingWithOptionsSbSo13UIApplicationC_SDySo0k6LaunchJ3KeyaypGSgtF_0();
 
   return v8 & 1;
 }
 
-- (unint64_t)application:(id)a3 supportedInterfaceOrientationsForWindow:(id)a4
+- (unint64_t)application:(id)application supportedInterfaceOrientationsForWindow:(id)window
 {
   if (qword_27F8F4670 != -1)
   {

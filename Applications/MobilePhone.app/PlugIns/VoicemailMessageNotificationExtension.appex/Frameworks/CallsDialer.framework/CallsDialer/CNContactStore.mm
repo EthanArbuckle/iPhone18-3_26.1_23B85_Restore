@@ -1,14 +1,14 @@
 @interface CNContactStore
 + (id)contactStore;
 + (id)suggestedContactStore;
-- (id)__contactsForHandles:(id)a3 keyDescriptors:(id)a4 alwaysUnifyLabeledValues:(BOOL)a5;
+- (id)__contactsForHandles:(id)handles keyDescriptors:(id)descriptors alwaysUnifyLabeledValues:(BOOL)values;
 @end
 
 @implementation CNContactStore
 
 + (id)contactStore
 {
-  if ([a1 phoneKit_isAuthorized])
+  if ([self phoneKit_isAuthorized])
   {
     v2 = objc_alloc_init(CNContactStoreConfiguration);
     [v2 setIncludeLocalContacts:1];
@@ -36,7 +36,7 @@
 
 + (id)suggestedContactStore
 {
-  if ([a1 phoneKit_isAuthorized])
+  if ([self phoneKit_isAuthorized])
   {
     v2 = objc_alloc_init(CNContactStoreConfiguration);
     [v2 setIncludeLocalContacts:1];
@@ -68,20 +68,20 @@
   return v3;
 }
 
-- (id)__contactsForHandles:(id)a3 keyDescriptors:(id)a4 alwaysUnifyLabeledValues:(BOOL)a5
+- (id)__contactsForHandles:(id)handles keyDescriptors:(id)descriptors alwaysUnifyLabeledValues:(BOOL)values
 {
-  v7 = a3;
-  v8 = a4;
+  handlesCopy = handles;
+  descriptorsCopy = descriptors;
   v29 = +[NSMutableDictionary dictionary];
-  if ([v7 count])
+  if ([handlesCopy count])
   {
-    [CNContact predicateForContactsMatchingHandleStrings:v7];
+    [CNContact predicateForContactsMatchingHandleStrings:handlesCopy];
     v26 = v34 = 0;
-    v27 = v8;
+    v27 = descriptorsCopy;
     v9 = [CNContactStore unifiedContactsMatchingPredicate:"unifiedContactsMatchingPredicate:keysToFetch:error:" keysToFetch:? error:?];
     v25 = v34;
-    v28 = v7;
-    v10 = [NSSet setWithArray:v7];
+    v28 = handlesCopy;
+    v10 = [NSSet setWithArray:handlesCopy];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -102,23 +102,23 @@
           }
 
           v16 = *(*(&v30 + 1) + 8 * i);
-          v17 = [v16 phoneNumbers];
-          v18 = [v17 firstObject];
-          v19 = [v18 value];
-          v20 = [v19 stringValue];
+          phoneNumbers = [v16 phoneNumbers];
+          firstObject = [phoneNumbers firstObject];
+          value = [firstObject value];
+          stringValue = [value stringValue];
 
-          if (!v20)
+          if (!stringValue)
           {
-            v21 = [v16 emailAddresses];
-            v22 = [v21 firstObject];
-            v20 = [v22 value];
+            emailAddresses = [v16 emailAddresses];
+            firstObject2 = [emailAddresses firstObject];
+            stringValue = [firstObject2 value];
           }
 
-          if ([v20 length] && objc_msgSend(v10, "containsObject:", v20))
+          if ([stringValue length] && objc_msgSend(v10, "containsObject:", stringValue))
           {
             v35 = v16;
             v23 = [NSArray arrayWithObjects:&v35 count:1];
-            [v29 setObject:v23 forKeyedSubscript:v20];
+            [v29 setObject:v23 forKeyedSubscript:stringValue];
           }
         }
 
@@ -128,8 +128,8 @@
       while (v13);
     }
 
-    v8 = v27;
-    v7 = v28;
+    descriptorsCopy = v27;
+    handlesCopy = v28;
   }
 
   return v29;

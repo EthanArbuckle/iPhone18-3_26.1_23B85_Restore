@@ -1,52 +1,52 @@
 @interface HKInteractiveChartGenericStatFormatter
-+ (int64_t)mapSingleItemToStatisticsType:(id)a3;
-- (id)_formattedAnnotationForDistributionChartData:(id)a3;
-- (id)_formattedSelectedRangeLabelDataWithChartData:(id)a3 items:(id)a4;
-- (id)_makeSelectedRangeDataWithAvg:(double)a3 unit:(id)a4 showUnit:(BOOL)a5 statisticsType:(int64_t)a6;
-- (id)_makeSelectedRangeDataWithMax:(double)a3 unit:(id)a4 prepend:(id)a5 statisticsType:(int64_t)a6;
-- (id)_makeSelectedRangeDataWithMin:(double)a3 max:(double)a4 unit:(id)a5 statisticsType:(int64_t)a6;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
++ (int64_t)mapSingleItemToStatisticsType:(id)type;
+- (id)_formattedAnnotationForDistributionChartData:(id)data;
+- (id)_formattedSelectedRangeLabelDataWithChartData:(id)data items:(id)items;
+- (id)_makeSelectedRangeDataWithAvg:(double)avg unit:(id)unit showUnit:(BOOL)showUnit statisticsType:(int64_t)type;
+- (id)_makeSelectedRangeDataWithMax:(double)max unit:(id)unit prepend:(id)prepend statisticsType:(int64_t)type;
+- (id)_makeSelectedRangeDataWithMin:(double)min max:(double)max unit:(id)unit statisticsType:(int64_t)type;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 - (id)selectedRangeSeparatorString;
-- (void)configureFormatterForDisplayType:(id)a3 quantityType:(id)a4 chartRangeProvider:(id)a5 timeScope:(int64_t)a6 context:(int64_t)a7;
+- (void)configureFormatterForDisplayType:(id)type quantityType:(id)quantityType chartRangeProvider:(id)provider timeScope:(int64_t)scope context:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartGenericStatFormatter
 
-- (id)_formattedSelectedRangeLabelDataWithChartData:(id)a3 items:(id)a4
+- (id)_formattedSelectedRangeLabelDataWithChartData:(id)data items:(id)items
 {
   v124[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v106 = v5;
-  if (v5 && [v5 count])
+  dataCopy = data;
+  itemsCopy = items;
+  v106 = dataCopy;
+  if (dataCopy && [dataCopy count])
   {
-    v109 = v6;
-    v107 = [v5 firstObject];
-    v7 = [(HKInteractiveChartGenericStatFormatter *)self overrideStatFormatterItemOptions];
-    v8 = [v7 firstObject];
-    v9 = [v8 integerValue];
+    v109 = itemsCopy;
+    firstObject = [dataCopy firstObject];
+    overrideStatFormatterItemOptions = [(HKInteractiveChartGenericStatFormatter *)self overrideStatFormatterItemOptions];
+    firstObject2 = [overrideStatFormatterItemOptions firstObject];
+    integerValue = [firstObject2 integerValue];
 
-    if ([v5 count] != 1 || (v9 & 0x100000) != 0 || objc_msgSend(v107, "representsRange") && (objc_msgSend(v107, "maxValue"), v11 = v10, objc_msgSend(v107, "minValue"), v11 - v12 > 2.22044605e-16))
+    if ([dataCopy count] != 1 || (integerValue & 0x100000) != 0 || objc_msgSend(firstObject, "representsRange") && (objc_msgSend(firstObject, "maxValue"), v11 = v10, objc_msgSend(firstObject, "minValue"), v11 - v12 > 2.22044605e-16))
     {
-      if ([v107 representsRange])
+      if ([firstObject representsRange])
       {
-        [v107 minValue];
+        [firstObject minValue];
       }
 
       else
       {
-        [v107 value];
+        [firstObject value];
       }
 
       v24 = v13;
-      if ([v107 representsRange])
+      if ([firstObject representsRange])
       {
-        [v107 maxValue];
+        [firstObject maxValue];
       }
 
       else
       {
-        [v107 value];
+        [firstObject value];
       }
 
       v26 = v25;
@@ -54,7 +54,7 @@
       v119 = 0u;
       v116 = 0u;
       v117 = 0u;
-      obj = v5;
+      obj = dataCopy;
       v27 = [obj countByEnumeratingWithState:&v116 objects:v123 count:16];
       if (v27)
       {
@@ -102,10 +102,10 @@
 
             [v34 value];
             v39 = v38;
-            v40 = [v34 recordCount];
-            v41 = [v34 recordCount];
-            v42 = [v34 statisticsInterval];
-            [v42 hk_approximateDuration];
+            recordCount = [v34 recordCount];
+            recordCount2 = [v34 recordCount];
+            statisticsInterval = [v34 statisticsInterval];
+            [statisticsInterval hk_approximateDuration];
             v44 = HKUIEqualDoubles(v43, v31);
 
             if (v44)
@@ -118,8 +118,8 @@
               v29 = 0;
             }
 
-            v32 = v32 + v39 * v40;
-            v28 += v41;
+            v32 = v32 + v39 * recordCount;
+            v28 += recordCount2;
           }
 
           v27 = [obj countByEnumeratingWithState:&v116 objects:v123 count:16];
@@ -136,11 +136,11 @@
         v32 = 0.0;
       }
 
-      v46 = [obj lastObject];
-      [v46 value];
+      lastObject = [obj lastObject];
+      [lastObject value];
       v48 = v47;
-      v49 = [obj firstObject];
-      [v49 value];
+      firstObject3 = [obj firstObject];
+      [firstObject3 value];
       v51 = v50;
 
       if (v29 < 1)
@@ -153,7 +153,7 @@
         v52 = v32 / v29;
       }
 
-      v14 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       if ([v109 count])
       {
         v53 = v109;
@@ -200,15 +200,15 @@
         {
           v62 = [v109 objectAtIndexedSubscript:{v56, v104}];
           v63 = [v109 count];
-          v64 = [v62 integerValue];
+          integerValue2 = [v62 integerValue];
           v65 = v63 - 1;
-          if (v64 > 2047)
+          if (integerValue2 > 2047)
           {
-            if (v64 >= 0x8000)
+            if (integerValue2 >= 0x8000)
             {
-              if (v64 >= 0x80000)
+              if (integerValue2 >= 0x80000)
               {
-                if (v64 == 0x80000)
+                if (integerValue2 == 0x80000)
                 {
                   v96 = v56 == v65;
                   if ([obj count] == 1)
@@ -221,14 +221,14 @@
                     v97 = 3;
                   }
 
-                  v98 = [v107 unit];
-                  v99 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:v98 unit:v96 showUnit:v97 statisticsType:v60];
-                  [v14 addObject:v99];
+                  unit = [firstObject unit];
+                  v99 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:unit unit:v96 showUnit:v97 statisticsType:v60];
+                  [array addObject:v99];
 
                   goto LABEL_112;
                 }
 
-                if (v64 == 0x100000)
+                if (integerValue2 == 0x100000)
                 {
                   *&buf = 0;
                   *(&buf + 1) = &buf;
@@ -249,9 +249,9 @@
                   {
                     if ((*(*(&buf + 1) + 24) & 1) == 0)
                     {
-                      v81 = [v107 unit];
-                      v82 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithMin:v81 max:9 unit:v24 statisticsType:v26];
-                      [v14 addObject:v82];
+                      unit2 = [firstObject unit];
+                      unit3 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithMin:unit2 max:9 unit:v24 statisticsType:v26];
+                      [array addObject:unit3];
 LABEL_111:
 
                       _Block_object_dispose(&v112, 8);
@@ -263,18 +263,18 @@ LABEL_104:
                     if (v113[3] >= v26)
                     {
                       v101 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-                      v81 = [v101 localizedStringForKey:@"BELOW_MAXIMUM_DEPTH" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Charon"];
+                      unit2 = [v101 localizedStringForKey:@"BELOW_MAXIMUM_DEPTH" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Charon"];
                     }
 
                     else
                     {
 LABEL_105:
-                      v81 = 0;
+                      unit2 = 0;
                     }
 
-                    v82 = [v107 unit];
-                    v102 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithMax:v82 unit:v81 prepend:29 statisticsType:v26];
-                    [v14 addObject:v102];
+                    unit3 = [firstObject unit];
+                    v102 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithMax:unit3 unit:unit2 prepend:29 statisticsType:v26];
+                    [array addObject:v102];
 
                     goto LABEL_111;
                   }
@@ -290,13 +290,13 @@ LABEL_105:
 
               else
               {
-                if (v64 == 0x8000)
+                if (integerValue2 == 0x8000)
                 {
                   v69 = 18;
                   goto LABEL_95;
                 }
 
-                if (v64 == 0x10000)
+                if (integerValue2 == 0x10000)
                 {
                   v69 = 19;
 LABEL_95:
@@ -307,19 +307,19 @@ LABEL_95:
 
             else
             {
-              if (v64 < 0x2000)
+              if (integerValue2 < 0x2000)
               {
-                if (v64 == 2048)
+                if (integerValue2 == 2048)
                 {
                   v85 = v56 == v65;
-                  v86 = [v107 unit];
-                  v87 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:v86 unit:v85 showUnit:14 statisticsType:v60];
-                  [v14 addObject:v87];
+                  unit4 = [firstObject unit];
+                  v87 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:unit4 unit:v85 showUnit:14 statisticsType:v60];
+                  [array addObject:v87];
 
                   goto LABEL_112;
                 }
 
-                if (v64 != 4096)
+                if (integerValue2 != 4096)
                 {
                   goto LABEL_112;
                 }
@@ -327,12 +327,12 @@ LABEL_95:
                 goto LABEL_81;
               }
 
-              if (v64 == 0x2000)
+              if (integerValue2 == 0x2000)
               {
                 goto LABEL_81;
               }
 
-              if (v64 == 0x4000)
+              if (integerValue2 == 0x4000)
               {
                 v69 = 17;
                 goto LABEL_95;
@@ -342,42 +342,42 @@ LABEL_95:
 
           else
           {
-            if (v64 > 31)
+            if (integerValue2 > 31)
             {
-              if (v64 > 511)
+              if (integerValue2 > 511)
               {
-                if (v64 == 512)
+                if (integerValue2 == 512)
                 {
                   v93 = v56 == v65;
-                  v94 = [v107 unit];
-                  v95 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:v94 unit:v93 showUnit:13 statisticsType:v60];
-                  [v14 addObject:v95];
+                  unit5 = [firstObject unit];
+                  v95 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:unit5 unit:v93 showUnit:13 statisticsType:v60];
+                  [array addObject:v95];
                 }
 
-                else if (v64 == 1024)
+                else if (integerValue2 == 1024)
                 {
                   v78 = v56 == v65;
-                  v79 = [v107 unit];
-                  v80 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:v79 unit:v78 showUnit:12 statisticsType:v60];
-                  [v14 addObject:v80];
+                  unit6 = [firstObject unit];
+                  v80 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:unit6 unit:v78 showUnit:12 statisticsType:v60];
+                  [array addObject:v80];
                 }
               }
 
-              else if (v64 == 32)
+              else if (integerValue2 == 32)
               {
                 v88 = v56 == v65;
                 v89 = [[HKSelectedRangeData alloc] initWithStatisticsType:v59];
-                v90 = [v107 unit];
-                v91 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v90 unit:v88 showUnit:v61];
+                unit7 = [firstObject unit];
+                v91 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:unit7 unit:v88 showUnit:v61];
                 [(HKSelectedRangeData *)v89 setAttributedString:v91];
 
                 v92 = [MEMORY[0x1E696AD98] numberWithDouble:v61];
                 [(HKSelectedRangeData *)v89 setValueAsNumber:v92];
 
-                [v14 addObject:v89];
+                [array addObject:v89];
               }
 
-              else if (v64 == 128)
+              else if (integerValue2 == 128)
               {
                 if (v29 < 1)
                 {
@@ -394,31 +394,31 @@ LABEL_95:
                 else
                 {
                   v66 = v56 == v65;
-                  v67 = [v107 unit];
-                  v68 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:v67 unit:v66 showUnit:8 statisticsType:v52];
-                  [v14 addObject:v68];
+                  unit8 = [firstObject unit];
+                  v68 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:unit8 unit:v66 showUnit:8 statisticsType:v52];
+                  [array addObject:v68];
                 }
               }
 
               goto LABEL_112;
             }
 
-            if (v64 > 7)
+            if (integerValue2 > 7)
             {
-              if (v64 != 8)
+              if (integerValue2 != 8)
               {
-                if (v64 == 16)
+                if (integerValue2 == 16)
                 {
                   v70 = v56 == v65;
                   v71 = [[HKSelectedRangeData alloc] initWithStatisticsType:5];
-                  v72 = [v107 unit];
-                  v73 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v72 unit:v70 showUnit:v32];
+                  unit9 = [firstObject unit];
+                  v73 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:unit9 unit:v70 showUnit:v32];
                   [(HKSelectedRangeData *)v71 setAttributedString:v73];
 
                   v74 = [MEMORY[0x1E696AD98] numberWithDouble:v32];
                   [(HKSelectedRangeData *)v71 setValueAsNumber:v74];
 
-                  [v14 addObject:v71];
+                  [array addObject:v71];
                 }
 
                 goto LABEL_112;
@@ -426,14 +426,14 @@ LABEL_95:
 
 LABEL_81:
               v75 = v56 == v65;
-              v76 = [v107 unit];
-              v77 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:v76 unit:v75 showUnit:3 statisticsType:v60];
-              [v14 addObject:v77];
+              unit10 = [firstObject unit];
+              v77 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithAvg:unit10 unit:v75 showUnit:3 statisticsType:v60];
+              [array addObject:v77];
 
               goto LABEL_112;
             }
 
-            if (v64 == 2)
+            if (integerValue2 == 2)
             {
               if ((v55 | 1) != 3)
               {
@@ -442,15 +442,15 @@ LABEL_81:
               }
 
 LABEL_91:
-              v83 = [v107 unit];
-              v84 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithMin:v83 max:v105 unit:v24 statisticsType:v26];
-              [v14 addObject:v84];
+              unit11 = [firstObject unit];
+              v84 = [(HKInteractiveChartGenericStatFormatter *)self _makeSelectedRangeDataWithMin:unit11 max:v105 unit:v24 statisticsType:v26];
+              [array addObject:v84];
 
               v55 = 0;
               goto LABEL_112;
             }
 
-            if (v64 == 4)
+            if (integerValue2 == 4)
             {
               if ((v55 & 0xFFFFFFFFFFFFFFFDLL) != 1)
               {
@@ -473,12 +473,12 @@ LABEL_112:
 
     else
     {
-      v15 = [v109 firstObject];
-      v16 = [HKInteractiveChartGenericStatFormatter mapSingleItemToStatisticsType:v15];
+      firstObject4 = [v109 firstObject];
+      v16 = [HKInteractiveChartGenericStatFormatter mapSingleItemToStatisticsType:firstObject4];
 
       if (!v16)
       {
-        if ([v107 recordCount] <= 1)
+        if ([firstObject recordCount] <= 1)
         {
           v16 = 0;
         }
@@ -490,31 +490,31 @@ LABEL_112:
       }
 
       v17 = [[HKSelectedRangeData alloc] initWithStatisticsType:v16];
-      [v107 minValue];
+      [firstObject minValue];
       v19 = v18;
-      v20 = [v107 unit];
-      v21 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v20 unit:1 showUnit:v19];
+      unit12 = [firstObject unit];
+      v21 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:unit12 unit:1 showUnit:v19];
       [(HKSelectedRangeData *)v17 setAttributedString:v21];
 
       [(HKSelectedRangeData *)v17 setDataType:0];
       v22 = MEMORY[0x1E696AD98];
-      [v107 minValue];
+      [firstObject minValue];
       v23 = [v22 numberWithDouble:?];
       [(HKSelectedRangeData *)v17 setValueAsNumber:v23];
 
       v124[0] = v17;
-      v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:1];
+      array = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:1];
     }
 
-    v6 = v109;
+    itemsCopy = v109;
   }
 
   else
   {
-    v14 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v14;
+  return array;
 }
 
 uint64_t __94__HKInteractiveChartGenericStatFormatter__formattedSelectedRangeLabelDataWithChartData_items___block_invoke(uint64_t a1, void *a2)
@@ -548,15 +548,15 @@ uint64_t __94__HKInteractiveChartGenericStatFormatter__formattedSelectedRangeLab
   return MEMORY[0x1EEE66BB8](isKindOfClass, v4);
 }
 
-- (void)configureFormatterForDisplayType:(id)a3 quantityType:(id)a4 chartRangeProvider:(id)a5 timeScope:(int64_t)a6 context:(int64_t)a7
+- (void)configureFormatterForDisplayType:(id)type quantityType:(id)quantityType chartRangeProvider:(id)provider timeScope:(int64_t)scope context:(int64_t)context
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  objc_storeStrong(&self->_chartRangeProvider, a5);
-  v15 = [v12 chartingRules];
-  if ([v15 chartStyleForTimeScope:a6] == 3)
+  typeCopy = type;
+  quantityTypeCopy = quantityType;
+  providerCopy = provider;
+  objc_storeStrong(&self->_chartRangeProvider, provider);
+  chartingRules = [typeCopy chartingRules];
+  if ([chartingRules chartStyleForTimeScope:scope] == 3)
   {
 
 LABEL_4:
@@ -566,16 +566,16 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v16 = [v12 chartingRules];
-  v17 = [v16 chartStyleForTimeScope:a6];
+  chartingRules2 = [typeCopy chartingRules];
+  v17 = [chartingRules2 chartStyleForTimeScope:scope];
 
   if (v17 == 9)
   {
     goto LABEL_4;
   }
 
-  v19 = [v13 identifier];
-  v20 = [v19 isEqualToString:*MEMORY[0x1E696BD78]];
+  identifier = [quantityTypeCopy identifier];
+  v20 = [identifier isEqualToString:*MEMORY[0x1E696BD78]];
 
   if (v20)
   {
@@ -583,8 +583,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v21 = [v13 identifier];
-  v22 = [v21 isEqualToString:*MEMORY[0x1E696BE08]];
+  identifier2 = [quantityTypeCopy identifier];
+  v22 = [identifier2 isEqualToString:*MEMORY[0x1E696BE08]];
 
   if (v22)
   {
@@ -592,11 +592,11 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if ([v12 displayTypeIdentifier] != 125)
+  if ([typeCopy displayTypeIdentifier] != 125)
   {
-    if ([v13 aggregationStyle])
+    if ([quantityTypeCopy aggregationStyle])
     {
-      if (a6 == 2 || a7 == 1)
+      if (scope == 2 || context == 1)
       {
         v18 = &unk_1F4381150;
       }
@@ -609,22 +609,22 @@ LABEL_5:
 
     else
     {
-      if (a6 > 8)
+      if (scope > 8)
       {
         goto LABEL_6;
       }
 
-      if (((1 << a6) & 0x1C3) != 0)
+      if (((1 << scope) & 0x1C3) != 0)
       {
         v18 = &unk_1F4381138;
       }
 
-      else if (((1 << a6) & 0xC) != 0)
+      else if (((1 << scope) & 0xC) != 0)
       {
         v18 = &unk_1F4381120;
       }
 
-      else if (a7 == 1)
+      else if (context == 1)
       {
         v18 = &unk_1F43810F0;
       }
@@ -638,14 +638,14 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v23 = (a7 == 0) << 6;
+  v23 = (context == 0) << 6;
   v24 = v23 | 8;
-  if ((a6 - 6) < 3)
+  if ((scope - 6) < 3)
   {
     v23 |= 0x10uLL;
   }
 
-  if (a6 >= 6)
+  if (scope >= 6)
   {
     v25 = v23;
   }
@@ -663,55 +663,55 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)_makeSelectedRangeDataWithAvg:(double)a3 unit:(id)a4 showUnit:(BOOL)a5 statisticsType:(int64_t)a6
+- (id)_makeSelectedRangeDataWithAvg:(double)avg unit:(id)unit showUnit:(BOOL)showUnit statisticsType:(int64_t)type
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = [[HKSelectedRangeData alloc] initWithStatisticsType:a6];
-  v12 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v10 unit:v7 showUnit:a3];
+  showUnitCopy = showUnit;
+  unitCopy = unit;
+  v11 = [[HKSelectedRangeData alloc] initWithStatisticsType:type];
+  v12 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:unitCopy unit:showUnitCopy showUnit:avg];
 
   [(HKSelectedRangeData *)v11 setAttributedString:v12];
-  v13 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithDouble:avg];
   [(HKSelectedRangeData *)v11 setValueAsNumber:v13];
 
   return v11;
 }
 
-- (id)_makeSelectedRangeDataWithMin:(double)a3 max:(double)a4 unit:(id)a5 statisticsType:(int64_t)a6
+- (id)_makeSelectedRangeDataWithMin:(double)min max:(double)max unit:(id)unit statisticsType:(int64_t)type
 {
-  v10 = a5;
-  v11 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v10 unit:1 showUnit:a3];
-  v12 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v10 unit:1 showUnit:a4];
-  v13 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v14 = [(HKInteractiveChartDataFormatter *)self unitStringFromUnit:v10 number:v13];
+  unitCopy = unit;
+  v11 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:unitCopy unit:1 showUnit:min];
+  v12 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:unitCopy unit:1 showUnit:max];
+  v13 = [MEMORY[0x1E696AD98] numberWithDouble:min];
+  v14 = [(HKInteractiveChartDataFormatter *)self unitStringFromUnit:unitCopy number:v13];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  v16 = [(HKInteractiveChartDataFormatter *)self unitStringFromUnit:v10 number:v15];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:max];
+  v16 = [(HKInteractiveChartDataFormatter *)self unitStringFromUnit:unitCopy number:v15];
 
   v26 = 0;
   v17 = objc_alloc_init(HKInteractiveChartNumberRangeFormatter);
-  v18 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v19 = [(HKInteractiveChartNumberRangeFormatter *)v17 attributedStringForMinimumString:v11 maximumString:v12 minimumUnitString:v14 maximumUnitString:v16 valueFont:v18 formatForChart:1 resultIsASingleValue:&v26];
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  v19 = [(HKInteractiveChartNumberRangeFormatter *)v17 attributedStringForMinimumString:v11 maximumString:v12 minimumUnitString:v14 maximumUnitString:v16 valueFont:majorFont formatForChart:1 resultIsASingleValue:&v26];
 
   v20 = v26;
   v21 = [HKSelectedRangeData alloc];
   if (v20)
   {
-    v22 = 0;
+    typeCopy = 0;
   }
 
   else
   {
-    v22 = a6;
+    typeCopy = type;
   }
 
   if (v20)
   {
-    a4 = a3;
+    max = min;
   }
 
-  v23 = [(HKSelectedRangeData *)v21 initWithStatisticsType:v22];
-  v24 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v23 = [(HKSelectedRangeData *)v21 initWithStatisticsType:typeCopy];
+  v24 = [MEMORY[0x1E696AD98] numberWithDouble:max];
   [(HKSelectedRangeData *)v23 setValueAsNumber:v24];
 
   [(HKSelectedRangeData *)v23 setAttributedString:v19];
@@ -719,18 +719,18 @@ LABEL_6:
   return v23;
 }
 
-- (id)_makeSelectedRangeDataWithMax:(double)a3 unit:(id)a4 prepend:(id)a5 statisticsType:(int64_t)a6
+- (id)_makeSelectedRangeDataWithMax:(double)max unit:(id)unit prepend:(id)prepend statisticsType:(int64_t)type
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a4;
-  v12 = [[HKSelectedRangeData alloc] initWithStatisticsType:a6];
-  v13 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:v11 unit:1 showUnit:a3];
+  prependCopy = prepend;
+  unitCopy = unit;
+  v12 = [[HKSelectedRangeData alloc] initWithStatisticsType:type];
+  v13 = [(HKInteractiveChartDataFormatter *)self attributedStringWithValue:unitCopy unit:1 showUnit:max];
 
-  if (v10)
+  if (prependCopy)
   {
     v14 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v13];
-    v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v10];
+    v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:prependCopy];
     [v14 insertAttributedString:v15 atIndex:0];
 
     v13 = v14;
@@ -741,7 +741,7 @@ LABEL_6:
   v17 = HKUIJoinAttributedStringsForLocale(v16);
   [(HKSelectedRangeData *)v12 setAttributedString:v17];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v18 = [MEMORY[0x1E696AD98] numberWithDouble:max];
   [(HKSelectedRangeData *)v12 setValueAsNumber:v18];
 
   return v12;
@@ -755,12 +755,12 @@ LABEL_6:
   return v3;
 }
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
-  v5 = a3;
-  v6 = [(HKInteractiveChartGenericStatFormatter *)self overrideStatFormatterItemOptions];
+  dataCopy = data;
+  overrideStatFormatterItemOptions = [(HKInteractiveChartGenericStatFormatter *)self overrideStatFormatterItemOptions];
 
-  if (v6)
+  if (overrideStatFormatterItemOptions)
   {
     [(HKInteractiveChartGenericStatFormatter *)self overrideStatFormatterItemOptions];
   }
@@ -770,32 +770,32 @@ LABEL_6:
     [(HKInteractiveChartGenericStatFormatter *)self configuredStatItems];
   }
   v7 = ;
-  v8 = [(HKInteractiveChartGenericStatFormatter *)self _formattedSelectedRangeLabelDataWithChartData:v5 items:v7];
+  v8 = [(HKInteractiveChartGenericStatFormatter *)self _formattedSelectedRangeLabelDataWithChartData:dataCopy items:v7];
 
   return v8;
 }
 
-+ (int64_t)mapSingleItemToStatisticsType:(id)a3
++ (int64_t)mapSingleItemToStatisticsType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy)
   {
-    v5 = [v3 integerValue];
+    integerValue = [typeCopy integerValue];
     v6 = 18;
     v7 = 19;
     v8 = 24;
-    if (v5 != 0x80000)
+    if (integerValue != 0x80000)
     {
       v8 = 0;
     }
 
-    if (v5 != 0x10000)
+    if (integerValue != 0x10000)
     {
       v7 = v8;
     }
 
-    if (v5 != 0x8000)
+    if (integerValue != 0x8000)
     {
       v6 = v7;
     }
@@ -803,22 +803,22 @@ LABEL_6:
     v9 = 15;
     v10 = 16;
     v11 = 17;
-    if (v5 != 0x4000)
+    if (integerValue != 0x4000)
     {
       v11 = 0;
     }
 
-    if (v5 != 0x2000)
+    if (integerValue != 0x2000)
     {
       v10 = v11;
     }
 
-    if (v5 != 4096)
+    if (integerValue != 4096)
     {
       v9 = v10;
     }
 
-    if (v5 < 0x8000)
+    if (integerValue < 0x8000)
     {
       v6 = v9;
     }
@@ -826,17 +826,17 @@ LABEL_6:
     v12 = 13;
     v13 = 12;
     v14 = 14;
-    if (v5 != 2048)
+    if (integerValue != 2048)
     {
       v14 = 0;
     }
 
-    if (v5 != 1024)
+    if (integerValue != 1024)
     {
       v13 = v14;
     }
 
-    if (v5 != 512)
+    if (integerValue != 512)
     {
       v12 = v13;
     }
@@ -844,27 +844,27 @@ LABEL_6:
     v15 = 5;
     v16 = 8;
     v17 = 11;
-    if (v5 != 256)
+    if (integerValue != 256)
     {
       v17 = 0;
     }
 
-    if (v5 != 128)
+    if (integerValue != 128)
     {
       v16 = v17;
     }
 
-    if (v5 != 16)
+    if (integerValue != 16)
     {
       v15 = v16;
     }
 
-    if (v5 <= 511)
+    if (integerValue <= 511)
     {
       v12 = v15;
     }
 
-    if (v5 <= 4095)
+    if (integerValue <= 4095)
     {
       v18 = v12;
     }
@@ -883,20 +883,20 @@ LABEL_6:
   return v18;
 }
 
-- (id)_formattedAnnotationForDistributionChartData:(id)a3
+- (id)_formattedAnnotationForDistributionChartData:(id)data
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  [v5 minimumValue];
+  dataCopy = data;
+  firstObject = [dataCopy firstObject];
+  [firstObject minimumValue];
   v7 = v6;
-  [v5 maximumValue];
+  [firstObject maximumValue];
   v9 = v8;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v4;
+  v10 = dataCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v11)
   {
@@ -931,8 +931,8 @@ LABEL_6:
     while (v12);
   }
 
-  v18 = [v5 unit];
-  v19 = [(HKInteractiveChartGenericStatFormatter *)self _formatMin:v18 max:v7 unit:v9];
+  unit = [firstObject unit];
+  v19 = [(HKInteractiveChartGenericStatFormatter *)self _formatMin:unit max:v7 unit:v9];
 
   v26 = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];

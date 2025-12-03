@@ -1,7 +1,7 @@
 @interface AVOccasionalTimebaseObserver
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_nextFiringTimeAfterTime:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_previousFiringTimeBeforeTime:(SEL)a3;
-- (AVOccasionalTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)a3 times:(id)a4 queue:(id)a5 block:(id)a6;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_nextFiringTimeAfterTime:(SEL)time;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_previousFiringTimeBeforeTime:(SEL)time;
+- (AVOccasionalTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)timebase times:(id)times queue:(id)queue block:(id)block;
 - (void)_effectiveRateChanged;
 - (void)_fireBlock;
 - (void)_handleTimeDiscontinuity;
@@ -11,14 +11,14 @@
 
 @implementation AVOccasionalTimebaseObserver
 
-- (AVOccasionalTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)a3 times:(id)a4 queue:(id)a5 block:(id)a6
+- (AVOccasionalTimebaseObserver)initWithTimebase:(OpaqueCMTimebase *)timebase times:(id)times queue:(id)queue block:(id)block
 {
   v27.receiver = self;
   v27.super_class = AVOccasionalTimebaseObserver;
-  v9 = [(AVTimebaseObserver *)&v27 initWithTimebase:a3 queue:a5];
+  v9 = [(AVTimebaseObserver *)&v27 initWithTimebase:timebase queue:queue];
   if (v9)
   {
-    if ([a4 count])
+    if ([times count])
     {
       goto LABEL_7;
     }
@@ -39,13 +39,13 @@
       [(AVTimebaseObserver *)v9 invalidate];
     }
 
-    if ([a4 count])
+    if ([times count])
     {
 LABEL_7:
-      if (a6)
+      if (block)
       {
-        v9->_times = [a4 sortedArrayUsingComparator:&__block_literal_global_9];
-        v9->_block = [a6 copy];
+        v9->_times = [times sortedArrayUsingComparator:&__block_literal_global_9];
+        v9->_block = [block copy];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __67__AVOccasionalTimebaseObserver_initWithTimebase_times_queue_block___block_invoke_4;
@@ -170,7 +170,7 @@ void __67__AVOccasionalTimebaseObserver_initWithTimebase_times_queue_block___blo
   }
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_previousFiringTimeBeforeTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_previousFiringTimeBeforeTime:(SEL)time
 {
   v7 = [(NSArray *)self->_times count];
   times = self->_times;
@@ -248,7 +248,7 @@ uint64_t __62__AVOccasionalTimebaseObserver__previousFiringTimeBeforeTime___bloc
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_nextFiringTimeAfterTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_nextFiringTimeAfterTime:(SEL)time
 {
   times = self->_times;
   v9[0] = MEMORY[0x1E69E9820];

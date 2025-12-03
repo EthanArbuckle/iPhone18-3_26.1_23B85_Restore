@@ -1,47 +1,47 @@
 @interface DNDSClientConnectionDetails
-- (id)_initWithDetails:(id)a3;
-- (id)_initWithInterruptionInvalidationAssertionUUID:(id)a3 assertionUpdateClientIdentifiers:(id)a4 activeAssertionUpdateClientIdentifiers:(id)a5 wantsStateUpdates:(BOOL)a6 wantsSettingsUpdates:(BOOL)a7 wantsModeUpdates:(BOOL)a8 wantsActiveModeUpdates:(BOOL)a9 wantsGlobalConfigurationUpdates:(BOOL)a10 wantsMeDeviceStateUpdates:(BOOL)a11;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithDetails:(id)details;
+- (id)_initWithInterruptionInvalidationAssertionUUID:(id)d assertionUpdateClientIdentifiers:(id)identifiers activeAssertionUpdateClientIdentifiers:(id)clientIdentifiers wantsStateUpdates:(BOOL)updates wantsSettingsUpdates:(BOOL)settingsUpdates wantsModeUpdates:(BOOL)modeUpdates wantsActiveModeUpdates:(BOOL)activeModeUpdates wantsGlobalConfigurationUpdates:(BOOL)self0 wantsMeDeviceStateUpdates:(BOOL)self1;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DNDSClientConnectionDetails
 
-- (id)_initWithDetails:(id)a3
+- (id)_initWithDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(DNDSClientConnectionDetails *)self interruptionInvalidationAssertionUUID];
-  v6 = [v4 assertionUpdateClientIdentifiers];
-  v7 = [v4 activeAssertionUpdateClientIdentifiers];
-  v16 = [v4 wantsStateUpdates];
-  v8 = [v4 wantsSettingsUpdates];
-  v9 = [v4 wantsModeUpdates];
-  v10 = [v4 wantsActiveModeUpdates];
-  v11 = [v4 wantsGlobalConfigurationUpdates];
-  v12 = [v4 wantsMeDeviceStateUpdates];
+  detailsCopy = details;
+  interruptionInvalidationAssertionUUID = [(DNDSClientConnectionDetails *)self interruptionInvalidationAssertionUUID];
+  assertionUpdateClientIdentifiers = [detailsCopy assertionUpdateClientIdentifiers];
+  activeAssertionUpdateClientIdentifiers = [detailsCopy activeAssertionUpdateClientIdentifiers];
+  wantsStateUpdates = [detailsCopy wantsStateUpdates];
+  wantsSettingsUpdates = [detailsCopy wantsSettingsUpdates];
+  wantsModeUpdates = [detailsCopy wantsModeUpdates];
+  wantsActiveModeUpdates = [detailsCopy wantsActiveModeUpdates];
+  wantsGlobalConfigurationUpdates = [detailsCopy wantsGlobalConfigurationUpdates];
+  wantsMeDeviceStateUpdates = [detailsCopy wantsMeDeviceStateUpdates];
 
-  BYTE2(v15) = v12;
-  BYTE1(v15) = v11;
-  LOBYTE(v15) = v10;
-  v13 = [DNDSClientConnectionDetails _initWithInterruptionInvalidationAssertionUUID:"_initWithInterruptionInvalidationAssertionUUID:assertionUpdateClientIdentifiers:activeAssertionUpdateClientIdentifiers:wantsStateUpdates:wantsSettingsUpdates:wantsModeUpdates:wantsActiveModeUpdates:wantsGlobalConfigurationUpdates:wantsMeDeviceStateUpdates:" assertionUpdateClientIdentifiers:v5 activeAssertionUpdateClientIdentifiers:v6 wantsStateUpdates:v7 wantsSettingsUpdates:v16 wantsModeUpdates:v8 wantsActiveModeUpdates:v9 wantsGlobalConfigurationUpdates:v15 wantsMeDeviceStateUpdates:?];
+  BYTE2(v15) = wantsMeDeviceStateUpdates;
+  BYTE1(v15) = wantsGlobalConfigurationUpdates;
+  LOBYTE(v15) = wantsActiveModeUpdates;
+  v13 = [DNDSClientConnectionDetails _initWithInterruptionInvalidationAssertionUUID:"_initWithInterruptionInvalidationAssertionUUID:assertionUpdateClientIdentifiers:activeAssertionUpdateClientIdentifiers:wantsStateUpdates:wantsSettingsUpdates:wantsModeUpdates:wantsActiveModeUpdates:wantsGlobalConfigurationUpdates:wantsMeDeviceStateUpdates:" assertionUpdateClientIdentifiers:interruptionInvalidationAssertionUUID activeAssertionUpdateClientIdentifiers:assertionUpdateClientIdentifiers wantsStateUpdates:activeAssertionUpdateClientIdentifiers wantsSettingsUpdates:wantsStateUpdates wantsModeUpdates:wantsSettingsUpdates wantsActiveModeUpdates:wantsModeUpdates wantsGlobalConfigurationUpdates:v15 wantsMeDeviceStateUpdates:?];
 
   return v13;
 }
 
-- (id)_initWithInterruptionInvalidationAssertionUUID:(id)a3 assertionUpdateClientIdentifiers:(id)a4 activeAssertionUpdateClientIdentifiers:(id)a5 wantsStateUpdates:(BOOL)a6 wantsSettingsUpdates:(BOOL)a7 wantsModeUpdates:(BOOL)a8 wantsActiveModeUpdates:(BOOL)a9 wantsGlobalConfigurationUpdates:(BOOL)a10 wantsMeDeviceStateUpdates:(BOOL)a11
+- (id)_initWithInterruptionInvalidationAssertionUUID:(id)d assertionUpdateClientIdentifiers:(id)identifiers activeAssertionUpdateClientIdentifiers:(id)clientIdentifiers wantsStateUpdates:(BOOL)updates wantsSettingsUpdates:(BOOL)settingsUpdates wantsModeUpdates:(BOOL)modeUpdates wantsActiveModeUpdates:(BOOL)activeModeUpdates wantsGlobalConfigurationUpdates:(BOOL)self0 wantsMeDeviceStateUpdates:(BOOL)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
+  dCopy = d;
+  identifiersCopy = identifiers;
+  clientIdentifiersCopy = clientIdentifiers;
   v32.receiver = self;
   v32.super_class = DNDSClientConnectionDetails;
   v20 = [(DNDSClientConnectionDetails *)&v32 init];
   if (v20)
   {
-    v21 = [v17 copy];
+    v21 = [dCopy copy];
     interruptionInvalidationAssertionUUID = v20->_interruptionInvalidationAssertionUUID;
     v20->_interruptionInvalidationAssertionUUID = v21;
 
-    v23 = [v18 copy];
+    v23 = [identifiersCopy copy];
     v24 = v23;
     if (v23)
     {
@@ -56,7 +56,7 @@
     assertionUpdateClientIdentifiers = v20->_assertionUpdateClientIdentifiers;
     v20->_assertionUpdateClientIdentifiers = v25;
 
-    v27 = [v19 copy];
+    v27 = [clientIdentifiersCopy copy];
     v28 = v27;
     if (v27)
     {
@@ -71,18 +71,18 @@
     activeAssertionUpdateClientIdentifiers = v20->_activeAssertionUpdateClientIdentifiers;
     v20->_activeAssertionUpdateClientIdentifiers = v29;
 
-    v20->_wantsStateUpdates = a6;
-    v20->_wantsSettingsUpdates = a7;
-    v20->_wantsModeUpdates = a8;
-    v20->_wantsActiveModeUpdates = a9;
-    v20->_wantsGlobalConfigurationUpdates = a10;
-    v20->_wantsMeDeviceStateUpdates = a11;
+    v20->_wantsStateUpdates = updates;
+    v20->_wantsSettingsUpdates = settingsUpdates;
+    v20->_wantsModeUpdates = modeUpdates;
+    v20->_wantsActiveModeUpdates = activeModeUpdates;
+    v20->_wantsGlobalConfigurationUpdates = configurationUpdates;
+    v20->_wantsMeDeviceStateUpdates = stateUpdates;
   }
 
   return v20;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableClientConnectionDetails alloc];
 

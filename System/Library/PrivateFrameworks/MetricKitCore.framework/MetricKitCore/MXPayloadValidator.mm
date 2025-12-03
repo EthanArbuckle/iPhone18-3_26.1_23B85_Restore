@@ -1,61 +1,61 @@
 @interface MXPayloadValidator
-- (BOOL)_validateHangTracerData:(id)a3;
-- (BOOL)_validatePayload:(id)a3;
-- (BOOL)_validatePowerlogData:(id)a3;
-- (BOOL)_validateReportCrashData:(id)a3;
-- (BOOL)_validateSpaceAttributionData:(id)a3;
-- (BOOL)_validateSpinTracerData:(id)a3;
-- (BOOL)validatePayload:(id)a3;
-- (MXPayloadValidator)initWithLogHandle:(id)a3;
-- (void)_sanitizeDeviceMetadataForDiagnostic:(id)a3;
+- (BOOL)_validateHangTracerData:(id)data;
+- (BOOL)_validatePayload:(id)payload;
+- (BOOL)_validatePowerlogData:(id)data;
+- (BOOL)_validateReportCrashData:(id)data;
+- (BOOL)_validateSpaceAttributionData:(id)data;
+- (BOOL)_validateSpinTracerData:(id)data;
+- (BOOL)validatePayload:(id)payload;
+- (MXPayloadValidator)initWithLogHandle:(id)handle;
+- (void)_sanitizeDeviceMetadataForDiagnostic:(id)diagnostic;
 @end
 
 @implementation MXPayloadValidator
 
-- (MXPayloadValidator)initWithLogHandle:(id)a3
+- (MXPayloadValidator)initWithLogHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = MXPayloadValidator;
   v6 = [(MXPayloadValidator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logHandle, a3);
+    objc_storeStrong(&v6->_logHandle, handle);
   }
 
   return v7;
 }
 
-- (BOOL)validatePayload:(id)a3
+- (BOOL)validatePayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(MXPayloadValidator *)self _validatePayload:v4];
+  payloadCopy = payload;
+  v5 = [(MXPayloadValidator *)self _validatePayload:payloadCopy];
   if (!v5)
   {
     logHandle = self->_logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      [(MXPayloadValidator *)v4 validatePayload:?];
+      [(MXPayloadValidator *)payloadCopy validatePayload:?];
     }
   }
 
   return v5;
 }
 
-- (BOOL)_validatePayload:(id)a3
+- (BOOL)_validatePayload:(id)payload
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  payloadCopy = payload;
+  v5 = payloadCopy;
+  if (payloadCopy)
   {
-    v6 = [v4 datestamp];
+    datestamp = [payloadCopy datestamp];
 
-    if (v6)
+    if (datestamp)
     {
-      v7 = [v5 sourceID];
-      v8 = [v5 metrics];
-      if (!v8)
+      sourceID = [v5 sourceID];
+      metrics = [v5 metrics];
+      if (!metrics)
       {
         logHandle = self->_logHandle;
         if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
@@ -68,33 +68,33 @@
       }
 
       v9 = 0;
-      if (v7 <= 3)
+      if (sourceID <= 3)
       {
-        if (v7 == 2)
+        if (sourceID == 2)
         {
-          v10 = [(MXPayloadValidator *)self _validatePowerlogData:v8];
+          v10 = [(MXPayloadValidator *)self _validatePowerlogData:metrics];
           goto LABEL_23;
         }
 
-        if (v7 == 3)
+        if (sourceID == 3)
         {
-          v10 = [(MXPayloadValidator *)self _validateHangTracerData:v8];
+          v10 = [(MXPayloadValidator *)self _validateHangTracerData:metrics];
           goto LABEL_23;
         }
       }
 
       else
       {
-        switch(v7)
+        switch(sourceID)
         {
           case 4:
-            v10 = [(MXPayloadValidator *)self _validateSpinTracerData:v8];
+            v10 = [(MXPayloadValidator *)self _validateSpinTracerData:metrics];
             goto LABEL_23;
           case 5:
-            v10 = [(MXPayloadValidator *)self _validateReportCrashData:v8];
+            v10 = [(MXPayloadValidator *)self _validateReportCrashData:metrics];
             goto LABEL_23;
           case 6:
-            v10 = [(MXPayloadValidator *)self _validateSpaceAttributionData:v8];
+            v10 = [(MXPayloadValidator *)self _validateSpaceAttributionData:metrics];
 LABEL_23:
             v9 = v10;
             break;
@@ -124,15 +124,15 @@ LABEL_25:
   return v9;
 }
 
-- (BOOL)_validatePowerlogData:(id)a3
+- (BOOL)_validatePowerlogData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dataCopy = data;
+  v5 = [dataCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -143,10 +143,10 @@ LABEL_25:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataCopy);
         }
 
-        v9 = [v4 objectForKey:{*(*(&v13 + 1) + 8 * i), v13}];
+        v9 = [dataCopy objectForKey:{*(*(&v13 + 1) + 8 * i), v13}];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
@@ -160,7 +160,7 @@ LABEL_25:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [dataCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       v10 = 1;
       if (v6)
       {
@@ -182,15 +182,15 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)_validateHangTracerData:(id)a3
+- (BOOL)_validateHangTracerData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  dataCopy = data;
+  v5 = [dataCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -201,10 +201,10 @@ LABEL_15:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataCopy);
         }
 
-        v9 = [v4 objectForKey:{*(*(&v16 + 1) + 8 * i), v16}];
+        v9 = [dataCopy objectForKey:{*(*(&v16 + 1) + 8 * i), v16}];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
@@ -218,15 +218,15 @@ LABEL_15:
         }
 
         v10 = v9;
-        v11 = [v10 hangDiagnostic];
-        [(MXPayloadValidator *)self _sanitizeDeviceMetadataForDiagnostic:v11];
+        hangDiagnostic = [v10 hangDiagnostic];
+        [(MXPayloadValidator *)self _sanitizeDeviceMetadataForDiagnostic:hangDiagnostic];
 
-        v12 = [v10 appLaunchDiagnostic];
+        appLaunchDiagnostic = [v10 appLaunchDiagnostic];
 
-        [(MXPayloadValidator *)self _sanitizeDeviceMetadataForDiagnostic:v12];
+        [(MXPayloadValidator *)self _sanitizeDeviceMetadataForDiagnostic:appLaunchDiagnostic];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [dataCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       v13 = 1;
       if (v6)
       {
@@ -248,15 +248,15 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)_validateSpinTracerData:(id)a3
+- (BOOL)_validateSpinTracerData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  dataCopy = data;
+  v5 = [dataCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -267,10 +267,10 @@ LABEL_15:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataCopy);
         }
 
-        v9 = [v4 objectForKey:{*(*(&v16 + 1) + 8 * i), v16}];
+        v9 = [dataCopy objectForKey:{*(*(&v16 + 1) + 8 * i), v16}];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
@@ -284,15 +284,15 @@ LABEL_15:
         }
 
         v10 = v9;
-        v11 = [v10 cpuExceptionDiagnostic];
-        [(MXPayloadValidator *)self _sanitizeDeviceMetadataForDiagnostic:v11];
+        cpuExceptionDiagnostic = [v10 cpuExceptionDiagnostic];
+        [(MXPayloadValidator *)self _sanitizeDeviceMetadataForDiagnostic:cpuExceptionDiagnostic];
 
-        v12 = [v10 diskWriteExceptionDiagnostic];
+        diskWriteExceptionDiagnostic = [v10 diskWriteExceptionDiagnostic];
 
-        [(MXPayloadValidator *)self _sanitizeDeviceMetadataForDiagnostic:v12];
+        [(MXPayloadValidator *)self _sanitizeDeviceMetadataForDiagnostic:diskWriteExceptionDiagnostic];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [dataCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       v13 = 1;
       if (v6)
       {
@@ -314,15 +314,15 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)_validateReportCrashData:(id)a3
+- (BOOL)_validateReportCrashData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  dataCopy = data;
+  v5 = [dataCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -333,10 +333,10 @@ LABEL_15:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataCopy);
         }
 
-        v9 = [v4 objectForKey:{*(*(&v14 + 1) + 8 * i), v14}];
+        v9 = [dataCopy objectForKey:{*(*(&v14 + 1) + 8 * i), v14}];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
@@ -349,11 +349,11 @@ LABEL_15:
           goto LABEL_15;
         }
 
-        v10 = [v9 crashDiagnostic];
-        [(MXPayloadValidator *)self _sanitizeDeviceMetadataForDiagnostic:v10];
+        crashDiagnostic = [v9 crashDiagnostic];
+        [(MXPayloadValidator *)self _sanitizeDeviceMetadataForDiagnostic:crashDiagnostic];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [dataCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       v11 = 1;
       if (v6)
       {
@@ -375,15 +375,15 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)_validateSpaceAttributionData:(id)a3
+- (BOOL)_validateSpaceAttributionData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dataCopy = data;
+  v5 = [dataCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -394,10 +394,10 @@ LABEL_15:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataCopy);
         }
 
-        v9 = [v4 objectForKey:{*(*(&v13 + 1) + 8 * i), v13}];
+        v9 = [dataCopy objectForKey:{*(*(&v13 + 1) + 8 * i), v13}];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
@@ -411,7 +411,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [dataCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       v10 = 1;
       if (v6)
       {
@@ -433,29 +433,29 @@ LABEL_15:
   return v10;
 }
 
-- (void)_sanitizeDeviceMetadataForDiagnostic:(id)a3
+- (void)_sanitizeDeviceMetadataForDiagnostic:(id)diagnostic
 {
-  v4 = a3;
-  if (!v4)
+  diagnosticCopy = diagnostic;
+  if (!diagnosticCopy)
   {
     goto LABEL_14;
   }
 
   v5 = objc_alloc_init(MXBundleUtil);
-  v6 = [v4 metaData];
-  v7 = [v6 bundleIdentifier];
+  metaData = [diagnosticCopy metaData];
+  bundleIdentifier = [metaData bundleIdentifier];
 
-  if ([(MXBundleUtil *)v5 isAppExtensionFromBundleID:v7])
+  if ([(MXBundleUtil *)v5 isAppExtensionFromBundleID:bundleIdentifier])
   {
-    v8 = [(MXBundleUtil *)v5 mainAppBundleIDforExtension:v7];
+    v8 = [(MXBundleUtil *)v5 mainAppBundleIDforExtension:bundleIdentifier];
 
-    v7 = v8;
+    bundleIdentifier = v8;
   }
 
   v28 = 0;
-  v9 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v7 allowPlaceholder:0 error:&v28];
+  v9 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v28];
   v10 = v28;
-  v26 = v7;
+  v26 = bundleIdentifier;
   v27 = v5;
   v25 = v10;
   if (v10)
@@ -464,40 +464,40 @@ LABEL_15:
     logHandle = self->_logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      [(MXPayloadValidator *)v7 _sanitizeDeviceMetadataForDiagnostic:v11, logHandle];
+      [(MXPayloadValidator *)bundleIdentifier _sanitizeDeviceMetadataForDiagnostic:v11, logHandle];
     }
 
-    v24 = 0;
+    isBeta = 0;
   }
 
   else
   {
     if (!v9)
     {
-      v24 = 0;
+      isBeta = 0;
       goto LABEL_11;
     }
 
-    v24 = [v9 isBeta];
+    isBeta = [v9 isBeta];
   }
 
 LABEL_11:
   v13 = objc_alloc(MEMORY[0x277CD79F8]);
-  v14 = [MEMORY[0x277D28708] regionFormat];
-  v15 = [MEMORY[0x277D28708] osVersion];
-  v16 = [MEMORY[0x277D28708] modelIdentifier];
-  v17 = [v4 metaData];
-  v18 = [v17 applicationBuildVersion];
-  v19 = [MEMORY[0x277D28708] platformArchitecture];
-  v20 = [v4 metaData];
-  v21 = [v20 bundleIdentifier];
-  BYTE4(v23) = v24;
-  LODWORD(v23) = [v4 pid];
-  v22 = [v13 initWithRegionFormat:v14 osVersion:v15 deviceType:v16 appBuildVersion:v18 platformArchitecture:v19 bundleID:v21 pid:v23 isTestFlightApp:?];
+  regionFormat = [MEMORY[0x277D28708] regionFormat];
+  osVersion = [MEMORY[0x277D28708] osVersion];
+  modelIdentifier = [MEMORY[0x277D28708] modelIdentifier];
+  metaData2 = [diagnosticCopy metaData];
+  applicationBuildVersion = [metaData2 applicationBuildVersion];
+  platformArchitecture = [MEMORY[0x277D28708] platformArchitecture];
+  metaData3 = [diagnosticCopy metaData];
+  bundleIdentifier2 = [metaData3 bundleIdentifier];
+  BYTE4(v23) = isBeta;
+  LODWORD(v23) = [diagnosticCopy pid];
+  v22 = [v13 initWithRegionFormat:regionFormat osVersion:osVersion deviceType:modelIdentifier appBuildVersion:applicationBuildVersion platformArchitecture:platformArchitecture bundleID:bundleIdentifier2 pid:v23 isTestFlightApp:?];
 
   if (v22)
   {
-    [v4 setMetaData:v22];
+    [diagnosticCopy setMetaData:v22];
   }
 
 LABEL_14:

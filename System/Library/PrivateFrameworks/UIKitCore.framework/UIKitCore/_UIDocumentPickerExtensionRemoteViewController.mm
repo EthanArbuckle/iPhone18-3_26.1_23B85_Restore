@@ -1,6 +1,6 @@
 @interface _UIDocumentPickerExtensionRemoteViewController
 + (id)serviceViewControllerInterface;
-- (void)_displayLocationMenu:(CGRect)a3;
+- (void)_displayLocationMenu:(CGRect)menu;
 - (void)_doneButtonPressed;
 @end
 
@@ -18,20 +18,20 @@
   return v2;
 }
 
-- (void)_displayLocationMenu:(CGRect)a3
+- (void)_displayLocationMenu:(CGRect)menu
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(_UIDocumentPickerRemoteViewController *)self publicController];
-  [v7 _displayLocationsMenuFromRect:{x, y, width, height}];
+  height = menu.size.height;
+  width = menu.size.width;
+  y = menu.origin.y;
+  x = menu.origin.x;
+  publicController = [(_UIDocumentPickerRemoteViewController *)self publicController];
+  [publicController _displayLocationsMenuFromRect:{x, y, width, height}];
 }
 
 - (void)_doneButtonPressed
 {
-  v2 = [(_UIDocumentPickerRemoteViewController *)self publicController];
-  [v2 _dismissViewController];
+  publicController = [(_UIDocumentPickerRemoteViewController *)self publicController];
+  [publicController _dismissViewController];
 }
 
 @end

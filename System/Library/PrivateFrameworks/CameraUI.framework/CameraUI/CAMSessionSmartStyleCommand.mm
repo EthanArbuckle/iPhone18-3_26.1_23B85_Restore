@@ -1,24 +1,24 @@
 @interface CAMSessionSmartStyleCommand
-- (CAMSessionSmartStyleCommand)initWithCoder:(id)a3;
-- (CAMSessionSmartStyleCommand)initWithSmartStyle:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMSessionSmartStyleCommand)initWithCoder:(id)coder;
+- (CAMSessionSmartStyleCommand)initWithSmartStyle:(id)style;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMSessionSmartStyleCommand
 
-- (CAMSessionSmartStyleCommand)initWithSmartStyle:(id)a3
+- (CAMSessionSmartStyleCommand)initWithSmartStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v10.receiver = self;
   v10.super_class = CAMSessionSmartStyleCommand;
   v5 = [(CAMCaptureCommand *)&v10 initWithSubcommands:0];
   if (v5)
   {
-    if (v4 && [v4 presetType])
+    if (styleCopy && [styleCopy presetType])
     {
-      v6 = [CAMCaptureConversions AVCaptureSmartStyleForCEKSmartStyle:v4];
+      v6 = [CAMCaptureConversions AVCaptureSmartStyleForCEKSmartStyle:styleCopy];
       v7 = 0;
     }
 
@@ -39,51 +39,51 @@
   return v5;
 }
 
-- (CAMSessionSmartStyleCommand)initWithCoder:(id)a3
+- (CAMSessionSmartStyleCommand)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CAMSessionSmartStyleCommand;
-  [(CAMCaptureCommand *)&v3 encodeWithCoder:a3];
+  [(CAMCaptureCommand *)&v3 encodeWithCoder:coder];
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CAMSessionSmartStyleCommand;
-  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:a3];
-  v5 = [(CAMSessionSmartStyleCommand *)self _smartStyle];
+  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:zone];
+  _smartStyle = [(CAMSessionSmartStyleCommand *)self _smartStyle];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = _smartStyle;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 currentCaptureSession];
-  v6 = [v4 currentVideoDeviceFormat];
+  contextCopy = context;
+  currentCaptureSession = [contextCopy currentCaptureSession];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
 
-  v7 = [(CAMSessionSmartStyleCommand *)self _smartStyle];
-  if ([v6 isSmartStyleRenderingSupported])
+  _smartStyle = [(CAMSessionSmartStyleCommand *)self _smartStyle];
+  if ([currentVideoDeviceFormat isSmartStyleRenderingSupported])
   {
-    [v5 setSmartStyle:v7];
+    [currentCaptureSession setSmartStyle:_smartStyle];
   }
 
-  else if (v7)
+  else if (_smartStyle)
   {
     v8 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CAMSessionSmartStyleCommand *)v6 executeWithContext:v7, v8];
+      [(CAMSessionSmartStyleCommand *)currentVideoDeviceFormat executeWithContext:_smartStyle, v8];
     }
   }
 }

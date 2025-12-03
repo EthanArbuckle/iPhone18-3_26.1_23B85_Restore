@@ -1,76 +1,76 @@
 @interface UITextInteractionInputDelegate
 - (UITextInteraction)rootInteraction;
-- (void)selectionDidChange:(id)a3;
-- (void)selectionWillChange:(id)a3;
-- (void)textDidChange:(id)a3;
-- (void)textWillChange:(id)a3;
+- (void)selectionDidChange:(id)change;
+- (void)selectionWillChange:(id)change;
+- (void)textDidChange:(id)change;
+- (void)textWillChange:(id)change;
 @end
 
 @implementation UITextInteractionInputDelegate
 
-- (void)selectionWillChange:(id)a3
+- (void)selectionWillChange:(id)change
 {
-  v6 = a3;
+  changeCopy = change;
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 delegate];
+  delegate = [v3 delegate];
 
-  if (v4 == v6)
+  if (delegate == changeCopy)
   {
     v5 = +[UIKeyboardImpl activeInstance];
-    [v5 selectionWillChange:v6];
+    [v5 selectionWillChange:changeCopy];
   }
 }
 
-- (void)selectionDidChange:(id)a3
+- (void)selectionDidChange:(id)change
 {
-  v9 = a3;
-  v4 = [(UITextInteractionInputDelegate *)self rootInteraction];
+  changeCopy = change;
+  rootInteraction = [(UITextInteractionInputDelegate *)self rootInteraction];
   v5 = +[UIKeyboardImpl activeInstance];
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
 
-  if (v6 == v9)
+  if (delegate == changeCopy)
   {
     v7 = +[UIKeyboardImpl activeInstance];
-    [v7 selectionDidChange:v9];
+    [v7 selectionDidChange:changeCopy];
   }
 
-  v8 = [v4 assistantDelegate];
-  [v8 selectionChanged];
+  assistantDelegate = [rootInteraction assistantDelegate];
+  [assistantDelegate selectionChanged];
 }
 
-- (void)textWillChange:(id)a3
+- (void)textWillChange:(id)change
 {
-  v7 = a3;
+  changeCopy = change;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 delegate];
+  delegate = [v4 delegate];
 
-  if (v5 == v7)
+  if (delegate == changeCopy)
   {
     v6 = +[UIKeyboardImpl activeInstance];
-    [v6 textWillChange:v7];
+    [v6 textWillChange:changeCopy];
   }
 
   else
   {
-    [(UITextInteractionInputDelegate *)self selectionWillChange:v7];
+    [(UITextInteractionInputDelegate *)self selectionWillChange:changeCopy];
   }
 }
 
-- (void)textDidChange:(id)a3
+- (void)textDidChange:(id)change
 {
-  v7 = a3;
+  changeCopy = change;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 delegate];
+  delegate = [v4 delegate];
 
-  if (v5 == v7)
+  if (delegate == changeCopy)
   {
     v6 = +[UIKeyboardImpl activeInstance];
-    [v6 textDidChange:v7];
+    [v6 textDidChange:changeCopy];
   }
 
   else
   {
-    [(UITextInteractionInputDelegate *)self selectionDidChange:v7];
+    [(UITextInteractionInputDelegate *)self selectionDidChange:changeCopy];
   }
 }
 

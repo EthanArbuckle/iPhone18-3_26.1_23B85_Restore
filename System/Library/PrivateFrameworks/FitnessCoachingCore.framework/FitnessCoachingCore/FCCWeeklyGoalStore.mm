@@ -1,7 +1,7 @@
 @interface FCCWeeklyGoalStore
 - (FCCWeeklyGoalStore)init;
 - (id)currentDisplayContext;
-- (void)updateDisplayContext:(id)a3;
+- (void)updateDisplayContext:(id)context;
 @end
 
 @implementation FCCWeeklyGoalStore
@@ -29,10 +29,10 @@
   return v3;
 }
 
-- (void)updateDisplayContext:(id)a3
+- (void)updateDisplayContext:(id)context
 {
-  v4 = [a3 dictionaryRepresentation];
-  [(NSUserDefaults *)self->_userDefaults setObject:v4 forKey:@"WeeklyGoalDisplayContext"];
+  dictionaryRepresentation = [context dictionaryRepresentation];
+  [(NSUserDefaults *)self->_userDefaults setObject:dictionaryRepresentation forKey:@"WeeklyGoalDisplayContext"];
 }
 
 @end

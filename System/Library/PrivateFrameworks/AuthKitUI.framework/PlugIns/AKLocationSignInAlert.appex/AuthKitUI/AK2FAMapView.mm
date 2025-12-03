@@ -1,19 +1,19 @@
 @interface AK2FAMapView
-- (AK2FAMapView)initWithCoordinate:(CLLocationCoordinate2D)a3 size:(CGSize)a4;
+- (AK2FAMapView)initWithCoordinate:(CLLocationCoordinate2D)coordinate size:(CGSize)size;
 - (CGSize)size;
 - (CLLocationCoordinate2D)coordinate;
-- (void)_onqueue_setImageForSnapshot:(id)a3;
-- (void)_setImageForSnapshot:(id)a3;
+- (void)_onqueue_setImageForSnapshot:(id)snapshot;
+- (void)_setImageForSnapshot:(id)snapshot;
 - (void)startLoadingImage;
 - (void)viewDidLoad;
 @end
 
 @implementation AK2FAMapView
 
-- (AK2FAMapView)initWithCoordinate:(CLLocationCoordinate2D)a3 size:(CGSize)a4
+- (AK2FAMapView)initWithCoordinate:(CLLocationCoordinate2D)coordinate size:(CGSize)size
 {
-  v10 = a3;
-  v9 = a4;
+  coordinateCopy = coordinate;
+  sizeCopy = size;
   v7 = a2;
   v8 = 0;
   v6.receiver = self;
@@ -22,8 +22,8 @@
   objc_storeStrong(&v8, v8);
   if (v8)
   {
-    v8->_coordinate = v10;
-    v8->_size = v9;
+    v8->_coordinate = coordinateCopy;
+    v8->_size = sizeCopy;
   }
 
   v5 = v8;
@@ -33,98 +33,98 @@
 
 - (void)viewDidLoad
 {
-  v39 = self;
+  selfCopy = self;
   v38 = a2;
   v37.receiver = self;
   v37.super_class = AK2FAMapView;
   [(AK2FAMapView *)&v37 viewDidLoad];
   v2 = objc_alloc_init(UIImageView);
-  mapView = v39->_mapView;
-  v39->_mapView = v2;
+  mapView = selfCopy->_mapView;
+  selfCopy->_mapView = v2;
 
-  [(UIImageView *)v39->_mapView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIImageView *)selfCopy->_mapView setTranslatesAutoresizingMaskIntoConstraints:0];
   v4 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
-  spinner = v39->_spinner;
-  v39->_spinner = v4;
+  spinner = selfCopy->_spinner;
+  selfCopy->_spinner = v4;
 
-  [(UIActivityIndicatorView *)v39->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIImageView *)v39->_mapView center];
-  [(UIActivityIndicatorView *)v39->_spinner setCenter:v6, v7];
-  [(UIActivityIndicatorView *)v39->_spinner setHidesWhenStopped:1];
-  [(UIImageView *)v39->_mapView addSubview:v39->_spinner];
-  v18 = [(UIActivityIndicatorView *)v39->_spinner centerXAnchor];
-  v17 = [(UIImageView *)v39->_mapView centerXAnchor];
-  v16 = [v18 constraintEqualToAnchor:?];
+  [(UIActivityIndicatorView *)selfCopy->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIImageView *)selfCopy->_mapView center];
+  [(UIActivityIndicatorView *)selfCopy->_spinner setCenter:v6, v7];
+  [(UIActivityIndicatorView *)selfCopy->_spinner setHidesWhenStopped:1];
+  [(UIImageView *)selfCopy->_mapView addSubview:selfCopy->_spinner];
+  centerXAnchor = [(UIActivityIndicatorView *)selfCopy->_spinner centerXAnchor];
+  centerXAnchor2 = [(UIImageView *)selfCopy->_mapView centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:?];
   v41[0] = v16;
-  v15 = [(UIActivityIndicatorView *)v39->_spinner centerYAnchor];
-  v14 = [(UIImageView *)v39->_mapView centerYAnchor];
-  v13 = [v15 constraintEqualToAnchor:?];
+  centerYAnchor = [(UIActivityIndicatorView *)selfCopy->_spinner centerYAnchor];
+  centerYAnchor2 = [(UIImageView *)selfCopy->_mapView centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:?];
   v41[1] = v13;
-  v12 = [(UIActivityIndicatorView *)v39->_spinner heightAnchor];
-  v11 = [v12 constraintEqualToConstant:?];
+  heightAnchor = [(UIActivityIndicatorView *)selfCopy->_spinner heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:?];
   v41[2] = v11;
-  v10 = [(UIActivityIndicatorView *)v39->_spinner widthAnchor];
-  v9 = [v10 constraintEqualToConstant:32.0];
+  widthAnchor = [(UIActivityIndicatorView *)selfCopy->_spinner widthAnchor];
+  v9 = [widthAnchor constraintEqualToConstant:32.0];
   v41[3] = v9;
   v8 = [NSArray arrayWithObjects:v41 count:?];
   [NSLayoutConstraint activateConstraints:?];
 
-  v19 = [(AK2FAMapView *)v39 view];
-  [v19 addSubview:v39->_mapView];
+  view = [(AK2FAMapView *)selfCopy view];
+  [view addSubview:selfCopy->_mapView];
 
-  v36 = [(UIImageView *)v39->_mapView topAnchor];
-  v35 = [(AK2FAMapView *)v39 view];
-  v34 = [v35 topAnchor];
-  v33 = [v36 constraintEqualToAnchor:?];
+  topAnchor = [(UIImageView *)selfCopy->_mapView topAnchor];
+  view2 = [(AK2FAMapView *)selfCopy view];
+  topAnchor2 = [view2 topAnchor];
+  v33 = [topAnchor constraintEqualToAnchor:?];
   v40[0] = v33;
-  v32 = [(UIImageView *)v39->_mapView leadingAnchor];
-  v31 = [(AK2FAMapView *)v39 view];
-  v30 = [v31 leadingAnchor];
-  v29 = [v32 constraintEqualToAnchor:?];
+  leadingAnchor = [(UIImageView *)selfCopy->_mapView leadingAnchor];
+  view3 = [(AK2FAMapView *)selfCopy view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:?];
   v40[1] = v29;
-  v28 = [(UIImageView *)v39->_mapView trailingAnchor];
-  v27 = [(AK2FAMapView *)v39 view];
-  v26 = [v27 trailingAnchor];
-  v25 = [v28 constraintEqualToAnchor:?];
+  trailingAnchor = [(UIImageView *)selfCopy->_mapView trailingAnchor];
+  view4 = [(AK2FAMapView *)selfCopy view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:?];
   v40[2] = v25;
-  v24 = [(UIImageView *)v39->_mapView bottomAnchor];
-  v23 = [(AK2FAMapView *)v39 view];
-  v22 = [v23 bottomAnchor];
-  v21 = [v24 constraintEqualToAnchor:?];
+  bottomAnchor = [(UIImageView *)selfCopy->_mapView bottomAnchor];
+  view5 = [(AK2FAMapView *)selfCopy view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:?];
   v40[3] = v21;
   v20 = [NSArray arrayWithObjects:v40 count:4];
   [NSLayoutConstraint activateConstraints:?];
 
-  [(AK2FAMapView *)v39 startLoadingImage];
+  [(AK2FAMapView *)selfCopy startLoadingImage];
 }
 
 - (void)startLoadingImage
 {
-  v27 = self;
+  selfCopy = self;
   v26[1] = a2;
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
   v26[0] = objc_alloc_init(MKMapSnapshotOptions);
-  width = v27->_size.width;
-  height = v27->_size.height;
+  width = selfCopy->_size.width;
+  height = selfCopy->_size.height;
   sub_1000059A4();
   *&v25 = v4;
   *(&v25 + 1) = v5;
   v24 = v25;
   [v26[0] setSize:{v4, v5}];
   [v26[0] setMapType:?];
-  coordinate = v27->_coordinate;
+  coordinate = selfCopy->_coordinate;
   *&v23 = 0x3FD999999999999ALL;
   *(&v23 + 1) = 0x3FD999999999999ALL;
   v20 = coordinate;
   v21 = v23;
   [v26[0] setRegion:{coordinate, 0.4, 0.4}];
-  v8 = [(AK2FAMapView *)v27 view];
-  v7 = [v8 traitCollection];
+  view = [(AK2FAMapView *)selfCopy view];
+  traitCollection = [view traitCollection];
   [v26[0] setTraitCollection:?];
 
   v6 = [MKMapSnapshotter alloc];
   v19 = [v6 initWithOptions:v26[0]];
-  objc_initWeak(&location, v27);
+  objc_initWeak(&location, selfCopy);
   queue = dispatch_get_global_queue(25, 0);
   v10 = _NSConcreteStackBlock;
   v11 = -1073741824;
@@ -133,7 +133,7 @@
   v14 = &unk_10000C3F0;
   v15 = v19;
   objc_copyWeak(&v17, &location);
-  v16 = v27;
+  v16 = selfCopy;
   dispatch_async(queue, &v10);
 
   objc_storeStrong(&v16, 0);
@@ -144,12 +144,12 @@
   objc_storeStrong(v26, 0);
 }
 
-- (void)_setImageForSnapshot:(id)a3
+- (void)_setImageForSnapshot:(id)snapshot
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, snapshot);
   v13 = _AKLogSystem();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -166,7 +166,7 @@
   v7 = 0;
   v8 = sub_100005F3C;
   v9 = &unk_10000C418;
-  v10 = v15;
+  v10 = selfCopy;
   v11 = location[0];
   dispatch_async(queue, &v5);
 
@@ -175,12 +175,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_onqueue_setImageForSnapshot:(id)a3
+- (void)_onqueue_setImageForSnapshot:(id)snapshot
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, snapshot);
   v24 = _AKLogSystem();
   v23 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -190,12 +190,12 @@
   }
 
   objc_storeStrong(&v24, 0);
-  [(UIActivityIndicatorView *)v26->_spinner stopAnimating];
-  v13 = [location[0] image];
-  [(UIImageView *)v26->_mapView setImage:?];
+  [(UIActivityIndicatorView *)selfCopy->_spinner stopAnimating];
+  image = [location[0] image];
+  [(UIImageView *)selfCopy->_mapView setImage:?];
 
   v22 = objc_opt_new();
-  [(UIImageView *)v26->_mapView bounds];
+  [(UIImageView *)selfCopy->_mapView bounds];
   *&v20 = v3;
   *(&v20 + 1) = v4;
   *&v21 = v5;
@@ -203,15 +203,15 @@
   v18 = v20;
   v19 = v21;
   [v22 setFrame:{v3, v4, v5, v6}];
-  [(UIImageView *)v26->_mapView bounds];
+  [(UIImageView *)selfCopy->_mapView bounds];
   v17 = [UIBezierPath bezierPathWithRoundedRect:v7 cornerRadius:v8, v9, v10, 12.0];
   v14 = v17;
   v11 = v17;
-  v12 = [v14 CGPath];
-  [v22 setPath:v12];
+  cGPath = [v14 CGPath];
+  [v22 setPath:cGPath];
   v15 = v22;
-  v16 = [(UIImageView *)v26->_mapView layer];
-  [v16 setMask:v15];
+  layer = [(UIImageView *)selfCopy->_mapView layer];
+  [layer setMask:v15];
 
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v22, 0);

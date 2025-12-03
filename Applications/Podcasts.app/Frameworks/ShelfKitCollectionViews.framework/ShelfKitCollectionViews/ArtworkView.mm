@@ -4,9 +4,9 @@
 - (NSString)accessibilityTitle;
 - (UIColor)backgroundColor;
 - (void)layoutSubviews;
-- (void)setAccessibilityTitle:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setAccessibilityTitle:(id)title;
+- (void)setBackgroundColor:(id)color;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation ArtworkView
@@ -27,9 +27,9 @@
   return v2;
 }
 
-- (void)setAccessibilityTitle:(id)a3
+- (void)setAccessibilityTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_30C0D8();
   }
@@ -47,24 +47,24 @@
 
 - (UIColor)backgroundColor
 {
-  v2 = [objc_opt_self() clearColor];
+  clearColor = [objc_opt_self() clearColor];
 
-  return v2;
+  return clearColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4 = *(self + OBJC_IVAR____TtC23ShelfKitCollectionViews11ArtworkView_internalBackgroundColor);
-  *(self + OBJC_IVAR____TtC23ShelfKitCollectionViews11ArtworkView_internalBackgroundColor) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____TtC23ShelfKitCollectionViews11ArtworkView_internalBackgroundColor) = color;
+  colorCopy = color;
+  selfCopy = self;
 
   sub_2D294();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2D844();
 }
 
@@ -80,13 +80,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_2DD8C(x, y, width, height);
 }
 

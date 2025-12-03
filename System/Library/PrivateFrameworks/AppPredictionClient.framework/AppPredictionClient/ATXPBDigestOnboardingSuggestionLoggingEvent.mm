@@ -1,16 +1,16 @@
 @interface ATXPBDigestOnboardingSuggestionLoggingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)digestOnboardingSuggestionOutcomeAsString:(int)a3;
-- (int)StringAsDigestOnboardingSuggestionOutcome:(id)a3;
+- (id)digestOnboardingSuggestionOutcomeAsString:(int)string;
+- (int)StringAsDigestOnboardingSuggestionOutcome:(id)outcome;
 - (int)digestOnboardingSuggestionOutcome;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDigestOnboardingSuggestionOutcome:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDigestOnboardingSuggestionOutcome:(BOOL)outcome;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBDigestOnboardingSuggestionLoggingEvent
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasDigestOnboardingSuggestionOutcome:(BOOL)a3
+- (void)setHasDigestOnboardingSuggestionOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 2;
   }
@@ -43,35 +43,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)digestOnboardingSuggestionOutcomeAsString:(int)a3
+- (id)digestOnboardingSuggestionOutcomeAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C2518[a3];
+    v4 = off_1E80C2518[string];
   }
 
   return v4;
 }
 
-- (int)StringAsDigestOnboardingSuggestionOutcome:(id)a3
+- (int)StringAsDigestOnboardingSuggestionOutcome:(id)outcome
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Dismissed"])
+  outcomeCopy = outcome;
+  if ([outcomeCopy isEqualToString:@"Dismissed"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Engaged"])
+  else if ([outcomeCopy isEqualToString:@"Engaged"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([outcomeCopy isEqualToString:@"Total"])
   {
     v4 = 2;
   }
@@ -90,20 +90,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBDigestOnboardingSuggestionLoggingEvent;
   v4 = [(ATXPBDigestOnboardingSuggestionLoggingEvent *)&v8 description];
-  v5 = [(ATXPBDigestOnboardingSuggestionLoggingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBDigestOnboardingSuggestionLoggingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   sessionUUID = self->_sessionUUID;
   if (sessionUUID)
   {
-    [v3 setObject:sessionUUID forKey:@"sessionUUID"];
+    [dictionary setObject:sessionUUID forKey:@"sessionUUID"];
   }
 
   has = self->_has;
@@ -134,60 +134,60 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_sessionUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_sessionUUID)
   {
-    v6 = v4;
-    [v4 setSessionUUID:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setSessionUUID:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = self->_digestOnboardingSuggestionOutcome;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 4) = self->_digestOnboardingSuggestionOutcome;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_timeToResolution;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = *&self->_timeToResolution;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sessionUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sessionUUID copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -208,16 +208,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   sessionUUID = self->_sessionUUID;
-  if (sessionUUID | *(v4 + 3))
+  if (sessionUUID | *(equalCopy + 3))
   {
     if (![(NSString *)sessionUUID isEqual:?])
     {
@@ -227,23 +227,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_digestOnboardingSuggestionOutcome != *(v4 + 4))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_digestOnboardingSuggestionOutcome != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 32) & 1) == 0;
+  v6 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timeToResolution != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timeToResolution != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
@@ -307,27 +307,27 @@ LABEL_3:
   return v6 ^ v3 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ATXPBDigestOnboardingSuggestionLoggingEvent *)self setSessionUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) != 0)
   {
-    self->_digestOnboardingSuggestionOutcome = *(v4 + 4);
+    self->_digestOnboardingSuggestionOutcome = *(fromCopy + 4);
     *&self->_has |= 2u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
   }
 
   if (v5)
   {
-    self->_timeToResolution = *(v4 + 1);
+    self->_timeToResolution = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

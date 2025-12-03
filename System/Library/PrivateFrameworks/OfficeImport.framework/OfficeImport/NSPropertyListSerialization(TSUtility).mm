@@ -49,7 +49,7 @@
     v18[1] = 3221225472;
     v18[2] = __75__NSPropertyListSerialization_TSUtility__tsu_processLocalizedPropertyList___block_invoke;
     v18[3] = &__block_descriptor_40_e15_v32__0_8_16_B24l;
-    v18[4] = a1;
+    v18[4] = self;
     [v5 enumerateKeysAndObjectsUsingBlock:v18];
     if (v6)
     {
@@ -93,7 +93,7 @@ LABEL_17:
             objc_enumerationMutation(v9);
           }
 
-          [a1 tsu_processLocalizedPropertyList:*(*(&v14 + 1) + 8 * v13++)];
+          [self tsu_processLocalizedPropertyList:*(*(&v14 + 1) + 8 * v13++)];
         }
 
         while (v11 != v13);
@@ -121,8 +121,8 @@ LABEL_18:
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v11 = [a1 tsu_propertyListWithContentsOfURL:v8 options:a4 error:a5];
-  [a1 tsu_processLocalizedPropertyList:v11];
+  v11 = [self tsu_propertyListWithContentsOfURL:v8 options:a4 error:a5];
+  [self tsu_processLocalizedPropertyList:v11];
 
   return v11;
 }

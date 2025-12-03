@@ -1,20 +1,20 @@
 @interface HVContentAdmission
-+ (BOOL)shouldAdmitContentFromBundleIdentifier:(id)a3;
++ (BOOL)shouldAdmitContentFromBundleIdentifier:(id)identifier;
 + (BOOL)suggestionsShouldShowPastEvents;
 + (id)sharedInstance;
-+ (void)addContentAdmissionObserver:(id)a3;
++ (void)addContentAdmissionObserver:(id)observer;
 + (void)clearTestSettings;
-+ (void)disableBundleIdentifier:(id)a3;
++ (void)disableBundleIdentifier:(id)identifier;
 + (void)initialize;
 + (void)migrateForTests;
-+ (void)registerConfigurationAsset:(id)a3;
-+ (void)updateConfigurableBundleIdentifierDenyList:(id)a3;
++ (void)registerConfigurationAsset:(id)asset;
++ (void)updateConfigurableBundleIdentifierDenyList:(id)list;
 - (HVContentAdmission)init;
 - (uint64_t)_refreshPastEventsSetting;
-- (uint64_t)_shouldAdmitContentFromBundleIdentifier:(void *)a1;
-- (void)_disableBundleIdentifier:(uint64_t)a1;
-- (void)_migrateIfNeededWithCompletion:(uint64_t)a1;
-- (void)_refreshBundleIdentifierDenyListsWithLearnFromDenyList:(void *)a3 configurableDenyList:;
+- (uint64_t)_shouldAdmitContentFromBundleIdentifier:(void *)identifier;
+- (void)_disableBundleIdentifier:(uint64_t)identifier;
+- (void)_migrateIfNeededWithCompletion:(uint64_t)completion;
+- (void)_refreshBundleIdentifierDenyListsWithLearnFromDenyList:(void *)list configurableDenyList:;
 - (void)_refreshDisabledBundleIds;
 @end
 
@@ -120,9 +120,9 @@ void __26__HVContentAdmission_init__block_invoke(uint64_t a1)
 - (void)_refreshDisabledBundleIds
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     if (v2)
     {
       v3 = [v2 objectForKey:@"SiriCanLearnFromAppBlacklist"];
@@ -147,7 +147,7 @@ void __26__HVContentAdmission_init__block_invoke(uint64_t a1)
           _os_log_impl(&dword_2321EC000, v8, OS_LOG_TYPE_DEFAULT, "HVContentAdmission loaded %tu disabled bundleIds from prefs", &v10, 0xCu);
         }
 
-        [(HVContentAdmission *)a1 _refreshBundleIdentifierDenyListsWithLearnFromDenyList:v7 configurableDenyList:0];
+        [(HVContentAdmission *)self _refreshBundleIdentifierDenyListsWithLearnFromDenyList:v7 configurableDenyList:0];
       }
 
       else
@@ -187,10 +187,10 @@ void __26__HVContentAdmission_init__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)_migrateIfNeededWithCompletion:(uint64_t)a1
+- (void)_migrateIfNeededWithCompletion:(uint64_t)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     if (_migrateIfNeededWithCompletion___pasOnceToken12 != -1)
     {
@@ -202,7 +202,7 @@ void __26__HVContentAdmission_init__block_invoke_2(uint64_t a1)
     v6[1] = 3221225472;
     v6[2] = __53__HVContentAdmission__migrateIfNeededWithCompletion___block_invoke_2;
     v6[3] = &unk_278968D78;
-    v6[4] = a1;
+    v6[4] = completion;
     v7 = v3;
     v5 = v4;
     dispatch_async(v5, v6);
@@ -409,19 +409,19 @@ uint64_t __53__HVContentAdmission__migrateIfNeededWithCompletion___block_invoke_
   return result;
 }
 
-- (void)_disableBundleIdentifier:(uint64_t)a1
+- (void)_disableBundleIdentifier:(uint64_t)identifier
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identifier)
   {
-    v5 = *(a1 + 8);
+    v5 = *(identifier + 8);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __47__HVContentAdmission__disableBundleIdentifier___block_invoke;
     v6[3] = &unk_278968CF0;
     v7 = v3;
-    v8 = a1;
+    identifierCopy = identifier;
     [v5 runWithLockAcquired:v6];
   }
 }
@@ -454,13 +454,13 @@ uint64_t __47__HVContentAdmission__refreshPastEventsSetting__block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_refreshBundleIdentifierDenyListsWithLearnFromDenyList:(void *)a3 configurableDenyList:
+- (void)_refreshBundleIdentifierDenyListsWithLearnFromDenyList:(void *)list configurableDenyList:
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1 && v5 | v6)
+  listCopy = list;
+  v7 = listCopy;
+  if (self && v5 | listCopy)
   {
     v27 = 0;
     v28 = &v27;
@@ -468,7 +468,7 @@ uint64_t __47__HVContentAdmission__refreshPastEventsSetting__block_invoke(uint64
     v30 = __Block_byref_object_copy__312;
     v31 = __Block_byref_object_dispose__313;
     v32 = 0;
-    v8 = *(a1 + 8);
+    v8 = *(self + 8);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __98__HVContentAdmission__refreshBundleIdentifierDenyListsWithLearnFromDenyList_configurableDenyList___block_invoke;
@@ -733,21 +733,21 @@ void __40__HVContentAdmission__clearTestSettings__block_invoke(uint64_t a1, void
   return v5 & 1;
 }
 
-+ (BOOL)shouldAdmitContentFromBundleIdentifier:(id)a3
++ (BOOL)shouldAdmitContentFromBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v6 = +[HVContentAdmission sharedInstance];
     v7 = v6;
-    v8 = v5;
+    v8 = identifierCopy;
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"HVContentAdmission.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HVContentAdmission.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
     v6 = +[HVContentAdmission sharedInstance];
     v7 = v6;
@@ -768,7 +768,7 @@ void __40__HVContentAdmission__clearTestSettings__block_invoke(uint64_t a1, void
     *buf = 138412546;
     v16 = v11;
     v17 = 2112;
-    v18 = v5;
+    v18 = identifierCopy;
     _os_log_impl(&dword_2321EC000, v10, OS_LOG_TYPE_INFO, "HVContentAdmission: %@ content from bundleIdentifier: %@", buf, 0x16u);
   }
 
@@ -776,30 +776,30 @@ void __40__HVContentAdmission__clearTestSettings__block_invoke(uint64_t a1, void
   return v9;
 }
 
-- (uint64_t)_shouldAdmitContentFromBundleIdentifier:(void *)a1
+- (uint64_t)_shouldAdmitContentFromBundleIdentifier:(void *)identifier
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identifier)
   {
     v9 = 0;
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    a1 = a1[1];
+    identifier = identifier[1];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__HVContentAdmission__shouldAdmitContentFromBundleIdentifier___block_invoke;
     v6[3] = &unk_278968D18;
     v8 = &v9;
     v7 = v3;
-    [a1 runWithLockAcquired:v6];
-    LOBYTE(a1) = *(v10 + 24);
+    [identifier runWithLockAcquired:v6];
+    LOBYTE(identifier) = *(v10 + 24);
 
     _Block_object_dispose(&v9, 8);
   }
 
-  return a1 & 1;
+  return identifier & 1;
 }
 
 void __62__HVContentAdmission__shouldAdmitContentFromBundleIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -818,25 +818,25 @@ void __62__HVContentAdmission__shouldAdmitContentFromBundleIdentifier___block_in
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-+ (void)disableBundleIdentifier:(id)a3
++ (void)disableBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[HVContentAdmission sharedInstance];
-  [(HVContentAdmission *)v4 _disableBundleIdentifier:v3];
+  [(HVContentAdmission *)v4 _disableBundleIdentifier:identifierCopy];
 }
 
-+ (void)updateConfigurableBundleIdentifierDenyList:(id)a3
++ (void)updateConfigurableBundleIdentifierDenyList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = +[HVContentAdmission sharedInstance];
-  [(HVContentAdmission *)v4 _refreshBundleIdentifierDenyListsWithLearnFromDenyList:v3 configurableDenyList:?];
+  [(HVContentAdmission *)v4 _refreshBundleIdentifierDenyListsWithLearnFromDenyList:listCopy configurableDenyList:?];
 }
 
-+ (void)registerConfigurationAsset:(id)a3
++ (void)registerConfigurationAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   val = +[HVContentAdmission sharedInstance];
-  v4 = v3;
+  v4 = assetCopy;
   if (val)
   {
     objc_initWeak(&location, val);
@@ -950,11 +950,11 @@ void __50__HVContentAdmission__registerConfigurationAsset___block_invoke(uint64_
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)addContentAdmissionObserver:(id)a3
++ (void)addContentAdmissionObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   v6 = +[HVContentAdmission sharedInstance];
-  v4 = v3;
+  v4 = observerCopy;
   if (v6)
   {
     v5 = v6[1];
@@ -971,7 +971,7 @@ void __50__HVContentAdmission__registerConfigurationAsset___block_invoke(uint64_
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = +[HVContentAdmission sharedInstance];
   }

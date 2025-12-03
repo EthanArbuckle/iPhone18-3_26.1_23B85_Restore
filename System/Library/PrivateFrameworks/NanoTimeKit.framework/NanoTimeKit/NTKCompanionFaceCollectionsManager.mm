@@ -1,7 +1,7 @@
 @interface NTKCompanionFaceCollectionsManager
 + (id)sharedInstance;
 - (NTKCompanionFaceCollectionsManager)init;
-- (id)sharedFaceCollectionForDevice:(id)a3 forCollectionIdentifier:(id)a4;
+- (id)sharedFaceCollectionForDevice:(id)device forCollectionIdentifier:(id)identifier;
 - (id)sharedLibraryFaceCollectionsForAllDevices;
 - (void)_handlePairedDeviceDidChangeVersionNotification;
 - (void)dealloc;
@@ -45,7 +45,7 @@ void __52__NTKCompanionFaceCollectionsManager_sharedInstance__block_invoke()
     v3->_lock_faceCollectionsForCollectionIdentifier = v5;
 
     objc_initWeak(&location, v3);
-    v7 = [MEMORY[0x277D37B40] pairedDeviceDidChangeVersion];
+    pairedDeviceDidChangeVersion = [MEMORY[0x277D37B40] pairedDeviceDidChangeVersion];
     v8 = MEMORY[0x277D85CD0];
     v9 = MEMORY[0x277D85CD0];
     v11[0] = MEMORY[0x277D85DD0];
@@ -53,7 +53,7 @@ void __52__NTKCompanionFaceCollectionsManager_sharedInstance__block_invoke()
     v11[2] = __42__NTKCompanionFaceCollectionsManager_init__block_invoke;
     v11[3] = &unk_27877E868;
     objc_copyWeak(&v12, &location);
-    notify_register_dispatch(v7, &v3->_pairedDeviceVersionChangeNotificationToken, v8, v11);
+    notify_register_dispatch(pairedDeviceDidChangeVersion, &v3->_pairedDeviceVersionChangeNotificationToken, v8, v11);
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -83,30 +83,30 @@ void __42__NTKCompanionFaceCollectionsManager_init__block_invoke(uint64_t a1)
   self->_lock_activeDeviceUUID = 0;
 
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"com.apple.nanotimekit.CompanionFaceCollectionsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.nanotimekit.CompanionFaceCollectionsDidChangeNotification" object:0];
 }
 
-- (id)sharedFaceCollectionForDevice:(id)a3 forCollectionIdentifier:(id)a4
+- (id)sharedFaceCollectionForDevice:(id)device forCollectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [v6 pairingID];
-  if (([v8 isEqual:self->_lock_activeDeviceUUID] & 1) == 0)
+  pairingID = [deviceCopy pairingID];
+  if (([pairingID isEqual:self->_lock_activeDeviceUUID] & 1) == 0)
   {
-    objc_storeStrong(&self->_lock_activeDeviceUUID, v8);
+    objc_storeStrong(&self->_lock_activeDeviceUUID, pairingID);
     [(NSMutableDictionary *)self->_lock_faceCollectionsForCollectionIdentifier removeAllObjects];
   }
 
-  v9 = [v6 pdrDevice];
-  if (v8 && ([MEMORY[0x277CBBAE8] PDRDeviceIsRunningDaytonaOrLater:v9] & 1) != 0)
+  pdrDevice = [deviceCopy pdrDevice];
+  if (pairingID && ([MEMORY[0x277CBBAE8] PDRDeviceIsRunningDaytonaOrLater:pdrDevice] & 1) != 0)
   {
   }
 
   else
   {
-    v10 = [v7 isEqualToString:@"LibraryFaces"];
+    v10 = [identifierCopy isEqualToString:@"LibraryFaces"];
 
     if (v10)
     {
@@ -115,11 +115,11 @@ void __42__NTKCompanionFaceCollectionsManager_init__block_invoke(uint64_t a1)
     }
   }
 
-  v11 = [(NSMutableDictionary *)self->_lock_faceCollectionsForCollectionIdentifier objectForKeyedSubscript:v7];
+  v11 = [(NSMutableDictionary *)self->_lock_faceCollectionsForCollectionIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v11)
   {
-    v11 = [[NTKPersistentFaceCollection alloc] initWithCollectionIdentifier:v7 deviceUUID:self->_lock_activeDeviceUUID];
-    [(NSMutableDictionary *)self->_lock_faceCollectionsForCollectionIdentifier setObject:v11 forKeyedSubscript:v7];
+    v11 = [[NTKPersistentFaceCollection alloc] initWithCollectionIdentifier:identifierCopy deviceUUID:self->_lock_activeDeviceUUID];
+    [(NSMutableDictionary *)self->_lock_faceCollectionsForCollectionIdentifier setObject:v11 forKeyedSubscript:identifierCopy];
   }
 
 LABEL_10:
@@ -131,9 +131,9 @@ LABEL_10:
 - (id)sharedLibraryFaceCollectionsForAllDevices
 {
   v20 = *MEMORY[0x277D85DE8];
-  v14 = [MEMORY[0x277D37B50] sharedInstance];
-  v2 = [v14 devices];
-  v3 = [v2 all];
+  mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+  devices = [mEMORY[0x277D37B50] devices];
+  v3 = [devices all];
 
   v4 = objc_opt_new();
   v15 = 0u;

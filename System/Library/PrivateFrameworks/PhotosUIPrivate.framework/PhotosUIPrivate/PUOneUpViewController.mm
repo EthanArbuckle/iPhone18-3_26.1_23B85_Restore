@@ -1,106 +1,106 @@
 @interface PUOneUpViewController
 + (NSString)oneUpActivityTitle;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)playerCurrentTimeForActionPerformer:(SEL)a3;
-- (BOOL)_allowsShowingVisualIntelligenceForAsset:(id)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)playerCurrentTimeForActionPerformer:(SEL)performer;
+- (BOOL)_allowsShowingVisualIntelligenceForAsset:(id)asset;
 - (BOOL)_allowsVisualLookupInInfoPanelMode;
 - (BOOL)_canAdvertiseKeyCommands;
-- (BOOL)_canAttemptNavigationToAssetDisplayDescriptor:(id)a3;
+- (BOOL)_canAttemptNavigationToAssetDisplayDescriptor:(id)descriptor;
 - (BOOL)_canShowAccessoryViewForCurrentAsset;
 - (BOOL)_enablePockets;
 - (BOOL)_isAccessoryAvailableForCurrentAsset;
 - (BOOL)_isAccessoryVisible;
-- (BOOL)_isAssetEligibleForTip:(id)a3;
+- (BOOL)_isAssetEligibleForTip:(id)tip;
 - (BOOL)_isCameraDetailsAccessory;
-- (BOOL)_isCurrentAssetAndInEditModeForAssetReference:(id)a3;
-- (BOOL)_isDetailsAccessoryAvailableForAssetReference:(id)a3;
+- (BOOL)_isCurrentAssetAndInEditModeForAssetReference:(id)reference;
+- (BOOL)_isDetailsAccessoryAvailableForAssetReference:(id)reference;
 - (BOOL)_isDrivingScrubbing;
-- (BOOL)_isLayoutAffectedBySpecChange:(id)a3;
-- (BOOL)_isLocationFromProvider:(id)a3 overTileOfKind:(id)a4 insetBy:(UIEdgeInsets)a5;
-- (BOOL)_isLocationFromProviderInAccessoryArea:(id)a3;
-- (BOOL)_isLocationFromProviderOverActionInfoItem:(id)a3;
-- (BOOL)_isLocationFromProviderOverControl:(id)a3;
-- (BOOL)_isLocationFromProviderOverImageSubject:(id)a3;
-- (BOOL)_isLocationFromProviderOverInteractiveItem:(id)a3;
-- (BOOL)_isLocationFromProviderOverInteractiveItemExcludingImageSubject:(id)a3;
-- (BOOL)_isLocationFromProviderOverSyndicationAttributionPill:(id)a3;
-- (BOOL)_isLocationFromProviderOverVisualSearch:(id)a3;
+- (BOOL)_isLayoutAffectedBySpecChange:(id)change;
+- (BOOL)_isLocationFromProvider:(id)provider overTileOfKind:(id)kind insetBy:(UIEdgeInsets)by;
+- (BOOL)_isLocationFromProviderInAccessoryArea:(id)area;
+- (BOOL)_isLocationFromProviderOverActionInfoItem:(id)item;
+- (BOOL)_isLocationFromProviderOverControl:(id)control;
+- (BOOL)_isLocationFromProviderOverImageSubject:(id)subject;
+- (BOOL)_isLocationFromProviderOverInteractiveItem:(id)item;
+- (BOOL)_isLocationFromProviderOverInteractiveItemExcludingImageSubject:(id)subject;
+- (BOOL)_isLocationFromProviderOverSyndicationAttributionPill:(id)pill;
+- (BOOL)_isLocationFromProviderOverVisualSearch:(id)search;
 - (BOOL)_isSecondScreenBrowserVisible;
-- (BOOL)_isVisualImageHasSubjectLiftedFromProvider:(id)a3;
+- (BOOL)_isVisualImageHasSubjectLiftedFromProvider:(id)provider;
 - (BOOL)_isZoomedIn;
 - (BOOL)_needsUpdate;
 - (BOOL)_prefersFloatingInfoPanel;
-- (BOOL)_shouldMakeChromeVisibleWhenVideoPlayerPlaysToEndTime:(id)a3;
+- (BOOL)_shouldMakeChromeVisibleWhenVideoPlayerPlaysToEndTime:(id)time;
 - (BOOL)_shouldPreventScaledOffsetAdjustments;
-- (BOOL)_visualImageHasActiveTextSelectionFromProvider:(id)a3;
-- (BOOL)_vkImageOverlayAllowsVKCToHandleLongPressGestureFromProvider:(id)a3;
+- (BOOL)_visualImageHasActiveTextSelectionFromProvider:(id)provider;
+- (BOOL)_vkImageOverlayAllowsVKCToHandleLongPressGestureFromProvider:(id)provider;
 - (BOOL)_wantsShowInLibraryButtonForAllAssets;
-- (BOOL)accessoryTileViewControllerShouldUseSquareImageWhenShowingAccessoryView:(id)a3;
-- (BOOL)accessoryTileViewControllerWillHideNavigationBarWhenShowingAccessoryView:(id)a3;
-- (BOOL)accessoryTileViewControllerWillHideToolbarWhenShowingAccessoryView:(id)a3;
-- (BOOL)analysisInteractionAllowedForImageAnalysisInteraction:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)doubleTapZoomController:(id)a3 canDoubleTapBeginAtLocationFromProvider:(id)a4;
-- (BOOL)interactiveDismissalController:(id)a3 canBeginDismissalAtLocationFromProvider:(id)a4;
+- (BOOL)accessoryTileViewControllerShouldUseSquareImageWhenShowingAccessoryView:(id)view;
+- (BOOL)accessoryTileViewControllerWillHideNavigationBarWhenShowingAccessoryView:(id)view;
+- (BOOL)accessoryTileViewControllerWillHideToolbarWhenShowingAccessoryView:(id)view;
+- (BOOL)analysisInteractionAllowedForImageAnalysisInteraction:(id)interaction;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)doubleTapZoomController:(id)controller canDoubleTapBeginAtLocationFromProvider:(id)provider;
+- (BOOL)interactiveDismissalController:(id)controller canBeginDismissalAtLocationFromProvider:(id)provider;
 - (BOOL)isFloatingInfoPanelPresented;
-- (BOOL)layout:(id)a3 canApplyInsetStylingToItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 isShowingInfoPanelForItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 shouldInitiallyZoomToFillForItemAtIndexPath:(id)a4 contentSize:(CGSize)a5 viewportSize:(CGSize)a6;
-- (BOOL)layout:(id)a3 shouldMovePeopleRowForItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 shouldMoveProgressIndicatorForItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 shouldShowAccessoryForItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 shouldShowAttributionViewForItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 shouldShowBufferingIndicatorForItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 shouldShowCropButtonForItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 shouldShowPeopleRowForItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 shouldShowPlayButtonForItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 shouldShowVideoPlaceholderForItemAtIndexPath:(id)a4;
-- (BOOL)layout:(id)a3 shouldUseSquareImageInAccessoryForItemAtIndexPath:(id)a4;
-- (BOOL)layoutShouldShowReviewScreenScrubberBar:(id)a3;
-- (BOOL)livePhotoVideoPlaybackTileViewControllerCanBeginPlaying:(id)a3 locationProvider:(id)a4;
-- (BOOL)oneUpActionsControllerDismissPresentedViewController:(id)a3;
-- (BOOL)oneUpActionsControllerIsDetailsAccessoryAvailable:(id)a3;
-- (BOOL)oneUpActionsControllerPrefersInclusionAfterRemoval:(id)a3 forActionType:(unint64_t)a4;
-- (BOOL)oneUpBarsController:(id)a3 canShowCommentsForAsset:(id)a4;
-- (BOOL)oneUpBarsController:(id)a3 shouldHideNavigationBarWhenShowingAccessoryViewForAssetReference:(id)a4;
-- (BOOL)oneUpBarsController:(id)a3 shouldHideStatusBarWhenShowingAccessoryViewForAssetReference:(id)a4;
-- (BOOL)oneUpBarsController:(id)a3 shouldHideToolbarWhenShowingAccessoryViewForAssetReference:(id)a4;
-- (BOOL)oneUpBarsController:(id)a3 shouldTapBeginAtLocationFromProvider:(id)a4;
-- (BOOL)oneUpChromeViewControllerIsDeviceUnlocked:(id)a3;
-- (BOOL)oneUpGestureController:(id)a3 canBeginGestureAt:(id)a4;
-- (BOOL)oneUpGestureController:(id)a3 canDoubleTapToZoomAtPoint:(id)a4;
-- (BOOL)oneUpGestureController:(id)a3 canPerformSelectionAtPoint:(id)a4;
-- (BOOL)oneUpGestureController:(id)a3 canTapToToggleChromeAtPoint:(id)a4;
-- (BOOL)oneUpGestureController:(id)a3 shouldRecognizeGestureRecognizer:(id)a4 simultaneouslyWithOtherGestureRecognizer:(id)a5;
-- (BOOL)oneUpGestureRecognizerCoordinator:(id)a3 shouldAllowIrisGestureAtLocationFromProvider:(id)a4;
-- (BOOL)overOneUpPresentationSessionPresentingViewControllerIsReady:(id)a3;
-- (BOOL)playButtonTileViewControllerShouldShowPauseButton:(id)a3;
-- (BOOL)playButtonTileViewControllerShouldShowPlayButtonWhileActivated:(id)a3;
-- (BOOL)ppt_imageTileViewControllerShouldSignalDeferredProcessingDoneAndFinalImageDisplayed:(id)a3;
+- (BOOL)layout:(id)layout canApplyInsetStylingToItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout isShowingInfoPanelForItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout shouldInitiallyZoomToFillForItemAtIndexPath:(id)path contentSize:(CGSize)size viewportSize:(CGSize)viewportSize;
+- (BOOL)layout:(id)layout shouldMovePeopleRowForItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout shouldMoveProgressIndicatorForItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout shouldShowAccessoryForItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout shouldShowAttributionViewForItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout shouldShowBufferingIndicatorForItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout shouldShowCropButtonForItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout shouldShowPeopleRowForItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout shouldShowPlayButtonForItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout shouldShowVideoPlaceholderForItemAtIndexPath:(id)path;
+- (BOOL)layout:(id)layout shouldUseSquareImageInAccessoryForItemAtIndexPath:(id)path;
+- (BOOL)layoutShouldShowReviewScreenScrubberBar:(id)bar;
+- (BOOL)livePhotoVideoPlaybackTileViewControllerCanBeginPlaying:(id)playing locationProvider:(id)provider;
+- (BOOL)oneUpActionsControllerDismissPresentedViewController:(id)controller;
+- (BOOL)oneUpActionsControllerIsDetailsAccessoryAvailable:(id)available;
+- (BOOL)oneUpActionsControllerPrefersInclusionAfterRemoval:(id)removal forActionType:(unint64_t)type;
+- (BOOL)oneUpBarsController:(id)controller canShowCommentsForAsset:(id)asset;
+- (BOOL)oneUpBarsController:(id)controller shouldHideNavigationBarWhenShowingAccessoryViewForAssetReference:(id)reference;
+- (BOOL)oneUpBarsController:(id)controller shouldHideStatusBarWhenShowingAccessoryViewForAssetReference:(id)reference;
+- (BOOL)oneUpBarsController:(id)controller shouldHideToolbarWhenShowingAccessoryViewForAssetReference:(id)reference;
+- (BOOL)oneUpBarsController:(id)controller shouldTapBeginAtLocationFromProvider:(id)provider;
+- (BOOL)oneUpChromeViewControllerIsDeviceUnlocked:(id)unlocked;
+- (BOOL)oneUpGestureController:(id)controller canBeginGestureAt:(id)at;
+- (BOOL)oneUpGestureController:(id)controller canDoubleTapToZoomAtPoint:(id)point;
+- (BOOL)oneUpGestureController:(id)controller canPerformSelectionAtPoint:(id)point;
+- (BOOL)oneUpGestureController:(id)controller canTapToToggleChromeAtPoint:(id)point;
+- (BOOL)oneUpGestureController:(id)controller shouldRecognizeGestureRecognizer:(id)recognizer simultaneouslyWithOtherGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)oneUpGestureRecognizerCoordinator:(id)coordinator shouldAllowIrisGestureAtLocationFromProvider:(id)provider;
+- (BOOL)overOneUpPresentationSessionPresentingViewControllerIsReady:(id)ready;
+- (BOOL)playButtonTileViewControllerShouldShowPauseButton:(id)button;
+- (BOOL)playButtonTileViewControllerShouldShowPlayButtonWhileActivated:(id)activated;
+- (BOOL)ppt_imageTileViewControllerShouldSignalDeferredProcessingDoneAndFinalImageDisplayed:(id)displayed;
 - (BOOL)prefersStatusBarHidden;
-- (BOOL)prepareForDismissingForced:(BOOL)a3;
+- (BOOL)prepareForDismissingForced:(BOOL)forced;
 - (BOOL)pu_wantsNavigationBarVisible;
 - (BOOL)pu_wantsToolbarVisible;
-- (BOOL)tilingViewCanBypass20069585Check:(id)a3;
-- (BOOL)userTransformTileViewController:(id)a3 shouldReceiveTouchAtLocationFromProvider:(id)a4;
-- (BOOL)userTransformTileViewControllerShouldAnimateMinimumScaleWhileApplyingInsets:(id)a3;
+- (BOOL)tilingViewCanBypass20069585Check:(id)check;
+- (BOOL)userTransformTileViewController:(id)controller shouldReceiveTouchAtLocationFromProvider:(id)provider;
+- (BOOL)userTransformTileViewControllerShouldAnimateMinimumScaleWhileApplyingInsets:(id)insets;
 - (BOOL)videoTilesCanPlayVideo;
 - (BOOL)wantsActionsMenu;
 - (BOOL)wantsSpotlightStyling;
 - (BOOL)xct_isCurrentImageDeferredProcessingFinished;
 - (BOOL)xct_isCurrentImageFullQuality;
-- (CGImage)livePhotoVideoPlaybackTileViewControllerCurrentGainMapImage:(id)a3 outGainMapAvailable:(BOOL *)a4 outGainMapValue:(float *)a5;
-- (CGPoint)layout:(id)a3 accessoryOffsetForItemAtIndexPath:(id)a4;
-- (CGPoint)layout:(id)a3 contentOffsetForItemAtIndexPath:(id)a4;
-- (CGPoint)tilingView:(id)a3 initialVisibleOriginWithLayout:(id)a4;
-- (CGRect)_currentFrameForTileController:(id)a3;
-- (CGRect)layout:(id)a3 bestSquareRectForItemAtIndexPath:(id)a4;
+- (CGImage)livePhotoVideoPlaybackTileViewControllerCurrentGainMapImage:(id)image outGainMapAvailable:(BOOL *)available outGainMapValue:(float *)value;
+- (CGPoint)layout:(id)layout accessoryOffsetForItemAtIndexPath:(id)path;
+- (CGPoint)layout:(id)layout contentOffsetForItemAtIndexPath:(id)path;
+- (CGPoint)tilingView:(id)view initialVisibleOriginWithLayout:(id)layout;
+- (CGRect)_currentFrameForTileController:(id)controller;
+- (CGRect)layout:(id)layout bestSquareRectForItemAtIndexPath:(id)path;
 - (CGRect)ppt_scrollableBoundsForTesting;
 - (CGSize)_layoutReferenceSize;
 - (CGSize)_pendingViewTransitionSize;
-- (CGSize)layout:(id)a3 assetExplorerReviewScreenBadgeSizeForItemAtIndexPath:(id)a4;
-- (CGSize)layout:(id)a3 badgeSizeForItemAtIndexPath:(id)a4 contentWidth:(double)a5;
-- (CGSize)layout:(id)a3 loadingIndicatorSizeForItemAtIndexPath:(id)a4;
-- (CGSize)layout:(id)a3 pixelSizeForItemAtIndexPath:(id)a4;
+- (CGSize)layout:(id)layout assetExplorerReviewScreenBadgeSizeForItemAtIndexPath:(id)path;
+- (CGSize)layout:(id)layout badgeSizeForItemAtIndexPath:(id)path contentWidth:(double)width;
+- (CGSize)layout:(id)layout loadingIndicatorSizeForItemAtIndexPath:(id)path;
+- (CGSize)layout:(id)layout pixelSizeForItemAtIndexPath:(id)path;
 - (CGSize)preferredContentSizeOverride;
 - (NSArray)_tileKindsToHide;
 - (NSString)authenticationTitle;
@@ -108,137 +108,137 @@
 - (PUAccessoryContentViewController)currentFloatingInfoPanelAccessoryViewController;
 - (PUOneUpPhototypeSupportController)phototypeSupportController;
 - (PUOneUpViewController)_mainOneUpForSecondScreenBrowser;
-- (PUOneUpViewController)initWithBrowsingSession:(id)a3 options:(unint64_t)a4 initialActivity:(unint64_t)a5 presentationOrigin:(int64_t)a6;
+- (PUOneUpViewController)initWithBrowsingSession:(id)session options:(unint64_t)options initialActivity:(unint64_t)activity presentationOrigin:(int64_t)origin;
 - (PUOneUpVisualImageAnalyzingController)visualImageAnalyzingController;
 - (PUShazamEventsController)shazamEventsController;
 - (PXAssetActionManager)assetActionManager;
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration;
-- (UIEdgeInsets)layout:(id)a3 insetsWhenScaledToFitForItemAtIndexPath:(id)a4 inViewportSize:(CGSize)a5;
+- (UIEdgeInsets)layout:(id)layout insetsWhenScaledToFitForItemAtIndexPath:(id)path inViewportSize:(CGSize)size;
 - (UIView)chromeView;
 - (UIView)ppt_scrubberView;
-- (double)alphaForReviewScreenBarsInLayout:(id)a3;
-- (double)layout:(id)a3 aspectRatioForItemAtIndexPath:(id)a4;
-- (double)layout:(id)a3 insetContentCornerRadiusForItemAtIndexPath:(id)a4;
-- (double)layout:(id)a3 leadingBadgesWidthForItemAtIndexPath:(id)a4 contentWidth:(double)a5;
-- (double)layout:(id)a3 minimumItemHeightNeededInAccessoryForItemAtIndexPath:(id)a4;
-- (double)layout:(id)a3 minimumVisibleAccessoryHeightForItemAtIndexPath:(id)a4;
-- (double)layout:(id)a3 minimumVisibleContentHeightForItemAtIndexPath:(id)a4;
-- (double)livePhotoVideoPlaybackTileViewControllerExtraMinimumTouchDuration:(id)a3 locationProvider:(id)a4;
-- (double)playButtonTileViewController:(id)a3 delayForButtonAnimation:(BOOL)a4;
+- (double)alphaForReviewScreenBarsInLayout:(id)layout;
+- (double)layout:(id)layout aspectRatioForItemAtIndexPath:(id)path;
+- (double)layout:(id)layout insetContentCornerRadiusForItemAtIndexPath:(id)path;
+- (double)layout:(id)layout leadingBadgesWidthForItemAtIndexPath:(id)path contentWidth:(double)width;
+- (double)layout:(id)layout minimumItemHeightNeededInAccessoryForItemAtIndexPath:(id)path;
+- (double)layout:(id)layout minimumVisibleAccessoryHeightForItemAtIndexPath:(id)path;
+- (double)layout:(id)layout minimumVisibleContentHeightForItemAtIndexPath:(id)path;
+- (double)livePhotoVideoPlaybackTileViewControllerExtraMinimumTouchDuration:(id)duration locationProvider:(id)provider;
+- (double)playButtonTileViewController:(id)controller delayForButtonAnimation:(BOOL)animation;
 - (double)px_HDRFocus;
 - (double)px_imageModulationIntensity;
-- (double)tilingViewControllerTransitionProgressAtWhichChromeIsFullyFadedOut:(id)a3;
+- (double)tilingViewControllerTransitionProgressAtWhichChromeIsFullyFadedOut:(id)out;
 - (id)_additionalExcludedMenuActionTypes;
-- (id)_assetDisplayDescriptorForAsset:(id)a3;
-- (id)_assetReferenceAtIndexPath:(id)a3 layout:(id)a4;
-- (id)_assetViewModelAtIndexPath:(id)a3 layout:(id)a4;
-- (id)_assetsToPrefetchForCount:(int)a3;
-- (id)_assetsToPrefetchUsingDataSource:(id)a3 startingAt:(id)a4 count:(int64_t)a5 reverseDirection:(BOOL)a6;
-- (id)_contentTileControllerForAssetReference:(id)a3;
+- (id)_assetDisplayDescriptorForAsset:(id)asset;
+- (id)_assetReferenceAtIndexPath:(id)path layout:(id)layout;
+- (id)_assetViewModelAtIndexPath:(id)path layout:(id)layout;
+- (id)_assetsToPrefetchForCount:(int)count;
+- (id)_assetsToPrefetchUsingDataSource:(id)source startingAt:(id)at count:(int64_t)count reverseDirection:(BOOL)direction;
+- (id)_contentTileControllerForAssetReference:(id)reference;
 - (id)_cropButtonTileViewControllerForCurrentAsset;
 - (id)_currentAccessoryViewController;
 - (id)_currentAssetViewModel;
 - (id)_currentContentTileController;
-- (id)_currentPlaceholderSnapshotViewForTileController:(id)a3;
+- (id)_currentPlaceholderSnapshotViewForTileController:(id)controller;
 - (id)_leadingContentTileController;
 - (id)_livePhotoBadge;
 - (id)_menuElements;
 - (id)_newOneUpLayout;
 - (id)_passthroughViews;
-- (id)_presentedTileControllerForCurrentIndexPathWithKind:(id)a3;
-- (id)_presentedTileControllerForIndexPath:(id)a3 kind:(id)a4;
+- (id)_presentedTileControllerForCurrentIndexPathWithKind:(id)kind;
+- (id)_presentedTileControllerForIndexPath:(id)path kind:(id)kind;
 - (id)_syndicationPillView;
 - (id)_trailingContentTileController;
-- (id)_userTransformTileControllerAtLocationFromProvider:(id)a3;
+- (id)_userTransformTileControllerAtLocationFromProvider:(id)provider;
 - (id)_userTransformTileViewControllerForCurrentAsset;
-- (id)_videoPlayerAtIndexPath:(id)a3 layout:(id)a4;
-- (id)accessoryTileViewControllerAccessoryViewController:(id)a3;
-- (id)additionalContextMenuActionsForAttributionTileViewController:(id)a3;
-- (id)barsControllerViewHostingGestureRecognizers:(id)a3;
+- (id)_videoPlayerAtIndexPath:(id)path layout:(id)layout;
+- (id)accessoryTileViewControllerAccessoryViewController:(id)controller;
+- (id)additionalContextMenuActionsForAttributionTileViewController:(id)controller;
+- (id)barsControllerViewHostingGestureRecognizers:(id)recognizers;
 - (id)browsingTileViewAnimator;
-- (id)contentViewControllerForAirPlayController:(id)a3;
-- (id)contentViewForImageAnalysisInteraction:(id)a3;
+- (id)contentViewControllerForAirPlayController:(id)controller;
+- (id)contentViewForImageAnalysisInteraction:(id)interaction;
 - (id)createAssetTransitionInfo;
 - (id)currentImageAnalysisInteraction;
-- (id)interactiveDismissalControllerDesignatedTileController:(id)a3;
-- (id)irisImageTileViewController:(id)a3 delegateForGestureRecognizer:(id)a4;
+- (id)interactiveDismissalControllerDesignatedTileController:(id)controller;
+- (id)irisImageTileViewController:(id)controller delegateForGestureRecognizer:(id)recognizer;
 - (id)keyCommands;
-- (id)layout:(id)a3 modelTileTransformForItemAtIndexPath:(id)a4;
-- (id)livePhotoVideoPlaybackTileViewControllerCurrentImage:(id)a3;
-- (id)livePhotoVideoPlaybackTileViewControllerDisplayTileTransform:(id)a3;
-- (id)oneUpBarsControllerCustomActionMenuElements:(id)a3;
-- (id)oneUpChromeViewControllerFullSizeOneUpHostingView:(id)a3;
-- (id)overOneUpPresentationSessionBrowserViewModel:(id)a3;
-- (id)overOneUpPresentationSessionCreateIfNeeded:(BOOL)a3;
-- (id)presentationControllerForTipID:(id)a3;
-- (id)presentationEnvironmentForActionPerformer:(id)a3;
+- (id)layout:(id)layout modelTileTransformForItemAtIndexPath:(id)path;
+- (id)livePhotoVideoPlaybackTileViewControllerCurrentImage:(id)image;
+- (id)livePhotoVideoPlaybackTileViewControllerDisplayTileTransform:(id)transform;
+- (id)oneUpBarsControllerCustomActionMenuElements:(id)elements;
+- (id)oneUpChromeViewControllerFullSizeOneUpHostingView:(id)view;
+- (id)overOneUpPresentationSessionBrowserViewModel:(id)model;
+- (id)overOneUpPresentationSessionCreateIfNeeded:(BOOL)needed;
+- (id)presentationControllerForTipID:(id)d;
+- (id)presentationEnvironmentForActionPerformer:(id)performer;
 - (id)pu_debugCurrentAsset;
 - (id)pu_debugCurrentPrivacyController;
 - (id)pu_debugCurrentViewModel;
 - (id)pu_debugRows;
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4;
-- (id)sourceItemForTipID:(id)a3;
-- (id)textsToHighlightForImageAnalysisInteraction:(id)a3;
-- (id)tilingView:(id)a3 scrollInfoWithLayout:(id)a4;
-- (id)tilingView:(id)a3 tileControllerWithIndexPath:(id)a4 kind:(id)a5 dataSource:(id)a6;
-- (id)tilingView:(id)a3 tileTransitionCoordinatorForChangeFromFrame:(CGRect)a4 toFrame:(CGRect)a5 duration:(double)a6;
-- (id)tilingView:(id)a3 tileTransitionCoordinatorForLayoutInvalidationContext:(id)a4;
-- (id)tilingView:(id)a3 tileTransitionCoordinatorForReattachedTileControllers:(id)a4 context:(id)a5;
-- (id)tilingView:(id)a3 tileTransitionCoordinatorForTransitionFromLayout:(id)a4 toLayout:(id)a5 withContext:(id)a6;
-- (id)tilingViewControllerTransition:(id)a3 tilingViewToTransferToEndPoint:(id)a4;
-- (int64_t)_accessoryContentKindForAsset:(id)a3;
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space;
+- (id)sourceItemForTipID:(id)d;
+- (id)textsToHighlightForImageAnalysisInteraction:(id)interaction;
+- (id)tilingView:(id)view scrollInfoWithLayout:(id)layout;
+- (id)tilingView:(id)view tileControllerWithIndexPath:(id)path kind:(id)kind dataSource:(id)source;
+- (id)tilingView:(id)view tileTransitionCoordinatorForChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame duration:(double)duration;
+- (id)tilingView:(id)view tileTransitionCoordinatorForLayoutInvalidationContext:(id)context;
+- (id)tilingView:(id)view tileTransitionCoordinatorForReattachedTileControllers:(id)controllers context:(id)context;
+- (id)tilingView:(id)view tileTransitionCoordinatorForTransitionFromLayout:(id)layout toLayout:(id)toLayout withContext:(id)context;
+- (id)tilingViewControllerTransition:(id)transition tilingViewToTransferToEndPoint:(id)point;
+- (int64_t)_accessoryContentKindForAsset:(id)asset;
 - (int64_t)_accessoryContentKindForCurrentAsset;
-- (int64_t)_insetModeForAsset:(id)a3;
-- (int64_t)layout:(id)a3 insetModeForItemAtIndexPath:(id)a4;
+- (int64_t)_insetModeForAsset:(id)asset;
+- (int64_t)layout:(id)layout insetModeForItemAtIndexPath:(id)path;
 - (int64_t)pu_preferredBarStyle;
-- (int64_t)userTransformTileViewController:(id)a3 insetModeForItemAtIndexPath:(id)a4;
-- (unint64_t)routingOptionsForDestination:(id)a3;
-- (void)_abandonTileController:(id)a3;
-- (void)_arrowKey:(id)a3;
-- (void)_beginVKSubjectAnalyzingWithGestureRecognizer:(id)a3 beginID:(unint64_t)a4;
-- (void)_browsingVideoPlayerDidPlayToEndTime:(id)a3;
+- (int64_t)userTransformTileViewController:(id)controller insetModeForItemAtIndexPath:(id)path;
+- (unint64_t)routingOptionsForDestination:(id)destination;
+- (void)_abandonTileController:(id)controller;
+- (void)_arrowKey:(id)key;
+- (void)_beginVKSubjectAnalyzingWithGestureRecognizer:(id)recognizer beginID:(unint64_t)d;
+- (void)_browsingVideoPlayerDidPlayToEndTime:(id)time;
 - (void)_cancelTimedChromeAutoHide;
-- (void)_chromeAutoHideTimerFired:(id)a3;
-- (void)_configureAdoptedTileController:(id)a3;
-- (void)_configurePocketStyle:(id)a3;
+- (void)_chromeAutoHideTimerFired:(id)fired;
+- (void)_configureAdoptedTileController:(id)controller;
+- (void)_configurePocketStyle:(id)style;
 - (void)_configureVitalityController;
 - (void)_didEndTransition;
-- (void)_dimFloatingInfoPanelAnimated:(BOOL)a3;
+- (void)_dimFloatingInfoPanelAnimated:(BOOL)animated;
 - (void)_dismissAnyPresentedTip;
-- (void)_dismissFloatingInfoPanelAnimated:(BOOL)a3;
-- (void)_dismissTipPopoverAnimated:(BOOL)a3;
-- (void)_editAdjust:(id)a3;
-- (void)_editCleanup:(id)a3;
-- (void)_editCrop:(id)a3;
-- (void)_editFilter:(id)a3;
-- (void)_editStyles:(id)a3;
-- (void)_handleDeferredProcessingFinishedForAssetUUID:(id)a3;
-- (void)_handleSuggestedActionCompletedForTip:(id)a3 completion:(id)a4;
-- (void)_handleTouchGesture:(id)a3;
-- (void)_handleUnlockDeviceForActionType:(unint64_t)a3 success:(BOOL)a4;
+- (void)_dismissFloatingInfoPanelAnimated:(BOOL)animated;
+- (void)_dismissTipPopoverAnimated:(BOOL)animated;
+- (void)_editAdjust:(id)adjust;
+- (void)_editCleanup:(id)cleanup;
+- (void)_editCrop:(id)crop;
+- (void)_editFilter:(id)filter;
+- (void)_editStyles:(id)styles;
+- (void)_handleDeferredProcessingFinishedForAssetUUID:(id)d;
+- (void)_handleSuggestedActionCompletedForTip:(id)tip completion:(id)completion;
+- (void)_handleTouchGesture:(id)gesture;
+- (void)_handleUnlockDeviceForActionType:(unint64_t)type success:(BOOL)success;
 - (void)_handleZoomOutCurrentAsset;
-- (void)_hideChromeOnPlayButtonTapWithItemIsNowPlaying:(BOOL)a3 buttonIsOverlayed:(BOOL)a4;
+- (void)_hideChromeOnPlayButtonTapWithItemIsNowPlaying:(BOOL)playing buttonIsOverlayed:(BOOL)overlayed;
 - (void)_hideOverlays;
 - (void)_informVKCOverlayToKickOffSubjectAnalyzing;
-- (void)_invalidateInfoPanelLayoutAnimated:(BOOL)a3;
+- (void)_invalidateInfoPanelLayoutAnimated:(BOOL)animated;
 - (void)_isPresentedForPreviewDidChange;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_notifyTileIsReadyWithTimeOut:(double)a3 completionHandler:(id)a4;
-- (void)_performNavigationToAssetDisplayDescriptor:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5;
-- (void)_performPXActionType:(id)a3;
+- (void)_keyboardWillShow:(id)show;
+- (void)_notifyTileIsReadyWithTimeOut:(double)out completionHandler:(id)handler;
+- (void)_performNavigationToAssetDisplayDescriptor:(id)descriptor beforeDate:(id)date completionHandler:(id)handler;
+- (void)_performPXActionType:(id)type;
 - (void)_preheatAdjacentAssetsForPhotosDetailsContext;
 - (void)_preheatAssetsForSpatialGeneration;
-- (void)_presentAlertForUnplayableAssetReference:(id)a3;
-- (void)_presentFloatingInfoPanelAnimated:(BOOL)a3;
+- (void)_presentAlertForUnplayableAssetReference:(id)reference;
+- (void)_presentFloatingInfoPanelAnimated:(BOOL)animated;
 - (void)_scheduleTimedChromeAutoHide;
-- (void)_setAccessoryVisible:(BOOL)a3 changeReason:(int64_t)a4;
-- (void)_setContentUnavailableConfiguration:(id)a3;
-- (void)_setIrisPlaying:(BOOL)a3;
-- (void)_setLayoutReferenceSize:(CGSize)a3;
-- (void)_setPrefersHomeIndicatorHidden:(BOOL)a3;
-- (void)_setSecondScreenBrowser:(id)a3;
-- (void)_setTilingView:(id)a3;
-- (void)_setWindowInterfaceOrientation:(int64_t)a3;
+- (void)_setAccessoryVisible:(BOOL)visible changeReason:(int64_t)reason;
+- (void)_setContentUnavailableConfiguration:(id)configuration;
+- (void)_setIrisPlaying:(BOOL)playing;
+- (void)_setLayoutReferenceSize:(CGSize)size;
+- (void)_setPrefersHomeIndicatorHidden:(BOOL)hidden;
+- (void)_setSecondScreenBrowser:(id)browser;
+- (void)_setTilingView:(id)view;
+- (void)_setWindowInterfaceOrientation:(int64_t)orientation;
 - (void)_toggleAccessoryVisibility;
 - (void)_toggleCommentsVisibility;
 - (void)_toggleDetailsVisibility;
@@ -250,7 +250,7 @@
 - (void)_updateBarsControllerIfNeeded;
 - (void)_updateChromeViewControllerDismissalProgress;
 - (void)_updateChromeViewControllerIfNeeded;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)_updateEditModeIfNeeded;
 - (void)_updateFloatingInfoPanel;
 - (void)_updateFloatingInfoPanelIfNeeded;
@@ -258,7 +258,7 @@
 - (void)_updateIfNeeded;
 - (void)_updateImageAnalysisInteractionAdditionalActionInfoEdgeInsetsIfNeeded;
 - (void)_updateImageAnalysisInteractionDelegate;
-- (void)_updateLayout:(id)a3;
+- (void)_updateLayout:(id)layout;
 - (void)_updateLayoutIfNeeded;
 - (void)_updateLayoutReferenceSize;
 - (void)_updateMergedVideoProviderEnabled;
@@ -281,105 +281,105 @@
 - (void)_xct_endSignpostingForImageDeferredProcessing;
 - (void)_xct_endSignpostingForImageFullQuality;
 - (void)_xct_endSignpostingForImageTileImageLoadingAndProcessing;
-- (void)accessoryVisibilityInteractionController:(id)a3 setAccessoryVisible:(BOOL)a4 changeReason:(int64_t)a5;
-- (void)accessoryVisibilityInteractionControllerDidEnd:(id)a3;
-- (void)addAssetsToAlbum:(id)a3;
-- (void)addAssetsToLastUsedAlbum:(id)a3;
-- (void)adjustDateTime:(id)a3;
-- (void)adjustLocation:(id)a3;
-- (void)airPlayControllerScreenAvailabilityChanged:(id)a3;
-- (void)appIntentsEnumerateAssetCollections:(id)a3;
-- (void)appIntentsEnumerateAssets:(id)a3;
-- (void)autoEnhanceAssets:(id)a3;
-- (void)badgeVisibilityDidChange:(id)a3;
-- (void)barsControllerContentGuideInsetsDidChange:(id)a3;
-- (void)copy:(id)a3;
-- (void)copyAdjustments:(id)a3;
-- (void)createMenuActionControllerForManagerIfNeeded:(id)a3 withPresentingViewController:(id)a4 regionOfInterestProvider:(id)a5;
-- (void)cropButtonTileViewController:(id)a3 didSelectAspectRatio:(CGSize)a4;
+- (void)accessoryVisibilityInteractionController:(id)controller setAccessoryVisible:(BOOL)visible changeReason:(int64_t)reason;
+- (void)accessoryVisibilityInteractionControllerDidEnd:(id)end;
+- (void)addAssetsToAlbum:(id)album;
+- (void)addAssetsToLastUsedAlbum:(id)album;
+- (void)adjustDateTime:(id)time;
+- (void)adjustLocation:(id)location;
+- (void)airPlayControllerScreenAvailabilityChanged:(id)changed;
+- (void)appIntentsEnumerateAssetCollections:(id)collections;
+- (void)appIntentsEnumerateAssets:(id)assets;
+- (void)autoEnhanceAssets:(id)assets;
+- (void)badgeVisibilityDidChange:(id)change;
+- (void)barsControllerContentGuideInsetsDidChange:(id)change;
+- (void)copy:(id)copy;
+- (void)copyAdjustments:(id)adjustments;
+- (void)createMenuActionControllerForManagerIfNeeded:(id)needed withPresentingViewController:(id)controller regionOfInterestProvider:(id)provider;
+- (void)cropButtonTileViewController:(id)controller didSelectAspectRatio:(CGSize)ratio;
 - (void)dealloc;
-- (void)deleteAssets:(id)a3;
-- (void)dismissPresentedViewController:(id)a3 presentMenuWithCompletion:(id)a4;
-- (void)duplicateAssets:(id)a3;
-- (void)favoriteAssets:(id)a3;
-- (void)hideAssets:(id)a3;
-- (void)imageAnalysisInteractionIsDrivingLivePhotoPlaybackDidChange:(id)a3;
-- (void)imageAnalysisInteractionSubjectInteractionInProgressDidChange:(id)a3;
-- (void)imageTileViewController:(id)a3 didDisplayFullQualityImageWithDeferredProcessingFinished:(BOOL)a4;
-- (void)interactiveDismissalControllerChangedIsHandlingDismissalInteraction:(id)a3;
-- (void)irisImageTileViewControllerDidBeginHinting:(id)a3;
-- (void)irisImageTileViewControllerDidBeginPlaying:(id)a3;
-- (void)irisImageTileViewControllerDidEndPlaying:(id)a3;
-- (void)irisImageTileViewControllerDidEndVitality:(id)a3;
-- (void)layout:(id)a3 willApplyDisplayTileTransform:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)livePhotoVideoPlaybackTileViewControllerDidEndPlaying:(id)a3;
-- (void)livePhotoVideoPlaybackTileViewControllerWillBeginPlaying:(id)a3;
+- (void)deleteAssets:(id)assets;
+- (void)dismissPresentedViewController:(id)controller presentMenuWithCompletion:(id)completion;
+- (void)duplicateAssets:(id)assets;
+- (void)favoriteAssets:(id)assets;
+- (void)hideAssets:(id)assets;
+- (void)imageAnalysisInteractionIsDrivingLivePhotoPlaybackDidChange:(id)change;
+- (void)imageAnalysisInteractionSubjectInteractionInProgressDidChange:(id)change;
+- (void)imageTileViewController:(id)controller didDisplayFullQualityImageWithDeferredProcessingFinished:(BOOL)finished;
+- (void)interactiveDismissalControllerChangedIsHandlingDismissalInteraction:(id)interaction;
+- (void)irisImageTileViewControllerDidBeginHinting:(id)hinting;
+- (void)irisImageTileViewControllerDidBeginPlaying:(id)playing;
+- (void)irisImageTileViewControllerDidEndPlaying:(id)playing;
+- (void)irisImageTileViewControllerDidEndVitality:(id)vitality;
+- (void)layout:(id)layout willApplyDisplayTileTransform:(id)transform forItemAtIndexPath:(id)path;
+- (void)livePhotoVideoPlaybackTileViewControllerDidEndPlaying:(id)playing;
+- (void)livePhotoVideoPlaybackTileViewControllerWillBeginPlaying:(id)playing;
 - (void)loadView;
-- (void)loadingStatusManager:(id)a3 didUpdateLoadingStatus:(id)a4 forItemIdentifier:(id)a5;
-- (void)navigateToAssetDisplayDescriptor:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5;
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)oneUpActionsController:(id)a3 zoomAtLocationProvider:(id)a4;
-- (void)oneUpActionsControllerToggleChromeVisibility:(id)a3;
-- (void)oneUpAssetTransition:(id)a3 animateTransitionWithContext:(id)a4 duration:(double)a5 completion:(id)a6;
-- (void)oneUpAssetTransition:(id)a3 requestTransitionContextWithCompletion:(id)a4 options:(unint64_t)a5;
-- (void)oneUpBarsControllerDidChangeShowingPlayPauseButton:(id)a3;
-- (void)oneUpBarsControllerDidTapTitle:(id)a3;
-- (void)oneUpBarsControllerWillPresentActionsMenu:(id)a3 completionHandler:(id)a4;
-- (void)oneUpChromeViewControllerAdditionalActionInfoEdgeInsetsDidChange:(id)a3;
-- (void)oneUpChromeViewControllerRequestDeviceUnlock:(id)a3 for:(unint64_t)a4;
-- (void)overOneUpPresentationSession:(id)a3 didPresent:(id)a4;
-- (void)overOneUpPresentationSessionDidFinish:(id)a3;
-- (void)pasteAdjustments:(id)a3;
-- (void)playButtonTileViewControllerDidTapButton:(id)a3;
-- (void)ppt_notifyWhenDeferredProcessingIsDoneAndFinalImageDisplayedWithTimeout:(double)a3 handler:(id)a4;
-- (void)ppt_notifyWhenVKAnalysisIsReadyWithTimeout:(double)a3 handler:(id)a4;
-- (void)ppt_playCurrentLivePhotoWithCompletionHandler:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)prepareTipPopover:(id)a3 tipID:(id)a4;
-- (void)presentErrorFromLoadingIndicator:(id)a3;
-- (void)presentPeopleViewController:(id)a3;
-- (void)print:(id)a3;
+- (void)loadingStatusManager:(id)manager didUpdateLoadingStatus:(id)status forItemIdentifier:(id)identifier;
+- (void)navigateToAssetDisplayDescriptor:(id)descriptor beforeDate:(id)date completionHandler:(id)handler;
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)oneUpActionsController:(id)controller zoomAtLocationProvider:(id)provider;
+- (void)oneUpActionsControllerToggleChromeVisibility:(id)visibility;
+- (void)oneUpAssetTransition:(id)transition animateTransitionWithContext:(id)context duration:(double)duration completion:(id)completion;
+- (void)oneUpAssetTransition:(id)transition requestTransitionContextWithCompletion:(id)completion options:(unint64_t)options;
+- (void)oneUpBarsControllerDidChangeShowingPlayPauseButton:(id)button;
+- (void)oneUpBarsControllerDidTapTitle:(id)title;
+- (void)oneUpBarsControllerWillPresentActionsMenu:(id)menu completionHandler:(id)handler;
+- (void)oneUpChromeViewControllerAdditionalActionInfoEdgeInsetsDidChange:(id)change;
+- (void)oneUpChromeViewControllerRequestDeviceUnlock:(id)unlock for:(unint64_t)for;
+- (void)overOneUpPresentationSession:(id)session didPresent:(id)present;
+- (void)overOneUpPresentationSessionDidFinish:(id)finish;
+- (void)pasteAdjustments:(id)adjustments;
+- (void)playButtonTileViewControllerDidTapButton:(id)button;
+- (void)ppt_notifyWhenDeferredProcessingIsDoneAndFinalImageDisplayedWithTimeout:(double)timeout handler:(id)handler;
+- (void)ppt_notifyWhenVKAnalysisIsReadyWithTimeout:(double)timeout handler:(id)handler;
+- (void)ppt_playCurrentLivePhotoWithCompletionHandler:(id)handler;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)prepareTipPopover:(id)popover tipID:(id)d;
+- (void)presentErrorFromLoadingIndicator:(id)indicator;
+- (void)presentPeopleViewController:(id)controller;
+- (void)print:(id)print;
 - (void)purgeIfPossible;
-- (void)pushPeopleViewController:(id)a3;
-- (void)restoreAssets:(id)a3;
-- (void)restoreAssetsWithoutConfirmation:(id)a3;
-- (void)revertAdjustments:(id)a3;
-- (void)rotateAssetsClockwise:(id)a3;
-- (void)rotateAssetsCounterclockwise:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setAppearState:(int)a3;
-- (void)setAppearanceTransitionAnimationsDisabled:(BOOL)a3;
-- (void)setUnlockDeviceHandlerWithActionType:(id)a3;
-- (void)setUnlockDeviceStatus:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)shareAssets:(id)a3;
-- (void)showDetailsViewForImageAnalysisInteraction:(id)a3;
-- (void)tilingViewControllerTransition:(id)a3 abandonTilingView:(id)a4 toEndPoint:(id)a5;
-- (void)tilingViewControllerTransition:(id)a3 adoptTilingView:(id)a4 fromEndPoint:(id)a5 isCancelingTransition:(BOOL)a6 animationSetupCompletionHandler:(id)a7;
-- (void)tipPopoverDidDismissWithTipID:(id)a3;
-- (void)tipPopoverDidPresentWithTipID:(id)a3;
-- (void)toggleEditor:(id)a3;
-- (void)togglePlayback:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)trashAssets:(id)a3;
-- (void)trashAssetsWithoutConfirmation:(id)a3;
-- (void)userTransformTileViewController:(id)a3 didChangeIsUserInteracting:(BOOL)a4;
-- (void)validateCommand:(id)a3;
-- (void)viewControllerSpec:(id)a3 didChange:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)pushPeopleViewController:(id)controller;
+- (void)restoreAssets:(id)assets;
+- (void)restoreAssetsWithoutConfirmation:(id)confirmation;
+- (void)revertAdjustments:(id)adjustments;
+- (void)rotateAssetsClockwise:(id)clockwise;
+- (void)rotateAssetsCounterclockwise:(id)counterclockwise;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setAppearState:(int)state;
+- (void)setAppearanceTransitionAnimationsDisabled:(BOOL)disabled;
+- (void)setUnlockDeviceHandlerWithActionType:(id)type;
+- (void)setUnlockDeviceStatus:(id)status;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)shareAssets:(id)assets;
+- (void)showDetailsViewForImageAnalysisInteraction:(id)interaction;
+- (void)tilingViewControllerTransition:(id)transition abandonTilingView:(id)view toEndPoint:(id)point;
+- (void)tilingViewControllerTransition:(id)transition adoptTilingView:(id)view fromEndPoint:(id)point isCancelingTransition:(BOOL)cancelingTransition animationSetupCompletionHandler:(id)handler;
+- (void)tipPopoverDidDismissWithTipID:(id)d;
+- (void)tipPopoverDidPresentWithTipID:(id)d;
+- (void)toggleEditor:(id)editor;
+- (void)togglePlayback:(id)playback;
+- (void)traitCollectionDidChange:(id)change;
+- (void)trashAssets:(id)assets;
+- (void)trashAssetsWithoutConfirmation:(id)confirmation;
+- (void)userTransformTileViewController:(id)controller didChangeIsUserInteracting:(BOOL)interacting;
+- (void)validateCommand:(id)command;
+- (void)viewControllerSpec:(id)spec didChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewModel:(id)model didChange:(id)change;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUOneUpViewController
@@ -425,27 +425,27 @@
   return result;
 }
 
-- (void)appIntentsEnumerateAssets:(id)a3
+- (void)appIntentsEnumerateAssets:(id)assets
 {
-  v5 = a3;
+  assetsCopy = assets;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (!v5)
+  if (!assetsCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7461 description:{@"Invalid parameter not satisfying: %@", @"assetHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7461 description:{@"Invalid parameter not satisfying: %@", @"assetHandler"}];
   }
 
-  v6 = [(PUOneUpViewController *)self browsingSession];
-  v7 = [v6 privacyController];
-  v8 = [v7 isLocked];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  privacyController = [browsingSession privacyController];
+  isLocked = [privacyController isLocked];
 
-  if (!v8)
+  if (!isLocked)
   {
-    v10 = [v6 viewModel];
-    v11 = [v10 currentAssetReference];
-    v12 = [v11 asset];
+    viewModel = [browsingSession viewModel];
+    currentAssetReference = [viewModel currentAssetReference];
+    asset = [currentAssetReference asset];
 
-    v13 = v12;
+    v13 = asset;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v14 = v13;
@@ -457,15 +457,15 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v15 = [(PUOneUpViewController *)self view];
-      [v15 bounds];
-      v5[2](v5, v14, 1);
+      view = [(PUOneUpViewController *)self view];
+      [view bounds];
+      assetsCopy[2](assetsCopy, v14, 1);
     }
 
     else
     {
       v14 = 0;
-      v15 = v13;
+      view = v13;
     }
 
     goto LABEL_13;
@@ -481,27 +481,27 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)appIntentsEnumerateAssetCollections:(id)a3
+- (void)appIntentsEnumerateAssetCollections:(id)collections
 {
-  v5 = a3;
+  collectionsCopy = collections;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (!v5)
+  if (!collectionsCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7444 description:{@"Invalid parameter not satisfying: %@", @"assetCollectionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7444 description:{@"Invalid parameter not satisfying: %@", @"assetCollectionHandler"}];
   }
 
-  v6 = [(PUOneUpViewController *)self browsingSession];
-  v7 = [v6 privacyController];
-  v8 = [v7 isLocked];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  privacyController = [browsingSession privacyController];
+  isLocked = [privacyController isLocked];
 
-  if (!v8)
+  if (!isLocked)
   {
-    v10 = [v6 viewModel];
-    v11 = [v10 currentAssetReference];
-    v12 = [v11 assetCollection];
+    viewModel = [browsingSession viewModel];
+    currentAssetReference = [viewModel currentAssetReference];
+    assetCollection = [currentAssetReference assetCollection];
 
-    v13 = v12;
+    v13 = assetCollection;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v14 = v13;
@@ -513,15 +513,15 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v15 = [(PUOneUpViewController *)self view];
-      [v15 bounds];
-      v5[2](v5, v14, 1);
+      view = [(PUOneUpViewController *)self view];
+      [view bounds];
+      collectionsCopy[2](collectionsCopy, v14, 1);
     }
 
     else
     {
       v14 = 0;
-      v15 = v13;
+      view = v13;
     }
 
     goto LABEL_13;
@@ -539,46 +539,46 @@ LABEL_14:
 
 - (BOOL)xct_isCurrentImageDeferredProcessingFinished
 {
-  v2 = [(PUOneUpViewController *)self _currentContentTileController];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  _currentContentTileController = [(PUOneUpViewController *)self _currentContentTileController];
+  if (_currentContentTileController && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 isDeferredProcessingFinished];
+    isDeferredProcessingFinished = [_currentContentTileController isDeferredProcessingFinished];
   }
 
   else
   {
-    v3 = 0;
+    isDeferredProcessingFinished = 0;
   }
 
-  return v3;
+  return isDeferredProcessingFinished;
 }
 
 - (BOOL)xct_isCurrentImageFullQuality
 {
-  v2 = [(PUOneUpViewController *)self _currentContentTileController];
+  _currentContentTileController = [(PUOneUpViewController *)self _currentContentTileController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 isDisplayingFullQualityImage];
+    isDisplayingFullQualityImage = [_currentContentTileController isDisplayingFullQualityImage];
   }
 
   else
   {
-    v3 = 0;
+    isDisplayingFullQualityImage = 0;
   }
 
-  return v3;
+  return isDisplayingFullQualityImage;
 }
 
 - (void)_xct_endSignpostingForImageDeferredProcessing
 {
-  v3 = [(PUOneUpViewController *)self xct_waitForDeferredProcessingTimer];
-  v4 = [v3 isValid];
+  xct_waitForDeferredProcessingTimer = [(PUOneUpViewController *)self xct_waitForDeferredProcessingTimer];
+  isValid = [xct_waitForDeferredProcessingTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
-    v5 = [(PUOneUpViewController *)self xct_waitForDeferredProcessingTimer];
-    [v5 invalidate];
+    xct_waitForDeferredProcessingTimer2 = [(PUOneUpViewController *)self xct_waitForDeferredProcessingTimer];
+    [xct_waitForDeferredProcessingTimer2 invalidate];
 
     v6 = PLOneUpGetLog();
     if (os_signpost_enabled(v6))
@@ -600,13 +600,13 @@ LABEL_14:
 
 - (void)_xct_endSignpostingForImageFullQuality
 {
-  v3 = [(PUOneUpViewController *)self xct_waitForFullQualityImageTimer];
-  v4 = [v3 isValid];
+  xct_waitForFullQualityImageTimer = [(PUOneUpViewController *)self xct_waitForFullQualityImageTimer];
+  isValid = [xct_waitForFullQualityImageTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
-    v5 = [(PUOneUpViewController *)self xct_waitForFullQualityImageTimer];
-    [v5 invalidate];
+    xct_waitForFullQualityImageTimer2 = [(PUOneUpViewController *)self xct_waitForFullQualityImageTimer];
+    [xct_waitForFullQualityImageTimer2 invalidate];
 
     v6 = PLOneUpGetLog();
     if (os_signpost_enabled(v6))
@@ -637,7 +637,7 @@ LABEL_14:
 {
   [(PUOneUpViewController *)self _xct_endSignpostingForImageTileImageLoadingAndProcessing];
   v3 = PLOneUpGetLog();
-  v4 = [(PUOneUpViewController *)self _currentContentTileController];
+  _currentContentTileController = [(PUOneUpViewController *)self _currentContentTileController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -660,7 +660,7 @@ LABEL_14:
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "1Up signpost: timeToSharp start.", buf, 2u);
     }
 
-    if ([v4 isDisplayingFullQualityImage])
+    if ([_currentContentTileController isDisplayingFullQualityImage])
     {
       if (os_signpost_enabled(v3))
       {
@@ -690,7 +690,7 @@ LABEL_14:
       v6 = v21;
     }
 
-    if (![v4 isDeferredProcessingFinished])
+    if (![_currentContentTileController isDeferredProcessingFinished])
     {
       v13 = MEMORY[0x1E695DFF0];
       v15 = MEMORY[0x1E69E9820];
@@ -783,30 +783,30 @@ void __83__PUOneUpViewController__xct_beginSignpostingForImageTileImageLoadingAn
     dispatch_once(&activityItemsConfiguration_onceToken, &__block_literal_global_1051);
   }
 
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  if ([v4 contentPrivacyState] != 1)
+  if ([viewModel contentPrivacyState] != 1)
   {
-    v7 = [v4 currentAssetReference];
-    v8 = [v7 asset];
+    currentAssetReference = [viewModel currentAssetReference];
+    asset = [currentAssetReference asset];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v9 = v8;
+      v9 = asset;
 
       if (v9)
       {
-        v10 = [(PUOneUpViewController *)self boopableItemsProvider];
+        boopableItemsProvider = [(PUOneUpViewController *)self boopableItemsProvider];
 
-        if (!v10)
+        if (!boopableItemsProvider)
         {
           v11 = activityItemsConfiguration_boopLog;
           if (os_log_type_enabled(activityItemsConfiguration_boopLog, OS_LOG_TYPE_DEFAULT))
           {
             v12 = v11;
-            v13 = [v9 uuid];
+            uuid = [v9 uuid];
             *buf = 138543362;
-            v24 = v13;
+            v24 = uuid;
             _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_DEFAULT, "Creating boopable item provider for 1up asset %{public}@", buf, 0xCu);
           }
 
@@ -815,17 +815,17 @@ void __83__PUOneUpViewController__xct_beginSignpostingForImageTileImageLoadingAn
 
           v22 = v9;
           v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-          v16 = [(PUOneUpViewController *)self boopableItemsProvider];
-          [v16 setAssets:v15];
+          boopableItemsProvider2 = [(PUOneUpViewController *)self boopableItemsProvider];
+          [boopableItemsProvider2 setAssets:v15];
 
-          v17 = [MEMORY[0x1E69C4568] defaultManager];
-          v18 = [v17 imageProviderForAsset:v9];
+          defaultManager = [MEMORY[0x1E69C4568] defaultManager];
+          v18 = [defaultManager imageProviderForAsset:v9];
 
-          v19 = [(PUOneUpViewController *)self boopableItemsProvider];
-          [v19 setImagePreviewMediaProvider:v18];
+          boopableItemsProvider3 = [(PUOneUpViewController *)self boopableItemsProvider];
+          [boopableItemsProvider3 setImagePreviewMediaProvider:v18];
         }
 
-        v6 = [(PUOneUpViewController *)self boopableItemsProvider];
+        boopableItemsProvider4 = [(PUOneUpViewController *)self boopableItemsProvider];
 LABEL_19:
 
         goto LABEL_20;
@@ -845,7 +845,7 @@ LABEL_19:
     }
 
     v9 = 0;
-    v6 = 0;
+    boopableItemsProvider4 = 0;
     goto LABEL_19;
   }
 
@@ -856,10 +856,10 @@ LABEL_19:
     _os_log_error_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_ERROR, "Couldn't create an 1up boopable item provider because 1up is currently locked", buf, 2u);
   }
 
-  v6 = 0;
+  boopableItemsProvider4 = 0;
 LABEL_20:
 
-  return v6;
+  return boopableItemsProvider4;
 }
 
 uint64_t __51__PUOneUpViewController_activityItemsConfiguration__block_invoke()
@@ -876,26 +876,26 @@ uint64_t __51__PUOneUpViewController_activityItemsConfiguration__block_invoke()
   if ([(PUOneUpViewController *)self _needsUpdateUserActivity])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateUserActivity:0];
-    v3 = [(PUOneUpViewController *)self browsingSession];
-    v4 = [v3 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    if ([v4 contentPrivacyState] == 1)
+    if ([viewModel contentPrivacyState] == 1)
     {
-      v5 = [(PUOneUpViewController *)self siriActionActivity];
-      [v5 resignCurrent];
+      siriActionActivity = [(PUOneUpViewController *)self siriActionActivity];
+      [siriActionActivity resignCurrent];
 
       [(PUOneUpViewController *)self setSiriActionActivity:0];
     }
 
-    else if (([v4 isScrubbing] & 1) == 0)
+    else if (([viewModel isScrubbing] & 1) == 0)
     {
-      v6 = [v4 currentAssetReference];
-      v7 = [v6 asset];
-      v8 = v7;
-      if (v7)
+      currentAssetReference = [viewModel currentAssetReference];
+      asset = [currentAssetReference asset];
+      v8 = asset;
+      if (asset)
       {
-        v9 = [v7 creationDate];
-        [v9 timeIntervalSinceNow];
+        creationDate = [asset creationDate];
+        [creationDate timeIntervalSinceNow];
         v11 = v10;
         if ([MEMORY[0x1E69636A8] px_allowsDonationsForCurrentProcess])
         {
@@ -919,7 +919,7 @@ uint64_t __51__PUOneUpViewController_activityItemsConfiguration__block_invoke()
         v14[4] = self;
         v15 = v8;
         v17 = v12;
-        v16 = v6;
+        v16 = currentAssetReference;
         [v13 px_requestActivityWithActivityType:@"com.apple.mobileslideshow.oneUp" titleProvider:&__block_literal_global_1032 completionBlock:v14];
       }
     }
@@ -1006,28 +1006,28 @@ LABEL_10:
   }
 }
 
-- (void)loadingStatusManager:(id)a3 didUpdateLoadingStatus:(id)a4 forItemIdentifier:(id)a5
+- (void)loadingStatusManager:(id)manager didUpdateLoadingStatus:(id)status forItemIdentifier:(id)identifier
 {
-  v24 = a5;
-  v8 = a4;
-  v9 = [(PUOneUpViewController *)self browsingSession];
-  v10 = [v9 viewModel];
-  v11 = [v10 currentAssetReference];
-  v12 = [v11 asset];
+  identifierCopy = identifier;
+  statusCopy = status;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  asset = [currentAssetReference asset];
 
-  v13 = [v8 error];
+  error = [statusCopy error];
 
-  if (v13)
+  if (error)
   {
-    v14 = [v12 uuid];
-    if ([v24 isEqual:v14])
+    uuid = [asset uuid];
+    if ([identifierCopy isEqual:uuid])
     {
     }
 
     else
     {
       v15 = +[PUOneUpSpatialToastController statusManagerItemIdentifier];
-      v16 = [v24 isEqual:v15];
+      v16 = [identifierCopy isEqual:v15];
 
       if (!v16)
       {
@@ -1036,14 +1036,14 @@ LABEL_10:
     }
 
     v17 = [PUEditingErrorPresentationController alloc];
-    v18 = v12;
+    v18 = asset;
     v19 = v18;
     if (v18)
     {
       if ([v18 conformsToProtocol:&unk_1F2BDF538])
       {
 LABEL_7:
-        v20 = [(PUEditingErrorPresentationController *)v17 initWithError:v13 forAsset:v19];
+        v20 = [(PUEditingErrorPresentationController *)v17 initWithError:error forAsset:v19];
 
         v21 = [(PUErrorPresentationController *)v20 alertControllerWithCompletion:&__block_literal_global_1020];
         [(PUOneUpViewController *)self presentViewController:v21 animated:1 completion:0];
@@ -1051,15 +1051,15 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      v23 = [v19 px_descriptionForAssertionMessage];
-      [v22 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7210 description:{@"%@ should conform to protocol %@, but %@ doesn't", @"asset", @"PUEditableAsset", v23}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      px_descriptionForAssertionMessage = [v19 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7210 description:{@"%@ should conform to protocol %@, but %@ doesn't", @"asset", @"PUEditableAsset", px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7210 description:{@"%@ should conform to protocol %@, but it is nil", @"asset", @"PUEditableAsset"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7210 description:{@"%@ should conform to protocol %@, but it is nil", @"asset", @"PUEditableAsset"}];
     }
 
     goto LABEL_7;
@@ -1068,33 +1068,33 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)_assetDisplayDescriptorForAsset:(id)a3
+- (id)_assetDisplayDescriptorForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [[PUAssetReference alloc] initWithAsset:v3 assetCollection:0 indexPath:0 dataSourceIdentifier:0];
+  assetCopy = asset;
+  v4 = [[PUAssetReference alloc] initWithAsset:assetCopy assetCollection:0 indexPath:0 dataSourceIdentifier:0];
 
   v5 = [PUAssetDisplayDescriptor assetDisplayDescriptorForSimpleNavigationToAssetReference:v4];
 
   return v5;
 }
 
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = [a3 asset];
-  v9 = [(PUOneUpViewController *)self _assetDisplayDescriptorForAsset:v8];
+  handlerCopy = handler;
+  asset = [destination asset];
+  v9 = [(PUOneUpViewController *)self _assetDisplayDescriptorForAsset:asset];
 
   v10 = MEMORY[0x1E695DF00];
-  v11 = [MEMORY[0x1E69C3350] sharedInstance];
-  [v11 defaultNavigationTimeoutDuration];
+  mEMORY[0x1E69C3350] = [MEMORY[0x1E69C3350] sharedInstance];
+  [mEMORY[0x1E69C3350] defaultNavigationTimeoutDuration];
   v12 = [v10 dateWithTimeIntervalSinceNow:?];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __73__PUOneUpViewController_navigateToDestination_options_completionHandler___block_invoke;
   v14[3] = &unk_1E7B7C940;
-  v15 = v7;
-  v13 = v7;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
   [(PUOneUpViewController *)self navigateToAssetDisplayDescriptor:v9 beforeDate:v12 completionHandler:v14];
 }
 
@@ -1114,13 +1114,13 @@ uint64_t __73__PUOneUpViewController_navigateToDestination_options_completionHan
   return (*(v2 + 16))(v2, v3);
 }
 
-- (unint64_t)routingOptionsForDestination:(id)a3
+- (unint64_t)routingOptionsForDestination:(id)destination
 {
-  v4 = a3;
-  if ([v4 type] == 7 && (objc_msgSend(v4, "asset"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  destinationCopy = destination;
+  if ([destinationCopy type] == 7 && (objc_msgSend(destinationCopy, "asset"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [v4 asset];
-    v7 = [(PUOneUpViewController *)self _assetDisplayDescriptorForAsset:v6];
+    asset = [destinationCopy asset];
+    v7 = [(PUOneUpViewController *)self _assetDisplayDescriptorForAsset:asset];
 
     LODWORD(v8) = [(PUOneUpViewController *)self _canAttemptNavigationToAssetDisplayDescriptor:v7];
     v8 = v8;
@@ -1142,11 +1142,11 @@ uint64_t __73__PUOneUpViewController_navigateToDestination_options_completionHan
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v4 px_descriptionForAssertionMessage];
-      [v6 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7177 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self _presentedTileControllerForCurrentIndexPathWithKind:PUTileKindCropButton]", v8, v9}];
+      px_descriptionForAssertionMessage = [v4 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7177 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self _presentedTileControllerForCurrentIndexPathWithKind:PUTileKindCropButton]", v8, px_descriptionForAssertionMessage}];
     }
   }
 
@@ -1161,11 +1161,11 @@ uint64_t __73__PUOneUpViewController_navigateToDestination_options_completionHan
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v4 px_descriptionForAssertionMessage];
-      [v6 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7173 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self _presentedTileControllerForCurrentIndexPathWithKind:PUTileKindUserTransform]", v8, v9}];
+      px_descriptionForAssertionMessage = [v4 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:7173 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[self _presentedTileControllerForCurrentIndexPathWithKind:PUTileKindUserTransform]", v8, px_descriptionForAssertionMessage}];
     }
   }
 
@@ -1175,24 +1175,24 @@ uint64_t __73__PUOneUpViewController_navigateToDestination_options_completionHan
 - (void)_informVKCOverlayToKickOffSubjectAnalyzing
 {
   v3 = +[PUOneUpSettings sharedInstance];
-  v4 = [v3 allowsVisualIntelligenceRemoveBackground];
+  allowsVisualIntelligenceRemoveBackground = [v3 allowsVisualIntelligenceRemoveBackground];
 
-  if (v4)
+  if (allowsVisualIntelligenceRemoveBackground)
   {
-    v5 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-    [v5 beginImageSubjectAnalysisIfNecessary];
+    currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+    [currentImageAnalysisInteraction beginImageSubjectAnalysisIfNecessary];
   }
 }
 
-- (BOOL)_isLocationFromProviderOverSyndicationAttributionPill:(id)a3
+- (BOOL)_isLocationFromProviderOverSyndicationAttributionPill:(id)pill
 {
-  v4 = a3;
+  pillCopy = pill;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v5 = [(PUOneUpViewController *)self _tilingView];
-  [v4 locationInView:v5];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  [pillCopy locationInView:_tilingView];
   v7 = v6 + -0.5;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1201,7 +1201,7 @@ uint64_t __73__PUOneUpViewController_navigateToDestination_options_completionHan
   v9 = v8 + -0.5;
   v16 = v6;
   v17 = v8;
-  v10 = v5;
+  v10 = _tilingView;
   v14 = v10;
   v15 = &v18;
   [v10 enumeratePresentedTileControllersInRect:v13 usingBlock:{v7, v9, 1.0, 1.0}];
@@ -1236,8 +1236,8 @@ void __79__PUOneUpViewController__isLocationFromProviderOverSyndicationAttributi
 
 - (void)_configureVitalityController
 {
-  v5 = [(PUOneUpViewController *)self _tilingView];
-  [v5 setCanDriveVitality:{-[PUOneUpViewController _isPresentedForSecondScreen](self, "_isPresentedForSecondScreen") ^ 1}];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  [_tilingView setCanDriveVitality:{-[PUOneUpViewController _isPresentedForSecondScreen](self, "_isPresentedForSecondScreen") ^ 1}];
   if ([(PUOneUpViewController *)self _isIrisPlaying])
   {
     IsVideoAutoplayEnabled = 0;
@@ -1248,70 +1248,70 @@ void __79__PUOneUpViewController__isLocationFromProviderOverSyndicationAttributi
     IsVideoAutoplayEnabled = PXPreferencesIsVideoAutoplayEnabled();
   }
 
-  v4 = [v5 is_vitalityController];
-  [v4 setEnabled:IsVideoAutoplayEnabled];
+  is_vitalityController = [_tilingView is_vitalityController];
+  [is_vitalityController setEnabled:IsVideoAutoplayEnabled];
 }
 
-- (void)livePhotoVideoPlaybackTileViewControllerDidEndPlaying:(id)a3
+- (void)livePhotoVideoPlaybackTileViewControllerDidEndPlaying:(id)playing
 {
-  v4 = a3;
+  playingCopy = playing;
   [(PUOneUpViewController *)self _setIrisPlaying:0];
   [(PUOneUpViewController *)self _setDidPlayCurrentLivePhoto:1];
-  v5 = [v4 browsingViewModel];
+  browsingViewModel = [playingCopy browsingViewModel];
 
-  v6 = [v5 currentAssetReference];
-  v11 = [v6 asset];
+  currentAssetReference = [browsingViewModel currentAssetReference];
+  asset = [currentAssetReference asset];
 
-  v7 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  v8 = [(PUOneUpViewController *)self lastLivePhotoGestureLocationProvider];
-  v9 = [v7 imageSubjectExistsAtLocation:v8];
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  lastLivePhotoGestureLocationProvider = [(PUOneUpViewController *)self lastLivePhotoGestureLocationProvider];
+  v9 = [currentImageAnalysisInteraction imageSubjectExistsAtLocation:lastLivePhotoGestureLocationProvider];
 
-  v10 = [(PUOneUpViewController *)self eventTracker];
-  [v10 logUserDidPlayLivePhoto:v11 pressOnSubject:v9];
+  eventTracker = [(PUOneUpViewController *)self eventTracker];
+  [eventTracker logUserDidPlayLivePhoto:asset pressOnSubject:v9];
 
   [(PUOneUpViewController *)self _invalidateTipPopovers];
   [(PUOneUpViewController *)self _updateTipPopoversIfNeeded];
   [(PUOneUpViewController *)self setLastLivePhotoGestureLocationProvider:0];
 }
 
-- (void)livePhotoVideoPlaybackTileViewControllerWillBeginPlaying:(id)a3
+- (void)livePhotoVideoPlaybackTileViewControllerWillBeginPlaying:(id)playing
 {
-  v4 = a3;
+  playingCopy = playing;
   [(PUOneUpViewController *)self _setIrisPlaying:1];
-  v5 = [v4 browsingViewModel];
+  browsingViewModel = [playingCopy browsingViewModel];
 
-  v6 = [v5 currentAssetReference];
-  v12 = [v6 asset];
+  currentAssetReference = [browsingViewModel currentAssetReference];
+  asset = [currentAssetReference asset];
 
-  v7 = [(PUOneUpViewController *)self _currentAssetViewModel];
+  _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
   Current = CFAbsoluteTimeGetCurrent();
-  [v7 focusValueAtZeroTimestamp];
+  [_currentAssetViewModel focusValueAtZeroTimestamp];
   v10 = Current - v9;
-  v11 = [(PUOneUpViewController *)self eventTracker];
-  [v11 logUserWillPlayLivePhoto:v12 firstTimeWaitDuration:v10];
+  eventTracker = [(PUOneUpViewController *)self eventTracker];
+  [eventTracker logUserWillPlayLivePhoto:asset firstTimeWaitDuration:v10];
 
-  [v7 setFocusValueAtZeroTimestamp:-1.0];
+  [_currentAssetViewModel setFocusValueAtZeroTimestamp:-1.0];
   [(PUOneUpViewController *)self _invalidateTipPopovers];
   [(PUOneUpViewController *)self _updateTipPopoversIfNeeded];
 }
 
-- (CGImage)livePhotoVideoPlaybackTileViewControllerCurrentGainMapImage:(id)a3 outGainMapAvailable:(BOOL *)a4 outGainMapValue:(float *)a5
+- (CGImage)livePhotoVideoPlaybackTileViewControllerCurrentGainMapImage:(id)image outGainMapAvailable:(BOOL *)available outGainMapValue:(float *)value
 {
-  v8 = [a3 browsingViewModel];
-  v9 = [v8 currentAssetReference];
+  browsingViewModel = [image browsingViewModel];
+  currentAssetReference = [browsingViewModel currentAssetReference];
 
-  v10 = [(PUOneUpViewController *)self _tilingView];
-  v11 = [v9 indexPath];
-  v12 = [v9 dataSourceIdentifier];
-  v13 = [v10 presentedTileControllerWithIndexPath:v11 kind:@"PUTileKindItemContent" dataSourceIdentifier:v12];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  indexPath = [currentAssetReference indexPath];
+  dataSourceIdentifier = [currentAssetReference dataSourceIdentifier];
+  v13 = [_tilingView presentedTileControllerWithIndexPath:indexPath kind:@"PUTileKindItemContent" dataSourceIdentifier:dataSourceIdentifier];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = 0;
-    v15 = 0;
+    gainMapImageIsAvailable = 0;
+    gainMapImage = 0;
     v17 = 0;
-    if (!a4)
+    if (!available)
     {
       goto LABEL_6;
     }
@@ -1320,127 +1320,127 @@ void __79__PUOneUpViewController__isLocationFromProviderOverSyndicationAttributi
   }
 
   v14 = v13;
-  v15 = [v14 gainMapImage];
+  gainMapImage = [v14 gainMapImage];
   [v14 gainMapValue];
   v17 = v16;
-  v18 = [v14 gainMapImageIsAvailable];
+  gainMapImageIsAvailable = [v14 gainMapImageIsAvailable];
 
-  if (a4)
+  if (available)
   {
 LABEL_5:
-    *a4 = v18;
+    *available = gainMapImageIsAvailable;
   }
 
 LABEL_6:
-  if (a5)
+  if (value)
   {
-    *a5 = v17;
+    *value = v17;
   }
 
-  return v15;
+  return gainMapImage;
 }
 
-- (id)livePhotoVideoPlaybackTileViewControllerCurrentImage:(id)a3
+- (id)livePhotoVideoPlaybackTileViewControllerCurrentImage:(id)image
 {
-  v4 = [a3 browsingViewModel];
-  v5 = [v4 currentAssetReference];
+  browsingViewModel = [image browsingViewModel];
+  currentAssetReference = [browsingViewModel currentAssetReference];
 
-  v6 = [(PUOneUpViewController *)self _tilingView];
-  v7 = [v5 indexPath];
-  v8 = [v5 dataSourceIdentifier];
-  v9 = [v6 presentedTileControllerWithIndexPath:v7 kind:@"PUTileKindItemContent" dataSourceIdentifier:v8];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  indexPath = [currentAssetReference indexPath];
+  dataSourceIdentifier = [currentAssetReference dataSourceIdentifier];
+  v9 = [_tilingView presentedTileControllerWithIndexPath:indexPath kind:@"PUTileKindItemContent" dataSourceIdentifier:dataSourceIdentifier];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 image];
+    image = [v9 image];
   }
 
   else
   {
-    v10 = 0;
+    image = 0;
   }
 
-  return v10;
+  return image;
 }
 
-- (id)livePhotoVideoPlaybackTileViewControllerDisplayTileTransform:(id)a3
+- (id)livePhotoVideoPlaybackTileViewControllerDisplayTileTransform:(id)transform
 {
-  v4 = [a3 browsingViewModel];
-  v5 = [v4 currentAssetReference];
+  browsingViewModel = [transform browsingViewModel];
+  currentAssetReference = [browsingViewModel currentAssetReference];
 
   if ([(PUOneUpViewController *)self _isPresentedForSecondScreen])
   {
-    v6 = [(PUOneUpViewController *)self _mainOneUpForSecondScreenBrowser];
+    selfCopy = [(PUOneUpViewController *)self _mainOneUpForSecondScreenBrowser];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  v7 = v6;
-  v8 = [(PUOneUpViewController *)v6 _tilingView];
-  v9 = [v5 indexPath];
+  v7 = selfCopy;
+  _tilingView = [(PUOneUpViewController *)selfCopy _tilingView];
+  indexPath = [currentAssetReference indexPath];
   v10 = PUTileKindUserTransform;
-  v11 = [v5 dataSourceIdentifier];
-  v12 = [v8 presentedTileControllerWithIndexPath:v9 kind:v10 dataSourceIdentifier:v11];
+  dataSourceIdentifier = [currentAssetReference dataSourceIdentifier];
+  v12 = [_tilingView presentedTileControllerWithIndexPath:indexPath kind:v10 dataSourceIdentifier:dataSourceIdentifier];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v12 displayTileTransform];
+    displayTileTransform = [v12 displayTileTransform];
   }
 
   else
   {
-    v13 = 0;
+    displayTileTransform = 0;
   }
 
-  return v13;
+  return displayTileTransform;
 }
 
-- (BOOL)livePhotoVideoPlaybackTileViewControllerCanBeginPlaying:(id)a3 locationProvider:(id)a4
+- (BOOL)livePhotoVideoPlaybackTileViewControllerCanBeginPlaying:(id)playing locationProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUOneUpViewController *)self _interactivePinchDismissalController];
-  if ([v8 isHandlingDismissalInteraction])
+  playingCopy = playing;
+  providerCopy = provider;
+  _interactivePinchDismissalController = [(PUOneUpViewController *)self _interactivePinchDismissalController];
+  if ([_interactivePinchDismissalController isHandlingDismissalInteraction])
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
-    v9 = [v10 isHandlingDismissalInteraction] ^ 1;
+    _interactiveSwipeDismissalController = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
+    v9 = [_interactiveSwipeDismissalController isHandlingDismissalInteraction] ^ 1;
   }
 
   v11 = +[PUOneUpSettings sharedInstance];
   if ([v11 allowVisualIntelligence])
   {
-    v12 = [(PUOneUpViewController *)self _isLocationFromProvider:v7 overTileOfKind:@"PUTileKindItemContent"];
+    v12 = [(PUOneUpViewController *)self _isLocationFromProvider:providerCopy overTileOfKind:@"PUTileKindItemContent"];
 
     if (v12)
     {
       v13 = +[PUOneUpSettings sharedInstance];
-      v14 = [v13 allowsVisualIntelligenceRemoveBackground];
+      allowsVisualIntelligenceRemoveBackground = [v13 allowsVisualIntelligenceRemoveBackground];
 
-      if (v14)
+      if (allowsVisualIntelligenceRemoveBackground)
       {
-        if (!v9 || [(PUOneUpViewController *)self _vkImageOverlayAllowsVKCToHandleLongPressGestureFromProvider:v7])
+        if (!v9 || [(PUOneUpViewController *)self _vkImageOverlayAllowsVKCToHandleLongPressGestureFromProvider:providerCopy])
         {
           goto LABEL_16;
         }
 
 LABEL_15:
-        if ([(PUOneUpViewController *)self _isLocationFromProviderOverInteractiveItem:v7])
+        if ([(PUOneUpViewController *)self _isLocationFromProviderOverInteractiveItem:providerCopy])
         {
           goto LABEL_16;
         }
 
 LABEL_17:
-        v15 = ![(PUOneUpViewController *)self _isLocationFromProviderOverControl:v7];
+        v15 = ![(PUOneUpViewController *)self _isLocationFromProviderOverControl:providerCopy];
         goto LABEL_18;
       }
 
@@ -1468,21 +1468,21 @@ LABEL_17:
 LABEL_16:
   v15 = 0;
 LABEL_18:
-  v16 = [v6 browsingViewModel];
-  v17 = [v16 currentAssetReference];
-  v18 = [v17 pxAssetReference];
-  v19 = [v18 asset];
+  browsingViewModel = [playingCopy browsingViewModel];
+  currentAssetReference = [browsingViewModel currentAssetReference];
+  pxAssetReference = [currentAssetReference pxAssetReference];
+  asset = [pxAssetReference asset];
 
   v20 = PXContentSyndicationShouldShowAttributionViewForAsset() ^ 1;
   v21 = v20 & v15;
   if ((v20 & 1) == 0 && v15)
   {
-    v21 = ![(PUOneUpViewController *)self _isLocationFromProviderOverSyndicationAttributionPill:v7];
+    v21 = ![(PUOneUpViewController *)self _isLocationFromProviderOverSyndicationAttributionPill:providerCopy];
   }
 
-  v22 = [(PUOneUpViewController *)self _tilingView];
-  [v7 locationInView:v22];
-  v25 = [[PUPointDisplayLocationProvider alloc] initWithPoint:v22 inCoordinateSpace:v23, v24];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  [providerCopy locationInView:_tilingView];
+  v25 = [[PUPointDisplayLocationProvider alloc] initWithPoint:_tilingView inCoordinateSpace:v23, v24];
   [(PUOneUpViewController *)self setLastLivePhotoGestureLocationProvider:v25];
 
   if (v21)
@@ -1498,16 +1498,16 @@ LABEL_18:
   return v26;
 }
 
-- (double)livePhotoVideoPlaybackTileViewControllerExtraMinimumTouchDuration:(id)a3 locationProvider:(id)a4
+- (double)livePhotoVideoPlaybackTileViewControllerExtraMinimumTouchDuration:(id)duration locationProvider:(id)provider
 {
-  v5 = a4;
+  providerCopy = provider;
   v6 = +[PUOneUpSettings sharedInstance];
-  v7 = [v6 allowVisualIntelligence];
+  allowVisualIntelligence = [v6 allowVisualIntelligence];
 
   v8 = 0.0;
-  if (v7 && [(PUOneUpViewController *)self _isLocationFromProviderOverImageSubject:v5])
+  if (allowVisualIntelligence && [(PUOneUpViewController *)self _isLocationFromProviderOverImageSubject:providerCopy])
   {
-    if ([(PUOneUpViewController *)self _isLocationFromProviderOverInteractiveItemExcludingImageSubject:v5])
+    if ([(PUOneUpViewController *)self _isLocationFromProviderOverInteractiveItemExcludingImageSubject:providerCopy])
     {
       v8 = 0.0;
     }
@@ -1521,41 +1521,41 @@ LABEL_18:
   return v8;
 }
 
-- (void)cropButtonTileViewController:(id)a3 didSelectAspectRatio:(CGSize)a4
+- (void)cropButtonTileViewController:(id)controller didSelectAspectRatio:(CGSize)ratio
 {
-  height = a4.height;
-  width = a4.width;
-  v22 = [(PUOneUpViewController *)self browsingSession];
-  v7 = [v22 viewModel];
-  v8 = [v7 currentAssetReference];
-  if (v8)
+  height = ratio.height;
+  width = ratio.width;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  if (currentAssetReference)
   {
     [MEMORY[0x1E69C3748] signalDidQuickCrop];
-    v9 = [v7 assetViewModelForAssetReference:v8];
-    v10 = [v9 modelTileTransform];
+    v9 = [viewModel assetViewModelForAssetReference:currentAssetReference];
+    modelTileTransform = [v9 modelTileTransform];
 
-    v11 = [v8 asset];
-    v12 = [v11 pixelWidth];
-    v13 = [v8 asset];
-    v14 = [v13 pixelHeight];
+    asset = [currentAssetReference asset];
+    pixelWidth = [asset pixelWidth];
+    asset2 = [currentAssetReference asset];
+    pixelHeight = [asset2 pixelHeight];
 
-    v15 = [(PUOneUpViewController *)self view];
-    [v15 frame];
+    view = [(PUOneUpViewController *)self view];
+    [view frame];
     v17 = v16;
     v19 = v18;
 
-    v20 = [[PUQuickCropContext alloc] initWithTileTransform:v10 renderedImageSize:v12 boundingSize:v14 selectedAspectRatio:v17, v19, width, height];
-    v21 = [(PUOneUpViewController *)self actionsController];
-    [v21 performQuickCropActionWithContext:v20];
+    height = [[PUQuickCropContext alloc] initWithTileTransform:modelTileTransform renderedImageSize:pixelWidth boundingSize:pixelHeight selectedAspectRatio:v17, v19, width, height];
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    [actionsController performQuickCropActionWithContext:height];
   }
 }
 
-- (id)additionalContextMenuActionsForAttributionTileViewController:(id)a3
+- (id)additionalContextMenuActionsForAttributionTileViewController:(id)controller
 {
   v16[1] = *MEMORY[0x1E69E9840];
   [(PUOneUpViewController *)self createMenuActionControllerForManagerIfNeeded:0 withPresentingViewController:self regionOfInterestProvider:0];
-  v5 = [(PUOneUpViewController *)self menuActionController];
-  v6 = [v5 contextMenuActionIfAvailableForActionType:57];
+  menuActionController = [(PUOneUpViewController *)self menuActionController];
+  v6 = [menuActionController contextMenuActionIfAvailableForActionType:57];
 
   if (v6)
   {
@@ -1563,11 +1563,11 @@ LABEL_18:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [v7 px_descriptionForAssertionMessage];
-      [v12 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6989 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"removeSuggestionMenuElement", v14, v15}];
+      px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6989 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"removeSuggestionMenuElement", v14, px_descriptionForAssertionMessage}];
     }
 
     [v7 setAttributes:{objc_msgSend(v7, "attributes") & 0xFFFFFFFFFFFFFFFDLL}];
@@ -1595,21 +1595,21 @@ LABEL_18:
   return v9;
 }
 
-- (void)_performPXActionType:(id)a3
+- (void)_performPXActionType:(id)type
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self assetActionManager];
-  if ([v5 canPerformActionType:v4])
+  typeCopy = type;
+  assetActionManager = [(PUOneUpViewController *)self assetActionManager];
+  if ([assetActionManager canPerformActionType:typeCopy])
   {
-    v6 = [v5 actionPerformerForActionType:v4];
+    v6 = [assetActionManager actionPerformerForActionType:typeCopy];
     if (!v6)
     {
       v7 = PLOneUpGetLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v8 = 138412290;
-        v9 = v4;
+        v9 = typeCopy;
         _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_ERROR, "Missing action performer for action: %@", &v8, 0xCu);
       }
     }
@@ -1620,12 +1620,12 @@ LABEL_18:
 
 - (id)_additionalExcludedMenuActionTypes
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   options = self->__options;
   if ((options & 0x10) != 0)
   {
-    [v3 addObject:*MEMORY[0x1E69C47D8]];
+    [array addObject:*MEMORY[0x1E69C47D8]];
     options = self->__options;
     if ((options & 0x200000) == 0)
     {
@@ -1667,24 +1667,24 @@ LABEL_5:
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
   v6 = [v3 arrayWithArray:v5];
 
-  v7 = [(PUOneUpViewController *)self _additionalExcludedMenuActionTypes];
-  [v6 addObjectsFromArray:v7];
+  _additionalExcludedMenuActionTypes = [(PUOneUpViewController *)self _additionalExcludedMenuActionTypes];
+  [v6 addObjectsFromArray:_additionalExcludedMenuActionTypes];
 
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E695DF70];
   v9 = MEMORY[0x1E69C4488];
-  v10 = [(PUOneUpViewController *)self assetActionManager];
+  assetActionManager = [(PUOneUpViewController *)self assetActionManager];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __38__PUOneUpViewController__menuElements__block_invoke;
   v19 = &unk_1E7B7A1B0;
   objc_copyWeak(&v20, &location);
-  v11 = [v9 pxMenuElementsForActionManager:v10 excludedActionTypes:v6 handler:&v16];
+  v11 = [v9 pxMenuElementsForActionManager:assetActionManager excludedActionTypes:v6 handler:&v16];
   v12 = [v8 arrayWithArray:{v11, v16, v17, v18, v19}];
 
-  v13 = [(PUOneUpViewController *)self chromeViewController];
-  v14 = [v13 additionalInternalOneUpMenuElements];
-  [v12 addObjectsFromArray:v14];
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  additionalInternalOneUpMenuElements = [chromeViewController additionalInternalOneUpMenuElements];
+  [v12 addObjectsFromArray:additionalInternalOneUpMenuElements];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -1699,25 +1699,25 @@ void __38__PUOneUpViewController__menuElements__block_invoke(uint64_t a1, void *
   [WeakRetained _performPXActionType:v3];
 }
 
-- (id)oneUpChromeViewControllerFullSizeOneUpHostingView:(id)a3
+- (id)oneUpChromeViewControllerFullSizeOneUpHostingView:(id)view
 {
-  v3 = [(PUOneUpViewController *)self view];
-  v4 = [v3 superview];
+  view = [(PUOneUpViewController *)self view];
+  superview = [view superview];
 
-  return v4;
+  return superview;
 }
 
-- (void)oneUpChromeViewControllerAdditionalActionInfoEdgeInsetsDidChange:(id)a3
+- (void)oneUpChromeViewControllerAdditionalActionInfoEdgeInsetsDidChange:(id)change
 {
   [(PUOneUpViewController *)self _invalidateImageAnalysisInteractionAdditionalActionInfoEdgeInsets];
 
   [(PUOneUpViewController *)self _updateIfNeeded];
 }
 
-- (void)_handleUnlockDeviceForActionType:(unint64_t)a3 success:(BOOL)a4
+- (void)_handleUnlockDeviceForActionType:(unint64_t)type success:(BOOL)success
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!success)
   {
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1729,29 +1729,29 @@ void __38__PUOneUpViewController__menuElements__block_invoke(uint64_t a1, void *
     }
   }
 
-  v7 = [(PUOneUpViewController *)self chromeViewController];
-  [v7 invalidateIsDeviceUnlocked];
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  [chromeViewController invalidateIsDeviceUnlocked];
 
-  v8 = [(PUOneUpViewController *)self chromeViewController];
-  [v8 updateIsDeviceUnlockedIfNeeded];
+  chromeViewController2 = [(PUOneUpViewController *)self chromeViewController];
+  [chromeViewController2 updateIsDeviceUnlockedIfNeeded];
 }
 
-- (void)oneUpChromeViewControllerRequestDeviceUnlock:(id)a3 for:(unint64_t)a4
+- (void)oneUpChromeViewControllerRequestDeviceUnlock:(id)unlock for:(unint64_t)for
 {
-  v6 = a3;
-  v7 = [(PUOneUpViewController *)self unlockDeviceHandlerWithActionType];
+  unlockCopy = unlock;
+  unlockDeviceHandlerWithActionType = [(PUOneUpViewController *)self unlockDeviceHandlerWithActionType];
 
-  if (v7)
+  if (unlockDeviceHandlerWithActionType)
   {
     objc_initWeak(&location, self);
-    v8 = [(PUOneUpViewController *)self unlockDeviceHandlerWithActionType];
+    unlockDeviceHandlerWithActionType2 = [(PUOneUpViewController *)self unlockDeviceHandlerWithActionType];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __74__PUOneUpViewController_oneUpChromeViewControllerRequestDeviceUnlock_for___block_invoke;
     v9[3] = &unk_1E7B7A188;
     objc_copyWeak(v10, &location);
-    v10[1] = a4;
-    (v8)[2](v8, v9, a4);
+    v10[1] = for;
+    (unlockDeviceHandlerWithActionType2)[2](unlockDeviceHandlerWithActionType2, v9, for);
 
     objc_destroyWeak(v10);
     objc_destroyWeak(&location);
@@ -1764,49 +1764,49 @@ void __74__PUOneUpViewController_oneUpChromeViewControllerRequestDeviceUnlock_fo
   [WeakRetained _handleUnlockDeviceForActionType:*(a1 + 40) success:a2];
 }
 
-- (BOOL)oneUpChromeViewControllerIsDeviceUnlocked:(id)a3
+- (BOOL)oneUpChromeViewControllerIsDeviceUnlocked:(id)unlocked
 {
-  v4 = [(PUOneUpViewController *)self unlockDeviceStatus];
+  unlockDeviceStatus = [(PUOneUpViewController *)self unlockDeviceStatus];
 
-  if (!v4)
+  if (!unlockDeviceStatus)
   {
     return 1;
   }
 
-  v5 = [(PUOneUpViewController *)self unlockDeviceStatus];
-  v6 = v5[2]();
+  unlockDeviceStatus2 = [(PUOneUpViewController *)self unlockDeviceStatus];
+  v6 = unlockDeviceStatus2[2]();
 
   return v6;
 }
 
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PUOneUpViewController *)self browsingSession];
-  v9 = [v8 viewModel];
-  v10 = [v9 currentAssetReference];
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
   v30.receiver = self;
   v30.super_class = PUOneUpViewController;
-  v11 = [(PUOneUpViewController *)&v30 px_diagnosticsItemProvidersForPoint:v7 inCoordinateSpace:x, y];
+  v11 = [(PUOneUpViewController *)&v30 px_diagnosticsItemProvidersForPoint:spaceCopy inCoordinateSpace:x, y];
   v12 = [v11 mutableCopy];
 
-  v13 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v14 = [v13 accessoryViewControllerForAssetReference:v10];
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  v14 = [_accessoryViewControllersManager accessoryViewControllerForAssetReference:currentAssetReference];
 
   if (v14)
   {
-    v15 = [v14 px_diagnosticsItemProvidersForPoint:v7 inCoordinateSpace:{x, y}];
+    v15 = [v14 px_diagnosticsItemProvidersForPoint:spaceCopy inCoordinateSpace:{x, y}];
     [v12 addObjectsFromArray:v15];
   }
 
-  v16 = [[PUPointDisplayLocationProvider alloc] initWithPoint:v7 inCoordinateSpace:x, y];
+  v16 = [[PUPointDisplayLocationProvider alloc] initWithPoint:spaceCopy inCoordinateSpace:x, y];
   if (![(PUOneUpViewController *)self _isLocationFromProviderInAccessoryArea:v16])
   {
-    v17 = [v10 asset];
-    v18 = [v10 assetCollection];
+    asset = [currentAssetReference asset];
+    assetCollection = [currentAssetReference assetCollection];
     v19 = objc_alloc_init(MEMORY[0x1E69C3458]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1816,7 +1816,7 @@ void __74__PUOneUpViewController_oneUpChromeViewControllerRequestDeviceUnlock_fo
       v28[1] = 3221225472;
       v28[2] = __79__PUOneUpViewController_px_diagnosticsItemProvidersForPoint_inCoordinateSpace___block_invoke;
       v28[3] = &unk_1E7B7E038;
-      v29 = v17;
+      v29 = asset;
       [v19 registerItemForIdentifier:v20 loadHandler:v28];
     }
 
@@ -1828,7 +1828,7 @@ void __74__PUOneUpViewController_oneUpChromeViewControllerRequestDeviceUnlock_fo
       v24 = 3221225472;
       v25 = __79__PUOneUpViewController_px_diagnosticsItemProvidersForPoint_inCoordinateSpace___block_invoke_2;
       v26 = &unk_1E7B7E038;
-      v27 = v18;
+      v27 = assetCollection;
       [v19 registerItemForIdentifier:v21 loadHandler:&v23];
     }
 
@@ -1841,43 +1841,43 @@ void __74__PUOneUpViewController_oneUpChromeViewControllerRequestDeviceUnlock_fo
 - (id)pu_debugRows
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v6 = [v5 assetViewModelForCurrentAssetReference];
-  v7 = [v6 videoPlayer];
-  v8 = [v7 playerItem];
-  v9 = v8;
-  if (v8)
+  assetViewModelForCurrentAssetReference = [viewModel assetViewModelForCurrentAssetReference];
+  videoPlayer = [assetViewModelForCurrentAssetReference videoPlayer];
+  playerItem = [videoPlayer playerItem];
+  v9 = playerItem;
+  if (playerItem)
   {
     v10 = MEMORY[0x1E69C65E8];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __37__PUOneUpViewController_pu_debugRows__block_invoke;
     v23[3] = &unk_1E7B7E038;
-    v24 = v8;
+    v24 = playerItem;
     v11 = [v10 pu_rowWithTitle:@"Print Video Information" output:v23];
     [v3 addObject:v11];
   }
 
-  v12 = [v6 asset];
+  asset = [assetViewModelForCurrentAssetReference asset];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v13 = v12;
+    v13 = asset;
 
     if (!v13)
     {
       goto LABEL_9;
     }
 
-    v14 = [v13 px_coreDataBrowserURL];
+    px_coreDataBrowserURL = [v13 px_coreDataBrowserURL];
     v15 = MEMORY[0x1E69C65E8];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __37__PUOneUpViewController_pu_debugRows__block_invoke_2;
     v21 = &unk_1E7B7E3F0;
-    v22 = v14;
-    v12 = v14;
+    v22 = px_coreDataBrowserURL;
+    asset = px_coreDataBrowserURL;
     v16 = [v15 pu_rowWithTitle:@"Core Data Browser" action:&v18];
     [v3 addObject:{v16, v18, v19, v20, v21}];
   }
@@ -1909,75 +1909,75 @@ void __37__PUOneUpViewController_pu_debugRows__block_invoke_2(uint64_t a1)
 
 - (id)pu_debugCurrentPrivacyController
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 privacyController];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  privacyController = [browsingSession privacyController];
 
-  return v3;
+  return privacyController;
 }
 
 - (id)pu_debugCurrentViewModel
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  return v3;
+  return viewModel;
 }
 
 - (id)pu_debugCurrentAsset
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 viewModel];
-  v4 = [v3 currentAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  v5 = [v4 asset];
+  asset = [currentAssetReference asset];
 
-  return v5;
+  return asset;
 }
 
-- (void)ppt_notifyWhenVKAnalysisIsReadyWithTimeout:(double)a3 handler:(id)a4
+- (void)ppt_notifyWhenVKAnalysisIsReadyWithTimeout:(double)timeout handler:(id)handler
 {
-  v8 = a4;
-  v6 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  v7 = currentImageAnalysisInteraction;
+  if (currentImageAnalysisInteraction)
   {
-    [v6 ppt_notifyWhenVKAnalysisIsReadyWithTimeout:v8 completionHandler:a3];
+    [currentImageAnalysisInteraction ppt_notifyWhenVKAnalysisIsReadyWithTimeout:handlerCopy completionHandler:timeout];
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)ppt_notifyWhenDeferredProcessingIsDoneAndFinalImageDisplayedWithTimeout:(double)a3 handler:(id)a4
+- (void)ppt_notifyWhenDeferredProcessingIsDoneAndFinalImageDisplayedWithTimeout:(double)timeout handler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (v7)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(PUOneUpViewController *)self _tilingView];
-    [v8 layoutIfNeeded];
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    [_tilingView layoutIfNeeded];
 
-    v9 = [(PUOneUpViewController *)self browsingSession];
-    v10 = [v9 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v11 = [v10 currentAssetReference];
-    v12 = [v11 asset];
+    currentAssetReference = [viewModel currentAssetReference];
+    asset = [currentAssetReference asset];
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v12 needsDeferredProcessing];
+      needsDeferredProcessing = [asset needsDeferredProcessing];
     }
 
     else
     {
-      v13 = 1;
+      needsDeferredProcessing = 1;
     }
 
-    if (fmin(a3, 60.0) <= 0.0)
+    if (fmin(timeout, 60.0) <= 0.0)
     {
-      v7[2](v7, 1);
+      handlerCopy[2](handlerCopy, 1);
       v20 = PLOneUpGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -1988,25 +1988,25 @@ void __37__PUOneUpViewController_pu_debugRows__block_invoke_2(uint64_t a1)
       goto LABEL_16;
     }
 
-    v14 = [(PUOneUpViewController *)self ppt_deferredProcessingCompletionBlock];
+    ppt_deferredProcessingCompletionBlock = [(PUOneUpViewController *)self ppt_deferredProcessingCompletionBlock];
 
-    if (v14)
+    if (ppt_deferredProcessingCompletionBlock)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6733 description:{@"Should not request notification, when a request is already on going"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6733 description:{@"Should not request notification, when a request is already on going"}];
 
-      if (v13)
+      if (needsDeferredProcessing)
       {
         goto LABEL_8;
       }
     }
 
-    else if (v13)
+    else if (needsDeferredProcessing)
     {
 LABEL_8:
-      [(PUOneUpViewController *)self setPpt_deferredProcessingCompletionBlock:v7];
-      v15 = [v12 uuid];
-      [(PUOneUpViewController *)self setPpt_assetUUIDNeedsDeferredProcessingFinishNotification:v15];
+      [(PUOneUpViewController *)self setPpt_deferredProcessingCompletionBlock:handlerCopy];
+      uuid = [asset uuid];
+      [(PUOneUpViewController *)self setPpt_assetUUIDNeedsDeferredProcessingFinishNotification:uuid];
 
       objc_initWeak(location, self);
       v16 = MEMORY[0x1E695DFF0];
@@ -2015,15 +2015,15 @@ LABEL_8:
       v22[2] = __105__PUOneUpViewController_ppt_notifyWhenDeferredProcessingIsDoneAndFinalImageDisplayedWithTimeout_handler___block_invoke_2;
       v22[3] = &unk_1E7B80638;
       objc_copyWeak(&v23, location);
-      v17 = [v16 pu_scheduledTimerWithTimeInterval:0 repeats:v22 block:a3];
+      v17 = [v16 pu_scheduledTimerWithTimeInterval:0 repeats:v22 block:timeout];
       [(PUOneUpViewController *)self setPpt_deferredProcessingWaitTimer:v17];
 
       v18 = PLOneUpGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v19 = [v12 uuid];
+        uuid2 = [asset uuid];
         *buf = 138412290;
-        v27 = v19;
+        v27 = uuid2;
         _os_log_impl(&dword_1B36F3000, v18, OS_LOG_TYPE_DEBUG, "Deferred Processing (PPT): ===> DP callback installed for %@", buf, 0xCu);
       }
 
@@ -2036,7 +2036,7 @@ LABEL_8:
     location[2] = 3221225472;
     location[3] = __105__PUOneUpViewController_ppt_notifyWhenDeferredProcessingIsDoneAndFinalImageDisplayedWithTimeout_handler___block_invoke;
     location[4] = &unk_1E7B80C88;
-    v25 = v7;
+    v25 = handlerCopy;
     px_dispatch_on_main_queue();
 
 LABEL_16:
@@ -2071,18 +2071,18 @@ void __105__PUOneUpViewController_ppt_notifyWhenDeferredProcessingIsDoneAndFinal
   }
 }
 
-- (void)ppt_playCurrentLivePhotoWithCompletionHandler:(id)a3
+- (void)ppt_playCurrentLivePhotoWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v5 = [(PUOneUpViewController *)self _currentContentTileController];
+  handlerCopy = handler;
+  _currentContentTileController = [(PUOneUpViewController *)self _currentContentTileController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6717 description:{@"unexpected class %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6717 description:{@"unexpected class %@", _currentContentTileController}];
   }
 
-  [v5 ppt_playLivePhotoWithCompletionHandler:v7];
+  [_currentContentTileController ppt_playLivePhotoWithCompletionHandler:handlerCopy];
 }
 
 - (UIView)ppt_scrubberView
@@ -2097,33 +2097,33 @@ void __105__PUOneUpViewController_ppt_notifyWhenDeferredProcessingIsDoneAndFinal
     [(PUOneUpViewController *)self _barsController];
   }
   v3 = ;
-  v4 = [v3 ppt_scrubberView];
+  ppt_scrubberView = [v3 ppt_scrubberView];
 
-  return v4;
+  return ppt_scrubberView;
 }
 
 - (CGRect)ppt_scrollableBoundsForTesting
 {
-  v3 = [(PUOneUpViewController *)self _tilingView];
-  v4 = [(PUOneUpViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  [v5 frame];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  navigationController = [(PUOneUpViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v7 = v6;
 
-  v8 = [(PUOneUpViewController *)self navigationController];
-  v9 = [v8 toolbar];
-  [v9 frame];
+  navigationController2 = [(PUOneUpViewController *)self navigationController];
+  toolbar = [navigationController2 toolbar];
+  [toolbar frame];
   v11 = v10;
 
-  v12 = [v3 superview];
-  [v3 frame];
-  [v12 convertRect:0 toView:?];
+  superview = [_tilingView superview];
+  [_tilingView frame];
+  [superview convertRect:0 toView:?];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  [v3 adjustedContentInset];
+  [_tilingView adjustedContentInset];
   v23 = v7 + v22;
   v25 = v11 + v24;
   v26 = v14 + v21 + 24.0;
@@ -2142,13 +2142,13 @@ void __105__PUOneUpViewController_ppt_notifyWhenDeferredProcessingIsDoneAndFinal
   return result;
 }
 
-- (BOOL)prepareForDismissingForced:(BOOL)a3
+- (BOOL)prepareForDismissingForced:(BOOL)forced
 {
-  v3 = a3;
-  v4 = [(PUOneUpViewController *)self presentedViewController];
+  forcedCopy = forced;
+  presentedViewController = [(PUOneUpViewController *)self presentedViewController];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 prepareForDismissingForced:v3];
+    v5 = [presentedViewController prepareForDismissingForced:forcedCopy];
   }
 
   else
@@ -2161,34 +2161,34 @@ void __105__PUOneUpViewController_ppt_notifyWhenDeferredProcessingIsDoneAndFinal
 
 - (void)purgeIfPossible
 {
-  v3 = [(PUOneUpViewController *)self _currentAccessoryViewController];
-  if ([v3 conformsToProtocol:&unk_1F2C4F490])
+  _currentAccessoryViewController = [(PUOneUpViewController *)self _currentAccessoryViewController];
+  if ([_currentAccessoryViewController conformsToProtocol:&unk_1F2C4F490])
   {
-    v4 = [(PUOneUpViewController *)self _currentAccessoryViewController];
+    _currentAccessoryViewController2 = [(PUOneUpViewController *)self _currentAccessoryViewController];
   }
 
   else
   {
-    v4 = 0;
+    _currentAccessoryViewController2 = 0;
   }
 
-  [v4 purgeIfPossible];
+  [_currentAccessoryViewController2 purgeIfPossible];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUOneUpViewController *)self _tilingView];
+  settingsCopy = settings;
+  keyCopy = key;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__PUOneUpViewController_settings_changedValueForKey___block_invoke;
   v11[3] = &unk_1E7B7A160;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 enumerateAllTileControllersUsingBlock:v11];
+  v12 = settingsCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = settingsCopy;
+  [_tilingView enumerateAllTileControllersUsingBlock:v11];
 }
 
 void __53__PUOneUpViewController_settings_changedValueForKey___block_invoke(uint64_t a1, void *a2)
@@ -2200,44 +2200,44 @@ void __53__PUOneUpViewController_settings_changedValueForKey___block_invoke(uint
   }
 }
 
-- (void)_notifyTileIsReadyWithTimeOut:(double)a3 completionHandler:(id)a4
+- (void)_notifyTileIsReadyWithTimeOut:(double)out completionHandler:(id)handler
 {
-  v10 = a4;
-  v6 = [(PUOneUpViewController *)self _tilingView];
-  [v6 layoutIfNeeded];
+  handlerCopy = handler;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  [_tilingView layoutIfNeeded];
 
-  v7 = [(PUOneUpViewController *)self _currentContentTileController];
-  v8 = v7;
-  if (fmin(a3, 0.5) <= 0.0 || v7 == 0)
+  _currentContentTileController = [(PUOneUpViewController *)self _currentContentTileController];
+  v8 = _currentContentTileController;
+  if (fmin(out, 0.5) <= 0.0 || _currentContentTileController == 0)
   {
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    [v7 notifyWhenReadyForDisplayWithTimeOut:v10 completionHandler:?];
+    [_currentContentTileController notifyWhenReadyForDisplayWithTimeOut:handlerCopy completionHandler:?];
   }
 }
 
-- (void)_performNavigationToAssetDisplayDescriptor:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5
+- (void)_performNavigationToAssetDisplayDescriptor:(id)descriptor beforeDate:(id)date completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  descriptorCopy = descriptor;
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!dateCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6563 description:{@"Invalid parameter not satisfying: %@", @"beforeDate != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6563 description:{@"Invalid parameter not satisfying: %@", @"beforeDate != nil"}];
   }
 
   v12 = objc_alloc_init(PUAssetDisplayDescriptorNavigationRequest);
-  v13 = [MEMORY[0x1E695DF00] date];
-  [v10 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [dateCopy timeIntervalSinceReferenceDate];
   v15 = v14;
-  [v13 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v17 = v15 - v16;
   objc_initWeak(&location, self);
   v29[0] = MEMORY[0x1E69E9820];
@@ -2245,12 +2245,12 @@ void __53__PUOneUpViewController_settings_changedValueForKey___block_invoke(uint
   v29[2] = __97__PUOneUpViewController__performNavigationToAssetDisplayDescriptor_beforeDate_completionHandler___block_invoke;
   v29[3] = &unk_1E7B7B540;
   v33[1] = *&v17;
-  v18 = v10;
+  v18 = dateCopy;
   v30 = v18;
-  v19 = v13;
+  v19 = date;
   v31 = v19;
   objc_copyWeak(v33, &location);
-  v20 = v11;
+  v20 = handlerCopy;
   v32 = v20;
   [(PUAssetDisplayDescriptorNavigationRequest *)v12 setCompletionHandler:v29];
   v24[0] = MEMORY[0x1E69E9820];
@@ -2259,8 +2259,8 @@ void __53__PUOneUpViewController_settings_changedValueForKey___block_invoke(uint
   v24[3] = &unk_1E7B7FE10;
   v21 = v12;
   v25 = v21;
-  v26 = self;
-  v22 = v9;
+  selfCopy = self;
+  v22 = descriptorCopy;
   v27 = v22;
   v28 = v17;
   [(PUAssetDisplayDescriptorNavigationRequest *)v21 performChanges:v24];
@@ -2430,37 +2430,37 @@ uint64_t __97__PUOneUpViewController__performNavigationToAssetDisplayDescriptor_
   return result;
 }
 
-- (BOOL)_canAttemptNavigationToAssetDisplayDescriptor:(id)a3
+- (BOOL)_canAttemptNavigationToAssetDisplayDescriptor:(id)descriptor
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self browsingSession];
-  v6 = [v5 viewModel];
-  v7 = [v6 assetsDataSource];
+  descriptorCopy = descriptor;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
 
-  if (!v7)
+  if (!assetsDataSource)
   {
     v8 = PLOneUpGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(PUOneUpViewController *)self browsingSession];
-      v10 = [(PUOneUpViewController *)self browsingSession];
-      v11 = [v10 viewModel];
+      browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+      browsingSession3 = [(PUOneUpViewController *)self browsingSession];
+      viewModel2 = [browsingSession3 viewModel];
       v18 = 138412546;
-      v19 = v9;
+      v19 = browsingSession2;
       v20 = 2112;
-      v21 = v11;
+      v21 = viewModel2;
       _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_ERROR, "assetsDataSource is unexpectedly nil. browsingSession: %@, viewModel: %@", &v18, 0x16u);
     }
   }
 
-  v12 = [v4 assetReference];
-  v13 = [v7 couldAssetReferenceAppear:v12];
+  assetReference = [descriptorCopy assetReference];
+  v13 = [assetsDataSource couldAssetReferenceAppear:assetReference];
   v14 = PLOneUpGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:v13];
-    v16 = [MEMORY[0x1E696AD98] numberWithInt:v12 != 0];
+    v16 = [MEMORY[0x1E696AD98] numberWithInt:assetReference != 0];
     v18 = 138412546;
     v19 = v15;
     v20 = 2112;
@@ -2471,55 +2471,55 @@ uint64_t __97__PUOneUpViewController__performNavigationToAssetDisplayDescriptor_
   return v13;
 }
 
-- (void)navigateToAssetDisplayDescriptor:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5
+- (void)navigateToAssetDisplayDescriptor:(id)descriptor beforeDate:(id)date completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  dateCopy = date;
+  handlerCopy = handler;
   v11 = PLOneUpGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v12 = @"YES";
-    if (!v10)
+    if (!handlerCopy)
     {
       v12 = @"NO";
     }
 
     v14 = 138412546;
-    v15 = v8;
+    v15 = descriptorCopy;
     v16 = 2112;
     v17 = v12;
     _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_DEBUG, "Navigating to assetDisplayDescriptor: %@, completionHandler?: %@", &v14, 0x16u);
   }
 
-  if (v8)
+  if (descriptorCopy)
   {
-    if ([(PUOneUpViewController *)self _canAttemptNavigationToAssetDisplayDescriptor:v8])
+    if ([(PUOneUpViewController *)self _canAttemptNavigationToAssetDisplayDescriptor:descriptorCopy])
     {
-      [(PUOneUpViewController *)self _performNavigationToAssetDisplayDescriptor:v8 beforeDate:v9 completionHandler:v10];
+      [(PUOneUpViewController *)self _performNavigationToAssetDisplayDescriptor:descriptorCopy beforeDate:dateCopy completionHandler:handlerCopy];
     }
 
-    else if (v10)
+    else if (handlerCopy)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PUAssetDisplayDescriptorNavigationErrorDomain" code:1 userInfo:0];
-      v10[2](v10, 0, v13);
+      handlerCopy[2](handlerCopy, 0, v13);
     }
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    v10[2](v10, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
-- (BOOL)accessoryTileViewControllerShouldUseSquareImageWhenShowingAccessoryView:(id)a3
+- (BOOL)accessoryTileViewControllerShouldUseSquareImageWhenShowingAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self _spec];
-  v6 = [v5 prefersSquareImageInDetails];
+  viewCopy = view;
+  _spec = [(PUOneUpViewController *)self _spec];
+  prefersSquareImageInDetails = [_spec prefersSquareImageInDetails];
 
-  if (v6)
+  if (prefersSquareImageInDetails)
   {
     if ([MEMORY[0x1E69C3640] isOneUpRefreshEnabled] && (objc_msgSend(MEMORY[0x1E69C3640], "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "enableSideCommentsInLandscape"), v7, (v8 & 1) != 0))
     {
@@ -2528,9 +2528,9 @@ uint64_t __97__PUOneUpViewController__performNavigationToAssetDisplayDescriptor_
 
     else
     {
-      v10 = [v4 assetReference];
-      v11 = [v10 asset];
-      v9 = ![PUCommentsViewController canShowCommentsForAsset:v11];
+      assetReference = [viewCopy assetReference];
+      asset = [assetReference asset];
+      v9 = ![PUCommentsViewController canShowCommentsForAsset:asset];
     }
   }
 
@@ -2542,15 +2542,15 @@ uint64_t __97__PUOneUpViewController__performNavigationToAssetDisplayDescriptor_
   return v9;
 }
 
-- (BOOL)accessoryTileViewControllerWillHideNavigationBarWhenShowingAccessoryView:(id)a3
+- (BOOL)accessoryTileViewControllerWillHideNavigationBarWhenShowingAccessoryView:(id)view
 {
-  v4 = [a3 assetReference];
-  v5 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v6 = [v5 shouldHideNavigationBarWhenShowingAccessoryViewControllerForAssetReference:v4];
+  assetReference = [view assetReference];
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  v6 = [_accessoryViewControllersManager shouldHideNavigationBarWhenShowingAccessoryViewControllerForAssetReference:assetReference];
 
   if (v6)
   {
-    v7 = ![(PUOneUpViewController *)self _isCurrentAssetAndInEditModeForAssetReference:v4];
+    v7 = ![(PUOneUpViewController *)self _isCurrentAssetAndInEditModeForAssetReference:assetReference];
   }
 
   else
@@ -2561,119 +2561,119 @@ uint64_t __97__PUOneUpViewController__performNavigationToAssetDisplayDescriptor_
   return v7;
 }
 
-- (BOOL)accessoryTileViewControllerWillHideToolbarWhenShowingAccessoryView:(id)a3
+- (BOOL)accessoryTileViewControllerWillHideToolbarWhenShowingAccessoryView:(id)view
 {
-  v4 = [a3 assetReference];
-  v5 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v6 = [v5 shouldHideToolbarWhenShowingAccessoryViewControllerForAssetReference:v4];
+  assetReference = [view assetReference];
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  v6 = [_accessoryViewControllersManager shouldHideToolbarWhenShowingAccessoryViewControllerForAssetReference:assetReference];
 
   return v6;
 }
 
-- (id)accessoryTileViewControllerAccessoryViewController:(id)a3
+- (id)accessoryTileViewControllerAccessoryViewController:(id)controller
 {
-  v4 = [a3 assetReference];
-  v5 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v6 = [v5 accessoryViewControllerForAssetReference:v4];
+  assetReference = [controller assetReference];
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  v6 = [_accessoryViewControllersManager accessoryViewControllerForAssetReference:assetReference];
 
   return v6;
 }
 
-- (id)irisImageTileViewController:(id)a3 delegateForGestureRecognizer:(id)a4
+- (id)irisImageTileViewController:(id)controller delegateForGestureRecognizer:(id)recognizer
 {
-  v5 = a4;
-  v6 = [(PUOneUpViewController *)self _gestureRecognizerCoordinator];
-  [v6 addIrisGestureRecognizer:v5];
+  recognizerCopy = recognizer;
+  _gestureRecognizerCoordinator = [(PUOneUpViewController *)self _gestureRecognizerCoordinator];
+  [_gestureRecognizerCoordinator addIrisGestureRecognizer:recognizerCopy];
 
   return [(PUOneUpViewController *)self _gestureRecognizerCoordinator];
 }
 
-- (void)irisImageTileViewControllerDidEndVitality:(id)a3
+- (void)irisImageTileViewControllerDidEndVitality:(id)vitality
 {
-  v5 = [a3 asset];
-  v4 = [(PUOneUpViewController *)self eventTracker];
-  [v4 logVitalityDidEndForLivePhoto:v5];
+  asset = [vitality asset];
+  eventTracker = [(PUOneUpViewController *)self eventTracker];
+  [eventTracker logVitalityDidEndForLivePhoto:asset];
 }
 
-- (void)irisImageTileViewControllerDidEndPlaying:(id)a3
+- (void)irisImageTileViewControllerDidEndPlaying:(id)playing
 {
-  v4 = a3;
+  playingCopy = playing;
   [(PUOneUpViewController *)self _setIrisPlaying:0];
   [(PUOneUpViewController *)self _setDidPlayCurrentLivePhoto:1];
-  v6 = [v4 asset];
+  asset = [playingCopy asset];
 
-  v5 = [(PUOneUpViewController *)self eventTracker];
-  [v5 logUserDidPlayLivePhoto:v6];
+  eventTracker = [(PUOneUpViewController *)self eventTracker];
+  [eventTracker logUserDidPlayLivePhoto:asset];
 
   [(PUOneUpViewController *)self _updateIfNeeded];
 }
 
-- (void)irisImageTileViewControllerDidBeginPlaying:(id)a3
+- (void)irisImageTileViewControllerDidBeginPlaying:(id)playing
 {
-  v9 = a3;
-  v4 = [v9 assetViewModel];
-  v5 = [v4 irisPlayer];
-  v6 = [v5 player];
-  if ([v6 currentPlaybackStyle] == 1)
+  playingCopy = playing;
+  assetViewModel = [playingCopy assetViewModel];
+  irisPlayer = [assetViewModel irisPlayer];
+  player = [irisPlayer player];
+  if ([player currentPlaybackStyle] == 1)
   {
     [(PUOneUpViewController *)self _setIrisPlaying:1];
-    v7 = [v9 asset];
-    v8 = [(PUOneUpViewController *)self eventTracker];
-    [v8 logUserWillPlayLivePhoto:v7];
+    asset = [playingCopy asset];
+    eventTracker = [(PUOneUpViewController *)self eventTracker];
+    [eventTracker logUserWillPlayLivePhoto:asset];
   }
 }
 
-- (void)irisImageTileViewControllerDidBeginHinting:(id)a3
+- (void)irisImageTileViewControllerDidBeginHinting:(id)hinting
 {
-  v4 = [(PUOneUpViewController *)self _barsController];
-  v5 = [v4 tapGestureRecognizer];
-  [v5 pu_cancel];
+  _barsController = [(PUOneUpViewController *)self _barsController];
+  tapGestureRecognizer = [_barsController tapGestureRecognizer];
+  [tapGestureRecognizer pu_cancel];
 
-  v7 = [(PUOneUpViewController *)self _doubleTapZoomController];
-  v6 = [v7 doubleTapGestureRecognizer];
-  [v6 pu_cancel];
+  _doubleTapZoomController = [(PUOneUpViewController *)self _doubleTapZoomController];
+  doubleTapGestureRecognizer = [_doubleTapZoomController doubleTapGestureRecognizer];
+  [doubleTapGestureRecognizer pu_cancel];
 }
 
-- (void)oneUpAssetTransition:(id)a3 animateTransitionWithContext:(id)a4 duration:(double)a5 completion:(id)a6
+- (void)oneUpAssetTransition:(id)transition animateTransitionWithContext:(id)context duration:(double)duration completion:(id)completion
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [v9 executedAction];
-  v12 = [(PUOneUpViewController *)self undoManager];
-  [v11 registerWithUndoManager:v12];
+  contextCopy = context;
+  completionCopy = completion;
+  executedAction = [contextCopy executedAction];
+  undoManager = [(PUOneUpViewController *)self undoManager];
+  [executedAction registerWithUndoManager:undoManager];
 
-  v13 = [(PUOneUpViewController *)self _tilingView];
-  [v13 layoutIfNeeded];
-  v14 = [(PUOneUpViewController *)self _currentContentTileController];
-  if (v14)
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  [_tilingView layoutIfNeeded];
+  _currentContentTileController = [(PUOneUpViewController *)self _currentContentTileController];
+  if (_currentContentTileController)
   {
-    v141 = a5;
-    v15 = [(PUOneUpViewController *)self _tilingView];
-    v16 = [v15 layout];
+    durationCopy = duration;
+    _tilingView2 = [(PUOneUpViewController *)self _tilingView];
+    layout = [_tilingView2 layout];
 
-    v17 = [(PUOneUpViewController *)self browsingSession];
-    v18 = [v17 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v19 = [v18 assetsDataSource];
-    v149 = v18;
-    v143 = [v18 currentAssetReference];
-    v144 = v19;
-    [v19 indexPathForAssetReference:?];
-    v142 = v145 = v16;
-    v20 = [v16 layoutInfoForTileWithIndexPath:? kind:?];
-    v21 = [v9 containerView];
-    v22 = [v9 fromView];
-    v23 = [v9 snapshotView];
-    [v23 frame];
-    v139 = v22;
-    [v21 convertRect:v22 fromView:?];
+    assetsDataSource = [viewModel assetsDataSource];
+    v149 = viewModel;
+    currentAssetReference = [viewModel currentAssetReference];
+    v144 = assetsDataSource;
+    [assetsDataSource indexPathForAssetReference:?];
+    v142 = v145 = layout;
+    v20 = [layout layoutInfoForTileWithIndexPath:? kind:?];
+    containerView = [contextCopy containerView];
+    fromView = [contextCopy fromView];
+    snapshotView = [contextCopy snapshotView];
+    [snapshotView frame];
+    v139 = fromView;
+    [containerView convertRect:fromView fromView:?];
     v137 = v24;
     v26 = v25;
     v128 = v25;
     v28 = v27;
     v30 = v29;
-    [v23 setFrame:?];
-    [v21 addSubview:v23];
+    [snapshotView setFrame:?];
+    [containerView addSubview:snapshotView];
     [v20 frame];
     v32 = v31;
     v133 = v33;
@@ -2683,47 +2683,47 @@ uint64_t __97__PUOneUpViewController__performNavigationToAssetDisplayDescriptor_
     v130 = v37;
     v131 = v35;
     v38 = v37;
-    v39 = [v20 coordinateSystem];
-    v40 = [v13 contentCoordinateSystem];
-    v41 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v39, v40, v32, v34);
+    coordinateSystem = [v20 coordinateSystem];
+    contentCoordinateSystem = [_tilingView contentCoordinateSystem];
+    v41 = PUConvertPointFromCoordinateSystemToCoordinateSystem(coordinateSystem, contentCoordinateSystem, v32, v34);
     v43 = v42;
 
-    v44 = [(PUOneUpViewController *)self view];
-    [v44 convertRect:v13 fromView:{v41, v43, v36, v38}];
+    view = [(PUOneUpViewController *)self view];
+    [view convertRect:_tilingView fromView:{v41, v43, v36, v38}];
     v46 = v45;
     v48 = v47;
     v50 = v49;
     v52 = v51;
 
-    v53 = [(PUOneUpViewController *)self view];
-    [v21 convertRect:v53 fromView:{v46, v48, v50, v52}];
+    view2 = [(PUOneUpViewController *)self view];
+    [containerView convertRect:view2 fromView:{v46, v48, v50, v52}];
     v126 = v55;
     v127 = v54;
     v125 = v56;
     v58 = v57;
 
-    v59 = [(PUOneUpViewController *)self view];
-    v140 = v21;
-    [v21 convertRect:v59 toView:{v26, v28, v137, v30}];
+    view3 = [(PUOneUpViewController *)self view];
+    v140 = containerView;
+    [containerView convertRect:view3 toView:{v26, v28, v137, v30}];
     v61 = v60;
     v63 = v62;
     v65 = v64;
     v67 = v66;
 
-    v68 = [(PUOneUpViewController *)self view];
-    [v13 convertRect:v68 fromView:{v61, v63, v65, v67}];
+    view4 = [(PUOneUpViewController *)self view];
+    [_tilingView convertRect:view4 fromView:{v61, v63, v65, v67}];
     v70 = v69;
     v72 = v71;
     v74 = v73;
     v76 = v75;
 
-    v77 = [v13 contentCoordinateSystem];
-    v78 = [v20 coordinateSystem];
-    v79 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v77, v78, v70, v72);
+    contentCoordinateSystem2 = [_tilingView contentCoordinateSystem];
+    coordinateSystem2 = [v20 coordinateSystem];
+    v79 = PUConvertPointFromCoordinateSystemToCoordinateSystem(contentCoordinateSystem2, coordinateSystem2, v70, v72);
     v81 = v80;
 
-    v146 = v23;
-    v82 = [v23 contentMode];
+    v146 = snapshotView;
+    contentMode = [snapshotView contentMode];
     v182 = 0u;
     v183 = 0u;
     v181 = 0u;
@@ -2739,9 +2739,9 @@ uint64_t __97__PUOneUpViewController__performNavigationToAssetDisplayDescriptor_
     v180 = 0u;
     v178 = 0u;
     matched = PUAffineTransformToMatchRect(&v178, v135, v133, v131, v130, v79, v81, v74, v76);
-    v132 = v82 == 2;
-    v148 = v10;
-    if (v82 == 2)
+    v132 = contentMode == 2;
+    v148 = completionCopy;
+    if (contentMode == 2)
     {
       PXRectGetCenter();
       v90 = *(MEMORY[0x1E695EFD0] + 16);
@@ -2771,61 +2771,61 @@ uint64_t __97__PUOneUpViewController__performNavigationToAssetDisplayDescriptor_
 
     v105 = [v102 layoutInfoWithCenter:&v175 size:v103 transform:{v104, v99, v101, *&v125, *&v126, *&v127}];
     v106 = v20;
-    v107 = [MEMORY[0x1E695DF70] array];
-    [v107 addObject:v14];
-    v108 = [(PUOneUpViewController *)self _backgroundTileViewController];
-    if (v108 && [v9 shouldHideBackground])
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObject:_currentContentTileController];
+    _backgroundTileViewController = [(PUOneUpViewController *)self _backgroundTileViewController];
+    if (_backgroundTileViewController && [contextCopy shouldHideBackground])
     {
-      [v107 addObject:v108];
+      [array addObject:_backgroundTileViewController];
     }
 
-    if ([v107 count])
+    if ([array count])
     {
-      [v13 detachTileControllers:v107];
+      [_tilingView detachTileControllers:array];
     }
 
     v136 = v105;
-    [v14 applyLayoutInfo:v105];
-    if ([v9 shouldHideBackground])
+    [_currentContentTileController applyLayoutInfo:v105];
+    if ([contextCopy shouldHideBackground])
     {
-      v109 = [v108 presentationLayoutInfo];
-      v110 = [v109 layoutInfoWithAlpha:0.0];
+      presentationLayoutInfo = [_backgroundTileViewController presentationLayoutInfo];
+      v110 = [presentationLayoutInfo layoutInfoWithAlpha:0.0];
 
-      [v108 applyLayoutInfo:v110];
+      [_backgroundTileViewController applyLayoutInfo:v110];
     }
 
-    v134 = v108;
-    v111 = v13;
+    v134 = _backgroundTileViewController;
+    v111 = _tilingView;
     [(PUOneUpViewController *)self _hideOverlays];
-    v112 = [v9 transitionInfo];
-    v113 = v112;
-    if (v112)
+    transitionInfo = [contextCopy transitionInfo];
+    v113 = transitionInfo;
+    if (transitionInfo)
     {
-      if (([v112 allowAutoPlay] & 1) == 0)
+      if (([transitionInfo allowAutoPlay] & 1) == 0)
       {
-        v114 = [v149 assetViewModelForCurrentAssetReference];
-        v115 = [v114 videoPlayer];
+        assetViewModelForCurrentAssetReference = [v149 assetViewModelForCurrentAssetReference];
+        videoPlayer = [assetViewModelForCurrentAssetReference videoPlayer];
         v173[0] = MEMORY[0x1E69E9820];
         v173[1] = 3221225472;
         v173[2] = __95__PUOneUpViewController_oneUpAssetTransition_animateTransitionWithContext_duration_completion___block_invoke;
         v173[3] = &unk_1E7B80DD0;
-        v174 = v115;
-        v116 = v115;
+        v174 = videoPlayer;
+        v116 = videoPlayer;
         [v116 performChanges:v173];
       }
 
-      [v14 adoptAssetTransitionInfo:v113];
+      [_currentContentTileController adoptAssetTransitionInfo:v113];
     }
 
     v117 = [PUInterfaceManager beginDisablingUserInteractionForReason:10];
-    [v14 startSuppressingAnimatedUpdatesWithReason:@"one-up transition"];
-    [v14 viewControllerTransitionWillBegin];
+    [_currentContentTileController startSuppressingAnimatedUpdatesWithReason:@"one-up transition"];
+    [_currentContentTileController viewControllerTransitionWillBegin];
     v129 = MEMORY[0x1E69DD250];
     v158[0] = MEMORY[0x1E69E9820];
     v158[1] = 3221225472;
     v158[2] = __95__PUOneUpViewController_oneUpAssetTransition_animateTransitionWithContext_duration_completion___block_invoke_2;
     v158[3] = &unk_1E7B7A110;
-    v159 = v9;
+    v159 = contextCopy;
     v160 = v149;
     v172 = v132;
     v161 = v146;
@@ -2836,48 +2836,48 @@ uint64_t __97__PUOneUpViewController__performNavigationToAssetDisplayDescriptor_
     v169 = v181;
     v170 = v182;
     v171 = v183;
-    v162 = v14;
+    v162 = _currentContentTileController;
     v163 = v20;
-    v164 = self;
+    selfCopy = self;
     v150[0] = MEMORY[0x1E69E9820];
     v150[1] = 3221225472;
     v150[2] = __95__PUOneUpViewController_oneUpAssetTransition_animateTransitionWithContext_duration_completion___block_invoke_4;
     v150[3] = &unk_1E7B7A138;
-    v147 = v9;
+    v147 = contextCopy;
     v118 = v111;
     v151 = v111;
-    v152 = v107;
+    v152 = array;
     v153 = v161;
     v154 = v139;
     v155 = v162;
     v156 = v117;
-    v10 = v148;
+    completionCopy = v148;
     v157 = v148;
     v119 = v117;
     v120 = v139;
     v121 = v161;
-    v122 = v107;
+    v122 = array;
     v123 = v106;
     v124 = v149;
-    [v129 animateWithDuration:v158 animations:v150 completion:v141];
+    [v129 animateWithDuration:v158 animations:v150 completion:durationCopy];
 
-    v13 = v118;
-    v9 = v147;
+    _tilingView = v118;
+    contextCopy = v147;
   }
 
   else
   {
-    v91 = [(PUOneUpViewController *)self navigationController];
-    v92 = [v91 topViewController];
+    navigationController = [(PUOneUpViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
 
-    if (v92 == self)
+    if (topViewController == self)
     {
-      v93 = [v91 popViewControllerAnimated:0];
+      v93 = [navigationController popViewControllerAnimated:0];
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, v92 == self);
+      (*(completionCopy + 2))(completionCopy, topViewController == self);
     }
   }
 }
@@ -2937,132 +2937,132 @@ void __95__PUOneUpViewController_oneUpAssetTransition_animateTransitionWithConte
 
 - (id)createAssetTransitionInfo
 {
-  v2 = [(PUOneUpViewController *)self _currentContentTileController];
-  v3 = [v2 generateAssetTransitionInfo];
+  _currentContentTileController = [(PUOneUpViewController *)self _currentContentTileController];
+  generateAssetTransitionInfo = [_currentContentTileController generateAssetTransitionInfo];
 
-  return v3;
+  return generateAssetTransitionInfo;
 }
 
-- (void)oneUpAssetTransition:(id)a3 requestTransitionContextWithCompletion:(id)a4 options:(unint64_t)a5
+- (void)oneUpAssetTransition:(id)transition requestTransitionContextWithCompletion:(id)completion options:(unint64_t)options
 {
-  v5 = a5;
-  v66 = a3;
-  v9 = a4;
-  v10 = [(PUOneUpViewController *)self _currentContentTileController];
-  v11 = [(PUOneUpViewController *)self browsingSession];
-  v12 = [v11 viewModel];
-  v13 = [v12 currentAssetReference];
+  optionsCopy = options;
+  transitionCopy = transition;
+  completionCopy = completion;
+  _currentContentTileController = [(PUOneUpViewController *)self _currentContentTileController];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  v63 = v13;
-  v14 = [v13 asset];
-  v65 = v9;
-  v15 = [v14 playbackStyle] == 4 || objc_msgSend(v14, "playbackStyle") == 5;
-  v61 = v5;
-  if ((v5 & 2) != 0 && v15)
+  v63 = currentAssetReference;
+  asset = [currentAssetReference asset];
+  v65 = completionCopy;
+  v15 = [asset playbackStyle] == 4 || objc_msgSend(asset, "playbackStyle") == 5;
+  v61 = optionsCopy;
+  if ((optionsCopy & 2) != 0 && v15)
   {
-    v16 = v10;
+    v16 = _currentContentTileController;
     if (v16)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 LABEL_8:
-        v17 = [v16 view];
-        v18 = [v17 snapshotViewAfterScreenUpdates:0];
+        view = [v16 view];
+        v18 = [view snapshotViewAfterScreenUpdates:0];
 
         v69[0] = MEMORY[0x1E69E9820];
         v69[1] = 3221225472;
         v69[2] = __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWithCompletion_options___block_invoke;
         v69[3] = &unk_1E7B7B808;
         v70 = v18;
-        v71 = v14;
+        v71 = asset;
         v19 = v18;
-        v20 = [PUAssetTransitionInfo assetTransitionInfoWithConfigurationBlock:v69];
+        generateAssetTransitionInfo = [PUAssetTransitionInfo assetTransitionInfoWithConfigurationBlock:v69];
 
         goto LABEL_10;
       }
 
-      v56 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v59 = objc_opt_class();
       v58 = NSStringFromClass(v59);
-      v60 = [v16 px_descriptionForAssertionMessage];
-      [v56 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6187 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"tileController", v58, v60}];
+      px_descriptionForAssertionMessage = [v16 px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6187 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"tileController", v58, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v56 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v57 = objc_opt_class();
       v58 = NSStringFromClass(v57);
-      [v56 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6187 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"tileController", v58}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:6187 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"tileController", v58}];
     }
 
     goto LABEL_8;
   }
 
-  v20 = [v10 generateAssetTransitionInfo];
+  generateAssetTransitionInfo = [_currentContentTileController generateAssetTransitionInfo];
 LABEL_10:
   if (objc_opt_respondsToSelector())
   {
-    v21 = [v66 toViewController];
+    toViewController = [transitionCopy toViewController];
     if (objc_opt_respondsToSelector())
     {
-      v22 = [v21 oneUpAssetTransition:v66 adjustTransitionInfo:v20];
+      v22 = [toViewController oneUpAssetTransition:transitionCopy adjustTransitionInfo:generateAssetTransitionInfo];
       v23 = v22;
       if (v22)
       {
         v24 = v22;
 
-        v20 = v24;
+        generateAssetTransitionInfo = v24;
       }
     }
   }
 
-  v25 = [v20 snapshotView];
-  v64 = v10;
-  if (v25)
+  snapshotView = [generateAssetTransitionInfo snapshotView];
+  v64 = _currentContentTileController;
+  if (snapshotView)
   {
-    [(PUOneUpViewController *)self _currentFrameForTileController:v10];
-    [v25 setFrame:?];
-    [v25 setContentMode:2];
-    [v25 setClipsToBounds:1];
-    v26 = [v10 layoutInfo];
-    [v26 cornerRadius];
+    [(PUOneUpViewController *)self _currentFrameForTileController:_currentContentTileController];
+    [snapshotView setFrame:?];
+    [snapshotView setContentMode:2];
+    [snapshotView setClipsToBounds:1];
+    layoutInfo = [_currentContentTileController layoutInfo];
+    [layoutInfo cornerRadius];
     v28 = v27;
-    v29 = [v25 layer];
-    [v29 setCornerRadius:v28];
+    layer = [snapshotView layer];
+    [layer setCornerRadius:v28];
 
-    v30 = [v10 layoutInfo];
-    v31 = [v30 cornerCurve];
-    v32 = [v25 layer];
-    [v32 setCornerCurve:v31];
+    layoutInfo2 = [_currentContentTileController layoutInfo];
+    cornerCurve = [layoutInfo2 cornerCurve];
+    layer2 = [snapshotView layer];
+    [layer2 setCornerCurve:cornerCurve];
 
-    v33 = v25;
+    v33 = snapshotView;
   }
 
   else
   {
-    v33 = [(PUOneUpViewController *)self _currentPlaceholderSnapshotViewForTileController:v10];
-    v34 = [v20 image];
-    [v33 setImage:v34];
+    v33 = [(PUOneUpViewController *)self _currentPlaceholderSnapshotViewForTileController:_currentContentTileController];
+    image = [generateAssetTransitionInfo image];
+    [v33 setImage:image];
     [v33 setClipsToBounds:1];
-    [v10 layoutInfo];
-    v35 = v20;
-    v36 = v14;
-    v38 = v37 = v10;
+    [_currentContentTileController layoutInfo];
+    v35 = generateAssetTransitionInfo;
+    v36 = asset;
+    v38 = v37 = _currentContentTileController;
     [v38 cornerRadius];
     v40 = v39;
-    v41 = [v33 layer];
-    [v41 setCornerRadius:v40];
+    layer3 = [v33 layer];
+    [layer3 setCornerRadius:v40];
 
-    v42 = [v37 layoutInfo];
-    v43 = [v42 cornerCurve];
-    v44 = [v33 layer];
-    [v44 setCornerCurve:v43];
+    layoutInfo3 = [v37 layoutInfo];
+    cornerCurve2 = [layoutInfo3 cornerCurve];
+    layer4 = [v33 layer];
+    [layer4 setCornerCurve:cornerCurve2];
 
     [v33 setContentMode:2];
-    v45 = [(PUOneUpViewController *)self _tilingView];
-    if ([v45 shouldDisplayHDR])
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    if ([_tilingView shouldDisplayHDR])
     {
       v46 = 2;
     }
@@ -3072,39 +3072,39 @@ LABEL_10:
       v46 = 0;
     }
 
-    v14 = v36;
-    v20 = v35;
-    v25 = 0;
+    asset = v36;
+    generateAssetTransitionInfo = v35;
+    snapshotView = 0;
     [v33 setPreferredImageDynamicRange:v46];
   }
 
-  v47 = [v20 imageLayerModulator];
+  imageLayerModulator = [generateAssetTransitionInfo imageLayerModulator];
   v67[0] = MEMORY[0x1E69E9820];
   v67[1] = 3221225472;
   v67[2] = __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWithCompletion_options___block_invoke_2;
   v67[3] = &unk_1E7B7F3B8;
   v48 = v33;
   v68 = v48;
-  [v47 performChanges:v67];
+  [imageLayerModulator performChanges:v67];
 
   if (v61)
   {
-    v49 = [(PUOneUpViewController *)self _trailingContentTileController];
-    v51 = [v49 generateAssetTransitionInfo];
+    _trailingContentTileController = [(PUOneUpViewController *)self _trailingContentTileController];
+    generateAssetTransitionInfo2 = [_trailingContentTileController generateAssetTransitionInfo];
     [(PUOneUpViewController *)self _leadingContentTileController];
-    v52 = v62 = v14;
-    v53 = [v52 generateAssetTransitionInfo];
-    v54 = [(PUOneUpViewController *)self view];
-    v55 = v51;
-    v50 = [PUOneUpAssetTransitionContext oneUpAssetTransitionContextWithContainerView:0 fromView:v54 snapshotView:v48 transitionInfo:v20 trailingAssetTransitionInfo:v51 leadingAssetTransitionInfo:v53];
+    v52 = v62 = asset;
+    generateAssetTransitionInfo3 = [v52 generateAssetTransitionInfo];
+    view2 = [(PUOneUpViewController *)self view];
+    v55 = generateAssetTransitionInfo2;
+    v50 = [PUOneUpAssetTransitionContext oneUpAssetTransitionContextWithContainerView:0 fromView:view2 snapshotView:v48 transitionInfo:generateAssetTransitionInfo trailingAssetTransitionInfo:generateAssetTransitionInfo2 leadingAssetTransitionInfo:generateAssetTransitionInfo3];
 
-    v14 = v62;
+    asset = v62;
   }
 
   else
   {
-    v49 = [(PUOneUpViewController *)self view];
-    v50 = [PUOneUpAssetTransitionContext oneUpAssetTransitionContextWithContainerView:0 fromView:v49 snapshotView:v48 transitionInfo:v20];
+    _trailingContentTileController = [(PUOneUpViewController *)self view];
+    v50 = [PUOneUpAssetTransitionContext oneUpAssetTransitionContextWithContainerView:0 fromView:_trailingContentTileController snapshotView:v48 transitionInfo:generateAssetTransitionInfo];
   }
 
   if (v65)
@@ -3132,99 +3132,99 @@ void __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWi
 - (void)_didEndTransition
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUOneUpViewController *)self _userTransformTileViewControllerForCurrentAsset];
-  [v3 zoomOutAnimated:0];
+  _userTransformTileViewControllerForCurrentAsset = [(PUOneUpViewController *)self _userTransformTileViewControllerForCurrentAsset];
+  [_userTransformTileViewControllerForCurrentAsset zoomOutAnimated:0];
 
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __42__PUOneUpViewController__didEndTransition__block_invoke;
   v11[3] = &unk_1E7B80DD0;
-  v6 = v5;
+  v6 = viewModel;
   v12 = v6;
   [v6 performChanges:v11];
   [(PUOneUpViewController *)self _unhideOverlays];
-  v7 = [(PUOneUpViewController *)self _tilingView];
-  v8 = [(PUOneUpViewController *)self _currentContentTileController];
-  if ([v8 isDetached])
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  _currentContentTileController = [(PUOneUpViewController *)self _currentContentTileController];
+  if ([_currentContentTileController isDetached])
   {
     v9 = objc_alloc_init(PUTileReattachmentContext);
     [(PUTileReattachmentContext *)v9 setTransitioningOverOneUp:1];
-    v13[0] = v8;
+    v13[0] = _currentContentTileController;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    [v7 reattachTileControllers:v10 withContext:v9];
+    [_tilingView reattachTileControllers:v10 withContext:v9];
   }
 
-  [v7 layoutIfNeeded];
+  [_tilingView layoutIfNeeded];
 }
 
 - (void)_willBeginTransition
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUOneUpViewController *)self _tilingView];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
   if ([(PUOneUpViewController *)self _accessoryContentKindForCurrentAsset]== 1)
   {
     [(PUOneUpViewController *)self _setAccessoryVisible:0];
   }
 
   [(PUOneUpViewController *)self _hideOverlays];
-  v4 = [(PUOneUpViewController *)self _currentContentTileController];
-  v5 = v4;
-  if (v4)
+  _currentContentTileController = [(PUOneUpViewController *)self _currentContentTileController];
+  v5 = _currentContentTileController;
+  if (_currentContentTileController)
   {
-    v9[0] = v4;
+    v9[0] = _currentContentTileController;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    [v3 detachTileControllers:v6];
+    [_tilingView detachTileControllers:v6];
 
-    v7 = [v5 presentationLayoutInfo];
-    v8 = [v7 layoutInfoWithAlpha:0.0];
+    presentationLayoutInfo = [v5 presentationLayoutInfo];
+    v8 = [presentationLayoutInfo layoutInfoWithAlpha:0.0];
     [v5 applyLayoutInfo:v8];
   }
 
-  [v3 layoutIfNeeded];
+  [_tilingView layoutIfNeeded];
 }
 
 - (void)_unhideOverlays
 {
-  v4 = [(PUOneUpViewController *)self _tilingView];
-  v3 = [(PUOneUpViewController *)self _hiddenTilesController];
-  if ([v3 count])
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  _hiddenTilesController = [(PUOneUpViewController *)self _hiddenTilesController];
+  if ([_hiddenTilesController count])
   {
-    [v4 reattachTileControllers:v3 withContext:0];
+    [_tilingView reattachTileControllers:_hiddenTilesController withContext:0];
     [(PUOneUpViewController *)self _setHiddenTilesController:0];
-    [v4 layoutIfNeeded];
+    [_tilingView layoutIfNeeded];
   }
 }
 
 - (void)_hideOverlays
 {
-  v2 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v5 = [(PUOneUpViewController *)v2 _tilingView];
-  v6 = v5;
-  if (v4 && v5)
+  _tilingView = [(PUOneUpViewController *)selfCopy _tilingView];
+  v6 = _tilingView;
+  if (viewModel && _tilingView)
   {
-    v28 = v4;
-    v7 = [v4 currentAssetReference];
-    v8 = [v7 indexPath];
-    v27 = v7;
-    v9 = [v7 dataSourceIdentifier];
+    v28 = viewModel;
+    currentAssetReference = [viewModel currentAssetReference];
+    indexPath = [currentAssetReference indexPath];
+    v27 = currentAssetReference;
+    dataSourceIdentifier = [currentAssetReference dataSourceIdentifier];
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v11 = [(PUOneUpViewController *)v2 _tileKindsToHide];
-    v12 = [v11 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    _tileKindsToHide = [(PUOneUpViewController *)selfCopy _tileKindsToHide];
+    v12 = [_tileKindsToHide countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v12)
     {
       v13 = v12;
-      v26 = v2;
+      v26 = selfCopy;
       v14 = 0;
       v15 = *v34;
       do
@@ -3234,10 +3234,10 @@ void __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWi
           v17 = v14;
           if (*v34 != v15)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(_tileKindsToHide);
           }
 
-          v14 = [v6 presentedTileControllerWithIndexPath:v8 kind:*(*(&v33 + 1) + 8 * i) dataSourceIdentifier:v9];
+          v14 = [v6 presentedTileControllerWithIndexPath:indexPath kind:*(*(&v33 + 1) + 8 * i) dataSourceIdentifier:dataSourceIdentifier];
 
           if (v14 && ([v14 isDetached] & 1) == 0)
           {
@@ -3245,15 +3245,15 @@ void __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWi
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v13 = [_tileKindsToHide countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v13);
 
-      v2 = v26;
+      selfCopy = v26;
     }
 
-    [(PUOneUpViewController *)v2 _setHiddenTilesController:v10];
+    [(PUOneUpViewController *)selfCopy _setHiddenTilesController:v10];
     [v6 detachTileControllers:v10];
     v31 = 0u;
     v32 = 0u;
@@ -3275,8 +3275,8 @@ void __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWi
           }
 
           v23 = *(*(&v29 + 1) + 8 * j);
-          v24 = [v23 presentationLayoutInfo];
-          v25 = [v24 layoutInfoWithAlpha:0.0];
+          presentationLayoutInfo = [v23 presentationLayoutInfo];
+          v25 = [presentationLayoutInfo layoutInfoWithAlpha:0.0];
 
           [v23 applyLayoutInfo:v25];
         }
@@ -3287,7 +3287,7 @@ void __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWi
       while (v20);
     }
 
-    v4 = v28;
+    viewModel = v28;
   }
 }
 
@@ -3315,26 +3315,26 @@ void __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWi
   return tileKindsToHide;
 }
 
-- (CGRect)_currentFrameForTileController:(id)a3
+- (CGRect)_currentFrameForTileController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v4 = a3;
-    v5 = [(PUOneUpViewController *)self _tilingView];
-    v6 = [v4 presentationLayoutInfo];
+    controllerCopy = controller;
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    presentationLayoutInfo = [controllerCopy presentationLayoutInfo];
 
-    [v6 frame];
+    [presentationLayoutInfo frame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [v6 coordinateSystem];
-    v16 = [v5 contentCoordinateSystem];
-    v17 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v15, v16, v8, v10);
+    coordinateSystem = [presentationLayoutInfo coordinateSystem];
+    contentCoordinateSystem = [_tilingView contentCoordinateSystem];
+    v17 = PUConvertPointFromCoordinateSystemToCoordinateSystem(coordinateSystem, contentCoordinateSystem, v8, v10);
     v19 = v18;
 
-    v20 = [(PUOneUpViewController *)self view];
-    [v20 convertRect:v5 fromView:{v17, v19, v12, v14}];
+    view = [(PUOneUpViewController *)self view];
+    [view convertRect:_tilingView fromView:{v17, v19, v12, v14}];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -3360,9 +3360,9 @@ void __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWi
   return result;
 }
 
-- (id)_currentPlaceholderSnapshotViewForTileController:(id)a3
+- (id)_currentPlaceholderSnapshotViewForTileController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
     [(PUOneUpViewController *)self _currentFrameForTileController:?];
     v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v4, v5, v6, v7}];
@@ -3378,36 +3378,36 @@ void __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWi
 
 - (id)_leadingContentTileController
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 leadingAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  leadingAssetReference = [viewModel leadingAssetReference];
 
-  v6 = [(PUOneUpViewController *)self _contentTileControllerForAssetReference:v5];
+  v6 = [(PUOneUpViewController *)self _contentTileControllerForAssetReference:leadingAssetReference];
 
   return v6;
 }
 
 - (id)_trailingContentTileController
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 trailingAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  trailingAssetReference = [viewModel trailingAssetReference];
 
-  v6 = [(PUOneUpViewController *)self _contentTileControllerForAssetReference:v5];
+  v6 = [(PUOneUpViewController *)self _contentTileControllerForAssetReference:trailingAssetReference];
 
   return v6;
 }
 
-- (id)_contentTileControllerForAssetReference:(id)a3
+- (id)_contentTileControllerForAssetReference:(id)reference
 {
-  if (a3)
+  if (reference)
   {
-    v4 = a3;
-    v5 = [(PUOneUpViewController *)self _tilingView];
-    v6 = [v4 indexPath];
-    v7 = [v4 dataSourceIdentifier];
+    referenceCopy = reference;
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    indexPath = [referenceCopy indexPath];
+    dataSourceIdentifier = [referenceCopy dataSourceIdentifier];
 
-    v8 = [v5 presentedTileControllerWithIndexPath:v6 kind:@"PUTileKindItemContent" dataSourceIdentifier:v7];
+    v8 = [_tilingView presentedTileControllerWithIndexPath:indexPath kind:@"PUTileKindItemContent" dataSourceIdentifier:dataSourceIdentifier];
   }
 
   else
@@ -3420,148 +3420,148 @@ void __93__PUOneUpViewController_oneUpAssetTransition_requestTransitionContextWi
 
 - (id)_currentContentTileController
 {
-  v3 = [(PUOneUpViewController *)self _tilingView];
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
-  v6 = [v5 currentAssetReference];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  v7 = [v6 indexPath];
-  v8 = [v6 dataSourceIdentifier];
-  v9 = [v3 presentedTileControllerWithIndexPath:v7 kind:@"PUTileKindItemContent" dataSourceIdentifier:v8];
+  indexPath = [currentAssetReference indexPath];
+  dataSourceIdentifier = [currentAssetReference dataSourceIdentifier];
+  v9 = [_tilingView presentedTileControllerWithIndexPath:indexPath kind:@"PUTileKindItemContent" dataSourceIdentifier:dataSourceIdentifier];
 
   return v9;
 }
 
-- (void)overOneUpPresentationSessionDidFinish:(id)a3
+- (void)overOneUpPresentationSessionDidFinish:(id)finish
 {
   [(PUOneUpViewController *)self _setOverOneUpPresentationSession:0];
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PUOneUpViewController_overOneUpPresentationSessionDidFinish___block_invoke;
   v7[3] = &unk_1E7B80DD0;
-  v8 = v5;
-  v6 = v5;
+  v8 = viewModel;
+  v6 = viewModel;
   [v6 performChanges:v7];
 }
 
-- (void)overOneUpPresentationSession:(id)a3 didPresent:(id)a4
+- (void)overOneUpPresentationSession:(id)session didPresent:(id)present
 {
-  v4 = [(PUOneUpViewController *)self browsingSession:a3];
-  v5 = [v4 viewModel];
+  v4 = [(PUOneUpViewController *)self browsingSession:session];
+  viewModel = [v4 viewModel];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__PUOneUpViewController_overOneUpPresentationSession_didPresent___block_invoke;
   v7[3] = &unk_1E7B80DD0;
-  v8 = v5;
-  v6 = v5;
+  v8 = viewModel;
+  v6 = viewModel;
   [v6 performChanges:v7];
 }
 
-- (BOOL)overOneUpPresentationSessionPresentingViewControllerIsReady:(id)a3
+- (BOOL)overOneUpPresentationSessionPresentingViewControllerIsReady:(id)ready
 {
-  v4 = [(PUOneUpViewController *)self parentViewController];
+  parentViewController = [(PUOneUpViewController *)self parentViewController];
 
-  if (!v4 || ([(PUOneUpViewController *)self isBeingDismissed]& 1) != 0)
+  if (!parentViewController || ([(PUOneUpViewController *)self isBeingDismissed]& 1) != 0)
   {
     return 0;
   }
 
-  v6 = [(PUOneUpViewController *)self _tilingView];
-  v5 = v6 != 0;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  v5 = _tilingView != 0;
 
   return v5;
 }
 
-- (id)overOneUpPresentationSessionBrowserViewModel:(id)a3
+- (id)overOneUpPresentationSessionBrowserViewModel:(id)model
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  return v4;
+  return viewModel;
 }
 
-- (id)_presentedTileControllerForIndexPath:(id)a3 kind:(id)a4
+- (id)_presentedTileControllerForIndexPath:(id)path kind:(id)kind
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUOneUpViewController *)self browsingSession];
-  v9 = [v8 viewModel];
+  kindCopy = kind;
+  pathCopy = path;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v10 = [v9 assetsDataSource];
-  v11 = [(PUOneUpViewController *)self _tilingView];
-  v12 = [v10 identifier];
-  v13 = [v11 presentedTileControllerWithIndexPath:v7 kind:v6 dataSourceIdentifier:v12];
+  assetsDataSource = [viewModel assetsDataSource];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  identifier = [assetsDataSource identifier];
+  v13 = [_tilingView presentedTileControllerWithIndexPath:pathCopy kind:kindCopy dataSourceIdentifier:identifier];
 
   return v13;
 }
 
-- (id)_presentedTileControllerForCurrentIndexPathWithKind:(id)a3
+- (id)_presentedTileControllerForCurrentIndexPathWithKind:(id)kind
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self browsingSession];
-  v6 = [v5 viewModel];
+  kindCopy = kind;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v7 = [v6 assetsDataSource];
-  v8 = [v6 currentAssetReference];
-  v9 = [v7 indexPathForAssetReference:v8];
-  v10 = [(PUOneUpViewController *)self _presentedTileControllerForIndexPath:v9 kind:v4];
+  assetsDataSource = [viewModel assetsDataSource];
+  currentAssetReference = [viewModel currentAssetReference];
+  v9 = [assetsDataSource indexPathForAssetReference:currentAssetReference];
+  v10 = [(PUOneUpViewController *)self _presentedTileControllerForIndexPath:v9 kind:kindCopy];
 
   return v10;
 }
 
-- (id)overOneUpPresentationSessionCreateIfNeeded:(BOOL)a3
+- (id)overOneUpPresentationSessionCreateIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(PUOneUpViewController *)self _overOneUpPresentationSession];
-  if (!v5 && v3)
+  neededCopy = needed;
+  _overOneUpPresentationSession = [(PUOneUpViewController *)self _overOneUpPresentationSession];
+  if (!_overOneUpPresentationSession && neededCopy)
   {
     v6 = [PUOneUpActivitySharingActionPerformer alloc];
-    v7 = [(PUOneUpViewController *)self actionsController];
-    v8 = [(PUOneUpActivitySharingActionPerformer *)v6 initWithActionsController:v7];
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    v8 = [(PUOneUpActivitySharingActionPerformer *)v6 initWithActionsController:actionsController];
 
-    v5 = [[PUOverOneUpPresentationSession alloc] initWithActivitySharingActionPerformer:v8];
-    [(PUOverOneUpPresentationSession *)v5 setDelegate:self];
-    v9 = [(PUOneUpViewController *)self _barsController];
-    [(PUOverOneUpPresentationSession *)v5 setBarsDelegate:v9];
+    _overOneUpPresentationSession = [[PUOverOneUpPresentationSession alloc] initWithActivitySharingActionPerformer:v8];
+    [(PUOverOneUpPresentationSession *)_overOneUpPresentationSession setDelegate:self];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    [(PUOverOneUpPresentationSession *)_overOneUpPresentationSession setBarsDelegate:_barsController];
 
-    [(PUOneUpViewController *)self _setOverOneUpPresentationSession:v5];
+    [(PUOneUpViewController *)self _setOverOneUpPresentationSession:_overOneUpPresentationSession];
   }
 
-  return v5;
+  return _overOneUpPresentationSession;
 }
 
-- (void)accessoryVisibilityInteractionController:(id)a3 setAccessoryVisible:(BOOL)a4 changeReason:(int64_t)a5
+- (void)accessoryVisibilityInteractionController:(id)controller setAccessoryVisible:(BOOL)visible changeReason:(int64_t)reason
 {
-  v5 = a4;
-  v7 = [PUInterfaceManager currentTheme:a3];
-  v8 = [v7 photoBrowserChromeVisibleBackgroundColor];
-  v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v10 = [v8 isEqual:v9];
+  visibleCopy = visible;
+  v7 = [PUInterfaceManager currentTheme:controller];
+  photoBrowserChromeVisibleBackgroundColor = [v7 photoBrowserChromeVisibleBackgroundColor];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v10 = [photoBrowserChromeVisibleBackgroundColor isEqual:systemBackgroundColor];
 
   if (v10)
   {
-    v11 = [(PUOneUpViewController *)self _currentAssetViewModel];
-    v12 = [v11 modelTileTransform];
-    v13 = [v12 hasUserZoomedIn];
+    _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+    modelTileTransform = [_currentAssetViewModel modelTileTransform];
+    hasUserZoomedIn = [modelTileTransform hasUserZoomedIn];
 
-    if (v13)
+    if (hasUserZoomedIn)
     {
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __99__PUOneUpViewController_accessoryVisibilityInteractionController_setAccessoryVisible_changeReason___block_invoke;
       v16[3] = &unk_1E7B80DD0;
-      v17 = v11;
+      v17 = _currentAssetViewModel;
       [v17 performChanges:v16];
 
 LABEL_9:
       return;
     }
 
-    if (v5)
+    if (visibleCopy)
     {
       if ([(PUOneUpViewController *)self _shouldShowAccessoryAfterUnlock]|| [(PUOneUpViewController *)self _requireUnlockedDeviceForAccessoryView]&& ([(PUOneUpViewController *)self unlockDeviceStatus], v14 = objc_claimAutoreleasedReturnValue(), v15 = v14[2](), v14, (v15 & 1) == 0))
       {
@@ -3575,12 +3575,12 @@ LABEL_9:
       [(PUOneUpViewController *)self _setShouldShowAccessoryAfterUnlock:0];
     }
 
-    [(PUOneUpViewController *)self _setAccessoryVisible:v5 changeReason:2];
+    [(PUOneUpViewController *)self _setAccessoryVisible:visibleCopy changeReason:2];
     goto LABEL_9;
   }
 }
 
-- (void)accessoryVisibilityInteractionControllerDidEnd:(id)a3
+- (void)accessoryVisibilityInteractionControllerDidEnd:(id)end
 {
   if ([(PUOneUpViewController *)self _shouldShowAccessoryAfterUnlock])
   {
@@ -3591,22 +3591,22 @@ LABEL_9:
     aBlock[3] = &unk_1E7B7F020;
     aBlock[4] = self;
     v4 = _Block_copy(aBlock);
-    v5 = [(PUOneUpViewController *)self unlockDeviceHandlerWithActionType];
+    unlockDeviceHandlerWithActionType = [(PUOneUpViewController *)self unlockDeviceHandlerWithActionType];
 
-    if (v5)
+    if (unlockDeviceHandlerWithActionType)
     {
-      v6 = [(PUOneUpViewController *)self unlockDeviceHandlerWithActionType];
-      (v6)[2](v6, v4, 0);
+      unlockDeviceHandlerWithActionType2 = [(PUOneUpViewController *)self unlockDeviceHandlerWithActionType];
+      (unlockDeviceHandlerWithActionType2)[2](unlockDeviceHandlerWithActionType2, v4, 0);
     }
   }
 
-  v7 = [(PUOneUpViewController *)self _currentAssetViewModel];
+  _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__PUOneUpViewController_accessoryVisibilityInteractionControllerDidEnd___block_invoke_2;
   v9[3] = &unk_1E7B80DD0;
-  v10 = v7;
-  v8 = v7;
+  v10 = _currentAssetViewModel;
+  v8 = _currentAssetViewModel;
   [v8 performChanges:v9];
 }
 
@@ -3622,19 +3622,19 @@ uint64_t __72__PUOneUpViewController_accessoryVisibilityInteractionControllerDid
 
 - (BOOL)_canShowAccessoryViewForCurrentAsset
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v5 = [v4 currentAssetReference];
-  v6 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v7 = [v5 asset];
-  v8 = [v6 accessoryViewTypeForAsset:v7];
+  currentAssetReference = [viewModel currentAssetReference];
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  asset = [currentAssetReference asset];
+  v8 = [_accessoryViewControllersManager accessoryViewTypeForAsset:asset];
 
-  v10 = [v4 assetViewModelForAssetReference:v5];
-  v9 = [v10 isInEditMode];
+  v10 = [viewModel assetViewModelForAssetReference:currentAssetReference];
+  isInEditMode = [v10 isInEditMode];
 
   LOBYTE(v10) = 0;
-  if (v8 && ((v8 == 3) & v9) == 0)
+  if (v8 && ((v8 == 3) & isInEditMode) == 0)
   {
     LODWORD(v10) = [MEMORY[0x1E69C3740] enabled] ^ 1;
   }
@@ -3642,44 +3642,44 @@ uint64_t __72__PUOneUpViewController_accessoryVisibilityInteractionControllerDid
   return v10;
 }
 
-- (BOOL)doubleTapZoomController:(id)a3 canDoubleTapBeginAtLocationFromProvider:(id)a4
+- (BOOL)doubleTapZoomController:(id)controller canDoubleTapBeginAtLocationFromProvider:(id)provider
 {
-  v5 = a4;
+  providerCopy = provider;
   v6 = +[PUOneUpSettings sharedInstance];
-  v7 = [v6 doubleTapZoomAreaExcludesBars];
+  doubleTapZoomAreaExcludesBars = [v6 doubleTapZoomAreaExcludesBars];
 
-  if (v7 && (-[PUOneUpViewController _barsController](self, "_barsController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isLocationFromProviderInBarsArea:v5], v8, (v9 & 1) != 0) || -[PUOneUpViewController _isLocationFromProviderInAccessoryArea:](self, "_isLocationFromProviderInAccessoryArea:", v5) || -[PUOneUpViewController _isLocationFromProviderOverControl:](self, "_isLocationFromProviderOverControl:", v5))
+  if (doubleTapZoomAreaExcludesBars && (-[PUOneUpViewController _barsController](self, "_barsController"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isLocationFromProviderInBarsArea:providerCopy], v8, (v9 & 1) != 0) || -[PUOneUpViewController _isLocationFromProviderInAccessoryArea:](self, "_isLocationFromProviderInAccessoryArea:", providerCopy) || -[PUOneUpViewController _isLocationFromProviderOverControl:](self, "_isLocationFromProviderOverControl:", providerCopy))
   {
     LOBYTE(v10) = 0;
   }
 
   else
   {
-    v12 = [(PUOneUpViewController *)self _currentAssetViewModel];
-    v10 = [v12 isInEditMode] ^ 1;
+    _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+    v10 = [_currentAssetViewModel isInEditMode] ^ 1;
   }
 
   return v10;
 }
 
-- (BOOL)oneUpGestureController:(id)a3 shouldRecognizeGestureRecognizer:(id)a4 simultaneouslyWithOtherGestureRecognizer:(id)a5
+- (BOOL)oneUpGestureController:(id)controller shouldRecognizeGestureRecognizer:(id)recognizer simultaneouslyWithOtherGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [v6 view];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  view = [recognizerCopy view];
 
-  if (v8 && ([v6 view], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_class(), NSStringFromClass(v10), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsString:", @"SCUISensitiveContentOverlayView"), v11, v9, (v12 & 1) != 0))
+  if (view && ([recognizerCopy view], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_class(), NSStringFromClass(v10), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsString:", @"SCUISensitiveContentOverlayView"), v11, v9, (v12 & 1) != 0))
   {
     LOBYTE(v13) = 0;
   }
 
   else
   {
-    v14 = [v7 view];
+    view2 = [gestureRecognizerCopy view];
 
-    if (v14)
+    if (view2)
     {
-      v15 = [v7 view];
+      view3 = [gestureRecognizerCopy view];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
       v13 = [v17 containsString:@"SCUISensitiveContentOverlayView"] ^ 1;
@@ -3694,47 +3694,47 @@ uint64_t __72__PUOneUpViewController_accessoryVisibilityInteractionControllerDid
   return v13;
 }
 
-- (BOOL)oneUpGestureController:(id)a3 canPerformSelectionAtPoint:(id)a4
+- (BOOL)oneUpGestureController:(id)controller canPerformSelectionAtPoint:(id)point
 {
-  v4 = [(PUOneUpViewController *)self browsingSession:a3];
-  v5 = [v4 viewModel];
+  v4 = [(PUOneUpViewController *)self browsingSession:controller];
+  viewModel = [v4 viewModel];
 
-  if (v5)
+  if (viewModel)
   {
-    v6 = [v5 isInSelectionMode];
+    isInSelectionMode = [viewModel isInSelectionMode];
   }
 
   else
   {
+    isInSelectionMode = 0;
+  }
+
+  return isInSelectionMode;
+}
+
+- (BOOL)oneUpGestureController:(id)controller canTapToToggleChromeAtPoint:(id)point
+{
+  pointCopy = point;
+  if ([(PUOneUpViewController *)self _isVisualImageHasSubjectLiftedFromProvider:pointCopy]|| [(PUOneUpViewController *)self _isLocationFromProviderOverVisualSearch:pointCopy])
+  {
     v6 = 0;
+  }
+
+  else
+  {
+    _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+    v6 = ([_currentAssetViewModel isAccessoryViewVisible] & 1) == 0 && (-[PUOneUpViewController _options](self, "_options") & 0x4000) == 0;
   }
 
   return v6;
 }
 
-- (BOOL)oneUpGestureController:(id)a3 canTapToToggleChromeAtPoint:(id)a4
+- (BOOL)oneUpGestureController:(id)controller canDoubleTapToZoomAtPoint:(id)point
 {
-  v5 = a4;
-  if ([(PUOneUpViewController *)self _isVisualImageHasSubjectLiftedFromProvider:v5]|| [(PUOneUpViewController *)self _isLocationFromProviderOverVisualSearch:v5])
-  {
-    v6 = 0;
-  }
-
-  else
-  {
-    v7 = [(PUOneUpViewController *)self _currentAssetViewModel];
-    v6 = ([v7 isAccessoryViewVisible] & 1) == 0 && (-[PUOneUpViewController _options](self, "_options") & 0x4000) == 0;
-  }
-
-  return v6;
-}
-
-- (BOOL)oneUpGestureController:(id)a3 canDoubleTapToZoomAtPoint:(id)a4
-{
-  v5 = a4;
-  v6 = [(PUOneUpViewController *)self chromeViewController];
-  [v6 contentDecorationAdditionalInsets];
-  v7 = [(PUOneUpViewController *)self _isLocationFromProvider:v5 overTileOfKind:@"PUTileKindItemContent" insetBy:?];
+  pointCopy = point;
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  [chromeViewController contentDecorationAdditionalInsets];
+  v7 = [(PUOneUpViewController *)self _isLocationFromProvider:pointCopy overTileOfKind:@"PUTileKindItemContent" insetBy:?];
 
   if (!v7)
   {
@@ -3749,40 +3749,40 @@ uint64_t __72__PUOneUpViewController_accessoryVisibilityInteractionControllerDid
   return ![(PUOneUpViewController *)self _isAccessoryVisible];
 }
 
-- (BOOL)oneUpGestureController:(id)a3 canBeginGestureAt:(id)a4
+- (BOOL)oneUpGestureController:(id)controller canBeginGestureAt:(id)at
 {
-  v5 = a4;
-  v6 = [(PUOneUpViewController *)self chromeViewController];
-  v7 = [v6 shouldAllowGestureToBeginAt:v5];
+  atCopy = at;
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  v7 = [chromeViewController shouldAllowGestureToBeginAt:atCopy];
 
-  if (!v7 || -[PUOneUpViewController _isLocationFromProviderInAccessoryArea:](self, "_isLocationFromProviderInAccessoryArea:", v5) || -[PUOneUpViewController _isLocationFromProviderOverControl:](self, "_isLocationFromProviderOverControl:", v5) || (-[PUOneUpViewController _currentAssetViewModel](self, "_currentAssetViewModel"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isInEditMode], v8, (v9 & 1) != 0) || -[PUOneUpViewController _isLocationFromProviderOverActionInfoItem:](self, "_isLocationFromProviderOverActionInfoItem:", v5) || -[PUOneUpViewController _visualImageHasActiveTextSelectionFromProvider:](self, "_visualImageHasActiveTextSelectionFromProvider:", v5))
+  if (!v7 || -[PUOneUpViewController _isLocationFromProviderInAccessoryArea:](self, "_isLocationFromProviderInAccessoryArea:", atCopy) || -[PUOneUpViewController _isLocationFromProviderOverControl:](self, "_isLocationFromProviderOverControl:", atCopy) || (-[PUOneUpViewController _currentAssetViewModel](self, "_currentAssetViewModel"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isInEditMode], v8, (v9 & 1) != 0) || -[PUOneUpViewController _isLocationFromProviderOverActionInfoItem:](self, "_isLocationFromProviderOverActionInfoItem:", atCopy) || -[PUOneUpViewController _visualImageHasActiveTextSelectionFromProvider:](self, "_visualImageHasActiveTextSelectionFromProvider:", atCopy))
   {
     LOBYTE(v10) = 0;
   }
 
   else
   {
-    v10 = ![(PUOneUpViewController *)self _isVisualImageHasSubjectLiftedFromProvider:v5];
+    v10 = ![(PUOneUpViewController *)self _isVisualImageHasSubjectLiftedFromProvider:atCopy];
   }
 
   return v10;
 }
 
-- (BOOL)oneUpGestureRecognizerCoordinator:(id)a3 shouldAllowIrisGestureAtLocationFromProvider:(id)a4
+- (BOOL)oneUpGestureRecognizerCoordinator:(id)coordinator shouldAllowIrisGestureAtLocationFromProvider:(id)provider
 {
-  v5 = a4;
-  if ([(PUOneUpViewController *)self _isLocationFromProviderInAccessoryArea:v5])
+  providerCopy = provider;
+  if ([(PUOneUpViewController *)self _isLocationFromProviderInAccessoryArea:providerCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = ![(PUOneUpViewController *)self _isLocationFromProviderOverControl:v5];
+    v6 = ![(PUOneUpViewController *)self _isLocationFromProviderOverControl:providerCopy];
   }
 
   v7 = +[PUOneUpSettings sharedInstance];
-  if (![v7 allowVisualIntelligence] || !-[PUOneUpViewController _isLocationFromProvider:overTileOfKind:](self, "_isLocationFromProvider:overTileOfKind:", v5, @"PUTileKindItemContent"))
+  if (![v7 allowVisualIntelligence] || !-[PUOneUpViewController _isLocationFromProvider:overTileOfKind:](self, "_isLocationFromProvider:overTileOfKind:", providerCopy, @"PUTileKindItemContent"))
   {
     goto LABEL_15;
   }
@@ -3797,15 +3797,15 @@ LABEL_12:
     }
 
 LABEL_14:
-    v6 = ![(PUOneUpViewController *)self _isLocationFromProviderOverInteractiveItem:v5];
+    v6 = ![(PUOneUpViewController *)self _isLocationFromProviderOverInteractiveItem:providerCopy];
     goto LABEL_15;
   }
 
-  v8 = [(PUOneUpViewController *)self browsingSession];
-  v9 = [v8 viewModel];
-  v10 = [v9 currentAssetReference];
-  v11 = [v10 asset];
-  v12 = [(PUOneUpViewController *)self _allowsShowingVisualIntelligenceForAsset:v11];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  asset = [currentAssetReference asset];
+  v12 = [(PUOneUpViewController *)self _allowsShowingVisualIntelligenceForAsset:asset];
 
   if (!v12)
   {
@@ -3819,7 +3819,7 @@ LABEL_14:
 
   if (v6)
   {
-    if (![(PUOneUpViewController *)self _vkImageOverlayAllowsVKCToHandleLongPressGestureFromProvider:v5])
+    if (![(PUOneUpViewController *)self _vkImageOverlayAllowsVKCToHandleLongPressGestureFromProvider:providerCopy])
     {
       goto LABEL_14;
     }
@@ -3839,15 +3839,15 @@ LABEL_15:
     return 0;
   }
 
-  v4 = [(PUOneUpViewController *)self _secondScreenBrowser];
-  v3 = v4 != 0;
+  _secondScreenBrowser = [(PUOneUpViewController *)self _secondScreenBrowser];
+  v3 = _secondScreenBrowser != 0;
 
   return v3;
 }
 
-- (void)airPlayControllerScreenAvailabilityChanged:(id)a3
+- (void)airPlayControllerScreenAvailabilityChanged:(id)changed
 {
-  if (![a3 screenAvailability])
+  if (![changed screenAvailability])
   {
     [(PUOneUpViewController *)self _setSecondScreenBrowser:0];
   }
@@ -3859,33 +3859,33 @@ LABEL_15:
   [(PUOneUpViewController *)self _updateIfNeeded];
 }
 
-- (id)contentViewControllerForAirPlayController:(id)a3
+- (id)contentViewControllerForAirPlayController:(id)controller
 {
-  v4 = [(PUOneUpViewController *)self _secondScreenBrowser];
-  if (!v4)
+  _secondScreenBrowser = [(PUOneUpViewController *)self _secondScreenBrowser];
+  if (!_secondScreenBrowser)
   {
-    v5 = [(PUOneUpViewController *)self browsingSession];
-    v4 = [[PUOneUpViewController alloc] initWithBrowsingSession:v5 options:514];
-    [(PUOneUpViewController *)v4 _setMainOneUpForSecondScreenBrowser:self];
-    [(PUOneUpViewController *)self _setSecondScreenBrowser:v4];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    _secondScreenBrowser = [[PUOneUpViewController alloc] initWithBrowsingSession:browsingSession options:514];
+    [(PUOneUpViewController *)_secondScreenBrowser _setMainOneUpForSecondScreenBrowser:self];
+    [(PUOneUpViewController *)self _setSecondScreenBrowser:_secondScreenBrowser];
   }
 
-  return v4;
+  return _secondScreenBrowser;
 }
 
-- (void)badgeVisibilityDidChange:(id)a3
+- (void)badgeVisibilityDidChange:(id)change
 {
   [(PUOneUpViewController *)self _invalidateTipPopovers];
 
   [(PUOneUpViewController *)self _updateTipPopoversIfNeeded];
 }
 
-- (void)dismissPresentedViewController:(id)a3 presentMenuWithCompletion:(id)a4
+- (void)dismissPresentedViewController:(id)controller presentMenuWithCompletion:(id)completion
 {
   v5 = MEMORY[0x1E69C3748];
-  v6 = a4;
-  v7 = [v5 livePhotosTipID];
-  [(PUOneUpViewController *)self _handleSuggestedActionCompletedForTip:v7 completion:v6];
+  completionCopy = completion;
+  livePhotosTipID = [v5 livePhotosTipID];
+  [(PUOneUpViewController *)self _handleSuggestedActionCompletedForTip:livePhotosTipID completion:completionCopy];
 }
 
 - (void)_dismissAnyPresentedTip
@@ -3899,45 +3899,45 @@ LABEL_15:
   }
 }
 
-- (void)_handleSuggestedActionCompletedForTip:(id)a3 completion:(id)a4
+- (void)_handleSuggestedActionCompletedForTip:(id)tip completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  if ([(NSString *)self->_presentedTipID isEqualToString:v9])
+  tipCopy = tip;
+  completionCopy = completion;
+  if ([(NSString *)self->_presentedTipID isEqualToString:tipCopy])
   {
     [(PUOneUpViewController *)self _setHasShownRelevantTip:1];
-    [MEMORY[0x1E69C3748] setTipActionPerformed:v9];
-    v7 = _Block_copy(v6);
+    [MEMORY[0x1E69C3748] setTipActionPerformed:tipCopy];
+    v7 = _Block_copy(completionCopy);
     tipDismissedCompletion = self->_tipDismissedCompletion;
     self->_tipDismissedCompletion = v7;
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (BOOL)playButtonTileViewControllerShouldShowPlayButtonWhileActivated:(id)a3
+- (BOOL)playButtonTileViewControllerShouldShowPlayButtonWhileActivated:(id)activated
 {
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
-  v6 = [v5 reviewScreenBarsModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  reviewScreenBarsModel = [viewModel reviewScreenBarsModel];
 
-  if (v6)
+  if (reviewScreenBarsModel)
   {
     return 1;
   }
 
-  v8 = [(PUOneUpViewController *)self browsingSession];
-  v9 = [v8 viewModel];
-  v10 = [v9 currentAssetReference];
+  browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+  viewModel2 = [browsingSession2 viewModel];
+  currentAssetReference = [viewModel2 currentAssetReference];
 
-  v11 = [v10 asset];
-  v12 = [v10 assetCollection];
-  v13 = [(PUOneUpViewController *)self browsingSession];
-  v14 = [v13 actionManager];
-  v15 = [v14 shouldEnableActionType:53 onAsset:v11 inAssetCollection:v12];
+  asset = [currentAssetReference asset];
+  assetCollection = [currentAssetReference assetCollection];
+  browsingSession3 = [(PUOneUpViewController *)self browsingSession];
+  actionManager = [browsingSession3 actionManager];
+  v15 = [actionManager shouldEnableActionType:53 onAsset:asset inAssetCollection:assetCollection];
 
   if (v15)
   {
@@ -3946,33 +3946,33 @@ LABEL_15:
 
   else
   {
-    v16 = [(PUOneUpViewController *)self browsingSession];
-    v17 = [v16 actionManager];
-    v7 = [v17 shouldEnableActionType:54 onAsset:v11 inAssetCollection:v12];
+    browsingSession4 = [(PUOneUpViewController *)self browsingSession];
+    actionManager2 = [browsingSession4 actionManager];
+    v7 = [actionManager2 shouldEnableActionType:54 onAsset:asset inAssetCollection:assetCollection];
   }
 
   return v7;
 }
 
-- (BOOL)playButtonTileViewControllerShouldShowPauseButton:(id)a3
+- (BOOL)playButtonTileViewControllerShouldShowPauseButton:(id)button
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 reviewScreenBarsModel];
-  v6 = v5 != 0;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  reviewScreenBarsModel = [viewModel reviewScreenBarsModel];
+  v6 = reviewScreenBarsModel != 0;
 
   return v6;
 }
 
-- (double)playButtonTileViewController:(id)a3 delayForButtonAnimation:(BOOL)a4
+- (double)playButtonTileViewController:(id)controller delayForButtonAnimation:(BOOL)animation
 {
   v4 = 0.0;
-  if (a4)
+  if (animation)
   {
-    v6 = [a3 assetViewModel];
-    v7 = [v6 videoPlayer];
+    assetViewModel = [controller assetViewModel];
+    videoPlayer = [assetViewModel videoPlayer];
 
-    if ([v7 isAtEnd] && -[PUOneUpViewController _shouldMakeChromeVisibleWhenVideoPlayerPlaysToEndTime:](self, "_shouldMakeChromeVisibleWhenVideoPlayerPlaysToEndTime:", v7))
+    if ([videoPlayer isAtEnd] && -[PUOneUpViewController _shouldMakeChromeVisibleWhenVideoPlayerPlaysToEndTime:](self, "_shouldMakeChromeVisibleWhenVideoPlayerPlaysToEndTime:", videoPlayer))
     {
       v8 = +[PUOneUpSettings sharedInstance];
       [v8 chromeDefaultAnimationDuration];
@@ -3983,20 +3983,20 @@ LABEL_15:
   return v4;
 }
 
-- (void)playButtonTileViewControllerDidTapButton:(id)a3
+- (void)playButtonTileViewControllerDidTapButton:(id)button
 {
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
-  v6 = [v5 assetViewModelForCurrentAssetReference];
-  v7 = [v6 videoPlayer];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  assetViewModelForCurrentAssetReference = [viewModel assetViewModelForCurrentAssetReference];
+  videoPlayer = [assetViewModelForCurrentAssetReference videoPlayer];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__PUOneUpViewController_playButtonTileViewControllerDidTapButton___block_invoke;
   v9[3] = &unk_1E7B80C38;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
+  v10 = videoPlayer;
+  selfCopy = self;
+  v8 = videoPlayer;
   [v8 performChanges:v9];
 }
 
@@ -4025,21 +4025,21 @@ uint64_t __66__PUOneUpViewController_playButtonTileViewControllerDidTapButton___
   return [v4 _hideChromeOnPlayButtonTapWithItemIsNowPlaying:v2 ^ 1u buttonIsOverlayed:1];
 }
 
-- (void)imageTileViewController:(id)a3 didDisplayFullQualityImageWithDeferredProcessingFinished:(BOOL)a4
+- (void)imageTileViewController:(id)controller didDisplayFullQualityImageWithDeferredProcessingFinished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   [(PUOneUpViewController *)self _xct_endSignpostingForImageFullQuality];
-  if (v4)
+  if (finishedCopy)
   {
 
     [(PUOneUpViewController *)self _xct_endSignpostingForImageDeferredProcessing];
   }
 }
 
-- (BOOL)ppt_imageTileViewControllerShouldSignalDeferredProcessingDoneAndFinalImageDisplayed:(id)a3
+- (BOOL)ppt_imageTileViewControllerShouldSignalDeferredProcessingDoneAndFinalImageDisplayed:(id)displayed
 {
-  v4 = [a3 image];
-  [v4 size];
+  image = [displayed image];
+  [image size];
   v6 = v5;
   v8 = v7;
 
@@ -4057,128 +4057,128 @@ uint64_t __66__PUOneUpViewController_playButtonTileViewControllerDidTapButton___
 - (BOOL)_shouldPreventScaledOffsetAdjustments
 {
   [(PUOneUpViewController *)self _updateScrubbingAdjustmentPolicyForVideoTimelineControlInteractionChange];
-  v3 = [(PUOneUpViewController *)self scaledVideoOffsetAdjustmentPolicy];
-  v4 = [v3 evaluatePolicy];
+  scaledVideoOffsetAdjustmentPolicy = [(PUOneUpViewController *)self scaledVideoOffsetAdjustmentPolicy];
+  evaluatePolicy = [scaledVideoOffsetAdjustmentPolicy evaluatePolicy];
 
-  return v4 == 1;
+  return evaluatePolicy == 1;
 }
 
-- (BOOL)userTransformTileViewControllerShouldAnimateMinimumScaleWhileApplyingInsets:(id)a3
+- (BOOL)userTransformTileViewControllerShouldAnimateMinimumScaleWhileApplyingInsets:(id)insets
 {
-  v3 = [a3 assetViewModel];
-  v4 = [v3 isUserTransformingTile];
+  assetViewModel = [insets assetViewModel];
+  isUserTransformingTile = [assetViewModel isUserTransformingTile];
 
-  return v4;
+  return isUserTransformingTile;
 }
 
-- (BOOL)userTransformTileViewController:(id)a3 shouldReceiveTouchAtLocationFromProvider:(id)a4
+- (BOOL)userTransformTileViewController:(id)controller shouldReceiveTouchAtLocationFromProvider:(id)provider
 {
-  v5 = a4;
-  v6 = [(PUOneUpViewController *)self _currentAssetViewModel];
-  v7 = [v6 asset];
+  providerCopy = provider;
+  _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+  asset = [_currentAssetViewModel asset];
 
-  if (-[PUOneUpViewController _isLocationFromProviderInAccessoryArea:](self, "_isLocationFromProviderInAccessoryArea:", v5) || -[PUOneUpViewController _isLocationFromProviderOverControl:](self, "_isLocationFromProviderOverControl:", v5) || (-[PUOneUpViewController _currentAssetViewModel](self, "_currentAssetViewModel"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isInEditMode], v8, (v9 & 1) != 0) || (-[PUOneUpViewController _currentAssetViewModel](self, "_currentAssetViewModel"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isAccessoryViewVisible"), v10, (v11 & 1) != 0) || -[PUOneUpViewController _isLocationFromProviderOverVisualSearch:](self, "_isLocationFromProviderOverVisualSearch:", v5))
+  if (-[PUOneUpViewController _isLocationFromProviderInAccessoryArea:](self, "_isLocationFromProviderInAccessoryArea:", providerCopy) || -[PUOneUpViewController _isLocationFromProviderOverControl:](self, "_isLocationFromProviderOverControl:", providerCopy) || (-[PUOneUpViewController _currentAssetViewModel](self, "_currentAssetViewModel"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isInEditMode], v8, (v9 & 1) != 0) || (-[PUOneUpViewController _currentAssetViewModel](self, "_currentAssetViewModel"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isAccessoryViewVisible"), v10, (v11 & 1) != 0) || -[PUOneUpViewController _isLocationFromProviderOverVisualSearch:](self, "_isLocationFromProviderOverVisualSearch:", providerCopy))
   {
     LOBYTE(v12) = 0;
   }
 
   else
   {
-    v12 = [v7 needsSensitivityProtection] ^ 1;
+    v12 = [asset needsSensitivityProtection] ^ 1;
   }
 
   return v12;
 }
 
-- (void)userTransformTileViewController:(id)a3 didChangeIsUserInteracting:(BOOL)a4
+- (void)userTransformTileViewController:(id)controller didChangeIsUserInteracting:(BOOL)interacting
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  interactingCopy = interacting;
+  controllerCopy = controller;
+  if (interactingCopy)
   {
-    v7 = [(PUOneUpViewController *)self gestureController];
-    [v7 cancelGestures];
+    gestureController = [(PUOneUpViewController *)self gestureController];
+    [gestureController cancelGestures];
   }
 
-  v8 = [v6 assetViewModel];
+  assetViewModel = [controllerCopy assetViewModel];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__PUOneUpViewController_userTransformTileViewController_didChangeIsUserInteracting___block_invoke;
   v10[3] = &unk_1E7B7FF98;
-  v11 = v8;
-  v12 = v4;
-  v9 = v8;
+  v11 = assetViewModel;
+  v12 = interactingCopy;
+  v9 = assetViewModel;
   [v9 performChanges:v10];
 }
 
-- (int64_t)userTransformTileViewController:(id)a3 insetModeForItemAtIndexPath:(id)a4
+- (int64_t)userTransformTileViewController:(id)controller insetModeForItemAtIndexPath:(id)path
 {
-  v5 = [a3 assetViewModel];
-  v6 = [v5 asset];
-  v7 = [(PUOneUpViewController *)self _insetModeForAsset:v6];
+  assetViewModel = [controller assetViewModel];
+  asset = [assetViewModel asset];
+  v7 = [(PUOneUpViewController *)self _insetModeForAsset:asset];
 
   return v7;
 }
 
-- (BOOL)_isCurrentAssetAndInEditModeForAssetReference:(id)a3
+- (BOOL)_isCurrentAssetAndInEditModeForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self browsingSession];
-  v6 = [v5 viewModel];
+  referenceCopy = reference;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v7 = [v6 currentAssetReference];
-  v8 = [v7 asset];
-  v9 = [v4 asset];
-  v10 = v9;
-  if (v8 == v9)
+  currentAssetReference = [viewModel currentAssetReference];
+  asset = [currentAssetReference asset];
+  asset2 = [referenceCopy asset];
+  v10 = asset2;
+  if (asset == asset2)
   {
 
     goto LABEL_5;
   }
 
-  v11 = [v8 isEqual:v9];
+  v11 = [asset isEqual:asset2];
 
   if (v11)
   {
 LABEL_5:
-    v13 = [v6 assetViewModelForAssetReference:v4];
-    v12 = [v13 isInEditMode];
+    v13 = [viewModel assetViewModelForAssetReference:referenceCopy];
+    isInEditMode = [v13 isInEditMode];
 
     goto LABEL_6;
   }
 
-  v12 = 0;
+  isInEditMode = 0;
 LABEL_6:
 
-  return v12;
+  return isInEditMode;
 }
 
-- (id)oneUpBarsControllerCustomActionMenuElements:(id)a3
+- (id)oneUpBarsControllerCustomActionMenuElements:(id)elements
 {
-  v3 = [(PUOneUpViewController *)self _menuElements];
+  _menuElements = [(PUOneUpViewController *)self _menuElements];
   v4 = UIMenuElementsFromPXMenuElements();
 
   return v4;
 }
 
-- (void)oneUpBarsControllerWillPresentActionsMenu:(id)a3 completionHandler:(id)a4
+- (void)oneUpBarsControllerWillPresentActionsMenu:(id)menu completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E69C3748];
-  v6 = a4;
-  v7 = [v5 actionsMenuTipID];
-  [(PUOneUpViewController *)self _handleSuggestedActionCompletedForTip:v7 completion:v6];
+  handlerCopy = handler;
+  actionsMenuTipID = [v5 actionsMenuTipID];
+  [(PUOneUpViewController *)self _handleSuggestedActionCompletedForTip:actionsMenuTipID completion:handlerCopy];
 }
 
-- (BOOL)oneUpBarsController:(id)a3 shouldHideStatusBarWhenShowingAccessoryViewForAssetReference:(id)a4
+- (BOOL)oneUpBarsController:(id)controller shouldHideStatusBarWhenShowingAccessoryViewForAssetReference:(id)reference
 {
-  v5 = a4;
-  v6 = [(PUOneUpViewController *)self _spec];
-  v7 = [v6 hideStatusBarWhenShowingAccessoryView];
+  referenceCopy = reference;
+  _spec = [(PUOneUpViewController *)self _spec];
+  hideStatusBarWhenShowingAccessoryView = [_spec hideStatusBarWhenShowingAccessoryView];
 
-  if (v7)
+  if (hideStatusBarWhenShowingAccessoryView)
   {
-    v8 = [v5 asset];
-    v9 = [PUCommentsViewController canShowCommentsForAsset:v8];
+    asset = [referenceCopy asset];
+    v9 = [PUCommentsViewController canShowCommentsForAsset:asset];
 
     v10 = !v9;
   }
@@ -4191,15 +4191,15 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)oneUpBarsController:(id)a3 shouldHideNavigationBarWhenShowingAccessoryViewForAssetReference:(id)a4
+- (BOOL)oneUpBarsController:(id)controller shouldHideNavigationBarWhenShowingAccessoryViewForAssetReference:(id)reference
 {
-  v5 = a4;
-  v6 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v7 = [v6 shouldHideNavigationBarWhenShowingAccessoryViewControllerForAssetReference:v5];
+  referenceCopy = reference;
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  v7 = [_accessoryViewControllersManager shouldHideNavigationBarWhenShowingAccessoryViewControllerForAssetReference:referenceCopy];
 
   if (v7)
   {
-    v8 = ![(PUOneUpViewController *)self _isCurrentAssetAndInEditModeForAssetReference:v5];
+    v8 = ![(PUOneUpViewController *)self _isCurrentAssetAndInEditModeForAssetReference:referenceCopy];
   }
 
   else
@@ -4210,43 +4210,43 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)oneUpBarsController:(id)a3 shouldHideToolbarWhenShowingAccessoryViewForAssetReference:(id)a4
+- (BOOL)oneUpBarsController:(id)controller shouldHideToolbarWhenShowingAccessoryViewForAssetReference:(id)reference
 {
-  v5 = a4;
-  v6 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v7 = [v6 shouldHideToolbarWhenShowingAccessoryViewControllerForAssetReference:v5];
+  referenceCopy = reference;
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  v7 = [_accessoryViewControllersManager shouldHideToolbarWhenShowingAccessoryViewControllerForAssetReference:referenceCopy];
 
   return v7;
 }
 
-- (BOOL)oneUpBarsController:(id)a3 shouldTapBeginAtLocationFromProvider:(id)a4
+- (BOOL)oneUpBarsController:(id)controller shouldTapBeginAtLocationFromProvider:(id)provider
 {
-  v5 = a4;
+  providerCopy = provider;
   presentedTipID = self->_presentedTipID;
-  v7 = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
-  LODWORD(presentedTipID) = [(NSString *)presentedTipID isEqualToString:v7];
+  syndicatedPhotosTipID = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
+  LODWORD(presentedTipID) = [(NSString *)presentedTipID isEqualToString:syndicatedPhotosTipID];
 
-  if (presentedTipID && [(PUOneUpViewController *)self _isLocationFromProvider:v5 overTileOfKind:PUTileKindSyndicationAttribution])
+  if (presentedTipID && [(PUOneUpViewController *)self _isLocationFromProvider:providerCopy overTileOfKind:PUTileKindSyndicationAttribution])
   {
-    v8 = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
-    [(PUOneUpViewController *)self _handleSuggestedActionCompletedForTip:v8 completion:0];
+    syndicatedPhotosTipID2 = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
+    [(PUOneUpViewController *)self _handleSuggestedActionCompletedForTip:syndicatedPhotosTipID2 completion:0];
   }
 
-  if ([(PUOneUpViewController *)self _isLocationFromProviderInAccessoryArea:v5]|| [(PUOneUpViewController *)self _isLocationFromProviderOverControl:v5])
+  if ([(PUOneUpViewController *)self _isLocationFromProviderInAccessoryArea:providerCopy]|| [(PUOneUpViewController *)self _isLocationFromProviderOverControl:providerCopy])
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [(PUOneUpViewController *)self _currentAssetViewModel];
-    v9 = [v10 isInEditMode] ^ 1;
+    _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+    v9 = [_currentAssetViewModel isInEditMode] ^ 1;
   }
 
   v11 = +[PUOneUpSettings sharedInstance];
-  v12 = [v11 allowVisualIntelligence];
+  allowVisualIntelligence = [v11 allowVisualIntelligence];
 
-  if (!v12)
+  if (!allowVisualIntelligence)
   {
     LOBYTE(v13) = v9;
     goto LABEL_18;
@@ -4264,19 +4264,19 @@ LABEL_17:
     }
 
 LABEL_15:
-    if (![(PUOneUpViewController *)self _isLocationFromProviderOverActionInfoItem:v5]&& ![(PUOneUpViewController *)self _visualImageHasActiveTextSelectionFromProvider:v5])
+    if (![(PUOneUpViewController *)self _isLocationFromProviderOverActionInfoItem:providerCopy]&& ![(PUOneUpViewController *)self _visualImageHasActiveTextSelectionFromProvider:providerCopy])
     {
-      LODWORD(v13) = ![(PUOneUpViewController *)self _isVisualImageHasSubjectLiftedFromProvider:v5];
+      LODWORD(v13) = ![(PUOneUpViewController *)self _isVisualImageHasSubjectLiftedFromProvider:providerCopy];
       goto LABEL_18;
     }
 
     goto LABEL_17;
   }
 
-  v14 = [(PUOneUpViewController *)self _isAccessoryVisible];
+  _isAccessoryVisible = [(PUOneUpViewController *)self _isAccessoryVisible];
 
   LOBYTE(v13) = 0;
-  if (!v14 && ((v9 ^ 1) & 1) == 0)
+  if (!_isAccessoryVisible && ((v9 ^ 1) & 1) == 0)
   {
     goto LABEL_15;
   }
@@ -4286,13 +4286,13 @@ LABEL_18:
   return v13;
 }
 
-- (BOOL)oneUpBarsController:(id)a3 canShowCommentsForAsset:(id)a4
+- (BOOL)oneUpBarsController:(id)controller canShowCommentsForAsset:(id)asset
 {
-  v5 = a4;
-  v6 = [(PUOneUpViewController *)self _spec];
-  if ([v6 allowAccessoryVisibility])
+  assetCopy = asset;
+  _spec = [(PUOneUpViewController *)self _spec];
+  if ([_spec allowAccessoryVisibility])
   {
-    v7 = [PUCommentsViewController canShowCommentsForAsset:v5];
+    v7 = [PUCommentsViewController canShowCommentsForAsset:assetCopy];
   }
 
   else
@@ -4303,17 +4303,17 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)_isDetailsAccessoryAvailableForAssetReference:(id)a3
+- (BOOL)_isDetailsAccessoryAvailableForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v6 = [v4 asset];
+  referenceCopy = reference;
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  asset = [referenceCopy asset];
 
-  LOBYTE(v4) = [v5 accessoryViewTypeForAsset:v6] != 0;
-  return v4;
+  LOBYTE(referenceCopy) = [_accessoryViewControllersManager accessoryViewTypeForAsset:asset] != 0;
+  return referenceCopy;
 }
 
-- (void)oneUpBarsControllerDidTapTitle:(id)a3
+- (void)oneUpBarsControllerDidTapTitle:(id)title
 {
   if ([(PUOneUpViewController *)self _canShowAccessoryViewForCurrentAsset])
   {
@@ -4322,59 +4322,59 @@ LABEL_18:
   }
 }
 
-- (void)oneUpBarsControllerDidChangeShowingPlayPauseButton:(id)a3
+- (void)oneUpBarsControllerDidChangeShowingPlayPauseButton:(id)button
 {
   [(PUOneUpViewController *)self _invalidateSpec];
 
   [(PUOneUpViewController *)self _updateIfNeeded];
 }
 
-- (void)barsControllerContentGuideInsetsDidChange:(id)a3
+- (void)barsControllerContentGuideInsetsDidChange:(id)change
 {
   [(PUOneUpViewController *)self _invalidateLayout];
 
   [(PUOneUpViewController *)self _updateIfNeeded];
 }
 
-- (id)barsControllerViewHostingGestureRecognizers:(id)a3
+- (id)barsControllerViewHostingGestureRecognizers:(id)recognizers
 {
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
-  v6 = [v5 isPresentedForPreview];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  isPresentedForPreview = [viewModel isPresentedForPreview];
 
-  if (v6)
+  if (isPresentedForPreview)
   {
-    v7 = 0;
+    _tilingView = 0;
   }
 
   else
   {
-    v7 = [(PUOneUpViewController *)self _tilingView];
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
   }
 
-  return v7;
+  return _tilingView;
 }
 
 - (void)_updateChromeViewControllerDismissalProgress
 {
-  v3 = [(PUOneUpViewController *)self _interactivePinchDismissalController];
-  [v3 dismissalInteractionProgress];
+  _interactivePinchDismissalController = [(PUOneUpViewController *)self _interactivePinchDismissalController];
+  [_interactivePinchDismissalController dismissalInteractionProgress];
   v5 = v4;
 
-  v6 = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
-  [v6 dismissalInteractionProgress];
+  _interactiveSwipeDismissalController = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
+  [_interactiveSwipeDismissalController dismissalInteractionProgress];
   v8 = v7;
 
-  v9 = [(PUOneUpViewController *)self _interactivePinchDismissalController];
-  if ([v9 isHandlingDismissalInteraction])
+  _interactivePinchDismissalController2 = [(PUOneUpViewController *)self _interactivePinchDismissalController];
+  if ([_interactivePinchDismissalController2 isHandlingDismissalInteraction])
   {
-    v10 = 1;
+    isHandlingDismissalInteraction = 1;
   }
 
   else
   {
-    v11 = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
-    v10 = [v11 isHandlingDismissalInteraction];
+    _interactiveSwipeDismissalController2 = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
+    isHandlingDismissalInteraction = [_interactiveSwipeDismissalController2 isHandlingDismissalInteraction];
   }
 
   if (v5 < v8)
@@ -4382,22 +4382,22 @@ LABEL_18:
     v5 = v8;
   }
 
-  v12 = [(PUOneUpViewController *)self chromeViewController];
-  [v12 updateDismissalStateWithIsInteractivelyDismissing:v10 dismissalProgress:v5];
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  [chromeViewController updateDismissalStateWithIsInteractivelyDismissing:isHandlingDismissalInteraction dismissalProgress:v5];
 }
 
-- (void)interactiveDismissalControllerChangedIsHandlingDismissalInteraction:(id)a3
+- (void)interactiveDismissalControllerChangedIsHandlingDismissalInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self _currentAssetViewModel];
+  interactionCopy = interaction;
+  _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __93__PUOneUpViewController_interactiveDismissalControllerChangedIsHandlingDismissalInteraction___block_invoke;
   v11 = &unk_1E7B80C38;
-  v12 = v5;
-  v13 = v4;
-  v6 = v4;
-  v7 = v5;
+  v12 = _currentAssetViewModel;
+  v13 = interactionCopy;
+  v6 = interactionCopy;
+  v7 = _currentAssetViewModel;
   [v7 performChanges:&v8];
   [(PUOneUpViewController *)self _updateChromeViewControllerDismissalProgress:v8];
 }
@@ -4410,59 +4410,59 @@ uint64_t __93__PUOneUpViewController_interactiveDismissalControllerChangedIsHand
   return [v3 setIsBeingDismissed:v2];
 }
 
-- (BOOL)interactiveDismissalController:(id)a3 canBeginDismissalAtLocationFromProvider:(id)a4
+- (BOOL)interactiveDismissalController:(id)controller canBeginDismissalAtLocationFromProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUOneUpViewController *)self _currentAssetViewModel];
-  if ([v8 isInEditMode])
+  providerCopy = provider;
+  controllerCopy = controller;
+  _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+  if ([_currentAssetViewModel isInEditMode])
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v8 isAccessoryViewVisible];
+    isAccessoryViewVisible = [_currentAssetViewModel isAccessoryViewVisible];
 
-    if ((v10 & 1) != 0 || [(PUOneUpViewController *)self _isLocationFromProviderInAccessoryArea:v6]|| [(PUOneUpViewController *)self _isLocationFromProviderOverControl:v6]|| [(PUOneUpViewController *)self _isIrisPlaying])
+    if ((isAccessoryViewVisible & 1) != 0 || [(PUOneUpViewController *)self _isLocationFromProviderInAccessoryArea:providerCopy]|| [(PUOneUpViewController *)self _isLocationFromProviderOverControl:providerCopy]|| [(PUOneUpViewController *)self _isIrisPlaying])
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v8 = [(PUOneUpViewController *)self browsingSession];
-    v16 = [v8 viewModel];
-    v9 = [v16 isInSelectionMode] ^ 1;
+    _currentAssetViewModel = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [_currentAssetViewModel viewModel];
+    v9 = [viewModel isInSelectionMode] ^ 1;
   }
 
 LABEL_9:
-  v11 = [(PUOneUpViewController *)self _interactivePinchDismissalController];
+  _interactivePinchDismissalController = [(PUOneUpViewController *)self _interactivePinchDismissalController];
 
-  v12 = v11 == v7;
-  LOBYTE(v7) = (v11 != v7) & v9;
+  v12 = _interactivePinchDismissalController == controllerCopy;
+  LOBYTE(controllerCopy) = (_interactivePinchDismissalController != controllerCopy) & v9;
   if (v12 && v9)
   {
-    v13 = [(PUOneUpViewController *)self _currentAssetViewModel];
-    v14 = [v13 modelTileTransform];
-    LODWORD(v7) = [v14 hasUserZoomedIn] ^ 1;
+    _currentAssetViewModel2 = [(PUOneUpViewController *)self _currentAssetViewModel];
+    modelTileTransform = [_currentAssetViewModel2 modelTileTransform];
+    LODWORD(controllerCopy) = [modelTileTransform hasUserZoomedIn] ^ 1;
   }
 
-  return v7;
+  return controllerCopy;
 }
 
-- (id)interactiveDismissalControllerDesignatedTileController:(id)a3
+- (id)interactiveDismissalControllerDesignatedTileController:(id)controller
 {
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v6 = [v5 assetsDataSource];
-  v7 = [v5 currentAssetReference];
-  v8 = [v6 indexPathForAssetReference:v7];
+  assetsDataSource = [viewModel assetsDataSource];
+  currentAssetReference = [viewModel currentAssetReference];
+  v8 = [assetsDataSource indexPathForAssetReference:currentAssetReference];
   if (v8)
   {
-    v9 = [(PUOneUpViewController *)self _tilingView];
-    v10 = [v6 identifier];
-    v11 = [v9 presentedTileControllerWithIndexPath:v8 kind:@"PUTileKindItemContent" dataSourceIdentifier:v10];
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    identifier = [assetsDataSource identifier];
+    v11 = [_tilingView presentedTileControllerWithIndexPath:v8 kind:@"PUTileKindItemContent" dataSourceIdentifier:identifier];
   }
 
   else
@@ -4473,36 +4473,36 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)layout:(id)a3 shouldShowAttributionViewForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout shouldShowAttributionViewForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dataSource];
-  v8 = [v7 assetReferenceAtIndexPath:v6];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v8 = [dataSource assetReferenceAtIndexPath:pathCopy];
 
-  v9 = [(PUOneUpViewController *)self browsingSession];
-  v10 = [v9 viewModel];
-  v11 = [v10 assetViewModelForAssetReference:v8];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  v11 = [viewModel assetViewModelForAssetReference:v8];
 
-  v12 = [v11 fetchAssetSyndicationState];
-  v14 = v12 == 4 || (v12 & 0xFFFFFFFFFFFFFFFELL) == 2;
+  fetchAssetSyndicationState = [v11 fetchAssetSyndicationState];
+  v14 = fetchAssetSyndicationState == 4 || (fetchAssetSyndicationState & 0xFFFFFFFFFFFFFFFELL) == 2;
 
   return v14;
 }
 
-- (CGRect)layout:(id)a3 bestSquareRectForItemAtIndexPath:(id)a4
+- (CGRect)layout:(id)layout bestSquareRectForItemAtIndexPath:(id)path
 {
   v6 = *MEMORY[0x1E69C48E0];
   v5 = *(MEMORY[0x1E69C48E0] + 8);
   v8 = *(MEMORY[0x1E69C48E0] + 16);
   v7 = *(MEMORY[0x1E69C48E0] + 24);
-  v9 = a4;
-  v10 = [a3 dataSource];
-  v11 = [v10 assetReferenceAtIndexPath:v9];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v11 = [dataSource assetReferenceAtIndexPath:pathCopy];
 
-  v12 = [v11 asset];
-  if (v12)
+  asset = [v11 asset];
+  if (asset)
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v12 bestCropRectForAspectRatio:0 verticalContentMode:2 cropMode:1.0], x = v31.origin.x, y = v31.origin.y, width = v31.size.width, height = v31.size.height, !CGRectIsEmpty(v31)))
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([asset bestCropRectForAspectRatio:0 verticalContentMode:2 cropMode:1.0], x = v31.origin.x, y = v31.origin.y, width = v31.size.width, height = v31.size.height, !CGRectIsEmpty(v31)))
     {
       v7 = height;
       v8 = width;
@@ -4519,12 +4519,12 @@ LABEL_9:
         _os_log_impl(&dword_1B36F3000, v17, OS_LOG_TYPE_ERROR, "Can't get a non-empty bestSquareRect by bestCropRectForAspectRatio:bestCropRectForAspectRatio:...", buf, 2u);
       }
 
-      v18 = [v12 pixelWidth];
-      v19 = [v12 pixelHeight];
+      pixelWidth = [asset pixelWidth];
+      pixelHeight = [asset pixelHeight];
       v32.origin.x = 0.0;
       v32.origin.y = 0.0;
-      v32.size.width = v18;
-      v32.size.height = v19;
+      v32.size.width = pixelWidth;
+      v32.size.height = pixelHeight;
       if (!CGRectIsEmpty(v32))
       {
         PXRectWithAspectRatioFittingRect();
@@ -4558,29 +4558,29 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)layout:(id)a3 shouldInitiallyZoomToFillForItemAtIndexPath:(id)a4 contentSize:(CGSize)a5 viewportSize:(CGSize)a6
+- (BOOL)layout:(id)layout shouldInitiallyZoomToFillForItemAtIndexPath:(id)path contentSize:(CGSize)size viewportSize:(CGSize)viewportSize
 {
-  height = a6.height;
-  width = a6.width;
-  v8 = a5.height;
-  v9 = a5.width;
-  v12 = a4;
-  v13 = [a3 dataSource];
-  v14 = [v13 assetReferenceAtIndexPath:v12];
+  height = viewportSize.height;
+  width = viewportSize.width;
+  v8 = size.height;
+  v9 = size.width;
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v14 = [dataSource assetReferenceAtIndexPath:pathCopy];
 
-  v15 = [(PUOneUpViewController *)self browsingSession];
-  v16 = [v15 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v17 = [v14 asset];
-  v18 = [v17 mediaType];
+  asset = [v14 asset];
+  mediaType = [asset mediaType];
 
   if ([MEMORY[0x1E69C3640] isOneUpRefreshEnabled])
   {
-    v19 = [v16 assetViewModelForAssetReference:v14];
-    if ([v16 isFillScreenModeEnabled] && (objc_msgSend(v19, "isUserTransformingTile") & 1) == 0)
+    mEMORY[0x1E69C3738]2 = [viewModel assetViewModelForAssetReference:v14];
+    if ([viewModel isFillScreenModeEnabled] && (objc_msgSend(mEMORY[0x1E69C3738]2, "isUserTransformingTile") & 1) == 0)
     {
-      v25 = [v19 modelTileTransform];
-      v20 = [v25 hasUserInput] ^ 1;
+      modelTileTransform = [mEMORY[0x1E69C3738]2 modelTileTransform];
+      v20 = [modelTileTransform hasUserInput] ^ 1;
     }
 
     else
@@ -4588,13 +4588,13 @@ LABEL_9:
       v20 = 0;
     }
 
-    v26 = [MEMORY[0x1E69C3738] sharedInstance];
-    v27 = [(PUOneUpViewController *)self px_extendedTraitCollection];
-    v28 = [v26 shouldInitiallyZoomContentWithSize:v18 toFillViewWithSize:objc_msgSend(v27 forAssetMediaType:"userInterfaceIdiom") userInterfaceIdiom:{v9, v8, width, height}];
+    mEMORY[0x1E69C3738] = [MEMORY[0x1E69C3738] sharedInstance];
+    px_extendedTraitCollection = [(PUOneUpViewController *)self px_extendedTraitCollection];
+    v28 = [mEMORY[0x1E69C3738] shouldInitiallyZoomContentWithSize:mediaType toFillViewWithSize:objc_msgSend(px_extendedTraitCollection forAssetMediaType:"userInterfaceIdiom") userInterfaceIdiom:{v9, v8, width, height}];
 
     if ((v20 & 1) == 0)
     {
-      v24 = [v16 isPresentedForPreview] | v28;
+      v24 = [viewModel isPresentedForPreview] | v28;
       goto LABEL_16;
     }
 
@@ -4605,23 +4605,23 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v18 != 2 || [v16 isPresentedForPreview])
+  if (mediaType != 2 || [viewModel isPresentedForPreview])
   {
-    v19 = [MEMORY[0x1E69C3738] sharedInstance];
-    v21 = [(PUOneUpViewController *)self _spec];
-    v22 = [v21 tileInitialContentMode];
+    mEMORY[0x1E69C3738]2 = [MEMORY[0x1E69C3738] sharedInstance];
+    _spec = [(PUOneUpViewController *)self _spec];
+    tileInitialContentMode = [_spec tileInitialContentMode];
 
-    if (v22 != 2)
+    if (tileInitialContentMode != 2)
     {
-      if (v22)
+      if (tileInitialContentMode)
       {
         v24 = 0;
       }
 
       else
       {
-        v23 = [(PUOneUpViewController *)self px_extendedTraitCollection];
-        v24 = [v19 shouldInitiallyZoomContentWithSize:v18 toFillViewWithSize:objc_msgSend(v23 forAssetMediaType:"userInterfaceIdiom") userInterfaceIdiom:{v9, v8, width, height}];
+        px_extendedTraitCollection2 = [(PUOneUpViewController *)self px_extendedTraitCollection];
+        v24 = [mEMORY[0x1E69C3738]2 shouldInitiallyZoomContentWithSize:mediaType toFillViewWithSize:objc_msgSend(px_extendedTraitCollection2 forAssetMediaType:"userInterfaceIdiom") userInterfaceIdiom:{v9, v8, width, height}];
       }
 
       goto LABEL_16;
@@ -4636,28 +4636,28 @@ LABEL_17:
   return v24 & 1;
 }
 
-- (BOOL)layout:(id)a3 shouldShowVideoPlaceholderForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout shouldShowVideoPlaceholderForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  pathCopy = path;
   if ([(PUOneUpViewController *)self _isSecondScreenBrowserVisible])
   {
-    v8 = [(PUOneUpViewController *)self _videoPlayerAtIndexPath:v7 layout:v6];
-    v9 = [v8 isPlaybackDesired];
+    v8 = [(PUOneUpViewController *)self _videoPlayerAtIndexPath:pathCopy layout:layoutCopy];
+    isPlaybackDesired = [v8 isPlaybackDesired];
   }
 
   else
   {
-    v9 = 0;
+    isPlaybackDesired = 0;
   }
 
-  return v9;
+  return isPlaybackDesired;
 }
 
-- (CGPoint)layout:(id)a3 accessoryOffsetForItemAtIndexPath:(id)a4
+- (CGPoint)layout:(id)layout accessoryOffsetForItemAtIndexPath:(id)path
 {
   v4 = *MEMORY[0x1E695EFF8];
-  v5 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:a4 layout:a3];
+  v5 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:path layout:layout];
   [v5 contentOffset];
   v7 = v6;
   [v5 preferredContentOffset];
@@ -4687,50 +4687,50 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   layout_accessoryOffsetForItemAtIndexPath__verticalOffsetFilter = v0;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v10.receiver = self;
   v10.super_class = PUOneUpViewController;
-  [(PUOneUpViewController *)&v10 preferredContentSizeDidChangeForChildContentContainer:v4];
+  [(PUOneUpViewController *)&v10 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 conformsToProtocol:&unk_1F2BFC710])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [containerCopy conformsToProtocol:&unk_1F2BFC710])
   {
-    v5 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-    v6 = [v5 assetReferenceForAccessoryViewController:v4];
+    _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+    v6 = [_accessoryViewControllersManager assetReferenceForAccessoryViewController:containerCopy];
 
-    v7 = [v6 indexPath];
-    if (v7)
+    indexPath = [v6 indexPath];
+    if (indexPath)
     {
-      v8 = [(PUOneUpViewController *)self _tilingView];
-      v9 = [v8 layout];
+      _tilingView = [(PUOneUpViewController *)self _tilingView];
+      layout = [_tilingView layout];
 
-      [v9 invalidateAccessoryForItemAtIndexPath:v7 withOptions:2];
+      [layout invalidateAccessoryForItemAtIndexPath:indexPath withOptions:2];
     }
   }
 }
 
-- (BOOL)layout:(id)a3 shouldUseSquareImageInAccessoryForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout shouldUseSquareImageInAccessoryForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUOneUpViewController *)self _spec];
-  v9 = [v8 prefersSquareImageInDetails];
+  layoutCopy = layout;
+  pathCopy = path;
+  _spec = [(PUOneUpViewController *)self _spec];
+  prefersSquareImageInDetails = [_spec prefersSquareImageInDetails];
 
-  if (v9)
+  if (prefersSquareImageInDetails)
   {
-    v10 = [(PUOneUpViewController *)self _currentAssetViewModel];
-    v11 = [v10 modelTileTransform];
-    v12 = [v11 hasUserZoomedIn];
+    _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+    modelTileTransform = [_currentAssetViewModel modelTileTransform];
+    hasUserZoomedIn = [modelTileTransform hasUserZoomedIn];
 
     if (![MEMORY[0x1E69C3640] isOneUpRefreshEnabled] || (objc_msgSend(MEMORY[0x1E69C3640], "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "enableSideCommentsInLandscape"), v13, (v14 & 1) == 0))
     {
-      v15 = [(PUOneUpViewController *)self _assetReferenceAtIndexPath:v7 layout:v6];
-      v16 = [v15 asset];
-      v12 |= [PUCommentsViewController canShowCommentsForAsset:v16];
+      v15 = [(PUOneUpViewController *)self _assetReferenceAtIndexPath:pathCopy layout:layoutCopy];
+      asset = [v15 asset];
+      hasUserZoomedIn |= [PUCommentsViewController canShowCommentsForAsset:asset];
     }
 
-    v17 = v12 ^ 1;
+    v17 = hasUserZoomedIn ^ 1;
   }
 
   else
@@ -4741,19 +4741,19 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   return v17 & 1;
 }
 
-- (double)layout:(id)a3 minimumItemHeightNeededInAccessoryForItemAtIndexPath:(id)a4
+- (double)layout:(id)layout minimumItemHeightNeededInAccessoryForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 visibleRect];
+  layoutCopy = layout;
+  pathCopy = path;
+  [layoutCopy visibleRect];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(PUOneUpViewController *)self _assetReferenceAtIndexPath:v7 layout:v6];
+  v16 = [(PUOneUpViewController *)self _assetReferenceAtIndexPath:pathCopy layout:layoutCopy];
 
-  v17 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v18 = [v17 accessoryViewControllerForAssetReference:v16];
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  v18 = [_accessoryViewControllersManager accessoryViewControllerForAssetReference:v16];
 
   if (v18)
   {
@@ -4771,7 +4771,7 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   v25.size.width = v13;
   v25.size.height = v15;
   Height = CGRectGetHeight(v25);
-  [v6 contentGuideInsets];
+  [layoutCopy contentGuideInsets];
   if (Height - v22 - v20 >= 0.0)
   {
     v23 = Height - v22 - v20;
@@ -4785,11 +4785,11 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   return v23;
 }
 
-- (double)layout:(id)a3 minimumVisibleAccessoryHeightForItemAtIndexPath:(id)a4
+- (double)layout:(id)layout minimumVisibleAccessoryHeightForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 visibleRect];
+  pathCopy = path;
+  layoutCopy = layout;
+  [layoutCopy visibleRect];
   x = v31.origin.x;
   y = v31.origin.y;
   width = v31.size.width;
@@ -4804,10 +4804,10 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   v32.size.height = height;
   v16 = CGRectGetHeight(v32);
 
-  v17 = [(PUOneUpViewController *)self _spec];
-  v18 = [v17 prefersSquareImageInDetails];
+  _spec = [(PUOneUpViewController *)self _spec];
+  prefersSquareImageInDetails = [_spec prefersSquareImageInDetails];
 
-  if (v18)
+  if (prefersSquareImageInDetails)
   {
     AspectRatio = PURectGetAspectRatio(x, y, width, height);
     v33.origin.x = x;
@@ -4838,12 +4838,12 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   v35.size.width = width;
   v35.size.height = height;
   MaxY = CGRectGetMaxY(v35);
-  [v7 contentGuideInsets];
+  [layoutCopy contentGuideInsets];
   v25 = MaxY - v24 - v22;
-  v26 = [(PUOneUpViewController *)self _assetReferenceAtIndexPath:v6 layout:v7];
+  v26 = [(PUOneUpViewController *)self _assetReferenceAtIndexPath:pathCopy layout:layoutCopy];
 
-  v27 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v28 = [v27 accessoryViewControllerForAssetReference:v26];
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  v28 = [_accessoryViewControllersManager accessoryViewControllerForAssetReference:v26];
 
   [v28 preferredContentSize];
   if (v25 >= v29)
@@ -4854,20 +4854,20 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   return v25;
 }
 
-- (double)layout:(id)a3 minimumVisibleContentHeightForItemAtIndexPath:(id)a4
+- (double)layout:(id)layout minimumVisibleContentHeightForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  pathCopy = path;
   v8 = +[PUOneUpSettings sharedInstance];
   [v8 minimumVisibleContentHeight];
   v10 = v9;
 
   if (([MEMORY[0x1E69C3640] isOneUpRefreshEnabled] & 1) == 0)
   {
-    v11 = [(PUOneUpViewController *)self _assetReferenceAtIndexPath:v7 layout:v6];
-    v12 = [v11 asset];
+    v11 = [(PUOneUpViewController *)self _assetReferenceAtIndexPath:pathCopy layout:layoutCopy];
+    asset = [v11 asset];
 
-    if ([PUCommentsViewController canShowCommentsForAsset:v12])
+    if ([PUCommentsViewController canShowCommentsForAsset:asset])
     {
       v13 = +[PUOneUpSettings sharedInstance];
       [v13 minimumVisibleCommentedContentHeight];
@@ -4878,10 +4878,10 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   return v10;
 }
 
-- (BOOL)layout:(id)a3 isShowingInfoPanelForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout isShowingInfoPanelForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  pathCopy = path;
   if ([(PUOneUpViewController *)self _isPresentedForSecondScreen])
   {
     v8 = 0;
@@ -4889,15 +4889,15 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
 
   else
   {
-    v9 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:v7 layout:v6];
-    v10 = [(PUOneUpViewController *)self _prefersFloatingInfoPanel];
-    v11 = [v9 asset];
-    v12 = [(PUOneUpViewController *)self _accessoryContentKindForAsset:v11];
+    v9 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:pathCopy layout:layoutCopy];
+    _prefersFloatingInfoPanel = [(PUOneUpViewController *)self _prefersFloatingInfoPanel];
+    asset = [v9 asset];
+    v12 = [(PUOneUpViewController *)self _accessoryContentKindForAsset:asset];
 
-    v13 = [v9 isAccessoryViewVisible];
+    isAccessoryViewVisible = [v9 isAccessoryViewVisible];
     if (v12 == 1)
     {
-      v14 = v13;
+      v14 = isAccessoryViewVisible;
     }
 
     else
@@ -4905,16 +4905,16 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
       v14 = 0;
     }
 
-    v8 = v14 & v10;
+    v8 = v14 & _prefersFloatingInfoPanel;
   }
 
   return v8;
 }
 
-- (BOOL)layout:(id)a3 shouldShowAccessoryForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout shouldShowAccessoryForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  pathCopy = path;
   if ([(PUOneUpViewController *)self _isPresentedForSecondScreen])
   {
     LOBYTE(v8) = 0;
@@ -4922,7 +4922,7 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
 
   else
   {
-    v9 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:v7 layout:v6];
+    v9 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:pathCopy layout:layoutCopy];
     if ([v9 isAccessoryViewVisible])
     {
       v8 = ![(PUOneUpViewController *)self _prefersFloatingInfoPanel];
@@ -4937,10 +4937,10 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   return v8;
 }
 
-- (CGPoint)layout:(id)a3 contentOffsetForItemAtIndexPath:(id)a4
+- (CGPoint)layout:(id)layout contentOffsetForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  pathCopy = path;
   if ([(PUOneUpViewController *)self _isPresentedForSecondScreen])
   {
     v8 = *MEMORY[0x1E695EFF8];
@@ -4949,7 +4949,7 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
 
   else
   {
-    v10 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:v7 layout:v6];
+    v10 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:pathCopy layout:layoutCopy];
     [v10 contentOffset];
     v8 = v11;
     v9 = v12;
@@ -4962,105 +4962,105 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   return result;
 }
 
-- (void)layout:(id)a3 willApplyDisplayTileTransform:(id)a4 forItemAtIndexPath:(id)a5
+- (void)layout:(id)layout willApplyDisplayTileTransform:(id)transform forItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  layoutCopy = layout;
+  transformCopy = transform;
+  pathCopy = path;
   if ([(PUOneUpViewController *)self _isPresentedForSecondScreen])
   {
-    v11 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:v10 layout:v8];
+    v11 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:pathCopy layout:layoutCopy];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __81__PUOneUpViewController_layout_willApplyDisplayTileTransform_forItemAtIndexPath___block_invoke;
     v13[3] = &unk_1E7B80C38;
     v14 = v11;
-    v15 = v9;
+    v15 = transformCopy;
     v12 = v11;
     [v12 performChanges:v13];
   }
 }
 
-- (id)layout:(id)a3 modelTileTransformForItemAtIndexPath:(id)a4
+- (id)layout:(id)layout modelTileTransformForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dataSource];
+  layoutCopy = layout;
+  pathCopy = path;
+  dataSource = [layoutCopy dataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v6 dataSource];
-    v11 = [(PUOneUpViewController *)self browsingSession];
-    v12 = [v11 viewModel];
-    v13 = [v12 assetsDataSource];
+    dataSource2 = [layoutCopy dataSource];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    assetsDataSource = [viewModel assetsDataSource];
 
-    v14 = [v10 assetReferenceAtIndexPath:v7];
-    if (v10 != v13)
+    v14 = [dataSource2 assetReferenceAtIndexPath:pathCopy];
+    if (dataSource2 != assetsDataSource)
     {
-      v15 = [v13 assetReferenceForAssetReference:v14];
+      v15 = [assetsDataSource assetReferenceForAssetReference:v14];
 
       v14 = v15;
     }
 
     if (v14)
     {
-      v16 = [(PUOneUpViewController *)self browsingSession];
-      v17 = [v16 viewModel];
-      v18 = [v17 assetViewModelForAssetReference:v14];
+      browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+      viewModel2 = [browsingSession2 viewModel];
+      v18 = [viewModel2 assetViewModelForAssetReference:v14];
 
-      v19 = [v18 modelTileTransform];
+      modelTileTransform = [v18 modelTileTransform];
       if ([v18 isAccessoryViewVisible] && !-[PUOneUpViewController _prefersFloatingInfoPanel](self, "_prefersFloatingInfoPanel"))
       {
         [v18 accessoryViewVisibilityFraction];
-        [v19 scale];
+        [modelTileTransform scale];
         PXFloatByLinearlyInterpolatingFloats();
         v21 = v20;
-        [v19 normalizedTranslation];
+        [modelTileTransform normalizedTranslation];
         PXPointByLinearlyInterpolatingPoints();
-        v24 = [v19 copyWithScale:v21 normalizedTranslation:{v22, v23}];
+        v24 = [modelTileTransform copyWithScale:v21 normalizedTranslation:{v22, v23}];
 
-        v19 = v24;
+        modelTileTransform = v24;
       }
     }
 
     else
     {
-      v19 = 0;
+      modelTileTransform = 0;
     }
   }
 
   else
   {
-    v19 = 0;
+    modelTileTransform = 0;
   }
 
   if ([(PUOneUpViewController *)self _isPresentedForSecondScreen])
   {
-    [v19 scale];
+    [modelTileTransform scale];
     if (v25 < 1.0)
     {
 
-      v19 = 0;
+      modelTileTransform = 0;
     }
   }
 
-  return v19;
+  return modelTileTransform;
 }
 
-- (CGSize)layout:(id)a3 loadingIndicatorSizeForItemAtIndexPath:(id)a4
+- (CGSize)layout:(id)layout loadingIndicatorSizeForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dataSource];
-  v8 = [(PUOneUpViewController *)self browsingSession];
-  v9 = [v8 viewModel];
-  v10 = [v7 assetReferenceAtIndexPath:v6];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  v10 = [dataSource assetReferenceAtIndexPath:pathCopy];
 
-  v11 = [v9 assetViewModelForAssetReference:v10];
+  v11 = [viewModel assetViewModelForAssetReference:v10];
 
-  v12 = [(PUOneUpViewController *)self loadingIndicatorController];
-  v13 = [v12 loadingIndicatorStyleForAssetViewModel:v11];
+  loadingIndicatorController = [(PUOneUpViewController *)self loadingIndicatorController];
+  v13 = [loadingIndicatorController loadingIndicatorStyleForAssetViewModel:v11];
 
   if (v13)
   {
@@ -5082,11 +5082,11 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
   return result;
 }
 
-- (BOOL)layout:(id)a3 shouldShowBufferingIndicatorForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout shouldShowBufferingIndicatorForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 dataSource];
-  v7 = [v6 assetAtIndexPath:v5];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v7 = [dataSource assetAtIndexPath:pathCopy];
 
   if ([PUBufferingIndicatorTileViewController canShowBufferingIndicatorTileForAsset:v7])
   {
@@ -5094,33 +5094,33 @@ void __66__PUOneUpViewController_layout_accessoryOffsetForItemAtIndexPath___bloc
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 px_isContentPreviewable];
+      px_isContentPreviewable = [v8 px_isContentPreviewable];
     }
 
     else
     {
-      v9 = 1;
+      px_isContentPreviewable = 1;
     }
   }
 
   else
   {
-    v9 = 0;
+    px_isContentPreviewable = 0;
   }
 
-  return v9;
+  return px_isContentPreviewable;
 }
 
-- (BOOL)layout:(id)a3 shouldMovePeopleRowForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout shouldMovePeopleRowForItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [a3 dataSource];
-  if (!v8)
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  if (!dataSource)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    [v15 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:5036 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout.dataSource", v17}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:5036 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout.dataSource", v17}];
 LABEL_6:
 
     goto LABEL_3;
@@ -5129,44 +5129,44 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = objc_opt_class();
     v17 = NSStringFromClass(v18);
-    v19 = [v8 px_descriptionForAssertionMessage];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:5036 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout.dataSource", v17, v19}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:5036 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout.dataSource", v17, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v9 = [v8 assetAtIndexPath:v7];
+  v9 = [dataSource assetAtIndexPath:pathCopy];
 
-  v10 = [(PUOneUpViewController *)self browsingSession];
-  v11 = [v10 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v12 = [v11 assetSharedViewModelForAsset:v9];
+  v12 = [viewModel assetSharedViewModelForAsset:v9];
   v13 = +[PURenderIndicatorTileViewController wantsRenderViewForTypeOfProcessingNeeded:](PURenderIndicatorTileViewController, "wantsRenderViewForTypeOfProcessingNeeded:", [v12 deferredProcessingNeeded]);
 
   return v13;
 }
 
-- (BOOL)layout:(id)a3 shouldShowPeopleRowForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout shouldShowPeopleRowForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  layoutCopy = layout;
+  pathCopy = path;
   if (PFIsiOSPhotosApp() & 1) == 0 && !PFIsCamera() || ([MEMORY[0x1E69C3358] isExternalAppAndPhotosIsLocked])
   {
     v9 = 0;
     goto LABEL_11;
   }
 
-  v10 = [v7 dataSource];
-  if (!v10)
+  dataSource = [layoutCopy dataSource];
+  if (!dataSource)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    [v18 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:5028 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout.dataSource", v20}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:5028 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout.dataSource", v20}];
 LABEL_14:
 
     goto LABEL_7;
@@ -5175,46 +5175,46 @@ LABEL_14:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = objc_opt_class();
     v20 = NSStringFromClass(v21);
-    v22 = [v10 px_descriptionForAssertionMessage];
-    [v18 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:5028 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout.dataSource", v20, v22}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:5028 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout.dataSource", v20, px_descriptionForAssertionMessage}];
 
     goto LABEL_14;
   }
 
 LABEL_7:
-  v11 = [(PUOneUpViewController *)self browsingSession];
-  v12 = [v11 viewModel];
-  v13 = [v10 assetReferenceAtIndexPath:v8];
-  v14 = [v12 assetViewModelForAssetReference:v13];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  v13 = [dataSource assetReferenceAtIndexPath:pathCopy];
+  v14 = [viewModel assetViewModelForAssetReference:v13];
 
-  v15 = [(PUOneUpViewController *)self _options];
-  v16 = [v14 isAccessoryViewVisible];
-  if ((*&v15 & 0x400000) != 0)
+  _options = [(PUOneUpViewController *)self _options];
+  isAccessoryViewVisible = [v14 isAccessoryViewVisible];
+  if ((*&_options & 0x400000) != 0)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v16;
+    v9 = isAccessoryViewVisible;
   }
 
 LABEL_11:
   return v9;
 }
 
-- (BOOL)layout:(id)a3 shouldMoveProgressIndicatorForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout shouldMoveProgressIndicatorForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUOneUpViewController *)self browsingSession];
-  v9 = [v8 viewModel];
+  layoutCopy = layout;
+  pathCopy = path;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v10 = [(PUOneUpViewController *)self _spec];
-  if ([v10 shouldDisplaySelectionIndicators])
+  _spec = [(PUOneUpViewController *)self _spec];
+  if ([_spec shouldDisplaySelectionIndicators])
   {
     v11 = 1;
 LABEL_7:
@@ -5222,24 +5222,24 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [v9 isInSelectionMode];
+  isInSelectionMode = [viewModel isInSelectionMode];
 
-  if ((v12 & 1) == 0)
+  if ((isInSelectionMode & 1) == 0)
   {
-    v13 = [(PUOneUpViewController *)self browsingSession];
-    v14 = [v13 importStatusManager];
+    browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+    importStatusManager = [browsingSession2 importStatusManager];
 
-    if (!v14)
+    if (!importStatusManager)
     {
       v11 = 0;
       goto LABEL_8;
     }
 
-    v10 = [v6 dataSource];
-    v15 = [(PUOneUpViewController *)self browsingSession];
-    v16 = [v15 viewModel];
-    v17 = [v10 assetReferenceAtIndexPath:v7];
-    v18 = [v16 assetViewModelForAssetReference:v17];
+    _spec = [layoutCopy dataSource];
+    browsingSession3 = [(PUOneUpViewController *)self browsingSession];
+    viewModel2 = [browsingSession3 viewModel];
+    v17 = [_spec assetReferenceAtIndexPath:pathCopy];
+    v18 = [viewModel2 assetViewModelForAssetReference:v17];
 
     v11 = [v18 importState] != 0;
     goto LABEL_7;
@@ -5251,14 +5251,14 @@ LABEL_8:
   return v11;
 }
 
-- (double)alphaForReviewScreenBarsInLayout:(id)a3
+- (double)alphaForReviewScreenBarsInLayout:(id)layout
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 isChromeVisible];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  isChromeVisible = [viewModel isChromeVisible];
 
   result = 0.0;
-  if (v5)
+  if (isChromeVisible)
   {
     return 1.0;
   }
@@ -5266,36 +5266,36 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)layoutShouldShowReviewScreenScrubberBar:(id)a3
+- (BOOL)layoutShouldShowReviewScreenScrubberBar:(id)bar
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v5 = [v4 currentAssetReference];
-  v6 = [v5 asset];
-  v7 = [v6 playbackStyle] == 4;
+  currentAssetReference = [viewModel currentAssetReference];
+  asset = [currentAssetReference asset];
+  v7 = [asset playbackStyle] == 4;
 
   return v7;
 }
 
-- (BOOL)layout:(id)a3 shouldShowCropButtonForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout shouldShowCropButtonForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUOneUpViewController *)self _spec];
-  v9 = [v8 shouldShowCropButton];
+  layoutCopy = layout;
+  pathCopy = path;
+  _spec = [(PUOneUpViewController *)self _spec];
+  shouldShowCropButton = [_spec shouldShowCropButton];
 
-  if (v9)
+  if (shouldShowCropButton)
   {
-    v10 = [v6 dataSource];
-    v11 = [v10 assetAtIndexPath:v7];
+    dataSource = [layoutCopy dataSource];
+    v11 = [dataSource assetAtIndexPath:pathCopy];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v12 = v11;
 
       if (v12)
       {
-        LOBYTE(v9) = [PUCropButtonTileViewController shouldShowCropButtonTileForAsset:v12];
+        LOBYTE(shouldShowCropButton) = [PUCropButtonTileViewController shouldShowCropButtonTileForAsset:v12];
 LABEL_8:
 
         goto LABEL_9;
@@ -5308,19 +5308,19 @@ LABEL_8:
       v12 = 0;
     }
 
-    LOBYTE(v9) = 0;
+    LOBYTE(shouldShowCropButton) = 0;
     goto LABEL_8;
   }
 
 LABEL_9:
 
-  return v9;
+  return shouldShowCropButton;
 }
 
-- (BOOL)layout:(id)a3 shouldShowPlayButtonForItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout shouldShowPlayButtonForItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
+  layoutCopy = layout;
+  pathCopy = path;
   if ([MEMORY[0x1E69C3640] isOneUpRefreshEnabled])
   {
     v7 = 0;
@@ -5328,49 +5328,49 @@ LABEL_9:
 
   else
   {
-    v8 = [v5 dataSource];
-    v9 = [v8 assetAtIndexPath:v6];
+    dataSource = [layoutCopy dataSource];
+    v9 = [dataSource assetAtIndexPath:pathCopy];
     v7 = (objc_opt_respondsToSelector() & 1) != 0 && [v9 playbackStyle] == 4;
   }
 
   return v7;
 }
 
-- (CGSize)layout:(id)a3 assetExplorerReviewScreenBadgeSizeForItemAtIndexPath:(id)a4
+- (CGSize)layout:(id)layout assetExplorerReviewScreenBadgeSizeForItemAtIndexPath:(id)path
 {
-  [PUAssetExplorerReviewScreenBadgeTileViewController badgeTileSize:a3];
+  [PUAssetExplorerReviewScreenBadgeTileViewController badgeTileSize:layout];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (double)layout:(id)a3 leadingBadgesWidthForItemAtIndexPath:(id)a4 contentWidth:(double)a5
+- (double)layout:(id)layout leadingBadgesWidthForItemAtIndexPath:(id)path contentWidth:(double)width
 {
-  v8 = a4;
-  v9 = [a3 dataSource];
-  v10 = [v9 assetReferenceAtIndexPath:v8];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v10 = [dataSource assetReferenceAtIndexPath:pathCopy];
 
-  v11 = [(PUOneUpViewController *)self browsingSession];
-  v12 = [v11 viewModel];
-  v13 = [v12 assetViewModelForAssetReference:v10];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  v13 = [viewModel assetViewModelForAssetReference:v10];
 
-  [PUBadgeTileViewController leadingBadgesSizeForAssetViewModel:v13 contentWidth:a5];
+  [PUBadgeTileViewController leadingBadgesSizeForAssetViewModel:v13 contentWidth:width];
   v15 = v14;
 
   return v15;
 }
 
-- (CGSize)layout:(id)a3 badgeSizeForItemAtIndexPath:(id)a4 contentWidth:(double)a5
+- (CGSize)layout:(id)layout badgeSizeForItemAtIndexPath:(id)path contentWidth:(double)width
 {
-  v8 = a4;
-  v9 = [a3 dataSource];
-  v10 = [v9 assetReferenceAtIndexPath:v8];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v10 = [dataSource assetReferenceAtIndexPath:pathCopy];
 
-  v11 = [(PUOneUpViewController *)self browsingSession];
-  v12 = [v11 viewModel];
-  v13 = [v12 assetViewModelForAssetReference:v10];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  v13 = [viewModel assetViewModelForAssetReference:v10];
 
-  [PUBadgeTileViewController badgeTileSizeForAssetViewModel:v13 contentWidth:a5];
+  [PUBadgeTileViewController badgeTileSizeForAssetViewModel:v13 contentWidth:width];
   v15 = v14;
   v17 = v16;
 
@@ -5381,34 +5381,34 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)layout:(id)a3 canApplyInsetStylingToItemAtIndexPath:(id)a4
+- (BOOL)layout:(id)layout canApplyInsetStylingToItemAtIndexPath:(id)path
 {
-  if ([(PUOneUpViewController *)self _shouldPreventScaledOffsetAdjustments:a3])
+  if ([(PUOneUpViewController *)self _shouldPreventScaledOffsetAdjustments:layout])
   {
     return 1;
   }
 
-  v6 = [(PUOneUpViewController *)self browsingSession];
-  v7 = [v6 viewModel];
-  v8 = [v7 isChromeVisible];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  isChromeVisible = [viewModel isChromeVisible];
 
-  return v8;
+  return isChromeVisible;
 }
 
-- (UIEdgeInsets)layout:(id)a3 insetsWhenScaledToFitForItemAtIndexPath:(id)a4 inViewportSize:(CGSize)a5
+- (UIEdgeInsets)layout:(id)layout insetsWhenScaledToFitForItemAtIndexPath:(id)path inViewportSize:(CGSize)size
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PUOneUpViewController *)self browsingSession];
-  v11 = [v10 viewModel];
+  layoutCopy = layout;
+  pathCopy = path;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v12 = [v8 dataSource];
-  if (!v12)
+  dataSource = [layoutCopy dataSource];
+  if (!dataSource)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v39 = objc_opt_class();
     v40 = NSStringFromClass(v39);
-    [v38 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4862 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout.dataSource", v40}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4862 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"layout.dataSource", v40}];
 LABEL_23:
 
     goto LABEL_3;
@@ -5417,23 +5417,23 @@ LABEL_23:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v41 = objc_opt_class();
     v40 = NSStringFromClass(v41);
-    v42 = [v12 px_descriptionForAssertionMessage];
-    [v38 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4862 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout.dataSource", v40, v42}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4862 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"layout.dataSource", v40, px_descriptionForAssertionMessage}];
 
     goto LABEL_23;
   }
 
 LABEL_3:
-  v13 = [v12 assetAtIndexPath:v9];
+  v13 = [dataSource assetAtIndexPath:pathCopy];
   if (![MEMORY[0x1E69C3640] isOneUpRefreshEnabled])
   {
-    [v8 visibleRect];
+    [layoutCopy visibleRect];
     if ((PXSizeIsEmpty() & 1) != 0 || (PXSizeGetAspectRatio(), [v13 aspectRatio], !PXFloatEqualToFloatWithTolerance()))
     {
-      [v8 contentSafeInsets];
+      [layoutCopy contentSafeInsets];
       v18 = v24;
       v17 = v25;
       v16 = v26;
@@ -5459,9 +5459,9 @@ LABEL_3:
 
   if (v14 == 2)
   {
-    v19 = [(PUOneUpViewController *)self chromeViewController];
+    chromeViewController = [(PUOneUpViewController *)self chromeViewController];
     [(PUOneUpViewController *)self _layoutReferenceSize];
-    [v19 contentGuideInsetsForViewSize:?];
+    [chromeViewController contentGuideInsetsForViewSize:?];
     goto LABEL_15;
   }
 
@@ -5474,7 +5474,7 @@ LABEL_3:
     goto LABEL_16;
   }
 
-  if (([v11 isChromeVisible] & 1) == 0)
+  if (([viewModel isChromeVisible] & 1) == 0)
   {
 LABEL_13:
     v18 = *MEMORY[0x1E69C48A0];
@@ -5484,9 +5484,9 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  v19 = [(PUOneUpViewController *)self chromeViewController];
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
   [(PUOneUpViewController *)self _layoutReferenceSize];
-  [v19 toolbarInsetsForViewSize:?];
+  [chromeViewController toolbarInsetsForViewSize:?];
 LABEL_15:
   v18 = v20;
   v17 = v21;
@@ -5494,8 +5494,8 @@ LABEL_15:
   v15 = v23;
 
 LABEL_16:
-  v28 = [v12 assetReferenceAtIndexPath:v9];
-  v29 = [v11 assetViewModelForAssetReference:v28];
+  v28 = [dataSource assetReferenceAtIndexPath:pathCopy];
+  v29 = [viewModel assetViewModelForAssetReference:v28];
   if ([v29 isAccessoryViewVisible] && !-[PUOneUpViewController _prefersFloatingInfoPanel](self, "_prefersFloatingInfoPanel"))
   {
     [v29 accessoryViewVisibilityFraction];
@@ -5518,24 +5518,24 @@ LABEL_20:
   return result;
 }
 
-- (double)layout:(id)a3 insetContentCornerRadiusForItemAtIndexPath:(id)a4
+- (double)layout:(id)layout insetContentCornerRadiusForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dataSource];
-  v8 = [v7 assetAtIndexPath:v6];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v8 = [dataSource assetAtIndexPath:pathCopy];
 
   if (v8 && ([v8 mediaSubtypes] & 0x80004) != 0)
   {
     [v8 aspectRatio];
     v10 = v9;
-    v11 = [(PUOneUpViewController *)self traitCollection];
-    [PUOneUpScreenshotInsetUtilities cornerRadiusForAspectRatio:v11 traitCollection:v10];
+    traitCollection = [(PUOneUpViewController *)self traitCollection];
+    [PUOneUpScreenshotInsetUtilities cornerRadiusForAspectRatio:traitCollection traitCollection:v10];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69C3640] sharedInstance];
-    [v11 insetContentCornerRadius];
+    traitCollection = [MEMORY[0x1E69C3640] sharedInstance];
+    [traitCollection insetContentCornerRadius];
   }
 
   v13 = v12;
@@ -5543,27 +5543,27 @@ LABEL_20:
   return v13;
 }
 
-- (CGSize)layout:(id)a3 pixelSizeForItemAtIndexPath:(id)a4
+- (CGSize)layout:(id)layout pixelSizeForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 dataSource];
-  v7 = [v6 assetAtIndexPath:v5];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v7 = [dataSource assetAtIndexPath:pathCopy];
 
-  v8 = [v7 pixelWidth];
-  v9 = [v7 pixelHeight];
+  pixelWidth = [v7 pixelWidth];
+  pixelHeight = [v7 pixelHeight];
 
-  v10 = v8;
-  v11 = v9;
+  v10 = pixelWidth;
+  v11 = pixelHeight;
   result.height = v11;
   result.width = v10;
   return result;
 }
 
-- (double)layout:(id)a3 aspectRatioForItemAtIndexPath:(id)a4
+- (double)layout:(id)layout aspectRatioForItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [a3 dataSource];
-  v9 = [v8 assetAtIndexPath:v7];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v9 = [dataSource assetAtIndexPath:pathCopy];
 
   [v9 aspectRatio];
   v11 = *&v10;
@@ -5588,70 +5588,70 @@ LABEL_20:
 
   if ((v14 | v13) == 1)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4833 description:{@"Asset:%@ must provide a valid aspect ratio, got:%f.", v9, *&v11}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4833 description:{@"Asset:%@ must provide a valid aspect ratio, got:%f.", v9, *&v11}];
   }
 
   return v11;
 }
 
-- (int64_t)layout:(id)a3 insetModeForItemAtIndexPath:(id)a4
+- (int64_t)layout:(id)layout insetModeForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dataSource];
-  v8 = [v7 assetAtIndexPath:v6];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v8 = [dataSource assetAtIndexPath:pathCopy];
 
   v9 = [(PUOneUpViewController *)self _insetModeForAsset:v8];
   return v9;
 }
 
-- (void)imageAnalysisInteractionSubjectInteractionInProgressDidChange:(id)a3
+- (void)imageAnalysisInteractionSubjectInteractionInProgressDidChange:(id)change
 {
-  if ([a3 isSubjectInteractionInProgress])
+  if ([change isSubjectInteractionInProgress])
   {
-    v4 = [(PUOneUpViewController *)self gestureController];
-    [v4 cancelGestures];
+    gestureController = [(PUOneUpViewController *)self gestureController];
+    [gestureController cancelGestures];
   }
 }
 
-- (id)textsToHighlightForImageAnalysisInteraction:(id)a3
+- (id)textsToHighlightForImageAnalysisInteraction:(id)interaction
 {
-  v4 = [(PUOneUpViewController *)self textsToHighlight];
-  if ([v4 count])
+  textsToHighlight = [(PUOneUpViewController *)self textsToHighlight];
+  if ([textsToHighlight count])
   {
-    v5 = [(PUOneUpViewController *)self assetUUIDsAllowedToHighlightText];
-    if ([v5 count])
+    assetUUIDsAllowedToHighlightText = [(PUOneUpViewController *)self assetUUIDsAllowedToHighlightText];
+    if ([assetUUIDsAllowedToHighlightText count])
     {
-      v6 = [(PUOneUpViewController *)self browsingSession];
-      v7 = [v6 viewModel];
-      v8 = [v7 currentAssetReference];
-      v9 = [v8 asset];
+      browsingSession = [(PUOneUpViewController *)self browsingSession];
+      viewModel = [browsingSession viewModel];
+      currentAssetReference = [viewModel currentAssetReference];
+      asset = [currentAssetReference asset];
 
-      v10 = [v9 uuid];
-      LOBYTE(v7) = [v5 containsObject:v10];
+      uuid = [asset uuid];
+      LOBYTE(viewModel) = [assetUUIDsAllowedToHighlightText containsObject:uuid];
 
-      if ((v7 & 1) == 0)
+      if ((viewModel & 1) == 0)
       {
 
-        v4 = MEMORY[0x1E695E0F0];
+        textsToHighlight = MEMORY[0x1E695E0F0];
       }
     }
   }
 
-  return v4;
+  return textsToHighlight;
 }
 
-- (void)imageAnalysisInteractionIsDrivingLivePhotoPlaybackDidChange:(id)a3
+- (void)imageAnalysisInteractionIsDrivingLivePhotoPlaybackDidChange:(id)change
 {
-  v3 = a3;
-  v4 = v3;
+  changeCopy = change;
+  v4 = changeCopy;
   if (imageAnalysisInteractionIsDrivingLivePhotoPlaybackDidChange__onceToken != -1)
   {
     dispatch_once(&imageAnalysisInteractionIsDrivingLivePhotoPlaybackDidChange__onceToken, &__block_literal_global_47430);
-    v3 = v4;
+    changeCopy = v4;
   }
 
-  if ([v3 isDrivingLivePhotoPlayback])
+  if ([changeCopy isDrivingLivePhotoPlayback])
   {
     [analysisControllers addObject:v4];
   }
@@ -5671,7 +5671,7 @@ uint64_t __85__PUOneUpViewController_imageAnalysisInteractionIsDrivingLivePhotoP
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)showDetailsViewForImageAnalysisInteraction:(id)a3
+- (void)showDetailsViewForImageAnalysisInteraction:(id)interaction
 {
   if (![(PUOneUpViewController *)self _isAccessoryVisible])
   {
@@ -5680,44 +5680,44 @@ uint64_t __85__PUOneUpViewController_imageAnalysisInteractionIsDrivingLivePhotoP
   }
 }
 
-- (id)contentViewForImageAnalysisInteraction:(id)a3
+- (id)contentViewForImageAnalysisInteraction:(id)interaction
 {
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
-  v6 = [v5 currentAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  v7 = [(PUOneUpViewController *)self _tilingView];
-  v8 = [v6 indexPath];
-  v9 = [v6 dataSourceIdentifier];
-  v10 = [v7 presentedTileControllerWithIndexPath:v8 kind:@"PUTileKindItemContent" dataSourceIdentifier:v9];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  indexPath = [currentAssetReference indexPath];
+  dataSourceIdentifier = [currentAssetReference dataSourceIdentifier];
+  v10 = [_tilingView presentedTileControllerWithIndexPath:indexPath kind:@"PUTileKindItemContent" dataSourceIdentifier:dataSourceIdentifier];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 viewIfLoaded];
+    viewIfLoaded = [v10 viewIfLoaded];
   }
 
   else
   {
-    v11 = 0;
+    viewIfLoaded = 0;
   }
 
-  return v11;
+  return viewIfLoaded;
 }
 
-- (BOOL)analysisInteractionAllowedForImageAnalysisInteraction:(id)a3
+- (BOOL)analysisInteractionAllowedForImageAnalysisInteraction:(id)interaction
 {
-  v4 = [a3 assetViewModel];
-  v5 = [v4 asset];
+  assetViewModel = [interaction assetViewModel];
+  asset = [assetViewModel asset];
 
-  if ([(PUOneUpViewController *)self _allowsShowingVisualIntelligenceForAsset:v5])
+  if ([(PUOneUpViewController *)self _allowsShowingVisualIntelligenceForAsset:asset])
   {
-    v6 = [(PUOneUpViewController *)self browsingSession];
-    v7 = [v6 viewModel];
-    v8 = [v7 currentAssetReference];
-    v9 = [v8 asset];
-    v10 = v5;
-    v11 = v9;
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    currentAssetReference = [viewModel currentAssetReference];
+    asset2 = [currentAssetReference asset];
+    v10 = asset;
+    v11 = asset2;
     if (v10 == v11)
     {
       v13 = 1;
@@ -5743,21 +5743,21 @@ uint64_t __85__PUOneUpViewController_imageAnalysisInteractionIsDrivingLivePhotoP
   return v13;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self _tilingView];
+  deceleratingCopy = decelerating;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
 
-  if (v5 == v4)
+  if (_tilingView == deceleratingCopy)
   {
-    v6 = [(PUOneUpViewController *)self browsingSession];
-    v7 = [v6 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __54__PUOneUpViewController_scrollViewDidEndDecelerating___block_invoke;
     v10[3] = &unk_1E7B80DD0;
-    v8 = v7;
+    v8 = viewModel;
     v11 = v8;
     [v8 performChanges:v10];
     if ([(PUOneUpViewController *)self _isAccessoryVisible]&& [(PUOneUpViewController *)self _accessoryContentKindForCurrentAsset]== 1)
@@ -5765,72 +5765,72 @@ uint64_t __85__PUOneUpViewController_imageAnalysisInteractionIsDrivingLivePhotoP
       [(PUOneUpEventTracker *)self->_eventTracker logInfoPanelShownAndSwipeToNewAsset];
     }
 
-    v9 = [v4 is_scrollViewDelegate];
-    [v9 scrollViewDidEndDecelerating:v4];
+    is_scrollViewDelegate = [deceleratingCopy is_scrollViewDelegate];
+    [is_scrollViewDelegate scrollViewDidEndDecelerating:deceleratingCopy];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PUOneUpViewController *)self _tilingView];
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
 
-  if (v7 == v6)
+  if (_tilingView == draggingCopy)
   {
-    if (!v4)
+    if (!decelerateCopy)
     {
-      v8 = [(PUOneUpViewController *)self browsingSession];
-      v9 = [v8 viewModel];
+      browsingSession = [(PUOneUpViewController *)self browsingSession];
+      viewModel = [browsingSession viewModel];
 
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __65__PUOneUpViewController_scrollViewDidEndDragging_willDecelerate___block_invoke;
       v12[3] = &unk_1E7B80DD0;
-      v13 = v9;
-      v10 = v9;
+      v13 = viewModel;
+      v10 = viewModel;
       [v10 performChanges:v12];
     }
 
-    v11 = [v6 is_scrollViewDelegate];
-    [v11 scrollViewDidEndDragging:v6 willDecelerate:v4];
+    is_scrollViewDelegate = [draggingCopy is_scrollViewDelegate];
+    [is_scrollViewDelegate scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a3;
-  v9 = [(PUOneUpViewController *)self _tilingView];
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
 
-  v10 = v12;
-  if (v9 == v12)
+  v10 = draggingCopy;
+  if (_tilingView == draggingCopy)
   {
-    v11 = [v12 is_scrollViewDelegate];
-    [v11 scrollViewWillEndDragging:v12 withVelocity:a5 targetContentOffset:{x, y}];
+    is_scrollViewDelegate = [draggingCopy is_scrollViewDelegate];
+    [is_scrollViewDelegate scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
 
-    v10 = v12;
+    v10 = draggingCopy;
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self _tilingView];
+  draggingCopy = dragging;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
 
-  if (v5 == v4)
+  if (_tilingView == draggingCopy)
   {
     [(PUOneUpViewController *)self _updateViewModelWithCurrentScrollPosition];
-    v6 = [(PUOneUpViewController *)self browsingSession];
-    v7 = [v6 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__PUOneUpViewController_scrollViewWillBeginDragging___block_invoke;
     v10[3] = &unk_1E7B80DD0;
-    v11 = v7;
-    v8 = v7;
+    v11 = viewModel;
+    v8 = viewModel;
     [v8 performChanges:v10];
     if ([(PUOneUpViewController *)self _isTipPopoverVisible])
     {
@@ -5839,48 +5839,48 @@ uint64_t __85__PUOneUpViewController_imageAnalysisInteractionIsDrivingLivePhotoP
       [(PUOneUpViewController *)self _updateTipPopoversIfNeeded];
     }
 
-    v9 = [v4 is_scrollViewDelegate];
-    [v9 scrollViewWillBeginDragging:v4];
+    is_scrollViewDelegate = [draggingCopy is_scrollViewDelegate];
+    [is_scrollViewDelegate scrollViewWillBeginDragging:draggingCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v11 = a3;
-  v4 = [(PUOneUpViewController *)self _tilingView];
+  scrollCopy = scroll;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
 
-  v5 = v11;
-  if (v4 == v11)
+  v5 = scrollCopy;
+  if (_tilingView == scrollCopy)
   {
     if (UIAccessibilityIsVoiceOverRunning())
     {
-      v6 = [(PUOneUpViewController *)self browsingSession];
-      v7 = [v6 viewModel];
-      v8 = [v7 isScrolling];
+      browsingSession = [(PUOneUpViewController *)self browsingSession];
+      viewModel = [browsingSession viewModel];
+      isScrolling = [viewModel isScrolling];
     }
 
     else
     {
-      v8 = 0;
+      isScrolling = 0;
     }
 
-    if ([v11 isDragging] & 1) != 0 || (v8)
+    if ([scrollCopy isDragging] & 1) != 0 || (isScrolling)
     {
       if (![(PUOneUpViewController *)self _isDrivingScrubbing])
       {
 LABEL_13:
-        v10 = [v11 is_scrollViewDelegate];
-        [v10 scrollViewDidScroll:v11];
+        is_scrollViewDelegate = [scrollCopy is_scrollViewDelegate];
+        [is_scrollViewDelegate scrollViewDidScroll:scrollCopy];
 
-        v5 = v11;
+        v5 = scrollCopy;
         goto LABEL_14;
       }
     }
 
     else
     {
-      v9 = [v11 isDecelerating];
-      if (!-[PUOneUpViewController _isDrivingScrubbing](self, "_isDrivingScrubbing") || (v9 & 1) == 0 && ![v11 pu_isPerformingScrollTest])
+      isDecelerating = [scrollCopy isDecelerating];
+      if (!-[PUOneUpViewController _isDrivingScrubbing](self, "_isDrivingScrubbing") || (isDecelerating & 1) == 0 && ![scrollCopy pu_isPerformingScrollTest])
       {
         goto LABEL_13;
       }
@@ -5893,31 +5893,31 @@ LABEL_13:
 LABEL_14:
 }
 
-- (CGPoint)tilingView:(id)a3 initialVisibleOriginWithLayout:(id)a4
+- (CGPoint)tilingView:(id)view initialVisibleOriginWithLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [(PUOneUpViewController *)self browsingSession];
-  v8 = [v7 viewModel];
-  v9 = [v8 assetsDataSource];
+  layoutCopy = layout;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
 
-  v10 = [v6 dataSource];
-  LOBYTE(v8) = [v10 isEqual:v9];
+  dataSource = [layoutCopy dataSource];
+  LOBYTE(viewModel) = [dataSource isEqual:assetsDataSource];
 
-  if ((v8 & 1) == 0)
+  if ((viewModel & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4659 description:{@"Invalid parameter not satisfying: %@", @"[[layout dataSource] isEqual:assetsDataSource]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4659 description:{@"Invalid parameter not satisfying: %@", @"[[layout dataSource] isEqual:assetsDataSource]"}];
   }
 
-  v11 = [(PUOneUpViewController *)self browsingSession];
-  v12 = [v11 viewModel];
-  v13 = [v12 currentAssetReference];
+  browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+  viewModel2 = [browsingSession2 viewModel];
+  currentAssetReference = [viewModel2 currentAssetReference];
 
-  v14 = [v9 indexPathForAssetReference:v13];
-  if (v14 || ([v9 firstItemIndexPath], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+  v14 = [assetsDataSource indexPathForAssetReference:currentAssetReference];
+  if (v14 || ([assetsDataSource firstItemIndexPath], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v15 = v14;
-    [v6 visibleRectForScrollingToItemAtIndexPath:v14 scrollPosition:0];
+    [layoutCopy visibleRectForScrollingToItemAtIndexPath:v14 scrollPosition:0];
     v17 = v16;
     v19 = v18;
   }
@@ -5935,57 +5935,57 @@ LABEL_14:
   return result;
 }
 
-- (id)tilingView:(id)a3 scrollInfoWithLayout:(id)a4
+- (id)tilingView:(id)view scrollInfoWithLayout:(id)layout
 {
-  v5 = a4;
-  v6 = [(PUOneUpViewController *)self browsingSession];
-  v7 = [v6 viewModel];
-  v8 = [v7 assetsDataSource];
-  v9 = [v8 isEmpty];
+  layoutCopy = layout;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
+  isEmpty = [assetsDataSource isEmpty];
 
-  if (v9)
+  if (isEmpty)
   {
     [PUTilingScrollInfo scrollInfoWithScrollDirections:0];
   }
 
   else
   {
-    [v5 preferredScrollInfo];
+    [layoutCopy preferredScrollInfo];
   }
   v10 = ;
 
   return v10;
 }
 
-- (void)presentPeopleViewController:(id)a3
+- (void)presentPeopleViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self navigationController];
-  [v5 presentViewController:v4 animated:1 completion:0];
+  controllerCopy = controller;
+  navigationController = [(PUOneUpViewController *)self navigationController];
+  [navigationController presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (void)pushPeopleViewController:(id)a3
+- (void)pushPeopleViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self navigationController];
-  [v5 setNavigationBarHidden:0 animated:1];
+  controllerCopy = controller;
+  navigationController = [(PUOneUpViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:1];
 
-  v6 = [(PUOneUpViewController *)self navigationController];
-  [v6 pushViewController:v4 animated:1];
+  navigationController2 = [(PUOneUpViewController *)self navigationController];
+  [navigationController2 pushViewController:controllerCopy animated:1];
 }
 
-- (BOOL)tilingViewCanBypass20069585Check:(id)a3
+- (BOOL)tilingViewCanBypass20069585Check:(id)check
 {
-  v3 = [(PUOneUpViewController *)self _currentAssetViewModel];
-  v4 = [v3 isInEditMode];
+  _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+  isInEditMode = [_currentAssetViewModel isInEditMode];
 
-  return v4;
+  return isInEditMode;
 }
 
-- (id)tilingView:(id)a3 tileTransitionCoordinatorForLayoutInvalidationContext:(id)a4
+- (id)tilingView:(id)view tileTransitionCoordinatorForLayoutInvalidationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  contextCopy = context;
   if ([(PUOneUpViewController *)self _shouldDisableTransitionsUntilAppeared])
   {
     v8 = 0;
@@ -5993,74 +5993,74 @@ LABEL_14:
 
   else
   {
-    v9 = [(PUOneUpViewController *)self browsingSession];
-    v10 = [v9 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v11 = [v6 layout];
-    v8 = [PUTileTransitionCoordinator defaultTileTransitionCoordinatorForLayoutInvalidationContext:v7 layout:v11 tilingView:v6 viewModel:v10];
+    layout = [viewCopy layout];
+    v8 = [PUTileTransitionCoordinator defaultTileTransitionCoordinatorForLayoutInvalidationContext:contextCopy layout:layout tilingView:viewCopy viewModel:viewModel];
   }
 
   return v8;
 }
 
-- (id)tilingView:(id)a3 tileTransitionCoordinatorForReattachedTileControllers:(id)a4 context:(id)a5
+- (id)tilingView:(id)view tileTransitionCoordinatorForReattachedTileControllers:(id)controllers context:(id)context
 {
-  v6 = a4;
-  v7 = a5;
-  if ([v7 isTransitioningOverOneUp])
+  controllersCopy = controllers;
+  contextCopy = context;
+  if ([contextCopy isTransitioningOverOneUp])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [PUTileTransitionCoordinator defaultTileTransitionCoordinatorForReattachedTileControllers:v6 context:v7];
+    v8 = [PUTileTransitionCoordinator defaultTileTransitionCoordinatorForReattachedTileControllers:controllersCopy context:contextCopy];
   }
 
   return v8;
 }
 
-- (id)tilingView:(id)a3 tileTransitionCoordinatorForChangeFromFrame:(CGRect)a4 toFrame:(CGRect)a5 duration:(double)a6
+- (id)tilingView:(id)view tileTransitionCoordinatorForChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame duration:(double)duration
 {
-  if (a6 <= 0.0)
+  if (duration <= 0.0)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [PUTileTransitionCoordinator defaultTileTransitionCoordinatorForFrameChangeWithTileCrossFade:0 tilingView:a3, a6, a4.origin.y, a4.size.width, a4.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+    v6 = [PUTileTransitionCoordinator defaultTileTransitionCoordinatorForFrameChangeWithTileCrossFade:0 tilingView:view, duration, frame.origin.y, frame.size.width, frame.size.height, toFrame.origin.x, toFrame.origin.y, toFrame.size.width, toFrame.size.height];
   }
 
   return v6;
 }
 
-- (id)tilingView:(id)a3 tileTransitionCoordinatorForTransitionFromLayout:(id)a4 toLayout:(id)a5 withContext:(id)a6
+- (id)tilingView:(id)view tileTransitionCoordinatorForTransitionFromLayout:(id)layout toLayout:(id)toLayout withContext:(id)context
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(PUOneUpViewController *)self browsingSession];
-  v15 = [v14 viewModel];
-  v16 = [v15 currentAssetReference];
+  contextCopy = context;
+  toLayoutCopy = toLayout;
+  layoutCopy = layout;
+  viewCopy = view;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  v17 = [PUTileTransitionCoordinator browsingTileTransitionCoordinatorForTransitionFromLayout:v12 toLayout:v11 withTilingView:v13 anchorAssetReference:v16 context:v10];
+  v17 = [PUTileTransitionCoordinator browsingTileTransitionCoordinatorForTransitionFromLayout:layoutCopy toLayout:toLayoutCopy withTilingView:viewCopy anchorAssetReference:currentAssetReference context:contextCopy];
 
   return v17;
 }
 
-- (void)presentErrorFromLoadingIndicator:(id)a3
+- (void)presentErrorFromLoadingIndicator:(id)indicator
 {
-  v4 = a3;
-  if (v4)
+  indicatorCopy = indicator;
+  if (indicatorCopy)
   {
-    v5 = [(PUOneUpViewController *)self browsingSession];
-    v6 = [v5 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v7 = [v6 assetViewModelForCurrentAssetReference];
-    v8 = [v7 asset];
-    v9 = [[PUOneUpLoadingErrorPresentationController alloc] initWithError:v4 forAsset:v8];
+    assetViewModelForCurrentAssetReference = [viewModel assetViewModelForCurrentAssetReference];
+    asset = [assetViewModelForCurrentAssetReference asset];
+    v9 = [[PUOneUpLoadingErrorPresentationController alloc] initWithError:indicatorCopy forAsset:asset];
     [(PUErrorPresentationController *)v9 setRadarComponentID:@"512768" name:@"Photos Backend (New Bugs)" version:@"all"];
     v10 = [(PUErrorPresentationController *)v9 alertControllerWithCompletion:0];
     [(PUOneUpViewController *)self presentViewController:v10 animated:1 completion:0];
@@ -6068,46 +6068,46 @@ LABEL_14:
 
   else
   {
-    v6 = PLOneUpGetLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    viewModel = PLOneUpGetLog();
+    if (os_log_type_enabled(viewModel, OS_LOG_TYPE_DEFAULT))
     {
       *v11 = 0;
-      _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "Attempted to present an error from the loading indicator, but the error was nil. Skipping.", v11, 2u);
+      _os_log_impl(&dword_1B36F3000, viewModel, OS_LOG_TYPE_DEFAULT, "Attempted to present an error from the loading indicator, but the error was nil. Skipping.", v11, 2u);
     }
   }
 }
 
-- (id)tilingView:(id)a3 tileControllerWithIndexPath:(id)a4 kind:(id)a5 dataSource:(id)a6
+- (id)tilingView:(id)view tileControllerWithIndexPath:(id)path kind:(id)kind dataSource:(id)source
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(PUOneUpViewController *)self browsingSession];
-  v16 = [v15 viewModel];
+  viewCopy = view;
+  pathCopy = path;
+  kindCopy = kind;
+  sourceCopy = source;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v17 = [v16 assetsDataSource];
-  if (([v14 isEqual:v17] & 1) == 0)
+  assetsDataSource = [viewModel assetsDataSource];
+  if (([sourceCopy isEqual:assetsDataSource] & 1) == 0)
   {
-    v64 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v64 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4342 description:{@"Invalid parameter not satisfying: %@", @"[dataSource isEqual:assetsDataSource]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4342 description:{@"Invalid parameter not satisfying: %@", @"[dataSource isEqual:assetsDataSource]"}];
   }
 
-  v123 = v12;
-  if ([v13 isEqualToString:@"PUTileKindItemContent"])
+  v123 = pathCopy;
+  if ([kindCopy isEqualToString:@"PUTileKindItemContent"])
   {
-    v18 = v14;
-    v19 = v13;
-    v20 = self;
-    v21 = [(PUOneUpViewController *)self browsingSession];
-    v22 = [v21 contentTileProvider];
+    v18 = sourceCopy;
+    v19 = kindCopy;
+    selfCopy = self;
+    browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+    contentTileProvider = [browsingSession2 contentTileProvider];
 
-    v121 = v17;
-    v23 = [v17 assetReferenceAtIndexPath:v12];
-    v119 = v16;
-    v24 = [v16 assetViewModelForAssetReference:v23];
-    v25 = [v23 asset];
-    v26 = [v22 tileControllerForAsset:v25 viewModel:v24 tilingView:v11];
+    v121 = assetsDataSource;
+    v23 = [assetsDataSource assetReferenceAtIndexPath:pathCopy];
+    v119 = viewModel;
+    v24 = [viewModel assetViewModelForAssetReference:v23];
+    asset = [v23 asset];
+    v26 = [contentTileProvider tileControllerForAsset:asset viewModel:v24 tilingView:viewCopy];
     if ([v24 isUpdatingDisplayedContent])
     {
       objc_initWeak(location, v24);
@@ -6121,36 +6121,36 @@ LABEL_14:
       objc_destroyWeak(location);
     }
 
-    v16 = v119;
-    v17 = v121;
-    self = v20;
-    v13 = v19;
-    v14 = v18;
+    viewModel = v119;
+    assetsDataSource = v121;
+    self = selfCopy;
+    kindCopy = v19;
+    sourceCopy = v18;
     goto LABEL_7;
   }
 
-  if ([v13 isEqualToString:PUTileKindUserTransform])
+  if ([kindCopy isEqualToString:PUTileKindUserTransform])
   {
-    v28 = [v17 assetReferenceAtIndexPath:v12];
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUUserTransformTileReuseIdentifier"];
-    [v16 assetViewModelForAssetReference:v28];
-    v30 = v29 = v16;
+    v28 = [assetsDataSource assetReferenceAtIndexPath:pathCopy];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUUserTransformTileReuseIdentifier"];
+    [viewModel assetViewModelForAssetReference:v28];
+    v30 = v29 = viewModel;
     [v27 setAssetViewModel:v30];
     [v27 setBrowsingViewModel:v29];
 LABEL_13:
 
-    v16 = v29;
+    viewModel = v29;
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if ([v13 isEqualToString:PUTileKindPlayButton])
+  if ([kindCopy isEqualToString:PUTileKindPlayButton])
   {
-    v28 = [v17 assetReferenceAtIndexPath:v12];
-    [v16 assetViewModelForAssetReference:v28];
-    v30 = v29 = v16;
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUPlayButtonViewReuseIdentifier"];
+    v28 = [assetsDataSource assetReferenceAtIndexPath:pathCopy];
+    [viewModel assetViewModelForAssetReference:v28];
+    v30 = v29 = viewModel;
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUPlayButtonViewReuseIdentifier"];
     [v27 setBrowsingViewModel:v29];
     v31 = v27;
 LABEL_12:
@@ -6158,33 +6158,33 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v13 isEqualToString:PUTileKindBackground])
+  if ([kindCopy isEqualToString:PUTileKindBackground])
   {
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUBackgroundTileReuseIdentifier"];
-    [v27 setViewModel:v16];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUBackgroundTileReuseIdentifier"];
+    [v27 setViewModel:viewModel];
     [(PUOneUpViewController *)self _setBackgroundTileViewController:v27];
     [(PUOneUpViewController *)self _updateBackgroundTileViewController];
     goto LABEL_15;
   }
 
-  if ([v13 isEqualToString:PUTileKindBadge])
+  if ([kindCopy isEqualToString:PUTileKindBadge])
   {
-    v28 = [v17 assetReferenceAtIndexPath:v12];
-    [v16 assetViewModelForAssetReference:v28];
-    v30 = v29 = v16;
-    v31 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUBadgeTileReuseIdentifier"];
+    v28 = [assetsDataSource assetReferenceAtIndexPath:pathCopy];
+    [viewModel assetViewModelForAssetReference:v28];
+    v30 = v29 = viewModel;
+    v31 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUBadgeTileReuseIdentifier"];
     v27 = v31;
     goto LABEL_12;
   }
 
-  if ([v13 isEqualToString:PUTileKindAssetExplorerReviewScreenBadge])
+  if ([kindCopy isEqualToString:PUTileKindAssetExplorerReviewScreenBadge])
   {
-    v33 = [v17 assetReferenceAtIndexPath:v12];
+    v33 = [assetsDataSource assetReferenceAtIndexPath:pathCopy];
     [(PUOneUpViewController *)self browsingSession];
-    v35 = v34 = v16;
+    v35 = v34 = viewModel;
     [v35 actionManager];
-    v36 = v11;
-    v37 = v109 = v11;
+    v36 = viewCopy;
+    v37 = v109 = viewCopy;
 
     v38 = [v36 dequeueTileControllerWithReuseIdentifier:@"PUAssetExplorerReviewScreenBadgeTileReuseIdentifier"];
     v133[0] = MEMORY[0x1E69E9820];
@@ -6204,8 +6204,8 @@ LABEL_12:
     v42 = v39;
 
     v27 = v42;
-    v16 = v40;
-    v11 = v109;
+    viewModel = v40;
+    viewCopy = v109;
 
     v43 = v134;
 LABEL_27:
@@ -6214,14 +6214,14 @@ LABEL_28:
     goto LABEL_15;
   }
 
-  if ([v13 isEqualToString:PUTileKindSelectionIndicator])
+  if ([kindCopy isEqualToString:PUTileKindSelectionIndicator])
   {
-    v44 = [v17 assetReferenceAtIndexPath:v12];
+    v44 = [assetsDataSource assetReferenceAtIndexPath:pathCopy];
     [(PUOneUpViewController *)self browsingSession];
-    v46 = v45 = v16;
+    v46 = v45 = viewModel;
     [v46 actionManager];
-    v47 = v11;
-    v48 = v110 = v11;
+    v47 = viewCopy;
+    v48 = v110 = viewCopy;
 
     v49 = [v47 dequeueTileControllerWithReuseIdentifier:@"PUSelectionIndicatorTileReuseIdentifier"];
     v128[0] = MEMORY[0x1E69E9820];
@@ -6241,74 +6241,74 @@ LABEL_28:
     v53 = v50;
 
     v27 = v53;
-    v16 = v51;
-    v11 = v110;
+    viewModel = v51;
+    viewCopy = v110;
 
     v43 = v129;
     goto LABEL_27;
   }
 
-  if ([v13 isEqualToString:PUTileKindAssetExplorerReviewScreenProgressIndicator])
+  if ([kindCopy isEqualToString:PUTileKindAssetExplorerReviewScreenProgressIndicator])
   {
-    v117 = [v17 assetAtIndexPath:v12];
-    v122 = [v16 assetSharedViewModelForAsset:v117];
-    [v17 assetReferenceAtIndexPath:v12];
-    v54 = v16;
-    v56 = v55 = v11;
+    v117 = [assetsDataSource assetAtIndexPath:pathCopy];
+    v122 = [viewModel assetSharedViewModelForAsset:v117];
+    [assetsDataSource assetReferenceAtIndexPath:pathCopy];
+    v54 = viewModel;
+    v56 = v55 = viewCopy;
     [v54 assetViewModelForAssetReference:v56];
-    v115 = v14;
-    v57 = v17;
+    v115 = sourceCopy;
+    v57 = assetsDataSource;
     v58 = a2;
     v60 = v59 = v54;
-    v61 = [v60 videoPlayer];
+    videoPlayer = [v60 videoPlayer];
     v62 = [v55 dequeueTileControllerWithReuseIdentifier:@"PUAssetExplorerReviewScreenProgressIndicatorTileReuseIdentifier"];
     [v62 setAssetSharedViewModel:v122];
-    [v62 setVideoPlayer:v61];
+    [v62 setVideoPlayer:videoPlayer];
 
     v27 = v62;
     v63 = v59;
     a2 = v58;
-    v17 = v57;
-    v14 = v115;
+    assetsDataSource = v57;
+    sourceCopy = v115;
 
-    v11 = v55;
-    v16 = v63;
+    viewCopy = v55;
+    viewModel = v63;
     goto LABEL_28;
   }
 
-  if ([v13 isEqualToString:PUTileKindReviewScreenTopBar])
+  if ([kindCopy isEqualToString:PUTileKindReviewScreenTopBar])
   {
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUReviewScreenTopBarTileReuseIdentifier"];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUReviewScreenTopBarTileReuseIdentifier"];
     [(PUOneUpViewController *)self _setReviewScreenTopBarTileViewController:v27];
 LABEL_37:
-    [v27 setBrowsingViewModel:v16];
+    [v27 setBrowsingViewModel:viewModel];
     [(PUOneUpViewController *)self _updateReviewScreenBars];
     goto LABEL_15;
   }
 
-  if ([v13 isEqualToString:PUTileKindReviewScreenControlBar])
+  if ([kindCopy isEqualToString:PUTileKindReviewScreenControlBar])
   {
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUReviewScreenControlBarTileReuseIdentifier"];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUReviewScreenControlBarTileReuseIdentifier"];
     [(PUOneUpViewController *)self _setReviewScreenControlBarTileViewController:v27];
     goto LABEL_37;
   }
 
-  if ([v13 isEqualToString:PUTileKindReviewScreenScrubberBar])
+  if ([kindCopy isEqualToString:PUTileKindReviewScreenScrubberBar])
   {
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUReviewScreenScrubberBarTileReuseIdentifier"];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUReviewScreenScrubberBarTileReuseIdentifier"];
     [(PUOneUpViewController *)self _setReviewScreenScrubberBarTileViewController:v27];
     goto LABEL_37;
   }
 
-  if ([v13 isEqualToString:PUTileKindProgressIndicator])
+  if ([kindCopy isEqualToString:PUTileKindProgressIndicator])
   {
-    v116 = v14;
-    v118 = [v17 assetAtIndexPath:v12];
-    [v16 assetSharedViewModelForAsset:?];
-    v66 = v65 = v16;
-    [v17 assetReferenceAtIndexPath:v12];
-    v68 = v67 = v11;
-    v69 = [v16 assetViewModelForAssetReference:v68];
+    v116 = sourceCopy;
+    v118 = [assetsDataSource assetAtIndexPath:pathCopy];
+    [viewModel assetSharedViewModelForAsset:?];
+    v66 = v65 = viewModel;
+    [assetsDataSource assetReferenceAtIndexPath:pathCopy];
+    v68 = v67 = viewCopy;
+    v69 = [viewModel assetViewModelForAssetReference:v68];
     v111 = v67;
     v70 = [v67 dequeueTileControllerWithReuseIdentifier:@"PUProgressIndicatorTileReuseIdentifier"];
     [v70 setAssetViewModel:v69];
@@ -6325,35 +6325,35 @@ LABEL_37:
     objc_destroyWeak(&v127);
     objc_destroyWeak(location);
 
-    v16 = v65;
-    v14 = v116;
-    v11 = v111;
+    viewModel = v65;
+    sourceCopy = v116;
+    viewCopy = v111;
     goto LABEL_15;
   }
 
-  if ([v13 isEqualToString:PUTileKindPeople])
+  if ([kindCopy isEqualToString:PUTileKindPeople])
   {
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUPeopleTileReuseIdentifier"];
-    v28 = [v17 assetAtIndexPath:v12];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUPeopleTileReuseIdentifier"];
+    v28 = [assetsDataSource assetAtIndexPath:pathCopy];
     [v27 setDisplayAsset:v28];
     [v27 setPeopleDelegate:self];
     goto LABEL_14;
   }
 
   v71 = a2;
-  v120 = v16;
-  if ([v13 isEqualToString:PUTileKindRenderIndicator])
+  v120 = viewModel;
+  if ([kindCopy isEqualToString:PUTileKindRenderIndicator])
   {
-    v72 = [v17 assetAtIndexPath:v12];
-    v73 = [v16 assetSharedViewModelForAsset:v72];
-    v26 = [v11 dequeueTileControllerWithReuseIdentifier:@"PURenderIndicatorTileReuseIdentifier"];
+    v72 = [assetsDataSource assetAtIndexPath:pathCopy];
+    v73 = [viewModel assetSharedViewModelForAsset:v72];
+    v26 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PURenderIndicatorTileReuseIdentifier"];
     [v26 setAssetSharedViewModel:v73];
     [(PUOneUpViewController *)self undoManager];
-    v75 = v74 = v11;
+    v75 = v74 = viewCopy;
     [v26 setUndoManager:v75];
 
-    v11 = v74;
-    v16 = v120;
+    viewCopy = v74;
+    viewModel = v120;
 
     a2 = v71;
 LABEL_7:
@@ -6361,39 +6361,39 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v76 = v17;
-  v113 = self;
+  v76 = assetsDataSource;
+  selfCopy2 = self;
   v114 = v71;
-  v77 = v11;
-  if ([v13 isEqualToString:PUTileKindImportStatusIndicator])
+  v77 = viewCopy;
+  if ([kindCopy isEqualToString:PUTileKindImportStatusIndicator])
   {
-    v78 = [v76 assetReferenceAtIndexPath:v12];
-    v79 = [v16 assetViewModelForAssetReference:v78];
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUImportStatusIndicatorTileReuseIdentifier"];
+    v78 = [v76 assetReferenceAtIndexPath:pathCopy];
+    v79 = [viewModel assetViewModelForAssetReference:v78];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUImportStatusIndicatorTileReuseIdentifier"];
     [v27 setAssetViewModel:v79];
 
-    v16 = v120;
+    viewModel = v120;
 LABEL_46:
     v80 = v114;
 LABEL_47:
-    v17 = v76;
+    assetsDataSource = v76;
     a2 = v80;
     goto LABEL_15;
   }
 
-  v112 = v13;
-  if ([v13 isEqualToString:PUTileKindBufferingIndicator])
+  v112 = kindCopy;
+  if ([kindCopy isEqualToString:PUTileKindBufferingIndicator])
   {
-    v81 = [v76 assetReferenceAtIndexPath:v12];
-    v82 = [v16 assetViewModelForAssetReference:?];
-    v83 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUBufferingIndicatorTileReuseIdentifier"];
+    v81 = [v76 assetReferenceAtIndexPath:pathCopy];
+    v82 = [viewModel assetViewModelForAssetReference:?];
+    v83 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUBufferingIndicatorTileReuseIdentifier"];
     [v83 setAssetViewModel:v82];
-    v84 = [(PUOneUpViewController *)v113 browsingSession];
-    v85 = [v84 mergedVideoProvider];
-    [v83 setMergedVideoProvider:v85];
+    browsingSession3 = [(PUOneUpViewController *)selfCopy2 browsingSession];
+    mergedVideoProvider = [browsingSession3 mergedVideoProvider];
+    [v83 setMergedVideoProvider:mergedVideoProvider];
 
     [v83 setBrowsingViewModel:v120];
-    objc_initWeak(location, v113);
+    objc_initWeak(location, selfCopy2);
     v124[0] = MEMORY[0x1E69E9820];
     v124[1] = 3221225472;
     v124[2] = __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dataSource___block_invoke_5;
@@ -6403,11 +6403,11 @@ LABEL_47:
     objc_destroyWeak(&v125);
     objc_destroyWeak(location);
 
-    self = v113;
-    v17 = v76;
+    self = selfCopy2;
+    assetsDataSource = v76;
     a2 = v114;
     v27 = v83;
-    v16 = v120;
+    viewModel = v120;
 LABEL_15:
     [(PUOneUpViewController *)self _configureAdoptedTileController:v27];
     if (v27)
@@ -6418,77 +6418,77 @@ LABEL_15:
     goto LABEL_70;
   }
 
-  if ([v13 isEqualToString:PUTileKindLoadingIndicator])
+  if ([kindCopy isEqualToString:PUTileKindLoadingIndicator])
   {
-    v86 = [v76 assetReferenceAtIndexPath:v12];
-    v87 = v16;
-    v88 = [v16 assetViewModelForAssetReference:v86];
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PULoadingIndicatorTileReuseIdentifier"];
-    v89 = [(PUOneUpViewController *)self loadingIndicatorController];
-    [v27 setStyle:{objc_msgSend(v89, "loadingIndicatorStyleForAssetViewModel:", v88)}];
+    v86 = [v76 assetReferenceAtIndexPath:pathCopy];
+    v87 = viewModel;
+    v88 = [viewModel assetViewModelForAssetReference:v86];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PULoadingIndicatorTileReuseIdentifier"];
+    loadingIndicatorController = [(PUOneUpViewController *)self loadingIndicatorController];
+    [v27 setStyle:{objc_msgSend(loadingIndicatorController, "loadingIndicatorStyleForAssetViewModel:", v88)}];
 
-    v11 = v77;
+    viewCopy = v77;
 LABEL_52:
 
-    v16 = v87;
-    v13 = v112;
+    viewModel = v87;
+    kindCopy = v112;
     goto LABEL_46;
   }
 
-  if ([v13 isEqualToString:PUTileKindAccessory])
+  if ([kindCopy isEqualToString:PUTileKindAccessory])
   {
-    v90 = [v76 assetReferenceAtIndexPath:v12];
-    v91 = [v16 assetViewModelForAssetReference:v90];
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUAccessoryTileReuseIdentifier"];
+    v90 = [v76 assetReferenceAtIndexPath:pathCopy];
+    v91 = [viewModel assetViewModelForAssetReference:v90];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUAccessoryTileReuseIdentifier"];
     [v27 setAssetViewModel:v91];
     [v27 setAssetReference:v90];
 
-    v16 = v120;
+    viewModel = v120;
     goto LABEL_46;
   }
 
-  if ([v13 isEqualToString:PUTileKindVideoPlaceholder])
+  if ([kindCopy isEqualToString:PUTileKindVideoPlaceholder])
   {
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUVideoPlaceholderTileReuseIdentifier"];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUVideoPlaceholderTileReuseIdentifier"];
 LABEL_61:
-    v13 = v112;
+    kindCopy = v112;
 LABEL_62:
     v80 = v114;
-    v16 = v120;
+    viewModel = v120;
     goto LABEL_47;
   }
 
-  if ([v13 isEqualToString:PUTileKindLivePhotoVideoPlaybackOverlay])
+  if ([kindCopy isEqualToString:PUTileKindLivePhotoVideoPlaybackOverlay])
   {
-    v92 = [v11 dequeueTileControllerWithReuseIdentifier:@"PULivePhotoVideoPlaybackTileReuseIdentifier"];
-    [v92 setBrowsingViewModel:v16];
-    v93 = [(PUOneUpViewController *)self browsingSession];
-    v94 = [v93 mergedVideoProvider];
-    [v92 setMergedVideoProvider:v94];
+    v92 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PULivePhotoVideoPlaybackTileReuseIdentifier"];
+    [v92 setBrowsingViewModel:viewModel];
+    browsingSession4 = [(PUOneUpViewController *)self browsingSession];
+    mergedVideoProvider2 = [browsingSession4 mergedVideoProvider];
+    [v92 setMergedVideoProvider:mergedVideoProvider2];
 
     [v92 setIsPresentedForSecondScreen:{-[PUOneUpViewController _isPresentedForSecondScreen](self, "_isPresentedForSecondScreen")}];
     v27 = v92;
     [v92 setDelegate:self];
-    v95 = [(PUOneUpViewController *)self _tilingView];
-    v96 = [v95 window];
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    window = [_tilingView window];
 
-    if (!v96)
+    if (!window)
     {
-      v97 = [MEMORY[0x1E69DC668] sharedApplication];
-      v98 = [v97 windows];
-      v96 = [v98 firstObject];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      windows = [mEMORY[0x1E69DC668] windows];
+      window = [windows firstObject];
     }
 
-    v99 = [v96 px_imageModulationManager];
-    [v92 setImageModulationManager:v99];
+    px_imageModulationManager = [window px_imageModulationManager];
+    [v92 setImageModulationManager:px_imageModulationManager];
 
     goto LABEL_61;
   }
 
-  if ([v13 isEqualToString:PUTileKindSyndicationAttribution])
+  if ([kindCopy isEqualToString:PUTileKindSyndicationAttribution])
   {
-    v100 = [v76 assetReferenceAtIndexPath:v12];
-    v101 = [v16 assetViewModelForAssetReference:v100];
+    v100 = [v76 assetReferenceAtIndexPath:pathCopy];
+    v101 = [viewModel assetViewModelForAssetReference:v100];
     v102 = [v77 dequeueTileControllerWithReuseIdentifier:@"PUSyndicationAttributionTileReuseIdentifier"];
     if (v102)
     {
@@ -6500,35 +6500,35 @@ LABEL_66:
         [v102 setDelegate:self];
 
         v27 = v102;
-        v11 = v77;
-        v13 = v112;
+        viewCopy = v77;
+        kindCopy = v112;
         goto LABEL_62;
       }
 
-      v104 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v107 = objc_opt_class();
       v106 = NSStringFromClass(v107);
-      v108 = [v102 px_descriptionForAssertionMessage];
-      [v104 handleFailureInMethod:v114 object:self file:@"PUOneUpViewController.m" lineNumber:4544 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[tilingView dequeueTileControllerWithReuseIdentifier:PUSyndicationAttributionTileReuseIdentifier]", v106, v108}];
+      px_descriptionForAssertionMessage = [v102 px_descriptionForAssertionMessage];
+      [currentHandler2 handleFailureInMethod:v114 object:self file:@"PUOneUpViewController.m" lineNumber:4544 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[tilingView dequeueTileControllerWithReuseIdentifier:PUSyndicationAttributionTileReuseIdentifier]", v106, px_descriptionForAssertionMessage}];
     }
 
     else
     {
-      v104 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v105 = objc_opt_class();
       v106 = NSStringFromClass(v105);
-      [v104 handleFailureInMethod:v114 object:self file:@"PUOneUpViewController.m" lineNumber:4544 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[tilingView dequeueTileControllerWithReuseIdentifier:PUSyndicationAttributionTileReuseIdentifier]", v106}];
+      [currentHandler2 handleFailureInMethod:v114 object:self file:@"PUOneUpViewController.m" lineNumber:4544 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[tilingView dequeueTileControllerWithReuseIdentifier:PUSyndicationAttributionTileReuseIdentifier]", v106}];
     }
 
     goto LABEL_66;
   }
 
-  if ([v13 isEqualToString:PUTileKindCropButton])
+  if ([kindCopy isEqualToString:PUTileKindCropButton])
   {
-    v86 = [v76 assetReferenceAtIndexPath:v12];
-    v87 = v16;
-    v88 = [v16 assetViewModelForAssetReference:v86];
-    v27 = [v11 dequeueTileControllerWithReuseIdentifier:@"PUCropButtonTileReuseIdentifier"];
+    v86 = [v76 assetReferenceAtIndexPath:pathCopy];
+    v87 = viewModel;
+    v88 = [viewModel assetViewModelForAssetReference:v86];
+    v27 = [viewCopy dequeueTileControllerWithReuseIdentifier:@"PUCropButtonTileReuseIdentifier"];
     [v27 setDelegate:self];
     [v27 setAssetViewModel:v88];
     [v27 setBrowsingViewModel:v120];
@@ -6536,11 +6536,11 @@ LABEL_66:
   }
 
   [(PUOneUpViewController *)self _configureAdoptedTileController:0];
-  v17 = v76;
+  assetsDataSource = v76;
   a2 = v71;
 LABEL_70:
-  v103 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v103 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4563 description:{@"Invalid parameter not satisfying: %@", @"tileController != nil"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:4563 description:{@"Invalid parameter not satisfying: %@", @"tileController != nil"}];
 
   v27 = 0;
 LABEL_16:
@@ -6596,23 +6596,23 @@ void __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dat
 - (BOOL)_allowsVisualLookupInInfoPanelMode
 {
   v3 = +[PUOneUpSettings sharedInstance];
-  v4 = [v3 allowsVisualIntelligenceVisualLookupInfoPanelMode];
+  allowsVisualIntelligenceVisualLookupInfoPanelMode = [v3 allowsVisualIntelligenceVisualLookupInfoPanelMode];
 
-  if (!v4)
+  if (!allowsVisualIntelligenceVisualLookupInfoPanelMode)
   {
     return 0;
   }
 
-  v5 = [(PUOneUpViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
-  v7 = [(PUOneUpViewController *)self browsingSession];
-  v8 = [v7 viewModel];
-  v9 = [v8 horizontalSizeClass];
+  traitCollection = [(PUOneUpViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  horizontalSizeClass = [viewModel horizontalSizeClass];
 
-  v10 = [MEMORY[0x1E69C3740] enabled];
-  if (v6)
+  enabled = [MEMORY[0x1E69C3740] enabled];
+  if (userInterfaceIdiom)
   {
-    v11 = v9 == 1;
+    v11 = horizontalSizeClass == 1;
   }
 
   else
@@ -6621,28 +6621,28 @@ void __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dat
   }
 
   v12 = v11;
-  v13 = v12 & (v10 ^ 1);
+  v13 = v12 & (enabled ^ 1);
 
   return v13;
 }
 
-- (BOOL)_allowsShowingVisualIntelligenceForAsset:(id)a3
+- (BOOL)_allowsShowingVisualIntelligenceForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self presentationOrigin];
+  assetCopy = asset;
+  presentationOrigin = [(PUOneUpViewController *)self presentationOrigin];
   v6 = +[PUOneUpSettings sharedInstance];
-  v7 = [v6 allowsVisualIntelligenceInVideoFrame];
+  allowsVisualIntelligenceInVideoFrame = [v6 allowsVisualIntelligenceInVideoFrame];
 
-  v8 = [MEMORY[0x1E69C3C88] canRequestVKImageAnalysisForAsset:v4];
-  if ((v8 & 1) == 0 && v7)
+  v8 = [MEMORY[0x1E69C3C88] canRequestVKImageAnalysisForAsset:assetCopy];
+  if ((v8 & 1) == 0 && allowsVisualIntelligenceInVideoFrame)
   {
-    v8 = [v4 mediaType] == 2;
+    v8 = [assetCopy mediaType] == 2;
   }
 
   v9 = +[PUOneUpSettings sharedInstance];
   if ([v9 allowVisualIntelligence])
   {
-    v10 = v8 & ~[(PUOneUpViewController *)self _isPresentedForSecondScreen]& (v5 != 13);
+    v10 = v8 & ~[(PUOneUpViewController *)self _isPresentedForSecondScreen]& (presentationOrigin != 13);
   }
 
   else
@@ -6658,14 +6658,14 @@ void __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dat
   if (([(PUOneUpViewController *)self _options]& 0x40000) == 0 && !self->_visualImageAnalyzingController)
   {
     v3 = +[PUOneUpSettings sharedInstance];
-    v4 = [v3 allowVisualIntelligence];
+    allowVisualIntelligence = [v3 allowVisualIntelligence];
 
-    if (v4)
+    if (allowVisualIntelligence)
     {
       v5 = [PUOneUpVisualImageAnalyzingController alloc];
-      v6 = [(PUOneUpViewController *)self browsingSession];
-      v7 = [v6 viewModel];
-      v8 = [(PUOneUpVisualImageAnalyzingController *)v5 initWithBrowsingViewModel:v7];
+      browsingSession = [(PUOneUpViewController *)self browsingSession];
+      viewModel = [browsingSession viewModel];
+      v8 = [(PUOneUpVisualImageAnalyzingController *)v5 initWithBrowsingViewModel:viewModel];
       visualImageAnalyzingController = self->_visualImageAnalyzingController;
       self->_visualImageAnalyzingController = v8;
     }
@@ -6678,18 +6678,18 @@ void __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dat
 
 - (PUOneUpPhototypeSupportController)phototypeSupportController
 {
-  v3 = [MEMORY[0x1E69C3650] sharedInstance];
-  v4 = [v3 enablePhototypes];
+  mEMORY[0x1E69C3650] = [MEMORY[0x1E69C3650] sharedInstance];
+  enablePhototypes = [mEMORY[0x1E69C3650] enablePhototypes];
 
-  if (v4)
+  if (enablePhototypes)
   {
     phototypeSupportController = self->_phototypeSupportController;
     if (!phototypeSupportController)
     {
       v6 = [PUOneUpPhototypeSupportController alloc];
-      v7 = [(PUOneUpViewController *)self browsingSession];
-      v8 = [v7 viewModel];
-      v9 = [(PUOneUpPhototypeSupportController *)v6 initWithBrowsingViewModel:v8];
+      browsingSession = [(PUOneUpViewController *)self browsingSession];
+      viewModel = [browsingSession viewModel];
+      v9 = [(PUOneUpPhototypeSupportController *)v6 initWithBrowsingViewModel:viewModel];
       v10 = self->_phototypeSupportController;
       self->_phototypeSupportController = v9;
 
@@ -6713,9 +6713,9 @@ void __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dat
   if (!shazamEventsController)
   {
     v4 = [PUShazamEventsController alloc];
-    v5 = [(PUOneUpViewController *)self browsingSession];
-    v6 = [v5 viewModel];
-    v7 = [(PUShazamEventsController *)v4 initWithBrowsingViewModel:v6];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    v7 = [(PUShazamEventsController *)v4 initWithBrowsingViewModel:viewModel];
     v8 = self->_shazamEventsController;
     self->_shazamEventsController = v7;
 
@@ -6727,15 +6727,15 @@ void __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dat
 
 - (NSString)passcodeAuthenticationReason
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 viewModel];
-  v4 = [v3 currentAssetReference];
-  v5 = [v4 pxAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  pxAssetReference = [currentAssetReference pxAssetReference];
 
-  v6 = [v5 assetCollection];
-  [v6 px_isHiddenSmartAlbum];
-  [v6 px_isRecentlyDeletedSmartAlbum];
-  [v6 px_isRecoveredSmartAlbum];
+  assetCollection = [pxAssetReference assetCollection];
+  [assetCollection px_isHiddenSmartAlbum];
+  [assetCollection px_isRecentlyDeletedSmartAlbum];
+  [assetCollection px_isRecoveredSmartAlbum];
   v7 = PXLocalizedString();
 
   return v7;
@@ -6743,15 +6743,15 @@ void __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dat
 
 - (NSString)authenticationTitle
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 viewModel];
-  v4 = [v3 currentAssetReference];
-  v5 = [v4 pxAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  pxAssetReference = [currentAssetReference pxAssetReference];
 
-  v6 = [v5 assetCollection];
-  [v6 px_isHiddenSmartAlbum];
-  [v6 px_isRecentlyDeletedSmartAlbum];
-  [v6 px_isRecoveredSmartAlbum];
+  assetCollection = [pxAssetReference assetCollection];
+  [assetCollection px_isHiddenSmartAlbum];
+  [assetCollection px_isRecentlyDeletedSmartAlbum];
+  [assetCollection px_isRecoveredSmartAlbum];
   v7 = PXLocalizedString();
 
   return v7;
@@ -6766,48 +6766,48 @@ void __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dat
   [(PUOneUpViewController *)self _invalidateInfoPanelLayoutAnimated:1];
   if (![(PUOneUpViewController *)self _prefersFloatingInfoPanel])
   {
-    v4 = [(PUOneUpViewController *)self browsingSession];
-    v5 = [v4 viewModel];
-    v3 = [v5 accessoryViewsDefaultVisibility] ^ 1;
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    v3 = [viewModel accessoryViewsDefaultVisibility] ^ 1;
   }
 
-  v6 = [(PUOneUpViewController *)self browsingSession];
-  v7 = [v6 viewModel];
-  v8 = [v7 isChromeVisible];
+  browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+  viewModel2 = [browsingSession2 viewModel];
+  isChromeVisible = [viewModel2 isChromeVisible];
 
-  if (v8)
+  if (isChromeVisible)
   {
     if (v3)
     {
-      v9 = [(PUOneUpViewController *)self view];
-      [v9 safeAreaInsets];
+      view = [(PUOneUpViewController *)self view];
+      [view safeAreaInsets];
       v11 = v10;
       v13 = v12;
 
-      v14 = [(PUOneUpViewController *)self chromeViewController];
-      [v14 setTopSafeAreaInset:v11];
+      chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+      [chromeViewController setTopSafeAreaInset:v11];
 
-      v15 = [(PUOneUpViewController *)self chromeViewController];
-      [v15 setBottomSafeAreaInset:v13];
+      chromeViewController2 = [(PUOneUpViewController *)self chromeViewController];
+      [chromeViewController2 setBottomSafeAreaInset:v13];
     }
   }
 }
 
-- (void)_handleDeferredProcessingFinishedForAssetUUID:(id)a3
+- (void)_handleDeferredProcessingFinishedForAssetUUID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self ppt_deferredProcessingCompletionBlock];
-  if (v5)
+  dCopy = d;
+  ppt_deferredProcessingCompletionBlock = [(PUOneUpViewController *)self ppt_deferredProcessingCompletionBlock];
+  if (ppt_deferredProcessingCompletionBlock)
   {
-    v6 = [(PUOneUpViewController *)self ppt_assetUUIDNeedsDeferredProcessingFinishNotification];
-    v7 = [v4 isEqualToString:v6];
+    ppt_assetUUIDNeedsDeferredProcessingFinishNotification = [(PUOneUpViewController *)self ppt_assetUUIDNeedsDeferredProcessingFinishNotification];
+    v7 = [dCopy isEqualToString:ppt_assetUUIDNeedsDeferredProcessingFinishNotification];
 
     if (v7)
     {
       [(PUOneUpViewController *)self setPpt_deferredProcessingCompletionBlock:0];
-      v8 = [(PUOneUpViewController *)self ppt_deferredProcessingWaitTimer];
-      [v8 invalidate];
+      ppt_deferredProcessingWaitTimer = [(PUOneUpViewController *)self ppt_deferredProcessingWaitTimer];
+      [ppt_deferredProcessingWaitTimer invalidate];
 
       [(PUOneUpViewController *)self setPpt_deferredProcessingWaitTimer:0];
       [(PUOneUpViewController *)self setPpt_assetUUIDNeedsDeferredProcessingFinishNotification:0];
@@ -6815,21 +6815,21 @@ void __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dat
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v12 = v4;
+        v12 = dCopy;
         _os_log_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_DEBUG, "Deferred Processing: Notify DP is done and final image is loaded/displayed (asset: %@).", buf, 0xCu);
       }
 
-      v10 = v5;
+      v10 = ppt_deferredProcessingCompletionBlock;
       px_dispatch_on_main_queue();
     }
   }
 }
 
-- (id)_assetsToPrefetchUsingDataSource:(id)a3 startingAt:(id)a4 count:(int64_t)a5 reverseDirection:(BOOL)a6
+- (id)_assetsToPrefetchUsingDataSource:(id)source startingAt:(id)at count:(int64_t)count reverseDirection:(BOOL)direction
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
+  directionCopy = direction;
+  sourceCopy = source;
+  atCopy = at;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
@@ -6839,17 +6839,17 @@ void __80__PUOneUpViewController_tilingView_tileControllerWithIndexPath_kind_dat
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__47533;
   v23 = __Block_byref_object_dispose__47534;
-  v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a5];
+  v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:count];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __92__PUOneUpViewController__assetsToPrefetchUsingDataSource_startingAt_count_reverseDirection___block_invoke;
   v14[3] = &unk_1E7B7A098;
-  v11 = v9;
+  v11 = sourceCopy;
   v15 = v11;
   v16 = &v19;
   v17 = v25;
-  v18 = a5;
-  [v11 enumerateIndexPathsStartingAtIndexPath:v10 reverseDirection:v6 usingBlock:v14];
+  countCopy = count;
+  [v11 enumerateIndexPathsStartingAtIndexPath:atCopy reverseDirection:directionCopy usingBlock:v14];
   v12 = v20[5];
 
   _Block_object_dispose(&v19, 8);
@@ -6874,19 +6874,19 @@ void __92__PUOneUpViewController__assetsToPrefetchUsingDataSource_startingAt_cou
   }
 }
 
-- (id)_assetsToPrefetchForCount:(int)a3
+- (id)_assetsToPrefetchForCount:(int)count
 {
-  v5 = [(PUOneUpViewController *)self browsingSession];
-  v6 = [v5 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v7 = [v6 assetsDataSource];
-  v8 = [v6 currentAssetReference];
-  v9 = [v7 indexPathForAssetReference:v8];
+  assetsDataSource = [viewModel assetsDataSource];
+  currentAssetReference = [viewModel currentAssetReference];
+  v9 = [assetsDataSource indexPathForAssetReference:currentAssetReference];
   v10 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   if (v9)
   {
-    v11 = [(PUOneUpViewController *)self _assetsToPrefetchUsingDataSource:v7 startingAt:v9 count:a3 reverseDirection:1];
-    v12 = [(PUOneUpViewController *)self _assetsToPrefetchUsingDataSource:v7 startingAt:v9 count:a3 reverseDirection:0];
+    v11 = [(PUOneUpViewController *)self _assetsToPrefetchUsingDataSource:assetsDataSource startingAt:v9 count:count reverseDirection:1];
+    v12 = [(PUOneUpViewController *)self _assetsToPrefetchUsingDataSource:assetsDataSource startingAt:v9 count:count reverseDirection:0];
     [v10 addObjectsFromArray:v11];
     [v10 addObjectsFromArray:v12];
   }
@@ -6899,10 +6899,10 @@ void __92__PUOneUpViewController__assetsToPrefetchUsingDataSource_startingAt_cou
   objc_initWeak(&location, self);
   if ([MEMORY[0x1E69C3740] enabled])
   {
-    v2 = [MEMORY[0x1E696AE30] processInfo];
-    v3 = [v2 isLowPowerModeEnabled];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-    if ((v3 & 1) == 0)
+    if ((isLowPowerModeEnabled & 1) == 0)
     {
       v11 = 0;
       v12 = &v11;
@@ -6918,12 +6918,12 @@ void __92__PUOneUpViewController__assetsToPrefetchUsingDataSource_startingAt_cou
       objc_copyWeak(&v10, &location);
       dispatch_sync(MEMORY[0x1E69E96A0], block);
       v4 = objc_loadWeakRetained(&location);
-      v5 = [v4 browsingSession];
-      v6 = [v5 viewModel];
+      browsingSession = [v4 browsingSession];
+      viewModel = [browsingSession viewModel];
 
-      v7 = [v6 spatialOverlayController];
-      v8 = [v12[5] array];
-      [v7 prepareOverlayViewForAssets:v8];
+      spatialOverlayController = [viewModel spatialOverlayController];
+      array = [v12[5] array];
+      [spatialOverlayController prepareOverlayViewForAssets:array];
 
       objc_destroyWeak(&v10);
       _Block_object_dispose(&v11, 8);
@@ -6944,10 +6944,10 @@ void __59__PUOneUpViewController__preheatAssetsForSpatialGeneration__block_invok
 
 - (void)_preheatAdjacentAssetsForPhotosDetailsContext
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  if (-[PUOneUpViewController appearState](self, "appearState") == 2 && [v4 browsingSpeedRegime] <= 0 && (objc_msgSend(v4, "isScrubbing") & 1) == 0)
+  if (-[PUOneUpViewController appearState](self, "appearState") == 2 && [viewModel browsingSpeedRegime] <= 0 && (objc_msgSend(viewModel, "isScrubbing") & 1) == 0)
   {
     objc_initWeak(&location, self);
     preheatAssetsQueue = self->_preheatAssetsQueue;
@@ -6999,10 +6999,10 @@ void __70__PUOneUpViewController__preheatAdjacentAssetsForPhotosDetailsContext__
 
 - (void)_updatePocketBias
 {
-  v3 = [(PUOneUpViewController *)self _isZoomedIn];
-  v4 = [(PUOneUpViewController *)self _tilingView];
-  v6 = v4;
-  if (v3)
+  _isZoomedIn = [(PUOneUpViewController *)self _isZoomedIn];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  v6 = _tilingView;
+  if (_isZoomedIn)
   {
     v5 = 2;
   }
@@ -7012,14 +7012,14 @@ void __70__PUOneUpViewController__preheatAdjacentAssetsForPhotosDetailsContext__
     v5 = 0;
   }
 
-  [v4 px_setPocketPreferredUserInterfaceStyleForAllEdges:v5];
+  [_tilingView px_setPocketPreferredUserInterfaceStyleForAllEdges:v5];
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 currentAssetDidChange])
+  modelCopy = model;
+  changeCopy = change;
+  if ([changeCopy currentAssetDidChange])
   {
     [(PUOneUpViewController *)self _invalidateAssetActionManager];
     [(PUOneUpViewController *)self _invalidateBarsControllers];
@@ -7027,33 +7027,33 @@ void __70__PUOneUpViewController__preheatAdjacentAssetsForPhotosDetailsContext__
     [(PUOneUpViewController *)self _invalidateScrubbingAdjustmentPolicy];
   }
 
-  if ([v7 isPresentedForPreviewDidChange])
+  if ([changeCopy isPresentedForPreviewDidChange])
   {
     [(PUOneUpViewController *)self _isPresentedForPreviewDidChange];
   }
 
-  if ([v7 imageAnalysisInteractionDidChange])
+  if ([changeCopy imageAnalysisInteractionDidChange])
   {
     [(PUOneUpViewController *)self _invalidateImageAnalysisInteractionAdditionalActionInfoEdgeInsets];
     [(PUOneUpViewController *)self _updateImageAnalysisInteractionDelegate];
   }
 
-  if ([MEMORY[0x1E69C3640] isOneUpRefreshEnabled] && objc_msgSend(v7, "contentPrivacyStateDidChange") && objc_msgSend(v6, "contentPrivacyState") == 1)
+  if ([MEMORY[0x1E69C3640] isOneUpRefreshEnabled] && objc_msgSend(changeCopy, "contentPrivacyStateDidChange") && objc_msgSend(modelCopy, "contentPrivacyState") == 1)
   {
     PXUIApplicationUpdateSnapshotForBackgroundApplication();
   }
 
-  v8 = [(PUOneUpViewController *)self _tilingView];
-  v9 = v8;
-  if (v8)
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  v9 = _tilingView;
+  if (_tilingView)
   {
-    v10 = [v8 layout];
+    layout = [_tilingView layout];
     v11 = objc_opt_class();
     if (v11)
     {
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = layout;
       }
 
       else
@@ -7064,29 +7064,29 @@ void __70__PUOneUpViewController__preheatAdjacentAssetsForPhotosDetailsContext__
 
     v12 = v11;
 
-    v13 = [(PUOneUpViewController *)self browsingSession];
-    v14 = [v13 viewModel];
-    v56 = [v14 assetsDataSource];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    assetsDataSource = [viewModel assetsDataSource];
 
-    v15 = [v6 currentAssetReference];
-    v57 = v6;
-    v54 = v15;
-    if (([v7 assetsDataSourceDidChange] & 1) != 0 || (objc_msgSend(v12, "dataSource"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", v56), v16, (v17 & 1) == 0))
+    currentAssetReference = [modelCopy currentAssetReference];
+    v57 = modelCopy;
+    v54 = currentAssetReference;
+    if (([changeCopy assetsDataSourceDidChange] & 1) != 0 || (objc_msgSend(v12, "dataSource"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", assetsDataSource), v16, (v17 & 1) == 0))
     {
-      v20 = [(PUOneUpViewController *)self _newOneUpLayout];
+      _newOneUpLayout = [(PUOneUpViewController *)self _newOneUpLayout];
 
-      v21 = [v6 assetViewModelForAssetReference:v15];
-      v22 = [(PUOneUpViewController *)self assetUUIDsWithDisplayedContentUpdates];
-      v23 = [v21 asset];
-      v24 = [v23 uuid];
-      v25 = [v22 containsObject:v24];
+      v21 = [modelCopy assetViewModelForAssetReference:currentAssetReference];
+      assetUUIDsWithDisplayedContentUpdates = [(PUOneUpViewController *)self assetUUIDsWithDisplayedContentUpdates];
+      asset = [v21 asset];
+      uuid = [asset uuid];
+      v25 = [assetUUIDsWithDisplayedContentUpdates containsObject:uuid];
 
       if (v25)
       {
         v26 = objc_alloc_init(PUTilingLayoutTransitionContext);
         [(PUTilingLayoutTransitionContext *)v26 setIsUpdatingDisplayedContent:1];
-        v27 = [v21 displayedContentUpdateGroup];
-        [(PUTilingLayoutTransitionContext *)v26 setDisplayedContentUpdateGroup:v27];
+        displayedContentUpdateGroup = [v21 displayedContentUpdateGroup];
+        [(PUTilingLayoutTransitionContext *)v26 setDisplayedContentUpdateGroup:displayedContentUpdateGroup];
       }
 
       else
@@ -7094,11 +7094,11 @@ void __70__PUOneUpViewController__preheatAdjacentAssetsForPhotosDetailsContext__
         v26 = 0;
       }
 
-      v28 = [(PUOneUpViewController *)self assetUUIDsWithDisplayedContentUpdates];
-      [v28 removeAllObjects];
+      assetUUIDsWithDisplayedContentUpdates2 = [(PUOneUpViewController *)self assetUUIDsWithDisplayedContentUpdates];
+      [assetUUIDsWithDisplayedContentUpdates2 removeAllObjects];
 
-      v19 = v20;
-      [v9 transitionToLayout:v20 withContext:v26 animationSetupCompletionHandler:0];
+      v19 = _newOneUpLayout;
+      [v9 transitionToLayout:_newOneUpLayout withContext:v26 animationSetupCompletionHandler:0];
       v18 = v9;
       [v9 layoutIfNeeded];
       [(PUOneUpViewController *)self _preheatAdjacentAssetsForPhotosDetailsContext];
@@ -7110,7 +7110,7 @@ void __70__PUOneUpViewController__preheatAdjacentAssetsForPhotosDetailsContext__
       v19 = v12;
     }
 
-    v29 = [v7 assetViewModelChangesByAssetReference];
+    assetViewModelChangesByAssetReference = [changeCopy assetViewModelChangesByAssetReference];
     v89 = 0;
     v90 = &v89;
     v91 = 0x2020000000;
@@ -7127,14 +7127,14 @@ void __70__PUOneUpViewController__preheatAdjacentAssetsForPhotosDetailsContext__
     v78 = &v77;
     v79 = 0x2020000000;
     v80 = 0;
-    v30 = [v57 accessoryViewsDefaultVisibility];
+    accessoryViewsDefaultVisibility = [v57 accessoryViewsDefaultVisibility];
     v66[0] = MEMORY[0x1E69E9820];
     v66[1] = 3221225472;
     v66[2] = __45__PUOneUpViewController_viewModel_didChange___block_invoke;
     v66[3] = &unk_1E7B7A048;
     v31 = v57;
     v67 = v31;
-    v76 = v30;
+    v76 = accessoryViewsDefaultVisibility;
     v53 = v19;
     v68 = v53;
     v72 = &v77;
@@ -7142,31 +7142,31 @@ void __70__PUOneUpViewController__preheatAdjacentAssetsForPhotosDetailsContext__
     v69 = v32;
     v52 = v54;
     v70 = v52;
-    v71 = self;
+    selfCopy = self;
     v73 = &v85;
     v74 = &v81;
     v75 = &v89;
-    [v29 enumerateKeysAndObjectsUsingBlock:v66];
-    v50 = v29;
+    [assetViewModelChangesByAssetReference enumerateKeysAndObjectsUsingBlock:v66];
+    v50 = assetViewModelChangesByAssetReference;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __45__PUOneUpViewController_viewModel_didChange___block_invoke_3;
     aBlock[3] = &unk_1E7B80C38;
     v33 = v31;
     v64 = v33;
-    v65 = self;
+    selfCopy2 = self;
     v55 = _Block_copy(aBlock);
     v34 = v53;
     if (*(v86 + 24) == 1)
     {
-      v6 = v57;
+      modelCopy = v57;
       v9 = v18;
       -[PUOneUpViewController setWasChromeVisibleBeforeZoomIn:](self, "setWasChromeVisibleBeforeZoomIn:", [v33 isChromeVisible]);
     }
 
     else
     {
-      v6 = v57;
+      modelCopy = v57;
       v9 = v18;
       if (*(v82 + 24) == 1)
       {
@@ -7187,12 +7187,12 @@ LABEL_29:
           goto LABEL_44;
         }
 
-        if ([v7 currentAssetDidChange])
+        if ([changeCopy currentAssetDidChange])
         {
           if (!v53)
           {
 LABEL_44:
-            if ([v7 chromeVisibilityDidChange])
+            if ([changeCopy chromeVisibilityDidChange])
             {
               [(PUOneUpViewController *)self _invalidateSpec];
               [(PUOneUpViewController *)self _updatePrefersHomeIndicatorHidden];
@@ -7201,17 +7201,17 @@ LABEL_44:
               [(PUOneUpViewController *)self _updateGestureController];
             }
 
-            if ([v7 isInteractingWithVideoScrubberDidChange])
+            if ([changeCopy isInteractingWithVideoScrubberDidChange])
             {
               [(PUOneUpViewController *)self _invalidateLayout];
             }
 
-            if ([v7 secondScreenSizeDidChange] && !-[PUOneUpViewController _isPresentedForSecondScreen](self, "_isPresentedForSecondScreen"))
+            if ([changeCopy secondScreenSizeDidChange] && !-[PUOneUpViewController _isPresentedForSecondScreen](self, "_isPresentedForSecondScreen"))
             {
               [(PUOneUpViewController *)self _invalidateSpec];
             }
 
-            if ([v7 currentAssetDidChange])
+            if ([changeCopy currentAssetDidChange])
             {
               [(PUOneUpViewController *)self _invalidateEditMode];
               [(PUOneUpViewController *)self _invalidatePreferredContentSize];
@@ -7220,17 +7220,17 @@ LABEL_44:
               [(PUOneUpViewController *)self _invalidateCachedBoopableItemProvider];
               if ([(PUOneUpViewController *)self isFloatingInfoPanelPresented])
               {
-                if ([v7 currentAssetTransitionProgressDidChange])
+                if ([changeCopy currentAssetTransitionProgressDidChange])
                 {
                   [(PUOneUpViewController *)self _dimFloatingInfoPanelAnimated:1];
                   objc_initWeak(&location, self);
-                  v47 = [MEMORY[0x1E69C45A8] sharedScheduler];
+                  mEMORY[0x1E69C45A8] = [MEMORY[0x1E69C45A8] sharedScheduler];
                   v60[0] = MEMORY[0x1E69E9820];
                   v60[1] = 3221225472;
                   v60[2] = __45__PUOneUpViewController_viewModel_didChange___block_invoke_5;
                   v60[3] = &unk_1E7B80638;
                   objc_copyWeak(&v61, &location);
-                  [v47 dispatchOnMainThreadWhenNotScrolling:v60];
+                  [mEMORY[0x1E69C45A8] dispatchOnMainThreadWhenNotScrolling:v60];
 
                   objc_destroyWeak(&v61);
                   objc_destroyWeak(&location);
@@ -7246,36 +7246,36 @@ LABEL_44:
               [(PUOneUpViewController *)self _preheatAdjacentAssetsForPhotosDetailsContext];
             }
 
-            if ([v7 presentingOverOneUpDidChange])
+            if ([changeCopy presentingOverOneUpDidChange])
             {
               [(PUOneUpViewController *)self _invalidateVideoPlayer];
             }
 
-            if ([v7 browsingSpeedRegimeDidChange])
+            if ([changeCopy browsingSpeedRegimeDidChange])
             {
               [(PUOneUpViewController *)self _invalidatePreloadInsets];
               [(PUOneUpViewController *)self _preheatAdjacentAssetsForPhotosDetailsContext];
             }
 
-            if (([v7 currentAssetDidChange] & 1) != 0 || objc_msgSend(v7, "currentAssetTransitionProgressDidChange"))
+            if (([changeCopy currentAssetDidChange] & 1) != 0 || objc_msgSend(changeCopy, "currentAssetTransitionProgressDidChange"))
             {
               [(PUOneUpViewController *)self px_setNeedsHDRFocusUpdate];
             }
 
-            if ([v7 reviewScreenBarsModelDidChange])
+            if ([changeCopy reviewScreenBarsModelDidChange])
             {
               [(PUOneUpViewController *)self _updateReviewScreenBars];
             }
 
-            if (([v7 videoOverlayPlayStateDidChange] & 1) != 0 || objc_msgSend(v7, "isScrubbingActivationDidChange"))
+            if (([changeCopy videoOverlayPlayStateDidChange] & 1) != 0 || objc_msgSend(changeCopy, "isScrubbingActivationDidChange"))
             {
               [(PUOneUpViewController *)self _invalidateLayout];
             }
 
-            if ([v7 isScrubbingDidChange])
+            if ([changeCopy isScrubbingDidChange])
             {
-              v48 = [(PUOneUpViewController *)self _currentAssetViewModel];
-              if ([v48 isAccessoryViewVisible] && -[PUOneUpViewController _prefersFloatingInfoPanel](self, "_prefersFloatingInfoPanel"))
+              _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+              if ([_currentAssetViewModel isAccessoryViewVisible] && -[PUOneUpViewController _prefersFloatingInfoPanel](self, "_prefersFloatingInfoPanel"))
               {
                 if ([v33 isScrubbing])
                 {
@@ -7300,31 +7300,31 @@ LABEL_44:
               [(PUOneUpViewController *)self _preheatAdjacentAssetsForPhotosDetailsContext];
             }
 
-            if ([v7 contentPrivacyStateDidChange])
+            if ([changeCopy contentPrivacyStateDidChange])
             {
               [(PUOneUpViewController *)self _invalidateSpec];
               [(PUOneUpViewController *)self _invalidateUserActivity];
               [(PUOneUpViewController *)self _invalidateBarsControllers];
               if ([v33 contentPrivacyState] == 1)
               {
-                v49 = [v33 videoPlayer];
+                videoPlayer = [v33 videoPlayer];
                 v58[0] = MEMORY[0x1E69E9820];
                 v58[1] = 3221225472;
                 v58[2] = __45__PUOneUpViewController_viewModel_didChange___block_invoke_6;
                 v58[3] = &unk_1E7B80DD0;
                 v59 = v33;
-                [v49 performChanges:v58];
+                [videoPlayer performChanges:v58];
 
                 [(PUOneUpViewController *)self _dismissFloatingInfoPanelAnimated:0];
               }
             }
 
-            if (([v7 systemAuthenticationTypeDidChange] & 1) != 0 || objc_msgSend(v7, "wantsContentUnavailableUnlockButtonVisibleDidChange"))
+            if (([changeCopy systemAuthenticationTypeDidChange] & 1) != 0 || objc_msgSend(changeCopy, "wantsContentUnavailableUnlockButtonVisibleDidChange"))
             {
               [(PUOneUpViewController *)self _setNeedsUpdateContentUnavailableConfiguration];
             }
 
-            if ([v7 isInSelectionModeDidChange])
+            if ([changeCopy isInSelectionModeDidChange])
             {
               [(PUOneUpViewController *)self _invalidateLayout];
             }
@@ -7340,10 +7340,10 @@ LABEL_44:
 
         else
         {
-          v35 = [v7 currentAssetTransitionProgressDidChange];
+          currentAssetTransitionProgressDidChange = [changeCopy currentAssetTransitionProgressDidChange];
           if (v53)
           {
-            v36 = v35;
+            v36 = currentAssetTransitionProgressDidChange;
           }
 
           else
@@ -7357,19 +7357,19 @@ LABEL_44:
           }
         }
 
-        v37 = [v33 currentAssetReference];
-        v38 = [v56 indexPathForAssetReference:v37];
+        currentAssetReference2 = [v33 currentAssetReference];
+        v38 = [assetsDataSource indexPathForAssetReference:currentAssetReference2];
         if (v38)
         {
           [v33 currentAssetTransitionProgress];
           [v53 visibleRectForItemAtIndexPath:v38 transitionProgress:?];
           v40 = v39;
           v42 = v41;
-          v43 = [v53 coordinateSystem];
-          v44 = [v32 contentCoordinateSystem];
-          if (PUCanConvertFromCoordinateSystemToCoordinateSystem(v43, v44))
+          coordinateSystem = [v53 coordinateSystem];
+          contentCoordinateSystem = [v32 contentCoordinateSystem];
+          if (PUCanConvertFromCoordinateSystemToCoordinateSystem(coordinateSystem, contentCoordinateSystem))
           {
-            v45 = PUConvertPointFromCoordinateSystemToCoordinateSystem(v43, v44, v40, v42);
+            v45 = PUConvertPointFromCoordinateSystemToCoordinateSystem(coordinateSystem, contentCoordinateSystem, v40, v42);
             [v32 setContentOffset:objc_msgSend(v33 animated:{"assetChangesShouldAnimate"), v45, v46}];
             [v32 px_cancelScrollGesture];
           }
@@ -7795,11 +7795,11 @@ uint64_t __45__PUOneUpViewController_viewModel_didChange___block_invoke_2(uint64
   return result;
 }
 
-- (double)tilingViewControllerTransitionProgressAtWhichChromeIsFullyFadedOut:(id)a3
+- (double)tilingViewControllerTransitionProgressAtWhichChromeIsFullyFadedOut:(id)out
 {
-  v3 = [MEMORY[0x1E69C3640] isOneUpRefreshEnabled];
+  isOneUpRefreshEnabled = [MEMORY[0x1E69C3640] isOneUpRefreshEnabled];
   result = 1.0;
-  if (v3)
+  if (isOneUpRefreshEnabled)
   {
     return 0.25;
   }
@@ -7807,22 +7807,22 @@ uint64_t __45__PUOneUpViewController_viewModel_didChange___block_invoke_2(uint64
   return result;
 }
 
-- (void)tilingViewControllerTransition:(id)a3 adoptTilingView:(id)a4 fromEndPoint:(id)a5 isCancelingTransition:(BOOL)a6 animationSetupCompletionHandler:(id)a7
+- (void)tilingViewControllerTransition:(id)transition adoptTilingView:(id)view fromEndPoint:(id)point isCancelingTransition:(BOOL)cancelingTransition animationSetupCompletionHandler:(id)handler
 {
-  v30 = a6;
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = [(PUOneUpViewController *)self _tilingView];
+  cancelingTransitionCopy = cancelingTransition;
+  viewCopy = view;
+  pointCopy = point;
+  handlerCopy = handler;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
 
-  if (v14)
+  if (_tilingView)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    v29 = [(PUOneUpViewController *)self _tilingView];
-    [v28 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:3683 description:{@"adopting tiling %@ from %@ will override current tiling view %@", v11, v12, v29}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    _tilingView2 = [(PUOneUpViewController *)self _tilingView];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:3683 description:{@"adopting tiling %@ from %@ will override current tiling view %@", viewCopy, pointCopy, _tilingView2}];
   }
 
-  [(PUOneUpViewController *)self _setTilingView:v11];
+  [(PUOneUpViewController *)self _setTilingView:viewCopy];
   tilingView = self->__tilingView;
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
@@ -7830,10 +7830,10 @@ uint64_t __45__PUOneUpViewController_viewModel_didChange___block_invoke_2(uint64
   v34[3] = &unk_1E7B7A020;
   v34[4] = self;
   [(PUTilingView *)tilingView enumerateAllTileControllersUsingBlock:v34];
-  v16 = [v11 layout];
+  layout = [viewCopy layout];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v17 = v16;
+    v17 = layout;
   }
 
   else
@@ -7841,47 +7841,47 @@ uint64_t __45__PUOneUpViewController_viewModel_didChange___block_invoke_2(uint64
     v17 = 0;
   }
 
-  v18 = [(PUOneUpViewController *)self browsingSession];
-  v19 = [v18 viewModel];
-  v20 = [v19 assetsDataSource];
-  v21 = [v17 assetReference];
-  v22 = [v20 assetReferenceForAssetReference:v21];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
+  assetReference = [v17 assetReference];
+  v22 = [assetsDataSource assetReferenceForAssetReference:assetReference];
 
   if (v22)
   {
-    v23 = [(PUOneUpViewController *)self browsingSession];
-    v24 = [v23 viewModel];
+    browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+    viewModel2 = [browsingSession2 viewModel];
 
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __139__PUOneUpViewController_tilingViewControllerTransition_adoptTilingView_fromEndPoint_isCancelingTransition_animationSetupCompletionHandler___block_invoke_2;
     v31[3] = &unk_1E7B80C38;
-    v32 = v24;
+    v32 = viewModel2;
     v33 = v22;
-    v25 = v24;
+    v25 = viewModel2;
     [v25 performChanges:v31];
   }
 
-  v26 = [(PUOneUpViewController *)self _newOneUpLayout];
+  _newOneUpLayout = [(PUOneUpViewController *)self _newOneUpLayout];
   v27 = objc_alloc_init(PUTilingLayoutTransitionContext);
   [(PUTilingLayoutTransitionContext *)v27 setIsViewControllerTransition:1];
-  [(PUTilingLayoutTransitionContext *)v27 setCancelingTransition:v30];
-  [v11 transitionToLayout:v26 withContext:v27 animationSetupCompletionHandler:v13];
+  [(PUTilingLayoutTransitionContext *)v27 setCancelingTransition:cancelingTransitionCopy];
+  [viewCopy transitionToLayout:_newOneUpLayout withContext:v27 animationSetupCompletionHandler:handlerCopy];
 
-  [v11 layoutIfNeeded];
+  [viewCopy layoutIfNeeded];
 }
 
-- (void)tilingViewControllerTransition:(id)a3 abandonTilingView:(id)a4 toEndPoint:(id)a5
+- (void)tilingViewControllerTransition:(id)transition abandonTilingView:(id)view toEndPoint:(id)point
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PUOneUpViewController *)self _tilingView];
+  viewCopy = view;
+  pointCopy = point;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
 
-  if (v10 != v8)
+  if (_tilingView != viewCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    v12 = [(PUOneUpViewController *)self _tilingView];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:3673 description:{@"tiling view %@ to abandon to %@ isn't the current tiling view %@", v8, v9, v12}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    _tilingView2 = [(PUOneUpViewController *)self _tilingView];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:3673 description:{@"tiling view %@ to abandon to %@ isn't the current tiling view %@", viewCopy, pointCopy, _tilingView2}];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -7889,71 +7889,71 @@ uint64_t __45__PUOneUpViewController_viewModel_didChange___block_invoke_2(uint64
   v13[2] = __85__PUOneUpViewController_tilingViewControllerTransition_abandonTilingView_toEndPoint___block_invoke;
   v13[3] = &unk_1E7B7A020;
   v13[4] = self;
-  [v8 enumerateAllTileControllersUsingBlock:v13];
+  [viewCopy enumerateAllTileControllersUsingBlock:v13];
   [(PUOneUpViewController *)self _setTilingView:0];
 }
 
-- (id)tilingViewControllerTransition:(id)a3 tilingViewToTransferToEndPoint:(id)a4
+- (id)tilingViewControllerTransition:(id)transition tilingViewToTransferToEndPoint:(id)point
 {
-  v6 = a4;
-  v7 = [(PUOneUpViewController *)self _tilingView];
-  if (!v7)
+  pointCopy = point;
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  if (!_tilingView)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:3668 description:{@"no tiling view to transfer to %@", v6}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:3668 description:{@"no tiling view to transfer to %@", pointCopy}];
   }
 
-  return v7;
+  return _tilingView;
 }
 
-- (void)_editCrop:(id)a3
+- (void)_editCrop:(id)crop
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:26];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:26];
 }
 
-- (void)_editCleanup:(id)a3
+- (void)_editCleanup:(id)cleanup
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:24];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:24];
 }
 
-- (void)_editStyles:(id)a3
+- (void)_editStyles:(id)styles
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:25];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:25];
 }
 
-- (void)_editFilter:(id)a3
+- (void)_editFilter:(id)filter
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:23];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:23];
 }
 
-- (void)_editAdjust:(id)a3
+- (void)_editAdjust:(id)adjust
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:16];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:16];
 }
 
-- (void)_arrowKey:(id)a3
+- (void)_arrowKey:(id)key
 {
-  v12 = a3;
-  v4 = [(PUOneUpViewController *)self viewIfLoaded];
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  viewIfLoaded = [(PUOneUpViewController *)self viewIfLoaded];
+  v5 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    v6 = [v4 effectiveUserInterfaceLayoutDirection];
-    v7 = [v12 input];
-    v8 = [v7 isEqualToString:*MEMORY[0x1E69DDF28]];
+    effectiveUserInterfaceLayoutDirection = [viewIfLoaded effectiveUserInterfaceLayoutDirection];
+    input = [keyCopy input];
+    v8 = [input isEqualToString:*MEMORY[0x1E69DDF28]];
 
     if (v8)
     {
-      v9 = [(PUOneUpViewController *)self actionsController];
-      if (v6 == 1)
+      actionsController = [(PUOneUpViewController *)self actionsController];
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
 LABEL_4:
-        [v9 jumpToPreviousAsset];
+        [actionsController jumpToPreviousAsset];
 LABEL_8:
 
         goto LABEL_9;
@@ -7962,22 +7962,22 @@ LABEL_8:
 
     else
     {
-      v10 = [v12 input];
-      v11 = [v10 isEqualToString:*MEMORY[0x1E69DDF10]];
+      input2 = [keyCopy input];
+      v11 = [input2 isEqualToString:*MEMORY[0x1E69DDF10]];
 
       if (!v11)
       {
         goto LABEL_9;
       }
 
-      v9 = [(PUOneUpViewController *)self actionsController];
-      if (v6 != 1)
+      actionsController = [(PUOneUpViewController *)self actionsController];
+      if (effectiveUserInterfaceLayoutDirection != 1)
       {
         goto LABEL_4;
       }
     }
 
-    [v9 jumpToNextAsset];
+    [actionsController jumpToNextAsset];
     goto LABEL_8;
   }
 
@@ -8033,10 +8033,10 @@ LABEL_9:
     v13 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDEA0] modifierFlags:0 action:sel_toggleViewer_];
     [v6 addObject:v13];
 
-    v14 = [(PUOneUpViewController *)self _currentAssetViewModel];
-    v15 = [v14 asset];
+    _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+    asset = [_currentAssetViewModel asset];
 
-    v16 = v15;
+    v16 = asset;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v17 = v16;
@@ -8047,8 +8047,8 @@ LABEL_9:
       v17 = 0;
     }
 
-    v18 = [v17 isSpatialMedia];
-    if ((v18 & 1) == 0)
+    isSpatialMedia = [v17 isSpatialMedia];
+    if ((isSpatialMedia & 1) == 0)
     {
       v19 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"a" modifierFlags:0 action:sel__editAdjust_];
       [v6 addObject:v19];
@@ -8064,10 +8064,10 @@ LABEL_9:
         v21 = 0;
       }
 
-      v22 = [v21 fetchSmartStyleExtendedProperties];
+      fetchSmartStyleExtendedProperties = [v21 fetchSmartStyleExtendedProperties];
 
-      v23 = [v22 originallySmartStyleable];
-      if (v23)
+      originallySmartStyleable = [fetchSmartStyleExtendedProperties originallySmartStyleable];
+      if (originallySmartStyleable)
       {
         v24 = @"s";
       }
@@ -8078,7 +8078,7 @@ LABEL_9:
       }
 
       v25 = &selRef__editStyles_;
-      if (!v23)
+      if (!originallySmartStyleable)
       {
         v25 = &selRef__editFilter_;
       }
@@ -8104,61 +8104,61 @@ LABEL_9:
 
 - (BOOL)_canAdvertiseKeyCommands
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 isPresentingOverOneUp];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  isPresentingOverOneUp = [viewModel isPresentingOverOneUp];
 
-  v6 = [(PUOneUpViewController *)self browsingSession];
-  v7 = [v6 viewModel];
-  v8 = [v7 assetViewModelForCurrentAssetReference];
-  v9 = [v8 isInEditMode];
+  browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+  viewModel2 = [browsingSession2 viewModel];
+  assetViewModelForCurrentAssetReference = [viewModel2 assetViewModelForCurrentAssetReference];
+  isInEditMode = [assetViewModelForCurrentAssetReference isInEditMode];
 
-  return ((v5 | v9) & 1) == 0;
+  return ((isPresentingOverOneUp | isInEditMode) & 1) == 0;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:33];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:33];
 }
 
-- (void)print:(id)a3
+- (void)print:(id)print
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:34];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:34];
 }
 
-- (void)addAssetsToLastUsedAlbum:(id)a3
+- (void)addAssetsToLastUsedAlbum:(id)album
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:64];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:64];
 }
 
-- (void)addAssetsToAlbum:(id)a3
+- (void)addAssetsToAlbum:(id)album
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:63];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:63];
 }
 
-- (void)duplicateAssets:(id)a3
+- (void)duplicateAssets:(id)assets
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
-  v6 = [v5 currentAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  if (v6 && ([v6 assetCollection], (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, objc_msgSend(v6, "asset"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  if (currentAssetReference && ([currentAssetReference assetCollection], (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, objc_msgSend(currentAssetReference, "asset"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
-    v10 = [v6 assetCollection];
-    v17 = v10;
-    v11 = [v6 asset];
-    v16 = v11;
+    assetCollection = [currentAssetReference assetCollection];
+    v17 = assetCollection;
+    asset = [currentAssetReference asset];
+    v16 = asset;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
     v18[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
 
-    v14 = [(PUOneUpViewController *)self actionsController];
-    [v14 performDuplicateActionWithAssetsByAssetCollection:v13];
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    [actionsController performDuplicateActionWithAssetsByAssetCollection:v13];
   }
 
   else
@@ -8172,43 +8172,43 @@ LABEL_9:
   }
 }
 
-- (void)favoriteAssets:(id)a3
+- (void)favoriteAssets:(id)assets
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performToggleFavoriteAction];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performToggleFavoriteAction];
 }
 
-- (void)hideAssets:(id)a3
+- (void)hideAssets:(id)assets
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:40];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:40];
 }
 
-- (void)deleteAssets:(id)a3
+- (void)deleteAssets:(id)assets
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:10];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:10];
 }
 
-- (void)restoreAssetsWithoutConfirmation:(id)a3
+- (void)restoreAssetsWithoutConfirmation:(id)confirmation
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:14];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:14];
 }
 
-- (void)restoreAssets:(id)a3
+- (void)restoreAssets:(id)assets
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:13];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:13];
 }
 
-- (void)trashAssetsWithoutConfirmation:(id)a3
+- (void)trashAssetsWithoutConfirmation:(id)confirmation
 {
-  v4 = [(PUOneUpViewController *)self actionsController];
-  v5 = [v4 canPerformSimpleActionWithActionType:9];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  v5 = [actionsController canPerformSimpleActionWithActionType:9];
 
-  v6 = [(PUOneUpViewController *)self actionsController];
-  v9 = v6;
+  actionsController2 = [(PUOneUpViewController *)self actionsController];
+  v9 = actionsController2;
   if (v5)
   {
     v7 = 9;
@@ -8216,10 +8216,10 @@ LABEL_9:
 
   else
   {
-    v8 = [v6 canPerformSimpleActionWithActionType:58];
+    v8 = [actionsController2 canPerformSimpleActionWithActionType:58];
 
-    v6 = [(PUOneUpViewController *)self actionsController];
-    v9 = v6;
+    actionsController2 = [(PUOneUpViewController *)self actionsController];
+    v9 = actionsController2;
     if (v8)
     {
       v7 = 58;
@@ -8231,16 +8231,16 @@ LABEL_9:
     }
   }
 
-  [v6 performSimpleActionWithActionType:v7];
+  [actionsController2 performSimpleActionWithActionType:v7];
 }
 
-- (void)trashAssets:(id)a3
+- (void)trashAssets:(id)assets
 {
-  v4 = [(PUOneUpViewController *)self actionsController];
-  v5 = [v4 canPerformSimpleActionWithActionType:1];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  v5 = [actionsController canPerformSimpleActionWithActionType:1];
 
-  v6 = [(PUOneUpViewController *)self actionsController];
-  v10 = v6;
+  actionsController2 = [(PUOneUpViewController *)self actionsController];
+  v10 = actionsController2;
   if (v5)
   {
     v7 = 1;
@@ -8248,10 +8248,10 @@ LABEL_9:
 
   else
   {
-    v8 = [v6 canPerformSimpleActionWithActionType:8];
+    v8 = [actionsController2 canPerformSimpleActionWithActionType:8];
 
-    v6 = [(PUOneUpViewController *)self actionsController];
-    v10 = v6;
+    actionsController2 = [(PUOneUpViewController *)self actionsController];
+    v10 = actionsController2;
     if (v8)
     {
       v7 = 8;
@@ -8259,10 +8259,10 @@ LABEL_9:
 
     else
     {
-      v9 = [v6 canPerformSimpleActionWithActionType:57];
+      v9 = [actionsController2 canPerformSimpleActionWithActionType:57];
 
-      v6 = [(PUOneUpViewController *)self actionsController];
-      v10 = v6;
+      actionsController2 = [(PUOneUpViewController *)self actionsController];
+      v10 = actionsController2;
       if (v9)
       {
         v7 = 57;
@@ -8275,52 +8275,52 @@ LABEL_9:
     }
   }
 
-  [v6 performSimpleActionWithActionType:v7];
+  [actionsController2 performSimpleActionWithActionType:v7];
 }
 
-- (void)shareAssets:(id)a3
+- (void)shareAssets:(id)assets
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:35];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:35];
 }
 
-- (void)revertAdjustments:(id)a3
+- (void)revertAdjustments:(id)adjustments
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:22];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:22];
 }
 
-- (void)pasteAdjustments:(id)a3
+- (void)pasteAdjustments:(id)adjustments
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:21];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:21];
 }
 
-- (void)copyAdjustments:(id)a3
+- (void)copyAdjustments:(id)adjustments
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:19];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:19];
 }
 
-- (void)autoEnhanceAssets:(id)a3
+- (void)autoEnhanceAssets:(id)assets
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:17];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:17];
 }
 
-- (void)rotateAssetsClockwise:(id)a3
+- (void)rotateAssetsClockwise:(id)clockwise
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:28];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:28];
 }
 
-- (void)rotateAssetsCounterclockwise:(id)a3
+- (void)rotateAssetsCounterclockwise:(id)counterclockwise
 {
-  v4 = [(PUOneUpViewController *)self actionsController];
-  v5 = [v4 canPerformSimpleActionWithActionType:13];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  v5 = [actionsController canPerformSimpleActionWithActionType:13];
 
-  v6 = [(PUOneUpViewController *)self actionsController];
-  v8 = v6;
+  actionsController2 = [(PUOneUpViewController *)self actionsController];
+  v8 = actionsController2;
   if (v5)
   {
     v7 = 13;
@@ -8331,40 +8331,40 @@ LABEL_9:
     v7 = 27;
   }
 
-  [v6 performSimpleActionWithActionType:v7];
+  [actionsController2 performSimpleActionWithActionType:v7];
 }
 
-- (void)adjustLocation:(id)a3
+- (void)adjustLocation:(id)location
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:32];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:32];
 }
 
-- (void)adjustDateTime:(id)a3
+- (void)adjustDateTime:(id)time
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:31];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:31];
 }
 
-- (void)toggleEditor:(id)a3
+- (void)toggleEditor:(id)editor
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 performSimpleActionWithActionType:15];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController performSimpleActionWithActionType:15];
 }
 
-- (void)togglePlayback:(id)a3
+- (void)togglePlayback:(id)playback
 {
-  v3 = [(PUOneUpViewController *)self actionsController];
-  [v3 togglePlayback];
+  actionsController = [(PUOneUpViewController *)self actionsController];
+  [actionsController togglePlayback];
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v19 = a3;
-  if ([v19 action] == sel_toggleViewer_)
+  commandCopy = command;
+  if ([commandCopy action] == sel_toggleViewer_)
   {
-    v5 = [v19 title];
-    v6 = [v5 length];
+    title = [commandCopy title];
+    v6 = [title length];
 
     if (v6)
     {
@@ -8372,28 +8372,28 @@ LABEL_9:
     }
   }
 
-  if ([v19 action] != sel_toggleInspector_)
+  if ([commandCopy action] != sel_toggleInspector_)
   {
-    if ([v19 action] == sel_togglePlayback_)
+    if ([commandCopy action] == sel_togglePlayback_)
     {
-      v7 = [(PUOneUpViewController *)self _currentAssetViewModel];
-      v8 = [v7 videoPlayer];
-      [v8 isPlaybackDesired];
+      _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+      videoPlayer = [_currentAssetViewModel videoPlayer];
+      [videoPlayer isPlaybackDesired];
     }
 
     else
     {
-      if ([v19 action] != sel_hideAssets_)
+      if ([commandCopy action] != sel_hideAssets_)
       {
-        if ([v19 action] != sel_addAssetsToLastUsedAlbum_)
+        if ([commandCopy action] != sel_addAssetsToLastUsedAlbum_)
         {
-          if ([v19 action] == sel_favoriteAssets_)
+          if ([commandCopy action] == sel_favoriteAssets_)
           {
-            v13 = [(PUOneUpViewController *)self _currentAssetViewModel];
-            v14 = [v13 asset];
-            v15 = [v14 isFavorite];
+            _currentAssetViewModel2 = [(PUOneUpViewController *)self _currentAssetViewModel];
+            asset = [_currentAssetViewModel2 asset];
+            isFavorite = [asset isFavorite];
 
-            if (v15)
+            if (isFavorite)
             {
               v16 = @"heart.slash";
             }
@@ -8404,35 +8404,35 @@ LABEL_9:
             }
 
             v17 = [MEMORY[0x1E69DCAB8] systemImageNamed:v16];
-            [v19 setImage:v17];
+            [commandCopy setImage:v17];
           }
 
-          else if ([v19 action] == sel_rotateAssetsCounterclockwise_)
+          else if ([commandCopy action] == sel_rotateAssetsCounterclockwise_)
           {
-            v18 = [(PUOneUpViewController *)self actionsController];
-            [v18 canPerformSimpleActionWithActionType:13];
+            actionsController = [(PUOneUpViewController *)self actionsController];
+            [actionsController canPerformSimpleActionWithActionType:13];
           }
 
           else
           {
-            if ([v19 action] != sel_trashAssetsWithoutConfirmation_)
+            if ([commandCopy action] != sel_trashAssetsWithoutConfirmation_)
             {
               goto LABEL_19;
             }
 
-            v4 = [(PUOneUpViewController *)self actionsController];
-            [v4 canPerformSimpleActionWithActionType:8];
+            actionsController2 = [(PUOneUpViewController *)self actionsController];
+            [actionsController2 canPerformSimpleActionWithActionType:8];
           }
 
           goto LABEL_13;
         }
 
-        v10 = [(PUOneUpViewController *)self _currentAssetViewModel];
-        v11 = [v10 asset];
+        _currentAssetViewModel3 = [(PUOneUpViewController *)self _currentAssetViewModel];
+        asset2 = [_currentAssetViewModel3 asset];
 
         if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
         {
-          v12 = v11;
+          v12 = asset2;
         }
 
         else
@@ -8440,46 +8440,46 @@ LABEL_9:
           v12 = 0;
         }
 
-        v7 = [v12 photoLibrary];
+        _currentAssetViewModel = [v12 photoLibrary];
 
-        v8 = [MEMORY[0x1E69C3320] commandTitleWithPhotoLibrary:v7];
-        [v19 setTitle:v8];
+        videoPlayer = [MEMORY[0x1E69C3320] commandTitleWithPhotoLibrary:_currentAssetViewModel];
+        [commandCopy setTitle:videoPlayer];
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v7 = [(PUOneUpViewController *)self _currentAssetViewModel];
-      v8 = [v7 asset];
-      [v8 isHidden];
+      _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+      videoPlayer = [_currentAssetViewModel asset];
+      [videoPlayer isHidden];
     }
 
     v9 = PXLocalizedString();
-    [v19 setTitle:v9];
+    [commandCopy setTitle:v9];
 
     goto LABEL_17;
   }
 
   [(PUOneUpViewController *)self _isAccessoryVisible];
 LABEL_13:
-  v7 = PXLocalizedString();
-  [v19 setTitle:v7];
+  _currentAssetViewModel = PXLocalizedString();
+  [commandCopy setTitle:_currentAssetViewModel];
 LABEL_18:
 
 LABEL_19:
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel__arrowKey_ == a3)
+  senderCopy = sender;
+  if (sel__arrowKey_ == action)
   {
-    v7 = [(PUOneUpViewController *)self browsingSession];
-    v8 = [v7 viewModel];
-    v9 = [v8 assetViewModelForCurrentAssetReference];
-    v10 = [v9 isInEditMode];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    assetViewModelForCurrentAssetReference = [viewModel assetViewModelForCurrentAssetReference];
+    isInEditMode = [assetViewModelForCurrentAssetReference isInEditMode];
 
-    if (v10)
+    if (isInEditMode)
     {
       goto LABEL_33;
     }
@@ -8487,7 +8487,7 @@ LABEL_19:
     goto LABEL_31;
   }
 
-  if (sel_toggleInspector_ == a3)
+  if (sel_toggleInspector_ == action)
   {
     if (![(PUOneUpViewController *)self _isAccessoryAvailableForCurrentAsset])
     {
@@ -8497,22 +8497,22 @@ LABEL_19:
     goto LABEL_31;
   }
 
-  if (sel_togglePlayback_ == a3)
+  if (sel_togglePlayback_ == action)
   {
-    v11 = [(PUOneUpViewController *)self _barsController];
-    v12 = [v11 allowShowingPlayPauseButton];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    allowShowingPlayPauseButton = [_barsController allowShowingPlayPauseButton];
     goto LABEL_30;
   }
 
-  if (sel_toggleEditor_ == a3)
+  if (sel_toggleEditor_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 15;
 LABEL_29:
-    v12 = [v13 canPerformSimpleActionWithActionType:v14];
+    allowShowingPlayPauseButton = [actionsController canPerformSimpleActionWithActionType:v14];
 LABEL_30:
-    v15 = v12;
+    v15 = allowShowingPlayPauseButton;
 
     if (v15)
     {
@@ -8524,11 +8524,11 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (sel_toggleViewer_ == a3)
+  if (sel_toggleViewer_ == action)
   {
-    v17 = [(PUOneUpViewController *)self presentedViewController];
+    presentedViewController = [(PUOneUpViewController *)self presentedViewController];
 
-    if (!v17)
+    if (!presentedViewController)
     {
       goto LABEL_31;
     }
@@ -8536,177 +8536,177 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  if (sel_rotateAssetsCounterclockwise_ == a3)
+  if (sel_rotateAssetsCounterclockwise_ == action)
   {
-    v19 = [(PUOneUpViewController *)self actionsController];
-    v20 = [v19 canPerformSimpleActionWithActionType:13];
+    actionsController2 = [(PUOneUpViewController *)self actionsController];
+    v20 = [actionsController2 canPerformSimpleActionWithActionType:13];
 
     if (v20)
     {
       goto LABEL_31;
     }
 
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 27;
     goto LABEL_29;
   }
 
-  if (sel_rotateAssetsClockwise_ == a3)
+  if (sel_rotateAssetsClockwise_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 28;
     goto LABEL_29;
   }
 
-  if (sel_shareAssets_ == a3)
+  if (sel_shareAssets_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 35;
     goto LABEL_29;
   }
 
-  if (sel_trashAssets_ == a3)
+  if (sel_trashAssets_ == action)
   {
-    v21 = [(PUOneUpViewController *)self actionsController];
-    v22 = [v21 canPerformSimpleActionWithActionType:1];
+    actionsController3 = [(PUOneUpViewController *)self actionsController];
+    v22 = [actionsController3 canPerformSimpleActionWithActionType:1];
 
     if (v22)
     {
       goto LABEL_31;
     }
 
-    v23 = [(PUOneUpViewController *)self actionsController];
-    v24 = [v23 canPerformSimpleActionWithActionType:10];
+    actionsController4 = [(PUOneUpViewController *)self actionsController];
+    v24 = [actionsController4 canPerformSimpleActionWithActionType:10];
 
     if (v24)
     {
       goto LABEL_31;
     }
 
-    v25 = [(PUOneUpViewController *)self actionsController];
-    v26 = [v25 canPerformSimpleActionWithActionType:8];
+    actionsController5 = [(PUOneUpViewController *)self actionsController];
+    v26 = [actionsController5 canPerformSimpleActionWithActionType:8];
 
     if (v26)
     {
       goto LABEL_31;
     }
 
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 57;
     goto LABEL_29;
   }
 
-  if (sel_trashAssetsWithoutConfirmation_ == a3)
+  if (sel_trashAssetsWithoutConfirmation_ == action)
   {
-    v27 = [(PUOneUpViewController *)self actionsController];
-    v28 = [v27 canPerformSimpleActionWithActionType:9];
+    actionsController6 = [(PUOneUpViewController *)self actionsController];
+    v28 = [actionsController6 canPerformSimpleActionWithActionType:9];
 
     if (v28)
     {
       goto LABEL_31;
     }
 
-    v29 = [(PUOneUpViewController *)self actionsController];
-    v30 = [v29 canPerformSimpleActionWithActionType:10];
+    actionsController7 = [(PUOneUpViewController *)self actionsController];
+    v30 = [actionsController7 canPerformSimpleActionWithActionType:10];
 
     if (v30)
     {
       goto LABEL_31;
     }
 
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 58;
     goto LABEL_29;
   }
 
-  if (sel_hideAssets_ == a3)
+  if (sel_hideAssets_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 40;
     goto LABEL_29;
   }
 
-  if (sel_favoriteAssets_ == a3)
+  if (sel_favoriteAssets_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 44;
     goto LABEL_29;
   }
 
-  if (sel_duplicateAssets_ == a3)
+  if (sel_duplicateAssets_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 41;
     goto LABEL_29;
   }
 
-  if (sel_addAssetsToAlbum_ == a3)
+  if (sel_addAssetsToAlbum_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 63;
     goto LABEL_29;
   }
 
-  if (sel_addAssetsToLastUsedAlbum_ == a3)
+  if (sel_addAssetsToLastUsedAlbum_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 64;
     goto LABEL_29;
   }
 
-  if (sel_print_ == a3)
+  if (sel_print_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 34;
     goto LABEL_29;
   }
 
-  if (sel_copy_ == a3)
+  if (sel_copy_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 33;
     goto LABEL_29;
   }
 
-  if (sel_copyAdjustments_ == a3)
+  if (sel_copyAdjustments_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 19;
     goto LABEL_29;
   }
 
-  if (sel_pasteAdjustments_ == a3)
+  if (sel_pasteAdjustments_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 21;
     goto LABEL_29;
   }
 
-  if (sel_revertAdjustments_ == a3)
+  if (sel_revertAdjustments_ == action)
   {
-    v13 = [(PUOneUpViewController *)self actionsController];
-    v11 = v13;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    _barsController = actionsController;
     v14 = 22;
     goto LABEL_29;
   }
 
   v31.receiver = self;
   v31.super_class = PUOneUpViewController;
-  if (![(PUOneUpViewController *)&v31 canPerformAction:a3 withSender:v6])
+  if (![(PUOneUpViewController *)&v31 canPerformAction:action withSender:senderCopy])
   {
     goto LABEL_33;
   }
@@ -8718,11 +8718,11 @@ LABEL_34:
   return v16;
 }
 
-- (void)createMenuActionControllerForManagerIfNeeded:(id)a3 withPresentingViewController:(id)a4 regionOfInterestProvider:(id)a5
+- (void)createMenuActionControllerForManagerIfNeeded:(id)needed withPresentingViewController:(id)controller regionOfInterestProvider:(id)provider
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  neededCopy = needed;
+  controllerCopy = controller;
+  providerCopy = provider;
   menuActionController = self->_menuActionController;
   if (!menuActionController)
   {
@@ -8734,37 +8734,37 @@ LABEL_34:
     menuActionController = self->_menuActionController;
   }
 
-  v13 = [(PUOneUpViewController *)self browsingSession];
-  [(PUMenuActionController *)menuActionController setBrowsingSession:v13];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  [(PUMenuActionController *)menuActionController setBrowsingSession:browsingSession];
 
-  [(PUMenuActionController *)self->_menuActionController setPresentingViewController:v8];
-  [(PUMenuActionController *)self->_menuActionController setRegionOfInterestProvider:v9];
-  [(PUMenuActionController *)self->_menuActionController setPhotosUICoreActionManager:v15];
-  v14 = [(PUMenuActionController *)self->_menuActionController actions];
-  [(PUOneUpViewController *)self px_setPreviewActionMenus:v14];
+  [(PUMenuActionController *)self->_menuActionController setPresentingViewController:controllerCopy];
+  [(PUMenuActionController *)self->_menuActionController setRegionOfInterestProvider:providerCopy];
+  [(PUMenuActionController *)self->_menuActionController setPhotosUICoreActionManager:neededCopy];
+  actions = [(PUMenuActionController *)self->_menuActionController actions];
+  [(PUOneUpViewController *)self px_setPreviewActionMenus:actions];
 }
 
-- (void)setAppearanceTransitionAnimationsDisabled:(BOOL)a3
+- (void)setAppearanceTransitionAnimationsDisabled:(BOOL)disabled
 {
-  if (self->_appearanceTransitionAnimationsDisabled != a3)
+  if (self->_appearanceTransitionAnimationsDisabled != disabled)
   {
-    self->_appearanceTransitionAnimationsDisabled = a3;
-    if (a3)
+    self->_appearanceTransitionAnimationsDisabled = disabled;
+    if (disabled)
     {
       [(PUOneUpViewController *)self _setShouldDisableTransitionsUntilAppeared:1];
     }
   }
 }
 
-- (BOOL)oneUpActionsControllerIsDetailsAccessoryAvailable:(id)a3
+- (BOOL)oneUpActionsControllerIsDetailsAccessoryAvailable:(id)available
 {
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
-  v6 = [v5 currentAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  if (v6)
+  if (currentAssetReference)
   {
-    v7 = [(PUOneUpViewController *)self _isDetailsAccessoryAvailableForAssetReference:v6];
+    v7 = [(PUOneUpViewController *)self _isDetailsAccessoryAvailableForAssetReference:currentAssetReference];
   }
 
   else
@@ -8775,43 +8775,43 @@ LABEL_34:
   return v7;
 }
 
-- (BOOL)oneUpActionsControllerPrefersInclusionAfterRemoval:(id)a3 forActionType:(unint64_t)a4
+- (BOOL)oneUpActionsControllerPrefersInclusionAfterRemoval:(id)removal forActionType:(unint64_t)type
 {
-  if (a4 != 44)
+  if (type != 44)
   {
     return 0;
   }
 
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
-  v6 = [v5 currentAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  v7 = [v6 pxAssetReference];
-  v8 = [v7 assetCollection];
+  pxAssetReference = [currentAssetReference pxAssetReference];
+  assetCollection = [pxAssetReference assetCollection];
 
-  LOBYTE(v7) = [v8 px_isFavoritesSmartAlbum];
-  return v7;
+  LOBYTE(pxAssetReference) = [assetCollection px_isFavoritesSmartAlbum];
+  return pxAssetReference;
 }
 
-- (id)_userTransformTileControllerAtLocationFromProvider:(id)a3
+- (id)_userTransformTileControllerAtLocationFromProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__47533;
   v15 = __Block_byref_object_dispose__47534;
   v16 = 0;
-  v5 = [(PUOneUpViewController *)self _tilingView];
-  if (v5)
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  if (_tilingView)
   {
-    [v4 locationInView:v5];
+    [providerCopy locationInView:_tilingView];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __76__PUOneUpViewController__userTransformTileControllerAtLocationFromProvider___block_invoke;
     v10[3] = &unk_1E7B79FF8;
     v10[4] = &v11;
-    [v5 enumeratePresentedTileControllersInRect:v10 usingBlock:{v6 + -1.0, v7 + -1.0, 2.0, 2.0}];
+    [_tilingView enumeratePresentedTileControllersInRect:v10 usingBlock:{v6 + -1.0, v7 + -1.0, 2.0, 2.0}];
   }
 
   v8 = v12[5];
@@ -8832,9 +8832,9 @@ void __76__PUOneUpViewController__userTransformTileControllerAtLocationFromProvi
   }
 }
 
-- (void)oneUpActionsController:(id)a3 zoomAtLocationProvider:(id)a4
+- (void)oneUpActionsController:(id)controller zoomAtLocationProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v5 = [(PUOneUpViewController *)self _userTransformTileControllerAtLocationFromProvider:?];
   if ([v5 isZoomedIn])
   {
@@ -8844,16 +8844,16 @@ void __76__PUOneUpViewController__userTransformTileControllerAtLocationFromProvi
 
   else
   {
-    [v5 zoomInOnLocationFromProvider:v6];
+    [v5 zoomInOnLocationFromProvider:providerCopy];
   }
 }
 
-- (void)oneUpActionsControllerToggleChromeVisibility:(id)a3
+- (void)oneUpActionsControllerToggleChromeVisibility:(id)visibility
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  if ([v4 isChromeVisible] && (objc_msgSend(v4, "assetsDataSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEmpty"), v5, v6))
+  if ([viewModel isChromeVisible] && (objc_msgSend(viewModel, "assetsDataSource"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEmpty"), v5, v6))
   {
     v7 = PLOneUpGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -8869,7 +8869,7 @@ void __76__PUOneUpViewController__userTransformTileControllerAtLocationFromProvi
     v8[1] = 3221225472;
     v8[2] = __70__PUOneUpViewController_oneUpActionsControllerToggleChromeVisibility___block_invoke;
     v8[3] = &unk_1E7B80DD0;
-    v9 = v4;
+    v9 = viewModel;
     [v9 performChanges:v8];
     v7 = v9;
   }
@@ -8883,10 +8883,10 @@ uint64_t __70__PUOneUpViewController_oneUpActionsControllerToggleChromeVisibilit
   return [v1 setChromeVisible:v2 changeReason:1];
 }
 
-- (BOOL)oneUpActionsControllerDismissPresentedViewController:(id)a3
+- (BOOL)oneUpActionsControllerDismissPresentedViewController:(id)controller
 {
-  v4 = [(PUOneUpViewController *)self _isTipPopoverVisible];
-  if (v4)
+  _isTipPopoverVisible = [(PUOneUpViewController *)self _isTipPopoverVisible];
+  if (_isTipPopoverVisible)
   {
     [(PUOneUpViewController *)self _dismissTipPopoverAnimated:1];
     [(PUOneUpViewController *)self _setHasShownRelevantTip:1];
@@ -8894,31 +8894,31 @@ uint64_t __70__PUOneUpViewController_oneUpActionsControllerToggleChromeVisibilit
     [(PUOneUpViewController *)self _updateTipPopoversIfNeeded];
   }
 
-  return v4;
+  return _isTipPopoverVisible;
 }
 
 - (int64_t)pu_preferredBarStyle
 {
-  v2 = [(PUOneUpViewController *)self _barsController];
-  v3 = [v2 preferredBarStyle];
+  _barsController = [(PUOneUpViewController *)self _barsController];
+  preferredBarStyle = [_barsController preferredBarStyle];
 
-  return v3;
+  return preferredBarStyle;
 }
 
 - (BOOL)pu_wantsToolbarVisible
 {
-  v2 = [(PUOneUpViewController *)self _barsController];
-  v3 = [v2 wantsToolbarVisible];
+  _barsController = [(PUOneUpViewController *)self _barsController];
+  wantsToolbarVisible = [_barsController wantsToolbarVisible];
 
-  return v3;
+  return wantsToolbarVisible;
 }
 
 - (BOOL)pu_wantsNavigationBarVisible
 {
-  v2 = [(PUOneUpViewController *)self _barsController];
-  v3 = [v2 wantsNavigationBarVisible];
+  _barsController = [(PUOneUpViewController *)self _barsController];
+  wantsNavigationBarVisible = [_barsController wantsNavigationBarVisible];
 
-  return v3;
+  return wantsNavigationBarVisible;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -8927,62 +8927,62 @@ uint64_t __70__PUOneUpViewController_oneUpActionsControllerToggleChromeVisibilit
   v6.super_class = PUOneUpViewController;
   if (![(PUOneUpViewController *)&v6 prefersStatusBarHidden])
   {
-    v3 = [(PUOneUpViewController *)self _barsController];
-    if (([v3 prefersStatusBarHidden] & 1) == 0)
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    if (([_barsController prefersStatusBarHidden] & 1) == 0)
     {
-      v4 = [(PUOneUpViewController *)self chromeViewController];
-      [v4 prefersStatusBarHidden];
+      chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+      [chromeViewController prefersStatusBarHidden];
     }
   }
 
   return PXShouldHideStatusBarWithCameraWorkaround();
 }
 
-- (BOOL)_isLayoutAffectedBySpecChange:(id)a3
+- (BOOL)_isLayoutAffectedBySpecChange:(id)change
 {
-  v3 = a3;
-  if ([v3 shouldUseContentGuideInsetsChanged] & 1) != 0 || (objc_msgSend(v3, "shouldUseUserTransformTilesChanged") & 1) != 0 || (objc_msgSend(v3, "shouldDisplayBadgesChanged") & 1) != 0 || (objc_msgSend(v3, "shouldDisplayAssetExplorerReviewScreenBadgesChanged") & 1) != 0 || (objc_msgSend(v3, "shouldDisplayPlayButtonsChanged") & 1) != 0 || (objc_msgSend(v3, "shouldDisplayProgressIndicatorsChanged") & 1) != 0 || (objc_msgSend(v3, "progressIndicatorSizeChanged") & 1) != 0 || (objc_msgSend(v3, "progressIndicatorContentInsetsChanged") & 1) != 0 || (objc_msgSend(v3, "bufferingIndicatorSizeChanged") & 1) != 0 || (objc_msgSend(v3, "renderIndicatorSizeChanged") & 1) != 0 || (objc_msgSend(v3, "canDisplayLoadingIndicatorsChanged") & 1) != 0 || (objc_msgSend(v3, "shouldUseCompactCommentsTitleChanged") & 1) != 0 || (objc_msgSend(v3, "tileInitialContentModeChanged") & 1) != 0 || (objc_msgSend(v3, "traitCollectionChanged") & 1) != 0 || (objc_msgSend(v3, "shouldPinContentToTopChanged"))
+  changeCopy = change;
+  if ([changeCopy shouldUseContentGuideInsetsChanged] & 1) != 0 || (objc_msgSend(changeCopy, "shouldUseUserTransformTilesChanged") & 1) != 0 || (objc_msgSend(changeCopy, "shouldDisplayBadgesChanged") & 1) != 0 || (objc_msgSend(changeCopy, "shouldDisplayAssetExplorerReviewScreenBadgesChanged") & 1) != 0 || (objc_msgSend(changeCopy, "shouldDisplayPlayButtonsChanged") & 1) != 0 || (objc_msgSend(changeCopy, "shouldDisplayProgressIndicatorsChanged") & 1) != 0 || (objc_msgSend(changeCopy, "progressIndicatorSizeChanged") & 1) != 0 || (objc_msgSend(changeCopy, "progressIndicatorContentInsetsChanged") & 1) != 0 || (objc_msgSend(changeCopy, "bufferingIndicatorSizeChanged") & 1) != 0 || (objc_msgSend(changeCopy, "renderIndicatorSizeChanged") & 1) != 0 || (objc_msgSend(changeCopy, "canDisplayLoadingIndicatorsChanged") & 1) != 0 || (objc_msgSend(changeCopy, "shouldUseCompactCommentsTitleChanged") & 1) != 0 || (objc_msgSend(changeCopy, "tileInitialContentModeChanged") & 1) != 0 || (objc_msgSend(changeCopy, "traitCollectionChanged") & 1) != 0 || (objc_msgSend(changeCopy, "shouldPinContentToTopChanged"))
   {
-    v4 = 1;
+    shouldLayoutReviewScreenControlBarVerticallyChanged = 1;
   }
 
   else
   {
-    v4 = [v3 shouldLayoutReviewScreenControlBarVerticallyChanged];
+    shouldLayoutReviewScreenControlBarVerticallyChanged = [changeCopy shouldLayoutReviewScreenControlBarVerticallyChanged];
   }
 
-  return v4;
+  return shouldLayoutReviewScreenControlBarVerticallyChanged;
 }
 
-- (void)viewControllerSpec:(id)a3 didChange:(id)a4
+- (void)viewControllerSpec:(id)spec didChange:(id)change
 {
-  v5 = a4;
-  if ([v5 contentLockingChanged])
+  changeCopy = change;
+  if ([changeCopy contentLockingChanged])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateContentUnavailableConfiguration];
   }
 
-  if (([v5 shouldPlaceButtonsInNavigationBarChanged] & 1) != 0 || (objc_msgSend(v5, "shouldUseCompactTitleViewChanged") & 1) != 0 || (objc_msgSend(v5, "maximumToolbarHeightChanged") & 1) != 0 || (objc_msgSend(v5, "shouldUseCompactCommentsTitleChanged") & 1) != 0 || (objc_msgSend(v5, "shouldPlaceScrubberInScrubberBarChanged") & 1) != 0 || objc_msgSend(v5, "contentLockingChanged"))
+  if (([changeCopy shouldPlaceButtonsInNavigationBarChanged] & 1) != 0 || (objc_msgSend(changeCopy, "shouldUseCompactTitleViewChanged") & 1) != 0 || (objc_msgSend(changeCopy, "maximumToolbarHeightChanged") & 1) != 0 || (objc_msgSend(changeCopy, "shouldUseCompactCommentsTitleChanged") & 1) != 0 || (objc_msgSend(changeCopy, "shouldPlaceScrubberInScrubberBarChanged") & 1) != 0 || objc_msgSend(changeCopy, "contentLockingChanged"))
   {
     [(PUOneUpViewController *)self _invalidateBarsControllers];
   }
 
-  if (([v5 backgroundColorOverrideChanged] & 1) != 0 || objc_msgSend(v5, "shouldDisplayEmptyPlaceholderChanged"))
+  if (([changeCopy backgroundColorOverrideChanged] & 1) != 0 || objc_msgSend(changeCopy, "shouldDisplayEmptyPlaceholderChanged"))
   {
     [(PUOneUpViewController *)self _updateBackgroundTileViewController];
   }
 
-  if (([v5 shouldLayoutReviewScreenControlBarVerticallyChanged] & 1) != 0 || objc_msgSend(v5, "shouldCounterrotateReviewScreenBarsChanged"))
+  if (([changeCopy shouldLayoutReviewScreenControlBarVerticallyChanged] & 1) != 0 || objc_msgSend(changeCopy, "shouldCounterrotateReviewScreenBarsChanged"))
   {
     [(PUOneUpViewController *)self _updateReviewScreenBars];
   }
 
-  if ([(PUOneUpViewController *)self _isLayoutAffectedBySpecChange:v5])
+  if ([(PUOneUpViewController *)self _isLayoutAffectedBySpecChange:changeCopy])
   {
     [(PUOneUpViewController *)self _invalidateLayout];
   }
 
-  if ([v5 hideScrubberWhenShowingAccessoryView])
+  if ([changeCopy hideScrubberWhenShowingAccessoryView])
   {
     [(PUOneUpViewController *)self _invalidateChromeViewController];
   }
@@ -8992,37 +8992,37 @@ uint64_t __70__PUOneUpViewController_oneUpActionsControllerToggleChromeVisibilit
 
 - (id)_syndicationPillView
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v5 = [v4 assetsDataSource];
-  v6 = [v4 currentAssetReference];
-  v7 = [v5 indexPathForAssetReference:v6];
-  v8 = [(PUOneUpViewController *)self _tilingView];
+  assetsDataSource = [viewModel assetsDataSource];
+  currentAssetReference = [viewModel currentAssetReference];
+  v7 = [assetsDataSource indexPathForAssetReference:currentAssetReference];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
   v9 = PUTileKindSyndicationAttribution;
-  v10 = [v5 identifier];
-  v11 = [v8 presentedTileControllerWithIndexPath:v7 kind:v9 dataSourceIdentifier:v10];
+  identifier = [assetsDataSource identifier];
+  v11 = [_tilingView presentedTileControllerWithIndexPath:v7 kind:v9 dataSourceIdentifier:identifier];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = 0;
+    superview = 0;
     goto LABEL_10;
   }
 
-  v12 = [v11 pillView];
-  v13 = [v12 superview];
-  if (v13)
+  pillView = [v11 pillView];
+  superview = [pillView superview];
+  if (superview)
   {
-    v14 = [v12 window];
-    if (v14)
+    window = [pillView window];
+    if (window)
     {
-      v15 = v14;
-      v16 = [v12 isHidden];
+      v15 = window;
+      isHidden = [pillView isHidden];
 
-      if ((v16 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
-        v13 = v12;
+        superview = pillView;
         goto LABEL_9;
       }
     }
@@ -9031,56 +9031,56 @@ uint64_t __70__PUOneUpViewController_oneUpActionsControllerToggleChromeVisibilit
     {
     }
 
-    v13 = 0;
+    superview = 0;
   }
 
 LABEL_9:
 
 LABEL_10:
 
-  return v13;
+  return superview;
 }
 
 - (id)_passthroughViews
 {
-  v3 = [(PUOneUpViewController *)self navigationController];
-  v4 = [v3 navigationBar];
+  navigationController = [(PUOneUpViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  v5 = [(PUOneUpViewController *)self navigationController];
-  v6 = [v5 toolbar];
+  navigationController2 = [(PUOneUpViewController *)self navigationController];
+  toolbar = [navigationController2 toolbar];
 
-  v7 = [(PUOneUpViewController *)self view];
+  view = [(PUOneUpViewController *)self view];
   v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
   v9 = v8;
-  if (v4)
+  if (navigationBar)
   {
-    [v8 addObject:v4];
+    [v8 addObject:navigationBar];
   }
 
-  if (v6)
+  if (toolbar)
   {
-    [v9 addObject:v6];
+    [v9 addObject:toolbar];
   }
 
-  if (v7)
+  if (view)
   {
-    [v9 addObject:v7];
+    [v9 addObject:view];
   }
 
   return v9;
 }
 
-- (void)tipPopoverDidDismissWithTipID:(id)a3
+- (void)tipPopoverDidDismissWithTipID:(id)d
 {
   v4 = MEMORY[0x1E69C3748];
-  v5 = a3;
-  v6 = [v4 quickCropTipID];
-  v7 = [v5 isEqualToString:v6];
+  dCopy = d;
+  quickCropTipID = [v4 quickCropTipID];
+  v7 = [dCopy isEqualToString:quickCropTipID];
 
   if (v7)
   {
-    v8 = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
-    [v8 setPresentingTip:0];
+    _cropButtonTileViewControllerForCurrentAsset = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
+    [_cropButtonTileViewControllerForCurrentAsset setPresentingTip:0];
   }
 
   tipDismissedCompletion = self->_tipDismissedCompletion;
@@ -9096,11 +9096,11 @@ LABEL_10:
   self->_presentedTipID = 0;
 }
 
-- (void)tipPopoverDidPresentWithTipID:(id)a3
+- (void)tipPopoverDidPresentWithTipID:(id)d
 {
-  v11 = a3;
-  v4 = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
-  v5 = [v11 isEqualToString:v4];
+  dCopy = d;
+  syndicatedPhotosTipID = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
+  v5 = [dCopy isEqualToString:syndicatedPhotosTipID];
 
   if (v5)
   {
@@ -9109,19 +9109,19 @@ LABEL_10:
 
   else
   {
-    v6 = [MEMORY[0x1E69C3748] quickCropTipID];
-    v7 = [v11 isEqualToString:v6];
+    quickCropTipID = [MEMORY[0x1E69C3748] quickCropTipID];
+    v7 = [dCopy isEqualToString:quickCropTipID];
 
     if (v7)
     {
-      v8 = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
-      [v8 setPresentingTip:1];
+      _cropButtonTileViewControllerForCurrentAsset = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
+      [_cropButtonTileViewControllerForCurrentAsset setPresentingTip:1];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69C3748] cleanUpTipID];
-      v10 = [v11 isEqualToString:v9];
+      cleanUpTipID = [MEMORY[0x1E69C3748] cleanUpTipID];
+      v10 = [dCopy isEqualToString:cleanUpTipID];
 
       if (v10)
       {
@@ -9131,158 +9131,158 @@ LABEL_10:
   }
 }
 
-- (void)prepareTipPopover:(id)a3 tipID:(id)a4
+- (void)prepareTipPopover:(id)popover tipID:(id)d
 {
   v66 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUOneUpViewController *)self _passthroughViews];
-  [v6 setPassthroughViews:v8];
+  popoverCopy = popover;
+  dCopy = d;
+  _passthroughViews = [(PUOneUpViewController *)self _passthroughViews];
+  [popoverCopy setPassthroughViews:_passthroughViews];
 
-  v9 = [MEMORY[0x1E69C3748] infoPanelTipID];
-  v10 = [v7 isEqualToString:v9];
+  infoPanelTipID = [MEMORY[0x1E69C3748] infoPanelTipID];
+  v10 = [dCopy isEqualToString:infoPanelTipID];
 
   if (v10)
   {
-    v11 = [(PUOneUpViewController *)self _barsController];
-    v12 = [v11 barButtonItemToggleDetails];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    barButtonItemToggleDetails = [_barsController barButtonItemToggleDetails];
 
-    if (v12)
+    if (barButtonItemToggleDetails)
     {
-      [v6 setBarButtonItem:v12];
+      [popoverCopy setBarButtonItem:barButtonItemToggleDetails];
     }
 
     goto LABEL_12;
   }
 
-  v13 = [MEMORY[0x1E69C3748] livePhotosTipID];
-  v14 = [v7 isEqualToString:v13];
+  livePhotosTipID = [MEMORY[0x1E69C3748] livePhotosTipID];
+  v14 = [dCopy isEqualToString:livePhotosTipID];
 
   if (v14)
   {
-    v12 = [(PUOneUpViewController *)self _livePhotoBadge];
-    if (!v12)
+    barButtonItemToggleDetails = [(PUOneUpViewController *)self _livePhotoBadge];
+    if (!barButtonItemToggleDetails)
     {
 LABEL_12:
 
-      [(PUOneUpBarsController *)self->__barsController setPresentedTipID:v7];
-      objc_storeStrong(&self->_presentedTipID, a4);
+      [(PUOneUpBarsController *)self->__barsController setPresentedTipID:dCopy];
+      objc_storeStrong(&self->_presentedTipID, d);
       goto LABEL_13;
     }
 
-    [v6 setSourceView:v12];
-    v15 = [v6 sourceView];
-    [v12 frame];
+    [popoverCopy setSourceView:barButtonItemToggleDetails];
+    sourceView = [popoverCopy sourceView];
+    [barButtonItemToggleDetails frame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [v12 superview];
-    [v15 convertRect:v24 fromCoordinateSpace:{v17, v19, v21, v23}];
-    [v6 setSourceRect:?];
+    superview = [barButtonItemToggleDetails superview];
+    [sourceView convertRect:superview fromCoordinateSpace:{v17, v19, v21, v23}];
+    [popoverCopy setSourceRect:?];
 
 LABEL_7:
-    [v6 setPermittedArrowDirections:1];
+    [popoverCopy setPermittedArrowDirections:1];
     goto LABEL_12;
   }
 
-  v25 = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
-  v26 = [v7 isEqualToString:v25];
+  syndicatedPhotosTipID = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
+  v26 = [dCopy isEqualToString:syndicatedPhotosTipID];
 
   if (v26)
   {
-    v12 = [(PUOneUpViewController *)self _syndicationPillView];
-    if (!v12)
+    barButtonItemToggleDetails = [(PUOneUpViewController *)self _syndicationPillView];
+    if (!barButtonItemToggleDetails)
     {
       goto LABEL_12;
     }
 
-    [v6 setSourceView:v12];
-    v27 = [v6 sourceView];
-    [v12 frame];
+    [popoverCopy setSourceView:barButtonItemToggleDetails];
+    sourceView2 = [popoverCopy sourceView];
+    [barButtonItemToggleDetails frame];
     v29 = v28;
     v31 = v30;
     v33 = v32;
     v35 = v34;
-    v36 = [v12 superview];
-    [v27 convertRect:v36 fromCoordinateSpace:{v29, v31, v33, v35}];
-    [v6 setSourceRect:?];
+    superview2 = [barButtonItemToggleDetails superview];
+    [sourceView2 convertRect:superview2 fromCoordinateSpace:{v29, v31, v33, v35}];
+    [popoverCopy setSourceRect:?];
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  v37 = [MEMORY[0x1E69C3748] actionsMenuTipID];
-  v38 = [v7 isEqualToString:v37];
+  actionsMenuTipID = [MEMORY[0x1E69C3748] actionsMenuTipID];
+  v38 = [dCopy isEqualToString:actionsMenuTipID];
 
   if (v38)
   {
-    v39 = [(PUOneUpViewController *)self _barsController];
-    v12 = [v39 barButtonItemActionsMenu];
+    _barsController2 = [(PUOneUpViewController *)self _barsController];
+    barButtonItemToggleDetails = [_barsController2 barButtonItemActionsMenu];
 
-    if (!v12)
+    if (!barButtonItemToggleDetails)
     {
       goto LABEL_12;
     }
 
-    [v6 setBarButtonItem:v12];
-    [v6 popoverLayoutMargins];
-    [v6 setPopoverLayoutMargins:?];
+    [popoverCopy setBarButtonItem:barButtonItemToggleDetails];
+    [popoverCopy popoverLayoutMargins];
+    [popoverCopy setPopoverLayoutMargins:?];
     goto LABEL_7;
   }
 
-  v40 = [MEMORY[0x1E69C3748] quickCropTipID];
-  v41 = [v7 isEqualToString:v40];
+  quickCropTipID = [MEMORY[0x1E69C3748] quickCropTipID];
+  v41 = [dCopy isEqualToString:quickCropTipID];
 
   if (v41)
   {
-    v42 = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
-    v12 = [v42 cropButton];
+    _cropButtonTileViewControllerForCurrentAsset = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
+    barButtonItemToggleDetails = [_cropButtonTileViewControllerForCurrentAsset cropButton];
 
-    if (v12)
+    if (barButtonItemToggleDetails)
     {
-      [v6 setSourceView:v12];
-      v43 = [v6 sourceView];
-      [v12 frame];
+      [popoverCopy setSourceView:barButtonItemToggleDetails];
+      sourceView3 = [popoverCopy sourceView];
+      [barButtonItemToggleDetails frame];
       v45 = v44;
       v47 = v46;
       v49 = v48;
       v51 = v50;
-      v52 = [v12 superview];
-      [v43 convertRect:v52 fromCoordinateSpace:{v45, v47, v49, v51}];
-      [v6 setSourceRect:?];
+      superview3 = [barButtonItemToggleDetails superview];
+      [sourceView3 convertRect:superview3 fromCoordinateSpace:{v45, v47, v49, v51}];
+      [popoverCopy setSourceRect:?];
 
-      v53 = [v12 overrideUserInterfaceStyle];
-      v54 = [v6 traitOverrides];
-      [v54 setUserInterfaceStyle:v53];
+      overrideUserInterfaceStyle = [barButtonItemToggleDetails overrideUserInterfaceStyle];
+      traitOverrides = [popoverCopy traitOverrides];
+      [traitOverrides setUserInterfaceStyle:overrideUserInterfaceStyle];
     }
 
     goto LABEL_12;
   }
 
-  v55 = [MEMORY[0x1E69C3748] cleanUpTipID];
-  v56 = [v7 isEqualToString:v55];
+  cleanUpTipID = [MEMORY[0x1E69C3748] cleanUpTipID];
+  v56 = [dCopy isEqualToString:cleanUpTipID];
 
   if (v56)
   {
-    v57 = [(PUOneUpViewController *)self _barsController];
-    v58 = [v57 sourceItemForActionType:*MEMORY[0x1E69C4690]];
+    _barsController3 = [(PUOneUpViewController *)self _barsController];
+    v58 = [_barsController3 sourceItemForActionType:*MEMORY[0x1E69C4690]];
 
-    v12 = v58;
+    barButtonItemToggleDetails = v58;
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v27 = v12;
+      sourceView2 = barButtonItemToggleDetails;
 
-      if (v27)
+      if (sourceView2)
       {
-        [v6 setBarButtonItem:v27];
+        [popoverCopy setBarButtonItem:sourceView2];
       }
     }
 
     else
     {
 
-      v27 = 0;
+      sourceView2 = 0;
     }
 
     goto LABEL_11;
@@ -9294,82 +9294,82 @@ LABEL_11:
     v60 = 138543874;
     v61 = objc_opt_class();
     v62 = 2048;
-    v63 = self;
+    selfCopy = self;
     v64 = 2112;
-    v65 = v7;
+    v65 = dCopy;
     _os_log_impl(&dword_1B36F3000, v59, OS_LOG_TYPE_ERROR, "<%{public}@:%p> Invalid tip ID %@", &v60, 0x20u);
   }
 
 LABEL_13:
 }
 
-- (id)sourceItemForTipID:(id)a3
+- (id)sourceItemForTipID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C3748] infoPanelTipID];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  infoPanelTipID = [MEMORY[0x1E69C3748] infoPanelTipID];
+  v6 = [dCopy isEqualToString:infoPanelTipID];
 
   if (v6)
   {
-    v7 = [(PUOneUpViewController *)self _barsController];
-    v8 = [v7 barButtonItemToggleDetails];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    barButtonItemToggleDetails = [_barsController barButtonItemToggleDetails];
 LABEL_3:
-    v9 = v8;
+    v9 = barButtonItemToggleDetails;
 
     goto LABEL_9;
   }
 
-  v10 = [MEMORY[0x1E69C3748] livePhotosTipID];
-  v11 = [v4 isEqualToString:v10];
+  livePhotosTipID = [MEMORY[0x1E69C3748] livePhotosTipID];
+  v11 = [dCopy isEqualToString:livePhotosTipID];
 
   if (v11)
   {
-    v12 = [(PUOneUpViewController *)self _livePhotoBadge];
+    _livePhotoBadge = [(PUOneUpViewController *)self _livePhotoBadge];
 LABEL_8:
-    v9 = v12;
+    v9 = _livePhotoBadge;
     goto LABEL_9;
   }
 
-  v13 = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
-  v14 = [v4 isEqualToString:v13];
+  syndicatedPhotosTipID = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
+  v14 = [dCopy isEqualToString:syndicatedPhotosTipID];
 
   if (v14)
   {
-    v12 = [(PUOneUpViewController *)self _syndicationPillView];
+    _livePhotoBadge = [(PUOneUpViewController *)self _syndicationPillView];
     goto LABEL_8;
   }
 
-  v16 = [MEMORY[0x1E69C3748] actionsMenuTipID];
-  v17 = [v4 isEqualToString:v16];
+  actionsMenuTipID = [MEMORY[0x1E69C3748] actionsMenuTipID];
+  v17 = [dCopy isEqualToString:actionsMenuTipID];
 
   if (v17)
   {
-    v7 = [(PUOneUpViewController *)self _barsController];
-    v8 = [v7 barButtonItemActionsMenu];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    barButtonItemToggleDetails = [_barsController barButtonItemActionsMenu];
     goto LABEL_3;
   }
 
-  v18 = [MEMORY[0x1E69C3748] quickCropTipID];
-  v19 = [v4 isEqualToString:v18];
+  quickCropTipID = [MEMORY[0x1E69C3748] quickCropTipID];
+  v19 = [dCopy isEqualToString:quickCropTipID];
 
   if (v19)
   {
-    v7 = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
-    v8 = [v7 cropButton];
+    _barsController = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
+    barButtonItemToggleDetails = [_barsController cropButton];
     goto LABEL_3;
   }
 
-  v20 = [MEMORY[0x1E69C3748] cleanUpTipID];
-  if ([v4 isEqualToString:v20])
+  cleanUpTipID = [MEMORY[0x1E69C3748] cleanUpTipID];
+  if ([dCopy isEqualToString:cleanUpTipID])
   {
-    v21 = [(PUOneUpViewController *)self actionsController];
-    v22 = [v21 canPerformSimpleActionWithActionType:15];
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    v22 = [actionsController canPerformSimpleActionWithActionType:15];
 
     if (v22)
     {
-      v7 = [(PUOneUpViewController *)self _barsController];
-      v8 = [v7 sourceItemForActionType:*MEMORY[0x1E69C4690]];
+      _barsController = [(PUOneUpViewController *)self _barsController];
+      barButtonItemToggleDetails = [_barsController sourceItemForActionType:*MEMORY[0x1E69C4690]];
       goto LABEL_3;
     }
   }
@@ -9382,7 +9382,7 @@ LABEL_8:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     v24 = 138412290;
-    v25 = v4;
+    v25 = dCopy;
     _os_log_error_impl(&dword_1B36F3000, v23, OS_LOG_TYPE_ERROR, "No source item for tip ID: %@", &v24, 0xCu);
   }
 
@@ -9392,17 +9392,17 @@ LABEL_9:
   return v9;
 }
 
-- (id)presentationControllerForTipID:(id)a3
+- (id)presentationControllerForTipID:(id)d
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C3748] infoPanelTipID];
-  if ([v4 isEqualToString:v5])
+  dCopy = d;
+  infoPanelTipID = [MEMORY[0x1E69C3748] infoPanelTipID];
+  if ([dCopy isEqualToString:infoPanelTipID])
   {
-    v6 = [(PUOneUpViewController *)self _barsController];
-    v7 = [v6 barButtonItemToggleDetails];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    barButtonItemToggleDetails = [_barsController barButtonItemToggleDetails];
 
-    if (v7)
+    if (barButtonItemToggleDetails)
     {
       goto LABEL_25;
     }
@@ -9412,30 +9412,30 @@ LABEL_9:
   {
   }
 
-  v8 = [MEMORY[0x1E69C3748] livePhotosTipID];
-  v9 = [v4 isEqualToString:v8];
+  livePhotosTipID = [MEMORY[0x1E69C3748] livePhotosTipID];
+  v9 = [dCopy isEqualToString:livePhotosTipID];
 
   if (v9)
   {
-    v10 = [(PUOneUpViewController *)self browsingSession];
-    v11 = [v10 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v12 = [v11 assetsDataSource];
-    v13 = [v11 currentAssetReference];
-    v14 = [v12 indexPathForAssetReference:v13];
-    v15 = [(PUOneUpViewController *)self _tilingView];
+    assetsDataSource = [viewModel assetsDataSource];
+    currentAssetReference = [viewModel currentAssetReference];
+    v14 = [assetsDataSource indexPathForAssetReference:currentAssetReference];
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
     v16 = PUTileKindBadge;
-    v17 = [v12 identifier];
-    v18 = [v15 presentedTileControllerWithIndexPath:v14 kind:v16 dataSourceIdentifier:v17];
+    identifier = [assetsDataSource identifier];
+    v18 = [_tilingView presentedTileControllerWithIndexPath:v14 kind:v16 dataSourceIdentifier:identifier];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v18 view];
+      view = [v18 view];
 
-      if (v19)
+      if (view)
       {
-        v20 = self;
+        selfCopy3 = self;
 
         goto LABEL_26;
       }
@@ -9444,12 +9444,12 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v21 = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
-  if ([v4 isEqualToString:v21])
+  syndicatedPhotosTipID = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
+  if ([dCopy isEqualToString:syndicatedPhotosTipID])
   {
-    v22 = [(PUOneUpViewController *)self _syndicationPillView];
+    _syndicationPillView = [(PUOneUpViewController *)self _syndicationPillView];
 
-    if (v22)
+    if (_syndicationPillView)
     {
       goto LABEL_25;
     }
@@ -9459,13 +9459,13 @@ LABEL_9:
   {
   }
 
-  v23 = [MEMORY[0x1E69C3748] actionsMenuTipID];
-  if ([v4 isEqualToString:v23])
+  actionsMenuTipID = [MEMORY[0x1E69C3748] actionsMenuTipID];
+  if ([dCopy isEqualToString:actionsMenuTipID])
   {
-    v24 = [(PUOneUpViewController *)self _barsController];
-    v25 = [v24 barButtonItemActionsMenu];
+    _barsController2 = [(PUOneUpViewController *)self _barsController];
+    barButtonItemActionsMenu = [_barsController2 barButtonItemActionsMenu];
 
-    if (v25)
+    if (barButtonItemActionsMenu)
     {
       goto LABEL_25;
     }
@@ -9475,24 +9475,24 @@ LABEL_9:
   {
   }
 
-  v26 = [MEMORY[0x1E69C3748] quickCropTipID];
-  if (([v4 isEqualToString:v26] & 1) == 0)
+  quickCropTipID = [MEMORY[0x1E69C3748] quickCropTipID];
+  if (([dCopy isEqualToString:quickCropTipID] & 1) == 0)
   {
 
     goto LABEL_23;
   }
 
-  v27 = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
-  v28 = [v27 cropButton];
+  _cropButtonTileViewControllerForCurrentAsset = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
+  cropButton = [_cropButtonTileViewControllerForCurrentAsset cropButton];
 
-  if (!v28)
+  if (!cropButton)
   {
 LABEL_23:
-    v29 = [MEMORY[0x1E69C3748] cleanUpTipID];
-    if ([v4 isEqualToString:v29])
+    cleanUpTipID = [MEMORY[0x1E69C3748] cleanUpTipID];
+    if ([dCopy isEqualToString:cleanUpTipID])
     {
-      v30 = [(PUOneUpViewController *)self actionsController];
-      v31 = [v30 canPerformSimpleActionWithActionType:15];
+      actionsController = [(PUOneUpViewController *)self actionsController];
+      v31 = [actionsController canPerformSimpleActionWithActionType:15];
 
       if (v31)
       {
@@ -9504,63 +9504,63 @@ LABEL_23:
     {
     }
 
-    v11 = PLOneUpGetLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    viewModel = PLOneUpGetLog();
+    if (os_log_type_enabled(viewModel, OS_LOG_TYPE_ERROR))
     {
       v33 = 138543618;
       v34 = objc_opt_class();
       v35 = 2048;
-      v36 = self;
-      _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_ERROR, "<%{public}@:%p> Failed to present tip view controller", &v33, 0x16u);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1B36F3000, viewModel, OS_LOG_TYPE_ERROR, "<%{public}@:%p> Failed to present tip view controller", &v33, 0x16u);
     }
 
 LABEL_13:
 
-    v20 = 0;
+    selfCopy3 = 0;
     goto LABEL_26;
   }
 
 LABEL_25:
-  v20 = self;
+  selfCopy3 = self;
 LABEL_26:
 
-  return v20;
+  return selfCopy3;
 }
 
-- (id)_videoPlayerAtIndexPath:(id)a3 layout:(id)a4
+- (id)_videoPlayerAtIndexPath:(id)path layout:(id)layout
 {
-  v4 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:a3 layout:a4];
-  v5 = [v4 videoPlayer];
+  v4 = [(PUOneUpViewController *)self _assetViewModelAtIndexPath:path layout:layout];
+  videoPlayer = [v4 videoPlayer];
 
-  return v5;
+  return videoPlayer;
 }
 
-- (id)_assetViewModelAtIndexPath:(id)a3 layout:(id)a4
+- (id)_assetViewModelAtIndexPath:(id)path layout:(id)layout
 {
-  v5 = [(PUOneUpViewController *)self _assetReferenceAtIndexPath:a3 layout:a4];
-  v6 = [(PUOneUpViewController *)self browsingSession];
-  v7 = [v6 viewModel];
-  v8 = [v7 assetViewModelForAssetReference:v5];
+  v5 = [(PUOneUpViewController *)self _assetReferenceAtIndexPath:path layout:layout];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  v8 = [viewModel assetViewModelForAssetReference:v5];
 
   return v8;
 }
 
 - (id)_currentAssetViewModel
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v4 = [v3 currentAssetReference];
-  v5 = [v3 assetViewModelForAssetReference:v4];
+  currentAssetReference = [viewModel currentAssetReference];
+  v5 = [viewModel assetViewModelForAssetReference:currentAssetReference];
 
   return v5;
 }
 
-- (id)_assetReferenceAtIndexPath:(id)a3 layout:(id)a4
+- (id)_assetReferenceAtIndexPath:(id)path layout:(id)layout
 {
-  v5 = a3;
-  v6 = [a4 dataSource];
-  v7 = [v6 assetReferenceAtIndexPath:v5];
+  pathCopy = path;
+  dataSource = [layout dataSource];
+  v7 = [dataSource assetReferenceAtIndexPath:pathCopy];
 
   return v7;
 }
@@ -9572,8 +9572,8 @@ LABEL_26:
     return 1;
   }
 
-  v4 = [(PUOneUpViewController *)self _secondScreenBrowser];
-  v3 = v4 == 0;
+  _secondScreenBrowser = [(PUOneUpViewController *)self _secondScreenBrowser];
+  v3 = _secondScreenBrowser == 0;
 
   return v3;
 }
@@ -9581,13 +9581,13 @@ LABEL_26:
 - (void)_updateActiveVideoTilesCanDisplayVideo
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PUOneUpViewController *)self videoTilesCanPlayVideo];
+  videoTilesCanPlayVideo = [(PUOneUpViewController *)self videoTilesCanPlayVideo];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(PUOneUpViewController *)self activeVideoTileControllers];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  activeVideoTileControllers = [(PUOneUpViewController *)self activeVideoTileControllers];
+  v5 = [activeVideoTileControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -9599,35 +9599,35 @@ LABEL_26:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeVideoTileControllers);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setCanPlayVideo:v3];
+        [*(*(&v9 + 1) + 8 * v8++) setCanPlayVideo:videoTilesCanPlayVideo];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [activeVideoTileControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_setSecondScreenBrowser:(id)a3
+- (void)_setSecondScreenBrowser:(id)browser
 {
-  v5 = a3;
-  if (self->__secondScreenBrowser != v5)
+  browserCopy = browser;
+  if (self->__secondScreenBrowser != browserCopy)
   {
-    v16 = v5;
-    objc_storeStrong(&self->__secondScreenBrowser, a3);
+    v16 = browserCopy;
+    objc_storeStrong(&self->__secondScreenBrowser, browser);
     [(PUOneUpViewController *)self _updateActiveVideoTilesCanDisplayVideo];
-    v6 = [(PUOneUpViewController *)self _tilingView];
-    v7 = [v6 layout];
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    layout = [_tilingView layout];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = layout;
     }
 
     else
@@ -9636,30 +9636,30 @@ LABEL_26:
     }
 
     v9 = v8;
-    v10 = [(PUOneUpViewController *)self browsingSession];
-    v11 = [v10 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v12 = [v11 assetsDataSource];
-    v13 = [v12 isEmpty];
+    assetsDataSource = [viewModel assetsDataSource];
+    isEmpty = [assetsDataSource isEmpty];
 
-    if ((v13 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
-      v14 = [v11 currentAssetReference];
-      v15 = [v14 indexPath];
-      [v9 invalidateVideoPlaceholderForItemAtIndexPath:v15];
+      currentAssetReference = [viewModel currentAssetReference];
+      indexPath = [currentAssetReference indexPath];
+      [v9 invalidateVideoPlaceholderForItemAtIndexPath:indexPath];
     }
 
     [(PUOneUpViewController *)self _invalidateChromeViewController];
 
-    v5 = v16;
+    browserCopy = v16;
   }
 }
 
 - (double)px_imageModulationIntensity
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 viewModel];
-  if ([v3 isPresentedForPreview])
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  if ([viewModel isPresentedForPreview])
   {
     v4 = 0.0;
   }
@@ -9684,20 +9684,20 @@ LABEL_26:
   aBlock[3] = &unk_1E7B79FD0;
   aBlock[4] = &v15;
   v3 = _Block_copy(aBlock);
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  [v5 currentAssetTransitionProgress];
+  [viewModel currentAssetTransitionProgress];
   v7 = v6;
-  v8 = [v5 leadingAssetReference];
-  v3[2](v3, v8, (0.5 - v7) * 0.666666687);
+  leadingAssetReference = [viewModel leadingAssetReference];
+  v3[2](v3, leadingAssetReference, (0.5 - v7) * 0.666666687);
 
-  v9 = [v5 currentAssetReference];
+  currentAssetReference = [viewModel currentAssetReference];
   v10 = fabs(v7);
-  v3[2](v3, v9, (v10 + v10) / -3.0 + 1.0);
+  v3[2](v3, currentAssetReference, (v10 + v10) / -3.0 + 1.0);
 
-  v11 = [v5 trailingAssetReference];
-  v3[2](v3, v11, (v7 + 0.5) * 0.666666687);
+  trailingAssetReference = [viewModel trailingAssetReference];
+  v3[2](v3, trailingAssetReference, (v7 + 0.5) * 0.666666687);
 
   v12 = v16[3];
   _Block_object_dispose(&v15, 8);
@@ -9726,38 +9726,38 @@ void __36__PUOneUpViewController_px_HDRFocus__block_invoke(uint64_t a1, void *a2
 
 - (id)_currentAccessoryViewController
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 currentAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  v6 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v7 = [v6 accessoryViewControllerForAssetReference:v5 createIfNeeded:0];
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  v7 = [_accessoryViewControllersManager accessoryViewControllerForAssetReference:currentAssetReference createIfNeeded:0];
 
   return v7;
 }
 
-- (void)_setAccessoryVisible:(BOOL)a3 changeReason:(int64_t)a4
+- (void)_setAccessoryVisible:(BOOL)visible changeReason:(int64_t)reason
 {
-  v5 = a3;
-  v7 = [(PUOneUpViewController *)self browsingSession];
-  v8 = [v7 viewModel];
+  visibleCopy = visible;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  if ([v8 accessoryViewsDefaultVisibility] != v5)
+  if ([viewModel accessoryViewsDefaultVisibility] != visibleCopy)
   {
-    if (v5)
+    if (visibleCopy)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __59__PUOneUpViewController__setAccessoryVisible_changeReason___block_invoke;
       v15[3] = &unk_1E7B80DD0;
-      v16 = v8;
+      v16 = viewModel;
       [v16 performChanges:v15];
       if ([(PUOneUpViewController *)self _accessoryContentKindForCurrentAsset]== 1)
       {
         [(PUOneUpViewController *)self _setHasShownRelevantTip:1];
         v9 = MEMORY[0x1E69C3748];
-        v10 = [MEMORY[0x1E69C3748] infoPanelTipID];
-        [v9 setTipActionPerformed:v10];
+        infoPanelTipID = [MEMORY[0x1E69C3748] infoPanelTipID];
+        [v9 setTipActionPerformed:infoPanelTipID];
       }
     }
 
@@ -9765,36 +9765,36 @@ void __36__PUOneUpViewController_px_HDRFocus__block_invoke(uint64_t a1, void *a2
     v11[1] = 3221225472;
     v11[2] = __59__PUOneUpViewController__setAccessoryVisible_changeReason___block_invoke_2;
     v11[3] = &unk_1E7B7FA58;
-    v14 = v5;
-    v12 = v8;
-    v13 = a4;
+    v14 = visibleCopy;
+    v12 = viewModel;
+    reasonCopy = reason;
     [v12 performChanges:v11];
   }
 }
 
 - (BOOL)_isAccessoryVisible
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  LOBYTE(v2) = [v3 accessoryViewsDefaultVisibility];
-  return v2;
+  LOBYTE(browsingSession) = [viewModel accessoryViewsDefaultVisibility];
+  return browsingSession;
 }
 
 - (BOOL)_isAccessoryAvailableForCurrentAsset
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 currentAssetReference];
-  v6 = [v5 asset];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  asset = [currentAssetReference asset];
 
-  v7 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-  v8 = [v7 accessoryViewTypeForAsset:v6];
+  _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+  v8 = [_accessoryViewControllersManager accessoryViewTypeForAsset:asset];
 
   if (v8)
   {
-    v9 = [(PUOneUpViewController *)self actionsController];
-    v10 = [v9 canPerformSimpleActionWithActionType:13] ^ 1;
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    v10 = [actionsController canPerformSimpleActionWithActionType:13] ^ 1;
   }
 
   else
@@ -9805,15 +9805,15 @@ void __36__PUOneUpViewController_px_HDRFocus__block_invoke(uint64_t a1, void *a2
   return v10;
 }
 
-- (int64_t)_accessoryContentKindForAsset:(id)a3
+- (int64_t)_accessoryContentKindForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self _spec];
-  v6 = [v5 allowAccessoryVisibility];
+  assetCopy = asset;
+  _spec = [(PUOneUpViewController *)self _spec];
+  allowAccessoryVisibility = [_spec allowAccessoryVisibility];
 
-  if (v6)
+  if (allowAccessoryVisibility)
   {
-    if ([PUCommentsViewController canShowCommentsForAsset:v4])
+    if ([PUCommentsViewController canShowCommentsForAsset:assetCopy])
     {
       v7 = 2;
     }
@@ -9834,20 +9834,20 @@ void __36__PUOneUpViewController_px_HDRFocus__block_invoke(uint64_t a1, void *a2
 
 - (int64_t)_accessoryContentKindForCurrentAsset
 {
-  v3 = [(PUOneUpViewController *)self _spec];
-  v4 = [v3 allowAccessoryVisibility];
+  _spec = [(PUOneUpViewController *)self _spec];
+  allowAccessoryVisibility = [_spec allowAccessoryVisibility];
 
-  if (!v4)
+  if (!allowAccessoryVisibility)
   {
     return 0;
   }
 
-  v5 = [(PUOneUpViewController *)self browsingSession];
-  v6 = [v5 viewModel];
-  v7 = [v6 currentAssetReference];
-  v8 = [v7 asset];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  asset = [currentAssetReference asset];
 
-  if ([PUCommentsViewController canShowCommentsForAsset:v8])
+  if ([PUCommentsViewController canShowCommentsForAsset:asset])
   {
     v9 = 2;
   }
@@ -9906,27 +9906,27 @@ void __36__PUOneUpViewController_px_HDRFocus__block_invoke(uint64_t a1, void *a2
   }
 
   [(PUOneUpViewController *)self _setNeedsUpdateAccessoryView:0];
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v20 = [v4 currentAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  v5 = [(PUOneUpViewController *)self _currentAssetViewModel];
+  _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
   if ([(PUOneUpViewController *)self _prefersFloatingInfoPanel])
   {
-    if (![v5 isAccessoryViewVisible])
+    if (![_currentAssetViewModel isAccessoryViewVisible])
     {
       [(PUOneUpViewController *)self _dismissFloatingInfoPanelAnimated:1];
       goto LABEL_24;
     }
 
-    v6 = [v20 indexPath];
-    v7 = [(PUOneUpViewController *)self _tilingView];
-    v8 = [v7 layout];
+    indexPath = [currentAssetReference indexPath];
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    layout = [_tilingView layout];
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v6)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && indexPath)
     {
-      [v8 invalidateAccessoryForItemAtIndexPath:v6 withOptions:5];
+      [layout invalidateAccessoryForItemAtIndexPath:indexPath withOptions:5];
     }
 
     [(PUOneUpViewController *)self _presentFloatingInfoPanelAnimated:1];
@@ -9935,18 +9935,18 @@ void __36__PUOneUpViewController_px_HDRFocus__block_invoke(uint64_t a1, void *a2
   else
   {
     [(PUOneUpViewController *)self _dismissFloatingInfoPanelAnimated:1];
-    v9 = [MEMORY[0x1E69C38B0] sharedInstance];
-    v10 = [v9 captionWidgetEnableDirectAttachToMaster];
+    mEMORY[0x1E69C38B0] = [MEMORY[0x1E69C38B0] sharedInstance];
+    captionWidgetEnableDirectAttachToMaster = [mEMORY[0x1E69C38B0] captionWidgetEnableDirectAttachToMaster];
 
-    LODWORD(v9) = [v5 isAccessoryViewVisible];
-    v11 = [v5 isLastAccessoryViewVisibilityChangeReasonUserAction];
+    LODWORD(mEMORY[0x1E69C38B0]) = [_currentAssetViewModel isAccessoryViewVisible];
+    isLastAccessoryViewVisibilityChangeReasonUserAction = [_currentAssetViewModel isLastAccessoryViewVisibilityChangeReasonUserAction];
     v12 = 5;
-    if ((v9 & v10) != 0)
+    if ((mEMORY[0x1E69C38B0] & captionWidgetEnableDirectAttachToMaster) != 0)
     {
       v12 = 1;
     }
 
-    if (v11)
+    if (isLastAccessoryViewVisibilityChangeReasonUserAction)
     {
       v13 = v12;
     }
@@ -9956,28 +9956,28 @@ void __36__PUOneUpViewController_px_HDRFocus__block_invoke(uint64_t a1, void *a2
       v13 = 1;
     }
 
-    v14 = [(PUOneUpViewController *)self _spec];
-    v15 = [v14 hideScrubberWhenShowingAccessoryView];
+    _spec = [(PUOneUpViewController *)self _spec];
+    hideScrubberWhenShowingAccessoryView = [_spec hideScrubberWhenShowingAccessoryView];
 
-    if (v15)
+    if (hideScrubberWhenShowingAccessoryView)
     {
       [(PUOneUpViewController *)self _invalidateBarsControllers];
     }
 
-    v6 = [v20 indexPath];
-    v16 = [(PUOneUpViewController *)self _tilingView];
-    v17 = [v16 layout];
+    indexPath = [currentAssetReference indexPath];
+    _tilingView2 = [(PUOneUpViewController *)self _tilingView];
+    layout2 = [_tilingView2 layout];
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && v6)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && indexPath)
     {
-      [v17 invalidateAccessoryForItemAtIndexPath:v6 withOptions:v13];
+      [layout2 invalidateAccessoryForItemAtIndexPath:indexPath withOptions:v13];
     }
 
-    v18 = [(PUOneUpViewController *)self _spec];
-    v19 = [v18 hideBadgesWhenShowingAccessoryView];
+    _spec2 = [(PUOneUpViewController *)self _spec];
+    hideBadgesWhenShowingAccessoryView = [_spec2 hideBadgesWhenShowingAccessoryView];
 
-    if (v19)
+    if (hideBadgesWhenShowingAccessoryView)
     {
       [(PUOneUpViewController *)self _invalidateLayout];
     }
@@ -9988,18 +9988,18 @@ LABEL_24:
 
 - (void)_updateImageAnalysisInteractionDelegate
 {
-  v3 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  [v3 setDelegate:self];
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  [currentImageAnalysisInteraction setDelegate:self];
 }
 
 - (BOOL)_prefersFloatingInfoPanel
 {
-  v3 = [(PUOneUpViewController *)self _spec];
-  v4 = [v3 prefersFloatingInfoPanel];
+  _spec = [(PUOneUpViewController *)self _spec];
+  prefersFloatingInfoPanel = [_spec prefersFloatingInfoPanel];
 
   if ([(PUOneUpViewController *)self _accessoryContentKindForCurrentAsset]== 1)
   {
-    return v4;
+    return prefersFloatingInfoPanel;
   }
 
   else
@@ -10008,92 +10008,92 @@ LABEL_24:
   }
 }
 
-- (void)_invalidateInfoPanelLayoutAnimated:(BOOL)a3
+- (void)_invalidateInfoPanelLayoutAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v11 = [(PUOneUpViewController *)self currentFloatingInfoPanelAccessoryViewController];
-  v5 = [(PUOneUpViewController *)self cardPresentationController];
-  v6 = [v5 isPresenting];
+  animatedCopy = animated;
+  currentFloatingInfoPanelAccessoryViewController = [(PUOneUpViewController *)self currentFloatingInfoPanelAccessoryViewController];
+  cardPresentationController = [(PUOneUpViewController *)self cardPresentationController];
+  isPresenting = [cardPresentationController isPresenting];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && v6)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && isPresenting)
   {
-    v7 = v11;
-    v8 = [v7 composition];
-    v9 = [objc_alloc(MEMORY[0x1E69C3898]) initWithPhotosDetailsUIViewController:v7 widgetComposition:v8];
+    v7 = currentFloatingInfoPanelAccessoryViewController;
+    composition = [v7 composition];
+    v9 = [objc_alloc(MEMORY[0x1E69C3898]) initWithPhotosDetailsUIViewController:v7 widgetComposition:composition];
 
-    v10 = [(PUOneUpViewController *)self cardPresentationController];
-    [v10 setLayout:v9 animated:v3];
+    cardPresentationController2 = [(PUOneUpViewController *)self cardPresentationController];
+    [cardPresentationController2 setLayout:v9 animated:animatedCopy];
   }
 }
 
-- (void)_dimFloatingInfoPanelAnimated:(BOOL)a3
+- (void)_dimFloatingInfoPanelAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUOneUpViewController *)self cardPresentationController];
-  v6 = [v5 isPresenting];
+  animatedCopy = animated;
+  cardPresentationController = [(PUOneUpViewController *)self cardPresentationController];
+  isPresenting = [cardPresentationController isPresenting];
 
-  if (v6)
+  if (isPresenting)
   {
-    v7 = [(PUOneUpViewController *)self cardPresentationController];
-    [v7 dimAnimated:v3];
+    cardPresentationController2 = [(PUOneUpViewController *)self cardPresentationController];
+    [cardPresentationController2 dimAnimated:animatedCopy];
   }
 }
 
 - (BOOL)isFloatingInfoPanelPresented
 {
-  v2 = [(PUOneUpViewController *)self cardPresentationController];
-  v3 = [v2 isPresenting];
+  cardPresentationController = [(PUOneUpViewController *)self cardPresentationController];
+  isPresenting = [cardPresentationController isPresenting];
 
-  return v3;
+  return isPresenting;
 }
 
-- (void)_dismissFloatingInfoPanelAnimated:(BOOL)a3
+- (void)_dismissFloatingInfoPanelAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PUOneUpViewController *)self cardPresentationController];
-  v6 = [v5 isPresenting];
+  animatedCopy = animated;
+  cardPresentationController = [(PUOneUpViewController *)self cardPresentationController];
+  isPresenting = [cardPresentationController isPresenting];
 
-  if (v6)
+  if (isPresenting)
   {
     [(PUOneUpViewController *)self setCurrentFloatingInfoPanelAccessoryViewController:0];
     [(PUOneUpViewController *)self setUuidOfAssetPresentedInFloatingInfoPanel:0];
-    v7 = [(PUOneUpViewController *)self cardPresentationController];
-    [v7 dismissAnimated:v3];
+    cardPresentationController2 = [(PUOneUpViewController *)self cardPresentationController];
+    [cardPresentationController2 dismissAnimated:animatedCopy];
   }
 }
 
-- (void)_presentFloatingInfoPanelAnimated:(BOOL)a3
+- (void)_presentFloatingInfoPanelAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v14 = [MEMORY[0x1E69C3738] sharedInstance];
-  if (([v14 hideFloatingInfoPanel] & 1) == 0)
+  animatedCopy = animated;
+  mEMORY[0x1E69C3738] = [MEMORY[0x1E69C3738] sharedInstance];
+  if (([mEMORY[0x1E69C3738] hideFloatingInfoPanel] & 1) == 0)
   {
-    v5 = [(PUOneUpViewController *)self cardPresentationController];
-    v6 = [v5 isPresenting];
+    cardPresentationController = [(PUOneUpViewController *)self cardPresentationController];
+    isPresenting = [cardPresentationController isPresenting];
 
-    if (v6)
+    if (isPresenting)
     {
       return;
     }
 
-    v7 = [(PUOneUpViewController *)self browsingSession];
-    v8 = [v7 viewModel];
-    v14 = [v8 currentAssetReference];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    mEMORY[0x1E69C3738] = [viewModel currentAssetReference];
 
-    v9 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-    v10 = [v9 createAccessoryViewControllerForAssetReference:v14];
+    _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+    v10 = [_accessoryViewControllersManager createAccessoryViewControllerForAssetReference:mEMORY[0x1E69C3738]];
 
     if (v10)
     {
       [v10 setContentInsets:1 changeReason:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
       [(PUOneUpViewController *)self setCurrentFloatingInfoPanelAccessoryViewController:v10];
-      v11 = [v14 asset];
-      v12 = [v11 uuid];
-      [(PUOneUpViewController *)self setUuidOfAssetPresentedInFloatingInfoPanel:v12];
+      asset = [mEMORY[0x1E69C3738] asset];
+      uuid = [asset uuid];
+      [(PUOneUpViewController *)self setUuidOfAssetPresentedInFloatingInfoPanel:uuid];
 
-      v13 = [(PUOneUpViewController *)self cardPresentationController];
-      [v13 presentViewController:v10 animated:v3];
+      cardPresentationController2 = [(PUOneUpViewController *)self cardPresentationController];
+      [cardPresentationController2 presentViewController:v10 animated:animatedCopy];
     }
   }
 }
@@ -10110,21 +10110,21 @@ LABEL_24:
 {
   if ([(PUOneUpViewController *)self isFloatingInfoPanelPresented])
   {
-    v3 = [(PUOneUpViewController *)self browsingSession];
-    v4 = [v3 viewModel];
-    v5 = [v4 currentAssetReference];
-    v6 = [v5 asset];
-    v10 = [v6 uuid];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    currentAssetReference = [viewModel currentAssetReference];
+    asset = [currentAssetReference asset];
+    uuid = [asset uuid];
 
-    v7 = [(PUOneUpViewController *)self uuidOfAssetPresentedInFloatingInfoPanel];
-    v8 = v7;
-    if (v7 == v10)
+    uuidOfAssetPresentedInFloatingInfoPanel = [(PUOneUpViewController *)self uuidOfAssetPresentedInFloatingInfoPanel];
+    v8 = uuidOfAssetPresentedInFloatingInfoPanel;
+    if (uuidOfAssetPresentedInFloatingInfoPanel == uuid)
     {
     }
 
     else
     {
-      v9 = [v7 isEqualToString:?];
+      v9 = [uuidOfAssetPresentedInFloatingInfoPanel isEqualToString:?];
 
       if ((v9 & 1) == 0)
       {
@@ -10136,50 +10136,50 @@ LABEL_24:
 
 - (BOOL)_isCameraDetailsAccessory
 {
-  v3 = [(PUOneUpViewController *)self presentationOrigin];
-  v4 = [(PUOneUpViewController *)self _accessoryContentKindForCurrentAsset];
-  return v3 == 37 && v4 == 1;
+  presentationOrigin = [(PUOneUpViewController *)self presentationOrigin];
+  _accessoryContentKindForCurrentAsset = [(PUOneUpViewController *)self _accessoryContentKindForCurrentAsset];
+  return presentationOrigin == 37 && _accessoryContentKindForCurrentAsset == 1;
 }
 
 - (BOOL)wantsActionsMenu
 {
   if (!self->_wantsActionsMenu)
   {
-    v4 = [MEMORY[0x1E69C3490] sharedInstance];
-    v5 = [v4 actionsMenuLocation];
-    v6 = v5 == 1;
-    v7 = [(PUOneUpViewController *)self traitCollection];
-    if ([v7 userInterfaceIdiom] == 1)
+    mEMORY[0x1E69C3490] = [MEMORY[0x1E69C3490] sharedInstance];
+    actionsMenuLocation = [mEMORY[0x1E69C3490] actionsMenuLocation];
+    v6 = actionsMenuLocation == 1;
+    traitCollection = [(PUOneUpViewController *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 1)
     {
-      v19 = [v4 enableActionsMenuOnPad];
+      enableActionsMenuOnPad = [mEMORY[0x1E69C3490] enableActionsMenuOnPad];
     }
 
     else
     {
-      v19 = 0;
+      enableActionsMenuOnPad = 0;
     }
 
-    v8 = [(PUOneUpViewController *)self traitCollection];
-    if ([v8 userInterfaceIdiom])
+    traitCollection2 = [(PUOneUpViewController *)self traitCollection];
+    if ([traitCollection2 userInterfaceIdiom])
     {
-      v9 = 0;
+      enableActionsMenuOnPhone = 0;
     }
 
     else
     {
-      v9 = [v4 enableActionsMenuOnPhone];
+      enableActionsMenuOnPhone = [mEMORY[0x1E69C3490] enableActionsMenuOnPhone];
     }
 
-    v10 = [(PUOneUpViewController *)self browsingSession];
-    v11 = [v10 viewModel];
-    v12 = [v11 currentAssetReference];
-    v13 = [v12 assetCollection];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    currentAssetReference = [viewModel currentAssetReference];
+    assetCollection = [currentAssetReference assetCollection];
 
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v14 = v13;
+      v14 = assetCollection;
 
-      if (v5 == 1 && v14)
+      if (actionsMenuLocation == 1 && v14)
       {
         if ([v14 px_isRecentlyDeletedSmartAlbum])
         {
@@ -10198,10 +10198,10 @@ LABEL_25:
       v14 = 0;
     }
 
-    if (v6 && ((v19 | v9) & 1) != 0)
+    if (v6 && ((enableActionsMenuOnPad | enableActionsMenuOnPhone) & 1) != 0)
     {
-      v15 = [(PUOneUpViewController *)self _options];
-      v17 = ([(PUOneUpViewController *)self _options]& 8) == 0 && v15 != 0x20000;
+      _options = [(PUOneUpViewController *)self _options];
+      v17 = ([(PUOneUpViewController *)self _options]& 8) == 0 && _options != 0x20000;
       self->_wantsActionsMenu = v17;
     }
 
@@ -10218,36 +10218,36 @@ LABEL_25:
   [(PUOneUpViewController *)self _setAccessoryVisible:v3];
 }
 
-- (void)_presentAlertForUnplayableAssetReference:(id)a3
+- (void)_presentAlertForUnplayableAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self browsingSession];
-  v6 = [v5 viewModel];
+  referenceCopy = reference;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v7 = [(PUOneUpViewController *)self _options];
-  v8 = [v4 asset];
-  v9 = [v8 mediaType];
+  _options = [(PUOneUpViewController *)self _options];
+  asset = [referenceCopy asset];
+  mediaType = [asset mediaType];
 
-  if ((v7 & 2) == 0 && v9 == 2 && ([v6 isPresentedForPreview] & 1) == 0)
+  if ((_options & 2) == 0 && mediaType == 2 && ([viewModel isPresentedForPreview] & 1) == 0)
   {
-    v10 = [v6 currentAssetReference];
-    if ([v10 isEqual:v4])
+    currentAssetReference = [viewModel currentAssetReference];
+    if ([currentAssetReference isEqual:referenceCopy])
     {
-      v11 = [v6 assetViewModelForAssetReference:v4];
-      v12 = [v11 videoPlayer];
+      v11 = [viewModel assetViewModelForAssetReference:referenceCopy];
+      videoPlayer = [v11 videoPlayer];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __66__PUOneUpViewController__presentAlertForUnplayableAssetReference___block_invoke;
       v21[3] = &unk_1E7B80DD0;
       v22 = v11;
       v13 = v11;
-      [v12 performChanges:v21];
+      [videoPlayer performChanges:v21];
 
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __66__PUOneUpViewController__presentAlertForUnplayableAssetReference___block_invoke_2;
       v19[3] = &unk_1E7B80DD0;
-      v20 = v6;
+      v20 = viewModel;
       [v20 performChanges:v19];
       objc_initWeak(&location, self);
       v14 = dispatch_time(0, 400000000);
@@ -10255,7 +10255,7 @@ LABEL_25:
       block[1] = 3221225472;
       block[2] = __66__PUOneUpViewController__presentAlertForUnplayableAssetReference___block_invoke_3;
       block[3] = &unk_1E7B80610;
-      v16 = v4;
+      v16 = referenceCopy;
       objc_copyWeak(&v17, &location);
       dispatch_after(v14, MEMORY[0x1E69E96A0], block);
       objc_destroyWeak(&v17);
@@ -10294,16 +10294,16 @@ uint64_t __66__PUOneUpViewController__presentAlertForUnplayableAssetReference___
   return 1;
 }
 
-- (void)_beginVKSubjectAnalyzingWithGestureRecognizer:(id)a3 beginID:(unint64_t)a4
+- (void)_beginVKSubjectAnalyzingWithGestureRecognizer:(id)recognizer beginID:(unint64_t)d
 {
-  v6 = a3;
+  recognizerCopy = recognizer;
   v7 = +[PUOneUpSettings sharedInstance];
-  v8 = [v7 allowsVisualIntelligenceRemoveBackground];
+  allowsVisualIntelligenceRemoveBackground = [v7 allowsVisualIntelligenceRemoveBackground];
 
-  if (v8)
+  if (allowsVisualIntelligenceRemoveBackground)
   {
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v6);
+    objc_initWeak(&from, recognizerCopy);
     v9 = dispatch_time(0, 150000000);
     v10 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -10311,7 +10311,7 @@ uint64_t __66__PUOneUpViewController__presentAlertForUnplayableAssetReference___
     block[2] = __79__PUOneUpViewController__beginVKSubjectAnalyzingWithGestureRecognizer_beginID___block_invoke;
     block[3] = &unk_1E7B79F80;
     objc_copyWeak(&v12, &location);
-    v13[1] = a4;
+    v13[1] = d;
     objc_copyWeak(v13, &from);
     dispatch_after(v9, v10, block);
 
@@ -10343,83 +10343,83 @@ void __79__PUOneUpViewController__beginVKSubjectAnalyzingWithGestureRecognizer_b
   }
 }
 
-- (void)_handleTouchGesture:(id)a3
+- (void)_handleTouchGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
     [(PUOneUpViewController *)self _updateViewModelWithCurrentScrollPosition];
     [(PUOneUpViewController *)self setTouchingGestureRecognizerStateBeginID:[(PUOneUpViewController *)self touchingGestureRecognizerStateBeginID]+ 1];
-    [(PUOneUpViewController *)self _beginVKSubjectAnalyzingWithGestureRecognizer:v4 beginID:[(PUOneUpViewController *)self touchingGestureRecognizerStateBeginID]];
+    [(PUOneUpViewController *)self _beginVKSubjectAnalyzingWithGestureRecognizer:gestureCopy beginID:[(PUOneUpViewController *)self touchingGestureRecognizerStateBeginID]];
   }
 }
 
-- (BOOL)_isLocationFromProviderOverInteractiveItemExcludingImageSubject:(id)a3
+- (BOOL)_isLocationFromProviderOverInteractiveItemExcludingImageSubject:(id)subject
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  if ([v5 textExistsAtLocation:v4] & 1) != 0 || (objc_msgSend(v5, "dataDetectorExistsAtLocation:", v4))
+  subjectCopy = subject;
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  if ([currentImageAnalysisInteraction textExistsAtLocation:subjectCopy] & 1) != 0 || (objc_msgSend(currentImageAnalysisInteraction, "dataDetectorExistsAtLocation:", subjectCopy))
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 actionInfoItemExistsAtLocation:v4];
+    v6 = [currentImageAnalysisInteraction actionInfoItemExistsAtLocation:subjectCopy];
   }
 
   return v6;
 }
 
-- (BOOL)_isLocationFromProviderOverImageSubject:(id)a3
+- (BOOL)_isLocationFromProviderOverImageSubject:(id)subject
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  v6 = [v5 imageSubjectExistsAtLocation:v4];
+  subjectCopy = subject;
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  v6 = [currentImageAnalysisInteraction imageSubjectExistsAtLocation:subjectCopy];
 
   return v6;
 }
 
-- (BOOL)_isLocationFromProviderOverVisualSearch:(id)a3
+- (BOOL)_isLocationFromProviderOverVisualSearch:(id)search
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  v6 = [v5 visualSearchExistsAtLocation:v4];
+  searchCopy = search;
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  v6 = [currentImageAnalysisInteraction visualSearchExistsAtLocation:searchCopy];
 
   return v6;
 }
 
-- (BOOL)_vkImageOverlayAllowsVKCToHandleLongPressGestureFromProvider:(id)a3
+- (BOOL)_vkImageOverlayAllowsVKCToHandleLongPressGestureFromProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  v6 = [v5 hostView];
-  if (v6)
+  providerCopy = provider;
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  hostView = [currentImageAnalysisInteraction hostView];
+  if (hostView)
   {
-    if ([v5 isVisualIntelligenceOverlayInitialized])
+    if ([currentImageAnalysisInteraction isVisualIntelligenceOverlayInitialized])
     {
-      [v4 locationInView:v6];
+      [providerCopy locationInView:hostView];
       v8 = v7;
       v10 = v9;
-      if ([v5 imageInteractionHasAnalysisAndSubjectLiftingEnabled])
+      if ([currentImageAnalysisInteraction imageInteractionHasAnalysisAndSubjectLiftingEnabled])
       {
-        v11 = [v5 assetViewModel];
-        v12 = [v11 hasVisualAnalysisFailed];
+        assetViewModel = [currentImageAnalysisInteraction assetViewModel];
+        hasVisualAnalysisFailed = [assetViewModel hasVisualAnalysisFailed];
 
-        if ((v12 & 1) == 0)
+        if ((hasVisualAnalysisFailed & 1) == 0)
         {
-          if (([v5 isImageSubjectAnalyzingFinished] & 1) == 0 && (objc_msgSend(v5, "isImageSubjectAnalysisAvailable") & 1) == 0)
+          if (([currentImageAnalysisInteraction isImageSubjectAnalyzingFinished] & 1) == 0 && (objc_msgSend(currentImageAnalysisInteraction, "isImageSubjectAnalysisAvailable") & 1) == 0)
           {
-            [v6 bounds];
+            [hostView bounds];
             v16.x = v8;
             v16.y = v10;
             v13 = CGRectContainsPoint(v17, v16);
             goto LABEL_12;
           }
 
-          if ([v5 isImageSubjectAnalysisAvailable])
+          if ([currentImageAnalysisInteraction isImageSubjectAnalysisAvailable])
           {
-            v13 = [v5 imageSubjectExistsAtLocation:v4];
+            v13 = [currentImageAnalysisInteraction imageSubjectExistsAtLocation:providerCopy];
 LABEL_12:
             v14 = v13;
             goto LABEL_10;
@@ -10435,73 +10435,73 @@ LABEL_10:
   return v14;
 }
 
-- (BOOL)_isVisualImageHasSubjectLiftedFromProvider:(id)a3
+- (BOOL)_isVisualImageHasSubjectLiftedFromProvider:(id)provider
 {
-  v3 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  v4 = [v3 subjectHighlightActive];
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  subjectHighlightActive = [currentImageAnalysisInteraction subjectHighlightActive];
 
-  return v4;
+  return subjectHighlightActive;
 }
 
-- (BOOL)_visualImageHasActiveTextSelectionFromProvider:(id)a3
+- (BOOL)_visualImageHasActiveTextSelectionFromProvider:(id)provider
 {
-  v3 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  v4 = [v3 hasActiveTextSelection];
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  hasActiveTextSelection = [currentImageAnalysisInteraction hasActiveTextSelection];
 
-  return v4;
+  return hasActiveTextSelection;
 }
 
-- (BOOL)_isLocationFromProviderOverActionInfoItem:(id)a3
+- (BOOL)_isLocationFromProviderOverActionInfoItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  v6 = [v5 actionInfoItemExistsAtLocation:v4];
+  itemCopy = item;
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  v6 = [currentImageAnalysisInteraction actionInfoItemExistsAtLocation:itemCopy];
 
   return v6;
 }
 
-- (BOOL)_isLocationFromProviderOverInteractiveItem:(id)a3
+- (BOOL)_isLocationFromProviderOverInteractiveItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-  v6 = [v5 interactiveItemExistsAtLocation:v4];
+  itemCopy = item;
+  currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+  v6 = [currentImageAnalysisInteraction interactiveItemExistsAtLocation:itemCopy];
 
   return v6;
 }
 
 - (id)currentImageAnalysisInteraction
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 viewModel];
-  v4 = [v3 imageAnalysisInteraction];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  imageAnalysisInteraction = [viewModel imageAnalysisInteraction];
 
-  return v4;
+  return imageAnalysisInteraction;
 }
 
-- (BOOL)_isLocationFromProvider:(id)a3 overTileOfKind:(id)a4 insetBy:(UIEdgeInsets)a5
+- (BOOL)_isLocationFromProvider:(id)provider overTileOfKind:(id)kind insetBy:(UIEdgeInsets)by
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(PUOneUpViewController *)self browsingSession];
-  v10 = [v9 viewModel];
+  providerCopy = provider;
+  kindCopy = kind;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v11 = [v10 assetsDataSource];
-  v12 = [v10 currentAssetReference];
-  v13 = [v11 indexPathForAssetReference:v12];
-  v14 = [(PUOneUpViewController *)self _tilingView];
-  v15 = [v11 identifier];
-  v16 = [v14 presentedTileControllerWithIndexPath:v13 kind:v8 dataSourceIdentifier:v15];
+  assetsDataSource = [viewModel assetsDataSource];
+  currentAssetReference = [viewModel currentAssetReference];
+  v13 = [assetsDataSource indexPathForAssetReference:currentAssetReference];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  identifier = [assetsDataSource identifier];
+  v16 = [_tilingView presentedTileControllerWithIndexPath:v13 kind:kindCopy dataSourceIdentifier:identifier];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v16 view];
-    if (v17)
+    view = [v16 view];
+    if (view)
     {
-      [v7 locationInView:v17];
+      [providerCopy locationInView:view];
       v19 = v18;
       v21 = v20;
-      v22 = [v17 hitTest:0 withEvent:?];
+      v22 = [view hitTest:0 withEvent:?];
       if (v22)
       {
         if (PXEdgeInsetsIsZero())
@@ -10511,7 +10511,7 @@ LABEL_10:
 
         else
         {
-          [v17 bounds];
+          [view bounds];
           PXEdgeInsetsInsetRect();
           v25.x = v19;
           v25.y = v21;
@@ -10539,15 +10539,15 @@ LABEL_10:
   return v23;
 }
 
-- (BOOL)_isLocationFromProviderOverControl:(id)a3
+- (BOOL)_isLocationFromProviderOverControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v5 = [(PUOneUpViewController *)self _tilingView];
-  [v4 locationInView:v5];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  [controlCopy locationInView:_tilingView];
   v7 = v6 + -0.5;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -10556,7 +10556,7 @@ LABEL_10:
   v9 = v8 + -0.5;
   v16 = v6;
   v17 = v8;
-  v10 = v5;
+  v10 = _tilingView;
   v14 = v10;
   v15 = &v18;
   [v10 enumeratePresentedTileControllersInRect:v13 usingBlock:{v7, v9, 1.0, 1.0}];
@@ -10600,15 +10600,15 @@ uint64_t __60__PUOneUpViewController__isLocationFromProviderOverControl___block_
   return MEMORY[0x1EEE66BB8](isKindOfClass, v7);
 }
 
-- (BOOL)_isLocationFromProviderInAccessoryArea:(id)a3
+- (BOOL)_isLocationFromProviderInAccessoryArea:(id)area
 {
-  v4 = a3;
+  areaCopy = area;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [(PUOneUpViewController *)self _tilingView];
-  [v4 locationInView:v5];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  [areaCopy locationInView:_tilingView];
   v7 = v6 + -0.5;
   v9 = v8 + -0.5;
   v13[0] = MEMORY[0x1E69E9820];
@@ -10616,9 +10616,9 @@ uint64_t __60__PUOneUpViewController__isLocationFromProviderOverControl___block_
   v13[2] = __64__PUOneUpViewController__isLocationFromProviderInAccessoryArea___block_invoke;
   v13[3] = &unk_1E7B7DD60;
   v15 = &v16;
-  v10 = v4;
+  v10 = areaCopy;
   v14 = v10;
-  [v5 enumeratePresentedTileControllersInRect:v13 usingBlock:{v7, v9, 1.0, 1.0}];
+  [_tilingView enumeratePresentedTileControllersInRect:v13 usingBlock:{v7, v9, 1.0, 1.0}];
   v11 = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
@@ -10660,20 +10660,20 @@ LABEL_7:
   return MEMORY[0x1EEE66BB8](isKindOfClass, v11);
 }
 
-- (BOOL)_shouldMakeChromeVisibleWhenVideoPlayerPlaysToEndTime:(id)a3
+- (BOOL)_shouldMakeChromeVisibleWhenVideoPlayerPlaysToEndTime:(id)time
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self browsingSession];
-  v6 = [v5 viewModel];
+  timeCopy = time;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v7 = [v6 currentAssetReference];
-  v8 = [v6 assetViewModelForAssetReference:v7];
-  v9 = [v8 videoPlayer];
+  currentAssetReference = [viewModel currentAssetReference];
+  v8 = [viewModel assetViewModelForAssetReference:currentAssetReference];
+  videoPlayer = [v8 videoPlayer];
 
-  if (v9 == v4 && [v6 lastChromeVisibilityChangeReason] == 4)
+  if (videoPlayer == timeCopy && [viewModel lastChromeVisibilityChangeReason] == 4)
   {
-    v10 = [v6 lastChromeVisibilityChangeContext];
-    v11 = [v10 isEqual:v7];
+    lastChromeVisibilityChangeContext = [viewModel lastChromeVisibilityChangeContext];
+    v11 = [lastChromeVisibilityChangeContext isEqual:currentAssetReference];
   }
 
   else
@@ -10684,34 +10684,34 @@ LABEL_7:
   return v11;
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  rect_8 = a3;
-  v4 = [(PUOneUpViewController *)self currentFloatingInfoPanelAccessoryViewController];
+  rect_8 = show;
+  currentFloatingInfoPanelAccessoryViewController = [(PUOneUpViewController *)self currentFloatingInfoPanelAccessoryViewController];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(PUOneUpViewController *)self view];
-    v6 = [rect_8 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    view = [(PUOneUpViewController *)self view];
+    userInfo = [rect_8 userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
     [v7 CGRectValue];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [v5 window];
-    [v5 convertRect:v16 fromView:{v9, v11, v13, v15}];
+    window = [view window];
+    [view convertRect:window fromView:{v9, v11, v13, v15}];
     rect = v17;
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    [v5 safeAreaInsets];
+    [view safeAreaInsets];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    [v5 bounds];
+    [view bounds];
     MaxY = CGRectGetMaxY(v38);
     v39.origin.x = rect;
     v39.origin.y = v19;
@@ -10728,19 +10728,19 @@ LABEL_7:
       v34 = v33;
     }
 
-    [v4 setMaxVisibleContentInsetsWhenInEdit:{v25, v27, v34, v31, *&rect}];
+    [currentFloatingInfoPanelAccessoryViewController setMaxVisibleContentInsetsWhenInEdit:{v25, v27, v34, v31, *&rect}];
   }
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)playerCurrentTimeForActionPerformer:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)playerCurrentTimeForActionPerformer:(SEL)performer
 {
-  v9 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v9 viewModel];
-  v6 = [v5 videoPlayer];
-  v7 = v6;
-  if (v6)
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  videoPlayer = [viewModel videoPlayer];
+  v7 = videoPlayer;
+  if (videoPlayer)
   {
-    [v6 currentTime];
+    [videoPlayer currentTime];
   }
 
   else
@@ -10753,13 +10753,13 @@ LABEL_7:
   return result;
 }
 
-- (id)presentationEnvironmentForActionPerformer:(id)a3
+- (id)presentationEnvironmentForActionPerformer:(id)performer
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self _barsController];
-  v6 = [v4 actionType];
+  performerCopy = performer;
+  _barsController = [(PUOneUpViewController *)self _barsController];
+  actionType = [performerCopy actionType];
 
-  v7 = [v5 sourceItemForActionType:v6];
+  v7 = [_barsController sourceItemForActionType:actionType];
 
   if (v7)
   {
@@ -10775,22 +10775,22 @@ LABEL_7:
   return v8;
 }
 
-- (int64_t)_insetModeForAsset:(id)a3
+- (int64_t)_insetModeForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self browsingSession];
-  v6 = [v5 viewModel];
-  v7 = [v6 isPresentedForPreview];
+  assetCopy = asset;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  isPresentedForPreview = [viewModel isPresentedForPreview];
 
-  if ((v7 & 1) != 0 || ![MEMORY[0x1E69C3640] isOneUpRefreshEnabled])
+  if ((isPresentedForPreview & 1) != 0 || ![MEMORY[0x1E69C3640] isOneUpRefreshEnabled])
   {
     v9 = 0;
     goto LABEL_26;
   }
 
-  if (v4)
+  if (assetCopy)
   {
-    v8 = ([v4 mediaSubtypes] & 0x80004) != 0;
+    v8 = ([assetCopy mediaSubtypes] & 0x80004) != 0;
   }
 
   else
@@ -10798,19 +10798,19 @@ LABEL_7:
     v8 = 0;
   }
 
-  v10 = [(PUOneUpViewController *)self traitCollection];
-  if ([v10 verticalSizeClass] == 2)
+  traitCollection = [(PUOneUpViewController *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 2)
   {
-    v11 = [(PUOneUpViewController *)self traitCollection];
-    v12 = [v11 horizontalSizeClass];
-    v13 = v12 == 2;
+    traitCollection2 = [(PUOneUpViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    v13 = horizontalSizeClass == 2;
 
     if (!v8)
     {
-      if (v12 == 2)
+      if (horizontalSizeClass == 2)
       {
-        v14 = [MEMORY[0x1E69C3640] sharedInstance];
-        v15 = [v14 regularSizeClassInsetMode];
+        mEMORY[0x1E69C3640] = [MEMORY[0x1E69C3640] sharedInstance];
+        regularSizeClassInsetMode = [mEMORY[0x1E69C3640] regularSizeClassInsetMode];
         v13 = 1;
         goto LABEL_15;
       }
@@ -10819,8 +10819,8 @@ LABEL_7:
     }
 
 LABEL_13:
-    v14 = [MEMORY[0x1E69C3640] sharedInstance];
-    v15 = [v14 screenshotInsetMode];
+    mEMORY[0x1E69C3640] = [MEMORY[0x1E69C3640] sharedInstance];
+    regularSizeClassInsetMode = [mEMORY[0x1E69C3640] screenshotInsetMode];
     goto LABEL_15;
   }
 
@@ -10831,33 +10831,33 @@ LABEL_13:
   }
 
 LABEL_14:
-  v14 = [MEMORY[0x1E69C3640] sharedInstance];
-  v15 = [v14 insetMode];
+  mEMORY[0x1E69C3640] = [MEMORY[0x1E69C3640] sharedInstance];
+  regularSizeClassInsetMode = [mEMORY[0x1E69C3640] insetMode];
   v13 = 0;
 LABEL_15:
 
-  v16 = [MEMORY[0x1E69C3CA8] sharedInstance];
-  if (![v16 shouldWorkAround139627593] || v13)
+  mEMORY[0x1E69C3CA8] = [MEMORY[0x1E69C3CA8] sharedInstance];
+  if (![mEMORY[0x1E69C3CA8] shouldWorkAround139627593] || v13)
   {
   }
 
   else
   {
-    v17 = [(PUOneUpViewController *)self _isZoomedIn];
+    _isZoomedIn = [(PUOneUpViewController *)self _isZoomedIn];
 
-    if (v17)
+    if (_isZoomedIn)
     {
-      v15 = 0;
+      regularSizeClassInsetMode = 0;
     }
   }
 
   v18 = 1;
-  if (v15 == 1)
+  if (regularSizeClassInsetMode == 1)
   {
     v18 = 2;
   }
 
-  if (v15)
+  if (regularSizeClassInsetMode)
   {
     v9 = v18;
   }
@@ -10874,40 +10874,40 @@ LABEL_26:
 
 - (BOOL)_isZoomedIn
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v4 = [v3 currentAssetReference];
-  v5 = [v3 assetViewModelForAssetReference:v4];
-  v6 = [v5 isZoomedIn];
+  currentAssetReference = [viewModel currentAssetReference];
+  v5 = [viewModel assetViewModelForAssetReference:currentAssetReference];
+  isZoomedIn = [v5 isZoomedIn];
 
-  return v6;
+  return isZoomedIn;
 }
 
 - (void)_handleZoomOutCurrentAsset
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  if (-[PUOneUpViewController wasChromeVisibleBeforeZoomIn](self, "wasChromeVisibleBeforeZoomIn") && ([v4 isChromeVisible] & 1) == 0)
+  if (-[PUOneUpViewController wasChromeVisibleBeforeZoomIn](self, "wasChromeVisibleBeforeZoomIn") && ([viewModel isChromeVisible] & 1) == 0)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __51__PUOneUpViewController__handleZoomOutCurrentAsset__block_invoke;
     v5[3] = &unk_1E7B80DD0;
-    v6 = v4;
+    v6 = viewModel;
     [v6 performChanges:v5];
   }
 }
 
 - (id)browsingTileViewAnimator
 {
-  v2 = [(PUOneUpViewController *)self browsingSession];
-  v3 = [v2 tileAnimator];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  tileAnimator = [browsingSession tileAnimator];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = tileAnimator;
   }
 
   else
@@ -10920,29 +10920,29 @@ LABEL_26:
 
 - (id)_livePhotoBadge
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v5 = [v4 assetsDataSource];
-  v6 = [v4 currentAssetReference];
-  v7 = [v5 indexPathForAssetReference:v6];
-  v8 = [(PUOneUpViewController *)self _tilingView];
+  assetsDataSource = [viewModel assetsDataSource];
+  currentAssetReference = [viewModel currentAssetReference];
+  v7 = [assetsDataSource indexPathForAssetReference:currentAssetReference];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
   v9 = PUTileKindBadge;
-  v10 = [v5 identifier];
-  v11 = [v8 presentedTileControllerWithIndexPath:v7 kind:v9 dataSourceIdentifier:v10];
+  identifier = [assetsDataSource identifier];
+  v11 = [_tilingView presentedTileControllerWithIndexPath:v7 kind:v9 dataSourceIdentifier:identifier];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 livePhotoBadgeContainerView];
+    livePhotoBadgeContainerView = [v11 livePhotoBadgeContainerView];
   }
 
   else
   {
-    v12 = 0;
+    livePhotoBadgeContainerView = 0;
   }
 
-  return v12;
+  return livePhotoBadgeContainerView;
 }
 
 - (PXAssetActionManager)assetActionManager
@@ -10950,15 +10950,15 @@ LABEL_26:
   assetActionManager = self->_assetActionManager;
   if (!assetActionManager)
   {
-    v4 = [(PUOneUpViewController *)self browsingSession];
-    v5 = [v4 dataSourceManager];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    dataSourceManager = [browsingSession dataSourceManager];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v7 = [v4 dataSourceManager];
-    if (isKindOfClass & 1) != 0 || (objc_opt_class(), v8 = objc_opt_isKindOfClass(), v7, [v4 dataSourceManager], v7 = objc_claimAutoreleasedReturnValue(), (v8))
+    dataSourceManager2 = [browsingSession dataSourceManager];
+    if (isKindOfClass & 1) != 0 || (objc_opt_class(), v8 = objc_opt_isKindOfClass(), dataSourceManager2, [browsingSession dataSourceManager], dataSourceManager2 = objc_claimAutoreleasedReturnValue(), (v8))
     {
-      v9 = [v7 photosDataSource];
+      photosDataSource = [dataSourceManager2 photosDataSource];
     }
 
     else
@@ -10971,30 +10971,30 @@ LABEL_26:
         goto LABEL_17;
       }
 
-      v7 = [v4 dataSourceManager];
-      v27 = [v7 dataSourceManagers];
-      v28 = [v27 firstObject];
+      dataSourceManager2 = [browsingSession dataSourceManager];
+      dataSourceManagers = [dataSourceManager2 dataSourceManagers];
+      firstObject = [dataSourceManagers firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v28 photosDataSource];
+        photosDataSource = [firstObject photosDataSource];
       }
 
       else
       {
-        v9 = 0;
+        photosDataSource = 0;
       }
     }
 
-    if (v9)
+    if (photosDataSource)
     {
-      v10 = [objc_alloc(MEMORY[0x1E69C37D8]) initWithPhotosDataSource:v9];
-      v11 = [v4 viewModel];
-      v12 = [v11 currentAssetReference];
-      v13 = [v12 indexPath];
-      v14 = [v13 section];
-      if (v14 >= [v9 numberOfSections])
+      v10 = [objc_alloc(MEMORY[0x1E69C37D8]) initWithPhotosDataSource:photosDataSource];
+      viewModel = [browsingSession viewModel];
+      currentAssetReference = [viewModel currentAssetReference];
+      indexPath = [currentAssetReference indexPath];
+      section = [indexPath section];
+      if (section >= [photosDataSource numberOfSections])
       {
         v22 = 0;
 LABEL_29:
@@ -11002,32 +11002,32 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v37 = v11;
+      v37 = viewModel;
       v38 = v10;
-      v15 = [v12 indexPath];
-      v16 = [v15 item];
-      v17 = [v12 indexPath];
-      v18 = [v9 numberOfItemsInSection:{objc_msgSend(v17, "section")}];
+      indexPath2 = [currentAssetReference indexPath];
+      item = [indexPath2 item];
+      indexPath3 = [currentAssetReference indexPath];
+      v18 = [photosDataSource numberOfItemsInSection:{objc_msgSend(indexPath3, "section")}];
 
-      if (v16 < v18)
+      if (item < v18)
       {
-        v19 = [v12 indexPath];
-        v13 = [v9 assetReferenceAtIndexPath:v19];
+        indexPath4 = [currentAssetReference indexPath];
+        indexPath = [photosDataSource assetReferenceAtIndexPath:indexPath4];
 
-        v20 = [(PUOneUpViewController *)self wantsSpotlightStyling];
+        wantsSpotlightStyling = [(PUOneUpViewController *)self wantsSpotlightStyling];
         v21 = 0x1E69C37C0;
-        if (!v20)
+        if (!wantsSpotlightStyling)
         {
           v21 = 0x1E69C3798;
         }
 
-        v22 = [objc_alloc(*v21) initWithSelectedObjectReference:v13 dataSourceManager:v38];
-        v23 = [(PUOneUpViewController *)self browsingSession];
-        v24 = [v23 actionManager];
+        v22 = [objc_alloc(*v21) initWithSelectedObjectReference:indexPath dataSourceManager:v38];
+        browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+        actionManager = [browsingSession2 actionManager];
 
         if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
         {
-          v25 = v24;
+          v25 = actionManager;
         }
 
         else
@@ -11035,23 +11035,23 @@ LABEL_29:
           v25 = 0;
         }
 
-        v31 = [v25 underlyingActionManager];
+        underlyingActionManager = [v25 underlyingActionManager];
         objc_opt_class();
         v32 = objc_opt_isKindOfClass();
 
         if (v32)
         {
-          v33 = [v25 underlyingActionManager];
-          [v22 setAdditionalPropertiesFromActionManager:v33];
+          underlyingActionManager2 = [v25 underlyingActionManager];
+          [v22 setAdditionalPropertiesFromActionManager:underlyingActionManager2];
         }
 
-        v11 = v37;
+        viewModel = v37;
         v10 = v38;
         goto LABEL_29;
       }
 
       v22 = 0;
-      v11 = v37;
+      viewModel = v37;
       v10 = v38;
 LABEL_30:
 
@@ -11063,7 +11063,7 @@ LABEL_17:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = 0;
+      photosDataSource = 0;
       v22 = 0;
 LABEL_32:
       [v22 setPerformerDelegate:self];
@@ -11075,31 +11075,31 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v10 = v4;
-    v29 = [v10 viewModel];
-    v30 = [v29 currentAssetReference];
-    v12 = [v30 asset];
+    v10 = browsingSession;
+    viewModel2 = [v10 viewModel];
+    currentAssetReference2 = [viewModel2 currentAssetReference];
+    currentAssetReference = [currentAssetReference2 asset];
 
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v11 = v12;
+      viewModel = currentAssetReference;
 
-      if (!v11)
+      if (!viewModel)
       {
-        v9 = 0;
+        photosDataSource = 0;
         v22 = 0;
         goto LABEL_31;
       }
 
-      v12 = [v10 importController];
+      currentAssetReference = [v10 importController];
       v22 = PXCreateImportAssetActionManager();
-      v9 = 0;
+      photosDataSource = 0;
     }
 
     else
     {
-      v11 = 0;
-      v9 = 0;
+      viewModel = 0;
+      photosDataSource = 0;
       v22 = 0;
     }
 
@@ -11111,38 +11111,38 @@ LABEL_33:
   return assetActionManager;
 }
 
-- (void)_browsingVideoPlayerDidPlayToEndTime:(id)a3
+- (void)_browsingVideoPlayerDidPlayToEndTime:(id)time
 {
-  v4 = [a3 object];
-  if ([(PUOneUpViewController *)self _shouldMakeChromeVisibleWhenVideoPlayerPlaysToEndTime:v4])
+  object = [time object];
+  if ([(PUOneUpViewController *)self _shouldMakeChromeVisibleWhenVideoPlayerPlaysToEndTime:object])
   {
-    v5 = [(PUOneUpViewController *)self browsingSession];
-    v6 = [v5 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __62__PUOneUpViewController__browsingVideoPlayerDidPlayToEndTime___block_invoke;
     v8[3] = &unk_1E7B80DD0;
-    v9 = v6;
-    v7 = v6;
+    v9 = viewModel;
+    v7 = viewModel;
     [v7 performChanges:v8];
   }
 }
 
-- (void)_abandonTileController:(id)a3
+- (void)_abandonTileController:(id)controller
 {
-  v6 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v6 setDelegate:0];
+    [controllerCopy setDelegate:0];
     goto LABEL_6;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
+    v4 = controllerCopy;
     [v4 setDelegate:0];
     [v4 setPresentingDelegate:0];
     [v4 setBrowsingViewModel:0];
@@ -11153,8 +11153,8 @@ LABEL_33:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PUOneUpViewController *)self activeVideoTileControllers];
-    [v5 removeObject:v6];
+    activeVideoTileControllers = [(PUOneUpViewController *)self activeVideoTileControllers];
+    [activeVideoTileControllers removeObject:controllerCopy];
   }
 
   else
@@ -11168,17 +11168,17 @@ LABEL_33:
         goto LABEL_6;
       }
 
-      [v6 setPresentingDelegate:0];
+      [controllerCopy setPresentingDelegate:0];
     }
   }
 
-  [v6 setBrowsingViewModel:0];
+  [controllerCopy setBrowsingViewModel:0];
 LABEL_6:
 }
 
-- (void)_configureAdoptedTileController:(id)a3
+- (void)_configureAdoptedTileController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -11194,19 +11194,19 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
+    v7 = controllerCopy;
     [v7 setDelegate:self];
-    v8 = [(PUOneUpViewController *)self _enablePockets];
-    v9 = [v7 userTransformView];
+    _enablePockets = [(PUOneUpViewController *)self _enablePockets];
+    userTransformView = [v7 userTransformView];
 
-    [v9 setScrollPocketsEnabled:v8];
+    [userTransformView setScrollPocketsEnabled:_enablePockets];
     goto LABEL_4;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v4;
+    v10 = controllerCopy;
     [v10 setDelegate:self];
     v11 = v10;
     goto LABEL_15;
@@ -11218,9 +11218,9 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v4;
-      v14 = [(PUOneUpViewController *)self activeVideoTileControllers];
-      [v14 addObject:v10];
+      v10 = controllerCopy;
+      activeVideoTileControllers = [(PUOneUpViewController *)self activeVideoTileControllers];
+      [activeVideoTileControllers addObject:v10];
 
       [v10 setCanPlayVideo:{-[PUOneUpViewController videoTilesCanPlayVideo](self, "videoTilesCanPlayVideo")}];
       [v10 setIsOnSecondScreen:{-[PUOneUpViewController _isPresentedForSecondScreen](self, "_isPresentedForSecondScreen")}];
@@ -11230,7 +11230,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v4;
+      v10 = controllerCopy;
       goto LABEL_16;
     }
 
@@ -11240,23 +11240,23 @@ LABEL_6:
       goto LABEL_4;
     }
 
-    v11 = v4;
+    v11 = controllerCopy;
     v10 = v11;
 LABEL_15:
     [v11 setPresentingDelegate:self];
 LABEL_16:
-    v12 = [(PUOneUpViewController *)self browsingSession];
-    v13 = [v12 viewModel];
-    [v10 setBrowsingViewModel:v13];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    [v10 setBrowsingViewModel:viewModel];
 
     goto LABEL_4;
   }
 
 LABEL_3:
-  [v4 setDelegate:self];
+  [controllerCopy setDelegate:self];
 LABEL_4:
-  v5 = [(PUOneUpViewController *)self _isPresentedForSecondScreen];
-  v15 = v4;
+  _isPresentedForSecondScreen = [(PUOneUpViewController *)self _isPresentedForSecondScreen];
+  v15 = controllerCopy;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v6 = v15;
@@ -11267,66 +11267,66 @@ LABEL_4:
     v6 = 0;
   }
 
-  [v6 setIsOnPrimaryDisplay:!v5];
+  [v6 setIsOnPrimaryDisplay:!_isPresentedForSecondScreen];
 }
 
-- (void)_hideChromeOnPlayButtonTapWithItemIsNowPlaying:(BOOL)a3 buttonIsOverlayed:(BOOL)a4
+- (void)_hideChromeOnPlayButtonTapWithItemIsNowPlaying:(BOOL)playing buttonIsOverlayed:(BOOL)overlayed
 {
-  if (a3 && a4)
+  if (playing && overlayed)
   {
-    v5 = [(PUOneUpViewController *)self browsingSession];
-    v6 = [v5 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v7 = [v6 currentAssetReference];
+    currentAssetReference = [viewModel currentAssetReference];
     v8 = +[PUOneUpSettings sharedInstance];
-    v9 = PUShouldAutoHideChrome(v6, [v8 chromeAutoHideBehaviorOnPlayButton]);
+    v9 = PUShouldAutoHideChrome(viewModel, [v8 chromeAutoHideBehaviorOnPlayButton]);
 
-    v10 = [v7 indexPath];
-    v11 = [(PUOneUpViewController *)self _tilingView];
-    v12 = [v11 layout];
+    indexPath = [currentAssetReference indexPath];
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    layout = [_tilingView layout];
 
-    v13 = [(PUOneUpViewController *)self _videoPlayerAtIndexPath:v10 layout:v12];
+    v13 = [(PUOneUpViewController *)self _videoPlayerAtIndexPath:indexPath layout:layout];
 
     if (v9 && (![(PUOneUpViewController *)self _isSecondScreenBrowserVisible]|| !v13))
     {
-      v14 = [(PUOneUpViewController *)self _barsController];
-      v15 = [v14 disableChromeHiding];
+      _barsController = [(PUOneUpViewController *)self _barsController];
+      disableChromeHiding = [_barsController disableChromeHiding];
 
-      if ((v15 & 1) == 0)
+      if ((disableChromeHiding & 1) == 0)
       {
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __90__PUOneUpViewController__hideChromeOnPlayButtonTapWithItemIsNowPlaying_buttonIsOverlayed___block_invoke;
         v16[3] = &unk_1E7B80C38;
-        v17 = v6;
-        v18 = v7;
+        v17 = viewModel;
+        v18 = currentAssetReference;
         [v17 performChanges:v16];
       }
     }
   }
 }
 
-- (void)_chromeAutoHideTimerFired:(id)a3
+- (void)_chromeAutoHideTimerFired:(id)fired
 {
   [(PUOneUpViewController *)self _setChromeAutoHideTimer:0];
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  if (PUShouldAutoHideChrome(v5, 1))
+  if (PUShouldAutoHideChrome(viewModel, 1))
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __51__PUOneUpViewController__chromeAutoHideTimerFired___block_invoke;
     v6[3] = &unk_1E7B80DD0;
-    v7 = v5;
+    v7 = viewModel;
     [v7 performChanges:v6];
   }
 }
 
 - (void)_cancelTimedChromeAutoHide
 {
-  v3 = [(PUOneUpViewController *)self _chromeAutoHideTimer];
-  [v3 invalidate];
+  _chromeAutoHideTimer = [(PUOneUpViewController *)self _chromeAutoHideTimer];
+  [_chromeAutoHideTimer invalidate];
 
   [(PUOneUpViewController *)self _setChromeAutoHideTimer:0];
 }
@@ -11337,9 +11337,9 @@ LABEL_4:
   [v3 chromeAutoHideDelay];
   v5 = v4;
 
-  v6 = [(PUOneUpViewController *)self _chromeAutoHideTimer];
+  _chromeAutoHideTimer = [(PUOneUpViewController *)self _chromeAutoHideTimer];
 
-  if (!v6 && v5 > 0.0)
+  if (!_chromeAutoHideTimer && v5 > 0.0)
   {
     v7 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__chromeAutoHideTimerFired_ selector:0 userInfo:0 repeats:v5];
     [(PUOneUpViewController *)self _setChromeAutoHideTimer:v7];
@@ -11351,15 +11351,15 @@ LABEL_4:
   if ([(PUOneUpViewController *)self _needsUpdateImageAnalysisInteractionAdditionalActionInfoEdgeInsets])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateImageAnalysisInteractionAdditionalActionInfoEdgeInsets:0];
-    v3 = [(PUOneUpViewController *)self chromeViewController];
-    [v3 additionalActionInfoEdgeInsets];
+    chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+    [chromeViewController additionalActionInfoEdgeInsets];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
-    [v12 setAdditionalActionInfoEdgeInsets:{v5, v7, v9, v11}];
+    currentImageAnalysisInteraction = [(PUOneUpViewController *)self currentImageAnalysisInteraction];
+    [currentImageAnalysisInteraction setAdditionalActionInfoEdgeInsets:{v5, v7, v9, v11}];
   }
 }
 
@@ -11368,21 +11368,21 @@ LABEL_4:
   if ([(PUOneUpViewController *)self _needsUpdateEditMode])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateEditMode:0];
-    v3 = [(PUOneUpViewController *)self browsingSession];
-    v4 = [v3 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v5 = [v4 currentAssetReference];
-    if (v5)
+    currentAssetReference = [viewModel currentAssetReference];
+    if (currentAssetReference)
     {
-      v6 = [v4 currentAssetReference];
-      v7 = [v4 assetViewModelForAssetReference:v6];
+      currentAssetReference2 = [viewModel currentAssetReference];
+      v7 = [viewModel assetViewModelForAssetReference:currentAssetReference2];
 
-      v8 = [v7 isInEditMode];
-      v9 = [(PUOneUpViewController *)self _tilingView];
-      v10 = [v5 indexPath];
+      isInEditMode = [v7 isInEditMode];
+      _tilingView = [(PUOneUpViewController *)self _tilingView];
+      indexPath = [currentAssetReference indexPath];
       v11 = PUTileKindUserTransform;
-      v12 = [v5 dataSourceIdentifier];
-      v13 = [v9 presentedTileControllerWithIndexPath:v10 kind:v11 dataSourceIdentifier:v12];
+      dataSourceIdentifier = [currentAssetReference dataSourceIdentifier];
+      v13 = [_tilingView presentedTileControllerWithIndexPath:indexPath kind:v11 dataSourceIdentifier:dataSourceIdentifier];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -11395,7 +11395,7 @@ LABEL_4:
         v16 = 0;
       }
 
-      v14 = v8 ^ 1u;
+      v14 = isInEditMode ^ 1u;
     }
 
     else
@@ -11404,8 +11404,8 @@ LABEL_4:
       v14 = 1;
     }
 
-    v15 = [(PUOneUpViewController *)self _tilingView];
-    [v15 setScrollEnabled:v14];
+    _tilingView2 = [(PUOneUpViewController *)self _tilingView];
+    [_tilingView2 setScrollEnabled:v14];
 
     [v16 setUserInteractionEnabled:v14];
   }
@@ -11413,29 +11413,29 @@ LABEL_4:
 
 - (void)_updateReviewScreenBars
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 reviewScreenBarsModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  reviewScreenBarsModel = [viewModel reviewScreenBarsModel];
 
-  v6 = [(PUOneUpViewController *)self _reviewScreenControlBarTileViewController];
-  [v6 setBarsModel:v5];
+  _reviewScreenControlBarTileViewController = [(PUOneUpViewController *)self _reviewScreenControlBarTileViewController];
+  [_reviewScreenControlBarTileViewController setBarsModel:reviewScreenBarsModel];
 
-  v7 = [(PUOneUpViewController *)self _reviewScreenTopBarTileViewController];
-  [v7 setBarsModel:v5];
+  _reviewScreenTopBarTileViewController = [(PUOneUpViewController *)self _reviewScreenTopBarTileViewController];
+  [_reviewScreenTopBarTileViewController setBarsModel:reviewScreenBarsModel];
 
-  v8 = [(PUOneUpViewController *)self _reviewScreenScrubberBarTileViewController];
-  [v8 setBarsModel:v5];
+  _reviewScreenScrubberBarTileViewController = [(PUOneUpViewController *)self _reviewScreenScrubberBarTileViewController];
+  [_reviewScreenScrubberBarTileViewController setBarsModel:reviewScreenBarsModel];
 
-  v9 = [(PUOneUpViewController *)self _spec];
-  LOBYTE(v8) = [v9 shouldLayoutReviewScreenControlBarVertically];
-  v10 = [v9 shouldCounterrotateReviewScreenBars];
+  _spec = [(PUOneUpViewController *)self _spec];
+  LOBYTE(_reviewScreenScrubberBarTileViewController) = [_spec shouldLayoutReviewScreenControlBarVertically];
+  shouldCounterrotateReviewScreenBars = [_spec shouldCounterrotateReviewScreenBars];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__PUOneUpViewController__updateReviewScreenBars__block_invoke;
   v11[3] = &__block_descriptor_34_e42_v16__0___PUMutableReviewScreenBarsModel__8l;
-  v12 = v8;
-  v13 = v10;
-  [v5 performChanges:v11];
+  v12 = _reviewScreenScrubberBarTileViewController;
+  v13 = shouldCounterrotateReviewScreenBars;
+  [reviewScreenBarsModel performChanges:v11];
 }
 
 void __48__PUOneUpViewController__updateReviewScreenBars__block_invoke(uint64_t a1, void *a2)
@@ -11454,18 +11454,18 @@ void __48__PUOneUpViewController__updateReviewScreenBars__block_invoke(uint64_t 
     return 1;
   }
 
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 currentAssetReference];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
 
-  if (v5)
+  if (currentAssetReference)
   {
-    v6 = [(PUOneUpViewController *)self browsingSession];
-    v7 = [v6 actionManager];
+    browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+    actionManager = [browsingSession2 actionManager];
 
-    v11[0] = v5;
+    v11[0] = currentAssetReference;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    v9 = [v7 canPerformAction:43 onAllAssetReferences:v8];
+    v9 = [actionManager canPerformAction:43 onAllAssetReferences:v8];
   }
 
   else
@@ -11478,10 +11478,10 @@ void __48__PUOneUpViewController__updateReviewScreenBars__block_invoke(uint64_t 
 
 - (UIView)chromeView
 {
-  v2 = [(PUOneUpViewController *)self chromeViewController];
-  v3 = [v2 view];
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  view = [chromeViewController view];
 
-  return v3;
+  return view;
 }
 
 - (void)_updateChromeViewControllerIfNeeded
@@ -11489,56 +11489,56 @@ void __48__PUOneUpViewController__updateReviewScreenBars__block_invoke(uint64_t 
   if ([(PUOneUpViewController *)self needsUpdateChromeViewController])
   {
     [(PUOneUpViewController *)self setNeedsUpdateChromeViewController:0];
-    v3 = [(PUOneUpViewController *)self _spec];
-    v4 = [v3 hideScrubberWhenShowingAccessoryView];
-    v5 = [(PUOneUpViewController *)self chromeViewController];
-    [v5 setHideScrubberWhenAccessoryIsVisible:v4];
+    _spec = [(PUOneUpViewController *)self _spec];
+    hideScrubberWhenShowingAccessoryView = [_spec hideScrubberWhenShowingAccessoryView];
+    chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+    [chromeViewController setHideScrubberWhenAccessoryIsVisible:hideScrubberWhenShowingAccessoryView];
 
-    v6 = [(PUOneUpViewController *)self _wantsShowInLibraryButtonForAllAssets];
-    v7 = [(PUOneUpViewController *)self chromeViewController];
-    [v7 setWantsShowInLibraryButton:v6];
+    _wantsShowInLibraryButtonForAllAssets = [(PUOneUpViewController *)self _wantsShowInLibraryButtonForAllAssets];
+    chromeViewController2 = [(PUOneUpViewController *)self chromeViewController];
+    [chromeViewController2 setWantsShowInLibraryButton:_wantsShowInLibraryButtonForAllAssets];
 
-    v8 = [(PUOneUpViewController *)self chromeViewController];
-    [v8 updatePresentingViewController];
+    chromeViewController3 = [(PUOneUpViewController *)self chromeViewController];
+    [chromeViewController3 updatePresentingViewController];
 
-    v9 = [(PUOneUpViewController *)self chromeViewController];
-    [v9 setAirplayInfoWithShouldShowAirPlayButton:_ShouldShowAirPlayButton() isDisplayingContentOnSecondScreen:{-[PUOneUpViewController _isSecondScreenBrowserVisible](self, "_isSecondScreenBrowserVisible")}];
+    chromeViewController4 = [(PUOneUpViewController *)self chromeViewController];
+    [chromeViewController4 setAirplayInfoWithShouldShowAirPlayButton:_ShouldShowAirPlayButton() isDisplayingContentOnSecondScreen:{-[PUOneUpViewController _isSecondScreenBrowserVisible](self, "_isSecondScreenBrowserVisible")}];
   }
 }
 
 - (void)_updateBackgroundTileViewController
 {
-  v17 = [(PUOneUpViewController *)self _backgroundTileViewController];
-  v3 = [(PUOneUpViewController *)self _spec];
-  v4 = [v3 backgroundColorOverride];
-  v5 = v4;
-  if (v4)
+  _backgroundTileViewController = [(PUOneUpViewController *)self _backgroundTileViewController];
+  _spec = [(PUOneUpViewController *)self _spec];
+  backgroundColorOverride = [_spec backgroundColorOverride];
+  v5 = backgroundColorOverride;
+  if (backgroundColorOverride)
   {
-    v6 = v4;
+    backgroundColorOverride2 = backgroundColorOverride;
   }
 
   else
   {
-    v7 = [(PUOneUpViewController *)self chromeViewController];
-    v6 = [v7 backgroundColorOverride];
+    chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+    backgroundColorOverride2 = [chromeViewController backgroundColorOverride];
   }
 
-  v8 = [v3 shouldDisplayEmptyPlaceholder];
-  [v17 setBackgroundColorOverride:v6];
-  [v17 setShouldDisplayEmptyPlaceholder:v8];
-  v9 = [(PUOneUpViewController *)self browsingSession];
-  v10 = [v9 emptyPlaceholderTitle];
-  [v17 setEmptyPlaceholderCustomTitle:v10];
+  shouldDisplayEmptyPlaceholder = [_spec shouldDisplayEmptyPlaceholder];
+  [_backgroundTileViewController setBackgroundColorOverride:backgroundColorOverride2];
+  [_backgroundTileViewController setShouldDisplayEmptyPlaceholder:shouldDisplayEmptyPlaceholder];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  emptyPlaceholderTitle = [browsingSession emptyPlaceholderTitle];
+  [_backgroundTileViewController setEmptyPlaceholderCustomTitle:emptyPlaceholderTitle];
 
-  v11 = [(PUOneUpViewController *)self browsingSession];
-  v12 = [v11 emptyPlaceholderSubtitle];
-  [v17 setEmptyPlaceholderCustomSubtitle:v12];
+  browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+  emptyPlaceholderSubtitle = [browsingSession2 emptyPlaceholderSubtitle];
+  [_backgroundTileViewController setEmptyPlaceholderCustomSubtitle:emptyPlaceholderSubtitle];
 
   if ([(PUOneUpViewController *)self wantsSpotlightStyling])
   {
-    v13 = [(PUOneUpViewController *)self view];
-    v14 = [v13 traitCollection];
-    if ([v14 userInterfaceIdiom])
+    view = [(PUOneUpViewController *)self view];
+    traitCollection = [view traitCollection];
+    if ([traitCollection userInterfaceIdiom])
     {
       v15 = 8;
     }
@@ -11549,65 +11549,65 @@ void __48__PUOneUpViewController__updateReviewScreenBars__block_invoke(uint64_t 
     }
 
     v16 = [MEMORY[0x1E69DC730] effectWithStyle:v15];
-    [v17 setVisualEffect:v16];
+    [_backgroundTileViewController setVisualEffect:v16];
   }
 }
 
-- (void)_setContentUnavailableConfiguration:(id)a3
+- (void)_setContentUnavailableConfiguration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = PUOneUpViewController;
   [(PUOneUpViewController *)&v7 _setContentUnavailableConfiguration:?];
-  if (a3)
+  if (configuration)
   {
-    v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
 
   else
   {
-    v5 = 0;
+    systemBackgroundColor = 0;
   }
 
-  v6 = [(PUOneUpViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  view = [(PUOneUpViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  if (a3)
+  if (configuration)
   {
   }
 }
 
 - (void)_updateGestureController
 {
-  v7 = [(PUOneUpViewController *)self gestureController];
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 isChromeVisible];
+  gestureController = [(PUOneUpViewController *)self gestureController];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  isChromeVisible = [viewModel isChromeVisible];
 
-  if (v5)
+  if (isChromeVisible)
   {
-    v6 = [(PUOneUpViewController *)self chromeViewController];
-    [v6 contentGuideInsets];
-    [v7 setInteractionInsets:?];
+    chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+    [chromeViewController contentGuideInsets];
+    [gestureController setInteractionInsets:?];
   }
 
   else
   {
-    [v7 setInteractionInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+    [gestureController setInteractionInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
   }
 }
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
-  v4 = a3;
-  v5 = [(PUOneUpViewController *)self _spec];
-  v6 = [v5 isContentLocked];
+  stateCopy = state;
+  _spec = [(PUOneUpViewController *)self _spec];
+  isContentLocked = [_spec isContentLocked];
 
-  v7 = [(PUOneUpViewController *)self _tilingView];
-  [v7 setHidden:v6];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  [_tilingView setHidden:isContentLocked];
 
-  v8 = v6 ^ 1;
-  v9 = [(PUOneUpViewController *)self _tilingView];
-  [v9 setUserInteractionEnabled:v8];
+  v8 = isContentLocked ^ 1;
+  _tilingView2 = [(PUOneUpViewController *)self _tilingView];
+  [_tilingView2 setUserInteractionEnabled:v8];
 
   if (v8)
   {
@@ -11624,26 +11624,26 @@ void __48__PUOneUpViewController__updateReviewScreenBars__block_invoke(uint64_t 
     v23[3] = &unk_1E7B80890;
     objc_copyWeak(&v24, &location);
     v11 = [v10 actionWithHandler:v23];
-    v12 = [(PUOneUpViewController *)self browsingSession];
-    v13 = [v12 privacyController];
-    [v13 authenticationType];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    privacyController = [browsingSession privacyController];
+    [privacyController authenticationType];
 
-    v14 = [(PUOneUpViewController *)self browsingSession];
-    v15 = [v14 viewModel];
-    [v15 wantsContentUnavailableUnlockButtonVisible];
+    browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession2 viewModel];
+    [viewModel wantsContentUnavailableUnlockButtonVisible];
 
     v16 = PXContentLockedPlaceholderConfiguration();
-    v17 = [v16 updatedConfigurationForState:v4];
+    v17 = [v16 updatedConfigurationForState:stateCopy];
     [(PUOneUpViewController *)self _setContentUnavailableConfiguration:v17];
 
-    v18 = [(PUOneUpViewController *)self browsingSession];
-    v19 = [v18 viewModel];
+    browsingSession3 = [(PUOneUpViewController *)self browsingSession];
+    viewModel2 = [browsingSession3 viewModel];
 
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingState___block_invoke_2;
     v21[3] = &unk_1E7B80DD0;
-    v20 = v19;
+    v20 = viewModel2;
     v22 = v20;
     [v20 performChanges:v21];
 
@@ -11666,59 +11666,59 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
   if ([(PUOneUpViewController *)self _needsUpdateLayout])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateLayout:0];
-    v3 = [(PUOneUpViewController *)self _tilingView];
-    v4 = [v3 layout];
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    layout = [_tilingView layout];
 
-    [(PUOneUpViewController *)self _updateLayout:v4];
+    [(PUOneUpViewController *)self _updateLayout:layout];
   }
 }
 
 - (void)_updateViewModelWithCurrentScrollPosition
 {
-  v4 = [(PUOneUpViewController *)self _tilingView];
-  v5 = [v4 layout];
+  _tilingView = [(PUOneUpViewController *)self _tilingView];
+  layout = [_tilingView layout];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(PUOneUpViewController *)self browsingSession];
-    v7 = [v6 viewModel];
-    v8 = [v7 assetsDataSource];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    assetsDataSource = [viewModel assetsDataSource];
 
-    v9 = [v5 dataSource];
-    LOBYTE(v7) = [v9 isEqual:v8];
+    dataSource = [layout dataSource];
+    LOBYTE(viewModel) = [dataSource isEqual:assetsDataSource];
 
-    if ((v7 & 1) == 0)
+    if ((viewModel & 1) == 0)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:1883 description:{@"Invalid parameter not satisfying: %@", @"[[oneUpLayout dataSource] isEqual:assetsDataSource]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:1883 description:{@"Invalid parameter not satisfying: %@", @"[[oneUpLayout dataSource] isEqual:assetsDataSource]"}];
     }
 
-    v10 = [v5 indexPathOfCurrentItem];
-    if (v10)
+    indexPathOfCurrentItem = [layout indexPathOfCurrentItem];
+    if (indexPathOfCurrentItem)
     {
-      [v5 transitionProgress];
+      [layout transitionProgress];
       v12 = v11;
-      v13 = [v8 assetReferenceAtIndexPath:v10];
+      v13 = [assetsDataSource assetReferenceAtIndexPath:indexPathOfCurrentItem];
       if (!v13)
       {
-        v19 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v19 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:1889 description:{@"Invalid parameter not satisfying: %@", @"assetReference != nil"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:1889 description:{@"Invalid parameter not satisfying: %@", @"assetReference != nil"}];
       }
 
-      v14 = [(PUOneUpViewController *)self browsingSession];
-      v15 = [v14 viewModel];
+      browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+      viewModel2 = [browsingSession2 viewModel];
 
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __66__PUOneUpViewController__updateViewModelWithCurrentScrollPosition__block_invoke;
       v20[3] = &unk_1E7B7FE10;
-      v21 = v15;
+      v21 = viewModel2;
       v22 = v13;
       v24 = v12;
-      v23 = self;
+      selfCopy = self;
       v16 = v13;
-      v17 = v15;
+      v17 = viewModel2;
       [v17 performChanges:v20];
     }
   }
@@ -11726,13 +11726,13 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
 
 - (BOOL)_isDrivingScrubbing
 {
-  v2 = self;
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 transitionDriverIdentifier];
-  LOBYTE(v2) = [v5 isEqualToString:v2->_scrubbingIdentifier];
+  selfCopy = self;
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  transitionDriverIdentifier = [viewModel transitionDriverIdentifier];
+  LOBYTE(selfCopy) = [transitionDriverIdentifier isEqualToString:selfCopy->_scrubbingIdentifier];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_updateScrubbingAdjustmentPolicyIfNeeded
@@ -11740,15 +11740,15 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
   if ([(PUOneUpViewController *)self _needsUpdateScrubbingAdjustmentPolicy])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateScrubbingAdjustmentPolicy:0];
-    v3 = [(PUOneUpViewController *)self browsingSession];
-    v4 = [v3 viewModel];
-    v8 = [v4 assetViewModelForCurrentAssetReference];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
+    assetViewModelForCurrentAssetReference = [viewModel assetViewModelForCurrentAssetReference];
 
-    v5 = [v8 asset];
-    v6 = [(PUOneUpViewController *)self _insetModeForAsset:v5];
+    asset = [assetViewModelForCurrentAssetReference asset];
+    v6 = [(PUOneUpViewController *)self _insetModeForAsset:asset];
 
-    v7 = [(PUOneUpViewController *)self scaledVideoOffsetAdjustmentPolicy];
-    [v7 setInsetMode:v6];
+    scaledVideoOffsetAdjustmentPolicy = [(PUOneUpViewController *)self scaledVideoOffsetAdjustmentPolicy];
+    [scaledVideoOffsetAdjustmentPolicy setInsetMode:v6];
   }
 }
 
@@ -11757,31 +11757,31 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
   if ([(PUOneUpViewController *)self _needsUpdateBarsController])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateBarsController:0];
-    v47 = [(PUOneUpViewController *)self _spec];
-    v3 = [(PUOneUpViewController *)self _options];
-    v4 = [(PUOneUpViewController *)self browsingSession];
-    v5 = [v4 viewModel];
+    _spec = [(PUOneUpViewController *)self _spec];
+    _options = [(PUOneUpViewController *)self _options];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v6 = [MEMORY[0x1E69C3640] isOneUpRefreshEnabled];
+    isOneUpRefreshEnabled = [MEMORY[0x1E69C3640] isOneUpRefreshEnabled];
     v7 = +[PUOneUpSettings sharedInstance];
-    v44 = [v47 shouldPlaceButtonsInNavigationBar];
-    v43 = [v47 shouldUseCompactTitleView];
-    v42 = [v47 shouldUseCompactCommentsTitle];
-    [v47 maximumToolbarHeight];
+    shouldPlaceButtonsInNavigationBar = [_spec shouldPlaceButtonsInNavigationBar];
+    shouldUseCompactTitleView = [_spec shouldUseCompactTitleView];
+    shouldUseCompactCommentsTitle = [_spec shouldUseCompactCommentsTitle];
+    [_spec maximumToolbarHeight];
     v9 = v8;
-    [v47 maximumAccessoryToolbarHeight];
+    [_spec maximumAccessoryToolbarHeight];
     v11 = v10;
     v12 = 0;
-    if ([v47 allowProgrammaticNavBackButton])
+    if ([_spec allowProgrammaticNavBackButton])
     {
-      v13 = [(PUOneUpViewController *)self navigationController];
-      v14 = [v13 viewControllers];
-      v15 = [v14 firstObject];
-      if (v15 == self)
+      navigationController = [(PUOneUpViewController *)self navigationController];
+      viewControllers = [navigationController viewControllers];
+      firstObject = [viewControllers firstObject];
+      if (firstObject == self)
       {
-        v16 = [(PUOneUpViewController *)self navigationController];
-        v17 = [v16 presentingViewController];
-        v12 = v17 != 0;
+        navigationController2 = [(PUOneUpViewController *)self navigationController];
+        presentingViewController = [navigationController2 presentingViewController];
+        v12 = presentingViewController != 0;
       }
 
       else
@@ -11791,7 +11791,7 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
     }
 
     v41 = v12;
-    if (v6)
+    if (isOneUpRefreshEnabled)
     {
       v18 = 0;
     }
@@ -11799,32 +11799,32 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
     else
     {
       v18 = 0;
-      if (([v5 isPresentedForPreview] & 1) == 0 && (v3 & 0x800) == 0)
+      if (([viewModel isPresentedForPreview] & 1) == 0 && (_options & 0x800) == 0)
       {
-        v18 = [v47 isContentLocked] ^ 1;
+        v18 = [_spec isContentLocked] ^ 1;
       }
     }
 
-    v19 = [v47 shouldShowTitleView];
-    v45 = v3;
-    if ((v3 & 0x1000) != 0)
+    shouldShowTitleView = [_spec shouldShowTitleView];
+    v45 = _options;
+    if ((_options & 0x1000) != 0)
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldShowTitleView;
     }
 
     v40 = v20;
     ShouldShowAirPlayButton = _ShouldShowAirPlayButton();
-    v21 = [v5 currentAssetReference];
-    v22 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-    v23 = [v21 asset];
-    v24 = [v22 accessoryViewTypeForAsset:v23];
+    currentAssetReference = [viewModel currentAssetReference];
+    _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+    asset = [currentAssetReference asset];
+    v24 = [_accessoryViewControllersManager accessoryViewTypeForAsset:asset];
 
-    if ([v47 allowTapOnTitle])
+    if ([_spec allowTapOnTitle])
     {
       v26 = [v7 titleTapAction] == 2 && v24 == 2;
       v38 = v26;
@@ -11835,19 +11835,19 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
       v38 = 0;
     }
 
-    v27 = [v21 asset];
-    v28 = v27;
+    asset2 = [currentAssetReference asset];
+    v28 = asset2;
     v46 = v7;
-    if (v6)
+    if (isOneUpRefreshEnabled)
     {
-      v29 = v5;
+      v29 = viewModel;
       v37 = 0;
       v30 = 0;
     }
 
     else
     {
-      if ([v27 mediaType] == 2)
+      if ([asset2 mediaType] == 2)
       {
         v37 = [v28 canPlayLoopingVideo] ^ 1;
       }
@@ -11857,39 +11857,39 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
         v37 = 0;
       }
 
-      v29 = v5;
+      v29 = viewModel;
       v30 = [v28 playbackStyle] == 4;
     }
 
-    v31 = [v47 shouldDisableNavigationBarsVisibility];
-    v32 = [v47 shouldPlaceScrubberInScrubberBar];
-    v33 = [(PUOneUpViewController *)self _spec];
-    v34 = [v33 hideScrubberWhenShowingAccessoryView];
+    shouldDisableNavigationBarsVisibility = [_spec shouldDisableNavigationBarsVisibility];
+    shouldPlaceScrubberInScrubberBar = [_spec shouldPlaceScrubberInScrubberBar];
+    _spec2 = [(PUOneUpViewController *)self _spec];
+    hideScrubberWhenShowingAccessoryView = [_spec2 hideScrubberWhenShowingAccessoryView];
 
-    if (v34)
+    if (hideScrubberWhenShowingAccessoryView)
     {
-      v35 = [v29 assetViewModelForAssetReference:v21];
+      v35 = [v29 assetViewModelForAssetReference:currentAssetReference];
       v18 = ([v35 isAccessoryViewVisible] ^ 1) & v18;
     }
 
-    v36 = [(PUOneUpViewController *)self _barsController];
-    [v36 setShouldShowMuteButton:v30];
-    [v36 setShouldPlaceButtonsInNavigationBar:v44];
-    [v36 setShouldUseCompactTitleView:v43];
-    [v36 setShouldUseCompactCommentsTitle:v42];
-    [v36 setMaximumToolbarHeight:v9];
-    [v36 setMaximumAccessoryToolbarHeight:v11];
-    [v36 setShouldShowProgrammaticNavBackButton:v41];
-    [v36 setShouldShowAirPlayButton:ShouldShowAirPlayButton];
-    [v36 setShouldShowScrubber:v18];
-    [v36 setShouldShowTitleView:v40];
-    [v36 setAllowTapOnTitle:v38];
-    [v36 setAllowShowingPlayPauseButton:v37];
-    [v36 setDisableShowingNavigationBars:v31];
-    [v36 setShouldPlaceScrubberInScrubberBar:v32];
-    [v36 setDisableChromeHiding:(v45 >> 14) & 1];
-    [v36 setWantsShowInLibraryButton:(v45 >> 15) & 1];
-    [v36 setIsInCompactLayoutStyle:{objc_msgSend(v47, "isInCompactLayoutStyle")}];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    [_barsController setShouldShowMuteButton:v30];
+    [_barsController setShouldPlaceButtonsInNavigationBar:shouldPlaceButtonsInNavigationBar];
+    [_barsController setShouldUseCompactTitleView:shouldUseCompactTitleView];
+    [_barsController setShouldUseCompactCommentsTitle:shouldUseCompactCommentsTitle];
+    [_barsController setMaximumToolbarHeight:v9];
+    [_barsController setMaximumAccessoryToolbarHeight:v11];
+    [_barsController setShouldShowProgrammaticNavBackButton:v41];
+    [_barsController setShouldShowAirPlayButton:ShouldShowAirPlayButton];
+    [_barsController setShouldShowScrubber:v18];
+    [_barsController setShouldShowTitleView:v40];
+    [_barsController setAllowTapOnTitle:v38];
+    [_barsController setAllowShowingPlayPauseButton:v37];
+    [_barsController setDisableShowingNavigationBars:shouldDisableNavigationBarsVisibility];
+    [_barsController setShouldPlaceScrubberInScrubberBar:shouldPlaceScrubberInScrubberBar];
+    [_barsController setDisableChromeHiding:(v45 >> 14) & 1];
+    [_barsController setWantsShowInLibraryButton:(v45 >> 15) & 1];
+    [_barsController setIsInCompactLayoutStyle:{objc_msgSend(_spec, "isInCompactLayoutStyle")}];
   }
 }
 
@@ -11898,24 +11898,24 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
   if ([(PUOneUpViewController *)self _needsUpdateVideoPlayer])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateVideoPlayer:0];
-    v3 = [(PUOneUpViewController *)self browsingSession];
-    v4 = [v3 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v5 = [v4 currentAssetReference];
-    v6 = [v4 assetViewModelForAssetReference:v5];
+    currentAssetReference = [viewModel currentAssetReference];
+    v6 = [viewModel assetViewModelForAssetReference:currentAssetReference];
 
-    v7 = [v6 asset];
-    v8 = [v4 isPresentingOverOneUp];
-    v9 = [v6 videoPlayer];
-    if ((v8 & 1) == 0)
+    asset = [v6 asset];
+    isPresentingOverOneUp = [viewModel isPresentingOverOneUp];
+    videoPlayer = [v6 videoPlayer];
+    if ((isPresentingOverOneUp & 1) == 0)
     {
-      if ([v7 canPlayLoopingVideo])
+      if ([asset canPlayLoopingVideo])
       {
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __51__PUOneUpViewController__updateVideoPlayerIfNeeded__block_invoke;
         v10[3] = &unk_1E7B80DD0;
-        v11 = v9;
+        v11 = videoPlayer;
         [v11 performChanges:v10];
       }
     }
@@ -11930,15 +11930,15 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
     [(PUOneUpViewController *)self preferredContentSizeOverride];
     if (v4 == *MEMORY[0x1E695F060] && v3 == *(MEMORY[0x1E695F060] + 8))
     {
-      v6 = [(PUOneUpViewController *)self browsingSession];
-      v25 = [v6 viewModel];
+      browsingSession = [(PUOneUpViewController *)self browsingSession];
+      viewModel = [browsingSession viewModel];
 
-      v7 = [v25 currentAssetReference];
-      v8 = [v7 asset];
+      currentAssetReference = [viewModel currentAssetReference];
+      asset = [currentAssetReference asset];
 
-      if (v8)
+      if (asset)
       {
-        [v8 aspectRatio];
+        [asset aspectRatio];
         v10 = v9;
       }
 
@@ -11947,8 +11947,8 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
         v10 = 1.0;
       }
 
-      v11 = [(PUOneUpViewController *)self px_screen];
-      [v11 bounds];
+      px_screen = [(PUOneUpViewController *)self px_screen];
+      [px_screen bounds];
       v16 = PURectWithAspectRatioFittingRect(1.0, v12, v13, v14, v15);
       v18 = v17;
       v20 = v19;
@@ -11973,21 +11973,21 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
   if ([(PUOneUpViewController *)self _needsUpdateSpec])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateSpec:0];
-    v3 = [(PUOneUpViewController *)self traitCollection];
+    traitCollection = [(PUOneUpViewController *)self traitCollection];
     [(PUOneUpViewController *)self _layoutReferenceSize];
     v5 = v4;
     v7 = v6;
-    v37 = [(PUOneUpViewController *)self _isPresentedForSecondScreen];
-    v8 = [(PUOneUpViewController *)self _prefersCompactLayoutForSplitScreen];
-    v9 = [(PUOneUpViewController *)self browsingSession];
-    v10 = [v9 viewModel];
+    _isPresentedForSecondScreen = [(PUOneUpViewController *)self _isPresentedForSecondScreen];
+    _prefersCompactLayoutForSplitScreen = [(PUOneUpViewController *)self _prefersCompactLayoutForSplitScreen];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v11 = [v10 isPresentedForPreview];
-    v12 = [v10 isChromeVisible];
-    v13 = [(PUOneUpViewController *)self _secondScreenBrowser];
-    if (v13 && ![(PUOneUpViewController *)self _isPresentedForSecondScreen])
+    isPresentedForPreview = [viewModel isPresentedForPreview];
+    isChromeVisible = [viewModel isChromeVisible];
+    _secondScreenBrowser = [(PUOneUpViewController *)self _secondScreenBrowser];
+    if (_secondScreenBrowser && ![(PUOneUpViewController *)self _isPresentedForSecondScreen])
     {
-      [v10 secondScreenSize];
+      [viewModel secondScreenSize];
       v14 = v16;
       v15 = v17;
     }
@@ -11998,16 +11998,16 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
       v15 = *(MEMORY[0x1E695F060] + 8);
     }
 
-    v18 = [(PUOneUpViewController *)self _barsController];
-    v19 = [v18 isShowingPlayPauseButton];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    isShowingPlayPauseButton = [_barsController isShowingPlayPauseButton];
 
-    v20 = [v10 contentPrivacyState] == 1;
-    v21 = [(PUOneUpViewController *)self unlockDeviceStatus];
+    v20 = [viewModel contentPrivacyState] == 1;
+    unlockDeviceStatus = [(PUOneUpViewController *)self unlockDeviceStatus];
 
-    if (v21)
+    if (unlockDeviceStatus)
     {
-      v22 = [(PUOneUpViewController *)self unlockDeviceStatus];
-      v23 = v22[2]();
+      unlockDeviceStatus2 = [(PUOneUpViewController *)self unlockDeviceStatus];
+      v23 = unlockDeviceStatus2[2]();
     }
 
     else
@@ -12026,45 +12026,45 @@ void __74__PUOneUpViewController__updateContentUnavailableConfigurationUsingStat
 
       v36 = v23;
       v26 = v20;
-      v27 = v19;
-      v28 = v3;
-      v29 = v12;
-      v30 = v11;
-      v31 = v8;
+      v27 = isShowingPlayPauseButton;
+      v28 = traitCollection;
+      v29 = isChromeVisible;
+      v30 = isPresentedForPreview;
+      v31 = _prefersCompactLayoutForSplitScreen;
       v32 = v25;
       *buf = 138412290;
       v53 = v32;
       _os_log_impl(&dword_1B36F3000, v24, OS_LOG_TYPE_INFO, "PUOneUpViewController: shouldDisplayPeopleRow: %@", buf, 0xCu);
 
-      v8 = v31;
-      v11 = v30;
-      v12 = v29;
-      v3 = v28;
-      v19 = v27;
+      _prefersCompactLayoutForSplitScreen = v31;
+      isPresentedForPreview = v30;
+      isChromeVisible = v29;
+      traitCollection = v28;
+      isShowingPlayPauseButton = v27;
       v20 = v26;
       LOBYTE(v23) = v36;
     }
 
-    v33 = [(PUOneUpViewController *)self _spec];
+    _spec = [(PUOneUpViewController *)self _spec];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke;
     v38[3] = &unk_1E7B79F10;
-    v45 = v11;
-    v46 = v37;
+    v45 = isPresentedForPreview;
+    v46 = _isPresentedForSecondScreen;
     v41 = v14;
     v42 = v15;
-    v47 = v12;
+    v47 = isChromeVisible;
     v48 = v20;
-    v49 = v19;
-    v39 = v33;
-    v40 = v3;
-    v50 = v8;
+    v49 = isShowingPlayPauseButton;
+    v39 = _spec;
+    v40 = traitCollection;
+    v50 = _prefersCompactLayoutForSplitScreen;
     v43 = v5;
     v44 = v7;
     v51 = v23;
-    v34 = v3;
-    v35 = v33;
+    v34 = traitCollection;
+    v35 = _spec;
     [v35 performChanges:v38];
   }
 }
@@ -12090,12 +12090,12 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
   return [v3 setShouldDisplayPeopleRow:v4];
 }
 
-- (void)_dismissTipPopoverAnimated:(BOOL)a3
+- (void)_dismissTipPopoverAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(PUOneUpViewController *)self _isTipPopoverVisible])
   {
-    [(PUOneUpViewController *)self dismissViewControllerAnimated:v3 completion:0];
+    [(PUOneUpViewController *)self dismissViewControllerAnimated:animatedCopy completion:0];
     [MEMORY[0x1E69C3748] setTip:self->_presentedTipID isPresentable:0];
     [(PUOneUpBarsController *)self->__barsController setPresentedTipID:0];
     presentedTipID = self->_presentedTipID;
@@ -12116,55 +12116,55 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
   if ([(PUOneUpViewController *)self _needsUpdateTipsPopover])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateTipPopovers:0];
-    v3 = [(PUOneUpViewController *)self browsingSession];
-    v4 = [v3 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    v5 = [(PUOneUpViewController *)self browsingSession];
-    v6 = [v5 actionManager];
+    browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+    actionManager = [browsingSession2 actionManager];
 
-    v7 = [v4 assetViewModelForCurrentAssetReference];
-    v8 = [v4 assetsDataSource];
-    v9 = [v4 currentAssetReference];
-    v10 = [v9 asset];
-    v11 = [v7 badgeInfoPromise];
-    v12 = v11;
-    if (v11)
+    assetViewModelForCurrentAssetReference = [viewModel assetViewModelForCurrentAssetReference];
+    assetsDataSource = [viewModel assetsDataSource];
+    currentAssetReference = [viewModel currentAssetReference];
+    asset = [currentAssetReference asset];
+    badgeInfoPromise = [assetViewModelForCurrentAssetReference badgeInfoPromise];
+    v12 = badgeInfoPromise;
+    if (badgeInfoPromise)
     {
-      [v11 badgeInfo];
+      [badgeInfoPromise badgeInfo];
     }
 
-    v67 = [v4 isChromeVisible];
-    v66 = [(PUOneUpViewController *)self _isIrisPlaying];
-    v13 = [(PUOneUpViewController *)self traitCollection];
-    v65 = [v13 userInterfaceIdiom];
+    isChromeVisible = [viewModel isChromeVisible];
+    _isIrisPlaying = [(PUOneUpViewController *)self _isIrisPlaying];
+    traitCollection = [(PUOneUpViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    v14 = [(PUOneUpViewController *)self view];
-    v15 = [v14 window];
-    v64 = [v15 _toWindowOrientation];
+    view = [(PUOneUpViewController *)self view];
+    window = [view window];
+    _toWindowOrientation = [window _toWindowOrientation];
 
-    if ([v4 isScrolling])
+    if ([viewModel isScrolling])
     {
-      v63 = 1;
+      isScrubbing = 1;
     }
 
     else
     {
-      v63 = [v4 isScrubbing];
+      isScrubbing = [viewModel isScrubbing];
     }
 
     if ([(PUOneUpViewController *)self appearState]== 2)
     {
-      v62 = [v4 isPresentedForPreview];
+      isPresentedForPreview = [viewModel isPresentedForPreview];
     }
 
     else
     {
-      v62 = 1;
+      isPresentedForPreview = 1;
     }
 
-    v61 = [(PUOneUpViewController *)self _isAccessoryVisible];
-    v16 = [(PUOneUpViewController *)self _barsController];
-    v59 = [v16 barButtonItemToggleDetails];
+    _isAccessoryVisible = [(PUOneUpViewController *)self _isAccessoryVisible];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    barButtonItemToggleDetails = [_barsController barButtonItemToggleDetails];
 
     if (PXAssetBadgeInfoIsActionable())
     {
@@ -12176,14 +12176,14 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
       v56 = 0;
     }
 
-    v17 = [(PUOneUpViewController *)self _barsController];
-    v18 = [v17 barButtonItemActionsMenu];
-    v55 = v18 != 0;
+    _barsController2 = [(PUOneUpViewController *)self _barsController];
+    barButtonItemActionsMenu = [_barsController2 barButtonItemActionsMenu];
+    v55 = barButtonItemActionsMenu != 0;
 
     if (PXContentSyndicationShouldShowAttributionViewForAsset())
     {
-      v19 = [(PUOneUpViewController *)self _syndicationPillView];
-      v54 = v19 != 0;
+      _syndicationPillView = [(PUOneUpViewController *)self _syndicationPillView];
+      v54 = _syndicationPillView != 0;
     }
 
     else
@@ -12191,30 +12191,30 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
       v54 = 0;
     }
 
-    v68 = v10;
-    v20 = [v7 asset];
-    v58 = [(PUOneUpViewController *)self _isAssetEligibleForTip:v20];
+    v68 = asset;
+    asset2 = [assetViewModelForCurrentAssetReference asset];
+    v58 = [(PUOneUpViewController *)self _isAssetEligibleForTip:asset2];
 
-    v21 = [v7 visualImageAnalysis];
-    v57 = [v21 hasVisualSearchResults];
+    visualImageAnalysis = [assetViewModelForCurrentAssetReference visualImageAnalysis];
+    hasVisualSearchResults = [visualImageAnalysis hasVisualSearchResults];
 
-    if (v9)
+    if (currentAssetReference)
     {
-      v22 = [v8 indexPathForAssetReference:v9];
-      v23 = [(PUOneUpViewController *)self _tilingView];
+      v22 = [assetsDataSource indexPathForAssetReference:currentAssetReference];
+      _tilingView = [(PUOneUpViewController *)self _tilingView];
       v24 = PUTileKindBadge;
-      v25 = [v8 identifier];
-      v26 = [v23 presentedTileControllerWithIndexPath:v22 kind:v24 dataSourceIdentifier:v25];
+      identifier = [assetsDataSource identifier];
+      v26 = [_tilingView presentedTileControllerWithIndexPath:v22 kind:v24 dataSourceIdentifier:identifier];
 
-      v53 = [v26 isActive];
+      isActive = [v26 isActive];
       if ([MEMORY[0x1E69BDDE0] status] == 1)
       {
-        v73[0] = v9;
+        v73[0] = currentAssetReference;
         v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:1];
-        if ([v6 canPerformAction:24 onAllAssetReferences:v27])
+        if ([actionManager canPerformAction:24 onAllAssetReferences:v27])
         {
-          v28 = [v9 asset];
-          v60 = [v28 mediaType] == 1;
+          asset3 = [currentAssetReference asset];
+          v60 = [asset3 mediaType] == 1;
         }
 
         else
@@ -12232,36 +12232,36 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
     else
     {
       v60 = 0;
-      v53 = 0;
+      isActive = 0;
     }
 
-    v69 = v8;
-    v71 = v6;
-    v29 = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
-    v30 = [v29 cropButton];
+    v69 = assetsDataSource;
+    v71 = actionManager;
+    _cropButtonTileViewControllerForCurrentAsset = [(PUOneUpViewController *)self _cropButtonTileViewControllerForCurrentAsset];
+    cropButton = [_cropButtonTileViewControllerForCurrentAsset cropButton];
 
     v31 = 0;
-    v33 = v64 != 1 && v65 != 1;
-    v72 = v4;
-    v70 = v7;
+    v33 = _toWindowOrientation != 1 && userInterfaceIdiom != 1;
+    v72 = viewModel;
+    v70 = assetViewModelForCurrentAssetReference;
     v34 = 0;
     v35 = 0;
     v36 = 0;
     v37 = 0;
-    if (((v63 | v62) | (v66 || v61)))
+    if (((isScrubbing | isPresentedForPreview) | (_isIrisPlaying || _isAccessoryVisible)))
     {
-      v38 = v67;
+      v38 = isChromeVisible;
     }
 
     else
     {
-      v38 = v67;
+      v38 = isChromeVisible;
       if (!v33)
       {
         v34 = ![(PUOneUpViewController *)self _hasShownRelevantTip];
-        if (v59)
+        if (barButtonItemToggleDetails)
         {
-          v39 = v67 & v34;
+          v39 = isChromeVisible & v34;
         }
 
         else
@@ -12269,12 +12269,12 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
           v39 = 0;
         }
 
-        v31 = v39 & v58 & v57;
-        if ((v67 & v34) == 1)
+        v31 = v39 & v58 & hasVisualSearchResults;
+        if ((isChromeVisible & v34) == 1)
         {
           v35 = v55;
           v36 = v54;
-          v37 = [(PUOneUpViewController *)self _didPlayCurrentLivePhoto]& v53 & v56;
+          v37 = [(PUOneUpViewController *)self _didPlayCurrentLivePhoto]& isActive & v56;
           v34 = 1;
         }
 
@@ -12287,30 +12287,30 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
       }
     }
 
-    v40 = v30 != 0;
+    v40 = cropButton != 0;
     v41 = MEMORY[0x1E69C3748];
-    v42 = [MEMORY[0x1E69C3748] infoPanelTipID];
-    [v41 setTip:v42 isPresentable:v31];
+    infoPanelTipID = [MEMORY[0x1E69C3748] infoPanelTipID];
+    [v41 setTip:infoPanelTipID isPresentable:v31];
 
     v43 = MEMORY[0x1E69C3748];
-    v44 = [MEMORY[0x1E69C3748] livePhotosTipID];
-    [v43 setTip:v44 isPresentable:v37];
+    livePhotosTipID = [MEMORY[0x1E69C3748] livePhotosTipID];
+    [v43 setTip:livePhotosTipID isPresentable:v37];
 
     v45 = MEMORY[0x1E69C3748];
-    v46 = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
-    [v45 setTip:v46 isPresentable:v36];
+    syndicatedPhotosTipID = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
+    [v45 setTip:syndicatedPhotosTipID isPresentable:v36];
 
     v47 = MEMORY[0x1E69C3748];
-    v48 = [MEMORY[0x1E69C3748] actionsMenuTipID];
-    [v47 setTip:v48 isPresentable:v35];
+    actionsMenuTipID = [MEMORY[0x1E69C3748] actionsMenuTipID];
+    [v47 setTip:actionsMenuTipID isPresentable:v35];
 
     v49 = MEMORY[0x1E69C3748];
-    v50 = [MEMORY[0x1E69C3748] quickCropTipID];
-    [v49 setTip:v50 isPresentable:v34 & ~v38 & v40];
+    quickCropTipID = [MEMORY[0x1E69C3748] quickCropTipID];
+    [v49 setTip:quickCropTipID isPresentable:v34 & ~v38 & v40];
 
     v51 = MEMORY[0x1E69C3748];
-    v52 = [MEMORY[0x1E69C3748] cleanUpTipID];
-    [v51 setTip:v52 isPresentable:v34 & v60];
+    cleanUpTipID = [MEMORY[0x1E69C3748] cleanUpTipID];
+    [v51 setTip:cleanUpTipID isPresentable:v34 & v60];
   }
 }
 
@@ -12320,20 +12320,20 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
   if ([(PUOneUpViewController *)self _needsUpdateBarAppearance])
   {
     [(PUOneUpViewController *)self _setNeedsUpdateBarAppearance:0];
-    v3 = [(PUOneUpViewController *)self px_barAppearance];
-    if (([v3 isEnabled] & 1) == 0)
+    px_barAppearance = [(PUOneUpViewController *)self px_barAppearance];
+    if (([px_barAppearance isEnabled] & 1) == 0)
     {
       v4 = PXAssertGetLog();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v10 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_ERROR, "Attempting to modify PXBarAppearance state without enabling bar appearance on: %@", buf, 0xCu);
       }
     }
 
-    v5 = [(PUOneUpViewController *)self pu_wantsToolbarVisible];
-    if ([v3 prefersTabBarVisible])
+    pu_wantsToolbarVisible = [(PUOneUpViewController *)self pu_wantsToolbarVisible];
+    if ([px_barAppearance prefersTabBarVisible])
     {
       v6 = PXAssertGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -12347,8 +12347,8 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
     v7[1] = 3221225472;
     v7[2] = __53__PUOneUpViewController__updateBarAppearanceIfNeeded__block_invoke;
     v7[3] = &__block_descriptor_33_e34_v16__0___PXMutableBarAppearance__8l;
-    v8 = v5;
-    [v3 performChangesWithAnimationOptions:0 changes:v7];
+    v8 = pu_wantsToolbarVisible;
+    [px_barAppearance performChangesWithAnimationOptions:0 changes:v7];
   }
 }
 
@@ -12357,10 +12357,10 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
   if ([(PUOneUpViewController *)self _needsUpdatePreloadInsets])
   {
     [(PUOneUpViewController *)self _setNeedsUpdatePreloadInsets:0];
-    v3 = [(PUOneUpViewController *)self browsingSession];
-    v14 = [v3 viewModel];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession viewModel];
 
-    if ([v14 browsingSpeedRegime] == 2 || objc_msgSend(v14, "isPresentedForPreview"))
+    if ([viewModel browsingSpeedRegime] == 2 || objc_msgSend(viewModel, "isPresentedForPreview"))
     {
       v5 = *MEMORY[0x1E69DDCE0];
       v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -12370,8 +12370,8 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
 
     else
     {
-      v8 = [(PUOneUpViewController *)self view];
-      [v8 bounds];
+      view = [(PUOneUpViewController *)self view];
+      [view bounds];
       v10 = v9;
 
       v11 = v10;
@@ -12391,61 +12391,61 @@ uint64_t __44__PUOneUpViewController__updateSpecIfNeeded__block_invoke(uint64_t 
       v5 = 0.0;
     }
 
-    v13 = [(PUOneUpViewController *)self _tilingView];
-    [v13 setLoadingInsets:{v5, v4, v7, v6}];
+    _tilingView = [(PUOneUpViewController *)self _tilingView];
+    [_tilingView setLoadingInsets:{v5, v4, v7, v6}];
   }
 }
 
-- (void)_updateLayout:(id)a3
+- (void)_updateLayout:(id)layout
 {
-  v132 = a3;
+  layoutCopy = layout;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_68;
   }
 
-  v4 = [(PUOneUpViewController *)self _spec];
+  _spec = [(PUOneUpViewController *)self _spec];
   v5 = +[PUOneUpSettings sharedInstance];
-  v6 = [MEMORY[0x1E69C3640] isOneUpRefreshEnabled];
-  v7 = [(PUOneUpViewController *)self browsingSession];
-  v8 = [v7 viewModel];
+  isOneUpRefreshEnabled = [MEMORY[0x1E69C3640] isOneUpRefreshEnabled];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v131 = [(PUOneUpViewController *)self _currentAssetViewModel];
+  _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
   v9 = *MEMORY[0x1E69DDCE0];
   v10 = *(MEMORY[0x1E69DDCE0] + 8);
   v11 = *(MEMORY[0x1E69DDCE0] + 16);
   v12 = *(MEMORY[0x1E69DDCE0] + 24);
-  if (v6)
+  if (isOneUpRefreshEnabled)
   {
-    v13 = [(PUOneUpViewController *)self browsingSession];
-    v14 = [v13 viewModel];
-    v15 = [v14 isPresentedForPreview];
+    browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+    viewModel2 = [browsingSession2 viewModel];
+    isPresentedForPreview = [viewModel2 isPresentedForPreview];
 
-    if (v15)
+    if (isPresentedForPreview)
     {
       goto LABEL_8;
     }
 
-    v16 = [(PUOneUpViewController *)self chromeViewController];
+    chromeViewController = [(PUOneUpViewController *)self chromeViewController];
     [(PUOneUpViewController *)self _layoutReferenceSize];
-    [v16 contentGuideInsetsForViewSize:?];
+    [chromeViewController contentGuideInsetsForViewSize:?];
   }
 
   else
   {
-    if (![v4 shouldUseContentGuideInsets])
+    if (![_spec shouldUseContentGuideInsets])
     {
       goto LABEL_8;
     }
 
-    v16 = [(PUOneUpViewController *)self _barsController];
-    [v16 contentGuideInsets];
+    chromeViewController = [(PUOneUpViewController *)self _barsController];
+    [chromeViewController contentGuideInsets];
   }
 
 LABEL_8:
-  v17 = [(PUOneUpViewController *)self chromeViewController];
-  [v17 contentDecorationAdditionalInsets];
+  chromeViewController2 = [(PUOneUpViewController *)self chromeViewController];
+  [chromeViewController2 contentDecorationAdditionalInsets];
   v127 = v19;
   v128 = v18;
   v125 = v21;
@@ -12457,11 +12457,11 @@ LABEL_8:
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(PUOneUpViewController *)self browsingSession];
-  v31 = [v30 viewModel];
-  v32 = [v31 isPresentedForPreview];
+  browsingSession3 = [(PUOneUpViewController *)self browsingSession];
+  viewModel3 = [browsingSession3 viewModel];
+  isPresentedForPreview2 = [viewModel3 isPresentedForPreview];
 
-  if (v32)
+  if (isPresentedForPreview2)
   {
 LABEL_9:
     v122 = v11;
@@ -12471,8 +12471,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v40 = [v5 scaleToFitBehavior];
-  switch(v40)
+  scaleToFitBehavior = [v5 scaleToFitBehavior];
+  switch(scaleToFitBehavior)
   {
     case 3:
       [v5 minimumContentInset];
@@ -12493,8 +12493,8 @@ LABEL_9:
       v121 = v25;
       break;
     case 1:
-      v41 = [(PUOneUpViewController *)self view];
-      [v41 safeAreaInsets];
+      view = [(PUOneUpViewController *)self view];
+      [view safeAreaInsets];
       v120 = v42;
       v121 = v43;
       v122 = v44;
@@ -12506,25 +12506,25 @@ LABEL_9:
   }
 
 LABEL_10:
-  v130 = v8;
-  v33 = [v8 videoOverlayPlayState];
-  v34 = [v4 shouldDisplayBadges];
-  if (v33)
+  v130 = viewModel;
+  videoOverlayPlayState = [viewModel videoOverlayPlayState];
+  shouldDisplayBadges = [_spec shouldDisplayBadges];
+  if (videoOverlayPlayState)
   {
     v35 = 0;
   }
 
   else
   {
-    v35 = v34;
+    v35 = shouldDisplayBadges;
   }
 
-  v116 = [v4 shouldUseUserTransformTiles];
-  v36 = [v4 shouldDisplayPlayButtons];
+  shouldUseUserTransformTiles = [_spec shouldUseUserTransformTiles];
+  shouldDisplayPlayButtons = [_spec shouldDisplayPlayButtons];
   v37 = MEMORY[0x1E695F060];
-  if (v36)
+  if (shouldDisplayPlayButtons)
   {
-    [v4 playButtonSize];
+    [_spec playButtonSize];
     v117 = v39;
     v118 = v38;
   }
@@ -12535,8 +12535,8 @@ LABEL_10:
     v118 = *MEMORY[0x1E695F060];
   }
 
-  v46 = [v4 shouldDisplayProgressIndicators];
-  if (v33 || !v46)
+  shouldDisplayProgressIndicators = [_spec shouldDisplayProgressIndicators];
+  if (videoOverlayPlayState || !shouldDisplayProgressIndicators)
   {
     v114 = v37[1];
     v115 = *v37;
@@ -12544,14 +12544,14 @@ LABEL_10:
 
   else
   {
-    [v4 progressIndicatorSize];
+    [_spec progressIndicatorSize];
     v114 = v48;
     v115 = v47;
   }
 
-  if ([v4 shouldDisplayPeopleRow])
+  if ([_spec shouldDisplayPeopleRow])
   {
-    [v4 peopleRowSize];
+    [_spec peopleRowSize];
     v112 = v50;
     v113 = v49;
   }
@@ -12562,19 +12562,19 @@ LABEL_10:
     v113 = *v37;
   }
 
-  v51 = [v4 shouldDisplayProgressIndicators];
-  if (!v33 && v51)
+  shouldDisplayProgressIndicators2 = [_spec shouldDisplayProgressIndicators];
+  if (!videoOverlayPlayState && shouldDisplayProgressIndicators2)
   {
-    [v4 progressIndicatorContentInsets];
+    [_spec progressIndicatorContentInsets];
     v9 = v52;
     v10 = v53;
     v11 = v54;
     v12 = v55;
   }
 
-  if ([v4 shouldDisplayProgressIndicators])
+  if ([_spec shouldDisplayProgressIndicators])
   {
-    [v4 renderIndicatorSize];
+    [_spec renderIndicatorSize];
     v110 = v57;
     v111 = v56;
   }
@@ -12585,10 +12585,10 @@ LABEL_10:
     v111 = *v37;
   }
 
-  v119 = [v4 traitCollection];
-  v58 = [v4 shouldDisplayBufferingIndicators];
+  traitCollection = [_spec traitCollection];
+  shouldDisplayBufferingIndicators = [_spec shouldDisplayBufferingIndicators];
   v124 = v25;
-  if (v33 || !v58)
+  if (videoOverlayPlayState || !shouldDisplayBufferingIndicators)
   {
     v102 = v37[1];
     v103 = *v37;
@@ -12596,21 +12596,21 @@ LABEL_10:
 
   else
   {
-    [v4 bufferingIndicatorSize];
+    [_spec bufferingIndicatorSize];
     v102 = v60;
     v103 = v59;
   }
 
-  v99 = [v4 canDisplayLoadingIndicators];
-  [v4 secondScreenSize];
+  canDisplayLoadingIndicators = [_spec canDisplayLoadingIndicators];
+  [_spec secondScreenSize];
   v100 = v62;
   v101 = v61;
   [v5 interpageSpacing];
   v64 = v63;
-  v107 = [v4 shouldPinContentToTop];
-  if ([v4 shouldDisplayAssetExplorerReviewScreenProgressIndicators])
+  shouldPinContentToTop = [_spec shouldPinContentToTop];
+  if ([_spec shouldDisplayAssetExplorerReviewScreenProgressIndicators])
   {
-    [v4 assetExplorerReviewScreenProgressIndicatorSize];
+    [_spec assetExplorerReviewScreenProgressIndicatorSize];
     v108 = v66;
     v109 = v65;
   }
@@ -12621,45 +12621,45 @@ LABEL_10:
     v109 = *v37;
   }
 
-  v106 = [v4 shouldDisplayReviewScreenBars];
-  v105 = [v4 shouldLayoutReviewScreenControlBarVertically];
-  v104 = [(PUOneUpViewController *)self _windowInterfaceOrientation];
-  v67 = [v131 isAccessoryViewVisible];
-  if (v6)
+  shouldDisplayReviewScreenBars = [_spec shouldDisplayReviewScreenBars];
+  shouldLayoutReviewScreenControlBarVertically = [_spec shouldLayoutReviewScreenControlBarVertically];
+  _windowInterfaceOrientation = [(PUOneUpViewController *)self _windowInterfaceOrientation];
+  isAccessoryViewVisible = [_currentAssetViewModel isAccessoryViewVisible];
+  if (isOneUpRefreshEnabled)
   {
-    v68 = [(PUOneUpViewController *)self traitCollection];
-    v69 = [v68 userInterfaceStyle];
+    traitCollection2 = [(PUOneUpViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
-    if (v69 >= 2)
+    if (userInterfaceStyle >= 2)
     {
-      if (v69 != 2)
+      if (userInterfaceStyle != 2)
       {
         v98 = 0;
 LABEL_50:
-        v76 = [MEMORY[0x1E69C3640] sharedInstance];
-        [v76 insetContentCornerRadius];
+        mEMORY[0x1E69C3640] = [MEMORY[0x1E69C3640] sharedInstance];
+        [mEMORY[0x1E69C3640] insetContentCornerRadius];
         v97 = v77;
 
-        v78 = [MEMORY[0x1E69C3640] sharedInstance];
-        [v78 insetContentBorderWidth];
+        mEMORY[0x1E69C3640]2 = [MEMORY[0x1E69C3640] sharedInstance];
+        [mEMORY[0x1E69C3640]2 insetContentBorderWidth];
         v96 = v79;
 
         goto LABEL_51;
       }
 
-      v70 = [MEMORY[0x1E69DC888] whiteColor];
-      v71 = [MEMORY[0x1E69C3640] sharedInstance];
-      [v71 insetContentBorderOpacityDarkMode];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      mEMORY[0x1E69C3640]3 = [MEMORY[0x1E69C3640] sharedInstance];
+      [mEMORY[0x1E69C3640]3 insetContentBorderOpacityDarkMode];
     }
 
     else
     {
-      v70 = [MEMORY[0x1E69DC888] blackColor];
-      v71 = [MEMORY[0x1E69C3640] sharedInstance];
-      [v71 insetContentBorderOpacityLightMode];
+      whiteColor = [MEMORY[0x1E69DC888] blackColor];
+      mEMORY[0x1E69C3640]3 = [MEMORY[0x1E69C3640] sharedInstance];
+      [mEMORY[0x1E69C3640]3 insetContentBorderOpacityLightMode];
     }
 
-    v98 = [v70 colorWithAlphaComponent:?];
+    v98 = [whiteColor colorWithAlphaComponent:?];
 
     goto LABEL_50;
   }
@@ -12671,10 +12671,10 @@ LABEL_51:
   v129 = v5;
   if (v35)
   {
-    if (v67)
+    if (isAccessoryViewVisible)
     {
-      v80 = [(PUOneUpViewController *)self _spec];
-      v81 = [v80 hideBadgesWhenShowingAccessoryView] ^ 1;
+      _spec2 = [(PUOneUpViewController *)self _spec];
+      v81 = [_spec2 hideBadgesWhenShowingAccessoryView] ^ 1;
     }
 
     else
@@ -12682,7 +12682,7 @@ LABEL_51:
       v81 = 1;
     }
 
-    v82 = (v6 ^ 1) & v81;
+    v82 = (isOneUpRefreshEnabled ^ 1) & v81;
   }
 
   else
@@ -12690,13 +12690,13 @@ LABEL_51:
     v82 = 0;
   }
 
-  v95 = [v4 shouldDisplayAssetExplorerReviewScreenBadges];
-  v83 = (([v4 shouldDisplaySelectionIndicators] & 1) != 0 || objc_msgSend(v130, "isInSelectionMode")) && v33 == 0;
-  v84 = [(PUOneUpViewController *)self browsingSession];
-  v85 = [v84 importStatusManager];
-  if (v85)
+  shouldDisplayAssetExplorerReviewScreenBadges = [_spec shouldDisplayAssetExplorerReviewScreenBadges];
+  v83 = (([_spec shouldDisplaySelectionIndicators] & 1) != 0 || objc_msgSend(v130, "isInSelectionMode")) && videoOverlayPlayState == 0;
+  browsingSession4 = [(PUOneUpViewController *)self browsingSession];
+  importStatusManager = [browsingSession4 importStatusManager];
+  if (importStatusManager)
   {
-    v86 = v33 == 0;
+    v86 = videoOverlayPlayState == 0;
   }
 
   else
@@ -12704,10 +12704,10 @@ LABEL_51:
     v86 = 0;
   }
 
-  if ([v4 shouldDisplaySyndicationAttribution])
+  if ([_spec shouldDisplaySyndicationAttribution])
   {
-    v87 = [MEMORY[0x1E69C3408] sharedInstance];
-    v88 = [v87 showSyndicated1upPillUI] & (v33 == 0) & v82;
+    mEMORY[0x1E69C3408] = [MEMORY[0x1E69C3408] sharedInstance];
+    v88 = [mEMORY[0x1E69C3408] showSyndicated1upPillUI] & (videoOverlayPlayState == 0) & v82;
   }
 
   else
@@ -12715,21 +12715,21 @@ LABEL_51:
     v88 = 0;
   }
 
-  v89 = v33 == 0;
-  v90 = v33 != 0;
+  v89 = videoOverlayPlayState == 0;
+  v90 = videoOverlayPlayState != 0;
   v91 = MEMORY[0x1E69C3640];
-  v92 = v132;
-  v93 = [v91 sharedInstance];
-  [v93 insetContentCornerRadius];
+  v92 = layoutCopy;
+  sharedInstance = [v91 sharedInstance];
+  [sharedInstance insetContentCornerRadius];
   [v92 setInsetContentCornerRadius:?];
 
-  v94 = [MEMORY[0x1E69C3640] sharedInstance];
-  [v94 minimumMarginForInsetContent];
+  mEMORY[0x1E69C3640]4 = [MEMORY[0x1E69C3640] sharedInstance];
+  [mEMORY[0x1E69C3640]4 minimumMarginForInsetContent];
   [v92 setMinimumMarginForInsetContent:?];
 
   [v92 setUseBackgroundTile:1];
   [v92 setUseBadgeTiles:v82];
-  [v92 setUseUserTransformTiles:v116];
+  [v92 setUseUserTransformTiles:shouldUseUserTransformTiles];
   [v92 setContentGuideInsets:{v23, v124, v27, v29}];
   [v92 setContentSafeInsets:{v120, v121, v122, v123}];
   [v92 setContentDecorationAdditionalInsets:{v128, v127, v126, v125}];
@@ -12739,19 +12739,19 @@ LABEL_51:
   [v92 setPeopleRowSize:{v113, v112}];
   [v92 setBufferingIndicatorSize:{v103, v102}];
   [v92 setRenderIndicatorSize:{v111, v110}];
-  [v92 setCanDisplayLoadingIndicators:v99 & v89];
-  [v92 setTraitCollection:v119];
+  [v92 setCanDisplayLoadingIndicators:canDisplayLoadingIndicators & v89];
+  [v92 setTraitCollection:traitCollection];
   [v92 setDisplaySizeForInsetMatching:{v101, v100}];
   [v92 setInterpageSpacing:{v64, 0.0}];
   [v92 setInterSectionSpacing:{v64, 0.0}];
-  [v92 setShouldPinContentToTop:v107];
-  [v92 setUseAssetExplorerReviewScreenBadgeTiles:v95 & v89];
+  [v92 setShouldPinContentToTop:shouldPinContentToTop];
+  [v92 setUseAssetExplorerReviewScreenBadgeTiles:shouldDisplayAssetExplorerReviewScreenBadges & v89];
   [v92 setUseSelectionIndicatorTiles:v83];
   [v92 setUseImportStatusIndicatorTiles:v86];
   [v92 setAssetExplorerReviewScreenProgressIndicatorSize:{v109, v108}];
-  [v92 setUseReviewScreenBars:v106];
-  [v92 setUseVerticalReviewScreenControlBarLayout:v105];
-  [v92 setWindowInterfaceOrientation:v104];
+  [v92 setUseReviewScreenBars:shouldDisplayReviewScreenBars];
+  [v92 setUseVerticalReviewScreenControlBarLayout:shouldLayoutReviewScreenControlBarVertically];
+  [v92 setWindowInterfaceOrientation:_windowInterfaceOrientation];
   [v92 setShouldHideMainContent:v90];
   [v92 setUseSyndicationAttributionTile:v88];
   [v92 setInsetContentBorderColor:v98];
@@ -12764,82 +12764,82 @@ LABEL_68:
 - (id)_newOneUpLayout
 {
   v3 = [PUOneUpTilingLayout alloc];
-  v4 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v4 viewModel];
-  v6 = [v5 assetsDataSource];
-  v7 = [(PUSectionedTilingLayout *)v3 initWithDataSource:v6];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
+  v7 = [(PUSectionedTilingLayout *)v3 initWithDataSource:assetsDataSource];
 
   [(PUOneUpTilingLayout *)v7 setDelegate:self];
-  v8 = [(PUOneUpViewController *)self _parallaxComputer];
-  [(PUOneUpTilingLayout *)v7 setParallaxComputer:v8];
+  _parallaxComputer = [(PUOneUpViewController *)self _parallaxComputer];
+  [(PUOneUpTilingLayout *)v7 setParallaxComputer:_parallaxComputer];
 
   [(PUOneUpViewController *)self _updateLayout:v7];
   return v7;
 }
 
-- (void)_setIrisPlaying:(BOOL)a3
+- (void)_setIrisPlaying:(BOOL)playing
 {
-  if (self->__isIrisPlaying != a3)
+  if (self->__isIrisPlaying != playing)
   {
-    v5 = [(PUOneUpViewController *)self _currentAssetViewModel];
+    _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __41__PUOneUpViewController__setIrisPlaying___block_invoke;
     v30[3] = &unk_1E7B7FF98;
-    v6 = v5;
+    v6 = _currentAssetViewModel;
     v31 = v6;
-    v32 = a3;
+    playingCopy = playing;
     [v6 performChanges:v30];
-    self->__isIrisPlaying = a3;
+    self->__isIrisPlaying = playing;
     [(PUOneUpViewController *)self _configureVitalityController];
     if (self->__isIrisPlaying)
     {
-      v7 = [(PUOneUpViewController *)self browsingSession];
-      v8 = [v7 viewModel];
+      browsingSession = [(PUOneUpViewController *)self browsingSession];
+      viewModel = [browsingSession viewModel];
 
       v9 = +[PUOneUpSettings sharedInstance];
-      v10 = PUShouldAutoHideChrome(v8, [v9 chromeAutoHideBehaviorOnLivePhoto]);
+      v10 = PUShouldAutoHideChrome(viewModel, [v9 chromeAutoHideBehaviorOnLivePhoto]);
 
       if (v10)
       {
-        v11 = [v8 currentAssetReference];
+        currentAssetReference = [viewModel currentAssetReference];
         v24 = MEMORY[0x1E69E9820];
         v25 = 3221225472;
         v26 = __41__PUOneUpViewController__setIrisPlaying___block_invoke_2;
         v27 = &unk_1E7B80C38;
-        v28 = v8;
-        v29 = v11;
-        v12 = v11;
+        v28 = viewModel;
+        v29 = currentAssetReference;
+        v12 = currentAssetReference;
         [v28 performChanges:&v24];
       }
 
       v13 = [(PUOneUpViewController *)self _barsController:v24];
-      v14 = [v13 tapGestureRecognizer];
-      [v14 pu_cancel];
+      tapGestureRecognizer = [v13 tapGestureRecognizer];
+      [tapGestureRecognizer pu_cancel];
 
-      v15 = [(PUOneUpViewController *)self _doubleTapZoomController];
-      v16 = [v15 doubleTapGestureRecognizer];
-      [v16 pu_cancel];
+      _doubleTapZoomController = [(PUOneUpViewController *)self _doubleTapZoomController];
+      doubleTapGestureRecognizer = [_doubleTapZoomController doubleTapGestureRecognizer];
+      [doubleTapGestureRecognizer pu_cancel];
 
-      v17 = [(PUOneUpViewController *)self _accessoryVisibilityInteractionController];
-      v18 = [v17 panGestureRecognizer];
-      [v18 pu_cancel];
+      _accessoryVisibilityInteractionController = [(PUOneUpViewController *)self _accessoryVisibilityInteractionController];
+      panGestureRecognizer = [_accessoryVisibilityInteractionController panGestureRecognizer];
+      [panGestureRecognizer pu_cancel];
 
-      v19 = [(PUOneUpViewController *)self gestureController];
-      [v19 cancelGestures];
+      gestureController = [(PUOneUpViewController *)self gestureController];
+      [gestureController cancelGestures];
 
       v20 = +[PUOneUpSettings sharedInstance];
-      LODWORD(v18) = [v20 lockScrollDuringLivePhotoPlayback];
+      LODWORD(panGestureRecognizer) = [v20 lockScrollDuringLivePhotoPlayback];
 
-      if (v18)
+      if (panGestureRecognizer)
       {
-        v21 = [(PUOneUpViewController *)self browsingSession];
-        v22 = [v21 viewModel];
-        [v22 currentAssetTransitionProgress];
+        browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+        viewModel2 = [browsingSession2 viewModel];
+        [viewModel2 currentAssetTransitionProgress];
         if (PXFloatApproximatelyEqualToFloat())
         {
-          v23 = [(PUOneUpViewController *)self _tilingView];
-          [v23 px_cancelScrollGesture];
+          _tilingView = [(PUOneUpViewController *)self _tilingView];
+          [_tilingView px_cancelScrollGesture];
         }
       }
     }
@@ -12849,71 +12849,71 @@ LABEL_68:
 - (void)_updateMergedVideoProviderEnabled
 {
   v3 = [(PUOneUpViewController *)self appearState]== 2;
-  v5 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v5 mergedVideoProvider];
-  [v4 setIsEnabled:v3];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  mergedVideoProvider = [browsingSession mergedVideoProvider];
+  [mergedVideoProvider setIsEnabled:v3];
 }
 
-- (void)setAppearState:(int)a3
+- (void)setAppearState:(int)state
 {
-  if (self->_appearState != a3)
+  if (self->_appearState != state)
   {
-    self->_appearState = a3;
+    self->_appearState = state;
     [(PUOneUpViewController *)self _updateMergedVideoProviderEnabled];
   }
 }
 
-- (void)setUnlockDeviceStatus:(id)a3
+- (void)setUnlockDeviceStatus:(id)status
 {
-  if (self->_unlockDeviceStatus != a3)
+  if (self->_unlockDeviceStatus != status)
   {
-    v4 = a3;
-    v5 = [v4 copy];
+    statusCopy = status;
+    v5 = [statusCopy copy];
     unlockDeviceStatus = self->_unlockDeviceStatus;
     self->_unlockDeviceStatus = v5;
 
-    v7 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-    [v7 setUnlockDeviceStatus:v4];
+    _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+    [_accessoryViewControllersManager setUnlockDeviceStatus:statusCopy];
 
-    v8 = [(PUOneUpViewController *)self chromeViewController];
-    [v8 invalidateIsDeviceUnlocked];
+    chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+    [chromeViewController invalidateIsDeviceUnlocked];
   }
 }
 
-- (void)setUnlockDeviceHandlerWithActionType:(id)a3
+- (void)setUnlockDeviceHandlerWithActionType:(id)type
 {
-  if (self->_unlockDeviceHandlerWithActionType != a3)
+  if (self->_unlockDeviceHandlerWithActionType != type)
   {
-    v4 = a3;
-    v5 = [v4 copy];
+    typeCopy = type;
+    v5 = [typeCopy copy];
     unlockDeviceHandlerWithActionType = self->_unlockDeviceHandlerWithActionType;
     self->_unlockDeviceHandlerWithActionType = v5;
 
-    v7 = [(PUOneUpViewController *)self _accessoryViewControllersManager];
-    [v7 setUnlockDeviceHandlerWithActionType:v4];
+    _accessoryViewControllersManager = [(PUOneUpViewController *)self _accessoryViewControllersManager];
+    [_accessoryViewControllersManager setUnlockDeviceHandlerWithActionType:typeCopy];
   }
 }
 
 - (void)_isPresentedForPreviewDidChange
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 isPresentedForPreview];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  isPresentedForPreview = [viewModel isPresentedForPreview];
 
-  v6 = [(PUOneUpViewController *)self view];
-  [v6 setUserInteractionEnabled:v5 ^ 1u];
+  view = [(PUOneUpViewController *)self view];
+  [view setUserInteractionEnabled:isPresentedForPreview ^ 1u];
 
-  if ((v5 & 1) == 0)
+  if ((isPresentedForPreview & 1) == 0)
   {
-    v7 = [(PUOneUpViewController *)self _currentAssetViewModel];
-    v8 = [v7 videoPlayer];
+    _currentAssetViewModel = [(PUOneUpViewController *)self _currentAssetViewModel];
+    videoPlayer = [_currentAssetViewModel videoPlayer];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __56__PUOneUpViewController__isPresentedForPreviewDidChange__block_invoke;
     v16[3] = &unk_1E7B80DD0;
-    v17 = v8;
-    v9 = v8;
+    v17 = videoPlayer;
+    v9 = videoPlayer;
     [v9 performChanges:v16];
   }
 
@@ -12922,88 +12922,88 @@ LABEL_68:
   [(PUOneUpViewController *)self _invalidateBarsControllers];
   [(PUOneUpViewController *)self _invalidatePreloadInsets];
   [(PUOneUpViewController *)self _invalidateLayout];
-  v10 = [(PUOneUpViewController *)self _barsController];
-  [v10 invalidateViewHostingGestureRecognizers];
+  _barsController = [(PUOneUpViewController *)self _barsController];
+  [_barsController invalidateViewHostingGestureRecognizers];
 
   [(PUOneUpViewController *)self _updateIfNeeded];
   [(PUOneUpViewController *)self px_setNeedsImageModulationIntensityUpdate];
   [(PUOneUpViewController *)self _updatePrefersHomeIndicatorHidden];
-  v11 = [(PUOneUpViewController *)self _currentAssetViewModel];
+  _currentAssetViewModel2 = [(PUOneUpViewController *)self _currentAssetViewModel];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __56__PUOneUpViewController__isPresentedForPreviewDidChange__block_invoke_2;
   v13[3] = &unk_1E7B7FF98;
-  v14 = v11;
-  v15 = v5;
-  v12 = v11;
+  v14 = _currentAssetViewModel2;
+  v15 = isPresentedForPreview;
+  v12 = _currentAssetViewModel2;
   [v12 performChanges:v13];
 }
 
-- (void)_setWindowInterfaceOrientation:(int64_t)a3
+- (void)_setWindowInterfaceOrientation:(int64_t)orientation
 {
-  if (self->__windowInterfaceOrientation != a3)
+  if (self->__windowInterfaceOrientation != orientation)
   {
-    self->__windowInterfaceOrientation = a3;
-    v5 = [(PUOneUpViewController *)self _spec];
-    v6 = [v5 shouldDisplayReviewScreenBars];
+    self->__windowInterfaceOrientation = orientation;
+    _spec = [(PUOneUpViewController *)self _spec];
+    shouldDisplayReviewScreenBars = [_spec shouldDisplayReviewScreenBars];
 
-    if (v6)
+    if (shouldDisplayReviewScreenBars)
     {
       [(PUOneUpViewController *)self _invalidateLayout];
     }
 
-    v7 = [(PUOneUpViewController *)self _barsController];
-    [v7 invalidateContentGuideInsets];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    [_barsController invalidateContentGuideInsets];
   }
 }
 
 - (void)_updateWindowInterfaceOrientation
 {
-  v3 = [(PUOneUpViewController *)self view];
-  v7 = [v3 window];
+  view = [(PUOneUpViewController *)self view];
+  window = [view window];
 
-  if ([v7 _toWindowOrientation] && (v4 = objc_msgSend(v7, "_toWindowOrientation"), v4 != objc_msgSend(v7, "_windowInterfaceOrientation")))
+  if ([window _toWindowOrientation] && (v4 = objc_msgSend(window, "_toWindowOrientation"), v4 != objc_msgSend(window, "_windowInterfaceOrientation")))
   {
-    v5 = [v7 _toWindowOrientation];
+    _toWindowOrientation = [window _toWindowOrientation];
   }
 
   else
   {
-    v5 = [v7 _windowInterfaceOrientation];
+    _toWindowOrientation = [window _windowInterfaceOrientation];
   }
 
-  v6 = v5;
-  if (v5 || (v6 = [v7 _windowInterfaceOrientation]) != 0)
+  v6 = _toWindowOrientation;
+  if (_toWindowOrientation || (v6 = [window _windowInterfaceOrientation]) != 0)
   {
     [(PUOneUpViewController *)self _setWindowInterfaceOrientation:v6];
   }
 }
 
-- (void)_setLayoutReferenceSize:(CGSize)a3
+- (void)_setLayoutReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width != self->__layoutReferenceSize.width || a3.height != self->__layoutReferenceSize.height)
+  height = size.height;
+  width = size.width;
+  if (size.width != self->__layoutReferenceSize.width || size.height != self->__layoutReferenceSize.height)
   {
-    self->__layoutReferenceSize = a3;
+    self->__layoutReferenceSize = size;
     [(PUOneUpViewController *)self _invalidateSpec];
-    v7 = [(PUOneUpViewController *)self _barsController];
-    [v7 invalidateViewControllerView];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    [_barsController invalidateViewControllerView];
 
     [(PUOneUpViewController *)self _updateIfNeeded];
     if ([(PUOneUpViewController *)self _isPresentedForSecondScreen])
     {
-      v8 = [(PUOneUpViewController *)self browsingSession];
-      v9 = [v8 viewModel];
+      browsingSession = [(PUOneUpViewController *)self browsingSession];
+      viewModel = [browsingSession viewModel];
 
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __49__PUOneUpViewController__setLayoutReferenceSize___block_invoke;
       v11[3] = &unk_1E7B7C518;
-      v12 = v9;
+      v12 = viewModel;
       v13 = width;
       v14 = height;
-      v10 = v9;
+      v10 = viewModel;
       [v10 performChanges:v11];
     }
   }
@@ -13014,8 +13014,8 @@ LABEL_68:
   [(PUOneUpViewController *)self _pendingViewTransitionSize];
   if (v4 == *MEMORY[0x1E695F060] && v3 == *(MEMORY[0x1E695F060] + 8))
   {
-    v10 = [(PUOneUpViewController *)self view];
-    [v10 bounds];
+    view = [(PUOneUpViewController *)self view];
+    [view bounds];
     v7 = v11;
     v9 = v12;
   }
@@ -13030,21 +13030,21 @@ LABEL_68:
   [(PUOneUpViewController *)self _setLayoutReferenceSize:v7, v9];
 }
 
-- (void)_configurePocketStyle:(id)a3
+- (void)_configurePocketStyle:(id)style
 {
   tilingView = self->__tilingView;
-  v5 = a3;
-  v6 = [(PUTilingView *)tilingView topEdgeEffect];
-  [v6 setStyle:v5];
+  styleCopy = style;
+  topEdgeEffect = [(PUTilingView *)tilingView topEdgeEffect];
+  [topEdgeEffect setStyle:styleCopy];
 
-  v7 = [(PUTilingView *)self->__tilingView bottomEdgeEffect];
-  [v7 setStyle:v5];
+  bottomEdgeEffect = [(PUTilingView *)self->__tilingView bottomEdgeEffect];
+  [bottomEdgeEffect setStyle:styleCopy];
 }
 
 - (BOOL)_enablePockets
 {
-  v2 = [MEMORY[0x1E69C3640] sharedInstance];
-  if ([v2 enableClearMagicPocket])
+  mEMORY[0x1E69C3640] = [MEMORY[0x1E69C3640] sharedInstance];
+  if ([mEMORY[0x1E69C3640] enableClearMagicPocket])
   {
     v3 = !+[PUOneUpChromeUserDefaultsWrapper shouldDisableMagicPocket];
   }
@@ -13057,27 +13057,27 @@ LABEL_68:
   return v3;
 }
 
-- (void)_setTilingView:(id)a3
+- (void)_setTilingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   tilingView = self->__tilingView;
-  if (tilingView != v5)
+  if (tilingView != viewCopy)
   {
     [(PUTilingView *)tilingView setTileSource:0];
     [(PUTilingView *)self->__tilingView setTileTransitionDelegate:0];
     [(PUTilingView *)self->__tilingView setScrollDelegate:0];
     [(PUTilingView *)self->__tilingView setDelegate:0];
-    objc_storeStrong(&self->__tilingView, a3);
+    objc_storeStrong(&self->__tilingView, view);
     if ((PFIsSpotlight() & 1) == 0)
     {
       v7 = *(MEMORY[0x1E695EFD0] + 16);
       v19[0] = *MEMORY[0x1E695EFD0];
       v19[1] = v7;
       v19[2] = *(MEMORY[0x1E695EFD0] + 32);
-      [(PUTilingView *)v5 setTransform:v19];
-      v8 = [(PUOneUpViewController *)self contentContainerView];
-      [v8 bounds];
-      [(PUTilingView *)v5 setFrame:?];
+      [(PUTilingView *)viewCopy setTransform:v19];
+      contentContainerView = [(PUOneUpViewController *)self contentContainerView];
+      [contentContainerView bounds];
+      [(PUTilingView *)viewCopy setFrame:?];
     }
 
     [(PUTilingView *)self->__tilingView setTileSource:self];
@@ -13088,9 +13088,9 @@ LABEL_68:
     [(PUTilingView *)self->__tilingView setShowsHorizontalScrollIndicator:0];
     [(PUTilingView *)self->__tilingView setShowsVerticalScrollIndicator:0];
     [(PUTilingView *)self->__tilingView _setAutoScrollEnabled:0];
-    v9 = [(PUOneUpViewController *)self _enablePockets];
-    [(PUTilingView *)self->__tilingView px_setPocketsEnabled:v9];
-    if (!v9)
+    _enablePockets = [(PUOneUpViewController *)self _enablePockets];
+    [(PUTilingView *)self->__tilingView px_setPocketsEnabled:_enablePockets];
+    if (!_enablePockets)
     {
       goto LABEL_14;
     }
@@ -13098,12 +13098,12 @@ LABEL_68:
     v10 = +[PUOneUpChromeUserDefaultsWrapper preferredPocketStyle];
     if (v10 == 2)
     {
-      v11 = [MEMORY[0x1E69DCED8] hardStyle];
+      hardStyle = [MEMORY[0x1E69DCED8] hardStyle];
     }
 
     else if (v10 == 1)
     {
-      v11 = [MEMORY[0x1E69DCED8] softStyle];
+      hardStyle = [MEMORY[0x1E69DCED8] softStyle];
     }
 
     else
@@ -13119,11 +13119,11 @@ LABEL_68:
         goto LABEL_13;
       }
 
-      v11 = [MEMORY[0x1E69DCED8] _clearStyle];
+      hardStyle = [MEMORY[0x1E69DCED8] _clearStyle];
     }
 
-    v12 = v11;
-    [(PUOneUpViewController *)self _configurePocketStyle:v11];
+    v12 = hardStyle;
+    [(PUOneUpViewController *)self _configurePocketStyle:hardStyle];
 
 LABEL_13:
     [(PUOneUpViewController *)self _updatePocketBias];
@@ -13150,23 +13150,23 @@ LABEL_14:
     [(PUTilingView *)self->__tilingView registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PULivePhotoVideoPlaybackTileReuseIdentifier"];
     [(PUTilingView *)self->__tilingView registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUSyndicationAttributionTileReuseIdentifier"];
     [(PUTilingView *)self->__tilingView registerTileControllerClass:objc_opt_class() forReuseIdentifier:@"PUCropButtonTileReuseIdentifier"];
-    v13 = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
-    [v13 invalidateDelegateData];
+    _interactiveSwipeDismissalController = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
+    [_interactiveSwipeDismissalController invalidateDelegateData];
 
-    v14 = [(PUOneUpViewController *)self _interactivePinchDismissalController];
-    [v14 invalidateDelegateData];
+    _interactivePinchDismissalController = [(PUOneUpViewController *)self _interactivePinchDismissalController];
+    [_interactivePinchDismissalController invalidateDelegateData];
 
-    v15 = [(PUOneUpViewController *)self _barsController];
-    [v15 invalidateViewHostingGestureRecognizers];
+    _barsController = [(PUOneUpViewController *)self _barsController];
+    [_barsController invalidateViewHostingGestureRecognizers];
 
-    v16 = [(PUOneUpViewController *)self _gestureRecognizerCoordinator];
-    [v16 invalidateViewHostingGestureRecognizers];
+    _gestureRecognizerCoordinator = [(PUOneUpViewController *)self _gestureRecognizerCoordinator];
+    [_gestureRecognizerCoordinator invalidateViewHostingGestureRecognizers];
 
-    v17 = [(PUOneUpViewController *)self _doubleTapZoomController];
-    [v17 invalidateViewHostingGestureRecognizers];
+    _doubleTapZoomController = [(PUOneUpViewController *)self _doubleTapZoomController];
+    [_doubleTapZoomController invalidateViewHostingGestureRecognizers];
 
-    v18 = [(PUOneUpViewController *)self _accessoryVisibilityInteractionController];
-    [v18 invalidateViewHostingGestureRecognizers];
+    _accessoryVisibilityInteractionController = [(PUOneUpViewController *)self _accessoryVisibilityInteractionController];
+    [_accessoryVisibilityInteractionController invalidateViewHostingGestureRecognizers];
 
     [(PUOneUpViewController *)self _configureVitalityController];
   }
@@ -13202,122 +13202,122 @@ LABEL_14:
     [(PUOneUpViewController *)self _updateScrubbingAdjustmentPolicyIfNeeded];
     if ([(PUOneUpViewController *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:1157 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:1157 description:@"updates still needed after an update cycle"];
     }
   }
 }
 
-- (void)_setPrefersHomeIndicatorHidden:(BOOL)a3
+- (void)_setPrefersHomeIndicatorHidden:(BOOL)hidden
 {
-  if (self->__prefersHomeIndicatorHidden != a3)
+  if (self->__prefersHomeIndicatorHidden != hidden)
   {
-    self->__prefersHomeIndicatorHidden = a3;
+    self->__prefersHomeIndicatorHidden = hidden;
     [(PUOneUpViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
   }
 }
 
 - (void)_updateScrubbingAdjustmentPolicyForVideoTimelineControlInteractionChange
 {
-  v3 = [(PUOneUpViewController *)self chromeViewController];
-  v4 = [v3 isVideoTimelineControlInteracting];
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  isVideoTimelineControlInteracting = [chromeViewController isVideoTimelineControlInteracting];
 
-  v5 = [(PUOneUpViewController *)self scaledVideoOffsetAdjustmentPolicy];
-  [v5 setIsVideoTimelineControlInteracting:v4];
+  scaledVideoOffsetAdjustmentPolicy = [(PUOneUpViewController *)self scaledVideoOffsetAdjustmentPolicy];
+  [scaledVideoOffsetAdjustmentPolicy setIsVideoTimelineControlInteracting:isVideoTimelineControlInteracting];
 }
 
 - (void)_updateScrubbingAdjustmentPolicyForChromeChange
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v5 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  v4 = [(PUOneUpViewController *)self scaledVideoOffsetAdjustmentPolicy];
-  [v4 setChromeVisibilityChangeReason:{objc_msgSend(v5, "lastChromeVisibilityChangeReason")}];
+  scaledVideoOffsetAdjustmentPolicy = [(PUOneUpViewController *)self scaledVideoOffsetAdjustmentPolicy];
+  [scaledVideoOffsetAdjustmentPolicy setChromeVisibilityChangeReason:{objc_msgSend(viewModel, "lastChromeVisibilityChangeReason")}];
 }
 
 - (void)_updatePrefersHomeIndicatorHidden
 {
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
-  -[PUOneUpViewController _setPrefersHomeIndicatorHidden:](self, "_setPrefersHomeIndicatorHidden:", (([v4 isPresentedForPreview] | objc_msgSend(v4, "isChromeVisible")) & 1) == 0);
+  -[PUOneUpViewController _setPrefersHomeIndicatorHidden:](self, "_setPrefersHomeIndicatorHidden:", (([viewModel isPresentedForPreview] | objc_msgSend(viewModel, "isChromeVisible")) & 1) == 0);
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = PUOneUpViewController;
-  v6 = a3;
-  [(PUOneUpViewController *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  windowCopy = window;
+  [(PUOneUpViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
   [(PUOneUpViewController *)self _updateWindowInterfaceOrientation:v8.receiver];
-  v7 = [(PUOneUpViewController *)self chromeViewController];
-  [v7 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  [chromeViewController viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v109.receiver = self;
   v109.super_class = PUOneUpViewController;
-  [(PUOneUpViewController *)&v109 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(PUOneUpViewController *)self scaledVideoOffsetAdjustmentPolicy];
-  [v8 resetPolicy];
+  [(PUOneUpViewController *)&v109 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  scaledVideoOffsetAdjustmentPolicy = [(PUOneUpViewController *)self scaledVideoOffsetAdjustmentPolicy];
+  [scaledVideoOffsetAdjustmentPolicy resetPolicy];
 
   [(PUOneUpViewController *)self _setPendingViewTransitionSize:width, height];
   [(PUOneUpViewController *)self _updateLayoutReferenceSize];
   [(PUOneUpViewController *)self _updateWindowInterfaceOrientation];
   v9 = MEMORY[0x1E69C3748];
-  v10 = [MEMORY[0x1E69C3748] infoPanelTipID];
-  [v9 setTip:v10 isPresentable:0];
+  infoPanelTipID = [MEMORY[0x1E69C3748] infoPanelTipID];
+  [v9 setTip:infoPanelTipID isPresentable:0];
 
   v11 = MEMORY[0x1E69C3748];
-  v12 = [MEMORY[0x1E69C3748] livePhotosTipID];
-  [v11 setTip:v12 isPresentable:0];
+  livePhotosTipID = [MEMORY[0x1E69C3748] livePhotosTipID];
+  [v11 setTip:livePhotosTipID isPresentable:0];
 
   v13 = MEMORY[0x1E69C3748];
-  v14 = [MEMORY[0x1E69C3748] actionsMenuTipID];
-  [v13 setTip:v14 isPresentable:0];
+  actionsMenuTipID = [MEMORY[0x1E69C3748] actionsMenuTipID];
+  [v13 setTip:actionsMenuTipID isPresentable:0];
 
   v15 = MEMORY[0x1E69C3748];
-  v16 = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
-  [v15 setTip:v16 isPresentable:0];
+  syndicatedPhotosTipID = [MEMORY[0x1E69C3748] syndicatedPhotosTipID];
+  [v15 setTip:syndicatedPhotosTipID isPresentable:0];
 
   v17 = MEMORY[0x1E69C3748];
-  v18 = [MEMORY[0x1E69C3748] quickCropTipID];
-  [v17 setTip:v18 isPresentable:0];
+  quickCropTipID = [MEMORY[0x1E69C3748] quickCropTipID];
+  [v17 setTip:quickCropTipID isPresentable:0];
 
   v19 = MEMORY[0x1E69C3748];
-  v20 = [MEMORY[0x1E69C3748] cleanUpTipID];
-  [v19 setTip:v20 isPresentable:0];
+  cleanUpTipID = [MEMORY[0x1E69C3748] cleanUpTipID];
+  [v19 setTip:cleanUpTipID isPresentable:0];
 
-  v21 = [(PUOneUpViewController *)self browsingSession];
-  v22 = [v21 viewModel];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
   v107[0] = MEMORY[0x1E69E9820];
   v107[1] = 3221225472;
   v107[2] = __76__PUOneUpViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v107[3] = &unk_1E7B80DD0;
-  v23 = v22;
+  v23 = viewModel;
   v108 = v23;
   [v23 performChanges:v107];
-  v24 = [(PUOneUpViewController *)self _spec];
-  v25 = [v24 shouldCounterrotateReviewScreenBars];
+  _spec = [(PUOneUpViewController *)self _spec];
+  shouldCounterrotateReviewScreenBars = [_spec shouldCounterrotateReviewScreenBars];
 
-  if (v25)
+  if (shouldCounterrotateReviewScreenBars)
   {
-    v77 = v7;
-    v26 = [(PUOneUpViewController *)self _reviewScreenTopBarTileViewController];
-    v74 = [(PUOneUpViewController *)self _reviewScreenControlBarTileViewController];
-    v27 = [v74 view];
-    v75 = v26;
-    v28 = [v26 view];
-    v29 = [v27 snapshotViewAfterScreenUpdates:0];
-    v30 = [v28 snapshotViewAfterScreenUpdates:0];
-    v31 = [(PUOneUpViewController *)self view];
-    [v31 bounds];
+    v77 = coordinatorCopy;
+    _reviewScreenTopBarTileViewController = [(PUOneUpViewController *)self _reviewScreenTopBarTileViewController];
+    _reviewScreenControlBarTileViewController = [(PUOneUpViewController *)self _reviewScreenControlBarTileViewController];
+    view = [_reviewScreenControlBarTileViewController view];
+    v75 = _reviewScreenTopBarTileViewController;
+    view2 = [_reviewScreenTopBarTileViewController view];
+    v29 = [view snapshotViewAfterScreenUpdates:0];
+    v30 = [view2 snapshotViewAfterScreenUpdates:0];
+    view3 = [(PUOneUpViewController *)self view];
+    [view3 bounds];
     v33 = v32;
     v35 = v34;
     v37 = v36;
@@ -13326,24 +13326,24 @@ LABEL_14:
     UIRectGetCenter();
     v72 = v41;
     v73 = v40;
-    v42 = [(PUOneUpViewController *)self view];
-    v43 = [v42 window];
-    v44 = [v43 _toWindowOrientation];
+    view4 = [(PUOneUpViewController *)self view];
+    window = [view4 window];
+    _toWindowOrientation = [window _toWindowOrientation];
 
-    v45 = [(PUOneUpViewController *)self view];
-    v46 = [v45 window];
-    v47 = [v46 _fromWindowOrientation];
+    view5 = [(PUOneUpViewController *)self view];
+    window2 = [view5 window];
+    _fromWindowOrientation = [window2 _fromWindowOrientation];
 
     v48 = 0.0;
     v49 = 0.0;
-    if (v44 != 1)
+    if (_toWindowOrientation != 1)
     {
-      if (v44 == 3)
+      if (_toWindowOrientation == 3)
       {
         v49 = 1.57079633;
       }
 
-      else if (v44 == 4)
+      else if (_toWindowOrientation == 4)
       {
         v49 = -1.57079633;
       }
@@ -13351,7 +13351,7 @@ LABEL_14:
       else
       {
         v49 = 3.14159265;
-        if (v44 != 2)
+        if (_toWindowOrientation != 2)
         {
           v49 = 0.0;
         }
@@ -13359,9 +13359,9 @@ LABEL_14:
     }
 
     v76 = height;
-    if (v47 != 1)
+    if (_fromWindowOrientation != 1)
     {
-      switch(v47)
+      switch(_fromWindowOrientation)
       {
         case 3:
           v48 = 1.57079633;
@@ -13382,8 +13382,8 @@ LABEL_14:
     v52 = objc_alloc_init(PUReviewScreenBarsSnapshot);
     [(PUReviewScreenBarsSnapshot *)v52 addSubview:v29];
     [(PUReviewScreenBarsSnapshot *)v52 addSubview:v30];
-    v53 = [(PUOneUpViewController *)self view];
-    [v53 addSubview:v52];
+    view6 = [(PUOneUpViewController *)self view];
+    [view6 addSubview:v52];
 
     v54 = MEMORY[0x1E69DD250];
     v94[0] = MEMORY[0x1E69E9820];
@@ -13399,11 +13399,11 @@ LABEL_14:
     v105 = v72;
     v95 = v55;
     v96 = v29;
-    v56 = v27;
+    v56 = view;
     v106 = v48;
     v97 = v56;
     v98 = v30;
-    v57 = v28;
+    v57 = view2;
     v99 = v57;
     v58 = v30;
     v59 = v29;
@@ -13419,7 +13419,7 @@ LABEL_14:
     height = v76;
     v93 = v76;
     v89 = v55;
-    v90 = self;
+    selfCopy = self;
     v82[0] = MEMORY[0x1E69E9820];
     v82[1] = 3221225472;
     v82[2] = __76__PUOneUpViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_4;
@@ -13428,13 +13428,13 @@ LABEL_14:
     v84 = v89;
     v85 = v56;
     v86 = v57;
-    v87 = self;
+    selfCopy2 = self;
     v60 = v57;
     v61 = v56;
     v62 = v89;
     [v77 animateAlongsideTransition:v88 completion:v82];
 
-    v7 = v77;
+    coordinatorCopy = v77;
     v50 = v75;
   }
 
@@ -13450,18 +13450,18 @@ LABEL_14:
     v78[2] = __76__PUOneUpViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_7;
     v78[3] = &unk_1E7B7AC08;
     v79 = v23;
-    v80 = self;
-    [v7 animateAlongsideTransition:v81 completion:v78];
+    selfCopy3 = self;
+    [coordinatorCopy animateAlongsideTransition:v81 completion:v78];
     v50 = v79;
   }
 
-  v63 = [(PUOneUpViewController *)self view];
-  v64 = [v63 window];
-  if (([v64 _toWindowOrientation] - 3) <= 1 && -[PUOneUpViewController _isAccessoryVisible](self, "_isAccessoryVisible"))
+  view7 = [(PUOneUpViewController *)self view];
+  window3 = [view7 window];
+  if (([window3 _toWindowOrientation] - 3) <= 1 && -[PUOneUpViewController _isAccessoryVisible](self, "_isAccessoryVisible"))
   {
-    v65 = [(PUOneUpViewController *)self _accessoryContentKindForCurrentAsset];
+    _accessoryContentKindForCurrentAsset = [(PUOneUpViewController *)self _accessoryContentKindForCurrentAsset];
 
-    if (v65 == 1)
+    if (_accessoryContentKindForCurrentAsset == 1)
     {
       [(PUOneUpEventTracker *)self->_eventTracker logInfoPanelRotatedToHorizontalView];
     }
@@ -13471,13 +13471,13 @@ LABEL_14:
   {
   }
 
-  v66 = [(PUOneUpViewController *)self view];
-  v67 = [v66 window];
+  view8 = [(PUOneUpViewController *)self view];
+  window4 = [view8 window];
 
-  if ([v67 _toWindowOrientation])
+  if ([window4 _toWindowOrientation])
   {
-    v68 = [v67 _toWindowOrientation];
-    v69 = v68 != [v67 _windowInterfaceOrientation];
+    _toWindowOrientation2 = [window4 _toWindowOrientation];
+    v69 = _toWindowOrientation2 != [window4 _windowInterfaceOrientation];
   }
 
   else
@@ -13485,12 +13485,12 @@ LABEL_14:
     v69 = 0;
   }
 
-  v70 = [(PUOneUpViewController *)self chromeViewController];
-  [v70 setIsRotating:v69];
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  [chromeViewController setIsRotating:v69];
 
   [(PUOneUpViewController *)self _updateIfNeeded];
-  v71 = [(PUOneUpViewController *)self chromeViewController];
-  [v71 viewWillTransitionToSize:v7 withCoordinator:{width, height}];
+  chromeViewController2 = [(PUOneUpViewController *)self chromeViewController];
+  [chromeViewController2 viewWillTransitionToSize:coordinatorCopy withCoordinator:{width, height}];
 }
 
 uint64_t __76__PUOneUpViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1)
@@ -13567,45 +13567,45 @@ void __76__PUOneUpViewController_viewWillTransitionToSize_withTransitionCoordina
 
 - (BOOL)wantsSpotlightStyling
 {
-  v2 = [(PUOneUpViewController *)self _spec];
-  v3 = [v2 shouldUseSpotlightStyling];
+  _spec = [(PUOneUpViewController *)self _spec];
+  shouldUseSpotlightStyling = [_spec shouldUseSpotlightStyling];
 
-  return v3;
+  return shouldUseSpotlightStyling;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v21.receiver = self;
   v21.super_class = PUOneUpViewController;
-  [(PUOneUpViewController *)&v21 traitCollectionDidChange:v4];
-  v5 = [(PUOneUpViewController *)self traitCollection];
-  v6 = [(PUOneUpViewController *)self browsingSession];
-  v7 = [v6 viewModel];
+  [(PUOneUpViewController *)&v21 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PUOneUpViewController *)self traitCollection];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
 
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __50__PUOneUpViewController_traitCollectionDidChange___block_invoke;
   v18 = &unk_1E7B80C38;
-  v19 = v7;
-  v8 = v5;
+  v19 = viewModel;
+  v8 = traitCollection;
   v20 = v8;
-  v9 = v7;
+  v9 = viewModel;
   [v9 performChanges:&v15];
   v10 = [(PUOneUpViewController *)self traitCollection:v15];
-  v11 = [v10 userInterfaceIdiom];
+  userInterfaceIdiom = [v10 userInterfaceIdiom];
 
-  v12 = [v8 horizontalSizeClass];
-  v13 = [v4 horizontalSizeClass];
-  if (v11 == 1 && v12 != v13)
+  horizontalSizeClass = [v8 horizontalSizeClass];
+  horizontalSizeClass2 = [changeCopy horizontalSizeClass];
+  if (userInterfaceIdiom == 1 && horizontalSizeClass != horizontalSizeClass2)
   {
     [(PUOneUpViewController *)self _invalidateBarsControllers];
     [(PUOneUpViewController *)self _invalidateAccessoryView];
     [(PUOneUpViewController *)self _setAccessoryVisible:0];
   }
 
-  v14 = [v4 userInterfaceStyle];
-  if (v14 != [v8 userInterfaceStyle])
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
+  if (userInterfaceStyle != [v8 userInterfaceStyle])
   {
     [(PUOneUpViewController *)self _invalidateLayout];
   }
@@ -13627,13 +13627,13 @@ uint64_t __50__PUOneUpViewController_traitCollectionDidChange___block_invoke(uin
   v9.receiver = self;
   v9.super_class = PUOneUpViewController;
   [(PUOneUpViewController *)&v9 viewWillLayoutSubviews];
-  v3 = [(PUOneUpViewController *)self _barsController];
-  [v3 updateIfNeeded];
+  _barsController = [(PUOneUpViewController *)self _barsController];
+  [_barsController updateIfNeeded];
 
   [(PUOneUpViewController *)self _setPendingViewTransitionSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   [(PUOneUpViewController *)self _updateLayoutReferenceSize];
-  v4 = [(PUOneUpViewController *)self view];
-  [v4 bounds];
+  view = [(PUOneUpViewController *)self view];
+  [view bounds];
   v6 = v5;
 
   [(PUOneUpViewController *)self _preloadInsetsBasedOffViewWidth];
@@ -13644,15 +13644,15 @@ uint64_t __50__PUOneUpViewController_traitCollectionDidChange___block_invoke(uin
     [(PUOneUpViewController *)self _updatePreloadInsetsIfNeeded];
   }
 
-  v8 = [(PUOneUpViewController *)self chromeViewController];
-  [v8 viewWillLayoutSubviews];
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  [chromeViewController viewWillLayoutSubviews];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v20.receiver = self;
   v20.super_class = PUOneUpViewController;
-  [(PUOneUpViewController *)&v20 viewDidDisappear:a3];
+  [(PUOneUpViewController *)&v20 viewDidDisappear:disappear];
   v4 = PLOneUpGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -13661,8 +13661,8 @@ uint64_t __50__PUOneUpViewController_traitCollectionDidChange___block_invoke(uin
   }
 
   [(PUOneUpViewController *)self _xct_endSignpostingForImageTileImageLoadingAndProcessing];
-  v5 = [(PUOneUpViewController *)self presentedViewController];
-  if (v5)
+  presentedViewController = [(PUOneUpViewController *)self presentedViewController];
+  if (presentedViewController)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -13677,58 +13677,58 @@ uint64_t __50__PUOneUpViewController_traitCollectionDidChange___block_invoke(uin
     goto LABEL_10;
   }
 
-  v7 = [(PUOneUpViewController *)self browsingSession];
-  v8 = [v7 viewModel];
-  v9 = [v8 isPresentedForPreview];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  isPresentedForPreview = [viewModel isPresentedForPreview];
 
-  if ((v9 & 1) == 0)
+  if ((isPresentedForPreview & 1) == 0)
   {
     v10 = +[PHAirPlayScreenController sharedInstance];
     [v10 unregisterContentProvider:self];
   }
 
 LABEL_10:
-  v11 = [MEMORY[0x1E69C4558] defaultManager];
-  [v11 unregisterObserver:self];
+  defaultManager = [MEMORY[0x1E69C4558] defaultManager];
+  [defaultManager unregisterObserver:self];
 
-  v12 = [(PUOneUpViewController *)self eventTracker];
-  [v12 logViewControllerDidDisappear:self];
+  eventTracker = [(PUOneUpViewController *)self eventTracker];
+  [eventTracker logViewControllerDidDisappear:self];
 
   v13 = PXContentPrivacyNavigationStateFromViewController();
   if (v13 == 2)
   {
-    v14 = [(PUOneUpViewController *)self navigationController];
-    v15 = [v14 viewControllers];
-    v16 = [v15 count] != 1;
+    navigationController = [(PUOneUpViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v16 = [viewControllers count] != 1;
 
     v13 = 2 * v16;
   }
 
-  v17 = [(PUOneUpViewController *)self browsingSession];
-  v18 = [v17 privacyController];
-  [v18 viewDidDisappearForAuthenticationContext:self withNavigationState:v13];
+  browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+  privacyController = [browsingSession2 privacyController];
+  [privacyController viewDidDisappearForAuthenticationContext:self withNavigationState:v13];
 
   [(PUOneUpViewController *)self setAppearState:0];
   [MEMORY[0x1E69C3740] disable];
   [(PUOneUpViewController *)self _updateIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v12.receiver = self;
   v12.super_class = PUOneUpViewController;
-  [(PUOneUpViewController *)&v12 viewWillDisappear:a3];
-  v4 = [(PUOneUpViewController *)self browsingOneUpVisibilityHelper];
-  [v4 setIsOneUpVisible:0];
+  [(PUOneUpViewController *)&v12 viewWillDisappear:disappear];
+  browsingOneUpVisibilityHelper = [(PUOneUpViewController *)self browsingOneUpVisibilityHelper];
+  [browsingOneUpVisibilityHelper setIsOneUpVisible:0];
 
-  v5 = [(PUOneUpViewController *)self visualImageAnalyzingController];
-  [v5 setIsEnabled:0];
+  visualImageAnalyzingController = [(PUOneUpViewController *)self visualImageAnalyzingController];
+  [visualImageAnalyzingController setIsEnabled:0];
 
-  v6 = [(PUOneUpViewController *)self shazamEventsController];
-  [v6 setIsEnabled:0];
+  shazamEventsController = [(PUOneUpViewController *)self shazamEventsController];
+  [shazamEventsController setIsEnabled:0];
 
-  v7 = [(PUOneUpViewController *)self phototypeSupportController];
-  [v7 setIsEnabled:0];
+  phototypeSupportController = [(PUOneUpViewController *)self phototypeSupportController];
+  [phototypeSupportController setIsEnabled:0];
 
   [(PUOneUpViewController *)self _cancelTimedChromeAutoHide];
   [(PUOneUpViewController *)self setAppearState:3];
@@ -13739,22 +13739,22 @@ LABEL_10:
   }
 
   [MEMORY[0x1E69C3748] setTipsPresentationDelegate:0];
-  v8 = [(PUOneUpViewController *)self view];
-  v9 = [v8 window];
-  v10 = [v9 windowScene];
-  [v10 setUserActivity:0];
+  view = [(PUOneUpViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [windowScene setUserActivity:0];
 
-  v11 = [(PUOneUpViewController *)self viewIfLoaded];
+  viewIfLoaded = [(PUOneUpViewController *)self viewIfLoaded];
   PXAppIntentsClearViewAnnotationDelegate();
 }
 
-- (BOOL)_isAssetEligibleForTip:(id)a3
+- (BOOL)_isAssetEligibleForTip:(id)tip
 {
-  v3 = a3;
+  tipCopy = tip;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = tipCopy;
     if ([v4 px_isScreenshot])
     {
       LOBYTE(v5) = 0;
@@ -13774,11 +13774,11 @@ LABEL_10:
   return v5;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v48.receiver = self;
   v48.super_class = PUOneUpViewController;
-  [(PUOneUpViewController *)&v48 viewDidAppear:a3];
+  [(PUOneUpViewController *)&v48 viewDidAppear:appear];
   [(PUOneUpViewController *)self _preheatAdjacentAssetsForPhotosDetailsContext];
   [MEMORY[0x1E69C3748] setTipsPresentationDelegate:self];
   v4 = PLOneUpGetLog();
@@ -13789,53 +13789,53 @@ LABEL_10:
   }
 
   [(PUOneUpViewController *)self _xct_beginSignpostingForImageTileImageLoadingAndProcessing];
-  v5 = [(PUOneUpViewController *)self browsingOneUpVisibilityHelper];
-  [v5 setIsOneUpVisible:1];
+  browsingOneUpVisibilityHelper = [(PUOneUpViewController *)self browsingOneUpVisibilityHelper];
+  [browsingOneUpVisibilityHelper setIsOneUpVisible:1];
 
-  v6 = [(PUOneUpViewController *)self visualImageAnalyzingController];
-  [v6 setIsEnabled:1];
+  visualImageAnalyzingController = [(PUOneUpViewController *)self visualImageAnalyzingController];
+  [visualImageAnalyzingController setIsEnabled:1];
 
-  v7 = [(PUOneUpViewController *)self shazamEventsController];
-  [v7 setIsEnabled:1];
+  shazamEventsController = [(PUOneUpViewController *)self shazamEventsController];
+  [shazamEventsController setIsEnabled:1];
 
-  v8 = [(PUOneUpViewController *)self phototypeSupportController];
-  [v8 setIsEnabled:1];
+  phototypeSupportController = [(PUOneUpViewController *)self phototypeSupportController];
+  [phototypeSupportController setIsEnabled:1];
 
-  v9 = [(PUOneUpViewController *)self browsingSession];
-  v10 = [v9 viewModel];
-  v11 = [v10 isPresentedForPreview];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  isPresentedForPreview = [viewModel isPresentedForPreview];
 
-  v12 = [(PUOneUpViewController *)self _isPresentedForSecondScreen];
-  if (!v12 && (v11 & 1) == 0)
+  _isPresentedForSecondScreen = [(PUOneUpViewController *)self _isPresentedForSecondScreen];
+  if (!_isPresentedForSecondScreen && (isPresentedForPreview & 1) == 0)
   {
     v13 = +[PHAirPlayScreenController sharedInstance];
     [v13 registerContentProvider:self];
   }
 
-  v14 = [MEMORY[0x1E69C4558] defaultManager];
-  [v14 registerObserver:self];
+  defaultManager = [MEMORY[0x1E69C4558] defaultManager];
+  [defaultManager registerObserver:self];
 
   [(PUOneUpViewController *)self _scheduleTimedChromeAutoHide];
-  v15 = [(PUOneUpViewController *)self browsingSession];
-  v16 = [v15 viewModel];
+  browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+  viewModel2 = [browsingSession2 viewModel];
 
-  v17 = [v16 assetViewModelForCurrentAssetReference];
-  v18 = [v17 asset];
-  v19 = [v18 playbackStyle] == 5;
+  assetViewModelForCurrentAssetReference = [viewModel2 assetViewModelForCurrentAssetReference];
+  asset = [assetViewModelForCurrentAssetReference asset];
+  v19 = [asset playbackStyle] == 5;
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __39__PUOneUpViewController_viewDidAppear___block_invoke;
   v41[3] = &unk_1E7B79E98;
-  v20 = v16;
+  v20 = viewModel2;
   v42 = v20;
-  v43 = self;
-  v45 = v12;
+  selfCopy = self;
+  v45 = _isPresentedForSecondScreen;
   v46 = v19;
-  v21 = v17;
+  v21 = assetViewModelForCurrentAssetReference;
   v44 = v21;
   [v20 performChanges:v41];
-  v22 = [(PUOneUpViewController *)self eventTracker];
-  [v22 logViewControllerDidAppear:self];
+  eventTracker = [(PUOneUpViewController *)self eventTracker];
+  [eventTracker logViewControllerDidAppear:self];
 
   [(PUOneUpViewController *)self setAppearState:2];
   [(PUOneUpViewController *)self _invalidateTipPopovers];
@@ -13843,24 +13843,24 @@ LABEL_10:
   [(PUOneUpViewController *)self _invalidateCachedBoopableItemProvider];
   [(PUOneUpViewController *)self _invalidateScrubbingAdjustmentPolicy];
   [(PUOneUpViewController *)self _updateIfNeeded];
-  v23 = [(PUOneUpViewController *)self editActivityCompletion];
-  v24 = v23;
+  editActivityCompletion = [(PUOneUpViewController *)self editActivityCompletion];
+  v24 = editActivityCompletion;
   if (self->_actionTypeToPerformInViewDidAppear)
   {
-    v25 = [(PUOneUpViewController *)self actionsController];
-    [v25 performSimpleActionWithActionType:self->_actionTypeToPerformInViewDidAppear];
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    [actionsController performSimpleActionWithActionType:self->_actionTypeToPerformInViewDidAppear];
 
     self->_actionTypeToPerformInViewDidAppear = 0;
     if (v24)
     {
-      v26 = [(PUOneUpViewController *)self navigationController];
+      navigationController = [(PUOneUpViewController *)self navigationController];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __39__PUOneUpViewController_viewDidAppear___block_invoke_3;
       v38[3] = &unk_1E7B80B48;
-      v39 = v26;
+      v39 = navigationController;
       v40 = v24;
-      v27 = v26;
+      v27 = navigationController;
       [v27 ppt_performBlockAfterNextNavigationAnimation:v38];
 
 LABEL_10:
@@ -13868,35 +13868,35 @@ LABEL_10:
     }
   }
 
-  else if (v23)
+  else if (editActivityCompletion)
   {
     goto LABEL_10;
   }
 
-  v28 = [(PUOneUpViewController *)self _isAssetEligibleForTip:v18];
-  v29 = [(PUOneUpViewController *)self _barsController];
-  v30 = [v29 barButtonItemToggleDetails];
+  v28 = [(PUOneUpViewController *)self _isAssetEligibleForTip:asset];
+  _barsController = [(PUOneUpViewController *)self _barsController];
+  barButtonItemToggleDetails = [_barsController barButtonItemToggleDetails];
 
-  if (v30 && v28)
+  if (barButtonItemToggleDetails && v28)
   {
     [MEMORY[0x1E69C3748] signalOneUpPhotoOpened];
   }
 
   +[PUPhotoEditViewController preheatEditDependenciesIfNeeded];
-  v31 = [(PUOneUpViewController *)self browsingSession];
-  v32 = [v31 privacyController];
-  [v32 viewDidAppearForAuthenticationContext:self];
+  browsingSession3 = [(PUOneUpViewController *)self browsingSession];
+  privacyController = [browsingSession3 privacyController];
+  [privacyController viewDidAppearForAuthenticationContext:self];
 
-  v33 = [(PUOneUpViewController *)self view];
+  view = [(PUOneUpViewController *)self view];
   PXAppIntentsSetViewAnnotationDelegate();
 
   if ([(PUOneUpViewController *)self _shouldDisableTransitionsUntilAppeared])
   {
-    v34 = [(PUOneUpViewController *)self browsingSession];
-    v35 = [v34 viewModel];
-    v36 = [v35 isPresentedForPreview];
+    browsingSession4 = [(PUOneUpViewController *)self browsingSession];
+    viewModel3 = [browsingSession4 viewModel];
+    isPresentedForPreview2 = [viewModel3 isPresentedForPreview];
 
-    if ((v36 & 1) == 0)
+    if ((isPresentedForPreview2 & 1) == 0)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -13942,61 +13942,61 @@ void __39__PUOneUpViewController_viewDidAppear___block_invoke_3(uint64_t a1)
   [v2 ppt_setEditIsReadyNotificationBlock:*(a1 + 40)];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v23.receiver = self;
   v23.super_class = PUOneUpViewController;
   [(PUOneUpViewController *)&v23 viewWillAppear:?];
   [(PUOneUpViewController *)self _updateLayoutReferenceSize];
   [(PUOneUpViewController *)self _updateWindowInterfaceOrientation];
   [(PUOneUpViewController *)self _invalidateSpec];
-  v5 = [(PUOneUpViewController *)self _barsController];
-  [v5 invalidateViewControllerView];
+  _barsController = [(PUOneUpViewController *)self _barsController];
+  [_barsController invalidateViewControllerView];
   if (([(PUOneUpViewController *)self isBeingPresented]& 1) != 0 || [(PUOneUpViewController *)self isMovingToParentViewController])
   {
     [(PUOneUpViewController *)self _invalidateBarsControllers];
   }
 
   [(PUOneUpViewController *)self _updateIfNeeded];
-  [v5 updateIfNeeded];
-  v6 = [(PUOneUpViewController *)self _spec];
-  v7 = [v6 shouldDisableNavigationBarsVisibility];
+  [_barsController updateIfNeeded];
+  _spec = [(PUOneUpViewController *)self _spec];
+  shouldDisableNavigationBarsVisibility = [_spec shouldDisableNavigationBarsVisibility];
 
-  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:v3 & ~v7];
-  [v5 invalidateViewControllerView];
-  [v5 updateIfNeeded];
-  v8 = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
-  [v8 invalidateDelegateData];
+  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:appearCopy & ~shouldDisableNavigationBarsVisibility];
+  [_barsController invalidateViewControllerView];
+  [_barsController updateIfNeeded];
+  _interactiveSwipeDismissalController = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
+  [_interactiveSwipeDismissalController invalidateDelegateData];
 
-  v9 = [(PUOneUpViewController *)self _interactivePinchDismissalController];
-  [v9 invalidateDelegateData];
+  _interactivePinchDismissalController = [(PUOneUpViewController *)self _interactivePinchDismissalController];
+  [_interactivePinchDismissalController invalidateDelegateData];
 
-  v10 = [(PUOneUpViewController *)self browsingSession];
-  v11 = [v10 viewModel];
-  v12 = [v11 currentAssetReference];
-  v13 = [v11 assetViewModelForAssetReference:v12];
-  v14 = [v13 irisPlayer];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  v13 = [viewModel assetViewModelForAssetReference:currentAssetReference];
+  irisPlayer = [v13 irisPlayer];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __40__PUOneUpViewController_viewWillAppear___block_invoke;
   v19[3] = &unk_1E7B809F0;
-  v20 = v11;
-  v21 = self;
-  v22 = v14;
-  v15 = v14;
-  v16 = v11;
+  v20 = viewModel;
+  selfCopy = self;
+  v22 = irisPlayer;
+  v15 = irisPlayer;
+  v16 = viewModel;
   [v16 performChanges:v19];
   if ([(PUOneUpViewController *)self _initialActivity]== 1)
   {
     self->_actionTypeToPerformInViewDidAppear = 15;
   }
 
-  v17 = [(PUOneUpViewController *)self _interactivePinchDismissalController];
-  [v17 viewControllerWillAppear];
+  _interactivePinchDismissalController2 = [(PUOneUpViewController *)self _interactivePinchDismissalController];
+  [_interactivePinchDismissalController2 viewControllerWillAppear];
 
-  v18 = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
-  [v18 viewControllerWillAppear];
+  _interactiveSwipeDismissalController2 = [(PUOneUpViewController *)self _interactiveSwipeDismissalController];
+  [_interactiveSwipeDismissalController2 viewControllerWillAppear];
 
   [(PUOneUpViewController *)self _setInitialActivity:0];
   [(PUOneUpViewController *)self setAppearState:1];
@@ -14050,15 +14050,15 @@ void __40__PUOneUpViewController_viewWillAppear___block_invoke_2(uint64_t a1)
   v41.receiver = self;
   v41.super_class = PUOneUpViewController;
   [(PUOneUpViewController *)&v41 viewDidLoad];
-  v3 = [(PUOneUpViewController *)self view];
+  view = [(PUOneUpViewController *)self view];
   v4 = objc_alloc(MEMORY[0x1E69DD250]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   contentContainerView = self->_contentContainerView;
   self->_contentContainerView = v5;
 
   [(UIView *)self->_contentContainerView setAutoresizingMask:18];
-  [v3 addSubview:self->_contentContainerView];
+  [view addSubview:self->_contentContainerView];
   if (![(PUOneUpViewController *)self _isPresentedForSecondScreen])
   {
     [(PUOneUpViewController *)self px_enableImageModulation];
@@ -14066,16 +14066,16 @@ void __40__PUOneUpViewController_viewWillAppear___block_invoke_2(uint64_t a1)
 
   if (([(PUOneUpViewController *)self _options]& 1) == 0)
   {
-    v7 = [(PUOneUpViewController *)self _newOneUpLayout];
+    _newOneUpLayout = [(PUOneUpViewController *)self _newOneUpLayout];
     v8 = [PUTilingView alloc];
-    [v3 bounds];
-    v9 = [(PUTilingView *)v8 initWithFrame:v7 layout:?];
+    [view bounds];
+    v9 = [(PUTilingView *)v8 initWithFrame:_newOneUpLayout layout:?];
     [(PUTilingView *)v9 setAutoresizingMask:18];
-    v10 = [(PUOneUpViewController *)self contentContainerView];
-    [v10 addSubview:v9];
+    contentContainerView = [(PUOneUpViewController *)self contentContainerView];
+    [contentContainerView addSubview:v9];
 
-    v11 = [(PUOneUpViewController *)self browsingSession];
-    [v11 configureTilingView:v9];
+    browsingSession = [(PUOneUpViewController *)self browsingSession];
+    [browsingSession configureTilingView:v9];
     if (![(PUOneUpViewController *)self _isPresentedForSecondScreen])
     {
       [(PUTilingView *)v9 configureDynamicRangeProperties];
@@ -14094,62 +14094,62 @@ void __40__PUOneUpViewController_viewWillAppear___block_invoke_2(uint64_t a1)
   if ([MEMORY[0x1E69C3640] isOneUpRefreshEnabled])
   {
     v14 = [PUOneUpGestureController alloc];
-    v15 = [(PUOneUpViewController *)self actionsController];
-    v16 = [(PUOneUpGestureController *)v14 initWithView:v3 actionsController:v15];
+    actionsController = [(PUOneUpViewController *)self actionsController];
+    v16 = [(PUOneUpGestureController *)v14 initWithView:view actionsController:actionsController];
     gestureController = self->_gestureController;
     self->_gestureController = v16;
 
     [(PUOneUpGestureController *)self->_gestureController setDelegate:self];
     v18 = [PUOneUpFeedbackController alloc];
-    v19 = [(PUOneUpViewController *)self browsingSession];
-    v20 = [v19 viewModel];
-    v21 = [(PUOneUpFeedbackController *)v18 initWithViewModel:v20];
+    browsingSession2 = [(PUOneUpViewController *)self browsingSession];
+    viewModel = [browsingSession2 viewModel];
+    v21 = [(PUOneUpFeedbackController *)v18 initWithViewModel:viewModel];
     feedbackController = self->_feedbackController;
     self->_feedbackController = v21;
   }
 
-  v23 = [(PUOneUpViewController *)self chromeViewController];
-  v24 = v23 == 0;
+  chromeViewController = [(PUOneUpViewController *)self chromeViewController];
+  v24 = chromeViewController == 0;
 
   if (v24)
   {
-    v28 = [(PUOneUpViewController *)self navigationController];
-    v25 = [v28 navigationBar];
+    navigationController = [(PUOneUpViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
 
-    v29 = [v25 standardAppearance];
-    [v25 setScrollEdgeAppearance:v29];
+    standardAppearance = [navigationBar standardAppearance];
+    [navigationBar setScrollEdgeAppearance:standardAppearance];
 
-    v30 = [(PUOneUpViewController *)self navigationController];
-    v27 = [v30 toolbar];
+    navigationController2 = [(PUOneUpViewController *)self navigationController];
+    toolbar = [navigationController2 toolbar];
 
-    v31 = [v27 standardAppearance];
-    [v27 setScrollEdgeAppearance:v31];
+    standardAppearance2 = [toolbar standardAppearance];
+    [toolbar setScrollEdgeAppearance:standardAppearance2];
 
     if (([(PUOneUpViewController *)self _options]& 0x100000) != 0)
     {
       v32 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
       [v32 configureWithOpaqueBackground];
-      v33 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      [v32 setBackgroundColor:v33];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      [v32 setBackgroundColor:systemBackgroundColor];
 
-      [v25 setScrollEdgeAppearance:v32];
+      [navigationBar setScrollEdgeAppearance:v32];
       v34 = objc_alloc_init(MEMORY[0x1E69DD188]);
       [v34 configureWithOpaqueBackground];
-      v35 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      [v34 setBackgroundColor:v35];
+      systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      [v34 setBackgroundColor:systemBackgroundColor2];
 
-      [v27 setScrollEdgeAppearance:v34];
+      [toolbar setScrollEdgeAppearance:v34];
     }
   }
 
   else
   {
-    v25 = [(PUOneUpViewController *)self view];
-    v26 = [(PUOneUpViewController *)self chromeViewController];
-    v27 = [v26 view];
+    navigationBar = [(PUOneUpViewController *)self view];
+    chromeViewController2 = [(PUOneUpViewController *)self chromeViewController];
+    toolbar = [chromeViewController2 view];
 
-    [v27 setAutoresizingMask:18];
-    [v25 addSubview:v27];
+    [toolbar setAutoresizingMask:18];
+    [navigationBar addSubview:toolbar];
   }
 
   objc_initWeak(&location, self);
@@ -14182,11 +14182,11 @@ void __36__PUOneUpViewController_viewDidLoad__block_invoke(uint64_t a1)
 {
   PXUnregisterPreferencesObserver();
   [(PUTilingView *)self->__tilingView setDelegate:0];
-  v3 = [(PUOneUpViewController *)self browsingSession];
-  v4 = [v3 viewModel];
-  v5 = [v4 isPresentedForPreview];
+  browsingSession = [(PUOneUpViewController *)self browsingSession];
+  viewModel = [browsingSession viewModel];
+  isPresentedForPreview = [viewModel isPresentedForPreview];
 
-  if (![(PUOneUpViewController *)self _isPresentedForSecondScreen]&& (v5 & 1) == 0)
+  if (![(PUOneUpViewController *)self _isPresentedForSecondScreen]&& (isPresentedForPreview & 1) == 0)
   {
     v6 = +[PHAirPlayScreenController sharedInstance];
     [v6 unregisterContentProvider:self];
@@ -14197,13 +14197,13 @@ void __36__PUOneUpViewController_viewDidLoad__block_invoke(uint64_t a1)
   [(PUOneUpViewController *)&v7 dealloc];
 }
 
-- (PUOneUpViewController)initWithBrowsingSession:(id)a3 options:(unint64_t)a4 initialActivity:(unint64_t)a5 presentationOrigin:(int64_t)a6
+- (PUOneUpViewController)initWithBrowsingSession:(id)session options:(unint64_t)options initialActivity:(unint64_t)activity presentationOrigin:(int64_t)origin
 {
-  v12 = a3;
-  if (!v12)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
-    v84 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v84 handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:466 description:{@"Invalid parameter not satisfying: %@", @"browsingSession != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpViewController.m" lineNumber:466 description:{@"Invalid parameter not satisfying: %@", @"browsingSession != nil"}];
   }
 
   v88.receiver = self;
@@ -14212,8 +14212,8 @@ void __36__PUOneUpViewController_viewDidLoad__block_invoke(uint64_t a1)
   v14 = v13;
   if (v13)
   {
-    v13->__options = a4;
-    v13->__initialActivity = a5;
+    v13->__options = options;
+    v13->__initialActivity = activity;
     v15 = px_dispatch_queue_create_serial();
     preheatAssetsQueue = v14->_preheatAssetsQueue;
     v14->_preheatAssetsQueue = v15;
@@ -14223,39 +14223,39 @@ void __36__PUOneUpViewController_viewDidLoad__block_invoke(uint64_t a1)
     v14->_assetUUIDsWithDisplayedContentUpdates = v17;
 
     PXRegisterPreferencesObserver();
-    v19 = [(PUOneUpViewController *)v14 navigationItem];
-    [v19 setLargeTitleDisplayMode:2];
+    navigationItem = [(PUOneUpViewController *)v14 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
-    v20 = [[PUOneUpViewControllerSpec alloc] initWithOptions:a4];
+    v20 = [[PUOneUpViewControllerSpec alloc] initWithOptions:options];
     spec = v14->__spec;
     v14->__spec = v20;
 
     [(PUViewControllerSpec *)v14->__spec registerChangeObserver:v14];
     v14->__needsUpdateSpec = 1;
     v22 = [objc_opt_class() description];
-    v23 = [MEMORY[0x1E696AFB0] UUID];
-    v24 = [v23 UUIDString];
-    v25 = [v22 stringByAppendingString:v24];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v25 = [v22 stringByAppendingString:uUIDString];
     scrubbingIdentifier = v14->_scrubbingIdentifier;
     v14->_scrubbingIdentifier = v25;
 
-    objc_storeStrong(&v14->_browsingSession, a3);
-    v14->_presentationOrigin = a6;
-    v27 = [(PUBrowsingSession *)v14->_browsingSession viewModel];
-    [v27 registerChangeObserver:v14];
-    v28 = [(PUOneUpViewController *)v14 traitCollection];
-    [v27 setHorizontalSizeClass:{objc_msgSend(v28, "horizontalSizeClass")}];
+    objc_storeStrong(&v14->_browsingSession, session);
+    v14->_presentationOrigin = origin;
+    viewModel = [(PUBrowsingSession *)v14->_browsingSession viewModel];
+    [viewModel registerChangeObserver:v14];
+    traitCollection = [(PUOneUpViewController *)v14 traitCollection];
+    [viewModel setHorizontalSizeClass:{objc_msgSend(traitCollection, "horizontalSizeClass")}];
 
     v29 = objc_alloc_init(PULoadingIndicatorController);
     loadingIndicatorController = v14->_loadingIndicatorController;
     v14->_loadingIndicatorController = v29;
 
     v14->__needsUpdateLayout = 1;
-    v14->__isPresentedForSecondScreen = (a4 & 2) != 0;
-    v14->__prefersCompactLayoutForSplitScreen = (a4 & 0x400) != 0;
-    if ((a4 & 2) == 0)
+    v14->__isPresentedForSecondScreen = (options & 2) != 0;
+    v14->__prefersCompactLayoutForSplitScreen = (options & 0x400) != 0;
+    if ((options & 2) == 0)
     {
-      v31 = PUOneUpEventTrackerCreate(v27, a6);
+      v31 = PUOneUpEventTrackerCreate(viewModel, origin);
       eventTracker = v14->_eventTracker;
       v14->_eventTracker = v31;
 
@@ -14274,7 +14274,7 @@ void __36__PUOneUpViewController_viewDidLoad__block_invoke(uint64_t a1)
         v37 = 1;
       }
 
-      else if ((a4 & 0x20000) != 0)
+      else if ((options & 0x20000) != 0)
       {
         v37 = 2;
       }
@@ -14293,13 +14293,13 @@ void __36__PUOneUpViewController_viewDidLoad__block_invoke(uint64_t a1)
         }
       }
 
-      v38 = [[PUOneUpDefaultActionsController alloc] initWithBrowsingSession:v12 viewController:v14];
+      v38 = [[PUOneUpDefaultActionsController alloc] initWithBrowsingSession:sessionCopy viewController:v14];
       [(PUOneUpDefaultActionsController *)v38 setDelegate:v14];
       [(PUOneUpDefaultActionsController *)v38 setAssetActionManagerSource:v14];
       objc_storeStrong(&v14->_actionsController, v38);
       if ([MEMORY[0x1E69C3640] isOneUpRefreshEnabled])
       {
-        v39 = [[PUOneUpChromeViewController alloc] initWithBrowsingSession:v12 actionsController:v14->_actionsController];
+        v39 = [[PUOneUpChromeViewController alloc] initWithBrowsingSession:sessionCopy actionsController:v14->_actionsController];
         chromeViewController = v14->_chromeViewController;
         v14->_chromeViewController = v39;
 
@@ -14341,33 +14341,33 @@ void __36__PUOneUpViewController_viewDidLoad__block_invoke(uint64_t a1)
         [(PUDoubleTapZoomController *)v14->__doubleTapZoomController setDelegate:v14];
       }
 
-      v49 = [(PUOneUpViewController *)v14 _spec];
-      v50 = [v49 allowAccessoryVisibility];
+      _spec = [(PUOneUpViewController *)v14 _spec];
+      allowAccessoryVisibility = [_spec allowAccessoryVisibility];
 
-      if (v50)
+      if (allowAccessoryVisibility)
       {
         v51 = objc_alloc_init(PUAccessoryVisibilityInteractionController);
         accessoryVisibilityInteractionController = v14->__accessoryVisibilityInteractionController;
         v14->__accessoryVisibilityInteractionController = v51;
 
         [(PUAccessoryVisibilityInteractionController *)v14->__accessoryVisibilityInteractionController setDelegate:v14];
-        [(PUAccessoryVisibilityInteractionController *)v14->__accessoryVisibilityInteractionController setBrowsingSession:v12];
+        [(PUAccessoryVisibilityInteractionController *)v14->__accessoryVisibilityInteractionController setBrowsingSession:sessionCopy];
         v53 = [PUOneUpAccessoryViewControllersManager alloc];
         browsingSession = v14->_browsingSession;
         [(PUOneUpViewController *)v14 _spec];
-        v55 = v27;
-        v56 = v12;
+        v55 = viewModel;
+        v56 = sessionCopy;
         v58 = v57 = v38;
         v59 = [(PUOneUpAccessoryViewControllersManager *)v53 initWithBrowsingSession:browsingSession spec:v58];
         accessoryViewControllersManager = v14->__accessoryViewControllersManager;
         v14->__accessoryViewControllersManager = v59;
 
         v38 = v57;
-        v12 = v56;
-        v27 = v55;
+        sessionCopy = v56;
+        viewModel = v55;
         v61 = v14->__accessoryViewControllersManager;
-        v62 = [(PUOneUpViewController *)v14 unlockDeviceStatus];
-        [(PUOneUpAccessoryViewControllersManager *)v61 setUnlockDeviceStatus:v62];
+        unlockDeviceStatus = [(PUOneUpViewController *)v14 unlockDeviceStatus];
+        [(PUOneUpAccessoryViewControllersManager *)v61 setUnlockDeviceStatus:unlockDeviceStatus];
 
         [(PUOneUpAccessoryViewControllersManager *)v14->__accessoryViewControllersManager setDelegate:v14];
         [(PUOneUpAccessoryViewControllersManager *)v14->__accessoryViewControllersManager setScrollPocketsEnabled:[(PUOneUpViewController *)v14 _enablePockets]];
@@ -14386,20 +14386,20 @@ void __36__PUOneUpViewController_viewDidLoad__block_invoke(uint64_t a1)
       [(PUOneUpGestureRecognizerCoordinator *)v14->__gestureRecognizerCoordinator setDoubleTapZoomController:v14->__doubleTapZoomController];
       [(PUOneUpGestureRecognizerCoordinator *)v14->__gestureRecognizerCoordinator setBrowsingSession:v14->_browsingSession];
       [(PUOneUpGestureRecognizerCoordinator *)v14->__gestureRecognizerCoordinator setDelegate:v14];
-      v67 = [(PUOneUpGestureRecognizerCoordinator *)v14->__gestureRecognizerCoordinator touchingGestureRecognizer];
-      [v67 addTarget:v14 action:sel__handleTouchGesture_];
+      touchingGestureRecognizer = [(PUOneUpGestureRecognizerCoordinator *)v14->__gestureRecognizerCoordinator touchingGestureRecognizer];
+      [touchingGestureRecognizer addTarget:v14 action:sel__handleTouchGesture_];
     }
 
-    v68 = a4 & 2;
-    v69 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v69 addObserver:v14 selector:sel__browsingVideoPlayerDidPlayToEndTime_ name:PUBrowsingVideoPlayerDidPlayToEndTimeNotification object:0];
-    [v69 addObserver:v14 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-    [v69 addObserver:v14 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
-    [v69 addObserver:v14 selector:sel__preheatAdjacentAssetsForPhotosDetailsContext name:*MEMORY[0x1E696A7D8] object:0];
+    v68 = options & 2;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__browsingVideoPlayerDidPlayToEndTime_ name:PUBrowsingVideoPlayerDidPlayToEndTimeNotification object:0];
+    [defaultCenter addObserver:v14 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter addObserver:v14 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    [defaultCenter addObserver:v14 selector:sel__preheatAdjacentAssetsForPhotosDetailsContext name:*MEMORY[0x1E696A7D8] object:0];
     v70 = +[PUOneUpSettings sharedInstance];
-    v71 = [v70 allowParallax];
+    allowParallax = [v70 allowParallax];
 
-    if (v71 && !UIAccessibilityIsReduceMotionEnabled())
+    if (allowParallax && !UIAccessibilityIsReduceMotionEnabled())
     {
       v72 = objc_alloc_init(PUParallaxComputer);
       parallaxComputer = v14->__parallaxComputer;
@@ -14417,7 +14417,7 @@ void __36__PUOneUpViewController_viewDidLoad__block_invoke(uint64_t a1)
       [(PUParallaxComputer *)v14->__parallaxComputer setAxis:1];
     }
 
-    v79 = [[PUBrowsingOneUpVisibilityHelper alloc] initWithBrowsingViewModel:v27 isPresentedForSecondScreen:v68 != 0];
+    v79 = [[PUBrowsingOneUpVisibilityHelper alloc] initWithBrowsingViewModel:viewModel isPresentedForSecondScreen:v68 != 0];
     [(PUOneUpViewController *)v14 setBrowsingOneUpVisibilityHelper:v79];
 
     v80 = objc_alloc_init(MEMORY[0x1E695DFA8]);

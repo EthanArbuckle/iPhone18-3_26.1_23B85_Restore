@@ -1,14 +1,14 @@
 @interface AppURLSession
-- (_TtC14amsengagementd13AppURLSession)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5;
+- (_TtC14amsengagementd13AppURLSession)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue;
 @end
 
 @implementation AppURLSession
 
-- (_TtC14amsengagementd13AppURLSession)initWithConfiguration:(id)a3 delegate:(id)a4 delegateQueue:(id)a5
+- (_TtC14amsengagementd13AppURLSession)initWithConfiguration:(id)configuration delegate:(id)delegate delegateQueue:(id)queue
 {
-  v6 = a3;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v7 = a5;
+  queueCopy = queue;
   sub_1000A97F8();
 }
 

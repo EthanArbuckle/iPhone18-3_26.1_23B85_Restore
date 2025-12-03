@@ -1,23 +1,23 @@
 @interface NDDownloadServiceStore
 - (NDDownloadLimits)lastKnownLimits;
-- (NDDownloadServiceStore)initWithParentDirectory:(id)a3;
+- (NDDownloadServiceStore)initWithParentDirectory:(id)directory;
 - (NSArray)lastKnownRequests;
-- (id)_filePathForKey:(id)a3;
-- (void)setLastKnownLimits:(id)a3;
-- (void)setLastKnownRequests:(id)a3;
+- (id)_filePathForKey:(id)key;
+- (void)setLastKnownLimits:(id)limits;
+- (void)setLastKnownRequests:(id)requests;
 @end
 
 @implementation NDDownloadServiceStore
 
-- (NDDownloadServiceStore)initWithParentDirectory:(id)a3
+- (NDDownloadServiceStore)initWithParentDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v9.receiver = self;
   v9.super_class = NDDownloadServiceStore;
   v5 = [(NDDownloadServiceStore *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [directoryCopy copy];
     parentDirectory = v5->_parentDirectory;
     v5->_parentDirectory = v6;
   }
@@ -72,12 +72,12 @@
   return v9;
 }
 
-- (void)setLastKnownRequests:(id)a3
+- (void)setLastKnownRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   v5 = objc_autoreleasePoolPush();
   v21 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v21];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:requestsCopy requiringSecureCoding:1 error:&v21];
   v7 = v21;
   v8 = v7;
   if (v6)
@@ -94,7 +94,7 @@
       if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
       {
         v14 = v13;
-        v15 = [v4 count];
+        v15 = [requestsCopy count];
         *buf = 134217984;
         v23 = v15;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "successfully saved %lu last known requests to store", buf, 0xCu);
@@ -171,12 +171,12 @@
   return v7;
 }
 
-- (void)setLastKnownLimits:(id)a3
+- (void)setLastKnownLimits:(id)limits
 {
-  v4 = a3;
+  limitsCopy = limits;
   v5 = objc_autoreleasePoolPush();
   v20 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v20];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:limitsCopy requiringSecureCoding:1 error:&v20];
   v7 = v20;
   v8 = v7;
   if (v6)
@@ -223,11 +223,11 @@
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)_filePathForKey:(id)a3
+- (id)_filePathForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NDDownloadServiceStore *)self parentDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  keyCopy = key;
+  parentDirectory = [(NDDownloadServiceStore *)self parentDirectory];
+  v6 = [parentDirectory stringByAppendingPathComponent:keyCopy];
 
   return v6;
 }

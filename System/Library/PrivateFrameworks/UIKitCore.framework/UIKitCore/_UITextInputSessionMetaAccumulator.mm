@@ -1,7 +1,7 @@
 @interface _UITextInputSessionMetaAccumulator
-+ (id)accumulatorWithName:(id)a3 accumulators:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)increaseWithActions:(id)a3;
++ (id)accumulatorWithName:(id)name accumulators:(id)accumulators;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)increaseWithActions:(id)actions;
 - (void)reset;
 @end
 
@@ -46,28 +46,28 @@
   }
 }
 
-+ (id)accumulatorWithName:(id)a3 accumulators:(id)a4
++ (id)accumulatorWithName:(id)name accumulators:(id)accumulators
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  accumulatorsCopy = accumulators;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 1;
-  v7 = [v6 firstObject];
-  v8 = [v7 depthRange];
+  firstObject = [accumulatorsCopy firstObject];
+  depthRange = [firstObject depthRange];
   v10 = v9;
 
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
-  v26 = v8;
+  v26 = depthRange;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
-  v22 = v8 + v10;
-  v11 = [v6 firstObject];
-  v12 = [v11 type];
+  v22 = depthRange + v10;
+  firstObject2 = [accumulatorsCopy firstObject];
+  type = [firstObject2 type];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -76,17 +76,17 @@
   v18[4] = &v23;
   v18[5] = &v19;
   v18[6] = &v27;
-  v18[7] = v12;
-  [v6 enumerateObjectsUsingBlock:v18];
-  if (*(v28 + 24) == 1 && [v6 count])
+  v18[7] = type;
+  [accumulatorsCopy enumerateObjectsUsingBlock:v18];
+  if (*(v28 + 24) == 1 && [accumulatorsCopy count])
   {
     v13 = objc_alloc_init(objc_opt_class());
-    v14 = [v5 copy];
+    v14 = [nameCopy copy];
     [v13 setName:v14];
 
-    [v13 setType:v12];
+    [v13 setType:type];
     [v13 setDepthRange:{v24[3], v20[3] - v24[3]}];
-    v15 = [v6 copy];
+    v15 = [accumulatorsCopy copy];
     v16 = v13[15];
     v13[15] = v15;
 
@@ -105,19 +105,19 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v5 = [(_UITextInputSessionAccumulator *)self name];
-  v6 = [v4 accumulatorWithName:v5 accumulators:self->_accumulators];
+  name = [(_UITextInputSessionAccumulator *)self name];
+  v6 = [v4 accumulatorWithName:name accumulators:self->_accumulators];
 
   return v6;
 }
 
-- (void)increaseWithActions:(id)a3
+- (void)increaseWithActions:(id)actions
 {
-  v4 = a3;
-  v5 = [v4 count];
+  actionsCopy = actions;
+  v5 = [actionsCopy count];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -128,8 +128,8 @@
   v17 = __58___UITextInputSessionMetaAccumulator_increaseWithActions___block_invoke;
   v18 = &unk_1E71253B0;
   v22 = v5;
-  v7 = v4;
-  v20 = self;
+  v7 = actionsCopy;
+  selfCopy = self;
   v21 = &v23;
   v19 = v7;
   [(NSArray *)accumulators enumerateObjectsWithOptions:2 usingBlock:&v15];
@@ -152,8 +152,8 @@
   }
 
   v11 = [(NSArray *)self->_accumulators objectAtIndex:v10];
-  v12 = [v11 depthRange];
-  v14 = v12 + v13;
+  depthRange = [v11 depthRange];
+  v14 = depthRange + v13;
 
   if (self->_actionCountWithoutIncrease >= v14)
   {

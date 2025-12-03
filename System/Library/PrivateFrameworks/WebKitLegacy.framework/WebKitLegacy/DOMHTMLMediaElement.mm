@@ -25,28 +25,28 @@
 - (double)getStartDate;
 - (double)playbackRate;
 - (double)volume;
-- (id)canPlayType:(id)a3;
+- (id)canPlayType:(id)type;
 - (unsigned)networkState;
 - (unsigned)readyState;
-- (void)fastSeek:(double)a3;
+- (void)fastSeek:(double)seek;
 - (void)load;
 - (void)pause;
 - (void)play;
-- (void)setAutoplay:(BOOL)a3;
-- (void)setControls:(BOOL)a3;
-- (void)setCrossOrigin:(id)a3;
-- (void)setCurrentTime:(double)a3;
-- (void)setDefaultMuted:(BOOL)a3;
-- (void)setDefaultPlaybackRate:(double)a3;
-- (void)setLoop:(BOOL)a3;
-- (void)setMediaGroup:(id)a3;
-- (void)setMuted:(BOOL)a3;
-- (void)setPlaybackRate:(double)a3;
-- (void)setPreload:(id)a3;
-- (void)setSrc:(id)a3;
-- (void)setVolume:(double)a3;
-- (void)setWebkitClosedCaptionsVisible:(BOOL)a3;
-- (void)setWebkitPreservesPitch:(BOOL)a3;
+- (void)setAutoplay:(BOOL)autoplay;
+- (void)setControls:(BOOL)controls;
+- (void)setCrossOrigin:(id)origin;
+- (void)setCurrentTime:(double)time;
+- (void)setDefaultMuted:(BOOL)muted;
+- (void)setDefaultPlaybackRate:(double)rate;
+- (void)setLoop:(BOOL)loop;
+- (void)setMediaGroup:(id)group;
+- (void)setMuted:(BOOL)muted;
+- (void)setPlaybackRate:(double)rate;
+- (void)setPreload:(id)preload;
+- (void)setSrc:(id)src;
+- (void)setVolume:(double)volume;
+- (void)setWebkitClosedCaptionsVisible:(BOOL)visible;
+- (void)setWebkitPreservesPitch:(BOOL)pitch;
 @end
 
 @implementation DOMHTMLMediaElement
@@ -139,7 +139,7 @@
   return v5;
 }
 
-- (void)setSrc:(id)a3
+- (void)setSrc:(id)src
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v10);
   internal = self->super.super.super.super._internal;
@@ -148,7 +148,7 @@
     *(internal + 7) += 2;
   }
 
-  WTF::AtomStringImpl::add(&v11, a3, v5);
+  WTF::AtomStringImpl::add(&v11, src, v5);
   v9 = v11;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v9)
@@ -291,7 +291,7 @@ LABEL_9:
   return v6;
 }
 
-- (void)setCrossOrigin:(id)a3
+- (void)setCrossOrigin:(id)origin
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v10);
   internal = self->super.super.super.super._internal;
@@ -300,7 +300,7 @@ LABEL_9:
     *(internal + 7) += 2;
   }
 
-  WTF::AtomStringImpl::add(&v11, a3, v5);
+  WTF::AtomStringImpl::add(&v11, origin, v5);
   v9 = v11;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v9)
@@ -418,7 +418,7 @@ LABEL_9:
   return v6;
 }
 
-- (void)setPreload:(id)a3
+- (void)setPreload:(id)preload
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v10);
   internal = self->super.super.super.super._internal;
@@ -427,7 +427,7 @@ LABEL_9:
     *(internal + 7) += 2;
   }
 
-  WTF::AtomStringImpl::add(&v11, a3, v5);
+  WTF::AtomStringImpl::add(&v11, preload, v5);
   v9 = v11;
   WebCore::HTMLMediaElement::setPreload();
   if (v9)
@@ -585,7 +585,7 @@ LABEL_11:
   return v5;
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v11);
   internal = self->super.super.super.super._internal;
@@ -594,7 +594,7 @@ LABEL_11:
     *(internal + 7) += 2;
   }
 
-  WebCore::HTMLMediaElement::setCurrentTimeForBindings(&v8, internal, a3);
+  WebCore::HTMLMediaElement::setCurrentTimeForBindings(&v8, internal, time);
   if (v10 == 1)
   {
     v11[80] = v8;
@@ -692,7 +692,7 @@ LABEL_11:
   return v5;
 }
 
-- (void)setDefaultPlaybackRate:(double)a3
+- (void)setDefaultPlaybackRate:(double)rate
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super._internal;
@@ -701,7 +701,7 @@ LABEL_11:
     *(internal + 7) += 2;
   }
 
-  (*(*internal + 1408))(internal, a3);
+  (*(*internal + 1408))(internal, rate);
   if (*(internal + 7) == 2)
   {
     WebCore::Node::removedLastRef(internal);
@@ -739,7 +739,7 @@ LABEL_11:
   return v5;
 }
 
-- (void)setPlaybackRate:(double)a3
+- (void)setPlaybackRate:(double)rate
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super._internal;
@@ -748,7 +748,7 @@ LABEL_11:
     *(internal + 7) += 2;
   }
 
-  (*(*internal + 1424))(internal, a3);
+  (*(*internal + 1424))(internal, rate);
   if (*(internal + 7) == 2)
   {
     WebCore::Node::removedLastRef(internal);
@@ -981,7 +981,7 @@ LABEL_19:
   return v9;
 }
 
-- (void)setAutoplay:(BOOL)a3
+- (void)setAutoplay:(BOOL)autoplay
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super._internal;
@@ -1090,7 +1090,7 @@ LABEL_19:
   return v9;
 }
 
-- (void)setLoop:(BOOL)a3
+- (void)setLoop:(BOOL)loop
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super._internal;
@@ -1144,7 +1144,7 @@ LABEL_6:
   return v5;
 }
 
-- (void)setControls:(BOOL)a3
+- (void)setControls:(BOOL)controls
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super._internal;
@@ -1195,7 +1195,7 @@ LABEL_6:
   return v5;
 }
 
-- (void)setVolume:(double)a3
+- (void)setVolume:(double)volume
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v11);
   internal = self->super.super.super.super._internal;
@@ -1204,7 +1204,7 @@ LABEL_6:
     *(internal + 7) += 2;
   }
 
-  (*(*internal + 1472))(&v8, internal, a3);
+  (*(*internal + 1472))(&v8, internal, volume);
   if (v10 == 1)
   {
     v11[80] = v8;
@@ -1251,9 +1251,9 @@ LABEL_6:
   return v5;
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super._internal;
   if (internal)
@@ -1261,7 +1261,7 @@ LABEL_6:
     *(internal + 7) += 2;
   }
 
-  (*(*internal + 1488))(internal, v3);
+  (*(*internal + 1488))(internal, mutedCopy);
   if (*(internal + 7) == 2)
   {
     WebCore::Node::removedLastRef(internal);
@@ -1357,7 +1357,7 @@ LABEL_19:
   return v9;
 }
 
-- (void)setDefaultMuted:(BOOL)a3
+- (void)setDefaultMuted:(BOOL)muted
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super._internal;
@@ -1411,7 +1411,7 @@ LABEL_6:
   return v5;
 }
 
-- (void)setWebkitPreservesPitch:(BOOL)a3
+- (void)setWebkitPreservesPitch:(BOOL)pitch
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super._internal;
@@ -1486,9 +1486,9 @@ LABEL_6:
   return v5;
 }
 
-- (void)setWebkitClosedCaptionsVisible:(BOOL)a3
+- (void)setWebkitClosedCaptionsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super._internal;
   if (internal)
@@ -1496,7 +1496,7 @@ LABEL_6:
     *(internal + 7) += 2;
   }
 
-  (*(*internal + 1864))(internal, v3);
+  (*(*internal + 1864))(internal, visibleCopy);
   if (*(internal + 7) == 2)
   {
     WebCore::Node::removedLastRef(internal);
@@ -1565,7 +1565,7 @@ LABEL_6:
   return v6;
 }
 
-- (void)setMediaGroup:(id)a3
+- (void)setMediaGroup:(id)group
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v10);
   internal = self->super.super.super.super._internal;
@@ -1574,7 +1574,7 @@ LABEL_6:
     *(internal + 7) += 2;
   }
 
-  WTF::AtomStringImpl::add(&v11, a3, v5);
+  WTF::AtomStringImpl::add(&v11, group, v5);
   v9 = v11;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v9)
@@ -1629,7 +1629,7 @@ LABEL_6:
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v6, v5);
 }
 
-- (id)canPlayType:(id)a3
+- (id)canPlayType:(id)type
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v18);
   internal = self->super.super.super.super._internal;
@@ -1638,7 +1638,7 @@ LABEL_6:
     *(internal + 7) += 2;
   }
 
-  MEMORY[0x1CCA63A40](&v15, a3);
+  MEMORY[0x1CCA63A40](&v15, type);
   WebCore::HTMLMediaElement::canPlayType(&v16, internal, &v15);
   v6 = v16;
   if (v16)
@@ -1776,7 +1776,7 @@ LABEL_6:
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v5, v4);
 }
 
-- (void)fastSeek:(double)a3
+- (void)fastSeek:(double)seek
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
   internal = self->super.super.super.super._internal;
@@ -1785,7 +1785,7 @@ LABEL_6:
     *(internal + 7) += 2;
   }
 
-  WebCore::HTMLMediaElement::fastSeek(internal, a3);
+  WebCore::HTMLMediaElement::fastSeek(internal, seek);
   if (internal)
   {
     if (*(internal + 7) == 2)

@@ -1,32 +1,32 @@
 @interface TKSlotServerConnectionProvider
-- (TKSlotServerConnectionProvider)initWithReplyQueue:(id)a3;
-- (id)makeSlotServerConnectionWithExportedObject:(id)a3;
+- (TKSlotServerConnectionProvider)initWithReplyQueue:(id)queue;
+- (id)makeSlotServerConnectionWithExportedObject:(id)object;
 @end
 
 @implementation TKSlotServerConnectionProvider
 
-- (TKSlotServerConnectionProvider)initWithReplyQueue:(id)a3
+- (TKSlotServerConnectionProvider)initWithReplyQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = TKSlotServerConnectionProvider;
   v6 = [(TKSlotServerConnectionProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_replyQueue, a3);
+    objc_storeStrong(&v6->_replyQueue, queue);
   }
 
   return v7;
 }
 
-- (id)makeSlotServerConnectionWithExportedObject:(id)a3
+- (id)makeSlotServerConnectionWithExportedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [TKXPCConnectionConfigurationDefault alloc];
   v6 = [TKXPCInterface interfaceForXPCProtocol:&OBJC_PROTOCOL___TKProtocolSlotClient];
   v7 = [TKXPCInterface interfaceForXPCProtocol:&OBJC_PROTOCOL___TKProtocolSlotClientNotification];
-  v8 = [(TKXPCConnectionConfigurationDefault *)v5 initWithRemoteObjectInterface:v6 exportedInterface:v7 exportedObject:v4 replyQueue:self->_replyQueue];
+  v8 = [(TKXPCConnectionConfigurationDefault *)v5 initWithRemoteObjectInterface:v6 exportedInterface:v7 exportedObject:objectCopy replyQueue:self->_replyQueue];
 
   v9 = [TKXPCConnectionDefault alloc];
   v10 = [(TKXPCConnectionDefault *)v9 initWithMachServiceName:TKProtocolSlotClientName options:4096];

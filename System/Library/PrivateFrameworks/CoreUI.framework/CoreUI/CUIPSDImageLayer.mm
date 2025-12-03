@@ -1,18 +1,18 @@
 @interface CUIPSDImageLayer
-- (CUIPSDImageLayer)initWithCGImageRef:(CGImage *)a3;
+- (CUIPSDImageLayer)initWithCGImageRef:(CGImage *)ref;
 - (void)dealloc;
 @end
 
 @implementation CUIPSDImageLayer
 
-- (CUIPSDImageLayer)initWithCGImageRef:(CGImage *)a3
+- (CUIPSDImageLayer)initWithCGImageRef:(CGImage *)ref
 {
   v6.receiver = self;
   v6.super_class = CUIPSDImageLayer;
   v4 = [(CUIPSDLayer *)&v6 init];
   if (v4)
   {
-    v4->_image = [CUIImage imageWithCGImage:a3];
+    v4->_image = [CUIImage imageWithCGImage:ref];
   }
 
   return v4;

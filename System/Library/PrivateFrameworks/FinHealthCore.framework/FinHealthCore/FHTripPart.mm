@@ -1,33 +1,33 @@
 @interface FHTripPart
-- (FHTripPart)initWithPPTripPart:(id)a3;
+- (FHTripPart)initWithPPTripPart:(id)part;
 - (id)description;
 @end
 
 @implementation FHTripPart
 
-- (FHTripPart)initWithPPTripPart:(id)a3
+- (FHTripPart)initWithPPTripPart:(id)part
 {
-  v4 = a3;
+  partCopy = part;
   v11.receiver = self;
   v11.super_class = FHTripPart;
   v5 = [(FHTripPart *)&v11 init];
   if (v5)
   {
-    v6 = [v4 eventIdentifiers];
-    [(FHTripPart *)v5 setEventIdentifiers:v6];
+    eventIdentifiers = [partCopy eventIdentifiers];
+    [(FHTripPart *)v5 setEventIdentifiers:eventIdentifiers];
 
-    v7 = [v4 mainLocation];
-    [(FHTripPart *)v5 setMainLocation:v7];
+    mainLocation = [partCopy mainLocation];
+    [(FHTripPart *)v5 setMainLocation:mainLocation];
 
-    v8 = [v4 tripMode];
-    if (v8 >= 3)
+    tripMode = [partCopy tripMode];
+    if (tripMode >= 3)
     {
       v9 = 3;
     }
 
     else
     {
-      v9 = v8;
+      v9 = tripMode;
     }
 
     [(FHTripPart *)v5 setTripMode:v9];

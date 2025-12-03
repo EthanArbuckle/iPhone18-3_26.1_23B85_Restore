@@ -6,29 +6,29 @@
 
 - (void)executionDidBegin
 {
-  v3 = [MEMORY[0x277CEE3F8] vs_defaultBag];
+  vs_defaultBag = [MEMORY[0x277CEE3F8] vs_defaultBag];
   v4 = objc_alloc(MEMORY[0x277CEE680]);
-  v5 = [v4 initWithMediaType:2 clientIdentifier:*MEMORY[0x277CE2380] bag:v3];
-  v6 = [v5 performTask];
+  v5 = [v4 initWithMediaType:2 clientIdentifier:*MEMORY[0x277CE2380] bag:vs_defaultBag];
+  performTask = [v5 performTask];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__VSAMSStorefrontFetchAllOperation_executionDidBegin__block_invoke;
   v11[3] = &unk_279E194D0;
   objc_copyWeak(&v12, &location);
-  [v6 addErrorBlock:v11];
+  [performTask addErrorBlock:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__VSAMSStorefrontFetchAllOperation_executionDidBegin__block_invoke_2;
   v9[3] = &unk_279E199E0;
   objc_copyWeak(&v10, &location);
-  [v6 addSuccessBlock:v9];
+  [performTask addSuccessBlock:v9];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__VSAMSStorefrontFetchAllOperation_executionDidBegin__block_invoke_5;
   v7[3] = &unk_279E19A08;
   objc_copyWeak(&v8, &location);
-  [v6 addFinishBlock:v7];
+  [performTask addFinishBlock:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);

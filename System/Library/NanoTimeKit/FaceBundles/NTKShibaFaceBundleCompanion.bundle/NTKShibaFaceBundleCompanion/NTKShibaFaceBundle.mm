@@ -1,25 +1,25 @@
 @interface NTKShibaFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKShibaFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKShibaFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKShibaFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_C600;
   v6 = &off_C618;
@@ -28,15 +28,15 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  if ([v4 isRunningNapiliGMOrLater])
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v16.receiver = self;
     v16.super_class = NTKShibaFaceBundle;
-    v6 = [(NTKShibaFaceBundle *)&v16 galleryFacesForDevice:v4];
+    v6 = [(NTKShibaFaceBundle *)&v16 galleryFacesForDevice:deviceCopy];
     [v5 addObjectsFromArray:v6];
 
     [v5 enumerateObjectsUsingBlock:&stru_C318];
@@ -44,19 +44,19 @@
 
   else
   {
-    v7 = [NTKShibaStyleEditOption numberOfOptionsForDevice:v4];
+    v7 = [NTKShibaStyleEditOption numberOfOptionsForDevice:deviceCopy];
     if (v7)
     {
       v8 = v7;
       for (i = 0; i != v8; ++i)
       {
-        v10 = [objc_opt_class() identifier];
-        v11 = [objc_opt_class() analyticsIdentifier];
-        v12 = [NTKShibaFace bundledFaceWithIdentifier:v10 analyticsIdentifier:v11 forDevice:v4 initCustomization:0];
+        identifier = [objc_opt_class() identifier];
+        analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+        v12 = [NTKShibaFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
         if (v12)
         {
-          v13 = [NTKShibaStyleEditOption optionAtIndex:i forDevice:v4];
+          v13 = [NTKShibaStyleEditOption optionAtIndex:i forDevice:deviceCopy];
           [v12 selectOption:v13 forCustomEditMode:15 slot:0];
 
           [v5 addObject:v12];
@@ -70,9 +70,9 @@
   return v14;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5 = &off_C630;
     v6 = &off_CB70;
@@ -87,13 +87,13 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v3 = ntk_victory_black;
-    v4 = [NTKPigmentEditOption duotoneNameWithName:ntk_victory_purePlatinum otherName:ntk_victory_black, ntk_special_multicolor];
-    v8[1] = v4;
+    ntk_special_multicolor = [NTKPigmentEditOption duotoneNameWithName:ntk_victory_purePlatinum otherName:ntk_victory_black, ntk_special_multicolor];
+    v8[1] = ntk_special_multicolor;
     v5 = [NTKPigmentEditOption duotoneNameWithName:v3 otherName:ntk_victory_volt];
     v8[2] = v5;
     v6 = [NSArray arrayWithObjects:v8 count:3];
@@ -107,17 +107,17 @@
   return v6;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:4094027452])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:4094027452])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKShibaFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKShibaFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v7 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v6 priority:900];
     v8 = v7;
     if (v7)

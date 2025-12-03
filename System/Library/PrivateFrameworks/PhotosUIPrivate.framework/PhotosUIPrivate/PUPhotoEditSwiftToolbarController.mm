@@ -1,7 +1,7 @@
 @interface PUPhotoEditSwiftToolbarController
-- (PUPhotoEditSwiftToolbarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)selectToolController:(id)a3;
-- (void)updateForToolControllers:(id)a3;
+- (PUPhotoEditSwiftToolbarController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)selectToolController:(id)controller;
+- (void)updateForToolControllers:(id)controllers;
 - (void)viewDidLoad;
 @end
 
@@ -9,33 +9,33 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B382902C();
 }
 
-- (void)updateForToolControllers:(id)a3
+- (void)updateForToolControllers:(id)controllers
 {
   sub_1B3710718(0, &unk_1EB84F170);
   v4 = sub_1B3C9C788();
-  v5 = self;
+  selfCopy = self;
   sub_1B382952C(v4);
 }
 
-- (void)selectToolController:(id)a3
+- (void)selectToolController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1B38298BC();
 }
 
-- (PUPhotoEditSwiftToolbarController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUPhotoEditSwiftToolbarController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1B3C9C5E8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1B382A6AC();
 }
 

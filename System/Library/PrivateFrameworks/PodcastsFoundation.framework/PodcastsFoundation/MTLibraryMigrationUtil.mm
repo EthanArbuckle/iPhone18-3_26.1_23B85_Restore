@@ -1,12 +1,12 @@
 @interface MTLibraryMigrationUtil
-+ (BOOL)isMomCompatible:(id)a3;
++ (BOOL)isMomCompatible:(id)compatible;
 + (BOOL)isNewInstall;
 + (BOOL)needsCoreDataMigration;
 + (BOOL)needsDataMigration;
 + (BOOL)needsImageStoreMigration;
 + (id)_fallbackCoreDataChecksumFromLibraryFile;
 + (id)libraryImageStoreType;
-+ (void)setLibraryImageStoreType:(id)a3;
++ (void)setLibraryImageStoreType:(id)type;
 @end
 
 @implementation MTLibraryMigrationUtil
@@ -14,9 +14,9 @@
 + (BOOL)isNewInstall
 {
   v2 = +[MTDB libraryPath];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v2 path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   return v5 ^ 1;
 }
@@ -24,14 +24,14 @@
 + (BOOL)needsCoreDataMigration
 {
   v3 = +[MTDB managedObjectModel];
-  v4 = [v3 versionChecksum];
-  v5 = +[MTDB coreDataChecksum];
-  if (!v5)
+  versionChecksum = [v3 versionChecksum];
+  _fallbackCoreDataChecksumFromLibraryFile = +[MTDB coreDataChecksum];
+  if (!_fallbackCoreDataChecksumFromLibraryFile)
   {
-    v5 = [a1 _fallbackCoreDataChecksumFromLibraryFile];
+    _fallbackCoreDataChecksumFromLibraryFile = [self _fallbackCoreDataChecksumFromLibraryFile];
   }
 
-  v6 = [v4 isEqualToString:v5];
+  v6 = [versionChecksum isEqualToString:_fallbackCoreDataChecksumFromLibraryFile];
 
   return v6 ^ 1;
 }
@@ -51,10 +51,10 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   v2 = +[MTImageStoreConstants deprecatedImageStoreURL];
-  v3 = [v2 path];
+  path = [v2 path];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   v6 = +[MTLibraryMigrationUtil libraryImageStoreType];
   v7 = +[MTImageStoreConstants fileType];
@@ -77,8 +77,8 @@
 
 + (id)libraryImageStoreType
 {
-  v2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  v3 = [v2 stringForKey:@"MTImageCacheFormatIdentifier"];
+  _applePodcastsFoundationSharedUserDefaults = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  v3 = [_applePodcastsFoundationSharedUserDefaults stringForKey:@"MTImageCacheFormatIdentifier"];
 
   if (v3)
   {
@@ -87,8 +87,8 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-    [v5 BOOLForKey:@"MTHeicImageMigrationHasOccurred"];
+    _applePodcastsFoundationSharedUserDefaults2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+    [_applePodcastsFoundationSharedUserDefaults2 BOOLForKey:@"MTHeicImageMigrationHasOccurred"];
 
     v4 = *MEMORY[0x1E6982E58];
   }
@@ -136,29 +136,29 @@
   return v7;
 }
 
-+ (void)setLibraryImageStoreType:(id)a3
++ (void)setLibraryImageStoreType:(id)type
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 _applePodcastsFoundationSharedUserDefaults];
-  v6 = [v4 identifier];
+  typeCopy = type;
+  _applePodcastsFoundationSharedUserDefaults = [v3 _applePodcastsFoundationSharedUserDefaults];
+  identifier = [typeCopy identifier];
 
-  [v5 setObject:v6 forKey:@"MTImageCacheFormatIdentifier"];
-  v7 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
-  [v7 setBool:0 forKey:@"MTHeicImageMigrationHasOccurred"];
+  [_applePodcastsFoundationSharedUserDefaults setObject:identifier forKey:@"MTImageCacheFormatIdentifier"];
+  _applePodcastsFoundationSharedUserDefaults2 = [MEMORY[0x1E695E000] _applePodcastsFoundationSharedUserDefaults];
+  [_applePodcastsFoundationSharedUserDefaults2 setBool:0 forKey:@"MTHeicImageMigrationHasOccurred"];
 }
 
-+ (BOOL)isMomCompatible:(id)a3
++ (BOOL)isMomCompatible:(id)compatible
 {
-  v4 = a3;
-  if ([a1 isNewInstall])
+  compatibleCopy = compatible;
+  if ([self isNewInstall])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [a1 createPersistentStoreForModel:v4 attemptMigration:0];
+    v5 = [self createPersistentStoreForModel:compatibleCopy attemptMigration:0];
   }
 
   return v5;

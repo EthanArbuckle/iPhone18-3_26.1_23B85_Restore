@@ -1,21 +1,21 @@
 @interface AFServiceContextSnapshot
-- (AFServiceContextSnapshot)initWithCoder:(id)a3;
-- (AFServiceContextSnapshot)initWithDeliveryDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AFServiceContextSnapshot)initWithCoder:(id)coder;
+- (AFServiceContextSnapshot)initWithDeliveryDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation AFServiceContextSnapshot
 
-- (AFServiceContextSnapshot)initWithCoder:(id)a3
+- (AFServiceContextSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AFServiceContextSnapshot;
   v5 = [(AFServiceContextSnapshot *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_deliveryDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_deliveryDate"];
     deliveryDate = v5->_deliveryDate;
     v5->_deliveryDate = v6;
   }
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -36,10 +36,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       deliveryDate = self->_deliveryDate;
-      v7 = [(AFServiceContextSnapshot *)v5 deliveryDate];
-      if (deliveryDate == v7)
+      deliveryDate = [(AFServiceContextSnapshot *)v5 deliveryDate];
+      if (deliveryDate == deliveryDate)
       {
         v10 = 1;
       }
@@ -47,8 +47,8 @@
       else
       {
         v8 = self->_deliveryDate;
-        v9 = [(AFServiceContextSnapshot *)v5 deliveryDate];
-        v10 = [(NSDate *)v8 isEqual:v9];
+        deliveryDate2 = [(AFServiceContextSnapshot *)v5 deliveryDate];
+        v10 = [(NSDate *)v8 isEqual:deliveryDate2];
       }
     }
 
@@ -72,15 +72,15 @@
   return v5;
 }
 
-- (AFServiceContextSnapshot)initWithDeliveryDate:(id)a3
+- (AFServiceContextSnapshot)initWithDeliveryDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = AFServiceContextSnapshot;
   v5 = [(AFServiceContextSnapshot *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dateCopy copy];
     deliveryDate = v5->_deliveryDate;
     v5->_deliveryDate = v6;
   }

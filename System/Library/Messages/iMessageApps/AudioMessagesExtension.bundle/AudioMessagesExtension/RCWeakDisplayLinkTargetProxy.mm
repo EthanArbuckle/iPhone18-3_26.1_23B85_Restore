@@ -1,30 +1,30 @@
 @interface RCWeakDisplayLinkTargetProxy
-- (RCWeakDisplayLinkTargetProxy)initWithTarget:(id)a3 selector:(SEL)a4;
+- (RCWeakDisplayLinkTargetProxy)initWithTarget:(id)target selector:(SEL)selector;
 - (void)dealloc;
-- (void)displayLinkFired:(id)a3;
+- (void)displayLinkFired:(id)fired;
 @end
 
 @implementation RCWeakDisplayLinkTargetProxy
 
-- (RCWeakDisplayLinkTargetProxy)initWithTarget:(id)a3 selector:(SEL)a4
+- (RCWeakDisplayLinkTargetProxy)initWithTarget:(id)target selector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = RCWeakDisplayLinkTargetProxy;
   v6 = [(RCWeakDisplayLinkTargetProxy *)&v9 init];
   if (v6)
   {
-    v6->_weakTarget = [RCWeakRef weakRefWithObject:a3];
-    if (a4)
+    v6->_weakTarget = [RCWeakRef weakRefWithObject:target];
+    if (selector)
     {
-      v7 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v7 = 0;
+      selectorCopy = 0;
     }
 
-    v6->_weakTargetSelector = v7;
+    v6->_weakTargetSelector = selectorCopy;
   }
 
   return v6;
@@ -38,10 +38,10 @@
   [(RCWeakDisplayLinkTargetProxy *)&v3 dealloc];
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  v5 = [(RCWeakRef *)self->_weakTarget object];
-  if (v5)
+  object = [(RCWeakRef *)self->_weakTarget object];
+  if (object)
   {
     if (self->_weakTargetSelector)
     {
@@ -53,13 +53,13 @@
       weakTargetSelector = 0;
     }
 
-    [v5 performSelector:weakTargetSelector withObject:a3];
+    [object performSelector:weakTargetSelector withObject:fired];
   }
 
   else
   {
 
-    [a3 invalidate];
+    [fired invalidate];
   }
 }
 

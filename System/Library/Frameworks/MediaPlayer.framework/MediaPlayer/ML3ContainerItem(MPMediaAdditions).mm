@@ -21,7 +21,7 @@
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &off_1F1596280;
     v7 = objc_msgSendSuper2(&v10, sel_propertyForMPMediaEntityProperty_, v4);
   }

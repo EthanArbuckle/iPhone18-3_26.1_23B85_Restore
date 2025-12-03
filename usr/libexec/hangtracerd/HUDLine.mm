@@ -4,9 +4,9 @@
 - (double)contentScaleForTexts;
 - (void)layoutSublayers;
 - (void)nilifyCALayers;
-- (void)setFontSize:(double)a3;
-- (void)setPreferredKeyLayerWidth:(double)a3;
-- (void)setPreferredValueLayerWidth:(double)a3;
+- (void)setFontSize:(double)size;
+- (void)setPreferredKeyLayerWidth:(double)width;
+- (void)setPreferredValueLayerWidth:(double)width;
 @end
 
 @implementation HUDLine
@@ -42,23 +42,23 @@
   self->_valueLayer = 0;
 }
 
-- (void)setPreferredKeyLayerWidth:(double)a3
+- (void)setPreferredKeyLayerWidth:(double)width
 {
   [(HUDLine *)self preferredKeyLayerWidth];
-  if (v5 != a3)
+  if (v5 != width)
   {
-    self->_preferredKeyLayerWidth = a3;
+    self->_preferredKeyLayerWidth = width;
 
     [(HUDLine *)self setNeedsLayout];
   }
 }
 
-- (void)setPreferredValueLayerWidth:(double)a3
+- (void)setPreferredValueLayerWidth:(double)width
 {
   [(HUDLine *)self preferredValueLayerWidth];
-  if (v5 != a3)
+  if (v5 != width)
   {
-    self->_preferredValueLayerWidth = a3;
+    self->_preferredValueLayerWidth = width;
 
     [(HUDLine *)self setNeedsLayout];
   }
@@ -79,24 +79,24 @@
 
   [(CALayer *)self->_keyLayer preferredFrameSize];
   v6 = v5;
-  v7 = [(HUDLine *)self keyLayer];
-  [v7 setFrame:{0.0, 0.0, preferredKeyLayerWidth, v6}];
+  keyLayer = [(HUDLine *)self keyLayer];
+  [keyLayer setFrame:{0.0, 0.0, preferredKeyLayerWidth, v6}];
 
-  v8 = [(HUDLine *)self valueLayer];
+  valueLayer = [(HUDLine *)self valueLayer];
 
-  if (v8)
+  if (valueLayer)
   {
     [(CALayer *)self->_keyLayer frame];
     v10 = self->_spacing + v9;
     preferredValueLayerWidth = self->_preferredValueLayerWidth;
     [(CALayer *)self->_valueLayer preferredFrameSize];
     v13 = v12;
-    v14 = [(HUDLine *)self valueLayer];
-    [v14 setFrame:{v10, 0.0, preferredValueLayerWidth, v13}];
+    valueLayer2 = [(HUDLine *)self valueLayer];
+    [valueLayer2 setFrame:{v10, 0.0, preferredValueLayerWidth, v13}];
   }
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
   v3 = sub_100003824();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

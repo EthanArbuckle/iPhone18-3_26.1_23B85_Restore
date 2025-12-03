@@ -1,36 +1,36 @@
 @interface RWIProtocolDebuggerCSPViolationPauseReason
 - (NSString)directive;
-- (RWIProtocolDebuggerCSPViolationPauseReason)initWithDirective:(id)a3;
-- (void)setDirective:(id)a3;
+- (RWIProtocolDebuggerCSPViolationPauseReason)initWithDirective:(id)directive;
+- (void)setDirective:(id)directive;
 @end
 
 @implementation RWIProtocolDebuggerCSPViolationPauseReason
 
-- (RWIProtocolDebuggerCSPViolationPauseReason)initWithDirective:(id)a3
+- (RWIProtocolDebuggerCSPViolationPauseReason)initWithDirective:(id)directive
 {
-  v4 = a3;
+  directiveCopy = directive;
   v8.receiver = self;
   v8.super_class = RWIProtocolDebuggerCSPViolationPauseReason;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!directiveCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"directive"}];
     }
 
-    [(RWIProtocolDebuggerCSPViolationPauseReason *)v5 setDirective:v4];
+    [(RWIProtocolDebuggerCSPViolationPauseReason *)v5 setDirective:directiveCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setDirective:(id)a3
+- (void)setDirective:(id)directive
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerCSPViolationPauseReason;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"directive"];
+  [(RWIProtocolJSONObject *)&v3 setString:directive forKey:@"directive"];
 }
 
 - (NSString)directive

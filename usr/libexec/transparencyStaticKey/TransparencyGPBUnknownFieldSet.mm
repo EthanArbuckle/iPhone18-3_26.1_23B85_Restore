@@ -1,29 +1,29 @@
 @interface TransparencyGPBUnknownFieldSet
-- (BOOL)hasField:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeFieldFrom:(int)a3 input:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)hasField:(int)field;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeFieldFrom:(int)from input:(id)input;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)data;
 - (id)description;
-- (id)getField:(int)a3;
+- (id)getField:(int)field;
 - (id)sortedFields;
 - (unint64_t)countOfFields;
 - (unint64_t)hash;
 - (unint64_t)serializedSize;
 - (unint64_t)serializedSizeAsMessageSet;
-- (void)addField:(id)a3;
+- (void)addField:(id)field;
 - (void)dealloc;
-- (void)getTags:(int *)a3;
-- (void)mergeFromCodedInputStream:(id)a3;
-- (void)mergeFromData:(id)a3;
-- (void)mergeUnknownFields:(id)a3;
-- (void)writeAsMessageSetTo:(id)a3;
-- (void)writeToCodedOutputStream:(id)a3;
+- (void)getTags:(int *)tags;
+- (void)mergeFromCodedInputStream:(id)stream;
+- (void)mergeFromData:(id)data;
+- (void)mergeUnknownFields:(id)fields;
+- (void)writeAsMessageSetTo:(id)to;
+- (void)writeToCodedOutputStream:(id)stream;
 @end
 
 @implementation TransparencyGPBUnknownFieldSet
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TransparencyGPBUnknownFieldSet allocWithZone:?]];
   fields = self->fields_;
@@ -48,7 +48,7 @@
   [(TransparencyGPBUnknownFieldSet *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -57,7 +57,7 @@
   }
 
   fields = self->fields_;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
   result = (fields | v6) == 0;
   if (fields)
   {
@@ -91,23 +91,23 @@
   }
 }
 
-- (BOOL)hasField:(int)a3
+- (BOOL)hasField:(int)field
 {
   fields = self->fields_;
   if (fields)
   {
-    LOBYTE(fields) = CFDictionaryGetValue(fields, a3) != 0;
+    LOBYTE(fields) = CFDictionaryGetValue(fields, field) != 0;
   }
 
   return fields;
 }
 
-- (id)getField:(int)a3
+- (id)getField:(int)field
 {
   result = self->fields_;
   if (result)
   {
-    return CFDictionaryGetValue(result, a3);
+    return CFDictionaryGetValue(result, field);
   }
 
   return result;
@@ -180,7 +180,7 @@
   }
 }
 
-- (void)writeToCodedOutputStream:(id)a3
+- (void)writeToCodedOutputStream:(id)stream
 {
   fields = self->fields_;
   if (fields)
@@ -192,7 +192,7 @@
     CFDictionaryGetKeysAndValues(self->fields_, v7, v7);
     if (Count < 2)
     {
-      [*v7 writeToOutput:a3];
+      [*v7 writeToOutput:stream];
     }
 
     else
@@ -217,7 +217,7 @@
       {
         v13 = *v12;
         v12 += 2;
-        [v13 writeToOutput:a3];
+        [v13 writeToOutput:stream];
         --Count;
       }
 
@@ -247,12 +247,12 @@
   return result;
 }
 
-- (void)writeAsMessageSetTo:(id)a3
+- (void)writeAsMessageSetTo:(id)to
 {
   fields = self->fields_;
   if (fields)
   {
-    CFDictionaryApplyFunction(fields, sub_100015854, a3);
+    CFDictionaryApplyFunction(fields, sub_100015854, to);
   }
 }
 
@@ -278,10 +278,10 @@
   return v3;
 }
 
-- (void)addField:(id)a3
+- (void)addField:(id)field
 {
-  v5 = [a3 number];
-  if (!v5)
+  number = [field number];
+  if (!number)
   {
     [NSException raise:NSInvalidArgumentException format:@"Zero is not a valid field number."];
   }
@@ -293,14 +293,14 @@
     self->fields_ = fields;
   }
 
-  CFDictionarySetValue(fields, v5, a3);
+  CFDictionarySetValue(fields, number, field);
 }
 
-- (void)mergeUnknownFields:(id)a3
+- (void)mergeUnknownFields:(id)fields
 {
-  if (a3)
+  if (fields)
   {
-    v4 = *(a3 + 1);
+    v4 = *(fields + 1);
     if (v4)
     {
       CFDictionaryApplyFunction(v4, sub_100015AB8, self);
@@ -308,18 +308,18 @@
   }
 }
 
-- (void)mergeFromData:(id)a3
+- (void)mergeFromData:(id)data
 {
-  v4 = [[TransparencyGPBCodedInputStream alloc] initWithData:a3];
+  v4 = [[TransparencyGPBCodedInputStream alloc] initWithData:data];
   [(TransparencyGPBUnknownFieldSet *)self mergeFromCodedInputStream:v4];
   [(TransparencyGPBCodedInputStream *)v4 checkLastTagWas:0];
 }
 
-- (BOOL)mergeFieldFrom:(int)a3 input:(id)a4
+- (BOOL)mergeFieldFrom:(int)from input:(id)input
 {
-  v5 = a3;
-  v7 = sub_100025194(a3);
-  v8 = sub_10002518C(v5);
+  fromCopy = from;
+  v7 = sub_100025194(from);
+  v8 = sub_10002518C(fromCopy);
   v9 = 0;
   if (v8 <= 1)
   {
@@ -328,14 +328,14 @@
       if (v8 == 1)
       {
         v9 = 1;
-        [-[TransparencyGPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:v7 create:{1), "addFixed64:", sub_100038D38(a4 + 1)}];
+        [-[TransparencyGPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:v7 create:{1), "addFixed64:", sub_100038D38(input + 1)}];
       }
     }
 
     else
     {
       v9 = 1;
-      [-[TransparencyGPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:v7 create:{1), "addVarint:", sub_100038C94(a4 + 8)}];
+      [-[TransparencyGPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:v7 create:{1), "addVarint:", sub_100038C94(input + 8)}];
     }
   }
 
@@ -344,21 +344,21 @@
     switch(v8)
     {
       case 2:
-        v10 = sub_1000390CC(a4 + 1);
+        v10 = sub_1000390CC(input + 1);
         v9 = 1;
         [-[TransparencyGPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:v7 create:{1), "addLengthDelimited:", v10}];
 
         break;
       case 3:
         v11 = objc_alloc_init(TransparencyGPBUnknownFieldSet);
-        [a4 readUnknownGroup:v7 message:v11];
+        [input readUnknownGroup:v7 message:v11];
         v9 = 1;
         [-[TransparencyGPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:v7 create:{1), "addGroup:", v11}];
 
         break;
       case 5:
         v9 = 1;
-        [-[TransparencyGPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:v7 create:{1), "addFixed32:", sub_100038D74(a4 + 1)}];
+        [-[TransparencyGPBUnknownFieldSet mutableFieldForNumber:create:](self mutableFieldForNumber:v7 create:{1), "addFixed32:", sub_100038D74(input + 1)}];
         break;
     }
   }
@@ -366,17 +366,17 @@
   return v9;
 }
 
-- (void)mergeFromCodedInputStream:(id)a3
+- (void)mergeFromCodedInputStream:(id)stream
 {
   do
   {
-    v5 = sub_100038E18(a3 + 8);
+    v5 = sub_100038E18(stream + 8);
   }
 
-  while (v5 && [(TransparencyGPBUnknownFieldSet *)self mergeFieldFrom:v5 input:a3]);
+  while (v5 && [(TransparencyGPBUnknownFieldSet *)self mergeFieldFrom:v5 input:stream]);
 }
 
-- (void)getTags:(int *)a3
+- (void)getTags:(int *)tags
 {
   fields = self->fields_;
   if (fields)
@@ -388,7 +388,7 @@
     for (; Count; --Count)
     {
       v8 = *v7++;
-      *a3++ = v8;
+      *tags++ = v8;
     }
   }
 }

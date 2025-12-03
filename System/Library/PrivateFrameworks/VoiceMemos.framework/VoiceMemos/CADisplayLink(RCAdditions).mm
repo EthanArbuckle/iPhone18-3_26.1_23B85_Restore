@@ -9,7 +9,7 @@
 {
   v5 = [[RCWeakDisplayLinkTargetProxy alloc] initWithTarget:a3 selector:a4];
 
-  return [a1 displayLinkWithTarget:v5 selector:sel_displayLinkFired_];
+  return [self displayLinkWithTarget:v5 selector:sel_displayLinkFired_];
 }
 
 + (void)rc_displayWithFramesPerSecond:()RCAdditions handlerBlock:

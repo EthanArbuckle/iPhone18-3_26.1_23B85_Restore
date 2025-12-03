@@ -1,28 +1,28 @@
 @interface OCImporter
-+ (BOOL)URLIsXML:(id)a3;
++ (BOOL)URLIsXML:(id)l;
 + (Class)binaryReaderClass;
-+ (Class)readerClassForURL:(id)a3;
++ (Class)readerClassForURL:(id)l;
 + (Class)xmlReaderClass;
 + (id)xmlPathExtensions;
 + (void)initialize;
-- (BOOL)isDocumentEncryptedUnsupportedVersion:(BOOL *)a3 errorMessage:(id *)a4;
-- (BOOL)isDocumentEncryptedUnsupportedVersionHelper:(BOOL *)a3 errorMessage:(id *)a4 readError:(BOOL *)a5;
+- (BOOL)isDocumentEncryptedUnsupportedVersion:(BOOL *)version errorMessage:(id *)message;
+- (BOOL)isDocumentEncryptedUnsupportedVersionHelper:(BOOL *)helper errorMessage:(id *)message readError:(BOOL *)error;
 - (BOOL)isXML;
-- (BOOL)setPassphrase:(id)a3;
+- (BOOL)setPassphrase:(id)passphrase;
 - (Class)readerClass;
-- (OCImporter)initWithData:(id)a3;
-- (OCImporter)initWithURL:(id)a3;
+- (OCImporter)initWithData:(id)data;
+- (OCImporter)initWithURL:(id)l;
 - (id)displayName;
 - (void)dealloc;
-- (void)finalizeWithDocumentState:(id)a3;
-- (void)setURL:(id)a3;
+- (void)finalizeWithDocumentState:(id)state;
+- (void)setURL:(id)l;
 @end
 
 @implementation OCImporter
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     objc_opt_class();
     objc_opt_class();
@@ -34,32 +34,32 @@
   }
 }
 
-- (OCImporter)initWithURL:(id)a3
+- (OCImporter)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = OCImporter;
   v5 = [(OCMapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(OCImporter *)v5 setURL:v4];
+    [(OCImporter *)v5 setURL:lCopy];
     xmlSetExternalEntityLoader(+[CXCommon ignoreExternalEntityLoader]);
   }
 
   return v6;
 }
 
-- (OCImporter)initWithData:(id)a3
+- (OCImporter)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = OCImporter;
   v6 = [(OCMapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mData, a3);
+    objc_storeStrong(&v6->mData, data);
   }
 
   return v7;
@@ -73,18 +73,18 @@
   [(OCImporter *)&v3 dealloc];
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v5 = a3;
-  if (self->mURL != v5)
+  lCopy = l;
+  if (self->mURL != lCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mURL, a3);
-    v5 = v6;
+    v6 = lCopy;
+    objc_storeStrong(&self->mURL, l);
+    lCopy = v6;
   }
 }
 
-- (BOOL)isDocumentEncryptedUnsupportedVersionHelper:(BOOL *)a3 errorMessage:(id *)a4 readError:(BOOL *)a5
+- (BOOL)isDocumentEncryptedUnsupportedVersionHelper:(BOOL *)helper errorMessage:(id *)message readError:(BOOL *)error
 {
   if ([(OCImporter *)self start])
   {
@@ -95,12 +95,12 @@
       v21 = 0;
       if (([(OCDReader *)v9 retainDecryptorWithErrorCode:&v21]& 1) != 0)
       {
-        v10 = [(OCDReader *)v9 decryptor];
-        v11 = [v10 isReadProtectedUsingDefaultPassphrase];
+        decryptor = [(OCDReader *)v9 decryptor];
+        isReadProtectedUsingDefaultPassphrase = [decryptor isReadProtectedUsingDefaultPassphrase];
 
-        if ((v11 & 1) == 0)
+        if ((isReadProtectedUsingDefaultPassphrase & 1) == 0)
         {
-          *a3 = 0;
+          *helper = 0;
           v12 = 1;
 LABEL_18:
 
@@ -120,10 +120,10 @@ LABEL_18:
         if (v19 == 8003)
         {
           v12 = 1;
-          *a3 = 1;
-          if (a4)
+          *helper = 1;
+          if (message)
           {
-            *a4 = kErrorMessageUnsupportedEncryption;
+            *message = kErrorMessageUnsupportedEncryption;
           }
 
           goto LABEL_18;
@@ -137,19 +137,19 @@ LABEL_18:
 
   else
   {
-    v13 = [(OCDReader *)self->mReader startError];
-    v14 = v13;
-    if (v13)
+    startError = [(OCDReader *)self->mReader startError];
+    v14 = startError;
+    if (startError)
     {
-      v15 = [v13 localizedDescription];
-      v16 = [TCInvalidFileFormatMessage messageText];
-      v17 = [v15 isEqualToString:v16];
+      localizedDescription = [startError localizedDescription];
+      messageText = [TCInvalidFileFormatMessage messageText];
+      v17 = [localizedDescription isEqualToString:messageText];
 
       if (v17)
       {
-        *a5 = 1;
-        v18 = [v14 localizedDescription];
-        *a4 = [v18 copy];
+        *error = 1;
+        localizedDescription2 = [v14 localizedDescription];
+        *message = [localizedDescription2 copy];
       }
     }
   }
@@ -157,10 +157,10 @@ LABEL_18:
   return 0;
 }
 
-- (BOOL)isDocumentEncryptedUnsupportedVersion:(BOOL *)a3 errorMessage:(id *)a4
+- (BOOL)isDocumentEncryptedUnsupportedVersion:(BOOL *)version errorMessage:(id *)message
 {
   v9 = 0;
-  if ([(OCImporter *)self isDocumentEncryptedUnsupportedVersionHelper:a3 errorMessage:a4 readError:&v9])
+  if ([(OCImporter *)self isDocumentEncryptedUnsupportedVersionHelper:version errorMessage:message readError:&v9])
   {
     return 1;
   }
@@ -174,20 +174,20 @@ LABEL_18:
   self->mReader = 0;
 
   self->mTryAlternateReader = 1;
-  *a4 = 0;
-  return [(OCImporter *)self isDocumentEncryptedUnsupportedVersionHelper:a3 errorMessage:a4 readError:&v9];
+  *message = 0;
+  return [(OCImporter *)self isDocumentEncryptedUnsupportedVersionHelper:version errorMessage:message readError:&v9];
 }
 
-- (BOOL)setPassphrase:(id)a3
+- (BOOL)setPassphrase:(id)passphrase
 {
-  v4 = a3;
+  passphraseCopy = passphrase;
   v5 = self->mReader;
-  v6 = [(OCDReader *)v5 decryptor];
-  v7 = [v6 verifyPassphrase:v4];
+  decryptor = [(OCDReader *)v5 decryptor];
+  v7 = [decryptor verifyPassphrase:passphraseCopy];
 
   if (v7)
   {
-    [(OCImporter *)self setLastPasswordAttempted:v4];
+    [(OCImporter *)self setLastPasswordAttempted:passphraseCopy];
   }
 
   return v7;
@@ -195,18 +195,18 @@ LABEL_18:
 
 - (id)displayName
 {
-  v2 = [(OCDReader *)self->mReader fileName];
-  v3 = [v2 lastPathComponent];
+  fileName = [(OCDReader *)self->mReader fileName];
+  lastPathComponent = [fileName lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
-- (void)finalizeWithDocumentState:(id)a3
+- (void)finalizeWithDocumentState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [TCProgressContext createStageWithSteps:@"Background objects" takingSteps:100.0 name:10.0];
-  v3 = [v4 backgroundThreadManager];
-  [v3 waitUntilComplete];
+  backgroundThreadManager = [stateCopy backgroundThreadManager];
+  [backgroundThreadManager waitUntilComplete];
 
   +[TCProgressContext endStage];
   +[TCMessageContext reportWarningsToDelegate];
@@ -272,32 +272,32 @@ LABEL_18:
   objc_exception_throw(v11);
 }
 
-+ (BOOL)URLIsXML:(id)a3
++ (BOOL)URLIsXML:(id)l
 {
-  v4 = [a3 pathExtension];
-  v5 = [v4 lowercaseString];
+  pathExtension = [l pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
 
-  v6 = [a1 xmlPathExtensions];
-  LOBYTE(a1) = [v6 indexOfObject:v5] != 0x7FFFFFFFFFFFFFFFLL;
+  xmlPathExtensions = [self xmlPathExtensions];
+  LOBYTE(self) = [xmlPathExtensions indexOfObject:lowercaseString] != 0x7FFFFFFFFFFFFFFFLL;
 
-  return a1;
+  return self;
 }
 
-+ (Class)readerClassForURL:(id)a3
++ (Class)readerClassForURL:(id)l
 {
-  v4 = a3;
-  if ([a1 URLIsXML:v4])
+  lCopy = l;
+  if ([self URLIsXML:lCopy])
   {
-    v5 = [a1 xmlReaderClass];
+    xmlReaderClass = [self xmlReaderClass];
   }
 
   else
   {
-    v5 = [a1 binaryReaderClass];
+    xmlReaderClass = [self binaryReaderClass];
   }
 
-  v6 = v5;
-  v7 = v5;
+  v6 = xmlReaderClass;
+  v7 = xmlReaderClass;
 
   return v6;
 }
@@ -312,20 +312,20 @@ LABEL_18:
 
 - (Class)readerClass
 {
-  v3 = [(OCImporter *)self isXML];
-  v4 = [(OCImporter *)self tryAlternateReader];
+  isXML = [(OCImporter *)self isXML];
+  tryAlternateReader = [(OCImporter *)self tryAlternateReader];
   v5 = objc_opt_class();
-  if (v3 == v4)
+  if (isXML == tryAlternateReader)
   {
-    v6 = [v5 binaryReaderClass];
+    binaryReaderClass = [v5 binaryReaderClass];
   }
 
   else
   {
-    v6 = [v5 xmlReaderClass];
+    binaryReaderClass = [v5 xmlReaderClass];
   }
 
-  return v6;
+  return binaryReaderClass;
 }
 
 @end

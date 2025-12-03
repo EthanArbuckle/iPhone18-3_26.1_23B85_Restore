@@ -1,9 +1,9 @@
 @interface STKInternalSettings
-+ (BOOL)BOOLForKey:(id)a3 withDefaultValue:(BOOL)a4;
++ (BOOL)BOOLForKey:(id)key withDefaultValue:(BOOL)value;
 + (BOOL)isInternalBuild;
 + (BOOL)isSeedBuild;
 + (NSUserDefaults)defaults;
-+ (double)floatForKey:(id)a3 withDefaultValue:(double)a4;
++ (double)floatForKey:(id)key withDefaultValue:(double)value;
 + (id)allowEmojiKeyboardSettingsValue;
 + (id)autoPopulateDebugPromptsSettingsValue;
 + (id)autoSelectSingleAmbiguitySettingsValue;
@@ -22,13 +22,13 @@
 + (id)maxRewriteWordCountSettingsValue;
 + (id)pinBottomLabelToBottomSettingsValue;
 + (id)runVGFRemoveBackgroundSettingsValue;
-+ (id)settingsValueForKey:(id)a3;
++ (id)settingsValueForKey:(id)key;
 + (id)showCameraSettingsValue;
 + (id)showDisambiguationUISettingsValue;
 + (id)useGPGenerationUISettingsValue;
 + (id)useNewCollectionViewSettingsValue;
 + (id)useNewRecencyServiceSettingsValue;
-+ (int64_t)integerForKey:(id)a3 withDefaultValue:(int64_t)a4;
++ (int64_t)integerForKey:(id)key withDefaultValue:(int64_t)value;
 @end
 
 @implementation STKInternalSettings
@@ -52,13 +52,13 @@ uint64_t __31__STKInternalSettings_defaults__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)settingsValueForKey:(id)a3
++ (id)settingsValueForKey:(id)key
 {
-  v4 = [a3 stringByAppendingString:@"SettingsValue"];
+  v4 = [key stringByAppendingString:@"SettingsValue"];
   v5 = NSSelectorFromString(v4);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [a1 performSelector:v5];
+    v6 = [self performSelector:v5];
   }
 
   else
@@ -71,7 +71,7 @@ uint64_t __31__STKInternalSettings_defaults__block_invoke()
 
 + (BOOL)isInternalBuild
 {
-  if ([a1 emulateNonInternalBuild])
+  if ([self emulateNonInternalBuild])
   {
     return 0;
   }
@@ -81,7 +81,7 @@ uint64_t __31__STKInternalSettings_defaults__block_invoke()
 
 + (BOOL)isSeedBuild
 {
-  if ([a1 emulateSeedBuild])
+  if ([self emulateSeedBuild])
   {
     return 1;
   }
@@ -92,228 +92,228 @@ uint64_t __31__STKInternalSettings_defaults__block_invoke()
 + (id)runVGFRemoveBackgroundSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 runVGFRemoveBackground];
+  runVGFRemoveBackground = [self runVGFRemoveBackground];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:runVGFRemoveBackground];
 }
 
 + (id)autoPopulateDebugPromptsSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 autoPopulateDebugPrompts];
+  autoPopulateDebugPrompts = [self autoPopulateDebugPrompts];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:autoPopulateDebugPrompts];
 }
 
 + (id)bypassPersonCheckSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 bypassPersonCheck];
+  bypassPersonCheck = [self bypassPersonCheck];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:bypassPersonCheck];
 }
 
 + (id)disableLanguageCheckSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 disableLanguageCheck];
+  disableLanguageCheck = [self disableLanguageCheck];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:disableLanguageCheck];
 }
 
 + (id)disablePromptSafetySettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 disablePromptSafety];
+  disablePromptSafety = [self disablePromptSafety];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:disablePromptSafety];
 }
 
 + (id)disableImageSafetySettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 disableImageSafety];
+  disableImageSafety = [self disableImageSafety];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:disableImageSafety];
 }
 
 + (id)showCameraSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 showCamera];
+  showCamera = [self showCamera];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:showCamera];
 }
 
 + (id)showDisambiguationUISettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 showDisambiguationUI];
+  showDisambiguationUI = [self showDisambiguationUI];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:showDisambiguationUI];
 }
 
 + (id)autoSelectSingleAmbiguitySettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 autoSelectSingleAmbiguity];
+  autoSelectSingleAmbiguity = [self autoSelectSingleAmbiguity];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:autoSelectSingleAmbiguity];
 }
 
 + (id)disableRewritesSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 disableRewrites];
+  disableRewrites = [self disableRewrites];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:disableRewrites];
 }
 
 + (id)defaultRewriteCountSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 defaultRewriteCount];
+  defaultRewriteCount = [self defaultRewriteCount];
 
-  return [v2 numberWithInteger:v3];
+  return [v2 numberWithInteger:defaultRewriteCount];
 }
 
 + (id)maxRewriteWordCountSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 maxRewriteWordCount];
+  maxRewriteWordCount = [self maxRewriteWordCount];
 
-  return [v2 numberWithInteger:v3];
+  return [v2 numberWithInteger:maxRewriteWordCount];
 }
 
 + (id)emulateNonInternalBuildSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 emulateNonInternalBuild];
+  emulateNonInternalBuild = [self emulateNonInternalBuild];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:emulateNonInternalBuild];
 }
 
 + (id)emulateSeedBuildSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 emulateSeedBuild];
+  emulateSeedBuild = [self emulateSeedBuild];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:emulateSeedBuild];
 }
 
 + (id)pinBottomLabelToBottomSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 pinBottomLabelToBottom];
+  pinBottomLabelToBottom = [self pinBottomLabelToBottom];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:pinBottomLabelToBottom];
 }
 
 + (id)enableEnglishLanguageAnalysisSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 enableEnglishLanguageAnalysis];
+  enableEnglishLanguageAnalysis = [self enableEnglishLanguageAnalysis];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:enableEnglishLanguageAnalysis];
 }
 
 + (id)useNewCollectionViewSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 useNewCollectionView];
+  useNewCollectionView = [self useNewCollectionView];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:useNewCollectionView];
 }
 
 + (id)allowEmojiKeyboardSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 allowEmojiKeyboard];
+  allowEmojiKeyboard = [self allowEmojiKeyboard];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:allowEmojiKeyboard];
 }
 
 + (id)useGPGenerationUISettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 useGPGenerationUI];
+  useGPGenerationUI = [self useGPGenerationUI];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:useGPGenerationUI];
 }
 
 + (id)useNewRecencyServiceSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 useNewRecencyService];
+  useNewRecencyService = [self useNewRecencyService];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:useNewRecencyService];
 }
 
 + (id)genmojiPosterSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 genmojiPoster];
+  genmojiPoster = [self genmojiPoster];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:genmojiPoster];
 }
 
 + (id)emojiPosterSearchSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 emojiPosterSearch];
+  emojiPosterSearch = [self emojiPosterSearch];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:emojiPosterSearch];
 }
 
 + (id)defaultGenmojiCandidateCountSettingsValue
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [a1 defaultGenmojiCandidateCount];
+  defaultGenmojiCandidateCount = [self defaultGenmojiCandidateCount];
 
-  return [v2 numberWithInteger:v3];
+  return [v2 numberWithInteger:defaultGenmojiCandidateCount];
 }
 
-+ (BOOL)BOOLForKey:(id)a3 withDefaultValue:(BOOL)a4
++ (BOOL)BOOLForKey:(id)key withDefaultValue:(BOOL)value
 {
-  v6 = [a1 defaultsKeyForKey:a3];
-  v7 = [a1 defaults];
-  v8 = [v7 objectForKey:v6];
+  v6 = [self defaultsKeyForKey:key];
+  defaults = [self defaults];
+  v8 = [defaults objectForKey:v6];
 
   if (v8)
   {
-    a4 = [v8 BOOLValue];
+    value = [v8 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-+ (double)floatForKey:(id)a3 withDefaultValue:(double)a4
++ (double)floatForKey:(id)key withDefaultValue:(double)value
 {
-  v6 = [a1 defaultsKeyForKey:a3];
-  v7 = [a1 defaults];
-  v8 = [v7 objectForKey:v6];
+  v6 = [self defaultsKeyForKey:key];
+  defaults = [self defaults];
+  v8 = [defaults objectForKey:v6];
 
   if (v8)
   {
     [v8 floatValue];
-    a4 = v9;
+    value = v9;
   }
 
-  return a4;
+  return value;
 }
 
-+ (int64_t)integerForKey:(id)a3 withDefaultValue:(int64_t)a4
++ (int64_t)integerForKey:(id)key withDefaultValue:(int64_t)value
 {
-  v6 = [a1 defaultsKeyForKey:a3];
-  v7 = [a1 defaults];
-  v8 = [v7 objectForKey:v6];
+  v6 = [self defaultsKeyForKey:key];
+  defaults = [self defaults];
+  v8 = [defaults objectForKey:v6];
 
   if (v8)
   {
-    a4 = [v8 integerValue];
+    value = [v8 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
 @end

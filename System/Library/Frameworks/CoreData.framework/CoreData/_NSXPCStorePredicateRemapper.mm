@@ -2,16 +2,16 @@
 + (id)defaultInstance;
 + (void)initialize;
 - (_NSXPCStorePredicateRemapper)init;
-- (id)createPredicateForFetchFromPredicate:(id)a3;
+- (id)createPredicateForFetchFromPredicate:(id)predicate;
 - (void)dealloc;
-- (void)visitPredicateExpression:(id)a3;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation _NSXPCStorePredicateRemapper
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS____NSXPCStorePredicateRemapper;
   objc_msgSendSuper2(&v2, sel_initialize);
   objc_opt_class();
@@ -43,24 +43,24 @@
   [(_NSXPCStorePredicateRemapper *)&v2 dealloc];
 }
 
-- (id)createPredicateForFetchFromPredicate:(id)a3
+- (id)createPredicateForFetchFromPredicate:(id)predicate
 {
-  v4 = [a3 copy];
+  v4 = [predicate copy];
   [v4 acceptVisitor:self flags:1];
   return v4;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   v18 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [a3 constantValue];
-    if (v4)
+    constantValue = [expression constantValue];
+    if (constantValue)
     {
-      v5 = v4;
-      if (([v4 isNSArray] & 1) != 0 || objc_msgSend(v5, "isNSSet"))
+      v5 = constantValue;
+      if (([constantValue isNSArray] & 1) != 0 || objc_msgSend(v5, "isNSSet"))
       {
         if ([v5 count])
         {
@@ -106,7 +106,7 @@ LABEL_8:
           {
 LABEL_14:
             v11 = objc_opt_class();
-            object_setClass(a3, v11);
+            object_setClass(expression, v11);
           }
         }
       }

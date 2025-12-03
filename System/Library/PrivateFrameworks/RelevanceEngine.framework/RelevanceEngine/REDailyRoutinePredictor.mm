@@ -1,10 +1,10 @@
 @interface REDailyRoutinePredictor
 - (NSDateInterval)currentRoutineInterval;
-- (id)_eveningRoutineIntervalForEvening:(id)a3;
+- (id)_eveningRoutineIntervalForEvening:(id)evening;
 - (id)_init;
-- (id)_morningRoutineIntervalForMorning:(id)a3;
-- (id)routineIntervalForNextRoutine:(unint64_t)a3;
-- (id)routineIntervalForPreviousRoutine:(unint64_t)a3;
+- (id)_morningRoutineIntervalForMorning:(id)morning;
+- (id)routineIntervalForNextRoutine:(unint64_t)routine;
+- (id)routineIntervalForPreviousRoutine:(unint64_t)routine;
 - (unint64_t)currentRoutineType;
 - (void)_queue_didBeginEveningRoutine;
 - (void)_queue_didBeginMorningRoutine;
@@ -12,10 +12,10 @@
 - (void)_queue_didEndMorningRoutine;
 - (void)_queue_setupEveningBeginTimerIfNeeded;
 - (void)_queue_setupMorningBeginTimerIfNeeded;
-- (void)_setOverrideRoutineType:(unint64_t)a3;
+- (void)_setOverrideRoutineType:(unint64_t)type;
 - (void)_updateCurrentRoutine;
 - (void)dealloc;
-- (void)periodOfDayPredictorDidUpdatePredictedIntervals:(id)a3;
+- (void)periodOfDayPredictorDidUpdatePredictedIntervals:(id)intervals;
 @end
 
 @implementation REDailyRoutinePredictor
@@ -24,25 +24,25 @@
 {
   v11.receiver = self;
   v11.super_class = REDailyRoutinePredictor;
-  v2 = [(REObservableSingleton *)&v11 _init];
-  if (v2)
+  _init = [(REObservableSingleton *)&v11 _init];
+  if (_init)
   {
     v3 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
     v4 = dispatch_queue_create("com.apple.RelevanceEngine.REDailyRoutinePredictor", v3);
-    v5 = *(v2 + 6);
-    *(v2 + 6) = v4;
+    v5 = *(_init + 6);
+    *(_init + 6) = v4;
 
     v6 = +[(RESingleton *)REPeriodOfDayPredictor];
-    v7 = *(v2 + 2);
-    *(v2 + 2) = v6;
+    v7 = *(_init + 2);
+    *(_init + 2) = v6;
 
-    [*(v2 + 2) addObserver:v2];
+    [*(_init + 2) addObserver:_init];
     v8 = objc_opt_new();
-    v9 = *(v2 + 9);
-    *(v2 + 9) = v8;
+    v9 = *(_init + 9);
+    *(_init + 9) = v8;
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)dealloc
@@ -80,11 +80,11 @@
   return v3;
 }
 
-- (id)routineIntervalForNextRoutine:(unint64_t)a3
+- (id)routineIntervalForNextRoutine:(unint64_t)routine
 {
-  if (a3)
+  if (routine)
   {
-    v5 = a3 == 2;
+    v5 = routine == 2;
   }
 
   else
@@ -92,9 +92,9 @@
     v5 = 2;
   }
 
-  v6 = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor currentPeriodOfDay];
+  currentPeriodOfDay = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor currentPeriodOfDay];
   periodOfDayPredictor = self->_periodOfDayPredictor;
-  if (v6 == v5)
+  if (currentPeriodOfDay == v5)
   {
     [(REPeriodOfDayPredictor *)periodOfDayPredictor intervalForCurrentPeriodOfDay];
   }
@@ -109,13 +109,13 @@
     goto LABEL_11;
   }
 
-  if (a3 == 1)
+  if (routine == 1)
   {
     v9 = [(REDailyRoutinePredictor *)self _morningRoutineIntervalForMorning:v8];
     goto LABEL_13;
   }
 
-  if (a3 != 2)
+  if (routine != 2)
   {
 LABEL_11:
     v10 = 0;
@@ -130,11 +130,11 @@ LABEL_14:
   return v10;
 }
 
-- (id)routineIntervalForPreviousRoutine:(unint64_t)a3
+- (id)routineIntervalForPreviousRoutine:(unint64_t)routine
 {
-  if (a3)
+  if (routine)
   {
-    v5 = a3 == 2;
+    v5 = routine == 2;
   }
 
   else
@@ -142,9 +142,9 @@ LABEL_14:
     v5 = 2;
   }
 
-  v6 = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor currentPeriodOfDay];
+  currentPeriodOfDay = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor currentPeriodOfDay];
   periodOfDayPredictor = self->_periodOfDayPredictor;
-  if (v6 == v5)
+  if (currentPeriodOfDay == v5)
   {
     [(REPeriodOfDayPredictor *)periodOfDayPredictor intervalForCurrentPeriodOfDay];
   }
@@ -159,13 +159,13 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  if (a3 == 1)
+  if (routine == 1)
   {
     v9 = [(REDailyRoutinePredictor *)self _morningRoutineIntervalForMorning:v8];
     goto LABEL_13;
   }
 
-  if (a3 != 2)
+  if (routine != 2)
   {
 LABEL_11:
     v10 = 0;
@@ -180,20 +180,20 @@ LABEL_14:
   return v10;
 }
 
-- (id)_morningRoutineIntervalForMorning:(id)a3
+- (id)_morningRoutineIntervalForMorning:(id)morning
 {
   periodOfDayPredictor = self->_periodOfDayPredictor;
-  v4 = a3;
-  v5 = [v4 endDate];
-  v6 = [(REPeriodOfDayPredictor *)periodOfDayPredictor dateIntervalForPreviousPeriodOfDay:2 beforeDate:v5];
+  morningCopy = morning;
+  endDate = [morningCopy endDate];
+  v6 = [(REPeriodOfDayPredictor *)periodOfDayPredictor dateIntervalForPreviousPeriodOfDay:2 beforeDate:endDate];
 
   [v6 duration];
   v8 = v7;
   v9 = v7 * 0.400000006;
-  v10 = [v4 startDate];
-  v11 = [v10 dateByAddingTimeInterval:-(v8 * 0.400000006)];
+  startDate = [morningCopy startDate];
+  v11 = [startDate dateByAddingTimeInterval:-(v8 * 0.400000006)];
 
-  [v4 duration];
+  [morningCopy duration];
   v13 = v12;
 
   v14 = 4320.0;
@@ -207,21 +207,21 @@ LABEL_14:
   return v15;
 }
 
-- (id)_eveningRoutineIntervalForEvening:(id)a3
+- (id)_eveningRoutineIntervalForEvening:(id)evening
 {
   v19 = *MEMORY[0x277D85DE8];
   periodOfDayPredictor = self->_periodOfDayPredictor;
-  v4 = a3;
-  v5 = [v4 startDate];
-  v6 = [(REPeriodOfDayPredictor *)periodOfDayPredictor dateIntervalForNextPeriodOfDay:2 afterDate:v5];
+  eveningCopy = evening;
+  startDate = [eveningCopy startDate];
+  v6 = [(REPeriodOfDayPredictor *)periodOfDayPredictor dateIntervalForNextPeriodOfDay:2 afterDate:startDate];
 
   [v6 duration];
   v8 = v7;
-  [v4 duration];
+  [eveningCopy duration];
   v10 = fmin(v9, 3600.0);
-  v11 = [v4 endDate];
+  endDate = [eveningCopy endDate];
 
-  v12 = [v11 dateByAddingTimeInterval:-v10];
+  v12 = [endDate dateByAddingTimeInterval:-v10];
 
   v13 = RELogForDomain(8);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -237,7 +237,7 @@ LABEL_14:
   return v14;
 }
 
-- (void)periodOfDayPredictorDidUpdatePredictedIntervals:(id)a3
+- (void)periodOfDayPredictorDidUpdatePredictedIntervals:(id)intervals
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -245,9 +245,9 @@ LABEL_14:
   block[2] = __75__REDailyRoutinePredictor_periodOfDayPredictorDidUpdatePredictedIntervals___block_invoke;
   block[3] = &unk_2785F9AB8;
   block[4] = self;
-  v5 = a3;
+  intervalsCopy = intervals;
   dispatch_async(queue, block);
-  [(REDailyRoutinePredictor *)self periodOfDayPredictorDidUpdateCurrentPeriodOfDay:v5];
+  [(REDailyRoutinePredictor *)self periodOfDayPredictorDidUpdateCurrentPeriodOfDay:intervalsCopy];
 
   v6 = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -289,9 +289,9 @@ uint64_t __75__REDailyRoutinePredictor_periodOfDayPredictorDidUpdatePredictedInt
 - (void)_updateCurrentRoutine
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor currentPeriodOfDay];
-  v27 = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor intervalForCurrentPeriodOfDay];
+  date = [MEMORY[0x277CBEAA8] date];
+  currentPeriodOfDay = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor currentPeriodOfDay];
+  intervalForCurrentPeriodOfDay = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor intervalForCurrentPeriodOfDay];
   [(NSLock *)self->_routineLock lock];
   currentRoutine = self->_currentRoutine;
   v6 = RELogForDomain(8);
@@ -309,7 +309,7 @@ uint64_t __75__REDailyRoutinePredictor_periodOfDayPredictorDidUpdatePredictedInt
     }
 
     currentRoutineInterval = self->_currentRoutineInterval;
-    REStringForPeriodOfDay(v4);
+    REStringForPeriodOfDay(currentPeriodOfDay);
     *buf = 138412802;
     v30 = v26;
     v31 = 2112;
@@ -323,11 +323,11 @@ uint64_t __75__REDailyRoutinePredictor_periodOfDayPredictorDidUpdatePredictedInt
   v7 = self->_currentRoutineInterval;
   self->_currentRoutineInterval = 0;
 
-  if (v4)
+  if (currentPeriodOfDay)
   {
-    if (v4 != 1)
+    if (currentPeriodOfDay != 1)
     {
-      if (v4 != 2)
+      if (currentPeriodOfDay != 2)
       {
         goto LABEL_16;
       }
@@ -339,11 +339,11 @@ uint64_t __75__REDailyRoutinePredictor_periodOfDayPredictorDidUpdatePredictedInt
       v11 = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor dateIntervalForNextPeriodOfDay:0];
       v12 = [(REDailyRoutinePredictor *)self _morningRoutineIntervalForMorning:v11];
 
-      v13 = [(NSDateInterval *)v12 containsDate:v3];
+      v13 = [(NSDateInterval *)v12 containsDate:date];
       v14 = v12;
       if (!v13)
       {
-        if (![(NSDateInterval *)v10 containsDate:v3])
+        if (![(NSDateInterval *)v10 containsDate:date])
         {
 LABEL_14:
 
@@ -359,8 +359,8 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v10 = [(REDailyRoutinePredictor *)self _eveningRoutineIntervalForEvening:v27];
-    if ([(NSDateInterval *)v10 containsDate:v3])
+    v10 = [(REDailyRoutinePredictor *)self _eveningRoutineIntervalForEvening:intervalForCurrentPeriodOfDay];
+    if ([(NSDateInterval *)v10 containsDate:date])
     {
       v15 = 2;
 LABEL_13:
@@ -374,8 +374,8 @@ LABEL_13:
 
   else
   {
-    v10 = [(REDailyRoutinePredictor *)self _morningRoutineIntervalForMorning:v27];
-    if ([(NSDateInterval *)v10 containsDate:v3])
+    v10 = [(REDailyRoutinePredictor *)self _morningRoutineIntervalForMorning:intervalForCurrentPeriodOfDay];
+    if ([(NSDateInterval *)v10 containsDate:date])
     {
       v15 = 1;
       goto LABEL_13;
@@ -476,11 +476,11 @@ uint64_t __48__REDailyRoutinePredictor__updateCurrentRoutine__block_invoke(uint6
   v15[3] = &unk_2785FB2C8;
   v15[4] = self;
   [(REObservableSingleton *)self enumerateObservers:v15];
-  v5 = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor intervalForCurrentPeriodOfDay];
-  v6 = [(REDailyRoutinePredictor *)self _morningRoutineIntervalForMorning:v5];
+  intervalForCurrentPeriodOfDay = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor intervalForCurrentPeriodOfDay];
+  v6 = [(REDailyRoutinePredictor *)self _morningRoutineIntervalForMorning:intervalForCurrentPeriodOfDay];
   objc_initWeak(&location, self);
-  v7 = [v6 startDate];
-  v8 = [v7 dateByAddingTimeInterval:2.0];
+  startDate = [v6 startDate];
+  v8 = [startDate dateByAddingTimeInterval:2.0];
   queue = self->_queue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -567,11 +567,11 @@ void __54__REDailyRoutinePredictor__queue_didEndMorningRoutine__block_invoke(uin
   v16[3] = &unk_2785FB2C8;
   v16[4] = self;
   [(REObservableSingleton *)self enumerateObservers:v16];
-  v6 = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor intervalForCurrentPeriodOfDay];
-  v7 = [(REDailyRoutinePredictor *)self _eveningRoutineIntervalForEvening:v6];
+  intervalForCurrentPeriodOfDay = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor intervalForCurrentPeriodOfDay];
+  v7 = [(REDailyRoutinePredictor *)self _eveningRoutineIntervalForEvening:intervalForCurrentPeriodOfDay];
   objc_initWeak(&location, self);
-  v8 = [v7 startDate];
-  v9 = [v8 dateByAddingTimeInterval:2.0];
+  startDate = [v7 startDate];
+  v9 = [startDate dateByAddingTimeInterval:2.0];
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -648,11 +648,11 @@ void __54__REDailyRoutinePredictor__queue_didEndEveningRoutine__block_invoke(uin
 
   if ([(REPeriodOfDayPredictor *)self->_periodOfDayPredictor currentPeriodOfDay]== 2 && ![(REDailyRoutinePredictor *)self currentRoutineType])
   {
-    v4 = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor intervalForCurrentPeriodOfDay];
-    v5 = [(REDailyRoutinePredictor *)self _morningRoutineIntervalForMorning:v4];
+    intervalForCurrentPeriodOfDay = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor intervalForCurrentPeriodOfDay];
+    v5 = [(REDailyRoutinePredictor *)self _morningRoutineIntervalForMorning:intervalForCurrentPeriodOfDay];
     objc_initWeak(&location, self);
-    v6 = [v5 startDate];
-    v7 = [v6 dateByAddingTimeInterval:2.0];
+    startDate = [v5 startDate];
+    v7 = [startDate dateByAddingTimeInterval:2.0];
     queue = self->_queue;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -692,11 +692,11 @@ void __64__REDailyRoutinePredictor__queue_setupMorningBeginTimerIfNeeded__block_
 
   if ([(REPeriodOfDayPredictor *)self->_periodOfDayPredictor currentPeriodOfDay]== 1 && ![(REDailyRoutinePredictor *)self currentRoutineType])
   {
-    v5 = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor intervalForCurrentPeriodOfDay];
-    v6 = [(REDailyRoutinePredictor *)self _eveningRoutineIntervalForEvening:v5];
+    intervalForCurrentPeriodOfDay = [(REPeriodOfDayPredictor *)self->_periodOfDayPredictor intervalForCurrentPeriodOfDay];
+    v6 = [(REDailyRoutinePredictor *)self _eveningRoutineIntervalForEvening:intervalForCurrentPeriodOfDay];
     objc_initWeak(&location, self);
-    v7 = [v6 startDate];
-    v8 = [v7 dateByAddingTimeInterval:2.0];
+    startDate = [v6 startDate];
+    v8 = [startDate dateByAddingTimeInterval:2.0];
     queue = self->_queue;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -724,9 +724,9 @@ void __64__REDailyRoutinePredictor__queue_setupEveningBeginTimerIfNeeded__block_
   }
 }
 
-- (void)_setOverrideRoutineType:(unint64_t)a3
+- (void)_setOverrideRoutineType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   }

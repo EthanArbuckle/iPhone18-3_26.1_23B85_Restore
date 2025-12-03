@@ -13,11 +13,11 @@
 
 - (BOOL)ad_shouldUseExtendedFlowTimeout
 {
-  v3 = [(SAUIAssistantUtteranceView *)self speakableText];
-  if (v3)
+  speakableText = [(SAUIAssistantUtteranceView *)self speakableText];
+  if (speakableText)
   {
-    v4 = [(SAUIAssistantUtteranceView *)self speakableText];
-    v5 = [v4 isEqualToString:&stru_10051F508] ^ 1;
+    speakableText2 = [(SAUIAssistantUtteranceView *)self speakableText];
+    v5 = [speakableText2 isEqualToString:&stru_10051F508] ^ 1;
   }
 
   else

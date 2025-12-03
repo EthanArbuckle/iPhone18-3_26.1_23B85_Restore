@@ -3,28 +3,28 @@
 + (void)nextSleepAlarm;
 - (BOOL)_didCompleteSleepOnboarding;
 - (BOOL)watchSleepFeaturesEnabled;
-- (MTSleepManager)initWithAlarmStorage:(id)a3;
-- (MTSleepManager)initWithAlarmStorage:(id)a3 sleepStoreProvider:(id)a4 featureStoreProvider:(id)a5 healthStore:(id)a6 persistence:(id)a7;
+- (MTSleepManager)initWithAlarmStorage:(id)storage;
+- (MTSleepManager)initWithAlarmStorage:(id)storage sleepStoreProvider:(id)provider featureStoreProvider:(id)storeProvider healthStore:(id)store persistence:(id)persistence;
 - (id)sourceIdentifier;
 - (void)markSleepMigrationComplete;
 - (void)resetSleepAlarmSnoozeState;
-- (void)sleepStore:(id)a3 sleepSettingsDidChange:(id)a4;
-- (void)source:(id)a3 didDismissAlarm:(id)a4 dismissAction:(unint64_t)a5;
-- (void)source:(id)a3 didSnoozeAlarm:(id)a4 snoozeAction:(unint64_t)a5;
-- (void)source:(id)a3 didUpdateAlarms:(id)a4;
+- (void)sleepStore:(id)store sleepSettingsDidChange:(id)change;
+- (void)source:(id)source didDismissAlarm:(id)alarm dismissAction:(unint64_t)action;
+- (void)source:(id)source didSnoozeAlarm:(id)alarm snoozeAction:(unint64_t)action;
+- (void)source:(id)source didUpdateAlarms:(id)alarms;
 - (void)updateSleepAlarms;
 - (void)watchSleepFeaturesEnabled;
 @end
 
 @implementation MTSleepManager
 
-- (MTSleepManager)initWithAlarmStorage:(id)a3
+- (MTSleepManager)initWithAlarmStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   getHKHealthStoreClass();
   v5 = objc_opt_new();
   v6 = +[MTUserDefaults sharedUserDefaults];
-  v7 = [(MTSleepManager *)self initWithAlarmStorage:v4 sleepStoreProvider:&__block_literal_global_48 featureStoreProvider:&__block_literal_global_301 healthStore:v5 persistence:v6];
+  v7 = [(MTSleepManager *)self initWithAlarmStorage:storageCopy sleepStoreProvider:&__block_literal_global_48 featureStoreProvider:&__block_literal_global_301 healthStore:v5 persistence:v6];
 
   return v7;
 }
@@ -67,14 +67,14 @@ id __39__MTSleepManager_initWithAlarmStorage___block_invoke_2(uint64_t a1, void 
   return v6;
 }
 
-- (MTSleepManager)initWithAlarmStorage:(id)a3 sleepStoreProvider:(id)a4 featureStoreProvider:(id)a5 healthStore:(id)a6 persistence:(id)a7
+- (MTSleepManager)initWithAlarmStorage:(id)storage sleepStoreProvider:(id)provider featureStoreProvider:(id)storeProvider healthStore:(id)store persistence:(id)persistence
 {
   v35 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  storageCopy = storage;
+  providerCopy = provider;
+  storeProviderCopy = storeProvider;
+  storeCopy = store;
+  persistenceCopy = persistence;
   v32.receiver = self;
   v32.super_class = MTSleepManager;
   v18 = [(MTSleepManager *)&v32 init];
@@ -88,29 +88,29 @@ id __39__MTSleepManager_initWithAlarmStorage___block_invoke_2(uint64_t a1, void 
       _os_log_impl(&dword_1B1F9F000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ sleep manager initialized", buf, 0xCu);
     }
 
-    objc_storeStrong(&v18->_alarmStorage, a3);
+    objc_storeStrong(&v18->_alarmStorage, storage);
     [(MTAlarmStorage *)v18->_alarmStorage registerObserver:v18];
-    [(MTSleepManager *)v18 setHealthStore:v16];
-    v20 = [v14 copy];
+    [(MTSleepManager *)v18 setHealthStore:storeCopy];
+    v20 = [providerCopy copy];
     [(MTSleepManager *)v18 setSleepStoreProvider:v20];
 
-    v21 = [(MTSleepManager *)v18 sleepStoreProvider];
+    sleepStoreProvider = [(MTSleepManager *)v18 sleepStoreProvider];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    v24 = [(MTSleepManager *)v18 healthStore];
-    v25 = (v21)[2](v21, v23, v24);
+    healthStore = [(MTSleepManager *)v18 healthStore];
+    v25 = (sleepStoreProvider)[2](sleepStoreProvider, v23, healthStore);
     [(MTSleepManager *)v18 setSleepStore:v25];
 
-    v26 = [(MTSleepManager *)v18 sleepStore];
-    [v26 addObserver:v18];
+    sleepStore = [(MTSleepManager *)v18 sleepStore];
+    [sleepStore addObserver:v18];
 
-    v27 = [(MTSleepManager *)v18 sleepStore];
-    v28 = v15[2](v15, v27);
+    sleepStore2 = [(MTSleepManager *)v18 sleepStore];
+    v28 = storeProviderCopy[2](storeProviderCopy, sleepStore2);
     [(MTSleepManager *)v18 setFeatureStore:v28];
 
-    [(MTSleepManager *)v18 setPersistence:v17];
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 addObserver:v18 selector:sel_updateSleepAlarms name:@"com.apple.MTAlarmStorage.updateSleepAlarms" object:0];
+    [(MTSleepManager *)v18 setPersistence:persistenceCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v18 selector:sel_updateSleepAlarms name:@"com.apple.MTAlarmStorage.updateSleepAlarms" object:0];
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -139,16 +139,16 @@ id __35__MTSleepManager_updateSleepAlarms__block_invoke(uint64_t a1, void *a2)
 - (BOOL)_didCompleteSleepOnboarding
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(MTSleepManager *)self featureStore];
+  featureStore = [(MTSleepManager *)self featureStore];
   v10 = 0;
-  v4 = [v3 isCurrentOnboardingVersionCompletedWithError:&v10];
+  v4 = [featureStore isCurrentOnboardingVersionCompletedWithError:&v10];
   v5 = v10;
 
   v6 = MTLogForCategory(7);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
     v14 = v4;
     v15 = 2114;
@@ -158,16 +158,16 @@ id __35__MTSleepManager_updateSleepAlarms__block_invoke(uint64_t a1, void *a2)
 
   if (v5)
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v7 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return bOOLValue;
 }
 
 - (void)resetSleepAlarmSnoozeState
@@ -177,7 +177,7 @@ id __35__MTSleepManager_updateSleepAlarms__block_invoke(uint64_t a1, void *a2)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ resetSleepAlarmSnoozeState", &v5, 0xCu);
   }
 
@@ -192,38 +192,38 @@ id __35__MTSleepManager_updateSleepAlarms__block_invoke(uint64_t a1, void *a2)
 - (BOOL)watchSleepFeaturesEnabled
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(MTSleepManager *)self persistence];
-  v4 = [v3 objectForKey:@"MTNeedsSleepMigration"];
-  v5 = [v4 BOOLValue];
+  persistence = [(MTSleepManager *)self persistence];
+  v4 = [persistence objectForKey:@"MTNeedsSleepMigration"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = MTLogForCategory(7);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_INFO, "%{public}@ needs sleep migration, fetching watchSleepFeaturesEnabled async", buf, 0xCu);
     }
 
-    v7 = [(MTSleepManager *)self sleepStore];
+    sleepStore = [(MTSleepManager *)self sleepStore];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __43__MTSleepManager_watchSleepFeaturesEnabled__block_invoke;
     v16[3] = &unk_1E7B0FC38;
     v16[4] = self;
-    [v7 currentSleepSettingsWithCompletion:v16];
+    [sleepStore currentSleepSettingsWithCompletion:v16];
 
-    v8 = 0;
+    watchSleepFeaturesEnabled = 0;
   }
 
   else
   {
-    v9 = [(MTSleepManager *)self sleepStore];
+    sleepStore2 = [(MTSleepManager *)self sleepStore];
     v15 = 0;
-    v10 = [v9 currentSleepSettingsWithError:&v15];
+    v10 = [sleepStore2 currentSleepSettingsWithError:&v15];
     v11 = v15;
-    v8 = [v10 watchSleepFeaturesEnabled];
+    watchSleepFeaturesEnabled = [v10 watchSleepFeaturesEnabled];
 
     if (v11)
     {
@@ -236,7 +236,7 @@ id __35__MTSleepManager_updateSleepAlarms__block_invoke(uint64_t a1, void *a2)
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v8;
+  return watchSleepFeaturesEnabled;
 }
 
 void __43__MTSleepManager_watchSleepFeaturesEnabled__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -261,9 +261,9 @@ void __43__MTSleepManager_watchSleepFeaturesEnabled__block_invoke(uint64_t a1, u
 
 - (void)markSleepMigrationComplete
 {
-  v3 = [(MTSleepManager *)self persistence];
+  persistence = [(MTSleepManager *)self persistence];
   v2 = [MEMORY[0x1E696AD98] numberWithBool:0];
-  [v3 setObject:v2 forKey:@"MTNeedsSleepMigration"];
+  [persistence setObject:v2 forKey:@"MTNeedsSleepMigration"];
 }
 
 - (id)sourceIdentifier
@@ -273,10 +273,10 @@ void __43__MTSleepManager_watchSleepFeaturesEnabled__block_invoke(uint64_t a1, u
   return NSStringFromClass(v2);
 }
 
-- (void)sleepStore:(id)a3 sleepSettingsDidChange:(id)a4
+- (void)sleepStore:(id)store sleepSettingsDidChange:(id)change
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:MTSleepManagerSettingsDidChange object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:MTSleepManagerSettingsDidChange object:0];
 }
 
 + (id)nextSleepAlarm
@@ -286,16 +286,16 @@ void __43__MTSleepManager_watchSleepFeaturesEnabled__block_invoke(uint64_t a1, u
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ fetching sleep alarm from health", buf, 0xCu);
   }
 
   getHKHealthStoreClass();
   v4 = objc_opt_new();
   v5 = [objc_alloc(MEMORY[0x1E69D3690]) initWithHealthStore:v4];
-  v6 = [MEMORY[0x1E695DF00] mtNow];
+  mtNow = [MEMORY[0x1E695DF00] mtNow];
   v15 = 0;
-  v7 = [v5 upcomingScheduleOccurrenceAfterDate:v6 error:&v15];
+  v7 = [v5 upcomingScheduleOccurrenceAfterDate:mtNow error:&v15];
   v8 = v15;
 
   if (v8)
@@ -332,7 +332,7 @@ LABEL_10:
     v10 = MTLogForCategory(7);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      +[(MTSleepManager *)a1];
+      +[(MTSleepManager *)self];
     }
 
     goto LABEL_9;
@@ -346,27 +346,27 @@ LABEL_11:
   return v11;
 }
 
-- (void)source:(id)a3 didDismissAlarm:(id)a4 dismissAction:(unint64_t)a5
+- (void)source:(id)source didDismissAlarm:(id)alarm dismissAction:(unint64_t)action
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isSleepAlarm])
+  sourceCopy = source;
+  alarmCopy = alarm;
+  if ([alarmCopy isSleepAlarm])
   {
-    if (a5 <= 0xB && ((1 << a5) & 0x8E0) != 0)
+    if (action <= 0xB && ((1 << action) & 0x8E0) != 0)
     {
       v10 = MTLogForCategory(7);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v9 alarmIDString];
-        v12 = [v9 dismissedDate];
-        v13 = MTDismissAlarmActionDescription(a5);
+        alarmIDString = [alarmCopy alarmIDString];
+        dismissedDate = [alarmCopy dismissedDate];
+        v13 = MTDismissAlarmActionDescription(action);
         *buf = 138544130;
-        v24 = self;
+        selfCopy2 = self;
         v25 = 2114;
-        v26 = v11;
+        v26 = alarmIDString;
         v27 = 2114;
-        v28 = v12;
+        v28 = dismissedDate;
         v29 = 2114;
         v30 = v13;
         _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ informing sleep store of alarm dismiss: %{public}@, dismiss date:%{public}@ action: %{public}@", buf, 0x2Au);
@@ -374,23 +374,23 @@ LABEL_11:
 
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v8 isFromOtherDevice];
+        isFromOtherDevice = [sourceCopy isFromOtherDevice];
       }
 
       else
       {
-        v14 = 0;
+        isFromOtherDevice = 0;
       }
 
-      v15 = [(MTSleepManager *)self sleepStore];
-      v16 = [v9 dismissedDate];
+      sleepStore = [(MTSleepManager *)self sleepStore];
+      dismissedDate2 = [alarmCopy dismissedDate];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __55__MTSleepManager_source_didDismissAlarm_dismissAction___block_invoke;
       v21[3] = &unk_1E7B0FC60;
       v21[4] = self;
-      v22 = v9;
-      [v15 sleepAlarmWasDismissedOnDate:v16 source:v14 completion:v21];
+      v22 = alarmCopy;
+      [sleepStore sleepAlarmWasDismissedOnDate:dismissedDate2 source:isFromOtherDevice completion:v21];
     }
 
     else
@@ -398,12 +398,12 @@ LABEL_11:
       v18 = MTLogForCategory(7);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v9 alarmIDString];
-        v20 = MTDismissAlarmActionDescription(a5);
+        alarmIDString2 = [alarmCopy alarmIDString];
+        v20 = MTDismissAlarmActionDescription(action);
         *buf = 138543874;
-        v24 = self;
+        selfCopy2 = self;
         v25 = 2114;
-        v26 = v19;
+        v26 = alarmIDString2;
         v27 = 2114;
         v28 = v20;
         _os_log_impl(&dword_1B1F9F000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ not informing sleep store of alarm dismiss: %{public}@, action: %{public}@", buf, 0x20u);
@@ -437,31 +437,31 @@ void __55__MTSleepManager_source_didDismissAlarm_dismissAction___block_invoke(ui
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didSnoozeAlarm:(id)a4 snoozeAction:(unint64_t)a5
+- (void)source:(id)source didSnoozeAlarm:(id)alarm snoozeAction:(unint64_t)action
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 isSleepAlarm])
+  sourceCopy = source;
+  alarmCopy = alarm;
+  if ([alarmCopy isSleepAlarm])
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v7 isFromOtherDevice];
+      isFromOtherDevice = [sourceCopy isFromOtherDevice];
     }
 
     else
     {
-      v9 = 0;
+      isFromOtherDevice = 0;
     }
 
-    v10 = [(MTSleepManager *)self sleepStore];
-    v11 = [v8 snoozeFireDate];
+    sleepStore = [(MTSleepManager *)self sleepStore];
+    snoozeFireDate = [alarmCopy snoozeFireDate];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __53__MTSleepManager_source_didSnoozeAlarm_snoozeAction___block_invoke;
     v12[3] = &unk_1E7B0FC60;
     v12[4] = self;
-    v13 = v8;
-    [v10 sleepAlarmWasSnoozedUntilDate:v11 source:v9 completion:v12];
+    v13 = alarmCopy;
+    [sleepStore sleepAlarmWasSnoozedUntilDate:snoozeFireDate source:isFromOtherDevice completion:v12];
   }
 }
 
@@ -488,28 +488,28 @@ void __53__MTSleepManager_source_didSnoozeAlarm_snoozeAction___block_invoke(uint
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)source:(id)a3 didUpdateAlarms:(id)a4
+- (void)source:(id)source didUpdateAlarms:(id)alarms
 {
-  v6 = a3;
-  if ([a4 na_any:&__block_literal_global_324])
+  sourceCopy = source;
+  if ([alarms na_any:&__block_literal_global_324])
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 isFromOtherDevice];
+      isFromOtherDevice = [sourceCopy isFromOtherDevice];
     }
 
     else
     {
-      v7 = 0;
+      isFromOtherDevice = 0;
     }
 
-    v8 = [(MTSleepManager *)self sleepStore];
+    sleepStore = [(MTSleepManager *)self sleepStore];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __41__MTSleepManager_source_didUpdateAlarms___block_invoke_2;
     v9[3] = &unk_1E7B0FC88;
     v9[4] = self;
-    [v8 sleepAlarmWasModifiedFromSource:v7 completion:v9];
+    [sleepStore sleepAlarmWasModifiedFromSource:isFromOtherDevice completion:v9];
   }
 }
 
@@ -564,7 +564,7 @@ void __43__MTSleepManager_watchSleepFeaturesEnabled__block_invoke_cold_1(uint64_
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B1F9F000, a2, OS_LOG_TYPE_ERROR, "%{public}@ no upcoming sleep schedule occurrence", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

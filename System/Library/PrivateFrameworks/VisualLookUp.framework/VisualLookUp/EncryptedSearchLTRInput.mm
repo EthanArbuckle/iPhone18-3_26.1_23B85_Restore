@@ -1,6 +1,6 @@
 @interface EncryptedSearchLTRInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation EncryptedSearchLTRInput
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_1D9C7DC7C();
   v5 = v4;

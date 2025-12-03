@@ -1,28 +1,28 @@
 @interface _DASActivity
-+ (_DASActivity)activityWithName:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 startingAfter:(id)a6 startingBefore:(id)a7;
-+ (_DASActivity)activityWithName:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 startingAfter:(id)a6 startingBefore:(id)a7 userInfo:(id)a8;
-+ (id)anyApplicationActivityWithName:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 startingAfter:(id)a6 startingBefore:(id)a7 limitedToApplications:(id)a8;
-+ (id)applicationLaunchActivityWithName:(id)a3 priority:(unint64_t)a4 forApplication:(id)a5 withReason:(id)a6 duration:(unint64_t)a7 startingAfter:(id)a8 startingBefore:(id)a9;
-+ (id)continuedProcessingActivityWithName:(id)a3;
-+ (id)extensionLaunchActivityWithName:(id)a3 priority:(unint64_t)a4 forApplication:(id)a5 forExtensionIdentifier:(id)a6 withReason:(id)a7 duration:(unint64_t)a8 startingAfter:(id)a9 startingBefore:(id)a10;
-+ (id)extensionLaunchActivityWithName:(id)a3 priority:(unint64_t)a4 forApplication:(id)a5 withReason:(id)a6 duration:(unint64_t)a7 startingAfter:(id)a8 startingBefore:(id)a9;
-+ (id)extensionLaunchActivityWithName:(id)a3 priority:(unint64_t)a4 forExtensionIdentifier:(id)a5 withReason:(id)a6 duration:(unint64_t)a7 startingAfter:(id)a8 startingBefore:(id)a9;
-+ (id)launchWithTopic:(id)a3 forReason:(id)a4 withPayload:(id)a5 highPriority:(BOOL)a6;
-+ (id)networkingActivityWithName:(id)a3 priority:(unint64_t)a4 downloadSize:(unint64_t)a5 uploadSize:(unint64_t)a6 expensiveNetworkingAllowed:(BOOL)a7 startingAfter:(id)a8 startingBefore:(id)a9;
-+ (id)prettySchedulingPriorityDescription:(unint64_t)a3;
++ (_DASActivity)activityWithName:(id)name priority:(unint64_t)priority duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before;
++ (_DASActivity)activityWithName:(id)name priority:(unint64_t)priority duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before userInfo:(id)info;
++ (id)anyApplicationActivityWithName:(id)name priority:(unint64_t)priority duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before limitedToApplications:(id)applications;
++ (id)applicationLaunchActivityWithName:(id)name priority:(unint64_t)priority forApplication:(id)application withReason:(id)reason duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before;
++ (id)continuedProcessingActivityWithName:(id)name;
++ (id)extensionLaunchActivityWithName:(id)name priority:(unint64_t)priority forApplication:(id)application forExtensionIdentifier:(id)identifier withReason:(id)reason duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)self0;
++ (id)extensionLaunchActivityWithName:(id)name priority:(unint64_t)priority forApplication:(id)application withReason:(id)reason duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before;
++ (id)extensionLaunchActivityWithName:(id)name priority:(unint64_t)priority forExtensionIdentifier:(id)identifier withReason:(id)reason duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before;
++ (id)launchWithTopic:(id)topic forReason:(id)reason withPayload:(id)payload highPriority:(BOOL)priority;
++ (id)networkingActivityWithName:(id)name priority:(unint64_t)priority downloadSize:(unint64_t)size uploadSize:(unint64_t)uploadSize expensiveNetworkingAllowed:(BOOL)allowed startingAfter:(id)after startingBefore:(id)before;
++ (id)prettySchedulingPriorityDescription:(unint64_t)description;
 + (id)sharedDateFormatter;
 + (id)validClassesForUserInfoSerialization;
-+ (id)validateBGTaskRequestWithActivity:(id)a3;
-+ (unint64_t)cleanDuration:(unint64_t)a3;
-+ (unint64_t)cleanSchedulingPriority:(unint64_t)a3;
-+ (unint64_t)cleanTransferSize:(unint64_t)a3;
-- (BOOL)BOOLForUserInfoKey:(id)a3;
++ (id)validateBGTaskRequestWithActivity:(id)activity;
++ (unint64_t)cleanDuration:(unint64_t)duration;
++ (unint64_t)cleanSchedulingPriority:(unint64_t)priority;
++ (unint64_t)cleanTransferSize:(unint64_t)size;
+- (BOOL)BOOLForUserInfoKey:(id)key;
 - (BOOL)allowsCompanionExpensiveNetworking;
 - (BOOL)allowsUnrestrictedBackgroundLaunches;
 - (BOOL)beforeApplicationLaunch;
 - (BOOL)blockRebootActivitiesForSU;
 - (BOOL)budgeted;
-- (BOOL)ckPushContentMatches:(id)a3;
+- (BOOL)ckPushContentMatches:(id)matches;
 - (BOOL)dataBudgetingEnabled;
 - (BOOL)hasMagneticSensitivity;
 - (BOOL)hasManyConstraints;
@@ -33,9 +33,9 @@
 - (BOOL)isContinuedProcessingTask;
 - (BOOL)isDiskIntensive;
 - (BOOL)isEmergencySOSActivity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isGPUIntensive;
-- (BOOL)isIdenticalLaunchTo:(id)a3;
+- (BOOL)isIdenticalLaunchTo:(id)to;
 - (BOOL)isIntensive;
 - (BOOL)isMemoryIntensive;
 - (BOOL)isPartOfCustomGroup;
@@ -44,13 +44,13 @@
 - (BOOL)isSilentPush;
 - (BOOL)isSoftwareUpdateActivity;
 - (BOOL)keepsPrevious;
-- (BOOL)overdueAtDate:(id)a3;
+- (BOOL)overdueAtDate:(id)date;
 - (BOOL)overwritesPrevious;
 - (BOOL)requestsNewsstandLaunch;
 - (BOOL)requiresSignificantUserInactivity;
-- (BOOL)shouldReplaceActivity:(id)a3 andKeepsSubmitted:(BOOL *)a4;
-- (BOOL)significantlyOverdueAtDate:(id)a3;
-- (BOOL)timewiseEligibleAtDate:(id)a3;
+- (BOOL)shouldReplaceActivity:(id)activity andKeepsSubmitted:(BOOL *)submitted;
+- (BOOL)significantlyOverdueAtDate:(id)date;
+- (BOOL)timewiseEligibleAtDate:(id)date;
 - (BOOL)useStatisticalModelForTriggersRestart;
 - (BOOL)userRequestedBackupTask;
 - (NSDate)clientProvidedStartDate;
@@ -61,51 +61,51 @@
 - (NSString)clientProvidedIdentifier;
 - (NSString)groupName;
 - (NSString)identifier;
-- (_DASActivity)initWithCoder:(id)a3;
-- (_DASActivity)initWithName:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 startingAfter:(id)a6 startingBefore:(id)a7 userInfo:(id)a8;
+- (_DASActivity)initWithCoder:(id)coder;
+- (_DASActivity)initWithName:(id)name priority:(unint64_t)priority duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before userInfo:(id)info;
 - (_DASFileProtection)fileProtection;
-- (double)compatibilityWith:(id)a3;
+- (double)compatibilityWith:(id)with;
 - (id)debugDescription;
-- (id)dependencyForIdentifier:(id)a3;
+- (id)dependencyForIdentifier:(id)identifier;
 - (id)nameString;
-- (id)objectForUserInfoKey:(id)a3;
+- (id)objectForUserInfoKey:(id)key;
 - (id)policyScores;
 - (id)shortDescription;
-- (unint64_t)hashArrayOfString:(id)a3;
+- (unint64_t)hashArrayOfString:(id)string;
 - (unint64_t)taskID;
 - (unint64_t)transferSize;
 - (unint64_t)transferSizeType;
-- (void)encodeWithCoder:(id)a3;
-- (void)reconcileWithActivity:(id)a3;
-- (void)setAfterUserIsInactive:(BOOL)a3;
-- (void)setAneIntensive:(BOOL)a3;
-- (void)setBeforeDaysFirstActivity:(BOOL)a3;
-- (void)setBool:(BOOL)a3 forUserInfoKey:(id)a4;
-- (void)setConstraintsWithXPCDictionary:(id)a3;
-- (void)setCpuIntensive:(BOOL)a3;
-- (void)setDarkWakeEligible:(BOOL)a3;
-- (void)setDiskIntensive:(BOOL)a3;
-- (void)setGpuIntensive:(BOOL)a3;
-- (void)setGroupName:(id)a3;
-- (void)setHasMagneticSensitivity:(BOOL)a3;
-- (void)setInternalGroupNames:(id)a3;
-- (void)setInvolvedProcesses:(id)a3;
-- (void)setIsContactTracingBackgroundActivity:(BOOL)a3;
-- (void)setIsMLBackgroundActivity:(BOOL)a3;
-- (void)setIsUpload:(BOOL)a3;
-- (void)setMemoryIntensive:(BOOL)a3;
-- (void)setObject:(id)a3 forUserInfoKey:(id)a4;
-- (void)setPercentCompleted:(double)a3;
-- (void)setRelatedApplications:(id)a3;
-- (void)setRemoteDevice:(id)a3;
-- (void)setRequestsApplicationLaunch:(BOOL)a3;
-- (void)setRequestsExtensionLaunch:(BOOL)a3;
-- (void)setRequiresDeviceInactivity:(BOOL)a3;
-- (void)setRequiresSignificantUserInactivity:(BOOL)a3;
-- (void)setSuspendHandler:(id)a3;
-- (void)setTransferSize:(unint64_t)a3;
-- (void)setTriggersRestart:(BOOL)a3;
-- (void)setUserInfo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)reconcileWithActivity:(id)activity;
+- (void)setAfterUserIsInactive:(BOOL)inactive;
+- (void)setAneIntensive:(BOOL)intensive;
+- (void)setBeforeDaysFirstActivity:(BOOL)activity;
+- (void)setBool:(BOOL)bool forUserInfoKey:(id)key;
+- (void)setConstraintsWithXPCDictionary:(id)dictionary;
+- (void)setCpuIntensive:(BOOL)intensive;
+- (void)setDarkWakeEligible:(BOOL)eligible;
+- (void)setDiskIntensive:(BOOL)intensive;
+- (void)setGpuIntensive:(BOOL)intensive;
+- (void)setGroupName:(id)name;
+- (void)setHasMagneticSensitivity:(BOOL)sensitivity;
+- (void)setInternalGroupNames:(id)names;
+- (void)setInvolvedProcesses:(id)processes;
+- (void)setIsContactTracingBackgroundActivity:(BOOL)activity;
+- (void)setIsMLBackgroundActivity:(BOOL)activity;
+- (void)setIsUpload:(BOOL)upload;
+- (void)setMemoryIntensive:(BOOL)intensive;
+- (void)setObject:(id)object forUserInfoKey:(id)key;
+- (void)setPercentCompleted:(double)completed;
+- (void)setRelatedApplications:(id)applications;
+- (void)setRemoteDevice:(id)device;
+- (void)setRequestsApplicationLaunch:(BOOL)launch;
+- (void)setRequestsExtensionLaunch:(BOOL)launch;
+- (void)setRequiresDeviceInactivity:(BOOL)inactivity;
+- (void)setRequiresSignificantUserInactivity:(BOOL)inactivity;
+- (void)setSuspendHandler:(id)handler;
+- (void)setTransferSize:(unint64_t)size;
+- (void)setTriggersRestart:(BOOL)restart;
+- (void)setUserInfo:(id)info;
 - (void)updateGroupIfNecessary;
 - (void)updateInternalGroups;
 @end
@@ -114,40 +114,40 @@
 
 - (BOOL)isBackgroundTaskActivity
 {
-  v3 = [(_DASActivity *)self launchReason];
-  if ([v3 isEqualToString:@"com.apple.das.bgrefresh"])
+  launchReason = [(_DASActivity *)self launchReason];
+  if ([launchReason isEqualToString:@"com.apple.das.bgrefresh"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_DASActivity *)self launchReason];
-    if ([v5 isEqualToString:@"com.apple.das.bgprocessing"])
+    launchReason2 = [(_DASActivity *)self launchReason];
+    if ([launchReason2 isEqualToString:@"com.apple.das.bgprocessing"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(_DASActivity *)self launchReason];
-      if ([v6 isEqualToString:@"com.apple.das.bghealthresearch"])
+      launchReason3 = [(_DASActivity *)self launchReason];
+      if ([launchReason3 isEqualToString:@"com.apple.das.bghealthresearch"])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(_DASActivity *)self launchReason];
-        if ([v7 isEqualToString:@"com.apple.das.bgongoingprocessing"])
+        launchReason4 = [(_DASActivity *)self launchReason];
+        if ([launchReason4 isEqualToString:@"com.apple.das.bgongoingprocessing"])
         {
           v4 = 1;
         }
 
         else
         {
-          v8 = [(_DASActivity *)self launchReason];
-          v4 = [v8 isEqualToString:@"com.apple.das.bgongoingprocessing.internal"];
+          launchReason5 = [(_DASActivity *)self launchReason];
+          v4 = [launchReason5 isEqualToString:@"com.apple.das.bgongoingprocessing.internal"];
         }
       }
     }
@@ -158,8 +158,8 @@
 
 - (NSString)clientProvidedIdentifier
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"clientID"];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"clientID"];
 
   return v3;
 }
@@ -172,8 +172,8 @@
     goto LABEL_2;
   }
 
-  v5 = [(_DASActivity *)self name];
-  v6 = [v5 componentsSeparatedByString:@":"];
+  name = [(_DASActivity *)self name];
+  v6 = [name componentsSeparatedByString:@":"];
 
   v7 = [v6 count];
   if (v7 > 1)
@@ -208,36 +208,36 @@
 
       v18 = self->_identifier;
       self->_identifier = v12;
-      v3 = v12;
+      name2 = v12;
     }
 
     else
     {
-      v3 = [(_DASActivity *)self name];
+      name2 = [(_DASActivity *)self name];
     }
 
     if (v11)
     {
       identifier = self->_identifier;
 LABEL_2:
-      v3 = identifier;
+      name2 = identifier;
     }
   }
 
   else
   {
-    v3 = [(_DASActivity *)self name];
+    name2 = [(_DASActivity *)self name];
   }
 
-  return v3;
+  return name2;
 }
 
 - (id)nameString
 {
   v2 = MEMORY[0x1E696AEC0];
   name = self->_name;
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  v5 = [v4 substringToIndex:6];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v5 = [uUIDString substringToIndex:6];
   v6 = [v2 stringWithFormat:@"%@:%@", name, v5];
 
   return v6;
@@ -326,17 +326,17 @@ LABEL_2:
 
 - (BOOL)isContinuedProcessingTask
 {
-  v2 = [(_DASActivity *)self launchReason];
-  v3 = [v2 hasPrefix:@"com.apple.das.bgongoingprocessing"];
+  launchReason = [(_DASActivity *)self launchReason];
+  v3 = [launchReason hasPrefix:@"com.apple.das.bgongoingprocessing"];
 
   return v3;
 }
 
 - (BOOL)isIntensive
 {
-  v3 = [(_DASActivity *)self fastPass];
+  fastPass = [(_DASActivity *)self fastPass];
 
-  if (v3)
+  if (fastPass)
   {
     return 0;
   }
@@ -358,24 +358,24 @@ LABEL_2:
 
 - (BOOL)userRequestedBackupTask
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"UserRequestedBackupActivity"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"UserRequestedBackupActivity"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (_DASFileProtection)fileProtection
 {
-  v3 = [(_DASActivity *)self dependencies];
-  if ([v3 count])
+  dependencies = [(_DASActivity *)self dependencies];
+  if ([dependencies count])
   {
   }
 
   else
   {
-    v4 = [(_DASActivity *)self producedResultIdentifiers];
-    v5 = [v4 count];
+    producedResultIdentifiers = [(_DASActivity *)self producedResultIdentifiers];
+    v5 = [producedResultIdentifiers count];
 
     if (!v5)
     {
@@ -401,16 +401,16 @@ LABEL_7:
 
 - (BOOL)isSoftwareUpdateActivity
 {
-  v3 = [(_DASActivity *)self name];
-  if ([v3 isEqualToString:@"com.apple.softwareupdate.autoinstall.startInstall"])
+  name = [(_DASActivity *)self name];
+  if ([name isEqualToString:@"com.apple.softwareupdate.autoinstall.startInstall"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_DASActivity *)self name];
-    v4 = ([v5 hasSuffix:@"com.apple.SUOSUScheduler.tonight.install"] & 1) != 0 || -[_DASActivity blockRebootActivitiesForSU](self, "blockRebootActivitiesForSU");
+    name2 = [(_DASActivity *)self name];
+    v4 = ([name2 hasSuffix:@"com.apple.SUOSUScheduler.tonight.install"] & 1) != 0 || -[_DASActivity blockRebootActivitiesForSU](self, "blockRebootActivitiesForSU");
   }
 
   return v4;
@@ -418,11 +418,11 @@ LABEL_7:
 
 - (BOOL)blockRebootActivitiesForSU
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"BlockRebootActivitiesForSU"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"BlockRebootActivitiesForSU"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)transferSizeType
@@ -437,14 +437,14 @@ LABEL_7:
     return 0;
   }
 
-  v4 = [(_DASActivity *)self transferSize];
+  transferSize = [(_DASActivity *)self transferSize];
   v5 = 30;
-  if (v4 < _DASActivityTransferSizeVeryLarge)
+  if (transferSize < _DASActivityTransferSizeVeryLarge)
   {
     v5 = 20;
   }
 
-  if (v4 >= _DASActivityTransferSizeLarge)
+  if (transferSize >= _DASActivityTransferSizeLarge)
   {
     return v5;
   }
@@ -459,8 +459,8 @@ LABEL_7:
 {
   if (![(_DASActivity *)self isIntensive])
   {
-    v5 = [(_DASActivity *)self fastPass];
-    if (v5)
+    fastPass = [(_DASActivity *)self fastPass];
+    if (fastPass)
     {
 LABEL_4:
       v4 = 1;
@@ -480,8 +480,8 @@ LABEL_5:
       goto LABEL_4;
     }
 
-    v2 = [(_DASActivity *)self launchReason];
-    if (![v2 isEqualToString:@"com.apple.das.launchreason.fetch"])
+    launchReason = [(_DASActivity *)self launchReason];
+    if (![launchReason isEqualToString:@"com.apple.das.launchreason.fetch"])
     {
       v4 = 1;
     }
@@ -537,20 +537,20 @@ LABEL_25:
 
 - (BOOL)requiresSignificantUserInactivity
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"com.apple.das.significantInactivity"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"com.apple.das.significantInactivity"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)useStatisticalModelForTriggersRestart
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"UseStatisticalModelForTriggersRestart"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"UseStatisticalModelForTriggersRestart"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)allowsUnrestrictedBackgroundLaunches
@@ -560,37 +560,37 @@ LABEL_25:
     return 1;
   }
 
-  v4 = [(_DASActivity *)self launchReason];
-  v5 = [v4 isEqualToString:@"com.apple.das.bghealthresearch"];
+  launchReason = [(_DASActivity *)self launchReason];
+  v5 = [launchReason isEqualToString:@"com.apple.das.bghealthresearch"];
 
   return v5;
 }
 
 - (BOOL)isContactTracingBackgroundActivity
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"isCTActivity"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"isCTActivity"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)beforeApplicationLaunch
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"BeforeApplicationLaunch"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"BeforeApplicationLaunch"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)requestsNewsstandLaunch
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"newsstand"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"newsstand"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)validClassesForUserInfoSerialization
@@ -617,29 +617,29 @@ LABEL_25:
 {
   v3 = +[_DASActivity sharedDateFormatter];
   v4 = MEMORY[0x1E696AD60];
-  v5 = [(_DASActivity *)self nameString];
+  nameString = [(_DASActivity *)self nameString];
   v6 = [_DASActivity prettySchedulingPriorityDescription:self->_schedulingPriority];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_duration];
-  v8 = [(_DASActivity *)self startAfter];
-  v9 = [v3 stringFromDate:v8];
-  v10 = [(_DASActivity *)self startBefore];
-  v11 = [v3 stringFromDate:v10];
-  v12 = [v4 stringWithFormat:@"<_DASActivity: %@, %@, %@s, [%@ - %@]", v5, v6, v7, v9, v11];
+  startAfter = [(_DASActivity *)self startAfter];
+  v9 = [v3 stringFromDate:startAfter];
+  startBefore = [(_DASActivity *)self startBefore];
+  v11 = [v3 stringFromDate:startBefore];
+  v12 = [v4 stringWithFormat:@"<_DASActivity: %@, %@, %@s, [%@ - %@]", nameString, v6, v7, v9, v11];
 
-  v13 = [(_DASActivity *)self limitationResponse];
+  limitationResponse = [(_DASActivity *)self limitationResponse];
 
-  if (v13)
+  if (limitationResponse)
   {
-    v14 = [(_DASActivity *)self limitationResponse];
-    [v12 appendFormat:@", ACTIVITY LIMITED %@", v14];
+    limitationResponse2 = [(_DASActivity *)self limitationResponse];
+    [v12 appendFormat:@", ACTIVITY LIMITED %@", limitationResponse2];
   }
 
-  v15 = [(_DASActivity *)self startDate];
+  startDate = [(_DASActivity *)self startDate];
 
-  if (v15)
+  if (startDate)
   {
-    v16 = [(_DASActivity *)self startDate];
-    v17 = [v3 stringFromDate:v16];
+    startDate2 = [(_DASActivity *)self startDate];
+    v17 = [v3 stringFromDate:startDate2];
     [v12 appendFormat:@", Started at %@", v17];
   }
 
@@ -679,12 +679,12 @@ LABEL_25:
   fastPass = self->_fastPass;
   if (fastPass)
   {
-    v22 = [(_DASFastPass *)fastPass processingTaskIdentifiers];
+    processingTaskIdentifiers = [(_DASFastPass *)fastPass processingTaskIdentifiers];
 
-    if (v22)
+    if (processingTaskIdentifiers)
     {
-      v23 = [(_DASFastPass *)self->_fastPass processingTaskIdentifiers];
-      [v12 appendFormat:@", TaskID: %@", v23];
+      processingTaskIdentifiers2 = [(_DASFastPass *)self->_fastPass processingTaskIdentifiers];
+      [v12 appendFormat:@", TaskID: %@", processingTaskIdentifiers2];
     }
   }
 
@@ -775,30 +775,30 @@ LABEL_25:
 {
   v3 = +[_DASActivity sharedDateFormatter];
   v4 = MEMORY[0x1E696AD60];
-  v5 = [(_DASActivity *)self nameString];
+  nameString = [(_DASActivity *)self nameString];
   v6 = [_DASActivity prettySchedulingPriorityDescription:self->_schedulingPriority];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_duration];
-  v8 = [(_DASActivity *)self startAfter];
-  v9 = [v3 stringFromDate:v8];
-  v10 = [(_DASActivity *)self startBefore];
-  v11 = [v3 stringFromDate:v10];
-  v12 = [v4 stringWithFormat:@"<_DASActivity: %@, %@, %@s, [%@ - %@]", v5, v6, v7, v9, v11];
+  startAfter = [(_DASActivity *)self startAfter];
+  v9 = [v3 stringFromDate:startAfter];
+  startBefore = [(_DASActivity *)self startBefore];
+  v11 = [v3 stringFromDate:startBefore];
+  v12 = [v4 stringWithFormat:@"<_DASActivity: %@, %@, %@s, [%@ - %@]", nameString, v6, v7, v9, v11];
 
-  v13 = [(_DASActivity *)self startDate];
+  startDate = [(_DASActivity *)self startDate];
 
-  if (v13)
+  if (startDate)
   {
-    v14 = [(_DASActivity *)self startDate];
-    v15 = [v3 stringFromDate:v14];
+    startDate2 = [(_DASActivity *)self startDate];
+    v15 = [v3 stringFromDate:startDate2];
     [v12 appendFormat:@", Started at %@", v15];
   }
 
-  v16 = [(_DASActivity *)self limitationResponse];
+  limitationResponse = [(_DASActivity *)self limitationResponse];
 
-  if (v16)
+  if (limitationResponse)
   {
-    v17 = [(_DASActivity *)self limitationResponse];
-    [v12 appendFormat:@", ACTIVITY LIMITED %@", v17];
+    limitationResponse2 = [(_DASActivity *)self limitationResponse];
+    [v12 appendFormat:@", ACTIVITY LIMITED %@", limitationResponse2];
   }
 
   if (!self->_suspendable)
@@ -825,12 +825,12 @@ LABEL_25:
   fastPass = self->_fastPass;
   if (fastPass)
   {
-    v19 = [(_DASFastPass *)fastPass processingTaskIdentifiers];
+    processingTaskIdentifiers = [(_DASFastPass *)fastPass processingTaskIdentifiers];
 
-    if (v19)
+    if (processingTaskIdentifiers)
     {
-      v20 = [(_DASFastPass *)self->_fastPass processingTaskIdentifiers];
-      [v12 appendFormat:@", TaskID: %@", v20];
+      processingTaskIdentifiers2 = [(_DASFastPass *)self->_fastPass processingTaskIdentifiers];
+      [v12 appendFormat:@", TaskID: %@", processingTaskIdentifiers2];
     }
   }
 
@@ -921,14 +921,14 @@ LABEL_25:
 
   if (self->_requestsApplicationLaunch)
   {
-    v22 = [(NSArray *)self->_relatedApplications firstObject];
-    [v12 appendFormat:@", Requests Launch (%@)", v22];
+    firstObject = [(NSArray *)self->_relatedApplications firstObject];
+    [v12 appendFormat:@", Requests Launch (%@)", firstObject];
   }
 
   if (self->_requestsExtensionLaunch)
   {
-    v23 = [(NSArray *)self->_relatedApplications firstObject];
-    [v12 appendFormat:@", Requests Extension Launch (%@)", v23];
+    firstObject2 = [(NSArray *)self->_relatedApplications firstObject];
+    [v12 appendFormat:@", Requests Extension Launch (%@)", firstObject2];
   }
 
   if (self->_requiresPlugin)
@@ -1013,12 +1013,12 @@ LABEL_64:
     [v12 appendString:{@", Budgeted"}];
   }
 
-  v30 = [(_DASActivity *)self clientDataBudgetName];
+  clientDataBudgetName = [(_DASActivity *)self clientDataBudgetName];
 
-  if (v30)
+  if (clientDataBudgetName)
   {
-    v31 = [(_DASActivity *)self clientDataBudgetName];
-    [v12 appendFormat:@", Budget=%@", v31];
+    clientDataBudgetName2 = [(_DASActivity *)self clientDataBudgetName];
+    [v12 appendFormat:@", Budget=%@", clientDataBudgetName2];
   }
 
   if (self->_backlogged)
@@ -1026,12 +1026,12 @@ LABEL_64:
     [v12 appendString:{@", Backlogged"}];
   }
 
-  v32 = [(_DASActivity *)self activityType];
+  activityType = [(_DASActivity *)self activityType];
 
-  if (v32)
+  if (activityType)
   {
-    v33 = [(_DASActivity *)self activityType];
-    [v12 appendFormat:@", activityType=%@", v33];
+    activityType2 = [(_DASActivity *)self activityType];
+    [v12 appendFormat:@", activityType=%@", activityType2];
   }
 
   if (self->_budgetingToken)
@@ -1049,17 +1049,17 @@ LABEL_64:
     [v12 appendFormat:@", %@", self->_fileProtection];
   }
 
-  v34 = [(_DASActivity *)self fileProtection];
+  fileProtection = [(_DASActivity *)self fileProtection];
 
-  if (v34)
+  if (fileProtection)
   {
-    v35 = [(_DASActivity *)self fileProtection];
+    fileProtection2 = [(_DASActivity *)self fileProtection];
     fileProtection = self->_fileProtection;
 
-    v37 = [(_DASActivity *)self fileProtection];
-    [v12 appendFormat:@", %@", v37];
+    fileProtection3 = [(_DASActivity *)self fileProtection];
+    [v12 appendFormat:@", %@", fileProtection3];
 
-    if (v35 != fileProtection)
+    if (fileProtection2 != fileProtection)
     {
       [v12 appendFormat:@" (overridden value: %@)", self->_fileProtection];
     }
@@ -1070,8 +1070,8 @@ LABEL_64:
     [v12 appendFormat:@", Delayed Start"];
   }
 
-  v38 = [(_DASActivity *)self userInfo];
-  v39 = [v38 mutableCopy];
+  userInfo = [(_DASActivity *)self userInfo];
+  v39 = [userInfo mutableCopy];
 
   if ([v39 count])
   {
@@ -1096,18 +1096,18 @@ LABEL_64:
     [v12 appendFormat:@", Continued Processing Wrapper: %@", self->_continuedProcessingWrapper];
   }
 
-  v42 = [(_DASActivity *)self fastPass];
+  fastPass = [(_DASActivity *)self fastPass];
 
-  if (v42)
+  if (fastPass)
   {
-    v43 = [(_DASActivity *)self fastPass];
-    [v12 appendFormat:@", FastPass v%d", objc_msgSend(v43, "semanticVersion")];
+    fastPass2 = [(_DASActivity *)self fastPass];
+    [v12 appendFormat:@", FastPass v%d", objc_msgSend(fastPass2, "semanticVersion")];
   }
 
   if (self->_diskVolume)
   {
-    v44 = [(_DASActivity *)self diskVolume];
-    [v12 appendFormat:@", DiskVolume=%@", v44];
+    diskVolume = [(_DASActivity *)self diskVolume];
+    [v12 appendFormat:@", DiskVolume=%@", diskVolume];
   }
 
   if ([(_DASActivity *)self maximumRuntime])
@@ -1142,14 +1142,14 @@ LABEL_64:
     return 0;
   }
 
-  v4 = [(_DASActivity *)self schedulingPriority];
-  if (v4 < _DASSchedulingPriorityUtility)
+  schedulingPriority = [(_DASActivity *)self schedulingPriority];
+  if (schedulingPriority < _DASSchedulingPriorityUtility)
   {
     return 1;
   }
 
-  v5 = [(_DASActivity *)self schedulingPriority];
-  if (v5 != _DASSchedulingPriorityUtility)
+  schedulingPriority2 = [(_DASActivity *)self schedulingPriority];
+  if (schedulingPriority2 != _DASSchedulingPriorityUtility)
   {
     return 0;
   }
@@ -1172,14 +1172,14 @@ LABEL_64:
 
 - (unint64_t)taskID
 {
-  v3 = [(_DASActivity *)self name];
-  v4 = [v3 hash];
+  name = [(_DASActivity *)self name];
+  v4 = [name hash];
   v5 = v4 ^ (2 * [(_DASActivity *)self schedulingPriority]);
-  v6 = [(_DASActivity *)self groupName];
-  v7 = v5 ^ (4 * [v6 hash]);
-  v8 = [(_DASActivity *)self fileProtection];
-  v9 = [v8 protectionType];
-  v10 = v7 ^ (8 * [v9 hash]);
+  groupName = [(_DASActivity *)self groupName];
+  v7 = v5 ^ (4 * [groupName hash]);
+  fileProtection = [(_DASActivity *)self fileProtection];
+  protectionType = [fileProtection protectionType];
+  v10 = v7 ^ (8 * [protectionType hash]);
   if ([(_DASActivity *)self cpuIntensive])
   {
     v11 = 16;
@@ -1190,41 +1190,41 @@ LABEL_64:
     v11 = 0;
   }
 
-  v12 = [(_DASActivity *)self memoryIntensive];
+  memoryIntensive = [(_DASActivity *)self memoryIntensive];
   v13 = 32;
-  if (!v12)
+  if (!memoryIntensive)
   {
     v13 = 0;
   }
 
   v14 = v11 ^ v13;
-  v15 = [(_DASActivity *)self aneIntensive];
+  aneIntensive = [(_DASActivity *)self aneIntensive];
   v16 = 64;
-  if (!v15)
+  if (!aneIntensive)
   {
     v16 = 0;
   }
 
   v17 = v14 ^ v16;
-  v18 = [(_DASActivity *)self gpuIntensive];
+  gpuIntensive = [(_DASActivity *)self gpuIntensive];
   v19 = 128;
-  if (!v18)
+  if (!gpuIntensive)
   {
     v19 = 0;
   }
 
   v20 = v17 ^ v19;
-  v21 = [(_DASActivity *)self requiresPlugin];
+  requiresPlugin = [(_DASActivity *)self requiresPlugin];
   v22 = 256;
-  if (!v21)
+  if (!requiresPlugin)
   {
     v22 = 0;
   }
 
   v23 = v20 ^ v22;
-  v24 = [(_DASActivity *)self requiresNetwork];
+  requiresNetwork = [(_DASActivity *)self requiresNetwork];
   v25 = 512;
-  if (!v24)
+  if (!requiresNetwork)
   {
     v25 = 0;
   }
@@ -1240,44 +1240,44 @@ LABEL_64:
     v27 = 0;
   }
 
-  v28 = [(_DASActivity *)self requiresUnconstrainedNetworking];
+  requiresUnconstrainedNetworking = [(_DASActivity *)self requiresUnconstrainedNetworking];
   v29 = 2048;
-  if (!v28)
+  if (!requiresUnconstrainedNetworking)
   {
     v29 = 0;
   }
 
   v30 = v27 ^ v29;
-  v31 = [(_DASActivity *)self requiresDeviceInactivity];
+  requiresDeviceInactivity = [(_DASActivity *)self requiresDeviceInactivity];
   v32 = 4096;
-  if (!v31)
+  if (!requiresDeviceInactivity)
   {
     v32 = 0;
   }
 
   v33 = v30 ^ v32;
-  v34 = [(_DASActivity *)self requiresSignificantUserInactivity];
+  requiresSignificantUserInactivity = [(_DASActivity *)self requiresSignificantUserInactivity];
   v35 = 0x2000;
-  if (!v34)
+  if (!requiresSignificantUserInactivity)
   {
     v35 = 0;
   }
 
   v36 = v33 ^ v35;
-  v37 = [(_DASActivity *)self triggersRestart];
+  triggersRestart = [(_DASActivity *)self triggersRestart];
   v38 = 0x4000;
-  if (!v37)
+  if (!triggersRestart)
   {
     v38 = 0;
   }
 
   v39 = v26 ^ v36 ^ v38;
-  v40 = [(_DASActivity *)self bundleId];
-  v41 = v39 ^ ([v40 hash] << 15);
-  v42 = [(_DASActivity *)self relatedApplications];
-  v43 = v41 ^ ([(_DASActivity *)self hashArrayOfString:v42]<< 16);
-  v44 = [(_DASActivity *)self involvedProcesses];
-  v45 = v43 ^ ([(_DASActivity *)self hashArrayOfString:v44]<< 17);
+  bundleId = [(_DASActivity *)self bundleId];
+  v41 = v39 ^ ([bundleId hash] << 15);
+  relatedApplications = [(_DASActivity *)self relatedApplications];
+  v43 = v41 ^ ([(_DASActivity *)self hashArrayOfString:relatedApplications]<< 16);
+  involvedProcesses = [(_DASActivity *)self involvedProcesses];
+  v45 = v43 ^ ([(_DASActivity *)self hashArrayOfString:involvedProcesses]<< 17);
   if ([(_DASActivity *)self diskIntensive])
   {
     v46 = 0x40000;
@@ -1293,11 +1293,11 @@ LABEL_64:
 
 - (BOOL)hasMagneticSensitivity
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"MagneticInterferenceSensitivity"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"MagneticInterferenceSensitivity"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSMutableDictionary)policyResponseMetadata
@@ -1305,9 +1305,9 @@ LABEL_64:
   policyResponseMetadata = self->_policyResponseMetadata;
   if (!policyResponseMetadata)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = self->_policyResponseMetadata;
-    self->_policyResponseMetadata = v4;
+    self->_policyResponseMetadata = dictionary;
 
     policyResponseMetadata = self->_policyResponseMetadata;
   }
@@ -1317,16 +1317,16 @@ LABEL_64:
 
 - (BOOL)isEmergencySOSActivity
 {
-  v2 = [(_DASActivity *)self name];
-  v3 = [v2 containsString:@"com.corelocation.eedmediaservice.progress"];
+  name = [(_DASActivity *)self name];
+  v3 = [name containsString:@"com.corelocation.eedmediaservice.progress"];
 
   return v3;
 }
 
 - (BOOL)isRunning
 {
-  v2 = [(_DASActivity *)self startDate];
-  [v2 timeIntervalSinceNow];
+  startDate = [(_DASActivity *)self startDate];
+  [startDate timeIntervalSinceNow];
   v4 = v3 < 0.0;
 
   return v4;
@@ -1348,78 +1348,78 @@ LABEL_64:
 
 - (NSProgress)progress
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"progress"];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"progress"];
 
   return v3;
 }
 
 - (BOOL)isCPUIntensive
 {
-  v3 = [(_DASActivity *)self fastPass];
+  fastPass = [(_DASActivity *)self fastPass];
 
-  return !v3 && self->_cpuIntensive;
+  return !fastPass && self->_cpuIntensive;
 }
 
 - (BOOL)isMemoryIntensive
 {
-  v3 = [(_DASActivity *)self fastPass];
+  fastPass = [(_DASActivity *)self fastPass];
 
-  return !v3 && self->_memoryIntensive;
+  return !fastPass && self->_memoryIntensive;
 }
 
 - (BOOL)isDiskIntensive
 {
-  v3 = [(_DASActivity *)self fastPass];
+  fastPass = [(_DASActivity *)self fastPass];
 
-  return !v3 && self->_diskIntensive;
+  return !fastPass && self->_diskIntensive;
 }
 
 - (BOOL)isANEIntensive
 {
-  v3 = [(_DASActivity *)self fastPass];
+  fastPass = [(_DASActivity *)self fastPass];
 
-  return !v3 && self->_aneIntensive;
+  return !fastPass && self->_aneIntensive;
 }
 
 - (BOOL)isGPUIntensive
 {
-  v3 = [(_DASActivity *)self fastPass];
+  fastPass = [(_DASActivity *)self fastPass];
 
-  return !v3 && self->_gpuIntensive;
+  return !fastPass && self->_gpuIntensive;
 }
 
 - (NSDate)clientProvidedStartDate
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"clientStartDate"];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"clientStartDate"];
 
   return v3;
 }
 
-- (_DASActivity)initWithName:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 startingAfter:(id)a6 startingBefore:(id)a7 userInfo:(id)a8
+- (_DASActivity)initWithName:(id)name priority:(unint64_t)priority duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before userInfo:(id)info
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  nameCopy = name;
+  afterCopy = after;
+  beforeCopy = before;
+  infoCopy = info;
   v31.receiver = self;
   v31.super_class = _DASActivity;
   v19 = [(_DASActivity *)&v31 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_name, a3);
-    v20->_schedulingPriority = [_DASActivity cleanSchedulingPriority:a4];
-    v20->_duration = [_DASActivity cleanDuration:a5];
-    objc_storeStrong(&v20->_startAfter, a6);
-    objc_storeStrong(&v20->_startBefore, a7);
+    objc_storeStrong(&v19->_name, name);
+    v20->_schedulingPriority = [_DASActivity cleanSchedulingPriority:priority];
+    v20->_duration = [_DASActivity cleanDuration:duration];
+    objc_storeStrong(&v20->_startAfter, after);
+    objc_storeStrong(&v20->_startBefore, before);
     v21 = _DASActivityTransferSizeZero;
     v20->_uploadSize = _DASActivityTransferSizeZero;
     v20->_downloadSize = v21;
     v20->_motionState = _DASMotionStateAny;
     v20->_delayedStart = 0;
-    v22 = [v18 mutableCopy];
+    v22 = [infoCopy mutableCopy];
     v23 = v22;
     if (v22)
     {
@@ -1439,9 +1439,9 @@ LABEL_64:
     v20->_internalGroupNames = v26;
 
     *&v20->_userInfoLock._os_unfair_lock_opaque = 0;
-    v28 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = v20->_uuid;
-    v20->_uuid = v28;
+    v20->_uuid = uUID;
 
     v20->_userIdentifier = -1;
     [(_DASActivity *)v20 updateGroupIfNecessary];
@@ -1450,52 +1450,52 @@ LABEL_64:
   return v20;
 }
 
-+ (_DASActivity)activityWithName:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 startingAfter:(id)a6 startingBefore:(id)a7
++ (_DASActivity)activityWithName:(id)name priority:(unint64_t)priority duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  v15 = [[a1 alloc] initWithName:v14 priority:a4 duration:a5 startingAfter:v13 startingBefore:v12 userInfo:0];
+  beforeCopy = before;
+  afterCopy = after;
+  nameCopy = name;
+  v15 = [[self alloc] initWithName:nameCopy priority:priority duration:duration startingAfter:afterCopy startingBefore:beforeCopy userInfo:0];
 
   return v15;
 }
 
-+ (_DASActivity)activityWithName:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 startingAfter:(id)a6 startingBefore:(id)a7 userInfo:(id)a8
++ (_DASActivity)activityWithName:(id)name priority:(unint64_t)priority duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before userInfo:(id)info
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a3;
-  v18 = [[a1 alloc] initWithName:v17 priority:a4 duration:a5 startingAfter:v16 startingBefore:v15 userInfo:v14];
+  infoCopy = info;
+  beforeCopy = before;
+  afterCopy = after;
+  nameCopy = name;
+  v18 = [[self alloc] initWithName:nameCopy priority:priority duration:duration startingAfter:afterCopy startingBefore:beforeCopy userInfo:infoCopy];
 
   return v18;
 }
 
-+ (id)networkingActivityWithName:(id)a3 priority:(unint64_t)a4 downloadSize:(unint64_t)a5 uploadSize:(unint64_t)a6 expensiveNetworkingAllowed:(BOOL)a7 startingAfter:(id)a8 startingBefore:(id)a9
++ (id)networkingActivityWithName:(id)name priority:(unint64_t)priority downloadSize:(unint64_t)size uploadSize:(unint64_t)uploadSize expensiveNetworkingAllowed:(BOOL)allowed startingAfter:(id)after startingBefore:(id)before
 {
-  v10 = a7;
-  v15 = a9;
-  v16 = a8;
-  v17 = a3;
-  v18 = [objc_alloc(objc_opt_class()) initWithName:v17 priority:a4 duration:_DASActivityDurationLong startingAfter:v16 startingBefore:v15 userInfo:0];
+  allowedCopy = allowed;
+  beforeCopy = before;
+  afterCopy = after;
+  nameCopy = name;
+  v18 = [objc_alloc(objc_opt_class()) initWithName:nameCopy priority:priority duration:_DASActivityDurationLong startingAfter:afterCopy startingBefore:beforeCopy userInfo:0];
 
   [v18 setRequiresNetwork:1];
-  [v18 setDownloadSize:a5];
-  [v18 setUploadSize:a6];
-  [v18 setRequiresInexpensiveNetworking:!v10];
+  [v18 setDownloadSize:size];
+  [v18 setUploadSize:uploadSize];
+  [v18 setRequiresInexpensiveNetworking:!allowedCopy];
 
   return v18;
 }
 
-+ (id)continuedProcessingActivityWithName:(id)a3
++ (id)continuedProcessingActivityWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc(objc_opt_class());
   v5 = _DASSchedulingPriorityUserInitiated;
   v6 = _DASActivityDurationLong;
   v7 = [MEMORY[0x1E695DF00] now];
   v8 = [MEMORY[0x1E695DF00] now];
-  v9 = [v4 initWithName:v3 priority:v5 duration:v6 startingAfter:v7 startingBefore:v8 userInfo:0];
+  v9 = [v4 initWithName:nameCopy priority:v5 duration:v6 startingAfter:v7 startingBefore:v8 userInfo:0];
 
   [v9 setLaunchReason:@"com.apple.das.bgongoingprocessing"];
   [v9 setGroupName:_DASDefaultContinuedProcessingGroupName];
@@ -1503,65 +1503,65 @@ LABEL_64:
   return v9;
 }
 
-+ (id)anyApplicationActivityWithName:(id)a3 priority:(unint64_t)a4 duration:(unint64_t)a5 startingAfter:(id)a6 startingBefore:(id)a7 limitedToApplications:(id)a8
++ (id)anyApplicationActivityWithName:(id)name priority:(unint64_t)priority duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before limitedToApplications:(id)applications
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a3;
-  v17 = [objc_alloc(objc_opt_class()) initWithName:v16 priority:a4 duration:a5 startingAfter:v15 startingBefore:v14 userInfo:0];
+  applicationsCopy = applications;
+  beforeCopy = before;
+  afterCopy = after;
+  nameCopy = name;
+  v17 = [objc_alloc(objc_opt_class()) initWithName:nameCopy priority:priority duration:duration startingAfter:afterCopy startingBefore:beforeCopy userInfo:0];
 
   [v17 setSupportsAnyApplication:1];
-  [v17 setRelatedApplications:v13];
+  [v17 setRelatedApplications:applicationsCopy];
 
   return v17;
 }
 
-+ (id)applicationLaunchActivityWithName:(id)a3 priority:(unint64_t)a4 forApplication:(id)a5 withReason:(id)a6 duration:(unint64_t)a7 startingAfter:(id)a8 startingBefore:(id)a9
++ (id)applicationLaunchActivityWithName:(id)name priority:(unint64_t)priority forApplication:(id)application withReason:(id)reason duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v15 = a9;
-  v16 = a8;
-  v17 = a6;
-  v18 = a5;
-  v19 = a3;
-  v20 = [objc_alloc(objc_opt_class()) initWithName:v19 priority:a4 duration:a7 startingAfter:v16 startingBefore:v15 userInfo:0];
+  beforeCopy = before;
+  afterCopy = after;
+  reasonCopy = reason;
+  applicationCopy = application;
+  nameCopy = name;
+  v20 = [objc_alloc(objc_opt_class()) initWithName:nameCopy priority:priority duration:duration startingAfter:afterCopy startingBefore:beforeCopy userInfo:0];
 
   [v20 setRequestsApplicationLaunch:1];
-  [v20 setLaunchReason:v17];
+  [v20 setLaunchReason:reasonCopy];
 
-  v24[0] = v18;
+  v24[0] = applicationCopy;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   [v20 setRelatedApplications:v21];
 
-  [v20 setBundleId:v18];
+  [v20 setBundleId:applicationCopy];
   v22 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-+ (id)extensionLaunchActivityWithName:(id)a3 priority:(unint64_t)a4 forApplication:(id)a5 forExtensionIdentifier:(id)a6 withReason:(id)a7 duration:(unint64_t)a8 startingAfter:(id)a9 startingBefore:(id)a10
++ (id)extensionLaunchActivityWithName:(id)name priority:(unint64_t)priority forApplication:(id)application forExtensionIdentifier:(id)identifier withReason:(id)reason duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)self0
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v16 = a6;
-  v17 = a10;
-  v18 = a9;
-  v19 = a7;
-  v20 = a3;
-  v21 = [objc_alloc(objc_opt_class()) initWithName:v20 priority:a4 duration:a8 startingAfter:v18 startingBefore:v17 userInfo:0];
+  applicationCopy = application;
+  identifierCopy = identifier;
+  beforeCopy = before;
+  afterCopy = after;
+  reasonCopy = reason;
+  nameCopy = name;
+  v21 = [objc_alloc(objc_opt_class()) initWithName:nameCopy priority:priority duration:duration startingAfter:afterCopy startingBefore:beforeCopy userInfo:0];
 
   [v21 setRequestsExtensionLaunch:1];
-  [v21 setLaunchReason:v19];
+  [v21 setLaunchReason:reasonCopy];
 
-  v22 = v16;
-  if (v15)
+  v22 = identifierCopy;
+  if (applicationCopy)
   {
-    v26[0] = v15;
+    v26[0] = applicationCopy;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     [v21 setRelatedApplications:v23];
 
-    v22 = v15;
+    v22 = applicationCopy;
   }
 
   [v21 setExtensionIdentifier:v22];
@@ -1571,60 +1571,60 @@ LABEL_64:
   return v21;
 }
 
-+ (id)extensionLaunchActivityWithName:(id)a3 priority:(unint64_t)a4 forApplication:(id)a5 withReason:(id)a6 duration:(unint64_t)a7 startingAfter:(id)a8 startingBefore:(id)a9
++ (id)extensionLaunchActivityWithName:(id)name priority:(unint64_t)priority forApplication:(id)application withReason:(id)reason duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a6;
-  v18 = a5;
-  v19 = a3;
-  v20 = [objc_opt_class() extensionLaunchActivityWithName:v19 priority:a4 forApplication:v18 forExtensionIdentifier:0 withReason:v17 duration:a7 startingAfter:v16 startingBefore:v15];
+  beforeCopy = before;
+  afterCopy = after;
+  reasonCopy = reason;
+  applicationCopy = application;
+  nameCopy = name;
+  v20 = [objc_opt_class() extensionLaunchActivityWithName:nameCopy priority:priority forApplication:applicationCopy forExtensionIdentifier:0 withReason:reasonCopy duration:duration startingAfter:afterCopy startingBefore:beforeCopy];
 
   return v20;
 }
 
-+ (id)extensionLaunchActivityWithName:(id)a3 priority:(unint64_t)a4 forExtensionIdentifier:(id)a5 withReason:(id)a6 duration:(unint64_t)a7 startingAfter:(id)a8 startingBefore:(id)a9
++ (id)extensionLaunchActivityWithName:(id)name priority:(unint64_t)priority forExtensionIdentifier:(id)identifier withReason:(id)reason duration:(unint64_t)duration startingAfter:(id)after startingBefore:(id)before
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a6;
-  v18 = a5;
-  v19 = a3;
-  v20 = [objc_opt_class() extensionLaunchActivityWithName:v19 priority:a4 forApplication:0 forExtensionIdentifier:v18 withReason:v17 duration:a7 startingAfter:v16 startingBefore:v15];
+  beforeCopy = before;
+  afterCopy = after;
+  reasonCopy = reason;
+  identifierCopy = identifier;
+  nameCopy = name;
+  v20 = [objc_opt_class() extensionLaunchActivityWithName:nameCopy priority:priority forApplication:0 forExtensionIdentifier:identifierCopy withReason:reasonCopy duration:duration startingAfter:afterCopy startingBefore:beforeCopy];
 
   return v20;
 }
 
-+ (id)launchWithTopic:(id)a3 forReason:(id)a4 withPayload:(id)a5 highPriority:(BOOL)a6
++ (id)launchWithTopic:(id)topic forReason:(id)reason withPayload:(id)payload highPriority:(BOOL)priority
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = v8;
-  if ([v8 hasPrefix:@"com.apple.icloud-container."])
+  topicCopy = topic;
+  payloadCopy = payload;
+  reasonCopy = reason;
+  v11 = topicCopy;
+  if ([topicCopy hasPrefix:@"com.apple.icloud-container."])
   {
-    v11 = [v8 substringFromIndex:{objc_msgSend(@"com.apple.icloud-container.", "length")}];
+    v11 = [topicCopy substringFromIndex:{objc_msgSend(@"com.apple.icloud-container.", "length")}];
   }
 
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.pushLaunch", v11];
   v13 = objc_opt_class();
   v14 = _DASSchedulingPriorityBackground;
   v15 = _DASActivityDurationVeryShort;
-  v16 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v17 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:86400.0];
-  v18 = [v13 applicationLaunchActivityWithName:v12 priority:v14 forApplication:v11 withReason:v10 duration:v15 startingAfter:v16 startingBefore:v17];
+  v18 = [v13 applicationLaunchActivityWithName:v12 priority:v14 forApplication:v11 withReason:reasonCopy duration:v15 startingAfter:date startingBefore:v17];
 
   [v18 setRequiresNetwork:1];
   v19 = +[_DASFileProtection completeUntilFirstUserAuthentication];
   [v18 setFileProtection:v19];
 
   v24 = @"notificationpayload";
-  v25[0] = v9;
+  v25[0] = payloadCopy;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
 
   [v18 setUserInfo:v20];
-  if (!a6)
+  if (!priority)
   {
     [v18 setSchedulingPriority:_DASSchedulingPriorityMaintenance];
   }
@@ -1634,14 +1634,14 @@ LABEL_64:
   return v18;
 }
 
-+ (id)validateBGTaskRequestWithActivity:(id)a3
++ (id)validateBGTaskRequestWithActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 clientProvidedIdentifier];
-  if ([v4 length])
+  activityCopy = activity;
+  clientProvidedIdentifier = [activityCopy clientProvidedIdentifier];
+  if ([clientProvidedIdentifier length])
   {
-    v5 = [v3 clientProvidedIdentifier];
-    v6 = [v5 length];
+    clientProvidedIdentifier2 = [activityCopy clientProvidedIdentifier];
+    v6 = [clientProvidedIdentifier2 length];
 
     if (v6 > 0x80)
     {
@@ -1650,32 +1650,32 @@ LABEL_64:
     }
 
     v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:450.0];
-    v9 = [v3 launchReason];
-    v10 = [v9 isEqualToString:@"com.apple.das.bgrefresh"];
+    launchReason = [activityCopy launchReason];
+    v10 = [launchReason isEqualToString:@"com.apple.das.bgrefresh"];
 
     if (v10)
     {
-      v11 = [v3 name];
+      name = [activityCopy name];
       v12 = _DASSchedulingPriorityBackground;
       v13 = _DASActivityDurationVeryShort;
-      v14 = [v3 startAfter];
-      v15 = [v3 startBefore];
-      v4 = [_DASActivity activityWithName:v11 priority:v12 duration:v13 startingAfter:v14 startingBefore:v15];
+      startAfter = [activityCopy startAfter];
+      startBefore = [activityCopy startBefore];
+      clientProvidedIdentifier = [_DASActivity activityWithName:name priority:v12 duration:v13 startingAfter:startAfter startingBefore:startBefore];
 
-      [v4 setLaunchReason:@"com.apple.das.bgrefresh"];
-      [v4 setRequestsApplicationLaunch:1];
-      [v4 setRequiresNetwork:1];
-      v16 = [v3 clientProvidedStartDate];
-      if (v16)
+      [clientProvidedIdentifier setLaunchReason:@"com.apple.das.bgrefresh"];
+      [clientProvidedIdentifier setRequestsApplicationLaunch:1];
+      [clientProvidedIdentifier setRequiresNetwork:1];
+      clientProvidedStartDate = [activityCopy clientProvidedStartDate];
+      if (clientProvidedStartDate)
       {
-        v17 = [v3 clientProvidedStartDate];
-        v18 = [v17 laterDate:v8];
-        [v4 setStartAfter:v18];
+        clientProvidedStartDate2 = [activityCopy clientProvidedStartDate];
+        v18 = [clientProvidedStartDate2 laterDate:v8];
+        [clientProvidedIdentifier setStartAfter:v18];
       }
 
       else
       {
-        [v4 setStartAfter:v8];
+        [clientProvidedIdentifier setStartAfter:v8];
       }
 
       v38 = 86400.0;
@@ -1683,33 +1683,33 @@ LABEL_64:
 
     else
     {
-      v19 = [v3 launchReason];
-      v20 = [v19 isEqualToString:@"com.apple.das.bgprocessing"];
+      launchReason2 = [activityCopy launchReason];
+      v20 = [launchReason2 isEqualToString:@"com.apple.das.bgprocessing"];
 
       if (v20)
       {
-        v21 = [v3 name];
+        name2 = [activityCopy name];
         v22 = _DASSchedulingPriorityBackground;
         v23 = _DASActivityDurationShort;
-        v24 = [v3 startAfter];
-        v25 = [v3 startBefore];
-        v4 = [_DASActivity activityWithName:v21 priority:v22 duration:v23 startingAfter:v24 startingBefore:v25];
+        startAfter2 = [activityCopy startAfter];
+        startBefore2 = [activityCopy startBefore];
+        clientProvidedIdentifier = [_DASActivity activityWithName:name2 priority:v22 duration:v23 startingAfter:startAfter2 startingBefore:startBefore2];
 
-        [v4 setRequiresNetwork:{objc_msgSend(v3, "requiresNetwork")}];
-        [v4 setRequiresPlugin:{objc_msgSend(v3, "requiresPlugin")}];
-        [v4 setLaunchReason:@"com.apple.das.bgprocessing"];
-        [v4 setRequestsApplicationLaunch:1];
-        v16 = [v3 clientProvidedStartDate];
-        if (v16)
+        [clientProvidedIdentifier setRequiresNetwork:{objc_msgSend(activityCopy, "requiresNetwork")}];
+        [clientProvidedIdentifier setRequiresPlugin:{objc_msgSend(activityCopy, "requiresPlugin")}];
+        [clientProvidedIdentifier setLaunchReason:@"com.apple.das.bgprocessing"];
+        [clientProvidedIdentifier setRequestsApplicationLaunch:1];
+        clientProvidedStartDate = [activityCopy clientProvidedStartDate];
+        if (clientProvidedStartDate)
         {
-          v26 = [v3 clientProvidedStartDate];
-          v27 = [v26 laterDate:v8];
-          [v4 setStartAfter:v27];
+          clientProvidedStartDate3 = [activityCopy clientProvidedStartDate];
+          v27 = [clientProvidedStartDate3 laterDate:v8];
+          [clientProvidedIdentifier setStartAfter:v27];
         }
 
         else
         {
-          [v4 setStartAfter:v8];
+          [clientProvidedIdentifier setStartAfter:v8];
         }
 
         v38 = 604800.0;
@@ -1717,68 +1717,68 @@ LABEL_64:
 
       else
       {
-        v28 = [v3 launchReason];
-        v29 = [v28 isEqualToString:@"com.apple.das.bghealthresearch"];
+        launchReason3 = [activityCopy launchReason];
+        v29 = [launchReason3 isEqualToString:@"com.apple.das.bghealthresearch"];
 
         if (!v29)
         {
-          v39 = [v3 launchReason];
+          launchReason4 = [activityCopy launchReason];
           v40 = @"com.apple.das.bgongoingprocessing";
-          v41 = [v39 isEqual:@"com.apple.das.bgongoingprocessing"];
+          v41 = [launchReason4 isEqual:@"com.apple.das.bgongoingprocessing"];
 
           if (!v41)
           {
-            v42 = [v3 launchReason];
+            launchReason5 = [activityCopy launchReason];
             v40 = @"com.apple.das.bgongoingprocessing.internal";
-            v43 = [v42 isEqual:@"com.apple.das.bgongoingprocessing.internal"];
+            v43 = [launchReason5 isEqual:@"com.apple.das.bgongoingprocessing.internal"];
 
             if (!v43)
             {
-              v4 = 0;
+              clientProvidedIdentifier = 0;
               goto LABEL_26;
             }
           }
 
-          v44 = [v3 name];
+          name3 = [activityCopy name];
           v45 = _DASSchedulingPriorityUserInitiated;
           v46 = _DASActivityDurationModerate;
-          v47 = [MEMORY[0x1E695DF00] distantPast];
+          distantPast = [MEMORY[0x1E695DF00] distantPast];
           v48 = [MEMORY[0x1E695DF00] now];
-          v4 = [_DASActivity activityWithName:v44 priority:v45 duration:v46 startingAfter:v47 startingBefore:v48];
+          clientProvidedIdentifier = [_DASActivity activityWithName:name3 priority:v45 duration:v46 startingAfter:distantPast startingBefore:v48];
 
-          [v4 setRequiresNetwork:{objc_msgSend(v3, "requiresNetwork")}];
-          [v4 setLaunchReason:v40];
-          [v4 setRequestsApplicationLaunch:0];
-          [v4 setGroupName:_DASDefaultContinuedProcessingGroupName];
-          v49 = [v3 relatedApplications];
-          [v4 setRelatedApplications:v49];
+          [clientProvidedIdentifier setRequiresNetwork:{objc_msgSend(activityCopy, "requiresNetwork")}];
+          [clientProvidedIdentifier setLaunchReason:v40];
+          [clientProvidedIdentifier setRequestsApplicationLaunch:0];
+          [clientProvidedIdentifier setGroupName:_DASDefaultContinuedProcessingGroupName];
+          relatedApplications = [activityCopy relatedApplications];
+          [clientProvidedIdentifier setRelatedApplications:relatedApplications];
 
-          v50 = [v3 continuedProcessingWrapper];
-          v51 = [v50 copy];
-          [v4 setContinuedProcessingWrapper:v51];
+          continuedProcessingWrapper = [activityCopy continuedProcessingWrapper];
+          v51 = [continuedProcessingWrapper copy];
+          [clientProvidedIdentifier setContinuedProcessingWrapper:v51];
 
-          v52 = [v4 continuedProcessingWrapper];
-          v53 = [v52 title];
-          if (v53)
+          continuedProcessingWrapper2 = [clientProvidedIdentifier continuedProcessingWrapper];
+          title = [continuedProcessingWrapper2 title];
+          if (title)
           {
-            v54 = v53;
-            v55 = [v4 continuedProcessingWrapper];
-            v56 = [v55 subtitle];
+            v54 = title;
+            continuedProcessingWrapper3 = [clientProvidedIdentifier continuedProcessingWrapper];
+            subtitle = [continuedProcessingWrapper3 subtitle];
 
-            if (v56)
+            if (subtitle)
             {
 LABEL_26:
-              v59 = [v3 clientProvidedIdentifier];
-              [v4 setClientProvidedIdentifier:v59];
+              clientProvidedIdentifier3 = [activityCopy clientProvidedIdentifier];
+              [clientProvidedIdentifier setClientProvidedIdentifier:clientProvidedIdentifier3];
 
-              v60 = [v3 clientProvidedStartDate];
-              [v4 setClientProvidedStartDate:v60];
+              clientProvidedStartDate4 = [activityCopy clientProvidedStartDate];
+              [clientProvidedIdentifier setClientProvidedStartDate:clientProvidedStartDate4];
 
-              v61 = [v3 uuid];
-              [v4 setUuid:v61];
+              uuid = [activityCopy uuid];
+              [clientProvidedIdentifier setUuid:uuid];
 
-              v4 = v4;
-              v7 = v4;
+              clientProvidedIdentifier = clientProvidedIdentifier;
+              v7 = clientProvidedIdentifier;
 LABEL_27:
 
               goto LABEL_28;
@@ -1793,40 +1793,40 @@ LABEL_27:
           goto LABEL_27;
         }
 
-        v30 = [v3 name];
+        name4 = [activityCopy name];
         v31 = _DASSchedulingPriorityUtility;
         v32 = _DASActivityDurationShort;
-        v33 = [v3 startAfter];
-        v34 = [v3 startBefore];
-        v4 = [_DASActivity activityWithName:v30 priority:v31 duration:v32 startingAfter:v33 startingBefore:v34];
+        startAfter3 = [activityCopy startAfter];
+        startBefore3 = [activityCopy startBefore];
+        clientProvidedIdentifier = [_DASActivity activityWithName:name4 priority:v31 duration:v32 startingAfter:startAfter3 startingBefore:startBefore3];
 
-        [v4 setRequiresNetwork:{objc_msgSend(v3, "requiresNetwork")}];
-        [v4 setRequiresPlugin:{objc_msgSend(v3, "requiresPlugin")}];
-        [v4 setLaunchReason:@"com.apple.das.bghealthresearch"];
-        [v4 setRequestsApplicationLaunch:1];
-        v35 = [v3 fileProtection];
-        [v4 setFileProtection:v35];
+        [clientProvidedIdentifier setRequiresNetwork:{objc_msgSend(activityCopy, "requiresNetwork")}];
+        [clientProvidedIdentifier setRequiresPlugin:{objc_msgSend(activityCopy, "requiresPlugin")}];
+        [clientProvidedIdentifier setLaunchReason:@"com.apple.das.bghealthresearch"];
+        [clientProvidedIdentifier setRequestsApplicationLaunch:1];
+        fileProtection = [activityCopy fileProtection];
+        [clientProvidedIdentifier setFileProtection:fileProtection];
 
-        v16 = [v3 clientProvidedStartDate];
-        if (v16)
+        clientProvidedStartDate = [activityCopy clientProvidedStartDate];
+        if (clientProvidedStartDate)
         {
-          v36 = [v3 clientProvidedStartDate];
-          v37 = [v36 laterDate:v8];
-          [v4 setStartAfter:v37];
+          clientProvidedStartDate5 = [activityCopy clientProvidedStartDate];
+          v37 = [clientProvidedStartDate5 laterDate:v8];
+          [clientProvidedIdentifier setStartAfter:v37];
         }
 
         else
         {
-          [v4 setStartAfter:v8];
+          [clientProvidedIdentifier setStartAfter:v8];
         }
 
         v38 = 600.0;
       }
     }
 
-    v57 = [v4 startAfter];
-    v58 = [v57 dateByAddingTimeInterval:v38];
-    [v4 setStartBefore:v58];
+    startAfter4 = [clientProvidedIdentifier startAfter];
+    v58 = [startAfter4 dateByAddingTimeInterval:v38];
+    [clientProvidedIdentifier setStartBefore:v58];
 
     goto LABEL_26;
   }
@@ -1839,56 +1839,56 @@ LABEL_29:
   return v7;
 }
 
-- (void)setSuspendHandler:(id)a3
+- (void)setSuspendHandler:(id)handler
 {
-  self->_suspendable = a3 != 0;
-  v6 = a3;
+  self->_suspendable = handler != 0;
+  handlerCopy = handler;
   v4 = MEMORY[0x1B8C9D430]();
   suspendHandler = self->_suspendHandler;
   self->_suspendHandler = v4;
 }
 
-+ (unint64_t)cleanDuration:(unint64_t)a3
++ (unint64_t)cleanDuration:(unint64_t)duration
 {
-  if (_DASActivityDurationVeryLong >= a3)
+  if (_DASActivityDurationVeryLong >= duration)
   {
-    v3 = a3;
+    durationCopy = duration;
   }
 
   else
   {
-    v3 = _DASActivityDurationInterminable;
+    durationCopy = _DASActivityDurationInterminable;
   }
 
-  if (_DASActivityDurationVeryShort >= a3)
+  if (_DASActivityDurationVeryShort >= duration)
   {
     return _DASActivityDurationVeryShort;
   }
 
   else
   {
-    return v3;
+    return durationCopy;
   }
 }
 
-+ (unint64_t)cleanTransferSize:(unint64_t)a3
++ (unint64_t)cleanTransferSize:(unint64_t)size
 {
   result = _DASActivityTransferSizeZero;
-  if (_DASActivityTransferSizeZero < a3)
+  if (_DASActivityTransferSizeZero < size)
   {
     result = _DASActivityTransferSizeVerySmall;
-    if (_DASActivityTransferSizeVerySmall < a3)
+    if (_DASActivityTransferSizeVerySmall < size)
     {
       result = _DASActivityTransferSizeSmall;
-      if (_DASActivityTransferSizeSmall < a3)
+      if (_DASActivityTransferSizeSmall < size)
       {
         result = _DASActivityTransferSizeModerate;
-        if (_DASActivityTransferSizeModerate < a3)
+        if (_DASActivityTransferSizeModerate < size)
         {
           result = _DASActivityTransferSizeLarge;
-          if (_DASActivityTransferSizeLarge < a3)
+          if (_DASActivityTransferSizeLarge < size)
           {
-            if (_DASActivityTransferSizeVeryLarge >= a3)
+            if (_DASActivityTransferSizeVeryLarge >= size)
             {
               return _DASActivityTransferSizeVeryLarge;
             }
@@ -1906,21 +1906,21 @@ LABEL_29:
   return result;
 }
 
-+ (unint64_t)cleanSchedulingPriority:(unint64_t)a3
++ (unint64_t)cleanSchedulingPriority:(unint64_t)priority
 {
   result = _DASSchedulingPriorityMaintenance;
-  if (_DASSchedulingPriorityMaintenance < a3)
+  if (_DASSchedulingPriorityMaintenance < priority)
   {
     result = _DASSchedulingPriorityBackground;
-    if (_DASSchedulingPriorityBackground < a3)
+    if (_DASSchedulingPriorityBackground < priority)
     {
       result = _DASSchedulingPriorityUtility;
-      if (_DASSchedulingPriorityUtility < a3)
+      if (_DASSchedulingPriorityUtility < priority)
       {
         result = _DASSchedulingPriorityDefault;
-        if (_DASSchedulingPriorityDefault < a3)
+        if (_DASSchedulingPriorityDefault < priority)
         {
-          if (_DASSchedulingPriorityUserInitiated >= a3)
+          if (_DASSchedulingPriorityUserInitiated >= priority)
           {
             return _DASSchedulingPriorityUserInitiated;
           }
@@ -1937,124 +1937,124 @@ LABEL_29:
   return result;
 }
 
-- (void)setTransferSize:(unint64_t)a3
+- (void)setTransferSize:(unint64_t)size
 {
   if (self->_isUpload)
   {
-    self->_uploadSize = a3;
-    a3 = _DASActivityTransferSizeZero;
+    self->_uploadSize = size;
+    size = _DASActivityTransferSizeZero;
   }
 
-  self->_downloadSize = a3;
+  self->_downloadSize = size;
 }
 
-- (void)setCpuIntensive:(BOOL)a3
+- (void)setCpuIntensive:(BOOL)intensive
 {
-  if (a3)
+  if (intensive)
   {
     self->_requiresDeviceInactivity = 1;
   }
 
-  self->_cpuIntensive = a3;
+  self->_cpuIntensive = intensive;
   [(_DASActivity *)self updateGroupIfNecessary];
 }
 
-- (void)setMemoryIntensive:(BOOL)a3
+- (void)setMemoryIntensive:(BOOL)intensive
 {
-  if (a3)
+  if (intensive)
   {
     self->_requiresDeviceInactivity = 1;
   }
 
-  self->_memoryIntensive = a3;
+  self->_memoryIntensive = intensive;
   [(_DASActivity *)self updateGroupIfNecessary];
 }
 
-- (void)setDiskIntensive:(BOOL)a3
+- (void)setDiskIntensive:(BOOL)intensive
 {
-  if (a3)
+  if (intensive)
   {
     self->_requiresDeviceInactivity = 1;
   }
 
-  self->_diskIntensive = a3;
+  self->_diskIntensive = intensive;
   [(_DASActivity *)self updateGroupIfNecessary];
 }
 
-- (void)setAneIntensive:(BOOL)a3
+- (void)setAneIntensive:(BOOL)intensive
 {
-  if (a3)
+  if (intensive)
   {
     self->_requiresDeviceInactivity = 1;
   }
 
-  self->_aneIntensive = a3;
+  self->_aneIntensive = intensive;
   [(_DASActivity *)self updateGroupIfNecessary];
 }
 
-- (void)setGpuIntensive:(BOOL)a3
+- (void)setGpuIntensive:(BOOL)intensive
 {
-  if (a3)
+  if (intensive)
   {
     self->_requiresDeviceInactivity = 1;
   }
 
-  self->_gpuIntensive = a3;
+  self->_gpuIntensive = intensive;
   [(_DASActivity *)self updateGroupIfNecessary];
 }
 
-- (void)setRequiresDeviceInactivity:(BOOL)a3
+- (void)setRequiresDeviceInactivity:(BOOL)inactivity
 {
-  if (a3 || !self->_cpuIntensive && !self->_diskIntensive && !self->_aneIntensive && !self->_gpuIntensive)
+  if (inactivity || !self->_cpuIntensive && !self->_diskIntensive && !self->_aneIntensive && !self->_gpuIntensive)
   {
-    self->_requiresDeviceInactivity = a3;
+    self->_requiresDeviceInactivity = inactivity;
   }
 }
 
-- (void)setAfterUserIsInactive:(BOOL)a3
+- (void)setAfterUserIsInactive:(BOOL)inactive
 {
-  if (a3)
+  if (inactive)
   {
     self->_beforeUserIsActive = 0;
     self->_requiresDeviceInactivity = 1;
   }
 
-  self->_afterUserIsInactive = a3;
+  self->_afterUserIsInactive = inactive;
 }
 
-- (void)setBeforeDaysFirstActivity:(BOOL)a3
+- (void)setBeforeDaysFirstActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     self->_darkWakeEligible = 1;
   }
 
-  self->_beforeDaysFirstActivity = a3;
+  self->_beforeDaysFirstActivity = activity;
 }
 
-- (void)setDarkWakeEligible:(BOOL)a3
+- (void)setDarkWakeEligible:(BOOL)eligible
 {
-  if (!a3)
+  if (!eligible)
   {
     self->_beforeDaysFirstActivity = 0;
   }
 
-  self->_darkWakeEligible = a3;
+  self->_darkWakeEligible = eligible;
 }
 
-- (void)setTriggersRestart:(BOOL)a3
+- (void)setTriggersRestart:(BOOL)restart
 {
-  if (a3)
+  if (restart)
   {
     [(_DASActivity *)self setRequiresSignificantUserInactivity:1];
   }
 
-  self->_triggersRestart = a3;
+  self->_triggersRestart = restart;
 }
 
-- (void)setIsMLBackgroundActivity:(BOOL)a3
+- (void)setIsMLBackgroundActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     [(_DASActivity *)self setCpuIntensive:1];
     [(_DASActivity *)self setMemoryIntensive:1];
@@ -2067,43 +2067,43 @@ LABEL_29:
   }
 }
 
-- (void)setIsUpload:(BOOL)a3
+- (void)setIsUpload:(BOOL)upload
 {
-  if (a3)
+  if (upload)
   {
     v3 = _DASActivityTransferSizeZero;
     self->_uploadSize = self->_downloadSize;
     self->_downloadSize = v3;
   }
 
-  self->_isUpload = a3;
+  self->_isUpload = upload;
 }
 
-- (void)setRequestsApplicationLaunch:(BOOL)a3
+- (void)setRequestsApplicationLaunch:(BOOL)launch
 {
-  if (a3)
+  if (launch)
   {
     self->_shouldBePersisted = 1;
     self->_suspendable = 1;
   }
 
-  self->_requestsApplicationLaunch = a3;
+  self->_requestsApplicationLaunch = launch;
 }
 
-- (void)setRequestsExtensionLaunch:(BOOL)a3
+- (void)setRequestsExtensionLaunch:(BOOL)launch
 {
-  if (a3)
+  if (launch)
   {
     self->_shouldBePersisted = 1;
     self->_suspendable = 1;
   }
 
-  self->_requestsExtensionLaunch = a3;
+  self->_requestsExtensionLaunch = launch;
 }
 
-- (void)setRequiresSignificantUserInactivity:(BOOL)a3
+- (void)setRequiresSignificantUserInactivity:(BOOL)inactivity
 {
-  if (a3 || self->_triggersRestart)
+  if (inactivity || self->_triggersRestart)
   {
     self->_requiresDeviceInactivity = 1;
   }
@@ -2111,9 +2111,9 @@ LABEL_29:
   [_DASActivity setBool:"setBool:forUserInfoKey:" forUserInfoKey:?];
 }
 
-- (void)setHasMagneticSensitivity:(BOOL)a3
+- (void)setHasMagneticSensitivity:(BOOL)sensitivity
 {
-  if (a3)
+  if (sensitivity)
   {
     self->_requiresPlugin = 0;
   }
@@ -2123,17 +2123,17 @@ LABEL_29:
 
 - (BOOL)allowsCompanionExpensiveNetworking
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"allowsCompanionExpensive"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"allowsCompanionExpensive"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setPercentCompleted:(double)a3
+- (void)setPercentCompleted:(double)completed
 {
   v3 = 0.0;
-  if (a3 < 0.0 || (v3 = 0.999, self->_percentCompleted > 0.999))
+  if (completed < 0.0 || (v3 = 0.999, self->_percentCompleted > 0.999))
   {
     self->_percentCompleted = v3;
   }
@@ -2141,8 +2141,8 @@ LABEL_29:
 
 - (BOOL)isSilentPush
 {
-  v2 = [(_DASActivity *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"notificationpayload"];
+  userInfo = [(_DASActivity *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"notificationpayload"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2188,18 +2188,18 @@ LABEL_29:
   return v7;
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  objc_storeStrong(&self->_groupName, a3);
+  objc_storeStrong(&self->_groupName, name);
 
   [(_DASActivity *)self updateGroupIfNecessary];
 }
 
-- (void)setInternalGroupNames:(id)a3
+- (void)setInternalGroupNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   os_unfair_lock_lock(&self->_internalGroupLock);
-  v5 = [v4 copy];
+  v5 = [namesCopy copy];
 
   internalGroupNames = self->_internalGroupNames;
   self->_internalGroupNames = v5;
@@ -2209,25 +2209,25 @@ LABEL_29:
   [(_DASActivity *)self updateGroupIfNecessary];
 }
 
-- (void)setRemoteDevice:(id)a3
+- (void)setRemoteDevice:(id)device
 {
-  objc_storeStrong(&self->_remoteDevice, a3);
-  if (a3 && !self->_targetDevice)
+  objc_storeStrong(&self->_remoteDevice, device);
+  if (device && !self->_targetDevice)
   {
 
     [(_DASActivity *)self setTargetDevice:3];
   }
 }
 
-- (void)setIsContactTracingBackgroundActivity:(BOOL)a3
+- (void)setIsContactTracingBackgroundActivity:(BOOL)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v5 = [MEMORY[0x1E696AD98] numberWithBool:?];
   [(_DASActivity *)self setObject:v5 forUserInfoKey:@"isCTActivity"];
 
   schedulingPriority = self->_schedulingPriority;
   v7 = _DASSchedulingPriorityUtility;
-  if (!v3)
+  if (!activityCopy)
   {
     if (schedulingPriority != _DASSchedulingPriorityUtility)
     {
@@ -2245,30 +2245,30 @@ LABEL_6:
   }
 }
 
-- (void)setObject:(id)a3 forUserInfoKey:(id)a4
+- (void)setObject:(id)object forUserInfoKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_userInfoLock);
-  [(NSMutableDictionary *)self->_userInfo setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_userInfo setObject:objectCopy forKeyedSubscript:keyCopy];
 
   os_unfair_lock_unlock(&self->_userInfoLock);
 }
 
-- (id)objectForUserInfoKey:(id)a3
+- (id)objectForUserInfoKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_userInfoLock);
-  v5 = [(NSMutableDictionary *)self->_userInfo objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_userInfo objectForKeyedSubscript:keyCopy];
 
   os_unfair_lock_unlock(&self->_userInfoLock);
 
   return v5;
 }
 
-- (void)setBool:(BOOL)a3 forUserInfoKey:(id)a4
+- (void)setBool:(BOOL)bool forUserInfoKey:(id)key
 {
-  if (a3)
+  if (bool)
   {
     v4 = MEMORY[0x1E695E118];
   }
@@ -2278,22 +2278,22 @@ LABEL_6:
     v4 = 0;
   }
 
-  [(_DASActivity *)self setObject:v4 forUserInfoKey:a4];
+  [(_DASActivity *)self setObject:v4 forUserInfoKey:key];
 }
 
-- (BOOL)BOOLForUserInfoKey:(id)a3
+- (BOOL)BOOLForUserInfoKey:(id)key
 {
-  v3 = [(_DASActivity *)self objectForUserInfoKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(_DASActivity *)self objectForUserInfoKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   os_unfair_lock_lock(&self->_userInfoLock);
-  v5 = [v4 mutableCopy];
+  v5 = [infoCopy mutableCopy];
 
   userInfo = self->_userInfo;
   self->_userInfo = v5;
@@ -2301,77 +2301,77 @@ LABEL_6:
   os_unfair_lock_unlock(&self->_userInfoLock);
 }
 
-- (void)setConstraintsWithXPCDictionary:(id)a3
+- (void)setConstraintsWithXPCDictionary:(id)dictionary
 {
   applier[0] = MEMORY[0x1E69E9820];
   applier[1] = 3221225472;
   applier[2] = __48___DASActivity_setConstraintsWithXPCDictionary___block_invoke;
   applier[3] = &unk_1E7C8F558;
   applier[4] = self;
-  xpc_dictionary_apply(a3, applier);
+  xpc_dictionary_apply(dictionary, applier);
 }
 
-- (double)compatibilityWith:(id)a3
+- (double)compatibilityWith:(id)with
 {
   v72 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  withCopy = with;
   v8 = 1.0;
-  if ([(_DASActivity *)self isEqual:v7])
+  if ([(_DASActivity *)self isEqual:withCopy])
   {
     goto LABEL_88;
   }
 
-  v9 = [(_DASActivity *)self widgetID];
-  if (v9 && ([v7 widgetID], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  widgetID = [(_DASActivity *)self widgetID];
+  if (widgetID && ([withCopy widgetID], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v11 = [(_DASActivity *)self widgetBudgetID];
-    if (!v11)
+    widgetBudgetID = [(_DASActivity *)self widgetBudgetID];
+    if (!widgetBudgetID)
     {
 
-      if (v9)
+      if (widgetID)
       {
       }
 
       goto LABEL_13;
     }
 
-    v12 = [v7 widgetBudgetID];
+    widgetBudgetID2 = [withCopy widgetBudgetID];
 
-    if (v9)
+    if (widgetID)
     {
     }
 
-    if (!v12)
+    if (!widgetBudgetID2)
     {
       goto LABEL_13;
     }
   }
 
-  v13 = [(_DASActivity *)self relatedApplications];
-  v14 = [v13 firstObject];
-  v15 = [v7 relatedApplications];
-  v3 = [v15 firstObject];
-  v4 = [v14 isEqual:v3];
+  relatedApplications = [(_DASActivity *)self relatedApplications];
+  firstObject = [relatedApplications firstObject];
+  relatedApplications2 = [withCopy relatedApplications];
+  firstObject2 = [relatedApplications2 firstObject];
+  processingTaskIdentifiers = [firstObject isEqual:firstObject2];
 
-  if (v4)
+  if (processingTaskIdentifiers)
   {
     goto LABEL_88;
   }
 
 LABEL_13:
-  v16 = [(_DASActivity *)self isIntensive];
-  v17 = [v7 isIntensive];
-  v18 = [(_DASActivity *)self fastPass];
-  if (v18)
+  isIntensive = [(_DASActivity *)self isIntensive];
+  isIntensive2 = [withCopy isIntensive];
+  fastPass = [(_DASActivity *)self fastPass];
+  if (fastPass)
   {
-    v3 = [(_DASActivity *)self fastPass];
-    v4 = [v3 processingTaskIdentifiers];
-    v5 = [v7 name];
-    if ([v4 containsObject:v5])
+    firstObject2 = [(_DASActivity *)self fastPass];
+    processingTaskIdentifiers = [firstObject2 processingTaskIdentifiers];
+    name = [withCopy name];
+    if ([processingTaskIdentifiers containsObject:name])
     {
 
 LABEL_16:
@@ -2380,23 +2380,23 @@ LABEL_16:
     }
   }
 
-  v19 = [v7 fastPass];
-  if (v19)
+  fastPass2 = [withCopy fastPass];
+  if (fastPass2)
   {
-    v65 = v17;
-    v66 = v16;
-    v20 = [v7 fastPass];
-    v21 = [v20 processingTaskIdentifiers];
-    v22 = [(_DASActivity *)self name];
-    v64 = [v21 containsObject:v22];
+    v65 = isIntensive2;
+    v66 = isIntensive;
+    fastPass3 = [withCopy fastPass];
+    processingTaskIdentifiers2 = [fastPass3 processingTaskIdentifiers];
+    name2 = [(_DASActivity *)self name];
+    v64 = [processingTaskIdentifiers2 containsObject:name2];
 
-    if (v18)
+    if (fastPass)
     {
     }
 
     v8 = -1.0;
-    v17 = v65;
-    v16 = v66;
+    isIntensive2 = v65;
+    isIntensive = v66;
     if (v64)
     {
       goto LABEL_88;
@@ -2406,25 +2406,25 @@ LABEL_16:
   else
   {
 
-    if (v18)
+    if (fastPass)
     {
     }
   }
 
   v23 = 0.0;
-  if ((v16 & v17) == 1)
+  if ((isIntensive & isIntensive2) == 1)
   {
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      v36 = [(_DASActivity *)self groupName];
-      if (([v36 isEqualToString:_DASDefaultIntensiveGroupName] & 1) == 0)
+      groupName = [(_DASActivity *)self groupName];
+      if (([groupName isEqualToString:_DASDefaultIntensiveGroupName] & 1) == 0)
       {
 
         goto LABEL_16;
       }
 
-      v37 = [v7 groupName];
-      v38 = [v37 isEqualToString:_DASDefaultIntensiveGroupName];
+      groupName2 = [withCopy groupName];
+      v38 = [groupName2 isEqualToString:_DASDefaultIntensiveGroupName];
 
       v8 = -1.0;
       if (!v38)
@@ -2433,62 +2433,62 @@ LABEL_16:
       }
     }
 
-    v24 = [(_DASActivity *)self isCPUIntensive];
+    isCPUIntensive = [(_DASActivity *)self isCPUIntensive];
     if ([(_DASActivity *)self isMemoryIntensive])
     {
-      v24 |= 2uLL;
+      isCPUIntensive |= 2uLL;
     }
 
     if ([(_DASActivity *)self isDiskIntensive])
     {
-      v24 |= 4uLL;
+      isCPUIntensive |= 4uLL;
     }
 
     if ([(_DASActivity *)self isANEIntensive])
     {
-      v24 |= 8uLL;
+      isCPUIntensive |= 8uLL;
     }
 
     if ([(_DASActivity *)self isGPUIntensive])
     {
-      v24 |= 0x10uLL;
+      isCPUIntensive |= 0x10uLL;
     }
 
-    v25 = [v7 isCPUIntensive];
-    if ([v7 isMemoryIntensive])
+    isCPUIntensive2 = [withCopy isCPUIntensive];
+    if ([withCopy isMemoryIntensive])
     {
-      v25 |= 2uLL;
+      isCPUIntensive2 |= 2uLL;
     }
 
-    if ([v7 isDiskIntensive])
+    if ([withCopy isDiskIntensive])
     {
-      v25 |= 4uLL;
+      isCPUIntensive2 |= 4uLL;
     }
 
-    if ([v7 isANEIntensive])
+    if ([withCopy isANEIntensive])
     {
-      v25 |= 8uLL;
+      isCPUIntensive2 |= 8uLL;
     }
 
-    v26 = [v7 isGPUIntensive];
-    v27 = v25 | 0x10;
-    if (!v26)
+    isGPUIntensive = [withCopy isGPUIntensive];
+    v27 = isCPUIntensive2 | 0x10;
+    if (!isGPUIntensive)
     {
-      v27 = v25;
+      v27 = isCPUIntensive2;
     }
 
-    if ((v27 & v24) != 0)
+    if ((v27 & isCPUIntensive) != 0)
     {
       v28 = +[_DASPlistParser sharedInstance];
-      v29 = [v28 suspensionThreshold];
+      suspensionThreshold = [v28 suspensionThreshold];
 
-      v30 = [v7 suspendRequestDate];
-      if (v30)
+      suspendRequestDate = [withCopy suspendRequestDate];
+      if (suspendRequestDate)
       {
-        v31 = v30;
-        if (v29)
+        v31 = suspendRequestDate;
+        if (suspensionThreshold)
         {
-          v32 = v29;
+          v32 = suspensionThreshold;
         }
 
         else
@@ -2496,8 +2496,8 @@ LABEL_16:
           v32 = 61;
         }
 
-        v33 = [v7 suspendRequestDate];
-        [v33 timeIntervalSinceNow];
+        suspendRequestDate2 = [withCopy suspendRequestDate];
+        [suspendRequestDate2 timeIntervalSinceNow];
         v35 = -v34;
 
         if (v35 <= v32)
@@ -2522,18 +2522,18 @@ LABEL_16:
     v23 = 0.5;
   }
 
-  if (![v7 triggersRestart])
+  if (![withCopy triggersRestart])
   {
     goto LABEL_60;
   }
 
-  v39 = [v7 startDate];
+  startDate = [withCopy startDate];
   v8 = -1.0;
-  if (v39)
+  if (startDate)
   {
-    v40 = v39;
-    v41 = [v7 startDate];
-    [v41 timeIntervalSinceNow];
+    v40 = startDate;
+    startDate2 = [withCopy startDate];
+    [startDate2 timeIntervalSinceNow];
     v43 = v42;
 
     if (v43 < 0.0)
@@ -2547,8 +2547,8 @@ LABEL_60:
       bundleId = self->_bundleId;
       if (bundleId)
       {
-        v45 = [v7 bundleId];
-        v46 = [(NSString *)bundleId isEqual:v45];
+        bundleId = [withCopy bundleId];
+        v46 = [(NSString *)bundleId isEqual:bundleId];
 
         if (v46)
         {
@@ -2557,15 +2557,15 @@ LABEL_60:
       }
 
       runWhenAppLaunchUnlikely = self->_runWhenAppLaunchUnlikely;
-      if (runWhenAppLaunchUnlikely == [v7 runWhenAppLaunchUnlikely])
+      if (runWhenAppLaunchUnlikely == [withCopy runWhenAppLaunchUnlikely])
       {
         if (self->_relatedApplications)
         {
-          v48 = [v7 relatedApplications];
+          relatedApplications3 = [withCopy relatedApplications];
 
-          if (v48)
+          if (relatedApplications3)
           {
-            v49 = [v7 relatedApplications];
+            relatedApplications4 = [withCopy relatedApplications];
             v67 = 0u;
             v68 = 0u;
             v69 = 0u;
@@ -2585,7 +2585,7 @@ LABEL_60:
                     objc_enumerationMutation(v50);
                   }
 
-                  if ([v49 containsObject:*(*(&v67 + 1) + 8 * i)])
+                  if ([relatedApplications4 containsObject:*(*(&v67 + 1) + 8 * i)])
                   {
                     v23 = v23 + 0.1;
                   }
@@ -2600,22 +2600,22 @@ LABEL_60:
         }
       }
 
-      if (self->_requiresNetwork && [v7 requiresNetwork])
+      if (self->_requiresNetwork && [withCopy requiresNetwork])
       {
-        if ([v7 noTransferSizeSpecified])
+        if ([withCopy noTransferSizeSpecified])
         {
-          v55 = _DASActivityTransferSizeSmall;
+          downloadSize = _DASActivityTransferSizeSmall;
         }
 
         else
         {
-          v55 = [v7 downloadSize];
+          downloadSize = [withCopy downloadSize];
         }
 
-        v56 = v55 + 2 * [v7 uploadSize];
-        v57 = [(_DASActivity *)self noTransferSizeSpecified];
+        v56 = downloadSize + 2 * [withCopy uploadSize];
+        noTransferSizeSpecified = [(_DASActivity *)self noTransferSizeSpecified];
         p_downloadSize = &self->_downloadSize;
-        if (v57)
+        if (noTransferSizeSpecified)
         {
           p_downloadSize = &_DASActivityTransferSizeSmall;
         }
@@ -2641,9 +2641,9 @@ LABEL_88:
   return v8;
 }
 
-- (BOOL)timewiseEligibleAtDate:(id)a3
+- (BOOL)timewiseEligibleAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(_DASActivity *)self isSoftwareUpdateActivity]&& ![(_DASActivity *)self useStatisticalModelForTriggersRestart]|| self->_beforeDaysFirstActivity)
   {
     v5 = 1;
@@ -2651,42 +2651,42 @@ LABEL_88:
 
   else
   {
-    v6 = [(_DASActivity *)self startAfter];
-    [v4 timeIntervalSinceDate:v6];
+    startAfter = [(_DASActivity *)self startAfter];
+    [dateCopy timeIntervalSinceDate:startAfter];
     v5 = v7 > 0.0 || [(_DASActivity *)self userRequestedBackupTask];
   }
 
   return v5;
 }
 
-- (BOOL)overdueAtDate:(id)a3
+- (BOOL)overdueAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_DASActivity *)self startBefore];
-  [v4 timeIntervalSinceDate:v5];
+  dateCopy = date;
+  startBefore = [(_DASActivity *)self startBefore];
+  [dateCopy timeIntervalSinceDate:startBefore];
   v7 = v6;
 
   return v7 > 0.0;
 }
 
-- (BOOL)significantlyOverdueAtDate:(id)a3
+- (BOOL)significantlyOverdueAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_DASActivity *)self startBefore];
-  [v4 timeIntervalSinceDate:v5];
+  dateCopy = date;
+  startBefore = [(_DASActivity *)self startBefore];
+  [dateCopy timeIntervalSinceDate:startBefore];
   v7 = v6;
 
   return v7 > 86400.0;
 }
 
-- (BOOL)ckPushContentMatches:(id)a3
+- (BOOL)ckPushContentMatches:(id)matches
 {
-  v4 = a3;
+  matchesCopy = matches;
   v5 = [(_DASActivity *)self objectForUserInfoKey:@"notificationpayload"];
   v6 = [v5 objectForKeyedSubscript:@"ck"];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"notificationpayload"];
+  userInfo = [matchesCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"notificationpayload"];
   v9 = [v8 objectForKeyedSubscript:@"ck"];
 
   v15 = 0;
@@ -2716,27 +2716,27 @@ LABEL_88:
   return v10 & 1;
 }
 
-- (BOOL)isIdenticalLaunchTo:(id)a3
+- (BOOL)isIdenticalLaunchTo:(id)to
 {
-  v4 = a3;
-  v5 = [(_DASActivity *)self name];
-  v6 = [v4 name];
-  if ([v5 isEqualToString:v6])
+  toCopy = to;
+  name = [(_DASActivity *)self name];
+  name2 = [toCopy name];
+  if ([name isEqualToString:name2])
   {
-    v7 = [(_DASActivity *)self relatedApplications];
-    v8 = [v7 firstObject];
-    v9 = [v4 relatedApplications];
-    v10 = [v9 firstObject];
-    if ([v8 isEqualToString:v10])
+    relatedApplications = [(_DASActivity *)self relatedApplications];
+    firstObject = [relatedApplications firstObject];
+    relatedApplications2 = [toCopy relatedApplications];
+    firstObject2 = [relatedApplications2 firstObject];
+    if ([firstObject isEqualToString:firstObject2])
     {
-      v11 = [(_DASActivity *)self launchReason];
-      v12 = [v4 launchReason];
-      if ([v11 isEqualToString:v12])
+      launchReason = [(_DASActivity *)self launchReason];
+      launchReason2 = [toCopy launchReason];
+      if ([launchReason isEqualToString:launchReason2])
       {
-        v15 = [(_DASActivity *)self launchReason];
-        if ([v15 isEqualToString:@"com.apple.das.launchreason.push"])
+        launchReason3 = [(_DASActivity *)self launchReason];
+        if ([launchReason3 isEqualToString:@"com.apple.das.launchreason.push"])
         {
-          v13 = [(_DASActivity *)self ckPushContentMatches:v4];
+          v13 = [(_DASActivity *)self ckPushContentMatches:toCopy];
         }
 
         else
@@ -2767,16 +2767,16 @@ LABEL_88:
 
 - (BOOL)keepsPrevious
 {
-  v3 = [(_DASActivity *)self launchReason];
-  if ([v3 isEqualToString:@"com.apple.duetactivity.launchreason.nsurlsessioncomplete"])
+  launchReason = [(_DASActivity *)self launchReason];
+  if ([launchReason isEqualToString:@"com.apple.duetactivity.launchreason.nsurlsessioncomplete"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_DASActivity *)self launchReason];
-    v4 = [v5 isEqualToString:@"com.apple.duetactivity.launchreason.wkpendingdata"];
+    launchReason2 = [(_DASActivity *)self launchReason];
+    v4 = [launchReason2 isEqualToString:@"com.apple.duetactivity.launchreason.wkpendingdata"];
   }
 
   return v4;
@@ -2784,16 +2784,16 @@ LABEL_88:
 
 - (BOOL)overwritesPrevious
 {
-  v3 = [(_DASActivity *)self launchReason];
-  if ([v3 isEqualToString:@"com.apple.das.launchreason.push"])
+  launchReason = [(_DASActivity *)self launchReason];
+  if ([launchReason isEqualToString:@"com.apple.das.launchreason.push"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_DASActivity *)self launchReason];
-    v4 = [v5 isEqualToString:@"_DASExtLaunchMLCompute"];
+    launchReason2 = [(_DASActivity *)self launchReason];
+    v4 = [launchReason2 isEqualToString:@"_DASExtLaunchMLCompute"];
   }
 
   return v4;
@@ -2801,31 +2801,31 @@ LABEL_88:
 
 - (BOOL)isPrioritizedIdleStackTasks
 {
-  v3 = [(_DASActivity *)self name];
-  if ([v3 containsString:@"com.apple.idleStack_med"])
+  name = [(_DASActivity *)self name];
+  if ([name containsString:@"com.apple.idleStack_med"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(_DASActivity *)self name];
-    v4 = [v5 containsString:@"com.apple.idleStack_high"];
+    name2 = [(_DASActivity *)self name];
+    v4 = [name2 containsString:@"com.apple.idleStack_high"];
   }
 
   return v4;
 }
 
-- (id)dependencyForIdentifier:(id)a3
+- (id)dependencyForIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(_DASActivity *)self dependencies];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  dependencies = [(_DASActivity *)self dependencies];
+  v6 = [dependencies countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -2835,12 +2835,12 @@ LABEL_88:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dependencies);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -2849,7 +2849,7 @@ LABEL_88:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [dependencies countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -2868,53 +2868,53 @@ LABEL_11:
 
 - (id)policyScores
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = self;
-  objc_sync_enter(v4);
-  policyResponseMetadata = v4->_policyResponseMetadata;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  policyResponseMetadata = selfCopy->_policyResponseMetadata;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __28___DASActivity_policyScores__block_invoke;
   v8[3] = &unk_1E7C8F5D0;
-  v6 = v3;
+  v6 = dictionary;
   v9 = v6;
   [(NSMutableDictionary *)policyResponseMetadata enumerateKeysAndObjectsUsingBlock:v8];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)shouldReplaceActivity:(id)a3 andKeepsSubmitted:(BOOL *)a4
+- (BOOL)shouldReplaceActivity:(id)activity andKeepsSubmitted:(BOOL *)submitted
 {
-  v6 = a3;
-  v7 = [(_DASActivity *)self clientProvidedIdentifier];
-  v8 = [v6 clientProvidedIdentifier];
-  v9 = [v7 isEqualToString:v8];
+  activityCopy = activity;
+  clientProvidedIdentifier = [(_DASActivity *)self clientProvidedIdentifier];
+  clientProvidedIdentifier2 = [activityCopy clientProvidedIdentifier];
+  v9 = [clientProvidedIdentifier isEqualToString:clientProvidedIdentifier2];
 
   if (v9)
   {
-    v10 = [(_DASActivity *)self launchReason];
-    v11 = [v6 launchReason];
-    v12 = [v10 isEqualToString:v11];
+    launchReason = [(_DASActivity *)self launchReason];
+    launchReason2 = [activityCopy launchReason];
+    v12 = [launchReason isEqualToString:launchReason2];
 
     if (v12)
     {
-      v13 = [(_DASActivity *)self launchReason];
-      if ([v13 isEqualToString:@"com.apple.das.bgprocessing"])
+      launchReason3 = [(_DASActivity *)self launchReason];
+      if ([launchReason3 isEqualToString:@"com.apple.das.bgprocessing"])
       {
-        v14 = [(_DASActivity *)self requiresPlugin];
-        if (v14 != [v6 requiresPlugin])
+        requiresPlugin = [(_DASActivity *)self requiresPlugin];
+        if (requiresPlugin != [activityCopy requiresPlugin])
         {
 LABEL_12:
 
           goto LABEL_22;
         }
 
-        v15 = [(_DASActivity *)self requiresNetwork];
-        v16 = [v6 requiresNetwork];
+        requiresNetwork = [(_DASActivity *)self requiresNetwork];
+        requiresNetwork2 = [activityCopy requiresNetwork];
 
-        if (v15 != v16)
+        if (requiresNetwork != requiresNetwork2)
         {
           goto LABEL_22;
         }
@@ -2924,24 +2924,24 @@ LABEL_12:
       {
       }
 
-      v13 = [(_DASActivity *)self launchReason];
-      if ([v13 isEqualToString:@"com.apple.das.bghealthresearch"])
+      launchReason3 = [(_DASActivity *)self launchReason];
+      if ([launchReason3 isEqualToString:@"com.apple.das.bghealthresearch"])
       {
-        v19 = [(_DASActivity *)self requiresPlugin];
-        if (v19 != [v6 requiresPlugin])
+        requiresPlugin2 = [(_DASActivity *)self requiresPlugin];
+        if (requiresPlugin2 != [activityCopy requiresPlugin])
         {
           goto LABEL_12;
         }
 
-        v20 = [(_DASActivity *)self requiresNetwork];
-        if (v20 != [v6 requiresNetwork])
+        requiresNetwork3 = [(_DASActivity *)self requiresNetwork];
+        if (requiresNetwork3 != [activityCopy requiresNetwork])
         {
           goto LABEL_12;
         }
 
-        v32 = [(_DASActivity *)self fileProtection];
-        v33 = [v6 fileProtection];
-        v34 = [v32 isEqual:v33];
+        fileProtection = [(_DASActivity *)self fileProtection];
+        fileProtection2 = [activityCopy fileProtection];
+        v34 = [fileProtection isEqual:fileProtection2];
 
         if (!v34)
         {
@@ -2953,23 +2953,23 @@ LABEL_12:
       {
       }
 
-      v21 = [(_DASActivity *)self clientProvidedStartDate];
-      v22 = [v6 clientProvidedStartDate];
-      v23 = v22 != 0;
+      clientProvidedStartDate = [(_DASActivity *)self clientProvidedStartDate];
+      clientProvidedStartDate2 = [activityCopy clientProvidedStartDate];
+      v23 = clientProvidedStartDate2 != 0;
 
-      if ((v21 == 0) != v23)
+      if ((clientProvidedStartDate == 0) != v23)
       {
-        v24 = [(_DASActivity *)self clientProvidedStartDate];
-        if (v24)
+        clientProvidedStartDate3 = [(_DASActivity *)self clientProvidedStartDate];
+        if (clientProvidedStartDate3)
         {
-          v25 = v24;
-          v26 = [v6 clientProvidedStartDate];
-          if (v26)
+          v25 = clientProvidedStartDate3;
+          clientProvidedStartDate4 = [activityCopy clientProvidedStartDate];
+          if (clientProvidedStartDate4)
           {
-            v27 = v26;
-            v28 = [(_DASActivity *)self clientProvidedStartDate];
-            v29 = [v6 clientProvidedStartDate];
-            [v28 timeIntervalSinceDate:v29];
+            v27 = clientProvidedStartDate4;
+            clientProvidedStartDate5 = [(_DASActivity *)self clientProvidedStartDate];
+            clientProvidedStartDate6 = [activityCopy clientProvidedStartDate];
+            [clientProvidedStartDate5 timeIntervalSinceDate:clientProvidedStartDate6];
             v31 = v30;
 
             if (v31 < 0.0)
@@ -3003,25 +3003,25 @@ LABEL_22:
   v17 = 0;
   v18 = 1;
 LABEL_23:
-  *a4 = v18;
+  *submitted = v18;
 
   return v17;
 }
 
-- (void)reconcileWithActivity:(id)a3
+- (void)reconcileWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  obj = v4;
+  activityCopy = activity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  obj = activityCopy;
   objc_sync_enter(obj);
-  v6 = [(_DASActivity *)v5 uuid];
-  v7 = [obj uuid];
-  v8 = [v6 isEqual:v7];
+  uuid = [(_DASActivity *)selfCopy uuid];
+  uuid2 = [obj uuid];
+  v8 = [uuid isEqual:uuid2];
 
   if (v8)
   {
-    [(_DASActivity *)v5 percentCompleted];
+    [(_DASActivity *)selfCopy percentCompleted];
     v10 = v9;
     [obj percentCompleted];
     if (v10 >= v11)
@@ -3029,284 +3029,284 @@ LABEL_23:
       v11 = v10;
     }
 
-    [(_DASActivity *)v5 setPercentCompleted:v11];
+    [(_DASActivity *)selfCopy setPercentCompleted:v11];
     [obj lastComputedScore];
-    [(_DASActivity *)v5 setLastComputedScore:?];
+    [(_DASActivity *)selfCopy setLastComputedScore:?];
     [obj predictedOptimalScore];
-    [(_DASActivity *)v5 setPredictedOptimalScore:?];
-    -[_DASActivity setLastDenialValue:](v5, "setLastDenialValue:", [obj lastDenialValue]);
-    -[_DASActivity setWasForceRun:](v5, "setWasForceRun:", [obj wasForceRun]);
-    -[_DASActivity setBypassesPredictions:](v5, "setBypassesPredictions:", [obj bypassesPredictions]);
-    -[_DASActivity setStaticPriority:](v5, "setStaticPriority:", [obj staticPriority]);
-    v12 = [obj assertion];
-    [(_DASActivity *)v5 setAssertion:v12];
+    [(_DASActivity *)selfCopy setPredictedOptimalScore:?];
+    -[_DASActivity setLastDenialValue:](selfCopy, "setLastDenialValue:", [obj lastDenialValue]);
+    -[_DASActivity setWasForceRun:](selfCopy, "setWasForceRun:", [obj wasForceRun]);
+    -[_DASActivity setBypassesPredictions:](selfCopy, "setBypassesPredictions:", [obj bypassesPredictions]);
+    -[_DASActivity setStaticPriority:](selfCopy, "setStaticPriority:", [obj staticPriority]);
+    assertion = [obj assertion];
+    [(_DASActivity *)selfCopy setAssertion:assertion];
 
-    v13 = [obj submitDate];
-    v14 = [v13 copy];
-    [(_DASActivity *)v5 setSubmitDate:v14];
+    submitDate = [obj submitDate];
+    v14 = [submitDate copy];
+    [(_DASActivity *)selfCopy setSubmitDate:v14];
 
-    v15 = [obj predictedOptimalStartDate];
-    v16 = [v15 copy];
-    [(_DASActivity *)v5 setPredictedOptimalStartDate:v16];
+    predictedOptimalStartDate = [obj predictedOptimalStartDate];
+    v16 = [predictedOptimalStartDate copy];
+    [(_DASActivity *)selfCopy setPredictedOptimalStartDate:v16];
 
-    v17 = [obj lastScored];
-    v18 = [v17 copy];
-    [(_DASActivity *)v5 setLastScored:v18];
+    lastScored = [obj lastScored];
+    v18 = [lastScored copy];
+    [(_DASActivity *)selfCopy setLastScored:v18];
 
-    v19 = [obj suspendRequestDate];
-    v20 = [v19 copy];
-    [(_DASActivity *)v5 setSuspendRequestDate:v20];
+    suspendRequestDate = [obj suspendRequestDate];
+    v20 = [suspendRequestDate copy];
+    [(_DASActivity *)selfCopy setSuspendRequestDate:v20];
 
-    v21 = [obj policyResponseMetadata];
-    v22 = [v21 mutableCopy];
-    [(_DASActivity *)v5 setPolicyResponseMetadata:v22];
+    policyResponseMetadata = [obj policyResponseMetadata];
+    v22 = [policyResponseMetadata mutableCopy];
+    [(_DASActivity *)selfCopy setPolicyResponseMetadata:v22];
 
-    v23 = [obj startConditions];
-    v24 = [v23 mutableCopy];
-    [(_DASActivity *)v5 setStartConditions:v24];
+    startConditions = [obj startConditions];
+    v24 = [startConditions mutableCopy];
+    [(_DASActivity *)selfCopy setStartConditions:v24];
 
-    v25 = [obj limitationResponse];
-    v26 = [v25 mutableCopy];
-    [(_DASActivity *)v5 setLimitationResponse:v26];
+    limitationResponse = [obj limitationResponse];
+    v26 = [limitationResponse mutableCopy];
+    [(_DASActivity *)selfCopy setLimitationResponse:v26];
 
-    v27 = [obj progress];
-    [(_DASActivity *)v5 setProgress:v27];
+    progress = [obj progress];
+    [(_DASActivity *)selfCopy setProgress:progress];
 
-    -[_DASActivity setMaximumRuntime:](v5, "setMaximumRuntime:", [obj maximumRuntime]);
-    v28 = [obj internalGroupNames];
-    v29 = [v28 copy];
-    [(_DASActivity *)v5 setInternalGroupNames:v29];
+    -[_DASActivity setMaximumRuntime:](selfCopy, "setMaximumRuntime:", [obj maximumRuntime]);
+    internalGroupNames = [obj internalGroupNames];
+    v29 = [internalGroupNames copy];
+    [(_DASActivity *)selfCopy setInternalGroupNames:v29];
 
-    -[_DASActivity setUninterruptibleDuration:](v5, "setUninterruptibleDuration:", [obj uninterruptibleDuration]);
-    -[_DASActivity setRequestsImmediateRuntime:](v5, "setRequestsImmediateRuntime:", [obj requestsImmediateRuntime]);
-    v30 = [obj rateLimitConfigurationName];
-    [(_DASActivity *)v5 setRateLimitConfigurationName:v30];
+    -[_DASActivity setUninterruptibleDuration:](selfCopy, "setUninterruptibleDuration:", [obj uninterruptibleDuration]);
+    -[_DASActivity setRequestsImmediateRuntime:](selfCopy, "setRequestsImmediateRuntime:", [obj requestsImmediateRuntime]);
+    rateLimitConfigurationName = [obj rateLimitConfigurationName];
+    [(_DASActivity *)selfCopy setRateLimitConfigurationName:rateLimitConfigurationName];
 
-    v31 = [obj widgetID];
-    [(_DASActivity *)v5 setWidgetID:v31];
+    widgetID = [obj widgetID];
+    [(_DASActivity *)selfCopy setWidgetID:widgetID];
 
-    v32 = [obj widgetBudgetID];
-    [(_DASActivity *)v5 setWidgetBudgetID:v32];
+    widgetBudgetID = [obj widgetBudgetID];
+    [(_DASActivity *)selfCopy setWidgetBudgetID:widgetBudgetID];
 
-    v33 = [obj producedResultIdentifiers];
-    v34 = [v33 copy];
-    [(_DASActivity *)v5 setProducedResultIdentifiers:v34];
+    producedResultIdentifiers = [obj producedResultIdentifiers];
+    v34 = [producedResultIdentifiers copy];
+    [(_DASActivity *)selfCopy setProducedResultIdentifiers:v34];
 
-    v35 = [obj dependencies];
-    v36 = [v35 copy];
-    [(_DASActivity *)v5 setDependencies:v36];
+    dependencies = [obj dependencies];
+    v36 = [dependencies copy];
+    [(_DASActivity *)selfCopy setDependencies:v36];
   }
 
   objc_sync_exit(obj);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v49 = a3;
-  [v49 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_schedulingPriority];
-  [v49 encodeObject:v4 forKey:@"schedPriority"];
+  [coderCopy encodeObject:v4 forKey:@"schedPriority"];
 
-  v5 = [(_DASActivity *)self startBefore];
-  [v49 encodeObject:v5 forKey:@"before"];
+  startBefore = [(_DASActivity *)self startBefore];
+  [coderCopy encodeObject:startBefore forKey:@"before"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_duration];
-  [v49 encodeObject:v6 forKey:@"duration"];
+  [coderCopy encodeObject:v6 forKey:@"duration"];
 
-  v7 = [(_DASActivity *)self startAfter];
-  [v49 encodeObject:v7 forKey:@"after"];
+  startAfter = [(_DASActivity *)self startAfter];
+  [coderCopy encodeObject:startAfter forKey:@"after"];
 
-  [v49 encodeObject:self->_uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_uuid forKey:@"uuid"];
   if ([(_DASFileProtection *)self->_fileProtection indicatesProtection])
   {
-    [v49 encodeObject:self->_fileProtection forKey:@"fileProtection"];
+    [coderCopy encodeObject:self->_fileProtection forKey:@"fileProtection"];
   }
 
   if (self->_suspendable)
   {
-    [v49 encodeBool:1 forKey:@"suspendable"];
+    [coderCopy encodeBool:1 forKey:@"suspendable"];
   }
 
   if (self->_cancelAfterDeadline)
   {
-    [v49 encodeBool:1 forKey:@"deadlineCancel"];
+    [coderCopy encodeBool:1 forKey:@"deadlineCancel"];
   }
 
   if (self->_requiresNetwork)
   {
-    [v49 encodeBool:1 forKey:@"reqNW"];
+    [coderCopy encodeBool:1 forKey:@"reqNW"];
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_downloadSize];
-    [v49 encodeObject:v8 forKey:@"nwDownloadSize"];
+    [coderCopy encodeObject:v8 forKey:@"nwDownloadSize"];
 
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_uploadSize];
-    [v49 encodeObject:v9 forKey:@"nwUploadSize"];
+    [coderCopy encodeObject:v9 forKey:@"nwUploadSize"];
 
-    [v49 encodeBool:self->_isUpload forKey:@"isUpload"];
-    [v49 encodeBool:self->_requiresInexpensiveNetworking forKey:@"cheapNW"];
-    [v49 encodeBool:self->_requiresUnconstrainedNetworking forKey:@"unconstrainedNW"];
+    [coderCopy encodeBool:self->_isUpload forKey:@"isUpload"];
+    [coderCopy encodeBool:self->_requiresInexpensiveNetworking forKey:@"cheapNW"];
+    [coderCopy encodeBool:self->_requiresUnconstrainedNetworking forKey:@"unconstrainedNW"];
   }
 
   if (self->_shouldWakeDevice)
   {
-    [v49 encodeBool:1 forKey:@"shouldWakeDevice"];
+    [coderCopy encodeBool:1 forKey:@"shouldWakeDevice"];
   }
 
   if (self->_cpuIntensive)
   {
-    [v49 encodeBool:1 forKey:@"cpu"];
+    [coderCopy encodeBool:1 forKey:@"cpu"];
   }
 
   if (self->_memoryIntensive)
   {
-    [v49 encodeBool:1 forKey:@"mem"];
+    [coderCopy encodeBool:1 forKey:@"mem"];
   }
 
   if (self->_diskIntensive)
   {
-    [v49 encodeBool:1 forKey:@"disk"];
+    [coderCopy encodeBool:1 forKey:@"disk"];
   }
 
   if (self->_aneIntensive)
   {
-    [v49 encodeBool:1 forKey:@"ane"];
+    [coderCopy encodeBool:1 forKey:@"ane"];
   }
 
   if (self->_gpuIntensive)
   {
-    [v49 encodeBool:1 forKey:@"gpu"];
+    [coderCopy encodeBool:1 forKey:@"gpu"];
   }
 
   if (self->_afterUserIsInactive)
   {
-    [v49 encodeBool:1 forKey:@"afterInactive"];
+    [coderCopy encodeBool:1 forKey:@"afterInactive"];
   }
 
   if (self->_beforeUserIsActive)
   {
-    [v49 encodeBool:1 forKey:@"beforeActive"];
+    [coderCopy encodeBool:1 forKey:@"beforeActive"];
   }
 
   if (self->_requiresDeviceInactivity)
   {
-    [v49 encodeBool:1 forKey:@"inactive"];
+    [coderCopy encodeBool:1 forKey:@"inactive"];
   }
 
   if (self->_darkWakeEligible)
   {
-    [v49 encodeBool:1 forKey:@"darkWake"];
+    [coderCopy encodeBool:1 forKey:@"darkWake"];
   }
 
   if (self->_beforeDaysFirstActivity)
   {
-    [v49 encodeBool:1 forKey:@"apprefresh"];
+    [coderCopy encodeBool:1 forKey:@"apprefresh"];
   }
 
   if (self->_interval != 0.0)
   {
-    [v49 encodeDouble:@"interval" forKey:?];
+    [coderCopy encodeDouble:@"interval" forKey:?];
   }
 
   if (self->_requiresPlugin)
   {
-    [v49 encodeBool:1 forKey:@"plugin"];
+    [coderCopy encodeBool:1 forKey:@"plugin"];
   }
 
   if (self->_dataBudgeted)
   {
-    [v49 encodeBool:1 forKey:@"dataBudgeted"];
+    [coderCopy encodeBool:1 forKey:@"dataBudgeted"];
   }
 
   if (self->_triggersRestart)
   {
-    [v49 encodeBool:1 forKey:@"restart"];
+    [coderCopy encodeBool:1 forKey:@"restart"];
   }
 
   if (self->_preventDeviceSleep)
   {
-    [v49 encodeBool:1 forKey:@"preventSleep"];
+    [coderCopy encodeBool:1 forKey:@"preventSleep"];
   }
 
   targetDevice = self->_targetDevice;
   if (targetDevice)
   {
-    [v49 encodeInteger:targetDevice forKey:@"target"];
+    [coderCopy encodeInteger:targetDevice forKey:@"target"];
   }
 
   remoteDevice = self->_remoteDevice;
   if (remoteDevice)
   {
-    [v49 encodeObject:remoteDevice forKey:@"remote"];
+    [coderCopy encodeObject:remoteDevice forKey:@"remote"];
   }
 
   if (self->_requiresRemoteDeviceWake)
   {
-    [v49 encodeBool:1 forKey:@"remoteDeviceWake"];
+    [coderCopy encodeBool:1 forKey:@"remoteDeviceWake"];
   }
 
   if (self->_supportsAnyApplication)
   {
-    [v49 encodeBool:1 forKey:@"anyApp"];
+    [coderCopy encodeBool:1 forKey:@"anyApp"];
   }
 
   if (self->_requestsApplicationLaunch)
   {
-    [v49 encodeBool:1 forKey:@"appLaunch"];
+    [coderCopy encodeBool:1 forKey:@"appLaunch"];
   }
 
   if (self->_requestsImmediateRuntime)
   {
-    [v49 encodeBool:1 forKey:@"requestsimmediateRuntime"];
+    [coderCopy encodeBool:1 forKey:@"requestsimmediateRuntime"];
   }
 
   if (self->_requestsExtensionLaunch)
   {
-    [v49 encodeBool:1 forKey:@"extLaunch"];
+    [coderCopy encodeBool:1 forKey:@"extLaunch"];
   }
 
   extensionIdentifier = self->_extensionIdentifier;
   if (extensionIdentifier)
   {
-    [v49 encodeObject:extensionIdentifier forKey:@"extId"];
+    [coderCopy encodeObject:extensionIdentifier forKey:@"extId"];
   }
 
   if (self->_shouldBePersisted)
   {
-    [v49 encodeBool:1 forKey:@"persist"];
+    [coderCopy encodeBool:1 forKey:@"persist"];
   }
 
   launchReason = self->_launchReason;
   if (launchReason)
   {
-    [v49 encodeObject:launchReason forKey:@"launchReason"];
+    [coderCopy encodeObject:launchReason forKey:@"launchReason"];
   }
 
   relatedApplications = self->_relatedApplications;
   if (relatedApplications)
   {
-    [v49 encodeObject:relatedApplications forKey:@"related"];
+    [coderCopy encodeObject:relatedApplications forKey:@"related"];
   }
 
   if (self->_runWhenAppLaunchUnlikely)
   {
-    [v49 encodeBool:1 forKey:@"runWhenAppLaunchUnkely"];
+    [coderCopy encodeBool:1 forKey:@"runWhenAppLaunchUnkely"];
   }
 
   involvedProcesses = self->_involvedProcesses;
   if (involvedProcesses)
   {
-    [v49 encodeObject:involvedProcesses forKey:@"involvedProcesses"];
+    [coderCopy encodeObject:involvedProcesses forKey:@"involvedProcesses"];
   }
 
   groupName = self->_groupName;
   if (groupName)
   {
-    [v49 encodeObject:groupName forKey:@"groupName"];
+    [coderCopy encodeObject:groupName forKey:@"groupName"];
   }
 
-  v17 = [(_DASActivity *)self userInfo];
-  v18 = [v17 mutableCopy];
+  userInfo = [(_DASActivity *)self userInfo];
+  v18 = [userInfo mutableCopy];
 
   if ([v18 count])
   {
@@ -3318,237 +3318,237 @@ LABEL_23:
     }
 
     v21 = [v18 copy];
-    [v49 encodeObject:v21 forKey:@"userInfo"];
+    [coderCopy encodeObject:v21 forKey:@"userInfo"];
   }
 
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v49 encodeObject:bundleId forKey:@"bundleID"];
+    [coderCopy encodeObject:bundleId forKey:@"bundleID"];
   }
 
-  v23 = [(_DASActivity *)self startDate];
+  startDate = [(_DASActivity *)self startDate];
 
-  if (v23)
+  if (startDate)
   {
-    v24 = [(_DASActivity *)self startDate];
-    [v49 encodeObject:v24 forKey:@"startDate"];
+    startDate2 = [(_DASActivity *)self startDate];
+    [coderCopy encodeObject:startDate2 forKey:@"startDate"];
   }
 
   submitDate = self->_submitDate;
   if (submitDate)
   {
-    [v49 encodeObject:submitDate forKey:@"submitDate"];
+    [coderCopy encodeObject:submitDate forKey:@"submitDate"];
   }
 
-  v26 = [(_DASActivity *)self lastScored];
+  lastScored = [(_DASActivity *)self lastScored];
 
-  if (v26)
+  if (lastScored)
   {
-    [v49 encodeDouble:@"lastScore" forKey:self->_lastComputedScore];
-    v27 = [(_DASActivity *)self lastScored];
-    [v49 encodeObject:v27 forKey:@"lastScored"];
+    [coderCopy encodeDouble:@"lastScore" forKey:self->_lastComputedScore];
+    lastScored2 = [(_DASActivity *)self lastScored];
+    [coderCopy encodeObject:lastScored2 forKey:@"lastScored"];
   }
 
-  v28 = [(_DASActivity *)self predictedOptimalStartDate];
+  predictedOptimalStartDate = [(_DASActivity *)self predictedOptimalStartDate];
 
-  if (v28)
+  if (predictedOptimalStartDate)
   {
-    v29 = [(_DASActivity *)self predictedOptimalStartDate];
-    [v49 encodeObject:v29 forKey:@"predStart"];
+    predictedOptimalStartDate2 = [(_DASActivity *)self predictedOptimalStartDate];
+    [coderCopy encodeObject:predictedOptimalStartDate2 forKey:@"predStart"];
 
-    [v49 encodeDouble:@"predOpt" forKey:self->_predictedOptimalScore];
+    [coderCopy encodeDouble:@"predOpt" forKey:self->_predictedOptimalScore];
   }
 
   motionState = self->_motionState;
   if (motionState)
   {
-    [v49 encodeInteger:motionState forKey:@"motionState"];
+    [coderCopy encodeInteger:motionState forKey:@"motionState"];
   }
 
-  v31 = v49;
+  v31 = coderCopy;
   if (self->_delayedStart)
   {
-    [v49 encodeBool:1 forKey:@"delayedStart"];
-    v31 = v49;
+    [coderCopy encodeBool:1 forKey:@"delayedStart"];
+    v31 = coderCopy;
   }
 
   if (self->_pid >= 1)
   {
-    [v49 encodeInt:? forKey:?];
-    v31 = v49;
+    [coderCopy encodeInt:? forKey:?];
+    v31 = coderCopy;
   }
 
   clientDataBudgetName = self->_clientDataBudgetName;
   if (clientDataBudgetName)
   {
-    [v49 encodeObject:clientDataBudgetName forKey:@"clientCellBudget"];
-    v31 = v49;
+    [coderCopy encodeObject:clientDataBudgetName forKey:@"clientCellBudget"];
+    v31 = coderCopy;
   }
 
   clientName = self->_clientName;
   if (clientName)
   {
-    [v49 encodeObject:clientName forKey:@"clientName"];
-    v31 = v49;
+    [coderCopy encodeObject:clientName forKey:@"clientName"];
+    v31 = coderCopy;
   }
 
   if (self->_deferred)
   {
-    [v49 encodeBool:1 forKey:@"deferred"];
-    v31 = v49;
+    [coderCopy encodeBool:1 forKey:@"deferred"];
+    v31 = coderCopy;
   }
 
   if (self->_percentCompleted > 0.0)
   {
-    [v49 encodeDouble:@"percentCompleted" forKey:?];
-    v31 = v49;
+    [coderCopy encodeDouble:@"percentCompleted" forKey:?];
+    v31 = coderCopy;
   }
 
   completionStatus = self->_completionStatus;
   if (completionStatus)
   {
-    [v49 encodeInteger:completionStatus forKey:@"completionStatus"];
-    v31 = v49;
+    [coderCopy encodeInteger:completionStatus forKey:@"completionStatus"];
+    v31 = coderCopy;
   }
 
   preClearedMode = self->_preClearedMode;
   if (preClearedMode)
   {
-    [v49 encodeInteger:preClearedMode forKey:@"preCleared"];
-    v31 = v49;
+    [coderCopy encodeInteger:preClearedMode forKey:@"preCleared"];
+    v31 = coderCopy;
   }
 
   if (self->_requiresBuddyComplete)
   {
-    [v49 encodeBool:1 forKey:@"buddyComplete"];
-    v31 = v49;
+    [coderCopy encodeBool:1 forKey:@"buddyComplete"];
+    v31 = coderCopy;
   }
 
   [v31 encodeInt64:self->_userIdentifier forKey:@"userIdentifier"];
   if (self->_runOnAppForeground)
   {
-    [v49 encodeBool:1 forKey:@"runOnAppFG"];
+    [coderCopy encodeBool:1 forKey:@"runOnAppFG"];
   }
 
   widgetBudgetID = self->_widgetBudgetID;
   if (widgetBudgetID)
   {
-    [v49 encodeObject:widgetBudgetID forKey:@"widgetBudgetID"];
+    [coderCopy encodeObject:widgetBudgetID forKey:@"widgetBudgetID"];
   }
 
   widgetID = self->_widgetID;
   if (widgetID)
   {
-    [v49 encodeObject:widgetID forKey:@"widgetID"];
+    [coderCopy encodeObject:widgetID forKey:@"widgetID"];
   }
 
   rateLimitConfigurationName = self->_rateLimitConfigurationName;
   if (rateLimitConfigurationName)
   {
-    [v49 encodeObject:rateLimitConfigurationName forKey:@"rateLimitConfigName"];
+    [coderCopy encodeObject:rateLimitConfigurationName forKey:@"rateLimitConfigName"];
   }
 
   limitationResponse = self->_limitationResponse;
   if (limitationResponse)
   {
-    [v49 encodeObject:limitationResponse forKey:@"limitationResponses"];
+    [coderCopy encodeObject:limitationResponse forKey:@"limitationResponses"];
   }
 
   serviceName = self->_serviceName;
   if (serviceName)
   {
-    [v49 encodeObject:serviceName forKey:@"serviceNameKey"];
+    [coderCopy encodeObject:serviceName forKey:@"serviceNameKey"];
   }
 
   if (self->_backlogged)
   {
-    [v49 encodeBool:1 forKey:@"backlogged"];
+    [coderCopy encodeBool:1 forKey:@"backlogged"];
   }
 
   activityType = self->_activityType;
   if (activityType)
   {
-    [v49 encodeObject:activityType forKey:@"activityType"];
+    [coderCopy encodeObject:activityType forKey:@"activityType"];
   }
 
   featureCodes = self->_featureCodes;
   if (featureCodes)
   {
-    [v49 encodeObject:featureCodes forKey:@"featureCodes"];
+    [coderCopy encodeObject:featureCodes forKey:@"featureCodes"];
   }
 
   fastPass = self->_fastPass;
   if (fastPass)
   {
-    [v49 encodeObject:fastPass forKey:@"fastPass"];
+    [coderCopy encodeObject:fastPass forKey:@"fastPass"];
   }
 
   producedResultIdentifiers = self->_producedResultIdentifiers;
   if (producedResultIdentifiers)
   {
-    [v49 encodeObject:producedResultIdentifiers forKey:@"producedResultIdentifiers"];
+    [coderCopy encodeObject:producedResultIdentifiers forKey:@"producedResultIdentifiers"];
   }
 
   dependencies = self->_dependencies;
   if (dependencies)
   {
-    [v49 encodeObject:dependencies forKey:@"dependencies"];
+    [coderCopy encodeObject:dependencies forKey:@"dependencies"];
   }
 
   continuedProcessingWrapper = self->_continuedProcessingWrapper;
   if (continuedProcessingWrapper)
   {
-    [v49 encodeObject:continuedProcessingWrapper forKey:@"continuedProcessingWrapper"];
+    [coderCopy encodeObject:continuedProcessingWrapper forKey:@"continuedProcessingWrapper"];
   }
 
   diskVolume = self->_diskVolume;
   if (diskVolume)
   {
-    [v49 encodeObject:diskVolume forKey:@"diskVolume"];
+    [coderCopy encodeObject:diskVolume forKey:@"diskVolume"];
   }
 
   if (self->_lastDenialValue)
   {
     v48 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-    [v49 encodeObject:v48 forKey:@"lastDenialValue"];
+    [coderCopy encodeObject:v48 forKey:@"lastDenialValue"];
   }
 }
 
-- (void)setRelatedApplications:(id)a3
+- (void)setRelatedApplications:(id)applications
 {
   v4 = MEMORY[0x1E695DFB8];
-  v8 = [a3 copy];
+  v8 = [applications copy];
   v5 = [v4 orderedSetWithArray:v8];
-  v6 = [v5 array];
+  array = [v5 array];
   relatedApplications = self->_relatedApplications;
-  self->_relatedApplications = v6;
+  self->_relatedApplications = array;
 }
 
-- (void)setInvolvedProcesses:(id)a3
+- (void)setInvolvedProcesses:(id)processes
 {
   v4 = MEMORY[0x1E695DFB8];
-  v8 = [a3 copy];
+  v8 = [processes copy];
   v5 = [v4 orderedSetWithArray:v8];
-  v6 = [v5 array];
+  array = [v5 array];
   involvedProcesses = self->_involvedProcesses;
-  self->_involvedProcesses = v6;
+  self->_involvedProcesses = array;
 }
 
-- (_DASActivity)initWithCoder:(id)a3
+- (_DASActivity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v126.receiver = self;
   v126.super_class = _DASActivity;
   v5 = [(_DASActivity *)&v126 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"schedPriority"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"duration"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"before"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"after"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"schedPriority"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"duration"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"before"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"after"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     v12 = 0;
     if (!v6 || !v7 || !v8 || !v9 || !v10 || !v11)
     {
@@ -3563,9 +3563,9 @@ LABEL_23:
     [(_DASActivity *)v5 setStartAfter:v10];
     v122 = v13;
     objc_storeStrong(&v5->_uuid, v13);
-    if ([v4 containsValueForKey:@"fileProtection"])
+    if ([coderCopy containsValueForKey:@"fileProtection"])
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileProtection"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileProtection"];
       if (!v14)
       {
         v12 = 0;
@@ -3585,11 +3585,11 @@ LABEL_70:
     fileProtection = v5->_fileProtection;
     v5->_fileProtection = v14;
 
-    v5->_suspendable = [v4 decodeBoolForKey:@"suspendable"];
-    v5->_cancelAfterDeadline = [v4 decodeBoolForKey:@"deadlineCancel"];
-    v5->_shouldWakeDevice = [v4 decodeBoolForKey:@"shouldWakeDevice"];
-    v5->_requiresNetwork = [v4 decodeBoolForKey:@"reqNW"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nwDownloadSize"];
+    v5->_suspendable = [coderCopy decodeBoolForKey:@"suspendable"];
+    v5->_cancelAfterDeadline = [coderCopy decodeBoolForKey:@"deadlineCancel"];
+    v5->_shouldWakeDevice = [coderCopy decodeBoolForKey:@"shouldWakeDevice"];
+    v5->_requiresNetwork = [coderCopy decodeBoolForKey:@"reqNW"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nwDownloadSize"];
     v17 = v16;
     if (v16)
     {
@@ -3597,7 +3597,7 @@ LABEL_70:
     }
 
     v117 = v17;
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nwUploadSize"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nwUploadSize"];
     v19 = v18;
     if (v18)
     {
@@ -3609,53 +3609,53 @@ LABEL_70:
     v119 = v8;
     v120 = v7;
     v121 = v6;
-    v5->_isUpload = [v4 decodeBoolForKey:@"isUpload"];
-    v5->_requiresInexpensiveNetworking = [v4 decodeBoolForKey:@"cheapNW"];
-    v5->_requiresUnconstrainedNetworking = [v4 decodeBoolForKey:@"unconstrainedNW"];
-    v5->_cpuIntensive = [v4 decodeBoolForKey:@"cpu"];
-    v5->_memoryIntensive = [v4 decodeBoolForKey:@"mem"];
-    v5->_diskIntensive = [v4 decodeBoolForKey:@"disk"];
-    v5->_aneIntensive = [v4 decodeBoolForKey:@"ane"];
-    v5->_gpuIntensive = [v4 decodeBoolForKey:@"gpu"];
-    v5->_afterUserIsInactive = [v4 decodeBoolForKey:@"afterInactive"];
-    v5->_beforeUserIsActive = [v4 decodeBoolForKey:@"beforeActive"];
-    v5->_beforeUserIsActive = [v4 decodeBoolForKey:@"beforeActive"];
-    v5->_requiresDeviceInactivity = [v4 decodeBoolForKey:@"inactive"];
-    v5->_darkWakeEligible = [v4 decodeBoolForKey:@"darkWake"];
-    v5->_beforeDaysFirstActivity = [v4 decodeBoolForKey:@"apprefresh"];
-    [v4 decodeDoubleForKey:@"interval"];
+    v5->_isUpload = [coderCopy decodeBoolForKey:@"isUpload"];
+    v5->_requiresInexpensiveNetworking = [coderCopy decodeBoolForKey:@"cheapNW"];
+    v5->_requiresUnconstrainedNetworking = [coderCopy decodeBoolForKey:@"unconstrainedNW"];
+    v5->_cpuIntensive = [coderCopy decodeBoolForKey:@"cpu"];
+    v5->_memoryIntensive = [coderCopy decodeBoolForKey:@"mem"];
+    v5->_diskIntensive = [coderCopy decodeBoolForKey:@"disk"];
+    v5->_aneIntensive = [coderCopy decodeBoolForKey:@"ane"];
+    v5->_gpuIntensive = [coderCopy decodeBoolForKey:@"gpu"];
+    v5->_afterUserIsInactive = [coderCopy decodeBoolForKey:@"afterInactive"];
+    v5->_beforeUserIsActive = [coderCopy decodeBoolForKey:@"beforeActive"];
+    v5->_beforeUserIsActive = [coderCopy decodeBoolForKey:@"beforeActive"];
+    v5->_requiresDeviceInactivity = [coderCopy decodeBoolForKey:@"inactive"];
+    v5->_darkWakeEligible = [coderCopy decodeBoolForKey:@"darkWake"];
+    v5->_beforeDaysFirstActivity = [coderCopy decodeBoolForKey:@"apprefresh"];
+    [coderCopy decodeDoubleForKey:@"interval"];
     v5->_interval = v20;
-    v5->_requiresPlugin = [v4 decodeBoolForKey:@"plugin"];
-    v5->_dataBudgeted = [v4 decodeBoolForKey:@"dataBudgeted"];
-    v5->_triggersRestart = [v4 decodeBoolForKey:@"restart"];
-    v5->_preventDeviceSleep = [v4 decodeBoolForKey:@"preventSleep"];
-    v5->_supportsAnyApplication = [v4 decodeBoolForKey:@"anyApp"];
-    v5->_requestsApplicationLaunch = [v4 decodeBoolForKey:@"appLaunch"];
-    v5->_requestsExtensionLaunch = [v4 decodeBoolForKey:@"extLaunch"];
-    v5->_requestsImmediateRuntime = [v4 decodeBoolForKey:@"requestsimmediateRuntime"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extId"];
+    v5->_requiresPlugin = [coderCopy decodeBoolForKey:@"plugin"];
+    v5->_dataBudgeted = [coderCopy decodeBoolForKey:@"dataBudgeted"];
+    v5->_triggersRestart = [coderCopy decodeBoolForKey:@"restart"];
+    v5->_preventDeviceSleep = [coderCopy decodeBoolForKey:@"preventSleep"];
+    v5->_supportsAnyApplication = [coderCopy decodeBoolForKey:@"anyApp"];
+    v5->_requestsApplicationLaunch = [coderCopy decodeBoolForKey:@"appLaunch"];
+    v5->_requestsExtensionLaunch = [coderCopy decodeBoolForKey:@"extLaunch"];
+    v5->_requestsImmediateRuntime = [coderCopy decodeBoolForKey:@"requestsimmediateRuntime"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extId"];
     extensionIdentifier = v5->_extensionIdentifier;
     v5->_extensionIdentifier = v21;
 
-    v5->_shouldBePersisted = [v4 decodeBoolForKey:@"persist"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"launchReason"];
+    v5->_shouldBePersisted = [coderCopy decodeBoolForKey:@"persist"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"launchReason"];
     launchReason = v5->_launchReason;
     v5->_launchReason = v23;
 
-    if ([v4 containsValueForKey:@"target"])
+    if ([coderCopy containsValueForKey:@"target"])
     {
-      v5->_targetDevice = [v4 decodeIntForKey:@"target"];
+      v5->_targetDevice = [coderCopy decodeIntForKey:@"target"];
     }
 
-    v5->_requiresRemoteDeviceWake = [v4 decodeBoolForKey:@"remoteDeviceWake"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remote"];
+    v5->_requiresRemoteDeviceWake = [coderCopy decodeBoolForKey:@"remoteDeviceWake"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remote"];
     remoteDevice = v5->_remoteDevice;
     v5->_remoteDevice = v25;
 
     v27 = MEMORY[0x1E695DFD8];
     v28 = objc_opt_class();
     v123 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:? forKey:?];
+    v29 = [coderCopy decodeObjectOfClasses:? forKey:?];
     v30 = [v29 mutableCopy];
 
     if ([v30 count])
@@ -3664,8 +3664,8 @@ LABEL_70:
       do
       {
         v32 = [v30 objectAtIndexedSubscript:v31];
-        v33 = [v32 dk_dedup];
-        [v30 setObject:v33 atIndexedSubscript:v31];
+        dk_dedup = [v32 dk_dedup];
+        [v30 setObject:dk_dedup atIndexedSubscript:v31];
 
         ++v31;
       }
@@ -3677,7 +3677,7 @@ LABEL_70:
     relatedApplications = v5->_relatedApplications;
     v5->_relatedApplications = v34;
 
-    v36 = [v4 decodeObjectOfClasses:v123 forKey:@"involvedProcesses"];
+    v36 = [coderCopy decodeObjectOfClasses:v123 forKey:@"involvedProcesses"];
     v37 = [v36 mutableCopy];
 
     if ([v37 count])
@@ -3686,8 +3686,8 @@ LABEL_70:
       do
       {
         v39 = [v37 objectAtIndexedSubscript:v38];
-        v40 = [v39 dk_dedup];
-        [v37 setObject:v40 atIndexedSubscript:v38];
+        dk_dedup2 = [v39 dk_dedup];
+        [v37 setObject:dk_dedup2 atIndexedSubscript:v38];
 
         ++v38;
       }
@@ -3699,25 +3699,25 @@ LABEL_70:
     involvedProcesses = v5->_involvedProcesses;
     v5->_involvedProcesses = v41;
 
-    v5->_runWhenAppLaunchUnlikely = [v4 decodeBoolForKey:@"runWhenAppLaunchUnkely"];
+    v5->_runWhenAppLaunchUnlikely = [coderCopy decodeBoolForKey:@"runWhenAppLaunchUnkely"];
     v43 = +[_DASActivity validClassesForUserInfoSerialization];
-    v44 = [v4 decodeObjectOfClasses:v43 forKey:@"userInfo"];
+    v44 = [coderCopy decodeObjectOfClasses:v43 forKey:@"userInfo"];
 
-    v45 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v124[0] = MEMORY[0x1E69E9820];
     v124[1] = 3221225472;
     v124[2] = __30___DASActivity_initWithCoder___block_invoke;
     v124[3] = &unk_1E7C8F530;
-    v114 = v45;
+    v114 = dictionary;
     v115 = v44;
     v125 = v114;
     [v44 enumerateKeysAndObjectsUsingBlock:v124];
-    objc_storeStrong(&v5->_userInfo, v45);
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    objc_storeStrong(&v5->_userInfo, dictionary);
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleId = v5->_bundleId;
     v5->_bundleId = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
     v113 = v48;
     if (([(__CFString *)v48 isEqualToString:_DASDefaultGroupName]& 1) != 0)
     {
@@ -3749,96 +3749,96 @@ LABEL_70:
     internalGroupNames = v5->_internalGroupNames;
     v5->_internalGroupNames = v50;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     [(_DASActivity *)v5 setStartDate:v52];
 
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"submitDate"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"submitDate"];
     submitDate = v5->_submitDate;
     v5->_submitDate = v53;
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastScored"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastScored"];
     [(_DASActivity *)v5 setLastScored:v55];
 
-    [v4 decodeDoubleForKey:@"lastScore"];
+    [coderCopy decodeDoubleForKey:@"lastScore"];
     v5->_lastComputedScore = v56;
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predStart"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predStart"];
     predictedOptimalStartDate = v5->_predictedOptimalStartDate;
     v5->_predictedOptimalStartDate = v57;
 
-    [v4 decodeDoubleForKey:@"predOpt"];
+    [coderCopy decodeDoubleForKey:@"predOpt"];
     v5->_predictedOptimalScore = v59;
-    if ([v4 containsValueForKey:@"motionState"])
+    if ([coderCopy containsValueForKey:@"motionState"])
     {
-      v5->_motionState = [v4 decodeIntegerForKey:@"motionState"];
+      v5->_motionState = [coderCopy decodeIntegerForKey:@"motionState"];
     }
 
-    if ([v4 containsValueForKey:@"deferred"])
+    if ([coderCopy containsValueForKey:@"deferred"])
     {
-      v5->_deferred = [v4 decodeBoolForKey:@"deferred"];
+      v5->_deferred = [coderCopy decodeBoolForKey:@"deferred"];
     }
 
-    v5->_delayedStart = [v4 decodeBoolForKey:@"delayedStart"];
-    v5->_pid = [v4 decodeIntForKey:@"pid"];
-    v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientCellBudget"];
+    v5->_delayedStart = [coderCopy decodeBoolForKey:@"delayedStart"];
+    v5->_pid = [coderCopy decodeIntForKey:@"pid"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientCellBudget"];
     clientDataBudgetName = v5->_clientDataBudgetName;
     v5->_clientDataBudgetName = v60;
 
-    v62 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientName"];
-    v63 = [v62 dk_dedup];
+    v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientName"];
+    dk_dedup3 = [v62 dk_dedup];
     clientName = v5->_clientName;
-    v5->_clientName = v63;
+    v5->_clientName = dk_dedup3;
 
-    v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
+    v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityType"];
     activityType = v5->_activityType;
     v5->_activityType = v65;
 
-    [v4 decodeDoubleForKey:@"percentCompleted"];
+    [coderCopy decodeDoubleForKey:@"percentCompleted"];
     v5->_percentCompleted = v67;
-    v5->_completionStatus = [v4 decodeIntegerForKey:@"completionStatus"];
-    if ([v4 containsValueForKey:@"preCleared"])
+    v5->_completionStatus = [coderCopy decodeIntegerForKey:@"completionStatus"];
+    if ([coderCopy containsValueForKey:@"preCleared"])
     {
-      v5->_preClearedMode = [v4 decodeIntegerForKey:@"preCleared"];
+      v5->_preClearedMode = [coderCopy decodeIntegerForKey:@"preCleared"];
     }
 
-    if ([v4 containsValueForKey:@"buddyComplete"])
+    if ([coderCopy containsValueForKey:@"buddyComplete"])
     {
-      v5->_requiresBuddyComplete = [v4 decodeBoolForKey:@"buddyComplete"];
+      v5->_requiresBuddyComplete = [coderCopy decodeBoolForKey:@"buddyComplete"];
     }
 
-    if ([v4 containsValueForKey:@"userIdentifier"])
+    if ([coderCopy containsValueForKey:@"userIdentifier"])
     {
-      v5->_userIdentifier = [v4 decodeInt64ForKey:@"userIdentifier"];
+      v5->_userIdentifier = [coderCopy decodeInt64ForKey:@"userIdentifier"];
     }
 
-    v5->_runOnAppForeground = [v4 decodeBoolForKey:@"runOnAppFG"];
-    v5->_backlogged = [v4 decodeBoolForKey:@"backlogged"];
-    if ([v4 containsValueForKey:@"widgetBudgetID"])
+    v5->_runOnAppForeground = [coderCopy decodeBoolForKey:@"runOnAppFG"];
+    v5->_backlogged = [coderCopy decodeBoolForKey:@"backlogged"];
+    if ([coderCopy containsValueForKey:@"widgetBudgetID"])
     {
-      v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widgetBudgetID"];
+      v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetBudgetID"];
       widgetBudgetID = v5->_widgetBudgetID;
       v5->_widgetBudgetID = v68;
     }
 
-    if ([v4 containsValueForKey:@"widgetID"])
+    if ([coderCopy containsValueForKey:@"widgetID"])
     {
-      v70 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widgetID"];
+      v70 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetID"];
       widgetID = v5->_widgetID;
       v5->_widgetID = v70;
     }
 
-    if ([v4 containsValueForKey:@"rateLimitConfigName"])
+    if ([coderCopy containsValueForKey:@"rateLimitConfigName"])
     {
-      v72 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rateLimitConfigName"];
+      v72 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rateLimitConfigName"];
       rateLimitConfigurationName = v5->_rateLimitConfigurationName;
       v5->_rateLimitConfigurationName = v72;
     }
 
-    if ([v4 containsValueForKey:@"limitationResponses"])
+    if ([coderCopy containsValueForKey:@"limitationResponses"])
     {
       v74 = MEMORY[0x1E695DFD8];
       v75 = objc_opt_class();
       v76 = [v74 setWithObjects:{v75, objc_opt_class(), 0}];
-      v77 = [v4 decodeObjectOfClasses:v76 forKey:@"limitationResponses"];
+      v77 = [coderCopy decodeObjectOfClasses:v76 forKey:@"limitationResponses"];
       v78 = [v77 mutableCopy];
 
       v79 = [v78 copy];
@@ -3846,19 +3846,19 @@ LABEL_70:
       v5->_limitationResponse = v79;
     }
 
-    if ([v4 containsValueForKey:@"serviceNameKey"])
+    if ([coderCopy containsValueForKey:@"serviceNameKey"])
     {
-      v81 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceNameKey"];
+      v81 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceNameKey"];
       serviceName = v5->_serviceName;
       v5->_serviceName = v81;
     }
 
-    if ([v4 containsValueForKey:@"featureCodes"])
+    if ([coderCopy containsValueForKey:@"featureCodes"])
     {
       v83 = MEMORY[0x1E695DFD8];
       v84 = objc_opt_class();
       v85 = [v83 setWithObjects:{v84, objc_opt_class(), 0}];
-      v86 = [v4 decodeObjectOfClasses:v85 forKey:@"featureCodes"];
+      v86 = [coderCopy decodeObjectOfClasses:v85 forKey:@"featureCodes"];
       v87 = [v86 mutableCopy];
 
       v88 = [v87 copy];
@@ -3866,57 +3866,57 @@ LABEL_70:
       v5->_featureCodes = v88;
     }
 
-    if ([v4 containsValueForKey:@"fastPass"])
+    if ([coderCopy containsValueForKey:@"fastPass"])
     {
-      v90 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fastPass"];
+      v90 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fastPass"];
       fastPass = v5->_fastPass;
       v5->_fastPass = v90;
     }
 
-    if ([v4 containsValueForKey:@"producedResultIdentifiers"])
+    if ([coderCopy containsValueForKey:@"producedResultIdentifiers"])
     {
       v92 = MEMORY[0x1E695DFD8];
       v93 = objc_opt_class();
       v94 = objc_opt_class();
       v95 = [v92 setWithObjects:{v93, v94, objc_opt_class(), 0}];
-      v96 = [v4 decodeObjectOfClasses:v95 forKey:@"producedResultIdentifiers"];
+      v96 = [coderCopy decodeObjectOfClasses:v95 forKey:@"producedResultIdentifiers"];
 
       v97 = [v96 copy];
       producedResultIdentifiers = v5->_producedResultIdentifiers;
       v5->_producedResultIdentifiers = v97;
     }
 
-    if ([v4 containsValueForKey:@"dependencies"])
+    if ([coderCopy containsValueForKey:@"dependencies"])
     {
       v99 = MEMORY[0x1E695DFD8];
       v100 = objc_opt_class();
       v101 = objc_opt_class();
       v102 = [v99 setWithObjects:{v100, v101, objc_opt_class(), 0}];
-      v103 = [v4 decodeObjectOfClasses:v102 forKey:@"dependencies"];
+      v103 = [coderCopy decodeObjectOfClasses:v102 forKey:@"dependencies"];
 
       v104 = [v103 copy];
       dependencies = v5->_dependencies;
       v5->_dependencies = v104;
     }
 
-    if ([v4 containsValueForKey:@"continuedProcessingWrapper"])
+    if ([coderCopy containsValueForKey:@"continuedProcessingWrapper"])
     {
-      v106 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"continuedProcessingWrapper"];
+      v106 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"continuedProcessingWrapper"];
       v107 = [v106 copy];
       continuedProcessingWrapper = v5->_continuedProcessingWrapper;
       v5->_continuedProcessingWrapper = v107;
     }
 
-    if ([v4 containsValueForKey:@"diskVolume"])
+    if ([coderCopy containsValueForKey:@"diskVolume"])
     {
-      v109 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"diskVolume"];
+      v109 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"diskVolume"];
       diskVolume = v5->_diskVolume;
       v5->_diskVolume = v109;
     }
 
-    if ([v4 containsValueForKey:@"lastDenialValue"])
+    if ([coderCopy containsValueForKey:@"lastDenialValue"])
     {
-      v111 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastDenialValue"];
+      v111 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastDenialValue"];
       v5->_lastDenialValue = [v111 unsignedIntegerValue];
     }
 
@@ -3935,34 +3935,34 @@ LABEL_71:
   return v12;
 }
 
-+ (id)prettySchedulingPriorityDescription:(unint64_t)a3
++ (id)prettySchedulingPriorityDescription:(unint64_t)description
 {
-  if (_DASSchedulingPriorityUserInitiatedOvercommit == a3)
+  if (_DASSchedulingPriorityUserInitiatedOvercommit == description)
   {
     return @"UserInitiatedOvercommit";
   }
 
-  if (_DASSchedulingPriorityUserInitiated == a3)
+  if (_DASSchedulingPriorityUserInitiated == description)
   {
     return @"UserInitiated";
   }
 
-  if (_DASSchedulingPriorityDefault == a3)
+  if (_DASSchedulingPriorityDefault == description)
   {
     return @"Default";
   }
 
-  if (_DASSchedulingPriorityUtility == a3)
+  if (_DASSchedulingPriorityUtility == description)
   {
     return @"Utility";
   }
 
-  if (_DASSchedulingPriorityBackground == a3)
+  if (_DASSchedulingPriorityBackground == description)
   {
     return @"Background";
   }
 
-  if (_DASSchedulingPriorityMaintenance == a3)
+  if (_DASSchedulingPriorityMaintenance == description)
   {
     return @"Maintenance";
   }
@@ -3970,11 +3970,11 @@ LABEL_71:
   return &stru_1F2EC9F10;
 }
 
-- (unint64_t)hashArrayOfString:(id)a3
+- (unint64_t)hashArrayOfString:(id)string
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 sortedArrayUsingSelector:sel_compare_];
-  v4 = [MEMORY[0x1E696AD60] string];
+  v3 = [string sortedArrayUsingSelector:sel_compare_];
+  string = [MEMORY[0x1E696AD60] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -3995,7 +3995,7 @@ LABEL_71:
           objc_enumerationMutation(v5);
         }
 
-        [v4 appendString:{*(*(&v13 + 1) + 8 * v9++), v13}];
+        [string appendString:{*(*(&v13 + 1) + 8 * v9++), v13}];
       }
 
       while (v7 != v9);
@@ -4005,24 +4005,24 @@ LABEL_71:
     while (v7);
   }
 
-  v10 = [v4 hash];
+  v10 = [string hash];
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if ([(_DASActivity *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(_DASActivity *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     uuid = self->_uuid;
-    v6 = [(_DASActivity *)v4 uuid];
-    v7 = [(NSUUID *)uuid isEqual:v6];
+    uuid = [(_DASActivity *)equalCopy uuid];
+    v7 = [(NSUUID *)uuid isEqual:uuid];
   }
 
   else

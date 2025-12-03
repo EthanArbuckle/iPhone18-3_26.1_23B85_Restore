@@ -1,14 +1,14 @@
 @interface ARFrameRateLimitingStrategy
-- (ARFrameRateLimitingStrategy)initWithFrameRate:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldProcessData:(id)a3;
-- (BOOL)shouldRequestResultDataAtTimestamp:(double)a3 context:(id)a4;
+- (ARFrameRateLimitingStrategy)initWithFrameRate:(int64_t)rate;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldProcessData:(id)data;
+- (BOOL)shouldRequestResultDataAtTimestamp:(double)timestamp context:(id)context;
 - (NSString)description;
 @end
 
 @implementation ARFrameRateLimitingStrategy
 
-- (ARFrameRateLimitingStrategy)initWithFrameRate:(int64_t)a3
+- (ARFrameRateLimitingStrategy)initWithFrameRate:(int64_t)rate
 {
   v9.receiver = self;
   v9.super_class = ARFrameRateLimitingStrategy;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_frameRate = a3;
+    v4->_frameRate = rate;
     v6 = [[ARCircularArray alloc] initWithCapacity:5];
     mostRecentTimestamps = v5->_mostRecentTimestamps;
     v5->_mostRecentTimestamps = v6;
@@ -27,19 +27,19 @@
   return v5;
 }
 
-- (BOOL)shouldProcessData:(id)a3
+- (BOOL)shouldProcessData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     os_unfair_lock_lock(&self->_mostRecentTimestampsLock);
     objc_opt_class();
     objc_opt_isKindOfClass();
-    [v4 timestamp];
+    [dataCopy timestamp];
     v6 = v5;
-    v7 = [(ARCircularArray *)self->_mostRecentTimestamps lastObject];
-    if (v7)
+    lastObject = [(ARCircularArray *)self->_mostRecentTimestamps lastObject];
+    if (lastObject)
     {
       frameRate = self->_frameRate;
       if (!frameRate)
@@ -66,7 +66,7 @@ LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v7 doubleValue];
+        [lastObject doubleValue];
         if (v6 - v15 <= 1.0 / self->_frameRate)
         {
           goto LABEL_14;
@@ -110,14 +110,14 @@ LABEL_16:
   return v14;
 }
 
-- (BOOL)shouldRequestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (BOOL)shouldRequestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_mostRecentTimestampsLock);
   mostRecentTimestamps = self->_mostRecentTimestamps;
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v5 imageData];
-  [v8 timestamp];
+  imageData = [contextCopy imageData];
+  [imageData timestamp];
   v9 = [v7 numberWithDouble:?];
   LOBYTE(mostRecentTimestamps) = [(ARCircularArray *)mostRecentTimestamps containsObject:v9];
 
@@ -125,11 +125,11 @@ LABEL_16:
   return mostRecentTimestamps;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_frameRate == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_frameRate == equalCopy[1];
 
   return v5;
 }

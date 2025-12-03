@@ -25,8 +25,8 @@
 
 + (double)intrinsicHeight
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = 1.0 / v3;
 
   return v4;

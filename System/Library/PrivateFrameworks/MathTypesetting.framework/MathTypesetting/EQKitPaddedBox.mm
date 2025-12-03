@@ -1,32 +1,32 @@
 @interface EQKitPaddedBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)erasableBounds;
-- (EQKitPaddedBox)initWithBox:(id)a3 height:(double)a4 width:(double)a5 depth:(double)a6 lspace:(double)a7 voffset:(double)a8;
+- (EQKitPaddedBox)initWithBox:(id)box height:(double)height width:(double)width depth:(double)depth lspace:(double)lspace voffset:(double)voffset;
 - (id)containedBoxes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitPaddedBox
 
-- (EQKitPaddedBox)initWithBox:(id)a3 height:(double)a4 width:(double)a5 depth:(double)a6 lspace:(double)a7 voffset:(double)a8
+- (EQKitPaddedBox)initWithBox:(id)box height:(double)height width:(double)width depth:(double)depth lspace:(double)lspace voffset:(double)voffset
 {
-  v15 = a3;
+  boxCopy = box;
   v19.receiver = self;
   v19.super_class = EQKitPaddedBox;
   v16 = [(EQKitPaddedBox *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_box, a3);
-    v17->_height = a4;
-    v17->_width = a5;
-    v17->_depth = a6;
-    v17->_lspace = a7;
-    v17->_voffset = a8;
+    objc_storeStrong(&v16->_box, box);
+    v17->_height = height;
+    v17->_width = width;
+    v17->_depth = depth;
+    v17->_lspace = lspace;
+    v17->_voffset = voffset;
   }
 
   return v17;
@@ -51,42 +51,42 @@
   return CGRectOffset(*&v3, lspace, v8);
 }
 
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = offset.y;
+  x = offset.x;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = EQKitPaddedBox;
-  [(EQKitBox *)&v8 renderIntoContext:v7 offset:x, y];
-  [(EQKitBox *)self->_box renderIntoContext:v7 offset:x + self->_lspace, y - self->_voffset];
+  [(EQKitBox *)&v8 renderIntoContext:contextCopy offset:x, y];
+  [(EQKitBox *)self->_box renderIntoContext:contextCopy offset:x + self->_lspace, y - self->_voffset];
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  v4 = *(a3 + 6);
+  v4 = *(spec + 6);
   if (v4 <= 1)
   {
     if (v4)
     {
       if (v4 != 1)
       {
-        return [(EQKitBox *)self->_box appendOpticalAlignToSpec:a4.x offset:a4.y];
+        return [(EQKitBox *)self->_box appendOpticalAlignToSpec:offset.x offset:offset.y];
       }
 
       goto LABEL_8;
     }
 
 LABEL_7:
-    a4.y = a4.y - self->_voffset;
-    return [(EQKitBox *)self->_box appendOpticalAlignToSpec:a4.x offset:a4.y];
+    offset.y = offset.y - self->_voffset;
+    return [(EQKitBox *)self->_box appendOpticalAlignToSpec:offset.x offset:offset.y];
   }
 
   if (v4 == 3)
   {
 LABEL_8:
-    a4.x = a4.x + self->_lspace;
-    return [(EQKitBox *)self->_box appendOpticalAlignToSpec:a4.x offset:a4.y];
+    offset.x = offset.x + self->_lspace;
+    return [(EQKitBox *)self->_box appendOpticalAlignToSpec:offset.x offset:offset.y];
   }
 
   if (v4 == 2)
@@ -94,30 +94,30 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  return [(EQKitBox *)self->_box appendOpticalAlignToSpec:a4.x offset:a4.y];
+  return [(EQKitBox *)self->_box appendOpticalAlignToSpec:offset.x offset:offset.y];
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
-  v6 = a4;
-  if (v6 != self)
+  descendantCopy = descendant;
+  if (descendantCopy != self)
   {
-    if (![(EQKitBox *)self->_box p_getTransform:a3 fromDescendant:v6])
+    if (![(EQKitBox *)self->_box p_getTransform:transform fromDescendant:descendantCopy])
     {
       v10 = 0;
       goto LABEL_6;
     }
 
-    v7 = *&a3->c;
-    *&v12.a = *&a3->a;
+    v7 = *&transform->c;
+    *&v12.a = *&transform->a;
     *&v12.c = v7;
     lspace = self->_lspace;
-    *&v12.tx = *&a3->tx;
+    *&v12.tx = *&transform->tx;
     CGAffineTransformTranslate(&v13, &v12, lspace, -self->_voffset);
     v9 = *&v13.c;
-    *&a3->a = *&v13.a;
-    *&a3->c = v9;
-    *&a3->tx = *&v13.tx;
+    *&transform->a = *&v13.a;
+    *&transform->c = v9;
+    *&transform->tx = *&v13.tx;
   }
 
   v10 = 1;
@@ -126,9 +126,9 @@ LABEL_6:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(EQKitPaddedBox *)self box];
   [(EQKitPaddedBox *)self height];
   v7 = v6;
@@ -144,17 +144,17 @@ LABEL_6:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v23 = 1;
   }
 
-  else if ([(EQKitPaddedBox *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(EQKitPaddedBox *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(EQKitPaddedBox *)self height];
     v7 = v6;
     [(EQKitPaddedBox *)v5 height];

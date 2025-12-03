@@ -1,10 +1,10 @@
 @interface CCContentRecord
 + (id)genSQLCreateStatements;
-+ (id)recordFromDatabaseValueRow:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItemRecord:(id)a3;
++ (id)recordFromDatabaseValueRow:(id)row;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItemRecord:(id)record;
 - (CCContentRecord)init;
-- (CCContentRecord)initWithDatabaseValueRow:(id)a3;
+- (CCContentRecord)initWithDatabaseValueRow:(id)row;
 - (NSString)description;
 @end
 
@@ -16,10 +16,10 @@
   objc_exception_throw(v2);
 }
 
-+ (id)recordFromDatabaseValueRow:(id)a3
++ (id)recordFromDatabaseValueRow:(id)row
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseValueRow:v3];
+  rowCopy = row;
+  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseValueRow:rowCopy];
 
   return v4;
 }
@@ -36,19 +36,19 @@
   return v3;
 }
 
-- (CCContentRecord)initWithDatabaseValueRow:(id)a3
+- (CCContentRecord)initWithDatabaseValueRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v11.receiver = self;
   v11.super_class = CCContentRecord;
   v5 = [(CCContentRecord *)&v11 init];
   if (v5)
   {
-    v6 = [v4 numberValueAtColumnIndex:0];
+    v6 = [rowCopy numberValueAtColumnIndex:0];
     contentHash = v5->_contentHash;
     v5->_contentHash = v6;
 
-    v8 = [v4 dataValueAtColumnIndex:1];
+    v8 = [rowCopy dataValueAtColumnIndex:1];
     content = v5->_content;
     v5->_content = v8;
   }
@@ -66,36 +66,36 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCContentRecord *)self isEqualToItemRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCContentRecord *)self isEqualToItemRecord:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToItemRecord:(id)a3
+- (BOOL)isEqualToItemRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (recordCopy)
   {
     contentHash = self->_contentHash;
-    v7 = [v4 contentHash];
-    if ([(NSNumber *)contentHash isEqual:v7])
+    contentHash = [recordCopy contentHash];
+    if ([(NSNumber *)contentHash isEqual:contentHash])
     {
       content = self->_content;
-      v9 = [v5 content];
-      v10 = [(NSData *)content isEqual:v9];
+      content = [v5 content];
+      v10 = [(NSData *)content isEqual:content];
     }
 
     else

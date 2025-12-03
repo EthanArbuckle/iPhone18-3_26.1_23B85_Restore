@@ -1,20 +1,20 @@
 @interface MOAnnotationManager
-- (MOAnnotationManager)initWithUniverse:(id)a3;
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5;
+- (MOAnnotationManager)initWithUniverse:(id)universe;
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler;
 @end
 
 @implementation MOAnnotationManager
 
-- (MOAnnotationManager)initWithUniverse:(id)a3
+- (MOAnnotationManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v14.receiver = self;
   v14.super_class = MOAnnotationManager;
   v6 = [(MOAnnotationManager *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fUniverse, a3);
+    objc_storeStrong(&v6->_fUniverse, universe);
     fUniverse = v7->_fUniverse;
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
@@ -26,7 +26,7 @@
   return v7;
 }
 
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler
 {
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))

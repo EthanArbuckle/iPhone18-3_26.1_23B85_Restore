@@ -6,8 +6,8 @@
 
 - (id)accessibilityPlaceholderValue
 {
-  v3 = [(UITextFieldAccessibility__PhotoLibrary__UIKit *)self accessibilityIdentification];
-  if (![v3 isEqualToString:@"PhotoShareAlbumNameTextField"])
+  accessibilityIdentification = [(UITextFieldAccessibility__PhotoLibrary__UIKit *)self accessibilityIdentification];
+  if (![accessibilityIdentification isEqualToString:@"PhotoShareAlbumNameTextField"])
   {
     goto LABEL_4;
   }
@@ -20,7 +20,7 @@ LABEL_4:
 LABEL_5:
     v9.receiver = self;
     v9.super_class = UITextFieldAccessibility__PhotoLibrary__UIKit;
-    v5 = [(UITextFieldAccessibility__PhotoLibrary__UIKit *)&v9 accessibilityPlaceholderValue];
+    accessibilityPlaceholderValue = [(UITextFieldAccessibility__PhotoLibrary__UIKit *)&v9 accessibilityPlaceholderValue];
     goto LABEL_6;
   }
 
@@ -32,10 +32,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v5 = [(UITextFieldAccessibility__PhotoLibrary__UIKit *)self _accessibilityValueForKey:@"AXPlaceholder"];
+  accessibilityPlaceholderValue = [(UITextFieldAccessibility__PhotoLibrary__UIKit *)self _accessibilityValueForKey:@"AXPlaceholder"];
 LABEL_6:
 
-  return v5;
+  return accessibilityPlaceholderValue;
 }
 
 @end

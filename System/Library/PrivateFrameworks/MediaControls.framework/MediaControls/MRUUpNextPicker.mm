@@ -1,31 +1,31 @@
 @interface MRUUpNextPicker
-- (MRUUpNextPicker)initWithFrame:(CGRect)a3 dataSource:(id)a4;
-- (id)reponseItemForIndexPath:(id)a3;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3 forMovie:(id)a4;
-- (void)configureCell:(id)a3 forSong:(id)a4;
-- (void)configureCell:(id)a3 forTVEpisode:(id)a4;
+- (MRUUpNextPicker)initWithFrame:(CGRect)frame dataSource:(id)source;
+- (id)reponseItemForIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forMovie:(id)movie;
+- (void)configureCell:(id)cell forSong:(id)song;
+- (void)configureCell:(id)cell forTVEpisode:(id)episode;
 - (void)layoutSubviews;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateDiffableDataSourceAnimated:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateDiffableDataSourceAnimated:(BOOL)animated;
 @end
 
 @implementation MRUUpNextPicker
 
-- (MRUUpNextPicker)initWithFrame:(CGRect)a3 dataSource:(id)a4
+- (MRUUpNextPicker)initWithFrame:(CGRect)frame dataSource:(id)source
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sourceCopy = source;
   v31.receiver = self;
   v31.super_class = MRUUpNextPicker;
-  v11 = [(MRUUpNextPicker *)&v31 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(MRUUpNextPicker *)&v31 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_dataSource, a4);
+    objc_storeStrong(&height->_dataSource, source);
     [(MRUUpNextDataSource *)v12->_dataSource setDelegate:v12];
     v13 = objc_alloc(MEMORY[0x1E69DD020]);
     [(MRUUpNextPicker *)v12 bounds];
@@ -105,13 +105,13 @@ id __44__MRUUpNextPicker_initWithFrame_dataSource___block_invoke(uint64_t a1, ui
   [(UITableView *)self->_tableView setFrame:?];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 cellForRowAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [view cellForRowAtIndexPath:pathCopy];
   if ([v6 isUserInteractionEnabled])
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   else
@@ -124,84 +124,84 @@ id __44__MRUUpNextPicker_initWithFrame_dataSource___block_invoke(uint64_t a1, ui
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  [v7 scrollToRowAtIndexPath:v6 atScrollPosition:1 animated:0];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  [viewCopy scrollToRowAtIndexPath:pathCopy atScrollPosition:1 animated:0];
 
-  v8 = [(UITableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:v6];
+  v8 = [(UITableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   [(MRUUpNextDataSource *)self->_dataSource playItemWithIdentifier:v8 completion:0];
 }
 
-- (void)updateDiffableDataSourceAnimated:(BOOL)a3
+- (void)updateDiffableDataSourceAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v6 = objc_opt_new();
   [v6 appendSectionsWithIdentifiers:&unk_1F148B3B8];
-  v5 = [(MRUUpNextDataSource *)self->_dataSource responseItemIDs];
-  [v6 appendItemsWithIdentifiers:v5];
+  responseItemIDs = [(MRUUpNextDataSource *)self->_dataSource responseItemIDs];
+  [v6 appendItemsWithIdentifiers:responseItemIDs];
 
-  [(UITableViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v6 animatingDifferences:v3];
+  [(UITableViewDiffableDataSource *)self->_diffableDataSource applySnapshot:v6 animatingDifferences:animatedCopy];
 }
 
-- (id)reponseItemForIndexPath:(id)a3
+- (id)reponseItemForIndexPath:(id)path
 {
-  v4 = [(UITableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:a3];
+  v4 = [(UITableViewDiffableDataSource *)self->_diffableDataSource itemIdentifierForIndexPath:path];
   v5 = [(MRUUpNextDataSource *)self->_dataSource objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)configureCell:(id)a3 forSong:(id)a4
+- (void)configureCell:(id)cell forSong:(id)song
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 title];
-  v8 = [v6 textLabel];
-  [v8 setText:v7];
+  songCopy = song;
+  cellCopy = cell;
+  title = [songCopy title];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:title];
 
-  v9 = [v5 album];
-  v10 = [v9 title];
-  v11 = [v6 detailTextLabel];
-  [v11 setText:v10];
+  album = [songCopy album];
+  title2 = [album title];
+  detailTextLabel = [cellCopy detailTextLabel];
+  [detailTextLabel setText:title2];
 
-  v12 = [v5 artworkCatalog];
+  artworkCatalog = [songCopy artworkCatalog];
 
-  [v6 setArtworkCatalog:v12];
+  [cellCopy setArtworkCatalog:artworkCatalog];
 }
 
-- (void)configureCell:(id)a3 forTVEpisode:(id)a4
+- (void)configureCell:(id)cell forTVEpisode:(id)episode
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 title];
-  v8 = [v6 textLabel];
-  [v8 setText:v7];
+  episodeCopy = episode;
+  cellCopy = cell;
+  title = [episodeCopy title];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:title];
 
-  v9 = [v5 show];
-  v10 = [v9 title];
-  v11 = [v6 detailTextLabel];
-  [v11 setText:v10];
+  show = [episodeCopy show];
+  title2 = [show title];
+  detailTextLabel = [cellCopy detailTextLabel];
+  [detailTextLabel setText:title2];
 
-  v12 = [v5 artworkCatalog];
+  artworkCatalog = [episodeCopy artworkCatalog];
 
-  [v6 setArtworkCatalog:v12];
+  [cellCopy setArtworkCatalog:artworkCatalog];
 }
 
-- (void)configureCell:(id)a3 forMovie:(id)a4
+- (void)configureCell:(id)cell forMovie:(id)movie
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 title];
-  v8 = [v6 textLabel];
-  [v8 setText:v7];
+  movieCopy = movie;
+  cellCopy = cell;
+  title = [movieCopy title];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:title];
 
-  v9 = [v5 artworkCatalog];
+  artworkCatalog = [movieCopy artworkCatalog];
 
-  [v6 setArtworkCatalog:v9];
+  [cellCopy setArtworkCatalog:artworkCatalog];
 }
 
 @end

@@ -1,72 +1,72 @@
 @interface IDSRegistrationMessage
-- (BOOL)hasRequiredKeys:(id *)a3;
+- (BOOL)hasRequiredKeys:(id *)keys;
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSRegistrationMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21.receiver = self;
   v21.super_class = IDSRegistrationMessage;
-  v4 = [(IDSRegistrationMessage *)&v21 copyWithZone:a3];
-  v5 = [(IDSRegistrationMessage *)self deviceName];
-  [v4 setDeviceName:v5];
+  v4 = [(IDSRegistrationMessage *)&v21 copyWithZone:zone];
+  deviceName = [(IDSRegistrationMessage *)self deviceName];
+  [v4 setDeviceName:deviceName];
 
-  v6 = [(IDSRegistrationMessage *)self language];
-  [v4 setLanguage:v6];
+  language = [(IDSRegistrationMessage *)self language];
+  [v4 setLanguage:language];
 
-  v7 = [(IDSRegistrationMessage *)self services];
-  [v4 setServices:v7];
+  services = [(IDSRegistrationMessage *)self services];
+  [v4 setServices:services];
 
-  v8 = [(IDSRegistrationMessage *)self osVersion];
-  [v4 setOsVersion:v8];
+  osVersion = [(IDSRegistrationMessage *)self osVersion];
+  [v4 setOsVersion:osVersion];
 
-  v9 = [(IDSRegistrationMessage *)self softwareVersion];
-  [v4 setSoftwareVersion:v9];
+  softwareVersion = [(IDSRegistrationMessage *)self softwareVersion];
+  [v4 setSoftwareVersion:softwareVersion];
 
-  v10 = [(IDSRegistrationMessage *)self hardwareVersion];
-  [v4 setHardwareVersion:v10];
+  hardwareVersion = [(IDSRegistrationMessage *)self hardwareVersion];
+  [v4 setHardwareVersion:hardwareVersion];
 
-  v11 = [(IDSRegistrationMessage *)self privateDeviceData];
-  [v4 setPrivateDeviceData:v11];
+  privateDeviceData = [(IDSRegistrationMessage *)self privateDeviceData];
+  [v4 setPrivateDeviceData:privateDeviceData];
 
-  v12 = [(IDSRegistrationMessage *)self hostDeviceName];
-  [v4 setHostDeviceName:v12];
+  hostDeviceName = [(IDSRegistrationMessage *)self hostDeviceName];
+  [v4 setHostDeviceName:hostDeviceName];
 
-  v13 = [(IDSRegistrationMessage *)self hostLanguage];
-  [v4 setHostLanguage:v13];
+  hostLanguage = [(IDSRegistrationMessage *)self hostLanguage];
+  [v4 setHostLanguage:hostLanguage];
 
-  v14 = [(IDSRegistrationMessage *)self hostOsVersion];
-  [v4 setHostOsVersion:v14];
+  hostOsVersion = [(IDSRegistrationMessage *)self hostOsVersion];
+  [v4 setHostOsVersion:hostOsVersion];
 
-  v15 = [(IDSRegistrationMessage *)self hostSoftwareVersion];
-  [v4 setHostSoftwareVersion:v15];
+  hostSoftwareVersion = [(IDSRegistrationMessage *)self hostSoftwareVersion];
+  [v4 setHostSoftwareVersion:hostSoftwareVersion];
 
-  v16 = [(IDSRegistrationMessage *)self hostHardwareVersion];
-  [v4 setHostHardwareVersion:v16];
+  hostHardwareVersion = [(IDSRegistrationMessage *)self hostHardwareVersion];
+  [v4 setHostHardwareVersion:hostHardwareVersion];
 
-  v17 = [(IDSRegistrationMessage *)self validationData];
-  [v4 setValidationData:v17];
+  validationData = [(IDSRegistrationMessage *)self validationData];
+  [v4 setValidationData:validationData];
 
-  v18 = [(IDSRegistrationMessage *)self responseServices];
-  [v4 setResponseServices:v18];
+  responseServices = [(IDSRegistrationMessage *)self responseServices];
+  [v4 setResponseServices:responseServices];
 
-  v19 = [(IDSRegistrationMessage *)self responseHBI];
-  [v4 setResponseHBI:v19];
+  responseHBI = [(IDSRegistrationMessage *)self responseHBI];
+  [v4 setResponseHBI:responseHBI];
 
   return v4;
 }
 
-- (BOOL)hasRequiredKeys:(id *)a3
+- (BOOL)hasRequiredKeys:(id *)keys
 {
   v4.receiver = self;
   v4.super_class = IDSRegistrationMessage;
-  return [(IDSRegistrationMessage *)&v4 hasRequiredKeys:a3];
+  return [(IDSRegistrationMessage *)&v4 hasRequiredKeys:keys];
 }
 
 - (id)requiredKeys
@@ -85,18 +85,18 @@
 {
   v7.receiver = self;
   v7.super_class = IDSRegistrationMessage;
-  v3 = [(IDSRegistrationMessage *)&v7 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSRegistrationMessage *)&v7 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSRegistrationMessage *)self requestReasonString];
-  if (v5)
+  requestReasonString = [(IDSRegistrationMessage *)self requestReasonString];
+  if (requestReasonString)
   {
-    CFDictionarySetValue(Mutable, @"x-apple-req-reason", v5);
+    CFDictionarySetValue(Mutable, @"x-apple-req-reason", requestReasonString);
   }
 
   return Mutable;
@@ -106,18 +106,18 @@
 {
   v19.receiver = self;
   v19.super_class = IDSRegistrationMessage;
-  v3 = [(IDSRegistrationMessage *)&v19 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSRegistrationMessage *)&v19 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSRegistrationMessage *)self hardwareVersion];
-  if (v5)
+  hardwareVersion = [(IDSRegistrationMessage *)self hardwareVersion];
+  if (hardwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"hardware-version", v5);
+    CFDictionarySetValue(Mutable, @"hardware-version", hardwareVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -125,10 +125,10 @@
     sub_1009151DC();
   }
 
-  v6 = [(IDSRegistrationMessage *)self osVersion];
-  if (v6)
+  osVersion = [(IDSRegistrationMessage *)self osVersion];
+  if (osVersion)
   {
-    CFDictionarySetValue(Mutable, @"os-version", v6);
+    CFDictionarySetValue(Mutable, @"os-version", osVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -136,16 +136,16 @@
     sub_100915264();
   }
 
-  v7 = [(IDSRegistrationMessage *)self privateDeviceData];
-  if (v7)
+  privateDeviceData = [(IDSRegistrationMessage *)self privateDeviceData];
+  if (privateDeviceData)
   {
-    CFDictionarySetValue(Mutable, @"private-device-data", v7);
+    CFDictionarySetValue(Mutable, @"private-device-data", privateDeviceData);
   }
 
-  v8 = [(IDSRegistrationMessage *)self softwareVersion];
-  if (v8)
+  softwareVersion = [(IDSRegistrationMessage *)self softwareVersion];
+  if (softwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"software-version", v8);
+    CFDictionarySetValue(Mutable, @"software-version", softwareVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -153,10 +153,10 @@
     sub_100920E24();
   }
 
-  v9 = [(IDSRegistrationMessage *)self validationData];
-  if (v9)
+  validationData = [(IDSRegistrationMessage *)self validationData];
+  if (validationData)
   {
-    CFDictionarySetValue(Mutable, @"validation-data", v9);
+    CFDictionarySetValue(Mutable, @"validation-data", validationData);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -175,10 +175,10 @@
     sub_1009285E4();
   }
 
-  v11 = [(IDSRegistrationMessage *)self services];
-  if (v11)
+  services = [(IDSRegistrationMessage *)self services];
+  if (services)
   {
-    CFDictionarySetValue(Mutable, @"services", v11);
+    CFDictionarySetValue(Mutable, @"services", services);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -186,55 +186,55 @@
     sub_10092866C();
   }
 
-  v12 = [(IDSRegistrationMessage *)self deviceName];
-  if (v12)
+  deviceName = [(IDSRegistrationMessage *)self deviceName];
+  if (deviceName)
   {
-    CFDictionarySetValue(Mutable, @"device-name", v12);
+    CFDictionarySetValue(Mutable, @"device-name", deviceName);
   }
 
-  v13 = [(IDSRegistrationMessage *)self hostHardwareVersion];
-  if (v13)
+  hostHardwareVersion = [(IDSRegistrationMessage *)self hostHardwareVersion];
+  if (hostHardwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"host-hardware-version", v13);
+    CFDictionarySetValue(Mutable, @"host-hardware-version", hostHardwareVersion);
   }
 
-  v14 = [(IDSRegistrationMessage *)self hostOsVersion];
-  if (v14)
+  hostOsVersion = [(IDSRegistrationMessage *)self hostOsVersion];
+  if (hostOsVersion)
   {
-    CFDictionarySetValue(Mutable, @"host-os-version", v14);
+    CFDictionarySetValue(Mutable, @"host-os-version", hostOsVersion);
   }
 
-  v15 = [(IDSRegistrationMessage *)self hostDeviceName];
-  if (v15)
+  hostDeviceName = [(IDSRegistrationMessage *)self hostDeviceName];
+  if (hostDeviceName)
   {
-    CFDictionarySetValue(Mutable, @"host-device-name", v15);
+    CFDictionarySetValue(Mutable, @"host-device-name", hostDeviceName);
   }
 
-  v16 = [(IDSRegistrationMessage *)self hostSoftwareVersion];
-  if (v16)
+  hostSoftwareVersion = [(IDSRegistrationMessage *)self hostSoftwareVersion];
+  if (hostSoftwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"host-software-version", v16);
+    CFDictionarySetValue(Mutable, @"host-software-version", hostSoftwareVersion);
   }
 
-  v17 = [(IDSRegistrationMessage *)self hostLanguage];
-  if (v17)
+  hostLanguage = [(IDSRegistrationMessage *)self hostLanguage];
+  if (hostLanguage)
   {
-    CFDictionarySetValue(Mutable, @"host-language", v17);
+    CFDictionarySetValue(Mutable, @"host-language", hostLanguage);
   }
 
   return Mutable;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"services"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"services"];
   [(IDSRegistrationMessage *)self setResponseServices:v5];
 
-  v6 = [v4 objectForKey:@"next-hbi"];
+  v6 = [dictionaryCopy objectForKey:@"next-hbi"];
   [(IDSRegistrationMessage *)self setResponseHBI:v6];
 
-  v7 = [v4 objectForKey:@"alert"];
+  v7 = [dictionaryCopy objectForKey:@"alert"];
 
   [(IDSRegistrationMessage *)self setResponseAlertInfo:v7];
 }

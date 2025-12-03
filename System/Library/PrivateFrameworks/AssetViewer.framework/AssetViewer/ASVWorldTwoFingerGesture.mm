@@ -1,18 +1,18 @@
 @interface ASVWorldTwoFingerGesture
-- (ASVWorldTwoFingerGesture)initWithFirstTouch:(id)a3 secondTouch:(id)a4 dataSource:(id)a5 worldDelegate:(id)a6;
+- (ASVWorldTwoFingerGesture)initWithFirstTouch:(id)touch secondTouch:(id)secondTouch dataSource:(id)source worldDelegate:(id)delegate;
 - (ASVWorldTwoFingerGestureDelegate)worldDelegate;
 - (void)finishGesture;
-- (void)updatePanWithFirstTouchLocation:(ASVWorldTwoFingerGesture *)self secondTouchLocation:(SEL)a2 midPoint:;
+- (void)updatePanWithFirstTouchLocation:(ASVWorldTwoFingerGesture *)self secondTouchLocation:(SEL)location midPoint:;
 @end
 
 @implementation ASVWorldTwoFingerGesture
 
-- (ASVWorldTwoFingerGesture)initWithFirstTouch:(id)a3 secondTouch:(id)a4 dataSource:(id)a5 worldDelegate:(id)a6
+- (ASVWorldTwoFingerGesture)initWithFirstTouch:(id)touch secondTouch:(id)secondTouch dataSource:(id)source worldDelegate:(id)delegate
 {
-  v10 = a6;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = ASVWorldTwoFingerGesture;
-  v11 = [(ASVTwoFingerGesture *)&v16 initWithFirstTouch:a3 secondTouch:a4 dataSource:a5 delegate:v10];
+  v11 = [(ASVTwoFingerGesture *)&v16 initWithFirstTouch:touch secondTouch:secondTouch dataSource:source delegate:delegateCopy];
   v12 = v11;
   if (v11)
   {
@@ -22,7 +22,7 @@
       goto LABEL_6;
     }
 
-    objc_storeWeak(&v12->_worldDelegate, v10);
+    objc_storeWeak(&v12->_worldDelegate, delegateCopy);
     dragOffsetCorrector = v12->_dragOffsetCorrector;
     v12->_dragOffsetCorrector = 0;
   }
@@ -33,12 +33,12 @@ LABEL_6:
   return v14;
 }
 
-- (void)updatePanWithFirstTouchLocation:(ASVWorldTwoFingerGesture *)self secondTouchLocation:(SEL)a2 midPoint:
+- (void)updatePanWithFirstTouchLocation:(ASVWorldTwoFingerGesture *)self secondTouchLocation:(SEL)location midPoint:
 {
   v5 = v4;
   v6 = v3;
   v7 = v2;
-  v46 = [(ASVWorldTwoFingerGesture *)self worldDelegate];
+  worldDelegate = [(ASVWorldTwoFingerGesture *)self worldDelegate];
   if (![(ASVTwoFingerGesture *)self panThresholdPassed])
   {
     [ASVSettings floatForKey:@"ASVSettingTwoFingerTranslationThreshold"];
@@ -102,7 +102,7 @@ LABEL_6:
         if (v30 < 30.0 || v30 > 150.0)
         {
           [(ASVTwoFingerGesture *)self setLevitationThresholdPassed:1];
-          [v46 gestureBeganLevitation:self];
+          [worldDelegate gestureBeganLevitation:self];
           goto LABEL_21;
         }
       }
@@ -116,26 +116,26 @@ LABEL_6:
         [(ASVWorldTwoFingerGesture *)self setDragOffsetCorrector:v39];
       }
 
-      [v46 gestureBeganTranslation:self];
+      [worldDelegate gestureBeganTranslation:self];
     }
   }
 
 LABEL_21:
   if ([(ASVTwoFingerGesture *)self panThresholdPassed]|| [(ASVTwoFingerGesture *)self levitationThresholdPassed])
   {
-    v40 = [(ASVWorldTwoFingerGesture *)self dragOffsetCorrector];
-    [v40 currentDragOffset];
+    dragOffsetCorrector = [(ASVWorldTwoFingerGesture *)self dragOffsetCorrector];
+    [dragOffsetCorrector currentDragOffset];
     v42 = v41;
 
     v43 = COERCE_DOUBLE(vsub_f32(v5, v42));
     if ([(ASVTwoFingerGesture *)self levitationThresholdPassed])
     {
-      [v46 gesture:self levitatedAssetToScreenPoint:v43];
+      [worldDelegate gesture:self levitatedAssetToScreenPoint:v43];
     }
 
     else
     {
-      [v46 gesture:self translatedAssetToScreenPoint:v43];
+      [worldDelegate gesture:self translatedAssetToScreenPoint:v43];
     }
   }
 }
@@ -144,15 +144,15 @@ LABEL_21:
 {
   if ([(ASVTwoFingerGesture *)self panThresholdPassed])
   {
-    v3 = [(ASVWorldTwoFingerGesture *)self worldDelegate];
+    worldDelegate = [(ASVWorldTwoFingerGesture *)self worldDelegate];
     if ([(ASVTwoFingerGesture *)self levitationThresholdPassed])
     {
-      [v3 gestureEndedLevitation:self];
+      [worldDelegate gestureEndedLevitation:self];
     }
 
     else
     {
-      [v3 gestureEndedTranslation:self];
+      [worldDelegate gestureEndedTranslation:self];
     }
   }
 

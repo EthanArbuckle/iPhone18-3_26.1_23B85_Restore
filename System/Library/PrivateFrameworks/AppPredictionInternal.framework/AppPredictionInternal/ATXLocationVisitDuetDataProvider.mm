@@ -1,17 +1,17 @@
 @interface ATXLocationVisitDuetDataProvider
-- (id)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 withPredicates:(id)a5 limit:(unint64_t)a6 ascending:(BOOL)a7;
+- (id)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate withPredicates:(id)predicates limit:(unint64_t)limit ascending:(BOOL)ascending;
 @end
 
 @implementation ATXLocationVisitDuetDataProvider
 
-- (id)fetchEventsBetweenStartDate:(id)a3 andEndDate:(id)a4 withPredicates:(id)a5 limit:(unint64_t)a6 ascending:(BOOL)a7
+- (id)fetchEventsBetweenStartDate:(id)date andEndDate:(id)endDate withPredicates:(id)predicates limit:(unint64_t)limit ascending:(BOOL)ascending
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x277D41BF8] sharedInstance];
-  v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v10];
+  dateCopy = date;
+  endDateCopy = endDate;
+  predicatesCopy = predicates;
+  mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+  v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:endDateCopy];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -26,7 +26,7 @@
   v26 = &v27;
   v15 = v14;
   v25 = v15;
-  [v12 fetchLocationsOfInterestVisitedDuring:v13 handler:&v21];
+  [mEMORY[0x277D41BF8] fetchLocationsOfInterestVisitedDuring:v13 handler:&v21];
   [MEMORY[0x277D425A0] waitForSemaphore:v15 timeoutSeconds:{10.0, v21, v22, v23, v24}];
   v16 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))

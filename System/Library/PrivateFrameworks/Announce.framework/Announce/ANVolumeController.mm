@@ -1,6 +1,6 @@
 @interface ANVolumeController
 + (id)sharedController;
-- (void)setVolumeWithOptions:(unint64_t)a3;
+- (void)setVolumeWithOptions:(unint64_t)options;
 @end
 
 @implementation ANVolumeController
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __38__ANVolumeController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken != -1)
   {
     dispatch_once(&sharedController_onceToken, block);
@@ -30,19 +30,19 @@ uint64_t __38__ANVolumeController_sharedController__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setVolumeWithOptions:(unint64_t)a3
+- (void)setVolumeWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v20 = *MEMORY[0x277D85DE8];
   [(ANVolumeController *)self smartSiriVolume];
-  if (v3)
+  if (optionsCopy)
   {
     v5 = v4;
     if (v4 != -1.0)
     {
-      v6 = [MEMORY[0x277D26E58] sharedAVSystemController];
+      mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
       *&v7 = v5;
-      v8 = [v6 setVolumeTo:@"VoiceCommand" forCategory:v7];
+      v8 = [mEMORY[0x277D26E58] setVolumeTo:@"VoiceCommand" forCategory:v7];
 
       if (ANLogHandleVolumeController_once != -1)
       {

@@ -1,7 +1,7 @@
 @interface MKPlaceholder
-- (MKPlaceholder)initWithBundleIdentifier:(id)a3;
-- (MKPlaceholder)initWithBundleIdentifier:(id)a3 appStoreIdentifier:(id)a4 bundleName:(id)a5 developer:(id)a6 icon:(id)a7;
-- (MKPlaceholder)initWithJSONData:(id)a3;
+- (MKPlaceholder)initWithBundleIdentifier:(id)identifier;
+- (MKPlaceholder)initWithBundleIdentifier:(id)identifier appStoreIdentifier:(id)storeIdentifier bundleName:(id)name developer:(id)developer icon:(id)icon;
+- (MKPlaceholder)initWithJSONData:(id)data;
 - (MKPlaceholder)initWithTestBundleIdentifier;
 - (void)install;
 - (void)uninstall;
@@ -9,16 +9,16 @@
 
 @implementation MKPlaceholder
 
-- (MKPlaceholder)initWithJSONData:(id)a3
+- (MKPlaceholder)initWithJSONData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v34.receiver = self;
   v34.super_class = MKPlaceholder;
   v5 = [(MKPlaceholder *)&v34 init];
-  if (v5 && [v4 length])
+  if (v5 && [dataCopy length])
   {
     v33 = 0;
-    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v33];
+    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v33];
     v7 = v33;
     if (v7)
     {
@@ -113,9 +113,9 @@ LABEL_17:
   return v9;
 }
 
-- (MKPlaceholder)initWithBundleIdentifier:(id)a3
+- (MKPlaceholder)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = MKPlaceholder;
   v5 = [(MKPlaceholder *)&v13 init];
@@ -126,19 +126,19 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v4 length])
+  if ([identifierCopy length])
   {
-    [(MKPlaceholder *)v5 setBundleIdentifier:v4];
+    [(MKPlaceholder *)v5 setBundleIdentifier:identifierCopy];
     v6 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v5->_bundleIdentifier allowPlaceholder:1 error:0];
-    v7 = [v6 dataContainerURL];
-    v8 = [v7 path];
-    v9 = [v8 stringByAppendingPathComponent:@"Library"];
+    dataContainerURL = [v6 dataContainerURL];
+    path = [dataContainerURL path];
+    v9 = [path stringByAppendingPathComponent:@"Library"];
     [(MKPlaceholder *)v5 setContainer:v9];
 
     if (v6)
     {
-      v10 = [v6 dataContainerURL];
-      [(MKPlaceholder *)v5 setEnabled:v10 != 0];
+      dataContainerURL2 = [v6 dataContainerURL];
+      [(MKPlaceholder *)v5 setEnabled:dataContainerURL2 != 0];
     }
 
     else
@@ -155,20 +155,20 @@ LABEL_9:
   return v11;
 }
 
-- (MKPlaceholder)initWithBundleIdentifier:(id)a3 appStoreIdentifier:(id)a4 bundleName:(id)a5 developer:(id)a6 icon:(id)a7
+- (MKPlaceholder)initWithBundleIdentifier:(id)identifier appStoreIdentifier:(id)storeIdentifier bundleName:(id)name developer:(id)developer icon:(id)icon
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(MKPlaceholder *)self initWithBundleIdentifier:a3];
+  storeIdentifierCopy = storeIdentifier;
+  nameCopy = name;
+  developerCopy = developer;
+  iconCopy = icon;
+  v16 = [(MKPlaceholder *)self initWithBundleIdentifier:identifier];
   v17 = v16;
   if (v16)
   {
-    [(MKPlaceholder *)v16 setAppStoreIdentifier:v12];
-    [(MKPlaceholder *)v17 setName:v13];
-    [(MKPlaceholder *)v17 setDeveloper:v14];
-    [(MKPlaceholder *)v17 setIcon:v15];
+    [(MKPlaceholder *)v16 setAppStoreIdentifier:storeIdentifierCopy];
+    [(MKPlaceholder *)v17 setName:nameCopy];
+    [(MKPlaceholder *)v17 setDeveloper:developerCopy];
+    [(MKPlaceholder *)v17 setIcon:iconCopy];
   }
 
   return v17;
@@ -189,15 +189,15 @@ LABEL_9:
     v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
     self = [(MKPlaceholder *)self initWithBundleIdentifier:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)install
@@ -210,7 +210,7 @@ LABEL_9:
     {
       bundleIdentifier = self->_bundleIdentifier;
       *buf = 138412290;
-      v37 = bundleIdentifier;
+      selfCopy = bundleIdentifier;
       _os_log_impl(&dword_2592D2000, v3, OS_LOG_TYPE_INFO, "The placeholder is already installed. id=%@", buf, 0xCu);
     }
   }
@@ -308,7 +308,7 @@ LABEL_9:
         v19 = self->_bundleIdentifier;
         v20 = [v3 description];
         *buf = 138413058;
-        v37 = self;
+        selfCopy = self;
         v38 = 2112;
         v39 = v19;
         v40 = 1024;
@@ -323,7 +323,7 @@ LABEL_9:
     {
       v12 = self->_bundleIdentifier;
       *buf = 138412290;
-      v37 = v12;
+      selfCopy = v12;
       _os_log_impl(&dword_2592D2000, v11, OS_LOG_TYPE_INFO, "will install a placeholder. id=%@", buf, 0xCu);
     }
   }

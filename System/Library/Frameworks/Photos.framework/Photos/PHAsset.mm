@@ -1,125 +1,125 @@
 @interface PHAsset
-+ (BOOL)_isLibraryScopeExiting:(id)a3;
-+ (BOOL)_isLivePhotoWithPhotoIris:(BOOL)a3 hasAdjustments:(BOOL)a4 videoCpDuration:(int64_t)a5 videoCPVisibility:(unsigned __int16)a6 sourceType:(unint64_t)a7;
-+ (BOOL)_libraryScopeAssetContributedByCurrentUser:(id)a3;
-+ (BOOL)isEligibleForSpatialGenerationWithPixelSize:(CGSize)a3;
-+ (Class)propertySetClassForPropertySet:(id)a3;
++ (BOOL)_isLibraryScopeExiting:(id)exiting;
++ (BOOL)_isLivePhotoWithPhotoIris:(BOOL)iris hasAdjustments:(BOOL)adjustments videoCpDuration:(int64_t)duration videoCPVisibility:(unsigned __int16)visibility sourceType:(unint64_t)type;
++ (BOOL)_libraryScopeAssetContributedByCurrentUser:(id)user;
++ (BOOL)isEligibleForSpatialGenerationWithPixelSize:(CGSize)size;
++ (Class)propertySetClassForPropertySet:(id)set;
 + (PHFetchResult)fetchAssetsInAssetCollection:(PHAssetCollection *)assetCollection options:(PHFetchOptions *)options;
 + (PHFetchResult)fetchAssetsWithALAssetURLs:(NSArray *)assetURLs options:(PHFetchOptions *)options;
 + (PHFetchResult)fetchAssetsWithBurstIdentifier:(NSString *)burstIdentifier options:(PHFetchOptions *)options;
 + (PHFetchResult)fetchAssetsWithLocalIdentifiers:(NSArray *)identifiers options:(PHFetchOptions *)options;
 + (PHFetchResult)fetchAssetsWithMediaType:(PHAssetMediaType)mediaType options:(PHFetchOptions *)options;
 + (PHFetchResult)fetchKeyAssetsInAssetCollection:(PHAssetCollection *)assetCollection options:(PHFetchOptions *)options;
-+ (id)_assetFetchResultFromAssets:(id)a3 options:(id)a4;
-+ (id)_composePropertiesToFetchWithHint:(unint64_t)a3;
++ (id)_assetFetchResultFromAssets:(id)assets options:(id)options;
++ (id)_composePropertiesToFetchWithHint:(unint64_t)hint;
 + (id)_currentTimestampString;
-+ (id)_descriptionForMediaSubtype:(unint64_t)a3;
-+ (id)_descriptionForVariationSuggestionStates:(unint64_t)a3;
-+ (id)_descriptionForVariationSuggestionType:(unint64_t)a3;
-+ (id)_fetchRepresentativeAssetInAssetCollection:(id)a3;
++ (id)_descriptionForMediaSubtype:(unint64_t)subtype;
++ (id)_descriptionForVariationSuggestionStates:(unint64_t)states;
++ (id)_descriptionForVariationSuggestionType:(unint64_t)type;
++ (id)_fetchRepresentativeAssetInAssetCollection:(id)collection;
 + (id)_imageManagerRequestLoggingQueue;
 + (id)_inq_highestImageManagerRequestIDsObserved;
 + (id)_inq_imageManagerRequestLogsByAssetUUID;
-+ (id)_inq_imageManagerRequestMessagesByRequestIDForAssetUUID:(id)a3 requestID:(int64_t)a4;
-+ (id)_requestCuratedAssetInAssetCollection:(id)a3 referenceAsset:(id)a4 referencePersons:(id)a5 fetchOptions:(id)a6 onlyKey:(BOOL)a7;
-+ (id)_transformMediaSubtypeReferences:(id)a3 inComparisonPredicate:(id)a4 options:(id)a5;
-+ (id)_unfetchedPropertySetsForAssets:(id)a3 fromPropertySets:(id)a4;
-+ (id)composabilityScoresOfAssets:(id)a3 options:(id)a4 error:(id *)a5;
++ (id)_inq_imageManagerRequestMessagesByRequestIDForAssetUUID:(id)d requestID:(int64_t)iD;
++ (id)_requestCuratedAssetInAssetCollection:(id)collection referenceAsset:(id)asset referencePersons:(id)persons fetchOptions:(id)options onlyKey:(BOOL)key;
++ (id)_transformMediaSubtypeReferences:(id)references inComparisonPredicate:(id)predicate options:(id)options;
++ (id)_unfetchedPropertySetsForAssets:(id)assets fromPropertySets:(id)sets;
++ (id)composabilityScoresOfAssets:(id)assets options:(id)options error:(id *)error;
 + (id)corePropertiesToFetch;
-+ (id)descriptionForMediaSubtypes:(unint64_t)a3;
-+ (id)descriptionForMediaType:(int64_t)a3;
-+ (id)descriptionForPlaybackStyle:(int64_t)a3;
++ (id)descriptionForMediaSubtypes:(unint64_t)subtypes;
++ (id)descriptionForMediaType:(int64_t)type;
++ (id)descriptionForPlaybackStyle:(int64_t)style;
 + (id)entityKeyMap;
 + (id)faceWorkerPropertiesToFetch;
-+ (id)fetchAllAssetsInYearRepresentedByYearHighlight:(id)a3 options:(id)a4;
-+ (id)fetchAnyCinematicVideosNeedingDeferredProcessingWithOptions:(id)a3;
-+ (id)fetchAssetsAssociatedWithMomentsOfMemory:(id)a3 options:(id)a4;
-+ (id)fetchAssetsCapturedOrEdited:(BOOL)a3 onThisCameraSinceDate:(id)a4 options:(id)a5;
-+ (id)fetchAssetsContainingAllPersons:(id)a3 options:(id)a4;
-+ (id)fetchAssetsForCloudFeedEntry:(id)a3 options:(id)a4;
-+ (id)fetchAssetsForComment:(id)a3 options:(id)a4;
-+ (id)fetchAssetsForFaceGroups:(id)a3 options:(id)a4;
-+ (id)fetchAssetsForFaces:(id)a3 options:(id)a4;
-+ (id)fetchAssetsForKeywords:(id)a3 options:(id)a4;
-+ (id)fetchAssetsForOsMigrationWithOptions:(id)a3;
-+ (id)fetchAssetsForPTPWithOptions:(id)a3;
-+ (id)fetchAssetsForPerson:(id)a3 faceCount:(unint64_t)a4 options:(id)a5;
-+ (id)fetchAssetsForPerson:(id)a3 options:(id)a4;
-+ (id)fetchAssetsForPersons:(id)a3 options:(id)a4;
-+ (id)fetchAssetsForReferences:(id)a3 photoLibrary:(id)a4;
-+ (id)fetchAssetsForSearchLookupIdentifier:(id)a3 options:(id)a4;
-+ (id)fetchAssetsForStyleablePhotoSuggestionsWithOptions:(id)a3;
-+ (id)fetchAssetsFromCameraSinceDate:(id)a3 options:(id)a4;
-+ (id)fetchAssetsGroupedByFaceUUIDForFaces:(id)a3;
-+ (id)fetchAssetsGroupedByFaceUUIDForFaces:(id)a3 fetchPropertySets:(id)a4;
-+ (id)fetchAssetsInAssetCollections:(id)a3 options:(id)a4;
-+ (id)fetchAssetsInBoundingBoxWithTopLeftLocation:(id)a3 bottomRightLocation:(id)a4 options:(id)a5;
-+ (id)fetchAssetsInImportSessions:(id)a3 options:(id)a4;
-+ (id)fetchAssetsInLibraryScope:(id)a3 fromAssets:(id)a4;
-+ (id)fetchAssetsInLibraryScope:(id)a3 options:(id)a4;
-+ (id)fetchAssetsInPreviewStateInLibraryScope:(id)a3 options:(id)a4;
-+ (id)fetchAssetsInPreviewStateWithPhotosOrPhotosDeferredSuggestedByClientTypeWithOptions:(id)a3;
-+ (id)fetchAssetsInPreviewStateWithSuggestedByClientType:(signed __int16)a3 options:(id)a4;
-+ (id)fetchAssetsMatchingAdjustedStableHash:(id)a3 photoLibrary:(id)a4;
-+ (id)fetchAssetsMatchingOriginalStableHash:(id)a3 photoLibrary:(id)a4;
-+ (id)fetchAssetsThroughAssetPersonEdgesForPerson:(id)a3 options:(id)a4;
-+ (id)fetchAssetsWithCloudIdentifiers:(id)a3 options:(id)a4;
-+ (id)fetchAssetsWithCurrentUserAsLibraryScopeContributor:(BOOL)a3 inLibraryScope:(id)a4 options:(id)a5;
-+ (id)fetchAssetsWithObjectIDs:(id)a3 options:(id)a4;
-+ (id)fetchAssetsWithSyndicationIdentifiers:(id)a3 options:(id)a4 includeRejected:(BOOL)a5;
-+ (id)fetchAssetsWithUUIDs:(id)a3 options:(id)a4;
-+ (id)fetchAssetsWithoutOriginalsInAssetCollection:(id)a3 options:(id)a4;
-+ (id)fetchCollageAssetsForDayHighlight:(id)a3 options:(id)a4;
-+ (id)fetchCuratedAssetsForMomentShareCreationWithAssets:(id)a3 options:(id)a4;
-+ (id)fetchCuratedAssetsInAssetCollection:(id)a3 options:(id)a4;
-+ (id)fetchCustomUserAssetsInMemory:(id)a3 options:(id)a4;
-+ (id)fetchExclusiveAssetsForSocialGroup:(id)a3 options:(id)a4;
-+ (id)fetchExclusiveSocialGroupAssetsForPersons:(id)a3 minimumNumberOfSharedAssets:(unint64_t)a4 options:(id)a5 error:(id *)a6;
-+ (id)fetchExtendedCuratedAndRepresentativeAssetsAssociatedWithMemory:(id)a3 options:(id)a4;
-+ (id)fetchExtendedCuratedAssetsInAssetCollection:(id)a3 options:(id)a4;
-+ (id)fetchGuestAssetsInCollectionContainingAsset:(id)a3 options:(id)a4;
-+ (id)fetchInclusiveAssetsForSocialGroup:(id)a3 options:(id)a4;
-+ (id)fetchKeyAssetByHighlightUUIDForHighlights:(id)a3 options:(id)a4;
-+ (id)fetchKeyAssetByMemoryUUIDForMemories:(id)a3 options:(id)a4;
-+ (id)fetchKeyAssetBySuggestionUUIDForSuggestions:(id)a3 options:(id)a4;
-+ (id)fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs:(id)a3 options:(id)a4;
-+ (id)fetchKeyAssetForEachSuggestion:(id)a3 options:(id)a4 useSuggestionsSortOrder:(BOOL)a5;
-+ (id)fetchKeyAssetForExtendedSceneIdentifier:(unint64_t)a3 aboveConfidenceThreshold:(double)a4 minimumSceneAnalysisVersion:(signed __int16)a5 options:(id)a6;
-+ (id)fetchKeyAssetForPerson:(id)a3 options:(id)a4;
-+ (id)fetchKeyAssetForSocialGroup:(id)a3 createIfNeeded:(BOOL)a4 options:(id)a5;
-+ (id)fetchKeyAssetsForCollectionList:(id)a3 options:(id)a4;
-+ (id)fetchKeyCuratedAssetInAssetCollection:(id)a3 referenceAsset:(id)a4 options:(id)a5;
-+ (id)fetchKeyCuratedAssetInAssetCollection:(id)a3 referencePersons:(id)a4;
-+ (id)fetchMovieCuratedAssetsInMemory:(id)a3;
-+ (id)fetchPredicateFromComparisonPredicate:(id)a3 options:(id)a4;
-+ (id)fetchPreviewAssetsForMomentShareCreationWithAssets:(id)a3 options:(id)a4;
-+ (id)fetchReducedCuratedAssetsInMemory:(id)a3 options:(id)a4;
-+ (id)fetchRepresentativeAssetsInAssetCollection:(id)a3;
-+ (id)fetchSummaryCurationForHighlight:(id)a3 fetchOptions:(id)a4 allowsOnDemand:(BOOL)a5 error:(id *)a6;
-+ (id)fetchUserCuratedAssetsInMemory:(id)a3;
-+ (id)fetchUserCuratedAssetsInMemory:(id)a3 options:(id)a4;
-+ (id)fetchUserHiddenAssetsWithOptions:(id)a3;
-+ (id)fetchVisibleAssetsWithObjectIDs:(id)a3 options:(id)a4;
++ (id)fetchAllAssetsInYearRepresentedByYearHighlight:(id)highlight options:(id)options;
++ (id)fetchAnyCinematicVideosNeedingDeferredProcessingWithOptions:(id)options;
++ (id)fetchAssetsAssociatedWithMomentsOfMemory:(id)memory options:(id)options;
++ (id)fetchAssetsCapturedOrEdited:(BOOL)edited onThisCameraSinceDate:(id)date options:(id)options;
++ (id)fetchAssetsContainingAllPersons:(id)persons options:(id)options;
++ (id)fetchAssetsForCloudFeedEntry:(id)entry options:(id)options;
++ (id)fetchAssetsForComment:(id)comment options:(id)options;
++ (id)fetchAssetsForFaceGroups:(id)groups options:(id)options;
++ (id)fetchAssetsForFaces:(id)faces options:(id)options;
++ (id)fetchAssetsForKeywords:(id)keywords options:(id)options;
++ (id)fetchAssetsForOsMigrationWithOptions:(id)options;
++ (id)fetchAssetsForPTPWithOptions:(id)options;
++ (id)fetchAssetsForPerson:(id)person faceCount:(unint64_t)count options:(id)options;
++ (id)fetchAssetsForPerson:(id)person options:(id)options;
++ (id)fetchAssetsForPersons:(id)persons options:(id)options;
++ (id)fetchAssetsForReferences:(id)references photoLibrary:(id)library;
++ (id)fetchAssetsForSearchLookupIdentifier:(id)identifier options:(id)options;
++ (id)fetchAssetsForStyleablePhotoSuggestionsWithOptions:(id)options;
++ (id)fetchAssetsFromCameraSinceDate:(id)date options:(id)options;
++ (id)fetchAssetsGroupedByFaceUUIDForFaces:(id)faces;
++ (id)fetchAssetsGroupedByFaceUUIDForFaces:(id)faces fetchPropertySets:(id)sets;
++ (id)fetchAssetsInAssetCollections:(id)collections options:(id)options;
++ (id)fetchAssetsInBoundingBoxWithTopLeftLocation:(id)location bottomRightLocation:(id)rightLocation options:(id)options;
++ (id)fetchAssetsInImportSessions:(id)sessions options:(id)options;
++ (id)fetchAssetsInLibraryScope:(id)scope fromAssets:(id)assets;
++ (id)fetchAssetsInLibraryScope:(id)scope options:(id)options;
++ (id)fetchAssetsInPreviewStateInLibraryScope:(id)scope options:(id)options;
++ (id)fetchAssetsInPreviewStateWithPhotosOrPhotosDeferredSuggestedByClientTypeWithOptions:(id)options;
++ (id)fetchAssetsInPreviewStateWithSuggestedByClientType:(signed __int16)type options:(id)options;
++ (id)fetchAssetsMatchingAdjustedStableHash:(id)hash photoLibrary:(id)library;
++ (id)fetchAssetsMatchingOriginalStableHash:(id)hash photoLibrary:(id)library;
++ (id)fetchAssetsThroughAssetPersonEdgesForPerson:(id)person options:(id)options;
++ (id)fetchAssetsWithCloudIdentifiers:(id)identifiers options:(id)options;
++ (id)fetchAssetsWithCurrentUserAsLibraryScopeContributor:(BOOL)contributor inLibraryScope:(id)scope options:(id)options;
++ (id)fetchAssetsWithObjectIDs:(id)ds options:(id)options;
++ (id)fetchAssetsWithSyndicationIdentifiers:(id)identifiers options:(id)options includeRejected:(BOOL)rejected;
++ (id)fetchAssetsWithUUIDs:(id)ds options:(id)options;
++ (id)fetchAssetsWithoutOriginalsInAssetCollection:(id)collection options:(id)options;
++ (id)fetchCollageAssetsForDayHighlight:(id)highlight options:(id)options;
++ (id)fetchCuratedAssetsForMomentShareCreationWithAssets:(id)assets options:(id)options;
++ (id)fetchCuratedAssetsInAssetCollection:(id)collection options:(id)options;
++ (id)fetchCustomUserAssetsInMemory:(id)memory options:(id)options;
++ (id)fetchExclusiveAssetsForSocialGroup:(id)group options:(id)options;
++ (id)fetchExclusiveSocialGroupAssetsForPersons:(id)persons minimumNumberOfSharedAssets:(unint64_t)assets options:(id)options error:(id *)error;
++ (id)fetchExtendedCuratedAndRepresentativeAssetsAssociatedWithMemory:(id)memory options:(id)options;
++ (id)fetchExtendedCuratedAssetsInAssetCollection:(id)collection options:(id)options;
++ (id)fetchGuestAssetsInCollectionContainingAsset:(id)asset options:(id)options;
++ (id)fetchInclusiveAssetsForSocialGroup:(id)group options:(id)options;
++ (id)fetchKeyAssetByHighlightUUIDForHighlights:(id)highlights options:(id)options;
++ (id)fetchKeyAssetByMemoryUUIDForMemories:(id)memories options:(id)options;
++ (id)fetchKeyAssetBySuggestionUUIDForSuggestions:(id)suggestions options:(id)options;
++ (id)fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs:(id)ds options:(id)options;
++ (id)fetchKeyAssetForEachSuggestion:(id)suggestion options:(id)options useSuggestionsSortOrder:(BOOL)order;
++ (id)fetchKeyAssetForExtendedSceneIdentifier:(unint64_t)identifier aboveConfidenceThreshold:(double)threshold minimumSceneAnalysisVersion:(signed __int16)version options:(id)options;
++ (id)fetchKeyAssetForPerson:(id)person options:(id)options;
++ (id)fetchKeyAssetForSocialGroup:(id)group createIfNeeded:(BOOL)needed options:(id)options;
++ (id)fetchKeyAssetsForCollectionList:(id)list options:(id)options;
++ (id)fetchKeyCuratedAssetInAssetCollection:(id)collection referenceAsset:(id)asset options:(id)options;
++ (id)fetchKeyCuratedAssetInAssetCollection:(id)collection referencePersons:(id)persons;
++ (id)fetchMovieCuratedAssetsInMemory:(id)memory;
++ (id)fetchPredicateFromComparisonPredicate:(id)predicate options:(id)options;
++ (id)fetchPreviewAssetsForMomentShareCreationWithAssets:(id)assets options:(id)options;
++ (id)fetchReducedCuratedAssetsInMemory:(id)memory options:(id)options;
++ (id)fetchRepresentativeAssetsInAssetCollection:(id)collection;
++ (id)fetchSummaryCurationForHighlight:(id)highlight fetchOptions:(id)options allowsOnDemand:(BOOL)demand error:(id *)error;
++ (id)fetchUserCuratedAssetsInMemory:(id)memory;
++ (id)fetchUserCuratedAssetsInMemory:(id)memory options:(id)options;
++ (id)fetchUserHiddenAssetsWithOptions:(id)options;
++ (id)fetchVisibleAssetsWithObjectIDs:(id)ds options:(id)options;
 + (id)imageManagerPropertiesToFetch;
-+ (id)internalSortDescriptorsWithCreationDateAscending:(BOOL)a3;
++ (id)internalSortDescriptorsWithCreationDateAscending:(BOOL)ascending;
 + (id)locationPropertiesToFetch;
-+ (id)originalUniformTypeIdentifierForAsset:(id)a3;
-+ (id)pl_managedAssetsForAssets:(id)a3;
-+ (id)predicateForResourcesForOsMigrationIncludeLocalOnly:(BOOL)a3 iCPLEnabled:(BOOL)a4;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
++ (id)originalUniformTypeIdentifierForAsset:(id)asset;
++ (id)pl_managedAssetsForAssets:(id)assets;
++ (id)predicateForResourcesForOsMigrationIncludeLocalOnly:(BOOL)only iCPLEnabled:(BOOL)enabled;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
 + (id)propertySetAccessorsByPropertySet;
-+ (id)propertySetsForPropertyFetchHints:(unint64_t)a3;
-+ (id)senderIdentifierByAssetUUIDForAssets:(id)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-+ (int64_t)countOfAssetsWithLocationFromUUIDs:(id)a3 photoLibrary:(id)a4;
-+ (unint64_t)_extendedPropertyFetchHintsForPropertySets:(id)a3;
-+ (unint64_t)propertyFetchHintsForPropertySets:(id)a3;
-+ (void)_batchFetchAdditionalPropertySetsIfNeeded:(id)a3 forAssets:(id)a4;
-+ (void)_inq_recordRequestID:(int64_t)a3;
++ (id)propertySetsForPropertyFetchHints:(unint64_t)hints;
++ (id)senderIdentifierByAssetUUIDForAssets:(id)assets;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
++ (int64_t)countOfAssetsWithLocationFromUUIDs:(id)ds photoLibrary:(id)library;
++ (unint64_t)_extendedPropertyFetchHintsForPropertySets:(id)sets;
++ (unint64_t)propertyFetchHintsForPropertySets:(id)sets;
++ (void)_batchFetchAdditionalPropertySetsIfNeeded:(id)needed forAssets:(id)assets;
++ (void)_inq_recordRequestID:(int64_t)d;
 + (void)_inq_trimToMostRecentImageManagerMessages;
-+ (void)computeStableHashesOfAsset:(id)a3 completionHandler:(id)a4;
-- (BOOL)_canHandleAdjustmentData:(id)a3 withOptions:(id)a4;
-- (BOOL)_isPartOfAvalancheWithKind:(unsigned __int16)a3;
++ (void)computeStableHashesOfAsset:(id)asset completionHandler:(id)handler;
+- (BOOL)_canHandleAdjustmentData:(id)data withOptions:(id)options;
+- (BOOL)_isPartOfAvalancheWithKind:(unsigned __int16)kind;
 - (BOOL)canPerformEditOperation:(PHAssetEditOperation)editOperation;
 - (BOOL)canPerformSharingAction;
 - (BOOL)hasLargerThanThumbResourceLocal;
@@ -132,7 +132,7 @@
 - (BOOL)isCloudSharedAsset;
 - (BOOL)isCollectionShareAsset;
 - (BOOL)isDeleted;
-- (BOOL)isEligibleForSpatialGenerationIncludingStereo:(BOOL)a3;
+- (BOOL)isEligibleForSpatialGenerationIncludingStereo:(BOOL)stereo;
 - (BOOL)isGuestAsset;
 - (BOOL)isHDR;
 - (BOOL)isHDRVideo;
@@ -144,8 +144,8 @@
 - (BOOL)isJPEG;
 - (BOOL)isJPEG2000;
 - (BOOL)isLocalVideoKeyFrameValid;
-- (BOOL)isLocatedAtCoordinates:(CLLocationCoordinate2D)a3;
-- (BOOL)isMediaSubtype:(unint64_t)a3;
+- (BOOL)isLocatedAtCoordinates:(CLLocationCoordinate2D)coordinates;
+- (BOOL)isMediaSubtype:(unint64_t)subtype;
 - (BOOL)isMomentSharedAsset;
 - (BOOL)isOffline;
 - (BOOL)isOriginalRaw;
@@ -171,18 +171,18 @@
 - (BOOL)isWalrusEnabled;
 - (BOOL)representsBurst;
 - (BOOL)shouldUseRAWResourceAsUnadjustedEditBase;
-- (BOOL)shouldUseRAWResourceWithOriginalResourceChoice:(unint64_t)a3;
+- (BOOL)shouldUseRAWResourceWithOriginalResourceChoice:(unint64_t)choice;
 - (CGRect)acceptableCropRect;
 - (CGRect)normalizedFaceAreaRect;
 - (CGRect)originalFaceAreaRect;
 - (CGRect)preferredCropRect;
-- (CGRect)suggestedAdaptiveCropWithFaceRectScaleFactor:(double)a3 andOutputCropScore:(double *)a4 andAdaptiveHeadroom:(double *)a5;
-- (CGRect)suggestedAdaptiveCropWithFaceRegionsForOutputCropScore:(double *)a3 andAdaptiveHeadroom:(double *)a4;
-- (CGRect)suggestedCropForAspectRatio:(double)a3 withFocusRegion:(CGRect)a4 andOutputCropScore:(double *)a5;
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3;
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withFocusRegion:(CGRect)a4;
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withFocusRegion:(CGRect)a4 andOutputCropScore:(double *)a5;
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withOcclusionRegion:(CGRect)a4 andOutputCropScore:(double *)a5;
+- (CGRect)suggestedAdaptiveCropWithFaceRectScaleFactor:(double)factor andOutputCropScore:(double *)score andAdaptiveHeadroom:(double *)headroom;
+- (CGRect)suggestedAdaptiveCropWithFaceRegionsForOutputCropScore:(double *)score andAdaptiveHeadroom:(double *)headroom;
+- (CGRect)suggestedCropForAspectRatio:(double)ratio withFocusRegion:(CGRect)region andOutputCropScore:(double *)score;
+- (CGRect)suggestedCropForTargetSize:(CGSize)size;
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withFocusRegion:(CGRect)region;
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withFocusRegion:(CGRect)region andOutputCropScore:(double *)score;
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withOcclusionRegion:(CGRect)region andOutputCropScore:(double *)score;
 - (CGSize)imageSize;
 - (CGSize)originalImageSize;
 - (CGSize)originalUnorientedSize;
@@ -205,23 +205,23 @@
 - (NSString)variationSuggestionStatesDetails;
 - (NSURL)ALAssetURL;
 - (NSValue)originalFaceAreaRectValue;
-- (PHAsset)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
+- (PHAsset)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (PHAssetPhotosSmartStyleExtendedProperties)fetchSmartStyleExtendedProperties;
 - (PHAssetSourceType)sourceType;
 - (PHContentEditingInputRequestID)requestContentEditingInputWithOptions:(PHContentEditingInputRequestOptions *)options completionHandler:(void *)completionHandler;
 - (UTType)contentType;
 - (double)aspectRatio;
 - (id)StoryPlaybackProperties;
-- (id)__dictionaryWithContentsOfData:(id)a3;
+- (id)__dictionaryWithContentsOfData:(id)data;
 - (id)_createAnalysisStatePropertyObject;
 - (id)_createCommentPropertyObject;
 - (id)_createKeywordPropertyObject;
-- (id)_createPropertyObjectOfClass:(Class)a3 preFetchedProperties:(id)a4;
-- (id)_imageRequestOptionsForBaseVersion:(int64_t)a3 options:(id)a4 progressEstimateForImageProgress:(id)a5;
-- (id)_sceneClassificationsWithPredicate:(id)a3;
+- (id)_createPropertyObjectOfClass:(Class)class preFetchedProperties:(id)properties;
+- (id)_imageRequestOptionsForBaseVersion:(int64_t)version options:(id)options progressEstimateForImageProgress:(id)progress;
+- (id)_sceneClassificationsWithPredicate:(id)predicate;
 - (id)_uncachedLocation;
-- (id)_unfetchedPropertySetsFromPropertySets:(id)a3;
-- (id)_videoRequestOptionsForBaseVersion:(int64_t)a3 options:(id)a4 progressEstimateForVideoProgress:(id)a5;
+- (id)_unfetchedPropertySetsFromPropertySets:(id)sets;
+- (id)_videoRequestOptionsForBaseVersion:(int64_t)version options:(id)options progressEstimateForVideoProgress:(id)progress;
 - (id)adjustmentProperties;
 - (id)adjustmentVersion;
 - (id)adjustmentsDebugMetadata;
@@ -236,12 +236,12 @@
 - (id)commentProperties;
 - (id)creationDateAdjustedForTimeZone;
 - (id)curationProperties;
-- (id)descriptionForAestheticsWithManagedAsset:(id)a3;
-- (id)descriptionForMediaAnalysisWithManagedAsset:(id)a3;
-- (id)descriptionForPhotoAnanlysisWallpaperProeprtiesWithManagedAsset:(id)a3;
+- (id)descriptionForAestheticsWithManagedAsset:(id)asset;
+- (id)descriptionForMediaAnalysisWithManagedAsset:(id)asset;
+- (id)descriptionForPhotoAnanlysisWallpaperProeprtiesWithManagedAsset:(id)asset;
 - (id)descriptionProperties;
 - (id)destinationAssetCopyProperties;
-- (id)detailedDebugDescriptionInLibrary:(id)a3;
+- (id)detailedDebugDescriptionInLibrary:(id)library;
 - (id)evaluationDebugMetadata;
 - (id)fileURLForFullsizeRenderImage;
 - (id)fileURLForVideoComplementFile;
@@ -256,13 +256,13 @@
 - (id)localDateProperties;
 - (id)locationDataProperties;
 - (id)mainFileURL;
-- (id)managedAssetForPhotoLibrary:(id)a3;
+- (id)managedAssetForPhotoLibrary:(id)library;
 - (id)mediaAnalysisProperties;
 - (id)messagesForRecentImageManagerRequests;
 - (id)montageProperties;
 - (id)originalAVAssetCommonMetadata;
 - (id)originalAVAssetOrProxy;
-- (id)originalCreationDateWithTimeZone:(id *)a3;
+- (id)originalCreationDateWithTimeZone:(id *)zone;
 - (id)originalImageProperties;
 - (id)originalMetadataProperties;
 - (id)originalUTI;
@@ -276,52 +276,52 @@
 - (id)photosOneUpProperties;
 - (id)photosSmartStyleExtendedProperties;
 - (id)pl_managedAsset;
-- (id)pl_managedAssetFromPhotoLibrary:(id)a3;
+- (id)pl_managedAssetFromPhotoLibrary:(id)library;
 - (id)pl_photoLibrary;
 - (id)ptpProperties;
 - (id)sceneAnalysisProperties;
-- (id)sceneClassificationsOfTypes:(id)a3;
+- (id)sceneClassificationsOfTypes:(id)types;
 - (id)sceneprintProperties;
 - (id)shortDescriptionForSensitivityState;
 - (id)spatialMediaProperties;
 - (id)textUnderstandingProperties;
 - (id)visualSearchProperties;
 - (id)wallpaperCroppingDebugKeyValuePairs;
-- (int)analysisStateForWorkerType:(signed __int16)a3 outLastIgnoreDate:(id *)a4 outIgnoreUntilDate:(id *)a5;
+- (int)analysisStateForWorkerType:(signed __int16)type outLastIgnoreDate:(id *)date outIgnoreUntilDate:(id *)untilDate;
 - (int)orientation;
-- (int64_t)_baseVersionForAdjustmentData:(id)a3 canHandleAdjustmentData:(BOOL)a4;
+- (int64_t)_baseVersionForAdjustmentData:(id)data canHandleAdjustmentData:(BOOL)adjustmentData;
 - (int64_t)originalImageOrientation;
 - (int64_t)syndicationEligibility;
 - (signed)kind;
-- (unint64_t)contentChangeFromAsset:(id)a3;
+- (unint64_t)contentChangeFromAsset:(id)asset;
 - (unint64_t)originalChoiceToFallbackForUnsupportRAW;
 - (unint64_t)originalResourceChoice;
 - (unint64_t)thumbnailIndex;
-- (unint64_t)variationSuggestionStatesForVariationType:(unint64_t)a3;
-- (void)_attachPropertyObjectOfClass:(Class)a3 preFetchedProperties:(id)a4;
-- (void)_createExtendedPropertySetsIfNeededWithPropertyHint:(unint64_t)a3 fetchDictionary:(id)a4;
+- (unint64_t)variationSuggestionStatesForVariationType:(unint64_t)type;
+- (void)_attachPropertyObjectOfClass:(Class)class preFetchedProperties:(id)properties;
+- (void)_createExtendedPropertySetsIfNeededWithPropertyHint:(unint64_t)hint fetchDictionary:(id)dictionary;
 - (void)_initializeCachedLocation;
-- (void)_renderTemporaryVideoForObjectBuilder:(id)a3 resultHandler:(id)a4;
-- (void)_requestRenderedVideoForVideoURL:(id)a3 adjustmentData:(id)a4 canHandleAdjustmentData:(BOOL)a5 resultHandler:(id)a6;
-- (void)_setupAdjustmentAndDeferredProcessingAttributesFromFetchDictionary:(id)a3;
-- (void)_setupAnalysisScoreAttributesFromFetchDictionary:(id)a3;
-- (void)_setupAuxiliaryIdentifierAttributesFromFetchDictionary:(id)a3;
-- (void)_setupBadgeAttributesFromFetchDictionary:(id)a3;
-- (void)_setupFaceAttributesFromFetchDictionary:(id)a3;
-- (void)_setupFileSystemAttributesFromFetchDictionary:(id)a3;
-- (void)_setupGeometryAttributesFromFetchDictionary:(id)a3;
-- (void)_setupHDRAndDepthMediaSubtypesFromFetchDictionary:(id)a3;
-- (void)_setupKindSubtypeFromFetchDictionary:(id)a3;
-- (void)_setupLocationAndCreationDateAttributesFromFetchDictionary:(id)a3;
-- (void)_setupSmartStyleFromFetchDictionary:(id)a3;
-- (void)_setupSpatialTypeFromFetchDictionary:(id)a3;
-- (void)_setupTypeAndPersistenceStateAttributesFromFetchDictionary:(id)a3;
-- (void)_setupUIStateAndTrashAttributesFromFetchDictionary:(id)a3;
+- (void)_renderTemporaryVideoForObjectBuilder:(id)builder resultHandler:(id)handler;
+- (void)_requestRenderedVideoForVideoURL:(id)l adjustmentData:(id)data canHandleAdjustmentData:(BOOL)adjustmentData resultHandler:(id)handler;
+- (void)_setupAdjustmentAndDeferredProcessingAttributesFromFetchDictionary:(id)dictionary;
+- (void)_setupAnalysisScoreAttributesFromFetchDictionary:(id)dictionary;
+- (void)_setupAuxiliaryIdentifierAttributesFromFetchDictionary:(id)dictionary;
+- (void)_setupBadgeAttributesFromFetchDictionary:(id)dictionary;
+- (void)_setupFaceAttributesFromFetchDictionary:(id)dictionary;
+- (void)_setupFileSystemAttributesFromFetchDictionary:(id)dictionary;
+- (void)_setupGeometryAttributesFromFetchDictionary:(id)dictionary;
+- (void)_setupHDRAndDepthMediaSubtypesFromFetchDictionary:(id)dictionary;
+- (void)_setupKindSubtypeFromFetchDictionary:(id)dictionary;
+- (void)_setupLocationAndCreationDateAttributesFromFetchDictionary:(id)dictionary;
+- (void)_setupSmartStyleFromFetchDictionary:(id)dictionary;
+- (void)_setupSpatialTypeFromFetchDictionary:(id)dictionary;
+- (void)_setupTypeAndPersistenceStateAttributesFromFetchDictionary:(id)dictionary;
+- (void)_setupUIStateAndTrashAttributesFromFetchDictionary:(id)dictionary;
 - (void)cancelContentEditingInputRequest:(PHContentEditingInputRequestID)requestID;
 - (void)generateLargeThumbnailFileIfNecessary;
-- (void)getFingerPrintForAssetType:(int64_t)a3 withCompletionHandler:(id)a4;
-- (void)getOriginalStableHashWithCompletionHandler:(id)a3;
-- (void)recordImageManagerMessageForRequestID:(int)a3 message:(id)a4;
+- (void)getFingerPrintForAssetType:(int64_t)type withCompletionHandler:(id)handler;
+- (void)getOriginalStableHashWithCompletionHandler:(id)handler;
+- (void)recordImageManagerMessageForRequestID:(int)d message:(id)message;
 @end
 
 @implementation PHAsset
@@ -450,9 +450,9 @@ void __36__PHAsset_locationPropertiesToFetch__block_invoke()
 - (PHAssetSourceType)sourceType
 {
   v3 = objc_opt_class();
-  v4 = [(PHAsset *)self savedAssetType];
+  savedAssetType = [(PHAsset *)self savedAssetType];
 
-  return [v3 sourceTypeFromSavedAssetType:v4];
+  return [v3 sourceTypeFromSavedAssetType:savedAssetType];
 }
 
 - (BOOL)representsBurst
@@ -635,19 +635,19 @@ void __23__PHAsset_entityKeyMap__block_invoke()
 
 - (id)adjustmentVersion
 {
-  v3 = [(PHAsset *)self adjustmentTimestamp];
-  v4 = v3;
-  if (v3)
+  adjustmentTimestamp = [(PHAsset *)self adjustmentTimestamp];
+  v4 = adjustmentTimestamp;
+  if (adjustmentTimestamp)
   {
-    v5 = v3;
+    creationDate = adjustmentTimestamp;
   }
 
   else
   {
-    v5 = [(PHAsset *)self creationDate];
+    creationDate = [(PHAsset *)self creationDate];
   }
 
-  v6 = v5;
+  v6 = creationDate;
 
   return v6;
 }
@@ -666,10 +666,10 @@ void __23__PHAsset_entityKeyMap__block_invoke()
 
 - (id)libraryID
 {
-  v2 = [(PHObject *)self photoLibrary];
-  v3 = [v2 libraryID];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  libraryID = [photoLibrary libraryID];
 
-  return v3;
+  return libraryID;
 }
 
 - (id)mediaAnalysisProperties
@@ -685,31 +685,31 @@ void __23__PHAsset_entityKeyMap__block_invoke()
   v20.receiver = self;
   v20.super_class = PHAsset;
   v19 = [(PHObject *)&v20 description];
-  v3 = [(PHAsset *)self burstIdentifier];
+  burstIdentifier = [(PHAsset *)self burstIdentifier];
   v4 = &stru_1F0FC60C8;
-  if (v3)
+  if (burstIdentifier)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(PHAsset *)self burstIdentifier];
-    v7 = [(PHAsset *)self burstSelectionTypes];
-    v8 = [(PHAsset *)self representsBurst];
+    burstIdentifier2 = [(PHAsset *)self burstIdentifier];
+    burstSelectionTypes = [(PHAsset *)self burstSelectionTypes];
+    representsBurst = [(PHAsset *)self representsBurst];
     v9 = @"(*)";
-    if (!v8)
+    if (!representsBurst)
     {
       v9 = &stru_1F0FC60C8;
     }
 
-    v4 = [v5 stringWithFormat:@" burst=%@/%lu%@", v6, v7, v9];
+    v4 = [v5 stringWithFormat:@" burst=%@/%lu%@", burstIdentifier2, burstSelectionTypes, v9];
   }
 
-  v18 = [(PHAsset *)self mediaType];
-  v17 = [(PHAsset *)self mediaSubtypes];
-  v10 = [(PHAsset *)self sourceType];
-  v11 = [(PHAsset *)self pixelWidth];
-  v12 = [(PHAsset *)self pixelHeight];
-  v13 = [(PHAsset *)self creationDate];
-  v14 = [(PHAsset *)self location];
-  v15 = [v19 stringByAppendingFormat:@" mediaType=%ld/%ld, sourceType=%ld, (%lux%lu), creationDate=%@, location=%d, hidden=%d, favorite=%d, adjusted=%d %@", v18, v17, v10, v11, v12, v13, v14 != 0, -[PHAsset isHidden](self, "isHidden"), -[PHAsset isFavorite](self, "isFavorite"), -[PHAsset hasAdjustments](self, "hasAdjustments"), v4];
+  mediaType = [(PHAsset *)self mediaType];
+  mediaSubtypes = [(PHAsset *)self mediaSubtypes];
+  sourceType = [(PHAsset *)self sourceType];
+  pixelWidth = [(PHAsset *)self pixelWidth];
+  pixelHeight = [(PHAsset *)self pixelHeight];
+  creationDate = [(PHAsset *)self creationDate];
+  location = [(PHAsset *)self location];
+  v15 = [v19 stringByAppendingFormat:@" mediaType=%ld/%ld, sourceType=%ld, (%lux%lu), creationDate=%@, location=%d, hidden=%d, favorite=%d, adjusted=%d %@", mediaType, mediaSubtypes, sourceType, pixelWidth, pixelHeight, creationDate, location != 0, -[PHAsset isHidden](self, "isHidden"), -[PHAsset isFavorite](self, "isFavorite"), -[PHAsset hasAdjustments](self, "hasAdjustments"), v4];
 
   return v15;
 }
@@ -772,14 +772,14 @@ id __36__PHAsset__initializeCachedLocation__block_invoke(uint64_t a1)
   return [(PHAsset *)self _createPropertyObjectOfClass:v3];
 }
 
-+ (id)fetchAssetsMatchingAdjustedStableHash:(id)a3 photoLibrary:(id)a4
++ (id)fetchAssetsMatchingAdjustedStableHash:(id)hash photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [PHFetchOptions fetchOptionsWithInclusiveDefaultsForPhotoLibrary:a4];
+  hashCopy = hash;
+  v6 = [PHFetchOptions fetchOptionsWithInclusiveDefaultsForPhotoLibrary:library];
   [v6 setIncludeAssetSourceTypes:15];
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"additionalAttributes.adjustedStableHash", v5];
+  hashCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"additionalAttributes.adjustedStableHash", hashCopy];
 
-  [v6 setInternalPredicate:v7];
+  [v6 setInternalPredicate:hashCopy];
   v8 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:&__block_literal_global_42];
 
   return v8;
@@ -793,14 +793,14 @@ id __74__PHAsset_StableHash__fetchAssetsMatchingAdjustedStableHash_photoLibrary_
   return v3;
 }
 
-+ (id)fetchAssetsMatchingOriginalStableHash:(id)a3 photoLibrary:(id)a4
++ (id)fetchAssetsMatchingOriginalStableHash:(id)hash photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [PHFetchOptions fetchOptionsWithInclusiveDefaultsForPhotoLibrary:a4];
+  hashCopy = hash;
+  v6 = [PHFetchOptions fetchOptionsWithInclusiveDefaultsForPhotoLibrary:library];
   [v6 setIncludeAssetSourceTypes:15];
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"additionalAttributes.originalStableHash", v5];
+  hashCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"additionalAttributes.originalStableHash", hashCopy];
 
-  [v6 setInternalPredicate:v7];
+  [v6 setInternalPredicate:hashCopy];
   v8 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:&__block_literal_global_197];
 
   return v8;
@@ -814,23 +814,23 @@ id __74__PHAsset_StableHash__fetchAssetsMatchingOriginalStableHash_photoLibrary_
   return v3;
 }
 
-+ (void)computeStableHashesOfAsset:(id)a3 completionHandler:(id)a4
++ (void)computeStableHashesOfAsset:(id)asset completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectID];
-  v8 = [v6 pl_photoLibrary];
+  handlerCopy = handler;
+  assetCopy = asset;
+  objectID = [assetCopy objectID];
+  pl_photoLibrary = [assetCopy pl_photoLibrary];
 
-  v9 = [v8 assetsdClient];
-  v10 = [v9 cloudClient];
+  assetsdClient = [pl_photoLibrary assetsdClient];
+  cloudClient = [assetsdClient cloudClient];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__PHAsset_StableHash__computeStableHashesOfAsset_completionHandler___block_invoke;
   v12[3] = &unk_1E75A34A0;
-  v13 = v5;
-  v11 = v5;
-  [v10 computeStableHashesOfAsset:v7 synchronously:0 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [cloudClient computeStableHashesOfAsset:objectID synchronously:0 completionHandler:v12];
 }
 
 void __68__PHAsset_StableHash__computeStableHashesOfAsset_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -874,47 +874,47 @@ void __68__PHAsset_StableHash__computeStableHashesOfAsset_completionHandler___bl
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PHAdoptionUtilities.m" lineNumber:50 description:@"This is only callable on the main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAdoptionUtilities.m" lineNumber:50 description:@"This is only callable on the main thread"];
   }
 
-  v4 = [(PHObject *)self photoLibrary];
-  v5 = [v4 mainQueueConcurrencyPhotoLibrary];
-  v6 = [(PHAsset *)self managedAssetForPhotoLibrary:v5];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  mainQueueConcurrencyPhotoLibrary = [photoLibrary mainQueueConcurrencyPhotoLibrary];
+  v6 = [(PHAsset *)self managedAssetForPhotoLibrary:mainQueueConcurrencyPhotoLibrary];
 
   return v6;
 }
 
-- (id)pl_managedAssetFromPhotoLibrary:(id)a3
+- (id)pl_managedAssetFromPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PHAdoptionUtilities.m" lineNumber:44 description:@"This is only callable on the main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAdoptionUtilities.m" lineNumber:44 description:@"This is only callable on the main thread"];
   }
 
-  v6 = [(PHAsset *)self managedAssetForPhotoLibrary:v5];
+  v6 = [(PHAsset *)self managedAssetForPhotoLibrary:libraryCopy];
 
   return v6;
 }
 
-+ (id)pl_managedAssetsForAssets:(id)a3
++ (id)pl_managedAssetsForAssets:(id)assets
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  assetsCopy = assets;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PHAdoptionUtilities.m" lineNumber:56 description:@"This is only callable on the main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAdoptionUtilities.m" lineNumber:56 description:@"This is only callable on the main thread"];
   }
 
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = assetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -929,10 +929,10 @@ void __68__PHAsset_StableHash__computeStableHashesOfAsset_completionHandler___bl
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) pl_managedAsset];
-        if (v12)
+        pl_managedAsset = [*(*(&v15 + 1) + 8 * i) pl_managedAsset];
+        if (pl_managedAsset)
         {
-          [v6 addObject:v12];
+          [v6 addObject:pl_managedAsset];
         }
       }
 
@@ -945,10 +945,10 @@ void __68__PHAsset_StableHash__computeStableHashesOfAsset_completionHandler___bl
   return v6;
 }
 
-- (CGRect)suggestedAdaptiveCropWithFaceRegionsForOutputCropScore:(double *)a3 andAdaptiveHeadroom:(double *)a4
+- (CGRect)suggestedAdaptiveCropWithFaceRegionsForOutputCropScore:(double *)score andAdaptiveHeadroom:(double *)headroom
 {
-  v7 = [(PHAsset *)self pixelWidth];
-  v8 = [(PHAsset *)self pixelHeight];
+  pixelWidth = [(PHAsset *)self pixelWidth];
+  pixelHeight = [(PHAsset *)self pixelHeight];
   v9 = [MEMORY[0x1E69C0790] deviceConfigurationForOrientation:1];
   v60 = 0;
   v61 = &v60;
@@ -961,9 +961,9 @@ void __68__PHAsset_StableHash__computeStableHashesOfAsset_completionHandler___bl
   *(&v64 + 1) = v11;
   *&v65 = v12;
   *(&v65 + 1) = v13;
-  v14 = [(PHAsset *)self pixelWidth];
-  v15 = [(PHAsset *)self pixelHeight];
-  v53 = v7;
+  pixelWidth2 = [(PHAsset *)self pixelWidth];
+  pixelHeight2 = [(PHAsset *)self pixelHeight];
+  v53 = pixelWidth;
   v16 = [[PHWallpaperAsset alloc] initWithPhotoAsset:self];
   v17 = dispatch_group_create();
   dispatch_group_enter(v17);
@@ -990,8 +990,8 @@ void __68__PHAsset_StableHash__computeStableHashesOfAsset_completionHandler___bl
   v54[2] = __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropScore_andAdaptiveHeadroom___block_invoke;
   v54[3] = &unk_1E75A6378;
   v57 = &v60;
-  v58 = v14;
-  v59 = v15;
+  v58 = pixelWidth2;
+  v59 = pixelHeight2;
   v20 = v9;
   v55 = v20;
   v21 = v17;
@@ -999,33 +999,33 @@ void __68__PHAsset_StableHash__computeStableHashesOfAsset_completionHandler___bl
   [v18 loadSegmentationDataForAsset:v16 options:MEMORY[0x1E695E0F8] completion:v54];
   dispatch_group_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
   v22 = MEMORY[0x1E69C06A0];
-  v23 = [(PHAsset *)self pixelWidth];
-  v24 = [(PHAsset *)self pixelHeight];
+  pixelWidth3 = [(PHAsset *)self pixelWidth];
+  pixelHeight3 = [(PHAsset *)self pixelHeight];
   [(PHAsset *)self preferredCropRect];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
   [(PHAsset *)self acceptableCropRect];
-  v37 = [v22 bestAdaptiveCropRectForPosterClassification:1 layoutConfiguration:v20 sourcePixelWidth:v23 sourcePixelHeight:v24 sourcePreferredCropRectNormalized:v26 sourceAcceptableCropRectNormalized:v28 sourceFaceAreaRectNormalized:{v30, v32, v33, v34, v35, v36, v61[4], v61[5], v61[6], v61[7]}];
+  v37 = [v22 bestAdaptiveCropRectForPosterClassification:1 layoutConfiguration:v20 sourcePixelWidth:pixelWidth3 sourcePixelHeight:pixelHeight3 sourcePreferredCropRectNormalized:v26 sourceAcceptableCropRectNormalized:v28 sourceFaceAreaRectNormalized:{v30, v32, v33, v34, v35, v36, v61[4], v61[5], v61[6], v61[7]}];
   v38 = v37;
-  if (a3)
+  if (score)
   {
     [v37 cropScore];
-    *a3 = v39;
+    *score = v39;
   }
 
-  if (a4)
+  if (headroom)
   {
     [v38 adaptiveHeadroom];
-    *a4 = v40;
+    *headroom = v40;
   }
 
   [v38 adaptiveVisibleRect];
   v42 = v41 * v53 + 0.0;
-  v44 = v43 * v8 + 0.0;
+  v44 = v43 * pixelHeight + 0.0;
   v46 = v45 * v53;
-  v48 = v47 * v8;
+  v48 = v47 * pixelHeight;
 
   _Block_object_dispose(&v60, 8);
   v49 = v42;
@@ -1075,48 +1075,48 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (CGRect)suggestedAdaptiveCropWithFaceRectScaleFactor:(double)a3 andOutputCropScore:(double *)a4 andAdaptiveHeadroom:(double *)a5
+- (CGRect)suggestedAdaptiveCropWithFaceRectScaleFactor:(double)factor andOutputCropScore:(double *)score andAdaptiveHeadroom:(double *)headroom
 {
-  v9 = [(PHAsset *)self pixelWidth];
-  v10 = [(PHAsset *)self pixelHeight];
+  pixelWidth = [(PHAsset *)self pixelWidth];
+  pixelHeight = [(PHAsset *)self pixelHeight];
   v11 = [MEMORY[0x1E69C0790] deviceConfigurationForOrientation:1];
   [(PHAsset *)self normalizedFaceAreaRect];
-  v53.origin.x = v12 + v13 * 0.5 + v13 * a3 * -0.5;
-  v53.origin.y = v14 + v15 * 0.5 + v15 * a3 * -0.5;
+  v53.origin.x = v12 + v13 * 0.5 + v13 * factor * -0.5;
+  v53.origin.y = v14 + v15 * 0.5 + v15 * factor * -0.5;
   v56.origin.x = 0.0;
   v56.origin.y = 0.0;
-  v53.size.width = v13 * a3;
-  v53.size.height = v15 * a3;
-  v51 = v10;
-  v52 = v9;
-  v56.size.width = v9;
-  v56.size.height = v10;
+  v53.size.width = v13 * factor;
+  v53.size.height = v15 * factor;
+  v51 = pixelHeight;
+  v52 = pixelWidth;
+  v56.size.width = pixelWidth;
+  v56.size.height = pixelHeight;
   v54 = CGRectIntersection(v53, v56);
   x = v54.origin.x;
   width = v54.size.width;
   height = v54.size.height;
   v19 = 1.0 - (v54.origin.y + v54.size.height);
   v20 = MEMORY[0x1E69C06A0];
-  v21 = [(PHAsset *)self pixelWidth];
-  v22 = [(PHAsset *)self pixelHeight];
+  pixelWidth2 = [(PHAsset *)self pixelWidth];
+  pixelHeight2 = [(PHAsset *)self pixelHeight];
   [(PHAsset *)self preferredCropRect];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
   [(PHAsset *)self acceptableCropRect];
-  v35 = [v20 bestAdaptiveCropRectForPosterClassification:1 layoutConfiguration:v11 sourcePixelWidth:v21 sourcePixelHeight:v22 sourcePreferredCropRectNormalized:v24 sourceAcceptableCropRectNormalized:v26 sourceFaceAreaRectNormalized:{v28, v30, v31, v32, v33, v34, *&x, *&v19, *&width, *&height}];
+  v35 = [v20 bestAdaptiveCropRectForPosterClassification:1 layoutConfiguration:v11 sourcePixelWidth:pixelWidth2 sourcePixelHeight:pixelHeight2 sourcePreferredCropRectNormalized:v24 sourceAcceptableCropRectNormalized:v26 sourceFaceAreaRectNormalized:{v28, v30, v31, v32, v33, v34, *&x, *&v19, *&width, *&height}];
   v36 = v35;
-  if (a4)
+  if (score)
   {
     [v35 cropScore];
-    *a4 = v37;
+    *score = v37;
   }
 
-  if (a5)
+  if (headroom)
   {
     [v36 adaptiveHeadroom];
-    *a5 = v38;
+    *headroom = v38;
   }
 
   [v36 adaptiveVisibleRect];
@@ -1136,7 +1136,7 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
   return result;
 }
 
-- (CGRect)suggestedCropForAspectRatio:(double)a3 withFocusRegion:(CGRect)a4 andOutputCropScore:(double *)a5
+- (CGRect)suggestedCropForAspectRatio:(double)ratio withFocusRegion:(CGRect)region andOutputCropScore:(double *)score
 {
   [(PHAsset *)self faceAreaMinX];
   v8 = v7;
@@ -1149,25 +1149,25 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
   v15 = v14 - v10;
   v16 = 1.0 - (v10 + v14 - v10);
   v17 = MEMORY[0x1E69C06A0];
-  v18 = [(PHAsset *)self pixelWidth];
-  v19 = [(PHAsset *)self pixelHeight];
+  pixelWidth = [(PHAsset *)self pixelWidth];
+  pixelHeight = [(PHAsset *)self pixelHeight];
   [(PHAsset *)self preferredCropRect];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
   [(PHAsset *)self acceptableCropRect];
-  [v17 bestCropRectV2ForAspectRatio:v18 withFocusRegion:v19 sourcePixelWidth:a5 sourcePixelHeight:a3 sourcePreferredCropRectNormalized:a4.origin.x sourceAcceptableCropRectNormalized:a4.origin.y sourceFaceAreaRectNormalized:a4.size.width outputCropScore:{a4.size.height, v21, v23, v25, v27, v28, v29, v30, v31, *&v8, *&v16, *&v13, *&v15}];
+  [v17 bestCropRectV2ForAspectRatio:pixelWidth withFocusRegion:pixelHeight sourcePixelWidth:score sourcePixelHeight:ratio sourcePreferredCropRectNormalized:region.origin.x sourceAcceptableCropRectNormalized:region.origin.y sourceFaceAreaRectNormalized:region.size.width outputCropScore:{region.size.height, v21, v23, v25, v27, v28, v29, v30, v31, *&v8, *&v16, *&v13, *&v15}];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  v40 = [(PHAsset *)self pixelWidth];
-  v41 = [(PHAsset *)self pixelHeight];
-  v42 = v33 * v40 + 0.0;
-  v43 = v35 * v41 + 0.0;
-  v44 = v37 * v40;
-  v45 = v39 * v41;
+  pixelWidth2 = [(PHAsset *)self pixelWidth];
+  pixelHeight2 = [(PHAsset *)self pixelHeight];
+  v42 = v33 * pixelWidth2 + 0.0;
+  v43 = v35 * pixelHeight2 + 0.0;
+  v44 = v37 * pixelWidth2;
+  v45 = v39 * pixelHeight2;
   result.size.height = v45;
   result.size.width = v44;
   result.origin.y = v43;
@@ -1175,47 +1175,47 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
   return result;
 }
 
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withFocusRegion:(CGRect)a4 andOutputCropScore:(double *)a5
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withFocusRegion:(CGRect)region andOutputCropScore:(double *)score
 {
-  if (a3.width <= 0.0 || a3.height <= 0.0)
+  if (size.width <= 0.0 || size.height <= 0.0)
   {
-    v10 = [(PHAsset *)self pixelWidth];
-    v8 = [(PHAsset *)self pixelHeight];
+    pixelWidth = [(PHAsset *)self pixelWidth];
+    pixelHeight = [(PHAsset *)self pixelHeight];
     v6 = 0.0;
     v7 = 0.0;
   }
 
   else
   {
-    [(PHAsset *)self suggestedCropForAspectRatio:a5 withFocusRegion:a3.width / a3.height andOutputCropScore:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
-    v10 = v9;
+    [(PHAsset *)self suggestedCropForAspectRatio:score withFocusRegion:size.width / size.height andOutputCropScore:region.origin.x, region.origin.y, region.size.width, region.size.height];
+    pixelWidth = v9;
   }
 
-  v11 = v10;
-  result.size.height = v8;
+  v11 = pixelWidth;
+  result.size.height = pixelHeight;
   result.size.width = v11;
   result.origin.y = v7;
   result.origin.x = v6;
   return result;
 }
 
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withOcclusionRegion:(CGRect)a4 andOutputCropScore:(double *)a5
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withOcclusionRegion:(CGRect)region andOutputCropScore:(double *)score
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.height;
-  v11 = a3.width;
-  if (!CGRectIsNull(a4) && ((v13 = x + width, v14 = y + height, v13 <= 1.0) ? (v15 = v14 <= 1.0) : (v15 = 0), v15))
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
+  v10 = size.height;
+  v11 = size.width;
+  if (!CGRectIsNull(region) && ((v13 = x + width, v14 = y + height, v13 <= 1.0) ? (v15 = v14 <= 1.0) : (v15 = 0), v15))
   {
-    v42 = [(PHAsset *)self pixelWidth];
-    v20 = [(PHAsset *)self pixelHeight];
+    pixelWidth = [(PHAsset *)self pixelWidth];
+    pixelHeight = [(PHAsset *)self pixelHeight];
     v45 = 0.0;
     [(PHAsset *)self suggestedCropForTargetSize:&v45 withFocusRegion:v11 andOutputCropScore:v10, 0.0, v14, 1.0, 1.0 - v14];
     if (v45 <= 0.0)
     {
-      v23 = v42;
+      v23 = pixelWidth;
     }
 
     v43 = v23;
@@ -1226,7 +1226,7 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
 
     else
     {
-      v20 = v24;
+      pixelHeight = v24;
     }
 
     v40 = v21;
@@ -1244,7 +1244,7 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
     [(PHAsset *)self suggestedCropForTargetSize:&v45 withFocusRegion:v11 andOutputCropScore:v10, 0.0, 0.0, 1.0, y];
     if (v45 <= v26)
     {
-      v30 = v20;
+      v30 = pixelHeight;
     }
 
     v41 = v30;
@@ -1313,20 +1313,20 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
       v16 = v44;
     }
 
-    if (a5)
+    if (score)
     {
       if (v45 <= v38)
       {
         v39 = v38;
       }
 
-      *a5 = v39;
+      *score = v39;
     }
   }
 
   else
   {
-    [(PHAsset *)self suggestedCropForTargetSize:a5 withFocusRegion:v11 andOutputCropScore:v10, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+    [(PHAsset *)self suggestedCropForTargetSize:score withFocusRegion:v11 andOutputCropScore:v10, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
   }
 
   result.size.height = v19;
@@ -1336,9 +1336,9 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
   return result;
 }
 
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3 withFocusRegion:(CGRect)a4
+- (CGRect)suggestedCropForTargetSize:(CGSize)size withFocusRegion:(CGRect)region
 {
-  [(PHAsset *)self suggestedCropForTargetSize:0 withFocusRegion:a3.width andOutputCropScore:a3.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(PHAsset *)self suggestedCropForTargetSize:0 withFocusRegion:size.width andOutputCropScore:size.height, region.origin.x, region.origin.y, region.size.width, region.size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1346,9 +1346,9 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
   return result;
 }
 
-- (CGRect)suggestedCropForTargetSize:(CGSize)a3
+- (CGRect)suggestedCropForTargetSize:(CGSize)size
 {
-  [(PHAsset *)self suggestedCropForTargetSize:a3.width withFocusRegion:a3.height, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+  [(PHAsset *)self suggestedCropForTargetSize:size.width withFocusRegion:size.height, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -1356,10 +1356,10 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
   return result;
 }
 
-+ (id)internalSortDescriptorsWithCreationDateAscending:(BOOL)a3
++ (id)internalSortDescriptorsWithCreationDateAscending:(BOOL)ascending
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v3 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"dateCreated" ascending:a3];
+  v3 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"dateCreated" ascending:ascending];
   v7[0] = v3;
   v4 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"objectID" ascending:0];
   v7[1] = v4;
@@ -1368,13 +1368,13 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
   return v5;
 }
 
-+ (id)fetchAssetsForStyleablePhotoSuggestionsWithOptions:(id)a3
++ (id)fetchAssetsForStyleablePhotoSuggestionsWithOptions:(id)options
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v3 = [a3 copy];
+  v3 = [options copy];
   v4 = MEMORY[0x1E696AB28];
-  v5 = [MEMORY[0x1E69BE540] predicateForStyleableAssets];
-  v17[0] = v5;
+  predicateForStyleableAssets = [MEMORY[0x1E69BE540] predicateForStyleableAssets];
+  v17[0] = predicateForStyleableAssets;
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > %f", @"highlightBeingExtendedAssets.promotionScore", *MEMORY[0x1E69BECC8]];
   v17[1] = v6;
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %d", @"highlightBeingExtendedAssets.enrichmentState", 3];
@@ -1384,9 +1384,9 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
   [v3 setInternalPredicate:v9];
 
   [v3 setPredicate:0];
-  v10 = [v3 sortDescriptors];
+  sortDescriptors = [v3 sortDescriptors];
 
-  if (!v10)
+  if (!sortDescriptors)
   {
     v11 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
     v16[0] = v11;
@@ -1401,102 +1401,102 @@ void __95__PHAsset_Curated__suggestedAdaptiveCropWithFaceRegionsForOutputCropSco
   return v14;
 }
 
-+ (id)fetchSummaryCurationForHighlight:(id)a3 fetchOptions:(id)a4 allowsOnDemand:(BOOL)a5 error:(id *)a6
++ (id)fetchSummaryCurationForHighlight:(id)highlight fetchOptions:(id)options allowsOnDemand:(BOOL)demand error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 photoLibrary];
-  if ([v9 enrichmentState] == 4)
+  highlightCopy = highlight;
+  optionsCopy = options;
+  photoLibrary = [highlightCopy photoLibrary];
+  if ([highlightCopy enrichmentState] == 4)
   {
-    v12 = [v9 enrichmentVersion];
-    if (v12 == [v9 highlightVersion])
+    enrichmentVersion = [highlightCopy enrichmentVersion];
+    if (enrichmentVersion == [highlightCopy highlightVersion])
     {
-      v13 = [v10 copy];
+      v13 = [optionsCopy copy];
       v14 = v13;
       if (v13)
       {
-        v15 = v13;
+        librarySpecificFetchOptions = v13;
       }
 
       else
       {
-        v15 = [v11 librarySpecificFetchOptions];
+        librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
       }
 
-      v18 = v15;
+      v18 = librarySpecificFetchOptions;
 
       [v18 setHighlightCurationType:1];
-      v19 = [PHAsset fetchCuratedAssetsInAssetCollection:v9 options:v18];
+      v19 = [PHAsset fetchCuratedAssetsInAssetCollection:highlightCopy options:v18];
       goto LABEL_13;
     }
   }
 
-  if (a5)
+  if (demand)
   {
-    v16 = [v11 photoAnalysisClient];
-    v17 = [v9 localIdentifier];
-    v18 = [v16 requestSummaryCurationForHighlightLocalIdentifier:v17 options:MEMORY[0x1E695E0F8] error:a6];
+    photoAnalysisClient = [photoLibrary photoAnalysisClient];
+    localIdentifier = [highlightCopy localIdentifier];
+    v18 = [photoAnalysisClient requestSummaryCurationForHighlightLocalIdentifier:localIdentifier options:MEMORY[0x1E695E0F8] error:error];
 
     if (!v18)
     {
-      a6 = 0;
+      error = 0;
 LABEL_14:
 
       goto LABEL_15;
     }
 
-    v19 = [PHAsset fetchAssetsWithUUIDs:v18 options:v10];
+    v19 = [PHAsset fetchAssetsWithUUIDs:v18 options:optionsCopy];
 LABEL_13:
-    a6 = v19;
+    error = v19;
     goto LABEL_14;
   }
 
-  if (a6)
+  if (error)
   {
     v20 = MEMORY[0x1E696ABC0];
     v26 = *MEMORY[0x1E696A578];
     v21 = MEMORY[0x1E696AEC0];
-    v22 = [v9 uuid];
-    v23 = [v21 stringWithFormat:@"No summary curation available for highlight %@, on-demand not allowed", v22];
+    uuid = [highlightCopy uuid];
+    v23 = [v21 stringWithFormat:@"No summary curation available for highlight %@, on-demand not allowed", uuid];
     v27[0] = v23;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-    *a6 = [v20 errorWithDomain:@"PHPhotosErrorDomain" code:3303 userInfo:v24];
+    *error = [v20 errorWithDomain:@"PHPhotosErrorDomain" code:3303 userInfo:v24];
 
-    a6 = 0;
+    error = 0;
   }
 
 LABEL_15:
 
-  return a6;
+  return error;
 }
 
-+ (id)fetchKeyAssetByMemoryUUIDForMemories:(id)a3 options:(id)a4
++ (id)fetchKeyAssetByMemoryUUIDForMemories:(id)memories options:(id)options
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  memoriesCopy = memories;
   v8 = objc_alloc_init(v5);
-  v9 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v10 = [v9 photoLibrary];
-  v11 = [v7 fetchedObjectIDsSet];
+  v9 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  photoLibrary = [v9 photoLibrary];
+  fetchedObjectIDsSet = [memoriesCopy fetchedObjectIDsSet];
 
-  v12 = [v6 fetchPropertySets];
+  fetchPropertySets = [optionsCopy fetchPropertySets];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __65__PHAsset_Curated__fetchKeyAssetByMemoryUUIDForMemories_options___block_invoke;
   v21[3] = &unk_1E75AA130;
-  v22 = v11;
-  v23 = v10;
+  v22 = fetchedObjectIDsSet;
+  v23 = photoLibrary;
   v24 = v9;
-  v25 = v12;
+  v25 = fetchPropertySets;
   v13 = v8;
   v26 = v13;
-  v14 = v12;
+  v14 = fetchPropertySets;
   v15 = v9;
-  v16 = v10;
-  v17 = v11;
+  v16 = photoLibrary;
+  v17 = fetchedObjectIDsSet;
   [v16 performBlockAndWait:v21];
   v18 = v26;
   v19 = v13;
@@ -1591,30 +1591,30 @@ void __65__PHAsset_Curated__fetchKeyAssetByMemoryUUIDForMemories_options___block
   }
 }
 
-+ (id)fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs:(id)a3 options:(id)a4
++ (id)fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs:(id)ds options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:0];
-  v9 = [v8 photoLibrary];
-  v10 = [v6 fetchPropertySets];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
+  photoLibrary = [v8 photoLibrary];
+  fetchPropertySets = [optionsCopy fetchPropertySets];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __76__PHAsset_Curated__fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs_options___block_invoke;
   v20[3] = &unk_1E75A6EB0;
-  v21 = v5;
-  v22 = v6;
-  v23 = v9;
+  v21 = dsCopy;
+  v22 = optionsCopy;
+  v23 = photoLibrary;
   v24 = v8;
-  v25 = v10;
+  v25 = fetchPropertySets;
   v11 = v7;
   v26 = v11;
-  v12 = v10;
+  v12 = fetchPropertySets;
   v13 = v8;
-  v14 = v9;
-  v15 = v6;
-  v16 = v5;
+  v14 = photoLibrary;
+  v15 = optionsCopy;
+  v16 = dsCopy;
   [v14 performBlockAndWait:v20];
   v17 = v26;
   v18 = v11;
@@ -1736,23 +1736,23 @@ void __76__PHAsset_Curated__fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs_opti
   }
 }
 
-+ (id)fetchKeyAssetBySuggestionUUIDForSuggestions:(id)a3 options:(id)a4
++ (id)fetchKeyAssetBySuggestionUUIDForSuggestions:(id)suggestions options:(id)options
 {
-  v6 = a4;
-  v7 = [a3 fetchedObjectIDsSet];
-  v8 = [a1 fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs:v7 options:v6];
+  optionsCopy = options;
+  fetchedObjectIDsSet = [suggestions fetchedObjectIDsSet];
+  v8 = [self fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs:fetchedObjectIDsSet options:optionsCopy];
 
   return v8;
 }
 
-+ (id)fetchKeyAssetByHighlightUUIDForHighlights:(id)a3 options:(id)a4
++ (id)fetchKeyAssetByHighlightUUIDForHighlights:(id)highlights options:(id)options
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  highlightsCopy = highlights;
+  optionsCopy = options;
   v31 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v32 = v6;
-  v7 = [v6 photoLibrary];
+  v32 = optionsCopy;
+  photoLibrary = [optionsCopy photoLibrary];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1760,7 +1760,7 @@ void __76__PHAsset_Curated__fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs_opti
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v5;
+  obj = highlightsCopy;
   v11 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v11)
   {
@@ -1776,15 +1776,15 @@ void __76__PHAsset_Curated__fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs_opti
         }
 
         v15 = *(*(&v43 + 1) + 8 * i);
-        v16 = [v15 uuid];
-        v17 = [v15 objectID];
-        [v8 addObject:v17];
+        uuid = [v15 uuid];
+        objectID = [v15 objectID];
+        [v8 addObject:objectID];
 
-        [v9 addObject:v16];
-        [v10 setObject:v15 forKeyedSubscript:v16];
-        if (!v7)
+        [v9 addObject:uuid];
+        [v10 setObject:v15 forKeyedSubscript:uuid];
+        if (!photoLibrary)
         {
-          v7 = [v15 photoLibrary];
+          photoLibrary = [v15 photoLibrary];
         }
       }
 
@@ -1794,28 +1794,28 @@ void __76__PHAsset_Curated__fetchKeyAssetBySuggestionUUIDForSuggestionsOIDs_opti
     while (v12);
   }
 
-  v18 = [v7 photoLibrary];
-  v19 = [v32 fetchPropertySets];
+  v7PhotoLibrary = [photoLibrary photoLibrary];
+  fetchPropertySets = [v32 fetchPropertySets];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __70__PHAsset_Curated__fetchKeyAssetByHighlightUUIDForHighlights_options___block_invoke;
   v34[3] = &unk_1E75A6300;
-  v35 = v18;
+  v35 = v7PhotoLibrary;
   v36 = v32;
   v37 = v8;
   v38 = v9;
   v39 = v10;
   v20 = v31;
   v40 = v20;
-  v41 = v7;
-  v42 = v19;
-  v21 = v19;
-  v22 = v7;
+  v41 = photoLibrary;
+  v42 = fetchPropertySets;
+  v21 = fetchPropertySets;
+  v22 = photoLibrary;
   v23 = v10;
   v24 = v9;
   v25 = v8;
   v26 = v32;
-  v27 = v18;
+  v27 = v7PhotoLibrary;
   [v27 performBlockAndWait:v34];
   v28 = v42;
   v29 = v20;
@@ -2011,31 +2011,31 @@ uint64_t __64__PHAsset_Curated__fetchAssetsForBehavioralCurationWithOptions___bl
   return 0;
 }
 
-+ (id)fetchKeyAssetForEachSuggestion:(id)a3 options:(id)a4 useSuggestionsSortOrder:(BOOL)a5
++ (id)fetchKeyAssetForEachSuggestion:(id)suggestion options:(id)options useSuggestionsSortOrder:(BOOL)order
 {
-  v5 = a5;
+  orderCopy = order;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (![v7 count])
+  suggestionCopy = suggestion;
+  optionsCopy = options;
+  if (![suggestionCopy count])
   {
-    v27 = [v8 photoLibrary];
-    v26 = [PHManualFetchResult emptyFetchResultWithPhotoLibrary:v27];
+    photoLibrary = [optionsCopy photoLibrary];
+    v26 = [PHManualFetchResult emptyFetchResultWithPhotoLibrary:photoLibrary];
 
     goto LABEL_22;
   }
 
-  v29 = v5;
-  v30 = v8;
-  v9 = [PHAsset fetchKeyAssetBySuggestionUUIDForSuggestions:v7 options:v8];
+  v29 = orderCopy;
+  v30 = optionsCopy;
+  v9 = [PHAsset fetchKeyAssetBySuggestionUUIDForSuggestions:suggestionCopy options:optionsCopy];
   v10 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v31 = v7;
-  v12 = v7;
+  v31 = suggestionCopy;
+  v12 = suggestionCopy;
   v13 = [v12 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (!v13)
   {
@@ -2054,21 +2054,21 @@ uint64_t __64__PHAsset_Curated__fetchAssetsForBehavioralCurationWithOptions___bl
       }
 
       v17 = *(*(&v32 + 1) + 8 * i);
-      v18 = [v17 uuid];
-      v19 = [v9 objectForKeyedSubscript:v18];
+      uuid = [v17 uuid];
+      v19 = [v9 objectForKeyedSubscript:uuid];
 
       if (!v19)
       {
-        v20 = PLPhotoKitGetLog();
-        if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+        objectID = PLPhotoKitGetLog();
+        if (!os_log_type_enabled(objectID, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_16;
         }
 
-        v21 = [v17 uuid];
+        uuid2 = [v17 uuid];
         *buf = 138412290;
-        v37 = v21;
-        v22 = v20;
+        v37 = uuid2;
+        v22 = objectID;
         v23 = "Suggestion UUID %@ not found in suggestionsKeyAssetBySuggestionUUID.";
 LABEL_13:
         _os_log_impl(&dword_19C86F000, v22, OS_LOG_TYPE_ERROR, v23, buf, 0xCu);
@@ -2077,15 +2077,15 @@ LABEL_14:
         goto LABEL_16;
       }
 
-      v20 = [v19 objectID];
-      if ([v10 containsObject:v20])
+      objectID = [v19 objectID];
+      if ([v10 containsObject:objectID])
       {
-        v21 = PLPhotoKitGetLog();
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        uuid2 = PLPhotoKitGetLog();
+        if (os_log_type_enabled(uuid2, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v37 = v19;
-          v22 = v21;
+          v22 = uuid2;
           v23 = "Duplicated suggestionKeyAsset: %@";
           goto LABEL_13;
         }
@@ -2093,7 +2093,7 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      [v10 addObject:v20];
+      [v10 addObject:objectID];
       [v11 addObject:v19];
 LABEL_16:
     }
@@ -2104,108 +2104,108 @@ LABEL_16:
   while (v14);
 LABEL_18:
 
-  v8 = v30;
+  optionsCopy = v30;
   v24 = [v30 copy];
   if (v29)
   {
-    v25 = [v10 array];
-    [v24 setCustomObjectIDSortOrder:v25];
+    array = [v10 array];
+    [v24 setCustomObjectIDSortOrder:array];
   }
 
   v26 = [PHAsset _assetFetchResultFromAssets:v11 options:v24];
 
-  v7 = v31;
+  suggestionCopy = v31;
 LABEL_22:
 
   return v26;
 }
 
-+ (id)fetchReducedCuratedAssetsInMemory:(id)a3 options:(id)a4
++ (id)fetchReducedCuratedAssetsInMemory:(id)memory options:(id)options
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 assetCollectionType] != 4 && objc_msgSend(v7, "assetCollectionType") != 8)
+  memoryCopy = memory;
+  optionsCopy = options;
+  if ([memoryCopy assetCollectionType] != 4 && objc_msgSend(memoryCopy, "assetCollectionType") != 8)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PHAsset_Curated.m" lineNumber:425 description:@"Only memories and suggestions are supported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset_Curated.m" lineNumber:425 description:@"Only memories and suggestions are supported"];
   }
 
-  if ([v7 assetCollectionType] == 8)
+  if ([memoryCopy assetCollectionType] == 8)
   {
-    v9 = [PHAsset fetchKeyAssetsInAssetCollection:v7 options:v8];
+    v9 = [PHAsset fetchKeyAssetsInAssetCollection:memoryCopy options:optionsCopy];
   }
 
   else
   {
-    if ([v8 fetchLimit])
+    if ([optionsCopy fetchLimit])
     {
-      v10 = [v8 fetchLimit];
+      fetchLimit = [optionsCopy fetchLimit];
     }
 
     else
     {
-      v10 = 15;
+      fetchLimit = 15;
     }
 
-    v11 = [v7 photoLibrary];
-    v12 = [v11 librarySpecificFetchOptions];
+    photoLibrary = [memoryCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    if (v8)
+    if (optionsCopy)
     {
-      [v12 mergeWithFetchOptions:v8];
+      [librarySpecificFetchOptions mergeWithFetchOptions:optionsCopy];
     }
 
     v13 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
     v41[0] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
-    [v12 setSortDescriptors:v14];
+    [librarySpecificFetchOptions setSortDescriptors:v14];
 
-    [v12 setFetchLimit:0];
-    v15 = [PHQuery queryForCuratedAssetsInMemory:v7 options:v12];
-    v16 = [v15 executeQuery];
-    v17 = [v16 count];
-    if (v17 <= v10)
+    [librarySpecificFetchOptions setFetchLimit:0];
+    v15 = [PHQuery queryForCuratedAssetsInMemory:memoryCopy options:librarySpecificFetchOptions];
+    executeQuery = [v15 executeQuery];
+    v17 = [executeQuery count];
+    if (v17 <= fetchLimit)
     {
-      v9 = v16;
+      v9 = executeQuery;
     }
 
     else
     {
-      v18 = [PHAsset fetchKeyCuratedAssetInAssetCollection:v7 referenceAsset:0];
-      v19 = [v18 firstObject];
-      v20 = [v19 localIdentifier];
+      v18 = [PHAsset fetchKeyCuratedAssetInAssetCollection:memoryCopy referenceAsset:0];
+      firstObject = [v18 firstObject];
+      localIdentifier = [firstObject localIdentifier];
 
-      v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:v10];
+      v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:fetchLimit];
       v35 = 0;
       v36 = &v35;
       v37 = 0x3032000000;
       v38 = __Block_byref_object_copy__18550;
       v39 = __Block_byref_object_dispose__18551;
-      v40 = [v16 firstObject];
+      firstObject2 = [executeQuery firstObject];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __62__PHAsset_Curated__fetchReducedCuratedAssetsInMemory_options___block_invoke;
       v29[3] = &unk_1E75A6288;
-      v33 = v10;
+      v33 = fetchLimit;
       v34 = v17;
       v22 = v21;
       v30 = v22;
       v32 = &v35;
-      v23 = v20;
+      v23 = localIdentifier;
       v31 = v23;
-      [v16 enumerateObjectsUsingBlock:v29];
-      if ([v22 count] < v10)
+      [executeQuery enumerateObjectsUsingBlock:v29];
+      if ([v22 count] < fetchLimit)
       {
-        v24 = [v36[5] localIdentifier];
-        [v22 addObject:v24];
+        localIdentifier2 = [v36[5] localIdentifier];
+        [v22 addObject:localIdentifier2];
       }
 
-      v25 = [PHQuery queryForAssetsWithLocalIdentifiers:v22 options:v8];
+      v25 = [PHQuery queryForAssetsWithLocalIdentifiers:v22 options:optionsCopy];
 
-      v26 = [v25 executeQuery];
+      executeQuery2 = [v25 executeQuery];
 
-      v9 = v26;
+      v9 = executeQuery2;
       _Block_object_dispose(&v35, 8);
 
       v15 = v25;
@@ -2265,391 +2265,391 @@ void __62__PHAsset_Curated__fetchReducedCuratedAssetsInMemory_options___block_in
 LABEL_19:
 }
 
-+ (id)fetchAssetsAssociatedWithMomentsOfMemory:(id)a3 options:(id)a4
++ (id)fetchAssetsAssociatedWithMomentsOfMemory:(id)memory options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  memoryCopy = memory;
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v7 = [v5 photoLibrary];
-    v6 = [v7 librarySpecificFetchOptions];
+    photoLibrary = [memoryCopy photoLibrary];
+    optionsCopy = [photoLibrary librarySpecificFetchOptions];
   }
 
-  v8 = [PHQuery queryForAssetsAssociatedWithMomentsOfMemory:v5 options:v6];
-  v9 = [v8 executeQuery];
+  v8 = [PHQuery queryForAssetsAssociatedWithMomentsOfMemory:memoryCopy options:optionsCopy];
+  executeQuery = [v8 executeQuery];
 
-  return v9;
+  return executeQuery;
 }
 
-+ (id)fetchExtendedCuratedAndRepresentativeAssetsAssociatedWithMemory:(id)a3 options:(id)a4
++ (id)fetchExtendedCuratedAndRepresentativeAssetsAssociatedWithMemory:(id)memory options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  memoryCopy = memory;
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v7 = [v5 photoLibrary];
-    v6 = [v7 librarySpecificFetchOptions];
+    photoLibrary = [memoryCopy photoLibrary];
+    optionsCopy = [photoLibrary librarySpecificFetchOptions];
   }
 
-  [v6 setIncludeHiddenAssets:1];
-  [v6 setIncludeAllBurstAssets:1];
-  [v6 setIncludeGuestAssets:1];
-  v8 = [PHQuery queryForAllAssetsAssociatedWithMemory:v5 options:v6];
-  v9 = [v8 executeQuery];
+  [optionsCopy setIncludeHiddenAssets:1];
+  [optionsCopy setIncludeAllBurstAssets:1];
+  [optionsCopy setIncludeGuestAssets:1];
+  v8 = [PHQuery queryForAllAssetsAssociatedWithMemory:memoryCopy options:optionsCopy];
+  executeQuery = [v8 executeQuery];
 
-  return v9;
+  return executeQuery;
 }
 
-+ (id)fetchRepresentativeAssetsInAssetCollection:(id)a3
++ (id)fetchRepresentativeAssetsInAssetCollection:(id)collection
 {
-  v5 = a3;
-  if ([v5 assetCollectionType] == 4)
+  collectionCopy = collection;
+  if ([collectionCopy assetCollectionType] == 4)
   {
-    if ([v5 isTransient])
+    if ([collectionCopy isTransient])
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:a1 file:@"PHAsset_Curated.m" lineNumber:382 description:@"Transient memories aren't supported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset_Curated.m" lineNumber:382 description:@"Transient memories aren't supported"];
     }
 
-    v6 = [v5 photoLibrary];
-    v7 = [v6 librarySpecificFetchOptions];
+    photoLibrary = [collectionCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v7 setIncludeHiddenAssets:1];
-    [v7 setIncludeAllBurstAssets:1];
-    [v7 setIncludeGuestAssets:1];
-    v8 = [PHQuery queryForRepresentativeAssetsInMemory:v5 options:v7];
+    [librarySpecificFetchOptions setIncludeHiddenAssets:1];
+    [librarySpecificFetchOptions setIncludeAllBurstAssets:1];
+    [librarySpecificFetchOptions setIncludeGuestAssets:1];
+    v8 = [PHQuery queryForRepresentativeAssetsInMemory:collectionCopy options:librarySpecificFetchOptions];
 LABEL_9:
     v10 = v8;
-    v11 = [v8 executeQuery];
+    executeQuery = [v8 executeQuery];
 
     goto LABEL_11;
   }
 
-  if ([v5 assetCollectionType] == 8)
+  if ([collectionCopy assetCollectionType] == 8)
   {
-    if ([v5 isTransient])
+    if ([collectionCopy isTransient])
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:a1 file:@"PHAsset_Curated.m" lineNumber:391 description:@"Transient suggestions aren't supported"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAsset_Curated.m" lineNumber:391 description:@"Transient suggestions aren't supported"];
     }
 
-    v9 = [v5 photoLibrary];
-    v7 = [v9 librarySpecificFetchOptions];
+    photoLibrary2 = [collectionCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary2 librarySpecificFetchOptions];
 
-    [v7 setIncludeHiddenAssets:1];
-    [v7 setIncludeAllBurstAssets:1];
-    v8 = [PHQuery queryForRepresentativeAssetsInSuggestion:v5 options:v7];
+    [librarySpecificFetchOptions setIncludeHiddenAssets:1];
+    [librarySpecificFetchOptions setIncludeAllBurstAssets:1];
+    v8 = [PHQuery queryForRepresentativeAssetsInSuggestion:collectionCopy options:librarySpecificFetchOptions];
     goto LABEL_9;
   }
 
-  v11 = [objc_opt_class() _fetchRepresentativeAssetInAssetCollection:v5];
+  executeQuery = [objc_opt_class() _fetchRepresentativeAssetInAssetCollection:collectionCopy];
 LABEL_11:
 
-  return v11;
+  return executeQuery;
 }
 
-+ (id)fetchCustomUserAssetsInMemory:(id)a3 options:(id)a4
++ (id)fetchCustomUserAssetsInMemory:(id)memory options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 assetCollectionType] == 4)
+  memoryCopy = memory;
+  optionsCopy = options;
+  if ([memoryCopy assetCollectionType] == 4)
   {
-    v9 = [PHQuery queryForCustomUserAssetsInMemory:v7 options:v8];
-    v10 = [v9 executeQuery];
+    currentHandler = [PHQuery queryForCustomUserAssetsInMemory:memoryCopy options:optionsCopy];
+    executeQuery = [currentHandler executeQuery];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PHAsset_Curated.m" lineNumber:373 description:@"fetchCustomUserAssetsInMemory only supports memory"];
-    v10 = 0;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset_Curated.m" lineNumber:373 description:@"fetchCustomUserAssetsInMemory only supports memory"];
+    executeQuery = 0;
   }
 
-  return v10;
+  return executeQuery;
 }
 
-+ (id)fetchUserCuratedAssetsInMemory:(id)a3 options:(id)a4
++ (id)fetchUserCuratedAssetsInMemory:(id)memory options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 assetCollectionType] == 4)
+  memoryCopy = memory;
+  optionsCopy = options;
+  if ([memoryCopy assetCollectionType] == 4)
   {
-    if ([v7 isTransient])
+    if ([memoryCopy isTransient])
     {
-      [v7 queryForCuratedAssetsWithOptions:v8];
+      [memoryCopy queryForCuratedAssetsWithOptions:optionsCopy];
     }
 
     else
     {
-      [PHQuery queryForUserCuratedAssetsInMemory:v7 options:v8];
+      [PHQuery queryForUserCuratedAssetsInMemory:memoryCopy options:optionsCopy];
     }
-    v9 = ;
-    v10 = [v9 executeQuery];
+    currentHandler = ;
+    executeQuery = [currentHandler executeQuery];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PHAsset_Curated.m" lineNumber:362 description:@"fetchUserCuratedAssetsInMemory only supports memory"];
-    v10 = 0;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset_Curated.m" lineNumber:362 description:@"fetchUserCuratedAssetsInMemory only supports memory"];
+    executeQuery = 0;
   }
 
-  return v10;
+  return executeQuery;
 }
 
-+ (id)fetchUserCuratedAssetsInMemory:(id)a3
++ (id)fetchUserCuratedAssetsInMemory:(id)memory
 {
-  v4 = a3;
-  v5 = [v4 photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  memoryCopy = memory;
+  photoLibrary = [memoryCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v7 = [a1 fetchUserCuratedAssetsInMemory:v4 options:v6];
+  v7 = [self fetchUserCuratedAssetsInMemory:memoryCopy options:librarySpecificFetchOptions];
 
   return v7;
 }
 
-+ (id)fetchMovieCuratedAssetsInMemory:(id)a3
++ (id)fetchMovieCuratedAssetsInMemory:(id)memory
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 assetCollectionType] == 4)
+  memoryCopy = memory;
+  if ([memoryCopy assetCollectionType] == 4)
   {
-    v6 = [v5 photoLibrary];
-    v7 = [v6 librarySpecificFetchOptions];
+    photoLibrary = [memoryCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v13[0] = @"PHAssetPropertySetOriginalMetadata";
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    [v7 addFetchPropertySets:v8];
+    [librarySpecificFetchOptions addFetchPropertySets:v8];
 
-    if ([v5 isTransient])
+    if ([memoryCopy isTransient])
     {
-      [v5 queryForCuratedAssetsWithOptions:v7];
+      [memoryCopy queryForCuratedAssetsWithOptions:librarySpecificFetchOptions];
     }
 
     else
     {
-      [PHQuery queryForMovieCuratedAssetsInMemory:v5 options:v7];
+      [PHQuery queryForMovieCuratedAssetsInMemory:memoryCopy options:librarySpecificFetchOptions];
     }
     v11 = ;
-    v10 = [v11 executeQuery];
+    executeQuery = [v11 executeQuery];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PHAsset_Curated.m" lineNumber:341 description:@"fetchMovieCuratedAssetsInMemory only supports memory"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset_Curated.m" lineNumber:341 description:@"fetchMovieCuratedAssetsInMemory only supports memory"];
 
-    v10 = 0;
+    executeQuery = 0;
   }
 
-  return v10;
+  return executeQuery;
 }
 
-+ (id)fetchExtendedCuratedAssetsInAssetCollection:(id)a3 options:(id)a4
++ (id)fetchExtendedCuratedAssetsInAssetCollection:(id)collection options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  collectionCopy = collection;
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v8 = [v6 photoLibrary];
-    v7 = [v8 librarySpecificFetchOptions];
+    photoLibrary = [collectionCopy photoLibrary];
+    optionsCopy = [photoLibrary librarySpecificFetchOptions];
   }
 
-  if ([v6 assetCollectionType] == 4)
+  if ([collectionCopy assetCollectionType] == 4)
   {
-    v9 = [PHQuery queryForExtendedCuratedAssetsInMemory:v6 options:v7];
+    v9 = [PHQuery queryForExtendedCuratedAssetsInMemory:collectionCopy options:optionsCopy];
 LABEL_7:
     v10 = v9;
-    v11 = [v9 executeQuery];
+    executeQuery = [v9 executeQuery];
 
     goto LABEL_9;
   }
 
-  if ([v6 assetCollectionType] == 6)
+  if ([collectionCopy assetCollectionType] == 6)
   {
-    [v7 setHighlightCurationType:2];
-    v9 = [PHQuery queryForCuratedAssetsInPhotosHighlight:v6 options:v7];
+    [optionsCopy setHighlightCurationType:2];
+    v9 = [PHQuery queryForCuratedAssetsInPhotosHighlight:collectionCopy options:optionsCopy];
     goto LABEL_7;
   }
 
-  v11 = [a1 _requestCuratedAssetInAssetCollection:v6 referenceAsset:0 referencePersons:0 fetchOptions:0 onlyKey:0];
+  executeQuery = [self _requestCuratedAssetInAssetCollection:collectionCopy referenceAsset:0 referencePersons:0 fetchOptions:0 onlyKey:0];
 LABEL_9:
 
-  return v11;
+  return executeQuery;
 }
 
-+ (id)fetchCuratedAssetsInAssetCollection:(id)a3 options:(id)a4
++ (id)fetchCuratedAssetsInAssetCollection:(id)collection options:(id)options
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  collectionCopy = collection;
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v8 = [v6 photoLibrary];
-    v7 = [v8 librarySpecificFetchOptions];
+    photoLibrary = [collectionCopy photoLibrary];
+    optionsCopy = [photoLibrary librarySpecificFetchOptions];
   }
 
-  if ([v6 assetCollectionType] == 4)
+  if ([collectionCopy assetCollectionType] == 4)
   {
     v14[0] = @"PHAssetPropertySetOriginalMetadata";
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    [v7 addFetchPropertySets:v9];
+    [optionsCopy addFetchPropertySets:v9];
 
-    v10 = [PHQuery queryForCuratedAssetsInMemory:v6 options:v7];
+    v10 = [PHQuery queryForCuratedAssetsInMemory:collectionCopy options:optionsCopy];
 LABEL_11:
     v11 = v10;
-    v12 = [v10 executeQuery];
+    executeQuery = [v10 executeQuery];
 
     goto LABEL_12;
   }
 
-  if ([v6 assetCollectionType] == 6)
+  if ([collectionCopy assetCollectionType] == 6)
   {
-    if (![v7 highlightCurationType])
+    if (![optionsCopy highlightCurationType])
     {
-      [v7 setHighlightCurationType:{objc_msgSend(v6, "preferredCurationType")}];
+      [optionsCopy setHighlightCurationType:{objc_msgSend(collectionCopy, "preferredCurationType")}];
     }
 
-    v10 = [PHQuery queryForCuratedAssetsInPhotosHighlight:v6 options:v7];
+    v10 = [PHQuery queryForCuratedAssetsInPhotosHighlight:collectionCopy options:optionsCopy];
     goto LABEL_11;
   }
 
-  if ([v6 assetCollectionType] == 7)
+  if ([collectionCopy assetCollectionType] == 7)
   {
-    v10 = [PHQuery queryForCuratedAssetsInMomentShare:v6 options:v7];
+    v10 = [PHQuery queryForCuratedAssetsInMomentShare:collectionCopy options:optionsCopy];
     goto LABEL_11;
   }
 
-  v12 = [a1 _requestCuratedAssetInAssetCollection:v6 referenceAsset:0 referencePersons:0 fetchOptions:v7 onlyKey:0];
+  executeQuery = [self _requestCuratedAssetInAssetCollection:collectionCopy referenceAsset:0 referencePersons:0 fetchOptions:optionsCopy onlyKey:0];
 LABEL_12:
 
-  return v12;
+  return executeQuery;
 }
 
-+ (id)fetchKeyCuratedAssetInAssetCollection:(id)a3 referencePersons:(id)a4
++ (id)fetchKeyCuratedAssetInAssetCollection:(id)collection referencePersons:(id)persons
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 assetCollectionType];
+  personsCopy = persons;
+  collectionCopy = collection;
+  assetCollectionType = [collectionCopy assetCollectionType];
   v8 = objc_opt_class();
-  if (v7 == 4)
+  if (assetCollectionType == 4)
   {
-    [v8 fetchKeyCuratedAssetInAssetCollection:v6 referenceAsset:0];
+    [v8 fetchKeyCuratedAssetInAssetCollection:collectionCopy referenceAsset:0];
   }
 
   else
   {
-    [v8 _requestCuratedAssetInAssetCollection:v6 referenceAsset:0 referencePersons:v5 fetchOptions:0 onlyKey:1];
+    [v8 _requestCuratedAssetInAssetCollection:collectionCopy referenceAsset:0 referencePersons:personsCopy fetchOptions:0 onlyKey:1];
   }
   v9 = ;
 
   return v9;
 }
 
-+ (id)fetchKeyCuratedAssetInAssetCollection:(id)a3 referenceAsset:(id)a4 options:(id)a5
++ (id)fetchKeyCuratedAssetInAssetCollection:(id)collection referenceAsset:(id)asset options:(id)options
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 photoLibrary];
+  collectionCopy = collection;
+  assetCopy = asset;
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
 
-  if (!v10)
+  if (!photoLibrary)
   {
-    v11 = [v7 photoLibrary];
-    v12 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v9 photoLibrary:v11];
+    photoLibrary2 = [collectionCopy photoLibrary];
+    v12 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary2];
 
-    v9 = v12;
+    optionsCopy = v12;
   }
 
-  [v9 setIncludeGuestAssets:1];
-  if ([v7 assetCollectionType] == 4)
+  [optionsCopy setIncludeGuestAssets:1];
+  if ([collectionCopy assetCollectionType] == 4)
   {
-    v13 = [v7 photoLibrary];
-    v14 = [v13 librarySpecificFetchOptions];
+    photoLibrary3 = [collectionCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary3 librarySpecificFetchOptions];
 
     v22[0] = @"PHAssetPropertySetOriginalMetadata";
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-    [v14 addFetchPropertySets:v15];
+    [librarySpecificFetchOptions addFetchPropertySets:v15];
 
-    [v14 mergeWithFetchOptions:v9];
-    if ([v7 isTransient])
+    [librarySpecificFetchOptions mergeWithFetchOptions:optionsCopy];
+    if ([collectionCopy isTransient])
     {
-      [v7 queryForKeyAssetWithOptions:v14];
+      [collectionCopy queryForKeyAssetWithOptions:librarySpecificFetchOptions];
     }
 
     else
     {
-      [PHQuery queryForKeyAssetInMemory:v7 options:v14];
+      [PHQuery queryForKeyAssetInMemory:collectionCopy options:librarySpecificFetchOptions];
     }
     v20 = ;
-    v19 = [v20 executeQuery];
+    executeQuery = [v20 executeQuery];
   }
 
-  else if ([v7 assetCollectionType] == 6)
+  else if ([collectionCopy assetCollectionType] == 6)
   {
-    v16 = [v7 photoLibrary];
-    v17 = [v16 librarySpecificFetchOptions];
+    photoLibrary4 = [collectionCopy photoLibrary];
+    librarySpecificFetchOptions2 = [photoLibrary4 librarySpecificFetchOptions];
 
-    [v17 mergeWithFetchOptions:v9];
-    v18 = [PHQuery queryForKeyAssetInPhotosHighlight:v7 options:v17];
-    v19 = [v18 executeQuery];
+    [librarySpecificFetchOptions2 mergeWithFetchOptions:optionsCopy];
+    v18 = [PHQuery queryForKeyAssetInPhotosHighlight:collectionCopy options:librarySpecificFetchOptions2];
+    executeQuery = [v18 executeQuery];
   }
 
   else
   {
-    v19 = [objc_opt_class() _requestCuratedAssetInAssetCollection:v7 referenceAsset:v8 referencePersons:0 fetchOptions:0 onlyKey:1];
+    executeQuery = [objc_opt_class() _requestCuratedAssetInAssetCollection:collectionCopy referenceAsset:assetCopy referencePersons:0 fetchOptions:0 onlyKey:1];
   }
 
-  return v19;
+  return executeQuery;
 }
 
-+ (id)_assetFetchResultFromAssets:(id)a3 options:(id)a4
++ (id)_assetFetchResultFromAssets:(id)assets options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 copy];
-  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v5 object:0];
+  optionsCopy = options;
+  assetsCopy = assets;
+  v7 = [optionsCopy copy];
+  v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:0];
   [v7 setPhotoLibrary:v8];
 
   [v7 setIncludeHiddenAssets:0];
-  v9 = [v5 fetchPropertySets];
-  [v7 setFetchPropertySets:v9];
+  fetchPropertySets = [optionsCopy fetchPropertySets];
+  [v7 setFetchPropertySets:fetchPropertySets];
 
-  v10 = [v5 customObjectIDSortOrder];
+  customObjectIDSortOrder = [optionsCopy customObjectIDSortOrder];
 
-  [v7 setCustomObjectIDSortOrder:v10];
-  v11 = [v6 valueForKey:@"localIdentifier"];
+  [v7 setCustomObjectIDSortOrder:customObjectIDSortOrder];
+  v11 = [assetsCopy valueForKey:@"localIdentifier"];
 
   v12 = [PHAsset fetchAssetsWithLocalIdentifiers:v11 options:v7];
 
   return v12;
 }
 
-+ (id)_fetchRepresentativeAssetInAssetCollection:(id)a3
++ (id)_fetchRepresentativeAssetInAssetCollection:(id)collection
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 photoLibrary];
-  v6 = [v5 photoAnalysisClient];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
+  v4PhotoLibrary = [photoLibrary photoLibrary];
+  photoAnalysisClient = [v4PhotoLibrary photoAnalysisClient];
 
-  if (v6)
+  if (photoAnalysisClient)
   {
-    if (([v3 isTransient] & 1) == 0 && (objc_msgSend(v3, "assetCollectionType") == 4 || objc_msgSend(v3, "assetCollectionType") == 3 || objc_msgSend(v3, "assetCollectionType") == 7 || objc_msgSend(v3, "assetCollectionType") == 12 || objc_msgSend(v3, "assetCollectionType") == 1 || objc_msgSend(v3, "assetCollectionType") == 2 && objc_msgSend(v3, "assetCollectionSubtype") != 200))
+    if (([collectionCopy isTransient] & 1) == 0 && (objc_msgSend(collectionCopy, "assetCollectionType") == 4 || objc_msgSend(collectionCopy, "assetCollectionType") == 3 || objc_msgSend(collectionCopy, "assetCollectionType") == 7 || objc_msgSend(collectionCopy, "assetCollectionType") == 12 || objc_msgSend(collectionCopy, "assetCollectionType") == 1 || objc_msgSend(collectionCopy, "assetCollectionType") == 2 && objc_msgSend(collectionCopy, "assetCollectionSubtype") != 200))
     {
-      v8 = [v3 localIdentifier];
+      localIdentifier = [collectionCopy localIdentifier];
       v7 = 0;
     }
 
     else
     {
-      v7 = [PHAssetCollection graphOptionsForTransientAssetCollection:v3 needsCompleteMomentsInfo:0 options:0];
-      v8 = 0;
+      v7 = [PHAssetCollection graphOptionsForTransientAssetCollection:collectionCopy needsCompleteMomentsInfo:0 options:0];
+      localIdentifier = 0;
     }
 
     v31 = 0;
-    v10 = [v6 requestRepresentativeAssetsForAssetCollectionWithLocalIdentifier:v8 options:v7 error:&v31];
+    v10 = [photoAnalysisClient requestRepresentativeAssetsForAssetCollectionWithLocalIdentifier:localIdentifier options:v7 error:&v31];
     v11 = v31;
     if (v11)
     {
@@ -2665,8 +2665,8 @@ LABEL_12:
     if (v10)
     {
       v24 = v11;
-      v25 = v8;
-      v26 = v6;
+      v25 = localIdentifier;
+      v26 = photoAnalysisClient;
       v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
       v27 = 0u;
       v28 = 0u;
@@ -2697,7 +2697,7 @@ LABEL_12:
         while (v16);
       }
 
-      v20 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:v3];
+      v20 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:collectionCopy];
       [v20 setIncludeHiddenAssets:1];
       [v20 setIncludeAllBurstAssets:1];
       v21 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
@@ -2707,8 +2707,8 @@ LABEL_12:
 
       v9 = [PHAsset fetchAssetsWithLocalIdentifiers:v13 options:v20];
 
-      v8 = v25;
-      v6 = v26;
+      localIdentifier = v25;
+      photoAnalysisClient = v26;
       v11 = v24;
     }
 
@@ -2733,60 +2733,60 @@ LABEL_12:
   return v9;
 }
 
-+ (id)_requestCuratedAssetInAssetCollection:(id)a3 referenceAsset:(id)a4 referencePersons:(id)a5 fetchOptions:(id)a6 onlyKey:(BOOL)a7
++ (id)_requestCuratedAssetInAssetCollection:(id)collection referenceAsset:(id)asset referencePersons:(id)persons fetchOptions:(id)options onlyKey:(BOOL)key
 {
-  v7 = a7;
+  keyCopy = key;
   v79 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 photoLibrary];
-  v16 = [v15 photoLibrary];
-  v17 = [v16 photoAnalysisClient];
+  collectionCopy = collection;
+  assetCopy = asset;
+  personsCopy = persons;
+  optionsCopy = options;
+  photoLibrary = [collectionCopy photoLibrary];
+  v15PhotoLibrary = [photoLibrary photoLibrary];
+  photoAnalysisClient = [v15PhotoLibrary photoAnalysisClient];
 
-  if (v17)
+  if (photoAnalysisClient)
   {
     v18 = objc_opt_new();
-    v19 = [v13 count];
+    v19 = [personsCopy count];
     if (v19)
     {
-      v20 = [v13 _pl_map:&__block_literal_global_18579];
+      v20 = [personsCopy _pl_map:&__block_literal_global_18579];
       [v18 setObject:v20 forKeyedSubscript:@"PHPhotosGraphOptionPersonLocalIdentifiersToFocus"];
     }
 
-    if ([v14 curationType] == 2)
+    if ([optionsCopy curationType] == 2)
     {
       [v18 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"PHPhotosGraphOptionCurationTypeDedupe"];
     }
 
     v57 = v19;
-    if (v14 || (v24 = [v11 assetCollectionType], v24 > 0xC) || ((1 << v24) & 0x11DA) == 0 && (v24 != 2 || objc_msgSend(v11, "assetCollectionSubtype") == 200))
+    if (optionsCopy || (v24 = [collectionCopy assetCollectionType], v24 > 0xC) || ((1 << v24) & 0x11DA) == 0 && (v24 != 2 || objc_msgSend(collectionCopy, "assetCollectionSubtype") == 200))
     {
       if (v19 != 1)
       {
-        if ([v11 isTransient] && objc_msgSend(v11, "assetCollectionType") == 1)
+        if ([collectionCopy isTransient] && objc_msgSend(collectionCopy, "assetCollectionType") == 1)
         {
-          [v14 setFetchLimit:0];
+          [optionsCopy setFetchLimit:0];
         }
 
-        v21 = [PHAssetCollection graphOptionsForTransientAssetCollection:v11 needsCompleteMomentsInfo:1 options:v14];
+        v21 = [PHAssetCollection graphOptionsForTransientAssetCollection:collectionCopy needsCompleteMomentsInfo:1 options:optionsCopy];
         [v18 addEntriesFromDictionary:v21];
       }
 
-      v22 = 0;
+      localIdentifier = 0;
     }
 
     else
     {
-      v22 = [v11 localIdentifier];
-      if (!v22)
+      localIdentifier = [collectionCopy localIdentifier];
+      if (!localIdentifier)
       {
         v52 = PLPhotoKitGetLog();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v78 = v11;
+          v78 = collectionCopy;
           _os_log_impl(&dword_19C86F000, v52, OS_LOG_TYPE_ERROR, "no collection identifier found for %@", buf, 0xCu);
         }
 
@@ -2795,12 +2795,12 @@ LABEL_12:
       }
     }
 
-    v61 = v22;
-    if (v7)
+    v61 = localIdentifier;
+    if (keyCopy)
     {
-      v25 = [v12 localIdentifier];
+      localIdentifier2 = [assetCopy localIdentifier];
       v71 = 0;
-      v26 = [v17 requestCuratedAssetForAssetCollectionWithLocalIdentifier:v22 referenceAssetLocalIdentifier:v25 options:v18 error:&v71];
+      v26 = [photoAnalysisClient requestCuratedAssetForAssetCollectionWithLocalIdentifier:localIdentifier referenceAssetLocalIdentifier:localIdentifier2 options:v18 error:&v71];
       v27 = v71;
 
       if (v26)
@@ -2824,7 +2824,7 @@ LABEL_12:
     else
     {
       v70 = 0;
-      v28 = [v17 requestCuratedAssetsForAssetCollectionWithLocalIdentifier:v22 duration:2 options:v18 error:&v70];
+      v28 = [photoAnalysisClient requestCuratedAssetsForAssetCollectionWithLocalIdentifier:localIdentifier duration:2 options:v18 error:&v70];
       v29 = v70;
       if (v29)
       {
@@ -2842,10 +2842,10 @@ LABEL_26:
     v60 = v29;
     if (v28)
     {
-      v54 = v17;
-      v55 = v12;
-      v59 = v14;
-      v56 = v13;
+      v54 = photoAnalysisClient;
+      v55 = assetCopy;
+      v59 = optionsCopy;
+      v56 = personsCopy;
       v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v28, "count")}];
       v66 = 0u;
       v67 = 0u;
@@ -2876,11 +2876,11 @@ LABEL_26:
         while (v34);
       }
 
-      v14 = v59;
+      optionsCopy = v59;
       v38 = [v59 copy];
       if (!v38)
       {
-        v38 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:v11];
+        v38 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:collectionCopy];
         [v38 setIncludeHiddenAssets:0];
         v39 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
         v74[0] = v39;
@@ -2889,7 +2889,7 @@ LABEL_26:
         v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:2];
         [v38 setSortDescriptors:v41];
 
-        v14 = v59;
+        optionsCopy = v59;
         v73 = @"PHAssetPropertySetOriginalMetadata";
         v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v73 count:1];
         [v38 addFetchPropertySets:v42];
@@ -2897,8 +2897,8 @@ LABEL_26:
 
       if (v57)
       {
-        v58 = v11;
-        v43 = [MEMORY[0x1E695DF70] array];
+        v58 = collectionCopy;
+        array = [MEMORY[0x1E695DF70] array];
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
@@ -2918,8 +2918,8 @@ LABEL_26:
                 objc_enumerationMutation(v44);
               }
 
-              v49 = [*(*(&v62 + 1) + 8 * j) objectID];
-              [v43 addObject:v49];
+              objectID = [*(*(&v62 + 1) + 8 * j) objectID];
+              [array addObject:objectID];
             }
 
             v46 = [v44 countByEnumeratingWithState:&v62 objects:v72 count:16];
@@ -2928,19 +2928,19 @@ LABEL_26:
           while (v46);
         }
 
-        v50 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K.%K IN %@", @"detectedFaces", @"personForFace", v43];
+        v50 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K.%K IN %@", @"detectedFaces", @"personForFace", array];
         [v38 setInternalPredicate:v50];
         [v38 setPredicate:0];
 
-        v11 = v58;
-        v14 = v59;
+        collectionCopy = v58;
+        optionsCopy = v59;
       }
 
       v51 = [PHAsset fetchAssetsWithLocalIdentifiers:v31 options:v38];
 
-      v12 = v55;
-      v13 = v56;
-      v17 = v54;
+      assetCopy = v55;
+      personsCopy = v56;
+      photoAnalysisClient = v54;
     }
 
     else
@@ -2972,8 +2972,8 @@ LABEL_52:
 - (BOOL)isOriginalRaw
 {
   v2 = MEMORY[0x1E69C08F0];
-  v3 = [(PHAsset *)self originalUTI];
-  v4 = [v2 typeWithIdentifier:v3];
+  originalUTI = [(PHAsset *)self originalUTI];
+  v4 = [v2 typeWithIdentifier:originalUTI];
   v5 = [v4 conformsToType:*MEMORY[0x1E6982F88]];
 
   return v5;
@@ -2981,40 +2981,40 @@ LABEL_52:
 
 - (id)originalUTI
 {
-  v3 = [(PHAsset *)self pathForOriginalFile];
-  v4 = [v3 pathExtension];
+  pathForOriginalFile = [(PHAsset *)self pathForOriginalFile];
+  pathExtension = [pathForOriginalFile pathExtension];
 
-  v5 = [MEMORY[0x1E69BE540] uniformTypeIdentifierFromPathExtension:v4 assetType:{-[PHAsset kind](self, "kind")}];
+  v5 = [MEMORY[0x1E69BE540] uniformTypeIdentifierFromPathExtension:pathExtension assetType:{-[PHAsset kind](self, "kind")}];
 
   return v5;
 }
 
-- (BOOL)shouldUseRAWResourceWithOriginalResourceChoice:(unint64_t)a3
+- (BOOL)shouldUseRAWResourceWithOriginalResourceChoice:(unint64_t)choice
 {
-  if (a3 == 1)
+  if (choice == 1)
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isOriginalRaw) = 1;
   }
 
   else
   {
-    v3 = [(PHAsset *)self isOriginalRaw];
-    if (v3)
+    isOriginalRaw = [(PHAsset *)self isOriginalRaw];
+    if (isOriginalRaw)
     {
       v6 = ![(PHAsset *)self hasAdjustments];
-      if (a3 == 3)
+      if (choice == 3)
       {
-        LOBYTE(v3) = v6;
+        LOBYTE(isOriginalRaw) = v6;
       }
 
       else
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(isOriginalRaw) = 1;
       }
     }
   }
 
-  return v3;
+  return isOriginalRaw;
 }
 
 - (BOOL)shouldUseRAWResourceAsUnadjustedEditBase
@@ -3029,21 +3029,21 @@ LABEL_52:
     return 0;
   }
 
-  v3 = [(PHAsset *)self originalResourceChoice];
+  originalResourceChoice = [(PHAsset *)self originalResourceChoice];
 
-  return [(PHAsset *)self shouldUseRAWResourceWithOriginalResourceChoice:v3];
+  return [(PHAsset *)self shouldUseRAWResourceWithOriginalResourceChoice:originalResourceChoice];
 }
 
 - (unint64_t)originalChoiceToFallbackForUnsupportRAW
 {
-  v3 = [(PHAsset *)self originalResourceChoice];
-  if (v3 == 1)
+  originalResourceChoice = [(PHAsset *)self originalResourceChoice];
+  if (originalResourceChoice == 1)
   {
     return 0;
   }
 
-  v5 = v3;
-  if (((v3 == 0) & [(PHAsset *)self isOriginalRaw]) != 0)
+  v5 = originalResourceChoice;
+  if (((originalResourceChoice == 0) & [(PHAsset *)self isOriginalRaw]) != 0)
   {
     return 3;
   }
@@ -3054,17 +3054,17 @@ LABEL_52:
   }
 }
 
-- (void)_renderTemporaryVideoForObjectBuilder:(id)a3 resultHandler:(id)a4
+- (void)_renderTemporaryVideoForObjectBuilder:(id)builder resultHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = *MEMORY[0x1E6987338];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __86__PHAsset_PHContentEditingInput___renderTemporaryVideoForObjectBuilder_resultHandler___block_invoke;
   v8[3] = &unk_1E75A92F8;
-  v9 = v5;
-  v7 = v5;
-  [a3 requestExportSessionWithExportPreset:v6 resultHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [builder requestExportSessionWithExportPreset:v6 resultHandler:v8];
 }
 
 void __86__PHAsset_PHContentEditingInput___renderTemporaryVideoForObjectBuilder_resultHandler___block_invoke(uint64_t a1, void *a2)
@@ -3142,32 +3142,32 @@ LABEL_7:
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_requestRenderedVideoForVideoURL:(id)a3 adjustmentData:(id)a4 canHandleAdjustmentData:(BOOL)a5 resultHandler:(id)a6
+- (void)_requestRenderedVideoForVideoURL:(id)l adjustmentData:(id)data canHandleAdjustmentData:(BOOL)adjustmentData resultHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  lCopy = l;
+  handlerCopy = handler;
   v12 = MEMORY[0x1E69C0910];
-  v13 = a4;
+  dataCopy = data;
   v14 = [v12 alloc];
-  v15 = [v13 formatIdentifier];
-  v16 = [v13 formatVersion];
-  v17 = [v13 data];
+  formatIdentifier = [dataCopy formatIdentifier];
+  formatVersion = [dataCopy formatVersion];
+  data = [dataCopy data];
 
-  v18 = [v14 initWithFormatIdentifier:v15 formatVersion:v16 data:v17 baseVersion:0 editorBundleID:0 renderTypes:0];
-  if (-[PHAsset isPhotoIris](self, "isPhotoIris") || a5 || ([v18 isRecognizedFormat] & 1) == 0)
+  v18 = [v14 initWithFormatIdentifier:formatIdentifier formatVersion:formatVersion data:data baseVersion:0 editorBundleID:0 renderTypes:0];
+  if (-[PHAsset isPhotoIris](self, "isPhotoIris") || adjustmentData || ([v18 isRecognizedFormat] & 1) == 0)
   {
-    v11[2](v11, v10, 0);
+    handlerCopy[2](handlerCopy, lCopy, 0);
   }
 
   else
   {
-    v19 = [MEMORY[0x1E6988168] assetWithURL:v10];
+    v19 = [MEMORY[0x1E6988168] assetWithURL:lCopy];
     v20 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:v19 videoAdjustments:v18];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __120__PHAsset_PHContentEditingInput___requestRenderedVideoForVideoURL_adjustmentData_canHandleAdjustmentData_resultHandler___block_invoke;
     v21[3] = &unk_1E75A92D0;
-    v22 = v11;
+    v22 = handlerCopy;
     [(PHAsset *)self _renderTemporaryVideoForObjectBuilder:v20 resultHandler:v21];
   }
 }
@@ -3202,29 +3202,29 @@ LABEL_7:
   return v10;
 }
 
-- (id)_imageRequestOptionsForBaseVersion:(int64_t)a3 options:(id)a4 progressEstimateForImageProgress:(id)a5
+- (id)_imageRequestOptionsForBaseVersion:(int64_t)version options:(id)options progressEstimateForImageProgress:(id)progress
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  progressCopy = progress;
   v10 = objc_opt_new();
   [v10 setDeliveryMode:1];
   [v10 setLoadingMode:65537];
-  [v10 setNetworkAccessAllowed:{objc_msgSend(v8, "isNetworkAccessAllowed")}];
-  v11 = [v8 progressHandler];
+  [v10 setNetworkAccessAllowed:{objc_msgSend(optionsCopy, "isNetworkAccessAllowed")}];
+  progressHandler = [optionsCopy progressHandler];
 
-  if (v11)
+  if (progressHandler)
   {
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __110__PHAsset_PHContentEditingInput___imageRequestOptionsForBaseVersion_options_progressEstimateForImageProgress___block_invoke;
     v17 = &unk_1E75A64D0;
-    v19 = v9;
-    v18 = v8;
+    v19 = progressCopy;
+    v18 = optionsCopy;
     [v10 setProgressHandler:&v14];
   }
 
-  v12 = [PHAdjustmentData imageRequestVersionFromAdjustmentBaseVersion:a3, v14, v15, v16, v17];
-  if (([v8 dontAllowRAW] & 1) == 0 && v12 == 1)
+  v12 = [PHAdjustmentData imageRequestVersionFromAdjustmentBaseVersion:version, v14, v15, v16, v17];
+  if (([optionsCopy dontAllowRAW] & 1) == 0 && v12 == 1)
   {
     if ([(PHAsset *)self shouldUseRAWResourceAsUnadjustedEditBase])
     {
@@ -3249,28 +3249,28 @@ void __110__PHAsset_PHContentEditingInput___imageRequestOptionsForBaseVersion_op
   v6[2](v6, a3, v5);
 }
 
-- (id)_videoRequestOptionsForBaseVersion:(int64_t)a3 options:(id)a4 progressEstimateForVideoProgress:(id)a5
+- (id)_videoRequestOptionsForBaseVersion:(int64_t)version options:(id)options progressEstimateForVideoProgress:(id)progress
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  progressCopy = progress;
   v10 = objc_opt_new();
   [v10 setDeliveryMode:1];
-  [v10 setNetworkAccessAllowed:{objc_msgSend(v8, "isNetworkAccessAllowed")}];
+  [v10 setNetworkAccessAllowed:{objc_msgSend(optionsCopy, "isNetworkAccessAllowed")}];
   [v10 setVideoComplementAllowed:{-[PHAsset isPhotoIris](self, "isPhotoIris")}];
-  v11 = [v8 progressHandler];
+  progressHandler = [optionsCopy progressHandler];
 
-  if (v11)
+  if (progressHandler)
   {
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __110__PHAsset_PHContentEditingInput___videoRequestOptionsForBaseVersion_options_progressEstimateForVideoProgress___block_invoke;
     v16 = &unk_1E75A64D0;
-    v18 = v9;
-    v17 = v8;
+    v18 = progressCopy;
+    v17 = optionsCopy;
     [v10 setProgressHandler:&v13];
   }
 
-  [v10 setVersion:{+[PHAdjustmentData videoRequestVersionFromAdjustmentBaseVersion:](PHAdjustmentData, "videoRequestVersionFromAdjustmentBaseVersion:", a3, v13, v14, v15, v16)}];
+  [v10 setVersion:{+[PHAdjustmentData videoRequestVersionFromAdjustmentBaseVersion:](PHAdjustmentData, "videoRequestVersionFromAdjustmentBaseVersion:", version, v13, v14, v15, v16)}];
 
   return v10;
 }
@@ -3282,12 +3282,12 @@ void __110__PHAsset_PHContentEditingInput___videoRequestOptionsForBaseVersion_op
   v6[2](v6, a3, v5);
 }
 
-- (int64_t)_baseVersionForAdjustmentData:(id)a3 canHandleAdjustmentData:(BOOL)a4
+- (int64_t)_baseVersionForAdjustmentData:(id)data canHandleAdjustmentData:(BOOL)adjustmentData
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 _hasAdjustments];
-  if (v7)
+  adjustmentDataCopy = adjustmentData;
+  dataCopy = data;
+  _hasAdjustments = [dataCopy _hasAdjustments];
+  if (_hasAdjustments)
   {
     v8 = 2;
   }
@@ -3297,9 +3297,9 @@ void __110__PHAsset_PHContentEditingInput___videoRequestOptionsForBaseVersion_op
     v8 = 0;
   }
 
-  if (v7 && v4)
+  if (_hasAdjustments && adjustmentDataCopy)
   {
-    if ([v6 baseVersion])
+    if ([dataCopy baseVersion])
     {
       if ([(PHAsset *)self isVideo])
       {
@@ -3321,27 +3321,27 @@ void __110__PHAsset_PHContentEditingInput___videoRequestOptionsForBaseVersion_op
   return v8;
 }
 
-- (BOOL)_canHandleAdjustmentData:(id)a3 withOptions:(id)a4
+- (BOOL)_canHandleAdjustmentData:(id)data withOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 isOpaque] & 1) != 0 || !objc_msgSend(v5, "_hasAdjustments"))
+  dataCopy = data;
+  optionsCopy = options;
+  if (([dataCopy isOpaque] & 1) != 0 || !objc_msgSend(dataCopy, "_hasAdjustments"))
   {
-    LOBYTE(v7) = 0;
+    LOBYTE(canHandleAdjustmentData) = 0;
   }
 
   else
   {
-    v7 = [v6 canHandleAdjustmentData];
+    canHandleAdjustmentData = [optionsCopy canHandleAdjustmentData];
 
-    if (v7)
+    if (canHandleAdjustmentData)
     {
-      v8 = [v6 canHandleAdjustmentData];
-      LOBYTE(v7) = (v8)[2](v8, v5);
+      canHandleAdjustmentData2 = [optionsCopy canHandleAdjustmentData];
+      LOBYTE(canHandleAdjustmentData) = (canHandleAdjustmentData2)[2](canHandleAdjustmentData2, dataCopy);
     }
   }
 
-  return v7;
+  return canHandleAdjustmentData;
 }
 
 - (CGRect)acceptableCropRect
@@ -3434,15 +3434,15 @@ void __110__PHAsset_PHContentEditingInput___videoRequestOptionsForBaseVersion_op
 
 - (NSManagedObjectContext)managedObjectContextForFetchingResources
 {
-  v3 = [(PHObject *)self photoLibrary];
-  v4 = [v3 objectFetchingManagedObjectContextForObject:self propertySet:@"PHAssetPropertySetCore"];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  v4 = [photoLibrary objectFetchingManagedObjectContextForObject:self propertySet:@"PHAssetPropertySetCore"];
 
   return v4;
 }
 
 - (id)shortDescriptionForSensitivityState
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -3470,10 +3470,10 @@ void __110__PHAsset_PHContentEditingInput___videoRequestOptionsForBaseVersion_op
     goto LABEL_18;
   }
 
-  v9 = [(PHAsset *)self sensitivityAnalysisState];
-  if (v9 <= 4)
+  sensitivityAnalysisState = [(PHAsset *)self sensitivityAnalysisState];
+  if (sensitivityAnalysisState <= 4)
   {
-    [v3 appendString:off_1E75A7250[v9]];
+    [string appendString:off_1E75A7250[sensitivityAnalysisState]];
   }
 
   if ([(PHAsset *)self compactSCSensitivityAnalysis])
@@ -3485,7 +3485,7 @@ void __110__PHAsset_PHContentEditingInput___videoRequestOptionsForBaseVersion_op
         if (![v6 isContentPreviewable])
         {
           v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown value: %lld", -[PHAsset compactSCSensitivityAnalysis](self, "compactSCSensitivityAnalysis")];
-          [v3 appendString:v13];
+          [string appendString:v13];
 
           goto LABEL_17;
         }
@@ -3510,9 +3510,9 @@ void __110__PHAsset_PHContentEditingInput___videoRequestOptionsForBaseVersion_op
     v10 = @"<unprocessed>";
   }
 
-  [v3 appendString:v10];
+  [string appendString:v10];
 LABEL_17:
-  v8 = v3;
+  v8 = string;
 LABEL_18:
   v11 = v8;
 
@@ -3598,11 +3598,11 @@ LABEL_18:
   v25 = *MEMORY[0x1E69E9840];
   [(PHObject *)self addFetchPropertyHint:16];
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(PHAsset *)self photosOneUpProperties];
-  v5 = [v3 stringWithFormat:@"[variationSuggestionState = %llu] ", objc_msgSend(v4, "variationSuggestionStates")];
+  photosOneUpProperties = [(PHAsset *)self photosOneUpProperties];
+  v5 = [v3 stringWithFormat:@"[variationSuggestionState = %llu] ", objc_msgSend(photosOneUpProperties, "variationSuggestionStates")];
 
-  v6 = [(PHObject *)self photoLibrary];
-  v19 = [v6 variationCache];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  variationCache = [photoLibrary variationCache];
 
   v22 = 0u;
   v23 = 0u;
@@ -3622,25 +3622,25 @@ LABEL_18:
           objc_enumerationMutation(&unk_1F102E060);
         }
 
-        v11 = [*(*(&v20 + 1) + 8 * i) integerValue];
-        v12 = [(PHAsset *)self variationSuggestionStatesForVariationType:v11];
-        v13 = [objc_opt_class() _descriptionForVariationSuggestionType:v11];
+        integerValue = [*(*(&v20 + 1) + 8 * i) integerValue];
+        v12 = [(PHAsset *)self variationSuggestionStatesForVariationType:integerValue];
+        v13 = [objc_opt_class() _descriptionForVariationSuggestionType:integerValue];
         v14 = [objc_opt_class() _descriptionForVariationSuggestionStates:v12];
         [v5 appendFormat:@"\n\t%@: [%llu] %@", v13, v12, v14];
         if ((v12 & 2) != 0)
         {
-          if ((v11 - 1) >= 3)
+          if ((integerValue - 1) >= 3)
           {
             v15 = 0;
           }
 
           else
           {
-            v15 = v11;
+            v15 = integerValue;
           }
 
-          v16 = [(PHObject *)self uuid];
-          v17 = [v19 gatingResultForVariationType:v15 assetIdentifier:v16];
+          uuid = [(PHObject *)self uuid];
+          v17 = [variationCache gatingResultForVariationType:v15 assetIdentifier:uuid];
 
           [v5 appendFormat:@" %@", v17];
         }
@@ -3663,15 +3663,15 @@ LABEL_18:
   v36 = __Block_byref_object_copy__22497;
   v37 = __Block_byref_object_dispose__22498;
   v38 = &stru_1F0FC60C8;
-  v3 = [(PHAsset *)self mediaType];
-  v4 = [(PHAsset *)self mediaType]== PHAssetMediaTypeVideo || [(PHAsset *)self isPhotoIris];
+  mediaType = [(PHAsset *)self mediaType];
+  isPhotoIris = [(PHAsset *)self mediaType]== PHAssetMediaTypeVideo || [(PHAsset *)self isPhotoIris];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
   v5 = dispatch_group_create();
   v6 = dispatch_queue_create("com.apple.photos.metadatadebugdescription", 0);
-  if (v3 == PHAssetMediaTypeImage)
+  if (mediaType == PHAssetMediaTypeImage)
   {
     dispatch_group_enter(v5);
     v7 = v34[5];
@@ -3704,7 +3704,7 @@ LABEL_18:
     [v10 requestImageDataAndOrientationForAsset:self options:v8 resultHandler:v26];
   }
 
-  if (v4)
+  if (isPhotoIris)
   {
     dispatch_group_enter(v5);
     v11 = [v34[5] stringByAppendingString:@"==========================\nVideo Metadata:\n\n"];
@@ -3740,7 +3740,7 @@ LABEL_18:
   {
     v18 = dispatch_time(0, 10000000000);
     dispatch_group_wait(v5, v18);
-    if (v3 == PHAssetMediaTypeImage)
+    if (mediaType == PHAssetMediaTypeImage)
     {
       goto LABEL_15;
     }
@@ -3870,7 +3870,7 @@ void __35__PHAsset_metadataDebugDescription__block_invoke_2(uint64_t a1, uint64_
 
 - (NSString)resourcesDebugDescription
 {
-  v3 = [(PHAsset *)self pl_photoLibrary];
+  pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
   v4 = [(PHAsset *)self description];
   v5 = [v4 mutableCopy];
 
@@ -3884,12 +3884,12 @@ void __35__PHAsset_metadataDebugDescription__block_invoke_2(uint64_t a1, uint64_
   v9 = 3221225472;
   v10 = __36__PHAsset_resourcesDebugDescription__block_invoke;
   v11 = &unk_1E75AA3F8;
-  v12 = self;
-  v6 = v3;
+  selfCopy = self;
+  v6 = pl_photoLibrary;
   v13 = v6;
   v14 = &v15;
   [v6 performBlockAndWait:&v8 completionHandler:0];
-  [v5 appendFormat:@"\n'modern' resources: %@\n", v16[5], v8, v9, v10, v11, v12];
+  [v5 appendFormat:@"\n'modern' resources: %@\n", v16[5], v8, v9, v10, v11, selfCopy];
 
   _Block_object_dispose(&v15, 8);
 
@@ -3911,23 +3911,23 @@ void __36__PHAsset_resourcesDebugDescription__block_invoke(uint64_t a1)
   }
 }
 
-- (id)descriptionForPhotoAnanlysisWallpaperProeprtiesWithManagedAsset:(id)a3
+- (id)descriptionForPhotoAnanlysisWallpaperProeprtiesWithManagedAsset:(id)asset
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v5 = [(PHAsset *)self _createPropertyObjectOfClass:objc_opt_class()];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 wallpaperPropertiesData];
-    [v4 appendFormat:@"wallpaperPropertiesData: %p (size: %lu)\n", v7, objc_msgSend(v7, "length")];
-    v8 = [v6 wallpaperPropertiesTimestamp];
-    [v4 appendFormat:@"wallpaperPropertiesTimestamp: %@\n", v8];
+    wallpaperPropertiesData = [v5 wallpaperPropertiesData];
+    [v4 appendFormat:@"wallpaperPropertiesData: %p (size: %lu)\n", wallpaperPropertiesData, objc_msgSend(wallpaperPropertiesData, "length")];
+    wallpaperPropertiesTimestamp = [v6 wallpaperPropertiesTimestamp];
+    [v4 appendFormat:@"wallpaperPropertiesTimestamp: %@\n", wallpaperPropertiesTimestamp];
 
     [v4 appendFormat:@"wallpaperPropertiesVersion: %llu\n", objc_msgSend(v6, "wallpaperPropertiesVersion")];
-    if (v7)
+    if (wallpaperPropertiesData)
     {
       v12 = 0;
-      v9 = [MEMORY[0x1E696AE40] propertyListWithData:v7 options:0 format:0 error:&v12];
+      v9 = [MEMORY[0x1E696AE40] propertyListWithData:wallpaperPropertiesData options:0 format:0 error:&v12];
       v10 = v9;
       if (v9)
       {
@@ -3949,7 +3949,7 @@ void __36__PHAsset_resourcesDebugDescription__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)descriptionForAestheticsWithManagedAsset:(id)a3
+- (id)descriptionForAestheticsWithManagedAsset:(id)asset
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v5 = [(PHAsset *)self _createPropertyObjectOfClass:objc_opt_class()];
@@ -4000,13 +4000,13 @@ void __36__PHAsset_resourcesDebugDescription__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)descriptionForMediaAnalysisWithManagedAsset:(id)a3
+- (id)descriptionForMediaAnalysisWithManagedAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v6 = [(PHAsset *)self _createPropertyObjectOfClass:objc_opt_class()];
-  v7 = [v6 mediaAnalysisTimeStamp];
-  [v5 appendFormat:@"mediaAnalysisTimeStamp = %@\n", v7];
+  mediaAnalysisTimeStamp = [v6 mediaAnalysisTimeStamp];
+  [v5 appendFormat:@"mediaAnalysisTimeStamp = %@\n", mediaAnalysisTimeStamp];
 
   [v5 appendFormat:@"mediaAnalysisVersion = %llu\n", objc_msgSend(v6, "mediaAnalysisVersion")];
   [v5 appendFormat:@"mediaAnalysisImageVersion = %hd\n", objc_msgSend(v6, "mediaAnalysisImageVersion")];
@@ -4014,7 +4014,7 @@ void __36__PHAsset_resourcesDebugDescription__block_invoke(uint64_t a1)
   [v5 appendFormat:@"videoCaptionVersion = %hd\n", objc_msgSend(v6, "videoCaptionVersion")];
   v49 = 0uLL;
   v50 = 0;
-  if (v4 && ([v4 videoKeyFrameTime], (BYTE12(v49) & 0x1D) == 1))
+  if (assetCopy && ([assetCopy videoKeyFrameTime], (BYTE12(v49) & 0x1D) == 1))
   {
     *&time.start.value = v49;
     time.start.epoch = v50;
@@ -4099,37 +4099,37 @@ LABEL_17:
   [v5 appendFormat:@"probableRotationDirection = %hd\n", objc_msgSend(v6, "probableRotationDirection")];
   [v6 probableRotationDirectionConfidence];
   [v5 appendFormat:@"probableRotationDirectionConfidence = %g\n", v22];
-  v23 = [v6 colorNormalizationData];
-  [v5 appendFormat:@"colorNormalizationData = %@\n", v23];
+  colorNormalizationData = [v6 colorNormalizationData];
+  [v5 appendFormat:@"colorNormalizationData = %@\n", colorNormalizationData];
 
   v24 = [(PHAsset *)self _createPropertyObjectOfClass:objc_opt_class()];
   [v5 appendFormat:@"characterRecognitionAlgorithmVersion = %ld\n", objc_msgSend(v24, "algorithmVersion")];
-  v25 = [v24 adjustmentVersion];
-  [v5 appendFormat:@"characterRecognitionAdjustmentVersion = %@\n", v25];
+  adjustmentVersion = [v24 adjustmentVersion];
+  [v5 appendFormat:@"characterRecognitionAdjustmentVersion = %@\n", adjustmentVersion];
 
-  v26 = [v24 characterRecognitionData];
-  v27 = [v24 characterRecognitionData];
-  [v5 appendFormat:@"characterRecognitionData = %p(.characterRecognitionData.length = %lu)\n", v26, objc_msgSend(v27, "length")];
+  characterRecognitionData = [v24 characterRecognitionData];
+  characterRecognitionData2 = [v24 characterRecognitionData];
+  [v5 appendFormat:@"characterRecognitionData = %p(.characterRecognitionData.length = %lu)\n", characterRecognitionData, objc_msgSend(characterRecognitionData2, "length")];
 
-  v28 = [v24 machineReadableCodeData];
-  v29 = [v24 machineReadableCodeData];
-  [v5 appendFormat:@"machineReadableCodeData = %p(.machineReadableCodeData.length = %lu)\n", v28, objc_msgSend(v29, "length")];
+  machineReadableCodeData = [v24 machineReadableCodeData];
+  machineReadableCodeData2 = [v24 machineReadableCodeData];
+  [v5 appendFormat:@"machineReadableCodeData = %p(.machineReadableCodeData.length = %lu)\n", machineReadableCodeData, objc_msgSend(machineReadableCodeData2, "length")];
 
   v30 = [(PHAsset *)self _createPropertyObjectOfClass:objc_opt_class()];
   [v5 appendFormat:@"textUnderstandingAlgorithmVersion = %ld\n", objc_msgSend(v30, "textUnderstandingVersion")];
-  v31 = [v30 textUnderstandingData];
-  v32 = [v30 textUnderstandingData];
-  [v5 appendFormat:@"textUnderstandingData = %p(.textUnderstandingData.length = %lu)\n", v31, objc_msgSend(v32, "length")];
+  textUnderstandingData = [v30 textUnderstandingData];
+  textUnderstandingData2 = [v30 textUnderstandingData];
+  [v5 appendFormat:@"textUnderstandingData = %p(.textUnderstandingData.length = %lu)\n", textUnderstandingData, objc_msgSend(textUnderstandingData2, "length")];
 
   [v5 appendFormat:@"screenTimeDeviceImageSensitivity = %hd\n", objc_msgSend(v6, "screenTimeDeviceImageSensitivity")];
   v33 = [(PHAsset *)self _createPropertyObjectOfClass:objc_opt_class()];
   [v5 appendFormat:@"visualSearchAlgorithmVersion = %ld\n", objc_msgSend(v33, "algorithmVersion")];
-  v34 = [v33 adjustmentVersion];
-  [v5 appendFormat:@"visualSearchAdjustmentVersion = %@\n", v34];
+  adjustmentVersion2 = [v33 adjustmentVersion];
+  [v5 appendFormat:@"visualSearchAdjustmentVersion = %@\n", adjustmentVersion2];
 
-  v35 = [v33 visualSearchData];
-  v36 = [v33 visualSearchData];
-  [v5 appendFormat:@"visualSearchData = %p(.visualSearchData.length = %lu)\n", v35, objc_msgSend(v36, "length")];
+  visualSearchData = [v33 visualSearchData];
+  visualSearchData2 = [v33 visualSearchData];
+  [v5 appendFormat:@"visualSearchData = %p(.visualSearchData.length = %lu)\n", visualSearchData, objc_msgSend(visualSearchData2, "length")];
 
   [v33 stickerConfidenceScore];
   [v5 appendFormat:@"stickerConfidenceScore = %0.3f\n", v37];
@@ -4139,20 +4139,20 @@ LABEL_17:
   [v5 appendFormat:@"syndicationProcessingVersion = %@\n", v38];
 
   [v5 appendFormat:@"privateEncryptedComputeAnalysisVersion = %d", objc_msgSend(v6, "privateEncryptedComputeAnalysisVersion")];
-  v39 = [v6 privateEncryptedComputeAnalysisTimestamp];
-  [v5 appendFormat:@"privateEncryptedComputeAnalysisTimestamp = %@", v39];
+  privateEncryptedComputeAnalysisTimestamp = [v6 privateEncryptedComputeAnalysisTimestamp];
+  [v5 appendFormat:@"privateEncryptedComputeAnalysisTimestamp = %@", privateEncryptedComputeAnalysisTimestamp];
 
   return v5;
 }
 
-- (id)detailedDebugDescriptionInLibrary:(id)a3
+- (id)detailedDebugDescriptionInLibrary:(id)library
 {
   v107 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PHAsset.m" lineNumber:4530 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset.m" lineNumber:4530 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v6 = [(PHAsset *)self description];
@@ -4229,7 +4229,7 @@ LABEL_17:
   v30[2] = __45__PHAsset_detailedDebugDescriptionInLibrary___block_invoke;
   v30[3] = &unk_1E75A70B8;
   v30[4] = self;
-  v31 = v5;
+  v31 = libraryCopy;
   v8 = v7;
   v32 = v8;
   v33 = &v88;
@@ -4247,11 +4247,11 @@ LABEL_17:
   [v31 performBlockAndWait:v30 completionHandler:0];
   [v8 appendFormat:@"\n\nDate Details: %@", v89[5]];
   [v8 appendFormat:@"\n\nAdjustments Details: %@", v101[5]];
-  v9 = [(PHAsset *)self adjustmentsDebugMetadata];
-  v10 = v9;
-  if (v9)
+  adjustmentsDebugMetadata = [(PHAsset *)self adjustmentsDebugMetadata];
+  v10 = adjustmentsDebugMetadata;
+  if (adjustmentsDebugMetadata)
   {
-    v11 = [v9 description];
+    v11 = [adjustmentsDebugMetadata description];
   }
 
   else
@@ -4270,17 +4270,17 @@ LABEL_17:
   [v8 appendFormat:@"\n\nAdjustments Data: %@", v11];
   [v8 appendFormat:@"\n\nAdditional Details: %@", v95[5]];
   [v8 appendFormat:@"\n\nAnalysis State Details:\n%@", v75[5]];
-  v14 = [(PHAsset *)self variationSuggestionStatesDetails];
-  [v8 appendFormat:@"\n\nVariation Suggestion State Details:\n%@", v14];
+  variationSuggestionStatesDetails = [(PHAsset *)self variationSuggestionStatesDetails];
+  [v8 appendFormat:@"\n\nVariation Suggestion State Details:\n%@", variationSuggestionStatesDetails];
   [v8 appendFormat:@"\n\nScene Analysis Details: %@", v69[5]];
   [v8 appendFormat:@"\n\nFace Analysis Details: %@", v63[5]];
   [v8 appendFormat:@"\n\nMedia Analysis Details: %@", v57[5]];
   [v8 appendFormat:@"\n\nAesthetics Details: %@", v51[5]];
   [v8 appendFormat:@"\n\nPhotoAnalysis Wallpaper Properties Details: %@", v45[5]];
-  v15 = [(PHAsset *)self croppingDebugDescription];
-  [v8 appendFormat:@"\n\nCropping Details: %@", v15];
-  v16 = [(PHObject *)self uuid];
-  v17 = [PHImageManagerRequestTracer recentMessagesSummaryForAssetUUID:v16];
+  croppingDebugDescription = [(PHAsset *)self croppingDebugDescription];
+  [v8 appendFormat:@"\n\nCropping Details: %@", croppingDebugDescription];
+  uuid = [(PHObject *)self uuid];
+  v17 = [PHImageManagerRequestTracer recentMessagesSummaryForAssetUUID:uuid];
   [v8 appendFormat:@"\n\nRecent Image Manager Requests:\n%@", v17];
 
   if (v83[5])
@@ -4500,8 +4500,8 @@ void __45__PHAsset_detailedDebugDescriptionInLibrary___block_invoke(uint64_t a1)
   PFSizeWithAspectRatioFittingSize();
   v178 = v12;
   v180 = v11;
-  v182 = [(PHAsset *)self pixelWidth];
-  v115 = [(PHAsset *)self pixelHeight];
+  pixelWidth = [(PHAsset *)self pixelWidth];
+  pixelHeight = [(PHAsset *)self pixelHeight];
   v193 = 0;
   v192 = 0;
   v191 = 0;
@@ -4575,15 +4575,15 @@ void __45__PHAsset_detailedDebugDescriptionInLibrary___block_invoke(uint64_t a1)
   [(PHAsset *)self faceAreaMaxY];
   v173 = [v65 stringWithFormat:@"(minX: %.2f, maxX: %.2f, minY: %.2f, maxY: %.2f)", v67, v69, v71, v72];
   [(PHAsset *)self acceptableCropRect];
-  v136 = v75 * v182 + 0.0;
-  v126 = (1.0 - (v73 + v74)) * v115 + 0.0;
-  v113 = v74 * v115;
-  v114 = v76 * v182;
+  v136 = v75 * pixelWidth + 0.0;
+  v126 = (1.0 - (v73 + v74)) * pixelHeight + 0.0;
+  v113 = v74 * pixelHeight;
+  v114 = v76 * pixelWidth;
   [(PHAsset *)self preferredCropRect];
-  v149 = v79 * v182 + 0.0;
-  v111 = v80 * v182;
-  v112 = (1.0 - (v77 + v78)) * v115 + 0.0;
-  v110 = v78 * v115;
+  v149 = v79 * pixelWidth + 0.0;
+  v111 = v80 * pixelWidth;
+  v112 = (1.0 - (v77 + v78)) * pixelHeight + 0.0;
+  v110 = v78 * pixelHeight;
   [(PHAsset *)self faceAreaMinX];
   v82 = v81;
   [(PHAsset *)self faceAreaMinY];
@@ -4595,8 +4595,8 @@ void __45__PHAsset_detailedDebugDescriptionInLibrary___block_invoke(uint64_t a1)
   v89 = v88 - v84;
   v90 = 1.0 - (v84 + v88 - v84);
   v194[0] = @"uuid";
-  v181 = [(PHObject *)self uuid];
-  v195[0] = v181;
+  uuid = [(PHObject *)self uuid];
+  v195[0] = uuid;
   v194[1] = @"width";
   v179 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PHAsset pixelWidth](self, "pixelWidth")}];
   v195[1] = v179;
@@ -4629,8 +4629,8 @@ void __45__PHAsset_detailedDebugDescriptionInLibrary___block_invoke(uint64_t a1)
   v137 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", *&v136, *&v126, *&v114, *&v113];
   v195[10] = v137;
   v194[11] = @"faceAreaPixels";
-  v127 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v82 * v182 + 0.0, v90 * v115 + 0.0, v87 * v182, v89 * v115];
-  v195[11] = v127;
+  v115 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v82 * pixelWidth + 0.0, v90 * pixelHeight + 0.0, v87 * pixelWidth, v89 * pixelHeight];
+  v195[11] = v115;
   v194[12] = @"suggestedCrop";
   v171 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v170, v168, *&v167, *&v166];
   v195[12] = v171;
@@ -4638,65 +4638,65 @@ void __45__PHAsset_detailedDebugDescriptionInLibrary___block_invoke(uint64_t a1)
   v169 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v163, v161, *&v160, *&v159];
   v195[13] = v169;
   v194[14] = @"suggestedCropWithScreenTranspose";
-  v164 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v157, v155, v153, v151];
-  v195[14] = v164;
+  v151 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v157, v155, v153, v151];
+  v195[14] = v151;
   v194[15] = @"estimatedSuggestedCropPad";
-  v162 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v147, v145, v143, v141];
-  v195[15] = v162;
+  v141 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v147, v145, v143, v141];
+  v195[15] = v141;
   v194[16] = @"estimatedSuggestedCropPadWithFocusArea";
-  v158 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v139, v138, v135, v134];
-  v195[16] = v158;
+  v134 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v139, v138, v135, v134];
+  v195[16] = v134;
   v194[17] = @"estimatedSuggestedCropPadWithScreenTranspose";
-  v156 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v133, v132, v131, v130];
-  v195[17] = v156;
+  v130 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v133, v132, v131, v130];
+  v195[17] = v130;
   v194[18] = @"estimatedSuggestedCropPhone";
-  v154 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v129, v128, v125, v124];
-  v195[18] = v154;
+  v124 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v129, v128, v125, v124];
+  v195[18] = v124;
   v194[19] = @"estimatedSuggestedCropPhoneWithFocusArea";
-  v152 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v123, v122, v121, v120];
-  v195[19] = v152;
+  v120 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v123, v122, v121, v120];
+  v195[19] = v120;
   v194[20] = @"estimatedSuggestedCropPhoneWithScreenTranspose";
-  v148 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v119, v118, v117, v116];
-  v195[20] = v148;
+  v116 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{{x:%.3f, y:%.3f}, {width:%.3f, height:%.3f}}", v119, v118, v117, v116];
+  v195[20] = v116;
   v194[21] = @"cropQualityScore";
-  v146 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v193];
-  v195[21] = v146;
+  v193 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v193];
+  v195[21] = v193;
   v194[22] = @"cropQualityScoreWithFocusArea";
-  v144 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v192];
-  v195[22] = v144;
+  v192 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v192];
+  v195[22] = v192;
   v194[23] = @"cropQualityScoreWithScreenTranspose";
-  v142 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v191];
-  v195[23] = v142;
+  v191 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v191];
+  v195[23] = v191;
   v194[24] = @"estimatedCropQualityScorePad";
-  v140 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v190];
-  v195[24] = v140;
+  v190 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v190];
+  v195[24] = v190;
   v194[25] = @"estimatedCropQualityScorePadWithFocusArea";
-  v99 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v189];
-  v195[25] = v99;
+  v189 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v189];
+  v195[25] = v189;
   v194[26] = @"estimatedCropQualityScorePadWithScreenTranspose";
-  v100 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v188];
-  v195[26] = v100;
+  v188 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v188];
+  v195[26] = v188;
   v194[27] = @"estimatedCropQualityScorePhone";
-  v101 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v187];
-  v195[27] = v101;
+  v187 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v187];
+  v195[27] = v187;
   v194[28] = @"estimatedCropQualityScorePhoneWithFocusArea";
-  v102 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v186];
-  v195[28] = v102;
+  v186 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v186];
+  v195[28] = v186;
   v194[29] = @"estimatedCropQualityScorePhoneWithScreenTranspose";
-  v103 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v185];
-  v195[29] = v103;
+  v185 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v185];
+  v195[29] = v185;
   v194[30] = @"imageAspectRatio";
-  v104 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v182 / v115];
-  v195[30] = v104;
+  v1152 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", pixelWidth / pixelHeight];
+  v195[30] = v1152;
   v194[31] = @"screenAspectRatio";
-  v105 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v183 / v184];
-  v195[31] = v105;
+  v184 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v183 / v184];
+  v195[31] = v184;
   v194[32] = @"cropAspectRatio";
-  v106 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v167 / v166];
-  v195[32] = v106;
+  v166 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v167 / v166];
+  v195[32] = v166;
   v194[33] = @"cropAspectRatioWithFocusArea";
-  v107 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v160 / v159];
-  v195[33] = v107;
+  v159 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.3f", v160 / v159];
+  v195[33] = v159;
   v108 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v195 forKeys:v194 count:34];
 
   return v108;
@@ -4805,113 +4805,113 @@ LABEL_7:
 {
   if (PFOSVariantHasInternalDiagnostics())
   {
-    v3 = objc_opt_new();
-    v4 = [(PHAsset *)self mainFileURL];
-    v5 = [v4 lastPathComponent];
+    dictionary = objc_opt_new();
+    mainFileURL = [(PHAsset *)self mainFileURL];
+    lastPathComponent = [mainFileURL lastPathComponent];
 
     v6 = MEMORY[0x1E69BE540];
-    v7 = [(PHObject *)self photoLibrary];
-    v8 = [v7 photoLibrary];
-    v9 = [v5 stringByDeletingPathExtension];
-    v10 = [v9 stringByAppendingPathComponent:@"ReframeEvaluation"];
-    v11 = [v6 diagnosticFilePathForLibrary:v8 mainFilename:v10 createIfNeeded:0];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    v7PhotoLibrary = [photoLibrary photoLibrary];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    v10 = [stringByDeletingPathExtension stringByAppendingPathComponent:@"ReframeEvaluation"];
+    v11 = [v6 diagnosticFilePathForLibrary:v7PhotoLibrary mainFilename:v10 createIfNeeded:0];
 
     if (v11)
     {
       v12 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v11];
       if (v12)
       {
-        [v3 setObject:v12 forKeyedSubscript:@"ReframeEvaluation"];
+        [dictionary setObject:v12 forKeyedSubscript:@"ReframeEvaluation"];
       }
     }
 
     v13 = MEMORY[0x1E69BE540];
-    v14 = [(PHObject *)self photoLibrary];
-    v15 = [v14 photoLibrary];
-    v16 = [v5 stringByDeletingPathExtension];
-    v17 = [v16 stringByAppendingPathComponent:@"ReframeSubjects"];
-    v18 = [v13 diagnosticFilePathForLibrary:v15 mainFilename:v17 createIfNeeded:0];
+    photoLibrary2 = [(PHObject *)self photoLibrary];
+    v14PhotoLibrary = [photoLibrary2 photoLibrary];
+    stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
+    v17 = [stringByDeletingPathExtension2 stringByAppendingPathComponent:@"ReframeSubjects"];
+    v18 = [v13 diagnosticFilePathForLibrary:v14PhotoLibrary mainFilename:v17 createIfNeeded:0];
 
     if (v18)
     {
       v19 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v18];
       if (v19)
       {
-        [v3 setObject:v19 forKeyedSubscript:@"ReframeSubjects"];
+        [dictionary setObject:v19 forKeyedSubscript:@"ReframeSubjects"];
       }
     }
 
     v35 = v11;
     v20 = MEMORY[0x1E69BE540];
-    v21 = [(PHObject *)self photoLibrary];
-    v22 = [v21 photoLibrary];
-    v23 = [v5 stringByDeletingPathExtension];
-    v24 = [v23 stringByAppendingPathComponent:@"CapturePerspectiveEvaluation-txt"];
-    v25 = [v20 diagnosticFilePathForLibrary:v22 mainFilename:v24 createIfNeeded:0];
+    photoLibrary3 = [(PHObject *)self photoLibrary];
+    v21PhotoLibrary = [photoLibrary3 photoLibrary];
+    stringByDeletingPathExtension3 = [lastPathComponent stringByDeletingPathExtension];
+    v24 = [stringByDeletingPathExtension3 stringByAppendingPathComponent:@"CapturePerspectiveEvaluation-txt"];
+    v25 = [v20 diagnosticFilePathForLibrary:v21PhotoLibrary mainFilename:v24 createIfNeeded:0];
 
     if (v25)
     {
       v26 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v25];
       if (v26)
       {
-        [v3 setObject:v26 forKeyedSubscript:@"CapturePerspectiveEvaluation-txt"];
+        [dictionary setObject:v26 forKeyedSubscript:@"CapturePerspectiveEvaluation-txt"];
       }
     }
 
     v27 = MEMORY[0x1E69BE540];
-    v28 = [(PHObject *)self photoLibrary];
-    v29 = [v28 photoLibrary];
-    v30 = [v5 stringByDeletingPathExtension];
-    v31 = [v30 stringByAppendingPathComponent:@"CaptureAutoCropEvaluation-txt"];
-    v32 = [v27 diagnosticFilePathForLibrary:v29 mainFilename:v31 createIfNeeded:0];
+    photoLibrary4 = [(PHObject *)self photoLibrary];
+    v28PhotoLibrary = [photoLibrary4 photoLibrary];
+    stringByDeletingPathExtension4 = [lastPathComponent stringByDeletingPathExtension];
+    v31 = [stringByDeletingPathExtension4 stringByAppendingPathComponent:@"CaptureAutoCropEvaluation-txt"];
+    v32 = [v27 diagnosticFilePathForLibrary:v28PhotoLibrary mainFilename:v31 createIfNeeded:0];
 
     if (v32)
     {
       v33 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v32];
       if (v33)
       {
-        [v3 setObject:v33 forKeyedSubscript:@"CaptureAutoCropEvaluation-txt"];
+        [dictionary setObject:v33 forKeyedSubscript:@"CaptureAutoCropEvaluation-txt"];
       }
     }
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)gatingDebugMetadata
 {
   if (PFOSVariantHasInternalDiagnostics())
   {
-    v3 = [(PHAsset *)self pl_managedAsset];
-    v4 = [v3 pathForReframeDiagnosticFile];
+    pl_managedAsset = [(PHAsset *)self pl_managedAsset];
+    pathForReframeDiagnosticFile = [pl_managedAsset pathForReframeDiagnosticFile];
 
-    if (v4)
+    if (pathForReframeDiagnosticFile)
     {
-      v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v4];
+      v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:pathForReframeDiagnosticFile];
       if (v5)
       {
         v6 = v5;
-        v7 = [MEMORY[0x1E695DEC8] arrayWithObject:v5];
+        array = [MEMORY[0x1E695DEC8] arrayWithObject:v5];
 
         goto LABEL_7;
       }
     }
   }
 
-  v7 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
 LABEL_7:
 
-  return v7;
+  return array;
 }
 
-- (id)__dictionaryWithContentsOfData:(id)a3
+- (id)__dictionaryWithContentsOfData:(id)data
 {
-  v3 = CFPropertyListCreateWithData(*MEMORY[0x1E695E480], a3, 0, 0, 0);
+  v3 = CFPropertyListCreateWithData(*MEMORY[0x1E695E480], data, 0, 0, 0);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 && v3)
   {
@@ -4924,25 +4924,25 @@ LABEL_7:
 
 - (id)fileURLForVideoComplementFile
 {
-  v3 = [(PHAsset *)self pl_photoLibrary];
-  v4 = [v3 pathManager];
+  pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
+  pathManager = [pl_photoLibrary pathManager];
 
-  if ([v4 shouldUseFileIdentifierForBundleScope:{-[PHAsset bundleScope](self, "bundleScope")}] && !-[PHAsset isCloudSharedAsset](self, "isCloudSharedAsset"))
+  if ([pathManager shouldUseFileIdentifierForBundleScope:{-[PHAsset bundleScope](self, "bundleScope")}] && !-[PHAsset isCloudSharedAsset](self, "isCloudSharedAsset"))
   {
     v8 = objc_alloc(MEMORY[0x1E69BF298]);
-    v9 = [(PHObject *)self uuid];
-    v10 = [(PHAsset *)self bundleScope];
-    v11 = [*MEMORY[0x1E6982F80] identifier];
-    v6 = [v8 initWithAssetUuid:v9 bundleScope:v10 uti:v11 resourceVersion:0 resourceType:3];
+    uuid = [(PHObject *)self uuid];
+    bundleScope = [(PHAsset *)self bundleScope];
+    identifier = [*MEMORY[0x1E6982F80] identifier];
+    uRLByDeletingPathExtension = [v8 initWithAssetUuid:uuid bundleScope:bundleScope uti:identifier resourceVersion:0 resourceType:3];
 
-    v7 = [v4 readOnlyUrlWithIdentifier:v6];
+    v7 = [pathManager readOnlyUrlWithIdentifier:uRLByDeletingPathExtension];
   }
 
   else
   {
-    v5 = [(PHAsset *)self mainFileURL];
-    v6 = [v5 URLByDeletingPathExtension];
-    v7 = [v6 URLByAppendingPathExtension:@"MOV"];
+    mainFileURL = [(PHAsset *)self mainFileURL];
+    uRLByDeletingPathExtension = [mainFileURL URLByDeletingPathExtension];
+    v7 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"MOV"];
   }
 
   return v7;
@@ -4957,25 +4957,25 @@ LABEL_7:
 
   else
   {
-    v4 = [(PHAsset *)self pl_photoLibrary];
-    v5 = [v4 pathManager];
+    pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
+    pathManager = [pl_photoLibrary pathManager];
 
-    if ([v5 shouldUseFileIdentifierForBundleScope:{-[PHAsset bundleScope](self, "bundleScope")}])
+    if ([pathManager shouldUseFileIdentifierForBundleScope:{-[PHAsset bundleScope](self, "bundleScope")}])
     {
       v6 = objc_alloc(MEMORY[0x1E69BF298]);
-      v7 = [(PHObject *)self uuid];
-      v8 = [(PHAsset *)self bundleScope];
-      v9 = [*MEMORY[0x1E6982E58] identifier];
-      v10 = [v6 initWithAssetUuid:v7 bundleScope:v8 uti:v9 resourceVersion:2 recipeID:65938];
+      uuid = [(PHObject *)self uuid];
+      bundleScope = [(PHAsset *)self bundleScope];
+      identifier = [*MEMORY[0x1E6982E58] identifier];
+      v10 = [v6 initWithAssetUuid:uuid bundleScope:bundleScope uti:identifier resourceVersion:2 recipeID:65938];
 
-      v3 = [v5 readOnlyUrlWithIdentifier:v10];
+      v3 = [pathManager readOnlyUrlWithIdentifier:v10];
     }
 
     else
     {
-      v11 = [(PHAsset *)self directory];
-      v12 = [(PHAsset *)self filename];
-      v10 = [v5 assetPathForMutationsDirectoryWithDirectory:v11 filename:v12];
+      directory = [(PHAsset *)self directory];
+      filename = [(PHAsset *)self filename];
+      v10 = [pathManager assetPathForMutationsDirectoryWithDirectory:directory filename:filename];
 
       v13 = [MEMORY[0x1E69BE540] pathForAdjustmentDirectoryWithMutationsDirectory:v10];
       if (v13)
@@ -5006,13 +5006,13 @@ LABEL_7:
   else
   {
     v3 = objc_opt_new();
-    v4 = [(PHAsset *)self mainFileURL];
-    v5 = [v4 lastPathComponent];
+    mainFileURL = [(PHAsset *)self mainFileURL];
+    lastPathComponent = [mainFileURL lastPathComponent];
 
     v6 = MEMORY[0x1E69BE540];
-    v7 = [(PHObject *)self photoLibrary];
-    v8 = [v7 photoLibrary];
-    v9 = [v6 diagnosticFilePathForLibrary:v8 mainFilename:v5 createIfNeeded:0];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    v7PhotoLibrary = [photoLibrary photoLibrary];
+    v9 = [v6 diagnosticFilePathForLibrary:v7PhotoLibrary mainFilename:lastPathComponent createIfNeeded:0];
 
     v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9 isDirectory:0];
     v105 = v3;
@@ -5021,31 +5021,31 @@ LABEL_7:
     v104 = v9;
     if (PFOSVariantHasInternalDiagnostics())
     {
-      v11 = [(PHAsset *)self pl_managedAsset];
-      v12 = [v11 pathForSpatialOverCaptureDiagnosticFile];
+      pl_managedAsset = [(PHAsset *)self pl_managedAsset];
+      pathForSpatialOverCaptureDiagnosticFile = [pl_managedAsset pathForSpatialOverCaptureDiagnosticFile];
 
-      if (v12)
+      if (pathForSpatialOverCaptureDiagnosticFile)
       {
-        v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12 isDirectory:0];
+        v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForSpatialOverCaptureDiagnosticFile isDirectory:0];
         [v3 addObject:v13];
       }
 
-      v103 = v12;
-      v14 = [(PHAsset *)self pl_managedAsset];
-      v15 = [v14 pathForReframeDiagnosticFile];
+      v103 = pathForSpatialOverCaptureDiagnosticFile;
+      pl_managedAsset2 = [(PHAsset *)self pl_managedAsset];
+      pathForReframeDiagnosticFile = [pl_managedAsset2 pathForReframeDiagnosticFile];
 
-      if (v15)
+      if (pathForReframeDiagnosticFile)
       {
-        v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:v15 isDirectory:0];
+        v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForReframeDiagnosticFile isDirectory:0];
         [v3 addObject:v16];
       }
 
       v17 = MEMORY[0x1E69BE540];
-      v18 = [(PHObject *)self photoLibrary];
-      v19 = [v18 photoLibrary];
-      v20 = [v5 stringByDeletingPathExtension];
-      v21 = [v20 stringByAppendingPathComponent:@"ReframeEvaluation"];
-      v22 = [v17 diagnosticFilePathForLibrary:v19 mainFilename:v21 createIfNeeded:0];
+      photoLibrary2 = [(PHObject *)self photoLibrary];
+      v18PhotoLibrary = [photoLibrary2 photoLibrary];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+      v21 = [stringByDeletingPathExtension stringByAppendingPathComponent:@"ReframeEvaluation"];
+      v22 = [v17 diagnosticFilePathForLibrary:v18PhotoLibrary mainFilename:v21 createIfNeeded:0];
 
       if (v22)
       {
@@ -5054,11 +5054,11 @@ LABEL_7:
       }
 
       v24 = MEMORY[0x1E69BE540];
-      v25 = [(PHObject *)self photoLibrary];
-      v26 = [v25 photoLibrary];
-      v27 = [v5 stringByDeletingPathExtension];
-      v28 = [v27 stringByAppendingPathComponent:@"EditPerspectiveEvaluation-txt"];
-      v29 = [v24 diagnosticFilePathForLibrary:v26 mainFilename:v28 createIfNeeded:0];
+      photoLibrary3 = [(PHObject *)self photoLibrary];
+      v25PhotoLibrary = [photoLibrary3 photoLibrary];
+      stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
+      v28 = [stringByDeletingPathExtension2 stringByAppendingPathComponent:@"EditPerspectiveEvaluation-txt"];
+      v29 = [v24 diagnosticFilePathForLibrary:v25PhotoLibrary mainFilename:v28 createIfNeeded:0];
 
       v30 = v29;
       if (v29)
@@ -5069,11 +5069,11 @@ LABEL_7:
 
       v99 = v30;
       v32 = MEMORY[0x1E69BE540];
-      v33 = [(PHObject *)self photoLibrary];
-      v34 = [v33 photoLibrary];
-      v35 = [v5 stringByDeletingPathExtension];
-      v36 = [v35 stringByAppendingPathComponent:@"EditPerspectiveLineDetection-png"];
-      v37 = [v32 diagnosticFilePathForLibrary:v34 mainFilename:v36 createIfNeeded:0];
+      photoLibrary4 = [(PHObject *)self photoLibrary];
+      v33PhotoLibrary = [photoLibrary4 photoLibrary];
+      stringByDeletingPathExtension3 = [lastPathComponent stringByDeletingPathExtension];
+      v36 = [stringByDeletingPathExtension3 stringByAppendingPathComponent:@"EditPerspectiveLineDetection-png"];
+      v37 = [v32 diagnosticFilePathForLibrary:v33PhotoLibrary mainFilename:v36 createIfNeeded:0];
 
       v38 = v37;
       if (v37)
@@ -5085,11 +5085,11 @@ LABEL_7:
       v98 = v38;
       v100 = v22;
       v40 = MEMORY[0x1E69BE540];
-      v41 = [(PHObject *)self photoLibrary];
-      v42 = [v41 photoLibrary];
-      v43 = [v5 stringByDeletingPathExtension];
-      v44 = [v43 stringByAppendingPathComponent:@"CapturePerspectiveEvaluation-txt"];
-      v45 = [v40 diagnosticFilePathForLibrary:v42 mainFilename:v44 createIfNeeded:0];
+      photoLibrary5 = [(PHObject *)self photoLibrary];
+      v41PhotoLibrary = [photoLibrary5 photoLibrary];
+      stringByDeletingPathExtension4 = [lastPathComponent stringByDeletingPathExtension];
+      v44 = [stringByDeletingPathExtension4 stringByAppendingPathComponent:@"CapturePerspectiveEvaluation-txt"];
+      v45 = [v40 diagnosticFilePathForLibrary:v41PhotoLibrary mainFilename:v44 createIfNeeded:0];
 
       if (v45)
       {
@@ -5099,11 +5099,11 @@ LABEL_7:
 
       v97 = v45;
       v47 = MEMORY[0x1E69BE540];
-      v48 = [(PHObject *)self photoLibrary];
-      v49 = [v48 photoLibrary];
-      v50 = [v5 stringByDeletingPathExtension];
-      v51 = [v50 stringByAppendingPathComponent:@"CapturePerspectiveLineDetection-png"];
-      v52 = [v47 diagnosticFilePathForLibrary:v49 mainFilename:v51 createIfNeeded:0];
+      photoLibrary6 = [(PHObject *)self photoLibrary];
+      v48PhotoLibrary = [photoLibrary6 photoLibrary];
+      stringByDeletingPathExtension5 = [lastPathComponent stringByDeletingPathExtension];
+      v51 = [stringByDeletingPathExtension5 stringByAppendingPathComponent:@"CapturePerspectiveLineDetection-png"];
+      v52 = [v47 diagnosticFilePathForLibrary:v48PhotoLibrary mainFilename:v51 createIfNeeded:0];
 
       if (v52)
       {
@@ -5112,13 +5112,13 @@ LABEL_7:
       }
 
       v96 = v52;
-      v101 = v15;
+      v101 = pathForReframeDiagnosticFile;
       v54 = MEMORY[0x1E69BE540];
-      v55 = [(PHObject *)self photoLibrary];
-      v56 = [v55 photoLibrary];
-      v57 = [v5 stringByDeletingPathExtension];
-      v58 = [v57 stringByAppendingPathComponent:@"CaptureAutoCropEvaluation-txt"];
-      v59 = [v54 diagnosticFilePathForLibrary:v56 mainFilename:v58 createIfNeeded:0];
+      photoLibrary7 = [(PHObject *)self photoLibrary];
+      v55PhotoLibrary = [photoLibrary7 photoLibrary];
+      stringByDeletingPathExtension6 = [lastPathComponent stringByDeletingPathExtension];
+      v58 = [stringByDeletingPathExtension6 stringByAppendingPathComponent:@"CaptureAutoCropEvaluation-txt"];
+      v59 = [v54 diagnosticFilePathForLibrary:v55PhotoLibrary mainFilename:v58 createIfNeeded:0];
 
       if (v59)
       {
@@ -5127,12 +5127,12 @@ LABEL_7:
       }
 
       v61 = MEMORY[0x1E69BE540];
-      v62 = [(PHObject *)self photoLibrary];
-      v63 = [v62 photoLibrary];
-      v64 = v5;
-      v65 = [v5 stringByDeletingPathExtension];
-      v66 = [v65 stringByAppendingPathComponent:@"ReframeSubjects"];
-      v67 = [v61 diagnosticFilePathForLibrary:v63 mainFilename:v66 createIfNeeded:0];
+      photoLibrary8 = [(PHObject *)self photoLibrary];
+      v62PhotoLibrary = [photoLibrary8 photoLibrary];
+      v64 = lastPathComponent;
+      stringByDeletingPathExtension7 = [lastPathComponent stringByDeletingPathExtension];
+      v66 = [stringByDeletingPathExtension7 stringByAppendingPathComponent:@"ReframeSubjects"];
+      v67 = [v61 diagnosticFilePathForLibrary:v62PhotoLibrary mainFilename:v66 createIfNeeded:0];
 
       if (v67)
       {
@@ -5141,11 +5141,11 @@ LABEL_7:
       }
 
       v69 = MEMORY[0x1E69BE540];
-      v70 = [(PHObject *)self photoLibrary];
-      v71 = [v70 photoLibrary];
-      v72 = [v64 stringByDeletingPathExtension];
-      v73 = [v72 stringByAppendingPathComponent:@"ReframeRects"];
-      v74 = [v69 diagnosticFilePathForLibrary:v71 mainFilename:v73 createIfNeeded:0];
+      photoLibrary9 = [(PHObject *)self photoLibrary];
+      v70PhotoLibrary = [photoLibrary9 photoLibrary];
+      stringByDeletingPathExtension8 = [v64 stringByDeletingPathExtension];
+      v73 = [stringByDeletingPathExtension8 stringByAppendingPathComponent:@"ReframeRects"];
+      v74 = [v69 diagnosticFilePathForLibrary:v70PhotoLibrary mainFilename:v73 createIfNeeded:0];
 
       if (v74)
       {
@@ -5153,22 +5153,22 @@ LABEL_7:
         [v105 addObject:v75];
       }
 
-      v76 = [(PHAsset *)self pl_managedAsset];
-      v77 = [v76 pathForCameraMetadataDiagnosticFile];
+      pl_managedAsset3 = [(PHAsset *)self pl_managedAsset];
+      pathForCameraMetadataDiagnosticFile = [pl_managedAsset3 pathForCameraMetadataDiagnosticFile];
 
-      if (v77)
+      if (pathForCameraMetadataDiagnosticFile)
       {
-        v78 = [MEMORY[0x1E695DFF8] fileURLWithPath:v77 isDirectory:0];
+        v78 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForCameraMetadataDiagnosticFile isDirectory:0];
         [v105 addObject:v78];
       }
 
-      v79 = [(PHAsset *)self pl_managedAsset];
-      v80 = [v79 pathForCameraSpatialOverCaptureMetadataDiagnosticFile];
+      pl_managedAsset4 = [(PHAsset *)self pl_managedAsset];
+      pathForCameraSpatialOverCaptureMetadataDiagnosticFile = [pl_managedAsset4 pathForCameraSpatialOverCaptureMetadataDiagnosticFile];
 
-      v5 = v64;
-      if (v80)
+      lastPathComponent = v64;
+      if (pathForCameraSpatialOverCaptureMetadataDiagnosticFile)
       {
-        v81 = [MEMORY[0x1E695DFF8] fileURLWithPath:v80 isDirectory:0];
+        v81 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForCameraSpatialOverCaptureMetadataDiagnosticFile isDirectory:0];
         [v105 addObject:v81];
       }
 
@@ -5177,10 +5177,10 @@ LABEL_7:
 
     if (PFOSVariantHasInternalDiagnostics())
     {
-      v82 = [MEMORY[0x1E696AC08] defaultManager];
-      v83 = [(PHObject *)self uuid];
-      v102 = v82;
-      v84 = [v82 contentsOfDirectoryAtPath:@"/var/mobile/Media/DCIM/" error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      uuid = [(PHObject *)self uuid];
+      v102 = defaultManager;
+      v84 = [defaultManager contentsOfDirectoryAtPath:@"/var/mobile/Media/DCIM/" error:0];
       v106 = 0u;
       v107 = 0u;
       v108 = 0u;
@@ -5200,7 +5200,7 @@ LABEL_7:
             }
 
             v89 = *(*(&v106 + 1) + 8 * i);
-            if ([v89 containsString:v83])
+            if ([v89 containsString:uuid])
             {
               v90 = [@"/var/mobile/Media/DCIM/" stringByAppendingPathComponent:v89];
               v91 = [v90 stringByAppendingPathComponent:@"Misc"];
@@ -5227,26 +5227,26 @@ LABEL_7:
 
 - (id)mainFileURL
 {
-  v3 = [(PHAsset *)self directory];
-  if (v3)
+  directory = [(PHAsset *)self directory];
+  if (directory)
   {
-    v4 = [(PHAsset *)self pl_photoLibrary];
-    v5 = [v4 pathManager];
+    pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
+    pathManager = [pl_photoLibrary pathManager];
 
-    v6 = [(PHAsset *)self filename];
-    v7 = [v5 assetMainFilePathWithDirectory:v3 filename:v6 bundleScope:{-[PHAsset bundleScope](self, "bundleScope")}];
+    filename = [(PHAsset *)self filename];
+    v7 = [pathManager assetMainFilePathWithDirectory:directory filename:filename bundleScope:{-[PHAsset bundleScope](self, "bundleScope")}];
 
-    if ([v5 isUBF])
+    if ([pathManager isUBF])
     {
       if ([(PHAsset *)self isStreamedVideo])
       {
-        v8 = [v7 pathExtension];
-        v9 = [v8 isEqualToString:@"medium.MP4"];
+        pathExtension = [v7 pathExtension];
+        v9 = [pathExtension isEqualToString:@"medium.MP4"];
 
         if ((v9 & 1) == 0)
         {
-          v10 = [v7 stringByDeletingPathExtension];
-          v11 = [v10 stringByAppendingPathExtension:@"medium.MP4"];
+          stringByDeletingPathExtension = [v7 stringByDeletingPathExtension];
+          v11 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"medium.MP4"];
 
           v7 = v11;
         }
@@ -5276,8 +5276,8 @@ LABEL_7:
 
     else
     {
-      v7 = [(PHAsset *)self isPhotoIrisPlaceholder];
-      if (v7)
+      isPhotoIrisPlaceholder = [(PHAsset *)self isPhotoIrisPlaceholder];
+      if (isPhotoIrisPlaceholder)
       {
         v3 = @"photoiris placeholder";
       }
@@ -5287,7 +5287,7 @@ LABEL_7:
         v3 = 0;
       }
 
-      if (!v7)
+      if (!isPhotoIrisPlaceholder)
       {
         return ![(PHAsset *)self needsSensitivityProtection];
       }
@@ -5302,9 +5302,9 @@ LABEL_7:
   v4 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    v5 = [(PHObject *)self uuid];
+    uuid = [(PHObject *)self uuid];
     v8 = 138543618;
-    v9 = v5;
+    v9 = uuid;
     v10 = 2114;
     v11 = v3;
     _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_ERROR, "Cannot perform sharing for asset %{public}@, reason: %{public}@", &v8, 0x16u);
@@ -5321,10 +5321,10 @@ LABEL_7:
   v44 = 0;
   if (editOperation != 100)
   {
-    v9 = [(PHObject *)self photoLibrary];
-    v10 = [v9 wellKnownPhotoLibraryIdentifier];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    wellKnownPhotoLibraryIdentifier = [photoLibrary wellKnownPhotoLibraryIdentifier];
 
-    if (v10 == 3)
+    if (wellKnownPhotoLibraryIdentifier == 3)
     {
       v7 = editOperation == PHAssetEditOperationDelete;
 LABEL_10:
@@ -5546,10 +5546,10 @@ void *__35__PHAsset_canPerformEditOperation___block_invoke_5(void *result)
 - (BOOL)hasPeopleSceneMidOrGreaterConfidence
 {
   [(PHObject *)self addFetchPropertyHint:0x4000000000];
-  v3 = [(PHAsset *)self StoryPlaybackProperties];
-  v4 = [v3 hasPeopleSceneMidOrGreaterConfidence];
+  storyPlaybackProperties = [(PHAsset *)self StoryPlaybackProperties];
+  hasPeopleSceneMidOrGreaterConfidence = [storyPlaybackProperties hasPeopleSceneMidOrGreaterConfidence];
 
-  return v4;
+  return hasPeopleSceneMidOrGreaterConfidence;
 }
 
 - (BOOL)isLocalVideoKeyFrameValid
@@ -5566,10 +5566,10 @@ void *__35__PHAsset_canPerformEditOperation___block_invoke_5(void *result)
 
 - (BOOL)isWalrusEnabled
 {
-  v2 = [(PHObject *)self photoLibrary];
-  v3 = [v2 isWalrusEnabled];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  isWalrusEnabled = [photoLibrary isWalrusEnabled];
 
-  return v3;
+  return isWalrusEnabled;
 }
 
 - (BOOL)isIncompleteLivePhotoMissingVideoComplement
@@ -5588,9 +5588,9 @@ void *__35__PHAsset_canPerformEditOperation___block_invoke_5(void *result)
     v6 = PLBackendGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      v7 = [(PHObject *)self uuid];
+      uuid = [(PHObject *)self uuid];
       v9 = 138543362;
-      v10 = v7;
+      v10 = uuid;
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_FAULT, "Live photo asset %{public}@ is missing its video complement", &v9, 0xCu);
     }
   }
@@ -5606,18 +5606,18 @@ BOOL __54__PHAsset_isIncompleteLivePhotoMissingVideoComplement__block_invoke(uin
   return v3;
 }
 
-- (unint64_t)contentChangeFromAsset:(id)a3
+- (unint64_t)contentChangeFromAsset:(id)asset
 {
-  v4 = a3;
-  v5 = !v4 || ![(PHObject *)self isEqual:v4];
-  v6 = [v4 adjustmentTimestamp];
-  v7 = [(PHAsset *)self adjustmentTimestamp];
-  v8 = v7;
-  if (v7 | v6)
+  assetCopy = asset;
+  v5 = !assetCopy || ![(PHObject *)self isEqual:assetCopy];
+  adjustmentTimestamp = [assetCopy adjustmentTimestamp];
+  adjustmentTimestamp2 = [(PHAsset *)self adjustmentTimestamp];
+  v8 = adjustmentTimestamp2;
+  if (adjustmentTimestamp2 | adjustmentTimestamp)
   {
-    if (v6 && v7)
+    if (adjustmentTimestamp && adjustmentTimestamp2)
     {
-      [v6 timeIntervalSinceDate:v7];
+      [adjustmentTimestamp timeIntervalSinceDate:adjustmentTimestamp2];
       if (fabs(v9) > 2.22044605e-16)
       {
         v5 |= 0x10uLL;
@@ -5630,8 +5630,8 @@ BOOL __54__PHAsset_isIncompleteLivePhotoMissingVideoComplement__block_invoke(uin
     }
   }
 
-  v10 = [v4 thumbnailIndex];
-  if (v10 == [(PHAsset *)self thumbnailIndex])
+  thumbnailIndex = [assetCopy thumbnailIndex];
+  if (thumbnailIndex == [(PHAsset *)self thumbnailIndex])
   {
     v11 = v5;
   }
@@ -5641,7 +5641,7 @@ BOOL __54__PHAsset_isIncompleteLivePhotoMissingVideoComplement__block_invoke(uin
     v11 = v5 | 1;
   }
 
-  [v4 duration];
+  [assetCopy duration];
   v13 = v12;
   [(PHAsset *)self duration];
   if (v13 == v14)
@@ -5654,39 +5654,39 @@ BOOL __54__PHAsset_isIncompleteLivePhotoMissingVideoComplement__block_invoke(uin
     v15 = v5 | 1;
   }
 
-  v16 = [v4 canPlayPhotoIris];
-  if (v16 != [(PHAsset *)self canPlayPhotoIris])
+  canPlayPhotoIris = [assetCopy canPlayPhotoIris];
+  if (canPlayPhotoIris != [(PHAsset *)self canPlayPhotoIris])
   {
     v15 |= 4uLL;
   }
 
-  v17 = [v4 compactSCSensitivityAnalysis];
-  if (v17 != [(PHAsset *)self compactSCSensitivityAnalysis])
+  compactSCSensitivityAnalysis = [assetCopy compactSCSensitivityAnalysis];
+  if (compactSCSensitivityAnalysis != [(PHAsset *)self compactSCSensitivityAnalysis])
   {
     v15 |= 0x40uLL;
   }
 
-  v18 = [v4 sensitivityAnalysisState];
-  if (v18 != [(PHAsset *)self sensitivityAnalysisState])
+  sensitivityAnalysisState = [assetCopy sensitivityAnalysisState];
+  if (sensitivityAnalysisState != [(PHAsset *)self sensitivityAnalysisState])
   {
     v15 |= 0x80uLL;
   }
 
-  v19 = [(PHAsset *)self deferredProcessingNeeded];
-  v20 = [v4 deferredProcessingNeeded];
-  if ((v20 - 4) >= 6 && v20 != 0 && v19 == 0)
+  deferredProcessingNeeded = [(PHAsset *)self deferredProcessingNeeded];
+  deferredProcessingNeeded2 = [assetCopy deferredProcessingNeeded];
+  if ((deferredProcessingNeeded2 - 4) >= 6 && deferredProcessingNeeded2 != 0 && deferredProcessingNeeded == 0)
   {
     v15 |= 2uLL;
   }
 
-  v23 = [(PHAsset *)self videoDeferredProcessingNeeded];
-  if ([v4 videoDeferredProcessingNeeded] == 1 && v23 == 0)
+  videoDeferredProcessingNeeded = [(PHAsset *)self videoDeferredProcessingNeeded];
+  if ([assetCopy videoDeferredProcessingNeeded] == 1 && videoDeferredProcessingNeeded == 0)
   {
     v15 |= 8uLL;
   }
 
-  v25 = [(PHAsset *)self playbackStyle];
-  if (v25 == [v4 playbackStyle])
+  playbackStyle = [(PHAsset *)self playbackStyle];
+  if (playbackStyle == [assetCopy playbackStyle])
   {
     v26 = v15;
   }
@@ -5696,13 +5696,13 @@ BOOL __54__PHAsset_isIncompleteLivePhotoMissingVideoComplement__block_invoke(uin
     v26 = v15 | 0x20;
   }
 
-  v27 = [(PHAsset *)self burstSelectionTypes];
-  v28 = (([v4 burstSelectionTypes] ^ v27) >> 1) & 1;
-  v29 = [v4 RAWBadgeAttributes];
-  v30 = [(PHAsset *)self RAWBadgeAttributes];
-  v31 = [v4 syndicationState];
-  v32 = [(PHAsset *)self syndicationState];
-  if (v29 == v30 && v31 == v32)
+  burstSelectionTypes = [(PHAsset *)self burstSelectionTypes];
+  v28 = (([assetCopy burstSelectionTypes] ^ burstSelectionTypes) >> 1) & 1;
+  rAWBadgeAttributes = [assetCopy RAWBadgeAttributes];
+  rAWBadgeAttributes2 = [(PHAsset *)self RAWBadgeAttributes];
+  syndicationState = [assetCopy syndicationState];
+  syndicationState2 = [(PHAsset *)self syndicationState];
+  if (rAWBadgeAttributes == rAWBadgeAttributes2 && syndicationState == syndicationState2)
   {
     v34 = v28;
   }
@@ -5715,33 +5715,33 @@ BOOL __54__PHAsset_isIncompleteLivePhotoMissingVideoComplement__block_invoke(uin
   return v34 | v26;
 }
 
-- (void)getFingerPrintForAssetType:(int64_t)a3 withCompletionHandler:(id)a4
+- (void)getFingerPrintForAssetType:(int64_t)type withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PHObject *)self photoLibrary];
-  v8 = [v7 isCloudPhotoLibraryEnabled];
+  handlerCopy = handler;
+  photoLibrary = [(PHObject *)self photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-  if (v8)
+  if (isCloudPhotoLibraryEnabled)
   {
-    v9 = [(PHAsset *)self pl_photoLibrary];
+    pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __60__PHAsset_getFingerPrintForAssetType_withCompletionHandler___block_invoke;
     v11[3] = &unk_1E75AAAF0;
     v11[4] = self;
-    v12 = v9;
-    v14 = a3;
-    v13 = v6;
-    v10 = v9;
+    v12 = pl_photoLibrary;
+    typeCopy = type;
+    v13 = handlerCopy;
+    v10 = pl_photoLibrary;
     [v10 performBlock:v11];
   }
 
   else
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.pkphotosctl" code:200 userInfo:&unk_1F102E668];
-    if (v6)
+    if (handlerCopy)
     {
-      (*(v6 + 2))(v6, 0, v10);
+      (*(handlerCopy + 2))(handlerCopy, 0, v10);
     }
   }
 }
@@ -5762,25 +5762,25 @@ void __60__PHAsset_getFingerPrintForAssetType_withCompletionHandler___block_invo
   }
 }
 
-- (void)getOriginalStableHashWithCompletionHandler:(id)a3
+- (void)getOriginalStableHashWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
   v12[3] = __Block_byref_object_copy__22497;
   v12[4] = __Block_byref_object_dispose__22498;
   v13 = 0;
-  v5 = [(PHAsset *)self pl_photoLibrary];
+  pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__PHAsset_getOriginalStableHashWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E75A6F00;
   v8[4] = self;
-  v6 = v5;
+  v6 = pl_photoLibrary;
   v9 = v6;
   v11 = v12;
-  v7 = v4;
+  v7 = handlerCopy;
   v10 = v7;
   [v6 performBlock:v8];
 
@@ -5811,9 +5811,9 @@ void __54__PHAsset_getOriginalStableHashWithCompletionHandler___block_invoke(uin
 {
   if ([(PHAsset *)self isMediaSubtype:0x40000]&& ([(PHAsset *)self duration], v3 == 0.0))
   {
-    v4 = [(PHAsset *)self pathForOriginalFile];
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 fileExistsAtPath:v4] ^ 1;
+    pathForOriginalFile = [(PHAsset *)self pathForOriginalFile];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:pathForOriginalFile] ^ 1;
   }
 
   else
@@ -5826,26 +5826,26 @@ void __54__PHAsset_getOriginalStableHashWithCompletionHandler___block_invoke(uin
 
 - (BOOL)isHighFrameRateVideo
 {
-  v3 = [(PHAsset *)self isVideo];
-  if (v3)
+  isVideo = [(PHAsset *)self isVideo];
+  if (isVideo)
   {
 
-    LOBYTE(v3) = [(PHAsset *)self isMediaSubtype:0x20000];
+    LOBYTE(isVideo) = [(PHAsset *)self isMediaSubtype:0x20000];
   }
 
-  return v3;
+  return isVideo;
 }
 
 - (BOOL)isStreamedVideo
 {
-  v3 = [(PHAsset *)self isVideo];
-  if (v3)
+  isVideo = [(PHAsset *)self isVideo];
+  if (isVideo)
   {
 
-    LOBYTE(v3) = [(PHAsset *)self isMediaSubtype:0x10000];
+    LOBYTE(isVideo) = [(PHAsset *)self isMediaSubtype:0x10000];
   }
 
-  return v3;
+  return isVideo;
 }
 
 - (NSString)cloudIdentifier
@@ -5854,8 +5854,8 @@ void __54__PHAsset_getOriginalStableHashWithCompletionHandler___block_invoke(uin
   if (cloudAssetGUID)
   {
     v3 = [(NSString *)cloudAssetGUID stringByAppendingString:@"/G0/"];
-    v4 = [objc_opt_class() identifierCode];
-    v5 = [v3 stringByAppendingString:v4];
+    identifierCode = [objc_opt_class() identifierCode];
+    v5 = [v3 stringByAppendingString:identifierCode];
   }
 
   else
@@ -5875,16 +5875,16 @@ void __54__PHAsset_getOriginalStableHashWithCompletionHandler___block_invoke(uin
   if ([(PHAsset *)self hasAllThumbs])
   {
     v3 = MEMORY[0x1E69BE540];
-    v4 = [(PHAsset *)self imageRequestHints];
-    v5 = [(PHAsset *)self pixelWidth];
-    v6 = [(PHAsset *)self pixelHeight];
-    v7 = [(PHAsset *)self libraryID];
+    imageRequestHints = [(PHAsset *)self imageRequestHints];
+    pixelWidth = [(PHAsset *)self pixelWidth];
+    pixelHeight = [(PHAsset *)self pixelHeight];
+    libraryID = [(PHAsset *)self libraryID];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __42__PHAsset_hasLargerThanThumbResourceLocal__block_invoke;
     v10[3] = &unk_1E75A6ED8;
     v10[4] = &v11;
-    [v3 enumerateImageRequestHintData:v4 assetWidth:v5 assetHeight:v6 libraryID:v7 startingOffset:0 assetID:self block:v10];
+    [v3 enumerateImageRequestHintData:imageRequestHints assetWidth:pixelWidth assetHeight:pixelHeight libraryID:libraryID startingOffset:0 assetID:self block:v10];
 
     v8 = *(v12 + 24);
   }
@@ -5925,15 +5925,15 @@ uint64_t __42__PHAsset_hasLargerThanThumbResourceLocal__block_invoke(uint64_t re
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 1;
-    v3 = [(PHAsset *)self mainFileURL];
-    v4 = [(PHAsset *)self pl_photoLibrary];
+    mainFileURL = [(PHAsset *)self mainFileURL];
+    pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __20__PHAsset_isOffline__block_invoke;
     v9[3] = &unk_1E75AA3F8;
-    v5 = v3;
+    v5 = mainFileURL;
     v10 = v5;
-    v6 = v4;
+    v6 = pl_photoLibrary;
     v11 = v6;
     v12 = &v13;
     [v6 performBlockAndWait:v9];
@@ -5967,15 +5967,15 @@ void __20__PHAsset_isOffline__block_invoke(uint64_t a1)
 
 - (BOOL)isSyndicatedAssetSavedToUserLibrary
 {
-  v3 = [(PHAsset *)self curationProperties];
-  v4 = [v3 syndicationIdentifier];
+  curationProperties = [(PHAsset *)self curationProperties];
+  syndicationIdentifier = [curationProperties syndicationIdentifier];
 
-  if (v4)
+  if (syndicationIdentifier)
   {
-    v5 = [(PHObject *)self photoLibrary];
-    v6 = [v5 wellKnownPhotoLibraryIdentifier];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    wellKnownPhotoLibraryIdentifier = [photoLibrary wellKnownPhotoLibraryIdentifier];
 
-    if (v6 == 3)
+    if (wellKnownPhotoLibraryIdentifier == 3)
     {
       return ([(PHAsset *)self syndicationState]>> 1) & 1;
     }
@@ -6031,13 +6031,13 @@ void __20__PHAsset_isOffline__block_invoke(uint64_t a1)
 
 - (BOOL)hasPhotoStreamTagID
 {
-  v2 = [(PHAsset *)self pl_managedAsset];
-  v3 = [v2 additionalAttributes];
-  v4 = [v3 photoStreamTagId];
-  v5 = v4;
-  if (v4)
+  pl_managedAsset = [(PHAsset *)self pl_managedAsset];
+  additionalAttributes = [pl_managedAsset additionalAttributes];
+  photoStreamTagId = [additionalAttributes photoStreamTagId];
+  v5 = photoStreamTagId;
+  if (photoStreamTagId)
   {
-    v6 = [v4 length] != 0;
+    v6 = [photoStreamTagId length] != 0;
   }
 
   else
@@ -6058,8 +6058,8 @@ void __20__PHAsset_isOffline__block_invoke(uint64_t a1)
 - (BOOL)isSpatial3DPresentation
 {
   [(PHObject *)self addFetchPropertyHint:16];
-  v3 = [(PHAsset *)self photosOneUpProperties];
-  v4 = [v3 viewPresentation] == 1000;
+  photosOneUpProperties = [(PHAsset *)self photosOneUpProperties];
+  v4 = [photosOneUpProperties viewPresentation] == 1000;
 
   return v4;
 }
@@ -6067,25 +6067,25 @@ void __20__PHAsset_isOffline__block_invoke(uint64_t a1)
 - (BOOL)isSpatialPresentation
 {
   [(PHObject *)self addFetchPropertyHint:16];
-  v3 = [(PHAsset *)self photosOneUpProperties];
-  if ([v3 viewPresentation])
+  photosOneUpProperties = [(PHAsset *)self photosOneUpProperties];
+  if ([photosOneUpProperties viewPresentation])
   {
-    v4 = 0;
+    isSpatialMedia = 0;
   }
 
   else
   {
-    v4 = [(PHAsset *)self isSpatialMedia];
+    isSpatialMedia = [(PHAsset *)self isSpatialMedia];
   }
 
-  return v4;
+  return isSpatialMedia;
 }
 
 - (BOOL)isSpatialMedia
 {
   [(PHObject *)self addFetchPropertyHint:0x100000000];
-  v3 = [(PHAsset *)self spatialMediaProperties];
-  v4 = [v3 spatialMediaType] != 0;
+  spatialMediaProperties = [(PHAsset *)self spatialMediaProperties];
+  v4 = [spatialMediaProperties spatialMediaType] != 0;
 
   return v4;
 }
@@ -6131,78 +6131,78 @@ void __20__PHAsset_isOffline__block_invoke(uint64_t a1)
 - (NSString)adjustmentFormatIdentifier
 {
   [(PHObject *)self addFetchPropertyHint:0x2000];
-  v3 = [(PHAsset *)self adjustmentProperties];
-  v4 = [v3 formatIdentifier];
+  adjustmentProperties = [(PHAsset *)self adjustmentProperties];
+  formatIdentifier = [adjustmentProperties formatIdentifier];
 
-  return v4;
+  return formatIdentifier;
 }
 
 - (BOOL)hasPhotoColorAdjustments
 {
-  v3 = [(PHAsset *)self isPhotoIris];
-  if (v3)
+  isPhotoIris = [(PHAsset *)self isPhotoIris];
+  if (isPhotoIris)
   {
 
-    LOBYTE(v3) = [(PHAsset *)self isMediaSubtype:2];
+    LOBYTE(isPhotoIris) = [(PHAsset *)self isMediaSubtype:2];
   }
 
-  return v3;
+  return isPhotoIris;
 }
 
 - (BOOL)isPhotoIrisPlaceholder
 {
-  v3 = [(PHAsset *)self isPhoto];
-  if (v3)
+  isPhoto = [(PHAsset *)self isPhoto];
+  if (isPhoto)
   {
-    v4 = [(PHAsset *)self isPhotoIris];
-    v5 = [(PHAsset *)self videoCpDurationValue];
-    v6 = [(PHAsset *)self isCloudSharedAsset];
+    isPhotoIris = [(PHAsset *)self isPhotoIris];
+    videoCpDurationValue = [(PHAsset *)self videoCpDurationValue];
+    isCloudSharedAsset = [(PHAsset *)self isCloudSharedAsset];
     v7 = MEMORY[0x1E69BE540];
 
-    LOBYTE(v3) = [v7 isPhotoIrisPlaceholderWithPhotoIris:v4 videoCpDuration:v5 isCloudShared:v6 videoCpFilePath:0];
+    LOBYTE(isPhoto) = [v7 isPhotoIrisPlaceholderWithPhotoIris:isPhotoIris videoCpDuration:videoCpDurationValue isCloudShared:isCloudSharedAsset videoCpFilePath:0];
   }
 
-  return v3;
+  return isPhoto;
 }
 
-- (BOOL)_isPartOfAvalancheWithKind:(unsigned __int16)a3
+- (BOOL)_isPartOfAvalancheWithKind:(unsigned __int16)kind
 {
-  v3 = a3;
-  v5 = [(PHAsset *)self avalanchePickType];
-  if (v5)
+  kindCopy = kind;
+  avalanchePickType = [(PHAsset *)self avalanchePickType];
+  if (avalanchePickType)
   {
-    LOBYTE(v5) = [(PHAsset *)self avalancheKind]== v3;
+    LOBYTE(avalanchePickType) = [(PHAsset *)self avalancheKind]== kindCopy;
   }
 
-  return v5;
+  return avalanchePickType;
 }
 
 - (NSString)thumbnailIdentifier
 {
   v3 = MEMORY[0x1E69BE848];
-  v4 = [(PHObject *)self uuid];
-  v5 = [(PHAsset *)self directory];
-  v6 = [(PHAsset *)self filename];
-  v7 = [(PHAsset *)self bundleScope];
-  v8 = [(PHAsset *)self pl_photoLibrary];
-  v9 = [v8 pathManager];
-  v10 = [v3 thumbnailIdentifierWithAssetUUID:v4 directory:v5 filename:v6 bundleScope:v7 pathManager:v9];
+  uuid = [(PHObject *)self uuid];
+  directory = [(PHAsset *)self directory];
+  filename = [(PHAsset *)self filename];
+  bundleScope = [(PHAsset *)self bundleScope];
+  pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
+  pathManager = [pl_photoLibrary pathManager];
+  v10 = [v3 thumbnailIdentifierWithAssetUUID:uuid directory:directory filename:filename bundleScope:bundleScope pathManager:pathManager];
 
   return v10;
 }
 
 - (void)generateLargeThumbnailFileIfNecessary
 {
-  v3 = [(PHObject *)self photoLibrary];
-  v4 = [v3 photoLibrary];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  v3PhotoLibrary = [photoLibrary photoLibrary];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke;
   v6[3] = &unk_1E75AAEB0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = v3PhotoLibrary;
+  v5 = v3PhotoLibrary;
   [v5 performBlockAndWait:v6 completionHandler:0];
 }
 
@@ -6215,12 +6215,12 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
   [v4 generateLargeThumbnailFileIfNecessary];
 }
 
-- (id)managedAssetForPhotoLibrary:(id)a3
+- (id)managedAssetForPhotoLibrary:(id)library
 {
   v4 = MEMORY[0x1E69BE540];
-  v5 = a3;
-  v6 = [(PHObject *)self objectID];
-  v7 = [v4 assetWithObjectID:v6 inLibrary:v5];
+  libraryCopy = library;
+  objectID = [(PHObject *)self objectID];
+  v7 = [v4 assetWithObjectID:objectID inLibrary:libraryCopy];
 
   return v7;
 }
@@ -6234,26 +6234,26 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
 
   else
   {
-    v4 = [(PHAsset *)self pl_photoLibrary];
-    v5 = [v4 pathManager];
+    pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
+    pathManager = [pl_photoLibrary pathManager];
 
-    if ([v5 isUBF])
+    if ([pathManager isUBF])
     {
       v6 = objc_alloc(MEMORY[0x1E69BF298]);
-      v7 = [(PHObject *)self uuid];
-      v8 = [(PHAsset *)self bundleScope];
-      v9 = [*MEMORY[0x1E6982D60] identifier];
-      v10 = [v6 initWithAssetUuid:v7 bundleScope:v8 uti:v9 resourceVersion:2 resourceType:6];
+      uuid = [(PHObject *)self uuid];
+      bundleScope = [(PHAsset *)self bundleScope];
+      identifier = [*MEMORY[0x1E6982D60] identifier];
+      v10 = [v6 initWithAssetUuid:uuid bundleScope:bundleScope uti:identifier resourceVersion:2 resourceType:6];
 
-      v11 = [v5 readOnlyUrlWithIdentifier:v10];
+      v11 = [pathManager readOnlyUrlWithIdentifier:v10];
       [v11 path];
     }
 
     else
     {
-      v12 = [(PHAsset *)self directory];
-      v13 = [(PHAsset *)self filename];
-      v10 = [v5 assetPathForMutationsDirectoryWithDirectory:v12 filename:v13];
+      directory = [(PHAsset *)self directory];
+      filename = [(PHAsset *)self filename];
+      v10 = [pathManager assetPathForMutationsDirectoryWithDirectory:directory filename:filename];
 
       v11 = [MEMORY[0x1E69BE540] pathForAdjustmentDirectoryWithMutationsDirectory:v10];
       [v11 stringByAppendingPathComponent:@"Adjustments.data"];
@@ -6273,26 +6273,26 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
 
   else
   {
-    v4 = [(PHAsset *)self pl_photoLibrary];
-    v5 = [v4 pathManager];
+    pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
+    pathManager = [pl_photoLibrary pathManager];
 
-    if ([v5 isUBF])
+    if ([pathManager isUBF])
     {
       v6 = objc_alloc(MEMORY[0x1E69BF298]);
-      v7 = [(PHObject *)self uuid];
-      v8 = [(PHAsset *)self bundleScope];
-      v9 = [*MEMORY[0x1E6982F68] identifier];
-      v10 = [v6 initWithAssetUuid:v7 bundleScope:v8 uti:v9 resourceVersion:2 recipeID:0];
+      uuid = [(PHObject *)self uuid];
+      bundleScope = [(PHAsset *)self bundleScope];
+      identifier = [*MEMORY[0x1E6982F68] identifier];
+      v10 = [v6 initWithAssetUuid:uuid bundleScope:bundleScope uti:identifier resourceVersion:2 recipeID:0];
 
-      v11 = [v5 readOnlyUrlWithIdentifier:v10];
+      v11 = [pathManager readOnlyUrlWithIdentifier:v10];
       [v11 path];
     }
 
     else
     {
-      v12 = [(PHAsset *)self directory];
-      v13 = [(PHAsset *)self filename];
-      v10 = [v5 assetPathForMutationsDirectoryWithDirectory:v12 filename:v13];
+      directory = [(PHAsset *)self directory];
+      filename = [(PHAsset *)self filename];
+      v10 = [pathManager assetPathForMutationsDirectoryWithDirectory:directory filename:filename];
 
       v11 = [MEMORY[0x1E69BE540] pathForAdjustmentDirectoryWithMutationsDirectory:v10];
       [v11 stringByAppendingPathComponent:@"Adjustments.plist"];
@@ -6305,10 +6305,10 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
 
 - (id)pathForOriginalFile
 {
-  v2 = [(PHAsset *)self mainFileURL];
-  v3 = [v2 path];
+  mainFileURL = [(PHAsset *)self mainFileURL];
+  path = [mainFileURL path];
 
-  return v3;
+  return path;
 }
 
 - (NSString)title
@@ -6324,9 +6324,9 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
     [(PHAsset *)self descriptionProperties];
   }
   v3 = ;
-  v4 = [v3 title];
+  title = [v3 title];
 
-  return v4;
+  return title;
 }
 
 - (NSString)originalFilename
@@ -6342,9 +6342,9 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
     [(PHAsset *)self originalMetadataProperties];
   }
   v3 = ;
-  v4 = [v3 originalFilename];
+  originalFilename = [v3 originalFilename];
 
-  return v4;
+  return originalFilename;
 }
 
 - (CGSize)imageSize
@@ -6374,8 +6374,8 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
 
 - (BOOL)isOriginalSRGB
 {
-  v2 = [(PHAsset *)self originalColorSpace];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E695F1C0]];
+  originalColorSpace = [(PHAsset *)self originalColorSpace];
+  v3 = [originalColorSpace isEqualToString:*MEMORY[0x1E695F1C0]];
 
   return v3;
 }
@@ -6406,13 +6406,13 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
 - (CGSize)originalImageSize
 {
   [(PHObject *)self addFetchPropertyHint:8];
-  v3 = [(PHAsset *)self originalMetadataProperties];
-  v4 = [v3 originalWidth];
-  v5 = [(PHAsset *)self originalMetadataProperties];
-  v6 = [v5 originalHeight];
+  originalMetadataProperties = [(PHAsset *)self originalMetadataProperties];
+  originalWidth = [originalMetadataProperties originalWidth];
+  originalMetadataProperties2 = [(PHAsset *)self originalMetadataProperties];
+  originalHeight = [originalMetadataProperties2 originalHeight];
 
-  v7 = v4;
-  v8 = v6;
+  v7 = originalWidth;
+  v8 = originalHeight;
   result.height = v8;
   result.width = v7;
   return result;
@@ -6421,8 +6421,8 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
 - (int64_t)originalImageOrientation
 {
   [(PHObject *)self addFetchPropertyHint:8];
-  v3 = [(PHAsset *)self originalMetadataProperties];
-  [v3 originalExifOrientation];
+  originalMetadataProperties = [(PHAsset *)self originalMetadataProperties];
+  [originalMetadataProperties originalExifOrientation];
   v4 = PLImageOrientationFromExifOrientation();
 
   return v4;
@@ -6431,10 +6431,10 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
 - (NSURL)ALAssetURL
 {
   v3 = MEMORY[0x1E69BE540];
-  v4 = [(PHObject *)self uuid];
-  v5 = [(PHAsset *)self filename];
-  v6 = [v5 pathExtension];
-  v7 = [v3 assetsLibraryURLWithUUID:v4 extension:v6];
+  uuid = [(PHObject *)self uuid];
+  filename = [(PHAsset *)self filename];
+  pathExtension = [filename pathExtension];
+  v7 = [v3 assetsLibraryURLWithUUID:uuid extension:pathExtension];
 
   return v7;
 }
@@ -6446,55 +6446,55 @@ void __48__PHAsset_generateLargeThumbnailFileIfNecessary__block_invoke(uint64_t 
     return 1.0;
   }
 
-  v3 = [(PHAsset *)self pixelWidth];
-  return v3 / [(PHAsset *)self pixelHeight];
+  pixelWidth = [(PHAsset *)self pixelWidth];
+  return pixelWidth / [(PHAsset *)self pixelHeight];
 }
 
 - (id)pl_photoLibrary
 {
-  v2 = [(PHObject *)self photoLibrary];
-  v3 = [v2 photoLibrary];
+  photoLibrary = [(PHObject *)self photoLibrary];
+  v2PhotoLibrary = [photoLibrary photoLibrary];
 
-  return v3;
+  return v2PhotoLibrary;
 }
 
-- (id)originalCreationDateWithTimeZone:(id *)a3
+- (id)originalCreationDateWithTimeZone:(id *)zone
 {
-  v5 = [(PHAsset *)self photosInfoPanelExtendedProperties];
-  v6 = [v5 dateCreated];
-  if (a3)
+  photosInfoPanelExtendedProperties = [(PHAsset *)self photosInfoPanelExtendedProperties];
+  dateCreated = [photosInfoPanelExtendedProperties dateCreated];
+  if (zone)
   {
-    v7 = [v5 timezoneOffset];
+    timezoneOffset = [photosInfoPanelExtendedProperties timezoneOffset];
 
-    if (v7)
+    if (timezoneOffset)
     {
       v8 = MEMORY[0x1E695DFE8];
-      v9 = [v5 timezoneOffset];
-      *a3 = [v8 timeZoneForSecondsFromGMT:{objc_msgSend(v9, "integerValue")}];
+      timezoneOffset2 = [photosInfoPanelExtendedProperties timezoneOffset];
+      *zone = [v8 timeZoneForSecondsFromGMT:{objc_msgSend(timezoneOffset2, "integerValue")}];
     }
   }
 
-  if (!v6)
+  if (!dateCreated)
   {
-    v10 = [(PHObject *)self photoLibrary];
-    v11 = [v10 photoLibraryBundle];
-    v12 = [v11 timeZoneLookup];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    photoLibraryBundle = [photoLibrary photoLibraryBundle];
+    timeZoneLookup = [photoLibraryBundle timeZoneLookup];
 
     if ([(PHAsset *)self isVideo])
     {
-      v13 = [(PHAsset *)self originalAVAssetOrProxy];
-      if (v13)
+      originalAVAssetOrProxy = [(PHAsset *)self originalAVAssetOrProxy];
+      if (originalAVAssetOrProxy)
       {
-        v14 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:v13 timeZoneLookup:v12];
+        v14 = [objc_alloc(MEMORY[0x1E69C0718]) initWithAVAsset:originalAVAssetOrProxy timeZoneLookup:timeZoneLookup];
 LABEL_11:
 
-        v6 = [v14 utcCreationDate];
-        v18 = [v14 timeZone];
-        v19 = v18;
-        if (a3)
+        dateCreated = [v14 utcCreationDate];
+        timeZone = [v14 timeZone];
+        v19 = timeZone;
+        if (zone)
         {
-          v20 = v18;
-          *a3 = v19;
+          v20 = timeZone;
+          *zone = v19;
         }
 
         goto LABEL_14;
@@ -6503,14 +6503,14 @@ LABEL_11:
 
     else
     {
-      v13 = [(PHAsset *)self originalImageProperties];
-      if (v13)
+      originalAVAssetOrProxy = [(PHAsset *)self originalImageProperties];
+      if (originalAVAssetOrProxy)
       {
         v15 = MEMORY[0x1E69C08F0];
-        v16 = [(PHAsset *)self uniformTypeIdentifier];
-        v17 = [v15 typeWithIdentifier:v16];
+        uniformTypeIdentifier = [(PHAsset *)self uniformTypeIdentifier];
+        v17 = [v15 typeWithIdentifier:uniformTypeIdentifier];
 
-        v14 = [objc_alloc(MEMORY[0x1E69C0718]) initWithImageProperties:v13 contentType:v17 timeZoneLookup:v12];
+        v14 = [objc_alloc(MEMORY[0x1E69C0718]) initWithImageProperties:originalAVAssetOrProxy contentType:v17 timeZoneLookup:timeZoneLookup];
         goto LABEL_11;
       }
     }
@@ -6521,15 +6521,15 @@ LABEL_11:
 
 LABEL_14:
 
-  return v6;
+  return dateCreated;
 }
 
 - (id)originalAVAssetCommonMetadata
 {
-  v2 = [(PHAsset *)self originalAVAssetOrProxy];
-  v3 = [v2 commonMetadata];
+  originalAVAssetOrProxy = [(PHAsset *)self originalAVAssetOrProxy];
+  commonMetadata = [originalAVAssetOrProxy commonMetadata];
 
-  return v3;
+  return commonMetadata;
 }
 
 - (id)originalAVAssetOrProxy
@@ -6540,13 +6540,13 @@ LABEL_14:
   v13 = __Block_byref_object_copy__22497;
   v14 = __Block_byref_object_dispose__22498;
   v15 = 0;
-  v3 = [(PHAsset *)self pl_photoLibrary];
+  pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__PHAsset_originalAVAssetOrProxy__block_invoke;
   v7[3] = &unk_1E75AA3F8;
   v7[4] = self;
-  v4 = v3;
+  v4 = pl_photoLibrary;
   v8 = v4;
   v9 = &v10;
   [v4 performBlockAndWait:v7];
@@ -6574,13 +6574,13 @@ void __33__PHAsset_originalAVAssetOrProxy__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__22497;
   v14 = __Block_byref_object_dispose__22498;
   v15 = 0;
-  v3 = [(PHAsset *)self pl_photoLibrary];
+  pl_photoLibrary = [(PHAsset *)self pl_photoLibrary];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__PHAsset_originalImageProperties__block_invoke;
   v7[3] = &unk_1E75AA3F8;
   v7[4] = self;
-  v4 = v3;
+  v4 = pl_photoLibrary;
   v8 = v4;
   v9 = &v10;
   [v4 performBlockAndWait:v7];
@@ -6600,15 +6600,15 @@ void __34__PHAsset_originalImageProperties__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)isLocatedAtCoordinates:(CLLocationCoordinate2D)a3
+- (BOOL)isLocatedAtCoordinates:(CLLocationCoordinate2D)coordinates
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v5 = [(PHAsset *)self location];
-  v6 = v5;
-  if (v5)
+  longitude = coordinates.longitude;
+  latitude = coordinates.latitude;
+  location = [(PHAsset *)self location];
+  v6 = location;
+  if (location)
   {
-    [v5 coordinate];
+    [location coordinate];
     v8 = v7;
     v10 = v9;
   }
@@ -6637,112 +6637,112 @@ void __34__PHAsset_originalImageProperties__block_invoke(uint64_t a1)
 {
   if ([(PHAsset *)self isMediaSubtype:0x80000])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isVideo) = 1;
   }
 
   else
   {
-    v3 = [(PHAsset *)self isVideo];
-    if (v3)
+    isVideo = [(PHAsset *)self isVideo];
+    if (isVideo)
     {
-      v4 = [(PHAsset *)self originalFilename];
-      v5 = [MEMORY[0x1E69BE540] isScreenRecordingFileName:v4];
+      originalFilename = [(PHAsset *)self originalFilename];
+      v5 = [MEMORY[0x1E69BE540] isScreenRecordingFileName:originalFilename];
 
-      LOBYTE(v3) = v5;
+      LOBYTE(isVideo) = v5;
     }
   }
 
-  return v3;
+  return isVideo;
 }
 
 - (BOOL)isPrimaryImageFormat
 {
   v2 = MEMORY[0x1E69BE540];
-  v3 = [(PHAsset *)self uniformTypeIdentifier];
-  LOBYTE(v2) = [v2 isPrimaryImageFormatForUTI:v3];
+  uniformTypeIdentifier = [(PHAsset *)self uniformTypeIdentifier];
+  LOBYTE(v2) = [v2 isPrimaryImageFormatForUTI:uniformTypeIdentifier];
 
   return v2;
 }
 
 - (BOOL)isHEICSequence
 {
-  v2 = [(PHAsset *)self contentType];
-  v3 = [MEMORY[0x1E69C08F0] heicSequenceType];
-  v4 = [v2 conformsToType:v3];
+  contentType = [(PHAsset *)self contentType];
+  heicSequenceType = [MEMORY[0x1E69C08F0] heicSequenceType];
+  v4 = [contentType conformsToType:heicSequenceType];
 
   return v4;
 }
 
 - (BOOL)isAnimatedGIF
 {
-  v2 = [(PHAsset *)self contentType];
-  v3 = [v2 isEqual:*MEMORY[0x1E6982DE8]];
+  contentType = [(PHAsset *)self contentType];
+  v3 = [contentType isEqual:*MEMORY[0x1E6982DE8]];
 
   return v3;
 }
 
 - (BOOL)isRAW
 {
-  v2 = [(PHAsset *)self contentType];
-  v3 = [v2 conformsToType:*MEMORY[0x1E6982F88]];
+  contentType = [(PHAsset *)self contentType];
+  v3 = [contentType conformsToType:*MEMORY[0x1E6982F88]];
 
   return v3;
 }
 
 - (BOOL)isPSD
 {
-  v2 = [(PHAsset *)self contentType];
-  v3 = [MEMORY[0x1E69C08F0] adobePhotoshopType];
-  v4 = [v2 conformsToType:v3];
+  contentType = [(PHAsset *)self contentType];
+  adobePhotoshopType = [MEMORY[0x1E69C08F0] adobePhotoshopType];
+  v4 = [contentType conformsToType:adobePhotoshopType];
 
   return v4;
 }
 
 - (BOOL)isPDF
 {
-  v2 = [(PHAsset *)self contentType];
-  v3 = [v2 conformsToType:*MEMORY[0x1E6982F10]];
+  contentType = [(PHAsset *)self contentType];
+  v3 = [contentType conformsToType:*MEMORY[0x1E6982F10]];
 
   return v3;
 }
 
 - (BOOL)isPNG
 {
-  v2 = [(PHAsset *)self contentType];
-  v3 = [v2 conformsToType:*MEMORY[0x1E6982F28]];
+  contentType = [(PHAsset *)self contentType];
+  v3 = [contentType conformsToType:*MEMORY[0x1E6982F28]];
 
   return v3;
 }
 
 - (BOOL)isTIFF
 {
-  v2 = [(PHAsset *)self contentType];
-  v3 = [v2 conformsToType:*MEMORY[0x1E6983008]];
+  contentType = [(PHAsset *)self contentType];
+  v3 = [contentType conformsToType:*MEMORY[0x1E6983008]];
 
   return v3;
 }
 
 - (BOOL)isHEIF
 {
-  v2 = [(PHAsset *)self contentType];
-  v3 = [v2 conformsToType:*MEMORY[0x1E6983138]];
+  contentType = [(PHAsset *)self contentType];
+  v3 = [contentType conformsToType:*MEMORY[0x1E6983138]];
 
   return v3;
 }
 
 - (BOOL)isJPEG2000
 {
-  v2 = [(PHAsset *)self contentType];
-  v3 = [MEMORY[0x1E69C08F0] jpeg2000Type];
-  v4 = [v2 conformsToType:v3];
+  contentType = [(PHAsset *)self contentType];
+  jpeg2000Type = [MEMORY[0x1E69C08F0] jpeg2000Type];
+  v4 = [contentType conformsToType:jpeg2000Type];
 
   return v4;
 }
 
 - (BOOL)isJPEG
 {
-  v2 = [(PHAsset *)self contentType];
-  v3 = [v2 conformsToType:*MEMORY[0x1E6982E58]];
+  contentType = [(PHAsset *)self contentType];
+  v3 = [contentType conformsToType:*MEMORY[0x1E6982E58]];
 
   return v3;
 }
@@ -6750,8 +6750,8 @@ void __34__PHAsset_originalImageProperties__block_invoke(uint64_t a1)
 - (UTType)contentType
 {
   v2 = MEMORY[0x1E69C08F0];
-  v3 = [(PHAsset *)self uniformTypeIdentifier];
-  v4 = [v2 typeWithIdentifier:v3];
+  uniformTypeIdentifier = [(PHAsset *)self uniformTypeIdentifier];
+  v4 = [v2 typeWithIdentifier:uniformTypeIdentifier];
 
   if (v4)
   {
@@ -6770,15 +6770,15 @@ void __34__PHAsset_originalImageProperties__block_invoke(uint64_t a1)
 
 - (BOOL)isHDVideo
 {
-  v3 = [(PHAsset *)self isVideo];
-  if (v3)
+  isVideo = [(PHAsset *)self isVideo];
+  if (isVideo)
   {
-    v4 = [(PHAsset *)self pixelWidth];
-    v5 = [(PHAsset *)self pixelHeight];
-    LOBYTE(v3) = v4 >= 0x2D0 && v5 > 0x4FF || v4 > 0x4FF && v5 > 0x2CF;
+    pixelWidth = [(PHAsset *)self pixelWidth];
+    pixelHeight = [(PHAsset *)self pixelHeight];
+    LOBYTE(isVideo) = pixelWidth >= 0x2D0 && pixelHeight > 0x4FF || pixelWidth > 0x4FF && pixelHeight > 0x2CF;
   }
 
-  return v3;
+  return isVideo;
 }
 
 - (int)orientation
@@ -6792,16 +6792,16 @@ void __34__PHAsset_originalImageProperties__block_invoke(uint64_t a1)
   return [(PHAsset *)v4 _unfetchedPropertySetsFromPropertySets:v5, v6];
 }
 
-- (id)_unfetchedPropertySetsFromPropertySets:(id)a3
+- (id)_unfetchedPropertySetsFromPropertySets:(id)sets
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setsCopy = sets;
   v5 = [MEMORY[0x1E695DFA8] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = setsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -6835,21 +6835,21 @@ void __34__PHAsset_originalImageProperties__block_invoke(uint64_t a1)
 - (BOOL)isVariationSuggestionStatesUnknown
 {
   [(PHObject *)self addFetchPropertyHint:16];
-  v3 = [(PHAsset *)self photosOneUpProperties];
-  v4 = [v3 variationSuggestionStates];
+  photosOneUpProperties = [(PHAsset *)self photosOneUpProperties];
+  variationSuggestionStates = [photosOneUpProperties variationSuggestionStates];
 
-  return v4 == 0;
+  return variationSuggestionStates == 0;
 }
 
-- (unint64_t)variationSuggestionStatesForVariationType:(unint64_t)a3
+- (unint64_t)variationSuggestionStatesForVariationType:(unint64_t)type
 {
   [(PHObject *)self addFetchPropertyHint:16];
-  v5 = [(PHAsset *)self photosOneUpProperties];
-  v6 = [v5 variationSuggestionStates];
+  photosOneUpProperties = [(PHAsset *)self photosOneUpProperties];
+  variationSuggestionStates = [photosOneUpProperties variationSuggestionStates];
 
-  if (a3)
+  if (type)
   {
-    return (v6 >> (6 * a3 - 6)) & 0x3F;
+    return (variationSuggestionStates >> (6 * type - 6)) & 0x3F;
   }
 
   else
@@ -6858,29 +6858,29 @@ void __34__PHAsset_originalImageProperties__block_invoke(uint64_t a1)
   }
 }
 
-- (int)analysisStateForWorkerType:(signed __int16)a3 outLastIgnoreDate:(id *)a4 outIgnoreUntilDate:(id *)a5
+- (int)analysisStateForWorkerType:(signed __int16)type outLastIgnoreDate:(id *)date outIgnoreUntilDate:(id *)untilDate
 {
-  v7 = a3;
+  typeCopy = type;
   [(PHObject *)self fetchPropertySetsIfNeeded];
-  v9 = [(PHAsset *)self assetAnalysisStateProperties];
-  LODWORD(a5) = [v9 analysisStateForWorkerType:v7 outLastIgnoreDate:a4 outIgnoreUntilDate:a5];
+  assetAnalysisStateProperties = [(PHAsset *)self assetAnalysisStateProperties];
+  LODWORD(untilDate) = [assetAnalysisStateProperties analysisStateForWorkerType:typeCopy outLastIgnoreDate:date outIgnoreUntilDate:untilDate];
 
-  return a5;
+  return untilDate;
 }
 
 - (NSData)distanceIdentity
 {
   [(PHObject *)self fetchPropertySetsIfNeeded];
-  v3 = [(PHAsset *)self sceneAnalysisProperties];
-  v4 = [v3 distanceIdentity];
+  sceneAnalysisProperties = [(PHAsset *)self sceneAnalysisProperties];
+  distanceIdentity = [sceneAnalysisProperties distanceIdentity];
 
-  return v4;
+  return distanceIdentity;
 }
 
-- (id)_sceneClassificationsWithPredicate:(id)a3
+- (id)_sceneClassificationsWithPredicate:(id)predicate
 {
   v42[7] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   v42[0] = @"sceneIdentifier";
   v42[1] = @"confidence";
   v42[2] = @"packedBoundingBoxRect";
@@ -6889,20 +6889,20 @@ void __34__PHAsset_originalImageProperties__block_invoke(uint64_t a1)
   v42[5] = @"classificationType";
   v42[6] = @"thumbnailIdentifier";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:7];
-  v6 = [MEMORY[0x1E69BE778] entityName];
-  v7 = [(PHObject *)self photoLibrary];
+  entityName = [MEMORY[0x1E69BE778] entityName];
+  photoLibrary = [(PHObject *)self photoLibrary];
   v8 = +[PHAssetSceneAnalysisProperties propertySetName];
-  v9 = [v7 objectFetchingManagedObjectContextForObject:self propertySet:v8];
+  v9 = [photoLibrary objectFetchingManagedObjectContextForObject:self propertySet:v8];
 
   v10 = [MEMORY[0x1E695DFA8] set];
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __46__PHAsset__sceneClassificationsWithPredicate___block_invoke;
   v34[3] = &unk_1E75A6EB0;
-  v28 = v6;
+  v28 = entityName;
   v35 = v28;
-  v29 = v4;
+  v29 = predicateCopy;
   v36 = v29;
   v27 = v5;
   v37 = v27;
@@ -6910,7 +6910,7 @@ void __34__PHAsset_originalImageProperties__block_invoke(uint64_t a1)
   v38 = v12;
   v13 = v10;
   v39 = v13;
-  v14 = v11;
+  v14 = dictionary;
   v40 = v14;
   [v12 performBlockAndWait:v34];
   v32 = 0u;
@@ -7051,18 +7051,18 @@ void __46__PHAsset__sceneClassificationsWithPredicate___block_invoke(uint64_t a1
   }
 }
 
-- (id)sceneClassificationsOfTypes:(id)a3
+- (id)sceneClassificationsOfTypes:(id)types
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  typesCopy = types;
   v6 = [MEMORY[0x1E695DFA8] set];
-  v42 = [MEMORY[0x1E695DF70] array];
-  v41 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v7 = v5;
+  v7 = typesCopy;
   v8 = [v7 countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (!v8)
   {
@@ -7091,45 +7091,45 @@ void __46__PHAsset__sceneClassificationsWithPredicate___block_invoke(uint64_t a1
       v15 = v14;
       if (v14)
       {
-        v16 = [v14 allObjects];
-        [v6 addObjectsFromArray:v16];
+        allObjects = [v14 allObjects];
+        [v6 addObjectsFromArray:allObjects];
 LABEL_8:
 
         goto LABEL_9;
       }
 
-      v17 = [v13 integerValue];
-      if (v17 > 7)
+      integerValue = [v13 integerValue];
+      if (integerValue > 7)
       {
         goto LABEL_16;
       }
 
       v39 = v10;
-      if (((1 << v17) & 0xF1) != 0)
+      if (((1 << integerValue) & 0xF1) != 0)
       {
         v18 = MEMORY[0x1E696AE18];
-        v19 = [(PHObject *)self objectID];
-        v10 = [v18 predicateWithFormat:@"%K == %@", @"assetAttributes.asset", v19];
+        objectID = [(PHObject *)self objectID];
+        v10 = [v18 predicateWithFormat:@"%K == %@", @"assetAttributes.asset", objectID];
 
-        [v42 addObject:v13];
+        [array addObject:v13];
       }
 
       else
       {
-        if (((1 << v17) & 0xC) == 0)
+        if (((1 << integerValue) & 0xC) == 0)
         {
 LABEL_16:
-          v16 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v16 handleFailureInMethod:v40 object:self file:@"PHAsset.m" lineNumber:2232 description:{@"Invalid parameter not satisfying: %@", @"knownSceneIdentifier"}];
+          allObjects = [MEMORY[0x1E696AAA8] currentHandler];
+          [allObjects handleFailureInMethod:v40 object:self file:@"PHAsset.m" lineNumber:2232 description:{@"Invalid parameter not satisfying: %@", @"knownSceneIdentifier"}];
           goto LABEL_8;
         }
 
         v20 = MEMORY[0x1E696AE18];
-        v21 = [(PHObject *)self objectID];
-        v22 = [v20 predicateWithFormat:@"%K == %@", @"assetAttributesForTemporalSceneClassifications.asset", v21];
+        objectID2 = [(PHObject *)self objectID];
+        v22 = [v20 predicateWithFormat:@"%K == %@", @"assetAttributesForTemporalSceneClassifications.asset", objectID2];
 
         v10 = v39;
-        [v41 addObject:v13];
+        [array2 addObject:v13];
         v43 = v22;
       }
 
@@ -7146,16 +7146,16 @@ LABEL_9:
   while (v23);
 LABEL_20:
 
-  v24 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   if (v10)
   {
     v25 = MEMORY[0x1E696AB28];
     v49[0] = v10;
-    v26 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"classificationType", v42];
+    v26 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"classificationType", array];
     v49[1] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
     v28 = [v25 andPredicateWithSubpredicates:v27];
-    [v24 addObject:v28];
+    [array3 addObject:v28];
   }
 
   v29 = v43;
@@ -7163,21 +7163,21 @@ LABEL_20:
   {
     v30 = MEMORY[0x1E696AB28];
     v48[0] = v43;
-    v31 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"classificationType", v41];
+    v31 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"classificationType", array2];
     v48[1] = v31;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
     v33 = [v30 andPredicateWithSubpredicates:v32];
-    [v24 addObject:v33];
+    [array3 addObject:v33];
 
     v29 = v43;
   }
 
-  if ([v24 count])
+  if ([array3 count])
   {
-    v34 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v24];
+    v34 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:array3];
     v35 = [(PHAsset *)self _sceneClassificationsWithPredicate:v34];
-    v36 = [v35 allObjects];
-    [v6 addObjectsFromArray:v36];
+    allObjects2 = [v35 allObjects];
+    [v6 addObjectsFromArray:allObjects2];
 
     v29 = v43;
   }
@@ -7190,10 +7190,10 @@ LABEL_20:
 - (unint64_t)originalResourceChoice
 {
   [(PHObject *)self addFetchPropertyHint:0x2000];
-  v3 = [(PHAsset *)self adjustmentProperties];
-  v4 = [v3 originalResourceChoice];
+  adjustmentProperties = [(PHAsset *)self adjustmentProperties];
+  originalResourceChoice = [adjustmentProperties originalResourceChoice];
 
-  return v4;
+  return originalResourceChoice;
 }
 
 - (id)iconicScoreProperties
@@ -7375,15 +7375,15 @@ LABEL_20:
   [(PHObject *)self assertRequiredFetchPropertyHints:128];
   if ([(PHAsset *)self isCloudSharedAsset])
   {
-    v3 = [(PHAsset *)self _createCommentPropertyObject];
+    _createCommentPropertyObject = [(PHAsset *)self _createCommentPropertyObject];
   }
 
   else
   {
-    v3 = 0;
+    _createCommentPropertyObject = 0;
   }
 
-  return v3;
+  return _createCommentPropertyObject;
 }
 
 - (id)cloudSharedProperties
@@ -7485,9 +7485,9 @@ LABEL_20:
   v4 = v18[5];
   if (!v4)
   {
-    v5 = [(PHObject *)self photoLibrary];
-    v6 = [v3 propertySetName];
-    v7 = [v5 objectFetchingManagedObjectContextForObject:self propertySet:v6];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    propertySetName = [v3 propertySetName];
+    v7 = [photoLibrary objectFetchingManagedObjectContextForObject:self propertySet:propertySetName];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -7574,9 +7574,9 @@ void __39__PHAsset__createKeywordPropertyObject__block_invoke(uint64_t a1)
   v4 = v19[5];
   if (!v4)
   {
-    v5 = [(PHObject *)self photoLibrary];
-    v6 = [v3 propertySetName];
-    v7 = [v5 objectFetchingManagedObjectContextForObject:self propertySet:v6];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    propertySetName = [v3 propertySetName];
+    v7 = [photoLibrary objectFetchingManagedObjectContextForObject:self propertySet:propertySetName];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -7663,13 +7663,13 @@ void __45__PHAsset__createAnalysisStatePropertyObject__block_invoke(uint64_t a1)
     v34[2] = @"isMyComment";
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:3];
     v6 = MEMORY[0x1E696AE18];
-    v7 = [(PHObject *)self objectID];
-    v8 = [(PHObject *)self objectID];
-    v9 = [v6 predicateWithFormat:@"likedAsset == %@ OR commentedAsset == %@", v7, v8];
+    objectID = [(PHObject *)self objectID];
+    objectID2 = [(PHObject *)self objectID];
+    v9 = [v6 predicateWithFormat:@"likedAsset == %@ OR commentedAsset == %@", objectID, objectID2];
 
-    v10 = [(PHObject *)self photoLibrary];
-    v11 = [v3 propertySetName];
-    v12 = [v10 objectFetchingManagedObjectContextForObject:self propertySet:v11];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    propertySetName = [v3 propertySetName];
+    v12 = [photoLibrary objectFetchingManagedObjectContextForObject:self propertySet:propertySetName];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -7684,7 +7684,7 @@ void __45__PHAsset__createAnalysisStatePropertyObject__block_invoke(uint64_t a1)
     v26 = &v28;
     v27 = v3;
     v24 = v15;
-    v25 = self;
+    selfCopy = self;
     [v15 performBlockAndWait:v20];
     v16 = ph_objc_setAssociatedObjectIfNotSet(self, v3, v29[5]);
     v17 = v29[5];
@@ -7739,23 +7739,23 @@ void __39__PHAsset__createCommentPropertyObject__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_createPropertyObjectOfClass:(Class)a3 preFetchedProperties:(id)a4
+- (id)_createPropertyObjectOfClass:(Class)class preFetchedProperties:(id)properties
 {
   v71 = *MEMORY[0x1E69E9840];
-  v45 = a4;
+  propertiesCopy = properties;
   v60 = 0;
   v61 = &v60;
   v62 = 0x3032000000;
   v63 = __Block_byref_object_copy__22497;
   v64 = __Block_byref_object_dispose__22498;
-  aClass = a3;
-  v65 = ph_objc_getAssociatedObject(self, a3);
+  aClass = class;
+  v65 = ph_objc_getAssociatedObject(self, class);
   v6 = v61[5];
   if (!v6)
   {
-    if (v45)
+    if (propertiesCopy)
     {
-      v7 = [[a3 alloc] initWithFetchDictionary:v45 asset:self prefetched:1];
+      v7 = [[class alloc] initWithFetchDictionary:propertiesCopy asset:self prefetched:1];
       v8 = v61[5];
       v61[5] = v7;
 LABEL_26:
@@ -7768,59 +7768,59 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if (([(objc_class *)a3 inverseIsToMany]& 1) != 0)
+    if (([(objc_class *)class inverseIsToMany]& 1) != 0)
     {
-      v9 = [MEMORY[0x1E69BE540] entityName];
+      entityName = [MEMORY[0x1E69BE540] entityName];
       v10 = MEMORY[0x1E696AE18];
-      v11 = [(PHObject *)self objectID];
-      v43 = [v10 predicateWithFormat:@"self == %@", v11];
-      v44 = v9;
+      objectID = [(PHObject *)self objectID];
+      v43 = [v10 predicateWithFormat:@"self == %@", objectID];
+      v44 = entityName;
     }
 
     else
     {
-      v12 = [(objc_class *)a3 entityName];
-      v13 = v12;
-      if (v12)
+      entityName2 = [(objc_class *)class entityName];
+      v13 = entityName2;
+      if (entityName2)
       {
-        v14 = v12;
+        entityName3 = entityName2;
       }
 
       else
       {
-        v14 = [MEMORY[0x1E69BE540] entityName];
+        entityName3 = [MEMORY[0x1E69BE540] entityName];
       }
 
-      v44 = v14;
+      v44 = entityName3;
 
-      v11 = [(objc_class *)a3 keyPathToPrimaryObject];
+      objectID = [(objc_class *)class keyPathToPrimaryObject];
       v15 = MEMORY[0x1E696AE18];
-      v16 = [(PHObject *)self objectID];
-      if (v11)
+      objectID2 = [(PHObject *)self objectID];
+      if (objectID)
       {
-        [v15 predicateWithFormat:@"%K == %@", v11, v16];
+        [v15 predicateWithFormat:@"%K == %@", objectID, objectID2];
       }
 
       else
       {
-        [v15 predicateWithFormat:@"self == %@", v16];
+        [v15 predicateWithFormat:@"self == %@", objectID2];
       }
       v43 = ;
     }
 
-    v17 = [(objc_class *)a3 propertiesToFetch];
-    v18 = [v17 mutableCopy];
+    propertiesToFetch = [(objc_class *)class propertiesToFetch];
+    v18 = [propertiesToFetch mutableCopy];
 
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
       v19 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = NSStringFromClass(a3);
+        v20 = NSStringFromClass(class);
         *buf = 138412546;
         v68 = v20;
         v69 = 2112;
-        v70 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Missing prefetched properties for %@ on %@. Fetching on demand on the main queue, which may degrade performance.", buf, 0x16u);
       }
     }
@@ -7830,27 +7830,27 @@ LABEL_26:
       v19 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        v21 = NSStringFromClass(a3);
+        v21 = NSStringFromClass(class);
         *buf = 138412546;
         v68 = v21;
         v69 = 2112;
-        v70 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_DEBUG, "Missing prefetched properties for %@ on %@. Fetching on demand.", buf, 0x16u);
       }
     }
 
-    if (([(objc_class *)a3 inverseIsToMany]& 1) != 0)
+    if (([(objc_class *)class inverseIsToMany]& 1) != 0)
     {
-      [objc_opt_class() extendPropertiesToFetch:v18 withPropertySetClass:a3];
+      [objc_opt_class() extendPropertiesToFetch:v18 withPropertySetClass:class];
     }
 
     else if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v22 = [(objc_class *)a3 keyPathToPrimaryObject];
-      v42 = v22;
-      if (v22)
+      keyPathToPrimaryObject = [(objc_class *)class keyPathToPrimaryObject];
+      v42 = keyPathToPrimaryObject;
+      if (keyPathToPrimaryObject)
       {
-        v23 = [v22 stringByAppendingString:@"."];
+        v23 = [keyPathToPrimaryObject stringByAppendingString:@"."];
       }
 
       else
@@ -7858,7 +7858,7 @@ LABEL_26:
         v23 = 0;
       }
 
-      [(objc_class *)a3 additionalPropertiesToFetchOnPrimaryObject];
+      [(objc_class *)class additionalPropertiesToFetchOnPrimaryObject];
       v58 = 0u;
       v59 = 0u;
       v56 = 0u;
@@ -7910,9 +7910,9 @@ LABEL_26:
 
     v24 = 0;
 LABEL_25:
-    v25 = [(PHObject *)self photoLibrary];
-    v26 = [(objc_class *)aClass propertySetName];
-    v27 = [v25 objectFetchingManagedObjectContextForObject:self propertySet:v26];
+    photoLibrary = [(PHObject *)self photoLibrary];
+    propertySetName = [(objc_class *)aClass propertySetName];
+    v27 = [photoLibrary objectFetchingManagedObjectContextForObject:self propertySet:propertySetName];
 
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
@@ -7926,7 +7926,7 @@ LABEL_25:
     v50 = v29;
     v30 = v27;
     v51 = v30;
-    v52 = self;
+    selfCopy3 = self;
     v55 = v24;
     v53 = &v60;
     v54 = aClass;
@@ -8093,30 +8093,30 @@ LABEL_24:
   *(v34 + 40) = v33;
 }
 
-- (void)_attachPropertyObjectOfClass:(Class)a3 preFetchedProperties:(id)a4
+- (void)_attachPropertyObjectOfClass:(Class)class preFetchedProperties:(id)properties
 {
-  v8 = a4;
+  propertiesCopy = properties;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PHAsset *)self _createPropertyObjectOfClass:a3 preFetchedProperties:v8];
+  v7 = [(PHAsset *)self _createPropertyObjectOfClass:class preFetchedProperties:propertiesCopy];
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)_createExtendedPropertySetsIfNeededWithPropertyHint:(unint64_t)a3 fetchDictionary:(id)a4
+- (void)_createExtendedPropertySetsIfNeededWithPropertyHint:(unint64_t)hint fetchDictionary:(id)dictionary
 {
-  v6 = a4;
-  if ((a3 & 0xFFFFFFFFFFFFFD78) == 0)
+  dictionaryCopy = dictionary;
+  if ((hint & 0xFFFFFFFFFFFFFD78) == 0)
   {
     goto LABEL_38;
   }
 
-  v7 = v6;
-  if ((a3 & 0x4000000) != 0)
+  v7 = dictionaryCopy;
+  if ((hint & 0x4000000) != 0)
   {
-    [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v6];
-    if ((a3 & 8) == 0)
+    [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:dictionaryCopy];
+    if ((hint & 8) == 0)
     {
 LABEL_4:
-      if ((a3 & 0x10) == 0)
+      if ((hint & 0x10) == 0)
       {
         goto LABEL_5;
       }
@@ -8125,16 +8125,16 @@ LABEL_4:
     }
   }
 
-  else if ((a3 & 8) == 0)
+  else if ((hint & 8) == 0)
   {
     goto LABEL_4;
   }
 
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x10) == 0)
+  if ((hint & 0x10) == 0)
   {
 LABEL_5:
-    if ((a3 & 0x200000) == 0)
+    if ((hint & 0x200000) == 0)
     {
       goto LABEL_6;
     }
@@ -8144,10 +8144,10 @@ LABEL_5:
 
 LABEL_43:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x200000) == 0)
+  if ((hint & 0x200000) == 0)
   {
 LABEL_6:
-    if ((a3 & 0x100000) == 0)
+    if ((hint & 0x100000) == 0)
     {
       goto LABEL_7;
     }
@@ -8157,10 +8157,10 @@ LABEL_6:
 
 LABEL_44:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x100000) == 0)
+  if ((hint & 0x100000) == 0)
   {
 LABEL_7:
-    if ((a3 & 0x1000000) == 0)
+    if ((hint & 0x1000000) == 0)
     {
       goto LABEL_8;
     }
@@ -8170,10 +8170,10 @@ LABEL_7:
 
 LABEL_45:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x1000000) == 0)
+  if ((hint & 0x1000000) == 0)
   {
 LABEL_8:
-    if ((a3 & 0x8000000000) == 0)
+    if ((hint & 0x8000000000) == 0)
     {
       goto LABEL_9;
     }
@@ -8183,10 +8183,10 @@ LABEL_8:
 
 LABEL_46:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x8000000000) == 0)
+  if ((hint & 0x8000000000) == 0)
   {
 LABEL_9:
-    if ((a3 & 0x10000000) == 0)
+    if ((hint & 0x10000000) == 0)
     {
       goto LABEL_10;
     }
@@ -8196,10 +8196,10 @@ LABEL_9:
 
 LABEL_47:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x10000000) == 0)
+  if ((hint & 0x10000000) == 0)
   {
 LABEL_10:
-    if ((a3 & 0x20) == 0)
+    if ((hint & 0x20) == 0)
     {
       goto LABEL_11;
     }
@@ -8209,10 +8209,10 @@ LABEL_10:
 
 LABEL_48:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x20) == 0)
+  if ((hint & 0x20) == 0)
   {
 LABEL_11:
-    if ((a3 & 0x40) == 0)
+    if ((hint & 0x40) == 0)
     {
       goto LABEL_12;
     }
@@ -8222,10 +8222,10 @@ LABEL_11:
 
 LABEL_49:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x40) == 0)
+  if ((hint & 0x40) == 0)
   {
 LABEL_12:
-    if ((a3 & 0x400) == 0)
+    if ((hint & 0x400) == 0)
     {
       goto LABEL_13;
     }
@@ -8235,10 +8235,10 @@ LABEL_12:
 
 LABEL_50:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x400) == 0)
+  if ((hint & 0x400) == 0)
   {
 LABEL_13:
-    if ((a3 & 0x100) == 0)
+    if ((hint & 0x100) == 0)
     {
       goto LABEL_14;
     }
@@ -8248,10 +8248,10 @@ LABEL_13:
 
 LABEL_51:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x100) == 0)
+  if ((hint & 0x100) == 0)
   {
 LABEL_14:
-    if ((a3 & 0x2000) == 0)
+    if ((hint & 0x2000) == 0)
     {
       goto LABEL_15;
     }
@@ -8261,10 +8261,10 @@ LABEL_14:
 
 LABEL_52:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x2000) == 0)
+  if ((hint & 0x2000) == 0)
   {
 LABEL_15:
-    if ((a3 & 0x4000) == 0)
+    if ((hint & 0x4000) == 0)
     {
       goto LABEL_16;
     }
@@ -8274,10 +8274,10 @@ LABEL_15:
 
 LABEL_53:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x4000) == 0)
+  if ((hint & 0x4000) == 0)
   {
 LABEL_16:
-    if ((a3 & 0x8000) == 0)
+    if ((hint & 0x8000) == 0)
     {
       goto LABEL_17;
     }
@@ -8287,10 +8287,10 @@ LABEL_16:
 
 LABEL_54:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x8000) == 0)
+  if ((hint & 0x8000) == 0)
   {
 LABEL_17:
-    if ((a3 & 0x10000) == 0)
+    if ((hint & 0x10000) == 0)
     {
       goto LABEL_18;
     }
@@ -8300,10 +8300,10 @@ LABEL_17:
 
 LABEL_55:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x10000) == 0)
+  if ((hint & 0x10000) == 0)
   {
 LABEL_18:
-    if ((a3 & 0x200000000) == 0)
+    if ((hint & 0x200000000) == 0)
     {
       goto LABEL_19;
     }
@@ -8313,10 +8313,10 @@ LABEL_18:
 
 LABEL_56:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x200000000) == 0)
+  if ((hint & 0x200000000) == 0)
   {
 LABEL_19:
-    if ((a3 & 0x8000000) == 0)
+    if ((hint & 0x8000000) == 0)
     {
       goto LABEL_20;
     }
@@ -8326,10 +8326,10 @@ LABEL_19:
 
 LABEL_57:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x8000000) == 0)
+  if ((hint & 0x8000000) == 0)
   {
 LABEL_20:
-    if ((a3 & 0x20000000000) == 0)
+    if ((hint & 0x20000000000) == 0)
     {
       goto LABEL_21;
     }
@@ -8339,10 +8339,10 @@ LABEL_20:
 
 LABEL_58:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x20000000000) == 0)
+  if ((hint & 0x20000000000) == 0)
   {
 LABEL_21:
-    if ((a3 & 0x40000000) == 0)
+    if ((hint & 0x40000000) == 0)
     {
       goto LABEL_22;
     }
@@ -8352,10 +8352,10 @@ LABEL_21:
 
 LABEL_59:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x40000000) == 0)
+  if ((hint & 0x40000000) == 0)
   {
 LABEL_22:
-    if ((a3 & 0x20000) == 0)
+    if ((hint & 0x20000) == 0)
     {
       goto LABEL_23;
     }
@@ -8365,10 +8365,10 @@ LABEL_22:
 
 LABEL_60:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x20000) == 0)
+  if ((hint & 0x20000) == 0)
   {
 LABEL_23:
-    if ((a3 & 0x40000) == 0)
+    if ((hint & 0x40000) == 0)
     {
       goto LABEL_24;
     }
@@ -8378,10 +8378,10 @@ LABEL_23:
 
 LABEL_61:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x40000) == 0)
+  if ((hint & 0x40000) == 0)
   {
 LABEL_24:
-    if ((a3 & 0x80000) == 0)
+    if ((hint & 0x80000) == 0)
     {
       goto LABEL_25;
     }
@@ -8391,10 +8391,10 @@ LABEL_24:
 
 LABEL_62:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x80000) == 0)
+  if ((hint & 0x80000) == 0)
   {
 LABEL_25:
-    if ((a3 & 0x800000) == 0)
+    if ((hint & 0x800000) == 0)
     {
       goto LABEL_26;
     }
@@ -8404,10 +8404,10 @@ LABEL_25:
 
 LABEL_63:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x800000) == 0)
+  if ((hint & 0x800000) == 0)
   {
 LABEL_26:
-    if ((a3 & 0x2000000) == 0)
+    if ((hint & 0x2000000) == 0)
     {
       goto LABEL_27;
     }
@@ -8417,10 +8417,10 @@ LABEL_26:
 
 LABEL_64:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x2000000) == 0)
+  if ((hint & 0x2000000) == 0)
   {
 LABEL_27:
-    if ((a3 & 0x20000000) == 0)
+    if ((hint & 0x20000000) == 0)
     {
       goto LABEL_29;
     }
@@ -8430,21 +8430,21 @@ LABEL_27:
 
 LABEL_65:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x20000000) != 0)
+  if ((hint & 0x20000000) != 0)
   {
 LABEL_28:
     [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
   }
 
 LABEL_29:
-  if (a3 >= 0xFFFFFFFF80000000)
+  if (hint >= 0xFFFFFFFF80000000)
   {
     [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
   }
 
-  else if ((a3 & 0x100000000) == 0)
+  else if ((hint & 0x100000000) == 0)
   {
-    if ((a3 & 0x400000000) == 0)
+    if ((hint & 0x400000000) == 0)
     {
       goto LABEL_32;
     }
@@ -8453,10 +8453,10 @@ LABEL_29:
   }
 
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x400000000) == 0)
+  if ((hint & 0x400000000) == 0)
   {
 LABEL_32:
-    if ((a3 & 0x2000000000) == 0)
+    if ((hint & 0x2000000000) == 0)
     {
       goto LABEL_33;
     }
@@ -8466,10 +8466,10 @@ LABEL_32:
 
 LABEL_69:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x2000000000) == 0)
+  if ((hint & 0x2000000000) == 0)
   {
 LABEL_33:
-    if ((a3 & 0x800000000) == 0)
+    if ((hint & 0x800000000) == 0)
     {
       goto LABEL_34;
     }
@@ -8479,10 +8479,10 @@ LABEL_33:
 
 LABEL_70:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x800000000) == 0)
+  if ((hint & 0x800000000) == 0)
   {
 LABEL_34:
-    if ((a3 & 0x4000000000) == 0)
+    if ((hint & 0x4000000000) == 0)
     {
       goto LABEL_36;
     }
@@ -8492,18 +8492,18 @@ LABEL_34:
 
 LABEL_71:
   [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-  if ((a3 & 0x4000000000) != 0)
+  if ((hint & 0x4000000000) != 0)
   {
 LABEL_35:
     [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
   }
 
 LABEL_36:
-  v6 = v7;
-  if ((a3 & 0x10000000000) != 0)
+  dictionaryCopy = v7;
+  if ((hint & 0x10000000000) != 0)
   {
     [(PHAsset *)self _attachPropertyObjectOfClass:objc_opt_class() preFetchedProperties:v7];
-    v6 = v7;
+    dictionaryCopy = v7;
   }
 
 LABEL_38:
@@ -8515,22 +8515,22 @@ LABEL_38:
   if (!localCreationDate)
   {
     [(PHObject *)self fetchPropertySetsIfNeeded];
-    v4 = [(PHAsset *)self creationDate];
-    v5 = [(PHAsset *)self localDateProperties];
-    v6 = [v5 inferredTimeZoneOffset];
+    creationDate = [(PHAsset *)self creationDate];
+    localDateProperties = [(PHAsset *)self localDateProperties];
+    inferredTimeZoneOffset = [localDateProperties inferredTimeZoneOffset];
 
-    if (v6)
+    if (inferredTimeZoneOffset)
     {
-      v7 = [v6 integerValue];
+      integerValue = [inferredTimeZoneOffset integerValue];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFE8] localTimeZone];
-      v7 = [v8 secondsFromGMTForDate:v4];
+      localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+      integerValue = [localTimeZone secondsFromGMTForDate:creationDate];
     }
 
-    v9 = [v4 dateByAddingTimeInterval:v7];
+    v9 = [creationDate dateByAddingTimeInterval:integerValue];
     v10 = self->_localCreationDate;
     self->_localCreationDate = v9;
 
@@ -8543,23 +8543,23 @@ LABEL_38:
 - (id)creationDateAdjustedForTimeZone
 {
   [(PHObject *)self fetchPropertySetsIfNeeded];
-  v3 = [(PHAsset *)self creationDate];
-  v4 = [(PHAsset *)self originalMetadataProperties];
-  v5 = [v3 dateByAddingTimeInterval:{objc_msgSend(v4, "timeZoneOffset")}];
+  creationDate = [(PHAsset *)self creationDate];
+  originalMetadataProperties = [(PHAsset *)self originalMetadataProperties];
+  v5 = [creationDate dateByAddingTimeInterval:{objc_msgSend(originalMetadataProperties, "timeZoneOffset")}];
 
   return v5;
 }
 
-- (BOOL)isMediaSubtype:(unint64_t)a3
+- (BOOL)isMediaSubtype:(unint64_t)subtype
 {
-  if ((a3 & 0x400) != 0)
+  if ((subtype & 0x400) != 0)
   {
-    v5 = [(PHAsset *)self spatialMediaProperties];
-    v6 = [v5 spatialMediaType];
+    spatialMediaProperties = [(PHAsset *)self spatialMediaProperties];
+    spatialMediaType = [spatialMediaProperties spatialMediaType];
 
-    if ((v6 - 1) > 1u)
+    if ((spatialMediaType - 1) > 1u)
     {
-      if (!v6)
+      if (!spatialMediaType)
       {
         mediaSubtypes = self->_mediaSubtypes;
         if ((mediaSubtypes & 0x400) != 0)
@@ -8579,50 +8579,50 @@ LABEL_38:
     }
   }
 
-  return (a3 & ~self->_mediaSubtypes) == 0;
+  return (subtype & ~self->_mediaSubtypes) == 0;
 }
 
-- (void)_setupSmartStyleFromFetchDictionary:(id)a3
+- (void)_setupSmartStyleFromFetchDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"currentSleetCast"];
-  v5 = [v4 shortValue];
+  v4 = [dictionary objectForKeyedSubscript:@"currentSleetCast"];
+  shortValue = [v4 shortValue];
 
-  if (v5 >= 1 && self->_currentSmartStyleCast != v5)
+  if (shortValue >= 1 && self->_currentSmartStyleCast != shortValue)
   {
-    self->_currentSmartStyleCast = v5;
+    self->_currentSmartStyleCast = shortValue;
   }
 }
 
-- (void)_setupBadgeAttributesFromFetchDictionary:(id)a3
+- (void)_setupBadgeAttributesFromFetchDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"packedBadgeAttributes"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"packedBadgeAttributes"];
   self->_packedBadgeAttributes = [v5 intValue];
 
-  v6 = [v4 objectForKeyedSubscript:@"syndicationState"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"syndicationState"];
   self->_syndicationState = [v6 unsignedShortValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"activeLibraryScopeParticipationState"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"activeLibraryScopeParticipationState"];
 
   self->_participatesInLibraryScope = [v7 integerValue] == 1;
 }
 
-- (void)_setupSpatialTypeFromFetchDictionary:(id)a3
+- (void)_setupSpatialTypeFromFetchDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"spatialType"];
-  v5 = [v4 shortValue];
+  v4 = [dictionary objectForKeyedSubscript:@"spatialType"];
+  shortValue = [v4 shortValue];
 
-  if ((v5 - 1) <= 1u)
+  if ((shortValue - 1) <= 1u)
   {
     self->_mediaSubtypes |= 0x400uLL;
   }
 }
 
-- (void)_setupHDRAndDepthMediaSubtypesFromFetchDictionary:(id)a3
+- (void)_setupHDRAndDepthMediaSubtypesFromFetchDictionary:(id)dictionary
 {
-  v17 = a3;
-  v4 = [v17 objectForKeyedSubscript:@"hdrType"];
-  v5 = [v4 shortValue];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"hdrType"];
+  shortValue = [v4 shortValue];
 
   mediaType = self->_mediaType;
   if (mediaType != 2)
@@ -8632,19 +8632,19 @@ LABEL_38:
       goto LABEL_19;
     }
 
-    if (v5 - 2 < 2)
+    if (shortValue - 2 < 2)
     {
       self->_mediaSubtypes |= 2uLL;
-      if (v5 != 10)
+      if (shortValue != 10)
       {
         goto LABEL_5;
       }
     }
 
-    else if (v5 != 10)
+    else if (shortValue != 10)
     {
 LABEL_5:
-      if (v5 != 11)
+      if (shortValue != 11)
       {
         goto LABEL_14;
       }
@@ -8653,18 +8653,18 @@ LABEL_5:
 LABEL_13:
       self->_mediaSubtypes |= v7;
 LABEL_14:
-      v11 = [v17 objectForKeyedSubscript:@"depthType"];
-      v12 = [v11 unsignedShortValue];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"depthType"];
+      unsignedShortValue = [v11 unsignedShortValue];
 
-      if (v12 == 1)
+      if (unsignedShortValue == 1)
       {
         self->_mediaSubtypes |= 0x10uLL;
       }
 
-      v13 = [v17 objectForKeyedSubscript:@"playbackStyle"];
-      v14 = [v13 shortValue];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"playbackStyle"];
+      shortValue2 = [v13 shortValue];
 
-      if (v14 == 2)
+      if (shortValue2 == 2)
       {
         v10 = 64;
         goto LABEL_18;
@@ -8677,15 +8677,15 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if (v5 == 5)
+  if (shortValue == 5)
   {
     self->_mediaSubtypes |= 0x100000uLL;
   }
 
-  v8 = [v17 objectForKeyedSubscript:@"depthType"];
-  v9 = [v8 unsignedShortValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"depthType"];
+  unsignedShortValue2 = [v8 unsignedShortValue];
 
-  if (v9 == 2)
+  if (unsignedShortValue2 == 2)
   {
     v10 = 0x200000;
 LABEL_18:
@@ -8693,40 +8693,40 @@ LABEL_18:
   }
 
 LABEL_19:
-  v15 = [v17 objectForKeyedSubscript:@"hdrGain"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"hdrGain"];
   hdrGain = self->_hdrGain;
   self->_hdrGain = v15;
 }
 
-- (void)_setupAdjustmentAndDeferredProcessingAttributesFromFetchDictionary:(id)a3
+- (void)_setupAdjustmentAndDeferredProcessingAttributesFromFetchDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"adjustmentTimestamp"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"adjustmentTimestamp"];
   adjustmentTimestamp = self->_adjustmentTimestamp;
   self->_adjustmentTimestamp = v5;
 
-  v7 = [v4 objectForKeyedSubscript:@"adjustmentsState"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"adjustmentsState"];
   self->_adjustmentsState = [v7 unsignedShortValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"deferredProcessingNeeded"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"deferredProcessingNeeded"];
   self->_deferredProcessingNeeded = [v8 intValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"videoDeferredProcessingNeeded"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"videoDeferredProcessingNeeded"];
 
   self->_videoDeferredProcessingNeeded = [v9 intValue];
 }
 
-- (void)_setupKindSubtypeFromFetchDictionary:(id)a3
+- (void)_setupKindSubtypeFromFetchDictionary:(id)dictionary
 {
-  v9 = a3;
-  v4 = [v9 objectForKeyedSubscript:@"kindSubtype"];
-  v5 = [v4 shortValue];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"kindSubtype"];
+  shortValue = [v4 shortValue];
 
-  if (v5 <= 0x63u)
+  if (shortValue <= 0x63u)
   {
-    if (v5 > 1u)
+    if (shortValue > 1u)
     {
-      if (v5 == 2)
+      if (shortValue == 2)
       {
         self->_isPhotoIris = 1;
         if (([objc_opt_class() _isLivePhotoWithPhotoIris:self->_isPhotoIris hasAdjustments:-[PHAsset hasAdjustments](self videoCpDuration:"hasAdjustments") videoCPVisibility:self->_videoCpDurationValue sourceType:{self->_videoCpVisibilityState, -[PHAsset sourceType](self, "sourceType")}] & 1) == 0)
@@ -8739,7 +8739,7 @@ LABEL_19:
 
       else
       {
-        if (v5 != 10)
+        if (shortValue != 10)
         {
           goto LABEL_25;
         }
@@ -8748,9 +8748,9 @@ LABEL_19:
       }
     }
 
-    else if (v5)
+    else if (shortValue)
     {
-      if (v5 != 1)
+      if (shortValue != 1)
       {
         goto LABEL_25;
       }
@@ -8766,9 +8766,9 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  if (v5 > 0x65u)
+  if (shortValue > 0x65u)
   {
-    switch(v5)
+    switch(shortValue)
     {
       case 'f':
         v6 = 0x40000;
@@ -8786,18 +8786,18 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  if (v5 == 100)
+  if (shortValue == 100)
   {
     v6 = 0x10000;
     goto LABEL_24;
   }
 
-  if (v5 == 101)
+  if (shortValue == 101)
   {
-    v7 = [v9 objectForKeyedSubscript:@"highFrameRateState"];
-    v8 = [v7 integerValue];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"highFrameRateState"];
+    integerValue = [v7 integerValue];
 
-    if ((v8 & 2) != 0)
+    if ((integerValue & 2) != 0)
     {
       v6 = 0x20000;
 LABEL_24:
@@ -8808,84 +8808,84 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_setupFaceAttributesFromFetchDictionary:(id)a3
+- (void)_setupFaceAttributesFromFetchDictionary:(id)dictionary
 {
-  v12 = a3;
+  dictionaryCopy = dictionary;
   if (PLPlatformEagerlyFetchFaceRegions())
   {
-    v4 = [v12 objectForKeyedSubscript:@"additionalAttributes.faceRegions"];
+    v4 = [dictionaryCopy objectForKeyedSubscript:@"additionalAttributes.faceRegions"];
     v5 = PLManagedAssetDecodeFaceRegions();
     faceRegions = self->_faceRegions;
     self->_faceRegions = v5;
   }
 
-  v7 = [v12 objectForKeyedSubscript:@"faceAdjustmentVersion"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"faceAdjustmentVersion"];
   faceAdjustmentVersion = self->_faceAdjustmentVersion;
   self->_faceAdjustmentVersion = v7;
 
-  v9 = [v12 objectForKeyedSubscript:@"additionalAttributes.faceAnalysisVersion"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"additionalAttributes.faceAnalysisVersion"];
   self->_faceAnalysisVersion = [v9 intValue];
 
-  v10 = [v12 objectForKeyedSubscript:@"faceAreaPoints"];
-  v11 = [v10 longLongValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"faceAreaPoints"];
+  longLongValue = [v10 longLongValue];
 
-  if ((v11 & 0x8000000000000000) == 0)
+  if ((longLongValue & 0x8000000000000000) == 0)
   {
     PLSplitToDoubleFromInt64();
   }
 }
 
-- (void)_setupUIStateAndTrashAttributesFromFetchDictionary:(id)a3
+- (void)_setupUIStateAndTrashAttributesFromFetchDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"favorite"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"favorite"];
   self->_favorite = [v5 BOOLValue];
 
-  v6 = [v4 objectForKeyedSubscript:@"hidden"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"hidden"];
   self->_hidden = [v6 BOOLValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"trashedState"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"trashedState"];
   self->_trashed = [v7 intValue] != 0;
 
-  v8 = [v4 objectForKeyedSubscript:@"trashedDate"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"trashedDate"];
 
   trashedDate = self->_trashedDate;
   self->_trashedDate = v8;
 }
 
-- (void)_setupAnalysisScoreAttributesFromFetchDictionary:(id)a3
+- (void)_setupAnalysisScoreAttributesFromFetchDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"curationScore"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"curationScore"];
   [v5 doubleValue];
   self->_curationScore = v6;
 
-  v7 = [v4 objectForKeyedSubscript:@"overallAestheticScore"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"overallAestheticScore"];
   [v7 floatValue];
   self->_overallAestheticScore = v8;
 
-  v10 = [v4 objectForKeyedSubscript:@"highlightVisibilityScore"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"highlightVisibilityScore"];
 
   [v10 doubleValue];
   self->_highlightVisibilityScore = v9;
 }
 
-- (void)_setupGeometryAttributesFromFetchDictionary:(id)a3
+- (void)_setupGeometryAttributesFromFetchDictionary:(id)dictionary
 {
-  v13 = a3;
-  v4 = [v13 objectForKeyedSubscript:@"height"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"height"];
   self->_pixelHeight = [v4 unsignedIntegerValue];
 
-  v5 = [v13 objectForKeyedSubscript:@"width"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"width"];
   self->_pixelWidth = [v5 unsignedIntegerValue];
 
-  v6 = [v13 objectForKeyedSubscript:@"orientation"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"orientation"];
   self->_exifOrientation = [v6 intValue];
 
-  v7 = [v13 objectForKeyedSubscript:@"packedPreferredCropRect"];
-  v8 = [v7 longLongValue];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"packedPreferredCropRect"];
+  longLongValue = [v7 longLongValue];
 
-  if (v8)
+  if (longLongValue)
   {
     PLSplitToCGRectFromInt64();
   }
@@ -8897,10 +8897,10 @@ LABEL_25:
     self->_preferredCropRect.size = v9;
   }
 
-  v10 = [v13 objectForKeyedSubscript:@"packedAcceptableCropRect"];
-  v11 = [v10 longLongValue];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"packedAcceptableCropRect"];
+  longLongValue2 = [v10 longLongValue];
 
-  if (v11)
+  if (longLongValue2)
   {
     PLSplitToCGRectFromInt64();
   }
@@ -8913,15 +8913,15 @@ LABEL_25:
   }
 }
 
-- (void)_setupTypeAndPersistenceStateAttributesFromFetchDictionary:(id)a3
+- (void)_setupTypeAndPersistenceStateAttributesFromFetchDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kind"];
-  v6 = [v5 shortValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
+  shortValue = [v5 shortValue];
 
-  if (v6 < 3)
+  if (shortValue < 3)
   {
-    v7 = v6 + 1;
+    v7 = shortValue + 1;
   }
 
   else
@@ -8930,30 +8930,30 @@ LABEL_25:
   }
 
   self->_mediaType = v7;
-  v8 = [v4 objectForKeyedSubscript:@"uniformTypeIdentifier"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"uniformTypeIdentifier"];
   uniformTypeIdentifier = self->_uniformTypeIdentifier;
   self->_uniformTypeIdentifier = v8;
 
-  v10 = [v4 objectForKeyedSubscript:@"savedAssetType"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"savedAssetType"];
   self->_savedAssetType = [v10 shortValue];
 
-  v11 = [v4 objectForKeyedSubscript:@"bundleScope"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"bundleScope"];
   self->_bundleScope = [v11 shortValue];
 
-  v12 = [v4 objectForKeyedSubscript:@"complete"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"complete"];
 
   self->_complete = [v12 BOOLValue];
 }
 
-- (void)_setupLocationAndCreationDateAttributesFromFetchDictionary:(id)a3
+- (void)_setupLocationAndCreationDateAttributesFromFetchDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"dateCreated"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"dateCreated"];
   creationDate = self->_creationDate;
   self->_creationDate = v5;
 
-  v11 = [v4 objectForKeyedSubscript:@"latitude"];
-  v7 = [v4 objectForKeyedSubscript:@"longitude"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"latitude"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"longitude"];
 
   if (v11 && v7)
   {
@@ -8971,26 +8971,26 @@ LABEL_25:
   [(PHAsset *)self _initializeCachedLocation];
 }
 
-- (void)_setupFileSystemAttributesFromFetchDictionary:(id)a3
+- (void)_setupFileSystemAttributesFromFetchDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"directory"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"directory"];
   directory = self->_directory;
   self->_directory = v5;
 
-  v7 = [v4 objectForKeyedSubscript:@"filename"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"filename"];
 
   filename = self->_filename;
   self->_filename = v7;
 }
 
-- (void)_setupAuxiliaryIdentifierAttributesFromFetchDictionary:(id)a3
+- (void)_setupAuxiliaryIdentifierAttributesFromFetchDictionary:(id)dictionary
 {
-  v7 = a3;
-  v4 = [(PHAsset *)self isPartOfBurst];
-  if (v4)
+  dictionaryCopy = dictionary;
+  isPartOfBurst = [(PHAsset *)self isPartOfBurst];
+  if (isPartOfBurst)
   {
-    v5 = [v7 objectForKeyedSubscript:@"avalancheUUID"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"avalancheUUID"];
   }
 
   else
@@ -8999,103 +8999,103 @@ LABEL_25:
   }
 
   objc_storeStrong(&self->_burstIdentifier, v5);
-  if (v4)
+  if (isPartOfBurst)
   {
   }
 
-  v6 = [v7 objectForKeyedSubscript:@"cloudAssetGUID"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"cloudAssetGUID"];
   if ([v6 length])
   {
     objc_storeStrong(&self->_cloudAssetGUID, v6);
   }
 }
 
-- (PHAsset)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHAsset)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = PHAsset;
-  v9 = [(PHObject *)&v37 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v37 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   v10 = v9;
   if (v9)
   {
-    if ((a4 & 6) == 4)
+    if ((hint & 6) == 4)
     {
-      [(PHAsset *)v9 _setupLocationAndCreationDateAttributesFromFetchDictionary:v8];
+      [(PHAsset *)v9 _setupLocationAndCreationDateAttributesFromFetchDictionary:dictionaryCopy];
     }
 
     else
     {
-      v11 = [v8 objectForKeyedSubscript:@"avalanchePickType"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"avalanchePickType"];
       v10->_avalanchePickType = [v11 intValue];
 
-      v12 = [v8 objectForKeyedSubscript:@"avalancheKind"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"avalancheKind"];
       v10->_avalancheKind = [v12 intValue];
 
-      v13 = [v8 objectForKeyedSubscript:@"thumbnailIndex"];
-      v14 = [v13 intValue];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"thumbnailIndex"];
+      intValue = [v13 intValue];
 
-      v10->_persistedThumbnailIndex = v14;
-      v15 = [v8 objectForKeyedSubscript:@"duration"];
+      v10->_persistedThumbnailIndex = intValue;
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
       [v15 doubleValue];
       v10->_duration = v16;
 
-      v17 = [v8 objectForKeyedSubscript:@"videoCpDurationValue"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"videoCpDurationValue"];
       v10->_videoCpDurationValue = [v17 integerValue];
 
-      v18 = [v8 objectForKeyedSubscript:@"videoCpVisibilityState"];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"videoCpVisibilityState"];
       v10->_videoCpVisibilityState = [v18 integerValue];
 
-      v19 = [v8 objectForKeyedSubscript:@"playbackStyle"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"playbackStyle"];
       v10->_playbackStyle = [v19 shortValue];
 
-      v20 = [v8 objectForKeyedSubscript:@"playbackVariation"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"playbackVariation"];
       v10->_playbackVariation = [v20 shortValue];
 
-      v21 = [v8 objectForKeyedSubscript:@"modificationDate"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"modificationDate"];
       modificationDate = v10->_modificationDate;
       v10->_modificationDate = v21;
 
-      v23 = [v8 objectForKeyedSubscript:@"addedDate"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"addedDate"];
       addedDate = v10->_addedDate;
       v10->_addedDate = v23;
 
-      v25 = [v8 objectForKeyedSubscript:@"cloudIsDeletable"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"cloudIsDeletable"];
       v10->_cloudIsDeletable = [v25 BOOLValue];
 
-      v26 = [v8 objectForKeyedSubscript:@"originalColorSpace"];
+      v26 = [dictionaryCopy objectForKeyedSubscript:@"originalColorSpace"];
       originalColorSpace = v10->_originalColorSpace;
       v10->_originalColorSpace = v26;
 
-      v28 = [v8 objectForKeyedSubscript:@"imageRequestHints"];
+      v28 = [dictionaryCopy objectForKeyedSubscript:@"imageRequestHints"];
       imageRequestHints = v10->_imageRequestHints;
       v10->_imageRequestHints = v28;
 
-      v30 = [v8 objectForKeyedSubscript:@"generativeMemoryCreationEligibilityState"];
+      v30 = [dictionaryCopy objectForKeyedSubscript:@"generativeMemoryCreationEligibilityState"];
       v10->_generativeMemoryCreationEligibilityState = [v30 intValue];
 
-      v31 = [v8 objectForKeyedSubscript:@"locationData"];
+      v31 = [dictionaryCopy objectForKeyedSubscript:@"locationData"];
       locationData = v10->_locationData;
       v10->_locationData = v31;
 
-      v33 = [v8 objectForKeyedSubscript:@"compactSCSensitivityAnalysis"];
+      v33 = [dictionaryCopy objectForKeyedSubscript:@"compactSCSensitivityAnalysis"];
       v10->_compactSCSensitivityAnalysis = [v33 longLongValue];
 
-      [(PHAsset *)v10 _setupLocationAndCreationDateAttributesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupAuxiliaryIdentifierAttributesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupFileSystemAttributesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupUIStateAndTrashAttributesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupAdjustmentAndDeferredProcessingAttributesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupTypeAndPersistenceStateAttributesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupGeometryAttributesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupFaceAttributesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupKindSubtypeFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupSpatialTypeFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupHDRAndDepthMediaSubtypesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupAnalysisScoreAttributesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupBadgeAttributesFromFetchDictionary:v8];
-      [(PHAsset *)v10 _setupSmartStyleFromFetchDictionary:v8];
-      [(PHAsset *)v10 _createExtendedPropertySetsIfNeededWithPropertyHint:a4 fetchDictionary:v8];
+      [(PHAsset *)v10 _setupLocationAndCreationDateAttributesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupAuxiliaryIdentifierAttributesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupFileSystemAttributesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupUIStateAndTrashAttributesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupAdjustmentAndDeferredProcessingAttributesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupTypeAndPersistenceStateAttributesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupGeometryAttributesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupFaceAttributesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupKindSubtypeFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupSpatialTypeFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupHDRAndDepthMediaSubtypesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupAnalysisScoreAttributesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupBadgeAttributesFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _setupSmartStyleFromFetchDictionary:dictionaryCopy];
+      [(PHAsset *)v10 _createExtendedPropertySetsIfNeededWithPropertyHint:hint fetchDictionary:dictionaryCopy];
       mediaType = v10->_mediaType;
       if (mediaType == 1)
       {
@@ -9120,27 +9120,27 @@ LABEL_25:
   return v10;
 }
 
-+ (BOOL)_libraryScopeAssetContributedByCurrentUser:(id)a3
++ (BOOL)_libraryScopeAssetContributedByCurrentUser:(id)user
 {
-  v3 = a3;
+  userCopy = user;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [v3 pl_photoLibrary];
+  pl_photoLibrary = [userCopy pl_photoLibrary];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__PHAsset__libraryScopeAssetContributedByCurrentUser___block_invoke;
   v7[3] = &unk_1E75AADC0;
-  v5 = v3;
+  v5 = userCopy;
   v8 = v5;
   v9 = &v10;
-  [v4 performBlockAndWait:v7];
+  [pl_photoLibrary performBlockAndWait:v7];
 
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(pl_photoLibrary) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return pl_photoLibrary;
 }
 
 void __54__PHAsset__libraryScopeAssetContributedByCurrentUser___block_invoke(uint64_t a1)
@@ -9190,21 +9190,21 @@ void __54__PHAsset__libraryScopeAssetContributedByCurrentUser___block_invoke(uin
   }
 }
 
-+ (BOOL)_isLibraryScopeExiting:(id)a3
++ (BOOL)_isLibraryScopeExiting:(id)exiting
 {
-  v3 = a3;
+  exitingCopy = exiting;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v4 = [v3 pl_photoLibrary];
+  pl_photoLibrary = [exitingCopy pl_photoLibrary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __34__PHAsset__isLibraryScopeExiting___block_invoke;
   v9[3] = &unk_1E75AA3F8;
-  v5 = v4;
+  v5 = pl_photoLibrary;
   v10 = v5;
-  v6 = v3;
+  v6 = exitingCopy;
   v11 = v6;
   v12 = &v13;
   [v5 performBlockAndWait:v9];
@@ -9282,23 +9282,23 @@ void __34__PHAsset__isLibraryScopeExiting___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)originalUniformTypeIdentifierForAsset:(id)a3
++ (id)originalUniformTypeIdentifierForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__22497;
   v17 = __Block_byref_object_dispose__22498;
   v18 = 0;
-  v4 = [v3 pl_photoLibrary];
+  pl_photoLibrary = [assetCopy pl_photoLibrary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__PHAsset_originalUniformTypeIdentifierForAsset___block_invoke;
   v9[3] = &unk_1E75AA3F8;
-  v5 = v3;
+  v5 = assetCopy;
   v10 = v5;
-  v6 = v4;
+  v6 = pl_photoLibrary;
   v11 = v6;
   v12 = &v13;
   [v6 performBlockAndWait:v9];
@@ -9318,42 +9318,42 @@ void __49__PHAsset_originalUniformTypeIdentifierForAsset___block_invoke(uint64_t
   *(v3 + 40) = v2;
 }
 
-+ (id)fetchPredicateFromComparisonPredicate:(id)a3 options:(id)a4
++ (id)fetchPredicateFromComparisonPredicate:(id)predicate options:(id)options
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v23.receiver = a1;
+  predicateCopy = predicate;
+  optionsCopy = options;
+  v23.receiver = self;
   v23.super_class = &OBJC_METACLASS___PHAsset;
-  v8 = objc_msgSendSuper2(&v23, sel_fetchPredicateFromComparisonPredicate_options_, v6, v7);
+  v8 = objc_msgSendSuper2(&v23, sel_fetchPredicateFromComparisonPredicate_options_, predicateCopy, optionsCopy);
   v9 = [MEMORY[0x1E695DFA8] set];
   if (v8)
   {
     goto LABEL_24;
   }
 
-  v10 = [v6 leftExpression];
-  v11 = [v6 rightExpression];
-  if ([v10 expressionType] == 3)
+  leftExpression = [predicateCopy leftExpression];
+  rightExpression = [predicateCopy rightExpression];
+  if ([leftExpression expressionType] == 3)
   {
-    v12 = [v10 keyPath];
-    v13 = v11;
+    keyPath = [leftExpression keyPath];
+    v13 = rightExpression;
 LABEL_6:
     v14 = v13;
     goto LABEL_14;
   }
 
-  if ([v11 expressionType] == 3)
+  if ([rightExpression expressionType] == 3)
   {
-    v12 = [v11 keyPath];
-    v13 = v10;
+    keyPath = [rightExpression keyPath];
+    v13 = leftExpression;
     goto LABEL_6;
   }
 
-  if ([v10 expressionType] == 4 || objc_msgSend(v11, "expressionType") == 4)
+  if ([leftExpression expressionType] == 4 || objc_msgSend(rightExpression, "expressionType") == 4)
   {
-    v15 = [v6 predicateFormat];
-    v16 = [v15 containsString:@"mediaSubtypes"];
+    predicateFormat = [predicateCopy predicateFormat];
+    v16 = [predicateFormat containsString:@"mediaSubtypes"];
 
     if (v16)
     {
@@ -9362,8 +9362,8 @@ LABEL_6:
 
     else
     {
-      v17 = [v6 predicateFormat];
-      v18 = [v17 containsString:@"mediaSubtype"];
+      predicateFormat2 = [predicateCopy predicateFormat];
+      v18 = [predicateFormat2 containsString:@"mediaSubtype"];
 
       if (v18)
       {
@@ -9373,23 +9373,23 @@ LABEL_6:
   }
 
   v14 = 0;
-  v12 = 0;
+  keyPath = 0;
 LABEL_14:
-  if ([v12 isEqualToString:@"mediaSubtypes"])
+  if ([keyPath isEqualToString:@"mediaSubtypes"])
   {
     [v9 addObject:@"mediaSubtypes"];
   }
 
-  else if ([v12 isEqualToString:@"mediaSubtype"])
+  else if ([keyPath isEqualToString:@"mediaSubtype"])
   {
     [v9 addObject:@"mediaSubtype"];
   }
 
-  else if ([v12 isEqualToString:@"adjustmentFormatIdentifier"] && !objc_msgSend(v14, "expressionType"))
+  else if ([keyPath isEqualToString:@"adjustmentFormatIdentifier"] && !objc_msgSend(v14, "expressionType"))
   {
     v21 = MEMORY[0x1E696AE18];
-    v22 = [v14 constantValue];
-    v8 = [v21 predicateWithFormat:@"%K = %@", @"additionalAttributes.unmanagedAdjustment.adjustmentFormatIdentifier", v22];
+    constantValue = [v14 constantValue];
+    v8 = [v21 predicateWithFormat:@"%K = %@", @"additionalAttributes.unmanagedAdjustment.adjustmentFormatIdentifier", constantValue];
 
     goto LABEL_21;
   }
@@ -9398,7 +9398,7 @@ LABEL_14:
 LABEL_21:
   if ([v9 count])
   {
-    v19 = [a1 _transformMediaSubtypeReferences:v9 inComparisonPredicate:v6 options:v7];
+    v19 = [self _transformMediaSubtypeReferences:v9 inComparisonPredicate:predicateCopy options:optionsCopy];
 
     v8 = v19;
   }
@@ -9408,21 +9408,21 @@ LABEL_24:
   return v8;
 }
 
-+ (id)descriptionForMediaSubtypes:(unint64_t)a3
++ (id)descriptionForMediaSubtypes:(unint64_t)subtypes
 {
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 64; ++i)
   {
-    if (((1 << i) & 0x1FF075F) != 0 && ((1 << i) & a3) != 0)
+    if (((1 << i) & 0x1FF075F) != 0 && ((1 << i) & subtypes) != 0)
     {
       v7 = [PHAsset _descriptionForMediaSubtype:?];
-      [v4 addObject:v7];
+      [array addObject:v7];
     }
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    v8 = [v4 componentsJoinedByString:{@", "}];
+    v8 = [array componentsJoinedByString:{@", "}];
   }
 
   else
@@ -9433,74 +9433,74 @@ LABEL_24:
   return v8;
 }
 
-+ (id)_descriptionForMediaSubtype:(unint64_t)a3
++ (id)_descriptionForMediaSubtype:(unint64_t)subtype
 {
   v3 = @"unknown";
-  if (a3 <= 1023)
+  if (subtype <= 1023)
   {
     v13 = @"animated";
     v14 = @"semantic enhance";
     v15 = @"HDR gain map";
-    if (a3 != 512)
+    if (subtype != 512)
     {
       v15 = @"unknown";
     }
 
-    if (a3 != 256)
+    if (subtype != 256)
     {
       v14 = v15;
     }
 
-    if (a3 != 64)
+    if (subtype != 64)
     {
       v13 = v14;
     }
 
     v16 = @"livephoto";
     v17 = @"deptheffect";
-    if (a3 != 16)
+    if (subtype != 16)
     {
       v17 = @"unknown";
     }
 
-    if (a3 != 8)
+    if (subtype != 8)
     {
       v16 = v17;
     }
 
-    if (a3 <= 63)
+    if (subtype <= 63)
     {
       v13 = v16;
     }
 
     v18 = @"HDR";
     v19 = @"screenshot";
-    if (a3 != 4)
+    if (subtype != 4)
     {
       v19 = @"unknown";
     }
 
-    if (a3 != 2)
+    if (subtype != 2)
     {
       v18 = v19;
     }
 
-    if (a3 == 1)
+    if (subtype == 1)
     {
       v3 = @"panorama";
     }
 
-    if (!a3)
+    if (!subtype)
     {
       v3 = @"none";
     }
 
-    if (a3 > 1)
+    if (subtype > 1)
     {
       v3 = v18;
     }
 
-    if (a3 <= 7)
+    if (subtype <= 7)
     {
       return v3;
     }
@@ -9516,34 +9516,34 @@ LABEL_24:
     v4 = @"actioncam";
     v5 = @"high or extended dynamic range";
     v6 = @"smart style";
-    if (a3 != 0x1000000)
+    if (subtype != 0x1000000)
     {
       v6 = @"unknown";
     }
 
-    if (a3 != 0x800000)
+    if (subtype != 0x800000)
     {
       v5 = v6;
     }
 
-    if (a3 != 0x400000)
+    if (subtype != 0x400000)
     {
       v4 = v5;
     }
 
     v7 = @"video HDR";
     v8 = @"cinematic video";
-    if (a3 != 0x200000)
+    if (subtype != 0x200000)
     {
       v8 = @"unknown";
     }
 
-    if (a3 != 0x100000)
+    if (subtype != 0x100000)
     {
       v7 = v8;
     }
 
-    if (a3 < 0x400000)
+    if (subtype < 0x400000)
     {
       v4 = v7;
     }
@@ -9551,37 +9551,37 @@ LABEL_24:
     v9 = @"highframerate";
     v10 = @"timelapse";
     v11 = @"screenrecording";
-    if (a3 != 0x80000)
+    if (subtype != 0x80000)
     {
       v11 = @"unknown";
     }
 
-    if (a3 != 0x40000)
+    if (subtype != 0x40000)
     {
       v10 = v11;
     }
 
-    if (a3 != 0x20000)
+    if (subtype != 0x20000)
     {
       v9 = v10;
     }
 
-    if (a3 == 0x10000)
+    if (subtype == 0x10000)
     {
       v3 = @"streamedvideo";
     }
 
-    if (a3 == 1024)
+    if (subtype == 1024)
     {
       v3 = @"spatial media";
     }
 
-    if (a3 >= 0x20000)
+    if (subtype >= 0x20000)
     {
       v3 = v9;
     }
 
-    if (a3 < 0x100000)
+    if (subtype < 0x100000)
     {
       return v3;
     }
@@ -9593,44 +9593,44 @@ LABEL_24:
   }
 }
 
-+ (id)descriptionForMediaType:(int64_t)a3
++ (id)descriptionForMediaType:(int64_t)type
 {
-  if ((a3 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E75A7238[a3 - 1];
+    return off_1E75A7238[type - 1];
   }
 }
 
-+ (id)descriptionForPlaybackStyle:(int64_t)a3
++ (id)descriptionForPlaybackStyle:(int64_t)style
 {
-  if (a3 > 5)
+  if (style > 5)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E75A7208[a3];
+    return off_1E75A7208[style];
   }
 }
 
-+ (id)_descriptionForVariationSuggestionStates:(unint64_t)a3
++ (id)_descriptionForVariationSuggestionStates:(unint64_t)states
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v4;
-  if (v3)
+  statesCopy = states;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = array;
+  if (statesCopy)
   {
-    [v4 addObject:@"suggested"];
-    if ((v3 & 2) == 0)
+    [array addObject:@"suggested"];
+    if ((statesCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 0x20) == 0)
+      if ((statesCopy & 0x20) == 0)
       {
         goto LABEL_5;
       }
@@ -9639,13 +9639,13 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((statesCopy & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"poor"];
-  if ((v3 & 0x20) != 0)
+  if ((statesCopy & 0x20) != 0)
   {
 LABEL_4:
     [v5 addObject:@"seen"];
@@ -9665,34 +9665,34 @@ LABEL_5:
   return v6;
 }
 
-+ (id)_descriptionForVariationSuggestionType:(unint64_t)a3
++ (id)_descriptionForVariationSuggestionType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E75A71E8[a3];
+    return off_1E75A71E8[type];
   }
 }
 
-+ (id)fetchAssetsForOsMigrationWithOptions:(id)a3
++ (id)fetchAssetsForOsMigrationWithOptions:(id)options
 {
-  v5 = a3;
-  if (!v5)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PHAsset.m" lineNumber:4148 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset.m" lineNumber:4148 description:{@"Invalid parameter not satisfying: %@", @"options"}];
   }
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__PHAsset_fetchAssetsForOsMigrationWithOptions___block_invoke;
   v9[3] = &__block_descriptor_40_e39___PHFetchResult_16__0__PHFetchOptions_8l;
-  v9[4] = a1;
-  v6 = [PHObject authorizationAwareFetchResultWithOptions:v5 fetchBlock:v9];
+  v9[4] = self;
+  v6 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:v9];
 
   return v6;
 }
@@ -9769,15 +9769,15 @@ void __48__PHAsset_fetchAssetsForOsMigrationWithOptions___block_invoke_2(uint64_
   *(v13 + 40) = v12;
 }
 
-+ (id)predicateForResourcesForOsMigrationIncludeLocalOnly:(BOOL)a3 iCPLEnabled:(BOOL)a4
++ (id)predicateForResourcesForOsMigrationIncludeLocalOnly:(BOOL)only iCPLEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
+  enabledCopy = enabled;
+  onlyCopy = only;
   v25[3] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AB28];
   v7 = MEMORY[0x1E696AE18];
-  v8 = [MEMORY[0x1E69BE4D0] originalCPLResourceTypes];
-  v9 = [v7 predicateWithFormat:@"%K in %@", @"dataStoreSubtype", v8];
+  originalCPLResourceTypes = [MEMORY[0x1E69BE4D0] originalCPLResourceTypes];
+  v9 = [v7 predicateWithFormat:@"%K in %@", @"dataStoreSubtype", originalCPLResourceTypes];
   v25[0] = v9;
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"dataStoreClassID", 0];
   v25[1] = v10;
@@ -9786,9 +9786,9 @@ void __48__PHAsset_fetchAssetsForOsMigrationWithOptions___block_invoke_2(uint64_
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:3];
   v13 = [v6 andPredicateWithSubpredicates:v12];
 
-  if (!v4)
+  if (!enabledCopy)
   {
-    if (!v5)
+    if (!onlyCopy)
     {
       goto LABEL_6;
     }
@@ -9804,7 +9804,7 @@ void __48__PHAsset_fetchAssetsForOsMigrationWithOptions___block_invoke_2(uint64_
   v17 = [v14 andPredicateWithSubpredicates:v16];
 
   v13 = v17;
-  if (v5)
+  if (onlyCopy)
   {
 LABEL_5:
     v18 = MEMORY[0x1E696AB28];
@@ -9821,25 +9821,25 @@ LABEL_6:
   return v13;
 }
 
-+ (id)fetchUserHiddenAssetsWithOptions:(id)a3
++ (id)fetchUserHiddenAssetsWithOptions:(id)options
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PHAsset.m" lineNumber:4114 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset.m" lineNumber:4114 description:{@"Invalid parameter not satisfying: %@", @"options"}];
   }
 
   v11[0] = @"PHAssetPropertySetIdentifier";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  [v5 setFetchPropertySets:v6];
+  [optionsCopy setFetchPropertySets:v6];
 
-  [v5 setIncludeHiddenAssets:1];
+  [optionsCopy setIncludeHiddenAssets:1];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == YES", @"hidden"];
-  [v5 setPredicate:v7];
+  [optionsCopy setPredicate:v7];
 
-  v8 = [PHObject authorizationAwareFetchResultWithOptions:v5 fetchBlock:&__block_literal_global_1070];
+  v8 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_1070];
 
   return v8;
 }
@@ -9852,16 +9852,16 @@ id __44__PHAsset_fetchUserHiddenAssetsWithOptions___block_invoke(uint64_t a1, ui
   return v3;
 }
 
-+ (id)fetchAnyCinematicVideosNeedingDeferredProcessingWithOptions:(id)a3
++ (id)fetchAnyCinematicVideosNeedingDeferredProcessingWithOptions:(id)options
 {
-  v5 = a3;
-  if (!v5)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PHAsset.m" lineNumber:4106 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset.m" lineNumber:4106 description:{@"Invalid parameter not satisfying: %@", @"options"}];
   }
 
-  v6 = [PHObject authorizationAwareFetchResultWithOptions:v5 fetchBlock:&__block_literal_global_1065];
+  v6 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_1065];
 
   return v6;
 }
@@ -9874,23 +9874,23 @@ id __71__PHAsset_fetchAnyCinematicVideosNeedingDeferredProcessingWithOptions___b
   return v3;
 }
 
-+ (id)fetchAssetsForPTPWithOptions:(id)a3
++ (id)fetchAssetsForPTPWithOptions:(id)options
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PHAsset.m" lineNumber:4096 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset.m" lineNumber:4096 description:{@"Invalid parameter not satisfying: %@", @"options"}];
   }
 
   v10[0] = @"PHAssetPropertySetIdentifier";
   v10[1] = @"PHAssetPropertySetPTP";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
-  [v5 setFetchPropertySets:v6];
+  [optionsCopy setFetchPropertySets:v6];
 
-  [v5 setIncludeHiddenAssets:1];
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:v5 fetchBlock:&__block_literal_global_1063];
+  [optionsCopy setIncludeHiddenAssets:1];
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:optionsCopy fetchBlock:&__block_literal_global_1063];
 
   return v7;
 }
@@ -9903,56 +9903,56 @@ id __40__PHAsset_fetchAssetsForPTPWithOptions___block_invoke(uint64_t a1, uint64
   return v3;
 }
 
-+ (id)fetchAssetsForSearchLookupIdentifier:(id)a3 options:(id)a4
++ (id)fetchAssetsForSearchLookupIdentifier:(id)identifier options:(id)options
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifierCopy = identifier;
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PHAsset.m" lineNumber:4056 description:{@"Invalid parameter not satisfying: %@", @"options"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset.m" lineNumber:4056 description:{@"Invalid parameter not satisfying: %@", @"options"}];
 
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"PHAsset.m" lineNumber:4057 description:{@"Invalid parameter not satisfying: %@", @"lookupIdentifier"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAsset.m" lineNumber:4057 description:{@"Invalid parameter not satisfying: %@", @"lookupIdentifier"}];
 
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!identifierCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
   v9 = PLPhotoKitGetLog();
-  v10 = os_signpost_id_make_with_pointer(v9, a1);
+  v10 = os_signpost_id_make_with_pointer(v9, self);
   v11 = v9;
   v12 = v11;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
     *buf = 138412290;
-    v30 = v7;
+    v30 = identifierCopy;
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "UtilityCollectionFetch", "LookupIdentifier=%@", buf, 0xCu);
   }
 
-  v13 = [v8 photoLibrary];
-  v14 = [v13 searchIndex];
-  v15 = [v14 unverifiedPsiSearchIndex];
+  photoLibrary = [optionsCopy photoLibrary];
+  searchIndex = [photoLibrary searchIndex];
+  unverifiedPsiSearchIndex = [searchIndex unverifiedPsiSearchIndex];
 
-  v16 = [v15 uuidsForLookupIdentifier:v7 resultTypes:1];
-  v17 = [v8 photoLibrary];
-  v18 = [PHFetchOptions fetchOptionsWithPhotoLibrary:v17 orObject:0];
+  v16 = [unverifiedPsiSearchIndex uuidsForLookupIdentifier:identifierCopy resultTypes:1];
+  photoLibrary2 = [optionsCopy photoLibrary];
+  v18 = [PHFetchOptions fetchOptionsWithPhotoLibrary:photoLibrary2 orObject:0];
 
   [v18 setIncludeHiddenAssets:0];
   [v18 setIncludeTrashedAssets:0];
-  [v18 mergeWithFetchOptions:v8];
+  [v18 mergeWithFetchOptions:optionsCopy];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __56__PHAsset_fetchAssetsForSearchLookupIdentifier_options___block_invoke;
@@ -9994,16 +9994,16 @@ id __56__PHAsset_fetchAssetsForSearchLookupIdentifier_options___block_invoke(uin
   return v4;
 }
 
-+ (id)fetchAssetsForCloudFeedEntry:(id)a3 options:(id)a4
++ (id)fetchAssetsForCloudFeedEntry:(id)entry options:(id)options
 {
-  v5 = a3;
+  entryCopy = entry;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__PHAsset_fetchAssetsForCloudFeedEntry_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = entryCopy;
+  v6 = entryCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -10016,34 +10016,34 @@ id __48__PHAsset_fetchAssetsForCloudFeedEntry_options___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (id)fetchKeyAssetsForCollectionList:(id)a3 options:(id)a4
++ (id)fetchKeyAssetsForCollectionList:(id)list options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [PHCollection fetchCollectionsInCollectionList:v6 options:v5];
+  optionsCopy = options;
+  listCopy = list;
+  v7 = [PHCollection fetchCollectionsInCollectionList:listCopy options:optionsCopy];
   LOBYTE(v10) = 1;
-  v8 = [[PHCollectionListKeyAssetsFetchResult alloc] initWithCollectionList:v6 keyAssets:0 childCollectionsFetchResult:v7 keyAssetFetchByCollectionID:0 identifier:0 options:v5 registerIfNeeded:v10];
+  v8 = [[PHCollectionListKeyAssetsFetchResult alloc] initWithCollectionList:listCopy keyAssets:0 childCollectionsFetchResult:v7 keyAssetFetchByCollectionID:0 identifier:0 options:optionsCopy registerIfNeeded:v10];
 
   return v8;
 }
 
-+ (id)fetchAssetsThroughAssetPersonEdgesForPerson:(id)a3 options:(id)a4
++ (id)fetchAssetsThroughAssetPersonEdgesForPerson:(id)person options:(id)options
 {
-  v4 = [PHGraphQuery graphQueryForAssetsForPerson:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHGraphQuery graphQueryForAssetsForPerson:person options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)fetchAssetsInPreviewStateWithPhotosOrPhotosDeferredSuggestedByClientTypeWithOptions:(id)a3
++ (id)fetchAssetsInPreviewStateWithPhotosOrPhotosDeferredSuggestedByClientTypeWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __95__PHAsset_fetchAssetsInPreviewStateWithPhotosOrPhotosDeferredSuggestedByClientTypeWithOptions___block_invoke;
   v7[3] = &unk_1E75AB0E0;
-  v8 = v3;
-  v4 = v3;
+  v8 = optionsCopy;
+  v4 = optionsCopy;
   v5 = [PHObject authorizationAwareFetchResultWithOptions:v4 fetchBlock:v7];
 
   return v5;
@@ -10057,16 +10057,16 @@ id __95__PHAsset_fetchAssetsInPreviewStateWithPhotosOrPhotosDeferredSuggestedByC
   return v2;
 }
 
-+ (id)fetchAssetsInPreviewStateWithSuggestedByClientType:(signed __int16)a3 options:(id)a4
++ (id)fetchAssetsInPreviewStateWithSuggestedByClientType:(signed __int16)type options:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__PHAsset_fetchAssetsInPreviewStateWithSuggestedByClientType_options___block_invoke;
   v9[3] = &unk_1E75A7018;
-  v11 = a3;
-  v10 = v5;
-  v6 = v5;
+  typeCopy = type;
+  v10 = optionsCopy;
+  v6 = optionsCopy;
   v7 = [PHObject authorizationAwareFetchResultWithOptions:v6 fetchBlock:v9];
 
   return v7;
@@ -10085,18 +10085,18 @@ id __70__PHAsset_fetchAssetsInPreviewStateWithSuggestedByClientType_options___bl
   return v5;
 }
 
-+ (id)fetchAssetsInPreviewStateInLibraryScope:(id)a3 options:(id)a4
++ (id)fetchAssetsInPreviewStateInLibraryScope:(id)scope options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  scopeCopy = scope;
+  optionsCopy = options;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__PHAsset_fetchAssetsInPreviewStateInLibraryScope_options___block_invoke;
   v11[3] = &unk_1E75AA278;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = scopeCopy;
+  v13 = optionsCopy;
+  v7 = optionsCopy;
+  v8 = scopeCopy;
   v9 = [PHObject authorizationAwareFetchResultWithOptions:v7 fetchBlock:v11];
 
   return v9;
@@ -10110,19 +10110,19 @@ id __59__PHAsset_fetchAssetsInPreviewStateInLibraryScope_options___block_invoke(
   return v2;
 }
 
-+ (id)fetchAssetsWithCurrentUserAsLibraryScopeContributor:(BOOL)a3 inLibraryScope:(id)a4 options:(id)a5
++ (id)fetchAssetsWithCurrentUserAsLibraryScopeContributor:(BOOL)contributor inLibraryScope:(id)scope options:(id)options
 {
-  v7 = a4;
-  v8 = a5;
+  scopeCopy = scope;
+  optionsCopy = options;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __86__PHAsset_fetchAssetsWithCurrentUserAsLibraryScopeContributor_inLibraryScope_options___block_invoke;
   v13[3] = &unk_1E75A6FF0;
-  v16 = a3;
-  v14 = v7;
-  v15 = v8;
-  v9 = v8;
-  v10 = v7;
+  contributorCopy = contributor;
+  v14 = scopeCopy;
+  v15 = optionsCopy;
+  v9 = optionsCopy;
+  v10 = scopeCopy;
   v11 = [PHObject authorizationAwareFetchResultWithOptions:v9 fetchBlock:v13];
 
   return v11;
@@ -10136,28 +10136,28 @@ id __86__PHAsset_fetchAssetsWithCurrentUserAsLibraryScopeContributor_inLibrarySc
   return v2;
 }
 
-+ (id)fetchAssetsInLibraryScope:(id)a3 fromAssets:(id)a4
++ (id)fetchAssetsInLibraryScope:(id)scope fromAssets:(id)assets
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  assetsCopy = assets;
+  scopeCopy = scope;
+  v8 = [[v5 alloc] initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __48__PHAsset_fetchAssetsInLibraryScope_fromAssets___block_invoke;
   v19 = &unk_1E75A6FC8;
   v20 = v8;
   v9 = v8;
-  [v6 enumerateObjectsUsingBlock:&v16];
-  v10 = [v6 firstObject];
+  [assetsCopy enumerateObjectsUsingBlock:&v16];
+  firstObject = [assetsCopy firstObject];
 
-  v11 = [v10 photoLibrary];
-  v12 = [v11 librarySpecificFetchOptions];
+  photoLibrary = [firstObject photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v9, v16, v17, v18, v19];
-  [v12 setInternalPredicate:v13];
+  [librarySpecificFetchOptions setInternalPredicate:v13];
 
-  v14 = [PHAsset fetchAssetsInLibraryScope:v7 options:v12];
+  v14 = [PHAsset fetchAssetsInLibraryScope:scopeCopy options:librarySpecificFetchOptions];
 
   return v14;
 }
@@ -10169,18 +10169,18 @@ void __48__PHAsset_fetchAssetsInLibraryScope_fromAssets___block_invoke(uint64_t 
   [v2 addObject:v3];
 }
 
-+ (id)fetchAssetsInLibraryScope:(id)a3 options:(id)a4
++ (id)fetchAssetsInLibraryScope:(id)scope options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  scopeCopy = scope;
+  optionsCopy = options;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __45__PHAsset_fetchAssetsInLibraryScope_options___block_invoke;
   v11[3] = &unk_1E75AA278;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = scopeCopy;
+  v13 = optionsCopy;
+  v7 = optionsCopy;
+  v8 = scopeCopy;
   v9 = [PHObject authorizationAwareFetchResultWithOptions:v7 fetchBlock:v11];
 
   return v9;
@@ -10194,17 +10194,17 @@ id __45__PHAsset_fetchAssetsInLibraryScope_options___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)fetchAssetsCapturedOrEdited:(BOOL)a3 onThisCameraSinceDate:(id)a4 options:(id)a5
++ (id)fetchAssetsCapturedOrEdited:(BOOL)edited onThisCameraSinceDate:(id)date options:(id)options
 {
-  v7 = a4;
+  dateCopy = date;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__PHAsset_fetchAssetsCapturedOrEdited_onThisCameraSinceDate_options___block_invoke;
   v11[3] = &unk_1E75A6FA0;
-  v13 = a3;
-  v12 = v7;
-  v8 = v7;
-  v9 = [PHObject authorizationAwareFetchResultWithOptions:a5 fetchBlock:v11];
+  editedCopy = edited;
+  v12 = dateCopy;
+  v8 = dateCopy;
+  v9 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v11];
 
   return v9;
 }
@@ -10227,23 +10227,23 @@ id __69__PHAsset_fetchAssetsCapturedOrEdited_onThisCameraSinceDate_options___blo
   return v4;
 }
 
-+ (id)fetchAssetsFromCameraSinceDate:(id)a3 options:(id)a4
++ (id)fetchAssetsFromCameraSinceDate:(id)date options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  dateCopy = date;
+  optionsCopy = options;
+  if (!dateCopy)
   {
-    v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-300.0];
+    dateCopy = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-300.0];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__PHAsset_fetchAssetsFromCameraSinceDate_options___block_invoke;
   v11[3] = &unk_1E75AA278;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = dateCopy;
+  v13 = optionsCopy;
+  v7 = optionsCopy;
+  v8 = dateCopy;
   v9 = [PHObject authorizationAwareFetchResultWithOptions:v7 fetchBlock:v11];
 
   return v9;
@@ -10257,18 +10257,18 @@ id __50__PHAsset_fetchAssetsFromCameraSinceDate_options___block_invoke(uint64_t 
   return v2;
 }
 
-+ (id)fetchAllAssetsInYearRepresentedByYearHighlight:(id)a3 options:(id)a4
++ (id)fetchAllAssetsInYearRepresentedByYearHighlight:(id)highlight options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  highlightCopy = highlight;
+  optionsCopy = options;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__PHAsset_fetchAllAssetsInYearRepresentedByYearHighlight_options___block_invoke;
   v11[3] = &unk_1E75AA278;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = highlightCopy;
+  v13 = optionsCopy;
+  v7 = optionsCopy;
+  v8 = highlightCopy;
   v9 = [PHObject authorizationAwareFetchResultWithOptions:v7 fetchBlock:v11];
 
   return v9;
@@ -10290,16 +10290,16 @@ id __44__PHAsset_fetchReferencedAssetsWithOptions___block_invoke(uint64_t a1, ui
   return v3;
 }
 
-+ (id)fetchAssetsForKeywords:(id)a3 options:(id)a4
++ (id)fetchAssetsForKeywords:(id)keywords options:(id)options
 {
-  v5 = a3;
+  keywordsCopy = keywords;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__PHAsset_fetchAssetsForKeywords_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = keywordsCopy;
+  v6 = keywordsCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -10312,15 +10312,15 @@ id __42__PHAsset_fetchAssetsForKeywords_options___block_invoke(uint64_t a1, uint
   return v3;
 }
 
-+ (id)fetchAssetsInAssetCollections:(id)a3 options:(id)a4
++ (id)fetchAssetsInAssetCollections:(id)collections options:(id)options
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  collectionsCopy = collections;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = collectionsCopy;
   }
 
   else
@@ -10332,8 +10332,8 @@ id __42__PHAsset_fetchAssetsForKeywords_options___block_invoke(uint64_t a1, uint
   v9 = v8;
   if (v8 && [v8 count] == 1)
   {
-    v10 = [v9 firstObject];
-    v11 = [PHAsset fetchAssetsInAssetCollection:v10 options:v6];
+    firstObject = [v9 firstObject];
+    v11 = [PHAsset fetchAssetsInAssetCollection:firstObject options:optionsCopy];
 
     goto LABEL_22;
   }
@@ -10343,18 +10343,18 @@ id __42__PHAsset_fetchAssetsForKeywords_options___block_invoke(uint64_t a1, uint
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v13 = v5;
+  v13 = collectionsCopy;
   v11 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
     v24 = v9;
-    v25 = v5;
-    v14 = 0;
+    v25 = collectionsCopy;
+    photoLibrary = 0;
     v15 = *v27;
     do
     {
       v16 = 0;
-      v17 = v14;
+      v17 = photoLibrary;
       do
       {
         if (*v27 != v15)
@@ -10363,14 +10363,14 @@ id __42__PHAsset_fetchAssetsForKeywords_options___block_invoke(uint64_t a1, uint
         }
 
         v18 = *(*(&v26 + 1) + 8 * v16);
-        v19 = [PHAsset fetchAssetsInAssetCollection:v18 options:v6, v24];
-        v20 = [v19 fetchedObjectIDs];
-        [v12 addObjectsFromArray:v20];
+        v19 = [PHAsset fetchAssetsInAssetCollection:v18 options:optionsCopy, v24];
+        fetchedObjectIDs = [v19 fetchedObjectIDs];
+        [v12 addObjectsFromArray:fetchedObjectIDs];
 
-        v14 = [v18 photoLibrary];
+        photoLibrary = [v18 photoLibrary];
 
         v16 = v16 + 1;
-        v17 = v14;
+        v17 = photoLibrary;
       }
 
       while (v11 != v16);
@@ -10379,31 +10379,31 @@ id __42__PHAsset_fetchAssetsForKeywords_options___block_invoke(uint64_t a1, uint
 
     while (v11);
 
-    if (!v14)
+    if (!photoLibrary)
     {
       v11 = 0;
       v9 = v24;
-      v5 = v25;
+      collectionsCopy = v25;
       goto LABEL_21;
     }
 
-    v21 = [v6 photoLibrary];
+    photoLibrary2 = [optionsCopy photoLibrary];
 
     v9 = v24;
-    if (v21 != v14)
+    if (photoLibrary2 != photoLibrary)
     {
-      v22 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v14];
+      v22 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-      v6 = v22;
+      optionsCopy = v22;
     }
 
-    v5 = v25;
-    v11 = [PHAsset fetchAssetsWithObjectIDs:v12 options:v6];
+    collectionsCopy = v25;
+    v11 = [PHAsset fetchAssetsWithObjectIDs:v12 options:optionsCopy];
   }
 
   else
   {
-    v14 = v13;
+    photoLibrary = v13;
   }
 
 LABEL_21:
@@ -10412,16 +10412,16 @@ LABEL_22:
   return v11;
 }
 
-+ (id)fetchVisibleAssetsWithObjectIDs:(id)a3 options:(id)a4
++ (id)fetchVisibleAssetsWithObjectIDs:(id)ds options:(id)options
 {
-  v5 = a3;
+  dsCopy = ds;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__PHAsset_fetchVisibleAssetsWithObjectIDs_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = dsCopy;
+  v6 = dsCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -10434,16 +10434,16 @@ id __51__PHAsset_fetchVisibleAssetsWithObjectIDs_options___block_invoke(uint64_t
   return v3;
 }
 
-+ (id)fetchAssetsWithObjectIDs:(id)a3 options:(id)a4
++ (id)fetchAssetsWithObjectIDs:(id)ds options:(id)options
 {
-  v5 = a3;
+  dsCopy = ds;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__PHAsset_fetchAssetsWithObjectIDs_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = dsCopy;
+  v6 = dsCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -10456,24 +10456,24 @@ id __44__PHAsset_fetchAssetsWithObjectIDs_options___block_invoke(uint64_t a1, ui
   return v3;
 }
 
-+ (id)fetchKeyAssetForExtendedSceneIdentifier:(unint64_t)a3 aboveConfidenceThreshold:(double)a4 minimumSceneAnalysisVersion:(signed __int16)a5 options:(id)a6
++ (id)fetchKeyAssetForExtendedSceneIdentifier:(unint64_t)identifier aboveConfidenceThreshold:(double)threshold minimumSceneAnalysisVersion:(signed __int16)version options:(id)options
 {
-  v6 = a5;
+  versionCopy = version;
   v41[1] = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = [v11 photoLibrary];
-  v13 = [v12 photoLibrary];
+  optionsCopy = options;
+  photoLibrary = [optionsCopy photoLibrary];
+  v12PhotoLibrary = [photoLibrary photoLibrary];
 
-  if (!v13)
+  if (!v12PhotoLibrary)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"PHAsset.m" lineNumber:3867 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset.m" lineNumber:3867 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  v14 = [v13 managedObjectContext];
+  managedObjectContext = [v12PhotoLibrary managedObjectContext];
   v15 = MEMORY[0x1E695D5E0];
-  v16 = [MEMORY[0x1E69BE778] entityName];
-  v17 = [v15 fetchRequestWithEntityName:v16];
+  entityName = [MEMORY[0x1E69BE778] entityName];
+  v17 = [v15 fetchRequestWithEntityName:entityName];
 
   v18 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"confidence" ascending:0];
   v41[0] = v18;
@@ -10481,7 +10481,7 @@ id __44__PHAsset_fetchAssetsWithObjectIDs_options___block_invoke(uint64_t a1, ui
   [v17 setSortDescriptors:v19];
 
   [v17 setFetchLimit:1];
-  v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"sceneIdentifier == %lld && confidence > %f && assetAttributes.asset.additionalAttributes.sceneAnalysisVersion >= %i && assetAttributes.asset.hidden == NO && assetAttributes.asset.trashedState == %d", a3, *&a4, v6, 0];
+  v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"sceneIdentifier == %lld && confidence > %f && assetAttributes.asset.additionalAttributes.sceneAnalysisVersion >= %i && assetAttributes.asset.hidden == NO && assetAttributes.asset.trashedState == %d", identifier, *&threshold, versionCopy, 0];
   [v17 setPredicate:v20];
 
   v35 = 0;
@@ -10500,7 +10500,7 @@ id __44__PHAsset_fetchAssetsWithObjectIDs_options___block_invoke(uint64_t a1, ui
   v28[1] = 3221225472;
   v28[2] = __112__PHAsset_fetchKeyAssetForExtendedSceneIdentifier_aboveConfidenceThreshold_minimumSceneAnalysisVersion_options___block_invoke;
   v28[3] = &unk_1E75A9D58;
-  v21 = v14;
+  v21 = managedObjectContext;
   v29 = v21;
   v22 = v17;
   v30 = v22;
@@ -10508,8 +10508,8 @@ id __44__PHAsset_fetchAssetsWithObjectIDs_options___block_invoke(uint64_t a1, ui
   v32 = &v35;
   [v21 performBlockAndWait:v28];
   v23 = v36[5];
-  v24 = [v11 photoLibrary];
-  v25 = [v23 pl_PHAssetFromPhotoLibrary:v24];
+  photoLibrary2 = [optionsCopy photoLibrary];
+  v25 = [v23 pl_PHAssetFromPhotoLibrary:photoLibrary2];
 
   _Block_object_dispose(v33, 8);
   _Block_object_dispose(&v35, 8);
@@ -10534,24 +10534,24 @@ void __112__PHAsset_fetchKeyAssetForExtendedSceneIdentifier_aboveConfidenceThres
   *(v9 + 40) = v8;
 }
 
-+ (id)fetchAssetsForComment:(id)a3 options:(id)a4
++ (id)fetchAssetsForComment:(id)comment options:(id)options
 {
-  v4 = [PHQuery queryForAssetsForComment:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHQuery queryForAssetsForComment:comment options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)fetchAssetsForFaceGroups:(id)a3 options:(id)a4
++ (id)fetchAssetsForFaceGroups:(id)groups options:(id)options
 {
-  v5 = a3;
+  groupsCopy = groups;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__PHAsset_fetchAssetsForFaceGroups_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = groupsCopy;
+  v6 = groupsCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -10564,16 +10564,16 @@ id __44__PHAsset_fetchAssetsForFaceGroups_options___block_invoke(uint64_t a1, ui
   return v3;
 }
 
-+ (id)fetchAssetsForFaces:(id)a3 options:(id)a4
++ (id)fetchAssetsForFaces:(id)faces options:(id)options
 {
-  v5 = a3;
+  facesCopy = faces;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __39__PHAsset_fetchAssetsForFaces_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = facesCopy;
+  v6 = facesCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -10586,18 +10586,18 @@ id __39__PHAsset_fetchAssetsForFaces_options___block_invoke(uint64_t a1, uint64_
   return v3;
 }
 
-+ (id)fetchCollageAssetsForDayHighlight:(id)a3 options:(id)a4
++ (id)fetchCollageAssetsForDayHighlight:(id)highlight options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  highlightCopy = highlight;
+  optionsCopy = options;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__PHAsset_fetchCollageAssetsForDayHighlight_options___block_invoke;
   v11[3] = &unk_1E75AA278;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = highlightCopy;
+  v13 = optionsCopy;
+  v7 = optionsCopy;
+  v8 = highlightCopy;
   v9 = [PHObject authorizationAwareFetchResultWithOptions:v7 fetchBlock:v11];
 
   return v9;
@@ -10611,30 +10611,30 @@ id __53__PHAsset_fetchCollageAssetsForDayHighlight_options___block_invoke(uint64
   return v2;
 }
 
-+ (id)fetchKeyAssetForSocialGroup:(id)a3 createIfNeeded:(BOOL)a4 options:(id)a5
++ (id)fetchKeyAssetForSocialGroup:(id)group createIfNeeded:(BOOL)needed options:(id)options
 {
-  v5 = [PHGraphQuery graphQueryForKeyAssetForSocialGroup:a3 createIfNeeded:a4 options:a5];
-  v6 = [v5 executeQuery];
+  v5 = [PHGraphQuery graphQueryForKeyAssetForSocialGroup:group createIfNeeded:needed options:options];
+  executeQuery = [v5 executeQuery];
 
-  return v6;
+  return executeQuery;
 }
 
-+ (id)fetchInclusiveAssetsForSocialGroup:(id)a3 options:(id)a4
++ (id)fetchInclusiveAssetsForSocialGroup:(id)group options:(id)options
 {
-  v4 = [PHGraphQuery graphQueryForInclusiveAssetsForSocialGroup:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHGraphQuery graphQueryForInclusiveAssetsForSocialGroup:group options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)fetchExclusiveSocialGroupAssetsForPersons:(id)a3 minimumNumberOfSharedAssets:(unint64_t)a4 options:(id)a5 error:(id *)a6
++ (id)fetchExclusiveSocialGroupAssetsForPersons:(id)persons minimumNumberOfSharedAssets:(unint64_t)assets options:(id)options error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  if ([v11 count] <= 1)
+  personsCopy = persons;
+  optionsCopy = options;
+  if ([personsCopy count] <= 1)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PHAsset.m" lineNumber:3786 description:{@"Invalid parameter not satisfying: %@", @"personUUIDs.count > 1"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset.m" lineNumber:3786 description:{@"Invalid parameter not satisfying: %@", @"personUUIDs.count > 1"}];
   }
 
   v34 = 0;
@@ -10643,8 +10643,8 @@ id __53__PHAsset_fetchCollageAssetsForDayHighlight_options___block_invoke(uint64
   v37 = __Block_byref_object_copy__22497;
   v38 = __Block_byref_object_dispose__22498;
   v39 = 0;
-  v13 = [v12 photoLibrary];
-  v14 = [v13 photoLibraryForCurrentQueueQoS];
+  photoLibrary = [optionsCopy photoLibrary];
+  photoLibraryForCurrentQueueQoS = [photoLibrary photoLibraryForCurrentQueueQoS];
 
   v28 = 0;
   v29 = &v28;
@@ -10656,27 +10656,27 @@ id __53__PHAsset_fetchCollageAssetsForDayHighlight_options___block_invoke(uint64
   v22[1] = 3221225472;
   v22[2] = __95__PHAsset_fetchExclusiveSocialGroupAssetsForPersons_minimumNumberOfSharedAssets_options_error___block_invoke;
   v22[3] = &unk_1E75AA420;
-  v15 = v11;
+  v15 = personsCopy;
   v23 = v15;
-  v16 = v14;
+  v16 = photoLibraryForCurrentQueueQoS;
   v24 = v16;
   v25 = &v28;
   v26 = &v34;
-  v27 = a4;
+  assetsCopy = assets;
   [v16 performBlockAndWait:v22];
   v17 = v35[5];
   if (v17)
   {
-    v18 = [v17 allObjects];
-    v19 = [PHAsset fetchVisibleAssetsWithObjectIDs:v18 options:v12];
+    allObjects = [v17 allObjects];
+    v19 = [PHAsset fetchVisibleAssetsWithObjectIDs:allObjects options:optionsCopy];
   }
 
   else
   {
     v19 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v29[5];
+      *error = v29[5];
     }
   }
 
@@ -10754,24 +10754,24 @@ void __95__PHAsset_fetchExclusiveSocialGroupAssetsForPersons_minimumNumberOfShar
   }
 }
 
-+ (id)fetchExclusiveAssetsForSocialGroup:(id)a3 options:(id)a4
++ (id)fetchExclusiveAssetsForSocialGroup:(id)group options:(id)options
 {
-  v4 = [PHGraphQuery graphQueryForExclusiveAssetsForSocialGroup:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHGraphQuery graphQueryForExclusiveAssetsForSocialGroup:group options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)fetchAssetsForPersons:(id)a3 options:(id)a4
++ (id)fetchAssetsForPersons:(id)persons options:(id)options
 {
-  v5 = a3;
+  personsCopy = persons;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __41__PHAsset_fetchAssetsForPersons_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = personsCopy;
+  v6 = personsCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -10784,50 +10784,50 @@ id __41__PHAsset_fetchAssetsForPersons_options___block_invoke(uint64_t a1, uint6
   return v3;
 }
 
-+ (id)fetchAssetsForPerson:(id)a3 options:(id)a4
++ (id)fetchAssetsForPerson:(id)person options:(id)options
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  personCopy = person;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
+  optionsCopy = options;
+  personCopy2 = person;
+  v9 = [v6 arrayWithObjects:&personCopy count:1];
 
-  v10 = [a1 fetchAssetsForPersons:v9 options:{v7, v12, v13}];
+  v10 = [self fetchAssetsForPersons:v9 options:{optionsCopy, personCopy, v13}];
 
   return v10;
 }
 
-+ (id)fetchKeyAssetForPerson:(id)a3 options:(id)a4
++ (id)fetchKeyAssetForPerson:(id)person options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 photoLibrary];
-  v8 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v5 photoLibrary:v7];
+  optionsCopy = options;
+  personCopy = person;
+  photoLibrary = [personCopy photoLibrary];
+  v8 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v9 = [PHQuery queryForKeyAssetForPerson:v6 options:v8];
+  v9 = [PHQuery queryForKeyAssetForPerson:personCopy options:v8];
 
-  v10 = [v9 executeQuery];
+  executeQuery = [v9 executeQuery];
 
-  return v10;
+  return executeQuery;
 }
 
-+ (id)fetchAssetsForPerson:(id)a3 faceCount:(unint64_t)a4 options:(id)a5
++ (id)fetchAssetsForPerson:(id)person faceCount:(unint64_t)count options:(id)options
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  personCopy = person;
   v9 = MEMORY[0x1E696AE18];
-  v10 = a5;
-  v11 = [v9 predicateWithFormat:@"%K.@count == %lu", @"detectedFaces", a4];
-  v12 = [v8 photoLibrary];
-  v13 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v10 photoLibrary:v12];
+  optionsCopy = options;
+  v11 = [v9 predicateWithFormat:@"%K.@count == %lu", @"detectedFaces", count];
+  photoLibrary = [personCopy photoLibrary];
+  v13 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:photoLibrary];
 
-  v14 = [v13 internalPredicate];
-  v15 = v14;
-  if (v14)
+  internalPredicate = [v13 internalPredicate];
+  v15 = internalPredicate;
+  if (internalPredicate)
   {
     v16 = MEMORY[0x1E696AB28];
-    v21[0] = v14;
+    v21[0] = internalPredicate;
     v21[1] = v11;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     v18 = [v16 andPredicateWithSubpredicates:v17];
@@ -10839,21 +10839,21 @@ id __41__PHAsset_fetchAssetsForPersons_options___block_invoke(uint64_t a1, uint6
     [v13 setInternalPredicate:v11];
   }
 
-  v19 = [a1 fetchAssetsForPerson:v8 options:v13];
+  v19 = [self fetchAssetsForPerson:personCopy options:v13];
 
   return v19;
 }
 
-+ (id)fetchGuestAssetsInCollectionContainingAsset:(id)a3 options:(id)a4
++ (id)fetchGuestAssetsInCollectionContainingAsset:(id)asset options:(id)options
 {
-  v5 = a3;
+  assetCopy = asset;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__PHAsset_fetchGuestAssetsInCollectionContainingAsset_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = assetCopy;
+  v6 = assetCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -10888,22 +10888,22 @@ id __34__PHAsset_fetchAssetsWithOptions___block_invoke(uint64_t a1, uint64_t a2)
   v6 = options;
   if (!v5 || [(PHObject *)v5 isTransient]|| [(PHAssetCollection *)v5 isPrivacySensitiveAlbum])
   {
-    v7 = 0;
+    executeQuery = 0;
   }
 
   else
   {
     v9 = [PHQuery queryForKeyAssetsInAssetCollection:v5 options:v6];
-    v7 = [v9 executeQuery];
-    if (!v7)
+    executeQuery = [v9 executeQuery];
+    if (!executeQuery)
     {
       v10 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v5];
       v11 = [PHAssetCollection transientAssetCollectionWithAssets:MEMORY[0x1E695E0F0] title:@"keys" identifier:@"transientkeyassets" photoLibrary:v10];
-      v7 = [PHAsset fetchAssetsInAssetCollection:v11 options:v6];
+      executeQuery = [PHAsset fetchAssetsInAssetCollection:v11 options:v6];
     }
   }
 
-  return v7;
+  return executeQuery;
 }
 
 + (PHFetchResult)fetchAssetsWithBurstIdentifier:(NSString *)burstIdentifier options:(PHFetchOptions *)options
@@ -10990,16 +10990,16 @@ id __46__PHAsset_fetchAssetsWithALAssetURLs_options___block_invoke(uint64_t a1, 
   return v11;
 }
 
-+ (id)fetchAssetsWithCloudIdentifiers:(id)a3 options:(id)a4
++ (id)fetchAssetsWithCloudIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__PHAsset_fetchAssetsWithCloudIdentifiers_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = identifiersCopy;
+  v6 = identifiersCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -11012,16 +11012,16 @@ id __51__PHAsset_fetchAssetsWithCloudIdentifiers_options___block_invoke(uint64_t
   return v3;
 }
 
-+ (id)fetchAssetsWithUUIDs:(id)a3 options:(id)a4
++ (id)fetchAssetsWithUUIDs:(id)ds options:(id)options
 {
-  v5 = a3;
+  dsCopy = ds;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__PHAsset_fetchAssetsWithUUIDs_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = dsCopy;
+  v6 = dsCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -11076,31 +11076,31 @@ id __44__PHAsset_fetchAssetsWithMediaType_options___block_invoke(uint64_t a1, ui
   return v3;
 }
 
-+ (id)fetchAssetsWithoutOriginalsInAssetCollection:(id)a3 options:(id)a4
++ (id)fetchAssetsWithoutOriginalsInAssetCollection:(id)collection options:(id)options
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  collectionCopy = collection;
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v7 = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:v6];
+    optionsCopy = [PHFetchOptions fetchOptionsWithPhotoLibrary:0 orObject:collectionCopy];
   }
 
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"master != nil && (SUBQUERY(master.resources, $r, $r.type == %ul AND $r.isLocallyAvailable == NO).@count != 0)", 1];
-  v9 = [v7 internalPredicate];
-  v10 = v9;
+  internalPredicate = [optionsCopy internalPredicate];
+  v10 = internalPredicate;
   v11 = v8;
-  if (v9)
+  if (internalPredicate)
   {
     v12 = MEMORY[0x1E696AB28];
-    v16[0] = v9;
+    v16[0] = internalPredicate;
     v16[1] = v8;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     v11 = [v12 andPredicateWithSubpredicates:v13];
   }
 
-  [v7 setInternalPredicate:v11];
-  v14 = [a1 fetchAssetsInAssetCollection:v6 options:v7];
+  [optionsCopy setInternalPredicate:v11];
+  v14 = [self fetchAssetsInAssetCollection:collectionCopy options:optionsCopy];
 
   return v14;
 }
@@ -11112,12 +11112,12 @@ id __44__PHAsset_fetchAssetsWithMediaType_options___block_invoke(uint64_t a1, ui
   v7 = v6;
   if (v5)
   {
-    v8 = [(PHFetchOptions *)v6 photoLibrary];
+    photoLibrary = [(PHFetchOptions *)v6 photoLibrary];
 
-    if (!v8)
+    if (!photoLibrary)
     {
-      v9 = [(PHObject *)v5 photoLibrary];
-      v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:v9];
+      photoLibrary2 = [(PHObject *)v5 photoLibrary];
+      v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v7 photoLibrary:photoLibrary2];
 
       v7 = v10;
     }
@@ -11127,120 +11127,120 @@ id __44__PHAsset_fetchAssetsWithMediaType_options___block_invoke(uint64_t a1, ui
       goto LABEL_17;
     }
 
-    v11 = [(PHAssetCollection *)v5 query];
-    if (v11)
+    query = [(PHAssetCollection *)v5 query];
+    if (query)
     {
-      v12 = v11;
+      v12 = query;
       if (v7)
       {
-        v13 = [v11 copy];
+        photoLibrary4 = [query copy];
 
-        v14 = [v13 fetchOptions];
-        v15 = v14;
-        if (v14)
+        fetchOptions = [photoLibrary4 fetchOptions];
+        v15 = fetchOptions;
+        if (fetchOptions)
         {
-          [v14 mergeWithFetchOptions:v7];
+          [fetchOptions mergeWithFetchOptions:v7];
         }
 
         else
         {
-          [v13 setFetchOptions:v7];
+          [photoLibrary4 setFetchOptions:v7];
         }
       }
 
       else
       {
-        v13 = v11;
+        photoLibrary4 = query;
       }
 
-      v16 = [v13 executeQuery];
+      executeQuery = [photoLibrary4 executeQuery];
     }
 
     else
     {
-      v17 = [(PHAssetCollection *)v5 assetOids];
-      if (v17)
+      assetOids = [(PHAssetCollection *)v5 assetOids];
+      if (assetOids)
       {
-        v13 = v17;
+        photoLibrary4 = assetOids;
         v18 = [PHManualFetchResult alloc];
-        v19 = [v7 photoLibrary];
-        v20 = [v7 fetchPropertySetsAsSet];
-        v16 = [(PHManualFetchResult *)v18 initWithOids:v13 photoLibrary:v19 fetchType:@"PHAsset" fetchPropertySets:v20 identifier:0 registerIfNeeded:1];
+        photoLibrary3 = [v7 photoLibrary];
+        fetchPropertySetsAsSet = [v7 fetchPropertySetsAsSet];
+        executeQuery = [(PHManualFetchResult *)v18 initWithOids:photoLibrary4 photoLibrary:photoLibrary3 fetchType:@"PHAsset" fetchPropertySets:fetchPropertySetsAsSet identifier:0 registerIfNeeded:1];
       }
 
       else
       {
-        v23 = [(PHAssetCollection *)v5 assets];
-        v24 = v23;
+        assets = [(PHAssetCollection *)v5 assets];
+        v24 = assets;
         v25 = MEMORY[0x1E695E0F0];
-        if (v23)
+        if (assets)
         {
-          v25 = v23;
+          v25 = assets;
         }
 
         v26 = v25;
 
         v27 = objc_opt_class();
-        v28 = [v7 fetchPropertySetsAsSet];
-        [v27 _batchFetchAdditionalPropertySetsIfNeeded:v28 forAssets:v26];
+        fetchPropertySetsAsSet2 = [v7 fetchPropertySetsAsSet];
+        [v27 _batchFetchAdditionalPropertySetsIfNeeded:fetchPropertySetsAsSet2 forAssets:v26];
 
         v29 = [PHManualFetchResult alloc];
-        v13 = [v7 photoLibrary];
-        v30 = [v7 fetchPropertySetsAsSet];
-        v16 = [(PHManualFetchResult *)v29 initWithObjects:v26 photoLibrary:v13 fetchType:@"PHAsset" fetchPropertySets:v30 identifier:0 registerIfNeeded:1];
+        photoLibrary4 = [v7 photoLibrary];
+        fetchPropertySetsAsSet3 = [v7 fetchPropertySetsAsSet];
+        executeQuery = [(PHManualFetchResult *)v29 initWithObjects:v26 photoLibrary:photoLibrary4 fetchType:@"PHAsset" fetchPropertySets:fetchPropertySetsAsSet3 identifier:0 registerIfNeeded:1];
       }
     }
 
-    if (!v16)
+    if (!executeQuery)
     {
 LABEL_17:
       v21 = [PHQuery queryForAssetsInAssetCollection:v5 options:v7];
-      v16 = [v21 executeQuery];
+      executeQuery = [v21 executeQuery];
     }
   }
 
   else
   {
-    v16 = 0;
+    executeQuery = 0;
   }
 
-  return v16;
+  return executeQuery;
 }
 
-+ (id)fetchAssetsInImportSessions:(id)a3 options:(id)a4
++ (id)fetchAssetsInImportSessions:(id)sessions options:(id)options
 {
-  v4 = [PHQuery queryForAssetsInImportSessions:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHQuery queryForAssetsInImportSessions:sessions options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)fetchAssetsInBoundingBoxWithTopLeftLocation:(id)a3 bottomRightLocation:(id)a4 options:(id)a5
++ (id)fetchAssetsInBoundingBoxWithTopLeftLocation:(id)location bottomRightLocation:(id)rightLocation options:(id)options
 {
-  v5 = [PHQuery queryForAssetsInBoundingBoxWithTopLeftLocation:a3 bottomRightLocation:a4 options:a5];
-  v6 = [v5 executeQuery];
+  v5 = [PHQuery queryForAssetsInBoundingBoxWithTopLeftLocation:location bottomRightLocation:rightLocation options:options];
+  executeQuery = [v5 executeQuery];
 
-  return v6;
+  return executeQuery;
 }
 
-+ (id)fetchAssetsContainingAllPersons:(id)a3 options:(id)a4
++ (id)fetchAssetsContainingAllPersons:(id)persons options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  personsCopy = persons;
+  optionsCopy = options;
+  if ([personsCopy count])
   {
-    v7 = [v5 firstObject];
-    v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v6 object:v7];
+    firstObject = [personsCopy firstObject];
+    v8 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:firstObject];
 
-    v9 = [v8 managedObjectContext];
-    v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:v6 photoLibrary:v8];
+    managedObjectContext = [v8 managedObjectContext];
+    v10 = [PHFetchOptions fetchOptionsCopyFromNullableFetchOptions:optionsCopy photoLibrary:v8];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __51__PHAsset_fetchAssetsContainingAllPersons_options___block_invoke;
     v14[3] = &unk_1E75AA278;
-    v15 = v5;
-    v16 = v9;
-    v11 = v9;
+    v15 = personsCopy;
+    v16 = managedObjectContext;
+    v11 = managedObjectContext;
     v12 = [PHObject authorizationAwareFetchResultWithOptions:v10 fetchBlock:v14];
   }
 
@@ -11326,24 +11326,24 @@ uint64_t __51__PHAsset_fetchAssetsContainingAllPersons_options___block_invoke_2(
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)fetchAssetsGroupedByFaceUUIDForFaces:(id)a3 fetchPropertySets:(id)a4
++ (id)fetchAssetsGroupedByFaceUUIDForFaces:(id)faces fetchPropertySets:(id)sets
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  facesCopy = faces;
+  setsCopy = sets;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__22497;
   v34 = __Block_byref_object_dispose__22498;
   v35 = 0;
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v5;
-  v9 = 0;
+  v8 = facesCopy;
+  v16PhotoLibrary = 0;
   v10 = 0;
   v11 = [v8 countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v11)
@@ -11359,15 +11359,15 @@ uint64_t __51__PHAsset_fetchAssetsContainingAllPersons_options___block_invoke_2(
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 uuid];
-        [v7 addObject:v15];
+        uuid = [v14 uuid];
+        [array addObject:uuid];
 
-        if (!v9)
+        if (!v16PhotoLibrary)
         {
-          v16 = [v14 photoLibrary];
+          photoLibrary = [v14 photoLibrary];
 
-          v9 = [v16 photoLibrary];
-          v10 = v16;
+          v16PhotoLibrary = [photoLibrary photoLibrary];
+          v10 = photoLibrary;
         }
       }
 
@@ -11384,10 +11384,10 @@ uint64_t __51__PHAsset_fetchAssetsContainingAllPersons_options___block_invoke_2(
   v22[3] = &unk_1E75A8890;
   v18 = v10;
   v23 = v18;
-  v19 = v6;
+  v19 = setsCopy;
   v24 = v19;
   v25 = &v30;
-  if (MEMORY[0x19EAF3390]([v17 batchFetchAssetsByFaceUUIDWithFaceUUIDs:v7 library:v9 completion:v22]))
+  if (MEMORY[0x19EAF3390]([v17 batchFetchAssetsByFaceUUIDWithFaceUUIDs:array library:v16PhotoLibrary completion:v22]))
   {
     plslogGreenTeaReadingPhotosOrVideos();
   }
@@ -11430,77 +11430,77 @@ void __66__PHAsset_fetchAssetsGroupedByFaceUUIDForFaces_fetchPropertySets___bloc
   [*(a1 + 48) setObject:v7 forKeyedSubscript:v6];
 }
 
-+ (id)fetchAssetsGroupedByFaceUUIDForFaces:(id)a3
++ (id)fetchAssetsGroupedByFaceUUIDForFaces:(id)faces
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v9[0] = @"PHAssetPropertySetCore";
   v9[1] = @"PHAssetPropertySetOriginalMetadata";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  facesCopy = faces;
   v6 = [v4 arrayWithObjects:v9 count:2];
-  v7 = [a1 fetchAssetsGroupedByFaceUUIDForFaces:v5 fetchPropertySets:v6];
+  v7 = [self fetchAssetsGroupedByFaceUUIDForFaces:facesCopy fetchPropertySets:v6];
 
   return v7;
 }
 
-+ (int64_t)countOfAssetsWithLocationFromUUIDs:(id)a3 photoLibrary:(id)a4
++ (int64_t)countOfAssetsWithLocationFromUUIDs:(id)ds photoLibrary:(id)library
 {
-  if (!a3)
+  if (!ds)
   {
     return 0;
   }
 
-  v5 = a3;
-  v6 = [a4 librarySpecificFetchOptions];
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"locationData != nil && uuid in %@", v5];
+  dsCopy = ds;
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"locationData != nil && uuid in %@", dsCopy];
 
-  [v6 setInternalPredicate:v7];
-  [v6 setInternalSortDescriptors:MEMORY[0x1E695E0F0]];
-  [v6 setShouldPrefetchCount:1];
-  [v6 setWantsIncrementalChangeDetails:0];
-  v8 = [PHAsset fetchAssetsWithOptions:v6];
+  [librarySpecificFetchOptions setInternalPredicate:dsCopy];
+  [librarySpecificFetchOptions setInternalSortDescriptors:MEMORY[0x1E695E0F0]];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  v8 = [PHAsset fetchAssetsWithOptions:librarySpecificFetchOptions];
   v9 = [v8 count];
 
   return v9;
 }
 
-+ (BOOL)_isLivePhotoWithPhotoIris:(BOOL)a3 hasAdjustments:(BOOL)a4 videoCpDuration:(int64_t)a5 videoCPVisibility:(unsigned __int16)a6 sourceType:(unint64_t)a7
++ (BOOL)_isLivePhotoWithPhotoIris:(BOOL)iris hasAdjustments:(BOOL)adjustments videoCpDuration:(int64_t)duration videoCPVisibility:(unsigned __int16)visibility sourceType:(unint64_t)type
 {
-  v7 = a6;
-  v8 = a4;
-  v9 = a3;
-  v10 = [MEMORY[0x1E69BE540] isPhotoIrisPlaceholderWithPhotoIris:a3 videoCpDuration:a5 isCloudShared:a7 == 2 videoCpFilePath:0];
+  visibilityCopy = visibility;
+  adjustmentsCopy = adjustments;
+  irisCopy = iris;
+  v10 = [MEMORY[0x1E69BE540] isPhotoIrisPlaceholderWithPhotoIris:iris videoCpDuration:duration isCloudShared:type == 2 videoCpFilePath:0];
   v11 = MEMORY[0x1E69BE540];
 
-  return [v11 canPlayPhotoIrisWithPhotoIris:v9 photoIrisPlaceholder:v10 hasAdjustments:v8 videoCpVisibilityState:v7];
+  return [v11 canPlayPhotoIrisWithPhotoIris:irisCopy photoIrisPlaceholder:v10 hasAdjustments:adjustmentsCopy videoCpVisibilityState:visibilityCopy];
 }
 
-+ (void)_batchFetchAdditionalPropertySetsIfNeeded:(id)a3 forAssets:(id)a4
++ (void)_batchFetchAdditionalPropertySetsIfNeeded:(id)needed forAssets:(id)assets
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() _unfetchedPropertySetsForAssets:v6 fromPropertySets:v5];
+  neededCopy = needed;
+  assetsCopy = assets;
+  v7 = [objc_opt_class() _unfetchedPropertySetsForAssets:assetsCopy fromPropertySets:neededCopy];
   if ([v7 count])
   {
-    v30 = v5;
-    v8 = [objc_opt_class() _extendedPropertyFetchHintsForPropertySets:v5];
-    v31 = [MEMORY[0x1E695DF70] array];
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    v30 = neededCopy;
+    v8 = [objc_opt_class() _extendedPropertyFetchHintsForPropertySets:neededCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v29 = v6;
-    v10 = v6;
+    v29 = assetsCopy;
+    v10 = assetsCopy;
     v11 = [v10 countByEnumeratingWithState:&v37 objects:v42 count:16];
     v28 = v7;
     if (v11)
     {
       v12 = v11;
-      v13 = 0;
+      photoLibrary = 0;
       v14 = *v38;
-      v15 = v31;
+      v15 = array;
       do
       {
         for (i = 0; i != v12; ++i)
@@ -11511,16 +11511,16 @@ void __66__PHAsset_fetchAssetsGroupedByFaceUUIDForFaces_fetchPropertySets___bloc
           }
 
           v17 = *(*(&v37 + 1) + 8 * i);
-          if (!v13)
+          if (!photoLibrary)
           {
-            v13 = [*(*(&v37 + 1) + 8 * i) photoLibrary];
+            photoLibrary = [*(*(&v37 + 1) + 8 * i) photoLibrary];
           }
 
-          v18 = [v17 objectID];
-          [v31 addObject:v18];
+          objectID = [v17 objectID];
+          [array addObject:objectID];
 
-          v19 = [v17 uuid];
-          [v9 setObject:v17 forKeyedSubscript:v19];
+          uuid = [v17 uuid];
+          [dictionary setObject:v17 forKeyedSubscript:uuid];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -11531,11 +11531,11 @@ void __66__PHAsset_fetchAssetsGroupedByFaceUUIDForFaces_fetchPropertySets___bloc
 
     else
     {
-      v13 = 0;
-      v15 = v31;
+      photoLibrary = 0;
+      v15 = array;
     }
 
-    v27 = [v13 fetchDictionariesByPHClassForOIDs:v15 propertyHint:v8 includeTrash:1 overrideWithPHClass:0];
+    v27 = [photoLibrary fetchDictionariesByPHClassForOIDs:v15 propertyHint:v8 includeTrash:1 overrideWithPHClass:0];
     [v27 objectForKey:objc_opt_class()];
     v33 = 0u;
     v34 = 0u;
@@ -11557,7 +11557,7 @@ void __66__PHAsset_fetchAssetsGroupedByFaceUUIDForFaces_fetchPropertySets___bloc
 
           v24 = *(*(&v33 + 1) + 8 * j);
           v25 = [v24 objectForKeyedSubscript:@"uuid"];
-          v26 = [v9 objectForKeyedSubscript:v25];
+          v26 = [dictionary objectForKeyedSubscript:v25];
           [v26 _createExtendedPropertySetsIfNeededWithPropertyHint:v8 fetchDictionary:v24];
           [v26 addFetchPropertyHint:v8];
         }
@@ -11568,23 +11568,23 @@ void __66__PHAsset_fetchAssetsGroupedByFaceUUIDForFaces_fetchPropertySets___bloc
       while (v21);
     }
 
-    v6 = v29;
-    v5 = v30;
+    assetsCopy = v29;
+    neededCopy = v30;
     v7 = v28;
   }
 }
 
-+ (id)_unfetchedPropertySetsForAssets:(id)a3 fromPropertySets:(id)a4
++ (id)_unfetchedPropertySetsForAssets:(id)assets fromPropertySets:(id)sets
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  setsCopy = sets;
   v7 = [MEMORY[0x1E695DFA8] set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = assetsCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -11599,7 +11599,7 @@ void __66__PHAsset_fetchAssetsGroupedByFaceUUIDForFaces_fetchPropertySets___bloc
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) _unfetchedPropertySetsFromPropertySets:{v6, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) _unfetchedPropertySetsFromPropertySets:{setsCopy, v15}];
         [v7 unionSet:v13];
       }
 
@@ -11695,11 +11695,11 @@ void __44__PHAsset_propertySetAccessorsByPropertySet__block_invoke()
   propertySetAccessorsByPropertySet_pl_once_object_21 = v1;
 }
 
-+ (Class)propertySetClassForPropertySet:(id)a3
++ (Class)propertySetClassForPropertySet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   pl_dispatch_once();
-  v4 = [propertySetClassForPropertySet__pl_once_object_20 objectForKey:v3];
+  v4 = [propertySetClassForPropertySet__pl_once_object_20 objectForKey:setCopy];
 
   return v4;
 }
@@ -11791,23 +11791,23 @@ void __42__PHAsset_propertySetClassForPropertySet___block_invoke()
   propertySetClassForPropertySet__pl_once_object_20 = v1;
 }
 
-+ (id)_transformMediaSubtypeReferences:(id)a3 inComparisonPredicate:(id)a4 options:(id)a5
++ (id)_transformMediaSubtypeReferences:(id)references inComparisonPredicate:(id)predicate options:(id)options
 {
   v71 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v52 = a4;
-  v49 = a5;
+  referencesCopy = references;
+  predicateCopy = predicate;
+  optionsCopy = options;
   if (_transformMediaSubtypeReferences_inComparisonPredicate_options__onceToken != -1)
   {
     dispatch_once(&_transformMediaSubtypeReferences_inComparisonPredicate_options__onceToken, &__block_literal_global_688);
   }
 
-  v57 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v7;
+  obj = referencesCopy;
   v53 = [obj countByEnumeratingWithState:&v62 objects:v70 count:16];
   if (v53)
   {
@@ -11825,7 +11825,7 @@ void __42__PHAsset_propertySetClassForPropertySet___block_invoke()
 
         v54 = v9;
         v10 = [_transformMediaSubtypeReferences_inComparisonPredicate_options___allSubtypesByMediaSubtypeKey objectForKeyedSubscript:*(*(&v62 + 1) + 8 * v9)];
-        v11 = [v10 filteredArrayUsingPredicate:v52];
+        v11 = [v10 filteredArrayUsingPredicate:predicateCopy];
 
         v60 = 0u;
         v61 = 0u;
@@ -11855,14 +11855,14 @@ void __42__PHAsset_propertySetClassForPropertySet___block_invoke()
                 v18 = [v17 objectForKeyedSubscript:@"mediaSubtype"];
               }
 
-              v19 = [v18 integerValue];
-              if (v19 >= 0x10000)
+              integerValue = [v18 integerValue];
+              if (integerValue >= 0x10000)
               {
-                if (v19 < 0x100000)
+                if (integerValue < 0x100000)
                 {
-                  if (v19 >= 0x40000)
+                  if (integerValue >= 0x40000)
                   {
-                    if (v19 == 0x40000)
+                    if (integerValue == 0x40000)
                     {
                       v25 = *(v8 + 3608);
                       v26 = 102;
@@ -11870,7 +11870,7 @@ void __42__PHAsset_propertySetClassForPropertySet___block_invoke()
 
                     else
                     {
-                      if (v19 != 0x80000)
+                      if (integerValue != 0x80000)
                       {
                         goto LABEL_64;
                       }
@@ -11882,9 +11882,9 @@ void __42__PHAsset_propertySetClassForPropertySet___block_invoke()
 
                   else
                   {
-                    if (v19 != 0x10000)
+                    if (integerValue != 0x10000)
                     {
-                      if (v19 != 0x20000)
+                      if (integerValue != 0x20000)
                       {
                         goto LABEL_64;
                       }
@@ -11900,16 +11900,16 @@ void __42__PHAsset_propertySetClassForPropertySet___block_invoke()
 
                 else
                 {
-                  if (v19 < 0x400000)
+                  if (integerValue < 0x400000)
                   {
-                    if (v19 == 0x100000)
+                    if (integerValue == 0x100000)
                     {
                       v20 = *(v8 + 3608);
                       v41 = 5;
                       goto LABEL_57;
                     }
 
-                    if (v19 != 0x200000)
+                    if (integerValue != 0x200000)
                     {
                       goto LABEL_64;
                     }
@@ -11920,11 +11920,11 @@ void __42__PHAsset_propertySetClassForPropertySet___block_invoke()
                     goto LABEL_58;
                   }
 
-                  if (v19 != 0x400000)
+                  if (integerValue != 0x400000)
                   {
-                    if (v19 != 0x800000)
+                    if (integerValue != 0x800000)
                     {
-                      if (v19 != 0x1000000)
+                      if (integerValue != 0x1000000)
                       {
                         goto LABEL_64;
                       }
@@ -11933,7 +11933,7 @@ void __42__PHAsset_propertySetClassForPropertySet___block_invoke()
                       v21 = @"currentSleetCast > 0";
 LABEL_59:
                       [v20 predicateWithFormat:v21, v45, v46, v47, v48];
-                      v42 = LABEL_60:;
+                      predicateForDepthEffectPhotos = LABEL_60:;
                       goto LABEL_61;
                     }
 
@@ -11957,29 +11957,29 @@ LABEL_55:
                 goto LABEL_60;
               }
 
-              if (v19 <= 15)
+              if (integerValue <= 15)
               {
-                if (v19 > 3)
+                if (integerValue > 3)
                 {
-                  if (v19 != 4)
+                  if (integerValue != 4)
                   {
-                    if (v19 != 8)
+                    if (integerValue != 8)
                     {
                       goto LABEL_64;
                     }
 
                     v23 = [*(v8 + 3608) predicateWithFormat:@"%K = %d", @"kindSubtype", 2];
                     v27 = [*(v8 + 3608) predicateWithFormat:@"%K != %d", @"videoCpDurationValue", 0];
-                    v28 = [MEMORY[0x1E69BE540] videoComplementVisibilityStatePlayablePredicate];
+                    videoComplementVisibilityStatePlayablePredicate = [MEMORY[0x1E69BE540] videoComplementVisibilityStatePlayablePredicate];
                     v29 = MEMORY[0x1E696AB28];
                     v68[0] = v23;
                     v68[1] = v27;
-                    v68[2] = v28;
+                    v68[2] = videoComplementVisibilityStatePlayablePredicate;
                     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:3];
                     v31 = [v29 andPredicateWithSubpredicates:v30];
 
                     v15 = v56;
-                    [v57 addObject:v31];
+                    [array addObject:v31];
 
                     v8 = 0x1E696A000;
                     goto LABEL_63;
@@ -11991,19 +11991,19 @@ LABEL_55:
 
                 else
                 {
-                  if (v19 != 1)
+                  if (integerValue != 1)
                   {
-                    if (v19 != 2)
+                    if (integerValue != 2)
                     {
                       goto LABEL_64;
                     }
 
                     v22 = [*(v8 + 3608) predicateWithFormat:@"%K = %d", @"hdrType", 2];
-                    [v57 addObject:v22];
+                    [array addObject:v22];
 
                     v15 = v56;
                     v23 = [*(v8 + 3608) predicateWithFormat:@"%K = %d", @"hdrType", 3];
-                    v24 = v57;
+                    v24 = array;
                     v12 = v55;
                     goto LABEL_62;
                   }
@@ -12015,21 +12015,21 @@ LABEL_55:
                 goto LABEL_55;
               }
 
-              if (v19 > 511)
+              if (integerValue > 511)
               {
-                if (v19 != 512)
+                if (integerValue != 512)
                 {
-                  if (v19 != 1024)
+                  if (integerValue != 1024)
                   {
                     goto LABEL_64;
                   }
 
                   v23 = [*(v8 + 3608) predicateWithFormat:@"%K != %d", @"spatialType", 0];
                   v32 = [MEMORY[0x1E69BE540] predicateForUnadjustedAssetsWithKeyPathToAsset:0];
-                  v33 = [*(v8 + 3608) predicateWithFormat:@"(%K & %d) != 0", @"additionalAttributes.unmanagedAdjustment.adjustmentRenderTypes", 4096];
+                  4096 = [*(v8 + 3608) predicateWithFormat:@"(%K & %d) != 0", @"additionalAttributes.unmanagedAdjustment.adjustmentRenderTypes", 4096];
                   v34 = MEMORY[0x1E696AB28];
                   v67[0] = v32;
-                  v67[1] = v33;
+                  v67[1] = 4096;
                   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
                   v36 = [v34 orPredicateWithSubpredicates:v35];
 
@@ -12040,7 +12040,7 @@ LABEL_55:
                   v39 = [v37 andPredicateWithSubpredicates:v38];
 
                   v12 = v55;
-                  [v57 addObject:v39];
+                  [array addObject:v39];
 
                   v15 = v56;
                   v8 = 0x1E696A000;
@@ -12053,9 +12053,9 @@ LABEL_55:
                 goto LABEL_57;
               }
 
-              if (v19 != 16)
+              if (integerValue != 16)
               {
-                if (v19 != 64)
+                if (integerValue != 64)
                 {
                   goto LABEL_64;
                 }
@@ -12064,10 +12064,10 @@ LABEL_55:
                 goto LABEL_60;
               }
 
-              v42 = [MEMORY[0x1E69BE540] predicateForDepthEffectPhotos];
+              predicateForDepthEffectPhotos = [MEMORY[0x1E69BE540] predicateForDepthEffectPhotos];
 LABEL_61:
-              v23 = v42;
-              v24 = v57;
+              v23 = predicateForDepthEffectPhotos;
+              v24 = array;
 LABEL_62:
               [v24 addObject:v23];
 LABEL_63:
@@ -12091,9 +12091,9 @@ LABEL_64:
     while (v53);
   }
 
-  if ([v57 count])
+  if ([array count])
   {
-    [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v57];
+    [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:array];
   }
 
   else
@@ -12162,38 +12162,38 @@ void __74__PHAsset__transformMediaSubtypeReferences_inComparisonPredicate_option
   _transformMediaSubtypeReferences_inComparisonPredicate_options___allSubtypesByMediaSubtypeKey = v11;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__PHAsset_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_22932 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_22932, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_22933 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_22933 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
-  else if ([v6 expressionType])
+  else if ([expressionCopy expressionType])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v6 constantValue];
-    if (v9)
+    constantValue = [expressionCopy constantValue];
+    if (constantValue)
     {
-      if ([v7 isEqualToString:@"mediaType"])
+      if ([pathCopy isEqualToString:@"mediaType"])
       {
-        v10 = PHQueryTransformExpressionConstantValue(v9, &__block_literal_global_648);
+        v10 = PHQueryTransformExpressionConstantValue(constantValue, &__block_literal_global_648);
         v8 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v10];
       }
 
@@ -12202,9 +12202,9 @@ void __74__PHAsset__transformMediaSubtypeReferences_inComparisonPredicate_option
         v8 = 0;
       }
 
-      if ([v7 isEqualToString:@"contentType"])
+      if ([pathCopy isEqualToString:@"contentType"])
       {
-        v11 = PHQueryTransformExpressionConstantValue(v9, &__block_literal_global_651);
+        v11 = PHQueryTransformExpressionConstantValue(constantValue, &__block_literal_global_651);
         v12 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v11];
 
         v8 = v12;
@@ -12294,7 +12294,7 @@ id __47__PHAsset_transformValueExpression_forKeyPath___block_invoke_2(uint64_t a
   return v5;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   if (propertiesToFetchWithHint__onceToken_22954 != -1)
   {
@@ -12348,18 +12348,18 @@ uint64_t __37__PHAsset_propertiesToFetchWithHint___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_composePropertiesToFetchWithHint:(unint64_t)a3
++ (id)_composePropertiesToFetchWithHint:(unint64_t)hint
 {
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (hint)
   {
-    v8 = [a1 identifierPropertiesToFetch];
-    [a1 extendPropertiesToFetch:v5 withProperties:v8];
+    identifierPropertiesToFetch = [self identifierPropertiesToFetch];
+    [self extendPropertiesToFetch:array withProperties:identifierPropertiesToFetch];
 
-    if ((a3 & 2) == 0)
+    if ((hint & 2) == 0)
     {
 LABEL_3:
-      if ((a3 & 4) == 0)
+      if ((hint & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -12368,18 +12368,18 @@ LABEL_3:
     }
   }
 
-  else if ((a3 & 2) == 0)
+  else if ((hint & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  v9 = [a1 corePropertiesToFetch];
-  [a1 extendPropertiesToFetch:v5 withProperties:v9];
+  corePropertiesToFetch = [self corePropertiesToFetch];
+  [self extendPropertiesToFetch:array withProperties:corePropertiesToFetch];
 
-  if ((a3 & 4) == 0)
+  if ((hint & 4) == 0)
   {
 LABEL_4:
-    if ((a3 & 0x1000) == 0)
+    if ((hint & 0x1000) == 0)
     {
       goto LABEL_5;
     }
@@ -12388,13 +12388,13 @@ LABEL_4:
   }
 
 LABEL_47:
-  v10 = [a1 locationPropertiesToFetch];
-  [a1 extendPropertiesToFetch:v5 withProperties:v10];
+  locationPropertiesToFetch = [self locationPropertiesToFetch];
+  [self extendPropertiesToFetch:array withProperties:locationPropertiesToFetch];
 
-  if ((a3 & 0x1000) == 0)
+  if ((hint & 0x1000) == 0)
   {
 LABEL_5:
-    if ((a3 & 8) == 0)
+    if ((hint & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -12403,13 +12403,13 @@ LABEL_5:
   }
 
 LABEL_48:
-  v11 = [a1 imageManagerPropertiesToFetch];
-  [a1 extendPropertiesToFetch:v5 withProperties:v11];
+  imageManagerPropertiesToFetch = [self imageManagerPropertiesToFetch];
+  [self extendPropertiesToFetch:array withProperties:imageManagerPropertiesToFetch];
 
-  if ((a3 & 8) == 0)
+  if ((hint & 8) == 0)
   {
 LABEL_6:
-    if ((a3 & 0x10) == 0)
+    if ((hint & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -12418,11 +12418,11 @@ LABEL_6:
   }
 
 LABEL_49:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x10) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x10) == 0)
   {
 LABEL_7:
-    if ((a3 & 0x200000) == 0)
+    if ((hint & 0x200000) == 0)
     {
       goto LABEL_8;
     }
@@ -12431,11 +12431,11 @@ LABEL_7:
   }
 
 LABEL_50:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x200000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x200000) == 0)
   {
 LABEL_8:
-    if ((a3 & 0x100000) == 0)
+    if ((hint & 0x100000) == 0)
     {
       goto LABEL_9;
     }
@@ -12444,11 +12444,11 @@ LABEL_8:
   }
 
 LABEL_51:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x100000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x100000) == 0)
   {
 LABEL_9:
-    if ((a3 & 0x8000000000) == 0)
+    if ((hint & 0x8000000000) == 0)
     {
       goto LABEL_10;
     }
@@ -12457,11 +12457,11 @@ LABEL_9:
   }
 
 LABEL_52:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x8000000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x8000000000) == 0)
   {
 LABEL_10:
-    if ((a3 & 0x1000000) == 0)
+    if ((hint & 0x1000000) == 0)
     {
       goto LABEL_11;
     }
@@ -12470,11 +12470,11 @@ LABEL_10:
   }
 
 LABEL_53:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x1000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x1000000) == 0)
   {
 LABEL_11:
-    if ((a3 & 0x20) == 0)
+    if ((hint & 0x20) == 0)
     {
       goto LABEL_12;
     }
@@ -12483,11 +12483,11 @@ LABEL_11:
   }
 
 LABEL_54:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x20) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x20) == 0)
   {
 LABEL_12:
-    if ((a3 & 0x40) == 0)
+    if ((hint & 0x40) == 0)
     {
       goto LABEL_13;
     }
@@ -12496,11 +12496,11 @@ LABEL_12:
   }
 
 LABEL_55:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x40) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x40) == 0)
   {
 LABEL_13:
-    if ((a3 & 0x10000000000) == 0)
+    if ((hint & 0x10000000000) == 0)
     {
       goto LABEL_14;
     }
@@ -12509,11 +12509,11 @@ LABEL_13:
   }
 
 LABEL_56:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x10000000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x10000000000) == 0)
   {
 LABEL_14:
-    if ((a3 & 0x80) == 0)
+    if ((hint & 0x80) == 0)
     {
       goto LABEL_15;
     }
@@ -12522,11 +12522,11 @@ LABEL_14:
   }
 
 LABEL_57:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x80) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x80) == 0)
   {
 LABEL_15:
-    if ((a3 & 0x100) == 0)
+    if ((hint & 0x100) == 0)
     {
       goto LABEL_16;
     }
@@ -12535,11 +12535,11 @@ LABEL_15:
   }
 
 LABEL_58:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x100) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x100) == 0)
   {
 LABEL_16:
-    if ((a3 & 0x200) == 0)
+    if ((hint & 0x200) == 0)
     {
       goto LABEL_17;
     }
@@ -12548,11 +12548,11 @@ LABEL_16:
   }
 
 LABEL_59:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x200) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x200) == 0)
   {
 LABEL_17:
-    if ((a3 & 0x400) == 0)
+    if ((hint & 0x400) == 0)
     {
       goto LABEL_18;
     }
@@ -12561,11 +12561,11 @@ LABEL_17:
   }
 
 LABEL_60:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x400) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x400) == 0)
   {
 LABEL_18:
-    if ((a3 & 0x2000) == 0)
+    if ((hint & 0x2000) == 0)
     {
       goto LABEL_19;
     }
@@ -12574,11 +12574,11 @@ LABEL_18:
   }
 
 LABEL_61:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x2000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x2000) == 0)
   {
 LABEL_19:
-    if ((a3 & 0x800) == 0)
+    if ((hint & 0x800) == 0)
     {
       goto LABEL_20;
     }
@@ -12587,11 +12587,11 @@ LABEL_19:
   }
 
 LABEL_62:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x800) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x800) == 0)
   {
 LABEL_20:
-    if ((a3 & 0x4000) == 0)
+    if ((hint & 0x4000) == 0)
     {
       goto LABEL_21;
     }
@@ -12600,13 +12600,13 @@ LABEL_20:
   }
 
 LABEL_63:
-  v12 = [a1 faceWorkerPropertiesToFetch];
-  [a1 extendPropertiesToFetch:v5 withProperties:v12];
+  faceWorkerPropertiesToFetch = [self faceWorkerPropertiesToFetch];
+  [self extendPropertiesToFetch:array withProperties:faceWorkerPropertiesToFetch];
 
-  if ((a3 & 0x4000) == 0)
+  if ((hint & 0x4000) == 0)
   {
 LABEL_21:
-    if ((a3 & 0x8000) == 0)
+    if ((hint & 0x8000) == 0)
     {
       goto LABEL_22;
     }
@@ -12615,11 +12615,11 @@ LABEL_21:
   }
 
 LABEL_64:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x8000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x8000) == 0)
   {
 LABEL_22:
-    if ((a3 & 0x10000) == 0)
+    if ((hint & 0x10000) == 0)
     {
       goto LABEL_23;
     }
@@ -12628,11 +12628,11 @@ LABEL_22:
   }
 
 LABEL_65:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x10000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x10000) == 0)
   {
 LABEL_23:
-    if ((a3 & 0x200000000) == 0)
+    if ((hint & 0x200000000) == 0)
     {
       goto LABEL_24;
     }
@@ -12641,11 +12641,11 @@ LABEL_23:
   }
 
 LABEL_66:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x200000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x200000000) == 0)
   {
 LABEL_24:
-    if ((a3 & 0x8000000) == 0)
+    if ((hint & 0x8000000) == 0)
     {
       goto LABEL_25;
     }
@@ -12654,11 +12654,11 @@ LABEL_24:
   }
 
 LABEL_67:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x8000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x8000000) == 0)
   {
 LABEL_25:
-    if ((a3 & 0x20000000000) == 0)
+    if ((hint & 0x20000000000) == 0)
     {
       goto LABEL_26;
     }
@@ -12667,11 +12667,11 @@ LABEL_25:
   }
 
 LABEL_68:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x20000000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x20000000000) == 0)
   {
 LABEL_26:
-    if ((a3 & 0x40000000) == 0)
+    if ((hint & 0x40000000) == 0)
     {
       goto LABEL_27;
     }
@@ -12680,11 +12680,11 @@ LABEL_26:
   }
 
 LABEL_69:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x40000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x40000000) == 0)
   {
 LABEL_27:
-    if ((a3 & 0x20000) == 0)
+    if ((hint & 0x20000) == 0)
     {
       goto LABEL_28;
     }
@@ -12693,11 +12693,11 @@ LABEL_27:
   }
 
 LABEL_70:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x20000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x20000) == 0)
   {
 LABEL_28:
-    if ((a3 & 0x40000) == 0)
+    if ((hint & 0x40000) == 0)
     {
       goto LABEL_29;
     }
@@ -12706,11 +12706,11 @@ LABEL_28:
   }
 
 LABEL_71:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x40000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x40000) == 0)
   {
 LABEL_29:
-    if ((a3 & 0x80000) == 0)
+    if ((hint & 0x80000) == 0)
     {
       goto LABEL_30;
     }
@@ -12719,11 +12719,11 @@ LABEL_29:
   }
 
 LABEL_72:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x80000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x80000) == 0)
   {
 LABEL_30:
-    if ((a3 & 0x400000) == 0)
+    if ((hint & 0x400000) == 0)
     {
       goto LABEL_31;
     }
@@ -12732,11 +12732,11 @@ LABEL_30:
   }
 
 LABEL_73:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x400000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x400000) == 0)
   {
 LABEL_31:
-    if ((a3 & 0x800000) == 0)
+    if ((hint & 0x800000) == 0)
     {
       goto LABEL_32;
     }
@@ -12745,11 +12745,11 @@ LABEL_31:
   }
 
 LABEL_74:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x800000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x800000) == 0)
   {
 LABEL_32:
-    if ((a3 & 0x2000000) == 0)
+    if ((hint & 0x2000000) == 0)
     {
       goto LABEL_33;
     }
@@ -12758,11 +12758,11 @@ LABEL_32:
   }
 
 LABEL_75:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x2000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x2000000) == 0)
   {
 LABEL_33:
-    if ((a3 & 0x4000000) == 0)
+    if ((hint & 0x4000000) == 0)
     {
       goto LABEL_34;
     }
@@ -12771,11 +12771,11 @@ LABEL_33:
   }
 
 LABEL_76:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x4000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x4000000) == 0)
   {
 LABEL_34:
-    if ((a3 & 0x10000000) == 0)
+    if ((hint & 0x10000000) == 0)
     {
       goto LABEL_35;
     }
@@ -12784,11 +12784,11 @@ LABEL_34:
   }
 
 LABEL_77:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x10000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x10000000) == 0)
   {
 LABEL_35:
-    if ((a3 & 0x20000000) == 0)
+    if ((hint & 0x20000000) == 0)
     {
       goto LABEL_37;
     }
@@ -12797,22 +12797,22 @@ LABEL_35:
   }
 
 LABEL_78:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x20000000) != 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x20000000) != 0)
   {
 LABEL_36:
-    [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
+    [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
   }
 
 LABEL_37:
-  if (a3 >= 0xFFFFFFFF80000000)
+  if (hint >= 0xFFFFFFFF80000000)
   {
-    [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
+    [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
   }
 
-  else if ((a3 & 0x100000000) == 0)
+  else if ((hint & 0x100000000) == 0)
   {
-    if ((a3 & 0x400000000) == 0)
+    if ((hint & 0x400000000) == 0)
     {
       goto LABEL_40;
     }
@@ -12820,11 +12820,11 @@ LABEL_37:
     goto LABEL_82;
   }
 
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x400000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x400000000) == 0)
   {
 LABEL_40:
-    if ((a3 & 0x2000000000) == 0)
+    if ((hint & 0x2000000000) == 0)
     {
       goto LABEL_41;
     }
@@ -12833,18 +12833,18 @@ LABEL_40:
   }
 
 LABEL_82:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x2000000000) == 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x2000000000) == 0)
   {
 LABEL_41:
-    if ((a3 & 0x800000000) == 0)
+    if ((hint & 0x800000000) == 0)
     {
       goto LABEL_42;
     }
 
 LABEL_84:
-    [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-    if ((a3 & 0x4000000000) == 0)
+    [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+    if ((hint & 0x4000000000) == 0)
     {
       goto LABEL_44;
     }
@@ -12853,23 +12853,23 @@ LABEL_84:
   }
 
 LABEL_83:
-  [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
-  if ((a3 & 0x800000000) != 0)
+  [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
+  if ((hint & 0x800000000) != 0)
   {
     goto LABEL_84;
   }
 
 LABEL_42:
-  if ((a3 & 0x4000000000) != 0)
+  if ((hint & 0x4000000000) != 0)
   {
 LABEL_43:
-    [a1 extendPropertiesToFetch:v5 withPropertySetClass:objc_opt_class()];
+    [self extendPropertiesToFetch:array withPropertySetClass:objc_opt_class()];
   }
 
 LABEL_44:
-  v6 = v5;
+  v6 = array;
 
-  return v5;
+  return array;
 }
 
 + (id)imageManagerPropertiesToFetch
@@ -12934,251 +12934,251 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
   faceWorkerPropertiesToFetch_pl_once_object_16 = v1;
 }
 
-+ (id)propertySetsForPropertyFetchHints:(unint64_t)a3
++ (id)propertySetsForPropertyFetchHints:(unint64_t)hints
 {
   v4 = [MEMORY[0x1E695DFA8] set];
   v5 = [@"PHAssetPropertySetIdentifier" length];
-  if ((a3 & 1) != 0 && v5)
+  if ((hints & 1) != 0 && v5)
   {
     [v4 addObject:@"PHAssetPropertySetIdentifier"];
   }
 
   v6 = [@"PHAssetPropertySetCore" length];
-  if ((a3 & 2) != 0 && v6)
+  if ((hints & 2) != 0 && v6)
   {
     [v4 addObject:@"PHAssetPropertySetCore"];
   }
 
   v7 = [@"PHAssetPropertySetLocalDate" length];
-  if ((a3 & 0x200000) != 0 && v7)
+  if ((hints & 0x200000) != 0 && v7)
   {
     [v4 addObject:@"PHAssetPropertySetLocalDate"];
   }
 
   v8 = [@"PHAssetPropertySetPlacesCore" length];
-  if ((a3 & 4) != 0 && v8)
+  if ((hints & 4) != 0 && v8)
   {
     [v4 addObject:@"PHAssetPropertySetPlacesCore"];
   }
 
   v9 = [@"PHAssetPropertySetOriginalMetadata" length];
-  if ((a3 & 8) != 0 && v9)
+  if ((hints & 8) != 0 && v9)
   {
     [v4 addObject:@"PHAssetPropertySetOriginalMetadata"];
   }
 
   v10 = [@"PHAssetPropertySetPhotosOneUp" length];
-  if ((a3 & 0x10) != 0 && v10)
+  if ((hints & 0x10) != 0 && v10)
   {
     [v4 addObject:@"PHAssetPropertySetPhotosOneUp"];
   }
 
   v11 = [@"PHAssetPropertySetPhotosInfoPanelExtended" length];
-  if ((a3 & 0x100000) != 0 && v11)
+  if ((hints & 0x100000) != 0 && v11)
   {
     [v4 addObject:@"PHAssetPropertySetPhotosInfoPanelExtended"];
   }
 
   v12 = [@"PHAssetPropertySetPhotosSmartStyleExtended" length];
-  if ((a3 & 0x8000000000) != 0 && v12)
+  if ((hints & 0x8000000000) != 0 && v12)
   {
     [v4 addObject:@"PHAssetPropertySetPhotosSmartStyleExtended"];
   }
 
   v13 = [@"PHAssetPropertySetPhotosInfoPanelLocation" length];
-  if ((a3 & 0x1000000) != 0 && v13)
+  if ((hints & 0x1000000) != 0 && v13)
   {
     [v4 addObject:@"PHAssetPropertySetPhotosInfoPanelLocation"];
   }
 
   v14 = [@"PHAssetPropertySetPhotoIris" length];
-  if ((a3 & 0x20) != 0 && v14)
+  if ((hints & 0x20) != 0 && v14)
   {
     [v4 addObject:@"PHAssetPropertySetPhotoIris"];
   }
 
   v15 = [@"PHAssetPropertySetDescription" length];
-  if ((a3 & 0x40) != 0 && v15)
+  if ((hints & 0x40) != 0 && v15)
   {
     [v4 addObject:@"PHAssetPropertySetDescription"];
   }
 
   v16 = [@"PHAssetPropertySetCloudShared" length];
-  if ((a3 & 0x10000000000) != 0 && v16)
+  if ((hints & 0x10000000000) != 0 && v16)
   {
     [v4 addObject:@"PHAssetPropertySetCloudShared"];
   }
 
   v17 = [@"PHAssetPropertySetComments" length];
-  if ((a3 & 0x80) != 0 && v17)
+  if ((hints & 0x80) != 0 && v17)
   {
     [v4 addObject:@"PHAssetPropertySetComments"];
   }
 
   v18 = [@"PHAssetPropertySetSceneAnalysis" length];
-  if ((a3 & 0x100) != 0 && v18)
+  if ((hints & 0x100) != 0 && v18)
   {
     [v4 addObject:@"PHAssetPropertySetSceneAnalysis"];
   }
 
   v19 = [@"PHAssetPropertySetAnalysisState" length];
-  if ((a3 & 0x200) != 0 && v19)
+  if ((hints & 0x200) != 0 && v19)
   {
     [v4 addObject:@"PHAssetPropertySetAnalysisState"];
   }
 
   v20 = [@"PHAssetPropertySetUserActivity" length];
-  if ((a3 & 0x400) != 0 && v20)
+  if ((hints & 0x400) != 0 && v20)
   {
     [v4 addObject:@"PHAssetPropertySetUserActivity"];
   }
 
   v21 = [@"PHAssetPropertySetFaceWorker" length];
-  if ((a3 & 0x800) != 0 && v21)
+  if ((hints & 0x800) != 0 && v21)
   {
     [v4 addObject:@"PHAssetPropertySetFaceWorker"];
   }
 
   v22 = [@"PHAssetPropertySetImageManager" length];
-  if ((a3 & 0x1000) != 0 && v22)
+  if ((hints & 0x1000) != 0 && v22)
   {
     [v4 addObject:@"PHAssetPropertySetImageManager"];
   }
 
   v23 = [@"PHAssetPropertySetAdjustment" length];
-  if ((a3 & 0x2000) != 0 && v23)
+  if ((hints & 0x2000) != 0 && v23)
   {
     [v4 addObject:@"PHAssetPropertySetAdjustment"];
   }
 
   v24 = [@"PHAssetPropertySetCuration" length];
-  if ((a3 & 0x4000) != 0 && v24)
+  if ((hints & 0x4000) != 0 && v24)
   {
     [v4 addObject:@"PHAssetPropertySetCuration"];
   }
 
   v25 = [@"PHAssetPropertySetAesthetic" length];
-  if ((a3 & 0x8000) != 0 && v25)
+  if ((hints & 0x8000) != 0 && v25)
   {
     [v4 addObject:@"PHAssetPropertySetAesthetic"];
   }
 
   v26 = [@"PHAssetPropertySetMediaAnalysis" length];
-  if ((a3 & 0x10000) != 0 && v26)
+  if ((hints & 0x10000) != 0 && v26)
   {
     [v4 addObject:@"PHAssetPropertySetMediaAnalysis"];
   }
 
   v27 = [@"PHAssetPropertySetPhotoAnalysisWallpaperProperties" length];
-  if ((a3 & 0x200000000) != 0 && v27)
+  if ((hints & 0x200000000) != 0 && v27)
   {
     [v4 addObject:@"PHAssetPropertySetPhotoAnalysisWallpaperProperties"];
   }
 
   v28 = [@"PHAssetPropertySetCharacterRecognition" length];
-  if ((a3 & 0x8000000) != 0 && v28)
+  if ((hints & 0x8000000) != 0 && v28)
   {
     [v4 addObject:@"PHAssetPropertySetCharacterRecognition"];
   }
 
   v29 = [@"PHAssetPropertySetTextUnderstanding" length];
-  if ((a3 & 0x20000000000) != 0 && v29)
+  if ((hints & 0x20000000000) != 0 && v29)
   {
     [v4 addObject:@"PHAssetPropertySetTextUnderstanding"];
   }
 
   v30 = [@"PHAssetPropertySetVisualSearch" length];
-  if ((a3 & 0x40000000) != 0 && v30)
+  if ((hints & 0x40000000) != 0 && v30)
   {
     [v4 addObject:@"PHAssetPropertySetVisualSearch"];
   }
 
   v31 = [@"PHAssetPropertySetImport" length];
-  if ((a3 & 0x20000) != 0 && v31)
+  if ((hints & 0x20000) != 0 && v31)
   {
     [v4 addObject:@"PHAssetPropertySetImport"];
   }
 
   v32 = [@"PHAssetPropertySetSceneprint" length];
-  if ((a3 & 0x40000) != 0 && v32)
+  if ((hints & 0x40000) != 0 && v32)
   {
     [v4 addObject:@"PHAssetPropertySetSceneprint"];
   }
 
   v33 = [@"PHAssetPropertySetDestinationAssetCopy" length];
-  if ((a3 & 0x80000) != 0 && v33)
+  if ((hints & 0x80000) != 0 && v33)
   {
     [v4 addObject:@"PHAssetPropertySetDestinationAssetCopy"];
   }
 
   v34 = [@"PHAssetPropertySetKeywords" length];
-  if ((a3 & 0x400000) != 0 && v34)
+  if ((hints & 0x400000) != 0 && v34)
   {
     [v4 addObject:@"PHAssetPropertySetKeywords"];
   }
 
   v35 = [@"PHAssetPropertySetGridMetadata" length];
-  if ((a3 & 0x800000) != 0 && v35)
+  if ((hints & 0x800000) != 0 && v35)
   {
     [v4 addObject:@"PHAssetPropertySetGridMetadata"];
   }
 
   v36 = [@"PHAssetPropertySetCoarseLocation" length];
-  if ((a3 & 0x2000000) != 0 && v36)
+  if ((hints & 0x2000000) != 0 && v36)
   {
     [v4 addObject:@"PHAssetPropertySetCoarseLocation"];
   }
 
   v37 = [@"PHAssetPropertySetLibraryScope" length];
-  if ((a3 & 0x4000000) != 0 && v37)
+  if ((hints & 0x4000000) != 0 && v37)
   {
     [v4 addObject:@"PHAssetPropertySetLibraryScope"];
   }
 
   v38 = [@"PHAssetPropertySetCameraCaptureDevice" length];
-  if ((a3 & 0x10000000) != 0 && v38)
+  if ((hints & 0x10000000) != 0 && v38)
   {
     [v4 addObject:@"PHAssetPropertySetCameraCaptureDevice"];
   }
 
   v39 = [@"PHAssetPropertySetCloudLocalState" length];
-  if ((a3 & 0x20000000) != 0 && v39)
+  if ((hints & 0x20000000) != 0 && v39)
   {
     [v4 addObject:@"PHAssetPropertySetCloudLocalState"];
   }
 
   v40 = [@"PHAssetPropertySetMontage" length];
-  if (a3 >= 0xFFFFFFFF80000000 && v40)
+  if (hints >= 0xFFFFFFFF80000000 && v40)
   {
     [v4 addObject:@"PHAssetPropertySetMontage"];
   }
 
   v41 = [@"PHAssetPropertySetSpatialMedia" length];
-  if ((a3 & 0x100000000) != 0 && v41)
+  if ((hints & 0x100000000) != 0 && v41)
   {
     [v4 addObject:@"PHAssetPropertySetSpatialMedia"];
   }
 
   v42 = [@"PHAssetPropertySetLocationData" length];
-  if ((a3 & 0x400000000) != 0 && v42)
+  if ((hints & 0x400000000) != 0 && v42)
   {
     [v4 addObject:@"PHAssetPropertySetLocationData"];
   }
 
   v43 = [@"PHAssetPropertySetPTP" length];
-  if ((a3 & 0x2000000000) != 0 && v43)
+  if ((hints & 0x2000000000) != 0 && v43)
   {
     [v4 addObject:@"PHAssetPropertySetPTP"];
   }
 
   v44 = [@"PHAssetPropertySetIconicScore" length];
-  if ((a3 & 0x800000000) != 0 && v44)
+  if ((hints & 0x800000000) != 0 && v44)
   {
     [v4 addObject:@"PHAssetPropertySetIconicScore"];
   }
 
   v45 = [@"PHAssetPropertySetStoryPlayback" length];
-  if ((a3 & 0x4000000000) != 0 && v45)
+  if ((hints & 0x4000000000) != 0 && v45)
   {
     [v4 addObject:@"PHAssetPropertySetStoryPlayback"];
   }
@@ -13188,11 +13188,11 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
   return v46;
 }
 
-+ (unint64_t)propertyFetchHintsForPropertySets:(id)a3
++ (unint64_t)propertyFetchHintsForPropertySets:(id)sets
 {
-  v4 = a3;
-  v5 = [a1 _extendedPropertyFetchHintsForPropertySets:v4];
-  v6 = [v4 containsObject:@"PHAssetPropertySetIdentifier"];
+  setsCopy = sets;
+  v5 = [self _extendedPropertyFetchHintsForPropertySets:setsCopy];
+  v6 = [setsCopy containsObject:@"PHAssetPropertySetIdentifier"];
 
   if (v6)
   {
@@ -13205,12 +13205,12 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
   }
 }
 
-+ (unint64_t)_extendedPropertyFetchHintsForPropertySets:(id)a3
++ (unint64_t)_extendedPropertyFetchHintsForPropertySets:(id)sets
 {
-  v3 = a3;
+  setsCopy = sets;
   if ([@"PHAssetPropertySetIdentifier" length])
   {
-    v4 = [v3 containsObject:@"PHAssetPropertySetIdentifier"];
+    v4 = [setsCopy containsObject:@"PHAssetPropertySetIdentifier"];
   }
 
   else
@@ -13218,202 +13218,202 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
     v4 = 0;
   }
 
-  if ([@"PHAssetPropertySetCore" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetCore"))
+  if ([@"PHAssetPropertySetCore" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetCore"))
   {
     v4 |= 2uLL;
   }
 
-  if ([@"PHAssetPropertySetLocalDate" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetLocalDate"))
+  if ([@"PHAssetPropertySetLocalDate" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetLocalDate"))
   {
     v4 |= 0x200000uLL;
   }
 
-  if ([@"PHAssetPropertySetPlacesCore" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetPlacesCore"))
+  if ([@"PHAssetPropertySetPlacesCore" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetPlacesCore"))
   {
     v4 |= 4uLL;
   }
 
-  if ([@"PHAssetPropertySetOriginalMetadata" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetOriginalMetadata"))
+  if ([@"PHAssetPropertySetOriginalMetadata" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetOriginalMetadata"))
   {
     v4 |= 8uLL;
   }
 
-  if ([@"PHAssetPropertySetPhotosOneUp" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetPhotosOneUp"))
+  if ([@"PHAssetPropertySetPhotosOneUp" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetPhotosOneUp"))
   {
     v4 |= 0x10uLL;
   }
 
-  if ([@"PHAssetPropertySetPhotosInfoPanelExtended" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetPhotosInfoPanelExtended"))
+  if ([@"PHAssetPropertySetPhotosInfoPanelExtended" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetPhotosInfoPanelExtended"))
   {
     v4 |= 0x100000uLL;
   }
 
-  if ([@"PHAssetPropertySetPhotosSmartStyleExtended" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetPhotosSmartStyleExtended"))
+  if ([@"PHAssetPropertySetPhotosSmartStyleExtended" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetPhotosSmartStyleExtended"))
   {
     v4 |= 0x8000000000uLL;
   }
 
-  if ([@"PHAssetPropertySetPhotosInfoPanelLocation" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetPhotosInfoPanelLocation"))
+  if ([@"PHAssetPropertySetPhotosInfoPanelLocation" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetPhotosInfoPanelLocation"))
   {
     v4 |= 0x1000000uLL;
   }
 
-  if ([@"PHAssetPropertySetPhotoIris" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetPhotoIris"))
+  if ([@"PHAssetPropertySetPhotoIris" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetPhotoIris"))
   {
     v4 |= 0x20uLL;
   }
 
-  if ([@"PHAssetPropertySetDescription" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetDescription"))
+  if ([@"PHAssetPropertySetDescription" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetDescription"))
   {
     v4 |= 0x40uLL;
   }
 
-  if ([@"PHAssetPropertySetCloudShared" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetCloudShared"))
+  if ([@"PHAssetPropertySetCloudShared" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetCloudShared"))
   {
     v4 |= 0x10000000000uLL;
   }
 
-  if ([@"PHAssetPropertySetComments" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetComments"))
+  if ([@"PHAssetPropertySetComments" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetComments"))
   {
     v4 |= 0x80uLL;
   }
 
-  if ([@"PHAssetPropertySetSceneAnalysis" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetSceneAnalysis"))
+  if ([@"PHAssetPropertySetSceneAnalysis" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetSceneAnalysis"))
   {
     v4 |= 0x100uLL;
   }
 
-  if ([@"PHAssetPropertySetAnalysisState" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetAnalysisState"))
+  if ([@"PHAssetPropertySetAnalysisState" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetAnalysisState"))
   {
     v4 |= 0x200uLL;
   }
 
-  if ([@"PHAssetPropertySetUserActivity" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetUserActivity"))
+  if ([@"PHAssetPropertySetUserActivity" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetUserActivity"))
   {
     v4 |= 0x400uLL;
   }
 
-  if ([@"PHAssetPropertySetFaceWorker" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetFaceWorker"))
+  if ([@"PHAssetPropertySetFaceWorker" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetFaceWorker"))
   {
     v4 |= 0x800uLL;
   }
 
-  if ([@"PHAssetPropertySetImageManager" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetImageManager"))
+  if ([@"PHAssetPropertySetImageManager" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetImageManager"))
   {
     v4 |= 0x1000uLL;
   }
 
-  if ([@"PHAssetPropertySetAdjustment" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetAdjustment"))
+  if ([@"PHAssetPropertySetAdjustment" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetAdjustment"))
   {
     v4 |= 0x2000uLL;
   }
 
-  if ([@"PHAssetPropertySetCuration" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetCuration"))
+  if ([@"PHAssetPropertySetCuration" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetCuration"))
   {
     v4 |= 0x4000uLL;
   }
 
-  if ([@"PHAssetPropertySetAesthetic" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetAesthetic"))
+  if ([@"PHAssetPropertySetAesthetic" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetAesthetic"))
   {
     v4 |= 0x8000uLL;
   }
 
-  if ([@"PHAssetPropertySetMediaAnalysis" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetMediaAnalysis"))
+  if ([@"PHAssetPropertySetMediaAnalysis" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetMediaAnalysis"))
   {
     v4 |= 0x10000uLL;
   }
 
-  if ([@"PHAssetPropertySetPhotoAnalysisWallpaperProperties" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetPhotoAnalysisWallpaperProperties"))
+  if ([@"PHAssetPropertySetPhotoAnalysisWallpaperProperties" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetPhotoAnalysisWallpaperProperties"))
   {
     v4 |= 0x200000000uLL;
   }
 
-  if ([@"PHAssetPropertySetCharacterRecognition" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetCharacterRecognition"))
+  if ([@"PHAssetPropertySetCharacterRecognition" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetCharacterRecognition"))
   {
     v4 |= 0x8000000uLL;
   }
 
-  if ([@"PHAssetPropertySetTextUnderstanding" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetTextUnderstanding"))
+  if ([@"PHAssetPropertySetTextUnderstanding" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetTextUnderstanding"))
   {
     v4 |= 0x20000000000uLL;
   }
 
-  if ([@"PHAssetPropertySetVisualSearch" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetVisualSearch"))
+  if ([@"PHAssetPropertySetVisualSearch" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetVisualSearch"))
   {
     v4 |= 0x40000000uLL;
   }
 
-  if ([@"PHAssetPropertySetImport" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetImport"))
+  if ([@"PHAssetPropertySetImport" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetImport"))
   {
     v4 |= 0x20000uLL;
   }
 
-  if ([@"PHAssetPropertySetSceneprint" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetSceneprint"))
+  if ([@"PHAssetPropertySetSceneprint" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetSceneprint"))
   {
     v4 |= 0x40000uLL;
   }
 
-  if ([@"PHAssetPropertySetDestinationAssetCopy" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetDestinationAssetCopy"))
+  if ([@"PHAssetPropertySetDestinationAssetCopy" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetDestinationAssetCopy"))
   {
     v4 |= 0x80000uLL;
   }
 
-  if ([@"PHAssetPropertySetKeywords" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetKeywords"))
+  if ([@"PHAssetPropertySetKeywords" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetKeywords"))
   {
     v4 |= 0x400000uLL;
   }
 
-  if ([@"PHAssetPropertySetGridMetadata" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetGridMetadata"))
+  if ([@"PHAssetPropertySetGridMetadata" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetGridMetadata"))
   {
     v4 |= 0x800000uLL;
   }
 
-  if ([@"PHAssetPropertySetCoarseLocation" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetCoarseLocation"))
+  if ([@"PHAssetPropertySetCoarseLocation" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetCoarseLocation"))
   {
     v4 |= 0x2000000uLL;
   }
 
-  if ([@"PHAssetPropertySetLibraryScope" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetLibraryScope"))
+  if ([@"PHAssetPropertySetLibraryScope" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetLibraryScope"))
   {
     v4 |= 0x4000000uLL;
   }
 
-  if ([@"PHAssetPropertySetCameraCaptureDevice" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetCameraCaptureDevice"))
+  if ([@"PHAssetPropertySetCameraCaptureDevice" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetCameraCaptureDevice"))
   {
     v4 |= 0x10000000uLL;
   }
 
-  if ([@"PHAssetPropertySetCloudLocalState" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetCloudLocalState"))
+  if ([@"PHAssetPropertySetCloudLocalState" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetCloudLocalState"))
   {
     v4 |= 0x20000000uLL;
   }
 
-  if ([@"PHAssetPropertySetMontage" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetMontage"))
+  if ([@"PHAssetPropertySetMontage" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetMontage"))
   {
     v4 |= 0xFFFFFFFF80000000;
   }
 
-  if ([@"PHAssetPropertySetSpatialMedia" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetSpatialMedia"))
+  if ([@"PHAssetPropertySetSpatialMedia" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetSpatialMedia"))
   {
     v4 |= 0x100000000uLL;
   }
 
-  if ([@"PHAssetPropertySetLocationData" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetLocationData"))
+  if ([@"PHAssetPropertySetLocationData" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetLocationData"))
   {
     v4 |= 0x400000000uLL;
   }
 
-  if ([@"PHAssetPropertySetPTP" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetPTP"))
+  if ([@"PHAssetPropertySetPTP" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetPTP"))
   {
     v4 |= 0x2000000000uLL;
   }
 
-  if ([@"PHAssetPropertySetIconicScore" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetIconicScore"))
+  if ([@"PHAssetPropertySetIconicScore" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetIconicScore"))
   {
     v4 |= 0x800000000uLL;
   }
 
-  if ([@"PHAssetPropertySetStoryPlayback" length] && objc_msgSend(v3, "containsObject:", @"PHAssetPropertySetStoryPlayback"))
+  if ([@"PHAssetPropertySetStoryPlayback" length] && objc_msgSend(setsCopy, "containsObject:", @"PHAssetPropertySetStoryPlayback"))
   {
     v4 |= 0x4000000000uLL;
   }
@@ -13430,19 +13430,19 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
 
   else
   {
-    v4 = [(PHAsset *)self originalImageProperties];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+    originalImageProperties = [(PHAsset *)self originalImageProperties];
+    v5 = [originalImageProperties objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
     v6 = [v5 objectForKeyedSubscript:@"58"];
 
-    v7 = [v6 unsignedIntValue];
-    if (v7 < 0x80000001)
+    unsignedIntValue = [v6 unsignedIntValue];
+    if (unsignedIntValue < 0x80000001)
     {
       v3 = 0;
     }
 
     else
     {
-      *&v8 = vcvts_n_f32_u32(v7, 8uLL);
+      *&v8 = vcvts_n_f32_u32(unsignedIntValue, 8uLL);
       v3 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
     }
   }
@@ -13450,17 +13450,17 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
   return v3;
 }
 
-- (BOOL)isEligibleForSpatialGenerationIncludingStereo:(BOOL)a3
+- (BOOL)isEligibleForSpatialGenerationIncludingStereo:(BOOL)stereo
 {
-  if (!PLIsAlchemistAllowed() || ![(PHAsset *)self isPhoto]|| !a3 && [(PHAsset *)self isSpatialMedia]|| ([(PHAsset *)self mediaSubtypes]& 1) != 0 && ![(PHAsset *)self isSpatialMedia]|| ![PHAsset isEligibleForSpatialGenerationWithPixelSize:[(PHAsset *)self pixelWidth], [(PHAsset *)self pixelHeight]]|| [(PHAsset *)self playbackVariation])
+  if (!PLIsAlchemistAllowed() || ![(PHAsset *)self isPhoto]|| !stereo && [(PHAsset *)self isSpatialMedia]|| ([(PHAsset *)self mediaSubtypes]& 1) != 0 && ![(PHAsset *)self isSpatialMedia]|| ![PHAsset isEligibleForSpatialGenerationWithPixelSize:[(PHAsset *)self pixelWidth], [(PHAsset *)self pixelHeight]]|| [(PHAsset *)self playbackVariation])
   {
     return 0;
   }
 
-  v7 = [(PHAsset *)self isCloudSharedAsset];
-  v8 = [(PHAsset *)self isCollectionShareAsset];
+  isCloudSharedAsset = [(PHAsset *)self isCloudSharedAsset];
+  isCollectionShareAsset = [(PHAsset *)self isCollectionShareAsset];
   v5 = 0;
-  if (!v7 && !v8)
+  if (!isCloudSharedAsset && !isCollectionShareAsset)
   {
     if ([(PHAsset *)self isMomentSharedAsset])
     {
@@ -13473,13 +13473,13 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
       return 0;
     }
 
-    v9 = [(PHAsset *)self cameraCaptureDeviceProperties];
-    if (v9)
+    cameraCaptureDeviceProperties = [(PHAsset *)self cameraCaptureDeviceProperties];
+    if (cameraCaptureDeviceProperties)
     {
-      v10 = [(PHAsset *)self cameraCaptureDeviceProperties];
-      v11 = [v10 isFrontRear];
+      cameraCaptureDeviceProperties2 = [(PHAsset *)self cameraCaptureDeviceProperties];
+      isFrontRear = [cameraCaptureDeviceProperties2 isFrontRear];
 
-      v5 = v11 ^ 1;
+      v5 = isFrontRear ^ 1;
     }
 
     else
@@ -13491,55 +13491,55 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
   return v5;
 }
 
-+ (BOOL)isEligibleForSpatialGenerationWithPixelSize:(CGSize)a3
++ (BOOL)isEligibleForSpatialGenerationWithPixelSize:(CGSize)size
 {
   result = 0;
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
   {
-    height = a3.width;
+    height = size.width;
   }
 
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
   {
-    width = a3.height;
+    width = size.height;
   }
 
   if (width >= 1024 && height >= 512)
   {
-    v6 = a3.width / a3.height;
+    v6 = size.width / size.height;
     return v6 >= 0.454545455 && v6 <= 2.2;
   }
 
   return result;
 }
 
-+ (id)fetchAssetsForReferences:(id)a3 photoLibrary:(id)a4
++ (id)fetchAssetsForReferences:(id)references photoLibrary:(id)library
 {
-  v6 = a4;
-  v7 = PHLocalIdentifierForObjectReferencesAndLibrary(a3, v6);
-  v8 = [v6 librarySpecificFetchOptions];
+  libraryCopy = library;
+  v7 = PHLocalIdentifierForObjectReferencesAndLibrary(references, libraryCopy);
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
 
-  [v8 setIsExclusivePredicate:1];
-  v9 = [a1 fetchAssetsWithLocalIdentifiers:v7 options:v8];
+  [librarySpecificFetchOptions setIsExclusivePredicate:1];
+  v9 = [self fetchAssetsWithLocalIdentifiers:v7 options:librarySpecificFetchOptions];
 
   return v9;
 }
 
 - (NSString)syndicatedAppDisplayName
 {
-  v2 = [(PHAsset *)self curationProperties];
-  v3 = [v2 importedByBundleIdentifier];
-  v4 = [v2 importedByDisplayName];
+  curationProperties = [(PHAsset *)self curationProperties];
+  importedByBundleIdentifier = [curationProperties importedByBundleIdentifier];
+  importedByDisplayName = [curationProperties importedByDisplayName];
   if (PLShouldConstructDisplayNameForAppBundle())
   {
     v5 = PLSyndicatedDisplayNameForAppBundle();
@@ -13555,23 +13555,23 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
 
 - (int64_t)syndicationEligibility
 {
-  v3 = [(PHAsset *)self syndicationState];
+  syndicationState = [(PHAsset *)self syndicationState];
   if ([(PHAsset *)self thumbnailIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
     return -6;
   }
 
-  if ((v3 & 0xFFFFFFFD) != 0)
+  if ((syndicationState & 0xFFFFFFFD) != 0)
   {
     return -5;
   }
 
-  v5 = [(PHAsset *)self sceneAnalysisProperties];
-  v6 = [v5 sceneAnalysisVersion];
-  v7 = [MEMORY[0x1E69BE5A0] currentSceneVersion];
-  v8 = [v7 intValue];
+  sceneAnalysisProperties = [(PHAsset *)self sceneAnalysisProperties];
+  sceneAnalysisVersion = [sceneAnalysisProperties sceneAnalysisVersion];
+  currentSceneVersion = [MEMORY[0x1E69BE5A0] currentSceneVersion];
+  intValue = [currentSceneVersion intValue];
 
-  if (v8 > v6)
+  if (intValue > sceneAnalysisVersion)
   {
     return -4;
   }
@@ -13588,39 +13588,39 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
     return 0;
   }
 
-  v11 = [(PHAsset *)self curationProperties];
-  v12 = [v11 importedByBundleIdentifier];
-  v13 = [v12 isEqual:*MEMORY[0x1E69BFF00]];
+  curationProperties = [(PHAsset *)self curationProperties];
+  importedByBundleIdentifier = [curationProperties importedByBundleIdentifier];
+  v13 = [importedByBundleIdentifier isEqual:*MEMORY[0x1E69BFF00]];
 
   if (!v13)
   {
     return 0;
   }
 
-  v14 = [(PHAsset *)self faceAdjustmentVersion];
+  faceAdjustmentVersion = [(PHAsset *)self faceAdjustmentVersion];
 
-  v15 = [(PHAsset *)self mediaAnalysisProperties];
-  v16 = [v15 syndicationProcessingVersion];
+  mediaAnalysisProperties = [(PHAsset *)self mediaAnalysisProperties];
+  syndicationProcessingVersion = [mediaAnalysisProperties syndicationProcessingVersion];
 
   v17 = 65558;
-  if (!v14)
+  if (!faceAdjustmentVersion)
   {
     v17 = 22;
   }
 
-  if (v16 != v17)
+  if (syndicationProcessingVersion != v17)
   {
     return -1;
   }
 
-  v18 = [(PHAsset *)self sourceType];
+  sourceType = [(PHAsset *)self sourceType];
   v19 = -3;
-  if (v14)
+  if (faceAdjustmentVersion)
   {
     v19 = 1;
   }
 
-  if (v18 == 32)
+  if (sourceType == 32)
   {
     return 2;
   }
@@ -13631,17 +13631,17 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
   }
 }
 
-+ (id)senderIdentifierByAssetUUIDForAssets:(id)a3
++ (id)senderIdentifierByAssetUUIDForAssets:(id)assets
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v36 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v3;
+  obj = assetsCopy;
   v5 = [obj countByEnumeratingWithState:&v42 objects:v51 count:16];
   if (v5)
   {
@@ -13661,31 +13661,31 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
 
         v11 = *(*(&v42 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 uuid];
-        v14 = [v11 curationProperties];
-        if (!v14)
+        uuid = [v11 uuid];
+        curationProperties = [v11 curationProperties];
+        if (!curationProperties)
         {
-          v19 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v19 handleFailureInMethod:a2 object:a1 file:@"PHAsset+Syndicated.m" lineNumber:280 description:@"Expecting PHAsset to have curationProperties pre-loaded"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset+Syndicated.m" lineNumber:280 description:@"Expecting PHAsset to have curationProperties pre-loaded"];
         }
 
-        v15 = [v14 syndicationIdentifier];
-        if (v15)
+        syndicationIdentifier = [curationProperties syndicationIdentifier];
+        if (syndicationIdentifier)
         {
-          v16 = [v14 importedByBundleIdentifier];
-          if (v16)
+          importedByBundleIdentifier = [curationProperties importedByBundleIdentifier];
+          if (importedByBundleIdentifier)
           {
-            v17 = v16;
+            v17 = importedByBundleIdentifier;
 
-            [v36 setObject:v13 forKeyedSubscript:v15];
-            [v4 addObject:v15];
+            [v36 setObject:uuid forKeyedSubscript:syndicationIdentifier];
+            [v4 addObject:syndicationIdentifier];
             v8 = v17;
           }
 
           else
           {
-            v18 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v18 handleFailureInMethod:a2 object:a1 file:@"PHAsset+Syndicated.m" lineNumber:290 description:@"Expecting bundle identifier to be non-nil for a syndicated asset"];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAsset+Syndicated.m" lineNumber:290 description:@"Expecting bundle identifier to be non-nil for a syndicated asset"];
 
             v17 = 0;
           }
@@ -13697,7 +13697,7 @@ void __38__PHAsset_faceWorkerPropertiesToFetch__block_invoke()
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
             *buf = v33;
-            v47 = v13;
+            v47 = uuid;
             _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_ERROR, "Returning nil CSSearchableItem due to nil syndication identifier for asset: %{public}@", buf, 0xCu);
           }
         }
@@ -13824,29 +13824,29 @@ void __60__PHAsset_Syndicated__senderIdentifierByAssetUUIDForAssets___block_invo
   [v13 setObject:v14 forKeyedSubscript:v6];
 }
 
-+ (id)fetchAssetsWithSyndicationIdentifiers:(id)a3 options:(id)a4 includeRejected:(BOOL)a5
++ (id)fetchAssetsWithSyndicationIdentifiers:(id)identifiers options:(id)options includeRejected:(BOOL)rejected
 {
-  v5 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 photoLibrary];
+  rejectedCopy = rejected;
+  optionsCopy = options;
+  identifiersCopy = identifiers;
+  photoLibrary = [optionsCopy photoLibrary];
 
-  if (!v11)
+  if (!photoLibrary)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PHAsset+Syndicated.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"fetchOptions.photoLibrary != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset+Syndicated.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"fetchOptions.photoLibrary != nil"}];
   }
 
-  v12 = [v9 internalPredicate];
+  internalPredicate = [optionsCopy internalPredicate];
 
-  if (v12)
+  if (internalPredicate)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PHAsset+Syndicated.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"fetchOptions.internalPredicate == nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAsset+Syndicated.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"fetchOptions.internalPredicate == nil"}];
   }
 
-  v13 = [v9 copy];
-  v14 = [a1 predicateForSyndicatedAssetIdentifiers:v10 includeRejected:v5];
+  v13 = [optionsCopy copy];
+  v14 = [self predicateForSyndicatedAssetIdentifiers:identifiersCopy includeRejected:rejectedCopy];
 
   [v13 setInternalPredicate:v14];
   v15 = [PHObject authorizationAwareFetchResultWithOptions:v13 fetchBlock:&__block_literal_global_40986];
@@ -13862,68 +13862,68 @@ id __85__PHAsset_Syndicated__fetchAssetsWithSyndicationIdentifiers_options_inclu
   return v3;
 }
 
-+ (id)fetchPreviewAssetsForMomentShareCreationWithAssets:(id)a3 options:(id)a4
++ (id)fetchPreviewAssetsForMomentShareCreationWithAssets:(id)assets options:(id)options
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  assetsCopy = assets;
+  firstObject = [assetsCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
   v14[0] = v8;
   v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:0];
   v14[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-  [v7 setSortDescriptors:v10];
+  [librarySpecificFetchOptions setSortDescriptors:v10];
 
-  [v7 setFetchLimit:10];
-  [v7 setIncludeHiddenAssets:1];
+  [librarySpecificFetchOptions setFetchLimit:10];
+  [librarySpecificFetchOptions setIncludeHiddenAssets:1];
   v11 = PFMap();
 
-  v12 = [PHAsset fetchAssetsWithObjectIDs:v11 options:v7];
+  v12 = [PHAsset fetchAssetsWithObjectIDs:v11 options:librarySpecificFetchOptions];
 
   return v12;
 }
 
-+ (id)fetchCuratedAssetsForMomentShareCreationWithAssets:(id)a3 options:(id)a4
++ (id)fetchCuratedAssetsForMomentShareCreationWithAssets:(id)assets options:(id)options
 {
   v62 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 fetchLimit])
+  assetsCopy = assets;
+  optionsCopy = options;
+  if ([optionsCopy fetchLimit])
   {
-    v7 = [v6 fetchLimit];
+    fetchLimit = [optionsCopy fetchLimit];
   }
 
   else
   {
-    v7 = 10;
+    fetchLimit = 10;
   }
 
-  v8 = [v5 count];
-  if (v7 >= v8)
+  v8 = [assetsCopy count];
+  if (fetchLimit >= v8)
   {
     v9 = v8;
   }
 
   else
   {
-    v9 = v7;
+    v9 = fetchLimit;
   }
 
-  v10 = [v5 firstObject];
-  v11 = [v10 photoLibrary];
+  firstObject = [assetsCopy firstObject];
+  photoLibrary = [firstObject photoLibrary];
 
-  if (v11)
+  if (photoLibrary)
   {
-    v45 = v6;
-    v46 = v11;
+    v45 = optionsCopy;
+    v46 = photoLibrary;
     v12 = [objc_alloc(MEMORY[0x1E69BE4D8]) initWithNumericValueKeypaths:&unk_1F102E390];
     [v12 setK:v9];
     v44 = v12;
-    v47 = v5;
-    v13 = [v12 performWithDataset:v5 progressBlock:&__block_literal_global_346];
+    v47 = assetsCopy;
+    v13 = [v12 performWithDataset:assetsCopy progressBlock:&__block_literal_global_346];
     v14 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"curationScore" ascending:0];
     v59[0] = v14;
     v15 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"overallAestheticScore" ascending:0];
@@ -13952,15 +13952,15 @@ id __85__PHAsset_Syndicated__fetchAssetsWithSyndicationIdentifiers_options_inclu
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v52 + 1) + 8 * i) objects];
-          v25 = [v24 sortedArrayUsingDescriptors:v17];
+          objects = [*(*(&v52 + 1) + 8 * i) objects];
+          v25 = [objects sortedArrayUsingDescriptors:v17];
 
-          v26 = [v25 firstObject];
-          v27 = [v26 uuid];
+          firstObject2 = [v25 firstObject];
+          uuid = [firstObject2 uuid];
 
-          if (v27)
+          if (uuid)
           {
-            [v18 addObject:v27];
+            [v18 addObject:uuid];
           }
         }
 
@@ -13998,8 +13998,8 @@ LABEL_22:
             objc_enumerationMutation(v29);
           }
 
-          v34 = [*(*(&v48 + 1) + 8 * v33) uuid];
-          [v18 addObject:v34];
+          uuid2 = [*(*(&v48 + 1) + 8 * v33) uuid];
+          [v18 addObject:uuid2];
 
           if ([v18 count] == v9)
           {
@@ -14020,19 +14020,19 @@ LABEL_22:
       }
     }
 
-    v6 = v45;
+    optionsCopy = v45;
     if (v45)
     {
-      v35 = [v45 copy];
+      librarySpecificFetchOptions = [v45 copy];
     }
 
     else
     {
-      v35 = [v46 librarySpecificFetchOptions];
+      librarySpecificFetchOptions = [v46 librarySpecificFetchOptions];
     }
 
-    v38 = v35;
-    v5 = v47;
+    v38 = librarySpecificFetchOptions;
+    assetsCopy = v47;
     v39 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:1];
     v56[0] = v39;
     v40 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:0];
@@ -14047,7 +14047,7 @@ LABEL_22:
     [v38 setIncludeHiddenAssets:1];
     v37 = [PHAsset fetchAssetsWithOptions:v38];
 
-    v11 = v46;
+    photoLibrary = v46;
     v36 = v44;
   }
 
@@ -14057,7 +14057,7 @@ LABEL_22:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v61 = v5;
+      v61 = assetsCopy;
       _os_log_impl(&dword_19C86F000, v36, OS_LOG_TYPE_ERROR, "Failed to compute curated assets: No photo library with assets: %@.", buf, 0xCu);
     }
 
@@ -14067,16 +14067,16 @@ LABEL_22:
   return v37;
 }
 
-+ (id)composabilityScoresOfAssets:(id)a3 options:(id)a4 error:(id *)a5
++ (id)composabilityScoresOfAssets:(id)assets options:(id)options error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  assetsCopy = assets;
+  optionsCopy = options;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  v9 = [assetsCopy countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (!v9)
   {
     goto LABEL_19;
@@ -14091,19 +14091,19 @@ LABEL_22:
     {
       if (*v31 != v12)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(assetsCopy);
       }
 
       v14 = *(*(&v30 + 1) + 8 * i);
       if (objc_opt_respondsToSelector())
       {
-        v15 = [v14 photoLibrary];
+        photoLibrary = [v14 photoLibrary];
 
-        v11 = v15;
+        v11 = photoLibrary;
       }
     }
 
-    v10 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    v10 = [assetsCopy countByEnumeratingWithState:&v30 objects:v35 count:16];
   }
 
   while (v10);
@@ -14114,7 +14114,7 @@ LABEL_22:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v17 = v7;
+    v17 = assetsCopy;
     v18 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v18)
     {
@@ -14129,8 +14129,8 @@ LABEL_22:
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v26 + 1) + 8 * j) localIdentifier];
-          [v16 addObject:v22];
+          localIdentifier = [*(*(&v26 + 1) + 8 * j) localIdentifier];
+          [v16 addObject:localIdentifier];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -14139,8 +14139,8 @@ LABEL_22:
       while (v19);
     }
 
-    v23 = [v11 photoAnalysisClient];
-    v24 = [v23 requestComposabilityScoresOfAssetsForLocalIdentifiers:v16 options:v8 error:a5];
+    photoAnalysisClient = [v11 photoAnalysisClient];
+    v24 = [photoAnalysisClient requestComposabilityScoresOfAssetsForLocalIdentifiers:v16 options:optionsCopy error:error];
   }
 
   else
@@ -14154,19 +14154,19 @@ LABEL_19:
 
 - (id)messagesForRecentImageManagerRequests
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PHObject *)self uuid];
-  v5 = [objc_opt_class() _imageManagerRequestLoggingQueue];
+  string = [MEMORY[0x1E696AD60] string];
+  uuid = [(PHObject *)self uuid];
+  _imageManagerRequestLoggingQueue = [objc_opt_class() _imageManagerRequestLoggingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__PHAsset_ImageManager__messagesForRecentImageManagerRequests__block_invoke;
   block[3] = &unk_1E75AB248;
   block[4] = self;
-  v12 = v4;
-  v6 = v3;
+  v12 = uuid;
+  v6 = string;
   v13 = v6;
-  v7 = v4;
-  dispatch_sync(v5, block);
+  v7 = uuid;
+  dispatch_sync(_imageManagerRequestLoggingQueue, block);
 
   v8 = v13;
   v9 = v6;
@@ -14243,37 +14243,37 @@ void __62__PHAsset_ImageManager__messagesForRecentImageManagerRequests__block_in
   }
 }
 
-- (void)recordImageManagerMessageForRequestID:(int)a3 message:(id)a4
+- (void)recordImageManagerMessageForRequestID:(int)d message:(id)message
 {
-  v7 = a4;
-  if (!v7)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PHAsset_ImageManager.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAsset_ImageManager.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
   v23 = &v24;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [objc_opt_class() _currentTimestampString];
-  v10 = [v8 stringWithFormat:@"%@: ", v9];
+  _currentTimestampString = [objc_opt_class() _currentTimestampString];
+  v10 = [v8 stringWithFormat:@"%@: ", _currentTimestampString];
 
-  v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v7 arguments:&v24];
+  v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:messageCopy arguments:&v24];
   v12 = [v10 stringByAppendingString:v11];
 
-  v13 = [(PHObject *)self uuid];
-  v14 = [objc_opt_class() _imageManagerRequestLoggingQueue];
+  uuid = [(PHObject *)self uuid];
+  _imageManagerRequestLoggingQueue = [objc_opt_class() _imageManagerRequestLoggingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__PHAsset_ImageManager__recordImageManagerMessageForRequestID_message___block_invoke;
   block[3] = &unk_1E75AA040;
   block[4] = self;
-  v19 = v13;
-  v22 = a3;
+  v19 = uuid;
+  dCopy = d;
   v20 = v12;
   v21 = a2;
   v15 = v12;
-  v16 = v13;
-  dispatch_async(v14, block);
+  v16 = uuid;
+  dispatch_async(_imageManagerRequestLoggingQueue, block);
 }
 
 void __71__PHAsset_ImageManager__recordImageManagerMessageForRequestID_message___block_invoke(uint64_t a1)
@@ -14296,18 +14296,18 @@ void __71__PHAsset_ImageManager__recordImageManagerMessageForRequestID_message__
 + (void)_inq_trimToMostRecentImageManagerMessages
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [a1 _inq_imageManagerRequestLogsByAssetUUID];
-  v4 = [a1 _inq_highestImageManagerRequestIDsObserved];
-  v5 = [v4 firstIndex];
+  _inq_imageManagerRequestLogsByAssetUUID = [self _inq_imageManagerRequestLogsByAssetUUID];
+  _inq_highestImageManagerRequestIDsObserved = [self _inq_highestImageManagerRequestIDsObserved];
+  firstIndex = [_inq_highestImageManagerRequestIDsObserved firstIndex];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __66__PHAsset_ImageManager___inq_trimToMostRecentImageManagerMessages__block_invoke;
   v17[3] = &unk_1E75AA018;
-  v19 = v5;
+  v19 = firstIndex;
   v7 = v6;
   v18 = v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v17];
+  [_inq_imageManagerRequestLogsByAssetUUID enumerateKeysAndObjectsUsingBlock:v17];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -14328,7 +14328,7 @@ void __71__PHAsset_ImageManager__recordImageManagerMessageForRequestID_message__
           objc_enumerationMutation(v8);
         }
 
-        [v3 removeObjectForKey:{*(*(&v13 + 1) + 8 * v12++), v13}];
+        [_inq_imageManagerRequestLogsByAssetUUID removeObjectForKey:{*(*(&v13 + 1) + 8 * v12++), v13}];
       }
 
       while (v10 != v12);
@@ -14398,8 +14398,8 @@ void __66__PHAsset_ImageManager___inq_trimToMostRecentImageManagerMessages__bloc
   }
 
   v2 = _currentTimestampString_s_formatter_47548;
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v2 stringFromDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [v2 stringFromDate:date];
 
   return v4;
 }
@@ -14415,40 +14415,40 @@ uint64_t __48__PHAsset_ImageManager___currentTimestampString__block_invoke()
   return [v2 setDateFormat:@"yyyy-MM-dd' 'HH:mm:ss.SS"];
 }
 
-+ (void)_inq_recordRequestID:(int64_t)a3
++ (void)_inq_recordRequestID:(int64_t)d
 {
-  v4 = [a1 _inq_highestImageManagerRequestIDsObserved];
-  [v4 addIndex:a3];
-  if ([v4 count] >= 0x65)
+  _inq_highestImageManagerRequestIDsObserved = [self _inq_highestImageManagerRequestIDsObserved];
+  [_inq_highestImageManagerRequestIDsObserved addIndex:d];
+  if ([_inq_highestImageManagerRequestIDsObserved count] >= 0x65)
   {
-    [v4 removeIndex:{objc_msgSend(v4, "firstIndex")}];
+    [_inq_highestImageManagerRequestIDsObserved removeIndex:{objc_msgSend(_inq_highestImageManagerRequestIDsObserved, "firstIndex")}];
   }
 }
 
-+ (id)_inq_imageManagerRequestMessagesByRequestIDForAssetUUID:(id)a3 requestID:(int64_t)a4
++ (id)_inq_imageManagerRequestMessagesByRequestIDForAssetUUID:(id)d requestID:(int64_t)iD
 {
-  v6 = a3;
-  v7 = [a1 _inq_imageManagerRequestLogsByAssetUUID];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  _inq_imageManagerRequestLogsByAssetUUID = [self _inq_imageManagerRequestLogsByAssetUUID];
+  dictionary = [_inq_imageManagerRequestLogsByAssetUUID objectForKeyedSubscript:dCopy];
 
-  if (!v8)
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    v9 = [a1 _inq_imageManagerRequestLogsByAssetUUID];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    _inq_imageManagerRequestLogsByAssetUUID2 = [self _inq_imageManagerRequestLogsByAssetUUID];
+    [_inq_imageManagerRequestLogsByAssetUUID2 setObject:dictionary forKeyedSubscript:dCopy];
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  v11 = [v8 objectForKeyedSubscript:v10];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:iD];
+  array = [dictionary objectForKeyedSubscript:v10];
 
-  if (!v11)
+  if (!array)
   {
-    v11 = [MEMORY[0x1E695DF70] array];
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    [v8 setObject:v11 forKeyedSubscript:v12];
+    array = [MEMORY[0x1E695DF70] array];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:iD];
+    [dictionary setObject:array forKeyedSubscript:v12];
   }
 
-  return v11;
+  return array;
 }
 
 + (id)_inq_highestImageManagerRequestIDsObserved

@@ -1,5 +1,5 @@
 @interface PosterSectionFooterView
-- (_TtC11PosterBoard23PosterSectionFooterView)initWithCoder:(id)a3;
+- (_TtC11PosterBoard23PosterSectionFooterView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -21,7 +21,7 @@
   *(v4 + 1) = 0;
 }
 
-- (_TtC11PosterBoard23PosterSectionFooterView)initWithCoder:(id)a3
+- (_TtC11PosterBoard23PosterSectionFooterView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard23PosterSectionFooterView_titleLabel) = 0;
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard23PosterSectionFooterView_symbol);
@@ -38,7 +38,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B646F14();
 }
 

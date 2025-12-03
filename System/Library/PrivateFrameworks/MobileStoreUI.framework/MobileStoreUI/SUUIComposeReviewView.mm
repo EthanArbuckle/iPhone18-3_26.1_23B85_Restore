@@ -1,54 +1,54 @@
 @interface SUUIComposeReviewView
-- (BOOL)_composeReviewTextViewShouldChangeTextInRange:(_NSRange)a3 replacementText:(id)a4;
+- (BOOL)_composeReviewTextViewShouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (BOOL)_isReviewTextOptional;
 - (BOOL)isValid;
-- (SUUIComposeReviewView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (SUUIComposeReviewView)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (SUUIComposeReviewViewDelegate)delegate;
 - (id)_body;
 - (id)_reviewPlaceholder;
 - (id)copyReview;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_delayedUpdateReviewLength;
-- (void)_keyboardVisibilityDidChangeNotification:(id)a3;
+- (void)_keyboardVisibilityDidChangeNotification:(id)notification;
 - (void)_layoutComposeView;
 - (void)_layoutLoadingView;
-- (void)_remoteKeyboardVisibilityDidChangeNotification:(id)a3;
+- (void)_remoteKeyboardVisibilityDidChangeNotification:(id)notification;
 - (void)_showComposeView;
 - (void)_showLoadingView;
 - (void)_updateContentSize;
-- (void)composeHeaderViewValidityDidChange:(id)a3;
-- (void)composeHeaderViewValuesDidChange:(id)a3;
+- (void)composeHeaderViewValidityDidChange:(id)change;
+- (void)composeHeaderViewValuesDidChange:(id)change;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)setFrame:(CGRect)a3;
-- (void)setLoading:(BOOL)a3;
-- (void)setReview:(id)a3;
-- (void)textContentViewDidChange:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setLoading:(BOOL)loading;
+- (void)setReview:(id)review;
+- (void)textContentViewDidChange:(id)change;
 @end
 
 @implementation SUUIComposeReviewView
 
-- (SUUIComposeReviewView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (SUUIComposeReviewView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v11.receiver = self;
   v11.super_class = SUUIComposeReviewView;
-  v5 = [(SUUIComposeReviewView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SUUIComposeReviewView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_style = a4;
+    v5->_style = style;
     v7 = *(MEMORY[0x277CBF3A0] + 16);
     v5->_remoteKeyboardFrame.origin = *MEMORY[0x277CBF3A0];
     v5->_remoteKeyboardFrame.size = v7;
-    v8 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SUUIComposeReviewView *)v6 setBackgroundColor:v8];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SUUIComposeReviewView *)v6 setBackgroundColor:systemBackgroundColor];
 
     [(SUUIComposeReviewView *)v6 _showComposeView];
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel__keyboardVisibilityDidChangeNotification_ name:*MEMORY[0x277D76BA0] object:0];
-    [v9 addObserver:v6 selector:sel__keyboardVisibilityDidChangeNotification_ name:*MEMORY[0x277D76BA8] object:0];
-    [v9 addObserver:v6 selector:sel__remoteKeyboardVisibilityDidChangeNotification_ name:@"SUUIRemoteKeyboardFrameChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__keyboardVisibilityDidChangeNotification_ name:*MEMORY[0x277D76BA0] object:0];
+    [defaultCenter addObserver:v6 selector:sel__keyboardVisibilityDidChangeNotification_ name:*MEMORY[0x277D76BA8] object:0];
+    [defaultCenter addObserver:v6 selector:sel__remoteKeyboardVisibilityDidChangeNotification_ name:@"SUUIRemoteKeyboardFrameChangedNotification" object:0];
   }
 
   return v6;
@@ -56,10 +56,10 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
-  [v3 removeObserver:self name:@"SUUIRemoteKeyboardFrameChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76BA8] object:0];
+  [defaultCenter removeObserver:self name:@"SUUIRemoteKeyboardFrameChangedNotification" object:0];
   [(SUUIComposeReviewHeaderView *)self->_headerView setDelegate:0];
   [(SUTextContentView *)self->_textContentView setDelegate:0];
 
@@ -81,12 +81,12 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
+  y = test.y;
   v12.receiver = self;
   v12.super_class = SUUIComposeReviewView;
-  v6 = [(SUUIComposeReviewView *)&v12 hitTest:a4 withEvent:a3.x];
+  v6 = [(SUUIComposeReviewView *)&v12 hitTest:event withEvent:test.x];
   textContentView = self->_textContentView;
   [(SUTextContentView *)textContentView frame];
   [(SUTextContentView *)textContentView convertRect:self->_scrollView toView:?];
@@ -100,23 +100,23 @@
   return v6;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = SUUIComposeReviewView;
-  [(SUUIComposeReviewView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUUIComposeReviewView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (id)copyReview
 {
   v3 = [(SUUIReviewMetadata *)self->_review copy];
-  v4 = [(SUUIComposeReviewView *)self _body];
-  [v3 setBody:v4];
+  _body = [(SUUIComposeReviewView *)self _body];
+  [v3 setBody:_body];
 
   [(SUUIComposeReviewView *)self rating];
   [v3 setRating:?];
-  v5 = [(SUUIComposeReviewHeaderView *)self->_headerView title];
-  [v3 setTitle:v5];
+  title = [(SUUIComposeReviewHeaderView *)self->_headerView title];
+  [v3 setTitle:title];
 
   return v3;
 }
@@ -124,10 +124,10 @@
 - (BOOL)isValid
 {
   review = self->_review;
-  v4 = [(SUUIComposeReviewHeaderView *)self->_headerView title];
-  if ([v4 length] || (v5 = review != 0, self->_currentBodyLength >= 1))
+  title = [(SUUIComposeReviewHeaderView *)self->_headerView title];
+  if ([title length] || (v5 = review != 0, self->_currentBodyLength >= 1))
   {
-    if ([v4 length])
+    if ([title length])
     {
       v5 = self->_currentBodyLength > 0;
     }
@@ -143,29 +143,29 @@
 
 - (void)reloadData
 {
-  v8 = [(SUUIReviewMetadata *)self->_review body];
+  body = [(SUUIReviewMetadata *)self->_review body];
   if ([(SUUIReviewMetadata *)self->_review bodyMaxLength])
   {
-    v3 = [(SUUIReviewMetadata *)self->_review bodyMaxLength];
+    bodyMaxLength = [(SUUIReviewMetadata *)self->_review bodyMaxLength];
   }
 
   else
   {
-    v3 = 0x7FFFFFFFFFFFFFFFLL;
+    bodyMaxLength = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [v8 length];
+  v4 = [body length];
   self->_currentBodyLength = v4;
-  if (v4 <= v3)
+  if (v4 <= bodyMaxLength)
   {
-    v6 = v8;
+    v6 = body;
   }
 
   else
   {
-    v5 = [v8 substringToIndex:v3];
+    v5 = [body substringToIndex:bodyMaxLength];
 
-    self->_currentBodyLength = v3;
+    self->_currentBodyLength = bodyMaxLength;
     v6 = v5;
   }
 
@@ -178,13 +178,13 @@
   [WeakRetained composeReviewViewValidityChanged:self];
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
   v3 = *(self + 496);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != loading)
   {
-    *(self + 496) = v3 & 0xFE | a3;
-    if (a3)
+    *(self + 496) = v3 & 0xFE | loading;
+    if (loading)
     {
       [(SUUIComposeReviewView *)self _showLoadingView];
     }
@@ -196,53 +196,53 @@
   }
 }
 
-- (void)setReview:(id)a3
+- (void)setReview:(id)review
 {
-  v5 = a3;
-  if (self->_review != v5)
+  reviewCopy = review;
+  if (self->_review != reviewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_review, a3);
-    v5 = v6;
+    v6 = reviewCopy;
+    objc_storeStrong(&self->_review, review);
+    reviewCopy = v6;
   }
 }
 
-- (void)composeHeaderViewValidityDidChange:(id)a3
+- (void)composeHeaderViewValidityDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeReviewViewValidityChanged:self];
 }
 
-- (void)composeHeaderViewValuesDidChange:(id)a3
+- (void)composeHeaderViewValuesDidChange:(id)change
 {
   textContentView = self->_textContentView;
-  v5 = [(SUUIComposeReviewView *)self _reviewPlaceholder];
-  [(SUTextContentView *)textContentView setPlaceholder:v5];
+  _reviewPlaceholder = [(SUUIComposeReviewView *)self _reviewPlaceholder];
+  [(SUTextContentView *)textContentView setPlaceholder:_reviewPlaceholder];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeReviewViewValidityChanged:self];
 }
 
-- (void)textContentViewDidChange:(id)a3
+- (void)textContentViewDidChange:(id)change
 {
-  v8 = a3;
-  [v8 rectForScrollToVisible];
+  changeCopy = change;
+  [changeCopy rectForScrollToVisible];
   x = v10.origin.x;
   y = v10.origin.y;
   width = v10.size.width;
   height = v10.size.height;
   if (!CGRectIsEmpty(v10))
   {
-    [v8 convertRect:self->_scrollView toView:{x, y, width, height}];
+    [changeCopy convertRect:self->_scrollView toView:{x, y, width, height}];
     [(UIScrollView *)self->_scrollView scrollRectToVisible:1 animated:?];
   }
 }
 
-- (BOOL)_composeReviewTextViewShouldChangeTextInRange:(_NSRange)a3 replacementText:(id)a4
+- (BOOL)_composeReviewTextViewShouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   if (self->_currentBodyLength <= location + length)
   {
     currentBodyLength = location + length;
@@ -255,27 +255,27 @@
 
   if ([(SUUIReviewMetadata *)self->_review bodyMaxLength])
   {
-    v9 = [(SUUIReviewMetadata *)self->_review bodyMaxLength];
+    bodyMaxLength = [(SUUIReviewMetadata *)self->_review bodyMaxLength];
   }
 
   else
   {
-    v9 = 0x7FFFFFFFFFFFFFFFLL;
+    bodyMaxLength = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v10 = currentBodyLength - length + [v7 length];
-  if (v10 <= v9)
+  v10 = currentBodyLength - length + [textCopy length];
+  if (v10 <= bodyMaxLength)
   {
     [(SUUIComposeReviewView *)self performSelector:sel__delayedUpdateReviewLength withObject:0 afterDelay:0.0];
   }
 
-  return v10 <= v9;
+  return v10 <= bodyMaxLength;
 }
 
-- (void)_keyboardVisibilityDidChangeNotification:(id)a3
+- (void)_keyboardVisibilityDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v20 = [v4 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [notification userInfo];
+  v20 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
 
   p_keyboardFrame = &self->_keyboardFrame;
   if (v20)
@@ -285,8 +285,8 @@
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [MEMORY[0x277D75DA0] keyWindow];
-    [(SUUIComposeReviewView *)self convertRect:v14 fromView:v7, v9, v11, v13];
+    keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+    [(SUUIComposeReviewView *)self convertRect:keyWindow fromView:v7, v9, v11, v13];
     p_keyboardFrame->origin.x = v15;
     self->_keyboardFrame.origin.y = v16;
     self->_keyboardFrame.size.width = v17;
@@ -306,10 +306,10 @@
   }
 }
 
-- (void)_remoteKeyboardVisibilityDidChangeNotification:(id)a3
+- (void)_remoteKeyboardVisibilityDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKey:@"SUUIRemoteKeyboardFrame"];
+  userInfo = [notification userInfo];
+  v7 = [userInfo objectForKey:@"SUUIRemoteKeyboardFrame"];
 
   p_remoteKeyboardFrame = &self->_remoteKeyboardFrame;
   if (v7)
@@ -337,17 +337,17 @@
 
 - (id)_body
 {
-  v2 = [(SUTextContentView *)self->_textContentView text];
-  v3 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  text = [(SUTextContentView *)self->_textContentView text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v4 = [text stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v4;
 }
 
 - (void)_delayedUpdateReviewLength
 {
-  v3 = [(SUTextContentView *)self->_textContentView text];
-  self->_currentBodyLength = [v3 length];
+  text = [(SUTextContentView *)self->_textContentView text];
+  self->_currentBodyLength = [text length];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeReviewViewValidityChanged:self];
@@ -355,8 +355,8 @@
 
 - (BOOL)_isReviewTextOptional
 {
-  v2 = [(SUUIComposeReviewHeaderView *)self->_headerView title];
-  v3 = [v2 length] == 0;
+  title = [(SUUIComposeReviewHeaderView *)self->_headerView title];
+  v3 = [title length] == 0;
 
   return v3;
 }
@@ -450,10 +450,10 @@
 
   else
   {
-    v3 = [(SUUIComposeReviewView *)self _isReviewTextOptional];
+    _isReviewTextOptional = [(SUUIComposeReviewView *)self _isReviewTextOptional];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = v4;
-    if (v3)
+    if (_isReviewTextOptional)
     {
       v6 = @"REVIEW_PLACEHOLDER";
     }
@@ -481,15 +481,15 @@
 
     [(UIScrollView *)self->_scrollView setAlwaysBounceVertical:1];
     v6 = self->_scrollView;
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(UIScrollView *)v6 setTopExtensionViewColor:v7];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(UIScrollView *)v6 setTopExtensionViewColor:systemBackgroundColor];
 
     scrollView = self->_scrollView;
   }
 
-  v8 = [(UIScrollView *)scrollView superview];
+  superview = [(UIScrollView *)scrollView superview];
 
-  if (v8 != self)
+  if (superview != self)
   {
     [(SUUIComposeReviewView *)self addSubview:self->_scrollView];
   }
@@ -498,8 +498,8 @@
   if (!headerView)
   {
     v10 = [SUUIComposeReviewHeaderView alloc];
-    v11 = [(SUUIComposeReviewView *)self composeReviewStyle];
-    v12 = [(SUUIComposeReviewHeaderView *)v10 initWithFrame:v11 style:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+    composeReviewStyle = [(SUUIComposeReviewView *)self composeReviewStyle];
+    v12 = [(SUUIComposeReviewHeaderView *)v10 initWithFrame:composeReviewStyle style:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     v13 = self->_headerView;
     self->_headerView = v12;
 
@@ -509,10 +509,10 @@
 
   [(SUUIComposeReviewHeaderView *)headerView setReview:self->_review];
   [(SUUIComposeReviewHeaderView *)self->_headerView sizeToFit];
-  v14 = [(SUUIComposeReviewHeaderView *)self->_headerView superview];
+  superview2 = [(SUUIComposeReviewHeaderView *)self->_headerView superview];
   v15 = self->_scrollView;
 
-  if (v14 != v15)
+  if (superview2 != v15)
   {
     [(UIScrollView *)self->_scrollView addSubview:self->_headerView];
   }
@@ -530,40 +530,40 @@
     [(SUTextContentView *)v19 setFont:v20];
 
     v21 = self->_textContentView;
-    v22 = [(SUUIComposeReviewView *)self _reviewPlaceholder];
-    [(SUTextContentView *)v21 setPlaceholder:v22];
+    _reviewPlaceholder = [(SUUIComposeReviewView *)self _reviewPlaceholder];
+    [(SUTextContentView *)v21 setPlaceholder:_reviewPlaceholder];
 
     v23 = self->_textContentView;
     v24 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
     [(SUTextContentView *)v23 setFont:v24];
 
     v25 = self->_textContentView;
-    v26 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SUTextContentView *)v25 setBackgroundColor:v26];
+    systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SUTextContentView *)v25 setBackgroundColor:systemBackgroundColor2];
 
     v27 = self->_textContentView;
-    v28 = [MEMORY[0x277D75348] labelColor];
-    [(SUTextContentView *)v27 setTextColor:v28];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(SUTextContentView *)v27 setTextColor:labelColor];
 
     textContentView = self->_textContentView;
   }
 
-  v29 = [(SUTextContentView *)textContentView superview];
+  superview3 = [(SUTextContentView *)textContentView superview];
   v30 = self->_scrollView;
 
-  if (v29 != v30)
+  if (superview3 != v30)
   {
     [(UIScrollView *)self->_scrollView addSubview:self->_textContentView];
   }
 
-  v31 = [(SUUIComposeReviewHeaderView *)self->_headerView initialFirstResponder];
-  if (!v31)
+  initialFirstResponder = [(SUUIComposeReviewHeaderView *)self->_headerView initialFirstResponder];
+  if (!initialFirstResponder)
   {
-    v31 = self->_textContentView;
+    initialFirstResponder = self->_textContentView;
   }
 
-  v32 = v31;
-  [(SUTextContentView *)v31 becomeFirstResponder];
+  v32 = initialFirstResponder;
+  [(SUTextContentView *)initialFirstResponder becomeFirstResponder];
   [(SUUIComposeReviewView *)self _layoutComposeView];
   [(SUUIComposeReviewView *)self _updateContentSize];
 }
@@ -582,9 +582,9 @@
     loadingView = self->_loadingView;
   }
 
-  v6 = [(SULoadingView *)loadingView superview];
+  superview = [(SULoadingView *)loadingView superview];
 
-  if (v6 != self)
+  if (superview != self)
   {
     v7 = self->_loadingView;
 

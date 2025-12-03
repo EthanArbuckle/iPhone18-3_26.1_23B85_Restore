@@ -1,18 +1,18 @@
 @interface VNNOPRequest
-- (BOOL)_performNOPForRevision:(unint64_t)a3 inContext:(id)a4 detectorCompletionSemaphore:(id)a5 error:(id *)a6;
+- (BOOL)_performNOPForRevision:(unint64_t)revision inContext:(id)context detectorCompletionSemaphore:(id)semaphore error:(id *)error;
 - (BOOL)detectorWantsAnisotropicScaling;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (CGSize)_actualSizeForDesiredSize:(id)a3 ofSourceImageWidth:(unint64_t)a4 height:(unint64_t)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (CGSize)_actualSizeForDesiredSize:(id)size ofSourceImageWidth:(unint64_t)width height:(unint64_t)height;
 - (VNSupportedImageSize)detectorPreferredImageSize;
-- (__CVBuffer)_createScaledImagePixelBufferFromCropRect:(CGRect)a3 ofImageBuffer:(id)a4 inPixelFormat:(unsigned int)a5 forDetectorInputImageSize:(CGSize)a6 usingAnisotropicScaling:(BOOL)a7 error:(id *)a8;
-- (__CVBuffer)_createScaledImagePixelBufferFromImageBuffer:(id)a3 inPixelFormat:(unsigned int)a4 forDetectorInputImageSize:(CGSize)a5 usingAnisotropicScaling:(BOOL)a6 error:(id *)a7;
+- (__CVBuffer)_createScaledImagePixelBufferFromCropRect:(CGRect)rect ofImageBuffer:(id)buffer inPixelFormat:(unsigned int)format forDetectorInputImageSize:(CGSize)size usingAnisotropicScaling:(BOOL)scaling error:(id *)error;
+- (__CVBuffer)_createScaledImagePixelBufferFromImageBuffer:(id)buffer inPixelFormat:(unsigned int)format forDetectorInputImageSize:(CGSize)size usingAnisotropicScaling:(BOOL)scaling error:(id *)error;
 - (double)detectorExecutionTimeInterval;
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3;
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error;
 - (id)supportedImageSizeSet;
-- (void)setDetectorExecutionTimeInterval:(double)a3;
-- (void)setDetectorPreferredImageSize:(id)a3;
-- (void)setDetectorWantsAnisotropicScaling:(BOOL)a3;
+- (void)setDetectorExecutionTimeInterval:(double)interval;
+- (void)setDetectorPreferredImageSize:(id)size;
+- (void)setDetectorWantsAnisotropicScaling:(BOOL)scaling;
 @end
 
 @implementation VNNOPRequest
@@ -20,16 +20,16 @@
 - (id)supportedImageSizeSet
 {
   v3 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v4 = [(VNNOPRequest *)self detectorPreferredImageSize];
-  v5 = [v3 initWithObjects:{v4, 0}];
+  detectorPreferredImageSize = [(VNNOPRequest *)self detectorPreferredImageSize];
+  v5 = [v3 initWithObjects:{detectorPreferredImageSize, 0}];
 
   return v5;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = [(VNRequest *)self cancellerAndReturnError:a5];
+  contextCopy = context;
+  v9 = [(VNRequest *)self cancellerAndReturnError:error];
   if (v9)
   {
     v10 = dispatch_semaphore_create(0);
@@ -49,8 +49,8 @@
     v17[3] = &unk_1E77B3BB8;
     v20 = &v23;
     v17[4] = self;
-    v22 = a3;
-    v18 = v8;
+    revisionCopy = revision;
+    v18 = contextCopy;
     v19 = v10;
     v21 = &v27;
     v15[0] = MEMORY[0x1E69E9820];
@@ -72,19 +72,19 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      if (a5)
+      if (error)
       {
         v13 = v28[5];
         goto LABEL_10;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v13 = [VNError errorForCancellationOfRequest:self];
 LABEL_10:
       v12 = 0;
-      *a5 = v13;
+      *error = v13;
       goto LABEL_12;
     }
 
@@ -111,15 +111,15 @@ void __56__VNNOPRequest_internalPerformRevision_inContext_error___block_invoke(v
   *(*(a1[7] + 8) + 24) = v7;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 detectorExecutionTimeInterval];
+  configurationCopy = configuration;
+  [configurationCopy detectorExecutionTimeInterval];
   if (v5 <= 0.0)
   {
     v8.receiver = self;
     v8.super_class = VNNOPRequest;
-    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -130,7 +130,7 @@ void __56__VNNOPRequest_internalPerformRevision_inContext_error___block_invoke(v
   return v6;
 }
 
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"VNComputeStageMain";
@@ -141,75 +141,75 @@ void __56__VNNOPRequest_internalPerformRevision_inContext_error___block_invoke(v
   return v4;
 }
 
-- (void)setDetectorExecutionTimeInterval:(double)a3
+- (void)setDetectorExecutionTimeInterval:(double)interval
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setDetectorExecutionTimeInterval:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setDetectorExecutionTimeInterval:interval];
 }
 
 - (double)detectorExecutionTimeInterval
 {
-  v2 = [(VNRequest *)self configuration];
-  [v2 detectorExecutionTimeInterval];
+  configuration = [(VNRequest *)self configuration];
+  [configuration detectorExecutionTimeInterval];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDetectorWantsAnisotropicScaling:(BOOL)a3
+- (void)setDetectorWantsAnisotropicScaling:(BOOL)scaling
 {
-  v3 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setDetectorWantsAnisotropicScaling:v3];
+  scalingCopy = scaling;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setDetectorWantsAnisotropicScaling:scalingCopy];
 }
 
 - (BOOL)detectorWantsAnisotropicScaling
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 detectorWantsAnisotropicScaling];
+  configuration = [(VNRequest *)self configuration];
+  detectorWantsAnisotropicScaling = [configuration detectorWantsAnisotropicScaling];
 
-  return v3;
+  return detectorWantsAnisotropicScaling;
 }
 
-- (void)setDetectorPreferredImageSize:(id)a3
+- (void)setDetectorPreferredImageSize:(id)size
 {
-  v4 = a3;
-  v5 = [(VNRequest *)self configuration];
-  [v5 setDetectorPreferredImageSize:v4];
+  sizeCopy = size;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setDetectorPreferredImageSize:sizeCopy];
 }
 
 - (VNSupportedImageSize)detectorPreferredImageSize
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 detectorPreferredImageSize];
+  configuration = [(VNRequest *)self configuration];
+  detectorPreferredImageSize = [configuration detectorPreferredImageSize];
 
-  return v3;
+  return detectorPreferredImageSize;
 }
 
-- (BOOL)_performNOPForRevision:(unint64_t)a3 inContext:(id)a4 detectorCompletionSemaphore:(id)a5 error:(id *)a6
+- (BOOL)_performNOPForRevision:(unint64_t)revision inContext:(id)context detectorCompletionSemaphore:(id)semaphore error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  if ([(VNRequest *)self cancellationTriggeredAndReturnError:a6])
+  contextCopy = context;
+  semaphoreCopy = semaphore;
+  if ([(VNRequest *)self cancellationTriggeredAndReturnError:error])
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = [v9 imageBufferAndReturnError:a6];
-    if (v12 && (v28 = 0, v29 = 0, [(VNRequest *)self validateImageBuffer:v12 ofNonZeroWidth:&v29 andHeight:&v28 error:a6]))
+    v12 = [contextCopy imageBufferAndReturnError:error];
+    if (v12 && (v28 = 0, v29 = 0, [(VNRequest *)self validateImageBuffer:v12 ofNonZeroWidth:&v29 andHeight:&v28 error:error]))
     {
-      v13 = [(VNNOPRequest *)self detectorPreferredImageSize];
-      [(VNNOPRequest *)self _actualSizeForDesiredSize:v13 ofSourceImageWidth:v29 height:v28];
+      detectorPreferredImageSize = [(VNNOPRequest *)self detectorPreferredImageSize];
+      [(VNNOPRequest *)self _actualSizeForDesiredSize:detectorPreferredImageSize ofSourceImageWidth:v29 height:v28];
       v16 = v15;
       v17 = v14;
       if (v15 == *MEMORY[0x1E695F060] && v14 == *(MEMORY[0x1E695F060] + 8))
       {
-        if (a6)
+        if (error)
         {
           [VNError errorForInvalidOperationWithLocalizedDescription:@"unable to determine preferred image size for detection"];
-          *a6 = v11 = 0;
+          *error = v11 = 0;
         }
 
         else
@@ -231,12 +231,12 @@ void __56__VNNOPRequest_internalPerformRevision_inContext_error___block_invoke(v
         v31.size.height = 1.0;
         if (CGRectEqualToRect(v30, v31))
         {
-          v23 = -[VNNOPRequest _createScaledImagePixelBufferFromImageBuffer:inPixelFormat:forDetectorInputImageSize:usingAnisotropicScaling:error:](self, "_createScaledImagePixelBufferFromImageBuffer:inPixelFormat:forDetectorInputImageSize:usingAnisotropicScaling:error:", v12, [v13 idealImageFormat], -[VNNOPRequest detectorWantsAnisotropicScaling](self, "detectorWantsAnisotropicScaling"), a6, v16, v17);
+          v23 = -[VNNOPRequest _createScaledImagePixelBufferFromImageBuffer:inPixelFormat:forDetectorInputImageSize:usingAnisotropicScaling:error:](self, "_createScaledImagePixelBufferFromImageBuffer:inPixelFormat:forDetectorInputImageSize:usingAnisotropicScaling:error:", v12, [detectorPreferredImageSize idealImageFormat], -[VNNOPRequest detectorWantsAnisotropicScaling](self, "detectorWantsAnisotropicScaling"), error, v16, v17);
         }
 
         else
         {
-          v23 = -[VNNOPRequest _createScaledImagePixelBufferFromCropRect:ofImageBuffer:inPixelFormat:forDetectorInputImageSize:usingAnisotropicScaling:error:](self, "_createScaledImagePixelBufferFromCropRect:ofImageBuffer:inPixelFormat:forDetectorInputImageSize:usingAnisotropicScaling:error:", v12, [v13 idealImageFormat], -[VNNOPRequest detectorWantsAnisotropicScaling](self, "detectorWantsAnisotropicScaling"), a6, x * v29, y * v28, width * v29, height * v28, v16, v17);
+          v23 = -[VNNOPRequest _createScaledImagePixelBufferFromCropRect:ofImageBuffer:inPixelFormat:forDetectorInputImageSize:usingAnisotropicScaling:error:](self, "_createScaledImagePixelBufferFromCropRect:ofImageBuffer:inPixelFormat:forDetectorInputImageSize:usingAnisotropicScaling:error:", v12, [detectorPreferredImageSize idealImageFormat], -[VNNOPRequest detectorWantsAnisotropicScaling](self, "detectorWantsAnisotropicScaling"), error, x * v29, y * v28, width * v29, height * v28, v16, v17);
         }
 
         v24 = v23;
@@ -244,7 +244,7 @@ void __56__VNNOPRequest_internalPerformRevision_inContext_error___block_invoke(v
         if (v23)
         {
           [(VNNOPRequest *)self detectorExecutionTimeInterval];
-          if (v25 <= 0.0 || (v26 = dispatch_time(0, (v25 * 1000000000.0)), dispatch_semaphore_wait(v10, v26), ![(VNRequest *)self cancellationTriggeredAndReturnError:a6]))
+          if (v25 <= 0.0 || (v26 = dispatch_time(0, (v25 * 1000000000.0)), dispatch_semaphore_wait(semaphoreCopy, v26), ![(VNRequest *)self cancellationTriggeredAndReturnError:error]))
           {
             v11 = 1;
           }
@@ -263,57 +263,57 @@ void __56__VNNOPRequest_internalPerformRevision_inContext_error___block_invoke(v
   return v11;
 }
 
-- (__CVBuffer)_createScaledImagePixelBufferFromImageBuffer:(id)a3 inPixelFormat:(unsigned int)a4 forDetectorInputImageSize:(CGSize)a5 usingAnisotropicScaling:(BOOL)a6 error:(id *)a7
+- (__CVBuffer)_createScaledImagePixelBufferFromImageBuffer:(id)buffer inPixelFormat:(unsigned int)format forDetectorInputImageSize:(CGSize)size usingAnisotropicScaling:(BOOL)scaling error:(id *)error
 {
-  v8 = a6;
-  height = a5.height;
-  width = a5.width;
-  v11 = *&a4;
-  v12 = a3;
-  v13 = [v12 width];
-  v14 = [v12 height];
-  if (v8)
+  scalingCopy = scaling;
+  height = size.height;
+  width = size.width;
+  v11 = *&format;
+  bufferCopy = buffer;
+  width = [bufferCopy width];
+  height = [bufferCopy height];
+  if (scalingCopy)
   {
     v23 = 0;
-    v15 = [v12 bufferWithWidth:width height:height format:v11 options:0 error:&v23];
+    v15 = [bufferCopy bufferWithWidth:width height:height format:v11 options:0 error:&v23];
     v16 = v23;
-    if (a7 && !v15)
+    if (error && !v15)
     {
       v17 = @"Failed to scale the input image";
 LABEL_14:
       [VNError errorWithCode:9 message:v17 underlyingError:v16];
-      *a7 = v15 = 0;
+      *error = v15 = 0;
     }
   }
 
   else
   {
-    v18 = (v14 - v13) * 0.5 + 0.0;
-    if (v13 < v14)
+    v18 = (height - width) * 0.5 + 0.0;
+    if (width < height)
     {
       v19 = 0.0;
     }
 
     else
     {
-      v19 = (v13 - v14) * 0.5 + 0.0;
+      v19 = (width - height) * 0.5 + 0.0;
     }
 
-    if (v13 < v14)
+    if (width < height)
     {
-      v20 = v13;
+      v20 = width;
     }
 
     else
     {
       v18 = 0.0;
-      v20 = v14;
+      v20 = height;
     }
 
     v22 = 0;
-    v15 = [v12 croppedBufferWithWidth:width height:height format:v11 cropRect:0 options:&v22 error:{trunc(v19), trunc(v18), v20, v20}];
+    v15 = [bufferCopy croppedBufferWithWidth:width height:height format:v11 cropRect:0 options:&v22 error:{trunc(v19), trunc(v18), v20, v20}];
     v16 = v22;
-    if (a7 && !v15)
+    if (error && !v15)
     {
       v17 = @"Failed to center square crop the input image";
       goto LABEL_14;
@@ -323,35 +323,35 @@ LABEL_14:
   return v15;
 }
 
-- (__CVBuffer)_createScaledImagePixelBufferFromCropRect:(CGRect)a3 ofImageBuffer:(id)a4 inPixelFormat:(unsigned int)a5 forDetectorInputImageSize:(CGSize)a6 usingAnisotropicScaling:(BOOL)a7 error:(id *)a8
+- (__CVBuffer)_createScaledImagePixelBufferFromCropRect:(CGRect)rect ofImageBuffer:(id)buffer inPixelFormat:(unsigned int)format forDetectorInputImageSize:(CGSize)size usingAnisotropicScaling:(BOOL)scaling error:(id *)error
 {
-  height = a6.height;
-  width = a6.width;
-  v11 = *&a5;
-  v12 = a3.size.height;
-  v13 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a7)
+  height = size.height;
+  width = size.width;
+  v11 = *&format;
+  v12 = rect.size.height;
+  v13 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (scaling)
   {
     v27 = 0;
-    v16 = a4;
-    v17 = [v16 croppedBufferWithWidth:width height:height format:v11 cropRect:0 options:&v27 error:{x, y, v13, v12}];
+    bufferCopy = buffer;
+    v17 = [bufferCopy croppedBufferWithWidth:width height:height format:v11 cropRect:0 options:&v27 error:{x, y, v13, v12}];
 
     v18 = v27;
-    if (a8 && !v17)
+    if (error && !v17)
     {
       v19 = @"Failed to scale the input image";
 LABEL_14:
       [VNError errorWithCode:9 message:v19 underlyingError:v18];
-      *a8 = v17 = 0;
+      *error = v17 = 0;
     }
   }
 
   else
   {
-    v20 = a4;
-    v21 = v20;
+    bufferCopy2 = buffer;
+    v21 = bufferCopy2;
     v22 = x + (v13 - v12) * 0.5;
     v23 = y + (v12 - v13) * 0.5;
     if (v13 >= v12)
@@ -375,10 +375,10 @@ LABEL_14:
     }
 
     v26 = 0;
-    v17 = [v20 croppedBufferWithWidth:width height:height format:v11 cropRect:0 options:&v26 error:{trunc(v22), trunc(v23), v24, v24}];
+    v17 = [bufferCopy2 croppedBufferWithWidth:width height:height format:v11 cropRect:0 options:&v26 error:{trunc(v22), trunc(v23), v24, v24}];
 
     v18 = v26;
-    if (a8 && !v17)
+    if (error && !v17)
     {
       v19 = @"Failed to center square crop the input image";
       goto LABEL_14;
@@ -388,22 +388,22 @@ LABEL_14:
   return v17;
 }
 
-- (CGSize)_actualSizeForDesiredSize:(id)a3 ofSourceImageWidth:(unint64_t)a4 height:(unint64_t)a5
+- (CGSize)_actualSizeForDesiredSize:(id)size ofSourceImageWidth:(unint64_t)width height:(unint64_t)height
 {
-  v7 = a3;
-  v8 = v7;
-  if (!v7 || [v7 isAllowedPixelsWide:a4 pixelsHigh:a5])
+  sizeCopy = size;
+  v8 = sizeCopy;
+  if (!sizeCopy || [sizeCopy isAllowedPixelsWide:width pixelsHigh:height])
   {
-    v9 = a4;
-    v10 = a5;
+    widthCopy = width;
+    heightCopy = height;
     goto LABEL_4;
   }
 
-  v13 = [v8 aspectRatioHandling];
-  if (v13 == 2)
+  aspectRatioHandling = [v8 aspectRatioHandling];
+  if (aspectRatioHandling == 2)
   {
-    v16 = [v8 pixelsWideRange];
-    if (a4 < a5)
+    pixelsWideRange = [v8 pixelsWideRange];
+    if (width < height)
     {
       goto LABEL_10;
     }
@@ -411,49 +411,49 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  if (v13 == 1)
+  if (aspectRatioHandling == 1)
   {
-    v16 = [v8 pixelsWideRange];
-    if (a4 > a5)
+    pixelsWideRange = [v8 pixelsWideRange];
+    if (width > height)
     {
 LABEL_10:
-      v17 = _bestDimensionForSizeRange(v16, a5);
+      v17 = _bestDimensionForSizeRange(pixelsWideRange, height);
 
-      v18 = a5;
-      v19 = v17 / a5;
-      v9 = trunc(v19 * a4);
+      heightCopy3 = height;
+      v19 = v17 / height;
+      widthCopy = trunc(v19 * width);
 LABEL_13:
-      v10 = trunc(v19 * v18);
+      heightCopy = trunc(v19 * heightCopy3);
       goto LABEL_4;
     }
 
 LABEL_12:
-    v20 = _bestDimensionForSizeRange(v16, a4);
+    v20 = _bestDimensionForSizeRange(pixelsWideRange, width);
 
-    v19 = v20 / a4;
-    v9 = trunc(v19 * a4);
-    v18 = a5;
+    v19 = v20 / width;
+    widthCopy = trunc(v19 * width);
+    heightCopy3 = height;
     goto LABEL_13;
   }
 
-  if (v13)
+  if (aspectRatioHandling)
   {
-    v9 = *MEMORY[0x1E695F060];
-    v10 = *(MEMORY[0x1E695F060] + 8);
+    widthCopy = *MEMORY[0x1E695F060];
+    heightCopy = *(MEMORY[0x1E695F060] + 8);
   }
 
   else
   {
-    v14 = [v8 pixelsWideRange];
-    v9 = _bestDimensionForSizeRange(v14, a4);
-    v15 = [v8 pixelsHighRange];
-    v10 = _bestDimensionForSizeRange(v15, a5);
+    pixelsWideRange2 = [v8 pixelsWideRange];
+    widthCopy = _bestDimensionForSizeRange(pixelsWideRange2, width);
+    pixelsHighRange = [v8 pixelsHighRange];
+    heightCopy = _bestDimensionForSizeRange(pixelsHighRange, height);
   }
 
 LABEL_4:
 
-  v11 = v9;
-  v12 = v10;
+  v11 = widthCopy;
+  v12 = heightCopy;
   result.height = v12;
   result.width = v11;
   return result;

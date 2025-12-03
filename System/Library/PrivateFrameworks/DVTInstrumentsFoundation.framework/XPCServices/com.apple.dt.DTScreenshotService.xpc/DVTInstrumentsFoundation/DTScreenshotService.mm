@@ -1,13 +1,13 @@
 @interface DTScreenshotService
 - (id)_UIKitScreenshotMainscreenWithError:(id *)Mutable;
-- (void)takeScreenshotWithReply:(id)a3;
+- (void)takeScreenshotWithReply:(id)reply;
 @end
 
 @implementation DTScreenshotService
 
-- (void)takeScreenshotWithReply:(id)a3
+- (void)takeScreenshotWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v7 = 0;
   v5 = [(DTScreenshotService *)self _screenshotMainscreenWithError:&v7];
   v6 = v7;
@@ -23,19 +23,19 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Screen capture failed with error: %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (replyCopy)
   {
-    v4[2](v4, v5, v6);
+    replyCopy[2](replyCopy, v5, v6);
   }
 }
 
 - (id)_UIKitScreenshotMainscreenWithError:(id *)Mutable
 {
   v4 = _UICreateScreenUIImageWithRotation();
-  v5 = [v4 CGImage];
-  if (v5)
+  cGImage = [v4 CGImage];
+  if (cGImage)
   {
-    v6 = v5;
+    v6 = cGImage;
     Mutable = CFDataCreateMutable(0, 0);
     v7 = CGImageDestinationCreateWithData(Mutable, @"public.png", 1uLL, 0);
     if (qword_100008570 != -1)

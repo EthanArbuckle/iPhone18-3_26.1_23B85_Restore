@@ -3,7 +3,7 @@
 - (BCExternalURLOpenPrompterContext)init;
 - (NSCache)responseCache;
 - (void)_resetResponseCache;
-- (void)setCacheResponses:(BOOL)a3;
+- (void)setCacheResponses:(BOOL)responses;
 @end
 
 @implementation BCExternalURLOpenPrompterContext
@@ -52,12 +52,12 @@
   return v7;
 }
 
-- (void)setCacheResponses:(BOOL)a3
+- (void)setCacheResponses:(BOOL)responses
 {
-  if (self->_cacheResponses != a3)
+  if (self->_cacheResponses != responses)
   {
-    self->_cacheResponses = a3;
-    if (!a3)
+    self->_cacheResponses = responses;
+    if (!responses)
     {
       self->_responseCache = 0;
       _objc_release_x1();
@@ -67,8 +67,8 @@
 
 - (void)_resetResponseCache
 {
-  v2 = [(BCExternalURLOpenPrompterContext *)self responseCache];
-  [v2 removeAllObjects];
+  responseCache = [(BCExternalURLOpenPrompterContext *)self responseCache];
+  [responseCache removeAllObjects];
 }
 
 @end

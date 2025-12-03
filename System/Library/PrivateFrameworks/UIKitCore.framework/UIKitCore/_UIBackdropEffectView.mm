@@ -1,9 +1,9 @@
 @interface _UIBackdropEffectView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (_UIBackdropEffectView)init;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)setContentScaleFactor:(double)a3;
-- (void)setZoom:(double)a3;
+- (id)valueForUndefinedKey:(id)key;
+- (void)setContentScaleFactor:(double)factor;
+- (void)setZoom:(double)zoom;
 @end
 
 @implementation _UIBackdropEffectView
@@ -19,8 +19,8 @@
     [(UIView *)v2 setAutoresizingMask:18];
     [(UIView *)v3 setOpaque:0];
     [(UIView *)v3 setUserInteractionEnabled:0];
-    v4 = [(_UIBackdropEffectView *)v3 backdropLayer];
-    [v4 setEnabled:1];
+    backdropLayer = [(_UIBackdropEffectView *)v3 backdropLayer];
+    [backdropLayer setEnabled:1];
 
     v5 = v3;
   }
@@ -28,10 +28,10 @@
   return v3;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"filters.gaussianBlur.inputQuality") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"filters.colorSaturate.inputAmount") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"filters.colorMatrix.inputColorMatrix") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"enabled") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"meshTransform"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"filters.gaussianBlur.inputQuality") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"filters.colorSaturate.inputAmount") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"filters.colorMatrix.inputColorMatrix") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"enabled") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"meshTransform"))
   {
     v5 = 1;
   }
@@ -40,34 +40,34 @@
   {
     v7.receiver = self;
     v7.super_class = _UIBackdropEffectView;
-    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  NSLog(&cfstr_WarningCalling.isa, v4);
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  NSLog(&cfstr_WarningCalling.isa, keyCopy);
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = &unk_1EFE2F470;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputQuality"])
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputQuality"])
   {
     v5 = @"default";
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"filters.colorSaturate.inputAmount"])
+  if ([keyCopy isEqualToString:@"filters.colorSaturate.inputAmount"])
   {
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"filters.colorMatrix.inputColorMatrix"])
+  if ([keyCopy isEqualToString:@"filters.colorMatrix.inputColorMatrix"])
   {
     v9 = 1065353216;
     v11 = 0;
@@ -85,7 +85,7 @@
 
   else
   {
-    if ([v4 isEqualToString:@"enabled"])
+    if ([keyCopy isEqualToString:@"enabled"])
     {
 LABEL_6:
       v5 = &unk_1EFE2F488;
@@ -94,7 +94,7 @@ LABEL_6:
 
     v8.receiver = self;
     v8.super_class = _UIBackdropEffectView;
-    v6 = [(_UIBackdropEffectView *)&v8 valueForUndefinedKey:v4];
+    v6 = [(_UIBackdropEffectView *)&v8 valueForUndefinedKey:keyCopy];
   }
 
   v5 = v6;
@@ -103,25 +103,25 @@ LABEL_12:
   return v5;
 }
 
-- (void)setZoom:(double)a3
+- (void)setZoom:(double)zoom
 {
-  if (self->_zoom != a3)
+  if (self->_zoom != zoom)
   {
-    v5 = MeshTransformForZoom(a3);
-    v6 = [(_UIBackdropEffectView *)self backdropLayer];
-    [v6 setMeshTransform:v5];
+    v5 = MeshTransformForZoom(zoom);
+    backdropLayer = [(_UIBackdropEffectView *)self backdropLayer];
+    [backdropLayer setMeshTransform:v5];
 
-    self->_zoom = a3;
+    self->_zoom = zoom;
   }
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
   v5.receiver = self;
   v5.super_class = _UIBackdropEffectView;
-  [(UIView *)&v5 setContentScaleFactor:a3];
-  v4 = [(UIView *)self layer];
-  [v4 setRasterizationScale:1.0];
+  [(UIView *)&v5 setContentScaleFactor:factor];
+  layer = [(UIView *)self layer];
+  [layer setRasterizationScale:1.0];
 }
 
 @end

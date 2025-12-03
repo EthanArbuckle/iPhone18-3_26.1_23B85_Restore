@@ -6,55 +6,55 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v21.receiver = self;
   v21.super_class = HMDAudioStreamConfig;
-  [(HMDMediaStreamConfig *)&v21 addToDescription:v3];
-  [v3 appendFormat:@"\n"];
-  v4 = [(AVCMediaStreamConfig *)self audio];
-  v5 = [v4 codecType];
-  v6 = [(AVCMediaStreamConfig *)self audio];
-  v7 = [v6 codecType];
-  if (v7 < 0xC && ((0xFBFu >> v7) & 1) != 0)
+  [(HMDMediaStreamConfig *)&v21 addToDescription:string];
+  [string appendFormat:@"\n"];
+  audio = [(AVCMediaStreamConfig *)self audio];
+  codecType = [audio codecType];
+  audio2 = [(AVCMediaStreamConfig *)self audio];
+  codecType2 = [audio2 codecType];
+  if (codecType2 < 0xC && ((0xFBFu >> codecType2) & 1) != 0)
   {
-    v8 = off_278679EA0[v7];
+    v8 = off_278679EA0[codecType2];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown AVC audio codec type (%ld)", v7];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown AVC audio codec type (%ld)", codecType2];
   }
 
-  [v3 appendFormat:@"audio.codecType       = %tu, %@\n", v5, v8];
+  [string appendFormat:@"audio.codecType       = %tu, %@\n", codecType, v8];
 
-  v9 = [(AVCMediaStreamConfig *)self audio];
-  [v3 appendFormat:@"audio.dtmfPayloadType = %tu\n", objc_msgSend(v9, "dtmfPayloadType")];
+  audio3 = [(AVCMediaStreamConfig *)self audio];
+  [string appendFormat:@"audio.dtmfPayloadType = %tu\n", objc_msgSend(audio3, "dtmfPayloadType")];
 
-  v10 = [(AVCMediaStreamConfig *)self audio];
-  [v10 isOctectAligned];
+  audio4 = [(AVCMediaStreamConfig *)self audio];
+  [audio4 isOctectAligned];
   v11 = HMFBooleanToString();
-  [v3 appendFormat:@"audio.octetAligned    = %@\n", v11];
+  [string appendFormat:@"audio.octetAligned    = %@\n", v11];
 
-  v12 = [(AVCMediaStreamConfig *)self audio];
-  [v12 isDTXEnabled];
+  audio5 = [(AVCMediaStreamConfig *)self audio];
+  [audio5 isDTXEnabled];
   v13 = HMFEnabledStatusToString();
-  [v3 appendFormat:@"audio.dtxEnabled      = %@\n", v13];
+  [string appendFormat:@"audio.dtxEnabled      = %@\n", v13];
 
-  v14 = [(AVCMediaStreamConfig *)self audio];
-  [v3 appendFormat:@"audio.audioStreamMode = %tu\n", objc_msgSend(v14, "audioStreamMode")];
+  audio6 = [(AVCMediaStreamConfig *)self audio];
+  [string appendFormat:@"audio.audioStreamMode = %tu\n", objc_msgSend(audio6, "audioStreamMode")];
 
-  v15 = [(AVCMediaStreamConfig *)self audio];
-  [v15 isCNEnabled];
+  audio7 = [(AVCMediaStreamConfig *)self audio];
+  [audio7 isCNEnabled];
   v16 = HMFEnabledStatusToString();
-  [v3 appendFormat:@"audio.cnEnabled       = %@\n", v16];
+  [string appendFormat:@"audio.cnEnabled       = %@\n", v16];
 
-  v17 = [(AVCMediaStreamConfig *)self audio];
-  [v3 appendFormat:@"audio.cnPayloadType   = %tu\n", objc_msgSend(v17, "cnPayloadType")];
+  audio8 = [(AVCMediaStreamConfig *)self audio];
+  [string appendFormat:@"audio.cnPayloadType   = %tu\n", objc_msgSend(audio8, "cnPayloadType")];
 
-  v18 = [(AVCMediaStreamConfig *)self audio];
-  [v3 appendFormat:@"audio.ptime           = %tu ms\n", objc_msgSend(v18, "ptime")];
+  audio9 = [(AVCMediaStreamConfig *)self audio];
+  [string appendFormat:@"audio.ptime           = %tu ms\n", objc_msgSend(audio9, "ptime")];
 
-  v19 = [v3 copy];
+  v19 = [string copy];
 
   return v19;
 }

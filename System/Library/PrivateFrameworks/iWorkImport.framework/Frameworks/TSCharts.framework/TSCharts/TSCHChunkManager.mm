@@ -1,38 +1,38 @@
 @interface TSCHChunkManager
 - (BOOL)hasBackgroundLayerForPieChart;
-- (BOOL)lastChunkForSeriesIndex:(unint64_t)a3 currentChunk:(unint64_t)a4 chunkStyle:(unint64_t)a5;
-- (BOOL)p_hasBackgroundFillForChart:(id)a3;
-- (BOOL)p_hasBackgroundLayerForPieChartForChart:(id)a3;
-- (BOOL)p_isMultiDataForChart:(id)a3;
-- (BOOL)p_supportsByWedgeDeliveryStyle:(id)a3;
-- (TSCHChunkManager)initWithChartInfo:(id)a3;
-- (id)animationFiltersWithDefaultFilters:(id)a3;
-- (id)containedTextForChartDeliveryStyle:(unint64_t)a3 chunkIndex:(unint64_t)a4 displayName:(id)a5;
-- (id)p_allChartDeliveryStylesLocalized:(BOOL)a3;
+- (BOOL)lastChunkForSeriesIndex:(unint64_t)index currentChunk:(unint64_t)chunk chunkStyle:(unint64_t)style;
+- (BOOL)p_hasBackgroundFillForChart:(id)chart;
+- (BOOL)p_hasBackgroundLayerForPieChartForChart:(id)chart;
+- (BOOL)p_isMultiDataForChart:(id)chart;
+- (BOOL)p_supportsByWedgeDeliveryStyle:(id)style;
+- (TSCHChunkManager)initWithChartInfo:(id)info;
+- (id)animationFiltersWithDefaultFilters:(id)filters;
+- (id)containedTextForChartDeliveryStyle:(unint64_t)style chunkIndex:(unint64_t)index displayName:(id)name;
+- (id)p_allChartDeliveryStylesLocalized:(BOOL)localized;
 - (id)p_allLocalizedChartDeliveryStyles;
 - (id)p_allNonLocalizedChartDeliveryStyles;
-- (id)p_backgroundStringForChartWithTitle:(id)a3;
+- (id)p_backgroundStringForChartWithTitle:(id)title;
 - (id)p_cachedChunkMap;
 - (id)p_chart;
-- (id)p_chunkMapForChart:(id)a3 chunkStyle:(unint64_t)a4 forceUpdateCache:(BOOL)a5;
-- (id)p_createChunkMapForChart:(id)a3 chunkStyle:(unint64_t)a4;
-- (id)p_makeAllChartDeliveryStylesLocalized:(BOOL)a3;
-- (id)p_nameForMultiDataSetCategory:(unint64_t)a3 chart:(id)a4;
-- (id)p_seriesNameForSeriesAtIndex:(unint64_t)a3 withPrefix:(id)a4 chart:(id)a5;
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4;
-- (unint64_t)chartDeliveryStyleFromTSDDeliveryStyle:(unint64_t)a3;
-- (unint64_t)chunkCountByUpdatingCacheIfNecessaryForChartDeliveryStyle:(unint64_t)a3;
-- (unint64_t)chunkCountForChartDeliveryStyle:(unint64_t)a3;
-- (unint64_t)p_chunkCountForChart:(id)a3 chunkStyle:(unint64_t)a4 chunkMap:(id)a5;
-- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)a3;
-- (void)adjustRangeForRep:(id)a3 chunkIndex:(unint64_t)a4 finalTexture:(BOOL)a5 seriesStart:(int64_t *)a6 seriesCount:(int64_t *)a7;
-- (void)adjustRangeForRep:(id)a3 seriesIndex:(unint64_t)a4 chunkIndex:(unint64_t)a5 finalTexture:(BOOL)a6 outGroupStart:(int64_t *)a7 outGroupCount:(int64_t *)a8;
-- (void)updateCache:(unint64_t)a3;
+- (id)p_chunkMapForChart:(id)chart chunkStyle:(unint64_t)style forceUpdateCache:(BOOL)cache;
+- (id)p_createChunkMapForChart:(id)chart chunkStyle:(unint64_t)style;
+- (id)p_makeAllChartDeliveryStylesLocalized:(BOOL)localized;
+- (id)p_nameForMultiDataSetCategory:(unint64_t)category chart:(id)chart;
+- (id)p_seriesNameForSeriesAtIndex:(unint64_t)index withPrefix:(id)prefix chart:(id)chart;
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter;
+- (unint64_t)chartDeliveryStyleFromTSDDeliveryStyle:(unint64_t)style;
+- (unint64_t)chunkCountByUpdatingCacheIfNecessaryForChartDeliveryStyle:(unint64_t)style;
+- (unint64_t)chunkCountForChartDeliveryStyle:(unint64_t)style;
+- (unint64_t)p_chunkCountForChart:(id)chart chunkStyle:(unint64_t)style chunkMap:(id)map;
+- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)string;
+- (void)adjustRangeForRep:(id)rep chunkIndex:(unint64_t)index finalTexture:(BOOL)texture seriesStart:(int64_t *)start seriesCount:(int64_t *)count;
+- (void)adjustRangeForRep:(id)rep seriesIndex:(unint64_t)index chunkIndex:(unint64_t)chunkIndex finalTexture:(BOOL)texture outGroupStart:(int64_t *)start outGroupCount:(int64_t *)count;
+- (void)updateCache:(unint64_t)cache;
 @end
 
 @implementation TSCHChunkManager
 
-- (id)p_makeAllChartDeliveryStylesLocalized:(BOOL)a3
+- (id)p_makeAllChartDeliveryStylesLocalized:(BOOL)localized
 {
   v124[20] = *MEMORY[0x277D85DE8];
   v7 = objc_msgSend_p_chart(self, a2, v3, v4, v5);
@@ -49,7 +49,7 @@
   }
 
   v120 = v12;
-  if (a3)
+  if (localized)
   {
     v32 = sub_276360774(v14, v15, v16);
     v122 = objc_msgSend_localizedStringForKey_value_table_(v32, v33, v34, v35, v36, @"All at Once", &stru_288528678, @"TSCharts");
@@ -169,9 +169,9 @@
   return v6;
 }
 
-- (id)p_allChartDeliveryStylesLocalized:(BOOL)a3
+- (id)p_allChartDeliveryStylesLocalized:(BOOL)localized
 {
-  if (a3)
+  if (localized)
   {
     objc_msgSend_p_allLocalizedChartDeliveryStyles(self, a2, v3, v4, v5);
   }
@@ -185,16 +185,16 @@
   return v6;
 }
 
-- (TSCHChunkManager)initWithChartInfo:(id)a3
+- (TSCHChunkManager)initWithChartInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = TSCHChunkManager;
   v5 = [(TSCHChunkManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weakChart, v4);
+    objc_storeWeak(&v5->_weakChart, infoCopy);
   }
 
   return v6;
@@ -219,48 +219,48 @@
   return v23;
 }
 
-- (id)p_createChunkMapForChart:(id)a3 chunkStyle:(unint64_t)a4
+- (id)p_createChunkMapForChart:(id)chart chunkStyle:(unint64_t)style
 {
-  v5 = a3;
+  chartCopy = chart;
   v6 = [TSCHChunkMap alloc];
-  v11 = objc_msgSend_initWithChart_chunkStyle_(v6, v7, v8, v9, v10, v5, a4);
+  v11 = objc_msgSend_initWithChart_chunkStyle_(v6, v7, v8, v9, v10, chartCopy, style);
 
   return v11;
 }
 
-- (id)p_chunkMapForChart:(id)a3 chunkStyle:(unint64_t)a4 forceUpdateCache:(BOOL)a5
+- (id)p_chunkMapForChart:(id)chart chunkStyle:(unint64_t)style forceUpdateCache:(BOOL)cache
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = self;
-  objc_sync_enter(v9);
-  if (v5)
+  cacheCopy = cache;
+  chartCopy = chart;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (cacheCopy)
   {
-    cachedChunkMap = v9->_cachedChunkMap;
-    v9->_cachedChunkMap = 0;
+    cachedChunkMap = selfCopy->_cachedChunkMap;
+    selfCopy->_cachedChunkMap = 0;
   }
 
-  v15 = v9->_cachedChunkMap;
+  v15 = selfCopy->_cachedChunkMap;
   if (!v15)
   {
-    v16 = objc_msgSend_p_createChunkMapForChart_chunkStyle_(v9, v10, v11, v12, v13, v8, a4);
-    v17 = v9->_cachedChunkMap;
-    v9->_cachedChunkMap = v16;
+    v16 = objc_msgSend_p_createChunkMapForChart_chunkStyle_(selfCopy, v10, v11, v12, v13, chartCopy, style);
+    v17 = selfCopy->_cachedChunkMap;
+    selfCopy->_cachedChunkMap = v16;
 
-    v15 = v9->_cachedChunkMap;
+    v15 = selfCopy->_cachedChunkMap;
   }
 
   v18 = v15;
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   return v18;
 }
 
 - (id)p_cachedChunkMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cachedChunkMap = v2->_cachedChunkMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedChunkMap = selfCopy->_cachedChunkMap;
   if (!cachedChunkMap)
   {
     v8 = MEMORY[0x277D81150];
@@ -269,57 +269,57 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 386, 0, "invalid nil value for '%{public}s'", "_cachedChunkMap");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
-    cachedChunkMap = v2->_cachedChunkMap;
+    cachedChunkMap = selfCopy->_cachedChunkMap;
   }
 
   v23 = cachedChunkMap;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v23;
 }
 
-- (void)updateCache:(unint64_t)a3
+- (void)updateCache:(unint64_t)cache
 {
   v15 = objc_msgSend_p_chart(self, a2, v3, v4, v5);
-  v8 = self;
-  objc_sync_enter(v8);
-  v13 = objc_msgSend_p_createChunkMapForChart_chunkStyle_(v8, v9, v10, v11, v12, v15, a3);
-  cachedChunkMap = v8->_cachedChunkMap;
-  v8->_cachedChunkMap = v13;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v13 = objc_msgSend_p_createChunkMapForChart_chunkStyle_(selfCopy, v9, v10, v11, v12, v15, cache);
+  cachedChunkMap = selfCopy->_cachedChunkMap;
+  selfCopy->_cachedChunkMap = v13;
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (unint64_t)chunkCountByUpdatingCacheIfNecessaryForChartDeliveryStyle:(unint64_t)a3
+- (unint64_t)chunkCountByUpdatingCacheIfNecessaryForChartDeliveryStyle:(unint64_t)style
 {
   v8 = objc_msgSend_p_chart(self, a2, v3, v4, v5);
-  v13 = objc_msgSend_p_chunkMapForChart_chunkStyle_forceUpdateCache_(self, v9, v10, v11, v12, v8, a3, 0);
-  v18 = objc_msgSend_p_chunkCountForChart_chunkStyle_chunkMap_(self, v14, v15, v16, v17, v8, a3, v13);
+  v13 = objc_msgSend_p_chunkMapForChart_chunkStyle_forceUpdateCache_(self, v9, v10, v11, v12, v8, style, 0);
+  v18 = objc_msgSend_p_chunkCountForChart_chunkStyle_chunkMap_(self, v14, v15, v16, v17, v8, style, v13);
 
   return v18;
 }
 
-- (BOOL)p_supportsByWedgeDeliveryStyle:(id)a3
+- (BOOL)p_supportsByWedgeDeliveryStyle:(id)style
 {
-  v6 = objc_msgSend_chartType(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_chartType(style, a2, v3, v4, v5);
   v11 = objc_msgSend_animationDeliveryStylesForFilter_(v6, v7, v8, v9, v10, &stru_288528678);
 
   LOBYTE(v6) = objc_msgSend_containsIndex_(v11, v12, v13, v14, v15, 103);
   return v6;
 }
 
-- (BOOL)p_isMultiDataForChart:(id)a3
+- (BOOL)p_isMultiDataForChart:(id)chart
 {
-  v6 = objc_msgSend_chartType(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_chartType(chart, a2, v3, v4, v5);
   isMultiData = objc_msgSend_isMultiData(v6, v7, v8, v9, v10);
 
   return isMultiData;
 }
 
-- (BOOL)p_hasBackgroundFillForChart:(id)a3
+- (BOOL)p_hasBackgroundFillForChart:(id)chart
 {
-  v3 = a3;
-  v8 = objc_msgSend_objectValueForProperty_(v3, v4, v5, v6, v7, 1101);
+  chartCopy = chart;
+  v8 = objc_msgSend_objectValueForProperty_(chartCopy, v4, v5, v6, v7, 1101);
   if (objc_msgSend_hasNoFill_(TSCHStyleUtilities, v9, v10, v11, v12, v8))
   {
     goto LABEL_6;
@@ -329,7 +329,7 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     LODWORD(v14) = 1.0;
-    objc_msgSend_floatValueForProperty_defaultValue_(v3, v13, v14, v15, v16, 1102);
+    objc_msgSend_floatValueForProperty_defaultValue_(chartCopy, v13, v14, v15, v16, 1102);
     if (v26 == 0.0)
     {
       goto LABEL_6;
@@ -344,7 +344,7 @@ LABEL_9:
   if (!objc_msgSend_isEqual_(v8, v18, v19, v20, v21, v17))
   {
     LODWORD(v23) = 1.0;
-    objc_msgSend_floatValueForProperty_defaultValue_(v3, v22, v23, v24, v25, 1102);
+    objc_msgSend_floatValueForProperty_defaultValue_(chartCopy, v22, v23, v24, v25, 1102);
     v30 = v29;
 
     if (v30 == 0.0)
@@ -362,23 +362,23 @@ LABEL_7:
   return v27;
 }
 
-- (BOOL)p_hasBackgroundLayerForPieChartForChart:(id)a3
+- (BOOL)p_hasBackgroundLayerForPieChartForChart:(id)chart
 {
-  v4 = a3;
-  v9 = objc_msgSend_chartType(v4, v5, v6, v7, v8);
+  chartCopy = chart;
+  v9 = objc_msgSend_chartType(chartCopy, v5, v6, v7, v8);
   if (objc_msgSend_is3D(v9, v10, v11, v12, v13))
   {
     hasBackgroundFillForChart = 0;
   }
 
-  else if (objc_msgSend_p_titleOnForChart_(self, v14, v15, v16, v17, v4) & 1) != 0 || (objc_msgSend_p_legendOnForChart_(self, v19, v20, v21, v22, v4))
+  else if (objc_msgSend_p_titleOnForChart_(self, v14, v15, v16, v17, chartCopy) & 1) != 0 || (objc_msgSend_p_legendOnForChart_(self, v19, v20, v21, v22, chartCopy))
   {
     hasBackgroundFillForChart = 1;
   }
 
   else
   {
-    hasBackgroundFillForChart = objc_msgSend_p_hasBackgroundFillForChart_(self, v23, v24, v25, v26, v4);
+    hasBackgroundFillForChart = objc_msgSend_p_hasBackgroundFillForChart_(self, v23, v24, v25, v26, chartCopy);
   }
 
   return hasBackgroundFillForChart;
@@ -386,32 +386,32 @@ LABEL_7:
 
 - (BOOL)hasBackgroundLayerForPieChart
 {
-  v5 = self;
+  selfCopy = self;
   v6 = objc_msgSend_p_chart(self, a2, v2, v3, v4);
-  LOBYTE(v5) = objc_msgSend_p_hasBackgroundLayerForPieChartForChart_(v5, v7, v8, v9, v10, v6);
+  LOBYTE(selfCopy) = objc_msgSend_p_hasBackgroundLayerForPieChartForChart_(selfCopy, v7, v8, v9, v10, v6);
 
-  return v5;
+  return selfCopy;
 }
 
-- (unint64_t)chartDeliveryStyleFromTSDDeliveryStyle:(unint64_t)a3
+- (unint64_t)chartDeliveryStyleFromTSDDeliveryStyle:(unint64_t)style
 {
   v7 = objc_msgSend_p_allChartDeliveryStylesLocalized_(self, a2, v3, v4, v5, 0);
-  v12 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v8, v9, v10, v11, a3);
+  v12 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v8, v9, v10, v11, style);
   v17 = objc_msgSend_objectForKeyedSubscript_(v7, v13, v14, v15, v16, v12);
 
   if (!v17)
   {
-    a3 = 0;
+    style = 0;
   }
 
-  return a3;
+  return style;
 }
 
-- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)a3
+- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9 = objc_msgSend_p_allChartDeliveryStylesLocalized_(self, v5, v6, v7, v8, 0);
-  v14 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v11, v12, v13, v4);
+  v14 = objc_msgSend_objectForKeyedSubscript_(v9, v10, v11, v12, v13, stringCopy);
 
   if (v14)
   {
@@ -426,14 +426,14 @@ LABEL_7:
   return v19;
 }
 
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter
 {
-  v4 = a3;
-  v6 = a4;
+  localizedCopy = localized;
+  filterCopy = filter;
   v11 = objc_msgSend_p_chart(self, v7, v8, v9, v10);
-  v16 = objc_msgSend_p_allChartDeliveryStylesLocalized_(self, v12, v13, v14, v15, v4);
+  v16 = objc_msgSend_p_allChartDeliveryStylesLocalized_(self, v12, v13, v14, v15, localizedCopy);
   v21 = objc_msgSend_chartType(v11, v17, v18, v19, v20);
-  v26 = objc_msgSend_animationDeliveryStylesForFilter_(v21, v22, v23, v24, v25, v6);
+  v26 = objc_msgSend_animationDeliveryStylesForFilter_(v21, v22, v23, v24, v25, filterCopy);
 
   v73 = 0;
   v74 = &v73;
@@ -470,26 +470,26 @@ LABEL_7:
   return v65;
 }
 
-- (unint64_t)chunkCountForChartDeliveryStyle:(unint64_t)a3
+- (unint64_t)chunkCountForChartDeliveryStyle:(unint64_t)style
 {
   v8 = objc_msgSend_p_chart(self, a2, v3, v4, v5);
-  v13 = objc_msgSend_p_chunkMapForChart_chunkStyle_forceUpdateCache_(self, v9, v10, v11, v12, v8, a3, 1);
-  v18 = objc_msgSend_p_chunkCountForChart_chunkStyle_chunkMap_(self, v14, v15, v16, v17, v8, a3, v13);
+  v13 = objc_msgSend_p_chunkMapForChart_chunkStyle_forceUpdateCache_(self, v9, v10, v11, v12, v8, style, 1);
+  v18 = objc_msgSend_p_chunkCountForChart_chunkStyle_chunkMap_(self, v14, v15, v16, v17, v8, style, v13);
 
   return v18;
 }
 
-- (unint64_t)p_chunkCountForChart:(id)a3 chunkStyle:(unint64_t)a4 chunkMap:(id)a5
+- (unint64_t)p_chunkCountForChart:(id)chart chunkStyle:(unint64_t)style chunkMap:(id)map
 {
-  v8 = a3;
-  v9 = a5;
-  v14 = objc_msgSend_model(v8, v10, v11, v12, v13);
+  chartCopy = chart;
+  mapCopy = map;
+  v14 = objc_msgSend_model(chartCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_numberOfSeries(v14, v15, v16, v17, v18);
-  if (objc_msgSend_p_supportsByWedgeDeliveryStyle_(self, v20, v21, v22, v23, v8))
+  if (objc_msgSend_p_supportsByWedgeDeliveryStyle_(self, v20, v21, v22, v23, chartCopy))
   {
-    if (a4 == 103)
+    if (style == 103)
     {
-      hasBackgroundLayerForPieChartForChart = objc_msgSend_p_hasBackgroundLayerForPieChartForChart_(self, v24, v25, v26, v27, v8);
+      hasBackgroundLayerForPieChartForChart = objc_msgSend_p_hasBackgroundLayerForPieChartForChart_(self, v24, v25, v26, v27, chartCopy);
       if (v19 + hasBackgroundLayerForPieChartForChart <= 1)
       {
         v29 = 1;
@@ -508,13 +508,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!objc_msgSend_p_isMultiDataForChart_(self, v24, v25, v26, v27, v8))
+  if (!objc_msgSend_p_isMultiDataForChart_(self, v24, v25, v26, v27, chartCopy))
   {
-    if (a4 > 103)
+    if (style > 103)
     {
-      if (a4 - 105 < 4)
+      if (style - 105 < 4)
       {
-        v41 = objc_msgSend_count(v9, v30, v31, v32, v33);
+        v41 = objc_msgSend_count(mapCopy, v30, v31, v32, v33);
         hasReferenceLines = objc_msgSend_hasReferenceLines(v14, v42, v43, v44, v45);
         v47 = 1;
         if (hasReferenceLines)
@@ -526,7 +526,7 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      if (a4 == 104)
+      if (style == 104)
       {
         v29 = 2;
         goto LABEL_12;
@@ -536,7 +536,7 @@ LABEL_11:
     else
     {
       v29 = 1;
-      if (!a4 || a4 == 100 || a4 == 102)
+      if (!style || style == 100 || style == 102)
       {
         goto LABEL_12;
       }
@@ -545,19 +545,19 @@ LABEL_11:
     v48 = MEMORY[0x277D81150];
     v49 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v30, v31, v32, v33, "[TSCHChunkManager p_chunkCountForChart:chunkStyle:chunkMap:]");
     v54 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v50, v51, v52, v53, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChunkManager.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v48, v55, v56, v57, v58, v49, v54, 540, 0, "invalid chart delivery style: %ld", a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v48, v55, v56, v57, v58, v49, v54, 540, 0, "invalid chart delivery style: %ld", style);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v59, v60, v61, v62);
     v29 = 0;
     goto LABEL_12;
   }
 
-  if (a4 != 106)
+  if (style != 106)
   {
     goto LABEL_11;
   }
 
-  v34 = objc_msgSend_model(v8, v30, v31, v32, v33);
+  v34 = objc_msgSend_model(chartCopy, v30, v31, v32, v33);
   v39 = objc_msgSend_numberOfChunkableMultiDataSets(v34, v35, v36, v37, v38);
 
   if ((v39 + 1) > 1)
@@ -575,19 +575,19 @@ LABEL_12:
   return v29;
 }
 
-- (void)adjustRangeForRep:(id)a3 chunkIndex:(unint64_t)a4 finalTexture:(BOOL)a5 seriesStart:(int64_t *)a6 seriesCount:(int64_t *)a7
+- (void)adjustRangeForRep:(id)rep chunkIndex:(unint64_t)index finalTexture:(BOOL)texture seriesStart:(int64_t *)start seriesCount:(int64_t *)count
 {
-  v9 = a5;
-  v12 = a3;
+  textureCopy = texture;
+  repCopy = rep;
   v230 = objc_msgSend_p_chart(self, v13, v14, v15, v16);
   v22 = objc_msgSend_p_cachedChunkMap(self, v17, v18, v19, v20);
-  if (a6)
+  if (start)
   {
-    v26 = *a6;
-    if (a7)
+    v26 = *start;
+    if (count)
     {
 LABEL_3:
-      v27 = *a7;
+      v27 = *count;
       goto LABEL_6;
     }
   }
@@ -595,7 +595,7 @@ LABEL_3:
   else
   {
     v26 = 0;
-    if (a7)
+    if (count)
     {
       goto LABEL_3;
     }
@@ -603,7 +603,7 @@ LABEL_3:
 
   v27 = 0;
 LABEL_6:
-  v28 = objc_msgSend_chartDeliveryStyle(v12, v21, v23, v24, v25);
+  v28 = objc_msgSend_chartDeliveryStyle(repCopy, v21, v23, v24, v25);
 
   if (!objc_msgSend_p_supportsByWedgeDeliveryStyle_(self, v29, v30, v31, v32, v230))
   {
@@ -635,9 +635,9 @@ LABEL_71:
       goto LABEL_42;
     }
 
-    v48 = a4 - 1;
+    v48 = index - 1;
     v49 = objc_msgSend_count(v22, v33, v34, v35, v36);
-    if ((a4 - 1) >= v49)
+    if ((index - 1) >= v49)
     {
       v48 = v49;
     }
@@ -653,7 +653,7 @@ LABEL_71:
         }
 
 LABEL_46:
-        if ((a4 || v9) && (a4 != 1 || !v9))
+        if ((index || textureCopy) && (index != 1 || !textureCopy))
         {
           v27 = 0;
           v26 = 0;
@@ -670,7 +670,7 @@ LABEL_46:
       if (v28 == 104)
       {
 LABEL_42:
-        if (a4 && (a4 != 1 || !v9))
+        if (index && (index != 1 || !textureCopy))
         {
           goto LABEL_73;
         }
@@ -691,7 +691,7 @@ LABEL_70:
     {
       if (v28 == 107)
       {
-        if (!a4)
+        if (!index)
         {
           goto LABEL_68;
         }
@@ -701,9 +701,9 @@ LABEL_70:
         {
           v103 = objc_msgSend_count(v22, v99, v100, v101, v102) + 1;
 
-          if (v103 == a4)
+          if (v103 == index)
           {
-            if (!v9)
+            if (!textureCopy)
             {
               goto LABEL_117;
             }
@@ -716,7 +716,7 @@ LABEL_70:
         {
         }
 
-        if (v9)
+        if (textureCopy)
         {
           if ((v48 & 0x8000000000000000) != 0)
           {
@@ -770,7 +770,7 @@ LABEL_101:
           goto LABEL_70;
         }
 
-        if (!a4)
+        if (!index)
         {
           goto LABEL_68;
         }
@@ -780,7 +780,7 @@ LABEL_101:
         {
           v79 = objc_msgSend_count(v22, v75, v76, v77, v78) + 1;
 
-          if (v79 == a4)
+          if (v79 == index)
           {
             goto LABEL_61;
           }
@@ -791,7 +791,7 @@ LABEL_101:
         }
 
         v50 = v230;
-        if (v9)
+        if (textureCopy)
         {
           if ((v48 & 0x8000000000000000) != 0)
           {
@@ -837,7 +837,7 @@ LABEL_101:
 
         v60 = objc_msgSend_count(v22, v56, v57, v58, v59) + 1;
 
-        if (v60 != a4)
+        if (v60 != index)
         {
 LABEL_72:
           v50 = v230;
@@ -847,7 +847,7 @@ LABEL_72:
         v27 = 0;
         v26 = 0;
         v50 = v230;
-        if (!v9)
+        if (!textureCopy)
         {
           goto LABEL_73;
         }
@@ -855,7 +855,7 @@ LABEL_72:
         goto LABEL_67;
       }
 
-      if (!a4)
+      if (!index)
       {
 LABEL_68:
         v27 = 0;
@@ -867,11 +867,11 @@ LABEL_68:
       {
         v93 = objc_msgSend_count(v22, v89, v90, v91, v92) + 1;
 
-        if (v93 == a4)
+        if (v93 == index)
         {
 LABEL_61:
           v50 = v230;
-          if (v9)
+          if (textureCopy)
           {
 LABEL_67:
             v104 = objc_msgSend_model(v230, v33, v34, v35, v36);
@@ -893,7 +893,7 @@ LABEL_73:
       {
       }
 
-      if (v9)
+      if (textureCopy)
       {
         if ((v48 & 0x8000000000000000) != 0)
         {
@@ -944,7 +944,7 @@ LABEL_121:
     }
 
 LABEL_21:
-    if ((a4 || v9) && (a4 != 1 || !v9))
+    if ((index || textureCopy) && (index != 1 || !textureCopy))
     {
       v27 = 0;
       v26 = 0;
@@ -968,12 +968,12 @@ LABEL_38:
     goto LABEL_71;
   }
 
-  if (v9)
+  if (textureCopy)
   {
-    if (a4)
+    if (index)
     {
       v26 = 0;
-      v27 = a4 - objc_msgSend_p_hasBackgroundLayerForPieChartForChart_(self, v33, v34, v35, v36, v230);
+      v27 = index - objc_msgSend_p_hasBackgroundLayerForPieChartForChart_(self, v33, v34, v35, v36, v230);
       goto LABEL_72;
     }
 
@@ -983,7 +983,7 @@ LABEL_117:
     goto LABEL_72;
   }
 
-  if (!a4)
+  if (!index)
   {
     v26 = 0;
 LABEL_123:
@@ -991,7 +991,7 @@ LABEL_123:
     goto LABEL_72;
   }
 
-  v26 = a4 - objc_msgSend_p_hasBackgroundLayerForPieChartForChart_(self, v33, v34, v35, v36, v230);
+  v26 = index - objc_msgSend_p_hasBackgroundLayerForPieChartForChart_(self, v33, v34, v35, v36, v230);
   v27 = 1;
   objc_msgSend_model(v230, v80, v81, v82, v83);
   v122 = LABEL_74:;
@@ -1003,37 +1003,37 @@ LABEL_123:
     v26 = 0;
   }
 
-  if (a6)
+  if (start)
   {
-    *a6 = v26;
+    *start = v26;
   }
 
-  if (a7)
+  if (count)
   {
-    *a7 = v27;
+    *count = v27;
   }
 }
 
-- (id)animationFiltersWithDefaultFilters:(id)a3
+- (id)animationFiltersWithDefaultFilters:(id)filters
 {
-  v4 = a3;
+  filtersCopy = filters;
   v9 = objc_msgSend_p_chart(self, v5, v6, v7, v8);
   v14 = objc_msgSend_chartType(v9, v10, v11, v12, v13);
-  v19 = objc_msgSend_animationFiltersWithDefaultFilters_(v14, v15, v16, v17, v18, v4);
+  v19 = objc_msgSend_animationFiltersWithDefaultFilters_(v14, v15, v16, v17, v18, filtersCopy);
 
   return v19;
 }
 
-- (void)adjustRangeForRep:(id)a3 seriesIndex:(unint64_t)a4 chunkIndex:(unint64_t)a5 finalTexture:(BOOL)a6 outGroupStart:(int64_t *)a7 outGroupCount:(int64_t *)a8
+- (void)adjustRangeForRep:(id)rep seriesIndex:(unint64_t)index chunkIndex:(unint64_t)chunkIndex finalTexture:(BOOL)texture outGroupStart:(int64_t *)start outGroupCount:(int64_t *)count
 {
-  v10 = a6;
-  v209 = a3;
+  textureCopy = texture;
+  repCopy = rep;
   v17 = objc_msgSend_p_chart(self, v13, v14, v15, v16);
   v23 = objc_msgSend_p_cachedChunkMap(self, v18, v19, v20, v21);
-  if (!a7)
+  if (!start)
   {
     v27 = 0;
-    if (a8)
+    if (count)
     {
       goto LABEL_3;
     }
@@ -1043,24 +1043,24 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v27 = *a7;
-  if (!a8)
+  v27 = *start;
+  if (!count)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v28 = *a8;
+  v28 = *count;
 LABEL_6:
-  v29 = objc_msgSend_chartDeliveryStyle(v209, v22, v24, v25, v26);
+  v29 = objc_msgSend_chartDeliveryStyle(repCopy, v22, v24, v25, v26);
   if (objc_msgSend_p_supportsByWedgeDeliveryStyle_(self, v30, v31, v32, v33, v17) & 1) != 0 || (objc_msgSend_p_isMultiDataForChart_(self, v34, v35, v36, v37, v17))
   {
     goto LABEL_8;
   }
 
-  v43 = a5 - 1;
+  v43 = chunkIndex - 1;
   v44 = objc_msgSend_count(v23, v38, v39, v40, v41);
-  if ((a5 - 1) >= v44)
+  if ((chunkIndex - 1) >= v44)
   {
     v43 = v44;
   }
@@ -1073,7 +1073,7 @@ LABEL_6:
       {
         if (v29 == 104)
         {
-          if (!a5)
+          if (!chunkIndex)
           {
             v28 = 0;
             v27 = 0;
@@ -1091,7 +1091,7 @@ LABEL_6:
       goto LABEL_55;
     }
 
-    if ((a5 || v10) && (a5 != 1 || !v10))
+    if ((chunkIndex || textureCopy) && (chunkIndex != 1 || !textureCopy))
     {
       v28 = 0;
       v27 = 0;
@@ -1116,7 +1116,7 @@ LABEL_55:
         goto LABEL_8;
       }
 
-      if (!a5)
+      if (!chunkIndex)
       {
         goto LABEL_53;
       }
@@ -1126,7 +1126,7 @@ LABEL_55:
       {
         v72 = objc_msgSend_count(v23, v68, v69, v70, v71) + 1;
 
-        if (v72 == a5)
+        if (v72 == chunkIndex)
         {
           goto LABEL_51;
         }
@@ -1137,7 +1137,7 @@ LABEL_55:
       }
 
       v42 = v23;
-      if (!v10)
+      if (!textureCopy)
       {
         v27 = v43;
         if ((v43 & 0x8000000000000000) == 0 && v43 < objc_msgSend_count(v23, v59, v60, v61, v62))
@@ -1169,7 +1169,7 @@ LABEL_55:
         v28 = 0;
         do
         {
-          if (objc_msgSend_seriesIndexAtIndex_(v42, v59, v60, v61, v62, v169) == a4)
+          if (objc_msgSend_seriesIndexAtIndex_(v42, v59, v60, v61, v62, v169) == index)
           {
             v28 = objc_msgSend_groupIndexAtMapIndex_(v42, v59, v60, v61, v62, v169) + 1;
           }
@@ -1185,7 +1185,7 @@ LABEL_55:
       goto LABEL_92;
     }
 
-    if (!a5)
+    if (!chunkIndex)
     {
       goto LABEL_53;
     }
@@ -1195,7 +1195,7 @@ LABEL_55:
     {
       v101 = objc_msgSend_count(v23, v97, v98, v99, v100) + 1;
 
-      if (v101 == a5)
+      if (v101 == chunkIndex)
       {
         goto LABEL_51;
       }
@@ -1206,7 +1206,7 @@ LABEL_55:
     }
 
     v42 = v23;
-    if (!v10)
+    if (!textureCopy)
     {
       v27 = v43;
       if ((v43 & 0x8000000000000000) == 0 && v43 < objc_msgSend_count(v23, v59, v60, v61, v62))
@@ -1239,7 +1239,7 @@ LABEL_92:
       goto LABEL_93;
     }
 
-    if (objc_msgSend_seriesIndexAtIndex_(v42, v59, v60, v61, v62, v122 - 1) <= a4)
+    if (objc_msgSend_seriesIndexAtIndex_(v42, v59, v60, v61, v62, v122 - 1) <= index)
     {
       v207 = objc_msgSend_groupIndexAtMapIndex_(v42, v203, v204, v205, v206, v122 - 1);
 LABEL_96:
@@ -1262,7 +1262,7 @@ LABEL_96:
 
     v82 = objc_msgSend_count(v23, v78, v79, v80, v81) + 1;
 
-    if (v82 != a5)
+    if (v82 != chunkIndex)
     {
 LABEL_8:
       v42 = v23;
@@ -1272,7 +1272,7 @@ LABEL_8:
     v28 = 0;
     v27 = 0;
     v42 = v23;
-    if (!v10)
+    if (!textureCopy)
     {
       goto LABEL_9;
     }
@@ -1285,7 +1285,7 @@ LABEL_93:
     goto LABEL_9;
   }
 
-  if (!a5)
+  if (!chunkIndex)
   {
     goto LABEL_53;
   }
@@ -1299,10 +1299,10 @@ LABEL_93:
 
   v58 = objc_msgSend_count(v23, v54, v55, v56, v57) + 1;
 
-  if (v58 == a5)
+  if (v58 == chunkIndex)
   {
 LABEL_51:
-    if (v10)
+    if (textureCopy)
     {
       v102 = objc_msgSend_model(v17, v59, v60, v61, v62);
       v28 = objc_msgSend_numberOfGroupsInAllSeries(v102, v103, v104, v105, v106);
@@ -1320,7 +1320,7 @@ LABEL_53:
 LABEL_63:
   v42 = v23;
   v27 = v43;
-  if (!v10)
+  if (!textureCopy)
   {
     if ((v43 & 0x8000000000000000) == 0 && v43 < objc_msgSend_count(v23, v59, v60, v61, v62))
     {
@@ -1360,18 +1360,18 @@ LABEL_95:
 
   v28 = 0;
 LABEL_9:
-  if (a7)
+  if (start)
   {
-    *a7 = v27;
+    *start = v27;
   }
 
-  if (a8)
+  if (count)
   {
-    *a8 = v28;
+    *count = v28;
   }
 }
 
-- (BOOL)lastChunkForSeriesIndex:(unint64_t)a3 currentChunk:(unint64_t)a4 chunkStyle:(unint64_t)a5
+- (BOOL)lastChunkForSeriesIndex:(unint64_t)index currentChunk:(unint64_t)chunk chunkStyle:(unint64_t)style
 {
   v12 = objc_msgSend_p_chart(self, a2, v5, v6, v7);
   v17 = objc_msgSend_chartType(v12, v13, v14, v15, v16);
@@ -1388,14 +1388,14 @@ LABEL_9:
     v33 = objc_msgSend_p_cachedChunkMap(self, v27, v28, v29, v30);
     v17 = v33;
     v31 = 1;
-    if (a5 <= 103)
+    if (style <= 103)
     {
-      if (!a5 || a5 == 100)
+      if (!style || style == 100)
       {
         goto LABEL_5;
       }
 
-      if (a5 == 102)
+      if (style == 102)
       {
         v38 = MEMORY[0x277D81150];
         v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v34, v35, v36, v37, "[TSCHChunkManager lastChunkForSeriesIndex:currentChunk:chunkStyle:]");
@@ -1412,38 +1412,38 @@ LABEL_19:
       v59 = MEMORY[0x277D81150];
       v60 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v34, v35, v36, v37, "[TSCHChunkManager lastChunkForSeriesIndex:currentChunk:chunkStyle:]");
       v65 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v61, v62, v63, v64, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChunkManager.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v59, v66, v67, v68, v69, v60, v65, 891, 0, "invalid chart delivery style %ld", a5);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v59, v66, v67, v68, v69, v60, v65, 891, 0, "invalid chart delivery style %ld", style);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v70, v71, v72, v73);
       goto LABEL_20;
     }
 
-    if (a5 - 104 >= 2)
+    if (style - 104 >= 2)
     {
-      if (a5 - 107 < 2)
+      if (style - 107 < 2)
       {
         do
         {
           v53 = objc_msgSend_count(v17, v34, v35, v36, v37);
-          v31 = a4 >= v53;
-          if (a4 >= v53)
+          v31 = chunk >= v53;
+          if (chunk >= v53)
           {
             break;
           }
 
-          v58 = objc_msgSend_seriesIndexAtIndex_(v17, v54, v55, v56, v57, a4++);
+          v58 = objc_msgSend_seriesIndexAtIndex_(v17, v54, v55, v56, v57, chunk++);
         }
 
-        while (v58 != a3);
+        while (v58 != index);
         goto LABEL_5;
       }
 
-      if (a5 != 106)
+      if (style != 106)
       {
         goto LABEL_19;
       }
 
-      v31 = objc_msgSend_count(v33, v34, v35, v36, v37) == a4;
+      v31 = objc_msgSend_count(v33, v34, v35, v36, v37) == chunk;
     }
 
 LABEL_5:
@@ -1457,32 +1457,32 @@ LABEL_6:
   return v31;
 }
 
-- (id)p_backgroundStringForChartWithTitle:(id)a3
+- (id)p_backgroundStringForChartWithTitle:(id)title
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  titleCopy = title;
   v8 = sub_276360774(v5, v6, v7);
   v13 = objc_msgSend_localizedStringForKey_value_table_(v8, v9, v10, v11, v12, @"Background (%@)", &stru_288528678, @"TSCharts");
-  v18 = objc_msgSend_stringWithFormat_(v3, v14, v15, v16, v17, v13, v4);
+  v18 = objc_msgSend_stringWithFormat_(v3, v14, v15, v16, v17, v13, titleCopy);
 
   return v18;
 }
 
-- (id)p_seriesNameForSeriesAtIndex:(unint64_t)a3 withPrefix:(id)a4 chart:(id)a5
+- (id)p_seriesNameForSeriesAtIndex:(unint64_t)index withPrefix:(id)prefix chart:(id)chart
 {
-  v7 = a4;
-  v12 = objc_msgSend_model(a5, v8, v9, v10, v11);
-  v17 = objc_msgSend_nameForSeries_(v12, v13, v14, v15, v16, a3);
+  prefixCopy = prefix;
+  v12 = objc_msgSend_model(chart, v8, v9, v10, v11);
+  v17 = objc_msgSend_nameForSeries_(v12, v13, v14, v15, v16, index);
   v22 = v17;
   if (!v17 || !objc_msgSend_length(v17, v18, v19, v20, v21))
   {
-    v23 = objc_msgSend_tswp_stringForValue_withListNumberFormat_includeFormatting_(MEMORY[0x277CCACA8], v18, v19, v20, v21, (a3 + 1), 9, 0);
-    if (!objc_msgSend_length(v7, v24, v25, v26, v27))
+    v23 = objc_msgSend_tswp_stringForValue_withListNumberFormat_includeFormatting_(MEMORY[0x277CCACA8], v18, v19, v20, v21, (index + 1), 9, 0);
+    if (!objc_msgSend_length(prefixCopy, v24, v25, v26, v27))
     {
       v32 = MEMORY[0x277D81150];
       v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, v29, v30, v31, "[TSCHChunkManager p_seriesNameForSeriesAtIndex:withPrefix:chart:]");
       v38 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v34, v35, v36, v37, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChunkManager.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v32, v39, v40, v41, v42, v33, v38, 910, 0, "invalid prefix %@", v7);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v32, v39, v40, v41, v42, v33, v38, 910, 0, "invalid prefix %@", prefixCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46);
     }
@@ -1490,7 +1490,7 @@ LABEL_6:
     v47 = MEMORY[0x277CCACA8];
     v48 = sub_276360774(v29, v30, v31);
     v53 = objc_msgSend_localizedStringForKey_value_table_(v48, v49, v50, v51, v52, @"%@ %@", &stru_288528678, @"TSCharts");
-    v58 = objc_msgSend_stringWithFormat_(v47, v54, v55, v56, v57, v53, v7, v23);
+    v58 = objc_msgSend_stringWithFormat_(v47, v54, v55, v56, v57, v53, prefixCopy, v23);
 
     v22 = v58;
   }
@@ -1498,14 +1498,14 @@ LABEL_6:
   return v22;
 }
 
-- (id)p_nameForMultiDataSetCategory:(unint64_t)a3 chart:(id)a4
+- (id)p_nameForMultiDataSetCategory:(unint64_t)category chart:(id)chart
 {
-  v8 = objc_msgSend_model(a4, a2, v4, v5, v6);
-  v13 = objc_msgSend_nameForMultiDataSetCategory_(v8, v9, v10, v11, v12, a3);
+  v8 = objc_msgSend_model(chart, a2, v4, v5, v6);
+  v13 = objc_msgSend_nameForMultiDataSetCategory_(v8, v9, v10, v11, v12, category);
   v18 = v13;
   if (!v13 || !objc_msgSend_length(v13, v14, v15, v16, v17))
   {
-    v19 = objc_msgSend_tswp_stringForValue_withListNumberFormat_includeFormatting_(MEMORY[0x277CCACA8], v14, v15, v16, v17, (a3 + 1), 9, 0);
+    v19 = objc_msgSend_tswp_stringForValue_withListNumberFormat_includeFormatting_(MEMORY[0x277CCACA8], v14, v15, v16, v17, (category + 1), 9, 0);
     v20 = MEMORY[0x277CCACA8];
     v24 = sub_276360774(v21, v22, v23);
     v29 = objc_msgSend_localizedStringForKey_value_table_(v24, v25, v26, v27, v28, @"%@ %@", &stru_288528678, @"TSCharts");
@@ -1519,11 +1519,11 @@ LABEL_6:
   return v18;
 }
 
-- (id)containedTextForChartDeliveryStyle:(unint64_t)a3 chunkIndex:(unint64_t)a4 displayName:(id)a5
+- (id)containedTextForChartDeliveryStyle:(unint64_t)style chunkIndex:(unint64_t)index displayName:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v13 = objc_msgSend_p_chart(self, v9, v10, v11, v12);
-  v19 = objc_msgSend_p_chunkMapForChart_chunkStyle_forceUpdateCache_(self, v14, v15, v16, v17, v13, a3, 1);
+  v19 = objc_msgSend_p_chunkMapForChart_chunkStyle_forceUpdateCache_(self, v14, v15, v16, v17, v13, style, 1);
   if (!v19)
   {
     v23 = MEMORY[0x277D81150];
@@ -1534,15 +1534,15 @@ LABEL_6:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v34, v35, v36, v37);
   }
 
-  v38 = v8;
+  v38 = nameCopy;
   if (objc_msgSend_p_supportsByWedgeDeliveryStyle_(self, v39, v40, v41, v42, v13))
   {
-    if (a3 == 103)
+    if (style == 103)
     {
       hasBackgroundLayerForPieChartForChart = objc_msgSend_p_hasBackgroundLayerForPieChartForChart_(self, v43, v44, v45, v46, v13);
-      if (a4 || !hasBackgroundLayerForPieChartForChart)
+      if (index || !hasBackgroundLayerForPieChartForChart)
       {
-        v52 = a4 - ((a4 != 0) & hasBackgroundLayerForPieChartForChart);
+        v52 = index - ((index != 0) & hasBackgroundLayerForPieChartForChart);
         v53 = sub_276360774(v49, v50, v51);
         objc_msgSend_localizedStringForKey_value_table_(v53, v54, v55, v56, v57, @"Wedge", &stru_288528678, @"TSCharts");
         v58 = LABEL_8:;
@@ -1571,14 +1571,14 @@ LABEL_46:
 
   if (objc_msgSend_p_isMultiDataForChart_(self, v43, v44, v45, v46, v13))
   {
-    if (a3 != 106)
+    if (style != 106)
     {
       goto LABEL_33;
     }
 
-    if (a4)
+    if (index)
     {
-      objc_msgSend_p_nameForMultiDataSetCategory_chart_(self, v48, v49, v50, v51, a4 - 1, v13);
+      objc_msgSend_p_nameForMultiDataSetCategory_chart_(self, v48, v49, v50, v51, index - 1, v13);
       v63 = LABEL_13:;
       v64 = MEMORY[0x277CCACA8];
       v68 = sub_276360774(v73, v74, v75);
@@ -1591,9 +1591,9 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if (a3 <= 105)
+  if (style <= 105)
   {
-    if (a3 == 101)
+    if (style == 101)
     {
       v111 = MEMORY[0x277D81150];
       v112 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v48, v49, v50, v51, "[TSCHChunkManager containedTextForChartDeliveryStyle:chunkIndex:displayName:]");
@@ -1604,9 +1604,9 @@ LABEL_45:
       goto LABEL_33;
     }
 
-    if (a3 == 104)
+    if (style == 104)
     {
-      if (!a4)
+      if (!index)
       {
         goto LABEL_45;
       }
@@ -1619,12 +1619,12 @@ LABEL_45:
       goto LABEL_16;
     }
 
-    if (a3 != 105)
+    if (style != 105)
     {
       goto LABEL_33;
     }
 
-    if (!a4)
+    if (!index)
     {
       goto LABEL_45;
     }
@@ -1634,9 +1634,9 @@ LABEL_45:
     {
 
 LABEL_54:
-      if (objc_msgSend_count(v19, v96, v97, v98, v99) + 1 > a4)
+      if (objc_msgSend_count(v19, v96, v97, v98, v99) + 1 > index)
       {
-        v52 = objc_msgSend_seriesIndexAtIndex_(v19, v172, v173, v174, v175, a4 - 1);
+        v52 = objc_msgSend_seriesIndexAtIndex_(v19, v172, v173, v174, v175, index - 1);
         v53 = sub_276360774(v176, v177, v178);
         objc_msgSend_localizedStringForKey_value_table_(v53, v179, v180, v181, v182, @"Series", &stru_288528678, @"TSCharts");
         goto LABEL_8;
@@ -1645,7 +1645,7 @@ LABEL_54:
       v276 = MEMORY[0x277D81150];
       v250 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v172, v173, v174, v175, "[TSCHChunkManager containedTextForChartDeliveryStyle:chunkIndex:displayName:]");
       v255 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v277, v278, v279, v280, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChunkManager.m");
-      v260 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v281, v282, v283, v284, a4);
+      v260 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v281, v282, v283, v284, index);
       v285 = MEMORY[0x277CCABB0];
       v290 = objc_msgSend_count(v19, v286, v287, v288, v289);
       v271 = objc_msgSend_numberWithUnsignedInteger_(v285, v291, v292, v293, v294, v290);
@@ -1655,7 +1655,7 @@ LABEL_54:
 
     v95 = objc_msgSend_count(v19, v91, v92, v93, v94) + 1;
 
-    if (v95 != a4)
+    if (v95 != index)
     {
       goto LABEL_54;
     }
@@ -1667,10 +1667,10 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  switch(a3)
+  switch(style)
   {
     case 'j':
-      if (!a4)
+      if (!index)
       {
         goto LABEL_45;
       }
@@ -1680,7 +1680,7 @@ LABEL_43:
       {
         v136 = objc_msgSend_count(v19, v132, v133, v134, v135) + 1;
 
-        if (v136 == a4)
+        if (v136 == index)
         {
           goto LABEL_43;
         }
@@ -1690,9 +1690,9 @@ LABEL_43:
       {
       }
 
-      if (objc_msgSend_count(v19, v137, v97, v98, v99) + 1 > a4)
+      if (objc_msgSend_count(v19, v137, v97, v98, v99) + 1 > index)
       {
-        v167 = objc_msgSend_groupIndexAtMapIndex_(v19, v163, v164, v165, v166, a4 - 1);
+        v167 = objc_msgSend_groupIndexAtMapIndex_(v19, v163, v164, v165, v166, index - 1);
         objc_msgSend_p_nameForMultiDataSetCategory_chart_(self, v168, v169, v170, v171, v167, v13);
         goto LABEL_13;
       }
@@ -1700,14 +1700,14 @@ LABEL_43:
       v249 = MEMORY[0x277D81150];
       v250 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v163, v164, v165, v166, "[TSCHChunkManager containedTextForChartDeliveryStyle:chunkIndex:displayName:]");
       v255 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v251, v252, v253, v254, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChunkManager.m");
-      v260 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v256, v257, v258, v259, a4);
+      v260 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v256, v257, v258, v259, index);
       v261 = MEMORY[0x277CCABB0];
       v266 = objc_msgSend_count(v19, v262, v263, v264, v265);
       v271 = objc_msgSend_numberWithUnsignedInteger_(v261, v267, v268, v269, v270, v266);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v249, v272, v273, v274, v275, v250, v255, 1002, 0, "Index (%@) out of range for chunk map count (%@)", v260, v271);
       break;
     case 'k':
-      if (!a4)
+      if (!index)
       {
         goto LABEL_45;
       }
@@ -1717,7 +1717,7 @@ LABEL_43:
       {
         v152 = objc_msgSend_count(v19, v148, v149, v150, v151) + 1;
 
-        if (v152 == a4)
+        if (v152 == index)
         {
           goto LABEL_43;
         }
@@ -1727,9 +1727,9 @@ LABEL_43:
       {
       }
 
-      if (objc_msgSend_count(v19, v153, v97, v98, v99) + 1 > a4)
+      if (objc_msgSend_count(v19, v153, v97, v98, v99) + 1 > index)
       {
-        v214 = a4 - 1;
+        v214 = index - 1;
         v215 = objc_msgSend_seriesIndexAtIndex_(v19, v210, v211, v212, v213, v214);
         v220 = objc_msgSend_groupIndexAtMapIndex_(v19, v216, v217, v218, v219, v214) + 1;
         v224 = sub_276360774(v221, v222, v223);
@@ -1747,14 +1747,14 @@ LABEL_43:
       v322 = MEMORY[0x277D81150];
       v250 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v210, v211, v212, v213, "[TSCHChunkManager containedTextForChartDeliveryStyle:chunkIndex:displayName:]");
       v255 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v323, v324, v325, v326, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChunkManager.m");
-      v260 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v327, v328, v329, v330, a4);
+      v260 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v327, v328, v329, v330, index);
       v331 = MEMORY[0x277CCABB0];
       v336 = objc_msgSend_count(v19, v332, v333, v334, v335);
       v271 = objc_msgSend_numberWithUnsignedInteger_(v331, v337, v338, v339, v340, v336);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v322, v341, v342, v343, v344, v250, v255, 1018, 0, "Index (%@) out of range for chunk map count (%@)", v260, v271);
       break;
     case 'l':
-      if (!a4)
+      if (!index)
       {
         goto LABEL_45;
       }
@@ -1764,7 +1764,7 @@ LABEL_43:
       {
         v109 = objc_msgSend_count(v19, v105, v106, v107, v108) + 1;
 
-        if (v109 == a4)
+        if (v109 == index)
         {
           goto LABEL_43;
         }
@@ -1774,9 +1774,9 @@ LABEL_43:
       {
       }
 
-      if (objc_msgSend_count(v19, v110, v97, v98, v99) + 1 > a4)
+      if (objc_msgSend_count(v19, v110, v97, v98, v99) + 1 > index)
       {
-        v187 = a4 - 1;
+        v187 = index - 1;
         v188 = objc_msgSend_groupIndexAtMapIndex_(v19, v183, v184, v185, v186, v187);
         v193 = objc_msgSend_seriesIndexAtIndex_(v19, v189, v190, v191, v192, v187) + 1;
         v63 = objc_msgSend_p_nameForMultiDataSetCategory_chart_(self, v194, v195, v196, v197, v188, v13);
@@ -1790,7 +1790,7 @@ LABEL_43:
       v299 = MEMORY[0x277D81150];
       v250 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v183, v184, v185, v186, "[TSCHChunkManager containedTextForChartDeliveryStyle:chunkIndex:displayName:]");
       v255 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v300, v301, v302, v303, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChunkManager.m");
-      v260 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v304, v305, v306, v307, a4);
+      v260 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v304, v305, v306, v307, index);
       v308 = MEMORY[0x277CCABB0];
       v313 = objc_msgSend_count(v19, v309, v310, v311, v312);
       v271 = objc_msgSend_numberWithUnsignedInteger_(v308, v314, v315, v316, v317, v313);

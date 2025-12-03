@@ -1,24 +1,24 @@
 @interface PXPhotosViewLens
 + (PXPhotosViewLens)grid;
 + (PXPhotosViewLens)zoomableGrid;
-+ (id)lensForCurationLength:(int64_t)a3 isDefault:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)lensForCurationLength:(int64_t)length isDefault:(BOOL)default;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (PXPhotosViewLens)init;
-- (PXPhotosViewLens)initWithTitle:(id)a3 symbolName:(id)a4 defaultSectionBodyStyle:(int64_t)a5;
+- (PXPhotosViewLens)initWithTitle:(id)title symbolName:(id)name defaultSectionBodyStyle:(int64_t)style;
 @end
 
 @implementation PXPhotosViewLens
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     identifier = self->_identifier;
-    v6 = [v4 identifier];
-    v7 = [(NSString *)identifier isEqualToString:v6];
+    identifier = [equalCopy identifier];
+    v7 = [(NSString *)identifier isEqualToString:identifier];
   }
 
   else
@@ -41,59 +41,59 @@
 
 - (PXPhotosViewLens)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosViewLens.m" lineNumber:139 description:{@"%s is not available as initializer", "-[PXPhotosViewLens init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewLens.m" lineNumber:139 description:{@"%s is not available as initializer", "-[PXPhotosViewLens init]"}];
 
   abort();
 }
 
-- (PXPhotosViewLens)initWithTitle:(id)a3 symbolName:(id)a4 defaultSectionBodyStyle:(int64_t)a5
+- (PXPhotosViewLens)initWithTitle:(id)title symbolName:(id)name defaultSectionBodyStyle:(int64_t)style
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = PXPhotosViewLens;
   v10 = [(PXPhotosViewLens *)&v19 init];
   if (v10)
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v10->_identifier;
-    v10->_identifier = v12;
+    v10->_identifier = uUIDString;
 
-    v14 = [v8 copy];
+    v14 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v14;
 
-    v16 = [v9 copy];
+    v16 = [nameCopy copy];
     symbolName = v10->_symbolName;
     v10->_symbolName = v16;
 
-    v10->_defaultSectionBodyStyle = a5;
+    v10->_defaultSectionBodyStyle = style;
   }
 
   return v10;
 }
 
-+ (id)lensForCurationLength:(int64_t)a3 isDefault:(BOOL)a4
++ (id)lensForCurationLength:(int64_t)length isDefault:(BOOL)default
 {
-  v4 = a4;
+  defaultCopy = default;
   if (lensForCurationLength_isDefault__onceToken != -1)
   {
     dispatch_once(&lensForCurationLength_isDefault__onceToken, &__block_literal_global_11);
   }
 
   v6 = 1000;
-  if (!v4)
+  if (!defaultCopy)
   {
     v6 = 1;
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:v6 * a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:v6 * length];
   v8 = [lensForCurationLength_isDefault__cachedLenses objectForKeyedSubscript:v7];
   if (!v8)
   {
-    v8 = [[_PXPhotosCurationLengthLens alloc] initWithCurationLength:a3 isDefault:v4];
+    v8 = [[_PXPhotosCurationLengthLens alloc] initWithCurationLength:length isDefault:defaultCopy];
     [lensForCurationLength_isDefault__cachedLenses setObject:v8 forKeyedSubscript:v7];
   }
 

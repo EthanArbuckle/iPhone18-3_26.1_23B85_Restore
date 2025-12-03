@@ -1,14 +1,14 @@
 @interface PDDPProgressEntity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPProgressEntity
@@ -26,40 +26,40 @@
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_ENTITY"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_ENTITY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TIME_INTERVAL"])
+  else if ([typeCopy isEqualToString:@"TIME_INTERVAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVITY"])
+  else if ([typeCopy isEqualToString:@"ACTIVITY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVITY_QUANTITY_ITEM"])
+  else if ([typeCopy isEqualToString:@"ACTIVITY_QUANTITY_ITEM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVITY_BINARY_ITEM"])
+  else if ([typeCopy isEqualToString:@"ACTIVITY_BINARY_ITEM"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVITY_SCORE_ITEM"])
+  else if ([typeCopy isEqualToString:@"ACTIVITY_SCORE_ITEM"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"RANGE"])
+  else if ([typeCopy isEqualToString:@"RANGE"])
   {
     v4 = 6;
   }
@@ -77,8 +77,8 @@
   v7.receiver = self;
   v7.super_class = PDDPProgressEntity;
   v3 = [(PDDPProgressEntity *)&v7 description];
-  v4 = [(PDDPProgressEntity *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPProgressEntity *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -129,8 +129,8 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v11 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   stableParentObjectId = self->_stableParentObjectId;
@@ -148,116 +148,116 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_parentObjectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_appIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_objectIdPath)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dateCreated)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_stableParentObjectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_stableObjectIdPath)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[16] = self->_type;
-    *(v4 + 68) |= 1u;
+    toCopy[16] = self->_type;
+    *(toCopy + 68) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
-    v4 = v5;
+    [toCopy setObjectId:?];
+    toCopy = v5;
   }
 
   if (self->_parentObjectId)
   {
     [v5 setParentObjectId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_appIdentifier)
   {
     [v5 setAppIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_objectIdPath)
   {
     [v5 setObjectIdPath:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dateCreated)
   {
     [v5 setDateCreated:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_stableParentObjectId)
   {
     [v5 setStableParentObjectId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_stableObjectIdPath)
   {
     [v5 setStableObjectIdPath:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -265,55 +265,55 @@
     *(v5 + 68) |= 1u;
   }
 
-  v7 = [(NSString *)self->_objectId copyWithZone:a3];
+  v7 = [(NSString *)self->_objectId copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(NSString *)self->_parentObjectId copyWithZone:a3];
+  v9 = [(NSString *)self->_parentObjectId copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
-  v11 = [(NSString *)self->_appIdentifier copyWithZone:a3];
+  v11 = [(NSString *)self->_appIdentifier copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
-  v13 = [(NSString *)self->_objectIdPath copyWithZone:a3];
+  v13 = [(NSString *)self->_objectIdPath copyWithZone:zone];
   v14 = v6[4];
   v6[4] = v13;
 
-  v15 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v15 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v16 = v6[2];
   v6[2] = v15;
 
-  v17 = [(NSString *)self->_stableParentObjectId copyWithZone:a3];
+  v17 = [(NSString *)self->_stableParentObjectId copyWithZone:zone];
   v18 = v6[7];
   v6[7] = v17;
 
-  v19 = [(NSString *)self->_stableObjectIdPath copyWithZone:a3];
+  v19 = [(NSString *)self->_stableObjectIdPath copyWithZone:zone];
   v20 = v6[6];
   v6[6] = v19;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(equalCopy + 68);
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_type != *(v4 + 16))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_type != *(equalCopy + 16))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
 LABEL_21:
     v13 = 0;
@@ -321,13 +321,13 @@ LABEL_21:
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 3) && ![(NSString *)objectId isEqual:?])
+  if (objectId | *(equalCopy + 3) && ![(NSString *)objectId isEqual:?])
   {
     goto LABEL_21;
   }
 
   parentObjectId = self->_parentObjectId;
-  if (parentObjectId | *(v4 + 5))
+  if (parentObjectId | *(equalCopy + 5))
   {
     if (![(NSString *)parentObjectId isEqual:?])
     {
@@ -336,7 +336,7 @@ LABEL_21:
   }
 
   appIdentifier = self->_appIdentifier;
-  if (appIdentifier | *(v4 + 1))
+  if (appIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)appIdentifier isEqual:?])
     {
@@ -345,7 +345,7 @@ LABEL_21:
   }
 
   objectIdPath = self->_objectIdPath;
-  if (objectIdPath | *(v4 + 4))
+  if (objectIdPath | *(equalCopy + 4))
   {
     if (![(NSString *)objectIdPath isEqual:?])
     {
@@ -354,7 +354,7 @@ LABEL_21:
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 2))
+  if (dateCreated | *(equalCopy + 2))
   {
     if (![(PDDPDate *)dateCreated isEqual:?])
     {
@@ -363,7 +363,7 @@ LABEL_21:
   }
 
   stableParentObjectId = self->_stableParentObjectId;
-  if (stableParentObjectId | *(v4 + 7))
+  if (stableParentObjectId | *(equalCopy + 7))
   {
     if (![(NSString *)stableParentObjectId isEqual:?])
     {
@@ -372,7 +372,7 @@ LABEL_21:
   }
 
   stableObjectIdPath = self->_stableObjectIdPath;
-  if (stableObjectIdPath | *(v4 + 6))
+  if (stableObjectIdPath | *(equalCopy + 6))
   {
     v13 = [(NSString *)stableObjectIdPath isEqual:?];
   }
@@ -408,18 +408,18 @@ LABEL_22:
   return v9 ^ [(NSString *)self->_stableObjectIdPath hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 68))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 68))
   {
-    self->_type = *(v4 + 16);
+    self->_type = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 
-  v8 = v4;
-  if (*(v4 + 3))
+  v8 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(PDDPProgressEntity *)self setObjectId:?];
     v5 = v8;

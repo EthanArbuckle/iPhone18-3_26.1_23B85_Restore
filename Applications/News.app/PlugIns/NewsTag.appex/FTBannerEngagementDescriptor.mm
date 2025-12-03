@@ -1,5 +1,5 @@
 @interface FTBannerEngagementDescriptor
-+ (id)engagementDescriptorWithTargetURL:(id)a3;
++ (id)engagementDescriptorWithTargetURL:(id)l;
 - (FTBannerEngagementDescriptor)init;
 @end
 
@@ -28,14 +28,14 @@
   objc_exception_throw(v4);
 }
 
-+ (id)engagementDescriptorWithTargetURL:(id)a3
++ (id)engagementDescriptorWithTargetURL:(id)l
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000FD0C;
   v7[3] = &unk_1000D7198;
-  v8 = a3;
-  v3 = v8;
+  lCopy = l;
+  v3 = lCopy;
   v4 = objc_retainBlock(v7);
   v5 = [[FTOpenArbitraryURLEngagementDescriptor alloc] initWithURL:v3 engagementReporter:v4];
 

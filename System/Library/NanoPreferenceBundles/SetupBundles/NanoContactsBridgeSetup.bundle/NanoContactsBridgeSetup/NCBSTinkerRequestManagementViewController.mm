@@ -7,7 +7,7 @@
 - (id)titleString;
 - (void)_notifyUserRequestWasSentThenProceed;
 - (void)_requestToManageContacts;
-- (void)alternateButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
 @end
 
 @implementation NCBSTinkerRequestManagementViewController
@@ -28,24 +28,24 @@
 
 - (id)titleString
 {
-  v2 = [(NCBSTinkerRequestManagementViewController *)self miniFlowDelegate];
-  v3 = [v2 familyMemberFirstName];
+  miniFlowDelegate = [(NCBSTinkerRequestManagementViewController *)self miniFlowDelegate];
+  familyMemberFirstName = [miniFlowDelegate familyMemberFirstName];
 
   v4 = NanoContactsBridgeSetupBundle();
   v5 = [v4 localizedStringForKey:@"TK_CONTACTS_REQUEST_TITLE" value:&stru_1C900 table:@"NanoContactsBridgeSetup"];
-  v6 = [NSString stringWithFormat:v5, v3];
+  v6 = [NSString stringWithFormat:v5, familyMemberFirstName];
 
   return v6;
 }
 
 - (id)detailString
 {
-  v2 = [(NCBSTinkerRequestManagementViewController *)self miniFlowDelegate];
-  v3 = [v2 familyMemberFirstName];
+  miniFlowDelegate = [(NCBSTinkerRequestManagementViewController *)self miniFlowDelegate];
+  familyMemberFirstName = [miniFlowDelegate familyMemberFirstName];
 
   v4 = NanoContactsBridgeSetupBundle();
   v5 = [v4 localizedStringForKey:@"TK_CONTACTS_REQUEST_DETAIL" value:&stru_1C900 table:@"NanoContactsBridgeSetup"];
-  v6 = [NSString stringWithFormat:v5, v3, v3];
+  v6 = [NSString stringWithFormat:v5, familyMemberFirstName, familyMemberFirstName];
 
   return v6;
 }
@@ -66,10 +66,10 @@
   return v3;
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v4 = [(NCBSTinkerRequestManagementViewController *)self miniFlowDelegate];
-  [v4 miniFlowStepComplete:self];
+  miniFlowDelegate = [(NCBSTinkerRequestManagementViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
 - (void)_requestToManageContacts
@@ -82,23 +82,23 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "%{public}s - making request", buf, 0xCu);
   }
 
-  v4 = [(NCBSTinkerRequestManagementViewController *)self miniFlowDelegate];
+  miniFlowDelegate = [(NCBSTinkerRequestManagementViewController *)self miniFlowDelegate];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_C354;
   v5[3] = &unk_1C540;
   v5[4] = self;
-  [v4 requestContactsManagementWithCompletionHandler:v5];
+  [miniFlowDelegate requestContactsManagementWithCompletionHandler:v5];
 }
 
 - (void)_notifyUserRequestWasSentThenProceed
 {
-  v3 = [(NCBSTinkerRequestManagementViewController *)self miniFlowDelegate];
-  v4 = [v3 familyMemberFirstName];
+  miniFlowDelegate = [(NCBSTinkerRequestManagementViewController *)self miniFlowDelegate];
+  familyMemberFirstName = [miniFlowDelegate familyMemberFirstName];
 
   v5 = NanoContactsBridgeSetupBundle();
   v6 = [v5 localizedStringForKey:@"TK_CONTACTS_REQUESTED_MESSAGE" value:&stru_1C900 table:@"NanoContactsBridgeSetup"];
-  v7 = [NSString stringWithFormat:v6, v4];
+  v7 = [NSString stringWithFormat:v6, familyMemberFirstName];
 
   v8 = NanoContactsBridgeSetupBundle();
   v9 = [v8 localizedStringForKey:@"TK_CONTACTS_REQUESTED_TITLE" value:&stru_1C900 table:@"NanoContactsBridgeSetup"];

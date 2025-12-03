@@ -12,9 +12,9 @@
   }
 
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 30;
   }

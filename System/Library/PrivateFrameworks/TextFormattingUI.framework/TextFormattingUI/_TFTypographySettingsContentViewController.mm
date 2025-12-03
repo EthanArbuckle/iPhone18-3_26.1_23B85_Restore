@@ -1,19 +1,19 @@
 @interface _TFTypographySettingsContentViewController
 - (TypographyPanelDelegate)delegate;
-- (_TFTypographySettingsContentViewController)initWithCoder:(id)a3;
-- (_TFTypographySettingsContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TFTypographySettingsContentViewController)initWithCoder:(id)coder;
+- (_TFTypographySettingsContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (__TFTypographySettingsContentViewControllerDelegate)_delegate;
-- (id)_setSelectedFont:(uint64_t)a1;
+- (id)_setSelectedFont:(uint64_t)font;
 - (void)loadView;
-- (void)setDelegate:(id)a3;
-- (void)set_delegate:(id)a3;
-- (void)typographyPanelDidUpdateWithFont:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)set_delegate:(id)set_delegate;
+- (void)typographyPanelDidUpdateWithFont:(id)font;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _TFTypographySettingsContentViewController
 
-- (_TFTypographySettingsContentViewController)initWithCoder:(id)a3
+- (_TFTypographySettingsContentViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TFTypographySettingsContentViewController__typographyPanel) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TFTypographySettingsContentViewController_delegate) = 0;
@@ -25,14 +25,14 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   _TFTypographySettingsContentViewController.loadView()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  _TFTypographySettingsContentViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  _TFTypographySettingsContentViewController.viewWillAppear(_:)(appear);
 }
 
 - (TypographyPanelDelegate)delegate
@@ -42,17 +42,17 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  *(&self->super.super.super.isa + OBJC_IVAR____TFTypographySettingsContentViewController_delegate) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TFTypographySettingsContentViewController_delegate) = delegate;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (id)_setSelectedFont:(uint64_t)a1
+- (id)_setSelectedFont:(uint64_t)font
 {
-  result = *(a1 + OBJC_IVAR____TFTypographySettingsContentViewController__typographyPanel);
+  result = *(font + OBJC_IVAR____TFTypographySettingsContentViewController__typographyPanel);
   if (result)
   {
     return [result setSelectedFont_];
@@ -61,7 +61,7 @@
   return result;
 }
 
-- (void)typographyPanelDidUpdateWithFont:(id)a3
+- (void)typographyPanelDidUpdateWithFont:(id)font
 {
   v5 = OBJC_IVAR____TFTypographySettingsContentViewController__delegate;
   swift_beginAccess();
@@ -80,16 +80,16 @@
   return v2;
 }
 
-- (void)set_delegate:(id)a3
+- (void)set_delegate:(id)set_delegate
 {
   v5 = OBJC_IVAR____TFTypographySettingsContentViewController__delegate;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = set_delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (_TFTypographySettingsContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TFTypographySettingsContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

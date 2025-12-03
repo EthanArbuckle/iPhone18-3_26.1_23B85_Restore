@@ -1,21 +1,21 @@
 @interface UITableViewIndexVisualStyle_iOS
 - (UITableViewIndex)tableViewIndex;
-- (UITableViewIndexVisualStyle_iOS)initWithTableViewIndex:(id)a3;
+- (UITableViewIndexVisualStyle_iOS)initWithTableViewIndex:(id)index;
 - (double)_lineSpacingForCurrentIdiom;
 - (double)indexWidth;
 - (double)minLineSpacing;
-- (void)setFont:(id)a3;
+- (void)setFont:(id)font;
 @end
 
 @implementation UITableViewIndexVisualStyle_iOS
 
-- (UITableViewIndexVisualStyle_iOS)initWithTableViewIndex:(id)a3
+- (UITableViewIndexVisualStyle_iOS)initWithTableViewIndex:(id)index
 {
   v7.receiver = self;
   v7.super_class = UITableViewIndexVisualStyle_iOS;
-  v3 = a3;
+  indexCopy = index;
   v4 = [(UITableViewIndexVisualStyle_iOS *)&v7 init];
-  [(UITableViewIndexVisualStyle_iOS *)v4 setTableViewIndex:v3, v7.receiver, v7.super_class];
+  [(UITableViewIndexVisualStyle_iOS *)v4 setTableViewIndex:indexCopy, v7.receiver, v7.super_class];
 
   v5 = [off_1E70ECC18 boldSystemFontOfSize:11.0];
   [(UITableViewIndexVisualStyle_iOS *)v4 setFont:v5];
@@ -24,39 +24,39 @@
   return v4;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  if (self->_font != v5)
+  fontCopy = font;
+  if (self->_font != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_font, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_font, font);
     [(UITableViewIndexVisualStyle_iOS *)self setVerticalTextHeightEstimate:0.0];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
 - (double)indexWidth
 {
-  v2 = [(UITableViewIndexVisualStyle_iOS *)self tableViewIndex];
-  v3 = [v2 traitCollection];
+  tableViewIndex = [(UITableViewIndexVisualStyle_iOS *)self tableViewIndex];
+  traitCollection = [tableViewIndex traitCollection];
 
-  v4 = _UIDefaultIndexBarWidthForTraitCollection(v3);
+  v4 = _UIDefaultIndexBarWidthForTraitCollection(traitCollection);
   return v4;
 }
 
 - (double)_lineSpacingForCurrentIdiom
 {
-  v2 = [(UITableViewIndexVisualStyle_iOS *)self tableViewIndex];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  tableViewIndex = [(UITableViewIndexVisualStyle_iOS *)self tableViewIndex];
+  traitCollection = [tableViewIndex traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   v5 = 6.0;
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v5 = 9.0;
   }
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v6 = 16.0;
   }
@@ -75,8 +75,8 @@
   if (self->_verticalTextHeightEstimate == 0.0)
   {
     v12 = *off_1E70EC918;
-    v3 = [(UITableViewIndexVisualStyle_iOS *)self font];
-    v13[0] = v3;
+    font = [(UITableViewIndexVisualStyle_iOS *)self font];
+    v13[0] = font;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
     v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:0x1EFBB7A10 attributes:v4];

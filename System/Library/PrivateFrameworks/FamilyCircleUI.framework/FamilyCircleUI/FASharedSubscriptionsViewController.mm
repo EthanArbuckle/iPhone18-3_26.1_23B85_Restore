@@ -1,28 +1,28 @@
 @interface FASharedSubscriptionsViewController
-- (FASharedSubscriptionsViewController)initWithAppleAccount:(id)a3 sharedSubscriptionSpecifierProvider:(id)a4;
+- (FASharedSubscriptionsViewController)initWithAppleAccount:(id)account sharedSubscriptionSpecifierProvider:(id)provider;
 - (id)preferredContentSizeCategory;
 - (id)specifiers;
-- (void)_performEventWithContext:(id)a3 specifier:(id)a4 completion:(id)a5;
-- (void)_startSpinnerInCellLoadingRemoteUI:(id)a3;
+- (void)_performEventWithContext:(id)context specifier:(id)specifier completion:(id)completion;
+- (void)_startSpinnerInCellLoadingRemoteUI:(id)i;
 - (void)_stopSpinnerInCellLoadingRemoteUI;
-- (void)didSelectSpecifier:(id)a3;
+- (void)didSelectSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
 @implementation FASharedSubscriptionsViewController
 
-- (FASharedSubscriptionsViewController)initWithAppleAccount:(id)a3 sharedSubscriptionSpecifierProvider:(id)a4
+- (FASharedSubscriptionsViewController)initWithAppleAccount:(id)account sharedSubscriptionSpecifierProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = FASharedSubscriptionsViewController;
   v9 = [(ACUIViewController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appleAccount, a3);
-    objc_storeStrong(&v10->_sharedSubscriptionSpecifierProvider, a4);
+    objc_storeStrong(&v9->_appleAccount, account);
+    objc_storeStrong(&v10->_sharedSubscriptionSpecifierProvider, provider);
     [(FASharedSubscriptionSpecifierProvider *)v10->_sharedSubscriptionSpecifierProvider addSubscriber:v10];
     v11 = objc_alloc_init(MEMORY[0x277CCABD8]);
     networkingQueue = v10->_networkingQueue;
@@ -37,10 +37,10 @@
   v4.receiver = self;
   v4.super_class = FASharedSubscriptionsViewController;
   [(ACUIViewController *)&v4 viewDidLoad];
-  v3 = [(FASharedSubscriptionsViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:0];
-  [v3 setRightBarButtonItem:0];
-  [v3 setTitle:0];
+  navigationItem = [(FASharedSubscriptionsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
+  [navigationItem setRightBarButtonItem:0];
+  [navigationItem setTitle:0];
 }
 
 - (id)specifiers
@@ -49,9 +49,9 @@
   v4 = *(&self->super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(FASharedSubscriptionsViewController *)self _sharedSubscriptionSpecifiers];
+    _sharedSubscriptionSpecifiers = [(FASharedSubscriptionsViewController *)self _sharedSubscriptionSpecifiers];
     v6 = *(&self->super.super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.super.isa + v3) = _sharedSubscriptionSpecifiers;
 
     v4 = *(&self->super.super.super.super.super.super.isa + v3);
   }
@@ -59,14 +59,14 @@
   return v4;
 }
 
-- (void)_performEventWithContext:(id)a3 specifier:(id)a4 completion:(id)a5
+- (void)_performEventWithContext:(id)context specifier:(id)specifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  contextCopy = context;
+  specifierCopy = specifier;
+  completionCopy = completion;
+  if (specifierCopy)
   {
-    v11 = [v9 propertyForKey:*MEMORY[0x277D40148]];
+    v11 = [specifierCopy propertyForKey:*MEMORY[0x277D40148]];
     [(FASharedSubscriptionsViewController *)self _startSpinnerInCellLoadingRemoteUI:v11];
   }
 
@@ -76,8 +76,8 @@
   v26 = __Block_byref_object_copy__7;
   v27 = __Block_byref_object_dispose__7;
   v12 = [FACircleStateController alloc];
-  v13 = [(FASharedSubscriptionsViewController *)self navigationController];
-  v28 = [(FACircleStateController *)v12 initWithPresenter:v13];
+  navigationController = [(FASharedSubscriptionsViewController *)self navigationController];
+  v28 = [(FACircleStateController *)v12 initWithPresenter:navigationController];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -90,11 +90,11 @@
   v17[1] = 3221225472;
   v17[2] = __85__FASharedSubscriptionsViewController__performEventWithContext_specifier_completion___block_invoke_2;
   v17[3] = &unk_2782F43B0;
-  v15 = v8;
+  v15 = contextCopy;
   v21 = &v23;
   v18 = v15;
-  v19 = self;
-  v16 = v10;
+  selfCopy = self;
+  v16 = completionCopy;
   v20 = v16;
   [v14 performOperationWithContext:v15 completion:v17];
 
@@ -138,18 +138,18 @@ void __85__FASharedSubscriptionsViewController__performEventWithContext_specifie
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startSpinnerInCellLoadingRemoteUI:(id)a3
+- (void)_startSpinnerInCellLoadingRemoteUI:(id)i
 {
-  v5 = a3;
-  if (v5)
+  iCopy = i;
+  if (iCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_activeCell, a3);
+    v7 = iCopy;
+    objc_storeStrong(&self->_activeCell, i);
     v6 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     [v6 startAnimating];
     [(UITableViewCell *)self->_activeCell setAccessoryView:v6];
 
-    v5 = v7;
+    iCopy = v7;
   }
 }
 
@@ -164,23 +164,23 @@ void __85__FASharedSubscriptionsViewController__performEventWithContext_specifie
   }
 }
 
-- (void)didSelectSpecifier:(id)a3
+- (void)didSelectSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if (![(FASharedSubscriptionsViewController *)self _hasActiveCell])
   {
-    v5 = [v4 propertyForKey:@"FASharedServicesSpecifierActionURLKey"];
+    v5 = [specifierCopy propertyForKey:@"FASharedServicesSpecifierActionURLKey"];
     if (v5)
     {
       v6 = [[FACircleContext alloc] initWithEventType:@"FACircleEventTypeSharedService"];
       [(FACircleContext *)v6 setUrlForContext:v5];
-      v7 = [v4 propertyForKey:@"FASharedServicesAdditionalParameters"];
+      v7 = [specifierCopy propertyForKey:@"FASharedServicesAdditionalParameters"];
       if (v7)
       {
         [(FACircleContext *)v6 setAdditionalParameters:v7];
       }
 
-      [(FASharedSubscriptionsViewController *)self _performEventWithContext:v6 specifier:v4 completion:0];
+      [(FASharedSubscriptionsViewController *)self _performEventWithContext:v6 specifier:specifierCopy completion:0];
     }
 
     else
@@ -197,10 +197,10 @@ void __85__FASharedSubscriptionsViewController__performEventWithContext_specifie
 
 - (id)preferredContentSizeCategory
 {
-  v2 = [(FASharedSubscriptionsViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(FASharedSubscriptionsViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  return v3;
+  return preferredContentSizeCategory;
 }
 
 @end

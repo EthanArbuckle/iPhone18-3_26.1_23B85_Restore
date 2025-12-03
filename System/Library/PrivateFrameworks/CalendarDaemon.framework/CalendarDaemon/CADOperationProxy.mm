@@ -1,10 +1,10 @@
 @interface CADOperationProxy
-- (CADOperationProxy)initWithClientConnection:(id)a3;
+- (CADOperationProxy)initWithClientConnection:(id)connection;
 - (id)_newImplementation;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation CADOperationProxy
@@ -24,7 +24,7 @@
   [(CADOperationProxy *)&v3 dealloc];
 }
 
-- (CADOperationProxy)initWithClientConnection:(id)a3
+- (CADOperationProxy)initWithClientConnection:(id)connection
 {
   if (initWithClientConnection__onceToken != -1)
   {
@@ -36,7 +36,7 @@
   v5 = [(CADOperationProxy *)&v7 init];
   if (v5)
   {
-    v5->_conn = a3;
+    v5->_conn = connection;
     v5->_implementation = [(CADOperationProxy *)v5 _newImplementation];
   }
 
@@ -53,14 +53,14 @@ os_log_t __46__CADOperationProxy_initWithClientConnection___block_invoke()
   return result;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v4 = self;
-  if (sel_CADDatabaseSetInitializationOptions_reply_ == a3 || [(ClientConnection *)self->_conn initializationOptionsSet])
+  selfCopy = self;
+  if (sel_CADDatabaseSetInitializationOptions_reply_ == selector || [(ClientConnection *)self->_conn initializationOptionsSet])
   {
-    if ([(CADXPCImplementation *)v4->_implementation accessGrantedToPerformSelector:a3])
+    if ([(CADXPCImplementation *)selfCopy->_implementation accessGrantedToPerformSelector:selector])
     {
-      return v4->_implementation;
+      return selfCopy->_implementation;
     }
 
     else
@@ -68,19 +68,19 @@ os_log_t __46__CADOperationProxy_initWithClientConnection___block_invoke()
       v5 = CADOperationProxyLogHandle;
       if (os_log_type_enabled(CADOperationProxyLogHandle, OS_LOG_TYPE_ERROR))
       {
-        [(CADOperationProxy *)a3 forwardingTargetForSelector:v4, v5];
+        [(CADOperationProxy *)selector forwardingTargetForSelector:selfCopy, v5];
       }
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  MethodDescription = protocol_getMethodDescription(&unk_2837DB770, a3, 1, 1);
+  MethodDescription = protocol_getMethodDescription(&unk_2837DB770, selector, 1, 1);
   types = MethodDescription.types;
-  if (MethodDescription.name || (v6 = protocol_getMethodDescription(&unk_2837DB770, a3, 0, 1), types = v6.types, v6.name))
+  if (MethodDescription.name || (v6 = protocol_getMethodDescription(&unk_2837DB770, selector, 0, 1), types = v6.types, v6.name))
   {
     v7 = MEMORY[0x277CBEB08];
 
@@ -95,30 +95,30 @@ os_log_t __46__CADOperationProxy_initWithClientConnection___block_invoke()
   }
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  if (([objc_opt_class() _selectorMayBeCalledBeforeInitialization:{objc_msgSend(a3, "selector")}] & 1) == 0 && !-[ClientConnection initializationOptionsSet](self->_conn, "initializationOptionsSet"))
+  if (([objc_opt_class() _selectorMayBeCalledBeforeInitialization:{objc_msgSend(invocation, "selector")}] & 1) == 0 && !-[ClientConnection initializationOptionsSet](self->_conn, "initializationOptionsSet"))
   {
-    v8 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:a3];
+    v8 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:invocation];
     v13 = CADOperationProxyLogHandle;
     if (os_log_type_enabled(CADOperationProxyLogHandle, OS_LOG_TYPE_DEBUG))
     {
-      [(CADOperationProxy *)a3 forwardInvocation:v13];
+      [(CADOperationProxy *)invocation forwardInvocation:v13];
     }
 
     v9 = MEMORY[0x277CF7820];
     v10 = v8;
-    v11 = a3;
+    invocationCopy2 = invocation;
     v12 = 1019;
     goto LABEL_18;
   }
 
-  if (!-[CADXPCImplementation accessGrantedToPerformSelector:](self->_implementation, "accessGrantedToPerformSelector:", [a3 selector]))
+  if (!-[CADXPCImplementation accessGrantedToPerformSelector:](self->_implementation, "accessGrantedToPerformSelector:", [invocation selector]))
   {
     v6 = CADOperationProxyLogHandle;
     if (os_log_type_enabled(CADOperationProxyLogHandle, OS_LOG_TYPE_ERROR))
     {
-      [(CADOperationProxy *)a3 forwardInvocation:v6];
+      [(CADOperationProxy *)invocation forwardInvocation:v6];
     }
 
     if (MGGetBoolAnswer())
@@ -136,20 +136,20 @@ os_log_t __46__CADOperationProxy_initWithClientConnection___block_invoke()
       }
     }
 
-    v8 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:a3];
+    v8 = [MEMORY[0x277CF7820] copyReplyBlockFromInvocation:invocation];
     v9 = MEMORY[0x277CF7820];
     v10 = v8;
-    v11 = a3;
+    invocationCopy2 = invocation;
     v12 = 1013;
 LABEL_18:
-    [v9 callReplyHandler:v10 ofInvocation:v11 withErrorCode:v12];
+    [v9 callReplyHandler:v10 ofInvocation:invocationCopy2 withErrorCode:v12];
 
     return;
   }
 
   implementation = self->_implementation;
 
-  [a3 invokeWithTarget:implementation];
+  [invocation invokeWithTarget:implementation];
 }
 
 - (void)forwardingTargetForSelector:(NSObject *)a3 .cold.1(const char *a1, uint64_t a2, NSObject *a3)

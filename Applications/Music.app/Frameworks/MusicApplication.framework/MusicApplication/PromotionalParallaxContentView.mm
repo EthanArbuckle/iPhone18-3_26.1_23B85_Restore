@@ -2,8 +2,8 @@
 - (CGRect)frame;
 - (void)layoutSubviews;
 - (void)music_inheritedLayoutInsetsDidChange;
-- (void)setFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PromotionalParallaxContentView
@@ -20,22 +20,22 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v24.receiver = self;
   v24.super_class = ObjectType;
-  v9 = self;
+  selfCopy = self;
   [(PromotionalParallaxContentView *)&v24 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v23.receiver = v9;
+  v23.receiver = selfCopy;
   v23.super_class = ObjectType;
   [(PromotionalParallaxContentView *)&v23 setFrame:x, y, width, height];
   type metadata accessor for CGRect(0);
@@ -43,7 +43,7 @@
   v20 = v13;
   v21 = v15;
   v22 = v17;
-  v18.receiver = v9;
+  v18.receiver = selfCopy;
   v18.super_class = ObjectType;
   [(PromotionalParallaxContentView *)&v18 frame];
   if (sub_AB38D0())
@@ -54,7 +54,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A7890();
 }
 
@@ -70,11 +70,11 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1A8E90(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1A8E90(change);
 }
 
 @end

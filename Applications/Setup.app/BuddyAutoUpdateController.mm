@@ -1,15 +1,15 @@
 @interface BuddyAutoUpdateController
-+ (void)clearAutoDownloadWithUpdateSetting:(id)a3;
-+ (void)setAutoDownloadWithUpdateEnabled:(BOOL)a3 presented:(BOOL)a4 buddyPreferences:(id)a5;
++ (void)clearAutoDownloadWithUpdateSetting:(id)setting;
++ (void)setAutoDownloadWithUpdateEnabled:(BOOL)enabled presented:(BOOL)presented buddyPreferences:(id)preferences;
 - (BOOL)controllerNeedsToRun;
 - (BuddyAutoUpdateController)init;
-- (void)_enableAutomaticDownload:(BOOL)a3 enableAutomaticUpdate:(BOOL)a4;
-- (void)_updateAutomaticallyPressed:(id)a3;
-- (void)_updateManuallyPressed:(id)a3;
+- (void)_enableAutomaticDownload:(BOOL)download enableAutomaticUpdate:(BOOL)update;
+- (void)_updateAutomaticallyPressed:(id)pressed;
+- (void)_updateManuallyPressed:(id)pressed;
 - (void)controllerWasPopped;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyAutoUpdateController
@@ -40,7 +40,7 @@
 
 - (void)viewDidLoad
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = BuddyAutoUpdateController;
@@ -48,108 +48,108 @@
   v2 = +[NSBundle mainBundle];
   v3 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"AUTO_UPDATE_BACK_TITLE"];
   v4 = [(NSBundle *)v2 localizedStringForKey:v3 value:&stru_10032F900 table:@"Localizable"];
-  v5 = [(BuddyAutoUpdateController *)v9 navigationItem];
-  [v5 setBackButtonTitle:v4];
+  navigationItem = [(BuddyAutoUpdateController *)selfCopy navigationItem];
+  [navigationItem setBackButtonTitle:v4];
 
-  v6 = [(BuddyAutoUpdateController *)v9 buddy_animationController:@"Update"];
-  [(BuddyAutoUpdateController *)v9 setAnimationController:v6];
+  v6 = [(BuddyAutoUpdateController *)selfCopy buddy_animationController:@"Update"];
+  [(BuddyAutoUpdateController *)selfCopy setAnimationController:v6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  appearCopy = appear;
   v4.receiver = self;
   v4.super_class = BuddyAutoUpdateController;
-  [(BuddyAutoUpdateController *)&v4 viewWillAppear:a3];
-  v3 = [(BuddyAutoUpdateController *)v7 animationController];
-  [(OBAnimationController *)v3 startAnimation];
+  [(BuddyAutoUpdateController *)&v4 viewWillAppear:appear];
+  animationController = [(BuddyAutoUpdateController *)selfCopy animationController];
+  [(OBAnimationController *)animationController startAnimation];
 }
 
-+ (void)setAutoDownloadWithUpdateEnabled:(BOOL)a3 presented:(BOOL)a4 buddyPreferences:(id)a5
++ (void)setAutoDownloadWithUpdateEnabled:(BOOL)enabled presented:(BOOL)presented buddyPreferences:(id)preferences
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  v9 = a4;
+  enabledCopy = enabled;
+  presentedCopy = presented;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, preferences);
   v5 = location;
-  v6 = [NSNumber numberWithBool:v9];
+  v6 = [NSNumber numberWithBool:presentedCopy];
   [v5 setObject:v6 forKey:@"AutoUpdatePresented"];
 
   v7 = [BYSUManagerClient createWithQueue:0 clientType:1];
-  [v7 enableAutomaticDownload:v10];
-  [v7 enableAutomaticUpdateV2:v10];
+  [v7 enableAutomaticDownload:enabledCopy];
+  [v7 enableAutomaticUpdateV2:enabledCopy];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&location, 0);
 }
 
-+ (void)clearAutoDownloadWithUpdateSetting:(id)a3
++ (void)clearAutoDownloadWithUpdateSetting:(id)setting
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, setting);
   [objc_opt_class() setAutoDownloadWithUpdateEnabled:0 presented:0 buddyPreferences:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_enableAutomaticDownload:(BOOL)a3 enableAutomaticUpdate:(BOOL)a4
+- (void)_enableAutomaticDownload:(BOOL)download enableAutomaticUpdate:(BOOL)update
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  downloadCopy = download;
+  updateCopy = update;
   v10 = [BYSUManagerClient createWithQueue:0 clientType:1];
-  [v10 enableAutomaticDownload:v12];
-  [v10 enableAutomaticUpdateV2:v11];
-  v4 = [(BuddyAutoUpdateController *)v14 settingsManager];
-  [(BFFSettingsManager *)v4 setAutoDownloadEnabled:v12];
+  [v10 enableAutomaticDownload:downloadCopy];
+  [v10 enableAutomaticUpdateV2:updateCopy];
+  settingsManager = [(BuddyAutoUpdateController *)selfCopy settingsManager];
+  [(BFFSettingsManager *)settingsManager setAutoDownloadEnabled:downloadCopy];
 
-  v5 = [(BuddyAutoUpdateController *)v14 settingsManager];
-  [(BFFSettingsManager *)v5 setAutoUpdateEnabled:v11];
+  settingsManager2 = [(BuddyAutoUpdateController *)selfCopy settingsManager];
+  [(BFFSettingsManager *)settingsManager2 setAutoUpdateEnabled:updateCopy];
 
-  v6 = [(BuddyAutoUpdateController *)v14 paneFeatureAnalyticsManager];
-  v7 = [NSNumber numberWithBool:v12];
-  [(BYPaneFeatureAnalyticsManager *)v6 recordActionWithValue:v7 forFeature:2];
+  paneFeatureAnalyticsManager = [(BuddyAutoUpdateController *)selfCopy paneFeatureAnalyticsManager];
+  v7 = [NSNumber numberWithBool:downloadCopy];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:v7 forFeature:2];
 
-  v8 = [(BuddyAutoUpdateController *)v14 paneFeatureAnalyticsManager];
-  v9 = [NSNumber numberWithBool:v11];
-  [(BYPaneFeatureAnalyticsManager *)v8 recordActionWithValue:v9 forFeature:1];
+  paneFeatureAnalyticsManager2 = [(BuddyAutoUpdateController *)selfCopy paneFeatureAnalyticsManager];
+  v9 = [NSNumber numberWithBool:updateCopy];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager2 recordActionWithValue:v9 forFeature:1];
 
   objc_storeStrong(&v10, 0);
 }
 
-- (void)_updateAutomaticallyPressed:(id)a3
+- (void)_updateAutomaticallyPressed:(id)pressed
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyAutoUpdateController *)v6 _enableAutomaticDownload:1 enableAutomaticUpdate:1];
-  v3 = [(BuddyAutoUpdateController *)v6 buddyPreferences];
-  [(BYPreferencesController *)v3 setObject:&__kCFBooleanTrue forKey:@"AutoUpdatePresented"];
+  objc_storeStrong(location, pressed);
+  [(BuddyAutoUpdateController *)selfCopy _enableAutomaticDownload:1 enableAutomaticUpdate:1];
+  buddyPreferences = [(BuddyAutoUpdateController *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"AutoUpdatePresented"];
 
-  v4 = [(BuddyWelcomeController *)v6 delegate];
-  [(BFFFlowItemDelegate *)v4 flowItemDone:v6];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_updateManuallyPressed:(id)a3
+- (void)_updateManuallyPressed:(id)pressed
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyAutoUpdateController *)v6 _enableAutomaticDownload:1 enableAutomaticUpdate:0];
-  v3 = [(BuddyAutoUpdateController *)v6 buddyPreferences];
-  [(BYPreferencesController *)v3 setObject:&__kCFBooleanTrue forKey:@"AutoUpdatePresented"];
+  objc_storeStrong(location, pressed);
+  [(BuddyAutoUpdateController *)selfCopy _enableAutomaticDownload:1 enableAutomaticUpdate:0];
+  buddyPreferences = [(BuddyAutoUpdateController *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"AutoUpdatePresented"];
 
-  v4 = [(BuddyWelcomeController *)v6 delegate];
-  [(BFFFlowItemDelegate *)v4 flowItemDone:v6];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }
@@ -162,24 +162,24 @@
   return v3 & 1;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAutoUpdateController *)v18 capabilities];
-  v4 = [(BYCapabilities *)v3 mgHasGreenTea];
+  objc_storeStrong(location, completion);
+  capabilities = [(BuddyAutoUpdateController *)selfCopy capabilities];
+  mgHasGreenTea = [(BYCapabilities *)capabilities mgHasGreenTea];
 
-  v5 = v18;
-  if (v4)
+  v5 = selfCopy;
+  if (mgHasGreenTea)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"AUTO_UPDATE_INSTALL_UPDATES_AUTOMATICALLY"];
     v8 = [(NSBundle *)v6 localizedStringForKey:v7 value:&stru_10032F900 table:@"Localizable"];
     [(BuddyWelcomeController *)v5 addBoldButton:v8 action:"_updateAutomaticallyPressed:"];
 
-    v9 = v18;
+    v9 = selfCopy;
     v10 = +[NSBundle mainBundle];
     v11 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"AUTO_UPDATE_DOWNLOAD_IOS_UPDATES_AUTOMATICALLY"];
     v12 = [(NSBundle *)v10 localizedStringForKey:v11 value:&stru_10032F900 table:@"Localizable"];
@@ -192,14 +192,14 @@
     v14 = [(NSBundle *)v13 localizedStringForKey:@"CONTINUE" value:&stru_10032F900 table:@"Localizable"];
     [(BuddyWelcomeController *)v5 addBoldButton:v14 action:"_updateAutomaticallyPressed:"];
 
-    v15 = v18;
+    v15 = selfCopy;
     v10 = +[NSBundle mainBundle];
     v11 = [(NSBundle *)v10 localizedStringForKey:@"AUTO_UPDATE_DOWNLOAD_UPDATES_AUTOMATICALLY" value:&stru_10032F900 table:@"Localizable"];
     [(BuddyWelcomeController *)v15 addLinkButton:v11 action:"_updateManuallyPressed:"];
   }
 
-  v16 = [(BuddyAutoUpdateController *)v18 chronicle];
-  [(BYChronicle *)v16 recordFeatureShown:3];
+  chronicle = [(BuddyAutoUpdateController *)selfCopy chronicle];
+  [(BYChronicle *)chronicle recordFeatureShown:3];
 
   if (location[0])
   {
@@ -211,14 +211,14 @@
 
 - (void)controllerWasPopped
 {
-  v2 = [(BuddyAutoUpdateController *)self buddyPreferences];
-  [(BYPreferencesController *)v2 removeObjectForKey:@"AutoUpdatePresented"];
+  buddyPreferences = [(BuddyAutoUpdateController *)self buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences removeObjectForKey:@"AutoUpdatePresented"];
 
-  v3 = [(BuddyAutoUpdateController *)self paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v3 clearActionForFeature:1];
+  paneFeatureAnalyticsManager = [(BuddyAutoUpdateController *)self paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager clearActionForFeature:1];
 
-  v4 = [(BuddyAutoUpdateController *)self paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v4 clearActionForFeature:2];
+  paneFeatureAnalyticsManager2 = [(BuddyAutoUpdateController *)self paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager2 clearActionForFeature:2];
 }
 
 @end

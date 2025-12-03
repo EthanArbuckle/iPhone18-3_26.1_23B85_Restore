@@ -1,15 +1,15 @@
 @interface TrapOverlayView
-- (TrapOverlayView)initWithFrame:(CGRect)a3;
+- (TrapOverlayView)initWithFrame:(CGRect)frame;
 - (void)updateConstraints;
 @end
 
 @implementation TrapOverlayView
 
-- (TrapOverlayView)initWithFrame:(CGRect)a3
+- (TrapOverlayView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = TrapOverlayView;
-  v3 = [(TrapOverlayView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TrapOverlayView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor systemBackgroundColor];
@@ -18,12 +18,12 @@
     v5 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(TrapOverlayView *)v3 setLabel:v5];
 
-    v6 = [(TrapOverlayView *)v3 label];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    label = [(TrapOverlayView *)v3 label];
+    [label setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v7 = +[UIColor secondaryLabelColor];
-    v8 = [(TrapOverlayView *)v3 label];
-    [v8 setTextColor:v7];
+    label2 = [(TrapOverlayView *)v3 label];
+    [label2 setTextColor:v7];
 
     v9 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleFootnote];
     v22 = UIFontDescriptorTraitsAttribute;
@@ -35,17 +35,17 @@
     v12 = [v9 fontDescriptorByAddingAttributes:v11];
 
     v13 = [UIFont fontWithDescriptor:v12 size:0.0];
-    v14 = [(TrapOverlayView *)v3 label];
-    [v14 setFont:v13];
+    label3 = [(TrapOverlayView *)v3 label];
+    [label3 setFont:v13];
 
-    v15 = [(TrapOverlayView *)v3 label];
-    [v15 setNumberOfLines:0];
+    label4 = [(TrapOverlayView *)v3 label];
+    [label4 setNumberOfLines:0];
 
-    v16 = [(TrapOverlayView *)v3 label];
-    [v16 setTextAlignment:1];
+    label5 = [(TrapOverlayView *)v3 label];
+    [label5 setTextAlignment:1];
 
-    v17 = [(TrapOverlayView *)v3 label];
-    [(TrapOverlayView *)v3 addSubview:v17];
+    label6 = [(TrapOverlayView *)v3 label];
+    [(TrapOverlayView *)v3 addSubview:label6];
   }
 
   return v3;
@@ -56,45 +56,45 @@
   v27.receiver = self;
   v27.super_class = TrapOverlayView;
   [(TrapOverlayView *)&v27 updateConstraints];
-  v3 = [(TrapOverlayView *)self constraints];
+  constraints = [(TrapOverlayView *)self constraints];
 
-  if (v3)
+  if (constraints)
   {
-    v4 = [(TrapOverlayView *)self constraints];
-    [NSLayoutConstraint deactivateConstraints:v4];
+    constraints2 = [(TrapOverlayView *)self constraints];
+    [NSLayoutConstraint deactivateConstraints:constraints2];
 
     [(TrapOverlayView *)self setConstraints:0];
   }
 
-  v26 = [(TrapOverlayView *)self label];
-  v24 = [v26 widthAnchor];
-  v25 = [(TrapOverlayView *)self safeAreaLayoutGuide];
-  v23 = [v25 widthAnchor];
-  v22 = [v24 constraintLessThanOrEqualToAnchor:v23 multiplier:1.0 constant:-20.0];
+  label = [(TrapOverlayView *)self label];
+  widthAnchor = [label widthAnchor];
+  safeAreaLayoutGuide = [(TrapOverlayView *)self safeAreaLayoutGuide];
+  widthAnchor2 = [safeAreaLayoutGuide widthAnchor];
+  v22 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2 multiplier:1.0 constant:-20.0];
   v28[0] = v22;
-  v21 = [(TrapOverlayView *)self label];
-  v19 = [v21 heightAnchor];
-  v20 = [(TrapOverlayView *)self safeAreaLayoutGuide];
-  v18 = [v20 heightAnchor];
-  v17 = [v19 constraintLessThanOrEqualToAnchor:v18 multiplier:1.0 constant:-20.0];
+  label2 = [(TrapOverlayView *)self label];
+  heightAnchor = [label2 heightAnchor];
+  safeAreaLayoutGuide2 = [(TrapOverlayView *)self safeAreaLayoutGuide];
+  heightAnchor2 = [safeAreaLayoutGuide2 heightAnchor];
+  v17 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2 multiplier:1.0 constant:-20.0];
   v28[1] = v17;
-  v16 = [(TrapOverlayView *)self label];
-  v15 = [v16 centerXAnchor];
-  v5 = [(TrapOverlayView *)self safeAreaLayoutGuide];
-  v6 = [v5 centerXAnchor];
-  v7 = [v15 constraintEqualToAnchor:v6];
+  label3 = [(TrapOverlayView *)self label];
+  centerXAnchor = [label3 centerXAnchor];
+  safeAreaLayoutGuide3 = [(TrapOverlayView *)self safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide3 centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v28[2] = v7;
-  v8 = [(TrapOverlayView *)self label];
-  v9 = [v8 centerYAnchor];
-  v10 = [(TrapOverlayView *)self safeAreaLayoutGuide];
-  v11 = [v10 centerYAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:-10.0];
+  label4 = [(TrapOverlayView *)self label];
+  centerYAnchor = [label4 centerYAnchor];
+  safeAreaLayoutGuide4 = [(TrapOverlayView *)self safeAreaLayoutGuide];
+  centerYAnchor2 = [safeAreaLayoutGuide4 centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:-10.0];
   v28[3] = v12;
   v13 = [NSArray arrayWithObjects:v28 count:4];
   [(TrapOverlayView *)self setConstraints:v13];
 
-  v14 = [(TrapOverlayView *)self constraints];
-  [NSLayoutConstraint activateConstraints:v14];
+  constraints3 = [(TrapOverlayView *)self constraints];
+  [NSLayoutConstraint activateConstraints:constraints3];
 }
 
 @end

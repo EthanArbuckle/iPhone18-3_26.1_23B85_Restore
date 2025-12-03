@@ -1,21 +1,21 @@
 @interface BMWriteServerExported
-- (BMWriteServerExported)initWithProcess:(id)a3 accessControlPolicy:(id)a4;
+- (BMWriteServerExported)initWithProcess:(id)process accessControlPolicy:(id)policy;
 @end
 
 @implementation BMWriteServerExported
 
-- (BMWriteServerExported)initWithProcess:(id)a3 accessControlPolicy:(id)a4
+- (BMWriteServerExported)initWithProcess:(id)process accessControlPolicy:(id)policy
 {
-  v7 = a3;
-  v8 = a4;
+  processCopy = process;
+  policyCopy = policy;
   v14.receiver = self;
   v14.super_class = BMWriteServerExported;
   v9 = [(BMWriteServerExported *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_process, a3);
-    objc_storeStrong(&v10->_policy, a4);
+    objc_storeStrong(&v9->_process, process);
+    objc_storeStrong(&v10->_policy, policy);
     v11 = objc_opt_new();
     writerCache = v10->_writerCache;
     v10->_writerCache = v11;

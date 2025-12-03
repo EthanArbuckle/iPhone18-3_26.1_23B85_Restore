@@ -1,10 +1,10 @@
 @interface MKMapItemDetailViewController
-- (MKMapItemDetailViewController)initWithCoder:(id)a3;
-- (MKMapItemDetailViewController)initWithMapItem:(id)a3 displaysMap:(BOOL)a4;
+- (MKMapItemDetailViewController)initWithCoder:(id)coder;
+- (MKMapItemDetailViewController)initWithMapItem:(id)item displaysMap:(BOOL)map;
 - (MKMapItemDetailViewControllerDelegate)delegate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadView;
-- (void)selectionAccessoryViewDidRequestDismissal:(id)a3;
+- (void)selectionAccessoryViewDidRequestDismissal:(id)dismissal;
 @end
 
 @implementation MKMapItemDetailViewController
@@ -16,22 +16,22 @@
   return WeakRetained;
 }
 
-- (void)selectionAccessoryViewDidRequestDismissal:(id)a3
+- (void)selectionAccessoryViewDidRequestDismissal:(id)dismissal
 {
-  v4 = [(MKMapItemDetailViewController *)self delegate];
+  delegate = [(MKMapItemDetailViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v8 = [(MKMapItemDetailViewController *)self delegate];
-    [v8 mapItemDetailViewControllerDidFinish:self];
+    delegate2 = [(MKMapItemDetailViewController *)self delegate];
+    [delegate2 mapItemDetailViewControllerDidFinish:self];
   }
 
   else
   {
-    v6 = [(MKMapItemDetailViewController *)self presentingViewController];
+    presentingViewController = [(MKMapItemDetailViewController *)self presentingViewController];
 
-    if (v6)
+    if (presentingViewController)
     {
 
       [(MKMapItemDetailViewController *)self dismissViewControllerAnimated:1 completion:0];
@@ -56,14 +56,14 @@
   v4 = [(_MKMapItemDetailView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(MKMapItemDetailViewController *)self setView:v4];
 
-  v5 = [(MKMapItemDetailViewController *)self view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(MKMapItemDetailViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-    v7 = [(MKMapItemDetailViewController *)self view];
-    [v7 setBackgroundColor:v6];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    view2 = [(MKMapItemDetailViewController *)self view];
+    [view2 setBackgroundColor:systemGroupedBackgroundColor];
   }
 
   v8 = [[MKFullDeveloperPlaceCardSelectionAccessoryView alloc] initAsStandAloneHidingInlineMap:!self->_displaysMap];
@@ -73,29 +73,29 @@
   [(MKFullDeveloperPlaceCardSelectionAccessoryView *)self->_accessoryView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MKViewSwitchingSelectionAccessoryView *)self->_accessoryView setParentViewController:self];
   [(MKSelectionAccessoryView *)self->_accessoryView setDelegate:self];
-  v10 = [(MKMapItemDetailViewController *)self view];
-  [v10 addSubview:self->_accessoryView];
+  view3 = [(MKMapItemDetailViewController *)self view];
+  [view3 addSubview:self->_accessoryView];
 
   v21 = MEMORY[0x1E696ACD8];
-  v27 = [(MKFullDeveloperPlaceCardSelectionAccessoryView *)self->_accessoryView topAnchor];
-  v28 = [(MKMapItemDetailViewController *)self view];
-  v26 = [v28 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  topAnchor = [(MKFullDeveloperPlaceCardSelectionAccessoryView *)self->_accessoryView topAnchor];
+  view4 = [(MKMapItemDetailViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[0] = v25;
-  v23 = [(MKFullDeveloperPlaceCardSelectionAccessoryView *)self->_accessoryView leadingAnchor];
-  v24 = [(MKMapItemDetailViewController *)self view];
-  v22 = [v24 leadingAnchor];
-  v20 = [v23 constraintEqualToAnchor:v22];
+  leadingAnchor = [(MKFullDeveloperPlaceCardSelectionAccessoryView *)self->_accessoryView leadingAnchor];
+  view5 = [(MKMapItemDetailViewController *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[1] = v20;
-  v19 = [(MKMapItemDetailViewController *)self view];
-  v11 = [v19 trailingAnchor];
-  v12 = [(MKFullDeveloperPlaceCardSelectionAccessoryView *)self->_accessoryView trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  view6 = [(MKMapItemDetailViewController *)self view];
+  trailingAnchor = [view6 trailingAnchor];
+  trailingAnchor2 = [(MKFullDeveloperPlaceCardSelectionAccessoryView *)self->_accessoryView trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[2] = v13;
-  v14 = [(MKMapItemDetailViewController *)self view];
-  v15 = [v14 bottomAnchor];
-  v16 = [(MKFullDeveloperPlaceCardSelectionAccessoryView *)self->_accessoryView bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  view7 = [(MKMapItemDetailViewController *)self view];
+  bottomAnchor = [view7 bottomAnchor];
+  bottomAnchor2 = [(MKFullDeveloperPlaceCardSelectionAccessoryView *)self->_accessoryView bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[3] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   [v21 activateConstraints:v18];
@@ -106,30 +106,30 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MKMapItemDetailViewController;
-  v4 = a3;
-  [(MKMapItemDetailViewController *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_displaysMap forKey:{@"MKDisplaysMap", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(MKMapItemDetailViewController *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_displaysMap forKey:{@"MKDisplaysMap", v5.receiver, v5.super_class}];
 }
 
-- (MKMapItemDetailViewController)initWithCoder:(id)a3
+- (MKMapItemDetailViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MKMapItemDetailViewController;
-  v5 = [(MKMapItemDetailViewController *)&v9 initWithCoder:v4];
+  v5 = [(MKMapItemDetailViewController *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     mapItem = v5->_mapItem;
     v5->_mapItem = 0;
 
-    if ([v4 containsValueForKey:@"MKDisplaysMap"])
+    if ([coderCopy containsValueForKey:@"MKDisplaysMap"])
     {
-      v6->_displaysMap = [v4 decodeBoolForKey:@"MKDisplaysMap"];
+      v6->_displaysMap = [coderCopy decodeBoolForKey:@"MKDisplaysMap"];
     }
 
     else
@@ -141,17 +141,17 @@
   return v6;
 }
 
-- (MKMapItemDetailViewController)initWithMapItem:(id)a3 displaysMap:(BOOL)a4
+- (MKMapItemDetailViewController)initWithMapItem:(id)item displaysMap:(BOOL)map
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MKMapItemDetailViewController;
   v8 = [(MKMapItemDetailViewController *)&v11 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mapItem, a3);
-    v9->_displaysMap = a4;
+    objc_storeStrong(&v8->_mapItem, item);
+    v9->_displaysMap = map;
   }
 
   return v9;

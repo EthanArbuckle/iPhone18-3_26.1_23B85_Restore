@@ -1,6 +1,6 @@
 @interface PGVibrantFillView
-- (PGVibrantFillView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (PGVibrantFillView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)PG_updateVibrancyEffectForTintColor;
 - (void)tintColorDidChange;
 @end
@@ -9,34 +9,34 @@
 
 - (void)PG_updateVibrancyEffectForTintColor
 {
-  v3 = [(PGVibrantFillView *)self tintColor];
-  v4 = [v3 PG_wantsVibrancyEffect];
+  tintColor = [(PGVibrantFillView *)self tintColor];
+  pG_wantsVibrancyEffect = [tintColor PG_wantsVibrancyEffect];
   v5 = *MEMORY[0x1E6979CF8];
-  if (!v4)
+  if (!pG_wantsVibrancyEffect)
   {
     v5 = 0;
   }
 
   v10 = v5;
 
-  v6 = [(PGVibrantFillView *)self layer];
-  v7 = [v6 compositingFilter];
+  layer = [(PGVibrantFillView *)self layer];
+  compositingFilter = [layer compositingFilter];
 
-  if (([v7 isEqualToString:v10] & 1) == 0 && v7 != v10)
+  if (([compositingFilter isEqualToString:v10] & 1) == 0 && compositingFilter != v10)
   {
-    v8 = [(PGVibrantFillView *)self layer];
-    [v8 setCompositingFilter:v10];
+    layer2 = [(PGVibrantFillView *)self layer];
+    [layer2 setCompositingFilter:v10];
   }
 
-  v9 = [(PGVibrantFillView *)self tintColor];
-  [(PGVibrantFillView *)self setBackgroundColor:v9];
+  tintColor2 = [(PGVibrantFillView *)self tintColor];
+  [(PGVibrantFillView *)self setBackgroundColor:tintColor2];
 }
 
-- (PGVibrantFillView)initWithFrame:(CGRect)a3
+- (PGVibrantFillView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PGVibrantFillView;
-  v3 = [(PGVibrantFillView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PGVibrantFillView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,11 +46,11 @@
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = PGVibrantFillView;
-  v5 = [(PGVibrantFillView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(PGVibrantFillView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

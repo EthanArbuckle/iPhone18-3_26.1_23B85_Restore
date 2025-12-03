@@ -1,6 +1,6 @@
 @interface FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range
-- (FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range)initWithFlatbuffData:(id)a3 root:(const Range *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TranslationPhraseMetaInfo_::AlternativeSelectedSpan_::Range>)addObjectToBuffer:(void *)a3;
+- (FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range)initWithFlatbuffData:(id)data root:(const Range *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TranslationPhraseMetaInfo_::AlternativeSelectedSpan_::Range>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int)length;
 - (int)start;
@@ -8,10 +8,10 @@
 
 @implementation FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range
 
-- (FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range)initWithFlatbuffData:(id)a3 root:(const Range *)a4 verify:(BOOL)a5
+- (FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range)initWithFlatbuffData:(id)data root:(const Range *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range;
   v10 = [(FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range *)&v25 init];
@@ -20,35 +20,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -104,18 +104,18 @@ LABEL_13:
   }
 }
 
-- (Offset<siri::speech::schema_fb::TranslationPhraseMetaInfo_::AlternativeSelectedSpan_::Range>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TranslationPhraseMetaInfo_::AlternativeSelectedSpan_::Range>)addObjectToBuffer:(void *)buffer
 {
-  v4 = self;
-  v5 = [(FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range *)self start];
-  LODWORD(v4) = [(FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range *)v4 length];
-  *(a3 + 70) = 1;
-  v6 = *(a3 + 10);
-  v7 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v4, 0);
+  selfCopy = self;
+  start = [(FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range *)self start];
+  LODWORD(selfCopy) = [(FTTranslationPhraseMetaInfo_AlternativeSelectedSpan_Range *)selfCopy length];
+  *(buffer + 70) = 1;
+  v6 = *(buffer + 10);
+  v7 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, start, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, selfCopy, 0);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v7 + v6);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v7 + v6);
 }
 
 - (id)flatbuffData

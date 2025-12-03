@@ -1,37 +1,37 @@
 @interface MTLDebugParallelRenderCommandEncoder
-- (MTLDebugParallelRenderCommandEncoder)initWithBaseRenderPass:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5;
+- (MTLDebugParallelRenderCommandEncoder)initWithBaseRenderPass:(id)pass commandBuffer:(id)buffer descriptor:(id)descriptor;
 - (id)endEncodingAndRetrieveProgramAddressTable;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 - (id)renderCommandEncoder;
-- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4;
+- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
 - (void)dealloc;
 - (void)endEncoding;
 - (void)endEncoding_private;
-- (void)setColorStoreAction:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setColorStoreActionOptions:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setDepthStoreAction:(unint64_t)a3;
-- (void)setDepthStoreActionOptions:(unint64_t)a3;
-- (void)setStencilStoreAction:(unint64_t)a3;
-- (void)setStencilStoreActionOptions:(unint64_t)a3;
+- (void)setColorStoreAction:(unint64_t)action atIndex:(unint64_t)index;
+- (void)setColorStoreActionOptions:(unint64_t)options atIndex:(unint64_t)index;
+- (void)setDepthStoreAction:(unint64_t)action;
+- (void)setDepthStoreActionOptions:(unint64_t)options;
+- (void)setStencilStoreAction:(unint64_t)action;
+- (void)setStencilStoreActionOptions:(unint64_t)options;
 @end
 
 @implementation MTLDebugParallelRenderCommandEncoder
 
-- (MTLDebugParallelRenderCommandEncoder)initWithBaseRenderPass:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5
+- (MTLDebugParallelRenderCommandEncoder)initWithBaseRenderPass:(id)pass commandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v13.receiver = self;
   v13.super_class = MTLDebugParallelRenderCommandEncoder;
-  v6 = [(MTLToolsParallelRenderCommandEncoder *)&v13 initWithParallelRenderCommandEncoder:a3 parent:a4 descriptor:?];
+  v6 = [(MTLToolsParallelRenderCommandEncoder *)&v13 initWithParallelRenderCommandEncoder:pass parent:buffer descriptor:?];
   if (v6)
   {
-    v7 = [a5 copy];
+    v7 = [descriptor copy];
     v6->_descriptor = v7;
     if (v7)
     {
-      v8 = [(MTLRenderPassDescriptor *)v7 colorAttachments];
+      colorAttachments = [(MTLRenderPassDescriptor *)v7 colorAttachments];
       for (i = 0; i != 10; ++i)
       {
-        v10 = [(MTLRenderPassColorAttachmentDescriptorArray *)v8 _descriptorAtIndex:i];
+        v10 = [(MTLRenderPassColorAttachmentDescriptorArray *)colorAttachments _descriptorAtIndex:i];
         if (v10)
         {
           v11 = v10;
@@ -57,7 +57,7 @@
   [(MTLToolsObject *)&v3 dealloc];
 }
 
-- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4
+- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v7 = objc_autoreleasePoolPush();
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -95,74 +95,74 @@
   }
 }
 
-- (void)setColorStoreAction:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setColorStoreAction:(unint64_t)action atIndex:(unint64_t)index
 {
-  if (a4 >= 8)
+  if (index >= 8)
   {
     [MTLDebugParallelRenderCommandEncoder setColorStoreAction:atIndex:];
   }
 
-  v7 = [(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)self->_descriptor colorAttachments] _descriptorAtIndex:a4];
-  _MTLDebugValidateDeferredStoreActionOnDevice([(MTLToolsObject *)self device], a3, v7, a4, *(&self->_unknownStoreActions + 1));
-  [v7 setStoreAction:a3];
-  v8 = [(MTLToolsObject *)self baseObject];
+  v7 = [(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)self->_descriptor colorAttachments] _descriptorAtIndex:index];
+  _MTLDebugValidateDeferredStoreActionOnDevice([(MTLToolsObject *)self device], action, v7, index, *(&self->_unknownStoreActions + 1));
+  [v7 setStoreAction:action];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 setColorStoreAction:a3 atIndex:a4];
+  [baseObject setColorStoreAction:action atIndex:index];
 }
 
-- (void)setDepthStoreAction:(unint64_t)a3
+- (void)setDepthStoreAction:(unint64_t)action
 {
   v5 = [(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)self->_descriptor colorAttachments] _descriptorAtIndex:8];
-  _MTLDebugValidateDeferredStoreActionOnDevice([(MTLToolsObject *)self device], a3, v5, 8uLL, *(&self->_unknownStoreActions + 1));
-  [v5 setStoreAction:a3];
-  v6 = [(MTLToolsObject *)self baseObject];
+  _MTLDebugValidateDeferredStoreActionOnDevice([(MTLToolsObject *)self device], action, v5, 8uLL, *(&self->_unknownStoreActions + 1));
+  [v5 setStoreAction:action];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setDepthStoreAction:a3];
+  [baseObject setDepthStoreAction:action];
 }
 
-- (void)setStencilStoreAction:(unint64_t)a3
+- (void)setStencilStoreAction:(unint64_t)action
 {
   v5 = [(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)self->_descriptor colorAttachments] _descriptorAtIndex:9];
-  _MTLDebugValidateDeferredStoreActionOnDevice([(MTLToolsObject *)self device], a3, v5, 9uLL, *(&self->_unknownStoreActions + 1));
-  [v5 setStoreAction:a3];
-  v6 = [(MTLToolsObject *)self baseObject];
+  _MTLDebugValidateDeferredStoreActionOnDevice([(MTLToolsObject *)self device], action, v5, 9uLL, *(&self->_unknownStoreActions + 1));
+  [v5 setStoreAction:action];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setStencilStoreAction:a3];
+  [baseObject setStencilStoreAction:action];
 }
 
-- (void)setColorStoreActionOptions:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setColorStoreActionOptions:(unint64_t)options atIndex:(unint64_t)index
 {
-  if (a4 >= 8)
+  if (index >= 8)
   {
     [MTLDebugParallelRenderCommandEncoder setColorStoreActionOptions:atIndex:];
   }
 
-  v7 = [(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)self->_descriptor colorAttachments] _descriptorAtIndex:a4];
-  _MTLDebugValidateDeferredStoreActionOptionsOnDevice([(MTLToolsObject *)self device], a3, v7, a4, *(&self->_unknownStoreActions + 1));
-  [v7 setStoreActionOptions:a3];
-  v8 = [(MTLToolsObject *)self baseObject];
+  v7 = [(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)self->_descriptor colorAttachments] _descriptorAtIndex:index];
+  _MTLDebugValidateDeferredStoreActionOptionsOnDevice([(MTLToolsObject *)self device], options, v7, index, *(&self->_unknownStoreActions + 1));
+  [v7 setStoreActionOptions:options];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 setColorStoreActionOptions:a3 atIndex:a4];
+  [baseObject setColorStoreActionOptions:options atIndex:index];
 }
 
-- (void)setDepthStoreActionOptions:(unint64_t)a3
+- (void)setDepthStoreActionOptions:(unint64_t)options
 {
   v5 = [(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)self->_descriptor colorAttachments] _descriptorAtIndex:8];
-  _MTLDebugValidateDeferredStoreActionOptionsOnDevice([(MTLToolsObject *)self device], a3, v5, 8, *(&self->_unknownStoreActions + 1));
-  [v5 setStoreActionOptions:a3];
-  v6 = [(MTLToolsObject *)self baseObject];
+  _MTLDebugValidateDeferredStoreActionOptionsOnDevice([(MTLToolsObject *)self device], options, v5, 8, *(&self->_unknownStoreActions + 1));
+  [v5 setStoreActionOptions:options];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setDepthStoreActionOptions:a3];
+  [baseObject setDepthStoreActionOptions:options];
 }
 
-- (void)setStencilStoreActionOptions:(unint64_t)a3
+- (void)setStencilStoreActionOptions:(unint64_t)options
 {
   v5 = [(MTLRenderPassColorAttachmentDescriptorArray *)[(MTLRenderPassDescriptor *)self->_descriptor colorAttachments] _descriptorAtIndex:9];
-  _MTLDebugValidateDeferredStoreActionOptionsOnDevice([(MTLToolsObject *)self device], a3, v5, 9, *(&self->_unknownStoreActions + 1));
-  [v5 setStoreActionOptions:a3];
-  v6 = [(MTLToolsObject *)self baseObject];
+  _MTLDebugValidateDeferredStoreActionOptionsOnDevice([(MTLToolsObject *)self device], options, v5, 9, *(&self->_unknownStoreActions + 1));
+  [v5 setStoreActionOptions:options];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setStencilStoreActionOptions:a3];
+  [baseObject setStencilStoreActionOptions:options];
 }
 
 - (void)endEncoding_private
@@ -171,45 +171,45 @@
   descriptor = self->_descriptor;
   if (descriptor)
   {
-    v4 = [(MTLRenderPassDescriptor *)descriptor colorAttachments];
+    colorAttachments = [(MTLRenderPassDescriptor *)descriptor colorAttachments];
     v5 = 0;
     v6 = 0;
     v7 = 0;
-    v21 = 0;
-    v8 = 0;
+    storeAction3 = 0;
+    storeAction2 = 0;
     v9 = 0;
     do
     {
-      v10 = [(MTLRenderPassColorAttachmentDescriptorArray *)v4 _descriptorAtIndex:v6];
+      v10 = [(MTLRenderPassColorAttachmentDescriptorArray *)colorAttachments _descriptorAtIndex:v6];
       if (v10)
       {
         v11 = v10;
-        v12 = [v10 texture];
-        if (v12)
+        texture = [v10 texture];
+        if (texture)
         {
-          v13 = v12;
+          v13 = texture;
           if (v6 > 7)
           {
-            v14 = [v11 storeAction];
+            storeAction = [v11 storeAction];
             if (v6 == 8)
             {
-              if (v14 == 4)
+              if (storeAction == 4)
               {
                 [MTLDebugParallelRenderCommandEncoder endEncoding_private];
               }
 
-              v8 = [v11 storeAction];
+              storeAction2 = [v11 storeAction];
               v5 = 1;
             }
 
             else
             {
-              if (v14 == 4)
+              if (storeAction == 4)
               {
                 [MTLDebugParallelRenderCommandEncoder endEncoding_private];
               }
 
-              v21 = [v11 storeAction];
+              storeAction3 = [v11 storeAction];
               v7 = *([v11 _descriptorPrivate] + 104);
               v9 = 1;
             }
@@ -239,19 +239,19 @@
     while (v6 != 10);
     if (v5 & v9)
     {
-      _MTLValidateDepthStencilStoreState(v8, v21, v7, 0);
+      _MTLValidateDepthStencilStoreState(storeAction2, storeAction3, v7, 0);
     }
 
     if ([(MTLToolsDevice *)self->super.super.super._device storeValidationEnabled])
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = [(MTLDebugParallelRenderCommandEncoder *)self renderCommandEncoder];
+      renderCommandEncoder = [(MTLDebugParallelRenderCommandEncoder *)self renderCommandEncoder];
       v22[0] = xmmword_22E27C300;
       v22[1] = unk_22E27C310;
       device = self->super.super.super._device;
       v19 = atomic_load(&self->_attachmentWriteMask.__a_.__a_value);
-      [(MTLToolsDevice *)device clearRenderEncoder:v17 writeMask:v19 withCheckerboard:v22];
-      [v17 endEncoding];
+      [(MTLToolsDevice *)device clearRenderEncoder:renderCommandEncoder writeMask:v19 withCheckerboard:v22];
+      [renderCommandEncoder endEncoding];
       objc_autoreleasePoolPop(v16);
     }
   }
@@ -275,7 +275,7 @@
   return [(MTLToolsParallelRenderCommandEncoder *)&v4 endEncodingAndRetrieveProgramAddressTable];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v5 = MEMORY[0x277CCACA8];
   v10.receiver = self;
@@ -284,7 +284,7 @@
   descriptor = self->_descriptor;
   if (descriptor)
   {
-    v8 = [(MTLRenderPassDescriptor *)descriptor formattedDescription:a3 + 4];
+    v8 = [(MTLRenderPassDescriptor *)descriptor formattedDescription:description + 4];
   }
 
   else

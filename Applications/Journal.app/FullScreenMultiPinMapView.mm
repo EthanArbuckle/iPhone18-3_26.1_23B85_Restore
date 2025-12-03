@@ -1,6 +1,6 @@
 @interface FullScreenMultiPinMapView
 - (void)didMoveToWindow;
-- (void)textFieldDidChange:(id)a3;
+- (void)textFieldDidChange:(id)change;
 @end
 
 @implementation FullScreenMultiPinMapView
@@ -14,11 +14,11 @@
   sub_10053DC9C();
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_10053C8AC(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10053C8AC(changeCopy);
 }
 
 @end

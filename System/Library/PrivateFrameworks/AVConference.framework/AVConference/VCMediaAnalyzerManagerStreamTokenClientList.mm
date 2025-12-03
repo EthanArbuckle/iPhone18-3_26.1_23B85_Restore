@@ -1,12 +1,12 @@
 @interface VCMediaAnalyzerManagerStreamTokenClientList
-- (VCMediaAnalyzerManagerStreamTokenClientList)initWithStreamToken:(int64_t)a3 mediaAnalyzerSource:(id)a4;
+- (VCMediaAnalyzerManagerStreamTokenClientList)initWithStreamToken:(int64_t)token mediaAnalyzerSource:(id)source;
 - (id)newClientContext;
 - (void)dealloc;
 @end
 
 @implementation VCMediaAnalyzerManagerStreamTokenClientList
 
-- (VCMediaAnalyzerManagerStreamTokenClientList)initWithStreamToken:(int64_t)a3 mediaAnalyzerSource:(id)a4
+- (VCMediaAnalyzerManagerStreamTokenClientList)initWithStreamToken:(int64_t)token mediaAnalyzerSource:(id)source
 {
   v24 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -15,14 +15,14 @@
   v7 = v6;
   if (v6)
   {
-    if (a4)
+    if (source)
     {
       v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v7->_clientContextList = v8;
       if (v8)
       {
-        v7->_streamToken = a3;
-        v7->_mediaAnalyzerSource = a4;
+        v7->_streamToken = token;
+        v7->_mediaAnalyzerSource = source;
         return v7;
       }
 

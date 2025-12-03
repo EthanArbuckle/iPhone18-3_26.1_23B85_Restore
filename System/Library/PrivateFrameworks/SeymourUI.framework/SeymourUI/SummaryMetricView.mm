@@ -1,6 +1,6 @@
 @interface SummaryMetricView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI17SummaryMetricView)initWithCoder:(id)a3;
+- (_TtC9SeymourUI17SummaryMetricView)initWithCoder:(id)coder;
 @end
 
 @implementation SummaryMetricView
@@ -13,12 +13,12 @@
   return result;
 }
 
-- (_TtC9SeymourUI17SummaryMetricView)initWithCoder:(id)a3
+- (_TtC9SeymourUI17SummaryMetricView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9SeymourUI17SummaryMetricView_labelStack;
-  v5 = [objc_allocWithZone(type metadata accessor for SessionStackedLabelView()) initWithFrame_];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints_];
-  *(&self->super.super.super.isa + v4) = v5;
+  initWithFrame_ = [objc_allocWithZone(type metadata accessor for SessionStackedLabelView()) initWithFrame_];
+  [initWithFrame_ setTranslatesAutoresizingMaskIntoConstraints_];
+  *(&self->super.super.super.isa + v4) = initWithFrame_;
   result = sub_20C13DE24();
   __break(1u);
   return result;

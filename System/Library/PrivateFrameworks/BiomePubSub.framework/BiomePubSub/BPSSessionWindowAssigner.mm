@@ -1,16 +1,16 @@
 @interface BPSSessionWindowAssigner
-- (BPSSessionWindowAssigner)initWithGap:(double)a3 timestamp:(id)a4 aggregator:(id)a5;
-- (id)assignWindow:(id)a3 input:(id)a4;
-- (id)updateAndReturnNewWindowStates:(id)a3 input:(id)a4;
+- (BPSSessionWindowAssigner)initWithGap:(double)gap timestamp:(id)timestamp aggregator:(id)aggregator;
+- (id)assignWindow:(id)window input:(id)input;
+- (id)updateAndReturnNewWindowStates:(id)states input:(id)input;
 @end
 
 @implementation BPSSessionWindowAssigner
 
-- (BPSSessionWindowAssigner)initWithGap:(double)a3 timestamp:(id)a4 aggregator:(id)a5
+- (BPSSessionWindowAssigner)initWithGap:(double)gap timestamp:(id)timestamp aggregator:(id)aggregator
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 <= 0.0)
+  timestampCopy = timestamp;
+  aggregatorCopy = aggregator;
+  if (gap <= 0.0)
   {
     [BPSSessionWindowAssigner initWithGap:a2 timestamp:self aggregator:?];
   }
@@ -21,40 +21,40 @@
   v12 = v11;
   if (v11)
   {
-    v11->_gap = a3;
-    objc_storeStrong(&v11->_aggregator, a5);
-    v13 = [v9 copy];
+    v11->_gap = gap;
+    objc_storeStrong(&v11->_aggregator, aggregator);
+    v13 = [timestampCopy copy];
     timestamp = v12->_timestamp;
     v12->_timestamp = v13;
 
     v12->_identifier = 0;
-    v15 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     lastTimestamp = v12->_lastTimestamp;
-    v12->_lastTimestamp = v15;
+    v12->_lastTimestamp = distantPast;
   }
 
   return v12;
 }
 
-- (id)assignWindow:(id)a3 input:(id)a4
+- (id)assignWindow:(id)window input:(id)input
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  windowCopy = window;
+  inputCopy = input;
   v9 = [MEMORY[0x1E695DFD8] set];
   v10 = [v9 mutableCopy];
 
-  v45 = v8;
+  v45 = inputCopy;
   v11 = (*(self->_timestamp + 2))();
   [v11 timeIntervalSinceReferenceDate];
   v13 = v12;
-  v44 = self;
+  selfCopy = self;
   lastTimestamp = self->_lastTimestamp;
   p_lastTimestamp = &self->_lastTimestamp;
   [(NSDate *)lastTimestamp timeIntervalSinceReferenceDate];
   if (v13 < v16)
   {
-    [BPSSessionWindowAssigner assignWindow:a2 input:v44];
+    [BPSSessionWindowAssigner assignWindow:a2 input:selfCopy];
   }
 
   objc_storeStrong(p_lastTimestamp, v11);
@@ -62,7 +62,7 @@
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v17 = v7;
+  v17 = windowCopy;
   v18 = [v17 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v18)
   {
@@ -86,12 +86,12 @@
           goto LABEL_10;
         }
 
-        v24 = [*(*(&v46 + 1) + 8 * i) identifier];
-        v25 = [v24 integerValue];
-        v26 = [v20 identifier];
-        v27 = [v26 integerValue];
+        identifier = [*(*(&v46 + 1) + 8 * i) identifier];
+        integerValue = [identifier integerValue];
+        identifier2 = [v20 identifier];
+        integerValue2 = [identifier2 integerValue];
 
-        if (v25 > v27)
+        if (integerValue > integerValue2)
         {
 LABEL_10:
           v28 = v23;
@@ -109,9 +109,9 @@ LABEL_10:
     {
       v10 = v43;
       [v43 addObject:v20];
-      v29 = [v20 dateInterval];
+      dateInterval = [v20 dateInterval];
       v11 = v42;
-      v30 = [v29 containsDate:v42];
+      v30 = [dateInterval containsDate:v42];
 
       if (v30)
       {
@@ -132,17 +132,17 @@ LABEL_10:
     v20 = 0;
   }
 
-  v31 = v44->_gap + -0.0001;
+  v31 = selfCopy->_gap + -0.0001;
   v32 = [BPSSessionWindow alloc];
   v33 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v11 duration:v31];
-  gap = v44->_gap;
-  aggregator = v44->_aggregator;
-  timestamp = v44->_timestamp;
-  v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v44->_identifier];
+  gap = selfCopy->_gap;
+  aggregator = selfCopy->_aggregator;
+  timestamp = selfCopy->_timestamp;
+  v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", selfCopy->_identifier];
   v38 = [(BPSSessionWindow *)v32 initWithDateInterval:v33 gap:timestamp timestamp:aggregator aggregator:v37 identifier:gap];
   [v10 addObject:v38];
 
-  ++v44->_identifier;
+  ++selfCopy->_identifier;
 LABEL_19:
   v39 = v10;
 
@@ -150,21 +150,21 @@ LABEL_19:
   return v10;
 }
 
-- (id)updateAndReturnNewWindowStates:(id)a3 input:(id)a4
+- (id)updateAndReturnNewWindowStates:(id)states input:(id)input
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  statesCopy = states;
+  inputCopy = input;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
-  v57 = self;
-  v58 = v7;
+  selfCopy = self;
+  v58 = inputCopy;
   v10 = (*(self->_timestamp + 2))();
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v11 = v6;
+  v11 = statesCopy;
   v12 = [v11 countByEnumeratingWithState:&v66 objects:v71 count:16];
   v56 = v9;
   obj = v11;
@@ -196,15 +196,15 @@ LABEL_19:
       [*(*(&v66 + 1) + 8 * i) identifier];
       v17 = v10;
       v19 = v18 = v8;
-      v20 = [v19 integerValue];
+      integerValue = [v19 integerValue];
       [v14 identifier];
       v22 = v21 = v14;
-      v23 = [v22 integerValue];
+      integerValue2 = [v22 integerValue];
 
       v14 = v21;
       v8 = v18;
       v10 = v17;
-      if (v20 > v23)
+      if (integerValue > integerValue2)
       {
 LABEL_8:
         v24 = v16;
@@ -225,24 +225,24 @@ LABEL_8:
   }
 
   [v8 addObject:v14];
-  v25 = [v14 dateInterval];
-  v26 = [v25 containsDate:v10];
+  dateInterval = [v14 dateInterval];
+  v26 = [dateInterval containsDate:v10];
 
   v9 = v56;
   if ((v26 & 1) == 0)
   {
 LABEL_16:
-    v27 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v10 duration:v57->_gap + -0.0001];
-    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v57->_identifier];
+    v27 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v10 duration:selfCopy->_gap + -0.0001];
+    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", selfCopy->_identifier];
     v29 = [BPSSessionWindowState alloc];
-    [(BPSAggregator *)v57->_aggregator accumulator];
+    [(BPSAggregator *)selfCopy->_aggregator accumulator];
     v31 = v30 = v14;
     v32 = [(BPSSessionWindowState *)v29 initWithDateInterval:v27 identifier:v28 aggregate:v31 completed:0];
 
     v14 = v30;
     [v8 addObject:v32];
     [v9 addObject:v32];
-    ++v57->_identifier;
+    ++selfCopy->_identifier;
   }
 
   v64 = 0u;
@@ -265,27 +265,27 @@ LABEL_16:
         }
 
         v37 = *(*(&v62 + 1) + 8 * j);
-        v38 = [v37 dateInterval];
-        v39 = [v38 containsDate:v10];
+        dateInterval2 = [v37 dateInterval];
+        v39 = [dateInterval2 containsDate:v10];
 
         if (v39)
         {
-          v40 = [(BPSAggregator *)v57->_aggregator closure];
-          v41 = [v37 aggregate];
-          v42 = (v40)[2](v40, v41, v58);
+          closure = [(BPSAggregator *)selfCopy->_aggregator closure];
+          aggregate = [v37 aggregate];
+          v42 = (closure)[2](closure, aggregate, v58);
           [v37 setAggregate:v42];
 
           [v10 timeIntervalSinceReferenceDate];
           v44 = v43;
-          v45 = [v37 dateInterval];
-          v46 = [v45 startDate];
-          [v46 timeIntervalSinceReferenceDate];
-          v48 = v44 - v47 + v57->_gap + -0.0001;
+          dateInterval3 = [v37 dateInterval];
+          startDate = [dateInterval3 startDate];
+          [startDate timeIntervalSinceReferenceDate];
+          v48 = v44 - v47 + selfCopy->_gap + -0.0001;
 
           v49 = objc_alloc(MEMORY[0x1E696AB80]);
-          v50 = [v37 dateInterval];
-          v51 = [v50 startDate];
-          v52 = [v49 initWithStartDate:v51 duration:v48];
+          dateInterval4 = [v37 dateInterval];
+          startDate2 = [dateInterval4 startDate];
+          v52 = [v49 initWithStartDate:startDate2 duration:v48];
           [v37 setDateInterval:v52];
         }
 

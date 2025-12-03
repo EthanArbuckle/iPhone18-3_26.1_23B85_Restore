@@ -1,6 +1,6 @@
 @interface ARQLUIBarButtonItem
 - (_TtC11AssetViewer19ARQLUIBarButtonItem)init;
-- (_TtC11AssetViewer19ARQLUIBarButtonItem)initWithCoder:(id)a3;
+- (_TtC11AssetViewer19ARQLUIBarButtonItem)initWithCoder:(id)coder;
 - (void)buttonPressed;
 @end
 
@@ -11,7 +11,7 @@
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC11AssetViewer19ARQLUIBarButtonItem_onPressed);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_24124AD38(v2);
     v2(v4);
 
@@ -30,15 +30,15 @@
   return [(ARQLUIBarButtonItem *)&v6 init];
 }
 
-- (_TtC11AssetViewer19ARQLUIBarButtonItem)initWithCoder:(id)a3
+- (_TtC11AssetViewer19ARQLUIBarButtonItem)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC11AssetViewer19ARQLUIBarButtonItem_onPressed);
   *v4 = 0;
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ARQLUIBarButtonItem();
-  v5 = a3;
-  v6 = [(ARQLUIBarButtonItem *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(ARQLUIBarButtonItem *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

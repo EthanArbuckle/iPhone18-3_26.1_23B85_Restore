@@ -1,26 +1,26 @@
 @interface MREffectManager
 + (void)initialize;
-- (BOOL)hasCustomTimingForEffectID:(id)a3;
-- (BOOL)hasMultiImageInputForEffectID:(id)a3;
-- (BOOL)isOpaqueForEffectID:(id)a3;
-- (Class)classForEffectID:(id)a3;
+- (BOOL)hasCustomTimingForEffectID:(id)d;
+- (BOOL)hasMultiImageInputForEffectID:(id)d;
+- (BOOL)isOpaqueForEffectID:(id)d;
+- (Class)classForEffectID:(id)d;
 - (MREffectManager)init;
-- (double)defaultMainDurationForEffectID:(id)a3;
-- (double)defaultPhaseInDurationForEffectID:(id)a3;
-- (double)defaultPhaseOutDurationForEffectID:(id)a3;
-- (double)lineSpacingFactorForTextInEffectID:(id)a3 presetID:(id)a4 atIndex:(int64_t)a5;
-- (id)attributeDescriptionForEffectID:(id)a3 andKey:(id)a4;
-- (id)customTimingWithEffectID:(id)a3 effectAttributes:(id)a4 slideInformation:(id)a5 textInformation:(id)a6 inAspectRatio:(double)a7;
-- (id)defaultEffectAttributesWithEffectID:(id)a3 andSlideInformation:(id)a4;
-- (id)descriptionForEffectID:(id)a3;
-- (id)effectWithEffectID:(id)a3;
-- (id)imageInputInfosForEffectID:(id)a3;
-- (id)imageProviderInfosForEffectID:(id)a3;
-- (id)resourcePathForEffectID:(id)a3 andResource:(id)a4;
-- (id)sizeScriptForEffectID:(id)a3 andKey:(id)a4;
+- (double)defaultMainDurationForEffectID:(id)d;
+- (double)defaultPhaseInDurationForEffectID:(id)d;
+- (double)defaultPhaseOutDurationForEffectID:(id)d;
+- (double)lineSpacingFactorForTextInEffectID:(id)d presetID:(id)iD atIndex:(int64_t)index;
+- (id)attributeDescriptionForEffectID:(id)d andKey:(id)key;
+- (id)customTimingWithEffectID:(id)d effectAttributes:(id)attributes slideInformation:(id)information textInformation:(id)textInformation inAspectRatio:(double)ratio;
+- (id)defaultEffectAttributesWithEffectID:(id)d andSlideInformation:(id)information;
+- (id)descriptionForEffectID:(id)d;
+- (id)effectWithEffectID:(id)d;
+- (id)imageInputInfosForEffectID:(id)d;
+- (id)imageProviderInfosForEffectID:(id)d;
+- (id)resourcePathForEffectID:(id)d andResource:(id)resource;
+- (id)sizeScriptForEffectID:(id)d andKey:(id)key;
 - (void)cleanup;
 - (void)dealloc;
-- (void)recycleEffect:(id)a3;
+- (void)recycleEffect:(id)effect;
 - (void)releaseResources;
 @end
 
@@ -28,7 +28,7 @@
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___MREffectManager;
   objc_msgSendSuper2(&v2, "initialize");
   if (!qword_1EF3A8)
@@ -137,25 +137,25 @@
   [(NSMutableDictionary *)self->mEffectPools removeAllObjects];
 }
 
-- (Class)classForEffectID:(id)a3
+- (Class)classForEffectID:(id)d
 {
-  v3 = a3;
-  if (!a3)
+  dCopy = d;
+  if (!d)
   {
-    return v3;
+    return dCopy;
   }
 
   v4 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   v5 = [v4 objectForKey:@"className"];
-  v6 = v5 ? v5 : v3;
+  v6 = v5 ? v5 : dCopy;
   v7 = NSClassFromString([@"MREffect" stringByAppendingString:v6]);
   if (v7)
   {
-    v3 = v7;
+    dCopy = v7;
     v8 = [NSBundle bundleForClass:v7];
     if (v8 == [NSBundle bundleForClass:objc_opt_class()])
     {
-      return v3;
+      return dCopy;
     }
   }
 
@@ -167,193 +167,193 @@
   return objc_opt_class();
 }
 
-- (id)effectWithEffectID:(id)a3
+- (id)effectWithEffectID:(id)d
 {
-  if (!a3 || ([a3 isEqualToString:@"Undefined"] & 1) != 0)
+  if (!d || ([d isEqualToString:@"Undefined"] & 1) != 0)
   {
     return 0;
   }
 
   objc_sync_enter(self);
-  v6 = [(NSMutableDictionary *)self->mEffectPools objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->mEffectPools objectForKey:d];
   v7 = v6;
   if (v6 && [v6 count])
   {
-    v5 = [v7 anyObject];
-    [v7 removeObject:v5];
+    anyObject = [v7 anyObject];
+    [v7 removeObject:anyObject];
   }
 
   else
   {
-    v5 = [objc_alloc(-[MREffectManager classForEffectID:](self classForEffectID:{a3)), "initWithEffectID:", a3}];
-    if (v5)
+    anyObject = [objc_alloc(-[MREffectManager classForEffectID:](self classForEffectID:{d)), "initWithEffectID:", d}];
+    if (anyObject)
     {
-      v8 = [(NSMutableDictionary *)self->mEffectSets objectForKey:a3];
+      v8 = [(NSMutableDictionary *)self->mEffectSets objectForKey:d];
       if (v8)
       {
-        [v8 addObject:v5];
+        [v8 addObject:anyObject];
       }
 
       else
       {
-        [(NSMutableDictionary *)self->mEffectSets setObject:[NSMutableSet forKey:"setWithObject:" setWithObject:v5], a3];
+        [(NSMutableDictionary *)self->mEffectSets setObject:[NSMutableSet forKey:"setWithObject:" setWithObject:anyObject], d];
       }
     }
   }
 
   objc_sync_exit(self);
-  return v5;
+  return anyObject;
 }
 
-- (void)recycleEffect:(id)a3
+- (void)recycleEffect:(id)effect
 {
   objc_sync_enter(self);
-  v5 = -[NSMutableDictionary objectForKey:](self->mEffectPools, "objectForKey:", [a3 effectID]);
+  v5 = -[NSMutableDictionary objectForKey:](self->mEffectPools, "objectForKey:", [effect effectID]);
   if (v5)
   {
-    [v5 addObject:a3];
+    [v5 addObject:effect];
   }
 
   else
   {
-    -[NSMutableDictionary setObject:forKey:](self->mEffectPools, "setObject:forKey:", +[NSMutableSet setWithObject:](NSMutableSet, "setWithObject:", a3), [a3 effectID]);
+    -[NSMutableDictionary setObject:forKey:](self->mEffectPools, "setObject:forKey:", +[NSMutableSet setWithObject:](NSMutableSet, "setWithObject:", effect), [effect effectID]);
   }
 
   objc_sync_exit(self);
 }
 
-- (id)descriptionForEffectID:(id)a3
+- (id)descriptionForEffectID:(id)d
 {
   v4 = +[MPEffectManager sharedManager];
 
-  return [v4 descriptionForEffectID:a3];
+  return [v4 descriptionForEffectID:d];
 }
 
-- (id)resourcePathForEffectID:(id)a3 andResource:(id)a4
+- (id)resourcePathForEffectID:(id)d andResource:(id)resource
 {
   v5 = [objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   if (!v5)
   {
-    return a4;
+    return resource;
   }
 
-  return [v5 stringByAppendingPathComponent:a4];
+  return [v5 stringByAppendingPathComponent:resource];
 }
 
-- (id)sizeScriptForEffectID:(id)a3 andKey:(id)a4
+- (id)sizeScriptForEffectID:(id)d andKey:(id)key
 {
-  v5 = [(MREffectManager *)self descriptionForEffectID:a3];
-  v6 = [a4 stringByAppendingString:@"SizeScript"];
+  v5 = [(MREffectManager *)self descriptionForEffectID:d];
+  v6 = [key stringByAppendingString:@"SizeScript"];
 
   return [v5 objectForKey:v6];
 }
 
-- (BOOL)hasMultiImageInputForEffectID:(id)a3
+- (BOOL)hasMultiImageInputForEffectID:(id)d
 {
-  v3 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{a3), "objectForKey:", @"hasMultiImageInput"}];
+  v3 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{d), "objectForKey:", @"hasMultiImageInput"}];
 
   return [v3 BOOLValue];
 }
 
-- (id)imageInputInfosForEffectID:(id)a3
+- (id)imageInputInfosForEffectID:(id)d
 {
-  v3 = [(MREffectManager *)self descriptionForEffectID:a3];
+  v3 = [(MREffectManager *)self descriptionForEffectID:d];
 
   return [v3 objectForKey:@"imageInputInfo"];
 }
 
-- (id)imageProviderInfosForEffectID:(id)a3
+- (id)imageProviderInfosForEffectID:(id)d
 {
-  v3 = [(MREffectManager *)self descriptionForEffectID:a3];
+  v3 = [(MREffectManager *)self descriptionForEffectID:d];
 
   return [v3 objectForKey:@"imageProviderInfo"];
 }
 
-- (BOOL)isOpaqueForEffectID:(id)a3
+- (BOOL)isOpaqueForEffectID:(id)d
 {
   if (![-[MREffectManager descriptionForEffectID:](self "descriptionForEffectID:{"objectForKey:", @"isOpaque"}")])
   {
     return 1;
   }
 
-  v5 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{a3), "objectForKey:", @"isOpaque"}];
+  v5 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{d), "objectForKey:", @"isOpaque"}];
 
   return [v5 BOOLValue];
 }
 
-- (double)defaultPhaseInDurationForEffectID:(id)a3
+- (double)defaultPhaseInDurationForEffectID:(id)d
 {
-  v3 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{a3), "objectForKey:", @"phaseInDuration"}];
+  v3 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{d), "objectForKey:", @"phaseInDuration"}];
 
   [v3 doubleValue];
   return result;
 }
 
-- (double)defaultMainDurationForEffectID:(id)a3
+- (double)defaultMainDurationForEffectID:(id)d
 {
-  v3 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{a3), "objectForKey:", @"mainDuration"}];
+  v3 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{d), "objectForKey:", @"mainDuration"}];
 
   [v3 doubleValue];
   return result;
 }
 
-- (double)defaultPhaseOutDurationForEffectID:(id)a3
+- (double)defaultPhaseOutDurationForEffectID:(id)d
 {
-  v3 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{a3), "objectForKey:", @"phaseOutDuration"}];
+  v3 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{d), "objectForKey:", @"phaseOutDuration"}];
 
   [v3 doubleValue];
   return result;
 }
 
-- (BOOL)hasCustomTimingForEffectID:(id)a3
+- (BOOL)hasCustomTimingForEffectID:(id)d
 {
-  v3 = [(MREffectManager *)self classForEffectID:a3];
+  v3 = [(MREffectManager *)self classForEffectID:d];
 
   return [(objc_class *)v3 hasCustomTiming];
 }
 
-- (id)customTimingWithEffectID:(id)a3 effectAttributes:(id)a4 slideInformation:(id)a5 textInformation:(id)a6 inAspectRatio:(double)a7
+- (id)customTimingWithEffectID:(id)d effectAttributes:(id)attributes slideInformation:(id)information textInformation:(id)textInformation inAspectRatio:(double)ratio
 {
   v12 = [(MREffectManager *)self classForEffectID:?];
 
-  return [(objc_class *)v12 customTimingWithEffectID:a3 effectAttributes:a4 slideInformation:a5 textInformation:a6 inAspectRatio:a7];
+  return [(objc_class *)v12 customTimingWithEffectID:d effectAttributes:attributes slideInformation:information textInformation:textInformation inAspectRatio:ratio];
 }
 
-- (id)defaultEffectAttributesWithEffectID:(id)a3 andSlideInformation:(id)a4
+- (id)defaultEffectAttributesWithEffectID:(id)d andSlideInformation:(id)information
 {
   v6 = [(MREffectManager *)self classForEffectID:?];
 
-  return [(objc_class *)v6 defaultEffectAttributesWithEffectID:a3 andSlideInformation:a4];
+  return [(objc_class *)v6 defaultEffectAttributesWithEffectID:d andSlideInformation:information];
 }
 
-- (id)attributeDescriptionForEffectID:(id)a3 andKey:(id)a4
+- (id)attributeDescriptionForEffectID:(id)d andKey:(id)key
 {
-  v5 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{a3), "objectForKey:", @"attributes"}];
+  v5 = [-[MREffectManager descriptionForEffectID:](self descriptionForEffectID:{d), "objectForKey:", @"attributes"}];
 
-  return [v5 objectForKey:a4];
+  return [v5 objectForKey:key];
 }
 
-- (double)lineSpacingFactorForTextInEffectID:(id)a3 presetID:(id)a4 atIndex:(int64_t)a5
+- (double)lineSpacingFactorForTextInEffectID:(id)d presetID:(id)iD atIndex:(int64_t)index
 {
-  if (a4)
+  if (iD)
   {
-    v6 = a4;
+    iDCopy = iD;
   }
 
   else
   {
-    v6 = @"Default";
+    iDCopy = @"Default";
   }
 
   v7 = [objc_msgSend(+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-  if ([v7 count] <= a5)
+  if ([v7 count] <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v7 objectAtIndex:a5];
+    v8 = [v7 objectAtIndex:index];
   }
 
   v9 = [v8 objectForKey:@"lineSpacing"];

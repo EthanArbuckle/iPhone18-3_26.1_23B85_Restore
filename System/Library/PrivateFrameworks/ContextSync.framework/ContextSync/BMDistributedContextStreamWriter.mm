@@ -1,7 +1,7 @@
 @interface BMDistributedContextStreamWriter
 + (id)sharedEventQueue;
-+ (id)sourceForStreamWithIdentifier:(id)a3;
-+ (void)postEvent:(id)a3;
++ (id)sourceForStreamWithIdentifier:(id)identifier;
++ (void)postEvent:(id)event;
 @end
 
 @implementation BMDistributedContextStreamWriter
@@ -25,9 +25,9 @@ uint64_t __52__BMDistributedContextStreamWriter_sharedEventQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)sourceForStreamWithIdentifier:(id)a3
++ (id)sourceForStreamWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -54,39 +54,39 @@ uint64_t __52__BMDistributedContextStreamWriter_sharedEventQueue__block_invoke()
 
   v6 = v4();
   v18[0] = 0;
-  v7 = [v6 streamWithIdentifier:v3 error:v18];
+  v7 = [v6 streamWithIdentifier:identifierCopy error:v18];
   v8 = v18[0];
   if (v8)
   {
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(BMDistributedContextStreamWriter *)v3 sourceForStreamWithIdentifier:v9, v10, v11, v12, v13, v14, v15];
+      [(BMDistributedContextStreamWriter *)identifierCopy sourceForStreamWithIdentifier:v9, v10, v11, v12, v13, v14, v15];
     }
 
-    v16 = 0;
+    source = 0;
   }
 
   else
   {
-    v16 = [v7 source];
+    source = [v7 source];
   }
 
-  return v16;
+  return source;
 }
 
-+ (void)postEvent:(id)a3
++ (void)postEvent:(id)event
 {
-  v4 = a3;
-  v5 = [objc_opt_class() sharedEventQueue];
+  eventCopy = event;
+  sharedEventQueue = [objc_opt_class() sharedEventQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__BMDistributedContextStreamWriter_postEvent___block_invoke;
   v7[3] = &unk_278E07AB0;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
+  dispatch_sync(sharedEventQueue, v7);
 }
 
 void __46__BMDistributedContextStreamWriter_postEvent___block_invoke(uint64_t a1)

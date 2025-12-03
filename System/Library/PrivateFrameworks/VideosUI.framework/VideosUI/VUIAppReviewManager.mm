@@ -4,11 +4,11 @@
 - (BOOL)_shouldAttemptToPrompt;
 - (VUIAppReviewManager)init;
 - (void)_attemptToPrompt;
-- (void)_handleIsPlaybackUIBeingShownDidChange:(id)a3;
+- (void)_handleIsPlaybackUIBeingShownDidChange:(id)change;
 - (void)dealloc;
-- (void)isFeatureEnabled:(id)a3;
+- (void)isFeatureEnabled:(id)enabled;
 - (void)processAddToUpNext;
-- (void)setMostRecentPlaybackProgressForNonTrailerContent:(double)a3;
+- (void)setMostRecentPlaybackProgressForNonTrailerContent:(double)content;
 @end
 
 @implementation VUIAppReviewManager
@@ -39,14 +39,14 @@ void __37__VUIAppReviewManager_sharedInstance__block_invoke()
   v2 = [(VUIAppReviewManager *)&v24 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v2->_numberOfAddToUpNexts = [v3 integerForKey:@"AppReviewNumberOfAddToUpNexts"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v2->_numberOfAddToUpNexts = [standardUserDefaults integerForKey:@"AppReviewNumberOfAddToUpNexts"];
 
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v2->_numberOfPlaybacks = [v4 integerForKey:@"AppReviewNumberOfPlaybacks"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v2->_numberOfPlaybacks = [standardUserDefaults2 integerForKey:@"AppReviewNumberOfPlaybacks"];
 
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 integerForKey:@"AppReviewAfterNthAddToUpNext"];
+    standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults3 integerForKey:@"AppReviewAfterNthAddToUpNext"];
     if (v6)
     {
       v7 = v6;
@@ -59,8 +59,8 @@ void __37__VUIAppReviewManager_sharedInstance__block_invoke()
 
     v2->_numberOfAddToUpNextsBeforePrompting = v7;
 
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v9 = [v8 integerForKey:@"AppReviewAfterNthPlaybacks"];
+    standardUserDefaults4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v9 = [standardUserDefaults4 integerForKey:@"AppReviewAfterNthPlaybacks"];
     if (v9)
     {
       v10 = v9;
@@ -73,8 +73,8 @@ void __37__VUIAppReviewManager_sharedInstance__block_invoke()
 
     v2->_numberOfPlaybacksBeforePrompting = v10;
 
-    v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v11 doubleForKey:@"AppReviewMinCompletionThreshold"];
+    standardUserDefaults5 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults5 doubleForKey:@"AppReviewMinCompletionThreshold"];
     v2->_completionThreshold = v12;
 
     completionThreshold = v2->_completionThreshold;
@@ -84,15 +84,15 @@ void __37__VUIAppReviewManager_sharedInstance__block_invoke()
     }
 
     v2->_lastPlaybackEvent = 0;
-    v15 = [MEMORY[0x1E698C7D8] vui_defaultBag];
-    v16 = [objc_alloc(MEMORY[0x1E698CB20]) initWithBag:v15];
+    vui_defaultBag = [MEMORY[0x1E698C7D8] vui_defaultBag];
+    v16 = [objc_alloc(MEMORY[0x1E698CB20]) initWithBag:vui_defaultBag];
     sharedStoreReview = v2->_sharedStoreReview;
     v2->_sharedStoreReview = v16;
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v19 = VUIPlaybackManagerIsPlaybackUIBeingShownDidChange[0];
     v20 = +[VUIPlaybackManager sharedInstance];
-    [v18 addObserver:v2 selector:sel__handleIsPlaybackUIBeingShownDidChange_ name:v19 object:v20];
+    [defaultCenter addObserver:v2 selector:sel__handleIsPlaybackUIBeingShownDidChange_ name:v19 object:v20];
 
     v21 = dispatch_queue_create("com.apple.tv.appreviewmanager", 0);
     queue = v2->_queue;
@@ -102,9 +102,9 @@ void __37__VUIAppReviewManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)isFeatureEnabled:(id)a3
+- (void)isFeatureEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -112,8 +112,8 @@ void __37__VUIAppReviewManager_sharedInstance__block_invoke()
   block[2] = __40__VUIAppReviewManager_isFeatureEnabled___block_invoke;
   block[3] = &unk_1E872E828;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = enabledCopy;
+  v6 = enabledCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -166,9 +166,9 @@ void __40__VUIAppReviewManager_isFeatureEnabled___block_invoke(uint64_t a1)
 
   else
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     ++self->_numberOfAddToUpNexts;
-    [v4 setInteger:? forKey:?];
+    [standardUserDefaults setInteger:? forKey:?];
 
     v5 = VUIDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -211,15 +211,15 @@ void __41__VUIAppReviewManager_processAddToUpNext__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setMostRecentPlaybackProgressForNonTrailerContent:(double)a3
+- (void)setMostRecentPlaybackProgressForNonTrailerContent:(double)content
 {
-  if (self->_highestPlaybackProgress < a3)
+  if (self->_highestPlaybackProgress < content)
   {
-    self->_highestPlaybackProgress = a3;
+    self->_highestPlaybackProgress = content;
   }
 }
 
-- (void)_handleIsPlaybackUIBeingShownDidChange:(id)a3
+- (void)_handleIsPlaybackUIBeingShownDidChange:(id)change
 {
   if ([(VUIAppReviewManager *)self _isYouthAccount])
   {
@@ -380,8 +380,8 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIAppReviewManager;
@@ -390,8 +390,8 @@ LABEL_11:
 
 - (BOOL)_isYouthAccount
 {
-  v2 = [MEMORY[0x1E69D5920] activeAccount];
-  v3 = [v2 ams_accountFlagValueForAccountFlag:*MEMORY[0x1E698C4B8]];
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  v3 = [activeAccount ams_accountFlagValueForAccountFlag:*MEMORY[0x1E698C4B8]];
   v4 = v3;
   v5 = v3 && ([v3 BOOLValue] & 1) != 0;
 
@@ -400,27 +400,27 @@ LABEL_11:
 
 - (void)_attemptToPrompt
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v3 setValue:v4 forKey:@"AppReviewLastPromptedAt"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  date = [MEMORY[0x1E695DF00] date];
+  [standardUserDefaults setValue:date forKey:@"AppReviewLastPromptedAt"];
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 systemVersion];
-  [v5 setValue:v7 forKey:@"AppReviewLastPromptedOSVersion"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  systemVersion = [currentDevice systemVersion];
+  [standardUserDefaults2 setValue:systemVersion forKey:@"AppReviewLastPromptedOSVersion"];
 
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v8 setInteger:0 forKey:@"AppReviewNumberOfPlaybacks"];
+  standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults3 setInteger:0 forKey:@"AppReviewNumberOfPlaybacks"];
 
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v9 setInteger:0 forKey:@"AppReviewNumberOfAddToUpNexts"];
+  standardUserDefaults4 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults4 setInteger:0 forKey:@"AppReviewNumberOfAddToUpNexts"];
 
   self->_numberOfAddToUpNexts = 0;
   self->_numberOfPlaybacks = 0;
   [(AMSSharedStoreReview *)self->_sharedStoreReview didAttemptPromptReview];
-  v10 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
-  v11 = [v10 windowScene];
-  [_TtC8VideosUI8VideosUI requestAppStoreReview:v11];
+  vui_keyWindow = [MEMORY[0x1E69DD2E8] vui_keyWindow];
+  windowScene = [vui_keyWindow windowScene];
+  [_TtC8VideosUI8VideosUI requestAppStoreReview:windowScene];
 
   v12 = VUIDefaultLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -434,18 +434,18 @@ LABEL_11:
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = +[VUITVAppLauncher sharedInstance];
-  v4 = [v3 appController];
+  appController = [v3 appController];
 
   v5 = +[VUIApplicationRouter topPresentedViewController];
-  v6 = [v5 presentedViewController];
-  if (v6)
+  presentedViewController = [v5 presentedViewController];
+  if (presentedViewController)
   {
     goto LABEL_4;
   }
 
-  v6 = +[VUIApplicationRouter currentNavigationController];
-  v7 = [v6 presentedViewController];
-  if (v7)
+  presentedViewController = +[VUIApplicationRouter currentNavigationController];
+  v6PresentedViewController = [presentedViewController presentedViewController];
+  if (v6PresentedViewController)
   {
 
 LABEL_4:
@@ -463,10 +463,10 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  v14 = [v4 navigationController];
-  v15 = [v14 presentedViewController];
+  navigationController = [appController navigationController];
+  presentedViewController2 = [navigationController presentedViewController];
 
-  if (v15)
+  if (presentedViewController2)
   {
     goto LABEL_5;
   }
@@ -497,10 +497,10 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v20 = [(AMSSharedStoreReview *)self->_sharedStoreReview shouldAttemptPromptReview];
+  shouldAttemptPromptReview = [(AMSSharedStoreReview *)self->_sharedStoreReview shouldAttemptPromptReview];
   v8 = VUIDefaultLogObject();
   v21 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (!v20)
+  if (!shouldAttemptPromptReview)
   {
     if (!v21)
     {

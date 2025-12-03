@@ -1,12 +1,12 @@
 @interface STStorageDataManager
 + (id)applicationRecords;
-+ (id)computeBundleRemappings:(id)a3;
-+ (id)computeCategoriesForApps:(id)a3;
-+ (id)getLocalAppId:(id)a3 foreignAppId:(id)a4;
-+ (id)overridesFor:(id)a3;
-+ (id)sharedContainersFor:(id)a3;
-+ (id)updateAppsWithPrevious:(id)a3 usageBundles:(id)a4 skipAppRecordBlock:(id)a5;
-+ (void)fixClonesInPhotosAndMessages:(id)a3;
++ (id)computeBundleRemappings:(id)remappings;
++ (id)computeCategoriesForApps:(id)apps;
++ (id)getLocalAppId:(id)id foreignAppId:(id)appId;
++ (id)overridesFor:(id)for;
++ (id)sharedContainersFor:(id)for;
++ (id)updateAppsWithPrevious:(id)previous usageBundles:(id)bundles skipAppRecordBlock:(id)block;
++ (void)fixClonesInPhotosAndMessages:(id)messages;
 @end
 
 @implementation STStorageDataManager
@@ -15,26 +15,26 @@
 {
   v2 = objc_opt_new();
   v3 = [MEMORY[0x277CC1E70] enumeratorWithOptions:0];
-  v4 = [v3 allObjects];
-  [v2 addObjectsFromArray:v4];
+  allObjects = [v3 allObjects];
+  [v2 addObjectsFromArray:allObjects];
 
   v5 = [MEMORY[0x277CC1E70] enumeratorWithOptions:64];
-  v6 = [v5 allObjects];
-  [v2 addObjectsFromArray:v6];
+  allObjects2 = [v5 allObjects];
+  [v2 addObjectsFromArray:allObjects2];
 
   return v2;
 }
 
-+ (id)sharedContainersFor:(id)a3
++ (id)sharedContainersFor:(id)for
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  forCopy = for;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = forCopy;
   v21 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v21)
   {
@@ -49,14 +49,14 @@
         }
 
         v6 = *(*(&v26 + 1) + 8 * i);
-        v7 = [v6 groupContainerURLs];
-        v8 = [v7 allKeys];
-        v9 = [v6 bundleIdentifier];
+        groupContainerURLs = [v6 groupContainerURLs];
+        allKeys = [groupContainerURLs allKeys];
+        bundleIdentifier = [v6 bundleIdentifier];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v10 = v8;
+        v10 = allKeys;
         v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v11)
         {
@@ -71,11 +71,11 @@
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [v7 objectForKey:*(*(&v22 + 1) + 8 * j)];
-              v16 = [v15 path];
-              if ([v16 length])
+              v15 = [groupContainerURLs objectForKey:*(*(&v22 + 1) + 8 * j)];
+              path = [v15 path];
+              if ([path length])
               {
-                AddToMultiDict(v4, v16, v9);
+                AddToMultiDict(dictionary, path, bundleIdentifier);
               }
             }
 
@@ -94,13 +94,13 @@
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)computeCategoriesForApps:(id)a3
++ (id)computeCategoriesForApps:(id)apps
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  appsCopy = apps;
   v4 = objc_alloc_init(STMutableSizeDict);
   v24 = STKeyForCategory(0);
   v23 = STKeyForCategory(7u);
@@ -108,7 +108,7 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v3;
+  obj = appsCopy;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
@@ -124,26 +124,26 @@
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        v10 = [v9 internalSizes];
-        v11 = [v9 externalSizes];
-        v12 = [v9 userVisible];
+        internalSizes = [v9 internalSizes];
+        externalSizes = [v9 externalSizes];
+        userVisible = [v9 userVisible];
         v13 = v24;
-        if ((v12 & 1) == 0)
+        if ((userVisible & 1) == 0)
         {
           v14 = v23;
 
           v13 = v14;
         }
 
-        [(STMutableSizeDict *)v4 addSize:v10 toKey:v13];
-        if (v11)
+        [(STMutableSizeDict *)v4 addSize:internalSizes toKey:v13];
+        if (externalSizes)
         {
-          v15 = [a1 overridesFor:v9];
-          v16 = [v15 category];
+          v15 = [self overridesFor:v9];
+          category = [v15 category];
 
-          if ((v16 != 0) | v12 & 1)
+          if ((category != 0) | userVisible & 1)
           {
-            v17 = STKeyForCategory(v16);
+            v17 = STKeyForCategory(category);
           }
 
           else
@@ -152,7 +152,7 @@
           }
 
           v18 = v17;
-          [(STMutableSizeDict *)v4 addSize:v11 toKey:v17];
+          [(STMutableSizeDict *)v4 addSize:externalSizes toKey:v17];
         }
       }
 
@@ -167,16 +167,16 @@
   return v4;
 }
 
-+ (id)computeBundleRemappings:(id)a3
++ (id)computeBundleRemappings:(id)remappings
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  remappingsCopy = remappings;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = remappingsCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v5)
   {
@@ -192,16 +192,16 @@
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
-        v9 = [v8 bundleIdentifier];
-        v10 = [v8 bundleIdentifier];
-        [v4 setObject:v9 forKeyedSubscript:v10];
+        bundleIdentifier = [v8 bundleIdentifier];
+        bundleIdentifier2 = [v8 bundleIdentifier];
+        [dictionary setObject:bundleIdentifier forKeyedSubscript:bundleIdentifier2];
 
         v25 = 0u;
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v11 = [v8 counterpartIdentifiers];
-        v12 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        counterpartIdentifiers = [v8 counterpartIdentifiers];
+        v12 = [counterpartIdentifiers countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v12)
         {
           v13 = v12;
@@ -212,20 +212,20 @@
             {
               if (*v24 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(counterpartIdentifiers);
               }
 
               v16 = *(*(&v23 + 1) + 8 * j);
-              v17 = [v4 objectForKeyedSubscript:v16];
+              v17 = [dictionary objectForKeyedSubscript:v16];
 
               if (!v17)
               {
-                v18 = [v8 bundleIdentifier];
-                [v4 setObject:v18 forKeyedSubscript:v16];
+                bundleIdentifier3 = [v8 bundleIdentifier];
+                [dictionary setObject:bundleIdentifier3 forKeyedSubscript:v16];
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v13 = [counterpartIdentifiers countByEnumeratingWithState:&v23 objects:v31 count:16];
           }
 
           while (v13);
@@ -240,38 +240,38 @@
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)overridesFor:(id)a3
++ (id)overridesFor:(id)for
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
-  v5 = [STAppOverrides overridesFor:v4];
+  forCopy = for;
+  bundleIdentifier = [forCopy bundleIdentifier];
+  v5 = [STAppOverrides overridesFor:bundleIdentifier];
 
   if (v5)
   {
-    v6 = v5;
+    appRecord = v5;
   }
 
   else
   {
-    v6 = [v3 appRecord];
+    appRecord = [forCopy appRecord];
 
-    if (v6)
+    if (appRecord)
     {
-      v7 = [v3 appRecord];
-      v6 = [STAppOverrides overridesForApplication:v7];
+      appRecord2 = [forCopy appRecord];
+      appRecord = [STAppOverrides overridesForApplication:appRecord2];
     }
   }
 
-  return v6;
+  return appRecord;
 }
 
-+ (id)getLocalAppId:(id)a3 foreignAppId:(id)a4
++ (id)getLocalAppId:(id)id foreignAppId:(id)appId
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:v5];
+  appIdCopy = appId;
+  v6 = [id objectForKeyedSubscript:appIdCopy];
   v7 = v6;
   if (v6)
   {
@@ -280,7 +280,7 @@
 
   else
   {
-    v8 = v5;
+    v8 = appIdCopy;
   }
 
   v9 = v8;
@@ -288,22 +288,22 @@
   return v9;
 }
 
-+ (id)updateAppsWithPrevious:(id)a3 usageBundles:(id)a4 skipAppRecordBlock:(id)a5
++ (id)updateAppsWithPrevious:(id)previous usageBundles:(id)bundles skipAppRecordBlock:(id)block
 {
   v288 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v242 = a5;
+  previousCopy = previous;
+  bundlesCopy = bundles;
+  blockCopy = block;
   v238 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  v239 = v7;
-  if (v7)
+  v239 = previousCopy;
+  if (previousCopy)
   {
-    v249 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+    v249 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(previousCopy, "count")}];
     v279 = 0u;
     v280 = 0u;
     v281 = 0u;
     v282 = 0u;
-    v9 = v7;
+    v9 = previousCopy;
     v10 = [v9 countByEnumeratingWithState:&v279 objects:v287 count:16];
     if (v10)
     {
@@ -319,8 +319,8 @@
           }
 
           v14 = *(*(&v279 + 1) + 8 * i);
-          v15 = [v14 bundleIdentifier];
-          [v249 setObject:v14 forKey:v15];
+          bundleIdentifier = [v14 bundleIdentifier];
+          [v249 setObject:v14 forKey:bundleIdentifier];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v279 objects:v287 count:16];
@@ -335,17 +335,17 @@
     v249 = 0;
   }
 
-  v245 = [MEMORY[0x277CBEB38] dictionary];
-  v16 = [objc_opt_class() applicationRecords];
-  v17 = [STStorageDataManager computeBundleRemappings:v16];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  applicationRecords = [objc_opt_class() applicationRecords];
+  v17 = [STStorageDataManager computeBundleRemappings:applicationRecords];
   v247 = objc_opt_new();
   v237 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v275 = 0u;
   v276 = 0u;
   v277 = 0u;
   v278 = 0u;
-  v18 = [v8 allAppsWithUsageBundles];
-  v19 = [v18 countByEnumeratingWithState:&v275 objects:v286 count:16];
+  allAppsWithUsageBundles = [bundlesCopy allAppsWithUsageBundles];
+  v19 = [allAppsWithUsageBundles countByEnumeratingWithState:&v275 objects:v286 count:16];
   if (v19)
   {
     v20 = v19;
@@ -356,31 +356,31 @@
       {
         if (*v276 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allAppsWithUsageBundles);
         }
 
         v23 = *(*(&v275 + 1) + 8 * j);
-        v24 = [v8 usageBundleForIdentifier:v23];
+        v24 = [bundlesCopy usageBundleForIdentifier:v23];
         v25 = [STStorageDataManager getLocalAppId:v17 foreignAppId:v23];
         [v247 setObject:v24 forKeyedSubscript:v25];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v275 objects:v286 count:16];
+      v20 = [allAppsWithUsageBundles countByEnumeratingWithState:&v275 objects:v286 count:16];
     }
 
     while (v20);
   }
 
   v240 = v17;
-  v241 = v8;
+  v241 = bundlesCopy;
 
   v273 = 0u;
   v274 = 0u;
   v271 = 0u;
   v272 = 0u;
-  obj = v16;
+  obj = applicationRecords;
   v26 = [obj countByEnumeratingWithState:&v271 objects:v285 count:16];
-  v27 = v242;
+  v27 = blockCopy;
   if (v26)
   {
     v28 = v26;
@@ -397,25 +397,25 @@
         v31 = *(*(&v271 + 1) + 8 * k);
         if (!v27 || (v27[2](v27, *(*(&v271 + 1) + 8 * k)) & 1) == 0)
         {
-          v32 = [v31 bundleIdentifier];
-          STLog(1, @"Listing app : %@", v33, v34, v35, v36, v37, v38, v32);
+          bundleIdentifier2 = [v31 bundleIdentifier];
+          STLog(1, @"Listing app : %@", v33, v34, v35, v36, v37, v38, bundleIdentifier2);
 
-          v39 = [v31 bundleIdentifier];
-          v40 = [v249 objectForKey:v39];
+          bundleIdentifier3 = [v31 bundleIdentifier];
+          v40 = [v249 objectForKey:bundleIdentifier3];
           v41 = v40;
           if (!v40)
           {
             v42 = [STStorageApp alloc];
-            v43 = [v247 objectForKey:v39];
+            v43 = [v247 objectForKey:bundleIdentifier3];
             v41 = [(STStorageApp *)v42 initWithAppRecord:v31 usageBundle:v43];
 
-            v27 = v242;
-            v44 = [a1 overridesFor:v41];
+            v27 = blockCopy;
+            v44 = [self overridesFor:v41];
             -[STStorageApp setForceVisible:](v41, "setForceVisible:", [v44 forceVisible]);
             -[STStorageApp setForceHidden:](v41, "setForceHidden:", [v44 forceHidden]);
           }
 
-          [v245 setObject:v41 forKey:v39];
+          [dictionary setObject:v41 forKey:bundleIdentifier3];
         }
       }
 
@@ -438,9 +438,9 @@
     [(STStorageApp *)v45 setExternalSizes:v48];
   }
 
-  v49 = [(STStorageApp *)v45 appIdentifier];
+  appIdentifier = [(STStorageApp *)v45 appIdentifier];
   v236 = v45;
-  [v245 setObject:v45 forKey:v49];
+  [dictionary setObject:v45 forKey:appIdentifier];
 
   v231 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v50 = +[STStorageApp sizeOfPluginKitContainers];
@@ -458,12 +458,12 @@
     }
 
     [(STStorageApp *)v51 setExternalSizes:v50];
-    v54 = [(STStorageApp *)v51 appIdentifier];
-    [v245 setObject:v51 forKey:v54];
+    appIdentifier2 = [(STStorageApp *)v51 appIdentifier];
+    [dictionary setObject:v51 forKey:appIdentifier2];
   }
 
   v229 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  [v245 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_10];
+  [dictionary enumerateKeysAndObjectsUsingBlock:&__block_literal_global_10];
   v55 = STGetCurrentMediaUsage();
   v56 = objc_alloc_init(STMutableSizeDict);
   v57 = +[STAppOverrides overrides];
@@ -487,8 +487,8 @@
   v65 = STMessagesExternalDataSize();
   [(STMutableSizeDict *)v56 addSize:v65 toKey:@"com.apple.MobileSMS"];
 
-  v66 = [MEMORY[0x277D262A0] sharedConnection];
-  LODWORD(v62) = [v66 isiCloudDriveAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  LODWORD(v62) = [mEMORY[0x277D262A0] isiCloudDriveAllowed];
 
   if (!v62)
   {
@@ -496,16 +496,16 @@
   }
 
   v67 = +[STStorageCacheDelete sharedMonitor];
-  v68 = [v67 cacheDeleteDict];
+  cacheDeleteDict = [v67 cacheDeleteDict];
 
-  v69 = [v68 objectForKeyedSubscript:@"CACHE_DELETE_ITEMIZED_NONPURGEABLE"];
-  v70 = [v68 objectForKeyedSubscript:@"com.apple.bird.cache-delete"];
+  v69 = [cacheDeleteDict objectForKeyedSubscript:@"CACHE_DELETE_ITEMIZED_NONPURGEABLE"];
+  v70 = [cacheDeleteDict objectForKeyedSubscript:@"com.apple.bird.cache-delete"];
   v71 = [v69 objectForKeyedSubscript:@"com.apple.bird.cache-delete"];
   if (v70 | v71)
   {
     if (v70 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      STLog(3, @"'com.apple.bird.cache-delete' value must be an NSNumber.\ncacheDeleteDict value: %@", v72, v73, v74, v75, v76, v77, v68);
+      STLog(3, @"'com.apple.bird.cache-delete' value must be an NSNumber.\ncacheDeleteDict value: %@", v72, v73, v74, v75, v76, v77, cacheDeleteDict);
       v78 = 1;
       if (!v71)
       {
@@ -521,7 +521,7 @@
 LABEL_44:
         if ((v78 & 1) == 0)
         {
-          v234 = v68;
+          v234 = cacheDeleteDict;
           v85 = [v249 objectForKey:@"com.apple.CloudDocs.iCloudDriveFileProvider"];
           if (!v85)
           {
@@ -536,9 +536,9 @@ LABEL_44:
           [(STStorageApp *)v85 setExternalSizes:v88];
 
           STLog(1, @"Listing app container : %@", v89, v90, v91, v92, v93, v94, @"com.apple.CloudDocs.iCloudDriveFileProvider");
-          [v245 setObject:v85 forKey:@"com.apple.CloudDocs.iCloudDriveFileProvider"];
+          [dictionary setObject:v85 forKey:@"com.apple.CloudDocs.iCloudDriveFileProvider"];
 
-          v68 = v234;
+          cacheDeleteDict = v234;
         }
 
         goto LABEL_49;
@@ -559,10 +559,10 @@ LABEL_49:
 LABEL_50:
   v235 = v50;
   v95 = +[STFileProviderMonitor sharedMonitor];
-  v96 = [v95 fpDomains];
+  fpDomains = [v95 fpDomains];
 
   v97 = +[STAppOverrides overrides];
-  v98 = STFileProviderExternalDataSize(v96);
+  v98 = STFileProviderExternalDataSize(fpDomains);
   [(STMutableSizeDict *)v56 plusEquals:v98];
 
   v232 = v56;
@@ -571,11 +571,11 @@ LABEL_50:
   v269[1] = 3221225472;
   v269[2] = __79__STStorageDataManager_updateAppsWithPrevious_usageBundles_skipAppRecordBlock___block_invoke_2;
   v269[3] = &unk_279D1D480;
-  v100 = v245;
+  v100 = dictionary;
   v270 = v100;
   [v247 enumerateKeysAndObjectsUsingBlock:v269];
   v246 = v99;
-  v101 = [v99 dictionary];
+  dictionary2 = [v99 dictionary];
   v266[0] = MEMORY[0x277D85DD0];
   v266[1] = 3221225472;
   v266[2] = __79__STStorageDataManager_updateAppsWithPrevious_usageBundles_skipAppRecordBlock___block_invoke_3;
@@ -584,14 +584,14 @@ LABEL_50:
   v267 = v102;
   v248 = v247;
   v268 = v248;
-  [v101 enumerateKeysAndObjectsUsingBlock:v266];
+  [dictionary2 enumerateKeysAndObjectsUsingBlock:v266];
 
   v228 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v262 = 0u;
   v263 = 0u;
   v264 = 0u;
   v265 = 0u;
-  v103 = v96;
+  v103 = fpDomains;
   v104 = [v103 countByEnumeratingWithState:&v262 objects:v284 count:16];
   if (!v104)
   {
@@ -611,19 +611,19 @@ LABEL_50:
       }
 
       v108 = *(*(&v262 + 1) + 8 * v107);
-      v109 = [v108 topLevelBundleIdentifier];
-      v110 = v109;
-      if (v109)
+      topLevelBundleIdentifier = [v108 topLevelBundleIdentifier];
+      v110 = topLevelBundleIdentifier;
+      if (topLevelBundleIdentifier)
       {
-        v111 = v109;
+        providerID = topLevelBundleIdentifier;
       }
 
       else
       {
-        v111 = [v108 providerID];
+        providerID = [v108 providerID];
       }
 
-      v112 = v111;
+      v112 = providerID;
 
       v113 = [v102 objectForKey:v112];
       v114 = v113;
@@ -639,19 +639,19 @@ LABEL_61:
           goto LABEL_65;
         }
 
-        v117 = [v114 appRecord];
-        if (v117)
+        appRecord = [v114 appRecord];
+        if (appRecord)
         {
         }
 
         else
         {
-          v118 = [v114 usageBundle];
+          usageBundle = [v114 usageBundle];
 
-          if (!v118)
+          if (!usageBundle)
           {
-            v119 = [v108 providerDisplayName];
-            [v114 setName:v119];
+            providerDisplayName = [v108 providerDisplayName];
+            [v114 setName:providerDisplayName];
 
             v115 = v114;
             v116 = 4;
@@ -675,44 +675,44 @@ LABEL_69:
 
   v226 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v121 = +[STUpdateMonitor sharedMonitor];
-  v122 = [v121 currentUpdateSize];
-  STLog(1, @"Current update size (%lld)", v123, v124, v125, v126, v127, v128, v122);
-  if (v122)
+  currentUpdateSize = [v121 currentUpdateSize];
+  STLog(1, @"Current update size (%lld)", v123, v124, v125, v126, v127, v128, currentUpdateSize);
+  if (currentUpdateSize)
   {
-    v129 = [v121 bundleIdentifier];
-    v130 = [v249 objectForKey:v129];
+    bundleIdentifier4 = [v121 bundleIdentifier];
+    v130 = [v249 objectForKey:bundleIdentifier4];
     if (!v130)
     {
       v131 = [STStorageApp alloc];
       v132 = STStorageDataLocStr(@"SOFTWARE_UPDATE");
-      v130 = [(STStorageApp *)v131 initWithBundleIdentifier:v129 name:v132 vendorName:0];
+      v130 = [(STStorageApp *)v131 initWithBundleIdentifier:bundleIdentifier4 name:v132 vendorName:0];
 
       [(STStorageApp *)v130 setAppKind:3];
       v133 = [v241 usageBundleForIdentifier:@"com.apple.Preferences"];
       [(STStorageApp *)v130 setUsageBundle:v133];
     }
 
-    v134 = [v121 currentUpdateName];
-    [(STStorageApp *)v130 setName:v134];
+    currentUpdateName = [v121 currentUpdateName];
+    [(STStorageApp *)v130 setName:currentUpdateName];
 
-    v135 = [STSizeVector docsAndData:v122];
+    v135 = [STSizeVector docsAndData:currentUpdateSize];
     [(STStorageApp *)v130 setExternalSizes:v135];
 
-    STLog(1, @"Listing app container : %@", v136, v137, v138, v139, v140, v141, v129);
-    [v102 setObject:v130 forKey:v129];
+    STLog(1, @"Listing app container : %@", v136, v137, v138, v139, v140, v141, bundleIdentifier4);
+    [v102 setObject:v130 forKey:bundleIdentifier4];
   }
 
   v227 = v121;
   v223 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   v225 = [objc_opt_class() sharedContainersFor:obj];
   v224 = [STMSizer containersWithClass:7];
-  v142 = [v224 allValues];
-  v143 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v142, "count")}];
+  allValues = [v224 allValues];
+  v143 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(allValues, "count")}];
   v258 = 0u;
   v259 = 0u;
   v260 = 0u;
   v261 = 0u;
-  v144 = v142;
+  v144 = allValues;
   v145 = [v144 countByEnumeratingWithState:&v258 objects:v283 count:16];
   if (v145)
   {
@@ -729,8 +729,8 @@ LABEL_69:
 
         v149 = *(*(&v258 + 1) + 8 * m);
         v150 = [v149 url];
-        v151 = [v150 path];
-        [v143 setObject:v149 forKey:v151];
+        path = [v150 path];
+        [v143 setObject:v149 forKey:path];
       }
 
       v146 = [v144 countByEnumeratingWithState:&v258 objects:v283 count:16];
@@ -762,7 +762,7 @@ LABEL_69:
   v155 = v153;
   [v221 enumerateKeysAndObjectsUsingBlock:v251];
   v156 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
-  [a1 fixClonesInPhotosAndMessages:v155];
+  [self fixClonesInPhotosAndMessages:v155];
   v157 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   STLog(1, @"%0.3f secs: load app records", v158, v159, v160, v161, v162, v163, COERCE__INT64((v237 - v238) / 1000000000.0));
   STLog(1, @"%0.3f secs: build app objects", v164, v165, v166, v167, v168, v169, COERCE__INT64((v231 - v237) / 1000000000.0));
@@ -774,11 +774,11 @@ LABEL_69:
   STLog(1, @"%0.3f secs: add pseudo apps", v200, v201, v202, v203, v204, v205, COERCE__INT64((v156 - v154) / 1000000000.0));
   STLog(1, @"%0.3f secs: apply fixes", v206, v207, v208, v209, v210, v211, COERCE__INT64((v157 - v156) / 1000000000.0));
   STLog(1, @"%0.3f secs: load apps total", v212, v213, v214, v215, v216, v217, COERCE__INT64((v157 - v238) / 1000000000.0));
-  v218 = [v155 allValues];
+  allValues2 = [v155 allValues];
 
   v219 = *MEMORY[0x277D85DE8];
 
-  return v218;
+  return allValues2;
 }
 
 void __79__STStorageDataManager_updateAppsWithPrevious_usageBundles_skipAppRecordBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1027,10 +1027,10 @@ void __79__STStorageDataManager_updateAppsWithPrevious_usageBundles_skipAppRecor
   }
 }
 
-+ (void)fixClonesInPhotosAndMessages:(id)a3
++ (void)fixClonesInPhotosAndMessages:(id)messages
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messagesCopy = messages;
   v4 = STMSizesOfClones(@"/private/var/mobile/Library/SMS/Attachments/");
   v5 = STMSizesOfClones(@"/private/var/mobile/Library/Photos/Libraries/Syndication.photoslibrary/");
   v28 = 0u;
@@ -1078,11 +1078,11 @@ void __79__STStorageDataManager_updateAppsWithPrevious_usageBundles_skipAppRecor
   v27 = STFormattedSize(v10);
   STLog(4, @"fix applied: message/photos: %u shared clones using %@", v15, v16, v17, v18, v19, v20, v9);
 
-  v21 = [v3 objectForKeyedSubscript:@"com.apple.mobileslideshow"];
-  v22 = [v21 externalSizes];
+  v21 = [messagesCopy objectForKeyedSubscript:@"com.apple.mobileslideshow"];
+  externalSizes = [v21 externalSizes];
   v23 = [STSizeVector purgeable:v10];
-  v24 = [v22 plus:v23];
-  v25 = [v3 objectForKeyedSubscript:@"com.apple.mobileslideshow"];
+  v24 = [externalSizes plus:v23];
+  v25 = [messagesCopy objectForKeyedSubscript:@"com.apple.mobileslideshow"];
   [v25 setExternalSizes:v24];
 
   v26 = *MEMORY[0x277D85DE8];

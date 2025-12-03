@@ -1,12 +1,12 @@
 @interface MRUAmbientCompactNowPlayingViewController
 - (MRUAmbientCompactNowPlayingViewController)init;
-- (MRUAmbientCompactNowPlayingViewController)initWithNowPlayingController:(id)a3;
+- (MRUAmbientCompactNowPlayingViewController)initWithNowPlayingController:(id)controller;
 - (void)loadView;
-- (void)setOnScreen:(BOOL)a3;
+- (void)setOnScreen:(BOOL)screen;
 - (void)updateArtwork;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MRUAmbientCompactNowPlayingViewController
@@ -20,16 +20,16 @@
   return v5;
 }
 
-- (MRUAmbientCompactNowPlayingViewController)initWithNowPlayingController:(id)a3
+- (MRUAmbientCompactNowPlayingViewController)initWithNowPlayingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = MRUAmbientCompactNowPlayingViewController;
   v6 = [(MRUAmbientCompactNowPlayingViewController *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nowPlayingController, a3);
+    objc_storeStrong(&v6->_nowPlayingController, controller);
     [(MRUNowPlayingController *)v7->_nowPlayingController addObserver:v7];
     v8 = objc_alloc_init(MRUWaveformController);
     waveformController = v7->_waveformController;
@@ -54,13 +54,13 @@
 - (void)loadView
 {
   v3 = [MRUAmbientCompactNowPlayingView alloc];
-  v4 = [(MRUAmbientCompactNowPlayingViewController *)self waveformViewController];
-  v5 = [v4 view];
-  v6 = [(MRUAmbientCompactNowPlayingView *)v3 initWithWaveformView:v5];
+  waveformViewController = [(MRUAmbientCompactNowPlayingViewController *)self waveformViewController];
+  view = [waveformViewController view];
+  v6 = [(MRUAmbientCompactNowPlayingView *)v3 initWithWaveformView:view];
   [(MRUAmbientCompactNowPlayingViewController *)self setView:v6];
 
-  v7 = [(MRUAmbientCompactNowPlayingViewController *)self waveformViewController];
-  [v7 didMoveToParentViewController:self];
+  waveformViewController2 = [(MRUAmbientCompactNowPlayingViewController *)self waveformViewController];
+  [waveformViewController2 didMoveToParentViewController:self];
 }
 
 - (void)viewDidLoad
@@ -71,43 +71,43 @@
   [(MRUAmbientCompactNowPlayingViewController *)self updateArtwork];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MRUAmbientCompactNowPlayingViewController;
-  [(MRUAmbientCompactNowPlayingViewController *)&v4 viewWillAppear:a3];
+  [(MRUAmbientCompactNowPlayingViewController *)&v4 viewWillAppear:appear];
   [(MRUAmbientCompactNowPlayingViewController *)self setOnScreen:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MRUAmbientCompactNowPlayingViewController;
-  [(MRUAmbientCompactNowPlayingViewController *)&v4 viewDidDisappear:a3];
+  [(MRUAmbientCompactNowPlayingViewController *)&v4 viewDidDisappear:disappear];
   [(MRUAmbientCompactNowPlayingViewController *)self setOnScreen:0];
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    self->_onScreen = a3;
-    v4 = [(MRUAmbientCompactNowPlayingViewController *)self nowPlayingController];
-    [v4 updateAutomaticResponseLoading];
+    self->_onScreen = screen;
+    nowPlayingController = [(MRUAmbientCompactNowPlayingViewController *)self nowPlayingController];
+    [nowPlayingController updateAutomaticResponseLoading];
   }
 }
 
 - (void)updateArtwork
 {
-  v3 = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
-  v4 = [v3 artwork];
-  v5 = [v4 catalog];
+  metadataController = [(MRUNowPlayingController *)self->_nowPlayingController metadataController];
+  artwork = [metadataController artwork];
+  catalog = [artwork catalog];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__MRUAmbientCompactNowPlayingViewController_updateArtwork__block_invoke;
   v6[3] = &unk_1E76647F0;
   v6[4] = self;
-  [v5 requestImageWithCompletion:v6];
+  [catalog requestImageWithCompletion:v6];
 }
 
 void __58__MRUAmbientCompactNowPlayingViewController_updateArtwork__block_invoke(uint64_t a1, void *a2)

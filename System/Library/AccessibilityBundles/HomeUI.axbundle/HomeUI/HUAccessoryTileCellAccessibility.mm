@@ -1,35 +1,35 @@
 @interface HUAccessoryTileCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityCustomActions;
 @end
 
 @implementation HUAccessoryTileCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUAccessoryTileCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"HUAccessoryTileCell" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUAccessoryTileCell" isKindOfClass:@"HUTileCell"];
-  [v3 validateClass:@"HUTileCell" hasInstanceMethod:@"tappableAreaForPoint:" withFullSignature:{"@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"HUTileCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUDashboardViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"HUDashboardViewController" hasInstanceMethod:@"presentationCoordinator:didRecognizeTapForItem:tappedArea:" withFullSignature:{"v", "@", "@", "@", 0}];
-  [v3 validateClass:@"HUDashboardViewController" hasInstanceMethod:@"quickControlPresentationContextForItem:atIndexPath:point:" withFullSignature:{"@", "@", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"HomeUI.TileCellContentView" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"setPresentationContext:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UICollectionView"];
-  [v3 validateClass:@"HUEmbeddedTriggerActionGridViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"HUContainedAccessoryElementsGridViewController" isKindOfClass:@"UICollectionViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUAccessoryTileCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"HUAccessoryTileCell" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUAccessoryTileCell" isKindOfClass:@"HUTileCell"];
+  [validationsCopy validateClass:@"HUTileCell" hasInstanceMethod:@"tappableAreaForPoint:" withFullSignature:{"@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"HUTileCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUDashboardViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"HUDashboardViewController" hasInstanceMethod:@"presentationCoordinator:didRecognizeTapForItem:tappedArea:" withFullSignature:{"v", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"HUDashboardViewController" hasInstanceMethod:@"quickControlPresentationContextForItem:atIndexPath:point:" withFullSignature:{"@", "@", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"HomeUI.TileCellContentView" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlPresentationCoordinator" hasInstanceMethod:@"setPresentationContext:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UICollectionView"];
+  [validationsCopy validateClass:@"HUEmbeddedTriggerActionGridViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"HUContainedAccessoryElementsGridViewController" isKindOfClass:@"UICollectionViewController"];
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 contentView];
-  v4 = [v3 safeValueForKey:@"iconView"];
+  contentView = [v2 contentView];
+  v4 = [contentView safeValueForKey:@"iconView"];
   [v4 accessibilityActivationPoint];
   v6 = v5;
   v8 = v7;
@@ -45,20 +45,20 @@
 {
   v21.receiver = self;
   v21.super_class = HUAccessoryTileCellAccessibility;
-  v3 = [(HUAccessoryTileCellAccessibility *)&v21 accessibilityCustomActions];
-  v4 = [v3 mutableCopy];
+  accessibilityCustomActions = [(HUAccessoryTileCellAccessibility *)&v21 accessibilityCustomActions];
+  v4 = [accessibilityCustomActions mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
   location = 0;
   p_location = &location;

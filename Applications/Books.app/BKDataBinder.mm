@@ -1,10 +1,10 @@
 @interface BKDataBinder
 + (id)bindings;
-+ (id)findBindingFrom:(id)a3 key:(id)a4 to:(id)a5 key:(id)a6;
-+ (void)bind:(id)a3 key:(id)a4 between:(id)a5 key:(id)a6;
-+ (void)bind:(id)a3 key:(id)a4 to:(id)a5 key:(id)a6;
-+ (void)unbind:(id)a3;
-+ (void)unbind:(id)a3 key:(id)a4 from:(id)a5 key:(id)a6;
++ (id)findBindingFrom:(id)from key:(id)key to:(id)to key:(id)a6;
++ (void)bind:(id)bind key:(id)key between:(id)between key:(id)a6;
++ (void)bind:(id)bind key:(id)key to:(id)to key:(id)a6;
++ (void)unbind:(id)unbind;
++ (void)unbind:(id)unbind key:(id)key from:(id)from key:(id)a6;
 @end
 
 @implementation BKDataBinder
@@ -21,14 +21,14 @@
   return v3;
 }
 
-+ (void)unbind:(id)a3
++ (void)unbind:(id)unbind
 {
-  v3 = a3;
+  unbindCopy = unbind;
   v4 = +[BKDataBinder bindings];
   while (1)
   {
-    v5 = [BKDataBinder findBindingFrom:v3 key:0 to:0 key:0];
-    v6 = [BKDataBinder findBindingFrom:0 key:0 to:v3 key:0];
+    v5 = [BKDataBinder findBindingFrom:unbindCopy key:0 to:0 key:0];
+    v6 = [BKDataBinder findBindingFrom:0 key:0 to:unbindCopy key:0];
     if (!(v5 | v6))
     {
       break;
@@ -69,13 +69,13 @@
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        v15 = [v14 srcObj];
-        if (v15)
+        srcObj = [v14 srcObj];
+        if (srcObj)
         {
-          v16 = v15;
-          v17 = [v14 dstObj];
+          v16 = srcObj;
+          dstObj = [v14 dstObj];
 
-          if (v17)
+          if (dstObj)
           {
             continue;
           }
@@ -119,25 +119,25 @@
   }
 }
 
-+ (void)bind:(id)a3 key:(id)a4 to:(id)a5 key:(id)a6
++ (void)bind:(id)bind key:(id)key to:(id)to key:(id)a6
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a5;
+  bindCopy = bind;
+  keyCopy = key;
+  toCopy = to;
   v11 = a6;
-  v12 = [BKDataBinder findBindingFrom:v15 key:v9 to:v10 key:v11];
+  v12 = [BKDataBinder findBindingFrom:bindCopy key:keyCopy to:toCopy key:v11];
 
   if (!v12)
   {
-    v13 = [[BKDataBinding alloc] initWithBinding:v15 key:v9 to:v10 key:v11 transmitInitialValue:1];
+    v13 = [[BKDataBinding alloc] initWithBinding:bindCopy key:keyCopy to:toCopy key:v11 transmitInitialValue:1];
     v14 = +[BKDataBinder bindings];
     [v14 addObject:v13];
   }
 }
 
-+ (void)unbind:(id)a3 key:(id)a4 from:(id)a5 key:(id)a6
++ (void)unbind:(id)unbind key:(id)key from:(id)from key:(id)a6
 {
-  v6 = [BKDataBinder findBindingFrom:a3 key:a4 to:a5 key:a6];
+  v6 = [BKDataBinder findBindingFrom:unbind key:key to:from key:a6];
   if (v6)
   {
     v8 = v6;
@@ -149,21 +149,21 @@
   }
 }
 
-+ (void)bind:(id)a3 key:(id)a4 between:(id)a5 key:(id)a6
++ (void)bind:(id)bind key:(id)key between:(id)between key:(id)a6
 {
   v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [a1 bind:v13 key:v12 to:v11 key:v10];
-  [a1 bind:v11 key:v10 to:v13 key:v12];
+  betweenCopy = between;
+  keyCopy = key;
+  bindCopy = bind;
+  [self bind:bindCopy key:keyCopy to:betweenCopy key:v10];
+  [self bind:betweenCopy key:v10 to:bindCopy key:keyCopy];
 }
 
-+ (id)findBindingFrom:(id)a3 key:(id)a4 to:(id)a5 key:(id)a6
++ (id)findBindingFrom:(id)from key:(id)key to:(id)to key:(id)a6
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  fromCopy = from;
+  keyCopy = key;
+  toCopy = to;
   v24 = a6;
   v27 = 0u;
   v28 = 0u;
@@ -176,7 +176,7 @@
     goto LABEL_32;
   }
 
-  v25 = v13;
+  v25 = keyCopy;
   v16 = *v28;
   while (2)
   {
@@ -188,23 +188,23 @@
       }
 
       v18 = *(*(&v27 + 1) + 8 * i);
-      if (v12)
+      if (fromCopy)
       {
-        v6 = [*(*(&v27 + 1) + 8 * i) srcObj];
-        if (v6 != v12)
+        srcObj = [*(*(&v27 + 1) + 8 * i) srcObj];
+        if (srcObj != fromCopy)
         {
           goto LABEL_11;
         }
       }
 
-      if (v14)
+      if (toCopy)
       {
-        v19 = [v18 dstObj];
-        v7 = v19;
-        if (v19 != v14)
+        dstObj = [v18 dstObj];
+        v7 = dstObj;
+        if (dstObj != toCopy)
         {
 
-          if (!v12)
+          if (!fromCopy)
           {
             continue;
           }
@@ -217,9 +217,9 @@ LABEL_11:
 
       if (v25)
       {
-        v20 = [v18 srcKey];
-        v8 = v20;
-        if (v20 != v25)
+        srcKey = [v18 srcKey];
+        v8 = srcKey;
+        if (srcKey != v25)
         {
 
           v21 = 0;
@@ -241,8 +241,8 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v22 = [v18 dstKey];
-      v21 = v22 == v24;
+      dstKey = [v18 dstKey];
+      v21 = dstKey == v24;
 
       if (v25)
       {
@@ -250,11 +250,11 @@ LABEL_21:
       }
 
 LABEL_22:
-      if (v14)
+      if (toCopy)
       {
       }
 
-      if (v12)
+      if (fromCopy)
       {
       }
 
@@ -275,7 +275,7 @@ LABEL_22:
   }
 
 LABEL_31:
-  v13 = v25;
+  keyCopy = v25;
 LABEL_32:
 
   return v15;

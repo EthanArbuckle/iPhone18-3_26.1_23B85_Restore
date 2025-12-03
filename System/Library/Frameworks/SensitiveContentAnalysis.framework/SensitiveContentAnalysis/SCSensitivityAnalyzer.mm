@@ -1,78 +1,78 @@
 @interface SCSensitivityAnalyzer
-+ (BOOL)_isSensitiveContentWarningEnabled:(id)a3;
-+ (BOOL)_isSensitiveContentWarningEnabledForAnyOfServices:(id)a3 scanningPolicy:(id)a4;
-+ (BOOL)_isSensitiveContentWarningEnabledForApplication:(id)a3 scanningPolicy:(id)a4;
-+ (BOOL)_isSensitiveContentWarningEnabledForService:(id)a3 scanningPolicy:(id)a4;
-+ (BOOL)isSensitiveContentWarningEnabledForAnyOfServices:(id)a3;
-+ (BOOL)isSensitiveContentWarningEnabledForService:(id)a3;
-+ (id)subscribeForAnalysisAvailabilityChanges:(id)a3;
-+ (int64_t)_analysisPolicyFrom:(id)a3;
++ (BOOL)_isSensitiveContentWarningEnabled:(id)enabled;
++ (BOOL)_isSensitiveContentWarningEnabledForAnyOfServices:(id)services scanningPolicy:(id)policy;
++ (BOOL)_isSensitiveContentWarningEnabledForApplication:(id)application scanningPolicy:(id)policy;
++ (BOOL)_isSensitiveContentWarningEnabledForService:(id)service scanningPolicy:(id)policy;
++ (BOOL)isSensitiveContentWarningEnabledForAnyOfServices:(id)services;
++ (BOOL)isSensitiveContentWarningEnabledForService:(id)service;
++ (id)subscribeForAnalysisAvailabilityChanges:(id)changes;
++ (int64_t)_analysisPolicyFrom:(id)from;
 + (int64_t)analysisFeatureEnablement;
-- (BOOL)shouldAnalyzeMedia:(id *)a3;
-- (BOOL)shouldAnalyzeMediaWithType:(id)a3 error:(id *)a4;
+- (BOOL)shouldAnalyzeMedia:(id *)media;
+- (BOOL)shouldAnalyzeMediaWithType:(id)type error:(id *)error;
 - (NSProgress)analyzeVideoFile:(NSURL *)fileURL completionHandler:(void *)completionHandler;
 - (SCSensitivityAnalysisPolicy)analysisPolicy;
-- (SCSensitivityAnalyzer)initWithQueue:(id)a3;
-- (SCSensitivityAnalyzer)initWithQueue:(id)a3 madService:(id)a4;
-- (int64_t)_mapMOScanningPolicyEnumValue:(id)a3;
-- (void)_runBlockOnDispatchQueueIfSet:(id)a3;
-- (void)analyzeCGImage:(CGImage *)a3 orientation:(unsigned int)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)analyzeFile:(id)a3 options:(unint64_t)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (void)analyzeImageFile:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)analyzeImageWithLocalIdentifier:(id)a3 fromPhotoLibraryWithURL:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)analyzePixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 completionHandler:(id)a5;
-- (void)analyzeVideoFile:(id)a3 options:(unint64_t)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (void)analyzeVideoWithLocalIdentifier:(id)a3 fromPhotoLibraryWithURL:(id)a4 options:(unint64_t)a5 progressHandler:(id)a6 completionHandler:(id)a7;
+- (SCSensitivityAnalyzer)initWithQueue:(id)queue;
+- (SCSensitivityAnalyzer)initWithQueue:(id)queue madService:(id)service;
+- (int64_t)_mapMOScanningPolicyEnumValue:(id)value;
+- (void)_runBlockOnDispatchQueueIfSet:(id)set;
+- (void)analyzeCGImage:(CGImage *)image orientation:(unsigned int)orientation options:(unint64_t)options completionHandler:(id)handler;
+- (void)analyzeFile:(id)file options:(unint64_t)options progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)analyzeImageFile:(id)file options:(unint64_t)options completionHandler:(id)handler;
+- (void)analyzeImageWithLocalIdentifier:(id)identifier fromPhotoLibraryWithURL:(id)l options:(unint64_t)options completionHandler:(id)handler;
+- (void)analyzePixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation completionHandler:(id)handler;
+- (void)analyzeVideoFile:(id)file options:(unint64_t)options progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)analyzeVideoWithLocalIdentifier:(id)identifier fromPhotoLibraryWithURL:(id)l options:(unint64_t)options progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation SCSensitivityAnalyzer
 
 - (SCSensitivityAnalysisPolicy)analysisPolicy
 {
-  v3 = [(SCSensitivityAnalyzer *)self madService];
-  v4 = [v3 obtainCurrentPolicy];
-  v5 = [(SCSensitivityAnalyzer *)self _mapMOScanningPolicyEnumValue:v4];
+  madService = [(SCSensitivityAnalyzer *)self madService];
+  obtainCurrentPolicy = [madService obtainCurrentPolicy];
+  v5 = [(SCSensitivityAnalyzer *)self _mapMOScanningPolicyEnumValue:obtainCurrentPolicy];
 
   return v5;
 }
 
 + (int64_t)analysisFeatureEnablement
 {
-  v3 = [objc_msgSend(a1 "settingsReaderClass")];
-  v4 = [a1 _analysisPolicyFrom:v3];
+  v3 = [objc_msgSend(self "settingsReaderClass")];
+  v4 = [self _analysisPolicyFrom:v3];
 
   return v4;
 }
 
-+ (BOOL)isSensitiveContentWarningEnabledForService:(id)a3
++ (BOOL)isSensitiveContentWarningEnabledForService:(id)service
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 "settingsReaderClass")];
-  LOBYTE(a1) = [a1 _isSensitiveContentWarningEnabledForService:v4 scanningPolicy:v5];
+  serviceCopy = service;
+  v5 = [objc_msgSend(self "settingsReaderClass")];
+  LOBYTE(self) = [self _isSensitiveContentWarningEnabledForService:serviceCopy scanningPolicy:v5];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)isSensitiveContentWarningEnabledForAnyOfServices:(id)a3
++ (BOOL)isSensitiveContentWarningEnabledForAnyOfServices:(id)services
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 "settingsReaderClass")];
-  LOBYTE(a1) = [a1 _isSensitiveContentWarningEnabledForAnyOfServices:v4 scanningPolicy:v5];
+  servicesCopy = services;
+  v5 = [objc_msgSend(self "settingsReaderClass")];
+  LOBYTE(self) = [self _isSensitiveContentWarningEnabledForAnyOfServices:servicesCopy scanningPolicy:v5];
 
-  return a1;
+  return self;
 }
 
-+ (id)subscribeForAnalysisAvailabilityChanges:(id)a3
++ (id)subscribeForAnalysisAvailabilityChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = [SCSensitivityAnalysisAvailabilityObserver alloc];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __65__SCSensitivityAnalyzer_subscribeForAnalysisAvailabilityChanges___block_invoke;
   v13 = &unk_1E7A439B0;
-  v14 = v4;
-  v15 = a1;
-  v6 = v4;
+  v14 = changesCopy;
+  selfCopy = self;
+  v6 = changesCopy;
   v7 = [SCManagedSettingsReader subscribeForScanningPolicyChanges:&v10];
   v8 = [(SCSensitivityAnalysisAvailabilityObserver *)v5 initWithSubscription:v7, v10, v11, v12, v13];
 
@@ -88,27 +88,27 @@ uint64_t __65__SCSensitivityAnalyzer_subscribeForAnalysisAvailabilityChanges___b
   return v4(v2, v3);
 }
 
-- (SCSensitivityAnalyzer)initWithQueue:(id)a3
+- (SCSensitivityAnalyzer)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_opt_new();
-  v6 = [(SCSensitivityAnalyzer *)self initWithQueue:v4 madService:v5];
+  v6 = [(SCSensitivityAnalyzer *)self initWithQueue:queueCopy madService:v5];
 
   return v6;
 }
 
-- (SCSensitivityAnalyzer)initWithQueue:(id)a3 madService:(id)a4
+- (SCSensitivityAnalyzer)initWithQueue:(id)queue madService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = SCSensitivityAnalyzer;
   v9 = [(SCSensitivityAnalyzer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dispatchQueue, a3);
-    objc_storeStrong(&v10->_madService, a4);
+    objc_storeStrong(&v9->_dispatchQueue, queue);
+    objc_storeStrong(&v10->_madService, service);
     v11 = objc_alloc_init(SCAnalytics);
     analytics = v10->_analytics;
     v10->_analytics = v11;
@@ -117,19 +117,19 @@ uint64_t __65__SCSensitivityAnalyzer_subscribeForAnalysisAvailabilityChanges___b
   return v10;
 }
 
-- (void)analyzeImageFile:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)analyzeImageFile:(id)file options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SCSensitivityAnalyzer *)self madService];
+  handlerCopy = handler;
+  fileCopy = file;
+  madService = [(SCSensitivityAnalyzer *)self madService];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__SCSensitivityAnalyzer_analyzeImageFile_options_completionHandler___block_invoke;
   v12[3] = &unk_1E7A43A00;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
-  [v10 isSensitiveImage:v9 options:a4 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [madService isSensitiveImage:fileCopy options:options completionHandler:v12];
 }
 
 void __68__SCSensitivityAnalyzer_analyzeImageFile_options_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -168,26 +168,26 @@ void __68__SCSensitivityAnalyzer_analyzeImageFile_options_completionHandler___bl
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)analyzeCGImage:(CGImage *)a3 orientation:(unsigned int)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)analyzeCGImage:(CGImage *)image orientation:(unsigned int)orientation options:(unint64_t)options completionHandler:(id)handler
 {
-  v7 = *&a4;
-  v10 = a6;
-  v11 = [[SCSensitivityAnalysis alloc] initSummaryAnalysisForOptions:a5];
+  v7 = *&orientation;
+  handlerCopy = handler;
+  v11 = [[SCSensitivityAnalysis alloc] initSummaryAnalysisForOptions:options];
   if (v11)
   {
-    v10[2](v10, v11, 0);
+    handlerCopy[2](handlerCopy, v11, 0);
   }
 
   else
   {
-    v12 = [(SCSensitivityAnalyzer *)self madService];
+    madService = [(SCSensitivityAnalyzer *)self madService];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __78__SCSensitivityAnalyzer_analyzeCGImage_orientation_options_completionHandler___block_invoke;
     v13[3] = &unk_1E7A43A00;
     v13[4] = self;
-    v14 = v10;
-    [v12 isSensitiveCGImage:a3 withOrientation:v7 options:a5 completionHandler:v13];
+    v14 = handlerCopy;
+    [madService isSensitiveCGImage:image withOrientation:v7 options:options completionHandler:v13];
   }
 }
 
@@ -227,19 +227,19 @@ void __78__SCSensitivityAnalyzer_analyzeCGImage_orientation_options_completionHa
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)analyzePixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 completionHandler:(id)a5
+- (void)analyzePixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation completionHandler:(id)handler
 {
-  v5 = *&a4;
-  v8 = a5;
-  v9 = [(SCSensitivityAnalyzer *)self madService];
+  v5 = *&orientation;
+  handlerCopy = handler;
+  madService = [(SCSensitivityAnalyzer *)self madService];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__SCSensitivityAnalyzer_analyzePixelBuffer_orientation_completionHandler___block_invoke;
   v11[3] = &unk_1E7A43A00;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [v9 isSensitivePixelBuffer:a3 withOrientation:v5 options:4 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [madService isSensitivePixelBuffer:buffer withOrientation:v5 options:4 completionHandler:v11];
 }
 
 void __74__SCSensitivityAnalyzer_analyzePixelBuffer_orientation_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -301,33 +301,33 @@ void __74__SCSensitivityAnalyzer_analyzePixelBuffer_orientation_completionHandle
   return v8;
 }
 
-- (void)analyzeVideoFile:(id)a3 options:(unint64_t)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (void)analyzeVideoFile:(id)file options:(unint64_t)options progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[SCSensitivityAnalysis alloc] initSummaryAnalysisForOptions:a4];
+  fileCopy = file;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v13 = [[SCSensitivityAnalysis alloc] initSummaryAnalysisForOptions:options];
   if (v13)
   {
-    v12[2](v12, v13, 0);
+    completionHandlerCopy[2](completionHandlerCopy, v13, 0);
   }
 
   else
   {
-    v14 = [(SCSensitivityAnalyzer *)self madService];
+    madService = [(SCSensitivityAnalyzer *)self madService];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __84__SCSensitivityAnalyzer_analyzeVideoFile_options_progressHandler_completionHandler___block_invoke;
     v17[3] = &unk_1E7A43A78;
     v17[4] = self;
-    v18 = v11;
+    v18 = handlerCopy;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __84__SCSensitivityAnalyzer_analyzeVideoFile_options_progressHandler_completionHandler___block_invoke_3;
     v15[3] = &unk_1E7A43A00;
     v15[4] = self;
-    v16 = v12;
-    [v14 isSensitiveVideoFile:v10 options:a4 progressHandler:v17 completionHandler:v15];
+    v16 = completionHandlerCopy;
+    [madService isSensitiveVideoFile:fileCopy options:options progressHandler:v17 completionHandler:v15];
   }
 }
 
@@ -383,49 +383,49 @@ void __84__SCSensitivityAnalyzer_analyzeVideoFile_options_progressHandler_comple
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)analyzeFile:(id)a3 options:(unint64_t)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (void)analyzeFile:(id)file options:(unint64_t)options progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v13 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [[SCSensitivityAnalysis alloc] initSummaryAnalysisForOptions:a4];
+  fileCopy = file;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v12 = [[SCSensitivityAnalysis alloc] initSummaryAnalysisForOptions:options];
   if (v12)
   {
-    v11[2](v11, v12, 0);
+    completionHandlerCopy[2](completionHandlerCopy, v12, 0);
   }
 
-  else if ([v13 sca_isMovieFile])
+  else if ([fileCopy sca_isMovieFile])
   {
-    [(SCSensitivityAnalyzer *)self analyzeVideoFile:v13 options:a4 progressHandler:v10 completionHandler:v11];
+    [(SCSensitivityAnalyzer *)self analyzeVideoFile:fileCopy options:options progressHandler:handlerCopy completionHandler:completionHandlerCopy];
   }
 
   else
   {
-    [(SCSensitivityAnalyzer *)self analyzeImageFile:v13 options:a4 completionHandler:v11];
+    [(SCSensitivityAnalyzer *)self analyzeImageFile:fileCopy options:options completionHandler:completionHandlerCopy];
   }
 }
 
-- (void)analyzeImageWithLocalIdentifier:(id)a3 fromPhotoLibraryWithURL:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)analyzeImageWithLocalIdentifier:(id)identifier fromPhotoLibraryWithURL:(id)l options:(unint64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [[SCSensitivityAnalysis alloc] initSummaryAnalysisForOptions:a5];
+  identifierCopy = identifier;
+  lCopy = l;
+  handlerCopy = handler;
+  v13 = [[SCSensitivityAnalysis alloc] initSummaryAnalysisForOptions:options];
   if (v13)
   {
-    v12[2](v12, v13, 0);
+    handlerCopy[2](handlerCopy, v13, 0);
   }
 
   else
   {
-    v14 = [(SCSensitivityAnalyzer *)self madService];
+    madService = [(SCSensitivityAnalyzer *)self madService];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __107__SCSensitivityAnalyzer_analyzeImageWithLocalIdentifier_fromPhotoLibraryWithURL_options_completionHandler___block_invoke;
     v15[3] = &unk_1E7A43A00;
     v15[4] = self;
-    v16 = v12;
-    [v14 isSensitiveImageWithLocalIdentifier:v10 fromPhotoLibraryWithURL:v11 options:a5 completionHandler:v15];
+    v16 = handlerCopy;
+    [madService isSensitiveImageWithLocalIdentifier:identifierCopy fromPhotoLibraryWithURL:lCopy options:options completionHandler:v15];
   }
 }
 
@@ -465,34 +465,34 @@ void __107__SCSensitivityAnalyzer_analyzeImageWithLocalIdentifier_fromPhotoLibra
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)analyzeVideoWithLocalIdentifier:(id)a3 fromPhotoLibraryWithURL:(id)a4 options:(unint64_t)a5 progressHandler:(id)a6 completionHandler:(id)a7
+- (void)analyzeVideoWithLocalIdentifier:(id)identifier fromPhotoLibraryWithURL:(id)l options:(unint64_t)options progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[SCSensitivityAnalysis alloc] initSummaryAnalysisForOptions:a5];
+  identifierCopy = identifier;
+  lCopy = l;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v16 = [[SCSensitivityAnalysis alloc] initSummaryAnalysisForOptions:options];
   if (v16)
   {
-    v15[2](v15, v16, 0);
+    completionHandlerCopy[2](completionHandlerCopy, v16, 0);
   }
 
   else
   {
-    v17 = [(SCSensitivityAnalyzer *)self madService];
+    madService = [(SCSensitivityAnalyzer *)self madService];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __123__SCSensitivityAnalyzer_analyzeVideoWithLocalIdentifier_fromPhotoLibraryWithURL_options_progressHandler_completionHandler___block_invoke;
     v20[3] = &unk_1E7A43AA0;
     v20[4] = self;
-    v21 = v14;
+    v21 = handlerCopy;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __123__SCSensitivityAnalyzer_analyzeVideoWithLocalIdentifier_fromPhotoLibraryWithURL_options_progressHandler_completionHandler___block_invoke_3;
     v18[3] = &unk_1E7A43A00;
     v18[4] = self;
-    v19 = v15;
-    [v17 isSensitiveVideoWithLocalIdentifier:v12 fromPhotoLibraryWithURL:v13 options:a5 progressHandler:v20 completionHandler:v18];
+    v19 = completionHandlerCopy;
+    [madService isSensitiveVideoWithLocalIdentifier:identifierCopy fromPhotoLibraryWithURL:lCopy options:options progressHandler:v20 completionHandler:v18];
   }
 }
 
@@ -548,50 +548,50 @@ void __123__SCSensitivityAnalyzer_analyzeVideoWithLocalIdentifier_fromPhotoLibra
   (*(*(a1 + 56) + 16))();
 }
 
-+ (int64_t)_analysisPolicyFrom:(id)a3
++ (int64_t)_analysisPolicyFrom:(id)from
 {
-  v4 = a3;
-  if ([a1 _isCommunicationSafetyEnabled:v4])
+  fromCopy = from;
+  if ([self _isCommunicationSafetyEnabled:fromCopy])
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = [a1 _isSensitiveContentWarningEnabled:v4];
+    v5 = [self _isSensitiveContentWarningEnabled:fromCopy];
   }
 
   return v5;
 }
 
-+ (BOOL)_isSensitiveContentWarningEnabled:(id)a3
++ (BOOL)_isSensitiveContentWarningEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 "entitlementsReaderClass")];
+  enabledCopy = enabled;
+  v5 = [objc_msgSend(self "entitlementsReaderClass")];
   if (v5)
   {
-    v6 = [a1 _isSensitiveContentWarningEnabledForAnyOfServices:v5 scanningPolicy:v4];
+    v6 = [self _isSensitiveContentWarningEnabledForAnyOfServices:v5 scanningPolicy:enabledCopy];
   }
 
   else
   {
-    v7 = [objc_msgSend(a1 "entitlementsReaderClass")];
-    v6 = [a1 _isSensitiveContentWarningEnabledForApplication:v7 scanningPolicy:v4];
+    v7 = [objc_msgSend(self "entitlementsReaderClass")];
+    v6 = [self _isSensitiveContentWarningEnabledForApplication:v7 scanningPolicy:enabledCopy];
   }
 
   return v6;
 }
 
-+ (BOOL)_isSensitiveContentWarningEnabledForAnyOfServices:(id)a3 scanningPolicy:(id)a4
++ (BOOL)_isSensitiveContentWarningEnabledForAnyOfServices:(id)services scanningPolicy:(id)policy
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  policyCopy = policy;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v6;
+  v8 = servicesCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -606,7 +606,7 @@ void __123__SCSensitivityAnalyzer_analyzeVideoWithLocalIdentifier_fromPhotoLibra
           objc_enumerationMutation(v8);
         }
 
-        if ([a1 _isSensitiveContentWarningEnabledForService:*(*(&v15 + 1) + 8 * i) scanningPolicy:{v7, v15}])
+        if ([self _isSensitiveContentWarningEnabledForService:*(*(&v15 + 1) + 8 * i) scanningPolicy:{policyCopy, v15}])
         {
           v13 = 1;
           goto LABEL_11;
@@ -629,14 +629,14 @@ LABEL_11:
   return v13;
 }
 
-+ (BOOL)_isSensitiveContentWarningEnabledForService:(id)a3 scanningPolicy:(id)a4
++ (BOOL)_isSensitiveContentWarningEnabledForService:(id)service scanningPolicy:(id)policy
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 policy] == 1)
+  serviceCopy = service;
+  policyCopy = policy;
+  if ([policyCopy policy] == 1)
   {
-    v7 = [v6 services];
-    v8 = [v7 containsObject:v5];
+    services = [policyCopy services];
+    v8 = [services containsObject:serviceCopy];
   }
 
   else
@@ -647,15 +647,15 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)_isSensitiveContentWarningEnabledForApplication:(id)a3 scanningPolicy:(id)a4
++ (BOOL)_isSensitiveContentWarningEnabledForApplication:(id)application scanningPolicy:(id)policy
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 policy] == 1)
+  applicationCopy = application;
+  policyCopy = policy;
+  if ([policyCopy policy] == 1)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69AE018]) initWithBundleIdentifier:v5];
-    v8 = [v6 applications];
-    v9 = [v8 containsObject:v7];
+    v7 = [objc_alloc(MEMORY[0x1E69AE018]) initWithBundleIdentifier:applicationCopy];
+    applications = [policyCopy applications];
+    v9 = [applications containsObject:v7];
   }
 
   else
@@ -666,9 +666,9 @@ LABEL_11:
   return v9;
 }
 
-- (int64_t)_mapMOScanningPolicyEnumValue:(id)a3
+- (int64_t)_mapMOScanningPolicyEnumValue:(id)value
 {
-  result = [a3 integerValue];
+  result = [value integerValue];
   if (result >= 3)
   {
     v4 = +[SCLog client];
@@ -683,10 +683,10 @@ LABEL_11:
   return result;
 }
 
-- (void)_runBlockOnDispatchQueueIfSet:(id)a3
+- (void)_runBlockOnDispatchQueueIfSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
+  setCopy = set;
+  v5 = setCopy;
   dispatchQueue = self->_dispatchQueue;
   if (dispatchQueue)
   {
@@ -694,28 +694,28 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = __55__SCSensitivityAnalyzer__runBlockOnDispatchQueueIfSet___block_invoke;
     block[3] = &unk_1E7A43AC8;
-    v8 = v4;
+    v8 = setCopy;
     dispatch_async(dispatchQueue, block);
   }
 
   else
   {
-    v4[2](v4);
+    setCopy[2](setCopy);
   }
 }
 
-- (BOOL)shouldAnalyzeMedia:(id *)a3
+- (BOOL)shouldAnalyzeMedia:(id *)media
 {
-  v3 = self;
+  selfCopy = self;
   sub_1AEA90D64();
 
   return 1;
 }
 
-- (BOOL)shouldAnalyzeMediaWithType:(id)a3 error:(id *)a4
+- (BOOL)shouldAnalyzeMediaWithType:(id)type error:(id *)error
 {
   sub_1AEAF95BC();
-  v5 = self;
+  selfCopy = self;
   sub_1AEA90E90();
 
   return 1;

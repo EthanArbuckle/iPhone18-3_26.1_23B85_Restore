@@ -1,47 +1,47 @@
 @interface CSActivityViewController
-- (BOOL)activityHostViewController:(id)a3 didReceiveAction:(id)a4;
-- (BOOL)handleEvent:(id)a3;
-- (CGSize)contentSizeForContentView:(id)a3;
-- (CSActivityViewController)initWithDescriptor:(id)a3 sceneType:(int64_t)a4;
-- (CSActivityViewController)initWithHostViewController:(id)a3;
+- (BOOL)activityHostViewController:(id)controller didReceiveAction:(id)action;
+- (BOOL)handleEvent:(id)event;
+- (CGSize)contentSizeForContentView:(id)view;
+- (CSActivityViewController)initWithDescriptor:(id)descriptor sceneType:(int64_t)type;
+- (CSActivityViewController)initWithHostViewController:(id)controller;
 - (CSActivityViewControllerDelegate)delegate;
 - (CSActivityViewControllerHostDelegate)hostDelegate;
 - (CSHostableEntityPresenterDelegate)entityPresenterDelegate;
 - (CSSceneHostEnvironmentObserving)sceneHostEnvironmentObserver;
-- (id)activityDescriptorForContentView:(id)a3;
+- (id)activityDescriptorForContentView:(id)view;
 - (id)sceneHostEnvironmentEntriesForBacklightSession;
-- (unint64_t)_presentationModeForActivityPresentationMode:(unint64_t)a3;
-- (unint64_t)_presentationModeForHostedEntityContentMode:(int64_t)a3;
+- (unint64_t)_presentationModeForActivityPresentationMode:(unint64_t)mode;
+- (unint64_t)_presentationModeForHostedEntityContentMode:(int64_t)mode;
 - (void)_backlightLuminanceDidChange;
-- (void)_handleButtonPressOfType:(unint64_t)a3;
-- (void)_preferredContentSizeDidChangeForChildViewController:(id)a3;
-- (void)_setPresentationMode:(unint64_t)a3;
-- (void)_setScreenOn:(BOOL)a3;
-- (void)_updateAudioCategoriesDisablingVolumeHUDWithReason:(id)a3;
-- (void)activityHostViewController:(id)a3 requestsLaunchWithAction:(id)a4;
-- (void)activityHostViewControllerAudioCategoriesDisablingVolumeHUDDidChange:(id)a3;
-- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)a3;
-- (void)activityHostViewControllerHostShouldCancelTouches:(id)a3;
-- (void)activityHostViewControllerSignificantUserInteractionBegan:(id)a3;
-- (void)activityHostViewControllerSignificantUserInteractionEnded:(id)a3;
-- (void)activityHostViewControllerTextColorDidChange:(id)a3;
+- (void)_handleButtonPressOfType:(unint64_t)type;
+- (void)_preferredContentSizeDidChangeForChildViewController:(id)controller;
+- (void)_setPresentationMode:(unint64_t)mode;
+- (void)_setScreenOn:(BOOL)on;
+- (void)_updateAudioCategoriesDisablingVolumeHUDWithReason:(id)reason;
+- (void)activityHostViewController:(id)controller requestsLaunchWithAction:(id)action;
+- (void)activityHostViewControllerAudioCategoriesDisablingVolumeHUDDidChange:(id)change;
+- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)change;
+- (void)activityHostViewControllerHostShouldCancelTouches:(id)touches;
+- (void)activityHostViewControllerSignificantUserInteractionBegan:(id)began;
+- (void)activityHostViewControllerSignificantUserInteractionEnded:(id)ended;
+- (void)activityHostViewControllerTextColorDidChange:(id)change;
 - (void)dealloc;
 - (void)loadView;
-- (void)reevaluatePresentationModeForReason:(id)a3;
-- (void)setHostableEntityContentMode:(int64_t)a3;
-- (void)setPresentationMode:(unint64_t)a3;
-- (void)setVisibility:(unint64_t)a3;
+- (void)reevaluatePresentationModeForReason:(id)reason;
+- (void)setHostableEntityContentMode:(int64_t)mode;
+- (void)setPresentationMode:(unint64_t)mode;
+- (void)setVisibility:(unint64_t)visibility;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CSActivityViewController
 
-- (CSActivityViewController)initWithDescriptor:(id)a3 sceneType:(int64_t)a4
+- (CSActivityViewController)initWithDescriptor:(id)descriptor sceneType:(int64_t)type
 {
   v6 = MEMORY[0x277D67D08];
-  v7 = a3;
-  if (a4 == 7)
+  descriptorCopy = descriptor;
+  if (type == 7)
   {
     [v6 modalFullScreenMetrics];
   }
@@ -51,7 +51,7 @@
     [v6 defaultMetrics];
   }
   v8 = ;
-  v9 = [MEMORY[0x277CE9570] activityHostViewControllerWithDescriptor:v7 sceneType:a4 metricsRequest:v8];
+  v9 = [MEMORY[0x277CE9570] activityHostViewControllerWithDescriptor:descriptorCopy sceneType:type metricsRequest:v8];
 
   hostViewController = self->_hostViewController;
   self->_hostViewController = v9;
@@ -60,35 +60,35 @@
   return v11;
 }
 
-- (CSActivityViewController)initWithHostViewController:(id)a3
+- (CSActivityViewController)initWithHostViewController:(id)controller
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = CSActivityViewController;
   v6 = [(CSActivityViewController *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_hostViewController, a3);
+    objc_storeStrong(&v6->_hostViewController, controller);
     [(ACUISActivityHostViewController *)v7->_hostViewController setShouldShareTouchesWithHost:1];
     [(ACUISActivityHostViewController *)v7->_hostViewController setDelegate:v7];
-    v8 = [v5 activitySceneDescriptor];
-    v7->_sceneType = [v8 activitySceneType];
+    activitySceneDescriptor = [controllerCopy activitySceneDescriptor];
+    v7->_sceneType = [activitySceneDescriptor activitySceneType];
 
     v9 = objc_opt_self();
     v17[0] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
     v11 = [(CSActivityViewController *)v7 registerForTraitChanges:v10 withAction:sel__backlightLuminanceDidChange];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v7 selector:sel__actionButtonPressed_ name:*MEMORY[0x277D679D8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__actionButtonPressed_ name:*MEMORY[0x277D679D8] object:0];
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v7 selector:sel__lockButtonPressed_ name:*MEMORY[0x277D67A80] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__lockButtonPressed_ name:*MEMORY[0x277D67A80] object:0];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v7 selector:sel__volumeButtonPressed_ name:*MEMORY[0x277D67AF0] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v7 selector:sel__volumeButtonPressed_ name:*MEMORY[0x277D67AF0] object:0];
   }
 
   return v7;
@@ -96,8 +96,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(ACUISActivityHostViewController *)self->_hostViewController invalidate];
   v4.receiver = self;
@@ -123,16 +123,16 @@
   [(CSCoverSheetViewControllerBase *)&v3 viewDidLoad];
 }
 
-- (void)_preferredContentSizeDidChangeForChildViewController:(id)a3
+- (void)_preferredContentSizeDidChangeForChildViewController:(id)controller
 {
   v24 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = CSActivityViewController;
-  v4 = a3;
-  [(CSActivityViewController *)&v17 _preferredContentSizeDidChangeForChildViewController:v4];
+  controllerCopy = controller;
+  [(CSActivityViewController *)&v17 _preferredContentSizeDidChangeForChildViewController:controllerCopy];
   hostViewController = self->_hostViewController;
 
-  if (hostViewController == v4)
+  if (hostViewController == controllerCopy)
   {
     [(ACUISActivityHostViewController *)hostViewController preferredContentSize:v17.receiver];
     v7 = v6;
@@ -140,25 +140,25 @@
     v10 = SBLogCoverSheetActivities();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(ACUISActivityHostViewController *)self->_hostViewController activityIdentifier];
-      v12 = [(ACUISActivityHostViewController *)self->_hostViewController activitySceneDescriptor];
-      v13 = [v12 activityDescriptor];
-      v14 = [v13 platterTargetBundleIdentifier];
+      activityIdentifier = [(ACUISActivityHostViewController *)self->_hostViewController activityIdentifier];
+      activitySceneDescriptor = [(ACUISActivityHostViewController *)self->_hostViewController activitySceneDescriptor];
+      activityDescriptor = [activitySceneDescriptor activityDescriptor];
+      platterTargetBundleIdentifier = [activityDescriptor platterTargetBundleIdentifier];
       v25.width = v7;
       v25.height = v9;
       v15 = NSStringFromCGSize(v25);
       *buf = 138543874;
-      v19 = v11;
+      v19 = activityIdentifier;
       v20 = 2114;
-      v21 = v14;
+      v21 = platterTargetBundleIdentifier;
       v22 = 2112;
       v23 = v15;
       _os_log_impl(&dword_21EB05000, v10, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] Preferred content size changed to: %@", buf, 0x20u);
     }
 
     [(CSActivityViewController *)self setPreferredContentSize:v7, v9];
-    v16 = [(CSActivityViewController *)self view];
-    [v16 layoutIfNeeded];
+    view = [(CSActivityViewController *)self view];
+    [view layoutIfNeeded];
   }
 }
 
@@ -168,15 +168,15 @@
   v24.receiver = self;
   v24.super_class = CSActivityViewController;
   [(CSCoverSheetViewControllerBase *)&v24 viewWillLayoutSubviews];
-  v3 = [(CSActivityViewController *)self view];
-  [v3 bounds];
+  view = [(CSActivityViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CSActivityViewController *)self view];
+  view2 = [(CSActivityViewController *)self view];
   v11 = objc_opt_class();
-  v12 = v10;
+  v12 = view2;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -203,99 +203,99 @@
   v17 = SBLogCoverSheetActivities();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(ACUISActivityHostViewController *)self->_hostViewController activityIdentifier];
-    v19 = [(ACUISActivityHostViewController *)self->_hostViewController activitySceneDescriptor];
-    v20 = [v19 activityDescriptor];
-    v21 = [v20 platterTargetBundleIdentifier];
+    activityIdentifier = [(ACUISActivityHostViewController *)self->_hostViewController activityIdentifier];
+    activitySceneDescriptor = [(ACUISActivityHostViewController *)self->_hostViewController activitySceneDescriptor];
+    activityDescriptor = [activitySceneDescriptor activityDescriptor];
+    platterTargetBundleIdentifier = [activityDescriptor platterTargetBundleIdentifier];
     v32.origin.x = v5;
     v32.origin.y = v7;
     v32.size.width = v9;
     v32.size.height = v16;
     v22 = NSStringFromCGRect(v32);
     *buf = 138543874;
-    v26 = v18;
+    v26 = activityIdentifier;
     v27 = 2114;
-    v28 = v21;
+    v28 = platterTargetBundleIdentifier;
     v29 = 2112;
     v30 = v22;
     _os_log_impl(&dword_21EB05000, v17, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] Setting host view controller frame: %@", buf, 0x20u);
   }
 
-  v23 = [(ACUISActivityHostViewController *)self->_hostViewController view];
-  [v23 setFrame:{v5, v7, v9, v16}];
+  view3 = [(ACUISActivityHostViewController *)self->_hostViewController view];
+  [view3 setFrame:{v5, v7, v9, v16}];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = CSActivityViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v10, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v10, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    if (v6 == 25)
+    type = [eventCopy type];
+    if (type == 25)
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 0;
     }
 
     else
     {
-      if (v6 != 24)
+      if (type != 24)
       {
 LABEL_9:
-        v5 = 0;
+        isConsumable = 0;
         goto LABEL_10;
       }
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = 1;
     }
 
-    [(CSActivityViewController *)v7 _setScreenOn:v8];
+    [(CSActivityViewController *)selfCopy2 _setScreenOn:v8];
     goto LABEL_9;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_10:
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)setVisibility:(unint64_t)a3
+- (void)setVisibility:(unint64_t)visibility
 {
   hostViewController = self->_hostViewController;
-  v4 = [(CSActivityViewController *)self _visiblityForCSActivityVisibilty:a3];
+  v4 = [(CSActivityViewController *)self _visiblityForCSActivityVisibilty:visibility];
 
   [(ACUISActivityHostViewController *)hostViewController setVisibility:v4];
 }
 
-- (void)setPresentationMode:(unint64_t)a3
+- (void)setPresentationMode:(unint64_t)mode
 {
-  v4 = [(CSActivityViewController *)self _presentationModeForActivityPresentationMode:a3];
+  v4 = [(CSActivityViewController *)self _presentationModeForActivityPresentationMode:mode];
 
   [(CSActivityViewController *)self _setPresentationMode:v4];
 }
 
-- (void)reevaluatePresentationModeForReason:(id)a3
+- (void)reevaluatePresentationModeForReason:(id)reason
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CSActivityViewController *)self isContentVisibleAndAppeared];
-  v6 = [(CSActivityViewController *)self _isScreenOn];
-  v7 = [(CSActivityViewController *)self traitCollection];
-  v8 = [v7 _backlightLuminance];
+  reasonCopy = reason;
+  isContentVisibleAndAppeared = [(CSActivityViewController *)self isContentVisibleAndAppeared];
+  _isScreenOn = [(CSActivityViewController *)self _isScreenOn];
+  traitCollection = [(CSActivityViewController *)self traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  v9 = v5 && (v6 || v8 != 0);
+  v9 = isContentVisibleAndAppeared && (_isScreenOn || _backlightLuminance != 0);
   v10 = SBLogCoverSheetActivities();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(ACUISActivityHostViewController *)self->_hostViewController activityIdentifier];
-    v19 = [(ACUISActivityHostViewController *)self->_hostViewController activitySceneDescriptor];
-    v12 = [v19 activityDescriptor];
-    [v12 platterTargetBundleIdentifier];
-    v13 = v20 = v5 && (v6 || v8 != 0);
-    v14 = v4;
+    activityIdentifier = [(ACUISActivityHostViewController *)self->_hostViewController activityIdentifier];
+    activitySceneDescriptor = [(ACUISActivityHostViewController *)self->_hostViewController activitySceneDescriptor];
+    activityDescriptor = [activitySceneDescriptor activityDescriptor];
+    [activityDescriptor platterTargetBundleIdentifier];
+    v13 = v20 = isContentVisibleAndAppeared && (_isScreenOn || _backlightLuminance != 0);
+    v14 = reasonCopy;
     if (v20)
     {
       v15 = @"live";
@@ -309,12 +309,12 @@ LABEL_10:
     v16 = NSStringFromBOOL();
     v17 = NSStringFromBOOL();
     *buf = 138544898;
-    v22 = v11;
+    v22 = activityIdentifier;
     v23 = 2114;
     v24 = v13;
     v25 = 2112;
     v26 = v15;
-    v4 = v14;
+    reasonCopy = v14;
     v27 = 2112;
     v28 = v14;
     v29 = 2112;
@@ -322,7 +322,7 @@ LABEL_10:
     v31 = 2112;
     v32 = v17;
     v33 = 2048;
-    v34 = v8;
+    v34 = _backlightLuminance;
     _os_log_impl(&dword_21EB05000, v10, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] Updating activity scene presentation mode to: %@, for reason: %@, for screen on: %@, appeared: %@, backlight luminance: %ld", buf, 0x48u);
 
     v9 = v20;
@@ -341,7 +341,7 @@ LABEL_10:
   [(CSActivityViewController *)self _setPresentationMode:v18];
 }
 
-- (void)_setPresentationMode:(unint64_t)a3
+- (void)_setPresentationMode:(unint64_t)mode
 {
   [(ACUISActivityHostViewController *)self->_hostViewController setPresentationMode:?];
   v5[0] = MEMORY[0x277D85DD0];
@@ -349,7 +349,7 @@ LABEL_10:
   v5[2] = __49__CSActivityViewController__setPresentationMode___block_invoke;
   v5[3] = &unk_27838C888;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = mode;
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
@@ -366,11 +366,11 @@ void __49__CSActivityViewController__setPresentationMode___block_invoke(uint64_t
   }
 }
 
-- (void)_setScreenOn:(BOOL)a3
+- (void)_setScreenOn:(BOOL)on
 {
-  if (self->_screenOn != a3)
+  if (self->_screenOn != on)
   {
-    self->_screenOn = a3;
+    self->_screenOn = on;
     [(CSActivityViewController *)self reevaluatePresentationModeForReason:@"ScreenOnChanged"];
   }
 }
@@ -381,16 +381,16 @@ void __49__CSActivityViewController__setPresentationMode___block_invoke(uint64_t
   [(CSActivityViewController *)self reevaluatePresentationModeForReason:v3];
 }
 
-- (void)_updateAudioCategoriesDisablingVolumeHUDWithReason:(id)a3
+- (void)_updateAudioCategoriesDisablingVolumeHUDWithReason:(id)reason
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if ([(CSActivityViewController *)self isContentVisibleAndAppeared])
   {
-    v5 = [(ACUISActivityHostViewController *)self->_hostViewController audioCategoriesDisablingVolumeHUD];
-    if (v5)
+    audioCategoriesDisablingVolumeHUD = [(ACUISActivityHostViewController *)self->_hostViewController audioCategoriesDisablingVolumeHUD];
+    if (audioCategoriesDisablingVolumeHUD)
     {
-      v6 = [MEMORY[0x277CBEB98] setWithArray:v5];
+      v6 = [MEMORY[0x277CBEB98] setWithArray:audioCategoriesDisablingVolumeHUD];
     }
 
     else
@@ -410,141 +410,141 @@ void __49__CSActivityViewController__setPresentationMode___block_invoke(uint64_t
     v7 = SBLogCoverSheetActivities();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ACUISActivityHostViewController *)self->_hostViewController activityIdentifier];
-      v9 = [(ACUISActivityHostViewController *)self->_hostViewController activitySceneDescriptor];
-      v10 = [v9 activityDescriptor];
-      v11 = [v10 platterTargetBundleIdentifier];
+      activityIdentifier = [(ACUISActivityHostViewController *)self->_hostViewController activityIdentifier];
+      activitySceneDescriptor = [(ACUISActivityHostViewController *)self->_hostViewController activitySceneDescriptor];
+      activityDescriptor = [activitySceneDescriptor activityDescriptor];
+      platterTargetBundleIdentifier = [activityDescriptor platterTargetBundleIdentifier];
       v13 = 138544386;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v8;
+      v16 = activityIdentifier;
       v17 = 2114;
-      v18 = v11;
+      v18 = platterTargetBundleIdentifier;
       v19 = 2114;
       v20 = v6;
       v21 = 2114;
-      v22 = v4;
+      v22 = reasonCopy;
       _os_log_impl(&dword_21EB05000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ [ActivityID: %{public}@, BundleID: %{public}@] Updating audioCategoriesDisablingVolumeHUD to '%{public}@' for reason: %{public}@", &v13, 0x34u);
     }
 
-    v12 = [(CSActivityViewController *)self delegate];
-    [v12 activityViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:self];
+    delegate = [(CSActivityViewController *)self delegate];
+    [delegate activityViewControllerDidUpdateAudioCategoriesDisablingVolumeHUD:self];
   }
 }
 
-- (unint64_t)_presentationModeForHostedEntityContentMode:(int64_t)a3
+- (unint64_t)_presentationModeForHostedEntityContentMode:(int64_t)mode
 {
-  if ((a3 - 1) > 2)
+  if ((mode - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_21EC96AE8[a3 - 1];
+    return qword_21EC96AE8[mode - 1];
   }
 }
 
-- (unint64_t)_presentationModeForActivityPresentationMode:(unint64_t)a3
+- (unint64_t)_presentationModeForActivityPresentationMode:(unint64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return mode == 1;
   }
 }
 
-- (void)_handleButtonPressOfType:(unint64_t)a3
+- (void)_handleButtonPressOfType:(unint64_t)type
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = [(ACUISActivityHostViewController *)self->_hostViewController handleHardwareButtonForType:?];
   v6 = SBLogCoverSheetActivities();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(ACUISActivityHostViewController *)self->_hostViewController activityIdentifier];
+    activityIdentifier = [(ACUISActivityHostViewController *)self->_hostViewController activityIdentifier];
     v8 = 138544130;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v7;
+    v11 = activityIdentifier;
     v12 = 2048;
-    v13 = a3;
+    typeCopy = type;
     v14 = 1024;
     v15 = v5;
     _os_log_impl(&dword_21EB05000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ [ActivityID: %{public}@, hardware button press of type %lu was sent to scene: %{BOOL}u", &v8, 0x26u);
   }
 }
 
-- (void)activityHostViewController:(id)a3 requestsLaunchWithAction:(id)a4
+- (void)activityHostViewController:(id)controller requestsLaunchWithAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CSActivityViewController *)self hostDelegate];
-  [v6 activityViewController:self requestsLaunchWithAction:v5];
+  actionCopy = action;
+  hostDelegate = [(CSActivityViewController *)self hostDelegate];
+  [hostDelegate activityViewController:self requestsLaunchWithAction:actionCopy];
 }
 
-- (BOOL)activityHostViewController:(id)a3 didReceiveAction:(id)a4
+- (BOOL)activityHostViewController:(id)controller didReceiveAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CSActivityViewController *)self hostDelegate];
-  LOBYTE(self) = [v6 activityViewController:self didReceiveAction:v5];
+  actionCopy = action;
+  hostDelegate = [(CSActivityViewController *)self hostDelegate];
+  LOBYTE(self) = [hostDelegate activityViewController:self didReceiveAction:actionCopy];
 
   return self;
 }
 
-- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)a3
+- (void)activityHostViewControllerBackgroundTintColorDidChange:(id)change
 {
-  v4 = [(CSActivityViewController *)self hostDelegate];
-  [v4 activityViewControllerBackgroundTintColorDidChange:self];
+  hostDelegate = [(CSActivityViewController *)self hostDelegate];
+  [hostDelegate activityViewControllerBackgroundTintColorDidChange:self];
 }
 
-- (void)activityHostViewControllerTextColorDidChange:(id)a3
+- (void)activityHostViewControllerTextColorDidChange:(id)change
 {
-  v4 = [(CSActivityViewController *)self hostDelegate];
-  [v4 activityViewControllerTextColorDidChange:self];
+  hostDelegate = [(CSActivityViewController *)self hostDelegate];
+  [hostDelegate activityViewControllerTextColorDidChange:self];
 }
 
-- (void)activityHostViewControllerHostShouldCancelTouches:(id)a3
+- (void)activityHostViewControllerHostShouldCancelTouches:(id)touches
 {
-  v4 = [(CSActivityViewController *)self hostDelegate];
-  [v4 activityViewControllerHostShouldCancelTouches:self];
+  hostDelegate = [(CSActivityViewController *)self hostDelegate];
+  [hostDelegate activityViewControllerHostShouldCancelTouches:self];
 }
 
-- (void)activityHostViewControllerSignificantUserInteractionBegan:(id)a3
+- (void)activityHostViewControllerSignificantUserInteractionBegan:(id)began
 {
-  v4 = [(CSActivityViewController *)self hostDelegate];
-  [v4 activityViewControllerSignificantUserInteractionBegan:self];
+  hostDelegate = [(CSActivityViewController *)self hostDelegate];
+  [hostDelegate activityViewControllerSignificantUserInteractionBegan:self];
 }
 
-- (void)activityHostViewControllerSignificantUserInteractionEnded:(id)a3
+- (void)activityHostViewControllerSignificantUserInteractionEnded:(id)ended
 {
-  v4 = [(CSActivityViewController *)self hostDelegate];
-  [v4 activityViewControllerSignificantUserInteractionEnded:self];
+  hostDelegate = [(CSActivityViewController *)self hostDelegate];
+  [hostDelegate activityViewControllerSignificantUserInteractionEnded:self];
 }
 
-- (void)activityHostViewControllerAudioCategoriesDisablingVolumeHUDDidChange:(id)a3
+- (void)activityHostViewControllerAudioCategoriesDisablingVolumeHUDDidChange:(id)change
 {
-  v4 = [(CSActivityViewController *)self hostDelegate];
-  [v4 activityViewControllerAudioCategoriesDisablingVolumeHUDDidChange:self];
+  hostDelegate = [(CSActivityViewController *)self hostDelegate];
+  [hostDelegate activityViewControllerAudioCategoriesDisablingVolumeHUDDidChange:self];
 }
 
-- (CGSize)contentSizeForContentView:(id)a3
+- (CGSize)contentSizeForContentView:(id)view
 {
-  v4 = [(CSActivityViewController *)self hostViewController];
-  [v4 preferredContentSize];
+  hostViewController = [(CSActivityViewController *)self hostViewController];
+  [hostViewController preferredContentSize];
   v6 = v5;
   v8 = v7;
 
   if (v6 == *MEMORY[0x277CBF3A8] && v8 == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v10 = [(CSActivityViewController *)self hostViewController];
-    v11 = [v10 activitySceneDescriptor];
-    v12 = [v11 metricsRequest];
+    hostViewController2 = [(CSActivityViewController *)self hostViewController];
+    activitySceneDescriptor = [hostViewController2 activitySceneDescriptor];
+    metricsRequest = [activitySceneDescriptor metricsRequest];
 
-    v13 = [v12 lockScreenMetrics];
-    [v13 initialSize];
+    lockScreenMetrics = [metricsRequest lockScreenMetrics];
+    [lockScreenMetrics initialSize];
     v6 = v14;
     v8 = v15;
   }
@@ -556,33 +556,33 @@ void __49__CSActivityViewController__setPresentationMode___block_invoke(uint64_t
   return result;
 }
 
-- (id)activityDescriptorForContentView:(id)a3
+- (id)activityDescriptorForContentView:(id)view
 {
-  v3 = [(CSActivityViewController *)self hostViewController];
-  v4 = [v3 activitySceneDescriptor];
-  v5 = [v4 activityDescriptor];
+  hostViewController = [(CSActivityViewController *)self hostViewController];
+  activitySceneDescriptor = [hostViewController activitySceneDescriptor];
+  activityDescriptor = [activitySceneDescriptor activityDescriptor];
 
-  return v5;
+  return activityDescriptor;
 }
 
-- (void)setHostableEntityContentMode:(int64_t)a3
+- (void)setHostableEntityContentMode:(int64_t)mode
 {
-  v4 = [(CSActivityViewController *)self _presentationModeForHostedEntityContentMode:a3];
+  v4 = [(CSActivityViewController *)self _presentationModeForHostedEntityContentMode:mode];
 
   [(CSActivityViewController *)self _setPresentationMode:v4];
 }
 
 - (id)sceneHostEnvironmentEntriesForBacklightSession
 {
-  v3 = [(ACUISActivityHostViewController *)self->_hostViewController backlightHostEnvironment];
-  if (v3)
+  backlightHostEnvironment = [(ACUISActivityHostViewController *)self->_hostViewController backlightHostEnvironment];
+  if (backlightHostEnvironment)
   {
-    v4 = [(ACUISActivityHostViewController *)self->_hostViewController activitySceneDescriptor];
-    v5 = [v4 activityDescriptor];
-    v6 = [v5 platterTargetBundleIdentifier];
+    activitySceneDescriptor = [(ACUISActivityHostViewController *)self->_hostViewController activitySceneDescriptor];
+    activityDescriptor = [activitySceneDescriptor activityDescriptor];
+    platterTargetBundleIdentifier = [activityDescriptor platterTargetBundleIdentifier];
 
     v7 = MEMORY[0x277CBEB98];
-    v8 = [MEMORY[0x277D65E08] entryWithSceneHostEnvironment:v3 bundleIdentifier:v6];
+    v8 = [MEMORY[0x277D65E08] entryWithSceneHostEnvironment:backlightHostEnvironment bundleIdentifier:platterTargetBundleIdentifier];
     v9 = [v7 setWithObject:v8];
   }
 

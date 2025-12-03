@@ -1,11 +1,11 @@
 @interface NRNANServiceInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRNANServiceInfo
@@ -18,13 +18,13 @@
   return v4 ^ v5 ^ [(NSData *)self->_deviceTypeHash hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((serviceName = self->_serviceName, !(serviceName | v4[4])) || -[NSString isEqual:](serviceName, "isEqual:")) && ((authTag = self->_authTag, !(authTag | v4[2])) || -[NSData isEqual:](authTag, "isEqual:")) && ((advertisingNonce = self->_advertisingNonce, !(advertisingNonce | v4[1])) || -[NSData isEqual:](advertisingNonce, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((serviceName = self->_serviceName, !(serviceName | equalCopy[4])) || -[NSString isEqual:](serviceName, "isEqual:")) && ((authTag = self->_authTag, !(authTag | equalCopy[2])) || -[NSData isEqual:](authTag, "isEqual:")) && ((advertisingNonce = self->_advertisingNonce, !(advertisingNonce | equalCopy[1])) || -[NSData isEqual:](advertisingNonce, "isEqual:")))
   {
     deviceTypeHash = self->_deviceTypeHash;
-    if (deviceTypeHash | v4[3])
+    if (deviceTypeHash | equalCopy[3])
     {
       v9 = [(NSData *)deviceTypeHash isEqual:?];
     }
@@ -43,67 +43,67 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_serviceName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_serviceName copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSData *)self->_authTag copyWithZone:a3];
+  v8 = [(NSData *)self->_authTag copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSData *)self->_advertisingNonce copyWithZone:a3];
+  v10 = [(NSData *)self->_advertisingNonce copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSData *)self->_deviceTypeHash copyWithZone:a3];
+  v12 = [(NSData *)self->_deviceTypeHash copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_serviceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_authTag)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_advertisingNonce)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deviceTypeHash)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v11 = 0;
@@ -112,18 +112,18 @@
       while (1)
       {
         v21 = 0;
-        v14 = [a3 position] + 1;
-        if (v14 >= [a3 position] && (v15 = objc_msgSend(a3, "position") + 1, v15 <= objc_msgSend(a3, "length")))
+        v14 = [from position] + 1;
+        if (v14 >= [from position] && (v15 = objc_msgSend(from, "position") + 1, v15 <= objc_msgSend(from, "length")))
         {
-          v16 = [a3 data];
-          [v16 getBytes:&v21 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v21 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v13 |= (v21 & 0x7F) << v11;
@@ -140,11 +140,11 @@
         }
       }
 
-      v18 = [a3 hasError] ? 0 : v13;
+      v18 = [from hasError] ? 0 : v13;
 LABEL_19:
-      if (([a3 hasError] & 1) != 0 || (v18 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v18 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v19 = v18 >> 3;
@@ -193,13 +193,13 @@ LABEL_4:
       }
 
 LABEL_5:
-      v10 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v10 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -238,8 +238,8 @@ LABEL_5:
   v7.receiver = self;
   v7.super_class = NRNANServiceInfo;
   v3 = [(NRNANServiceInfo *)&v7 description];
-  v4 = [(NRNANServiceInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRNANServiceInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

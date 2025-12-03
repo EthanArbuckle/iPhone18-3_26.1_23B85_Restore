@@ -1,26 +1,26 @@
 @interface SafariDeveloperSettingsController
-- (BOOL)isBlockAllNewWebsiteDataRestricted:(id)a3;
-- (BOOL)isJavaScriptRestricted:(id)a3;
+- (BOOL)isBlockAllNewWebsiteDataRestricted:(id)restricted;
+- (BOOL)isJavaScriptRestricted:(id)restricted;
 - (SafariDeveloperSettingsController)init;
 - (id)_automationController;
 - (id)_enhancedPrivacyPreference;
 - (id)_privacySpecifiers;
-- (id)_remoteAutomationEnabled:(id)a3;
+- (id)_remoteAutomationEnabled:(id)enabled;
 - (id)blockAllNewWebsiteDataEnabled;
-- (id)isJavaScriptEnabled:(id)a3;
-- (id)remoteInspectorEnabled:(id)a3;
+- (id)isJavaScriptEnabled:(id)enabled;
+- (id)remoteInspectorEnabled:(id)enabled;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_cancelBlockAllCookiesPrompt:(id)a3;
-- (void)_confirmBlockAllCookies:(id)a3;
-- (void)_setEnhancedPrivacyPreference:(id)a3 forSpecifier:(id)a4;
-- (void)_setSafariAcceptCookiesForPolicy:(unint64_t)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_cancelBlockAllCookiesPrompt:(id)prompt;
+- (void)_confirmBlockAllCookies:(id)cookies;
+- (void)_setEnhancedPrivacyPreference:(id)preference forSpecifier:(id)specifier;
+- (void)_setSafariAcceptCookiesForPolicy:(unint64_t)policy;
 - (void)_synchronizeNanoUserDefaults;
-- (void)safariToggleBlockAllNewWebsiteData:(id)a3 forSpecifier:(id)a4;
-- (void)setCookieStoragePolicy:(unint64_t)a3;
-- (void)setRemoteAutomationEnabled:(id)a3 specifier:(id)a4;
-- (void)setRemoteInspectorEnabled:(id)a3 specifier:(id)a4;
-- (void)showPrivacyExplanationSheet:(id)a3;
+- (void)safariToggleBlockAllNewWebsiteData:(id)data forSpecifier:(id)specifier;
+- (void)setCookieStoragePolicy:(unint64_t)policy;
+- (void)setRemoteAutomationEnabled:(id)enabled specifier:(id)specifier;
+- (void)setRemoteInspectorEnabled:(id)enabled specifier:(id)specifier;
+- (void)showPrivacyExplanationSheet:(id)sheet;
 @end
 
 @implementation SafariDeveloperSettingsController
@@ -94,20 +94,20 @@
   return v3;
 }
 
-- (void)_setEnhancedPrivacyPreference:(id)a3 forSpecifier:(id)a4
+- (void)_setEnhancedPrivacyPreference:(id)preference forSpecifier:(id)specifier
 {
-  v4 = a3;
+  preferenceCopy = preference;
   v9 = +[NSUserDefaults safari_browserDefaults];
-  v5 = [v4 integerValue];
+  integerValue = [preferenceCopy integerValue];
 
   v6 = 0;
   v7 = &WBSEnableEnhancedPrivacyInPrivateBrowsingPreferenceKey;
-  if (v5)
+  if (integerValue)
   {
     v8 = v9;
-    if (v5 != &dword_0 + 1)
+    if (integerValue != &dword_0 + 1)
     {
-      if (v5 != &dword_0 + 2)
+      if (integerValue != &dword_0 + 2)
       {
         goto LABEL_7;
       }
@@ -133,8 +133,8 @@ LABEL_7:
     v4 = [(SafariDeveloperSettingsController *)self loadSpecifiersFromPlistName:@"Developer" target:self];
     v5 = SafariSettingsLocalizedString(@"REMOTE_INSPECTOR_INSTRUCTIONS_TEXT", @"Developer");
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 localizedModel];
-    v39 = [NSString stringWithFormat:v5, v7];
+    localizedModel = [v6 localizedModel];
+    v39 = [NSString stringWithFormat:v5, localizedModel];
 
     v8 = [v4 specifierForID:@"REMOTE_INSPECTOR_ID"];
     [v8 setProperty:v39 forKey:PSFooterTextGroupKey];
@@ -165,9 +165,9 @@ LABEL_7:
 
     [v4 insertObject:v14 atIndex:{objc_msgSend(v4, "indexOfSpecifierWithID:", @"REMOTE_AUTOMATION_ID"}];
     v16 = [v4 indexOfSpecifierWithID:@"BLOCK_ALL_NEW_COOKIES"];
-    v17 = [(SafariDeveloperSettingsController *)self _privacySpecifiers];
-    v18 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v16, [v17 count]);
-    [v4 insertObjects:v17 atIndexes:v18];
+    _privacySpecifiers = [(SafariDeveloperSettingsController *)self _privacySpecifiers];
+    v18 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v16, [_privacySpecifiers count]);
+    [v4 insertObjects:_privacySpecifiers atIndexes:v18];
 
     v19 = [v4 objectAtIndexedSubscript:{objc_msgSend(v4, "indexOfSpecifierWithID:", @"PRIVACY_SETTINGS"}];
     v20 = SafariSettingsLocalizedString(@"Advanced Privacy Section Title", @"Developer");
@@ -175,13 +175,13 @@ LABEL_7:
 
     v21 = SafariSettingsLocalizedString(@"Privacy Explanation Footer Description", @"Safari");
     v22 = [OBBundle bundleWithIdentifier:@"com.apple.onboarding.safari"];
-    v23 = [v22 privacyFlow];
-    v24 = [v23 localizedButtonTitle];
+    privacyFlow = [v22 privacyFlow];
+    localizedButtonTitle = [privacyFlow localizedButtonTitle];
 
-    v25 = [NSString stringWithFormat:@"%@\n%@", v21, v24];
+    v25 = [NSString stringWithFormat:@"%@\n%@", v21, localizedButtonTitle];
     [v19 setProperty:v25 forKey:PSFooterHyperlinkViewTitleKey];
     v26 = [v21 length];
-    v46.length = [v24 length];
+    v46.length = [localizedButtonTitle length];
     v46.location = v26 + 1;
     v27 = NSStringFromRange(v46);
     [v19 setProperty:v27 forKey:PSFooterHyperlinkViewLinkRangeKey];
@@ -212,7 +212,7 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)isJavaScriptRestricted:(id)a3
+- (BOOL)isJavaScriptRestricted:(id)restricted
 {
   v3 = +[MCProfileConnection sharedConnection];
   v4 = [v3 isBoolSettingLockedDownByRestrictions:MCFeatureSafariJavaScriptAllowed];
@@ -220,7 +220,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)isJavaScriptEnabled:(id)a3
+- (id)isJavaScriptEnabled:(id)enabled
 {
   v3 = +[NSUserDefaults safari_browserDefaults];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 safari_isJavaScriptEnabled]);
@@ -228,7 +228,7 @@ LABEL_7:
   return v4;
 }
 
-- (id)remoteInspectorEnabled:(id)a3
+- (id)remoteInspectorEnabled:(id)enabled
 {
   v3 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.webinspectord"];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 BOOLForKey:@"RemoteInspectorEnabled"]);
@@ -236,18 +236,18 @@ LABEL_7:
   return v4;
 }
 
-- (void)setRemoteInspectorEnabled:(id)a3 specifier:(id)a4
+- (void)setRemoteInspectorEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  [(SafariDeveloperSettingsController *)self _setRemoteInspectorEnabled:v5];
+  [(SafariDeveloperSettingsController *)self _setRemoteInspectorEnabled:bOOLValue];
 }
 
-- (void)setRemoteAutomationEnabled:(id)a3 specifier:(id)a4
+- (void)setRemoteAutomationEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  [(SafariDeveloperSettingsController *)self _setRemoteAutomationEnabled:v5];
+  [(SafariDeveloperSettingsController *)self _setRemoteAutomationEnabled:bOOLValue];
 }
 
 - (id)_automationController
@@ -265,15 +265,15 @@ LABEL_7:
   return v2;
 }
 
-- (id)_remoteAutomationEnabled:(id)a3
+- (id)_remoteAutomationEnabled:(id)enabled
 {
-  v3 = [(SafariDeveloperSettingsController *)self _automationController];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 allowsRemoteAutomation]);
+  _automationController = [(SafariDeveloperSettingsController *)self _automationController];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [_automationController allowsRemoteAutomation]);
 
   return v4;
 }
 
-- (BOOL)isBlockAllNewWebsiteDataRestricted:(id)a3
+- (BOOL)isBlockAllNewWebsiteDataRestricted:(id)restricted
 {
   v3 = [(MCProfileConnection *)self->_profileConnection valueRestrictionForFeature:MCFeatureSafariAcceptCookies];
   v4 = v3;
@@ -294,14 +294,14 @@ LABEL_7:
 - (id)blockAllNewWebsiteDataEnabled
 {
   v2 = +[NSHTTPCookieStorage sharedHTTPCookieStorage];
-  v3 = [v2 webui_safariCookieAcceptPolicyEnumValue];
+  webui_safariCookieAcceptPolicyEnumValue = [v2 webui_safariCookieAcceptPolicyEnumValue];
 
-  return [NSNumber numberWithInt:v3 == &dword_0 + 1];
+  return [NSNumber numberWithInt:webui_safariCookieAcceptPolicyEnumValue == &dword_0 + 1];
 }
 
-- (void)safariToggleBlockAllNewWebsiteData:(id)a3 forSpecifier:(id)a4
+- (void)safariToggleBlockAllNewWebsiteData:(id)data forSpecifier:(id)specifier
 {
-  if ([a3 BOOLValue])
+  if ([data BOOLValue])
   {
     v5 = [PSConfirmationSpecifier preferenceSpecifierNamed:&stru_8BB60 target:self set:0 get:0 detail:0 cell:-1 edit:0];
     v11[0] = PSConfirmationTitleKey;
@@ -332,7 +332,7 @@ LABEL_7:
   }
 }
 
-- (void)_confirmBlockAllCookies:(id)a3
+- (void)_confirmBlockAllCookies:(id)cookies
 {
   [(SafariDeveloperSettingsController *)self _updateBlockAllNewWebsiteDataPolicyToBlockAllWebsiteData:1];
   v3 = WBAllWebsiteDataProfileIdentifier;
@@ -340,7 +340,7 @@ LABEL_7:
   [SafariStorageSettingsController deleteAllDataForProfileWithIdentifier:v3];
 }
 
-- (void)_cancelBlockAllCookiesPrompt:(id)a3
+- (void)_cancelBlockAllCookiesPrompt:(id)prompt
 {
   v4 = [(SafariDeveloperSettingsController *)self specifierForID:@"BLOCK_ALL_NEW_COOKIES"];
   [(SafariDeveloperSettingsController *)self reloadSpecifier:v4];
@@ -361,15 +361,15 @@ LABEL_7:
   [v5 synchronizeUserDefaultsDomain:@"com.apple.mobilesafari" keys:v6 container:@"com.apple.mobilesafari"];
 }
 
-- (void)_setSafariAcceptCookiesForPolicy:(unint64_t)a3
+- (void)_setSafariAcceptCookiesForPolicy:(unint64_t)policy
 {
   v3 = 0.0;
-  if (a3 == 2)
+  if (policy == 2)
   {
     *&v3 = 1.5;
   }
 
-  if (!a3)
+  if (!policy)
   {
     *&v3 = 2.0;
   }
@@ -379,9 +379,9 @@ LABEL_7:
   [(MCProfileConnection *)profileConnection setValue:v5 forSetting:MCFeatureSafariAcceptCookies];
 }
 
-- (void)setCookieStoragePolicy:(unint64_t)a3
+- (void)setCookieStoragePolicy:(unint64_t)policy
 {
-  [(SafariDeveloperSettingsController *)self _setSafariAcceptCookiesForPolicy:a3];
+  [(SafariDeveloperSettingsController *)self _setSafariAcceptCookiesForPolicy:policy];
   v4 = +[NSHTTPCookieStorage sharedHTTPCookieStorage];
   [v4 webui_applySafariCookieAcceptPolicy];
 
@@ -390,28 +390,28 @@ LABEL_7:
   [(SafariSettingsListController *)self postDistributedNotificationNamed:v5];
 }
 
-- (void)showPrivacyExplanationSheet:(id)a3
+- (void)showPrivacyExplanationSheet:(id)sheet
 {
   v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.safari"];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = SafariDeveloperSettingsController;
-  v4 = [(SafariDeveloperSettingsController *)&v11 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
-  [v5 setNumberOfLines:0];
+  v4 = [(SafariDeveloperSettingsController *)&v11 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
-  v6 = [v4 textLabel];
+  textLabel2 = [v4 textLabel];
   LODWORD(v7) = 1132068864;
-  [v6 setContentCompressionResistancePriority:0 forAxis:v7];
+  [textLabel2 setContentCompressionResistancePriority:0 forAxis:v7];
 
-  v8 = [v4 detailTextLabel];
+  detailTextLabel = [v4 detailTextLabel];
   LODWORD(v9) = 1144750080;
-  [v8 setContentCompressionResistancePriority:0 forAxis:v9];
+  [detailTextLabel setContentCompressionResistancePriority:0 forAxis:v9];
 
   return v4;
 }

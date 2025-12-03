@@ -9,10 +9,10 @@
 - (UILabel)teamInfoLabel;
 - (UILabel)titleLabel;
 - (void)awakeFromNib;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateLabelLinesForContentSizeCategory:(id)a3;
-- (void)updateWithEnhancedLoggingSession:(id)a3;
-- (void)updateWithItem:(id)a3 showingTeamName:(BOOL)a4;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateLabelLinesForContentSizeCategory:(id)category;
+- (void)updateWithEnhancedLoggingSession:(id)session;
+- (void)updateWithItem:(id)item showingTeamName:(BOOL)name;
 @end
 
 @implementation FBAInboxItemCell
@@ -23,67 +23,67 @@
   v10.super_class = FBAInboxItemCell;
   [(FBAInboxItemCell *)&v10 awakeFromNib];
   v3 = +[UIColor secondaryLabelColor];
-  v4 = [(FBAInboxItemCell *)self fauxAccessoryView];
-  [v4 setTintColor:v3];
+  fauxAccessoryView = [(FBAInboxItemCell *)self fauxAccessoryView];
+  [fauxAccessoryView setTintColor:v3];
 
-  v5 = [(FBAInboxItemCell *)self titleLabel];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(FBAInboxItemCell *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(FBAInboxItemCell *)self subtitleLabel];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  subtitleLabel = [(FBAInboxItemCell *)self subtitleLabel];
+  [subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(FBAInboxItemCell *)self teamInfoLabel];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  teamInfoLabel = [(FBAInboxItemCell *)self teamInfoLabel];
+  [teamInfoLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(FBAInboxItemCell *)self unreadImageView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  unreadImageView = [(FBAInboxItemCell *)self unreadImageView];
+  [unreadImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(FBAInboxItemCell *)self orphanImageView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  orphanImageView = [(FBAInboxItemCell *)self orphanImageView];
+  [orphanImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
-- (void)updateWithItem:(id)a3 showingTeamName:(BOOL)a4
+- (void)updateWithItem:(id)item showingTeamName:(BOOL)name
 {
-  v4 = a4;
-  v52 = a3;
-  v6 = [v52 displayTitle];
-  v7 = [(FBAInboxItemCell *)self titleLabel];
-  [v7 setText:v6];
+  nameCopy = name;
+  itemCopy = item;
+  displayTitle = [itemCopy displayTitle];
+  titleLabel = [(FBAInboxItemCell *)self titleLabel];
+  [titleLabel setText:displayTitle];
 
-  v8 = [v52 displayTitle];
-  [(FBAInboxItemCell *)self setAccessibilityIdentifier:v8];
+  displayTitle2 = [itemCopy displayTitle];
+  [(FBAInboxItemCell *)self setAccessibilityIdentifier:displayTitle2];
 
-  v9 = [v52 imageForNeedsAction];
-  v10 = [(FBAInboxItemCell *)self unreadImageView];
-  [v10 setImage:v9];
+  imageForNeedsAction = [itemCopy imageForNeedsAction];
+  unreadImageView = [(FBAInboxItemCell *)self unreadImageView];
+  [unreadImageView setImage:imageForNeedsAction];
 
-  LODWORD(v9) = [v52 needsAction];
-  v11 = [(FBAInboxItemCell *)self unreadImageView];
-  [v11 setHidden:v9 ^ 1];
+  LODWORD(imageForNeedsAction) = [itemCopy needsAction];
+  unreadImageView2 = [(FBAInboxItemCell *)self unreadImageView];
+  [unreadImageView2 setHidden:imageForNeedsAction ^ 1];
 
-  v12 = [v52 needsActionTintColor];
-  v13 = [(FBAInboxItemCell *)self unreadImageView];
-  [v13 setTintColor:v12];
+  needsActionTintColor = [itemCopy needsActionTintColor];
+  unreadImageView3 = [(FBAInboxItemCell *)self unreadImageView];
+  [unreadImageView3 setTintColor:needsActionTintColor];
 
-  LODWORD(v12) = [v52 isOrphaned];
-  v14 = [(FBAInboxItemCell *)self orphanImageView];
-  [v14 setHidden:v12 ^ 1];
+  LODWORD(needsActionTintColor) = [itemCopy isOrphaned];
+  orphanImageView = [(FBAInboxItemCell *)self orphanImageView];
+  [orphanImageView setHidden:needsActionTintColor ^ 1];
 
-  v15 = [v52 orphanBadgeTintColor];
-  v16 = [(FBAInboxItemCell *)self orphanImageView];
-  [v16 setTintColor:v15];
+  orphanBadgeTintColor = [itemCopy orphanBadgeTintColor];
+  orphanImageView2 = [(FBAInboxItemCell *)self orphanImageView];
+  [orphanImageView2 setTintColor:orphanBadgeTintColor];
 
-  v17 = [(FBAInboxItemCell *)self traitCollection];
-  v18 = [v17 preferredContentSizeCategory];
-  [(FBAInboxItemCell *)self updateLabelLinesForContentSizeCategory:v18];
+  traitCollection = [(FBAInboxItemCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [(FBAInboxItemCell *)self updateLabelLinesForContentSizeCategory:preferredContentSizeCategory];
 
-  v19 = [v52 itemSubtitle];
-  v20 = [(__CFString *)v19 length];
-  v21 = [(FBAInboxItemCell *)self subtitleLabel];
-  v22 = v21;
+  itemSubtitle = [itemCopy itemSubtitle];
+  v20 = [(__CFString *)itemSubtitle length];
+  subtitleLabel = [(FBAInboxItemCell *)self subtitleLabel];
+  v22 = subtitleLabel;
   if (v20)
   {
-    v23 = v19;
+    v23 = itemSubtitle;
   }
 
   else
@@ -91,137 +91,137 @@
     v23 = @" ";
   }
 
-  [v21 setText:v23];
+  [subtitleLabel setText:v23];
 
-  if ([v52 shouldShowAssigneeLabel])
+  if ([itemCopy shouldShowAssigneeLabel])
   {
-    v24 = [v52 assignee];
-    v25 = [v24 fullName];
-    v26 = v25;
-    if (v25)
+    assignee = [itemCopy assignee];
+    fullName = [assignee fullName];
+    v26 = fullName;
+    if (fullName)
     {
-      v27 = v25;
+      teamInfoLabel2 = fullName;
     }
 
     else
     {
       v28 = +[NSBundle mainBundle];
-      v27 = [v28 localizedStringForKey:@"UNASSIGNED" value:&stru_1000E2210 table:FBKCommonStrings];
+      teamInfoLabel2 = [v28 localizedStringForKey:@"UNASSIGNED" value:&stru_1000E2210 table:FBKCommonStrings];
     }
 
-    if (v4)
+    if (nameCopy)
     {
-      v29 = [v52 singleTeam];
-      v30 = [v29 name];
-      v31 = [v27 stringByAppendingFormat:@", %@", v30];
+      singleTeam = [itemCopy singleTeam];
+      name = [singleTeam name];
+      v31 = [teamInfoLabel2 stringByAppendingFormat:@", %@", name];
 
-      v27 = v31;
+      teamInfoLabel2 = v31;
     }
 
-    v32 = [(FBAInboxItemCell *)self teamInfoLabel];
-    [v32 setText:v27];
+    teamInfoLabel = [(FBAInboxItemCell *)self teamInfoLabel];
+    [teamInfoLabel setText:teamInfoLabel2];
   }
 
   else
   {
-    v27 = [(FBAInboxItemCell *)self teamInfoLabel];
-    [v27 setText:0];
+    teamInfoLabel2 = [(FBAInboxItemCell *)self teamInfoLabel];
+    [teamInfoLabel2 setText:0];
   }
 
-  v33 = [v52 formattedMailboxSortDate];
-  v34 = [(FBAInboxItemCell *)self dateLabel];
-  [v34 setText:v33];
+  formattedMailboxSortDate = [itemCopy formattedMailboxSortDate];
+  dateLabel = [(FBAInboxItemCell *)self dateLabel];
+  [dateLabel setText:formattedMailboxSortDate];
 
   v35 = sub_1000143E4();
-  v36 = [v52 mailboxSortDate];
-  v37 = [v35 stringFromDate:v36];
-  v38 = [(FBAInboxItemCell *)self dateLabel];
-  [v38 setAccessibilityLabel:v37];
+  mailboxSortDate = [itemCopy mailboxSortDate];
+  v37 = [v35 stringFromDate:mailboxSortDate];
+  dateLabel2 = [(FBAInboxItemCell *)self dateLabel];
+  [dateLabel2 setAccessibilityLabel:v37];
 
-  v39 = [v52 visibleFeedbackClosedStatus];
-  v40 = [(FBAInboxItemCell *)self closedLabel];
-  [v40 setText:v39];
+  visibleFeedbackClosedStatus = [itemCopy visibleFeedbackClosedStatus];
+  closedLabel = [(FBAInboxItemCell *)self closedLabel];
+  [closedLabel setText:visibleFeedbackClosedStatus];
 
-  v41 = [v52 itemTitleColor];
-  v42 = [(FBAInboxItemCell *)self titleLabel];
-  [v42 setTextColor:v41];
+  itemTitleColor = [itemCopy itemTitleColor];
+  titleLabel2 = [(FBAInboxItemCell *)self titleLabel];
+  [titleLabel2 setTextColor:itemTitleColor];
 
-  v43 = [v52 itemTitleColor];
-  v44 = [(FBAInboxItemCell *)self teamInfoLabel];
-  [v44 setTextColor:v43];
+  itemTitleColor2 = [itemCopy itemTitleColor];
+  teamInfoLabel3 = [(FBAInboxItemCell *)self teamInfoLabel];
+  [teamInfoLabel3 setTextColor:itemTitleColor2];
 
   v45 = +[UIColor secondaryLabelColor];
-  v46 = [(FBAInboxItemCell *)self subtitleLabel];
-  [v46 setTextColor:v45];
+  subtitleLabel2 = [(FBAInboxItemCell *)self subtitleLabel];
+  [subtitleLabel2 setTextColor:v45];
 
   v47 = +[UIColor secondaryLabelColor];
-  v48 = [(FBAInboxItemCell *)self dateLabel];
-  [v48 setTextColor:v47];
+  dateLabel3 = [(FBAInboxItemCell *)self dateLabel];
+  [dateLabel3 setTextColor:v47];
 
   v49 = +[UIColor secondaryLabelColor];
-  v50 = [(FBAInboxItemCell *)self closedLabel];
-  [v50 setTextColor:v49];
+  closedLabel2 = [(FBAInboxItemCell *)self closedLabel];
+  [closedLabel2 setTextColor:v49];
 
-  v51 = [(FBAInboxItemCell *)self accessibilityTraits];
-  [(FBAInboxItemCell *)self setAccessibilityTraits:UIAccessibilityTraitButton | v51];
+  accessibilityTraits = [(FBAInboxItemCell *)self accessibilityTraits];
+  [(FBAInboxItemCell *)self setAccessibilityTraits:UIAccessibilityTraitButton | accessibilityTraits];
 }
 
-- (void)updateWithEnhancedLoggingSession:(id)a3
+- (void)updateWithEnhancedLoggingSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [(FBAInboxItemCell *)self titleLabel];
-  [v6 setText:v5];
+  sessionCopy = session;
+  title = [sessionCopy title];
+  titleLabel = [(FBAInboxItemCell *)self titleLabel];
+  [titleLabel setText:title];
 
-  v7 = [v4 subtitle];
-  v8 = [(FBAInboxItemCell *)self subtitleLabel];
-  [v8 setText:v7];
+  subtitle = [sessionCopy subtitle];
+  subtitleLabel = [(FBAInboxItemCell *)self subtitleLabel];
+  [subtitleLabel setText:subtitle];
 
-  v9 = [(FBAInboxItemCell *)self dateLabel];
-  [v9 setText:&stru_1000E2210];
+  dateLabel = [(FBAInboxItemCell *)self dateLabel];
+  [dateLabel setText:&stru_1000E2210];
 
   v10 = sub_1000143E4();
-  v11 = [v4 updatedAt];
+  updatedAt = [sessionCopy updatedAt];
 
-  v12 = [v10 stringFromDate:v11];
-  v13 = [(FBAInboxItemCell *)self dateLabel];
-  [v13 setAccessibilityLabel:v12];
+  v12 = [v10 stringFromDate:updatedAt];
+  dateLabel2 = [(FBAInboxItemCell *)self dateLabel];
+  [dateLabel2 setAccessibilityLabel:v12];
 
   [(FBAInboxItemCell *)self setTeamInfoLabel:0];
-  v14 = [(FBAInboxItemCell *)self traitCollection];
-  v15 = [v14 preferredContentSizeCategory];
-  [(FBAInboxItemCell *)self updateLabelLinesForContentSizeCategory:v15];
+  traitCollection = [(FBAInboxItemCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [(FBAInboxItemCell *)self updateLabelLinesForContentSizeCategory:preferredContentSizeCategory];
 
-  v16 = [(FBAInboxItemCell *)self closedLabel];
-  [v16 setText:0];
+  closedLabel = [(FBAInboxItemCell *)self closedLabel];
+  [closedLabel setText:0];
 
   v17 = +[UIColor labelColor];
-  v18 = [(FBAInboxItemCell *)self titleLabel];
-  [v18 setTextColor:v17];
+  titleLabel2 = [(FBAInboxItemCell *)self titleLabel];
+  [titleLabel2 setTextColor:v17];
 
   v19 = +[UIColor secondaryLabelColor];
-  v20 = [(FBAInboxItemCell *)self subtitleLabel];
-  [v20 setTextColor:v19];
+  subtitleLabel2 = [(FBAInboxItemCell *)self subtitleLabel];
+  [subtitleLabel2 setTextColor:v19];
 
   v21 = +[UIColor secondaryLabelColor];
-  v22 = [(FBAInboxItemCell *)self dateLabel];
-  [v22 setTextColor:v21];
+  dateLabel3 = [(FBAInboxItemCell *)self dateLabel];
+  [dateLabel3 setTextColor:v21];
 
   v23 = +[UIColor secondaryLabelColor];
-  v24 = [(FBAInboxItemCell *)self closedLabel];
-  [v24 setTextColor:v23];
+  closedLabel2 = [(FBAInboxItemCell *)self closedLabel];
+  [closedLabel2 setTextColor:v23];
 
-  v25 = [(FBAInboxItemCell *)self accessibilityTraits];
-  v26 = UIAccessibilityTraitButton | v25;
+  accessibilityTraits = [(FBAInboxItemCell *)self accessibilityTraits];
+  v26 = UIAccessibilityTraitButton | accessibilityTraits;
 
   [(FBAInboxItemCell *)self setAccessibilityTraits:v26];
 }
 
-- (void)updateLabelLinesForContentSizeCategory:(id)a3
+- (void)updateLabelLinesForContentSizeCategory:(id)category
 {
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(a3);
-  v5 = [(FBAInboxItemCell *)self titleLabel];
-  v6 = v5;
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(category);
+  titleLabel = [(FBAInboxItemCell *)self titleLabel];
+  v6 = titleLabel;
   v7 = !IsAccessibilityCategory;
   if (IsAccessibilityCategory)
   {
@@ -244,23 +244,23 @@
     v10 = 20.0;
   }
 
-  [v5 setNumberOfLines:v8];
+  [titleLabel setNumberOfLines:v8];
 
-  v11 = [(FBAInboxItemCell *)self subtitleLabel];
-  [v11 setNumberOfLines:v9];
+  subtitleLabel = [(FBAInboxItemCell *)self subtitleLabel];
+  [subtitleLabel setNumberOfLines:v9];
 
-  v12 = [(FBAInboxItemCell *)self teamInfoLabel];
-  [v12 setNumberOfLines:v9];
+  teamInfoLabel = [(FBAInboxItemCell *)self teamInfoLabel];
+  [teamInfoLabel setNumberOfLines:v9];
 
-  v13 = [(FBAInboxItemCell *)self unreadImageViewHeightConstraint];
-  [v13 setConstant:v10];
+  unreadImageViewHeightConstraint = [(FBAInboxItemCell *)self unreadImageViewHeightConstraint];
+  [unreadImageViewHeightConstraint setConstant:v10];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = [(FBAInboxItemCell *)self traitCollection];
-  v4 = [v5 preferredContentSizeCategory];
-  [(FBAInboxItemCell *)self updateLabelLinesForContentSizeCategory:v4];
+  traitCollection = [(FBAInboxItemCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  [(FBAInboxItemCell *)self updateLabelLinesForContentSizeCategory:preferredContentSizeCategory];
 }
 
 - (UILabel)titleLabel

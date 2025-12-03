@@ -1,23 +1,23 @@
 @interface ATXInformationHeuristicRefreshBiomeTrigger
-- (ATXInformationHeuristicRefreshBiomeTrigger)initWithCoder:(id)a3;
-- (ATXInformationHeuristicRefreshBiomeTrigger)initWithStreamType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXInformationHeuristicRefreshBiomeTrigger)initWithCoder:(id)coder;
+- (ATXInformationHeuristicRefreshBiomeTrigger)initWithStreamType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (id)_publisher;
 - (id)description;
 - (void)_start;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXInformationHeuristicRefreshBiomeTrigger
 
-- (ATXInformationHeuristicRefreshBiomeTrigger)initWithStreamType:(int64_t)a3
+- (ATXInformationHeuristicRefreshBiomeTrigger)initWithStreamType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ATXInformationHeuristicRefreshBiomeTrigger;
   result = [(ATXInformationHeuristicRefreshTrigger *)&v5 init];
   if (result)
   {
-    result->_streamType = a3;
+    result->_streamType = type;
   }
 
   return result;
@@ -28,9 +28,9 @@
   if (!self->_sink)
   {
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.proactive.ActionPredictionHeuristicsInternal.BiomeTrigger.%ld", self->_streamType];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = self->_queue;
     self->_queue = v6;
 
@@ -39,8 +39,8 @@
     self->_scheduler = v8;
 
     objc_initWeak(&location, self);
-    v10 = [(ATXInformationHeuristicRefreshBiomeTrigger *)self _publisher];
-    v11 = [v10 subscribeOn:self->_scheduler];
+    _publisher = [(ATXInformationHeuristicRefreshBiomeTrigger *)self _publisher];
+    v11 = [_publisher subscribeOn:self->_scheduler];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __52__ATXInformationHeuristicRefreshBiomeTrigger__start__block_invoke;
@@ -119,11 +119,11 @@ void __52__ATXInformationHeuristicRefreshBiomeTrigger__start__block_invoke_191(u
   if (streamType == 2)
   {
     v4 = BiomeLibrary();
-    v5 = [v4 IntelligencePlatform];
-    v7 = [v5 Views];
-    v8 = [v7 Updated];
-    v9 = [v8 DSLPublisherWithUseCase:@"FutureLifeEvent"];
-    v2 = [v9 filterWithKeyPath:@"eventBody.viewName" value:@"futureLifeEventMap"];
+    intelligencePlatform = [v4 IntelligencePlatform];
+    views = [intelligencePlatform Views];
+    updated = [views Updated];
+    v9 = [updated DSLPublisherWithUseCase:@"FutureLifeEvent"];
+    atx_DSLPublisher = [v9 filterWithKeyPath:@"eventBody.viewName" value:@"futureLifeEventMap"];
   }
 
   else
@@ -131,8 +131,8 @@ void __52__ATXInformationHeuristicRefreshBiomeTrigger__start__block_invoke_191(u
     if (streamType == 1)
     {
       v4 = BiomeLibrary();
-      v5 = [v4 UserFocus];
-      v6 = [v5 InferredMode];
+      intelligencePlatform = [v4 UserFocus];
+      inferredMode = [intelligencePlatform InferredMode];
     }
 
     else
@@ -143,31 +143,31 @@ void __52__ATXInformationHeuristicRefreshBiomeTrigger__start__block_invoke_191(u
       }
 
       v4 = BiomeLibrary();
-      v5 = [v4 UserFocus];
-      v6 = [v5 ComputedMode];
+      intelligencePlatform = [v4 UserFocus];
+      inferredMode = [intelligencePlatform ComputedMode];
     }
 
-    v7 = v6;
-    v2 = [v6 atx_DSLPublisher];
+    views = inferredMode;
+    atx_DSLPublisher = [inferredMode atx_DSLPublisher];
   }
 
 LABEL_9:
 
-  return v2;
+  return atx_DSLPublisher;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXInformationHeuristicRefreshBiomeTrigger *)self isEqualToATXInformationHeuristicRefreshBiomeTrigger:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXInformationHeuristicRefreshBiomeTrigger *)self isEqualToATXInformationHeuristicRefreshBiomeTrigger:v5];
   }
 
   return v6;
@@ -180,22 +180,22 @@ LABEL_9:
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ATXInformationHeuristicRefreshBiomeTrigger;
-  v4 = a3;
-  [(ATXInformationHeuristicRefreshTrigger *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_streamType forKey:{@"streamType", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(ATXInformationHeuristicRefreshTrigger *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_streamType forKey:{@"streamType", v5.receiver, v5.super_class}];
 }
 
-- (ATXInformationHeuristicRefreshBiomeTrigger)initWithCoder:(id)a3
+- (ATXInformationHeuristicRefreshBiomeTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ATXInformationHeuristicRefreshBiomeTrigger;
-  v5 = [(ATXInformationHeuristicRefreshTrigger *)&v10 initWithCoder:v4];
-  if (!v5 || ([v4 error], v6 = objc_claimAutoreleasedReturnValue(), v6, v6) || (v5->_streamType = objc_msgSend(v4, "decodeIntegerForKey:", @"streamType"), objc_msgSend(v4, "error"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  v5 = [(ATXInformationHeuristicRefreshTrigger *)&v10 initWithCoder:coderCopy];
+  if (!v5 || ([coderCopy error], v6 = objc_claimAutoreleasedReturnValue(), v6, v6) || (v5->_streamType = objc_msgSend(coderCopy, "decodeIntegerForKey:", @"streamType"), objc_msgSend(coderCopy, "error"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v8 = 0;
   }

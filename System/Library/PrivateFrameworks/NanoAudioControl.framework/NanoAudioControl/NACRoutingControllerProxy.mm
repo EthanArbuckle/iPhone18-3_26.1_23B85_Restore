@@ -1,27 +1,27 @@
 @interface NACRoutingControllerProxy
 - (NACRoutingControllerDelegate)delegate;
-- (NACRoutingControllerProxy)initWithAudioCategory:(id)a3;
-- (void)_applicationDidBecomeActiveNotification:(id)a3;
-- (void)_applicationWillResignActiveNotification:(id)a3;
+- (NACRoutingControllerProxy)initWithAudioCategory:(id)category;
+- (void)_applicationDidBecomeActiveNotification:(id)notification;
+- (void)_applicationWillResignActiveNotification:(id)notification;
 - (void)_audioRoutesDidChange;
 - (void)beginObservingRoutes;
 - (void)dealloc;
 - (void)endObservingRoutes;
-- (void)pickAudioRoute:(id)a3;
+- (void)pickAudioRoute:(id)route;
 @end
 
 @implementation NACRoutingControllerProxy
 
-- (NACRoutingControllerProxy)initWithAudioCategory:(id)a3
+- (NACRoutingControllerProxy)initWithAudioCategory:(id)category
 {
-  v5 = a3;
+  categoryCopy = category;
   v11.receiver = self;
   v11.super_class = NACRoutingControllerProxy;
   v6 = [(NACRoutingControllerProxy *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_category, a3);
+    objc_storeStrong(&v6->_category, category);
     v8 = +[NACXPCClient sharedClient];
     xpcClient = v7->_xpcClient;
     v7->_xpcClient = v8;
@@ -46,9 +46,9 @@
     CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _NACAudioRoutesDidChangeNotification, @"NACAudioRoutesDidChangeNotification", 0, 0);
     [(NACXPCClient *)self->_xpcClient beginObservingAudioRoutesForCategory:self->_category];
     self->_isObserving = 1;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
-    [v5 addObserver:self selector:sel__applicationWillResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
+    [defaultCenter addObserver:self selector:sel__applicationWillResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
     [(NACRoutingControllerProxy *)self _audioRoutesDidChange];
   }
 }
@@ -60,18 +60,18 @@
     [(NACXPCClient *)self->_xpcClient endObservingAudioRoutesForCategory:self->_category];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     self->_isObserving = 0;
   }
 }
 
-- (void)pickAudioRoute:(id)a3
+- (void)pickAudioRoute:(id)route
 {
   xpcClient = self->_xpcClient;
-  v5 = [a3 uniqueIdentifier];
-  [(NACXPCClient *)xpcClient pickAudioRouteWithIdentifier:v5 category:self->_category];
+  uniqueIdentifier = [route uniqueIdentifier];
+  [(NACXPCClient *)xpcClient pickAudioRouteWithIdentifier:uniqueIdentifier category:self->_category];
 }
 
 - (void)_audioRoutesDidChange
@@ -155,7 +155,7 @@ void __50__NACRoutingControllerProxy__audioRoutesDidChange__block_invoke_2(uint6
   }
 }
 
-- (void)_applicationDidBecomeActiveNotification:(id)a3
+- (void)_applicationDidBecomeActiveNotification:(id)notification
 {
   if (self->_isObserving)
   {
@@ -163,7 +163,7 @@ void __50__NACRoutingControllerProxy__audioRoutesDidChange__block_invoke_2(uint6
   }
 }
 
-- (void)_applicationWillResignActiveNotification:(id)a3
+- (void)_applicationWillResignActiveNotification:(id)notification
 {
   if (self->_isObserving)
   {

@@ -1,10 +1,10 @@
 @interface ServiceOcelotUpsellViewController
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismissViewService;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)didFinishWithError:(id)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)didFinishWithError:(id)error;
+- (void)handleButtonActions:(id)actions;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ServiceOcelotUpsellViewController
@@ -12,9 +12,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30;
   }
@@ -25,72 +25,72 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v25 = a4;
-  v6 = a3;
-  v7 = [(ServiceOcelotUpsellViewController *)self _remoteViewControllerProxy];
-  [v7 setDesiredHardwareButtonEvents:16];
-  [v7 setAllowsMenuButtonDismissal:1];
-  [v7 setWallpaperTunnelActive:1];
-  [v7 setAllowsAlertStacking:1];
-  [v7 setDismissalAnimationStyle:2];
-  [v7 setReachabilityDisabled:1];
-  [v7 setSwipeDismissalStyle:1];
+  completionCopy = completion;
+  contextCopy = context;
+  _remoteViewControllerProxy = [(ServiceOcelotUpsellViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:1];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:2];
+  [_remoteViewControllerProxy setReachabilityDisabled:1];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:1];
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-  if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v10 = +[UIApplication sharedApplication];
-    v11 = [v10 statusBarOrientation];
+    statusBarOrientation = [v10 statusBarOrientation];
 
-    [v7 setLaunchingInterfaceOrientation:v11];
+    [_remoteViewControllerProxy setLaunchingInterfaceOrientation:statusBarOrientation];
   }
 
   v12 = [SKArcadeSubscribeViewController alloc];
-  v13 = [v6 userInfo];
-  v14 = [v13 objectForKeyedSubscript:@"itemID"];
-  v15 = [v6 userInfo];
+  userInfo = [contextCopy userInfo];
+  v14 = [userInfo objectForKeyedSubscript:@"itemID"];
+  userInfo2 = [contextCopy userInfo];
 
-  v16 = [v15 objectForKeyedSubscript:@"bundleID"];
+  v16 = [userInfo2 objectForKeyedSubscript:@"bundleID"];
   v17 = [v12 initWithItemID:v14 bundleID:v16];
   [(ServiceOcelotUpsellViewController *)self setChildViewController:v17];
 
-  v18 = [(ServiceOcelotUpsellViewController *)self childViewController];
-  [v18 setDelegate:self];
+  childViewController = [(ServiceOcelotUpsellViewController *)self childViewController];
+  [childViewController setDelegate:self];
 
-  v19 = [(ServiceOcelotUpsellViewController *)self childViewController];
-  [(ServiceOcelotUpsellViewController *)self addChildViewController:v19];
+  childViewController2 = [(ServiceOcelotUpsellViewController *)self childViewController];
+  [(ServiceOcelotUpsellViewController *)self addChildViewController:childViewController2];
 
-  v20 = [(ServiceOcelotUpsellViewController *)self childViewController];
-  v21 = [v20 view];
+  childViewController3 = [(ServiceOcelotUpsellViewController *)self childViewController];
+  view = [childViewController3 view];
 
-  v22 = [(ServiceOcelotUpsellViewController *)self view];
-  [v22 bounds];
-  [v21 setFrame:?];
+  view2 = [(ServiceOcelotUpsellViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  [v21 setAutoresizingMask:18];
-  v23 = [(ServiceOcelotUpsellViewController *)self view];
-  [v23 addSubview:v21];
+  [view setAutoresizingMask:18];
+  view3 = [(ServiceOcelotUpsellViewController *)self view];
+  [view3 addSubview:view];
 
-  v24 = [(ServiceOcelotUpsellViewController *)self childViewController];
-  [v24 didMoveToParentViewController:self];
+  childViewController4 = [(ServiceOcelotUpsellViewController *)self childViewController];
+  [childViewController4 didMoveToParentViewController:self];
 
-  if (v25)
+  if (completionCopy)
   {
-    v25[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -102,7 +102,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * v8) events] & 0x10) != 0)
@@ -114,53 +114,53 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
 - (void)_dismissViewService
 {
-  v5 = [(ServiceOcelotUpsellViewController *)self _remoteViewControllerProxy];
-  [v5 dismiss];
-  v3 = [(ServiceOcelotUpsellViewController *)self childViewController];
+  _remoteViewControllerProxy = [(ServiceOcelotUpsellViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismiss];
+  childViewController = [(ServiceOcelotUpsellViewController *)self childViewController];
 
-  if (v3)
+  if (childViewController)
   {
-    v4 = [(ServiceOcelotUpsellViewController *)self childViewController];
-    [v4 finishExtension];
+    childViewController2 = [(ServiceOcelotUpsellViewController *)self childViewController];
+    [childViewController2 finishExtension];
   }
 }
 
-- (void)didFinishWithError:(id)a3
+- (void)didFinishWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = +[SSLogConfig sharedConfig];
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v5 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 &= 2u;
     }
@@ -170,7 +170,7 @@
       *v13 = 138543618;
       *&v13[4] = objc_opt_class();
       *&v13[12] = 2114;
-      *&v13[14] = v4;
+      *&v13[14] = errorCopy;
       v9 = *&v13[4];
       LODWORD(v12) = 22;
       v11 = v13;
@@ -183,9 +183,9 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v8 = [NSString stringWithCString:v10 encoding:4, v13, v12, *v13, *&v13[16]];
+      oSLogObject = [NSString stringWithCString:v10 encoding:4, v13, v12, *v13, *&v13[16]];
       free(v10);
-      v11 = v8;
+      v11 = oSLogObject;
       SSFileLog();
     }
 

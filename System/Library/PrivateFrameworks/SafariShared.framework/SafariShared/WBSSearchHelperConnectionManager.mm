@@ -1,8 +1,8 @@
 @interface WBSSearchHelperConnectionManager
 + (id)sharedManager;
 - (WBSSearchHelperConnectionManager)init;
-- (id)searchHelperConnectionRequestedByClient:(id)a3;
-- (void)removeClient:(id)a3;
+- (id)searchHelperConnectionRequestedByClient:(id)client;
+- (void)removeClient:(id)client;
 @end
 
 @implementation WBSSearchHelperConnectionManager
@@ -39,10 +39,10 @@
   return v2;
 }
 
-- (id)searchHelperConnectionRequestedByClient:(id)a3
+- (id)searchHelperConnectionRequestedByClient:(id)client
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  [(NSMutableSet *)self->_clients addObject:a3];
+  [(NSMutableSet *)self->_clients addObject:client];
   searchHelperConnection = self->_searchHelperConnection;
   if (searchHelperConnection)
   {
@@ -103,9 +103,9 @@ void __76__WBSSearchHelperConnectionManager_searchHelperConnectionRequestedByCli
   [WeakRetained setSearchHelperConnection:0];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   [(NSMutableSet *)self->_clients removeObject:?];
   if (![(NSMutableSet *)self->_clients count])
   {

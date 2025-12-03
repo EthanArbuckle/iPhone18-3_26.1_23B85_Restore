@@ -1,22 +1,22 @@
 @interface NTKAnalogUtilities
-+ (CGSize)dialSizeForDevice:(id)a3;
-+ (CGSize)largeDialSizeForDevice:(id)a3;
-+ (CGSize)sceneSizeForDevice:(id)a3;
++ (CGSize)dialSizeForDevice:(id)device;
++ (CGSize)largeDialSizeForDevice:(id)device;
++ (CGSize)sceneSizeForDevice:(id)device;
 @end
 
 @implementation NTKAnalogUtilities
 
-+ (CGSize)sceneSizeForDevice:(id)a3
++ (CGSize)sceneSizeForDevice:(id)device
 {
-  MEMORY[0x28210DA90](a3, a2);
+  MEMORY[0x28210DA90](device, a2);
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-+ (CGSize)dialSizeForDevice:(id)a3
++ (CGSize)dialSizeForDevice:(id)device
 {
-  [NTKAnalogUtilities dialDiameterForDevice:a3];
+  [NTKAnalogUtilities dialDiameterForDevice:device];
   v4 = v3;
   result.height = v4;
   result.width = v3;
@@ -56,14 +56,14 @@ double __44__NTKAnalogUtilities_dialDiameterForDevice___block_invoke(uint64_t a1
   return v5;
 }
 
-+ (CGSize)largeDialSizeForDevice:(id)a3
++ (CGSize)largeDialSizeForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __45__NTKAnalogUtilities_largeDialSizeForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e29__CGSize_dd_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __45__NTKAnalogUtilities_largeDialSizeForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __45__NTKAnalogUtilities_largeDialSizeForDevice___block_invoke(v5, device);
   result.height = v4;
   result.width = v3;
   return result;

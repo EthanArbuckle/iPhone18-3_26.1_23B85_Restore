@@ -1,13 +1,13 @@
 @interface CNObservedResult
-+ (_NSRange)overflowSafeRangeWithTime:(unint64_t)a3 tolerance:(unint64_t)a4;
-+ (_NSRange)rangeWithExactTime:(unint64_t)a3;
-+ (_NSRange)rangeWithTime:(unint64_t)a3 tolerance:(unint64_t)a4;
-+ (_NSRange)underflowSafeRangeWithTime:(unint64_t)a3 tolerance:(unint64_t)a4;
-+ (id)completionResultWithTime:(unint64_t)a3 tolerance:(unint64_t)a4;
-+ (id)failureWithError:(id)a3 time:(unint64_t)a4 tolerance:(unint64_t)a5;
-+ (id)resultWithTime:(unint64_t)a3 tolerance:(unint64_t)a4 value:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (CNObservedResult)initWithValue:(id)a3 time:(unint64_t)a4 tolerance:(unint64_t)a5;
++ (_NSRange)overflowSafeRangeWithTime:(unint64_t)time tolerance:(unint64_t)tolerance;
++ (_NSRange)rangeWithExactTime:(unint64_t)time;
++ (_NSRange)rangeWithTime:(unint64_t)time tolerance:(unint64_t)tolerance;
++ (_NSRange)underflowSafeRangeWithTime:(unint64_t)time tolerance:(unint64_t)tolerance;
++ (id)completionResultWithTime:(unint64_t)time tolerance:(unint64_t)tolerance;
++ (id)failureWithError:(id)error time:(unint64_t)time tolerance:(unint64_t)tolerance;
++ (id)resultWithTime:(unint64_t)time tolerance:(unint64_t)tolerance value:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (CNObservedResult)initWithValue:(id)value time:(unint64_t)time tolerance:(unint64_t)tolerance;
 - (_NSRange)timeRange;
 - (id)description;
 - (id)formattedTimeString;
@@ -16,41 +16,41 @@
 
 @implementation CNObservedResult
 
-+ (id)resultWithTime:(unint64_t)a3 tolerance:(unint64_t)a4 value:(id)a5
++ (id)resultWithTime:(unint64_t)time tolerance:(unint64_t)tolerance value:(id)value
 {
-  v7 = a5;
-  v8 = [[CNObservedResult alloc] initWithValue:v7 time:a3 tolerance:a4];
+  valueCopy = value;
+  v8 = [[CNObservedResult alloc] initWithValue:valueCopy time:time tolerance:tolerance];
 
   return v8;
 }
 
-+ (id)completionResultWithTime:(unint64_t)a3 tolerance:(unint64_t)a4
++ (id)completionResultWithTime:(unint64_t)time tolerance:(unint64_t)tolerance
 {
-  v4 = [(CNObservedResult *)[CNObservedCompletionResult alloc] initWithValue:0 time:a3 tolerance:a4];
+  v4 = [(CNObservedResult *)[CNObservedCompletionResult alloc] initWithValue:0 time:time tolerance:tolerance];
 
   return v4;
 }
 
-+ (id)failureWithError:(id)a3 time:(unint64_t)a4 tolerance:(unint64_t)a5
++ (id)failureWithError:(id)error time:(unint64_t)time tolerance:(unint64_t)tolerance
 {
-  v7 = a3;
-  v8 = [(CNObservedResult *)[CNObservedFailureResult alloc] initWithValue:v7 time:a4 tolerance:a5];
+  errorCopy = error;
+  v8 = [(CNObservedResult *)[CNObservedFailureResult alloc] initWithValue:errorCopy time:time tolerance:tolerance];
 
   return v8;
 }
 
-- (CNObservedResult)initWithValue:(id)a3 time:(unint64_t)a4 tolerance:(unint64_t)a5
+- (CNObservedResult)initWithValue:(id)value time:(unint64_t)time tolerance:(unint64_t)tolerance
 {
-  v9 = a3;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = CNObservedResult;
   v10 = [(CNObservedResult *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_value, a3);
-    v11->_time = a4;
-    v11->_tolerance = a5;
+    objc_storeStrong(&v10->_value, value);
+    v11->_time = time;
+    v11->_tolerance = tolerance;
     v12 = v11;
   }
 
@@ -81,16 +81,16 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CNObservedResult *)self formattedTimeString];
-  v7 = [(CNObservedResult *)self logValue];
-  v8 = [v3 stringWithFormat:@"<%@ %p: %@ Observed: %@>", v5, self, v6, v7];
+  formattedTimeString = [(CNObservedResult *)self formattedTimeString];
+  logValue = [(CNObservedResult *)self logValue];
+  v8 = [v3 stringWithFormat:@"<%@ %p: %@ Observed: %@>", v5, self, formattedTimeString, logValue];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -108,19 +108,19 @@
     goto LABEL_8;
   }
 
-  v10 = [(CNObservedResult *)self timeRange];
+  timeRange = [(CNObservedResult *)self timeRange];
   v12 = v11;
-  v19.location = [v4 timeRange];
+  v19.location = [equalCopy timeRange];
   v19.length = v13;
-  v18.location = v10;
+  v18.location = timeRange;
   v18.length = v12;
   if (NSIntersectionRange(v18, v19).length)
   {
-    v14 = [(CNObservedResult *)self value];
-    if (v14 || v4[2])
+    value = [(CNObservedResult *)self value];
+    if (value || equalCopy[2])
     {
-      v15 = [(CNObservedResult *)self value];
-      v16 = [v15 isEqual:v4[2]];
+      value2 = [(CNObservedResult *)self value];
+      v16 = [value2 isEqual:equalCopy[2]];
     }
 
     else
@@ -197,32 +197,32 @@ unint64_t __24__CNObservedResult_hash__block_invoke_2(uint64_t a1)
   return result;
 }
 
-+ (_NSRange)rangeWithExactTime:(unint64_t)a3
++ (_NSRange)rangeWithExactTime:(unint64_t)time
 {
   v4 = 1;
   result.length = v4;
-  result.location = a3;
+  result.location = time;
   return result;
 }
 
-+ (_NSRange)rangeWithTime:(unint64_t)a3 tolerance:(unint64_t)a4
++ (_NSRange)rangeWithTime:(unint64_t)time tolerance:(unint64_t)tolerance
 {
-  if ([a1 rangeWouldUnderflowWithTime:? tolerance:?])
+  if ([self rangeWouldUnderflowWithTime:? tolerance:?])
   {
 
-    v7 = [a1 underflowSafeRangeWithTime:a3 tolerance:a4];
+    v7 = [self underflowSafeRangeWithTime:time tolerance:tolerance];
   }
 
-  else if ([a1 rangeWouldOverflowWithTime:a3 tolerance:a4])
+  else if ([self rangeWouldOverflowWithTime:time tolerance:tolerance])
   {
 
-    v7 = [a1 overflowSafeRangeWithTime:a3 tolerance:a4];
+    v7 = [self overflowSafeRangeWithTime:time tolerance:tolerance];
   }
 
   else
   {
-    v7 = a3 - a4;
-    v8 = (2 * a4) | 1;
+    v7 = time - tolerance;
+    v8 = (2 * tolerance) | 1;
   }
 
   result.length = v8;
@@ -230,19 +230,19 @@ unint64_t __24__CNObservedResult_hash__block_invoke_2(uint64_t a1)
   return result;
 }
 
-+ (_NSRange)underflowSafeRangeWithTime:(unint64_t)a3 tolerance:(unint64_t)a4
++ (_NSRange)underflowSafeRangeWithTime:(unint64_t)time tolerance:(unint64_t)tolerance
 {
-  v4 = a4 + a3;
+  v4 = tolerance + time;
   v5 = 0;
   result.length = v4;
   result.location = v5;
   return result;
 }
 
-+ (_NSRange)overflowSafeRangeWithTime:(unint64_t)a3 tolerance:(unint64_t)a4
++ (_NSRange)overflowSafeRangeWithTime:(unint64_t)time tolerance:(unint64_t)tolerance
 {
-  v4 = a3 - a4;
-  v5 = ~a3 + a4;
+  v4 = time - tolerance;
+  v5 = ~time + tolerance;
   result.length = v5;
   result.location = v4;
   return result;

@@ -1,20 +1,20 @@
 @interface DSSafetyCheckWelcomeController
-- (BOOL)performButtonActionForSpecifier:(id)a3;
-- (CGRect)_fitFrame:(CGRect)a3 toView:(id)a4;
+- (BOOL)performButtonActionForSpecifier:(id)specifier;
+- (CGRect)_fitFrame:(CGRect)frame toView:(id)view;
 - (id)specifiers;
-- (void)_performButtonActionForSpecifier:(id)a3;
+- (void)_performButtonActionForSpecifier:(id)specifier;
 - (void)_presentDTOBanner;
 - (void)_removeDTOBanner;
 - (void)dealloc;
-- (void)didEnterForeground:(id)a3;
-- (void)didTapLearnMoreLink:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (void)didEnterForeground:(id)foreground;
+- (void)didTapLearnMoreLink:(id)link;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)quickExit;
 - (void)startEmergencyResetFlow;
 - (void)startManageSharingFlow;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)willEnterBackground:(id)a3;
+- (void)willEnterBackground:(id)background;
 @end
 
 @implementation DSSafetyCheckWelcomeController
@@ -24,11 +24,11 @@
   v9.receiver = self;
   v9.super_class = DSSafetyCheckWelcomeController;
   [(DSSafetyCheckWelcomeController *)&v9 viewDidLoad];
-  v3 = [(DSSafetyCheckWelcomeController *)self navigationItem];
+  navigationItem = [(DSSafetyCheckWelcomeController *)self navigationItem];
   v4 = [UIBarButtonItem alloc];
   v5 = [NSString localizedStringForKey:@"QUICK_EXIT"];
   v6 = [v4 initWithTitle:v5 style:0 target:self action:"quickExit"];
-  [v3 setRightBarButtonItem:v6];
+  [navigationItem setRightBarButtonItem:v6];
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 addObserver:self selector:"willEnterBackground:" name:UIApplicationDidEnterBackgroundNotification object:0];
@@ -57,10 +57,10 @@
   if (!v4)
   {
     v5 = objc_opt_new();
-    v6 = [(DSSafetyCheckWelcomeController *)self traitCollection];
-    v7 = [v6 pe_isSettingsFeatureDescriptionCellSupported];
+    traitCollection = [(DSSafetyCheckWelcomeController *)self traitCollection];
+    pe_isSettingsFeatureDescriptionCellSupported = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
-    if (v7)
+    if (pe_isSettingsFeatureDescriptionCellSupported)
     {
       v8 = +[PSSpecifier emptyGroupSpecifier];
       [v5 addObject:v8];
@@ -112,13 +112,13 @@
   return v4;
 }
 
-- (void)willEnterBackground:(id)a3
+- (void)willEnterBackground:(id)background
 {
   if (!self->_obfuscationWindow)
   {
-    v4 = [(DSSafetyCheckWelcomeController *)self view];
-    v5 = [v4 window];
-    v6 = [DSObfuscationWindow showDSObfuscationWindowForApplicationWindow:v5];
+    view = [(DSSafetyCheckWelcomeController *)self view];
+    window = [view window];
+    v6 = [DSObfuscationWindow showDSObfuscationWindowForApplicationWindow:window];
     obfuscationWindow = self->_obfuscationWindow;
     self->_obfuscationWindow = v6;
 
@@ -127,7 +127,7 @@
   }
 }
 
-- (void)didEnterForeground:(id)a3
+- (void)didEnterForeground:(id)foreground
 {
   obfuscationWindow = self->_obfuscationWindow;
   if (obfuscationWindow)
@@ -140,17 +140,17 @@
 
 - (void)quickExit
 {
-  v2 = [(DSSafetyCheckWelcomeController *)self view];
-  v3 = [v2 window];
-  v7 = [v3 windowScene];
+  view = [(DSSafetyCheckWelcomeController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  v4 = [v7 _FBSScene];
+  _FBSScene = [windowScene _FBSScene];
   v5 = [[UIDestroySceneAction alloc] initWithPreferredAnimationType:1 callbackQueue:&_dispatch_main_q completion:&stru_10770];
   v6 = [NSSet setWithObject:v5];
-  [v4 sendActions:v6];
+  [_FBSScene sendActions:v6];
 }
 
-- (void)didTapLearnMoreLink:(id)a3
+- (void)didTapLearnMoreLink:(id)link
 {
   AnalyticsSendEventLazy();
   v4 = [NSString localizedStringForKey:@"WELCOME_LEARN_MORE_URL"];
@@ -159,17 +159,17 @@
 
 - (void)startEmergencyResetFlow
 {
-  v3 = [(DSSafetyCheckWelcomeController *)self unpresentedResourceDictionary];
+  unpresentedResourceDictionary = [(DSSafetyCheckWelcomeController *)self unpresentedResourceDictionary];
 
-  if (!v3)
+  if (!unpresentedResourceDictionary)
   {
 LABEL_9:
     [DSSafetyCheck startEmergencyResetWithPresentingViewController:self];
     return;
   }
 
-  v4 = [(DSSafetyCheckWelcomeController *)self unpresentedResourceDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"path"];
+  unpresentedResourceDictionary2 = [(DSSafetyCheckWelcomeController *)self unpresentedResourceDictionary];
+  v5 = [unpresentedResourceDictionary2 objectForKeyedSubscript:@"path"];
   v6 = [NSString stringWithFormat:@"EMERGENCY_RESET/%@", v5];
 
   v12 = @"path";
@@ -202,17 +202,17 @@ LABEL_9:
 
 - (void)startManageSharingFlow
 {
-  v3 = [(DSSafetyCheckWelcomeController *)self unpresentedResourceDictionary];
+  unpresentedResourceDictionary = [(DSSafetyCheckWelcomeController *)self unpresentedResourceDictionary];
 
-  if (!v3)
+  if (!unpresentedResourceDictionary)
   {
 LABEL_9:
     [DSSafetyCheck startManageSharingWithPresentingViewController:self];
     return;
   }
 
-  v4 = [(DSSafetyCheckWelcomeController *)self unpresentedResourceDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"path"];
+  unpresentedResourceDictionary2 = [(DSSafetyCheckWelcomeController *)self unpresentedResourceDictionary];
+  v5 = [unpresentedResourceDictionary2 objectForKeyedSubscript:@"path"];
   v6 = [NSString stringWithFormat:@"MANAGE_SHARING/%@", v5];
 
   v12 = @"path";
@@ -243,12 +243,12 @@ LABEL_9:
   }
 }
 
-- (BOOL)performButtonActionForSpecifier:(id)a3
+- (BOOL)performButtonActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(DSSafetyCheckWelcomeController *)self specifier];
+  specifierCopy = specifier;
+  specifier = [(DSSafetyCheckWelcomeController *)self specifier];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 isEqualToSpecifier:v4])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [specifier isEqualToSpecifier:specifierCopy])
   {
     v6 = DSLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -257,7 +257,7 @@ LABEL_9:
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Casting to DSDeepLinkSpecifier because self.specifer is kind of class", buf, 2u);
     }
 
-    [(DSSafetyCheckWelcomeController *)self _performButtonActionForSpecifier:v5];
+    [(DSSafetyCheckWelcomeController *)self _performButtonActionForSpecifier:specifier];
     v7 = 1;
   }
 
@@ -265,21 +265,21 @@ LABEL_9:
   {
     v9.receiver = self;
     v9.super_class = DSSafetyCheckWelcomeController;
-    v7 = [(DSSafetyCheckWelcomeController *)&v9 performButtonActionForSpecifier:v4];
+    v7 = [(DSSafetyCheckWelcomeController *)&v9 performButtonActionForSpecifier:specifierCopy];
   }
 
   return v7;
 }
 
-- (void)_performButtonActionForSpecifier:(id)a3
+- (void)_performButtonActionForSpecifier:(id)specifier
 {
-  v4 = [a3 inputURL];
-  v5 = [v4 path];
+  inputURL = [specifier inputURL];
+  path = [inputURL path];
 
-  if ([v5 length])
+  if ([path length])
   {
     v10 = @"path";
-    v11 = v5;
+    v11 = path;
     v6 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     [(DSSafetyCheckWelcomeController *)self setUnpresentedResourceDictionary:0];
     if (([DSSafetyCheck startWithPresentingViewController:self withURL:v6]& 1) == 0)
@@ -297,38 +297,38 @@ LABEL_9:
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v10.receiver = self;
   v10.super_class = DSSafetyCheckWelcomeController;
-  [(DSSafetyCheckWelcomeController *)&v10 handleURL:v6 withCompletion:&stru_107D0];
+  [(DSSafetyCheckWelcomeController *)&v10 handleURL:lCopy withCompletion:&stru_107D0];
   v8 = DSLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v12 = v6;
+    v12 = lCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "Handling URL: %@", buf, 0xCu);
   }
 
   [(DSSafetyCheckWelcomeController *)self setUnpresentedResourceDictionary:0];
-  if (([DSSafetyCheck startWithPresentingViewController:self withURL:v6]& 1) == 0)
+  if (([DSSafetyCheck startWithPresentingViewController:self withURL:lCopy]& 1) == 0)
   {
     v9 = DSLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v6;
+      v12 = lCopy;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Not presenting flow for resource dictionary %@", buf, 0xCu);
     }
 
-    [(DSSafetyCheckWelcomeController *)self setUnpresentedResourceDictionary:v6];
+    [(DSSafetyCheckWelcomeController *)self setUnpresentedResourceDictionary:lCopy];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -344,9 +344,9 @@ LABEL_9:
 
   else
   {
-    v3 = [(DSSafetyCheckWelcomeController *)self banner];
+    banner = [(DSSafetyCheckWelcomeController *)self banner];
 
-    if (v3)
+    if (banner)
     {
       [(DSSafetyCheckWelcomeController *)self _removeDTOBanner];
     }
@@ -365,55 +365,55 @@ LABEL_9:
     banner = self->_banner;
   }
 
-  v6 = [(DSSafetyCheckWelcomeController *)self table];
-  [v6 setTableHeaderView:banner];
+  table = [(DSSafetyCheckWelcomeController *)self table];
+  [table setTableHeaderView:banner];
 
-  v7 = [(DSPlatterTableView *)self->_banner widthAnchor];
-  v8 = [(DSSafetyCheckWelcomeController *)self table];
-  v9 = [v8 widthAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  widthAnchor = [(DSPlatterTableView *)self->_banner widthAnchor];
+  table2 = [(DSSafetyCheckWelcomeController *)self table];
+  widthAnchor2 = [table2 widthAnchor];
+  v10 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v10 setActive:1];
 
-  v11 = [(DSSafetyCheckWelcomeController *)self table];
-  v12 = [v11 tableHeaderView];
-  [v12 frame];
+  table3 = [(DSSafetyCheckWelcomeController *)self table];
+  tableHeaderView = [table3 tableHeaderView];
+  [tableHeaderView frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(DSSafetyCheckWelcomeController *)self banner];
-  [(DSSafetyCheckWelcomeController *)self _fitFrame:v21 toView:v14, v16, v18, v20];
+  banner = [(DSSafetyCheckWelcomeController *)self banner];
+  [(DSSafetyCheckWelcomeController *)self _fitFrame:banner toView:v14, v16, v18, v20];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(DSSafetyCheckWelcomeController *)self table];
-  v31 = [v30 tableHeaderView];
-  [v31 setFrame:{v23, v25, v27, v29}];
+  table4 = [(DSSafetyCheckWelcomeController *)self table];
+  tableHeaderView2 = [table4 tableHeaderView];
+  [tableHeaderView2 setFrame:{v23, v25, v27, v29}];
 
-  v50 = [(DSSafetyCheckWelcomeController *)self table];
-  [v50 frame];
+  table5 = [(DSSafetyCheckWelcomeController *)self table];
+  [table5 frame];
   v33 = v32;
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  v40 = [(DSSafetyCheckWelcomeController *)self table];
-  [(DSSafetyCheckWelcomeController *)self _fitFrame:v40 toView:v33, v35, v37, v39];
+  table6 = [(DSSafetyCheckWelcomeController *)self table];
+  [(DSSafetyCheckWelcomeController *)self _fitFrame:table6 toView:v33, v35, v37, v39];
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
-  v49 = [(DSSafetyCheckWelcomeController *)self table];
-  [v49 setFrame:{v42, v44, v46, v48}];
+  table7 = [(DSSafetyCheckWelcomeController *)self table];
+  [table7 setFrame:{v42, v44, v46, v48}];
 }
 
-- (CGRect)_fitFrame:(CGRect)a3 toView:(id)a4
+- (CGRect)_fitFrame:(CGRect)frame toView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [a4 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [view systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   if (v8 == height)
   {
     v9 = height;
@@ -437,8 +437,8 @@ LABEL_9:
 - (void)_removeDTOBanner
 {
   [(DSSafetyCheckWelcomeController *)self setBanner:0];
-  v3 = [(DSSafetyCheckWelcomeController *)self table];
-  [v3 setTableHeaderView:0];
+  table = [(DSSafetyCheckWelcomeController *)self table];
+  [table setTableHeaderView:0];
 
   [(DSSafetyCheckWelcomeController *)self viewWillLayoutSubviews];
 }

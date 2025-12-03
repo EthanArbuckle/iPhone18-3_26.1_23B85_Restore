@@ -1,14 +1,14 @@
 @interface ATXDailyOverviewOptions
-- (ATXDailyOverviewOptions)initWithCoder:(id)a3;
-- (ATXDailyOverviewOptions)initWithFocusFilter:(int64_t)a3 isModernDashboardLayout:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXDailyOverviewOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXDailyOverviewOptions)initWithCoder:(id)coder;
+- (ATXDailyOverviewOptions)initWithFocusFilter:(int64_t)filter isModernDashboardLayout:(BOOL)layout;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXDailyOverviewOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXDailyOverviewOptions
 
-- (ATXDailyOverviewOptions)initWithFocusFilter:(int64_t)a3 isModernDashboardLayout:(BOOL)a4
+- (ATXDailyOverviewOptions)initWithFocusFilter:(int64_t)filter isModernDashboardLayout:(BOOL)layout
 {
   v10.receiver = self;
   v10.super_class = ATXDailyOverviewOptions;
@@ -16,56 +16,56 @@
   v7 = v6;
   if (v6)
   {
-    v6->_focusFilter = a3;
-    v6->_isModernDashboardLayout = a4;
+    v6->_focusFilter = filter;
+    v6->_isModernDashboardLayout = layout;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (ATXDailyOverviewOptions)initWithCoder:(id)a3
+- (ATXDailyOverviewOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"focusFilter"];
-  v6 = [v4 decodeBoolForKey:@"isModernDashboardLayout"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"focusFilter"];
+  v6 = [coderCopy decodeBoolForKey:@"isModernDashboardLayout"];
 
   return [(ATXDailyOverviewOptions *)self initWithFocusFilter:v5 isModernDashboardLayout:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   focusFilter = self->_focusFilter;
-  v5 = a3;
-  [v5 encodeInteger:focusFilter forKey:@"focusFilter"];
-  [v5 encodeBool:self->_isModernDashboardLayout forKey:@"isModernDashboardLayout"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:focusFilter forKey:@"focusFilter"];
+  [coderCopy encodeBool:self->_isModernDashboardLayout forKey:@"isModernDashboardLayout"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXDailyOverviewOptions *)self isEqualToATXDailyOverviewOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXDailyOverviewOptions *)self isEqualToATXDailyOverviewOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXDailyOverviewOptions:(id)a3
+- (BOOL)isEqualToATXDailyOverviewOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 focusFilter];
-  if (v5 == [(ATXDailyOverviewOptions *)self focusFilter])
+  optionsCopy = options;
+  focusFilter = [optionsCopy focusFilter];
+  if (focusFilter == [(ATXDailyOverviewOptions *)self focusFilter])
   {
-    v6 = [v4 isModernDashboardLayout];
-    v7 = v6 ^ [(ATXDailyOverviewOptions *)self isModernDashboardLayout]^ 1;
+    isModernDashboardLayout = [optionsCopy isModernDashboardLayout];
+    v7 = isModernDashboardLayout ^ [(ATXDailyOverviewOptions *)self isModernDashboardLayout]^ 1;
   }
 
   else

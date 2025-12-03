@@ -1,15 +1,15 @@
 @interface AEAnnotationPopoverViewController
 - (AEAnnotationEditorDelegate)delegate;
 - (AEAnnotationPopoverViewController)init;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)p_containerFrameForView:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)p_containerFrameForView:(id)view;
 - (CGRect)presentationRect;
-- (int)willPresentInPosition:(CGRect)a3 view:(id)a4;
+- (int)willPresentInPosition:(CGRect)position view:(id)view;
 - (void)dealloc;
 - (void)didHide;
 - (void)didShow;
 - (void)hide;
-- (void)presentFromRect:(CGRect)a3 view:(id)a4;
+- (void)presentFromRect:(CGRect)rect view:(id)view;
 - (void)viewDidLoad;
 - (void)viewDidUnload;
 - (void)willHide;
@@ -46,8 +46,8 @@
   v4.receiver = self;
   v4.super_class = AEAnnotationPopoverViewController;
   [(AEAnnotationPopoverViewController *)&v4 viewDidLoad];
-  v3 = [(AEAnnotationPopoverViewController *)self view];
-  [v3 setUserInteractionEnabled:1];
+  view = [(AEAnnotationPopoverViewController *)self view];
+  [view setUserInteractionEnabled:1];
 }
 
 - (void)viewDidUnload
@@ -58,9 +58,9 @@
   [(AEAnnotationPopoverViewController *)self releaseOutlets];
 }
 
-- (CGRect)p_containerFrameForView:(id)a3
+- (CGRect)p_containerFrameForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(AEAnnotationPopoverViewController *)self im_isCompactHeight])
   {
     v5 = 12.0;
@@ -71,7 +71,7 @@
     v5 = 44.0;
   }
 
-  [v4 frame];
+  [viewCopy frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -89,21 +89,21 @@
   return result;
 }
 
-- (int)willPresentInPosition:(CGRect)a3 view:(id)a4
+- (int)willPresentInPosition:(CGRect)position view:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(AEAnnotationPopoverViewController *)self view];
-  [v10 bounds];
+  height = position.size.height;
+  width = position.size.width;
+  y = position.origin.y;
+  x = position.origin.x;
+  viewCopy = view;
+  view = [(AEAnnotationPopoverViewController *)self view];
+  [view bounds];
   v29 = v12;
   v30 = v11;
   v27 = v14;
   v28 = v13;
 
-  [(AEAnnotationPopoverViewController *)self p_containerFrameForView:v9];
+  [(AEAnnotationPopoverViewController *)self p_containerFrameForView:viewCopy];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -147,21 +147,21 @@
   return v25;
 }
 
-- (void)presentFromRect:(CGRect)a3 view:(id)a4
+- (void)presentFromRect:(CGRect)rect view:(id)view
 {
-  v5 = a4;
-  [(AEAnnotationPopoverViewController *)self setPresentationView:v5];
-  v6 = [(AEAnnotationPopoverViewController *)self view];
-  [v6 setAlpha:0.0];
+  viewCopy = view;
+  [(AEAnnotationPopoverViewController *)self setPresentationView:viewCopy];
+  view = [(AEAnnotationPopoverViewController *)self view];
+  [view setAlpha:0.0];
 
-  v7 = [(AEAnnotationPopoverViewController *)self view];
-  [v7 bounds];
+  view2 = [(AEAnnotationPopoverViewController *)self view];
+  [view2 bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  [(AEAnnotationPopoverViewController *)self p_containerFrameForView:v5];
+  [(AEAnnotationPopoverViewController *)self p_containerFrameForView:viewCopy];
   x = v59.origin.x;
   y = v59.origin.y;
   width = v59.size.width;
@@ -201,13 +201,13 @@
   v65.size.width = width;
   v65.size.height = height;
   MaxY = CGRectGetMaxY(v65);
-  v23 = CGRectGetMinX(a3);
-  v24 = v23 + CGRectGetWidth(a3) * 0.5;
-  v25 = CGRectGetMinY(a3);
+  v23 = CGRectGetMinX(rect);
+  v24 = v23 + CGRectGetWidth(rect) * 0.5;
+  v25 = CGRectGetMinY(rect);
   if (v25 < v21 && [(AEAnnotationPopoverViewController *)self canPresentInPosition:1])
   {
     [(AEAnnotationPopoverViewController *)self setPosition:1];
-    v25 = CGRectGetMaxY(a3);
+    v25 = CGRectGetMaxY(rect);
     v66.origin.x = v46;
     v66.origin.y = y;
     v66.size.width = width;
@@ -263,36 +263,36 @@
   }
 
   [(AEAnnotationPopoverViewController *)self setPresentationRect:v29 + -1.0, v30 + -1.0, 2.0, 2.0];
-  v31 = [(AEAnnotationPopoverViewController *)self position];
-  v32 = [(AEAnnotationPopoverViewController *)self view];
-  v33 = [v32 layer];
-  v34 = v33;
+  position = [(AEAnnotationPopoverViewController *)self position];
+  view3 = [(AEAnnotationPopoverViewController *)self view];
+  layer = [view3 layer];
+  v34 = layer;
   v35 = 0.0;
-  if (v31 != 1)
+  if (position != 1)
   {
     v35 = 1.0;
   }
 
-  [v33 setAnchorPoint:{0.5, v35}];
+  [layer setAnchorPoint:{0.5, v35}];
 
-  v36 = [(AEAnnotationPopoverViewController *)self view];
-  [v36 setCenter:{v29, v30}];
+  view4 = [(AEAnnotationPopoverViewController *)self view];
+  [view4 setCenter:{v29, v30}];
 
-  v37 = [(AEAnnotationPopoverViewController *)self view];
-  [v37 frame];
+  view5 = [(AEAnnotationPopoverViewController *)self view];
+  [view5 frame];
   v70 = CGRectIntegral(v69);
   v38 = v70.origin.x;
   v39 = v70.origin.y;
   v40 = v70.size.width;
   v41 = v70.size.height;
-  v42 = [(AEAnnotationPopoverViewController *)self view];
-  [v42 setFrame:{v38, v39, v40, v41}];
+  view6 = [(AEAnnotationPopoverViewController *)self view];
+  [view6 setFrame:{v38, v39, v40, v41}];
 
-  v43 = [(AEAnnotationPopoverViewController *)self view];
-  [v5 addSubview:v43];
+  view7 = [(AEAnnotationPopoverViewController *)self view];
+  [viewCopy addSubview:view7];
 
-  v44 = [v5 window];
-  [v44 setUserInteractionEnabled:0];
+  window = [viewCopy window];
+  [window setUserInteractionEnabled:0];
 
   [(AEAnnotationPopoverViewController *)self willShow];
   v58[0] = _NSConcreteStackBlock;
@@ -304,23 +304,23 @@
   v55[1] = 3221225472;
   v55[2] = sub_4F064;
   v55[3] = &unk_2C8200;
-  v56 = v5;
-  v57 = self;
-  v45 = v5;
+  v56 = viewCopy;
+  selfCopy = self;
+  v45 = viewCopy;
   [UIView animateWithDuration:v58 animations:v55 completion:0.15];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(AEAnnotationPopoverViewController *)self view];
-  [v5 bounds];
+  beginCopy = begin;
+  view = [(AEAnnotationPopoverViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(AEAnnotationPopoverViewController *)self view];
-  [v4 locationInView:v14];
+  view2 = [(AEAnnotationPopoverViewController *)self view];
+  [beginCopy locationInView:view2];
   v16 = v15;
   v18 = v17;
 
@@ -330,31 +330,31 @@
   v21.size.height = v13;
   v20.x = v16;
   v20.y = v18;
-  LOBYTE(v4) = CGRectContainsPoint(v21, v20);
+  LOBYTE(beginCopy) = CGRectContainsPoint(v21, v20);
 
-  return v4 ^ 1;
+  return beginCopy ^ 1;
 }
 
 - (void)willShow
 {
-  v3 = [(AEAnnotationPopoverViewController *)self delegate];
+  delegate = [(AEAnnotationPopoverViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 willShowAnnotationEditor:self];
+    [delegate willShowAnnotationEditor:self];
   }
 }
 
 - (void)didShow
 {
   v3 = [AETouchOutsideViewGestureRecognizer alloc];
-  v4 = [(AEAnnotationPopoverViewController *)self view];
-  v5 = [(AETouchOutsideViewGestureRecognizer *)v3 initWithTarget:self action:"hide" watchView:v4];
+  view = [(AEAnnotationPopoverViewController *)self view];
+  v5 = [(AETouchOutsideViewGestureRecognizer *)v3 initWithTarget:self action:"hide" watchView:view];
   mHideOnTouchGestureRecognizer = self->mHideOnTouchGestureRecognizer;
   self->mHideOnTouchGestureRecognizer = v5;
 
-  v7 = [(AEAnnotationPopoverViewController *)self view];
-  v8 = [v7 superview];
-  [v8 addGestureRecognizer:self->mHideOnTouchGestureRecognizer];
+  view2 = [(AEAnnotationPopoverViewController *)self view];
+  superview = [view2 superview];
+  [superview addGestureRecognizer:self->mHideOnTouchGestureRecognizer];
 
   v9 = +[NSNotificationCenter defaultCenter];
   v10 = AEAnnotationPopoverShouldHideNotification;
@@ -368,17 +368,17 @@
   mObserver = self->mObserver;
   self->mObserver = v12;
 
-  v14 = [(AEAnnotationPopoverViewController *)self delegate];
+  delegate = [(AEAnnotationPopoverViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v14 didShowAnnotationEditor:self];
+    [delegate didShowAnnotationEditor:self];
   }
 }
 
 - (void)willHide
 {
-  v3 = [(AETouchOutsideViewGestureRecognizer *)self->mHideOnTouchGestureRecognizer view];
-  [v3 removeGestureRecognizer:self->mHideOnTouchGestureRecognizer];
+  view = [(AETouchOutsideViewGestureRecognizer *)self->mHideOnTouchGestureRecognizer view];
+  [view removeGestureRecognizer:self->mHideOnTouchGestureRecognizer];
 
   mHideOnTouchGestureRecognizer = self->mHideOnTouchGestureRecognizer;
   self->mHideOnTouchGestureRecognizer = 0;
@@ -392,19 +392,19 @@
     self->mObserver = 0;
   }
 
-  v7 = [(AEAnnotationPopoverViewController *)self delegate];
+  delegate = [(AEAnnotationPopoverViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 willHideAnnotationEditor:self];
+    [delegate willHideAnnotationEditor:self];
   }
 }
 
 - (void)didHide
 {
-  v4 = [(AEAnnotationPopoverViewController *)self delegate];
+  delegate = [(AEAnnotationPopoverViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 didHideAnnotationEditor:self];
+    [delegate didHideAnnotationEditor:self];
   }
 
   [(AEAnnotationPopoverViewController *)self setPresentationRect:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
@@ -417,13 +417,13 @@
   if (self->mHideOnTouchGestureRecognizer)
   {
     [(AEAnnotationPopoverViewController *)self willHide];
-    v3 = [(AEAnnotationPopoverViewController *)self view];
-    [v3 setUserInteractionEnabled:0];
+    view = [(AEAnnotationPopoverViewController *)self view];
+    [view setUserInteractionEnabled:0];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_4F634;
     v10[3] = &unk_2C7D40;
-    v11 = v3;
+    v11 = view;
     v5 = _NSConcreteStackBlock;
     v6 = 3221225472;
     v7 = sub_4F640;

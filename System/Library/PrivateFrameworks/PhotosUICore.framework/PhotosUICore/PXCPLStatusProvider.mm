@@ -2,138 +2,138 @@
 + (id)sharedQueue;
 - (BOOL)_isSyncing;
 - (PXCPLStatusProvider)init;
-- (PXCPLStatusProvider)initWithPhotoLibrary:(id)a3;
+- (PXCPLStatusProvider)initWithPhotoLibrary:(id)library;
 - (double)nextOverrideResumeTimeInterval;
-- (id)_updateStatus:(id)a3 requestedTypes:(unint64_t)a4;
-- (void)_main_handleUpdatedStatus:(id)a3 producedForUpdateType:(unint64_t)a4 timeIntervalProducingUpdatedStatus:(double)a5;
+- (id)_updateStatus:(id)status requestedTypes:(unint64_t)types;
+- (void)_main_handleUpdatedStatus:(id)status producedForUpdateType:(unint64_t)type timeIntervalProducingUpdatedStatus:(double)updatedStatus;
 - (void)_performUpdate;
-- (void)_queue_performUpdateWithStatus:(id)a3 updateType:(unint64_t)a4;
+- (void)_queue_performUpdateWithStatus:(id)status updateType:(unint64_t)type;
 - (void)_schedulePendingUpdates;
-- (void)_scheduleUpdateForType:(unint64_t)a3;
-- (void)_setStatus:(id)a3 producedForUpdateType:(unint64_t)a4 timeIntervalProducingUpdatedStatus:(double)a5;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)_scheduleUpdateForType:(unint64_t)type;
+- (void)_setStatus:(id)status producedForUpdateType:(unint64_t)type timeIntervalProducingUpdatedStatus:(double)updatedStatus;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXCPLStatusProvider
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXCPLPhotoLibrarySourceObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXCPLPhotoLibrarySourceObservationContext == context)
   {
-    if ((v6 & 0xF) != 0)
+    if ((changeCopy & 0xF) != 0)
     {
-      v13 = v9;
+      v13 = observableCopy;
       v11 = 1;
     }
 
     else
     {
-      if ((v6 & 0x10) == 0)
+      if ((changeCopy & 0x10) == 0)
       {
         goto LABEL_24;
       }
 
-      v13 = v9;
+      v13 = observableCopy;
       v11 = 16;
     }
   }
 
-  else if (PXCPLStatusSourceObservationContext == a5)
+  else if (PXCPLStatusSourceObservationContext == context)
   {
-    v13 = v9;
+    v13 = observableCopy;
     v11 = 2;
   }
 
-  else if (PXCPLSyncActivityObservationContext == a5)
+  else if (PXCPLSyncActivityObservationContext == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_24;
     }
 
-    v13 = v9;
+    v13 = observableCopy;
     v11 = 512;
   }
 
-  else if (PXCPLSharedLibraryActivityObservationContext == a5)
+  else if (PXCPLSharedLibraryActivityObservationContext == context)
   {
-    if ((v6 & 7) == 0)
+    if ((changeCopy & 7) == 0)
     {
       goto LABEL_24;
     }
 
-    v13 = v9;
+    v13 = observableCopy;
     v11 = 2048;
   }
 
   else
   {
-    if (PXCPLCloudQuotaSourceObservationContext == a5)
+    if (PXCPLCloudQuotaSourceObservationContext == context)
     {
-      if ((v6 & 0xF) == 0)
+      if ((changeCopy & 0xF) == 0)
       {
         goto LABEL_24;
       }
 
-      v13 = v9;
+      v13 = observableCopy;
     }
 
     else
     {
-      v13 = v9;
-      if (PXCloudQuotaOfferProviderObservationContext == a5)
+      v13 = observableCopy;
+      if (PXCloudQuotaOfferProviderObservationContext == context)
       {
-        v10 = [(PXCloudQuotaOfferProvider *)self->_offerProvider offer];
+        offer = [(PXCloudQuotaOfferProvider *)self->_offerProvider offer];
       }
 
       else
       {
-        if (PXCloudQuotaPremiumOfferProviderObservationContext != a5)
+        if (PXCloudQuotaPremiumOfferProviderObservationContext != context)
         {
-          v12 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v12 handleFailureInMethod:a2 object:self file:@"PXCPLStatusProvider.m" lineNumber:678 description:@"Code which should be unreachable has been reached"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusProvider.m" lineNumber:678 description:@"Code which should be unreachable has been reached"];
 
           abort();
         }
 
-        v10 = [(PXCloudQuotaPremiumOfferProvider *)self->_premiumOfferProvider premiumOffer];
+        offer = [(PXCloudQuotaPremiumOfferProvider *)self->_premiumOfferProvider premiumOffer];
       }
 
-      self->_hasCloudQuotaOffer = v10 != 0;
+      self->_hasCloudQuotaOffer = offer != 0;
     }
 
     v11 = 128;
   }
 
   [(PXCPLStatusProvider *)self _scheduleUpdateForType:v11];
-  v9 = v13;
+  observableCopy = v13;
 LABEL_24:
 }
 
-- (void)_scheduleUpdateForType:(unint64_t)a3
+- (void)_scheduleUpdateForType:(unint64_t)type
 {
   v13 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (!a3)
+  if (!type)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXCPLStatusProvider.m" lineNumber:580 description:{@"Invalid parameter not satisfying: %@", @"updateType != PXCPLStatusUpdateTypeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusProvider.m" lineNumber:580 description:{@"Invalid parameter not satisfying: %@", @"updateType != PXCPLStatusUpdateTypeNone"}];
   }
 
   v6 = PLUserStatusGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = PXCPLStatusUpdateTypeDebugDescription(a3);
+    v7 = PXCPLStatusUpdateTypeDebugDescription(type);
     *buf = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = v7;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEBUG, "%@ Request update [reason: %{public}@]", buf, 0x16u);
   }
 
-  self->_needsUpdate |= a3;
+  self->_needsUpdate |= type;
   [(PXCPLStatusProvider *)self _schedulePendingUpdates];
 }
 
@@ -157,7 +157,7 @@ LABEL_24:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v10 = self;
+        selfCopy = self;
         v11 = 2048;
         v12 = v4;
         _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "%@ - Delaying update: %.2fs", buf, 0x16u);
@@ -183,32 +183,32 @@ void __46__PXCPLStatusProvider__schedulePendingUpdates__block_invoke(uint64_t a1
   [WeakRetained _performUpdate];
 }
 
-- (void)_main_handleUpdatedStatus:(id)a3 producedForUpdateType:(unint64_t)a4 timeIntervalProducingUpdatedStatus:(double)a5
+- (void)_main_handleUpdatedStatus:(id)status producedForUpdateType:(unint64_t)type timeIntervalProducingUpdatedStatus:(double)updatedStatus
 {
-  v8 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __106__PXCPLStatusProvider__main_handleUpdatedStatus_producedForUpdateType_timeIntervalProducingUpdatedStatus___block_invoke;
   v13 = &unk_1E772DC80;
-  v14 = self;
-  v15 = v8;
-  v16 = a4;
-  v17 = a5;
-  v9 = v8;
+  selfCopy = self;
+  v15 = statusCopy;
+  typeCopy = type;
+  updatedStatusCopy = updatedStatus;
+  v9 = statusCopy;
   [(PXCPLStatusProvider *)self performChanges:&v10];
   self->_isUpdating = 0;
   [(PXCPLStatusProvider *)self _schedulePendingUpdates:v10];
 }
 
-- (void)_queue_performUpdateWithStatus:(id)a3 updateType:(unint64_t)a4
+- (void)_queue_performUpdateWithStatus:(id)status updateType:(unint64_t)type
 {
   serialUpdateQueue = self->_serialUpdateQueue;
-  v7 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(serialUpdateQueue);
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v9 = v8;
-  v10 = [(PXCPLStatusProvider *)self _updateStatus:v7 requestedTypes:a4];
+  v10 = [(PXCPLStatusProvider *)self _updateStatus:statusCopy requestedTypes:type];
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v12 = v11 - v9;
@@ -219,7 +219,7 @@ void __46__PXCPLStatusProvider__schedulePendingUpdates__block_invoke(uint64_t a1
   block[3] = &unk_1E7735A38;
   objc_copyWeak(v16, &location);
   v15 = v10;
-  v16[1] = a4;
+  v16[1] = type;
   v16[2] = *&v12;
   v13 = v10;
   dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -242,7 +242,7 @@ void __65__PXCPLStatusProvider__queue_performUpdateWithStatus_updateType___block
   {
     v4 = PXCPLStatusUpdateTypeDebugDescription(self->_needsUpdate);
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = v4;
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEBUG, "%@ Perform update [reason: %{public}@]", buf, 0x16u);
@@ -252,8 +252,8 @@ void __65__PXCPLStatusProvider__queue_performUpdateWithStatus_updateType___block
   self->_lastUpdate = v5;
   needsUpdate = self->_needsUpdate;
   self->_needsUpdate = 0;
-  v7 = [(PXCPLStatusProvider *)self status];
-  v8 = [v7 copy];
+  status = [(PXCPLStatusProvider *)self status];
+  v8 = [status copy];
 
   objc_initWeak(buf, self);
   serialUpdateQueue = self->_serialUpdateQueue;
@@ -287,7 +287,7 @@ void __37__PXCPLStatusProvider__performUpdate__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
     v10 = v4;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEBUG, "%@ < Did get next override time interval: %f", &v7, 0x16u);
@@ -296,15 +296,15 @@ void __37__PXCPLStatusProvider__performUpdate__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)_updateStatus:(id)a3 requestedTypes:(unint64_t)a4
+- (id)_updateStatus:(id)status requestedTypes:(unint64_t)types
 {
   v87 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (!a4)
+  statusCopy = status;
+  v8 = statusCopy;
+  if (!types)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCPLStatusProvider.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"updateType != PXCPLStatusUpdateTypeNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusProvider.m" lineNumber:290 description:{@"Invalid parameter not satisfying: %@", @"updateType != PXCPLStatusUpdateTypeNone"}];
 
     if (v8)
     {
@@ -316,7 +316,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v7)
+  if (!statusCopy)
   {
     goto LABEL_5;
   }
@@ -325,7 +325,7 @@ LABEL_3:
   v9 = [v8 copy];
 LABEL_6:
   v11 = v9;
-  if ((a4 & 1) != 0 && v9)
+  if ((types & 1) != 0 && v9)
   {
     v12 = PLUserStatusGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -349,7 +349,7 @@ LABEL_6:
     }
   }
 
-  if ((a4 & 2) != 0 && v11)
+  if ((types & 2) != 0 && v11)
   {
     v14 = self->_cplStatusSource == 0;
     v15 = PLUserStatusGetLog();
@@ -379,11 +379,11 @@ LABEL_23:
         _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_DEBUG, "%@ > Will update CPLStatus", buf, 0xCu);
       }
 
-      v17 = [(PXCPLStatusSource *)self->_cplStatusSource exitDate];
-      [(PXCPLStatus *)v11 setExitDate:v17];
+      exitDate = [(PXCPLStatusSource *)self->_cplStatusSource exitDate];
+      [(PXCPLStatus *)v11 setExitDate:exitDate];
 
-      v18 = [(PXCPLStatusSource *)self->_cplStatusSource syncDate];
-      [(PXCPLStatus *)v11 setSyncDate:v18];
+      syncDate = [(PXCPLStatusSource *)self->_cplStatusSource syncDate];
+      [(PXCPLStatus *)v11 setSyncDate:syncDate];
 
       [(PXCPLStatus *)v11 setIsExceedingQuota:[(PXCPLStatusSource *)self->_cplStatusSource isExceedingQuota]];
       [(PXCPLStatus *)v11 setIsExceedingSharedLibraryQuota:[(PXCPLStatusSource *)self->_cplStatusSource isExceedingSharedLibraryQuota]];
@@ -428,7 +428,7 @@ LABEL_23:
   }
 
 LABEL_24:
-  if ((a4 & 4) != 0 && v11)
+  if ((types & 4) != 0 && v11)
   {
     v22 = PLUserStatusGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -440,11 +440,11 @@ LABEL_24:
 
     *&v82 = 0;
     *v81 = 0;
-    v23 = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
-    v24 = [v23 libraryBundle];
-    v25 = [v24 indicatorFileCoordinator];
+    photoLibrary = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
+    libraryBundle = [photoLibrary libraryBundle];
+    indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-    [v25 getDownloadPhotoCount:&v82 downloadVideoCount:v81];
+    [indicatorFileCoordinator getDownloadPhotoCount:&v82 downloadVideoCount:v81];
     [(PXCPLStatus *)v11 setNumberOfItemsToAdd:*v81 + v82];
     v26 = PLUserStatusGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -455,7 +455,7 @@ LABEL_24:
     }
   }
 
-  if ((a4 & 8) != 0 && v11)
+  if ((types & 8) != 0 && v11)
   {
     v27 = PLUserStatusGetLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -473,14 +473,14 @@ LABEL_24:
     *(&v82 + 1) = &v82;
     v83 = 0x2020000000;
     v84 = -1082130432;
-    v28 = [(PXCPLStatus *)v11 exitDate];
-    v29 = v28 == 0;
+    exitDate2 = [(PXCPLStatus *)v11 exitDate];
+    v29 = exitDate2 == 0;
 
     if (v29)
     {
-      v32 = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
-      v33 = [v32 assetsdClient];
-      v34 = [v33 cloudInternalClient];
+      photoLibrary2 = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
+      assetsdClient = [photoLibrary2 assetsdClient];
+      cloudInternalClient = [assetsdClient cloudInternalClient];
 
       v79[0] = MEMORY[0x1E69E9820];
       v79[1] = 3221225472;
@@ -489,7 +489,7 @@ LABEL_24:
       v79[4] = self;
       v79[5] = buf;
       v79[6] = &v82;
-      [v34 getCurrentTransferProgress:v79];
+      [cloudInternalClient getCurrentTransferProgress:v79];
       [(PXCPLStatus *)v11 setNumberOfItemsToUpload:*(*&buf[8] + 24)];
       LODWORD(v35) = *(*(&v82 + 1) + 24);
       [(PXCPLStatus *)v11 setFractionCompletedForUpload:v35];
@@ -522,13 +522,13 @@ LABEL_24:
     _Block_object_dispose(buf, 8);
   }
 
-  if ((a4 & 0x10) != 0 && v11)
+  if ((types & 0x10) != 0 && v11)
   {
-    v37 = [(PXCPLPhotoLibrarySource *)self->_photoLibrarySource cplSettingsObserver];
-    v38 = [v37 settings];
-    v39 = [v38 isKeepOriginalsEnabled];
+    cplSettingsObserver = [(PXCPLPhotoLibrarySource *)self->_photoLibrarySource cplSettingsObserver];
+    settings = [cplSettingsObserver settings];
+    isKeepOriginalsEnabled = [settings isKeepOriginalsEnabled];
 
-    if (v39)
+    if (isKeepOriginalsEnabled)
     {
       v40 = PLUserStatusGetLog();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -542,13 +542,13 @@ LABEL_24:
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
       v86 = 0;
-      v41 = [(PHPhotoLibrary *)self->_photoLibrary managedObjectContextForCurrentQueueQoS];
+      managedObjectContextForCurrentQueueQoS = [(PHPhotoLibrary *)self->_photoLibrary managedObjectContextForCurrentQueueQoS];
       +[PXPhotosDataSource waitForAllBackgroundFetchingToFinish];
       v76[0] = MEMORY[0x1E69E9820];
       v76[1] = 3221225472;
       v76[2] = __52__PXCPLStatusProvider__updateStatus_requestedTypes___block_invoke_261;
       v76[3] = &unk_1E7749A28;
-      v42 = v41;
+      v42 = managedObjectContextForCurrentQueueQoS;
       v77 = v42;
       v78 = buf;
       [v42 performBlockAndWait:v76];
@@ -572,7 +572,7 @@ LABEL_24:
     [(PXCPLStatus *)v11 setNumberOfOriginalsToDownload:v43];
   }
 
-  if ((a4 & 0x400) != 0 && v11)
+  if ((types & 0x400) != 0 && v11)
   {
     v45 = PLUserStatusGetLog();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
@@ -582,12 +582,12 @@ LABEL_24:
       _os_log_impl(&dword_1A3C1C000, v45, OS_LOG_TYPE_DEBUG, "%@ > Will update ResetSyncState", buf, 0xCu);
     }
 
-    v46 = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
-    v47 = [v46 assetsdClient];
-    v48 = [v47 cloudInternalClient];
+    photoLibrary3 = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
+    assetsdClient2 = [photoLibrary3 assetsdClient];
+    cloudInternalClient2 = [assetsdClient2 cloudInternalClient];
 
     v75 = 0;
-    v49 = [v48 getResetSyncStatusWithError:&v75];
+    v49 = [cloudInternalClient2 getResetSyncStatusWithError:&v75];
     v50 = v75;
     if (v50)
     {
@@ -630,7 +630,7 @@ LABEL_24:
     }
   }
 
-  if ((a4 & 0x800) != 0 && v11)
+  if ((types & 0x800) != 0 && v11)
   {
     v53 = PLUserStatusGetLog();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
@@ -652,7 +652,7 @@ LABEL_24:
     }
   }
 
-  if (((v11 != 0) & _os_feature_enabled_impl() & (a4 >> 5)) == 1)
+  if (((v11 != 0) & _os_feature_enabled_impl() & (types >> 5)) == 1)
   {
     v55 = PLUserStatusGetLog();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
@@ -672,11 +672,11 @@ LABEL_24:
     v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:3];
     v61 = [v56 andPredicateWithSubpredicates:v60];
 
-    v62 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-    [v62 setWantsIncrementalChangeDetails:0];
-    [v62 setShouldPrefetchCount:1];
-    [v62 setInternalPredicate:v61];
-    v63 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v62];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+    [librarySpecificFetchOptions setShouldPrefetchCount:1];
+    [librarySpecificFetchOptions setInternalPredicate:v61];
+    v63 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
     -[PXCPLStatus setNumberOfItemsFailingToUpload:](v11, "setNumberOfItemsFailingToUpload:", [v63 count]);
     v64 = PLUserStatusGetLog();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
@@ -687,7 +687,7 @@ LABEL_24:
     }
   }
 
-  if ((a4 & 0x80) != 0 && v11)
+  if ((types & 0x80) != 0 && v11)
   {
     v65 = PLUserStatusGetLog();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
@@ -707,7 +707,7 @@ LABEL_24:
     }
   }
 
-  if ((a4 & 0x100) != 0 && v11)
+  if ((types & 0x100) != 0 && v11)
   {
     v67 = PLUserStatusGetLog();
     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -717,11 +717,11 @@ LABEL_24:
       _os_log_impl(&dword_1A3C1C000, v67, OS_LOG_TYPE_DEBUG, "%@ > Will update PauseStates", buf, 0xCu);
     }
 
-    v68 = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
-    v69 = [v68 libraryBundle];
-    v70 = [v69 indicatorFileCoordinator];
+    photoLibrary4 = [(PHPhotoLibrary *)self->_photoLibrary photoLibrary];
+    libraryBundle2 = [photoLibrary4 libraryBundle];
+    indicatorFileCoordinator2 = [libraryBundle2 indicatorFileCoordinator];
 
-    -[PXCPLStatus setIsUserPaused:](v11, "setIsUserPaused:", [v70 currentPauseReason] == 3);
+    -[PXCPLStatus setIsUserPaused:](v11, "setIsUserPaused:", [indicatorFileCoordinator2 currentPauseReason] == 3);
     v71 = PLUserStatusGetLog();
     if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
     {
@@ -731,7 +731,7 @@ LABEL_24:
     }
   }
 
-  if ((a4 & 0x200) != 0 && v11)
+  if ((types & 0x200) != 0 && v11)
   {
     v72 = PLUserStatusGetLog();
     if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
@@ -821,37 +821,37 @@ void __52__PXCPLStatusProvider__updateStatus_requestedTypes___block_invoke_261(u
   return [(PXCPLStatusSource *)cplStatusSource hasChangesToProcess];
 }
 
-- (void)_setStatus:(id)a3 producedForUpdateType:(unint64_t)a4 timeIntervalProducingUpdatedStatus:(double)a5
+- (void)_setStatus:(id)status producedForUpdateType:(unint64_t)type timeIntervalProducingUpdatedStatus:(double)updatedStatus
 {
-  v6 = a4;
+  typeCopy = type;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  statusCopy = status;
   v10 = self->_status;
   v11 = v10;
-  if (v10 == v9)
+  if (v10 == statusCopy)
   {
   }
 
   else
   {
-    v12 = [(PXCPLStatus *)v10 isEqual:v9];
+    v12 = [(PXCPLStatus *)v10 isEqual:statusCopy];
 
     if (!v12)
     {
-      objc_storeStrong(&self->_status, a3);
+      objc_storeStrong(&self->_status, status);
       v13 = PLUserStatusGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         status = self->_status;
-        v15 = PXCPLStatusUpdateTypeDebugDescription(v6);
+        v15 = PXCPLStatusUpdateTypeDebugDescription(typeCopy);
         v18 = 138544130;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 2114;
-        v21 = status;
+        statusCopy2 = status;
         v22 = 2114;
-        v23 = *&v15;
+        updatedStatusCopy2 = *&v15;
         v24 = 2048;
-        v25 = a5;
+        updatedStatusCopy = updatedStatus;
         _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ >> %{public}@ [reason: %{public}@, time: %.2f s]", &v18, 0x2Au);
       }
 
@@ -863,41 +863,41 @@ void __52__PXCPLStatusProvider__updateStatus_requestedTypes___block_invoke_261(u
   v16 = PLUserStatusGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = PXCPLStatusUpdateTypeDebugDescription(v6);
+    v17 = PXCPLStatusUpdateTypeDebugDescription(typeCopy);
     v18 = 138412802;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2114;
-    v21 = v17;
+    statusCopy2 = v17;
     v22 = 2048;
-    v23 = a5;
+    updatedStatusCopy2 = updatedStatus;
     _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_DEBUG, "%@ Update resulted in no change [reason: %{public}@, time: %.2f s]", &v18, 0x20u);
   }
 
 LABEL_10:
 }
 
-- (PXCPLStatusProvider)initWithPhotoLibrary:(id)a3
+- (PXCPLStatusProvider)initWithPhotoLibrary:(id)library
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PXCPLStatusProvider.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusProvider.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
-  if (([v6 isCloudPhotoLibraryEnabled] & 1) == 0)
+  if (([libraryCopy isCloudPhotoLibraryEnabled] & 1) == 0)
   {
     v7 = PLUserStatusGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 photoLibraryURL];
+      photoLibraryURL = [libraryCopy photoLibraryURL];
       *buf = 138543874;
-      v33 = self;
+      selfCopy = self;
       v34 = 2112;
-      v35 = v6;
+      v35 = libraryCopy;
       v36 = 2112;
-      v37 = v8;
+      v37 = photoLibraryURL;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_ERROR, "%{public}@ ICPL is not enabled for library: %@, URL: %@", buf, 0x20u);
     }
   }
@@ -911,11 +911,11 @@ LABEL_10:
     serialUpdateQueue = v9->_serialUpdateQueue;
     v9->_serialUpdateQueue = v10;
 
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    v12 = [(PHPhotoLibrary *)v9->_photoLibrary cplStatus];
-    if (v12)
+    objc_storeStrong(&v9->_photoLibrary, library);
+    cplStatus = [(PHPhotoLibrary *)v9->_photoLibrary cplStatus];
+    if (cplStatus)
     {
-      v13 = [[PXCPLStatusSource alloc] initWithStatus:v12];
+      v13 = [[PXCPLStatusSource alloc] initWithStatus:cplStatus];
       cplStatusSource = v9->_cplStatusSource;
       v9->_cplStatusSource = v13;
 
@@ -928,9 +928,9 @@ LABEL_10:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v33 = v9;
+        selfCopy = v9;
         v34 = 2112;
-        v35 = v6;
+        v35 = libraryCopy;
         _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_ERROR, "%{public}@ No CPL status for library: %@", buf, 0x16u);
       }
     }
@@ -970,16 +970,16 @@ LABEL_10:
     premiumOfferProvider = v9->_premiumOfferProvider;
     v9->_premiumOfferProvider = v25;
 
-    v27 = [(PXCloudQuotaOfferProvider *)v9->_offerProvider offer];
-    if (v27)
+    offer = [(PXCloudQuotaOfferProvider *)v9->_offerProvider offer];
+    if (offer)
     {
       v9->_hasCloudQuotaOffer = 1;
     }
 
     else
     {
-      v28 = [(PXCloudQuotaPremiumOfferProvider *)v9->_premiumOfferProvider premiumOffer];
-      v9->_hasCloudQuotaOffer = v28 != 0;
+      premiumOffer = [(PXCloudQuotaPremiumOfferProvider *)v9->_premiumOfferProvider premiumOffer];
+      v9->_hasCloudQuotaOffer = premiumOffer != 0;
     }
 
     [(PXCloudQuotaOfferProvider *)v9->_offerProvider registerChangeObserver:v9 context:PXCloudQuotaOfferProviderObservationContext];
@@ -993,8 +993,8 @@ LABEL_10:
 
 - (PXCPLStatusProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCPLStatusProvider.m" lineNumber:193 description:{@"%s is not available as initializer", "-[PXCPLStatusProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCPLStatusProvider.m" lineNumber:193 description:{@"%s is not available as initializer", "-[PXCPLStatusProvider init]"}];
 
   abort();
 }

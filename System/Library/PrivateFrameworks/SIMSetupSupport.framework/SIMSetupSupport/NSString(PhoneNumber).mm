@@ -8,7 +8,7 @@
 - (id)unformattedPhoneNumber
 {
   v2 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"+() -"];
-  v3 = [a1 componentsSeparatedByCharactersInSet:v2];
+  v3 = [self componentsSeparatedByCharactersInSet:v2];
   v4 = [v3 componentsJoinedByString:&stru_28753DF48];
 
   return v4;
@@ -17,19 +17,19 @@
 - (BOOL)isEqualToPhoneNumber:()PhoneNumber
 {
   v4 = a3;
-  if (([a1 isEqualToString:v4] & 1) == 0)
+  if (([self isEqualToString:v4] & 1) == 0)
   {
-    v6 = [a1 unformattedPhoneNumber];
-    v7 = [v4 unformattedPhoneNumber];
-    if ([v6 length] && (v8 = objc_msgSend(v6, "length"), v8 <= objc_msgSend(v7, "length")))
+    unformattedPhoneNumber = [self unformattedPhoneNumber];
+    unformattedPhoneNumber2 = [v4 unformattedPhoneNumber];
+    if ([unformattedPhoneNumber length] && (v8 = objc_msgSend(unformattedPhoneNumber, "length"), v8 <= objc_msgSend(unformattedPhoneNumber2, "length")))
     {
-      v10 = v7;
-      v11 = v6;
+      v10 = unformattedPhoneNumber2;
+      v11 = unformattedPhoneNumber;
     }
 
     else
     {
-      if (![v7 length] || (v9 = objc_msgSend(v7, "length"), v9 >= objc_msgSend(v6, "length")))
+      if (![unformattedPhoneNumber2 length] || (v9 = objc_msgSend(unformattedPhoneNumber2, "length"), v9 >= objc_msgSend(unformattedPhoneNumber, "length")))
       {
         v5 = 0;
 LABEL_11:
@@ -37,8 +37,8 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v10 = v6;
-      v11 = v7;
+      v10 = unformattedPhoneNumber;
+      v11 = unformattedPhoneNumber2;
     }
 
     v5 = [v10 rangeOfString:v11] != 0x7FFFFFFFFFFFFFFFLL;

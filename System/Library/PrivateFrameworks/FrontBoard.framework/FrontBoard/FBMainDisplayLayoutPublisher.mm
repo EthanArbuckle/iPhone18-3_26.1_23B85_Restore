@@ -1,13 +1,13 @@
 @interface FBMainDisplayLayoutPublisher
 + (id)sharedInstance;
 - (FBMainDisplayLayoutPublisher)init;
-- (id)_initWithPublisher:(id)a3;
-- (void)_updateWithBacklightState:(int64_t)a3;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6;
-- (void)backlightHost:(id)a3 willTransitionToState:(int64_t)a4 forEvent:(id)a5;
+- (id)_initWithPublisher:(id)publisher;
+- (void)_updateWithBacklightState:(int64_t)state;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents;
+- (void)backlightHost:(id)host willTransitionToState:(int64_t)state forEvent:(id)event;
 - (void)dealloc;
-- (void)displayMonitor:(id)a3 didUpdateIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5;
+- (void)displayMonitor:(id)monitor didUpdateIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition;
 @end
 
 @implementation FBMainDisplayLayoutPublisher
@@ -37,7 +37,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBMainDisplayLayoutPublisher.m";
     v17 = 1024;
@@ -53,28 +53,28 @@
   return result;
 }
 
-- (id)_initWithPublisher:(id)a3
+- (id)_initWithPublisher:(id)publisher
 {
-  v6 = a3;
-  if (!v6)
+  publisherCopy = publisher;
+  if (!publisherCopy)
   {
     [(FBMainDisplayLayoutPublisher *)a2 _initWithPublisher:?];
   }
 
-  v7 = v6;
+  v7 = publisherCopy;
   v21.receiver = self;
   v21.super_class = FBMainDisplayLayoutPublisher;
   v8 = [(FBMainDisplayLayoutPublisher *)&v21 init];
   p_isa = &v8->super.isa;
   if (v8)
   {
-    objc_storeStrong(&v8->_publisher, a3);
+    objc_storeStrong(&v8->_publisher, publisher);
     v10 = [p_isa[1] transitionAssertionWithReason:0];
     v11 = +[FBDisplayManager sharedInstance];
     [v11 addObserver:p_isa];
     v12 = p_isa[1];
-    v13 = [v11 mainConfiguration];
-    [v12 setDisplayConfiguration:v13];
+    mainConfiguration = [v11 mainConfiguration];
+    [v12 setDisplayConfiguration:mainConfiguration];
 
     v27 = 0;
     v28 = &v27;
@@ -94,8 +94,8 @@
 
     v15 = v14;
     _Block_object_dispose(&v27, 8);
-    v16 = [v14 sharedBacklight];
-    if (v16)
+    sharedBacklight = [v14 sharedBacklight];
+    if (sharedBacklight)
     {
       v27 = 0;
       v28 = &v27;
@@ -117,8 +117,8 @@
       _Block_object_dispose(&v27, 8);
       if ([v17 isHostProcess])
       {
-        [v16 addObserver:p_isa];
-        [p_isa _updateWithBacklightState:{objc_msgSend(v16, "backlightState")}];
+        [sharedBacklight addObserver:p_isa];
+        [p_isa _updateWithBacklightState:{objc_msgSend(sharedBacklight, "backlightState")}];
 LABEL_15:
         [p_isa[1] addObserver:p_isa];
         [p_isa[1] activate];
@@ -165,7 +165,7 @@ LABEL_16:
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBMainDisplayLayoutPublisher.m";
     v16 = 1024;
@@ -221,37 +221,37 @@ void __46__FBMainDisplayLayoutPublisher_sharedInstance__block_invoke()
   }
 }
 
-- (void)_updateWithBacklightState:(int64_t)a3
+- (void)_updateWithBacklightState:(int64_t)state
 {
-  if (a3 <= 3)
+  if (state <= 3)
   {
-    [(FBSDisplayLayoutPublisher *)self->_publisher setBacklightLevel:qword_1A8A71E48[a3]];
+    [(FBSDisplayLayoutPublisher *)self->_publisher setBacklightLevel:qword_1A8A71E48[state]];
   }
 
   publisher = self->_publisher;
 
-  [(FBSDisplayLayoutPublisher *)publisher setBacklightState:a3];
+  [(FBSDisplayLayoutPublisher *)publisher setBacklightState:state];
 }
 
-- (void)displayMonitor:(id)a3 didUpdateIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didUpdateIdentity:(id)identity withConfiguration:(id)configuration
 {
-  v10 = a5;
-  v8 = a4;
-  v9 = [a3 mainIdentity];
+  configurationCopy = configuration;
+  identityCopy = identity;
+  mainIdentity = [monitor mainIdentity];
 
-  if (v9 == v8)
+  if (mainIdentity == identityCopy)
   {
-    [(FBSDisplayLayoutPublisher *)self->_publisher setDisplayConfiguration:v10];
+    [(FBSDisplayLayoutPublisher *)self->_publisher setDisplayConfiguration:configurationCopy];
   }
 }
 
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"FBDisplayLayoutDidUpdateNotification" object:&unk_1F1C10930];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"FBDisplayLayoutDidUpdateNotification" object:&unk_1F1C10930];
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents
 {
   v9 = self->_backlightTransition;
   backlightTransition = self->_backlightTransition;
@@ -262,11 +262,11 @@ void __46__FBMainDisplayLayoutPublisher_sharedInstance__block_invoke()
     v9 = [(FBSDisplayLayoutPublisher *)self->_publisher transitionAssertionWithReason:@"BLSBacklight"];
   }
 
-  [(FBMainDisplayLayoutPublisher *)self _updateWithBacklightState:a4];
+  [(FBMainDisplayLayoutPublisher *)self _updateWithBacklightState:state];
   [(BSInvalidatable *)v9 invalidate];
 }
 
-- (void)backlightHost:(id)a3 willTransitionToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlightHost:(id)host willTransitionToState:(int64_t)state forEvent:(id)event
 {
   publisher = self->_publisher;
   v10 = self->_backlightTransition;
@@ -274,7 +274,7 @@ void __46__FBMainDisplayLayoutPublisher_sharedInstance__block_invoke()
   backlightTransition = self->_backlightTransition;
   self->_backlightTransition = v8;
 
-  [(FBMainDisplayLayoutPublisher *)self _updateWithBacklightState:a4];
+  [(FBMainDisplayLayoutPublisher *)self _updateWithBacklightState:state];
   [(BSInvalidatable *)v10 invalidate];
 }
 

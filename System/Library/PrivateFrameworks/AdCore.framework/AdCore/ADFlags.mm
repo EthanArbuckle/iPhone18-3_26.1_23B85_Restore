@@ -1,15 +1,15 @@
 @interface ADFlags
-+ (id)initWithFlags:(unint64_t)a3;
++ (id)initWithFlags:(unint64_t)flags;
 - (ADFlags)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ADFlags
 
-+ (id)initWithFlags:(unint64_t)a3
++ (id)initWithFlags:(unint64_t)flags
 {
   v4 = objc_alloc_init(ADFlags);
-  [(ADFlags *)v4 set:a3];
+  [(ADFlags *)v4 set:flags];
 
   return v4;
 }
@@ -28,9 +28,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

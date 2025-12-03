@@ -1,10 +1,10 @@
 @interface ISURLBag
-+ (id)copyAllowedAutomaticDownloadKindsInBagContext:(id)a3;
++ (id)copyAllowedAutomaticDownloadKindsInBagContext:(id)context;
 @end
 
 @implementation ISURLBag
 
-+ (id)copyAllowedAutomaticDownloadKindsInBagContext:(id)a3
++ (id)copyAllowedAutomaticDownloadKindsInBagContext:(id)context
 {
   v4 = objc_alloc_init(NSMutableSet);
   v5 = [+[ISURLBagCache sharedCache](ISURLBagCache "sharedCache")];

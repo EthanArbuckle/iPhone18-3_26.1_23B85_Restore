@@ -1,75 +1,75 @@
 @interface PKTransactionReceiptLineItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTransactionReceiptLineItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTransactionReceiptLineItem:(id)item;
 - (PKCurrencyAmount)currencyAmount;
-- (PKTransactionReceiptLineItem)initWithCoder:(id)a3;
-- (PKTransactionReceiptLineItem)initWithDictionary:(id)a3 bundle:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKTransactionReceiptLineItem)initWithCoder:(id)coder;
+- (PKTransactionReceiptLineItem)initWithDictionary:(id)dictionary bundle:(id)bundle;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransactionReceiptLineItem
 
-- (PKTransactionReceiptLineItem)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKTransactionReceiptLineItem)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v37.receiver = self;
   v37.super_class = PKTransactionReceiptLineItem;
   v8 = [(PKTransactionReceiptLineItem *)&v37 init];
   if (v8)
   {
-    v9 = [v6 PKStringForKey:@"identifier"];
+    v9 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v6 PKStringForKey:@"title"];
+    v11 = [dictionaryCopy PKStringForKey:@"title"];
     v12 = v11;
     if (v11)
     {
-      v13 = PKLocalizedReceiptStringForReceiptBundle(v11, v7);
+      v13 = PKLocalizedReceiptStringForReceiptBundle(v11, bundleCopy);
       title = v8->_title;
       v8->_title = v13;
     }
 
-    v15 = [v6 PKStringForKey:@"subtitle"];
+    v15 = [dictionaryCopy PKStringForKey:@"subtitle"];
     v16 = v15;
     if (v15)
     {
-      v17 = PKLocalizedReceiptStringForReceiptBundle(v15, v7);
+      v17 = PKLocalizedReceiptStringForReceiptBundle(v15, bundleCopy);
       subtitle = v8->_subtitle;
       v8->_subtitle = v17;
     }
 
-    v19 = [v6 PKStringForKey:@"itemDescription"];
+    v19 = [dictionaryCopy PKStringForKey:@"itemDescription"];
     v20 = v19;
     if (v19)
     {
-      v21 = PKLocalizedReceiptStringForReceiptBundle(v19, v7);
+      v21 = PKLocalizedReceiptStringForReceiptBundle(v19, bundleCopy);
       secondarySubtitle = v8->_secondarySubtitle;
       v8->_secondarySubtitle = v21;
     }
 
-    v23 = [v6 PKURLForKey:@"imageURL"];
+    v23 = [dictionaryCopy PKURLForKey:@"imageURL"];
     iconImageURL = v8->_iconImageURL;
     v8->_iconImageURL = v23;
 
-    v8->_quantity = [v6 PKIntegerForKey:@"quantity"];
-    v25 = [v6 PKDecimalNumberFromStringForKey:@"amount"];
+    v8->_quantity = [dictionaryCopy PKIntegerForKey:@"quantity"];
+    v25 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"amount"];
     amount = v8->_amount;
     v8->_amount = v25;
 
-    v27 = [v6 PKStringForKey:@"currencyCode"];
+    v27 = [dictionaryCopy PKStringForKey:@"currencyCode"];
     currencyCode = v8->_currencyCode;
     v8->_currencyCode = v27;
 
-    v8->_adamIdentifier = [v6 PKIntegerForKey:@"adamID"];
-    v29 = [v6 PKStringForKey:@"imageName"];
+    v8->_adamIdentifier = [dictionaryCopy PKIntegerForKey:@"adamID"];
+    v29 = [dictionaryCopy PKStringForKey:@"imageName"];
     if (v29)
     {
-      v30 = [PKImage imageNamed:v29 inBundle:v7];
+      v30 = [PKImage imageNamed:v29 inBundle:bundleCopy];
       image = v8->_image;
       v8->_image = v30;
     }
@@ -86,7 +86,7 @@ LABEL_13:
 
       image = [(NSURL *)v32 pathExtension];
       v33 = [(NSString *)v8->_identifier stringByAppendingPathExtension:image];
-      v34 = [PKImage imageNamed:v33 inBundle:v7];
+      v34 = [PKImage imageNamed:v33 inBundle:bundleCopy];
       v35 = v8->_image;
       v8->_image = v34;
     }
@@ -120,33 +120,33 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReceiptLineItem *)self isEqualToTransactionReceiptLineItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReceiptLineItem *)self isEqualToTransactionReceiptLineItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToTransactionReceiptLineItem:(id)a3
+- (BOOL)isEqualToTransactionReceiptLineItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     goto LABEL_48;
   }
 
-  v6 = v4[1];
+  v6 = itemCopy[1];
   v7 = self->_identifier;
   v8 = v6;
   v9 = v8;
@@ -339,99 +339,99 @@ LABEL_49:
   return v6;
 }
 
-- (PKTransactionReceiptLineItem)initWithCoder:(id)a3
+- (PKTransactionReceiptLineItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PKTransactionReceiptLineItem;
   v5 = [(PKTransactionReceiptLineItem *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemDescription"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemDescription"];
     secondarySubtitle = v5->_secondarySubtitle;
     v5->_secondarySubtitle = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
     iconImageURL = v5->_iconImageURL;
     v5->_iconImageURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     image = v5->_image;
     v5->_image = v16;
 
-    v5->_quantity = [v4 decodeIntegerForKey:@"quantity"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v5->_quantity = [coderCopy decodeIntegerForKey:@"quantity"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v20;
 
-    v5->_adamIdentifier = [v4 decodeIntegerForKey:@"adamID"];
+    v5->_adamIdentifier = [coderCopy decodeIntegerForKey:@"adamID"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_secondarySubtitle forKey:@"itemDescription"];
-  [v5 encodeObject:self->_iconImageURL forKey:@"imageURL"];
-  [v5 encodeObject:self->_image forKey:@"image"];
-  [v5 encodeInteger:self->_quantity forKey:@"quantity"];
-  [v5 encodeObject:self->_amount forKey:@"amount"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeInteger:self->_adamIdentifier forKey:@"adamID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_secondarySubtitle forKey:@"itemDescription"];
+  [coderCopy encodeObject:self->_iconImageURL forKey:@"imageURL"];
+  [coderCopy encodeObject:self->_image forKey:@"image"];
+  [coderCopy encodeInteger:self->_quantity forKey:@"quantity"];
+  [coderCopy encodeObject:self->_amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeInteger:self->_adamIdentifier forKey:@"adamID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_title copyWithZone:a3];
+  v8 = [(NSString *)self->_title copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v10 = [(NSString *)self->_subtitle copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
-  v12 = [(NSString *)self->_secondarySubtitle copyWithZone:a3];
+  v12 = [(NSString *)self->_secondarySubtitle copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
-  v14 = [(NSURL *)self->_iconImageURL copyWithZone:a3];
+  v14 = [(NSURL *)self->_iconImageURL copyWithZone:zone];
   v15 = *(v5 + 72);
   *(v5 + 72) = v14;
 
   objc_storeStrong((v5 + 40), self->_image);
   *(v5 + 48) = self->_quantity;
-  v16 = [(NSDecimalNumber *)self->_amount copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_amount copyWithZone:zone];
   v17 = *(v5 + 56);
   *(v5 + 56) = v16;
 
-  v18 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v18 = [(NSString *)self->_currencyCode copyWithZone:zone];
   v19 = *(v5 + 64);
   *(v5 + 64) = v18;
 

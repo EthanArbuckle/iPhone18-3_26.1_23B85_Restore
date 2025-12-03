@@ -1,11 +1,11 @@
 @interface AMSDAccountManagementService
 + (AMSDAccountManagementService)sharedService;
-+ (BOOL)isConnectionEntitled:(id)a3;
-- (id)_getOrCreateLocalAccountWithIdentifier:(id)a3 error:(id *)a4;
-- (id)_getOrCreateLocalAccountWithType:(id)a3 error:(id *)a4;
-- (id)_localAccountWithType:(id)a3;
-- (id)_newLocalAccountWithAccountType:(id)a3;
-- (void)performCreateLocalAccountWithIdentifier:(id)a3 completion:(id)a4;
++ (BOOL)isConnectionEntitled:(id)entitled;
+- (id)_getOrCreateLocalAccountWithIdentifier:(id)identifier error:(id *)error;
+- (id)_getOrCreateLocalAccountWithType:(id)type error:(id *)error;
+- (id)_localAccountWithType:(id)type;
+- (id)_newLocalAccountWithAccountType:(id)type;
+- (void)performCreateLocalAccountWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation AMSDAccountManagementService
@@ -22,10 +22,10 @@
   return v3;
 }
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  entitledCopy = entitled;
+  v4 = [entitledCopy valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -39,12 +39,12 @@
 
   if ([v5 BOOLValue])
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v7 = [v3 valueForEntitlement:@"com.apple.itunesstored.private"];
+    v7 = [entitledCopy valueForEntitlement:@"com.apple.itunesstored.private"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,18 +56,18 @@
       v8 = 0;
     }
 
-    v6 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)performCreateLocalAccountWithIdentifier:(id)a3 completion:(id)a4
+- (void)performCreateLocalAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = AMSSetLogKey();
-  if ([v6 isEqualToString:ACAccountTypeIdentifieriTunesStore] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", ACAccountTypeIdentifieriTunesStoreSandbox))
+  if ([identifierCopy isEqualToString:ACAccountTypeIdentifieriTunesStore] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", ACAccountTypeIdentifieriTunesStoreSandbox))
   {
     if (qword_1002E3198 != -1)
     {
@@ -86,7 +86,7 @@
     v24[2] = sub_10003F2F4;
     v24[3] = &unk_1002AFF00;
     v25 = v8;
-    v26 = self;
+    selfCopy = self;
     v10 = v9;
     v27 = v10;
     v28 = buf;
@@ -95,8 +95,8 @@
     *(*&buf[8] + 40) = v11;
 
     v13 = [AMSPair alloc];
-    v14 = objc_retainBlock(v7);
-    v15 = [v13 initWithFirst:v6 second:v14];
+    v14 = objc_retainBlock(completionCopy);
+    v15 = [v13 initWithFirst:identifierCopy second:v14];
 
     os_unfair_lock_lock_with_options();
     [v10 addObject:v15];
@@ -105,9 +105,9 @@
     if (v16 == 1)
     {
       v17 = *(*&buf[8] + 40);
-      v18 = [v15 first];
-      v19 = [v15 second];
-      (*(v17 + 16))(v17, v18, v19);
+      first = [v15 first];
+      second = [v15 second];
+      (*(v17 + 16))(v17, first, second);
     }
 
     _Block_object_dispose(buf, 8);
@@ -121,8 +121,8 @@
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
       if (v8)
@@ -138,29 +138,29 @@
       *buf = 138543618;
       *&buf[4] = v23;
       *&buf[12] = 2114;
-      *&buf[14] = v6;
-      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%{public}@Local account can only be created for iTunesStore identifiers. Identifier = %{public}@", buf, 0x16u);
+      *&buf[14] = identifierCopy;
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Local account can only be created for iTunesStore identifiers. Identifier = %{public}@", buf, 0x16u);
     }
 
     v10 = AMSError();
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 }
 
-- (id)_getOrCreateLocalAccountWithIdentifier:(id)a3 error:(id *)a4
+- (id)_getOrCreateLocalAccountWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[ACAccountStore ams_sharedAccountStore];
   v14 = 0;
-  v8 = [v7 accountTypeWithAccountTypeIdentifier:v6 error:&v14];
+  v8 = [v7 accountTypeWithAccountTypeIdentifier:identifierCopy error:&v14];
 
   v9 = v14;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       AMSError();
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -174,27 +174,27 @@
     v13 = 0;
     v10 = [(AMSDAccountManagementService *)self _getOrCreateLocalAccountWithType:v8 error:&v13];
     v11 = v13;
-    if (a4 && v11)
+    if (error && v11)
     {
       v11 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
   return v10;
 }
 
-- (id)_getOrCreateLocalAccountWithType:(id)a3 error:(id *)a4
+- (id)_getOrCreateLocalAccountWithType:(id)type error:(id *)error
 {
-  v8 = a3;
+  typeCopy = type;
   v9 = +[AMSLogConfig sharedAccountsConfig];
   if (!v9)
   {
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = AMSLogKey();
     v12 = objc_opt_class();
@@ -212,7 +212,7 @@
     v5 = ;
     *buf = 138543362;
     v51 = v5;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Checking for local account", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Checking for local account", buf, 0xCu);
     if (v11)
     {
 
@@ -220,7 +220,7 @@
     }
   }
 
-  v14 = [(AMSDAccountManagementService *)self _localAccountWithType:v8];
+  v14 = [(AMSDAccountManagementService *)self _localAccountWithType:typeCopy];
   v15 = +[AMSLogConfig sharedAccountsConfig];
   v16 = v15;
   if (v14)
@@ -230,8 +230,8 @@
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v18 = AMSLogKey();
       v19 = objc_opt_class();
@@ -246,18 +246,18 @@
       {
         [NSString stringWithFormat:@"%@: ", v19];
       }
-      v21 = ;
-      v26 = [v8 identifier];
+      selfCopy = ;
+      identifier = [typeCopy identifier];
       *buf = 138543618;
-      v51 = v21;
+      v51 = selfCopy;
       v52 = 2114;
-      v53 = v26;
-      _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@Local account already exists for type = %{public}@", buf, 0x16u);
+      v53 = identifier;
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Local account already exists for type = %{public}@", buf, 0x16u);
 
       if (v18)
       {
 
-        v21 = self;
+        selfCopy = self;
       }
     }
 
@@ -270,8 +270,8 @@ LABEL_58:
     v16 = +[AMSLogConfig sharedConfig];
   }
 
-  v22 = [v16 OSLogObject];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  oSLogObject3 = [v16 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
   {
     v23 = AMSLogKey();
     v24 = objc_opt_class();
@@ -287,12 +287,12 @@ LABEL_58:
       [NSString stringWithFormat:@"%@: ", v24];
     }
     v5 = ;
-    v27 = [v8 identifier];
+    identifier2 = [typeCopy identifier];
     *buf = 138543618;
     v51 = v5;
     v52 = 2114;
-    v53 = v27;
-    _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@Local account does not exist for type = %{public}@", buf, 0x16u);
+    v53 = identifier2;
+    _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@Local account does not exist for type = %{public}@", buf, 0x16u);
 
     if (v23)
     {
@@ -301,7 +301,7 @@ LABEL_58:
     }
   }
 
-  v28 = [(AMSDAccountManagementService *)self _newLocalAccountWithAccountType:v8];
+  v28 = [(AMSDAccountManagementService *)self _newLocalAccountWithAccountType:typeCopy];
   if (v28)
   {
     v16 = v28;
@@ -311,10 +311,10 @@ LABEL_58:
       v29 = +[AMSLogConfig sharedConfig];
     }
 
-    v30 = [v29 OSLogObject];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v29 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
-      v48 = a4;
+      errorCopy = error;
       v31 = AMSLogKey();
       v32 = objc_opt_class();
       v33 = v32;
@@ -329,14 +329,14 @@ LABEL_58:
         [NSString stringWithFormat:@"%@: ", v32];
       }
       v34 = ;
-      v35 = [v8 identifier];
+      identifier3 = [typeCopy identifier];
       *buf = 138543874;
       v51 = v34;
       v52 = 2114;
-      v53 = v35;
+      v53 = identifier3;
       v54 = 2114;
       v55 = v16;
-      _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}@Creating new local account for type = %{public}@ | account = %{public}@", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@Creating new local account for type = %{public}@ | account = %{public}@", buf, 0x20u);
 
       if (v31)
       {
@@ -344,7 +344,7 @@ LABEL_58:
         v34 = v5;
       }
 
-      a4 = v48;
+      error = errorCopy;
     }
 
     v36 = +[ACAccountStore ams_sharedAccountStore];
@@ -360,8 +360,8 @@ LABEL_58:
         v39 = +[AMSLogConfig sharedConfig];
       }
 
-      v40 = [v39 OSLogObject];
-      if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+      oSLogObject5 = [v39 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
       {
         v41 = AMSLogKey();
         v42 = objc_opt_class();
@@ -376,29 +376,29 @@ LABEL_58:
         {
           [NSString stringWithFormat:@"%@: ", v42];
         }
-        v44 = ;
-        v46 = [v8 identifier];
+        selfCopy2 = ;
+        identifier4 = [typeCopy identifier];
         *buf = 138543618;
-        v51 = v44;
+        v51 = selfCopy2;
         v52 = 2114;
-        v53 = v46;
-        _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "%{public}@Local account added for type = %{public}@", buf, 0x16u);
+        v53 = identifier4;
+        _os_log_impl(&_mh_execute_header, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@Local account added for type = %{public}@", buf, 0x16u);
 
         if (v41)
         {
 
-          v44 = self;
+          selfCopy2 = self;
         }
       }
 
       v14 = v16;
     }
 
-    else if (a4)
+    else if (error)
     {
       v45 = v38;
       v14 = 0;
-      *a4 = v38;
+      *error = v38;
     }
 
     else
@@ -409,10 +409,10 @@ LABEL_58:
     goto LABEL_58;
   }
 
-  if (a4)
+  if (error)
   {
     AMSError();
-    *a4 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -425,26 +425,26 @@ LABEL_59:
   return v14;
 }
 
-- (id)_localAccountWithType:(id)a3
+- (id)_localAccountWithType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[ACAccountStore ams_sharedAccountStore];
-  v5 = [v4 ams_alliTunesAccounts];
+  ams_alliTunesAccounts = [v4 ams_alliTunesAccounts];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10003FEC0;
   v9[3] = &unk_1002AFF28;
-  v10 = v3;
-  v6 = v3;
-  v7 = [v5 ams_firstObjectPassingTest:v9];
+  v10 = typeCopy;
+  v6 = typeCopy;
+  v7 = [ams_alliTunesAccounts ams_firstObjectPassingTest:v9];
 
   return v7;
 }
 
-- (id)_newLocalAccountWithAccountType:(id)a3
+- (id)_newLocalAccountWithAccountType:(id)type
 {
-  v3 = a3;
-  v4 = [[ACAccount alloc] initWithAccountType:v3];
+  typeCopy = type;
+  v4 = [[ACAccount alloc] initWithAccountType:typeCopy];
 
   [v4 setActive:0];
   [v4 setUsername:@"local"];

@@ -1,26 +1,26 @@
 @interface ICMusicUserTokenFetchRequest
-- (ICMusicUserTokenFetchRequest)initWithCoder:(id)a3;
-- (ICMusicUserTokenFetchRequest)initWithDeveloperToken:(id)a3 clientInfo:(id)a4 options:(unint64_t)a5;
-- (void)_executeByPerformingStoreRequestWithContext:(id)a3 qualityOfService:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ICMusicUserTokenFetchRequest)initWithCoder:(id)coder;
+- (ICMusicUserTokenFetchRequest)initWithDeveloperToken:(id)token clientInfo:(id)info options:(unint64_t)options;
+- (void)_executeByPerformingStoreRequestWithContext:(id)context qualityOfService:(int64_t)service;
+- (void)encodeWithCoder:(id)coder;
 - (void)execute;
-- (void)performRequestOnOperationQueue:(id)a3 withResponseHandler:(id)a4;
+- (void)performRequestOnOperationQueue:(id)queue withResponseHandler:(id)handler;
 @end
 
 @implementation ICMusicUserTokenFetchRequest
 
-- (void)_executeByPerformingStoreRequestWithContext:(id)a3 qualityOfService:(int64_t)a4
+- (void)_executeByPerformingStoreRequestWithContext:(id)context qualityOfService:(int64_t)service
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = +[ICURLBagProvider sharedBagProvider];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __93__ICMusicUserTokenFetchRequest__executeByPerformingStoreRequestWithContext_qualityOfService___block_invoke;
   v9[3] = &unk_1E7BF56F0;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = contextCopy;
+  serviceCopy = service;
+  v8 = contextCopy;
   [v7 getBagForRequestContext:v8 withCompletionHandler:v9];
 }
 
@@ -323,30 +323,30 @@ LABEL_31:
   {
     if ([(NSString *)self->_developerToken length])
     {
-      v3 = [(ICClientInfo *)self->_clientInfo requestingBundleIdentifier];
-      v4 = [v3 length];
+      requestingBundleIdentifier = [(ICClientInfo *)self->_clientInfo requestingBundleIdentifier];
+      v4 = [requestingBundleIdentifier length];
 
       if (v4)
       {
-        v5 = [(ICClientInfo *)self->_clientInfo requestingBundleVersion];
-        v6 = [v5 length];
+        requestingBundleVersion = [(ICClientInfo *)self->_clientInfo requestingBundleVersion];
+        v6 = [requestingBundleVersion length];
 
         if (v6)
         {
           v7 = +[ICPrivacyInfo sharedPrivacyInfo];
-          v8 = [v7 shouldBlockPersonalizedNetworkRequestsForMusic];
+          shouldBlockPersonalizedNetworkRequestsForMusic = [v7 shouldBlockPersonalizedNetworkRequestsForMusic];
 
-          if (v8)
+          if (shouldBlockPersonalizedNetworkRequestsForMusic)
           {
             v9 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-7007 debugDescription:@"Not getting music user token because privacy acknowledgement is required."];
             v10 = os_log_create("com.apple.amp.iTunesCloud", "Default");
             if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
             {
-              v11 = [(ICStoreRequestContext *)v9 msv_description];
+              msv_description = [(ICStoreRequestContext *)v9 msv_description];
               *buf = 138543618;
-              v32 = self;
+              selfCopy4 = self;
               v33 = 2114;
-              v34 = v11;
+              v34 = msv_description;
               _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@", buf, 0x16u);
             }
 
@@ -362,16 +362,16 @@ LABEL_31:
             v30[3] = &unk_1E7BF91F0;
             v30[4] = self;
             v9 = [(ICStoreRequestContext *)v15 initWithBlock:v30];
-            v16 = [(ICStoreRequestContext *)v9 identityStore];
-            v17 = [(ICStoreRequestContext *)v9 identity];
+            identityStore = [(ICStoreRequestContext *)v9 identityStore];
+            identity = [(ICStoreRequestContext *)v9 identity];
             v29 = 0;
-            v18 = [v16 getPropertiesForUserIdentity:v17 error:&v29];
+            v18 = [identityStore getPropertiesForUserIdentity:identity error:&v29];
             v19 = v29;
 
             if (v18 | v19)
             {
-              v22 = [MEMORY[0x1E696AF00] currentThread];
-              v23 = [v22 qualityOfService];
+              currentThread = [MEMORY[0x1E696AF00] currentThread];
+              qualityOfService = [currentThread qualityOfService];
 
               if (self->_options)
               {
@@ -379,11 +379,11 @@ LABEL_31:
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543362;
-                  v32 = self;
+                  selfCopy4 = self;
                   _os_log_impl(&dword_1B4491000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: shouldIgnoreCache = YES.", buf, 0xCu);
                 }
 
-                [(ICMusicUserTokenFetchRequest *)self _executeByPerformingStoreRequestWithContext:v9 qualityOfService:v23];
+                [(ICMusicUserTokenFetchRequest *)self _executeByPerformingStoreRequestWithContext:v9 qualityOfService:qualityOfService];
               }
 
               else
@@ -396,7 +396,7 @@ LABEL_31:
                 v28[3] = &unk_1E7BF56A0;
                 v28[4] = self;
                 v28[5] = v9;
-                v28[6] = v23;
+                v28[6] = qualityOfService;
                 [v24 getCachedUserTokenForDeveloperToken:developerToken requestContext:v9 completion:v28];
               }
             }
@@ -407,7 +407,7 @@ LABEL_31:
               if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543362;
-                v32 = self;
+                selfCopy4 = self;
                 _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_ERROR, "%{public}@: No active account. Failing request.", buf, 0xCu);
               }
 
@@ -440,11 +440,11 @@ LABEL_18:
     v13 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(ICStoreRequestContext *)v9 msv_description];
+      msv_description2 = [(ICStoreRequestContext *)v9 msv_description];
       *buf = 138543618;
-      v32 = self;
+      selfCopy4 = self;
       v33 = 2114;
-      v34 = v14;
+      v34 = msv_description2;
       _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_ERROR, "%{public}@: Invalid request. %{public}@", buf, 0x16u);
     }
 
@@ -497,50 +497,50 @@ uint64_t __39__ICMusicUserTokenFetchRequest_execute__block_invoke_38(uint64_t a1
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ICMusicUserTokenFetchRequest;
-  v4 = a3;
-  [(ICRemoteRequestOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_clientInfo forKey:{@"clientInfo", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_developerToken forKey:@"developerToken"];
-  [v4 encodeInteger:self->_options forKey:@"options"];
+  coderCopy = coder;
+  [(ICRemoteRequestOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_clientInfo forKey:{@"clientInfo", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_developerToken forKey:@"developerToken"];
+  [coderCopy encodeInteger:self->_options forKey:@"options"];
 }
 
-- (ICMusicUserTokenFetchRequest)initWithCoder:(id)a3
+- (ICMusicUserTokenFetchRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ICMusicUserTokenFetchRequest;
-  v5 = [(ICRemoteRequestOperation *)&v11 initWithCoder:v4];
+  v5 = [(ICRemoteRequestOperation *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientInfo"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientInfo"];
     clientInfo = v5->_clientInfo;
     v5->_clientInfo = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"developerToken"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"developerToken"];
     developerToken = v5->_developerToken;
     v5->_developerToken = v8;
 
-    v5->_options = [v4 decodeIntegerForKey:@"options"];
+    v5->_options = [coderCopy decodeIntegerForKey:@"options"];
   }
 
   return v5;
 }
 
-- (void)performRequestOnOperationQueue:(id)a3 withResponseHandler:(id)a4
+- (void)performRequestOnOperationQueue:(id)queue withResponseHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __83__ICMusicUserTokenFetchRequest_performRequestOnOperationQueue_withResponseHandler___block_invoke;
   v8[3] = &unk_1E7BFA490;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(ICRequestOperation *)self performRequestOnOperationQueue:a3 withCompletionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(ICRequestOperation *)self performRequestOnOperationQueue:queue withCompletionHandler:v8];
 }
 
 void __83__ICMusicUserTokenFetchRequest_performRequestOnOperationQueue_withResponseHandler___block_invoke(uint64_t a1, void *a2)
@@ -557,19 +557,19 @@ void __83__ICMusicUserTokenFetchRequest_performRequestOnOperationQueue_withRespo
   }
 }
 
-- (ICMusicUserTokenFetchRequest)initWithDeveloperToken:(id)a3 clientInfo:(id)a4 options:(unint64_t)a5
+- (ICMusicUserTokenFetchRequest)initWithDeveloperToken:(id)token clientInfo:(id)info options:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a4;
+  tokenCopy = token;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = ICMusicUserTokenFetchRequest;
   v11 = [(ICRequestOperation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_developerToken, a3);
-    objc_storeStrong(&v12->_clientInfo, a4);
-    v12->_options = a5;
+    objc_storeStrong(&v11->_developerToken, token);
+    objc_storeStrong(&v12->_clientInfo, info);
+    v12->_options = options;
   }
 
   return v12;

@@ -1,39 +1,39 @@
 @interface CCUIContentModuleContainerTransition
 - (CCUIContentModuleContainerViewController)viewController;
 - (CGRect)contentRestOverrideFrame;
-- (void)_removeMatchMoveAnimationFromTargetView:(id)a3;
-- (void)_setupMatchMoveAnimationWithSourceView:(id)a3 targetView:(id)a4;
-- (void)performTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
-- (void)prepareTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
-- (void)transitionDidEnd:(BOOL)a3;
+- (void)_removeMatchMoveAnimationFromTargetView:(id)view;
+- (void)_setupMatchMoveAnimationWithSourceView:(id)view targetView:(id)targetView;
+- (void)performTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
+- (void)prepareTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
+- (void)transitionDidEnd:(BOOL)end;
 @end
 
 @implementation CCUIContentModuleContainerTransition
 
-- (void)prepareTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)prepareTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
-  v27 = a5;
-  v7 = a4;
-  [v27 addSubview:v7];
-  [v27 bounds];
-  [v7 setFrame:?];
+  containerViewCopy = containerView;
+  toViewCopy = toView;
+  [containerViewCopy addSubview:toViewCopy];
+  [containerViewCopy bounds];
+  [toViewCopy setFrame:?];
 
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
   appearanceTransition = self->_appearanceTransition;
   [WeakRetained setExpanded:appearanceTransition];
-  v10 = [WeakRetained contentViewController];
+  contentViewController = [WeakRetained contentViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v10 willTransitionToExpandedContentMode:appearanceTransition];
+    [contentViewController willTransitionToExpandedContentMode:appearanceTransition];
   }
 
-  v11 = [v10 view];
+  view = [contentViewController view];
   if (objc_opt_respondsToSelector())
   {
-    [v11 contentModuleWillTransitionToExpandedContentMode:appearanceTransition];
+    [view contentModuleWillTransitionToExpandedContentMode:appearanceTransition];
   }
 
-  sendExpandModuleTransitionNotificationForSubviews(v11, appearanceTransition);
+  sendExpandModuleTransitionNotificationForSubviews(view, appearanceTransition);
   [(CCUIContentModuleContainerTransition *)self contentRestOverrideFrame];
   if (CGRectIsEmpty(v29))
   {
@@ -55,28 +55,28 @@
     [WeakRetained _contentBoundsForExpandedState];
     v20 = v19;
     v22 = v21;
-    v23 = [WeakRetained transitionCoordinator];
-    [v10 viewWillTransitionToSize:v23 withTransitionCoordinator:{v20, v22}];
+    transitionCoordinator = [WeakRetained transitionCoordinator];
+    [contentViewController viewWillTransitionToSize:transitionCoordinator withTransitionCoordinator:{v20, v22}];
 
-    [(CCUIContentModuleContainerTransition *)self _removeMatchMoveAnimationFromTargetView:v27];
+    [(CCUIContentModuleContainerTransition *)self _removeMatchMoveAnimationFromTargetView:containerViewCopy];
   }
 
   else
   {
-    v24 = [WeakRetained transitionCoordinator];
-    [v10 viewWillTransitionToSize:v24 withTransitionCoordinator:{v14, v16}];
+    transitionCoordinator2 = [WeakRetained transitionCoordinator];
+    [contentViewController viewWillTransitionToSize:transitionCoordinator2 withTransitionCoordinator:{v14, v16}];
 
-    v25 = v27;
-    v26 = [WeakRetained _contentSourceView];
-    [(CCUIContentModuleContainerTransition *)self _setupMatchMoveAnimationWithSourceView:v26 targetView:v25];
+    v25 = containerViewCopy;
+    _contentSourceView = [WeakRetained _contentSourceView];
+    [(CCUIContentModuleContainerTransition *)self _setupMatchMoveAnimationWithSourceView:_contentSourceView targetView:v25];
   }
 }
 
-- (void)performTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)performTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v7 = [WeakRetained delegate];
-  v8 = [WeakRetained contentContainerView];
+  delegate = [WeakRetained delegate];
+  contentContainerView = [WeakRetained contentContainerView];
   [(CCUIContentModuleContainerTransition *)self contentRestOverrideFrame];
   if (CGRectIsEmpty(v35))
   {
@@ -114,15 +114,15 @@
       [gSignpostListener didReceiveSignpost:5];
     }
 
-    v25 = [WeakRetained contentModule];
-    [v7 contentModuleContainerViewController:WeakRetained willOpenExpandedModule:v25];
+    contentModule = [WeakRetained contentModule];
+    [delegate contentModuleContainerViewController:WeakRetained willOpenExpandedModule:contentModule];
 
     v26 = MEMORY[0x277D75D18];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __87__CCUIContentModuleContainerTransition_performTransitionFromView_toView_containerView___block_invoke;
     v28[3] = &unk_278382DA8;
-    v29 = v8;
+    v29 = contentContainerView;
     v30 = v11;
     v31 = v13;
     v32 = v15;
@@ -146,35 +146,35 @@
     }
 
     [MEMORY[0x277CD9FF0] setFrameStallSkipRequest:1];
-    v27 = [WeakRetained contentModule];
-    [v7 contentModuleContainerViewController:WeakRetained willCloseExpandedModule:v27];
+    contentModule2 = [WeakRetained contentModule];
+    [delegate contentModuleContainerViewController:WeakRetained willCloseExpandedModule:contentModule2];
 
-    [v8 setFrame:{v11, v13, v15, v17}];
+    [contentContainerView setFrame:{v11, v13, v15, v17}];
     [WeakRetained transitionToExpandedMode:0];
   }
 }
 
-- (void)transitionDidEnd:(BOOL)a3
+- (void)transitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v5 = [WeakRetained contentModule];
-    v6 = [WeakRetained delegate];
+    contentModule = [WeakRetained contentModule];
+    delegate = [WeakRetained delegate];
     [WeakRetained _didEndTransitionWithContentModuleContainerTransition:self completed:1];
-    v7 = [WeakRetained contentViewController];
+    contentViewController = [WeakRetained contentViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v7 didTransitionToExpandedContentMode:self->_appearanceTransition];
+      [contentViewController didTransitionToExpandedContentMode:self->_appearanceTransition];
     }
 
-    v8 = [WeakRetained backgroundViewController];
-    [v8 endAppearanceTransition];
+    backgroundViewController = [WeakRetained backgroundViewController];
+    [backgroundViewController endAppearanceTransition];
 
     if (self->_appearanceTransition)
     {
       [WeakRetained _setDidExpandModulePreference];
-      [v6 contentModuleContainerViewController:WeakRetained didOpenExpandedModule:v5];
+      [delegate contentModuleContainerViewController:WeakRetained didOpenExpandedModule:contentModule];
       v9 = *MEMORY[0x277CFC8F8];
       if (os_signpost_enabled(*MEMORY[0x277CFC8F8]))
       {
@@ -199,8 +199,8 @@
       v11 = WeakRetained;
       v14 = v11;
       [v10 performWithoutAnimation:v13];
-      [v6 contentModuleContainerViewController:v11 didCloseExpandedModule:v5];
-      [v6 contentModuleContainerViewController:v11 didFinishInteractionWithModule:v5];
+      [delegate contentModuleContainerViewController:v11 didCloseExpandedModule:contentModule];
+      [delegate contentModuleContainerViewController:v11 didFinishInteractionWithModule:contentModule];
       v12 = *MEMORY[0x277CFC8F8];
       if (os_signpost_enabled(*MEMORY[0x277CFC8F8]))
       {
@@ -234,46 +234,46 @@ void __57__CCUIContentModuleContainerTransition_transitionDidEnd___block_invoke(
   [v10 setFrame:{v6, v7, v3, v5}];
 }
 
-- (void)_setupMatchMoveAnimationWithSourceView:(id)a3 targetView:(id)a4
+- (void)_setupMatchMoveAnimationWithSourceView:(id)view targetView:(id)targetView
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (view)
   {
     v5 = MEMORY[0x277CD9EE8];
-    v6 = a4;
-    v7 = a3;
-    v8 = [v5 animation];
-    v9 = [v7 layer];
-    [v8 setSourceLayer:v9];
+    targetViewCopy = targetView;
+    viewCopy = view;
+    animation = [v5 animation];
+    layer = [viewCopy layer];
+    [animation setSourceLayer:layer];
 
-    [v8 setFillMode:*MEMORY[0x277CDA230]];
-    [v8 setRemovedOnCompletion:0];
-    [v8 setDuration:INFINITY];
-    [v8 setAppliesY:1];
-    [v8 setAppliesX:1];
-    [v6 bounds];
+    [animation setFillMode:*MEMORY[0x277CDA230]];
+    [animation setRemovedOnCompletion:0];
+    [animation setDuration:INFINITY];
+    [animation setAppliesY:1];
+    [animation setAppliesX:1];
+    [targetViewCopy bounds];
     v11 = v10;
     v13 = v12;
-    [v7 bounds];
-    [v7 convertRect:v6 toView:?];
+    [viewCopy bounds];
+    [viewCopy convertRect:targetViewCopy toView:?];
     v15 = v14;
     v17 = v16;
 
     v18 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v11 * 0.5 - v15, v13 * 0.5 - v17}];
     v21[0] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-    [v8 setSourcePoints:v19];
+    [animation setSourcePoints:v19];
 
-    v20 = [v6 layer];
+    layer2 = [targetViewCopy layer];
 
-    [v20 addAnimation:v8 forKey:@"CCUIContentModuleContainerMatchMoveAnimationKey"];
+    [layer2 addAnimation:animation forKey:@"CCUIContentModuleContainerMatchMoveAnimationKey"];
   }
 }
 
-- (void)_removeMatchMoveAnimationFromTargetView:(id)a3
+- (void)_removeMatchMoveAnimationFromTargetView:(id)view
 {
-  v3 = [a3 layer];
-  [v3 removeAnimationForKey:@"CCUIContentModuleContainerMatchMoveAnimationKey"];
+  layer = [view layer];
+  [layer removeAnimationForKey:@"CCUIContentModuleContainerMatchMoveAnimationKey"];
 }
 
 - (CCUIContentModuleContainerViewController)viewController

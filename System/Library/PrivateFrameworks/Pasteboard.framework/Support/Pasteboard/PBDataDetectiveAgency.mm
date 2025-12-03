@@ -1,19 +1,19 @@
 @interface PBDataDetectiveAgency
-- (PBDataDetectiveAgency)initWithDetectives:(id)a3;
-- (id)detectionsForPatterns:(id)a3 inValue:(id)a4;
+- (PBDataDetectiveAgency)initWithDetectives:(id)detectives;
+- (id)detectionsForPatterns:(id)patterns inValue:(id)value;
 @end
 
 @implementation PBDataDetectiveAgency
 
-- (PBDataDetectiveAgency)initWithDetectives:(id)a3
+- (PBDataDetectiveAgency)initWithDetectives:(id)detectives
 {
-  v4 = a3;
+  detectivesCopy = detectives;
   v9.receiver = self;
   v9.super_class = PBDataDetectiveAgency;
   v5 = [(PBDataDetectiveAgency *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [detectivesCopy copy];
     detectives = v5->_detectives;
     v5->_detectives = v6;
   }
@@ -21,16 +21,16 @@
   return v5;
 }
 
-- (id)detectionsForPatterns:(id)a3 inValue:(id)a4
+- (id)detectionsForPatterns:(id)patterns inValue:(id)value
 {
-  v6 = a3;
-  v25 = a4;
+  patternsCopy = patterns;
+  valueCopy = value;
   v7 = objc_alloc_init(NSMutableDictionary);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = v6;
+  v8 = patternsCopy;
   v9 = [v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v9)
   {
@@ -76,12 +76,12 @@
         }
 
         v20 = *(*(&v28 + 1) + 8 * j);
-        v21 = [v20 patterns];
-        v22 = [v21 intersectsSet:v8];
+        patterns = [v20 patterns];
+        v22 = [patterns intersectsSet:v8];
 
         if (v22)
         {
-          v23 = [v20 detectedPatternValuesInValue:v25];
+          v23 = [v20 detectedPatternValuesInValue:valueCopy];
           v26[0] = _NSConcreteStackBlock;
           v26[1] = 3221225472;
           v26[2] = sub_100010FB0;

@@ -1,37 +1,37 @@
 @interface PLShare
-+ (BOOL)getShareIfNecessary:(id *)a3 forCPLRecordWithClass:(Class)a4 scopedIdentifier:(id)a5 inLibrary:(id)a6;
-+ (BOOL)incrementallyDeleteAndSaveShares:(id)a3 logMessagePrefix:(id)a4 error:(id *)a5;
-+ (BOOL)shouldAllowFetchURLWithScopeChange:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-+ (BOOL)supportsCPLScopeType:(int64_t)a3;
-+ (BOOL)validateCPLScopeChange:(id)a3;
-+ (id)_basePredicateIncludeTrashedShares:(BOOL)a3;
++ (BOOL)getShareIfNecessary:(id *)necessary forCPLRecordWithClass:(Class)class scopedIdentifier:(id)identifier inLibrary:(id)library;
++ (BOOL)incrementallyDeleteAndSaveShares:(id)shares logMessagePrefix:(id)prefix error:(id *)error;
++ (BOOL)shouldAllowFetchURLWithScopeChange:(id)change photoLibrary:(id)library error:(id *)error;
++ (BOOL)supportsCPLScopeType:(int64_t)type;
++ (BOOL)validateCPLScopeChange:(id)change;
++ (id)_basePredicateIncludeTrashedShares:(BOOL)shares;
 + (id)_registeredSubclasses;
-+ (id)batchedAssetsForShare:(id)a3;
-+ (id)createOwnedShareWithUUID:(id)a3 creationDate:(id)a4 title:(id)a5 inPhotoLibrary:(id)a6;
++ (id)batchedAssetsForShare:(id)share;
++ (id)createOwnedShareWithUUID:(id)d creationDate:(id)date title:(id)title inPhotoLibrary:(id)library;
 + (id)entityName;
-+ (id)insertInPhotoLibrary:(id)a3;
-+ (id)insertOrUpdateShareWithCPLScopeChange:(id)a3 inPhotoLibrary:(id)a4;
++ (id)insertInPhotoLibrary:(id)library;
++ (id)insertOrUpdateShareWithCPLScopeChange:(id)change inPhotoLibrary:(id)library;
 + (id)predicateToExcludeExpiredShares;
-+ (id)scopeIdentifierPrefixInLibrary:(id)a3;
-+ (id)shareWithScopeIdentifier:(id)a3 includeTrashed:(BOOL)a4 inManagedObjectContext:(id)a5;
-+ (id)shareWithScopedIdentifier:(id)a3 includeTrashed:(BOOL)a4 inManagedObjectContext:(id)a5;
-+ (id)shareWithShareURL:(id)a3 includeTrashed:(BOOL)a4 inManagedObjectContext:(id)a5;
-+ (id)shareWithUUID:(id)a3 includeTrashed:(BOOL)a4 inManagedObjectContext:(id)a5;
-+ (id)sharesWithPredicate:(id)a3 fetchLimit:(unint64_t)a4 includesPendingChanges:(BOOL)a5 propertiesToFetch:(id)a6 inManagedObjectContext:(id)a7;
-+ (id)sharesWithScopeIdentifiers:(id)a3 includeTrashed:(BOOL)a4 inManagedObjectContext:(id)a5;
-+ (int64_t)_cloudDeletionTypeForScopeType:(int64_t)a3;
-+ (int64_t)_cloudDeletionTypeForStatus:(signed __int16)a3;
-+ (int64_t)cloudDeletionTypeForTombstone:(id)a3;
++ (id)scopeIdentifierPrefixInLibrary:(id)library;
++ (id)shareWithScopeIdentifier:(id)identifier includeTrashed:(BOOL)trashed inManagedObjectContext:(id)context;
++ (id)shareWithScopedIdentifier:(id)identifier includeTrashed:(BOOL)trashed inManagedObjectContext:(id)context;
++ (id)shareWithShareURL:(id)l includeTrashed:(BOOL)trashed inManagedObjectContext:(id)context;
++ (id)shareWithUUID:(id)d includeTrashed:(BOOL)trashed inManagedObjectContext:(id)context;
++ (id)sharesWithPredicate:(id)predicate fetchLimit:(unint64_t)limit includesPendingChanges:(BOOL)changes propertiesToFetch:(id)fetch inManagedObjectContext:(id)context;
++ (id)sharesWithScopeIdentifiers:(id)identifiers includeTrashed:(BOOL)trashed inManagedObjectContext:(id)context;
++ (int64_t)_cloudDeletionTypeForScopeType:(int64_t)type;
++ (int64_t)_cloudDeletionTypeForStatus:(signed __int16)status;
++ (int64_t)cloudDeletionTypeForTombstone:(id)tombstone;
 + (signed)subclassKind;
 + (void)_abortIfCalledOnBaseClass;
-+ (void)_pool_recomputeCachedValuesForShare:(id)a3;
-+ (void)deleteAllSharesInManagedObjectContext:(id)a3;
-+ (void)deleteExpiredSharesInManagedObjectContext:(id)a3;
-+ (void)deleteOldTrashedSharesInManagedObjectContext:(id)a3;
-+ (void)fetchShareFromShareURL:(id)a3 inPhotoLibrary:(id)a4 completionHandler:(id)a5;
-+ (void)recomputeCachedValuesForShare:(id)a3;
++ (void)_pool_recomputeCachedValuesForShare:(id)share;
++ (void)deleteAllSharesInManagedObjectContext:(id)context;
++ (void)deleteExpiredSharesInManagedObjectContext:(id)context;
++ (void)deleteOldTrashedSharesInManagedObjectContext:(id)context;
++ (void)fetchShareFromShareURL:(id)l inPhotoLibrary:(id)library completionHandler:(id)handler;
++ (void)recomputeCachedValuesForShare:(id)share;
 - (BOOL)_shouldRecordCloudDeletion;
-- (BOOL)incrementallyDeleteAndSaveWithError:(id *)a3;
+- (BOOL)incrementallyDeleteAndSaveWithError:(id *)error;
 - (BOOL)isCurrentUserOwner;
 - (id)_statusDescription;
 - (id)compactDescription;
@@ -42,55 +42,55 @@
 - (int64_t)cloudDeletionType;
 - (int64_t)publicPermission;
 - (int64_t)scopeType;
-- (void)_updateShareStatusWithCurrentUser:(id)a3;
-- (void)acceptWithCompletionHandler:(id)a3;
+- (void)_updateShareStatusWithCurrentUser:(id)user;
+- (void)acceptWithCompletionHandler:(id)handler;
 - (void)prepareForDeletion;
-- (void)publishWithCompletionHandler:(id)a3;
+- (void)publishWithCompletionHandler:(id)handler;
 - (void)recordCloudDeletionIfNeeded;
 - (void)recordTrashDate;
-- (void)setPublicPermission:(int64_t)a3;
-- (void)setScopeType:(int64_t)a3;
+- (void)setPublicPermission:(int64_t)permission;
+- (void)setScopeType:(int64_t)type;
 - (void)trash;
 - (void)untrash;
-- (void)updateShareWithCPLShare:(id)a3 inPhotoLibrary:(id)a4;
+- (void)updateShareWithCPLShare:(id)share inPhotoLibrary:(id)library;
 @end
 
 @implementation PLShare
 
 - (id)_statusDescription
 {
-  v2 = [(PLShare *)self status];
-  if (v2 > 3)
+  status = [(PLShare *)self status];
+  if (status > 3)
   {
     return @"owned";
   }
 
   else
   {
-    return off_1E756BF18[v2];
+    return off_1E756BF18[status];
   }
 }
 
 - (id)compactDescription
 {
   v16 = MEMORY[0x1E696AEC0];
-  v14 = [(NSManagedObject *)self pl_shortDescription];
-  v3 = [(PLShare *)self uuid];
-  v4 = [(PLShare *)self scopeIdentifier];
-  v5 = [(PLShare *)self title];
-  v6 = [(PLShare *)self status];
-  v15 = [(PLShare *)self shareURL];
-  v7 = [v15 pl_redactedShareURL];
-  v8 = [(PLShare *)self creationDate];
-  v9 = [(PLShare *)self expiryDate];
-  v10 = [(PLShare *)self trashedDate];
-  v11 = [(PLShare *)self ckShareData];
-  v12 = [v16 stringWithFormat:@"%@ - UUID: %@, ScopeIdentifier: %@, Title: %@, Status: %d, ShareURL: %@, CreationDate: %@, ExpiryDate: %@, TrashedDate: %@, CKShareData: %lu", v14, v3, v4, v5, v6, v7, v8, v9, v10, objc_msgSend(v11, "length")];
+  pl_shortDescription = [(NSManagedObject *)self pl_shortDescription];
+  uuid = [(PLShare *)self uuid];
+  scopeIdentifier = [(PLShare *)self scopeIdentifier];
+  title = [(PLShare *)self title];
+  status = [(PLShare *)self status];
+  shareURL = [(PLShare *)self shareURL];
+  pl_redactedShareURL = [shareURL pl_redactedShareURL];
+  creationDate = [(PLShare *)self creationDate];
+  expiryDate = [(PLShare *)self expiryDate];
+  trashedDate = [(PLShare *)self trashedDate];
+  ckShareData = [(PLShare *)self ckShareData];
+  v12 = [v16 stringWithFormat:@"%@ - UUID: %@, ScopeIdentifier: %@, Title: %@, Status: %d, ShareURL: %@, CreationDate: %@, ExpiryDate: %@, TrashedDate: %@, CKShareData: %lu", pl_shortDescription, uuid, scopeIdentifier, title, status, pl_redactedShareURL, creationDate, expiryDate, trashedDate, objc_msgSend(ckShareData, "length")];
 
   return v12;
 }
 
-- (BOOL)incrementallyDeleteAndSaveWithError:(id *)a3
+- (BOOL)incrementallyDeleteAndSaveWithError:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -102,25 +102,25 @@
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v5 = [(PLShare *)self managedObjectContext];
-  v6 = [(PLManagedObject *)self photoLibrary];
+  managedObjectContext = [(PLShare *)self managedObjectContext];
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__PLShare_incrementallyDeleteAndSaveWithError___block_invoke;
   v12[3] = &unk_1E7578898;
-  v7 = v5;
+  v7 = managedObjectContext;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v15 = &v17;
   v16 = &v21;
-  [v6 performBlockAndWait:v12];
+  [photoLibrary performBlockAndWait:v12];
 
   v8 = *(v18 + 24);
   v9 = v22[5];
-  if (a3 && (v8 & 1) == 0)
+  if (error && (v8 & 1) == 0)
   {
     v9 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
   v10 = *(v18 + 24);
@@ -144,9 +144,9 @@ void __47__PLShare_incrementallyDeleteAndSaveWithError___block_invoke(uint64_t a
 - (int64_t)cloudDeletionType
 {
   v3 = objc_opt_class();
-  v4 = [(PLShare *)self scopeType];
+  scopeType = [(PLShare *)self scopeType];
 
-  return [v3 _cloudDeletionTypeForScopeType:v4];
+  return [v3 _cloudDeletionTypeForScopeType:scopeType];
 }
 
 - (void)untrash
@@ -157,9 +157,9 @@ void __47__PLShare_incrementallyDeleteAndSaveWithError___block_invoke(uint64_t a
   v3 = PLBackendSharingGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(PLShare *)self compactDescription];
+    compactDescription = [(PLShare *)self compactDescription];
     v5 = 138412290;
-    v6 = v4;
+    v6 = compactDescription;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_INFO, "Setting share to untrashed state: %@", &v5, 0xCu);
   }
 }
@@ -169,10 +169,10 @@ void __47__PLShare_incrementallyDeleteAndSaveWithError___block_invoke(uint64_t a
   if ([(PLShare *)self _shouldRecordCloudDeletion])
   {
     objc_opt_class();
-    v3 = [(PLShare *)self managedObjectContext];
+    managedObjectContext = [(PLShare *)self managedObjectContext];
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = managedObjectContext;
     }
 
     else
@@ -195,15 +195,15 @@ void __47__PLShare_incrementallyDeleteAndSaveWithError___block_invoke(uint64_t a
 {
   v8 = *MEMORY[0x1E69E9840];
   [(PLShare *)self setTrashedState:1];
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(PLShare *)self setTrashedDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PLShare *)self setTrashedDate:date];
 
   v4 = PLBackendSharingGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(PLShare *)self compactDescription];
+    compactDescription = [(PLShare *)self compactDescription];
     v6 = 138412290;
-    v7 = v5;
+    v7 = compactDescription;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_INFO, "Setting share to trashed state: %@", &v6, 0xCu);
   }
 }
@@ -215,26 +215,26 @@ void __47__PLShare_incrementallyDeleteAndSaveWithError___block_invoke(uint64_t a
   [(PLShare *)self recordCloudDeletionIfNeeded];
 }
 
-- (void)_updateShareStatusWithCurrentUser:(id)a3
+- (void)_updateShareStatusWithCurrentUser:(id)user
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  userCopy = user;
   [objc_opt_class() _abortIfCalledOnBaseClass];
-  v6 = [v5 role];
-  if (v6 <= 1)
+  role = [userCopy role];
+  if (role <= 1)
   {
-    if (v6)
+    if (role)
     {
-      if (v6 == 1)
+      if (role == 1)
       {
-        if ([v5 acceptanceStatus] != 2)
+        if ([userCopy acceptanceStatus] != 2)
         {
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
-          v16 = [(PLShare *)self compactDescription];
-          [v15 handleFailureInMethod:a2 object:self file:@"PLShare.m" lineNumber:560 description:{@"Owner %@ of a share %@ should have the accepted status", v5, v16}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          compactDescription = [(PLShare *)self compactDescription];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PLShare.m" lineNumber:560 description:{@"Owner %@ of a share %@ should have the accepted status", userCopy, compactDescription}];
         }
 
-        v10 = self;
+        selfCopy4 = self;
         v11 = 1;
         goto LABEL_21;
       }
@@ -246,7 +246,7 @@ void __47__PLShare_incrementallyDeleteAndSaveWithError___block_invoke(uint64_t a
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v18 = v5;
+        v18 = userCopy;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Unknown share participant type for %@", buf, 0xCu);
       }
     }
@@ -254,9 +254,9 @@ void __47__PLShare_incrementallyDeleteAndSaveWithError___block_invoke(uint64_t a
     goto LABEL_25;
   }
 
-  if ((v6 - 2) >= 2)
+  if ((role - 2) >= 2)
   {
-    if (v6 != 4)
+    if (role != 4)
     {
       goto LABEL_25;
     }
@@ -264,19 +264,19 @@ void __47__PLShare_incrementallyDeleteAndSaveWithError___block_invoke(uint64_t a
     v7 = PLBackendSharingGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(PLShare *)self compactDescription];
+      compactDescription2 = [(PLShare *)self compactDescription];
       *buf = 138412546;
-      v18 = v5;
+      v18 = userCopy;
       v19 = 2112;
-      v20 = v8;
+      v20 = compactDescription2;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Administrator participant type for %@ in %@", buf, 0x16u);
     }
   }
 
-  v9 = [v5 acceptanceStatus];
-  if (v9 > 2)
+  acceptanceStatus = [userCopy acceptanceStatus];
+  if (acceptanceStatus > 2)
   {
-    if ((v9 - 3) >= 3)
+    if ((acceptanceStatus - 3) >= 3)
     {
       goto LABEL_25;
     }
@@ -285,32 +285,32 @@ LABEL_18:
     v12 = PLBackendSharingGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(PLShare *)self compactDescription];
+      compactDescription3 = [(PLShare *)self compactDescription];
       *buf = 138412546;
-      v18 = v5;
+      v18 = userCopy;
       v19 = 2112;
-      v20 = v13;
+      v20 = compactDescription3;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Un-expected status from %@ for share %@", buf, 0x16u);
     }
 
-    v10 = self;
+    selfCopy4 = self;
     v11 = 0;
     goto LABEL_21;
   }
 
-  switch(v9)
+  switch(acceptanceStatus)
   {
     case 0:
       goto LABEL_18;
     case 1:
-      v10 = self;
+      selfCopy4 = self;
       v11 = 2;
       goto LABEL_21;
     case 2:
-      v10 = self;
+      selfCopy4 = self;
       v11 = 3;
 LABEL_21:
-      [(PLShare *)v10 setStatus:v11];
+      [(PLShare *)selfCopy4 setStatus:v11];
       break;
   }
 
@@ -319,11 +319,11 @@ LABEL_25:
 
 - (BOOL)isCurrentUserOwner
 {
-  v3 = [(PLShare *)self owner];
-  v4 = [v3 userIdentifier];
-  v5 = [(PLShare *)self currentUserParticipant];
-  v6 = [v5 userIdentifier];
-  v7 = v4 == v6;
+  owner = [(PLShare *)self owner];
+  userIdentifier = [owner userIdentifier];
+  currentUserParticipant = [(PLShare *)self currentUserParticipant];
+  userIdentifier2 = [currentUserParticipant userIdentifier];
+  v7 = userIdentifier == userIdentifier2;
 
   return v7;
 }
@@ -336,8 +336,8 @@ LABEL_25:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(PLShare *)self participants];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  participants = [(PLShare *)self participants];
+  v4 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -347,7 +347,7 @@ LABEL_25:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(participants);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -358,7 +358,7 @@ LABEL_25:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -381,8 +381,8 @@ LABEL_11:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(PLShare *)self participants];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  participants = [(PLShare *)self participants];
+  v4 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -392,7 +392,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(participants);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -403,7 +403,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [participants countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -422,21 +422,21 @@ LABEL_11:
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E6994BC0]);
-  v4 = [(PLShare *)self shareURL];
-  [v3 setURL:v4];
+  shareURL = [(PLShare *)self shareURL];
+  [v3 setURL:shareURL];
 
   v22 = v3;
   [v3 setPublicPermission:{-[PLShare publicPermission](self, "publicPermission")}];
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
-  v6 = [(PLShare *)self participants];
-  v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+  participants = [(PLShare *)self participants];
+  v7 = [v5 initWithCapacity:{objc_msgSend(participants, "count")}];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(PLShare *)self participants];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  participants2 = [(PLShare *)self participants];
+  v9 = [participants2 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -447,73 +447,73 @@ LABEL_11:
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(participants2);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
         v14 = objc_alloc(MEMORY[0x1E6994BC8]);
-        v15 = [v13 emailAddress];
-        v16 = [v14 initWithEmail:v15];
+        emailAddress = [v13 emailAddress];
+        v16 = [v14 initWithEmail:emailAddress];
 
-        v17 = [v13 phoneNumber];
-        [v16 setPhoneNumber:v17];
+        phoneNumber = [v13 phoneNumber];
+        [v16 setPhoneNumber:phoneNumber];
 
         [v16 setPermission:{objc_msgSend(v13, "permission")}];
         [v16 setRole:{objc_msgSend(v13, "role")}];
-        v18 = [v13 nameComponents];
-        [v16 setNameComponents:v18];
+        nameComponents = [v13 nameComponents];
+        [v16 setNameComponents:nameComponents];
 
-        v19 = [v13 userIdentifier];
-        [v16 setUserIdentifier:v19];
+        userIdentifier = [v13 userIdentifier];
+        [v16 setUserIdentifier:userIdentifier];
 
         [v16 setAcceptanceStatus:{objc_msgSend(v13, "acceptanceStatus")}];
         [v16 setIsCurrentUser:{objc_msgSend(v13, "isCurrentUser")}];
         [v7 addObject:v16];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [participants2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
   }
 
   [v22 setParticipants:v7];
-  v20 = [(PLShare *)self ckShareData];
-  [v22 setTransportShare:v20];
+  ckShareData = [(PLShare *)self ckShareData];
+  [v22 setTransportShare:ckShareData];
 
   return v22;
 }
 
-- (void)updateShareWithCPLShare:(id)a3 inPhotoLibrary:(id)a4
+- (void)updateShareWithCPLShare:(id)share inPhotoLibrary:(id)library
 {
   v98 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v69 = a4;
+  shareCopy = share;
+  libraryCopy = library;
   [objc_opt_class() _abortIfCalledOnBaseClass];
-  v7 = [v6 URL];
+  v7 = [shareCopy URL];
   [(PLShare *)self setShareURL:v7];
 
-  -[PLShare setPublicPermission:](self, "setPublicPermission:", [v6 publicPermission]);
-  v8 = [v6 transportShare];
-  [(PLShare *)self setCkShareData:v8];
+  -[PLShare setPublicPermission:](self, "setPublicPermission:", [shareCopy publicPermission]);
+  transportShare = [shareCopy transportShare];
+  [(PLShare *)self setCkShareData:transportShare];
 
-  v9 = [(PLShare *)self participants];
-  v10 = [v9 valueForKey:@"uuid"];
+  participants = [(PLShare *)self participants];
+  v10 = [participants valueForKey:@"uuid"];
   v71 = [v10 mutableCopy];
 
   v11 = objc_alloc(MEMORY[0x1E695DF70]);
-  v12 = [v6 participants];
-  v68 = [v11 initWithCapacity:{objc_msgSend(v12, "count")}];
+  participants2 = [shareCopy participants];
+  v68 = [v11 initWithCapacity:{objc_msgSend(participants2, "count")}];
 
   v70 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v66 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v67 = v6;
+  v67 = shareCopy;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v13 = [v6 participants];
-  v14 = [v13 countByEnumeratingWithState:&v84 objects:v97 count:16];
+  participants3 = [shareCopy participants];
+  v14 = [participants3 countByEnumeratingWithState:&v84 objects:v97 count:16];
   v15 = off_1E7560000;
   if (v14)
   {
@@ -525,7 +525,7 @@ LABEL_11:
       {
         if (*v85 != v17)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(participants3);
         }
 
         v19 = *(*(&v84 + 1) + 8 * i);
@@ -538,9 +538,9 @@ LABEL_11:
             v22 = PLBackendSharingGetLog();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
             {
-              v23 = [v21 uuid];
+              uuid = [v21 uuid];
               *buf = 138543362;
-              v92 = v23;
+              v92 = uuid;
               _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_INFO, "Participant acceptance status changes from pending to accepted: %{public}@", buf, 0xCu);
             }
 
@@ -551,31 +551,31 @@ LABEL_11:
         else
         {
           v24 = v15[461];
-          v25 = [(PLManagedObject *)self photoLibrary];
-          v26 = [v25 managedObjectContext];
-          v21 = [(__objc2_class *)v24 insertInManagedObjectContext:v26];
+          photoLibrary = [(PLManagedObject *)self photoLibrary];
+          managedObjectContext = [photoLibrary managedObjectContext];
+          v21 = [(__objc2_class *)v24 insertInManagedObjectContext:managedObjectContext];
 
           v15 = off_1E7560000;
           [v21 setShare:self];
-          v27 = [v21 uuid];
-          [v70 addObject:v27];
+          uuid2 = [v21 uuid];
+          [v70 addObject:uuid2];
         }
 
         [v21 updateWithCPLShareParticipant:v19 inShare:self];
-        v28 = [v21 uuid];
-        [v71 removeObject:v28];
+        uuid3 = [v21 uuid];
+        [v71 removeObject:uuid3];
 
         if ([v19 isCurrentUser])
         {
           v29 = PLBackendSharingGetLog();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
-            v30 = [(PLShare *)self uuid];
-            v31 = [v21 uuid];
+            uuid4 = [(PLShare *)self uuid];
+            uuid5 = [v21 uuid];
             *buf = 138543874;
-            v92 = v30;
+            v92 = uuid4;
             v93 = 2114;
-            v94 = v31;
+            v94 = uuid5;
             v95 = 2112;
             v96 = v19;
             _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_INFO, "Updating status for %{public}@ from current user: %{public}@, %@", buf, 0x20u);
@@ -587,7 +587,7 @@ LABEL_11:
         }
       }
 
-      v16 = [v13 countByEnumeratingWithState:&v84 objects:v97 count:16];
+      v16 = [participants3 countByEnumeratingWithState:&v84 objects:v97 count:16];
     }
 
     while (v16);
@@ -618,13 +618,13 @@ LABEL_11:
         }
 
         v37 = *(*(&v80 + 1) + 8 * j);
-        v38 = [v37 shortName];
-        if (v38)
+        shortName = [v37 shortName];
+        if (shortName)
         {
           v39 = +[PLNotificationManager sharedManager];
-          v40 = [(PLShare *)self scopeIdentifier];
+          scopeIdentifier = [(PLShare *)self scopeIdentifier];
           v41 = [MEMORY[0x1E695DF00] now];
-          [v39 postNotificationForAcceptedSharedLibraryWithScopeIdentifier:v40 participantName:v38 library:v69 notificationDeliveryDate:v41];
+          [v39 postNotificationForAcceptedSharedLibraryWithScopeIdentifier:scopeIdentifier participantName:shortName library:libraryCopy notificationDeliveryDate:v41];
 
           v15 = off_1E7560000;
         }
@@ -637,9 +637,9 @@ LABEL_11:
             goto LABEL_31;
           }
 
-          v40 = [v37 uuid];
+          scopeIdentifier = [v37 uuid];
           *buf = 138543362;
-          v92 = v40;
+          v92 = scopeIdentifier;
           _os_log_impl(&dword_19BF1F000, v39, OS_LOG_TYPE_ERROR, "Accepted participant does not have a short name for notification: %{public}@", buf, 0xCu);
         }
 
@@ -661,17 +661,17 @@ LABEL_33:
     v42 = PLBackendSharingGetLog();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
     {
-      v43 = [(PLShare *)self uuid];
+      uuid6 = [(PLShare *)self uuid];
       *buf = 138412546;
       v92 = v71;
       v93 = 2112;
-      v94 = v43;
+      v94 = uuid6;
       _os_log_impl(&dword_19BF1F000, v42, OS_LOG_TYPE_INFO, "Deleting participants %@ in share %@", buf, 0x16u);
     }
 
     v44 = v15[461];
-    v45 = [v71 allObjects];
-    v46 = [(__objc2_class *)v44 participantsWithUUIDs:v45 inPhotoLibrary:v69];
+    allObjects = [v71 allObjects];
+    v46 = [(__objc2_class *)v44 participantsWithUUIDs:allObjects inPhotoLibrary:libraryCopy];
 
     v78 = 0u;
     v79 = 0u;
@@ -692,8 +692,8 @@ LABEL_33:
             objc_enumerationMutation(v47);
           }
 
-          v52 = [*(*(&v76 + 1) + 8 * k) uuid];
-          [v66 addObject:v52];
+          uuid7 = [*(*(&v76 + 1) + 8 * k) uuid];
+          [v66 addObject:uuid7];
         }
 
         v49 = [v47 countByEnumeratingWithState:&v76 objects:v89 count:16];
@@ -708,23 +708,23 @@ LABEL_33:
   {
     if ([v70 count])
     {
-      v53 = [v70 allObjects];
-      [PLLibraryScope informRapportToAddShareParticipantUUIDs:v53 photoLibrary:v69];
+      allObjects2 = [v70 allObjects];
+      [PLLibraryScope informRapportToAddShareParticipantUUIDs:allObjects2 photoLibrary:libraryCopy];
     }
 
     if ([v66 count])
     {
-      v54 = [v66 allObjects];
-      v55 = [v69 libraryBundle];
-      [PLLibraryScope informRapportToRemoveShareParticipantUUIDs:v54 photoLibraryBundle:v55];
+      allObjects3 = [v66 allObjects];
+      libraryBundle = [libraryCopy libraryBundle];
+      [PLLibraryScope informRapportToRemoveShareParticipantUUIDs:allObjects3 photoLibraryBundle:libraryBundle];
     }
   }
 
   if ([v66 count])
   {
     v56 = v15[461];
-    v57 = [v66 allObjects];
-    v58 = [(__objc2_class *)v56 participantsWithUUIDs:v57 inPhotoLibrary:v69];
+    allObjects4 = [v66 allObjects];
+    v58 = [(__objc2_class *)v56 participantsWithUUIDs:allObjects4 inPhotoLibrary:libraryCopy];
 
     v74 = 0u;
     v75 = 0u;
@@ -746,8 +746,8 @@ LABEL_33:
           }
 
           v64 = *(*(&v72 + 1) + 8 * m);
-          v65 = [v69 managedObjectContext];
-          [v65 deleteObject:v64];
+          managedObjectContext2 = [libraryCopy managedObjectContext];
+          [managedObjectContext2 deleteObject:v64];
         }
 
         v61 = [v59 countByEnumeratingWithState:&v72 objects:v88 count:16];
@@ -760,7 +760,7 @@ LABEL_33:
 
 - (id)cplScopeChange
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
@@ -769,16 +769,16 @@ LABEL_33:
 {
   [(PLShare *)self willAccessValueForKey:@"scopeType"];
   v3 = [(PLShare *)self primitiveValueForKey:@"scopeType"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
   [(PLShare *)self didAccessValueForKey:@"scopeType"];
-  return v4;
+  return integerValue;
 }
 
-- (void)setScopeType:(int64_t)a3
+- (void)setScopeType:(int64_t)type
 {
   [(PLShare *)self willChangeValueForKey:@"scopeType"];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(PLShare *)self setPrimitiveValue:v5 forKey:@"scopeType"];
 
   [(PLShare *)self didChangeValueForKey:@"scopeType"];
@@ -788,41 +788,41 @@ LABEL_33:
 {
   [(PLShare *)self willAccessValueForKey:@"publicPermission"];
   v3 = [(PLShare *)self primitiveValueForKey:@"publicPermission"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
   [(PLShare *)self didAccessValueForKey:@"publicPermission"];
-  return v4;
+  return integerValue;
 }
 
-- (void)setPublicPermission:(int64_t)a3
+- (void)setPublicPermission:(int64_t)permission
 {
   [(PLShare *)self willChangeValueForKey:@"publicPermission"];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:permission];
   [(PLShare *)self setPrimitiveValue:v5 forKey:@"publicPermission"];
 
   [(PLShare *)self didChangeValueForKey:@"publicPermission"];
 }
 
-- (void)acceptWithCompletionHandler:(id)a3
+- (void)acceptWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   [objc_opt_class() _abortIfCalledOnBaseClass];
-  v5 = [(PLManagedObject *)self photoLibrary];
-  v6 = [v5 libraryServicesManager];
-  v7 = [v6 cloudPhotoLibraryManager];
+  photoLibrary = [(PLManagedObject *)self photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  if (v7)
+  if (cloudPhotoLibraryManager)
   {
-    v8 = [(PLShare *)self cplScopeChange];
+    cplScopeChange = [(PLShare *)self cplScopeChange];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __39__PLShare_acceptWithCompletionHandler___block_invoke;
     v12[3] = &unk_1E7578038;
-    v13 = v5;
-    v14 = self;
-    v15 = v4;
-    [v7 acceptCPLShare:v8 completionHandler:v12];
+    v13 = photoLibrary;
+    selfCopy = self;
+    v15 = handlerCopy;
+    [cloudPhotoLibraryManager acceptCPLShare:cplScopeChange completionHandler:v12];
 
     v9 = v13;
   }
@@ -833,9 +833,9 @@ LABEL_33:
     v11 = *MEMORY[0x1E69BFF48];
     v16 = *MEMORY[0x1E696A578];
     v17[0] = @"PLCloudPhotoLibraryManager is not available";
-    v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    v9 = [v10 errorWithDomain:v11 code:41004 userInfo:v8];
-    (*(v4 + 2))(v4, v9);
+    cplScopeChange = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
+    v9 = [v10 errorWithDomain:v11 code:41004 userInfo:cplScopeChange];
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 }
 
@@ -910,23 +910,23 @@ LABEL_6:
   }
 }
 
-- (void)publishWithCompletionHandler:(id)a3
+- (void)publishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
+  handlerCopy = handler;
+  selfCopy = self;
   v6 = PLAbstractMethodException();
   objc_exception_throw(v6);
 }
 
 - (BOOL)_shouldRecordCloudDeletion
 {
-  v3 = [(PLShare *)self status];
-  if (v3)
+  status = [(PLShare *)self status];
+  if (status)
   {
-    LOBYTE(v3) = [(PLShare *)self scopeType]!= 4 && [(PLShare *)self scopeType]!= 5;
+    LOBYTE(status) = [(PLShare *)self scopeType]!= 4 && [(PLShare *)self scopeType]!= 5;
   }
 
-  return v3;
+  return status;
 }
 
 - (void)prepareForDeletion
@@ -936,17 +936,17 @@ LABEL_6:
   [(PLShare *)&v2 prepareForDeletion];
 }
 
-+ (int64_t)_cloudDeletionTypeForStatus:(signed __int16)a3
++ (int64_t)_cloudDeletionTypeForStatus:(signed __int16)status
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ((a3 - 2) < 2)
+  if ((status - 2) < 2)
   {
     return 7;
   }
 
-  if (a3)
+  if (status)
   {
-    if (a3 == 1)
+    if (status == 1)
     {
       return 6;
     }
@@ -972,19 +972,19 @@ LABEL_6:
   }
 }
 
-+ (int64_t)_cloudDeletionTypeForScopeType:(int64_t)a3
++ (int64_t)_cloudDeletionTypeForScopeType:(int64_t)type
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 > 7)
+    if (type > 7)
     {
-      if (a3 == 8)
+      if (type == 8)
       {
         return 15;
       }
 
-      if (a3 != 9)
+      if (type != 9)
       {
         return 0;
       }
@@ -993,9 +993,9 @@ LABEL_13:
       v8 = PLBackendGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
-        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid scope type for cloud deletetion: %ld", a3];
+        type = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid scope type for cloud deletetion: %ld", type];
         *buf = 138412290;
-        v11 = v9;
+        v11 = type;
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_FAULT, "%@", buf, 0xCu);
       }
 
@@ -1004,21 +1004,21 @@ LABEL_13:
 
     v5 = 12;
     v6 = 14;
-    if (a3 != 7)
+    if (type != 7)
     {
       v6 = 0;
     }
 
-    v7 = a3 == 5;
+    v7 = type == 5;
   }
 
   else
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3 >= 2)
+      if (type >= 2)
       {
-        if (a3 == 2)
+        if (type == 2)
         {
           return 6;
         }
@@ -1034,12 +1034,12 @@ LABEL_13:
 
     v5 = 7;
     v6 = 11;
-    if (a3 != 4)
+    if (type != 4)
     {
       v6 = 0;
     }
 
-    v7 = a3 == 3;
+    v7 = type == 3;
   }
 
   if (v7)
@@ -1053,34 +1053,34 @@ LABEL_13:
   }
 }
 
-+ (int64_t)cloudDeletionTypeForTombstone:(id)a3
++ (int64_t)cloudDeletionTypeForTombstone:(id)tombstone
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"scopeType"];
+  tombstoneCopy = tombstone;
+  v5 = [tombstoneCopy objectForKeyedSubscript:@"scopeType"];
   v6 = v5;
   if (v5)
   {
-    v7 = [a1 _cloudDeletionTypeForScopeType:{objc_msgSend(v5, "intValue")}];
+    v7 = [self _cloudDeletionTypeForScopeType:{objc_msgSend(v5, "intValue")}];
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"status"];
-    v7 = [a1 _cloudDeletionTypeForStatus:{objc_msgSend(v8, "intValue")}];
+    v8 = [tombstoneCopy objectForKeyedSubscript:@"status"];
+    v7 = [self _cloudDeletionTypeForStatus:{objc_msgSend(v8, "intValue")}];
   }
 
   return v7;
 }
 
-+ (void)_pool_recomputeCachedValuesForShare:(id)a3
++ (void)_pool_recomputeCachedValuesForShare:(id)share
 {
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v17 = a3;
-  obj = [a1 batchedAssetsForShare:?];
+  shareCopy = share;
+  obj = [self batchedAssetsForShare:?];
   v4 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
@@ -1103,17 +1103,17 @@ LABEL_13:
 
         v12 = *(*(&v21 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 dateCreated];
-        if (!v6 || [v6 compare:v14] == 1)
+        dateCreated = [v12 dateCreated];
+        if (!v6 || [v6 compare:dateCreated] == 1)
         {
-          v15 = v14;
+          v15 = dateCreated;
 
           v6 = v15;
         }
 
-        if (!v7 || [v7 compare:v14] == -1)
+        if (!v7 || [v7 compare:dateCreated] == -1)
         {
-          v16 = v14;
+          v16 = dateCreated;
 
           v7 = v16;
         }
@@ -1147,25 +1147,25 @@ LABEL_13:
     v9 = 0;
   }
 
-  [v17 setStartDate:v6];
-  [v17 setEndDate:v7];
-  [v17 setAssetCount:v9];
-  [v17 setPhotosCount:v8];
-  [v17 setVideosCount:v20];
+  [shareCopy setStartDate:v6];
+  [shareCopy setEndDate:v7];
+  [shareCopy setAssetCount:v9];
+  [shareCopy setPhotosCount:v8];
+  [shareCopy setVideosCount:v20];
 }
 
-+ (void)recomputeCachedValuesForShare:(id)a3
++ (void)recomputeCachedValuesForShare:(id)share
 {
-  v5 = a3;
+  shareCopy = share;
   v4 = objc_autoreleasePoolPush();
-  [a1 _pool_recomputeCachedValuesForShare:v5];
+  [self _pool_recomputeCachedValuesForShare:shareCopy];
   objc_autoreleasePoolPop(v4);
 }
 
-+ (id)batchedAssetsForShare:(id)a3
++ (id)batchedAssetsForShare:(id)share
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  shareCopy = share;
   v4 = MEMORY[0x1E695D5E0];
   v5 = +[PLManagedAsset entityName];
   v6 = [v4 fetchRequestWithEntityName:v5];
@@ -1173,13 +1173,13 @@ LABEL_13:
   [v6 setFetchBatchSize:100];
   [v6 setReturnsObjectsAsFaults:0];
   v7 = MEMORY[0x1E696AE18];
-  v8 = [v3 assetToSelfKeyPath];
-  v9 = [v7 predicateWithFormat:@"%K == %@", v8, v3];
-  [v6 setPredicate:v9];
+  assetToSelfKeyPath = [shareCopy assetToSelfKeyPath];
+  shareCopy = [v7 predicateWithFormat:@"%K == %@", assetToSelfKeyPath, shareCopy];
+  [v6 setPredicate:shareCopy];
 
-  v10 = [v3 managedObjectContext];
+  managedObjectContext = [shareCopy managedObjectContext];
   v18 = 0;
-  v11 = [v10 executeFetchRequest:v6 error:&v18];
+  v11 = [managedObjectContext executeFetchRequest:v6 error:&v18];
   v12 = v18;
   if (!v11)
   {
@@ -1198,43 +1198,43 @@ LABEL_13:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v15 = [v11 count];
-    v16 = [v3 shortObjectIDURI];
+    shortObjectIDURI = [shareCopy shortObjectIDURI];
     *buf = 134218242;
     v20 = v15;
     v21 = 2112;
-    v22 = v16;
+    v22 = shortObjectIDURI;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "Batch fetched %tu assets from share %@", buf, 0x16u);
   }
 
   return v11;
 }
 
-+ (BOOL)shouldAllowFetchURLWithScopeChange:(id)a3 photoLibrary:(id)a4 error:(id *)a5
++ (BOOL)shouldAllowFetchURLWithScopeChange:(id)change photoLibrary:(id)library error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a1;
+  changeCopy = change;
+  libraryCopy = library;
+  selfCopy = self;
   v10 = PLAbstractMethodException();
   objc_exception_throw(v10);
 }
 
-+ (BOOL)supportsCPLScopeType:(int64_t)a3
++ (BOOL)supportsCPLScopeType:(int64_t)type
 {
-  v3 = a1;
+  selfCopy = self;
   v4 = PLAbstractMethodException();
   objc_exception_throw(v4);
 }
 
-+ (BOOL)validateCPLScopeChange:(id)a3
++ (BOOL)validateCPLScopeChange:(id)change
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 creationDate];
+    creationDate = [changeCopy creationDate];
 
-    if (v4)
+    if (creationDate)
     {
 LABEL_3:
       v5 = 1;
@@ -1244,10 +1244,10 @@ LABEL_3:
 
   else
   {
-    v6 = [v3 share];
-    v7 = [v6 creationDate];
+    share = [changeCopy share];
+    creationDate2 = [share creationDate];
 
-    if (v7)
+    if (creationDate2)
     {
       goto LABEL_3;
     }
@@ -1261,13 +1261,13 @@ LABEL_3:
   }
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [MEMORY[0x1E6994BB0] descriptionForScopeType:{objc_msgSend(v3, "scopeType")}];
+  v10 = [MEMORY[0x1E6994BB0] descriptionForScopeType:{objc_msgSend(changeCopy, "scopeType")}];
   v11 = [v9 stringWithFormat:@"TTR: Inconsistent %@ scope detected", v10];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [MEMORY[0x1E6994BB0] descriptionForScopeType:{objc_msgSend(v3, "scopeType")}];
-  v14 = [v3 scopeIdentifier];
-  v15 = [v12 stringWithFormat:@"A %@ scope was detected in an inconsistent state and ignored: %@", v13, v14];
+  v13 = [MEMORY[0x1E6994BB0] descriptionForScopeType:{objc_msgSend(changeCopy, "scopeType")}];
+  scopeIdentifier = [changeCopy scopeIdentifier];
+  v15 = [v12 stringWithFormat:@"A %@ scope was detected in an inconsistent state and ignored: %@", v13, scopeIdentifier];
 
   [PLDiagnostics fileRadarUserNotificationWithHeader:@"Inconsistent Scope State Detected" message:@"Your photo library has experienced an unexpected state radarTitle:please file a Radar against Photos to help us diagnose the issue" radarDescription:v11, v15];
   v16 = PLBackendSharingGetLog();
@@ -1284,16 +1284,16 @@ LABEL_10:
   return v5;
 }
 
-+ (void)deleteOldTrashedSharesInManagedObjectContext:(id)a3
++ (void)deleteOldTrashedSharesInManagedObjectContext:(id)context
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v7 = objc_opt_new();
   [v7 setMonth:-3];
   v8 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-  v9 = [v8 dateByAddingComponents:v7 toDate:v6 options:0];
+  v9 = [v8 dateByAddingComponents:v7 toDate:date options:0];
 
   v10 = PLBackendSharingGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1304,49 +1304,49 @@ LABEL_10:
   }
 
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"trashedDate != nil AND trashedDate < %@", v9];
-  v12 = [a1 sharesWithPredicate:v11 fetchLimit:0 inManagedObjectContext:v4];
-  [a1 incrementallyDeleteAndSaveShares:v12 logMessagePrefix:@"old trashed" error:0];
+  v12 = [self sharesWithPredicate:v11 fetchLimit:0 inManagedObjectContext:contextCopy];
+  [self incrementallyDeleteAndSaveShares:v12 logMessagePrefix:@"old trashed" error:0];
 
   objc_autoreleasePoolPop(v5);
 }
 
-+ (void)deleteExpiredSharesInManagedObjectContext:(id)a3
++ (void)deleteExpiredSharesInManagedObjectContext:(id)context
 {
-  v9 = a3;
+  contextCopy = context;
   v4 = objc_autoreleasePoolPush();
   v5 = MEMORY[0x1E696AE18];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 predicateWithFormat:@"expiryDate != nil AND expiryDate < %@", v6];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [v5 predicateWithFormat:@"expiryDate != nil AND expiryDate < %@", date];
 
-  v8 = [a1 sharesWithPredicate:v7 fetchLimit:0 inManagedObjectContext:v9];
-  [a1 incrementallyDeleteAndSaveShares:v8 logMessagePrefix:@"expired" error:0];
+  v8 = [self sharesWithPredicate:v7 fetchLimit:0 inManagedObjectContext:contextCopy];
+  [self incrementallyDeleteAndSaveShares:v8 logMessagePrefix:@"expired" error:0];
 
   objc_autoreleasePoolPop(v4);
 }
 
-+ (void)deleteAllSharesInManagedObjectContext:(id)a3
++ (void)deleteAllSharesInManagedObjectContext:(id)context
 {
-  v7 = a3;
+  contextCopy = context;
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x1E696AE18] predicateWithValue:1];
-  v6 = [a1 sharesWithPredicate:v5 fetchLimit:0 inManagedObjectContext:v7];
+  v6 = [self sharesWithPredicate:v5 fetchLimit:0 inManagedObjectContext:contextCopy];
 
-  [a1 incrementallyDeleteAndSaveShares:v6 logMessagePrefix:@"all" error:0];
+  [self incrementallyDeleteAndSaveShares:v6 logMessagePrefix:@"all" error:0];
   objc_autoreleasePoolPop(v4);
 }
 
-+ (BOOL)incrementallyDeleteAndSaveShares:(id)a3 logMessagePrefix:(id)a4 error:(id *)a5
++ (BOOL)incrementallyDeleteAndSaveShares:(id)shares logMessagePrefix:(id)prefix error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v26 = a4;
+  sharesCopy = shares;
+  prefixCopy = prefix;
   v8 = PLBackendSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v34 = [v7 count];
+    v34 = [sharesCopy count];
     v35 = 2112;
-    v36 = v26;
+    v36 = prefixCopy;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_INFO, "Deleting %lu (%@) shares...", buf, 0x16u);
   }
 
@@ -1354,7 +1354,7 @@ LABEL_10:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v7;
+  v9 = sharesCopy;
   v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v10)
   {
@@ -1366,7 +1366,7 @@ LABEL_23:
   }
 
   v11 = v10;
-  v25 = a5;
+  errorCopy = error;
   v12 = 0;
   v13 = 0;
   v14 = *v29;
@@ -1398,7 +1398,7 @@ LABEL_23:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v34 = v26;
+          v34 = prefixCopy;
           v35 = 2112;
           v36 = v12;
           _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Failed to delete (%@) share: %@", buf, 0x16u);
@@ -1424,17 +1424,17 @@ LABEL_23:
       *buf = 134218242;
       v34 = v13;
       v35 = 2112;
-      v36 = v26;
+      v36 = prefixCopy;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_INFO, "Deleted %lu (%@) shares", buf, 0x16u);
     }
   }
 
   if (v12)
   {
-    if (v25)
+    if (errorCopy)
     {
       v22 = v12;
-      *v25 = v12;
+      *errorCopy = v12;
     }
 
     goto LABEL_23;
@@ -1446,23 +1446,23 @@ LABEL_24:
   return v23;
 }
 
-+ (void)fetchShareFromShareURL:(id)a3 inPhotoLibrary:(id)a4 completionHandler:(id)a5
++ (void)fetchShareFromShareURL:(id)l inPhotoLibrary:(id)library completionHandler:(id)handler
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 libraryServicesManager];
-  v12 = [v11 cloudPhotoLibraryManager];
+  lCopy = l;
+  libraryCopy = library;
+  handlerCopy = handler;
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  if (v12)
+  if (cloudPhotoLibraryManager)
   {
     v13 = PLBackendSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v8 pl_redactedShareURL];
+      pl_redactedShareURL = [lCopy pl_redactedShareURL];
       *buf = 138412290;
-      v26 = v14;
+      v26 = pl_redactedShareURL;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_INFO, "Fetching share from URL: %@", buf, 0xCu);
     }
 
@@ -1470,11 +1470,11 @@ LABEL_24:
     v19[1] = 3221225472;
     v19[2] = __67__PLShare_fetchShareFromShareURL_inPhotoLibrary_completionHandler___block_invoke;
     v19[3] = &unk_1E756BEF8;
-    v20 = v8;
-    v23 = v10;
-    v24 = a1;
-    v21 = v9;
-    v22 = v12;
+    v20 = lCopy;
+    v23 = handlerCopy;
+    selfCopy = self;
+    v21 = libraryCopy;
+    v22 = cloudPhotoLibraryManager;
     [v22 fetchShareFromShareURL:v20 completionHandler:v19];
 
     v15 = v20;
@@ -1488,7 +1488,7 @@ LABEL_24:
     v28[0] = @"PLCloudPhotoLibraryManager is not available";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v18 = [v16 errorWithDomain:v17 code:41004 userInfo:v15];
-    (*(v10 + 2))(v10, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, v18);
   }
 }
 
@@ -1660,9 +1660,9 @@ uint64_t __67__PLShare_fetchShareFromShareURL_inPhotoLibrary_completionHandler__
   return v2();
 }
 
-+ (id)_basePredicateIncludeTrashedShares:(BOOL)a3
++ (id)_basePredicateIncludeTrashedShares:(BOOL)shares
 {
-  if (a3)
+  if (shares)
   {
     [MEMORY[0x1E696AE18] predicateWithValue:1];
   }
@@ -1679,22 +1679,22 @@ uint64_t __67__PLShare_fetchShareFromShareURL_inPhotoLibrary_completionHandler__
 + (id)predicateToExcludeExpiredShares
 {
   v2 = MEMORY[0x1E696AE18];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v2 predicateWithFormat:@"%K == nil OR %K > %@", @"expiryDate", @"expiryDate", v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [v2 predicateWithFormat:@"%K == nil OR %K > %@", @"expiryDate", @"expiryDate", date];
 
   return v4;
 }
 
-+ (BOOL)getShareIfNecessary:(id *)a3 forCPLRecordWithClass:(Class)a4 scopedIdentifier:(id)a5 inLibrary:(id)a6
++ (BOOL)getShareIfNecessary:(id *)necessary forCPLRecordWithClass:(Class)class scopedIdentifier:(id)identifier inLibrary:(id)library
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  if ([v10 isInACPLShare])
+  identifierCopy = identifier;
+  libraryCopy = library;
+  if ([identifierCopy isInACPLShare])
   {
-    v12 = [v11 managedObjectContext];
+    managedObjectContext = [libraryCopy managedObjectContext];
     v13 = 1;
-    v14 = [a1 shareWithScopedIdentifier:v10 includeTrashed:1 inManagedObjectContext:v12];
+    v14 = [self shareWithScopedIdentifier:identifierCopy includeTrashed:1 inManagedObjectContext:managedObjectContext];
 
     if (!v14)
     {
@@ -1704,9 +1704,9 @@ uint64_t __67__PLShare_fetchShareFromShareURL_inPhotoLibrary_completionHandler__
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           v22 = 138543618;
-          v23 = a4;
+          classCopy2 = class;
           v24 = 2112;
-          v25 = v10;
+          v25 = identifierCopy;
           _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Failed to find moment share for <%{public}@ %@>", &v22, 0x16u);
         }
 
@@ -1721,9 +1721,9 @@ LABEL_11:
 
   else
   {
-    v16 = [v10 scopeIdentifier];
-    v17 = [v11 mainScopeIdentifier];
-    v18 = [v16 isEqualToString:v17];
+    scopeIdentifier = [identifierCopy scopeIdentifier];
+    mainScopeIdentifier = [libraryCopy mainScopeIdentifier];
+    v18 = [scopeIdentifier isEqualToString:mainScopeIdentifier];
 
     if ((v18 & 1) == 0)
     {
@@ -1732,13 +1732,13 @@ LABEL_11:
         v15 = __CPLAssetsdOSLogDomain();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v19 = [v11 mainScopeIdentifier];
+          mainScopeIdentifier2 = [libraryCopy mainScopeIdentifier];
           v22 = 138543874;
-          v23 = a4;
+          classCopy2 = class;
           v24 = 2112;
-          v25 = v10;
+          v25 = identifierCopy;
           v26 = 2112;
-          v27 = v19;
+          v27 = mainScopeIdentifier2;
           _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Invalid scope identifier for  <%{public}@ %@> (expecting %@)", &v22, 0x20u);
         }
 
@@ -1757,28 +1757,28 @@ LABEL_12:
 
 LABEL_13:
   v20 = v14;
-  *a3 = v14;
+  *necessary = v14;
 
   return v13;
 }
 
-+ (id)sharesWithPredicate:(id)a3 fetchLimit:(unint64_t)a4 includesPendingChanges:(BOOL)a5 propertiesToFetch:(id)a6 inManagedObjectContext:(id)a7
++ (id)sharesWithPredicate:(id)predicate fetchLimit:(unint64_t)limit includesPendingChanges:(BOOL)changes propertiesToFetch:(id)fetch inManagedObjectContext:(id)context
 {
   v43 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  predicateCopy = predicate;
+  fetchCopy = fetch;
+  contextCopy = context;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __106__PLShare_sharesWithPredicate_fetchLimit_includesPendingChanges_propertiesToFetch_inManagedObjectContext___block_invoke;
   aBlock[3] = &unk_1E756BE80;
-  v15 = v12;
+  v15 = predicateCopy;
   v37 = v15;
-  v16 = v13;
-  v41 = a5;
+  v16 = fetchCopy;
+  changesCopy = changes;
   v38 = v16;
-  v40 = a4;
-  v17 = v14;
+  limitCopy = limit;
+  v17 = contextCopy;
   v39 = v17;
   v18 = _Block_copy(aBlock);
   v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1789,8 +1789,8 @@ LABEL_13:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v22 = [a1 _registeredSubclasses];
-    v23 = [v22 countByEnumeratingWithState:&v32 objects:v42 count:16];
+    _registeredSubclasses = [self _registeredSubclasses];
+    v23 = [_registeredSubclasses countByEnumeratingWithState:&v32 objects:v42 count:16];
     if (v23)
     {
       v24 = v23;
@@ -1803,11 +1803,11 @@ LABEL_13:
         {
           if (*v33 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(_registeredSubclasses);
           }
 
-          v27 = [*(*(&v32 + 1) + 8 * i) entityName];
-          v28 = v18[2](v18, v27);
+          entityName = [*(*(&v32 + 1) + 8 * i) entityName];
+          v28 = v18[2](v18, entityName);
 
           if (v28)
           {
@@ -1815,7 +1815,7 @@ LABEL_13:
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v32 objects:v42 count:16];
+        v24 = [_registeredSubclasses countByEnumeratingWithState:&v32 objects:v42 count:16];
       }
 
       while (v24);
@@ -1826,12 +1826,12 @@ LABEL_13:
 
   else
   {
-    v21 = [a1 entityName];
-    v22 = v18[2](v18, v21);
+    entityName2 = [self entityName];
+    _registeredSubclasses = v18[2](v18, entityName2);
 
-    if (v22)
+    if (_registeredSubclasses)
     {
-      [v19 addObjectsFromArray:v22];
+      [v19 addObjectsFromArray:_registeredSubclasses];
     }
   }
 
@@ -1871,101 +1871,101 @@ id __106__PLShare_sharesWithPredicate_fetchLimit_includesPendingChanges_properti
   return v5;
 }
 
-+ (id)shareWithShareURL:(id)a3 includeTrashed:(BOOL)a4 inManagedObjectContext:(id)a5
++ (id)shareWithShareURL:(id)l includeTrashed:(BOOL)trashed inManagedObjectContext:(id)context
 {
-  v5 = a4;
+  trashedCopy = trashed;
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 _basePredicateIncludeTrashedShares:v5];
+  contextCopy = context;
+  lCopy = l;
+  v10 = [self _basePredicateIncludeTrashedShares:trashedCopy];
   v11 = MEMORY[0x1E696AB28];
   v18[0] = v10;
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"shareURL", v9];
+  lCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"shareURL", lCopy];
 
-  v18[1] = v12;
+  v18[1] = lCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [v11 andPredicateWithSubpredicates:v13];
 
-  v15 = [a1 sharesWithPredicate:v14 fetchLimit:1 inManagedObjectContext:v8];
+  v15 = [self sharesWithPredicate:v14 fetchLimit:1 inManagedObjectContext:contextCopy];
 
-  v16 = [v15 firstObject];
+  firstObject = [v15 firstObject];
 
-  return v16;
+  return firstObject;
 }
 
-+ (id)shareWithUUID:(id)a3 includeTrashed:(BOOL)a4 inManagedObjectContext:(id)a5
++ (id)shareWithUUID:(id)d includeTrashed:(BOOL)trashed inManagedObjectContext:(id)context
 {
-  v5 = a4;
+  trashedCopy = trashed;
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 _basePredicateIncludeTrashedShares:v5];
+  contextCopy = context;
+  dCopy = d;
+  v10 = [self _basePredicateIncludeTrashedShares:trashedCopy];
   v11 = MEMORY[0x1E696AB28];
   v18[0] = v10;
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", v9];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"uuid", dCopy];
 
-  v18[1] = v12;
+  v18[1] = dCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [v11 andPredicateWithSubpredicates:v13];
 
-  v15 = [a1 sharesWithPredicate:v14 fetchLimit:1 inManagedObjectContext:v8];
+  v15 = [self sharesWithPredicate:v14 fetchLimit:1 inManagedObjectContext:contextCopy];
 
-  v16 = [v15 firstObject];
+  firstObject = [v15 firstObject];
 
-  return v16;
+  return firstObject;
 }
 
-+ (id)sharesWithScopeIdentifiers:(id)a3 includeTrashed:(BOOL)a4 inManagedObjectContext:(id)a5
++ (id)sharesWithScopeIdentifiers:(id)identifiers includeTrashed:(BOOL)trashed inManagedObjectContext:(id)context
 {
-  v5 = a4;
+  trashedCopy = trashed;
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 _basePredicateIncludeTrashedShares:v5];
+  contextCopy = context;
+  identifiersCopy = identifiers;
+  v10 = [self _basePredicateIncludeTrashedShares:trashedCopy];
   v11 = MEMORY[0x1E696AB28];
   v17[0] = v10;
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"scopeIdentifier", v9];
+  identifiersCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"scopeIdentifier", identifiersCopy];
 
-  v17[1] = v12;
+  v17[1] = identifiersCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v14 = [v11 andPredicateWithSubpredicates:v13];
 
-  v15 = [a1 sharesWithPredicate:v14 fetchLimit:0 inManagedObjectContext:v8];
+  v15 = [self sharesWithPredicate:v14 fetchLimit:0 inManagedObjectContext:contextCopy];
 
   return v15;
 }
 
-+ (id)shareWithScopeIdentifier:(id)a3 includeTrashed:(BOOL)a4 inManagedObjectContext:(id)a5
++ (id)shareWithScopeIdentifier:(id)identifier includeTrashed:(BOOL)trashed inManagedObjectContext:(id)context
 {
-  v5 = a4;
+  trashedCopy = trashed;
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 _basePredicateIncludeTrashedShares:v5];
+  contextCopy = context;
+  identifierCopy = identifier;
+  v10 = [self _basePredicateIncludeTrashedShares:trashedCopy];
   v11 = MEMORY[0x1E696AB28];
   v18[0] = v10;
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"scopeIdentifier", v9];
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"scopeIdentifier", identifierCopy];
 
-  v18[1] = v12;
+  v18[1] = identifierCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v14 = [v11 andPredicateWithSubpredicates:v13];
 
-  v15 = [a1 sharesWithPredicate:v14 fetchLimit:1 inManagedObjectContext:v8];
+  v15 = [self sharesWithPredicate:v14 fetchLimit:1 inManagedObjectContext:contextCopy];
 
-  v16 = [v15 firstObject];
+  firstObject = [v15 firstObject];
 
-  return v16;
+  return firstObject;
 }
 
-+ (id)shareWithScopedIdentifier:(id)a3 includeTrashed:(BOOL)a4 inManagedObjectContext:(id)a5
++ (id)shareWithScopedIdentifier:(id)identifier includeTrashed:(BOOL)trashed inManagedObjectContext:(id)context
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ([v8 isInACPLShare])
+  trashedCopy = trashed;
+  identifierCopy = identifier;
+  contextCopy = context;
+  if ([identifierCopy isInACPLShare])
   {
-    v10 = [v8 scopeIdentifier];
-    v11 = [a1 shareWithScopeIdentifier:v10 includeTrashed:v6 inManagedObjectContext:v9];
+    scopeIdentifier = [identifierCopy scopeIdentifier];
+    v11 = [self shareWithScopeIdentifier:scopeIdentifier includeTrashed:trashedCopy inManagedObjectContext:contextCopy];
   }
 
   else
@@ -1976,49 +1976,49 @@ id __106__PLShare_sharesWithPredicate_fetchLimit_includesPendingChanges_properti
   return v11;
 }
 
-+ (id)insertOrUpdateShareWithCPLScopeChange:(id)a3 inPhotoLibrary:(id)a4
++ (id)insertOrUpdateShareWithCPLScopeChange:(id)change inPhotoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a1;
+  changeCopy = change;
+  libraryCopy = library;
+  selfCopy = self;
   v9 = PLAbstractMethodException();
   objc_exception_throw(v9);
 }
 
-+ (id)createOwnedShareWithUUID:(id)a3 creationDate:(id)a4 title:(id)a5 inPhotoLibrary:(id)a6
++ (id)createOwnedShareWithUUID:(id)d creationDate:(id)date title:(id)title inPhotoLibrary:(id)library
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [a1 _abortIfCalledOnBaseClass];
-  v14 = [a1 insertInPhotoLibrary:v10];
+  libraryCopy = library;
+  titleCopy = title;
+  dateCopy = date;
+  dCopy = d;
+  [self _abortIfCalledOnBaseClass];
+  v14 = [self insertInPhotoLibrary:libraryCopy];
 
-  [v14 setTitle:v11];
-  [v14 setCreationDate:v12];
+  [v14 setTitle:titleCopy];
+  [v14 setCreationDate:dateCopy];
 
-  [v14 setUuid:v13];
+  [v14 setUuid:dCopy];
   [v14 setStatus:1];
 
   return v14;
 }
 
-+ (id)insertInPhotoLibrary:(id)a3
++ (id)insertInPhotoLibrary:(id)library
 {
-  v4 = a3;
-  [a1 _abortIfCalledOnBaseClass];
-  v5 = [v4 managedObjectContext];
-  v6 = [a1 entityName];
-  v7 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v6, v5, 0);
+  libraryCopy = library;
+  [self _abortIfCalledOnBaseClass];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  entityName = [self entityName];
+  v7 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, managedObjectContext, 0);
 
-  v8 = [MEMORY[0x1E69BF320] UUIDString];
-  [v7 setUuid:v8];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  [v7 setUuid:uUIDString];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [a1 scopeIdentifierPrefixInLibrary:v4];
+  v10 = [self scopeIdentifierPrefixInLibrary:libraryCopy];
 
-  v11 = [MEMORY[0x1E69BF320] UUIDString];
-  v12 = [v9 stringWithFormat:@"%@%@", v10, v11];
+  uUIDString2 = [MEMORY[0x1E69BF320] UUIDString];
+  v12 = [v9 stringWithFormat:@"%@%@", v10, uUIDString2];
 
   [v7 setScopeIdentifier:v12];
 
@@ -2027,22 +2027,22 @@ id __106__PLShare_sharesWithPredicate_fetchLimit_includesPendingChanges_properti
 
 + (id)entityName
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 + (signed)subclassKind
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-+ (id)scopeIdentifierPrefixInLibrary:(id)a3
++ (id)scopeIdentifierPrefixInLibrary:(id)library
 {
-  v4 = a3;
-  v5 = a1;
+  libraryCopy = library;
+  selfCopy = self;
   v6 = PLAbstractMethodException();
   objc_exception_throw(v6);
 }
@@ -2052,7 +2052,7 @@ id __106__PLShare_sharesWithPredicate_fetchLimit_includesPendingChanges_properti
   v3 = objc_opt_class();
   if (v3 == objc_opt_class())
   {
-    v4 = a1;
+    selfCopy = self;
     v5 = PLAbstractMethodException();
     objc_exception_throw(v5);
   }

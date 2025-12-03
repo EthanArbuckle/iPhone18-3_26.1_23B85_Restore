@@ -1,48 +1,48 @@
 @interface ADDeviceSyncCommandPullDeltaRequest
-+ (id)newWithBuilder:(id)a3;
-- (ADDeviceSyncCommandPullDeltaRequest)initWithBuilder:(id)a3;
-- (ADDeviceSyncCommandPullDeltaRequest)initWithCoder:(id)a3;
-- (ADDeviceSyncCommandPullDeltaRequest)initWithDataType:(id)a3 generation:(unint64_t)a4 limit:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADDeviceSyncCommandPullDeltaRequest)initWithBuilder:(id)builder;
+- (ADDeviceSyncCommandPullDeltaRequest)initWithCoder:(id)coder;
+- (ADDeviceSyncCommandPullDeltaRequest)initWithDataType:(id)type generation:(unint64_t)generation limit:(unint64_t)limit;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADDeviceSyncCommandPullDeltaRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   dataType = self->_dataType;
-  v5 = a3;
-  [v5 encodeObject:dataType forKey:@"ADDeviceSyncCommandPullDeltaRequest::dataType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:dataType forKey:@"ADDeviceSyncCommandPullDeltaRequest::dataType"];
   v6 = [NSNumber numberWithUnsignedLongLong:self->_generation];
-  [v5 encodeObject:v6 forKey:@"ADDeviceSyncCommandPullDeltaRequest::generation"];
+  [coderCopy encodeObject:v6 forKey:@"ADDeviceSyncCommandPullDeltaRequest::generation"];
 
   v7 = [NSNumber numberWithUnsignedLongLong:self->_limit];
-  [v5 encodeObject:v7 forKey:@"ADDeviceSyncCommandPullDeltaRequest::limit"];
+  [coderCopy encodeObject:v7 forKey:@"ADDeviceSyncCommandPullDeltaRequest::limit"];
 }
 
-- (ADDeviceSyncCommandPullDeltaRequest)initWithCoder:(id)a3
+- (ADDeviceSyncCommandPullDeltaRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncCommandPullDeltaRequest::dataType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncCommandPullDeltaRequest::generation"];
-  v7 = [v6 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncCommandPullDeltaRequest::dataType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncCommandPullDeltaRequest::generation"];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncCommandPullDeltaRequest::limit"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncCommandPullDeltaRequest::limit"];
 
-  v9 = [v8 unsignedLongLongValue];
-  v10 = [(ADDeviceSyncCommandPullDeltaRequest *)self initWithDataType:v5 generation:v7 limit:v9];
+  unsignedLongLongValue2 = [v8 unsignedLongLongValue];
+  v10 = [(ADDeviceSyncCommandPullDeltaRequest *)self initWithDataType:v5 generation:unsignedLongLongValue limit:unsignedLongLongValue2];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -52,13 +52,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       generation = self->_generation;
       if (generation == [(ADDeviceSyncCommandPullDeltaRequest *)v5 generation]&& (limit = self->_limit, limit == [(ADDeviceSyncCommandPullDeltaRequest *)v5 limit]))
       {
-        v8 = [(ADDeviceSyncCommandPullDeltaRequest *)v5 dataType];
+        dataType = [(ADDeviceSyncCommandPullDeltaRequest *)v5 dataType];
         dataType = self->_dataType;
-        v10 = dataType == v8 || [(NSString *)dataType isEqual:v8];
+        v10 = dataType == dataType || [(NSString *)dataType isEqual:dataType];
       }
 
       else
@@ -87,7 +87,7 @@
   return v5 ^ v7;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -98,36 +98,36 @@
   return v6;
 }
 
-- (ADDeviceSyncCommandPullDeltaRequest)initWithDataType:(id)a3 generation:(unint64_t)a4 limit:(unint64_t)a5
+- (ADDeviceSyncCommandPullDeltaRequest)initWithDataType:(id)type generation:(unint64_t)generation limit:(unint64_t)limit
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10036FD20;
   v11[3] = &unk_10051DF50;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v12;
+  typeCopy = type;
+  generationCopy = generation;
+  limitCopy = limit;
+  v8 = typeCopy;
   v9 = [(ADDeviceSyncCommandPullDeltaRequest *)self initWithBuilder:v11];
 
   return v9;
 }
 
-- (ADDeviceSyncCommandPullDeltaRequest)initWithBuilder:(id)a3
+- (ADDeviceSyncCommandPullDeltaRequest)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = ADDeviceSyncCommandPullDeltaRequest;
   v5 = [(ADDeviceSyncCommandPullDeltaRequest *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADDeviceSyncCommandPullDeltaRequestMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADDeviceSyncCommandPullDeltaRequestMutation *)v7 isDirty])
     {
-      v8 = [(_ADDeviceSyncCommandPullDeltaRequestMutation *)v7 getDataType];
-      v9 = [v8 copy];
+      getDataType = [(_ADDeviceSyncCommandPullDeltaRequestMutation *)v7 getDataType];
+      v9 = [getDataType copy];
       dataType = v6->_dataType;
       v6->_dataType = v9;
 
@@ -139,26 +139,26 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADDeviceSyncCommandPullDeltaRequestMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADDeviceSyncCommandPullDeltaRequestMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADDeviceSyncCommandPullDeltaRequest);
-      v7 = [(_ADDeviceSyncCommandPullDeltaRequestMutation *)v5 getDataType];
-      v8 = [v7 copy];
+      getDataType = [(_ADDeviceSyncCommandPullDeltaRequestMutation *)v5 getDataType];
+      v8 = [getDataType copy];
       dataType = v6->_dataType;
       v6->_dataType = v8;
 

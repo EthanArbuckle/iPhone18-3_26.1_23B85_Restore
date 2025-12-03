@@ -1,20 +1,20 @@
 @interface SHSheetRemoteScene
-- (SHSheetRemoteScene)initWithSession:(id)a3;
+- (SHSheetRemoteScene)initWithSession:(id)session;
 - (SHSheetRemoteSceneDelegate)delegate;
 - (SHSheetSession)session;
-- (id)_dataRepresentationForCollaborationShareOptions:(id)a3;
+- (id)_dataRepresentationForCollaborationShareOptions:(id)options;
 - (id)createSceneSettings;
 - (int64_t)presentationDirectionType;
 - (void)activate;
 - (void)clientIsReady;
 - (void)invalidate;
-- (void)presentCollaborationParticipantsViewControllerForCloudSharingRequest:(id)a3 completionHandler:(id)a4;
-- (void)receivedAction:(id)a3;
-- (void)sendAction:(id)a3;
-- (void)setHostProcessType:(int64_t)a3;
+- (void)presentCollaborationParticipantsViewControllerForCloudSharingRequest:(id)request completionHandler:(id)handler;
+- (void)receivedAction:(id)action;
+- (void)sendAction:(id)action;
+- (void)setHostProcessType:(int64_t)type;
 - (void)setupSceneHosting;
-- (void)updateWithChange:(id)a3;
-- (void)updateWithSessionContext:(id)a3;
+- (void)updateWithChange:(id)change;
+- (void)updateWithSessionContext:(id)context;
 @end
 
 @implementation SHSheetRemoteScene
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "scene %@ setting up scene hosting", buf, 0xCu);
     }
 
@@ -46,37 +46,37 @@
 
     SFUIShareSheetRemoteSettingsHelperClass = getSFUIShareSheetRemoteSettingsHelperClass();
     v10 = self->_hostingController;
-    v11 = [(SHSheetRemoteScene *)self sessionContext];
-    v12 = [(SHSheetRemoteScene *)self hostProcessType];
-    v13 = [(SHSheetRemoteScene *)self presentationStyle];
-    v14 = [(SHSheetRemoteScene *)self customizationGroups];
-    v15 = [(SHSheetRemoteScene *)self collaborationOptions];
-    v16 = [(SHSheetRemoteScene *)self _dataRepresentationForCollaborationShareOptions:v15];
-    v17 = [(SHSheetRemoteScene *)self cloudShareRequest];
+    sessionContext = [(SHSheetRemoteScene *)self sessionContext];
+    hostProcessType = [(SHSheetRemoteScene *)self hostProcessType];
+    presentationStyle = [(SHSheetRemoteScene *)self presentationStyle];
+    customizationGroups = [(SHSheetRemoteScene *)self customizationGroups];
+    collaborationOptions = [(SHSheetRemoteScene *)self collaborationOptions];
+    v16 = [(SHSheetRemoteScene *)self _dataRepresentationForCollaborationShareOptions:collaborationOptions];
+    cloudShareRequest = [(SHSheetRemoteScene *)self cloudShareRequest];
     LOBYTE(v19) = [(SHSheetRemoteScene *)self isSLMEnabled];
-    [SFUIShareSheetRemoteSettingsHelperClass updateHostingController:v10 withContext:v11 hostProcessType:v12 hostPresentationStyle:v13 optionGroups:v14 collaborationOptionsData:v16 cloudShareRequest:v17 isSLMEnabled:v19 presentationDirectionType:{-[SHSheetRemoteScene presentationDirectionType](self, "presentationDirectionType")}];
+    [SFUIShareSheetRemoteSettingsHelperClass updateHostingController:v10 withContext:sessionContext hostProcessType:hostProcessType hostPresentationStyle:presentationStyle optionGroups:customizationGroups collaborationOptionsData:v16 cloudShareRequest:cloudShareRequest isSLMEnabled:v19 presentationDirectionType:{-[SHSheetRemoteScene presentationDirectionType](self, "presentationDirectionType")}];
 
-    v18 = [(SHSheetRemoteScene *)self delegate];
-    [v18 sceneDidBecomeActive:self];
+    delegate = [(SHSheetRemoteScene *)self delegate];
+    [delegate sceneDidBecomeActive:self];
   }
 }
 
-- (SHSheetRemoteScene)initWithSession:(id)a3
+- (SHSheetRemoteScene)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = SHSheetRemoteScene;
   v5 = [(SHSheetRemoteScene *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_session, v4);
-    v7 = [v4 createClientContext];
+    objc_storeWeak(&v5->_session, sessionCopy);
+    createClientContext = [sessionCopy createClientContext];
     sessionContext = v6->_sessionContext;
-    v6->_sessionContext = v7;
+    v6->_sessionContext = createClientContext;
 
-    v9 = [v4 activityViewController];
-    v6->_presentationStyle = SHSheetPresentationControllerPresentationStyle(v9);
+    activityViewController = [sessionCopy activityViewController];
+    v6->_presentationStyle = SHSheetPresentationControllerPresentationStyle(activityViewController);
 
     v6->_isSLMEnabled = _ShareSheetSolariumEnabled();
   }
@@ -86,30 +86,30 @@
 
 - (int64_t)presentationDirectionType
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     return 0;
   }
 
-  v6 = [(SHSheetRemoteScene *)self session];
-  v7 = [v6 activityViewController];
-  v8 = [v7 popoverPresentationController];
+  session = [(SHSheetRemoteScene *)self session];
+  activityViewController = [session activityViewController];
+  popoverPresentationController = [activityViewController popoverPresentationController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v8 presentationDirectionType];
+    presentationDirectionType = [popoverPresentationController presentationDirectionType];
   }
 
   else
   {
-    v5 = 0;
+    presentationDirectionType = 0;
   }
 
-  return v5;
+  return presentationDirectionType;
 }
 
 - (void)activate
@@ -119,7 +119,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "scene %@ activating", &v4, 0xCu);
   }
 
@@ -133,7 +133,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "scene %@ invalidating", &v4, 0xCu);
   }
 
@@ -167,89 +167,89 @@ void __41__SHSheetRemoteScene_createSceneSettings__block_invoke(uint64_t a1, voi
   [v6 setIsSLMEnabled:_ShareSheetSolariumEnabled()];
 }
 
-- (void)updateWithSessionContext:(id)a3
+- (void)updateWithSessionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__SHSheetRemoteScene_updateWithSessionContext___block_invoke;
   v6[3] = &unk_1E71F9150;
-  v7 = v4;
-  v5 = v4;
+  v7 = contextCopy;
+  v5 = contextCopy;
   [(SHSheetRemoteScene *)self updateWithChange:v6];
 }
 
-- (void)updateWithChange:(id)a3
+- (void)updateWithChange:(id)change
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "scene %@ will update", buf, 0xCu);
   }
 
-  v4[2](v4, self);
+  changeCopy[2](changeCopy, self);
   SFUIShareSheetRemoteSettingsHelperClass = getSFUIShareSheetRemoteSettingsHelperClass();
-  v6 = [(SHSheetRemoteScene *)self hostingController];
-  v7 = [(SHSheetRemoteScene *)self sessionContext];
-  v8 = [(SHSheetRemoteScene *)self hostProcessType];
-  v9 = [(SHSheetRemoteScene *)self presentationStyle];
-  v10 = [(SHSheetRemoteScene *)self customizationGroups];
-  v11 = [(SHSheetRemoteScene *)self collaborationOptions];
-  v12 = [(SHSheetRemoteScene *)self _dataRepresentationForCollaborationShareOptions:v11];
-  v13 = [(SHSheetRemoteScene *)self cloudShareRequest];
+  hostingController = [(SHSheetRemoteScene *)self hostingController];
+  sessionContext = [(SHSheetRemoteScene *)self sessionContext];
+  hostProcessType = [(SHSheetRemoteScene *)self hostProcessType];
+  presentationStyle = [(SHSheetRemoteScene *)self presentationStyle];
+  customizationGroups = [(SHSheetRemoteScene *)self customizationGroups];
+  collaborationOptions = [(SHSheetRemoteScene *)self collaborationOptions];
+  v12 = [(SHSheetRemoteScene *)self _dataRepresentationForCollaborationShareOptions:collaborationOptions];
+  cloudShareRequest = [(SHSheetRemoteScene *)self cloudShareRequest];
   LOBYTE(v14) = [(SHSheetRemoteScene *)self isSLMEnabled];
-  [SFUIShareSheetRemoteSettingsHelperClass updateHostingController:v6 withContext:v7 hostProcessType:v8 hostPresentationStyle:v9 optionGroups:v10 collaborationOptionsData:v12 cloudShareRequest:v13 isSLMEnabled:v14 presentationDirectionType:{-[SHSheetRemoteScene presentationDirectionType](self, "presentationDirectionType")}];
+  [SFUIShareSheetRemoteSettingsHelperClass updateHostingController:hostingController withContext:sessionContext hostProcessType:hostProcessType hostPresentationStyle:presentationStyle optionGroups:customizationGroups collaborationOptionsData:v12 cloudShareRequest:cloudShareRequest isSLMEnabled:v14 presentationDirectionType:{-[SHSheetRemoteScene presentationDirectionType](self, "presentationDirectionType")}];
 }
 
-- (void)setHostProcessType:(int64_t)a3
+- (void)setHostProcessType:(int64_t)type
 {
   hostProcessType = self->_hostProcessType;
-  if (hostProcessType != a3 && hostProcessType <= 0)
+  if (hostProcessType != type && hostProcessType <= 0)
   {
-    self->_hostProcessType = a3;
+    self->_hostProcessType = type;
   }
 }
 
-- (void)receivedAction:(id)a3
+- (void)receivedAction:(id)action
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v4;
+    v19 = actionCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "scene %@ received action: %@", &v16, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = actionCopy;
     if ([(SHSheetRemoteScene *)v6 type]== 10)
     {
-      v7 = [(SHSheetRemoteScene *)self session];
-      v8 = [v7 activityViewController];
-      [v8 _endDelayingPresentation];
+      session = [(SHSheetRemoteScene *)self session];
+      activityViewController = [session activityViewController];
+      [activityViewController _endDelayingPresentation];
     }
 
-    v9 = [(SHSheetRemoteScene *)self delegate];
-    [v9 scene:self didReceiveAction:v6];
+    delegate = [(SHSheetRemoteScene *)self delegate];
+    [delegate scene:self didReceiveAction:v6];
     goto LABEL_15;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v9 = [(SHSheetRemoteScene *)self delegate];
-    [v9 scene:self didReceiveSizeUpdateAction:v6];
+    v6 = actionCopy;
+    delegate = [(SHSheetRemoteScene *)self delegate];
+    [delegate scene:self didReceiveSizeUpdateAction:v6];
 LABEL_15:
 
     goto LABEL_16;
@@ -258,38 +258,38 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v9 = [(SHSheetRemoteScene *)self delegate];
-    [v9 scene:self didReceiveMetadataUpdateAction:v6];
+    v6 = actionCopy;
+    delegate = [(SHSheetRemoteScene *)self delegate];
+    [delegate scene:self didReceiveMetadataUpdateAction:v6];
     goto LABEL_15;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v9 = [(SHSheetRemoteScene *)self delegate];
-    [v9 scene:self didReceiveSuggestionAction:v6];
+    v6 = actionCopy;
+    delegate = [(SHSheetRemoteScene *)self delegate];
+    [delegate scene:self didReceiveSuggestionAction:v6];
     goto LABEL_15;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v9 = [(SHSheetRemoteScene *)self delegate];
-    [v9 scene:self didReceiveOptionUpdateAction:v6];
+    v6 = actionCopy;
+    delegate = [(SHSheetRemoteScene *)self delegate];
+    [delegate scene:self didReceiveOptionUpdateAction:v6];
     goto LABEL_15;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v4;
-    v9 = [(SHSheetRemoteScene *)self delegate];
-    v11 = [(SHSheetRemoteScene *)v10 collaborationOptions];
+    v10 = actionCopy;
+    delegate = [(SHSheetRemoteScene *)self delegate];
+    collaborationOptions = [(SHSheetRemoteScene *)v10 collaborationOptions];
 
-    [v9 scene:self didReceiveCollaborationOptionUpdateAction:v11];
+    [delegate scene:self didReceiveCollaborationOptionUpdateAction:collaborationOptions];
   }
 
   else
@@ -297,15 +297,15 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v4;
+      delegate = actionCopy;
       [(SHSheetRemoteScene *)self setCloudShareRequest:0];
-      v12 = [(SHSheetRemoteScene *)self collaborationCreateSharingURLCompletionHandler];
+      collaborationCreateSharingURLCompletionHandler = [(SHSheetRemoteScene *)self collaborationCreateSharingURLCompletionHandler];
 
-      if (v12)
+      if (collaborationCreateSharingURLCompletionHandler)
       {
-        v13 = [(SHSheetRemoteScene *)self collaborationCreateSharingURLCompletionHandler];
-        v14 = [v9 result];
-        (v13)[2](v13, v14);
+        collaborationCreateSharingURLCompletionHandler2 = [(SHSheetRemoteScene *)self collaborationCreateSharingURLCompletionHandler];
+        result = [delegate result];
+        (collaborationCreateSharingURLCompletionHandler2)[2](collaborationCreateSharingURLCompletionHandler2, result);
 
         [(SHSheetRemoteScene *)self setCollaborationCreateSharingURLCompletionHandler:0];
       }
@@ -322,12 +322,12 @@ LABEL_15:
 
     else
     {
-      v9 = share_sheet_log();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      delegate = share_sheet_log();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v4;
-        _os_log_impl(&dword_18B359000, v9, OS_LOG_TYPE_DEFAULT, "scene receieved unsupported action:%@", &v16, 0xCu);
+        selfCopy = actionCopy;
+        _os_log_impl(&dword_18B359000, delegate, OS_LOG_TYPE_DEFAULT, "scene receieved unsupported action:%@", &v16, 0xCu);
       }
     }
   }
@@ -347,28 +347,28 @@ LABEL_16:
   self->_isActive = 1;
 }
 
-- (void)sendAction:(id)a3
+- (void)sendAction:(id)action
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = actionCopy;
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "scene %@ will send action:%@", &v7, 0x16u);
   }
 
-  v6 = [(SHSheetRemoteScene *)self hostingController];
-  [v6 sendAction:v4];
+  hostingController = [(SHSheetRemoteScene *)self hostingController];
+  [hostingController sendAction:actionCopy];
 }
 
-- (void)presentCollaborationParticipantsViewControllerForCloudSharingRequest:(id)a3 completionHandler:(id)a4
+- (void)presentCollaborationParticipantsViewControllerForCloudSharingRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = share_sheet_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -376,26 +376,26 @@ LABEL_16:
     _os_log_impl(&dword_18B359000, v8, OS_LOG_TYPE_DEFAULT, "Request collaboration participants view presentation from the remote", buf, 2u);
   }
 
-  [(SHSheetRemoteScene *)self setCollaborationCreateSharingURLCompletionHandler:v7];
+  [(SHSheetRemoteScene *)self setCollaborationCreateSharingURLCompletionHandler:handlerCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __109__SHSheetRemoteScene_presentCollaborationParticipantsViewControllerForCloudSharingRequest_completionHandler___block_invoke;
   v10[3] = &unk_1E71F9150;
-  v11 = v6;
-  v9 = v6;
+  v11 = requestCopy;
+  v9 = requestCopy;
   [(SHSheetRemoteScene *)self updateWithChange:v10];
 }
 
-- (id)_dataRepresentationForCollaborationShareOptions:(id)a3
+- (id)_dataRepresentationForCollaborationShareOptions:(id)options
 {
   v3 = MEMORY[0x1E696ACC8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = [[v3 alloc] initRequiringSecureCoding:1];
-  [v5 encodeObject:v4 forKey:*MEMORY[0x1E696A508]];
+  [v5 encodeObject:optionsCopy forKey:*MEMORY[0x1E696A508]];
 
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
 - (SHSheetSession)session

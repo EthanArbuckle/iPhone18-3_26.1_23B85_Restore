@@ -7,10 +7,10 @@
 - (id)outputImage
 {
   v37[6] = *MEMORY[0x1E69E9840];
-  v3 = [(CUIGlassHighlightInternal *)self inputImage];
-  if (v3)
+  inputImage = [(CUIGlassHighlightInternal *)self inputImage];
+  if (inputImage)
   {
-    v4 = v3;
+    v4 = inputImage;
     [(NSNumber *)[(CUIGlassHighlightInternal *)self inputHeight] floatValue];
     v6 = v5;
     [(NSNumber *)[(CUIGlassHighlightInternal *)self inputInset] floatValue];
@@ -27,16 +27,16 @@
     v18 = v17;
     [(NSNumber *)[(CUIGlassHighlightInternal *)self inputSDFScaleFactor] floatValue];
     v20 = [CIVector vectorWithX:v14 Y:v16 Z:v18 W:v19];
-    v21 = [(CUIGlassHighlightFromAlpha *)self _kernel];
-    if (v21)
+    _kernel = [(CUIGlassHighlightFromAlpha *)self _kernel];
+    if (_kernel)
     {
-      v22 = v21;
+      v22 = _kernel;
       [(CIImage *)v4 extent];
       v24 = v23;
       v26 = v25;
       v28 = v27;
       v30 = v29;
-      v31 = [(CIImage *)v4 imageByClampingToExtent];
+      imageByClampingToExtent = [(CIImage *)v4 imageByClampingToExtent];
       v39.origin.x = v24;
       v39.origin.y = v26;
       v39.size.width = v28;
@@ -46,7 +46,7 @@
       y = v40.origin.y;
       width = v40.size.width;
       height = v40.size.height;
-      v37[0] = v31;
+      v37[0] = imageByClampingToExtent;
       v37[1] = v12;
       v37[2] = v20;
       v37[3] = [(CUIGlassHighlightInternal *)self inputSDFZeroValue];

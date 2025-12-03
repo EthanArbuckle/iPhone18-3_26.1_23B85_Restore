@@ -1,17 +1,17 @@
 @interface SBSecureRenderingHostComponent
-- (void)setScene:(id)a3;
+- (void)setScene:(id)scene;
 @end
 
 @implementation SBSecureRenderingHostComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v12.receiver = self;
   v12.super_class = SBSecureRenderingHostComponent;
-  [(FBSSceneComponent *)&v12 setScene:v4];
+  [(FBSSceneComponent *)&v12 setScene:sceneCopy];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = sceneCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())

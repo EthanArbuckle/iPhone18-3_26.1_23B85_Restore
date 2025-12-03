@@ -8,7 +8,7 @@
 - (uint64_t)mixingTypeWithObject:()TSDMixingAdditions
 {
   objc_opt_class();
-  if ([a1 isEqual:TSUCheckedDynamicCast()])
+  if ([self isEqual:TSUCheckedDynamicCast()])
   {
     return 5;
   }
@@ -24,7 +24,7 @@
   objc_opt_class();
   v4 = TSUCheckedDynamicCast();
 
-  return [a1 blendedColorWithFraction:v4 ofColor:a2];
+  return [self blendedColorWithFraction:v4 ofColor:a2];
 }
 
 @end

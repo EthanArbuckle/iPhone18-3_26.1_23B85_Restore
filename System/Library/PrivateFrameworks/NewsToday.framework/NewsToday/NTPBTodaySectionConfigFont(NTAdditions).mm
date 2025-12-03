@@ -7,8 +7,8 @@
 - (id)URL
 {
   v1 = MEMORY[0x277CBEBC0];
-  v2 = [a1 urlString];
-  v3 = [v1 URLWithString:v2];
+  urlString = [self urlString];
+  v3 = [v1 URLWithString:urlString];
 
   return v3;
 }

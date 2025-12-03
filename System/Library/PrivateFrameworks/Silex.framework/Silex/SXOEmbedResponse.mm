@@ -1,53 +1,53 @@
 @interface SXOEmbedResponse
-+ (id)jsonPropertyNameForObjCPropertyName:(id)a3;
++ (id)jsonPropertyNameForObjCPropertyName:(id)name;
 - (CGSize)thumbnailSize;
-- (double)cacheAgeWithValue:(id)a3 withType:(int)a4;
+- (double)cacheAgeWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXOEmbedResponse
 
-+ (id)jsonPropertyNameForObjCPropertyName:(id)a3
++ (id)jsonPropertyNameForObjCPropertyName:(id)name
 {
-  v3 = a3;
-  if (([(__CFString *)v3 isEqualToString:@"authorName"]& 1) != 0)
+  nameCopy = name;
+  if (([(__CFString *)nameCopy isEqualToString:@"authorName"]& 1) != 0)
   {
     v4 = @"author_name";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"authorURL"]& 1) != 0)
+  else if (([(__CFString *)nameCopy isEqualToString:@"authorURL"]& 1) != 0)
   {
     v4 = @"author_url";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"providerName"]& 1) != 0)
+  else if (([(__CFString *)nameCopy isEqualToString:@"providerName"]& 1) != 0)
   {
     v4 = @"provider_name";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"providerURL"]& 1) != 0)
+  else if (([(__CFString *)nameCopy isEqualToString:@"providerURL"]& 1) != 0)
   {
     v4 = @"provider_url";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"cacheAge"]& 1) != 0)
+  else if (([(__CFString *)nameCopy isEqualToString:@"cacheAge"]& 1) != 0)
   {
     v4 = @"cache_age";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"thumbnailURL"]& 1) != 0)
+  else if (([(__CFString *)nameCopy isEqualToString:@"thumbnailURL"]& 1) != 0)
   {
     v4 = @"thumbnail_url";
   }
 
-  else if (([(__CFString *)v3 isEqualToString:@"thumbnailWidth"]& 1) != 0)
+  else if (([(__CFString *)nameCopy isEqualToString:@"thumbnailWidth"]& 1) != 0)
   {
     v4 = @"thumbnail_width";
   }
 
   else
   {
-    v4 = v3;
-    if (![(__CFString *)v3 isEqualToString:@"thumbnailHeight"])
+    v4 = nameCopy;
+    if (![(__CFString *)nameCopy isEqualToString:@"thumbnailHeight"])
     {
       goto LABEL_18;
     }
@@ -60,14 +60,14 @@ LABEL_18:
   return v4;
 }
 
-- (double)cacheAgeWithValue:(id)a3 withType:(int)a4
+- (double)cacheAgeWithValue:(id)value withType:(int)type
 {
-  if (a4 != 2)
+  if (type != 2)
   {
     return 978307200.0;
   }
 
-  [a3 doubleValue];
+  [value doubleValue];
   return result;
 }
 

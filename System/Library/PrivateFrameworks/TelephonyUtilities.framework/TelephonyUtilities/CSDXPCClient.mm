@@ -1,39 +1,39 @@
 @interface CSDXPCClient
-- (BOOL)isEntitledForCapability:(id)a3;
-- (CSDXPCClient)initWithConnection:(id)a3 queue:(id)a4;
+- (BOOL)isEntitledForCapability:(id)capability;
+- (CSDXPCClient)initWithConnection:(id)connection queue:(id)queue;
 - (id)acquireAssertionIfNecessary;
 - (id)newProcessAssertion;
 - (id)objectForBlock;
 - (id)propertiesDescription;
-- (id)valueForEntitlement:(id)a3;
+- (id)valueForEntitlement:(id)entitlement;
 - (void)dealloc;
 - (void)invalidate;
-- (void)performBlockAfterCoalescing:(id)a3;
+- (void)performBlockAfterCoalescing:(id)coalescing;
 @end
 
 @implementation CSDXPCClient
 
 - (id)objectForBlock
 {
-  v2 = [(CSDXPCClient *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(CSDXPCClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (id)acquireAssertionIfNecessary
 {
   if ([(CSDXPCClient *)self supportsClientAssertions]&& [(CSDXPCClient *)self isEntitledForCapability:@"needs-ui-assertion"])
   {
-    v3 = [(CSDXPCClient *)self processAssertion];
-    v4 = [(CSDXPCClient *)self newProcessAssertion];
+    processAssertion = [(CSDXPCClient *)self processAssertion];
+    newProcessAssertion = [(CSDXPCClient *)self newProcessAssertion];
     v8 = 0;
-    [v4 acquireWithError:&v8];
+    [newProcessAssertion acquireWithError:&v8];
     v5 = v8;
     if (!v5)
     {
-      [v3 invalidate];
-      [(CSDXPCClient *)self setProcessAssertion:v4];
+      [processAssertion invalidate];
+      [(CSDXPCClient *)self setProcessAssertion:newProcessAssertion];
     }
 
     v6 = v5;
@@ -51,20 +51,20 @@
 {
   v7.receiver = self;
   v7.super_class = CSDXPCClient;
-  v3 = [(CSDClient *)&v7 propertiesDescription];
-  v4 = [(CSDXPCClient *)self entitledCapabilities];
-  v5 = [NSString stringWithFormat:@"%@ entitlementCapabilities=%@", v3, v4];
+  propertiesDescription = [(CSDClient *)&v7 propertiesDescription];
+  entitledCapabilities = [(CSDXPCClient *)self entitledCapabilities];
+  v5 = [NSString stringWithFormat:@"%@ entitlementCapabilities=%@", propertiesDescription, entitledCapabilities];
 
   return v5;
 }
 
 - (void)invalidate
 {
-  v3 = [(CSDXPCClient *)self processAssertion];
-  [v3 invalidate];
+  processAssertion = [(CSDXPCClient *)self processAssertion];
+  [processAssertion invalidate];
 
-  v4 = [(CSDXPCClient *)self connection];
-  [v4 invalidate];
+  connection = [(CSDXPCClient *)self connection];
+  [connection invalidate];
 }
 
 - (void)dealloc
@@ -75,38 +75,38 @@
   [(CSDXPCClient *)&v3 dealloc];
 }
 
-- (CSDXPCClient)initWithConnection:(id)a3 queue:(id)a4
+- (CSDXPCClient)initWithConnection:(id)connection queue:(id)queue
 {
-  v7 = a3;
+  connectionCopy = connection;
   v27.receiver = self;
   v27.super_class = CSDXPCClient;
-  v8 = [(CSDClient *)&v27 initWithObject:v7 queue:a4];
+  v8 = [(CSDClient *)&v27 initWithObject:connectionCopy queue:queue];
   if (v8)
   {
-    v9 = [v7 processIdentifier];
-    if (v9 == getpid())
+    processIdentifier = [connectionCopy processIdentifier];
+    if (processIdentifier == getpid())
     {
       v10 = [NSString stringWithFormat:@"callservicesd is attempting to create an XPC client for itself."];
       NSLog(@"** TUAssertion failure: %@", v10);
 
       if (_TUAssertShouldCrashApplication())
       {
-        v11 = [v7 processIdentifier];
-        if (v11 == getpid())
+        processIdentifier2 = [connectionCopy processIdentifier];
+        if (processIdentifier2 == getpid())
         {
           sub_1004758B8(a2, v8);
         }
       }
     }
 
-    v8->_processIdentifier = [v7 processIdentifier];
-    v12 = [v7 processName];
+    v8->_processIdentifier = [connectionCopy processIdentifier];
+    processName = [connectionCopy processName];
     processName = v8->_processName;
-    v8->_processName = v12;
+    v8->_processName = processName;
 
-    v14 = [v7 processBundleIdentifier];
+    processBundleIdentifier = [connectionCopy processBundleIdentifier];
     processBundleIdentifier = v8->_processBundleIdentifier;
-    v8->_processBundleIdentifier = v14;
+    v8->_processBundleIdentifier = processBundleIdentifier;
 
     v16 = +[NSSet set];
     entitledCapabilities = v8->_entitledCapabilities;
@@ -164,43 +164,43 @@
   return v6;
 }
 
-- (void)performBlockAfterCoalescing:(id)a3
+- (void)performBlockAfterCoalescing:(id)coalescing
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10011FB8C;
   v8[3] = &unk_10061ACD0;
   v8[4] = self;
-  v9 = a3;
+  coalescingCopy = coalescing;
   v4 = objc_retainBlock(v8);
-  v5 = [(CSDXPCClient *)self acquireAssertionIfNecessary];
-  if (v5)
+  acquireAssertionIfNecessary = [(CSDXPCClient *)self acquireAssertionIfNecessary];
+  if (acquireAssertionIfNecessary)
   {
     v6 = sub_100004778();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_10047591C(self, v5, v6);
+      sub_10047591C(self, acquireAssertionIfNecessary, v6);
     }
   }
 
-  v7 = [(CSDXPCClient *)self connection];
-  [v7 addBarrierBlock:v4];
+  connection = [(CSDXPCClient *)self connection];
+  [connection addBarrierBlock:v4];
 }
 
-- (BOOL)isEntitledForCapability:(id)a3
+- (BOOL)isEntitledForCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(CSDXPCClient *)self entitledCapabilities];
-  v6 = [v5 containsObject:v4];
+  capabilityCopy = capability;
+  entitledCapabilities = [(CSDXPCClient *)self entitledCapabilities];
+  v6 = [entitledCapabilities containsObject:capabilityCopy];
 
   return v6;
 }
 
-- (id)valueForEntitlement:(id)a3
+- (id)valueForEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(CSDXPCClient *)self connection];
-  v6 = [v5 valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  connection = [(CSDXPCClient *)self connection];
+  v6 = [connection valueForEntitlement:entitlementCopy];
 
   return v6;
 }

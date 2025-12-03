@@ -1,9 +1,9 @@
 @interface ProcessExitFetcher
 + (id)sharedInstance;
-- (ProcessExitFetcher)initWithMonitorID:(id)a3 fetchIntervalMs:(double)a4;
-- (id)extractProcessNameToDisplayFromBundleID:(id)a3;
+- (ProcessExitFetcher)initWithMonitorID:(id)d fetchIntervalMs:(double)ms;
+- (id)extractProcessNameToDisplayFromBundleID:(id)d;
 - (id)getProcessExitRecordFetchQueue;
-- (id)processNameToDisplayForBundleID:(id)a3;
+- (id)processNameToDisplayForBundleID:(id)d;
 - (void)fetchProcessExitInfo;
 - (void)kickOffFetchTimer;
 - (void)stopFetchTimer;
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (ProcessExitFetcher)initWithMonitorID:(id)a3 fetchIntervalMs:(double)a4
+- (ProcessExitFetcher)initWithMonitorID:(id)d fetchIntervalMs:(double)ms
 {
-  v7 = a3;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = ProcessExitFetcher;
   v8 = [(ProcessExitFetcher *)&v19 init];
@@ -39,9 +39,9 @@
     processExitRecords = v9->_processExitRecords;
     v9->_processExitRecords = v11;
 
-    objc_storeStrong(&v9->_launchServiceMonitorID, a3);
+    objc_storeStrong(&v9->_launchServiceMonitorID, d);
     v9->_launchServiceMaxRecordCount = 128;
-    v9->_fetchIntervalMs = a4;
+    v9->_fetchIntervalMs = ms;
     v13 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v14 = dispatch_queue_create("com.apple.HangHUD.procExitfetchTimer", v13);
     timerQueue = v9->_timerQueue;
@@ -110,16 +110,16 @@
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
           v26 = sub_100017A6C(v31);
-          v27 = [(HTProcessLaunchExitRecord *)v17 exitReasonCode];
-          v28 = [(HTProcessLaunchExitRecord *)v17 exitReasonNamespace];
+          exitReasonCode = [(HTProcessLaunchExitRecord *)v17 exitReasonCode];
+          exitReasonNamespace = [(HTProcessLaunchExitRecord *)v17 exitReasonNamespace];
           *buf = 138413058;
           v34 = v13;
           v35 = 2048;
           v36 = v26;
           v37 = 2048;
-          v38 = v27;
+          v38 = exitReasonCode;
           v39 = 1024;
-          v40 = v28;
+          v40 = exitReasonNamespace;
           _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, " Process %@ exited - Fetch duration is : %f MS, reasonCode:%llu, exitReasonNamespce:%i", buf, 0x26u);
         }
 
@@ -171,28 +171,28 @@
   }
 }
 
-- (id)processNameToDisplayForBundleID:(id)a3
+- (id)processNameToDisplayForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_bundleIdToProcessNameCache objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSCache *)self->_bundleIdToProcessNameCache objectForKey:dCopy];
   if (!v5)
   {
     v11 = 0;
-    v6 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v11];
+    v6 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v11];
     v7 = v11;
     if (v7)
     {
-      v5 = [(ProcessExitFetcher *)self extractProcessNameToDisplayFromBundleID:v4];
+      v5 = [(ProcessExitFetcher *)self extractProcessNameToDisplayFromBundleID:dCopy];
     }
 
     else
     {
       v8 = +[HUDConfiguration sharedInstance];
-      v9 = [v8 thirdPartyDevPreferredLanguages];
+      thirdPartyDevPreferredLanguages = [v8 thirdPartyDevPreferredLanguages];
 
-      if ([v9 count])
+      if ([thirdPartyDevPreferredLanguages count])
       {
-        [v6 localizedNameWithPreferredLocalizations:v9];
+        [v6 localizedNameWithPreferredLocalizations:thirdPartyDevPreferredLanguages];
       }
 
       else
@@ -202,15 +202,15 @@
       v5 = ;
     }
 
-    [(NSCache *)self->_bundleIdToProcessNameCache setObject:v5 forKey:v4];
+    [(NSCache *)self->_bundleIdToProcessNameCache setObject:v5 forKey:dCopy];
   }
 
   return v5;
 }
 
-- (id)extractProcessNameToDisplayFromBundleID:(id)a3
+- (id)extractProcessNameToDisplayFromBundleID:(id)d
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [d componentsSeparatedByString:@"."];
   v4 = [v3 objectAtIndexedSubscript:{objc_msgSend(v3, "count") - 1}];
   v5 = +[NSCharacterSet characterSetWithCharactersInString:](NSCharacterSet, "characterSetWithCharactersInString:", @"[({<");
   v6 = [v4 rangeOfCharacterFromSet:v5];

@@ -6,15 +6,15 @@
 + (uint64_t)preferredTapAction;
 + (uint64_t)prefersHoverToolPreview;
 + (uint64_t)prefersPencilOnlyDrawing;
-+ (void)setHasUsedPassivePencil:(uint64_t)a1;
-+ (void)setPrefersPencilOnlyDrawing:(uint64_t)a1;
++ (void)setHasUsedPassivePencil:(uint64_t)pencil;
++ (void)setPrefersPencilOnlyDrawing:(uint64_t)drawing;
 - (_UIPencilPreferences)init;
 - (void)_hasUsedPassivePencilDidChange;
 - (void)_preferredSqueezeActionDidChange;
 - (void)_preferredTapActionDidChange;
 - (void)_prefersPencilOnlyDrawingDidChange;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _UIPencilPreferences
@@ -179,7 +179,7 @@
   return v1;
 }
 
-+ (void)setHasUsedPassivePencil:(uint64_t)a1
++ (void)setHasUsedPassivePencil:(uint64_t)pencil
 {
   objc_opt_self();
   v3 = +[_UIPencilPreferences sharedPreferences];
@@ -194,7 +194,7 @@
   }
 }
 
-+ (void)setPrefersPencilOnlyDrawing:(uint64_t)a1
++ (void)setPrefersPencilOnlyDrawing:(uint64_t)drawing
 {
   objc_opt_self();
   v3 = +[_UIPencilPreferences sharedPreferences];
@@ -276,7 +276,7 @@
 
 - (void)_hasUsedPassivePencilDidChange
 {
-  if (a1)
+  if (self)
   {
     v2 = _UIKitUserDefaults();
     if ([v2 BOOLForKey:@"UIPencilHasUsedPassivePencilKey"])
@@ -289,10 +289,10 @@
       v3 = 0;
     }
 
-    *(a1 + 24) = *(a1 + 24) & 0xF7 | v3;
+    *(self + 24) = *(self + 24) & 0xF7 | v3;
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"_UIPencilHasUsedPassivePencilChangedNotification" object:a1];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIPencilHasUsedPassivePencilChangedNotification" object:self];
   }
 }
 
@@ -358,7 +358,7 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v20[1] = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("PencilPreferences", &observeValueForKeyPath_ofObject_change_context____s_category);
@@ -368,27 +368,27 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       LODWORD(aBlock) = 138412290;
-      *(&aBlock + 4) = a3;
+      *(&aBlock + 4) = path;
       _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "KVO callback received for key: %@", &aBlock, 0xCu);
     }
   }
 
-  if ([a3 isEqualToString:@"UIPencilPreferredTapAction"])
+  if ([path isEqualToString:@"UIPencilPreferredTapAction"])
   {
     [(_UIPencilPreferences *)self _preferredTapActionDidChange];
   }
 
-  else if ([a3 isEqualToString:@"UIPencilPreferredSqueezeAction"])
+  else if ([path isEqualToString:@"UIPencilPreferredSqueezeAction"])
   {
     [(_UIPencilPreferences *)self _preferredSqueezeActionDidChange];
   }
 
-  else if ([a3 isEqualToString:@"UIPencilOnlyDrawWithPencilKey"])
+  else if ([path isEqualToString:@"UIPencilOnlyDrawWithPencilKey"])
   {
     [(_UIPencilPreferences *)self _prefersPencilOnlyDrawingDidChange];
   }
 
-  else if ([a3 isEqualToString:@"PKUIPencilHoverPreviewEnabledKey"])
+  else if ([path isEqualToString:@"PKUIPencilHoverPreviewEnabledKey"])
   {
     if (self)
     {
@@ -419,7 +419,7 @@
     }
   }
 
-  else if ([a3 isEqualToString:@"PKHasEverShownEduUI"])
+  else if ([path isEqualToString:@"PKHasEverShownEduUI"])
   {
     if (self)
     {
@@ -436,12 +436,12 @@
 
       *&self->_preferenceFlags = *&self->_preferenceFlags & 0xFB | v11;
 
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 postNotificationName:@"_UIPencilHasSeenPencilPairingUIChangedNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"_UIPencilHasSeenPencilPairingUIChangedNotification" object:self];
     }
   }
 
-  else if ([a3 isEqualToString:@"UIPencilHasUsedPassivePencilKey"])
+  else if ([path isEqualToString:@"UIPencilHasUsedPassivePencilKey"])
   {
     [(_UIPencilPreferences *)self _hasUsedPassivePencilDidChange];
   }

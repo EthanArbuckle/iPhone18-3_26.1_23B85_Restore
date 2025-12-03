@@ -30,9 +30,9 @@
   _Block_object_dispose(&v9, 8);
   if (!v2)
   {
-    v7 = [_PSBlockedHandlesCache beginSyncingWithTU];
+    beginSyncingWithTU = [_PSBlockedHandlesCache beginSyncingWithTU];
     _Block_object_dispose(&v9, 8);
-    _Unwind_Resume(v7);
+    _Unwind_Resume(beginSyncingWithTU);
   }
 
   v3 = *v2;
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __41___PSConstants_eligibleShareSheetTargets__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (eligibleShareSheetTargets__pasOnceToken2 != -1)
   {
     dispatch_once(&eligibleShareSheetTargets__pasOnceToken2, block);

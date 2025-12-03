@@ -1,17 +1,17 @@
 @interface UTType
-- (BOOL)tsu_conformsToAnyUTType:(id)a3;
+- (BOOL)tsu_conformsToAnyUTType:(id)type;
 @end
 
 @implementation UTType
 
-- (BOOL)tsu_conformsToAnyUTType:(id)a3
+- (BOOL)tsu_conformsToAnyUTType:(id)type
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  typeCopy = type;
+  v5 = [typeCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -22,7 +22,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(typeCopy);
         }
 
         if ([(UTType *)self conformsToType:*(*(&v11 + 1) + 8 * i), v11])
@@ -32,7 +32,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [typeCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;

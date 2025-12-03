@@ -1,9 +1,9 @@
 @interface VUIAppDocumentModifiedFavoritesEvent
-- (BOOL)isEqual:(id)a3;
-- (VUIAppDocumentModifiedFavoritesEvent)initWithAction:(unint64_t)a3 entityID:(id)a4 isBackground:(BOOL)a5;
-- (VUIAppDocumentModifiedFavoritesEvent)initWithAddedEntityIDs:(id)a3 removedEntityIDs:(id)a4 isBackground:(BOOL)a5;
-- (VUIAppDocumentModifiedFavoritesEvent)initWithDescriptor:(id)a3;
-- (id)coalescedEvent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VUIAppDocumentModifiedFavoritesEvent)initWithAction:(unint64_t)action entityID:(id)d isBackground:(BOOL)background;
+- (VUIAppDocumentModifiedFavoritesEvent)initWithAddedEntityIDs:(id)ds removedEntityIDs:(id)iDs isBackground:(BOOL)background;
+- (VUIAppDocumentModifiedFavoritesEvent)initWithDescriptor:(id)descriptor;
+- (id)coalescedEvent:(id)event;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
@@ -11,7 +11,7 @@
 
 @implementation VUIAppDocumentModifiedFavoritesEvent
 
-- (VUIAppDocumentModifiedFavoritesEvent)initWithDescriptor:(id)a3
+- (VUIAppDocumentModifiedFavoritesEvent)initWithDescriptor:(id)descriptor
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -21,12 +21,12 @@
   return 0;
 }
 
-- (VUIAppDocumentModifiedFavoritesEvent)initWithAddedEntityIDs:(id)a3 removedEntityIDs:(id)a4 isBackground:(BOOL)a5
+- (VUIAppDocumentModifiedFavoritesEvent)initWithAddedEntityIDs:(id)ds removedEntityIDs:(id)iDs isBackground:(BOOL)background
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  backgroundCopy = background;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  if (backgroundCopy)
   {
     +[VUIAppDocumentUpdateEventDescriptor favoritesInBackground];
   }
@@ -42,25 +42,25 @@
 
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dsCopy copy];
     addedEntityIDs = v11->_addedEntityIDs;
     v11->_addedEntityIDs = v12;
 
-    v14 = [v9 copy];
+    v14 = [iDsCopy copy];
     removedEntityIDs = v11->_removedEntityIDs;
     v11->_removedEntityIDs = v14;
 
-    v11->_isBackground = v5;
+    v11->_isBackground = backgroundCopy;
   }
 
   return v11;
 }
 
-- (VUIAppDocumentModifiedFavoritesEvent)initWithAction:(unint64_t)a3 entityID:(id)a4 isBackground:(BOOL)a5
+- (VUIAppDocumentModifiedFavoritesEvent)initWithAction:(unint64_t)action entityID:(id)d isBackground:(BOOL)background
 {
-  v5 = a5;
-  v8 = a4;
-  if (a3 == 2)
+  backgroundCopy = background;
+  dCopy = d;
+  if (action == 2)
   {
     v9 = [MEMORY[0x1E695DFD8] set];
     v10 = MEMORY[0x1E695DFD8];
@@ -69,24 +69,24 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (a3 != 1)
+  if (action != 1)
   {
-    if (a3)
+    if (action)
     {
       v9 = 0;
       v11 = 0;
       goto LABEL_9;
     }
 
-    v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v8, 0}];
+    v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{dCopy, 0}];
     v10 = MEMORY[0x1E695DFD8];
     goto LABEL_7;
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v8, 0}];
+  v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{dCopy, 0}];
   v9 = [MEMORY[0x1E695DFD8] set];
 LABEL_9:
-  v12 = [(VUIAppDocumentModifiedFavoritesEvent *)self initWithAddedEntityIDs:v9 removedEntityIDs:v11 isBackground:v5];
+  v12 = [(VUIAppDocumentModifiedFavoritesEvent *)self initWithAddedEntityIDs:v9 removedEntityIDs:v11 isBackground:backgroundCopy];
 
   return v12;
 }
@@ -95,21 +95,21 @@ LABEL_9:
 {
   v11.receiver = self;
   v11.super_class = VUIAppDocumentModifiedFavoritesEvent;
-  v3 = [(VUIAppDocumentUpdateEvent *)&v11 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(VUIAppDocumentUpdateEvent *)&v11 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(VUIAppDocumentModifiedFavoritesEvent *)self addedEntityIDs];
-  if ([v5 count])
+  addedEntityIDs = [(VUIAppDocumentModifiedFavoritesEvent *)self addedEntityIDs];
+  if ([addedEntityIDs count])
   {
-    v6 = [v5 allObjects];
-    [v4 setObject:v6 forKey:@"added"];
+    allObjects = [addedEntityIDs allObjects];
+    [v4 setObject:allObjects forKey:@"added"];
   }
 
-  v7 = [(VUIAppDocumentModifiedFavoritesEvent *)self removedEntityIDs];
-  if ([v7 count])
+  removedEntityIDs = [(VUIAppDocumentModifiedFavoritesEvent *)self removedEntityIDs];
+  if ([removedEntityIDs count])
   {
-    v8 = [v7 allObjects];
-    [v4 setObject:v8 forKey:@"removed"];
+    allObjects2 = [removedEntityIDs allObjects];
+    [v4 setObject:allObjects2 forKey:@"removed"];
   }
 
   v9 = [v4 copy];
@@ -117,25 +117,25 @@ LABEL_9:
   return v9;
 }
 
-- (id)coalescedEvent:(id)a3
+- (id)coalescedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[VUIAppDocumentUpdateEvent descriptor](self, "descriptor"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 type], objc_msgSend(v4, "descriptor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "type"), v7, v5, v6 == v8))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[VUIAppDocumentUpdateEvent descriptor](self, "descriptor"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 type], objc_msgSend(eventCopy, "descriptor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "type"), v7, v5, v6 == v8))
   {
-    v9 = v4;
-    v10 = [(VUIAppDocumentModifiedFavoritesEvent *)self addedEntityIDs];
-    v11 = [v10 mutableCopy];
+    v9 = eventCopy;
+    addedEntityIDs = [(VUIAppDocumentModifiedFavoritesEvent *)self addedEntityIDs];
+    v11 = [addedEntityIDs mutableCopy];
 
-    v12 = [v9 addedEntityIDs];
-    [v11 unionSet:v12];
+    addedEntityIDs2 = [v9 addedEntityIDs];
+    [v11 unionSet:addedEntityIDs2];
 
-    v13 = [(VUIAppDocumentModifiedFavoritesEvent *)self removedEntityIDs];
-    v14 = [v13 mutableCopy];
+    removedEntityIDs = [(VUIAppDocumentModifiedFavoritesEvent *)self removedEntityIDs];
+    v14 = [removedEntityIDs mutableCopy];
 
-    v15 = [v9 removedEntityIDs];
+    removedEntityIDs2 = [v9 removedEntityIDs];
 
-    [v14 unionSet:v15];
+    [v14 unionSet:removedEntityIDs2];
     v16 = [v11 mutableCopy];
     [v16 minusSet:v14];
     v17 = [v14 mutableCopy];
@@ -148,7 +148,7 @@ LABEL_9:
     v19 = VUIDefaultLogObject();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [(VUIAppDocumentModifiedFavoritesEvent *)self coalescedEvent:v4, v19];
+      [(VUIAppDocumentModifiedFavoritesEvent *)self coalescedEvent:eventCopy, v19];
     }
 
     v18 = 0;
@@ -162,27 +162,27 @@ LABEL_9:
   v9.receiver = self;
   v9.super_class = VUIAppDocumentModifiedFavoritesEvent;
   v3 = [(VUIAppDocumentUpdateEvent *)&v9 hash];
-  v4 = [(VUIAppDocumentModifiedFavoritesEvent *)self addedEntityIDs];
-  v5 = [v4 hash];
+  addedEntityIDs = [(VUIAppDocumentModifiedFavoritesEvent *)self addedEntityIDs];
+  v5 = [addedEntityIDs hash];
 
-  v6 = [(VUIAppDocumentModifiedFavoritesEvent *)self removedEntityIDs];
-  v7 = v5 ^ [v6 hash];
+  removedEntityIDs = [(VUIAppDocumentModifiedFavoritesEvent *)self removedEntityIDs];
+  v7 = v5 ^ [removedEntityIDs hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -201,10 +201,10 @@ LABEL_9:
           goto LABEL_10;
         }
 
-        v8 = [(VUIAppDocumentModifiedFavoritesEvent *)self addedEntityIDs];
-        v9 = [(VUIAppDocumentModifiedFavoritesEvent *)v6 addedEntityIDs];
-        v10 = v8;
-        v11 = v9;
+        addedEntityIDs = [(VUIAppDocumentModifiedFavoritesEvent *)self addedEntityIDs];
+        addedEntityIDs2 = [(VUIAppDocumentModifiedFavoritesEvent *)v6 addedEntityIDs];
+        v10 = addedEntityIDs;
+        v11 = addedEntityIDs2;
         v12 = v11;
         if (v10 == v11)
         {
@@ -232,10 +232,10 @@ LABEL_20:
           }
         }
 
-        v15 = [(VUIAppDocumentModifiedFavoritesEvent *)self removedEntityIDs];
-        v16 = [(VUIAppDocumentModifiedFavoritesEvent *)v6 removedEntityIDs];
-        v10 = v15;
-        v17 = v16;
+        removedEntityIDs = [(VUIAppDocumentModifiedFavoritesEvent *)self removedEntityIDs];
+        removedEntityIDs2 = [(VUIAppDocumentModifiedFavoritesEvent *)v6 removedEntityIDs];
+        v10 = removedEntityIDs;
+        v17 = removedEntityIDs2;
         v12 = v17;
         if (v10 == v17)
         {
@@ -272,13 +272,13 @@ LABEL_21:
   [v3 addObject:v4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(VUIAppDocumentModifiedFavoritesEvent *)self addedEntityIDs];
-  v7 = [v5 stringWithFormat:@"%@=%@", @"addedEntityIDs", v6];
+  addedEntityIDs = [(VUIAppDocumentModifiedFavoritesEvent *)self addedEntityIDs];
+  v7 = [v5 stringWithFormat:@"%@=%@", @"addedEntityIDs", addedEntityIDs];
   [v3 addObject:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(VUIAppDocumentModifiedFavoritesEvent *)self removedEntityIDs];
-  v10 = [v8 stringWithFormat:@"%@=%@", @"removedEntityIDs", v9];
+  removedEntityIDs = [(VUIAppDocumentModifiedFavoritesEvent *)self removedEntityIDs];
+  v10 = [v8 stringWithFormat:@"%@=%@", @"removedEntityIDs", removedEntityIDs];
   [v3 addObject:v10];
 
   v11 = MEMORY[0x1E696AEC0];

@@ -1,6 +1,6 @@
 @interface GKConcernInternal
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation GKConcernInternal
@@ -33,19 +33,19 @@ void __44__GKConcernInternal_secureCodedPropertyKeys__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     concernID = self->_concernID;
     if (concernID == [v5 concernID])
     {
       message = self->_message;
-      v8 = [v5 message];
-      v9 = [(NSString *)message isEqualToString:v8];
+      message = [v5 message];
+      v9 = [(NSString *)message isEqualToString:message];
     }
 
     else

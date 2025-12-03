@@ -10,7 +10,7 @@
   block[1] = 3221225472;
   block[2] = __44__UIView_ASViewExtras__as_shakeHorizontally__block_invoke;
   block[3] = &unk_1E7AF7608;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

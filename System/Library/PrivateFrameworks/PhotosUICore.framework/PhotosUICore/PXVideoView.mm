@@ -5,10 +5,10 @@
 - (PXVideoView)init;
 - (PXVideoViewDelegate)delegate;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)setPlayer:(id)a3;
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3;
-- (void)setVideoGravity:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setPlayer:(id)player;
+- (void)setToneMapToStandardDynamicRange:(BOOL)range;
+- (void)setVideoGravity:(id)gravity;
 @end
 
 @implementation PXVideoView
@@ -20,19 +20,19 @@
   return WeakRetained;
 }
 
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3
+- (void)setToneMapToStandardDynamicRange:(BOOL)range
 {
-  v3 = a3;
-  v4 = [(PXVideoView *)self playerLayer];
-  [v4 setToneMapToStandardDynamicRange:v3];
+  rangeCopy = range;
+  playerLayer = [(PXVideoView *)self playerLayer];
+  [playerLayer setToneMapToStandardDynamicRange:rangeCopy];
 }
 
 - (BOOL)toneMapToStandardDynamicRange
 {
-  v2 = [(PXVideoView *)self playerLayer];
-  v3 = [v2 toneMapToStandardDynamicRange];
+  playerLayer = [(PXVideoView *)self playerLayer];
+  toneMapToStandardDynamicRange = [playerLayer toneMapToStandardDynamicRange];
 
-  return v3;
+  return toneMapToStandardDynamicRange;
 }
 
 void __45__PXVideoView__layerReadyForDisplayDidChange__block_invoke(uint64_t a1)
@@ -81,15 +81,15 @@ void __45__PXVideoView__layerReadyForDisplayDidChange__block_invoke_2(uint64_t a
 
 - (BOOL)videoIsReadyForDisplay
 {
-  v2 = [(PXVideoView *)self playerLayer];
-  v3 = [v2 isReadyForDisplay];
+  playerLayer = [(PXVideoView *)self playerLayer];
+  isReadyForDisplay = [playerLayer isReadyForDisplay];
 
-  return v3;
+  return isReadyForDisplay;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -99,18 +99,18 @@ void __45__PXVideoView__layerReadyForDisplayDidChange__block_invoke_2(uint64_t a
   }
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v8 = a3;
-  objc_storeStrong(&self->_player, a3);
-  v5 = [(PXVideoView *)self layer];
-  [v8 attachToPlayerLayerIfNeeded:v5];
+  playerCopy = player;
+  objc_storeStrong(&self->_player, player);
+  layer = [(PXVideoView *)self layer];
+  [playerCopy attachToPlayerLayerIfNeeded:layer];
 
-  v6 = v8;
-  if (!v8)
+  v6 = playerCopy;
+  if (!playerCopy)
   {
-    v7 = [(PXVideoView *)self layer];
-    [v7 setWrappedPlayer:0];
+    layer2 = [(PXVideoView *)self layer];
+    [layer2 setWrappedPlayer:0];
 
     v6 = 0;
   }
@@ -118,8 +118,8 @@ void __45__PXVideoView__layerReadyForDisplayDidChange__block_invoke_2(uint64_t a
 
 - (void)dealloc
 {
-  v3 = [(PXVideoView *)self playerLayer];
-  [v3 deferredDealloc];
+  playerLayer = [(PXVideoView *)self playerLayer];
+  [playerLayer deferredDealloc];
 
   v4.receiver = self;
   v4.super_class = PXVideoView;
@@ -128,20 +128,20 @@ void __45__PXVideoView__layerReadyForDisplayDidChange__block_invoke_2(uint64_t a
 
 - (NSString)videoGravity
 {
-  v2 = [(PXVideoView *)self layer];
-  v3 = [v2 videoGravity];
+  layer = [(PXVideoView *)self layer];
+  videoGravity = [layer videoGravity];
 
-  return v3;
+  return videoGravity;
 }
 
-- (void)setVideoGravity:(id)a3
+- (void)setVideoGravity:(id)gravity
 {
   v4 = MEMORY[0x1E6979518];
-  v5 = a3;
+  gravityCopy = gravity;
   [v4 begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v6 = [(PXVideoView *)self layer];
-  [v6 setVideoGravity:v5];
+  layer = [(PXVideoView *)self layer];
+  [layer setVideoGravity:gravityCopy];
 
   v7 = MEMORY[0x1E6979518];
 

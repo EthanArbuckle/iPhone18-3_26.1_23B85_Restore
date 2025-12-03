@@ -1,17 +1,17 @@
 @interface CACloningTerminatorLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
 @end
 
 @implementation CACloningTerminatorLayer
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = CACloningTerminatorLayer;
-  v6 = [(CALayer *)&v11 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (v6 && (*(a5 + 2) & 1) != 0)
+  v6 = [(CALayer *)&v11 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (v6 && (*(commitFlags + 2) & 1) != 0)
   {
     if (x_malloc_get_zone::once != -1)
     {
@@ -43,17 +43,17 @@
   return v6;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CACloningTerminatorLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
 @end

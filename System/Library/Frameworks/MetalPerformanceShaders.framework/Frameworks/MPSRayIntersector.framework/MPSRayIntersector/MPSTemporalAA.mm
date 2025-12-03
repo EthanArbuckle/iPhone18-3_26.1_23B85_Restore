@@ -2,9 +2,9 @@
 - (MPSTemporalAA)copyWithZone:(NSZone *)zone device:(id)device;
 - (MPSTemporalAA)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSTemporalAA)initWithDevice:(id)device;
-- (MPSTemporalAAFunctionHash)getHashForKernelID:(unint64_t)a3 haveMotionVectorTexture:(BOOL)a4 haveDepthTexture:(BOOL)a5;
+- (MPSTemporalAAFunctionHash)getHashForKernelID:(unint64_t)d haveMotionVectorTexture:(BOOL)texture haveDepthTexture:(BOOL)depthTexture;
 - (id)description;
-- (unint64_t)channelCount:(id)a3;
+- (unint64_t)channelCount:(id)count;
 - (void)dealloc;
 - (void)encodeToCommandBuffer:(id)commandBuffer sourceTexture:(id)sourceTexture previousTexture:(id)previousTexture destinationTexture:(id)destinationTexture motionVectorTexture:(id)motionVectorTexture depthTexture:(id)depthTexture;
 - (void)encodeWithCoder:(NSCoder *)coder;
@@ -105,17 +105,17 @@
   return result;
 }
 
-- (MPSTemporalAAFunctionHash)getHashForKernelID:(unint64_t)a3 haveMotionVectorTexture:(BOOL)a4 haveDepthTexture:(BOOL)a5
+- (MPSTemporalAAFunctionHash)getHashForKernelID:(unint64_t)d haveMotionVectorTexture:(BOOL)texture haveDepthTexture:(BOOL)depthTexture
 {
   v5 = 2;
-  if (!a4)
+  if (!texture)
   {
     v5 = 0;
   }
 
-  v6 = v5 & 0xFFFFFFFFFFFFFFFELL | a3 & 1;
+  v6 = v5 & 0xFFFFFFFFFFFFFFFELL | d & 1;
   v7 = 4;
-  if (!a5)
+  if (!depthTexture)
   {
     v7 = 0;
   }
@@ -123,10 +123,10 @@
   return (v6 | v7);
 }
 
-- (unint64_t)channelCount:(id)a3
+- (unint64_t)channelCount:(id)count
 {
   v5 = *(&self->super.super.isa + *MEMORY[0x277CD7350]);
-  v6 = objc_msgSend_pixelFormat(a3, a2, a3, v3, v4);
+  v6 = objc_msgSend_pixelFormat(count, a2, count, v3, v4);
   PixelInfo = MPSDevice::GetPixelInfo(v5, v6, MPSImageFeatureChannelFormatNone);
   if ((PixelInfo & 0xE000000) != 0)
   {

@@ -1,10 +1,10 @@
 @interface FMSong
-+ (BOOL)hasValidTagIDs:(id)a3;
++ (BOOL)hasValidTagIDs:(id)ds;
 + (NSArray)availableTagIDs;
-+ (id)loadSongBundleAtPath:(id)a3;
-+ (id)loadSongsAndArtworkInFolderAtPath:(id)a3;
-+ (id)localizedNameForTagWithID:(id)a3;
-+ (int64_t)versionFromArtworkFilename:(id)a3;
++ (id)loadSongBundleAtPath:(id)path;
++ (id)loadSongsAndArtworkInFolderAtPath:(id)path;
++ (id)localizedNameForTagWithID:(id)d;
++ (int64_t)versionFromArtworkFilename:(id)filename;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minimumDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)naturalDuration;
 - (BOOL)_loadFlexSong;
@@ -12,51 +12,51 @@
 - (BOOL)hidden;
 - (BOOL)isLoaded;
 - (BOOL)recalled;
-- (FMSong)initWithBackend:(id)a3;
-- (FMSong)initWithUID:(id)a3 assets:(id)a4 metadata:(id)a5;
+- (FMSong)initWithBackend:(id)backend;
+- (FMSong)initWithUID:(id)d assets:(id)assets metadata:(id)metadata;
 - (NSDictionary)weightedKeywords;
 - (NSString)audioEncoderPresetName;
 - (NSString)songFormat;
 - (NSString)uid;
 - (id)_impl;
 - (id)artistName;
-- (id)assetWithID:(id)a3;
+- (id)assetWithID:(id)d;
 - (id)customOptions;
 - (id)description;
-- (id)existingAssetWithID:(id)a3;
+- (id)existingAssetWithID:(id)d;
 - (id)idealDurations;
 - (id)keywords;
-- (id)renditionForDuration:(id *)a3 withOptions:(id)a4;
-- (id)renditionForDuration:(id *)a3 withOptions:(id)a4 testingContext:(id)a5;
+- (id)renditionForDuration:(id *)duration withOptions:(id)options;
+- (id)renditionForDuration:(id *)duration withOptions:(id)options testingContext:(id)context;
 - (id)songName;
 - (id)tagIDs;
 - (int64_t)metadataVersion;
 - (int64_t)sampleRate;
 - (void)_loadIfNeeded;
 - (void)_notifySongAssetsChanged;
-- (void)cancelDownloadOfAllAssetsWithIDs:(id)a3;
-- (void)requestDownloadOfAllAssetsWithIDs:(id)a3;
-- (void)requestDownloadOfAllAssetsWithIDs:(id)a3 withOptions:(id)a4;
-- (void)updateAsset:(id)a3 downloadProgress:(double)a4 error:(id)a5;
-- (void)updateAssets:(id)a3;
-- (void)updateBackend:(id)a3;
+- (void)cancelDownloadOfAllAssetsWithIDs:(id)ds;
+- (void)requestDownloadOfAllAssetsWithIDs:(id)ds;
+- (void)requestDownloadOfAllAssetsWithIDs:(id)ds withOptions:(id)options;
+- (void)updateAsset:(id)asset downloadProgress:(double)progress error:(id)error;
+- (void)updateAssets:(id)assets;
+- (void)updateBackend:(id)backend;
 @end
 
 @implementation FMSong
 
-- (FMSong)initWithUID:(id)a3 assets:(id)a4 metadata:(id)a5
+- (FMSong)initWithUID:(id)d assets:(id)assets metadata:(id)metadata
 {
   v306 = *MEMORY[0x277D85DE8];
-  v286 = a3;
-  v7 = a4;
-  v287 = a5;
+  dCopy = d;
+  assetsCopy = assets;
+  metadataCopy = metadata;
   v289 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9, v10, v11);
-  v288 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v12, v7, v13, v14);
+  v288 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v12, assetsCopy, v13, v14);
   v299 = 0u;
   v300 = 0u;
   v301 = 0u;
   v302 = 0u;
-  obj = v7;
+  obj = assetsCopy;
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v15, &v299, v305, 16);
   if (!v16)
   {
@@ -121,8 +121,8 @@ LABEL_16:
   while (v21);
 LABEL_23:
 
-  v53 = v286;
-  v54 = v287;
+  v53 = dCopy;
+  v54 = metadataCopy;
   v285 = v23;
   if (objc_msgSend_count(v288, v45, v46, v47, v48))
   {
@@ -141,9 +141,9 @@ LABEL_23:
     v74 = objc_msgSend_set(MEMORY[0x277CBEB98], v70, v71, v72, v73);
     v79 = objc_msgSend_set(MEMORY[0x277CBEB98], v75, v76, v77, v78);
     v84 = objc_msgSend_dictionary(MEMORY[0x277CBEAC0], v80, v81, v82, v83);
-    v60 = objc_msgSend_initWithUID_songName_artistName_tagIDs_keywords_weightedKeywords_hidden_recalled_assets_audioEncoderPresetName_metadataVersion_songFormat_(v69, v85, v286, &stru_285EA09B0, &stru_285EA09B0, v74, v79, v84, 0, v289, &stru_285EA09B0, 1, &stru_285EA09B0);
+    v60 = objc_msgSend_initWithUID_songName_artistName_tagIDs_keywords_weightedKeywords_hidden_recalled_assets_audioEncoderPresetName_metadataVersion_songFormat_(v69, v85, dCopy, &stru_285EA09B0, &stru_285EA09B0, v74, v79, v84, 0, v289, &stru_285EA09B0, 1, &stru_285EA09B0);
 
-    if (!v287)
+    if (!metadataCopy)
     {
       goto LABEL_64;
     }
@@ -164,7 +164,7 @@ LABEL_23:
   }
 
   objc_msgSend_updateAssets_(v60, v61, v289, v62, v63);
-  if (v287)
+  if (metadataCopy)
   {
 LABEL_35:
     v283 = v60;
@@ -173,7 +173,7 @@ LABEL_35:
     v296 = 0u;
     v297 = 0u;
     v298 = 0u;
-    v91 = objc_msgSend_genres(v287, v87, v88, v89, v90);
+    v91 = objc_msgSend_genres(metadataCopy, v87, v88, v89, v90);
     v93 = objc_msgSend_countByEnumeratingWithState_objects_count_(v91, v92, &v295, v304, 16);
     if (v93)
     {
@@ -198,43 +198,43 @@ LABEL_35:
       while (v97);
     }
 
-    v108 = objc_msgSend_mood(v287, v104, v105, v106, v107);
+    v108 = objc_msgSend_mood(metadataCopy, v104, v105, v106, v107);
     v113 = objc_msgSend_length(v108, v109, v110, v111, v112);
 
     if (v113)
     {
       v118 = MEMORY[0x277CCACA8];
-      v119 = objc_msgSend_mood(v287, v114, v115, v116, v117);
+      v119 = objc_msgSend_mood(metadataCopy, v114, v115, v116, v117);
       v123 = objc_msgSend_stringWithFormat_(v118, v120, @"%@%@", v121, v122, @"Mood_", v119);
       objc_msgSend_addObject_(v86, v124, v123, v125, v126);
     }
 
-    v127 = objc_msgSend_moodAlt(v287, v114, v115, v116, v117);
+    v127 = objc_msgSend_moodAlt(metadataCopy, v114, v115, v116, v117);
     v132 = objc_msgSend_length(v127, v128, v129, v130, v131);
 
     if (v132)
     {
       v137 = MEMORY[0x277CCACA8];
-      v138 = objc_msgSend_moodAlt(v287, v133, v134, v135, v136);
+      v138 = objc_msgSend_moodAlt(metadataCopy, v133, v134, v135, v136);
       v142 = objc_msgSend_stringWithFormat_(v137, v139, @"%@%@", v140, v141, @"MoodAlt_", v138);
       objc_msgSend_addObject_(v86, v143, v142, v144, v145);
     }
 
-    v146 = objc_msgSend_pace(v287, v133, v134, v135, v136);
+    v146 = objc_msgSend_pace(metadataCopy, v133, v134, v135, v136);
     v151 = objc_msgSend_length(v146, v147, v148, v149, v150);
 
     if (v151)
     {
       v156 = MEMORY[0x277CCACA8];
-      v157 = objc_msgSend_pace(v287, v152, v153, v154, v155);
+      v157 = objc_msgSend_pace(metadataCopy, v152, v153, v154, v155);
       v161 = objc_msgSend_stringWithFormat_(v156, v158, @"%@%@", v159, v160, @"SongPace_", v157);
       objc_msgSend_addObject_(v86, v162, v161, v163, v164);
     }
 
-    if (objc_msgSend_style(v287, v152, v153, v154, v155) >= 1)
+    if (objc_msgSend_style(metadataCopy, v152, v153, v154, v155) >= 1)
     {
       v169 = MEMORY[0x277CCACA8];
-      v170 = objc_msgSend_style(v287, v165, v166, v167, v168);
+      v170 = objc_msgSend_style(metadataCopy, v165, v166, v167, v168);
       v174 = objc_msgSend_stringWithFormat_(v169, v171, @"%@%lld", v172, v173, @"Style_", v170);
       objc_msgSend_addObject_(v86, v175, v174, v176, v177);
     }
@@ -243,7 +243,7 @@ LABEL_35:
     v294 = 0u;
     v291 = 0u;
     v292 = 0u;
-    v178 = objc_msgSend_regions(v287, v165, v166, v167, v168);
+    v178 = objc_msgSend_regions(metadataCopy, v165, v166, v167, v168);
     v180 = objc_msgSend_countByEnumeratingWithState_objects_count_(v178, v179, &v291, v303, 16);
     if (v180)
     {
@@ -268,42 +268,42 @@ LABEL_35:
       while (v184);
     }
 
-    v54 = v287;
-    objc_msgSend_arousal(v287, v191, v192, v193, v194);
+    v54 = metadataCopy;
+    objc_msgSend_arousal(metadataCopy, v191, v192, v193, v194);
     if (v199 > 0.0)
     {
       v200 = MEMORY[0x277CCACA8];
-      objc_msgSend_arousal(v287, v195, v196, v197, v198);
+      objc_msgSend_arousal(metadataCopy, v195, v196, v197, v198);
       v205 = objc_msgSend_stringWithFormat_(v200, v201, @"%@%g", v202, v203, @"Arousal_", v204);
       objc_msgSend_addObject_(v86, v206, v205, v207, v208);
     }
 
-    objc_msgSend_valence(v287, v195, v196, v197, v198);
-    v53 = v286;
+    objc_msgSend_valence(metadataCopy, v195, v196, v197, v198);
+    v53 = dCopy;
     v60 = v283;
     if (v213 > 0.0)
     {
       v214 = MEMORY[0x277CCACA8];
-      objc_msgSend_valence(v287, v209, v210, v211, v212);
+      objc_msgSend_valence(metadataCopy, v209, v210, v211, v212);
       v219 = objc_msgSend_stringWithFormat_(v214, v215, @"%@%g", v216, v217, @"Valence_", v218);
       objc_msgSend_addObject_(v86, v220, v219, v221, v222);
     }
 
-    objc_msgSend_visualTempo(v287, v209, v210, v211, v212);
+    objc_msgSend_visualTempo(metadataCopy, v209, v210, v211, v212);
     if (v227 > 0.0)
     {
       v228 = MEMORY[0x277CCACA8];
-      objc_msgSend_visualTempo(v287, v223, v224, v225, v226);
+      objc_msgSend_visualTempo(metadataCopy, v223, v224, v225, v226);
       v233 = objc_msgSend_stringWithFormat_(v228, v229, @"%@%g", v230, v231, @"VisualTempo_", v232);
       objc_msgSend_addObject_(v86, v234, v233, v235, v236);
     }
 
-    v237 = objc_msgSend_artistName(v287, v223, v224, v225, v226);
-    v242 = objc_msgSend_songName(v287, v238, v239, v240, v241);
-    v247 = objc_msgSend_keywords(v287, v243, v244, v245, v246);
-    v252 = objc_msgSend_weightedKeywords(v287, v248, v249, v250, v251);
-    v257 = objc_msgSend_hidden(v287, v253, v254, v255, v256);
-    LOBYTE(v282) = objc_msgSend_recalled(v287, v258, v259, v260, v261);
+    v237 = objc_msgSend_artistName(metadataCopy, v223, v224, v225, v226);
+    v242 = objc_msgSend_songName(metadataCopy, v238, v239, v240, v241);
+    v247 = objc_msgSend_keywords(metadataCopy, v243, v244, v245, v246);
+    v252 = objc_msgSend_weightedKeywords(metadataCopy, v248, v249, v250, v251);
+    v257 = objc_msgSend_hidden(metadataCopy, v253, v254, v255, v256);
+    LOBYTE(v282) = objc_msgSend_recalled(metadataCopy, v258, v259, v260, v261);
     objc_msgSend_updateSongArtist_title_tags_keywords_weightedKeywords_hidden_recalled_metadataVersion_(v283, v262, v237, v242, v86, v247, v252, v257, v282, 1);
   }
 
@@ -333,22 +333,22 @@ LABEL_64:
   return v279;
 }
 
-- (FMSong)initWithBackend:(id)a3
+- (FMSong)initWithBackend:(id)backend
 {
-  v5 = a3;
+  backendCopy = backend;
   v10.receiver = self;
   v10.super_class = FMSong;
   v6 = [(FMSong *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!backendCopy)
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v6->_backend, a3);
+    objc_storeStrong(&v6->_backend, backend);
   }
 
   v8 = v7;
@@ -357,17 +357,17 @@ LABEL_6:
   return v8;
 }
 
-- (void)updateBackend:(id)a3
+- (void)updateBackend:(id)backend
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  backend = v5->_backend;
-  v5->_backend = v4;
+  backendCopy = backend;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  backend = selfCopy->_backend;
+  selfCopy->_backend = backendCopy;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  objc_msgSend__notifySongAssetsChanged(v5, v7, v8, v9, v10);
+  objc_msgSend__notifySongAssetsChanged(selfCopy, v7, v8, v9, v10);
 }
 
 - (void)_notifySongAssetsChanged
@@ -380,26 +380,26 @@ LABEL_6:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)updateAsset:(id)a3 downloadProgress:(double)a4 error:(id)a5
+- (void)updateAsset:(id)asset downloadProgress:(double)progress error:(id)error
 {
   v47[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (objc_msgSend_updateDownloadProgress_(v8, v10, v11, v12, v13, a4))
+  assetCopy = asset;
+  errorCopy = error;
+  if (objc_msgSend_updateDownloadProgress_(assetCopy, v10, v11, v12, v13, progress))
   {
-    if (v9)
+    if (errorCopy)
     {
       v46[0] = @"songUID";
       v18 = objc_msgSend_uid(self, v14, v15, v16, v17);
       v47[0] = v18;
       v46[1] = @"assetID";
-      v23 = objc_msgSend_assetID(v8, v19, v20, v21, v22);
+      v23 = objc_msgSend_assetID(assetCopy, v19, v20, v21, v22);
       v47[1] = v23;
       v46[2] = @"progress";
-      v28 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v24, v25, v26, v27, a4);
+      v28 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v24, v25, v26, v27, progress);
       v46[3] = @"error";
       v47[2] = v28;
-      v47[3] = v9;
+      v47[3] = errorCopy;
       objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v29, v47, v46, 4);
     }
 
@@ -409,10 +409,10 @@ LABEL_6:
       v18 = objc_msgSend_uid(self, v14, v15, v16, v17);
       v45[0] = v18;
       v44[1] = @"assetID";
-      v23 = objc_msgSend_assetID(v8, v30, v31, v32, v33);
+      v23 = objc_msgSend_assetID(assetCopy, v30, v31, v32, v33);
       v45[1] = v23;
       v44[2] = @"progress";
-      v28 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v34, v35, v36, v37, a4);
+      v28 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v34, v35, v36, v37, progress);
       v45[2] = v28;
       objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v38, v45, v44, 3);
     }
@@ -433,10 +433,10 @@ LABEL_6:
 
 - (id)_impl
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_backend;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_backend;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -450,7 +450,7 @@ LABEL_6:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24B7E5000, v14, OS_LOG_TYPE_DEFAULT, "Failed to load FlexSong _impl for song: %@", &v16, 0xCu);
     }
   }
@@ -467,7 +467,7 @@ LABEL_6:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v29 = 138412290;
-      v30 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24B7E5000, v9, OS_LOG_TYPE_DEFAULT, "ERROR: _loadFlexSong: Attempting to load already loaded FlexSong for song: %@", &v29, 0xCu);
     }
 
@@ -665,17 +665,17 @@ LABEL_6:
   return v15;
 }
 
-- (void)updateAssets:(id)a3
+- (void)updateAssets:(id)assets
 {
   v139 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v126 = objc_msgSend_array(MEMORY[0x277CBEB18], v4, v5, v6, v7);
-  v127 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v8, v3, v9, v10);
+  v127 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v8, assetsCopy, v9, v10);
   v133 = 0u;
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
-  obj = v3;
+  obj = assetsCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v133, v138, 16);
   if (!v12)
   {
@@ -739,7 +739,7 @@ LABEL_16:
   while (v17);
 LABEL_23:
 
-  v48 = self;
+  selfCopy3 = self;
   if (objc_msgSend_count(v127, v40, v41, v42, v43))
   {
     v49 = FlexLogForCategory(0);
@@ -788,14 +788,14 @@ LABEL_30:
           }
 
           v70 = v54;
-          v48 = self;
+          selfCopy3 = self;
           goto LABEL_45;
         }
       }
 
       v70 = v64;
 
-      v48 = self;
+      selfCopy3 = self;
       if (!v70)
       {
         goto LABEL_46;
@@ -837,64 +837,64 @@ LABEL_45:
   }
 
 LABEL_46:
-  v114 = objc_msgSend__impl(v48, v50, v51, v52, v53);
+  v114 = objc_msgSend__impl(selfCopy3, v50, v51, v52, v53);
   objc_msgSend_updateAssets_(v114, v115, v126, v116, v117);
 
-  objc_msgSend__notifySongAssetsChanged(v48, v118, v119, v120, v121);
+  objc_msgSend__notifySongAssetsChanged(selfCopy3, v118, v119, v120, v121);
   v122 = *MEMORY[0x277D85DE8];
 }
 
-- (id)assetWithID:(id)a3
+- (id)assetWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = objc_msgSend__impl(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_assetWithID_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_assetWithID_(v9, v10, dCopy, v11, v12);
 
-  if ((!v13 || (objc_msgSend_isCloudBacked(v13, v14, v15, v16, v17) & 1) == 0) && objc_msgSend_isEqualToString_(v4, v14, @"FMSongArtworkAssetID", v16, v17))
+  if ((!v13 || (objc_msgSend_isCloudBacked(v13, v14, v15, v16, v17) & 1) == 0) && objc_msgSend_isEqualToString_(dCopy, v14, @"FMSongArtworkAssetID", v16, v17))
   {
     v19 = objc_msgSend_existingAssetWithID_(self, v14, @"FMSongBundleAssetID", v16, v17);
     if (objc_msgSend_isCloudBacked(v19, v20, v21, v22, v23))
     {
       v28 = objc_msgSend_cloudManager(v19, v24, v25, v26, v27);
       v33 = objc_msgSend_uid(self, v29, v30, v31, v32);
-      objc_msgSend_loadAssetWithID_forSongID_(v28, v34, v4, v33, v35);
+      objc_msgSend_loadAssetWithID_forSongID_(v28, v34, dCopy, v33, v35);
     }
   }
 
   v36 = objc_msgSend__impl(self, v14, v18, v16, v17);
-  v40 = objc_msgSend_assetWithID_(v36, v37, v4, v38, v39);
+  v40 = objc_msgSend_assetWithID_(v36, v37, dCopy, v38, v39);
 
   return v40;
 }
 
-- (id)existingAssetWithID:(id)a3
+- (id)existingAssetWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9 = objc_msgSend__impl(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_existingAssetWithID_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_existingAssetWithID_(v9, v10, dCopy, v11, v12);
 
-  objc_msgSend_isEqualToString_(v4, v14, @"FMSongBundleAssetID", v15, v16);
+  objc_msgSend_isEqualToString_(dCopy, v14, @"FMSongBundleAssetID", v15, v16);
 
   return v13;
 }
 
-- (void)requestDownloadOfAllAssetsWithIDs:(id)a3
+- (void)requestDownloadOfAllAssetsWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v7 = objc_opt_new();
-  objc_msgSend_requestDownloadOfAllAssetsWithIDs_withOptions_(self, v5, v4, v7, v6);
+  objc_msgSend_requestDownloadOfAllAssetsWithIDs_withOptions_(self, v5, dsCopy, v7, v6);
 }
 
-- (void)requestDownloadOfAllAssetsWithIDs:(id)a3 withOptions:(id)a4
+- (void)requestDownloadOfAllAssetsWithIDs:(id)ds withOptions:(id)options
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  optionsCopy = options;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v21, v25, 16);
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(dsCopy, v8, &v21, v25, 16);
   if (v9)
   {
     v13 = v9;
@@ -906,17 +906,17 @@ LABEL_46:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dsCopy);
         }
 
         v16 = objc_msgSend_assetWithID_(self, v10, *(*(&v21 + 1) + 8 * v15), v11, v12);
-        objc_msgSend_requestDownloadWithOptions_(v16, v17, v7, v18, v19);
+        objc_msgSend_requestDownloadWithOptions_(v16, v17, optionsCopy, v18, v19);
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v10, &v21, v25, 16);
+      v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(dsCopy, v10, &v21, v25, 16);
     }
 
     while (v13);
@@ -925,15 +925,15 @@ LABEL_46:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelDownloadOfAllAssetsWithIDs:(id)a3
+- (void)cancelDownloadOfAllAssetsWithIDs:(id)ds
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v19, v23, 16);
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(dsCopy, v5, &v19, v23, 16);
   if (v6)
   {
     v10 = v6;
@@ -945,7 +945,7 @@ LABEL_46:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v13 = objc_msgSend_existingAssetWithID_(self, v7, *(*(&v19 + 1) + 8 * v12), v8, v9);
@@ -955,7 +955,7 @@ LABEL_46:
       }
 
       while (v10 != v12);
-      v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v7, &v19, v23, 16);
+      v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(dsCopy, v7, &v19, v23, 16);
     }
 
     while (v10);
@@ -976,13 +976,13 @@ LABEL_46:
   return v3;
 }
 
-+ (id)localizedNameForTagWithID:(id)a3
++ (id)localizedNameForTagWithID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy)
   {
-    v5 = v3;
+    v5 = dCopy;
   }
 
   else
@@ -1054,16 +1054,16 @@ LABEL_46:
   return v15;
 }
 
-- (id)renditionForDuration:(id *)a3 withOptions:(id)a4
+- (id)renditionForDuration:(id *)duration withOptions:(id)options
 {
   v18 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  if (a3->var2)
+  optionsCopy = options;
+  if (duration->var2)
   {
     objc_msgSend__loadIfNeeded(self, v6, v7, v8, v9);
-    v16 = *&a3->var0;
-    var3 = a3->var3;
-    v12 = objc_msgSend_renditionForDuration_withOptions_testingContext_(self, v13, &v16, v10, 0);
+    v16 = *&duration->var0;
+    var3 = duration->var3;
+    v12 = objc_msgSend_renditionForDuration_withOptions_testingContext_(self, v13, &v16, optionsCopy, 0);
   }
 
   else
@@ -1084,28 +1084,28 @@ LABEL_46:
   return v12;
 }
 
-- (id)renditionForDuration:(id *)a3 withOptions:(id)a4 testingContext:(id)a5
+- (id)renditionForDuration:(id *)duration withOptions:(id)options testingContext:(id)context
 {
-  v8 = a5;
-  v9 = a4;
+  contextCopy = context;
+  optionsCopy = options;
   v14 = objc_msgSend__impl(self, v10, v11, v12, v13);
-  v18 = *a3;
-  v16 = objc_msgSend_renditionForDuration_withOptions_testingContext_(v14, v15, &v18, v9, v8);
+  v18 = *duration;
+  v16 = objc_msgSend_renditionForDuration_withOptions_testingContext_(v14, v15, &v18, optionsCopy, contextCopy);
 
   return v16;
 }
 
-+ (int64_t)versionFromArtworkFilename:(id)a3
++ (int64_t)versionFromArtworkFilename:(id)filename
 {
-  v3 = a3;
-  if (objc_msgSend_rangeOfString_(v3, v4, @"_v", v5, v6) == 0x7FFFFFFFFFFFFFFFLL)
+  filenameCopy = filename;
+  if (objc_msgSend_rangeOfString_(filenameCopy, v4, @"_v", v5, v6) == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = objc_msgSend_componentsSeparatedByString_(v3, v7, @"_", v8, v9);
+    v11 = objc_msgSend_componentsSeparatedByString_(filenameCopy, v7, @"_", v8, v9);
     v16 = objc_msgSend_lastObject(v11, v12, v13, v14, v15);
 
     v21 = objc_msgSend_decimalDigitCharacterSet(MEMORY[0x277CCA900], v17, v18, v19, v20);
@@ -1119,22 +1119,22 @@ LABEL_46:
   return v10;
 }
 
-+ (id)loadSongBundleAtPath:(id)a3
++ (id)loadSongBundleAtPath:(id)path
 {
   v118[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v7 = objc_msgSend_stringByAppendingPathComponent_(v3, v4, @"metadata.smm", v5, v6);
+  pathCopy = path;
+  v7 = objc_msgSend_stringByAppendingPathComponent_(pathCopy, v4, @"metadata.smm", v5, v6);
   v12 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v8, v9, v10, v11);
   v16 = objc_msgSend_fileExistsAtPath_(v12, v13, v7, v14, v15);
 
   if (v16)
   {
-    objc_msgSend_loadSongInFolderWithPath_(FlexSong, v17, v3, v18, v19);
+    objc_msgSend_loadSongInFolderWithPath_(FlexSong, v17, pathCopy, v18, v19);
   }
 
   else
   {
-    objc_msgSend_loadSongAtPath_(FlexMLSong, v17, v3, v18, v19);
+    objc_msgSend_loadSongAtPath_(FlexMLSong, v17, pathCopy, v18, v19);
   }
   v20 = ;
   if (v20)
@@ -1144,7 +1144,7 @@ LABEL_46:
     if (v29)
     {
       v30 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v25, v26, v27, v28);
-      v35 = objc_msgSend_stringByDeletingLastPathComponent(v3, v31, v32, v33, v34);
+      v35 = objc_msgSend_stringByDeletingLastPathComponent(pathCopy, v31, v32, v33, v34);
       v38 = objc_msgSend_contentsOfDirectoryAtPath_error_(v30, v36, v35, 0, v37);
 
       v42 = objc_msgSend_predicateWithFormat_(MEMORY[0x277CCAC30], v39, @"self ENDSWITH '.jpg'", v40, v41);
@@ -1164,7 +1164,7 @@ LABEL_46:
       {
         v113 = v60;
         v114 = v42;
-        v73 = objc_msgSend_stringByDeletingLastPathComponent(v3, v69, v70, v71, v72);
+        v73 = objc_msgSend_stringByDeletingLastPathComponent(pathCopy, v69, v70, v71, v72);
         v78 = objc_msgSend_firstObject(v64, v74, v75, v76, v77);
         v82 = objc_msgSend_stringByAppendingPathComponent_(v73, v79, v78, v80, v81);
 
@@ -1207,15 +1207,15 @@ LABEL_46:
   return v29;
 }
 
-+ (id)loadSongsAndArtworkInFolderAtPath:(id)a3
++ (id)loadSongsAndArtworkInFolderAtPath:(id)path
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v41 = objc_opt_new();
-  if (v3)
+  if (pathCopy)
   {
     v8 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v4, v5, v6, v7);
-    v11 = objc_msgSend_contentsOfDirectoryAtPath_error_(v8, v9, v3, 0, v10);
+    v11 = objc_msgSend_contentsOfDirectoryAtPath_error_(v8, v9, pathCopy, 0, v10);
 
     v44 = 0u;
     v45 = 0u;
@@ -1240,7 +1240,7 @@ LABEL_46:
           v23 = objc_msgSend_pathExtension(v22, v15, v16, v17, v18);
           if (objc_msgSend_isEqualToString_(v23, v24, @"smsbundle", v25, v26))
           {
-            v30 = objc_msgSend_stringByAppendingPathComponent_(v3, v27, v22, v28, v29);
+            v30 = objc_msgSend_stringByAppendingPathComponent_(pathCopy, v27, v22, v28, v29);
             v37 = objc_msgSend_loadSongBundleAtPath_(FMSong, v31, v30, v32, v33);
             if (v37)
             {
@@ -1263,9 +1263,9 @@ LABEL_46:
   return v38;
 }
 
-+ (BOOL)hasValidTagIDs:(id)a3
++ (BOOL)hasValidTagIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -1284,7 +1284,7 @@ LABEL_46:
   v25[3] = &unk_27900EDE8;
   v25[4] = &v32;
   v25[5] = &v26;
-  objc_msgSend_enumerateObjectsUsingBlock_(v3, v12, v25, v13, v14);
+  objc_msgSend_enumerateObjectsUsingBlock_(dsCopy, v12, v25, v13, v14);
   v23 = objc_msgSend_count(v33[5], v15, v16, v17, v18) == 1 && objc_msgSend_count(v27[5], v19, v20, v21, v22) == 1;
   _Block_object_dispose(&v26, 8);
 

@@ -1,26 +1,26 @@
 @interface PKEncryptedPaymentSetupFieldSubmissionContainer
-- (PKEncryptedPaymentSetupFieldSubmissionContainer)initWithValue:(id)a3 format:(unint64_t)a4 scheme:(id)a5 certificates:(id)a6;
+- (PKEncryptedPaymentSetupFieldSubmissionContainer)initWithValue:(id)value format:(unint64_t)format scheme:(id)scheme certificates:(id)certificates;
 - (id)_tlvRepresentation;
 - (id)dataRepresentation;
 @end
 
 @implementation PKEncryptedPaymentSetupFieldSubmissionContainer
 
-- (PKEncryptedPaymentSetupFieldSubmissionContainer)initWithValue:(id)a3 format:(unint64_t)a4 scheme:(id)a5 certificates:(id)a6
+- (PKEncryptedPaymentSetupFieldSubmissionContainer)initWithValue:(id)value format:(unint64_t)format scheme:(id)scheme certificates:(id)certificates
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  schemeCopy = scheme;
+  certificatesCopy = certificates;
   v17.receiver = self;
   v17.super_class = PKEncryptedPaymentSetupFieldSubmissionContainer;
   v14 = [(PKEncryptedPaymentSetupFieldSubmissionContainer *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_value, a3);
-    v15->_format = a4;
-    v15->_encryptionScheme = v12;
-    objc_storeStrong(&v15->_encryptionCertificates, a6);
+    objc_storeStrong(&v14->_value, value);
+    v15->_format = format;
+    v15->_encryptionScheme = schemeCopy;
+    objc_storeStrong(&v15->_encryptionCertificates, certificates);
   }
 
   return v15;
@@ -30,15 +30,15 @@
 {
   if (self->_format > 1)
   {
-    v4 = 0;
+    _tlvRepresentation = 0;
   }
 
   else
   {
-    v4 = [(PKEncryptedPaymentSetupFieldSubmissionContainer *)self _tlvRepresentation];
+    _tlvRepresentation = [(PKEncryptedPaymentSetupFieldSubmissionContainer *)self _tlvRepresentation];
   }
 
-  return v4;
+  return _tlvRepresentation;
 }
 
 - (id)_tlvRepresentation

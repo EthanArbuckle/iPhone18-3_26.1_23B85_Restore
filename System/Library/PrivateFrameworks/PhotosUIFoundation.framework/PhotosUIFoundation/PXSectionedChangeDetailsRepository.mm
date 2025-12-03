@@ -1,17 +1,17 @@
 @interface PXSectionedChangeDetailsRepository
 - (PXSectionedChangeDetailsRepository)init;
-- (PXSectionedChangeDetailsRepository)initWithChangeHistoryLimit:(int64_t)a3;
-- (id)changeDetailsFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4;
-- (id)coalescedChangeDetailsFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4;
-- (id)indexPathSetAfterApplyingChangeDetailsToDataSourceIdentifier:(int64_t)a3 indexPathSetBeforeChanges:(id)a4 hasIncrementalChanges:(BOOL *)a5;
-- (void)addChangeDetails:(id)a3;
+- (PXSectionedChangeDetailsRepository)initWithChangeHistoryLimit:(int64_t)limit;
+- (id)changeDetailsFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier;
+- (id)coalescedChangeDetailsFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier;
+- (id)indexPathSetAfterApplyingChangeDetailsToDataSourceIdentifier:(int64_t)identifier indexPathSetBeforeChanges:(id)changes hasIncrementalChanges:(BOOL *)incrementalChanges;
+- (void)addChangeDetails:(id)details;
 @end
 
 @implementation PXSectionedChangeDetailsRepository
 
-- (id)indexPathSetAfterApplyingChangeDetailsToDataSourceIdentifier:(int64_t)a3 indexPathSetBeforeChanges:(id)a4 hasIncrementalChanges:(BOOL *)a5
+- (id)indexPathSetAfterApplyingChangeDetailsToDataSourceIdentifier:(int64_t)identifier indexPathSetBeforeChanges:(id)changes hasIncrementalChanges:(BOOL *)incrementalChanges
 {
-  v8 = a4;
+  changesCopy = changes;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -22,16 +22,16 @@
   v14[2] = __147__PXSectionedChangeDetailsRepository_indexPathSetAfterApplyingChangeDetailsToDataSourceIdentifier_indexPathSetBeforeChanges_hasIncrementalChanges___block_invoke;
   v14[3] = &unk_1E7BB5D08;
   v14[4] = self;
-  v18 = a3;
-  v10 = v8;
+  identifierCopy = identifier;
+  v10 = changesCopy;
   v15 = v10;
   v17 = &v19;
   v11 = v9;
   v16 = v11;
   [v10 enumerateDataSourceIdentifiers:v14];
-  if (a5)
+  if (incrementalChanges)
   {
-    *a5 = *(v20 + 24);
+    *incrementalChanges = *(v20 + 24);
   }
 
   v12 = [(PXMutableIndexPathSet *)v11 copy];
@@ -51,9 +51,9 @@ void __147__PXSectionedChangeDetailsRepository_indexPathSetAfterApplyingChangeDe
   [*(a1 + 48) unionIndexPathSet:v6];
 }
 
-- (id)coalescedChangeDetailsFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4
+- (id)coalescedChangeDetailsFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier
 {
-  v4 = [(PXSectionedChangeDetailsRepository *)self changeDetailsFromDataSourceIdentifier:a3 toDataSourceIdentifier:a4];
+  v4 = [(PXSectionedChangeDetailsRepository *)self changeDetailsFromDataSourceIdentifier:identifier toDataSourceIdentifier:sourceIdentifier];
   if ([v4 count])
   {
     v5 = [PXSectionedChangeDetailsCoalescer changeDetailsByCoalescingChangeDetails:v4];
@@ -67,12 +67,12 @@ void __147__PXSectionedChangeDetailsRepository_indexPathSetAfterApplyingChangeDe
   return v5;
 }
 
-- (id)changeDetailsFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4
+- (id)changeDetailsFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  if (a3 == a4)
+  if (identifier == sourceIdentifier)
   {
-    v5 = [PXSectionedDataSourceChangeDetails changeDetailsWithNoChangesFromDataSourceIdentifier:a3 toDataSourceIdentifier:a3];
+    v5 = [PXSectionedDataSourceChangeDetails changeDetailsWithNoChangesFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier];
     v55[0] = v5;
     v6 = MEMORY[0x1E695DEC8];
     v7 = v55;
@@ -81,9 +81,9 @@ LABEL_21:
     goto LABEL_38;
   }
 
-  if (!a3 || !a4)
+  if (!identifier || !sourceIdentifier)
   {
-    v5 = [PXSectionedDataSourceChangeDetails changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:a3 toDataSourceIdentifier:a4];
+    v5 = [PXSectionedDataSourceChangeDetails changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:identifier toDataSourceIdentifier:sourceIdentifier];
     v54 = v5;
     v6 = MEMORY[0x1E695DEC8];
     v7 = &v54;
@@ -97,10 +97,10 @@ LABEL_21:
   block[2] = __99__PXSectionedChangeDetailsRepository_changeDetailsFromDataSourceIdentifier_toDataSourceIdentifier___block_invoke;
   block[3] = &unk_1E7BB5CE0;
   block[4] = self;
-  v49 = a4;
+  sourceIdentifierCopy = sourceIdentifier;
   v12 = v10;
   v48 = v12;
-  v50 = a3;
+  identifierCopy = identifier;
   dispatch_sync(internalQueue, block);
   v45 = 0u;
   v46 = 0u;
@@ -131,20 +131,20 @@ LABEL_21:
       v18 = *(*(&v43 + 1) + 8 * v17);
       if (!v15 || (v19 = [*(*(&v43 + 1) + 8 * v17) count], v19 < objc_msgSend(v15, "count")))
       {
-        v20 = [v18 firstObject];
-        if ([v20 fromDataSourceIdentifier] != a3)
+        firstObject = [v18 firstObject];
+        if ([firstObject fromDataSourceIdentifier] != identifier)
         {
           goto LABEL_15;
         }
 
         v21 = v16;
         v22 = v5;
-        v23 = [v18 lastObject];
-        v24 = [v23 toDataSourceIdentifier];
+        lastObject = [v18 lastObject];
+        toDataSourceIdentifier = [lastObject toDataSourceIdentifier];
 
-        if (v24 == a4)
+        if (toDataSourceIdentifier == sourceIdentifier)
         {
-          v20 = v15;
+          firstObject = v15;
           v15 = v18;
           v5 = v22;
           v16 = v21;
@@ -189,12 +189,12 @@ LABEL_23:
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v39 + 1) + 8 * i) sectionChanges];
-        v32 = [v31 hasIncrementalChanges];
+        sectionChanges = [*(*(&v39 + 1) + 8 * i) sectionChanges];
+        hasIncrementalChanges = [sectionChanges hasIncrementalChanges];
 
-        if (!v32)
+        if (!hasIncrementalChanges)
         {
-          v33 = v26;
+          firstObject2 = v26;
           goto LABEL_35;
         }
       }
@@ -209,13 +209,13 @@ LABEL_23:
     }
   }
 
-  v33 = [v26 firstObject];
-  if ([v33 fromDataSourceIdentifier] == a3)
+  firstObject2 = [v26 firstObject];
+  if ([firstObject2 fromDataSourceIdentifier] == identifier)
   {
-    v34 = [v26 lastObject];
-    v35 = [v34 toDataSourceIdentifier];
+    lastObject2 = [v26 lastObject];
+    toDataSourceIdentifier2 = [lastObject2 toDataSourceIdentifier];
 
-    if (v35 == a4)
+    if (toDataSourceIdentifier2 == sourceIdentifier)
     {
       v25 = v26;
       goto LABEL_37;
@@ -227,7 +227,7 @@ LABEL_23:
 LABEL_35:
   }
 
-  v36 = [PXSectionedDataSourceChangeDetails changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:a3 toDataSourceIdentifier:a4];
+  v36 = [PXSectionedDataSourceChangeDetails changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:identifier toDataSourceIdentifier:sourceIdentifier];
   v51 = v36;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1];
 
@@ -344,11 +344,11 @@ LABEL_21:
 LABEL_23:
 }
 
-- (void)addChangeDetails:(id)a3
+- (void)addChangeDetails:(id)details
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  detailsCopy = details;
+  v5 = detailsCopy;
+  if (detailsCopy)
   {
     internalQueue = self->_internalQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -356,7 +356,7 @@ LABEL_23:
     v7[2] = __55__PXSectionedChangeDetailsRepository_addChangeDetails___block_invoke;
     v7[3] = &unk_1E7BB7DD0;
     v7[4] = self;
-    v8 = v4;
+    v8 = detailsCopy;
     dispatch_sync(internalQueue, v7);
   }
 }
@@ -378,7 +378,7 @@ unint64_t __55__PXSectionedChangeDetailsRepository_addChangeDetails___block_invo
   return result;
 }
 
-- (PXSectionedChangeDetailsRepository)initWithChangeHistoryLimit:(int64_t)a3
+- (PXSectionedChangeDetailsRepository)initWithChangeHistoryLimit:(int64_t)limit
 {
   v12.receiver = self;
   v12.super_class = PXSectionedChangeDetailsRepository;
@@ -386,10 +386,10 @@ unint64_t __55__PXSectionedChangeDetailsRepository_addChangeDetails___block_invo
   v5 = v4;
   if (v4)
   {
-    v4->_historyLimit = a3;
-    v6 = [MEMORY[0x1E695DF70] array];
+    v4->_historyLimit = limit;
+    array = [MEMORY[0x1E695DF70] array];
     allChangeDetails = v5->_allChangeDetails;
-    v5->_allChangeDetails = v6;
+    v5->_allChangeDetails = array;
 
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v9 = dispatch_queue_create("com.apple.photosUIFoundation.changeDetailsRepository", v8);
@@ -402,9 +402,9 @@ unint64_t __55__PXSectionedChangeDetailsRepository_addChangeDetails___block_invo
 
 - (PXSectionedChangeDetailsRepository)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSectionedChangeDetailsRepository.m" lineNumber:19 description:{@"%@ not supported", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedChangeDetailsRepository.m" lineNumber:19 description:{@"%@ not supported", v5}];
 
   abort();
 }

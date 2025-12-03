@@ -1,10 +1,10 @@
 @interface SCATCameraSwitchActionsSensitivityController
 - (BOOL)_belongsToTopLevelASTHeadTracking;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_saveSensitivityToHeadTrackingSettings:(unint64_t)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_saveSensitivityToHeadTrackingSettings:(unint64_t)settings;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SCATCameraSwitchActionsSensitivityController
@@ -15,13 +15,13 @@
   v4 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(SCATCameraSwitchActionsSensitivityController *)self _belongsToTopLevelASTHeadTracking];
-    v6 = [(SCATCameraSwitchActionsSensitivityController *)self specifier];
-    v7 = v6;
+    _belongsToTopLevelASTHeadTracking = [(SCATCameraSwitchActionsSensitivityController *)self _belongsToTopLevelASTHeadTracking];
+    specifier = [(SCATCameraSwitchActionsSensitivityController *)self specifier];
+    v7 = specifier;
     v26 = v3;
-    if (v5)
+    if (_belongsToTopLevelASTHeadTracking)
     {
-      v8 = [v6 propertyForKey:@"TopLevelHeadTrackingExpression"];
+      v8 = [specifier propertyForKey:@"TopLevelHeadTrackingExpression"];
 
       if (v8)
       {
@@ -31,22 +31,22 @@
 
     else
     {
-      v8 = [v6 propertyForKey:@"SCATCameraExpressionType"];
+      v8 = [specifier propertyForKey:@"SCATCameraExpressionType"];
 
       if (v8)
       {
         -[SCATCameraSwitchActionsSensitivityController setCameraSwitchType:](self, "setCameraSwitchType:", [v8 unsignedIntegerValue]);
       }
 
-      v9 = [(SCATCameraSwitchActionsSensitivityController *)self specifier];
-      v10 = [v9 propertyForKey:@"StoredCameraSwitch"];
+      specifier2 = [(SCATCameraSwitchActionsSensitivityController *)self specifier];
+      v10 = [specifier2 propertyForKey:@"StoredCameraSwitch"];
       [(SCATCameraSwitchActionsSensitivityController *)self setStoredSwitch:v10];
 
-      v11 = [(SCATCameraSwitchActionsSensitivityController *)self storedSwitch];
-      if (![v11 expressionSensitivity])
+      storedSwitch = [(SCATCameraSwitchActionsSensitivityController *)self storedSwitch];
+      if (![storedSwitch expressionSensitivity])
       {
-        [v11 setExpressionSensitivity:2];
-        [(SCATCameraSwitchActionsSensitivityController *)self _saveSwitchToSettings:v11];
+        [storedSwitch setExpressionSensitivity:2];
+        [(SCATCameraSwitchActionsSensitivityController *)self _saveSwitchToSettings:storedSwitch];
       }
     }
 
@@ -100,29 +100,29 @@
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SCATCameraSwitchActionsSensitivityController;
-  [(SCATCameraSwitchActionsSensitivityController *)&v4 viewWillAppear:a3];
+  [(SCATCameraSwitchActionsSensitivityController *)&v4 viewWillAppear:appear];
   [(SCATCameraSwitchActionsSensitivityController *)self reloadSpecifiers];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v21.receiver = self;
   v21.super_class = SCATCameraSwitchActionsSensitivityController;
-  v6 = a4;
-  v7 = [(SCATCameraSwitchActionsSensitivityController *)&v21 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(SCATCameraSwitchActionsSensitivityController *)self specifierAtIndexPath:v6, v21.receiver, v21.super_class];
+  pathCopy = path;
+  v7 = [(SCATCameraSwitchActionsSensitivityController *)&v21 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(SCATCameraSwitchActionsSensitivityController *)self specifierAtIndexPath:pathCopy, v21.receiver, v21.super_class];
 
   v9 = [v8 propertyForKey:@"CameraExpressionSensitivity"];
-  v10 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
   if ([(SCATCameraSwitchActionsSensitivityController *)self _belongsToTopLevelASTHeadTracking])
   {
-    v11 = [(SCATCameraSwitchActionsSensitivityController *)self expression];
-    v12 = [v11 isEqualToString:AXAssistiveTouchHeadTrackingExpressionNone];
+    expression = [(SCATCameraSwitchActionsSensitivityController *)self expression];
+    v12 = [expression isEqualToString:AXAssistiveTouchHeadTrackingExpressionNone];
 
     if (v12)
     {
@@ -130,15 +130,15 @@
     }
 
     v13 = +[AXSettings sharedInstance];
-    v14 = [v13 assistiveTouchHeadTrackingExpressionToSensitivityMapping];
-    v15 = [(SCATCameraSwitchActionsSensitivityController *)self expression];
-    v16 = [v14 objectForKey:v15];
+    assistiveTouchHeadTrackingExpressionToSensitivityMapping = [v13 assistiveTouchHeadTrackingExpressionToSensitivityMapping];
+    expression2 = [(SCATCameraSwitchActionsSensitivityController *)self expression];
+    v16 = [assistiveTouchHeadTrackingExpressionToSensitivityMapping objectForKey:expression2];
 
     if (v16)
     {
-      v17 = [v16 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 LABEL_7:
-      v19 = v17;
+      v19 = unsignedIntegerValue2;
       goto LABEL_10;
     }
 
@@ -148,11 +148,11 @@ LABEL_7:
 
   else
   {
-    v18 = [(SCATCameraSwitchActionsSensitivityController *)self storedSwitch];
-    v16 = v18;
-    if (v18)
+    storedSwitch = [(SCATCameraSwitchActionsSensitivityController *)self storedSwitch];
+    v16 = storedSwitch;
+    if (storedSwitch)
     {
-      v17 = [v18 expressionSensitivity];
+      unsignedIntegerValue2 = [storedSwitch expressionSensitivity];
       goto LABEL_7;
     }
 
@@ -163,7 +163,7 @@ LABEL_10:
 
   if (v19)
   {
-    [v7 setChecked:v19 == v10];
+    [v7 setChecked:v19 == unsignedIntegerValue];
   }
 
 LABEL_12:
@@ -171,63 +171,63 @@ LABEL_12:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = SCATCameraSwitchActionsSensitivityController;
-  [(SCATCameraSwitchActionsSensitivityController *)&v16 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(SCATCameraSwitchActionsSensitivityController *)self specifierAtIndexPath:v6];
+  [(SCATCameraSwitchActionsSensitivityController *)&v16 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(SCATCameraSwitchActionsSensitivityController *)self specifierAtIndexPath:pathCopy];
   v8 = [v7 propertyForKey:@"CameraExpressionSensitivity"];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
   if ([(SCATCameraSwitchActionsSensitivityController *)self _belongsToTopLevelASTHeadTracking])
   {
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 assistiveTouchHeadTrackingExpressionToSensitivityMapping];
-    v12 = [(SCATCameraSwitchActionsSensitivityController *)self expression];
-    v13 = [v11 objectForKey:v12];
+    assistiveTouchHeadTrackingExpressionToSensitivityMapping = [v10 assistiveTouchHeadTrackingExpressionToSensitivityMapping];
+    expression = [(SCATCameraSwitchActionsSensitivityController *)self expression];
+    v13 = [assistiveTouchHeadTrackingExpressionToSensitivityMapping objectForKey:expression];
 
-    v14 = [v13 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v13 unsignedIntegerValue];
     if (v13)
     {
-      if (!v9 || v14 == v9)
+      if (!unsignedIntegerValue || unsignedIntegerValue2 == unsignedIntegerValue)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!v9)
+    else if (!unsignedIntegerValue)
     {
       goto LABEL_11;
     }
 
-    [(SCATCameraSwitchActionsSensitivityController *)self _saveSensitivityToHeadTrackingSettings:v9];
+    [(SCATCameraSwitchActionsSensitivityController *)self _saveSensitivityToHeadTrackingSettings:unsignedIntegerValue];
     goto LABEL_11;
   }
 
-  v15 = [(SCATCameraSwitchActionsSensitivityController *)self storedSwitch];
-  v13 = v15;
-  if (v15 && [v15 expressionSensitivity] != v9)
+  storedSwitch = [(SCATCameraSwitchActionsSensitivityController *)self storedSwitch];
+  v13 = storedSwitch;
+  if (storedSwitch && [storedSwitch expressionSensitivity] != unsignedIntegerValue)
   {
-    [v13 setExpressionSensitivity:v9];
+    [v13 setExpressionSensitivity:unsignedIntegerValue];
     [(SCATCameraSwitchActionsSensitivityController *)self _saveSwitchToSettings:v13];
   }
 
 LABEL_11:
 
-  [(SCATCameraSwitchActionsSensitivityController *)self updateTableCheckedSelection:v6];
+  [(SCATCameraSwitchActionsSensitivityController *)self updateTableCheckedSelection:pathCopy];
 }
 
-- (void)_saveSensitivityToHeadTrackingSettings:(unint64_t)a3
+- (void)_saveSensitivityToHeadTrackingSettings:(unint64_t)settings
 {
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 assistiveTouchHeadTrackingExpressionToSensitivityMapping];
-  v11 = [NSMutableDictionary dictionaryWithDictionary:v6];
+  assistiveTouchHeadTrackingExpressionToSensitivityMapping = [v5 assistiveTouchHeadTrackingExpressionToSensitivityMapping];
+  v11 = [NSMutableDictionary dictionaryWithDictionary:assistiveTouchHeadTrackingExpressionToSensitivityMapping];
 
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
-  v8 = [(SCATCameraSwitchActionsSensitivityController *)self expression];
-  [v11 setObject:v7 forKey:v8];
+  v7 = [NSNumber numberWithUnsignedInteger:settings];
+  expression = [(SCATCameraSwitchActionsSensitivityController *)self expression];
+  [v11 setObject:v7 forKey:expression];
 
   v9 = [v11 copy];
   v10 = +[AXSettings sharedInstance];
@@ -236,11 +236,11 @@ LABEL_11:
 
 - (BOOL)_belongsToTopLevelASTHeadTracking
 {
-  v2 = [(SCATCameraSwitchActionsSensitivityController *)self specifier];
-  v3 = [v2 propertyForKey:@"BelongsToTopLevelHeadTracking"];
-  v4 = [v3 BOOLValue];
+  specifier = [(SCATCameraSwitchActionsSensitivityController *)self specifier];
+  v3 = [specifier propertyForKey:@"BelongsToTopLevelHeadTracking"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

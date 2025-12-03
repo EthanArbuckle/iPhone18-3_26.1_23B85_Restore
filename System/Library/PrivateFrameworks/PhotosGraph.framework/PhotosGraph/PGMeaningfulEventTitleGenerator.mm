@@ -1,9 +1,9 @@
 @interface PGMeaningfulEventTitleGenerator
-- (PGMeaningfulEventTitleGenerator)initWithCollection:(id)a3 meaningLabel:(id)a4 meaningIsReliable:(BOOL)a5 titleGenerationContext:(id)a6 featureNodes:(id)a7;
+- (PGMeaningfulEventTitleGenerator)initWithCollection:(id)collection meaningLabel:(id)label meaningIsReliable:(BOOL)reliable titleGenerationContext:(id)context featureNodes:(id)nodes;
 - (id)_meaningLabelForTitle;
 - (id)_timeTitle;
 - (id)_title;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGMeaningfulEventTitleGenerator
@@ -22,11 +22,11 @@
   }
 
   [(PGTimeTitleOptions *)v3 setAllowedFormats:v4];
-  v5 = [(PGTitleGenerator *)self momentNodes];
-  [(PGTimeTitleOptions *)v3 setMomentNodes:v5];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  [(PGTimeTitleOptions *)v3 setMomentNodes:momentNodes];
 
-  v6 = [(PGTitleGenerator *)self usedLocationNodes];
-  [(PGTimeTitleOptions *)v3 setLocationNodes:v6];
+  usedLocationNodes = [(PGTitleGenerator *)self usedLocationNodes];
+  [(PGTimeTitleOptions *)v3 setLocationNodes:usedLocationNodes];
 
   v7 = [PGTimeTitleUtility timeTitleWithOptions:v3];
   v8 = [PGTitle titleWithString:v7 category:5];
@@ -123,16 +123,16 @@ void __56__PGMeaningfulEventTitleGenerator__meaningLabelForTitle__block_invoke()
 
 - (id)_title
 {
-  v3 = [(PGMeaningfulEventTitleGenerator *)self _meaningLabelForTitle];
-  if (-[MAElementCollection count](self->_featureNodes, "count") && [v3 isEqualToString:@"HolidayEvent"])
+  _meaningLabelForTitle = [(PGMeaningfulEventTitleGenerator *)self _meaningLabelForTitle];
+  if (-[MAElementCollection count](self->_featureNodes, "count") && [_meaningLabelForTitle isEqualToString:@"HolidayEvent"])
   {
     v4 = [(PGGraphNodeCollection *)PGGraphHolidayNodeCollection subsetInCollection:self->_featureNodes];
     if ([v4 count])
     {
-      v5 = [v4 localizedHolidayNames];
-      v6 = [v5 anyObject];
+      localizedHolidayNames = [v4 localizedHolidayNames];
+      anyObject = [localizedHolidayNames anyObject];
 
-      v7 = [PGTitle titleWithString:v6 category:5];
+      title = [PGTitle titleWithString:anyObject category:5];
     }
 
     else
@@ -143,58 +143,58 @@ void __56__PGMeaningfulEventTitleGenerator__meaningLabelForTitle__block_invoke()
         _os_log_error_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "[PGMeaningfulEventTitleGenerator.m] MeaningfulEvent memory of type kPGGraphNodeMeaningHolidayEvent has no featureNode of type PGGraphHolidayNode.", v13, 2u);
       }
 
-      v7 = 0;
+      title = 0;
     }
   }
 
   else
   {
     v8 = [PGSpecBasedTitleGenerator alloc];
-    v9 = [(PGTitleGenerator *)self momentNodes];
-    v10 = [(PGTitleGenerator *)self titleGenerationContext];
-    v11 = [(PGSpecBasedTitleGenerator *)v8 initWithMomentNodes:v9 meaningLabel:v3 titleGenerationContext:v10];
+    momentNodes = [(PGTitleGenerator *)self momentNodes];
+    titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+    v11 = [(PGSpecBasedTitleGenerator *)v8 initWithMomentNodes:momentNodes meaningLabel:_meaningLabelForTitle titleGenerationContext:titleGenerationContext];
 
     [(PGSpecBasedTitleGenerator *)v11 setLineBreakBehavior:[(PGTitleGenerator *)self lineBreakBehavior]];
-    v7 = [(PGSpecBasedTitleGenerator *)v11 title];
+    title = [(PGSpecBasedTitleGenerator *)v11 title];
   }
 
-  return v7;
+  return title;
 }
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [(PGMeaningfulEventTitleGenerator *)self _title];
-  v6 = [(PGMeaningfulEventTitleGenerator *)self _timeTitle];
-  v7 = [v5 stringValue];
-  v8 = [v7 length];
+  resultCopy = result;
+  _title = [(PGMeaningfulEventTitleGenerator *)self _title];
+  _timeTitle = [(PGMeaningfulEventTitleGenerator *)self _timeTitle];
+  stringValue = [_title stringValue];
+  v8 = [stringValue length];
 
   if (v8)
   {
-    v4[2](v4, v5, v6);
+    resultCopy[2](resultCopy, _title, _timeTitle);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = PGMeaningfulEventTitleGenerator;
-    [(PGTitleGenerator *)&v9 _generateTitleAndSubtitleWithResult:v4];
+    [(PGTitleGenerator *)&v9 _generateTitleAndSubtitleWithResult:resultCopy];
   }
 }
 
-- (PGMeaningfulEventTitleGenerator)initWithCollection:(id)a3 meaningLabel:(id)a4 meaningIsReliable:(BOOL)a5 titleGenerationContext:(id)a6 featureNodes:(id)a7
+- (PGMeaningfulEventTitleGenerator)initWithCollection:(id)collection meaningLabel:(id)label meaningIsReliable:(BOOL)reliable titleGenerationContext:(id)context featureNodes:(id)nodes
 {
-  v13 = a4;
-  v14 = a7;
+  labelCopy = label;
+  nodesCopy = nodes;
   v18.receiver = self;
   v18.super_class = PGMeaningfulEventTitleGenerator;
-  v15 = [(PGDefaultCollectionTitleGenerator *)&v18 initWithCollection:a3 keyAsset:0 curatedAssetCollection:0 titleGenerationContext:a6];
+  v15 = [(PGDefaultCollectionTitleGenerator *)&v18 initWithCollection:collection keyAsset:0 curatedAssetCollection:0 titleGenerationContext:context];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_meaningLabel, a4);
-    v16->_meaningIsReliable = a5;
-    objc_storeStrong(&v16->_featureNodes, a7);
+    objc_storeStrong(&v15->_meaningLabel, label);
+    v16->_meaningIsReliable = reliable;
+    objc_storeStrong(&v16->_featureNodes, nodes);
   }
 
   return v16;

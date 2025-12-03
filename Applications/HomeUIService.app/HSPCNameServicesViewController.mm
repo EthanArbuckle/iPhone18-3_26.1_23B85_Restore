@@ -1,52 +1,52 @@
 @interface HSPCNameServicesViewController
-+ (id)applicableServicesForAccessory:(id)a3;
-- (BOOL)_indexPathAllowsToggling:(id)a3;
-- (BOOL)isServiceSelectable:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (HSPCNameServicesViewController)initWithCoordinator:(id)a3 config:(id)a4;
++ (id)applicableServicesForAccessory:(id)accessory;
+- (BOOL)_indexPathAllowsToggling:(id)toggling;
+- (BOOL)isServiceSelectable:(id)selectable;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (HSPCNameServicesViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (NSSet)characteristicTypesToPreload;
 - (NSSet)servicesToPreload;
 - (UITableView)tableView;
-- (id)_enabledServicesSetFromServices:(id)a3;
-- (id)_frozenServicesFromServices:(id)a3;
-- (id)_givenNameForService:(id)a3;
-- (id)cellReuseIdentifierForService:(id)a3;
+- (id)_enabledServicesSetFromServices:(id)services;
+- (id)_frozenServicesFromServices:(id)services;
+- (id)_givenNameForService:(id)service;
+- (id)cellReuseIdentifierForService:(id)service;
 - (id)commitConfiguration;
 - (id)hu_preloadContent;
-- (id)readCharacteristics:(id)a3 inServices:(id)a4;
-- (id)serviceForIndexPath:(id)a3;
-- (id)suggestedNamesForServices:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)readCharacteristics:(id)characteristics inServices:(id)services;
+- (id)serviceForIndexPath:(id)path;
+- (id)suggestedNamesForServices:(id)services;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_logDetailedServices;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCNameServicesViewController
 
-- (id)readCharacteristics:(id)a3 inServices:(id)a4
+- (id)readCharacteristics:(id)characteristics inServices:(id)services
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] && objc_msgSend(v7, "count"))
+  characteristicsCopy = characteristics;
+  servicesCopy = services;
+  if ([characteristicsCopy count] && objc_msgSend(servicesCopy, "count"))
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000572D8;
     v15[3] = &unk_1000C7B80;
-    v16 = v7;
-    v8 = [v6 na_flatMap:v15];
-    v9 = [(HSPCNameServicesViewController *)self config];
-    v10 = [v9 home];
-    v11 = [v10 hf_characteristicValueManager];
-    v12 = [v11 readValuesForCharacteristics:v8];
+    v16 = servicesCopy;
+    v8 = [characteristicsCopy na_flatMap:v15];
+    config = [(HSPCNameServicesViewController *)self config];
+    home = [config home];
+    hf_characteristicValueManager = [home hf_characteristicValueManager];
+    v12 = [hf_characteristicValueManager readValuesForCharacteristics:v8];
     v13 = [v12 flatMap:&stru_1000C7BC0];
   }
 
@@ -58,10 +58,10 @@
   return v13;
 }
 
-- (HSPCNameServicesViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCNameServicesViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v8 = a3;
-  v9 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v10 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v11 = [[PRXScrollableContentView alloc] initWithCardStyle:0 scrollView:v10];
   v55.receiver = self;
@@ -72,9 +72,9 @@
   {
     aSelector = a2;
     v53 = v11;
-    v54 = v9;
-    objc_storeStrong(&v12->_config, a4);
-    objc_storeStrong(&v13->_coordinator, a3);
+    v54 = configCopy;
+    objc_storeStrong(&v12->_config, config);
+    objc_storeStrong(&v13->_coordinator, coordinator);
     v14 = objc_storeWeak(&v13->_tableView, v10);
     [v10 setDelegate:v13];
 
@@ -119,11 +119,11 @@
     v35 = +[HSPCNameIdentifyServiceRow _reuseIdentifier];
     [v33 registerClass:v34 forCellReuseIdentifier:v35];
 
-    v36 = [v8 activeTuple];
-    v37 = [v36 accessoryCategoryOrPrimaryServiceType];
-    v38 = [v8 setupAccessoryDescription];
-    v39 = [v38 setupAccessoryPayload];
-    v40 = [v39 matterDeviceTypeID];
+    activeTuple = [coordinatorCopy activeTuple];
+    accessoryCategoryOrPrimaryServiceType = [activeTuple accessoryCategoryOrPrimaryServiceType];
+    setupAccessoryDescription = [coordinatorCopy setupAccessoryDescription];
+    setupAccessoryPayload = [setupAccessoryDescription setupAccessoryPayload];
+    matterDeviceTypeID = [setupAccessoryPayload matterDeviceTypeID];
     v41 = HFLocalizedCategoryOrPrimaryServiceTypeString();
     [(HSPCNameServicesViewController *)v13 setTitle:v41];
 
@@ -135,24 +135,24 @@
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
       v45 = NSStringFromSelector(aSelector);
-      v46 = [v8 setupAccessoryDescription];
-      v47 = [v46 setupAccessoryPayload];
-      v48 = [v47 matterDeviceTypeID];
-      v49 = [v8 setupAccessoryDescription];
-      v50 = [v49 setupAccessoryPayload];
+      setupAccessoryDescription2 = [coordinatorCopy setupAccessoryDescription];
+      setupAccessoryPayload2 = [setupAccessoryDescription2 setupAccessoryPayload];
+      matterDeviceTypeID2 = [setupAccessoryPayload2 matterDeviceTypeID];
+      setupAccessoryDescription3 = [coordinatorCopy setupAccessoryDescription];
+      setupAccessoryPayload3 = [setupAccessoryDescription3 setupAccessoryPayload];
       *buf = 138413058;
       v57 = v13;
       v58 = 2112;
       v59 = v45;
       v60 = 2112;
-      v61 = v48;
+      v61 = matterDeviceTypeID2;
       v62 = 2112;
-      v63 = v50;
+      v63 = setupAccessoryPayload3;
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "%@:%@: matterDeviceTypeID: %@ setupAccessoryPayload: %@", buf, 0x2Au);
     }
 
     v11 = v53;
-    v9 = v54;
+    configCopy = v54;
   }
 
   return v13;
@@ -161,9 +161,9 @@
 - (id)hu_preloadContent
 {
   objc_initWeak(&location, self);
-  v3 = [(HSPCNameServicesViewController *)self characteristicTypesToPreload];
-  v4 = [(HSPCNameServicesViewController *)self servicesToPreload];
-  v5 = [(HSPCNameServicesViewController *)self readCharacteristics:v3 inServices:v4];
+  characteristicTypesToPreload = [(HSPCNameServicesViewController *)self characteristicTypesToPreload];
+  servicesToPreload = [(HSPCNameServicesViewController *)self servicesToPreload];
+  v5 = [(HSPCNameServicesViewController *)self readCharacteristics:characteristicTypesToPreload inServices:servicesToPreload];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000579CC;
@@ -179,27 +179,27 @@
 
 - (id)commitConfiguration
 {
-  v3 = [(HSPCNameServicesViewController *)self view];
-  [v3 endEditing:1];
+  view = [(HSPCNameServicesViewController *)self view];
+  [view endEditing:1];
 
-  v4 = [(HSPCNameServicesViewController *)self serviceNames];
-  v5 = [NSSet setWithArray:v4];
+  serviceNames = [(HSPCNameServicesViewController *)self serviceNames];
+  v5 = [NSSet setWithArray:serviceNames];
 
   v6 = [v5 count];
-  v7 = [(HSPCNameServicesViewController *)self serviceNames];
-  v8 = [v7 count];
+  serviceNames2 = [(HSPCNameServicesViewController *)self serviceNames];
+  v8 = [serviceNames2 count];
 
   if (v6 == v8)
   {
-    v9 = [(HSPCNameServicesViewController *)self services];
-    v10 = [NSSet setWithArray:v9];
+    services = [(HSPCNameServicesViewController *)self services];
+    v10 = [NSSet setWithArray:services];
 
-    v11 = [(HSPCNameServicesViewController *)self enabledServices];
-    v12 = [v10 na_setByRemovingObjectsFromSet:v11];
+    enabledServices = [(HSPCNameServicesViewController *)self enabledServices];
+    v12 = [v10 na_setByRemovingObjectsFromSet:enabledServices];
 
-    v13 = [(HSPCNameServicesViewController *)self config];
-    v14 = [(HSPCNameServicesViewController *)self serviceNames];
-    v15 = [v13 validateNames:v14];
+    config = [(HSPCNameServicesViewController *)self config];
+    serviceNames3 = [(HSPCNameServicesViewController *)self serviceNames];
+    v15 = [config validateNames:serviceNames3];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_100057EB8;
@@ -244,39 +244,39 @@
   v4.receiver = self;
   v4.super_class = HSPCNameServicesViewController;
   [(HSPCNameServicesViewController *)&v4 viewDidLoad];
-  v3 = [(HSPCNameServicesViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(HSPCNameServicesViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [a3 tag], 0);
+  v4 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [editing tag], 0);
   [(HSPCNameServicesViewController *)self setIndexPathOfFirstResponder:v4];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [v4 text];
+  editingCopy = editing;
+  text = [editingCopy text];
   v6 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
-  [v4 setText:v7];
+  v7 = [text stringByTrimmingCharactersInSet:v6];
+  [editingCopy setText:v7];
 
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v4 text];
-    v10 = [v4 placeholder];
+    text2 = [editingCopy text];
+    placeholder = [editingCopy placeholder];
     *buf = 136315650;
     v19 = "[HSPCNameServicesViewController textFieldDidEndEditing:]";
     v20 = 2112;
-    v21 = v9;
+    v21 = text2;
     v22 = 2112;
-    v23 = v10;
+    v23 = placeholder;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s: Title: %@ | Placeholder: %@", buf, 0x20u);
   }
 
-  v11 = [v4 tag];
+  v11 = [editingCopy tag];
   if (v11 < 0 || (-[HSPCNameServicesViewController serviceNames](self, "serviceNames"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 count], v12, v11 >= v13))
   {
     v17 = HFLogForCategory();
@@ -285,33 +285,33 @@
       sub_10007B23C(self, v11, v17);
     }
 
-    v15 = [(HSPCNameServicesViewController *)self serviceNames];
-    NSLog(@"Well this isn't right, textfield is tagged with an invalid row tag: %ld, totalRows: %ld", v11, [v15 count]);
+    serviceNames = [(HSPCNameServicesViewController *)self serviceNames];
+    NSLog(@"Well this isn't right, textfield is tagged with an invalid row tag: %ld, totalRows: %ld", v11, [serviceNames count]);
   }
 
   else
   {
-    v14 = [(HSPCNameServicesViewController *)self serviceNames];
-    v15 = [v14 mutableCopy];
+    serviceNames2 = [(HSPCNameServicesViewController *)self serviceNames];
+    serviceNames = [serviceNames2 mutableCopy];
 
-    v16 = [v4 text];
-    [v15 setObject:v16 atIndexedSubscript:v11];
+    text3 = [editingCopy text];
+    [serviceNames setObject:text3 atIndexedSubscript:v11];
 
-    [(HSPCNameServicesViewController *)self setServiceNames:v15];
+    [(HSPCNameServicesViewController *)self setServiceNames:serviceNames];
   }
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [v4 tag];
-  v6 = [(HSPCNameServicesViewController *)self tableView];
-  v7 = [(HSPCNameServicesViewController *)self tableView:v6 numberOfRowsInSection:0];
+  returnCopy = return;
+  v5 = [returnCopy tag];
+  tableView = [(HSPCNameServicesViewController *)self tableView];
+  v7 = [(HSPCNameServicesViewController *)self tableView:tableView numberOfRowsInSection:0];
 
   if (v5 >= v7 - 1)
   {
     [(HSPCNameServicesViewController *)self setIndexPathOfFirstResponder:0];
-    [v4 resignFirstResponder];
+    [returnCopy resignFirstResponder];
   }
 
   else
@@ -319,8 +319,8 @@
     v8 = [NSIndexPath indexPathForRow:v5 + 1 inSection:0];
     [(HSPCNameServicesViewController *)self setIndexPathOfFirstResponder:v8];
     objc_opt_class();
-    v9 = [(HSPCNameServicesViewController *)self tableView];
-    v10 = [v9 cellForRowAtIndexPath:v8];
+    tableView2 = [(HSPCNameServicesViewController *)self tableView];
+    v10 = [tableView2 cellForRowAtIndexPath:v8];
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -335,31 +335,31 @@
 
     if (v12)
     {
-      v13 = [v12 textField];
-      [v13 becomeFirstResponder];
+      textField = [v12 textField];
+      [textField becomeFirstResponder];
     }
 
     else
     {
-      v13 = [(HSPCNameServicesViewController *)self tableView];
-      [v13 scrollToRowAtIndexPath:v8 atScrollPosition:2 animated:1];
+      textField = [(HSPCNameServicesViewController *)self tableView];
+      [textField scrollToRowAtIndexPath:v8 atScrollPosition:2 animated:1];
     }
   }
 
   return 1;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [(HSPCNameServicesViewController *)self indexPathOfFirstResponder];
-  v9 = [v7 isEqual:v8];
+  cellCopy = cell;
+  pathCopy = path;
+  indexPathOfFirstResponder = [(HSPCNameServicesViewController *)self indexPathOfFirstResponder];
+  v9 = [pathCopy isEqual:indexPathOfFirstResponder];
 
   if (v9)
   {
     objc_opt_class();
-    v10 = v14;
+    v10 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -372,17 +372,17 @@
 
     v12 = v11;
 
-    v13 = [v12 textField];
-    [v13 becomeFirstResponder];
+    textField = [v12 textField];
+    [textField becomeFirstResponder];
   }
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(HSPCNameServicesViewController *)self _indexPathAllowsToggling:v5])
+  pathCopy = path;
+  if ([(HSPCNameServicesViewController *)self _indexPathAllowsToggling:pathCopy])
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   else
@@ -395,12 +395,12 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 willDeselectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(HSPCNameServicesViewController *)self _indexPathAllowsToggling:v5])
+  pathCopy = path;
+  if ([(HSPCNameServicesViewController *)self _indexPathAllowsToggling:pathCopy])
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   else
@@ -413,22 +413,22 @@
   return v6;
 }
 
-- (BOOL)_indexPathAllowsToggling:(id)a3
+- (BOOL)_indexPathAllowsToggling:(id)toggling
 {
-  v4 = [(HSPCNameServicesViewController *)self serviceForIndexPath:a3];
+  v4 = [(HSPCNameServicesViewController *)self serviceForIndexPath:toggling];
   v5 = [(HSPCNameServicesViewController *)self isServiceSelectable:v4];
-  v6 = [(HSPCNameServicesViewController *)self frozenServices];
-  v7 = [v6 containsObject:v4];
+  frozenServices = [(HSPCNameServicesViewController *)self frozenServices];
+  v7 = [frozenServices containsObject:v4];
 
   return v5 & (v7 ^ 1);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v6 = a3;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
-  v7 = [v6 cellForRowAtIndexPath:v12];
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -444,19 +444,19 @@
 
   if (v9)
   {
-    v10 = [(HSPCNameServicesViewController *)self serviceForIndexPath:v12];
+    v10 = [(HSPCNameServicesViewController *)self serviceForIndexPath:pathCopy];
     [v9 setSelected:1];
-    v11 = [(HSPCNameServicesViewController *)self enabledServices];
-    [v11 addObject:v10];
+    enabledServices = [(HSPCNameServicesViewController *)self enabledServices];
+    [enabledServices addObject:v10];
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v6 = a3;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
-  v7 = [v6 cellForRowAtIndexPath:v12];
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -472,33 +472,33 @@
 
   if (v9)
   {
-    v10 = [(HSPCNameServicesViewController *)self serviceForIndexPath:v12];
+    v10 = [(HSPCNameServicesViewController *)self serviceForIndexPath:pathCopy];
     [v9 setSelected:0];
-    v11 = [(HSPCNameServicesViewController *)self enabledServices];
-    [v11 removeObject:v10];
+    enabledServices = [(HSPCNameServicesViewController *)self enabledServices];
+    [enabledServices removeObject:v10];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(HSPCNameServicesViewController *)self services:a3];
+  v4 = [(HSPCNameServicesViewController *)self services:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HSPCNameServicesViewController *)self services];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  services = [(HSPCNameServicesViewController *)self services];
+  v9 = [services objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v10 = [(HSPCNameServicesViewController *)self cellReuseIdentifierForService:v9];
-  v11 = [v6 dequeueReusableCellWithIdentifier:v10 forIndexPath:v7];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:v10 forIndexPath:pathCopy];
 
-  v12 = [(HSPCNameServicesViewController *)self serviceNames];
-  v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  serviceNames = [(HSPCNameServicesViewController *)self serviceNames];
+  v13 = [serviceNames objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   [v11 updateUIWithService:v9 suggestedName:v13];
   objc_opt_class();
@@ -517,21 +517,21 @@
 
   if (v16)
   {
-    v17 = [(HSPCNameServicesViewController *)self frozenServices];
-    [v16 setFrozen:{objc_msgSend(v17, "containsObject:", v9)}];
+    frozenServices = [(HSPCNameServicesViewController *)self frozenServices];
+    [v16 setFrozen:{objc_msgSend(frozenServices, "containsObject:", v9)}];
   }
 
-  v18 = [v14 textField];
-  [v18 setDelegate:self];
+  textField = [v14 textField];
+  [textField setDelegate:self];
 
-  v19 = [v7 row];
-  v20 = [v14 textField];
-  [v20 setTag:v19];
+  v19 = [pathCopy row];
+  textField2 = [v14 textField];
+  [textField2 setTag:v19];
 
-  v21 = [v7 row];
-  v22 = -[HSPCNameServicesViewController tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", v6, [v7 section]) - 1;
-  v23 = [v14 textField];
-  v24 = v23;
+  v21 = [pathCopy row];
+  v22 = -[HSPCNameServicesViewController tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", viewCopy, [pathCopy section]) - 1;
+  textField3 = [v14 textField];
+  v24 = textField3;
   if (v21 == v22)
   {
     v25 = 9;
@@ -542,22 +542,22 @@
     v25 = 4;
   }
 
-  [v23 setReturnKeyType:v25];
+  [textField3 setReturnKeyType:v25];
 
   return v14;
 }
 
-- (id)cellReuseIdentifierForService:(id)a3
+- (id)cellReuseIdentifierForService:(id)service
 {
-  v4 = a3;
-  if ([(HSPCNameServicesViewController *)self isServiceSelectable:v4])
+  serviceCopy = service;
+  if ([(HSPCNameServicesViewController *)self isServiceSelectable:serviceCopy])
   {
-    v5 = [v4 accessory];
-    v6 = [(HSPCNameServicesViewController *)self config];
-    v7 = [v6 addedAccessory];
+    accessory = [serviceCopy accessory];
+    config = [(HSPCNameServicesViewController *)self config];
+    addedAccessory = [config addedAccessory];
 
     v8 = off_1000C4938;
-    if (v5 == v7)
+    if (accessory == addedAccessory)
     {
       v8 = off_1000C4950;
     }
@@ -568,33 +568,33 @@
     v8 = off_1000C4948;
   }
 
-  v9 = [(__objc2_class *)*v8 _reuseIdentifier];
+  _reuseIdentifier = [(__objc2_class *)*v8 _reuseIdentifier];
 
-  return v9;
+  return _reuseIdentifier;
 }
 
-- (id)serviceForIndexPath:(id)a3
+- (id)serviceForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HSPCNameServicesViewController *)self services];
-  v6 = [v4 row];
+  pathCopy = path;
+  services = [(HSPCNameServicesViewController *)self services];
+  v6 = [pathCopy row];
 
-  v7 = [v5 objectAtIndexedSubscript:v6];
+  v7 = [services objectAtIndexedSubscript:v6];
 
   return v7;
 }
 
-- (BOOL)isServiceSelectable:(id)a3
+- (BOOL)isServiceSelectable:(id)selectable
 {
-  v3 = [a3 serviceType];
-  if ([v3 isEqualToString:HMServiceTypeInputSource])
+  serviceType = [selectable serviceType];
+  if ([serviceType isEqualToString:HMServiceTypeInputSource])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:HMServiceTypeValve];
+    v4 = [serviceType isEqualToString:HMServiceTypeValve];
   }
 
   return v4;
@@ -602,10 +602,10 @@
 
 - (NSSet)servicesToPreload
 {
-  v2 = [(HSPCNameServicesViewController *)self config];
-  v3 = [v2 addedAccessory];
+  config = [(HSPCNameServicesViewController *)self config];
+  addedAccessory = [config addedAccessory];
 
-  v4 = [objc_opt_class() applicableServicesForAccessory:v3];
+  v4 = [objc_opt_class() applicableServicesForAccessory:addedAccessory];
 
   return v4;
 }
@@ -621,14 +621,14 @@
   return v3;
 }
 
-+ (id)applicableServicesForAccessory:(id)a3
++ (id)applicableServicesForAccessory:(id)accessory
 {
-  v3 = a3;
-  v4 = [v3 hf_primaryService];
-  v5 = [v3 hf_visibleServices];
+  accessoryCopy = accessory;
+  hf_primaryService = [accessoryCopy hf_primaryService];
+  hf_visibleServices = [accessoryCopy hf_visibleServices];
 
-  v6 = [v4 hf_childServices];
-  v7 = [v5 setByAddingObjectsFromSet:v6];
+  hf_childServices = [hf_primaryService hf_childServices];
+  v7 = [hf_visibleServices setByAddingObjectsFromSet:hf_childServices];
 
   [NSSet setWithObjects:HMServiceTypeIrrigationSystem, HMServiceTypeValve, HMServiceTypeTelevision, HMServiceTypeInputSource, HMServiceTypeHeaterCooler, 0];
   v14[0] = _NSConcreteStackBlock;
@@ -654,73 +654,73 @@
   return v9;
 }
 
-- (id)_enabledServicesSetFromServices:(id)a3
+- (id)_enabledServicesSetFromServices:(id)services
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100059158;
   v5[3] = &unk_1000C7C10;
   v5[4] = self;
-  v3 = [a3 na_filter:v5];
+  v3 = [services na_filter:v5];
 
   return v3;
 }
 
-- (id)_frozenServicesFromServices:(id)a3
+- (id)_frozenServicesFromServices:(id)services
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000591F4;
   v5[3] = &unk_1000C7C10;
   v5[4] = self;
-  v3 = [a3 na_filter:v5];
+  v3 = [services na_filter:v5];
 
   return v3;
 }
 
-- (id)suggestedNamesForServices:(id)a3
+- (id)suggestedNamesForServices:(id)services
 {
-  v4 = a3;
-  +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+  servicesCopy = services;
+  +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [servicesCopy count]);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000592DC;
   v8[3] = &unk_1000C7C38;
   v9 = v8[4] = self;
   v5 = v9;
-  v6 = [v4 na_map:v8];
+  v6 = [servicesCopy na_map:v8];
 
   return v6;
 }
 
-- (id)_givenNameForService:(id)a3
+- (id)_givenNameForService:(id)service
 {
-  v3 = a3;
-  v4 = [v3 configuredName];
-  v5 = [v4 length];
+  serviceCopy = service;
+  configuredName = [serviceCopy configuredName];
+  v5 = [configuredName length];
 
   if (v5)
   {
-    v6 = [v3 configuredName];
+    configuredName2 = [serviceCopy configuredName];
   }
 
   else
   {
-    v7 = [v3 serviceType];
-    v8 = [v7 isEqualToString:HMServiceTypeInputSource];
+    serviceType = [serviceCopy serviceType];
+    v8 = [serviceType isEqualToString:HMServiceTypeInputSource];
 
-    if (v8 && ([v3 defaultName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
+    if (v8 && ([serviceCopy defaultName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
     {
-      v6 = [v3 defaultName];
+      configuredName2 = [serviceCopy defaultName];
     }
 
     else
     {
-      v6 = [v3 hf_userFriendlyLocalizedCapitalizedDescription];
+      configuredName2 = [serviceCopy hf_userFriendlyLocalizedCapitalizedDescription];
     }
   }
 
-  v11 = v6;
+  v11 = configuredName2;
 
   return v11;
 }
@@ -734,8 +734,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "HSPCNameServicesViewController is operating on the following services:", buf, 2u);
   }
 
-  v4 = [(HSPCNameServicesViewController *)self services];
-  v5 = [v4 count];
+  services = [(HSPCNameServicesViewController *)self services];
+  v5 = [services count];
 
   if (v5)
   {
@@ -744,17 +744,17 @@
     v19 = v6;
     do
     {
-      v8 = [(HSPCNameServicesViewController *)self services];
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      services2 = [(HSPCNameServicesViewController *)self services];
+      v9 = [services2 objectAtIndexedSubscript:v7];
 
-      v10 = [(HSPCNameServicesViewController *)self serviceNames];
-      v11 = [v10 objectAtIndexedSubscript:v7];
+      serviceNames = [(HSPCNameServicesViewController *)self serviceNames];
+      v11 = [serviceNames objectAtIndexedSubscript:v7];
 
-      v12 = [(HSPCNameServicesViewController *)self frozenServices];
-      v13 = [v12 containsObject:v9];
+      frozenServices = [(HSPCNameServicesViewController *)self frozenServices];
+      v13 = [frozenServices containsObject:v9];
 
-      v14 = [(HSPCNameServicesViewController *)self enabledServices];
-      v15 = [v14 containsObject:v9];
+      enabledServices = [(HSPCNameServicesViewController *)self enabledServices];
+      v15 = [enabledServices containsObject:v9];
 
       v16 = HFLogForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -771,8 +771,8 @@
       }
 
       ++v7;
-      v17 = [(HSPCNameServicesViewController *)self services];
-      v18 = [v17 count];
+      services3 = [(HSPCNameServicesViewController *)self services];
+      v18 = [services3 count];
     }
 
     while (v7 < v18);

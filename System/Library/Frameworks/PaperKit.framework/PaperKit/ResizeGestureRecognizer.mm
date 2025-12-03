@@ -1,7 +1,7 @@
 @interface ResizeGestureRecognizer
-- (_TtC8PaperKitP33_625D4AAB7AD9DA9F2F4DB07EDC29229023ResizeGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC8PaperKitP33_625D4AAB7AD9DA9F2F4DB07EDC29229023ResizeGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (int64_t)state;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation ResizeGestureRecognizer
@@ -13,12 +13,12 @@
   return [(ResizeGestureRecognizer *)&v3 state];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ResizeGestureRecognizer();
   v4 = v7.receiver;
-  [(ResizeGestureRecognizer *)&v7 setState:a3];
+  [(ResizeGestureRecognizer *)&v7 setState:state];
   if (![v4 delegate])
   {
     goto LABEL_4;
@@ -38,9 +38,9 @@ LABEL_4:
   swift_unknownObjectRelease();
 }
 
-- (_TtC8PaperKitP33_625D4AAB7AD9DA9F2F4DB07EDC29229023ResizeGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC8PaperKitP33_625D4AAB7AD9DA9F2F4DB07EDC29229023ResizeGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
@@ -52,7 +52,7 @@ LABEL_4:
     memset(v6, 0, sizeof(v6));
   }
 
-  return ResizeGestureRecognizer.init(target:action:)(v6, a4);
+  return ResizeGestureRecognizer.init(target:action:)(v6, action);
 }
 
 @end

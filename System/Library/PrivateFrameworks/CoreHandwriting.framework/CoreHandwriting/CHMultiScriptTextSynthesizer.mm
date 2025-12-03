@@ -1,28 +1,28 @@
 @interface CHMultiScriptTextSynthesizer
-+ (id)chunksForFeatures:(const void *)a3 metadata:(CHDiffusionPipelinePreprocessingExecutionMetadata *)a4;
++ (id)chunksForFeatures:(const void *)features metadata:(CHDiffusionPipelinePreprocessingExecutionMetadata *)metadata;
 + (id)diffusionModelHashes;
-+ (id)rescaleAndShiftSynthesizedDrawing:(id)a3 original:(id)a4;
-+ (int)synthesizerIdFromSuggestion:(int64_t)a3;
-+ (int64_t)suggestionFromSynthesizerID:(int)a3;
-- (CHMultiScriptTextSynthesizer)initWithStyleInventory:(id)a3;
++ (id)rescaleAndShiftSynthesizedDrawing:(id)drawing original:(id)original;
++ (int)synthesizerIdFromSuggestion:(int64_t)suggestion;
++ (int64_t)suggestionFromSynthesizerID:(int)d;
+- (CHMultiScriptTextSynthesizer)initWithStyleInventory:(id)inventory;
 - (id).cxx_construct;
 - (id)availableDiffusionSynthesizers;
-- (id)chunkForSynthesisString:(id)a3 allowedSynthesizers:(id)a4;
-- (id)chunkForSynthesisString:(id)a3 allowedSynthesizers:(id)a4 mode:(id)a5;
-- (id)getSynthesizerFromSynthesizerId:(int)a3;
-- (id)refineDrawing:(id)a3 transcription:(id)a4 options:(id)a5 shouldCancel:(id)a6 error:(id *)a7;
-- (id)replaceDrawing:(id)a3 originalTranscription:(id)a4 replacementTranscription:(id)a5 options:(id)a6 shouldCancel:(id)a7 error:(id *)a8;
-- (id)stylePredictionResultForTranscriptions:(id)a3 drawings:(id)a4 shouldCancel:(id)a5;
-- (id)supportedCharacterIndexesForString:(id)a3 options:(id)a4;
-- (id)synthesizeDrawingForString:(id)a3 options:(id)a4 shouldCancel:(id)a5 error:(id *)a6;
-- (int64_t)canPredictStyleForTranscription:(id)a3;
+- (id)chunkForSynthesisString:(id)string allowedSynthesizers:(id)synthesizers;
+- (id)chunkForSynthesisString:(id)string allowedSynthesizers:(id)synthesizers mode:(id)mode;
+- (id)getSynthesizerFromSynthesizerId:(int)id;
+- (id)refineDrawing:(id)drawing transcription:(id)transcription options:(id)options shouldCancel:(id)cancel error:(id *)error;
+- (id)replaceDrawing:(id)drawing originalTranscription:(id)transcription replacementTranscription:(id)replacementTranscription options:(id)options shouldCancel:(id)cancel error:(id *)error;
+- (id)stylePredictionResultForTranscriptions:(id)transcriptions drawings:(id)drawings shouldCancel:(id)cancel;
+- (id)supportedCharacterIndexesForString:(id)string options:(id)options;
+- (id)synthesizeDrawingForString:(id)string options:(id)options shouldCancel:(id)cancel error:(id *)error;
+- (int64_t)canPredictStyleForTranscription:(id)transcription;
 @end
 
 @implementation CHMultiScriptTextSynthesizer
 
-- (CHMultiScriptTextSynthesizer)initWithStyleInventory:(id)a3
+- (CHMultiScriptTextSynthesizer)initWithStyleInventory:(id)inventory
 {
-  v4 = a3;
+  inventoryCopy = inventory;
   v139.receiver = self;
   v139.super_class = CHMultiScriptTextSynthesizer;
   v5 = [(CHMultiScriptTextSynthesizer *)&v139 init];
@@ -33,7 +33,7 @@
   }
 
   v6 = [CHFastPathTextSynthesizer alloc];
-  v11 = objc_msgSend_initWithStyleInventory_(v6, v7, v4, v8, v9, v10);
+  v11 = objc_msgSend_initWithStyleInventory_(v6, v7, inventoryCopy, v8, v9, v10);
   fastPathSynthesizer = v5->_fastPathSynthesizer;
   v5->_fastPathSynthesizer = v11;
 
@@ -760,17 +760,17 @@ LABEL_169:
   return v133;
 }
 
-+ (id)rescaleAndShiftSynthesizedDrawing:(id)a3 original:(id)a4
++ (id)rescaleAndShiftSynthesizedDrawing:(id)drawing original:(id)original
 {
-  v5 = a3;
-  objc_msgSend_bounds(a4, v6, v7, v8, v9, v10);
+  drawingCopy = drawing;
+  objc_msgSend_bounds(original, v6, v7, v8, v9, v10);
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  objc_msgSend_bounds(v5, v19, v20, v21, v22, v23);
+  objc_msgSend_bounds(drawingCopy, v19, v20, v21, v22, v23);
   *&v24 = sqrt(v16 * v16 + v18 * v18) / sqrt(v24 * v24 + v25 * v25);
-  v33 = objc_msgSend_drawingTransformedWithTranslation_scaleFactor_(v5, v28, v29, v30, v31, v32, v12 / *&v24 - v26, v14 / *&v24 - v27);
+  v33 = objc_msgSend_drawingTransformedWithTranslation_scaleFactor_(drawingCopy, v28, v29, v30, v31, v32, v12 / *&v24 - v26, v14 / *&v24 - v27);
 
   return v33;
 }
@@ -789,18 +789,18 @@ LABEL_169:
   return v39;
 }
 
-- (id)getSynthesizerFromSynthesizerId:(int)a3
+- (id)getSynthesizerFromSynthesizerId:(int)id
 {
   v7 = 0;
-  if (a3 > 1)
+  if (id > 1)
   {
-    if (a3 != 2)
+    if (id != 2)
     {
-      if (a3 == 3)
+      if (id == 3)
       {
         diffusionSynthesizerZhJa = self->_diffusionSynthesizerZhJa;
         p_diffusionSynthesizerZhJa = &self->_diffusionSynthesizerZhJa;
-        if ((objc_msgSend_isLoaded(diffusionSynthesizerZhJa, a2, *&a3, v3, v4, v5) & 1) == 0)
+        if ((objc_msgSend_isLoaded(diffusionSynthesizerZhJa, a2, *&id, v3, v4, v5) & 1) == 0)
         {
           goto LABEL_16;
         }
@@ -808,14 +808,14 @@ LABEL_169:
 
       else
       {
-        if (a3 != 4)
+        if (id != 4)
         {
           goto LABEL_12;
         }
 
         diffusionSynthesizerKo = self->_diffusionSynthesizerKo;
         p_diffusionSynthesizerZhJa = &self->_diffusionSynthesizerKo;
-        if (!objc_msgSend_isLoaded(diffusionSynthesizerKo, a2, *&a3, v3, v4, v5))
+        if (!objc_msgSend_isLoaded(diffusionSynthesizerKo, a2, *&id, v3, v4, v5))
         {
 LABEL_16:
           v7 = 0;
@@ -830,12 +830,12 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!id)
   {
 LABEL_10:
     diffusionSynthesizerLatn = self->_diffusionSynthesizerLatn;
     p_diffusionSynthesizerZhJa = &self->_diffusionSynthesizerLatn;
-    if ((objc_msgSend_isLoaded(diffusionSynthesizerLatn, a2, *&a3, v3, v4, v5) & 1) == 0)
+    if ((objc_msgSend_isLoaded(diffusionSynthesizerLatn, a2, *&id, v3, v4, v5) & 1) == 0)
     {
       goto LABEL_16;
     }
@@ -843,7 +843,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 != 1)
+  if (id != 1)
   {
     goto LABEL_12;
   }
@@ -856,14 +856,14 @@ LABEL_12:
   return v7;
 }
 
-- (id)refineDrawing:(id)a3 transcription:(id)a4 options:(id)a5 shouldCancel:(id)a6 error:(id *)a7
+- (id)refineDrawing:(id)drawing transcription:(id)transcription options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v46 = a4;
-  v11 = a5;
-  v45 = a6;
-  v16 = objc_msgSend_objectForKeyedSubscript_(v11, v12, CHTextSynthesisOptionSynthesisSuggestion[0], v13, v14, v15);
+  drawingCopy = drawing;
+  transcriptionCopy = transcription;
+  optionsCopy = options;
+  cancelCopy = cancel;
+  v16 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v12, CHTextSynthesisOptionSynthesisSuggestion[0], v13, v14, v15);
   v22 = objc_msgSend_intValue(v16, v17, v18, v19, v20, v21);
 
   v23 = objc_opt_class();
@@ -963,15 +963,15 @@ LABEL_27:
   return 0;
 }
 
-- (id)replaceDrawing:(id)a3 originalTranscription:(id)a4 replacementTranscription:(id)a5 options:(id)a6 shouldCancel:(id)a7 error:(id *)a8
+- (id)replaceDrawing:(id)drawing originalTranscription:(id)transcription replacementTranscription:(id)replacementTranscription options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v51 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v20 = objc_msgSend_objectForKeyedSubscript_(v14, v16, CHTextSynthesisOptionSynthesisSuggestion[0], v17, v18, v19);
+  drawingCopy = drawing;
+  transcriptionCopy = transcription;
+  replacementTranscriptionCopy = replacementTranscription;
+  optionsCopy = options;
+  cancelCopy = cancel;
+  v20 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v16, CHTextSynthesisOptionSynthesisSuggestion[0], v17, v18, v19);
   v26 = objc_msgSend_intValue(v20, v21, v22, v23, v24, v25);
 
   v27 = objc_opt_class();
@@ -1109,20 +1109,20 @@ LABEL_9:
   return 0;
 }
 
-- (id)supportedCharacterIndexesForString:(id)a3 options:(id)a4
+- (id)supportedCharacterIndexesForString:(id)string options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = objc_msgSend_supportedCharacterIndexesForString_options_(self->_diffusionSynthesizerLatn, v8, v6, v7, v9, v10);
+  stringCopy = string;
+  optionsCopy = options;
+  v11 = objc_msgSend_supportedCharacterIndexesForString_options_(self->_diffusionSynthesizerLatn, v8, stringCopy, optionsCopy, v9, v10);
   v17 = objc_msgSend_mutableCopy(v11, v12, v13, v14, v15, v16);
 
-  v21 = objc_msgSend_supportedCharacterIndexesForString_options_(self->_fastPathSynthesizer, v18, v6, v7, v19, v20);
+  v21 = objc_msgSend_supportedCharacterIndexesForString_options_(self->_fastPathSynthesizer, v18, stringCopy, optionsCopy, v19, v20);
   objc_msgSend_addIndexes_(v17, v22, v21, v23, v24, v25);
 
-  v29 = objc_msgSend_supportedCharacterIndexesForString_options_(self->_diffusionSynthesizerZhJa, v26, v6, v7, v27, v28);
+  v29 = objc_msgSend_supportedCharacterIndexesForString_options_(self->_diffusionSynthesizerZhJa, v26, stringCopy, optionsCopy, v27, v28);
   objc_msgSend_addIndexes_(v17, v30, v29, v31, v32, v33);
 
-  v37 = objc_msgSend_supportedCharacterIndexesForString_options_(self->_diffusionSynthesizerKo, v34, v6, v7, v35, v36);
+  v37 = objc_msgSend_supportedCharacterIndexesForString_options_(self->_diffusionSynthesizerKo, v34, stringCopy, optionsCopy, v35, v36);
   objc_msgSend_addIndexes_(v17, v38, v37, v39, v40, v41);
 
   return v17;
@@ -1149,13 +1149,13 @@ LABEL_9:
   return v7;
 }
 
-- (id)synthesizeDrawingForString:(id)a3 options:(id)a4 shouldCancel:(id)a5 error:(id *)a6
+- (id)synthesizeDrawingForString:(id)string options:(id)options shouldCancel:(id)cancel error:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v16 = objc_msgSend_objectForKeyedSubscript_(v10, v12, CHTextSynthesisOptionFastPath[0], v13, v14, v15);
+  stringCopy = string;
+  optionsCopy = options;
+  cancelCopy = cancel;
+  v16 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v12, CHTextSynthesisOptionFastPath[0], v13, v14, v15);
   v22 = objc_msgSend_BOOLValue(v16, v17, v18, v19, v20, v21);
 
   v28 = objc_msgSend_availableDiffusionSynthesizers(self, v23, v24, v25, v26, v27);
@@ -1163,7 +1163,7 @@ LABEL_9:
 
   if (v34)
   {
-    v39 = objc_msgSend_objectForKeyedSubscript_(v10, v35, CHTextSynthesisOptionSynthesisSuggestion[0], v36, v37, v38);
+    v39 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v35, CHTextSynthesisOptionSynthesisSuggestion[0], v36, v37, v38);
     v45 = objc_msgSend_intValue(v39, v40, v41, v42, v43, v44);
 
     if (v22)
@@ -1357,11 +1357,11 @@ LABEL_42:
   return 0;
 }
 
-- (int64_t)canPredictStyleForTranscription:(id)a3
+- (int64_t)canPredictStyleForTranscription:(id)transcription
 {
-  v4 = a3;
-  canPredictStyleForTranscription = objc_msgSend_canPredictStyleForTranscription_(self->_diffusionSynthesizerLatn, v5, v4, v6, v7, v8);
-  if (canPredictStyleForTranscription || (canPredictStyleForTranscription = objc_msgSend_canPredictStyleForTranscription_(self->_diffusionSynthesizerZhJa, v9, v4, v10, v11, v12)) != 0)
+  transcriptionCopy = transcription;
+  canPredictStyleForTranscription = objc_msgSend_canPredictStyleForTranscription_(self->_diffusionSynthesizerLatn, v5, transcriptionCopy, v6, v7, v8);
+  if (canPredictStyleForTranscription || (canPredictStyleForTranscription = objc_msgSend_canPredictStyleForTranscription_(self->_diffusionSynthesizerZhJa, v9, transcriptionCopy, v10, v11, v12)) != 0)
   {
 
     return canPredictStyleForTranscription;
@@ -1369,22 +1369,22 @@ LABEL_42:
 
   else
   {
-    v19 = objc_msgSend_canPredictStyleForTranscription_(self->_diffusionSynthesizerKo, v15, v4, v16, v17, v18);
+    v19 = objc_msgSend_canPredictStyleForTranscription_(self->_diffusionSynthesizerKo, v15, transcriptionCopy, v16, v17, v18);
 
     return v19;
   }
 }
 
-- (id)stylePredictionResultForTranscriptions:(id)a3 drawings:(id)a4 shouldCancel:(id)a5
+- (id)stylePredictionResultForTranscriptions:(id)transcriptions drawings:(id)drawings shouldCancel:(id)cancel
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v15 = objc_msgSend_componentsJoinedByString_(v8, v11, &stru_1EF1C0318, v12, v13, v14);
+  transcriptionsCopy = transcriptions;
+  drawingsCopy = drawings;
+  cancelCopy = cancel;
+  v15 = objc_msgSend_componentsJoinedByString_(transcriptionsCopy, v11, &stru_1EF1C0318, v12, v13, v14);
   p_diffusionSynthesizerLatn = &self->_diffusionSynthesizerLatn;
   if (objc_msgSend_canPredictStyleForTranscription_(self->_diffusionSynthesizerLatn, v17, v15, v18, v19, v20) || (p_diffusionSynthesizerLatn = &self->_diffusionSynthesizerZhJa, objc_msgSend_canPredictStyleForTranscription_(self->_diffusionSynthesizerZhJa, v21, v15, v22, v23, v24)) || (p_diffusionSynthesizerLatn = &self->_diffusionSynthesizerKo, objc_msgSend_canPredictStyleForTranscription_(self->_diffusionSynthesizerKo, v21, v15, v25, v26, v24)))
   {
-    v27 = objc_msgSend_stylePredictionResultForTranscriptions_drawings_shouldCancel_(*p_diffusionSynthesizerLatn, v21, v8, v9, v10, v24);
+    v27 = objc_msgSend_stylePredictionResultForTranscriptions_drawings_shouldCancel_(*p_diffusionSynthesizerLatn, v21, transcriptionsCopy, drawingsCopy, cancelCopy, v24);
   }
 
   else
@@ -1407,37 +1407,37 @@ LABEL_42:
   return v27;
 }
 
-+ (int)synthesizerIdFromSuggestion:(int64_t)a3
++ (int)synthesizerIdFromSuggestion:(int64_t)suggestion
 {
-  if (a3 > 4)
+  if (suggestion > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_1839D97C4[a3];
+    return dword_1839D97C4[suggestion];
   }
 }
 
-+ (int64_t)suggestionFromSynthesizerID:(int)a3
++ (int64_t)suggestionFromSynthesizerID:(int)d
 {
-  if (a3 > 4)
+  if (d > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1839D97D8[a3];
+    return qword_1839D97D8[d];
   }
 }
 
-+ (id)chunksForFeatures:(const void *)a3 metadata:(CHDiffusionPipelinePreprocessingExecutionMetadata *)a4
++ (id)chunksForFeatures:(const void *)features metadata:(CHDiffusionPipelinePreprocessingExecutionMetadata *)metadata
 {
   v72 = *MEMORY[0x1E69E9840];
-  sub_1837D3C60(a4, a3, a3, a4, v4, v5, __p);
-  sub_1837D4C4C(__p, a4, v7, v8, v9, v10, buf);
+  sub_1837D3C60(metadata, features, features, metadata, v4, v5, __p);
+  sub_1837D4C4C(__p, metadata, v7, v8, v9, v10, buf);
   v11 = __p[0];
   if (__p[0])
   {
@@ -1535,20 +1535,20 @@ LABEL_42:
   return v14;
 }
 
-- (id)chunkForSynthesisString:(id)a3 allowedSynthesizers:(id)a4
+- (id)chunkForSynthesisString:(id)string allowedSynthesizers:(id)synthesizers
 {
-  v5 = objc_msgSend_chunkForSynthesisString_allowedSynthesizers_mode_(self, a2, a3, a4, &unk_1EF1ED9D8, v4);
+  v5 = objc_msgSend_chunkForSynthesisString_allowedSynthesizers_mode_(self, a2, string, synthesizers, &unk_1EF1ED9D8, v4);
 
   return v5;
 }
 
-- (id)chunkForSynthesisString:(id)a3 allowedSynthesizers:(id)a4 mode:(id)a5
+- (id)chunkForSynthesisString:(id)string allowedSynthesizers:(id)synthesizers mode:(id)mode
 {
   v182 = *MEMORY[0x1E69E9840];
-  v150 = a3;
-  v152 = a3;
-  v7 = a4;
-  v151 = a5;
+  stringCopy = string;
+  stringCopy2 = string;
+  synthesizersCopy = synthesizers;
+  modeCopy = mode;
   __p = 0u;
   v173 = 0u;
   v174 = 1065353216;
@@ -1556,7 +1556,7 @@ LABEL_42:
   v169 = 0u;
   v170 = 0u;
   v171 = 0u;
-  obj = v7;
+  obj = synthesizersCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v8, &v168, v181, 16, v9);
   if (v10)
   {
@@ -1572,7 +1572,7 @@ LABEL_42:
 
         v13 = *(*(&v168 + 1) + 8 * i);
         v14 = objc_opt_class();
-        v20 = objc_msgSend_integerValue(v13, v15, v16, v17, v18, v19, v150);
+        v20 = objc_msgSend_integerValue(v13, v15, v16, v17, v18, v19, stringCopy);
         v25 = objc_msgSend_synthesizerIdFromSuggestion_(v14, v21, v20, v22, v23, v24);
         if (!*(&__p + 1))
         {
@@ -1780,7 +1780,7 @@ LABEL_53:
     if (v44)
     {
       atomic_fetch_add_explicit(&v44->__shared_owners_, 1uLL, memory_order_relaxed);
-      objc_storeStrong((v43 + 16), v150);
+      objc_storeStrong((v43 + 16), stringCopy);
       if (!atomic_fetch_add(&v44->__shared_owners_, 0xFFFFFFFFFFFFFFFFLL))
       {
         (v44->__on_zero_shared)(v44);
@@ -1790,7 +1790,7 @@ LABEL_53:
 
     else
     {
-      objc_storeStrong((v43 + 16), v150);
+      objc_storeStrong((v43 + 16), stringCopy);
     }
 
     v45 = begin_node[5].__left_;
@@ -1814,7 +1814,7 @@ LABEL_53:
 
     v48 = begin_node[5].__left_;
     v49 = objc_opt_class();
-    v55 = objc_msgSend_integerValue(v151, v50, v51, v52, v53, v54);
+    v55 = objc_msgSend_integerValue(modeCopy, v50, v51, v52, v53, v54);
     v48[19] = objc_msgSend_pipelineModeFromSynthesizerMode_(v49, v56, v55, v57, v58, v59);
     v60 = begin_node[5].__left_;
     if (*(v60 + 19) == 2)
@@ -2199,12 +2199,12 @@ LABEL_137:
   }
 
   v110 = [CHTextSynthesizerDataChunk alloc];
-  v116 = objc_msgSend_length(v152, v111, v112, v113, v114, v115);
-  isNotDef_synthesisSuggestion = objc_msgSend_initWithChunkValueForSynthesis_originalValue_range_isNotDef_synthesisSuggestion_(v110, v117, &stru_1EF1C0318, v152, 0, v116, 1, 1);
+  v116 = objc_msgSend_length(stringCopy2, v111, v112, v113, v114, v115);
+  isNotDef_synthesisSuggestion = objc_msgSend_initWithChunkValueForSynthesis_originalValue_range_isNotDef_synthesisSuggestion_(v110, v117, &stru_1EF1C0318, stringCopy2, 0, v116, 1, 1);
   v119 = [CHTextSynthesizerChunkedData alloc];
   v180 = isNotDef_synthesisSuggestion;
   v123 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v120, &v180, 1, v121, v122);
-  v127 = objc_msgSend_initWithDataChunks_originalString_(v119, v124, v123, v152, v125, v126);
+  v127 = objc_msgSend_initWithDataChunks_originalString_(v119, v124, v123, stringCopy2, v125, v126);
 
   v128 = v162;
   if (v162)

@@ -1,7 +1,7 @@
 @interface CIFaceBalance
 + (id)customAttributes;
 - (BOOL)_isIdentity;
-- (id)_initFromProperties:(id)a3;
+- (id)_initFromProperties:(id)properties;
 - (id)_outputProperties;
 - (id)outputImage;
 @end
@@ -119,7 +119,7 @@
   if (fabs(v10) >= 0.001 || fabs(v12) >= 0.001)
   {
     v16 = [-[CIImage _imageByApplyingGamma:](inputImage _imageByApplyingGamma:{0.25), "imageByUnpremultiplyingAlpha"}];
-    v17 = [(CIFaceBalance *)self _kernel];
+    _kernel = [(CIFaceBalance *)self _kernel];
     [(CIImage *)self->inputImage extent];
     v19 = v18;
     v21 = v20;
@@ -127,7 +127,7 @@
     v25 = v24;
     v26[0] = v16;
     v26[1] = [CIVector vectorWithX:v10 Y:v12];
-    return [objc_msgSend(objc_msgSend(v17 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v26, 2), v19, v21, v23, v25), "imageByPremultiplyingAlpha"), "_imageByApplyingGamma:", 4.0}];
+    return [objc_msgSend(objc_msgSend(_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v26, 2), v19, v21, v23, v25), "imageByPremultiplyingAlpha"), "_imageByApplyingGamma:", 4.0}];
   }
 
   else
@@ -195,13 +195,13 @@
   return [v19 arrayWithObjects:v20 count:{v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38}];
 }
 
-- (id)_initFromProperties:(id)a3
+- (id)_initFromProperties:(id)properties
 {
   v8 = 0.0;
   v9 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
-  if (metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"FaceBalanceOrigI", &v9) && metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"FaceBalanceOrigQ", &v8) && metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"FaceBalanceStrength", &v7) && metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"FaceBalanceWarmth", &v6))
+  if (metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"FaceBalanceOrigI", &v9) && metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"FaceBalanceOrigQ", &v8) && metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"FaceBalanceStrength", &v7) && metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"FaceBalanceWarmth", &v6))
   {
     -[CIFaceBalance setInputOrigI:](self, "setInputOrigI:", [MEMORY[0x1E696AD98] numberWithDouble:v9]);
     -[CIFaceBalance setInputOrigQ:](self, "setInputOrigQ:", [MEMORY[0x1E696AD98] numberWithDouble:v8]);

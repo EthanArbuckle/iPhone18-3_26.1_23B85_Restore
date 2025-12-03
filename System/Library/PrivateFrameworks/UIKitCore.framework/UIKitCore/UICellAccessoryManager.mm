@@ -1,22 +1,22 @@
 @interface UICellAccessoryManager
-- (CGRect)_updateAccessories:(id)a3 previousAccessories:(id)a4 withLayout:(id)a5 edge:(unint64_t)a6;
+- (CGRect)_updateAccessories:(id)accessories previousAccessories:(id)previousAccessories withLayout:(id)layout edge:(unint64_t)edge;
 - (CGRect)containerBounds;
 - (CGRect)contentFrame;
 - (CGSize)containerSize;
 - (CGSize)previousContainerSize;
-- (UICellAccessoryManager)initWithContainerView:(id)a3;
+- (UICellAccessoryManager)initWithContainerView:(id)view;
 - (UIEdgeInsets)contentInset;
 - (UIEdgeInsets)safeAreaInsets;
 - (UIView)containerView;
-- (id)_configurationWithIdentifier:(id)a3;
-- (void)_updateFromPreviousConfiguration:(id)a3;
+- (id)_configurationWithIdentifier:(id)identifier;
+- (void)_updateFromPreviousConfiguration:(id)configuration;
 - (void)layoutIfNeeded;
-- (void)performWithEnforcedContainerSize:(CGSize)a3 block:(id)a4;
-- (void)setConfigurations:(id)a3;
-- (void)setCurrentConfigurationIdentifier:(id)a3;
+- (void)performWithEnforcedContainerSize:(CGSize)size block:(id)block;
+- (void)setConfigurations:(id)configurations;
+- (void)setCurrentConfigurationIdentifier:(id)identifier;
 - (void)setNeedsLayout;
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3;
-- (void)updateContainerView:(id)a3;
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets;
+- (void)updateContainerView:(id)view;
 @end
 
 @implementation UICellAccessoryManager
@@ -106,24 +106,24 @@
   return result;
 }
 
-- (UICellAccessoryManager)initWithContainerView:(id)a3
+- (UICellAccessoryManager)initWithContainerView:(id)view
 {
   v8.receiver = self;
   v8.super_class = UICellAccessoryManager;
-  v3 = a3;
+  viewCopy = view;
   v4 = [(UICellAccessoryManager *)&v8 init];
-  objc_storeWeak(&v4->_containerView, v3);
+  objc_storeWeak(&v4->_containerView, viewCopy);
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   accessoryViews = v4->_accessoryViews;
-  v4->_accessoryViews = v5;
+  v4->_accessoryViews = dictionary;
 
   return v4;
 }
 
-- (void)updateContainerView:(id)a3
+- (void)updateContainerView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_containerView);
 
   v5 = obj;
@@ -135,46 +135,46 @@
   }
 }
 
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets
 {
-  if (a3.left != self->_safeAreaInsets.left || a3.right != self->_safeAreaInsets.right)
+  if (insets.left != self->_safeAreaInsets.left || insets.right != self->_safeAreaInsets.right)
   {
-    self->_safeAreaInsets = a3;
+    self->_safeAreaInsets = insets;
     [(UICellAccessoryManager *)self setNeedsLayout];
   }
 }
 
-- (void)setConfigurations:(id)a3
+- (void)setConfigurations:(id)configurations
 {
-  v5 = a3;
-  if (self->_configurations != v5)
+  configurationsCopy = configurations;
+  if (self->_configurations != configurationsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_configurations, a3);
+    v7 = configurationsCopy;
+    objc_storeStrong(&self->_configurations, configurations);
     WeakRetained = objc_loadWeakRetained(&self->_containerView);
     [WeakRetained setNeedsLayout];
 
-    v5 = v7;
+    configurationsCopy = v7;
   }
 }
 
-- (void)setCurrentConfigurationIdentifier:(id)a3
+- (void)setCurrentConfigurationIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (self->_currentConfigurationIdentifier != v5)
+  identifierCopy = identifier;
+  if (self->_currentConfigurationIdentifier != identifierCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_currentConfigurationIdentifier, a3);
+    v7 = identifierCopy;
+    objc_storeStrong(&self->_currentConfigurationIdentifier, identifier);
     WeakRetained = objc_loadWeakRetained(&self->_containerView);
     [WeakRetained setNeedsLayout];
 
-    v5 = v7;
+    identifierCopy = v7;
   }
 }
 
-- (id)_configurationWithIdentifier:(id)a3
+- (id)_configurationWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:?];
   }
@@ -187,28 +187,28 @@
   return v4;
 }
 
-- (void)_updateFromPreviousConfiguration:(id)a3
+- (void)_updateFromPreviousConfiguration:(id)configuration
 {
-  v67 = a3;
+  configurationCopy = configuration;
   WeakRetained = objc_loadWeakRetained(&self->_containerView);
   if (WeakRetained)
   {
     v5 = [(UICellAccessoryManager *)self _configurationWithIdentifier:self->_currentConfigurationIdentifier];
-    v6 = [WeakRetained _shouldReverseLayoutDirection];
-    v7 = [v5 leadingAccessories];
-    v8 = [v7 reverseObjectEnumerator];
-    v9 = [v8 allObjects];
+    _shouldReverseLayoutDirection = [WeakRetained _shouldReverseLayoutDirection];
+    leadingAccessories = [v5 leadingAccessories];
+    reverseObjectEnumerator = [leadingAccessories reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
     v66 = v5;
-    v10 = [v5 trailingAccessories];
-    v11 = [v67 leadingAccessories];
-    v12 = [v11 reverseObjectEnumerator];
-    v13 = [v12 allObjects];
-    v14 = v13;
+    trailingAccessories = [v5 trailingAccessories];
+    leadingAccessories2 = [configurationCopy leadingAccessories];
+    reverseObjectEnumerator2 = [leadingAccessories2 reverseObjectEnumerator];
+    allObjects2 = [reverseObjectEnumerator2 allObjects];
+    v14 = allObjects2;
     v15 = MEMORY[0x1E695E0F0];
-    if (v13)
+    if (allObjects2)
     {
-      v16 = v13;
+      v16 = allObjects2;
     }
 
     else
@@ -218,11 +218,11 @@
 
     v17 = v16;
 
-    v18 = [v67 trailingAccessories];
-    v19 = v18;
-    if (v18)
+    trailingAccessories2 = [configurationCopy trailingAccessories];
+    v19 = trailingAccessories2;
+    if (trailingAccessories2)
     {
-      v20 = v18;
+      v20 = trailingAccessories2;
     }
 
     else
@@ -232,7 +232,7 @@
 
     v21 = v20;
 
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v22 = 8;
     }
@@ -242,7 +242,7 @@
       v22 = 2;
     }
 
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v23 = 2;
     }
@@ -252,18 +252,18 @@
       v23 = 8;
     }
 
-    [(UICellAccessoryManager *)self _updateAccessories:v9 previousAccessories:v17 withLayout:self->_leadingLayout edge:v22];
+    [(UICellAccessoryManager *)self _updateAccessories:allObjects previousAccessories:v17 withLayout:self->_leadingLayout edge:v22];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v62 = v28;
     v31 = v30;
-    [(UICellAccessoryManager *)self _updateAccessories:v10 previousAccessories:v21 withLayout:self->_trailingLayout edge:v23];
+    [(UICellAccessoryManager *)self _updateAccessories:trailingAccessories previousAccessories:v21 withLayout:self->_trailingLayout edge:v23];
     v36 = v32;
     v37 = v33;
     v38 = v34;
     v39 = v35;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v40 = v32;
     }
@@ -273,7 +273,7 @@
       v40 = v25;
     }
 
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v41 = v33;
     }
@@ -285,7 +285,7 @@
 
     v60 = v41;
     v61 = v40;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v42 = v34;
     }
@@ -296,7 +296,7 @@
     }
 
     v59 = v42;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v43 = v35;
     }
@@ -306,7 +306,7 @@
       v43 = v31;
     }
 
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v44 = v25;
     }
@@ -316,7 +316,7 @@
       v44 = v36;
     }
 
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v45 = v27;
     }
@@ -328,7 +328,7 @@
 
     v64 = v45;
     v65 = v44;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v38 = v62;
       v46 = v31;
@@ -386,38 +386,38 @@
   }
 }
 
-- (CGRect)_updateAccessories:(id)a3 previousAccessories:(id)a4 withLayout:(id)a5 edge:(unint64_t)a6
+- (CGRect)_updateAccessories:(id)accessories previousAccessories:(id)previousAccessories withLayout:(id)layout edge:(unint64_t)edge
 {
   v83 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  [v13 setManager:self];
-  [v13 setEdge:a6];
+  accessoriesCopy = accessories;
+  previousAccessoriesCopy = previousAccessories;
+  layoutCopy = layout;
+  [layoutCopy setManager:self];
+  [layoutCopy setEdge:edge];
   v14 = 136;
-  if (a6 == 8)
+  if (edge == 8)
   {
     v14 = 152;
   }
 
-  [v13 setSafeAreaInset:*(&self->super.isa + v14)];
-  v15 = [(UICellAccessoryManager *)self standardLayoutWidthProvider];
-  [v13 setStandardLayoutWidthProvider:v15];
+  [layoutCopy setSafeAreaInset:*(&self->super.isa + v14)];
+  standardLayoutWidthProvider = [(UICellAccessoryManager *)self standardLayoutWidthProvider];
+  [layoutCopy setStandardLayoutWidthProvider:standardLayoutWidthProvider];
 
-  v16 = [(UICellAccessoryManager *)self disclosureLayoutWidthProvider];
-  [v13 setDisclosureLayoutWidthProvider:v16];
+  disclosureLayoutWidthProvider = [(UICellAccessoryManager *)self disclosureLayoutWidthProvider];
+  [layoutCopy setDisclosureLayoutWidthProvider:disclosureLayoutWidthProvider];
 
-  v62 = self;
-  v59 = v13;
+  selfCopy = self;
+  v59 = layoutCopy;
   v60 = +[UIView _isInAnimationBlockWithAnimationsEnabled];
-  [v13 prepareLayoutForAccessories:v11 previousAccessories:v12 configurationIdentifier:self->_currentConfigurationIdentifier animated:?];
-  v17 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v11, "count")}];
-  v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  [layoutCopy prepareLayoutForAccessories:accessoriesCopy previousAccessories:previousAccessoriesCopy configurationIdentifier:self->_currentConfigurationIdentifier animated:?];
+  v17 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(accessoriesCopy, "count")}];
+  v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(accessoriesCopy, "count")}];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v19 = v11;
+  v19 = accessoriesCopy;
   v20 = [v19 countByEnumeratingWithState:&v77 objects:v82 count:16];
   if (v20)
   {
@@ -433,11 +433,11 @@
         }
 
         v24 = *(*(&v77 + 1) + 8 * i);
-        v25 = [v24 view];
-        [v17 addObject:v25];
+        view = [v24 view];
+        [v17 addObject:view];
 
-        v26 = [v24 identifier];
-        [v18 addObject:v26];
+        identifier = [v24 identifier];
+        [v18 addObject:identifier];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v77 objects:v82 count:16];
@@ -449,8 +449,8 @@
   v27 = [v17 count];
   if (v27 != [v19 count])
   {
-    v57 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v57 handleFailureInMethod:a2 object:v62 file:@"UICellAccessoryManager.m" lineNumber:334 description:@"Having the same view in multiple accessories is unsupported."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"UICellAccessoryManager.m" lineNumber:334 description:@"Having the same view in multiple accessories is unsupported."];
   }
 
   v58 = a2;
@@ -460,7 +460,7 @@
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v29 = v12;
+  v29 = previousAccessoriesCopy;
   v30 = [v29 countByEnumeratingWithState:&v73 objects:v81 count:16];
   if (v30)
   {
@@ -476,8 +476,8 @@
         }
 
         v34 = *(*(&v73 + 1) + 8 * j);
-        v35 = [v34 identifier];
-        v36 = [v18 containsObject:v35];
+        identifier2 = [v34 identifier];
+        v36 = [v18 containsObject:identifier2];
 
         if ((v36 & 1) == 0)
         {
@@ -495,7 +495,7 @@
   v70[1] = 3221225472;
   v70[2] = __81__UICellAccessoryManager__updateAccessories_previousAccessories_withLayout_edge___block_invoke;
   v70[3] = &unk_1E70F6228;
-  v70[4] = v62;
+  v70[4] = selfCopy;
   v37 = v28;
   v71 = v37;
   v38 = v59;
@@ -505,28 +505,28 @@
   v68[1] = 3221225472;
   v68[2] = __81__UICellAccessoryManager__updateAccessories_previousAccessories_withLayout_edge___block_invoke_3;
   v68[3] = &unk_1E7123148;
-  v68[4] = v62;
+  v68[4] = selfCopy;
   v39 = v38;
   v69 = v39;
   [v37 enumerateObjectsUsingBlock:v68];
-  v40 = [(UICellAccessoryManager *)v62 _configurationWithIdentifier:v62->_currentConfigurationIdentifier];
+  v40 = [(UICellAccessoryManager *)selfCopy _configurationWithIdentifier:selfCopy->_currentConfigurationIdentifier];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __81__UICellAccessoryManager__updateAccessories_previousAccessories_withLayout_edge___block_invoke_4;
   aBlock[3] = &unk_1E70F35B8;
-  aBlock[4] = v62;
+  aBlock[4] = selfCopy;
   v41 = v40;
   v67 = v41;
   v42 = _Block_copy(aBlock);
-  v43 = [(UICellAccessoryManager *)v62 animatedLayoutUpdatesCount];
+  animatedLayoutUpdatesCount = [(UICellAccessoryManager *)selfCopy animatedLayoutUpdatesCount];
   if (v60)
   {
-    [(UICellAccessoryManager *)v62 setAnimatedLayoutUpdatesCount:v43 + 1];
+    [(UICellAccessoryManager *)selfCopy setAnimatedLayoutUpdatesCount:animatedLayoutUpdatesCount + 1];
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
     v63[2] = __81__UICellAccessoryManager__updateAccessories_previousAccessories_withLayout_edge___block_invoke_5;
     v63[3] = &unk_1E7104F38;
-    v63[4] = v62;
+    v63[4] = selfCopy;
     v65 = v58;
     v64 = v42;
     [UIView _addCompletion:v63];
@@ -537,7 +537,7 @@
   else
   {
     v44 = v61;
-    if (!v43)
+    if (!animatedLayoutUpdatesCount)
     {
       v42[2](v42);
     }
@@ -782,11 +782,11 @@ void __81__UICellAccessoryManager__updateAccessories_previousAccessories_withLay
   }
 }
 
-- (void)performWithEnforcedContainerSize:(CGSize)a3 block:(id)a4
+- (void)performWithEnforcedContainerSize:(CGSize)size block:(id)block
 {
   enforcedContainerSize = self->_enforcedContainerSize;
-  self->_enforcedContainerSize = a3;
-  (*(a4 + 2))(a4, a2);
+  self->_enforcedContainerSize = size;
+  (*(block + 2))(block, a2);
   self->_enforcedContainerSize = enforcedContainerSize;
 }
 

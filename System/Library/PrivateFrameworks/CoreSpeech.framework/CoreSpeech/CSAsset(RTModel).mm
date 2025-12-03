@@ -35,18 +35,18 @@
   if (a3)
   {
     v5 = a3;
-    v6 = [v5 accessoryInfo];
-    v7 = [v6 supportsJustSiri];
+    accessoryInfo = [v5 accessoryInfo];
+    supportsJustSiri = [accessoryInfo supportsJustSiri];
 
-    v8 = [v5 engineMajorVersion];
-    v9 = [v8 unsignedIntValue];
+    engineMajorVersion = [v5 engineMajorVersion];
+    unsignedIntValue = [engineMajorVersion unsignedIntValue];
 
-    v10 = [v5 engineMinorVersion];
-    v11 = [v10 unsignedIntValue];
+    engineMinorVersion = [v5 engineMinorVersion];
+    unsignedIntValue2 = [engineMinorVersion unsignedIntValue];
 
-    if (v9)
+    if (unsignedIntValue)
     {
-      v12 = v11 == 0;
+      v12 = unsignedIntValue2 == 0;
     }
 
     else
@@ -65,22 +65,22 @@
       v14 = v13;
     }
 
-    v15 = [v5 allowMph];
+    allowMph = [v5 allowMph];
 
-    v16 = v7 & v14 & v15;
+    v16 = supportsJustSiri & v14 & allowMph;
     v17 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
     {
       v20 = 136316162;
       v21 = "[CSAsset(RTModel) _allowMultiPhrase:forceSkipEngineVersionCheck:]";
       v22 = 1024;
-      v23 = v7 & v14 & v15;
+      v23 = supportsJustSiri & v14 & allowMph;
       v24 = 1024;
-      v25 = v7;
+      v25 = supportsJustSiri;
       v26 = 1024;
       v27 = v14;
       v28 = 1024;
-      v29 = v15 & 1;
+      v29 = allowMph & 1;
       _os_log_impl(&dword_222E4D000, v17, OS_LOG_TYPE_DEFAULT, "%s Multi-phrase keyword detection (%d): Accessory supports multi-phrase: %d, engine support multi-phrase: %d, device allows multi-phrase: %d", &v20, 0x24u);
     }
   }
@@ -98,12 +98,12 @@
 {
   v33 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [a1 _getFilteredAccessoryRTBlobListForRequestOptions:v6 accessoryBlobs:a4 forceSkipEngineVersionCheck:0];
-  v8 = [v6 engineMajorVersion];
-  v9 = [v8 unsignedIntValue];
+  v7 = [self _getFilteredAccessoryRTBlobListForRequestOptions:v6 accessoryBlobs:a4 forceSkipEngineVersionCheck:0];
+  engineMajorVersion = [v6 engineMajorVersion];
+  unsignedIntValue = [engineMajorVersion unsignedIntValue];
 
-  v10 = [v6 engineMinorVersion];
-  v11 = [v10 unsignedIntValue];
+  engineMinorVersion = [v6 engineMinorVersion];
+  unsignedIntValue2 = [engineMinorVersion unsignedIntValue];
 
   v30 = 0u;
   v31 = 0u;
@@ -114,7 +114,7 @@
   if (v12)
   {
     v13 = v12;
-    v25 = a1;
+    selfCopy = self;
     v26 = v6;
     v14 = *v29;
     while (2)
@@ -128,15 +128,15 @@
 
         v16 = *(*(&v28 + 1) + 8 * i);
         v17 = [v16 objectForKeyedSubscript:@"majorVersion"];
-        v18 = [v17 unsignedIntValue];
+        unsignedIntValue3 = [v17 unsignedIntValue];
 
         v19 = [v16 objectForKeyedSubscript:@"minorVersion"];
-        v20 = [v19 unsignedIntValue];
+        unsignedIntValue4 = [v19 unsignedIntValue];
 
-        if (v18 == v9 && v11 >= v20)
+        if (unsignedIntValue3 == unsignedIntValue && unsignedIntValue2 >= unsignedIntValue4)
         {
           v6 = v26;
-          v22 = [v25 _buildRTModelWithBlobConfig:v16 requestOptions:v26];
+          v22 = [selfCopy _buildRTModelWithBlobConfig:v16 requestOptions:v26];
           goto LABEL_15;
         }
       }
@@ -170,11 +170,11 @@ LABEL_15:
 {
   v23 = *MEMORY[0x277D85DE8];
   v8 = a3;
-  v9 = [a1 _splitBlobsByPhraseType:a4];
-  v10 = [v8 userSelectedPhraseType];
-  v11 = [a1 _userSelectedPhraseTypeToRTModelPhraseType:v10];
+  v9 = [self _splitBlobsByPhraseType:a4];
+  userSelectedPhraseType = [v8 userSelectedPhraseType];
+  v11 = [self _userSelectedPhraseTypeToRTModelPhraseType:userSelectedPhraseType];
 
-  v12 = [a1 _allowMultiPhrase:v8 forceSkipEngineVersionCheck:a5];
+  v12 = [self _allowMultiPhrase:v8 forceSkipEngineVersionCheck:a5];
   v13 = MEMORY[0x277D015D8];
   if (v12)
   {
@@ -276,12 +276,12 @@ LABEL_8:
     while (v7);
   }
 
-  v16 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = [v16 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  v17 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v17)
   {
     v18 = v17;
@@ -292,7 +292,7 @@ LABEL_8:
       {
         if (*v27 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys);
         }
 
         v21 = *(*(&v26 + 1) + 8 * j);
@@ -305,7 +305,7 @@ LABEL_8:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v18 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v18);
@@ -324,11 +324,11 @@ LABEL_8:
   v8 = [v6 objectForKeyedSubscript:@"blob"];
   if (v8)
   {
-    v9 = [a1 resourcePath];
-    v10 = [v9 stringByAppendingPathComponent:v8];
+    resourcePath = [self resourcePath];
+    v10 = [resourcePath stringByAppendingPathComponent:v8];
 
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v11 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v12 = [defaultManager fileExistsAtPath:v10];
 
     v13 = MEMORY[0x277D015D8];
     v14 = *MEMORY[0x277D015D8];
@@ -356,11 +356,11 @@ LABEL_8:
         if (v18)
         {
           v19 = v18;
-          v20 = [a1 resourcePath];
-          v21 = [v20 stringByAppendingPathComponent:v19];
+          resourcePath2 = [self resourcePath];
+          v21 = [resourcePath2 stringByAppendingPathComponent:v19];
 
-          v22 = [MEMORY[0x277CCAA00] defaultManager];
-          v23 = [v22 fileExistsAtPath:v21];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          v23 = [defaultManager2 fileExistsAtPath:v21];
 
           if (v23)
           {
@@ -383,11 +383,11 @@ LABEL_8:
         if (v27)
         {
           v28 = v27;
-          v29 = [a1 resourcePath];
-          v30 = [v29 stringByAppendingPathComponent:v28];
+          resourcePath3 = [self resourcePath];
+          v30 = [resourcePath3 stringByAppendingPathComponent:v28];
 
-          v31 = [MEMORY[0x277CCAA00] defaultManager];
-          v32 = [v31 fileExistsAtPath:v30];
+          defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+          v32 = [defaultManager3 fileExistsAtPath:v30];
 
           if (v32)
           {
@@ -406,8 +406,8 @@ LABEL_8:
         }
 
         v34 = [CSVoiceTriggerRTModel alloc];
-        v35 = [v7 siriLocale];
-        v25 = [(CSVoiceTriggerRTModel *)v34 initWithData:v16 hash:v42 locale:v35 digest:v41 signature:v39 certificate:v33];
+        siriLocale = [v7 siriLocale];
+        v25 = [(CSVoiceTriggerRTModel *)v34 initWithData:v16 hash:v42 locale:siriLocale digest:v41 signature:v39 certificate:v33];
       }
 
       else
@@ -463,24 +463,24 @@ LABEL_8:
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 dictionary];
-  if (v5)
+  dictionary = [self dictionary];
+  if (dictionary)
   {
-    v6 = v5;
-    v7 = [a1 dictionary];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    v6 = dictionary;
+    dictionary2 = [self dictionary];
+    v8 = [dictionary2 objectForKeyedSubscript:v4];
     if (v8)
     {
       v9 = v8;
-      v10 = [a1 dictionary];
-      v11 = [v10 objectForKeyedSubscript:v4];
+      dictionary3 = [self dictionary];
+      v11 = [dictionary3 objectForKeyedSubscript:v4];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v13 = [a1 dictionary];
-        v14 = [v13 objectForKeyedSubscript:v4];
+        dictionary4 = [self dictionary];
+        v14 = [dictionary4 objectForKeyedSubscript:v4];
 
         goto LABEL_9;
       }
@@ -513,12 +513,12 @@ LABEL_9:
 {
   if (a3 == 1)
   {
-    [a1 remoraRTModelLocaleMap];
+    [self remoraRTModelLocaleMap];
   }
 
   else
   {
-    [a1 hearstRTModelLocaleMap];
+    [self hearstRTModelLocaleMap];
   }
   v3 = ;
 
@@ -529,10 +529,10 @@ LABEL_9:
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 accessoryModelType];
-  v6 = [v5 integerValue];
+  accessoryModelType = [v4 accessoryModelType];
+  integerValue = [accessoryModelType integerValue];
 
-  if (v6)
+  if (integerValue)
   {
     v7 = @"adkblobs";
   }
@@ -542,22 +542,22 @@ LABEL_9:
     v7 = @"rtblobs";
   }
 
-  v8 = [a1 dictionary];
-  if (!v8)
+  dictionary = [self dictionary];
+  if (!dictionary)
   {
     goto LABEL_7;
   }
 
-  v9 = v8;
-  v10 = [a1 dictionary];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  v9 = dictionary;
+  dictionary2 = [self dictionary];
+  v11 = [dictionary2 objectForKeyedSubscript:v7];
 
   if (v11)
   {
-    v12 = [a1 dictionary];
-    v13 = [v12 objectForKeyedSubscript:v7];
+    dictionary3 = [self dictionary];
+    v13 = [dictionary3 objectForKeyedSubscript:v7];
 
-    v14 = [a1 _rtModelWithRequestOptions:v4 accessoryBlobs:v13];
+    v14 = [self _rtModelWithRequestOptions:v4 accessoryBlobs:v13];
   }
 
   else
@@ -583,15 +583,15 @@ LABEL_7:
 {
   v49 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 dictionary];
-  if (!v5)
+  dictionary = [self dictionary];
+  if (!dictionary)
   {
     goto LABEL_18;
   }
 
-  v6 = v5;
-  v7 = [a1 dictionary];
-  v8 = [v7 objectForKeyedSubscript:@"rtblobs"];
+  v6 = dictionary;
+  dictionary2 = [self dictionary];
+  v8 = [dictionary2 objectForKeyedSubscript:@"rtblobs"];
 
   if (!v8)
   {
@@ -600,11 +600,11 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  v9 = [a1 dictionary];
-  v10 = [v9 objectForKeyedSubscript:@"rtblobs"];
-  v31 = a1;
+  dictionary3 = [self dictionary];
+  v10 = [dictionary3 objectForKeyedSubscript:@"rtblobs"];
+  selfCopy = self;
   v32 = v4;
-  v11 = [a1 _getFilteredAccessoryRTBlobListForRequestOptions:v4 accessoryBlobs:v10 forceSkipEngineVersionCheck:1];
+  v11 = [self _getFilteredAccessoryRTBlobListForRequestOptions:v4 accessoryBlobs:v10 forceSkipEngineVersionCheck:1];
 
   v38 = 0u;
   v39 = 0u;
@@ -636,23 +636,23 @@ LABEL_18:
 
       v18 = *(*(&v36 + 1) + 8 * i);
       v19 = [v18 objectForKeyedSubscript:@"majorVersion"];
-      v20 = [v19 unsignedIntValue];
+      unsignedIntValue = [v19 unsignedIntValue];
 
       v21 = [v18 objectForKeyedSubscript:@"minorVersion"];
-      v22 = [v21 unsignedIntValue];
+      unsignedIntValue2 = [v21 unsignedIntValue];
 
-      if (v14 < v20)
+      if (v14 < unsignedIntValue)
       {
-        v14 = v20;
+        v14 = unsignedIntValue;
 LABEL_14:
         v24 = v18;
 
-        v34 = v22;
+        v34 = unsignedIntValue2;
         v15 = v24;
         continue;
       }
 
-      if (v14 == v20 && v34 < v22)
+      if (v14 == unsignedIntValue && v34 < unsignedIntValue2)
       {
         goto LABEL_14;
       }
@@ -687,7 +687,7 @@ LABEL_20:
   v35[5] = v34;
   v4 = v32;
   v28 = [(CSVoiceTriggerRTModelRequestOptions *)v27 initWithCSRTModelRequestOptions:v32 builder:v35];
-  v25 = [v31 _buildRTModelWithBlobConfig:v15 requestOptions:v28];
+  v25 = [selfCopy _buildRTModelWithBlobConfig:v15 requestOptions:v28];
 
 LABEL_23:
   v29 = *MEMORY[0x277D85DE8];
@@ -698,7 +698,7 @@ LABEL_23:
 - (id)RTModelWithFallbackLanguage:()RTModel
 {
   v2 = [MEMORY[0x277D018F8] getSiriLanguageWithFallback:?];
-  v3 = [a1 createRTModelWithLocale:v2];
+  v3 = [self createRTModelWithLocale:v2];
 
   return v3;
 }
@@ -707,32 +707,32 @@ LABEL_23:
 {
   v49 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 resourcePath];
+  resourcePath = [self resourcePath];
   v6 = MEMORY[0x277D015D8];
   v7 = 0x277D7A000uLL;
-  if (v5 && (v8 = v5, [a1 path], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  if (resourcePath && (v8 = resourcePath, [self path], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
-    v10 = [a1 resourcePath];
-    v11 = [v10 stringByAppendingPathComponent:@"config_rtv2.txt"];
+    resourcePath2 = [self resourcePath];
+    v11 = [resourcePath2 stringByAppendingPathComponent:@"config_rtv2.txt"];
 
-    v12 = [a1 resourcePath];
-    v13 = [v12 stringByAppendingPathComponent:@"config_rt.txt"];
+    resourcePath3 = [self resourcePath];
+    v13 = [resourcePath3 stringByAppendingPathComponent:@"config_rt.txt"];
 
-    v14 = [a1 resourcePath];
-    v15 = [v14 stringByAppendingPathComponent:@"config.txt"];
+    resourcePath4 = [self resourcePath];
+    v15 = [resourcePath4 stringByAppendingPathComponent:@"config.txt"];
 
     v16 = CSHasAOP();
     v17 = v15;
     if (v16)
     {
-      v18 = [MEMORY[0x277CCAA00] defaultManager];
-      v19 = [v18 fileExistsAtPath:v11 isDirectory:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v19 = [defaultManager fileExistsAtPath:v11 isDirectory:0];
 
       v17 = v11;
       if ((v19 & 1) == 0)
       {
-        v20 = [MEMORY[0x277CCAA00] defaultManager];
-        v21 = [v20 fileExistsAtPath:v13 isDirectory:0];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+        v21 = [defaultManager2 fileExistsAtPath:v13 isDirectory:0];
 
         v17 = v13;
         if ((v21 & 1) == 0)
@@ -767,8 +767,8 @@ LABEL_23:
     }
 
     v26 = MEMORY[0x277D7A8C0];
-    v27 = [a1 resourcePath];
-    v28 = [v26 getBlobWithConfigFilename:v24 rootDirectory:v27];
+    resourcePath5 = [self resourcePath];
+    v28 = [v26 getBlobWithConfigFilename:v24 rootDirectory:resourcePath5];
 
     v29 = *v6;
     v30 = *v6;
@@ -783,7 +783,7 @@ LABEL_23:
         _os_log_impl(&dword_222E4D000, v29, OS_LOG_TYPE_DEFAULT, "%s CorealisRT model creation done successfully : %{public}@", &v43, 0x16u);
       }
 
-      v31 = [a1 assetHashInResourcePath:v24];
+      v31 = [self assetHashInResourcePath:v24];
     }
 
     else
@@ -802,13 +802,13 @@ LABEL_23:
 
     if (v28)
     {
-      v40 = [a1 resourcePath];
-      if (v40)
+      resourcePath6 = [self resourcePath];
+      if (resourcePath6)
       {
-        v41 = v40;
-        v42 = [a1 path];
+        v41 = resourcePath6;
+        path = [self path];
 
-        if (v42)
+        if (path)
         {
           goto LABEL_21;
         }
@@ -830,11 +830,11 @@ LABEL_23:
     _os_log_impl(&dword_222E4D000, v32, OS_LOG_TYPE_DEFAULT, "%s Defaulting to en_US CorealisRT model", &v43, 0xCu);
   }
 
-  v33 = [*(v7 + 2240) getDefaultBlob];
+  getDefaultBlob = [*(v7 + 2240) getDefaultBlob];
 
   v34 = *v6;
   v35 = *v6;
-  if (v33)
+  if (getDefaultBlob)
   {
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
@@ -844,7 +844,7 @@ LABEL_23:
     }
 
     v31 = @"nohash";
-    v28 = v33;
+    v28 = getDefaultBlob;
 LABEL_21:
     v36 = *v6;
     if (os_log_type_enabled(*v6, OS_LOG_TYPE_DEFAULT))
@@ -884,9 +884,9 @@ LABEL_27:
   v7 = a3;
   v8 = a4;
   v9 = a5;
-  v10 = [v7 unsignedIntegerValue];
-  v11 = [v8 unsignedIntegerValue];
-  v12 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v9 unsignedIntegerValue];
 
   v13 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -900,9 +900,9 @@ LABEL_27:
     _os_log_impl(&dword_222E4D000, v13, OS_LOG_TYPE_DEFAULT, "%s Incoming Major version:%@, Incoming Minor version:%@", &v19, 0x20u);
   }
 
-  if (v10)
+  if (unsignedIntegerValue)
   {
-    v14 = v11 == 0;
+    v14 = unsignedIntegerValue2 == 0;
   }
 
   else
@@ -911,7 +911,7 @@ LABEL_27:
   }
 
   v15 = !v14;
-  if (v12 <= 1)
+  if (unsignedIntegerValue3 <= 1)
   {
     v16 = v15;
   }

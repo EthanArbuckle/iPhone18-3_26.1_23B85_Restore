@@ -1,173 +1,173 @@
 @interface NTKFaceView
-+ (id)_swatchImageForColorOption:(id)a3 forDevice:(id)a4 color:(id)a5 size:(CGSize)a6;
-+ (id)newFaceViewForFace:(id)a3;
-+ (id)pigmentFromOption:(id)a3;
-- (BOOL)_renderSynchronouslyIfNeededInGroup:(id)a3;
++ (id)_swatchImageForColorOption:(id)option forDevice:(id)device color:(id)color size:(CGSize)size;
++ (id)newFaceViewForFace:(id)face;
++ (id)pigmentFromOption:(id)option;
+- (BOOL)_renderSynchronouslyIfNeededInGroup:(id)group;
 - (BOOL)_shouldHideUI;
-- (BOOL)_useAlternateComplicationColorForGraphicCircularComplication:(id)a3;
-- (BOOL)_useAlternateComplicationColorForGraphicCircularComplicationInSlot:(id)a3;
-- (BOOL)_useAlternateComplicationColorForGraphicCircularComplicationInView:(id)a3;
+- (BOOL)_useAlternateComplicationColorForGraphicCircularComplication:(id)complication;
+- (BOOL)_useAlternateComplicationColorForGraphicCircularComplicationInSlot:(id)slot;
+- (BOOL)_useAlternateComplicationColorForGraphicCircularComplicationInView:(id)view;
 - (BOOL)allFontsHidden;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)complicationDisplayWrapperView:(id)a3 shouldStartCustomDataAnimationFromEarlierView:(id)a4 laterView:(id)a5 isForward:(BOOL)a6 animationType:(unint64_t)a7;
+- (BOOL)complicationDisplayWrapperView:(id)view shouldStartCustomDataAnimationFromEarlierView:(id)earlierView laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type;
 - (BOOL)monochromeRichComplicationsEnabled;
 - (BOOL)renderIfNeeded;
-- (CGAffineTransform)_displayContentTransformForComplicationSlot:(SEL)a3 displayWrapper:(id)a4;
-- (CGAffineTransform)_displayEditingTransformForComplicationSlot:(SEL)a3 displayWrapper:(id)a4;
-- (CGRect)_faceViewFrameForEditMode:(int64_t)a3 option:(id)a4 slot:(id)a5;
-- (CGRect)_frameForComplicationDisplayWrapper:(id)a3 inSlot:(id)a4;
-- (CGRect)_keylineFrameForComplicationSlot:(id)a3 selected:(BOOL)a4;
-- (CGRect)_keylineFrameForCustomEditMode:(int64_t)a3 option:(id)a4 slot:(id)a5;
-- (CGRect)_keylineFrameForCustomEditMode:(int64_t)a3 option:(id)a4 slot:(id)a5 selectedSlot:(id)a6;
-- (CGRect)_keylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (CGRect)_keylineFrameForEditMode:(int64_t)a3 option:(id)a4 slot:(id)a5 selectedSlot:(id)a6;
-- (CGRect)_keylineFrameFromRelativeFrame:(CGRect)a3 forEditingMode:(int64_t)a4 option:(id)a5 slot:(id)a6;
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (CGRect)keylineFrameForCustomEditMode:(int64_t)a3 option:(id)a4 slot:(id)a5;
-- (CGRect)keylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4 selectedSlot:(id)a5;
-- (CGSize)_maxSizeForComplicationSlot:(id)a3 layoutOverride:(int64_t)a4;
+- (CGAffineTransform)_displayContentTransformForComplicationSlot:(SEL)slot displayWrapper:(id)wrapper;
+- (CGAffineTransform)_displayEditingTransformForComplicationSlot:(SEL)slot displayWrapper:(id)wrapper;
+- (CGRect)_faceViewFrameForEditMode:(int64_t)mode option:(id)option slot:(id)slot;
+- (CGRect)_frameForComplicationDisplayWrapper:(id)wrapper inSlot:(id)slot;
+- (CGRect)_keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected;
+- (CGRect)_keylineFrameForCustomEditMode:(int64_t)mode option:(id)option slot:(id)slot;
+- (CGRect)_keylineFrameForCustomEditMode:(int64_t)mode option:(id)option slot:(id)slot selectedSlot:(id)selectedSlot;
+- (CGRect)_keylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (CGRect)_keylineFrameForEditMode:(int64_t)mode option:(id)option slot:(id)slot selectedSlot:(id)selectedSlot;
+- (CGRect)_keylineFrameFromRelativeFrame:(CGRect)frame forEditingMode:(int64_t)mode option:(id)option slot:(id)slot;
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (CGRect)keylineFrameForCustomEditMode:(int64_t)mode option:(id)option slot:(id)slot;
+- (CGRect)keylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot selectedSlot:(id)selectedSlot;
+- (CGSize)_maxSizeForComplicationSlot:(id)slot layoutOverride:(int64_t)override;
 - (NSDate)currentDisplayDate;
 - (NTKFaceColorPalette)faceColorPalette;
-- (NTKFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (NTKFaceViewDelegate)delegate;
 - (NTKInterpolatedColorPalette)interpolatedColorPalette;
-- (double)_alphaForComplicationSlot:(id)a3 inEditOption:(id)a4 ofEditMode:(int64_t)a5;
-- (double)_faceEditingScaleForEditMode:(int64_t)a3 slot:(id)a4;
+- (double)_alphaForComplicationSlot:(id)slot inEditOption:(id)option ofEditMode:(int64_t)mode;
+- (double)_faceEditingScaleForEditMode:(int64_t)mode slot:(id)slot;
 - (double)_verticalPaddingForStatusBar;
 - (id)_accessPrewarmedData;
 - (id)_allViewsWithComplicationEditingDesaturationFilter;
 - (id)_complicationSlotsHiddenByCurrentConfiguration;
-- (id)_complicationSlotsHiddenByEditOption:(id)a3;
-- (id)_defaultKeylineViewForComplicationSlot:(id)a3;
+- (id)_complicationSlotsHiddenByEditOption:(id)option;
+- (id)_defaultKeylineViewForComplicationSlot:(id)slot;
 - (id)_editModesDisabledByCurrentConfiguration;
 - (id)_editModesNotDisabledByCurrentConfiguration;
 - (id)_editOptionThatHidesAllComplications;
 - (id)_editOptionsThatHideEditModes;
-- (id)_keylineViewForComplicationSlot:(id)a3;
-- (id)_layoutRuleForComplicationSlot:(id)a3 withOverride:(int64_t)a4 inEditMode:(int64_t)a5;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)_swatchColorForColorOption:(id)a3;
-- (id)_swatchImageForColorOption:(id)a3 size:(CGSize)a4;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_keylineViewForComplicationSlot:(id)slot;
+- (id)_layoutRuleForComplicationSlot:(id)slot withOverride:(int64_t)override inEditMode:(int64_t)mode;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)_swatchColorForColorOption:(id)option;
+- (id)_swatchImageForColorOption:(id)option size:(CGSize)size;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)allVisibleComplicationsForCurrentConfiguration;
-- (id)closestVisibleComplicationSlotToSlot:(id)a3;
-- (id)closestVisibleSlotToSlot:(id)a3 editMode:(int64_t)a4;
-- (id)colorForView:(id)a3 accented:(BOOL)a4;
-- (id)complicationLayoutforSlot:(id)a3;
+- (id)closestVisibleComplicationSlotToSlot:(id)slot;
+- (id)closestVisibleSlotToSlot:(id)slot editMode:(int64_t)mode;
+- (id)colorForView:(id)view accented:(BOOL)accented;
+- (id)complicationLayoutforSlot:(id)slot;
 - (id)createFaceColorPalette;
-- (id)filterForView:(id)a3 style:(int64_t)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)filtersForView:(id)a3 style:(int64_t)a4;
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)interpolatedColorForView:(id)a3;
-- (id)layoutRuleForComplicationSlot:(id)a3 inState:(int64_t)a4 layoutOverride:(int64_t)a5;
-- (id)optionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)swatchPrimaryColorForColorOption:(id)a3;
-- (int64_t)_complicationPickerStyleForSlot:(id)a3;
-- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4;
-- (int64_t)complicationPickerStyleForSlot:(id)a3;
-- (int64_t)legacyComplicationLayoutOverrideForSlot:(id)a3 complication:(id)a4;
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (unint64_t)_layoutStyleForSlot:(id)a3;
-- (void)_addSaturationFilterToViews:(id)a3;
-- (void)_applyEditConfigurationsWithForce:(BOOL)a3;
+- (id)filterForView:(id)view style:(int64_t)style;
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)filtersForView:(id)view style:(int64_t)style;
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)interpolatedColorForView:(id)view;
+- (id)layoutRuleForComplicationSlot:(id)slot inState:(int64_t)state layoutOverride:(int64_t)override;
+- (id)optionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)swatchPrimaryColorForColorOption:(id)option;
+- (int64_t)_complicationPickerStyleForSlot:(id)slot;
+- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot;
+- (int64_t)complicationPickerStyleForSlot:(id)slot;
+- (int64_t)legacyComplicationLayoutOverrideForSlot:(id)slot complication:(id)complication;
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_layoutStyleForSlot:(id)slot;
+- (void)_addSaturationFilterToViews:(id)views;
+- (void)_applyEditConfigurationsWithForce:(BOOL)force;
 - (void)_applyFrozen;
 - (void)_becameActiveFace;
 - (void)_bringForegroundViewsToFront;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_curvedComplicationCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8;
-- (void)_endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)_finalizeForSnapshotting:(id)a3;
-- (void)_getKeylineFrame:(CGRect *)a3 padding:(UIEdgeInsets *)a4 forComplicationSlot:(id)a5 selected:(BOOL)a6;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_curvedComplicationCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot;
+- (void)_endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)_finalizeForSnapshotting:(id)snapshotting;
+- (void)_getKeylineFrame:(CGRect *)frame padding:(UIEdgeInsets *)padding forComplicationSlot:(id)slot selected:(BOOL)selected;
 - (void)_handleLocaleDidChange;
-- (void)_layoutComplicationViewForSlot:(id)a3;
-- (void)_layoutComplicationViewWithWrapper:(id)a3 forSlot:(id)a4;
+- (void)_layoutComplicationViewForSlot:(id)slot;
+- (void)_layoutComplicationViewWithWrapper:(id)wrapper forSlot:(id)slot;
 - (void)_layoutComplicationViews;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
-- (void)_performPrewarmRoutine:(id)a3;
-- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)a3 inGroup:(id)a4;
+- (void)_performPrewarmRoutine:(id)routine;
+- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)discard inGroup:(id)group;
 - (void)_reorderSwitcherSnapshotView;
-- (void)_setComplicationAlphaForTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 customEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_setTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_setComplicationAlphaForTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption customEditMode:(int64_t)mode slot:(id)slot;
+- (void)_setTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_setupComplicationViewsIfHidden;
-- (void)_startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)_startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)_teardownComplicationViewsIfNeeded;
 - (void)_updateComplicationMaxSize;
-- (void)_updateFaceColorPaletteWithOption:(id)a3 mode:(int64_t)a4;
-- (void)_updateMaxSizeForDisplayWrapper:(id)a3 slot:(id)a4;
+- (void)_updateFaceColorPaletteWithOption:(id)option mode:(int64_t)mode;
+- (void)_updateMaxSizeForDisplayWrapper:(id)wrapper slot:(id)slot;
 - (void)_updateSaturationForComplicationEditing;
 - (void)_updateStatusIconVisibility;
-- (void)applyBreathingFraction:(double)a3 forComplicationSlot:(id)a4;
-- (void)changeComplicationsAlpha:(double)a3;
+- (void)applyBreathingFraction:(double)fraction forComplicationSlot:(id)slot;
+- (void)changeComplicationsAlpha:(double)alpha;
 - (void)cleanupAfterEditing;
-- (void)complicationDisplayWrapperView:(id)a3 updateCustomDataAnimationFromEarlierView:(id)a4 laterView:(id)a5 isForward:(BOOL)a6 animationType:(unint64_t)a7 animationDuration:(double)a8 animationFraction:(float)a9;
-- (void)configureComplicationViewDisplayWrapper:(id)a3 forSlot:(id)a4;
-- (void)configureForEditMode:(int64_t)a3;
-- (void)configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)complicationDisplayWrapperView:(id)view updateCustomDataAnimationFromEarlierView:(id)earlierView laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction;
+- (void)configureComplicationViewDisplayWrapper:(id)wrapper forSlot:(id)slot;
+- (void)configureForEditMode:(int64_t)mode;
+- (void)configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)dealloc;
 - (void)disableCrownEventReception;
 - (void)enableCrownEventReception;
-- (void)endScrubbingAnimated:(BOOL)a3;
-- (void)endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)ensureWidgetContentWithMetrics:(id)a3 timeout:(double)a4 completion:(id)a5;
-- (void)enumerateComplicationDisplayWrappersWithBlock:(id)a3;
-- (void)enumerateQuadViewsWithBlock:(id)a3;
-- (void)hideAppropriateComplicationsForCurrentConfigurationInEditMode:(int64_t)a3;
-- (void)layoutContainerView:(id)a3;
+- (void)endScrubbingAnimated:(BOOL)animated;
+- (void)endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)ensureWidgetContentWithMetrics:(id)metrics timeout:(double)timeout completion:(id)completion;
+- (void)enumerateComplicationDisplayWrappersWithBlock:(id)block;
+- (void)enumerateQuadViewsWithBlock:(id)block;
+- (void)hideAppropriateComplicationsForCurrentConfigurationInEditMode:(int64_t)mode;
+- (void)layoutContainerView:(id)view;
 - (void)layoutSubviews;
 - (void)loadContentToReplaceUnadornedSnapshot;
-- (void)performScrollTestNamed:(id)a3 completion:(id)a4;
+- (void)performScrollTestNamed:(id)named completion:(id)completion;
 - (void)performWristRaiseAnimation;
-- (void)populateFaceViewEditOptionsFromFace:(id)a3 forced:(BOOL)a4;
+- (void)populateFaceViewEditOptionsFromFace:(id)face forced:(BOOL)forced;
 - (void)prepareForEditing;
 - (void)prepareToZoom;
 - (void)prepareWristRaiseAnimation;
 - (void)reconfigureComplicationViews;
 - (void)reloadSnapshotContentViews;
 - (void)renderIfNeeded;
-- (void)renderSynchronouslyWithImageQueueDiscard:(BOOL)a3 inGroup:(id)a4;
-- (void)setComplicationHidden:(BOOL)a3 atSlot:(id)a4;
-- (void)setComplicationsShowEditingContent:(BOOL)a3;
-- (void)setDataMode:(int64_t)a3;
-- (void)setDetachedComplicationDisplayWrapper:(id)a3 forSlot:(id)a4;
+- (void)renderSynchronouslyWithImageQueueDiscard:(BOOL)discard inGroup:(id)group;
+- (void)setComplicationHidden:(BOOL)hidden atSlot:(id)slot;
+- (void)setComplicationsShowEditingContent:(BOOL)content;
+- (void)setDataMode:(int64_t)mode;
+- (void)setDetachedComplicationDisplayWrapper:(id)wrapper forSlot:(id)slot;
 - (void)setNeedsRender;
-- (void)setNormalComplicationDisplayWrapper:(id)a3 forSlot:(id)a4;
-- (void)setOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5 forceApply:(BOOL)a6;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setResourceDirectory:(id)a3;
-- (void)setSelectedComplicationSlot:(id)a3;
-- (void)setShouldShowUnsnapshotableContent:(BOOL)a3;
-- (void)setShowContentForUnadornedSnapshot:(BOOL)a3;
-- (void)setShowsCanonicalContent:(BOOL)a3;
-- (void)setShowsLockedUI:(BOOL)a3;
-- (void)setSlow:(BOOL)a3;
-- (void)setSwitcherSnapshotView:(id)a3;
-- (void)setTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 customEditMode:(int64_t)a6 slot:(id)a7;
-- (void)setWidgetHostPriorityTransientSnapshot:(BOOL)a3;
+- (void)setNormalComplicationDisplayWrapper:(id)wrapper forSlot:(id)slot;
+- (void)setOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot forceApply:(BOOL)apply;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setResourceDirectory:(id)directory;
+- (void)setSelectedComplicationSlot:(id)slot;
+- (void)setShouldShowUnsnapshotableContent:(BOOL)content;
+- (void)setShowContentForUnadornedSnapshot:(BOOL)snapshot;
+- (void)setShowsCanonicalContent:(BOOL)content;
+- (void)setShowsLockedUI:(BOOL)i;
+- (void)setSlow:(BOOL)slow;
+- (void)setSwitcherSnapshotView:(id)view;
+- (void)setTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption customEditMode:(int64_t)mode slot:(id)slot;
+- (void)setWidgetHostPriorityTransientSnapshot:(BOOL)snapshot;
 - (void)shiftSelectedComplicationSlotIfHidden;
-- (void)startScrubbingAnimated:(BOOL)a3;
-- (void)startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)updateRichCornerComplicationsInnerColor:(id)a3 outerColor:(id)a4;
-- (void)willMoveToWindow:(id)a3;
+- (void)startScrubbingAnimated:(BOOL)animated;
+- (void)startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)updateRichCornerComplicationsInnerColor:(id)color outerColor:(id)outerColor;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation NTKFaceView
 
-- (void)updateRichCornerComplicationsInnerColor:(id)a3 outerColor:(id)a4
+- (void)updateRichCornerComplicationsInnerColor:(id)color outerColor:(id)outerColor
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  outerColorCopy = outerColor;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__NTKFaceView_ComplicationColor__updateRichCornerComplicationsInnerColor_outerColor___block_invoke;
   v10[3] = &unk_278783AC0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = colorCopy;
+  v12 = outerColorCopy;
+  v8 = outerColorCopy;
+  v9 = colorCopy;
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v10];
 }
 
@@ -212,23 +212,23 @@ LABEL_6:
 LABEL_10:
 }
 
-+ (id)newFaceViewForFace:(id)a3
++ (id)newFaceViewForFace:(id)face
 {
-  v3 = a3;
-  v4 = objc_alloc(ViewClassForFace(v3));
-  v5 = [v3 faceStyle];
-  v6 = [v3 device];
-  v7 = [v3 bundleIdentifier];
+  faceCopy = face;
+  v4 = objc_alloc(ViewClassForFace(faceCopy));
+  faceStyle = [faceCopy faceStyle];
+  device = [faceCopy device];
+  bundleIdentifier = [faceCopy bundleIdentifier];
 
-  v8 = [v4 initWithFaceStyle:v5 forDevice:v6 clientIdentifier:v7];
+  v8 = [v4 initWithFaceStyle:faceStyle forDevice:device clientIdentifier:bundleIdentifier];
   return v8;
 }
 
-- (NTKFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a5;
-  [v9 screenBounds];
+  deviceCopy = device;
+  identifierCopy = identifier;
+  [deviceCopy screenBounds];
   v30.receiver = self;
   v30.super_class = NTKFaceView;
   v11 = [(NTKFaceView *)&v30 initWithFrame:?];
@@ -236,9 +236,9 @@ LABEL_10:
   if (v11)
   {
     [(NTKFaceView *)v11 setAccessibilityIdentifier:@"Watch Face"];
-    v12->_faceStyle = a3;
-    objc_storeStrong(&v12->_device, a4);
-    v13 = [v10 copy];
+    v12->_faceStyle = style;
+    objc_storeStrong(&v12->_device, device);
+    v13 = [identifierCopy copy];
     clientIdentifier = v12->_clientIdentifier;
     v12->_clientIdentifier = v13;
 
@@ -264,13 +264,13 @@ LABEL_10:
     v12->_complicationEditingSaturationFilter = v23;
 
     [(CAFilter *)v12->_complicationEditingSaturationFilter setName:@"EditingSaturationFilter"];
-    v25 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     complicationColor = v12->_complicationColor;
-    v12->_complicationColor = v25;
+    v12->_complicationColor = whiteColor;
 
-    v27 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
     interpolatedComplicationColor = v12->_interpolatedComplicationColor;
-    v12->_interpolatedComplicationColor = v27;
+    v12->_interpolatedComplicationColor = whiteColor2;
 
     CLKUIDefaultAlternateComplicationColor();
   }
@@ -278,17 +278,17 @@ LABEL_10:
   return 0;
 }
 
-- (void)performScrollTestNamed:(id)a3 completion:(id)a4
+- (void)performScrollTestNamed:(id)named completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:@"NTKPPTInvalidFace" reason:@"Only Siri face supports scrolling." userInfo:MEMORY[0x277CBEC10]];
   [v4 raise];
 
-  v5 = v6;
-  if (v6)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(completionCopy + 2))(completionCopy);
+    v5 = completionCopy;
   }
 }
 
@@ -303,7 +303,7 @@ LABEL_10:
 
 - (BOOL)monochromeRichComplicationsEnabled
 {
-  v2 = [(NTKFaceView *)self device];
+  device = [(NTKFaceView *)self device];
   v3 = NTKMonochromeComplicationsEnabledForDevice();
 
   return v3;
@@ -311,17 +311,17 @@ LABEL_10:
 
 - (BOOL)_shouldHideUI
 {
-  v2 = [objc_opt_class() uiSensitivity];
-  v3 = [MEMORY[0x277CBBB70] sharedMonitor];
-  LOBYTE(v2) = [v3 shouldHideForSensitivity:v2];
+  uiSensitivity = [objc_opt_class() uiSensitivity];
+  mEMORY[0x277CBBB70] = [MEMORY[0x277CBBB70] sharedMonitor];
+  LOBYTE(uiSensitivity) = [mEMORY[0x277CBBB70] shouldHideForSensitivity:uiSensitivity];
 
-  return v2;
+  return uiSensitivity;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_crownAssertionToken)
   {
@@ -386,15 +386,15 @@ LABEL_10:
   [(NTKFaceView *)self _reorderSwitcherSnapshotView];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v13.receiver = self;
   v13.super_class = NTKFaceView;
-  [(NTKFaceView *)&v13 willMoveToWindow:v4];
-  v5 = [(NTKFaceView *)self window];
+  [(NTKFaceView *)&v13 willMoveToWindow:windowCopy];
+  window = [(NTKFaceView *)self window];
 
-  if (!v4 && v5)
+  if (!windowCopy && window)
   {
     self->_removedFromWindowDuringThisTransaction = 1;
     objc_initWeak(&location, self);
@@ -409,7 +409,7 @@ LABEL_10:
   }
 
   v6 = [(NTKFaceView *)self window:v7];
-  if (!v4 || v6)
+  if (!windowCopy || v6)
   {
   }
 
@@ -429,12 +429,12 @@ void __32__NTKFaceView_willMoveToWindow___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShouldShowUnsnapshotableContent:(BOOL)a3
+- (void)setShouldShowUnsnapshotableContent:(BOOL)content
 {
-  if (self->_shouldShowUnsnapshotableContent != a3)
+  if (self->_shouldShowUnsnapshotableContent != content)
   {
-    self->_shouldShowUnsnapshotableContent = a3;
-    if (a3)
+    self->_shouldShowUnsnapshotableContent = content;
+    if (content)
     {
       [(NTKFaceView *)self _loadSnapshotContentViews];
       objc_initWeak(&location, self);
@@ -493,64 +493,64 @@ void __50__NTKFaceView_setShouldShowUnsnapshotableContent___block_invoke_2(uint6
   [WeakRetained _applyOption:v4 forCustomEditMode:*(a1 + 48) slot:v3];
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
-  if (self->_dataMode != a3)
+  if (self->_dataMode != mode)
   {
     kdebug_trace();
-    self->_dataMode = a3;
+    self->_dataMode = mode;
     [(NTKFaceView *)self _applyDataMode];
 
     [(NTKFaceView *)self _updateStatusIconVisibility];
   }
 }
 
-- (void)setShowsCanonicalContent:(BOOL)a3
+- (void)setShowsCanonicalContent:(BOOL)content
 {
-  if (self->_showsCanonicalContent != a3)
+  if (self->_showsCanonicalContent != content)
   {
-    self->_showsCanonicalContent = a3;
+    self->_showsCanonicalContent = content;
     [(NTKFaceView *)self _applyShowsCanonicalContent];
   }
 }
 
-- (void)setShowContentForUnadornedSnapshot:(BOOL)a3
+- (void)setShowContentForUnadornedSnapshot:(BOOL)snapshot
 {
-  if (self->_showContentForUnadornedSnapshot != a3)
+  if (self->_showContentForUnadornedSnapshot != snapshot)
   {
-    self->_showContentForUnadornedSnapshot = a3;
+    self->_showContentForUnadornedSnapshot = snapshot;
     [(NTKFaceView *)self _applyShowContentForUnadornedSnapshot];
   }
 }
 
-- (void)setShowsLockedUI:(BOOL)a3
+- (void)setShowsLockedUI:(BOOL)i
 {
-  if (self->_showsLockedUI != a3)
+  if (self->_showsLockedUI != i)
   {
-    self->_showsLockedUI = a3;
+    self->_showsLockedUI = i;
     [(NTKFaceView *)self _applyShowsLockedUI];
   }
 }
 
 - (NSDate)currentDisplayDate
 {
-  v2 = self->_overrideDate;
-  if (!v2)
+  faceDisplayTime = self->_overrideDate;
+  if (!faceDisplayTime)
   {
     v3 = +[NTKTimeOffsetManager sharedManager];
-    v2 = [v3 faceDisplayTime];
+    faceDisplayTime = [v3 faceDisplayTime];
   }
 
-  return v2;
+  return faceDisplayTime;
 }
 
-- (void)setResourceDirectory:(id)a3
+- (void)setResourceDirectory:(id)directory
 {
-  v7 = a3;
-  if (([v7 isEqualToString:self->_resourceDirectory] & 1) == 0)
+  directoryCopy = directory;
+  if (([directoryCopy isEqualToString:self->_resourceDirectory] & 1) == 0)
   {
     v4 = [(NSString *)self->_resourceDirectory copy];
-    v5 = [v7 copy];
+    v5 = [directoryCopy copy];
     resourceDirectory = self->_resourceDirectory;
     self->_resourceDirectory = v5;
 
@@ -558,41 +558,41 @@ void __50__NTKFaceView_setShouldShowUnsnapshotableContent___block_invoke_2(uint6
   }
 }
 
-- (id)optionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)optionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
   editConfigurations = self->_editConfigurations;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
+  slotCopy = slot;
+  v8 = [v6 numberWithInteger:mode];
   v9 = [(NSMutableDictionary *)editConfigurations objectForKey:v8];
 
-  v10 = [v9 editOptionForSlot:v7];
+  v10 = [v9 editOptionForSlot:slotCopy];
 
   return v10;
 }
 
-- (void)setOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5 forceApply:(BOOL)a6
+- (void)setOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot forceApply:(BOOL)apply
 {
-  v6 = a6;
-  v18 = a3;
-  v10 = a5;
-  [(NTKFaceView *)self _updateFaceColorPaletteWithOption:v18 mode:a4];
+  applyCopy = apply;
+  optionCopy = option;
+  slotCopy = slot;
+  [(NTKFaceView *)self _updateFaceColorPaletteWithOption:optionCopy mode:mode];
   editConfigurations = self->_editConfigurations;
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
   v13 = [(NSMutableDictionary *)editConfigurations objectForKey:v12];
 
   if (!v13)
   {
     v13 = objc_alloc_init(NTKEditModeConfiguration);
     v14 = self->_editConfigurations;
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
     [(NSMutableDictionary *)v14 setObject:v13 forKey:v15];
   }
 
-  v16 = [(NTKEditModeConfiguration *)v13 editOptionForSlot:v10];
-  if (NTKEqualObjects(v18, v16))
+  v16 = [(NTKEditModeConfiguration *)v13 editOptionForSlot:slotCopy];
+  if (NTKEqualObjects(optionCopy, v16))
   {
-    v17 = !v6;
+    v17 = !applyCopy;
   }
 
   else
@@ -602,42 +602,42 @@ void __50__NTKFaceView_setShouldShowUnsnapshotableContent___block_invoke_2(uint6
 
   if (!v17)
   {
-    [(NTKEditModeConfiguration *)v13 setEditOption:v18 forSlot:v10];
-    if (a4 != 10)
+    [(NTKEditModeConfiguration *)v13 setEditOption:optionCopy forSlot:slotCopy];
+    if (mode != 10)
     {
-      [(NTKFaceView *)self hideAppropriateComplicationsForCurrentConfigurationInEditMode:a4];
+      [(NTKFaceView *)self hideAppropriateComplicationsForCurrentConfigurationInEditMode:mode];
     }
 
-    [(NTKFaceView *)self _applyOption:v18 forCustomEditMode:a4 slot:v10];
+    [(NTKFaceView *)self _applyOption:optionCopy forCustomEditMode:mode slot:slotCopy];
   }
 }
 
-- (int64_t)legacyComplicationLayoutOverrideForSlot:(id)a3 complication:(id)a4
+- (int64_t)legacyComplicationLayoutOverrideForSlot:(id)slot complication:(id)complication
 {
-  v6 = a3;
-  v7 = -[NTKFaceView _legacyLayoutOverrideforComplicationType:slot:](self, "_legacyLayoutOverrideforComplicationType:slot:", [a4 complicationType], v6);
+  slotCopy = slot;
+  v7 = -[NTKFaceView _legacyLayoutOverrideforComplicationType:slot:](self, "_legacyLayoutOverrideforComplicationType:slot:", [complication complicationType], slotCopy);
 
   return v7;
 }
 
-- (void)configureComplicationViewDisplayWrapper:(id)a3 forSlot:(id)a4
+- (void)configureComplicationViewDisplayWrapper:(id)wrapper forSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
-  [(NTKFaceView *)self _updateMaxSizeForDisplayWrapper:v6 slot:v7];
-  [v6 setEditing:self->_complicationsShowEditingContent];
+  wrapperCopy = wrapper;
+  slotCopy = slot;
+  [(NTKFaceView *)self _updateMaxSizeForDisplayWrapper:wrapperCopy slot:slotCopy];
+  [wrapperCopy setEditing:self->_complicationsShowEditingContent];
   [(NTKFaceView *)self alphaForDimmedState];
-  [v6 setAlphaForDimmedState:?];
-  [v6 setTextLayoutStyle:{-[NTKFaceView layoutStyleForSlot:](self, "layoutStyleForSlot:", v7)}];
+  [wrapperCopy setAlphaForDimmedState:?];
+  [wrapperCopy setTextLayoutStyle:{-[NTKFaceView layoutStyleForSlot:](self, "layoutStyleForSlot:", slotCopy)}];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__NTKFaceView_configureComplicationViewDisplayWrapper_forSlot___block_invoke;
   v9[3] = &unk_2787875D0;
   objc_copyWeak(&v11, &location);
-  v8 = v7;
+  v8 = slotCopy;
   v10 = v8;
-  [v6 setDisplayConfigurationHandler:v9];
+  [wrapperCopy setDisplayConfigurationHandler:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -661,22 +661,22 @@ void __63__NTKFaceView_configureComplicationViewDisplayWrapper_forSlot___block_i
   [WeakRetained configureComplicationView:v6 forSlot:*(a1 + 32)];
 }
 
-- (void)setNormalComplicationDisplayWrapper:(id)a3 forSlot:(id)a4
+- (void)setNormalComplicationDisplayWrapper:(id)wrapper forSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_complicationDisplayWrappers objectForKey:v7];
+  wrapperCopy = wrapper;
+  slotCopy = slot;
+  v8 = [(NSMutableDictionary *)self->_complicationDisplayWrappers objectForKey:slotCopy];
   v9 = v8;
-  if (v8 != v6)
+  if (v8 != wrapperCopy)
   {
     if (v8)
     {
       [v8 setNeedsResizeHandler:0];
       [v9 removeFromSuperview];
-      [(NSMutableDictionary *)self->_complicationDisplayWrappers removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->_complicationDisplayWrappers removeObjectForKey:slotCopy];
     }
 
-    if (v6)
+    if (wrapperCopy)
     {
       objc_initWeak(&location, self);
       v12[0] = MEMORY[0x277D85DD0];
@@ -684,19 +684,19 @@ void __63__NTKFaceView_configureComplicationViewDisplayWrapper_forSlot___block_i
       v12[2] = __59__NTKFaceView_setNormalComplicationDisplayWrapper_forSlot___block_invoke;
       v12[3] = &unk_27877F610;
       objc_copyWeak(&v14, &location);
-      v10 = v7;
+      v10 = slotCopy;
       v13 = v10;
-      [v6 setNeedsResizeHandler:v12];
+      [wrapperCopy setNeedsResizeHandler:v12];
       v11 = [(NTKFaceView *)self _complicationContainerViewForSlot:v10];
-      [v11 addSubview:v6];
+      [v11 addSubview:wrapperCopy];
 
-      [(NSMutableDictionary *)self->_complicationDisplayWrappers setObject:v6 forKey:v10];
+      [(NSMutableDictionary *)self->_complicationDisplayWrappers setObject:wrapperCopy forKey:v10];
       [(NTKContainerView *)self->_foregroundContainerView setNeedsLayout];
-      [(NTKFaceView *)self _updateMaxSizeForDisplayWrapper:v6 slot:v10];
-      [v6 setEditing:self->_complicationsShowEditingContent];
+      [(NTKFaceView *)self _updateMaxSizeForDisplayWrapper:wrapperCopy slot:v10];
+      [wrapperCopy setEditing:self->_complicationsShowEditingContent];
       [(NTKFaceView *)self alphaForDimmedState];
-      [v6 setAlphaForDimmedState:?];
-      [v6 setAnimationDelegate:self];
+      [wrapperCopy setAlphaForDimmedState:?];
+      [wrapperCopy setAnimationDelegate:self];
       if (self->_complicationsShowEditingContent)
       {
         [(NTKFaceView *)self _updateSaturationForComplicationEditing];
@@ -714,33 +714,33 @@ void __59__NTKFaceView_setNormalComplicationDisplayWrapper_forSlot___block_invok
   [WeakRetained _layoutComplicationViewForSlot:*(a1 + 32)];
 }
 
-- (void)setDetachedComplicationDisplayWrapper:(id)a3 forSlot:(id)a4
+- (void)setDetachedComplicationDisplayWrapper:(id)wrapper forSlot:(id)slot
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_complicationDisplayWrappers objectForKey:v6];
-  v8 = v10;
+  wrapperCopy = wrapper;
+  slotCopy = slot;
+  v7 = [(NSMutableDictionary *)self->_complicationDisplayWrappers objectForKey:slotCopy];
+  v8 = wrapperCopy;
   v9 = v7;
-  if (v7 != v10)
+  if (v7 != wrapperCopy)
   {
     if (v7)
     {
-      [(NSMutableDictionary *)self->_complicationDisplayWrappers removeObjectForKey:v6];
-      v8 = v10;
+      [(NSMutableDictionary *)self->_complicationDisplayWrappers removeObjectForKey:slotCopy];
+      v8 = wrapperCopy;
     }
 
     if (v8)
     {
-      [(NSMutableDictionary *)self->_complicationDisplayWrappers setObject:v10 forKey:v6];
+      [(NSMutableDictionary *)self->_complicationDisplayWrappers setObject:wrapperCopy forKey:slotCopy];
     }
   }
 }
 
-- (void)setSlow:(BOOL)a3
+- (void)setSlow:(BOOL)slow
 {
-  if (self->_slow != a3)
+  if (self->_slow != slow)
   {
-    self->_slow = a3;
+    self->_slow = slow;
     [(NTKFaceView *)self _applySlow];
   }
 }
@@ -770,7 +770,7 @@ void __59__NTKFaceView_setNormalComplicationDisplayWrapper_forSlot___block_invok
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22D9C5000, a2, OS_LOG_TYPE_ERROR, "%@ setNeedsRender failed. ***** PLEASE FILE A RADAR ON Watch Faces *****", &v2, 0xCu);
 }
 
@@ -796,18 +796,18 @@ void __29__NTKFaceView_setNeedsRender__block_invoke(uint64_t a1)
   [(NTKFaceView *)self _performWristRaiseAnimation];
 }
 
-- (void)setComplicationsShowEditingContent:(BOOL)a3
+- (void)setComplicationsShowEditingContent:(BOOL)content
 {
-  if (self->_complicationsShowEditingContent != a3)
+  if (self->_complicationsShowEditingContent != content)
   {
     v7 = v3;
     v8 = v4;
-    self->_complicationsShowEditingContent = a3;
+    self->_complicationsShowEditingContent = content;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __50__NTKFaceView_setComplicationsShowEditingContent___block_invoke;
     v5[3] = &__block_descriptor_33_e56_v24__0__NSString_8__NTKComplicationDisplayWrapperView_16l;
-    v6 = a3;
+    contentCopy = content;
     [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v5];
   }
 }
@@ -815,8 +815,8 @@ void __29__NTKFaceView_setNeedsRender__block_invoke(uint64_t a1)
 - (void)prepareForEditing
 {
   self->_editing = 1;
-  v3 = [(NTKFaceView *)self delegate];
-  [v3 faceViewWantsUnadornedSnapshotViewRemoved];
+  delegate = [(NTKFaceView *)self delegate];
+  [delegate faceViewWantsUnadornedSnapshotViewRemoved];
 
   [(NTKFaceView *)self _setupComplicationViewsIfHidden];
 
@@ -831,21 +831,21 @@ void __29__NTKFaceView_setNeedsRender__block_invoke(uint64_t a1)
   self->_editModeTransitionFraction = 0.0;
   [(NTKFaceView *)self _teardownComplicationViewsIfNeeded];
   [(NTKFaceView *)self _cleanupAfterEditing];
-  v3 = [(NTKFaceView *)self faceColorPalette];
-  [v3 resetColorCache];
+  faceColorPalette = [(NTKFaceView *)self faceColorPalette];
+  [faceColorPalette resetColorCache];
 }
 
-- (void)populateFaceViewEditOptionsFromFace:(id)a3 forced:(BOOL)a4
+- (void)populateFaceViewEditOptionsFromFace:(id)face forced:(BOOL)forced
 {
-  v6 = a3;
+  faceCopy = face;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke;
   v8[3] = &unk_278787640;
-  v9 = v6;
-  v10 = self;
-  v11 = a4;
-  v7 = v6;
+  v9 = faceCopy;
+  selfCopy = self;
+  forcedCopy = forced;
+  v7 = faceCopy;
   [v7 enumerateCustomEditModesWithBlock:v8];
 }
 
@@ -893,53 +893,53 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
   }
 }
 
-- (void)configureForEditMode:(int64_t)a3
+- (void)configureForEditMode:(int64_t)mode
 {
-  [(NTKFaceView *)self _setTransitionFraction:a3 fromEditMode:a3 toEditMode:0.0];
+  [(NTKFaceView *)self _setTransitionFraction:mode fromEditMode:mode toEditMode:0.0];
 
-  [(NTKFaceView *)self _configureForEditMode:a3];
+  [(NTKFaceView *)self _configureForEditMode:mode];
 }
 
-- (void)configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   [NTKFaceView _setTransitionFraction:"_setTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
 
-  [(NTKFaceView *)self _configureForTransitionFraction:a4 fromEditMode:a5 toEditMode:a3];
+  [(NTKFaceView *)self _configureForTransitionFraction:mode fromEditMode:editMode toEditMode:fraction];
 }
 
-- (void)setTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 customEditMode:(int64_t)a6 slot:(id)a7
+- (void)setTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption customEditMode:(int64_t)mode slot:(id)slot
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [(NTKFaceView *)self faceColorPalette];
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  faceColorPalette = [(NTKFaceView *)self faceColorPalette];
 
-  if (a6 == 10 && v15)
+  if (mode == 10 && faceColorPalette)
   {
-    v16 = [objc_opt_class() pigmentFromOption:v12];
-    v17 = [(NTKFaceView *)self interpolatedColorPalette];
-    v18 = [v17 fromPalette];
-    [v18 setPigmentEditOption:v16];
+    v16 = [objc_opt_class() pigmentFromOption:optionCopy];
+    interpolatedColorPalette = [(NTKFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    [fromPalette setPigmentEditOption:v16];
 
-    v19 = [objc_opt_class() pigmentFromOption:v13];
-    v20 = [(NTKFaceView *)self interpolatedColorPalette];
-    v21 = [v20 toPalette];
-    [v21 setPigmentEditOption:v19];
+    v19 = [objc_opt_class() pigmentFromOption:toOptionCopy];
+    interpolatedColorPalette2 = [(NTKFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette2 toPalette];
+    [toPalette setPigmentEditOption:v19];
 
-    v22 = [(NTKFaceView *)self interpolatedColorPalette];
-    [v22 setTransitionFraction:a3];
+    interpolatedColorPalette3 = [(NTKFaceView *)self interpolatedColorPalette];
+    [interpolatedColorPalette3 setTransitionFraction:fraction];
   }
 
-  [(NTKFaceView *)self _applyTransitionFraction:v12 fromOption:v13 toOption:a6 forCustomEditMode:v14 slot:a3];
+  [(NTKFaceView *)self _applyTransitionFraction:optionCopy fromOption:toOptionCopy toOption:mode forCustomEditMode:slotCopy slot:fraction];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v24 = [WeakRetained faceViewComplicationSlots];
+  faceViewComplicationSlots = [WeakRetained faceViewComplicationSlots];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v25 = v24;
+  v25 = faceViewComplicationSlots;
   v26 = [v25 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v26)
   {
@@ -955,7 +955,7 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
           objc_enumerationMutation(v25);
         }
 
-        [(NTKFaceView *)self _setComplicationAlphaForTransitionFraction:v12 fromOption:v13 toOption:a6 customEditMode:*(*(&v30 + 1) + 8 * v29++) slot:a3, v30];
+        [(NTKFaceView *)self _setComplicationAlphaForTransitionFraction:optionCopy fromOption:toOptionCopy toOption:mode customEditMode:*(*(&v30 + 1) + 8 * v29++) slot:fraction, v30];
       }
 
       while (v27 != v29);
@@ -966,12 +966,12 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
   }
 }
 
-- (CGRect)keylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4 selectedSlot:(id)a5
+- (CGRect)keylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot selectedSlot:(id)selectedSlot
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(NTKFaceView *)self optionForCustomEditMode:a3 slot:v9];
-  [(NTKFaceView *)self _keylineFrameForEditMode:a3 option:v10 slot:v9 selectedSlot:v8];
+  selectedSlotCopy = selectedSlot;
+  slotCopy = slot;
+  v10 = [(NTKFaceView *)self optionForCustomEditMode:mode slot:slotCopy];
+  [(NTKFaceView *)self _keylineFrameForEditMode:mode option:v10 slot:slotCopy selectedSlot:selectedSlotCopy];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -988,9 +988,9 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
   return result;
 }
 
-- (CGRect)keylineFrameForCustomEditMode:(int64_t)a3 option:(id)a4 slot:(id)a5
+- (CGRect)keylineFrameForCustomEditMode:(int64_t)mode option:(id)option slot:(id)slot
 {
-  [(NTKFaceView *)self _keylineFrameForEditMode:a3 option:a4 slot:a5 selectedSlot:a5];
+  [(NTKFaceView *)self _keylineFrameForEditMode:mode option:option slot:slot selectedSlot:slot];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -998,24 +998,24 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
   return result;
 }
 
-- (CGRect)_keylineFrameForEditMode:(int64_t)a3 option:(id)a4 slot:(id)a5 selectedSlot:(id)a6
+- (CGRect)_keylineFrameForEditMode:(int64_t)mode option:(id)option slot:(id)slot selectedSlot:(id)selectedSlot
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  [(NTKFaceView *)self _relativeKeylineFrameForCustomEditMode:a3 slot:v11];
+  selectedSlotCopy = selectedSlot;
+  slotCopy = slot;
+  optionCopy = option;
+  [(NTKFaceView *)self _relativeKeylineFrameForCustomEditMode:mode slot:slotCopy];
   x = v29.origin.x;
   y = v29.origin.y;
   width = v29.size.width;
   height = v29.size.height;
   if (CGRectIsNull(v29))
   {
-    [(NTKFaceView *)self _keylineFrameForCustomEditMode:a3 option:v12 slot:v11 selectedSlot:v10];
+    [(NTKFaceView *)self _keylineFrameForCustomEditMode:mode option:optionCopy slot:slotCopy selectedSlot:selectedSlotCopy];
   }
 
   else
   {
-    [(NTKFaceView *)self _keylineFrameFromRelativeFrame:a3 forEditingMode:v12 option:v11 slot:x, y, width, height];
+    [(NTKFaceView *)self _keylineFrameFromRelativeFrame:mode forEditingMode:optionCopy option:slotCopy slot:x, y, width, height];
   }
 
   v21 = v17;
@@ -1034,11 +1034,11 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
   return result;
 }
 
-- (CGRect)_keylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_keylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  v7 = [(NTKFaceView *)self optionForCustomEditMode:a3 slot:v6];
-  [(NTKFaceView *)self _keylineFrameForEditMode:a3 option:v7 slot:v6 selectedSlot:v6];
+  slotCopy = slot;
+  v7 = [(NTKFaceView *)self optionForCustomEditMode:mode slot:slotCopy];
+  [(NTKFaceView *)self _keylineFrameForEditMode:mode option:v7 slot:slotCopy selectedSlot:slotCopy];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1055,7 +1055,7 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
   return result;
 }
 
-- (CGRect)_keylineFrameForCustomEditMode:(int64_t)a3 option:(id)a4 slot:(id)a5 selectedSlot:(id)a6
+- (CGRect)_keylineFrameForCustomEditMode:(int64_t)mode option:(id)option slot:(id)slot selectedSlot:(id)selectedSlot
 {
   v6 = *MEMORY[0x277CBF3A0];
   v7 = *(MEMORY[0x277CBF3A0] + 8);
@@ -1068,37 +1068,37 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
   return result;
 }
 
-- (double)_faceEditingScaleForEditMode:(int64_t)a3 slot:(id)a4
+- (double)_faceEditingScaleForEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  v7 = [(NTKFaceView *)self optionForCustomEditMode:a3 slot:v6];
-  [(NTKFaceView *)self faceViewFrameForEditMode:a3 option:v7 slot:v6];
+  slotCopy = slot;
+  v7 = [(NTKFaceView *)self optionForCustomEditMode:mode slot:slotCopy];
+  [(NTKFaceView *)self faceViewFrameForEditMode:mode option:v7 slot:slotCopy];
   v9 = v8;
 
-  v10 = [MEMORY[0x277CBBAE8] currentDevice];
-  [v10 screenBounds];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  [currentDevice screenBounds];
   v12 = v11;
 
   return v9 / v12;
 }
 
-- (CGRect)_keylineFrameFromRelativeFrame:(CGRect)a3 forEditingMode:(int64_t)a4 option:(id)a5 slot:(id)a6
+- (CGRect)_keylineFrameFromRelativeFrame:(CGRect)frame forEditingMode:(int64_t)mode option:(id)option slot:(id)slot
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13 = MEMORY[0x277CBBAE8];
-  v14 = a6;
-  v15 = a5;
-  v16 = [v13 currentDevice];
-  [v16 screenBounds];
+  slotCopy = slot;
+  optionCopy = option;
+  currentDevice = [v13 currentDevice];
+  [currentDevice screenBounds];
   v18 = v17;
 
-  [(NTKFaceView *)self faceViewFrameForEditMode:a4 option:v15 slot:v14];
+  [(NTKFaceView *)self faceViewFrameForEditMode:mode option:optionCopy slot:slotCopy];
   v20 = v19;
 
-  v21 = [(NTKFaceView *)self device];
+  device = [(NTKFaceView *)self device];
   CLKPointRoundForDevice();
   v23 = v22;
   v25 = v24;
@@ -1110,7 +1110,7 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
   v40.size.height = height;
   v41 = CGRectApplyAffineTransform(v40, &v39);
   CGRectOffset(v41, v23, v25);
-  v26 = [(NTKFaceView *)self device];
+  device2 = [(NTKFaceView *)self device];
   CLKPixelAlignRectForDevice();
   v28 = v27;
   v30 = v29;
@@ -1131,14 +1131,14 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
 - (BOOL)canBecomeFirstResponder
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKFaceView *)self delegate];
-  v4 = [v3 faceViewComplicationSlots];
+  delegate = [(NTKFaceView *)self delegate];
+  faceViewComplicationSlots = [delegate faceViewComplicationSlots];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = faceViewComplicationSlots;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1154,10 +1154,10 @@ void __58__NTKFaceView_populateFaceViewEditOptionsFromFace_forced___block_invoke
         }
 
         v10 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:*(*(&v15 + 1) + 8 * i), v15];
-        v11 = [v10 display];
-        v12 = [v11 canBecomeFirstResponder];
+        display = [v10 display];
+        canBecomeFirstResponder = [display canBecomeFirstResponder];
 
-        if (v12)
+        if (canBecomeFirstResponder)
         {
           v13 = 1;
           goto LABEL_11;
@@ -1183,14 +1183,14 @@ LABEL_11:
 - (BOOL)becomeFirstResponder
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKFaceView *)self delegate];
-  v4 = [v3 faceViewComplicationSlots];
+  delegate = [(NTKFaceView *)self delegate];
+  faceViewComplicationSlots = [delegate faceViewComplicationSlots];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = faceViewComplicationSlots;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1206,8 +1206,8 @@ LABEL_11:
         }
 
         v10 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:*(*(&v14 + 1) + 8 * i), v14];
-        v11 = [v10 display];
-        if ([v11 canBecomeFirstResponder] && (objc_msgSend(v11, "becomeFirstResponder") & 1) != 0)
+        display = [v10 display];
+        if ([display canBecomeFirstResponder] && (objc_msgSend(display, "becomeFirstResponder") & 1) != 0)
         {
 
           v12 = 1;
@@ -1231,12 +1231,12 @@ LABEL_12:
   return v12;
 }
 
-- (void)setSelectedComplicationSlot:(id)a3
+- (void)setSelectedComplicationSlot:(id)slot
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_selectedComplicationSlot] & 1) == 0)
+  slotCopy = slot;
+  if (([slotCopy isEqual:self->_selectedComplicationSlot] & 1) == 0)
   {
-    objc_storeStrong(&self->_selectedComplicationSlot, a3);
+    objc_storeStrong(&self->_selectedComplicationSlot, slot);
     [(NTKFaceView *)self _updateSaturationForComplicationEditing];
     [(NTKFaceView *)self setNeedsLayout];
   }
@@ -1244,18 +1244,18 @@ LABEL_12:
   [(NTKFaceView *)self shiftSelectedComplicationSlotIfHidden];
 }
 
-- (id)closestVisibleSlotToSlot:(id)a3 editMode:(int64_t)a4
+- (id)closestVisibleSlotToSlot:(id)slot editMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 1)
+  slotCopy = slot;
+  v7 = slotCopy;
+  if (mode == 1)
   {
-    v8 = [(NTKFaceView *)self closestVisibleComplicationSlotToSlot:v6];
+    v8 = [(NTKFaceView *)self closestVisibleComplicationSlotToSlot:slotCopy];
   }
 
   else
   {
-    v8 = v6;
+    v8 = slotCopy;
   }
 
   v9 = v8;
@@ -1263,15 +1263,15 @@ LABEL_12:
   return v9;
 }
 
-- (id)closestVisibleComplicationSlotToSlot:(id)a3
+- (id)closestVisibleComplicationSlotToSlot:(id)slot
 {
-  v4 = a3;
-  if (v4 && [(NTKFaceView *)self complicationIsHiddenAtSlot:v4])
+  slotCopy = slot;
+  if (slotCopy && [(NTKFaceView *)self complicationIsHiddenAtSlot:slotCopy])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [WeakRetained faceViewComplicationSlots];
+    faceViewComplicationSlots = [WeakRetained faceViewComplicationSlots];
 
-    v7 = [v6 indexOfObject:v4];
+    v7 = [faceViewComplicationSlots indexOfObject:slotCopy];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = 0;
@@ -1282,7 +1282,7 @@ LABEL_12:
       v8 = v7;
     }
 
-    v9 = (v8 + 1) % [v6 count];
+    v9 = (v8 + 1) % [faceViewComplicationSlots count];
     while (1)
     {
       if (v9 == v8)
@@ -1291,25 +1291,25 @@ LABEL_12:
         goto LABEL_12;
       }
 
-      v10 = [v6 objectAtIndexedSubscript:v9];
+      v10 = [faceViewComplicationSlots objectAtIndexedSubscript:v9];
       if (![(NTKFaceView *)self complicationIsHiddenAtSlot:v10])
       {
         break;
       }
 
-      v9 = (v9 + 1) % [v6 count];
+      v9 = (v9 + 1) % [faceViewComplicationSlots count];
     }
 
     if (v9 == v8)
     {
       v11 = 0;
-      v4 = v10;
+      slotCopy = v10;
     }
 
     else
     {
-      v4 = v10;
-      v11 = v4;
+      slotCopy = v10;
+      v11 = slotCopy;
     }
 
 LABEL_12:
@@ -1317,8 +1317,8 @@ LABEL_12:
 
   else
   {
-    v4 = v4;
-    v11 = v4;
+    slotCopy = slotCopy;
+    v11 = slotCopy;
   }
 
   return v11;
@@ -1326,53 +1326,53 @@ LABEL_12:
 
 - (void)shiftSelectedComplicationSlotIfHidden
 {
-  v4 = [(NTKFaceView *)self selectedComplicationSlot];
+  selectedComplicationSlot = [(NTKFaceView *)self selectedComplicationSlot];
   if ([(NTKFaceView *)self complicationIsHiddenAtSlot:?])
   {
-    v3 = [(NTKFaceView *)self closestVisibleComplicationSlotToSlot:v4];
+    v3 = [(NTKFaceView *)self closestVisibleComplicationSlotToSlot:selectedComplicationSlot];
     [(NTKFaceView *)self setSelectedComplicationSlot:v3];
   }
 }
 
-- (int64_t)complicationPickerStyleForSlot:(id)a3
+- (int64_t)complicationPickerStyleForSlot:(id)slot
 {
-  v4 = a3;
-  if ([(CLKDevice *)self->_device deviceCategory]!= 1 && ([(NTKFaceView *)self layoutStyleForSlot:v4]== 1 || [(NTKFaceView *)self layoutStyleForSlot:v4]== 2))
+  slotCopy = slot;
+  if ([(CLKDevice *)self->_device deviceCategory]!= 1 && ([(NTKFaceView *)self layoutStyleForSlot:slotCopy]== 1 || [(NTKFaceView *)self layoutStyleForSlot:slotCopy]== 2))
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = [(NTKFaceView *)self _complicationPickerStyleForSlot:v4];
+    v5 = [(NTKFaceView *)self _complicationPickerStyleForSlot:slotCopy];
   }
 
   return v5;
 }
 
-- (id)layoutRuleForComplicationSlot:(id)a3 inState:(int64_t)a4 layoutOverride:(int64_t)a5
+- (id)layoutRuleForComplicationSlot:(id)slot inState:(int64_t)state layoutOverride:(int64_t)override
 {
-  v7 = [(NSMutableDictionary *)self->_complicationLayouts objectForKey:a3];
-  v8 = [v7 layoutRuleForComplicationState:a4 layoutOverride:a5];
+  v7 = [(NSMutableDictionary *)self->_complicationLayouts objectForKey:slot];
+  v8 = [v7 layoutRuleForComplicationState:state layoutOverride:override];
 
   return v8;
 }
 
-- (CGRect)_keylineFrameForComplicationSlot:(id)a3 selected:(BOOL)a4
+- (CGRect)_keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected
 {
-  v4 = a4;
+  selectedCopy = selected;
   v24 = 0u;
   v25 = 0u;
-  v6 = a3;
-  [(NTKFaceView *)self _getKeylineFrame:&v24 padding:0 forComplicationSlot:v6 selected:v4];
-  v7 = [(NTKFaceView *)self _complicationContainerViewForSlot:v6];
+  slotCopy = slot;
+  [(NTKFaceView *)self _getKeylineFrame:&v24 padding:0 forComplicationSlot:slotCopy selected:selectedCopy];
+  v7 = [(NTKFaceView *)self _complicationContainerViewForSlot:slotCopy];
   [(NTKFaceView *)self convertRect:v7 fromCoordinateSpace:v24, v25];
   *&v24 = v8;
   *(&v24 + 1) = v9;
   *&v25 = v10;
   *(&v25 + 1) = v11;
 
-  [(NTKFaceView *)self _keylineFrameFromRelativeFrame:1 forEditingMode:0 option:v6 slot:v24, v25];
+  [(NTKFaceView *)self _keylineFrameFromRelativeFrame:1 forEditingMode:0 option:slotCopy slot:v24, v25];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -1389,16 +1389,16 @@ LABEL_12:
   return result;
 }
 
-- (void)applyBreathingFraction:(double)a3 forComplicationSlot:(id)a4
+- (void)applyBreathingFraction:(double)fraction forComplicationSlot:(id)slot
 {
-  v6 = a4;
-  [(NTKFaceView *)self _minimumBreathingScaleForComplicationSlot:v6];
-  v8 = NTKScaleForBreathingFraction(a3, v7);
-  v9 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:v6];
+  slotCopy = slot;
+  [(NTKFaceView *)self _minimumBreathingScaleForComplicationSlot:slotCopy];
+  v8 = NTKScaleForBreathingFraction(fraction, v7);
+  v9 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:slotCopy];
   if (v9)
   {
     memset(&v12, 0, sizeof(v12));
-    [(NTKFaceView *)self _displayEditingTransformForComplicationSlot:v6 displayWrapper:v9];
+    [(NTKFaceView *)self _displayEditingTransformForComplicationSlot:slotCopy displayWrapper:v9];
     v10 = v12;
     CGAffineTransformScale(&v11, &v10, v8, v8);
     v12 = v11;
@@ -1406,15 +1406,15 @@ LABEL_12:
   }
 }
 
-- (void)setSwitcherSnapshotView:(id)a3
+- (void)setSwitcherSnapshotView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   switcherSnapshotView = self->_switcherSnapshotView;
-  v7 = v5;
-  if (switcherSnapshotView != v5)
+  v7 = viewCopy;
+  if (switcherSnapshotView != viewCopy)
   {
     [(UIImageView *)switcherSnapshotView removeFromSuperview];
-    objc_storeStrong(&self->_switcherSnapshotView, a3);
+    objc_storeStrong(&self->_switcherSnapshotView, view);
     if (self->_switcherSnapshotView)
     {
       [(NTKFaceView *)self addSubview:?];
@@ -1422,7 +1422,7 @@ LABEL_12:
   }
 }
 
-- (void)layoutContainerView:(id)a3
+- (void)layoutContainerView:(id)view
 {
   [(NTKFaceView *)self _layoutComplicationViews];
   [(NTKFaceView *)self _layoutForegroundContainerView];
@@ -1434,29 +1434,29 @@ LABEL_12:
   }
 }
 
-- (id)complicationLayoutforSlot:(id)a3
+- (id)complicationLayoutforSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_complicationLayouts objectForKey:v4];
+  slotCopy = slot;
+  v5 = [(NSMutableDictionary *)self->_complicationLayouts objectForKey:slotCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(NTKComplicationLayout);
-    [(NSMutableDictionary *)self->_complicationLayouts setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_complicationLayouts setObject:v5 forKey:slotCopy];
   }
 
   return v5;
 }
 
-- (void)enumerateComplicationDisplayWrappersWithBlock:(id)a3
+- (void)enumerateComplicationDisplayWrappersWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   complicationDisplayWrappers = self->_complicationDisplayWrappers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__NTKFaceView_enumerateComplicationDisplayWrappersWithBlock___block_invoke;
   v7[3] = &unk_278787668;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)complicationDisplayWrappers enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -1498,7 +1498,7 @@ void __43__NTKFaceView_reconfigureComplicationViews__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_applyEditConfigurationsWithForce:(BOOL)a3
+- (void)_applyEditConfigurationsWithForce:(BOOL)force
 {
   objc_initWeak(&location, self);
   editConfigurations = self->_editConfigurations;
@@ -1508,7 +1508,7 @@ void __43__NTKFaceView_reconfigureComplicationViews__block_invoke(uint64_t a1, v
   v6[3] = &unk_2787876B8;
   objc_copyWeak(&v7, &location);
   v6[4] = self;
-  v8 = a3;
+  forceCopy = force;
   [(NSMutableDictionary *)editConfigurations enumerateKeysAndObjectsUsingBlock:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -1565,10 +1565,10 @@ void __49__NTKFaceView__applyEditConfigurationsWithForce___block_invoke_2(uint64
   }
 }
 
-- (void)enumerateQuadViewsWithBlock:(id)a3
+- (void)enumerateQuadViewsWithBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1589,7 +1589,7 @@ void __49__NTKFaceView__applyEditConfigurationsWithForce___block_invoke_2(uint64
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -1600,14 +1600,14 @@ void __49__NTKFaceView__applyEditConfigurationsWithForce___block_invoke_2(uint64
   }
 }
 
-- (void)renderSynchronouslyWithImageQueueDiscard:(BOOL)a3 inGroup:(id)a4
+- (void)renderSynchronouslyWithImageQueueDiscard:(BOOL)discard inGroup:(id)group
 {
-  v4 = a3;
+  discardCopy = discard;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  groupCopy = group;
   [(NTKFaceView *)self setNeedsRender];
-  self->_needsImageQueueDiscardOnRender |= v4;
-  [(NTKFaceView *)self _renderSynchronouslyIfNeededInGroup:v6];
+  self->_needsImageQueueDiscardOnRender |= discardCopy;
+  [(NTKFaceView *)self _renderSynchronouslyIfNeededInGroup:groupCopy];
 
   v7 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1616,7 +1616,7 @@ void __49__NTKFaceView__applyEditConfigurationsWithForce___block_invoke_2(uint64
     v9 = NSStringFromClass(v8);
     v10 = v9;
     v11 = @"NO";
-    if (v4)
+    if (discardCopy)
     {
       v11 = @"YES";
     }
@@ -1629,16 +1629,16 @@ void __49__NTKFaceView__applyEditConfigurationsWithForce___block_invoke_2(uint64
   }
 }
 
-- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)a3 inGroup:(id)a4
+- (void)_renderSynchronouslyWithImageQueueDiscard:(BOOL)discard inGroup:(id)group
 {
-  v6 = a4;
+  groupCopy = group;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__NTKFaceView__renderSynchronouslyWithImageQueueDiscard_inGroup___block_invoke;
   v8[3] = &unk_278780230;
-  v10 = a3;
-  v9 = v6;
-  v7 = v6;
+  discardCopy = discard;
+  v9 = groupCopy;
+  v7 = groupCopy;
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v8];
 }
 
@@ -1656,36 +1656,36 @@ void __65__NTKFaceView__renderSynchronouslyWithImageQueueDiscard_inGroup___block
   }
 }
 
-- (BOOL)_renderSynchronouslyIfNeededInGroup:(id)a3
+- (BOOL)_renderSynchronouslyIfNeededInGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   if (self->_needsRender)
   {
-    v5 = [(NTKFaceView *)self window];
+    window = [(NTKFaceView *)self window];
 
-    if (v5)
+    if (window)
     {
-      [(NTKFaceView *)self _renderSynchronouslyWithImageQueueDiscard:self->_needsImageQueueDiscardOnRender inGroup:v4];
+      [(NTKFaceView *)self _renderSynchronouslyWithImageQueueDiscard:self->_needsImageQueueDiscardOnRender inGroup:groupCopy];
       self->_needsImageQueueDiscardOnRender = 0;
-      LOBYTE(v5) = 1;
+      LOBYTE(window) = 1;
     }
   }
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(window) = 0;
   }
 
   self->_needsRender = 0;
 
-  return v5;
+  return window;
 }
 
 - (double)_verticalPaddingForStatusBar
 {
-  v2 = [(CLKDevice *)self->_device sizeClass];
+  sizeClass = [(CLKDevice *)self->_device sizeClass];
   result = 2.0;
-  if (!v2)
+  if (!sizeClass)
   {
     return 2.5;
   }
@@ -1704,59 +1704,59 @@ void __65__NTKFaceView__renderSynchronouslyWithImageQueueDiscard_inGroup___block
 
 - (void)prepareToZoom
 {
-  v3 = [(NTKFaceView *)self delegate];
-  [v3 faceViewWantsUnadornedSnapshotViewRemoved];
+  delegate = [(NTKFaceView *)self delegate];
+  [delegate faceViewWantsUnadornedSnapshotViewRemoved];
 
   self->_zooming = 1;
 
   [(NTKFaceView *)self _prepareToZoom];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dateCopy = date;
   v7 = _NTKLoggingObjectForDomain(40, "NTKLoggingDomainTritium");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [(NSDate *)self->_overrideDate description];
-    v9 = [v8 UTF8String];
-    v10 = [(NSDate *)v6 description];
+    uTF8String = [v8 UTF8String];
+    v10 = [(NSDate *)dateCopy description];
     v13 = 136315650;
-    v14 = v9;
+    v14 = uTF8String;
     v15 = 2080;
-    v16 = [v10 UTF8String];
+    uTF8String2 = [v10 UTF8String];
     v17 = 1024;
     v18 = 1;
     _os_log_impl(&dword_22D9C5000, v7, OS_LOG_TYPE_DEFAULT, "setOverrideDate: %s -> %s, shouldApply: %{BOOL}d", &v13, 0x1Cu);
   }
 
   overrideDate = self->_overrideDate;
-  self->_overrideDate = v6;
-  v12 = v6;
+  self->_overrideDate = dateCopy;
+  v12 = dateCopy;
 
-  [(NTKTimeView *)self->_timeView setOverrideDate:v12 duration:a4];
-  [(NTKExtraLargeTimeView *)self->_sensitiveUIShieldView setOverrideDate:v12 duration:a4];
+  [(NTKTimeView *)self->_timeView setOverrideDate:v12 duration:duration];
+  [(NTKExtraLargeTimeView *)self->_sensitiveUIShieldView setOverrideDate:v12 duration:duration];
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NTKFaceView *)self complicationFactory];
-  v11 = [v10 newLegacyViewForComplication:v9 family:a4 slot:v8];
+  slotCopy = slot;
+  complicationCopy = complication;
+  complicationFactory = [(NTKFaceView *)self complicationFactory];
+  v11 = [complicationFactory newLegacyViewForComplication:complicationCopy family:family slot:slotCopy];
 
   return v11;
 }
 
-- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4
+- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot
 {
-  v6 = a4;
-  v7 = [(NTKFaceView *)self complicationFactory];
-  if (v7 && (v8 = v7, [(NTKFaceView *)self complicationFactory], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, v8, (v10 & 1) != 0))
+  slotCopy = slot;
+  complicationFactory = [(NTKFaceView *)self complicationFactory];
+  if (complicationFactory && (v8 = complicationFactory, [(NTKFaceView *)self complicationFactory], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, v8, (v10 & 1) != 0))
   {
-    v11 = [(NTKFaceView *)self complicationFactory];
-    v12 = [v11 legacyLayoutOverrideforComplicationType:a3 slot:v6];
+    complicationFactory2 = [(NTKFaceView *)self complicationFactory];
+    v12 = [complicationFactory2 legacyLayoutOverrideforComplicationType:type slot:slotCopy];
   }
 
   else
@@ -1767,24 +1767,24 @@ void __65__NTKFaceView__renderSynchronouslyWithImageQueueDiscard_inGroup___block
   return v12;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKFaceView *)self complicationFactory];
-  [v8 configureComplicationView:v7 forSlot:v6];
+  slotCopy = slot;
+  viewCopy = view;
+  complicationFactory = [(NTKFaceView *)self complicationFactory];
+  [complicationFactory configureComplicationView:viewCopy forSlot:slotCopy];
 }
 
-- (unint64_t)_layoutStyleForSlot:(id)a3
+- (unint64_t)_layoutStyleForSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKFaceView *)self complicationFactory];
+  slotCopy = slot;
+  complicationFactory = [(NTKFaceView *)self complicationFactory];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(NTKFaceView *)self complicationFactory];
-    v8 = [v7 layoutStyleForSlot:v4];
+    complicationFactory2 = [(NTKFaceView *)self complicationFactory];
+    v8 = [complicationFactory2 layoutStyleForSlot:slotCopy];
   }
 
   else
@@ -1795,68 +1795,68 @@ void __65__NTKFaceView__renderSynchronouslyWithImageQueueDiscard_inGroup___block
   return v8;
 }
 
-- (void)_curvedComplicationCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8
+- (void)_curvedComplicationCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot
 {
-  v17 = a8;
-  if (a3)
+  slotCopy = slot;
+  if (radius)
   {
-    *a3 = 0.0;
+    *radius = 0.0;
   }
 
-  if (a4)
+  if (angle)
   {
-    *a4 = 0.0;
+    *angle = 0.0;
   }
 
-  if (a5)
+  if (width)
   {
-    *a5 = 0.0;
+    *width = 0.0;
   }
 
-  if (a7)
+  if (interior)
   {
-    *a7 = 0;
+    *interior = 0;
   }
 
-  if (a6)
+  if (center)
   {
-    *a6 = *MEMORY[0x277CBF348];
+    *center = *MEMORY[0x277CBF348];
   }
 
-  v14 = [(NTKFaceView *)self complicationFactory];
+  complicationFactory = [(NTKFaceView *)self complicationFactory];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(NTKFaceView *)self complicationFactory];
-    [v16 curvedComplicationCircleRadius:a3 centerAngle:a4 maxAngularWidth:a5 circleCenter:a6 interior:a7 forSlot:v17];
+    complicationFactory2 = [(NTKFaceView *)self complicationFactory];
+    [complicationFactory2 curvedComplicationCircleRadius:radius centerAngle:angle maxAngularWidth:width circleCenter:center interior:interior forSlot:slotCopy];
   }
 }
 
 - (void)_loadLayoutRules
 {
-  v2 = [(NTKFaceView *)self complicationFactory];
-  [v2 loadLayoutRules];
+  complicationFactory = [(NTKFaceView *)self complicationFactory];
+  [complicationFactory loadLayoutRules];
 }
 
 - (void)_bringForegroundViewsToFront
 {
   if (self->_foregroundContainerView)
   {
-    v3 = [(NTKFaceView *)self contentView];
-    [v3 bringSubviewToFront:self->_foregroundContainerView];
+    contentView = [(NTKFaceView *)self contentView];
+    [contentView bringSubviewToFront:self->_foregroundContainerView];
   }
 }
 
 - (void)_applyFrozen
 {
-  v3 = [(NTKFaceView *)self timeView];
-  [v3 setFrozen:{-[NTKFaceView isFrozen](self, "isFrozen")}];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView setFrozen:{-[NTKFaceView isFrozen](self, "isFrozen")}];
 
   sensitiveUIShieldView = self->_sensitiveUIShieldView;
-  v5 = [(NTKFaceView *)self isFrozen];
+  isFrozen = [(NTKFaceView *)self isFrozen];
 
-  [(NTKExtraLargeTimeView *)sensitiveUIShieldView setFrozen:v5];
+  [(NTKExtraLargeTimeView *)sensitiveUIShieldView setFrozen:isFrozen];
 }
 
 - (id)_accessPrewarmedData
@@ -1867,7 +1867,7 @@ void __65__NTKFaceView__renderSynchronouslyWithImageQueueDiscard_inGroup___block
   return v3;
 }
 
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v4 = *MEMORY[0x277CBF398];
   v5 = *(MEMORY[0x277CBF398] + 8);
@@ -1880,9 +1880,9 @@ void __65__NTKFaceView__renderSynchronouslyWithImageQueueDiscard_inGroup___block
   return result;
 }
 
-- (CGRect)_keylineFrameForCustomEditMode:(int64_t)a3 option:(id)a4 slot:(id)a5
+- (CGRect)_keylineFrameForCustomEditMode:(int64_t)mode option:(id)option slot:(id)slot
 {
-  [(NTKFaceView *)self _keylineFrameForCustomEditMode:a3 option:a4 slot:a5 selectedSlot:a5];
+  [(NTKFaceView *)self _keylineFrameForCustomEditMode:mode option:option slot:slot selectedSlot:slot];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -1890,9 +1890,9 @@ void __65__NTKFaceView__renderSynchronouslyWithImageQueueDiscard_inGroup___block
   return result;
 }
 
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 0;
   }
@@ -1905,33 +1905,33 @@ void __65__NTKFaceView__renderSynchronouslyWithImageQueueDiscard_inGroup___block
 
 - (id)_editOptionsThatHideEditModes
 {
-  v2 = [(NTKFaceView *)self delegate];
-  v3 = [v2 faceViewEditOptionsThatHideEditModes];
+  delegate = [(NTKFaceView *)self delegate];
+  faceViewEditOptionsThatHideEditModes = [delegate faceViewEditOptionsThatHideEditModes];
 
-  return v3;
+  return faceViewEditOptionsThatHideEditModes;
 }
 
 - (id)allVisibleComplicationsForCurrentConfiguration
 {
-  v2 = [(NTKFaceView *)self delegate];
-  v3 = [v2 faceViewAllVisibleComplicationsForCurrentConfiguration];
+  delegate = [(NTKFaceView *)self delegate];
+  faceViewAllVisibleComplicationsForCurrentConfiguration = [delegate faceViewAllVisibleComplicationsForCurrentConfiguration];
 
-  return v3;
+  return faceViewAllVisibleComplicationsForCurrentConfiguration;
 }
 
 - (id)_editOptionThatHidesAllComplications
 {
-  v2 = [(NTKFaceView *)self delegate];
-  v3 = [v2 faceViewEditOptionThatHidesAllComplications];
+  delegate = [(NTKFaceView *)self delegate];
+  faceViewEditOptionThatHidesAllComplications = [delegate faceViewEditOptionThatHidesAllComplications];
 
-  return v3;
+  return faceViewEditOptionThatHidesAllComplications;
 }
 
-- (id)_complicationSlotsHiddenByEditOption:(id)a3
+- (id)_complicationSlotsHiddenByEditOption:(id)option
 {
-  v4 = a3;
-  v5 = [(NTKFaceView *)self _editOptionThatHidesAllComplications];
-  v6 = [v5 isEqual:v4];
+  optionCopy = option;
+  _editOptionThatHidesAllComplications = [(NTKFaceView *)self _editOptionThatHidesAllComplications];
+  v6 = [_editOptionThatHidesAllComplications isEqual:optionCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained;
@@ -1942,7 +1942,7 @@ void __65__NTKFaceView__renderSynchronouslyWithImageQueueDiscard_inGroup___block
 
   else
   {
-    [WeakRetained faceViewComplicationSlotsHiddenByEditOption:v4];
+    [WeakRetained faceViewComplicationSlotsHiddenByEditOption:optionCopy];
   }
   v9 = ;
 
@@ -1993,21 +1993,21 @@ void __61__NTKFaceView__complicationSlotsHiddenByCurrentConfiguration__block_inv
   [v4 addObjectsFromArray:v5];
 }
 
-- (void)setComplicationHidden:(BOOL)a3 atSlot:(id)a4
+- (void)setComplicationHidden:(BOOL)hidden atSlot:(id)slot
 {
-  v4 = a3;
-  v8 = a4;
-  if ([(NTKFaceView *)self complicationIsHiddenAtSlot:?]!= v4)
+  hiddenCopy = hidden;
+  slotCopy = slot;
+  if ([(NTKFaceView *)self complicationIsHiddenAtSlot:?]!= hiddenCopy)
   {
     hiddenComplicationSlots = self->_hiddenComplicationSlots;
-    if (v4)
+    if (hiddenCopy)
     {
-      [(NSMutableSet *)hiddenComplicationSlots addObject:v8];
+      [(NSMutableSet *)hiddenComplicationSlots addObject:slotCopy];
     }
 
     else
     {
-      [(NSMutableSet *)hiddenComplicationSlots removeObject:v8];
+      [(NSMutableSet *)hiddenComplicationSlots removeObject:slotCopy];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -2027,22 +2027,22 @@ void __61__NTKFaceView__complicationSlotsHiddenByCurrentConfiguration__block_inv
   [WeakRetained faceViewDidHideOrShowComplicationSlot];
 }
 
-- (void)_setComplicationAlphaForTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 customEditMode:(int64_t)a6 slot:(id)a7
+- (void)_setComplicationAlphaForTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption customEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = [(NTKFaceView *)self _complicationSlotsHiddenByEditOption:v12];
-  v16 = [v15 containsObject:v14];
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  v15 = [(NTKFaceView *)self _complicationSlotsHiddenByEditOption:optionCopy];
+  v16 = [v15 containsObject:slotCopy];
 
-  v17 = [(NTKFaceView *)self _complicationSlotsHiddenByEditOption:v13];
-  v18 = [v17 containsObject:v14];
+  v17 = [(NTKFaceView *)self _complicationSlotsHiddenByEditOption:toOptionCopy];
+  v18 = [v17 containsObject:slotCopy];
 
   if (v16 != v18)
   {
     if (!self->_editing)
     {
-      a3 = 1.0;
+      fraction = 1.0;
     }
 
     objc_initWeak(&location, self);
@@ -2051,10 +2051,10 @@ void __61__NTKFaceView__complicationSlotsHiddenByCurrentConfiguration__block_inv
     v19[2] = __98__NTKFaceView__setComplicationAlphaForTransitionFraction_fromOption_toOption_customEditMode_slot___block_invoke;
     v19[3] = &unk_278787730;
     objc_copyWeak(v22, &location);
-    v20 = v12;
-    v22[1] = a6;
-    v21 = v13;
-    v22[2] = *&a3;
+    v20 = optionCopy;
+    v22[1] = mode;
+    v21 = toOptionCopy;
+    v22[2] = *&fraction;
     [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v19];
 
     objc_destroyWeak(v22);
@@ -2076,8 +2076,8 @@ void __98__NTKFaceView__setComplicationAlphaForTransitionFraction_fromOption_toO
 
 - (BOOL)allFontsHidden
 {
-  v2 = [(NTKFaceView *)self _editModesDisabledByCurrentConfiguration];
-  v3 = [v2 containsObject:&unk_284185D58];
+  _editModesDisabledByCurrentConfiguration = [(NTKFaceView *)self _editModesDisabledByCurrentConfiguration];
+  v3 = [_editModesDisabledByCurrentConfiguration containsObject:&unk_284185D58];
 
   return v3;
 }
@@ -2086,15 +2086,15 @@ void __98__NTKFaceView__setComplicationAlphaForTransitionFraction_fromOption_toO
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(NSMutableDictionary *)self->_editConfigurations allKeys];
-  v5 = [v3 setWithArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_editConfigurations allKeys];
+  v5 = [v3 setWithArray:allKeys];
 
-  v6 = [(NTKFaceView *)self _editModesDisabledByCurrentConfiguration];
+  _editModesDisabledByCurrentConfiguration = [(NTKFaceView *)self _editModesDisabledByCurrentConfiguration];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [_editModesDisabledByCurrentConfiguration countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2105,13 +2105,13 @@ void __98__NTKFaceView__setComplicationAlphaForTransitionFraction_fromOption_toO
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_editModesDisabledByCurrentConfiguration);
         }
 
         [v5 removeObject:*(*(&v12 + 1) + 8 * i)];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [_editModesDisabledByCurrentConfiguration countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -2122,7 +2122,7 @@ void __98__NTKFaceView__setComplicationAlphaForTransitionFraction_fromOption_toO
 
 - (id)_editModesDisabledByCurrentConfiguration
 {
-  v3 = [(NTKFaceView *)self _editOptionsThatHideEditModes];
+  _editOptionsThatHideEditModes = [(NTKFaceView *)self _editOptionsThatHideEditModes];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2135,7 +2135,7 @@ void __98__NTKFaceView__setComplicationAlphaForTransitionFraction_fromOption_toO
   v8[2] = __55__NTKFaceView__editModesDisabledByCurrentConfiguration__block_invoke;
   v8[3] = &unk_278787758;
   v8[4] = self;
-  v5 = v3;
+  v5 = _editOptionsThatHideEditModes;
   v9 = v5;
   v10 = &v11;
   [(NSMutableDictionary *)editConfigurations enumerateKeysAndObjectsUsingBlock:v8];
@@ -2192,14 +2192,14 @@ void __55__NTKFaceView__editModesDisabledByCurrentConfiguration__block_invoke_3(
   }
 }
 
-- (void)hideAppropriateComplicationsForCurrentConfigurationInEditMode:(int64_t)a3
+- (void)hideAppropriateComplicationsForCurrentConfigurationInEditMode:(int64_t)mode
 {
   objc_initWeak(&location, self);
-  v4 = [(NTKFaceView *)self _complicationSlotsHiddenByCurrentConfiguration];
-  v5 = [v4 count];
+  _complicationSlotsHiddenByCurrentConfiguration = [(NTKFaceView *)self _complicationSlotsHiddenByCurrentConfiguration];
+  v5 = [_complicationSlotsHiddenByCurrentConfiguration count];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained faceViewComplicationSlots];
-  self->_everyComplicationHidden = v5 == [v7 count];
+  faceViewComplicationSlots = [WeakRetained faceViewComplicationSlots];
+  self->_everyComplicationHidden = v5 == [faceViewComplicationSlots count];
 
   v8 = [(NSMutableSet *)self->_hiddenComplicationSlots copy];
   v16[0] = MEMORY[0x277D85DD0];
@@ -2214,7 +2214,7 @@ void __55__NTKFaceView__editModesDisabledByCurrentConfiguration__block_invoke_3(
   v12 = __77__NTKFaceView_hideAppropriateComplicationsForCurrentConfigurationInEditMode___block_invoke_2;
   v13 = &unk_278787780;
   objc_copyWeak(&v15, &location);
-  v9 = v4;
+  v9 = _complicationSlotsHiddenByCurrentConfiguration;
   v14 = v9;
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:&v10];
   [(NTKFaceView *)self shiftSelectedComplicationSlotIfHidden:v10];
@@ -2239,14 +2239,14 @@ void __77__NTKFaceView_hideAppropriateComplicationsForCurrentConfigurationInEdit
   [v5 setAlpha:v8];
 }
 
-- (int64_t)_complicationPickerStyleForSlot:(id)a3
+- (int64_t)_complicationPickerStyleForSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKFaceView *)self complicationFactory];
-  if (v5 && (v6 = v5, [(NTKFaceView *)self complicationFactory], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  slotCopy = slot;
+  complicationFactory = [(NTKFaceView *)self complicationFactory];
+  if (complicationFactory && (v6 = complicationFactory, [(NTKFaceView *)self complicationFactory], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(NTKFaceView *)self complicationFactory];
-    v10 = [v9 complicationPickerStyleForSlot:v4];
+    complicationFactory2 = [(NTKFaceView *)self complicationFactory];
+    v10 = [complicationFactory2 complicationPickerStyleForSlot:slotCopy];
   }
 
   else
@@ -2257,30 +2257,30 @@ void __77__NTKFaceView_hideAppropriateComplicationsForCurrentConfigurationInEdit
   return v10;
 }
 
-- (id)_keylineViewForComplicationSlot:(id)a3
+- (id)_keylineViewForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKFaceView *)self complicationFactory];
+  slotCopy = slot;
+  complicationFactory = [(NTKFaceView *)self complicationFactory];
 
-  if (!v5 || (-[NTKFaceView complicationFactory](self, "complicationFactory"), v6 = objc_claimAutoreleasedReturnValue(), [v6 keylineViewForComplicationSlot:v4], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!complicationFactory || (-[NTKFaceView complicationFactory](self, "complicationFactory"), v6 = objc_claimAutoreleasedReturnValue(), [v6 keylineViewForComplicationSlot:slotCopy], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
-    v7 = [(NTKFaceView *)self _defaultKeylineViewForComplicationSlot:v4];
+    v7 = [(NTKFaceView *)self _defaultKeylineViewForComplicationSlot:slotCopy];
   }
 
   return v7;
 }
 
-- (id)_defaultKeylineViewForComplicationSlot:(id)a3
+- (id)_defaultKeylineViewForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([(NTKFaceView *)self _keylineStyleForComplicationSlot:v4])
+  slotCopy = slot;
+  if ([(NTKFaceView *)self _keylineStyleForComplicationSlot:slotCopy])
   {
     NTKFittedCircleKeylineView();
   }
 
   else
   {
-    [(NTKFaceView *)self _keylineCornerRadiusForComplicationSlot:v4];
+    [(NTKFaceView *)self _keylineCornerRadiusForComplicationSlot:slotCopy];
     NTKKeylineViewWithContinuousCurveCornerRadius(v5);
   }
   v6 = ;
@@ -2288,10 +2288,10 @@ void __77__NTKFaceView_hideAppropriateComplicationsForCurrentConfigurationInEdit
   return v6;
 }
 
-- (void)_finalizeForSnapshotting:(id)a3
+- (void)_finalizeForSnapshotting:(id)snapshotting
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  snapshottingCopy = snapshotting;
   v4 = _NTKLoggingObjectForDomain(4, "NTKLoggingDomainSnapshot");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2302,21 +2302,21 @@ void __77__NTKFaceView_hideAppropriateComplicationsForCurrentConfigurationInEdit
     _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "NTKFaceView(%@) _finalizeForSnapshotting just immediatly call completion", &v7, 0xCu);
   }
 
-  if (v3)
+  if (snapshottingCopy)
   {
-    v3[2](v3);
+    snapshottingCopy[2](snapshottingCopy);
   }
 }
 
-- (void)_performPrewarmRoutine:(id)a3
+- (void)_performPrewarmRoutine:(id)routine
 {
-  if (a3)
+  if (routine)
   {
-    (*(a3 + 2))(a3);
+    (*(routine + 2))(routine);
   }
 }
 
-- (CGRect)_faceViewFrameForEditMode:(int64_t)a3 option:(id)a4 slot:(id)a5
+- (CGRect)_faceViewFrameForEditMode:(int64_t)mode option:(id)option slot:(id)slot
 {
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
@@ -2329,11 +2329,11 @@ void __77__NTKFaceView_hideAppropriateComplicationsForCurrentConfigurationInEdit
   return result;
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    v7 = [(NTKFaceView *)self _swatchImageForColorOption:a3 size:a4, a5, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8), v5];
+    v7 = [(NTKFaceView *)self _swatchImageForColorOption:option size:mode, options, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8), v5];
   }
 
   else
@@ -2344,25 +2344,25 @@ void __77__NTKFaceView_hideAppropriateComplicationsForCurrentConfigurationInEdit
   return v7;
 }
 
-- (id)_swatchImageForColorOption:(id)a3 size:(CGSize)a4
+- (id)_swatchImageForColorOption:(id)option size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  optionCopy = option;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__54;
   v22 = __Block_byref_object_dispose__54;
   v23 = 0;
-  if ([v7 conformsToProtocol:&unk_28A87B948])
+  if ([optionCopy conformsToProtocol:&unk_28A87B948])
   {
-    v8 = [(NTKFaceView *)self faceColorPalette];
+    faceColorPalette = [(NTKFaceView *)self faceColorPalette];
 
-    if (v8)
+    if (faceColorPalette)
     {
-      v9 = [(NTKFaceView *)self faceColorPalette];
-      v10 = [v7 pigmentEditOption];
+      faceColorPalette2 = [(NTKFaceView *)self faceColorPalette];
+      pigmentEditOption = [optionCopy pigmentEditOption];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __47__NTKFaceView__swatchImageForColorOption_size___block_invoke;
@@ -2370,15 +2370,15 @@ void __77__NTKFaceView_hideAppropriateComplicationsForCurrentConfigurationInEdit
       v17[4] = &v18;
       *&v17[5] = width;
       *&v17[6] = height;
-      [v9 executeWithOption:v10 block:v17];
+      [faceColorPalette2 executeWithOption:pigmentEditOption block:v17];
     }
   }
 
   v11 = v19[5];
   if (!v11)
   {
-    v12 = [(NTKFaceView *)self _swatchColorForColorOption:v7];
-    v13 = [objc_opt_class() _swatchImageForColorOption:v7 forDevice:self->_device color:v12 size:{width, height}];
+    v12 = [(NTKFaceView *)self _swatchColorForColorOption:optionCopy];
+    v13 = [objc_opt_class() _swatchImageForColorOption:optionCopy forDevice:self->_device color:v12 size:{width, height}];
     v14 = v19[5];
     v19[5] = v13;
 
@@ -2399,13 +2399,13 @@ void __47__NTKFaceView__swatchImageForColorOption_size___block_invoke(uint64_t a
   *(v4 + 40) = v3;
 }
 
-+ (id)_swatchImageForColorOption:(id)a3 forDevice:(id)a4 color:(id)a5 size:(CGSize)a6
++ (id)_swatchImageForColorOption:(id)option forDevice:(id)device color:(id)color size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  height = size.height;
+  width = size.width;
+  optionCopy = option;
+  deviceCopy = device;
+  colorCopy = color;
   if (!_swatchImageForColorOption_forDevice_color_size__swatches)
   {
     v13 = objc_opt_new();
@@ -2417,7 +2417,7 @@ void __47__NTKFaceView__swatchImageForColorOption_size___block_invoke(uint64_t a
   v35 = 0;
   v32 = 0;
   v33 = 0;
-  [v12 getRed:&v35 green:&v34 blue:&v33 alpha:&v32];
+  [colorCopy getRed:&v35 green:&v34 blue:&v33 alpha:&v32];
   v15 = MEMORY[0x277CCACA8];
   v17 = v34;
   v16 = v35;
@@ -2433,7 +2433,7 @@ void __47__NTKFaceView__swatchImageForColorOption_size___block_invoke(uint64_t a
   {
     if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
     {
-      +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [v10 swatchStyle]);
+      +[NTKEditOption sizeForSwatchStyle:](NTKEditOption, "sizeForSwatchStyle:", [optionCopy swatchStyle]);
       width = v24;
       height = v25;
     }
@@ -2443,7 +2443,7 @@ void __47__NTKFaceView__swatchImageForColorOption_size___block_invoke(uint64_t a
     v28[1] = 3221225472;
     v28[2] = __63__NTKFaceView__swatchImageForColorOption_forDevice_color_size___block_invoke;
     v28[3] = &unk_278780D88;
-    v29 = v12;
+    v29 = colorCopy;
     v30 = width;
     v31 = height;
     v22 = [v26 imageWithActions:v28];
@@ -2471,31 +2471,31 @@ void __63__NTKFaceView__swatchImageForColorOption_forDevice_color_size___block_i
   [v12 fill];
 }
 
-- (id)swatchPrimaryColorForColorOption:(id)a3
+- (id)swatchPrimaryColorForColorOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__54;
   v16 = __Block_byref_object_dispose__54;
   v17 = 0;
-  if ([v4 conformsToProtocol:&unk_28A87B948] && (-[NTKFaceView faceColorPalette](self, "faceColorPalette"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ([optionCopy conformsToProtocol:&unk_28A87B948] && (-[NTKFaceView faceColorPalette](self, "faceColorPalette"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(NTKFaceView *)self faceColorPalette];
-    v7 = [v4 pigmentEditOption];
+    faceColorPalette = [(NTKFaceView *)self faceColorPalette];
+    pigmentEditOption = [optionCopy pigmentEditOption];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __48__NTKFaceView_swatchPrimaryColorForColorOption___block_invoke;
     v11[3] = &unk_2787877D0;
     v11[4] = &v12;
-    [v6 executeWithOption:v7 block:v11];
+    [faceColorPalette executeWithOption:pigmentEditOption block:v11];
   }
 
   else
   {
-    v8 = [(NTKFaceView *)self _swatchColorForColorOption:v4];
-    v6 = v13[5];
+    v8 = [(NTKFaceView *)self _swatchColorForColorOption:optionCopy];
+    faceColorPalette = v13[5];
     v13[5] = v8;
   }
 
@@ -2513,10 +2513,10 @@ void __48__NTKFaceView_swatchPrimaryColorForColorOption___block_invoke(uint64_t 
   *(v4 + 40) = v3;
 }
 
-- (id)_swatchColorForColorOption:(id)a3
+- (id)_swatchColorForColorOption:(id)option
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28A87B948] && (-[NTKFaceView faceColorPalette](self, "faceColorPalette"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  optionCopy = option;
+  if ([optionCopy conformsToProtocol:&unk_28A87B948] && (-[NTKFaceView faceColorPalette](self, "faceColorPalette"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v17 = 0;
     v18 = &v17;
@@ -2524,16 +2524,16 @@ void __48__NTKFaceView_swatchPrimaryColorForColorOption___block_invoke(uint64_t 
     v20 = __Block_byref_object_copy__54;
     v21 = __Block_byref_object_dispose__54;
     v22 = 0;
-    v6 = [(NTKFaceView *)self faceColorPalette];
-    v7 = [v4 pigmentEditOption];
+    faceColorPalette = [(NTKFaceView *)self faceColorPalette];
+    pigmentEditOption = [optionCopy pigmentEditOption];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __42__NTKFaceView__swatchColorForColorOption___block_invoke;
     v16[3] = &unk_2787877D0;
     v16[4] = &v17;
-    [v6 executeWithOption:v7 block:v16];
+    [faceColorPalette executeWithOption:pigmentEditOption block:v16];
 
-    v8 = v18[5];
+    foregroundColor = v18[5];
     _Block_object_dispose(&v17, 8);
   }
 
@@ -2543,23 +2543,23 @@ void __48__NTKFaceView_swatchPrimaryColorForColorOption___block_invoke(uint64_t 
     if (objc_opt_isKindOfClass())
     {
       device = self->_device;
-      v10 = v4;
-      v11 = [(NTKFaceView *)self faceColorPalette];
-      v12 = [v10 pigmentEditOption];
+      v10 = optionCopy;
+      faceColorPalette2 = [(NTKFaceView *)self faceColorPalette];
+      pigmentEditOption2 = [v10 pigmentEditOption];
 
-      v13 = [v11 copyWithOption:v12];
+      v13 = [faceColorPalette2 copyWithOption:pigmentEditOption2];
       v14 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:v13 units:1];
 
-      v8 = [v14 foregroundColor];
+      foregroundColor = [v14 foregroundColor];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D75348] whiteColor];
+      foregroundColor = [MEMORY[0x277D75348] whiteColor];
     }
   }
 
-  return v8;
+  return foregroundColor;
 }
 
 void __42__NTKFaceView__swatchColorForColorOption___block_invoke(uint64_t a1, void *a2)
@@ -2610,15 +2610,15 @@ LABEL_10:
   [(NTKFaceView *)self _prepareForStatusChange:v4];
 }
 
-- (BOOL)complicationDisplayWrapperView:(id)a3 shouldStartCustomDataAnimationFromEarlierView:(id)a4 laterView:(id)a5 isForward:(BOOL)a6 animationType:(unint64_t)a7
+- (BOOL)complicationDisplayWrapperView:(id)view shouldStartCustomDataAnimationFromEarlierView:(id)earlierView laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [a3 family];
+  earlierViewCopy = earlierView;
+  laterViewCopy = laterView;
+  family = [view family];
   isKindOfClass = 1;
-  if ((v11 - 10) >= 3 && v11 != 8)
+  if ((family - 10) >= 3 && family != 8)
   {
-    if (v11 == 9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (family == 9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -2633,21 +2633,21 @@ LABEL_10:
   return isKindOfClass & 1;
 }
 
-- (void)complicationDisplayWrapperView:(id)a3 updateCustomDataAnimationFromEarlierView:(id)a4 laterView:(id)a5 isForward:(BOOL)a6 animationType:(unint64_t)a7 animationDuration:(double)a8 animationFraction:(float)a9
+- (void)complicationDisplayWrapperView:(id)view updateCustomDataAnimationFromEarlierView:(id)earlierView laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction
 {
-  v12 = a6;
-  v19 = a4;
-  v15 = a5;
-  v16 = [a3 family];
-  if (v16 <= 10)
+  forwardCopy = forward;
+  earlierViewCopy = earlierView;
+  laterViewCopy = laterView;
+  family = [view family];
+  if (family <= 10)
   {
-    if (v16 == 8)
+    if (family == 8)
     {
       v18 = NTKRichComplicationCornerUtilities;
       goto LABEL_9;
     }
 
-    if (v16 != 10)
+    if (family != 10)
     {
       goto LABEL_10;
     }
@@ -2655,12 +2655,12 @@ LABEL_10:
 LABEL_7:
     v18 = objc_opt_class();
 LABEL_9:
-    *&v17 = a9;
-    [(__objc2_class *)v18 updateCustomDataAnimationFromEarlierView:v19 laterView:v15 isForward:v12 animationType:a7 animationDuration:a8 animationFraction:v17];
+    *&v17 = fraction;
+    [(__objc2_class *)v18 updateCustomDataAnimationFromEarlierView:earlierViewCopy laterView:laterViewCopy isForward:forwardCopy animationType:type animationDuration:duration animationFraction:v17];
     goto LABEL_10;
   }
 
-  if (v16 == 11 || v16 == 12)
+  if (family == 11 || family == 12)
   {
     goto LABEL_7;
   }
@@ -2668,64 +2668,64 @@ LABEL_9:
 LABEL_10:
 }
 
-- (BOOL)_useAlternateComplicationColorForGraphicCircularComplicationInView:(id)a3
+- (BOOL)_useAlternateComplicationColorForGraphicCircularComplicationInView:(id)view
 {
-  v5 = a3;
-  v6 = [(NTKFaceView *)self _legacyShouldSwapGraphicCircularComplicationColors];
-  if (!v5 || !v6)
+  viewCopy = view;
+  _legacyShouldSwapGraphicCircularComplicationColors = [(NTKFaceView *)self _legacyShouldSwapGraphicCircularComplicationColors];
+  if (!viewCopy || !_legacyShouldSwapGraphicCircularComplicationColors)
   {
     goto LABEL_11;
   }
 
-  while (![v5 isMemberOfClass:objc_opt_class()])
+  while (![viewCopy isMemberOfClass:objc_opt_class()])
   {
-    v3 = [v5 superview];
+    superview = [viewCopy superview];
 
-    v5 = v3;
-    if (!v3)
+    viewCopy = superview;
+    if (!superview)
     {
       goto LABEL_11;
     }
   }
 
-  v5 = v5;
-  v7 = [v5 family];
-  v8 = v7;
-  if (v7 == 12 || v7 == 10)
+  viewCopy = viewCopy;
+  family = [viewCopy family];
+  v8 = family;
+  if (family == 12 || family == 10)
   {
-    v9 = [v5 complicationSlotIdentifier];
-    LOBYTE(v3) = [(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplicationInSlot:v9];
+    complicationSlotIdentifier = [viewCopy complicationSlotIdentifier];
+    LOBYTE(superview) = [(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplicationInSlot:complicationSlotIdentifier];
   }
 
   if (v8 != 10 && v8 != 12)
   {
 LABEL_11:
-    LOBYTE(v3) = 0;
+    LOBYTE(superview) = 0;
   }
 
-  return v3 & 1;
+  return superview & 1;
 }
 
-- (BOOL)_useAlternateComplicationColorForGraphicCircularComplicationInSlot:(id)a3
+- (BOOL)_useAlternateComplicationColorForGraphicCircularComplicationInSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKFaceView *)self delegate];
-  v6 = [v5 faceViewComplicationForSlot:v4];
+  slotCopy = slot;
+  delegate = [(NTKFaceView *)self delegate];
+  v6 = [delegate faceViewComplicationForSlot:slotCopy];
 
   LOBYTE(self) = [(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplication:v6];
   return self;
 }
 
-- (BOOL)_useAlternateComplicationColorForGraphicCircularComplication:(id)a3
+- (BOOL)_useAlternateComplicationColorForGraphicCircularComplication:(id)complication
 {
-  v3 = a3;
-  v4 = [v3 complicationType];
+  complicationCopy = complication;
+  complicationType = [complicationCopy complicationType];
   v5 = 0;
-  if (v4 > 37)
+  if (complicationType > 37)
   {
-    if (v4 != 38)
+    if (complicationType != 38)
     {
-      if (v4 != 48)
+      if (complicationType != 48)
       {
         goto LABEL_10;
       }
@@ -2736,11 +2736,11 @@ LABEL_11:
         goto LABEL_10;
       }
 
-      v6 = [v3 complication];
-      v7 = [v6 bundleIdentifier];
+      complication = [complicationCopy complication];
+      bundleIdentifier = [complication bundleIdentifier];
 
-      LOBYTE(v6) = [&unk_28418B890 containsObject:v7];
-      if ((v6 & 1) == 0)
+      LOBYTE(complication) = [&unk_28418B890 containsObject:bundleIdentifier];
+      if ((complication & 1) == 0)
       {
         goto LABEL_10;
       }
@@ -2749,7 +2749,7 @@ LABEL_11:
     }
   }
 
-  else if (v4 != 1 && v4 != 5)
+  else if (complicationType != 1 && complicationType != 5)
   {
 LABEL_10:
     v5 = 1;
@@ -2758,20 +2758,20 @@ LABEL_10:
   return v5;
 }
 
-- (void)_setTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_setTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  self->_editModeTransitionFraction = a3;
-  self->_fromEditMode = a4;
-  self->_toEditMode = a5;
+  self->_editModeTransitionFraction = fraction;
+  self->_fromEditMode = mode;
+  self->_toEditMode = editMode;
   [(NTKFaceView *)self _updateComplicationMaxSize];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__NTKFaceView__setTransitionFraction_fromEditMode_toEditMode___block_invoke;
   v9[3] = &unk_2787877F8;
   v9[4] = self;
-  v9[5] = a4;
-  v9[6] = a5;
-  *&v9[7] = a3;
+  v9[5] = mode;
+  v9[6] = editMode;
+  *&v9[7] = fraction;
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v9];
   [(NTKFaceView *)self setNeedsLayout];
   [(NTKContainerView *)self->_foregroundContainerView setNeedsLayout];
@@ -2795,16 +2795,16 @@ void __62__NTKFaceView__setTransitionFraction_fromEditMode_toEditMode___block_in
   [v5 setAlpha:v6];
 }
 
-- (double)_alphaForComplicationSlot:(id)a3 inEditOption:(id)a4 ofEditMode:(int64_t)a5
+- (double)_alphaForComplicationSlot:(id)slot inEditOption:(id)option ofEditMode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = [(NTKFaceView *)self _complicationSlotsHiddenByEditOption:a4];
-  v10 = [v9 containsObject:v8];
+  slotCopy = slot;
+  v9 = [(NTKFaceView *)self _complicationSlotsHiddenByEditOption:option];
+  v10 = [v9 containsObject:slotCopy];
 
   v11 = 0.0;
   if ((v10 & 1) == 0)
   {
-    if ([(NTKFaceView *)self _fadesComplicationSlot:v8 inEditMode:a5])
+    if ([(NTKFaceView *)self _fadesComplicationSlot:slotCopy inEditMode:mode])
     {
       v11 = 0.2;
     }
@@ -2818,19 +2818,19 @@ void __62__NTKFaceView__setTransitionFraction_fromEditMode_toEditMode___block_in
   return v11;
 }
 
-- (CGRect)_frameForComplicationDisplayWrapper:(id)a3 inSlot:(id)a4
+- (CGRect)_frameForComplicationDisplayWrapper:(id)wrapper inSlot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 preferredSize];
+  slotCopy = slot;
+  wrapperCopy = wrapper;
+  [wrapperCopy preferredSize];
   v9 = v8;
   v11 = v10;
-  v12 = [v7 layoutOverride];
+  layoutOverride = [wrapperCopy layoutOverride];
 
   if (self->_editing)
   {
-    v13 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:v6 withOverride:v12 inEditMode:self->_fromEditMode];
-    v14 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:v6 withOverride:v12 inEditMode:self->_toEditMode];
+    v13 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:slotCopy withOverride:layoutOverride inEditMode:self->_fromEditMode];
+    v14 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:slotCopy withOverride:layoutOverride inEditMode:self->_toEditMode];
     v15 = [v13 isEqual:v14];
     [v13 calculateLayoutFrameForBoundsSize:{v9, v11}];
     v17 = v16;
@@ -2850,7 +2850,7 @@ void __62__NTKFaceView__setTransitionFraction_fromEditMode_toEditMode___block_in
 
   else
   {
-    v13 = [(NTKFaceView *)self layoutRuleForComplicationSlot:v6 inState:0 layoutOverride:v12];
+    v13 = [(NTKFaceView *)self layoutRuleForComplicationSlot:slotCopy inState:0 layoutOverride:layoutOverride];
     [v13 calculateLayoutFrameForBoundsSize:{v9, v11}];
     v17 = v28;
     v19 = v29;
@@ -2869,19 +2869,19 @@ void __62__NTKFaceView__setTransitionFraction_fromEditMode_toEditMode___block_in
   return result;
 }
 
-- (CGAffineTransform)_displayEditingTransformForComplicationSlot:(SEL)a3 displayWrapper:(id)a4
+- (CGAffineTransform)_displayEditingTransformForComplicationSlot:(SEL)slot displayWrapper:(id)wrapper
 {
-  v8 = a4;
+  wrapperCopy = wrapper;
   v9 = MEMORY[0x277CBF2C0];
   v10 = *(MEMORY[0x277CBF2C0] + 16);
   *&retstr->a = *MEMORY[0x277CBF2C0];
   *&retstr->c = v10;
   *&retstr->tx = *(v9 + 32);
-  v11 = [a5 layoutOverride];
+  layoutOverride = [a5 layoutOverride];
   if (self->_editing)
   {
-    v12 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:v8 withOverride:v11 inEditMode:self->_fromEditMode];
-    v13 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:v8 withOverride:v11 inEditMode:self->_toEditMode];
+    v12 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:wrapperCopy withOverride:layoutOverride inEditMode:self->_fromEditMode];
+    v13 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:wrapperCopy withOverride:layoutOverride inEditMode:self->_toEditMode];
     if ([v12 isEqual:v13])
     {
       if (v13)
@@ -2924,7 +2924,7 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v14 = [(NTKFaceView *)self layoutRuleForComplicationSlot:v8 inState:0 layoutOverride:v11];
+  v14 = [(NTKFaceView *)self layoutRuleForComplicationSlot:wrapperCopy inState:0 layoutOverride:layoutOverride];
   v12 = v14;
   if (v14)
   {
@@ -2946,19 +2946,19 @@ LABEL_17:
   return result;
 }
 
-- (CGAffineTransform)_displayContentTransformForComplicationSlot:(SEL)a3 displayWrapper:(id)a4
+- (CGAffineTransform)_displayContentTransformForComplicationSlot:(SEL)slot displayWrapper:(id)wrapper
 {
-  v8 = a4;
+  wrapperCopy = wrapper;
   v9 = MEMORY[0x277CBF2C0];
   v10 = *(MEMORY[0x277CBF2C0] + 16);
   *&retstr->a = *MEMORY[0x277CBF2C0];
   *&retstr->c = v10;
   *&retstr->tx = *(v9 + 32);
-  v11 = [a5 layoutOverride];
+  layoutOverride = [a5 layoutOverride];
   if (self->_editing)
   {
-    v12 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:v8 withOverride:v11 inEditMode:self->_fromEditMode];
-    v13 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:v8 withOverride:v11 inEditMode:self->_toEditMode];
+    v12 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:wrapperCopy withOverride:layoutOverride inEditMode:self->_fromEditMode];
+    v13 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:wrapperCopy withOverride:layoutOverride inEditMode:self->_toEditMode];
     if ([v12 isEqual:v13])
     {
       if (v13)
@@ -3001,7 +3001,7 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v14 = [(NTKFaceView *)self layoutRuleForComplicationSlot:v8 inState:0 layoutOverride:v11];
+  v14 = [(NTKFaceView *)self layoutRuleForComplicationSlot:wrapperCopy inState:0 layoutOverride:layoutOverride];
   v12 = v14;
   if (v14)
   {
@@ -3044,31 +3044,31 @@ void __41__NTKFaceView__updateComplicationMaxSize__block_invoke(uint64_t a1, voi
   [WeakRetained _updateMaxSizeForDisplayWrapper:v5 slot:v6];
 }
 
-- (void)_updateMaxSizeForDisplayWrapper:(id)a3 slot:(id)a4
+- (void)_updateMaxSizeForDisplayWrapper:(id)wrapper slot:(id)slot
 {
-  v6 = a4;
-  v11 = a3;
-  -[NTKFaceView _maxSizeForComplicationSlot:layoutOverride:](self, "_maxSizeForComplicationSlot:layoutOverride:", v6, [v11 layoutOverride]);
+  slotCopy = slot;
+  wrapperCopy = wrapper;
+  -[NTKFaceView _maxSizeForComplicationSlot:layoutOverride:](self, "_maxSizeForComplicationSlot:layoutOverride:", slotCopy, [wrapperCopy layoutOverride]);
   v8 = v7;
   v10 = v9;
 
-  [v11 setMaxSize:{v8, v10}];
+  [wrapperCopy setMaxSize:{v8, v10}];
 }
 
-- (CGSize)_maxSizeForComplicationSlot:(id)a3 layoutOverride:(int64_t)a4
+- (CGSize)_maxSizeForComplicationSlot:(id)slot layoutOverride:(int64_t)override
 {
   if (self->_editing)
   {
     fromEditMode = self->_fromEditMode;
-    v7 = a3;
-    v8 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:v7 withOverride:a4 inEditMode:fromEditMode];
-    v9 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:v7 withOverride:a4 inEditMode:self->_toEditMode];
+    slotCopy = slot;
+    v8 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:slotCopy withOverride:override inEditMode:fromEditMode];
+    v9 = [(NTKFaceView *)self _layoutRuleForComplicationSlot:slotCopy withOverride:override inEditMode:self->_toEditMode];
 
-    LOBYTE(v7) = [v8 isEqual:v9];
+    LOBYTE(slotCopy) = [v8 isEqual:v9];
     [v8 maximumSize];
     v11 = v10;
     v13 = v12;
-    if ((v7 & 1) == 0)
+    if ((slotCopy & 1) == 0)
     {
       [v9 maximumSize];
       CLKInterpolateBetweenSizes();
@@ -3079,8 +3079,8 @@ void __41__NTKFaceView__updateComplicationMaxSize__block_invoke(uint64_t a1, voi
 
   else
   {
-    v16 = a3;
-    v8 = [(NTKFaceView *)self layoutRuleForComplicationSlot:v16 inState:0 layoutOverride:a4];
+    slotCopy2 = slot;
+    v8 = [(NTKFaceView *)self layoutRuleForComplicationSlot:slotCopy2 inState:0 layoutOverride:override];
 
     [v8 maximumSize];
     v11 = v17;
@@ -3094,14 +3094,14 @@ void __41__NTKFaceView__updateComplicationMaxSize__block_invoke(uint64_t a1, voi
   return result;
 }
 
-- (void)_getKeylineFrame:(CGRect *)a3 padding:(UIEdgeInsets *)a4 forComplicationSlot:(id)a5 selected:(BOOL)a6
+- (void)_getKeylineFrame:(CGRect *)frame padding:(UIEdgeInsets *)padding forComplicationSlot:(id)slot selected:(BOOL)selected
 {
-  v6 = a6;
-  v10 = a5;
-  v38 = v10;
-  if (v6)
+  selectedCopy = selected;
+  slotCopy = slot;
+  v38 = slotCopy;
+  if (selectedCopy)
   {
-    v11 = [(NSMutableDictionary *)self->_complicationLayouts objectForKey:v10];
+    v11 = [(NSMutableDictionary *)self->_complicationLayouts objectForKey:slotCopy];
     v12 = [v11 defaultLayoutRuleForState:3];
 
     [v12 referenceFrame];
@@ -3118,7 +3118,7 @@ void __41__NTKFaceView__updateComplicationMaxSize__block_invoke(uint64_t a1, voi
 
   else
   {
-    v12 = [(NSMutableDictionary *)self->_complicationDisplayWrappers objectForKey:v10];
+    v12 = [(NSMutableDictionary *)self->_complicationDisplayWrappers objectForKey:slotCopy];
     v29 = -[NTKFaceView layoutRuleForComplicationSlot:inState:layoutOverride:](self, "layoutRuleForComplicationSlot:inState:layoutOverride:", v38, 2, [v12 layoutOverride]);
     if ([(NTKFaceView *)self _layoutStyleForSlot:v38]== 1 || [(NTKFaceView *)self _layoutStyleForSlot:v38]== 2)
     {
@@ -3142,49 +3142,49 @@ void __41__NTKFaceView__updateComplicationMaxSize__block_invoke(uint64_t a1, voi
     v28 = v37;
   }
 
-  if (a3)
+  if (frame)
   {
-    a3->origin.x = v14 - v24;
-    a3->origin.y = v16 - v22;
-    a3->size.width = v18 - (-v28 - v24);
-    a3->size.height = v20 - (-v26 - v22);
+    frame->origin.x = v14 - v24;
+    frame->origin.y = v16 - v22;
+    frame->size.width = v18 - (-v28 - v24);
+    frame->size.height = v20 - (-v26 - v22);
   }
 
-  if (a4)
+  if (padding)
   {
-    a4->top = v22;
-    a4->left = v24;
-    a4->bottom = v26;
-    a4->right = v28;
+    padding->top = v22;
+    padding->left = v24;
+    padding->bottom = v26;
+    padding->right = v28;
   }
 }
 
-- (id)_layoutRuleForComplicationSlot:(id)a3 withOverride:(int64_t)a4 inEditMode:(int64_t)a5
+- (id)_layoutRuleForComplicationSlot:(id)slot withOverride:(int64_t)override inEditMode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  slotCopy = slot;
+  v9 = slotCopy;
+  if (mode)
   {
-    if (a5 == 1)
+    if (mode == 1)
     {
-      if ([v8 isEqual:self->_selectedComplicationSlot])
+      if ([slotCopy isEqual:self->_selectedComplicationSlot])
       {
-        a5 = 3;
+        mode = 3;
       }
 
       else
       {
-        a5 = 2;
+        mode = 2;
       }
     }
 
     else
     {
-      a5 = 1;
+      mode = 1;
     }
   }
 
-  v10 = [(NTKFaceView *)self layoutRuleForComplicationSlot:v9 inState:a5 layoutOverride:a4];
+  v10 = [(NTKFaceView *)self layoutRuleForComplicationSlot:v9 inState:mode layoutOverride:override];
 
   return v10;
 }
@@ -3213,25 +3213,25 @@ void __39__NTKFaceView__layoutComplicationViews__block_invoke(uint64_t a1, void 
   [WeakRetained _layoutComplicationViewWithWrapper:v5 forSlot:v6];
 }
 
-- (void)_layoutComplicationViewForSlot:(id)a3
+- (void)_layoutComplicationViewForSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:v4];
-  [(NTKFaceView *)self _layoutComplicationViewWithWrapper:v5 forSlot:v4];
+  slotCopy = slot;
+  v5 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:slotCopy];
+  [(NTKFaceView *)self _layoutComplicationViewWithWrapper:v5 forSlot:slotCopy];
 }
 
-- (void)_layoutComplicationViewWithWrapper:(id)a3 forSlot:(id)a4
+- (void)_layoutComplicationViewWithWrapper:(id)wrapper forSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
-  [(NTKFaceView *)self _frameForComplicationDisplayWrapper:v6 inSlot:v7];
-  [v6 ntk_setBoundsAndPositionFromFrame:?];
+  wrapperCopy = wrapper;
+  slotCopy = slot;
+  [(NTKFaceView *)self _frameForComplicationDisplayWrapper:wrapperCopy inSlot:slotCopy];
+  [wrapperCopy ntk_setBoundsAndPositionFromFrame:?];
   if (self->_editing)
   {
     v15 = 0u;
     v16 = 0u;
     v14 = 0u;
-    [(NTKFaceView *)self _displayEditingTransformForComplicationSlot:v7 displayWrapper:v6];
+    [(NTKFaceView *)self _displayEditingTransformForComplicationSlot:slotCopy displayWrapper:wrapperCopy];
     v11 = v14;
     v12 = v15;
     v13 = v16;
@@ -3247,32 +3247,32 @@ void __39__NTKFaceView__layoutComplicationViews__block_invoke(uint64_t a1, void 
     v8 = &v14;
   }
 
-  [v6 setEditingTransform:{v8, v11, v12, v13, v14, v15, v16}];
-  [(NTKFaceView *)self _displayContentTransformForComplicationSlot:v7 displayWrapper:v6];
-  [v6 setContentTransform:&v14];
-  v10 = [(NTKFaceView *)self _complicationContainerViewForSlot:v7];
-  [v10 bringSubviewToFront:v6];
+  [wrapperCopy setEditingTransform:{v8, v11, v12, v13, v14, v15, v16}];
+  [(NTKFaceView *)self _displayContentTransformForComplicationSlot:slotCopy displayWrapper:wrapperCopy];
+  [wrapperCopy setContentTransform:&v14];
+  v10 = [(NTKFaceView *)self _complicationContainerViewForSlot:slotCopy];
+  [v10 bringSubviewToFront:wrapperCopy];
 }
 
-- (void)startScrubbingAnimated:(BOOL)a3
+- (void)startScrubbingAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  animatedCopy = animated;
+  date = [MEMORY[0x277CBEAA8] date];
   analyticsTimeTravelSessionStart = self->_analyticsTimeTravelSessionStart;
-  self->_analyticsTimeTravelSessionStart = v5;
+  self->_analyticsTimeTravelSessionStart = date;
 
-  [(NTKFaceView *)self startScrubbingAnimated:v3 withCompletion:0];
+  [(NTKFaceView *)self startScrubbingAnimated:animatedCopy withCompletion:0];
 }
 
-- (void)startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   if ([(NTKFaceView *)self _supportsTimeScrubbing]&& !self->_timeScrubbing)
   {
     self->_transitioningBetweenLiveAndScrubbing = 1;
     self->_wasScrubbingAtStartOfTransition = 0;
-    v6 = [(NTKFaceView *)self delegate];
-    [v6 faceViewWillEnterTimeTravel];
+    delegate = [(NTKFaceView *)self delegate];
+    [delegate faceViewWillEnterTimeTravel];
 
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x277D85DD0];
@@ -3280,16 +3280,16 @@ void __39__NTKFaceView__layoutComplicationViews__block_invoke(uint64_t a1, void 
     v7[2] = __53__NTKFaceView_startScrubbingAnimated_withCompletion___block_invoke;
     v7[3] = &unk_278781070;
     objc_copyWeak(&v9, &location);
-    v8 = v5;
+    v8 = completionCopy;
     [(NTKFaceView *)self _startScrubbingAnimated:1 withCompletion:v7];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -3318,20 +3318,20 @@ void __53__NTKFaceView_startScrubbingAnimated_withCompletion___block_invoke(uint
   }
 }
 
-- (void)_startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)endScrubbingAnimated:(BOOL)a3
+- (void)endScrubbingAnimated:(BOOL)animated
 {
-  v12 = a3;
+  animatedCopy = animated;
   v16[3] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  [v4 timeIntervalSinceDate:self->_analyticsTimeTravelSessionStart];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_analyticsTimeTravelSessionStart];
   v6 = v5;
   v7 = NTKFaceStyleDescription([(NTKFaceView *)self faceStyle]);
   v15[0] = @"eventName";
@@ -3355,19 +3355,19 @@ void __53__NTKFaceView_startScrubbingAnimated_withCompletion___block_invoke(uint
   AnalyticsSendEvent();
 
   self->_analyticsTimeTravelMaximumOffset = 0.0;
-  [(NTKFaceView *)self endScrubbingAnimated:v12 withCompletion:0];
+  [(NTKFaceView *)self endScrubbingAnimated:animatedCopy withCompletion:0];
 }
 
-- (void)endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
+  animatedCopy = animated;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_transitioningBetweenLiveAndScrubbing)
   {
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6);
+      (*(completionCopy + 2))(completionCopy);
     }
   }
 
@@ -3380,8 +3380,8 @@ void __53__NTKFaceView_startScrubbingAnimated_withCompletion___block_invoke(uint
     self->_transitioningBetweenLiveAndScrubbing = 1;
     self->_timeScrubbing = 0;
     self->_wasScrubbingAtStartOfTransition = 1;
-    v9 = [(NTKFaceView *)self delegate];
-    [v9 faceViewWillExitTimeTravel];
+    delegate = [(NTKFaceView *)self delegate];
+    [delegate faceViewWillExitTimeTravel];
 
     objc_initWeak(&location, self);
     v11[0] = MEMORY[0x277D85DD0];
@@ -3390,7 +3390,7 @@ void __53__NTKFaceView_startScrubbingAnimated_withCompletion___block_invoke(uint
     v11[3] = &unk_278781070;
     objc_copyWeak(&v13, &location);
     v12 = v7;
-    [(NTKFaceView *)self _endScrubbingAnimated:v4 withCompletion:v11];
+    [(NTKFaceView *)self _endScrubbingAnimated:animatedCopy withCompletion:v11];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained faceViewDidScrubToDate:0 forced:1];
 
@@ -3418,11 +3418,11 @@ void __51__NTKFaceView_endScrubbingAnimated_withCompletion___block_invoke(uint64
   }
 }
 
-- (void)_endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
@@ -3437,7 +3437,7 @@ void __51__NTKFaceView_endScrubbingAnimated_withCompletion___block_invoke(uint64
     if (v5)
     {
       v7 = 138412290;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_22D9C5000, p_super, OS_LOG_TYPE_DEFAULT, "[CROWN] Face %@ taking crown assertion", &v7, 0xCu);
     }
 
@@ -3449,7 +3449,7 @@ void __51__NTKFaceView_endScrubbingAnimated_withCompletion___block_invoke(uint64
   else if (v5)
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_22D9C5000, p_super, OS_LOG_TYPE_DEFAULT, "[CROWN] Face %@ not taking crown assertion in background", &v7, 0xCu);
   }
 }
@@ -3463,7 +3463,7 @@ void __51__NTKFaceView_endScrubbingAnimated_withCompletion___block_invoke(uint64
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Face %@ releasing crown assertion", &v5, 0xCu);
     }
 
@@ -3477,13 +3477,13 @@ void __51__NTKFaceView_endScrubbingAnimated_withCompletion___block_invoke(uint64
 {
   if ([(NTKFaceView *)self _wantsDimWithDesaturationFilterDuringComplicationEditing])
   {
-    v3 = [MEMORY[0x277CBEB18] array];
-    v4 = [(NTKFaceView *)self timeView];
+    array = [MEMORY[0x277CBEB18] array];
+    timeView = [(NTKFaceView *)self timeView];
 
-    if (v4)
+    if (timeView)
     {
-      v5 = [(NTKFaceView *)self timeView];
-      [v3 addObject:v5];
+      timeView2 = [(NTKFaceView *)self timeView];
+      [array addObject:timeView2];
     }
 
     complicationDisplayWrappers = self->_complicationDisplayWrappers;
@@ -3491,13 +3491,13 @@ void __51__NTKFaceView_endScrubbingAnimated_withCompletion___block_invoke(uint64
     v11[1] = 3221225472;
     v11[2] = __65__NTKFaceView__allViewsWithComplicationEditingDesaturationFilter__block_invoke;
     v11[3] = &unk_278786F38;
-    v7 = v3;
+    v7 = array;
     v12 = v7;
     [(NSMutableDictionary *)complicationDisplayWrappers enumerateKeysAndObjectsUsingBlock:v11];
-    v8 = [(NTKFaceView *)self _additonalViewsToApplyDesaturationDuringComplicationEditing];
-    if (v8)
+    _additonalViewsToApplyDesaturationDuringComplicationEditing = [(NTKFaceView *)self _additonalViewsToApplyDesaturationDuringComplicationEditing];
+    if (_additonalViewsToApplyDesaturationDuringComplicationEditing)
     {
-      [v7 addObjectsFromArray:v8];
+      [v7 addObjectsFromArray:_additonalViewsToApplyDesaturationDuringComplicationEditing];
     }
 
     v9 = v7;
@@ -3511,14 +3511,14 @@ void __51__NTKFaceView_endScrubbingAnimated_withCompletion___block_invoke(uint64
   return v9;
 }
 
-- (void)_addSaturationFilterToViews:(id)a3
+- (void)_addSaturationFilterToViews:(id)views
 {
   v34 = *MEMORY[0x277D85DE8];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = a3;
+  obj = views;
   v3 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v3)
   {
@@ -3539,10 +3539,10 @@ void __51__NTKFaceView_endScrubbingAnimated_withCompletion___block_invoke(uint64
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v7 = [v6 layer];
-        v8 = [v7 filters];
+        layer = [v6 layer];
+        filters = [layer filters];
 
-        v9 = [v8 countByEnumeratingWithState:&v23 objects:v32 count:16];
+        v9 = [filters countByEnumeratingWithState:&v23 objects:v32 count:16];
         if (v9)
         {
           v10 = v9;
@@ -3553,11 +3553,11 @@ LABEL_8:
           {
             if (*v24 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(filters);
             }
 
-            v13 = [*(*(&v23 + 1) + 8 * v12) name];
-            v14 = [v13 isEqualToString:@"EditingSaturationFilter"];
+            name = [*(*(&v23 + 1) + 8 * v12) name];
+            v14 = [name isEqualToString:@"EditingSaturationFilter"];
 
             if (v14)
             {
@@ -3566,7 +3566,7 @@ LABEL_8:
 
             if (v10 == ++v12)
             {
-              v10 = [v8 countByEnumeratingWithState:&v23 objects:v32 count:16];
+              v10 = [filters countByEnumeratingWithState:&v23 objects:v32 count:16];
               if (v10)
               {
                 goto LABEL_8;
@@ -3581,26 +3581,26 @@ LABEL_8:
         {
 LABEL_14:
 
-          v15 = [v6 layer];
-          v16 = [v15 filters];
+          layer2 = [v6 layer];
+          filters2 = [layer2 filters];
 
-          if (v16)
+          if (filters2)
           {
-            v17 = [v6 layer];
-            v18 = [v17 filters];
-            v8 = [v18 mutableCopy];
+            layer3 = [v6 layer];
+            filters3 = [layer3 filters];
+            filters = [filters3 mutableCopy];
 
-            [v8 addObject:self->_complicationEditingSaturationFilter];
+            [filters addObject:self->_complicationEditingSaturationFilter];
           }
 
           else
           {
             complicationEditingSaturationFilter = self->_complicationEditingSaturationFilter;
-            v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&complicationEditingSaturationFilter count:1];
+            filters = [MEMORY[0x277CBEA60] arrayWithObjects:&complicationEditingSaturationFilter count:1];
           }
 
-          v19 = [v6 layer];
-          [v19 setFilters:v8];
+          layer4 = [v6 layer];
+          [layer4 setFilters:filters];
         }
 
         ++v5;
@@ -3617,14 +3617,14 @@ LABEL_14:
 - (void)_updateSaturationForComplicationEditing
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKFaceView *)self _allViewsWithComplicationEditingDesaturationFilter];
-  [(NTKFaceView *)self _addSaturationFilterToViews:v3];
+  _allViewsWithComplicationEditingDesaturationFilter = [(NTKFaceView *)self _allViewsWithComplicationEditingDesaturationFilter];
+  [(NTKFaceView *)self _addSaturationFilterToViews:_allViewsWithComplicationEditingDesaturationFilter];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"filters.%@.inputAmount", @"EditingSaturationFilter"];
-  v5 = [(NTKFaceView *)self selectedComplicationSlot];
-  v17 = v5;
-  if (v5)
+  selectedComplicationSlot = [(NTKFaceView *)self selectedComplicationSlot];
+  v17 = selectedComplicationSlot;
+  if (selectedComplicationSlot)
   {
-    v6 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:v5];
+    v6 = [(NTKFaceView *)self normalComplicationDisplayWrapperForSlot:selectedComplicationSlot];
   }
 
   else
@@ -3636,7 +3636,7 @@ LABEL_14:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v3;
+  v7 = _allViewsWithComplicationEditingDesaturationFilter;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -3652,11 +3652,11 @@ LABEL_14:
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 layer];
-        v15 = v13;
+        layer = [v12 layer];
+        v15 = layer;
         if (v12 == v6)
         {
-          [v13 setValue:&unk_284189908 forKeyPath:v4];
+          [layer setValue:&unk_284189908 forKeyPath:v4];
         }
 
         else
@@ -3674,15 +3674,15 @@ LABEL_14:
   }
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v6 = a3;
-  v7 = [(NTKFaceView *)self device];
-  v8 = NTKShowGossamerUI(v7);
+  viewCopy = view;
+  device = [(NTKFaceView *)self device];
+  v8 = NTKShowGossamerUI(device);
 
   if ((v8 & 1) == 0)
   {
-    if ([(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplicationInView:v6])
+    if ([(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplicationInView:viewCopy])
     {
       [(NTKFaceView *)self complicationColor];
       objc_claimAutoreleasedReturnValue();
@@ -3701,15 +3701,15 @@ LABEL_14:
   CLKUIMonochromeFiltersForStyleWithTintedBackground();
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4
+- (id)filtersForView:(id)view style:(int64_t)style
 {
-  v5 = a3;
-  v6 = [(NTKFaceView *)self device];
-  v7 = NTKShowGossamerUI(v6);
+  viewCopy = view;
+  device = [(NTKFaceView *)self device];
+  v7 = NTKShowGossamerUI(device);
 
   if ((v7 & 1) == 0)
   {
-    if ([(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplicationInView:v5])
+    if ([(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplicationInView:viewCopy])
     {
       [(NTKFaceView *)self interpolatedComplicationColor];
       objc_claimAutoreleasedReturnValue();
@@ -3728,7 +3728,7 @@ LABEL_14:
   CLKUIMonochromeFiltersForStyleWithTintedBackground();
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
   [(NTKFaceView *)self alternateComplicationColor];
   objc_claimAutoreleasedReturnValue();
@@ -3737,7 +3737,7 @@ LABEL_14:
   NTKMonochromeFilterForStyle();
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4
+- (id)filterForView:(id)view style:(int64_t)style
 {
   [(NTKFaceView *)self alternateComplicationColor];
   objc_claimAutoreleasedReturnValue();
@@ -3746,94 +3746,94 @@ LABEL_14:
   NTKMonochromeFilterForStyle();
 }
 
-- (id)colorForView:(id)a3 accented:(BOOL)a4
+- (id)colorForView:(id)view accented:(BOOL)accented
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NTKFaceView *)self device];
-  v8 = NTKShowGossamerUI(v7);
+  accentedCopy = accented;
+  viewCopy = view;
+  device = [(NTKFaceView *)self device];
+  v8 = NTKShowGossamerUI(device);
 
-  if ((v8 & 1) != 0 || ![(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplicationInView:v6])
+  if ((v8 & 1) != 0 || ![(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplicationInView:viewCopy])
   {
-    if (v4)
+    if (accentedCopy)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!v4)
+  else if (!accentedCopy)
   {
 LABEL_4:
-    v9 = [(NTKFaceView *)self complicationColor];
+    complicationColor = [(NTKFaceView *)self complicationColor];
     goto LABEL_7;
   }
 
-  v9 = [(NTKFaceView *)self alternateComplicationColor];
+  complicationColor = [(NTKFaceView *)self alternateComplicationColor];
 LABEL_7:
-  v10 = v9;
+  v10 = complicationColor;
 
   return v10;
 }
 
-- (id)interpolatedColorForView:(id)a3
+- (id)interpolatedColorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(NTKFaceView *)self device];
-  v6 = NTKShowGossamerUI(v5);
+  viewCopy = view;
+  device = [(NTKFaceView *)self device];
+  v6 = NTKShowGossamerUI(device);
 
-  if ((v6 & 1) != 0 || ![(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplicationInView:v4])
+  if ((v6 & 1) != 0 || ![(NTKFaceView *)self _useAlternateComplicationColorForGraphicCircularComplicationInView:viewCopy])
   {
-    v7 = [(NTKFaceView *)self interpolatedComplicationColor];
+    interpolatedComplicationColor = [(NTKFaceView *)self interpolatedComplicationColor];
   }
 
   else
   {
-    v7 = [(NTKFaceView *)self alternateComplicationColor];
+    interpolatedComplicationColor = [(NTKFaceView *)self alternateComplicationColor];
   }
 
-  v8 = v7;
+  v8 = interpolatedComplicationColor;
 
   return v8;
 }
 
-- (void)changeComplicationsAlpha:(double)a3
+- (void)changeComplicationsAlpha:(double)alpha
 {
-  v4 = [(NTKFaceView *)self complicationContainerView];
-  [v4 setAlpha:a3];
+  complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:alpha];
 }
 
 - (id)createFaceColorPalette
 {
-  v2 = [(NTKFaceView *)self delegate];
-  v3 = [v2 faceViewWantsFaceColorPalette];
+  delegate = [(NTKFaceView *)self delegate];
+  faceViewWantsFaceColorPalette = [delegate faceViewWantsFaceColorPalette];
 
-  return v3;
+  return faceViewWantsFaceColorPalette;
 }
 
-+ (id)pigmentFromOption:(id)a3
++ (id)pigmentFromOption:(id)option
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&unk_28A87B948])
+  optionCopy = option;
+  if ([optionCopy conformsToProtocol:&unk_28A87B948])
   {
-    v4 = [v3 pigmentEditOption];
+    pigmentEditOption = [optionCopy pigmentEditOption];
   }
 
   else
   {
-    v4 = 0;
+    pigmentEditOption = 0;
   }
 
-  return v4;
+  return pigmentEditOption;
 }
 
-- (void)_updateFaceColorPaletteWithOption:(id)a3 mode:(int64_t)a4
+- (void)_updateFaceColorPaletteWithOption:(id)option mode:(int64_t)mode
 {
-  v9 = a3;
-  v6 = [(NTKFaceView *)self faceColorPalette];
+  optionCopy = option;
+  faceColorPalette = [(NTKFaceView *)self faceColorPalette];
 
-  if (a4 == 10 && v6)
+  if (mode == 10 && faceColorPalette)
   {
-    v7 = [objc_opt_class() pigmentFromOption:v9];
+    v7 = [objc_opt_class() pigmentFromOption:optionCopy];
     [(NTKFaceColorPalette *)self->_faceColorPalette setPigmentEditOption:v7];
     interpolatedColorPalette = self->_interpolatedColorPalette;
     if (interpolatedColorPalette)
@@ -3849,9 +3849,9 @@ LABEL_7:
   faceColorPalette = self->_faceColorPalette;
   if (!faceColorPalette)
   {
-    v4 = [(NTKFaceView *)self createFaceColorPalette];
+    createFaceColorPalette = [(NTKFaceView *)self createFaceColorPalette];
     v5 = self->_faceColorPalette;
-    self->_faceColorPalette = v4;
+    self->_faceColorPalette = createFaceColorPalette;
 
     if (self->_faceColorPalette)
     {
@@ -3878,13 +3878,13 @@ LABEL_7:
 {
   if (!self->_interpolatedColorPalette)
   {
-    v3 = [(NTKFaceView *)self faceColorPalette];
+    faceColorPalette = [(NTKFaceView *)self faceColorPalette];
 
-    if (v3)
+    if (faceColorPalette)
     {
       v4 = [NTKInterpolatedColorPalette alloc];
-      v5 = [(NTKFaceView *)self faceColorPalette];
-      v6 = [(NTKInterpolatedColorPalette *)v4 initWithColorPalette:v5];
+      faceColorPalette2 = [(NTKFaceView *)self faceColorPalette];
+      v6 = [(NTKInterpolatedColorPalette *)v4 initWithColorPalette:faceColorPalette2];
       interpolatedColorPalette = self->_interpolatedColorPalette;
       self->_interpolatedColorPalette = v6;
     }
@@ -3895,10 +3895,10 @@ LABEL_7:
   return v8;
 }
 
-- (void)ensureWidgetContentWithMetrics:(id)a3 timeout:(double)a4 completion:(id)a5
+- (void)ensureWidgetContentWithMetrics:(id)metrics timeout:(double)timeout completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  metricsCopy = metrics;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v10 = dispatch_group_create();
   v23[0] = 0;
@@ -3911,10 +3911,10 @@ LABEL_7:
   v18[1] = 3221225472;
   v18[2] = __65__NTKFaceView_ensureWidgetContentWithMetrics_timeout_completion___block_invoke;
   v18[3] = &unk_278787898;
-  v11 = v8;
+  v11 = metricsCopy;
   v19 = v11;
   v12 = v10;
-  v22 = a4;
+  timeoutCopy = timeout;
   v20 = v12;
   v21 = v23;
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v18];
@@ -3922,9 +3922,9 @@ LABEL_7:
   v15[1] = 3221225472;
   v15[2] = __65__NTKFaceView_ensureWidgetContentWithMetrics_timeout_completion___block_invoke_180;
   v15[3] = &unk_27877FD78;
-  v16 = v9;
+  v16 = completionCopy;
   v17 = v23;
-  v13 = v9;
+  v13 = completionCopy;
   v14 = MEMORY[0x277D85CD0];
   dispatch_group_notify(v12, MEMORY[0x277D85CD0], v15);
 
@@ -4039,13 +4039,13 @@ void __65__NTKFaceView_ensureWidgetContentWithMetrics_timeout_completion___block
   }
 }
 
-- (void)setWidgetHostPriorityTransientSnapshot:(BOOL)a3
+- (void)setWidgetHostPriorityTransientSnapshot:(BOOL)snapshot
 {
-  if (self->_widgetHostPriorityTransientSnapshot != a3)
+  if (self->_widgetHostPriorityTransientSnapshot != snapshot)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_widgetHostPriorityTransientSnapshot = a3;
+    self->_widgetHostPriorityTransientSnapshot = snapshot;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __54__NTKFaceView_setWidgetHostPriorityTransientSnapshot___block_invoke;
@@ -4076,7 +4076,7 @@ void __54__NTKFaceView_setWidgetHostPriorityTransientSnapshot___block_invoke(uin
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = 134218496;
-  v4 = [a1 dataMode];
+  dataMode = [self dataMode];
   v5 = 1024;
   v6 = NTKIsScreenOn();
   v7 = 1024;

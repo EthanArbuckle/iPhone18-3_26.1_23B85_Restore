@@ -1,17 +1,17 @@
 @interface AWDCompanionSyncErrorEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsError:(id)a3;
+- (int)StringAsError:(id)error;
 - (int)error;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasError:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasError:(BOOL)error;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCompanionSyncErrorEvent
@@ -24,9 +24,9 @@
   [(AWDCompanionSyncErrorEvent *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -52,9 +52,9 @@
   }
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -67,19 +67,19 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsError:(id)a3
+- (int)StringAsError:(id)error
 {
-  if ([a3 isEqualToString:@"None"])
+  if ([error isEqualToString:@"None"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"Duplicate"])
+  if ([error isEqualToString:@"Duplicate"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"OutOfSequence"])
+  if ([error isEqualToString:@"OutOfSequence"])
   {
     return 2;
   }
@@ -96,22 +96,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   service = self->_service;
   if (service)
   {
-    [v3 setObject:service forKey:@"service"];
+    [dictionary setObject:service forKey:@"service"];
   }
 
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sequenceNumber), @"sequence_number"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_sequenceNumber), @"sequence_number"}];
     has = self->_has;
   }
 
@@ -128,13 +128,13 @@
       v7 = off_29EE32558[error];
     }
 
-    [v3 setObject:v7 forKey:@"error"];
+    [dictionary setObject:v7 forKey:@"error"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
@@ -163,37 +163,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 2) = self->_timestamp;
-    *(a3 + 40) |= 2u;
+    *(to + 2) = self->_timestamp;
+    *(to + 40) |= 2u;
   }
 
   if (self->_service)
   {
-    [a3 setService:?];
+    [to setService:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_sequenceNumber;
-    *(a3 + 40) |= 1u;
+    *(to + 1) = self->_sequenceNumber;
+    *(to + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(a3 + 6) = self->_error;
-    *(a3 + 40) |= 4u;
+    *(to + 6) = self->_error;
+    *(to + 40) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -201,7 +201,7 @@
     *(v5 + 40) |= 2u;
   }
 
-  *(v6 + 32) = [(NSString *)self->_service copyWithZone:a3];
+  *(v6 + 32) = [(NSString *)self->_service copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -219,22 +219,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 40);
+    v7 = *(equal + 40);
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_timestamp != *(a3 + 2))
+      if ((*(equal + 40) & 2) == 0 || self->_timestamp != *(equal + 2))
       {
         goto LABEL_19;
       }
     }
 
-    else if ((*(a3 + 40) & 2) != 0)
+    else if ((*(equal + 40) & 2) != 0)
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -242,7 +242,7 @@ LABEL_19:
     }
 
     service = self->_service;
-    if (service | *(a3 + 4))
+    if (service | *(equal + 4))
     {
       v5 = [(NSString *)service isEqual:?];
       if (!v5)
@@ -255,21 +255,21 @@ LABEL_19:
 
     if (has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_sequenceNumber != *(a3 + 1))
+      if ((*(equal + 40) & 1) == 0 || self->_sequenceNumber != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
       goto LABEL_19;
     }
 
-    LOBYTE(v5) = (*(a3 + 40) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 40) & 4) == 0;
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 40) & 4) == 0 || self->_error != *(a3 + 6))
+      if ((*(equal + 40) & 4) == 0 || self->_error != *(equal + 6))
       {
         goto LABEL_19;
       }
@@ -318,30 +318,30 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 40) & 2) != 0)
+  if ((*(from + 40) & 2) != 0)
   {
-    self->_timestamp = *(a3 + 2);
+    self->_timestamp = *(from + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDCompanionSyncErrorEvent *)self setService:?];
   }
 
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if (v5)
   {
-    self->_sequenceNumber = *(a3 + 1);
+    self->_sequenceNumber = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 40);
+    v5 = *(from + 40);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_error = *(a3 + 6);
+    self->_error = *(from + 6);
     *&self->_has |= 4u;
   }
 }

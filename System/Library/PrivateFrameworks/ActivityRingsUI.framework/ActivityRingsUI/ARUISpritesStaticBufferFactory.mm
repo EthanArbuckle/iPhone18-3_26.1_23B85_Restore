@@ -1,17 +1,17 @@
 @interface ARUISpritesStaticBufferFactory
-+ (id)spriteIndexBufferWithDevice:(id)a3;
-+ (id)spritePositionsBufferWithDevice:(id)a3;
++ (id)spriteIndexBufferWithDevice:(id)device;
++ (id)spritePositionsBufferWithDevice:(id)device;
 + (void)clearCaches;
 @end
 
 @implementation ARUISpritesStaticBufferFactory
 
-+ (id)spritePositionsBufferWithDevice:(id)a3
++ (id)spritePositionsBufferWithDevice:(id)device
 {
   v3 = __spriteVertexBuffer;
   if (!__spriteVertexBuffer)
   {
-    v4 = a3;
+    deviceCopy = device;
     v5 = malloc_type_malloc(0x80uLL, 0x10000406D1CE384uLL);
     *v5 = xmmword_1CFD91220;
     v5[2] = 0x3F80000000000000;
@@ -23,7 +23,7 @@
     v5[10] = 0;
     *(v5 + 6) = xmmword_1CFD91250;
     v5[14] = 1065353216;
-    v11 = [v4 newBufferWithBytes:v5 length:128 options:0];
+    v11 = [deviceCopy newBufferWithBytes:v5 length:128 options:0];
 
     v12 = __spriteVertexBuffer;
     __spriteVertexBuffer = v11;
@@ -36,16 +36,16 @@
   return v3;
 }
 
-+ (id)spriteIndexBufferWithDevice:(id)a3
++ (id)spriteIndexBufferWithDevice:(id)device
 {
   v3 = __spriteIndexBuffer;
   if (!__spriteIndexBuffer)
   {
-    v4 = a3;
+    deviceCopy = device;
     v5 = malloc_type_malloc(0xCuLL, 0x1000040BDFB0063uLL);
     *v5 = 0x1000200010000;
     v5[2] = 196610;
-    v6 = [v4 newBufferWithBytes:v5 length:12 options:0];
+    v6 = [deviceCopy newBufferWithBytes:v5 length:12 options:0];
 
     v7 = __spriteIndexBuffer;
     __spriteIndexBuffer = v6;

@@ -1,13 +1,13 @@
 @interface IDSPhoneUserCredential
-- (IDSPhoneUserCredential)initWithSMSSignature:(id)a3 mechanismUsed:(int64_t)a4;
+- (IDSPhoneUserCredential)initWithSMSSignature:(id)signature mechanismUsed:(int64_t)used;
 @end
 
 @implementation IDSPhoneUserCredential
 
-- (IDSPhoneUserCredential)initWithSMSSignature:(id)a3 mechanismUsed:(int64_t)a4
+- (IDSPhoneUserCredential)initWithSMSSignature:(id)signature mechanismUsed:(int64_t)used
 {
-  v7 = a3;
-  if (v7)
+  signatureCopy = signature;
+  if (signatureCopy)
   {
     v12.receiver = self;
     v12.super_class = IDSPhoneUserCredential;
@@ -15,20 +15,20 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_smsSignature, a3);
-      v9->_mechanismUsed = a4;
+      objc_storeStrong(&v8->_smsSignature, signature);
+      v9->_mechanismUsed = used;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

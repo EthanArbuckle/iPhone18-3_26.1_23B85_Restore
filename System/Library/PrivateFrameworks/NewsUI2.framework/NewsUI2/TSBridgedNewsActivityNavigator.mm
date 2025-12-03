@@ -1,22 +1,22 @@
 @interface TSBridgedNewsActivityNavigator
 - (TSBridgedNewsActivityNavigator)init;
-- (void)navigateWithActivityData:(id)a3;
-- (void)navigateWithoutAnimationWithActivityData:(id)a3;
+- (void)navigateWithActivityData:(id)data;
+- (void)navigateWithoutAnimationWithActivityData:(id)data;
 @end
 
 @implementation TSBridgedNewsActivityNavigator
 
-- (void)navigateWithActivityData:(id)a3
+- (void)navigateWithActivityData:(id)data
 {
-  v4 = a3;
-  v5 = self;
+  dataCopy = data;
+  selfCopy = self;
   BridgedNewsActivityNavigator.navigate(with:)();
 }
 
-- (void)navigateWithoutAnimationWithActivityData:(id)a3
+- (void)navigateWithoutAnimationWithActivityData:(id)data
 {
-  v4 = a3;
-  v5 = self;
+  dataCopy = data;
+  selfCopy = self;
   BridgedNewsActivityNavigator.navigateWithoutAnimation(with:)();
 }
 

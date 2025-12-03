@@ -1,7 +1,7 @@
 @interface _SCNCoderMaterialPropertyTextureProviderHelper
-- (id)cachedTextureWithURL:(id)a3 token:(id *)a4 didFallbackToDefaultTexture:(BOOL *)a5;
+- (id)cachedTextureWithURL:(id)l token:(id *)token didFallbackToDefaultTexture:(BOOL *)texture;
 - (void)dealloc;
-- (void)initWithDevice:(void *)a1;
+- (void)initWithDevice:(void *)device;
 @end
 
 @implementation _SCNCoderMaterialPropertyTextureProviderHelper
@@ -14,55 +14,55 @@
   [(_SCNCoderMaterialPropertyTextureProviderHelper *)&v3 dealloc];
 }
 
-- (id)cachedTextureWithURL:(id)a3 token:(id *)a4 didFallbackToDefaultTexture:(BOOL *)a5
+- (id)cachedTextureWithURL:(id)l token:(id *)token didFallbackToDefaultTexture:(BOOL *)texture
 {
-  if (a4)
+  if (token)
   {
-    *a4 = 0;
+    *token = 0;
   }
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __105___SCNCoderMaterialPropertyTextureProviderHelper_cachedTextureWithURL_token_didFallbackToDefaultTexture___block_invoke;
   v17[3] = &unk_2782FD090;
-  v17[4] = a3;
-  IfNeededForSource = C3DImageCopyCachedImageOrCreateIfNeededForSource(a3, 1, v17);
+  v17[4] = l;
+  IfNeededForSource = C3DImageCopyCachedImageOrCreateIfNeededForSource(l, 1, v17);
   v10 = IfNeededForSource;
-  if (a4)
+  if (token)
   {
-    *a4 = IfNeededForSource;
+    *token = IfNeededForSource;
   }
 
   v16 = 0;
   RenderContext = C3DEngineContextGetRenderContext(self->_engineContext);
-  v12 = [(SCNMTLRenderContext *)RenderContext resourceManager];
-  v13 = [v12 renderResourceForImage:v10 sampler:C3DTextureSamplerGetDefault() options:0 engineContext:self->_engineContext didFallbackToDefaultTexture:&v16];
+  resourceManager = [(SCNMTLRenderContext *)RenderContext resourceManager];
+  v13 = [resourceManager renderResourceForImage:v10 sampler:C3DTextureSamplerGetDefault() options:0 engineContext:self->_engineContext didFallbackToDefaultTexture:&v16];
   CFAutorelease(v10);
   if (v16)
   {
-    v14 = [(SCNMTLRenderContext *)RenderContext resourceManagerMonitor];
-    if (v14)
+    resourceManagerMonitor = [(SCNMTLRenderContext *)RenderContext resourceManagerMonitor];
+    if (resourceManagerMonitor)
     {
-      [v14 renderContext:RenderContext didFallbackToDefaultTextureForSource:a3 message:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"SCNMaterialPropertyTextureProviderHelper could not find texture for %@", a3)}];
+      [resourceManagerMonitor renderContext:RenderContext didFallbackToDefaultTextureForSource:l message:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"SCNMaterialPropertyTextureProviderHelper could not find texture for %@", l)}];
     }
   }
 
-  if (a5)
+  if (texture)
   {
-    *a5 = v16;
+    *texture = v16;
   }
 
   return v13;
 }
 
-- (void)initWithDevice:(void *)a1
+- (void)initWithDevice:(void *)device
 {
-  if (!a1)
+  if (!device)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = device;
   v6.super_class = _SCNCoderMaterialPropertyTextureProviderHelper;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   if (v3)

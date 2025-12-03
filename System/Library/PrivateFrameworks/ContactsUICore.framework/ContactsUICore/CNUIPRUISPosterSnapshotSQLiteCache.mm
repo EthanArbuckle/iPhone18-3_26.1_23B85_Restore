@@ -8,21 +8,21 @@
 
 + (id)_defaultCacheLocationURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 URLsForDirectory:13 inDomains:1];
-  v4 = [v3 firstObject];
-  v5 = [v4 URLByAppendingPathComponent:@"com.apple.ContactsUI.Posters" isDirectory:1];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager URLsForDirectory:13 inDomains:1];
+  firstObject = [v3 firstObject];
+  v5 = [firstObject URLByAppendingPathComponent:@"com.apple.ContactsUI.Posters" isDirectory:1];
 
   return v5;
 }
 
 + (PRUISPosterSnapshotSQLiteCache)contactsSnapshotCache
 {
-  v2 = [a1 _defaultCacheLocationURL];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  _defaultCacheLocationURL = [self _defaultCacheLocationURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = CNUIPFFileProtectionNoneAttributes();
   v12 = 0;
-  v5 = [v3 createDirectoryAtURL:v2 withIntermediateDirectories:1 attributes:v4 error:&v12];
+  v5 = [defaultManager createDirectoryAtURL:_defaultCacheLocationURL withIntermediateDirectories:1 attributes:v4 error:&v12];
   v6 = v12;
 
   if (v5)
@@ -45,7 +45,7 @@
 
     v8 = v7;
     _Block_object_dispose(&v14, 8);
-    v9 = [[v7 alloc] initWithURL:v2];
+    v9 = [[v7 alloc] initWithURL:_defaultCacheLocationURL];
   }
 
   else

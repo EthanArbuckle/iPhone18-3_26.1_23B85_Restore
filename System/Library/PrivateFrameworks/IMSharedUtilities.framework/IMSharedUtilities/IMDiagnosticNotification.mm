@@ -1,6 +1,6 @@
 @interface IMDiagnosticNotification
 - (IMDiagnosticNotification)init;
-- (IMDiagnosticNotification)initWithTitle:(id)a3 body:(id)a4;
+- (IMDiagnosticNotification)initWithTitle:(id)title body:(id)body;
 - (id)_createContent;
 - (id)_createRequest;
 @end
@@ -9,43 +9,43 @@
 
 - (IMDiagnosticNotification)init
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
     v10.receiver = self;
     v10.super_class = IMDiagnosticNotification;
     v5 = [(IMDiagnosticNotification *)&v10 init];
     if (v5)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringGUID];
+      stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
       identifier = v5->_identifier;
-      v5->_identifier = v6;
+      v5->_identifier = stringGUID;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (IMDiagnosticNotification)initWithTitle:(id)a3 body:(id)a4
+- (IMDiagnosticNotification)initWithTitle:(id)title body:(id)body
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  bodyCopy = body;
   v9 = [(IMDiagnosticNotification *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_body, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_body, body);
   }
 
   return v10;
@@ -53,8 +53,8 @@
 
 - (id)_createContent
 {
-  v3 = [(IMDiagnosticNotification *)self title];
-  if (v3 && (v4 = v3, [(IMDiagnosticNotification *)self body], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  title = [(IMDiagnosticNotification *)self title];
+  if (title && (v4 = title, [(IMDiagnosticNotification *)self body], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v15 = 0;
     v16 = &v15;
@@ -75,11 +75,11 @@
     v7 = v6;
     _Block_object_dispose(&v15, 8);
     v8 = objc_alloc_init(v6);
-    v9 = [(IMDiagnosticNotification *)self title];
-    [v8 setTitle:v9];
+    title2 = [(IMDiagnosticNotification *)self title];
+    [v8 setTitle:title2];
 
-    v10 = [(IMDiagnosticNotification *)self body];
-    [v8 setBody:v10];
+    body = [(IMDiagnosticNotification *)self body];
+    [v8 setBody:body];
 
     [v8 setFooter:@"This is an internal-only notification."];
     v11 = [MEMORY[0x1E6983290] iconForApplicationIdentifier:@"com.apple.MobileSMS"];
@@ -104,8 +104,8 @@
 
 - (id)_createRequest
 {
-  v3 = [(IMDiagnosticNotification *)self _createContent];
-  if (v3)
+  _createContent = [(IMDiagnosticNotification *)self _createContent];
+  if (_createContent)
   {
     v10 = 0;
     v11 = &v10;
@@ -125,8 +125,8 @@
 
     v5 = v4;
     _Block_object_dispose(&v10, 8);
-    v6 = [(IMDiagnosticNotification *)self identifier];
-    v7 = [v4 requestWithIdentifier:v6 content:v3 trigger:0];
+    identifier = [(IMDiagnosticNotification *)self identifier];
+    v7 = [v4 requestWithIdentifier:identifier content:_createContent trigger:0];
   }
 
   else

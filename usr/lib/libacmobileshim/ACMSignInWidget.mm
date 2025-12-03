@@ -1,6 +1,6 @@
 @interface ACMSignInWidget
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (CGPoint)position;
 - (NSString)accountLabelText;
 - (UILabel)accountLabel;
@@ -10,14 +10,14 @@
 - (UITableViewCell)passwordEditCell;
 - (UITextField)accountField;
 - (UITextField)passwordField;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)disableControls:(BOOL)a3;
-- (void)onSignIn:(id)a3;
-- (void)setAccountField:(id)a3;
-- (void)setAccountLabelText:(id)a3;
-- (void)setPasswordField:(id)a3;
-- (void)setPosition:(CGPoint)a3;
+- (void)disableControls:(BOOL)controls;
+- (void)onSignIn:(id)in;
+- (void)setAccountField:(id)field;
+- (void)setAccountLabelText:(id)text;
+- (void)setPasswordField:(id)field;
+- (void)setPosition:(CGPoint)position;
 @end
 
 @implementation ACMSignInWidget
@@ -43,24 +43,24 @@
 
 - (CGPoint)position
 {
-  v2 = [(ACMSignInWidget *)self table];
+  table = [(ACMSignInWidget *)self table];
 
-  [(UITableView *)v2 frame];
+  [(UITableView *)table frame];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(UITableView *)[(ACMSignInWidget *)self table] frame];
   v7 = v6;
   v9 = v8;
-  v10 = [(ACMSignInWidget *)self table];
+  table = [(ACMSignInWidget *)self table];
 
-  [(UITableView *)v10 setFrame:x, y, v7, v9];
+  [(UITableView *)table setFrame:x, y, v7, v9];
 }
 
 - (UITableView)table
@@ -90,16 +90,16 @@
 
 - (NSString)accountLabelText
 {
-  v2 = [(ACMSignInWidget *)self accountLabel];
+  accountLabel = [(ACMSignInWidget *)self accountLabel];
 
-  return [(UILabel *)v2 text];
+  return [(UILabel *)accountLabel text];
 }
 
-- (void)setAccountLabelText:(id)a3
+- (void)setAccountLabelText:(id)text
 {
-  v4 = [(ACMSignInWidget *)self accountLabel];
+  accountLabel = [(ACMSignInWidget *)self accountLabel];
 
-  [(UILabel *)v4 setText:a3];
+  [(UILabel *)accountLabel setText:text];
 }
 
 - (UITextField)accountField
@@ -114,13 +114,13 @@
   return result;
 }
 
-- (void)setAccountField:(id)a3
+- (void)setAccountField:(id)field
 {
   accountField = self->_accountField;
-  if (accountField != a3)
+  if (accountField != field)
   {
     v6 = accountField;
-    self->_accountField = a3;
+    self->_accountField = field;
   }
 }
 
@@ -136,13 +136,13 @@
   return result;
 }
 
-- (void)setPasswordField:(id)a3
+- (void)setPasswordField:(id)field
 {
   passwordField = self->_passwordField;
-  if (passwordField != a3)
+  if (passwordField != field)
   {
     v6 = passwordField;
-    self->_passwordField = a3;
+    self->_passwordField = field;
   }
 }
 
@@ -184,16 +184,16 @@
     v4 = [objc_alloc(MEMORY[0x29EDC7D10]) initWithStyle:0 reuseIdentifier:@"ACMAccountCell"];
     self->_accountEditCell = v4;
     [(UITableViewCell *)v4 setFrame:0.0, 0.0, 320.0, 40.0];
-    v5 = [(ACMSignInWidget *)self accountLabel];
+    accountLabel = [(ACMSignInWidget *)self accountLabel];
     v6 = objc_alloc(MEMORY[0x29EDC7D48]);
     v7 = 128.0;
-    if (!v5)
+    if (!accountLabel)
     {
       v7 = 8.0;
     }
 
     v8 = 304.0;
-    if (v5)
+    if (accountLabel)
     {
       v8 = 168.0;
     }
@@ -217,9 +217,9 @@
     [v9 setDelegate:self];
     [(ACMSignInWidget *)self setAccountField:v9];
     [(UITextField *)[(ACMSignInWidget *)self accountField] setKeyboardType:7];
-    if (v5)
+    if (accountLabel)
     {
-      [(UIView *)[(UITableViewCell *)self->_accountEditCell contentView] addSubview:v5];
+      [(UIView *)[(UITableViewCell *)self->_accountEditCell contentView] addSubview:accountLabel];
     }
 
     [(UIView *)[(UITableViewCell *)self->_accountEditCell contentView] addSubview:v9];
@@ -238,16 +238,16 @@
     v4 = [objc_alloc(MEMORY[0x29EDC7D10]) initWithStyle:0 reuseIdentifier:@"ACMPasswordCell"];
     self->_passwordEditCell = v4;
     [(UITableViewCell *)v4 setFrame:0.0, 0.0, 320.0, 40.0];
-    v5 = [(ACMSignInWidget *)self passwordLabel];
+    passwordLabel = [(ACMSignInWidget *)self passwordLabel];
     v6 = objc_alloc(MEMORY[0x29EDC7D48]);
     v7 = 128.0;
-    if (!v5)
+    if (!passwordLabel)
     {
       v7 = 8.0;
     }
 
     v8 = 304.0;
-    if (v5)
+    if (passwordLabel)
     {
       v8 = 168.0;
     }
@@ -270,9 +270,9 @@
     [v9 setTag:129];
     [v9 setDelegate:self];
     [(ACMSignInWidget *)self setPasswordField:v9];
-    if (v5)
+    if (passwordLabel)
     {
-      [(UIView *)[(UITableViewCell *)self->_passwordEditCell contentView] addSubview:v5];
+      [(UIView *)[(UITableViewCell *)self->_passwordEditCell contentView] addSubview:passwordLabel];
     }
 
     [(UIView *)[(UITableViewCell *)self->_passwordEditCell contentView] addSubview:v9];
@@ -283,9 +283,9 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  if ([a4 row])
+  if ([path row])
   {
 
     return [(ACMSignInWidget *)self passwordEditCell];
@@ -298,20 +298,20 @@
   }
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  if ([(ACMSignInWidget *)self accountField]== a3)
+  if ([(ACMSignInWidget *)self accountField]== return)
   {
     [(UITextField *)[(ACMSignInWidget *)self accountField] resignFirstResponder];
     [(UITextField *)[(ACMSignInWidget *)self passwordField] becomeFirstResponder];
   }
 
-  if ([(ACMSignInWidget *)self passwordField]== a3 && ![(ACMSignInWidget *)self shouldAuthenticateOnUserInput])
+  if ([(ACMSignInWidget *)self passwordField]== return && ![(ACMSignInWidget *)self shouldAuthenticateOnUserInput])
   {
     [(UITextField *)[(ACMSignInWidget *)self passwordField] resignFirstResponder];
   }
 
-  else if ([(ACMSignInWidget *)self passwordField]== a3 && [(NSString *)[(UITextField *)[(ACMSignInWidget *)self passwordField] text] length]&& [(NSString *)[(UITextField *)[(ACMSignInWidget *)self accountField] text] length])
+  else if ([(ACMSignInWidget *)self passwordField]== return && [(NSString *)[(UITextField *)[(ACMSignInWidget *)self passwordField] text] length]&& [(NSString *)[(UITextField *)[(ACMSignInWidget *)self accountField] text] length])
   {
     [(UITextField *)[(ACMSignInWidget *)self passwordField] resignFirstResponder];
     [(ACMSignInWidget *)self onSignIn:[(ACMSignInWidget *)self passwordField]];
@@ -320,11 +320,11 @@
   return 1;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  v9 = 32 * ([(ACMSignInWidget *)self passwordField:a3]== a3);
-  if ([(ACMSignInWidget *)self accountField]== a3)
+  length = range.length;
+  v9 = 32 * ([(ACMSignInWidget *)self passwordField:field]== field);
+  if ([(ACMSignInWidget *)self accountField]== field)
   {
     v10 = 128;
   }
@@ -334,13 +334,13 @@
     v10 = v9;
   }
 
-  v11 = [objc_msgSend(a3 "text")] - length;
-  return v11 + [a5 length] <= v10;
+  v11 = [objc_msgSend(field "text")] - length;
+  return v11 + [string length] <= v10;
 }
 
-- (void)disableControls:(BOOL)a3
+- (void)disableControls:(BOOL)controls
 {
-  if (a3)
+  if (controls)
   {
     if ([(UITextField *)[(ACMSignInWidget *)self passwordField] isFirstResponder])
     {
@@ -353,37 +353,37 @@
     }
 
     [(UITextField *)[(ACMSignInWidget *)self accountField] setEnabled:0];
-    v4 = [(ACMSignInWidget *)self passwordField];
+    passwordField = [(ACMSignInWidget *)self passwordField];
 
-    [(UITextField *)v4 setEnabled:0];
+    [(UITextField *)passwordField setEnabled:0];
   }
 
   else
   {
     [(UITextField *)[(ACMSignInWidget *)self accountField] setEnabled:1];
     [(UITextField *)[(ACMSignInWidget *)self passwordField] setEnabled:1];
-    v5 = [(ACMSignInWidget *)self accountField];
-    v6 = [(ACMSignInWidget *)self passwordField];
+    accountField = [(ACMSignInWidget *)self accountField];
+    passwordField2 = [(ACMSignInWidget *)self passwordField];
     if ([(NSString *)[(UITextField *)[(ACMSignInWidget *)self accountField] text] length])
     {
-      v5 = [(ACMSignInWidget *)self passwordField];
-      v6 = [(ACMSignInWidget *)self accountField];
+      accountField = [(ACMSignInWidget *)self passwordField];
+      passwordField2 = [(ACMSignInWidget *)self accountField];
     }
 
-    if (([(UITextField *)v5 isFirstResponder]& 1) == 0)
+    if (([(UITextField *)accountField isFirstResponder]& 1) == 0)
     {
-      [(UITextField *)v6 resignFirstResponder];
+      [(UITextField *)passwordField2 resignFirstResponder];
 
-      [(UITextField *)v5 becomeFirstResponder];
+      [(UITextField *)accountField becomeFirstResponder];
     }
   }
 }
 
-- (void)onSignIn:(id)a3
+- (void)onSignIn:(id)in
 {
-  v4 = [(ACMSignInWidget *)self delegate];
+  delegate = [(ACMSignInWidget *)self delegate];
 
-  [(ACMSignInWidgetDelegate *)v4 onSignIn:self];
+  [(ACMSignInWidgetDelegate *)delegate onSignIn:self];
 }
 
 uint64_t __56__ACMSignInWidget_Modern_createClearButtonForEditField___block_invoke(uint64_t a1)

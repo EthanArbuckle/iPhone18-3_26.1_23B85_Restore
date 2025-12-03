@@ -1,71 +1,71 @@
 @interface MFModernAddressAtom
-+ (id)copyDisplayStringForAddress:(id)a3 usingAddressBook:(void *)a4 useAbbreviatedName:(BOOL)a5;
-- (BOOL)respondsToSelector:(SEL)a3;
++ (id)copyDisplayStringForAddress:(id)address usingAddressBook:(void *)book useAbbreviatedName:(BOOL)name;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (CGPoint)baselinePoint;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MFModernAddressAtom)initWithAddress:(id)a3 isPhoneNumber:(BOOL)a4 maxWidth:(double)a5 addressBook:(void *)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MFModernAddressAtom)initWithAddress:(id)address isPhoneNumber:(BOOL)number maxWidth:(double)width addressBook:(void *)book;
 - (NSString)description;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)emailAddress;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)presentationOptionsDescription;
 - (int)ABPropertyType;
 - (int64_t)numberOfLines;
 - (void)ABPerson;
 - (void)_displayStringDidChange;
 - (void)_updateABPerson;
-- (void)_updateDisplayStringIncludingABPerson:(BOOL)a3;
-- (void)addressBookDidChange:(id)a3;
+- (void)_updateDisplayStringIncludingABPerson:(BOOL)person;
+- (void)addressBookDidChange:(id)change;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAddress:(id)a3;
-- (void)setAtomFont:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIsPrimaryAddressAtom:(BOOL)a3;
-- (void)setLabelAlpha:(double)a3;
-- (void)setOpaque:(BOOL)a3;
-- (void)setPresentationOptions:(unint64_t)a3;
-- (void)setScale:(double)a3;
+- (void)setAddress:(id)address;
+- (void)setAtomFont:(id)font;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIsPrimaryAddressAtom:(BOOL)atom;
+- (void)setLabelAlpha:(double)alpha;
+- (void)setOpaque:(BOOL)opaque;
+- (void)setPresentationOptions:(unint64_t)options;
+- (void)setScale:(double)scale;
 @end
 
 @implementation MFModernAddressAtom
 
-+ (id)copyDisplayStringForAddress:(id)a3 usingAddressBook:(void *)a4 useAbbreviatedName:(BOOL)a5
++ (id)copyDisplayStringForAddress:(id)address usingAddressBook:(void *)book useAbbreviatedName:(BOOL)name
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [v7 emailAddressValue];
-  v9 = v8;
-  if (v8)
+  nameCopy = name;
+  addressCopy = address;
+  emailAddressValue = [addressCopy emailAddressValue];
+  v9 = emailAddressValue;
+  if (emailAddressValue)
   {
-    v10 = [v8 em_displayableString];
+    em_displayableString = [emailAddressValue em_displayableString];
     [v9 simpleAddress];
-    if (v5)
+    if (nameCopy)
       v11 = {;
-      MFPreferredAbbreviatedNameForAddressAndDisplayName(a4, v11, v10, 0);
+      MFPreferredAbbreviatedNameForAddressAndDisplayName(book, v11, em_displayableString, 0);
     }
 
     else
       v11 = {;
-      MFPreferredCompositeNameForAddressAndDisplayName(a4, v11, v10, 0);
+      MFPreferredCompositeNameForAddressAndDisplayName(book, v11, em_displayableString, 0);
     }
     v13 = ;
   }
 
   else
   {
-    v10 = [v7 stringValue];
-    if ([v10 containsString:&stru_1F3CFAD78])
+    em_displayableString = [addressCopy stringValue];
+    if ([em_displayableString containsString:&stru_1F3CFAD78])
     {
-      v12 = [v10 stringByReplacingOccurrencesOfString:&stru_1F3CFAD78 withString:&stru_1F3CF3758];
+      v12 = [em_displayableString stringByReplacingOccurrencesOfString:&stru_1F3CFAD78 withString:&stru_1F3CF3758];
     }
 
     else
     {
-      v12 = v10;
-      v10 = v12;
+      v12 = em_displayableString;
+      em_displayableString = v12;
     }
 
     v13 = v12;
@@ -74,15 +74,15 @@
   return v13;
 }
 
-- (MFModernAddressAtom)initWithAddress:(id)a3 isPhoneNumber:(BOOL)a4 maxWidth:(double)a5 addressBook:(void *)a6
+- (MFModernAddressAtom)initWithAddress:(id)address isPhoneNumber:(BOOL)number maxWidth:(double)width addressBook:(void *)book
 {
-  v12 = a3;
+  addressCopy = address;
   [MEMORY[0x1E6996398] defaultHeight];
   v14 = v13;
   if (pthread_main_np() != 1)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"MFModernAddressAtom.m" lineNumber:118 description:@"Current thread must be main"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFModernAddressAtom.m" lineNumber:118 description:@"Current thread must be main"];
   }
 
   v15 = *MEMORY[0x1E695EFF8];
@@ -94,7 +94,7 @@
   v19 = v17;
   if (v17)
   {
-    v17->_maxWidth = a5;
+    v17->_maxWidth = width;
     [(MFModernAddressAtom *)v17 setOpaque:0];
     [(MFModernAddressAtom *)v19 setAutoresizesSubviews:1];
     if (MFSolariumFeatureEnabled())
@@ -105,11 +105,11 @@
       [(MFModernAddressAtom *)v19 setShowsMenuAsPrimaryAction:1];
     }
 
-    *(v19 + 504) = *(v19 + 504) & 0xFE | a4;
-    objc_storeStrong(&v18->_fullAddress, a3);
-    if (a6)
+    *(v19 + 504) = *(v19 + 504) & 0xFE | number;
+    objc_storeStrong(&v18->_fullAddress, address);
+    if (book)
     {
-      v21 = CFRetain(a6);
+      v21 = CFRetain(book);
     }
 
     else
@@ -127,8 +127,8 @@
 
     [(CNAtomView *)v19->_atomView setUserInteractionEnabled:0];
     [(CNAtomView *)v19->_atomView setAutoresizingMask:2];
-    v25 = [MEMORY[0x1E69DC888] clearColor];
-    [(CNAtomView *)v19->_atomView setBackgroundColor:v25];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CNAtomView *)v19->_atomView setBackgroundColor:clearColor];
 
     [(MFModernAddressAtom *)v19 addSubview:v19->_atomView];
     [(MFModernAddressAtom *)v19 _displayStringDidChange];
@@ -139,12 +139,12 @@
 
 - (int64_t)numberOfLines
 {
-  v3 = [(CNAtomView *)self->_atomView titleLabel];
-  [v3 bounds];
+  titleLabel = [(CNAtomView *)self->_atomView titleLabel];
+  [titleLabel bounds];
   v5 = v4;
-  v6 = [(CNAtomView *)self->_atomView titleLabel];
-  v7 = [v6 font];
-  [v7 lineHeight];
+  titleLabel2 = [(CNAtomView *)self->_atomView titleLabel];
+  font = [titleLabel2 font];
+  [font lineHeight];
   v9 = v5 / v8;
 
   v10 = floor(v9);
@@ -157,7 +157,7 @@
   return v10;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = MFModernAddressAtom;
@@ -174,34 +174,34 @@
   return v3 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = MFModernAddressAtom;
   v5 = [(MFModernAddressAtom *)&v7 methodSignatureForSelector:?];
   if (!v5)
   {
-    v5 = [(CNAtomView *)self->_atomView methodSignatureForSelector:a3];
+    v5 = [(CNAtomView *)self->_atomView methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = MFModernAddressAtom;
   [(MFModernAddressAtom *)&v6 setEnabled:?];
-  if (v3)
+  if (enabledCopy)
   {
     [(CNAtomView *)self->_atomView setTintColor:0];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] mailModernLabelledAddressAtomDefaultTextColor];
-    [(CNAtomView *)self->_atomView setTintColor:v5];
+    mailModernLabelledAddressAtomDefaultTextColor = [MEMORY[0x1E69DC888] mailModernLabelledAddressAtomDefaultTextColor];
+    [(CNAtomView *)self->_atomView setTintColor:mailModernLabelledAddressAtomDefaultTextColor];
   }
 }
 
@@ -214,8 +214,8 @@
   v5 = [v4 mutableCopy];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(MFModernAddressAtom *)self presentationOptionsDescription];
-  v8 = [v6 stringWithFormat:@" presentation = %@", v7];
+  presentationOptionsDescription = [(MFModernAddressAtom *)self presentationOptionsDescription];
+  v8 = [v6 stringWithFormat:@" presentation = %@", presentationOptionsDescription];
   [v5 insertObject:v8 atIndex:1];
 
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@" address = “%@”", self->_fullAddress];
@@ -230,8 +230,8 @@
   if ([(NSString *)self->_displayString length])
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(MFModernAddressAtom *)self displayString];
-    v13 = [v11 stringWithFormat:@" name = “%@”", v12];
+    displayString = [(MFModernAddressAtom *)self displayString];
+    v13 = [v11 stringWithFormat:@" name = “%@”", displayString];
 
     [v5 insertObject:v13 atIndex:1];
   }
@@ -248,17 +248,17 @@
 
 - (id)presentationOptionsDescription
 {
-  v2 = [(MFModernAddressAtom *)self presentationOptions];
-  if (v2)
+  presentationOptions = [(MFModernAddressAtom *)self presentationOptions];
+  if (presentationOptions)
   {
-    v3 = v2;
-    v4 = [MEMORY[0x1E695DF70] array];
+    v3 = presentationOptions;
+    array = [MEMORY[0x1E695DF70] array];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __53__MFModernAddressAtom_presentationOptionsDescription__block_invoke;
     v12 = &unk_1E80703F8;
     v14 = v3;
-    v5 = v4;
+    v5 = array;
     v13 = v5;
     v6 = _Block_copy(&v9);
     v6[2](v6, 1, @"failure");
@@ -294,7 +294,7 @@ void __53__MFModernAddressAtom_presentationOptionsDescription__block_invoke(uint
   }
 }
 
-- (void)addressBookDidChange:(id)a3
+- (void)addressBookDidChange:(id)change
 {
   [(MFModernAddressAtom *)self _updateDisplayStringIncludingABPerson:1];
 
@@ -320,11 +320,11 @@ void __53__MFModernAddressAtom_presentationOptionsDescription__block_invoke(uint
   [(MFModernAddressAtom *)&v5 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = MFModernAddressAtom;
-  [(MFModernAddressAtom *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MFModernAddressAtom *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   atomView = self->_atomView;
   [(MFModernAddressAtom *)self bounds];
   [(CNAtomView *)atomView setFrame:?];
@@ -339,14 +339,14 @@ void __53__MFModernAddressAtom_presentationOptionsDescription__block_invoke(uint
   [(MFModernAddressAtom *)self sizeToFit];
 }
 
-- (void)setPresentationOptions:(unint64_t)a3
+- (void)setPresentationOptions:(unint64_t)options
 {
-  [(CNAtomView *)self->_atomView setPresentationOptions:a3];
+  [(CNAtomView *)self->_atomView setPresentationOptions:options];
 
   [(MFModernAddressAtom *)self sizeToFit];
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   [(CNAtomView *)self->_atomView setScale:?];
   [(MFModernAddressAtom *)self frame];
@@ -354,14 +354,14 @@ void __53__MFModernAddressAtom_presentationOptionsDescription__block_invoke(uint
   v8 = v7;
   v10 = v9;
   [MEMORY[0x1E6996398] defaultHeight];
-  [(MFModernAddressAtom *)self setFrame:v6, v8, v10, v11 * a3];
+  [(MFModernAddressAtom *)self setFrame:v6, v8, v10, v11 * scale];
 
   [(MFModernAddressAtom *)self sizeToFit];
 }
 
-- (void)setIsPrimaryAddressAtom:(BOOL)a3
+- (void)setIsPrimaryAddressAtom:(BOOL)atom
 {
-  [(CNAtomView *)self->_atomView setIsPrimaryAddressAtom:a3];
+  [(CNAtomView *)self->_atomView setIsPrimaryAddressAtom:atom];
 
   [(MFModernAddressAtom *)self sizeToFit];
 }
@@ -377,17 +377,17 @@ void __53__MFModernAddressAtom_presentationOptionsDescription__block_invoke(uint
   return result;
 }
 
-- (void)setAtomFont:(id)a3
+- (void)setAtomFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   [(CNAtomView *)self->_atomView setTitleFont:?];
   [(MFModernAddressAtom *)self sizeToFit];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   atomView = self->_atomView;
   if (IsAccessibilityCategory)
@@ -400,11 +400,11 @@ void __53__MFModernAddressAtom_presentationOptionsDescription__block_invoke(uint
 
   else
   {
-    v11 = [(CNAtomView *)atomView titleFont];
-    [v11 lineHeight];
+    titleFont = [(CNAtomView *)atomView titleFont];
+    [titleFont lineHeight];
     v13 = v12;
-    v14 = [(CNAtomView *)self->_atomView titleFont];
-    [v14 descender];
+    titleFont2 = [(CNAtomView *)self->_atomView titleFont];
+    [titleFont2 descender];
     v16 = round(v13 - v15);
 
     v17 = self->_atomView;
@@ -424,8 +424,8 @@ void __53__MFModernAddressAtom_presentationOptionsDescription__block_invoke(uint
 {
   if (pthread_main_np() != 1)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MFModernAddressAtom.m" lineNumber:345 description:@"Current thread must be main"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFModernAddressAtom.m" lineNumber:345 description:@"Current thread must be main"];
   }
 
   person = self->_person;
@@ -439,8 +439,8 @@ void __53__MFModernAddressAtom_presentationOptionsDescription__block_invoke(uint
     fullAddress = self->_fullAddress;
     if (*(self + 504))
     {
-      v7 = [(ECEmailAddressConvertible *)fullAddress stringValue];
-      if ([v7 length])
+      stringValue = [(ECEmailAddressConvertible *)fullAddress stringValue];
+      if ([stringValue length])
       {
         v8 = ABCFindPersonMatchingPhoneNumber();
         goto LABEL_11;
@@ -449,10 +449,10 @@ void __53__MFModernAddressAtom_presentationOptionsDescription__block_invoke(uint
 
     else
     {
-      v6 = [(ECEmailAddressConvertible *)fullAddress emailAddressValue];
-      v7 = [v6 simpleAddress];
+      emailAddressValue = [(ECEmailAddressConvertible *)fullAddress emailAddressValue];
+      stringValue = [emailAddressValue simpleAddress];
 
-      if ([v7 length])
+      if ([stringValue length])
       {
         v8 = ABCFindPersonMatchingEmailAddress();
 LABEL_11:
@@ -468,18 +468,18 @@ LABEL_11:
 
 - (id)emailAddress
 {
-  v2 = [(ECEmailAddressConvertible *)self->_fullAddress emailAddressValue];
-  v3 = [v2 simpleAddress];
+  emailAddressValue = [(ECEmailAddressConvertible *)self->_fullAddress emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
 
-  return v3;
+  return simpleAddress;
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
-  v5 = a3;
-  if (self->_fullAddress != v5)
+  addressCopy = address;
+  if (self->_fullAddress != addressCopy)
   {
-    objc_storeStrong(&self->_fullAddress, a3);
+    objc_storeStrong(&self->_fullAddress, address);
     *(self + 504) &= ~1u;
     [(MFModernAddressAtom *)self _updateDisplayStringIncludingABPerson:0];
     *(self + 504) |= 2u;
@@ -490,7 +490,7 @@ LABEL_11:
 - (void)_displayStringDidChange
 {
   atomView = self->_atomView;
-  v5 = [(MFModernAddressAtom *)self displayString];
+  displayString = [(MFModernAddressAtom *)self displayString];
   [(CNAtomView *)atomView setTitle:?];
 
   [(CNAtomView *)self->_atomView layoutSubviews];
@@ -499,42 +499,42 @@ LABEL_11:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(MFModernAddressAtom *)self displayString];
-    [WeakRetained addressAtom:self displayStringDidChange:v4];
+    displayString2 = [(MFModernAddressAtom *)self displayString];
+    [WeakRetained addressAtom:self displayStringDidChange:displayString2];
   }
 }
 
-- (void)_updateDisplayStringIncludingABPerson:(BOOL)a3
+- (void)_updateDisplayStringIncludingABPerson:(BOOL)person
 {
-  v3 = a3;
+  personCopy = person;
   if (pthread_main_np() != 1)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MFModernAddressAtom.m" lineNumber:416 description:@"Current thread must be main"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFModernAddressAtom.m" lineNumber:416 description:@"Current thread must be main"];
   }
 
   displayString = self->_displayString;
   self->_displayString = 0;
 
   *(self + 504) &= ~4u;
-  if (v3)
+  if (personCopy)
   {
     [(MFModernAddressAtom *)self _updateABPerson];
   }
 
   if (!self->_displayString)
   {
-    v16 = [(ECEmailAddressConvertible *)self->_fullAddress emailAddressValue];
-    v7 = [v16 displayName];
-    if ([v7 isEqualToString:@"Hide My Email"])
+    emailAddressValue = [(ECEmailAddressConvertible *)self->_fullAddress emailAddressValue];
+    displayName = [emailAddressValue displayName];
+    if ([displayName isEqualToString:@"Hide My Email"])
     {
-      v8 = [v16 domain];
-      v9 = [v8 isEqualToString:@"icloud.com"];
+      domain = [emailAddressValue domain];
+      v9 = [domain isEqualToString:@"icloud.com"];
 
       if (v9)
       {
-        v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.messageui"];
-        v11 = [v10 localizedStringForKey:@"HIDE_MY_EMAIL_TITLE" value:&stru_1F3CF3758 table:@"Main"];
+        stringValue = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.messageui"];
+        v11 = [stringValue localizedStringForKey:@"HIDE_MY_EMAIL_TITLE" value:&stru_1F3CF3758 table:@"Main"];
         v12 = self->_displayString;
         self->_displayString = v11;
 
@@ -550,21 +550,21 @@ LABEL_14:
 
     if (*(self + 504))
     {
-      v10 = [(ECEmailAddressConvertible *)self->_fullAddress stringValue];
+      stringValue = [(ECEmailAddressConvertible *)self->_fullAddress stringValue];
       v14 = CPPhoneNumberCopyFormattedStringForTextMessage();
       v15 = self->_displayString;
       self->_displayString = v14;
 
       if (!self->_displayString)
       {
-        objc_storeStrong(&self->_displayString, v10);
+        objc_storeStrong(&self->_displayString, stringValue);
       }
     }
 
     else
     {
       v13 = [objc_opt_class() copyDisplayStringForAddress:self->_fullAddress usingAddressBook:0 useAbbreviatedName:0];
-      v10 = self->_displayString;
+      stringValue = self->_displayString;
       self->_displayString = v13;
     }
 
@@ -597,36 +597,36 @@ LABEL_14:
   return *v2;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(MFModernAddressAtom *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(MFModernAddressAtom *)self isHighlighted]!= highlighted)
   {
     v8.receiver = self;
     v8.super_class = MFModernAddressAtom;
-    [(MFModernAddressAtom *)&v8 setHighlighted:v3];
+    [(MFModernAddressAtom *)&v8 setHighlighted:highlightedCopy];
     atomView = self->_atomView;
-    if (v3)
+    if (highlightedCopy)
     {
       [(CNAtomView *)atomView setSelected:1 animated:1];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E699B978] __mui_nextRunLoopMainThreadScheduler];
-      v7 = [(CNAtomView *)atomView ef_onScheduler:v6];
+      __mui_nextRunLoopMainThreadScheduler = [MEMORY[0x1E699B978] __mui_nextRunLoopMainThreadScheduler];
+      v7 = [(CNAtomView *)atomView ef_onScheduler:__mui_nextRunLoopMainThreadScheduler];
       [v7 setSelected:0 animated:1];
     }
   }
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
+  opaqueCopy = opaque;
   v6.receiver = self;
   v6.super_class = MFModernAddressAtom;
   [(MFModernAddressAtom *)&v6 setOpaque:?];
-  if (v3)
+  if (opaqueCopy)
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }
@@ -639,13 +639,13 @@ LABEL_14:
   [(MFModernAddressAtom *)self setBackgroundColor:v5];
 }
 
-- (void)setLabelAlpha:(double)a3
+- (void)setLabelAlpha:(double)alpha
 {
-  v4 = [(CNAtomView *)self->_atomView titleLabel];
-  [v4 setAlpha:a3];
+  titleLabel = [(CNAtomView *)self->_atomView titleLabel];
+  [titleLabel setAlpha:alpha];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;

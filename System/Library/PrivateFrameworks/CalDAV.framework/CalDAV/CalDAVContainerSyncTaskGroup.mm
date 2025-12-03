@@ -1,81 +1,81 @@
 @interface CalDAVContainerSyncTaskGroup
-- (BOOL)_shouldFetchEventsForState:(int)a3;
-- (BOOL)_shouldFetchTodosForState:(int)a3;
-- (BOOL)shouldFetchResourceWithEtag:(id)a3 propertiesToValues:(id)a4;
-- (CalDAVContainerSyncTaskGroup)initWithCalendar:(id)a3 accountInfoProvider:(id)a4 taskManager:(id)a5;
-- (CalDAVContainerSyncTaskGroup)initWithFolderURL:(id)a3 previousCTag:(id)a4 previousSyncToken:(id)a5 actions:(id)a6 accountInfoProvider:(id)a7 taskManager:(id)a8 appSpecificCalendarItemClass:(Class)a9;
+- (BOOL)_shouldFetchEventsForState:(int)state;
+- (BOOL)_shouldFetchTodosForState:(int)state;
+- (BOOL)shouldFetchResourceWithEtag:(id)etag propertiesToValues:(id)values;
+- (CalDAVContainerSyncTaskGroup)initWithCalendar:(id)calendar accountInfoProvider:(id)provider taskManager:(id)manager;
+- (CalDAVContainerSyncTaskGroup)initWithFolderURL:(id)l previousCTag:(id)tag previousSyncToken:(id)token actions:(id)actions accountInfoProvider:(id)provider taskManager:(id)manager appSpecificCalendarItemClass:(Class)class;
 - (id)copyAdditionalResourcePropertiesToFetch;
-- (id)copyGetEtagTaskWithPropertiesToFind:(id)a3;
-- (id)copyGetTaskWithURL:(id)a3;
-- (id)copyMultiGetTaskWithURLs:(id)a3;
-- (id)copyPutTaskWithPayloadItem:(id)a3 forAction:(id)a4;
-- (void)applyAdditionalPropertiesFromPostTask:(id)a3;
-- (void)applyAdditionalPropertiesFromPutTask:(id)a3;
+- (id)copyGetEtagTaskWithPropertiesToFind:(id)find;
+- (id)copyGetTaskWithURL:(id)l;
+- (id)copyMultiGetTaskWithURLs:(id)ls;
+- (id)copyPutTaskWithPayloadItem:(id)item forAction:(id)action;
+- (void)applyAdditionalPropertiesFromPostTask:(id)task;
+- (void)applyAdditionalPropertiesFromPutTask:(id)task;
 @end
 
 @implementation CalDAVContainerSyncTaskGroup
 
-- (CalDAVContainerSyncTaskGroup)initWithFolderURL:(id)a3 previousCTag:(id)a4 previousSyncToken:(id)a5 actions:(id)a6 accountInfoProvider:(id)a7 taskManager:(id)a8 appSpecificCalendarItemClass:(Class)a9
+- (CalDAVContainerSyncTaskGroup)initWithFolderURL:(id)l previousCTag:(id)tag previousSyncToken:(id)token actions:(id)actions accountInfoProvider:(id)provider taskManager:(id)manager appSpecificCalendarItemClass:(Class)class
 {
   v12.receiver = self;
   v12.super_class = CalDAVContainerSyncTaskGroup;
-  v9 = [(CoreDAVContainerSyncTaskGroup *)&v12 initWithFolderURL:a3 previousCTag:a4 previousSyncToken:a5 actions:a6 syncItemOrder:0 context:0 accountInfoProvider:a7 taskManager:a8];
+  v9 = [(CoreDAVContainerSyncTaskGroup *)&v12 initWithFolderURL:l previousCTag:tag previousSyncToken:token actions:actions syncItemOrder:0 context:0 accountInfoProvider:provider taskManager:manager];
   v10 = v9;
   if (v9)
   {
     [(CalDAVContainerSyncTaskGroup *)v9 setSyncEvents:1];
     [(CalDAVContainerSyncTaskGroup *)v10 setSyncTodos:1];
     *&v10->_getScheduleTags = 0;
-    *(&v10->super.super.super.isa + *MEMORY[0x277CFDCE0]) = a9;
+    *(&v10->super.super.super.isa + *MEMORY[0x277CFDCE0]) = class;
   }
 
   return v10;
 }
 
-- (CalDAVContainerSyncTaskGroup)initWithCalendar:(id)a3 accountInfoProvider:(id)a4 taskManager:(id)a5
+- (CalDAVContainerSyncTaskGroup)initWithCalendar:(id)calendar accountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  calendarCopy = calendar;
+  managerCopy = manager;
+  providerCopy = provider;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 appSpecificCalendarItemClass];
+    appSpecificCalendarItemClass = [calendarCopy appSpecificCalendarItemClass];
   }
 
   else
   {
-    v11 = 0;
+    appSpecificCalendarItemClass = 0;
   }
 
-  v12 = [v8 ctag];
-  v13 = [v8 syncToken];
-  if ([v8 needsResync])
+  ctag = [calendarCopy ctag];
+  syncToken = [calendarCopy syncToken];
+  if ([calendarCopy needsResync])
   {
 
-    v12 = 0;
-    v13 = 0;
+    ctag = 0;
+    syncToken = 0;
   }
 
-  v14 = [v8 calendarURL];
-  v15 = [v8 syncActions];
-  v16 = [(CalDAVContainerSyncTaskGroup *)self initWithFolderURL:v14 previousCTag:v12 previousSyncToken:v13 actions:v15 accountInfoProvider:v10 taskManager:v9 appSpecificCalendarItemClass:v11];
+  calendarURL = [calendarCopy calendarURL];
+  syncActions = [calendarCopy syncActions];
+  v16 = [(CalDAVContainerSyncTaskGroup *)self initWithFolderURL:calendarURL previousCTag:ctag previousSyncToken:syncToken actions:syncActions accountInfoProvider:providerCopy taskManager:managerCopy appSpecificCalendarItemClass:appSpecificCalendarItemClass];
 
   if (v16)
   {
-    [(CalDAVContainerSyncTaskGroup *)v16 setCalendar:v8];
-    if ([v8 isScheduleInbox])
+    [(CalDAVContainerSyncTaskGroup *)v16 setCalendar:calendarCopy];
+    if ([calendarCopy isScheduleInbox])
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = [v8 isNotification] ^ 1;
+      v17 = [calendarCopy isNotification] ^ 1;
     }
 
     [(CalDAVContainerSyncTaskGroup *)v16 setGetScheduleTags:v17];
-    -[CalDAVContainerSyncTaskGroup setGetScheduleChanges:](v16, "setGetScheduleChanges:", [v8 isScheduleInbox]);
-    if ([v8 isNotification])
+    -[CalDAVContainerSyncTaskGroup setGetScheduleChanges:](v16, "setGetScheduleChanges:", [calendarCopy isScheduleInbox]);
+    if ([calendarCopy isNotification])
     {
       [(CoreDAVContainerSyncTaskGroup *)v16 setUseMultiGet:0];
     }
@@ -84,9 +84,9 @@
   return v16;
 }
 
-- (id)copyMultiGetTaskWithURLs:(id)a3
+- (id)copyMultiGetTaskWithURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -103,14 +103,14 @@
   if (*(&self->_fallbackOnMultiGetError + 4))
   {
     v7 = objc_alloc(MEMORY[0x277CFDC30]);
-    v8 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-    v9 = [(CoreDAVTaskGroup *)self taskManager];
-    v10 = [v7 initWithURLs:v4 multiGetBlock:v5 getBlock:v6 accountInfoProvider:v8 taskManager:v9];
+    accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+    taskManager = [(CoreDAVTaskGroup *)self taskManager];
+    v10 = [v7 initWithURLs:lsCopy multiGetBlock:v5 getBlock:v6 accountInfoProvider:accountInfoProvider taskManager:taskManager];
   }
 
   else
   {
-    v10 = (v5)[2](v5, v4);
+    v10 = (v5)[2](v5, lsCopy);
   }
 
   objc_destroyWeak(&v13);
@@ -141,87 +141,87 @@ id __57__CalDAVContainerSyncTaskGroup_copyMultiGetTaskWithURLs___block_invoke_2(
   return v5;
 }
 
-- (id)copyGetTaskWithURL:(id)a3
+- (id)copyGetTaskWithURL:(id)l
 {
   calendar = self->_calendar;
-  v4 = a3;
-  v5 = [(CalDAVCalendar *)calendar isNotification];
+  lCopy = l;
+  isNotification = [(CalDAVCalendar *)calendar isNotification];
   v6 = off_278D65BA8;
-  if (!v5)
+  if (!isNotification)
   {
     v6 = off_278D65B98;
   }
 
-  v7 = [objc_alloc(*v6) initWithURL:v4];
+  v7 = [objc_alloc(*v6) initWithURL:lCopy];
 
   return v7;
 }
 
-- (id)copyPutTaskWithPayloadItem:(id)a3 forAction:(id)a4
+- (id)copyPutTaskWithPayloadItem:(id)item forAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  actionCopy = action;
   v8 = [CalDAVPutCalendarItemTask alloc];
-  v9 = [v6 dataPayload];
-  v10 = [(CalDAVContainerSyncTaskGroup *)self dataContentType];
-  v11 = [v6 serverID];
-  v12 = [v7 action];
+  dataPayload = [itemCopy dataPayload];
+  dataContentType = [(CalDAVContainerSyncTaskGroup *)self dataContentType];
+  serverID = [itemCopy serverID];
+  action = [actionCopy action];
 
-  if (v12)
+  if (action)
   {
-    v13 = [v6 syncKey];
-    v14 = [(CoreDAVPostOrPutTask *)v8 initWithDataPayload:v9 dataContentType:v10 atURL:v11 previousETag:v13];
+    syncKey = [itemCopy syncKey];
+    v14 = [(CoreDAVPostOrPutTask *)v8 initWithDataPayload:dataPayload dataContentType:dataContentType atURL:serverID previousETag:syncKey];
   }
 
   else
   {
-    v14 = [(CoreDAVPostOrPutTask *)v8 initWithDataPayload:v9 dataContentType:v10 atURL:v11 previousETag:0];
+    v14 = [(CoreDAVPostOrPutTask *)v8 initWithDataPayload:dataPayload dataContentType:dataContentType atURL:serverID previousETag:0];
   }
 
-  v15 = [v6 scheduleTag];
-  [(CalDAVPutCalendarItemTask *)v14 setPreviousScheduleTag:v15];
+  scheduleTag = [itemCopy scheduleTag];
+  [(CalDAVPutCalendarItemTask *)v14 setPreviousScheduleTag:scheduleTag];
 
   return v14;
 }
 
-- (void)applyAdditionalPropertiesFromPutTask:(id)a3
+- (void)applyAdditionalPropertiesFromPutTask:(id)task
 {
-  v10 = a3;
-  v4 = [(CoreDAVTaskGroup *)self delegate];
+  taskCopy = task;
+  delegate = [(CoreDAVTaskGroup *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v10 responseHeaders];
-    v7 = [v6 CDVObjectForKeyCaseInsensitive:@"Schedule-Tag"];
+    responseHeaders = [taskCopy responseHeaders];
+    v7 = [responseHeaders CDVObjectForKeyCaseInsensitive:@"Schedule-Tag"];
 
-    v8 = [(CoreDAVTaskGroup *)self delegate];
-    v9 = [v10 url];
-    [v8 setLocalScheduleTag:v7 forItemWithURL:v9 inFolderWithURL:*(&self->super.super.super.isa + *MEMORY[0x277CFDCF0])];
+    delegate2 = [(CoreDAVTaskGroup *)self delegate];
+    v9 = [taskCopy url];
+    [delegate2 setLocalScheduleTag:v7 forItemWithURL:v9 inFolderWithURL:*(&self->super.super.super.isa + *MEMORY[0x277CFDCF0])];
   }
 }
 
-- (void)applyAdditionalPropertiesFromPostTask:(id)a3
+- (void)applyAdditionalPropertiesFromPostTask:(id)task
 {
-  v10 = a3;
-  v4 = [(CoreDAVTaskGroup *)self delegate];
+  taskCopy = task;
+  delegate = [(CoreDAVTaskGroup *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v10 responseHeaders];
-    v7 = [v6 CDVObjectForKeyCaseInsensitive:@"Schedule-Tag"];
+    responseHeaders = [taskCopy responseHeaders];
+    v7 = [responseHeaders CDVObjectForKeyCaseInsensitive:@"Schedule-Tag"];
 
-    v8 = [(CoreDAVTaskGroup *)self delegate];
-    v9 = [v10 url];
-    [v8 setLocalScheduleTag:v7 forItemWithURL:v9 inFolderWithURL:*(&self->super.super.super.isa + *MEMORY[0x277CFDCF0])];
+    delegate2 = [(CoreDAVTaskGroup *)self delegate];
+    v9 = [taskCopy url];
+    [delegate2 setLocalScheduleTag:v7 forItemWithURL:v9 inFolderWithURL:*(&self->super.super.super.isa + *MEMORY[0x277CFDCF0])];
   }
 }
 
-- (BOOL)_shouldFetchEventsForState:(int)a3
+- (BOOL)_shouldFetchEventsForState:(int)state
 {
   result = [(CalDAVContainerSyncTaskGroup *)self syncEvents];
-  if ((a3 & 0xFFFFFFFE) != 2)
+  if ((state & 0xFFFFFFFE) != 2)
   {
     return 0;
   }
@@ -229,21 +229,21 @@ id __57__CalDAVContainerSyncTaskGroup_copyMultiGetTaskWithURLs___block_invoke_2(
   return result;
 }
 
-- (BOOL)_shouldFetchTodosForState:(int)a3
+- (BOOL)_shouldFetchTodosForState:(int)state
 {
-  v4 = [(CalDAVContainerSyncTaskGroup *)self syncTodos];
-  v6 = a3 == 2 || a3 == 4;
-  return v4 && v6;
+  syncTodos = [(CalDAVContainerSyncTaskGroup *)self syncTodos];
+  v6 = state == 2 || state == 4;
+  return syncTodos && v6;
 }
 
-- (id)copyGetEtagTaskWithPropertiesToFind:(id)a3
+- (id)copyGetEtagTaskWithPropertiesToFind:(id)find
 {
-  v5 = a3;
+  findCopy = find;
   calendar = self->_calendar;
   if (calendar)
   {
-    v7 = [(CalDAVCalendar *)calendar isEventContainer];
-    v8 = v7 ^ [(CalDAVCalendar *)self->_calendar isTaskContainer];
+    isEventContainer = [(CalDAVCalendar *)calendar isEventContainer];
+    v8 = isEventContainer ^ [(CalDAVCalendar *)self->_calendar isTaskContainer];
     calendar = self->_calendar;
   }
 
@@ -252,29 +252,29 @@ id __57__CalDAVContainerSyncTaskGroup_copyMultiGetTaskWithURLs___block_invoke_2(
     v8 = 0;
   }
 
-  v9 = [(CalDAVCalendar *)calendar isNotification];
+  isNotification = [(CalDAVCalendar *)calendar isNotification];
   v10 = MEMORY[0x277CFDD20];
-  if ((v9 & 1) == 0)
+  if ((isNotification & 1) == 0)
   {
     if (![(CalDAVCalendar *)self->_calendar isScheduleInbox])
     {
       goto LABEL_7;
     }
 
-    v11 = [(CalDAVCalendar *)self->_calendar principal];
-    v12 = [v11 account];
-    v13 = [v12 serverVersion];
-    v14 = [v13 supportsTimeRangeFilterOnInbox];
+    principal = [(CalDAVCalendar *)self->_calendar principal];
+    account = [principal account];
+    serverVersion = [account serverVersion];
+    supportsTimeRangeFilterOnInbox = [serverVersion supportsTimeRangeFilterOnInbox];
 
-    if (v14)
+    if (supportsTimeRangeFilterOnInbox)
     {
 LABEL_7:
       if ((*(&self->super.super.super.isa + *v10) & 1) == 0)
       {
         if ((v8 & 1) == 0)
         {
-          v15 = [(CalDAVContainerSyncTaskGroup *)self syncEvents];
-          if (v15 != [(CalDAVContainerSyncTaskGroup *)self syncTodos])
+          syncEvents = [(CalDAVContainerSyncTaskGroup *)self syncEvents];
+          if (syncEvents != [(CalDAVContainerSyncTaskGroup *)self syncTodos])
           {
 LABEL_14:
             if ([(CalDAVContainerSyncTaskGroup *)self syncEvents]&& [(CalDAVContainerSyncTaskGroup *)self syncTodos])
@@ -282,9 +282,9 @@ LABEL_14:
               v18 = *&self->_getScheduleTags;
               if (v18 == 1)
               {
-                v19 = [MEMORY[0x277CFDC18] sharedLogging];
+                mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
                 WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x277CFDD48]));
-                v21 = [v19 logHandleForAccountInfoProvider:WeakRetained];
+                v21 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:WeakRetained];
 
                 if (v21 && os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                 {
@@ -299,8 +299,8 @@ LABEL_14:
               {
                 if (v18 != 3)
                 {
-                  v31 = [MEMORY[0x277CCA890] currentHandler];
-                  [v31 handleFailureInMethod:a2 object:self file:@"CalDAVContainerSyncTaskGroup.m" lineNumber:188 description:{@"Unexpected state (%d) when fetching etags", *&self->_getScheduleTags}];
+                  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                  [currentHandler handleFailureInMethod:a2 object:self file:@"CalDAVContainerSyncTaskGroup.m" lineNumber:188 description:{@"Unexpected state (%d) when fetching etags", *&self->_getScheduleTags}];
 
                   goto LABEL_37;
                 }
@@ -340,14 +340,14 @@ LABEL_14:
             *&self->_getScheduleTags = v22;
 LABEL_37:
             v28 = [CalDAVCalendarQueryTask alloc];
-            v26 = [(CoreDAVPropFindTask *)v28 initWithPropertiesToFind:v5 atURL:*(&self->super.super.super.isa + *MEMORY[0x277CFDCF0]) withDepth:3];
+            v26 = [(CoreDAVPropFindTask *)v28 initWithPropertiesToFind:findCopy atURL:*(&self->super.super.super.isa + *MEMORY[0x277CFDCF0]) withDepth:3];
             [(CalDAVCalendarQueryTask *)v26 setSyncEvents:[(CalDAVContainerSyncTaskGroup *)self _shouldFetchEventsForState:*&self->_getScheduleTags]];
             [(CalDAVCalendarQueryTask *)v26 setSyncTodos:[(CalDAVContainerSyncTaskGroup *)self _shouldFetchTodosForState:*&self->_getScheduleTags]];
-            v29 = [(CalDAVContainerSyncTaskGroup *)self eventFilterStartDate];
-            [(CalDAVCalendarQueryTask *)v26 setEventFilterStartDate:v29];
+            eventFilterStartDate = [(CalDAVContainerSyncTaskGroup *)self eventFilterStartDate];
+            [(CalDAVCalendarQueryTask *)v26 setEventFilterStartDate:eventFilterStartDate];
 
-            v30 = [(CalDAVContainerSyncTaskGroup *)self eventFilterEndDate];
-            [(CalDAVCalendarQueryTask *)v26 setEventFilterEndDate:v30];
+            eventFilterEndDate = [(CalDAVContainerSyncTaskGroup *)self eventFilterEndDate];
+            [(CalDAVCalendarQueryTask *)v26 setEventFilterEndDate:eventFilterEndDate];
 
             goto LABEL_29;
           }
@@ -355,16 +355,16 @@ LABEL_37:
 
         if ([(CalDAVContainerSyncTaskGroup *)self syncEvents])
         {
-          v16 = [(CalDAVContainerSyncTaskGroup *)self eventFilterStartDate];
-          if (v16)
+          eventFilterStartDate2 = [(CalDAVContainerSyncTaskGroup *)self eventFilterStartDate];
+          if (eventFilterStartDate2)
           {
 
             goto LABEL_14;
           }
 
-          v17 = [(CalDAVContainerSyncTaskGroup *)self eventFilterEndDate];
+          eventFilterEndDate2 = [(CalDAVContainerSyncTaskGroup *)self eventFilterEndDate];
 
-          if (v17)
+          if (eventFilterEndDate2)
           {
             goto LABEL_14;
           }
@@ -377,13 +377,13 @@ LABEL_37:
   if (*(&self->super.super.super.isa + *v10) == 1)
   {
     v23 = objc_alloc(MEMORY[0x277CFDC90]);
-    v24 = [v23 initWithPropertiesToFind:v5 atURL:*(&self->super.super.super.isa + *MEMORY[0x277CFDCF0]) withDepth:3 previousSyncToken:*(&self->super.super.super.isa + *MEMORY[0x277CFDD10])];
+    v24 = [v23 initWithPropertiesToFind:findCopy atURL:*(&self->super.super.super.isa + *MEMORY[0x277CFDCF0]) withDepth:3 previousSyncToken:*(&self->super.super.super.isa + *MEMORY[0x277CFDD10])];
   }
 
   else
   {
     v25 = objc_alloc(MEMORY[0x277CFDC68]);
-    v24 = [v25 initWithPropertiesToFind:v5 atURL:*(&self->super.super.super.isa + *MEMORY[0x277CFDCF0]) withDepth:3];
+    v24 = [v25 initWithPropertiesToFind:findCopy atURL:*(&self->super.super.super.isa + *MEMORY[0x277CFDCF0]) withDepth:3];
   }
 
   v26 = v24;
@@ -392,57 +392,57 @@ LABEL_29:
   return v26;
 }
 
-- (BOOL)shouldFetchResourceWithEtag:(id)a3 propertiesToValues:(id)a4
+- (BOOL)shouldFetchResourceWithEtag:(id)etag propertiesToValues:(id)values
 {
   calendar = self->_calendar;
-  v5 = a4;
+  valuesCopy = values;
   if ([(CalDAVCalendar *)calendar isNotification])
   {
-    v6 = [v5 CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDE90] andName:@"notificationtype"];
+    payloadAsString = [valuesCopy CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDE90] andName:@"notificationtype"];
 
-    if ([v6 isInviteNotification] & 1) != 0 || (objc_msgSend(v6, "isInviteReply"))
+    if ([payloadAsString isInviteNotification] & 1) != 0 || (objc_msgSend(payloadAsString, "isInviteReply"))
     {
-      v7 = 1;
+      isResourceChanged = 1;
     }
 
     else
     {
-      v7 = [v6 isResourceChanged];
+      isResourceChanged = [payloadAsString isResourceChanged];
     }
   }
 
   else
   {
-    v8 = [v5 CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDEF8] andName:*MEMORY[0x277CFDF18]];
+    v8 = [valuesCopy CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDEF8] andName:*MEMORY[0x277CFDF18]];
 
-    v6 = [v8 payloadAsString];
+    payloadAsString = [v8 payloadAsString];
 
-    v7 = [v6 rangeOfString:@"text/calendar"] != 0x7FFFFFFFFFFFFFFFLL;
+    isResourceChanged = [payloadAsString rangeOfString:@"text/calendar"] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v7;
+  return isResourceChanged;
 }
 
 - (id)copyAdditionalResourcePropertiesToFetch
 {
   v3 = objc_opt_new();
-  v4 = [(CalDAVCalendar *)self->_calendar isNotification];
+  isNotification = [(CalDAVCalendar *)self->_calendar isNotification];
   v5 = MEMORY[0x277CFDE90];
-  if (!v4)
+  if (!isNotification)
   {
     v5 = MEMORY[0x277CFDEF8];
   }
 
   v6 = *v5;
   v7 = cdXMLCalendarServerNotificationType;
-  if (!v4)
+  if (!isNotification)
   {
     v7 = MEMORY[0x277CFDF18];
   }
 
   v8 = *v7;
   v9 = off_278D65AF0;
-  if (!v4)
+  if (!isNotification)
   {
     v9 = 0x277CFDC10;
   }

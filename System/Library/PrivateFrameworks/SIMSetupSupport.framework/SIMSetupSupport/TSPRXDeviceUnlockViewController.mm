@@ -1,7 +1,7 @@
 @interface TSPRXDeviceUnlockViewController
 - (TSPRXDeviceUnlockViewController)init;
 - (TSSIMSetupFlowDelegate)delegate;
-- (void)_handleLockState:(int)a3;
+- (void)_handleLockState:(int)state;
 - (void)_registerLockState;
 - (void)_screenStateChanged;
 - (void)_startSystemMonitor;
@@ -70,12 +70,12 @@
   radioImageView = self->_radioImageView;
   self->_radioImageView = v10;
 
-  v12 = [MEMORY[0x277D75348] systemBlueColor];
-  [(UIImageView *)self->_radioImageView setTintColor:v12];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [(UIImageView *)self->_radioImageView setTintColor:systemBlueColor];
 
   [(UIImageView *)self->_radioImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(TSPRXDeviceUnlockViewController *)self contentView];
-  [v13 addSubview:self->_radioImageView];
+  contentView = [(TSPRXDeviceUnlockViewController *)self contentView];
+  [contentView addSubview:self->_radioImageView];
 
   objc_initWeak(&location, self);
   v14 = MEMORY[0x277D432F0];
@@ -91,8 +91,8 @@
   self->_action = v17;
 
   v19 = [(TSPRXDeviceUnlockViewController *)self addAction:self->_action];
-  v20 = [(TSPRXDeviceUnlockViewController *)self contentView];
-  [v20 bounds];
+  contentView2 = [(TSPRXDeviceUnlockViewController *)self contentView];
+  [contentView2 bounds];
   v22 = v21;
   v24 = v23;
 
@@ -115,29 +115,29 @@
   [v56 size];
   v33 = v32;
   v44 = MEMORY[0x277CCAAD0];
-  v53 = [(UIImageView *)self->_radioImageView topAnchor];
-  v55 = [(TSPRXDeviceUnlockViewController *)self contentView];
-  v54 = [v55 mainContentGuide];
-  v52 = [v54 topAnchor];
-  v51 = [v53 constraintGreaterThanOrEqualToAnchor:v52];
+  topAnchor = [(UIImageView *)self->_radioImageView topAnchor];
+  contentView3 = [(TSPRXDeviceUnlockViewController *)self contentView];
+  mainContentGuide = [contentView3 mainContentGuide];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v51 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v61[0] = v51;
-  v48 = [(UIImageView *)self->_radioImageView centerXAnchor];
-  v50 = [(TSPRXDeviceUnlockViewController *)self contentView];
-  v49 = [v50 mainContentGuide];
-  v47 = [v49 centerXAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  centerXAnchor = [(UIImageView *)self->_radioImageView centerXAnchor];
+  contentView4 = [(TSPRXDeviceUnlockViewController *)self contentView];
+  mainContentGuide2 = [contentView4 mainContentGuide];
+  centerXAnchor2 = [mainContentGuide2 centerXAnchor];
+  v46 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v61[1] = v46;
-  v45 = [(UIImageView *)self->_radioImageView centerYAnchor];
-  v34 = [(TSPRXDeviceUnlockViewController *)self contentView];
-  v35 = [v34 mainContentGuide];
-  v36 = [v35 centerYAnchor];
-  v37 = [v45 constraintEqualToAnchor:v36];
+  centerYAnchor = [(UIImageView *)self->_radioImageView centerYAnchor];
+  contentView5 = [(TSPRXDeviceUnlockViewController *)self contentView];
+  mainContentGuide3 = [contentView5 mainContentGuide];
+  centerYAnchor2 = [mainContentGuide3 centerYAnchor];
+  v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v61[2] = v37;
-  v38 = [(UIImageView *)self->_radioImageView widthAnchor];
-  v39 = [v38 constraintEqualToConstant:v29 * v31];
+  widthAnchor = [(UIImageView *)self->_radioImageView widthAnchor];
+  v39 = [widthAnchor constraintEqualToConstant:v29 * v31];
   v61[3] = v39;
-  v40 = [(UIImageView *)self->_radioImageView heightAnchor];
-  v41 = [v40 constraintEqualToConstant:v29 * v33];
+  heightAnchor = [(UIImageView *)self->_radioImageView heightAnchor];
+  v41 = [heightAnchor constraintEqualToConstant:v29 * v33];
   v61[4] = v41;
   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:5];
   [v44 activateConstraints:v42];
@@ -284,11 +284,11 @@ void __53__TSPRXDeviceUnlockViewController__registerLockState__block_invoke(uint
   }
 }
 
-- (void)_handleLockState:(int)a3
+- (void)_handleLockState:(int)state
 {
   v17 = *MEMORY[0x277D85DE8];
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(state, &state64))
   {
     v4 = 0;
   }
@@ -320,8 +320,8 @@ void __53__TSPRXDeviceUnlockViewController__registerLockState__block_invoke(uint
   if (v5)
   {
     [(TSPRXDeviceUnlockViewController *)self _unregisterLockState];
-    v8 = [(TSPRXDeviceUnlockViewController *)self delegate];
-    [v8 viewControllerDidComplete:self];
+    delegate = [(TSPRXDeviceUnlockViewController *)self delegate];
+    [delegate viewControllerDidComplete:self];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -400,8 +400,8 @@ void __54__TSPRXDeviceUnlockViewController__startSystemMonitor__block_invoke_2()
       _os_log_impl(&dword_262AA8000, v3, OS_LOG_TYPE_DEFAULT, "app enter background, dismiss. @%s", &v6, 0xCu);
     }
 
-    v4 = [(TSPRXDeviceUnlockViewController *)self delegate];
-    [v4 viewControllerDidComplete:self];
+    delegate = [(TSPRXDeviceUnlockViewController *)self delegate];
+    [delegate viewControllerDidComplete:self];
   }
 
   v5 = *MEMORY[0x277D85DE8];

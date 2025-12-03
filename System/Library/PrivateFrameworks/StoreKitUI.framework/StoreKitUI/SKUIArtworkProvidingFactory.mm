@@ -1,29 +1,29 @@
 @interface SKUIArtworkProvidingFactory
-+ (id)artworkCacheCandidatesForProvider:(id)a3;
-+ (id)artworkProviderForStoreResponse:(id)a3;
++ (id)artworkCacheCandidatesForProvider:(id)provider;
++ (id)artworkProviderForStoreResponse:(id)response;
 @end
 
 @implementation SKUIArtworkProvidingFactory
 
-+ (id)artworkProviderForStoreResponse:(id)a3
++ (id)artworkProviderForStoreResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[SKUIArtworkProvidingFactory artworkProviderForStoreResponse:];
   }
 
-  if ([SKUIArtworkList canHandleArtworkFormat:v3])
+  if ([SKUIArtworkList canHandleArtworkFormat:responseCopy])
   {
-    v4 = [[SKUIArtworkList alloc] initWithArtworkListArray:v3];
+    v4 = [[SKUIArtworkList alloc] initWithArtworkListArray:responseCopy];
 LABEL_9:
     v5 = v4;
     goto LABEL_11;
   }
 
-  if ([SKUIArtworkTemplate canHandleArtworkFormat:v3])
+  if ([SKUIArtworkTemplate canHandleArtworkFormat:responseCopy])
   {
-    v4 = [[SKUIArtworkTemplate alloc] initWithTemplateDictionary:v3];
+    v4 = [[SKUIArtworkTemplate alloc] initWithTemplateDictionary:responseCopy];
     goto LABEL_9;
   }
 
@@ -33,9 +33,9 @@ LABEL_11:
   return v5;
 }
 
-+ (id)artworkCacheCandidatesForProvider:(id)a3
++ (id)artworkCacheCandidatesForProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIArtworkProvidingFactory artworkCacheCandidatesForProvider:];
@@ -44,7 +44,7 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 artworks];
+    artworks = [providerCopy artworks];
   }
 
   else
@@ -52,17 +52,17 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v3 servedArtworks];
-      v4 = [v5 allObjects];
+      servedArtworks = [providerCopy servedArtworks];
+      artworks = [servedArtworks allObjects];
     }
 
     else
     {
-      v4 = 0;
+      artworks = 0;
     }
   }
 
-  return v4;
+  return artworks;
 }
 
 + (void)artworkProviderForStoreResponse:.cold.1()

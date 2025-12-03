@@ -1,15 +1,15 @@
 @interface tvOS_AVInfoMenuControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHeaderElements;
 @end
 
 @implementation tvOS_AVInfoMenuControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVInfoMenuController" hasInstanceMethod:@"viewControllers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVInfoPanelMetadataViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVInfoMenuController" hasInstanceMethod:@"viewControllers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVInfoPanelMetadataViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (id)accessibilityHeaderElements
@@ -19,11 +19,11 @@
   v4 = __UIAccessibilityCastAsClass();
 
   v5 = [v4 axFilterObjectsUsingBlock:&__block_literal_global_0];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  v7 = [v6 accessibilityHeaderElements];
+  accessibilityHeaderElements = [firstObject accessibilityHeaderElements];
 
-  return v7;
+  return accessibilityHeaderElements;
 }
 
 @end

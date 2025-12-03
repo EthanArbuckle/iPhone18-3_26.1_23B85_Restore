@@ -1,17 +1,17 @@
 @interface HMMutableCHIPHome
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableCHIPHome
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMCHIPHome allocWithZone:a3];
-  v5 = [(HMCHIPHome *)self identifier];
-  v6 = [(HMCHIPHome *)self index];
-  v7 = [(HMCHIPHome *)self name];
-  v8 = [(HMCHIPHome *)self ecosystem];
-  v9 = [(HMCHIPHome *)v4 initWithIdentifier:v5 index:v6 name:v7 ecosystem:v8];
+  v4 = [HMCHIPHome allocWithZone:zone];
+  identifier = [(HMCHIPHome *)self identifier];
+  index = [(HMCHIPHome *)self index];
+  name = [(HMCHIPHome *)self name];
+  ecosystem = [(HMCHIPHome *)self ecosystem];
+  v9 = [(HMCHIPHome *)v4 initWithIdentifier:identifier index:index name:name ecosystem:ecosystem];
 
   return v9;
 }

@@ -1,5 +1,5 @@
 @interface _UIViewServiceUIBehaviorProxy
-+ (id)proxyWrappingExportedObject:(id)a3 forCommunicationWithPID:(int)a4 exportedProtocol:(id)a5;
++ (id)proxyWrappingExportedObject:(id)object forCommunicationWithPID:(int)d exportedProtocol:(id)protocol;
 + (void)initialize;
 - (void)_objc_initiateDealloc;
 - (void)dealloc;
@@ -7,12 +7,12 @@
 
 @implementation _UIViewServiceUIBehaviorProxy
 
-+ (id)proxyWrappingExportedObject:(id)a3 forCommunicationWithPID:(int)a4 exportedProtocol:(id)a5
++ (id)proxyWrappingExportedObject:(id)object forCommunicationWithPID:(int)d exportedProtocol:(id)protocol
 {
-  v8 = [_UIViewServiceImplicitAnimationDecodingProxy proxyDecodingAnimationsForTarget:a3];
-  if (a4)
+  v8 = [_UIViewServiceImplicitAnimationDecodingProxy proxyDecodingAnimationsForTarget:object];
+  if (d)
   {
-    v9 = [_UIViewServiceFencingControlProxy proxyWithTarget:v8 exportedProtocol:a5 fencingBatchController:0];
+    v9 = [_UIViewServiceFencingControlProxy proxyWithTarget:v8 exportedProtocol:protocol fencingBatchController:0];
   }
 
   else
@@ -30,17 +30,17 @@
     v10 = v8;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS____UIViewServiceUIBehaviorProxy;
   v11 = objc_msgSendSuper2(&v13, sel_proxyWithTarget_, v10);
   v11[3] = v9;
-  *(v11 + 4) = a4;
+  *(v11 + 4) = d;
   return v11;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     _class_setCustomDeallocInitiation();

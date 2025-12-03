@@ -4,7 +4,7 @@
 - (id)combinedDate;
 - (id)combinedMailboxes;
 - (id)combinedMessageFlags;
-- (void)addMessage:(id)a3 withDatabaseID:(int64_t)a4;
+- (void)addMessage:(id)message withDatabaseID:(int64_t)d;
 @end
 
 @implementation _EDCombinedMessageInfo
@@ -20,13 +20,13 @@
     mailboxes = v2->_mailboxes;
     v2->_mailboxes = v3;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     flags = v2->_flags;
-    v2->_flags = v5;
+    v2->_flags = array;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     dates = v2->_dates;
-    v2->_dates = v7;
+    v2->_dates = array2;
   }
 
   return v2;
@@ -34,79 +34,79 @@
 
 - (EMMessage)deduplicatedMessage
 {
-  v4 = [(_EDCombinedMessageInfo *)self message];
-  if (!v4)
+  message = [(_EDCombinedMessageInfo *)self message];
+  if (!message)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"EDBatchingMessageQueryIterator.m" lineNumber:73 description:@"Don't have primary message for combined message info."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDBatchingMessageQueryIterator.m" lineNumber:73 description:@"Don't have primary message for combined message info."];
   }
 
   if ([(NSMutableArray *)self->_dates count]> 1)
   {
     v6 = objc_alloc(MEMORY[0x1E699AD30]);
-    v7 = [v4 objectID];
+    objectID = [message objectID];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __45___EDCombinedMessageInfo_deduplicatedMessage__block_invoke;
     v10[3] = &unk_1E82507C0;
     v10[4] = self;
-    v11 = v4;
-    v5 = [v6 initWithObjectID:v7 builder:v10];
+    v11 = message;
+    v5 = [v6 initWithObjectID:objectID builder:v10];
   }
 
   else
   {
-    v5 = v4;
+    v5 = message;
   }
 
   return v5;
 }
 
-- (void)addMessage:(id)a3 withDatabaseID:(int64_t)a4
+- (void)addMessage:(id)message withDatabaseID:(int64_t)d
 {
-  v15 = a3;
-  if (!v15)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"EDBatchingMessageQueryIterator.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"message != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDBatchingMessageQueryIterator.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"message != nil"}];
   }
 
-  if (!self->_message || self->_lowestDatabaseID > a4)
+  if (!self->_message || self->_lowestDatabaseID > d)
   {
-    objc_storeStrong(&self->_message, a3);
-    self->_lowestDatabaseID = a4;
+    objc_storeStrong(&self->_message, message);
+    self->_lowestDatabaseID = d;
   }
 
-  v8 = [(_EDCombinedMessageInfo *)self mailboxes];
-  v9 = [v15 mailboxes];
-  [v8 addObjectsFromArray:v9];
+  mailboxes = [(_EDCombinedMessageInfo *)self mailboxes];
+  mailboxes2 = [messageCopy mailboxes];
+  [mailboxes addObjectsFromArray:mailboxes2];
 
-  v10 = [(_EDCombinedMessageInfo *)self flags];
-  v11 = [v15 flags];
-  [v10 addObject:v11];
+  flags = [(_EDCombinedMessageInfo *)self flags];
+  flags2 = [messageCopy flags];
+  [flags addObject:flags2];
 
-  v12 = [(_EDCombinedMessageInfo *)self dates];
-  v13 = [v15 date];
-  [v12 addObject:v13];
+  dates = [(_EDCombinedMessageInfo *)self dates];
+  date = [messageCopy date];
+  [dates addObject:date];
 }
 
 - (id)combinedMailboxes
 {
-  v2 = [(_EDCombinedMessageInfo *)self mailboxes];
-  v3 = [v2 ef_notEmpty];
-  v4 = [v3 allObjects];
+  mailboxes = [(_EDCombinedMessageInfo *)self mailboxes];
+  ef_notEmpty = [mailboxes ef_notEmpty];
+  allObjects = [ef_notEmpty allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (id)combinedMessageFlags
 {
-  v3 = [(_EDCombinedMessageInfo *)self flags];
-  if ([v3 count])
+  flags = [(_EDCombinedMessageInfo *)self flags];
+  if ([flags count])
   {
     v4 = MEMORY[0x1E699AD30];
-    v5 = [(_EDCombinedMessageInfo *)self flags];
-    v6 = [v4 combinedFlagsForMessageListItemFlags:v5 forDisplay:1];
+    flags2 = [(_EDCombinedMessageInfo *)self flags];
+    v6 = [v4 combinedFlagsForMessageListItemFlags:flags2 forDisplay:1];
   }
 
   else
@@ -119,8 +119,8 @@
 
 - (id)combinedDate
 {
-  v2 = [(_EDCombinedMessageInfo *)self dates];
-  v3 = [v2 ef_reduce:&__block_literal_global_6];
+  dates = [(_EDCombinedMessageInfo *)self dates];
+  v3 = [dates ef_reduce:&__block_literal_global_6];
 
   return v3;
 }

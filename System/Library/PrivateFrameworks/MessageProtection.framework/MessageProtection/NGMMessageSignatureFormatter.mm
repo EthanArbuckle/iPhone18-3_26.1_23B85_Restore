@@ -1,22 +1,22 @@
 @interface NGMMessageSignatureFormatter
-- (NGMMessageSignatureFormatter)initWithDHOutput:(id)a3 prekeyPub:(id)a4 ephemeralPub:(id)a5 recipientPub:(id)a6 ciphertext:(id)a7;
+- (NGMMessageSignatureFormatter)initWithDHOutput:(id)output prekeyPub:(id)pub ephemeralPub:(id)ephemeralPub recipientPub:(id)recipientPub ciphertext:(id)ciphertext;
 @end
 
 @implementation NGMMessageSignatureFormatter
 
-- (NGMMessageSignatureFormatter)initWithDHOutput:(id)a3 prekeyPub:(id)a4 ephemeralPub:(id)a5 recipientPub:(id)a6 ciphertext:(id)a7
+- (NGMMessageSignatureFormatter)initWithDHOutput:(id)output prekeyPub:(id)pub ephemeralPub:(id)ephemeralPub recipientPub:(id)recipientPub ciphertext:(id)ciphertext
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [a3 mutableCopy];
-  [v16 appendData:v15];
+  ciphertextCopy = ciphertext;
+  recipientPubCopy = recipientPub;
+  ephemeralPubCopy = ephemeralPub;
+  pubCopy = pub;
+  v16 = [output mutableCopy];
+  [v16 appendData:pubCopy];
 
-  [v16 appendData:v14];
-  [v16 appendData:v13];
+  [v16 appendData:ephemeralPubCopy];
+  [v16 appendData:recipientPubCopy];
 
-  [v16 appendData:v12];
+  [v16 appendData:ciphertextCopy];
   v20.receiver = self;
   v20.super_class = NGMMessageSignatureFormatter;
   v17 = [(NGMMessageSignatureFormatter *)&v20 init];

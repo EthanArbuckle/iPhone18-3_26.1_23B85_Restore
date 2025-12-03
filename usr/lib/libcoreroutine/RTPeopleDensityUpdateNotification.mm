@@ -1,19 +1,19 @@
 @interface RTPeopleDensityUpdateNotification
-- (RTPeopleDensityUpdateNotification)initWithPeopleDensityBundles:(id)a3;
+- (RTPeopleDensityUpdateNotification)initWithPeopleDensityBundles:(id)bundles;
 @end
 
 @implementation RTPeopleDensityUpdateNotification
 
-- (RTPeopleDensityUpdateNotification)initWithPeopleDensityBundles:(id)a3
+- (RTPeopleDensityUpdateNotification)initWithPeopleDensityBundles:(id)bundles
 {
-  v5 = a3;
+  bundlesCopy = bundles;
   v9.receiver = self;
   v9.super_class = RTPeopleDensityUpdateNotification;
   v6 = [(RTNotification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_densityBundles, a3);
+    objc_storeStrong(&v6->_densityBundles, bundles);
   }
 
   return v7;

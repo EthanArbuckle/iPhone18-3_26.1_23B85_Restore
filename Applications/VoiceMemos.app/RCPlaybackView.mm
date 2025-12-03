@@ -1,18 +1,18 @@
 @interface RCPlaybackView
 - (CGSize)intrinsicContentSize;
 - (void)_classSpecificLayout;
-- (void)_updateAccessibilityStateForContentUnavailable:(BOOL)a3;
+- (void)_updateAccessibilityStateForContentUnavailable:(BOOL)unavailable;
 - (void)restyle;
-- (void)setRecordingViewState:(int64_t)a3;
+- (void)setRecordingViewState:(int64_t)state;
 - (void)updateColors;
 - (void)updateShuttleBarControlsColor;
 @end
 
 @implementation RCPlaybackView
 
-- (void)setRecordingViewState:(int64_t)a3
+- (void)setRecordingViewState:(int64_t)state
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if ((state & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
     v6 = v3;
     v7 = v4;
@@ -28,11 +28,11 @@
   v5 = v4 < 10.0 || v3 < 10.0;
   if (!v5 && [(RCRecordingView *)self didSetupSubviews])
   {
-    v6 = [(RCRecordingView *)self shuttleBar];
-    [(RCPlaybackView *)self bringSubviewToFront:v6];
+    shuttleBar = [(RCRecordingView *)self shuttleBar];
+    [(RCPlaybackView *)self bringSubviewToFront:shuttleBar];
 
-    v7 = [(RCRecordingView *)self progressOverlay];
-    [(RCPlaybackView *)self bringSubviewToFront:v7];
+    progressOverlay = [(RCRecordingView *)self progressOverlay];
+    [(RCPlaybackView *)self bringSubviewToFront:progressOverlay];
   }
 }
 
@@ -45,42 +45,42 @@
   return result;
 }
 
-- (void)_updateAccessibilityStateForContentUnavailable:(BOOL)a3
+- (void)_updateAccessibilityStateForContentUnavailable:(BOOL)unavailable
 {
-  v3 = a3;
+  unavailableCopy = unavailable;
   if ([(RCRecordingView *)self didSetupSubviews])
   {
-    v5 = [(RCRecordingView *)self currentTimeLabel];
-    [v5 setIsAccessibilityElement:v3 ^ 1];
+    currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+    [currentTimeLabel setIsAccessibilityElement:unavailableCopy ^ 1];
 
-    v6 = [(RCRecordingView *)self centerContentContainerView];
-    [v6 setAccessibilityElementsHidden:v3];
+    centerContentContainerView = [(RCRecordingView *)self centerContentContainerView];
+    [centerContentContainerView setAccessibilityElementsHidden:unavailableCopy];
 
-    v7 = [(RCRecordingView *)self shuttleBar];
-    [v7 setAccessibilityElementsHidden:v3];
+    shuttleBar = [(RCRecordingView *)self shuttleBar];
+    [shuttleBar setAccessibilityElementsHidden:unavailableCopy];
 
-    v8 = [(RCRecordingView *)self overviewWaveformContainerView];
-    [v8 setAccessibilityElementsHidden:v3];
+    overviewWaveformContainerView = [(RCRecordingView *)self overviewWaveformContainerView];
+    [overviewWaveformContainerView setAccessibilityElementsHidden:unavailableCopy];
   }
 }
 
 - (void)updateColors
 {
   v10 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v10 beginEndLabelsPlaybackColor];
-  v4 = [(RCRecordingView *)self overviewBeginTimeLabel];
-  [v4 setTextColor:v3];
+  beginEndLabelsPlaybackColor = [v10 beginEndLabelsPlaybackColor];
+  overviewBeginTimeLabel = [(RCRecordingView *)self overviewBeginTimeLabel];
+  [overviewBeginTimeLabel setTextColor:beginEndLabelsPlaybackColor];
 
-  v5 = [v10 beginEndLabelsPlaybackColor];
-  v6 = [(RCRecordingView *)self overviewEndTimeLabel];
-  [v6 setTextColor:v5];
+  beginEndLabelsPlaybackColor2 = [v10 beginEndLabelsPlaybackColor];
+  overviewEndTimeLabel = [(RCRecordingView *)self overviewEndTimeLabel];
+  [overviewEndTimeLabel setTextColor:beginEndLabelsPlaybackColor2];
 
-  v7 = [v10 playbackViewBackgroundColor];
-  [(RCPlaybackView *)self setBackgroundColor:v7];
+  playbackViewBackgroundColor = [v10 playbackViewBackgroundColor];
+  [(RCPlaybackView *)self setBackgroundColor:playbackViewBackgroundColor];
 
-  v8 = [v10 playbackCardTimeLabelFontColor];
-  v9 = [(RCRecordingView *)self currentTimeLabel];
-  [v9 setTextColor:v8];
+  playbackCardTimeLabelFontColor = [v10 playbackCardTimeLabelFontColor];
+  currentTimeLabel = [(RCRecordingView *)self currentTimeLabel];
+  [currentTimeLabel setTextColor:playbackCardTimeLabelFontColor];
 
   [(RCPlaybackView *)self updateShuttleBarControlsColor];
 }
@@ -88,9 +88,9 @@
 - (void)updateShuttleBarControlsColor
 {
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v5 transportControlsColorForPlaybackCard];
-  v4 = [(RCRecordingView *)self shuttleBar];
-  [v4 setControlsColor:v3];
+  transportControlsColorForPlaybackCard = [v5 transportControlsColorForPlaybackCard];
+  shuttleBar = [(RCRecordingView *)self shuttleBar];
+  [shuttleBar setControlsColor:transportControlsColorForPlaybackCard];
 }
 
 - (void)restyle

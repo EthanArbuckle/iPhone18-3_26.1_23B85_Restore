@@ -1,8 +1,8 @@
 @interface SLAccountNotificationPlugin
-- (BOOL)_accountExistsForAccountTypeIdentifier:(id)a3 inStore:(id)a4;
-- (BOOL)account:(id)a3 willChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (BOOL)_accountExistsForAccountTypeIdentifier:(id)identifier inStore:(id)store;
+- (BOOL)account:(id)account willChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 - (SLAccountNotificationPlugin)init;
-- (void)cleanupTwitterPushDestinationsForAccount:(id)a3 accountStore:(id)a4;
+- (void)cleanupTwitterPushDestinationsForAccount:(id)account accountStore:(id)store;
 @end
 
 @implementation SLAccountNotificationPlugin
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (BOOL)_accountExistsForAccountTypeIdentifier:(id)a3 inStore:(id)a4
+- (BOOL)_accountExistsForAccountTypeIdentifier:(id)identifier inStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x29EDB83C8] accountsWithAccountTypeIdentifierExist:v5];
+  identifierCopy = identifier;
+  storeCopy = store;
+  v7 = [MEMORY[0x29EDB83C8] accountsWithAccountTypeIdentifierExist:identifierCopy];
   if (v7 == 1)
   {
     v8 = 1;
@@ -46,11 +46,11 @@
     v12[1] = 3221225472;
     v12[2] = sub_29C91B030;
     v12[3] = &unk_29F333618;
-    v13 = v6;
+    v13 = storeCopy;
     v15 = &v16;
     v10 = v9;
     v14 = v10;
-    [v13 accountTypeWithIdentifier:v5 handler:v12];
+    [v13 accountTypeWithIdentifier:identifierCopy handler:v12];
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     v8 = *(v17 + 24);
 
@@ -60,32 +60,32 @@
   return v8 & 1;
 }
 
-- (void)cleanupTwitterPushDestinationsForAccount:(id)a3 accountStore:(id)a4
+- (void)cleanupTwitterPushDestinationsForAccount:(id)account accountStore:(id)store
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_alloc(MEMORY[0x29EDBFA58]);
   v6 = [v5 initWithEnvironmentName:*MEMORY[0x29EDBFA50]];
-  v7 = [MEMORY[0x29EDB8E48] mainRunLoop];
-  [v6 scheduleInRunLoop:v7];
+  mainRunLoop = [MEMORY[0x29EDB8E48] mainRunLoop];
+  [v6 scheduleInRunLoop:mainRunLoop];
 
-  v8 = [v6 publicToken];
-  v9 = [v8 base64Encoding];
+  publicToken = [v6 publicToken];
+  base64Encoding = [publicToken base64Encoding];
 
-  v22 = [v4 username];
+  username = [accountCopy username];
   _SLLog();
 
   v10 = MEMORY[0x29EDBA058];
-  v11 = [MEMORY[0x29EDB8E70] SLTwitterCleanupPushDestinationsURL];
-  v12 = [v10 requestWithURL:v11];
+  sLTwitterCleanupPushDestinationsURL = [MEMORY[0x29EDB8E70] SLTwitterCleanupPushDestinationsURL];
+  v12 = [v10 requestWithURL:sLTwitterCleanupPushDestinationsURL];
 
   [v12 setHTTPMethod:@"POST"];
   v13 = MEMORY[0x29EDBA0F8];
-  v14 = [v9 _urlEncodedString];
-  v15 = [v13 stringWithFormat:@"token=%@", v14];
+  _urlEncodedString = [base64Encoding _urlEncodedString];
+  v15 = [v13 stringWithFormat:@"token=%@", _urlEncodedString];
   v16 = [v15 dataUsingEncoding:4];
   [v12 setHTTPBody:v16];
 
-  v17 = [objc_alloc(MEMORY[0x29EDB83D0]) initWithAccount:v4];
+  v17 = [objc_alloc(MEMORY[0x29EDB83D0]) initWithAccount:accountCopy];
   v18 = v17;
   if (v17)
   {
@@ -96,26 +96,26 @@
     block[2] = sub_29C91B388;
     block[3] = &unk_29F333640;
     v24 = v19;
-    v25 = v4;
+    v25 = accountCopy;
     v21 = v19;
     dispatch_async(v20, block);
   }
 }
 
-- (BOOL)account:(id)a3 willChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (BOOL)account:(id)account willChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = v10;
-  if (a4 == 3)
+  storeCopy = store;
+  oldAccountCopy = oldAccount;
+  v11 = oldAccountCopy;
+  if (type == 3)
   {
-    v12 = [v10 accountType];
-    v13 = [v12 identifier];
-    v14 = [v13 isEqualToString:*MEMORY[0x29EDB82A8]];
+    accountType = [oldAccountCopy accountType];
+    identifier = [accountType identifier];
+    v14 = [identifier isEqualToString:*MEMORY[0x29EDB82A8]];
 
     if (v14)
     {
-      [(SLAccountNotificationPlugin *)self cleanupTwitterPushDestinationsForAccount:v11 accountStore:v9];
+      [(SLAccountNotificationPlugin *)self cleanupTwitterPushDestinationsForAccount:v11 accountStore:storeCopy];
     }
   }
 

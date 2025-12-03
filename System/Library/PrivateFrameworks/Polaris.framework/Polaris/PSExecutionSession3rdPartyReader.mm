@@ -1,23 +1,23 @@
 @interface PSExecutionSession3rdPartyReader
-+ (id)initSessionWithName:(id)a3;
-- (PSExecutionSession3rdPartyReader)initWithName:(id)a3;
-- (int)registerForContextUpdatesFromResourcesWithCategory:(unint64_t)a3;
++ (id)initSessionWithName:(id)name;
+- (PSExecutionSession3rdPartyReader)initWithName:(id)name;
+- (int)registerForContextUpdatesFromResourcesWithCategory:(unint64_t)category;
 @end
 
 @implementation PSExecutionSession3rdPartyReader
 
-+ (id)initSessionWithName:(id)a3
++ (id)initSessionWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[PSExecutionSession3rdPartyReader alloc] initWithName:v3];
+  nameCopy = name;
+  v4 = [[PSExecutionSession3rdPartyReader alloc] initWithName:nameCopy];
 
   return v4;
 }
 
-- (PSExecutionSession3rdPartyReader)initWithName:(id)a3
+- (PSExecutionSession3rdPartyReader)initWithName:(id)name
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = PSExecutionSession3rdPartyReader;
   v5 = [(PSExecutionSession3rdPartyReader *)&v24 init];
@@ -30,13 +30,13 @@ LABEL_10:
     return v6;
   }
 
-  [(PSExecutionSession3rdPartyReader *)v5 setName:v4];
+  [(PSExecutionSession3rdPartyReader *)v5 setName:nameCopy];
   if (ps_util_init_mach_time_factor() != 0.0)
   {
     ps_util_is_internal_build();
     v7 = objc_alloc(MEMORY[0x277D3E688]);
-    v8 = [(PSExecutionSession3rdPartyReader *)v6 name];
-    v9 = [v7 initForExecutionSession:v8];
+    name = [(PSExecutionSession3rdPartyReader *)v6 name];
+    v9 = [v7 initForExecutionSession:name];
     context = v6->_context;
     v6->_context = v9;
 
@@ -62,7 +62,7 @@ LABEL_10:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v4;
+      v26 = nameCopy;
       _os_log_impl(&dword_25EA3A000, v16, OS_LOG_TYPE_DEFAULT, "Created execution session with name %@", buf, 0xCu);
     }
 
@@ -73,7 +73,7 @@ LABEL_10:
   return [(PSExecutionSession3rdPartyReader *)v19 commitAddedGraphs:v20 removedGraphs:v21 error:v22, v23];
 }
 
-- (int)registerForContextUpdatesFromResourcesWithCategory:(unint64_t)a3
+- (int)registerForContextUpdatesFromResourcesWithCategory:(unint64_t)category
 {
   v10 = 0;
   v11 = &v10;
@@ -83,7 +83,7 @@ LABEL_10:
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:?];
   [(NSMutableSet *)resourceCategorySubscriptions addObject:v6];
 
-  if (a3 == 1)
+  if (category == 1)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;

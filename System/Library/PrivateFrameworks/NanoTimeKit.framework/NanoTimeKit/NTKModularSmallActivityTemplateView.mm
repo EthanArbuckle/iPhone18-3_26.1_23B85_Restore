@@ -1,31 +1,31 @@
 @interface NTKModularSmallActivityTemplateView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (NTKModularSmallActivityTemplateView)initWithFrame:(CGRect)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (NTKModularSmallActivityTemplateView)initWithFrame:(CGRect)frame;
 - (void)_configureContentSubviews;
 - (void)_layoutContentView;
 - (void)_setLayoutEmptyRings;
 - (void)_update;
-- (void)applyColorScheme:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setIsXL:(BOOL)a3;
+- (void)applyColorScheme:(id)scheme;
+- (void)setForegroundColor:(id)color;
+- (void)setIsXL:(BOOL)l;
 @end
 
 @implementation NTKModularSmallActivityTemplateView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v3 isCompatibleWithFamily:0])
+    if ([templateCopy isCompatibleWithFamily:0])
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = [v3 isCompatibleWithFamily:7];
+      v4 = [templateCopy isCompatibleWithFamily:7];
     }
   }
 
@@ -37,11 +37,11 @@
   return v4;
 }
 
-- (NTKModularSmallActivityTemplateView)initWithFrame:(CGRect)a3
+- (NTKModularSmallActivityTemplateView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NTKModularSmallActivityTemplateView;
-  v3 = [(NTKModuleView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKModuleView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -51,27 +51,27 @@
   return v4;
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = NTKModularSmallActivityTemplateView;
-  v4 = a3;
-  [(NTKModuleView *)&v5 setForegroundColor:v4];
-  [(NTKRingsAndDotsView *)self->_ringsView setForegroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(NTKModuleView *)&v5 setForegroundColor:colorCopy];
+  [(NTKRingsAndDotsView *)self->_ringsView setForegroundColor:colorCopy, v5.receiver, v5.super_class];
 }
 
 - (void)_configureContentSubviews
 {
-  v3 = [(NTKModuleView *)self device];
-  v4 = [(NTKComplicationModuleView *)self isXL];
-  if (v4)
+  device = [(NTKModuleView *)self device];
+  isXL = [(NTKComplicationModuleView *)self isXL];
+  if (isXL)
   {
-    v5 = ___LayoutConstantsExtraLarge_block_invoke_0(v4, v3);
+    v5 = ___LayoutConstantsExtraLarge_block_invoke_0(isXL, device);
   }
 
   else
   {
-    v5 = ___LayoutConstantsSmall_block_invoke(v4, v3);
+    v5 = ___LayoutConstantsSmall_block_invoke(isXL, device);
   }
 
   v9 = v5;
@@ -96,15 +96,15 @@
   self->_ringsView = v18;
 
   [(NTKRingsAndDotsView *)self->_ringsView setRingsFillFractions:self->_ringsFillFractions];
-  v20 = [(NTKModuleView *)self contentView];
-  [v20 addSubview:self->_ringsView];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView addSubview:self->_ringsView];
 }
 
-- (void)setIsXL:(BOOL)a3
+- (void)setIsXL:(BOOL)l
 {
   v4.receiver = self;
   v4.super_class = NTKModularSmallActivityTemplateView;
-  [(NTKComplicationModuleView *)&v4 setIsXL:a3];
+  [(NTKComplicationModuleView *)&v4 setIsXL:l];
   [(NTKModularSmallActivityTemplateView *)self _configureContentSubviews];
   [(NTKModularSmallActivityTemplateView *)self _layoutContentView];
   [(NTKModuleView *)self _updateColors];
@@ -113,8 +113,8 @@
 - (void)_layoutContentView
 {
   ringsView = self->_ringsView;
-  v3 = [(NTKModuleView *)self contentView];
-  MEMORY[0x2318D8E70]([v3 bounds]);
+  contentView = [(NTKModuleView *)self contentView];
+  MEMORY[0x2318D8E70]([contentView bounds]);
   [(NTKRingsAndDotsView *)ringsView setCenter:?];
 }
 
@@ -123,11 +123,11 @@
   v20.receiver = self;
   v20.super_class = NTKModularSmallActivityTemplateView;
   [(NTKModularTemplateView *)&v20 _update];
-  v3 = [(NTKModularTemplateView *)self complicationTemplate];
-  if (![v3 dotsAreHidden])
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
+  if (![complicationTemplate dotsAreHidden])
   {
     v4 = MEMORY[0x277CCABB0];
-    [v3 movePercentComplete];
+    [complicationTemplate movePercentComplete];
     if (v5 < 0.00000011920929)
     {
       v5 = 0.00000011920929;
@@ -143,7 +143,7 @@
     }
 
     v9 = MEMORY[0x277CCABB0];
-    [v3 exercisePercentComplete];
+    [complicationTemplate exercisePercentComplete];
     if (v10 < 0.00000011920929)
     {
       v10 = 0.00000011920929;
@@ -165,7 +165,7 @@
     }
 
     v15 = MEMORY[0x277CCABB0];
-    [v3 standPercentComplete];
+    [complicationTemplate standPercentComplete];
     if (v16 < 0.00000011920929)
     {
       v16 = 0.00000011920929;
@@ -211,16 +211,16 @@ LABEL_20:
   [(NTKRingsAndDotsView *)ringsView setRingsFillFractions:v7];
 }
 
-- (void)applyColorScheme:(id)a3
+- (void)applyColorScheme:(id)scheme
 {
   v12[3] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = NTKModularSmallActivityTemplateView;
-  v4 = a3;
-  [(NTKModuleView *)&v11 applyColorScheme:v4];
-  v5 = [v4 containsOverrideFaceColor];
+  schemeCopy = scheme;
+  [(NTKModuleView *)&v11 applyColorScheme:schemeCopy];
+  containsOverrideFaceColor = [schemeCopy containsOverrideFaceColor];
 
-  if (v5)
+  if (containsOverrideFaceColor)
   {
     ringsView = self->_ringsView;
     v7 = NTKMoveNonGradientTextColor();

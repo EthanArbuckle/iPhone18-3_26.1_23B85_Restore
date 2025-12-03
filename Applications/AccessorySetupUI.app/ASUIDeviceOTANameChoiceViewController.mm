@@ -1,5 +1,5 @@
 @interface ASUIDeviceOTANameChoiceViewController
-- (_TtC16AccessorySetupUI37ASUIDeviceOTANameChoiceViewController)initWithContentView:(id)a3;
+- (_TtC16AccessorySetupUI37ASUIDeviceOTANameChoiceViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -14,7 +14,7 @@
   [v2 setDismissalType:{3, v3.receiver, v3.super_class}];
 }
 
-- (_TtC16AccessorySetupUI37ASUIDeviceOTANameChoiceViewController)initWithContentView:(id)a3
+- (_TtC16AccessorySetupUI37ASUIDeviceOTANameChoiceViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI37ASUIDeviceOTANameChoiceViewController_type] = 2;
@@ -30,7 +30,7 @@
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI37ASUIDeviceOTANameChoiceViewController_deviceOTANameChoices] = _swiftEmptyArrayStorage;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  return [(ASUIDeviceOTANameChoiceViewController *)&v8 initWithContentView:a3];
+  return [(ASUIDeviceOTANameChoiceViewController *)&v8 initWithContentView:view];
 }
 
 @end

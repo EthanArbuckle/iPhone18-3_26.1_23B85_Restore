@@ -1,17 +1,17 @@
 @interface CRLBadgeView_i
-- (CRLBadgeView_i)initWithFrame:(CGRect)a3;
-- (id)tintColorForSystemImageNamed:(id)a3;
-- (void)setFinalImageWithName:(id)a3 legacyName:(id)a4 accessibilityName:(id)a5 scalesImageToFit:(BOOL)a6;
+- (CRLBadgeView_i)initWithFrame:(CGRect)frame;
+- (id)tintColorForSystemImageNamed:(id)named;
+- (void)setFinalImageWithName:(id)name legacyName:(id)legacyName accessibilityName:(id)accessibilityName scalesImageToFit:(BOOL)fit;
 @end
 
 @implementation CRLBadgeView_i
 
-- (CRLBadgeView_i)initWithFrame:(CGRect)a3
+- (CRLBadgeView_i)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = CRLBadgeView_i;
   v7 = [(CRLBadgeView_i *)&v13 initWithFrame:?];
@@ -24,19 +24,19 @@
     imageView = v7->_imageView;
     v7->_imageView = v9;
 
-    v11 = [(CRLBadgeView_i *)v7 imageView];
-    [(CRLBadgeView_i *)v7 addSubview:v11];
+    imageView = [(CRLBadgeView_i *)v7 imageView];
+    [(CRLBadgeView_i *)v7 addSubview:imageView];
   }
 
   return v7;
 }
 
-- (void)setFinalImageWithName:(id)a3 legacyName:(id)a4 accessibilityName:(id)a5 scalesImageToFit:(BOOL)a6
+- (void)setFinalImageWithName:(id)name legacyName:(id)legacyName accessibilityName:(id)accessibilityName scalesImageToFit:(BOOL)fit
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!a6)
+  nameCopy = name;
+  legacyNameCopy = legacyName;
+  accessibilityNameCopy = accessibilityName;
+  if (!fit)
   {
     v13 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -65,87 +65,87 @@
     v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLApplication/StatusHUDs/CRLBadgeView_i.m"];
   }
 
-  v18 = [v11 copy];
+  v18 = [legacyNameCopy copy];
   [(CRLBadgeView_i *)self setLegacyImageName:v18];
 
-  v19 = [v10 copy];
+  v19 = [nameCopy copy];
   [(CRLBadgeView_i *)self setFinalImageName:v19];
 
-  v20 = [(CRLBadgeView_i *)self finalImageName];
+  finalImageName = [(CRLBadgeView_i *)self finalImageName];
 
-  if (v20)
+  if (finalImageName)
   {
-    v21 = [(CRLBadgeView_i *)self finalImageName];
-    v22 = [UIImage imageNamed:v21];
+    finalImageName2 = [(CRLBadgeView_i *)self finalImageName];
+    v22 = [UIImage imageNamed:finalImageName2];
 
     if (v22)
     {
       goto LABEL_16;
     }
 
-    v23 = [(CRLBadgeView_i *)self finalImageName];
-    v22 = [UIImage systemImageNamed:v23];
+    finalImageName3 = [(CRLBadgeView_i *)self finalImageName];
+    v22 = [UIImage systemImageNamed:finalImageName3];
   }
 
   else
   {
-    v23 = +[NSBundle mainBundle];
-    v24 = [v23 infoDictionary];
-    v25 = [v24 objectForKeyedSubscript:@"CFBundleIcons"];
+    finalImageName3 = +[NSBundle mainBundle];
+    infoDictionary = [finalImageName3 infoDictionary];
+    v25 = [infoDictionary objectForKeyedSubscript:@"CFBundleIcons"];
     [v25 objectForKeyedSubscript:@"CFBundlePrimaryIcon"];
-    v41 = v12;
-    v26 = v11;
-    v28 = v27 = v10;
+    v41 = accessibilityNameCopy;
+    v26 = legacyNameCopy;
+    v28 = v27 = nameCopy;
     v29 = [v28 objectForKeyedSubscript:@"CFBundleIconFiles"];
-    v30 = [v29 lastObject];
-    v22 = [UIImage imageNamed:v30];
+    lastObject = [v29 lastObject];
+    v22 = [UIImage imageNamed:lastObject];
 
-    v10 = v27;
-    v11 = v26;
-    v12 = v41;
+    nameCopy = v27;
+    legacyNameCopy = v26;
+    accessibilityNameCopy = v41;
   }
 
 LABEL_16:
-  v31 = [(CRLBadgeView_i *)self imageView];
-  [v31 setImage:v22];
+  imageView = [(CRLBadgeView_i *)self imageView];
+  [imageView setImage:v22];
 
-  v32 = [(CRLBadgeView_i *)self imageView];
-  [v32 setContentMode:4];
+  imageView2 = [(CRLBadgeView_i *)self imageView];
+  [imageView2 setContentMode:4];
 
-  v33 = [(CRLBadgeView_i *)self finalImageName];
+  finalImageName4 = [(CRLBadgeView_i *)self finalImageName];
 
-  if (v33)
+  if (finalImageName4)
   {
-    v34 = [(CRLBadgeView_i *)self finalImageName];
-    v35 = [(CRLBadgeView_i *)self tintColorForSystemImageNamed:v34];
-    v36 = [(CRLBadgeView_i *)self imageView];
-    [v36 setTintColor:v35];
+    finalImageName5 = [(CRLBadgeView_i *)self finalImageName];
+    layer2 = [(CRLBadgeView_i *)self tintColorForSystemImageNamed:finalImageName5];
+    imageView3 = [(CRLBadgeView_i *)self imageView];
+    [imageView3 setTintColor:layer2];
   }
 
   else
   {
-    v37 = [(CRLBadgeView_i *)self imageView];
-    [v37 setContentMode:1];
+    imageView4 = [(CRLBadgeView_i *)self imageView];
+    [imageView4 setContentMode:1];
 
-    v38 = [(CRLBadgeView_i *)self imageView];
-    v39 = [v38 layer];
-    [v39 setCornerRadius:4.86];
+    imageView5 = [(CRLBadgeView_i *)self imageView];
+    layer = [imageView5 layer];
+    [layer setCornerRadius:4.86];
 
-    v34 = [(CRLBadgeView_i *)self imageView];
-    v35 = [v34 layer];
-    [v35 setMasksToBounds:1];
+    finalImageName5 = [(CRLBadgeView_i *)self imageView];
+    layer2 = [finalImageName5 layer];
+    [layer2 setMasksToBounds:1];
   }
 
-  v40 = [(CRLBadgeView_i *)self imageView];
-  [v40 setAccessibilityLabel:v12];
+  imageView6 = [(CRLBadgeView_i *)self imageView];
+  [imageView6 setAccessibilityLabel:accessibilityNameCopy];
 
   [(CRLBadgeView_i *)self setNeedsDisplay];
 }
 
-- (id)tintColorForSystemImageNamed:(id)a3
+- (id)tintColorForSystemImageNamed:(id)named
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"exclamationmark.circle"])
+  namedCopy = named;
+  if ([namedCopy isEqualToString:@"exclamationmark.circle"])
   {
     v4 = +[UIColor systemRedColor];
 LABEL_5:
@@ -153,7 +153,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"checkmark.circle"])
+  if ([namedCopy isEqualToString:@"checkmark.circle"])
   {
     v4 = +[UIColor systemGreenColor];
     goto LABEL_5;

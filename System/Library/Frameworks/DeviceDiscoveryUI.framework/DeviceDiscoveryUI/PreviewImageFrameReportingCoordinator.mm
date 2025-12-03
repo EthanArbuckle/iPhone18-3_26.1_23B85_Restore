@@ -1,14 +1,14 @@
 @interface PreviewImageFrameReportingCoordinator
 - (_TtC17DeviceDiscoveryUIP33_1E333BE9CDEDD9CAE6FF0E7324E8D41C37PreviewImageFrameReportingCoordinator)init;
-- (void)didUpdateImageViewFrame:(CGRect)a3;
+- (void)didUpdateImageViewFrame:(CGRect)frame;
 @end
 
 @implementation PreviewImageFrameReportingCoordinator
 
-- (void)didUpdateImageViewFrame:(CGRect)a3
+- (void)didUpdateImageViewFrame:(CGRect)frame
 {
-  *(&self->super.isa + OBJC_IVAR____TtC17DeviceDiscoveryUIP33_1E333BE9CDEDD9CAE6FF0E7324E8D41C37PreviewImageFrameReportingCoordinator_imageViewFrame) = a3;
-  v3 = self;
+  *(&self->super.isa + OBJC_IVAR____TtC17DeviceDiscoveryUIP33_1E333BE9CDEDD9CAE6FF0E7324E8D41C37PreviewImageFrameReportingCoordinator_imageViewFrame) = frame;
+  selfCopy = self;
   sub_2380E6084();
 }
 

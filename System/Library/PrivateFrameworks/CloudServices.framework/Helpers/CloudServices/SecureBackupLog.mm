@@ -1,48 +1,48 @@
 @interface SecureBackupLog
-- (BOOL)isEqual:(id)a3;
-- (SecureBackupLog)initWithActivities:(id)a3 allComplete:(BOOL)a4 totalOperations:(unint64_t)a5;
-- (SecureBackupLog)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateAllOperationsWithBlock:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SecureBackupLog)initWithActivities:(id)activities allComplete:(BOOL)complete totalOperations:(unint64_t)operations;
+- (SecureBackupLog)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateAllOperationsWithBlock:(id)block;
 @end
 
 @implementation SecureBackupLog
 
-- (SecureBackupLog)initWithActivities:(id)a3 allComplete:(BOOL)a4 totalOperations:(unint64_t)a5
+- (SecureBackupLog)initWithActivities:(id)activities allComplete:(BOOL)complete totalOperations:(unint64_t)operations
 {
-  v9 = a3;
+  activitiesCopy = activities;
   v14.receiver = self;
   v14.super_class = SecureBackupLog;
   v10 = [(SecureBackupLog *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_activities, a3);
-    v11->_allActivitiesComplete = a4;
-    v11->_totalOperations = a5;
+    objc_storeStrong(&v10->_activities, activities);
+    v11->_allActivitiesComplete = complete;
+    v11->_totalOperations = operations;
     v12 = v11;
   }
 
   return v11;
 }
 
-- (SecureBackupLog)initWithCoder:(id)a3
+- (SecureBackupLog)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SecureBackupLog;
   v5 = [(SecureBackupLog *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allActivitiesComplete"];
-    v7 = [v6 BOOLValue];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allActivitiesComplete"];
+    bOOLValue = [v6 BOOLValue];
 
-    v5->_allActivitiesComplete = v7;
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalOperations"];
-    v9 = [v8 unsignedIntegerValue];
+    v5->_allActivitiesComplete = bOOLValue;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalOperations"];
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-    v5->_totalOperations = v9;
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"activities"];
+    v5->_totalOperations = unsignedIntegerValue;
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"activities"];
     if (v10)
     {
       v11 = objc_opt_self();
@@ -62,28 +62,28 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   allActivitiesComplete = self->_allActivitiesComplete;
-  v7 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithBool:allActivitiesComplete];
-  [v7 encodeObject:v5 forKey:@"allActivitiesComplete"];
+  [coderCopy encodeObject:v5 forKey:@"allActivitiesComplete"];
 
   v6 = [NSNumber numberWithUnsignedInteger:self->_totalOperations];
-  [v7 encodeObject:v6 forKey:@"totalOperations"];
+  [coderCopy encodeObject:v6 forKey:@"totalOperations"];
 
-  [v7 encodeObject:self->_activities forKey:@"activities"];
+  [coderCopy encodeObject:self->_activities forKey:@"activities"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(SecureBackupLog *)self allActivitiesComplete];
-  if (v5 == [v4 allActivitiesComplete] && (v6 = -[SecureBackupLog totalOperations](self, "totalOperations"), v6 == objc_msgSend(v4, "totalOperations")))
+  equalCopy = equal;
+  allActivitiesComplete = [(SecureBackupLog *)self allActivitiesComplete];
+  if (allActivitiesComplete == [equalCopy allActivitiesComplete] && (v6 = -[SecureBackupLog totalOperations](self, "totalOperations"), v6 == objc_msgSend(equalCopy, "totalOperations")))
   {
-    v7 = [(SecureBackupLog *)self activities];
-    v8 = [v4 activities];
-    if ([v7 isEqual:v8])
+    activities = [(SecureBackupLog *)self activities];
+    activities2 = [equalCopy activities];
+    if ([activities isEqual:activities2])
     {
 
       v9 = 1;
@@ -91,9 +91,9 @@
 
     else
     {
-      v11 = [(SecureBackupLog *)self activities];
-      v12 = [v4 activities];
-      v9 = v11 == v12;
+      activities3 = [(SecureBackupLog *)self activities];
+      activities4 = [equalCopy activities];
+      v9 = activities3 == activities4;
     }
   }
 
@@ -105,17 +105,17 @@
   return v9;
 }
 
-- (void)enumerateAllOperationsWithBlock:(id)a3
+- (void)enumerateAllOperationsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SecureBackupLog *)self activities];
+  blockCopy = block;
+  activities = [(SecureBackupLog *)self activities];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100033CD8;
   v7[3] = &unk_100075BF8;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [activities enumerateObjectsUsingBlock:v7];
 }
 
 @end

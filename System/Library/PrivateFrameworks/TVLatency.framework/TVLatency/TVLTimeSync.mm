@@ -1,23 +1,23 @@
 @interface TVLTimeSync
 + (void)invalidate;
-- (TVLTimeSync)initWithRemoteIPv4:(id)a3 IPv6:(id)a4 interface:(id)a5;
-- (unint64_t)convertToDomainTimeFromHostTime:(unint64_t)a3 grandmasterIdentity:(unint64_t *)a4;
-- (unint64_t)convertToHostTimeFromDomainTime:(unint64_t)a3 grandmasterIdentity:(unint64_t *)a4;
+- (TVLTimeSync)initWithRemoteIPv4:(id)pv4 IPv6:(id)pv6 interface:(id)interface;
+- (unint64_t)convertToDomainTimeFromHostTime:(unint64_t)time grandmasterIdentity:(unint64_t *)identity;
+- (unint64_t)convertToHostTimeFromDomainTime:(unint64_t)time grandmasterIdentity:(unint64_t *)identity;
 - (void)_clearWaitForPTPClock;
-- (void)_startPTPWithSession:(id)a3 completionHandler:(id)a4;
-- (void)didChangeClockMasterForClock:(id)a3;
-- (void)didChangeLockStateTo:(int)a3 forClock:(id)a4;
+- (void)_startPTPWithSession:(id)session completionHandler:(id)handler;
+- (void)didChangeClockMasterForClock:(id)clock;
+- (void)didChangeLockStateTo:(int)to forClock:(id)clock;
 - (void)invalidate;
-- (void)negotiateGrandmasterIdentityAttempt:(int64_t)a3 withCompletion:(id)a4;
+- (void)negotiateGrandmasterIdentityAttempt:(int64_t)attempt withCompletion:(id)completion;
 @end
 
 @implementation TVLTimeSync
 
-- (void)_startPTPWithSession:(id)a3 completionHandler:(id)a4
+- (void)_startPTPWithSession:(id)session completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_session, a3);
+  sessionCopy = session;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_session, session);
   objc_initWeak(&location, self);
   session = self->_session;
   v14[0] = MEMORY[0x277D85DD0];
@@ -32,8 +32,8 @@
   v12[2] = __54__TVLTimeSync__startPTPWithSession_completionHandler___block_invoke_16;
   v12[3] = &unk_279D6BC28;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
+  v13 = handlerCopy;
+  v11 = handlerCopy;
   dispatch_async(v10, v12);
 
   objc_destroyWeak(&v15);
@@ -429,7 +429,7 @@ LABEL_23:
 
 + (void)invalidate
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   [_timeSync invalidate];
   v2 = _timeSync;
@@ -438,20 +438,20 @@ LABEL_23:
   objc_sync_exit(obj);
 }
 
-- (TVLTimeSync)initWithRemoteIPv4:(id)a3 IPv6:(id)a4 interface:(id)a5
+- (TVLTimeSync)initWithRemoteIPv4:(id)pv4 IPv6:(id)pv6 interface:(id)interface
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pv4Copy = pv4;
+  pv6Copy = pv6;
+  interfaceCopy = interface;
   v21.receiver = self;
   v21.super_class = TVLTimeSync;
   v11 = [(TVLTimeSync *)&v21 init];
   if (v11)
   {
-    if (v8)
+    if (pv4Copy)
     {
-      v12 = _IPv4ToHostByteOrder(v8);
+      v12 = _IPv4ToHostByteOrder(pv4Copy);
     }
 
     else
@@ -460,9 +460,9 @@ LABEL_23:
     }
 
     [(TVLTimeSync *)v11 setIPv4:v12];
-    if (v9)
+    if (pv6Copy)
     {
-      v13 = _IPv6ToHostByteOrder(v9);
+      v13 = _IPv6ToHostByteOrder(pv6Copy);
       [(TVLTimeSync *)v11 setIPv6:v13];
     }
 
@@ -471,7 +471,7 @@ LABEL_23:
       [(TVLTimeSync *)v11 setIPv6:0];
     }
 
-    [(TVLTimeSync *)v11 setNetworkInterfaceName:v10];
+    [(TVLTimeSync *)v11 setNetworkInterfaceName:interfaceCopy];
     if (_TVLLogDefault_onceToken != -1)
     {
       __54__TVLTimeSync__startPTPWithSession_completionHandler___block_invoke_3_cold_1();
@@ -481,8 +481,8 @@ LABEL_23:
     if (os_log_type_enabled(_TVLLogDefault_log, OS_LOG_TYPE_DEFAULT))
     {
       v15 = v14;
-      v16 = [(TVLTimeSync *)v11 IPv6];
-      if (v16)
+      iPv6 = [(TVLTimeSync *)v11 IPv6];
+      if (iPv6)
       {
         if ([(TVLTimeSync *)v11 IPv4])
         {
@@ -500,11 +500,11 @@ LABEL_23:
         v17 = "4";
       }
 
-      v18 = [(TVLTimeSync *)v11 networkInterfaceName];
+      networkInterfaceName = [(TVLTimeSync *)v11 networkInterfaceName];
       *buf = 136315394;
       v23 = v17;
       v24 = 2114;
-      v25 = v18;
+      v25 = networkInterfaceName;
       _os_log_impl(&dword_26CD78000, v15, OS_LOG_TYPE_DEFAULT, "Initializing PTP (IPv%s) Clock using network interface: %{public}@", buf, 0x16u);
     }
   }
@@ -515,40 +515,40 @@ LABEL_23:
 
 - (void)invalidate
 {
-  v3 = [(TVLTimeSync *)self clock];
+  clock = [(TVLTimeSync *)self clock];
 
-  if (v3)
+  if (clock)
   {
-    v4 = [(TVLTimeSync *)self clock];
-    v5 = [v4 clockIdentifier];
+    clock2 = [(TVLTimeSync *)self clock];
+    clockIdentifier = [clock2 clockIdentifier];
 
-    v6 = [(TVLTimeSync *)self clock];
-    v7 = [(TVLTimeSync *)self networkInterfaceName];
-    v8 = [(TVLTimeSync *)self IPv6];
-    [v6 removeUnicastUDPv6EtEPortFromInterfaceNamed:v7 withDestinationAddress:objc_msgSend(v8 error:{"bytes"), 0}];
+    clock3 = [(TVLTimeSync *)self clock];
+    networkInterfaceName = [(TVLTimeSync *)self networkInterfaceName];
+    iPv6 = [(TVLTimeSync *)self IPv6];
+    [clock3 removeUnicastUDPv6EtEPortFromInterfaceNamed:networkInterfaceName withDestinationAddress:objc_msgSend(iPv6 error:{"bytes"), 0}];
 
-    v9 = [(TVLTimeSync *)self clock];
-    v10 = [(TVLTimeSync *)self networkInterfaceName];
-    [v9 removeUnicastUDPv4EtEPortFromInterfaceNamed:v10 withDestinationAddress:-[TVLTimeSync IPv4](self error:{"IPv4"), 0}];
+    clock4 = [(TVLTimeSync *)self clock];
+    networkInterfaceName2 = [(TVLTimeSync *)self networkInterfaceName];
+    [clock4 removeUnicastUDPv4EtEPortFromInterfaceNamed:networkInterfaceName2 withDestinationAddress:-[TVLTimeSync IPv4](self error:{"IPv4"), 0}];
 
-    v11 = [(TVLTimeSync *)self clock];
-    [v11 removeClient:self];
+    clock5 = [(TVLTimeSync *)self clock];
+    [clock5 removeClient:self];
 
     [(TVLTimeSync *)self setClock:0];
-    v12 = [MEMORY[0x277D714E0] sharedgPTPManager];
-    [v12 removeDomainWithIdentifier:v5 error:0];
+    mEMORY[0x277D714E0] = [MEMORY[0x277D714E0] sharedgPTPManager];
+    [mEMORY[0x277D714E0] removeDomainWithIdentifier:clockIdentifier error:0];
   }
 }
 
-- (void)negotiateGrandmasterIdentityAttempt:(int64_t)a3 withCompletion:(id)a4
+- (void)negotiateGrandmasterIdentityAttempt:(int64_t)attempt withCompletion:(id)completion
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3 < 21)
+  completionCopy = completion;
+  if (attempt < 21)
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(TVLTimeSync *)self clock];
-    v10 = [v8 numberWithUnsignedLongLong:{objc_msgSend(v9, "grandmasterIdentity")}];
+    clock = [(TVLTimeSync *)self clock];
+    v10 = [v8 numberWithUnsignedLongLong:{objc_msgSend(clock, "grandmasterIdentity")}];
 
     v31[0] = @"MESSAGE";
     v31[1] = @"OPTIONS";
@@ -557,8 +557,8 @@ LABEL_23:
     v29[1] = @"LOCKED";
     v30[0] = v10;
     v11 = MEMORY[0x277CCABB0];
-    v12 = [(TVLTimeSync *)self clock];
-    v13 = [v11 numberWithInt:{objc_msgSend(v12, "lockState") == 2}];
+    clock2 = [(TVLTimeSync *)self clock];
+    v13 = [v11 numberWithInt:{objc_msgSend(clock2, "lockState") == 2}];
     v30[1] = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
     v32[1] = v14;
@@ -575,7 +575,7 @@ LABEL_23:
       *buf = 138543618;
       v26 = v15;
       v27 = 2048;
-      v28 = a3;
+      attemptCopy = attempt;
       _os_log_impl(&dword_26CD78000, v16, OS_LOG_TYPE_DEFAULT, "Outgoing Grandmaster Sync Request: %{public}@ | Attempt: %li", buf, 0x16u);
     }
 
@@ -588,9 +588,9 @@ LABEL_23:
     objc_copyWeak(v24, buf);
     v18 = v15;
     v21 = v18;
-    v22 = self;
-    v23 = v6;
-    v24[1] = a3;
+    selfCopy = self;
+    v23 = completionCopy;
+    v24[1] = attempt;
     [(CUMessageSession *)session sendRequestID:@"com.apple.tvlatency.timesync" options:0 request:v18 responseHandler:v20];
 
     objc_destroyWeak(v24);
@@ -611,7 +611,7 @@ LABEL_23:
     }
 
     +[TVLTimeSync invalidate];
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -739,12 +739,12 @@ void __66__TVLTimeSync_negotiateGrandmasterIdentityAttempt_withCompletion___bloc
   [WeakRetained negotiateGrandmasterIdentityAttempt:*(a1 + 48) + 1 withCompletion:*(a1 + 32)];
 }
 
-- (unint64_t)convertToHostTimeFromDomainTime:(unint64_t)a3 grandmasterIdentity:(unint64_t *)a4
+- (unint64_t)convertToHostTimeFromDomainTime:(unint64_t)time grandmasterIdentity:(unint64_t *)identity
 {
   v15 = *MEMORY[0x277D85DE8];
   v12 = 0;
-  v6 = [(TVLTimeSync *)self clock];
-  v7 = [v6 convertFromDomainToMachAbsoluteTime:a3 grandmasterUsed:a4 portNumber:&v12];
+  clock = [(TVLTimeSync *)self clock];
+  v7 = [clock convertFromDomainToMachAbsoluteTime:time grandmasterUsed:identity portNumber:&v12];
 
   if (_TVLLogDefault_onceToken != -1)
   {
@@ -754,7 +754,7 @@ void __66__TVLTimeSync_negotiateGrandmasterIdentityAttempt_withCompletion___bloc
   v8 = _TVLLogDefault_log;
   if (os_log_type_enabled(_TVLLogDefault_log, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = *a4;
+    v9 = *identity;
     *buf = 134217984;
     v14 = v9;
     _os_log_impl(&dword_26CD78000, v8, OS_LOG_TYPE_DEFAULT, "Converted Domain Time -> Host Time using GM: %llu", buf, 0xCu);
@@ -764,12 +764,12 @@ void __66__TVLTimeSync_negotiateGrandmasterIdentityAttempt_withCompletion___bloc
   return v7;
 }
 
-- (unint64_t)convertToDomainTimeFromHostTime:(unint64_t)a3 grandmasterIdentity:(unint64_t *)a4
+- (unint64_t)convertToDomainTimeFromHostTime:(unint64_t)time grandmasterIdentity:(unint64_t *)identity
 {
   v15 = *MEMORY[0x277D85DE8];
   v12 = 0;
-  v6 = [(TVLTimeSync *)self clock];
-  v7 = [v6 convertFromMachAbsoluteToDomainTime:a3 grandmasterUsed:a4 portNumber:&v12];
+  clock = [(TVLTimeSync *)self clock];
+  v7 = [clock convertFromMachAbsoluteToDomainTime:time grandmasterUsed:identity portNumber:&v12];
 
   if (_TVLLogDefault_onceToken != -1)
   {
@@ -779,7 +779,7 @@ void __66__TVLTimeSync_negotiateGrandmasterIdentityAttempt_withCompletion___bloc
   v8 = _TVLLogDefault_log;
   if (os_log_type_enabled(_TVLLogDefault_log, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = *a4;
+    v9 = *identity;
     *buf = 134217984;
     v14 = v9;
     _os_log_impl(&dword_26CD78000, v8, OS_LOG_TYPE_DEFAULT, "Converted Host Time -> Domain Time using GM: %llu", buf, 0xCu);
@@ -793,12 +793,12 @@ void __66__TVLTimeSync_negotiateGrandmasterIdentityAttempt_withCompletion___bloc
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(TVLTimeSync *)obj waitForPTPLock];
+  waitForPTPLock = [(TVLTimeSync *)obj waitForPTPLock];
 
-  if (v2)
+  if (waitForPTPLock)
   {
-    v3 = [(TVLTimeSync *)obj waitForPTPLock];
-    dispatch_semaphore_signal(v3);
+    waitForPTPLock2 = [(TVLTimeSync *)obj waitForPTPLock];
+    dispatch_semaphore_signal(waitForPTPLock2);
 
     [(TVLTimeSync *)obj setWaitForPTPLock:0];
   }
@@ -806,10 +806,10 @@ void __66__TVLTimeSync_negotiateGrandmasterIdentityAttempt_withCompletion___bloc
   objc_sync_exit(obj);
 }
 
-- (void)didChangeLockStateTo:(int)a3 forClock:(id)a4
+- (void)didChangeLockStateTo:(int)to forClock:(id)clock
 {
   v10 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  clockCopy = clock;
   if (_TVLLogDefault_onceToken != -1)
   {
     __54__TVLTimeSync__startPTPWithSession_completionHandler___block_invoke_cold_1();
@@ -819,13 +819,13 @@ void __66__TVLTimeSync_negotiateGrandmasterIdentityAttempt_withCompletion___bloc
   if (os_log_type_enabled(_TVLLogDefault_log, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = a3;
+    v9[1] = to;
     _os_log_impl(&dword_26CD78000, v7, OS_LOG_TYPE_DEFAULT, "PTP clock lock state is now %i", v9, 8u);
   }
 
-  if (a3)
+  if (to)
   {
-    if (a3 == 2)
+    if (to == 2)
     {
       [(TVLTimeSync *)self _clearWaitForPTPClock];
     }
@@ -839,10 +839,10 @@ void __66__TVLTimeSync_negotiateGrandmasterIdentityAttempt_withCompletion___bloc
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didChangeClockMasterForClock:(id)a3
+- (void)didChangeClockMasterForClock:(id)clock
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  clockCopy = clock;
   if (_TVLLogDefault_onceToken != -1)
   {
     __54__TVLTimeSync__startPTPWithSession_completionHandler___block_invoke_cold_1();
@@ -852,9 +852,9 @@ void __66__TVLTimeSync_negotiateGrandmasterIdentityAttempt_withCompletion___bloc
   if (os_log_type_enabled(_TVLLogDefault_log, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [v3 clockName];
+    clockName = [clockCopy clockName];
     v8 = 138543362;
-    v9 = v6;
+    v9 = clockName;
     _os_log_impl(&dword_26CD78000, v5, OS_LOG_TYPE_DEFAULT, "Changed Clock Master for Clock %{public}@\n", &v8, 0xCu);
   }
 

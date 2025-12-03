@@ -1,41 +1,41 @@
 @interface AKMasterToken
-+ (id)tokenWithExternalizedVersion:(id)a3 lifetime:(id)a4;
-+ (id)tokenWithExternalizedVersionString:(id)a3;
++ (id)tokenWithExternalizedVersion:(id)version lifetime:(id)lifetime;
++ (id)tokenWithExternalizedVersionString:(id)string;
 - (AKMasterToken)init;
-- (AKMasterToken)initWithAppleID:(id)a3 altDSID:(id)a4;
-- (BOOL)updateWithHTTPURLResponse:(id)a3;
+- (AKMasterToken)initWithAppleID:(id)d altDSID:(id)iD;
+- (BOOL)updateWithHTTPURLResponse:(id)response;
 - (NSData)externalizedVersion;
 - (NSString)externalizedVersionString;
-- (void)_setEncryptedSessionKey:(id)a3;
-- (void)_setSessionKey:(id)a3;
-- (void)setStringValue:(id)a3;
+- (void)_setEncryptedSessionKey:(id)key;
+- (void)_setSessionKey:(id)key;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation AKMasterToken
 
-+ (id)tokenWithExternalizedVersionString:(id)a3
++ (id)tokenWithExternalizedVersionString:(id)string
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v5 = [location[0] dataUsingEncoding:1];
-  v4 = [v7 tokenWithExternalizedVersion:v5 lifetime:0];
+  v4 = [selfCopy tokenWithExternalizedVersion:v5 lifetime:0];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-+ (id)tokenWithExternalizedVersion:(id)a3 lifetime:(id)a4
++ (id)tokenWithExternalizedVersion:(id)version lifetime:(id)lifetime
 {
   v26 = *MEMORY[0x1E69E9840];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, lifetime);
   v21 = 0;
   v19 = 0;
   v13 = [MEMORY[0x1E696AE40] propertyListWithData:location[0] options:0 format:0 error:&v19];
@@ -88,34 +88,34 @@
   return v9;
 }
 
-- (BOOL)updateWithHTTPURLResponse:(id)a3
+- (BOOL)updateWithHTTPURLResponse:(id)response
 {
   v27 = *MEMORY[0x1E69E9840];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = [location[0] allHeaderFields];
-  v7 = [v20 objectForKeyedSubscript:@"X-Apple-Identity-Token"];
+  objc_storeStrong(location, response);
+  allHeaderFields = [location[0] allHeaderFields];
+  v7 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-Identity-Token"];
   v19 = [AKToken tokenWithBase64String:?];
   MEMORY[0x1E69E5920](v7);
   if (v19)
   {
-    v15 = [v20 objectForKeyedSubscript:@"X-Apple-Session-Key"];
+    v15 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-Session-Key"];
     if (v15)
     {
-      v12 = [v20 objectForKeyedSubscript:@"X-Apple-Encrypted-Session-Key"];
+      v12 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-Encrypted-Session-Key"];
       if (v12)
       {
-        v5 = v22;
-        v6 = [v19 stringValue];
+        v5 = selfCopy;
+        stringValue = [v19 stringValue];
         [(AKMasterToken *)v5 setStringValue:?];
-        MEMORY[0x1E69E5920](v6);
+        MEMORY[0x1E69E5920](stringValue);
         v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v15 options:?];
-        [(AKMasterToken *)v22 _setSessionKey:v9];
+        [(AKMasterToken *)selfCopy _setSessionKey:v9];
         v3 = objc_alloc(MEMORY[0x1E695DEF0]);
         v8 = [v3 initWithBase64EncodedString:v12 options:0];
-        [(AKMasterToken *)v22 _setEncryptedSessionKey:v8];
+        [(AKMasterToken *)selfCopy _setEncryptedSessionKey:v8];
         v23 = 1;
         v16 = 1;
         objc_storeStrong(&v8, 0);
@@ -174,7 +174,7 @@
   }
 
   objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&allHeaderFields, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
   return v23 & 1;
@@ -189,81 +189,81 @@
   return v3;
 }
 
-- (AKMasterToken)initWithAppleID:(id)a3 altDSID:(id)a4
+- (AKMasterToken)initWithAppleID:(id)d altDSID:(id)iD
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(&v11, iD);
+  v4 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v4;
   v10.super_class = AKMasterToken;
-  v13 = [(AKMasterToken *)&v10 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(AKMasterToken *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    properties = v13->_properties;
-    v13->_properties = v5;
+    properties = selfCopy->_properties;
+    selfCopy->_properties = v5;
     MEMORY[0x1E69E5920](properties);
     if (location[0])
     {
-      [(NSMutableDictionary *)v13->_properties setObject:location[0] forKeyedSubscript:*MEMORY[0x1E698C208]];
+      [(NSMutableDictionary *)selfCopy->_properties setObject:location[0] forKeyedSubscript:*MEMORY[0x1E698C208]];
     }
 
     if (v11)
     {
-      [(NSMutableDictionary *)v13->_properties setObject:v11 forKeyedSubscript:*MEMORY[0x1E698C1E8]];
+      [(NSMutableDictionary *)selfCopy->_properties setObject:v11 forKeyedSubscript:*MEMORY[0x1E698C1E8]];
     }
   }
 
-  v8 = MEMORY[0x1E69E5928](v13);
+  v8 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   if (location[0])
   {
-    [(NSMutableDictionary *)v4->_properties setObject:location[0] forKeyedSubscript:*MEMORY[0x1E698C200]];
+    [(NSMutableDictionary *)selfCopy->_properties setObject:location[0] forKeyedSubscript:*MEMORY[0x1E698C200]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_setSessionKey:(id)a3
+- (void)_setSessionKey:(id)key
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   if (location[0])
   {
-    [(NSMutableDictionary *)v4->_properties setObject:location[0] forKeyedSubscript:*MEMORY[0x1E698C1F8]];
+    [(NSMutableDictionary *)selfCopy->_properties setObject:location[0] forKeyedSubscript:*MEMORY[0x1E698C1F8]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_setEncryptedSessionKey:(id)a3
+- (void)_setEncryptedSessionKey:(id)key
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   if (location[0])
   {
-    [(NSMutableDictionary *)v4->_properties setObject:location[0] forKeyedSubscript:*MEMORY[0x1E698C1F0]];
+    [(NSMutableDictionary *)selfCopy->_properties setObject:location[0] forKeyedSubscript:*MEMORY[0x1E698C1F0]];
   }
 
   objc_storeStrong(location, 0);
@@ -272,12 +272,12 @@
 - (NSData)externalizedVersion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   if (self->_properties)
   {
     v9[0] = 0;
-    properties = v10->_properties;
+    properties = selfCopy->_properties;
     v7 = 0;
     v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:properties format:100 options:0 error:&v7];
     objc_storeStrong(v9, v7);

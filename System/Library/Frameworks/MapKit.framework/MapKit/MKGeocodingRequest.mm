@@ -1,29 +1,29 @@
 @interface MKGeocodingRequest
 - (BOOL)isCancelled;
 - (BOOL)isLoading;
-- (MKGeocodingRequest)initWithAddressString:(id)a3;
+- (MKGeocodingRequest)initWithAddressString:(id)string;
 - (id)_geoMapRegion;
-- (void)_handleMapItems:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)_performRequestWithQueue:(id)a3 completionHandler:(id)a4;
+- (void)_handleMapItems:(id)items error:(id)error completionHandler:(id)handler;
+- (void)_performRequestWithQueue:(id)queue completionHandler:(id)handler;
 - (void)cancel;
-- (void)getMapItemsWithQueue:(id)a3 completionHandler:(id)a4;
-- (void)setPreferredLocale:(id)a3;
-- (void)setRegion:(id *)a3;
+- (void)getMapItemsWithQueue:(id)queue completionHandler:(id)handler;
+- (void)setPreferredLocale:(id)locale;
+- (void)setRegion:(id *)region;
 @end
 
 @implementation MKGeocodingRequest
 
-- (void)setPreferredLocale:(id)a3
+- (void)setPreferredLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   os_unfair_lock_lock_with_options();
   preferredLocale = self->_preferredLocale;
-  self->_preferredLocale = v4;
+  self->_preferredLocale = localeCopy;
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)setRegion:(id *)a3
+- (void)setRegion:(id *)region
 {
   v7 = v6;
   v8 = v5;
@@ -68,34 +68,34 @@
   return cancelled;
 }
 
-- (void)_handleMapItems:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)_handleMapItems:(id)items error:(id)error completionHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  itemsCopy = items;
+  errorCopy = error;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_stateLock);
   cancelled = self->_cancelled;
   os_unfair_lock_unlock(&self->_stateLock);
-  if (v9 && !cancelled)
+  if (handlerCopy && !cancelled)
   {
-    if (v8)
+    if (errorCopy)
     {
-      v11 = [v8 _mapkit_error];
-      v9[2](v9, 0, v11);
+      _mapkit_error = [errorCopy _mapkit_error];
+      handlerCopy[2](handlerCopy, 0, _mapkit_error);
 LABEL_5:
 
       goto LABEL_8;
     }
 
-    if (![v13 count])
+    if (![itemsCopy count])
     {
       v12 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v11 = [v12 initWithDomain:MKErrorDomain code:1 userInfo:0];
-      v9[2](v9, 0, v11);
+      _mapkit_error = [v12 initWithDomain:MKErrorDomain code:1 userInfo:0];
+      handlerCopy[2](handlerCopy, 0, _mapkit_error);
       goto LABEL_5;
     }
 
-    (v9)[2](v9, v13, 0);
+    (handlerCopy)[2](handlerCopy, itemsCopy, 0);
   }
 
 LABEL_8:
@@ -117,20 +117,20 @@ LABEL_8:
   return v3;
 }
 
-- (void)_performRequestWithQueue:(id)a3 completionHandler:(id)a4
+- (void)_performRequestWithQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v12 = __65__MKGeocodingRequest__performRequestWithQueue_completionHandler___block_invoke;
   v13 = &unk_1E76CAA70;
-  v15 = v6;
-  v16 = v7;
-  v14 = self;
+  v15 = queueCopy;
+  v16 = handlerCopy;
+  selfCopy = self;
   v8 = MEMORY[0x1E696AF00];
-  v9 = v6;
-  v10 = v7;
+  v9 = queueCopy;
+  v10 = handlerCopy;
   if ([v8 isMainThread])
   {
     v12(block);
@@ -203,10 +203,10 @@ void __65__MKGeocodingRequest__performRequestWithQueue_completionHandler___block
   [*(a1 + 32) _handleMapItems:v8 error:v5 completionHandler:*(a1 + 40)];
 }
 
-- (void)getMapItemsWithQueue:(id)a3 completionHandler:(id)a4
+- (void)getMapItemsWithQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  queueCopy = queue;
   os_unfair_lock_lock_with_options();
   if (self->_loading)
   {
@@ -225,32 +225,32 @@ void __65__MKGeocodingRequest__performRequestWithQueue_completionHandler___block
     v12[2] = __61__MKGeocodingRequest_getMapItemsWithQueue_completionHandler___block_invoke;
     v12[3] = &unk_1E76CDA20;
     v13 = v10;
-    v14 = v6;
+    v14 = handlerCopy;
     v11 = v10;
-    dispatch_async(v7, v12);
+    dispatch_async(queueCopy, v12);
 
-    v7 = v11;
+    queueCopy = v11;
   }
 
   else
   {
     self->_loading = 1;
     os_unfair_lock_unlock(&self->_stateLock);
-    [(MKGeocodingRequest *)self _performRequestWithQueue:v7 completionHandler:v6];
+    [(MKGeocodingRequest *)self _performRequestWithQueue:queueCopy completionHandler:handlerCopy];
   }
 }
 
-- (MKGeocodingRequest)initWithAddressString:(id)a3
+- (MKGeocodingRequest)initWithAddressString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v11.receiver = self;
     v11.super_class = MKGeocodingRequest;
     v5 = [(MKGeocodingRequest *)&v11 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [stringCopy copy];
       v7 = *(v5 + 3);
       *(v5 + 3) = v6;
 
@@ -260,7 +260,7 @@ void __65__MKGeocodingRequest__performRequestWithQueue_completionHandler___block
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -272,10 +272,10 @@ void __65__MKGeocodingRequest__performRequestWithQueue_completionHandler___block
       _os_log_impl(&dword_1A2EA0000, v9, OS_LOG_TYPE_ERROR, "Empty address string provided to MKGeocodingRequest initializer", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

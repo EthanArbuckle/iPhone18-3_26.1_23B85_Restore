@@ -1,6 +1,6 @@
 @interface BKAchievementsNotificationController
 + (NSString)categoryIdentifier;
-+ (int64_t)goalTypeFromNotificationUserInfo:(id)a3;
++ (int64_t)goalTypeFromNotificationUserInfo:(id)info;
 - (BKAchievementsNotificationController)init;
 @end
 
@@ -13,7 +13,7 @@
   return v2;
 }
 
-+ (int64_t)goalTypeFromNotificationUserInfo:(id)a3
++ (int64_t)goalTypeFromNotificationUserInfo:(id)info
 {
   v3 = sub_1007A2044();
   v4 = _s5Books34AchievementsNotificationControllerC8goalType4from13BookAnalytics011BridgedGoalF0OSDySSypG_tFZ_0(v3);

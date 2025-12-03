@@ -7,9 +7,9 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 paymentInfoUIURL];
+  paymentInfoUIURL = [v2 paymentInfoUIURL];
 
-  return v3;
+  return paymentInfoUIURL;
 }
 
 @end

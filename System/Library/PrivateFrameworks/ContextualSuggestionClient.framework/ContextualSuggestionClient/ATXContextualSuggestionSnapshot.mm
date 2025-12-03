@@ -1,19 +1,19 @@
 @interface ATXContextualSuggestionSnapshot
 - (ATXContextualSuggestionSnapshot)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXContextualSuggestionSnapshot
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = *(&self->super.isa + OBJC_IVAR___ATXContextualSuggestionSnapshot_contexts);
   type metadata accessor for ContextualSuggestionContext();
-  v6 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_2441D8CFC();
   v8 = sub_2441D8C4C();
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 }
 
 - (ATXContextualSuggestionSnapshot)init

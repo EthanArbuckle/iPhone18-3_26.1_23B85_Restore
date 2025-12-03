@@ -1,77 +1,77 @@
 @interface DebugHierarchyLogEntry
-+ (id)errorLogEntryWithTitle:(id)a3 message:(id)a4 methodSignature:(id)a5;
-+ (id)errorLogEntryWithTitle:(id)a3 message:(id)a4 methodSignature:(id)a5 environmentInfo:(id)a6;
-+ (id)formattedSummaryOfLogs:(id)a3;
-+ (id)logEntryWithDictionary:(id)a3;
-+ (id)warningLogEntryWithTitle:(id)a3 message:(id)a4 methodSignature:(id)a5;
-+ (id)warningLogEntryWithTitle:(id)a3 message:(id)a4 methodSignature:(id)a5 environmentInfo:(id)a6;
-- (DebugHierarchyLogEntry)initWithDictionary:(id)a3;
-- (DebugHierarchyLogEntry)initWithSeverity:(unint64_t)a3 title:(id)a4 message:(id)a5 methodSignature:(id)a6 environmentInfo:(id)a7;
++ (id)errorLogEntryWithTitle:(id)title message:(id)message methodSignature:(id)signature;
++ (id)errorLogEntryWithTitle:(id)title message:(id)message methodSignature:(id)signature environmentInfo:(id)info;
++ (id)formattedSummaryOfLogs:(id)logs;
++ (id)logEntryWithDictionary:(id)dictionary;
++ (id)warningLogEntryWithTitle:(id)title message:(id)message methodSignature:(id)signature;
++ (id)warningLogEntryWithTitle:(id)title message:(id)message methodSignature:(id)signature environmentInfo:(id)info;
+- (DebugHierarchyLogEntry)initWithDictionary:(id)dictionary;
+- (DebugHierarchyLogEntry)initWithSeverity:(unint64_t)severity title:(id)title message:(id)message methodSignature:(id)signature environmentInfo:(id)info;
 - (id)dictionaryRepresentation;
 - (id)formattedSummary;
 @end
 
 @implementation DebugHierarchyLogEntry
 
-+ (id)errorLogEntryWithTitle:(id)a3 message:(id)a4 methodSignature:(id)a5 environmentInfo:(id)a6
++ (id)errorLogEntryWithTitle:(id)title message:(id)message methodSignature:(id)signature environmentInfo:(id)info
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithSeverity:0 title:v13 message:v12 methodSignature:v11 environmentInfo:v10];
+  infoCopy = info;
+  signatureCopy = signature;
+  messageCopy = message;
+  titleCopy = title;
+  v14 = [[self alloc] initWithSeverity:0 title:titleCopy message:messageCopy methodSignature:signatureCopy environmentInfo:infoCopy];
 
   return v14;
 }
 
-+ (id)warningLogEntryWithTitle:(id)a3 message:(id)a4 methodSignature:(id)a5 environmentInfo:(id)a6
++ (id)warningLogEntryWithTitle:(id)title message:(id)message methodSignature:(id)signature environmentInfo:(id)info
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithSeverity:1 title:v13 message:v12 methodSignature:v11 environmentInfo:v10];
+  infoCopy = info;
+  signatureCopy = signature;
+  messageCopy = message;
+  titleCopy = title;
+  v14 = [[self alloc] initWithSeverity:1 title:titleCopy message:messageCopy methodSignature:signatureCopy environmentInfo:infoCopy];
 
   return v14;
 }
 
-+ (id)errorLogEntryWithTitle:(id)a3 message:(id)a4 methodSignature:(id)a5
++ (id)errorLogEntryWithTitle:(id)title message:(id)message methodSignature:(id)signature
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithSeverity:0 title:v10 message:v9 methodSignature:v8 environmentInfo:0];
+  signatureCopy = signature;
+  messageCopy = message;
+  titleCopy = title;
+  v11 = [[self alloc] initWithSeverity:0 title:titleCopy message:messageCopy methodSignature:signatureCopy environmentInfo:0];
 
   return v11;
 }
 
-+ (id)warningLogEntryWithTitle:(id)a3 message:(id)a4 methodSignature:(id)a5
++ (id)warningLogEntryWithTitle:(id)title message:(id)message methodSignature:(id)signature
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithSeverity:1 title:v10 message:v9 methodSignature:v8 environmentInfo:0];
+  signatureCopy = signature;
+  messageCopy = message;
+  titleCopy = title;
+  v11 = [[self alloc] initWithSeverity:1 title:titleCopy message:messageCopy methodSignature:signatureCopy environmentInfo:0];
 
   return v11;
 }
 
-+ (id)logEntryWithDictionary:(id)a3
++ (id)logEntryWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-+ (id)formattedSummaryOfLogs:(id)a3
++ (id)formattedSummaryOfLogs:(id)logs
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  logsCopy = logs;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [logsCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = logsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -86,8 +86,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) formattedSummary];
-        [v4 addObject:v10];
+        formattedSummary = [*(*(&v13 + 1) + 8 * i) formattedSummary];
+        [v4 addObject:formattedSummary];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -101,12 +101,12 @@
   return v11;
 }
 
-- (DebugHierarchyLogEntry)initWithSeverity:(unint64_t)a3 title:(id)a4 message:(id)a5 methodSignature:(id)a6 environmentInfo:(id)a7
+- (DebugHierarchyLogEntry)initWithSeverity:(unint64_t)severity title:(id)title message:(id)message methodSignature:(id)signature environmentInfo:(id)info
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  signatureCopy = signature;
+  infoCopy = info;
   v21.receiver = self;
   v21.super_class = DebugHierarchyLogEntry;
   v17 = [(DebugHierarchyLogEntry *)&v21 init];
@@ -116,45 +116,45 @@
     timestamp = v17->_timestamp;
     v17->_timestamp = v18;
 
-    v17->_severity = a3;
-    objc_storeStrong(&v17->_title, a4);
-    objc_storeStrong(&v17->_message, a5);
-    objc_storeStrong(&v17->_methodSignature, a6);
-    objc_storeStrong(&v17->_environmentInfo, a7);
+    v17->_severity = severity;
+    objc_storeStrong(&v17->_title, title);
+    objc_storeStrong(&v17->_message, message);
+    objc_storeStrong(&v17->_methodSignature, signature);
+    objc_storeStrong(&v17->_environmentInfo, info);
   }
 
   return v17;
 }
 
-- (DebugHierarchyLogEntry)initWithDictionary:(id)a3
+- (DebugHierarchyLogEntry)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = DebugHierarchyLogEntry;
   v5 = [(DebugHierarchyLogEntry *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"logTimestampKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"logTimestampKey"];
     v7 = +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", [v6 integerValue]);
     timestamp = v5->_timestamp;
     v5->_timestamp = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"logSeverityKey"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"logSeverityKey"];
     v5->_severity = [v9 unsignedIntegerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"logTitleKey"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"logTitleKey"];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"logMessageKey"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"logMessageKey"];
     message = v5->_message;
     v5->_message = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"logMethodKey"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"logMethodKey"];
     methodSignature = v5->_methodSignature;
     v5->_methodSignature = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"logEnvironmentKey"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"logEnvironmentKey"];
     environmentInfo = v5->_environmentInfo;
     v5->_environmentInfo = v16;
   }
@@ -165,48 +165,48 @@
 - (id)dictionaryRepresentation
 {
   v3 = [NSMutableDictionary dictionaryWithCapacity:5];
-  v4 = [(DebugHierarchyLogEntry *)self timestamp];
-  [v4 timeIntervalSinceReferenceDate];
+  timestamp = [(DebugHierarchyLogEntry *)self timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   v5 = [NSNumber numberWithDouble:?];
   [v3 setObject:v5 forKeyedSubscript:@"logTimestampKey"];
 
   v6 = [NSNumber numberWithUnsignedInteger:[(DebugHierarchyLogEntry *)self severity]];
   [v3 setObject:v6 forKeyedSubscript:@"logSeverityKey"];
 
-  v7 = [(DebugHierarchyLogEntry *)self title];
-  v8 = [v7 length];
+  title = [(DebugHierarchyLogEntry *)self title];
+  v8 = [title length];
 
   if (v8)
   {
-    v9 = [(DebugHierarchyLogEntry *)self title];
-    [v3 setObject:v9 forKeyedSubscript:@"logTitleKey"];
+    title2 = [(DebugHierarchyLogEntry *)self title];
+    [v3 setObject:title2 forKeyedSubscript:@"logTitleKey"];
   }
 
-  v10 = [(DebugHierarchyLogEntry *)self message];
-  v11 = [v10 length];
+  message = [(DebugHierarchyLogEntry *)self message];
+  v11 = [message length];
 
   if (v11)
   {
-    v12 = [(DebugHierarchyLogEntry *)self message];
-    [v3 setObject:v12 forKeyedSubscript:@"logMessageKey"];
+    message2 = [(DebugHierarchyLogEntry *)self message];
+    [v3 setObject:message2 forKeyedSubscript:@"logMessageKey"];
   }
 
-  v13 = [(DebugHierarchyLogEntry *)self methodSignature];
-  v14 = [v13 length];
+  methodSignature = [(DebugHierarchyLogEntry *)self methodSignature];
+  v14 = [methodSignature length];
 
   if (v14)
   {
-    v15 = [(DebugHierarchyLogEntry *)self methodSignature];
-    [v3 setObject:v15 forKeyedSubscript:@"logMethodKey"];
+    methodSignature2 = [(DebugHierarchyLogEntry *)self methodSignature];
+    [v3 setObject:methodSignature2 forKeyedSubscript:@"logMethodKey"];
   }
 
-  v16 = [(DebugHierarchyLogEntry *)self environmentInfo];
-  v17 = [v16 length];
+  environmentInfo = [(DebugHierarchyLogEntry *)self environmentInfo];
+  v17 = [environmentInfo length];
 
   if (v17)
   {
-    v18 = [(DebugHierarchyLogEntry *)self environmentInfo];
-    [v3 setObject:v18 forKeyedSubscript:@"logEnvironmentKey"];
+    environmentInfo2 = [(DebugHierarchyLogEntry *)self environmentInfo];
+    [v3 setObject:environmentInfo2 forKeyedSubscript:@"logEnvironmentKey"];
   }
 
   v19 = [v3 copy];
@@ -216,10 +216,10 @@
 
 - (id)formattedSummary
 {
-  v3 = [(DebugHierarchyLogEntry *)self title];
-  v4 = [(DebugHierarchyLogEntry *)self message];
-  v5 = [(DebugHierarchyLogEntry *)self methodSignature];
-  v6 = [NSString stringWithFormat:@"Log Title: %@\nLog Details: %@\nLog Method: %@", v3, v4, v5];
+  title = [(DebugHierarchyLogEntry *)self title];
+  message = [(DebugHierarchyLogEntry *)self message];
+  methodSignature = [(DebugHierarchyLogEntry *)self methodSignature];
+  v6 = [NSString stringWithFormat:@"Log Title: %@\nLog Details: %@\nLog Method: %@", title, message, methodSignature];
 
   return v6;
 }

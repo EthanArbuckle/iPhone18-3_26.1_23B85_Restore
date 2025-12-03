@@ -9,56 +9,56 @@
 - (id)remoteUIStyle;
 - (id)serverDataHarvester;
 - (void)_assertValidPresentingViewController;
-- (void)_cleanUpBasicLoginWithCompletion:(id)a3;
+- (void)_cleanUpBasicLoginWithCompletion:(id)completion;
 - (void)_contextDidEndPresentingSecondaryUI;
-- (void)_contextWillBeginPresentingSecondaryUIWithCompletion:(id)a3;
-- (void)_dismissServerProvidedUIWithCompletion:(id)a3;
-- (void)_handleBackButtonTap:(id)a3;
-- (void)_presentLoginAlertWithError:(id)a3 title:(id)a4 message:(id)a5 waitForInteraction:(BOOL)a6 completion:(id)a7;
-- (void)_presentTooManyLoginAttemptsViewWithCompletion:(id)a3;
-- (void)activateProximitySession:(id)a3 completion:(id)a4;
-- (void)completeWithError:(id)a3;
-- (void)didLoadURL:(id)a3 error:(id)a4;
-- (void)dismissBasicLoginUIWithCompletion:(id)a3;
-- (void)dismissKeepUsingUIWithCompletion:(id)a3;
-- (void)dismissNativeRecoveryUIWithCompletion:(id)a3;
-- (void)dismissProximityPairingUIWithCompletion:(id)a3;
-- (void)dismissSecondFactorUIWithCompletion:(id)a3;
-- (void)dismissServerProvidedUIWithCompletion:(id)a3;
-- (void)presentBasicLoginUIWithCompletion:(id)a3;
-- (void)presentBiometricOrPasscodeValidationForAppleID:(id)a3 completion:(id)a4;
-- (void)presentFidoAuthForContext:(id)a3 fidoContext:(id)a4 completion:(id)a5;
-- (void)presentKeepUsingUIForAppleID:(id)a3 completion:(id)a4;
-- (void)presentLoginAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6;
-- (void)presentNativeRecoveryUIWithContext:(id)a3 completion:(id)a4;
-- (void)presentProximityBroadcastUIWithCompletion:(id)a3;
-- (void)presentProximityPairingUIWithVerificationCode:(id)a3 completion:(id)a4;
-- (void)presentProximityPinCodeUIWithCompletion:(id)a3;
-- (void)presentSecondFactorAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6;
-- (void)presentSecondFactorUIWithCompletion:(id)a3;
-- (void)presentServerProvidedUIWithConfiguration:(id)a3 completion:(id)a4;
-- (void)processedElementWithError:(id)a3 forElement:(id)a4;
-- (void)remoteUIController:(id)a3 didDismissModalNavigationWithObjectModels:(id)a4;
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)remoteUIController:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)remoteUIController:(id)a3 didReceiveHTTPResponse:(id)a4 forRequest:(id)a5;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
-- (void)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5 withCompletionHandler:(id)a6;
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4;
-- (void)remoteUIController:(id)a3 willPresentObjectModel:(id)a4 modally:(BOOL)a5;
-- (void)showProximityErrorWithCompletion:(id)a3;
-- (void)willActivateElement:(id)a3;
-- (void)willDisplayUI:(id)a3;
-- (void)willLoadURL:(id)a3;
-- (void)willPresentModalNavigationController:(id)a3;
-- (void)willProcessHook:(id)a3;
+- (void)_contextWillBeginPresentingSecondaryUIWithCompletion:(id)completion;
+- (void)_dismissServerProvidedUIWithCompletion:(id)completion;
+- (void)_handleBackButtonTap:(id)tap;
+- (void)_presentLoginAlertWithError:(id)error title:(id)title message:(id)message waitForInteraction:(BOOL)interaction completion:(id)completion;
+- (void)_presentTooManyLoginAttemptsViewWithCompletion:(id)completion;
+- (void)activateProximitySession:(id)session completion:(id)completion;
+- (void)completeWithError:(id)error;
+- (void)didLoadURL:(id)l error:(id)error;
+- (void)dismissBasicLoginUIWithCompletion:(id)completion;
+- (void)dismissKeepUsingUIWithCompletion:(id)completion;
+- (void)dismissNativeRecoveryUIWithCompletion:(id)completion;
+- (void)dismissProximityPairingUIWithCompletion:(id)completion;
+- (void)dismissSecondFactorUIWithCompletion:(id)completion;
+- (void)dismissServerProvidedUIWithCompletion:(id)completion;
+- (void)presentBasicLoginUIWithCompletion:(id)completion;
+- (void)presentBiometricOrPasscodeValidationForAppleID:(id)d completion:(id)completion;
+- (void)presentFidoAuthForContext:(id)context fidoContext:(id)fidoContext completion:(id)completion;
+- (void)presentKeepUsingUIForAppleID:(id)d completion:(id)completion;
+- (void)presentLoginAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion;
+- (void)presentNativeRecoveryUIWithContext:(id)context completion:(id)completion;
+- (void)presentProximityBroadcastUIWithCompletion:(id)completion;
+- (void)presentProximityPairingUIWithVerificationCode:(id)code completion:(id)completion;
+- (void)presentProximityPinCodeUIWithCompletion:(id)completion;
+- (void)presentSecondFactorAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion;
+- (void)presentSecondFactorUIWithCompletion:(id)completion;
+- (void)presentServerProvidedUIWithConfiguration:(id)configuration completion:(id)completion;
+- (void)processedElementWithError:(id)error forElement:(id)element;
+- (void)remoteUIController:(id)controller didDismissModalNavigationWithObjectModels:(id)models;
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)remoteUIController:(id)controller didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)remoteUIController:(id)controller didReceiveHTTPResponse:(id)response forRequest:(id)request;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
+- (void)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response withCompletionHandler:(id)handler;
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController;
+- (void)remoteUIController:(id)controller willPresentObjectModel:(id)model modally:(BOOL)modally;
+- (void)showProximityErrorWithCompletion:(id)completion;
+- (void)willActivateElement:(id)element;
+- (void)willDisplayUI:(id)i;
+- (void)willLoadURL:(id)l;
+- (void)willPresentModalNavigationController:(id)controller;
+- (void)willProcessHook:(id)hook;
 @end
 
 @implementation AKAppleIDAuthenticationInAppContext
 
 - (AKInAppAuthenticationUIProvider)inAppAuthUIProvider
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!self->_inAppAuthUIProvider)
   {
@@ -74,13 +74,13 @@
 
     objc_storeStrong(location, 0);
     v2 = [AKInAppAuthenticationRemoteUIProvider alloc];
-    v3 = [(AKInAppAuthenticationRemoteUIProvider *)v2 initWithContext:v12];
-    inAppAuthUIProvider = v12->_inAppAuthUIProvider;
-    v12->_inAppAuthUIProvider = v3;
+    v3 = [(AKInAppAuthenticationRemoteUIProvider *)v2 initWithContext:selfCopy];
+    inAppAuthUIProvider = selfCopy->_inAppAuthUIProvider;
+    selfCopy->_inAppAuthUIProvider = v3;
     MEMORY[0x277D82BD8](inAppAuthUIProvider);
   }
 
-  v5 = v12->_inAppAuthUIProvider;
+  v5 = selfCopy->_inAppAuthUIProvider;
 
   return v5;
 }
@@ -88,58 +88,58 @@
 - (CDPStateUIProvider)cdpUiProvider
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   if (!self->_cdpUiProvider)
   {
-    v19[0] = [(AKAppleIDAuthenticationInAppContext *)v20 inAppAuthUIProvider];
-    v5 = [v19[0] remoteUIControllerDelegate];
-    v6 = [v5 modalRemoteUINavController];
+    v19[0] = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+    remoteUIControllerDelegate = [v19[0] remoteUIControllerDelegate];
+    modalRemoteUINavController = [remoteUIControllerDelegate modalRemoteUINavController];
     v16 = 0;
     v14 = 0;
     v12 = 0;
     v10 = 0;
-    if (v6)
+    if (modalRemoteUINavController)
     {
-      v17 = [v19[0] remoteUIControllerDelegate];
+      remoteUIControllerDelegate2 = [v19[0] remoteUIControllerDelegate];
       v16 = 1;
-      v15 = [v17 modalRemoteUINavController];
+      modalRemoteUINavController2 = [remoteUIControllerDelegate2 modalRemoteUINavController];
       v14 = 1;
-      v2 = MEMORY[0x277D82BE0](v15);
+      v2 = MEMORY[0x277D82BE0](modalRemoteUINavController2);
     }
 
     else
     {
-      v13 = [v19[0] remoteUIController];
+      remoteUIController = [v19[0] remoteUIController];
       v12 = 1;
-      v11 = [v13 navigationController];
+      navigationController = [remoteUIController navigationController];
       v10 = 1;
-      v2 = MEMORY[0x277D82BE0](v11);
+      v2 = MEMORY[0x277D82BE0](navigationController);
     }
 
     v18 = v2;
     if (v10)
     {
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](navigationController);
     }
 
     if (v12)
     {
-      MEMORY[0x277D82BD8](v13);
+      MEMORY[0x277D82BD8](remoteUIController);
     }
 
     if (v14)
     {
-      MEMORY[0x277D82BD8](v15);
+      MEMORY[0x277D82BD8](modalRemoteUINavController2);
     }
 
     if (v16)
     {
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](remoteUIControllerDelegate2);
     }
 
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](modalRemoteUINavController);
+    MEMORY[0x277D82BD8](remoteUIControllerDelegate);
     oslog = _AKLogSystem();
     type = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -151,14 +151,14 @@
     objc_storeStrong(&oslog, 0);
     obj = [MEMORY[0x277CF01E0] accountRecoveryControllerWithPresentingViewController:v18];
     [obj setForceInlinePresentation:1];
-    objc_storeStrong(&v20->_cdpUiProvider, obj);
+    objc_storeStrong(&selfCopy->_cdpUiProvider, obj);
     objc_storeStrong(&obj, 0);
     objc_storeStrong(&v18, 0);
     objc_storeStrong(v19, 0);
   }
 
   *MEMORY[0x277D85DE8];
-  cdpUiProvider = v20->_cdpUiProvider;
+  cdpUiProvider = selfCopy->_cdpUiProvider;
 
   return cdpUiProvider;
 }
@@ -185,12 +185,12 @@
   }
 }
 
-- (void)presentBasicLoginUIWithCompletion:(id)a3
+- (void)presentBasicLoginUIWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -199,7 +199,7 @@
   v8 = 0;
   v9 = __73__AKAppleIDAuthenticationInAppContext_presentBasicLoginUIWithCompletion___block_invoke;
   v10 = &unk_2784A63C8;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -274,193 +274,193 @@ void __73__AKAppleIDAuthenticationInAppContext_presentBasicLoginUIWithCompletion
   objc_storeStrong(location, 0);
 }
 
-- (void)presentLoginAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6
+- (void)presentLoginAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, title);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, message);
   v10 = 0;
-  objc_storeStrong(&v10, a6);
-  v9 = [(AKAppleIDAuthenticationInAppContext *)v14 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v9 presentLoginAlertWithError:location[0] title:v12 message:v11 completion:v10];
-  MEMORY[0x277D82BD8](v9);
+  objc_storeStrong(&v10, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider presentLoginAlertWithError:location[0] title:v12 message:v11 completion:v10];
+  MEMORY[0x277D82BD8](inAppAuthUIProvider);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_presentTooManyLoginAttemptsViewWithCompletion:(id)a3
+- (void)_presentTooManyLoginAttemptsViewWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissBasicLoginUIWithCompletion:(id)a3
+- (void)dismissBasicLoginUIWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKAppleIDAuthenticationInAppContext *)v5 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v3 dismissBasicLoginUIWithCompletion:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider dismissBasicLoginUIWithCompletion:location[0]];
+  MEMORY[0x277D82BD8](inAppAuthUIProvider);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentKeepUsingUIForAppleID:(id)a3 completion:(id)a4
+- (void)presentKeepUsingUIForAppleID:(id)d completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(AKAppleIDAuthenticationInAppContext *)v8 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v5 presentKeepUsingUIForAppleID:location[0] completion:v6];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v6, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider presentKeepUsingUIForAppleID:location[0] completion:v6];
+  MEMORY[0x277D82BD8](inAppAuthUIProvider);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissKeepUsingUIWithCompletion:(id)a3
+- (void)dismissKeepUsingUIWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKAppleIDAuthenticationInAppContext *)v5 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v3 dismissKeepUsingUIWithCompletion:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider dismissKeepUsingUIWithCompletion:location[0]];
+  MEMORY[0x277D82BD8](inAppAuthUIProvider);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentSecondFactorUIWithCompletion:(id)a3
+- (void)presentSecondFactorUIWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKAppleIDAuthenticationInAppContext *)v5 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v3 presentSecondFactorUIWithCompletion:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider presentSecondFactorUIWithCompletion:location[0]];
+  MEMORY[0x277D82BD8](inAppAuthUIProvider);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentSecondFactorAlertWithError:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6
+- (void)presentSecondFactorAlertWithError:(id)error title:(id)title message:(id)message completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, title);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, message);
   v10 = 0;
-  objc_storeStrong(&v10, a6);
-  v9 = [(AKAppleIDAuthenticationInAppContext *)v14 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v9 presentSecondFactorAlertWithError:location[0] title:v12 message:v11 completion:v10];
-  MEMORY[0x277D82BD8](v9);
+  objc_storeStrong(&v10, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider presentSecondFactorAlertWithError:location[0] title:v12 message:v11 completion:v10];
+  MEMORY[0x277D82BD8](inAppAuthUIProvider);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissSecondFactorUIWithCompletion:(id)a3
+- (void)dismissSecondFactorUIWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKAppleIDAuthenticationInAppContext *)v5 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v3 dismissSecondFactorUIWithCompletion:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider dismissSecondFactorUIWithCompletion:location[0]];
+  MEMORY[0x277D82BD8](inAppAuthUIProvider);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentBiometricOrPasscodeValidationForAppleID:(id)a3 completion:(id)a4
+- (void)presentBiometricOrPasscodeValidationForAppleID:(id)d completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(AKAppleIDAuthenticationInAppContext *)v8 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v5 presentBiometricOrPasscodeValidationForAppleID:location[0] completion:v6];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v6, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider presentBiometricOrPasscodeValidationForAppleID:location[0] completion:v6];
+  MEMORY[0x277D82BD8](inAppAuthUIProvider);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentServerProvidedUIWithConfiguration:(id)a3 completion:(id)a4
+- (void)presentServerProvidedUIWithConfiguration:(id)configuration completion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
-  v16 = [location[0] request];
-  *&v4 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-  if (v16)
+  objc_storeStrong(&v32, completion);
+  request = [location[0] request];
+  *&v4 = MEMORY[0x277D82BD8](request).n128_u64[0];
+  if (request)
   {
-    v11 = [location[0] resourceLoadDelegate];
+    resourceLoadDelegate = [location[0] resourceLoadDelegate];
     v29 = 0;
     v27 = 0;
     v25 = 0;
     v12 = 0;
-    if (v11)
+    if (resourceLoadDelegate)
     {
-      v30 = [(AKAppleIDAuthenticationInAppContext *)v34 anisetteDataProvider];
+      anisetteDataProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy anisetteDataProvider];
       v29 = 1;
       v12 = 0;
-      if (v30)
+      if (anisetteDataProvider)
       {
-        v28 = [location[0] resourceLoadDelegate];
+        resourceLoadDelegate2 = [location[0] resourceLoadDelegate];
         v27 = 1;
-        v26 = [v28 anisetteDataProvider];
+        anisetteDataProvider2 = [resourceLoadDelegate2 anisetteDataProvider];
         v25 = 1;
-        v12 = v26 == 0;
+        v12 = anisetteDataProvider2 == 0;
       }
     }
 
     if (v25)
     {
-      MEMORY[0x277D82BD8](v26);
+      MEMORY[0x277D82BD8](anisetteDataProvider2);
     }
 
     if (v27)
     {
-      MEMORY[0x277D82BD8](v28);
+      MEMORY[0x277D82BD8](resourceLoadDelegate2);
     }
 
     if (v29)
     {
-      MEMORY[0x277D82BD8](v30);
+      MEMORY[0x277D82BD8](anisetteDataProvider);
     }
 
-    v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+    v5 = MEMORY[0x277D82BD8](resourceLoadDelegate).n128_u64[0];
     if (v12)
     {
-      v10 = [(AKAppleIDAuthenticationInAppContext *)v34 anisetteDataProvider];
-      v9 = [location[0] resourceLoadDelegate];
-      [v9 setAnisetteDataProvider:v10];
-      MEMORY[0x277D82BD8](v9);
-      v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+      anisetteDataProvider3 = [(AKAppleIDAuthenticationInAppContext *)selfCopy anisetteDataProvider];
+      resourceLoadDelegate3 = [location[0] resourceLoadDelegate];
+      [resourceLoadDelegate3 setAnisetteDataProvider:anisetteDataProvider3];
+      MEMORY[0x277D82BD8](resourceLoadDelegate3);
+      v5 = MEMORY[0x277D82BD8](anisetteDataProvider3).n128_u64[0];
     }
 
-    [(AKAppleIDAuthenticationInAppContext *)v34 _assertValidPresentingViewController];
+    [(AKAppleIDAuthenticationInAppContext *)selfCopy _assertValidPresentingViewController];
     v7 = MEMORY[0x277D85CD0];
     v6 = MEMORY[0x277D85CD0];
     queue = v7;
@@ -469,7 +469,7 @@ void __73__AKAppleIDAuthenticationInAppContext_presentBasicLoginUIWithCompletion
     v19 = 0;
     v20 = __91__AKAppleIDAuthenticationInAppContext_presentServerProvidedUIWithConfiguration_completion___block_invoke;
     v21 = &unk_2784A6818;
-    v22 = MEMORY[0x277D82BE0](v34);
+    v22 = MEMORY[0x277D82BE0](selfCopy);
     v23 = MEMORY[0x277D82BE0](location[0]);
     v24 = MEMORY[0x277D82BE0](v32);
     dispatch_async(queue, &v17);
@@ -585,24 +585,24 @@ void __91__AKAppleIDAuthenticationInAppContext_presentServerProvidedUIWithConfig
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_dismissServerProvidedUIWithCompletion:(id)a3
+- (void)_dismissServerProvidedUIWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKAppleIDAuthenticationInAppContext *)v5 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v3 dismissServerProvidedUIWithCompletion:location[0]];
-  MEMORY[0x277D82BD8](v3);
+  objc_storeStrong(location, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider dismissServerProvidedUIWithCompletion:location[0]];
+  MEMORY[0x277D82BD8](inAppAuthUIProvider);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentProximityBroadcastUIWithCompletion:(id)a3
+- (void)presentProximityBroadcastUIWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -611,7 +611,7 @@ void __91__AKAppleIDAuthenticationInAppContext_presentServerProvidedUIWithConfig
   v8 = 0;
   v9 = __81__AKAppleIDAuthenticationInAppContext_presentProximityBroadcastUIWithCompletion___block_invoke;
   v10 = &unk_2784A63C8;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -628,14 +628,14 @@ double __81__AKAppleIDAuthenticationInAppContext_presentProximityBroadcastUIWith
   return result;
 }
 
-- (void)presentProximityPairingUIWithVerificationCode:(id)a3 completion:(id)a4
+- (void)presentProximityPairingUIWithVerificationCode:(id)code completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -644,7 +644,7 @@ double __81__AKAppleIDAuthenticationInAppContext_presentProximityBroadcastUIWith
   v10 = 0;
   v11 = __96__AKAppleIDAuthenticationInAppContext_presentProximityPairingUIWithVerificationCode_completion___block_invoke;
   v12 = &unk_2784A6818;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_async(queue, &v8);
@@ -665,12 +665,12 @@ double __96__AKAppleIDAuthenticationInAppContext_presentProximityPairingUIWithVe
   return result;
 }
 
-- (void)presentProximityPinCodeUIWithCompletion:(id)a3
+- (void)presentProximityPinCodeUIWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -679,7 +679,7 @@ double __96__AKAppleIDAuthenticationInAppContext_presentProximityPairingUIWithVe
   v8 = 0;
   v9 = __79__AKAppleIDAuthenticationInAppContext_presentProximityPinCodeUIWithCompletion___block_invoke;
   v10 = &unk_2784A63C8;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -696,14 +696,14 @@ double __79__AKAppleIDAuthenticationInAppContext_presentProximityPinCodeUIWithCo
   return result;
 }
 
-- (void)activateProximitySession:(id)a3 completion:(id)a4
+- (void)activateProximitySession:(id)session completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -712,7 +712,7 @@ double __79__AKAppleIDAuthenticationInAppContext_presentProximityPinCodeUIWithCo
   v10 = 0;
   v11 = __75__AKAppleIDAuthenticationInAppContext_activateProximitySession_completion___block_invoke;
   v12 = &unk_2784A6818;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_async(queue, &v8);
@@ -732,12 +732,12 @@ double __75__AKAppleIDAuthenticationInAppContext_activateProximitySession_comple
   return result;
 }
 
-- (void)dismissProximityPairingUIWithCompletion:(id)a3
+- (void)dismissProximityPairingUIWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -746,7 +746,7 @@ double __75__AKAppleIDAuthenticationInAppContext_activateProximitySession_comple
   v8 = 0;
   v9 = __79__AKAppleIDAuthenticationInAppContext_dismissProximityPairingUIWithCompletion___block_invoke;
   v10 = &unk_2784A63C8;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -763,12 +763,12 @@ double __79__AKAppleIDAuthenticationInAppContext_dismissProximityPairingUIWithCo
   return result;
 }
 
-- (void)showProximityErrorWithCompletion:(id)a3
+- (void)showProximityErrorWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -777,7 +777,7 @@ double __79__AKAppleIDAuthenticationInAppContext_dismissProximityPairingUIWithCo
   v8 = 0;
   v9 = __72__AKAppleIDAuthenticationInAppContext_showProximityErrorWithCompletion___block_invoke;
   v10 = &unk_2784A63C8;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -794,14 +794,14 @@ double __72__AKAppleIDAuthenticationInAppContext_showProximityErrorWithCompletio
   return result;
 }
 
-- (void)presentNativeRecoveryUIWithContext:(id)a3 completion:(id)a4
+- (void)presentNativeRecoveryUIWithContext:(id)context completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -811,7 +811,7 @@ double __72__AKAppleIDAuthenticationInAppContext_showProximityErrorWithCompletio
   v11 = __85__AKAppleIDAuthenticationInAppContext_presentNativeRecoveryUIWithContext_completion___block_invoke;
   v12 = &unk_2784A6818;
   v13 = MEMORY[0x277D82BE0](location[0]);
-  v14 = MEMORY[0x277D82BE0](v18);
+  v14 = MEMORY[0x277D82BE0](selfCopy);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
@@ -850,12 +850,12 @@ uint64_t __85__AKAppleIDAuthenticationInAppContext_presentNativeRecoveryUIWithCo
   return result;
 }
 
-- (void)dismissNativeRecoveryUIWithCompletion:(id)a3
+- (void)dismissNativeRecoveryUIWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -864,7 +864,7 @@ uint64_t __85__AKAppleIDAuthenticationInAppContext_presentNativeRecoveryUIWithCo
   v8 = 0;
   v9 = __77__AKAppleIDAuthenticationInAppContext_dismissNativeRecoveryUIWithCompletion___block_invoke;
   v10 = &unk_2784A63C8;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -916,12 +916,12 @@ void __77__AKAppleIDAuthenticationInAppContext_dismissNativeRecoveryUIWithComple
   objc_storeStrong(&location, 0);
 }
 
-- (void)dismissServerProvidedUIWithCompletion:(id)a3
+- (void)dismissServerProvidedUIWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -930,7 +930,7 @@ void __77__AKAppleIDAuthenticationInAppContext_dismissNativeRecoveryUIWithComple
   v8 = 0;
   v9 = __77__AKAppleIDAuthenticationInAppContext_dismissServerProvidedUIWithCompletion___block_invoke;
   v10 = &unk_2784A63C8;
-  v11 = MEMORY[0x277D82BE0](v14);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
@@ -982,16 +982,16 @@ void __77__AKAppleIDAuthenticationInAppContext_dismissServerProvidedUIWithComple
   objc_storeStrong(&location, 0);
 }
 
-- (void)presentFidoAuthForContext:(id)a3 fidoContext:(id)a4 completion:(id)a5
+- (void)presentFidoAuthForContext:(id)context fidoContext:(id)fidoContext completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, fidoContext);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, completion);
   v12 = _AKLogFido();
   v11 = 2;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1003,29 +1003,29 @@ void __77__AKAppleIDAuthenticationInAppContext_dismissServerProvidedUIWithComple
   }
 
   objc_storeStrong(&v12, 0);
-  v5 = [(AKAppleIDAuthenticationInAppContext *)v16 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v5 presentFidoAuthForContext:location[0] fidoContext:v14 completion:v13];
-  MEMORY[0x277D82BD8](v5);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider presentFidoAuthForContext:location[0] fidoContext:v14 completion:v13];
+  MEMORY[0x277D82BD8](inAppAuthUIProvider);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_contextWillBeginPresentingSecondaryUIWithCompletion:(id)a3
+- (void)_contextWillBeginPresentingSecondaryUIWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKAppleIDAuthenticationInAppContext *)v5 delegate];
+  objc_storeStrong(location, completion);
+  delegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 contextWillBeginPresentingSecondaryUI:v5 completion:location[0]];
+    [delegate contextWillBeginPresentingSecondaryUI:selfCopy completion:location[0]];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v3 contextWillBeginPresentingSecondaryUI:v5];
+    [delegate contextWillBeginPresentingSecondaryUI:selfCopy];
     if (location[0])
     {
       (*(location[0] + 2))();
@@ -1037,70 +1037,70 @@ void __77__AKAppleIDAuthenticationInAppContext_dismissServerProvidedUIWithComple
     (*(location[0] + 2))();
   }
 
-  objc_storeStrong(&v3, 0);
+  objc_storeStrong(&delegate, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)_contextDidEndPresentingSecondaryUI
 {
-  v3 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(AKAppleIDAuthenticationInAppContext *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [location[0] contextDidEndPresentingSecondaryUI:v3];
+    [location[0] contextDidEndPresentingSecondaryUI:selfCopy];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_cleanUpBasicLoginWithCompletion:(id)a3
+- (void)_cleanUpBasicLoginWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKAppleIDAuthenticationInAppContext *)v5 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v3 cleanUpBasicLoginWithCompletion:location[0]];
-  objc_storeStrong(&v3, 0);
+  objc_storeStrong(location, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider cleanUpBasicLoginWithCompletion:location[0]];
+  objc_storeStrong(&inAppAuthUIProvider, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_presentLoginAlertWithError:(id)a3 title:(id)a4 message:(id)a5 waitForInteraction:(BOOL)a6 completion:(id)a7
+- (void)_presentLoginAlertWithError:(id)error title:(id)title message:(id)message waitForInteraction:(BOOL)interaction completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, title);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
-  v13 = a6;
+  objc_storeStrong(&v14, message);
+  interactionCopy = interaction;
   v12 = 0;
-  objc_storeStrong(&v12, a7);
-  v11 = [(AKAppleIDAuthenticationInAppContext *)v17 inAppAuthUIProvider];
-  [(AKInAppAuthenticationUIProvider *)v11 presentLoginAlertWithError:location[0] title:v15 message:v14 waitForInteraction:v13 completion:v12];
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&v12, completion);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider presentLoginAlertWithError:location[0] title:v15 message:v14 waitForInteraction:interactionCopy completion:v12];
+  objc_storeStrong(&inAppAuthUIProvider, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)completeWithError:(id)a3
+- (void)completeWithError:(id)error
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AKAppleIDAuthenticationInAppContext *)v7 inAppAuthUIProvider];
-  v4 = [(AKInAppAuthenticationUIProvider *)v5 remoteUIControllerDelegate];
-  v3 = [v4 serverUIContextController];
-  [v3 completeWithError:location[0]];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(location, error);
+  inAppAuthUIProvider = [(AKAppleIDAuthenticationInAppContext *)selfCopy inAppAuthUIProvider];
+  remoteUIControllerDelegate = [(AKInAppAuthenticationUIProvider *)inAppAuthUIProvider remoteUIControllerDelegate];
+  serverUIContextController = [remoteUIControllerDelegate serverUIContextController];
+  [serverUIContextController completeWithError:location[0]];
+  MEMORY[0x277D82BD8](serverUIContextController);
+  MEMORY[0x277D82BD8](remoteUIControllerDelegate);
+  objc_storeStrong(&inAppAuthUIProvider, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -1109,22 +1109,22 @@ void __77__AKAppleIDAuthenticationInAppContext_dismissServerProvidedUIWithComple
   v6[2] = self;
   v6[1] = a2;
   v6[0] = [(AKAppleIDAuthenticationInAppContext *)self inAppAuthUIProvider];
-  v4 = [v6[0] remoteUIControllerDelegate];
-  v3 = [v4 serverUIContextController];
-  v5 = [v3 serverDataHarvester];
-  MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
+  remoteUIControllerDelegate = [v6[0] remoteUIControllerDelegate];
+  serverUIContextController = [remoteUIControllerDelegate serverUIContextController];
+  serverDataHarvester = [serverUIContextController serverDataHarvester];
+  MEMORY[0x277D82BD8](serverUIContextController);
+  MEMORY[0x277D82BD8](remoteUIControllerDelegate);
   objc_storeStrong(v6, 0);
 
-  return v5;
+  return serverDataHarvester;
 }
 
-- (void)_handleBackButtonTap:(id)a3
+- (void)_handleBackButtonTap:(id)tap
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tap);
   v9 = _AKLogSystem();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1136,7 +1136,7 @@ void __77__AKAppleIDAuthenticationInAppContext_dismissServerProvidedUIWithComple
   }
 
   objc_storeStrong(&v9, 0);
-  v3 = v11;
+  v3 = selfCopy;
   v4 = [MEMORY[0x277CCA9B8] ak_errorWithCode:-7003];
   [(AKAppleIDAuthenticationInAppContext *)v3 completeWithError:?];
   MEMORY[0x277D82BD8](v4);
@@ -1161,27 +1161,27 @@ void __77__AKAppleIDAuthenticationInAppContext_dismissServerProvidedUIWithComple
     }
 
     objc_storeStrong(&location, 0);
-    v10 = [v9[0] remoteUIStyle];
+    remoteUIStyle = [v9[0] remoteUIStyle];
   }
 
   else
   {
-    v10 = 0;
+    remoteUIStyle = 0;
   }
 
   objc_storeStrong(v9, 0);
-  v2 = v10;
+  v2 = remoteUIStyle;
 
   return v2;
 }
 
-- (void)willPresentModalNavigationController:(id)a3
+- (void)willPresentModalNavigationController:(id)controller
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [(AKAppleIDAuthenticationInAppContext *)v10 delegate];
+  objc_storeStrong(location, controller);
+  delegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
     v7 = _AKLogSystem();
@@ -1195,131 +1195,131 @@ void __77__AKAppleIDAuthenticationInAppContext_dismissServerProvidedUIWithComple
     }
 
     objc_storeStrong(&v7, 0);
-    [v8 willPresentModalNavigationController:location[0]];
+    [delegate willPresentModalNavigationController:location[0]];
   }
 
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&delegate, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)willDisplayUI:(id)a3
+- (void)willDisplayUI:(id)i
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, i);
   v10 = [MEMORY[0x277CE44D8] ak_analyticsEventWithRUITelemetryElement:location[0] eventName:*MEMORY[0x277CF0350] error:0];
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [MEMORY[0x277CE44D8] encodedElementNameWithDomainPrefix:@"com.apple.remoteui" element:location[0] activeElements:v9];
-  v6 = [v9 aaf_arrayAsCommaSeperatedString];
+  aaf_arrayAsCommaSeperatedString = [v9 aaf_arrayAsCommaSeperatedString];
   v3 = *MEMORY[0x277CF0328];
   [v10 setObject:? forKeyedSubscript:?];
-  *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  v7 = [(AKAppleIDAuthenticationInAppContext *)v12 telemetryFlowID];
+  *&v4 = MEMORY[0x277D82BD8](aaf_arrayAsCommaSeperatedString).n128_u64[0];
+  telemetryFlowID = [(AKAppleIDAuthenticationInAppContext *)selfCopy telemetryFlowID];
   v5 = *MEMORY[0x277CE45B8];
   [v10 setObject:? forKeyedSubscript:?];
-  v8 = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
-  [v8 sendEvent:v10];
-  MEMORY[0x277D82BD8](v8);
+  rtcAnalyticsReporter = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v10];
+  MEMORY[0x277D82BD8](rtcAnalyticsReporter);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)willActivateElement:(id)a3
+- (void)willActivateElement:(id)element
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, element);
   v6 = [MEMORY[0x277CE44D8] ak_analyticsEventWithRUITelemetryElement:location[0] eventName:*MEMORY[0x277CF0330] error:0];
-  v4 = [(AKAppleIDAuthenticationInAppContext *)v8 telemetryFlowID];
+  telemetryFlowID = [(AKAppleIDAuthenticationInAppContext *)selfCopy telemetryFlowID];
   v3 = *MEMORY[0x277CE45B8];
   [v6 setObject:? forKeyedSubscript:?];
-  v5 = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
-  [v5 sendEvent:v6];
-  MEMORY[0x277D82BD8](v5);
+  rtcAnalyticsReporter = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v6];
+  MEMORY[0x277D82BD8](rtcAnalyticsReporter);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)willLoadURL:(id)a3
+- (void)willLoadURL:(id)l
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v6 = [MEMORY[0x277CE44D8] ak_analyticsEventWithRUITelemetryElement:location[0] eventName:*MEMORY[0x277CF0338] error:0];
-  v4 = [(AKAppleIDAuthenticationInAppContext *)v8 telemetryFlowID];
+  telemetryFlowID = [(AKAppleIDAuthenticationInAppContext *)selfCopy telemetryFlowID];
   v3 = *MEMORY[0x277CE45B8];
   [v6 setObject:? forKeyedSubscript:?];
-  v5 = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
-  [v5 sendEvent:v6];
-  MEMORY[0x277D82BD8](v5);
+  rtcAnalyticsReporter = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v6];
+  MEMORY[0x277D82BD8](rtcAnalyticsReporter);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)didLoadURL:(id)a3 error:(id)a4
+- (void)didLoadURL:(id)l error:(id)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, error);
   v8 = [MEMORY[0x277CE44D8] ak_analyticsEventWithRUITelemetryElement:location[0] eventName:*MEMORY[0x277CF0340] error:v9];
-  v6 = [(AKAppleIDAuthenticationInAppContext *)v11 telemetryFlowID];
+  telemetryFlowID = [(AKAppleIDAuthenticationInAppContext *)selfCopy telemetryFlowID];
   v4 = *MEMORY[0x277CE45B8];
   [v8 setObject:? forKeyedSubscript:?];
-  v7 = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
-  [v7 sendEvent:v8];
-  MEMORY[0x277D82BD8](v7);
+  rtcAnalyticsReporter = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v8];
+  MEMORY[0x277D82BD8](rtcAnalyticsReporter);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)willProcessHook:(id)a3
+- (void)willProcessHook:(id)hook
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, hook);
   v10 = [MEMORY[0x277CE44D8] ak_analyticsEventWithRUITelemetryElement:location[0] eventName:*MEMORY[0x277CF0348] error:0];
-  v6 = [(AKAppleIDAuthenticationInAppContext *)v12 telemetryFlowID];
+  telemetryFlowID = [(AKAppleIDAuthenticationInAppContext *)selfCopy telemetryFlowID];
   v3 = *MEMORY[0x277CE45B8];
   [v10 setObject:? forKeyedSubscript:?];
-  *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  v8 = [location[0] attributes];
-  v7 = [v8 objectForKeyedSubscript:@"name"];
+  *&v4 = MEMORY[0x277D82BD8](telemetryFlowID).n128_u64[0];
+  attributes = [location[0] attributes];
+  v7 = [attributes objectForKeyedSubscript:@"name"];
   v5 = *MEMORY[0x277CF0370];
   [v10 setObject:? forKeyedSubscript:?];
   MEMORY[0x277D82BD8](v7);
-  v9 = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
-  [v9 sendEvent:v10];
-  MEMORY[0x277D82BD8](v9);
+  rtcAnalyticsReporter = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v10];
+  MEMORY[0x277D82BD8](rtcAnalyticsReporter);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)processedElementWithError:(id)a3 forElement:(id)a4
+- (void)processedElementWithError:(id)error forElement:(id)element
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, element);
   if (location[0])
   {
     v8 = [MEMORY[0x277CE44D8] ak_analyticsEventWithRUITelemetryElement:v10 eventName:*MEMORY[0x277CF0358] error:location[0]];
-    v5 = [(AKAppleIDAuthenticationInAppContext *)v12 telemetryFlowID];
+    telemetryFlowID = [(AKAppleIDAuthenticationInAppContext *)selfCopy telemetryFlowID];
     v4 = *MEMORY[0x277CE45B8];
     [v8 setObject:? forKeyedSubscript:?];
-    v6 = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
-    [v6 sendEvent:v8];
-    MEMORY[0x277D82BD8](v6);
+    rtcAnalyticsReporter = [MEMORY[0x277CF0158] rtcAnalyticsReporter];
+    [rtcAnalyticsReporter sendEvent:v8];
+    MEMORY[0x277D82BD8](rtcAnalyticsReporter);
     objc_storeStrong(&v8, 0);
     v9 = 0;
   }
@@ -1338,142 +1338,142 @@ void __77__AKAppleIDAuthenticationInAppContext_dismissServerProvidedUIWithComple
   v4[2] = self;
   v4[1] = a2;
   v4[0] = [(AKAppleIDAuthenticationInAppContext *)self inAppAuthUIProvider];
-  v3 = [v4[0] remoteUIControllerDelegate];
+  remoteUIControllerDelegate = [v4[0] remoteUIControllerDelegate];
   objc_storeStrong(v4, 0);
 
-  return v3;
+  return remoteUIControllerDelegate;
 }
 
-- (void)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5 withCompletionHandler:(id)a6
+- (void)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response withCompletionHandler:(id)handler
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, request);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, response);
   v10 = 0;
-  objc_storeStrong(&v10, a6);
-  v9 = [(AKAppleIDAuthenticationInAppContext *)v14 _remoteUIControllerDelegate];
-  [v9 remoteUIController:location[0] shouldLoadRequest:v12 redirectResponse:v11 withCompletionHandler:v10];
-  MEMORY[0x277D82BD8](v9);
+  objc_storeStrong(&v10, handler);
+  _remoteUIControllerDelegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy _remoteUIControllerDelegate];
+  [_remoteUIControllerDelegate remoteUIController:location[0] shouldLoadRequest:v12 redirectResponse:v11 withCompletionHandler:v10];
+  MEMORY[0x277D82BD8](_remoteUIControllerDelegate);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didReceiveHTTPResponse:(id)a4 forRequest:(id)a5
+- (void)remoteUIController:(id)controller didReceiveHTTPResponse:(id)response forRequest:(id)request
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, response);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v7 = [(AKAppleIDAuthenticationInAppContext *)v11 _remoteUIControllerDelegate];
-  [v7 remoteUIController:location[0] didReceiveHTTPResponse:v9 forRequest:v8];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(&v8, request);
+  _remoteUIControllerDelegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy _remoteUIControllerDelegate];
+  [_remoteUIControllerDelegate remoteUIController:location[0] didReceiveHTTPResponse:v9 forRequest:v8];
+  MEMORY[0x277D82BD8](_remoteUIControllerDelegate);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, error);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v7 = [(AKAppleIDAuthenticationInAppContext *)v11 _remoteUIControllerDelegate];
-  [v7 remoteUIController:location[0] didFinishLoadWithError:v9 forRequest:v8];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(&v8, request);
+  _remoteUIControllerDelegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy _remoteUIControllerDelegate];
+  [_remoteUIControllerDelegate remoteUIController:location[0] didFinishLoadWithError:v9 forRequest:v8];
+  MEMORY[0x277D82BD8](_remoteUIControllerDelegate);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(AKAppleIDAuthenticationInAppContext *)v8 _remoteUIControllerDelegate];
-  [v5 remoteUIController:location[0] willPresentModalNavigationController:v6];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v6, navigationController);
+  _remoteUIControllerDelegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy _remoteUIControllerDelegate];
+  [_remoteUIControllerDelegate remoteUIController:location[0] willPresentModalNavigationController:v6];
+  MEMORY[0x277D82BD8](_remoteUIControllerDelegate);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didDismissModalNavigationWithObjectModels:(id)a4
+- (void)remoteUIController:(id)controller didDismissModalNavigationWithObjectModels:(id)models
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(AKAppleIDAuthenticationInAppContext *)v8 _remoteUIControllerDelegate];
-  [v5 remoteUIController:location[0] didDismissModalNavigationWithObjectModels:v6];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v6, models);
+  _remoteUIControllerDelegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy _remoteUIControllerDelegate];
+  [_remoteUIControllerDelegate remoteUIController:location[0] didDismissModalNavigationWithObjectModels:v6];
+  MEMORY[0x277D82BD8](_remoteUIControllerDelegate);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(AKAppleIDAuthenticationInAppContext *)v10 _remoteUIControllerDelegate];
-  [v7 remoteUIController:location[0] didReceiveObjectModel:v8 actionSignal:a5];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(&v8, model);
+  _remoteUIControllerDelegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy _remoteUIControllerDelegate];
+  [_remoteUIControllerDelegate remoteUIController:location[0] didReceiveObjectModel:v8 actionSignal:signal];
+  MEMORY[0x277D82BD8](_remoteUIControllerDelegate);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 willPresentObjectModel:(id)a4 modally:(BOOL)a5
+- (void)remoteUIController:(id)controller willPresentObjectModel:(id)model modally:(BOOL)modally
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(AKAppleIDAuthenticationInAppContext *)v10 _remoteUIControllerDelegate];
-  [v7 remoteUIController:location[0] willPresentObjectModel:v8 modally:a5];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(&v8, model);
+  _remoteUIControllerDelegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy _remoteUIControllerDelegate];
+  [_remoteUIControllerDelegate remoteUIController:location[0] willPresentObjectModel:v8 modally:modally];
+  MEMORY[0x277D82BD8](_remoteUIControllerDelegate);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)remoteUIController:(id)controller didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, challenge);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v7 = [(AKAppleIDAuthenticationInAppContext *)v11 _remoteUIControllerDelegate];
-  [v7 remoteUIController:location[0] didReceiveChallenge:v9 completionHandler:v8];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(&v8, handler);
+  _remoteUIControllerDelegate = [(AKAppleIDAuthenticationInAppContext *)selfCopy _remoteUIControllerDelegate];
+  [_remoteUIControllerDelegate remoteUIController:location[0] didReceiveChallenge:v9 completionHandler:v8];
+  MEMORY[0x277D82BD8](_remoteUIControllerDelegate);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);

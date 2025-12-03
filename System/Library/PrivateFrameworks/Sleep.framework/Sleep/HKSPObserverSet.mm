@@ -1,39 +1,39 @@
 @interface HKSPObserverSet
-- (BOOL)containsObserver:(id)a3;
+- (BOOL)containsObserver:(id)observer;
 - (HKSPObserverSet)init;
-- (HKSPObserverSet)initWithCallbackScheduler:(id)a3;
+- (HKSPObserverSet)initWithCallbackScheduler:(id)scheduler;
 - (id)description;
-- (id)enumerateObserversWithFutureBlock:(id)a3;
+- (id)enumerateObserversWithFutureBlock:(id)block;
 - (unint64_t)count;
-- (void)_withLock:(id)a3;
-- (void)addObserver:(id)a3 callbackScheduler:(id)a4 wasFirst:(BOOL *)a5;
-- (void)enumerateObserversWithBlock:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)addObserver:(id)observer callbackScheduler:(id)scheduler wasFirst:(BOOL *)first;
+- (void)enumerateObserversWithBlock:(id)block;
 - (void)removeAllObservers;
-- (void)removeObserver:(id)a3 wasLast:(BOOL *)a4;
+- (void)removeObserver:(id)observer wasLast:(BOOL *)last;
 @end
 
 @implementation HKSPObserverSet
 
 - (HKSPObserverSet)init
 {
-  v3 = [MEMORY[0x277D2C938] hkspMainThreadScheduler];
-  v4 = [(HKSPObserverSet *)self initWithCallbackScheduler:v3];
+  hkspMainThreadScheduler = [MEMORY[0x277D2C938] hkspMainThreadScheduler];
+  v4 = [(HKSPObserverSet *)self initWithCallbackScheduler:hkspMainThreadScheduler];
 
   return v4;
 }
 
-- (HKSPObserverSet)initWithCallbackScheduler:(id)a3
+- (HKSPObserverSet)initWithCallbackScheduler:(id)scheduler
 {
-  v4 = a3;
+  schedulerCopy = scheduler;
   v15.receiver = self;
   v15.super_class = HKSPObserverSet;
   v5 = [(HKSPObserverSet *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (schedulerCopy)
     {
-      v7 = v4;
+      v7 = schedulerCopy;
       callbackScheduler = v6->_callbackScheduler;
       v6->_callbackScheduler = v7;
     }
@@ -46,9 +46,9 @@
       v6->_callbackScheduler = v9;
     }
 
-    v11 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     observerRecords = v6->_observerRecords;
-    v6->_observerRecords = v11;
+    v6->_observerRecords = weakToStrongObjectsMapTable;
 
     v6->_observersLock._os_unfair_lock_opaque = 0;
     v13 = v6;
@@ -57,23 +57,23 @@
   return v6;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_observersLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)addObserver:(id)a3 callbackScheduler:(id)a4 wasFirst:(BOOL *)a5
+- (void)addObserver:(id)observer callbackScheduler:(id)scheduler wasFirst:(BOOL *)first
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  observerCopy = observer;
+  schedulerCopy = scheduler;
+  if (!observerCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HKSPObserverSet.m" lineNumber:63 description:@"observer cannot be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPObserverSet.m" lineNumber:63 description:@"observer cannot be nil"];
   }
 
   v14[0] = MEMORY[0x277D85DD0];
@@ -81,11 +81,11 @@
   v14[2] = __58__HKSPObserverSet_addObserver_callbackScheduler_wasFirst___block_invoke;
   v14[3] = &unk_279C74168;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = a5;
-  v11 = v10;
-  v12 = v9;
+  v15 = observerCopy;
+  v16 = schedulerCopy;
+  firstCopy = first;
+  v11 = schedulerCopy;
+  v12 = observerCopy;
   [(HKSPObserverSet *)self _withLock:v14];
 }
 
@@ -101,13 +101,13 @@ void __58__HKSPObserverSet_addObserver_callbackScheduler_wasFirst___block_invoke
   }
 }
 
-- (void)removeObserver:(id)a3 wasLast:(BOOL *)a4
+- (void)removeObserver:(id)observer wasLast:(BOOL *)last
 {
-  v7 = a3;
-  if (!v7)
+  observerCopy = observer;
+  if (!observerCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HKSPObserverSet.m" lineNumber:78 description:@"observer cannot be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPObserverSet.m" lineNumber:78 description:@"observer cannot be nil"];
   }
 
   v10[0] = MEMORY[0x277D85DD0];
@@ -115,9 +115,9 @@ void __58__HKSPObserverSet_addObserver_callbackScheduler_wasFirst___block_invoke
   v10[2] = __42__HKSPObserverSet_removeObserver_wasLast___block_invoke;
   v10[3] = &unk_279C74190;
   v10[4] = self;
-  v11 = v7;
-  v12 = a4;
-  v8 = v7;
+  v11 = observerCopy;
+  lastCopy = last;
+  v8 = observerCopy;
   [(HKSPObserverSet *)self _withLock:v10];
 }
 
@@ -143,15 +143,15 @@ uint64_t __42__HKSPObserverSet_removeObserver_wasLast___block_invoke(uint64_t a1
   [(HKSPObserverSet *)self _withLock:v2];
 }
 
-- (void)enumerateObserversWithBlock:(id)a3
+- (void)enumerateObserversWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__HKSPObserverSet_enumerateObserversWithBlock___block_invoke;
   v7[3] = &unk_279C741B8;
-  v8 = v4;
-  v5 = v4;
+  v8 = blockCopy;
+  v5 = blockCopy;
   v6 = [(HKSPObserverSet *)self enumerateObserversWithFutureBlock:v7];
 }
 
@@ -163,10 +163,10 @@ uint64_t __47__HKSPObserverSet_enumerateObserversWithBlock___block_invoke(uint64
   return [v1 futureWithNoResult];
 }
 
-- (id)enumerateObserversWithFutureBlock:(id)a3
+- (id)enumerateObserversWithFutureBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -179,7 +179,7 @@ uint64_t __47__HKSPObserverSet_enumerateObserversWithBlock___block_invoke(uint64
   v28[3] = &unk_279C741E0;
   v28[4] = self;
   v28[5] = &v29;
-  v20 = self;
+  selfCopy = self;
   [(HKSPObserverSet *)self _withLock:v28];
   v5 = objc_opt_new();
   v26 = 0u;
@@ -201,15 +201,15 @@ uint64_t __47__HKSPObserverSet_enumerateObserversWithBlock___block_invoke(uint64
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v10 observer];
+        observer = [v10 observer];
 
-        if (v11)
+        if (observer)
         {
-          v12 = [v10 callbackScheduler];
-          callbackScheduler = v12;
-          if (!v12)
+          callbackScheduler = [v10 callbackScheduler];
+          callbackScheduler = callbackScheduler;
+          if (!callbackScheduler)
           {
-            callbackScheduler = v20->_callbackScheduler;
+            callbackScheduler = selfCopy->_callbackScheduler;
           }
 
           v14 = callbackScheduler;
@@ -219,7 +219,7 @@ uint64_t __47__HKSPObserverSet_enumerateObserversWithBlock___block_invoke(uint64
           v21[1] = 3221225472;
           v21[2] = __53__HKSPObserverSet_enumerateObserversWithFutureBlock___block_invoke_2;
           v21[3] = &unk_279C74208;
-          v23 = v4;
+          v23 = blockCopy;
           v21[4] = v10;
           v16 = v15;
           v22 = v16;
@@ -261,13 +261,13 @@ void __53__HKSPObserverSet_enumerateObserversWithFutureBlock___block_invoke_2(ui
   v5 = [v3 addCompletionBlock:v4];
 }
 
-- (BOOL)containsObserver:(id)a3
+- (BOOL)containsObserver:(id)observer
 {
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HKSPObserverSet.m" lineNumber:125 description:@"observer cannot be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPObserverSet.m" lineNumber:125 description:@"observer cannot be nil"];
   }
 
   v13 = 0;
@@ -280,7 +280,7 @@ void __53__HKSPObserverSet_enumerateObserversWithFutureBlock___block_invoke_2(ui
   v10[3] = &unk_279C74230;
   v12 = &v13;
   v10[4] = self;
-  v6 = v5;
+  v6 = observerCopy;
   v11 = v6;
   [(HKSPObserverSet *)self _withLock:v10];
   v7 = *(v14 + 24);

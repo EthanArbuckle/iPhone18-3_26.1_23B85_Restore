@@ -1,23 +1,23 @@
 @interface ABCPbSummarySignatureRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAttachments:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCaseStartTime:(BOOL)a3;
-- (void)setHasLogSizeTotal:(BOOL)a3;
-- (void)setHasRemoteTrigger:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttachments:(id)attachments;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCaseStartTime:(BOOL)time;
+- (void)setHasLogSizeTotal:(BOOL)total;
+- (void)setHasRemoteTrigger:(BOOL)trigger;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABCPbSummarySignatureRequest
 
-- (void)setHasLogSizeTotal:(BOOL)a3
+- (void)setHasLogSizeTotal:(BOOL)total
 {
-  if (a3)
+  if (total)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCaseStartTime:(BOOL)a3
+- (void)setHasCaseStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRemoteTrigger:(BOOL)a3
+- (void)setHasRemoteTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 8;
   }
@@ -60,22 +60,22 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addAttachments:(id)a3
+- (void)addAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   attachments = self->_attachments;
-  v8 = v4;
+  v8 = attachmentsCopy;
   if (!attachments)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_attachments;
     self->_attachments = v6;
 
-    v4 = v8;
+    attachmentsCopy = v8;
     attachments = self->_attachments;
   }
 
-  [(NSMutableArray *)attachments addObject:v4];
+  [(NSMutableArray *)attachments addObject:attachmentsCopy];
 }
 
 - (id)description
@@ -84,8 +84,8 @@
   v8.receiver = self;
   v8.super_class = ABCPbSummarySignatureRequest;
   v4 = [(ABCPbSummarySignatureRequest *)&v8 description];
-  v5 = [(ABCPbSummarySignatureRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ABCPbSummarySignatureRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -93,12 +93,12 @@
 - (id)dictionaryRepresentation
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   type = self->_type;
@@ -234,8 +234,8 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
+          [v25 addObject:dictionaryRepresentation];
         }
 
         v28 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -252,10 +252,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -389,133 +389,133 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_domain)
   {
-    [v4 setDomain:?];
-    v4 = v10;
+    [toCopy setDomain:?];
+    toCopy = v10;
   }
 
   if (self->_type)
   {
     [v10 setType:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_subtype)
   {
     [v10 setSubtype:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_subtypeContext)
   {
     [v10 setSubtypeContext:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_caseIdentifier)
   {
     [v10 setCaseIdentifier:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_process)
   {
     [v10 setProcess:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_build)
   {
     [v10 setBuild:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_buildVariant)
   {
     [v10 setBuildVariant:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_caseGroupIdentifier)
   {
     [v10 setCaseGroupIdentifier:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 30) = self->_logSizeTotal;
-    *(v4 + 164) |= 4u;
+    *(toCopy + 30) = self->_logSizeTotal;
+    *(toCopy + 164) |= 4u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_caseClosedTime;
-    *(v4 + 164) |= 1u;
+    *(toCopy + 1) = *&self->_caseClosedTime;
+    *(toCopy + 164) |= 1u;
   }
 
   if (self->_caseClosureType)
   {
     [v10 setCaseClosureType:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_caseStartTime;
-    *(v4 + 164) |= 2u;
+    *(toCopy + 2) = *&self->_caseStartTime;
+    *(toCopy + 164) |= 2u;
   }
 
   if (self->_caseContext)
   {
     [v10 setCaseContext:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_caseDampeningType)
   {
     [v10 setCaseDampeningType:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_caseEffectiveProcess)
   {
     [v10 setCaseEffectiveProcess:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_caseRelatedProcesses)
   {
     [v10 setCaseRelatedProcesses:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_caseThresholdValues)
   {
     [v10 setCaseThresholdValues:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 160) = self->_remoteTrigger;
-    *(v4 + 164) |= 8u;
+    *(toCopy + 160) = self->_remoteTrigger;
+    *(toCopy + 164) |= 8u;
   }
 
   if ([(ABCPbSummarySignatureRequest *)self attachmentsCount])
   {
     [v10 clearAttachments];
-    v6 = [(ABCPbSummarySignatureRequest *)self attachmentsCount];
-    if (v6)
+    attachmentsCount = [(ABCPbSummarySignatureRequest *)self attachmentsCount];
+    if (attachmentsCount)
     {
-      v7 = v6;
+      v7 = attachmentsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ABCPbSummarySignatureRequest *)self attachmentsAtIndex:i];
@@ -525,43 +525,43 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = *(v5 + 112);
   *(v5 + 112) = v6;
 
-  v8 = [(NSString *)self->_type copyWithZone:a3];
+  v8 = [(NSString *)self->_type copyWithZone:zone];
   v9 = *(v5 + 152);
   *(v5 + 152) = v8;
 
-  v10 = [(NSString *)self->_subtype copyWithZone:a3];
+  v10 = [(NSString *)self->_subtype copyWithZone:zone];
   v11 = *(v5 + 136);
   *(v5 + 136) = v10;
 
-  v12 = [(NSString *)self->_subtypeContext copyWithZone:a3];
+  v12 = [(NSString *)self->_subtypeContext copyWithZone:zone];
   v13 = *(v5 + 144);
   *(v5 + 144) = v12;
 
-  v14 = [(NSString *)self->_caseIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_caseIdentifier copyWithZone:zone];
   v15 = *(v5 + 88);
   *(v5 + 88) = v14;
 
-  v16 = [(NSString *)self->_process copyWithZone:a3];
+  v16 = [(NSString *)self->_process copyWithZone:zone];
   v17 = *(v5 + 128);
   *(v5 + 128) = v16;
 
-  v18 = [(NSString *)self->_build copyWithZone:a3];
+  v18 = [(NSString *)self->_build copyWithZone:zone];
   v19 = *(v5 + 32);
   *(v5 + 32) = v18;
 
-  v20 = [(NSString *)self->_buildVariant copyWithZone:a3];
+  v20 = [(NSString *)self->_buildVariant copyWithZone:zone];
   v21 = *(v5 + 40);
   *(v5 + 40) = v20;
 
-  v22 = [(NSString *)self->_caseGroupIdentifier copyWithZone:a3];
+  v22 = [(NSString *)self->_caseGroupIdentifier copyWithZone:zone];
   v23 = *(v5 + 80);
   *(v5 + 80) = v22;
 
@@ -579,7 +579,7 @@
     *(v5 + 164) |= 1u;
   }
 
-  v25 = [(NSString *)self->_caseClosureType copyWithZone:a3];
+  v25 = [(NSString *)self->_caseClosureType copyWithZone:zone];
   v26 = *(v5 + 48);
   *(v5 + 48) = v25;
 
@@ -589,23 +589,23 @@
     *(v5 + 164) |= 2u;
   }
 
-  v27 = [(NSString *)self->_caseContext copyWithZone:a3];
+  v27 = [(NSString *)self->_caseContext copyWithZone:zone];
   v28 = *(v5 + 56);
   *(v5 + 56) = v27;
 
-  v29 = [(NSString *)self->_caseDampeningType copyWithZone:a3];
+  v29 = [(NSString *)self->_caseDampeningType copyWithZone:zone];
   v30 = *(v5 + 64);
   *(v5 + 64) = v29;
 
-  v31 = [(NSString *)self->_caseEffectiveProcess copyWithZone:a3];
+  v31 = [(NSString *)self->_caseEffectiveProcess copyWithZone:zone];
   v32 = *(v5 + 72);
   *(v5 + 72) = v31;
 
-  v33 = [(NSString *)self->_caseRelatedProcesses copyWithZone:a3];
+  v33 = [(NSString *)self->_caseRelatedProcesses copyWithZone:zone];
   v34 = *(v5 + 96);
   *(v5 + 96) = v33;
 
-  v35 = [(NSString *)self->_caseThresholdValues copyWithZone:a3];
+  v35 = [(NSString *)self->_caseThresholdValues copyWithZone:zone];
   v36 = *(v5 + 104);
   *(v5 + 104) = v35;
 
@@ -634,7 +634,7 @@
           objc_enumerationMutation(v37);
         }
 
-        v42 = [*(*(&v45 + 1) + 8 * i) copyWithZone:{a3, v45}];
+        v42 = [*(*(&v45 + 1) + 8 * i) copyWithZone:{zone, v45}];
         [v5 addAttachments:v42];
       }
 
@@ -648,16 +648,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   domain = self->_domain;
-  if (domain | *(v4 + 14))
+  if (domain | *(equalCopy + 14))
   {
     if (![(NSString *)domain isEqual:?])
     {
@@ -666,7 +666,7 @@
   }
 
   type = self->_type;
-  if (type | *(v4 + 19))
+  if (type | *(equalCopy + 19))
   {
     if (![(NSString *)type isEqual:?])
     {
@@ -675,7 +675,7 @@
   }
 
   subtype = self->_subtype;
-  if (subtype | *(v4 + 17))
+  if (subtype | *(equalCopy + 17))
   {
     if (![(NSString *)subtype isEqual:?])
     {
@@ -684,7 +684,7 @@
   }
 
   subtypeContext = self->_subtypeContext;
-  if (subtypeContext | *(v4 + 18))
+  if (subtypeContext | *(equalCopy + 18))
   {
     if (![(NSString *)subtypeContext isEqual:?])
     {
@@ -693,7 +693,7 @@
   }
 
   caseIdentifier = self->_caseIdentifier;
-  if (caseIdentifier | *(v4 + 11))
+  if (caseIdentifier | *(equalCopy + 11))
   {
     if (![(NSString *)caseIdentifier isEqual:?])
     {
@@ -702,7 +702,7 @@
   }
 
   process = self->_process;
-  if (process | *(v4 + 16))
+  if (process | *(equalCopy + 16))
   {
     if (![(NSString *)process isEqual:?])
     {
@@ -711,7 +711,7 @@
   }
 
   build = self->_build;
-  if (build | *(v4 + 4))
+  if (build | *(equalCopy + 4))
   {
     if (![(NSString *)build isEqual:?])
     {
@@ -720,7 +720,7 @@
   }
 
   buildVariant = self->_buildVariant;
-  if (buildVariant | *(v4 + 5))
+  if (buildVariant | *(equalCopy + 5))
   {
     if (![(NSString *)buildVariant isEqual:?])
     {
@@ -729,7 +729,7 @@
   }
 
   caseGroupIdentifier = self->_caseGroupIdentifier;
-  if (caseGroupIdentifier | *(v4 + 10))
+  if (caseGroupIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)caseGroupIdentifier isEqual:?])
     {
@@ -738,35 +738,35 @@
   }
 
   has = self->_has;
-  v15 = *(v4 + 164);
+  v15 = *(equalCopy + 164);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 164) & 4) == 0 || self->_logSizeTotal != *(v4 + 30))
+    if ((*(equalCopy + 164) & 4) == 0 || self->_logSizeTotal != *(equalCopy + 30))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 164) & 4) != 0)
+  else if ((*(equalCopy + 164) & 4) != 0)
   {
     goto LABEL_53;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 164) & 1) == 0 || self->_caseClosedTime != *(v4 + 1))
+    if ((*(equalCopy + 164) & 1) == 0 || self->_caseClosedTime != *(equalCopy + 1))
     {
       goto LABEL_53;
     }
   }
 
-  else if (*(v4 + 164))
+  else if (*(equalCopy + 164))
   {
     goto LABEL_53;
   }
 
   caseClosureType = self->_caseClosureType;
-  if (caseClosureType | *(v4 + 6))
+  if (caseClosureType | *(equalCopy + 6))
   {
     if (![(NSString *)caseClosureType isEqual:?])
     {
@@ -776,28 +776,28 @@
     has = self->_has;
   }
 
-  v17 = *(v4 + 164);
+  v17 = *(equalCopy + 164);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 164) & 2) == 0 || self->_caseStartTime != *(v4 + 2))
+    if ((*(equalCopy + 164) & 2) == 0 || self->_caseStartTime != *(equalCopy + 2))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 164) & 2) != 0)
+  else if ((*(equalCopy + 164) & 2) != 0)
   {
     goto LABEL_53;
   }
 
   caseContext = self->_caseContext;
-  if (caseContext | *(v4 + 7) && ![(NSString *)caseContext isEqual:?])
+  if (caseContext | *(equalCopy + 7) && ![(NSString *)caseContext isEqual:?])
   {
     goto LABEL_53;
   }
 
   caseDampeningType = self->_caseDampeningType;
-  if (caseDampeningType | *(v4 + 8))
+  if (caseDampeningType | *(equalCopy + 8))
   {
     if (![(NSString *)caseDampeningType isEqual:?])
     {
@@ -806,7 +806,7 @@
   }
 
   caseEffectiveProcess = self->_caseEffectiveProcess;
-  if (caseEffectiveProcess | *(v4 + 9))
+  if (caseEffectiveProcess | *(equalCopy + 9))
   {
     if (![(NSString *)caseEffectiveProcess isEqual:?])
     {
@@ -815,7 +815,7 @@
   }
 
   caseRelatedProcesses = self->_caseRelatedProcesses;
-  if (caseRelatedProcesses | *(v4 + 12))
+  if (caseRelatedProcesses | *(equalCopy + 12))
   {
     if (![(NSString *)caseRelatedProcesses isEqual:?])
     {
@@ -824,7 +824,7 @@
   }
 
   caseThresholdValues = self->_caseThresholdValues;
-  if (caseThresholdValues | *(v4 + 13))
+  if (caseThresholdValues | *(equalCopy + 13))
   {
     if (![(NSString *)caseThresholdValues isEqual:?])
     {
@@ -832,10 +832,10 @@
     }
   }
 
-  v23 = *(v4 + 164);
+  v23 = *(equalCopy + 164);
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 164) & 8) == 0)
+    if ((*(equalCopy + 164) & 8) == 0)
     {
       goto LABEL_50;
     }
@@ -845,28 +845,28 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  if ((*(v4 + 164) & 8) == 0)
+  if ((*(equalCopy + 164) & 8) == 0)
   {
     goto LABEL_53;
   }
 
-  v27 = *(v4 + 160);
+  v27 = *(equalCopy + 160);
   if (self->_remoteTrigger)
   {
-    if ((*(v4 + 160) & 1) == 0)
+    if ((*(equalCopy + 160) & 1) == 0)
     {
       goto LABEL_53;
     }
   }
 
-  else if (*(v4 + 160))
+  else if (*(equalCopy + 160))
   {
     goto LABEL_53;
   }
 
 LABEL_50:
   attachments = self->_attachments;
-  if (attachments | *(v4 + 3))
+  if (attachments | *(equalCopy + 3))
   {
     v25 = [(NSMutableArray *)attachments isEqual:?];
   }
@@ -990,108 +990,108 @@ LABEL_9:
   return v32 ^ v33 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v8 ^ v9 ^ v12 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ [(NSMutableArray *)self->_attachments hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 14))
+  fromCopy = from;
+  if (*(fromCopy + 14))
   {
     [(ABCPbSummarySignatureRequest *)self setDomain:?];
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(ABCPbSummarySignatureRequest *)self setType:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(ABCPbSummarySignatureRequest *)self setSubtype:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(ABCPbSummarySignatureRequest *)self setSubtypeContext:?];
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(ABCPbSummarySignatureRequest *)self setCaseIdentifier:?];
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(ABCPbSummarySignatureRequest *)self setProcess:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ABCPbSummarySignatureRequest *)self setBuild:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ABCPbSummarySignatureRequest *)self setBuildVariant:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(ABCPbSummarySignatureRequest *)self setCaseGroupIdentifier:?];
   }
 
-  v5 = *(v4 + 164);
+  v5 = *(fromCopy + 164);
   if ((v5 & 4) != 0)
   {
-    self->_logSizeTotal = *(v4 + 30);
+    self->_logSizeTotal = *(fromCopy + 30);
     *&self->_has |= 4u;
-    v5 = *(v4 + 164);
+    v5 = *(fromCopy + 164);
   }
 
   if (v5)
   {
-    self->_caseClosedTime = *(v4 + 1);
+    self->_caseClosedTime = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ABCPbSummarySignatureRequest *)self setCaseClosureType:?];
   }
 
-  if ((*(v4 + 164) & 2) != 0)
+  if ((*(fromCopy + 164) & 2) != 0)
   {
-    self->_caseStartTime = *(v4 + 2);
+    self->_caseStartTime = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(ABCPbSummarySignatureRequest *)self setCaseContext:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(ABCPbSummarySignatureRequest *)self setCaseDampeningType:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(ABCPbSummarySignatureRequest *)self setCaseEffectiveProcess:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(ABCPbSummarySignatureRequest *)self setCaseRelatedProcesses:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(ABCPbSummarySignatureRequest *)self setCaseThresholdValues:?];
   }
 
-  if ((*(v4 + 164) & 8) != 0)
+  if ((*(fromCopy + 164) & 8) != 0)
   {
-    self->_remoteTrigger = *(v4 + 160);
+    self->_remoteTrigger = *(fromCopy + 160);
     *&self->_has |= 8u;
   }
 
@@ -1099,7 +1099,7 @@ LABEL_9:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

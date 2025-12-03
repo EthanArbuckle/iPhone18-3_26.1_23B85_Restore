@@ -4,11 +4,11 @@
 - (void)_listen;
 - (void)_sendItemScanInformation;
 - (void)_sendValueInputs;
-- (void)deviceMonitorDidDetectDeviceEvent:(id)a3;
-- (void)selectItemWithIndex:(int64_t)a3;
-- (void)sendButtonEventForButtonNumber:(int64_t)a3;
-- (void)sendMovementAcceleration:(CGPoint)a3;
-- (void)sendSignalQuality:(int64_t)a3;
+- (void)deviceMonitorDidDetectDeviceEvent:(id)event;
+- (void)selectItemWithIndex:(int64_t)index;
+- (void)sendButtonEventForButtonNumber:(int64_t)number;
+- (void)sendMovementAcceleration:(CGPoint)acceleration;
+- (void)sendSignalQuality:(int64_t)quality;
 @end
 
 @implementation AXTadmorTesterDevice
@@ -59,8 +59,8 @@ uint64_t __38__AXTadmorTesterDevice_sharedInstance__block_invoke()
     v14[6] = MEMORY[0x1E695E110];
     v13[6] = @"Built-In";
     v13[7] = @"SerialNumber";
-    v7 = [MEMORY[0x1E695DFB0] null];
-    v14[7] = v7;
+    null = [MEMORY[0x1E695DFB0] null];
+    v14[7] = null;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:8];
 
     [(AXTadmorTesterDevice *)self _listen];
@@ -73,35 +73,35 @@ uint64_t __38__AXTadmorTesterDevice_sharedInstance__block_invoke()
       IOHIDUserDeviceRegisterGetReportCallback();
       CFRunLoopGetMain();
       IOHIDUserDeviceScheduleWithRunLoop();
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)_sendItemScanInformation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(AXDeviceMonitor *)self->_monitor copyDevices];
-  v3 = [v2 anyObject];
+  copyDevices = [(AXDeviceMonitor *)self->_monitor copyDevices];
+  anyObject = [copyDevices anyObject];
 
-  v4 = v3;
+  v4 = anyObject;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = IOHIDDeviceCopyMatchingElements(v3, &unk_1EFE973F8, 0);
+  obj = IOHIDDeviceCopyMatchingElements(anyObject, &unk_1EFE973F8, 0);
   v5 = [(__CFArray *)obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
@@ -140,7 +140,7 @@ uint64_t __38__AXTadmorTesterDevice_sharedInstance__block_invoke()
   }
 }
 
-- (void)sendSignalQuality:(int64_t)a3
+- (void)sendSignalQuality:(int64_t)quality
 {
   v5 = dispatch_get_global_queue(2, 0);
   v6[0] = MEMORY[0x1E69E9820];
@@ -148,11 +148,11 @@ uint64_t __38__AXTadmorTesterDevice_sharedInstance__block_invoke()
   v6[2] = __42__AXTadmorTesterDevice_sendSignalQuality___block_invoke;
   v6[3] = &unk_1E71EAF98;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = quality;
   dispatch_async(v5, v6);
 }
 
-- (void)sendButtonEventForButtonNumber:(int64_t)a3
+- (void)sendButtonEventForButtonNumber:(int64_t)number
 {
   v5 = dispatch_get_global_queue(2, 0);
   v6[0] = MEMORY[0x1E69E9820];
@@ -160,7 +160,7 @@ uint64_t __38__AXTadmorTesterDevice_sharedInstance__block_invoke()
   v6[2] = __55__AXTadmorTesterDevice_sendButtonEventForButtonNumber___block_invoke;
   v6[3] = &unk_1E71EAF98;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = number;
   dispatch_async(v5, v6);
 }
 
@@ -185,10 +185,10 @@ uint64_t __55__AXTadmorTesterDevice_sendButtonEventForButtonNumber___block_invok
   return IOHIDUserDeviceHandleReport();
 }
 
-- (void)sendMovementAcceleration:(CGPoint)a3
+- (void)sendMovementAcceleration:(CGPoint)acceleration
 {
-  y = a3.y;
-  x = a3.x;
+  y = acceleration.y;
+  x = acceleration.x;
   v6 = dispatch_get_global_queue(2, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -200,7 +200,7 @@ uint64_t __55__AXTadmorTesterDevice_sendButtonEventForButtonNumber___block_invok
   dispatch_async(v6, block);
 }
 
-- (void)selectItemWithIndex:(int64_t)a3
+- (void)selectItemWithIndex:(int64_t)index
 {
   v5 = dispatch_get_global_queue(2, 0);
   v6[0] = MEMORY[0x1E69E9820];
@@ -208,7 +208,7 @@ uint64_t __55__AXTadmorTesterDevice_sendButtonEventForButtonNumber___block_invok
   v6[2] = __44__AXTadmorTesterDevice_selectItemWithIndex___block_invoke;
   v6[3] = &unk_1E71EAF98;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = index;
   dispatch_async(v5, v6);
 }
 
@@ -238,8 +238,8 @@ uint64_t __40__AXTadmorTesterDevice__sendValueInputs__block_invoke(uint64_t a1)
 - (void)_listen
 {
   v3 = [AXDeviceMonitor alloc];
-  v4 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  v5 = [(AXDeviceMonitor *)v3 initWithMatchingDictionary:&unk_1EFE97420 callbackRunLoop:v4];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  v5 = [(AXDeviceMonitor *)v3 initWithMatchingDictionary:&unk_1EFE97420 callbackRunLoop:mainRunLoop];
   monitor = self->_monitor;
   self->_monitor = v5;
 
@@ -249,16 +249,16 @@ uint64_t __40__AXTadmorTesterDevice__sendValueInputs__block_invoke(uint64_t a1)
   [(AXDeviceMonitor *)v7 begin];
 }
 
-- (void)deviceMonitorDidDetectDeviceEvent:(id)a3
+- (void)deviceMonitorDidDetectDeviceEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 copyDevices];
-  NSLog(&cfstr_FoundDevice.isa, v5);
+  eventCopy = event;
+  copyDevices = [eventCopy copyDevices];
+  NSLog(&cfstr_FoundDevice.isa, copyDevices);
 
-  v6 = [v4 copyDevices];
-  v7 = [v6 anyObject];
+  copyDevices2 = [eventCopy copyDevices];
+  anyObject = [copyDevices2 anyObject];
 
-  IOHIDDeviceRegisterInputValueCallback(v7, _valueCallback, self);
+  IOHIDDeviceRegisterInputValueCallback(anyObject, _valueCallback, self);
 }
 
 @end

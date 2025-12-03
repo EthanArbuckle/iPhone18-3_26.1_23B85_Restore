@@ -1,19 +1,19 @@
 @interface PIAutoLoopAutoCalculator
 + (id)pipelineFilterForRevertedOriginal;
 + (id)pipelineFilterForUnRevertedOriginal;
-- (PIAutoLoopAutoCalculator)initWithComposition:(id)a3;
-- (PIAutoLoopAutoCalculator)initWithMedia:(id)a3;
-- (PIAutoLoopAutoCalculator)initWithRequest:(id)a3;
-- (void)submit:(id)a3;
+- (PIAutoLoopAutoCalculator)initWithComposition:(id)composition;
+- (PIAutoLoopAutoCalculator)initWithMedia:(id)media;
+- (PIAutoLoopAutoCalculator)initWithRequest:(id)request;
+- (void)submit:(id)submit;
 @end
 
 @implementation PIAutoLoopAutoCalculator
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  submitCopy = submit;
+  if (!submitCopy)
   {
     v20 = NUAssertLogger_6863();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -35,8 +35,8 @@
         v28 = dispatch_get_specific(*v22);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v28;
         v38 = 2114;
@@ -47,8 +47,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v27;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -57,18 +57,18 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
-  v6 = [(NURenderRequest *)self composition];
-  if ([v6 mediaType] == 3)
+  v5 = submitCopy;
+  composition = [(NURenderRequest *)self composition];
+  if ([composition mediaType] == 3)
   {
   }
 
   else
   {
-    v7 = [(NURenderRequest *)self composition];
-    v8 = [v7 mediaType];
+    composition2 = [(NURenderRequest *)self composition];
+    mediaType = [composition2 mediaType];
 
-    if (v8 != 2)
+    if (mediaType != 2)
     {
       v18 = MEMORY[0x1E69B3A48];
       v19 = [(PIAutoLoopAutoCalculator *)self copy];
@@ -80,8 +80,8 @@
     }
   }
 
-  v9 = [(NURenderRequest *)self composition];
-  v10 = [v9 objectForKeyedSubscript:@"autoLoop"];
+  composition3 = [(NURenderRequest *)self composition];
+  v10 = [composition3 objectForKeyedSubscript:@"autoLoop"];
 
   if (!v10 || ([v10 objectForKeyedSubscript:@"recipe"], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
@@ -191,10 +191,10 @@ BOOL __35__PIAutoLoopAutoCalculator_submit___block_invoke_2(uint64_t a1, void *a
   return v3;
 }
 
-- (PIAutoLoopAutoCalculator)initWithMedia:(id)a3
+- (PIAutoLoopAutoCalculator)initWithMedia:(id)media
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -233,8 +233,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -261,8 +261,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -280,10 +280,10 @@ LABEL_14:
   }
 }
 
-- (PIAutoLoopAutoCalculator)initWithRequest:(id)a3
+- (PIAutoLoopAutoCalculator)initWithRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -322,8 +322,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -350,8 +350,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -369,11 +369,11 @@ LABEL_14:
   }
 }
 
-- (PIAutoLoopAutoCalculator)initWithComposition:(id)a3
+- (PIAutoLoopAutoCalculator)initWithComposition:(id)composition
 {
   v4.receiver = self;
   v4.super_class = PIAutoLoopAutoCalculator;
-  result = [(NURenderRequest *)&v4 initWithComposition:a3];
+  result = [(NURenderRequest *)&v4 initWithComposition:composition];
   result->_flavor = 1;
   return result;
 }

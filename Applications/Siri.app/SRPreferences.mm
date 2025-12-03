@@ -1,8 +1,8 @@
 @interface SRPreferences
 - (NSUUID)lastPinnedTranscriptItemIdentifier;
 - (SRPreferences)init;
-- (void)preferences:(id)a3 didChangeValueForKey:(id)a4;
-- (void)setLastPinnedTranscriptItemIdentifier:(id)a3;
+- (void)preferences:(id)preferences didChangeValueForKey:(id)key;
+- (void)setLastPinnedTranscriptItemIdentifier:(id)identifier;
 @end
 
 @implementation SRPreferences
@@ -25,21 +25,21 @@
   return v2;
 }
 
-- (void)preferences:(id)a3 didChangeValueForKey:(id)a4
+- (void)preferences:(id)preferences didChangeValueForKey:(id)key
 {
-  v6 = a3;
-  v5 = a4;
-  if (([v5 isEqualToString:@"SiriIsActive"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"LastKnownInterfaceOrientation") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"LastTranscriptVerticalContentOffset") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"LastVisibleTranscriptItemIndex") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"LastPinnedTranscriptItemIdentifier") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"TapToEditTipCount"))
+  preferencesCopy = preferences;
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"SiriIsActive"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"LastKnownInterfaceOrientation") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"LastTranscriptVerticalContentOffset") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"LastVisibleTranscriptItemIndex") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"LastPinnedTranscriptItemIdentifier") & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"TapToEditTipCount"))
   {
-    [v6 synchronize];
+    [preferencesCopy synchronize];
   }
 }
 
-- (void)setLastPinnedTranscriptItemIdentifier:(id)a3
+- (void)setLastPinnedTranscriptItemIdentifier:(id)identifier
 {
   internalPreferences = self->_internalPreferences;
-  v4 = [a3 UUIDString];
-  [(SRUIFPreferences *)internalPreferences setObject:v4 forKey:@"LastPinnedTranscriptItemIdentifier"];
+  uUIDString = [identifier UUIDString];
+  [(SRUIFPreferences *)internalPreferences setObject:uUIDString forKey:@"LastPinnedTranscriptItemIdentifier"];
 }
 
 - (NSUUID)lastPinnedTranscriptItemIdentifier

@@ -1,62 +1,62 @@
 @interface HMDCameraSnapshotManager
 + (id)logCategory;
-+ (id)messageBindingForDispatcher:(id)a3 message:(id)a4 receiver:(id)a5;
-+ (void)cleanStaleSnapshotDirectoriesUsingCurrentAccessories:(id)a3;
-- (HMDCameraSnapshotManager)initWithAccessory:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 uniqueIdentifier:(id)a6 msgDispatcher:(id)a7 networkMonitor:(id)a8;
-- (HMDCameraSnapshotManager)initWithAccessory:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 uniqueIdentifier:(id)a6 msgDispatcher:(id)a7 networkMonitor:(id)a8 logIdentifier:(id)a9 imageCacheDirectory:(id)a10 residentMessageHandler:(id)a11 snapshotFileManager:(id)a12 dataSource:(id)a13;
++ (id)messageBindingForDispatcher:(id)dispatcher message:(id)message receiver:(id)receiver;
++ (void)cleanStaleSnapshotDirectoriesUsingCurrentAccessories:(id)accessories;
+- (HMDCameraSnapshotManager)initWithAccessory:(id)accessory workQueue:(id)queue streamSnapshotHandler:(id)handler uniqueIdentifier:(id)identifier msgDispatcher:(id)dispatcher networkMonitor:(id)monitor;
+- (HMDCameraSnapshotManager)initWithAccessory:(id)accessory workQueue:(id)queue streamSnapshotHandler:(id)handler uniqueIdentifier:(id)identifier msgDispatcher:(id)dispatcher networkMonitor:(id)monitor logIdentifier:(id)logIdentifier imageCacheDirectory:(id)self0 residentMessageHandler:(id)self1 snapshotFileManager:(id)self2 dataSource:(id)self3;
 - (NSDictionary)encodedMostRecentSnapshot;
-- (id)_createSnapshotSessionIDWithMessage:(void *)a3 error:;
-- (id)_sessionWithID:(id *)a1;
+- (id)_createSnapshotSessionIDWithMessage:(void *)message error:;
+- (id)_sessionWithID:(id *)d;
 - (id)accessory;
-- (void)_endSession:(void *)a3 error:;
-- (void)_handleCreateSnapshotFromBulletinContextMessage:(id)a3;
-- (void)_handleFillSnapshotSlotMessage:(id)a3;
-- (void)_handleReleaseSnapshotMessage:(id)a3;
-- (void)_handleRemoteSnapshotReceivedMessage:(id)a3;
-- (void)_handleTakeRemoteSnapshotFailureMessage:(id)a3;
-- (void)_handleTakeRemoteSnapshotMessage:(id)a3;
-- (void)_handleTakeSnapshotMessage:(id)a3;
-- (void)_issueGetSnapshot:(void *)a1;
-- (void)_removeAllPendingRequests:(uint64_t)a1;
-- (void)_sendRemoteResponseForSessionID:(void *)a1;
-- (void)_sendResponse:(void *)a3 error:(void *)a4 sessionID:;
-- (void)_sendSnapshotRequestRelayReceiver:(void *)a3 snapshotSessionID:;
-- (void)_sendSnapshotRequestStreamReceiver:(void *)a3 snapshotSessionID:;
+- (void)_endSession:(void *)session error:;
+- (void)_handleCreateSnapshotFromBulletinContextMessage:(id)message;
+- (void)_handleFillSnapshotSlotMessage:(id)message;
+- (void)_handleReleaseSnapshotMessage:(id)message;
+- (void)_handleRemoteSnapshotReceivedMessage:(id)message;
+- (void)_handleTakeRemoteSnapshotFailureMessage:(id)message;
+- (void)_handleTakeRemoteSnapshotMessage:(id)message;
+- (void)_handleTakeSnapshotMessage:(id)message;
+- (void)_issueGetSnapshot:(void *)snapshot;
+- (void)_removeAllPendingRequests:(uint64_t)requests;
+- (void)_sendRemoteResponseForSessionID:(void *)d;
+- (void)_sendResponse:(void *)response error:(void *)error sessionID:;
+- (void)_sendSnapshotRequestRelayReceiver:(void *)receiver snapshotSessionID:;
+- (void)_sendSnapshotRequestStreamReceiver:(void *)receiver snapshotSessionID:;
 - (void)dealloc;
-- (void)handleAccessoryUnconfigured:(id)a3;
-- (void)handleCameraSettingsDidChangeNotification:(id)a3;
+- (void)handleAccessoryUnconfigured:(id)unconfigured;
+- (void)handleCameraSettingsDidChangeNotification:(id)notification;
 - (void)registerForMessages;
-- (void)releaseSnapshotWithSlotIdentifier:(id)a3;
-- (void)snapshotLocal:(id)a3 didSaveSnapshotFile:(id)a4 error:(id)a5 sessionID:(id)a6;
-- (void)snapshotRelayReceiver:(id)a3 didSaveSnapshotFile:(id)a4 error:(id)a5 sessionID:(id)a6;
-- (void)snapshotRelayReceiver:(id)a3 didStartImageCaptureForSessionID:(id)a4;
-- (void)snapshotRelaySender:(id)a3 didCompleteSendImage:(id)a4 sessionID:(id)a5;
-- (void)snapshotRelaySender:(id)a3 didSaveSnapshotFile:(id)a4 sessionID:(id)a5;
-- (void)snapshotRelaySender:(id)a3 didStartImageCaptureForSessionID:(id)a4;
-- (void)snapshotRelayStream:(id)a3 didCompleteSendImage:(id)a4 sessionID:(id)a5;
-- (void)snapshotRelayStream:(id)a3 didStartImageCaptureForSessionID:(id)a4;
-- (void)snapshotStreamReceiver:(id)a3 didSaveSnapshotFile:(id)a4 error:(id)a5 sessionID:(id)a6;
-- (void)snapshotStreamReceiver:(id)a3 didStartImageCaptureForSessionID:(id)a4;
-- (void)snapshotStreamSender:(id)a3 didCompleteSendImage:(id)a4 sessionID:(id)a5;
-- (void)snapshotStreamSender:(id)a3 didStartImageCaptureForSessionID:(id)a4;
-- (void)streamSnapshotHandler:(id)a3 didChangeStreamSetupInProgress:(BOOL)a4;
-- (void)streamSnapshotHandler:(id)a3 didGetLastSnapshot:(id)a4;
-- (void)streamSnapshotHandler:(id)a3 didGetNewSnapshot:(id)a4;
-- (void)takeSnapshot:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)releaseSnapshotWithSlotIdentifier:(id)identifier;
+- (void)snapshotLocal:(id)local didSaveSnapshotFile:(id)file error:(id)error sessionID:(id)d;
+- (void)snapshotRelayReceiver:(id)receiver didSaveSnapshotFile:(id)file error:(id)error sessionID:(id)d;
+- (void)snapshotRelayReceiver:(id)receiver didStartImageCaptureForSessionID:(id)d;
+- (void)snapshotRelaySender:(id)sender didCompleteSendImage:(id)image sessionID:(id)d;
+- (void)snapshotRelaySender:(id)sender didSaveSnapshotFile:(id)file sessionID:(id)d;
+- (void)snapshotRelaySender:(id)sender didStartImageCaptureForSessionID:(id)d;
+- (void)snapshotRelayStream:(id)stream didCompleteSendImage:(id)image sessionID:(id)d;
+- (void)snapshotRelayStream:(id)stream didStartImageCaptureForSessionID:(id)d;
+- (void)snapshotStreamReceiver:(id)receiver didSaveSnapshotFile:(id)file error:(id)error sessionID:(id)d;
+- (void)snapshotStreamReceiver:(id)receiver didStartImageCaptureForSessionID:(id)d;
+- (void)snapshotStreamSender:(id)sender didCompleteSendImage:(id)image sessionID:(id)d;
+- (void)snapshotStreamSender:(id)sender didStartImageCaptureForSessionID:(id)d;
+- (void)streamSnapshotHandler:(id)handler didChangeStreamSetupInProgress:(BOOL)progress;
+- (void)streamSnapshotHandler:(id)handler didGetLastSnapshot:(id)snapshot;
+- (void)streamSnapshotHandler:(id)handler didGetNewSnapshot:(id)snapshot;
+- (void)takeSnapshot:(id)snapshot;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDCameraSnapshotManager
 
-- (void)handleCameraSettingsDidChangeNotification:(id)a3
+- (void)handleCameraSettingsDidChangeNotification:(id)notification
 {
-  v4 = [(HMDCameraSnapshotManager *)self workQueue];
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___block_invoke(uint64_t a1)
@@ -107,21 +107,21 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
   return WeakRetained;
 }
 
-- (void)_removeAllPendingRequests:(uint64_t)a1
+- (void)_removeAllPendingRequests:(uint64_t)requests
 {
   v64 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (requests)
   {
-    if (*(a1 + 32))
+    if (*(requests + 32))
     {
       v4 = objc_autoreleasePoolPush();
-      v5 = a1;
+      requestsCopy = requests;
       v6 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v7 = HMFGetLogIdentifier();
-        v8 = v5[4];
+        v8 = requestsCopy[4];
         *buf = 138543874;
         v59 = v7;
         v60 = 2112;
@@ -132,19 +132,19 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       }
 
       objc_autoreleasePoolPop(v4);
-      [v5[4] respondWithPayload:0 error:v3];
-      objc_storeStrong(v5 + 4, 0);
+      [requestsCopy[4] respondWithPayload:0 error:v3];
+      objc_storeStrong(requestsCopy + 4, 0);
     }
 
-    if ([*(a1 + 40) count])
+    if ([*(requests + 40) count])
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = a1;
+      requestsCopy2 = requests;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v12 = HMFGetLogIdentifier();
-        v13 = v10[5];
+        v13 = requestsCopy2[5];
         *buf = 138543874;
         v59 = v12;
         v60 = 2112;
@@ -159,7 +159,7 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       v54 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v14 = v10[5];
+      v14 = requestsCopy2[5];
       v15 = [v14 countByEnumeratingWithState:&v51 objects:v57 count:16];
       if (v15)
       {
@@ -175,7 +175,7 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
             }
 
             v19 = *(*(&v51 + 1) + 8 * i);
-            v20 = v10[5];
+            v20 = requestsCopy2[5];
             v21 = [v20 objectForKeyedSubscript:v19];
             [v21 respondWithPayload:0 error:v3];
           }
@@ -186,18 +186,18 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
         while (v16);
       }
 
-      [v10[5] removeAllObjects];
+      [requestsCopy2[5] removeAllObjects];
     }
 
-    if ([*(a1 + 104) count])
+    if ([*(requests + 104) count])
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = a1;
+      requestsCopy3 = requests;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v25 = HMFGetLogIdentifier();
-        v26 = v23[13];
+        v26 = requestsCopy3[13];
         *buf = 138543874;
         v59 = v25;
         v60 = 2112;
@@ -212,7 +212,7 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v27 = v23[13];
+      v27 = requestsCopy3[13];
       v28 = [v27 countByEnumeratingWithState:&v47 objects:v56 count:16];
       if (v28)
       {
@@ -236,18 +236,18 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
         while (v29);
       }
 
-      [v23[13] removeAllObjects];
+      [requestsCopy3[13] removeAllObjects];
     }
 
-    if ([*(a1 + 112) count])
+    if ([*(requests + 112) count])
     {
       v32 = objc_autoreleasePoolPush();
-      v33 = a1;
+      requestsCopy4 = requests;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
         v35 = HMFGetLogIdentifier();
-        v36 = v33[14];
+        v36 = requestsCopy4[14];
         *buf = 138543874;
         v59 = v35;
         v60 = 2112;
@@ -262,7 +262,7 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v37 = v33[14];
+      v37 = requestsCopy4[14];
       v38 = [v37 countByEnumeratingWithState:&v43 objects:v55 count:16];
       if (v38)
       {
@@ -286,24 +286,24 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
         while (v39);
       }
 
-      [v33[14] removeAllObjects];
+      [requestsCopy4[14] removeAllObjects];
     }
   }
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamSnapshotHandler:(id)a3 didChangeStreamSetupInProgress:(BOOL)a4
+- (void)streamSnapshotHandler:(id)handler didChangeStreamSetupInProgress:(BOOL)progress
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  handlerCopy = handler;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (!a4)
+  if (!progress)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -314,10 +314,10 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
     }
 
     objc_autoreleasePoolPop(v8);
-    if (v9)
+    if (selfCopy)
     {
-      v12 = [(NSMutableArray *)v9->_pendingSnapshotRequestDuringStreamSetup copy];
-      pendingSnapshotRequestDuringStreamSetup = v9->_pendingSnapshotRequestDuringStreamSetup;
+      v12 = [(NSMutableArray *)selfCopy->_pendingSnapshotRequestDuringStreamSetup copy];
+      pendingSnapshotRequestDuringStreamSetup = selfCopy->_pendingSnapshotRequestDuringStreamSetup;
     }
 
     else
@@ -346,7 +346,7 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
             objc_enumerationMutation(v14);
           }
 
-          [(HMDCameraSnapshotManager *)v9 _handleTakeSnapshotMessage:*(*(&v31 + 1) + 8 * i)];
+          [(HMDCameraSnapshotManager *)selfCopy _handleTakeSnapshotMessage:*(*(&v31 + 1) + 8 * i)];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -355,10 +355,10 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       while (v16);
     }
 
-    if (v9)
+    if (selfCopy)
     {
-      v19 = [(NSMutableArray *)v9->_pendingRemoteSnapshotRequestDuringStreamSetup copy];
-      pendingRemoteSnapshotRequestDuringStreamSetup = v9->_pendingRemoteSnapshotRequestDuringStreamSetup;
+      v19 = [(NSMutableArray *)selfCopy->_pendingRemoteSnapshotRequestDuringStreamSetup copy];
+      pendingRemoteSnapshotRequestDuringStreamSetup = selfCopy->_pendingRemoteSnapshotRequestDuringStreamSetup;
     }
 
     else
@@ -387,7 +387,7 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
             objc_enumerationMutation(v21);
           }
 
-          [(HMDCameraSnapshotManager *)v9 _handleTakeRemoteSnapshotMessage:*(*(&v27 + 1) + 8 * j), v27];
+          [(HMDCameraSnapshotManager *)selfCopy _handleTakeRemoteSnapshotMessage:*(*(&v27 + 1) + 8 * j), v27];
         }
 
         v23 = [v21 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -400,23 +400,23 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamSnapshotHandler:(id)a3 didGetLastSnapshot:(id)a4
+- (void)streamSnapshotHandler:(id)handler didGetLastSnapshot:(id)snapshot
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  handlerCopy = handler;
+  snapshotCopy = snapshot;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    if (v10)
+    if (selfCopy)
     {
-      currentLocalSession = v10->_currentLocalSession;
+      currentLocalSession = selfCopy->_currentLocalSession;
     }
 
     else
@@ -425,22 +425,22 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
     }
 
     v14 = currentLocalSession;
-    v15 = [(HMDCameraSnapshotSession *)v14 sessionID];
-    v16 = [v15 sessionID];
+    sessionID = [(HMDCameraSnapshotSession *)v14 sessionID];
+    v15SessionID = [sessionID sessionID];
     *buf = 138543874;
     v36 = v12;
     v37 = 2112;
-    v38 = v16;
+    v38 = v15SessionID;
     v39 = 2112;
-    v40 = v7;
+    v40 = snapshotCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@[%@] Stream captured last snapshot: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v17 = [HMDCameraSnapshotFile alloc];
-  if (v10)
+  if (selfCopy)
   {
-    imageCacheDirectory = v10->_imageCacheDirectory;
+    imageCacheDirectory = selfCopy->_imageCacheDirectory;
   }
 
   else
@@ -450,14 +450,14 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
 
   v34 = 0;
   v19 = imageCacheDirectory;
-  v20 = [(HMDCameraSnapshotFile *)v17 initWithDirectory:v19 snapshot:v7 error:&v34];
+  v20 = [(HMDCameraSnapshotFile *)v17 initWithDirectory:v19 snapshot:snapshotCopy error:&v34];
   v21 = v34;
 
   if (v20)
   {
-    if (v10)
+    if (selfCopy)
     {
-      snapshotFileManager = v10->_snapshotFileManager;
+      snapshotFileManager = selfCopy->_snapshotFileManager;
     }
 
     else
@@ -471,13 +471,13 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = v10;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       v27 = HMFGetLogIdentifier();
-      v33 = v6;
-      if (v10)
+      v33 = handlerCopy;
+      if (selfCopy)
       {
         v28 = v25->_currentLocalSession;
       }
@@ -488,17 +488,17 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       }
 
       v29 = v28;
-      v30 = [(HMDCameraSnapshotSession *)v29 sessionID];
-      v31 = [v30 sessionID];
+      sessionID2 = [(HMDCameraSnapshotSession *)v29 sessionID];
+      v30SessionID = [sessionID2 sessionID];
       *buf = 138543874;
       v36 = v27;
       v37 = 2112;
-      v38 = v31;
+      v38 = v30SessionID;
       v39 = 2112;
       v40 = v21;
       _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to create snapshot file from last stream snapshot: %@", buf, 0x20u);
 
-      v6 = v33;
+      handlerCopy = v33;
     }
 
     objc_autoreleasePoolPop(v24);
@@ -507,26 +507,26 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamSnapshotHandler:(id)a3 didGetNewSnapshot:(id)a4
+- (void)streamSnapshotHandler:(id)handler didGetNewSnapshot:(id)snapshot
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  handlerCopy = handler;
+  snapshotCopy = snapshot;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = v11;
-  if (v7)
+  if (snapshotCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      if (v10)
+      if (selfCopy)
       {
-        currentLocalSession = v10->_currentLocalSession;
+        currentLocalSession = selfCopy->_currentLocalSession;
       }
 
       else
@@ -535,22 +535,22 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       }
 
       v15 = currentLocalSession;
-      v16 = [(HMDCameraSnapshotSession *)v15 sessionID];
-      v17 = [v16 sessionID];
+      sessionID = [(HMDCameraSnapshotSession *)v15 sessionID];
+      v16SessionID = [sessionID sessionID];
       *buf = 138543874;
       v46 = v13;
       v47 = 2112;
-      v48 = v17;
+      v48 = v16SessionID;
       v49 = 2112;
-      v50 = v7;
+      v50 = snapshotCopy;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@[%@] Stream captured a new snapshot: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
     v18 = [HMDCameraSnapshotFile alloc];
-    if (v10)
+    if (selfCopy)
     {
-      imageCacheDirectory = v10->_imageCacheDirectory;
+      imageCacheDirectory = selfCopy->_imageCacheDirectory;
     }
 
     else
@@ -560,14 +560,14 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
 
     v44 = 0;
     v20 = imageCacheDirectory;
-    v21 = [(HMDCameraSnapshotFile *)v18 initWithDirectory:v20 snapshot:v7 error:&v44];
+    sessionID5 = [(HMDCameraSnapshotFile *)v18 initWithDirectory:v20 snapshot:snapshotCopy error:&v44];
     v22 = v44;
 
-    if (v21)
+    if (sessionID5)
     {
-      if (v10)
+      if (selfCopy)
       {
-        v23 = v10->_currentLocalSession;
+        v23 = selfCopy->_currentLocalSession;
       }
 
       else
@@ -575,21 +575,21 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
         v23 = 0;
       }
 
-      v24 = [(HMDCameraSnapshotSession *)v23 sessionID];
-      [(HMDCameraSnapshotManager *)v10 _sendResponse:v21 error:0 sessionID:v24];
+      sessionID2 = [(HMDCameraSnapshotSession *)v23 sessionID];
+      [(HMDCameraSnapshotManager *)selfCopy _sendResponse:sessionID5 error:0 sessionID:sessionID2];
     }
 
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = v10;
+      v32 = selfCopy;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         v34 = HMFGetLogIdentifier();
         v42 = v31;
-        v43 = v6;
-        if (v10)
+        v43 = handlerCopy;
+        if (selfCopy)
         {
           v35 = v32->_currentLocalSession;
         }
@@ -600,22 +600,22 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
         }
 
         v36 = v35;
-        v37 = [(HMDCameraSnapshotSession *)v36 sessionID];
-        v38 = [v37 sessionID];
+        sessionID3 = [(HMDCameraSnapshotSession *)v36 sessionID];
+        v37SessionID = [sessionID3 sessionID];
         *buf = 138543874;
         v46 = v34;
         v47 = 2112;
-        v48 = v38;
+        v48 = v37SessionID;
         v49 = 2112;
         v50 = v22;
         _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to create snapshot file from new stream snapshot: %@", buf, 0x20u);
 
         v31 = v42;
-        v6 = v43;
+        handlerCopy = v43;
       }
 
       objc_autoreleasePoolPop(v31);
-      if (v10)
+      if (selfCopy)
       {
         v39 = v32->_currentLocalSession;
       }
@@ -626,8 +626,8 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       }
 
       v40 = v39;
-      v24 = [(HMDCameraSnapshotSession *)v40 sessionID];
-      [(HMDCameraSnapshotManager *)v32 _sendResponse:v22 error:v24 sessionID:?];
+      sessionID2 = [(HMDCameraSnapshotSession *)v40 sessionID];
+      [(HMDCameraSnapshotManager *)v32 _sendResponse:v22 error:sessionID2 sessionID:?];
     }
   }
 
@@ -636,9 +636,9 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      if (v10)
+      if (selfCopy)
       {
-        v26 = v10->_currentLocalSession;
+        v26 = selfCopy->_currentLocalSession;
       }
 
       else
@@ -647,20 +647,20 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       }
 
       v27 = v26;
-      v28 = [(HMDCameraSnapshotSession *)v27 sessionID];
-      v29 = [v28 sessionID];
+      sessionID4 = [(HMDCameraSnapshotSession *)v27 sessionID];
+      v28SessionID = [sessionID4 sessionID];
       *buf = 138543618;
       v46 = v25;
       v47 = 2112;
-      v48 = v29;
+      v48 = v28SessionID;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_ERROR, "%{public}@[%@] Stream failed to capture a new snapshot", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
     v22 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52];
-    if (v10)
+    if (selfCopy)
     {
-      v30 = v10->_currentLocalSession;
+      v30 = selfCopy->_currentLocalSession;
     }
 
     else
@@ -668,36 +668,36 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       v30 = 0;
     }
 
-    v21 = [(HMDCameraSnapshotSession *)v30 sessionID];
-    [(HMDCameraSnapshotManager *)v10 _sendResponse:v22 error:v21 sessionID:?];
+    sessionID5 = [(HMDCameraSnapshotSession *)v30 sessionID];
+    [(HMDCameraSnapshotManager *)selfCopy _sendResponse:v22 error:sessionID5 sessionID:?];
   }
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendResponse:(void *)a3 error:(void *)a4 sessionID:
+- (void)_sendResponse:(void *)response error:(void *)error sessionID:
 {
   v39 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  responseCopy = response;
+  errorCopy = error;
+  if (self)
   {
-    v10 = [a1 workQueue];
-    dispatch_assert_queue_V2(v10);
+    workQueue = [self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v11 = [(HMDCameraSnapshotManager *)a1 _sessionWithID:v9];
+    v11 = [(HMDCameraSnapshotManager *)self _sessionWithID:errorCopy];
     v12 = v11;
     if (v11)
     {
       v28 = v11;
-      v29 = v9;
+      v29 = errorCopy;
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v13 = [v11 sessionMessages];
-      v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      sessionMessages = [v11 sessionMessages];
+      v14 = [sessionMessages countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v14)
       {
         v15 = v14;
@@ -708,13 +708,13 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
           {
             if (*v31 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(sessionMessages);
             }
 
             v18 = [*(*(&v30 + 1) + 8 * i) stringForKey:@"kCameraProactiveSessionID"];
             if (v18)
             {
-              v19 = *(a1 + 80);
+              v19 = *(self + 80);
               if (v7)
               {
                 [v19 setSnapshotFile:v7 forEntryWithCharacteristicEventUUID:v18];
@@ -722,12 +722,12 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
 
               else
               {
-                [v19 removeEntryWithCharacteristicEventUUID:v18 error:v8];
+                [v19 removeEntryWithCharacteristicEventUUID:v18 error:responseCopy];
               }
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v15 = [sessionMessages countByEnumeratingWithState:&v30 objects:v34 count:16];
         }
 
         while (v15);
@@ -735,10 +735,10 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
 
       if (v7)
       {
-        v20 = *(a1 + 88);
+        v20 = *(self + 88);
         v12 = v28;
-        v21 = [v28 sessionMessages];
-        v22 = [v20 createSlotForSnapshotFile:v7 requestMessages:v21 shouldNotifyClients:1];
+        sessionMessages2 = [v28 sessionMessages];
+        v22 = [v20 createSlotForSnapshotFile:v7 requestMessages:sessionMessages2 shouldNotifyClients:1];
 
         [v28 respondWithPayload:v22 error:0];
       }
@@ -746,17 +746,17 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       else
       {
         v12 = v28;
-        [v28 respondWithPayload:0 error:v8];
+        [v28 respondWithPayload:0 error:responseCopy];
       }
 
-      v9 = v29;
-      [(HMDCameraSnapshotManager *)a1 _endSession:v29 error:v8];
+      errorCopy = v29;
+      [(HMDCameraSnapshotManager *)self _endSession:v29 error:responseCopy];
     }
 
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = a1;
+      selfCopy = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -764,7 +764,7 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
         *buf = 138543618;
         v36 = v26;
         v37 = 2112;
-        v38 = v9;
+        v38 = errorCopy;
         _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_ERROR, "%{public}@Asked to send response for an unknown session ID: %@", buf, 0x16u);
       }
 
@@ -775,49 +775,49 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sessionWithID:(id *)a1
+- (id)_sessionWithID:(id *)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v4 = [a1 workQueue];
-    dispatch_assert_queue_V2(v4);
+    workQueue = [d workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v5 = [a1[4] sessionID];
-    v6 = [v5 isEqual:v3];
+    sessionID = [d[4] sessionID];
+    v6 = [sessionID isEqual:v3];
 
     if (v6)
     {
-      v7 = a1[4];
+      v7 = d[4];
     }
 
     else
     {
-      v7 = [a1[5] objectForKeyedSubscript:v3];
+      v7 = [d[5] objectForKeyedSubscript:v3];
     }
 
-    a1 = v7;
+    d = v7;
   }
 
-  return a1;
+  return d;
 }
 
-- (void)_endSession:(void *)a3 error:
+- (void)_endSession:(void *)session error:
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  sessionCopy = session;
+  if (self)
   {
-    v7 = [a1 workQueue];
-    dispatch_assert_queue_V2(v7);
+    workQueue = [self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v8 = a1[4];
-    v9 = [v8 sessionID];
-    v10 = [v9 isEqual:v5];
+    v8 = self[4];
+    sessionID = [v8 sessionID];
+    v10 = [sessionID isEqual:v5];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = a1;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
     if (v10)
@@ -833,9 +833,9 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       }
 
       objc_autoreleasePoolPop(v11);
-      [v12[4] respondWithPayload:0 error:v6];
-      v16 = v12[4];
-      v12[4] = 0;
+      [selfCopy[4] respondWithPayload:0 error:sessionCopy];
+      v16 = selfCopy[4];
+      selfCopy[4] = 0;
     }
 
     else
@@ -851,26 +851,26 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
       }
 
       objc_autoreleasePoolPop(v11);
-      v16 = [v12[5] objectForKeyedSubscript:v5];
-      [v16 respondWithPayload:0 error:v6];
-      [v12[5] removeObjectForKey:v5];
+      v16 = [selfCopy[5] objectForKeyedSubscript:v5];
+      [v16 respondWithPayload:0 error:sessionCopy];
+      [selfCopy[5] removeObjectForKey:v5];
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotRelayStream:(id)a3 didCompleteSendImage:(id)a4 sessionID:(id)a5
+- (void)snapshotRelayStream:(id)stream didCompleteSendImage:(id)image sessionID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  streamCopy = stream;
+  imageCopy = image;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -878,28 +878,28 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
     v17 = 138543874;
     v18 = v15;
     v19 = 2112;
-    v20 = v10;
+    v20 = dCopy;
     v21 = 2112;
-    v22 = v9;
+    v22 = imageCopy;
     _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@%@ Received HMDCameraSnapshotRemoteRelayStreamDelegate callback that the image transfer has completed with error %@", &v17, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
-  [(HMDCameraSnapshotManager *)&v13->super.super.isa _endSession:v10 error:v9];
+  [(HMDCameraSnapshotManager *)&selfCopy->super.super.isa _endSession:dCopy error:imageCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotRelayStream:(id)a3 didStartImageCaptureForSessionID:(id)a4
+- (void)snapshotRelayStream:(id)stream didStartImageCaptureForSessionID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  streamCopy = stream;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -907,26 +907,26 @@ void __70__HMDCameraSnapshotManager_handleCameraSettingsDidChangeNotification___
     v14 = 138543618;
     v15 = v12;
     v16 = 2112;
-    v17 = v7;
+    v17 = dCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@%@ Received HMDCameraSnapshotRemoteRelayStreamDelegate callback that the image capture has started", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDCameraSnapshotManager *)v10 _sendRemoteResponseForSessionID:v7];
+  [(HMDCameraSnapshotManager *)selfCopy _sendRemoteResponseForSessionID:dCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendRemoteResponseForSessionID:(void *)a1
+- (void)_sendRemoteResponseForSessionID:(void *)d
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v4 = [a1 workQueue];
-    dispatch_assert_queue_V2(v4);
+    workQueue = [d workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    v5 = [(HMDCameraSnapshotManager *)a1 _sessionWithID:v3];
+    v5 = [(HMDCameraSnapshotManager *)d _sessionWithID:v3];
     if (v5)
     {
       objc_opt_class();
@@ -939,7 +939,7 @@ LABEL_11:
       }
 
       v6 = objc_autoreleasePoolPush();
-      v7 = a1;
+      dCopy2 = d;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -960,7 +960,7 @@ LABEL_11:
     else
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = a1;
+      dCopy2 = d;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
@@ -986,116 +986,116 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotStreamSender:(id)a3 didCompleteSendImage:(id)a4 sessionID:(id)a5
+- (void)snapshotStreamSender:(id)sender didCompleteSendImage:(id)image sessionID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  senderCopy = sender;
+  imageCopy = image;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v10 sessionID];
+    sessionID = [dCopy sessionID];
     v18 = 138543874;
     v19 = v15;
     v20 = 2112;
-    v21 = v16;
+    v21 = sessionID;
     v22 = 2112;
-    v23 = v9;
+    v23 = imageCopy;
     _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@[%@] Received HMDCameraSnapshotRemoteStreamSenderDelegate callback that the image transfer has completed with error %@", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
-  [(HMDCameraSnapshotManager *)&v13->super.super.isa _endSession:v10 error:v9];
+  [(HMDCameraSnapshotManager *)&selfCopy->super.super.isa _endSession:dCopy error:imageCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotStreamSender:(id)a3 didStartImageCaptureForSessionID:(id)a4
+- (void)snapshotStreamSender:(id)sender didStartImageCaptureForSessionID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  senderCopy = sender;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v7 sessionID];
+    sessionID = [dCopy sessionID];
     v15 = 138543618;
     v16 = v12;
     v17 = 2112;
-    v18 = v13;
+    v18 = sessionID;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@[%@] Received HMDCameraSnapshotRemoteStreamSenderDelegate callback that the image capture has started", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDCameraSnapshotManager *)v10 _sendRemoteResponseForSessionID:v7];
+  [(HMDCameraSnapshotManager *)selfCopy _sendRemoteResponseForSessionID:dCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotStreamReceiver:(id)a3 didSaveSnapshotFile:(id)a4 error:(id)a5 sessionID:(id)a6
+- (void)snapshotStreamReceiver:(id)receiver didSaveSnapshotFile:(id)file error:(id)error sessionID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  receiverCopy = receiver;
+  fileCopy = file;
+  errorCopy = error;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v13 sessionID];
+    sessionID = [dCopy sessionID];
     v21 = 138543874;
     v22 = v18;
     v23 = 2112;
-    v24 = v19;
+    v24 = sessionID;
     v25 = 2112;
-    v26 = v12;
+    v26 = errorCopy;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@[%@] Received HMDCameraSnapshotRemoteStreamReceiverDelegate callback that the image has been saved after relay with error %@", &v21, 0x20u);
   }
 
   objc_autoreleasePoolPop(v15);
-  [(HMDCameraSnapshotManager *)v16 _sendResponse:v11 error:v12 sessionID:v13];
+  [(HMDCameraSnapshotManager *)selfCopy _sendResponse:fileCopy error:errorCopy sessionID:dCopy];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotStreamReceiver:(id)a3 didStartImageCaptureForSessionID:(id)a4
+- (void)snapshotStreamReceiver:(id)receiver didStartImageCaptureForSessionID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  receiverCopy = receiver;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v7 sessionID];
+    sessionID = [dCopy sessionID];
     v15 = 138543618;
     v16 = v12;
     v17 = 2112;
-    v18 = v13;
+    v18 = sessionID;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@[%@] Received HMDCameraSnapshotRemoteStreamReceiverDelegate callback that the image capture has started after relay", &v15, 0x16u);
   }
 
@@ -1103,42 +1103,42 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotRelaySender:(id)a3 didSaveSnapshotFile:(id)a4 sessionID:(id)a5
+- (void)snapshotRelaySender:(id)sender didSaveSnapshotFile:(id)file sessionID:(id)d
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  senderCopy = sender;
+  fileCopy = file;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v10 sessionID];
-    v17 = [v10 snapshotCharacteristicEventUUID];
+    sessionID = [dCopy sessionID];
+    snapshotCharacteristicEventUUID = [dCopy snapshotCharacteristicEventUUID];
     v23 = 138544130;
     v24 = v15;
     v25 = 2112;
-    v26 = v16;
+    v26 = sessionID;
     v27 = 2112;
-    v28 = v9;
+    v28 = fileCopy;
     v29 = 2112;
-    v30 = v17;
+    v30 = snapshotCharacteristicEventUUID;
     _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@[%@] Received HMDCameraSnapshotRemoteRelaySenderDelegate callback that snapshotFile:%@ has been saved for snapshotCharacteristicEventUUID:%@", &v23, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v12);
-  v18 = [v10 snapshotCharacteristicEventUUID];
+  snapshotCharacteristicEventUUID2 = [dCopy snapshotCharacteristicEventUUID];
 
-  if (v18)
+  if (snapshotCharacteristicEventUUID2)
   {
-    if (v13)
+    if (selfCopy)
     {
-      snapshotCache = v13->_snapshotCache;
+      snapshotCache = selfCopy->_snapshotCache;
     }
 
     else
@@ -1147,123 +1147,123 @@ LABEL_12:
     }
 
     v20 = snapshotCache;
-    v21 = [v10 snapshotCharacteristicEventUUID];
-    [(HMDCameraSnapshotCache *)v20 setSnapshotFile:v9 forEntryWithCharacteristicEventUUID:v21];
+    snapshotCharacteristicEventUUID3 = [dCopy snapshotCharacteristicEventUUID];
+    [(HMDCameraSnapshotCache *)v20 setSnapshotFile:fileCopy forEntryWithCharacteristicEventUUID:snapshotCharacteristicEventUUID3];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotRelaySender:(id)a3 didCompleteSendImage:(id)a4 sessionID:(id)a5
+- (void)snapshotRelaySender:(id)sender didCompleteSendImage:(id)image sessionID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  senderCopy = sender;
+  imageCopy = image;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v10 sessionID];
+    sessionID = [dCopy sessionID];
     v18 = 138543874;
     v19 = v15;
     v20 = 2112;
-    v21 = v16;
+    v21 = sessionID;
     v22 = 2112;
-    v23 = v9;
+    v23 = imageCopy;
     _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@[%@] Received HMDCameraSnapshotRemoteRelaySenderDelegate callback that the image transfer has completed with error %@", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
-  [(HMDCameraSnapshotManager *)&v13->super.super.isa _endSession:v10 error:v9];
+  [(HMDCameraSnapshotManager *)&selfCopy->super.super.isa _endSession:dCopy error:imageCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotRelaySender:(id)a3 didStartImageCaptureForSessionID:(id)a4
+- (void)snapshotRelaySender:(id)sender didStartImageCaptureForSessionID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  senderCopy = sender;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v7 sessionID];
+    sessionID = [dCopy sessionID];
     v15 = 138543618;
     v16 = v12;
     v17 = 2112;
-    v18 = v13;
+    v18 = sessionID;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@[%@] Received HMDCameraSnapshotRemoteRelaySenderDelegate callback that the image capture has started", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  [(HMDCameraSnapshotManager *)v10 _sendRemoteResponseForSessionID:v7];
+  [(HMDCameraSnapshotManager *)selfCopy _sendRemoteResponseForSessionID:dCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotRelayReceiver:(id)a3 didSaveSnapshotFile:(id)a4 error:(id)a5 sessionID:(id)a6
+- (void)snapshotRelayReceiver:(id)receiver didSaveSnapshotFile:(id)file error:(id)error sessionID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  receiverCopy = receiver;
+  fileCopy = file;
+  errorCopy = error;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v13 sessionID];
+    sessionID = [dCopy sessionID];
     v21 = 138543874;
     v22 = v18;
     v23 = 2112;
-    v24 = v19;
+    v24 = sessionID;
     v25 = 2112;
-    v26 = v12;
+    v26 = errorCopy;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@[%@] Received HMDCameraSnapshotRemoteRelayReceiverDelegate callback that the image has been saved after relay with error %@", &v21, 0x20u);
   }
 
   objc_autoreleasePoolPop(v15);
-  [(HMDCameraSnapshotManager *)v16 _sendResponse:v11 error:v12 sessionID:v13];
+  [(HMDCameraSnapshotManager *)selfCopy _sendResponse:fileCopy error:errorCopy sessionID:dCopy];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotRelayReceiver:(id)a3 didStartImageCaptureForSessionID:(id)a4
+- (void)snapshotRelayReceiver:(id)receiver didStartImageCaptureForSessionID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  receiverCopy = receiver;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v7 sessionID];
+    sessionID = [dCopy sessionID];
     v15 = 138543618;
     v16 = v12;
     v17 = 2112;
-    v18 = v13;
+    v18 = sessionID;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@[%@] Received HMDCameraSnapshotRemoteRelayReceiverDelegate callback that the image capture has started after relay", &v15, 0x16u);
   }
 
@@ -1271,48 +1271,48 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)snapshotLocal:(id)a3 didSaveSnapshotFile:(id)a4 error:(id)a5 sessionID:(id)a6
+- (void)snapshotLocal:(id)local didSaveSnapshotFile:(id)file error:(id)error sessionID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  localCopy = local;
+  fileCopy = file;
+  errorCopy = error;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     v18 = HMFGetLogIdentifier();
-    v19 = [v13 sessionID];
+    sessionID = [dCopy sessionID];
     v21 = 138543874;
     v22 = v18;
     v23 = 2112;
-    v24 = v19;
+    v24 = sessionID;
     v25 = 2112;
-    v26 = v12;
+    v26 = errorCopy;
     _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@[%@] Received HMDCameraSnapshotLocalDelegate callback that the image has been saved %@", &v21, 0x20u);
   }
 
   objc_autoreleasePoolPop(v15);
-  [(HMDCameraSnapshotManager *)v16 _sendResponse:v11 error:v12 sessionID:v13];
+  [(HMDCameraSnapshotManager *)selfCopy _sendResponse:fileCopy error:errorCopy sessionID:dCopy];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTakeRemoteSnapshotFailureMessage:(id)a3
+- (void)_handleTakeRemoteSnapshotFailureMessage:(id)message
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = [HMDCameraSnapshotSessionID alloc];
-  v7 = [(HMDCameraSnapshotManager *)&self->super.super.isa accessory];
-  v8 = [(HMDCameraSnapshotSessionID *)v6 initWithAccessory:v7 message:v4];
+  accessory = [(HMDCameraSnapshotManager *)&self->super.super.isa accessory];
+  v8 = [(HMDCameraSnapshotSessionID *)v6 initWithAccessory:accessory message:messageCopy];
 
   if (v8)
   {
@@ -1320,10 +1320,10 @@ LABEL_12:
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 snapshotGetter];
-      if ([v11 conformsToProtocol:&unk_2866B91B8])
+      snapshotGetter = [v9 snapshotGetter];
+      if ([snapshotGetter conformsToProtocol:&unk_2866B91B8])
       {
-        v12 = v11;
+        v12 = snapshotGetter;
       }
 
       else
@@ -1335,20 +1335,20 @@ LABEL_12:
 
       if (v13)
       {
-        v14 = [(HMDCameraSnapshotSessionID *)v4 messagePayload];
-        v15 = [v14 errorFromDataForKey:@"kCameraSessionError"];
+        messagePayload = [(HMDCameraSnapshotSessionID *)messageCopy messagePayload];
+        v15 = [messagePayload errorFromDataForKey:@"kCameraSessionError"];
 
         v16 = objc_autoreleasePoolPush();
-        v17 = self;
+        selfCopy = self;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           v19 = HMFGetLogIdentifier();
-          v20 = [(HMDCameraSessionID *)v8 sessionID];
+          sessionID = [(HMDCameraSessionID *)v8 sessionID];
           v35 = 138543874;
           v36 = v19;
           v37 = 2112;
-          v38 = v20;
+          v38 = sessionID;
           v39 = 2112;
           v40 = v15;
           _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_ERROR, "%{public}@[%@] Handling remote snapshot failure: %@", &v35, 0x20u);
@@ -1356,35 +1356,35 @@ LABEL_12:
 
         objc_autoreleasePoolPop(v16);
         [v13 snapshotSendFailed:v15];
-        [(HMDCameraSnapshotSessionID *)v4 respondWithSuccess];
+        [(HMDCameraSnapshotSessionID *)messageCopy respondWithSuccess];
       }
 
       else
       {
         v29 = objc_autoreleasePoolPush();
-        v30 = self;
+        selfCopy2 = self;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
           v32 = HMFGetLogIdentifier();
-          v33 = [(HMDCameraSessionID *)v8 sessionID];
+          sessionID2 = [(HMDCameraSessionID *)v8 sessionID];
           v35 = 138543618;
           v36 = v32;
           v37 = 2112;
-          v38 = v33;
+          v38 = sessionID2;
           _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_ERROR, "%{public}@[%@] Cannot handle remote snapshot failure for session without a receiver", &v35, 0x16u);
         }
 
         objc_autoreleasePoolPop(v29);
         v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-        [(HMDCameraSnapshotSessionID *)v4 respondWithError:v15];
+        [(HMDCameraSnapshotSessionID *)messageCopy respondWithError:v15];
       }
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy3 = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
@@ -1398,14 +1398,14 @@ LABEL_12:
 
       objc_autoreleasePoolPop(v25);
       v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      [(HMDCameraSnapshotSessionID *)v4 respondWithError:v13];
+      [(HMDCameraSnapshotSessionID *)messageCopy respondWithError:v13];
     }
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy4 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -1413,28 +1413,28 @@ LABEL_12:
       v35 = 138543618;
       v36 = v24;
       v37 = 2112;
-      v38 = v4;
+      v38 = messageCopy;
       _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_ERROR, "%{public}@Failed to create snapshot session ID from remote snapshot failure message: %@", &v35, 0x16u);
     }
 
     objc_autoreleasePoolPop(v21);
     v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [(HMDCameraSnapshotSessionID *)v4 respondWithError:v10];
+    [(HMDCameraSnapshotSessionID *)messageCopy respondWithError:v10];
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRemoteSnapshotReceivedMessage:(id)a3
+- (void)_handleRemoteSnapshotReceivedMessage:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = [HMDCameraSnapshotSessionID alloc];
-  v7 = [(HMDCameraSnapshotManager *)&self->super.super.isa accessory];
-  v8 = [(HMDCameraSnapshotSessionID *)v6 initWithAccessory:v7 message:v4];
+  accessory = [(HMDCameraSnapshotManager *)&self->super.super.isa accessory];
+  v8 = [(HMDCameraSnapshotSessionID *)v6 initWithAccessory:accessory message:messageCopy];
 
   if (v8)
   {
@@ -1442,37 +1442,37 @@ LABEL_12:
     if (v9)
     {
       v10 = v9;
-      v11 = [v9 snapshotGetter];
-      v12 = [v11 conformsToProtocol:&unk_28665F1F8];
+      snapshotGetter = [v9 snapshotGetter];
+      v12 = [snapshotGetter conformsToProtocol:&unk_28665F1F8];
 
       if (v12)
       {
-        v13 = [v10 snapshotGetter];
+        snapshotGetter2 = [v10 snapshotGetter];
         v14 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy = self;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           v17 = HMFGetLogIdentifier();
-          v18 = [(HMDCameraSessionID *)v8 sessionID];
+          sessionID = [(HMDCameraSessionID *)v8 sessionID];
           v29 = 138543618;
           v30 = v17;
           v31 = 2112;
-          v32 = v18;
+          v32 = sessionID;
           _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_INFO, "%{public}@[%@] Sending snapshot received confirmation to the sender", &v29, 0x16u);
         }
 
         objc_autoreleasePoolPop(v14);
-        [v13 snapshotTransferComplete];
+        [snapshotGetter2 snapshotTransferComplete];
       }
 
-      [(HMDCameraSnapshotSessionID *)v4 respondWithSuccess];
+      [(HMDCameraSnapshotSessionID *)messageCopy respondWithSuccess];
     }
 
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy2 = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -1486,7 +1486,7 @@ LABEL_12:
 
       objc_autoreleasePoolPop(v23);
       v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      [(HMDCameraSnapshotSessionID *)v4 respondWithError:v27];
+      [(HMDCameraSnapshotSessionID *)messageCopy respondWithError:v27];
 
       v10 = 0;
     }
@@ -1495,7 +1495,7 @@ LABEL_12:
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy3 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -1503,26 +1503,26 @@ LABEL_12:
       v29 = 138543618;
       v30 = v22;
       v31 = 2112;
-      v32 = v4;
+      v32 = messageCopy;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to create snapshot session ID from remote snapshot received message: %@", &v29, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
     v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [(HMDCameraSnapshotSessionID *)v4 respondWithError:v10];
+    [(HMDCameraSnapshotSessionID *)messageCopy respondWithError:v10];
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = v4;
+  v6 = fireCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1538,11 +1538,11 @@ LABEL_12:
 
   if (v8)
   {
-    v9 = [v8 snapshotSession];
-    if (v9)
+    snapshotSession = [v8 snapshotSession];
+    if (snapshotSession)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -1550,33 +1550,33 @@ LABEL_12:
         v17 = 138543618;
         v18 = v13;
         v19 = 2112;
-        v20 = v9;
+        v20 = snapshotSession;
         _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Session has timed out: %@", &v17, 0x16u);
       }
 
       objc_autoreleasePoolPop(v10);
       v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:8];
-      v15 = [v9 sessionID];
-      [(HMDCameraSnapshotManager *)v11 _sendResponse:v14 error:v15 sessionID:?];
+      sessionID = [snapshotSession sessionID];
+      [(HMDCameraSnapshotManager *)selfCopy _sendResponse:v14 error:sessionID sessionID:?];
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTakeRemoteSnapshotMessage:(id)a3
+- (void)_handleTakeRemoteSnapshotMessage:(id)message
 {
   v134 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v129 = 0;
-  v6 = [(HMDCameraSnapshotManager *)&self->super.super.isa _createSnapshotSessionIDWithMessage:v4 error:&v129];
+  v6 = [(HMDCameraSnapshotManager *)&self->super.super.isa _createSnapshotSessionIDWithMessage:messageCopy error:&v129];
   v7 = v129;
   if (!v6)
   {
-    [v4 respondWithError:v7];
+    [messageCopy respondWithError:v7];
     goto LABEL_62;
   }
 
@@ -1592,63 +1592,63 @@ LABEL_12:
 
   if (![(HMDCameraStreamSnapshotHandler *)streamSnapshotHandler isStreamSetupInProgress])
   {
-    v15 = [(HMDCameraSnapshotManager *)&self->super.super.isa accessory];
+    accessory = [(HMDCameraSnapshotManager *)&self->super.super.isa accessory];
     v16 = +[HMDDeviceCapabilities deviceCapabilities];
-    v17 = [v16 isResidentCapable];
+    isResidentCapable = [v16 isResidentCapable];
 
-    if (v17)
+    if (isResidentCapable)
     {
-      v18 = [v15 isReachable];
+      isReachable = [accessory isReachable];
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       v22 = v21;
-      if (v18)
+      if (isReachable)
       {
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
           v23 = HMFGetLogIdentifier();
-          v24 = [v6 sessionID];
+          sessionID = [v6 sessionID];
           *buf = 138543618;
           v131 = v23;
           v132 = 2112;
-          v133 = v24;
+          v133 = sessionID;
           _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_INFO, "%{public}@[%@] Accessory is reachable and this is remote gateway capable device", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v19);
-        v25 = v4;
+        v25 = messageCopy;
         v26 = v6;
         if (self)
         {
-          v27 = [(HMDCameraSnapshotManager *)v20 workQueue];
-          dispatch_assert_queue_V2(v27);
+          workQueue2 = [(HMDCameraSnapshotManager *)selfCopy workQueue];
+          dispatch_assert_queue_V2(workQueue2);
 
           v28 = objc_autoreleasePoolPush();
-          v29 = v20;
+          v29 = selfCopy;
           v30 = HMFGetOSLogHandle();
           v124 = v25;
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
             v31 = HMFGetLogIdentifier();
             [v26 sessionID];
-            v33 = v32 = v15;
+            v33 = v32 = accessory;
             *buf = 138543618;
             v131 = v31;
             v132 = 2112;
             v133 = v33;
             _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_INFO, "%{public}@[%@] Creating a snapshot session with HMDCameraSnapshotRemoteRelaySender", buf, 0x16u);
 
-            v15 = v32;
+            accessory = v32;
             v25 = v124;
           }
 
           objc_autoreleasePoolPop(v28);
           v34 = [v25 stringForKey:@"kCameraProactiveSessionID"];
           v117 = [v25 numberForKey:@"kCameraStreamingTierType"];
-          v113 = [v25 remoteSourceDevice];
+          remoteSourceDevice = [v25 remoteSourceDevice];
           WeakRetained = objc_loadWeakRetained(v29 + 6);
-          v127 = v15;
+          v127 = accessory;
           v121 = v34;
           if (v34 && [v29[10] isEntryPresentForCharacteristicEventUUID:v34])
           {
@@ -1676,16 +1676,16 @@ LABEL_12:
 
           v66 = *(v29 + *v39);
           v67 = [HMDCameraSnapshotRemoteRelaySender alloc];
-          v68 = [v29 workQueue];
-          v69 = [v29 uniqueIdentifier];
-          v70 = [(HMDCameraSnapshotRemoteRelaySender *)v67 initWithSessionID:v26 workQueue:v68 device:v113 accessory:WeakRetained delegate:v29 uniqueIdentifier:v69 snapshotRequestHandler:v66];
+          workQueue3 = [v29 workQueue];
+          uniqueIdentifier = [v29 uniqueIdentifier];
+          v70 = [(HMDCameraSnapshotRemoteRelaySender *)v67 initWithSessionID:v26 workQueue:workQueue3 device:remoteSourceDevice accessory:WeakRetained delegate:v29 uniqueIdentifier:uniqueIdentifier snapshotRequestHandler:v66];
 
           v71 = -[HMDCameraSnapshotRemoteSession initWithSessionID:accessory:snapshotGetter:message:waitPeriod:streamingTierType:cameraLocallyReachable:]([HMDCameraSnapshotRemoteSession alloc], "initWithSessionID:accessory:snapshotGetter:message:waitPeriod:streamingTierType:cameraLocallyReachable:", v26, WeakRetained, v70, v124, [v117 unsignedIntegerValue], 1, 40.0);
           [v29[5] setObject:v71 forKeyedSubscript:v26];
           [(HMDCameraSnapshotManager *)v29 _issueGetSnapshot:v71];
 
           v25 = v124;
-          v15 = v127;
+          accessory = v127;
         }
 
         goto LABEL_60;
@@ -1694,11 +1694,11 @@ LABEL_12:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         v62 = HMFGetLogIdentifier();
-        v63 = [v6 sessionID];
+        sessionID2 = [v6 sessionID];
         *buf = 138543618;
         v131 = v62;
         v132 = 2112;
-        v133 = v63;
+        v133 = sessionID2;
         _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_ERROR, "%{public}@[%@] Accessory is not reachable and this is a remote gateway capable device", buf, 0x16u);
       }
 
@@ -1711,27 +1711,27 @@ LABEL_12:
     {
       if (isiOSDevice())
       {
-        v40 = [v15 isReachable];
+        isReachable2 = [accessory isReachable];
         v41 = objc_autoreleasePoolPush();
-        v42 = self;
+        selfCopy2 = self;
         v43 = HMFGetOSLogHandle();
         v44 = os_log_type_enabled(v43, OS_LOG_TYPE_INFO);
-        v128 = v15;
-        if (v40)
+        v128 = accessory;
+        if (isReachable2)
         {
           if (v44)
           {
             v45 = HMFGetLogIdentifier();
-            v46 = [v6 sessionID];
+            sessionID3 = [v6 sessionID];
             *buf = 138543618;
             v131 = v45;
             v132 = 2112;
-            v133 = v46;
+            v133 = sessionID3;
             _os_log_impl(&dword_2531F8000, v43, OS_LOG_TYPE_INFO, "%{public}@[%@] Accessory is reachable and this is iOS device", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v41);
-          v25 = v4;
+          v25 = messageCopy;
           v26 = v6;
           if (!self)
           {
@@ -1739,39 +1739,39 @@ LABEL_12:
           }
 
           v125 = v25;
-          v47 = [(HMDCameraSnapshotManager *)v42 workQueue];
-          dispatch_assert_queue_V2(v47);
+          workQueue4 = [(HMDCameraSnapshotManager *)selfCopy2 workQueue];
+          dispatch_assert_queue_V2(workQueue4);
 
           v48 = objc_autoreleasePoolPush();
-          v49 = v42;
+          v49 = selfCopy2;
           v50 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
           {
             v51 = HMFGetLogIdentifier();
-            v52 = [v26 sessionID];
+            sessionID4 = [v26 sessionID];
             *buf = 138543618;
             v131 = v51;
             v132 = 2112;
-            v133 = v52;
+            v133 = sessionID4;
             _os_log_impl(&dword_2531F8000, v50, OS_LOG_TYPE_INFO, "%{public}@[%@] Creating a snapshot session with HMDCameraSnapshotRemoteStreamSender", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v48);
-          v53 = [v26 streamingTier];
-          v54 = [v125 remoteSourceDevice];
+          streamingTier = [v26 streamingTier];
+          remoteSourceDevice2 = [v125 remoteSourceDevice];
           v55 = objc_loadWeakRetained(&v49->_accessory);
-          v122 = v54;
+          v122 = remoteSourceDevice2;
           if (v55)
           {
             v56 = [HMDCameraSnapshotRemoteStreamSender alloc];
             [(HMDCameraSnapshotManager *)v49 workQueue];
-            v57 = v118 = v53;
+            v57 = v118 = streamingTier;
             [(HMDCameraSnapshotManager *)v49 uniqueIdentifier];
             v59 = v58 = v55;
-            v60 = [(HMDCameraSnapshotRemoteStreamSender *)v56 initWithSessionID:v26 workQueue:v57 device:v54 accessory:v58 delegate:v49 uniqueIdentifier:v59 snapshotRequestHandler:v49->_snapshotRequestHandler];
+            v60 = [(HMDCameraSnapshotRemoteStreamSender *)v56 initWithSessionID:v26 workQueue:v57 device:remoteSourceDevice2 accessory:v58 delegate:v49 uniqueIdentifier:v59 snapshotRequestHandler:v49->_snapshotRequestHandler];
 
             v55 = v58;
-            v53 = v118;
+            streamingTier = v118;
             v61 = -[HMDCameraSnapshotRemoteSession initWithSessionID:accessory:snapshotGetter:message:waitPeriod:streamingTierType:cameraLocallyReachable:]([HMDCameraSnapshotRemoteSession alloc], "initWithSessionID:accessory:snapshotGetter:message:waitPeriod:streamingTierType:cameraLocallyReachable:", v26, v58, v60, v125, [v118 unsignedIntegerValue], 1, 40.0);
             [(NSMutableDictionary *)v49->_currentRemoteSessions setObject:v61 forKeyedSubscript:v26];
             [(HMDCameraSnapshotManager *)v49 _issueGetSnapshot:v61];
@@ -1810,27 +1810,27 @@ LABEL_12:
           if (v44)
           {
             v72 = HMFGetLogIdentifier();
-            v73 = [v6 sessionID];
+            sessionID5 = [v6 sessionID];
             *buf = 138543618;
             v131 = v72;
             v132 = 2112;
-            v133 = v73;
+            v133 = sessionID5;
             _os_log_impl(&dword_2531F8000, v43, OS_LOG_TYPE_INFO, "%{public}@[%@] Accessory is not reachable and this is iOS device", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v41);
-          v25 = v4;
+          v25 = messageCopy;
           v26 = v6;
           if (!self)
           {
             goto LABEL_60;
           }
 
-          v74 = [(HMDCameraSnapshotManager *)v42 workQueue];
-          dispatch_assert_queue_V2(v74);
+          workQueue5 = [(HMDCameraSnapshotManager *)selfCopy2 workQueue];
+          dispatch_assert_queue_V2(workQueue5);
 
           v75 = objc_autoreleasePoolPush();
-          v76 = v42;
+          v76 = selfCopy2;
           v77 = HMFGetOSLogHandle();
           v119 = v26;
           if (os_log_type_enabled(v77, OS_LOG_TYPE_INFO))
@@ -1849,36 +1849,36 @@ LABEL_12:
           }
 
           objc_autoreleasePoolPop(v75);
-          v126 = [v26 streamingTier];
-          v81 = [v25 remoteSourceDevice];
+          streamingTier2 = [v26 streamingTier];
+          remoteSourceDevice3 = [v25 remoteSourceDevice];
           v82 = objc_loadWeakRetained(v76 + 6);
           if (v82)
           {
-            v83 = [v76[16] remoteAccessDevice];
-            v112 = v83;
-            if (v83)
+            remoteAccessDevice = [v76[16] remoteAccessDevice];
+            v112 = remoteAccessDevice;
+            if (remoteAccessDevice)
             {
-              v84 = v83;
+              v84 = remoteAccessDevice;
               contexta = [HMDCameraSnapshotRemoteRelayStream alloc];
               [v76 workQueue];
-              v85 = v114 = v81;
-              v86 = [v76 uniqueIdentifier];
+              v85 = v114 = remoteSourceDevice3;
+              uniqueIdentifier2 = [v76 uniqueIdentifier];
               v123 = v82;
               v87 = v25;
               v88 = v76[16];
               v89 = v76[9];
               v108 = v88;
               v25 = v87;
-              v90 = [(HMDCameraSnapshotRemoteRelayStream *)contexta initWithSessionID:v119 workQueue:v85 sourceDevice:v114 remoteDevice:v84 accessory:v123 delegate:v76 uniqueIdentifier:v86 snapshotRequestHandler:v89 residentMessageHandler:v108];
+              v90 = [(HMDCameraSnapshotRemoteRelayStream *)contexta initWithSessionID:v119 workQueue:v85 sourceDevice:v114 remoteDevice:v84 accessory:v123 delegate:v76 uniqueIdentifier:uniqueIdentifier2 snapshotRequestHandler:v89 residentMessageHandler:v108];
 
               v26 = v119;
               v82 = v123;
 
-              v91 = -[HMDCameraSnapshotRemoteSession initWithSessionID:accessory:snapshotGetter:message:waitPeriod:streamingTierType:cameraLocallyReachable:]([HMDCameraSnapshotRemoteSession alloc], "initWithSessionID:accessory:snapshotGetter:message:waitPeriod:streamingTierType:cameraLocallyReachable:", v119, v123, v90, v25, [v126 unsignedIntegerValue], 0, 60.0);
+              v91 = -[HMDCameraSnapshotRemoteSession initWithSessionID:accessory:snapshotGetter:message:waitPeriod:streamingTierType:cameraLocallyReachable:]([HMDCameraSnapshotRemoteSession alloc], "initWithSessionID:accessory:snapshotGetter:message:waitPeriod:streamingTierType:cameraLocallyReachable:", v119, v123, v90, v25, [streamingTier2 unsignedIntegerValue], 0, 60.0);
               [v76[5] setObject:v91 forKeyedSubscript:v119];
               [(HMDCameraSnapshotManager *)v76 _issueGetSnapshot:v91];
 
-              v81 = v114;
+              remoteSourceDevice3 = v114;
             }
 
             else
@@ -1890,15 +1890,15 @@ LABEL_12:
               if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
               {
                 HMFGetLogIdentifier();
-                v105 = v116 = v81;
-                v106 = [v119 sessionID];
+                v105 = v116 = remoteSourceDevice3;
+                sessionID6 = [v119 sessionID];
                 *buf = 138543618;
                 v131 = v105;
                 v132 = 2112;
-                v133 = v106;
+                v133 = sessionID6;
                 _os_log_impl(&dword_2531F8000, v104, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to create snapshot session with HMDCameraSnapshotRemoteRelayStream: no remote access device", buf, 0x16u);
 
-                v81 = v116;
+                remoteSourceDevice3 = v116;
               }
 
               objc_autoreleasePoolPop(context);
@@ -1917,15 +1917,15 @@ LABEL_12:
             if (os_log_type_enabled(v99, OS_LOG_TYPE_ERROR))
             {
               HMFGetLogIdentifier();
-              v100 = v115 = v81;
-              v101 = [v26 sessionID];
+              v100 = v115 = remoteSourceDevice3;
+              sessionID7 = [v26 sessionID];
               *buf = 138543618;
               v131 = v100;
               v132 = 2112;
-              v133 = v101;
+              v133 = sessionID7;
               _os_log_impl(&dword_2531F8000, v99, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to create snapshot session with HMDCameraSnapshotRemoteRelayStream: accessory reference is nil", buf, 0x16u);
 
-              v81 = v115;
+              remoteSourceDevice3 = v115;
             }
 
             objc_autoreleasePoolPop(v97);
@@ -1935,7 +1935,7 @@ LABEL_12:
           }
         }
 
-        v15 = v128;
+        accessory = v128;
 LABEL_60:
 
         goto LABEL_61;
@@ -1946,30 +1946,30 @@ LABEL_60:
     }
 
     v25 = [v64 hmErrorWithCode:v65];
-    [v4 respondWithError:v25];
+    [messageCopy respondWithError:v25];
 LABEL_61:
 
     goto LABEL_62;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy3 = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v6 sessionID];
+    sessionID8 = [v6 sessionID];
     *buf = 138543618;
     v131 = v12;
     v132 = 2112;
-    v133 = v13;
+    v133 = sessionID8;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@[%@] Stream setup is in progress, adding this to remote pending request queue", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
   if (self)
   {
-    pendingRemoteSnapshotRequestDuringStreamSetup = v10->_pendingRemoteSnapshotRequestDuringStreamSetup;
+    pendingRemoteSnapshotRequestDuringStreamSetup = selfCopy3->_pendingRemoteSnapshotRequestDuringStreamSetup;
   }
 
   else
@@ -1977,27 +1977,27 @@ LABEL_61:
     pendingRemoteSnapshotRequestDuringStreamSetup = 0;
   }
 
-  [(NSMutableArray *)pendingRemoteSnapshotRequestDuringStreamSetup addObject:v4];
+  [(NSMutableArray *)pendingRemoteSnapshotRequestDuringStreamSetup addObject:messageCopy];
 LABEL_62:
 
   v107 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createSnapshotSessionIDWithMessage:(void *)a3 error:
+- (id)_createSnapshotSessionIDWithMessage:(void *)message error:
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [a1 workQueue];
-    dispatch_assert_queue_V2(v6);
+    workQueue = [self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
-    WeakRetained = objc_loadWeakRetained(a1 + 6);
+    WeakRetained = objc_loadWeakRetained(self + 6);
     v8 = [[HMDCameraSnapshotSessionID alloc] initWithAccessory:WeakRetained message:v5];
     if (!v8)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = a1;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -2010,31 +2010,31 @@ LABEL_62:
       }
 
       objc_autoreleasePoolPop(v17);
-      if (a3)
+      if (message)
       {
         [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-        *a3 = a1 = 0;
+        *message = self = 0;
       }
 
       else
       {
-        a1 = 0;
+        self = 0;
       }
 
       goto LABEL_18;
     }
 
-    v9 = [WeakRetained cameraProfiles];
-    v10 = [v9 anyObject];
-    v11 = [v10 currentSettings];
+    cameraProfiles = [WeakRetained cameraProfiles];
+    anyObject = [cameraProfiles anyObject];
+    currentSettings = [anyObject currentSettings];
 
-    if (v11)
+    if (currentSettings)
     {
-      [v11 currentAccessMode];
+      [currentSettings currentAccessMode];
       if ((HMAreSnapshotsAllowedForCameraAccessMode() & 1) == 0)
       {
         v12 = objc_autoreleasePoolPush();
-        v13 = a1;
+        selfCopy2 = self;
         v14 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
@@ -2048,15 +2048,15 @@ LABEL_62:
         }
 
         objc_autoreleasePoolPop(v12);
-        if (a3)
+        if (message)
         {
           [MEMORY[0x277CCA9B8] hmErrorWithCode:10];
-          *a3 = a1 = 0;
+          *message = self = 0;
         }
 
         else
         {
-          a1 = 0;
+          self = 0;
         }
 
         goto LABEL_17;
@@ -2066,7 +2066,7 @@ LABEL_62:
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = a1;
+      selfCopy3 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
@@ -2079,7 +2079,7 @@ LABEL_62:
       objc_autoreleasePoolPop(v21);
     }
 
-    a1 = v8;
+    self = v8;
 LABEL_17:
 
 LABEL_18:
@@ -2087,32 +2087,32 @@ LABEL_18:
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (void)_issueGetSnapshot:(void *)a1
+- (void)_issueGetSnapshot:(void *)snapshot
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  v4 = [a1 workQueue];
-  dispatch_assert_queue_V2(v4);
+  workQueue = [snapshot workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = objc_autoreleasePoolPush();
-  v6 = a1;
+  snapshotCopy = snapshot;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v3 sessionID];
-    v10 = [v9 snapshotReason];
-    if (v10 == 1)
+    sessionID = [v3 sessionID];
+    snapshotReason = [sessionID snapshotReason];
+    if (snapshotReason == 1)
     {
       v11 = @"HMDCameraSnapshotReasonEvent";
     }
 
-    else if (v10)
+    else if (snapshotReason)
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown snapshot reason: %lu", v10];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown snapshot reason: %lu", snapshotReason];
     }
 
     else
@@ -2120,106 +2120,106 @@ LABEL_18:
       v11 = @"HMDCameraSnapshotReasonPeriodic";
     }
 
-    v12 = [v3 sessionID];
-    v13 = [v12 sessionID];
+    sessionID2 = [v3 sessionID];
+    v12SessionID = [sessionID2 sessionID];
     *buf = 138543874;
     v22 = v8;
     v23 = 2112;
     v24 = v11;
     v25 = 2112;
-    v26 = v13;
+    v26 = v12SessionID;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@[%@] Issuing get snapshot request for reason: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v14 = [v3 sessionID];
-  [v14 markMilestoneFor:@"ReceivedSnapshotRequest"];
+  sessionID3 = [v3 sessionID];
+  [sessionID3 markMilestoneFor:@"ReceivedSnapshotRequest"];
 
-  v15 = [v3 snapshotGetter];
-  [v15 getSnapshot:{objc_msgSend(v3, "streamingTierType")}];
+  snapshotGetter = [v3 snapshotGetter];
+  [snapshotGetter getSnapshot:{objc_msgSend(v3, "streamingTierType")}];
 
-  v16 = [v3 snapshotCompletionTimer];
-  [v16 setDelegate:v6];
+  snapshotCompletionTimer = [v3 snapshotCompletionTimer];
+  [snapshotCompletionTimer setDelegate:snapshotCopy];
 
-  v17 = [v6 workQueue];
-  v18 = [v3 snapshotCompletionTimer];
-  [v18 setDelegateQueue:v17];
+  workQueue2 = [snapshotCopy workQueue];
+  snapshotCompletionTimer2 = [v3 snapshotCompletionTimer];
+  [snapshotCompletionTimer2 setDelegateQueue:workQueue2];
 
-  v19 = [v3 snapshotCompletionTimer];
-  [v19 resume];
+  snapshotCompletionTimer3 = [v3 snapshotCompletionTimer];
+  [snapshotCompletionTimer3 resume];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleTakeSnapshotMessage:(id)a3
+- (void)_handleTakeSnapshotMessage:(id)message
 {
   v115 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v108 = 0;
-  v6 = [(HMDCameraSnapshotManager *)&self->super.super.isa _createSnapshotSessionIDWithMessage:v4 error:&v108];
+  v6 = [(HMDCameraSnapshotManager *)&self->super.super.isa _createSnapshotSessionIDWithMessage:messageCopy error:&v108];
   v7 = v108;
   if (v6)
   {
-    v8 = [v6 snapshotCharacteristicEventUUID];
-    v9 = v8;
+    snapshotCharacteristicEventUUID = [v6 snapshotCharacteristicEventUUID];
+    v9 = snapshotCharacteristicEventUUID;
     if (self)
     {
       if (self->_currentLocalSession)
       {
         v10 = objc_autoreleasePoolPush();
-        v11 = self;
+        selfCopy = self;
         v12 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v13 = HMFGetLogIdentifier();
-          v14 = [v6 sessionID];
-          currentLocalSession = v11->_currentLocalSession;
+          sessionID = [v6 sessionID];
+          currentLocalSession = selfCopy->_currentLocalSession;
           *buf = 138543874;
           v110 = v13;
           v111 = 2112;
-          v112 = v14;
+          v112 = sessionID;
           v113 = 2112;
           v114 = currentLocalSession;
           _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@[%@] There is already a local session %@ in progress, adding this request to that", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v10);
-        [(HMDCameraSnapshotLocalSession *)v11->_currentLocalSession addMessage:v4];
+        [(HMDCameraSnapshotLocalSession *)selfCopy->_currentLocalSession addMessage:messageCopy];
         if (v9)
         {
-          [(HMDCameraSnapshotCache *)v11->_snapshotCache addEntryWithCharacteristicEventUUID:v9];
+          [(HMDCameraSnapshotCache *)selfCopy->_snapshotCache addEntryWithCharacteristicEventUUID:v9];
         }
 
         goto LABEL_33;
       }
 
-      if (v8)
+      if (snapshotCharacteristicEventUUID)
       {
 LABEL_10:
         if ([(HMDCameraStreamSnapshotHandler *)self->_streamSnapshotHandler isStreamSetupInProgress])
         {
 LABEL_11:
           v16 = objc_autoreleasePoolPush();
-          v17 = self;
+          selfCopy2 = self;
           v18 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             v19 = HMFGetLogIdentifier();
-            v20 = [v6 sessionID];
+            sessionID2 = [v6 sessionID];
             *buf = 138543618;
             v110 = v19;
             v111 = 2112;
-            v112 = v20;
+            v112 = sessionID2;
             _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_INFO, "%{public}@[%@] Stream setup is in progress, adding this to pending request queue", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v16);
           if (self)
           {
-            pendingSnapshotRequestDuringStreamSetup = v17->_pendingSnapshotRequestDuringStreamSetup;
+            pendingSnapshotRequestDuringStreamSetup = selfCopy2->_pendingSnapshotRequestDuringStreamSetup;
           }
 
           else
@@ -2227,7 +2227,7 @@ LABEL_11:
             pendingSnapshotRequestDuringStreamSetup = 0;
           }
 
-          [(NSMutableArray *)pendingSnapshotRequestDuringStreamSetup addObject:v4];
+          [(NSMutableArray *)pendingSnapshotRequestDuringStreamSetup addObject:messageCopy];
           goto LABEL_33;
         }
 
@@ -2236,63 +2236,63 @@ LABEL_17:
         if ([(HMDCameraStreamSnapshotHandler *)streamSnapshotHandler isStreamAvailable])
         {
           v23 = objc_autoreleasePoolPush();
-          v24 = self;
+          selfCopy3 = self;
           v25 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
           {
             v26 = HMFGetLogIdentifier();
-            v27 = [v6 sessionID];
+            sessionID3 = [v6 sessionID];
             *buf = 138543618;
             v110 = v26;
             v111 = 2112;
-            v112 = v27;
+            v112 = sessionID3;
             _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_INFO, "%{public}@[%@] Taking snapshot through available camera stream", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v23);
-          v28 = v4;
+          v28 = messageCopy;
           v29 = v6;
           if (self)
           {
             v106 = v28;
-            v30 = [(HMDCameraSnapshotManager *)v24 workQueue];
-            dispatch_assert_queue_V2(v30);
+            workQueue2 = [(HMDCameraSnapshotManager *)selfCopy3 workQueue];
+            dispatch_assert_queue_V2(workQueue2);
 
             v31 = objc_autoreleasePoolPush();
-            v32 = v24;
+            v32 = selfCopy3;
             v33 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
             {
               v34 = HMFGetLogIdentifier();
-              v35 = [v29 sessionID];
+              sessionID4 = [v29 sessionID];
               *buf = 138543618;
               v110 = v34;
               v111 = 2112;
-              v112 = v35;
+              v112 = sessionID4;
               _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_INFO, "%{public}@[%@] Creating a snapshot session with HMDCameraStreamSnapshot", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v31);
-            v101 = [v29 snapshotCharacteristicEventUUID];
-            v103 = [v29 isSnapshotRequestForBulletin];
+            snapshotCharacteristicEventUUID2 = [v29 snapshotCharacteristicEventUUID];
+            isSnapshotRequestForBulletin = [v29 isSnapshotRequestForBulletin];
             v36 = v29;
             v37 = v32->_dataSource;
             WeakRetained = objc_loadWeakRetained(&v32->_accessory);
             v39 = v32->_streamSnapshotHandler;
             v40 = v32->_networkMonitor;
             v41 = v39;
-            v42 = [(HMFNetMonitor *)v40 reachabilityPath];
-            LOBYTE(v98) = v103;
+            reachabilityPath = [(HMFNetMonitor *)v40 reachabilityPath];
+            LOBYTE(v98) = isSnapshotRequestForBulletin;
             v104 = v36;
             v43 = v36;
             v28 = v106;
-            v44 = [(HMDCameraSnapshotManagerDataSource *)v37 createLocalSnapshotSessionWithID:v43 accessory:WeakRetained snapshotGetter:v41 message:v106 waitPeriod:v42 reachabilityPath:1 cameraLocallyReachable:30.0 snapshotForNotification:v98];
+            v44 = [(HMDCameraSnapshotManagerDataSource *)v37 createLocalSnapshotSessionWithID:v43 accessory:WeakRetained snapshotGetter:v41 message:v106 waitPeriod:reachabilityPath reachabilityPath:1 cameraLocallyReachable:30.0 snapshotForNotification:v98];
             v45 = v32->_currentLocalSession;
             v32->_currentLocalSession = v44;
 
-            if (v101)
+            if (snapshotCharacteristicEventUUID2)
             {
-              [(HMDCameraSnapshotCache *)v32->_snapshotCache addEntryWithCharacteristicEventUUID:v101];
+              [(HMDCameraSnapshotCache *)v32->_snapshotCache addEntryWithCharacteristicEventUUID:snapshotCharacteristicEventUUID2];
             }
 
             [(HMDCameraSnapshotManager *)v32 _issueGetSnapshot:?];
@@ -2306,68 +2306,68 @@ LABEL_33:
           goto LABEL_34;
         }
 
-        v54 = [(HMDCameraSnapshotManager *)&self->super.super.isa accessory];
-        v55 = [v54 isReachable];
+        accessory = [(HMDCameraSnapshotManager *)&self->super.super.isa accessory];
+        isReachable = [accessory isReachable];
 
-        if (v55)
+        if (isReachable)
         {
           v56 = objc_autoreleasePoolPush();
-          v57 = self;
+          selfCopy4 = self;
           v58 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
           {
             v59 = HMFGetLogIdentifier();
-            v60 = [v6 sessionID];
+            sessionID5 = [v6 sessionID];
             *buf = 138543618;
             v110 = v59;
             v111 = 2112;
-            v112 = v60;
+            v112 = sessionID5;
             _os_log_impl(&dword_2531F8000, v58, OS_LOG_TYPE_INFO, "%{public}@[%@] Taking local snapshot because accessory is reachable", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v56);
-          v61 = v4;
+          v61 = messageCopy;
           v107 = v6;
           if (self)
           {
             v105 = v61;
-            v62 = [(HMDCameraSnapshotManager *)v57 workQueue];
-            dispatch_assert_queue_V2(v62);
+            workQueue3 = [(HMDCameraSnapshotManager *)selfCopy4 workQueue];
+            dispatch_assert_queue_V2(workQueue3);
 
             v63 = objc_autoreleasePoolPush();
-            v64 = v57;
+            v64 = selfCopy4;
             v65 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
             {
               v66 = HMFGetLogIdentifier();
-              v67 = [v107 sessionID];
+              sessionID6 = [v107 sessionID];
               *buf = 138543618;
               v110 = v66;
               v111 = 2112;
-              v112 = v67;
+              v112 = sessionID6;
               _os_log_impl(&dword_2531F8000, v65, OS_LOG_TYPE_INFO, "%{public}@[%@] Creating a snapshot session with HMDCameraSnapshotLocal", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v63);
-            v100 = [v107 isSnapshotRequestForBulletin];
-            v102 = [v107 snapshotCharacteristicEventUUID];
+            isSnapshotRequestForBulletin2 = [v107 isSnapshotRequestForBulletin];
+            snapshotCharacteristicEventUUID3 = [v107 snapshotCharacteristicEventUUID];
             v68 = objc_loadWeakRetained(&v64->_accessory);
             v69 = v64->_dataSource;
-            v70 = [(HMDCameraSnapshotManager *)v64 workQueue];
-            v99 = [(HMDCameraSnapshotManagerDataSource *)v69 createSnapshotLocalWithSessionID:v107 workQueue:v70 accessory:v68 delegate:v64 snapshotRequestHandler:v64->_snapshotRequestHandler];
+            workQueue4 = [(HMDCameraSnapshotManager *)v64 workQueue];
+            v99 = [(HMDCameraSnapshotManagerDataSource *)v69 createSnapshotLocalWithSessionID:v107 workQueue:workQueue4 accessory:v68 delegate:v64 snapshotRequestHandler:v64->_snapshotRequestHandler];
 
             dataSource = v64->_dataSource;
             v72 = v64->_networkMonitor;
             v73 = dataSource;
-            LOBYTE(v98) = v100;
+            LOBYTE(v98) = isSnapshotRequestForBulletin2;
             v61 = v105;
             v74 = [(HMDCameraSnapshotManagerDataSource *)v73 createLocalSnapshotSessionWithID:v107 accessory:v68 snapshotGetter:v99 message:v105 waitPeriod:[(HMFNetMonitor *)v72 reachabilityPath] reachabilityPath:1 cameraLocallyReachable:30.0 snapshotForNotification:v98];
             v75 = v64->_currentLocalSession;
             v64->_currentLocalSession = v74;
 
-            if (v102)
+            if (snapshotCharacteristicEventUUID3)
             {
-              [(HMDCameraSnapshotCache *)v64->_snapshotCache addEntryWithCharacteristicEventUUID:v102];
+              [(HMDCameraSnapshotCache *)v64->_snapshotCache addEntryWithCharacteristicEventUUID:snapshotCharacteristicEventUUID3];
             }
 
             [(HMDCameraSnapshotManager *)v64 _issueGetSnapshot:?];
@@ -2387,9 +2387,9 @@ LABEL_33:
 
         else
         {
-          v91 = [0 supportsCameraSnapshotRequestViaRelay];
+          supportsCameraSnapshotRequestViaRelay = [0 supportsCameraSnapshotRequestViaRelay];
           v76 = 0;
-          if (v91)
+          if (supportsCameraSnapshotRequestViaRelay)
           {
 LABEL_50:
             v77 = v76;
@@ -2405,26 +2405,26 @@ LABEL_50:
                 residentMessageHandler = 0;
               }
 
-              v79 = [(HMDCameraResidentMessageHandler *)residentMessageHandler isUsingCompanionForRemoteAccessDevice];
+              isUsingCompanionForRemoteAccessDevice = [(HMDCameraResidentMessageHandler *)residentMessageHandler isUsingCompanionForRemoteAccessDevice];
 
-              if (v79)
+              if (isUsingCompanionForRemoteAccessDevice)
               {
                 v80 = objc_autoreleasePoolPush();
-                v81 = self;
+                selfCopy5 = self;
                 v82 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
                 {
                   v83 = HMFGetLogIdentifier();
-                  v84 = [v6 sessionID];
+                  sessionID7 = [v6 sessionID];
                   *buf = 138543618;
                   v110 = v83;
                   v111 = 2112;
-                  v112 = v84;
+                  v112 = sessionID7;
                   _os_log_impl(&dword_2531F8000, v82, OS_LOG_TYPE_INFO, "%{public}@[%@] Taking remote snapshot via stream because accessory is unreachable", buf, 0x16u);
                 }
 
                 objc_autoreleasePoolPop(v80);
-                [(HMDCameraSnapshotManager *)v81 _sendSnapshotRequestStreamReceiver:v4 snapshotSessionID:v6];
+                [(HMDCameraSnapshotManager *)selfCopy5 _sendSnapshotRequestStreamReceiver:messageCopy snapshotSessionID:v6];
                 goto LABEL_33;
               }
             }
@@ -2434,42 +2434,42 @@ LABEL_50:
             }
 
             v85 = objc_autoreleasePoolPush();
-            v86 = self;
+            selfCopy6 = self;
             v87 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v87, OS_LOG_TYPE_INFO))
             {
               v88 = HMFGetLogIdentifier();
-              v89 = [v6 sessionID];
+              sessionID8 = [v6 sessionID];
               *buf = 138543618;
               v110 = v88;
               v111 = 2112;
-              v112 = v89;
+              v112 = sessionID8;
               _os_log_impl(&dword_2531F8000, v87, OS_LOG_TYPE_INFO, "%{public}@[%@] Taking remote snapshot via relay because accessory is unreachable", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v85);
-            [(HMDCameraSnapshotManager *)v86 _sendSnapshotRequestRelayReceiver:v4 snapshotSessionID:v6];
+            [(HMDCameraSnapshotManager *)selfCopy6 _sendSnapshotRequestRelayReceiver:messageCopy snapshotSessionID:v6];
             goto LABEL_33;
           }
         }
 
         v92 = objc_autoreleasePoolPush();
-        v93 = self;
+        selfCopy7 = self;
         v94 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
         {
           v95 = HMFGetLogIdentifier();
-          v96 = [v6 sessionID];
+          sessionID9 = [v6 sessionID];
           *buf = 138543618;
           v110 = v95;
           v111 = 2112;
-          v112 = v96;
+          v112 = sessionID9;
           _os_log_impl(&dword_2531F8000, v94, OS_LOG_TYPE_ERROR, "%{public}@[%@] Cannot take snapshot because accessory is unreachable remote and remote snapshots are unsupported", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v92);
         v97 = [MEMORY[0x277CCA9B8] hmErrorWithCode:4];
-        [v4 respondWithError:v97];
+        [messageCopy respondWithError:v97];
 
         goto LABEL_33;
       }
@@ -2479,7 +2479,7 @@ LABEL_50:
 
     else
     {
-      if (v8)
+      if (snapshotCharacteristicEventUUID)
       {
         goto LABEL_62;
       }
@@ -2488,28 +2488,28 @@ LABEL_50:
     }
 
     v47 = snapshotFileManager;
-    v28 = [(HMDCameraSnapshotFileManager *)v47 encodedMostRecentSnapshotForMessage:v4];
+    v28 = [(HMDCameraSnapshotFileManager *)v47 encodedMostRecentSnapshotForMessage:messageCopy];
 
     if (v28)
     {
       v48 = objc_autoreleasePoolPush();
-      v49 = self;
+      selfCopy8 = self;
       v50 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
       {
         v51 = HMFGetLogIdentifier();
-        v52 = [v6 sessionID];
+        sessionID10 = [v6 sessionID];
         *buf = 138543874;
         v110 = v51;
         v111 = 2112;
-        v112 = v52;
+        v112 = sessionID10;
         v113 = 2112;
         v114 = v28;
         _os_log_impl(&dword_2531F8000, v50, OS_LOG_TYPE_INFO, "%{public}@[%@] Most recent snapshot is still valid, sending it with payload %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v48);
-      [v4 respondWithPayload:v28];
+      [messageCopy respondWithPayload:v28];
       goto LABEL_32;
     }
 
@@ -2519,9 +2519,9 @@ LABEL_50:
     }
 
 LABEL_62:
-    v90 = [0 isStreamSetupInProgress];
+    isStreamSetupInProgress = [0 isStreamSetupInProgress];
     streamSnapshotHandler = 0;
-    if (v90)
+    if (isStreamSetupInProgress)
     {
       goto LABEL_11;
     }
@@ -2529,74 +2529,74 @@ LABEL_62:
     goto LABEL_17;
   }
 
-  [v4 respondWithError:v7];
+  [messageCopy respondWithError:v7];
 LABEL_34:
 
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendSnapshotRequestStreamReceiver:(void *)a3 snapshotSessionID:
+- (void)_sendSnapshotRequestStreamReceiver:(void *)receiver snapshotSessionID:
 {
   v42 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  receiverCopy = receiver;
+  if (self)
   {
-    v7 = [a1 workQueue];
-    dispatch_assert_queue_V2(v7);
+    workQueue = [self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v6 sessionID];
+      sessionID = [receiverCopy sessionID];
       *buf = 138543618;
       v39 = v11;
       v40 = 2112;
-      v41 = v12;
+      v41 = sessionID;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[%@] Creating a snapshot session with HMDCameraSnapshotRemoteStreamReceiver", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    WeakRetained = objc_loadWeakRetained(v9 + 6);
+    WeakRetained = objc_loadWeakRetained(selfCopy + 6);
     if (WeakRetained)
     {
-      v14 = [v9[16] remoteAccessDevice];
-      if (v14)
+      remoteAccessDevice = [selfCopy[16] remoteAccessDevice];
+      if (remoteAccessDevice)
       {
         v15 = [HMDCameraSnapshotRemoteStreamReceiver alloc];
-        v16 = [v9 workQueue];
-        v17 = [v9 uniqueIdentifier];
-        v18 = v9[16];
-        v19 = v9[9];
-        v20 = [(HMDCameraSnapshotRemoteStreamReceiver *)v15 initWithSessionID:v6 workQueue:v16 accessory:WeakRetained delegate:v9 uniqueIdentifier:v17 snapshotRequestHandler:v19 residentMessageHandler:v18 remoteDevice:v14];
+        workQueue2 = [selfCopy workQueue];
+        uniqueIdentifier = [selfCopy uniqueIdentifier];
+        v18 = selfCopy[16];
+        v19 = selfCopy[9];
+        v20 = [(HMDCameraSnapshotRemoteStreamReceiver *)v15 initWithSessionID:receiverCopy workQueue:workQueue2 accessory:WeakRetained delegate:selfCopy uniqueIdentifier:uniqueIdentifier snapshotRequestHandler:v19 residentMessageHandler:v18 remoteDevice:remoteAccessDevice];
 
-        v21 = v9[17];
-        v22 = v9[15];
+        v21 = selfCopy[17];
+        v22 = selfCopy[15];
         v23 = v21;
-        v24 = [v22 reachabilityPath];
-        LOBYTE(v37) = [v6 isSnapshotRequestForBulletin];
-        v25 = [v23 createLocalSnapshotSessionWithID:v6 accessory:WeakRetained snapshotGetter:v20 message:v5 waitPeriod:v24 reachabilityPath:0 cameraLocallyReachable:60.0 snapshotForNotification:v37];
+        reachabilityPath = [v22 reachabilityPath];
+        LOBYTE(v37) = [receiverCopy isSnapshotRequestForBulletin];
+        v25 = [v23 createLocalSnapshotSessionWithID:receiverCopy accessory:WeakRetained snapshotGetter:v20 message:v5 waitPeriod:reachabilityPath reachabilityPath:0 cameraLocallyReachable:60.0 snapshotForNotification:v37];
 
-        objc_storeStrong(v9 + 4, v25);
-        [(HMDCameraSnapshotManager *)v9 _issueGetSnapshot:?];
+        objc_storeStrong(selfCopy + 4, v25);
+        [(HMDCameraSnapshotManager *)selfCopy _issueGetSnapshot:?];
       }
 
       else
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = v9;
+        v32 = selfCopy;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
           v34 = HMFGetLogIdentifier();
-          v35 = [v6 sessionID];
+          sessionID2 = [receiverCopy sessionID];
           *buf = 138543618;
           v39 = v34;
           v40 = 2112;
-          v41 = v35;
+          v41 = sessionID2;
           _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to create snapshot session with HMDCameraSnapshotRemoteStreamReceiver: no remote access device", buf, 0x16u);
         }
 
@@ -2609,92 +2609,92 @@ LABEL_34:
     else
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = v9;
+      v27 = selfCopy;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         v29 = HMFGetLogIdentifier();
-        v30 = [v6 sessionID];
+        sessionID3 = [receiverCopy sessionID];
         *buf = 138543618;
         v39 = v29;
         v40 = 2112;
-        v41 = v30;
+        v41 = sessionID3;
         _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to create snapshot session with HMDCameraSnapshotRemoteStreamReceiver: accessory reference is nil", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v26);
-      v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-      [v5 respondWithError:v14];
+      remoteAccessDevice = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
+      [v5 respondWithError:remoteAccessDevice];
     }
   }
 
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendSnapshotRequestRelayReceiver:(void *)a3 snapshotSessionID:
+- (void)_sendSnapshotRequestRelayReceiver:(void *)receiver snapshotSessionID:
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  receiverCopy = receiver;
+  if (self)
   {
-    v7 = [a1 workQueue];
-    dispatch_assert_queue_V2(v7);
+    workQueue = [self workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v6 sessionID];
+      sessionID = [receiverCopy sessionID];
       *buf = 138543618;
       v40 = v11;
       v41 = 2112;
-      v42 = v12;
+      v42 = sessionID;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@[%@] Creating a snapshot session with HMDCameraSnapshotRemoteRelayReceiver", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    WeakRetained = objc_loadWeakRetained(v9 + 6);
+    WeakRetained = objc_loadWeakRetained(selfCopy + 6);
     if (WeakRetained)
     {
-      v14 = [v9[16] remoteAccessDevice];
-      if (v14)
+      remoteAccessDevice = [selfCopy[16] remoteAccessDevice];
+      if (remoteAccessDevice)
       {
-        v15 = v9[17];
-        v16 = [v9 workQueue];
-        v17 = [v9 uniqueIdentifier];
-        v18 = v9[16];
+        v15 = selfCopy[17];
+        workQueue2 = [selfCopy workQueue];
+        uniqueIdentifier = [selfCopy uniqueIdentifier];
+        v18 = selfCopy[16];
         v19 = v5;
-        v20 = v9[9];
-        v21 = [v15 createSnapshotRemoteRelayReceiverWithSessionID:v6 workQueue:v16 accessory:WeakRetained delegate:v9 uniqueIdentifier:v17 snapshotRequestHandler:v20 residentMessageHandler:v18 remoteDevice:v14];
+        v20 = selfCopy[9];
+        v21 = [v15 createSnapshotRemoteRelayReceiverWithSessionID:receiverCopy workQueue:workQueue2 accessory:WeakRetained delegate:selfCopy uniqueIdentifier:uniqueIdentifier snapshotRequestHandler:v20 residentMessageHandler:v18 remoteDevice:remoteAccessDevice];
 
         v5 = v19;
-        v22 = v9[17];
-        v23 = v9[15];
+        v22 = selfCopy[17];
+        v23 = selfCopy[15];
         v24 = v22;
-        v25 = [v23 reachabilityPath];
-        LOBYTE(v38) = [v6 isSnapshotRequestForBulletin];
-        v26 = [v24 createLocalSnapshotSessionWithID:v6 accessory:WeakRetained snapshotGetter:v21 message:v5 waitPeriod:v25 reachabilityPath:0 cameraLocallyReachable:60.0 snapshotForNotification:v38];
+        reachabilityPath = [v23 reachabilityPath];
+        LOBYTE(v38) = [receiverCopy isSnapshotRequestForBulletin];
+        v26 = [v24 createLocalSnapshotSessionWithID:receiverCopy accessory:WeakRetained snapshotGetter:v21 message:v5 waitPeriod:reachabilityPath reachabilityPath:0 cameraLocallyReachable:60.0 snapshotForNotification:v38];
 
-        objc_storeStrong(v9 + 4, v26);
-        [(HMDCameraSnapshotManager *)v9 _issueGetSnapshot:?];
+        objc_storeStrong(selfCopy + 4, v26);
+        [(HMDCameraSnapshotManager *)selfCopy _issueGetSnapshot:?];
       }
 
       else
       {
         v32 = objc_autoreleasePoolPush();
-        v33 = v9;
+        v33 = selfCopy;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
           v35 = HMFGetLogIdentifier();
-          v36 = [v6 sessionID];
+          sessionID2 = [receiverCopy sessionID];
           *buf = 138543618;
           v40 = v35;
           v41 = 2112;
-          v42 = v36;
+          v42 = sessionID2;
           _os_log_impl(&dword_2531F8000, v34, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to create snapshot session with HMDCameraSnapshotRemoteRelayReceiver: no remote access device", buf, 0x16u);
         }
 
@@ -2707,22 +2707,22 @@ LABEL_34:
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = v9;
+      v28 = selfCopy;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v30 = HMFGetLogIdentifier();
-        v31 = [v6 sessionID];
+        sessionID3 = [receiverCopy sessionID];
         *buf = 138543618;
         v40 = v30;
         v41 = 2112;
-        v42 = v31;
+        v42 = sessionID3;
         _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to create snapshot session with HMDCameraSnapshotRemoteRelayReceiver: accessory reference is nil", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v27);
-      v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-      [v5 respondWithError:v14];
+      remoteAccessDevice = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
+      [v5 respondWithError:remoteAccessDevice];
     }
   }
 
@@ -2743,10 +2743,10 @@ LABEL_34:
   }
 
   v4 = snapshotFileManager;
-  v5 = [(HMDCameraSnapshotFileManager *)v4 encodedMostRecentSnapshot];
+  encodedMostRecentSnapshot = [(HMDCameraSnapshotFileManager *)v4 encodedMostRecentSnapshot];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -2754,46 +2754,46 @@ LABEL_34:
     v12 = 138543618;
     v13 = v9;
     v14 = 2112;
-    v15 = v5;
+    v15 = encodedMostRecentSnapshot;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Responding to most recent snapshot with payload: %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v10 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return encodedMostRecentSnapshot;
 }
 
-- (void)_handleCreateSnapshotFromBulletinContextMessage:(id)a3
+- (void)_handleCreateSnapshotFromBulletinContextMessage:(id)message
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 stringForKey:@"kCameraSessionID"];
-  v7 = [v4 stringForKey:*MEMORY[0x277CD26B8]];
-  v8 = [v4 dateForKey:*MEMORY[0x277CD26B0]];
+  v6 = [messageCopy stringForKey:@"kCameraSessionID"];
+  v7 = [messageCopy stringForKey:*MEMORY[0x277CD26B8]];
+  v8 = [messageCopy dateForKey:*MEMORY[0x277CD26B0]];
   v9 = v8;
   if (!v6 || (v7 ? (v10 = v8 == 0) : (v10 = 1), v10))
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v4 messagePayload];
+      messagePayload = [messageCopy messagePayload];
       *buf = 138543618;
       v38 = v25;
       v39 = 2112;
-      v40 = v26;
+      v40 = messagePayload;
       _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_ERROR, "%{public}@Snapshot session ID or path or capture date is not present in request: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
     v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [v4 respondWithError:v12];
+    [messageCopy respondWithError:v12];
   }
 
   else
@@ -2813,14 +2813,14 @@ LABEL_34:
         snapshotFileManager = 0;
       }
 
-      v36 = v4;
+      v36 = messageCopy;
       v14 = MEMORY[0x277CBEA60];
       v15 = snapshotFileManager;
       v16 = [v14 arrayWithObjects:&v36 count:1];
       v17 = [(HMDCameraSnapshotFileManager *)v15 createSlotForSnapshotFile:v11 requestMessages:v16 shouldNotifyClients:0];
 
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy2 = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -2838,18 +2838,18 @@ LABEL_34:
       }
 
       objc_autoreleasePoolPop(v18);
-      [v4 respondWithPayload:v17];
+      [messageCopy respondWithPayload:v17];
     }
 
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = self;
+      selfCopy3 = self;
       v29 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v30 = HMFGetLogIdentifier();
-        [v4 shortDescription];
+        [messageCopy shortDescription];
         v31 = v34 = v27;
         *buf = 138543874;
         v38 = v30;
@@ -2863,18 +2863,18 @@ LABEL_34:
       }
 
       objc_autoreleasePoolPop(v27);
-      [v4 respondWithError:v12];
+      [messageCopy respondWithError:v12];
     }
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleReleaseSnapshotMessage:(id)a3
+- (void)_handleReleaseSnapshotMessage:(id)message
 {
-  v6 = a3;
-  v4 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  messageCopy = message;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (self)
   {
@@ -2886,14 +2886,14 @@ LABEL_34:
     snapshotFileManager = 0;
   }
 
-  [(HMDCameraSnapshotFileManager *)snapshotFileManager handleReleaseSnapshot:v6];
+  [(HMDCameraSnapshotFileManager *)snapshotFileManager handleReleaseSnapshot:messageCopy];
 }
 
-- (void)_handleFillSnapshotSlotMessage:(id)a3
+- (void)_handleFillSnapshotSlotMessage:(id)message
 {
-  v6 = a3;
-  v4 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  messageCopy = message;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (self)
   {
@@ -2905,18 +2905,18 @@ LABEL_34:
     snapshotFileManager = 0;
   }
 
-  [(HMDCameraSnapshotFileManager *)snapshotFileManager handleFillSnapshotSlot:v6];
+  [(HMDCameraSnapshotFileManager *)snapshotFileManager handleFillSnapshotSlot:messageCopy];
 }
 
-- (void)handleAccessoryUnconfigured:(id)a3
+- (void)handleAccessoryUnconfigured:(id)unconfigured
 {
-  v4 = [(HMDCameraSnapshotManager *)self workQueue];
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HMDCameraSnapshotManager_handleAccessoryUnconfigured___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __56__HMDCameraSnapshotManager_handleAccessoryUnconfigured___block_invoke(uint64_t a1)
@@ -2926,15 +2926,15 @@ void __56__HMDCameraSnapshotManager_handleAccessoryUnconfigured___block_invoke(u
   [(HMDCameraSnapshotManager *)v1 _removeAllPendingRequests:v2];
 }
 
-- (void)releaseSnapshotWithSlotIdentifier:(id)a3
+- (void)releaseSnapshotWithSlotIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = *MEMORY[0x277CD1060];
-  v10[0] = v4;
+  v10[0] = identifierCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v7 = [MEMORY[0x277D0F818] messageWithName:*MEMORY[0x277CCF5C8] messagePayload:v6 responseHandler:&__block_literal_global_45_106242];
 
@@ -2942,28 +2942,28 @@ void __56__HMDCameraSnapshotManager_handleAccessoryUnconfigured___block_invoke(u
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)takeSnapshot:(id)a3
+- (void)takeSnapshot:(id)snapshot
 {
-  v5 = a3;
-  v4 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  snapshotCopy = snapshot;
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDCameraSnapshotManager *)self _handleTakeSnapshotMessage:v5];
+  [(HMDCameraSnapshotManager *)self _handleTakeSnapshotMessage:snapshotCopy];
 }
 
 - (void)registerForMessages
 {
   v59 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraSnapshotManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraSnapshotManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraSnapshotManager *)&self->super.super.isa accessory];
-  v5 = [v4 home];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel_handleAccessoryUnconfigured_ name:@"HMDAccessoryDisconnectedNotification" object:v4];
+  accessory = [(HMDCameraSnapshotManager *)&self->super.super.isa accessory];
+  home = [accessory home];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleAccessoryUnconfigured_ name:@"HMDAccessoryDisconnectedNotification" object:accessory];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_handleCameraSettingsDidChangeNotification_ name:@"HMDCameraProfileSettingsDidChangeNotification" object:v4];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_handleCameraSettingsDidChangeNotification_ name:@"HMDCameraProfileSettingsDidChangeNotification" object:accessory];
 
   if (self)
   {
@@ -2978,7 +2978,7 @@ void __56__HMDCameraSnapshotManager_handleAccessoryUnconfigured___block_invoke(u
   }
 
   [(HMDCameraSnapshotFileManager *)snapshotFileManager registerForMessages];
-  v9 = [HMDUserMessagePolicy userMessagePolicyWithHome:v5 userPrivilege:0 remoteAccessRequired:1 requiresCameraStreamingAccess:1];
+  v9 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:0 remoteAccessRequired:1 requiresCameraStreamingAccess:1];
   v10 = +[(HMDRemoteMessagePolicy *)HMDMutableRemoteMessagePolicy];
   [v10 setRoles:{objc_msgSend(v10, "roles") | 6}];
   v11 = [v10 copy];
@@ -3130,120 +3130,120 @@ void __56__HMDCameraSnapshotManager_handleAccessoryUnconfigured___block_invoke(u
   [(HMDCameraSnapshotManager *)&v5 dealloc];
 }
 
-- (HMDCameraSnapshotManager)initWithAccessory:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 uniqueIdentifier:(id)a6 msgDispatcher:(id)a7 networkMonitor:(id)a8 logIdentifier:(id)a9 imageCacheDirectory:(id)a10 residentMessageHandler:(id)a11 snapshotFileManager:(id)a12 dataSource:(id)a13
+- (HMDCameraSnapshotManager)initWithAccessory:(id)accessory workQueue:(id)queue streamSnapshotHandler:(id)handler uniqueIdentifier:(id)identifier msgDispatcher:(id)dispatcher networkMonitor:(id)monitor logIdentifier:(id)logIdentifier imageCacheDirectory:(id)self0 residentMessageHandler:(id)self1 snapshotFileManager:(id)self2 dataSource:(id)self3
 {
-  obj = a3;
-  v55 = a4;
-  v49 = a5;
-  v54 = a5;
-  v18 = a6;
-  v19 = a7;
-  v53 = a7;
-  v48 = a8;
-  v52 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v51 = a13;
+  obj = accessory;
+  queueCopy = queue;
+  handlerCopy = handler;
+  handlerCopy2 = handler;
+  identifierCopy = identifier;
+  dispatcherCopy = dispatcher;
+  dispatcherCopy2 = dispatcher;
+  monitorCopy = monitor;
+  monitorCopy2 = monitor;
+  logIdentifierCopy = logIdentifier;
+  directoryCopy = directory;
+  messageHandlerCopy = messageHandler;
+  managerCopy = manager;
+  sourceCopy = source;
   v57.receiver = self;
   v57.super_class = HMDCameraSnapshotManager;
   v24 = [(HMDCameraSnapshotManager *)&v57 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_workQueue, a4);
-    objc_storeStrong(&v25->_msgDispatcher, v19);
+    objc_storeStrong(&v24->_workQueue, queue);
+    objc_storeStrong(&v25->_msgDispatcher, dispatcherCopy);
     objc_storeWeak(&v25->_accessory, obj);
-    v26 = [v18 copy];
+    v26 = [identifierCopy copy];
     uniqueIdentifier = v25->_uniqueIdentifier;
     v25->_uniqueIdentifier = v26;
 
-    v28 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     currentRemoteSessions = v25->_currentRemoteSessions;
-    v25->_currentRemoteSessions = v28;
+    v25->_currentRemoteSessions = dictionary;
 
-    objc_storeStrong(&v25->_networkMonitor, v48);
-    objc_storeStrong(&v25->_residentMessageHandler, a11);
-    objc_storeStrong(&v25->_dataSource, a13);
-    v30 = v20;
-    v31 = [v20 copy];
+    objc_storeStrong(&v25->_networkMonitor, monitorCopy);
+    objc_storeStrong(&v25->_residentMessageHandler, messageHandler);
+    objc_storeStrong(&v25->_dataSource, source);
+    v30 = logIdentifierCopy;
+    v31 = [logIdentifierCopy copy];
     logIdentifier = v25->_logIdentifier;
     v25->_logIdentifier = v31;
 
-    v33 = [v21 copy];
+    v33 = [directoryCopy copy];
     imageCacheDirectory = v25->_imageCacheDirectory;
     v25->_imageCacheDirectory = v33;
 
     if (!isWatch())
     {
-      v35 = [[HMDCameraSnapshotMonitorEvents alloc] initWithSnapshotManager:v25 accessory:obj workQueue:v25->_workQueue msgDispatcher:v53];
+      v35 = [[HMDCameraSnapshotMonitorEvents alloc] initWithSnapshotManager:v25 accessory:obj workQueue:v25->_workQueue msgDispatcher:dispatcherCopy2];
       monitorServicesManager = v25->_monitorServicesManager;
       v25->_monitorServicesManager = v35;
     }
 
-    v37 = [[HMDCameraSnapshotRequestHandler alloc] initWithAccessory:obj workQueue:v55 streamSnapshotHandler:v54 imageCacheDirectory:v25->_imageCacheDirectory logID:v25->_logIdentifier];
+    v37 = [[HMDCameraSnapshotRequestHandler alloc] initWithAccessory:obj workQueue:queueCopy streamSnapshotHandler:handlerCopy2 imageCacheDirectory:v25->_imageCacheDirectory logID:v25->_logIdentifier];
     snapshotRequestHandler = v25->_snapshotRequestHandler;
     v25->_snapshotRequestHandler = v37;
 
     v39 = +[HMDDeviceCapabilities deviceCapabilities];
-    v40 = [v39 isResidentCapable];
+    isResidentCapable = [v39 isResidentCapable];
 
-    if (v40)
+    if (isResidentCapable)
     {
-      v41 = [[HMDCameraSnapshotCache alloc] initWithWorkQueue:v55 logIdentifier:v25->_logIdentifier];
+      v41 = [[HMDCameraSnapshotCache alloc] initWithWorkQueue:queueCopy logIdentifier:v25->_logIdentifier];
       snapshotCache = v25->_snapshotCache;
       v25->_snapshotCache = v41;
     }
 
-    objc_storeStrong(&v25->_snapshotFileManager, a12);
-    objc_storeStrong(&v25->_streamSnapshotHandler, v49);
-    v43 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v25->_snapshotFileManager, manager);
+    objc_storeStrong(&v25->_streamSnapshotHandler, handlerCopy);
+    array = [MEMORY[0x277CBEB18] array];
     pendingSnapshotRequestDuringStreamSetup = v25->_pendingSnapshotRequestDuringStreamSetup;
-    v25->_pendingSnapshotRequestDuringStreamSetup = v43;
+    v25->_pendingSnapshotRequestDuringStreamSetup = array;
 
-    v45 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     pendingRemoteSnapshotRequestDuringStreamSetup = v25->_pendingRemoteSnapshotRequestDuringStreamSetup;
-    v25->_pendingRemoteSnapshotRequestDuringStreamSetup = v45;
+    v25->_pendingRemoteSnapshotRequestDuringStreamSetup = array2;
 
     [(HMDCameraStreamSnapshotHandler *)v25->_streamSnapshotHandler addDelegate:v25];
-    v20 = v30;
+    logIdentifierCopy = v30;
   }
 
   return v25;
 }
 
-- (HMDCameraSnapshotManager)initWithAccessory:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 uniqueIdentifier:(id)a6 msgDispatcher:(id)a7 networkMonitor:(id)a8
+- (HMDCameraSnapshotManager)initWithAccessory:(id)accessory workQueue:(id)queue streamSnapshotHandler:(id)handler uniqueIdentifier:(id)identifier msgDispatcher:(id)dispatcher networkMonitor:(id)monitor
 {
-  v13 = a3;
-  v14 = a6;
-  v31 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
+  accessoryCopy = accessory;
+  identifierCopy = identifier;
+  monitorCopy = monitor;
+  dispatcherCopy = dispatcher;
+  handlerCopy = handler;
+  queueCopy = queue;
   if (isInternalBuild())
   {
     v18 = MEMORY[0x277CCACA8];
-    v19 = [v13 home];
-    v20 = [v19 name];
-    v21 = [v13 name];
-    v22 = [v18 stringWithFormat:@"%@/%@/%@", v20, v21, v14];
+    home = [accessoryCopy home];
+    name = [home name];
+    name2 = [accessoryCopy name];
+    identifierCopy = [v18 stringWithFormat:@"%@/%@/%@", name, name2, identifierCopy];
   }
 
   else
   {
-    v22 = [v14 UUIDString];
+    identifierCopy = [identifierCopy UUIDString];
   }
 
   v23 = getImagesPath();
-  v24 = [v13 uuid];
-  v25 = [v24 UUIDString];
-  v26 = [v23 stringByAppendingPathComponent:v25];
+  uuid = [accessoryCopy uuid];
+  uUIDString = [uuid UUIDString];
+  v26 = [v23 stringByAppendingPathComponent:uUIDString];
 
-  v27 = [[HMDCameraResidentMessageHandler alloc] initWithAccessory:v13 logIdentifier:v22];
-  v28 = [[HMDCameraSnapshotFileManager alloc] initWithWorkQueue:v17 imageCacheDirectory:v26 logIdentifier:v22 uniqueIdentifier:v14 messageDispatcher:v15];
+  v27 = [[HMDCameraResidentMessageHandler alloc] initWithAccessory:accessoryCopy logIdentifier:identifierCopy];
+  v28 = [[HMDCameraSnapshotFileManager alloc] initWithWorkQueue:queueCopy imageCacheDirectory:v26 logIdentifier:identifierCopy uniqueIdentifier:identifierCopy messageDispatcher:dispatcherCopy];
   v29 = objc_alloc_init(HMDCameraSnapshotManagerDataSource);
-  v33 = [(HMDCameraSnapshotManager *)self initWithAccessory:v13 workQueue:v17 streamSnapshotHandler:v16 uniqueIdentifier:v14 msgDispatcher:v15 networkMonitor:v31 logIdentifier:v22 imageCacheDirectory:v26 residentMessageHandler:v27 snapshotFileManager:v28 dataSource:v29];
+  v33 = [(HMDCameraSnapshotManager *)self initWithAccessory:accessoryCopy workQueue:queueCopy streamSnapshotHandler:handlerCopy uniqueIdentifier:identifierCopy msgDispatcher:dispatcherCopy networkMonitor:monitorCopy logIdentifier:identifierCopy imageCacheDirectory:v26 residentMessageHandler:v27 snapshotFileManager:v28 dataSource:v29];
 
   return v33;
 }
@@ -3270,15 +3270,15 @@ uint64_t __39__HMDCameraSnapshotManager_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)messageBindingForDispatcher:(id)a3 message:(id)a4 receiver:(id)a5
++ (id)messageBindingForDispatcher:(id)dispatcher message:(id)message receiver:(id)receiver
 {
   v46[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  messageCopy = message;
+  receiverCopy = receiver;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = receiverCopy;
   }
 
   else
@@ -3287,21 +3287,21 @@ uint64_t __39__HMDCameraSnapshotManager_logCategory__block_invoke()
   }
 
   v9 = v8;
-  v10 = [(HMDCameraSnapshotManager *)v9 accessory];
-  v11 = [v10 home];
+  accessory = [(HMDCameraSnapshotManager *)v9 accessory];
+  home = [accessory home];
 
-  v12 = [HMDUserMessagePolicy userMessagePolicyWithHome:v11 userPrivilege:0 remoteAccessRequired:1 requiresCameraStreamingAccess:1];
+  v12 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:0 remoteAccessRequired:1 requiresCameraStreamingAccess:1];
   v13 = +[(HMDRemoteMessagePolicy *)HMDMutableRemoteMessagePolicy];
   [v13 setRoles:{objc_msgSend(v13, "roles") | 6}];
-  v14 = [v13 copy];
-  v15 = [v6 name];
-  v16 = [v15 isEqualToString:@"kTakeSnapshotRemoteRequestKey"];
+  name5 = [v13 copy];
+  name = [messageCopy name];
+  v16 = [name isEqualToString:@"kTakeSnapshotRemoteRequestKey"];
 
-  v17 = [v6 name];
-  v18 = v17;
+  name2 = [messageCopy name];
+  name3 = name2;
   if (v16)
   {
-    v46[0] = v14;
+    v46[0] = name5;
     v19 = &selRef__handleTakeRemoteSnapshotMessage_;
     v20 = v46;
 LABEL_8:
@@ -3314,38 +3314,38 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v21 = [v17 isEqualToString:@"kTakeSnapshotRemoteReceivedKey"];
+  v21 = [name2 isEqualToString:@"kTakeSnapshotRemoteReceivedKey"];
 
   if (v21)
   {
-    v18 = [v6 name];
-    v45 = v14;
+    name3 = [messageCopy name];
+    v45 = name5;
     v19 = &selRef__handleRemoteSnapshotReceivedMessage_;
     v20 = &v45;
     goto LABEL_8;
   }
 
   v13 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
-  v25 = [v6 name];
-  v26 = [v25 isEqualToString:@"kTakeSnapshotSendFailedNotificationKey"];
+  name4 = [messageCopy name];
+  v26 = [name4 isEqualToString:@"kTakeSnapshotSendFailedNotificationKey"];
 
   if (v26)
   {
-    v14 = [v6 name];
+    name5 = [messageCopy name];
     v44[0] = v13;
     v44[1] = v12;
-    v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
+    name3 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
 LABEL_20:
     v24 = HMFCreateMessageBindingWithReceiver();
     goto LABEL_21;
   }
 
   v13 = [HMDXPCMessagePolicy policyWithEntitlements:1];
-  v27 = [v6 name];
-  v28 = [v27 isEqualToString:*MEMORY[0x277CCF5D0]];
+  name6 = [messageCopy name];
+  v28 = [name6 isEqualToString:*MEMORY[0x277CCF5D0]];
 
-  v29 = [v6 name];
-  v14 = v29;
+  name7 = [messageCopy name];
+  name5 = name7;
   if (v28)
   {
     v43 = v13;
@@ -3353,15 +3353,15 @@ LABEL_20:
     v31 = &v43;
 LABEL_19:
     v31[1] = v12;
-    v18 = [MEMORY[0x277CBEA60] arrayWithObjects:? count:?];
+    name3 = [MEMORY[0x277CBEA60] arrayWithObjects:? count:?];
     v37 = *v30;
     goto LABEL_20;
   }
 
-  v32 = [v29 isEqualToString:*MEMORY[0x277CCF5C8]];
+  v32 = [name7 isEqualToString:*MEMORY[0x277CCF5C8]];
 
-  v33 = [v6 name];
-  v14 = v33;
+  name8 = [messageCopy name];
+  name5 = name8;
   if (v32)
   {
     v42 = v13;
@@ -3370,10 +3370,10 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v34 = [v33 isEqualToString:*MEMORY[0x277CCF5B0]];
+  v34 = [name8 isEqualToString:*MEMORY[0x277CCF5B0]];
 
-  v35 = [v6 name];
-  v14 = v35;
+  name9 = [messageCopy name];
+  name5 = name9;
   if (v34)
   {
     v41 = v13;
@@ -3382,11 +3382,11 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v36 = [v35 isEqualToString:*MEMORY[0x277CCF5A8]];
+  v36 = [name9 isEqualToString:*MEMORY[0x277CCF5A8]];
 
   if (v36)
   {
-    v14 = [v6 name];
+    name5 = [messageCopy name];
     v40 = v13;
     v30 = &selRef__handleCreateSnapshotFromBulletinContextMessage_;
     v31 = &v40;
@@ -3401,18 +3401,18 @@ LABEL_22:
   return v24;
 }
 
-+ (void)cleanStaleSnapshotDirectoriesUsingCurrentAccessories:(id)a3
++ (void)cleanStaleSnapshotDirectoriesUsingCurrentAccessories:(id)accessories
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  accessoriesCopy = accessories;
   v4 = MEMORY[0x277CBEB98];
-  v30 = v3;
-  v5 = [v3 na_map:&__block_literal_global_106285];
+  v30 = accessoriesCopy;
+  v5 = [accessoriesCopy na_map:&__block_literal_global_106285];
   v6 = [v4 setWithArray:v5];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = getImagesPath();
-  v9 = [v7 contentsOfDirectoryAtPath:v8 error:0];
+  v9 = [defaultManager contentsOfDirectoryAtPath:v8 error:0];
 
   v36 = 0u;
   v37 = 0u;
@@ -3439,13 +3439,13 @@ LABEL_22:
           v15 = getImagesPath();
           v16 = [v15 stringByAppendingPathComponent:v14];
 
-          v17 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
           v33 = 0;
-          v18 = [v17 removeItemAtPath:v16 error:&v33];
+          v18 = [defaultManager2 removeItemAtPath:v16 error:&v33];
           v19 = v33;
 
           v20 = objc_autoreleasePoolPush();
-          v21 = a1;
+          selfCopy = self;
           v22 = HMFGetOSLogHandle();
           v23 = v22;
           if (v18)

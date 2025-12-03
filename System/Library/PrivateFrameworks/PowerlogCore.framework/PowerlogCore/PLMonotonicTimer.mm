@@ -1,18 +1,18 @@
 @interface PLMonotonicTimer
 + (BOOL)debugInstance;
-+ (id)debugScheduledTimerWithMonotonicFireDate:(id)a3 withInterval:(double)a4 withQueue:(id)a5 withBlock:(id)a6;
-+ (id)scheduledTimerWithMonotonicFireDate:(id)a3 withInterval:(double)a4 withQueue:(id)a5 withBlock:(id)a6;
-- (PLMonotonicTimer)initWithMonotonicFireDate:(id)a3 withInterval:(double)a4 withQueue:(id)a5 withBlock:(id)a6;
++ (id)debugScheduledTimerWithMonotonicFireDate:(id)date withInterval:(double)interval withQueue:(id)queue withBlock:(id)block;
++ (id)scheduledTimerWithMonotonicFireDate:(id)date withInterval:(double)interval withQueue:(id)queue withBlock:(id)block;
+- (PLMonotonicTimer)initWithMonotonicFireDate:(id)date withInterval:(double)interval withQueue:(id)queue withBlock:(id)block;
 - (id)description;
 - (void)_cancel;
-- (void)_setMonotonicFireDate:(id)a3;
+- (void)_setMonotonicFireDate:(id)date;
 - (void)cancel;
 - (void)dealloc;
 - (void)fire;
 - (void)reschedule;
 - (void)schedule;
-- (void)setMonotonicFireDate:(id)a3;
-- (void)timerFiredForMonotonicFireDate:(id)a3;
+- (void)setMonotonicFireDate:(id)date;
+- (void)timerFiredForMonotonicFireDate:(id)date;
 @end
 
 @implementation PLMonotonicTimer
@@ -42,9 +42,9 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
     {
       v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"begin for self=%@", self];
       v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-      v6 = [v5 lastPathComponent];
+      lastPathComponent = [v5 lastPathComponent];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer _cancel]"];
-      [PLCoreStorage logMessage:v4 fromFile:v6 fromFunction:v7 fromLineNumber:173];
+      [PLCoreStorage logMessage:v4 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:173];
 
       v8 = PLLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -54,13 +54,13 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
     }
   }
 
-  v9 = [(PLMonotonicTimer *)self monotonicFireDate];
+  monotonicFireDate = [(PLMonotonicTimer *)self monotonicFireDate];
 
-  if (v9)
+  if (monotonicFireDate)
   {
-    v10 = [(PLMonotonicTimer *)self canceledFireDates];
-    v11 = [(PLMonotonicTimer *)self monotonicFireDate];
-    [v10 addObject:v11];
+    canceledFireDates = [(PLMonotonicTimer *)self canceledFireDates];
+    monotonicFireDate2 = [(PLMonotonicTimer *)self monotonicFireDate];
+    [canceledFireDates addObject:monotonicFireDate2];
 
     if (+[PLDefaults debugEnabled])
     {
@@ -78,13 +78,13 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
       if (_cancel_classDebugEnabled_41 == 1)
       {
         v13 = MEMORY[0x1E696AEC0];
-        v14 = [(PLMonotonicTimer *)self canceledFireDates];
-        v15 = [v13 stringWithFormat:@"self=%@, canceledFireDates=%@", self, v14];
+        canceledFireDates2 = [(PLMonotonicTimer *)self canceledFireDates];
+        v15 = [v13 stringWithFormat:@"self=%@, canceledFireDates=%@", self, canceledFireDates2];
 
         v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-        v17 = [v16 lastPathComponent];
+        lastPathComponent2 = [v16 lastPathComponent];
         v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer _cancel]"];
-        [PLCoreStorage logMessage:v15 fromFile:v17 fromFunction:v18 fromLineNumber:178];
+        [PLCoreStorage logMessage:v15 fromFile:lastPathComponent2 fromFunction:v18 fromLineNumber:178];
 
         v19 = PLLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -114,9 +114,9 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
       {
         v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"end for self=%@", self];
         v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-        v24 = [v23 lastPathComponent];
+        lastPathComponent3 = [v23 lastPathComponent];
         v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer _cancel]"];
-        [PLCoreStorage logMessage:v22 fromFile:v24 fromFunction:v25 fromLineNumber:181];
+        [PLCoreStorage logMessage:v22 fromFile:lastPathComponent3 fromFunction:v25 fromLineNumber:181];
 
         v26 = PLLogCommon();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -130,9 +130,9 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
 
 - (void)schedule
 {
-  v3 = [(PLMonotonicTimer *)self monotonicFireDate];
+  monotonicFireDate = [(PLMonotonicTimer *)self monotonicFireDate];
 
-  if (v3)
+  if (monotonicFireDate)
   {
     if (+[PLDefaults debugEnabled])
     {
@@ -151,9 +151,9 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
       {
         v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"begin for self=%@", self];
         v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-        v7 = [v6 lastPathComponent];
+        lastPathComponent = [v6 lastPathComponent];
         v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer schedule]"];
-        [PLCoreStorage logMessage:v5 fromFile:v7 fromFunction:v8 fromLineNumber:152];
+        [PLCoreStorage logMessage:v5 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:152];
 
         v9 = PLLogCommon();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -163,11 +163,11 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
       }
     }
 
-    v10 = [MEMORY[0x1E695DF00] monotonicDate];
-    v11 = [(PLMonotonicTimer *)self monotonicFireDate];
-    v12 = [v11 copy];
+    monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
+    monotonicFireDate2 = [(PLMonotonicTimer *)self monotonicFireDate];
+    v12 = [monotonicFireDate2 copy];
 
-    [v12 timeIntervalSinceDate:v10];
+    [v12 timeIntervalSinceDate:monotonicDate];
     if (v13 >= 0.0)
     {
       v14 = v13;
@@ -193,11 +193,11 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
 
       if (schedule_classDebugEnabled_29 == 1)
       {
-        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"self=%@, now=%@, timeInterval=%f", self, v10, *&v14];
+        v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"self=%@, now=%@, timeInterval=%f", self, monotonicDate, *&v14];
         v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-        v18 = [v17 lastPathComponent];
+        lastPathComponent2 = [v17 lastPathComponent];
         v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer schedule]"];
-        [PLCoreStorage logMessage:v16 fromFile:v18 fromFunction:v19 fromLineNumber:161];
+        [PLCoreStorage logMessage:v16 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:161];
 
         v20 = PLLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -236,9 +236,9 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
       {
         v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"end for self=%@", self];
         v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-        v27 = [v26 lastPathComponent];
+        lastPathComponent3 = [v26 lastPathComponent];
         v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer schedule]"];
-        [PLCoreStorage logMessage:v25 fromFile:v27 fromFunction:v28 fromLineNumber:168];
+        [PLCoreStorage logMessage:v25 fromFile:lastPathComponent3 fromFunction:v28 fromLineNumber:168];
 
         v29 = PLLogCommon();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -253,15 +253,15 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
   }
 }
 
-- (PLMonotonicTimer)initWithMonotonicFireDate:(id)a3 withInterval:(double)a4 withQueue:(id)a5 withBlock:(id)a6
+- (PLMonotonicTimer)initWithMonotonicFireDate:(id)date withInterval:(double)interval withQueue:(id)queue withBlock:(id)block
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (a4 < 0.0 || v12 == 0 || v13 == 0)
+  dateCopy = date;
+  queueCopy = queue;
+  blockCopy = block;
+  v14 = blockCopy;
+  if (interval < 0.0 || queueCopy == 0 || blockCopy == 0)
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -272,9 +272,9 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
     v19 = v18;
     if (v18)
     {
-      objc_storeStrong(&v18->_monotonicFireDate, a3);
-      v19->_interval = a4;
-      objc_storeStrong(&v19->_queue, a5);
+      objc_storeStrong(&v18->_monotonicFireDate, date);
+      v19->_interval = interval;
+      objc_storeStrong(&v19->_queue, queue);
       v20 = [v14 copy];
       block = v19->_block;
       v19->_block = v20;
@@ -298,10 +298,10 @@ void __28__PLMonotonicTimer_schedule__block_invoke_34(uint64_t a1)
     }
 
     self = v19;
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 void __79__PLMonotonicTimer_initWithMonotonicFireDate_withInterval_withQueue_withBlock___block_invoke(uint64_t a1)
@@ -323,19 +323,19 @@ void __79__PLMonotonicTimer_initWithMonotonicFireDate_withInterval_withQueue_wit
   [WeakRetained reschedule];
 }
 
-+ (id)scheduledTimerWithMonotonicFireDate:(id)a3 withInterval:(double)a4 withQueue:(id)a5 withBlock:(id)a6
++ (id)scheduledTimerWithMonotonicFireDate:(id)date withInterval:(double)interval withQueue:(id)queue withBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([a1 debugInstance])
+  dateCopy = date;
+  queueCopy = queue;
+  blockCopy = block;
+  if ([self debugInstance])
   {
     v13 = 0;
   }
 
   else
   {
-    v14 = [[PLMonotonicTimer alloc] initWithMonotonicFireDate:v10 withInterval:v11 withQueue:v12 withBlock:a4];
+    v14 = [[PLMonotonicTimer alloc] initWithMonotonicFireDate:dateCopy withInterval:queueCopy withQueue:blockCopy withBlock:interval];
     v15 = [PLUtilities workQueueForClass:objc_opt_class()];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -349,14 +349,14 @@ void __79__PLMonotonicTimer_initWithMonotonicFireDate_withInterval_withQueue_wit
   return v13;
 }
 
-+ (id)debugScheduledTimerWithMonotonicFireDate:(id)a3 withInterval:(double)a4 withQueue:(id)a5 withBlock:(id)a6
++ (id)debugScheduledTimerWithMonotonicFireDate:(id)date withInterval:(double)interval withQueue:(id)queue withBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([a1 debugInstance])
+  dateCopy = date;
+  queueCopy = queue;
+  blockCopy = block;
+  if ([self debugInstance])
   {
-    v13 = [[PLMonotonicTimer alloc] initWithMonotonicFireDate:v10 withInterval:v11 withQueue:v12 withBlock:a4];
+    v13 = [[PLMonotonicTimer alloc] initWithMonotonicFireDate:dateCopy withInterval:queueCopy withQueue:blockCopy withBlock:interval];
     v14 = [PLUtilities workQueueForClass:objc_opt_class()];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -386,17 +386,17 @@ void __79__PLMonotonicTimer_initWithMonotonicFireDate_withInterval_withQueue_wit
   [(PLMonotonicTimer *)&v5 dealloc];
 }
 
-- (void)setMonotonicFireDate:(id)a3
+- (void)setMonotonicFireDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [PLUtilities workQueueForClass:objc_opt_class()];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__PLMonotonicTimer_setMonotonicFireDate___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(v5, v7);
 }
 
@@ -432,8 +432,8 @@ void __24__PLMonotonicTimer_fire__block_invoke(uint64_t a1)
 
 - (id)description
 {
-  v2 = [(PLMonotonicTimer *)self monotonicFireDate];
-  v3 = [v2 description];
+  monotonicFireDate = [(PLMonotonicTimer *)self monotonicFireDate];
+  v3 = [monotonicFireDate description];
 
   return v3;
 }
@@ -463,14 +463,14 @@ BOOL __33__PLMonotonicTimer_debugInstance__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_setMonotonicFireDate:(id)a3
+- (void)_setMonotonicFireDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   monotonicFireDate = self->_monotonicFireDate;
-  if (v5 | monotonicFireDate && (!v5 || !monotonicFireDate || ![(NSDate *)monotonicFireDate isEqualToDate:v5]))
+  if (dateCopy | monotonicFireDate && (!dateCopy || !monotonicFireDate || ![(NSDate *)monotonicFireDate isEqualToDate:dateCopy]))
   {
     [(PLMonotonicTimer *)self _cancel];
-    objc_storeStrong(&self->_monotonicFireDate, a3);
+    objc_storeStrong(&self->_monotonicFireDate, date);
     [(PLMonotonicTimer *)self schedule];
   }
 
@@ -519,10 +519,10 @@ BOOL __27__PLMonotonicTimer__cancel__block_invoke_48(uint64_t a1)
   return result;
 }
 
-- (void)timerFiredForMonotonicFireDate:(id)a3
+- (void)timerFiredForMonotonicFireDate:(id)date
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF00] monotonicDate];
+  dateCopy = date;
+  monotonicDate = [MEMORY[0x1E695DF00] monotonicDate];
   if (+[PLDefaults debugEnabled])
   {
     v6 = objc_opt_class();
@@ -538,11 +538,11 @@ BOOL __27__PLMonotonicTimer__cancel__block_invoke_48(uint64_t a1)
 
     if (timerFiredForMonotonicFireDate__classDebugEnabled == 1)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"self=%@, now=%@, monotonicFireDate=%@", self, v5, v4];
+      dateCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"self=%@, now=%@, monotonicFireDate=%@", self, monotonicDate, dateCopy];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer timerFiredForMonotonicFireDate:]"];
-      [PLCoreStorage logMessage:v7 fromFile:v9 fromFunction:v10 fromLineNumber:187];
+      [PLCoreStorage logMessage:dateCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:187];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -552,13 +552,13 @@ BOOL __27__PLMonotonicTimer__cancel__block_invoke_48(uint64_t a1)
     }
   }
 
-  v12 = [(PLMonotonicTimer *)self canceledFireDates];
-  v13 = [v12 containsObject:v4];
+  canceledFireDates = [(PLMonotonicTimer *)self canceledFireDates];
+  v13 = [canceledFireDates containsObject:dateCopy];
 
   if (v13)
   {
-    v14 = [(PLMonotonicTimer *)self canceledFireDates];
-    [v14 removeObject:v4];
+    canceledFireDates2 = [(PLMonotonicTimer *)self canceledFireDates];
+    [canceledFireDates2 removeObject:dateCopy];
 
     if (+[PLDefaults debugEnabled])
     {
@@ -576,13 +576,13 @@ BOOL __27__PLMonotonicTimer__cancel__block_invoke_48(uint64_t a1)
       if (timerFiredForMonotonicFireDate__classDebugEnabled_53 == 1)
       {
         v16 = MEMORY[0x1E696AEC0];
-        v17 = [(PLMonotonicTimer *)self canceledFireDates];
-        v18 = [v16 stringWithFormat:@"canceled for self=%@ with canceledFireDates=%@", self, v17];
+        canceledFireDates3 = [(PLMonotonicTimer *)self canceledFireDates];
+        v18 = [v16 stringWithFormat:@"canceled for self=%@ with canceledFireDates=%@", self, canceledFireDates3];
 
         v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent2 = [v19 lastPathComponent];
         v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer timerFiredForMonotonicFireDate:]"];
-        [PLCoreStorage logMessage:v18 fromFile:v20 fromFunction:v21 fromLineNumber:192];
+        [PLCoreStorage logMessage:v18 fromFile:lastPathComponent2 fromFunction:v21 fromLineNumber:192];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -597,20 +597,20 @@ LABEL_22:
 
   else
   {
-    [v5 timeIntervalSinceDate:v4];
+    [monotonicDate timeIntervalSinceDate:dateCopy];
     if (v23 >= 0.0)
     {
       monotonicFireDate = self->_monotonicFireDate;
       self->_monotonicFireDate = 0;
 
-      v29 = [(PLMonotonicTimer *)self queue];
+      queue = [(PLMonotonicTimer *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __51__PLMonotonicTimer_timerFiredForMonotonicFireDate___block_invoke_64;
       block[3] = &unk_1E8519100;
       block[4] = self;
-      v49 = v5;
-      dispatch_async(v29, block);
+      v49 = monotonicDate;
+      dispatch_async(queue, block);
 
       [(PLMonotonicTimer *)self interval];
       if (v30 > 0.0)
@@ -634,9 +634,9 @@ LABEL_22:
             [(PLMonotonicTimer *)self interval];
             v34 = [v32 stringWithFormat:@"rescheduling periodic timer with interval=%f", v33];
             v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-            v36 = [v35 lastPathComponent];
+            lastPathComponent3 = [v35 lastPathComponent];
             v37 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer timerFiredForMonotonicFireDate:]"];
-            [PLCoreStorage logMessage:v34 fromFile:v36 fromFunction:v37 fromLineNumber:213];
+            [PLCoreStorage logMessage:v34 fromFile:lastPathComponent3 fromFunction:v37 fromLineNumber:213];
 
             v38 = PLLogCommon();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -647,7 +647,7 @@ LABEL_22:
         }
 
         [(PLMonotonicTimer *)self interval];
-        v39 = [v4 dateByAddingTimeInterval:?];
+        v39 = [dateCopy dateByAddingTimeInterval:?];
         [(PLMonotonicTimer *)self _setMonotonicFireDate:v39];
       }
 
@@ -668,9 +668,9 @@ LABEL_22:
         {
           v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"end"];
           v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-          v43 = [v42 lastPathComponent];
+          lastPathComponent4 = [v42 lastPathComponent];
           v44 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer timerFiredForMonotonicFireDate:]"];
-          [PLCoreStorage logMessage:v41 fromFile:v43 fromFunction:v44 fromLineNumber:216];
+          [PLCoreStorage logMessage:v41 fromFile:lastPathComponent4 fromFunction:v44 fromLineNumber:216];
 
           v45 = PLLogCommon();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
@@ -698,9 +698,9 @@ LABEL_22:
       {
         v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"time mismatch for self=%@", self];
         v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-        v26 = [v25 lastPathComponent];
+        lastPathComponent5 = [v25 lastPathComponent];
         v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer timerFiredForMonotonicFireDate:]"];
-        [PLCoreStorage logMessage:v18 fromFile:v26 fromFunction:v27 fromLineNumber:198];
+        [PLCoreStorage logMessage:v18 fromFile:lastPathComponent5 fromFunction:v27 fromLineNumber:198];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -848,9 +848,9 @@ BOOL __51__PLMonotonicTimer_timerFiredForMonotonicFireDate___block_invoke_83(uin
     {
       v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"begin for self=%@", self];
       v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-      v6 = [v5 lastPathComponent];
+      lastPathComponent = [v5 lastPathComponent];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer reschedule]"];
-      [PLCoreStorage logMessage:v4 fromFile:v6 fromFunction:v7 fromLineNumber:222];
+      [PLCoreStorage logMessage:v4 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:222];
 
       v8 = PLLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -860,15 +860,15 @@ BOOL __51__PLMonotonicTimer_timerFiredForMonotonicFireDate___block_invoke_83(uin
     }
   }
 
-  v9 = [(PLMonotonicTimer *)self monotonicFireDate];
+  monotonicFireDate = [(PLMonotonicTimer *)self monotonicFireDate];
   [(PLMonotonicTimer *)self _setMonotonicFireDate:0];
-  v10 = [(PLMonotonicTimer *)self canceledFireDates];
-  v11 = [v10 containsObject:v9];
+  canceledFireDates = [(PLMonotonicTimer *)self canceledFireDates];
+  v11 = [canceledFireDates containsObject:monotonicFireDate];
 
   if (v11)
   {
-    v12 = [(PLMonotonicTimer *)self canceledFireDates];
-    [v12 removeObject:v9];
+    canceledFireDates2 = [(PLMonotonicTimer *)self canceledFireDates];
+    [canceledFireDates2 removeObject:monotonicFireDate];
 
     if (+[PLDefaults debugEnabled])
     {
@@ -886,13 +886,13 @@ BOOL __51__PLMonotonicTimer_timerFiredForMonotonicFireDate___block_invoke_83(uin
       if (reschedule_classDebugEnabled_88 == 1)
       {
         v14 = MEMORY[0x1E696AEC0];
-        v15 = [(PLMonotonicTimer *)self canceledFireDates];
-        v16 = [v14 stringWithFormat:@"self=%@, self.canceledFireDates=%@", self, v15];
+        canceledFireDates3 = [(PLMonotonicTimer *)self canceledFireDates];
+        v16 = [v14 stringWithFormat:@"self=%@, self.canceledFireDates=%@", self, canceledFireDates3];
 
         v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-        v18 = [v17 lastPathComponent];
+        lastPathComponent2 = [v17 lastPathComponent];
         v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer reschedule]"];
-        [PLCoreStorage logMessage:v16 fromFile:v18 fromFunction:v19 fromLineNumber:231];
+        [PLCoreStorage logMessage:v16 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:231];
 
         v20 = PLLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -903,7 +903,7 @@ BOOL __51__PLMonotonicTimer_timerFiredForMonotonicFireDate___block_invoke_83(uin
     }
   }
 
-  [(PLMonotonicTimer *)self _setMonotonicFireDate:v9];
+  [(PLMonotonicTimer *)self _setMonotonicFireDate:monotonicFireDate];
   if (+[PLDefaults debugEnabled])
   {
     v21 = objc_opt_class();
@@ -921,9 +921,9 @@ BOOL __51__PLMonotonicTimer_timerFiredForMonotonicFireDate___block_invoke_83(uin
     {
       v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"end for self=%@", self];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLMonotonicTimer.m"];
-      v24 = [v23 lastPathComponent];
+      lastPathComponent3 = [v23 lastPathComponent];
       v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLMonotonicTimer reschedule]"];
-      [PLCoreStorage logMessage:v22 fromFile:v24 fromFunction:v25 fromLineNumber:235];
+      [PLCoreStorage logMessage:v22 fromFile:lastPathComponent3 fromFunction:v25 fromLineNumber:235];
 
       v26 = PLLogCommon();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))

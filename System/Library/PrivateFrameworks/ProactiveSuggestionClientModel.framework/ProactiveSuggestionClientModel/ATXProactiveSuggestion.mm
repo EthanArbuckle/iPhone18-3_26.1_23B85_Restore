@@ -1,15 +1,15 @@
 @interface ATXProactiveSuggestion
-+ (BOOL)suggestionsHaveChangedFromPreviousSuggestions:(id)a3 newSuggestions:(id)a4;
-+ (id)protoSuggestionsFromSuggestions:(id)a3;
-+ (id)suggestionsFromProtoSuggestions:(id)a3;
-- (ATXProactiveSuggestion)initWithClientModelSpecification:(id)a3 executableSpecification:(id)a4 uiSpecification:(id)a5 scoreSpecification:(id)a6;
-- (ATXProactiveSuggestion)initWithClientModelSpecification:(id)a3 executableSpecification:(id)a4 uiSpecification:(id)a5 scoreSpecification:(id)a6 uuid:(id)a7;
-- (ATXProactiveSuggestion)initWithCoder:(id)a3;
-- (ATXProactiveSuggestion)initWithProto:(id)a3;
-- (ATXProactiveSuggestion)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)fuzzyIsEqualToProactiveSuggestion:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)suggestionsHaveChangedFromPreviousSuggestions:(id)suggestions newSuggestions:(id)newSuggestions;
++ (id)protoSuggestionsFromSuggestions:(id)suggestions;
++ (id)suggestionsFromProtoSuggestions:(id)suggestions;
+- (ATXProactiveSuggestion)initWithClientModelSpecification:(id)specification executableSpecification:(id)executableSpecification uiSpecification:(id)uiSpecification scoreSpecification:(id)scoreSpecification;
+- (ATXProactiveSuggestion)initWithClientModelSpecification:(id)specification executableSpecification:(id)executableSpecification uiSpecification:(id)uiSpecification scoreSpecification:(id)scoreSpecification uuid:(id)uuid;
+- (ATXProactiveSuggestion)initWithCoder:(id)coder;
+- (ATXProactiveSuggestion)initWithProto:(id)proto;
+- (ATXProactiveSuggestion)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)fuzzyIsEqualToProactiveSuggestion:(id)suggestion;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValidForSuggestionsWidget;
 - (INIntent)intent;
 - (NSDate)endDate;
@@ -19,7 +19,7 @@
 - (NSString)criterion;
 - (NSString)suggestionIdentifier;
 - (NSString)widgetBundleIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsProto;
 - (id)infoSuggestion;
@@ -27,7 +27,7 @@
 - (id)proto;
 - (unint64_t)applicableLayouts;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)proto;
 @end
 
@@ -37,9 +37,9 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   clientModelSpecification = self->_clientModelSpecification;
-  v5 = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableIdentifier];
-  v6 = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableDescription];
-  v7 = [v3 initWithFormat:@"Client Model Spec: %@   Executable ID: %@   Executable Description: %@   UI Spec: %@   Score Spec: %@", clientModelSpecification, v5, v6, self->_uiSpecification, self->_scoreSpecification];
+  executableIdentifier = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableIdentifier];
+  executableDescription = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableDescription];
+  v7 = [v3 initWithFormat:@"Client Model Spec: %@   Executable ID: %@   Executable Description: %@   UI Spec: %@   Score Spec: %@", clientModelSpecification, executableIdentifier, executableDescription, self->_uiSpecification, self->_scoreSpecification];
 
   return v7;
 }
@@ -47,24 +47,24 @@
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(ATXProactiveSuggestionClientModelSpecification *)self->_clientModelSpecification proto];
-  [(ATXPBProactiveSuggestion *)v3 setClientModelSpecification:v4];
+  proto = [(ATXProactiveSuggestionClientModelSpecification *)self->_clientModelSpecification proto];
+  [(ATXPBProactiveSuggestion *)v3 setClientModelSpecification:proto];
 
-  v5 = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification proto];
-  [(ATXPBProactiveSuggestion *)v3 setExecutableSpecification:v5];
+  proto2 = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification proto];
+  [(ATXPBProactiveSuggestion *)v3 setExecutableSpecification:proto2];
 
-  v6 = [(ATXProactiveSuggestionScoreSpecification *)self->_scoreSpecification proto];
-  [(ATXPBProactiveSuggestion *)v3 setScoreSpecification:v6];
+  proto3 = [(ATXProactiveSuggestionScoreSpecification *)self->_scoreSpecification proto];
+  [(ATXPBProactiveSuggestion *)v3 setScoreSpecification:proto3];
 
-  v7 = [(ATXProactiveSuggestionUISpecification *)self->_uiSpecification proto];
-  [(ATXPBProactiveSuggestion *)v3 setUiSpecification:v7];
+  proto4 = [(ATXProactiveSuggestionUISpecification *)self->_uiSpecification proto];
+  [(ATXPBProactiveSuggestion *)v3 setUiSpecification:proto4];
 
-  v8 = [(NSUUID *)self->_uuid UUIDString];
-  [(ATXPBProactiveSuggestion *)v3 setUuidString:v8];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [(ATXPBProactiveSuggestion *)v3 setUuidString:uUIDString];
 
-  v9 = [(ATXPBProactiveSuggestion *)v3 uuidString];
+  uuidString = [(ATXPBProactiveSuggestion *)v3 uuidString];
 
-  if (!v9)
+  if (!uuidString)
   {
     v10 = __atxlog_handle_blending();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -93,13 +93,13 @@
 
 - (id)infoSuggestion
 {
-  v2 = [(ATXProactiveSuggestion *)self executableSpecification];
-  v3 = [v2 executableObject];
+  executableSpecification = [(ATXProactiveSuggestion *)self executableSpecification];
+  executableObject = [executableSpecification executableObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = executableObject;
   }
 
   else
@@ -118,106 +118,106 @@
 
 - (NSString)appBundleIdentifier
 {
-  v2 = [(ATXProactiveSuggestion *)self infoSuggestion];
-  v3 = [v2 appBundleIdentifier];
+  infoSuggestion = [(ATXProactiveSuggestion *)self infoSuggestion];
+  appBundleIdentifier = [infoSuggestion appBundleIdentifier];
 
-  return v3;
+  return appBundleIdentifier;
 }
 
 - (NSString)widgetBundleIdentifier
 {
-  v2 = [(ATXProactiveSuggestion *)self infoSuggestion];
-  v3 = [v2 widgetBundleIdentifier];
+  infoSuggestion = [(ATXProactiveSuggestion *)self infoSuggestion];
+  widgetBundleIdentifier = [infoSuggestion widgetBundleIdentifier];
 
-  return v3;
+  return widgetBundleIdentifier;
 }
 
 - (NSString)criterion
 {
-  v2 = [(ATXProactiveSuggestion *)self infoSuggestion];
-  v3 = [v2 criterion];
+  infoSuggestion = [(ATXProactiveSuggestion *)self infoSuggestion];
+  criterion = [infoSuggestion criterion];
 
-  return v3;
+  return criterion;
 }
 
 - (unint64_t)applicableLayouts
 {
-  v2 = [(ATXProactiveSuggestion *)self infoSuggestion];
-  v3 = [v2 layouts];
+  infoSuggestion = [(ATXProactiveSuggestion *)self infoSuggestion];
+  layouts = [infoSuggestion layouts];
 
-  return v3;
+  return layouts;
 }
 
 - (NSString)suggestionIdentifier
 {
-  v2 = [(ATXProactiveSuggestion *)self infoSuggestion];
-  v3 = [v2 suggestionIdentifier];
+  infoSuggestion = [(ATXProactiveSuggestion *)self infoSuggestion];
+  suggestionIdentifier = [infoSuggestion suggestionIdentifier];
 
-  return v3;
+  return suggestionIdentifier;
 }
 
 - (NSDate)startDate
 {
-  v2 = [(ATXProactiveSuggestion *)self infoSuggestion];
-  v3 = [v2 startDate];
+  infoSuggestion = [(ATXProactiveSuggestion *)self infoSuggestion];
+  startDate = [infoSuggestion startDate];
 
-  return v3;
+  return startDate;
 }
 
 - (NSDate)endDate
 {
-  v2 = [(ATXProactiveSuggestion *)self infoSuggestion];
-  v3 = [v2 endDate];
+  infoSuggestion = [(ATXProactiveSuggestion *)self infoSuggestion];
+  endDate = [infoSuggestion endDate];
 
-  return v3;
+  return endDate;
 }
 
 - (INIntent)intent
 {
-  v2 = [(ATXProactiveSuggestion *)self infoSuggestion];
-  v3 = [v2 intent];
+  infoSuggestion = [(ATXProactiveSuggestion *)self infoSuggestion];
+  intent = [infoSuggestion intent];
 
-  return v3;
+  return intent;
 }
 
 - (NSDictionary)metadata
 {
-  v2 = [(ATXProactiveSuggestion *)self infoSuggestion];
-  v3 = [v2 metadata];
+  infoSuggestion = [(ATXProactiveSuggestion *)self infoSuggestion];
+  metadata = [infoSuggestion metadata];
 
-  return v3;
+  return metadata;
 }
 
-- (ATXProactiveSuggestion)initWithClientModelSpecification:(id)a3 executableSpecification:(id)a4 uiSpecification:(id)a5 scoreSpecification:(id)a6
+- (ATXProactiveSuggestion)initWithClientModelSpecification:(id)specification executableSpecification:(id)executableSpecification uiSpecification:(id)uiSpecification scoreSpecification:(id)scoreSpecification
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  scoreSpecificationCopy = scoreSpecification;
+  uiSpecificationCopy = uiSpecification;
+  executableSpecificationCopy = executableSpecification;
+  specificationCopy = specification;
   v14 = objc_opt_new();
-  v15 = [(ATXProactiveSuggestion *)self initWithClientModelSpecification:v13 executableSpecification:v12 uiSpecification:v11 scoreSpecification:v10 uuid:v14];
+  v15 = [(ATXProactiveSuggestion *)self initWithClientModelSpecification:specificationCopy executableSpecification:executableSpecificationCopy uiSpecification:uiSpecificationCopy scoreSpecification:scoreSpecificationCopy uuid:v14];
 
   return v15;
 }
 
-- (ATXProactiveSuggestion)initWithClientModelSpecification:(id)a3 executableSpecification:(id)a4 uiSpecification:(id)a5 scoreSpecification:(id)a6 uuid:(id)a7
+- (ATXProactiveSuggestion)initWithClientModelSpecification:(id)specification executableSpecification:(id)executableSpecification uiSpecification:(id)uiSpecification scoreSpecification:(id)scoreSpecification uuid:(id)uuid
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  specificationCopy = specification;
+  executableSpecificationCopy = executableSpecification;
+  uiSpecificationCopy = uiSpecification;
+  scoreSpecificationCopy = scoreSpecification;
+  uuidCopy = uuid;
   v21.receiver = self;
   v21.super_class = ATXProactiveSuggestion;
   v17 = [(ATXProactiveSuggestion *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_clientModelSpecification, a3);
-    objc_storeStrong(&v18->_executableSpecification, a4);
-    objc_storeStrong(&v18->_uiSpecification, a5);
-    objc_storeStrong(&v18->_scoreSpecification, a6);
-    objc_storeStrong(&v18->_uuid, a7);
+    objc_storeStrong(&v17->_clientModelSpecification, specification);
+    objc_storeStrong(&v18->_executableSpecification, executableSpecification);
+    objc_storeStrong(&v18->_uiSpecification, uiSpecification);
+    objc_storeStrong(&v18->_scoreSpecification, scoreSpecification);
+    objc_storeStrong(&v18->_uuid, uuid);
   }
 
   return v18;
@@ -225,18 +225,18 @@
 
 - (BOOL)isValidForSuggestionsWidget
 {
-  v3 = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableType];
-  if (v3)
+  executableType = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableType];
+  if (executableType)
   {
-    LOBYTE(v3) = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableType]!= 3 && [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableType]!= 4 && [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableType]!= 11;
+    LOBYTE(executableType) = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableType]!= 3 && [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableType]!= 4 && [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification executableType]!= 11;
   }
 
-  return v3;
+  return executableType;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXProactiveSuggestion allocWithZone:a3];
+  v4 = [ATXProactiveSuggestion allocWithZone:zone];
   v5 = [(ATXProactiveSuggestionClientModelSpecification *)self->_clientModelSpecification copy];
   v6 = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification copy];
   v7 = [(ATXProactiveSuggestionUISpecification *)self->_uiSpecification copy];
@@ -247,10 +247,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -260,7 +260,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_clientModelSpecification;
       v7 = v6;
       if (v6 == v5->_clientModelSpecification)
@@ -352,10 +352,10 @@ LABEL_26:
   return v9;
 }
 
-- (BOOL)fuzzyIsEqualToProactiveSuggestion:(id)a3
+- (BOOL)fuzzyIsEqualToProactiveSuggestion:(id)suggestion
 {
-  v4 = a3;
-  if (self == v4)
+  suggestionCopy = suggestion;
+  if (self == suggestionCopy)
   {
     v16 = 1;
   }
@@ -368,33 +368,33 @@ LABEL_26:
       goto LABEL_7;
     }
 
-    v5 = [(ATXProactiveSuggestion *)self clientModelSpecification];
-    v6 = [(ATXProactiveSuggestion *)v4 clientModelSpecification];
-    v7 = [v5 fuzzyIsEqualToClientModelSpecification:v6];
+    clientModelSpecification = [(ATXProactiveSuggestion *)self clientModelSpecification];
+    clientModelSpecification2 = [(ATXProactiveSuggestion *)suggestionCopy clientModelSpecification];
+    v7 = [clientModelSpecification fuzzyIsEqualToClientModelSpecification:clientModelSpecification2];
 
     if (!v7)
     {
       goto LABEL_7;
     }
 
-    v8 = [(ATXProactiveSuggestion *)self executableSpecification];
-    v9 = [(ATXProactiveSuggestion *)v4 executableSpecification];
-    v10 = [v8 fuzzyIsEqualToExecutableSpecification:v9];
+    executableSpecification = [(ATXProactiveSuggestion *)self executableSpecification];
+    executableSpecification2 = [(ATXProactiveSuggestion *)suggestionCopy executableSpecification];
+    v10 = [executableSpecification fuzzyIsEqualToExecutableSpecification:executableSpecification2];
 
     if (!v10)
     {
       goto LABEL_7;
     }
 
-    v11 = [(ATXProactiveSuggestion *)self uiSpecification];
-    v12 = [(ATXProactiveSuggestion *)v4 uiSpecification];
-    v13 = [v11 fuzzyIsEqualToUISpecification:v12];
+    uiSpecification = [(ATXProactiveSuggestion *)self uiSpecification];
+    uiSpecification2 = [(ATXProactiveSuggestion *)suggestionCopy uiSpecification];
+    v13 = [uiSpecification fuzzyIsEqualToUISpecification:uiSpecification2];
 
     if (v13)
     {
-      v14 = [(ATXProactiveSuggestion *)self scoreSpecification];
-      v15 = [(ATXProactiveSuggestion *)v4 scoreSpecification];
-      v16 = [v14 fuzzyIsEqualToScoreSpecification:v15];
+      scoreSpecification = [(ATXProactiveSuggestion *)self scoreSpecification];
+      scoreSpecification2 = [(ATXProactiveSuggestion *)suggestionCopy scoreSpecification];
+      v16 = [scoreSpecification fuzzyIsEqualToScoreSpecification:scoreSpecification2];
     }
 
     else
@@ -407,14 +407,14 @@ LABEL_7:
   return v16;
 }
 
-+ (BOOL)suggestionsHaveChangedFromPreviousSuggestions:(id)a3 newSuggestions:(id)a4
++ (BOOL)suggestionsHaveChangedFromPreviousSuggestions:(id)suggestions newSuggestions:(id)newSuggestions
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count] || objc_msgSend(v5, "count"))
+  suggestionsCopy = suggestions;
+  newSuggestionsCopy = newSuggestions;
+  if ([newSuggestionsCopy count] || objc_msgSend(suggestionsCopy, "count"))
   {
-    v7 = [v6 count];
-    if (v7 == [v5 count])
+    v7 = [newSuggestionsCopy count];
+    if (v7 == [suggestionsCopy count])
     {
       v16 = 0;
       v17 = &v16;
@@ -424,9 +424,9 @@ LABEL_7:
       v13[1] = 3221225472;
       v13[2] = __87__ATXProactiveSuggestion_suggestionsHaveChangedFromPreviousSuggestions_newSuggestions___block_invoke;
       v13[3] = &unk_1E86A4830;
-      v14 = v5;
+      v14 = suggestionsCopy;
       v15 = &v16;
-      [v6 enumerateObjectsUsingBlock:v13];
+      [newSuggestionsCopy enumerateObjectsUsingBlock:v13];
       v8 = *(v17 + 24);
       if ((v8 & 1) == 0)
       {
@@ -517,35 +517,35 @@ LABEL_10:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXProactiveSuggestion *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXProactiveSuggestion *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXProactiveSuggestion)initWithProtoData:(id)a3
+- (ATXProactiveSuggestion)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBProactiveSuggestion alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBProactiveSuggestion alloc] initWithData:dataCopy];
 
     self = [(ATXProactiveSuggestion *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXProactiveSuggestion)initWithProto:(id)a3
+- (ATXProactiveSuggestion)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -556,11 +556,11 @@ LABEL_10:
         [ATXProactiveSuggestion initWithProto:];
       }
 
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_37;
     }
 
-    v5 = v4;
+    v5 = protoCopy;
     if (![(ATXPBProactiveSuggestion *)v5 hasUuidString])
     {
       v8 = __atxlog_handle_blending();
@@ -569,13 +569,13 @@ LABEL_10:
         [ATXProactiveSuggestion initWithProto:];
       }
 
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_36;
     }
 
     v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v7 = [(ATXPBProactiveSuggestion *)v5 uuidString];
-    v8 = [v6 initWithUUIDString:v7];
+    uuidString = [(ATXPBProactiveSuggestion *)v5 uuidString];
+    v8 = [v6 initWithUUIDString:uuidString];
 
     if (!v8)
     {
@@ -585,13 +585,13 @@ LABEL_10:
         [ATXProactiveSuggestion initWithProto:];
       }
 
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_35;
     }
 
     v9 = [ATXProactiveSuggestionClientModelSpecification alloc];
-    v10 = [(ATXPBProactiveSuggestion *)v5 clientModelSpecification];
-    v11 = [(ATXProactiveSuggestionClientModelSpecification *)v9 initWithProto:v10];
+    clientModelSpecification = [(ATXPBProactiveSuggestion *)v5 clientModelSpecification];
+    v11 = [(ATXProactiveSuggestionClientModelSpecification *)v9 initWithProto:clientModelSpecification];
 
     if (!v11)
     {
@@ -601,13 +601,13 @@ LABEL_10:
         [ATXProactiveSuggestion initWithProto:];
       }
 
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_34;
     }
 
     v12 = [ATXProactiveSuggestionExecutableSpecification alloc];
-    v13 = [(ATXPBProactiveSuggestion *)v5 executableSpecification];
-    v14 = [(ATXProactiveSuggestionExecutableSpecification *)v12 initWithProto:v13];
+    executableSpecification = [(ATXPBProactiveSuggestion *)v5 executableSpecification];
+    v14 = [(ATXProactiveSuggestionExecutableSpecification *)v12 initWithProto:executableSpecification];
 
     if (!v14)
     {
@@ -617,24 +617,24 @@ LABEL_10:
         [ATXProactiveSuggestion initWithProto:];
       }
 
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_33;
     }
 
     v15 = [ATXProactiveSuggestionUISpecification alloc];
-    v16 = [(ATXPBProactiveSuggestion *)v5 uiSpecification];
-    v17 = [(ATXProactiveSuggestionUISpecification *)v15 initWithProto:v16];
+    uiSpecification = [(ATXPBProactiveSuggestion *)v5 uiSpecification];
+    v17 = [(ATXProactiveSuggestionUISpecification *)v15 initWithProto:uiSpecification];
 
     if (v17)
     {
       v18 = [ATXProactiveSuggestionScoreSpecification alloc];
-      v19 = [(ATXPBProactiveSuggestion *)v5 scoreSpecification];
-      v20 = [(ATXProactiveSuggestionScoreSpecification *)v18 initWithProto:v19];
+      scoreSpecification = [(ATXPBProactiveSuggestion *)v5 scoreSpecification];
+      v20 = [(ATXProactiveSuggestionScoreSpecification *)v18 initWithProto:scoreSpecification];
 
       if (v20)
       {
         self = [(ATXProactiveSuggestion *)self initWithClientModelSpecification:v11 executableSpecification:v14 uiSpecification:v17 scoreSpecification:v20 uuid:v8];
-        v21 = self;
+        selfCopy = self;
 LABEL_32:
 
 LABEL_33:
@@ -663,28 +663,28 @@ LABEL_37:
       }
     }
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_32;
   }
 
-  v21 = 0;
+  selfCopy = 0;
 LABEL_38:
 
-  return v21;
+  return selfCopy;
 }
 
-+ (id)suggestionsFromProtoSuggestions:(id)a3
++ (id)suggestionsFromProtoSuggestions:(id)suggestions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  suggestionsCopy = suggestions;
+  if (suggestionsCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v3;
+    v5 = suggestionsCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -732,18 +732,18 @@ LABEL_38:
   return v4;
 }
 
-+ (id)protoSuggestionsFromSuggestions:(id)a3
++ (id)protoSuggestionsFromSuggestions:(id)suggestions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  suggestionsCopy = suggestions;
+  if (suggestionsCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(suggestionsCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v3;
+    v5 = suggestionsCopy;
     v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -758,10 +758,10 @@ LABEL_38:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) proto];
-          if (v10)
+          proto = [*(*(&v16 + 1) + 8 * i) proto];
+          if (proto)
           {
-            [v4 addObject:v10];
+            [v4 addObject:proto];
           }
 
           else
@@ -791,33 +791,33 @@ LABEL_38:
   return v4;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v22 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -829,17 +829,17 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXProactiveSuggestion *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXProactiveSuggestion *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXProactiveSuggestion)initWithCoder:(id)a3
+- (ATXProactiveSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXProactiveSuggestion *)self initWithProtoData:v5];
   return v6;
@@ -849,20 +849,20 @@ LABEL_7:
 {
   v12[5] = *MEMORY[0x1E69E9840];
   v11[0] = @"uuid";
-  v3 = [(NSUUID *)self->_uuid UUIDString];
-  v12[0] = v3;
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v12[0] = uUIDString;
   v11[1] = @"clientModelSpecification";
-  v4 = [(ATXProactiveSuggestionClientModelSpecification *)self->_clientModelSpecification jsonRawData];
-  v12[1] = v4;
+  jsonRawData = [(ATXProactiveSuggestionClientModelSpecification *)self->_clientModelSpecification jsonRawData];
+  v12[1] = jsonRawData;
   v11[2] = @"uiSpecification";
-  v5 = [(ATXProactiveSuggestionUISpecification *)self->_uiSpecification jsonRawData];
-  v12[2] = v5;
+  jsonRawData2 = [(ATXProactiveSuggestionUISpecification *)self->_uiSpecification jsonRawData];
+  v12[2] = jsonRawData2;
   v11[3] = @"scoreSpecification";
-  v6 = [(ATXProactiveSuggestionScoreSpecification *)self->_scoreSpecification jsonRawData];
-  v12[3] = v6;
+  jsonRawData3 = [(ATXProactiveSuggestionScoreSpecification *)self->_scoreSpecification jsonRawData];
+  v12[3] = jsonRawData3;
   v11[4] = @"executableSpecification";
-  v7 = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification jsonRawData];
-  v12[4] = v7;
+  jsonRawData4 = [(ATXProactiveSuggestionExecutableSpecification *)self->_executableSpecification jsonRawData];
+  v12[4] = jsonRawData4;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:5];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -902,7 +902,7 @@ LABEL_7:
 - (void)proto
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v5 = 138412546;
   v6 = v3;
   v7 = 2112;

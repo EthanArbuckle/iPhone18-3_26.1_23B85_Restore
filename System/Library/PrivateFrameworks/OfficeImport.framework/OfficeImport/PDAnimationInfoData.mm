@@ -1,35 +1,35 @@
 @interface PDAnimationInfoData
-- (PDAnimationInfoData)initWithTarget:(id)a3 presetClass:(int)a4 presetId:(int)a5 triggerType:(int)a6 iterateType:(int)a7 delay:(double)a8 direction:(double)a9 order:(unsigned int)a10 groupId:(id)a11 build:(id)a12;
+- (PDAnimationInfoData)initWithTarget:(id)target presetClass:(int)class presetId:(int)id triggerType:(int)type iterateType:(int)iterateType delay:(double)delay direction:(double)direction order:(unsigned int)self0 groupId:(id)self1 build:(id)self2;
 @end
 
 @implementation PDAnimationInfoData
 
-- (PDAnimationInfoData)initWithTarget:(id)a3 presetClass:(int)a4 presetId:(int)a5 triggerType:(int)a6 iterateType:(int)a7 delay:(double)a8 direction:(double)a9 order:(unsigned int)a10 groupId:(id)a11 build:(id)a12
+- (PDAnimationInfoData)initWithTarget:(id)target presetClass:(int)class presetId:(int)id triggerType:(int)type iterateType:(int)iterateType delay:(double)delay direction:(double)direction order:(unsigned int)self0 groupId:(id)self1 build:(id)self2
 {
-  v15 = *&a7;
-  v16 = *&a6;
-  v17 = *&a5;
-  v18 = *&a4;
-  v20 = a3;
-  v21 = a11;
-  v22 = a12;
+  v15 = *&iterateType;
+  v16 = *&type;
+  v17 = *&id;
+  v18 = *&class;
+  targetCopy = target;
+  groupIdCopy = groupId;
+  buildCopy = build;
   v30.receiver = self;
   v30.super_class = PDAnimationInfoData;
   v23 = [(PDAnimationInfoData *)&v30 init];
   v24 = v23;
   if (v23)
   {
-    v23->mOrder = a10;
-    objc_storeStrong(&v23->mBuild, a12);
+    v23->mOrder = order;
+    objc_storeStrong(&v23->mBuild, build);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = [v20 drawable];
+      drawable = [targetCopy drawable];
       mDrawable = v24->mDrawable;
-      v24->mDrawable = v25;
+      v24->mDrawable = drawable;
     }
 
-    v27 = [PDSequentialTimeNode newSequentialTimeNodeGroupForAnimationInfoWithClass:objc_opt_class() target:v20];
+    v27 = [PDSequentialTimeNode newSequentialTimeNodeGroupForAnimationInfoWithClass:objc_opt_class() target:targetCopy];
     mSequentialTimeNodeData = v24->mSequentialTimeNodeData;
     v24->mSequentialTimeNodeData = v27;
 
@@ -37,12 +37,12 @@
     [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setPresetId:v17];
     [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setTriggerType:v16];
     [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setIterateType:v15];
-    [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setDirection:a9];
-    [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setTarget:v20];
-    [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setGroupId:v21];
+    [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setDirection:direction];
+    [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setTarget:targetCopy];
+    [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setGroupId:groupIdCopy];
     if (v16 != 1)
     {
-      [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setDelay:a8];
+      [(PDSequentialTimeNode *)v24->mSequentialTimeNodeData setDelay:delay];
     }
   }
 

@@ -3,27 +3,27 @@
 + (id)_iconCacheDirectory;
 + (void)_cleanupLegacyIconCache;
 + (void)_clearIconCacheVersion;
-- (CALNNotificationIconUpdater)initWithProtectedNotificationStorage:(id)a3 iconIdentifierProvider:(id)a4 notificationManager:(id)a5;
-- (void)_updateAllIconIdentifiersInStorage:(id)a3;
+- (CALNNotificationIconUpdater)initWithProtectedNotificationStorage:(id)storage iconIdentifierProvider:(id)provider notificationManager:(id)manager;
+- (void)_updateAllIconIdentifiersInStorage:(id)storage;
 - (void)updateNotificationIconsIfNeeded;
 @end
 
 @implementation CALNNotificationIconUpdater
 
-- (CALNNotificationIconUpdater)initWithProtectedNotificationStorage:(id)a3 iconIdentifierProvider:(id)a4 notificationManager:(id)a5
+- (CALNNotificationIconUpdater)initWithProtectedNotificationStorage:(id)storage iconIdentifierProvider:(id)provider notificationManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storageCopy = storage;
+  providerCopy = provider;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = CALNNotificationIconUpdater;
   v12 = [(CALNNotificationIconUpdater *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_protectedStorage, a3);
-    objc_storeStrong(&v13->_iconIdentifierProvider, a4);
-    objc_storeStrong(&v13->_notificationManager, a5);
+    objc_storeStrong(&v12->_protectedStorage, storage);
+    objc_storeStrong(&v13->_iconIdentifierProvider, provider);
+    objc_storeStrong(&v13->_notificationManager, manager);
   }
 
   return v13;
@@ -46,16 +46,16 @@
   }
 }
 
-- (void)_updateAllIconIdentifiersInStorage:(id)a3
+- (void)_updateAllIconIdentifiersInStorage:(id)storage
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = [a3 notificationRecords];
-  v27 = [MEMORY[0x277CBEA80] currentCalendar];
+  notificationRecords = [storage notificationRecords];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = notificationRecords;
   v5 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v5)
   {
@@ -73,17 +73,17 @@
         }
 
         v9 = *(*(&v29 + 1) + 8 * i);
-        v10 = [v9 content];
-        v11 = [v10 mutableCopy];
+        content = [v9 content];
+        v11 = [content mutableCopy];
 
-        v12 = [v11 iconIdentifier];
+        iconIdentifier = [v11 iconIdentifier];
 
-        if (v12)
+        if (iconIdentifier)
         {
-          v13 = [(CALNNotificationIconUpdater *)self iconIdentifierProvider];
-          v14 = [v9 content];
-          v15 = [v14 date];
-          v16 = [v13 identifierForIconWithDate:v15 inCalendar:v27];
+          iconIdentifierProvider = [(CALNNotificationIconUpdater *)self iconIdentifierProvider];
+          content2 = [v9 content];
+          date = [content2 date];
+          v16 = [iconIdentifierProvider identifierForIconWithDate:date inCalendar:currentCalendar];
           [v11 setIconIdentifier:v16];
         }
 
@@ -92,19 +92,19 @@
         v18 = +[CALNLogSubsystem calendar];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v9 content];
-          v20 = [v19 iconIdentifier];
-          v21 = [v17 content];
-          v22 = [v21 iconIdentifier];
+          content3 = [v9 content];
+          iconIdentifier2 = [content3 iconIdentifier];
+          content4 = [v17 content];
+          iconIdentifier3 = [content4 iconIdentifier];
           *buf = v25;
-          v34 = v20;
+          v34 = iconIdentifier2;
           v35 = 2114;
-          v36 = v22;
+          v36 = iconIdentifier3;
           _os_log_impl(&dword_242909000, v18, OS_LOG_TYPE_DEFAULT, "IconUpdater: Updating iconIdentifiers in each notification storage entry, oldIdentifier:[%{public}@], newIdentifier:[%{public}@]", buf, 0x16u);
         }
 
-        v23 = [(CALNNotificationIconUpdater *)self notificationManager];
-        [v23 updateRecord:v17];
+        notificationManager = [(CALNNotificationIconUpdater *)self notificationManager];
+        [notificationManager updateRecord:v17];
       }
 
       v7 = [obj countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -126,28 +126,28 @@
 
 + (BOOL)_needsIconCacheCleanup
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"CALNNotificationIconIdentifierVersion"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"CALNNotificationIconIdentifierVersion"];
 
   return v3 != 0;
 }
 
 + (void)_clearIconCacheVersion
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 removeObjectForKey:@"CALNNotificationIconIdentifierVersion"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"CALNNotificationIconIdentifierVersion"];
 }
 
 + (void)_cleanupLegacyIconCache
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [a1 _iconCacheDirectory];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v3 fileExistsAtPath:v2])
+  _iconCacheDirectory = [self _iconCacheDirectory];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:_iconCacheDirectory])
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v13 = 0;
-    v5 = [v4 removeItemAtPath:v2 error:&v13];
+    v5 = [defaultManager2 removeItemAtPath:_iconCacheDirectory error:&v13];
     v6 = v13;
 
     v7 = +[CALNLogSubsystem calendar];

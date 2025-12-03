@@ -1,16 +1,16 @@
 @interface _UIRelationshipGestureRecognizer
-- (_UIRelationshipGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (_UIRelationshipGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UIRelationshipGestureRecognizer
 
-- (_UIRelationshipGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIRelationshipGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = _UIRelationshipGestureRecognizer;
-  result = [(UIGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  result = [(UIGestureRecognizer *)&v5 initWithTarget:target action:action];
   if (result)
   {
     result->_failsOnTouchesCancelled = 1;
@@ -19,9 +19,9 @@
   return result;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if ([(_UIRelationshipGestureRecognizer *)self succeedsOnTouchesEnded:a3])
+  if ([(_UIRelationshipGestureRecognizer *)self succeedsOnTouchesEnded:ended])
   {
 
     [(_UIRelationshipGestureRecognizer *)self _succeed];
@@ -34,9 +34,9 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if ([(_UIRelationshipGestureRecognizer *)self failsOnTouchesCancelled:a3])
+  if ([(_UIRelationshipGestureRecognizer *)self failsOnTouchesCancelled:cancelled])
   {
 
     [(_UIRelationshipGestureRecognizer *)self _fail];

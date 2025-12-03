@@ -1,14 +1,14 @@
 @interface PXSingleTileLayout
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6;
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (CGRect)contentBounds;
 - (CGSize)preferredSize;
 - (PXSingleTileLayout)init;
-- (PXSingleTileLayout)initWithTileIdentifier:(PXTileIdentifier *)a3;
+- (PXSingleTileLayout)initWithTileIdentifier:(PXTileIdentifier *)identifier;
 - (PXTileIdentifier)tileIdentifier;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
 - (void)prepareLayout;
-- (void)setPreferredSize:(CGSize)a3;
-- (void)setReferenceSize:(CGSize)a3;
+- (void)setPreferredSize:(CGSize)size;
+- (void)setReferenceSize:(CGSize)size;
 @end
 
 @implementation PXSingleTileLayout
@@ -35,20 +35,20 @@
   return self;
 }
 
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
   v11 = *MEMORY[0x1E695F050];
   v12 = *(MEMORY[0x1E695F050] + 8);
   v13 = *(MEMORY[0x1E695F050] + 16);
   v14 = *(MEMORY[0x1E695F050] + 24);
   [(PXSingleTileLayout *)self tileIdentifier];
-  v15 = *&a6->index[5];
-  v27[2] = *&a6->index[3];
+  v15 = *&identifier->index[5];
+  v27[2] = *&identifier->index[3];
   v27[3] = v15;
-  v27[4] = *&a6->index[7];
-  v28 = a6->index[9];
-  v16 = *&a6->index[1];
-  v27[0] = *&a6->length;
+  v27[4] = *&identifier->index[7];
+  v28 = identifier->index[9];
+  v16 = *&identifier->index[1];
+  v27[0] = *&identifier->length;
   v27[1] = v16;
   v17 = *&v27[0] == v29[0];
   if (*&v27[0] && *&v27[0] == v29[0])
@@ -86,34 +86,34 @@
   IsNull = CGRectIsNull(v30);
   if (!IsNull)
   {
-    if (a3)
+    if (geometry)
     {
       [(PXTilingLayout *)self coordinateSpaceIdentifier];
       PXRectGetCenter();
     }
 
-    if (a4)
+    if (group)
     {
-      *a4 = 0;
+      *group = 0;
     }
 
-    if (a5)
+    if (data)
     {
-      *a5 = 0;
+      *data = 0;
     }
   }
 
   return !IsNull;
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  blockCopy = block;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
@@ -128,7 +128,7 @@
   v20 = y;
   v21 = width;
   v22 = height;
-  v13 = v12;
+  v13 = blockCopy;
   v17 = v13;
   v14 = _Block_copy(aBlock);
   [(PXSingleTileLayout *)self tileIdentifier];
@@ -241,11 +241,11 @@ void __66__PXSingleTileLayout_enumerateTilesInRect_withOptions_usingBlock___bloc
   self->_contentBounds.size.height = v8;
 }
 
-- (void)setPreferredSize:(CGSize)a3
+- (void)setPreferredSize:(CGSize)size
 {
-  if (a3.width != self->_preferredSize.width || a3.height != self->_preferredSize.height)
+  if (size.width != self->_preferredSize.width || size.height != self->_preferredSize.height)
   {
-    self->_preferredSize = a3;
+    self->_preferredSize = size;
     v6 = objc_alloc_init(PXTilingLayoutInvalidationContext);
     [(PXTilingLayoutInvalidationContext *)v6 invalidateAllTiles];
     [(PXTilingLayoutInvalidationContext *)v6 invalidateContentBounds];
@@ -254,10 +254,10 @@ void __66__PXSingleTileLayout_enumerateTilesInRect_withOptions_usingBlock___bloc
   }
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PXTilingLayout *)self referenceSize];
   v7 = v6;
   v9 = v8;
@@ -274,20 +274,20 @@ void __66__PXSingleTileLayout_enumerateTilesInRect_withOptions_usingBlock___bloc
   }
 }
 
-- (PXSingleTileLayout)initWithTileIdentifier:(PXTileIdentifier *)a3
+- (PXSingleTileLayout)initWithTileIdentifier:(PXTileIdentifier *)identifier
 {
   v14.receiver = self;
   v14.super_class = PXSingleTileLayout;
   result = [(PXTilingLayout *)&v14 init];
   if (result)
   {
-    v5 = *&a3->index[1];
-    *&result->_tileIdentifier.length = *&a3->length;
+    v5 = *&identifier->index[1];
+    *&result->_tileIdentifier.length = *&identifier->length;
     *&result->_tileIdentifier.index[1] = v5;
-    v7 = *&a3->index[5];
-    v6 = *&a3->index[7];
-    v8 = *&a3->index[3];
-    result->_tileIdentifier.index[9] = a3->index[9];
+    v7 = *&identifier->index[5];
+    v6 = *&identifier->index[7];
+    v8 = *&identifier->index[3];
+    result->_tileIdentifier.index[9] = identifier->index[9];
     *&result->_tileIdentifier.index[5] = v7;
     *&result->_tileIdentifier.index[7] = v6;
     *&result->_tileIdentifier.index[3] = v8;

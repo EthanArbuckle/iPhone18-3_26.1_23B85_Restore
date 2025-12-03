@@ -1,49 +1,49 @@
 @interface CUIKSubscribedCalendarUtilities
-+ (BOOL)canHandleURL:(id)a3;
-+ (id)checkSubscriptionURL:(id)a3 missingSchemeBlock:(id)a4 unsupportedSchemeBlock:(id)a5;
-+ (id)subscriptionURL:(id)a3 usingHTTPS:(BOOL)a4;
-+ (id)subscriptionURLForCalendar:(id)a3 inStore:(id)a4;
-+ (void)checkURLForSpam:(id)a3 completionHandler:(id)a4 queue:(id)a5;
-+ (void)fetchAvailableHolidayCalendarsWithCompletion:(id)a3 queue:(id)a4;
-+ (void)reportLocalSubscribedCalendarAsJunkWithoutRemoval:(id)a3;
-+ (void)unsubscribeFromCalendar:(id)a3 reportAsJunk:(BOOL)a4;
++ (BOOL)canHandleURL:(id)l;
++ (id)checkSubscriptionURL:(id)l missingSchemeBlock:(id)block unsupportedSchemeBlock:(id)schemeBlock;
++ (id)subscriptionURL:(id)l usingHTTPS:(BOOL)s;
++ (id)subscriptionURLForCalendar:(id)calendar inStore:(id)store;
++ (void)checkURLForSpam:(id)spam completionHandler:(id)handler queue:(id)queue;
++ (void)fetchAvailableHolidayCalendarsWithCompletion:(id)completion queue:(id)queue;
++ (void)reportLocalSubscribedCalendarAsJunkWithoutRemoval:(id)removal;
++ (void)unsubscribeFromCalendar:(id)calendar reportAsJunk:(BOOL)junk;
 @end
 
 @implementation CUIKSubscribedCalendarUtilities
 
-+ (id)checkSubscriptionURL:(id)a3 missingSchemeBlock:(id)a4 unsupportedSchemeBlock:(id)a5
++ (id)checkSubscriptionURL:(id)l missingSchemeBlock:(id)block unsupportedSchemeBlock:(id)schemeBlock
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DFF8] URLWithString:a3];
+  blockCopy = block;
+  schemeBlockCopy = schemeBlock;
+  v10 = [MEMORY[0x1E695DFF8] URLWithString:l];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 scheme];
-    if (v12)
+    scheme = [v10 scheme];
+    if (scheme)
     {
-      v13 = v12;
-      v14 = [v11 scheme];
-      if (![v14 length])
+      cDVRawPath = scheme;
+      scheme2 = [v11 scheme];
+      if (![scheme2 length])
       {
         goto LABEL_7;
       }
 
-      v15 = [v11 host];
-      if (!v15)
+      host = [v11 host];
+      if (!host)
       {
         goto LABEL_7;
       }
 
-      v16 = v15;
-      v17 = [v11 host];
-      v18 = [v17 length];
+      v16 = host;
+      host2 = [v11 host];
+      v18 = [host2 length];
 
       if (v18)
       {
-        v13 = [v11 CDVRawPath];
-        v14 = [v13 CDVStringByAddingPercentEscapesForHREF];
-        v19 = [v11 CDVURLWithPath:v14];
+        cDVRawPath = [v11 CDVRawPath];
+        scheme2 = [cDVRawPath CDVStringByAddingPercentEscapesForHREF];
+        v19 = [v11 CDVURLWithPath:scheme2];
 
         v11 = v19;
 LABEL_7:
@@ -51,12 +51,12 @@ LABEL_7:
     }
   }
 
-  v20 = [v11 scheme];
-  if (!v20 || (v21 = v20, [v11 scheme], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", &stru_1F4AA8958), v22, v21, v23))
+  scheme3 = [v11 scheme];
+  if (!scheme3 || (v21 = scheme3, [v11 scheme], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", &stru_1F4AA8958), v22, v21, v23))
   {
-    if (v8)
+    if (blockCopy)
     {
-      v8[2](v8, v11);
+      blockCopy[2](blockCopy, v11);
     }
 
 LABEL_12:
@@ -64,11 +64,11 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (([a1 canHandleURL:v11] & 1) == 0)
+  if (([self canHandleURL:v11] & 1) == 0)
   {
-    if (v9)
+    if (schemeBlockCopy)
     {
-      v9[2](v9, v11);
+      schemeBlockCopy[2](schemeBlockCopy, v11);
     }
 
     goto LABEL_12;
@@ -80,34 +80,34 @@ LABEL_13:
   return v24;
 }
 
-+ (BOOL)canHandleURL:(id)a3
++ (BOOL)canHandleURL:(id)l
 {
-  v3 = [a3 scheme];
+  scheme = [l scheme];
   v4 = 1;
-  if ([v3 compare:@"webcal" options:1])
+  if ([scheme compare:@"webcal" options:1])
   {
     v4 = 1;
-    if ([v3 compare:@"http" options:1])
+    if ([scheme compare:@"http" options:1])
     {
-      v4 = [v3 compare:@"https" options:1] == 0;
+      v4 = [scheme compare:@"https" options:1] == 0;
     }
   }
 
   return v4;
 }
 
-+ (id)subscriptionURLForCalendar:(id)a3 inStore:(id)a4
++ (id)subscriptionURLForCalendar:(id)calendar inStore:(id)store
 {
-  v5 = a4;
-  v6 = [a3 subcalAccountID];
-  v7 = [v5 accountWithIdentifier:v6];
+  storeCopy = store;
+  subcalAccountID = [calendar subcalAccountID];
+  v7 = [storeCopy accountWithIdentifier:subcalAccountID];
 
   if (v7)
   {
     v8 = [MEMORY[0x1E6999830] daAccountSubclassWithBackingAccountInfo:v7];
     if ([v8 conformsToProtocol:&unk_1F4AF85C0])
     {
-      v9 = [v8 subscriptionURL];
+      subscriptionURL = [v8 subscriptionURL];
     }
 
     else
@@ -118,25 +118,25 @@ LABEL_13:
         [(CUIKSubscribedCalendarUtilities *)v8 subscriptionURLForCalendar:v7 inStore:v10];
       }
 
-      v9 = 0;
+      subscriptionURL = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    subscriptionURL = 0;
   }
 
-  return v9;
+  return subscriptionURL;
 }
 
-+ (id)subscriptionURL:(id)a3 usingHTTPS:(BOOL)a4
++ (id)subscriptionURL:(id)l usingHTTPS:(BOOL)s
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 scheme];
-  v7 = v6;
-  if (v4)
+  sCopy = s;
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v7 = scheme;
+  if (sCopy)
   {
     v8 = @"https";
   }
@@ -146,42 +146,42 @@ LABEL_13:
     v8 = @"http";
   }
 
-  if ([v6 compare:v8 options:1])
+  if ([scheme compare:v8 options:1])
   {
-    v9 = [MEMORY[0x1E696AF20] componentsWithURL:v5 resolvingAgainstBaseURL:0];
+    v9 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
     [v9 setScheme:v8];
     v10 = [v9 URL];
   }
 
   else
   {
-    v10 = v5;
+    v10 = lCopy;
   }
 
   return v10;
 }
 
-+ (void)unsubscribeFromCalendar:(id)a3 reportAsJunk:(BOOL)a4
++ (void)unsubscribeFromCalendar:(id)calendar reportAsJunk:(BOOL)junk
 {
-  v4 = a4;
+  junkCopy = junk;
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 subcalURL];
-  v8 = [v6 subcalAccountID];
+  calendarCopy = calendar;
+  subcalURL = [calendarCopy subcalURL];
+  subcalAccountID = [calendarCopy subcalAccountID];
   v9 = objc_alloc_init(MEMORY[0x1E6959A48]);
-  v10 = [v9 accountWithIdentifier:v8];
-  v11 = [MEMORY[0x1E6966A10] sharedInstance];
-  [v11 removeInteractionsForCalendar:v6];
+  v10 = [v9 accountWithIdentifier:subcalAccountID];
+  mEMORY[0x1E6966A10] = [MEMORY[0x1E6966A10] sharedInstance];
+  [mEMORY[0x1E6966A10] removeInteractionsForCalendar:calendarCopy];
 
-  v12 = [v6 source];
-  v13 = [v12 sourceType];
+  source = [calendarCopy source];
+  sourceType = [source sourceType];
 
-  if (v13 == 2)
+  if (sourceType == 2)
   {
-    v14 = [v10 parentAccount];
-    v15 = [v14 calIsiCloudCalDAVAccount];
+    parentAccount = [v10 parentAccount];
+    calIsiCloudCalDAVAccount = [parentAccount calIsiCloudCalDAVAccount];
 
-    if (!v4)
+    if (!junkCopy)
     {
       goto LABEL_15;
     }
@@ -196,9 +196,9 @@ LABEL_13:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v26 = v8;
+      v26 = subcalAccountID;
       v27 = 2112;
-      v28 = v6;
+      v28 = calendarCopy;
       _os_log_impl(&dword_1CAB19000, v17, OS_LOG_TYPE_DEFAULT, "Deleting account %{public}@ to delete subscribed calendar %@", buf, 0x16u);
     }
 
@@ -206,8 +206,8 @@ LABEL_13:
     v22[1] = 3221225472;
     v22[2] = __72__CUIKSubscribedCalendarUtilities_unsubscribeFromCalendar_reportAsJunk___block_invoke;
     v22[3] = &unk_1E8399810;
-    v23 = v8;
-    v24 = v6;
+    v23 = subcalAccountID;
+    v24 = calendarCopy;
     [v9 removeAccount:v10 withCompletionHandler:v22];
   }
 
@@ -215,31 +215,31 @@ LABEL_13:
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [(CUIKSubscribedCalendarUtilities *)v8 unsubscribeFromCalendar:v6 reportAsJunk:v17];
+      [(CUIKSubscribedCalendarUtilities *)subcalAccountID unsubscribeFromCalendar:calendarCopy reportAsJunk:v17];
     }
   }
 
-  v15 = 0;
-  if (v4)
+  calIsiCloudCalDAVAccount = 0;
+  if (junkCopy)
   {
 LABEL_12:
-    if (v15)
+    if (calIsiCloudCalDAVAccount)
     {
-      [v6 setIsSubscribedCalendarJunk:1];
-      v18 = [v6 eventStore];
-      [v18 saveCalendar:v6 commit:1 error:0];
+      [calendarCopy setIsSubscribedCalendarJunk:1];
+      eventStore = [calendarCopy eventStore];
+      [eventStore saveCalendar:calendarCopy commit:1 error:0];
     }
 
     else
     {
-      [a1 reportLocalSubscribedCalendarAsJunkWithoutRemoval:v7];
+      [self reportLocalSubscribedCalendarAsJunkWithoutRemoval:subcalURL];
     }
   }
 
 LABEL_15:
-  v19 = [v6 eventStore];
+  eventStore2 = [calendarCopy eventStore];
   v21 = 0;
-  [v19 removeCalendar:v6 commit:1 error:&v21];
+  [eventStore2 removeCalendar:calendarCopy commit:1 error:&v21];
   v20 = v21;
 }
 
@@ -269,27 +269,27 @@ void __72__CUIKSubscribedCalendarUtilities_unsubscribeFromCalendar_reportAsJunk_
   }
 }
 
-+ (void)reportLocalSubscribedCalendarAsJunkWithoutRemoval:(id)a3
++ (void)reportLocalSubscribedCalendarAsJunkWithoutRemoval:(id)removal
 {
-  if (a3)
+  if (removal)
   {
     v3 = MEMORY[0x1E69998A8];
-    v4 = a3;
-    v5 = [v3 sharedConnection];
-    [v5 reportSubscriptionCalendarAsJunk:v4];
+    removalCopy = removal;
+    sharedConnection = [v3 sharedConnection];
+    [sharedConnection reportSubscriptionCalendarAsJunk:removalCopy];
   }
 }
 
-+ (void)fetchAvailableHolidayCalendarsWithCompletion:(id)a3 queue:(id)a4
++ (void)fetchAvailableHolidayCalendarsWithCompletion:(id)completion queue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__8;
   v15[4] = __Block_byref_object_dispose__8;
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__CUIKSubscribedCalendarUtilities_fetchAvailableHolidayCalendarsWithCompletion_queue___block_invoke;
@@ -301,11 +301,11 @@ void __72__CUIKSubscribedCalendarUtilities_unsubscribeFromCalendar_reportAsJunk_
   v11[2] = __86__CUIKSubscribedCalendarUtilities_fetchAvailableHolidayCalendarsWithCompletion_queue___block_invoke_2;
   v11[3] = &unk_1E839A9B8;
   v13 = v15;
-  v8 = v5;
+  v8 = completionCopy;
   v12 = v8;
   v9 = _Block_copy(v11);
-  v10 = [MEMORY[0x1E69998A8] sharedConnection];
-  [v10 fetchAvailableHolidayCalendarsWithResultsBlock:v7 completionBlock:v9 queue:v6];
+  mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+  [mEMORY[0x1E69998A8] fetchAvailableHolidayCalendarsWithResultsBlock:v7 completionBlock:v9 queue:queueCopy];
 
   _Block_object_dispose(v15, 8);
 }
@@ -428,31 +428,31 @@ uint64_t __86__CUIKSubscribedCalendarUtilities_fetchAvailableHolidayCalendarsWit
   return v7;
 }
 
-+ (void)checkURLForSpam:(id)a3 completionHandler:(id)a4 queue:(id)a5
++ (void)checkURLForSpam:(id)spam completionHandler:(id)handler queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  spamCopy = spam;
+  handlerCopy = handler;
+  if (spamCopy)
   {
     v9 = MEMORY[0x1E69998A8];
-    v10 = a5;
-    v11 = [v9 sharedConnection];
-    v12 = [v7 absoluteString];
+    queueCopy = queue;
+    queueCopy2 = [v9 sharedConnection];
+    absoluteString = [spamCopy absoluteString];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __75__CUIKSubscribedCalendarUtilities_checkURLForSpam_completionHandler_queue___block_invoke;
     v21[3] = &unk_1E839A9E0;
     v13 = &v23;
-    v23 = v8;
+    v23 = handlerCopy;
     v14 = &v22;
-    v22 = v7;
-    v15 = v8;
-    [v11 checkSubscriptionCalendarIsJunk:v12 queue:v10 completionBlock:v21];
+    v22 = spamCopy;
+    v15 = handlerCopy;
+    [queueCopy2 checkSubscriptionCalendarIsJunk:absoluteString queue:queueCopy completionBlock:v21];
   }
 
   else
   {
-    v11 = a5;
+    queueCopy2 = queue;
     v16 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -466,9 +466,9 @@ uint64_t __86__CUIKSubscribedCalendarUtilities_fetchAvailableHolidayCalendarsWit
     v13 = &v20;
     v14 = &v19;
     v19 = 0;
-    v20 = v8;
-    v17 = v8;
-    dispatch_async(v11, v18);
+    v20 = handlerCopy;
+    v17 = handlerCopy;
+    dispatch_async(queueCopy2, v18);
   }
 }
 

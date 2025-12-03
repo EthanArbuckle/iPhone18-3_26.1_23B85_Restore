@@ -2,28 +2,28 @@
 + (id)sharedBrowser;
 - (NSString)description;
 - (SDServerBrowser)init;
-- (id)airDropNodesForDomain:(id)a3;
-- (id)bonjourNodesForDomain:(id)a3;
-- (id)odiskNodesForDomain:(id)a3;
-- (id)stringForBrowserMode:(int64_t)a3;
-- (id)windowsNodesForWorkgroup:(id)a3;
-- (void)airDropTransferRequested:(id)a3;
-- (void)bonjourNodesDidChange:(id)a3;
+- (id)airDropNodesForDomain:(id)domain;
+- (id)bonjourNodesForDomain:(id)domain;
+- (id)odiskNodesForDomain:(id)domain;
+- (id)stringForBrowserMode:(int64_t)mode;
+- (id)windowsNodesForWorkgroup:(id)workgroup;
+- (void)airDropTransferRequested:(id)requested;
+- (void)bonjourNodesDidChange:(id)change;
 - (void)incrementTransfersCompleted;
 - (void)incrementTransfersInitiated;
-- (void)postNotification:(id)a3 forNeighborhood:(id)a4;
-- (void)setBonjourBrowserMode:(int64_t)a3;
-- (void)setIconData:(id)a3 iconHash:(id)a4 forPerson:(__SFNode *)a5;
-- (void)startAirDropBrowsing:(id)a3 bundleID:(id)a4 sessionID:(id)a5 helperConnection:(id)a6 delayBonjour:(BOOL)a7;
-- (void)startAirDropBrowsing:(id)a3 connection:(id)a4 sessionID:(id)a5;
-- (void)startBrowsingDomain:(id)a3;
-- (void)startBrowsingWorkgroup:(id)a3;
-- (void)startODiskBrowsing:(id)a3;
-- (void)stopAirDropBrowsing:(id)a3;
-- (void)stopBrowsingDomain:(id)a3;
-- (void)stopBrowsingWorkgroup:(id)a3;
-- (void)stopODiskBrowsing:(id)a3;
-- (void)windowsNodesDidChange:(id)a3;
+- (void)postNotification:(id)notification forNeighborhood:(id)neighborhood;
+- (void)setBonjourBrowserMode:(int64_t)mode;
+- (void)setIconData:(id)data iconHash:(id)hash forPerson:(__SFNode *)person;
+- (void)startAirDropBrowsing:(id)browsing bundleID:(id)d sessionID:(id)iD helperConnection:(id)connection delayBonjour:(BOOL)bonjour;
+- (void)startAirDropBrowsing:(id)browsing connection:(id)connection sessionID:(id)d;
+- (void)startBrowsingDomain:(id)domain;
+- (void)startBrowsingWorkgroup:(id)workgroup;
+- (void)startODiskBrowsing:(id)browsing;
+- (void)stopAirDropBrowsing:(id)browsing;
+- (void)stopBrowsingDomain:(id)domain;
+- (void)stopBrowsingWorkgroup:(id)workgroup;
+- (void)stopODiskBrowsing:(id)browsing;
+- (void)windowsNodesDidChange:(id)change;
 @end
 
 @implementation SDServerBrowser
@@ -285,15 +285,15 @@
   return v3;
 }
 
-- (void)postNotification:(id)a3 forNeighborhood:(id)a4
+- (void)postNotification:(id)notification forNeighborhood:(id)neighborhood
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  notificationCopy = notification;
+  neighborhoodCopy = neighborhood;
+  v7 = neighborhoodCopy;
+  if (neighborhoodCopy)
   {
     v10 = @"NeighborhoodName";
-    v11 = v6;
+    v11 = neighborhoodCopy;
     v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   }
 
@@ -303,10 +303,10 @@
   }
 
   v9 = +[NSNotificationCenter defaultCenter];
-  [v9 postNotificationName:v5 object:0 userInfo:v8];
+  [v9 postNotificationName:notificationCopy object:0 userInfo:v8];
 }
 
-- (void)airDropTransferRequested:(id)a3
+- (void)airDropTransferRequested:(id)requested
 {
   v4 = airdrop_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -329,23 +329,23 @@
   }
 }
 
-- (void)bonjourNodesDidChange:(id)a3
+- (void)bonjourNodesDidChange:(id)change
 {
-  v7 = a3;
-  v4 = [v7 types];
-  if ([v4 containsObject:@"_afpovertcp._tcp."])
+  changeCopy = change;
+  types = [changeCopy types];
+  if ([types containsObject:@"_afpovertcp._tcp."])
   {
     v5 = @"com.apple.sharingd.BonjourChanged";
   }
 
-  else if ([v4 containsObject:sub_10011830C()])
+  else if ([types containsObject:sub_10011830C()])
   {
     v5 = @"com.apple.sharingd.AirDropChanged";
   }
 
   else
   {
-    if (![v4 containsObject:@"_odisk._tcp."])
+    if (![types containsObject:@"_odisk._tcp."])
     {
       goto LABEL_8;
     }
@@ -353,29 +353,29 @@
     v5 = @"com.apple.sharingd.ODisksChanged";
   }
 
-  v6 = [v7 domain];
-  [(SDServerBrowser *)self postNotification:v5 forNeighborhood:v6];
+  domain = [changeCopy domain];
+  [(SDServerBrowser *)self postNotification:v5 forNeighborhood:domain];
 
 LABEL_8:
 }
 
-- (void)windowsNodesDidChange:(id)a3
+- (void)windowsNodesDidChange:(id)change
 {
-  v4 = [a3 workgroup];
-  [(SDServerBrowser *)self postNotification:@"com.apple.sharingd.WindowsChanged" forNeighborhood:v4];
+  workgroup = [change workgroup];
+  [(SDServerBrowser *)self postNotification:@"com.apple.sharingd.WindowsChanged" forNeighborhood:workgroup];
 }
 
-- (void)startBrowsingDomain:(id)a3
+- (void)startBrowsingDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_bonjourBrowsers objectForKeyedSubscript:v4];
+  domainCopy = domain;
+  v5 = [(NSMutableDictionary *)self->_bonjourBrowsers objectForKeyedSubscript:domainCopy];
   if (v5)
   {
     v6 = v5;
     v7 = [v5 objectForKeyedSubscript:@"Count"];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
 
-    v9 = [NSNumber numberWithInt:v8 + 1];
+    v9 = [NSNumber numberWithInt:intValue + 1];
     [v6 setObject:v9 forKeyedSubscript:@"Count"];
   }
 
@@ -386,49 +386,49 @@ LABEL_8:
     v11[2] = @"_rfb._tcp.";
     v11[3] = @"_adisk._tcp.";
     v9 = [NSArray arrayWithObjects:v11 count:4];
-    v10 = [[SDBonjourBrowser alloc] initWithDomain:v4 types:v9];
+    v10 = [[SDBonjourBrowser alloc] initWithDomain:domainCopy types:v9];
     v6 = objc_opt_new();
     [v6 setObject:&off_10090BD00 forKeyedSubscript:@"Count"];
     [v6 setObject:v10 forKeyedSubscript:@"Browser"];
-    [(NSMutableDictionary *)self->_bonjourBrowsers setObject:v6 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_bonjourBrowsers setObject:v6 forKeyedSubscript:domainCopy];
     [(SDBonjourBrowser *)v10 setDelegate:self];
     [(SDBonjourBrowser *)v10 setMode:self->_mode];
     [(SDBonjourBrowser *)v10 start];
   }
 }
 
-- (void)setBonjourBrowserMode:(int64_t)a3
+- (void)setBonjourBrowserMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     v6 = [(NSMutableDictionary *)self->_bonjourBrowsers objectForKeyedSubscript:@"local"];
     v5 = [v6 objectForKeyedSubscript:@"Browser"];
-    [v5 setMode:a3];
+    [v5 setMode:mode];
   }
 }
 
-- (id)bonjourNodesForDomain:(id)a3
+- (id)bonjourNodesForDomain:(id)domain
 {
-  v3 = [(NSMutableDictionary *)self->_bonjourBrowsers objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_bonjourBrowsers objectForKeyedSubscript:domain];
   v4 = v3;
   if (v3)
   {
     v5 = [v3 objectForKeyedSubscript:@"Browser"];
-    v6 = [v5 nodes];
+    nodes = [v5 nodes];
   }
 
   else
   {
-    v6 = 0;
+    nodes = 0;
   }
 
-  return v6;
+  return nodes;
 }
 
-- (void)stopBrowsingDomain:(id)a3
+- (void)stopBrowsingDomain:(id)domain
 {
-  v11 = a3;
+  domainCopy = domain;
   v4 = [(NSMutableDictionary *)self->_bonjourBrowsers objectForKeyedSubscript:?];
   v5 = v4;
   if (v4)
@@ -450,22 +450,22 @@ LABEL_8:
       v10 = [v5 objectForKeyedSubscript:@"Browser"];
       [v10 setDelegate:0];
 
-      [(NSMutableDictionary *)self->_bonjourBrowsers removeObjectForKey:v11];
+      [(NSMutableDictionary *)self->_bonjourBrowsers removeObjectForKey:domainCopy];
     }
   }
 }
 
-- (void)startODiskBrowsing:(id)a3
+- (void)startODiskBrowsing:(id)browsing
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_odiskBrowsers objectForKeyedSubscript:v4];
+  browsingCopy = browsing;
+  v5 = [(NSMutableDictionary *)self->_odiskBrowsers objectForKeyedSubscript:browsingCopy];
   if (v5)
   {
     v6 = v5;
     v7 = [v5 objectForKeyedSubscript:@"Count"];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
 
-    v9 = [NSNumber numberWithInt:v8 + 1];
+    v9 = [NSNumber numberWithInt:intValue + 1];
     [v6 setObject:v9 forKeyedSubscript:@"Count"];
   }
 
@@ -473,37 +473,37 @@ LABEL_8:
   {
     v11 = @"_odisk._tcp.";
     v9 = [NSArray arrayWithObjects:&v11 count:1];
-    v10 = [[SDBonjourBrowser alloc] initWithDomain:v4 types:v9];
+    v10 = [[SDBonjourBrowser alloc] initWithDomain:browsingCopy types:v9];
     v6 = objc_opt_new();
     [v6 setObject:&off_10090BD00 forKeyedSubscript:@"Count"];
     [v6 setObject:v10 forKeyedSubscript:@"Browser"];
-    [(NSMutableDictionary *)self->_odiskBrowsers setObject:v6 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_odiskBrowsers setObject:v6 forKeyedSubscript:browsingCopy];
     [(SDBonjourBrowser *)v10 setDelegate:self];
     [(SDBonjourBrowser *)v10 start];
   }
 }
 
-- (id)odiskNodesForDomain:(id)a3
+- (id)odiskNodesForDomain:(id)domain
 {
-  v3 = [(NSMutableDictionary *)self->_odiskBrowsers objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_odiskBrowsers objectForKeyedSubscript:domain];
   v4 = v3;
   if (v3)
   {
     v5 = [v3 objectForKeyedSubscript:@"Browser"];
-    v6 = [v5 nodes];
+    nodes = [v5 nodes];
   }
 
   else
   {
-    v6 = 0;
+    nodes = 0;
   }
 
-  return v6;
+  return nodes;
 }
 
-- (void)stopODiskBrowsing:(id)a3
+- (void)stopODiskBrowsing:(id)browsing
 {
-  v11 = a3;
+  browsingCopy = browsing;
   v4 = [(NSMutableDictionary *)self->_odiskBrowsers objectForKeyedSubscript:?];
   v5 = v4;
   if (v4)
@@ -525,25 +525,25 @@ LABEL_8:
       v10 = [v5 objectForKeyedSubscript:@"Browser"];
       [v10 setDelegate:0];
 
-      [(NSMutableDictionary *)self->_odiskBrowsers removeObjectForKey:v11];
+      [(NSMutableDictionary *)self->_odiskBrowsers removeObjectForKey:browsingCopy];
     }
   }
 }
 
-- (void)startAirDropBrowsing:(id)a3 bundleID:(id)a4 sessionID:(id)a5 helperConnection:(id)a6 delayBonjour:(BOOL)a7
+- (void)startAirDropBrowsing:(id)browsing bundleID:(id)d sessionID:(id)iD helperConnection:(id)connection delayBonjour:(BOOL)bonjour
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(NSMutableDictionary *)self->_airDropBrowsers objectForKeyedSubscript:v12];
+  browsingCopy = browsing;
+  dCopy = d;
+  iDCopy = iD;
+  connectionCopy = connection;
+  v16 = [(NSMutableDictionary *)self->_airDropBrowsers objectForKeyedSubscript:browsingCopy];
   if (v16)
   {
     v17 = v16;
     v18 = [v16 objectForKeyedSubscript:@"Count"];
-    v19 = [v18 intValue];
+    intValue = [v18 intValue];
 
-    v20 = [NSNumber numberWithInt:v19 + 1];
+    v20 = [NSNumber numberWithInt:intValue + 1];
     [v17 setObject:v20 forKeyedSubscript:@"Count"];
   }
 
@@ -551,16 +551,16 @@ LABEL_8:
   {
     v26 = sub_10011830C();
     v21 = [NSArray arrayWithObjects:&v26 count:1];
-    v22 = [[SDBonjourBrowser alloc] initWithDomain:v12 types:v21];
-    [(SDBonjourBrowser *)v22 setHelperConnection:v15];
+    v22 = [[SDBonjourBrowser alloc] initWithDomain:browsingCopy types:v21];
+    [(SDBonjourBrowser *)v22 setHelperConnection:connectionCopy];
     v17 = objc_opt_new();
     [v17 setObject:&off_10090BD00 forKeyedSubscript:@"Count"];
     [v17 setObject:v22 forKeyedSubscript:@"Browser"];
-    [(NSMutableDictionary *)self->_airDropBrowsers setObject:v17 forKeyedSubscript:v12];
-    [(SDBonjourBrowser *)v22 setBundleID:v13];
-    [(SDBonjourBrowser *)v22 setSessionID:v14];
+    [(NSMutableDictionary *)self->_airDropBrowsers setObject:v17 forKeyedSubscript:browsingCopy];
+    [(SDBonjourBrowser *)v22 setBundleID:dCopy];
+    [(SDBonjourBrowser *)v22 setSessionID:iDCopy];
     [(SDBonjourBrowser *)v22 setDelegate:self];
-    if (a7)
+    if (bonjour)
     {
       v23 = airdrop_log();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -583,19 +583,19 @@ LABEL_8:
   }
 }
 
-- (void)startAirDropBrowsing:(id)a3 connection:(id)a4 sessionID:(id)a5
+- (void)startAirDropBrowsing:(id)browsing connection:(id)connection sessionID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_airDropBrowsers objectForKeyedSubscript:v8];
+  browsingCopy = browsing;
+  connectionCopy = connection;
+  dCopy = d;
+  v11 = [(NSMutableDictionary *)self->_airDropBrowsers objectForKeyedSubscript:browsingCopy];
   if (v11)
   {
     v12 = v11;
     v13 = [v11 objectForKeyedSubscript:@"Count"];
-    v14 = [v13 intValue];
+    intValue = [v13 intValue];
 
-    v15 = [NSNumber numberWithInt:v14 + 1];
+    v15 = [NSNumber numberWithInt:intValue + 1];
     [v12 setObject:v15 forKeyedSubscript:@"Count"];
 
     v16 = [v12 objectForKeyedSubscript:@"Browser"];
@@ -615,13 +615,13 @@ LABEL_8:
   {
     v20 = sub_10011830C();
     v16 = [NSArray arrayWithObjects:&v20 count:1];
-    v17 = [[SDBonjourBrowser alloc] initWithDomain:v8 types:v16];
+    v17 = [[SDBonjourBrowser alloc] initWithDomain:browsingCopy types:v16];
     v12 = objc_opt_new();
     [v12 setObject:&off_10090BD00 forKeyedSubscript:@"Count"];
     [v12 setObject:v17 forKeyedSubscript:@"Browser"];
-    [(NSMutableDictionary *)self->_airDropBrowsers setObject:v12 forKeyedSubscript:v8];
-    [(SDBonjourBrowser *)v17 setXpcConnection:v9];
-    [(SDBonjourBrowser *)v17 setSessionID:v10];
+    [(NSMutableDictionary *)self->_airDropBrowsers setObject:v12 forKeyedSubscript:browsingCopy];
+    [(SDBonjourBrowser *)v17 setXpcConnection:connectionCopy];
+    [(SDBonjourBrowser *)v17 setSessionID:dCopy];
     [(SDBonjourBrowser *)v17 setDelegate:self];
     [(SDBonjourBrowser *)v17 start];
     block[0] = _NSConcreteStackBlock;
@@ -633,16 +633,16 @@ LABEL_8:
   }
 }
 
-- (void)setIconData:(id)a3 iconHash:(id)a4 forPerson:(__SFNode *)a5
+- (void)setIconData:(id)data iconHash:(id)hash forPerson:(__SFNode *)person
 {
-  v12 = a3;
-  v8 = a4;
+  dataCopy = data;
+  hashCopy = hash;
   v9 = [(NSMutableDictionary *)self->_airDropBrowsers objectForKeyedSubscript:@"local"];
   v10 = v9;
   if (v9)
   {
     v11 = [v9 objectForKeyedSubscript:@"Browser"];
-    [v11 setIconData:v12 iconHash:v8 forPerson:a5];
+    [v11 setIconData:dataCopy iconHash:hashCopy forPerson:person];
   }
 }
 
@@ -687,28 +687,28 @@ LABEL_8:
   }
 }
 
-- (id)airDropNodesForDomain:(id)a3
+- (id)airDropNodesForDomain:(id)domain
 {
-  v3 = [(NSMutableDictionary *)self->_airDropBrowsers objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_airDropBrowsers objectForKeyedSubscript:domain];
   v4 = v3;
   if (v3)
   {
     v5 = [v3 objectForKeyedSubscript:@"Browser"];
-    v6 = [v5 nodes];
+    nodes = [v5 nodes];
   }
 
   else
   {
-    v6 = 0;
+    nodes = 0;
   }
 
-  return v6;
+  return nodes;
 }
 
-- (void)stopAirDropBrowsing:(id)a3
+- (void)stopAirDropBrowsing:(id)browsing
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_airDropBrowsers objectForKeyedSubscript:v4];
+  browsingCopy = browsing;
+  v5 = [(NSMutableDictionary *)self->_airDropBrowsers objectForKeyedSubscript:browsingCopy];
   v6 = v5;
   if (v5)
   {
@@ -729,7 +729,7 @@ LABEL_8:
       v11 = [v6 objectForKeyedSubscript:@"Browser"];
       [v11 setDelegate:0];
 
-      [(NSMutableDictionary *)self->_airDropBrowsers removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_airDropBrowsers removeObjectForKey:browsingCopy];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100142CD0;
@@ -740,53 +740,53 @@ LABEL_8:
   }
 }
 
-- (void)startBrowsingWorkgroup:(id)a3
+- (void)startBrowsingWorkgroup:(id)workgroup
 {
-  v9 = a3;
+  workgroupCopy = workgroup;
   v4 = [(NSMutableDictionary *)self->_windowsBrowsers objectForKeyedSubscript:?];
   if (v4)
   {
     v5 = v4;
     v6 = [v4 objectForKeyedSubscript:@"Count"];
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
 
-    v8 = [NSNumber numberWithInt:v7 + 1];
+    v8 = [NSNumber numberWithInt:intValue + 1];
     [v5 setObject:v8 forKeyedSubscript:@"Count"];
   }
 
   else
   {
-    v8 = [[SDWindowsBrowser alloc] initWithWorkgroup:v9];
+    v8 = [[SDWindowsBrowser alloc] initWithWorkgroup:workgroupCopy];
     v5 = objc_opt_new();
     [v5 setObject:&off_10090BD00 forKeyedSubscript:@"Count"];
     [v5 setObject:v8 forKeyedSubscript:@"Browser"];
-    [(NSMutableDictionary *)self->_windowsBrowsers setObject:v5 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_windowsBrowsers setObject:v5 forKeyedSubscript:workgroupCopy];
     [(SDWindowsBrowser *)v8 setDelegate:self];
     [(SDWindowsBrowser *)v8 start];
   }
 }
 
-- (id)windowsNodesForWorkgroup:(id)a3
+- (id)windowsNodesForWorkgroup:(id)workgroup
 {
-  v3 = [(NSMutableDictionary *)self->_windowsBrowsers objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_windowsBrowsers objectForKeyedSubscript:workgroup];
   v4 = v3;
   if (v3)
   {
     v5 = [v3 objectForKeyedSubscript:@"Browser"];
-    v6 = [v5 nodes];
+    nodes = [v5 nodes];
   }
 
   else
   {
-    v6 = 0;
+    nodes = 0;
   }
 
-  return v6;
+  return nodes;
 }
 
-- (void)stopBrowsingWorkgroup:(id)a3
+- (void)stopBrowsingWorkgroup:(id)workgroup
 {
-  v9 = a3;
+  workgroupCopy = workgroup;
   v4 = [(NSMutableDictionary *)self->_windowsBrowsers objectForKeyedSubscript:?];
   v5 = v4;
   if (v4)
@@ -805,24 +805,24 @@ LABEL_8:
       v8 = [v5 objectForKeyedSubscript:@"Browser"];
       [v8 stop];
       [v8 setDelegate:0];
-      [(NSMutableDictionary *)self->_windowsBrowsers removeObjectForKey:v9];
+      [(NSMutableDictionary *)self->_windowsBrowsers removeObjectForKey:workgroupCopy];
     }
   }
 }
 
-- (id)stringForBrowserMode:(int64_t)a3
+- (id)stringForBrowserMode:(int64_t)mode
 {
-  v3 = a3;
-  if (a3 < 3)
+  modeCopy = mode;
+  if (mode < 3)
   {
-    return off_1008D1690[a3];
+    return off_1008D1690[mode];
   }
 
   v5 = browser_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = modeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Unrecognized browser mode %d", v6, 8u);
   }
 

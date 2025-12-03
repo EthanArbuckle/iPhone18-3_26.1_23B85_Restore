@@ -1,13 +1,13 @@
 @interface VFXAccelerationConstraint
 + (id)accelerationConstraint;
 - (VFXAccelerationConstraint)init;
-- (VFXAccelerationConstraint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDamping:(float)a3;
-- (void)setDecelerationDistance:(float)a3;
-- (void)setMaximumLinearAcceleration:(float)a3;
-- (void)setMaximumLinearVelocity:(float)a3;
+- (VFXAccelerationConstraint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDamping:(float)damping;
+- (void)setDecelerationDistance:(float)distance;
+- (void)setMaximumLinearAcceleration:(float)acceleration;
+- (void)setMaximumLinearVelocity:(float)velocity;
 @end
 
 @implementation VFXAccelerationConstraint
@@ -37,7 +37,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_msgSend_maximumLinearVelocity(self, v5, v6, v7);
@@ -52,70 +52,70 @@
   return v4;
 }
 
-- (void)setMaximumLinearVelocity:(float)a3
+- (void)setMaximumLinearVelocity:(float)velocity
 {
-  self->_maximumLinearVelocity = a3;
+  self->_maximumLinearVelocity = velocity;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BB634;
   v3[3] = &unk_1E7A7E270;
   v3[4] = self;
-  v4 = a3;
+  velocityCopy = velocity;
   objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"maximumLinearVelocity", v3);
 }
 
-- (void)setMaximumLinearAcceleration:(float)a3
+- (void)setMaximumLinearAcceleration:(float)acceleration
 {
-  self->_maximumLinearAcceleration = a3;
+  self->_maximumLinearAcceleration = acceleration;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BB6E8;
   v3[3] = &unk_1E7A7E270;
   v3[4] = self;
-  v4 = a3;
+  accelerationCopy = acceleration;
   objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"maximumLinearAcceleration", v3);
 }
 
-- (void)setDecelerationDistance:(float)a3
+- (void)setDecelerationDistance:(float)distance
 {
-  self->_decelerationDistance = a3;
+  self->_decelerationDistance = distance;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BB78C;
   v3[3] = &unk_1E7A7E270;
   v3[4] = self;
-  v4 = a3;
+  distanceCopy = distance;
   objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"decelerationDistance", v3);
 }
 
-- (void)setDamping:(float)a3
+- (void)setDamping:(float)damping
 {
-  self->_damping = a3;
+  self->_damping = damping;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BB850;
   v3[3] = &unk_1E7A7E270;
   v3[4] = self;
-  v4 = a3;
+  dampingCopy = damping;
   objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"damping", v3);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17.receiver = self;
   v17.super_class = VFXAccelerationConstraint;
   [(VFXConstraint *)&v17 encodeWithCoder:?];
   *&v5 = self->_maximumLinearVelocity;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"maximumLinearVelocity", v7, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"maximumLinearVelocity", v7, v5);
   *&v8 = self->_maximumLinearAcceleration;
-  objc_msgSend_encodeFloat_forKey_(a3, v9, @"maximumLinearAcceleration", v10, v8);
+  objc_msgSend_encodeFloat_forKey_(coder, v9, @"maximumLinearAcceleration", v10, v8);
   *&v11 = self->_decelerationDistance;
-  objc_msgSend_encodeFloat_forKey_(a3, v12, @"decelerationDistance", v13, v11);
+  objc_msgSend_encodeFloat_forKey_(coder, v12, @"decelerationDistance", v13, v11);
   *&v14 = self->_damping;
-  objc_msgSend_encodeFloat_forKey_(a3, v15, @"damping", v16, v14);
+  objc_msgSend_encodeFloat_forKey_(coder, v15, @"damping", v16, v14);
 }
 
-- (VFXAccelerationConstraint)initWithCoder:(id)a3
+- (VFXAccelerationConstraint)initWithCoder:(id)coder
 {
   v38.receiver = self;
   v38.super_class = VFXAccelerationConstraint;
@@ -126,14 +126,14 @@
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
     v11 = sub_1AF154184();
     v7->super._constraintRef = v12;
-    objc_msgSend_finalizeDecodeConstraint_(v7, v13, a3, v14, v11);
-    objc_msgSend_decodeFloatForKey_(a3, v15, @"maximumLinearVelocity", v16);
+    objc_msgSend_finalizeDecodeConstraint_(v7, v13, coder, v14, v11);
+    objc_msgSend_decodeFloatForKey_(coder, v15, @"maximumLinearVelocity", v16);
     objc_msgSend_setMaximumLinearVelocity_(v7, v17, v18, v19);
-    objc_msgSend_decodeFloatForKey_(a3, v20, @"maximumLinearAcceleration", v21);
+    objc_msgSend_decodeFloatForKey_(coder, v20, @"maximumLinearAcceleration", v21);
     objc_msgSend_setMaximumLinearAcceleration_(v7, v22, v23, v24);
-    objc_msgSend_decodeFloatForKey_(a3, v25, @"decelerationDistance", v26);
+    objc_msgSend_decodeFloatForKey_(coder, v25, @"decelerationDistance", v26);
     objc_msgSend_setDecelerationDistance_(v7, v27, v28, v29);
-    objc_msgSend_decodeFloatForKey_(a3, v30, @"damping", v31);
+    objc_msgSend_decodeFloatForKey_(coder, v30, @"damping", v31);
     objc_msgSend_setDamping_(v7, v32, v33, v34);
     objc_msgSend_setImmediateMode_(VFXTransaction, v35, v8, v36);
   }

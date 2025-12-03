@@ -1,39 +1,39 @@
 @interface HDHRBloodPressureJournalControlServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (HDHRBloodPressureJournalControlServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (void)journalManager:(id)a3 didAddOrModifyJournals:(id)a4;
-- (void)remote_closeJournal:(id)a3 completion:(id)a4;
-- (void)remote_closeJournalWithIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_fetchActiveJournalWithCompletion:(id)a3;
-- (void)remote_fetchAllJournalsWithCompletion:(id)a3;
-- (void)remote_observeJournalChanges:(BOOL)a3 completion:(id)a4;
-- (void)remote_saveJournal:(id)a3 completion:(id)a4;
-- (void)remote_snoozeJournalNotificationWithIdentifier:(id)a3 journalType:(int64_t)a4 userInfo:(id)a5 onDate:(id)a6 completion:(id)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (HDHRBloodPressureJournalControlServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (void)journalManager:(id)manager didAddOrModifyJournals:(id)journals;
+- (void)remote_closeJournal:(id)journal completion:(id)completion;
+- (void)remote_closeJournalWithIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_fetchActiveJournalWithCompletion:(id)completion;
+- (void)remote_fetchAllJournalsWithCompletion:(id)completion;
+- (void)remote_observeJournalChanges:(BOOL)changes completion:(id)completion;
+- (void)remote_saveJournal:(id)journal completion:(id)completion;
+- (void)remote_snoozeJournalNotificationWithIdentifier:(id)identifier journalType:(int64_t)type userInfo:(id)info onDate:(id)date completion:(id)completion;
 @end
 
 @implementation HDHRBloodPressureJournalControlServer
 
-- (void)remote_closeJournal:(id)a3 completion:(id)a4
+- (void)remote_closeJournal:(id)journal completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 closedJournal];
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 heartHealthProfileExtension];
-  v10 = [v9 bloodPressureJournalManager];
+  completionCopy = completion;
+  closedJournal = [journal closedJournal];
+  profile = [(HDStandardTaskServer *)self profile];
+  heartHealthProfileExtension = [profile heartHealthProfileExtension];
+  bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
 
-  v18 = self;
+  selfCopy = self;
   v19 = 0;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__HDHRBloodPressureJournalControlServer_remote_closeJournal_completion___block_invoke;
   v15[3] = &unk_278660440;
-  v16 = v10;
-  v17 = v7;
-  v11 = v7;
-  v12 = v10;
+  v16 = bloodPressureJournalManager;
+  v17 = closedJournal;
+  v11 = closedJournal;
+  v12 = bloodPressureJournalManager;
   v13 = [v12 insertBloodPressureJournal:v11 isUserInitiated:0 error:&v19 onCommit:v15 onRollback:0];
   v14 = v19;
-  v6[2](v6, v13, v14);
+  completionCopy[2](completionCopy, v13, v14);
 }
 
 void __72__HDHRBloodPressureJournalControlServer_remote_closeJournal_completion___block_invoke(uint64_t a1)
@@ -52,67 +52,67 @@ void __72__HDHRBloodPressureJournalControlServer_remote_closeJournal_completion_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_closeJournalWithIdentifier:(id)a3 completion:(id)a4
+- (void)remote_closeJournalWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 heartHealthProfileExtension];
-  v10 = [v9 bloodPressureJournalManager];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  heartHealthProfileExtension = [profile heartHealthProfileExtension];
+  bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
 
   v14 = 0;
-  v11 = [v10 bloodPressureJournalWithIdentifier:v6 error:&v14];
+  v11 = [bloodPressureJournalManager bloodPressureJournalWithIdentifier:identifierCopy error:&v14];
   v12 = v14;
   if (v12)
   {
-    v7[2](v7, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 
   else if (v11)
   {
-    [(HDHRBloodPressureJournalControlServer *)self remote_closeJournal:v11 completion:v7];
+    [(HDHRBloodPressureJournalControlServer *)self remote_closeJournal:v11 completion:completionCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No journal exists with identifer %@", v6}];
-    v7[2](v7, 0, v13);
+    v13 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No journal exists with identifer %@", identifierCopy}];
+    completionCopy[2](completionCopy, 0, v13);
   }
 }
 
-- (void)remote_fetchActiveJournalWithCompletion:(id)a3
+- (void)remote_fetchActiveJournalWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 heartHealthProfileExtension];
-  v7 = [v6 bloodPressureJournalManager];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  heartHealthProfileExtension = [profile heartHealthProfileExtension];
+  bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
 
   v10 = 0;
-  v8 = [v7 latestActiveBloodPressureJournalWithError:&v10];
+  v8 = [bloodPressureJournalManager latestActiveBloodPressureJournalWithError:&v10];
   v9 = v10;
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)remote_fetchAllJournalsWithCompletion:(id)a3
+- (void)remote_fetchAllJournalsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 heartHealthProfileExtension];
-  v7 = [v6 bloodPressureJournalManager];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  heartHealthProfileExtension = [profile heartHealthProfileExtension];
+  bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
 
   v10 = 0;
-  v8 = [v7 bloodPressureJournalsWithError:&v10];
+  v8 = [bloodPressureJournalManager bloodPressureJournalsWithError:&v10];
   v9 = v10;
-  v4[2](v4, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)remote_saveJournal:(id)a3 completion:(id)a4
+- (void)remote_saveJournal:(id)journal completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 heartHealthProfileExtension];
-  v10 = [v9 bloodPressureJournalManager];
+  completionCopy = completion;
+  journalCopy = journal;
+  profile = [(HDStandardTaskServer *)self profile];
+  heartHealthProfileExtension = [profile heartHealthProfileExtension];
+  bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
 
   v19 = 0;
   v16[0] = MEMORY[0x277D85DD0];
@@ -121,7 +121,7 @@ void __72__HDHRBloodPressureJournalControlServer_remote_closeJournal_completion_
   v16[3] = &unk_278660968;
   v16[4] = self;
   v17 = 0;
-  v18 = v6;
+  v18 = completionCopy;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__HDHRBloodPressureJournalControlServer_remote_saveJournal_completion___block_invoke_2;
@@ -129,7 +129,7 @@ void __72__HDHRBloodPressureJournalControlServer_remote_closeJournal_completion_
   v14 = 0;
   v15 = v18;
   v11 = v18;
-  [v10 insertBloodPressureJournal:v7 isUserInitiated:1 error:&v19 onCommit:v16 onRollback:v13];
+  [bloodPressureJournalManager insertBloodPressureJournal:journalCopy isUserInitiated:1 error:&v19 onCommit:v16 onRollback:v13];
 
   v12 = v19;
 }
@@ -147,42 +147,42 @@ uint64_t __71__HDHRBloodPressureJournalControlServer_remote_saveJournal_completi
   return v6();
 }
 
-- (void)remote_snoozeJournalNotificationWithIdentifier:(id)a3 journalType:(int64_t)a4 userInfo:(id)a5 onDate:(id)a6 completion:(id)a7
+- (void)remote_snoozeJournalNotificationWithIdentifier:(id)identifier journalType:(int64_t)type userInfo:(id)info onDate:(id)date completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [(HDStandardTaskServer *)self profile];
-  v17 = [v16 heartHealthProfileExtension];
-  v18 = [v17 bloodPressureJournalNotificationManager];
+  completionCopy = completion;
+  dateCopy = date;
+  infoCopy = info;
+  identifierCopy = identifier;
+  profile = [(HDStandardTaskServer *)self profile];
+  heartHealthProfileExtension = [profile heartHealthProfileExtension];
+  bloodPressureJournalNotificationManager = [heartHealthProfileExtension bloodPressureJournalNotificationManager];
 
   v21 = 0;
-  v19 = [v18 snoozeBloodPressureJournalNotificationWithIdentifier:v15 journalType:a4 userInfo:v14 onDate:v13 error:&v21];
+  v19 = [bloodPressureJournalNotificationManager snoozeBloodPressureJournalNotificationWithIdentifier:identifierCopy journalType:type userInfo:infoCopy onDate:dateCopy error:&v21];
 
   v20 = v21;
-  v12[2](v12, v19, v20);
+  completionCopy[2](completionCopy, v19, v20);
 }
 
-- (void)remote_observeJournalChanges:(BOOL)a3 completion:(id)a4
+- (void)remote_observeJournalChanges:(BOOL)changes completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  self->_shouldObserveChanges = a3;
-  v7 = [(HDStandardTaskServer *)self profile];
-  v8 = [v7 heartHealthProfileExtension];
-  v9 = [v8 bloodPressureJournalManager];
+  self->_shouldObserveChanges = changes;
+  profile = [(HDStandardTaskServer *)self profile];
+  heartHealthProfileExtension = [profile heartHealthProfileExtension];
+  bloodPressureJournalManager = [heartHealthProfileExtension bloodPressureJournalManager];
 
   if (self->_shouldObserveChanges)
   {
-    [v9 registerObserver:self queue:0];
+    [bloodPressureJournalManager registerObserver:self queue:0];
     _HKInitializeLogging();
     v10 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       v11 = "%{public}@: Began observing changes to journal manager.";
 LABEL_6:
       _os_log_impl(&dword_229486000, v10, OS_LOG_TYPE_DEFAULT, v11, &v13, 0xCu);
@@ -191,40 +191,40 @@ LABEL_6:
 
   else
   {
-    [v9 unregisterObserver:self];
+    [bloodPressureJournalManager unregisterObserver:self];
     _HKInitializeLogging();
     v10 = HKLogBloodPressureJournal();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       v11 = "%{public}@: Stopped observing changes to journal manager.";
       goto LABEL_6;
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v6[2](v6, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[HDHRBloodPressureJournalControlServer alloc] initWithUUID:v13 configuration:v12 client:v11 delegate:v10];
+  delegateCopy = delegate;
+  clientCopy = client;
+  configurationCopy = configuration;
+  dCopy = d;
+  v14 = [[HDHRBloodPressureJournalControlServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
 
   return v14;
 }
 
-- (HDHRBloodPressureJournalControlServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDHRBloodPressureJournalControlServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = HDHRBloodPressureJournalControlServer;
-  result = [(HDStandardTaskServer *)&v7 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  result = [(HDStandardTaskServer *)&v7 initWithUUID:d configuration:configuration client:client delegate:delegate];
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;
@@ -234,10 +234,10 @@ LABEL_6:
   return result;
 }
 
-- (void)journalManager:(id)a3 didAddOrModifyJournals:(id)a4
+- (void)journalManager:(id)manager didAddOrModifyJournals:(id)journals
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  journalsCopy = journals;
   os_unfair_lock_lock(&self->_lock);
   shouldObserveChanges = self->_shouldObserveChanges;
   os_unfair_lock_unlock(&self->_lock);
@@ -258,16 +258,16 @@ LABEL_6:
       v10 = HKLogBloodPressureJournal();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v5 count];
+        v11 = [journalsCopy count];
         *buf = 138543618;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2048;
         v17 = v11;
         _os_log_impl(&dword_229486000, v10, OS_LOG_TYPE_INFO, "%{public}@: Notify client for didAddOrModifyJournals journal count %ld", buf, 0x16u);
       }
     }
 
-    [v7 client_notifyDidAddOrModifyBloodPressureJournals:v5];
+    [v7 client_notifyDidAddOrModifyBloodPressureJournals:journalsCopy];
   }
 
   else
@@ -277,7 +277,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_229486000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: ignoring changes from didAddOrModifyJournals", buf, 0xCu);
     }
   }

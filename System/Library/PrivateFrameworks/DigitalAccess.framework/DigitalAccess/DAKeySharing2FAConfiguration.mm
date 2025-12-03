@@ -1,12 +1,12 @@
 @interface DAKeySharing2FAConfiguration
-- (DAKeySharing2FAConfiguration)initWithCoder:(id)a3;
+- (DAKeySharing2FAConfiguration)initWithCoder:(id)coder;
 - (id)description;
 - (id)initForBringOtherKey;
-- (id)initForDeviceVerifiedPasscode:(id)a3 maxRetries:(unint64_t)a4;
+- (id)initForDeviceVerifiedPasscode:(id)passcode maxRetries:(unint64_t)retries;
 - (id)initForSecondFactorNone;
-- (id)initForServerVerifiedPasscode:(id)a3;
+- (id)initForServerVerifiedPasscode:(id)passcode;
 - (id)initForVehicleVerifiedPasscode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAKeySharing2FAConfiguration
@@ -29,9 +29,9 @@
   return v3;
 }
 
-- (id)initForDeviceVerifiedPasscode:(id)a3 maxRetries:(unint64_t)a4
+- (id)initForDeviceVerifiedPasscode:(id)passcode maxRetries:(unint64_t)retries
 {
-  v7 = a3;
+  passcodeCopy = passcode;
   v11.receiver = self;
   v11.super_class = DAKeySharing2FAConfiguration;
   v8 = [(DAKeySharing2FAConfiguration *)&v11 init];
@@ -39,8 +39,8 @@
   if (v8)
   {
     v8->_type = 1;
-    objc_storeStrong(&v8->_passcode, a3);
-    v9->_maxRetriesAllowed = a4;
+    objc_storeStrong(&v8->_passcode, passcode);
+    v9->_maxRetriesAllowed = retries;
   }
 
   return v9;
@@ -82,9 +82,9 @@
   return v3;
 }
 
-- (id)initForServerVerifiedPasscode:(id)a3
+- (id)initForServerVerifiedPasscode:(id)passcode
 {
-  v5 = a3;
+  passcodeCopy = passcode;
   v9.receiver = self;
   v9.super_class = DAKeySharing2FAConfiguration;
   v6 = [(DAKeySharing2FAConfiguration *)&v9 init];
@@ -92,37 +92,37 @@
   if (v6)
   {
     v6->_type = 4;
-    objc_storeStrong(&v6->_passcode, a3);
+    objc_storeStrong(&v6->_passcode, passcode);
     v7->_maxRetriesAllowed = 0;
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[DAKeySharing2FAConfiguration type](self forKey:{"type"), @"type"}];
-  v4 = [(DAKeySharing2FAConfiguration *)self passcode];
-  [v5 encodeObject:v4 forKey:@"passcode"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[DAKeySharing2FAConfiguration type](self forKey:{"type"), @"type"}];
+  passcode = [(DAKeySharing2FAConfiguration *)self passcode];
+  [coderCopy encodeObject:passcode forKey:@"passcode"];
 
-  [v5 encodeInteger:-[DAKeySharing2FAConfiguration maxRetriesAllowed](self forKey:{"maxRetriesAllowed"), @"maxRetriesAllowed"}];
+  [coderCopy encodeInteger:-[DAKeySharing2FAConfiguration maxRetriesAllowed](self forKey:{"maxRetriesAllowed"), @"maxRetriesAllowed"}];
 }
 
-- (DAKeySharing2FAConfiguration)initWithCoder:(id)a3
+- (DAKeySharing2FAConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DAKeySharing2FAConfiguration;
   v5 = [(DAKeySharing2FAConfiguration *)&v9 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
     passcode = v5->_passcode;
     v5->_passcode = v6;
 
-    v5->_maxRetriesAllowed = [v4 decodeIntegerForKey:@"maxRetriesAllowed"];
+    v5->_maxRetriesAllowed = [coderCopy decodeIntegerForKey:@"maxRetriesAllowed"];
   }
 
   return v5;
@@ -130,17 +130,17 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Type              : %ld\n", self->_type];
-  [v3 appendString:v4];
+  [string appendString:v4];
 
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Passcode Length   : %ld\n", -[NSString length](self->_passcode, "length")];
-  [v3 appendString:v5];
+  [string appendString:v5];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"MaxRetries        : %ld\n", self->_maxRetriesAllowed];
-  [v3 appendString:v6];
+  [string appendString:v6];
 
-  return v3;
+  return string;
 }
 
 @end

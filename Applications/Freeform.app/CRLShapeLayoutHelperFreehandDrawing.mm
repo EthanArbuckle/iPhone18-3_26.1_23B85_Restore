@@ -1,28 +1,28 @@
 @interface CRLShapeLayoutHelperFreehandDrawing
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3;
-- (CGRect)boundsOfLineEndForHead:(BOOL)a3 transform:(CGAffineTransform *)a4;
-- (CGRect)computeClippedPathBoundsWithTransform:(CGAffineTransform *)a3;
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale;
+- (CGRect)boundsOfLineEndForHead:(BOOL)head transform:(CGAffineTransform *)transform;
+- (CGRect)computeClippedPathBoundsWithTransform:(CGAffineTransform *)transform;
 - (CGRect)computePathBounds;
-- (CGRect)p_computePathBoundsWithTransform:(CGAffineTransform *)a3;
-- (CRLShapeLayoutHelperFreehandDrawing)initWithShapeLayout:(id)a3;
-- (id)p_possibleCopyOfPathUsingTransform:(CGAffineTransform *)a3;
+- (CGRect)p_computePathBoundsWithTransform:(CGAffineTransform *)transform;
+- (CRLShapeLayoutHelperFreehandDrawing)initWithShapeLayout:(id)layout;
+- (id)p_possibleCopyOfPathUsingTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation CRLShapeLayoutHelperFreehandDrawing
 
-- (CRLShapeLayoutHelperFreehandDrawing)initWithShapeLayout:(id)a3
+- (CRLShapeLayoutHelperFreehandDrawing)initWithShapeLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = CRLShapeLayoutHelperFreehandDrawing;
   v5 = [(CRLShapeLayoutHelperFreehandDrawing *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_shapeLayout, v4);
+    objc_storeWeak(&v5->_shapeLayout, layoutCopy);
     v7 = objc_opt_class();
-    v8 = [v4 info];
-    v9 = sub_100013F00(v7, v8);
+    info = [layoutCopy info];
+    v9 = sub_100013F00(v7, info);
     objc_storeWeak(&v6->_shapeInfo, v9);
   }
 
@@ -43,12 +43,12 @@
   return result;
 }
 
-- (CGRect)computeClippedPathBoundsWithTransform:(CGAffineTransform *)a3
+- (CGRect)computeClippedPathBoundsWithTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v8[0] = *&a3->a;
+  v3 = *&transform->c;
+  v8[0] = *&transform->a;
   v8[1] = v3;
-  v8[2] = *&a3->tx;
+  v8[2] = *&transform->tx;
   [(CRLShapeLayoutHelperFreehandDrawing *)self p_computePathBoundsWithTransform:v8];
   result.size.height = v7;
   result.size.width = v6;
@@ -57,25 +57,25 @@
   return result;
 }
 
-- (CGRect)p_computePathBoundsWithTransform:(CGAffineTransform *)a3
+- (CGRect)p_computePathBoundsWithTransform:(CGAffineTransform *)transform
 {
   WeakRetained = objc_loadWeakRetained(&self->_shapeLayout);
-  v6 = [WeakRetained stroke];
+  stroke = [WeakRetained stroke];
 
-  if (v6 && ![v6 isNullStroke])
+  if (stroke && ![stroke isNullStroke])
   {
     v17 = objc_loadWeakRetained(&self->_shapeLayout);
-    v8 = [v17 pencilKitStrokes];
+    pencilKitStrokes = [v17 pencilKitStrokes];
 
-    if (v8)
+    if (pencilKitStrokes)
     {
-      v18 = *&a3->c;
-      *&v35.a = *&a3->a;
+      v18 = *&transform->c;
+      *&v35.a = *&transform->a;
       *&v35.c = v18;
-      *&v35.tx = *&a3->tx;
+      *&v35.tx = *&transform->tx;
       if (CGAffineTransformIsIdentity(&v35))
       {
-        v19 = v8;
+        v19 = pencilKitStrokes;
       }
 
       else
@@ -84,11 +84,11 @@
         v31[1] = 3221225472;
         v31[2] = sub_1005726F4;
         v31[3] = &unk_101845998;
-        v26 = *&a3->c;
-        v32 = *&a3->a;
+        v26 = *&transform->c;
+        v32 = *&transform->a;
         v33 = v26;
-        v34 = *&a3->tx;
-        v19 = [v8 crl_arrayByTransformingWithBlock:v31];
+        v34 = *&transform->tx;
+        v19 = [pencilKitStrokes crl_arrayByTransformingWithBlock:v31];
       }
 
       v21 = v19;
@@ -97,10 +97,10 @@
 
     else
     {
-      v20 = *&a3->c;
-      *&v35.a = *&a3->a;
+      v20 = *&transform->c;
+      *&v35.a = *&transform->a;
       *&v35.c = v20;
-      *&v35.tx = *&a3->tx;
+      *&v35.tx = *&transform->tx;
       v21 = [(CRLShapeLayoutHelperFreehandDrawing *)self p_possibleCopyOfPathUsingTransform:&v35];
       [v21 bounds];
     }
@@ -113,12 +113,12 @@
 
   else
   {
-    v7 = *&a3->c;
-    *&v35.a = *&a3->a;
+    v7 = *&transform->c;
+    *&v35.a = *&transform->a;
     *&v35.c = v7;
-    *&v35.tx = *&a3->tx;
-    v8 = [(CRLShapeLayoutHelperFreehandDrawing *)self p_possibleCopyOfPathUsingTransform:&v35];
-    [v8 bounds];
+    *&v35.tx = *&transform->tx;
+    pencilKitStrokes = [(CRLShapeLayoutHelperFreehandDrawing *)self p_possibleCopyOfPathUsingTransform:&v35];
+    [pencilKitStrokes bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -136,31 +136,31 @@
   return result;
 }
 
-- (id)p_possibleCopyOfPathUsingTransform:(CGAffineTransform *)a3
+- (id)p_possibleCopyOfPathUsingTransform:(CGAffineTransform *)transform
 {
   WeakRetained = objc_loadWeakRetained(&self->_shapeLayout);
-  v5 = [WeakRetained path];
+  path = [WeakRetained path];
 
-  v6 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v6 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v6;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   if (!CGAffineTransformIsIdentity(&v10))
   {
-    v7 = [v5 copy];
+    v7 = [path copy];
 
-    v8 = *&a3->c;
-    *&v10.a = *&a3->a;
+    v8 = *&transform->c;
+    *&v10.a = *&transform->a;
     *&v10.c = v8;
-    *&v10.tx = *&a3->tx;
+    *&v10.tx = *&transform->tx;
     [v7 transformUsingAffineTransform:&v10];
-    v5 = v7;
+    path = v7;
   }
 
-  return v5;
+  return path;
 }
 
-- (CGRect)boundsOfLineEndForHead:(BOOL)a3 transform:(CGAffineTransform *)a4
+- (CGRect)boundsOfLineEndForHead:(BOOL)head transform:(CGAffineTransform *)transform
 {
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
@@ -173,7 +173,7 @@
   return result;
 }
 
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale
 {
   WeakRetained = objc_loadWeakRetained(&self->_shapeLayout);
   [WeakRetained alignmentFrame];

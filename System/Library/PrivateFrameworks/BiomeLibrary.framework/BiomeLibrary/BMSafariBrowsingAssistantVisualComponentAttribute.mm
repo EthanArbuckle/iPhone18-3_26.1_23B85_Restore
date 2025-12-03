@@ -1,42 +1,42 @@
 @interface BMSafariBrowsingAssistantVisualComponentAttribute
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSafariBrowsingAssistantVisualComponentAttribute)initWithComponentType:(int)a3 cardType:(int)a4 entityType:(int)a5 readerViewSectionType:(int)a6 sparkleTrigger:(id)a7;
-- (BMSafariBrowsingAssistantVisualComponentAttribute)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BOOL)isEqual:(id)a3;
+- (BMSafariBrowsingAssistantVisualComponentAttribute)initWithComponentType:(int)type cardType:(int)cardType entityType:(int)entityType readerViewSectionType:(int)sectionType sparkleTrigger:(id)trigger;
+- (BMSafariBrowsingAssistantVisualComponentAttribute)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_sparkleTriggerJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSafariBrowsingAssistantVisualComponentAttribute
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self componentType];
-    if (v6 == [v5 componentType] && (v7 = -[BMSafariBrowsingAssistantVisualComponentAttribute cardType](self, "cardType"), v7 == objc_msgSend(v5, "cardType")) && (v8 = -[BMSafariBrowsingAssistantVisualComponentAttribute entityType](self, "entityType"), v8 == objc_msgSend(v5, "entityType")) && (v9 = -[BMSafariBrowsingAssistantVisualComponentAttribute readerViewSectionType](self, "readerViewSectionType"), v9 == objc_msgSend(v5, "readerViewSectionType")))
+    v5 = equalCopy;
+    componentType = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self componentType];
+    if (componentType == [v5 componentType] && (v7 = -[BMSafariBrowsingAssistantVisualComponentAttribute cardType](self, "cardType"), v7 == objc_msgSend(v5, "cardType")) && (v8 = -[BMSafariBrowsingAssistantVisualComponentAttribute entityType](self, "entityType"), v8 == objc_msgSend(v5, "entityType")) && (v9 = -[BMSafariBrowsingAssistantVisualComponentAttribute readerViewSectionType](self, "readerViewSectionType"), v9 == objc_msgSend(v5, "readerViewSectionType")))
     {
-      v10 = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self sparkleTrigger];
-      v11 = [v5 sparkleTrigger];
-      if (v10 == v11)
+      sparkleTrigger = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self sparkleTrigger];
+      sparkleTrigger2 = [v5 sparkleTrigger];
+      if (sparkleTrigger == sparkleTrigger2)
       {
         v14 = 1;
       }
 
       else
       {
-        v12 = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self sparkleTrigger];
-        v13 = [v5 sparkleTrigger];
-        v14 = [v12 isEqual:v13];
+        sparkleTrigger3 = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self sparkleTrigger];
+        sparkleTrigger4 = [v5 sparkleTrigger];
+        v14 = [sparkleTrigger3 isEqual:sparkleTrigger4];
       }
     }
 
@@ -61,50 +61,50 @@
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSafariBrowsingAssistantVisualComponentAttribute cardType](self, "cardType")}];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSafariBrowsingAssistantVisualComponentAttribute entityType](self, "entityType")}];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSafariBrowsingAssistantVisualComponentAttribute readerViewSectionType](self, "readerViewSectionType")}];
-  v7 = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self _sparkleTriggerJSONArray];
+  _sparkleTriggerJSONArray = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self _sparkleTriggerJSONArray];
   v18 = @"componentType";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"cardType";
-  v9 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"entityType";
-  v10 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"readerViewSectionType";
-  v11 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"sparkleTrigger";
-  v12 = v7;
-  if (!v7)
+  null5 = _sparkleTriggerJSONArray;
+  if (!_sparkleTriggerJSONArray)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
-  if (v7)
+  if (_sparkleTriggerJSONArray)
   {
     if (v6)
     {
@@ -174,8 +174,8 @@ LABEL_16:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self sparkleTrigger];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sparkleTrigger = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self sparkleTrigger];
+  v5 = [sparkleTrigger countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -186,13 +186,13 @@ LABEL_16:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sparkleTrigger);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sparkleTrigger countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -203,16 +203,16 @@ LABEL_16:
   return v3;
 }
 
-- (BMSafariBrowsingAssistantVisualComponentAttribute)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMSafariBrowsingAssistantVisualComponentAttribute)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v97[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"componentType"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"componentType"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v10 = [v6 objectForKeyedSubscript:@"cardType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cardType"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -260,7 +260,7 @@ LABEL_9:
       v77 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"entityType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"entityType"];
     v75 = p_isa;
     v76 = v12;
     if (v12 && (v13 = v12, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -316,7 +316,7 @@ LABEL_62:
       v78 = 0;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"readerViewSectionType"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"readerViewSectionType"];
     v73 = v15;
     v74 = v10;
     if (v15 && (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -363,16 +363,16 @@ LABEL_62:
       v72 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"sparkleTrigger"];
-    v19 = [MEMORY[0x1E695DFB0] null];
-    v20 = [v18 isEqual:v19];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"sparkleTrigger"];
+    null = [MEMORY[0x1E695DFB0] null];
+    v20 = [v18 isEqual:null];
 
     if (v20)
     {
       v68 = v8;
       v69 = v7;
-      v70 = self;
-      v71 = v6;
+      selfCopy2 = self;
+      v71 = dictionaryCopy;
 
       v18 = 0;
     }
@@ -416,8 +416,8 @@ LABEL_59:
 
       v68 = v8;
       v69 = v7;
-      v70 = self;
-      v71 = v6;
+      selfCopy2 = self;
+      v71 = dictionaryCopy;
     }
 
     v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v18, "count")}];
@@ -458,8 +458,8 @@ LABEL_40:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            self = v70;
-            v6 = v71;
+            self = selfCopy2;
+            dictionaryCopy = v71;
             v29 = v72;
             if (v75)
             {
@@ -496,8 +496,8 @@ LABEL_55:
         }
       }
 
-      self = v70;
-      v6 = v71;
+      self = selfCopy2;
+      dictionaryCopy = v71;
       v29 = v72;
       if (v75)
       {
@@ -524,9 +524,9 @@ LABEL_50:
 
     v8 = v68;
     v29 = v72;
-    self = -[BMSafariBrowsingAssistantVisualComponentAttribute initWithComponentType:cardType:entityType:readerViewSectionType:sparkleTrigger:](v70, "initWithComponentType:cardType:entityType:readerViewSectionType:sparkleTrigger:", [v68 intValue], objc_msgSend(v77, "intValue"), objc_msgSend(v78, "intValue"), objc_msgSend(v72, "intValue"), v21);
+    self = -[BMSafariBrowsingAssistantVisualComponentAttribute initWithComponentType:cardType:entityType:readerViewSectionType:sparkleTrigger:](selfCopy2, "initWithComponentType:cardType:entityType:readerViewSectionType:sparkleTrigger:", [v68 intValue], objc_msgSend(v77, "intValue"), objc_msgSend(v78, "intValue"), objc_msgSend(v72, "intValue"), v21);
     p_isa = &self->super.super.isa;
-    v6 = v71;
+    dictionaryCopy = v71;
     v7 = v69;
 LABEL_57:
     v16 = v73;
@@ -579,15 +579,15 @@ LABEL_64:
 {
   v3 = objc_opt_new();
   [(BMSafariBrowsingAssistantVisualComponentAttribute *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   componentType = self->_componentType;
   PBDataWriterWriteUint32Field();
   cardType = self->_cardType;
@@ -631,9 +631,9 @@ LABEL_64:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v55.receiver = self;
   v55.super_class = BMSafariBrowsingAssistantVisualComponentAttribute;
   v5 = [(BMEventBase *)&v55 init];
@@ -643,12 +643,12 @@ LABEL_64:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_94;
       }
@@ -659,18 +659,18 @@ LABEL_64:
       while (1)
       {
         v56 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v56 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v56 & 0x7F) << v8;
@@ -687,9 +687,9 @@ LABEL_64:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_94;
       }
@@ -708,18 +708,18 @@ LABEL_16:
         while (1)
         {
           v56 = 0;
-          v31 = [v4 position] + 1;
-          if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+          v31 = [fromCopy position] + 1;
+          if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
           {
-            v33 = [v4 data];
-            [v33 getBytes:&v56 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v19 |= (v56 & 0x7F) << v29;
@@ -736,7 +736,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v19 > 4)
+        if (([fromCopy hasError] & 1) != 0 || v19 > 4)
         {
 LABEL_73:
           LODWORD(v19) = 0;
@@ -756,18 +756,18 @@ LABEL_73:
           while (1)
           {
             v56 = 0;
-            v20 = [v4 position] + 1;
-            if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+            v20 = [fromCopy position] + 1;
+            if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:&v56 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v19 |= (v56 & 0x7F) << v17;
@@ -784,7 +784,7 @@ LABEL_73:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v19 > 2)
+          if (([fromCopy hasError] & 1) != 0 || v19 > 2)
           {
 LABEL_86:
             LODWORD(v19) = 0;
@@ -806,18 +806,18 @@ LABEL_92:
       while (1)
       {
         v56 = 0;
-        v38 = [v4 position] + 1;
-        if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 1, v39 <= objc_msgSend(v4, "length")))
+        v38 = [fromCopy position] + 1;
+        if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 1, v39 <= objc_msgSend(fromCopy, "length")))
         {
-          v40 = [v4 data];
-          [v40 getBytes:&v56 range:{objc_msgSend(v4, "position"), 1}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v36 |= (v56 & 0x7F) << v34;
@@ -834,7 +834,7 @@ LABEL_92:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v36 > 5)
+      if (([fromCopy hasError] & 1) != 0 || v36 > 5)
       {
 LABEL_77:
         v36 = 0;
@@ -852,8 +852,8 @@ LABEL_98:
       [v6 addObject:v47];
 
 LABEL_93:
-      v49 = [v4 position];
-      if (v49 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_94;
       }
@@ -867,18 +867,18 @@ LABEL_93:
       while (1)
       {
         v56 = 0;
-        v43 = [v4 position] + 1;
-        if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 1, v44 <= objc_msgSend(v4, "length")))
+        v43 = [fromCopy position] + 1;
+        if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 1, v44 <= objc_msgSend(fromCopy, "length")))
         {
-          v45 = [v4 data];
-          [v45 getBytes:&v56 range:{objc_msgSend(v4, "position"), 1}];
+          data5 = [fromCopy data];
+          [data5 getBytes:&v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v19 |= (v56 & 0x7F) << v41;
@@ -895,7 +895,7 @@ LABEL_93:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v19 > 3)
+      if (([fromCopy hasError] & 1) != 0 || v19 > 3)
       {
 LABEL_82:
         LODWORD(v19) = 0;
@@ -913,18 +913,18 @@ LABEL_82:
       while (1)
       {
         v56 = 0;
-        v26 = [v4 position] + 1;
-        if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+        v26 = [fromCopy position] + 1;
+        if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
         {
-          v28 = [v4 data];
-          [v28 getBytes:&v56 range:{objc_msgSend(v4, "position"), 1}];
+          data6 = [fromCopy data];
+          [data6 getBytes:&v56 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v19 |= (v56 & 0x7F) << v24;
@@ -941,7 +941,7 @@ LABEL_82:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v19 > 2)
+      if (([fromCopy hasError] & 1) != 0 || v19 > 2)
       {
 LABEL_90:
         LODWORD(v19) = 0;
@@ -965,8 +965,8 @@ LABEL_94:
   sparkleTrigger = v5->_sparkleTrigger;
   v5->_sparkleTrigger = v50;
 
-  v52 = [v4 hasError];
-  if (v52)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_95:
     v53 = 0;
@@ -990,8 +990,8 @@ LABEL_96:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self sparkleTrigger];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  sparkleTrigger = [(BMSafariBrowsingAssistantVisualComponentAttribute *)self sparkleTrigger];
+  v5 = [sparkleTrigger countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1002,7 +1002,7 @@ LABEL_96:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sparkleTrigger);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
@@ -1015,7 +1015,7 @@ LABEL_96:
         [v3 appendString:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [sparkleTrigger countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -1034,20 +1034,20 @@ LABEL_96:
   return v16;
 }
 
-- (BMSafariBrowsingAssistantVisualComponentAttribute)initWithComponentType:(int)a3 cardType:(int)a4 entityType:(int)a5 readerViewSectionType:(int)a6 sparkleTrigger:(id)a7
+- (BMSafariBrowsingAssistantVisualComponentAttribute)initWithComponentType:(int)type cardType:(int)cardType entityType:(int)entityType readerViewSectionType:(int)sectionType sparkleTrigger:(id)trigger
 {
-  v13 = a7;
+  triggerCopy = trigger;
   v16.receiver = self;
   v16.super_class = BMSafariBrowsingAssistantVisualComponentAttribute;
   v14 = [(BMEventBase *)&v16 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    v14->_componentType = a3;
-    v14->_cardType = a4;
-    v14->_entityType = a5;
-    v14->_readerViewSectionType = a6;
-    objc_storeStrong(&v14->_sparkleTrigger, a7);
+    v14->_componentType = type;
+    v14->_cardType = cardType;
+    v14->_entityType = entityType;
+    v14->_readerViewSectionType = sectionType;
+    objc_storeStrong(&v14->_sparkleTrigger, trigger);
   }
 
   return v14;
@@ -1101,9 +1101,9 @@ id __60__BMSafariBrowsingAssistantVisualComponentAttribute_columns__block_invoke
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1111,8 +1111,8 @@ id __60__BMSafariBrowsingAssistantVisualComponentAttribute_columns__block_invoke
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSafariBrowsingAssistantVisualComponentAttribute alloc] initByReadFrom:v7];
     v4 = v8;

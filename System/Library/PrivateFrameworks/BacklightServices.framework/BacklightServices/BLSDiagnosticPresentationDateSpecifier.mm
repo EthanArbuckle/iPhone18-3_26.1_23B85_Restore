@@ -1,43 +1,43 @@
 @interface BLSDiagnosticPresentationDateSpecifier
-+ (id)createWithSpecifier:(id)a3;
-- (BLSDiagnosticPresentationDateSpecifier)initWithCoder:(id)a3;
-- (BLSDiagnosticPresentationDateSpecifier)initWithPresentationDate:(id)a3 specifiers:(id)a4;
-- (BLSDiagnosticPresentationDateSpecifier)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)createWithSpecifier:(id)specifier;
+- (BLSDiagnosticPresentationDateSpecifier)initWithCoder:(id)coder;
+- (BLSDiagnosticPresentationDateSpecifier)initWithPresentationDate:(id)date specifiers:(id)specifiers;
+- (BLSDiagnosticPresentationDateSpecifier)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)bls_loggingString;
 - (id)bls_shortLoggingString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSDiagnosticPresentationDateSpecifier
 
-+ (id)createWithSpecifier:(id)a3
++ (id)createWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 presentationDate];
-  v7 = [v4 specifiers];
+  specifierCopy = specifier;
+  v5 = [self alloc];
+  presentationDate = [specifierCopy presentationDate];
+  specifiers = [specifierCopy specifiers];
 
-  v8 = [v5 initWithPresentationDate:v6 specifiers:v7];
+  v8 = [v5 initWithPresentationDate:presentationDate specifiers:specifiers];
 
   return v8;
 }
 
-- (BLSDiagnosticPresentationDateSpecifier)initWithPresentationDate:(id)a3 specifiers:(id)a4
+- (BLSDiagnosticPresentationDateSpecifier)initWithPresentationDate:(id)date specifiers:(id)specifiers
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  specifiersCopy = specifiers;
   v14.receiver = self;
   v14.super_class = BLSDiagnosticPresentationDateSpecifier;
   v9 = [(BLSDiagnosticPresentationDateSpecifier *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_presentationDate, a3);
-    v11 = [v8 bs_map:&__block_literal_global_12];
+    objc_storeStrong(&v9->_presentationDate, date);
+    v11 = [specifiersCopy bs_map:&__block_literal_global_12];
     specifiers = v10->_specifiers;
     v10->_specifiers = v11;
   }
@@ -48,25 +48,25 @@
 - (id)bls_loggingString
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NSDate *)self->_presentationDate bls_shortLoggingString];
-  [v3 appendString:v4 withName:@"presentationDate"];
+  bls_shortLoggingString = [(NSDate *)self->_presentationDate bls_shortLoggingString];
+  [v3 appendString:bls_shortLoggingString withName:@"presentationDate"];
 
   [v3 appendArraySection:self->_specifiers withName:@"specifiers" skipIfEmpty:0 objectTransformer:&__block_literal_global_187];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (id)bls_shortLoggingString
 {
   v3 = objc_opt_new();
-  v4 = [(NSDate *)self->_presentationDate bls_shortLoggingString];
-  [v3 appendString:v4 withName:0 skipIfEmpty:1];
+  bls_shortLoggingString = [(NSDate *)self->_presentationDate bls_shortLoggingString];
+  [v3 appendString:bls_shortLoggingString withName:0 skipIfEmpty:1];
 
   v5 = [v3 appendUnsignedInteger:-[NSArray count](self->_specifiers withName:{"count"), @"environments"}];
-  v6 = [(NSArray *)self->_specifiers firstObject];
-  v7 = [v6 environmentIdentifier];
-  v8 = [v3 appendObject:v7 withName:@"startingWith" skipIfNil:1];
+  firstObject = [(NSArray *)self->_specifiers firstObject];
+  environmentIdentifier = [firstObject environmentIdentifier];
+  v8 = [v3 appendObject:environmentIdentifier withName:@"startingWith" skipIfNil:1];
 
   v9 = [v3 description];
 
@@ -76,49 +76,49 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NSDate *)self->_presentationDate bls_shortLoggingString];
-  [v3 appendString:v4 withName:@"presentationDate"];
+  bls_shortLoggingString = [(NSDate *)self->_presentationDate bls_shortLoggingString];
+  [v3 appendString:bls_shortLoggingString withName:@"presentationDate"];
 
   [v3 appendArraySection:self->_specifiers withName:@"specifiers" skipIfEmpty:0];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_presentationDate];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_presentationDate];
   specifiers = self->_specifiers;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__BLSDiagnosticPresentationDateSpecifier_hash__block_invoke;
   v9[3] = &unk_2784290B0;
-  v10 = v3;
-  v6 = v3;
+  v10 = builder;
+  v6 = builder;
   [(NSArray *)specifiers enumerateObjectsUsingBlock:v9];
   v7 = [v6 hash];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   presentationDate = self->_presentationDate;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __50__BLSDiagnosticPresentationDateSpecifier_isEqual___block_invoke;
   v13[3] = &unk_278428B00;
-  v7 = v4;
+  v7 = equalCopy;
   v14 = v7;
   v8 = [v5 appendObject:presentationDate counterpart:v13];
   if ([v5 isEqual])
   {
     specifiers = self->_specifiers;
-    v10 = [v7 specifiers];
-    v11 = [(NSArray *)specifiers isEqualToArray:v10];
+    specifiers = [v7 specifiers];
+    v11 = [(NSArray *)specifiers isEqualToArray:specifiers];
   }
 
   else
@@ -129,13 +129,13 @@
   return v11;
 }
 
-- (BLSDiagnosticPresentationDateSpecifier)initWithXPCDictionary:(id)a3
+- (BLSDiagnosticPresentationDateSpecifier)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:{xpc_dictionary_get_double(v4, objc_msgSend(@"presentationDate", "UTF8String"))}];
-  v6 = [@"specifiers" UTF8String];
+  dictionaryCopy = dictionary;
+  v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:{xpc_dictionary_get_double(dictionaryCopy, objc_msgSend(@"presentationDate", "UTF8String"))}];
+  uTF8String = [@"specifiers" UTF8String];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = xpc_dictionary_get_array(v4, v6);
+  v8 = xpc_dictionary_get_array(dictionaryCopy, uTF8String);
 
   if (v8)
   {
@@ -187,22 +187,22 @@ LABEL_9:
   return 1;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
-  v4 = [@"presentationDate" UTF8String];
+  xdict = dictionary;
+  uTF8String = [@"presentationDate" UTF8String];
   [(NSDate *)self->_presentationDate timeIntervalSinceReferenceDate];
-  xpc_dictionary_set_double(xdict, v4, v5);
+  xpc_dictionary_set_double(xdict, uTF8String, v5);
   [@"specifiers" UTF8String];
   specifiers = self->_specifiers;
   BSSerializeArrayOfBSXPCEncodableObjectsToXPCDictionaryWithKey();
 }
 
-- (BLSDiagnosticPresentationDateSpecifier)initWithCoder:(id)a3
+- (BLSDiagnosticPresentationDateSpecifier)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presentationDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presentationDate"];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
@@ -210,10 +210,10 @@ LABEL_9:
     v13[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"specifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"specifiers"];
 
     self = [(BLSDiagnosticPresentationDateSpecifier *)self initWithPresentationDate:v5 specifiers:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -224,19 +224,19 @@ LABEL_9:
       [BLSDiagnosticPresentationDateSpecifier initWithCoder:];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   presentationDate = self->_presentationDate;
-  v5 = a3;
-  [v5 encodeObject:presentationDate forKey:@"presentationDate"];
-  [v5 encodeObject:self->_specifiers forKey:@"specifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:presentationDate forKey:@"presentationDate"];
+  [coderCopy encodeObject:self->_specifiers forKey:@"specifiers"];
 }
 
 void __64__BLSDiagnosticPresentationDateSpecifier_initWithXPCDictionary___block_invoke_cold_1()

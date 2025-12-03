@@ -1,6 +1,6 @@
 @interface CNFInternalProcessListController
 - (id)specifiers;
-- (void)conferenceKillProcessesAndNukeKeychain:(id)a3;
+- (void)conferenceKillProcessesAndNukeKeychain:(id)keychain;
 @end
 
 @implementation CNFInternalProcessListController
@@ -21,7 +21,7 @@
   return v4;
 }
 
-- (void)conferenceKillProcessesAndNukeKeychain:(id)a3
+- (void)conferenceKillProcessesAndNukeKeychain:(id)keychain
 {
   +[CNFInternalSettingsUtilities nukeKeychain];
 

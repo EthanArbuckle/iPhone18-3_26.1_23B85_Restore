@@ -1,54 +1,54 @@
 @interface MOEventProactiveSuggested
-+ (id)describeCategory:(unint64_t)a3;
-- (MOEventProactiveSuggested)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)describeCategory:(unint64_t)category;
+- (MOEventProactiveSuggested)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventProactiveSuggested
 
-+ (id)describeCategory:(unint64_t)a3
++ (id)describeCategory:(unint64_t)category
 {
-  if (a3 > 0xC)
+  if (category > 0xC)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_10033F4B8[a3];
+    return off_10033F4B8[category];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   suggestedEventTitle = self->_suggestedEventTitle;
-  v5 = a3;
-  [v5 encodeObject:suggestedEventTitle forKey:@"suggestedEventTitle"];
-  [v5 encodeObject:self->_suggestedEventIdentifier forKey:@"suggestedEventIdentifier"];
-  [v5 encodeInteger:self->_suggestedEventCategory forKey:@"suggestedEventCategory"];
-  [v5 encodeObject:self->_suggestedEvent forKey:@"suggestedEvent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:suggestedEventTitle forKey:@"suggestedEventTitle"];
+  [coderCopy encodeObject:self->_suggestedEventIdentifier forKey:@"suggestedEventIdentifier"];
+  [coderCopy encodeInteger:self->_suggestedEventCategory forKey:@"suggestedEventCategory"];
+  [coderCopy encodeObject:self->_suggestedEvent forKey:@"suggestedEvent"];
 }
 
-- (MOEventProactiveSuggested)initWithCoder:(id)a3
+- (MOEventProactiveSuggested)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MOEventProactiveSuggested;
   v5 = [(MOEventProactiveSuggested *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedEventTitle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedEventTitle"];
     suggestedEventTitle = v5->_suggestedEventTitle;
     v5->_suggestedEventTitle = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedEventIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedEventIdentifier"];
     suggestedEventIdentifier = v5->_suggestedEventIdentifier;
     v5->_suggestedEventIdentifier = v8;
 
-    v5->_suggestedEventCategory = [v4 decodeIntegerForKey:@"suggestedEventCategory"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suggestedEvent"];
+    v5->_suggestedEventCategory = [coderCopy decodeIntegerForKey:@"suggestedEventCategory"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suggestedEvent"];
     suggestedEvent = v5->_suggestedEvent;
     v5->_suggestedEvent = v10;
   }
@@ -56,7 +56,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventProactiveSuggested);
   objc_storeStrong(&v4->_suggestedEvent, self->_suggestedEvent);
@@ -69,8 +69,8 @@
 - (id)description
 {
   v3 = [NSString alloc];
-  v4 = [(NSString *)self->_suggestedEventTitle mask];
-  v5 = [v3 initWithFormat:@"suggestedEventTitle, %@, suggestedEventIdentifier, %@", v4, self->_suggestedEventIdentifier];
+  mask = [(NSString *)self->_suggestedEventTitle mask];
+  v5 = [v3 initWithFormat:@"suggestedEventTitle, %@, suggestedEventIdentifier, %@", mask, self->_suggestedEventIdentifier];
 
   return v5;
 }

@@ -1,6 +1,6 @@
 @interface __CFNotification
-- (BOOL)isEqual:(id)a3;
-- (__CFNotification)initWithName:(__CFString *)a3 object:(const void *)a4 userInfo:(__CFDictionary *)a5 foundation:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (__CFNotification)initWithName:(__CFString *)name object:(const void *)object userInfo:(__CFDictionary *)info foundation:(BOOL)foundation;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -38,20 +38,20 @@
 
 - (unint64_t)hash
 {
-  v2 = [(__CFNotification *)self name];
+  name = [(__CFNotification *)self name];
 
-  return [v2 hash];
+  return [name hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
     return v6;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_8;
   }
@@ -69,13 +69,13 @@
     return v6;
   }
 
-  v7 = [(__CFNotification *)self object];
-  if (v7 == [a3 object])
+  object = [(__CFNotification *)self object];
+  if (object == [equal object])
   {
-    v8 = [(__CFNotification *)self userInfo];
-    v9 = [a3 userInfo];
+    userInfo = [(__CFNotification *)self userInfo];
+    userInfo2 = [equal userInfo];
 
-    LOBYTE(v6) = [v8 isEqual:v9];
+    LOBYTE(v6) = [userInfo isEqual:userInfo2];
   }
 
   else
@@ -87,24 +87,24 @@ LABEL_8:
   return v6;
 }
 
-- (__CFNotification)initWithName:(__CFString *)a3 object:(const void *)a4 userInfo:(__CFDictionary *)a5 foundation:(BOOL)a6
+- (__CFNotification)initWithName:(__CFString *)name object:(const void *)object userInfo:(__CFDictionary *)info foundation:(BOOL)foundation
 {
-  v6 = self;
-  if (a3)
+  selfCopy = self;
+  if (name)
   {
-    if (a6)
+    if (foundation)
     {
-      self->_name = [(__CFString *)a3 copy];
-      v6->_userInfo = a5;
-      a4 = a4;
+      self->_name = [(__CFString *)name copy];
+      selfCopy->_userInfo = info;
+      object = object;
     }
 
     else
     {
-      self->_name = CFRetain(a3);
-      if (a5)
+      self->_name = CFRetain(name);
+      if (info)
       {
-        v10 = CFRetain(a5);
+        v10 = CFRetain(info);
       }
 
       else
@@ -112,11 +112,11 @@ LABEL_8:
         v10 = 0;
       }
 
-      v6->_userInfo = v10;
+      selfCopy->_userInfo = v10;
     }
 
-    v6->_object = a4;
-    v6->_fouSemantics = a6;
+    selfCopy->_object = object;
+    selfCopy->_fouSemantics = foundation;
   }
 
   else
@@ -125,7 +125,7 @@ LABEL_8:
     return 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

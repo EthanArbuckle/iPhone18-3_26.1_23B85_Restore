@@ -1,35 +1,35 @@
 @interface NTKGreyhoundContentView
-- (NTKGreyhoundContentView)initWithFrame:(CGRect)a3 device:(id)a4 style:(unint64_t)a5 density:(unint64_t)a6 typeface:(unint64_t)a7 colorPalette:(id)a8;
-- (id)_createLabelForHour:(unint64_t)a3;
+- (NTKGreyhoundContentView)initWithFrame:(CGRect)frame device:(id)device style:(unint64_t)style density:(unint64_t)density typeface:(unint64_t)typeface colorPalette:(id)palette;
+- (id)_createLabelForHour:(unint64_t)hour;
 - (id)_font;
 - (void)_createHourLabels;
-- (void)setColorPalette:(id)a3;
-- (void)setDensity:(unint64_t)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setTypeface:(unint64_t)a3;
+- (void)setColorPalette:(id)palette;
+- (void)setDensity:(unint64_t)density;
+- (void)setStyle:(unint64_t)style;
+- (void)setTypeface:(unint64_t)typeface;
 @end
 
 @implementation NTKGreyhoundContentView
 
-- (NTKGreyhoundContentView)initWithFrame:(CGRect)a3 device:(id)a4 style:(unint64_t)a5 density:(unint64_t)a6 typeface:(unint64_t)a7 colorPalette:(id)a8
+- (NTKGreyhoundContentView)initWithFrame:(CGRect)frame device:(id)device style:(unint64_t)style density:(unint64_t)density typeface:(unint64_t)typeface colorPalette:(id)palette
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a4;
-  v19 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
+  paletteCopy = palette;
   v25.receiver = self;
   v25.super_class = NTKGreyhoundContentView;
-  v20 = [(NTKGreyhoundContentView *)&v25 initWithFrame:x, y, width, height];
-  v21 = v20;
-  if (v20)
+  height = [(NTKGreyhoundContentView *)&v25 initWithFrame:x, y, width, height];
+  v21 = height;
+  if (height)
   {
-    objc_storeStrong(&v20->_device, a4);
-    v21->_style = a5;
-    v21->_typeface = a7;
-    v21->_density = a6;
-    objc_storeStrong(&v21->_colorPalette, a8);
+    objc_storeStrong(&height->_device, device);
+    v21->_style = style;
+    v21->_typeface = typeface;
+    v21->_density = density;
+    objc_storeStrong(&v21->_colorPalette, palette);
     v22 = +[NSMutableArray array];
     hourLabels = v21->_hourLabels;
     v21->_hourLabels = v22;
@@ -40,45 +40,45 @@
   return v21;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(NTKGreyhoundContentView *)self _createHourLabels];
   }
 }
 
-- (void)setDensity:(unint64_t)a3
+- (void)setDensity:(unint64_t)density
 {
-  if (self->_density != a3)
+  if (self->_density != density)
   {
-    self->_density = a3;
+    self->_density = density;
     [(NTKGreyhoundContentView *)self _createHourLabels];
   }
 }
 
-- (void)setTypeface:(unint64_t)a3
+- (void)setTypeface:(unint64_t)typeface
 {
-  if (self->_typeface != a3)
+  if (self->_typeface != typeface)
   {
-    self->_typeface = a3;
+    self->_typeface = typeface;
     [(NTKGreyhoundContentView *)self _createHourLabels];
   }
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  objc_storeStrong(&self->_colorPalette, a3);
-  v5 = a3;
-  v6 = [v5 digit];
+  objc_storeStrong(&self->_colorPalette, palette);
+  paletteCopy = palette;
+  digit = [paletteCopy digit];
   hourLabels = self->_hourLabels;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_66B4;
   v9[3] = &unk_14618;
-  v10 = v6;
-  v8 = v6;
+  v10 = digit;
+  v8 = digit;
   [(NSMutableArray *)hourLabels enumerateObjectsUsingBlock:v9];
 }
 
@@ -117,9 +117,9 @@
   [(NSMutableArray *)hourLabels enumerateObjectsUsingBlock:v9];
 }
 
-- (id)_createLabelForHour:(unint64_t)a3
+- (id)_createLabelForHour:(unint64_t)hour
 {
-  v64 = [(NTKGreyhoundContentView *)self _font];
+  _font = [(NTKGreyhoundContentView *)self _font];
   style = self->_style;
   if (style <= 1)
   {
@@ -133,32 +133,32 @@
       typeface = self->_typeface;
       if (typeface)
       {
-        if (typeface != 2 || a3 > 0xC || ((1 << a3) & 0x1402) == 0)
+        if (typeface != 2 || hour > 0xC || ((1 << hour) & 0x1402) == 0)
         {
           goto LABEL_53;
         }
       }
 
-      else if (a3 != 3 || self->_density)
+      else if (hour != 3 || self->_density)
       {
         goto LABEL_53;
       }
     }
 
-    else if (a3 != 4)
+    else if (hour != 4)
     {
       goto LABEL_53;
     }
 
 LABEL_45:
-    v8 = [v64 CLKFontWithStylisticSet:1];
+    v8 = [_font CLKFontWithStylisticSet:1];
     goto LABEL_52;
   }
 
   switch(style)
   {
     case 2:
-      if (self->_typeface != 2 || a3 != 12 || self->_density)
+      if (self->_typeface != 2 || hour != 12 || self->_density)
       {
         break;
       }
@@ -170,7 +170,7 @@ LABEL_45:
       {
         if (v12 == 1)
         {
-          if (a3 != 12)
+          if (hour != 12)
           {
             break;
           }
@@ -185,13 +185,13 @@ LABEL_45:
 
           if (self->_density)
           {
-            if (a3 != 10)
+            if (hour != 10)
             {
               break;
             }
           }
 
-          else if (a3 != 12 && a3 != 10 && a3 != 9)
+          else if (hour != 12 && hour != 10 && hour != 9)
           {
             break;
           }
@@ -208,7 +208,7 @@ LABEL_45:
       density = self->_density;
       if (density == 1)
       {
-        v8 = [v64 CLKFontWithRareLigaturesAndStylisticSet:self->_typeface == 2];
+        v8 = [_font CLKFontWithRareLigaturesAndStylisticSet:self->_typeface == 2];
         goto LABEL_52;
       }
 
@@ -218,7 +218,7 @@ LABEL_45:
         switch(v7)
         {
           case 2uLL:
-            if (a3 == 12)
+            if (hour == 12)
             {
               v13 = 2;
             }
@@ -228,17 +228,17 @@ LABEL_45:
               v13 = 1;
             }
 
-            v8 = [v64 CLKFontWithRareLigaturesAndStylisticSet:v13];
+            v8 = [_font CLKFontWithRareLigaturesAndStylisticSet:v13];
             goto LABEL_52;
           case 1uLL:
-            v8 = [v64 CLKFontWithRareLigaturesAndStylisticSet:1];
+            v8 = [_font CLKFontWithRareLigaturesAndStylisticSet:1];
             goto LABEL_52;
           case 0uLL:
-            v8 = [v64 CLKFontWithRareLigaturesAndStylisticSet:2];
+            v8 = [_font CLKFontWithRareLigaturesAndStylisticSet:2];
 LABEL_52:
             v14 = v8;
 
-            v64 = v14;
+            _font = v14;
             break;
         }
       }
@@ -249,19 +249,19 @@ LABEL_52:
 LABEL_53:
   v15 = objc_alloc_init(UILabel);
   [v15 setTextAlignment:1];
-  v16 = [(NTKCaliforniaColorPalette *)self->_colorPalette digit];
-  [v15 setTextColor:v16];
+  digit = [(NTKCaliforniaColorPalette *)self->_colorPalette digit];
+  [v15 setTextColor:digit];
 
-  [v15 setFont:v64];
-  v17 = [NTKGreyhoundTextUtilities textForHour:a3 density:self->_density style:self->_style typeface:self->_typeface];
+  [v15 setFont:_font];
+  v17 = [NTKGreyhoundTextUtilities textForHour:hour density:self->_density style:self->_style typeface:self->_typeface];
   if (self->_density || self->_typeface != 1 || self->_style)
   {
     goto LABEL_56;
   }
 
-  if (a3 != 3)
+  if (hour != 3)
   {
-    if (a3 == 12)
+    if (hour == 12)
     {
       v30 = v17;
       sub_744C(v17, self->_device);
@@ -301,7 +301,7 @@ LABEL_56:
     v21 = [v19 objectForKeyedSubscript:v20];
     v22 = [NSNumber numberWithUnsignedInteger:self->_density];
     v23 = [v21 objectForKeyedSubscript:v22];
-    v24 = [NSNumber numberWithUnsignedInteger:a3];
+    v24 = [NSNumber numberWithUnsignedInteger:hour];
     v25 = [v23 objectForKeyedSubscript:v24];
 
     if (v25)
@@ -341,10 +341,10 @@ LABEL_56:
   {
     v48 = objc_alloc_init(UILabel);
     [v48 setTextAlignment:1];
-    v49 = [(NTKCaliforniaColorPalette *)self->_colorPalette digit];
-    [v48 setTextColor:v49];
+    digit2 = [(NTKCaliforniaColorPalette *)self->_colorPalette digit];
+    [v48 setTextColor:digit2];
 
-    [v48 setFont:v64];
+    [v48 setFont:_font];
     [v48 setText:v26];
     [v48 sizeToFit];
     [v15 center];

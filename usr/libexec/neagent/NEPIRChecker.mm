@@ -1,31 +1,31 @@
 @interface NEPIRChecker
 - (BOOL)stop;
 - (NEPIRChecker)init;
-- (void)check:(id)a3 sourceAppBundleId:(id)a4 responseQueue:(id)a5 redactSensitiveLogs:(BOOL)a6 completionHandler:(id)a7;
+- (void)check:(id)check sourceAppBundleId:(id)id responseQueue:(id)queue redactSensitiveLogs:(BOOL)logs completionHandler:(id)handler;
 - (void)fetchServerParameters;
 - (void)resetCache;
-- (void)start:(id)a3 responseQueue:(id)a4 completionHandler:(id)a5;
+- (void)start:(id)start responseQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation NEPIRChecker
 
-- (void)check:(id)a3 sourceAppBundleId:(id)a4 responseQueue:(id)a5 redactSensitiveLogs:(BOOL)a6 completionHandler:(id)a7
+- (void)check:(id)check sourceAppBundleId:(id)id responseQueue:(id)queue redactSensitiveLogs:(BOOL)logs completionHandler:(id)handler
 {
-  v64 = a6;
-  v11 = a3;
-  v67 = a4;
-  queue = a5;
-  v12 = a7;
-  v13 = v12;
-  v68 = v11;
+  logsCopy = logs;
+  checkCopy = check;
+  idCopy = id;
+  queue = queue;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  v68 = checkCopy;
   if (self && self->_registered)
   {
-    v65 = v12;
+    v65 = handlerCopy;
     v81 = 0;
-    v63 = self;
-    if (!sub_10000E3E4(self, v11, &v81))
+    selfCopy = self;
+    if (!sub_10000E3E4(self, checkCopy, &v81))
     {
-      v20 = v11;
+      v20 = checkCopy;
       if ([v20 count] && -[NSMutableArray count](self->_requestBatchGroups, "count"))
       {
         v84 = 0u;
@@ -77,7 +77,7 @@
                               objc_enumerationMutation(v28);
                             }
 
-                            if (![v24[1] containsObject:{*(*(&v86 + 1) + 8 * i), v63}])
+                            if (![v24[1] containsObject:{*(*(&v86 + 1) + 8 * i), selfCopy}])
                             {
 
                               goto LABEL_31;
@@ -126,10 +126,10 @@ LABEL_55:
           block[1] = 3221225472;
           block[2] = sub_10000E54C;
           block[3] = &unk_100024860;
-          block[4] = v63;
+          block[4] = selfCopy;
           v77 = v20;
-          v80 = v64;
-          v78 = v67;
+          v80 = logsCopy;
+          v78 = idCopy;
           v79 = v65;
           dispatch_group_notify(v50, queue, block);
 
@@ -165,7 +165,7 @@ LABEL_55:
         v35 = 0;
       }
 
-      [(NSMutableArray *)v63->_requestBatchGroups addObject:v35];
+      [(NSMutableArray *)selfCopy->_requestBatchGroups addObject:v35];
       if (v35)
       {
         v40 = v35[2];
@@ -178,8 +178,8 @@ LABEL_55:
 
       dispatch_group_enter(v40);
       v41 = [CMLClientConfig alloc];
-      appBundleIdentifier = v63->_appBundleIdentifier;
-      v43 = v63->_pirUseCase;
+      appBundleIdentifier = selfCopy->_appBundleIdentifier;
+      v43 = selfCopy->_pirUseCase;
       v44 = [v41 initWithUseCase:v43 sourceApplicationBundleIdentifier:appBundleIdentifier];
 
       v45 = [[CMLKeywordPIRClient alloc] initWithClientConfig:v44 dispatchQueue:queue];
@@ -204,10 +204,10 @@ LABEL_55:
       v69[1] = 3221225472;
       v69[2] = sub_10000EA84;
       v69[3] = &unk_100024888;
-      v69[4] = v63;
+      v69[4] = selfCopy;
       v73 = v90;
       v74 = v92;
-      v70 = v67;
+      v70 = idCopy;
       v75 = &v86;
       v72 = v65;
       v47 = v35;
@@ -222,13 +222,13 @@ LABEL_55:
       goto LABEL_52;
     }
 
-    v14 = [v11 objectAtIndexedSubscript:0];
+    v14 = [checkCopy objectAtIndexedSubscript:0];
     v15 = v81;
     v16 = ne_log_obj();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
     if (v15)
     {
-      if (v64)
+      if (logsCopy)
       {
         if (v17)
         {
@@ -244,22 +244,22 @@ LABEL_55:
 
           if ([v14 UTF8String])
           {
-            v52 = [v14 UTF8String];
+            uTF8String = [v14 UTF8String];
           }
 
           else
           {
-            v52 = "<nil url>";
+            uTF8String = "<nil url>";
           }
 
-          if ([v67 UTF8String])
+          if ([idCopy UTF8String])
           {
-            v56 = [v67 UTF8String];
+            uTF8String2 = [idCopy UTF8String];
           }
 
           else
           {
-            v56 = "nil";
+            uTF8String2 = "nil";
           }
 
           *v92 = 136316419;
@@ -269,9 +269,9 @@ LABEL_55:
           *&v92[22] = 1040;
           *&v92[24] = v18;
           *&v92[28] = 2101;
-          *&v92[30] = v52;
+          *&v92[30] = uTF8String;
           *&v92[38] = 2080;
-          v93 = v56;
+          v93 = uTF8String2;
           v94 = 1024;
           v95 = 0;
           v60 = "%s: URLCHECK: FINAL RESULT: CACHED BLOCKED - %{sensitive, mask.hash, networkextension:string}.*P (app bundleid <%s> pid <%d>)";
@@ -303,22 +303,22 @@ LABEL_93:
 
       if ([v14 UTF8String])
       {
-        v54 = [v14 UTF8String];
+        uTF8String3 = [v14 UTF8String];
       }
 
       else
       {
-        v54 = "<nil url>";
+        uTF8String3 = "<nil url>";
       }
 
-      if ([v67 UTF8String])
+      if ([idCopy UTF8String])
       {
-        v58 = [v67 UTF8String];
+        uTF8String4 = [idCopy UTF8String];
       }
 
       else
       {
-        v58 = "nil";
+        uTF8String4 = "nil";
       }
 
       *v92 = 136316163;
@@ -326,9 +326,9 @@ LABEL_93:
       *&v92[12] = 1024;
       *&v92[14] = v49;
       *&v92[18] = 2081;
-      *&v92[20] = v54;
+      *&v92[20] = uTF8String3;
       *&v92[28] = 2080;
-      *&v92[30] = v58;
+      *&v92[30] = uTF8String4;
       *&v92[38] = 1024;
       LODWORD(v93) = 0;
       v60 = "%s: URLCHECK: FINAL RESULT: CACHED BLOCKED - <%d : %{private}s> (app bundleid <%s> pid <%d>)";
@@ -336,7 +336,7 @@ LABEL_93:
 
     else
     {
-      if (v64)
+      if (logsCopy)
       {
         if (v17)
         {
@@ -352,22 +352,22 @@ LABEL_93:
 
           if ([v14 UTF8String])
           {
-            v53 = [v14 UTF8String];
+            uTF8String5 = [v14 UTF8String];
           }
 
           else
           {
-            v53 = "<nil url>";
+            uTF8String5 = "<nil url>";
           }
 
-          if ([v67 UTF8String])
+          if ([idCopy UTF8String])
           {
-            v57 = [v67 UTF8String];
+            uTF8String6 = [idCopy UTF8String];
           }
 
           else
           {
-            v57 = "nil";
+            uTF8String6 = "nil";
           }
 
           *v92 = 136316419;
@@ -377,9 +377,9 @@ LABEL_93:
           *&v92[22] = 1040;
           *&v92[24] = v48;
           *&v92[28] = 2101;
-          *&v92[30] = v53;
+          *&v92[30] = uTF8String5;
           *&v92[38] = 2080;
-          v93 = v57;
+          v93 = uTF8String6;
           v94 = 1024;
           v95 = 0;
           v60 = "%s: URLCHECK: FINAL RESULT: CACHED ALLOWED - %{sensitive, mask.hash, networkextension:string}.*P (app bundleid <%s> pid <%d>)";
@@ -412,22 +412,22 @@ LABEL_52:
 
       if ([v14 UTF8String])
       {
-        v55 = [v14 UTF8String];
+        uTF8String7 = [v14 UTF8String];
       }
 
       else
       {
-        v55 = "<nil url>";
+        uTF8String7 = "<nil url>";
       }
 
-      if ([v67 UTF8String])
+      if ([idCopy UTF8String])
       {
-        v59 = [v67 UTF8String];
+        uTF8String8 = [idCopy UTF8String];
       }
 
       else
       {
-        v59 = "nil";
+        uTF8String8 = "nil";
       }
 
       *v92 = 136316163;
@@ -435,9 +435,9 @@ LABEL_52:
       *&v92[12] = 1024;
       *&v92[14] = v51;
       *&v92[18] = 2081;
-      *&v92[20] = v55;
+      *&v92[20] = uTF8String7;
       *&v92[28] = 2080;
-      *&v92[30] = v59;
+      *&v92[30] = uTF8String8;
       *&v92[38] = 1024;
       LODWORD(v93) = 0;
       v60 = "%s: URLCHECK: FINAL RESULT: CACHED ALLOWED - <%d : %{private}s> (app bundleid <%s> pid <%d>)";
@@ -524,7 +524,7 @@ LABEL_53:
         {
           v10 = self->_pirGroupName;
           *buf = 138412802;
-          v15 = self;
+          selfCopy2 = self;
           v16 = 2080;
           v17 = "[NEPIRChecker stop]";
           v18 = 2112;
@@ -537,7 +537,7 @@ LABEL_53:
       {
         v12 = self->_pirGroupName;
         *buf = 138412802;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2080;
         v17 = "[NEPIRChecker stop]";
         v18 = 2112;
@@ -557,38 +557,38 @@ LABEL_53:
   return 1;
 }
 
-- (void)start:(id)a3 responseQueue:(id)a4 completionHandler:(id)a5
+- (void)start:(id)start responseQueue:(id)queue completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  startCopy = start;
+  handlerCopy = handler;
   v9 = ne_log_obj();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v86 = self;
+    selfCopy5 = self;
     v87 = 2080;
     v88 = "[NEPIRChecker start:responseQueue:completionHandler:]";
     v89 = 2112;
-    v90 = v7;
+    v90 = startCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: %s - enter %@", buf, 0x20u);
   }
 
-  if (v7)
+  if (startCopy)
   {
     v10 = objc_alloc_init(NSMutableDictionary);
     sub_10000F088(self, v10);
 
-    v11 = [(NSString *)v7 appBundleIdentifier];
+    appBundleIdentifier = [(NSString *)startCopy appBundleIdentifier];
     if (self)
     {
-      objc_storeStrong(&self->_appBundleIdentifier, v11);
+      objc_storeStrong(&self->_appBundleIdentifier, appBundleIdentifier);
     }
 
-    v12 = [(NSString *)v7 pirServerURL];
-    v13 = [(NSString *)v7 pirPrivacyPassIssuerURL];
+    pirServerURL = [(NSString *)startCopy pirServerURL];
+    pirPrivacyPassIssuerURL = [(NSString *)startCopy pirPrivacyPassIssuerURL];
     v14 = [NSData alloc];
-    v15 = [(NSString *)v7 pirAuthenticationToken];
-    v78 = [v14 initWithBase64EncodedString:v15 options:0];
+    pirAuthenticationToken = [(NSString *)startCopy pirAuthenticationToken];
+    v78 = [v14 initWithBase64EncodedString:pirAuthenticationToken options:0];
 
     if (self)
     {
@@ -607,14 +607,14 @@ LABEL_53:
     v19 = [v16 initWithFormat:@"%@.%@", v18, @"url.filtering"];
     sub_10000F7F0(self, v19);
 
-    v20 = [(NSString *)v7 pirGroupName];
+    pirGroupName = [(NSString *)startCopy pirGroupName];
 
-    if (v20)
+    if (pirGroupName)
     {
-      v21 = [(NSString *)v7 pirGroupName];
+      pirGroupName2 = [(NSString *)startCopy pirGroupName];
       if (self)
       {
-        objc_storeStrong(&self->_pirGroupName, v21);
+        objc_storeStrong(&self->_pirGroupName, pirGroupName2);
       }
 
       v22 = [NSString alloc];
@@ -633,26 +633,26 @@ LABEL_53:
       sub_10000F7F0(self, v25);
     }
 
-    v26 = [(NSString *)v7 pirUseCase];
+    pirUseCase = [(NSString *)startCopy pirUseCase];
 
-    if (v26)
+    if (pirUseCase)
     {
-      v27 = [(NSString *)v7 pirUseCase];
-      sub_10000F7F0(self, v27);
+      pirUseCase2 = [(NSString *)startCopy pirUseCase];
+      sub_10000F7F0(self, pirUseCase2);
     }
 
-    v28 = [(NSString *)v7 pirPrivacyProxyFailOpen];
+    pirPrivacyProxyFailOpen = [(NSString *)startCopy pirPrivacyProxyFailOpen];
     if (self)
     {
-      self->_pirPrivacyProxyFailOpen = v28;
-      self->_pirSkipRegistration = [(NSString *)v7 pirSkipRegistration];
+      self->_pirPrivacyProxyFailOpen = pirPrivacyProxyFailOpen;
+      self->_pirSkipRegistration = [(NSString *)startCopy pirSkipRegistration];
       v29 = [LSApplicationRecord alloc];
       appBundleIdentifier = self->_appBundleIdentifier;
     }
 
     else
     {
-      [(NSString *)v7 pirSkipRegistration];
+      [(NSString *)startCopy pirSkipRegistration];
       v29 = [LSApplicationRecord alloc];
       appBundleIdentifier = 0;
     }
@@ -664,13 +664,13 @@ LABEL_53:
 
     if (!v33 && v32)
     {
-      v34 = [v32 entitlements];
-      v35 = [v34 objectForKey:@"get-task-allow" ofClass:objc_opt_class()];
+      entitlements = [v32 entitlements];
+      v35 = [entitlements objectForKey:@"get-task-allow" ofClass:objc_opt_class()];
 
-      v36 = [v35 BOOLValue];
+      bOOLValue = [v35 BOOLValue];
       if (self)
       {
-        self->_pirPrivacyProxyFailOpen = v36;
+        self->_pirPrivacyProxyFailOpen = bOOLValue;
       }
     }
 
@@ -684,7 +684,7 @@ LABEL_53:
         pirPrivacyProxyFailOpen = self->_pirPrivacyProxyFailOpen;
         *buf = 138413570;
         v87 = 2080;
-        v86 = self;
+        selfCopy5 = self;
         v88 = "[NEPIRChecker start:responseQueue:completionHandler:]";
         v89 = 2112;
         v90 = v38;
@@ -693,20 +693,20 @@ LABEL_53:
         v93 = 1024;
         v94 = pirPrivacyProxyFailOpen;
         v95 = 2112;
-        v96 = v12;
+        v96 = pirServerURL;
         v41 = v38;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%@: %s - FOR TEST - Skip registration - (group <%@> use case <%@> PrivacyProxyFailOpen <%d> serverURL <%@>", buf, 0x3Au);
       }
 
       self->_registered = 1;
       self->_active = 1;
-      v8[2](v8, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
     {
       v42 = ne_log_obj();
-      v75 = v13;
+      v75 = pirPrivacyPassIssuerURL;
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
         v76 = v32;
@@ -730,7 +730,7 @@ LABEL_53:
         }
 
         *buf = 138413826;
-        v86 = self;
+        selfCopy5 = self;
         v87 = 2080;
         v88 = "[NEPIRChecker start:responseQueue:completionHandler:]";
         v89 = 2112;
@@ -740,9 +740,9 @@ LABEL_53:
         v93 = 1024;
         v94 = v46;
         v95 = 2112;
-        v96 = v12;
+        v96 = pirServerURL;
         v97 = 2112;
-        v98 = v13;
+        v98 = pirPrivacyPassIssuerURL;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%@: %s - Register with PIR Server (group <%@> use case <%@> PrivacyProxyFailOpen <%d> serverURL <%@> privacyPassIssuer <%@>", buf, 0x44u);
 
         v33 = v43;
@@ -761,7 +761,7 @@ LABEL_53:
         v51 = 0;
       }
 
-      v77 = [v50 initWithType:2 endpoint:v12 issuer:v13 authenticationToken:v78 privacyProxyFailOpen:v51];
+      v77 = [v50 initWithType:2 endpoint:pirServerURL issuer:pirPrivacyPassIssuerURL authenticationToken:v78 privacyProxyFailOpen:v51];
       v52 = [CMLUseCaseGroup alloc];
       if (self)
       {
@@ -817,7 +817,7 @@ LABEL_53:
           }
 
           *buf = 138413058;
-          v86 = self;
+          selfCopy5 = self;
           v87 = 2080;
           v88 = "[NEPIRChecker start:responseQueue:completionHandler:]";
           v89 = 2112;
@@ -840,7 +840,7 @@ LABEL_53:
           v68 = 0;
         }
 
-        v13 = v75;
+        pirPrivacyPassIssuerURL = v75;
         v69 = [v66 initWithUseCase:v67 sourceApplicationBundleIdentifier:v68];
 
         v79[0] = _NSConcreteStackBlock;
@@ -848,7 +848,7 @@ LABEL_53:
         v79[2] = sub_100010164;
         v79[3] = &unk_100024810;
         v79[4] = self;
-        v80 = v8;
+        v80 = handlerCopy;
         [CMLUseCaseStatus requestStatusForClientConfig:v69 options:266 completionHandler:v79];
         if (self)
         {
@@ -858,7 +858,7 @@ LABEL_53:
 
       else
       {
-        v13 = v75;
+        pirPrivacyPassIssuerURL = v75;
         if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
         {
           if (self)
@@ -876,7 +876,7 @@ LABEL_53:
           }
 
           *buf = 138413058;
-          v86 = self;
+          selfCopy5 = self;
           v87 = 2080;
           v88 = "[NEPIRChecker start:responseQueue:completionHandler:]";
           v89 = 2112;
@@ -887,15 +887,15 @@ LABEL_53:
         }
 
         v69 = [[NSError alloc] initWithDomain:@"NEMembershipCheckerErrorDomain" code:2 userInfo:0];
-        (v8)[2](v8, v69);
+        (handlerCopy)[2](handlerCopy, v69);
       }
     }
   }
 
   else
   {
-    v12 = [[NSError alloc] initWithDomain:@"NEMembershipCheckerErrorDomain" code:4 userInfo:0];
-    (v8)[2](v8, v12);
+    pirServerURL = [[NSError alloc] initWithDomain:@"NEMembershipCheckerErrorDomain" code:4 userInfo:0];
+    (handlerCopy)[2](handlerCopy, pirServerURL);
   }
 }
 

@@ -1,13 +1,13 @@
 @interface ML3Genre
-+ (id)countingQueryForBaseQuery:(id)a3 countProperty:(id)a4 forIdentifier:(int64_t)a5;
-+ (id)foreignPropertyForProperty:(id)a3 entityClass:(Class)a4;
-+ (id)joinClausesForProperty:(id)a3;
++ (id)countingQueryForBaseQuery:(id)query countProperty:(id)property forIdentifier:(int64_t)identifier;
++ (id)foreignPropertyForProperty:(id)property entityClass:(Class)class;
++ (id)joinClausesForProperty:(id)property;
 + (id)propertiesForGroupingKey;
-+ (id)protocolItemWithProperties:(id)a3 inLibrary:(id)a4;
++ (id)protocolItemWithProperties:(id)properties inLibrary:(id)library;
 + (void)initialize;
 - (id)multiverseIdentifier;
 - (id)protocolItem;
-- (void)updateTrackValues:(id)a3;
+- (void)updateTrackValues:(id)values;
 @end
 
 @implementation ML3Genre
@@ -15,7 +15,7 @@
 + (void)initialize
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = [ML3OrderingTerm orderingTermWithProperty:@"genre"];
     v17[0] = v3;
@@ -28,7 +28,7 @@
     ML3GenreAllProperties = v6;
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [a1 predisambiguateProperties:ML3GenreAllProperties toDictionary:v8];
+    [self predisambiguateProperties:ML3GenreAllProperties toDictionary:v8];
     v9 = ML3GenrePredisambiguatedPropertyForProperties;
     ML3GenrePredisambiguatedPropertyForProperties = v8;
     v10 = v8;
@@ -45,10 +45,10 @@
   }
 }
 
-- (void)updateTrackValues:(id)a3
+- (void)updateTrackValues:(id)values
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   v5 = @"ROWID";
   v22[0] = @"ROWID";
   v22[1] = @"genre";
@@ -59,39 +59,39 @@
   v20 = 0u;
   v21 = 0u;
   [(ML3Entity *)self getValues:&v20 forProperties:v22 count:4];
-  [v4 setValue:v20 forKey:@"genre_id"];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [ML3Track trackValueAreInTheCloud:v4];
-  v10 = [*(&v21 + 1) integerValue];
-  v11 = [v4 objectForKey:@"ROWID"];
-  v12 = [v21 longLongValue];
-  if (v12)
+  [valuesCopy setValue:v20 forKey:@"genre_id"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v9 = [ML3Track trackValueAreInTheCloud:valuesCopy];
+  integerValue = [*(&v21 + 1) integerValue];
+  v11 = [valuesCopy objectForKey:@"ROWID"];
+  longLongValue = [v21 longLongValue];
+  if (longLongValue)
   {
-    v13 = v12;
-    [v4 setValue:*(&v20 + 1) forKey:@"genre.genre"];
+    v13 = longLongValue;
+    [valuesCopy setValue:*(&v20 + 1) forKey:@"genre.genre"];
     if (v9)
     {
-      if (v10)
+      if (integerValue)
       {
         goto LABEL_9;
       }
     }
 
-    else if (v10 != 2)
+    else if (integerValue != 2)
     {
       goto LABEL_9;
     }
 
     v15 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-    [v8 setValue:v15 forKey:@"cloud_status"];
+    [dictionary setValue:v15 forKey:@"cloud_status"];
 
 LABEL_9:
-    [(ML3Collection *)self updateRepresentativeCollectionValues:v8 existingRepresentativePersistentID:v13 forUpdateTrackValues:v4];
-    v14 = [v8 objectForKey:@"representative_item_pid"];
-    v16 = [v14 longLongValue];
-    if (v16)
+    [(ML3Collection *)self updateRepresentativeCollectionValues:dictionary existingRepresentativePersistentID:v13 forUpdateTrackValues:valuesCopy];
+    v14 = [dictionary objectForKey:@"representative_item_pid"];
+    longLongValue2 = [v14 longLongValue];
+    if (longLongValue2)
     {
-      v13 = v16;
+      v13 = longLongValue2;
     }
 
     goto LABEL_11;
@@ -104,7 +104,7 @@ LABEL_9:
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:2];
-  [v8 setValue:v14 forKey:@"cloud_status"];
+  [dictionary setValue:v14 forKey:@"cloud_status"];
   v13 = 0;
 LABEL_11:
 
@@ -116,11 +116,11 @@ LABEL_12:
 
     if ((v18 & 1) == 0)
     {
-      [v8 setValue:v11 forKey:@"representative_item_pid"];
+      [dictionary setValue:v11 forKey:@"representative_item_pid"];
     }
   }
 
-  [(ML3Entity *)self setValuesForPropertiesWithDictionary:v8];
+  [(ML3Entity *)self setValuesForPropertiesWithDictionary:dictionary];
 
   for (i = 3; i != -1; --i)
   {
@@ -146,18 +146,18 @@ uint64_t __36__ML3Genre_propertiesForGroupingKey__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)countingQueryForBaseQuery:(id)a3 countProperty:(id)a4 forIdentifier:(int64_t)a5
++ (id)countingQueryForBaseQuery:(id)query countProperty:(id)property forIdentifier:(int64_t)identifier
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 predicateIncludingSystemwidePredicates];
+  queryCopy = query;
+  propertyCopy = property;
+  predicateIncludingSystemwidePredicates = [queryCopy predicateIncludingSystemwidePredicates];
 
-  if (v10)
+  if (predicateIncludingSystemwidePredicates)
   {
-    v11 = [v8 predicateIncludingSystemwidePredicates];
-    v22[0] = v11;
-    v12 = [ML3ComparisonPredicate predicateWithProperty:@"genre_id" equalToInt64:a5];
+    predicateIncludingSystemwidePredicates2 = [queryCopy predicateIncludingSystemwidePredicates];
+    v22[0] = predicateIncludingSystemwidePredicates2;
+    v12 = [ML3ComparisonPredicate predicateWithProperty:@"genre_id" equalToInt64:identifier];
     v22[1] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
     v14 = [(ML3CompoundPredicate *)ML3AllCompoundPredicate predicateMatchingPredicates:v13];
@@ -165,40 +165,40 @@ uint64_t __36__ML3Genre_propertiesForGroupingKey__block_invoke()
 
   else
   {
-    v14 = [ML3ComparisonPredicate predicateWithProperty:@"genre_id" equalToInt64:a5];
+    v14 = [ML3ComparisonPredicate predicateWithProperty:@"genre_id" equalToInt64:identifier];
   }
 
-  if (v9 == @"item_pid")
+  if (propertyCopy == @"item_pid")
   {
-    v16 = [v8 library];
-    v17 = +[ML3Entity queryWithLibrary:predicate:options:](ML3Track, "queryWithLibrary:predicate:options:", v16, v14, [v8 options]);
+    library = [queryCopy library];
+    v17 = +[ML3Entity queryWithLibrary:predicate:options:](ML3Track, "queryWithLibrary:predicate:options:", library, v14, [queryCopy options]);
   }
 
   else
   {
-    if (v9 == @"album_pid")
+    if (propertyCopy == @"album_pid")
     {
-      v16 = [v8 library];
-      v18 = [v8 options];
+      library = [queryCopy library];
+      options = [queryCopy options];
       v19 = @"album_pid";
     }
 
     else
     {
-      if (v9 != @"item_artist_pid")
+      if (propertyCopy != @"item_artist_pid")
       {
-        v21.receiver = a1;
+        v21.receiver = self;
         v21.super_class = &OBJC_METACLASS___ML3Genre;
-        v15 = objc_msgSendSuper2(&v21, sel_countingQueryForBaseQuery_countProperty_forIdentifier_, v8, v9, a5);
+        v15 = objc_msgSendSuper2(&v21, sel_countingQueryForBaseQuery_countProperty_forIdentifier_, queryCopy, propertyCopy, identifier);
         goto LABEL_13;
       }
 
-      v16 = [v8 library];
-      v18 = [v8 options];
+      library = [queryCopy library];
+      options = [queryCopy options];
       v19 = @"item_artist_pid";
     }
 
-    v17 = [(ML3Entity *)ML3Track queryWithLibrary:v16 predicate:v14 orderingTerms:0 propertyToCount:v19 options:v18];
+    v17 = [(ML3Entity *)ML3Track queryWithLibrary:library predicate:v14 orderingTerms:0 propertyToCount:v19 options:options];
   }
 
   v15 = v17;
@@ -208,17 +208,17 @@ LABEL_13:
   return v15;
 }
 
-+ (id)foreignPropertyForProperty:(id)a3 entityClass:(Class)a4
++ (id)foreignPropertyForProperty:(id)property entityClass:(Class)class
 {
-  v6 = a3;
-  v9.receiver = a1;
+  propertyCopy = property;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___ML3Genre;
-  v7 = objc_msgSendSuper2(&v9, sel_foreignPropertyForProperty_entityClass_, v6, a4);
+  v7 = objc_msgSendSuper2(&v9, sel_foreignPropertyForProperty_entityClass_, propertyCopy, class);
   if (!v7)
   {
-    if (objc_opt_class() == a4)
+    if (objc_opt_class() == class)
     {
-      v7 = [ML3TrackForeignPropertyForML3GenreProperties objectForKey:v6];
+      v7 = [ML3TrackForeignPropertyForML3GenreProperties objectForKey:propertyCopy];
     }
 
     else
@@ -230,10 +230,10 @@ LABEL_13:
   return v7;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [ML3GenreJoinsForProperties objectForKey:v4];
+  propertyCopy = property;
+  v5 = [ML3GenreJoinsForProperties objectForKey:propertyCopy];
   v6 = v5;
   if (v5)
   {
@@ -242,9 +242,9 @@ LABEL_13:
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___ML3Genre;
-    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, v4);
+    v7 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, propertyCopy);
   }
 
   v8 = v7;
@@ -273,8 +273,8 @@ LABEL_13:
   v4 = objc_alloc_init(MIPLibraryIdentifier);
   [(MIPLibraryIdentifier *)v4 setLibraryId:self->super.super._persistentID];
   WeakRetained = objc_loadWeakRetained(&self->super.super._library);
-  v6 = [WeakRetained libraryUID];
-  [(MIPLibraryIdentifier *)v4 setLibraryName:v6];
+  libraryUID = [WeakRetained libraryUID];
+  [(MIPLibraryIdentifier *)v4 setLibraryName:libraryUID];
 
   [(MIPMultiverseIdentifier *)v3 addLibraryIdentifiers:v4];
   v11[0] = @"genre";
@@ -286,11 +286,11 @@ LABEL_13:
   return v3;
 }
 
-+ (id)protocolItemWithProperties:(id)a3 inLibrary:(id)a4
++ (id)protocolItemWithProperties:(id)properties inLibrary:(id)library
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = objc_alloc_init(MIPGenre);
-  v6 = [v4 objectForKey:@"genre"];
+  v6 = [propertiesCopy objectForKey:@"genre"];
 
   if ([v6 length])
   {

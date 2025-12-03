@@ -1,28 +1,28 @@
 @interface NTKColtanFaceBundle
-- (id)_sortableFacesForDevice:(id)a3;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
+- (id)_sortableFacesForDevice:(id)device;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKColtanFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_opt_class();
-  v5 = [v4 identifier];
-  v6 = [v4 analyticsIdentifier];
-  v7 = [NTKColtanAnalogFace bundledFaceWithIdentifier:v5 analyticsIdentifier:v6 forDevice:v3 initCustomization:0];
+  identifier = [v4 identifier];
+  analyticsIdentifier = [v4 analyticsIdentifier];
+  v7 = [NTKColtanAnalogFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v7;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -37,23 +37,23 @@
   return v3;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if (([v4 supportsPDRCapability:3101771132] & 1) != 0 || (objc_msgSend(v4, "supportsPDRCapability:", 360081074) & 1) != 0 || !objc_msgSend(v4, "supportsPDRCapability:", 3049862277))
+  deviceCopy = device;
+  if (([deviceCopy supportsPDRCapability:3101771132] & 1) != 0 || (objc_msgSend(deviceCopy, "supportsPDRCapability:", 360081074) & 1) != 0 || !objc_msgSend(deviceCopy, "supportsPDRCapability:", 3049862277))
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v5 = [(NTKColtanFaceBundle *)self _sortableFacesForDevice:v4];
+    v5 = [(NTKColtanFaceBundle *)self _sortableFacesForDevice:deviceCopy];
   }
 
   return v5;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_10A90;
   v6 = &off_10AA8;
@@ -62,14 +62,14 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (NTKShowGalleryLiteUI())
   {
     v7.receiver = self;
     v7.super_class = NTKColtanFaceBundle;
-    v5 = [(NTKColtanFaceBundle *)&v7 galleryFacesForDevice:v4];
+    v5 = [(NTKColtanFaceBundle *)&v7 galleryFacesForDevice:deviceCopy];
     [v5 enumerateObjectsUsingBlock:&stru_10490];
   }
 
@@ -81,9 +81,9 @@
   return v5;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &off_10AC0;
     v5[1] = &off_10B08;
@@ -100,9 +100,9 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     return &off_10C98;
   }
@@ -113,9 +113,9 @@
   }
 }
 
-- (id)_sortableFacesForDevice:(id)a3
+- (id)_sortableFacesForDevice:(id)device
 {
-  v3 = [(NTKColtanFaceBundle *)self defaultFaceForDevice:a3];
+  v3 = [(NTKColtanFaceBundle *)self defaultFaceForDevice:device];
   v4 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v3 priority:1200];
   v5 = v4;
   if (v4)

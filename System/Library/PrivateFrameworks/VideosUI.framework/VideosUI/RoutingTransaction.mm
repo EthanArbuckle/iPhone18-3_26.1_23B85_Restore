@@ -1,10 +1,10 @@
 @interface RoutingTransaction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation RoutingTransaction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   sub_1E40C3B00(v5);

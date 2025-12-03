@@ -1,25 +1,25 @@
 @interface APEventDatabaseTelemetryDelivery
-- (APEventDatabaseTelemetryDelivery)initWithManager:(id)a3 telemetryClass:(Class)a4;
+- (APEventDatabaseTelemetryDelivery)initWithManager:(id)manager telemetryClass:(Class)class;
 - (id)_databaseDirectorySizeInKB;
 - (id)_totalAdInstanceCount;
 - (id)_totalEventsCount;
-- (unint64_t)_folderSizeAtPath:(id)a3;
+- (unint64_t)_folderSizeAtPath:(id)path;
 - (void)sendEventDatabaseCoreAnalytics;
 @end
 
 @implementation APEventDatabaseTelemetryDelivery
 
-- (APEventDatabaseTelemetryDelivery)initWithManager:(id)a3 telemetryClass:(Class)a4
+- (APEventDatabaseTelemetryDelivery)initWithManager:(id)manager telemetryClass:(Class)class
 {
-  v7 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = APEventDatabaseTelemetryDelivery;
   v8 = [(APEventDatabaseTelemetryDelivery *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_databaseManager, a3);
-    objc_storeStrong(&v9->_telemetryClass, a4);
+    objc_storeStrong(&v8->_databaseManager, manager);
+    objc_storeStrong(&v9->_telemetryClass, class);
   }
 
   return v9;
@@ -31,22 +31,22 @@
   if ([v3 actionStoreEnabled])
   {
     v4 = +[NSMutableDictionary dictionary];
-    v5 = [(APEventDatabaseTelemetryDelivery *)self _totalEventsCount];
-    if (v5)
+    _totalEventsCount = [(APEventDatabaseTelemetryDelivery *)self _totalEventsCount];
+    if (_totalEventsCount)
     {
-      [v4 setObject:v5 forKey:@"TotalEvents"];
+      [v4 setObject:_totalEventsCount forKey:@"TotalEvents"];
     }
 
-    v6 = [(APEventDatabaseTelemetryDelivery *)self _totalAdInstanceCount];
-    if (v6)
+    _totalAdInstanceCount = [(APEventDatabaseTelemetryDelivery *)self _totalAdInstanceCount];
+    if (_totalAdInstanceCount)
     {
-      [v4 setObject:v6 forKey:@"TotalAds"];
+      [v4 setObject:_totalAdInstanceCount forKey:@"TotalAds"];
     }
 
-    v7 = [(APEventDatabaseTelemetryDelivery *)self _databaseDirectorySizeInKB];
-    if (v7)
+    _databaseDirectorySizeInKB = [(APEventDatabaseTelemetryDelivery *)self _databaseDirectorySizeInKB];
+    if (_databaseDirectorySizeInKB)
     {
-      [v4 setObject:v7 forKey:@"DBFilesize"];
+      [v4 setObject:_databaseDirectorySizeInKB forKey:@"DBFilesize"];
     }
 
     v8 = APLogForCategory();
@@ -57,9 +57,9 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Event Database Core Analytics, payload: %{public}@", &v11, 0xCu);
     }
 
-    v9 = [(APEventDatabaseTelemetryDelivery *)self telemetryClass];
+    telemetryClass = [(APEventDatabaseTelemetryDelivery *)self telemetryClass];
     v10 = [NSDictionary dictionaryWithDictionary:v4];
-    [(objc_class *)v9 sendEvent:@"EventCollectionDatabase" customPayload:v10];
+    [(objc_class *)telemetryClass sendEvent:@"EventCollectionDatabase" customPayload:v10];
   }
 
   else
@@ -76,8 +76,8 @@
 - (id)_databaseDirectorySizeInKB
 {
   v3 = [APDatabasePath pathForName:@"APDatabase"];
-  v4 = [v3 databaseDirectory];
-  v5 = [(APEventDatabaseTelemetryDelivery *)self _folderSizeAtPath:v4];
+  databaseDirectory = [v3 databaseDirectory];
+  v5 = [(APEventDatabaseTelemetryDelivery *)self _folderSizeAtPath:databaseDirectory];
 
   if (v5)
   {
@@ -87,16 +87,16 @@
   return v5;
 }
 
-- (unint64_t)_folderSizeAtPath:(id)a3
+- (unint64_t)_folderSizeAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
   v38 = 0;
-  if ([v4 fileExistsAtPath:v3])
+  if ([v4 fileExistsAtPath:pathCopy])
   {
     v37 = 0;
     v31 = v4;
-    v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v37];
+    v5 = [v4 contentsOfDirectoryAtPath:pathCopy error:&v37];
     v6 = v37;
     v7 = [v5 mutableCopy];
 
@@ -145,21 +145,21 @@ LABEL_24:
             v17 = *(*(&v33 + 1) + 8 * i);
             if ([v17 rangeOfString:v15] == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v18 = [v3 stringByAppendingPathComponent:v17];
+              v18 = [pathCopy stringByAppendingPathComponent:v17];
               if ([v4 fileExistsAtPath:v18 isDirectory:&v38] && v38 == 1)
               {
-                v19 = [(APEventDatabaseTelemetryDelivery *)self _folderSizeAtPath:v18];
+                fileSize = [(APEventDatabaseTelemetryDelivery *)self _folderSizeAtPath:v18];
               }
 
               else
               {
-                v20 = v3;
+                v20 = pathCopy;
                 v21 = v15;
                 v22 = v20;
                 v32 = 0;
                 v23 = [v4 attributesOfItemAtPath:v18 error:&v32];
                 v6 = v32;
-                v19 = [v23 fileSize];
+                fileSize = [v23 fileSize];
 
                 if (v6)
                 {
@@ -172,7 +172,7 @@ LABEL_24:
                     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Error couldn't get file size, error: %{public}@", buf, 0xCu);
                   }
 
-                  v3 = v22;
+                  pathCopy = v22;
                   v7 = v28;
                   v8 = v30;
                   goto LABEL_24;
@@ -182,10 +182,10 @@ LABEL_24:
                 v11 = v30;
                 v4 = v31;
                 v15 = v21;
-                v3 = v24;
+                pathCopy = v24;
               }
 
-              v10 += v19;
+              v10 += fileSize;
             }
           }
 
@@ -219,16 +219,16 @@ LABEL_27:
 
 - (id)_totalEventsCount
 {
-  v2 = [(APEventDatabaseTelemetryDelivery *)self databaseManager];
-  v3 = [v2 getTableForClass:objc_opt_class()];
+  databaseManager = [(APEventDatabaseTelemetryDelivery *)self databaseManager];
+  v3 = [databaseManager getTableForClass:objc_opt_class()];
 
   if (v3)
   {
-    v4 = [v3 allEventsCount];
-    v5 = v4;
-    if (v4)
+    allEventsCount = [v3 allEventsCount];
+    v5 = allEventsCount;
+    if (allEventsCount)
     {
-      v5 = v4;
+      v5 = allEventsCount;
       v6 = v5;
     }
 
@@ -262,16 +262,16 @@ LABEL_27:
 
 - (id)_totalAdInstanceCount
 {
-  v2 = [(APEventDatabaseTelemetryDelivery *)self databaseManager];
-  v3 = [v2 getTableForClass:objc_opt_class()];
+  databaseManager = [(APEventDatabaseTelemetryDelivery *)self databaseManager];
+  v3 = [databaseManager getTableForClass:objc_opt_class()];
 
   if (v3)
   {
-    v4 = [v3 allAdInstanceCount];
-    v5 = v4;
-    if (v4)
+    allAdInstanceCount = [v3 allAdInstanceCount];
+    v5 = allAdInstanceCount;
+    if (allAdInstanceCount)
     {
-      v5 = v4;
+      v5 = allAdInstanceCount;
       v6 = v5;
     }
 

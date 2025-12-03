@@ -1,38 +1,38 @@
 @interface PKPassTileStateGroup
-+ (id)_createDefaultDashboardGroupStateWithMetadata:(id)a3;
-- (BOOL)_setUpWithDictionary:(id)a3;
-- (BOOL)isEqualToUnresolvedState:(id)a3;
-- (PKPassTileStateGroup)initWithCoder:(id)a3;
-- (id)createResolvedStateWithBundle:(id)a3 privateBundle:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)_createDefaultDashboardGroupStateWithMetadata:(id)metadata;
+- (BOOL)_setUpWithDictionary:(id)dictionary;
+- (BOOL)isEqualToUnresolvedState:(id)state;
+- (PKPassTileStateGroup)initWithCoder:(id)coder;
+- (id)createResolvedStateWithBundle:(id)bundle privateBundle:(id)privateBundle;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileStateGroup
 
-+ (id)_createDefaultDashboardGroupStateWithMetadata:(id)a3
++ (id)_createDefaultDashboardGroupStateWithMetadata:(id)metadata
 {
   v3 = [PKPassTileState _createWithType:3];
-  v4 = [v3 stateTypeGroup];
+  stateTypeGroup = [v3 stateTypeGroup];
 
-  [v4 setEnabled:1];
-  v5 = [v4 createResolvedStateWithBundle:0 privateBundle:0];
+  [stateTypeGroup setEnabled:1];
+  v5 = [stateTypeGroup createResolvedStateWithBundle:0 privateBundle:0];
 
   return v5;
 }
 
-- (BOOL)_setUpWithDictionary:(id)a3
+- (BOOL)_setUpWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKPassTileStateGroup;
-  v5 = [(PKPassTileState *)&v11 _setUpWithDictionary:v4];
+  v5 = [(PKPassTileState *)&v11 _setUpWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"header"];
+    v6 = [dictionaryCopy PKStringForKey:@"header"];
     header = self->_header;
     self->_header = v6;
 
-    v8 = [v4 PKStringForKey:@"footer"];
+    v8 = [dictionaryCopy PKStringForKey:@"footer"];
     footer = self->_footer;
     self->_footer = v8;
   }
@@ -40,18 +40,18 @@
   return v5;
 }
 
-- (id)createResolvedStateWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedStateWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
   v14.receiver = self;
   v14.super_class = PKPassTileStateGroup;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPassTileState *)&v14 createResolvedStateWithBundle:v7 privateBundle:v6];
-  v9 = PKLocalizedPassStringForPassBundle(self->_header, v7, v6);
+  privateBundleCopy = privateBundle;
+  bundleCopy = bundle;
+  v8 = [(PKPassTileState *)&v14 createResolvedStateWithBundle:bundleCopy privateBundle:privateBundleCopy];
+  v9 = PKLocalizedPassStringForPassBundle(self->_header, bundleCopy, privateBundleCopy);
   v10 = v8[8];
   v8[8] = v9;
 
-  v11 = PKLocalizedPassStringForPassBundle(self->_footer, v7, v6);
+  v11 = PKLocalizedPassStringForPassBundle(self->_footer, bundleCopy, privateBundleCopy);
 
   v12 = v8[9];
   v8[9] = v11;
@@ -59,31 +59,31 @@
   return v8;
 }
 
-- (PKPassTileStateGroup)initWithCoder:(id)a3
+- (PKPassTileStateGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKPassTileStateGroup;
-  v5 = [(PKPassTileState *)&v17 initWithCoder:v4];
+  v5 = [(PKPassTileState *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"header"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"header"];
     header = v5->_header;
     v5->_header = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"footer"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"footer"];
     footer = v5->_footer;
     v5->_footer = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionTitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionTitle"];
     headerActionTitle = v5->_headerActionTitle;
     v5->_headerActionTitle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"footerActionTitle"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"footerActionTitle"];
     footerActionTitle = v5->_footerActionTitle;
     v5->_footerActionTitle = v12;
 
-    v14 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"footerActions"];
+    v14 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"footerActions"];
     footerActions = v5->_footerActions;
     v5->_footerActions = v14;
   }
@@ -91,27 +91,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassTileStateGroup;
-  v4 = a3;
-  [(PKPassTileState *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_header forKey:{@"header", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_footer forKey:@"footer"];
-  [v4 encodeObject:self->_headerActionTitle forKey:@"actionTitle"];
-  [v4 encodeObject:self->_footerActionTitle forKey:@"footerActionTitle"];
-  [v4 encodeObject:self->_footerActions forKey:@"footerActions"];
+  coderCopy = coder;
+  [(PKPassTileState *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_header forKey:{@"header", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_footer forKey:@"footer"];
+  [coderCopy encodeObject:self->_headerActionTitle forKey:@"actionTitle"];
+  [coderCopy encodeObject:self->_footerActionTitle forKey:@"footerActionTitle"];
+  [coderCopy encodeObject:self->_footerActions forKey:@"footerActions"];
 }
 
-- (BOOL)isEqualToUnresolvedState:(id)a3
+- (BOOL)isEqualToUnresolvedState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v17.receiver = self;
   v17.super_class = PKPassTileStateGroup;
-  if ([(PKPassTileState *)&v17 isEqualToUnresolvedState:v4])
+  if ([(PKPassTileState *)&v17 isEqualToUnresolvedState:stateCopy])
   {
-    v5 = v4;
+    v5 = stateCopy;
     header = self->_header;
     v7 = v5[8];
     v8 = header;

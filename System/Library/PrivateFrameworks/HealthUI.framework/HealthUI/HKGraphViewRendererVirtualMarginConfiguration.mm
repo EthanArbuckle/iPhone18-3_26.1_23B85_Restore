@@ -1,20 +1,20 @@
 @interface HKGraphViewRendererVirtualMarginConfiguration
-- (HKGraphViewRendererVirtualMarginConfiguration)initWithVirtualLeftMarginWidth:(double)a3 virtualRightMarginWidth:(double)a4 virtualLeftMarginStyle:(int64_t)a5 virtualRightMarginStyle:(int64_t)a6;
+- (HKGraphViewRendererVirtualMarginConfiguration)initWithVirtualLeftMarginWidth:(double)width virtualRightMarginWidth:(double)marginWidth virtualLeftMarginStyle:(int64_t)style virtualRightMarginStyle:(int64_t)marginStyle;
 @end
 
 @implementation HKGraphViewRendererVirtualMarginConfiguration
 
-- (HKGraphViewRendererVirtualMarginConfiguration)initWithVirtualLeftMarginWidth:(double)a3 virtualRightMarginWidth:(double)a4 virtualLeftMarginStyle:(int64_t)a5 virtualRightMarginStyle:(int64_t)a6
+- (HKGraphViewRendererVirtualMarginConfiguration)initWithVirtualLeftMarginWidth:(double)width virtualRightMarginWidth:(double)marginWidth virtualLeftMarginStyle:(int64_t)style virtualRightMarginStyle:(int64_t)marginStyle
 {
   v11.receiver = self;
   v11.super_class = HKGraphViewRendererVirtualMarginConfiguration;
   result = [(HKGraphViewRendererVirtualMarginConfiguration *)&v11 init];
   if (result)
   {
-    result->_virtualLeftMarginWidth = a3;
-    result->_virtualRightMarginWidth = a4;
-    result->_virtualLeftMarginStyle = a5;
-    result->_virtualRightMarginStyle = a6;
+    result->_virtualLeftMarginWidth = width;
+    result->_virtualRightMarginWidth = marginWidth;
+    result->_virtualLeftMarginStyle = style;
+    result->_virtualRightMarginStyle = marginStyle;
   }
 
   return result;

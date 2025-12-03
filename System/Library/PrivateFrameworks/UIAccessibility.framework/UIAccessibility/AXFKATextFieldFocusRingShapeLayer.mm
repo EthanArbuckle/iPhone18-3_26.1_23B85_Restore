@@ -8,32 +8,32 @@
 {
   if ([(AXFKAFocusRingShapeLayer *)self kind]== 1 || ![(AXFKAFocusRingShapeLayer *)self kind])
   {
-    v4 = [(AXFKAFocusRingShapeLayer *)self tintColor];
-    v10 = v4;
-    if (v4)
+    tintColor = [(AXFKAFocusRingShapeLayer *)self tintColor];
+    v10 = tintColor;
+    if (tintColor)
     {
-      v2 = [(AXFKAFocusRingShapeLayer *)self bottomFocusRingColorForTintColor:v4];
-      v5 = [v2 CGColor];
+      v2 = [(AXFKAFocusRingShapeLayer *)self bottomFocusRingColorForTintColor:tintColor];
+      cGColor = [v2 CGColor];
     }
 
     else
     {
-      v5 = 0;
+      cGColor = 0;
     }
 
-    v6 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v6 setStrokeColor:v5];
+    bottomBorderLayer = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer setStrokeColor:cGColor];
 
     if (v10)
     {
     }
 
-    v7 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    bottomBorderLayer2 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
     LODWORD(v8) = 0.25;
-    [v7 setOpacity:v8];
+    [bottomBorderLayer2 setOpacity:v8];
 
-    v9 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
-    [v9 setUnscaledLineWidth:3.0];
+    bottomBorderLayer3 = [(AXFKAFocusRingShapeLayer *)self bottomBorderLayer];
+    [bottomBorderLayer3 setUnscaledLineWidth:3.0];
 
     [(AXFKAFocusRingShapeLayer *)self _updateBottomLayerPath];
   }

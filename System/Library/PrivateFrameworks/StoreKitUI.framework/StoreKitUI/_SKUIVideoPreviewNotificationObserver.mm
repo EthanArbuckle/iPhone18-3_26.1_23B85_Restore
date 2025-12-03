@@ -1,13 +1,13 @@
 @interface _SKUIVideoPreviewNotificationObserver
-- (_SKUIVideoPreviewNotificationObserver)initWithObservers:(id)a3;
+- (_SKUIVideoPreviewNotificationObserver)initWithObservers:(id)observers;
 - (void)dealloc;
 @end
 
 @implementation _SKUIVideoPreviewNotificationObserver
 
-- (_SKUIVideoPreviewNotificationObserver)initWithObservers:(id)a3
+- (_SKUIVideoPreviewNotificationObserver)initWithObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -25,7 +25,7 @@
   v13 = [(_SKUIVideoPreviewNotificationObserver *)&v17 init];
   if (v13)
   {
-    v14 = [v4 copy];
+    v14 = [observersCopy copy];
     observers = v13->_observers;
     v13->_observers = v14;
   }
@@ -36,7 +36,7 @@
 - (void)dealloc
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -57,7 +57,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [v3 removeObserver:*(*(&v10 + 1) + 8 * v8++)];
+        [defaultCenter removeObserver:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);

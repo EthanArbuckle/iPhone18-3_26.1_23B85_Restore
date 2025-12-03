@@ -1,19 +1,19 @@
 @interface SFDeviceAssetRequestConfiguration
-- (SFDeviceAssetRequestConfiguration)initWithQueryResultHandler:(id)a3;
+- (SFDeviceAssetRequestConfiguration)initWithQueryResultHandler:(id)handler;
 - (id)description;
 @end
 
 @implementation SFDeviceAssetRequestConfiguration
 
-- (SFDeviceAssetRequestConfiguration)initWithQueryResultHandler:(id)a3
+- (SFDeviceAssetRequestConfiguration)initWithQueryResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = SFDeviceAssetRequestConfiguration;
   v5 = [(SFDeviceAssetRequestConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     queryResultHandler = v5->_queryResultHandler;
     v5->_queryResultHandler = v6;
   }
@@ -37,11 +37,11 @@
     v3 = v6;
   }
 
-  v7 = [(SFDeviceAssetRequestConfiguration *)self downloadCompletionHandler];
+  downloadCompletionHandler = [(SFDeviceAssetRequestConfiguration *)self downloadCompletionHandler];
 
-  if (v7)
+  if (downloadCompletionHandler)
   {
-    v8 = [(SFDeviceAssetRequestConfiguration *)self downloadCompletionHandler];
+    downloadCompletionHandler2 = [(SFDeviceAssetRequestConfiguration *)self downloadCompletionHandler];
     NSAppendPrintF();
     v9 = v3;
 

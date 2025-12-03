@@ -1,59 +1,59 @@
 @interface HKMCOnboardingCompletionInfo
-- (HKMCOnboardingCompletionInfo)initWithUserEnteredCycleLength:(id)a3 userEnteredPeriodLength:(id)a4 userEnteredLastPeriodStartDay:(id)a5 addedCycleFactors:(id)a6 deletedCycleFactors:(id)a7 menstruationProjectionsEnabled:(BOOL)a8 fertileWindowProjectionsEnabled:(BOOL)a9 deviationDetectionEnabled:(BOOL)a10 fertilityTrackingDisplayTypesVisible:(BOOL)a11 sexualActivityDisplayTypeVisible:(BOOL)a12 heartRateInputSupportedCountryCode:(id)a13 deviationDetectionSupportedCountryCode:(id)a14 wristTemperatureInputSupportedCountryCode:(id)a15 heartRateInputEnabled:(id)a16 wristTemperatureInputEnabled:(id)a17;
+- (HKMCOnboardingCompletionInfo)initWithUserEnteredCycleLength:(id)length userEnteredPeriodLength:(id)periodLength userEnteredLastPeriodStartDay:(id)day addedCycleFactors:(id)factors deletedCycleFactors:(id)cycleFactors menstruationProjectionsEnabled:(BOOL)enabled fertileWindowProjectionsEnabled:(BOOL)projectionsEnabled deviationDetectionEnabled:(BOOL)self0 fertilityTrackingDisplayTypesVisible:(BOOL)self1 sexualActivityDisplayTypeVisible:(BOOL)self2 heartRateInputSupportedCountryCode:(id)self3 deviationDetectionSupportedCountryCode:(id)self4 wristTemperatureInputSupportedCountryCode:(id)self5 heartRateInputEnabled:(id)self6 wristTemperatureInputEnabled:(id)self7;
 @end
 
 @implementation HKMCOnboardingCompletionInfo
 
-- (HKMCOnboardingCompletionInfo)initWithUserEnteredCycleLength:(id)a3 userEnteredPeriodLength:(id)a4 userEnteredLastPeriodStartDay:(id)a5 addedCycleFactors:(id)a6 deletedCycleFactors:(id)a7 menstruationProjectionsEnabled:(BOOL)a8 fertileWindowProjectionsEnabled:(BOOL)a9 deviationDetectionEnabled:(BOOL)a10 fertilityTrackingDisplayTypesVisible:(BOOL)a11 sexualActivityDisplayTypeVisible:(BOOL)a12 heartRateInputSupportedCountryCode:(id)a13 deviationDetectionSupportedCountryCode:(id)a14 wristTemperatureInputSupportedCountryCode:(id)a15 heartRateInputEnabled:(id)a16 wristTemperatureInputEnabled:(id)a17
+- (HKMCOnboardingCompletionInfo)initWithUserEnteredCycleLength:(id)length userEnteredPeriodLength:(id)periodLength userEnteredLastPeriodStartDay:(id)day addedCycleFactors:(id)factors deletedCycleFactors:(id)cycleFactors menstruationProjectionsEnabled:(BOOL)enabled fertileWindowProjectionsEnabled:(BOOL)projectionsEnabled deviationDetectionEnabled:(BOOL)self0 fertilityTrackingDisplayTypesVisible:(BOOL)self1 sexualActivityDisplayTypeVisible:(BOOL)self2 heartRateInputSupportedCountryCode:(id)self3 deviationDetectionSupportedCountryCode:(id)self4 wristTemperatureInputSupportedCountryCode:(id)self5 heartRateInputEnabled:(id)self6 wristTemperatureInputEnabled:(id)self7
 {
-  v48 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
-  v25 = a13;
-  v47 = a14;
-  v26 = a15;
-  v27 = a16;
-  v28 = a17;
+  lengthCopy = length;
+  periodLengthCopy = periodLength;
+  dayCopy = day;
+  factorsCopy = factors;
+  cycleFactorsCopy = cycleFactors;
+  codeCopy = code;
+  countryCodeCopy = countryCode;
+  supportedCountryCodeCopy = supportedCountryCode;
+  inputEnabledCopy = inputEnabled;
+  temperatureInputEnabledCopy = temperatureInputEnabled;
   v49.receiver = self;
   v49.super_class = HKMCOnboardingCompletionInfo;
   v29 = [(HKMCOnboardingCompletionInfo *)&v49 init];
   if (v29)
   {
-    v30 = [v48 copy];
+    v30 = [lengthCopy copy];
     userEnteredCycleLength = v29->_userEnteredCycleLength;
     v29->_userEnteredCycleLength = v30;
 
-    v32 = [v21 copy];
+    v32 = [periodLengthCopy copy];
     userEnteredPeriodLength = v29->_userEnteredPeriodLength;
     v29->_userEnteredPeriodLength = v32;
 
-    v34 = [v22 copy];
+    v34 = [dayCopy copy];
     userEnteredLastPeriodStartDay = v29->_userEnteredLastPeriodStartDay;
     v29->_userEnteredLastPeriodStartDay = v34;
 
-    v36 = [v23 copy];
+    v36 = [factorsCopy copy];
     addedCycleFactors = v29->_addedCycleFactors;
     v29->_addedCycleFactors = v36;
 
-    v38 = [v24 copy];
+    v38 = [cycleFactorsCopy copy];
     deletedCycleFactors = v29->_deletedCycleFactors;
     v29->_deletedCycleFactors = v38;
 
-    v29->_menstruationProjectionsEnabled = a8;
-    v29->_fertileWindowProjectionsEnabled = a9;
-    v29->_deviationDetectionEnabled = a10;
-    v29->_fertilityTrackingDisplayTypesVisible = a11;
-    v29->_sexualActivityDisplayTypeVisible = a12;
-    objc_storeStrong(&v29->_heartRateInputSupportedCountryCode, a13);
-    objc_storeStrong(&v29->_deviationDetectionSupportedCountryCode, a14);
-    objc_storeStrong(&v29->_wristTemperatureInputSupportedCountryCode, a15);
-    v40 = [v27 copy];
+    v29->_menstruationProjectionsEnabled = enabled;
+    v29->_fertileWindowProjectionsEnabled = projectionsEnabled;
+    v29->_deviationDetectionEnabled = detectionEnabled;
+    v29->_fertilityTrackingDisplayTypesVisible = visible;
+    v29->_sexualActivityDisplayTypeVisible = typeVisible;
+    objc_storeStrong(&v29->_heartRateInputSupportedCountryCode, code);
+    objc_storeStrong(&v29->_deviationDetectionSupportedCountryCode, countryCode);
+    objc_storeStrong(&v29->_wristTemperatureInputSupportedCountryCode, supportedCountryCode);
+    v40 = [inputEnabledCopy copy];
     heartRateInputEnabled = v29->_heartRateInputEnabled;
     v29->_heartRateInputEnabled = v40;
 
-    v42 = [v28 copy];
+    v42 = [temperatureInputEnabledCopy copy];
     wristTemperatureInputEnabled = v29->_wristTemperatureInputEnabled;
     v29->_wristTemperatureInputEnabled = v42;
   }

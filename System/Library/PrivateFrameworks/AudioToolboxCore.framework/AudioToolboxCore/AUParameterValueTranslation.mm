@@ -1,7 +1,7 @@
 @interface AUParameterValueTranslation
-- (AUParameterValueTranslation)initWithCoder:(id)a3;
+- (AUParameterValueTranslation)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AUParameterValueTranslation
@@ -13,40 +13,40 @@
   [(AUParameterValueTranslation *)&v2 dealloc];
 }
 
-- (AUParameterValueTranslation)initWithCoder:(id)a3
+- (AUParameterValueTranslation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AUParameterValueTranslation;
   v5 = [(AUParameterValueTranslation *)&v12 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"otherDesc"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"otherDesc"];
     otherDesc = v5->_otherDesc;
     v5->_otherDesc = v7;
 
-    v5->_otherParamID = [v4 decodeIntForKey:@"otherParamID"];
-    [v4 decodeFloatForKey:@"otherValue"];
+    v5->_otherParamID = [coderCopy decodeIntForKey:@"otherParamID"];
+    [coderCopy decodeFloatForKey:@"otherValue"];
     v5->_otherValue = v9;
-    v5->_auParamID = [v4 decodeInt64ForKey:@"auParamID"];
-    [v4 decodeFloatForKey:@"auValue"];
+    v5->_auParamID = [coderCopy decodeInt64ForKey:@"auParamID"];
+    [coderCopy decodeFloatForKey:@"auValue"];
     v5->_auValue = v10;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_otherDesc forKey:@"otherDesc"];
-  [v6 encodeInteger:self->_otherParamID forKey:@"otherParamID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_otherDesc forKey:@"otherDesc"];
+  [coderCopy encodeInteger:self->_otherParamID forKey:@"otherParamID"];
   *&v4 = self->_otherValue;
-  [v6 encodeFloat:@"otherValue" forKey:v4];
-  [v6 encodeInt64:self->_auParamID forKey:@"auParamID"];
+  [coderCopy encodeFloat:@"otherValue" forKey:v4];
+  [coderCopy encodeInt64:self->_auParamID forKey:@"auParamID"];
   *&v5 = self->_auValue;
-  [v6 encodeFloat:@"auValue" forKey:v5];
+  [coderCopy encodeFloat:@"auValue" forKey:v5];
 }
 
 @end

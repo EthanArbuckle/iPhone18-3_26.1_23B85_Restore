@@ -12,18 +12,18 @@
     goto LABEL_5;
   }
 
-  v2 = [a1 _collectionView];
+  _collectionView = [self _collectionView];
   NSSelectorFromString(&cfstr_Currenttouch.isa);
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
 LABEL_5:
-    [a1 bounds];
+    [self bounds];
     return v9;
   }
 
-  v3 = [v2 _currentTouch];
-  [v3 locationInView:a1];
+  _currentTouch = [_collectionView _currentTouch];
+  [_currentTouch locationInView:self];
   v5 = v4;
   v7 = v6;
 

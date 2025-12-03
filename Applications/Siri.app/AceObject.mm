@@ -8,14 +8,14 @@
 {
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v3 = [(AceObject *)self extSessionGuid];
-    v4 = [(AceObject *)self extSessionGuidCreatedTimestamp];
-    v5 = v4;
-    if (v3 && v4)
+    extSessionGuid = [(AceObject *)self extSessionGuid];
+    extSessionGuidCreatedTimestamp = [(AceObject *)self extSessionGuidCreatedTimestamp];
+    v5 = extSessionGuidCreatedTimestamp;
+    if (extSessionGuid && extSessionGuidCreatedTimestamp)
     {
       v6 = +[GEOUserSession sharedInstance];
       v7 = objc_alloc_init(GEOUserSessionEntity);
-      [v7 updateSessionIDFromUUIDString:v3];
+      [v7 updateSessionIDFromUUIDString:extSessionGuid];
       [v5 timeIntervalSinceReferenceDate];
       [v7 setSessionCreationTime:?];
       v8 = AFSiriLogContextConnection;
@@ -24,7 +24,7 @@
         v9 = v8;
         v10 = objc_opt_class();
         v11 = v10;
-        v12 = [(AceObject *)self aceId];
+        aceId = [(AceObject *)self aceId];
         *buf = 136315906;
         v28 = "[AceObject(MapsSession) _afui_updateMapsAnalytics]";
         v29 = 2112;
@@ -32,7 +32,7 @@
         v31 = 2112;
         v32 = v10;
         v33 = 2112;
-        v34 = v12;
+        v34 = aceId;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s Setting maps user session to %@ from <%@ %@>", buf, 0x2Au);
       }
 
@@ -50,17 +50,17 @@ LABEL_23:
     }
   }
 
-  v15 = [(AceObject *)self _afui_mapsRelatedChild];
-  v16 = [v15 _afui_updateMapsAnalytics];
+  _afui_mapsRelatedChild = [(AceObject *)self _afui_mapsRelatedChild];
+  _afui_updateMapsAnalytics = [_afui_mapsRelatedChild _afui_updateMapsAnalytics];
 
-  if ((v16 & 1) == 0)
+  if ((_afui_updateMapsAnalytics & 1) == 0)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v3 = [(AceObject *)self _afui_mapsRelatedChildren];
-    v17 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    extSessionGuid = [(AceObject *)self _afui_mapsRelatedChildren];
+    v17 = [extSessionGuid countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v17)
     {
       v18 = v17;
@@ -71,7 +71,7 @@ LABEL_23:
         {
           if (*v23 != v19)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(extSessionGuid);
           }
 
           if ([*(*(&v22 + 1) + 8 * i) _afui_updateMapsAnalytics])
@@ -81,7 +81,7 @@ LABEL_23:
           }
         }
 
-        v18 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v18 = [extSessionGuid countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v18)
         {
           continue;

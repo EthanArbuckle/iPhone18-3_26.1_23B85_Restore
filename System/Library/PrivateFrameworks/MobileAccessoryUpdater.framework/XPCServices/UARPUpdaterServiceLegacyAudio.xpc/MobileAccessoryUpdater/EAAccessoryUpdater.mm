@@ -1,32 +1,32 @@
 @interface EAAccessoryUpdater
-- (BOOL)accessoryVersionFromString:(id)a3 accyVersion:(id *)a4;
+- (BOOL)accessoryVersionFromString:(id)string accyVersion:(id *)version;
 - (BOOL)consentRequired;
 - (BOOL)isRoamingEnabled;
-- (BOOL)prepareFirmwareBundlesFromDropbox:(id)a3 error:(id *)a4;
+- (BOOL)prepareFirmwareBundlesFromDropbox:(id)dropbox error:(id *)error;
 - (BOOL)setSeedParticipationStatusAndContinue;
-- (BOOL)shouldUpdateBeSilent:(id)a3;
-- (EAAccessoryUpdater)initWithCoder:(id)a3;
-- (EAAccessoryUpdater)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6;
-- (id)assetLocationForType:(unint64_t)a3 withTrain:(id)a4;
-- (id)getAssetLocation:(id)a3;
+- (BOOL)shouldUpdateBeSilent:(id)silent;
+- (EAAccessoryUpdater)initWithCoder:(id)coder;
+- (EAAccessoryUpdater)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options;
+- (id)assetLocationForType:(unint64_t)type withTrain:(id)train;
+- (id)getAssetLocation:(id)location;
 - (id)trainName;
-- (int64_t)compareLongVersionString:(id *)a3 withFirmwareVersion:(id *)a4;
+- (int64_t)compareLongVersionString:(id *)string withFirmwareVersion:(id *)version;
 - (void)allowConditionalDownloadOnCellular;
-- (void)applyFirmwareWithOptions:(id)a3;
-- (void)bootstrapWithOptions:(id)a3;
+- (void)applyFirmwareWithOptions:(id)options;
+- (void)bootstrapWithOptions:(id)options;
 - (void)dealloc;
-- (void)downloadFirmwareWithOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)finishWithOptions:(id)a3;
+- (void)downloadFirmwareWithOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
+- (void)finishWithOptions:(id)options;
 - (void)overrideUpdaterOptions;
-- (void)personalizationResponse:(id)a3 response:(id)a4 status:(id)a5;
-- (void)prepareFirmwareWithOptions:(id)a3;
-- (void)updateAccessoryInfoInDatabaseIfNeeded:(id)a3;
+- (void)personalizationResponse:(id)response response:(id)a4 status:(id)status;
+- (void)prepareFirmwareWithOptions:(id)options;
+- (void)updateAccessoryInfoInDatabaseIfNeeded:(id)needed;
 @end
 
 @implementation EAAccessoryUpdater
 
-- (EAAccessoryUpdater)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6
+- (EAAccessoryUpdater)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater initWithDeviceClass:delegate:info:options:]", 118];
   v46.receiver = self;
@@ -39,10 +39,10 @@
     return v12;
   }
 
-  v11->delegate = a4;
+  v11->delegate = delegate;
   p_delegate = &v11->delegate;
-  v11->initOptions = a6;
-  v12->deviceClass = a3;
+  v11->initOptions = options;
+  v12->deviceClass = class;
   v12->localFilePath = 0;
   v12->seedLocations = 0;
   v14 = objc_alloc_init(NSMutableSet);
@@ -63,10 +63,10 @@
     return 0;
   }
 
-  v45 = a5;
+  infoCopy = info;
   v44 = [(NSArray *)v16 objectAtIndex:[(NSArray *)v16 count]- 2];
   mobileAssetType = [[NSString alloc] initWithFormat:@"%@.%@.EA", @"com.apple.MobileAsset.MobileAccessoryUpdate", v44];
-  v18 = copyPlistDeviceEntryFromDeviceClass(a3);
+  v18 = copyPlistDeviceEntryFromDeviceClass(class);
   v12->deviceOptions = v18;
   v19 = [(NSDictionary *)v18 objectForKey:@"AlternateAssetTypes"];
   v20 = v19;
@@ -91,7 +91,7 @@
   }
 
   v22 = [-[NSDictionary objectForKey:](deviceOptions objectForKey:{@"NeedsDeviceIdleCheck", "BOOLValue"}];
-  v23 = [objc_msgSend(a6 objectForKey:{@"DeviceIdleLaunch", "BOOLValue"}];
+  v23 = [objc_msgSend(options objectForKey:{@"DeviceIdleLaunch", "BOOLValue"}];
   if (v22 && (v23 & 1) == 0)
   {
     sub_100015FDC(&v12->delegate);
@@ -143,9 +143,9 @@ LABEL_15:
   v12->restartOnlyUI = [-[NSDictionary objectForKey:](v12->deviceOptions objectForKey:{@"RestartRequiresUIOnly", "BOOLValue"}];
   if (v20)
   {
-    v32 = [(NSMutableArray *)v20 firstObject];
-    v12->mobileAssetType = v32;
-    [(NSMutableArray *)v20 removeObject:v32];
+    firstObject = [(NSMutableArray *)v20 firstObject];
+    v12->mobileAssetType = firstObject;
+    [(NSMutableArray *)v20 removeObject:firstObject];
     mobileAssetType = v12->mobileAssetType;
   }
 
@@ -154,8 +154,8 @@ LABEL_15:
     v12->mobileAssetType = mobileAssetType;
   }
 
-  [(FudPluginDelegate *)v12->delegate log:5 format:@"Initializing EA Updater plugin for deviceClass:%@ asset-name:%@ skipDFU:%d skipByteEscape:%d skipVersionCheck:%d", a3, mobileAssetType, v25, v27, v31];
-  v33 = [[EAFirmwareUpdater alloc] initWithDeviceClass:a3 assetType:v12->mobileAssetType skipDFU:v25 byteEscape:v27 ^ 1 skipReconnect:v29 skipVersionCheck:v31 options:v12->deviceOptions serialNum:[(NSDictionary *)v12->initOptions objectForKeyedSubscript:@"SerialNumber"]];
+  [(FudPluginDelegate *)v12->delegate log:5 format:@"Initializing EA Updater plugin for deviceClass:%@ asset-name:%@ skipDFU:%d skipByteEscape:%d skipVersionCheck:%d", class, mobileAssetType, v25, v27, v31];
+  v33 = [[EAFirmwareUpdater alloc] initWithDeviceClass:class assetType:v12->mobileAssetType skipDFU:v25 byteEscape:v27 ^ 1 skipReconnect:v29 skipVersionCheck:v31 options:v12->deviceOptions serialNum:[(NSDictionary *)v12->initOptions objectForKeyedSubscript:@"SerialNumber"]];
   v12->firmwareUpdater = v33;
   if (!v33)
   {
@@ -168,13 +168,13 @@ LABEL_15:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v35 = v12->deviceOptions;
-    v36 = [(EAFirmwareUpdater *)v34 accessory];
+    accessory = [(EAFirmwareUpdater *)v34 accessory];
     *buf = 136315650;
     v50 = "[EAAccessoryUpdater initWithDeviceClass:delegate:info:options:]";
     v51 = 2112;
     v52 = v35;
     v53 = 2112;
-    v54 = v36;
+    v54 = accessory;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s: deviceOptions: %@, firmwareUpdater accessory: %@", buf, 0x20u);
   }
 
@@ -236,7 +236,7 @@ LABEL_27:
   v47[3] = @"AccessoryIdentifier";
   v48[2] = &off_100031790;
   v48[3] = v44;
-  *v45 = [NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:4];
+  *infoCopy = [NSDictionary dictionaryWithObjects:v48 forKeys:v47 count:4];
   return v12;
 }
 
@@ -249,7 +249,7 @@ LABEL_27:
   [(EAAccessoryUpdater *)&v3 dealloc];
 }
 
-- (void)bootstrapWithOptions:(id)a3
+- (void)bootstrapWithOptions:(id)options
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater bootstrapWithOptions:]", 347];
   delegate = self->delegate;
@@ -259,12 +259,12 @@ LABEL_27:
 
 - (BOOL)setSeedParticipationStatusAndContinue
 {
-  v3 = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] protocolStrings];
-  v4 = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] name];
-  v5 = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] serialNumber];
-  if (v4)
+  protocolStrings = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] protocolStrings];
+  name = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] name];
+  serialNumber = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] serialNumber];
+  if (name)
   {
-    v6 = v5 == 0;
+    v6 = serialNumber == 0;
   }
 
   else
@@ -274,13 +274,13 @@ LABEL_27:
 
   if (!v6)
   {
-    v7 = v5;
-    v32 = v4;
+    v7 = serialNumber;
+    v32 = name;
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v8 = [(NSArray *)v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    v8 = [(NSArray *)protocolStrings countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v8)
     {
       v9 = v8;
@@ -292,7 +292,7 @@ LABEL_27:
         {
           if (*v34 != v10)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(protocolStrings);
           }
 
           v12 = *(*(&v33 + 1) + 8 * i);
@@ -306,7 +306,7 @@ LABEL_27:
           }
         }
 
-        v9 = [(NSArray *)v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v9 = [(NSArray *)protocolStrings countByEnumeratingWithState:&v33 objects:v37 count:16];
         v13 = 0;
         v14 = 0;
         v15 = 0;
@@ -401,14 +401,14 @@ LABEL_17:
   return 1;
 }
 
-- (id)getAssetLocation:(id)a3
+- (id)getAssetLocation:(id)location
 {
-  [a3 objectForKeyedSubscript:kAssetLocationKey];
+  [location objectForKeyedSubscript:kAssetLocationKey];
   v5 = AUDeveloperSettingsURLStringToType();
   if (v5 == 5)
   {
-    v6 = [a3 objectForKeyedSubscript:kBasejumperTrainKey];
-    v7 = [a3 objectForKeyedSubscript:kBasejumperBuildKey];
+    v6 = [location objectForKeyedSubscript:kBasejumperTrainKey];
+    v7 = [location objectForKeyedSubscript:kBasejumperBuildKey];
 
     return [(EAAccessoryUpdater *)self assetLocationForCustomBasejumperTrain:v6 build:v7];
   }
@@ -416,46 +416,46 @@ LABEL_17:
   else
   {
     v8 = v5;
-    if ([a3 objectForKeyedSubscript:kBasejumperBuildKey])
+    if ([location objectForKeyedSubscript:kBasejumperBuildKey])
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = [a3 objectForKeyedSubscript:kBasejumperTrainKey];
+      v9 = [location objectForKeyedSubscript:kBasejumperTrainKey];
     }
 
     return [(EAAccessoryUpdater *)self assetLocationForType:v8 withTrain:v9];
   }
 }
 
-- (void)updateAccessoryInfoInDatabaseIfNeeded:(id)a3
+- (void)updateAccessoryInfoInDatabaseIfNeeded:(id)needed
 {
-  v5 = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] name];
-  v6 = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] firmwareRevision];
-  v7 = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] modelNumber];
-  v12 = [a3 mutableCopy];
+  name = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] name];
+  firmwareRevision = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] firmwareRevision];
+  modelNumber = [(EAAccessory *)[(EAFirmwareUpdater *)self->firmwareUpdater accessory] modelNumber];
+  v12 = [needed mutableCopy];
   v8 = kNameKey;
-  if (([objc_msgSend(a3 objectForKeyedSubscript:{kNameKey), "isEqualToString:", v5}] & 1) == 0)
+  if (([objc_msgSend(needed objectForKeyedSubscript:{kNameKey), "isEqualToString:", name}] & 1) == 0)
   {
-    [v12 setObject:v5 forKeyedSubscript:v8];
+    [v12 setObject:name forKeyedSubscript:v8];
   }
 
   v9 = kActiveVersionKey;
-  if (([objc_msgSend(a3 objectForKeyedSubscript:{kActiveVersionKey), "isEqualToString:", v6}] & 1) == 0)
+  if (([objc_msgSend(needed objectForKeyedSubscript:{kActiveVersionKey), "isEqualToString:", firmwareRevision}] & 1) == 0)
   {
-    [v12 setObject:v6 forKeyedSubscript:v9];
+    [v12 setObject:firmwareRevision forKeyedSubscript:v9];
   }
 
   v10 = kModelNumberKey;
-  if (([objc_msgSend(a3 objectForKeyedSubscript:{kModelNumberKey), "isEqualToString:", v7}] & 1) == 0)
+  if (([objc_msgSend(needed objectForKeyedSubscript:{kModelNumberKey), "isEqualToString:", modelNumber}] & 1) == 0)
   {
-    [v12 setObject:v7 forKeyedSubscript:v10];
+    [v12 setObject:modelNumber forKeyedSubscript:v10];
   }
 
   v11 = kFusingKey;
-  if (([objc_msgSend(a3 objectForKeyedSubscript:{kFusingKey), "isEqualToString:", self->_accessoryFusingType}] & 1) == 0)
+  if (([objc_msgSend(needed objectForKeyedSubscript:{kFusingKey), "isEqualToString:", self->_accessoryFusingType}] & 1) == 0)
   {
     [v12 setObject:self->_accessoryFusingType forKeyedSubscript:v11];
   }
@@ -463,26 +463,26 @@ LABEL_17:
   [+[AUDeveloperSettingsDatabase sharedDatabase](AUDeveloperSettingsDatabase "sharedDatabase")];
 }
 
-- (id)assetLocationForType:(unint64_t)a3 withTrain:(id)a4
+- (id)assetLocationForType:(unint64_t)type withTrain:(id)train
 {
   v5 = 0;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      if (!a3)
+      if (!type)
       {
-        v8 = a4;
-        if (![a4 length])
+        trainCopy = train;
+        if (![train length])
         {
-          v8 = [(EAAccessoryUpdater *)self trainName];
+          trainCopy = [(EAAccessoryUpdater *)self trainName];
         }
 
-        v9 = [NSString stringWithFormat:@"%@/%@", getURLForAssetURLType(), v8];
+        trainCopy = [NSString stringWithFormat:@"%@/%@", getURLForAssetURLType(), trainCopy];
         goto LABEL_21;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         goto LABEL_14;
       }
@@ -490,7 +490,7 @@ LABEL_17:
       goto LABEL_22;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
 LABEL_19:
       URLForAssetURLType = getURLForAssetURLType();
@@ -499,15 +499,15 @@ LABEL_19:
     }
 
 LABEL_18:
-    v9 = getURLForAssetURLType();
+    trainCopy = getURLForAssetURLType();
 LABEL_21:
-    v5 = v9;
+    v5 = trainCopy;
     goto LABEL_22;
   }
 
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    if (a3 != 4 && a3 != 6)
+    if (type != 4 && type != 6)
     {
       goto LABEL_22;
     }
@@ -515,18 +515,18 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
     goto LABEL_19;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
 LABEL_14:
     URLForAssetURLType = getURLForAssetURLType();
     v7 = &kUARPAssetLocationTypeMobileAssetServerAirPodsDeveloperSeed;
 LABEL_20:
-    v9 = [URLForAssetURLType stringByAppendingPathComponent:*v7];
+    trainCopy = [URLForAssetURLType stringByAppendingPathComponent:*v7];
     goto LABEL_21;
   }
 
@@ -553,23 +553,23 @@ LABEL_22:
   }
 }
 
-- (int64_t)compareLongVersionString:(id *)a3 withFirmwareVersion:(id *)a4
+- (int64_t)compareLongVersionString:(id *)string withFirmwareVersion:(id *)version
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater compareLongVersionString:withFirmwareVersion:]", 677];
-  if (a4->var0 > a3->var0)
+  if (version->var0 > string->var0)
   {
     goto LABEL_2;
   }
 
-  if (a4->var0 < a3->var0)
+  if (version->var0 < string->var0)
   {
 LABEL_4:
     v7 = 1;
     goto LABEL_5;
   }
 
-  var1 = a4->var1;
-  v10 = a3->var1;
+  var1 = version->var1;
+  v10 = string->var1;
   if (var1 > v10)
   {
     goto LABEL_2;
@@ -580,8 +580,8 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  var2 = a4->var2;
-  v12 = a3->var2;
+  var2 = version->var2;
+  v12 = string->var2;
   if (var2 > v12)
   {
 LABEL_2:
@@ -594,8 +594,8 @@ LABEL_2:
     goto LABEL_4;
   }
 
-  var3 = a4->var3;
-  v14 = a3->var3;
+  var3 = version->var3;
+  v14 = string->var3;
   v15 = var3 > v14;
   v16 = var3 < v14;
   if (v15)
@@ -609,11 +609,11 @@ LABEL_2:
   }
 
 LABEL_5:
-  [(FudPluginDelegate *)self->delegate log:6 format:@"Comparing Result: %ld, AccessoryVersion: %lld.%lld.%lld.%lld FirmwareVersion: %lld.%lld.%lld.%lld", v7, a3->var0, a3->var1, a3->var2, a3->var3, a4->var0, a4->var1, a4->var2, a4->var3];
+  [(FudPluginDelegate *)self->delegate log:6 format:@"Comparing Result: %ld, AccessoryVersion: %lld.%lld.%lld.%lld FirmwareVersion: %lld.%lld.%lld.%lld", v7, string->var0, string->var1, string->var2, string->var3, version->var0, version->var1, version->var2, version->var3];
   return v7;
 }
 
-- (BOOL)prepareFirmwareBundlesFromDropbox:(id)a3 error:(id *)a4
+- (BOOL)prepareFirmwareBundlesFromDropbox:(id)dropbox error:(id *)error
 {
   p_delegate = &self->delegate;
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater prepareFirmwareBundlesFromDropbox:error:]", 727];
@@ -622,21 +622,21 @@ LABEL_5:
   {
     v16 = @"Not Applicable.";
 LABEL_16:
-    sub_1000160F0(v34, v16, &v34[0]._reserved, a4, &v25);
+    sub_1000160F0(v34, v16, &v34[0]._reserved, error, &v25);
     return v25;
   }
 
   [(FudPluginDelegate *)self->delegate log:5 format:@"%s: attempting to use files from dropbox: %@", "[EAAccessoryUpdater prepareFirmwareBundlesFromDropbox:error:]", self->dropboxPath];
-  v9 = [(EAFirmwareUpdater *)self->firmwareUpdater currentFirmwareVersionOnAcc];
+  currentFirmwareVersionOnAcc = [(EAFirmwareUpdater *)self->firmwareUpdater currentFirmwareVersionOnAcc];
   v32 = 0u;
   v33 = 0u;
-  if (![(EAAccessoryUpdater *)self accessoryVersionFromString:v9 accyVersion:&v32])
+  if (![(EAAccessoryUpdater *)self accessoryVersionFromString:currentFirmwareVersionOnAcc accyVersion:&v32])
   {
     v16 = @"Accessory Firmware Version Reading Error";
     goto LABEL_16;
   }
 
-  [a3 setObject:v9 forKey:@"existingFWVersionOnAccessory"];
+  [dropbox setObject:currentFirmwareVersionOnAcc forKey:@"existingFWVersionOnAccessory"];
   v10 = -[NSArray mutableCopy]([+[NSFileManager defaultManager](NSFileManager contentsOfDirectoryAtURL:"contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:" includingPropertiesForKeys:self->dropboxPath options:v8 error:4, 0], "mutableCopy");
   [v10 sortUsingComparator:&stru_10002CD48];
   if (![v10 count])
@@ -645,8 +645,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v21 = a4;
-  v22 = a3;
+  errorCopy = error;
+  dropboxCopy = dropbox;
   [(FudPluginDelegate *)*p_delegate log:5 format:@"Firmware Bundles (In Descending Oder):%@", v10];
   v30 = 0u;
   v31 = 0u;
@@ -660,7 +660,7 @@ LABEL_13:
 LABEL_14:
     v16 = @"No Firmware Bundle Is Available, either the folder name is incorrect or no firmware bundle has higher firmware version.";
 LABEL_15:
-    a4 = v21;
+    error = errorCopy;
     goto LABEL_16;
   }
 
@@ -705,7 +705,7 @@ LABEL_6:
     }
   }
 
-  [v22 setObject:v27 forKey:@"newFWVersion"];
+  [dropboxCopy setObject:v27 forKey:@"newFWVersion"];
   [(FudPluginDelegate *)*p_delegate log:5 format:@"Using firmware bundle in dropbox: %@", v15];
   if (!v15)
   {
@@ -740,7 +740,7 @@ LABEL_6:
   return 1;
 }
 
-- (void)downloadFirmwareWithOptions:(id)a3
+- (void)downloadFirmwareWithOptions:(id)options
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater downloadFirmwareWithOptions:]", 1125];
   v8[0] = 0;
@@ -749,7 +749,7 @@ LABEL_6:
   v8[3] = sub_100012A50;
   v8[4] = sub_100012A60;
   v8[5] = 0;
-  v4 = [(EAAccessoryUpdater *)self consentRequired];
+  consentRequired = [(EAAccessoryUpdater *)self consentRequired];
   if ([(EAFirmwareUpdater *)self->firmwareUpdater isMultiAssetSession])
   {
     [(FudPluginDelegate *)self->delegate log:3 format:@"%s: multi asset session - download NOP %@", "[EAAccessoryUpdater downloadFirmwareWithOptions:]", self->deviceClass];
@@ -763,7 +763,7 @@ LABEL_6:
     v6[1] = 3221225472;
     v6[2] = sub_100012A6C;
     v6[3] = &unk_10002CD98;
-    v7 = v4;
+    v7 = consentRequired;
     v6[4] = self;
     v6[5] = v8;
     [(EAFirmwareUpdater *)firmwareUpdater downloadAsset:v6];
@@ -772,15 +772,15 @@ LABEL_6:
   _Block_object_dispose(v8, 8);
 }
 
-- (void)personalizationResponse:(id)a3 response:(id)a4 status:(id)a5
+- (void)personalizationResponse:(id)response response:(id)a4 status:(id)status
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater personalizationResponse:response:status:]", 1170];
   firmwareUpdater = self->firmwareUpdater;
 
-  [(EAFirmwareUpdater *)firmwareUpdater personalizationResponse:a4 error:a5];
+  [(EAFirmwareUpdater *)firmwareUpdater personalizationResponse:a4 error:status];
 }
 
-- (void)prepareFirmwareWithOptions:(id)a3
+- (void)prepareFirmwareWithOptions:(id)options
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater prepareFirmwareWithOptions:]", 1183];
   delegate = self->delegate;
@@ -788,7 +788,7 @@ LABEL_6:
   [(FudPluginDelegate *)delegate didPrepare:1 info:0 error:0];
 }
 
-- (void)applyFirmwareWithOptions:(id)a3
+- (void)applyFirmwareWithOptions:(id)options
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater applyFirmwareWithOptions:]", 1192];
   firmwareUpdater = self->firmwareUpdater;
@@ -815,7 +815,7 @@ LABEL_6:
   [(EAFirmwareUpdater *)firmwareUpdater applyFirmware:v8 progress:v7 update:v6 personalization:v5];
 }
 
-- (void)finishWithOptions:(id)a3
+- (void)finishWithOptions:(id)options
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater finishWithOptions:]", 1248];
   [(EAFirmwareUpdater *)self->firmwareUpdater isRestartRequired];
@@ -840,7 +840,7 @@ LABEL_6:
   [(FudPluginDelegate *)delegate didFinish:1 info:v5 error:0];
 }
 
-- (BOOL)shouldUpdateBeSilent:(id)a3
+- (BOOL)shouldUpdateBeSilent:(id)silent
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater shouldUpdateBeSilent:]", 1275];
   firmwareUpdater = self->firmwareUpdater;
@@ -854,16 +854,16 @@ LABEL_6:
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(EAFirmwareUpdater *)self->firmwareUpdater assetLocation];
-  [(FudPluginDelegate *)self->delegate log:7 format:@"%s: asset Location %@", "[EAAccessoryUpdater consentRequired]", v3];
-  if (v3 && [(NSMutableSet *)self->seedLocations count])
+  assetLocation = [(EAFirmwareUpdater *)self->firmwareUpdater assetLocation];
+  [(FudPluginDelegate *)self->delegate log:7 format:@"%s: asset Location %@", "[EAAccessoryUpdater consentRequired]", assetLocation];
+  if (assetLocation && [(NSMutableSet *)self->seedLocations count])
   {
     seedLocations = self->seedLocations;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100013244;
     v7[3] = &unk_10002CE60;
-    v7[4] = v3;
+    v7[4] = assetLocation;
     v7[5] = self;
     v7[6] = &v8;
     [(NSMutableSet *)seedLocations enumerateObjectsUsingBlock:v7];
@@ -880,26 +880,26 @@ LABEL_6:
   return v5 & 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater encodeWithCoder:]", 1442];
-  [a3 encodeObject:self->deviceClass forKey:@"DeviceClass"];
-  [a3 encodeObject:self->mobileAssetType forKey:self->mobileAssetType];
+  [coder encodeObject:self->deviceClass forKey:@"DeviceClass"];
+  [coder encodeObject:self->mobileAssetType forKey:self->mobileAssetType];
   if (self->initOptions)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (BOOL)accessoryVersionFromString:(id)a3 accyVersion:(id *)a4
+- (BOOL)accessoryVersionFromString:(id)string accyVersion:(id *)version
 {
-  if (!a4)
+  if (!version)
   {
     return 0;
   }
 
-  v5 = [a3 componentsSeparatedByString:@"."];
+  v5 = [string componentsSeparatedByString:@"."];
   if ([v5 count] < 4)
   {
     v6 = 0;
@@ -910,7 +910,7 @@ LABEL_6:
     v6 = [objc_msgSend(v5 objectAtIndex:{3), "intValue"}];
   }
 
-  a4->var3 = v6;
+  version->var3 = v6;
   if ([v5 count] < 3)
   {
     v7 = 0;
@@ -921,7 +921,7 @@ LABEL_6:
     v7 = [objc_msgSend(v5 objectAtIndex:{2), "intValue"}];
   }
 
-  a4->var2 = v7;
+  version->var2 = v7;
   if ([v5 count] < 2)
   {
     v8 = 0;
@@ -932,7 +932,7 @@ LABEL_6:
     v8 = [objc_msgSend(v5 objectAtIndex:{1), "intValue"}];
   }
 
-  a4->var1 = v8;
+  version->var1 = v8;
   v9 = [v5 count];
   v10 = v9 != 0;
   if (v9)
@@ -945,7 +945,7 @@ LABEL_6:
     v11 = 0;
   }
 
-  a4->var0 = v11;
+  version->var0 = v11;
   return v10;
 }
 
@@ -1002,16 +1002,16 @@ LABEL_6:
   return v5;
 }
 
-- (EAAccessoryUpdater)initWithCoder:(id)a3
+- (EAAccessoryUpdater)initWithCoder:(id)coder
 {
   [(FudPluginDelegate *)self->delegate log:5 format:@"Entering: %s:%d", "[EAAccessoryUpdater initWithCoder:]", 1389];
   v14.receiver = self;
   v14.super_class = EAAccessoryUpdater;
   v5 = [(EAAccessoryUpdater *)&v14 init];
   v5->delegate = 0;
-  v5->deviceClass = [a3 decodeObjectForKey:@"DeviceClass"];
-  v5->mobileAssetType = [a3 decodeObjectForKey:@"MobileAssetType"];
-  v5->initOptions = [a3 decodeObjectForKey:@"InitOptions"];
+  v5->deviceClass = [coder decodeObjectForKey:@"DeviceClass"];
+  v5->mobileAssetType = [coder decodeObjectForKey:@"MobileAssetType"];
+  v5->initOptions = [coder decodeObjectForKey:@"InitOptions"];
   v6 = copyPlistDeviceEntryFromDeviceClass(v5->deviceClass);
   v5->deviceOptions = v6;
   if (!v6)

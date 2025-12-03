@@ -1,13 +1,13 @@
 @interface CNAPITriageSession
 - (CNAPITriageSession)init;
-- (CNAPITriageSession)initWithRequest:(id)a3;
-- (CNAPITriageSession)initWithRequest:(id)a3 triageLogger:(id)a4 timeProvider:(id)a5;
-- (id)normalizeCollectionOfContacts:(id)a3;
+- (CNAPITriageSession)initWithRequest:(id)request;
+- (CNAPITriageSession)initWithRequest:(id)request triageLogger:(id)logger timeProvider:(id)provider;
+- (id)normalizeCollectionOfContacts:(id)contacts;
 - (void)close;
-- (void)closeWithContacts:(id)a3;
-- (void)closeWithContacts:(id)a3 orError:(id)a4;
-- (void)closeWithError:(id)a3;
-- (void)closeWithResult:(id)a3;
+- (void)closeWithContacts:(id)contacts;
+- (void)closeWithContacts:(id)contacts orError:(id)error;
+- (void)closeWithError:(id)error;
+- (void)closeWithResult:(id)result;
 - (void)open;
 @end
 
@@ -42,37 +42,37 @@
 
 - (CNAPITriageSession)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNAPITriageSession)initWithRequest:(id)a3
+- (CNAPITriageSession)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[CNContactsLoggerProvider defaultProvider];
-  v6 = [v5 apiTriageLogger];
+  apiTriageLogger = [v5 apiTriageLogger];
 
-  v7 = [MEMORY[0x1E6996860] defaultProvider];
-  v8 = [(CNAPITriageSession *)self initWithRequest:v4 triageLogger:v6 timeProvider:v7];
+  defaultProvider = [MEMORY[0x1E6996860] defaultProvider];
+  v8 = [(CNAPITriageSession *)self initWithRequest:requestCopy triageLogger:apiTriageLogger timeProvider:defaultProvider];
 
   return v8;
 }
 
-- (CNAPITriageSession)initWithRequest:(id)a3 triageLogger:(id)a4 timeProvider:(id)a5
+- (CNAPITriageSession)initWithRequest:(id)request triageLogger:(id)logger timeProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  loggerCopy = logger;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = CNAPITriageSession;
   v12 = [(CNAPITriageSession *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_logger, a4);
-    objc_storeStrong(&v13->_timeProvider, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_logger, logger);
+    objc_storeStrong(&v13->_timeProvider, provider);
     v13->_hasClientCalloutTime = 0;
     v14 = v13;
   }
@@ -80,10 +80,10 @@
   return v13;
 }
 
-- (void)closeWithContacts:(id)a3
+- (void)closeWithContacts:(id)contacts
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(CNAPITriageSession *)self normalizeCollectionOfContacts:a3];
+  v4 = [(CNAPITriageSession *)self normalizeCollectionOfContacts:contacts];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -116,11 +116,11 @@
   [(CNAPITriageSession *)self close];
 }
 
-- (id)normalizeCollectionOfContacts:(id)a3
+- (id)normalizeCollectionOfContacts:(id)contacts
 {
-  v3 = a3;
+  contactsCopy = contacts;
   objc_opt_class();
-  v4 = v3;
+  v4 = contactsCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -134,7 +134,7 @@
   v6 = v5;
 
   v7 = v6;
-  v8 = v4;
+  _cn_flatten = v4;
   if (!v7)
   {
     objc_opt_class();
@@ -153,17 +153,17 @@
 
     if (v11)
     {
-      v12 = [v11 allValues];
-      v8 = [v12 _cn_flatten];
+      allValues = [v11 allValues];
+      _cn_flatten = [allValues _cn_flatten];
     }
 
     else
     {
-      v8 = v9;
+      _cn_flatten = v9;
       v13 = &unk_1F09AE0A0;
-      if ([v8 conformsToProtocol:v13])
+      if ([_cn_flatten conformsToProtocol:v13])
       {
-        v14 = v8;
+        v14 = _cn_flatten;
       }
 
       else
@@ -175,55 +175,55 @@
 
       if (!v15)
       {
-        v16 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+        os_log = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log, OS_LOG_TYPE_FAULT))
         {
-          [(CNAPITriageSession *)v8 normalizeCollectionOfContacts:v16];
+          [(CNAPITriageSession *)_cn_flatten normalizeCollectionOfContacts:os_log];
         }
 
-        v8 = MEMORY[0x1E695E0F0];
+        _cn_flatten = MEMORY[0x1E695E0F0];
       }
     }
   }
 
-  return v8;
+  return _cn_flatten;
 }
 
-- (void)closeWithError:(id)a3
+- (void)closeWithError:(id)error
 {
-  [(CNAPITriageLogger *)self->_logger request:self->_request encounteredError:a3];
+  [(CNAPITriageLogger *)self->_logger request:self->_request encounteredError:error];
 
   [(CNAPITriageSession *)self close];
 }
 
-- (void)closeWithResult:(id)a3
+- (void)closeWithResult:(id)result
 {
-  v4 = a3;
-  if ([v4 isSuccess])
+  resultCopy = result;
+  if ([resultCopy isSuccess])
   {
-    v5 = [v4 value];
+    value = [resultCopy value];
 
-    [(CNAPITriageSession *)self closeWithContacts:v5];
+    [(CNAPITriageSession *)self closeWithContacts:value];
   }
 
   else
   {
-    v5 = [v4 error];
+    value = [resultCopy error];
 
-    [(CNAPITriageSession *)self closeWithError:v5];
+    [(CNAPITriageSession *)self closeWithError:value];
   }
 }
 
-- (void)closeWithContacts:(id)a3 orError:(id)a4
+- (void)closeWithContacts:(id)contacts orError:(id)error
 {
-  if (a3)
+  if (contacts)
   {
-    [(CNAPITriageSession *)self closeWithContacts:a3, a4];
+    [(CNAPITriageSession *)self closeWithContacts:contacts, error];
   }
 
   else
   {
-    [(CNAPITriageSession *)self closeWithError:a4];
+    [(CNAPITriageSession *)self closeWithError:error];
   }
 }
 

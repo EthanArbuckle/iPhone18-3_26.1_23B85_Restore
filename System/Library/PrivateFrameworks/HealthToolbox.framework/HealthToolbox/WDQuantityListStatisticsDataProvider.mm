@@ -1,49 +1,49 @@
 @interface WDQuantityListStatisticsDataProvider
-- (id)textForObject:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
+- (id)textForObject:(id)object;
+- (id)titleForSection:(unint64_t)section;
 @end
 
 @implementation WDQuantityListStatisticsDataProvider
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(WDSampleListStatisticsDataProvider *)self displayType];
-  v6 = [(WDSampleListStatisticsDataProvider *)self unitController];
-  v7 = [v6 unitForDisplayType:v5];
+  objectCopy = object;
+  displayType = [(WDSampleListStatisticsDataProvider *)self displayType];
+  unitController = [(WDSampleListStatisticsDataProvider *)self unitController];
+  v7 = [unitController unitForDisplayType:displayType];
 
-  v8 = [v5 objectType];
-  v9 = [v8 aggregationStyle];
+  objectType = [displayType objectType];
+  aggregationStyle = [objectType aggregationStyle];
 
-  if (v9 == 3)
+  if (aggregationStyle == 3)
   {
     v10 = sel_averageQuantity;
   }
 
   else
   {
-    if (v9)
+    if (aggregationStyle)
     {
-      v18 = [v4 minimumQuantity];
-      [v18 doubleValueForUnit:v7];
+      minimumQuantity = [objectCopy minimumQuantity];
+      [minimumQuantity doubleValueForUnit:v7];
       v20 = v19;
 
-      v21 = [v4 maximumQuantity];
-      [v21 doubleValueForUnit:v7];
+      maximumQuantity = [objectCopy maximumQuantity];
+      [maximumQuantity doubleValueForUnit:v7];
       v23 = v22;
 
-      v24 = [v5 presentation];
+      presentation = [displayType presentation];
       v25 = [MEMORY[0x277CCABB0] numberWithDouble:v20];
-      v15 = [v24 adjustedValueForDaemonValue:v25];
+      v15 = [presentation adjustedValueForDaemonValue:v25];
 
-      v26 = [v5 presentation];
+      presentation2 = [displayType presentation];
       v27 = [MEMORY[0x277CCABB0] numberWithDouble:v23];
-      v16 = [v26 adjustedValueForDaemonValue:v27];
+      unitController4 = [presentation2 adjustedValueForDaemonValue:v27];
 
-      v28 = [(WDSampleListStatisticsDataProvider *)self unitController];
+      unitController2 = [(WDSampleListStatisticsDataProvider *)self unitController];
       v29 = HKFormattedStringFromValueForContext();
 
-      v30 = [(WDSampleListStatisticsDataProvider *)self unitController];
+      unitController3 = [(WDSampleListStatisticsDataProvider *)self unitController];
       v31 = HKFormattedStringFromValueForContext();
 
       v32 = MEMORY[0x277CCACA8];
@@ -63,13 +63,13 @@
     goto LABEL_10;
   }
 
-  [objc_msgSend(v4 performSelector:{v10), "doubleValueForUnit:", v7}];
+  [objc_msgSend(objectCopy performSelector:{v10), "doubleValueForUnit:", v7}];
   v12 = v11;
-  v13 = [v5 presentation];
+  presentation3 = [displayType presentation];
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
-  v15 = [v13 adjustedValueForDaemonValue:v14];
+  v15 = [presentation3 adjustedValueForDaemonValue:v14];
 
-  v16 = [(WDSampleListStatisticsDataProvider *)self unitController];
+  unitController4 = [(WDSampleListStatisticsDataProvider *)self unitController];
   v17 = HKFormattedStringFromValueForContext();
 LABEL_9:
 
@@ -78,10 +78,10 @@ LABEL_10:
   return v17;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  v5 = [(WDSampleListStatisticsDataProvider *)self displayType];
-  v6 = [(WDSampleListStatisticsDataProvider *)self unitController];
+  displayType = [(WDSampleListStatisticsDataProvider *)self displayType];
+  unitController = [(WDSampleListStatisticsDataProvider *)self unitController];
   v7 = HKFormatterIncludesUnitForDisplayTypeInContext();
 
   if (v7)
@@ -93,7 +93,7 @@ LABEL_10:
   {
     v10.receiver = self;
     v10.super_class = WDQuantityListStatisticsDataProvider;
-    v8 = [(WDSampleListStatisticsDataProvider *)&v10 titleForSection:a3];
+    v8 = [(WDSampleListStatisticsDataProvider *)&v10 titleForSection:section];
   }
 
   return v8;

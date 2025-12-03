@@ -1,10 +1,10 @@
 @interface BWNodeInputMediaProperties
 - (BWVideoFormat)liveVideoFormat;
 - (BWVideoFormat)resolvedVideoFormat;
-- (void)_setOwningNodeInput:(id)a3 associatedAttachedMediaKey:(id)a4;
+- (void)_setOwningNodeInput:(id)input associatedAttachedMediaKey:(id)key;
 - (void)dealloc;
-- (void)setLiveFormat:(id)a3;
-- (void)setResolvedFormat:(id)a3;
+- (void)setLiveFormat:(id)format;
+- (void)setResolvedFormat:(id)format;
 @end
 
 @implementation BWNodeInputMediaProperties
@@ -29,9 +29,9 @@
   [(BWNodeInputMediaProperties *)&v3 dealloc];
 }
 
-- (void)_setOwningNodeInput:(id)a3 associatedAttachedMediaKey:(id)a4
+- (void)_setOwningNodeInput:(id)input associatedAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!input)
   {
     v4 = MEMORY[0x1E695DF30];
     v5 = *MEMORY[0x1E695D920];
@@ -47,7 +47,7 @@
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!key)
   {
     v4 = MEMORY[0x1E695DF30];
     v5 = *MEMORY[0x1E695D940];
@@ -56,32 +56,32 @@ LABEL_8:
     objc_exception_throw([v4 exceptionWithName:v5 reason:v6 userInfo:0]);
   }
 
-  self->_owningNodeInput = a3;
-  self->_associatedAttachedMediaKey = [a4 copy];
+  self->_owningNodeInput = input;
+  self->_associatedAttachedMediaKey = [key copy];
 }
 
-- (void)setResolvedFormat:(id)a3
+- (void)setResolvedFormat:(id)format
 {
   resolvedFormat = self->_resolvedFormat;
-  if (resolvedFormat != a3)
+  if (resolvedFormat != format)
   {
 
-    self->_resolvedFormat = a3;
-    v7 = [(BWNodeInput *)self->_owningNodeInput node];
+    self->_resolvedFormat = format;
+    node = [(BWNodeInput *)self->_owningNodeInput node];
     associatedAttachedMediaKey = self->_associatedAttachedMediaKey;
     owningNodeInput = self->_owningNodeInput;
 
-    [(BWNode *)v7 didSelectFormat:a3 forInput:owningNodeInput forAttachedMediaKey:associatedAttachedMediaKey];
+    [(BWNode *)node didSelectFormat:format forInput:owningNodeInput forAttachedMediaKey:associatedAttachedMediaKey];
   }
 }
 
-- (void)setLiveFormat:(id)a3
+- (void)setLiveFormat:(id)format
 {
   liveFormat = self->_liveFormat;
-  if (liveFormat != a3)
+  if (liveFormat != format)
   {
 
-    self->_liveFormat = a3;
+    self->_liveFormat = format;
   }
 }
 

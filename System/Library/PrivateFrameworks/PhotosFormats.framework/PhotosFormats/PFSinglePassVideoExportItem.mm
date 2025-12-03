@@ -1,33 +1,33 @@
 @interface PFSinglePassVideoExportItem
-- (BOOL)isAPACAudioTrack:(id)a3;
+- (BOOL)isAPACAudioTrack:(id)track;
 - (BOOL)preflight;
-- (BOOL)setupConversionWithError:(id *)a3;
-- (BOOL)startConversionWithError:(id *)a3 outputAvailableHandler:(id)a4;
+- (BOOL)setupConversionWithError:(id *)error;
+- (BOOL)startConversionWithError:(id *)error outputAvailableHandler:(id)handler;
 - (PFSinglePassVideoExportItem)init;
 - (double)inputAssetDuration;
-- (id)bitRateControllerForTargetEncodingBitRate:(int64_t)a3;
-- (id)outputDataInRange:(_NSRange)a3 waitUntilAvailableWithTimeout:(unint64_t)a4 error:(id *)a5;
+- (id)bitRateControllerForTargetEncodingBitRate:(int64_t)rate;
+- (id)outputDataInRange:(_NSRange)range waitUntilAvailableWithTimeout:(unint64_t)timeout error:(id *)error;
 - (int64_t)estimatedOutputBitRate;
 - (void)_cancel;
-- (void)configureDroppableFrameRateForCompressionSession:(OpaqueVTCompressionSession *)a3 inputWidth:(int)a4 inputHeight:(int)a5;
-- (void)configureOutputMetadataForAssetWriter:(id)a3;
+- (void)configureDroppableFrameRateForCompressionSession:(OpaqueVTCompressionSession *)session inputWidth:(int)width inputHeight:(int)height;
+- (void)configureOutputMetadataForAssetWriter:(id)writer;
 - (void)dealloc;
-- (void)notifyDataAvailableToHandler:(id)a3 ignoreMinimumChunkLength:(BOOL)a4;
-- (void)processCompressedSampleBuffer:(opaqueCMSampleBuffer *)a3 presentationTimeStamp:(id *)a4;
-- (void)setTargetOutputFileSize:(unint64_t)a3;
-- (void)setupOutputFileSourceWithOutputAvailableHandler:(id)a3;
-- (void)startReadingInputAssetWithOutputAvailableHandler:(id)a3;
+- (void)notifyDataAvailableToHandler:(id)handler ignoreMinimumChunkLength:(BOOL)length;
+- (void)processCompressedSampleBuffer:(opaqueCMSampleBuffer *)buffer presentationTimeStamp:(id *)stamp;
+- (void)setTargetOutputFileSize:(unint64_t)size;
+- (void)setupOutputFileSourceWithOutputAvailableHandler:(id)handler;
+- (void)startReadingInputAssetWithOutputAvailableHandler:(id)handler;
 @end
 
 @implementation PFSinglePassVideoExportItem
 
 - (double)inputAssetDuration
 {
-  v2 = [(PFSinglePassVideoExportItem *)self inputAsset];
-  v3 = v2;
-  if (v2)
+  inputAsset = [(PFSinglePassVideoExportItem *)self inputAsset];
+  v3 = inputAsset;
+  if (inputAsset)
   {
-    [v2 duration];
+    [inputAsset duration];
   }
 
   else
@@ -43,38 +43,38 @@
 - (void)_cancel
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  state = v2->_state;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
   v4 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT);
   if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     if (v4)
     {
       *buf = 138543362;
-      v10 = v2;
+      v10 = selfCopy;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Export item %{public}@ cancellation requested", buf, 0xCu);
     }
 
-    v2->_didCancel = 1;
-    v2->_state = 4;
-    objc_sync_exit(v2);
+    selfCopy->_didCancel = 1;
+    selfCopy->_state = 4;
+    objc_sync_exit(selfCopy);
 
-    v5 = [(PFSinglePassVideoExportItem *)v2 assetWriter];
-    [v5 cancelWriting];
+    assetWriter = [(PFSinglePassVideoExportItem *)selfCopy assetWriter];
+    [assetWriter cancelWriting];
 
-    v6 = [(PFSinglePassVideoExportItem *)v2 assetReader];
-    [v6 cancelReading];
+    assetReader = [(PFSinglePassVideoExportItem *)selfCopy assetReader];
+    [assetReader cancelReading];
 
-    dispatch_group_leave(v2->_inputReadingCompletionGroup);
-    additionalReaderTrackOutputs = v2->_additionalReaderTrackOutputs;
+    dispatch_group_leave(selfCopy->_inputReadingCompletionGroup);
+    additionalReaderTrackOutputs = selfCopy->_additionalReaderTrackOutputs;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __38__PFSinglePassVideoExportItem__cancel__block_invoke;
     v8[3] = &unk_1E7B668F8;
-    v8[4] = v2;
+    v8[4] = selfCopy;
     [(NSArray *)additionalReaderTrackOutputs enumerateObjectsUsingBlock:v8];
-    [(PFVideoExportRangeCoordinator *)v2->_availableRangeCoordinator cancel];
+    [(PFVideoExportRangeCoordinator *)selfCopy->_availableRangeCoordinator cancel];
   }
 
   else
@@ -82,19 +82,19 @@
     if (v4)
     {
       *buf = 138543618;
-      v10 = v2;
+      v10 = selfCopy;
       v11 = 2048;
       v12 = state;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Ignoring cancellation request of export item %{public}@ in state %ld", buf, 0x16u);
     }
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)bitRateControllerForTargetEncodingBitRate:(int64_t)a3
+- (id)bitRateControllerForTargetEncodingBitRate:(int64_t)rate
 {
-  v3 = [[PFProportionalIntegralController alloc] initWithSetPoint:(a3 * 0.95)];
+  v3 = [[PFProportionalIntegralController alloc] initWithSetPoint:(rate * 0.95)];
   [(PFProportionalIntegralController *)v3 setOutputMax:[(PFProportionalIntegralController *)v3 setPoint]];
   [(PFProportionalIntegralController *)v3 setOutputMin:([(PFProportionalIntegralController *)v3 setPoint]* 0.6)];
   [(PFProportionalIntegralController *)v3 setIntegralErrorMin:-2000000];
@@ -105,9 +105,9 @@
   return v3;
 }
 
-- (void)notifyDataAvailableToHandler:(id)a3 ignoreMinimumChunkLength:(BOOL)a4
+- (void)notifyDataAvailableToHandler:(id)handler ignoreMinimumChunkLength:(BOOL)length
 {
-  v6 = a3;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -124,19 +124,19 @@
   if (v8 != [(PFSinglePassVideoExportItem *)self outputFileLastEndOffset])
   {
     v9 = v17[3];
-    v10 = [(PFSinglePassVideoExportItem *)self progress];
-    [v10 setCompletedUnitCount:v9];
+    progress = [(PFSinglePassVideoExportItem *)self progress];
+    [progress setCompletedUnitCount:v9];
 
-    v11 = [(PFSinglePassVideoExportItem *)self outputFileLastEndOffset];
+    outputFileLastEndOffset = [(PFSinglePassVideoExportItem *)self outputFileLastEndOffset];
     v12 = v17[3];
     v13 = v12 - [(PFSinglePassVideoExportItem *)self outputFileLastEndOffset];
-    if (a4 || v13 >= [(PFSinglePassVideoExportItem *)self minimumChunkLength])
+    if (length || v13 >= [(PFSinglePassVideoExportItem *)self minimumChunkLength])
     {
       [(PFSinglePassVideoExportItem *)self setOutputFileLastEndOffset:v17[3]];
-      v14 = [(PFSinglePassVideoExportItem *)self statistics];
-      [v14 addMeasurementForBytesDelivered:v13];
+      statistics = [(PFSinglePassVideoExportItem *)self statistics];
+      [statistics addMeasurementForBytesDelivered:v13];
 
-      v6[2](v6, 2, v11, v13, 0);
+      handlerCopy[2](handlerCopy, 2, outputFileLastEndOffset, v13, 0);
     }
   }
 
@@ -149,23 +149,23 @@ void __85__PFSinglePassVideoExportItem_notifyDataAvailableToHandler_ignoreMinimu
   *(*(*(a1 + 40) + 8) + 24) = [v2 seekToEndOfFile];
 }
 
-- (void)setupOutputFileSourceWithOutputAvailableHandler:(id)a3
+- (void)setupOutputFileSourceWithOutputAvailableHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_state == 2)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [(PFSinglePassVideoExportItem *)self destinationFileURL];
-    v7 = [v6 path];
-    v8 = [v5 fileExistsAtPath:v7];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    destinationFileURL = [(PFSinglePassVideoExportItem *)self destinationFileURL];
+    path = [destinationFileURL path];
+    v8 = [defaultManager fileExistsAtPath:path];
 
     if (v8)
     {
       v9 = MEMORY[0x1E696AC00];
-      v10 = [(PFSinglePassVideoExportItem *)self destinationFileURL];
+      destinationFileURL2 = [(PFSinglePassVideoExportItem *)self destinationFileURL];
       v24 = 0;
-      v11 = [v9 fileHandleForReadingFromURL:v10 error:&v24];
+      v11 = [v9 fileHandleForReadingFromURL:destinationFileURL2 error:&v24];
       v12 = v24;
 
       if (v11)
@@ -173,16 +173,16 @@ void __85__PFSinglePassVideoExportItem_notifyDataAvailableToHandler_ignoreMinimu
         [(PFSinglePassVideoExportItem *)self setConversionOutputFileHandle:v11];
         self->_state = 3;
         v13 = dispatch_queue_create("com.apple.pfvideoexport.output-vnode-source", 0);
-        v14 = [(PFSinglePassVideoExportItem *)self conversionOutputFileHandle];
-        v15 = [v14 fileDescriptor];
-        v16 = dispatch_source_create(MEMORY[0x1E69E9728], v15, 4uLL, v13);
+        conversionOutputFileHandle = [(PFSinglePassVideoExportItem *)self conversionOutputFileHandle];
+        fileDescriptor = [conversionOutputFileHandle fileDescriptor];
+        v16 = dispatch_source_create(MEMORY[0x1E69E9728], fileDescriptor, 4uLL, v13);
 
         handler[0] = MEMORY[0x1E69E9820];
         handler[1] = 3221225472;
         handler[2] = __79__PFSinglePassVideoExportItem_setupOutputFileSourceWithOutputAvailableHandler___block_invoke;
         handler[3] = &unk_1E7B668D0;
         handler[4] = self;
-        v17 = v4;
+        v17 = handlerCopy;
         v23 = v17;
         dispatch_source_set_event_handler(v16, handler);
         v20[0] = MEMORY[0x1E69E9820];
@@ -201,11 +201,11 @@ void __85__PFSinglePassVideoExportItem_notifyDataAvailableToHandler_ignoreMinimu
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           identifier = self->_identifier;
-          v19 = [(NSURL *)self->_destinationFileURL path];
+          path2 = [(NSURL *)self->_destinationFileURL path];
           *buf = 138543874;
           v26 = identifier;
           v27 = 2112;
-          v28 = v19;
+          v28 = path2;
           v29 = 2114;
           v30 = v12;
           _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to open output file handle for %{public}@ %@: %{public}@", buf, 0x20u);
@@ -317,26 +317,26 @@ void __79__PFSinglePassVideoExportItem_setupOutputFileSourceWithOutputAvailableH
   }
 }
 
-- (void)processCompressedSampleBuffer:(opaqueCMSampleBuffer *)a3 presentationTimeStamp:(id *)a4
+- (void)processCompressedSampleBuffer:(opaqueCMSampleBuffer *)buffer presentationTimeStamp:(id *)stamp
 {
   v39 = *MEMORY[0x1E69E9840];
   [(AVAssetWriterInput *)self->_videoWriterInput appendSampleBuffer:?];
   [(PFSinglePassVideoExportItemStatistics *)self->_statistics setProcessedOutputFrameCount:[(PFSinglePassVideoExportItemStatistics *)self->_statistics processedOutputFrameCount]+ 1];
-  [(PFSinglePassVideoExportItemStatistics *)self->_statistics setProcessedVideoSampleBytes:[(PFSinglePassVideoExportItemStatistics *)self->_statistics processedVideoSampleBytes]+ CMSampleBufferGetTotalSampleSize(a3)];
-  v27 = *a4;
+  [(PFSinglePassVideoExportItemStatistics *)self->_statistics setProcessedVideoSampleBytes:[(PFSinglePassVideoExportItemStatistics *)self->_statistics processedVideoSampleBytes]+ CMSampleBufferGetTotalSampleSize(buffer)];
+  v27 = *stamp;
   [(PFSinglePassVideoExportItemStatistics *)self->_statistics setLastProcessedInputFramePresentationTime:CMTimeGetSeconds(&v27)];
-  v7 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics effectiveEncodingBitRate];
-  v8 = v7 - [(PFProportionalIntegralController *)self->_bitRateController setPoint];
+  effectiveEncodingBitRate = [(PFSinglePassVideoExportItemStatistics *)self->_statistics effectiveEncodingBitRate];
+  v8 = effectiveEncodingBitRate - [(PFProportionalIntegralController *)self->_bitRateController setPoint];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     v19 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics effectiveEncodingBitRate]/ 1000000.0;
     v20 = self->_currentEncodingBitRate / 1000000.0;
     v21 = [(PFSinglePassVideoExportItem *)self estimatedOutputBitRate]/ 1000000.0;
-    v22 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedOutputFrameCount];
-    v23 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedVideoSampleBytes];
-    v24 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedAdditionalSampleBytes]+ v23;
-    v25 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedVideoSampleBytes];
-    v26 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedAdditionalSampleBytes];
+    processedOutputFrameCount = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedOutputFrameCount];
+    processedVideoSampleBytes = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedVideoSampleBytes];
+    v24 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedAdditionalSampleBytes]+ processedVideoSampleBytes;
+    processedVideoSampleBytes2 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedVideoSampleBytes];
+    processedAdditionalSampleBytes = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedAdditionalSampleBytes];
     LODWORD(v27.value) = 134219776;
     *(&v27.value + 4) = v19;
     LOWORD(v27.flags) = 2048;
@@ -346,28 +346,28 @@ void __79__PFSinglePassVideoExportItem_setupOutputFileSourceWithOutputAvailableH
     v29 = 2048;
     v30 = v8 / 1000000.0;
     v31 = 2048;
-    v32 = v22;
+    v32 = processedOutputFrameCount;
     v33 = 2048;
     v34 = v24;
     v35 = 2048;
-    v36 = v25;
+    v36 = processedVideoSampleBytes2;
     v37 = 2048;
-    v38 = v26;
+    v38 = processedAdditionalSampleBytes;
     _os_log_debug_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Effective/selected/target bit rate: %.2fmbit/s / %.2fmbit/s / %.2fmbit/s , error = %.2fmbit/s, output frame count = %ld, sample bytes = %lu, video bytes = %lu, additional bytes = %lu", &v27, 0x52u);
   }
 
-  v9 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedOutputFrameCount];
+  processedOutputFrameCount2 = [(PFSinglePassVideoExportItemStatistics *)self->_statistics processedOutputFrameCount];
   [(PFSinglePassVideoExportItemStatistics *)self->_statistics frameRate];
-  v11 = (v9 / v10);
-  v12 = [(PFSinglePassVideoExportItem *)self bitRateController];
-  [v12 updateWithTimestamp:v8 error:-[PFSinglePassVideoExportItemStatistics effectiveEncodingBitRate](self->_statistics feedback:{"effectiveEncodingBitRate"), v11}];
+  v11 = (processedOutputFrameCount2 / v10);
+  bitRateController = [(PFSinglePassVideoExportItem *)self bitRateController];
+  [bitRateController updateWithTimestamp:v8 error:-[PFSinglePassVideoExportItemStatistics effectiveEncodingBitRate](self->_statistics feedback:{"effectiveEncodingBitRate"), v11}];
 
   if ([(PFSinglePassVideoExportItemStatistics *)self->_statistics processedOutputFrameCount]>= 11 && [(PFProportionalIntegralController *)self->_bitRateController outputReady])
   {
-    v13 = [(PFProportionalIntegralController *)self->_bitRateController output];
-    v14 = [(PFProportionalIntegralController *)self->_bitRateController setPoint];
+    output = [(PFProportionalIntegralController *)self->_bitRateController output];
+    setPoint = [(PFProportionalIntegralController *)self->_bitRateController setPoint];
     bitRateController = self->_bitRateController;
-    v16 = v13 >= v14 ? [(PFProportionalIntegralController *)bitRateController setPoint]: [(PFProportionalIntegralController *)bitRateController output];
+    v16 = output >= setPoint ? [(PFProportionalIntegralController *)bitRateController setPoint]: [(PFProportionalIntegralController *)bitRateController output];
     v17 = v16;
     currentEncodingBitRate = self->_currentEncodingBitRate;
     if (v16 != currentEncodingBitRate)
@@ -387,22 +387,22 @@ void __79__PFSinglePassVideoExportItem_setupOutputFileSourceWithOutputAvailableH
   }
 }
 
-- (void)startReadingInputAssetWithOutputAvailableHandler:(id)a3
+- (void)startReadingInputAssetWithOutputAvailableHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v17 = [(PFSinglePassVideoExportItem *)self inputAsset];
+    inputAsset = [(PFSinglePassVideoExportItem *)self inputAsset];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v17;
+    *(&buf + 4) = inputAsset;
     _os_log_debug_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Start reading input asset %@", &buf, 0xCu);
   }
 
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_create("com.apple.pfvideoexport.conversion", v5);
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v35 = 0x2020000000;
@@ -431,9 +431,9 @@ void __79__PFSinglePassVideoExportItem_setupOutputFileSourceWithOutputAvailableH
   v27 = v29;
   v10 = v8;
   v25 = v10;
-  v11 = v4;
+  v11 = handlerCopy;
   v26 = v11;
-  v12 = v7;
+  v12 = array;
   v23 = v12;
   v28 = v31;
   v13 = v6;
@@ -859,11 +859,11 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
   return (v6 * v7 * 0.1);
 }
 
-- (void)configureDroppableFrameRateForCompressionSession:(OpaqueVTCompressionSession *)a3 inputWidth:(int)a4 inputHeight:(int)a5
+- (void)configureDroppableFrameRateForCompressionSession:(OpaqueVTCompressionSession *)session inputWidth:(int)width inputHeight:(int)height
 {
   v22 = *MEMORY[0x1E69E9840];
   supportedPropertyDictionaryOut = 0;
-  v8 = VTSessionCopySupportedPropertyDictionary(a3, &supportedPropertyDictionaryOut);
+  v8 = VTSessionCopySupportedPropertyDictionary(session, &supportedPropertyDictionaryOut);
   if (v8)
   {
     v9 = v8;
@@ -886,13 +886,13 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
     }
 
     v12 = &unk_1F2AAB5F0;
-    if (a5 * a4 > 2073600)
+    if (height * width > 2073600)
     {
       v12 = &unk_1F2AAB5D8;
     }
 
     v13 = v12;
-    v14 = VTSessionSetProperty(a3, v10, v13);
+    v14 = VTSessionSetProperty(session, v10, v13);
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138543874;
@@ -906,19 +906,19 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
   }
 }
 
-- (BOOL)isAPACAudioTrack:(id)a3
+- (BOOL)isAPACAudioTrack:(id)track
 {
-  v3 = a3;
-  v4 = [v3 mediaType];
-  v5 = [v4 isEqual:*MEMORY[0x1E69875A0]];
+  trackCopy = track;
+  mediaType = [trackCopy mediaType];
+  v5 = [mediaType isEqual:*MEMORY[0x1E69875A0]];
 
   v9 = 0;
   if (v5)
   {
-    v6 = [v3 formatDescriptions];
-    v7 = [v6 firstObject];
+    formatDescriptions = [trackCopy formatDescriptions];
+    firstObject = [formatDescriptions firstObject];
 
-    MediaSubType = CMFormatDescriptionGetMediaSubType(v7);
+    MediaSubType = CMFormatDescriptionGetMediaSubType(firstObject);
     if (MediaSubType == 1634754915 || MediaSubType == 1902211171 || MediaSubType == 1667330147)
     {
       v9 = 1;
@@ -928,17 +928,17 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
   return v9;
 }
 
-- (void)configureOutputMetadataForAssetWriter:(id)a3
+- (void)configureOutputMetadataForAssetWriter:(id)writer
 {
   v32 = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  writerCopy = writer;
   v4 = [MEMORY[0x1E695DFA8] set];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(PFSinglePassVideoExportItem *)self additionalMetadata];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  additionalMetadata = [(PFSinglePassVideoExportItem *)self additionalMetadata];
+  v6 = [additionalMetadata countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -949,26 +949,26 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(additionalMetadata);
         }
 
-        v10 = [*(*(&v26 + 1) + 8 * i) identifier];
-        [v4 addObject:v10];
+        identifier = [*(*(&v26 + 1) + 8 * i) identifier];
+        [v4 addObject:identifier];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [additionalMetadata countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = [(AVAsset *)self->_inputAsset metadata];
-  v13 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  metadata = [(AVAsset *)self->_inputAsset metadata];
+  v13 = [metadata countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v13)
   {
     v14 = v13;
@@ -979,20 +979,20 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
       {
         if (*v23 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(metadata);
         }
 
         v17 = *(*(&v22 + 1) + 8 * j);
-        v18 = [v17 identifier];
-        v19 = [v4 containsObject:v18];
+        identifier2 = [v17 identifier];
+        v19 = [v4 containsObject:identifier2];
 
         if ((v19 & 1) == 0)
         {
-          [v11 addObject:v17];
+          [array addObject:v17];
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v14 = [metadata countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v14);
@@ -1000,38 +1000,38 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
 
   if ([v4 count])
   {
-    v20 = [(PFSinglePassVideoExportItem *)self additionalMetadata];
-    [v11 addObjectsFromArray:v20];
+    additionalMetadata2 = [(PFSinglePassVideoExportItem *)self additionalMetadata];
+    [array addObjectsFromArray:additionalMetadata2];
   }
 
-  [v21 setMetadata:v11];
+  [writerCopy setMetadata:array];
 }
 
-- (BOOL)setupConversionWithError:(id *)a3
+- (BOOL)setupConversionWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v120[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PFSinglePassVideoExportItem *)self videoTrack];
-  [v4 naturalSize];
+  videoTrack = [(PFSinglePassVideoExportItem *)self videoTrack];
+  [videoTrack naturalSize];
   v6 = v5;
   v8 = v7;
 
-  inputAsset = v3->_inputAsset;
+  inputAsset = selfCopy->_inputAsset;
   v114 = 0;
   v10 = [MEMORY[0x1E6987E78] assetReaderWithAsset:inputAsset error:&v114];
   v11 = v114;
   if (v10)
   {
-    [(PFSinglePassVideoExportItem *)v3 setAssetReader:v10];
-    v12 = [(PFSinglePassVideoExportItem *)v3 videoTrack];
-    v13 = [v12 formatDescriptions];
-    v14 = [v13 firstObject];
+    [(PFSinglePassVideoExportItem *)selfCopy setAssetReader:v10];
+    videoTrack2 = [(PFSinglePassVideoExportItem *)selfCopy videoTrack];
+    formatDescriptions = [videoTrack2 formatDescriptions];
+    firstObject = [formatDescriptions firstObject];
 
-    v97 = CMFormatDescriptionGetExtensions(v14);
+    v97 = CMFormatDescriptionGetExtensions(firstObject);
     v15 = [v97 objectForKeyedSubscript:@"BitsPerComponent"];
-    v16 = [v15 integerValue];
+    integerValue = [v15 integerValue];
 
-    if (v16 <= 8)
+    if (integerValue <= 8)
     {
       v17 = 875704438;
     }
@@ -1047,26 +1047,26 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v120 forKeys:&v119 count:1];
 
     v20 = MEMORY[0x1E6987EA8];
-    v21 = [(PFSinglePassVideoExportItem *)v3 videoTrack];
-    v22 = [v20 assetReaderTrackOutputWithTrack:v21 outputSettings:v19];
+    videoTrack3 = [(PFSinglePassVideoExportItem *)selfCopy videoTrack];
+    v22 = [v20 assetReaderTrackOutputWithTrack:videoTrack3 outputSettings:v19];
 
-    [(PFSinglePassVideoExportItem *)v3 setVideoReaderTrackOutput:v22];
+    [(PFSinglePassVideoExportItem *)selfCopy setVideoReaderTrackOutput:v22];
     [v22 setAlwaysCopiesSampleData:0];
     [v10 addOutput:v22];
     v96 = v22;
-    [v22 setMaximizePowerEfficiency:{-[PFSinglePassVideoExportItem maximizePowerEfficiency](v3, "maximizePowerEfficiency")}];
+    [v22 setMaximizePowerEfficiency:{-[PFSinglePassVideoExportItem maximizePowerEfficiency](selfCopy, "maximizePowerEfficiency")}];
     v95 = v19;
-    if ([(NSArray *)v3->_additionalTracks count])
+    if ([(NSArray *)selfCopy->_additionalTracks count])
     {
       v93 = v11;
       v23 = v10;
-      v24 = [MEMORY[0x1E695DF70] array];
-      [(PFSinglePassVideoExportItem *)v3 setAdditionalReaderTrackOutputs:v24];
+      array = [MEMORY[0x1E695DF70] array];
+      [(PFSinglePassVideoExportItem *)selfCopy setAdditionalReaderTrackOutputs:array];
       v112 = 0u;
       v113 = 0u;
       v110 = 0u;
       v111 = 0u;
-      v25 = v3->_additionalTracks;
+      v25 = selfCopy->_additionalTracks;
       v26 = [(NSArray *)v25 countByEnumeratingWithState:&v110 objects:v118 count:16];
       if (v26)
       {
@@ -1082,19 +1082,19 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
             }
 
             v30 = *(*(&v110 + 1) + 8 * i);
-            if (![(PFSinglePassVideoExportItem *)v3 isAPACAudioTrack:v30])
+            if (![(PFSinglePassVideoExportItem *)selfCopy isAPACAudioTrack:v30])
             {
               v31 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v30 outputSettings:0];
               [v31 setAlwaysCopiesSampleData:0];
               [v23 addOutput:v31];
               v117[0] = v31;
-              v32 = v3;
+              v32 = selfCopy;
               v33 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v30, "isEnabled")}];
               v117[1] = v33;
               v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v117 count:2];
-              [v24 addObject:v34];
+              [array addObject:v34];
 
-              v3 = v32;
+              selfCopy = v32;
               [v31 setMaximizePowerEfficiency:{-[PFSinglePassVideoExportItem maximizePowerEfficiency](v32, "maximizePowerEfficiency")}];
             }
           }
@@ -1114,18 +1114,18 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
     {
       v35 = v6;
       v36 = v8;
-      v94 = v3;
-      v37 = [(PFSinglePassVideoExportItem *)v3 destinationFileURL];
+      v94 = selfCopy;
+      destinationFileURL = [(PFSinglePassVideoExportItem *)selfCopy destinationFileURL];
 
-      if (!v37)
+      if (!destinationFileURL)
       {
         v38 = MEMORY[0x1E695DFF8];
         v91 = NSTemporaryDirectory();
         v39 = MEMORY[0x1E696AEC0];
         v40 = objc_opt_class();
         v41 = NSStringFromClass(v40);
-        v42 = [(PFSinglePassVideoExportItem *)v94 identifier];
-        v43 = [v39 stringWithFormat:@"%@-%@.mov", v41, v42];
+        identifier = [(PFSinglePassVideoExportItem *)v94 identifier];
+        v43 = [v39 stringWithFormat:@"%@-%@.mov", v41, identifier];
         [v91 stringByAppendingPathComponent:v43];
         v45 = v44 = v11;
         v46 = [v38 fileURLWithPath:v45];
@@ -1162,15 +1162,15 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
         }
 
         v94->_state = 4;
-        if (a3)
+        if (error)
         {
           [MEMORY[0x1E696ABC0] errorWithDomain:@"PFVideoExportErrorDomain" code:6 userInfo:0];
-          *a3 = v49 = 0;
+          *error = startWriting = 0;
         }
 
         else
         {
-          v49 = 0;
+          startWriting = 0;
         }
 
         v55 = v11;
@@ -1195,9 +1195,9 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
         *&v51 = v52;
         v92 = [PFSinglePassVideoExportItemStatistics statisticsWithTargetPlaybackDuration:buf frameRate:v94->_targetOutputFileSize targetOutputTotalBytes:v51];
         [(PFSinglePassVideoExportItem *)v94 setStatistics:?];
-        v56 = [(PFSinglePassVideoExportItem *)v94 estimatedOutputBitRate];
-        v94->_currentEncodingBitRate = v56;
-        v57 = [(PFSinglePassVideoExportItem *)v94 bitRateControllerForTargetEncodingBitRate:v56];
+        estimatedOutputBitRate = [(PFSinglePassVideoExportItem *)v94 estimatedOutputBitRate];
+        v94->_currentEncodingBitRate = estimatedOutputBitRate;
+        v57 = [(PFSinglePassVideoExportItem *)v94 bitRateControllerForTargetEncodingBitRate:estimatedOutputBitRate];
         [(PFSinglePassVideoExportItem *)v94 setBitRateController:v57];
 
         VTSessionSetProperty(session, *MEMORY[0x1E6983558], [MEMORY[0x1E696AD98] numberWithInteger:v94->_currentEncodingBitRate]);
@@ -1211,10 +1211,10 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
 
         VTCompressionSessionPrepareToEncodeFrames(session);
         v58 = MEMORY[0x1E6987ED8];
-        v59 = [(PFSinglePassVideoExportItem *)v94 destinationFileURL];
+        destinationFileURL2 = [(PFSinglePassVideoExportItem *)v94 destinationFileURL];
         v60 = *MEMORY[0x1E69874C0];
         v108 = v11;
-        [v58 assetWriterWithURL:v59 fileType:v60 error:&v108];
+        [v58 assetWriterWithURL:destinationFileURL2 fileType:v60 error:&v108];
         v62 = v61 = v11;
         v55 = v108;
 
@@ -1246,8 +1246,8 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
           *&buf[16] = v106;
           v116 = v107;
           [v65 setTransform:buf];
-          v69 = [(AVAssetTrack *)v94->_videoTrack metadata];
-          [v65 setMetadata:v69];
+          metadata = [(AVAssetTrack *)v94->_videoTrack metadata];
+          [v65 setMetadata:metadata];
 
           v70 = v94;
           [v65 setMaximizePowerEfficiency:{-[PFSinglePassVideoExportItem maximizePowerEfficiency](v94, "maximizePowerEfficiency")}];
@@ -1255,8 +1255,8 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
           dispatch_group_enter(v94->_inputReadingCompletionGroup);
           if (v94->_additionalReaderTrackOutputs)
           {
-            v71 = [MEMORY[0x1E695DF70] array];
-            [(PFSinglePassVideoExportItem *)v94 setAdditionalWriterInputs:v71];
+            array2 = [MEMORY[0x1E695DF70] array];
+            [(PFSinglePassVideoExportItem *)v94 setAdditionalWriterInputs:array2];
             additionalReaderTrackOutputs = v94->_additionalReaderTrackOutputs;
             v101[0] = MEMORY[0x1E69E9820];
             v101[1] = 3221225472;
@@ -1264,8 +1264,8 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
             v101[3] = &unk_1E7B66808;
             v102 = v62;
             v103 = v94;
-            v104 = v71;
-            v73 = v71;
+            v104 = array2;
+            v73 = array2;
             [(NSArray *)additionalReaderTrackOutputs enumerateObjectsUsingBlock:v101];
 
             v70 = v94;
@@ -1286,8 +1286,8 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
           *buf = v99;
           *&buf[16] = v100;
           [v62 setOverallDurationHint:buf];
-          v49 = [v62 startWriting];
-          if (v49)
+          startWriting = [v62 startWriting];
+          if (startWriting)
           {
             v70->_state = 2;
             *buf = *MEMORY[0x1E6960CC0];
@@ -1299,24 +1299,24 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
           {
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
-              v88 = [(PFSinglePassVideoExportItem *)v70 destinationFileURL];
-              v89 = [v62 status];
-              v90 = [v62 error];
+              destinationFileURL3 = [(PFSinglePassVideoExportItem *)v70 destinationFileURL];
+              status = [v62 status];
+              error = [v62 error];
               *buf = 138412802;
-              *&buf[4] = v88;
+              *&buf[4] = destinationFileURL3;
               *&buf[12] = 2048;
-              *&buf[14] = v89;
+              *&buf[14] = status;
               *&buf[22] = 2112;
-              *&buf[24] = v90;
+              *&buf[24] = error;
               _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to start writing to %@: status: %ld, error: %@", buf, 0x20u);
 
               v70 = v94;
             }
 
             v70->_state = 4;
-            if (a3)
+            if (error)
             {
-              *a3 = [v62 error];
+              *error = [v62 error];
             }
           }
 
@@ -1341,16 +1341,16 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
 
           v94->_state = 4;
           v67 = v92;
-          if (a3)
+          if (error)
           {
             v68 = v55;
-            v49 = 0;
-            *a3 = v55;
+            startWriting = 0;
+            *error = v55;
           }
 
           else
           {
-            v49 = 0;
+            startWriting = 0;
           }
         }
       }
@@ -1364,34 +1364,34 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v80 = v10;
-        v81 = v3->_identifier;
-        v82 = v3->_inputAsset;
-        v83 = v3;
-        v84 = [v80 status];
-        v85 = [v80 error];
+        v81 = selfCopy->_identifier;
+        v82 = selfCopy->_inputAsset;
+        v83 = selfCopy;
+        status2 = [v80 status];
+        error2 = [v80 error];
         *buf = 138544130;
         *&buf[4] = v81;
         v10 = v80;
         *&buf[12] = 2112;
         *&buf[14] = v82;
         *&buf[22] = 2048;
-        *&buf[24] = v84;
-        v3 = v83;
+        *&buf[24] = status2;
+        selfCopy = v83;
         LOWORD(v116) = 2114;
-        *(&v116 + 2) = v85;
+        *(&v116 + 2) = error2;
         _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to start reading from asset %{public}@ %@: status: %ld, error: %{public}@", buf, 0x2Au);
       }
 
-      v3->_state = 4;
-      if (a3)
+      selfCopy->_state = 4;
+      if (error)
       {
         [v10 error];
-        *a3 = v49 = 0;
+        *error = startWriting = 0;
       }
 
       else
       {
-        v49 = 0;
+        startWriting = 0;
       }
 
       v54 = v96;
@@ -1402,8 +1402,8 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v76 = v3->_identifier;
-      v77 = v3->_inputAsset;
+      v76 = selfCopy->_identifier;
+      v77 = selfCopy->_inputAsset;
       *buf = 138543874;
       *&buf[4] = v76;
       *&buf[12] = 2112;
@@ -1413,21 +1413,21 @@ void __80__PFSinglePassVideoExportItem_startReadingInputAssetWithOutputAvailable
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to create asset reader for %{public}@ %@: %{public}@", buf, 0x20u);
     }
 
-    v3->_state = 4;
-    if (a3)
+    selfCopy->_state = 4;
+    if (error)
     {
       v50 = v11;
-      v49 = 0;
-      *a3 = v11;
+      startWriting = 0;
+      *error = v11;
     }
 
     else
     {
-      v49 = 0;
+      startWriting = 0;
     }
   }
 
-  return v49;
+  return startWriting;
 }
 
 void __56__PFSinglePassVideoExportItem_setupConversionWithError___block_invoke(id *a1, void *a2)
@@ -1448,33 +1448,33 @@ void __56__PFSinglePassVideoExportItem_setupConversionWithError___block_invoke(i
   dispatch_group_enter(*(a1[5] + 25));
 }
 
-- (id)outputDataInRange:(_NSRange)a3 waitUntilAvailableWithTimeout:(unint64_t)a4 error:(id *)a5
+- (id)outputDataInRange:(_NSRange)range waitUntilAvailableWithTimeout:(unint64_t)timeout error:(id *)error
 {
-  location = a3.location;
+  location = range.location;
   v31[1] = *MEMORY[0x1E69E9840];
   state = self->_state;
   if (state <= 4 && ((1 << state) & 0x13) != 0)
   {
-    if (a5)
+    if (error)
     {
       v9 = MEMORY[0x1E696ABC0];
       v30 = @"PFVideoExportErrorStateKey";
       v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
       v31[0] = v10;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-      *a5 = [v9 errorWithDomain:@"PFVideoExportErrorDomain" code:1 userInfo:v11];
+      *error = [v9 errorWithDomain:@"PFVideoExportErrorDomain" code:1 userInfo:v11];
     }
 
     goto LABEL_7;
   }
 
-  length = a3.length;
-  v17 = [(PFSinglePassVideoExportItem *)self targetOutputFileSize];
-  if (length <= 0x500000 && location + length <= v17)
+  length = range.length;
+  targetOutputFileSize = [(PFSinglePassVideoExportItem *)self targetOutputFileSize];
+  if (length <= 0x500000 && location + length <= targetOutputFileSize)
   {
-    v18 = [(PFSinglePassVideoExportItem *)self availableRangeCoordinator];
+    availableRangeCoordinator = [(PFSinglePassVideoExportItem *)self availableRangeCoordinator];
     v25 = 0;
-    v19 = [v18 waitForAvailabilityOfRange:location timeout:length error:{a4, &v25}];
+    v19 = [availableRangeCoordinator waitForAvailabilityOfRange:location timeout:length error:{timeout, &v25}];
     v20 = v25;
 
     if (v19)
@@ -1499,11 +1499,11 @@ void __56__PFSinglePassVideoExportItem_setupConversionWithError___block_invoke(i
       _Block_object_dispose(buf, 8);
     }
 
-    else if (a5)
+    else if (error)
     {
       v22 = v20;
       v12 = 0;
-      *a5 = v20;
+      *error = v20;
     }
 
     else
@@ -1525,7 +1525,7 @@ void __56__PFSinglePassVideoExportItem_setupConversionWithError___block_invoke(i
     *&buf[14] = [(PFSinglePassVideoExportItem *)self targetOutputFileSize];
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Invalid range %{public}@ requested, available length = %llu", buf, 0x16u);
 
-    if (a5)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -1535,14 +1535,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_7;
   }
 
 LABEL_17:
   [MEMORY[0x1E696ABC0] errorWithDomain:@"PFVideoExportErrorDomain" code:3 userInfo:0];
-  *a5 = v12 = 0;
+  *error = v12 = 0;
 LABEL_8:
 
   return v12;
@@ -1558,10 +1558,10 @@ void __85__PFSinglePassVideoExportItem_outputDataInRange_waitUntilAvailableWithT
   *(v3 + 40) = v2;
 }
 
-- (BOOL)startConversionWithError:(id *)a3 outputAvailableHandler:(id)a4
+- (BOOL)startConversionWithError:(id *)error outputAvailableHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PFSinglePassVideoExportItem *)self setupConversionWithError:a3];
+  handlerCopy = handler;
+  v7 = [(PFSinglePassVideoExportItem *)self setupConversionWithError:error];
   if (v7)
   {
     v9[0] = MEMORY[0x1E69E9820];
@@ -1569,7 +1569,7 @@ void __85__PFSinglePassVideoExportItem_outputDataInRange_waitUntilAvailableWithT
     v9[2] = __79__PFSinglePassVideoExportItem_startConversionWithError_outputAvailableHandler___block_invoke;
     v9[3] = &unk_1E7B667B8;
     v9[4] = self;
-    v10 = v6;
+    v10 = handlerCopy;
     [(PFSinglePassVideoExportItem *)self startReadingInputAssetWithOutputAvailableHandler:v9];
   }
 
@@ -1646,23 +1646,23 @@ LABEL_9:
   }
 }
 
-- (void)setTargetOutputFileSize:(unint64_t)a3
+- (void)setTargetOutputFileSize:(unint64_t)size
 {
-  self->_targetOutputFileSize = a3;
-  v4 = [(PFSinglePassVideoExportItem *)self progress];
-  [v4 setTotalUnitCount:a3];
+  self->_targetOutputFileSize = size;
+  progress = [(PFSinglePassVideoExportItem *)self progress];
+  [progress setTotalUnitCount:size];
 }
 
 - (BOOL)preflight
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(AVAsset *)self->_inputAsset tracks];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  tracks = [(AVAsset *)self->_inputAsset tracks];
+  v5 = [tracks countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1675,13 +1675,13 @@ LABEL_9:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tracks);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
         if (self->_videoTrack || ([*(*(&v16 + 1) + 8 * v9) mediaType], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqual:", v8), v11, !v12))
         {
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
 
         else
@@ -1693,19 +1693,19 @@ LABEL_9:
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [tracks countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
-  v13 = [(PFSinglePassVideoExportItem *)self videoTrack];
+  videoTrack = [(PFSinglePassVideoExportItem *)self videoTrack];
 
-  if (v13)
+  if (videoTrack)
   {
-    if ([v3 count])
+    if ([array count])
     {
-      [(PFSinglePassVideoExportItem *)self setAdditionalTracks:v3];
+      [(PFSinglePassVideoExportItem *)self setAdditionalTracks:array];
     }
 
     v14 = 1;
@@ -1718,7 +1718,7 @@ LABEL_9:
 
   self->_state = v14;
 
-  return v13 != 0;
+  return videoTrack != 0;
 }
 
 - (void)dealloc
@@ -1731,27 +1731,27 @@ LABEL_9:
     self->_compressionSession = 0;
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   if (self->_shouldDeleteDestinationURLOnDeallocation)
   {
     destinationFileURL = self->_destinationFileURL;
     if (destinationFileURL)
     {
-      v6 = [(NSURL *)destinationFileURL path];
-      v7 = [v4 fileExistsAtPath:v6];
+      path = [(NSURL *)destinationFileURL path];
+      v7 = [defaultManager fileExistsAtPath:path];
 
       if (v7)
       {
-        v8 = [(NSURL *)self->_destinationFileURL path];
+        path2 = [(NSURL *)self->_destinationFileURL path];
         v13 = 0;
-        v9 = [v4 removeItemAtPath:v8 error:&v13];
+        v9 = [defaultManager removeItemAtPath:path2 error:&v13];
         v10 = v13;
 
         if ((v9 & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v11 = [(NSURL *)self->_destinationFileURL path];
+          path3 = [(NSURL *)self->_destinationFileURL path];
           *buf = 138543618;
-          v15 = v11;
+          v15 = path3;
           v16 = 2112;
           v17 = v10;
           _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to remove temp file %{public}@: %@", buf, 0x16u);
@@ -1772,10 +1772,10 @@ LABEL_9:
   v2 = [(PFSinglePassVideoExportItem *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    objc_storeStrong(&v2->_identifier, v4);
+    objc_storeStrong(&v2->_identifier, uUIDString);
     v2->_state = 0;
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("com.apple.pfvideoexport.state", v5);
@@ -1792,7 +1792,7 @@ LABEL_9:
     v14[1] = 3221225472;
     v14[2] = __35__PFSinglePassVideoExportItem_init__block_invoke;
     v14[3] = &unk_1E7B66790;
-    v10 = v4;
+    v10 = uUIDString;
     v15 = v10;
     objc_copyWeak(&v16, &location);
     [(NSProgress *)v2->_progress setCancellationHandler:v14];

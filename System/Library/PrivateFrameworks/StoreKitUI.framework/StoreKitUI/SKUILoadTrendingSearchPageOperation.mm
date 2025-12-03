@@ -1,15 +1,15 @@
 @interface SKUILoadTrendingSearchPageOperation
-- (SKUILoadTrendingSearchPageOperation)initWithClientContext:(id)a3 pageURL:(id)a4 outputBlock:(id)a5;
+- (SKUILoadTrendingSearchPageOperation)initWithClientContext:(id)context pageURL:(id)l outputBlock:(id)block;
 - (void)main;
 @end
 
 @implementation SKUILoadTrendingSearchPageOperation
 
-- (SKUILoadTrendingSearchPageOperation)initWithClientContext:(id)a3 pageURL:(id)a4 outputBlock:(id)a5
+- (SKUILoadTrendingSearchPageOperation)initWithClientContext:(id)context pageURL:(id)l outputBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  lCopy = l;
+  blockCopy = block;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILoadTrendingSearchPageOperation initWithClientContext:pageURL:outputBlock:];
@@ -21,9 +21,9 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientContext, a3);
-    objc_storeStrong(&v13->_pageURL, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_clientContext, context);
+    objc_storeStrong(&v13->_pageURL, l);
+    v14 = [blockCopy copy];
     outputBlock = v13->_outputBlock;
     v13->_outputBlock = v14;
   }
@@ -44,15 +44,15 @@
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__72;
   v22 = __Block_byref_object_dispose__72;
-  v23 = [(SKUILoadTrendingSearchPageOperation *)self pageURL];
+  pageURL = [(SKUILoadTrendingSearchPageOperation *)self pageURL];
   if (!v19[5])
   {
-    v3 = [(SKUIClientContext *)self->_clientContext URLBag];
+    uRLBag = [(SKUIClientContext *)self->_clientContext URLBag];
 
-    if (v3)
+    if (uRLBag)
     {
       v4 = dispatch_semaphore_create(0);
-      v5 = [(SKUIClientContext *)self->_clientContext URLBag];
+      uRLBag2 = [(SKUIClientContext *)self->_clientContext URLBag];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __43__SKUILoadTrendingSearchPageOperation_main__block_invoke;
@@ -61,7 +61,7 @@
       v17 = v24;
       v6 = v4;
       v15 = v6;
-      [v5 loadValueForKey:@"trending-searches" completionBlock:v14];
+      [uRLBag2 loadValueForKey:@"trending-searches" completionBlock:v14];
 
       dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
     }

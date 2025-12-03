@@ -1,26 +1,26 @@
 @interface _UIPhysicalButtonAction
-+ (char)_actionFromPhysicalButtonBSAction:(uint64_t)a3 andDriver:;
-+ (id)_actionFromDynamicButton:(void *)a3 withConfiguration:(uint64_t)a4 state:(uint64_t)a5 andDriver:;
++ (char)_actionFromPhysicalButtonBSAction:(uint64_t)action andDriver:;
++ (id)_actionFromDynamicButton:(void *)button withConfiguration:(uint64_t)configuration state:(uint64_t)state andDriver:;
 - (CGPoint)_position;
 - (CGPoint)_positionDelta;
 - (_UIPhysicalButtonAction)init;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation _UIPhysicalButtonAction
 
-+ (char)_actionFromPhysicalButtonBSAction:(uint64_t)a3 andDriver:
++ (char)_actionFromPhysicalButtonBSAction:(uint64_t)action andDriver:
 {
   v5 = objc_opt_self();
   if (!a2)
   {
     v14 = v5;
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:sel__actionFromPhysicalButtonBSAction_andDriver_ object:v14 file:@"_UIPhysicalButtonInteraction.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"physicalButtonBSAction"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__actionFromPhysicalButtonBSAction_andDriver_ object:v14 file:@"_UIPhysicalButtonInteraction.m" lineNumber:205 description:{@"Invalid parameter not satisfying: %@", @"physicalButtonBSAction"}];
   }
 
   v6 = [_UIPhysicalButtonAction alloc];
@@ -29,14 +29,14 @@
     v16.receiver = v6;
     v16.super_class = _UIPhysicalButtonAction;
     v7 = objc_msgSendSuper2(&v16, sel_init);
-    v8 = [a2 button];
+    button = [a2 button];
     if (v7)
     {
-      *(v7 + 1) = v8;
+      *(v7 + 1) = button;
       *(v7 + 2) = [a2 source];
       *(v7 + 3) = [a2 state];
       *(v7 + 4) = [a2 behavior];
-      *(v7 + 5) = a3;
+      *(v7 + 5) = action;
       *(v7 + 6) = CACurrentMediaTime();
       objc_storeStrong(v7 + 7, 0);
       v9 = 0;
@@ -57,17 +57,17 @@
   v7 = 0;
   v9 = 1;
 LABEL_6:
-  v10 = [a2 state];
+  state = [a2 state];
   if ((v9 & 1) == 0)
   {
-    if (v10 >= 4)
+    if (state >= 4)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = v10;
+      v11 = state;
     }
 
     *(v7 + 10) = v11;
@@ -80,14 +80,14 @@ LABEL_6:
   return v7;
 }
 
-+ (id)_actionFromDynamicButton:(void *)a3 withConfiguration:(uint64_t)a4 state:(uint64_t)a5 andDriver:
++ (id)_actionFromDynamicButton:(void *)button withConfiguration:(uint64_t)configuration state:(uint64_t)state andDriver:
 {
   v9 = objc_opt_self();
   if (!a2)
   {
     v35 = v9;
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:sel__actionFromDynamicButton_withConfiguration_state_andDriver_ object:v35 file:@"_UIPhysicalButtonInteraction.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"dynamicButton"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__actionFromDynamicButton_withConfiguration_state_andDriver_ object:v35 file:@"_UIPhysicalButtonInteraction.m" lineNumber:237 description:{@"Invalid parameter not satisfying: %@", @"dynamicButton"}];
   }
 
   v10 = [_UIPhysicalButtonAction alloc];
@@ -96,14 +96,14 @@ LABEL_6:
     v37.receiver = v10;
     v37.super_class = _UIPhysicalButtonAction;
     v11 = objc_msgSendSuper2(&v37, sel_init);
-    v12 = [a2 _physicalButton];
+    _physicalButton = [a2 _physicalButton];
     if (v11)
     {
-      *(v11 + 1) = v12;
+      *(v11 + 1) = _physicalButton;
       *(v11 + 2) = [a2 _physicalButtonSource];
-      *(v11 + 3) = a4;
-      *(v11 + 4) = [a3 _behavior];
-      *(v11 + 5) = a5;
+      *(v11 + 3) = configuration;
+      *(v11 + 4) = [button _behavior];
+      *(v11 + 5) = state;
       [a2 _timestamp];
       v13 = 0;
       *(v11 + 6) = v14;
@@ -117,27 +117,27 @@ LABEL_6:
   }
 
   [a2 _physicalButtonSource];
-  [a3 _behavior];
+  [button _behavior];
   [a2 _timestamp];
   v11 = 0;
   v13 = 1;
 LABEL_6:
-  v15 = [[_UIPhysicalButtonContact alloc] _init];
-  v16 = [a2 _isTouching];
-  if (v15)
+  _init = [[_UIPhysicalButtonContact alloc] _init];
+  _isTouching = [a2 _isTouching];
+  if (_init)
   {
-    v15[8] = v16;
+    _init[8] = _isTouching;
     [a2 _touchMajorRadius];
-    *(v15 + 2) = v17;
+    *(_init + 2) = v17;
     [a2 _touchMinorRadius];
-    *(v15 + 3) = v18;
+    *(_init + 3) = v18;
     [a2 _position];
-    *(v15 + 5) = v19;
-    *(v15 + 6) = v20;
+    *(_init + 5) = v19;
+    *(_init + 6) = v20;
     [a2 _positionDelta];
-    *(v15 + 7) = v21;
-    *(v15 + 8) = v22;
-    *(v15 + 4) = [a2 _touchPositionHints];
+    *(_init + 7) = v21;
+    *(_init + 8) = v22;
+    *(_init + 4) = [a2 _touchPositionHints];
     if (!v11)
     {
       goto LABEL_9;
@@ -154,11 +154,11 @@ LABEL_6:
   if (v11)
   {
 LABEL_8:
-    objc_storeStrong(v11 + 7, v15);
+    objc_storeStrong(v11 + 7, _init);
   }
 
 LABEL_9:
-  v23 = [a2 _stage];
+  _stage = [a2 _stage];
   if (v13)
   {
     [v11 _button];
@@ -166,7 +166,7 @@ LABEL_9:
 
   else
   {
-    *(v11 + 8) = v23;
+    *(v11 + 8) = _stage;
     if ([v11 _button] == 5)
     {
       v24 = 5;
@@ -180,11 +180,11 @@ LABEL_9:
     *(v11 + 9) = v24;
   }
 
-  v25 = [a2 _phase];
+  _phase = [a2 _phase];
   v26 = 1;
-  if (v25 <= 2)
+  if (_phase <= 2)
   {
-    if (!v25)
+    if (!_phase)
     {
       v26 = 0;
       if (v13)
@@ -195,11 +195,11 @@ LABEL_9:
       goto LABEL_26;
     }
 
-    if (v25 == 2)
+    if (_phase == 2)
     {
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_UIPhysicalButtonStagePhase _UIPhysicalButtonStagePhaseForDynamicButtonPhase(_UIDynamicButtonPhase)"];
-      [v33 handleFailureInFunction:v34 file:@"_UIPhysicalButtonInteraction.m" lineNumber:127 description:@"Invalid state: attempting to resolve physical button stage for stationary dynamic button"];
+      [currentHandler2 handleFailureInFunction:v34 file:@"_UIPhysicalButtonInteraction.m" lineNumber:127 description:@"Invalid state: attempting to resolve physical button stage for stationary dynamic button"];
 
       v26 = 1;
       if (!v13)
@@ -213,7 +213,7 @@ LABEL_9:
 
   else
   {
-    if (v25 == 3)
+    if (_phase == 3)
     {
       v26 = 2;
       if (v13)
@@ -224,7 +224,7 @@ LABEL_9:
       goto LABEL_26;
     }
 
-    if (v25 == 4)
+    if (_phase == 4)
     {
       v26 = 3;
       if (v13)
@@ -266,8 +266,8 @@ LABEL_27:
 
 - (_UIPhysicalButtonAction)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteraction.m" lineNumber:269 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonAction init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteraction.m" lineNumber:269 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonAction init]", objc_opt_class()}];
 
   return 0;
 }
@@ -290,10 +290,10 @@ LABEL_27:
 
 - (id)succinctDescription
 {
-  v2 = [(_UIPhysicalButtonAction *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIPhysicalButtonAction *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -328,33 +328,33 @@ LABEL_27:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonAction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonAction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonAction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonAction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65___UIPhysicalButtonAction_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v6 = v5;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = [v6 modifyBody:v10];
   v8 = v6;
 

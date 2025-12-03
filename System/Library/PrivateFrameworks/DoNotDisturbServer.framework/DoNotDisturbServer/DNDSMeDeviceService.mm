@@ -1,16 +1,16 @@
 @interface DNDSMeDeviceService
-- (BOOL)_queue_saveDataToBackingStoreWithError:(id *)a3;
-- (BOOL)_saveDataToBackingStoreWithError:(id *)a3;
+- (BOOL)_queue_saveDataToBackingStoreWithError:(id *)error;
+- (BOOL)_saveDataToBackingStoreWithError:(id *)error;
 - (DNDMeDeviceState)meDeviceState;
 - (DNDSMeDeviceService)init;
-- (id)sysdiagnoseDataForDate:(id)a3 redacted:(BOOL)a4;
+- (id)sysdiagnoseDataForDate:(id)date redacted:(BOOL)redacted;
 - (void)_loadDataFromBackingStore;
 - (void)_queue_fetchMeDevice;
-- (void)_queue_processMeDevice:(id)a3 error:(id)a4;
-- (void)addListener:(id)a3;
+- (void)_queue_processMeDevice:(id)device error:(id)error;
+- (void)addListener:(id)listener;
 - (void)devicesChanged;
 - (void)meDeviceChanged;
-- (void)removeListener:(id)a3;
+- (void)removeListener:(id)listener;
 - (void)startMonitoringMeDeviceChanges;
 @end
 
@@ -46,8 +46,8 @@
 
     v13 = [DNDSJSONBackingStore alloc];
     v14 = objc_opt_class();
-    v15 = [MEMORY[0x277CBEBC0] dnds_meDeviceStoreFileURL];
-    v16 = [(DNDSJSONBackingStore *)v13 initWithRecordClass:v14 fileURL:v15 versionNumber:0];
+    dnds_meDeviceStoreFileURL = [MEMORY[0x277CBEBC0] dnds_meDeviceStoreFileURL];
+    v16 = [(DNDSJSONBackingStore *)v13 initWithRecordClass:v14 fileURL:dnds_meDeviceStoreFileURL versionNumber:0];
     backingStore = v2->_backingStore;
     v2->_backingStore = v16;
 
@@ -213,31 +213,31 @@ uint64_t __37__DNDSMeDeviceService_devicesChanged__block_invoke(uint64_t a1)
   return [*(a1 + 32) _queue_fetchMeDevice];
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__DNDSMeDeviceService_addListener___block_invoke;
   v7[3] = &unk_278F89F48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_sync(workQueue, v7);
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__DNDSMeDeviceService_removeListener___block_invoke;
   v7[3] = &unk_278F89F48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_sync(workQueue, v7);
 }
 
@@ -281,11 +281,11 @@ void __43__DNDSMeDeviceService__queue_fetchMeDevice__block_invoke(uint64_t a1, v
   dispatch_async(v8, block);
 }
 
-- (void)_queue_processMeDevice:(id)a3 error:(id)a4
+- (void)_queue_processMeDevice:(id)device error:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  errorCopy = error;
   v8 = DNDSLogMeDeviceService;
   if (os_log_type_enabled(DNDSLogMeDeviceService, OS_LOG_TYPE_DEFAULT))
   {
@@ -294,20 +294,20 @@ void __43__DNDSMeDeviceService__queue_fetchMeDevice__block_invoke(uint64_t a1, v
   }
 
   dispatch_assert_queue_V2(self->_workQueue);
-  if (v7)
+  if (errorCopy)
   {
     v9 = DNDSLogMeDeviceService;
     if (os_log_type_enabled(DNDSLogMeDeviceService, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v28 = v7;
+      v28 = errorCopy;
       _os_log_impl(&dword_24912E000, v9, OS_LOG_TYPE_DEFAULT, "findmylocate: error determining current 'Me Device' status; error=%{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    if ([v6 isThisDevice])
+    if ([deviceCopy isThisDevice])
     {
       v10 = 2;
     }
@@ -318,8 +318,8 @@ void __43__DNDSMeDeviceService__queue_fetchMeDevice__block_invoke(uint64_t a1, v
     }
 
     v11 = objc_alloc(MEMORY[0x277D05928]);
-    v12 = [v6 deviceName];
-    v13 = [v11 initWithStatus:v10 name:v12];
+    deviceName = [deviceCopy deviceName];
+    v13 = [v11 initWithStatus:v10 name:deviceName];
 
     v14 = DNDSLogMeDeviceService;
     if (os_log_type_enabled(DNDSLogMeDeviceService, OS_LOG_TYPE_DEFAULT))
@@ -327,17 +327,17 @@ void __43__DNDSMeDeviceService__queue_fetchMeDevice__block_invoke(uint64_t a1, v
       v15 = v14;
       [v13 meDeviceStatus];
       v16 = DNDMeDeviceStatusToString();
-      v17 = [v13 meDeviceName];
+      meDeviceName = [v13 meDeviceName];
       *buf = 138543618;
       v28 = v16;
       v29 = 2114;
-      v30 = v17;
+      v30 = meDeviceName;
       _os_log_impl(&dword_24912E000, v15, OS_LOG_TYPE_DEFAULT, "findmylocate: current 'Me Device' state determined; meDeviceStatus=%{public}@, meDeviceName=%{public}@", buf, 0x16u);
     }
 
     if (([(DNDMeDeviceState *)self->_meDeviceState isEqual:v13]& 1) != 0)
     {
-      v7 = 0;
+      errorCopy = 0;
     }
 
     else
@@ -345,7 +345,7 @@ void __43__DNDSMeDeviceService__queue_fetchMeDevice__block_invoke(uint64_t a1, v
       objc_storeStrong(&self->_meDeviceState, v13);
       v26 = 0;
       [(DNDSMeDeviceService *)self _queue_saveDataToBackingStoreWithError:&v26];
-      v7 = v26;
+      errorCopy = v26;
       v18 = [(NSMutableSet *)self->_listeners copy];
       calloutQueue = self->_calloutQueue;
       v22[0] = MEMORY[0x277D85DD0];
@@ -354,7 +354,7 @@ void __43__DNDSMeDeviceService__queue_fetchMeDevice__block_invoke(uint64_t a1, v
       v22[3] = &unk_278F89E30;
       v23 = v13;
       v24 = v18;
-      v25 = self;
+      selfCopy = self;
       v20 = v18;
       dispatch_async(calloutQueue, v22);
     }
@@ -509,7 +509,7 @@ uint64_t __48__DNDSMeDeviceService__loadDataFromBackingStore__block_invoke_26(ui
   return [*(a1 + 32) _queue_fetchMeDevice];
 }
 
-- (BOOL)_saveDataToBackingStoreWithError:(id *)a3
+- (BOOL)_saveDataToBackingStoreWithError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -522,7 +522,7 @@ uint64_t __48__DNDSMeDeviceService__loadDataFromBackingStore__block_invoke_26(ui
   block[3] = &unk_278F8ABC8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = error;
   dispatch_sync(workQueue, block);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -536,7 +536,7 @@ uint64_t __56__DNDSMeDeviceService__saveDataToBackingStoreWithError___block_invo
   return result;
 }
 
-- (BOOL)_queue_saveDataToBackingStoreWithError:(id *)a3
+- (BOOL)_queue_saveDataToBackingStoreWithError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_workQueue);
@@ -544,8 +544,8 @@ uint64_t __56__DNDSMeDeviceService__saveDataToBackingStoreWithError___block_invo
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[DNDMeDeviceState meDeviceStatus](self->_meDeviceState, "meDeviceStatus")}];
   [v5 setMeDeviceStatus:v6];
 
-  v7 = [(DNDMeDeviceState *)self->_meDeviceState meDeviceName];
-  [v5 setMeDeviceName:v7];
+  meDeviceName = [(DNDMeDeviceState *)self->_meDeviceState meDeviceName];
+  [v5 setMeDeviceName:meDeviceName];
 
   backingStore = self->_backingStore;
   v20 = 0;
@@ -573,7 +573,7 @@ uint64_t __56__DNDSMeDeviceService__saveDataToBackingStoreWithError___block_invo
       if (v9 != 2 || (v11 = DNDSLogMeDeviceService, !os_log_type_enabled(DNDSLogMeDeviceService, OS_LOG_TYPE_DEFAULT)))
       {
 LABEL_9:
-        if (!a3)
+        if (!error)
         {
           goto LABEL_12;
         }
@@ -598,13 +598,13 @@ LABEL_9:
   }
 
   _DNDSRequestRadar(@"Failed to write 'Me Device' store", v10, 0, @"/Library/Caches/com.apple.xbs/Sources/DoNotDisturbServer/DoNotDisturbServer/DNDSMeDeviceService.m", 268);
-  if (a3)
+  if (error)
   {
 LABEL_10:
     if (v10)
     {
       v16 = v10;
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -614,18 +614,18 @@ LABEL_12:
   return v9 == 2;
 }
 
-- (id)sysdiagnoseDataForDate:(id)a3 redacted:(BOOL)a4
+- (id)sysdiagnoseDataForDate:(id)date redacted:(BOOL)redacted
 {
   v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-  v7 = [(DNDSMeDeviceService *)self meDeviceState];
-  [v7 meDeviceStatus];
+  meDeviceState = [(DNDSMeDeviceService *)self meDeviceState];
+  [meDeviceState meDeviceStatus];
   v8 = DNDMeDeviceStatusToString();
   [v6 setObject:v8 forKeyedSubscript:@"status"];
 
-  if (!a4)
+  if (!redacted)
   {
-    v9 = [v7 meDeviceName];
-    [v6 setObject:v9 forKeyedSubscript:@"name"];
+    meDeviceName = [meDeviceState meDeviceName];
+    [v6 setObject:meDeviceName forKeyedSubscript:@"name"];
   }
 
   v10 = [v6 copy];

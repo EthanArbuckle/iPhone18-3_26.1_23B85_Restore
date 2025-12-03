@@ -2,17 +2,17 @@
 - (double)value;
 - (uint64_t)hasValue;
 - (uint64_t)reset;
-- (void)updateQuaternion:(double)a3 alpha:;
+- (void)updateQuaternion:(double)quaternion alpha:;
 @end
 
 @implementation LSSQuaternionSmoothFilter
 
 - (double)value
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 16);
-    v3 = *(a1 + 32);
+    v2 = *(self + 16);
+    v3 = *(self + 32);
     *a2 = v2;
     a2[1] = v3;
   }
@@ -27,24 +27,24 @@
   return *&v2;
 }
 
-- (void)updateQuaternion:(double)a3 alpha:
+- (void)updateQuaternion:(double)quaternion alpha:
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 8))
+    if (*(self + 8))
     {
-      if (a3 >= 1.0)
+      if (quaternion >= 1.0)
       {
         v28 = a2[1];
-        *(a1 + 16) = *a2;
-        *(a1 + 32) = v28;
+        *(self + 16) = *a2;
+        *(self + 32) = v28;
       }
 
       else
       {
-        v4 = fmax(a3, 0.0);
-        v6 = *(a1 + 16);
-        v5 = *(a1 + 32);
+        v4 = fmax(quaternion, 0.0);
+        v6 = *(self + 16);
+        v5 = *(self + 32);
         v7 = *a2;
         v8 = a2[1];
         v52 = v6;
@@ -135,17 +135,17 @@
           v44 = vmulq_n_f64(v40, v45);
         }
 
-        *(a1 + 16) = v44;
-        *(a1 + 32) = v43;
+        *(self + 16) = v44;
+        *(self + 32) = v43;
       }
     }
 
     else
     {
       v27 = a2[1];
-      *(a1 + 16) = *a2;
-      *(a1 + 32) = v27;
-      *(a1 + 8) = 1;
+      *(self + 16) = *a2;
+      *(self + 32) = v27;
+      *(self + 8) = 1;
     }
   }
 }
@@ -162,9 +162,9 @@
 
 - (uint64_t)hasValue
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else

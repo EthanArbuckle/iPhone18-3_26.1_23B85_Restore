@@ -1,21 +1,21 @@
 @interface WFWorkflowGlyphIcon
 - (BOOL)hasClearBackground;
 - (BOOL)hasTransparentBackground;
-- (BOOL)isEqual:(id)a3;
-- (WFWorkflowGlyphIcon)initWithCoder:(id)a3;
-- (WFWorkflowGlyphIcon)initWithGlyph:(unsigned __int16)a3 background:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFWorkflowGlyphIcon)initWithCoder:(id)coder;
+- (WFWorkflowGlyphIcon)initWithGlyph:(unsigned __int16)glyph background:(id)background;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkflowGlyphIcon
 
 - (BOOL)hasTransparentBackground
 {
-  v2 = [(WFWorkflowGlyphIcon *)self background];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  background = [(WFWorkflowGlyphIcon *)self background];
+  if (background && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 color];
-    [v3 alpha];
+    color = [background color];
+    [color alpha];
     v5 = v4 < 1.0;
   }
 
@@ -29,11 +29,11 @@
 
 - (BOOL)hasClearBackground
 {
-  v2 = [(WFWorkflowGlyphIcon *)self background];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  background = [(WFWorkflowGlyphIcon *)self background];
+  if (background && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 color];
-    [v3 alpha];
+    color = [background color];
+    [color alpha];
     v5 = v4 == 0.0;
   }
 
@@ -45,28 +45,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   glyph = self->_glyph;
-  v5 = a3;
-  [v5 encodeInteger:glyph forKey:@"glyph"];
-  [v5 encodeObject:self->_background forKey:@"background"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:glyph forKey:@"glyph"];
+  [coderCopy encodeObject:self->_background forKey:@"background"];
 }
 
-- (WFWorkflowGlyphIcon)initWithCoder:(id)a3
+- (WFWorkflowGlyphIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"glyph"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"background"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"glyph"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"background"];
 
   v7 = [(WFWorkflowGlyphIcon *)self initWithGlyph:v5 background:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (!v4)
+  equalCopy = equal;
+  if (!equalCopy)
   {
     v8 = 0;
     v12 = 0;
@@ -81,17 +81,17 @@ LABEL_13:
   {
     v12 = 0;
     v11 = 0;
-    v8 = v4;
+    v8 = equalCopy;
     goto LABEL_13;
   }
 
-  v5 = [(WFWorkflowGlyphIcon *)self glyph];
-  if (v5 == [v4 glyph])
+  glyph = [(WFWorkflowGlyphIcon *)self glyph];
+  if (glyph == [equalCopy glyph])
   {
-    v6 = [(WFWorkflowGlyphIcon *)self background];
-    v7 = [v4 background];
-    v8 = v6;
-    v9 = v7;
+    background = [(WFWorkflowGlyphIcon *)self background];
+    background2 = [equalCopy background];
+    v8 = background;
+    v9 = background2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -107,34 +107,34 @@ LABEL_13:
       }
     }
 
-    v12 = v4;
+    v12 = equalCopy;
     goto LABEL_13;
   }
 
   v11 = 0;
-  v12 = v4;
+  v12 = equalCopy;
 LABEL_14:
 
   return v11;
 }
 
-- (WFWorkflowGlyphIcon)initWithGlyph:(unsigned __int16)a3 background:(id)a4
+- (WFWorkflowGlyphIcon)initWithGlyph:(unsigned __int16)glyph background:(id)background
 {
-  v8 = a4;
-  if (!v8)
+  backgroundCopy = background;
+  if (!backgroundCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFIcon.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"background"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFIcon.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"background"}];
   }
 
   v14.receiver = self;
   v14.super_class = WFWorkflowGlyphIcon;
-  v9 = [(WFIcon *)&v14 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(WFIcon *)&v14 _init];
+  v10 = _init;
+  if (_init)
   {
-    v9->_glyph = a3;
-    objc_storeStrong(&v9->_background, a4);
+    _init->_glyph = glyph;
+    objc_storeStrong(&_init->_background, background);
     v11 = v10;
   }
 

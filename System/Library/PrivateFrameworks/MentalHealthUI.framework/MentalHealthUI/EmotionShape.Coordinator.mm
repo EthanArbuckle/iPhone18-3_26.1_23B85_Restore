@@ -1,15 +1,15 @@
 @interface EmotionShape.Coordinator
 - (_TtCV14MentalHealthUI12EmotionShape11Coordinator)init;
-- (void)handlePanWithSender:(id)a3;
+- (void)handlePanWithSender:(id)sender;
 @end
 
 @implementation EmotionShape.Coordinator
 
-- (void)handlePanWithSender:(id)a3
+- (void)handlePanWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_258AFBBA4(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_258AFBBA4(senderCopy);
 }
 
 - (_TtCV14MentalHealthUI12EmotionShape11Coordinator)init

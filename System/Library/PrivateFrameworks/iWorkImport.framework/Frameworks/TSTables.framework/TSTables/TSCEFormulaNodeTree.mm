@@ -1,33 +1,33 @@
 @interface TSCEFormulaNodeTree
-- (TSCEFormulaNodeTree)initWithFormula:(id)a3 options:(unsigned int)a4 partialResults:(id)a5 calcEngine:(id)a6 hostCellRef:(const TSCECellRef *)a7;
-- (TSCEFormulaNodeTree)initWithRootNode:(id)a3 calcEngine:(id)a4 hostCellRef:(const TSCECellRef *)a5;
+- (TSCEFormulaNodeTree)initWithFormula:(id)formula options:(unsigned int)options partialResults:(id)results calcEngine:(id)engine hostCellRef:(const TSCECellRef *)ref;
+- (TSCEFormulaNodeTree)initWithRootNode:(id)node calcEngine:(id)engine hostCellRef:(const TSCECellRef *)ref;
 - (TSKUIDStruct)hostColumnUID;
 - (TSKUIDStruct)hostRowUID;
 - (TSKUIDStruct)hostTableUID;
 - (id).cxx_construct;
-- (id)convertToFormula:(id *)a3;
+- (id)convertToFormula:(id *)formula;
 - (id)variableUsageError;
 - (void)resolveIdentifiers;
 @end
 
 @implementation TSCEFormulaNodeTree
 
-- (TSCEFormulaNodeTree)initWithRootNode:(id)a3 calcEngine:(id)a4 hostCellRef:(const TSCECellRef *)a5
+- (TSCEFormulaNodeTree)initWithRootNode:(id)node calcEngine:(id)engine hostCellRef:(const TSCECellRef *)ref
 {
-  v9 = a3;
-  v10 = a4;
+  nodeCopy = node;
+  engineCopy = engine;
   v15.receiver = self;
   v15.super_class = TSCEFormulaNodeTree;
   v11 = [(TSCEFormulaNodeTree *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_calcEngine, a4);
-    v13 = *&a5->coordinate.row;
-    v12->_hostCellRef._tableUID._upper = a5->_tableUID._upper;
+    objc_storeStrong(&v11->_calcEngine, engine);
+    v13 = *&ref->coordinate.row;
+    v12->_hostCellRef._tableUID._upper = ref->_tableUID._upper;
     *&v12->_hostCellRef.coordinate.row = v13;
     v12->_translationFlags._flags = 0;
-    objc_storeStrong(&v12->_root, a3);
+    objc_storeStrong(&v12->_root, node);
     v12->_hostRowUID = 0u;
     v12->_hostColumnUID = 0u;
     v12->_hostTableUID = 0u;
@@ -36,28 +36,28 @@
   return v12;
 }
 
-- (TSCEFormulaNodeTree)initWithFormula:(id)a3 options:(unsigned int)a4 partialResults:(id)a5 calcEngine:(id)a6 hostCellRef:(const TSCECellRef *)a7
+- (TSCEFormulaNodeTree)initWithFormula:(id)formula options:(unsigned int)options partialResults:(id)results calcEngine:(id)engine hostCellRef:(const TSCECellRef *)ref
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  v10 = *&options;
+  formulaCopy = formula;
+  resultsCopy = results;
+  engineCopy = engine;
   v27.receiver = self;
   v27.super_class = TSCEFormulaNodeTree;
   v15 = [(TSCEFormulaNodeTree *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_calcEngine, a6);
-    v21 = *&a7->coordinate.row;
-    v16->_hostCellRef._tableUID._upper = a7->_tableUID._upper;
+    objc_storeStrong(&v15->_calcEngine, engine);
+    v21 = *&ref->coordinate.row;
+    v16->_hostCellRef._tableUID._upper = ref->_tableUID._upper;
     *&v16->_hostCellRef.coordinate.row = v21;
     v16->_translationFlags._flags = 0;
-    if (v12)
+    if (formulaCopy)
     {
-      v16->_translationFlags._flags = objc_msgSend_translationFlags(v12, v17, v18, v19, v20);
-      TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v26, v14, a7);
-      v23 = TSCEFormulaNodeTreeCreator::formulaNodeTreeFromFormula(v12, v10, v13, &v26, v22);
+      v16->_translationFlags._flags = objc_msgSend_translationFlags(formulaCopy, v17, v18, v19, v20);
+      TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v26, engineCopy, ref);
+      v23 = TSCEFormulaNodeTreeCreator::formulaNodeTreeFromFormula(formulaCopy, v10, resultsCopy, &v26, v22);
       root = v16->_root;
       v16->_root = v23;
     }
@@ -72,14 +72,14 @@
 
 - (void)resolveIdentifiers
 {
-  v5 = self;
+  selfCopy = self;
   v6 = objc_msgSend_documentLocale(self->_calcEngine, a2, v2, v3, v4);
   TSCESymbolTable::TSCESymbolTable(&v193, v6);
 
   p_undoSymbolTableMaps = 0;
   v191 = 0;
   v192 = 0;
-  v7 = v5->_root;
+  v7 = selfCopy->_root;
   v188 = 0;
   v189 = 0;
   v187 = v7;
@@ -90,7 +90,7 @@
   v13 = v191;
   if (p_undoSymbolTableMaps != v191)
   {
-    v183 = v5;
+    v183 = selfCopy;
     do
     {
       v14 = *(v13 - 3);
@@ -208,7 +208,7 @@ LABEL_11:
               v188 = v91;
               v189 = v125 - 1;
               sub_221458860(&p_undoSymbolTableMaps, &v187);
-              v5 = v183;
+              selfCopy = v183;
 
               v15 = v186;
               if (v126 >= 1)
@@ -272,14 +272,14 @@ LABEL_11:
 
               v27 = 0;
               v15 = v186;
-              v5 = v183;
+              selfCopy = v183;
               goto LABEL_44;
             }
 
             goto LABEL_21;
           case 21:
             v101 = v17;
-            v27 = objc_msgSend_resolveIdentifier_hostTable_baseHostCell_symbolTable_(v101, v102, v5->_calcEngine, 0, *&v5->_hostCellRef.coordinate, &v193);
+            v27 = objc_msgSend_resolveIdentifier_hostTable_baseHostCell_symbolTable_(v101, v102, selfCopy->_calcEngine, 0, *&selfCopy->_hostCellRef.coordinate, &v193);
 
             if (v27 && v27 != v101)
             {
@@ -294,8 +294,8 @@ LABEL_11:
               else
               {
                 v160 = v27;
-                root = v5->_root;
-                v5->_root = v160;
+                root = selfCopy->_root;
+                selfCopy->_root = v160;
               }
 
               goto LABEL_39;
@@ -540,9 +540,9 @@ LABEL_43:
   return v98;
 }
 
-- (id)convertToFormula:(id *)a3
+- (id)convertToFormula:(id *)formula
 {
-  objc_msgSend_resolveIdentifiers(self, a2, a3, v3, v4);
+  objc_msgSend_resolveIdentifiers(self, a2, formula, v3, v4);
   v11 = objc_msgSend_variableUsageError(self, v7, v8, v9, v10);
   v12 = v11;
   if (!v11)
@@ -550,10 +550,10 @@ LABEL_43:
     __C();
   }
 
-  if (a3)
+  if (formula)
   {
     v13 = v11;
-    *a3 = v12;
+    *formula = v12;
   }
 
   return 0;

@@ -1,40 +1,40 @@
 @interface PKPencilSqueezeAnalyticsController
 + (uint64_t)currentSqueezeThresholdIndex;
-- (id)initWithDelegate:(id *)a1;
-- (void)_didHideMiniPaletteWithBlock:(uint64_t)a1;
-- (void)_logSqueezeCategory:(uint64_t)a1;
+- (id)initWithDelegate:(id *)delegate;
+- (void)_didHideMiniPaletteWithBlock:(uint64_t)block;
+- (void)_logSqueezeCategory:(uint64_t)category;
 - (void)didHideMiniPaletteByChangingContext;
 - (void)didHideMiniPaletteByDrawing;
 - (void)didHideMiniPaletteBySqueezingAgain;
 - (void)didHideMiniPaletteByTappingOutsideOnScreen;
-- (void)didShowMiniPaletteIsUndoRedoPalette:(uint64_t)a1;
+- (void)didShowMiniPaletteIsUndoRedoPalette:(uint64_t)palette;
 - (void)didUseMiniPalette;
 @end
 
 @implementation PKPencilSqueezeAnalyticsController
 
-- (id)initWithDelegate:(id *)a1
+- (id)initWithDelegate:(id *)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
-    v6.receiver = a1;
+    v6.receiver = delegate;
     v6.super_class = PKPencilSqueezeAnalyticsController;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    delegate = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 3, v3);
     }
   }
 
-  return a1;
+  return delegate;
 }
 
-- (void)didShowMiniPaletteIsUndoRedoPalette:(uint64_t)a1
+- (void)didShowMiniPaletteIsUndoRedoPalette:(uint64_t)palette
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 9) & 1) == 0)
+  if (palette && (*(palette + 9) & 1) == 0)
   {
     v4 = PKPencilSqueezeAnalyticsLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -44,16 +44,16 @@
       _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "did show mini palette, isUndoRedoPalette: %{BOOL}d", v5, 8u);
     }
 
-    *(a1 + 9) = 1;
-    *(a1 + 11) = 0;
-    *(a1 + 8) = a2;
-    *(a1 + 16) = CACurrentMediaTime();
+    *(palette + 9) = 1;
+    *(palette + 11) = 0;
+    *(palette + 8) = a2;
+    *(palette + 16) = CACurrentMediaTime();
   }
 }
 
 - (void)didUseMiniPalette
 {
-  if (a1 && *(a1 + 9) && (*(a1 + 10) & 1) == 0)
+  if (self && *(self + 9) && (*(self + 10) & 1) == 0)
   {
     v2 = PKPencilSqueezeAnalyticsLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -62,20 +62,20 @@
       _os_log_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEFAULT, "did use mini palette", v3, 2u);
     }
 
-    *(a1 + 10) = 1;
+    *(self + 10) = 1;
   }
 }
 
 - (void)didHideMiniPaletteByDrawing
 {
-  if (a1)
+  if (self)
   {
     v1[0] = MEMORY[0x1E69E9820];
     v1[1] = 3221225472;
     v1[2] = __65__PKPencilSqueezeAnalyticsController_didHideMiniPaletteByDrawing__block_invoke;
     v1[3] = &unk_1E82D7148;
-    v1[4] = a1;
-    [(PKPencilSqueezeAnalyticsController *)a1 _didHideMiniPaletteWithBlock:v1];
+    v1[4] = self;
+    [(PKPencilSqueezeAnalyticsController *)self _didHideMiniPaletteWithBlock:v1];
   }
 }
 
@@ -91,23 +91,23 @@ void __65__PKPencilSqueezeAnalyticsController_didHideMiniPaletteByDrawing__block
   [(PKPencilSqueezeAnalyticsController *)*(a1 + 32) _logSqueezeCategory:?];
 }
 
-- (void)_logSqueezeCategory:(uint64_t)a1
+- (void)_logSqueezeCategory:(uint64_t)category
 {
   v46 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (category)
   {
-    v4 = [MEMORY[0x1E69DCD58] preferredSqueezeAction];
-    v5 = v4;
-    if (v4 >= 5)
+    preferredSqueezeAction = [MEMORY[0x1E69DCD58] preferredSqueezeAction];
+    v5 = preferredSqueezeAction;
+    if (preferredSqueezeAction >= 5)
     {
-      if (v4 == 6)
+      if (preferredSqueezeAction == 6)
       {
         v5 = 8;
       }
 
-      else if (v4 == 5)
+      else if (preferredSqueezeAction == 5)
       {
-        if (*(a1 + 8))
+        if (*(category + 8))
         {
           v5 = 10;
         }
@@ -132,21 +132,21 @@ void __65__PKPencilSqueezeAnalyticsController_didHideMiniPaletteByDrawing__block
       }
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
-    v7 = [WeakRetained pencilSqueezeAnalyticsControllerIsHovering:a1];
+    WeakRetained = objc_loadWeakRetained((category + 24));
+    v7 = [WeakRetained pencilSqueezeAnalyticsControllerIsHovering:category];
 
-    v8 = objc_loadWeakRetained((a1 + 24));
-    [v8 pencilSqueezeAnalyticsControllerHoverZOffset:a1];
+    v8 = objc_loadWeakRetained((category + 24));
+    [v8 pencilSqueezeAnalyticsControllerHoverZOffset:category];
     v10 = v9;
 
-    v11 = objc_loadWeakRetained((a1 + 24));
+    v11 = objc_loadWeakRetained((category + 24));
     v12 = v11;
     if (!v7 || (v10 >= 0.1 ? (v13 = v10 > 1.0) : (v13 = 1), v13))
     {
-      v17 = [v11 pencilSqueezeAnalyticsControllerIsHovering:a1];
+      v17 = [v11 pencilSqueezeAnalyticsControllerIsHovering:category];
 
-      v18 = objc_loadWeakRetained((a1 + 24));
-      [v18 pencilSqueezeAnalyticsControllerHoverZOffset:a1];
+      v18 = objc_loadWeakRetained((category + 24));
+      [v18 pencilSqueezeAnalyticsControllerHoverZOffset:category];
       v20 = v19;
 
       if ((v17 & (v20 == 0.0)) != 0)
@@ -162,10 +162,10 @@ void __65__PKPencilSqueezeAnalyticsController_didHideMiniPaletteByDrawing__block
 
     else
     {
-      v14 = [v11 pencilSqueezeAnalyticsControllerHoverSettings:a1];
-      v15 = [objc_opt_class() allowDoubleTapOnlyWithPencilHover];
+      v14 = [v11 pencilSqueezeAnalyticsControllerHoverSettings:category];
+      allowDoubleTapOnlyWithPencilHover = [objc_opt_class() allowDoubleTapOnlyWithPencilHover];
 
-      if (v15)
+      if (allowDoubleTapOnlyWithPencilHover)
       {
         v16 = 3;
       }
@@ -178,9 +178,9 @@ void __65__PKPencilSqueezeAnalyticsController_didHideMiniPaletteByDrawing__block
 
     v21 = +[PKPencilDevice squeezeThreshold];
     v22 = PKPencilSqueezeThresholdMap(v21);
-    v23 = objc_loadWeakRetained((a1 + 24));
-    v24 = [v23 pencilSqueezeAnalyticsControllerHoverSettings:a1];
-    v25 = [v24 toolPreviewActive];
+    v23 = objc_loadWeakRetained((category + 24));
+    v24 = [v23 pencilSqueezeAnalyticsControllerHoverSettings:category];
+    toolPreviewActive = [v24 toolPreviewActive];
 
     v40[0] = @"squeezeCategory";
     v26 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
@@ -195,7 +195,7 @@ void __65__PKPencilSqueezeAnalyticsController_didHideMiniPaletteByDrawing__block
     v29 = [MEMORY[0x1E696AD98] numberWithInteger:v22];
     v43 = v29;
     v40[4] = @"hoverSettingState";
-    v30 = [MEMORY[0x1E696AD98] numberWithBool:v25];
+    v30 = [MEMORY[0x1E696AD98] numberWithBool:toolPreviewActive];
     v44 = v30;
     v40[5] = @"bundleId_category";
     v31 = +[PKStatisticsManager bundleIDCategory];
@@ -220,28 +220,28 @@ void __65__PKPencilSqueezeAnalyticsController_didHideMiniPaletteByDrawing__block
   }
 }
 
-- (void)_didHideMiniPaletteWithBlock:(uint64_t)a1
+- (void)_didHideMiniPaletteWithBlock:(uint64_t)block
 {
   v3 = a2;
-  if (a1 && *(a1 + 9) && (*(a1 + 11) & 1) == 0)
+  if (block && *(block + 9) && (*(block + 11) & 1) == 0)
   {
     v4 = v3;
     v3[2]();
     v3 = v4;
-    *(a1 + 8) = 0x1000000;
+    *(block + 8) = 0x1000000;
   }
 }
 
 - (void)didHideMiniPaletteBySqueezingAgain
 {
-  if (a1)
+  if (self)
   {
     v1[0] = MEMORY[0x1E69E9820];
     v1[1] = 3221225472;
     v1[2] = __72__PKPencilSqueezeAnalyticsController_didHideMiniPaletteBySqueezingAgain__block_invoke;
     v1[3] = &unk_1E82D7148;
-    v1[4] = a1;
-    [(PKPencilSqueezeAnalyticsController *)a1 _didHideMiniPaletteWithBlock:v1];
+    v1[4] = self;
+    [(PKPencilSqueezeAnalyticsController *)self _didHideMiniPaletteWithBlock:v1];
   }
 }
 
@@ -285,27 +285,27 @@ void __72__PKPencilSqueezeAnalyticsController_didHideMiniPaletteBySqueezingAgain
 
 - (void)didHideMiniPaletteByTappingOutsideOnScreen
 {
-  if (a1)
+  if (self)
   {
     v1[0] = MEMORY[0x1E69E9820];
     v1[1] = 3221225472;
     v1[2] = __80__PKPencilSqueezeAnalyticsController_didHideMiniPaletteByTappingOutsideOnScreen__block_invoke;
     v1[3] = &unk_1E82D7148;
-    v1[4] = a1;
-    [(PKPencilSqueezeAnalyticsController *)a1 _didHideMiniPaletteWithBlock:v1];
+    v1[4] = self;
+    [(PKPencilSqueezeAnalyticsController *)self _didHideMiniPaletteWithBlock:v1];
   }
 }
 
 - (void)didHideMiniPaletteByChangingContext
 {
-  if (a1)
+  if (self)
   {
     v1[0] = MEMORY[0x1E69E9820];
     v1[1] = 3221225472;
     v1[2] = __73__PKPencilSqueezeAnalyticsController_didHideMiniPaletteByChangingContext__block_invoke;
     v1[3] = &unk_1E82D7148;
-    v1[4] = a1;
-    [(PKPencilSqueezeAnalyticsController *)a1 _didHideMiniPaletteWithBlock:v1];
+    v1[4] = self;
+    [(PKPencilSqueezeAnalyticsController *)self _didHideMiniPaletteWithBlock:v1];
   }
 }
 

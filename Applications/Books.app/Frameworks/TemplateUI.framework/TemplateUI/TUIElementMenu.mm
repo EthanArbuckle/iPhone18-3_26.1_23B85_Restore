@@ -1,27 +1,27 @@
 @interface TUIElementMenu
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5;
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context;
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementMenu
 
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context
 {
-  v7 = a5;
+  attributesCopy = attributes;
   v8 = objc_alloc_init(_TUIElementMenuBuilder);
-  v9 = [v7 stringForAttribute:206 node:a3.var0];
+  v9 = [attributesCopy stringForAttribute:206 node:node.var0];
   [(_TUIElementMenuBuilder *)v8 setTitle:v9];
 
-  v10 = [v7 BOOLForAttribute:107 node:a3.var0];
+  v10 = [attributesCopy BOOLForAttribute:107 node:node.var0];
   [(_TUIElementMenuBuilder *)v8 setIsInline:v10];
   return v8;
 }
 
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context
 {
-  v6 = a4;
-  v7 = [a3 finalizeMenuItem];
-  [v6 addMenuContainer:v7];
+  builderCopy = builder;
+  finalizeMenuItem = [object finalizeMenuItem];
+  [builderCopy addMenuContainer:finalizeMenuItem];
 }
 
 @end

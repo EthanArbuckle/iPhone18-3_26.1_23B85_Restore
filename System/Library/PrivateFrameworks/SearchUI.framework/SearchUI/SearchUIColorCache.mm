@@ -11,8 +11,8 @@
   v2 = [(TLKAsyncCache *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_clear name:*MEMORY[0x1E69DD8B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_clear name:*MEMORY[0x1E69DD8B8] object:0];
   }
 
   return v2;

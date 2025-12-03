@@ -1,49 +1,49 @@
 @interface HMDAccountIdentifier
-+ (id)accountIdentifierForAccountHandle:(id)a3;
-+ (id)accountIdentifierForAppleAccountContext:(id)a3;
-+ (id)accountIdentifierForMessageContext:(id)a3;
-+ (id)accountIdentifierForSenderCorrelationIdentifier:(id)a3;
++ (id)accountIdentifierForAccountHandle:(id)handle;
++ (id)accountIdentifierForAppleAccountContext:(id)context;
++ (id)accountIdentifierForMessageContext:(id)context;
++ (id)accountIdentifierForSenderCorrelationIdentifier:(id)identifier;
 - (BOOL)isAuthenticated;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDAccountIdentifier)init;
-- (HMDAccountIdentifier)initWithCoder:(id)a3;
-- (HMDAccountIdentifier)initWithInternal:(id)a3;
+- (HMDAccountIdentifier)initWithCoder:(id)coder;
+- (HMDAccountIdentifier)initWithInternal:(id)internal;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (NSUUID)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDAccountIdentifier
 
 - (NSUUID)identifier
 {
-  v2 = [(HMDAccountIdentifier *)self internal];
-  v3 = [v2 identifier];
+  internal = [(HMDAccountIdentifier *)self internal];
+  identifier = [internal identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDAccountIdentifier *)self internal];
-  v3 = [v2 hash];
+  internal = [(HMDAccountIdentifier *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDAccountIdentifier *)self internal];
-  [v4 encodeObject:v5 forKey:@"HM.internal"];
+  coderCopy = coder;
+  internal = [(HMDAccountIdentifier *)self internal];
+  [coderCopy encodeObject:internal forKey:@"HM.internal"];
 }
 
-- (HMDAccountIdentifier)initWithCoder:(id)a3
+- (HMDAccountIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.internal"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.internal"];
 
   v6 = [(HMDAccountIdentifier *)self initWithInternal:v5];
   return v6;
@@ -51,27 +51,27 @@
 
 - (BOOL)isAuthenticated
 {
-  v2 = [(HMDAccountIdentifier *)self internal];
-  v3 = [v2 isAuthenticated];
+  internal = [(HMDAccountIdentifier *)self internal];
+  isAuthenticated = [internal isAuthenticated];
 
-  return v3;
+  return isAuthenticated;
 }
 
 - (NSArray)attributeDescriptions
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDAccountIdentifier *)self internal];
-  v5 = [v4 kind];
-  v6 = [v3 initWithName:@"KN" value:v5];
+  internal = [(HMDAccountIdentifier *)self internal];
+  kind = [internal kind];
+  v6 = [v3 initWithName:@"KN" value:kind];
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMDAccountIdentifier *)self identifier];
-  v9 = [v8 UUIDString];
-  v10 = [v7 initWithName:@"ID" value:v9];
+  identifier = [(HMDAccountIdentifier *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v10 = [v7 initWithName:@"ID" value:uUIDString];
   v17[1] = v10;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
-  v12 = [(HMDAccountIdentifier *)self senderCorrelationIdentifier];
-  v13 = [v11 initWithName:@"MID" value:v12];
+  senderCorrelationIdentifier = [(HMDAccountIdentifier *)self senderCorrelationIdentifier];
+  v13 = [v11 initWithName:@"MID" value:senderCorrelationIdentifier];
   v17[2] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
 
@@ -83,19 +83,19 @@
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDAccountIdentifier *)self internal];
-  v5 = [v4 kind];
-  v6 = [(HMDAccountIdentifier *)self identifier];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"(%@)%@", v5, v7];
+  internal = [(HMDAccountIdentifier *)self internal];
+  kind = [internal kind];
+  identifier = [(HMDAccountIdentifier *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v8 = [v3 stringWithFormat:@"(%@)%@", kind, uUIDString];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -105,7 +105,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -116,9 +116,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDAccountIdentifier *)self internal];
-      v8 = [(HMDAccountIdentifier *)v6 internal];
-      v9 = [v7 isEqual:v8];
+      internal = [(HMDAccountIdentifier *)self internal];
+      internal2 = [(HMDAccountIdentifier *)v6 internal];
+      v9 = [internal isEqual:internal2];
     }
 
     else
@@ -130,10 +130,10 @@
   return v9;
 }
 
-- (HMDAccountIdentifier)initWithInternal:(id)a3
+- (HMDAccountIdentifier)initWithInternal:(id)internal
 {
-  v5 = a3;
-  if (v5)
+  internalCopy = internal;
+  if (internalCopy)
   {
     v10.receiver = self;
     v10.super_class = HMDAccountIdentifier;
@@ -141,19 +141,19 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_internal, a3);
+      objc_storeStrong(&v6->_internal, internal);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (HMDAccountIdentifier)init
@@ -169,12 +169,12 @@
   objc_exception_throw(v7);
 }
 
-+ (id)accountIdentifierForSenderCorrelationIdentifier:(id)a3
++ (id)accountIdentifierForSenderCorrelationIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = [[_HMDIDSAccountIdentifier alloc] initWithIdentifierString:v3];
+    v4 = [[_HMDIDSAccountIdentifier alloc] initWithIdentifierString:identifierCopy];
     v5 = [[HMDAccountIdentifier alloc] initWithInternal:v4];
   }
 
@@ -186,32 +186,32 @@
   return v5;
 }
 
-+ (id)accountIdentifierForMessageContext:(id)a3
++ (id)accountIdentifierForMessageContext:(id)context
 {
-  v4 = [a3 senderCorrelationIdentifier];
-  v5 = [a1 accountIdentifierForSenderCorrelationIdentifier:v4];
+  senderCorrelationIdentifier = [context senderCorrelationIdentifier];
+  v5 = [self accountIdentifierForSenderCorrelationIdentifier:senderCorrelationIdentifier];
 
   return v5;
 }
 
-+ (id)accountIdentifierForAppleAccountContext:(id)a3
++ (id)accountIdentifierForAppleAccountContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [_HMDAppleAccountIdentifier alloc];
-  v5 = [v3 identifier];
+  identifier = [contextCopy identifier];
 
-  v6 = [(_HMDAppleAccountIdentifier *)v4 initWithIdentifierString:v5];
+  v6 = [(_HMDAppleAccountIdentifier *)v4 initWithIdentifierString:identifier];
   v7 = [[HMDAccountIdentifier alloc] initWithInternal:v6];
 
   return v7;
 }
 
-+ (id)accountIdentifierForAccountHandle:(id)a3
++ (id)accountIdentifierForAccountHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [[_HMDAccountHandleIdentifier alloc] initWithAccountHandle:v4];
+  handleCopy = handle;
+  v5 = [[_HMDAccountHandleIdentifier alloc] initWithAccountHandle:handleCopy];
 
-  v6 = [[a1 alloc] initWithInternal:v5];
+  v6 = [[self alloc] initWithInternal:v5];
 
   return v6;
 }

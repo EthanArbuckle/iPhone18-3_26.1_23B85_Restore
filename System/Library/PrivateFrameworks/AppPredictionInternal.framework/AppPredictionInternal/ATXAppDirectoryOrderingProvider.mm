@@ -1,82 +1,82 @@
 @interface ATXAppDirectoryOrderingProvider
-+ (id)_reorderedRecentApps:(id)a3;
++ (id)_reorderedRecentApps:(id)apps;
 + (id)sharedInstance;
-- (ATXAppDirectoryOrderingProvider)initWithAppInfoManager:(id)a3 cache:(id)a4 blacklist:(id)a5 recentsCache:(id)a6 hiddenAppsCache:(id)a7 appClipDataProvider:(id)a8 appIconState:(id)a9 appClipChangeListener:(id)a10 histogramManager:(id)a11 appProtectionInfoProvider:(id)a12;
-- (BOOL)_bundleIDIsPresentInLibraryCategories:(id)a3 remoteBundleID:(id)a4;
-- (BOOL)_bundleIDIsPresentInLibraryRecents:(id)a3 remoteBundleID:(id)a4;
+- (ATXAppDirectoryOrderingProvider)initWithAppInfoManager:(id)manager cache:(id)cache blacklist:(id)blacklist recentsCache:(id)recentsCache hiddenAppsCache:(id)appsCache appClipDataProvider:(id)provider appIconState:(id)state appClipChangeListener:(id)self0 histogramManager:(id)self1 appProtectionInfoProvider:(id)self2;
+- (BOOL)_bundleIDIsPresentInLibraryCategories:(id)categories remoteBundleID:(id)d;
+- (BOOL)_bundleIDIsPresentInLibraryRecents:(id)recents remoteBundleID:(id)d;
 - (BOOL)_readCategoriesFromDisk;
-- (BOOL)_shiftAppIndices:(id)a3 category:(id)a4;
-- (BOOL)_shouldConsiderAppForRecents:(id)a3;
+- (BOOL)_shiftAppIndices:(id)indices category:(id)category;
+- (BOOL)_shouldConsiderAppForRecents:(id)recents;
 - (BOOL)_shouldInvalidateCachedCategoriesForDemoMode;
 - (BOOL)_writeCategoriesToDisk;
-- (BOOL)_writeHiddenAppsToDisk:(id)a3;
+- (BOOL)_writeHiddenAppsToDisk:(id)disk;
 - (BOOL)_writeRecentsToDisk;
-- (BOOL)_writeToDisk:(id)a3 cache:(id)a4 logIdentifier:(id)a5;
+- (BOOL)_writeToDisk:(id)disk cache:(id)cache logIdentifier:(id)identifier;
 - (id)_appBundleIDLaunchCountComparator;
-- (id)_appBundleIDRecencyComparatorForLastLaunchDates:(id)a3;
+- (id)_appBundleIDRecencyComparatorForLastLaunchDates:(id)dates;
 - (id)_appBundleIDTotalLaunchComparator;
-- (id)_categoryChangesDictionaryForChangedApps:(id)a3;
+- (id)_categoryChangesDictionaryForChangedApps:(id)apps;
 - (id)_categoryComparator;
-- (id)_categoryIdFromBundleId:(id)a3;
-- (id)_combinedLaunchCountForBundleId:(id)a3;
-- (id)_computeCategoriesWithRetries:(unint64_t)a3;
-- (id)_genreIdFromBundleId:(id)a3 remoteBundleIDMappings:(id)a4;
-- (id)_getEnterpriseCategoriesForApps:(id)a3;
-- (id)_getInstallDateForUnhiddenApp:(id)a3;
+- (id)_categoryIdFromBundleId:(id)id;
+- (id)_combinedLaunchCountForBundleId:(id)id;
+- (id)_computeCategoriesWithRetries:(unint64_t)retries;
+- (id)_genreIdFromBundleId:(id)id remoteBundleIDMappings:(id)mappings;
+- (id)_getEnterpriseCategoriesForApps:(id)apps;
+- (id)_getInstallDateForUnhiddenApp:(id)app;
 - (id)_getMDMOrgName;
 - (id)_getManagedAppIDs;
-- (id)_issuingOrganizationForEnterpriseAppBundleID:(id)a3 isMDM:(BOOL)a4;
-- (id)_mdmEnterpriseCategoriesForApps:(id)a3;
-- (id)_reorderedHiddenApps:(id)a3;
-- (id)_screenTimeIdFromBundleId:(id)a3;
-- (id)_sortCategories:(id)a3;
-- (id)_totalCombinedLaunchCountsForCategory:(id)a3;
-- (id)_totalLaunchCountsForCategory:(id)a3;
-- (id)_totalLibraryLaunchCountsForCategory:(id)a3;
+- (id)_issuingOrganizationForEnterpriseAppBundleID:(id)d isMDM:(BOOL)m;
+- (id)_mdmEnterpriseCategoriesForApps:(id)apps;
+- (id)_reorderedHiddenApps:(id)apps;
+- (id)_screenTimeIdFromBundleId:(id)id;
+- (id)_sortCategories:(id)categories;
+- (id)_totalCombinedLaunchCountsForCategory:(id)category;
+- (id)_totalLaunchCountsForCategory:(id)category;
+- (id)_totalLibraryLaunchCountsForCategory:(id)category;
 - (id)description;
-- (id)filterBlockWithInstallDates:(id)a3;
-- (id)positionScreenTimeOtherAtTheEndOfCategories:(id)a3;
+- (id)filterBlockWithInstallDates:(id)dates;
+- (id)positionScreenTimeOtherAtTheEndOfCategories:(id)categories;
 - (void)_createHomeScreenServiceIfNecessary;
 - (void)_ensureCategoryConsistency;
 - (void)_handleManagedAppsChangedNotification;
 - (void)_handleManagedAppsOrgInfoChangedNotification;
 - (void)_initCategories;
-- (void)_postHiddenAppsUpdateNotificationWithReason:(id)a3;
-- (void)_postPredictedAppsAndRecentsUpdateNotificationWithReason:(id)a3;
-- (void)_postProcessCategories:(id)a3 withReply:(id)a4;
-- (void)_postUpdateNotificationWithReason:(id)a3;
+- (void)_postHiddenAppsUpdateNotificationWithReason:(id)reason;
+- (void)_postPredictedAppsAndRecentsUpdateNotificationWithReason:(id)reason;
+- (void)_postProcessCategories:(id)categories withReply:(id)reply;
+- (void)_postUpdateNotificationWithReason:(id)reason;
 - (void)_registerForManagedAppsChangedNotification;
 - (void)_registerForManagedAppsOrgInfoChangedNotification;
-- (void)_reorderAndHideDupesForAppsInCategory:(id)a3;
-- (void)_splitEnterpriseCategoryWithAppsInCategory:(id)a3 appsByCategoryName:(id)a4 isMDMAppCategory:(BOOL)a5;
-- (void)_updateAppClipSinceDate:(id)a3 installDates:(id)a4;
+- (void)_reorderAndHideDupesForAppsInCategory:(id)category;
+- (void)_splitEnterpriseCategoryWithAppsInCategory:(id)category appsByCategoryName:(id)name isMDMAppCategory:(BOOL)appCategory;
+- (void)_updateAppClipSinceDate:(id)date installDates:(id)dates;
 - (void)_updateAppLaunchCounts;
-- (void)_updateCategoriesForDownweightedAppSet:(id)a3;
-- (void)_updateCategoriesForInstalledApps:(id)a3;
-- (void)_updateCategoriesForRemovedApps:(id)a3 uninstalled:(BOOL)a4 hidden:(BOOL)a5;
-- (void)_updateCategoriesForUnhiddenApps:(id)a3;
-- (void)_updateCategoriesWithRetries:(unint64_t)a3;
-- (void)_updateHiddenAppsPodWithNotification:(id)a3;
+- (void)_updateCategoriesForDownweightedAppSet:(id)set;
+- (void)_updateCategoriesForInstalledApps:(id)apps;
+- (void)_updateCategoriesForRemovedApps:(id)apps uninstalled:(BOOL)uninstalled hidden:(BOOL)hidden;
+- (void)_updateCategoriesForUnhiddenApps:(id)apps;
+- (void)_updateCategoriesWithRetries:(unint64_t)retries;
+- (void)_updateHiddenAppsPodWithNotification:(id)notification;
 - (void)_updateMDMAndEnterpriseCategories;
 - (void)_updateMDMCategoryName;
 - (void)_updateMDMStatus;
 - (void)_updateMissingInstalledApps;
 - (void)_updateRecents;
-- (void)_updateRecentsForAppClipUsageEvent:(id)a3;
-- (void)_updateRecentsForInstalledApps:(id)a3;
-- (void)_updateRecentsForUnhiddenApps:(id)a3;
-- (void)_updateScreenTimeMappingsForAppBundleIds:(id)a3 withRetries:(unint64_t)a4;
-- (void)appLaunchDatesWithReply:(id)a3;
-- (void)appLaunchInformationWithReply:(id)a3;
-- (void)categoriesWithReply:(id)a3;
-- (void)categoryLaunchInformationWithReply:(id)a3;
+- (void)_updateRecentsForAppClipUsageEvent:(id)event;
+- (void)_updateRecentsForInstalledApps:(id)apps;
+- (void)_updateRecentsForUnhiddenApps:(id)apps;
+- (void)_updateScreenTimeMappingsForAppBundleIds:(id)ids withRetries:(unint64_t)retries;
+- (void)appLaunchDatesWithReply:(id)reply;
+- (void)appLaunchInformationWithReply:(id)reply;
+- (void)categoriesWithReply:(id)reply;
+- (void)categoryLaunchInformationWithReply:(id)reply;
 - (void)dealloc;
-- (void)postPredictedAppsAndRecentsUpdateNotificationWithReason:(id)a3;
+- (void)postPredictedAppsAndRecentsUpdateNotificationWithReason:(id)reason;
 - (void)requestNotificationWhenCategoriesAreReady;
-- (void)setCategories:(id)a3;
+- (void)setCategories:(id)categories;
 - (void)setUp;
-- (void)topAppsWithMaxNumberOfResults:(unint64_t)a3 reply:(id)a4;
-- (void)updateCacheWithActivity:(id)a3 completionHandler:(id)a4;
+- (void)topAppsWithMaxNumberOfResults:(unint64_t)results reply:(id)reply;
+- (void)updateCacheWithActivity:(id)activity completionHandler:(id)handler;
 - (void)updateRecents;
 @end
 
@@ -125,9 +125,9 @@ uint64_t __48__ATXAppDirectoryOrderingProvider_updateRecents__block_invoke(uint6
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_sbsHomeScreenService)
   {
-    v3 = [MEMORY[0x277D66AB8] atx_sharedInstance];
+    atx_sharedInstance = [MEMORY[0x277D66AB8] atx_sharedInstance];
     sbsHomeScreenService = self->_sbsHomeScreenService;
-    self->_sbsHomeScreenService = v3;
+    self->_sbsHomeScreenService = atx_sharedInstance;
 
     MEMORY[0x2821F96F8]();
   }
@@ -182,40 +182,40 @@ uint64_t __49__ATXAppDirectoryOrderingProvider_sharedInstance__block_invoke()
   return [v14 setUp];
 }
 
-- (ATXAppDirectoryOrderingProvider)initWithAppInfoManager:(id)a3 cache:(id)a4 blacklist:(id)a5 recentsCache:(id)a6 hiddenAppsCache:(id)a7 appClipDataProvider:(id)a8 appIconState:(id)a9 appClipChangeListener:(id)a10 histogramManager:(id)a11 appProtectionInfoProvider:(id)a12
+- (ATXAppDirectoryOrderingProvider)initWithAppInfoManager:(id)manager cache:(id)cache blacklist:(id)blacklist recentsCache:(id)recentsCache hiddenAppsCache:(id)appsCache appClipDataProvider:(id)provider appIconState:(id)state appClipChangeListener:(id)self0 histogramManager:(id)self1 appProtectionInfoProvider:(id)self2
 {
-  v17 = a3;
-  v64 = a4;
-  v18 = a4;
-  v62 = a5;
-  v19 = a5;
-  v65 = a6;
-  v73 = a6;
-  v66 = a7;
-  v20 = a7;
-  v21 = v17;
-  v72 = v20;
-  v71 = a8;
-  v70 = a9;
-  v69 = a10;
-  v68 = a11;
-  v67 = a12;
+  managerCopy = manager;
+  cacheCopy = cache;
+  cacheCopy2 = cache;
+  blacklistCopy = blacklist;
+  blacklistCopy2 = blacklist;
+  recentsCacheCopy = recentsCache;
+  recentsCacheCopy2 = recentsCache;
+  appsCacheCopy = appsCache;
+  appsCacheCopy2 = appsCache;
+  v21 = managerCopy;
+  v72 = appsCacheCopy2;
+  providerCopy = provider;
+  stateCopy = state;
+  listenerCopy = listener;
+  histogramManagerCopy = histogramManager;
+  infoProviderCopy = infoProvider;
   v95.receiver = self;
   v95.super_class = ATXAppDirectoryOrderingProvider;
   v22 = [(ATXAppDirectoryOrderingProvider *)&v95 init];
   if (v22)
   {
-    v75 = v19;
-    v61 = v18;
+    v75 = blacklistCopy2;
+    v61 = cacheCopy2;
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    v25 = [v24 UTF8String];
+    uTF8String = [v24 UTF8String];
     v26 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v27 = dispatch_queue_create(v25, v26);
+    v27 = dispatch_queue_create(uTF8String, v26);
     queue = v22->_queue;
     v22->_queue = v27;
 
-    objc_storeStrong(&v22->_infoManager, a3);
+    objc_storeStrong(&v22->_infoManager, manager);
     v29 = objc_opt_new();
     installNotification = v22->_installNotification;
     v22->_installNotification = v29;
@@ -240,23 +240,23 @@ uint64_t __49__ATXAppDirectoryOrderingProvider_sharedInstance__block_invoke()
     unhiddenAppNotification = v22->_unhiddenAppNotification;
     v22->_unhiddenAppNotification = v39;
 
-    objc_storeStrong(&v22->_cache, v64);
-    objc_storeStrong(&v22->_recentsCache, v65);
-    objc_storeStrong(&v22->_hiddenAppsCache, v66);
-    objc_storeStrong(&v22->_appClipDataProvider, a8);
-    objc_storeStrong(&v22->_appIconState, a9);
-    objc_storeStrong(&v22->_appLaunchHistogramManager, a11);
-    objc_storeStrong(&v22->_appClipChangeListener, a10);
-    v41 = [MEMORY[0x277CBEAA8] distantPast];
+    objc_storeStrong(&v22->_cache, cacheCopy);
+    objc_storeStrong(&v22->_recentsCache, recentsCacheCopy);
+    objc_storeStrong(&v22->_hiddenAppsCache, appsCacheCopy);
+    objc_storeStrong(&v22->_appClipDataProvider, provider);
+    objc_storeStrong(&v22->_appIconState, state);
+    objc_storeStrong(&v22->_appLaunchHistogramManager, histogramManager);
+    objc_storeStrong(&v22->_appClipChangeListener, listener);
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastUpdatePostTime = v22->_lastUpdatePostTime;
-    v22->_lastUpdatePostTime = v41;
+    v22->_lastUpdatePostTime = distantPast;
 
     v43 = objc_alloc(MEMORY[0x277CBEBD0]);
     v44 = [v43 initWithSuiteName:*MEMORY[0x277CEBD00]];
     atxDefaults = v22->_atxDefaults;
     v22->_atxDefaults = v44;
 
-    objc_storeStrong(&v22->_appProtectionInfoProvider, a12);
+    objc_storeStrong(&v22->_appProtectionInfoProvider, infoProvider);
     [(ATXAppDirectoryOrderingProvider *)v22 _registerForManagedAppsOrgInfoChangedNotification];
     [(ATXAppDirectoryOrderingProvider *)v22 _registerForManagedAppsChangedNotification];
     objc_initWeak(&location, v22);
@@ -318,10 +318,10 @@ uint64_t __49__ATXAppDirectoryOrderingProvider_sharedInstance__block_invoke()
     notify_register_dispatch("com.apple.suggestions.settingsChanged", &v22->_settingsChangedToken, v53, handler);
     if (v75)
     {
-      objc_storeStrong(&v22->_blacklist, v62);
-      v54 = [(ATXAppPredictionBlacklist *)v22->_blacklist disabledBundleIds];
+      objc_storeStrong(&v22->_blacklist, blacklistCopy);
+      disabledBundleIds = [(ATXAppPredictionBlacklist *)v22->_blacklist disabledBundleIds];
       blacklistedBundleIds = v22->_blacklistedBundleIds;
-      v22->_blacklistedBundleIds = v54;
+      v22->_blacklistedBundleIds = disabledBundleIds;
 
       blacklist = v22->_blacklist;
       v76[0] = MEMORY[0x277D85DD0];
@@ -351,8 +351,8 @@ uint64_t __49__ATXAppDirectoryOrderingProvider_sharedInstance__block_invoke()
     objc_destroyWeak(&v91);
     objc_destroyWeak(&v93);
     objc_destroyWeak(&location);
-    v18 = v61;
-    v19 = v75;
+    cacheCopy2 = v61;
+    blacklistCopy2 = v75;
   }
 
   return v22;
@@ -694,11 +694,11 @@ uint64_t __40__ATXAppDirectoryOrderingProvider_setUp__block_invoke(uint64_t a1)
   return [v2 _updateHiddenAppsPodWithNotification:@"Hidden apps pod initialized"];
 }
 
-- (void)updateCacheWithActivity:(id)a3 completionHandler:(id)a4
+- (void)updateCacheWithActivity:(id)activity completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 didDefer])
+  activityCopy = activity;
+  handlerCopy = handler;
+  if ([activityCopy didDefer])
   {
     v8 = __atxlog_handle_app_library();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -707,9 +707,9 @@ uint64_t __40__ATXAppDirectoryOrderingProvider_setUp__block_invoke(uint64_t a1)
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Deferring XPC update", buf, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -720,9 +720,9 @@ uint64_t __40__ATXAppDirectoryOrderingProvider_setUp__block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __77__ATXAppDirectoryOrderingProvider_updateCacheWithActivity_completionHandler___block_invoke;
     block[3] = &unk_2785980C0;
-    v11 = v6;
-    v12 = self;
-    v13 = v7;
+    v11 = activityCopy;
+    selfCopy = self;
+    v13 = handlerCopy;
     dispatch_async(queue, block);
   }
 }
@@ -843,16 +843,16 @@ uint64_t __46__ATXAppDirectoryOrderingProvider_description__block_invoke(uint64_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_postUpdateNotificationWithReason:(id)a3
+- (void)_postUpdateNotificationWithReason:(id)reason
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = @"Unknown";
-  if (a3)
+  reasonCopy = @"Unknown";
+  if (reason)
   {
-    v4 = a3;
+    reasonCopy = reason;
   }
 
-  v5 = v4;
+  v5 = reasonCopy;
   v6 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -871,30 +871,30 @@ uint64_t __46__ATXAppDirectoryOrderingProvider_description__block_invoke(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postPredictedAppsAndRecentsUpdateNotificationWithReason:(id)a3
+- (void)postPredictedAppsAndRecentsUpdateNotificationWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __91__ATXAppDirectoryOrderingProvider_postPredictedAppsAndRecentsUpdateNotificationWithReason___block_invoke;
   v7[3] = &unk_278596C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_postPredictedAppsAndRecentsUpdateNotificationWithReason:(id)a3
+- (void)_postPredictedAppsAndRecentsUpdateNotificationWithReason:(id)reason
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = @"Unknown";
-  if (a3)
+  reasonCopy = @"Unknown";
+  if (reason)
   {
-    v4 = a3;
+    reasonCopy = reason;
   }
 
-  v5 = v4;
+  v5 = reasonCopy;
   v6 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -909,16 +909,16 @@ uint64_t __46__ATXAppDirectoryOrderingProvider_description__block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postHiddenAppsUpdateNotificationWithReason:(id)a3
+- (void)_postHiddenAppsUpdateNotificationWithReason:(id)reason
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = @"Unknown";
-  if (a3)
+  reasonCopy = @"Unknown";
+  if (reason)
   {
-    v4 = a3;
+    reasonCopy = reason;
   }
 
-  v5 = v4;
+  v5 = reasonCopy;
   v6 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -974,10 +974,10 @@ uint64_t __46__ATXAppDirectoryOrderingProvider_description__block_invoke(uint64_
       if (isKindOfClass)
       {
         v16 = [v13 objectForKeyedSubscript:@"version"];
-        v17 = [v16 unsignedIntegerValue];
+        unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-        v18 = v17 == 11;
-        if (v17 != 11)
+        v18 = unsignedIntegerValue == 11;
+        if (unsignedIntegerValue != 11)
         {
           v25 = __atxlog_handle_app_library();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -1043,23 +1043,23 @@ LABEL_15:
   return v18;
 }
 
-- (BOOL)_writeToDisk:(id)a3 cache:(id)a4 logIdentifier:(id)a5
+- (BOOL)_writeToDisk:(id)disk cache:(id)cache logIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  diskCopy = disk;
+  cacheCopy = cache;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   v11 = 0;
-  if (v8 && v9)
+  if (diskCopy && cacheCopy)
   {
-    if ([v9 storeSecureCodedObject:v8 error:0])
+    if ([cacheCopy storeSecureCodedObject:diskCopy error:0])
     {
       v12 = __atxlog_handle_app_library();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412290;
-        v16 = v10;
+        v16 = identifierCopy;
         _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Write %@ to disk succeeded", &v15, 0xCu);
       }
 
@@ -1111,19 +1111,19 @@ LABEL_15:
   return v7;
 }
 
-+ (id)_reorderedRecentApps:(id)a3
++ (id)_reorderedRecentApps:(id)apps
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  appsCopy = apps;
   context = objc_autoreleasePoolPush();
-  v26 = [v3 allKeys];
+  allKeys = [appsCopy allKeys];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __56__ATXAppDirectoryOrderingProvider__reorderedRecentApps___block_invoke;
   v41[3] = &unk_278598110;
-  v4 = v3;
+  v4 = appsCopy;
   v42 = v4;
-  v25 = [v26 sortedArrayUsingComparator:v41];
+  v25 = [allKeys sortedArrayUsingComparator:v41];
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2592000.0];
   v37 = 0;
   v38 = &v37;
@@ -1244,24 +1244,24 @@ LABEL_5:
 LABEL_7:
 }
 
-- (id)_reorderedHiddenApps:(id)a3
+- (id)_reorderedHiddenApps:(id)apps
 {
   queue = self->_queue;
-  v5 = a3;
+  appsCopy = apps;
   dispatch_assert_queue_V2(queue);
-  v6 = [(ATXAppDirectoryOrderingProvider *)self _appBundleIDLaunchCountComparator];
-  v7 = [v5 sortedArrayUsingComparator:v6];
+  _appBundleIDLaunchCountComparator = [(ATXAppDirectoryOrderingProvider *)self _appBundleIDLaunchCountComparator];
+  v7 = [appsCopy sortedArrayUsingComparator:_appBundleIDLaunchCountComparator];
 
   return v7;
 }
 
-- (BOOL)_writeHiddenAppsToDisk:(id)a3
+- (BOOL)_writeHiddenAppsToDisk:(id)disk
 {
   v13 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v5 = a3;
+  diskCopy = disk;
   dispatch_assert_queue_V2(queue);
-  v6 = [(ATXAppDirectoryOrderingProvider *)self _reorderedHiddenApps:v5];
+  v6 = [(ATXAppDirectoryOrderingProvider *)self _reorderedHiddenApps:diskCopy];
 
   v7 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1400,11 +1400,11 @@ LABEL_15:
   return v9;
 }
 
-- (id)positionScreenTimeOtherAtTheEndOfCategories:(id)a3
+- (id)positionScreenTimeOtherAtTheEndOfCategories:(id)categories
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  categoriesCopy = categories;
+  v4 = [categoriesCopy mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1457,10 +1457,10 @@ LABEL_15:
   return v4;
 }
 
-- (void)setCategories:(id)a3
+- (void)setCategories:(id)categories
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (self->_categories != a3)
+  if (self->_categories != categories)
   {
     v4 = [(ATXAppDirectoryOrderingProvider *)self positionScreenTimeOtherAtTheEndOfCategories:?];
     categories = self->_categories;
@@ -1497,15 +1497,15 @@ LABEL_15:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             v14 = [v12 localizedStringForCategoryID:{objc_msgSend(v12, "categoryID")}];
-            v15 = [v12 appIdentities];
-            v16 = [v15 count];
-            v17 = [v12 appIdentities];
+            appIdentities = [v12 appIdentities];
+            v16 = [appIdentities count];
+            appIdentities2 = [v12 appIdentities];
             *buf = 138543874;
             v24 = v14;
             v25 = 2048;
             v26 = v16;
             v27 = 2112;
-            v28 = v17;
+            v28 = appIdentities2;
             _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: >>> Category %{public}@, app count: %ld, apps: %@", buf, 0x20u);
           }
         }
@@ -1520,7 +1520,7 @@ LABEL_15:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCategoriesWithRetries:(unint64_t)a3
+- (void)_updateCategoriesWithRetries:(unint64_t)retries
 {
   v5 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1531,7 +1531,7 @@ LABEL_15:
 
   dispatch_assert_queue_V2(self->_queue);
   [(ATXAppDirectoryOrderingProvider *)self _updateMDMStatus];
-  v6 = [(ATXAppDirectoryOrderingProvider *)self _computeCategoriesWithRetries:a3];
+  v6 = [(ATXAppDirectoryOrderingProvider *)self _computeCategoriesWithRetries:retries];
   v7 = [(ATXAppDirectoryOrderingProvider *)self _sortCategories:v6];
   [(ATXAppDirectoryOrderingProvider *)self setCategories:v7];
 
@@ -1539,16 +1539,16 @@ LABEL_15:
   [(ATXAppDirectoryOrderingProvider *)self _postUpdateNotificationWithReason:@"Full recategorization requested"];
 }
 
-- (id)_categoryChangesDictionaryForChangedApps:(id)a3
+- (id)_categoryChangesDictionaryForChangedApps:(id)apps
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appsCopy = apps;
   v5 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v4;
+  obj = appsCopy;
   v25 = [obj countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v25)
   {
@@ -1589,8 +1589,8 @@ LABEL_15:
                     objc_enumerationMutation(v10);
                   }
 
-                  v15 = [*(*(&v26 + 1) + 8 * j) categoryID];
-                  if (v15 == [v9 unsignedIntegerValue])
+                  categoryID = [*(*(&v26 + 1) + 8 * j) categoryID];
+                  if (categoryID == [v9 unsignedIntegerValue])
                   {
 
                     goto LABEL_21;
@@ -1654,9 +1654,9 @@ LABEL_22:
   return v5;
 }
 
-- (void)_updateRecentsForInstalledApps:(id)a3
+- (void)_updateRecentsForInstalledApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   dispatch_assert_queue_V2(self->_queue);
   v9 = 0;
   v10 = &v9;
@@ -1668,7 +1668,7 @@ LABEL_22:
   v8[3] = &unk_278598160;
   v8[4] = self;
   v8[5] = &v9;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [appsCopy enumerateKeysAndObjectsUsingBlock:v8];
   if (*(v10 + 24) == 1)
   {
     v5 = __atxlog_handle_app_library();
@@ -1710,16 +1710,16 @@ void __66__ATXAppDirectoryOrderingProvider__updateRecentsForInstalledApps___bloc
   }
 }
 
-- (void)_updateRecentsForUnhiddenApps:(id)a3
+- (void)_updateRecentsForUnhiddenApps:(id)apps
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appsCopy = apps;
   dispatch_assert_queue_V2(self->_queue);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v4;
+  v5 = appsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v6)
   {
@@ -1789,19 +1789,19 @@ LABEL_21:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCategoriesForInstalledApps:(id)a3
+- (void)_updateCategoriesForInstalledApps:(id)apps
 {
   v103 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appsCopy = apps;
   dispatch_assert_queue_V2(self->_queue);
-  v70 = self;
+  selfCopy = self;
   [(ATXAppDirectoryOrderingProvider *)self _updateMDMStatus];
   v5 = objc_opt_new();
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
-  obj = v4;
+  obj = appsCopy;
   v6 = [obj countByEnumeratingWithState:&v93 objects:v102 count:16];
   if (v6)
   {
@@ -1832,7 +1832,7 @@ LABEL_21:
   if ([v5 count])
   {
     v69 = [(ATXAppDirectoryOrderingProvider *)self _categoryChangesDictionaryForChangedApps:v5];
-    v65 = [v69 allKeys];
+    allKeys = [v69 allKeys];
     v67 = objc_opt_new();
     v89 = 0u;
     v90 = 0u;
@@ -1858,15 +1858,15 @@ LABEL_21:
 
         v12 = *(*(&v89 + 1) + 8 * j);
         v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v12, "categoryID")}];
-        if ([v65 containsObject:v13])
+        if ([allKeys containsObject:v13])
         {
         }
 
         else
         {
-          v14 = [v12 categoryID];
+          categoryID = [v12 categoryID];
 
-          if (v14 != 1008)
+          if (categoryID != 1008)
           {
             [v67 addObject:v12];
             continue;
@@ -1874,9 +1874,9 @@ LABEL_21:
         }
 
         v68 = j;
-        v15 = [v12 appIdentities];
-        v16 = [v15 bundleIDsFromIdentities];
-        v17 = [v16 mutableCopy];
+        appIdentities = [v12 appIdentities];
+        bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
+        v17 = [bundleIDsFromIdentities mutableCopy];
 
         if ([v12 categoryID] == 1008)
         {
@@ -1939,16 +1939,16 @@ LABEL_21:
               v31 = *(*(&v81 + 1) + 8 * m);
               if ([v12 categoryID] == 1)
               {
-                v32 = [(ATXAppDirectoryOrderingProvider *)v70 _issuingOrganizationForEnterpriseAppBundleID:v31 isMDM:0];
-                v33 = [v12 localizedName];
+                v32 = [(ATXAppDirectoryOrderingProvider *)selfCopy _issuingOrganizationForEnterpriseAppBundleID:v31 isMDM:0];
+                localizedName = [v12 localizedName];
                 v34 = 0;
-                if (!v33)
+                if (!localizedName)
                 {
                   v34 = [v32 isEqualToString:@"kATXEnterprise"];
                 }
 
-                v35 = [v12 localizedName];
-                v36 = [v35 isEqualToString:v32];
+                localizedName2 = [v12 localizedName];
+                v36 = [localizedName2 isEqualToString:v32];
 
                 if (((v34 & 1) != 0 || v36) && ([v17 containsObject:v31] & 1) == 0)
                 {
@@ -1990,7 +1990,7 @@ LABEL_53:
         v80 = 0u;
         v77 = 0u;
         v78 = 0u;
-        v72 = v65;
+        v72 = allKeys;
         v39 = [v72 countByEnumeratingWithState:&v77 objects:v98 count:16];
         if (!v39)
         {
@@ -2020,7 +2020,7 @@ LABEL_53:
               }
 
               v46 = [v69 objectForKeyedSubscript:v43];
-              v47 = [(ATXAppDirectoryOrderingProvider *)v70 _getEnterpriseCategoriesForApps:v46];
+              v47 = [(ATXAppDirectoryOrderingProvider *)selfCopy _getEnterpriseCategoriesForApps:v46];
               [v67 addObjectsFromArray:v47];
             }
 
@@ -2030,7 +2030,7 @@ LABEL_53:
               v76 = 0u;
               v73 = 0u;
               v74 = 0u;
-              v46 = v70->_categories;
+              v46 = selfCopy->_categories;
               v48 = [(NSArray *)v46 countByEnumeratingWithState:&v73 objects:v97 count:16];
               if (v48)
               {
@@ -2046,8 +2046,8 @@ LABEL_63:
                   }
 
                   v52 = *(*(&v73 + 1) + 8 * v51);
-                  v53 = [v43 unsignedIntegerValue];
-                  if (v53 == [v52 categoryID])
+                  unsignedIntegerValue = [v43 unsignedIntegerValue];
+                  if (unsignedIntegerValue == [v52 categoryID])
                   {
                     break;
                   }
@@ -2073,17 +2073,17 @@ LABEL_69:
                 {
                   v54 = [v69 objectForKeyedSubscript:v43];
                   v55 = [v54 copy];
-                  v46 = [(ATXAppDirectoryOrderingProvider *)v70 _mdmEnterpriseCategoriesForApps:v55];
+                  v46 = [(ATXAppDirectoryOrderingProvider *)selfCopy _mdmEnterpriseCategoriesForApps:v55];
                 }
 
                 else
                 {
                   v56 = objc_alloc(MEMORY[0x277CEB350]);
-                  v57 = [v43 unsignedIntegerValue];
+                  unsignedIntegerValue2 = [v43 unsignedIntegerValue];
                   v54 = [v69 objectForKeyedSubscript:v43];
                   v55 = [v54 copy];
-                  v58 = [v55 appIdentitiesFromBundleIDs];
-                  v46 = [v56 initWithCategoryID:v57 appIdentities:v58];
+                  appIdentitiesFromBundleIDs = [v55 appIdentitiesFromBundleIDs];
+                  v46 = [v56 initWithCategoryID:unsignedIntegerValue2 appIdentities:appIdentitiesFromBundleIDs];
                 }
 
                 if (v46)
@@ -2100,10 +2100,10 @@ LABEL_69:
 LABEL_77:
 
             v59 = [v67 copy];
-            [(ATXAppDirectoryOrderingProvider *)v70 setCategories:v59];
+            [(ATXAppDirectoryOrderingProvider *)selfCopy setCategories:v59];
 
-            [(ATXAppDirectoryOrderingProvider *)v70 _writeCategoriesToDisk];
-            [(ATXAppDirectoryOrderingProvider *)v70 _postUpdateNotificationWithReason:@"App installed"];
+            [(ATXAppDirectoryOrderingProvider *)selfCopy _writeCategoriesToDisk];
+            [(ATXAppDirectoryOrderingProvider *)selfCopy _postUpdateNotificationWithReason:@"App installed"];
 
             v5 = v61;
             goto LABEL_78;
@@ -2118,20 +2118,20 @@ LABEL_78:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCategoriesForUnhiddenApps:(id)a3
+- (void)_updateCategoriesForUnhiddenApps:(id)apps
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appsCopy = apps;
   dispatch_assert_queue_V2(self->_queue);
   [(ATXAppDirectoryOrderingProvider *)self _updateMDMStatus];
-  [(ATXAppDirectoryOrderingProvider *)self _updateScreenTimeMappingsForAppBundleIds:v4 withRetries:2];
+  [(ATXAppDirectoryOrderingProvider *)self _updateScreenTimeMappingsForAppBundleIds:appsCopy withRetries:2];
   v45 = objc_opt_new();
   v44 = objc_opt_new();
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v5 = v4;
+  v5 = appsCopy;
   v6 = [v5 countByEnumeratingWithState:&v54 objects:v63 count:16];
   if (v6)
   {
@@ -2209,9 +2209,9 @@ LABEL_78:
           if ([v22 categoryID] == v19)
           {
             v23 = MEMORY[0x277CBEB18];
-            v24 = [v22 appIdentities];
-            v25 = [v24 bundleIDsFromIdentities];
-            v26 = [v23 arrayWithArray:v25];
+            appIdentities = [v22 appIdentities];
+            bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
+            v26 = [v23 arrayWithArray:bundleIDsFromIdentities];
 
             if (([MEMORY[0x277CEB3B8] isOffloadedForBundle:v18] & 1) != 0 || -[NSSet containsObject:](self->_blacklistedBundleIds, "containsObject:", v18))
             {
@@ -2232,15 +2232,15 @@ LABEL_78:
             }
 
             v28 = objc_alloc(*(v16 + 848));
-            v29 = [v22 categoryID];
+            categoryID = [v22 categoryID];
             [(ATXAppDirectoryOrderingProvider *)self _appBundleIDLaunchCountComparator];
             v31 = v30 = self;
             [v26 sortedArrayUsingComparator:v31];
             v32 = v49 = v26;
-            v33 = [v32 appIdentitiesFromBundleIDs];
+            appIdentitiesFromBundleIDs = [v32 appIdentitiesFromBundleIDs];
             [v22 localizedName];
             v35 = v34 = v16;
-            v36 = [v28 initWithCategoryID:v29 appIdentitites:v33 localizedName:v35];
+            v36 = [v28 initWithCategoryID:categoryID appIdentitites:appIdentitiesFromBundleIDs localizedName:v35];
 
             v16 = v34;
             self = v30;
@@ -2284,11 +2284,11 @@ LABEL_28:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCategoriesForRemovedApps:(id)a3 uninstalled:(BOOL)a4 hidden:(BOOL)a5
+- (void)_updateCategoriesForRemovedApps:(id)apps uninstalled:(BOOL)uninstalled hidden:(BOOL)hidden
 {
-  v27 = a5;
+  hiddenCopy = hidden;
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  appsCopy = apps;
   dispatch_assert_queue_V2(self->_queue);
   v7 = [(NSArray *)self->_categories mutableCopy];
   if ([v7 count])
@@ -2298,15 +2298,15 @@ LABEL_28:
     {
       v9 = [v7 objectAtIndexedSubscript:v8];
       v10 = MEMORY[0x277CBEB18];
-      v11 = [v9 appIdentities];
-      v12 = [v11 bundleIDsFromIdentities];
-      v13 = [v10 arrayWithArray:v12];
+      appIdentities = [v9 appIdentities];
+      bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
+      v13 = [v10 arrayWithArray:bundleIDsFromIdentities];
 
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v14 = v6;
+      v14 = appsCopy;
       v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v15)
       {
@@ -2331,10 +2331,10 @@ LABEL_28:
       }
 
       v19 = objc_alloc(MEMORY[0x277CEB350]);
-      v20 = [v9 categoryID];
-      v21 = [v13 appIdentitiesFromBundleIDs];
-      v22 = [v9 localizedName];
-      v23 = [v19 initWithCategoryID:v20 appIdentitites:v21 localizedName:v22];
+      categoryID = [v9 categoryID];
+      appIdentitiesFromBundleIDs = [v13 appIdentitiesFromBundleIDs];
+      localizedName = [v9 localizedName];
+      v23 = [v19 initWithCategoryID:categoryID appIdentitites:appIdentitiesFromBundleIDs localizedName:localizedName];
 
       [v7 replaceObjectAtIndex:v8 withObject:v23];
       ++v8;
@@ -2347,7 +2347,7 @@ LABEL_28:
   [(ATXAppDirectoryOrderingProvider *)self setCategories:v24];
 
   [(ATXAppDirectoryOrderingProvider *)self _writeCategoriesToDisk];
-  if (v27)
+  if (hiddenCopy)
   {
     v25 = @"App hidden";
   }
@@ -2362,15 +2362,15 @@ LABEL_28:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCategoriesForDownweightedAppSet:(id)a3
+- (void)_updateCategoriesForDownweightedAppSet:(id)set
 {
   v35 = *MEMORY[0x277D85DE8];
-  v24 = a3;
+  setCopy = set;
   dispatch_assert_queue_V2(self->_queue);
   v3 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v24 description];
+    v4 = [setCopy description];
     *buf = 138412290;
     v34 = v4;
     _os_log_impl(&dword_2263AA000, v3, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Updating for downweighted apps: %@", buf, 0xCu);
@@ -2399,22 +2399,22 @@ LABEL_28:
 
         v11 = *(*(&v28 + 1) + 8 * i);
         v12 = objc_opt_new();
-        v13 = [v11 appIdentities];
-        v14 = [v13 bundleIDsFromIdentities];
+        appIdentities = [v11 appIdentities];
+        bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __74__ATXAppDirectoryOrderingProvider__updateCategoriesForDownweightedAppSet___block_invoke;
         v25[3] = &unk_278598188;
-        v26 = v24;
+        v26 = setCopy;
         v15 = v12;
         v27 = v15;
-        [v14 enumerateObjectsUsingBlock:v25];
+        [bundleIDsFromIdentities enumerateObjectsUsingBlock:v25];
 
         if ([v15 count])
         {
-          v16 = [v11 appIdentities];
-          v17 = [v16 bundleIDsFromIdentities];
-          v18 = [v17 mutableCopy];
+          appIdentities2 = [v11 appIdentities];
+          bundleIDsFromIdentities2 = [appIdentities2 bundleIDsFromIdentities];
+          v18 = [bundleIDsFromIdentities2 mutableCopy];
 
           v8 |= [(ATXAppDirectoryOrderingProvider *)self _shiftAppIndices:v15 category:v18];
           [v11 updateAppBundleIDs:v18];
@@ -2469,29 +2469,29 @@ uint64_t __74__ATXAppDirectoryOrderingProvider__updateCategoriesForDownweightedA
   return result;
 }
 
-- (void)_updateHiddenAppsPodWithNotification:(id)a3
+- (void)_updateHiddenAppsPodWithNotification:(id)notification
 {
   queue = self->_queue;
-  v7 = a3;
+  notificationCopy = notification;
   dispatch_assert_queue_V2(queue);
-  v5 = [(ATXAppProtectionInfoProvider *)self->_appProtectionInfoProvider hiddenBundleIDs];
-  v6 = [v5 mutableCopy];
+  hiddenBundleIDs = [(ATXAppProtectionInfoProvider *)self->_appProtectionInfoProvider hiddenBundleIDs];
+  v6 = [hiddenBundleIDs mutableCopy];
   [(ATXAppDirectoryOrderingProvider *)self _writeHiddenAppsToDisk:v6];
 
-  [(ATXAppDirectoryOrderingProvider *)self _postHiddenAppsUpdateNotificationWithReason:v7];
+  [(ATXAppDirectoryOrderingProvider *)self _postHiddenAppsUpdateNotificationWithReason:notificationCopy];
 }
 
-- (BOOL)_shouldConsiderAppForRecents:(id)a3
+- (BOOL)_shouldConsiderAppForRecents:(id)recents
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([MEMORY[0x277CEB3B8] isOffloadedForBundle:v4])
+  recentsCopy = recents;
+  if ([MEMORY[0x277CEB3B8] isOffloadedForBundle:recentsCopy])
   {
     self = __atxlog_handle_app_library();
     if (os_log_type_enabled(&self->super, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = recentsCopy;
       _os_log_impl(&dword_2263AA000, &self->super, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Ignoring offloaded app for recents: %@", &v7, 0xCu);
     }
 
@@ -2500,18 +2500,18 @@ uint64_t __74__ATXAppDirectoryOrderingProvider__updateCategoriesForDownweightedA
 
   else
   {
-    LODWORD(self) = [(ATXAppProtectionInfoProvider *)self->_appProtectionInfoProvider bundleIdIsHiddenByUserPreference:v4]^ 1;
+    LODWORD(self) = [(ATXAppProtectionInfoProvider *)self->_appProtectionInfoProvider bundleIdIsHiddenByUserPreference:recentsCopy]^ 1;
   }
 
   v5 = *MEMORY[0x277D85DE8];
   return self;
 }
 
-- (BOOL)_bundleIDIsPresentInLibraryCategories:(id)a3 remoteBundleID:(id)a4
+- (BOOL)_bundleIDIsPresentInLibraryCategories:(id)categories remoteBundleID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  categoriesCopy = categories;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
   v20 = 0u;
   v21 = 0u;
@@ -2532,10 +2532,10 @@ uint64_t __74__ATXAppDirectoryOrderingProvider__updateCategoriesForDownweightedA
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * i) appIdentities];
-        v14 = [v13 bundleIDsFromIdentities];
+        appIdentities = [*(*(&v18 + 1) + 8 * i) appIdentities];
+        bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
 
-        if ([v14 containsObject:v6] & 1) != 0 || v7 && (objc_msgSend(v14, "containsObject:", v7))
+        if ([bundleIDsFromIdentities containsObject:categoriesCopy] & 1) != 0 || dCopy && (objc_msgSend(bundleIDsFromIdentities, "containsObject:", dCopy))
         {
 
           v15 = 1;
@@ -2565,22 +2565,22 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)_bundleIDIsPresentInLibraryRecents:(id)a3 remoteBundleID:(id)a4
+- (BOOL)_bundleIDIsPresentInLibraryRecents:(id)recents remoteBundleID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   queue = self->_queue;
-  v8 = a3;
+  recentsCopy = recents;
   dispatch_assert_queue_V2(queue);
-  v9 = [(NSMutableDictionary *)self->_recentApps objectForKeyedSubscript:v8];
+  v9 = [(NSMutableDictionary *)self->_recentApps objectForKeyedSubscript:recentsCopy];
 
   if (v9)
   {
     v10 = 1;
   }
 
-  else if (v6)
+  else if (dCopy)
   {
-    v11 = [(NSMutableDictionary *)self->_recentApps objectForKeyedSubscript:v6];
+    v11 = [(NSMutableDictionary *)self->_recentApps objectForKeyedSubscript:dCopy];
     v10 = v11 != 0;
   }
 
@@ -2592,18 +2592,18 @@ LABEL_14:
   return v10;
 }
 
-- (id)_getInstallDateForUnhiddenApp:(id)a3
+- (id)_getInstallDateForUnhiddenApp:(id)app
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CEB3B8] registrationDateForBundle:v3];
+  appCopy = app;
+  v4 = [MEMORY[0x277CEB3B8] registrationDateForBundle:appCopy];
   v5 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
     v10 = v4;
     v11 = 2112;
-    v12 = v3;
+    v12 = appCopy;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: LS install date: %{public}@ for unhidden app: %@", &v9, 0x16u);
   }
 
@@ -2623,15 +2623,15 @@ LABEL_14:
   return v4;
 }
 
-- (id)filterBlockWithInstallDates:(id)a3
+- (id)filterBlockWithInstallDates:(id)dates
 {
-  v3 = a3;
+  datesCopy = dates;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__ATXAppDirectoryOrderingProvider_filterBlockWithInstallDates___block_invoke;
   aBlock[3] = &unk_2785981B0;
-  v8 = v3;
-  v4 = v3;
+  v8 = datesCopy;
+  v4 = datesCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -2672,21 +2672,21 @@ BOOL __63__ATXAppDirectoryOrderingProvider_filterBlockWithInstallDates___block_i
   return v7;
 }
 
-- (void)_updateAppClipSinceDate:(id)a3 installDates:(id)a4
+- (void)_updateAppClipSinceDate:(id)date installDates:(id)dates
 {
-  v6 = a4;
+  datesCopy = dates;
   appClipDataProvider = self->_appClipDataProvider;
   v8 = MEMORY[0x277CBEAA8];
-  v9 = a3;
+  dateCopy = date;
   v10 = [v8 now];
-  v11 = [(ATXAppDirectoryOrderingProvider *)self filterBlockWithInstallDates:v6];
+  v11 = [(ATXAppDirectoryOrderingProvider *)self filterBlockWithInstallDates:datesCopy];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates___block_invoke;
   v13[3] = &unk_2785981D8;
-  v14 = v6;
-  v12 = v6;
-  [(ATXAppClipUsageStream *)appClipDataProvider enumerateAppClipUsageEventsFromStartDate:v9 endDate:v10 filterBlock:v11 limit:1000 ascending:0 block:v13];
+  v14 = datesCopy;
+  v12 = datesCopy;
+  [(ATXAppClipUsageStream *)appClipDataProvider enumerateAppClipUsageEventsFromStartDate:dateCopy endDate:v10 filterBlock:v11 limit:1000 ascending:0 block:v13];
 }
 
 void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates___block_invoke(uint64_t a1, void *a2)
@@ -2703,23 +2703,23 @@ void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates_
   }
 }
 
-- (void)_updateRecentsForAppClipUsageEvent:(id)a3
+- (void)_updateRecentsForAppClipUsageEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 webClipBundleId];
-  if (v5)
+  webClipBundleId = [eventCopy webClipBundleId];
+  if (webClipBundleId)
   {
-    v6 = [v4 launchDate];
-    if (v6)
+    launchDate = [eventCopy launchDate];
+    if (launchDate)
     {
-      [(NSMutableDictionary *)self->_recentApps setObject:v6 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)self->_recentApps setObject:launchDate forKeyedSubscript:webClipBundleId];
     }
 
     else
     {
       v8 = [MEMORY[0x277CBEAA8] now];
-      [(NSMutableDictionary *)self->_recentApps setObject:v8 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)self->_recentApps setObject:v8 forKeyedSubscript:webClipBundleId];
     }
 
     [(ATXAppDirectoryOrderingProvider *)self _writeRecentsToDisk];
@@ -2739,13 +2739,13 @@ void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates_
 {
   v41 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(_ATXAppIconState *)self->_appIconState allAppsKnownToSpringBoard];
-  v4 = [v3 mutableCopy];
+  allAppsKnownToSpringBoard = [(_ATXAppIconState *)self->_appIconState allAppsKnownToSpringBoard];
+  v4 = [allAppsKnownToSpringBoard mutableCopy];
 
   if (v4)
   {
-    v5 = [(ATXAppProtectionInfoProvider *)self->_appProtectionInfoProvider hiddenBundleIDs];
-    [v4 removeObjectsInArray:v5];
+    hiddenBundleIDs = [(ATXAppProtectionInfoProvider *)self->_appProtectionInfoProvider hiddenBundleIDs];
+    [v4 removeObjectsInArray:hiddenBundleIDs];
 
     v26 = v4;
     v6 = [MEMORY[0x277CBEB58] setWithArray:v4];
@@ -2753,7 +2753,7 @@ void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates_
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v25 = self;
+    selfCopy = self;
     v7 = self->_categories;
     v8 = [(NSArray *)v7 countByEnumeratingWithState:&v31 objects:v40 count:16];
     if (v8)
@@ -2774,10 +2774,10 @@ void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates_
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v13 = [v12 appIdentities];
-          v14 = [v13 bundleIDsFromIdentities];
+          appIdentities = [v12 appIdentities];
+          bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
 
-          v15 = [v14 countByEnumeratingWithState:&v27 objects:v39 count:16];
+          v15 = [bundleIDsFromIdentities countByEnumeratingWithState:&v27 objects:v39 count:16];
           if (v15)
           {
             v16 = v15;
@@ -2788,7 +2788,7 @@ void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates_
               {
                 if (*v28 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(bundleIDsFromIdentities);
                 }
 
                 v19 = *(*(&v27 + 1) + 8 * j);
@@ -2798,7 +2798,7 @@ void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates_
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v27 objects:v39 count:16];
+              v16 = [bundleIDsFromIdentities countByEnumeratingWithState:&v27 objects:v39 count:16];
             }
 
             while (v16);
@@ -2818,36 +2818,36 @@ void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates_
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = [v6 count];
-        v22 = [v6 allObjects];
+        allObjects = [v6 allObjects];
         *buf = 134218242;
         v36 = v21;
         v37 = 2112;
-        v38 = v22;
+        v38 = allObjects;
         _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Recategorizing %lu missed apps: %@", buf, 0x16u);
       }
 
-      v23 = [v6 allObjects];
-      [(ATXAppDirectoryOrderingProvider *)v25 _updateCategoriesForInstalledApps:v23];
+      allObjects2 = [v6 allObjects];
+      [(ATXAppDirectoryOrderingProvider *)selfCopy _updateCategoriesForInstalledApps:allObjects2];
     }
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_categoryIdFromBundleId:(id)a3
+- (id)_categoryIdFromBundleId:(id)id
 {
   queue = self->_queue;
-  v5 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(queue);
-  v6 = [(ATXAppDirectoryOrderingProvider *)self _screenTimeIdFromBundleId:v5];
+  v6 = [(ATXAppDirectoryOrderingProvider *)self _screenTimeIdFromBundleId:idCopy];
 
   return v6;
 }
 
-- (id)_genreIdFromBundleId:(id)a3 remoteBundleIDMappings:(id)a4
+- (id)_genreIdFromBundleId:(id)id remoteBundleIDMappings:(id)mappings
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(self->_queue);
   hardcodedAppCategoryMappings = self->_hardcodedAppCategoryMappings;
   if (!hardcodedAppCategoryMappings)
@@ -2864,12 +2864,12 @@ void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates_
 
   if (v10)
   {
-    v11 = v10;
-    v12 = v11;
+    genreId = v10;
+    v12 = genreId;
     goto LABEL_29;
   }
 
-  v13 = [MEMORY[0x277CEB3B8] recordForBundleId:v5];
+  v13 = [MEMORY[0x277CEB3B8] recordForBundleId:idCopy];
   v14 = v13;
   if (!v13)
   {
@@ -2878,13 +2878,13 @@ void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates_
 
   if (([v13 isArcadeApp] & 1) == 0)
   {
-    v15 = [v14 iTunesMetadata];
+    iTunesMetadata = [v14 iTunesMetadata];
 
-    if (v15)
+    if (iTunesMetadata)
     {
       v16 = MEMORY[0x277CCABB0];
-      v17 = [v14 iTunesMetadata];
-      v18 = [v16 numberWithUnsignedLongLong:{objc_msgSend(v17, "genreIdentifier")}];
+      iTunesMetadata2 = [v14 iTunesMetadata];
+      v18 = [v16 numberWithUnsignedLongLong:{objc_msgSend(iTunesMetadata2, "genreIdentifier")}];
 
       goto LABEL_11;
     }
@@ -2892,11 +2892,11 @@ void __72__ATXAppDirectoryOrderingProvider__updateAppClipSinceDate_installDates_
 LABEL_10:
     v18 = 0;
 LABEL_11:
-    v19 = [(_ATXAppInfoManager *)self->_infoManager appInfoForBundleId:v5];
+    v19 = [(_ATXAppInfoManager *)self->_infoManager appInfoForBundleId:idCopy];
     if ([v19 isEnterpriseApp])
     {
-      v20 = [(NSSet *)self->_managedAppIDs containsObject:v5];
-      v21 = [(ATXAppDirectoryOrderingProvider *)self _issuingOrganizationForEnterpriseAppBundleID:v5 isMDM:v20];
+      v20 = [(NSSet *)self->_managedAppIDs containsObject:idCopy];
+      v21 = [(ATXAppDirectoryOrderingProvider *)self _issuingOrganizationForEnterpriseAppBundleID:idCopy isMDM:v20];
       if (![v21 isEqualToString:@"Apple Inc."])
       {
         v24 = &unk_283A55358;
@@ -2907,7 +2907,7 @@ LABEL_11:
 
         v12 = v24;
 
-        v11 = v18;
+        genreId = v18;
         goto LABEL_27;
       }
 
@@ -2925,15 +2925,15 @@ LABEL_11:
 
     else
     {
-      v11 = [v19 genreId];
+      genreId = [v19 genreId];
 
-      if (![v11 integerValue])
+      if (![genreId integerValue])
       {
         v25 = __atxlog_handle_app_library();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           v28 = 138412290;
-          v29 = v5;
+          v29 = idCopy;
           _os_log_impl(&dword_2263AA000, v25, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: no app info or genre ID for: %@", &v28, 0xCu);
         }
 
@@ -2941,17 +2941,17 @@ LABEL_11:
         goto LABEL_27;
       }
 
-      v23 = v11;
+      v23 = genreId;
     }
 
-    v11 = v23;
+    genreId = v23;
     v12 = v23;
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  v11 = 0;
+  genreId = 0;
   v12 = &unk_283A55328;
 LABEL_28:
 
@@ -2961,16 +2961,16 @@ LABEL_29:
   return v12;
 }
 
-- (id)_screenTimeIdFromBundleId:(id)a3
+- (id)_screenTimeIdFromBundleId:(id)id
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(self->_queue);
   v5 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v4;
+    *&buf[4] = idCopy;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Proactive is trying to categorize %@", buf, 0xCu);
   }
 
@@ -2993,7 +2993,7 @@ LABEL_29:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = idCopy;
       _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Providing a hardcoded value for %@", buf, 0xCu);
     }
 
@@ -3001,7 +3001,7 @@ LABEL_29:
     goto LABEL_41;
   }
 
-  if ([MEMORY[0x277CEB3B8] isArcadeAppForBundle:v4])
+  if ([MEMORY[0x277CEB3B8] isArcadeAppForBundle:idCopy])
   {
     v12 = &unk_283A55328;
     goto LABEL_41;
@@ -3019,23 +3019,23 @@ LABEL_29:
     goto LABEL_15;
   }
 
-  v13 = [(_ATXAppInfoManager *)self->_infoManager appInfoForBundleId:v4];
-  if ((-[NSObject isEnterpriseApp](v13, "isEnterpriseApp") & 1) != 0 || [MEMORY[0x277CEB3B8] isEnterpriseAppForBundle:v4])
+  v13 = [(_ATXAppInfoManager *)self->_infoManager appInfoForBundleId:idCopy];
+  if ((-[NSObject isEnterpriseApp](v13, "isEnterpriseApp") & 1) != 0 || [MEMORY[0x277CEB3B8] isEnterpriseAppForBundle:idCopy])
   {
     v27 = __atxlog_handle_app_library();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v13 isEnterpriseApp];
+      isEnterpriseApp = [v13 isEnterpriseApp];
       *buf = 138412546;
-      *&buf[4] = v4;
+      *&buf[4] = idCopy;
       *&buf[12] = 1024;
-      *&buf[14] = v28;
+      *&buf[14] = isEnterpriseApp;
       _os_log_impl(&dword_2263AA000, v27, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Got %@ as enterprise. isEnterpriseFromDB: %{BOOL}u", buf, 0x12u);
     }
 
-    if ([(NSSet *)self->_managedAppIDs containsObject:v4])
+    if ([(NSSet *)self->_managedAppIDs containsObject:idCopy])
     {
-      v29 = [(ATXAppDirectoryOrderingProvider *)self _issuingOrganizationForEnterpriseAppBundleID:v4 isMDM:1];
+      v29 = [(ATXAppDirectoryOrderingProvider *)self _issuingOrganizationForEnterpriseAppBundleID:idCopy isMDM:1];
       v30 = [v29 isEqualToString:@"Apple Inc."];
 
       if ((v30 & 1) == 0)
@@ -3049,7 +3049,7 @@ LABEL_45:
 
     else
     {
-      v31 = [(ATXAppDirectoryOrderingProvider *)self _issuingOrganizationForEnterpriseAppBundleID:v4 isMDM:0];
+      v31 = [(ATXAppDirectoryOrderingProvider *)self _issuingOrganizationForEnterpriseAppBundleID:idCopy isMDM:0];
       v32 = [v31 isEqualToString:@"Apple Inc."];
 
       if (!v32)
@@ -3074,7 +3074,7 @@ LABEL_15:
   v48 = __Block_byref_object_copy__8;
   v49 = __Block_byref_object_dispose__8;
   v50 = 0;
-  v14 = [(NSDictionary *)self->_appScreenTimeCategoryMappings objectForKeyedSubscript:v4];
+  v14 = [(NSDictionary *)self->_appScreenTimeCategoryMappings objectForKeyedSubscript:idCopy];
   v15 = v14 == 0;
 
   if (v15)
@@ -3088,7 +3088,7 @@ LABEL_15:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *v42 = 138412290;
-      v43 = v4;
+      v43 = idCopy;
       _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Requesting CTCategory for app: %@", v42, 0xCu);
     }
 
@@ -3099,7 +3099,7 @@ LABEL_15:
     v37[2] = __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_invoke;
     v37[3] = &unk_278598200;
     v40 = &v44;
-    v23 = v4;
+    v23 = idCopy;
     v38 = v23;
     v41 = buf;
     v24 = v19;
@@ -3145,11 +3145,11 @@ LABEL_15:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(v44) = 138412290;
-      *(&v44 + 4) = v4;
+      *(&v44 + 4) = idCopy;
       _os_log_impl(&dword_2263AA000, v16, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Using a cached CTCategory response rather than re-requesting for %@", &v44, 0xCu);
     }
 
-    v17 = [(NSDictionary *)self->_appScreenTimeCategoryMappings objectForKeyedSubscript:v4];
+    v17 = [(NSDictionary *)self->_appScreenTimeCategoryMappings objectForKeyedSubscript:idCopy];
     v18 = *(*&buf[8] + 40);
     *(*&buf[8] + 40) = v17;
   }
@@ -3218,8 +3218,8 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
 {
   v42 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(_ATXAppIconState *)self->_appIconState allAppsKnownToSpringBoard];
-  if (v3)
+  allAppsKnownToSpringBoard = [(_ATXAppIconState *)self->_appIconState allAppsKnownToSpringBoard];
+  if (allAppsKnownToSpringBoard)
   {
     v28 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:0];
     v29 = objc_opt_new();
@@ -3227,7 +3227,7 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v4 = v3;
+    v4 = allAppsKnownToSpringBoard;
     v5 = [v4 countByEnumeratingWithState:&v34 objects:v41 count:16];
     if (v5)
     {
@@ -3260,7 +3260,7 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
     appLaunchCounts = self->_appLaunchCounts;
     self->_appLaunchCounts = v12;
 
-    v27 = self;
+    selfCopy = self;
     v14 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:93];
     v15 = objc_opt_new();
     v30 = 0u;
@@ -3297,23 +3297,23 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
     }
 
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v16];
-    libraryAppLaunchCounts = v27->_libraryAppLaunchCounts;
-    v27->_libraryAppLaunchCounts = v24;
+    libraryAppLaunchCounts = selfCopy->_libraryAppLaunchCounts;
+    selfCopy->_libraryAppLaunchCounts = v24;
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_combinedLaunchCountForBundleId:(id)a3
+- (id)_combinedLaunchCountForBundleId:(id)id
 {
   queue = self->_queue;
-  v5 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(queue);
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(NSDictionary *)self->_appLaunchCounts objectForKeyedSubscript:v5];
+  v7 = [(NSDictionary *)self->_appLaunchCounts objectForKeyedSubscript:idCopy];
   [v7 doubleValue];
   v9 = v8;
-  v10 = [(NSDictionary *)self->_libraryAppLaunchCounts objectForKeyedSubscript:v5];
+  v10 = [(NSDictionary *)self->_libraryAppLaunchCounts objectForKeyedSubscript:idCopy];
 
   [v10 doubleValue];
   v12 = [v6 numberWithDouble:v9 + v11 * 10.0];
@@ -3321,19 +3321,19 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
   return v12;
 }
 
-- (id)_totalLaunchCountsForCategory:(id)a3
+- (id)_totalLaunchCountsForCategory:(id)category
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  categoryCopy = category;
   dispatch_assert_queue_V2(self->_queue);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 appIdentities];
-  v6 = [v5 bundleIDsFromIdentities];
+  appIdentities = [categoryCopy appIdentities];
+  bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [bundleIDsFromIdentities countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3345,7 +3345,7 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(bundleIDsFromIdentities);
         }
 
         v12 = [(NSDictionary *)self->_appLaunchCounts objectForKeyedSubscript:*(*(&v17 + 1) + 8 * i)];
@@ -3353,7 +3353,7 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
         v10 = v10 + v13;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [bundleIDsFromIdentities countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -3371,19 +3371,19 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
   return v14;
 }
 
-- (id)_totalLibraryLaunchCountsForCategory:(id)a3
+- (id)_totalLibraryLaunchCountsForCategory:(id)category
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  categoryCopy = category;
   dispatch_assert_queue_V2(self->_queue);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 appIdentities];
-  v6 = [v5 bundleIDsFromIdentities];
+  appIdentities = [categoryCopy appIdentities];
+  bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [bundleIDsFromIdentities countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3395,7 +3395,7 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(bundleIDsFromIdentities);
         }
 
         v12 = [(NSDictionary *)self->_libraryAppLaunchCounts objectForKeyedSubscript:*(*(&v17 + 1) + 8 * i)];
@@ -3403,7 +3403,7 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
         v10 = v10 + v13;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [bundleIDsFromIdentities countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -3421,19 +3421,19 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
   return v14;
 }
 
-- (id)_totalCombinedLaunchCountsForCategory:(id)a3
+- (id)_totalCombinedLaunchCountsForCategory:(id)category
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  categoryCopy = category;
   dispatch_assert_queue_V2(self->_queue);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 appIdentities];
-  v6 = [v5 bundleIDsFromIdentities];
+  appIdentities = [categoryCopy appIdentities];
+  bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [bundleIDsFromIdentities countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3445,7 +3445,7 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(bundleIDsFromIdentities);
         }
 
         v12 = [(ATXAppDirectoryOrderingProvider *)self _combinedLaunchCountForBundleId:*(*(&v17 + 1) + 8 * i)];
@@ -3453,7 +3453,7 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
         v10 = v10 + v13;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [bundleIDsFromIdentities countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -3491,8 +3491,8 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
 
   v5 = objc_autoreleasePoolPush();
   v6 = +[_ATXAppInstallMonitor newPreInstalledAppSet];
-  v7 = [(_ATXAppInfoManager *)self->_infoManager allAppsWithInstallDate];
-  v8 = [v7 mutableCopy];
+  allAppsWithInstallDate = [(_ATXAppInfoManager *)self->_infoManager allAppsWithInstallDate];
+  v8 = [allAppsWithInstallDate mutableCopy];
   v9 = v8;
   if (v8)
   {
@@ -3506,12 +3506,12 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
 
   v11 = v10;
 
-  v12 = [(_ATXAppIconState *)self->_appIconState allAppsKnownToSpringBoard];
-  v13 = v12;
+  allAppsKnownToSpringBoard = [(_ATXAppIconState *)self->_appIconState allAppsKnownToSpringBoard];
+  v13 = allAppsKnownToSpringBoard;
   v14 = MEMORY[0x277CBEBF8];
-  if (v12)
+  if (allAppsKnownToSpringBoard)
   {
-    v14 = v12;
+    v14 = allAppsKnownToSpringBoard;
   }
 
   v15 = v14;
@@ -3540,15 +3540,15 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
   if (!AppBooleanValue || [v16 count])
   {
     v38 = v11;
-    v22 = [v16 allObjects];
-    v23 = [_ATXAppInstallMonitor appInfoDictWithBackDate:0 assetData:0 newPreInstalledAppSet:v6 isFromNotification:0 newApps:v22];
+    allObjects = [v16 allObjects];
+    v23 = [_ATXAppInstallMonitor appInfoDictWithBackDate:0 assetData:0 newPreInstalledAppSet:v6 isFromNotification:0 newApps:allObjects];
 
     if (!AppBooleanValue)
     {
       v34 = v20;
       v35 = v15;
       v37 = v5;
-      v24 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
@@ -3571,7 +3571,7 @@ void __61__ATXAppDirectoryOrderingProvider__screenTimeIdFromBundleId___block_inv
 
             v30 = *(*(&v39 + 1) + 8 * i);
             infoManager = self->_infoManager;
-            [v24 timeIntervalSinceReferenceDate];
+            [date timeIntervalSinceReferenceDate];
             [(_ATXAppInfoManager *)infoManager updateInstallDateForBundleID:v30 timestamp:?];
           }
 
@@ -3699,16 +3699,16 @@ uint64_t __68__ATXAppDirectoryOrderingProvider__appBundleIDTotalLaunchComparator
   return v15;
 }
 
-- (id)_appBundleIDRecencyComparatorForLastLaunchDates:(id)a3
+- (id)_appBundleIDRecencyComparatorForLastLaunchDates:(id)dates
 {
-  v4 = a3;
+  datesCopy = dates;
   dispatch_assert_queue_V2(self->_queue);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__ATXAppDirectoryOrderingProvider__appBundleIDRecencyComparatorForLastLaunchDates___block_invoke;
   aBlock[3] = &unk_278598110;
-  v9 = v4;
-  v5 = v4;
+  v9 = datesCopy;
+  v5 = datesCopy;
   v6 = _Block_copy(aBlock);
 
   return v6;
@@ -3789,14 +3789,14 @@ uint64_t __68__ATXAppDirectoryOrderingProvider__appBundleIDLaunchCountComparator
   return v15;
 }
 
-- (void)_updateScreenTimeMappingsForAppBundleIds:(id)a3 withRetries:(unint64_t)a4
+- (void)_updateScreenTimeMappingsForAppBundleIds:(id)ids withRetries:(unint64_t)retries
 {
   v62 = *MEMORY[0x277D85DE8];
-  v41 = a3;
+  idsCopy = ids;
   context = objc_autoreleasePoolPush();
   val = self;
   dispatch_assert_queue_V2(self->_queue);
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -3807,7 +3807,7 @@ uint64_t __68__ATXAppDirectoryOrderingProvider__appBundleIDLaunchCountComparator
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v58 = v41;
+    v58 = idsCopy;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Requesting CTCategories for apps %@", buf, 0xCu);
   }
 
@@ -3818,11 +3818,11 @@ uint64_t __68__ATXAppDirectoryOrderingProvider__appBundleIDLaunchCountComparator
   v49[2] = __88__ATXAppDirectoryOrderingProvider__updateScreenTimeMappingsForAppBundleIds_withRetries___block_invoke;
   v49[3] = &unk_278598250;
   v52 = &v53;
-  v11 = v6;
+  v11 = dictionary;
   v50 = v11;
   group = v7;
   v51 = group;
-  [v9 categoryForBundleIdentifiers:v41 platform:v10 withCompletionHandler:v49];
+  [v9 categoryForBundleIdentifiers:idsCopy platform:v10 withCompletionHandler:v49];
   v12 = dispatch_time(0, 20000000000);
   dispatch_group_wait(group, v12);
   if (*(v54 + 24) == 1)
@@ -3848,7 +3848,7 @@ uint64_t __68__ATXAppDirectoryOrderingProvider__appBundleIDLaunchCountComparator
       [ATXAppDirectoryOrderingProvider _updateScreenTimeMappingsForAppBundleIds:withRetries:];
     }
 
-    if (a4)
+    if (retries)
     {
       objc_initWeak(buf, val);
       v30 = MEMORY[0x277CEBCE8];
@@ -3859,7 +3859,7 @@ uint64_t __68__ATXAppDirectoryOrderingProvider__appBundleIDLaunchCountComparator
       v47[2] = __88__ATXAppDirectoryOrderingProvider__updateScreenTimeMappingsForAppBundleIds_withRetries___block_invoke_211;
       v47[3] = &unk_2785982A0;
       objc_copyWeak(v48, buf);
-      v48[1] = a4;
+      v48[1] = retries;
       v33 = [v30 fireAtDate:v32 block:v47];
       currentTimer = val->_currentTimer;
       val->_currentTimer = v33;
@@ -3888,13 +3888,13 @@ uint64_t __68__ATXAppDirectoryOrderingProvider__appBundleIDLaunchCountComparator
       _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Retrieved categories: %@", buf, 0xCu);
     }
 
-    v16 = [v42 allKeys];
+    allKeys = [v42 allKeys];
     v17 = objc_opt_new();
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v18 = v16;
+    v18 = allKeys;
     v19 = [v18 countByEnumeratingWithState:&v43 objects:v61 count:16];
     if (v19)
     {
@@ -3910,19 +3910,19 @@ uint64_t __68__ATXAppDirectoryOrderingProvider__appBundleIDLaunchCountComparator
 
           v22 = *(*(&v43 + 1) + 8 * i);
           v23 = [v42 objectForKeyedSubscript:v22];
-          v24 = [v23 identifier];
+          identifier = [v23 identifier];
 
           v25 = __atxlog_handle_app_library();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v58 = v24;
+            v58 = identifier;
             v59 = 2112;
             v60 = v22;
             _os_log_impl(&dword_2263AA000, v25, OS_LOG_TYPE_DEFAULT, "ATXAppDirectoryOrderingProvider: Got CTCategory: %@ for app: %@", buf, 0x16u);
           }
 
-          v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x277CEB350], "screenTimeCategoryIDForCategoryIdentifier:", v24)}];
+          v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x277CEB350], "screenTimeCategoryIDForCategoryIdentifier:", identifier)}];
           [v17 addObject:v26];
         }
 
@@ -3999,13 +3999,13 @@ void __88__ATXAppDirectoryOrderingProvider__updateScreenTimeMappingsForAppBundle
 - (void)_updateMDMStatus
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(ATXAppDirectoryOrderingProvider *)self _getManagedAppIDs];
+  _getManagedAppIDs = [(ATXAppDirectoryOrderingProvider *)self _getManagedAppIDs];
   managedAppIDs = self->_managedAppIDs;
-  self->_managedAppIDs = v3;
+  self->_managedAppIDs = _getManagedAppIDs;
 
-  v5 = [(ATXAppDirectoryOrderingProvider *)self _getMDMOrgName];
+  _getMDMOrgName = [(ATXAppDirectoryOrderingProvider *)self _getMDMOrgName];
   managingOrganizationName = self->_managingOrganizationName;
-  self->_managingOrganizationName = v5;
+  self->_managingOrganizationName = _getMDMOrgName;
 
   MEMORY[0x2821F96F8]();
 }
@@ -4013,18 +4013,18 @@ void __88__ATXAppDirectoryOrderingProvider__updateScreenTimeMappingsForAppBundle
 - (id)_getManagedAppIDs
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 managedAppIDs];
-  v5 = [v2 setWithArray:v4];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  managedAppIDs = [mEMORY[0x277D262A0] managedAppIDs];
+  v5 = [v2 setWithArray:managedAppIDs];
 
   return v5;
 }
 
 - (id)_getMDMOrgName
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 managingOrganizationInformation];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D26360]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  managingOrganizationInformation = [mEMORY[0x277D262A0] managingOrganizationInformation];
+  v4 = [managingOrganizationInformation objectForKeyedSubscript:*MEMORY[0x277D26360]];
 
   return v4;
 }
@@ -4041,29 +4041,29 @@ void __88__ATXAppDirectoryOrderingProvider__updateScreenTimeMappingsForAppBundle
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_splitEnterpriseCategoryWithAppsInCategory:(id)a3 appsByCategoryName:(id)a4 isMDMAppCategory:(BOOL)a5
+- (void)_splitEnterpriseCategoryWithAppsInCategory:(id)category appsByCategoryName:(id)name isMDMAppCategory:(BOOL)appCategory
 {
-  v5 = a5;
+  appCategoryCopy = appCategory;
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  categoryCopy = category;
+  nameCopy = name;
   v10 = objc_opt_new();
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __114__ATXAppDirectoryOrderingProvider__splitEnterpriseCategoryWithAppsInCategory_appsByCategoryName_isMDMAppCategory___block_invoke;
   v29[3] = &unk_2785982C8;
-  v31 = v5;
+  v31 = appCategoryCopy;
   v29[4] = self;
   v11 = v10;
   v30 = v11;
-  [v8 enumerateObjectsUsingBlock:v29];
+  [categoryCopy enumerateObjectsUsingBlock:v29];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
   v23 = v11;
-  v24 = v8;
-  v12 = [v8 objectsAtIndexes:v11];
+  v24 = categoryCopy;
+  v12 = [categoryCopy objectsAtIndexes:v11];
   v13 = [v12 countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v13)
   {
@@ -4079,16 +4079,16 @@ void __88__ATXAppDirectoryOrderingProvider__updateScreenTimeMappingsForAppBundle
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        v18 = [(ATXAppDirectoryOrderingProvider *)self _issuingOrganizationForEnterpriseAppBundleID:v17 isMDM:!v5];
-        v19 = [v9 objectForKeyedSubscript:v18];
+        v18 = [(ATXAppDirectoryOrderingProvider *)self _issuingOrganizationForEnterpriseAppBundleID:v17 isMDM:!appCategoryCopy];
+        v19 = [nameCopy objectForKeyedSubscript:v18];
 
         if (!v19)
         {
           v20 = objc_opt_new();
-          [v9 setObject:v20 forKeyedSubscript:v18];
+          [nameCopy setObject:v20 forKeyedSubscript:v18];
         }
 
-        v21 = [v9 objectForKeyedSubscript:v18];
+        v21 = [nameCopy objectForKeyedSubscript:v18];
         [v21 addObject:v17];
       }
 
@@ -4117,9 +4117,9 @@ void __114__ATXAppDirectoryOrderingProvider__splitEnterpriseCategoryWithAppsInCa
 {
   v35 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(ATXAppDirectoryOrderingProvider *)self _getMDMOrgName];
+  _getMDMOrgName = [(ATXAppDirectoryOrderingProvider *)self _getMDMOrgName];
   managingOrganizationName = self->_managingOrganizationName;
-  self->_managingOrganizationName = v3;
+  self->_managingOrganizationName = _getMDMOrgName;
 
   v26 = 0u;
   v27 = 0u;
@@ -4143,8 +4143,8 @@ void __114__ATXAppDirectoryOrderingProvider__splitEnterpriseCategoryWithAppsInCa
         v10 = *(*(&v24 + 1) + 8 * i);
         if ([v10 categoryID] == 6)
         {
-          v13 = [v10 localizedName];
-          v14 = [v13 isEqualToString:self->_managingOrganizationName];
+          localizedName = [v10 localizedName];
+          v14 = [localizedName isEqualToString:self->_managingOrganizationName];
 
           v15 = __atxlog_handle_app_library();
           v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -4166,12 +4166,12 @@ void __114__ATXAppDirectoryOrderingProvider__splitEnterpriseCategoryWithAppsInCa
             {
               v19 = objc_opt_class();
               v20 = NSStringFromClass(v19);
-              v21 = [v10 localizedName];
+              localizedName2 = [v10 localizedName];
               v22 = self->_managingOrganizationName;
               *buf = 138412802;
               v29 = v20;
               v30 = 2112;
-              v31 = v21;
+              v31 = localizedName2;
               v32 = 2112;
               v33 = v22;
               _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "%@: MDM enterprise category updates its name from %@ to %@", buf, 0x20u);
@@ -4211,12 +4211,12 @@ LABEL_18:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_issuingOrganizationForEnterpriseAppBundleID:(id)a3 isMDM:(BOOL)a4
+- (id)_issuingOrganizationForEnterpriseAppBundleID:(id)d isMDM:(BOOL)m
 {
-  v4 = a4;
-  v6 = a3;
+  mCopy = m;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (mCopy)
   {
     managingOrganizationName = self->_managingOrganizationName;
     if (!managingOrganizationName)
@@ -4227,7 +4227,7 @@ LABEL_18:
     v8 = managingOrganizationName;
   }
 
-  else if ([MEMORY[0x277CEB3B8] isBetaAppForBundle:v6])
+  else if ([MEMORY[0x277CEB3B8] isBetaAppForBundle:dCopy])
   {
     v8 = @"TestFlight";
   }
@@ -4241,7 +4241,7 @@ LABEL_18:
     }
 
     v8 = @"kATXEnterprise";
-    if (([MEMORY[0x277CEB3B8] isUPPValidatedForBundle:v6] & 1) == 0)
+    if (([MEMORY[0x277CEB3B8] isUPPValidatedForBundle:dCopy] & 1) == 0)
     {
       v10 = __atxlog_handle_app_library();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -4251,11 +4251,11 @@ LABEL_18:
 
       v11 = ATXBundleIdForRemoteBundleId();
       v12 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v11 allowPlaceholder:1 error:0];
-      v13 = [v12 signerOrganization];
+      signerOrganization = [v12 signerOrganization];
 
-      if (v13)
+      if (signerOrganization)
       {
-        v14 = v13;
+        v14 = signerOrganization;
       }
 
       else
@@ -4270,10 +4270,10 @@ LABEL_18:
   return v8;
 }
 
-- (id)_mdmEnterpriseCategoriesForApps:(id)a3
+- (id)_mdmEnterpriseCategoriesForApps:(id)apps
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXAppDirectoryOrderingProvider *)self _groupEnterpriseAppsByIssuerWithBundleIDs:a3 isMDM:1];
+  v3 = [(ATXAppDirectoryOrderingProvider *)self _groupEnterpriseAppsByIssuerWithBundleIDs:apps isMDM:1];
   if ([v3 count] >= 2)
   {
     v4 = __atxlog_handle_app_library();
@@ -4293,7 +4293,7 @@ LABEL_18:
 
     LODWORD(v7) = [v6 isEqualToString:@"kATXMDM"];
     v9 = objc_alloc(MEMORY[0x277CEB350]);
-    v10 = [v8 appIdentitiesFromBundleIDs];
+    appIdentitiesFromBundleIDs = [v8 appIdentitiesFromBundleIDs];
     if (v7)
     {
       v11 = 0;
@@ -4304,7 +4304,7 @@ LABEL_18:
       v11 = v6;
     }
 
-    v12 = [v9 initWithCategoryID:6 appIdentitites:v10 localizedName:v11];
+    v12 = [v9 initWithCategoryID:6 appIdentitites:appIdentitiesFromBundleIDs localizedName:v11];
   }
 
   else
@@ -4317,13 +4317,13 @@ LABEL_18:
   return v12;
 }
 
-- (id)_getEnterpriseCategoriesForApps:(id)a3
+- (id)_getEnterpriseCategoriesForApps:(id)apps
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appsCopy = apps;
   v5 = objc_opt_new();
-  v20 = v4;
-  v6 = [(ATXAppDirectoryOrderingProvider *)self _groupEnterpriseAppsByIssuerWithBundleIDs:v4 isMDM:0];
+  v20 = appsCopy;
+  v6 = [(ATXAppDirectoryOrderingProvider *)self _groupEnterpriseAppsByIssuerWithBundleIDs:appsCopy isMDM:0];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -4348,7 +4348,7 @@ LABEL_18:
 
         LODWORD(v12) = [v11 isEqualToString:@"kATXEnterprise"];
         v14 = objc_alloc(MEMORY[0x277CEB350]);
-        v15 = [v13 appIdentitiesFromBundleIDs];
+        appIdentitiesFromBundleIDs = [v13 appIdentitiesFromBundleIDs];
         if (v12)
         {
           v16 = 0;
@@ -4359,7 +4359,7 @@ LABEL_18:
           v16 = v11;
         }
 
-        v17 = [v14 initWithCategoryID:1 appIdentitites:v15 localizedName:v16];
+        v17 = [v14 initWithCategoryID:1 appIdentitites:appIdentitiesFromBundleIDs localizedName:v16];
 
         [v5 addObject:v17];
       }
@@ -4375,24 +4375,24 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)_shiftAppIndices:(id)a3 category:(id)a4
+- (BOOL)_shiftAppIndices:(id)indices category:(id)category
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  indicesCopy = indices;
+  categoryCopy = category;
+  v7 = [indicesCopy count];
   if (v7)
   {
-    v8 = [v6 objectsAtIndexes:v5];
-    [v6 removeObjectsAtIndexes:v5];
-    [v6 addObjectsFromArray:v8];
+    v8 = [categoryCopy objectsAtIndexes:indicesCopy];
+    [categoryCopy removeObjectsAtIndexes:indicesCopy];
+    [categoryCopy addObjectsFromArray:v8];
   }
 
   return v7 != 0;
 }
 
-- (void)_reorderAndHideDupesForAppsInCategory:(id)a3
+- (void)_reorderAndHideDupesForAppsInCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
   v7 = objc_opt_new();
@@ -4400,17 +4400,17 @@ LABEL_18:
   v12 = 3221225472;
   v13 = __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory___block_invoke;
   v14 = &unk_2785982F0;
-  v15 = self;
+  selfCopy = self;
   v16 = v5;
   v17 = v6;
   v18 = v7;
   v8 = v7;
   v9 = v6;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:&v11];
-  [(ATXAppDirectoryOrderingProvider *)self _shiftAppIndices:v10 category:v4, v11, v12, v13, v14, v15];
-  [(ATXAppDirectoryOrderingProvider *)self _shiftAppIndices:v8 category:v4];
-  [(ATXAppDirectoryOrderingProvider *)self _shiftAppIndices:v9 category:v4];
+  [categoryCopy enumerateObjectsUsingBlock:&v11];
+  [(ATXAppDirectoryOrderingProvider *)self _shiftAppIndices:v10 category:categoryCopy, v11, v12, v13, v14, selfCopy];
+  [(ATXAppDirectoryOrderingProvider *)self _shiftAppIndices:v8 category:categoryCopy];
+  [(ATXAppDirectoryOrderingProvider *)self _shiftAppIndices:v9 category:categoryCopy];
 }
 
 void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -4447,7 +4447,7 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
   }
 }
 
-- (id)_computeCategoriesWithRetries:(unint64_t)a3
+- (id)_computeCategoriesWithRetries:(unint64_t)retries
 {
   v103 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -4458,14 +4458,14 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
     appLaunchCounts = self->_appLaunchCounts;
   }
 
-  v6 = [(NSDictionary *)appLaunchCounts allKeys];
-  v7 = [v6 mutableCopy];
+  allKeys = [(NSDictionary *)appLaunchCounts allKeys];
+  v7 = [allKeys mutableCopy];
 
-  v8 = [(ATXAppProtectionInfoProvider *)self->_appProtectionInfoProvider hiddenBundleIDs];
-  v9 = v8;
-  if (v8)
+  hiddenBundleIDs = [(ATXAppProtectionInfoProvider *)self->_appProtectionInfoProvider hiddenBundleIDs];
+  v9 = hiddenBundleIDs;
+  if (hiddenBundleIDs)
   {
-    v10 = v8;
+    v10 = hiddenBundleIDs;
   }
 
   else
@@ -4475,7 +4475,7 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
 
   [v7 removeObjectsInArray:v10];
 
-  [(ATXAppDirectoryOrderingProvider *)self _updateScreenTimeMappingsForAppBundleIds:v7 withRetries:a3];
+  [(ATXAppDirectoryOrderingProvider *)self _updateScreenTimeMappingsForAppBundleIds:v7 withRetries:retries];
   v11 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -4552,8 +4552,8 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
         }
 
         v28 = [v23 objectForKeyedSubscript:*(*(&v91 + 1) + 8 * j)];
-        v29 = [(ATXAppDirectoryOrderingProvider *)self _appBundleIDTotalLaunchComparator];
-        [v28 sortUsingComparator:v29];
+        _appBundleIDTotalLaunchComparator = [(ATXAppDirectoryOrderingProvider *)self _appBundleIDTotalLaunchComparator];
+        [v28 sortUsingComparator:_appBundleIDTotalLaunchComparator];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v91 objects:v101 count:16];
@@ -4564,9 +4564,9 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
 
   v78 = v12;
 
-  v30 = [(_ATXAppIconState *)self->_appIconState nonFolderAppSetOnPages];
+  nonFolderAppSetOnPages = [(_ATXAppIconState *)self->_appIconState nonFolderAppSetOnPages];
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[_ATXAppIconState getFirstVisiblePageIndex](self->_appIconState, "getFirstVisiblePageIndex")}];
-  v32 = [v30 objectForKeyedSubscript:v31];
+  v32 = [nonFolderAppSetOnPages objectForKeyedSubscript:v31];
   v33 = v32;
   if (v32)
   {
@@ -4586,12 +4586,12 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
     [ATXAppDirectoryOrderingProvider _computeCategoriesWithRetries:?];
   }
 
-  v36 = [(_ATXAppIconState *)self->_appIconState allDockedApps];
-  v37 = v36;
+  allDockedApps = [(_ATXAppIconState *)self->_appIconState allDockedApps];
+  v37 = allDockedApps;
   v38 = v78;
-  if (v36)
+  if (allDockedApps)
   {
-    v39 = v36;
+    v39 = allDockedApps;
   }
 
   else
@@ -4643,8 +4643,8 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
           v86 = 0u;
           v83 = 0u;
           v84 = 0u;
-          v51 = v50;
-          v52 = [v51 countByEnumeratingWithState:&v83 objects:v99 count:16];
+          appIdentitiesFromBundleIDs = v50;
+          v52 = [appIdentitiesFromBundleIDs countByEnumeratingWithState:&v83 objects:v99 count:16];
           if (v52)
           {
             v53 = v52;
@@ -4656,24 +4656,24 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
               {
                 if (*v84 != v54)
                 {
-                  objc_enumerationMutation(v51);
+                  objc_enumerationMutation(appIdentitiesFromBundleIDs);
                 }
 
                 v56 = *(*(&v83 + 1) + 8 * m);
-                v57 = [v56 appIdentities];
-                v58 = [v57 bundleIDsFromIdentities];
-                v59 = [v58 mutableCopy];
+                appIdentities = [v56 appIdentities];
+                bundleIDsFromIdentities = [appIdentities bundleIDsFromIdentities];
+                v59 = [bundleIDsFromIdentities mutableCopy];
 
                 [(ATXAppDirectoryOrderingProvider *)self _reorderAndHideDupesForAppsInCategory:v59];
                 [v56 updateAppBundleIDs:v59];
                 [v44 addObject:v56];
               }
 
-              v53 = [v51 countByEnumeratingWithState:&v83 objects:v99 count:16];
+              v53 = [appIdentitiesFromBundleIDs countByEnumeratingWithState:&v83 objects:v99 count:16];
             }
 
             while (v53);
-            v60 = v51;
+            v60 = appIdentitiesFromBundleIDs;
             v45 = v77;
             v38 = v78;
             v46 = v76;
@@ -4682,15 +4682,15 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
 
           else
           {
-            v60 = v51;
+            v60 = appIdentitiesFromBundleIDs;
           }
         }
 
         else
         {
-          v61 = [v48 unsignedIntegerValue];
+          unsignedIntegerValue = [v48 unsignedIntegerValue];
           v62 = [v45 objectForKeyedSubscript:v48];
-          if (v61 == 6)
+          if (unsignedIntegerValue == 6)
           {
             v60 = [(ATXAppDirectoryOrderingProvider *)self _mdmEnterpriseCategoriesForApps:v62];
 
@@ -4699,14 +4699,14 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
               goto LABEL_55;
             }
 
-            v63 = [v60 appIdentities];
-            [v63 bundleIDsFromIdentities];
+            appIdentities2 = [v60 appIdentities];
+            [appIdentities2 bundleIDsFromIdentities];
             v65 = v64 = k;
-            v51 = [v65 mutableCopy];
+            appIdentitiesFromBundleIDs = [v65 mutableCopy];
 
             k = v64;
-            [(ATXAppDirectoryOrderingProvider *)self _reorderAndHideDupesForAppsInCategory:v51];
-            [v60 updateAppBundleIDs:v51];
+            [(ATXAppDirectoryOrderingProvider *)self _reorderAndHideDupesForAppsInCategory:appIdentitiesFromBundleIDs];
+            [v60 updateAppBundleIDs:appIdentitiesFromBundleIDs];
             [v44 addObject:v60];
           }
 
@@ -4719,11 +4719,11 @@ void __73__ATXAppDirectoryOrderingProvider__reorderAndHideDupesForAppsInCategory
 
             v67 = objc_alloc(MEMORY[0x277CEB350]);
             v68 = k;
-            v69 = [v48 unsignedIntegerValue];
-            v51 = [v60 appIdentitiesFromBundleIDs];
-            v70 = v69;
+            unsignedIntegerValue2 = [v48 unsignedIntegerValue];
+            appIdentitiesFromBundleIDs = [v60 appIdentitiesFromBundleIDs];
+            v70 = unsignedIntegerValue2;
             k = v68;
-            v71 = [v67 initWithCategoryID:v70 appIdentities:v51];
+            v71 = [v67 initWithCategoryID:v70 appIdentities:appIdentitiesFromBundleIDs];
             [v44 addObject:v71];
           }
         }
@@ -4742,33 +4742,33 @@ LABEL_55:
   return v44;
 }
 
-- (id)_sortCategories:(id)a3
+- (id)_sortCategories:(id)categories
 {
   queue = self->_queue;
-  v5 = a3;
+  categoriesCopy = categories;
   dispatch_assert_queue_V2(queue);
   if (!self->_appLaunchCounts)
   {
     [(ATXAppDirectoryOrderingProvider *)self _updateAppLaunchCounts];
   }
 
-  v6 = [(ATXAppDirectoryOrderingProvider *)self _categoryComparator];
-  v7 = [v5 sortedArrayUsingComparator:v6];
+  _categoryComparator = [(ATXAppDirectoryOrderingProvider *)self _categoryComparator];
+  v7 = [categoriesCopy sortedArrayUsingComparator:_categoryComparator];
 
   return v7;
 }
 
-- (void)_postProcessCategories:(id)a3 withReply:(id)a4
+- (void)_postProcessCategories:(id)categories withReply:(id)reply
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v31 = a4;
+  categoriesCopy = categories;
+  replyCopy = reply;
   dispatch_assert_queue_V2(self->_queue);
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = v6;
+  v7 = categoriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (!v8)
   {
@@ -4776,8 +4776,8 @@ LABEL_55:
     v11 = 0;
     v10 = 0;
 LABEL_28:
-    v29 = v31;
-    (*(v31 + 2))(v31, v7, 0);
+    v29 = replyCopy;
+    (*(replyCopy + 2))(replyCopy, v7, 0);
     goto LABEL_29;
   }
 
@@ -4845,11 +4845,11 @@ LABEL_28:
         {
           v21 = objc_alloc(MEMORY[0x277CEB350]);
           v22 = v7;
-          v23 = [v20 categoryID];
-          v24 = [v20 appIdentities];
-          v25 = [v10 appIdentities];
-          v26 = [v24 arrayByAddingObjectsFromArray:v25];
-          v27 = v23;
+          categoryID = [v20 categoryID];
+          appIdentities = [v20 appIdentities];
+          appIdentities2 = [v10 appIdentities];
+          v26 = [appIdentities arrayByAddingObjectsFromArray:appIdentities2];
+          v27 = categoryID;
           v7 = v22;
           v28 = [v21 initWithCategoryID:v27 appIdentities:v26];
           [v34 addObject:v28];
@@ -4867,16 +4867,16 @@ LABEL_28:
     while (v18);
   }
 
-  v29 = v31;
-  (*(v31 + 2))(v31, v34, 0);
+  v29 = replyCopy;
+  (*(replyCopy + 2))(replyCopy, v34, 0);
 
 LABEL_29:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)categoriesWithReply:(id)a3
+- (void)categoriesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -4889,8 +4889,8 @@ LABEL_29:
   v8[2] = __55__ATXAppDirectoryOrderingProvider_categoriesWithReply___block_invoke;
   v8[3] = &unk_2785968C8;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = replyCopy;
+  v6 = replyCopy;
   v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v8);
   dispatch_async(self->_queue, v7);
 }
@@ -4913,18 +4913,18 @@ void __55__ATXAppDirectoryOrderingProvider_categoriesWithReply___block_invoke(ui
   }
 }
 
-- (void)topAppsWithMaxNumberOfResults:(unint64_t)a3 reply:(id)a4
+- (void)topAppsWithMaxNumberOfResults:(unint64_t)results reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__ATXAppDirectoryOrderingProvider_topAppsWithMaxNumberOfResults_reply___block_invoke;
   block[3] = &unk_278598318;
-  v10 = v6;
-  v11 = a3;
+  v10 = replyCopy;
+  resultsCopy = results;
   block[4] = self;
-  v8 = v6;
+  v8 = replyCopy;
   dispatch_async(queue, block);
 }
 
@@ -4968,17 +4968,17 @@ void __71__ATXAppDirectoryOrderingProvider_topAppsWithMaxNumberOfResults_reply__
   }
 }
 
-- (void)appLaunchDatesWithReply:(id)a3
+- (void)appLaunchDatesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ATXAppDirectoryOrderingProvider_appLaunchDatesWithReply___block_invoke;
   v7[3] = &unk_2785968C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -5069,14 +5069,14 @@ void __76__ATXAppDirectoryOrderingProvider_requestNotificationWhenCategoriesAreR
 
 - (void)_registerForManagedAppsOrgInfoChangedNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleManagedAppsOrgInfoChangedNotification name:*MEMORY[0x277D26128] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleManagedAppsOrgInfoChangedNotification name:*MEMORY[0x277D26128] object:0];
 }
 
 - (void)_registerForManagedAppsChangedNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleManagedAppsChangedNotification name:*MEMORY[0x277D26120] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleManagedAppsChangedNotification name:*MEMORY[0x277D26120] object:0];
 }
 
 - (void)_handleManagedAppsOrgInfoChangedNotification
@@ -5125,17 +5125,17 @@ void __76__ATXAppDirectoryOrderingProvider_requestNotificationWhenCategoriesAreR
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appLaunchInformationWithReply:(id)a3
+- (void)appLaunchInformationWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__ATXAppDirectoryOrderingProvider_appLaunchInformationWithReply___block_invoke;
   v7[3] = &unk_2785968C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -5200,17 +5200,17 @@ void __65__ATXAppDirectoryOrderingProvider_appLaunchInformationWithReply___block
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)categoryLaunchInformationWithReply:(id)a3
+- (void)categoryLaunchInformationWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__ATXAppDirectoryOrderingProvider_categoryLaunchInformationWithReply___block_invoke;
   v7[3] = &unk_2785968C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(queue, v7);
 }
 

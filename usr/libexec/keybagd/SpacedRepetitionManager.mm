@@ -4,7 +4,7 @@
 - (BOOL)commitNextVerificationEpoch;
 - (BOOL)continueRepetitionPeriod;
 - (BOOL)handleVerificationEpoch;
-- (BOOL)repetitionPeriodTimer:(id)a3;
+- (BOOL)repetitionPeriodTimer:(id)timer;
 - (BOOL)setupNextTimer;
 - (id)initialize;
 - (id)readConfig;
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_100002F40;
   block[3] = &unk_100034C80;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10003D2B0 != -1)
   {
     dispatch_once(&qword_10003D2B0, block);
@@ -88,7 +88,7 @@
 
 - (int64_t)getNextVerificationEpoch
 {
-  v3 = time(0);
+  integerValue2 = time(0);
   v4 = [qword_10003D290 valueForKey:@"lastVerificationEpoch"];
   v5 = [qword_10003D290 valueForKey:@"verificationEpochStartTime"];
   [(SpacedRepetitionManager *)self setupIntervals];
@@ -97,15 +97,15 @@
     return -1;
   }
 
-  v6 = [v4 integerValue];
+  integerValue = [v4 integerValue];
   if (v5)
   {
-    v3 = [v5 integerValue];
+    integerValue2 = [v5 integerValue];
   }
 
-  if (v6 < [qword_10003D288 count])
+  if (integerValue < [qword_10003D288 count])
   {
-    return v3 + [objc_msgSend(qword_10003D288 objectAtIndex:{v6), "intValue"}];
+    return integerValue2 + [objc_msgSend(qword_10003D288 objectAtIndex:{integerValue), "intValue"}];
   }
 
   else
@@ -155,10 +155,10 @@
 
 - (BOOL)handleVerificationEpoch
 {
-  v3 = [(SpacedRepetitionManager *)self checkForVerificationEpoch];
-  if (!v3)
+  checkForVerificationEpoch = [(SpacedRepetitionManager *)self checkForVerificationEpoch];
+  if (!checkForVerificationEpoch)
   {
-    return v3;
+    return checkForVerificationEpoch;
   }
 
   NSLog(@"handling verification epoch");
@@ -180,8 +180,8 @@ LABEL_7:
   {
     NSLog(@"spaced repetition is disabled. NOT performing verification.");
 LABEL_8:
-    LOBYTE(v3) = 0;
-    return v3;
+    LOBYTE(checkForVerificationEpoch) = 0;
+    return checkForVerificationEpoch;
   }
 
   v14 = 0;
@@ -203,8 +203,8 @@ LABEL_8:
   }
 
   _Block_object_dispose(&v14, 8);
-  v5 = [v4 availableDevices];
-  if (![v5 count])
+  availableDevices = [v4 availableDevices];
+  if (![availableDevices count])
   {
     NSLog(@"could not find a biometric device for verification");
     goto LABEL_8;
@@ -230,18 +230,18 @@ LABEL_8:
   }
 
   _Block_object_dispose(&v14, 8);
-  v3 = [objc_msgSend(v6 deviceWithDescriptor:objc_msgSend(v5 error:{"objectAtIndexedSubscript:", 0), 0), "dropAllUnlockTokensWithError:", 0}];
-  if (v3)
+  checkForVerificationEpoch = [objc_msgSend(v6 deviceWithDescriptor:objc_msgSend(availableDevices error:{"objectAtIndexedSubscript:", 0), 0), "dropAllUnlockTokensWithError:", 0}];
+  if (checkForVerificationEpoch)
   {
     if (![(SpacedRepetitionManager *)self commitNextVerificationEpoch])
     {
       [(SpacedRepetitionManager *)self stopSpacedRepetition];
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(checkForVerificationEpoch) = 1;
   }
 
-  return v3;
+  return checkForVerificationEpoch;
 }
 
 - (BOOL)setupNextTimer
@@ -252,13 +252,13 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [(SpacedRepetitionManager *)self getNextVerificationEpoch];
-  if (v3 < 1)
+  getNextVerificationEpoch = [(SpacedRepetitionManager *)self getNextVerificationEpoch];
+  if (getNextVerificationEpoch < 1)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = getNextVerificationEpoch;
   v5 = time(0);
   if (v5 >= [(SpacedRepetitionManager *)self getSpacedRepetitionTimeout]+ v4)
   {
@@ -294,10 +294,10 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)repetitionPeriodTimer:(id)a3
+- (BOOL)repetitionPeriodTimer:(id)timer
 {
   v4 = dword_10003D284;
-  if (v4 != [objc_msgSend(a3 "userInfo")])
+  if (v4 != [objc_msgSend(timer "userInfo")])
   {
     return 0;
   }
@@ -323,15 +323,15 @@ LABEL_8:
   [(SpacedRepetitionManager *)self setupIntervals];
   [qword_10003D290 setObject:&off_10003AC10 forKey:@"lastVerificationEpoch"];
   [qword_10003D290 setObject:+[NSNumber numberWithLong:](NSNumber forKey:{"numberWithLong:", time(0)), @"verificationEpochStartTime"}];
-  v3 = [(SpacedRepetitionManager *)self writeConfig];
-  if (v3)
+  writeConfig = [(SpacedRepetitionManager *)self writeConfig];
+  if (writeConfig)
   {
     NSLog(@"beginning new verification cycle...");
 
-    LOBYTE(v3) = [(SpacedRepetitionManager *)self setupNextTimer];
+    LOBYTE(writeConfig) = [(SpacedRepetitionManager *)self setupNextTimer];
   }
 
-  return v3;
+  return writeConfig;
 }
 
 - (BOOL)continueRepetitionPeriod

@@ -1,26 +1,26 @@
 @interface RPHIDDaemon
-- (BOOL)_setupHIDGCDeviceWithOptions:(id)a3 andReturnError:(id *)a4;
-- (BOOL)_setupHIDTouchDeviceAndReturnError:(id *)a3;
-- (BOOL)activateAndReturnError:(id *)a3;
-- (void)_activateScreenSaverWithResponseHandler:(id)a3;
-- (void)_handleCommand:(id)a3 responseHandler:(id)a4;
-- (void)_handleGameControllerAuxEvent:(int64_t)a3 pressed:(int64_t)a4;
-- (void)_handleGameControllerEvent:(id)a3;
-- (void)_handleGameControllerStart:(id)a3 responseHandler:(id)a4;
-- (void)_handleGameControllerStop:(id)a3 responseHandler:(id)a4;
-- (void)_handleTouchEvent:(id)a3;
-- (void)_handleTouchStart:(id)a3 responseHandler:(id)a4;
-- (void)_handleTouchStop:(id)a3 responseHandler:(id)a4;
+- (BOOL)_setupHIDGCDeviceWithOptions:(id)options andReturnError:(id *)error;
+- (BOOL)_setupHIDTouchDeviceAndReturnError:(id *)error;
+- (BOOL)activateAndReturnError:(id *)error;
+- (void)_activateScreenSaverWithResponseHandler:(id)handler;
+- (void)_handleCommand:(id)command responseHandler:(id)handler;
+- (void)_handleGameControllerAuxEvent:(int64_t)event pressed:(int64_t)pressed;
+- (void)_handleGameControllerEvent:(id)event;
+- (void)_handleGameControllerStart:(id)start responseHandler:(id)handler;
+- (void)_handleGameControllerStop:(id)stop responseHandler:(id)handler;
+- (void)_handleTouchEvent:(id)event;
+- (void)_handleTouchStart:(id)start responseHandler:(id)handler;
+- (void)_handleTouchStop:(id)stop responseHandler:(id)handler;
 - (void)_setupHIDGCSenderIDIfNeeded;
 - (void)_setupHIDSenderIDIfNeeded;
-- (void)_sleepSystemWithResponseHandler:(id)a3;
-- (void)_wakeSystemWithResponseHandler:(id)a3;
+- (void)_sleepSystemWithResponseHandler:(id)handler;
+- (void)_wakeSystemWithResponseHandler:(id)handler;
 - (void)invalidate;
 @end
 
 @implementation RPHIDDaemon
 
-- (BOOL)activateAndReturnError:(id *)a3
+- (BOOL)activateAndReturnError:(id *)error
 {
   v5 = self->_messenger;
   if (!v5)
@@ -116,10 +116,10 @@ LABEL_20:
   }
 
 LABEL_13:
-  if (a3)
+  if (error)
   {
     v11 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
   v8 = 0;
@@ -160,10 +160,10 @@ LABEL_16:
   }
 }
 
-- (void)_handleCommand:(id)a3 responseHandler:(id)a4
+- (void)_handleCommand:(id)command responseHandler:(id)handler
 {
-  v18 = a3;
-  v6 = a4;
+  commandCopy = command;
+  handlerCopy = handler;
   Int64Ranged = CFDictionaryGetInt64Ranged();
   v8 = CFDictionaryGetInt64Ranged();
   if (dword_1001D3948 <= 30 && (dword_1001D3948 != -1 || _LogCategory_Initialize()))
@@ -189,7 +189,7 @@ LABEL_16:
     }
 
     v16 = v10;
-    v17 = v18;
+    v17 = commandCopy;
     v15 = v9;
     LogPrintF();
   }
@@ -197,26 +197,26 @@ LABEL_16:
   switch(Int64Ranged)
   {
     case 1u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 1;
       v13 = 140;
       goto LABEL_33;
     case 2u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 1;
       goto LABEL_25;
     case 3u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 1;
       v13 = 139;
       goto LABEL_33;
     case 4u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 1;
       v13 = 138;
       goto LABEL_33;
     case 5u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 1;
       v13 = 134;
       goto LABEL_33;
@@ -224,68 +224,68 @@ LABEL_16:
       [(RPHIDDaemon *)self _handleSelectWithButtonState:v8];
       goto LABEL_34;
     case 7u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 12;
       v13 = 96;
       goto LABEL_33;
     case 8u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 12;
       v13 = 233;
       goto LABEL_33;
     case 9u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 12;
       v13 = 234;
       goto LABEL_33;
     case 0xAu:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 12;
       v13 = 4;
       goto LABEL_33;
     case 0xBu:
-      [(RPHIDDaemon *)self _activateScreenSaverWithResponseHandler:v6];
+      [(RPHIDDaemon *)self _activateScreenSaverWithResponseHandler:handlerCopy];
       break;
     case 0xCu:
-      [(RPHIDDaemon *)self _sleepSystemWithResponseHandler:v6];
+      [(RPHIDDaemon *)self _sleepSystemWithResponseHandler:handlerCopy];
       break;
     case 0xDu:
-      [(RPHIDDaemon *)self _wakeSystemWithResponseHandler:v6];
+      [(RPHIDDaemon *)self _wakeSystemWithResponseHandler:handlerCopy];
       break;
     case 0xEu:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 12;
       v13 = 205;
       goto LABEL_33;
     case 0xFu:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 7;
       v13 = 75;
       goto LABEL_33;
     case 0x10u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 7;
       v13 = 78;
       goto LABEL_33;
     case 0x11u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 12;
 LABEL_25:
       v13 = 141;
       goto LABEL_33;
     case 0x12u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 12;
       v13 = 226;
       goto LABEL_33;
     case 0x13u:
-      v11 = self;
+      selfCopy15 = self;
       v12 = 12;
       v13 = 48;
 LABEL_33:
-      [(RPHIDDaemon *)v11 _injectKeyboardEventUsagePage:v12 usageCode:v13 buttonState:v8, v15, v16, v17];
+      [(RPHIDDaemon *)selfCopy15 _injectKeyboardEventUsagePage:v12 usageCode:v13 buttonState:v8, v15, v16, v17];
 LABEL_34:
-      (*(v6 + 2))(v6, &__NSDictionary0__struct, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, &__NSDictionary0__struct, 0, 0);
       break;
     default:
       v14 = RPErrorF();
@@ -294,53 +294,53 @@ LABEL_34:
         sub_1001179E4();
       }
 
-      (*(v6 + 2))(v6, 0, 0, v14);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v14);
 
       break;
   }
 }
 
-- (void)_activateScreenSaverWithResponseHandler:(id)a3
+- (void)_activateScreenSaverWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v3 = RPErrorF();
   if (dword_1001D3948 <= 60 && (dword_1001D3948 != -1 || _LogCategory_Initialize()))
   {
     sub_100117A24();
   }
 
-  (*(v4 + 2))(v4, 0, 0, v3);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v3);
 }
 
-- (void)_sleepSystemWithResponseHandler:(id)a3
+- (void)_sleepSystemWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v3 = RPErrorF();
   if (dword_1001D3948 <= 60 && (dword_1001D3948 != -1 || _LogCategory_Initialize()))
   {
     sub_100117B20();
   }
 
-  (*(v4 + 2))(v4, 0, 0, v3);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v3);
 }
 
-- (void)_wakeSystemWithResponseHandler:(id)a3
+- (void)_wakeSystemWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v3 = RPErrorF();
   if (dword_1001D3948 <= 60 && (dword_1001D3948 != -1 || _LogCategory_Initialize()))
   {
     sub_100117B60();
   }
 
-  (*(v4 + 2))(v4, 0, 0, v3);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v3);
 }
 
-- (void)_handleGameControllerStart:(id)a3 responseHandler:(id)a4
+- (void)_handleGameControllerStart:(id)start responseHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8 = 0;
-  [(RPHIDDaemon *)self _setupHIDGCDeviceWithOptions:a3 andReturnError:&v8];
+  [(RPHIDDaemon *)self _setupHIDGCDeviceWithOptions:start andReturnError:&v8];
   v7 = v8;
   if (v7)
   {
@@ -349,18 +349,18 @@ LABEL_34:
       sub_100117BA0();
     }
 
-    (*(v6 + 2))(v6, 0, 0, v7);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v7);
   }
 
   else
   {
-    (*(v6 + 2))(v6, &__NSDictionary0__struct, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, &__NSDictionary0__struct, 0, 0);
   }
 }
 
-- (void)_handleGameControllerStop:(id)a3 responseHandler:(id)a4
+- (void)_handleGameControllerStop:(id)stop responseHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   hidGCDevice = self->_hidGCDevice;
   if (hidGCDevice)
   {
@@ -370,10 +370,10 @@ LABEL_34:
 
   self->_hidGCSenderID = 0;
   self->_hidGCSenderIDInitialized = 0;
-  (*(v6 + 2))(v6, &__NSDictionary0__struct, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, &__NSDictionary0__struct, 0, 0);
 }
 
-- (void)_handleGameControllerAuxEvent:(int64_t)a3 pressed:(int64_t)a4
+- (void)_handleGameControllerAuxEvent:(int64_t)event pressed:(int64_t)pressed
 {
   mach_absolute_time();
   v5 = IOHIDEventCreate();
@@ -399,11 +399,11 @@ LABEL_34:
   }
 }
 
-- (void)_handleGameControllerEvent:(id)a3
+- (void)_handleGameControllerEvent:(id)event
 {
-  v4 = a3;
-  v12 = v4;
-  if (self->_hidGCClient && v4 && ([(RPHIDDaemon *)self _setupHIDGCSenderIDIfNeeded], self->_hidGCSenderID) && (mach_absolute_time(), (v5 = IOHIDEventCreate()) != 0))
+  eventCopy = event;
+  v12 = eventCopy;
+  if (self->_hidGCClient && eventCopy && ([(RPHIDDaemon *)self _setupHIDGCSenderIDIfNeeded], self->_hidGCSenderID) && (mach_absolute_time(), (v5 = IOHIDEventCreate()) != 0))
   {
     v6 = v5;
     CFDictionaryGetDouble();
@@ -473,7 +473,7 @@ LABEL_34:
   }
 }
 
-- (BOOL)_setupHIDGCDeviceWithOptions:(id)a3 andReturnError:(id *)a4
+- (BOOL)_setupHIDGCDeviceWithOptions:(id)options andReturnError:(id *)error
 {
   if (self->_hidGCDevice)
   {
@@ -499,8 +499,8 @@ LABEL_34:
   [v7 setObject:&__kCFBooleanFalse forKeyedSubscript:@"DisplayIntegrated"];
   [v7 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Authenticated"];
   v9 = objc_alloc_init(NSUUID);
-  v10 = [v9 UUIDString];
-  [v7 setObject:v10 forKeyedSubscript:@"PhysicalDeviceUniqueID"];
+  uUIDString = [v9 UUIDString];
+  [v7 setObject:uUIDString forKeyedSubscript:@"PhysicalDeviceUniqueID"];
 
   [v7 setObject:@"Generic Extended Controller" forKeyedSubscript:@"Product"];
   [v7 setObject:&off_1001B7EA0 forKeyedSubscript:@"DeviceUsagePage"];
@@ -519,7 +519,7 @@ LABEL_34:
 
   else
   {
-    sub_100117CD0(a4);
+    sub_100117CD0(error);
   }
 
   return v4;
@@ -578,10 +578,10 @@ LABEL_34:
   }
 }
 
-- (void)_handleTouchStart:(id)a3 responseHandler:(id)a4
+- (void)_handleTouchStart:(id)start responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  startCopy = start;
+  handlerCopy = handler;
   if (dword_1001D3948 <= 30 && (dword_1001D3948 != -1 || _LogCategory_Initialize()))
   {
     sub_100117DF0();
@@ -597,7 +597,7 @@ LABEL_34:
       sub_100117E30();
     }
 
-    (*(v7 + 2))(v7, 0, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v8);
   }
 
   else
@@ -605,14 +605,14 @@ LABEL_34:
     v11 = @"_i";
     v12 = &off_1001B7EA0;
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    (*(v7 + 2))(v7, v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v9, 0, 0);
   }
 }
 
-- (void)_handleTouchStop:(id)a3 responseHandler:(id)a4
+- (void)_handleTouchStop:(id)stop responseHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
+  stopCopy = stop;
+  handlerCopy = handler;
   if (dword_1001D3948 <= 30 && (dword_1001D3948 != -1 || _LogCategory_Initialize()))
   {
     sub_100117E70();
@@ -631,12 +631,12 @@ LABEL_34:
 
   self->_hidSenderID = 0;
   self->_hidSenderIDInitialized = 0;
-  (*(v6 + 2))(v6, &__NSDictionary0__struct, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, &__NSDictionary0__struct, 0, 0);
 }
 
-- (void)_handleTouchEvent:(id)a3
+- (void)_handleTouchEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (!self->_hidTouchDevice)
   {
     if (dword_1001D3948 <= 30 && (dword_1001D3948 != -1 || _LogCategory_Initialize()))
@@ -790,7 +790,7 @@ LABEL_19:
 LABEL_41:
 }
 
-- (BOOL)_setupHIDTouchDeviceAndReturnError:(id *)a3
+- (BOOL)_setupHIDTouchDeviceAndReturnError:(id *)error
 {
   if (self->_hidTouchDevice)
   {
@@ -824,7 +824,7 @@ LABEL_41:
   v3 = v8 != 0;
   if (!v8)
   {
-    sub_100117CD0(a3);
+    sub_100117CD0(error);
   }
 
   return v3;

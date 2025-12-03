@@ -1,20 +1,20 @@
 @interface NTKTimerRichComplicationBaseCircularView
-- (NTKTimerRichComplicationBaseCircularView)initWithFamily:(int64_t)a3;
+- (NTKTimerRichComplicationBaseCircularView)initWithFamily:(int64_t)family;
 - (void)_applyPausedUpdate;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 - (void)_pause;
 - (void)_resume;
 - (void)_updateDialProgress;
 - (void)_updatePausedDialProgress;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKTimerRichComplicationBaseCircularView
 
-- (NTKTimerRichComplicationBaseCircularView)initWithFamily:(int64_t)a3
+- (NTKTimerRichComplicationBaseCircularView)initWithFamily:(int64_t)family
 {
   v48.receiver = self;
   v48.super_class = NTKTimerRichComplicationBaseCircularView;
@@ -23,14 +23,14 @@
   if (v4)
   {
     p_layoutConstants = &v4->_layoutConstants;
-    v7 = [(NTKTimerRichComplicationBaseCircularView *)v4 device];
+    device = [(NTKTimerRichComplicationBaseCircularView *)v4 device];
     memset(v50, 0, 64);
     memset(location, 0, sizeof(location));
     v8 = location;
-    sub_2118(v7, location);
-    if (a3 != 10)
+    sub_2118(device, location);
+    if (family != 10)
     {
-      if (a3 == 12)
+      if (family == 12)
       {
         v8 = v50;
       }
@@ -40,7 +40,7 @@
         v9 = _NTKLoggingObjectForDomain();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          sub_69D4(a3, v9);
+          sub_69D4(family, v9);
         }
 
         v8 = location;
@@ -99,19 +99,19 @@
     [v25 setNeedsResizeHandler:v38];
     [v13[6] setMaxWidth:v5->_layoutConstants.timerLabelMaxWidth];
     v26 = [CLKFont systemFontOfSize:CLKRoundedFontDesignName weight:v5->_layoutConstants.timerLabelFontSize design:UIFontWeightSemibold];
-    v27 = [v26 CLKFontWithAlternativePunctuation];
+    cLKFontWithAlternativePunctuation = [v26 CLKFontWithAlternativePunctuation];
 
-    [v13[6] setFont:v27];
+    [v13[6] setFont:cLKFontWithAlternativePunctuation];
     v28 = v13[6];
     v29 = +[UIColor whiteColor];
     [v28 setTextColor:v29];
 
     [v13[6] setHidden:1];
-    v30 = [v13 contentView];
-    [v30 addSubview:v13[6]];
+    contentView = [v13 contentView];
+    [contentView addSubview:v13[6]];
 
-    v31 = [v13 device];
-    v32 = [NTKTimerBundleTimelineEntry fullColorSymbolImageProviderForDevice:v31 withOverridePointSize:v5->_layoutConstants.overridePointSize];
+    device2 = [v13 device];
+    v32 = [NTKTimerBundleTimelineEntry fullColorSymbolImageProviderForDevice:device2 withOverridePointSize:v5->_layoutConstants.overridePointSize];
     v33 = v13[4];
     v13[4] = v32;
 
@@ -119,8 +119,8 @@
     v35 = v13[5];
     v13[5] = v34;
 
-    v36 = [v13 contentView];
-    [v36 addSubview:v13[5]];
+    contentView2 = [v13 contentView];
+    [contentView2 addSubview:v13[5]];
 
     objc_destroyWeak(&v39);
     objc_destroyWeak(&v41);
@@ -143,15 +143,15 @@
   v30.receiver = self;
   v30.super_class = NTKTimerRichComplicationBaseCircularView;
   [(NTKTimerRichComplicationBaseCircularView *)&v30 layoutSubviews];
-  v3 = [(NTKTimerRichComplicationBaseCircularView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKTimerRichComplicationBaseCircularView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   dialDiameter = self->_layoutConstants.dialDiameter;
-  v13 = [(NTKTimerRichComplicationBaseCircularView *)self device];
+  device = [(NTKTimerRichComplicationBaseCircularView *)self device];
   CLKSizeCenteredInRectForDevice();
   v15 = v14;
   v17 = v16;
@@ -174,8 +174,8 @@
   }
 
   timerLabelBottom = self->_layoutConstants.timerLabelBottom;
-  v27 = [(CLKUIColoringLabel *)self->_timerLabel font];
-  [v27 ascender];
+  font = [(CLKUIColoringLabel *)self->_timerLabel font];
+  [font ascender];
   *&v28 = timerLabelBottom - v28;
   v29 = ceilf(*&v28);
 
@@ -183,47 +183,47 @@
   [(UIImageView *)self->_timerImageView setFrame:v5, v7, v9, v11];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v23 = a3;
+  templateCopy = template;
   if (self->_updateToken)
   {
-    v5 = [(CLKUIColoringLabel *)self->_timerLabel textProvider];
-    [v5 stopUpdatesForToken:self->_updateToken];
+    textProvider = [(CLKUIColoringLabel *)self->_timerLabel textProvider];
+    [textProvider stopUpdatesForToken:self->_updateToken];
 
     updateToken = self->_updateToken;
     self->_updateToken = 0;
   }
 
   timerImageProvider = self->_timerImageProvider;
-  v8 = [v23 tintColor];
-  [(CLKFullColorSymbolImageProvider *)timerImageProvider setTintColor:v8];
+  tintColor = [templateCopy tintColor];
+  [(CLKFullColorSymbolImageProvider *)timerImageProvider setTintColor:tintColor];
 
   timerImageView = self->_timerImageView;
-  v10 = [(CLKFullColorSymbolImageProvider *)self->_timerImageProvider createSymbolImage];
-  [(UIImageView *)timerImageView setImage:v10];
+  createSymbolImage = [(CLKFullColorSymbolImageProvider *)self->_timerImageProvider createSymbolImage];
+  [(UIImageView *)timerImageView setImage:createSymbolImage];
 
   [(UIImageView *)self->_timerImageView setContentMode:4];
-  v11 = [v23 metadata];
-  v12 = [v11 objectForKeyedSubscript:@"NTKTimerComplicationMetadataTimerDateKey"];
+  metadata = [templateCopy metadata];
+  v12 = [metadata objectForKeyedSubscript:@"NTKTimerComplicationMetadataTimerDateKey"];
   timerDate = self->_timerDate;
   self->_timerDate = v12;
 
-  v14 = [v11 objectForKeyedSubscript:@"NTKTimerComplicationMetadataDurationKey"];
+  v14 = [metadata objectForKeyedSubscript:@"NTKTimerComplicationMetadataDurationKey"];
   [v14 doubleValue];
   self->_timerDuration = v15;
 
-  v16 = [v11 objectForKeyedSubscript:@"NTKTimerComplicationMetaDataRemainingPausedTimeKey"];
+  v16 = [metadata objectForKeyedSubscript:@"NTKTimerComplicationMetaDataRemainingPausedTimeKey"];
   [v16 doubleValue];
   self->_pausedTimeRemaining = v17;
 
-  v18 = [v11 objectForKeyedSubscript:@"NTKTimerComplicationMetadataTextProviderKey"];
+  v18 = [metadata objectForKeyedSubscript:@"NTKTimerComplicationMetadataTextProviderKey"];
   v19 = [v18 copy];
 
-  v20 = [v11 objectForKeyedSubscript:@"NTKTimerComplicationMetaDataIsDefaultKey"];
-  v21 = [v20 BOOLValue];
+  v20 = [metadata objectForKeyedSubscript:@"NTKTimerComplicationMetaDataIsDefaultKey"];
+  bOOLValue = [v20 BOOLValue];
 
-  v22 = [v11 objectForKeyedSubscript:@"NTKTimerComplicationMetadataStateKey"];
+  v22 = [metadata objectForKeyedSubscript:@"NTKTimerComplicationMetadataStateKey"];
   if ([v22 isEqualToString:@"running"])
   {
     [(NTKTimerRichComplicationBaseCircularView *)self _updateDialProgress];
@@ -231,7 +231,7 @@
 
   else
   {
-    if (([v22 isEqualToString:@"paused"] & 1) == 0 && v21 == 1)
+    if (([v22 isEqualToString:@"paused"] & 1) == 0 && bOOLValue == 1)
     {
       self->_showPlatter = 1;
       [(CLKUIColoringLabel *)self->_timerLabel setTextProvider:0];
@@ -271,9 +271,9 @@ LABEL_10:
     [(NTKTimerRichComplicationBaseCircularView *)self _resume];
   }
 
-  v3 = [(NTKTimerRichComplicationBaseCircularView *)self paused];
-  v4 = [(UIImageView *)self->_timerImageView layer];
-  [v4 setShouldRasterize:v3];
+  paused = [(NTKTimerRichComplicationBaseCircularView *)self paused];
+  layer = [(UIImageView *)self->_timerImageView layer];
+  [layer setShouldRasterize:paused];
 }
 
 - (void)_updatePausedDialProgress
@@ -311,18 +311,18 @@ LABEL_10:
 
 - (void)_resume
 {
-  v3 = [(CLKUIColoringLabel *)self->_timerLabel textProvider];
-  [v3 setPaused:0];
+  textProvider = [(CLKUIColoringLabel *)self->_timerLabel textProvider];
+  [textProvider setPaused:0];
   if (!self->_updateToken)
   {
     objc_initWeak(&location, self);
-    v4 = [(CLKUIColoringLabel *)self->_timerLabel textProvider];
+    textProvider2 = [(CLKUIColoringLabel *)self->_timerLabel textProvider];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1CA8;
     v7[3] = &unk_C4A0;
     objc_copyWeak(&v8, &location);
-    v5 = [v4 startUpdatesWithHandler:v7];
+    v5 = [textProvider2 startUpdatesWithHandler:v7];
     updateToken = self->_updateToken;
     self->_updateToken = v5;
 
@@ -333,45 +333,45 @@ LABEL_10:
 
 - (void)_pause
 {
-  v5 = [(CLKUIColoringLabel *)self->_timerLabel textProvider];
-  [v5 setPaused:1];
+  textProvider = [(CLKUIColoringLabel *)self->_timerLabel textProvider];
+  [textProvider setPaused:1];
   if (self->_updateToken)
   {
-    v3 = [(CLKUIColoringLabel *)self->_timerLabel textProvider];
-    [v3 stopUpdatesForToken:self->_updateToken];
+    textProvider2 = [(CLKUIColoringLabel *)self->_timerLabel textProvider];
+    [textProvider2 stopUpdatesForToken:self->_updateToken];
 
     updateToken = self->_updateToken;
     self->_updateToken = 0;
   }
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v13.receiver = self;
   v13.super_class = NTKTimerRichComplicationBaseCircularView;
   [(NTKTimerRichComplicationBaseCircularView *)&v13 transitionToMonochromeWithFraction:?];
-  v5 = [(NTKTimerRichComplicationBaseCircularView *)self filterProvider];
-  v6 = [v5 filtersForView:self style:-[NTKTimerRichComplicationBaseCircularView _backgroundFilterStyle](self fraction:{"_backgroundFilterStyle"), a3}];
+  filterProvider = [(NTKTimerRichComplicationBaseCircularView *)self filterProvider];
+  v6 = [filterProvider filtersForView:self style:-[NTKTimerRichComplicationBaseCircularView _backgroundFilterStyle](self fraction:{"_backgroundFilterStyle"), fraction}];
 
   if (v6)
   {
-    v7 = [(UIImageView *)self->_timerImageView layer];
-    [v7 setFilters:v6];
+    layer = [(UIImageView *)self->_timerImageView layer];
+    [layer setFilters:v6];
 
-    v8 = [(NTKRichComplicationDialView *)self->_backgroundDial layer];
-    [v8 setFilters:v6];
+    layer2 = [(NTKRichComplicationDialView *)self->_backgroundDial layer];
+    [layer2 setFilters:v6];
 
-    v9 = [(NTKRichComplicationDialView *)self->_foregroundDial layer];
-    [v9 setFilters:v6];
+    layer3 = [(NTKRichComplicationDialView *)self->_foregroundDial layer];
+    [layer3 setFilters:v6];
   }
 
-  v10 = [(NTKTimerRichComplicationBaseCircularView *)self filterProvider];
-  v11 = [v10 filtersForView:self style:-[NTKTimerRichComplicationBaseCircularView _foregroundFilterStyle](self fraction:{"_foregroundFilterStyle"), a3}];
+  filterProvider2 = [(NTKTimerRichComplicationBaseCircularView *)self filterProvider];
+  v11 = [filterProvider2 filtersForView:self style:-[NTKTimerRichComplicationBaseCircularView _foregroundFilterStyle](self fraction:{"_foregroundFilterStyle"), fraction}];
 
   if (v11)
   {
-    v12 = [(CLKUIColoringLabel *)self->_timerLabel layer];
-    [v12 setFilters:v11];
+    layer4 = [(CLKUIColoringLabel *)self->_timerLabel layer];
+    [layer4 setFilters:v11];
   }
 }
 
@@ -380,28 +380,28 @@ LABEL_10:
   v11.receiver = self;
   v11.super_class = NTKTimerRichComplicationBaseCircularView;
   [(NTKTimerRichComplicationBaseCircularView *)&v11 updateMonochromeColor];
-  v3 = [(NTKTimerRichComplicationBaseCircularView *)self filterProvider];
-  v4 = [v3 filtersForView:self style:{-[NTKTimerRichComplicationBaseCircularView _backgroundFilterStyle](self, "_backgroundFilterStyle")}];
+  filterProvider = [(NTKTimerRichComplicationBaseCircularView *)self filterProvider];
+  v4 = [filterProvider filtersForView:self style:{-[NTKTimerRichComplicationBaseCircularView _backgroundFilterStyle](self, "_backgroundFilterStyle")}];
 
   if (v4)
   {
-    v5 = [(UIImageView *)self->_timerImageView layer];
-    [v5 setFilters:v4];
+    layer = [(UIImageView *)self->_timerImageView layer];
+    [layer setFilters:v4];
 
-    v6 = [(NTKRichComplicationDialView *)self->_backgroundDial layer];
-    [v6 setFilters:v4];
+    layer2 = [(NTKRichComplicationDialView *)self->_backgroundDial layer];
+    [layer2 setFilters:v4];
 
-    v7 = [(NTKRichComplicationDialView *)self->_foregroundDial layer];
-    [v7 setFilters:v4];
+    layer3 = [(NTKRichComplicationDialView *)self->_foregroundDial layer];
+    [layer3 setFilters:v4];
   }
 
-  v8 = [(NTKTimerRichComplicationBaseCircularView *)self filterProvider];
-  v9 = [v8 filtersForView:self style:{-[NTKTimerRichComplicationBaseCircularView _foregroundFilterStyle](self, "_foregroundFilterStyle")}];
+  filterProvider2 = [(NTKTimerRichComplicationBaseCircularView *)self filterProvider];
+  v9 = [filterProvider2 filtersForView:self style:{-[NTKTimerRichComplicationBaseCircularView _foregroundFilterStyle](self, "_foregroundFilterStyle")}];
 
   if (v9)
   {
-    v10 = [(CLKUIColoringLabel *)self->_timerLabel layer];
-    [v10 setFilters:v9];
+    layer4 = [(CLKUIColoringLabel *)self->_timerLabel layer];
+    [layer4 setFilters:v9];
   }
 }
 

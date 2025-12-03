@@ -1,5 +1,5 @@
 @interface PSIInitialSuggestion
-- (PSIInitialSuggestion)initWithSuggestionTemplate:(id)a3 firstGroup:(id)a4 secondGroup:(id)a5 dateLastUsed:(double)a6;
+- (PSIInitialSuggestion)initWithSuggestionTemplate:(id)template firstGroup:(id)group secondGroup:(id)secondGroup dateLastUsed:(double)used;
 - (id)groups;
 @end
 
@@ -8,20 +8,20 @@
 - (id)groups
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PSIInitialSuggestion *)self firstGroup];
+  firstGroup = [(PSIInitialSuggestion *)self firstGroup];
 
-  if (v4)
+  if (firstGroup)
   {
-    v5 = [(PSIInitialSuggestion *)self firstGroup];
-    [v3 addObject:v5];
+    firstGroup2 = [(PSIInitialSuggestion *)self firstGroup];
+    [v3 addObject:firstGroup2];
   }
 
-  v6 = [(PSIInitialSuggestion *)self secondGroup];
+  secondGroup = [(PSIInitialSuggestion *)self secondGroup];
 
-  if (v6)
+  if (secondGroup)
   {
-    v7 = [(PSIInitialSuggestion *)self secondGroup];
-    [v3 addObject:v7];
+    secondGroup2 = [(PSIInitialSuggestion *)self secondGroup];
+    [v3 addObject:secondGroup2];
   }
 
   v8 = [v3 copy];
@@ -29,21 +29,21 @@
   return v8;
 }
 
-- (PSIInitialSuggestion)initWithSuggestionTemplate:(id)a3 firstGroup:(id)a4 secondGroup:(id)a5 dateLastUsed:(double)a6
+- (PSIInitialSuggestion)initWithSuggestionTemplate:(id)template firstGroup:(id)group secondGroup:(id)secondGroup dateLastUsed:(double)used
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  templateCopy = template;
+  groupCopy = group;
+  secondGroupCopy = secondGroup;
   v18.receiver = self;
   v18.super_class = PSIInitialSuggestion;
   v14 = [(PSIInitialSuggestion *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_suggestionTemplate, a3);
-    objc_storeStrong(&v15->_firstGroup, a4);
-    objc_storeStrong(&v15->_secondGroup, a5);
-    v15->_dateLastUsed = a6;
+    objc_storeStrong(&v14->_suggestionTemplate, template);
+    objc_storeStrong(&v15->_firstGroup, group);
+    objc_storeStrong(&v15->_secondGroup, secondGroup);
+    v15->_dateLastUsed = used;
     v16 = v15;
   }
 

@@ -1,33 +1,33 @@
 @interface FLOWSchemaFLOWLanguageConfidence
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWLanguageConfidence)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWLanguageConfidence)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWLanguageConfidence)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWLanguageConfidence)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasConfidenceScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasConfidenceScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWLanguageConfidence
 
-- (FLOWSchemaFLOWLanguageConfidence)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWLanguageConfidence)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = FLOWSchemaFLOWLanguageConfidence;
   v5 = [(FLOWSchemaFLOWLanguageConfidence *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"languageCode"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"languageCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWLanguageConfidence setLanguageCode:](v5, "setLanguageCode:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"confidenceScore"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"confidenceScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWLanguageConfidence)initWithJSON:(id)a3
+- (FLOWSchemaFLOWLanguageConfidence)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWLanguageConfidence *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWLanguageConfidence *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWLanguageConfidence *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,12 +76,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[FLOWSchemaFLOWLanguageConfidence confidenceScore](self, "confidenceScore")}];
-    [v3 setObject:v5 forKeyedSubscript:@"confidenceScore"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confidenceScore"];
 
     has = self->_has;
   }
@@ -99,12 +99,12 @@
       v7 = off_1E78D53E0[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"languageCode"];
+    [dictionary setObject:v7 forKeyedSubscript:@"languageCode"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -133,16 +133,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -151,7 +151,7 @@ LABEL_3:
   if (*&has)
   {
     languageCode = self->_languageCode;
-    if (languageCode != [v4 languageCode])
+    if (languageCode != [equalCopy languageCode])
     {
 LABEL_10:
       v10 = 0;
@@ -159,7 +159,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -171,7 +171,7 @@ LABEL_10:
   if (v8)
   {
     confidenceScore = self->_confidenceScore;
-    if (confidenceScore != [v4 confidenceScore])
+    if (confidenceScore != [equalCopy confidenceScore])
     {
       goto LABEL_10;
     }
@@ -183,28 +183,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasConfidenceScore:(BOOL)a3
+- (void)setHasConfidenceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }

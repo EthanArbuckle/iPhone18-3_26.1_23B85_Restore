@@ -1,27 +1,27 @@
 @interface WFWorkflowRunnerClient
-+ (id)underlyingErrorIfRunnerError:(id)a3;
++ (id)underlyingErrorIfRunnerError:(id)error;
 - (BOOL)isRunning;
 - (WFRunnerPrewarmManager)prewarmManager;
-- (WFWorkflowRunnerClient)initWithDescriptor:(id)a3 runRequest:(id)a4 delegateQueue:(id)a5;
+- (WFWorkflowRunnerClient)initWithDescriptor:(id)descriptor runRequest:(id)request delegateQueue:(id)queue;
 - (WFWorkflowRunnerClientDelegate)delegate;
-- (id)createRunningContextFromRequestIfNecessary:(id)a3 descriptor:(id)a4;
-- (id)createWorkflowControllerWithContext:(id)a3;
-- (id)runWorkflowWithRequest:(id)a3 descriptor:(id)a4 completion:(id)a5;
+- (id)createRunningContextFromRequestIfNecessary:(id)necessary descriptor:(id)descriptor;
+- (id)createWorkflowControllerWithContext:(id)context;
+- (id)runWorkflowWithRequest:(id)request descriptor:(id)descriptor completion:(id)completion;
 - (void)autoreleaseSelf;
-- (void)beginObservingProgressForWorkflowWithRunningContext:(id)a3;
-- (void)dispatchWorkflowResultHandlingWithResult:(id)a3;
-- (void)handleWorkflowDidStart:(id)a3;
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4;
-- (void)outOfProcessWorkflowController:(id)a3 didFinishWithResult:(id)a4 dialogAttribution:(id)a5 runResidency:(unint64_t)a6;
-- (void)outOfProcessWorkflowController:(id)a3 didRequestUpdatedRunViewSource:(id)a4 completionHandler:(id)a5;
+- (void)beginObservingProgressForWorkflowWithRunningContext:(id)context;
+- (void)dispatchWorkflowResultHandlingWithResult:(id)result;
+- (void)handleWorkflowDidStart:(id)start;
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion;
+- (void)outOfProcessWorkflowController:(id)controller didFinishWithResult:(id)result dialogAttribution:(id)attribution runResidency:(unint64_t)residency;
+- (void)outOfProcessWorkflowController:(id)controller didRequestUpdatedRunViewSource:(id)source completionHandler:(id)handler;
 - (void)pause;
 - (void)prewarmRunner;
 - (void)resume;
-- (void)setRunViewSource:(id)a3;
+- (void)setRunViewSource:(id)source;
 - (void)start;
 - (void)stop;
 - (void)stopObservingRunProgress;
-- (void)updateRunViewSource:(id)a3;
+- (void)updateRunViewSource:(id)source;
 @end
 
 @implementation WFWorkflowRunnerClient
@@ -32,16 +32,16 @@
   v3 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(WFWorkflowRunnerClient *)self descriptor];
-    v5 = [(WFWorkflowRunnerClient *)self runRequest];
+    descriptor = [(WFWorkflowRunnerClient *)self descriptor];
+    runRequest = [(WFWorkflowRunnerClient *)self runRequest];
     *buf = 136315906;
     v30 = "[WFWorkflowRunnerClient start]";
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
-    v34 = v4;
+    v34 = descriptor;
     v35 = 2112;
-    v36 = v5;
+    v36 = runRequest;
     _os_log_impl(&dword_1B1DE3000, v3, OS_LOG_TYPE_DEFAULT, "%s Starting shortcut run from client: %@, descriptor: %@, request: %@", buf, 0x2Au);
   }
 
@@ -50,23 +50,23 @@
     [(WFWorkflowRunnerClient *)self stop];
   }
 
-  v6 = [(WFWorkflowRunnerClient *)self runRequest];
-  v7 = [(WFWorkflowRunnerClient *)self descriptor];
+  runRequest2 = [(WFWorkflowRunnerClient *)self runRequest];
+  descriptor2 = [(WFWorkflowRunnerClient *)self descriptor];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __31__WFWorkflowRunnerClient_start__block_invoke;
   v28[3] = &unk_1E7AFFB50;
   v28[4] = self;
-  v8 = [(WFWorkflowRunnerClient *)self runWorkflowWithRequest:v6 descriptor:v7 completion:v28];
+  v8 = [(WFWorkflowRunnerClient *)self runWorkflowWithRequest:runRequest2 descriptor:descriptor2 completion:v28];
   [(WFWorkflowRunnerClient *)self setContext:v8];
 
-  v9 = [(WFWorkflowRunnerClient *)self descriptor];
-  if (v9)
+  descriptor3 = [(WFWorkflowRunnerClient *)self descriptor];
+  if (descriptor3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = descriptor3;
     }
 
     else
@@ -83,17 +83,17 @@
   v11 = v10;
 
   v12 = getWFVoiceShortcutClientLogObject();
-  v13 = [(WFWorkflowRunnerClient *)self context];
-  v14 = [v13 identifier];
-  v15 = [v14 hash];
+  context = [(WFWorkflowRunnerClient *)self context];
+  identifier = [context identifier];
+  v15 = [identifier hash];
 
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    v16 = [v11 identifier];
-    v17 = v16;
-    if (v16)
+    identifier2 = [v11 identifier];
+    v17 = identifier2;
+    if (identifier2)
     {
-      v18 = v16;
+      v18 = identifier2;
     }
 
     else
@@ -101,11 +101,11 @@
       v18 = @"none";
     }
 
-    v19 = [v11 name];
-    v20 = v19;
-    if (v19)
+    name = [v11 name];
+    v20 = name;
+    if (name)
     {
-      v21 = v19;
+      v21 = name;
     }
 
     else
@@ -113,26 +113,26 @@
       v21 = &stru_1F28FBBB8;
     }
 
-    v22 = [(WFWorkflowRunnerClient *)self runRequest];
-    v23 = [v22 runSource];
-    v24 = v23;
+    runRequest3 = [(WFWorkflowRunnerClient *)self runRequest];
+    runSource = [runRequest3 runSource];
+    v24 = runSource;
     v25 = @"unknown";
     *buf = 138412802;
     v30 = v18;
-    if (v23)
+    if (runSource)
     {
-      v25 = v23;
+      v25 = runSource;
     }
 
     v31 = 2112;
-    v32 = v21;
+    selfCopy = v21;
     v33 = 2112;
     v34 = v25;
     _os_signpost_emit_with_name_impl(&dword_1B1DE3000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v15, "RunWorkflow", "WorkflowID=%{signpost.description:attribute}@,WorkflowName=%{signpost.description:attribute}@,RunSource=%{signpost.description:attribute}@", buf, 0x20u);
   }
 
-  v26 = [(WFWorkflowRunnerClient *)self context];
-  [(WFWorkflowRunnerClient *)self beginObservingProgressForWorkflowWithRunningContext:v26];
+  context2 = [(WFWorkflowRunnerClient *)self context];
+  [(WFWorkflowRunnerClient *)self beginObservingProgressForWorkflowWithRunningContext:context2];
 
   [(WFWorkflowRunnerClient *)self retainSelf];
   v27 = *MEMORY[0x1E69E9840];
@@ -140,8 +140,8 @@
 
 - (BOOL)isRunning
 {
-  v2 = [(WFWorkflowRunnerClient *)self progressSubscriber];
-  v3 = v2 != 0;
+  progressSubscriber = [(WFWorkflowRunnerClient *)self progressSubscriber];
+  v3 = progressSubscriber != 0;
 
   return v3;
 }
@@ -163,12 +163,12 @@
 
 - (void)stop
 {
-  v3 = [(WFWorkflowRunnerClient *)self workflowController];
+  workflowController = [(WFWorkflowRunnerClient *)self workflowController];
 
-  if (v3)
+  if (workflowController)
   {
-    v4 = [(WFWorkflowRunnerClient *)self workflowController];
-    [v4 stop];
+    workflowController2 = [(WFWorkflowRunnerClient *)self workflowController];
+    [workflowController2 stop];
 
     [(WFWorkflowRunnerClient *)self autoreleaseSelf];
   }
@@ -191,51 +191,51 @@
   return WeakRetained;
 }
 
-- (void)outOfProcessWorkflowController:(id)a3 didRequestUpdatedRunViewSource:(id)a4 completionHandler:(id)a5
+- (void)outOfProcessWorkflowController:(id)controller didRequestUpdatedRunViewSource:(id)source completionHandler:(id)handler
 {
-  v12 = a5;
-  v7 = a4;
-  v8 = [(WFWorkflowRunnerClient *)self runViewSource];
-  v9 = [v8 isEqual:v7];
+  handlerCopy = handler;
+  sourceCopy = source;
+  runViewSource = [(WFWorkflowRunnerClient *)self runViewSource];
+  v9 = [runViewSource isEqual:sourceCopy];
 
   if (v9)
   {
-    v10 = [(WFWorkflowRunnerClient *)self runViewSource];
-    [v10 refresh];
+    runViewSource2 = [(WFWorkflowRunnerClient *)self runViewSource];
+    [runViewSource2 refresh];
 
-    v11 = [(WFWorkflowRunnerClient *)self runViewSource];
-    v12[2](v12, v11, 0);
+    runViewSource3 = [(WFWorkflowRunnerClient *)self runViewSource];
+    handlerCopy[2](handlerCopy, runViewSource3, 0);
   }
 
   else
   {
-    v12[2](v12, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (void)outOfProcessWorkflowController:(id)a3 didFinishWithResult:(id)a4 dialogAttribution:(id)a5 runResidency:(unint64_t)a6
+- (void)outOfProcessWorkflowController:(id)controller didFinishWithResult:(id)result dialogAttribution:(id)attribution runResidency:(unint64_t)residency
 {
-  [(WFWorkflowRunnerClient *)self dispatchWorkflowResultHandlingWithResult:a4];
+  [(WFWorkflowRunnerClient *)self dispatchWorkflowResultHandlingWithResult:result];
 
   [(WFWorkflowRunnerClient *)self autoreleaseSelf];
 }
 
 - (void)stopObservingRunProgress
 {
-  v3 = [(WFWorkflowRunnerClient *)self context];
-  v4 = [(WFWorkflowRunnerClient *)self progressSubscriber];
-  [v3 removeProgressSubscriber:v4];
+  context = [(WFWorkflowRunnerClient *)self context];
+  progressSubscriber = [(WFWorkflowRunnerClient *)self progressSubscriber];
+  [context removeProgressSubscriber:progressSubscriber];
 
   [(WFWorkflowRunnerClient *)self setProgressSubscriber:0];
 }
 
-- (void)beginObservingProgressForWorkflowWithRunningContext:(id)a3
+- (void)beginObservingProgressForWorkflowWithRunningContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFWorkflowRunnerClient.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowRunnerClient.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"context"}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -244,7 +244,7 @@
   aBlock[3] = &unk_1E7AFFC18;
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  v7 = [v5 addProgressSubscriberUsingPublishingHandler:v6];
+  v7 = [contextCopy addProgressSubscriberUsingPublishingHandler:v6];
   [(WFWorkflowRunnerClient *)self setProgressSubscriber:v7];
 }
 
@@ -264,23 +264,23 @@ void *__78__WFWorkflowRunnerClient_beginObservingProgressForWorkflowWithRunningC
   return &__block_literal_global_608;
 }
 
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   v8 = objc_opt_class();
-  v9 = [v6 error];
-  v10 = [v8 underlyingErrorIfRunnerError:v9];
+  error = [resultCopy error];
+  v10 = [v8 underlyingErrorIfRunnerError:error];
 
   if (_os_feature_enabled_impl())
   {
-    v11 = [(WFWorkflowRunnerClient *)self delegate];
+    delegate = [(WFWorkflowRunnerClient *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = v6;
+      v13 = resultCopy;
       if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         if ([v13 hasOutputs])
@@ -288,11 +288,11 @@ void *__78__WFWorkflowRunnerClient_beginObservingProgressForWorkflowWithRunningC
           v14 = getWFVoiceShortcutClientLogObject();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v15 = [(WFWorkflowRunnerClient *)self delegate];
+            delegate2 = [(WFWorkflowRunnerClient *)self delegate];
             *buf = 136315394;
             v48 = "[WFWorkflowRunnerClient handleWorkflowRunResult:completion:]";
             v49 = 2112;
-            v50 = v15;
+            v50 = delegate2;
             _os_log_impl(&dword_1B1DE3000, v14, OS_LOG_TYPE_DEBUG, "%s Preparing result with outputs for client (%@)", buf, 0x16u);
           }
 
@@ -303,12 +303,12 @@ void *__78__WFWorkflowRunnerClient_beginObservingProgressForWorkflowWithRunningC
           block[3] = &unk_1E7B024B0;
           v13 = v13;
           v43 = v13;
-          v44 = self;
+          selfCopy = self;
           v45 = v10;
-          v46 = v7;
+          v46 = completionCopy;
           dispatch_async(v16, block);
 
-          v17 = v43;
+          delegate4 = v43;
 LABEL_30:
 
           goto LABEL_31;
@@ -324,89 +324,89 @@ LABEL_30:
       v34 = getWFVoiceShortcutClientLogObject();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
       {
-        v35 = [(WFWorkflowRunnerClient *)self delegate];
+        delegate3 = [(WFWorkflowRunnerClient *)self delegate];
         *buf = 136315394;
         v48 = "[WFWorkflowRunnerClient handleWorkflowRunResult:completion:]";
         v49 = 2112;
-        v50 = v35;
+        v50 = delegate3;
         _os_log_impl(&dword_1B1DE3000, v34, OS_LOG_TYPE_DEBUG, "%s Preparing result without output for client (%@)", buf, 0x16u);
       }
 
-      v17 = [(WFWorkflowRunnerClient *)self delegate];
-      [v17 workflowRunnerClient:self didFinishRunningWorkflowWithAllResults:0 error:v10 cancelled:{objc_msgSend(v13, "isCancelled")}];
+      delegate4 = [(WFWorkflowRunnerClient *)self delegate];
+      [delegate4 workflowRunnerClient:self didFinishRunningWorkflowWithAllResults:0 error:v10 cancelled:{objc_msgSend(v13, "isCancelled")}];
       goto LABEL_30;
     }
   }
 
-  v18 = [(WFWorkflowRunnerClient *)self delegate];
+  delegate5 = [(WFWorkflowRunnerClient *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if ((v19 & 1) == 0)
   {
-    v25 = [(WFWorkflowRunnerClient *)self delegate];
+    delegate6 = [(WFWorkflowRunnerClient *)self delegate];
     v26 = objc_opt_respondsToSelector();
 
     v27 = getWFVoiceShortcutClientLogObject();
-    v28 = v27;
+    delegate8 = v27;
     if (v26)
     {
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
-        v29 = [(WFWorkflowRunnerClient *)self delegate];
+        delegate7 = [(WFWorkflowRunnerClient *)self delegate];
         *buf = 136315394;
         v48 = "[WFWorkflowRunnerClient handleWorkflowRunResult:completion:]";
         v49 = 2112;
-        v50 = v29;
+        v50 = delegate7;
       }
 
-      v28 = [(WFWorkflowRunnerClient *)self delegate];
-      -[NSObject workflowRunnerClient:didFinishRunningWorkflowWithError:cancelled:](v28, "workflowRunnerClient:didFinishRunningWorkflowWithError:cancelled:", self, v10, [v6 isCancelled]);
+      delegate8 = [(WFWorkflowRunnerClient *)self delegate];
+      -[NSObject workflowRunnerClient:didFinishRunningWorkflowWithError:cancelled:](delegate8, "workflowRunnerClient:didFinishRunningWorkflowWithError:cancelled:", self, v10, [resultCopy isCancelled]);
     }
 
     else if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v33 = [(WFWorkflowRunnerClient *)self delegate];
+      delegate9 = [(WFWorkflowRunnerClient *)self delegate];
       *buf = 136315394;
       v48 = "[WFWorkflowRunnerClient handleWorkflowRunResult:completion:]";
       v49 = 2112;
-      v50 = v33;
-      _os_log_impl(&dword_1B1DE3000, v28, OS_LOG_TYPE_ERROR, "%s Workflow finished running, but client (%@) does not respond to -workflowRunnerClient:didFinishRunningWorkflowWithError:cancelled: or workflowRunnerClient:didFinishRunningWorkflowWithOutput:error:cancelled:", buf, 0x16u);
+      v50 = delegate9;
+      _os_log_impl(&dword_1B1DE3000, delegate8, OS_LOG_TYPE_ERROR, "%s Workflow finished running, but client (%@) does not respond to -workflowRunnerClient:didFinishRunningWorkflowWithError:cancelled: or workflowRunnerClient:didFinishRunningWorkflowWithOutput:error:cancelled:", buf, 0x16u);
     }
 
     goto LABEL_25;
   }
 
-  v20 = v6;
+  v20 = resultCopy;
   if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
     v30 = getWFVoiceShortcutClientLogObject();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      v31 = [(WFWorkflowRunnerClient *)self delegate];
+      delegate10 = [(WFWorkflowRunnerClient *)self delegate];
       *buf = 136315394;
       v48 = "[WFWorkflowRunnerClient handleWorkflowRunResult:completion:]";
       v49 = 2112;
-      v50 = v31;
+      v50 = delegate10;
       _os_log_impl(&dword_1B1DE3000, v30, OS_LOG_TYPE_DEBUG, "%s Delivering workflow run result to client: %@", buf, 0x16u);
     }
 
-    v32 = [(WFWorkflowRunnerClient *)self delegate];
-    [v32 workflowRunnerClient:self didFinishRunningWorkflowWithOutput:0 error:v10 cancelled:{objc_msgSend(v20, "isCancelled")}];
+    delegate11 = [(WFWorkflowRunnerClient *)self delegate];
+    [delegate11 workflowRunnerClient:self didFinishRunningWorkflowWithOutput:0 error:v10 cancelled:{objc_msgSend(v20, "isCancelled")}];
 
 LABEL_25:
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     goto LABEL_31;
   }
 
   v21 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v22 = [(WFWorkflowRunnerClient *)self delegate];
+    delegate12 = [(WFWorkflowRunnerClient *)self delegate];
     *buf = 136315394;
     v48 = "[WFWorkflowRunnerClient handleWorkflowRunResult:completion:]";
     v49 = 2112;
-    v50 = v22;
+    v50 = delegate12;
     _os_log_impl(&dword_1B1DE3000, v21, OS_LOG_TYPE_DEBUG, "%s Preparing output for client (%@)", buf, 0x16u);
   }
 
@@ -416,9 +416,9 @@ LABEL_25:
   v37[2] = __61__WFWorkflowRunnerClient_handleWorkflowRunResult_completion___block_invoke_98;
   v37[3] = &unk_1E7B024B0;
   v38 = v20;
-  v39 = self;
+  selfCopy2 = self;
   v40 = v10;
-  v41 = v7;
+  v41 = completionCopy;
   v24 = v20;
   dispatch_async(v23, v37);
 
@@ -551,38 +551,38 @@ uint64_t __61__WFWorkflowRunnerClient_handleWorkflowRunResult_completion___block
   return result;
 }
 
-- (void)handleWorkflowDidStart:(id)a3
+- (void)handleWorkflowDidStart:(id)start
 {
-  v7 = a3;
-  v4 = [(WFWorkflowRunnerClient *)self delegate];
+  startCopy = start;
+  delegate = [(WFWorkflowRunnerClient *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WFWorkflowRunnerClient *)self delegate];
-    [v6 workflowRunnerClient:self didStartRunningWorkflowWithProgress:v7];
+    delegate2 = [(WFWorkflowRunnerClient *)self delegate];
+    [delegate2 workflowRunnerClient:self didStartRunningWorkflowWithProgress:startCopy];
   }
 }
 
-- (void)dispatchWorkflowResultHandlingWithResult:(id)a3
+- (void)dispatchWorkflowResultHandlingWithResult:(id)result
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v5 = getWFVoiceShortcutClientLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(WFWorkflowRunnerClient *)self delegate];
+    delegate = [(WFWorkflowRunnerClient *)self delegate];
     *buf = 136315394;
     v17 = "[WFWorkflowRunnerClient dispatchWorkflowResultHandlingWithResult:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = delegate;
     _os_log_impl(&dword_1B1DE3000, v5, OS_LOG_TYPE_DEBUG, "%s Workflow finished running, preparing to deliver result to client: %@", buf, 0x16u);
   }
 
   v7 = getWFVoiceShortcutClientLogObject();
-  v8 = [(WFWorkflowRunnerClient *)self context];
-  v9 = [v8 identifier];
-  v10 = [v9 hash];
+  context = [(WFWorkflowRunnerClient *)self context];
+  identifier = [context identifier];
+  v10 = [identifier hash];
 
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
@@ -590,15 +590,15 @@ uint64_t __61__WFWorkflowRunnerClient_handleWorkflowRunResult_completion___block
     _os_signpost_emit_with_name_impl(&dword_1B1DE3000, v7, OS_SIGNPOST_INTERVAL_END, v10, "RunWorkflow", "", buf, 2u);
   }
 
-  v11 = [(WFWorkflowRunnerClient *)self delegateQueue];
+  delegateQueue = [(WFWorkflowRunnerClient *)self delegateQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__WFWorkflowRunnerClient_dispatchWorkflowResultHandlingWithResult___block_invoke;
   v14[3] = &unk_1E7B02180;
   v14[4] = self;
-  v15 = v4;
-  v12 = v4;
-  dispatch_async(v11, v14);
+  v15 = resultCopy;
+  v12 = resultCopy;
+  dispatch_async(delegateQueue, v14);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -615,27 +615,27 @@ uint64_t __67__WFWorkflowRunnerClient_dispatchWorkflowResultHandlingWithResult__
   return [v2 handleWorkflowRunResult:v1 completion:v4];
 }
 
-- (id)runWorkflowWithRequest:(id)a3 descriptor:(id)a4 completion:(id)a5
+- (id)runWorkflowWithRequest:(id)request descriptor:(id)descriptor completion:(id)completion
 {
-  v6 = [(WFWorkflowRunnerClient *)self createRunningContextFromRequestIfNecessary:a3 descriptor:a4, a5];
-  v7 = [(WFWorkflowRunnerClient *)self createWorkflowControllerWithContext:v6];
-  v8 = [(WFWorkflowRunnerClient *)self prewarmManager];
+  completion = [(WFWorkflowRunnerClient *)self createRunningContextFromRequestIfNecessary:request descriptor:descriptor, completion];
+  v7 = [(WFWorkflowRunnerClient *)self createWorkflowControllerWithContext:completion];
+  prewarmManager = [(WFWorkflowRunnerClient *)self prewarmManager];
 
-  if (v8)
+  if (prewarmManager)
   {
-    v9 = [(WFWorkflowRunnerClient *)self prewarmManager];
-    [v9 reset];
+    prewarmManager2 = [(WFWorkflowRunnerClient *)self prewarmManager];
+    [prewarmManager2 reset];
   }
 
-  v10 = [(WFWorkflowRunnerClient *)self descriptor];
-  v11 = [(WFWorkflowRunnerClient *)self runRequest];
+  descriptor = [(WFWorkflowRunnerClient *)self descriptor];
+  runRequest = [(WFWorkflowRunnerClient *)self runRequest];
   v17 = 0;
-  v12 = [v7 runWorkflowWithDescriptor:v10 request:v11 error:&v17];
+  v12 = [v7 runWorkflowWithDescriptor:descriptor request:runRequest error:&v17];
   v13 = v17;
 
   if (v12)
   {
-    v14 = v6;
+    v14 = completion;
   }
 
   else
@@ -649,27 +649,27 @@ uint64_t __67__WFWorkflowRunnerClient_dispatchWorkflowResultHandlingWithResult__
   return v14;
 }
 
-- (id)createRunningContextFromRequestIfNecessary:(id)a3 descriptor:(id)a4
+- (id)createRunningContextFromRequestIfNecessary:(id)necessary descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFWorkflowRunnerClient *)self context];
+  necessaryCopy = necessary;
+  descriptorCopy = descriptor;
+  context = [(WFWorkflowRunnerClient *)self context];
 
-  if (v8)
+  if (context)
   {
-    v9 = [(WFWorkflowRunnerClient *)self context];
+    context2 = [(WFWorkflowRunnerClient *)self context];
   }
 
   else
   {
     v10 = [WFWorkflowRunningContext alloc];
-    v11 = [(WFWorkflowRunnerClient *)self descriptor];
-    if (v11)
+    descriptor = [(WFWorkflowRunnerClient *)self descriptor];
+    if (descriptor)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v11;
+        v12 = descriptor;
       }
 
       else
@@ -685,25 +685,25 @@ uint64_t __67__WFWorkflowRunnerClient_dispatchWorkflowResultHandlingWithResult__
 
     v13 = v12;
 
-    v14 = [v13 identifier];
+    identifier = [v13 identifier];
 
-    v9 = [(WFWorkflowRunningContext *)v10 initWithWorkflowIdentifier:v14];
-    -[WFWorkflowRunningContext setAllowsDialogNotifications:](v9, "setAllowsDialogNotifications:", [v6 allowsDialogNotifications]);
-    v15 = [v6 runSource];
-    [(WFWorkflowRunningContext *)v9 setRunSource:v15];
+    context2 = [(WFWorkflowRunningContext *)v10 initWithWorkflowIdentifier:identifier];
+    -[WFWorkflowRunningContext setAllowsDialogNotifications:](context2, "setAllowsDialogNotifications:", [necessaryCopy allowsDialogNotifications]);
+    runSource = [necessaryCopy runSource];
+    [(WFWorkflowRunningContext *)context2 setRunSource:runSource];
 
-    v16 = [v7 kind];
-    [(WFWorkflowRunningContext *)v9 setRunKind:v16];
+    kind = [descriptorCopy kind];
+    [(WFWorkflowRunningContext *)context2 setRunKind:kind];
 
-    -[WFWorkflowRunningContext setOutputBehavior:](v9, "setOutputBehavior:", [v6 outputBehavior]);
-    v17 = [v6 runViewSource];
-    [(WFWorkflowRunningContext *)v9 setRunViewSource:v17];
+    -[WFWorkflowRunningContext setOutputBehavior:](context2, "setOutputBehavior:", [necessaryCopy outputBehavior]);
+    runViewSource = [necessaryCopy runViewSource];
+    [(WFWorkflowRunningContext *)context2 setRunViewSource:runViewSource];
 
-    -[WFWorkflowRunningContext setStepwise:](v9, "setStepwise:", [v6 isStepwise]);
-    -[WFWorkflowRunningContext setShouldForwardDialogRequests:](v9, "setShouldForwardDialogRequests:", [v6 handlesDialogRequests]);
-    -[WFWorkflowRunningContext setShouldForwardSiriActionRequests:](v9, "setShouldForwardSiriActionRequests:", [v6 handlesSiriActionRequests]);
-    -[WFWorkflowRunningContext setRunningInPersistentMode:](v9, "setRunningInPersistentMode:", [v6 presentationMode] == 1);
-    v18 = v6;
+    -[WFWorkflowRunningContext setStepwise:](context2, "setStepwise:", [necessaryCopy isStepwise]);
+    -[WFWorkflowRunningContext setShouldForwardDialogRequests:](context2, "setShouldForwardDialogRequests:", [necessaryCopy handlesDialogRequests]);
+    -[WFWorkflowRunningContext setShouldForwardSiriActionRequests:](context2, "setShouldForwardSiriActionRequests:", [necessaryCopy handlesSiriActionRequests]);
+    -[WFWorkflowRunningContext setRunningInPersistentMode:](context2, "setRunningInPersistentMode:", [necessaryCopy presentationMode] == 1);
+    v18 = necessaryCopy;
     if (v18)
     {
       objc_opt_class();
@@ -725,23 +725,23 @@ uint64_t __67__WFWorkflowRunnerClient_dispatchWorkflowResultHandlingWithResult__
 
     v20 = v19;
 
-    v21 = [v20 locale];
+    locale = [v20 locale];
 
-    [(WFWorkflowRunningContext *)v9 setLocale:v21];
-    v22 = [MEMORY[0x1E696AAE8] mainBundle];
-    v23 = [v22 bundleIdentifier];
-    [(WFWorkflowRunningContext *)v9 setOriginatingBundleIdentifier:v23];
+    [(WFWorkflowRunningContext *)context2 setLocale:locale];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [(WFWorkflowRunningContext *)context2 setOriginatingBundleIdentifier:bundleIdentifier];
 
-    [(WFWorkflowRunnerClient *)self setContext:v9];
+    [(WFWorkflowRunnerClient *)self setContext:context2];
   }
 
-  return v9;
+  return context2;
 }
 
-- (id)createWorkflowControllerWithContext:(id)a3
+- (id)createWorkflowControllerWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFWorkflowRunnerClient *)self runRequest];
+  contextCopy = context;
+  runRequest = [(WFWorkflowRunnerClient *)self runRequest];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -750,8 +750,8 @@ uint64_t __67__WFWorkflowRunnerClient_dispatchWorkflowResultHandlingWithResult__
 
   else
   {
-    v7 = [v5 runSource];
-    IsSpotlight = WFRunSourceIsSpotlight(v7);
+    runSource = [runRequest runSource];
+    IsSpotlight = WFRunSourceIsSpotlight(runSource);
 
     if (IsSpotlight)
     {
@@ -764,21 +764,21 @@ uint64_t __67__WFWorkflowRunnerClient_dispatchWorkflowResultHandlingWithResult__
     }
   }
 
-  v9 = [v5 presentationMode];
-  if (v9 > 2)
+  presentationMode = [runRequest presentationMode];
+  if (presentationMode > 2)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = qword_1B1F36828[v9];
+    v10 = qword_1B1F36828[presentationMode];
   }
 
   v11 = [WFOutOfProcessWorkflowController alloc];
-  v12 = [(WFWorkflowRunnerClient *)self prewarmManager];
-  v13 = [v12 connection];
-  v14 = [(WFOutOfProcessWorkflowController *)v11 initWithEnvironment:v6 runningContext:v4 presentationMode:v10 existingConnection:v13];
+  prewarmManager = [(WFWorkflowRunnerClient *)self prewarmManager];
+  connection = [prewarmManager connection];
+  v14 = [(WFOutOfProcessWorkflowController *)v11 initWithEnvironment:v6 runningContext:contextCopy presentationMode:v10 existingConnection:connection];
 
   [(WFOutOfProcessWorkflowController *)v14 setDelegate:self];
   [(WFWorkflowRunnerClient *)self setWorkflowController:v14];
@@ -786,94 +786,94 @@ uint64_t __67__WFWorkflowRunnerClient_dispatchWorkflowResultHandlingWithResult__
   return v14;
 }
 
-- (void)setRunViewSource:(id)a3
+- (void)setRunViewSource:(id)source
 {
-  v4 = a3;
-  v5 = [(WFWorkflowRunnerClient *)self runRequest];
-  [v5 setRunViewSource:v4];
+  sourceCopy = source;
+  runRequest = [(WFWorkflowRunnerClient *)self runRequest];
+  [runRequest setRunViewSource:sourceCopy];
 
   runViewSource = self->_runViewSource;
-  self->_runViewSource = v4;
+  self->_runViewSource = sourceCopy;
 }
 
-- (void)updateRunViewSource:(id)a3
+- (void)updateRunViewSource:(id)source
 {
-  v4 = a3;
-  v5 = [(WFWorkflowRunnerClient *)self workflowController];
-  v6 = [v4 object];
-  [v5 updateRunViewSource:v6];
+  sourceCopy = source;
+  workflowController = [(WFWorkflowRunnerClient *)self workflowController];
+  object = [sourceCopy object];
+  [workflowController updateRunViewSource:object];
 
-  v7 = [v4 object];
+  object2 = [sourceCopy object];
 
-  [(WFWorkflowRunnerClient *)self setRunViewSource:v7];
+  [(WFWorkflowRunnerClient *)self setRunViewSource:object2];
 }
 
 - (void)prewarmRunner
 {
-  v3 = [(WFWorkflowRunnerClient *)self context];
+  context = [(WFWorkflowRunnerClient *)self context];
 
-  if (!v3)
+  if (!context)
   {
-    v4 = [(WFWorkflowRunnerClient *)self runRequest];
-    v5 = [(WFWorkflowRunnerClient *)self descriptor];
-    v6 = [(WFWorkflowRunnerClient *)self createRunningContextFromRequestIfNecessary:v4 descriptor:v5];
+    runRequest = [(WFWorkflowRunnerClient *)self runRequest];
+    descriptor = [(WFWorkflowRunnerClient *)self descriptor];
+    v6 = [(WFWorkflowRunnerClient *)self createRunningContextFromRequestIfNecessary:runRequest descriptor:descriptor];
   }
 
-  v7 = [(WFWorkflowRunnerClient *)self workflowController];
+  workflowController = [(WFWorkflowRunnerClient *)self workflowController];
 
-  if (!v7)
+  if (!workflowController)
   {
-    v8 = [(WFWorkflowRunnerClient *)self context];
-    v9 = [(WFWorkflowRunnerClient *)self createWorkflowControllerWithContext:v8];
+    context2 = [(WFWorkflowRunnerClient *)self context];
+    v9 = [(WFWorkflowRunnerClient *)self createWorkflowControllerWithContext:context2];
   }
 
-  v11 = [(WFWorkflowRunnerClient *)self prewarmManager];
-  v10 = [(WFWorkflowRunnerClient *)self workflowController];
-  [v11 prewarmRunnerWithHostIfNecessary:v10];
+  prewarmManager = [(WFWorkflowRunnerClient *)self prewarmManager];
+  workflowController2 = [(WFWorkflowRunnerClient *)self workflowController];
+  [prewarmManager prewarmRunnerWithHostIfNecessary:workflowController2];
 }
 
 - (void)pause
 {
-  v3 = [(WFWorkflowRunnerClient *)self workflowController];
+  workflowController = [(WFWorkflowRunnerClient *)self workflowController];
 
-  if (v3)
+  if (workflowController)
   {
-    v4 = [(WFWorkflowRunnerClient *)self workflowController];
-    [v4 pauseWorkflowAndWriteStateToDisk];
+    workflowController2 = [(WFWorkflowRunnerClient *)self workflowController];
+    [workflowController2 pauseWorkflowAndWriteStateToDisk];
   }
 }
 
 - (void)resume
 {
-  v3 = [(WFWorkflowRunnerClient *)self context];
+  context = [(WFWorkflowRunnerClient *)self context];
 
-  if (v3)
+  if (context)
   {
-    v4 = [(WFWorkflowRunnerClient *)self workflowController];
+    workflowController = [(WFWorkflowRunnerClient *)self workflowController];
 
-    if (!v4)
+    if (!workflowController)
     {
-      v5 = [(WFWorkflowRunnerClient *)self context];
-      v6 = [(WFWorkflowRunnerClient *)self createWorkflowControllerWithContext:v5];
+      context2 = [(WFWorkflowRunnerClient *)self context];
+      v6 = [(WFWorkflowRunnerClient *)self createWorkflowControllerWithContext:context2];
       [(WFWorkflowRunnerClient *)self setWorkflowController:v6];
     }
 
-    v7 = [(WFWorkflowRunnerClient *)self workflowController];
-    v8 = [(WFWorkflowRunnerClient *)self runRequest];
-    [v7 resumeRunningWithRequest:v8 error:0];
+    workflowController2 = [(WFWorkflowRunnerClient *)self workflowController];
+    runRequest = [(WFWorkflowRunnerClient *)self runRequest];
+    [workflowController2 resumeRunningWithRequest:runRequest error:0];
 
     [(WFWorkflowRunnerClient *)self retainSelf];
   }
 }
 
-- (WFWorkflowRunnerClient)initWithDescriptor:(id)a3 runRequest:(id)a4 delegateQueue:(id)a5
+- (WFWorkflowRunnerClient)initWithDescriptor:(id)descriptor runRequest:(id)request delegateQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  descriptorCopy = descriptor;
+  requestCopy = request;
+  queueCopy = queue;
+  if (descriptorCopy)
   {
-    if (v11)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
@@ -881,17 +881,17 @@ uint64_t __67__WFWorkflowRunnerClient_dispatchWorkflowResultHandlingWithResult__
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFWorkflowRunnerClient.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"descriptor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowRunnerClient.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"descriptor"}];
 
-    if (v11)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"WFWorkflowRunnerClient.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFWorkflowRunnerClient.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"request"}];
 
 LABEL_3:
   v24.receiver = self;
@@ -900,11 +900,11 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_descriptor, a3);
-    objc_storeStrong(&v14->_runRequest, a4);
-    if (v12)
+    objc_storeStrong(&v13->_descriptor, descriptor);
+    objc_storeStrong(&v14->_runRequest, request);
+    if (queueCopy)
     {
-      v15 = v12;
+      v15 = queueCopy;
       delegateQueue = v14->_delegateQueue;
       v14->_delegateQueue = v15;
     }
@@ -917,8 +917,8 @@ LABEL_3:
       v14->_delegateQueue = v17;
     }
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v14 selector:sel_updateRunViewSource_ name:@"WFWorkflowRunViewSourceUpdatedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel_updateRunViewSource_ name:@"WFWorkflowRunViewSourceUpdatedNotification" object:0];
 
     v20 = v14;
   }
@@ -926,20 +926,20 @@ LABEL_3:
   return v14;
 }
 
-+ (id)underlyingErrorIfRunnerError:(id)a3
++ (id)underlyingErrorIfRunnerError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"WFBackgroundShortcutRunnerErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"WFBackgroundShortcutRunnerErrorDomain"])
   {
-    v5 = [v3 userInfo];
+    userInfo = [errorCopy userInfo];
     v6 = *MEMORY[0x1E696AA08];
-    v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
     if (v7)
     {
-      v8 = [v3 userInfo];
-      v9 = [v8 objectForKeyedSubscript:v6];
+      userInfo2 = [errorCopy userInfo];
+      v9 = [userInfo2 objectForKeyedSubscript:v6];
 
       goto LABEL_6;
     }
@@ -949,7 +949,7 @@ LABEL_3:
   {
   }
 
-  v9 = v3;
+  v9 = errorCopy;
 LABEL_6:
 
   return v9;

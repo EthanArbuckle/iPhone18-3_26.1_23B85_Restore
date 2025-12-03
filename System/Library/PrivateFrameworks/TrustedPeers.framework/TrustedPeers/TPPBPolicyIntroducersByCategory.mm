@@ -1,22 +1,22 @@
 @interface TPPBPolicyIntroducersByCategory
-+ (id)TPPBPolicyIntroducersByCategoryWithCategory:(id)a3 introducers:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)TPPBPolicyIntroducersByCategoryWithCategory:(id)category introducers:(id)introducers;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addIntroducers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIntroducers:(id)introducers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TPPBPolicyIntroducersByCategory
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(TPPBPolicyIntroducersByCategory *)self setCategory:?];
   }
@@ -25,7 +25,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -52,13 +52,13 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((category = self->_category, !(category | v4[1])) || -[NSString isEqual:](category, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((category = self->_category, !(category | equalCopy[1])) || -[NSString isEqual:](category, "isEqual:")))
   {
     introducers = self->_introducers;
-    if (introducers | v4[2])
+    if (introducers | equalCopy[2])
     {
       v7 = [(NSMutableArray *)introducers isEqual:?];
     }
@@ -77,11 +77,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_category copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_category copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -105,7 +105,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addIntroducers:v13];
 
         ++v12;
@@ -122,34 +122,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_category)
   {
-    [v8 setCategory:?];
+    [toCopy setCategory:?];
   }
 
   if ([(TPPBPolicyIntroducersByCategory *)self introducersCount])
   {
-    [v8 clearIntroducers];
-    v4 = [(TPPBPolicyIntroducersByCategory *)self introducersCount];
-    if (v4)
+    [toCopy clearIntroducers];
+    introducersCount = [(TPPBPolicyIntroducersByCategory *)self introducersCount];
+    if (introducersCount)
     {
-      v5 = v4;
+      v5 = introducersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(TPPBPolicyIntroducersByCategory *)self introducersAtIndex:i];
-        [v8 addIntroducers:v7];
+        [toCopy addIntroducers:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_category)
   {
     PBDataWriterWriteStringField();
@@ -192,12 +192,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   category = self->_category;
   if (category)
   {
-    [v3 setObject:category forKey:@"category"];
+    [dictionary setObject:category forKey:@"category"];
   }
 
   introducers = self->_introducers;
@@ -215,38 +215,38 @@
   v8.receiver = self;
   v8.super_class = TPPBPolicyIntroducersByCategory;
   v4 = [(TPPBPolicyIntroducersByCategory *)&v8 description];
-  v5 = [(TPPBPolicyIntroducersByCategory *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(TPPBPolicyIntroducersByCategory *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addIntroducers:(id)a3
+- (void)addIntroducers:(id)introducers
 {
-  v4 = a3;
+  introducersCopy = introducers;
   introducers = self->_introducers;
-  v8 = v4;
+  v8 = introducersCopy;
   if (!introducers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_introducers;
     self->_introducers = v6;
 
-    v4 = v8;
+    introducersCopy = v8;
     introducers = self->_introducers;
   }
 
-  [(NSMutableArray *)introducers addObject:v4];
+  [(NSMutableArray *)introducers addObject:introducersCopy];
 }
 
-+ (id)TPPBPolicyIntroducersByCategoryWithCategory:(id)a3 introducers:(id)a4
++ (id)TPPBPolicyIntroducersByCategoryWithCategory:(id)category introducers:(id)introducers
 {
-  v5 = a4;
-  v6 = a3;
+  introducersCopy = introducers;
+  categoryCopy = category;
   v7 = objc_alloc_init(TPPBPolicyIntroducersByCategory);
-  [(TPPBPolicyIntroducersByCategory *)v7 setCategory:v6];
+  [(TPPBPolicyIntroducersByCategory *)v7 setCategory:categoryCopy];
 
-  v8 = [v5 mutableCopy];
+  v8 = [introducersCopy mutableCopy];
   [(TPPBPolicyIntroducersByCategory *)v7 setIntroducers:v8];
 
   return v7;

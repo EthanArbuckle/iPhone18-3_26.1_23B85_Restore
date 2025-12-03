@@ -1,5 +1,5 @@
 @interface PLResultSuccess
-- (PLResultSuccess)initWithResult:(id)a3;
+- (PLResultSuccess)initWithResult:(id)result;
 - (id)description;
 @end
 
@@ -15,22 +15,22 @@
   return v6;
 }
 
-- (PLResultSuccess)initWithResult:(id)a3
+- (PLResultSuccess)initWithResult:(id)result
 {
-  v6 = a3;
-  if (!v6)
+  resultCopy = result;
+  if (!resultCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLResult.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"result != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLResult.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"result != nil"}];
   }
 
   v12.receiver = self;
   v12.super_class = PLResultSuccess;
-  v7 = [(PLResult *)&v12 initForSubclasses];
-  v8 = v7;
-  if (v7)
+  initForSubclasses = [(PLResult *)&v12 initForSubclasses];
+  v8 = initForSubclasses;
+  if (initForSubclasses)
   {
-    objc_storeStrong(v7 + 1, a3);
+    objc_storeStrong(initForSubclasses + 1, result);
     v9 = v8;
   }
 

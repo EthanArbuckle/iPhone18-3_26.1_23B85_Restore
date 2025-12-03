@@ -1,21 +1,21 @@
 @interface CADisplayLink
-+ (id)rc_displayLinkWithWeakTarget:(id)a3 selector:(SEL)a4;
-+ (id)rc_displayWithFramesPerSecond:(int64_t)a3 handlerBlock:(id)a4;
++ (id)rc_displayLinkWithWeakTarget:(id)target selector:(SEL)selector;
++ (id)rc_displayWithFramesPerSecond:(int64_t)second handlerBlock:(id)block;
 @end
 
 @implementation CADisplayLink
 
-+ (id)rc_displayLinkWithWeakTarget:(id)a3 selector:(SEL)a4
++ (id)rc_displayLinkWithWeakTarget:(id)target selector:(SEL)selector
 {
-  v5 = [[RCWeakDisplayLinkTargetProxy alloc] initWithTarget:a3 selector:a4];
+  v5 = [[RCWeakDisplayLinkTargetProxy alloc] initWithTarget:target selector:selector];
 
-  return [a1 displayLinkWithTarget:v5 selector:"displayLinkFired:"];
+  return [self displayLinkWithTarget:v5 selector:"displayLinkFired:"];
 }
 
-+ (id)rc_displayWithFramesPerSecond:(int64_t)a3 handlerBlock:(id)a4
++ (id)rc_displayWithFramesPerSecond:(int64_t)second handlerBlock:(id)block
 {
-  v5 = [CADisplayLink displayLinkWithTarget:[[RCDisplayLinkBlockTargetProxy alloc] initWithHandlerBlock:a4] selector:"displayLinkFired:"];
-  [(CADisplayLink *)v5 setPreferredFramesPerSecond:a3];
+  v5 = [CADisplayLink displayLinkWithTarget:[[RCDisplayLinkBlockTargetProxy alloc] initWithHandlerBlock:block] selector:"displayLinkFired:"];
+  [(CADisplayLink *)v5 setPreferredFramesPerSecond:second];
   return v5;
 }
 

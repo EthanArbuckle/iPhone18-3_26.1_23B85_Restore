@@ -1,7 +1,7 @@
 @interface NSSQLUpdateColumnsIntermediate
-- (NSSQLConstantValueIntermediate)_generateSQLForAttributeUpdate:(uint64_t)a3 value:(void *)a4 inContext:;
-- (NSSQLUpdateColumnsIntermediate)initWithPropertiesToUpdate:(id)a3 inScope:(id)a4;
-- (id)generateSQLStringInContext:(id)a3;
+- (NSSQLConstantValueIntermediate)_generateSQLForAttributeUpdate:(uint64_t)update value:(void *)value inContext:;
+- (NSSQLUpdateColumnsIntermediate)initWithPropertiesToUpdate:(id)update inScope:(id)scope;
+- (id)generateSQLStringInContext:(id)context;
 - (void)dealloc;
 @end
 
@@ -15,29 +15,29 @@
   [(NSSQLUpdateColumnsIntermediate *)&v3 dealloc];
 }
 
-- (NSSQLUpdateColumnsIntermediate)initWithPropertiesToUpdate:(id)a3 inScope:(id)a4
+- (NSSQLUpdateColumnsIntermediate)initWithPropertiesToUpdate:(id)update inScope:(id)scope
 {
   v7.receiver = self;
   v7.super_class = NSSQLUpdateColumnsIntermediate;
-  v5 = [(NSSQLIntermediate *)&v7 initWithScope:a4];
+  v5 = [(NSSQLIntermediate *)&v7 initWithScope:scope];
   if (v5)
   {
-    v5->_propertiesToUpdate = a3;
+    v5->_propertiesToUpdate = update;
   }
 
   return v5;
 }
 
-- (NSSQLConstantValueIntermediate)_generateSQLForAttributeUpdate:(uint64_t)a3 value:(void *)a4 inContext:
+- (NSSQLConstantValueIntermediate)_generateSQLForAttributeUpdate:(uint64_t)update value:(void *)value inContext:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@ ", objc_msgSend(a2, "columnName")];
-  v9 = -[NSSQLConstantValueIntermediate initWithConstantValue:ofType:inScope:context:]([NSSQLConstantValueIntermediate alloc], "initWithConstantValue:ofType:inScope:context:", a3, [a2 sqlType], a1, a4);
-  v10 = [(NSSQLConstantValueIntermediate *)v9 generateSQLStringInContext:a4];
+  v9 = -[NSSQLConstantValueIntermediate initWithConstantValue:ofType:inScope:context:]([NSSQLConstantValueIntermediate alloc], "initWithConstantValue:ofType:inScope:context:", update, [a2 sqlType], self, value);
+  v10 = [(NSSQLConstantValueIntermediate *)v9 generateSQLStringInContext:value];
   if (v10)
   {
     v11 = v10;
@@ -46,9 +46,9 @@
 
   else
   {
-    if (![a4 objectForKey:@"NSUnderlyingException"])
+    if (![value objectForKey:@"NSUnderlyingException"])
     {
-      [a4 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Can't generate new column value from value: %@", a3), 0), @"NSUnderlyingException"}];
+      [value setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Can't generate new column value from value: %@", update), 0), @"NSUnderlyingException"}];
     }
 
     v9 = v8;
@@ -58,11 +58,11 @@
   return v8;
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
   v116 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v6 = [a3 objectForKey:@"entity"];
+  v6 = [context objectForKey:@"entity"];
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
@@ -75,7 +75,7 @@
   }
 
   v7 = 0;
-  v104 = self;
+  selfCopy = self;
   v105 = *v111;
   v8 = 0x1E696A000uLL;
   do
@@ -98,61 +98,61 @@
       }
 
       v12 = [(NSDictionary *)self->_propertiesToUpdate objectForKey:v11];
-      v13 = [v11 _propertyType];
-      v14 = [v11 _qualifiedName];
-      if (!v6 || (v15 = [v6[5] objectForKey:v14]) == 0)
+      _propertyType = [v11 _propertyType];
+      _qualifiedName = [v11 _qualifiedName];
+      if (!v6 || (v15 = [v6[5] objectForKey:_qualifiedName]) == 0)
       {
         v66 = MEMORY[0x1E695DF30];
         v67 = *MEMORY[0x1E695D940];
-        v68 = a3;
+        contextCopy3 = context;
         v69 = [*(v8 + 3776) stringWithFormat:@"Can't find property %@ on entity %@", objc_msgSend(v11, "name"), objc_msgSend(v6, "entityDescription")];
         goto LABEL_108;
       }
 
       v16 = v15;
-      v17 = [v15 propertyType];
-      if (v17 == 1)
+      propertyType = [v15 propertyType];
+      if (propertyType == 1)
       {
         if ([objc_msgSend(v16 "propertyDescription")] == 6)
         {
           v66 = MEMORY[0x1E695DF30];
           v67 = *MEMORY[0x1E695D940];
-          v68 = a3;
+          contextCopy3 = context;
           v69 = [*(v8 + 3776) stringWithFormat:@"Invalid property for update (can't batch update derived attributes) %@/%@", objc_msgSend(v11, "name"), objc_msgSend(v6, "entityDescription")];
           goto LABEL_108;
         }
       }
 
-      else if (v17 != 7)
+      else if (propertyType != 7)
       {
         v66 = MEMORY[0x1E695DF30];
         v67 = *MEMORY[0x1E695D940];
-        v68 = a3;
+        contextCopy3 = context;
         v69 = [*(v8 + 3776) stringWithFormat:@"Invalid property for update (not an attribute or a to one) %@/%@", objc_msgSend(v11, "name"), objc_msgSend(v6, "entityDescription")];
 LABEL_108:
         v70 = [v66 exceptionWithName:v67 reason:v69 userInfo:0];
-        v71 = v68;
+        contextCopy5 = contextCopy3;
         goto LABEL_133;
       }
 
-      v18 = [v12 expressionType];
-      if (v18 > 9)
+      expressionType = [v12 expressionType];
+      if (expressionType > 9)
       {
-        if (v18 == 10)
+        if (expressionType == 10)
         {
           goto LABEL_30;
         }
 
-        if (v18 == 13)
+        if (expressionType == 13)
         {
           v106 = v12;
           v41 = [[NSSQLSubqueryExpressionIntermediate alloc] initWithExpression:v12 trailingKeypath:0 inScope:self];
-          v42 = [(NSSQLSubqueryExpressionIntermediate *)v41 generateSQLStringInContext:a3];
+          v42 = [(NSSQLSubqueryExpressionIntermediate *)v41 generateSQLStringInContext:context];
 
           if (!v42)
           {
             v12 = v106;
-            if (![a3 objectForKey:@"NSUnderlyingException"])
+            if (![context objectForKey:@"NSUnderlyingException"])
             {
               v81 = MEMORY[0x1E695DF30];
               v82 = *MEMORY[0x1E695D940];
@@ -171,7 +171,7 @@ LABEL_108:
           goto LABEL_55;
         }
 
-        if (v18 != 50)
+        if (expressionType != 50)
         {
 LABEL_109:
           v72 = MEMORY[0x1E695DF30];
@@ -191,13 +191,13 @@ LABEL_109:
           goto LABEL_132;
         }
 
-        v23 = v22;
+        lastObject = v22;
         if (![v22 isNSArray])
         {
           goto LABEL_91;
         }
 
-        v24 = [v23 count];
+        v24 = [lastObject count];
         if (v24)
         {
           if (v24 != 1)
@@ -205,12 +205,12 @@ LABEL_109:
             goto LABEL_145;
           }
 
-          v23 = [v23 lastObject];
+          lastObject = [lastObject lastObject];
           objc_opt_class();
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v23 = [v23 objectID];
+            lastObject = [lastObject objectID];
             goto LABEL_76;
           }
 
@@ -219,18 +219,18 @@ LABEL_109:
           if (objc_opt_isKindOfClass())
           {
 LABEL_76:
-            self = v104;
+            self = selfCopy;
 LABEL_91:
-            if (v13 == 4)
+            if (_propertyType == 4)
             {
               v106 = v12;
               v81 = MEMORY[0x1E695DF30];
               v82 = *MEMORY[0x1E695D940];
-              v83 = [*(v8 + 3776) stringWithFormat:@"Can't generate new column values for %@ - incompatible destination: %@", objc_msgSend(v16, "name"), v23];
+              v83 = [*(v8 + 3776) stringWithFormat:@"Can't generate new column values for %@ - incompatible destination: %@", objc_msgSend(v16, "name"), lastObject];
               goto LABEL_128;
             }
 
-            v19 = [(NSSQLUpdateColumnsIntermediate *)self _generateSQLForAttributeUpdate:v16 value:v23 inContext:a3];
+            v19 = [(NSSQLUpdateColumnsIntermediate *)self _generateSQLForAttributeUpdate:v16 value:lastObject inContext:context];
             if (!v19)
             {
               goto LABEL_130;
@@ -239,10 +239,10 @@ LABEL_91:
             goto LABEL_93;
           }
 
-          self = v104;
-          if ([v23 isNSDictionary] && objc_msgSend(v23, "count"))
+          self = selfCopy;
+          if ([lastObject isNSDictionary] && objc_msgSend(lastObject, "count"))
           {
-            if ([v23 count] != 1)
+            if ([lastObject count] != 1)
             {
 LABEL_145:
               v72 = MEMORY[0x1E695DF30];
@@ -253,28 +253,28 @@ LABEL_145:
             }
 
             memset(v109, 0, sizeof(v109));
-            if ([v23 countByEnumeratingWithState:v109 objects:v114 count:16])
+            if ([lastObject countByEnumeratingWithState:v109 objects:v114 count:16])
             {
-              v23 = [v23 objectForKey:**(&v109[0] + 1)];
+              lastObject = [lastObject objectForKey:**(&v109[0] + 1)];
               goto LABEL_91;
             }
           }
         }
 
-        v23 = 0;
+        lastObject = 0;
         goto LABEL_91;
       }
 
-      if (v18)
+      if (expressionType)
       {
-        if (v18 != 3)
+        if (expressionType != 3)
         {
-          if (v18 != 4)
+          if (expressionType != 4)
           {
             goto LABEL_109;
           }
 
-          if (v13 == 4)
+          if (_propertyType == 4)
           {
             v72 = MEMORY[0x1E695DF30];
             v76 = v12;
@@ -284,12 +284,12 @@ LABEL_145:
           }
 
           v19 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@ ", objc_msgSend(v16, "columnName")];
-          v20 = [(NSSQLIntermediate *)self _generateSQLForExpression:v12 allowToMany:0 inContext:a3];
+          v20 = [(NSSQLIntermediate *)self _generateSQLForExpression:v12 allowToMany:0 inContext:context];
           if (!v20)
           {
-            if (![a3 objectForKey:@"NSUnderlyingException"])
+            if (![context objectForKey:@"NSUnderlyingException"])
             {
-              [a3 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(*(v8 + 3776), "stringWithFormat:", @"Fetch request expression evaluation (%@) failed", v12), 0), @"NSUnderlyingException"}];
+              [context setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(*(v8 + 3776), "stringWithFormat:", @"Fetch request expression evaluation (%@) failed", v12), 0), @"NSUnderlyingException"}];
             }
 
 LABEL_134:
@@ -302,7 +302,7 @@ LABEL_135:
           [(NSSQLConstantValueIntermediate *)v19 appendFormat:@" = %@", v20];
 
 LABEL_55:
-          self = v104;
+          self = selfCopy;
           if (!v19)
           {
             goto LABEL_130;
@@ -317,9 +317,9 @@ LABEL_30:
         if ([v25 count] != 1)
         {
           v100 = v6;
-          v101 = a3;
+          contextCopy4 = context;
           v102 = v5;
-          v32 = [objc_msgSend(a3 objectForKey:{@"entity", "entityDescription"}];
+          destinationEntity = [objc_msgSend(context objectForKey:{@"entity", "entityDescription"}];
           v33 = [v25 count] - 1;
           v98 = [objc_msgSend(v25 "lastObject")];
           v34 = 0;
@@ -328,12 +328,12 @@ LABEL_30:
           while (1)
           {
             v37 = [v25 objectAtIndex:v34];
-            if (!v32)
+            if (!destinationEntity)
             {
               break;
             }
 
-            v38 = [objc_msgSend(v32 "propertiesByName")];
+            v38 = [objc_msgSend(destinationEntity "propertiesByName")];
             if (!v38)
             {
               break;
@@ -349,26 +349,26 @@ LABEL_30:
 
               v95 = @"Can't generate SQL for keypath %@ : invalid attribute name location";
 LABEL_103:
-              a3 = v101;
+              context = contextCopy4;
               v5 = v102;
               v8 = 0x1E696A000uLL;
 LABEL_104:
-              [a3 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(*(v8 + 3776), "stringWithFormat:", v95, objc_msgSend(v25, "componentsJoinedByString:", @".", 0), @"NSUnderlyingException"}];
+              [context setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], objc_msgSend(*(v8 + 3776), "stringWithFormat:", v95, objc_msgSend(v25, "componentsJoinedByString:", @".", 0), @"NSUnderlyingException"}];
               v12 = v106;
               goto LABEL_105;
             }
 
             if ([v39 _isRelationship])
             {
-              v32 = [v39 destinationEntity];
-              v40 = [v39 isToMany];
-              if (v40 & v35)
+              destinationEntity = [v39 destinationEntity];
+              isToMany = [v39 isToMany];
+              if (isToMany & v35)
               {
                 v95 = @"Can't generate SQL for keypath %@ : multiple to many keypath components";
                 goto LABEL_103;
               }
 
-              v35 |= v40;
+              v35 |= isToMany;
             }
 
             ++v34;
@@ -381,7 +381,7 @@ LABEL_104:
 
           if (![v37 hasPrefix:@"@"])
           {
-            a3 = v101;
+            context = contextCopy4;
             v5 = v102;
             v8 = 0x1E696A000;
             v95 = @"Can't generate SQL for keypath %@ : invalid keypath";
@@ -397,18 +397,18 @@ LABEL_104:
 LABEL_64:
           v43 = [objc_opt_class() _newKeyPathExpressionForString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @".%@", objc_msgSend(v25, "lastObject"))}];
           v44 = [objc_msgSend(v25 subarrayWithRange:{0, objc_msgSend(v25, "count") - 1), "componentsJoinedByString:", @"."}];
-          v45 = [(NSSQLIntermediate *)v104->super._scope governingAlias];
-          a3 = v101;
-          if (!v45)
+          governingAlias = [(NSSQLIntermediate *)selfCopy->super._scope governingAlias];
+          context = contextCopy4;
+          if (!governingAlias)
           {
-            v45 = -[NSSQLAliasGenerator generateVariableAlias]([v101 objectForKey:@"aliasGenerator"]);
+            governingAlias = -[NSSQLAliasGenerator generateVariableAlias]([contextCopy4 objectForKey:@"aliasGenerator"]);
           }
 
           v46 = MEMORY[0x1E696ABC8];
           v47 = [MEMORY[0x1E696ABC8] expressionForKeyPath:v44];
-          v48 = -[NSSQLSubqueryExpressionIntermediate initWithExpression:trailingKeypath:inScope:]([NSSQLSubqueryExpressionIntermediate alloc], "initWithExpression:trailingKeypath:inScope:", [v46 expressionForSubquery:v47 usingIteratorVariable:v45 predicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithValue:", 1)}], v43, v104);
+          v48 = -[NSSQLSubqueryExpressionIntermediate initWithExpression:trailingKeypath:inScope:]([NSSQLSubqueryExpressionIntermediate alloc], "initWithExpression:trailingKeypath:inScope:", [v46 expressionForSubquery:v47 usingIteratorVariable:governingAlias predicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithValue:", 1)}], v43, selfCopy);
 
-          v49 = [(NSSQLSubqueryExpressionIntermediate *)v48 generateSQLStringInContext:v101];
+          v49 = [(NSSQLSubqueryExpressionIntermediate *)v48 generateSQLStringInContext:contextCopy4];
           v6 = v100;
           if (v49)
           {
@@ -425,32 +425,32 @@ LABEL_64:
           v5 = v102;
           v12 = v106;
           v8 = 0x1E696A000;
-          if (![v101 objectForKey:@"NSUnderlyingException"])
+          if (![contextCopy4 objectForKey:@"NSUnderlyingException"])
           {
             v95 = @"Can't generate SQL for keypath %@ : unexpected problem";
             goto LABEL_104;
           }
 
 LABEL_105:
-          if (![a3 objectForKey:@"NSUnderlyingException"])
+          if (![context objectForKey:@"NSUnderlyingException"])
           {
             v62 = MEMORY[0x1E695DF30];
             v63 = *MEMORY[0x1E695D940];
             v64 = [*(v8 + 3776) stringWithFormat:@"Unable to generate sql for components %@", v25];
             v65 = v63;
             v12 = v106;
-            [a3 setObject:objc_msgSend(v62 forKey:{"exceptionWithName:reason:userInfo:", v65, v64, 0), @"NSUnderlyingException"}];
+            [context setObject:objc_msgSend(v62 forKey:{"exceptionWithName:reason:userInfo:", v65, v64, 0), @"NSUnderlyingException"}];
           }
 
           goto LABEL_126;
         }
 
-        v26 = [v25 lastObject];
-        v27 = [v16 propertyType];
-        v28 = [v16 entity];
-        if (v28)
+        lastObject2 = [v25 lastObject];
+        propertyType2 = [v16 propertyType];
+        entity = [v16 entity];
+        if (entity)
         {
-          v29 = [*(v28 + 40) objectForKey:v26];
+          v29 = [*(entity + 40) objectForKey:lastObject2];
         }
 
         else
@@ -458,17 +458,17 @@ LABEL_105:
           v29 = 0;
         }
 
-        v30 = [v29 propertyType];
-        if (v30 != 1 && v30 != 7)
+        propertyType3 = [v29 propertyType];
+        if (propertyType3 != 1 && propertyType3 != 7)
         {
           v85 = MEMORY[0x1E695DF30];
           v86 = *MEMORY[0x1E695D940];
           v87 = [*(v8 + 3776) stringWithFormat:@"Invalid keypath for update (not an attribute or a to one) %@", objc_msgSend(v16, "name"), v97];
 LABEL_125:
-          [a3 setObject:objc_msgSend(v85 forKey:{"exceptionWithName:reason:userInfo:", v86, v87, 0), @"NSUnderlyingException"}];
+          [context setObject:objc_msgSend(v85 forKey:{"exceptionWithName:reason:userInfo:", v86, v87, 0), @"NSUnderlyingException"}];
           v12 = v106;
 LABEL_126:
-          if (![a3 objectForKey:@"NSUnderlyingException"])
+          if (![context objectForKey:@"NSUnderlyingException"])
           {
             v81 = MEMORY[0x1E695DF30];
             v88 = v12;
@@ -477,12 +477,12 @@ LABEL_126:
 LABEL_128:
             v89 = [v81 exceptionWithName:v82 reason:v83 userInfo:0];
 LABEL_129:
-            [a3 setObject:v89 forKey:@"NSUnderlyingException"];
+            [context setObject:v89 forKey:@"NSUnderlyingException"];
             v12 = v106;
           }
 
 LABEL_130:
-          if ([a3 objectForKey:@"NSUnderlyingException"])
+          if ([context objectForKey:@"NSUnderlyingException"])
           {
             goto LABEL_134;
           }
@@ -493,13 +493,13 @@ LABEL_130:
           v75 = [*(v8 + 3776) stringWithFormat:@"Can't generate new column value from expression %@", v90];
 LABEL_132:
           v70 = [v72 exceptionWithName:v74 reason:v75 userInfo:0];
-          v71 = a3;
+          contextCopy5 = context;
 LABEL_133:
-          [v71 setObject:v70 forKey:@"NSUnderlyingException"];
+          [contextCopy5 setObject:v70 forKey:@"NSUnderlyingException"];
           goto LABEL_134;
         }
 
-        if (v27 != v30)
+        if (propertyType2 != propertyType3)
         {
           v85 = MEMORY[0x1E695DF30];
           v86 = *MEMORY[0x1E695D940];
@@ -540,9 +540,9 @@ LABEL_121:
             if ([*(v50 + 144) count])
             {
 LABEL_80:
-              v57 = [*(v16 + v52[82]) columnName];
+              columnName = [*(v16 + v52[82]) columnName];
               v58 = v52;
-              v59 = v57;
+              v59 = columnName;
               if (v29)
               {
                 v60 = *(v29 + v58[82]);
@@ -556,7 +556,7 @@ LABEL_80:
               v12 = v106;
               -[NSSQLConstantValueIntermediate appendFormat:](v19, "appendFormat:", @", %@ = %@", v59, [v60 columnName]);
 LABEL_83:
-              self = v104;
+              self = selfCopy;
               if (!v19)
               {
                 goto LABEL_126;
@@ -572,14 +572,14 @@ LABEL_83:
 
             else
             {
-              v55 = v51;
+              superentity = v51;
               do
               {
-                v54 = v55;
-                v55 = [v55 superentity];
+                v54 = superentity;
+                superentity = [superentity superentity];
               }
 
-              while (v55);
+              while (superentity);
             }
           }
 
@@ -612,49 +612,49 @@ LABEL_83:
       }
 
       v106 = v12;
-      v31 = [v12 constantValue];
-      if (v13 == 4)
+      constantValue = [v12 constantValue];
+      if (_propertyType == 4)
       {
-        v77 = a3;
+        contextCopy6 = context;
         v78 = v5;
         objc_opt_class();
         v79 = v8;
         if (objc_opt_isKindOfClass())
         {
-          v80 = [v31 objectID];
+          objectID = [constantValue objectID];
         }
 
         else
         {
           objc_opt_class();
-          v80 = v31;
+          objectID = constantValue;
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v80 = 0;
-            if ([MEMORY[0x1E695DFB0] null] == v31)
+            objectID = 0;
+            if ([MEMORY[0x1E695DFB0] null] == constantValue)
             {
-              v31 = 0;
+              constantValue = 0;
             }
           }
         }
 
         v93 = *MEMORY[0x1E695D940];
         v94 = *(v79 + 3776);
-        if (!v80 && v31)
+        if (!objectID && constantValue)
         {
-          [v77 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", v93, objc_msgSend(v94, "stringWithFormat:", @"Invalid new constant value %@ for %@ (not a managed object)", v106, v11), 0), @"NSUnderlyingException"}];
+          [contextCopy6 setObject:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", v93, objc_msgSend(v94, "stringWithFormat:", @"Invalid new constant value %@ for %@ (not a managed object)", v106, v11), 0), @"NSUnderlyingException"}];
 
           goto LABEL_135;
         }
 
-        v89 = [MEMORY[0x1E695DF30] exceptionWithName:v93 reason:objc_msgSend(v94 userInfo:{"stringWithFormat:", @"Can't generate new column values for %@ - incompatible destination: %@", objc_msgSend(v16, "name"), v80), 0}];
+        v89 = [MEMORY[0x1E695DF30] exceptionWithName:v93 reason:objc_msgSend(v94 userInfo:{"stringWithFormat:", @"Can't generate new column values for %@ - incompatible destination: %@", objc_msgSend(v16, "name"), objectID), 0}];
         v5 = v78;
-        a3 = v77;
+        context = contextCopy6;
         v8 = v79;
         goto LABEL_129;
       }
 
-      v19 = [(NSSQLUpdateColumnsIntermediate *)self _generateSQLForAttributeUpdate:v16 value:v31 inContext:a3];
+      v19 = [(NSSQLUpdateColumnsIntermediate *)self _generateSQLForAttributeUpdate:v16 value:constantValue inContext:context];
       v12 = v106;
       if (!v19)
       {

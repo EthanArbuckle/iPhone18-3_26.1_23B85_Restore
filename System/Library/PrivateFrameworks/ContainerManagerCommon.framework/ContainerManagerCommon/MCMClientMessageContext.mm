@@ -4,8 +4,8 @@
 - (MCMUserIdentityCache)userIdentityCache;
 - (NSString)personaUniqueString;
 - (OS_xpc_object)message;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForCurrentThreadContextWithXPCMessage:(id)a3 userIdentityCache:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForCurrentThreadContextWithXPCMessage:(id)message userIdentityCache:(id)cache;
 - (int)pid;
 @end
 
@@ -62,7 +62,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = *MEMORY[0x1E69E9840];
   *MEMORY[0x1E69E9840];
@@ -70,23 +70,23 @@
   return self;
 }
 
-- (id)initForCurrentThreadContextWithXPCMessage:(id)a3 userIdentityCache:(id)a4
+- (id)initForCurrentThreadContextWithXPCMessage:(id)message userIdentityCache:(id)cache
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  cacheCopy = cache;
   v15.receiver = self;
   v15.super_class = MCMClientMessageContext;
   v9 = [(MCMClientMessageContext *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_message, a3);
+    objc_storeStrong(&v9->_message, message);
     xpc_dictionary_get_audit_token();
-    objc_storeStrong(&v10->_userIdentityCache, a4);
-    v11 = [v8 personaUniqueStringForCurrentContext];
+    objc_storeStrong(&v10->_userIdentityCache, cache);
+    personaUniqueStringForCurrentContext = [cacheCopy personaUniqueStringForCurrentContext];
     personaUniqueString = v10->_personaUniqueString;
-    v10->_personaUniqueString = v11;
+    v10->_personaUniqueString = personaUniqueStringForCurrentContext;
   }
 
   v13 = *MEMORY[0x1E69E9840];

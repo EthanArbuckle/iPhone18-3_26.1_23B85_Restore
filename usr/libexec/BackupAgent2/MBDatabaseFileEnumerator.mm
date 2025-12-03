@@ -1,22 +1,22 @@
 @interface MBDatabaseFileEnumerator
-- (MBDatabaseFileEnumerator)initWithDecoder:(id)a3 database:(id)a4;
+- (MBDatabaseFileEnumerator)initWithDecoder:(id)decoder database:(id)database;
 - (id)nextObject;
 @end
 
 @implementation MBDatabaseFileEnumerator
 
-- (MBDatabaseFileEnumerator)initWithDecoder:(id)a3 database:(id)a4
+- (MBDatabaseFileEnumerator)initWithDecoder:(id)decoder database:(id)database
 {
-  v7 = a3;
-  v8 = a4;
+  decoderCopy = decoder;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = MBDatabaseFileEnumerator;
   v9 = [(MBDatabaseFileEnumerator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_decoder, a3);
-    objc_storeStrong(&v10->_database, a4);
+    objc_storeStrong(&v9->_decoder, decoder);
+    objc_storeStrong(&v10->_database, database);
   }
 
   return v10;
@@ -24,11 +24,11 @@
 
 - (id)nextObject
 {
-  v3 = [(MBDecoder *)self->_decoder offset];
-  v4 = [(MBDecoder *)self->_decoder data];
-  v5 = [v4 length];
+  offset = [(MBDecoder *)self->_decoder offset];
+  data = [(MBDecoder *)self->_decoder data];
+  v5 = [data length];
 
-  if (v3 >= v5)
+  if (offset >= v5)
   {
     v6 = 0;
   }

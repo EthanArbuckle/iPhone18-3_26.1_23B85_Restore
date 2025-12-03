@@ -1,27 +1,27 @@
 @interface DDIDSOutgoingMessage
-- (DDIDSOutgoingMessage)initWithDestination:(id)a3 message:(id)a4 data:(id)a5 forceLocalDelivery:(BOOL)a6 expectsResponse:(BOOL)a7 response:(id)a8;
+- (DDIDSOutgoingMessage)initWithDestination:(id)destination message:(id)message data:(id)data forceLocalDelivery:(BOOL)delivery expectsResponse:(BOOL)response response:(id)a8;
 - (NSString)description;
 @end
 
 @implementation DDIDSOutgoingMessage
 
-- (DDIDSOutgoingMessage)initWithDestination:(id)a3 message:(id)a4 data:(id)a5 forceLocalDelivery:(BOOL)a6 expectsResponse:(BOOL)a7 response:(id)a8
+- (DDIDSOutgoingMessage)initWithDestination:(id)destination message:(id)message data:(id)data forceLocalDelivery:(BOOL)delivery expectsResponse:(BOOL)response response:(id)a8
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  destinationCopy = destination;
+  messageCopy = message;
+  dataCopy = data;
   v18 = a8;
   v32.receiver = self;
   v32.super_class = DDIDSOutgoingMessage;
   v19 = [(DDIDSOutgoingMessage *)&v32 init];
   if (v19)
   {
-    v30 = a7;
+    responseCopy = response;
     v20 = +[NSMutableDictionary dictionary];
-    if (v17)
+    if (dataCopy)
     {
       v31 = 0;
-      v21 = [NSKeyedArchiver archivedDataWithRootObject:v17 requiringSecureCoding:1 error:&v31];
+      v21 = [NSKeyedArchiver archivedDataWithRootObject:dataCopy requiringSecureCoding:1 error:&v31];
       v22 = v31;
       [(NSDictionary *)v20 setObject:v21 forKeyedSubscript:@"data"];
 
@@ -42,19 +42,19 @@
       }
     }
 
-    [(NSDictionary *)v20 setObject:v16 forKeyedSubscript:@"messageName"];
+    [(NSDictionary *)v20 setObject:messageCopy forKeyedSubscript:@"messageName"];
     dictionary = v19->_dictionary;
     v19->_dictionary = v20;
     v26 = v20;
 
-    objc_storeStrong(&v19->_destination, a3);
-    v19->_forceLocalDelivery = a6;
+    objc_storeStrong(&v19->_destination, destination);
+    v19->_forceLocalDelivery = delivery;
     v19->_retryCount = 0;
     v27 = objc_retainBlock(v18);
     response = v19->_response;
     v19->_response = v27;
 
-    v19->_expectsResponse = v30;
+    v19->_expectsResponse = responseCopy;
   }
 
   return v19;
@@ -62,9 +62,9 @@
 
 - (NSString)description
 {
-  v3 = [(DDIDSOutgoingMessage *)self dictionary];
+  dictionary = [(DDIDSOutgoingMessage *)self dictionary];
   v4 = [NSNumber numberWithInteger:[(DDIDSOutgoingMessage *)self retryCount]];
-  v5 = [NSString stringWithFormat:@"dictionary: %@ retry count: %@", v3, v4];;
+  v5 = [NSString stringWithFormat:@"dictionary: %@ retry count: %@", dictionary, v4];;
 
   return v5;
 }

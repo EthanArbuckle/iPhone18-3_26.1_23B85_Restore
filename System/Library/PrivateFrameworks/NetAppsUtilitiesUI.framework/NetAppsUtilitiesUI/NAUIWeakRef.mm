@@ -1,5 +1,5 @@
 @interface NAUIWeakRef
-+ (id)weakRefWithObject:(id)a3;
++ (id)weakRefWithObject:(id)object;
 - (id)object;
 - (void)dealloc;
 @end
@@ -14,16 +14,16 @@
   [(NAUIWeakRef *)&v3 dealloc];
 }
 
-+ (id)weakRefWithObject:(id)a3
++ (id)weakRefWithObject:(id)object
 {
-  v4 = objc_alloc_init(a1);
-  if ([a3 allowsWeakReference])
+  v4 = objc_alloc_init(self);
+  if ([object allowsWeakReference])
   {
     *(v4 + 24) = 1;
-    objc_storeWeak(v4 + 1, a3);
+    objc_storeWeak(v4 + 1, object);
   }
 
-  *(v4 + 2) = a3;
+  *(v4 + 2) = object;
 
   return v4;
 }

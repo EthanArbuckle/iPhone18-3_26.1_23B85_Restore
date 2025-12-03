@@ -24,8 +24,8 @@
   v6 = MEMORY[0x1E696AAE8];
   v7 = a4;
   v8 = a3;
-  v9 = [v6 _mapsuiBundle];
-  v10 = [v5 imageNamed:v8 inBundle:v9 withConfiguration:v7];
+  _mapsuiBundle = [v6 _mapsuiBundle];
+  v10 = [v5 imageNamed:v8 inBundle:_mapsuiBundle withConfiguration:v7];
 
   return v10;
 }

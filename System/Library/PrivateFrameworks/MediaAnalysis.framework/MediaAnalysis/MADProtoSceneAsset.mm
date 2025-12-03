@@ -1,75 +1,75 @@
 @interface MADProtoSceneAsset
-+ (id)protoFromPhotosAsset:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)protoFromPhotosAsset:(id)asset;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)a3;
+- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)addImageEmbeddingResults:(id)a3;
-- (void)addObjectSaliencyRects:(id)a3;
-- (void)addSceneClassifications:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)persistToPhotosAsset:(id)a3;
-- (void)setImageEmbeddingResultsFromVSKAsset:(id)a3 imageEmbeddingVersion:(signed __int16)a4;
-- (void)writeTo:(id)a3;
+- (void)addImageEmbeddingResults:(id)results;
+- (void)addObjectSaliencyRects:(id)rects;
+- (void)addSceneClassifications:(id)classifications;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)persistToPhotosAsset:(id)asset;
+- (void)setImageEmbeddingResultsFromVSKAsset:(id)asset imageEmbeddingVersion:(signed __int16)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MADProtoSceneAsset
 
-- (void)addSceneClassifications:(id)a3
+- (void)addSceneClassifications:(id)classifications
 {
-  v4 = a3;
+  classificationsCopy = classifications;
   sceneClassifications = self->_sceneClassifications;
-  v8 = v4;
+  v8 = classificationsCopy;
   if (!sceneClassifications)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sceneClassifications;
     self->_sceneClassifications = v6;
 
-    v4 = v8;
+    classificationsCopy = v8;
     sceneClassifications = self->_sceneClassifications;
   }
 
-  [(NSMutableArray *)sceneClassifications addObject:v4];
+  [(NSMutableArray *)sceneClassifications addObject:classificationsCopy];
 }
 
-- (void)addObjectSaliencyRects:(id)a3
+- (void)addObjectSaliencyRects:(id)rects
 {
-  v4 = a3;
+  rectsCopy = rects;
   objectSaliencyRects = self->_objectSaliencyRects;
-  v8 = v4;
+  v8 = rectsCopy;
   if (!objectSaliencyRects)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_objectSaliencyRects;
     self->_objectSaliencyRects = v6;
 
-    v4 = v8;
+    rectsCopy = v8;
     objectSaliencyRects = self->_objectSaliencyRects;
   }
 
-  [(NSMutableArray *)objectSaliencyRects addObject:v4];
+  [(NSMutableArray *)objectSaliencyRects addObject:rectsCopy];
 }
 
-- (void)addImageEmbeddingResults:(id)a3
+- (void)addImageEmbeddingResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageEmbeddingResults = self->_imageEmbeddingResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageEmbeddingResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageEmbeddingResults;
     self->_imageEmbeddingResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageEmbeddingResults = self->_imageEmbeddingResults;
   }
 
-  [(NSMutableArray *)imageEmbeddingResults addObject:v4];
+  [(NSMutableArray *)imageEmbeddingResults addObject:resultsCopy];
 }
 
 - (id)description
@@ -78,8 +78,8 @@
   v8.receiver = self;
   v8.super_class = MADProtoSceneAsset;
   v4 = [(MADProtoSceneAsset *)&v8 description];
-  v5 = [(MADProtoSceneAsset *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MADProtoSceneAsset *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -87,12 +87,12 @@
 - (id)dictionaryRepresentation
 {
   v110 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   assetCloudIdentifier = self->_assetCloudIdentifier;
   if (assetCloudIdentifier)
   {
-    [v3 setObject:assetCloudIdentifier forKey:@"assetCloudIdentifier"];
+    [dictionary setObject:assetCloudIdentifier forKey:@"assetCloudIdentifier"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_assetAdjustmentTimestamp];
@@ -126,8 +126,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v103 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v103 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v103 objects:v109 count:16];
@@ -230,15 +230,15 @@
   preferredCropRect = self->_preferredCropRect;
   if (preferredCropRect)
   {
-    v61 = [(VCPProtoBounds *)preferredCropRect dictionaryRepresentation];
-    [v4 setObject:v61 forKey:@"preferredCropRect"];
+    dictionaryRepresentation2 = [(VCPProtoBounds *)preferredCropRect dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"preferredCropRect"];
   }
 
   acceptableCropRect = self->_acceptableCropRect;
   if (acceptableCropRect)
   {
-    v63 = [(VCPProtoBounds *)acceptableCropRect dictionaryRepresentation];
-    [v4 setObject:v63 forKey:@"acceptableCropRect"];
+    dictionaryRepresentation3 = [(VCPProtoBounds *)acceptableCropRect dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"acceptableCropRect"];
   }
 
   if ([(NSMutableArray *)self->_objectSaliencyRects count])
@@ -263,8 +263,8 @@
             objc_enumerationMutation(v66);
           }
 
-          v71 = [*(*(&v99 + 1) + 8 * j) dictionaryRepresentation];
-          [v65 addObject:v71];
+          dictionaryRepresentation4 = [*(*(&v99 + 1) + 8 * j) dictionaryRepresentation];
+          [v65 addObject:dictionaryRepresentation4];
         }
 
         v68 = [(NSMutableArray *)v66 countByEnumeratingWithState:&v99 objects:v108 count:16];
@@ -351,8 +351,8 @@
             objc_enumerationMutation(v88);
           }
 
-          v93 = [*(*(&v95 + 1) + 8 * k) dictionaryRepresentation];
-          [v87 addObject:v93];
+          dictionaryRepresentation5 = [*(*(&v95 + 1) + 8 * k) dictionaryRepresentation];
+          [v87 addObject:dictionaryRepresentation5];
         }
 
         v90 = [(NSMutableArray *)v88 countByEnumeratingWithState:&v95 objects:v107 count:16];
@@ -367,10 +367,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteStringField();
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteInt32Field();
@@ -516,85 +516,85 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v17 = a3;
-  [v17 setAssetCloudIdentifier:self->_assetCloudIdentifier];
-  *(v17 + 2) = *&self->_assetAdjustmentTimestamp;
-  *(v17 + 8) = self->_algorithmVersion;
-  *(v17 + 1) = *&self->_adjustmentVersion;
+  toCopy = to;
+  [toCopy setAssetCloudIdentifier:self->_assetCloudIdentifier];
+  *(toCopy + 2) = *&self->_assetAdjustmentTimestamp;
+  *(toCopy + 8) = self->_algorithmVersion;
+  *(toCopy + 1) = *&self->_adjustmentVersion;
   if ([(MADProtoSceneAsset *)self sceneClassificationsCount])
   {
-    [v17 clearSceneClassifications];
-    v4 = [(MADProtoSceneAsset *)self sceneClassificationsCount];
-    if (v4)
+    [toCopy clearSceneClassifications];
+    sceneClassificationsCount = [(MADProtoSceneAsset *)self sceneClassificationsCount];
+    if (sceneClassificationsCount)
     {
-      v5 = v4;
+      v5 = sceneClassificationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(MADProtoSceneAsset *)self sceneClassificationsAtIndex:i];
-        [v17 addSceneClassifications:v7];
+        [toCopy addSceneClassifications:v7];
       }
     }
   }
 
-  *(v17 + 36) = LODWORD(self->_overallAestheticScore);
-  *(v17 + 58) = LODWORD(self->_wellFramedSubjectScore);
-  *(v17 + 57) = LODWORD(self->_wellChosenSubjectScore);
-  *(v17 + 55) = LODWORD(self->_tastefullyBlurredScore);
-  *(v17 + 54) = LODWORD(self->_sharplyFocusedSubjectScore);
-  *(v17 + 59) = LODWORD(self->_wellTimedShotScore);
-  *(v17 + 39) = LODWORD(self->_pleasantLightingScore);
-  *(v17 + 43) = LODWORD(self->_pleasantReflectionsScore);
-  *(v17 + 22) = LODWORD(self->_harmoniousColorScore);
-  *(v17 + 30) = LODWORD(self->_livelyColorScore);
-  *(v17 + 44) = LODWORD(self->_pleasantSymmetryScore);
-  *(v17 + 40) = LODWORD(self->_pleasantPatternScore);
-  *(v17 + 27) = LODWORD(self->_immersivenessScore);
-  *(v17 + 41) = LODWORD(self->_pleasantPerspectiveScore);
-  *(v17 + 42) = LODWORD(self->_pleasantPostProcessingScore);
-  *(v17 + 32) = LODWORD(self->_noiseScore);
-  *(v17 + 21) = LODWORD(self->_failureScore);
-  *(v17 + 38) = LODWORD(self->_pleasantCompositionScore);
-  *(v17 + 28) = LODWORD(self->_interestingSubjectScore);
-  *(v17 + 29) = LODWORD(self->_intrusiveObjectPresenceScore);
-  *(v17 + 37) = LODWORD(self->_pleasantCameraTiltScore);
-  *(v17 + 31) = LODWORD(self->_lowLight);
-  [v17 setPreferredCropRect:self->_preferredCropRect];
-  [v17 setAcceptableCropRect:self->_acceptableCropRect];
+  *(toCopy + 36) = LODWORD(self->_overallAestheticScore);
+  *(toCopy + 58) = LODWORD(self->_wellFramedSubjectScore);
+  *(toCopy + 57) = LODWORD(self->_wellChosenSubjectScore);
+  *(toCopy + 55) = LODWORD(self->_tastefullyBlurredScore);
+  *(toCopy + 54) = LODWORD(self->_sharplyFocusedSubjectScore);
+  *(toCopy + 59) = LODWORD(self->_wellTimedShotScore);
+  *(toCopy + 39) = LODWORD(self->_pleasantLightingScore);
+  *(toCopy + 43) = LODWORD(self->_pleasantReflectionsScore);
+  *(toCopy + 22) = LODWORD(self->_harmoniousColorScore);
+  *(toCopy + 30) = LODWORD(self->_livelyColorScore);
+  *(toCopy + 44) = LODWORD(self->_pleasantSymmetryScore);
+  *(toCopy + 40) = LODWORD(self->_pleasantPatternScore);
+  *(toCopy + 27) = LODWORD(self->_immersivenessScore);
+  *(toCopy + 41) = LODWORD(self->_pleasantPerspectiveScore);
+  *(toCopy + 42) = LODWORD(self->_pleasantPostProcessingScore);
+  *(toCopy + 32) = LODWORD(self->_noiseScore);
+  *(toCopy + 21) = LODWORD(self->_failureScore);
+  *(toCopy + 38) = LODWORD(self->_pleasantCompositionScore);
+  *(toCopy + 28) = LODWORD(self->_interestingSubjectScore);
+  *(toCopy + 29) = LODWORD(self->_intrusiveObjectPresenceScore);
+  *(toCopy + 37) = LODWORD(self->_pleasantCameraTiltScore);
+  *(toCopy + 31) = LODWORD(self->_lowLight);
+  [toCopy setPreferredCropRect:self->_preferredCropRect];
+  [toCopy setAcceptableCropRect:self->_acceptableCropRect];
   if ([(MADProtoSceneAsset *)self objectSaliencyRectsCount])
   {
-    [v17 clearObjectSaliencyRects];
-    v8 = [(MADProtoSceneAsset *)self objectSaliencyRectsCount];
-    if (v8)
+    [toCopy clearObjectSaliencyRects];
+    objectSaliencyRectsCount = [(MADProtoSceneAsset *)self objectSaliencyRectsCount];
+    if (objectSaliencyRectsCount)
     {
-      v9 = v8;
+      v9 = objectSaliencyRectsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(MADProtoSceneAsset *)self objectSaliencyRectsAtIndex:j];
-        [v17 addObjectSaliencyRects:v11];
+        [toCopy addObjectSaliencyRects:v11];
       }
     }
   }
 
-  [v17 setSceneprintData:self->_sceneprintData];
-  *(v17 + 56) = LODWORD(self->_wallpaperScore);
-  [v17 setColorNormalizationData:self->_colorNormalizationData];
-  v12 = v17;
-  *(v17 + 12) = LODWORD(self->_blurrinessScore);
-  *(v17 + 20) = LODWORD(self->_exposureScore);
-  *(v17 + 48) = self->_probableRotationDirection;
-  *(v17 + 49) = LODWORD(self->_probableRotationDirectionConfidence);
+  [toCopy setSceneprintData:self->_sceneprintData];
+  *(toCopy + 56) = LODWORD(self->_wallpaperScore);
+  [toCopy setColorNormalizationData:self->_colorNormalizationData];
+  v12 = toCopy;
+  *(toCopy + 12) = LODWORD(self->_blurrinessScore);
+  *(toCopy + 20) = LODWORD(self->_exposureScore);
+  *(toCopy + 48) = self->_probableRotationDirection;
+  *(toCopy + 49) = LODWORD(self->_probableRotationDirectionConfidence);
   if (self->_duplicateMatchingData)
   {
-    [v17 setDuplicateMatchingData:?];
-    v12 = v17;
+    [toCopy setDuplicateMatchingData:?];
+    v12 = toCopy;
   }
 
   if (self->_duplicateMatchingAlternateData)
   {
-    [v17 setDuplicateMatchingAlternateData:?];
-    v12 = v17;
+    [toCopy setDuplicateMatchingAlternateData:?];
+    v12 = toCopy;
   }
 
   v12[23] = LODWORD(self->_iconicScore);
@@ -606,25 +606,25 @@
 
   if ([(MADProtoSceneAsset *)self imageEmbeddingResultsCount])
   {
-    [v17 clearImageEmbeddingResults];
-    v13 = [(MADProtoSceneAsset *)self imageEmbeddingResultsCount];
-    if (v13)
+    [toCopy clearImageEmbeddingResults];
+    imageEmbeddingResultsCount = [(MADProtoSceneAsset *)self imageEmbeddingResultsCount];
+    if (imageEmbeddingResultsCount)
     {
-      v14 = v13;
+      v14 = imageEmbeddingResultsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(MADProtoSceneAsset *)self imageEmbeddingResultsAtIndex:k];
-        [v17 addImageEmbeddingResults:v16];
+        [toCopy addImageEmbeddingResults:v16];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_assetCloudIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_assetCloudIdentifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -651,7 +651,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v47 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v47 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addSceneClassifications:v13];
 
         ++v12;
@@ -686,11 +686,11 @@
   *(v5 + 116) = self->_intrusiveObjectPresenceScore;
   *(v5 + 148) = self->_pleasantCameraTiltScore;
   *(v5 + 124) = self->_lowLight;
-  v14 = [(VCPProtoBounds *)self->_preferredCropRect copyWithZone:a3];
+  v14 = [(VCPProtoBounds *)self->_preferredCropRect copyWithZone:zone];
   v15 = *(v5 + 184);
   *(v5 + 184) = v14;
 
-  v16 = [(VCPProtoBounds *)self->_acceptableCropRect copyWithZone:a3];
+  v16 = [(VCPProtoBounds *)self->_acceptableCropRect copyWithZone:zone];
   v17 = *(v5 + 24);
   *(v5 + 24) = v16;
 
@@ -714,7 +714,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v43 + 1) + 8 * v22) copyWithZone:a3];
+        v23 = [*(*(&v43 + 1) + 8 * v22) copyWithZone:zone];
         [v5 addObjectSaliencyRects:v23];
 
         ++v22;
@@ -727,12 +727,12 @@
     while (v20);
   }
 
-  v24 = [(NSData *)self->_sceneprintData copyWithZone:a3];
+  v24 = [(NSData *)self->_sceneprintData copyWithZone:zone];
   v25 = *(v5 + 208);
   *(v5 + 208) = v24;
 
   *(v5 + 224) = self->_wallpaperScore;
-  v26 = [(NSData *)self->_colorNormalizationData copyWithZone:a3];
+  v26 = [(NSData *)self->_colorNormalizationData copyWithZone:zone];
   v27 = *(v5 + 56);
   *(v5 + 56) = v26;
 
@@ -740,11 +740,11 @@
   *(v5 + 80) = self->_exposureScore;
   *(v5 + 192) = self->_probableRotationDirection;
   *(v5 + 196) = self->_probableRotationDirectionConfidence;
-  v28 = [(NSData *)self->_duplicateMatchingData copyWithZone:a3];
+  v28 = [(NSData *)self->_duplicateMatchingData copyWithZone:zone];
   v29 = *(v5 + 72);
   *(v5 + 72) = v28;
 
-  v30 = [(NSData *)self->_duplicateMatchingAlternateData copyWithZone:a3];
+  v30 = [(NSData *)self->_duplicateMatchingAlternateData copyWithZone:zone];
   v31 = *(v5 + 64);
   *(v5 + 64) = v30;
 
@@ -775,7 +775,7 @@
           objc_enumerationMutation(v32);
         }
 
-        v37 = [*(*(&v39 + 1) + 8 * v36) copyWithZone:{a3, v39}];
+        v37 = [*(*(&v39 + 1) + 8 * v36) copyWithZone:{zone, v39}];
         [v5 addImageEmbeddingResults:v37];
 
         ++v36;
@@ -791,16 +791,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   assetCloudIdentifier = self->_assetCloudIdentifier;
-  if (assetCloudIdentifier | *(v4 + 5))
+  if (assetCloudIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)assetCloudIdentifier isEqual:?])
     {
@@ -808,23 +808,23 @@
     }
   }
 
-  if (self->_assetAdjustmentTimestamp != *(v4 + 2))
+  if (self->_assetAdjustmentTimestamp != *(equalCopy + 2))
   {
     goto LABEL_58;
   }
 
-  if (self->_algorithmVersion != *(v4 + 8))
+  if (self->_algorithmVersion != *(equalCopy + 8))
   {
     goto LABEL_58;
   }
 
-  if (self->_adjustmentVersion != *(v4 + 1))
+  if (self->_adjustmentVersion != *(equalCopy + 1))
   {
     goto LABEL_58;
   }
 
   sceneClassifications = self->_sceneClassifications;
-  if (sceneClassifications | *(v4 + 25))
+  if (sceneClassifications | *(equalCopy + 25))
   {
     if (![(NSMutableArray *)sceneClassifications isEqual:?])
     {
@@ -832,118 +832,118 @@
     }
   }
 
-  if (self->_overallAestheticScore != *(v4 + 36))
+  if (self->_overallAestheticScore != *(equalCopy + 36))
   {
     goto LABEL_58;
   }
 
-  if (self->_wellFramedSubjectScore != *(v4 + 58))
+  if (self->_wellFramedSubjectScore != *(equalCopy + 58))
   {
     goto LABEL_58;
   }
 
-  if (self->_wellChosenSubjectScore != *(v4 + 57))
+  if (self->_wellChosenSubjectScore != *(equalCopy + 57))
   {
     goto LABEL_58;
   }
 
-  if (self->_tastefullyBlurredScore != *(v4 + 55))
+  if (self->_tastefullyBlurredScore != *(equalCopy + 55))
   {
     goto LABEL_58;
   }
 
-  if (self->_sharplyFocusedSubjectScore != *(v4 + 54))
+  if (self->_sharplyFocusedSubjectScore != *(equalCopy + 54))
   {
     goto LABEL_58;
   }
 
-  if (self->_wellTimedShotScore != *(v4 + 59))
+  if (self->_wellTimedShotScore != *(equalCopy + 59))
   {
     goto LABEL_58;
   }
 
-  if (self->_pleasantLightingScore != *(v4 + 39))
+  if (self->_pleasantLightingScore != *(equalCopy + 39))
   {
     goto LABEL_58;
   }
 
-  if (self->_pleasantReflectionsScore != *(v4 + 43))
+  if (self->_pleasantReflectionsScore != *(equalCopy + 43))
   {
     goto LABEL_58;
   }
 
-  if (self->_harmoniousColorScore != *(v4 + 22))
+  if (self->_harmoniousColorScore != *(equalCopy + 22))
   {
     goto LABEL_58;
   }
 
-  if (self->_livelyColorScore != *(v4 + 30))
+  if (self->_livelyColorScore != *(equalCopy + 30))
   {
     goto LABEL_58;
   }
 
-  if (self->_pleasantSymmetryScore != *(v4 + 44))
+  if (self->_pleasantSymmetryScore != *(equalCopy + 44))
   {
     goto LABEL_58;
   }
 
-  if (self->_pleasantPatternScore != *(v4 + 40))
+  if (self->_pleasantPatternScore != *(equalCopy + 40))
   {
     goto LABEL_58;
   }
 
-  if (self->_immersivenessScore != *(v4 + 27))
+  if (self->_immersivenessScore != *(equalCopy + 27))
   {
     goto LABEL_58;
   }
 
-  if (self->_pleasantPerspectiveScore != *(v4 + 41))
+  if (self->_pleasantPerspectiveScore != *(equalCopy + 41))
   {
     goto LABEL_58;
   }
 
-  if (self->_pleasantPostProcessingScore != *(v4 + 42))
+  if (self->_pleasantPostProcessingScore != *(equalCopy + 42))
   {
     goto LABEL_58;
   }
 
-  if (self->_noiseScore != *(v4 + 32))
+  if (self->_noiseScore != *(equalCopy + 32))
   {
     goto LABEL_58;
   }
 
-  if (self->_failureScore != *(v4 + 21))
+  if (self->_failureScore != *(equalCopy + 21))
   {
     goto LABEL_58;
   }
 
-  if (self->_pleasantCompositionScore != *(v4 + 38))
+  if (self->_pleasantCompositionScore != *(equalCopy + 38))
   {
     goto LABEL_58;
   }
 
-  if (self->_interestingSubjectScore != *(v4 + 28))
+  if (self->_interestingSubjectScore != *(equalCopy + 28))
   {
     goto LABEL_58;
   }
 
-  if (self->_intrusiveObjectPresenceScore != *(v4 + 29))
+  if (self->_intrusiveObjectPresenceScore != *(equalCopy + 29))
   {
     goto LABEL_58;
   }
 
-  if (self->_pleasantCameraTiltScore != *(v4 + 37))
+  if (self->_pleasantCameraTiltScore != *(equalCopy + 37))
   {
     goto LABEL_58;
   }
 
-  if (self->_lowLight != *(v4 + 31))
+  if (self->_lowLight != *(equalCopy + 31))
   {
     goto LABEL_58;
   }
 
   preferredCropRect = self->_preferredCropRect;
-  if (preferredCropRect | *(v4 + 23))
+  if (preferredCropRect | *(equalCopy + 23))
   {
     if (![(VCPProtoBounds *)preferredCropRect isEqual:?])
     {
@@ -952,7 +952,7 @@
   }
 
   acceptableCropRect = self->_acceptableCropRect;
-  if (acceptableCropRect | *(v4 + 3))
+  if (acceptableCropRect | *(equalCopy + 3))
   {
     if (![(VCPProtoBounds *)acceptableCropRect isEqual:?])
     {
@@ -961,7 +961,7 @@
   }
 
   objectSaliencyRects = self->_objectSaliencyRects;
-  if (objectSaliencyRects | *(v4 + 17))
+  if (objectSaliencyRects | *(equalCopy + 17))
   {
     if (![(NSMutableArray *)objectSaliencyRects isEqual:?])
     {
@@ -970,7 +970,7 @@
   }
 
   sceneprintData = self->_sceneprintData;
-  if (sceneprintData | *(v4 + 26))
+  if (sceneprintData | *(equalCopy + 26))
   {
     if (![(NSData *)sceneprintData isEqual:?])
     {
@@ -978,13 +978,13 @@
     }
   }
 
-  if (self->_wallpaperScore != *(v4 + 56))
+  if (self->_wallpaperScore != *(equalCopy + 56))
   {
     goto LABEL_58;
   }
 
   colorNormalizationData = self->_colorNormalizationData;
-  if (colorNormalizationData | *(v4 + 7))
+  if (colorNormalizationData | *(equalCopy + 7))
   {
     if (![(NSData *)colorNormalizationData isEqual:?])
     {
@@ -992,28 +992,28 @@
     }
   }
 
-  if (self->_blurrinessScore != *(v4 + 12))
+  if (self->_blurrinessScore != *(equalCopy + 12))
   {
     goto LABEL_58;
   }
 
-  if (self->_exposureScore != *(v4 + 20))
+  if (self->_exposureScore != *(equalCopy + 20))
   {
     goto LABEL_58;
   }
 
-  if (self->_probableRotationDirection != *(v4 + 48))
+  if (self->_probableRotationDirection != *(equalCopy + 48))
   {
     goto LABEL_58;
   }
 
-  if (self->_probableRotationDirectionConfidence != *(v4 + 49))
+  if (self->_probableRotationDirectionConfidence != *(equalCopy + 49))
   {
     goto LABEL_58;
   }
 
   duplicateMatchingData = self->_duplicateMatchingData;
-  if (duplicateMatchingData | *(v4 + 9))
+  if (duplicateMatchingData | *(equalCopy + 9))
   {
     if (![(NSData *)duplicateMatchingData isEqual:?])
     {
@@ -1022,7 +1022,7 @@
   }
 
   duplicateMatchingAlternateData = self->_duplicateMatchingAlternateData;
-  if (duplicateMatchingAlternateData | *(v4 + 8))
+  if (duplicateMatchingAlternateData | *(equalCopy + 8))
   {
     if (![(NSData *)duplicateMatchingAlternateData isEqual:?])
     {
@@ -1030,20 +1030,20 @@
     }
   }
 
-  if (self->_iconicScore != *(v4 + 23))
+  if (self->_iconicScore != *(equalCopy + 23))
   {
     goto LABEL_58;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 240) & 1) == 0 || self->_imageEmbeddingVersion != *(v4 + 26))
+    if ((*(equalCopy + 240) & 1) == 0 || self->_imageEmbeddingVersion != *(equalCopy + 26))
     {
       goto LABEL_58;
     }
   }
 
-  else if (*(v4 + 240))
+  else if (*(equalCopy + 240))
   {
 LABEL_58:
     v15 = 0;
@@ -1051,7 +1051,7 @@ LABEL_58:
   }
 
   imageEmbeddingResults = self->_imageEmbeddingResults;
-  if (imageEmbeddingResults | *(v4 + 12))
+  if (imageEmbeddingResults | *(equalCopy + 12))
   {
     v15 = [(NSMutableArray *)imageEmbeddingResults isEqual:?];
   }
@@ -1891,23 +1891,23 @@ LABEL_59:
   return v201 ^ v202 ^ (2654435761 * algorithmVersion) ^ v200 ^ v198 ^ v197 ^ v196 ^ v195 ^ v158 ^ v159 ^ v160 ^ v161 ^ v162 ^ v163 ^ v189 ^ v164 ^ v165 ^ v166 ^ v167 ^ v168 ^ v169 ^ v170 ^ v181 ^ v180 ^ v179 ^ v148 ^ v178 ^ v177 ^ v176 ^ v175 ^ v174 ^ v131 ^ v173 ^ v138 ^ v143 ^ (2654435761 * probableRotationDirection) ^ v147 ^ v150 ^ v151 ^ v157 ^ v171 ^ [(NSMutableArray *)self->_imageEmbeddingResults hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(MADProtoSceneAsset *)self setAssetCloudIdentifier:?];
   }
 
-  self->_assetAdjustmentTimestamp = *(v4 + 2);
-  self->_algorithmVersion = *(v4 + 8);
-  self->_adjustmentVersion = *(v4 + 1);
+  self->_assetAdjustmentTimestamp = *(fromCopy + 2);
+  self->_algorithmVersion = *(fromCopy + 8);
+  self->_adjustmentVersion = *(fromCopy + 1);
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = *(v4 + 25);
+  v5 = *(fromCopy + 25);
   v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v6)
   {
@@ -1931,30 +1931,30 @@ LABEL_59:
     while (v7);
   }
 
-  self->_overallAestheticScore = *(v4 + 36);
-  self->_wellFramedSubjectScore = *(v4 + 58);
-  self->_wellChosenSubjectScore = *(v4 + 57);
-  self->_tastefullyBlurredScore = *(v4 + 55);
-  self->_sharplyFocusedSubjectScore = *(v4 + 54);
-  self->_wellTimedShotScore = *(v4 + 59);
-  self->_pleasantLightingScore = *(v4 + 39);
-  self->_pleasantReflectionsScore = *(v4 + 43);
-  self->_harmoniousColorScore = *(v4 + 22);
-  self->_livelyColorScore = *(v4 + 30);
-  self->_pleasantSymmetryScore = *(v4 + 44);
-  self->_pleasantPatternScore = *(v4 + 40);
-  self->_immersivenessScore = *(v4 + 27);
-  self->_pleasantPerspectiveScore = *(v4 + 41);
-  self->_pleasantPostProcessingScore = *(v4 + 42);
-  self->_noiseScore = *(v4 + 32);
-  self->_failureScore = *(v4 + 21);
-  self->_pleasantCompositionScore = *(v4 + 38);
-  self->_interestingSubjectScore = *(v4 + 28);
-  self->_intrusiveObjectPresenceScore = *(v4 + 29);
-  self->_pleasantCameraTiltScore = *(v4 + 37);
-  self->_lowLight = *(v4 + 31);
+  self->_overallAestheticScore = *(fromCopy + 36);
+  self->_wellFramedSubjectScore = *(fromCopy + 58);
+  self->_wellChosenSubjectScore = *(fromCopy + 57);
+  self->_tastefullyBlurredScore = *(fromCopy + 55);
+  self->_sharplyFocusedSubjectScore = *(fromCopy + 54);
+  self->_wellTimedShotScore = *(fromCopy + 59);
+  self->_pleasantLightingScore = *(fromCopy + 39);
+  self->_pleasantReflectionsScore = *(fromCopy + 43);
+  self->_harmoniousColorScore = *(fromCopy + 22);
+  self->_livelyColorScore = *(fromCopy + 30);
+  self->_pleasantSymmetryScore = *(fromCopy + 44);
+  self->_pleasantPatternScore = *(fromCopy + 40);
+  self->_immersivenessScore = *(fromCopy + 27);
+  self->_pleasantPerspectiveScore = *(fromCopy + 41);
+  self->_pleasantPostProcessingScore = *(fromCopy + 42);
+  self->_noiseScore = *(fromCopy + 32);
+  self->_failureScore = *(fromCopy + 21);
+  self->_pleasantCompositionScore = *(fromCopy + 38);
+  self->_interestingSubjectScore = *(fromCopy + 28);
+  self->_intrusiveObjectPresenceScore = *(fromCopy + 29);
+  self->_pleasantCameraTiltScore = *(fromCopy + 37);
+  self->_lowLight = *(fromCopy + 31);
   preferredCropRect = self->_preferredCropRect;
-  v11 = *(v4 + 23);
+  v11 = *(fromCopy + 23);
   if (preferredCropRect)
   {
     if (v11)
@@ -1969,7 +1969,7 @@ LABEL_59:
   }
 
   acceptableCropRect = self->_acceptableCropRect;
-  v13 = *(v4 + 3);
+  v13 = *(fromCopy + 3);
   if (acceptableCropRect)
   {
     if (v13)
@@ -1987,7 +1987,7 @@ LABEL_59:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = *(v4 + 17);
+  v14 = *(fromCopy + 17);
   v15 = [v14 countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v15)
   {
@@ -2011,35 +2011,35 @@ LABEL_59:
     while (v16);
   }
 
-  if (*(v4 + 26))
+  if (*(fromCopy + 26))
   {
     [(MADProtoSceneAsset *)self setSceneprintData:?];
   }
 
-  self->_wallpaperScore = *(v4 + 56);
-  if (*(v4 + 7))
+  self->_wallpaperScore = *(fromCopy + 56);
+  if (*(fromCopy + 7))
   {
     [(MADProtoSceneAsset *)self setColorNormalizationData:?];
   }
 
-  self->_blurrinessScore = *(v4 + 12);
-  self->_exposureScore = *(v4 + 20);
-  self->_probableRotationDirection = *(v4 + 48);
-  self->_probableRotationDirectionConfidence = *(v4 + 49);
-  if (*(v4 + 9))
+  self->_blurrinessScore = *(fromCopy + 12);
+  self->_exposureScore = *(fromCopy + 20);
+  self->_probableRotationDirection = *(fromCopy + 48);
+  self->_probableRotationDirectionConfidence = *(fromCopy + 49);
+  if (*(fromCopy + 9))
   {
     [(MADProtoSceneAsset *)self setDuplicateMatchingData:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(MADProtoSceneAsset *)self setDuplicateMatchingAlternateData:?];
   }
 
-  self->_iconicScore = *(v4 + 23);
-  if (*(v4 + 240))
+  self->_iconicScore = *(fromCopy + 23);
+  if (*(fromCopy + 240))
   {
-    self->_imageEmbeddingVersion = *(v4 + 26);
+    self->_imageEmbeddingVersion = *(fromCopy + 26);
     *&self->_has |= 1u;
   }
 
@@ -2047,7 +2047,7 @@ LABEL_59:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v19 = *(v4 + 12);
+  v19 = *(fromCopy + 12);
   v20 = [v19 countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v20)
   {
@@ -2072,28 +2072,28 @@ LABEL_59:
   }
 }
 
-+ (id)protoFromPhotosAsset:(id)a3
++ (id)protoFromPhotosAsset:(id)asset
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetCopy = asset;
   v4 = objc_alloc_init(MADProtoSceneAsset);
-  v5 = [v3 photoLibrary];
-  v6 = [v3 localIdentifier];
+  photoLibrary = [assetCopy photoLibrary];
+  localIdentifier = [assetCopy localIdentifier];
   v47 = 0;
-  v7 = [v5 mad_cloudIdentifierForLocalIdentifier:v6 error:&v47];
+  v7 = [photoLibrary mad_cloudIdentifierForLocalIdentifier:localIdentifier error:&v47];
   v38 = v47;
   [(MADProtoSceneAsset *)v4 setAssetCloudIdentifier:v7];
 
-  v8 = [(MADProtoSceneAsset *)v4 assetCloudIdentifier];
-  v9 = v8 == 0;
+  assetCloudIdentifier = [(MADProtoSceneAsset *)v4 assetCloudIdentifier];
+  v9 = assetCloudIdentifier == 0;
 
   if (v9)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v35 = [v3 localIdentifier];
+      localIdentifier2 = [assetCopy localIdentifier];
       *buf = 138412546;
-      v51 = v35;
+      v51 = localIdentifier2;
       v52 = 2112;
       v53 = v38;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@] Failed to fetch asset's cloud identifier: %@", buf, 0x16u);
@@ -2104,22 +2104,22 @@ LABEL_59:
 
   else
   {
-    v10 = [v3 adjustmentTimestamp];
-    [v10 timeIntervalSinceReferenceDate];
+    adjustmentTimestamp = [assetCopy adjustmentTimestamp];
+    [adjustmentTimestamp timeIntervalSinceReferenceDate];
     [(MADProtoSceneAsset *)v4 setAssetAdjustmentTimestamp:?];
 
-    v37 = [v3 sceneAnalysisProperties];
-    -[MADProtoSceneAsset setAlgorithmVersion:](v4, "setAlgorithmVersion:", [v37 sceneAnalysisVersion]);
-    v11 = [v37 sceneAnalysisTimestamp];
-    [v11 timeIntervalSinceReferenceDate];
+    sceneAnalysisProperties = [assetCopy sceneAnalysisProperties];
+    -[MADProtoSceneAsset setAlgorithmVersion:](v4, "setAlgorithmVersion:", [sceneAnalysisProperties sceneAnalysisVersion]);
+    sceneAnalysisTimestamp = [sceneAnalysisProperties sceneAnalysisTimestamp];
+    [sceneAnalysisTimestamp timeIntervalSinceReferenceDate];
     [(MADProtoSceneAsset *)v4 setAdjustmentVersion:?];
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v12 = [v3 sceneClassifications];
-    v13 = [v12 countByEnumeratingWithState:&v43 objects:v49 count:16];
+    sceneClassifications = [assetCopy sceneClassifications];
+    v13 = [sceneClassifications countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v13)
     {
       v14 = *v44;
@@ -2129,79 +2129,79 @@ LABEL_59:
         {
           if (*v44 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(sceneClassifications);
           }
 
           v16 = [MADProtoSceneClassification protoFromPhotosSceneClassification:*(*(&v43 + 1) + 8 * i)];
           [(MADProtoSceneAsset *)v4 addSceneClassifications:v16];
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v43 objects:v49 count:16];
+        v13 = [sceneClassifications countByEnumeratingWithState:&v43 objects:v49 count:16];
       }
 
       while (v13);
     }
 
-    [v3 overallAestheticScore];
+    [assetCopy overallAestheticScore];
     [(MADProtoSceneAsset *)v4 setOverallAestheticScore:?];
-    v17 = [v3 aestheticProperties];
-    [v17 wellFramedSubjectScore];
+    aestheticProperties = [assetCopy aestheticProperties];
+    [aestheticProperties wellFramedSubjectScore];
     [(MADProtoSceneAsset *)v4 setWellFramedSubjectScore:?];
-    [v17 wellChosenSubjectScore];
+    [aestheticProperties wellChosenSubjectScore];
     [(MADProtoSceneAsset *)v4 setWellChosenSubjectScore:?];
-    [v17 tastefullyBlurredScore];
+    [aestheticProperties tastefullyBlurredScore];
     [(MADProtoSceneAsset *)v4 setTastefullyBlurredScore:?];
-    [v17 sharplyFocusedSubjectScore];
+    [aestheticProperties sharplyFocusedSubjectScore];
     [(MADProtoSceneAsset *)v4 setSharplyFocusedSubjectScore:?];
-    [v17 wellTimedShotScore];
+    [aestheticProperties wellTimedShotScore];
     [(MADProtoSceneAsset *)v4 setWellTimedShotScore:?];
-    [v17 pleasantLightingScore];
+    [aestheticProperties pleasantLightingScore];
     [(MADProtoSceneAsset *)v4 setPleasantLightingScore:?];
-    [v17 pleasantReflectionsScore];
+    [aestheticProperties pleasantReflectionsScore];
     [(MADProtoSceneAsset *)v4 setPleasantReflectionsScore:?];
-    [v17 harmoniousColorScore];
+    [aestheticProperties harmoniousColorScore];
     [(MADProtoSceneAsset *)v4 setHarmoniousColorScore:?];
-    [v17 livelyColorScore];
+    [aestheticProperties livelyColorScore];
     [(MADProtoSceneAsset *)v4 setLivelyColorScore:?];
-    [v17 pleasantSymmetryScore];
+    [aestheticProperties pleasantSymmetryScore];
     [(MADProtoSceneAsset *)v4 setPleasantSymmetryScore:?];
-    [v17 pleasantPatternScore];
+    [aestheticProperties pleasantPatternScore];
     [(MADProtoSceneAsset *)v4 setPleasantPatternScore:?];
-    [v17 immersivenessScore];
+    [aestheticProperties immersivenessScore];
     [(MADProtoSceneAsset *)v4 setImmersivenessScore:?];
-    [v17 pleasantPerspectiveScore];
+    [aestheticProperties pleasantPerspectiveScore];
     [(MADProtoSceneAsset *)v4 setPleasantPerspectiveScore:?];
-    [v17 pleasantPostProcessingScore];
+    [aestheticProperties pleasantPostProcessingScore];
     [(MADProtoSceneAsset *)v4 setPleasantPostProcessingScore:?];
-    [v17 noiseScore];
+    [aestheticProperties noiseScore];
     [(MADProtoSceneAsset *)v4 setNoiseScore:?];
-    [v17 failureScore];
+    [aestheticProperties failureScore];
     [(MADProtoSceneAsset *)v4 setFailureScore:?];
-    [v17 pleasantCompositionScore];
+    [aestheticProperties pleasantCompositionScore];
     [(MADProtoSceneAsset *)v4 setPleasantCompositionScore:?];
-    [v17 interestingSubjectScore];
+    [aestheticProperties interestingSubjectScore];
     [(MADProtoSceneAsset *)v4 setInterestingSubjectScore:?];
-    [v17 intrusiveObjectPresenceScore];
+    [aestheticProperties intrusiveObjectPresenceScore];
     [(MADProtoSceneAsset *)v4 setIntrusiveObjectPresenceScore:?];
-    [v17 pleasantCameraTiltScore];
+    [aestheticProperties pleasantCameraTiltScore];
     [(MADProtoSceneAsset *)v4 setPleasantCameraTiltScore:?];
-    [v17 lowLight];
+    [aestheticProperties lowLight];
     [(MADProtoSceneAsset *)v4 setLowLight:?];
-    [v3 preferredCropRect];
+    [assetCopy preferredCropRect];
     v18 = [VCPProtoBounds boundsWithCGRect:?];
     [(MADProtoSceneAsset *)v4 setPreferredCropRect:v18];
 
-    [v3 acceptableCropRect];
+    [assetCopy acceptableCropRect];
     v19 = [VCPProtoBounds boundsWithCGRect:?];
     [(MADProtoSceneAsset *)v4 setAcceptableCropRect:v19];
 
-    v20 = [v3 curationProperties];
+    curationProperties = [assetCopy curationProperties];
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v21 = [v20 objectSaliencyRects];
-    v22 = [v21 countByEnumeratingWithState:&v39 objects:v48 count:16];
+    objectSaliencyRects = [curationProperties objectSaliencyRects];
+    v22 = [objectSaliencyRects countByEnumeratingWithState:&v39 objects:v48 count:16];
     if (v22)
     {
       v23 = *v40;
@@ -2211,7 +2211,7 @@ LABEL_59:
         {
           if (*v40 != v23)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(objectSaliencyRects);
           }
 
           [*(*(&v39 + 1) + 8 * j) rectValue];
@@ -2219,37 +2219,37 @@ LABEL_59:
           [(MADProtoSceneAsset *)v4 addObjectSaliencyRects:v25];
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v39 objects:v48 count:16];
+        v22 = [objectSaliencyRects countByEnumeratingWithState:&v39 objects:v48 count:16];
       }
 
       while (v22);
     }
 
-    v26 = [v3 mediaAnalysisProperties];
-    [v26 wallpaperScore];
+    mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+    [mediaAnalysisProperties wallpaperScore];
     [(MADProtoSceneAsset *)v4 setWallpaperScore:?];
-    v27 = [v26 colorNormalizationData];
-    [(MADProtoSceneAsset *)v4 setColorNormalizationData:v27];
+    colorNormalizationData = [mediaAnalysisProperties colorNormalizationData];
+    [(MADProtoSceneAsset *)v4 setColorNormalizationData:colorNormalizationData];
 
-    [v26 blurrinessScore];
+    [mediaAnalysisProperties blurrinessScore];
     [(MADProtoSceneAsset *)v4 setBlurrinessScore:?];
-    [v26 exposureScore];
+    [mediaAnalysisProperties exposureScore];
     [(MADProtoSceneAsset *)v4 setExposureScore:?];
-    -[MADProtoSceneAsset setProbableRotationDirection:](v4, "setProbableRotationDirection:", [v26 probableRotationDirection]);
-    [v26 probableRotationDirectionConfidence];
+    -[MADProtoSceneAsset setProbableRotationDirection:](v4, "setProbableRotationDirection:", [mediaAnalysisProperties probableRotationDirection]);
+    [mediaAnalysisProperties probableRotationDirectionConfidence];
     [(MADProtoSceneAsset *)v4 setProbableRotationDirectionConfidence:?];
-    v28 = [v3 sceneprintProperties];
-    v29 = [v28 sceneprint];
-    [(MADProtoSceneAsset *)v4 setSceneprintData:v29];
+    sceneprintProperties = [assetCopy sceneprintProperties];
+    sceneprint = [sceneprintProperties sceneprint];
+    [(MADProtoSceneAsset *)v4 setSceneprintData:sceneprint];
 
-    v30 = [v28 duplicateMatchingData];
-    [(MADProtoSceneAsset *)v4 setDuplicateMatchingData:v30];
+    duplicateMatchingData = [sceneprintProperties duplicateMatchingData];
+    [(MADProtoSceneAsset *)v4 setDuplicateMatchingData:duplicateMatchingData];
 
-    v31 = [v28 duplicateMatchingAlternateData];
-    [(MADProtoSceneAsset *)v4 setDuplicateMatchingAlternateData:v31];
+    duplicateMatchingAlternateData = [sceneprintProperties duplicateMatchingAlternateData];
+    [(MADProtoSceneAsset *)v4 setDuplicateMatchingAlternateData:duplicateMatchingAlternateData];
 
-    v32 = [v3 iconicScoreProperties];
-    [v32 iconicScore];
+    iconicScoreProperties = [assetCopy iconicScoreProperties];
+    [iconicScoreProperties iconicScore];
     *&v33 = v33;
     [(MADProtoSceneAsset *)v4 setIconicScore:v33];
     v34 = v4;
@@ -2258,18 +2258,18 @@ LABEL_59:
   return v34;
 }
 
-- (void)persistToPhotosAsset:(id)a3
+- (void)persistToPhotosAsset:(id)asset
 {
   v60 = *MEMORY[0x1E69E9840];
-  v43 = a3;
+  assetCopy = asset;
   v4 = [MEMORY[0x1E6978640] changeRequestForAsset:?];
   v5 = [MEMORY[0x1E695DFA8] set];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v6 = [(MADProtoSceneAsset *)self sceneClassifications];
-  v7 = [v6 countByEnumeratingWithState:&v48 objects:v59 count:16];
+  sceneClassifications = [(MADProtoSceneAsset *)self sceneClassifications];
+  v7 = [sceneClassifications countByEnumeratingWithState:&v48 objects:v59 count:16];
   if (v7)
   {
     v8 = *v49;
@@ -2279,24 +2279,24 @@ LABEL_59:
       {
         if (*v49 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sceneClassifications);
         }
 
-        v10 = [*(*(&v48 + 1) + 8 * i) photosSceneClassification];
-        [v5 addObject:v10];
+        photosSceneClassification = [*(*(&v48 + 1) + 8 * i) photosSceneClassification];
+        [v5 addObject:photosSceneClassification];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v48 objects:v59 count:16];
+      v7 = [sceneClassifications countByEnumeratingWithState:&v48 objects:v59 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(MADProtoSceneAsset *)self algorithmVersion];
+  algorithmVersion = [(MADProtoSceneAsset *)self algorithmVersion];
   v12 = MEMORY[0x1E695DF00];
   [(MADProtoSceneAsset *)self adjustmentVersion];
   v13 = [v12 dateWithTimeIntervalSinceReferenceDate:?];
-  [v4 setSceneClassifications:v5 ofType:0 version:v11 timestamp:v13];
+  [v4 setSceneClassifications:v5 ofType:0 version:algorithmVersion timestamp:v13];
 
   [(MADProtoSceneAsset *)self overallAestheticScore];
   [v4 setOverallAestheticScore:?];
@@ -2342,21 +2342,21 @@ LABEL_59:
   [v4 setPleasantCameraTiltScore:?];
   [(MADProtoSceneAsset *)self lowLight];
   [v4 setLowLight:?];
-  v14 = [(MADProtoSceneAsset *)self preferredCropRect];
-  [v14 rectValue];
+  preferredCropRect = [(MADProtoSceneAsset *)self preferredCropRect];
+  [preferredCropRect rectValue];
   [v4 setPreferredCropRectWithNormalizedRect:?];
 
-  v15 = [(MADProtoSceneAsset *)self acceptableCropRect];
-  [v15 rectValue];
+  acceptableCropRect = [(MADProtoSceneAsset *)self acceptableCropRect];
+  [acceptableCropRect rectValue];
   [v4 setAcceptableCropRectWithNormalizedRect:?];
 
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v17 = [(MADProtoSceneAsset *)self objectSaliencyRects];
-  v18 = [v17 countByEnumeratingWithState:&v44 objects:v58 count:16];
+  objectSaliencyRects = [(MADProtoSceneAsset *)self objectSaliencyRects];
+  v18 = [objectSaliencyRects countByEnumeratingWithState:&v44 objects:v58 count:16];
   if (v18)
   {
     v19 = *v45;
@@ -2366,29 +2366,29 @@ LABEL_59:
       {
         if (*v45 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(objectSaliencyRects);
         }
 
         v21 = MEMORY[0x1E696B098];
         [*(*(&v44 + 1) + 8 * j) rectValue];
         v22 = [v21 valueWithRect:?];
-        [v16 addObject:v22];
+        [array addObject:v22];
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v44 objects:v58 count:16];
+      v18 = [objectSaliencyRects countByEnumeratingWithState:&v44 objects:v58 count:16];
     }
 
     while (v18);
   }
 
-  [v4 setObjectSaliencyRects:v16];
-  v23 = [(MADProtoSceneAsset *)self sceneprintData];
-  [v4 setSceneprintData:v23];
+  [v4 setObjectSaliencyRects:array];
+  sceneprintData = [(MADProtoSceneAsset *)self sceneprintData];
+  [v4 setSceneprintData:sceneprintData];
 
   [(MADProtoSceneAsset *)self wallpaperScore];
   [v4 setWallpaperScore:?];
-  v24 = [(MADProtoSceneAsset *)self colorNormalizationData];
-  [v4 setColorNormalizationData:v24];
+  colorNormalizationData = [(MADProtoSceneAsset *)self colorNormalizationData];
+  [v4 setColorNormalizationData:colorNormalizationData];
 
   [(MADProtoSceneAsset *)self blurrinessScore];
   [v4 setBlurrinessScore:?];
@@ -2397,11 +2397,11 @@ LABEL_59:
   [v4 setProbableRotationDirection:{-[MADProtoSceneAsset probableRotationDirection](self, "probableRotationDirection")}];
   [(MADProtoSceneAsset *)self probableRotationDirectionConfidence];
   [v4 setProbableRotationDirectionConfidence:?];
-  v25 = [(MADProtoSceneAsset *)self duplicateMatchingData];
-  if (v25)
+  duplicateMatchingData = [(MADProtoSceneAsset *)self duplicateMatchingData];
+  if (duplicateMatchingData)
   {
-    v26 = [(MADProtoSceneAsset *)self duplicateMatchingAlternateData];
-    v27 = v26 != 0;
+    duplicateMatchingAlternateData = [(MADProtoSceneAsset *)self duplicateMatchingAlternateData];
+    v27 = duplicateMatchingAlternateData != 0;
   }
 
   else
@@ -2409,16 +2409,16 @@ LABEL_59:
     v27 = 0;
   }
 
-  v28 = [(MADProtoSceneAsset *)self duplicateMatchingData];
-  v29 = [(MADProtoSceneAsset *)self duplicateMatchingAlternateData];
-  [v4 setDuplicateMatchingData:v28 duplicateMatchingAlternateData:v29 processingSucceeded:v27];
+  duplicateMatchingData2 = [(MADProtoSceneAsset *)self duplicateMatchingData];
+  duplicateMatchingAlternateData2 = [(MADProtoSceneAsset *)self duplicateMatchingAlternateData];
+  [v4 setDuplicateMatchingData:duplicateMatchingData2 duplicateMatchingAlternateData:duplicateMatchingAlternateData2 processingSucceeded:v27];
 
   [(MADProtoSceneAsset *)self iconicScore];
   [v4 setIconicScore:v30];
-  if ([v43 mad_needsImageEmbeddingProcessing])
+  if ([assetCopy mad_needsImageEmbeddingProcessing])
   {
-    v31 = [v43 localIdentifier];
-    v32 = [(MADProtoSceneAsset *)self imageEmbeddingVSKAssetWithLocalIdentifier:v31];
+    localIdentifier = [assetCopy localIdentifier];
+    v32 = [(MADProtoSceneAsset *)self imageEmbeddingVSKAssetWithLocalIdentifier:localIdentifier];
 
     if (!v32)
     {
@@ -2428,12 +2428,12 @@ LABEL_59:
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v33 = [v43 localIdentifier];
-      v34 = [(MADProtoSceneAsset *)self imageEmbeddingVersion];
+      localIdentifier2 = [assetCopy localIdentifier];
+      imageEmbeddingVersion = [(MADProtoSceneAsset *)self imageEmbeddingVersion];
       *buf = 138412546;
-      v53 = v33;
+      v53 = localIdentifier2;
       v54 = 1024;
-      v55 = v34;
+      v55 = imageEmbeddingVersion;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADProtoSceneAsset->Photos][%@] Persisting image embedding version %d", buf, 0x12u);
     }
 
@@ -2447,15 +2447,15 @@ LABEL_59:
 
   v35 = 0;
 LABEL_26:
-  if ([v43 mad_isEligibleForComputeSync])
+  if ([assetCopy mad_isEligibleForComputeSync])
   {
     v36 = [(MADProtoSceneAsset *)self algorithmVersion]? v35 : 1;
     if ((v36 & 1) == 0)
     {
-      v37 = [v43 mad_analysisStageAfterCompletingAnalysis:2];
+      v37 = [assetCopy mad_analysisStageAfterCompletingAnalysis:2];
       [v4 setLocalAnalysisStage:v37];
       v38 = [MADVSKEmbeddingResults resultsWithImageEmbedding:v32 imageEmbeddingVersion:[(MADProtoSceneAsset *)self imageEmbeddingVersion] videoEmbeddingAsset:0 videoEmbeddingVersion:0];
-      v39 = [MADComputeSyncPayloadResults payloadDataForAsset:v43 targetStage:v37 embeddingResults:v38 fullAnalysisResults:0];
+      v39 = [MADComputeSyncPayloadResults payloadDataForAsset:assetCopy targetStage:v37 embeddingResults:v38 fullAnalysisResults:0];
       if (v39)
       {
         [v4 setComputeSyncMediaAnalysisPayload:v39];
@@ -2463,32 +2463,32 @@ LABEL_26:
 
       else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v42 = [v43 localIdentifier];
-        v41 = [v43 mediaAnalysisProperties];
-        v40 = [v41 localAnalysisStage];
+        localIdentifier3 = [assetCopy localIdentifier];
+        mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+        localAnalysisStage = [mediaAnalysisProperties localAnalysisStage];
         *buf = 138412802;
-        v53 = v42;
+        v53 = localIdentifier3;
         v54 = 1024;
         v55 = v37;
         v56 = 1024;
-        v57 = v40;
+        v57 = localAnalysisStage;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[%@] No compute sync payload generated for target stage %d (current stage %d)", buf, 0x18u);
       }
     }
   }
 }
 
-- (void)setImageEmbeddingResultsFromVSKAsset:(id)a3 imageEmbeddingVersion:(signed __int16)a4
+- (void)setImageEmbeddingResultsFromVSKAsset:(id)asset imageEmbeddingVersion:(signed __int16)version
 {
-  v4 = a4;
-  v9 = a3;
+  versionCopy = version;
+  assetCopy = asset;
   v6 = [VCPProtoEmbeddingResult resultsFromVSKAsset:?];
   [(MADProtoSceneAsset *)self setImageEmbeddingResults:v6];
 
-  v7 = [(MADProtoSceneAsset *)self imageEmbeddingResults];
-  if ([v7 count])
+  imageEmbeddingResults = [(MADProtoSceneAsset *)self imageEmbeddingResults];
+  if ([imageEmbeddingResults count])
   {
-    v8 = v4;
+    v8 = versionCopy;
   }
 
   else
@@ -2499,14 +2499,14 @@ LABEL_26:
   [(MADProtoSceneAsset *)self setImageEmbeddingVersion:v8];
 }
 
-- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)a3
+- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(MADProtoSceneAsset *)self imageEmbeddingVersion]>= 73)
   {
-    v6 = [(MADProtoSceneAsset *)self imageEmbeddingResults];
-    v5 = [VCPProtoEmbeddingResult imageEmbeddingVSKAssetFromResults:v6 localIdentifier:v4];
+    imageEmbeddingResults = [(MADProtoSceneAsset *)self imageEmbeddingResults];
+    v5 = [VCPProtoEmbeddingResult imageEmbeddingVSKAssetFromResults:imageEmbeddingResults localIdentifier:identifierCopy];
   }
 
   else
@@ -2514,9 +2514,9 @@ LABEL_26:
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412802;
-      v9 = v4;
+      v9 = identifierCopy;
       v10 = 1024;
-      v11 = [(MADProtoSceneAsset *)self imageEmbeddingVersion];
+      imageEmbeddingVersion = [(MADProtoSceneAsset *)self imageEmbeddingVersion];
       v12 = 1024;
       v13 = 73;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProtoSceneAsset->VSKAsset][%@] Image embedding version %d < forward compatible version %d", &v8, 0x18u);

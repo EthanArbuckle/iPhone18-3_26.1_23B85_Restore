@@ -1,63 +1,63 @@
 @interface RTPurgeManager
-+ (id)purgeTypeToString:(int64_t)a3;
++ (id)purgeTypeToString:(int64_t)string;
 - (RTLifeCycleManager)lifeCycleManager;
-- (RTPurgeManager)initWithDefaultsManager:(id)a3 learnedLocationStore:(id)a4 lifeCycleManager:(id)a5 platform:(id)a6 purgers:(id)a7 visitStore:(id)a8 xpcActivityManager:(id)a9;
-- (id)_cacheDateDependencyForVisitWithDateInterval:(id)a3;
-- (id)_cacheDateDependencyLabeledLearnedVisitWithDateInterval:(id)a3;
-- (id)_cacheDateDependencyMomentsWithDateInterval:(id)a3;
-- (id)_cacheDateDependencyUnlabeledLearnedVisitWithDateInterval:(id)a3;
-- (id)_determinePruneDate:(id)a3 boundaryInterval:(id)a4;
-- (id)_firstUnlabeledLearnedVisitWithError:(id *)a3;
+- (RTPurgeManager)initWithDefaultsManager:(id)manager learnedLocationStore:(id)store lifeCycleManager:(id)cycleManager platform:(id)platform purgers:(id)purgers visitStore:(id)visitStore xpcActivityManager:(id)activityManager;
+- (id)_cacheDateDependencyForVisitWithDateInterval:(id)interval;
+- (id)_cacheDateDependencyLabeledLearnedVisitWithDateInterval:(id)interval;
+- (id)_cacheDateDependencyMomentsWithDateInterval:(id)interval;
+- (id)_cacheDateDependencyUnlabeledLearnedVisitWithDateInterval:(id)interval;
+- (id)_determinePruneDate:(id)date boundaryInterval:(id)interval;
+- (id)_firstUnlabeledLearnedVisitWithError:(id *)error;
 - (id)_generatePeriodicPurgeReferenceDateDict;
-- (id)_lastLabeledLearnedVisitWithError:(id *)a3;
-- (id)_lastVisitWithError:(id *)a3;
-- (id)_selectPruneDateFromReferenceDateDict:(id)a3 purger:(id)a4 type:(int64_t)a5;
-- (id)_shortTermReferenceDate:(id)a3;
+- (id)_lastLabeledLearnedVisitWithError:(id *)error;
+- (id)_lastVisitWithError:(id *)error;
+- (id)_selectPruneDateFromReferenceDateDict:(id)dict purger:(id)purger type:(int64_t)type;
+- (id)_shortTermReferenceDate:(id)date;
 - (void)_handleLanguageChangeNotification;
-- (void)_purge:(id)a3;
-- (void)_purgeWithType:(int64_t)a3 referenceDate:(id)a4 handler:(id)a5;
+- (void)_purge:(id)_purge;
+- (void)_purgeWithType:(int64_t)type referenceDate:(id)date handler:(id)handler;
 - (void)_registerForMemoryPressureWarnings;
-- (void)_shutdownWithHandler:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)_unregisterForMemoryPressureWarnings;
-- (void)clearRoutineWithHandler:(id)a3;
+- (void)clearRoutineWithHandler:(id)handler;
 - (void)dealloc;
 - (void)handleLanguageChangeNotification;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
 - (void)onCoreLocationPrivacyReset;
-- (void)purge:(id)a3;
-- (void)setPressureState:(int64_t)a3;
+- (void)purge:(id)purge;
+- (void)setPressureState:(int64_t)state;
 @end
 
 @implementation RTPurgeManager
 
-+ (id)purgeTypeToString:(int64_t)a3
++ (id)purgeTypeToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788C6A98[a3];
+    return off_2788C6A98[string];
   }
 }
 
-- (RTPurgeManager)initWithDefaultsManager:(id)a3 learnedLocationStore:(id)a4 lifeCycleManager:(id)a5 platform:(id)a6 purgers:(id)a7 visitStore:(id)a8 xpcActivityManager:(id)a9
+- (RTPurgeManager)initWithDefaultsManager:(id)manager learnedLocationStore:(id)store lifeCycleManager:(id)cycleManager platform:(id)platform purgers:(id)purgers visitStore:(id)visitStore xpcActivityManager:(id)activityManager
 {
   v61 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v43 = a7;
-  v45 = a8;
-  v44 = a9;
-  v40 = v16;
-  obj = v17;
-  v42 = v18;
-  if (!v15)
+  managerCopy = manager;
+  storeCopy = store;
+  cycleManagerCopy = cycleManager;
+  platformCopy = platform;
+  purgersCopy = purgers;
+  visitStoreCopy = visitStore;
+  activityManagerCopy = activityManager;
+  v40 = storeCopy;
+  obj = cycleManagerCopy;
+  v42 = platformCopy;
+  if (!managerCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -69,7 +69,7 @@
     goto LABEL_39;
   }
 
-  if (!v16)
+  if (!storeCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@
     goto LABEL_39;
   }
 
-  if (!v17)
+  if (!cycleManagerCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -93,7 +93,7 @@
     goto LABEL_39;
   }
 
-  if (!v18)
+  if (!platformCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -105,7 +105,7 @@
     goto LABEL_39;
   }
 
-  if (!v45)
+  if (!visitStoreCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -117,7 +117,7 @@
     goto LABEL_39;
   }
 
-  if (!v44)
+  if (!activityManagerCopy)
   {
     v36 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -128,7 +128,7 @@
 
 LABEL_39:
 
-    v35 = 0;
+    selfCopy = 0;
     goto LABEL_40;
   }
 
@@ -145,7 +145,7 @@ LABEL_39:
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v22 = v43;
+    v22 = purgersCopy;
     v23 = [v22 countByEnumeratingWithState:&v55 objects:v60 count:16];
     if (v23)
     {
@@ -178,12 +178,12 @@ LABEL_39:
       while (v23);
     }
 
-    objc_storeStrong(&val->_learnedLocationStore, a4);
+    objc_storeStrong(&val->_learnedLocationStore, store);
     objc_storeWeak(&val->_lifeCycleManager, obj);
-    objc_storeStrong(&val->_platform, a6);
+    objc_storeStrong(&val->_platform, platform);
     objc_storeStrong(&val->_purgers, v21);
-    objc_storeStrong(&val->_visitStore, a8);
-    objc_storeStrong(&val->_xpcActivityManager, a9);
+    objc_storeStrong(&val->_visitStore, visitStore);
+    objc_storeStrong(&val->_xpcActivityManager, activityManager);
     v27 = objc_opt_new();
     notificationHelper = val->_notificationHelper;
     val->_notificationHelper = v27;
@@ -196,35 +196,35 @@ LABEL_39:
     v52[3] = &unk_2788C5908;
     objc_copyWeak(&v53, location);
     [(RTDarwinNotificationHelper *)v29 addObserverForNotificationName:@"com.apple.language.changed" handler:v52];
-    v30 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v30 addObserver:val selector:sel_onCoreLocationPrivacyReset name:*MEMORY[0x277CC1BB8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:val selector:sel_onCoreLocationPrivacyReset name:*MEMORY[0x277CC1BB8] object:0];
 
     if ([v42 internalInstall])
     {
       out_token = -1;
-      v31 = [@"PurgeNow" UTF8String];
-      v32 = [(RTNotifier *)val queue];
+      uTF8String = [@"PurgeNow" UTF8String];
+      queue = [(RTNotifier *)val queue];
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __127__RTPurgeManager_initWithDefaultsManager_learnedLocationStore_lifeCycleManager_platform_purgers_visitStore_xpcActivityManager___block_invoke_2;
       handler[3] = &unk_2788C5F98;
       objc_copyWeak(&v50, location);
-      v49 = v15;
-      notify_register_dispatch(v31, &out_token, v32, handler);
+      v49 = managerCopy;
+      notify_register_dispatch(uTF8String, &out_token, queue, handler);
 
       objc_destroyWeak(&v50);
     }
 
     v33 = [[RTXPCActivityCriteria alloc] initWithInterval:1 gracePeriod:0 priority:0 requireNetworkConnectivity:0 requireInexpensiveNetworkConnectivity:0 networkTransferDirection:0 allowBattery:86400.0 powerNap:43200.0];
     [(RTXPCActivityCriteria *)v33 setCpuIntensive:1];
-    v34 = [(RTPurgeManager *)val xpcActivityManager];
+    xpcActivityManager = [(RTPurgeManager *)val xpcActivityManager];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __127__RTPurgeManager_initWithDefaultsManager_learnedLocationStore_lifeCycleManager_platform_purgers_visitStore_xpcActivityManager___block_invoke_56;
     v46[3] = &unk_2788C6A18;
     v47[1] = a2;
     objc_copyWeak(v47, location);
-    [v34 registerActivityWithIdentifier:@"com.apple.routined.purge" criteria:v33 handler:v46];
+    [xpcActivityManager registerActivityWithIdentifier:@"com.apple.routined.purge" criteria:v33 handler:v46];
 
     objc_destroyWeak(v47);
     objc_destroyWeak(&v53);
@@ -234,10 +234,10 @@ LABEL_39:
   }
 
   self = v20;
-  v35 = self;
+  selfCopy = self;
 LABEL_40:
 
-  return v35;
+  return selfCopy;
 }
 
 void __127__RTPurgeManager_initWithDefaultsManager_learnedLocationStore_lifeCycleManager_platform_purgers_visitStore_xpcActivityManager___block_invoke(uint64_t a1)
@@ -361,8 +361,8 @@ void __127__RTPurgeManager_initWithDefaultsManager_learnedLocationStore_lifeCycl
     self->_memoryWarningDispatchSource = 0;
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(RTDarwinNotificationHelper *)self->_notificationHelper removeObserverForNotificationName:@"com.apple.language.changed"];
   purgers = self->_purgers;
@@ -373,38 +373,38 @@ void __127__RTPurgeManager_initWithDefaultsManager_learnedLocationStore_lifeCycl
   [(RTPurgeManager *)&v7 dealloc];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v8 = a3;
-  v4 = [(RTPurgeManager *)self xpcActivityManager];
-  [v4 unregisterActivityWithIdentifier:@"com.apple.routined.purge" handler:0];
+  handlerCopy = handler;
+  xpcActivityManager = [(RTPurgeManager *)self xpcActivityManager];
+  [xpcActivityManager unregisterActivityWithIdentifier:@"com.apple.routined.purge" handler:0];
 
   [(RTPurgeManager *)self _unregisterForMemoryPressureWarnings];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(RTDarwinNotificationHelper *)self->_notificationHelper removeObserverForNotificationName:@"com.apple.language.changed"];
   purgers = self->_purgers;
   self->_purgers = 0;
 
-  v7 = v8;
-  if (v8)
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v8 + 2))(v8, 0);
-    v7 = v8;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v7 = handlerCopy;
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  nameCopy = name;
   v6 = +[(RTNotification *)RTPurgeManagerNotificationMemoryWarning];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [nameCopy isEqualToString:v6];
 
   if (v7)
   {
-    if ([(RTNotifier *)self getNumberOfObservers:v5]== 1)
+    if ([(RTNotifier *)self getNumberOfObservers:nameCopy]== 1)
     {
       [(RTPurgeManager *)self _registerForMemoryPressureWarnings];
     }
@@ -416,22 +416,22 @@ void __127__RTPurgeManager_initWithDefaultsManager_learnedLocationStore_lifeCycl
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Unsupported notification %@", &v9, 0xCu);
     }
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  nameCopy = name;
   v6 = +[(RTNotification *)RTPurgeManagerNotificationMemoryWarning];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [nameCopy isEqualToString:v6];
 
   if (v7)
   {
-    if (![(RTNotifier *)self getNumberOfObservers:v5])
+    if (![(RTNotifier *)self getNumberOfObservers:nameCopy])
     {
       [(RTPurgeManager *)self _unregisterForMemoryPressureWarnings];
     }
@@ -443,7 +443,7 @@ void __127__RTPurgeManager_initWithDefaultsManager_learnedLocationStore_lifeCycl
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Unsupported notification %@", &v9, 0xCu);
     }
   }
@@ -453,8 +453,8 @@ void __127__RTPurgeManager_initWithDefaultsManager_learnedLocationStore_lifeCycl
 {
   if (!self->_memoryWarningDispatchSource)
   {
-    v3 = [(RTNotifier *)self queue];
-    v4 = dispatch_source_create(MEMORY[0x277D85D18], 0, 7uLL, v3);
+    queue = [(RTNotifier *)self queue];
+    v4 = dispatch_source_create(MEMORY[0x277D85D18], 0, 7uLL, queue);
 
     objc_storeStrong(&self->_memoryWarningDispatchSource, v4);
     objc_initWeak(&location, self);
@@ -520,23 +520,23 @@ LABEL_10:
   }
 }
 
-- (void)purge:(id)a3
+- (void)purge:(id)purge
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  purgeCopy = purge;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __24__RTPurgeManager_purge___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = purgeCopy;
+  v6 = purgeCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_purge:(id)a3
+- (void)_purge:(id)_purge
 {
-  v4 = a3;
+  _purgeCopy = _purge;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityPurge);
@@ -547,14 +547,14 @@ LABEL_10:
     }
   }
 
-  v6 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __25__RTPurgeManager__purge___block_invoke;
   v8[3] = &unk_2788C48C0;
-  v9 = v4;
-  v7 = v4;
-  [(RTPurgeManager *)self _purgeWithType:0 referenceDate:v6 handler:v8];
+  v9 = _purgeCopy;
+  v7 = _purgeCopy;
+  [(RTPurgeManager *)self _purgeWithType:0 referenceDate:date handler:v8];
 }
 
 void __25__RTPurgeManager__purge___block_invoke(uint64_t a1, void *a2)
@@ -579,18 +579,18 @@ void __25__RTPurgeManager__purge___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)clearRoutineWithHandler:(id)a3
+- (void)clearRoutineWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__RTPurgeManager_clearRoutineWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __42__RTPurgeManager_clearRoutineWithHandler___block_invoke(uint64_t a1)
@@ -639,13 +639,13 @@ void __42__RTPurgeManager_clearRoutineWithHandler___block_invoke_64(uint64_t a1,
 
 - (void)onCoreLocationPrivacyReset
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke(uint64_t a1)
@@ -683,30 +683,30 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
 
 - (id)_generatePeriodicPurgeReferenceDateDict
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(RTPurgeManager *)self _dailyReferenceDate:v3];
-  v5 = [(RTPurgeManager *)self _shortTermReferenceDate:v3];
-  v6 = [(RTPurgeManager *)self _longTermReferenceDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [(RTPurgeManager *)self _dailyReferenceDate:date];
+  v5 = [(RTPurgeManager *)self _shortTermReferenceDate:date];
+  v6 = [(RTPurgeManager *)self _longTermReferenceDate:date];
   v7 = MEMORY[0x277CBEAC0];
-  v8 = v3;
+  v8 = date;
   v9 = [[v7 alloc] initWithObjectsAndKeys:{v4, &unk_28459C798, v5, &unk_28459C7B0, v6, &unk_28459C7C8, v8, &unk_28459C7E0, 0}];
 
   return v9;
 }
 
-- (id)_selectPruneDateFromReferenceDateDict:(id)a3 purger:(id)a4 type:(int64_t)a5
+- (id)_selectPruneDateFromReferenceDateDict:(id)dict purger:(id)purger type:(int64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (a5)
+  dictCopy = dict;
+  purgerCopy = purger;
+  if (type)
   {
-    v9 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
   else
   {
-    if (!v7)
+    if (!dictCopy)
     {
       v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -723,17 +723,17 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
     }
 
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(objc_opt_class(), "periodicPurgePolicy")}];
-    v9 = [v7 objectForKeyedSubscript:v11];
+    distantFuture = [dictCopy objectForKeyedSubscript:v11];
   }
 
-  return v9;
+  return distantFuture;
 }
 
-- (void)_purgeWithType:(int64_t)a3 referenceDate:(id)a4 handler:(id)a5
+- (void)_purgeWithType:(int64_t)type referenceDate:(id)date handler:(id)handler
 {
   v83[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  dateCopy = date;
+  handlerCopy = handler;
   v60 = dispatch_semaphore_create(0);
   v9 = objc_opt_new();
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -742,7 +742,7 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = [(NSArray *)self->_purgers count];
-      v12 = [objc_opt_class() purgeTypeToString:a3];
+      v12 = [objc_opt_class() purgeTypeToString:type];
       *buf = 134218242;
       *&buf[4] = v11;
       v81 = 2112;
@@ -751,19 +751,19 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
     }
   }
 
-  v13 = [MEMORY[0x277CBEAA8] date];
-  if (a3)
+  date = [MEMORY[0x277CBEAA8] date];
+  if (type)
   {
-    v59 = 0;
+    _generatePeriodicPurgeReferenceDateDict = 0;
   }
 
   else
   {
-    v59 = [(RTPurgeManager *)self _generatePeriodicPurgeReferenceDateDict];
+    _generatePeriodicPurgeReferenceDateDict = [(RTPurgeManager *)self _generatePeriodicPurgeReferenceDateDict];
   }
 
-  v53 = v13;
-  v54 = v8;
+  v53 = date;
+  v54 = handlerCopy;
   v75 = 0u;
   v76 = 0u;
   v73 = 0u;
@@ -778,7 +778,7 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
     v56 = *MEMORY[0x277D01448];
     v15 = 0x277CBE000uLL;
     v57 = v9;
-    v58 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v67; ++i)
@@ -789,7 +789,7 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
         }
 
         v17 = *(*(&v73 + 1) + 8 * i);
-        v18 = [*(v15 + 2728) date];
+        date2 = [*(v15 + 2728) date];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v19 = _rt_log_facility_get_os_log(RTLogFacilityPurge);
@@ -797,7 +797,7 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
           {
             v20 = objc_opt_class();
             v21 = NSStringFromClass(v20);
-            [objc_opt_class() purgeTypeToString:a3];
+            [objc_opt_class() purgeTypeToString:type];
             v23 = v22 = v14;
             *buf = 138412546;
             *&buf[4] = v21;
@@ -812,7 +812,7 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
 
         if (objc_opt_respondsToSelector())
         {
-          v24 = [(RTPurgeManager *)self _selectPruneDateFromReferenceDateDict:v59 purger:v17 type:a3];
+          v24 = [(RTPurgeManager *)self _selectPruneDateFromReferenceDateDict:_generatePeriodicPurgeReferenceDateDict purger:v17 type:type];
 
           v68[0] = MEMORY[0x277D85DD0];
           v68[1] = 3221225472;
@@ -820,12 +820,12 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
           v68[3] = &unk_2788C5F28;
           v68[4] = v17;
           v68[5] = self;
-          v72 = a3;
-          v69 = v18;
+          typeCopy = type;
+          v69 = date2;
           v70 = v9;
           v25 = v60;
           v71 = v25;
-          [v17 performPurgeOfType:a3 referenceDate:v24 completion:v68];
+          [v17 performPurgeOfType:type referenceDate:v24 completion:v68];
           v26 = v25;
           v27 = [*(v15 + 2728) now];
           v28 = dispatch_time(0, 3600000000000);
@@ -839,11 +839,11 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
             v31 = v30;
             v32 = objc_opt_new();
             v33 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_188];
-            v34 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v35 = [v34 filteredArrayUsingPredicate:v33];
-            v36 = [v35 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v35 = [callStackSymbols filteredArrayUsingPredicate:v33];
+            firstObject = [v35 firstObject];
 
-            [v32 submitToCoreAnalytics:v36 type:1 duration:v31];
+            [v32 submitToCoreAnalytics:firstObject type:1 duration:v31];
             v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v37, OS_LOG_TYPE_FAULT))
             {
@@ -872,8 +872,8 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
 
           v42 = v29;
           v14 = v42;
-          v7 = v24;
-          self = v58;
+          dateCopy = v24;
+          self = selfCopy;
         }
       }
 
@@ -892,7 +892,7 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
 
   if (![v9 count])
   {
-    v48 = 0;
+    firstObject2 = 0;
     v45 = v53;
     v44 = v54;
     if (!v54)
@@ -913,7 +913,7 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
     v78[0] = @"Multiple errors occurred.";
     v78[1] = v9;
     v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v78 forKeys:v77 count:2];
-    v48 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:9 userInfo:v47];
+    firstObject2 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:9 userInfo:v47];
 
     if (!v54)
     {
@@ -921,11 +921,11 @@ void __44__RTPurgeManager_onCoreLocationPrivacyReset__block_invoke_65(uint64_t a
     }
 
 LABEL_33:
-    (v44)[2](v44, v48);
+    (v44)[2](v44, firstObject2);
     goto LABEL_34;
   }
 
-  v48 = [v9 firstObject];
+  firstObject2 = [v9 firstObject];
   if (v54)
   {
     goto LABEL_33;
@@ -937,9 +937,9 @@ LABEL_34:
     v49 = _rt_log_facility_get_os_log(RTLogFacilityPurge);
     if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
     {
-      v50 = [objc_opt_class() purgeTypeToString:a3];
-      v51 = [*(v15 + 2728) date];
-      [v51 timeIntervalSinceDate:v45];
+      v50 = [objc_opt_class() purgeTypeToString:type];
+      date3 = [*(v15 + 2728) date];
+      [date3 timeIntervalSinceDate:v45];
       *buf = 138412546;
       *&buf[4] = v50;
       v81 = 2048;
@@ -1004,11 +1004,11 @@ LABEL_12:
   dispatch_semaphore_signal(*(a1 + 64));
 }
 
-- (void)setPressureState:(int64_t)a3
+- (void)setPressureState:(int64_t)state
 {
-  if (self->_pressureState != a3)
+  if (self->_pressureState != state)
   {
-    self->_pressureState = a3;
+    self->_pressureState = state;
     v4 = [[RTPurgeManagerNotificationMemoryWarning alloc] initWithMemoryPressureState:self->_pressureState];
     if (v4)
     {
@@ -1021,13 +1021,13 @@ LABEL_12:
 
 - (void)handleLanguageChangeNotification
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__RTPurgeManager_handleLanguageChangeNotification__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_handleLanguageChangeNotification
@@ -1042,13 +1042,13 @@ LABEL_12:
     }
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__RTPurgeManager__handleLanguageChangeNotification__block_invoke;
   v5[3] = &unk_2788C4730;
   v5[4] = self;
-  [(RTPurgeManager *)self _purgeWithType:3 referenceDate:v4 handler:v5];
+  [(RTPurgeManager *)self _purgeWithType:3 referenceDate:date handler:v5];
 }
 
 void __51__RTPurgeManager__handleLanguageChangeNotification__block_invoke(uint64_t a1, void *a2)
@@ -1080,16 +1080,16 @@ void __51__RTPurgeManager__handleLanguageChangeNotification__block_invoke(uint64
   [v6 exit];
 }
 
-- (id)_shortTermReferenceDate:(id)a3
+- (id)_shortTermReferenceDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (dateCopy)
   {
-    v6 = [v4 dateByAddingTimeInterval:-604800.0];
+    date = [dateCopy dateByAddingTimeInterval:-604800.0];
     v7 = [v5 dateByAddingTimeInterval:-259200.0];
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
-    v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v6 endDate:v7];
+    v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:date endDate:v7];
     v10 = [(RTPurgeManager *)self _cacheDateDependencyForVisitWithDateInterval:v9];
     [v8 addObject:v10];
 
@@ -1114,31 +1114,31 @@ void __51__RTPurgeManager__handleLanguageChangeNotification__block_invoke(uint64
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: referenceDate", v17, 2u);
     }
 
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v14 = [v6 dateByAddingTimeInterval:-604800.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v14 = [date dateByAddingTimeInterval:-604800.0];
   }
 
   return v14;
 }
 
-- (id)_determinePruneDate:(id)a3 boundaryInterval:(id)a4
+- (id)_determinePruneDate:(id)date boundaryInterval:(id)interval
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 startDate];
-  v8 = [v7 laterDate:v6];
+  intervalCopy = interval;
+  dateCopy = date;
+  startDate = [intervalCopy startDate];
+  v8 = [startDate laterDate:dateCopy];
 
-  v9 = [v5 endDate];
+  endDate = [intervalCopy endDate];
 
-  v10 = [v8 earlierDate:v9];
+  v10 = [v8 earlierDate:endDate];
 
   return v10;
 }
 
-- (id)_cacheDateDependencyForVisitWithDateInterval:(id)a3
+- (id)_cacheDateDependencyForVisitWithDateInterval:(id)interval
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   v16 = 0;
   v5 = [(RTPurgeManager *)self _lastVisitWithError:&v16];
   v6 = v16;
@@ -1153,25 +1153,25 @@ void __51__RTPurgeManager__handleLanguageChangeNotification__block_invoke(uint64
     }
 
 LABEL_5:
-    v8 = [v4 startDate];
+    startDate = [intervalCopy startDate];
     goto LABEL_22;
   }
 
   if (v5)
   {
-    v9 = [v5 exit];
-    v10 = v9;
-    if (v9)
+    exit = [v5 exit];
+    v10 = exit;
+    if (exit)
     {
-      v11 = v9;
+      entry = exit;
     }
 
     else
     {
-      v11 = [v5 entry];
+      entry = [v5 entry];
     }
 
-    v12 = v11;
+    v12 = entry;
   }
 
   else
@@ -1186,16 +1186,16 @@ LABEL_5:
     {
       if (v12)
       {
-        v14 = [v12 stringFromDate];
+        stringFromDate = [v12 stringFromDate];
       }
 
       else
       {
-        v14 = @"nil";
+        stringFromDate = @"nil";
       }
 
       *buf = 138412290;
-      v18 = v14;
+      v18 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "_cacheDateDependencyForVisitWithDateInterval: lastVisitDate is %@", buf, 0xCu);
       if (v12)
       {
@@ -1208,19 +1208,19 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v8 = [(RTPurgeManager *)self _determinePruneDate:v12 boundaryInterval:v4];
+  startDate = [(RTPurgeManager *)self _determinePruneDate:v12 boundaryInterval:intervalCopy];
 
 LABEL_22:
 
-  return v8;
+  return startDate;
 }
 
-- (id)_lastVisitWithError:(id *)a3
+- (id)_lastVisitWithError:(id *)error
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v4 = [(RTPurgeManager *)self visitStore];
+  visitStore = [(RTPurgeManager *)self visitStore];
 
-  if (!v4)
+  if (!visitStore)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1250,7 +1250,7 @@ LABEL_22:
   v8 = [v6 initWithAscending:0 confidence:v7 dateInterval:0 labelVisit:0 limit:&unk_28459C7F8];
 
   v9 = dispatch_semaphore_create(0);
-  v10 = [(RTPurgeManager *)self visitStore];
+  visitStore2 = [(RTPurgeManager *)self visitStore];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __38__RTPurgeManager__lastVisitWithError___block_invoke;
@@ -1259,7 +1259,7 @@ LABEL_22:
   v42 = &v43;
   v11 = v9;
   v40 = v11;
-  [v10 fetchVisitsWithOptions:v8 handler:v39];
+  [visitStore2 fetchVisitsWithOptions:v8 handler:v39];
 
   v12 = v11;
   v13 = [MEMORY[0x277CBEAA8] now];
@@ -1271,11 +1271,11 @@ LABEL_22:
     v17 = v16;
     v18 = objc_opt_new();
     v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_188];
-    v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v21 = [v20 filteredArrayUsingPredicate:v19];
-    v22 = [v21 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+    firstObject = [v21 firstObject];
 
-    [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+    [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
@@ -1312,7 +1312,7 @@ LABEL_12:
     objc_storeStrong(v44 + 5, v26);
   }
 
-  if (a3 && v44[5])
+  if (error && v44[5])
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1331,7 +1331,7 @@ LABEL_12:
     }
 
     v31 = 0;
-    *a3 = v44[5];
+    *error = v44[5];
   }
 
   else
@@ -1361,10 +1361,10 @@ void __38__RTPurgeManager__lastVisitWithError___block_invoke(uint64_t a1, void *
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_cacheDateDependencyUnlabeledLearnedVisitWithDateInterval:(id)a3
+- (id)_cacheDateDependencyUnlabeledLearnedVisitWithDateInterval:(id)interval
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   v13 = 0;
   v5 = [(RTPurgeManager *)self _firstUnlabeledLearnedVisitWithError:&v13];
   v6 = v13;
@@ -1379,18 +1379,18 @@ void __38__RTPurgeManager__lastVisitWithError___block_invoke(uint64_t a1, void *
     }
 
 LABEL_5:
-    v8 = [v4 startDate];
+    startDate = [intervalCopy startDate];
     goto LABEL_19;
   }
 
   if (v5)
   {
-    v9 = [v5 entryDate];
+    entryDate = [v5 entryDate];
   }
 
   else
   {
-    v9 = 0;
+    entryDate = 0;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1398,43 +1398,43 @@ LABEL_5:
     v10 = _rt_log_facility_get_os_log(RTLogFacilityPurge);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      if (v9)
+      if (entryDate)
       {
-        v11 = [v9 stringFromDate];
+        stringFromDate = [entryDate stringFromDate];
       }
 
       else
       {
-        v11 = @"nil";
+        stringFromDate = @"nil";
       }
 
       *buf = 138412290;
-      v15 = v11;
+      v15 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "_cacheDateDependencyUnlabeledLearnedVisitWithDateInterval unlabeled firstVisit.entryDate is %@", buf, 0xCu);
-      if (v9)
+      if (entryDate)
       {
       }
     }
   }
 
-  if (!v9)
+  if (!entryDate)
   {
     goto LABEL_5;
   }
 
-  v8 = [(RTPurgeManager *)self _determinePruneDate:v9 boundaryInterval:v4];
+  startDate = [(RTPurgeManager *)self _determinePruneDate:entryDate boundaryInterval:intervalCopy];
 
 LABEL_19:
 
-  return v8;
+  return startDate;
 }
 
-- (id)_firstUnlabeledLearnedVisitWithError:(id *)a3
+- (id)_firstUnlabeledLearnedVisitWithError:(id *)error
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v5 = [(RTPurgeManager *)self learnedLocationStore];
+  learnedLocationStore = [(RTPurgeManager *)self learnedLocationStore];
 
-  if (!v5)
+  if (!learnedLocationStore)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1460,7 +1460,7 @@ LABEL_19:
   v44 = __Block_byref_object_dispose__22;
   v45 = 0;
   v7 = dispatch_semaphore_create(0);
-  v8 = [(RTPurgeManager *)self learnedLocationStore];
+  learnedLocationStore2 = [(RTPurgeManager *)self learnedLocationStore];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __55__RTPurgeManager__firstUnlabeledLearnedVisitWithError___block_invoke;
@@ -1469,7 +1469,7 @@ LABEL_19:
   v39 = &v40;
   v9 = v7;
   v37 = v9;
-  [v8 fetchVisitsWithoutPlacesForCurrentDeviceWithHandler:v36 limit:&unk_28459C7F8];
+  [learnedLocationStore2 fetchVisitsWithoutPlacesForCurrentDeviceWithHandler:v36 limit:&unk_28459C7F8];
 
   v10 = v9;
   v11 = [MEMORY[0x277CBEAA8] now];
@@ -1481,11 +1481,11 @@ LABEL_19:
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_188];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -1522,7 +1522,7 @@ LABEL_12:
     objc_storeStrong(v41 + 5, v24);
   }
 
-  if (a3 && v41[5])
+  if (error && v41[5])
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1541,7 +1541,7 @@ LABEL_12:
     }
 
     v29 = 0;
-    *a3 = v41[5];
+    *error = v41[5];
   }
 
   else
@@ -1574,10 +1574,10 @@ void __55__RTPurgeManager__firstUnlabeledLearnedVisitWithError___block_invoke(ui
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_cacheDateDependencyLabeledLearnedVisitWithDateInterval:(id)a3
+- (id)_cacheDateDependencyLabeledLearnedVisitWithDateInterval:(id)interval
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   v13 = 0;
   v5 = [(RTPurgeManager *)self _lastLabeledLearnedVisitWithError:&v13];
   v6 = v13;
@@ -1592,18 +1592,18 @@ void __55__RTPurgeManager__firstUnlabeledLearnedVisitWithError___block_invoke(ui
     }
 
 LABEL_5:
-    v8 = [v4 startDate];
+    startDate = [intervalCopy startDate];
     goto LABEL_19;
   }
 
   if (v5)
   {
-    v9 = [v5 exitDate];
+    exitDate = [v5 exitDate];
   }
 
   else
   {
-    v9 = 0;
+    exitDate = 0;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1611,46 +1611,46 @@ LABEL_5:
     v10 = _rt_log_facility_get_os_log(RTLogFacilityPurge);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      if (v9)
+      if (exitDate)
       {
-        v11 = [v9 stringFromDate];
+        stringFromDate = [exitDate stringFromDate];
       }
 
       else
       {
-        v11 = @"nil";
+        stringFromDate = @"nil";
       }
 
       *buf = 138412290;
-      v15 = v11;
+      v15 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "_cacheDateDependencyLabeledLearnedVisitWithDateInterval, labeled lastVisit.exitDate is %@", buf, 0xCu);
-      if (v9)
+      if (exitDate)
       {
       }
     }
   }
 
-  if (!v9)
+  if (!exitDate)
   {
     goto LABEL_5;
   }
 
-  v8 = [(RTPurgeManager *)self _determinePruneDate:v9 boundaryInterval:v4];
+  startDate = [(RTPurgeManager *)self _determinePruneDate:exitDate boundaryInterval:intervalCopy];
 
 LABEL_19:
 
-  return v8;
+  return startDate;
 }
 
-- (id)_cacheDateDependencyMomentsWithDateInterval:(id)a3
+- (id)_cacheDateDependencyMomentsWithDateInterval:(id)interval
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [(RTPurgeManager *)self platform];
-  v8 = [v7 iPhoneDevice];
+  intervalCopy = interval;
+  date = [MEMORY[0x277CBEAA8] date];
+  platform = [(RTPurgeManager *)self platform];
+  iPhoneDevice = [platform iPhoneDevice];
 
-  if (v8)
+  if (iPhoneDevice)
   {
     v18 = 0;
     v19 = &v18;
@@ -1670,14 +1670,14 @@ LABEL_19:
 
     v10 = v9;
     _Block_object_dispose(&v18, 8);
-    v11 = [v9 sharedInstance];
-    v12 = [v11 onboardingFlowCompletionStatus];
+    sharedInstance = [v9 sharedInstance];
+    onboardingFlowCompletionStatus = [sharedInstance onboardingFlowCompletionStatus];
 
-    if ((v12 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((onboardingFlowCompletionStatus & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v13 = [v5 startDate];
+      startDate = [intervalCopy startDate];
 
-      v6 = v13;
+      date = startDate;
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1686,27 +1686,27 @@ LABEL_19:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v15 = NSStringFromSelector(a2);
-        v16 = [v6 stringFromDate];
+        stringFromDate = [date stringFromDate];
         *buf = 138412802;
         *&buf[4] = v15;
         *&buf[12] = 2048;
-        *&buf[14] = v12;
+        *&buf[14] = onboardingFlowCompletionStatus;
         *&buf[22] = 2112;
-        v23 = v16;
+        v23 = stringFromDate;
         _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@, onboarding flow completion status, %lu, earliest date required by moments, %@", buf, 0x20u);
       }
     }
   }
 
-  return v6;
+  return date;
 }
 
-- (id)_lastLabeledLearnedVisitWithError:(id *)a3
+- (id)_lastLabeledLearnedVisitWithError:(id *)error
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v5 = [(RTPurgeManager *)self learnedLocationStore];
+  learnedLocationStore = [(RTPurgeManager *)self learnedLocationStore];
 
-  if (!v5)
+  if (!learnedLocationStore)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1732,7 +1732,7 @@ LABEL_19:
   v44 = __Block_byref_object_dispose__22;
   v45 = 0;
   v7 = dispatch_semaphore_create(0);
-  v8 = [(RTPurgeManager *)self learnedLocationStore];
+  learnedLocationStore2 = [(RTPurgeManager *)self learnedLocationStore];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __52__RTPurgeManager__lastLabeledLearnedVisitWithError___block_invoke;
@@ -1741,7 +1741,7 @@ LABEL_19:
   v39 = &v40;
   v9 = v7;
   v37 = v9;
-  [v8 fetchLastVisitWithHandler:v36];
+  [learnedLocationStore2 fetchLastVisitWithHandler:v36];
 
   v10 = v9;
   v11 = [MEMORY[0x277CBEAA8] now];
@@ -1753,11 +1753,11 @@ LABEL_19:
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_188];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -1794,7 +1794,7 @@ LABEL_12:
     objc_storeStrong(v41 + 5, v24);
   }
 
-  if (a3 && v41[5])
+  if (error && v41[5])
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1813,7 +1813,7 @@ LABEL_12:
     }
 
     v29 = 0;
-    *a3 = v41[5];
+    *error = v41[5];
   }
 
   else

@@ -1,34 +1,34 @@
 @interface _UIBarCustomizationItemReservoirView
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (_UIBarCustomizationItemReservoirView)initWithItems:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (_UIBarCustomizationItemReservoirView)initWithItems:(id)items;
 - (double)_minimumLineSpacing;
 - (double)_popoverCornerRadius;
-- (id)_collectionView:(id)a3 layout:(id)a4 flowLayoutRowAlignmentOptionsForSection:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_collectionView:(id)view layout:(id)layout flowLayoutRowAlignmentOptionsForSection:(int64_t)section;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)flowLayout;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_updateArrowColor;
 - (void)_updateEmptyState;
-- (void)addItem:(id)a3;
-- (void)invalidateLayoutAndForceUpdate:(BOOL)a3;
+- (void)addItem:(id)item;
+- (void)invalidateLayoutAndForceUpdate:(BOOL)update;
 - (void)layoutSubviews;
-- (void)removeItem:(id)a3;
-- (void)scrollViewDidChangeContentSize:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setDoneAction:(id)a3;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setItems:(id)a3;
-- (void)setResetAction:(id)a3;
+- (void)removeItem:(id)item;
+- (void)scrollViewDidChangeContentSize:(id)size;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setDoneAction:(id)action;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setItems:(id)items;
+- (void)setResetAction:(id)action;
 - (void)sizeToFit;
 @end
 
 @implementation _UIBarCustomizationItemReservoirView
 
-- (_UIBarCustomizationItemReservoirView)initWithItems:(id)a3
+- (_UIBarCustomizationItemReservoirView)initWithItems:(id)items
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v65.receiver = self;
   v65.super_class = _UIBarCustomizationItemReservoirView;
   v5 = [(UIView *)&v65 initWithFrame:0.0, 0.0, 340.0, 188.0];
@@ -77,9 +77,9 @@
       v9 = [(UIView *)v13 initWithFrame:0.0, 0.0, Width, CGRectGetHeight(v72) + -1.0];
       [(UIView *)v6 anchorPoint];
       [(UIView *)v9 setAnchorPoint:?];
-      v15 = [v8 CGPath];
-      v16 = [(UIView *)v9 shapeLayer];
-      [v16 setPath:v15];
+      cGPath = [v8 CGPath];
+      shapeLayer = [(UIView *)v9 shapeLayer];
+      [shapeLayer setPath:cGPath];
 
       [(UIView *)v6 addSubview:v9];
     }
@@ -99,8 +99,8 @@
       v19 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
       v68[0] = v19;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:1];
-      v21 = [(UIView *)v18 layer];
-      [v21 setFilters:v20];
+      layer = [(UIView *)v18 layer];
+      [layer setFilters:v20];
 
       v22 = [[_UIViewGlass alloc] initWithVariant:0 size:0 smoothness:1 subdued:10.0];
       [(UIView *)v18 _setBackground:v22];
@@ -119,12 +119,12 @@
     if ((v7 & 1) == 0)
     {
       v23 = [_UIDiffuseShadowView alloc];
-      v24 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
-      [v24 frame];
+      containerView = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
+      [containerView frame];
       v25 = [(_UIDiffuseShadowView *)v23 initWithFrame:?];
 
-      v26 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
-      [v26 anchorPoint];
+      containerView2 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
+      [containerView2 anchorPoint];
       [(UIView *)v25 setAnchorPoint:?];
 
       [(_UIDiffuseShadowView *)v25 setIntensity:0.2];
@@ -134,17 +134,17 @@
     }
 
     v27 = objc_opt_new();
-    v28 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
-    [v28 bounds];
+    containerView3 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
+    [containerView3 bounds];
     v29 = CGRectGetWidth(v73);
     [v27 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     [v27 setFrame:{0.0, 0.0, v29, v30}];
 
     [v27 _forceNilGlassGroupTraitOverride];
     v31 = objc_opt_new();
-    v32 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
-    v33 = [v32 backgroundColor];
-    [v31 setBackgroundColor:v33];
+    containerView4 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
+    backgroundColor = [containerView4 backgroundColor];
+    [v31 setBackgroundColor:backgroundColor];
 
     [v27 setStandardAppearance:v31];
     v34 = [UINavigationItem alloc];
@@ -153,8 +153,8 @@
 
     [(UINavigationItem *)v36 _setManualScrollEdgeAppearanceEnabled:1];
     [v27 pushNavigationItem:v36 animated:0];
-    v37 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
-    [v37 addSubview:v27];
+    containerView5 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
+    [containerView5 addSubview:v27];
 
     [(_UIBarCustomizationItemReservoirView *)v6 setTopBar:v27];
     v38 = objc_opt_new();
@@ -171,16 +171,16 @@
 
     [v38 setSectionInset:{v40, 20.0, 56.0, 20.0}];
     v41 = [UICollectionView alloc];
-    v42 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
-    [v42 bounds];
+    containerView6 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
+    [containerView6 bounds];
     v43 = [(UICollectionView *)v41 initWithFrame:v38 collectionViewLayout:?];
 
-    v44 = [(_UIBarCustomizationItemReservoirView *)v6 topBar];
-    [v44 frame];
+    topBar = [(_UIBarCustomizationItemReservoirView *)v6 topBar];
+    [topBar frame];
     [(UICollectionView *)v43 setContentInset:CGRectGetMaxY(v74), 0.0, 0.0, 0.0];
 
-    v45 = [(_UIBarCustomizationItemReservoirView *)v6 topBar];
-    [v45 frame];
+    topBar2 = [(_UIBarCustomizationItemReservoirView *)v6 topBar];
+    [topBar2 frame];
     [(UIScrollView *)v43 setScrollIndicatorInsets:CGRectGetMaxY(v75), 0.0, 8.0, 0.0];
 
     [(UICollectionView *)v43 setBackgroundColor:0];
@@ -189,9 +189,9 @@
     [(UICollectionView *)v43 setAllowsSelection:0];
     [(UICollectionView *)v43 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kCustomizationReservoirCellIdentifier"];
     [(UICollectionView *)v43 _setVisibleRectEdgeInsets:0.0, 0.0, -150.0, 0.0];
-    v46 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
-    v47 = [(_UIBarCustomizationItemReservoirView *)v6 topBar];
-    [v46 insertSubview:v43 belowSubview:v47];
+    containerView7 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
+    topBar3 = [(_UIBarCustomizationItemReservoirView *)v6 topBar];
+    [containerView7 insertSubview:v43 belowSubview:topBar3];
 
     [(_UIBarCustomizationItemReservoirView *)v6 setCollectionView:v43];
     v48 = objc_opt_new();
@@ -207,8 +207,8 @@
     v51 = _UILocalizedString(@"BAR_CUSTOMIZATION_POPOVER_HINT_TEXT", @"Instructional text displayed at top of bar customization popover.", @"Drag to add or remove items from the toolbar");
     [v48 setText:v51];
 
-    v52 = [(_UIBarCustomizationItemReservoirView *)v6 collectionView];
-    [v52 addSubview:v48];
+    collectionView = [(_UIBarCustomizationItemReservoirView *)v6 collectionView];
+    [collectionView addSubview:v48];
 
     [(_UIBarCustomizationItemReservoirView *)v6 setTipLabel:v48];
     v53 = objc_opt_new();
@@ -224,14 +224,14 @@
 
     [v53 setLineBreakMode:4];
     [v53 setAdjustsFontSizeToFitWidth:0];
-    v57 = [(_UIBarCustomizationItemReservoirView *)v6 collectionView];
-    [v57 addSubview:v53];
+    collectionView2 = [(_UIBarCustomizationItemReservoirView *)v6 collectionView];
+    [collectionView2 addSubview:v53];
 
     [(_UIBarCustomizationItemReservoirView *)v6 setNoContentLabel:v53];
-    v58 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
-    [(UIView *)v6 addSubview:v58];
+    containerView8 = [(_UIBarCustomizationItemReservoirView *)v6 containerView];
+    [(UIView *)v6 addSubview:containerView8];
 
-    [(_UIBarCustomizationItemReservoirView *)v6 setItems:v4];
+    [(_UIBarCustomizationItemReservoirView *)v6 setItems:itemsCopy];
     v59 = +[UITraitCollection systemTraitsAffectingColorAppearance];
     v60 = [(UIView *)v6 registerForTraitChanges:v59 withAction:sel__updateArrowColor];
 
@@ -243,29 +243,29 @@
   return v6;
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  self->_isExpanded = a3;
+  animatedCopy = animated;
+  expandedCopy = expanded;
+  self->_isExpanded = expanded;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __61___UIBarCustomizationItemReservoirView_setExpanded_animated___block_invoke;
   aBlock[3] = &unk_1E70F35E0;
-  v29 = a3;
+  expandedCopy2 = expanded;
   aBlock[4] = self;
   v7 = _Block_copy(aBlock);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __61___UIBarCustomizationItemReservoirView_setExpanded_animated___block_invoke_2;
   v26[3] = &unk_1E70F35E0;
-  v27 = v5;
+  v27 = expandedCopy;
   v26[4] = self;
   v8 = _Block_copy(v26);
-  if (v4)
+  if (animatedCopy)
   {
     v9 = _UISolariumEnabled();
-    if (v5)
+    if (expandedCopy)
     {
       v10 = 0;
     }
@@ -285,13 +285,13 @@
       v25 = v7;
       dispatch_after(v11, MEMORY[0x1E69E96A0], block);
       v12 = 0.6;
-      if (!v5)
+      if (!expandedCopy)
       {
         v12 = 1.0;
       }
 
       v13 = 0.4;
-      if (v5)
+      if (expandedCopy)
       {
         v13 = 0.5;
       }
@@ -311,13 +311,13 @@
       v23 = v7;
       dispatch_after(v11, MEMORY[0x1E69E96A0], &v19);
       v16 = 0.8;
-      if (!v5)
+      if (!expandedCopy)
       {
         v16 = 1.0;
       }
 
       v17 = 0.3;
-      if (v5)
+      if (expandedCopy)
       {
         v17 = 0.4;
       }
@@ -336,38 +336,38 @@
   }
 }
 
-- (void)setResetAction:(id)a3
+- (void)setResetAction:(id)action
 {
-  v4 = a3;
-  v7 = [[UIBarButtonItem alloc] initWithPrimaryAction:v4];
+  actionCopy = action;
+  v7 = [[UIBarButtonItem alloc] initWithPrimaryAction:actionCopy];
 
-  v5 = [(_UIBarCustomizationItemReservoirView *)self topBar];
-  v6 = [v5 topItem];
-  [v6 setLeftBarButtonItem:v7];
+  topBar = [(_UIBarCustomizationItemReservoirView *)self topBar];
+  topItem = [topBar topItem];
+  [topItem setLeftBarButtonItem:v7];
 }
 
-- (void)setDoneAction:(id)a3
+- (void)setDoneAction:(id)action
 {
-  v4 = a3;
-  v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 primaryAction:v4];
+  actionCopy = action;
+  v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 primaryAction:actionCopy];
 
-  v5 = [(_UIBarCustomizationItemReservoirView *)self topBar];
-  v6 = [v5 topItem];
-  [v6 setRightBarButtonItem:v7];
+  topBar = [(_UIBarCustomizationItemReservoirView *)self topBar];
+  topItem = [topBar topItem];
+  [topItem setRightBarButtonItem:v7];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_items != v5)
+  itemsCopy = items;
+  if (self->_items != itemsCopy)
   {
-    objc_storeStrong(&self->_items, a3);
+    objc_storeStrong(&self->_items, items);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v5;
+    v6 = itemsCopy;
     v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -402,72 +402,72 @@
     }
 
     self->_computedInitialSize = 0;
-    v14 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
-    [v14 reloadData];
+    collectionView = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+    [collectionView reloadData];
 
     [(_UIBarCustomizationItemReservoirView *)self invalidateLayoutAndForceUpdate:0];
     [(_UIBarCustomizationItemReservoirView *)self _updateEmptyState];
   }
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 _chiclet];
-  [v5 setPlatterVisible:1];
-  v6 = [v5 window];
+  itemCopy = item;
+  _chiclet = [itemCopy _chiclet];
+  [_chiclet setPlatterVisible:1];
+  window = [_chiclet window];
 
-  if (v6)
+  if (window)
   {
     v7 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:1.0 response:0.2];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __48___UIBarCustomizationItemReservoirView_addItem___block_invoke;
     v14[3] = &unk_1E70F3590;
-    v15 = v5;
+    v15 = _chiclet;
     [UIView _animateUsingSpringBehavior:v7 tracking:0 animations:v14 completion:0];
   }
 
   else
   {
-    [v5 setLabelVisible:1];
+    [_chiclet setLabelVisible:1];
   }
 
-  v8 = [(_UIBarCustomizationItemReservoirView *)self items];
-  [v8 addObject:v4];
+  items = [(_UIBarCustomizationItemReservoirView *)self items];
+  [items addObject:itemCopy];
 
-  v9 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+  collectionView = [(_UIBarCustomizationItemReservoirView *)self collectionView];
   v10 = MEMORY[0x1E696AC88];
-  v11 = [(_UIBarCustomizationItemReservoirView *)self items];
-  v12 = [v10 indexPathForItem:objc_msgSend(v11 inSection:{"count") - 1, 0}];
+  items2 = [(_UIBarCustomizationItemReservoirView *)self items];
+  v12 = [v10 indexPathForItem:objc_msgSend(items2 inSection:{"count") - 1, 0}];
   v16[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  [v9 insertItemsAtIndexPaths:v13];
+  [collectionView insertItemsAtIndexPaths:v13];
 
   [(_UIBarCustomizationItemReservoirView *)self _updateEmptyState];
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIBarCustomizationItemReservoirView *)self items];
-  v6 = [v5 indexOfObject:v4];
+  itemCopy = item;
+  items = [(_UIBarCustomizationItemReservoirView *)self items];
+  v6 = [items indexOfObject:itemCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(_UIBarCustomizationItemReservoirView *)self items];
-    [v7 removeObjectAtIndex:v6];
+    items2 = [(_UIBarCustomizationItemReservoirView *)self items];
+    [items2 removeObjectAtIndex:v6];
 
     v8 = [MEMORY[0x1E696AC88] indexPathForItem:v6 inSection:0];
-    v9 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
-    v10 = [v9 cellForItemAtIndexPath:v8];
+    collectionView = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+    v10 = [collectionView cellForItemAtIndexPath:v8];
 
-    v11 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+    collectionView2 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
     v13[0] = v8;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    [v11 deleteItemsAtIndexPaths:v12];
+    [collectionView2 deleteItemsAtIndexPaths:v12];
 
     [v10 setChiclet:0];
   }
@@ -486,12 +486,12 @@
   width = v81.size.width;
   height = v81.size.height;
   MidX = CGRectGetMidX(v81);
-  v8 = [(_UIBarCustomizationItemReservoirView *)self arrowView];
-  [v8 setCenter:{MidX, 0.0}];
+  arrowView = [(_UIBarCustomizationItemReservoirView *)self arrowView];
+  [arrowView setCenter:{MidX, 0.0}];
 
   v9 = _UISolariumEnabled();
-  v10 = [(_UIBarCustomizationItemReservoirView *)self arrowView];
-  [v10 frame];
+  arrowView2 = [(_UIBarCustomizationItemReservoirView *)self arrowView];
+  [arrowView2 frame];
   if (v9)
   {
     MidY = CGRectGetMidY(*&v11);
@@ -501,8 +501,8 @@
     v82.size.width = width;
     v82.size.height = height;
     v16 = CGRectGetMidX(v82);
-    v17 = [(_UIBarCustomizationItemReservoirView *)self containerView];
-    [v17 setCenter:{v16, MidY}];
+    containerView = [(_UIBarCustomizationItemReservoirView *)self containerView];
+    [containerView setCenter:{v16, MidY}];
 
     v83.origin.x = x;
     v83.origin.y = y;
@@ -534,8 +534,8 @@
     v85.size.width = width;
     v85.size.height = height;
     v22 = CGRectGetMidX(v85);
-    v23 = [(_UIBarCustomizationItemReservoirView *)self containerView];
-    [v23 setCenter:{v22, MaxY}];
+    containerView2 = [(_UIBarCustomizationItemReservoirView *)self containerView];
+    [containerView2 setCenter:{v22, MaxY}];
 
     v86.origin.x = x;
     v86.origin.y = y;
@@ -549,11 +549,11 @@
     v20 = CGRectGetHeight(v87) - MaxY;
   }
 
-  v24 = [(_UIBarCustomizationItemReservoirView *)self containerView];
-  [v24 setBounds:{0.0, 0.0, v18, v20}];
+  containerView3 = [(_UIBarCustomizationItemReservoirView *)self containerView];
+  [containerView3 setBounds:{0.0, 0.0, v18, v20}];
 
-  v25 = [(_UIBarCustomizationItemReservoirView *)self containerView];
-  [v25 bounds];
+  containerView4 = [(_UIBarCustomizationItemReservoirView *)self containerView];
+  [containerView4 bounds];
   v27 = v26;
   v29 = v28;
   v31 = v30;
@@ -574,43 +574,43 @@
   v88.size.width = v31;
   v88.size.height = v33;
   v35 = CGRectGetWidth(v88);
-  v36 = [(_UIBarCustomizationItemReservoirView *)self topBar];
-  [v36 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  topBar = [(_UIBarCustomizationItemReservoirView *)self topBar];
+  [topBar sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v38 = v37;
 
-  v39 = [(_UIBarCustomizationItemReservoirView *)self topBar];
+  topBar2 = [(_UIBarCustomizationItemReservoirView *)self topBar];
   v74 = v35;
   v75 = v34;
   rect = v38;
-  [v39 setFrame:{0.0, v34, v35, v38}];
+  [topBar2 setFrame:{0.0, v34, v35, v38}];
 
-  v40 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
-  [v40 setFrame:{v27, v29, v31, v33}];
+  collectionView = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+  [collectionView setFrame:{v27, v29, v31, v33}];
 
-  v41 = [(_UIBarCustomizationItemReservoirView *)self containerView];
-  [v41 frame];
+  containerView5 = [(_UIBarCustomizationItemReservoirView *)self containerView];
+  [containerView5 frame];
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
-  v50 = [(_UIBarCustomizationItemReservoirView *)self shadowView];
-  [v50 setFrame:{v43, v45, v47, v49}];
+  shadowView = [(_UIBarCustomizationItemReservoirView *)self shadowView];
+  [shadowView setFrame:{v43, v45, v47, v49}];
 
-  v51 = [(_UIBarCustomizationItemReservoirView *)self tipLabel];
-  v52 = [(_UIBarCustomizationItemReservoirView *)self noContentLabel];
+  tipLabel = [(_UIBarCustomizationItemReservoirView *)self tipLabel];
+  noContentLabel = [(_UIBarCustomizationItemReservoirView *)self noContentLabel];
   v89.origin.x = v27;
   v89.origin.y = v29;
   v89.size.width = v31;
   v89.size.height = v33;
   v53 = CGRectGetWidth(v89) + -40.0;
-  [v51 sizeThatFits:{v53, 0.0}];
+  [tipLabel sizeThatFits:{v53, 0.0}];
   v55 = v54;
   v57 = v56;
-  [v52 sizeThatFits:{v53, 0.0}];
+  [noContentLabel sizeThatFits:{v53, 0.0}];
   v59 = v58;
   v61 = v60;
-  [v51 setBounds:{0.0, 0.0, v55, v57}];
-  [v52 setBounds:{0.0, 0.0, v59, v61}];
+  [tipLabel setBounds:{0.0, 0.0, v55, v57}];
+  [noContentLabel setBounds:{0.0, 0.0, v59, v61}];
   if (self->_isEmpty)
   {
     v90.origin.x = 0.0;
@@ -620,21 +620,21 @@
     v62 = CGRectGetHeight(v90);
     v63 = v27 + 0.0 + v31 * 0.5;
     v64 = v29 + v62 * 0.5 + (v33 - (v62 * 0.5 + 0.0)) * 0.5;
-    v65 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
-    [v65 contentInset];
+    collectionView2 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+    [collectionView2 contentInset];
     v67 = v64 - v66;
 
-    [v51 setCenter:{v63, v67}];
+    [tipLabel setCenter:{v63, v67}];
     CGAffineTransformMakeScale(&v79, v59 / v55, v61 / v57);
     v78 = v79;
-    [v51 setTransform:&v78];
-    [v51 setAlpha:0.0];
-    [v52 setCenter:{v63, v67}];
+    [tipLabel setTransform:&v78];
+    [tipLabel setAlpha:0.0];
+    [noContentLabel setCenter:{v63, v67}];
     v68 = *(MEMORY[0x1E695EFD0] + 16);
     *&v78.a = *MEMORY[0x1E695EFD0];
     *&v78.c = v68;
     *&v78.tx = *(MEMORY[0x1E695EFD0] + 32);
-    [v52 setTransform:&v78];
+    [noContentLabel setTransform:&v78];
     v69 = 1.0;
   }
 
@@ -656,44 +656,44 @@
     v91.size.width = v31;
     v91.size.height = v33;
     v71 = CGRectGetMidX(v91);
-    [v51 setCenter:{v71, v57 * 0.5 + v70}];
+    [tipLabel setCenter:{v71, v57 * 0.5 + v70}];
     v72 = *(MEMORY[0x1E695EFD0] + 16);
     *&v78.a = *MEMORY[0x1E695EFD0];
     *&v78.c = v72;
     *&v78.tx = *(MEMORY[0x1E695EFD0] + 32);
-    [v51 setTransform:&v78];
-    [v51 setAlpha:1.0];
-    [v52 setCenter:{v71, v57 * 0.5 + v70}];
+    [tipLabel setTransform:&v78];
+    [tipLabel setAlpha:1.0];
+    [noContentLabel setCenter:{v71, v57 * 0.5 + v70}];
     CGAffineTransformMakeScale(&v77, v76 / v59, v57 / v61);
     v78 = v77;
-    [v52 setTransform:&v78];
+    [noContentLabel setTransform:&v78];
     v69 = 0.0;
   }
 
-  [v52 setAlpha:v69];
+  [noContentLabel setAlpha:v69];
 }
 
 - (void)sizeToFit
 {
-  v3 = [(_UIBarCustomizationItemReservoirView *)self items];
-  v4 = dbl_18A680420[[v3 count] > 0xB];
+  items = [(_UIBarCustomizationItemReservoirView *)self items];
+  v4 = dbl_18A680420[[items count] > 0xB];
 
-  v5 = [(_UIBarCustomizationItemReservoirView *)self arrowView];
-  [v5 frame];
+  arrowView = [(_UIBarCustomizationItemReservoirView *)self arrowView];
+  [arrowView frame];
   MaxY = CGRectGetMaxY(v21);
-  v7 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
-  [v7 contentInset];
+  collectionView = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+  [collectionView contentInset];
   v9 = MaxY + v8;
-  v10 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
-  [v10 contentSize];
+  collectionView2 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+  [collectionView2 contentSize];
   v12 = v9 + v11;
 
   v13 = fmax(v12, 188.0);
-  v14 = [(UIView *)self superview];
-  v19 = v14;
-  if (v14)
+  superview = [(UIView *)self superview];
+  v19 = superview;
+  if (superview)
   {
-    [v14 bounds];
+    [superview bounds];
     Width = CGRectGetWidth(v22);
     [UIViewController _horizontalContentMarginForView:v19];
     v17 = Width - (v16 + v16);
@@ -713,15 +713,15 @@
   [(UIView *)self setBounds:0.0, 0.0, v4, v13];
 }
 
-- (void)invalidateLayoutAndForceUpdate:(BOOL)a3
+- (void)invalidateLayoutAndForceUpdate:(BOOL)update
 {
-  v3 = a3;
-  v5 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
-  v6 = [v5 collectionViewLayout];
-  [v6 invalidateLayout];
+  updateCopy = update;
+  collectionView = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   [(UIView *)self setNeedsLayout];
-  if (v3)
+  if (updateCopy)
   {
     [(UIView *)self layoutIfNeeded];
   }
@@ -731,41 +731,41 @@
 
 - (id)flowLayout
 {
-  v2 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
-  v3 = [v2 collectionViewLayout];
+  collectionView = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  return v3;
+  return collectionViewLayout;
 }
 
 - (void)_updateArrowColor
 {
-  v3 = [(_UIBarCustomizationItemReservoirView *)self arrowView];
+  arrowView = [(_UIBarCustomizationItemReservoirView *)self arrowView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [(_UIBarCustomizationItemReservoirView *)self containerView];
-    v5 = [v11 backgroundColor];
-    v6 = [(UIView *)self traitCollection];
-    v7 = [v5 resolvedColorWithTraitCollection:v6];
-    v8 = [v7 CGColor];
-    v9 = [(_UIBarCustomizationItemReservoirView *)self arrowView];
-    v10 = [v9 shapeLayer];
-    [v10 setFillColor:v8];
+    containerView = [(_UIBarCustomizationItemReservoirView *)self containerView];
+    backgroundColor = [containerView backgroundColor];
+    traitCollection = [(UIView *)self traitCollection];
+    v7 = [backgroundColor resolvedColorWithTraitCollection:traitCollection];
+    cGColor = [v7 CGColor];
+    arrowView2 = [(_UIBarCustomizationItemReservoirView *)self arrowView];
+    shapeLayer = [arrowView2 shapeLayer];
+    [shapeLayer setFillColor:cGColor];
   }
 }
 
 - (void)_updateEmptyState
 {
-  v3 = [(_UIBarCustomizationItemReservoirView *)self items];
-  self->_isEmpty = [v3 count] == 0;
+  items = [(_UIBarCustomizationItemReservoirView *)self items];
+  self->_isEmpty = [items count] == 0;
 }
 
 - (double)_minimumLineSpacing
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleCaption2" compatibleWithTraitCollection:v2];
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleCaption2" compatibleWithTraitCollection:traitCollection];
 
   [v3 lineHeight];
   v5 = v4 + v4 + 10.0 + 14.0;
@@ -785,23 +785,23 @@
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
-  v12 = [v5 collectionViewLayout];
+  scrollCopy = scroll;
+  collectionView = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  [v4 contentOffset];
+  [scrollCopy contentOffset];
   v7 = v6;
-  [v4 contentInset];
+  [scrollCopy contentInset];
   v9 = v8;
 
-  v10 = [(_UIBarCustomizationItemReservoirView *)self topBar];
-  v11 = [v10 topItem];
-  [v11 _setManualScrollEdgeAppearanceProgress:{fmax(fmin((v7 + v9) / 10.0, 1.0), 0.0)}];
+  topBar = [(_UIBarCustomizationItemReservoirView *)self topBar];
+  topItem = [topBar topItem];
+  [topItem _setManualScrollEdgeAppearanceProgress:{fmax(fmin((v7 + v9) / 10.0, 1.0), 0.0)}];
 }
 
-- (void)scrollViewDidChangeContentSize:(id)a3
+- (void)scrollViewDidChangeContentSize:(id)size
 {
   if (!self->_computedInitialSize)
   {
@@ -810,30 +810,30 @@
   }
 
   v4 = [_UIScrollPocketContainerInteraction alloc];
-  v5 = [(_UIBarCustomizationItemReservoirView *)self collectionView];
-  v7 = [(_UIScrollPocketContainerInteraction *)v4 initWithScrollView:v5 edge:1];
+  collectionView = [(_UIBarCustomizationItemReservoirView *)self collectionView];
+  v7 = [(_UIScrollPocketContainerInteraction *)v4 initWithScrollView:collectionView edge:1];
 
-  v6 = [(_UIBarCustomizationItemReservoirView *)self topBar];
-  [v6 addInteraction:v7];
+  topBar = [(_UIBarCustomizationItemReservoirView *)self topBar];
+  [topBar addInteraction:v7];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(_UIBarCustomizationItemReservoirView *)self items:a3];
+  v4 = [(_UIBarCustomizationItemReservoirView *)self items:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"kCustomizationReservoirCellIdentifier" forIndexPath:v6];
-  v8 = [(_UIBarCustomizationItemReservoirView *)self items];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
-  v10 = [v9 _chiclet];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"kCustomizationReservoirCellIdentifier" forIndexPath:pathCopy];
+  items = [(_UIBarCustomizationItemReservoirView *)self items];
+  v9 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+  _chiclet = [v9 _chiclet];
 
-  [v7 setChiclet:v10];
+  [v7 setChiclet:_chiclet];
   if (_UIInternalPreferencesRevisionOnce != -1)
   {
     dispatch_once(&_UIInternalPreferencesRevisionOnce, &__block_literal_global_5_11);
@@ -858,12 +858,12 @@
       if (byte_1EA95E154)
       {
         v14 = +[UIColor redColor];
-        v15 = [v14 CGColor];
-        v16 = [v7 layer];
-        [v16 setBorderColor:v15];
+        cGColor = [v14 CGColor];
+        layer = [v7 layer];
+        [layer setBorderColor:cGColor];
 
-        v17 = [v7 layer];
-        [v17 setBorderWidth:1.0];
+        layer2 = [v7 layer];
+        [layer2 setBorderWidth:1.0];
       }
     }
   }
@@ -873,16 +873,16 @@ LABEL_4:
   return v7;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(_UIBarCustomizationItemReservoirView *)self items];
-  v8 = [v6 item];
+  pathCopy = path;
+  items = [(_UIBarCustomizationItemReservoirView *)self items];
+  item = [pathCopy item];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
-  v10 = [v9 _chiclet];
+  v9 = [items objectAtIndexedSubscript:item];
+  _chiclet = [v9 _chiclet];
 
-  [v10 fittingSizeWithChicletSize:1];
+  [_chiclet fittingSizeWithChicletSize:1];
   v12 = v11;
   v14 = v13;
 
@@ -893,18 +893,18 @@ LABEL_4:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = a4;
-  [a3 bounds];
+  layoutCopy = layout;
+  [view bounds];
   Width = CGRectGetWidth(v21);
-  [v7 sectionInset];
+  [layoutCopy sectionInset];
   v10 = Width - v9;
-  [v7 sectionInset];
+  [layoutCopy sectionInset];
   v12 = v11;
 
-  v13 = [(_UIBarCustomizationItemReservoirView *)self tipLabel];
-  [v13 sizeThatFits:{v10 - v12, 20.0}];
+  tipLabel = [(_UIBarCustomizationItemReservoirView *)self tipLabel];
+  [tipLabel sizeThatFits:{v10 - v12, 20.0}];
   v15 = v14;
   v17 = v16;
 
@@ -915,22 +915,22 @@ LABEL_4:
   return result;
 }
 
-- (id)_collectionView:(id)a3 layout:(id)a4 flowLayoutRowAlignmentOptionsForSection:(int64_t)a5
+- (id)_collectionView:(id)view layout:(id)layout flowLayoutRowAlignmentOptionsForSection:(int64_t)section
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  [a3 bounds];
+  layoutCopy = layout;
+  [view bounds];
   Width = CGRectGetWidth(v34);
-  [v7 sectionInset];
+  [layoutCopy sectionInset];
   v10 = Width - v9;
-  [v7 sectionInset];
+  [layoutCopy sectionInset];
   v12 = v10 - v11;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = [(_UIBarCustomizationItemReservoirView *)self items];
-  v14 = [v13 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  items = [(_UIBarCustomizationItemReservoirView *)self items];
+  v14 = [items countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v14)
   {
     v15 = v14;
@@ -942,11 +942,11 @@ LABEL_4:
       {
         if (*v26 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(items);
         }
 
-        v19 = [*(*(&v25 + 1) + 8 * i) _chiclet];
-        [v19 bounds];
+        _chiclet = [*(*(&v25 + 1) + 8 * i) _chiclet];
+        [_chiclet bounds];
         v20 = CGRectGetWidth(v35);
 
         if (v17 + 20.0 + v20 <= v12)
@@ -960,7 +960,7 @@ LABEL_4:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v15 = [items countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v15);

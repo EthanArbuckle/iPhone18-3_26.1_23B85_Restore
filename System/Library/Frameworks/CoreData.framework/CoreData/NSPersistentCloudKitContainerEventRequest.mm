@@ -3,10 +3,10 @@
 + (NSPersistentCloudKitContainerEventRequest)fetchEventsAfterDate:(NSDate *)date;
 + (NSPersistentCloudKitContainerEventRequest)fetchEventsAfterEvent:(NSPersistentCloudKitContainerEvent *)event;
 + (NSPersistentCloudKitContainerEventRequest)fetchEventsMatchingFetchRequest:(NSFetchRequest *)fetchRequest;
-+ (__CFString)ckEventKeyForKey:(uint64_t)a1;
-+ (id)translateExpression:(uint64_t *)a3 orReturnFailureReason:;
-+ (uint64_t)translatePredicate:(uint64_t *)a3 orReturnFailureReason:;
-- (NSPersistentCloudKitContainerEventRequest)initWithCKEventFetchRequest:(id)a3;
++ (__CFString)ckEventKeyForKey:(uint64_t)key;
++ (id)translateExpression:(uint64_t *)expression orReturnFailureReason:;
++ (uint64_t)translatePredicate:(uint64_t *)predicate orReturnFailureReason:;
+- (NSPersistentCloudKitContainerEventRequest)initWithCKEventFetchRequest:(id)request;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
 {
   v5 = [[NSFetchRequest alloc] initWithEntityName:+[NSCKEvent entityPath]];
   -[NSFetchRequest setPredicate:](v5, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"startedAt > %@", date]);
-  v6 = [[a1 alloc] initWithCKEventFetchRequest:v5];
+  v6 = [[self alloc] initWithCKEventFetchRequest:v5];
 
   return v6;
 }
@@ -29,7 +29,7 @@
     -[NSFetchRequest setPredicate:](v5, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF > %@", event->_ckEventObjectID]);
   }
 
-  v6 = [[a1 alloc] initWithCKEventFetchRequest:v5];
+  v6 = [[self alloc] initWithCKEventFetchRequest:v5];
 
   return v6;
 }
@@ -40,19 +40,19 @@
   v5 = 0x1E6EC0000uLL;
   objc_opt_self();
   v66 = 0;
-  v6 = [(NSFetchRequest *)fetchRequest entityName];
+  entityName = [(NSFetchRequest *)fetchRequest entityName];
   v7 = objc_opt_class();
-  if (![(NSString *)v6 isEqualToString:NSStringFromClass(v7)])
+  if (![(NSString *)entityName isEqualToString:NSStringFromClass(v7)])
   {
     v40 = MEMORY[0x1E696AEC0];
     v41 = objc_opt_class();
     v42 = NSStringFromClass(v41);
     v43 = objc_opt_class();
     v44 = NSStringFromClass(v43);
-    v45 = [(NSFetchRequest *)fetchRequest entityName];
+    entityName2 = [(NSFetchRequest *)fetchRequest entityName];
     v46 = objc_opt_class();
     v47 = NSStringFromClass(v46);
-    v66 = [v40 stringWithFormat:@"Fetch requests for '%@' must use '%@' as the entity name, '%@' is not valid. Please consider using +[%@ %@].", v42, v44, v45, v47, NSStringFromSelector(sel_fetchRequest)];
+    v66 = [v40 stringWithFormat:@"Fetch requests for '%@' must use '%@' as the entity name, '%@' is not valid. Please consider using +[%@ %@].", v42, v44, entityName2, v47, NSStringFromSelector(sel_fetchRequest)];
     if (!v66)
     {
       goto LABEL_30;
@@ -86,7 +86,7 @@ LABEL_36:
   }
 
 LABEL_5:
-  v56 = a1;
+  selfCopy = self;
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](-[NSFetchRequest sortDescriptors](fetchRequest, "sortDescriptors"), "count")}];
   v62 = 0u;
   v63 = 0u;
@@ -217,7 +217,7 @@ LABEL_37:
     objc_exception_throw([v50 exceptionWithName:v51 reason:v52 userInfo:0]);
   }
 
-  v37 = [[v56 alloc] initWithCKEventFetchRequest:v58];
+  v37 = [[selfCopy alloc] initWithCKEventFetchRequest:v58];
 
   v38 = *MEMORY[0x1E69E9840];
 
@@ -232,7 +232,7 @@ LABEL_37:
   return [NSFetchRequest fetchRequestWithEntityName:v3];
 }
 
-- (NSPersistentCloudKitContainerEventRequest)initWithCKEventFetchRequest:(id)a3
+- (NSPersistentCloudKitContainerEventRequest)initWithCKEventFetchRequest:(id)request
 {
   v8.receiver = self;
   v8.super_class = NSPersistentCloudKitContainerEventRequest;
@@ -241,9 +241,9 @@ LABEL_37:
   if (v4)
   {
     v4->_resultType = 0;
-    v6 = a3;
-    v5->_ckEventFetchRequest = v6;
-    if ([(NSArray *)[(NSFetchRequest *)v6 affectedStores] count])
+    requestCopy = request;
+    v5->_ckEventFetchRequest = requestCopy;
+    if ([(NSArray *)[(NSFetchRequest *)requestCopy affectedStores] count])
     {
       [(NSPersistentStoreRequest *)v5 setAffectedStores:[(NSFetchRequest *)v5->_ckEventFetchRequest affectedStores]];
     }
@@ -259,7 +259,7 @@ LABEL_37:
   [(NSPersistentStoreRequest *)&v3 dealloc];
 }
 
-+ (__CFString)ckEventKeyForKey:(uint64_t)a1
++ (__CFString)ckEventKeyForKey:(uint64_t)key
 {
   objc_opt_self();
   if ([a2 isEqualToString:@"identifier"])
@@ -303,7 +303,7 @@ LABEL_37:
   return a2;
 }
 
-+ (uint64_t)translatePredicate:(uint64_t *)a3 orReturnFailureReason:
++ (uint64_t)translatePredicate:(uint64_t *)predicate orReturnFailureReason:
 {
   v33 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -315,8 +315,8 @@ LABEL_37:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v6 = [a2 subpredicates];
-    v7 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+    subpredicates = [a2 subpredicates];
+    v7 = [subpredicates countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (!v7)
     {
 LABEL_10:
@@ -332,10 +332,10 @@ LABEL_4:
     {
       if (*v27 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(subpredicates);
       }
 
-      v11 = [NSPersistentCloudKitContainerEventRequest translatePredicate:a3 orReturnFailureReason:?];
+      v11 = [NSPersistentCloudKitContainerEventRequest translatePredicate:predicate orReturnFailureReason:?];
       if (!v11)
       {
         goto LABEL_19;
@@ -346,7 +346,7 @@ LABEL_4:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+        v8 = [subpredicates countByEnumeratingWithState:&v26 objects:v32 count:16];
         if (v8)
         {
           goto LABEL_4;
@@ -375,11 +375,11 @@ LABEL_4:
     v16 = [v14 stringWithFormat:@"'%@' does not support predicates with custom selectors: %@", NSStringFromClass(v15), a2];
 LABEL_15:
     v13 = 0;
-    *a3 = v16;
+    *predicate = v16;
     goto LABEL_26;
   }
 
-  v5 = +[NSPersistentCloudKitContainerEventRequest translateExpression:orReturnFailureReason:](NSPersistentCloudKitContainerEventRequest, [a2 leftExpression], a3);
+  v5 = +[NSPersistentCloudKitContainerEventRequest translateExpression:orReturnFailureReason:](NSPersistentCloudKitContainerEventRequest, [a2 leftExpression], predicate);
   if (!v5)
   {
 LABEL_19:
@@ -387,7 +387,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v21 = +[NSPersistentCloudKitContainerEventRequest translateExpression:orReturnFailureReason:](NSPersistentCloudKitContainerEventRequest, [a2 rightExpression], a3);
+  v21 = +[NSPersistentCloudKitContainerEventRequest translateExpression:orReturnFailureReason:](NSPersistentCloudKitContainerEventRequest, [a2 rightExpression], predicate);
   if (v21)
   {
     v13 = [objc_alloc(MEMORY[0x1E696AB18]) initWithLeftExpression:v5 rightExpression:v21 modifier:objc_msgSend(a2 type:"comparisonPredicateModifier") options:{objc_msgSend(a2, "predicateOperatorType"), objc_msgSend(a2, "options")}];
@@ -399,7 +399,7 @@ LABEL_19:
   }
 
 LABEL_20:
-  if (!(a3 | v13))
+  if (!(predicate | v13))
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
@@ -425,7 +425,7 @@ LABEL_26:
   return v13;
 }
 
-+ (id)translateExpression:(uint64_t *)a3 orReturnFailureReason:
++ (id)translateExpression:(uint64_t *)expression orReturnFailureReason:
 {
   objc_opt_self();
   if ([a2 expressionType] != 3)
@@ -436,7 +436,7 @@ LABEL_26:
       goto LABEL_8;
     }
 
-    v7 = +[NSPersistentCloudKitContainerEventRequest translatePredicate:orReturnFailureReason:](NSPersistentCloudKitContainerEventRequest, [a2 predicate], a3);
+    v7 = +[NSPersistentCloudKitContainerEventRequest translatePredicate:orReturnFailureReason:](NSPersistentCloudKitContainerEventRequest, [a2 predicate], expression);
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x1E696AEC8]) initWithExpression:objc_msgSend(a2 usingIteratorExpression:"collection") predicate:{objc_msgSend(a2, "variableExpression"), v7}];
@@ -450,11 +450,11 @@ LABEL_26:
     return v8;
   }
 
-  v4 = [a2 keyPath];
-  v5 = [NSPersistentCloudKitContainerEventRequest ckEventKeyForKey:v4];
+  keyPath = [a2 keyPath];
+  v5 = [NSPersistentCloudKitContainerEventRequest ckEventKeyForKey:keyPath];
   if (!v5)
   {
-    if ([v4 isEqualToString:@"storeIdentifier"])
+    if ([keyPath isEqualToString:@"storeIdentifier"])
     {
       v10 = MEMORY[0x1E696AEC0];
       v11 = objc_opt_class();
@@ -464,12 +464,12 @@ LABEL_26:
       v15 = NSStringFromSelector(sel_affectedStores);
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
-      v18 = [v10 stringWithFormat:@"Cannot query events by '%@', it is not a persisted property of '%@'. Use '%@.%@' or '%@.%@' instead.", v4, v12, v14, v15, v17, NSStringFromSelector(sel_affectedStores)];
+      v18 = [v10 stringWithFormat:@"Cannot query events by '%@', it is not a persisted property of '%@'. Use '%@.%@' or '%@.%@' instead.", keyPath, v12, v14, v15, v17, NSStringFromSelector(sel_affectedStores)];
     }
 
     else
     {
-      v19 = [v4 isEqualToString:@"error"];
+      v19 = [keyPath isEqualToString:@"error"];
       v20 = MEMORY[0x1E696AEC0];
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
@@ -481,12 +481,12 @@ LABEL_26:
 
       else
       {
-        v18 = [v20 stringWithFormat:@"Cannot query events by '%@', it is not an attribute of '%@'.", v4, v22, v25, v26, v27, v28];
+        v18 = [v20 stringWithFormat:@"Cannot query events by '%@', it is not an attribute of '%@'.", keyPath, v22, v25, v26, v27, v28];
       }
     }
 
     v8 = 0;
-    *a3 = v18;
+    *expression = v18;
     return v8;
   }
 

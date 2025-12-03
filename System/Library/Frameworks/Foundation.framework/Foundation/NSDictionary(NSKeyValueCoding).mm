@@ -12,7 +12,7 @@
   if (v5 && (v6 = v5, [a3 characterAtIndex:0] == 64) && (v7 = objc_msgSend(a3, "_newSubstringWithRange:zone:", 1, v6 - 1, 0)) != 0)
   {
     v8 = v7;
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = NSDictionary_0;
     v9 = objc_msgSendSuper2(&v11, sel_valueForKey_, v7);
 
@@ -22,7 +22,7 @@
   else
   {
 
-    return [a1 objectForKey:a3];
+    return [self objectForKey:a3];
   }
 }
 
@@ -56,7 +56,7 @@
             {
 
               v23 = v10;
-              v24 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"[<%@ %p> valueForKeyPath:]: this class does not implement the %@ operation.", objc_opt_class(), a1, v10), 0}];
+              v24 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"[<%@ %p> valueForKeyPath:]: this class does not implement the %@ operation.", objc_opt_class(), self, v10), 0}];
               objc_exception_throw(v24);
             }
           }
@@ -73,7 +73,7 @@
         v10 = [a3 _newSubstringWithRange:1 zone:{v6 - 1, 0}];
       }
 
-      v27.receiver = a1;
+      v27.receiver = self;
       v27.super_class = NSDictionary_0;
       v21 = objc_msgSendSuper2(&v27, sel_valueForKey_, v10);
 LABEL_12:
@@ -82,10 +82,10 @@ LABEL_12:
     }
   }
 
-  v21 = [a1 objectForKey:a3];
+  v21 = [self objectForKey:a3];
   if (!v21)
   {
-    v26.receiver = a1;
+    v26.receiver = self;
     v26.super_class = NSDictionary_0;
     return objc_msgSendSuper2(&v26, sel_valueForKeyPath_, a3);
   }

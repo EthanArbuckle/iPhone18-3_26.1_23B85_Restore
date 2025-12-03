@@ -1,21 +1,21 @@
 @interface CBLanguageSelectorViewController
 - (CBLanguageSelectorViewController)init;
 - (UITableView)languageTableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_didBecomeActive:(id)a3;
-- (void)_didResignActive:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_didBecomeActive:(id)active;
+- (void)_didResignActive:(id)active;
 - (void)_hideActivityView;
 - (void)_refreshLanguageStrings;
-- (void)_selectLanguage:(id)a3;
+- (void)_selectLanguage:(id)language;
 - (void)_showActivityView;
 - (void)dealloc;
-- (void)setLanguageComposite:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setLanguageComposite:(id)composite;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CBLanguageSelectorViewController
@@ -84,8 +84,8 @@
   v7.super_class = CBLanguageSelectorViewController;
   [(CBLanguageSelectorViewController *)&v7 viewDidLoad];
   [(CBLanguageSelectorViewController *)self setModalPresentationStyle:2];
-  v3 = [(CBLanguageSelectorViewController *)self languageTableView];
-  [(CBLanguageSelectorViewController *)self setTableView:v3];
+  languageTableView = [(CBLanguageSelectorViewController *)self languageTableView];
+  [(CBLanguageSelectorViewController *)self setTableView:languageTableView];
 
   v4 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   [(CBLanguageSelectorViewController *)self setActivityView:v4];
@@ -93,8 +93,8 @@
   v5 = [(CBLanguageSelectorViewController *)self animationController:@"Language"];
   [(CBLanguageSelectorViewController *)self setAnimationController:v5];
 
-  v6 = [(CBLanguageSelectorViewController *)self view];
-  [v6 layoutIfNeeded];
+  view = [(CBLanguageSelectorViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (void)viewDidLayoutSubviews
@@ -104,52 +104,52 @@
   [(CBLanguageSelectorViewController *)&v2 viewDidLayoutSubviews];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CBLanguageSelectorViewController;
-  [(CBLanguageSelectorViewController *)&v7 viewWillAppear:a3];
+  [(CBLanguageSelectorViewController *)&v7 viewWillAppear:appear];
   v4 = +[UIColor whiteColor];
-  v5 = [(CBLanguageSelectorViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(CBLanguageSelectorViewController *)self view];
+  [view setBackgroundColor:v4];
 
   if ([(CBLanguageSelectorViewController *)self isMovingToParentViewController])
   {
     [(CBLanguageSelectorViewController *)self _refreshLanguageStrings];
   }
 
-  v6 = [(CBLanguageSelectorViewController *)self view];
-  [v6 layoutIfNeeded];
+  view2 = [(CBLanguageSelectorViewController *)self view];
+  [view2 layoutIfNeeded];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CBLanguageSelectorViewController;
-  [(CBLanguageSelectorViewController *)&v5 viewDidAppear:a3];
-  v4 = [(CBLanguageSelectorViewController *)self animationController];
-  [v4 startAnimation];
+  [(CBLanguageSelectorViewController *)&v5 viewDidAppear:appear];
+  animationController = [(CBLanguageSelectorViewController *)self animationController];
+  [animationController startAnimation];
 }
 
-- (void)_didBecomeActive:(id)a3
+- (void)_didBecomeActive:(id)active
 {
   [(CBLanguageSelectorViewController *)self setHasBeenShown:1];
-  v4 = [(CBLanguageSelectorViewController *)self navigationController];
-  v5 = [v4 topViewController];
+  navigationController = [(CBLanguageSelectorViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v5 == self)
+  if (topViewController == self)
   {
-    v6 = [(CBLanguageSelectorViewController *)self animationController];
-    [v6 startAnimation];
+    animationController = [(CBLanguageSelectorViewController *)self animationController];
+    [animationController startAnimation];
   }
 }
 
-- (void)_didResignActive:(id)a3
+- (void)_didResignActive:(id)active
 {
-  v4 = [(CBLanguageSelectorViewController *)self navigationController];
-  v5 = [v4 topViewController];
+  navigationController = [(CBLanguageSelectorViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v5 == self)
+  if (topViewController == self)
   {
     v6 = [(CBLanguageSelectorViewController *)self animationController:@"Language"];
     [(CBLanguageSelectorViewController *)self setAnimationController:v6];
@@ -158,20 +158,20 @@
 
 - (void)_refreshLanguageStrings
 {
-  v3 = [(CBLanguageSelectorViewController *)self languageComposite];
-  v4 = [v3 languageCodes];
+  languageComposite = [(CBLanguageSelectorViewController *)self languageComposite];
+  languageCodes = [languageComposite languageCodes];
   languageCodes = self->_languageCodes;
-  self->_languageCodes = v4;
+  self->_languageCodes = languageCodes;
 
-  v6 = [(CBLanguageSelectorViewController *)self languageComposite];
-  v7 = [v6 languageStrings];
+  languageComposite2 = [(CBLanguageSelectorViewController *)self languageComposite];
+  languageStrings = [languageComposite2 languageStrings];
   languageStrings = self->_languageStrings;
-  self->_languageStrings = v7;
+  self->_languageStrings = languageStrings;
 
-  v9 = [(CBLanguageSelectorViewController *)self languageComposite];
-  v10 = [v9 locales];
+  languageComposite3 = [(CBLanguageSelectorViewController *)self languageComposite];
+  locales = [languageComposite3 locales];
   locales = self->_locales;
-  self->_locales = v10;
+  self->_locales = locales;
 
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
@@ -184,40 +184,40 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_selectLanguage:(id)a3
+- (void)_selectLanguage:(id)language
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10003771C;
   v5[3] = &unk_10007D540;
-  v6 = a3;
-  v4 = v6;
+  languageCopy = language;
+  v4 = languageCopy;
   [(CBLanguageSelectorViewController *)self dismissViewControllerAnimated:1 completion:v5];
 }
 
 - (void)_showActivityView
 {
-  v3 = [(CBLanguageSelectorViewController *)self view];
-  v4 = [(CBLanguageSelectorViewController *)self activityView];
-  [v3 addSubview:v4];
+  view = [(CBLanguageSelectorViewController *)self view];
+  activityView = [(CBLanguageSelectorViewController *)self activityView];
+  [view addSubview:activityView];
 
-  v5 = [(CBLanguageSelectorViewController *)self activityView];
-  [v5 startAnimating];
+  activityView2 = [(CBLanguageSelectorViewController *)self activityView];
+  [activityView2 startAnimating];
 
-  v6 = [(CBLanguageSelectorViewController *)self activityView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  activityView3 = [(CBLanguageSelectorViewController *)self activityView];
+  [activityView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v17 = [(CBLanguageSelectorViewController *)self activityView];
-  v7 = [v17 topAnchor];
-  v8 = [(CBLanguageSelectorViewController *)self headerView];
-  v9 = [v8 bottomAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:64.0];
+  activityView4 = [(CBLanguageSelectorViewController *)self activityView];
+  topAnchor = [activityView4 topAnchor];
+  headerView = [(CBLanguageSelectorViewController *)self headerView];
+  bottomAnchor = [headerView bottomAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:64.0];
   v18[0] = v10;
-  v11 = [(CBLanguageSelectorViewController *)self activityView];
-  v12 = [v11 centerXAnchor];
-  v13 = [(CBLanguageSelectorViewController *)self view];
-  v14 = [v13 centerXAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14 constant:0.0];
+  activityView5 = [(CBLanguageSelectorViewController *)self activityView];
+  centerXAnchor = [activityView5 centerXAnchor];
+  view2 = [(CBLanguageSelectorViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
   v18[1] = v15;
   v16 = [NSArray arrayWithObjects:v18 count:2];
   [NSLayoutConstraint activateConstraints:v16];
@@ -225,16 +225,16 @@
 
 - (void)_hideActivityView
 {
-  v3 = [(CBLanguageSelectorViewController *)self activityView];
-  [v3 stopAnimating];
+  activityView = [(CBLanguageSelectorViewController *)self activityView];
+  [activityView stopAnimating];
 
-  v4 = [(CBLanguageSelectorViewController *)self activityView];
-  [v4 removeFromSuperview];
+  activityView2 = [(CBLanguageSelectorViewController *)self activityView];
+  [activityView2 removeFromSuperview];
 }
 
-- (void)setLanguageComposite:(id)a3
+- (void)setLanguageComposite:(id)composite
 {
-  v5 = a3;
+  compositeCopy = composite;
   if ([(CBLanguageSelectorViewController *)self hasBeenShown]&& [(NSArray *)self->_languageCodes count])
   {
     v6 = CheckerBoardLogHandleForCategory();
@@ -247,105 +247,105 @@
 
   else
   {
-    objc_storeStrong(&self->_languageComposite, a3);
+    objc_storeStrong(&self->_languageComposite, composite);
     v7 = +[NSLocale currentLocale];
-    v8 = [v7 localeIdentifier];
+    localeIdentifier = [v7 localeIdentifier];
     currentLocaleCode = self->_currentLocaleCode;
-    self->_currentLocaleCode = v8;
+    self->_currentLocaleCode = localeIdentifier;
 
     [(CBLanguageSelectorViewController *)self _refreshLanguageStrings];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(CBLanguageSelectorViewController *)self languageCodes:a3];
+  v4 = [(CBLanguageSelectorViewController *)self languageCodes:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:pathCopy];
   [v7 setMinimumHeight:60.0];
   v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   [v8 pointSize];
   v9 = [UIFont boldSystemFontOfSize:?];
-  v10 = [v7 titleLabel];
-  [v10 setFont:v9];
+  titleLabel = [v7 titleLabel];
+  [titleLabel setFont:v9];
 
-  v11 = [(CBLanguageSelectorViewController *)self languageCodes];
-  v12 = [v6 row];
+  languageCodes = [(CBLanguageSelectorViewController *)self languageCodes];
+  v12 = [pathCopy row];
 
-  v13 = [v11 objectAtIndex:v12];
+  v13 = [languageCodes objectAtIndex:v12];
 
-  v14 = [(CBLanguageSelectorViewController *)self languageStrings];
-  v15 = [v14 objectForKey:v13];
+  languageStrings = [(CBLanguageSelectorViewController *)self languageStrings];
+  v15 = [languageStrings objectForKey:v13];
 
   v16 = sub_100037D88(v15, v13);
-  v17 = [(CBLanguageSelectorViewController *)self locales];
-  v18 = [v17 objectForKey:v13];
+  locales = [(CBLanguageSelectorViewController *)self locales];
+  v18 = [locales objectForKey:v13];
 
   v19 = +[NSLocale currentLocale];
-  v20 = [v19 languageCode];
-  v21 = [v18 languageCode];
-  v22 = [v20 isEqualToString:v21];
+  languageCode = [v19 languageCode];
+  languageCode2 = [v18 languageCode];
+  v22 = [languageCode isEqualToString:languageCode2];
 
   if (v22)
   {
-    v23 = [v19 scriptCode];
+    scriptCode = [v19 scriptCode];
 
-    if (v23)
+    if (scriptCode)
     {
-      v24 = [v18 scriptCode];
+      scriptCode2 = [v18 scriptCode];
 
-      if (v24)
+      if (scriptCode2)
       {
-        v25 = [v19 scriptCode];
-        v26 = [v18 scriptCode];
-        v27 = [v25 isEqualToString:v26];
+        scriptCode3 = [v19 scriptCode];
+        scriptCode4 = [v18 scriptCode];
+        v27 = [scriptCode3 isEqualToString:scriptCode4];
 
         if (v27)
         {
-          v24 = 3;
+          scriptCode2 = 3;
         }
 
         else
         {
-          v24 = 0;
+          scriptCode2 = 0;
         }
       }
     }
 
     else
     {
-      v24 = 3;
+      scriptCode2 = 3;
     }
   }
 
   else
   {
-    v24 = 0;
+    scriptCode2 = 0;
   }
 
-  v28 = [v7 titleLabel];
-  [v28 setAttributedText:v16];
+  titleLabel2 = [v7 titleLabel];
+  [titleLabel2 setAttributedText:v16];
 
-  [v7 setAccessoryType:v24];
+  [v7 setAccessoryType:scriptCode2];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(CBLanguageSelectorViewController *)self languageCodes];
-  v8 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  languageCodes = [(CBLanguageSelectorViewController *)self languageCodes];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
+  v9 = [languageCodes objectAtIndexedSubscript:v8];
 
   v10 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))

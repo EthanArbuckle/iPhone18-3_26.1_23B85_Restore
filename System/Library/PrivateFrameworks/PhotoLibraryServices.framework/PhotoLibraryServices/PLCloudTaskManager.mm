@@ -1,72 +1,72 @@
 @interface PLCloudTaskManager
-- (BOOL)addProgressBlock:(id)a3 completionHandler:(id)a4 forResourceIdentifier:(id)a5 highPriority:(BOOL)a6 withTaskIdentifier:(id)a7;
+- (BOOL)addProgressBlock:(id)block completionHandler:(id)handler forResourceIdentifier:(id)identifier highPriority:(BOOL)priority withTaskIdentifier:(id)taskIdentifier;
 - (PLCloudTaskManager)init;
-- (id)_lock_taskForResourceIdentifier:(id)a3 highPriority:(BOOL)a4;
-- (id)_lock_taskIdentifiersForResourceIdentifier:(id)a3 highPriority:(BOOL)a4;
-- (id)getPendingTaskForTaskIdentifier:(id)a3;
-- (void)_lock_removeTaskIdentifiersForResourceIdentifier:(id)a3 highPriority:(BOOL)a4;
-- (void)_lock_setTaskIdentifiers:(id)a3 forResourceIdentifier:(id)a4 highPriority:(BOOL)a5;
-- (void)cancelTaskWithTaskIdentifier:(id)a3 completion:(id)a4;
-- (void)reportCompletionForResourceIdentifier:(id)a3 highPriority:(BOOL)a4 withError:(id)a5;
-- (void)reportProgress:(float)a3 forResourceIdentifier:(id)a4 highPriority:(BOOL)a5;
+- (id)_lock_taskForResourceIdentifier:(id)identifier highPriority:(BOOL)priority;
+- (id)_lock_taskIdentifiersForResourceIdentifier:(id)identifier highPriority:(BOOL)priority;
+- (id)getPendingTaskForTaskIdentifier:(id)identifier;
+- (void)_lock_removeTaskIdentifiersForResourceIdentifier:(id)identifier highPriority:(BOOL)priority;
+- (void)_lock_setTaskIdentifiers:(id)identifiers forResourceIdentifier:(id)identifier highPriority:(BOOL)priority;
+- (void)cancelTaskWithTaskIdentifier:(id)identifier completion:(id)completion;
+- (void)reportCompletionForResourceIdentifier:(id)identifier highPriority:(BOOL)priority withError:(id)error;
+- (void)reportProgress:(float)progress forResourceIdentifier:(id)identifier highPriority:(BOOL)priority;
 - (void)reset;
-- (void)setPendingTaskWithTransferTask:(id)a3 withTaskIdentifier:(id)a4;
+- (void)setPendingTaskWithTransferTask:(id)task withTaskIdentifier:(id)identifier;
 @end
 
 @implementation PLCloudTaskManager
 
-- (void)_lock_removeTaskIdentifiersForResourceIdentifier:(id)a3 highPriority:(BOOL)a4
+- (void)_lock_removeTaskIdentifiersForResourceIdentifier:(id)identifier highPriority:(BOOL)priority
 {
-  v4 = a4;
-  v7 = a3;
+  priorityCopy = priority;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
   v6 = 32;
-  if (v4)
+  if (priorityCopy)
   {
     v6 = 24;
   }
 
-  [*(&self->super.isa + v6) removeObjectForKey:v7];
+  [*(&self->super.isa + v6) removeObjectForKey:identifierCopy];
 }
 
-- (void)_lock_setTaskIdentifiers:(id)a3 forResourceIdentifier:(id)a4 highPriority:(BOOL)a5
+- (void)_lock_setTaskIdentifiers:(id)identifiers forResourceIdentifier:(id)identifier highPriority:(BOOL)priority
 {
-  v5 = a5;
-  v8 = a4;
-  v10 = a3;
+  priorityCopy = priority;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   os_unfair_lock_assert_owner(&self->_lock);
   v9 = 32;
-  if (v5)
+  if (priorityCopy)
   {
     v9 = 24;
   }
 
-  [*(&self->super.isa + v9) setObject:v10 forKey:v8];
+  [*(&self->super.isa + v9) setObject:identifiersCopy forKey:identifierCopy];
 }
 
-- (id)_lock_taskIdentifiersForResourceIdentifier:(id)a3 highPriority:(BOOL)a4
+- (id)_lock_taskIdentifiersForResourceIdentifier:(id)identifier highPriority:(BOOL)priority
 {
-  v4 = a4;
-  v6 = a3;
+  priorityCopy = priority;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
   v7 = 32;
-  if (v4)
+  if (priorityCopy)
   {
     v7 = 24;
   }
 
-  v8 = [*(&self->super.isa + v7) objectForKey:v6];
+  v8 = [*(&self->super.isa + v7) objectForKey:identifierCopy];
 
   return v8;
 }
 
-- (id)_lock_taskForResourceIdentifier:(id)a3 highPriority:(BOOL)a4
+- (id)_lock_taskForResourceIdentifier:(id)identifier highPriority:(BOOL)priority
 {
-  v4 = a4;
+  priorityCopy = priority;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  [(PLCloudTaskManager *)self _lock_taskIdentifiersForResourceIdentifier:v6 highPriority:v4];
+  [(PLCloudTaskManager *)self _lock_taskIdentifiersForResourceIdentifier:identifierCopy highPriority:priorityCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -130,17 +130,17 @@ LABEL_11:
   [v3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_12882];
 }
 
-- (void)cancelTaskWithTaskIdentifier:(id)a3 completion:(id)a4
+- (void)cancelTaskWithTaskIdentifier:(id)identifier completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_lock_pendingTaskForTaskIdentifier objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_lock_pendingTaskForTaskIdentifier objectForKey:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v8)
   {
-    [v8 cancelTaskWithIdentifier:v6];
+    [v8 cancelTaskWithIdentifier:identifierCopy];
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
       v9 = __CPLAssetsdOSLogDomain();
@@ -149,51 +149,51 @@ LABEL_11:
         v10 = 134218242;
         v11 = v8;
         v12 = 2112;
-        v13 = v6;
+        v13 = identifierCopy;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEBUG, "Removing PLCloudPendingResourceTask [cancelled] %p for identifier: %@", &v10, 0x16u);
       }
     }
 
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_lock_pendingTaskForTaskIdentifier removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_lock_pendingTaskForTaskIdentifier removeObjectForKey:identifierCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v8 != 0);
+    completionCopy[2](completionCopy, v8 != 0);
   }
 }
 
-- (id)getPendingTaskForTaskIdentifier:(id)a3
+- (id)getPendingTaskForTaskIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_pendingTaskForTaskIdentifier objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_lock_pendingTaskForTaskIdentifier objectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)reportCompletionForResourceIdentifier:(id)a3 highPriority:(BOOL)a4 withError:(id)a5
+- (void)reportCompletionForResourceIdentifier:(id)identifier highPriority:(BOOL)priority withError:(id)error
 {
-  v6 = a4;
+  priorityCopy = priority;
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(PLCloudTaskManager *)self _lock_taskForResourceIdentifier:v8 highPriority:v6];
+  v10 = [(PLCloudTaskManager *)self _lock_taskForResourceIdentifier:identifierCopy highPriority:priorityCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v10)
   {
-    v21 = v6;
-    v23 = v8;
-    v11 = [v10 taskIDs];
-    v12 = [v11 copy];
+    v21 = priorityCopy;
+    v23 = identifierCopy;
+    taskIDs = [v10 taskIDs];
+    v12 = [taskIDs copy];
 
-    v22 = v9;
-    [v10 reportCompletionWithError:v9];
+    v22 = errorCopy;
+    [v10 reportCompletionWithError:errorCopy];
     os_unfair_lock_lock(&self->_lock);
     v26 = 0u;
     v27 = 0u;
@@ -238,62 +238,62 @@ LABEL_11:
       while (v15);
     }
 
-    v8 = v23;
+    identifierCopy = v23;
     [(PLCloudTaskManager *)self _lock_removeTaskIdentifiersForResourceIdentifier:v23 highPriority:v21];
     os_unfair_lock_unlock(&self->_lock);
 
-    v9 = v22;
+    errorCopy = v22;
   }
 }
 
-- (void)reportProgress:(float)a3 forResourceIdentifier:(id)a4 highPriority:(BOOL)a5
+- (void)reportProgress:(float)progress forResourceIdentifier:(id)identifier highPriority:(BOOL)priority
 {
-  v5 = a5;
-  v8 = a4;
+  priorityCopy = priority;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v11 = [(PLCloudTaskManager *)self _lock_taskForResourceIdentifier:v8 highPriority:v5];
+  v11 = [(PLCloudTaskManager *)self _lock_taskForResourceIdentifier:identifierCopy highPriority:priorityCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   v10 = v11;
   if (v11)
   {
-    *&v9 = a3;
+    *&v9 = progress;
     [v11 reportProgress:v9];
     v10 = v11;
   }
 }
 
-- (void)setPendingTaskWithTransferTask:(id)a3 withTaskIdentifier:(id)a4
+- (void)setPendingTaskWithTransferTask:(id)task withTaskIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_lock_pendingTaskForTaskIdentifier objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_lock_pendingTaskForTaskIdentifier objectForKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
-  [v8 setTransferTask:v7];
+  [v8 setTransferTask:taskCopy];
 }
 
-- (BOOL)addProgressBlock:(id)a3 completionHandler:(id)a4 forResourceIdentifier:(id)a5 highPriority:(BOOL)a6 withTaskIdentifier:(id)a7
+- (BOOL)addProgressBlock:(id)block completionHandler:(id)handler forResourceIdentifier:(id)identifier highPriority:(BOOL)priority withTaskIdentifier:(id)taskIdentifier
 {
-  v8 = a6;
+  priorityCopy = priority;
   v25 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  blockCopy = block;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  taskIdentifierCopy = taskIdentifier;
   os_unfair_lock_lock(&self->_lock);
-  v16 = [(PLCloudTaskManager *)self _lock_taskForResourceIdentifier:v14 highPriority:v8];
+  v16 = [(PLCloudTaskManager *)self _lock_taskForResourceIdentifier:identifierCopy highPriority:priorityCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v16)
   {
-    [(PLCloudPendingResourceTask *)v16 addProgressBlock:v12 completionHandler:v13 withTaskIdentifier:v15];
+    [(PLCloudPendingResourceTask *)v16 addProgressBlock:blockCopy completionHandler:handlerCopy withTaskIdentifier:taskIdentifierCopy];
     v17 = v16;
   }
 
   else
   {
-    v17 = [[PLCloudPendingResourceTask alloc] initWithProgressBlock:v12 completionHandler:v13 forTaskIdentifier:v15];
+    v17 = [[PLCloudPendingResourceTask alloc] initWithProgressBlock:blockCopy completionHandler:handlerCopy forTaskIdentifier:taskIdentifierCopy];
   }
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -304,21 +304,21 @@ LABEL_11:
       v21 = 134218242;
       v22 = v17;
       v23 = 2112;
-      v24 = v15;
+      v24 = taskIdentifierCopy;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "Set PLCloudPendingResourceTask %p for identifier: %@", &v21, 0x16u);
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_lock_pendingTaskForTaskIdentifier setObject:v17 forKey:v15];
-  v19 = [(PLCloudTaskManager *)self _lock_taskIdentifiersForResourceIdentifier:v14 highPriority:v8];
+  [(NSMutableDictionary *)self->_lock_pendingTaskForTaskIdentifier setObject:v17 forKey:taskIdentifierCopy];
+  v19 = [(PLCloudTaskManager *)self _lock_taskIdentifiersForResourceIdentifier:identifierCopy highPriority:priorityCopy];
   if (!v19)
   {
     v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(PLCloudTaskManager *)self _lock_setTaskIdentifiers:v19 forResourceIdentifier:v14 highPriority:v8];
+    [(PLCloudTaskManager *)self _lock_setTaskIdentifiers:v19 forResourceIdentifier:identifierCopy highPriority:priorityCopy];
   }
 
-  [v19 addObject:v15];
+  [v19 addObject:taskIdentifierCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v16 != 0;

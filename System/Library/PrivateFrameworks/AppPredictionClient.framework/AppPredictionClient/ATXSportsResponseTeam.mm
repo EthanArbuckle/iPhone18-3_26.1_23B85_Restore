@@ -1,31 +1,31 @@
 @interface ATXSportsResponseTeam
-- (ATXSportsResponseTeam)initWithCoder:(id)a3;
-- (ATXSportsResponseTeam)initWithName:(id)a3 umcid:(id)a4 qid:(id)a5;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (void)encodeWithCoder:(id)a3;
+- (ATXSportsResponseTeam)initWithCoder:(id)coder;
+- (ATXSportsResponseTeam)initWithName:(id)name umcid:(id)umcid qid:(id)qid;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSportsResponseTeam
 
-- (ATXSportsResponseTeam)initWithName:(id)a3 umcid:(id)a4 qid:(id)a5
+- (ATXSportsResponseTeam)initWithName:(id)name umcid:(id)umcid qid:(id)qid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  umcidCopy = umcid;
+  qidCopy = qid;
   v19.receiver = self;
   v19.super_class = ATXSportsResponseTeam;
   v11 = [(ATXSportsResponseTeam *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [v9 copy];
+    v14 = [umcidCopy copy];
     umcid = v11->_umcid;
     v11->_umcid = v14;
 
-    v16 = [v10 copy];
+    v16 = [qidCopy copy];
     qid = v11->_qid;
     v11->_qid = v16;
   }
@@ -33,33 +33,33 @@
   return v11;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x1E696ABC0]);
       v21 = *MEMORY[0x1E696A578];
-      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", v11, v21];
+      v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to decode key %@", keyCopy, v21];
       v22[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -70,28 +70,28 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"KEY_NAME"];
-  [v5 encodeObject:self->_umcid forKey:@"KEY_UMCID"];
-  [v5 encodeObject:self->_qid forKey:@"KEY_QID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"KEY_NAME"];
+  [coderCopy encodeObject:self->_umcid forKey:@"KEY_UMCID"];
+  [coderCopy encodeObject:self->_qid forKey:@"KEY_QID"];
 }
 
-- (ATXSportsResponseTeam)initWithCoder:(id)a3
+- (ATXSportsResponseTeam)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E69C5D78];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_default();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"KEY_NAME" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXSportsResponseTeam" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"KEY_NAME" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXSportsResponseTeam" errorCode:-1 logHandle:v7];
 
-  v9 = [v4 error];
+  error = [coderCopy error];
 
-  if (v9)
+  if (error)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -99,13 +99,13 @@ LABEL_7:
     v11 = MEMORY[0x1E69C5D78];
     v12 = objc_opt_class();
     v13 = __atxlog_handle_default();
-    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"KEY_UMCID" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXSportsResponseTeam" errorCode:-1 logHandle:v13];
+    v14 = [v11 robustDecodeObjectOfClass:v12 forKey:@"KEY_UMCID" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXSportsResponseTeam" errorCode:-1 logHandle:v13];
 
-    v15 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (v15)
+    if (error2)
     {
-      v10 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -113,24 +113,24 @@ LABEL_7:
       v16 = MEMORY[0x1E69C5D78];
       v17 = objc_opt_class();
       v18 = __atxlog_handle_default();
-      v19 = [v16 robustDecodeObjectOfClass:v17 forKey:@"KEY_QID" withCoder:v4 expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXSportsResponseTeam" errorCode:-1 logHandle:v18];
+      v19 = [v16 robustDecodeObjectOfClass:v17 forKey:@"KEY_QID" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.duetexpertd.ATXSportsResponseTeam" errorCode:-1 logHandle:v18];
 
-      v20 = [v4 error];
+      error3 = [coderCopy error];
 
-      if (v20)
+      if (error3)
       {
-        v10 = 0;
+        selfCopy = 0;
       }
 
       else
       {
         self = [(ATXSportsResponseTeam *)self initWithName:v8 umcid:v14 qid:v19];
-        v10 = self;
+        selfCopy = self;
       }
     }
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

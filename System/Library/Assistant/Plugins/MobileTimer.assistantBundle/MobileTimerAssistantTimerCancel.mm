@@ -1,20 +1,20 @@
 @interface MobileTimerAssistantTimerCancel
-- (void)_performWithCompletion:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_performWithCompletion:(id)completion;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MobileTimerAssistantTimerCancel
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_D814(v5);
   }
 
-  [(MobileTimerAssistantTimerCancel *)self _performWithCompletion:v4];
+  [(MobileTimerAssistantTimerCancel *)self _performWithCompletion:completionCopy];
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -22,9 +22,9 @@
   }
 }
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -34,7 +34,7 @@
   }
 
   v6 = objc_opt_new();
-  v7 = [v6 currentTimer];
+  currentTimer = [v6 currentTimer];
   objc_initWeak(&location, self);
   v8 = dispatch_semaphore_create(0);
   *&buf = 0;
@@ -50,7 +50,7 @@
   objc_copyWeak(&v30, &location);
   v9 = v6;
   v29 = v9;
-  v10 = [v7 flatMap:v28];
+  v10 = [currentTimer flatMap:v28];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_9CB0;
@@ -73,18 +73,18 @@
   v15 = MTLogForCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [*(*(&buf + 1) + 40) dictionary];
-    sub_D91C(self, v16, v33);
+    dictionary = [*(*(&buf + 1) + 40) dictionary];
+    sub_D91C(self, dictionary, v33);
   }
 
-  v17 = [*(*(&buf + 1) + 40) dictionary];
-  v4[2](v4, v17);
+  dictionary2 = [*(*(&buf + 1) + 40) dictionary];
+  completionCopy[2](completionCopy, dictionary2);
 
   v18 = MTLogForCategory();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [*(*(&buf + 1) + 40) dictionary];
-    sub_D980(self, v19, v32);
+    dictionary3 = [*(*(&buf + 1) + 40) dictionary];
+    sub_D980(self, dictionary3, v32);
   }
 
   [MTAnalytics incrementEventCount:kMTCASiriTimerCancels];

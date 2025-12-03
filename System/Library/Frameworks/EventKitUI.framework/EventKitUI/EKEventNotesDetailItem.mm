@@ -1,17 +1,17 @@
 @interface EKEventNotesDetailItem
 + (id)titleForCell;
 + (id)titleForExtendedViewController;
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
 @end
 
 @implementation EKEventNotesDetailItem
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  v6 = [(EKEvent *)self->super.super._event displayNotes:a3];
+  v6 = [(EKEvent *)self->super.super._event displayNotes:event];
   if ([v6 length])
   {
-    v7 = [(EKEvent *)self->super.super._event displayNotes];
+    displayNotes = [(EKEvent *)self->super.super._event displayNotes];
     v8 = CUIKShouldDisplayNotes();
   }
 

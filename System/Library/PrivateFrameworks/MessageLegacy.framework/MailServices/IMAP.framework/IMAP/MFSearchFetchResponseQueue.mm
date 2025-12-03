@@ -1,6 +1,6 @@
 @interface MFSearchFetchResponseQueue
 - (MFSearchFetchResponseQueue)init;
-- (id)messageToSyncFlagsForUID:(unsigned int)a3;
+- (id)messageToSyncFlagsForUID:(unsigned int)d;
 @end
 
 @implementation MFSearchFetchResponseQueue
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (id)messageToSyncFlagsForUID:(unsigned int)a3
+- (id)messageToSyncFlagsForUID:(unsigned int)d
 {
   store = self->super._store;
   v4 = EFStringWithInt();

@@ -1,24 +1,24 @@
 @interface EKEventAutocompleteResultsEditItem
 - (BOOL)hasSuggestedLocationResult;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (unint64_t)numberOfSubitems;
-- (void)_updateTableWithOldCount:(int64_t)a3 newCount:(int64_t)a4;
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4;
-- (void)setResults:(id)a3;
+- (void)_updateTableWithOldCount:(int64_t)count newCount:(int64_t)newCount;
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem;
+- (void)setResults:(id)results;
 @end
 
 @implementation EKEventAutocompleteResultsEditItem
 
-- (void)setResults:(id)a3
+- (void)setResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v14 = v5;
+  v14 = resultsCopy;
   if (!results)
   {
     v8 = 1;
-    if (v5)
+    if (resultsCopy)
     {
       goto LABEL_3;
     }
@@ -29,7 +29,7 @@ LABEL_9:
   }
 
   v7 = [(NSArray *)results count];
-  v5 = v14;
+  resultsCopy = v14;
   v8 = v7 == 0;
   if (!v14)
   {
@@ -37,7 +37,7 @@ LABEL_9:
   }
 
 LABEL_3:
-  v9 = [v5 count];
+  v9 = [resultsCopy count];
   v10 = v9 == 0;
   if (v9)
   {
@@ -52,7 +52,7 @@ LABEL_3:
   if ((v11 & 1) == 0)
   {
     v12 = [(NSArray *)self->_results isEqualToArray:v14];
-    v5 = v14;
+    resultsCopy = v14;
     if (v12)
     {
       goto LABEL_17;
@@ -61,21 +61,21 @@ LABEL_3:
 LABEL_13:
     if (self->_suggestionApplied)
     {
-      objc_storeStrong(&self->_results, a3);
+      objc_storeStrong(&self->_results, results);
     }
 
     else
     {
-      v13 = [(EKEventAutocompleteResultsEditItem *)self numberOfSubitems];
-      objc_storeStrong(&self->_results, a3);
-      [(EKEventAutocompleteResultsEditItem *)self _updateTableWithOldCount:v13 newCount:[(EKEventAutocompleteResultsEditItem *)self numberOfSubitems]];
+      numberOfSubitems = [(EKEventAutocompleteResultsEditItem *)self numberOfSubitems];
+      objc_storeStrong(&self->_results, results);
+      [(EKEventAutocompleteResultsEditItem *)self _updateTableWithOldCount:numberOfSubitems newCount:[(EKEventAutocompleteResultsEditItem *)self numberOfSubitems]];
     }
 
-    v5 = v14;
+    resultsCopy = v14;
     goto LABEL_17;
   }
 
-  v5 = v14;
+  resultsCopy = v14;
 LABEL_10:
   if (!v8 || !v10)
   {
@@ -85,26 +85,26 @@ LABEL_10:
 LABEL_17:
 }
 
-- (void)_updateTableWithOldCount:(int64_t)a3 newCount:(int64_t)a4
+- (void)_updateTableWithOldCount:(int64_t)count newCount:(int64_t)newCount
 {
   v26 = objc_opt_new();
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  if (!a3 || !a4)
+  if (!count || !newCount)
   {
-    v9 = [(EKCalendarItemEditItem *)self delegate];
+    delegate = [(EKCalendarItemEditItem *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(EKCalendarItemEditItem *)self delegate];
-      [v11 editItemVisibilityChanged:self];
+      delegate2 = [(EKCalendarItemEditItem *)self delegate];
+      [delegate2 editItemVisibilityChanged:self];
     }
   }
 
-  if (a3 == a4)
+  if (count == newCount)
   {
-    if (a3)
+    if (count)
     {
       v12 = 0;
       do
@@ -112,19 +112,19 @@ LABEL_17:
         [v8 addIndex:v12++];
       }
 
-      while (a3 != v12);
+      while (count != v12);
     }
   }
 
-  else if (a3 <= a4)
+  else if (count <= newCount)
   {
-    if (a4)
+    if (newCount)
     {
       v15 = 0;
       do
       {
         v16 = v26;
-        if (v15 < a3)
+        if (v15 < count)
         {
           v16 = v8;
         }
@@ -132,16 +132,16 @@ LABEL_17:
         [v16 addIndex:v15++];
       }
 
-      while (a4 != v15);
+      while (newCount != v15);
     }
   }
 
-  else if (a3)
+  else if (count)
   {
     v13 = 0;
     do
     {
-      if (v13 >= a4)
+      if (v13 >= newCount)
       {
         v14 = v7;
       }
@@ -154,41 +154,41 @@ LABEL_17:
       [v14 addIndex:v13++];
     }
 
-    while (a3 != v13);
+    while (count != v13);
   }
 
-  v17 = [(EKCalendarItemEditItem *)self delegate];
+  delegate3 = [(EKCalendarItemEditItem *)self delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
   {
-    v19 = [(EKCalendarItemEditItem *)self delegate];
-    [v19 editItem:self wantsRowInsertions:v26 rowDeletions:v7 rowReloads:v8];
+    delegate4 = [(EKCalendarItemEditItem *)self delegate];
+    [delegate4 editItem:self wantsRowInsertions:v26 rowDeletions:v7 rowReloads:v8];
   }
 
-  if ((a3 == 0) != (a4 == 0))
+  if ((count == 0) != (newCount == 0))
   {
-    if (!a3)
+    if (!count)
     {
-      v20 = [(EKCalendarItemEditItem *)self delegate];
+      delegate5 = [(EKCalendarItemEditItem *)self delegate];
       v21 = objc_opt_respondsToSelector();
 
       if (v21)
       {
-        v22 = [(EKCalendarItemEditItem *)self delegate];
-        [v22 autocompleteResultsEditItemDidShowResults:self];
+        delegate6 = [(EKCalendarItemEditItem *)self delegate];
+        [delegate6 autocompleteResultsEditItemDidShowResults:self];
       }
     }
 
-    if (!a4)
+    if (!newCount)
     {
-      v23 = [(EKCalendarItemEditItem *)self delegate];
+      delegate7 = [(EKCalendarItemEditItem *)self delegate];
       v24 = objc_opt_respondsToSelector();
 
       if (v24)
       {
-        v25 = [(EKCalendarItemEditItem *)self delegate];
-        [v25 autocompleteResultsEditItemDidHideResults:self];
+        delegate8 = [(EKCalendarItemEditItem *)self delegate];
+        [delegate8 autocompleteResultsEditItemDidHideResults:self];
       }
     }
   }
@@ -207,21 +207,21 @@ LABEL_17:
   }
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
-  v4 = [(NSArray *)self->_results objectAtIndexedSubscript:a3];
-  v5 = [v4 pasteboardResults];
-  [v5 count];
+  v4 = [(NSArray *)self->_results objectAtIndexedSubscript:index];
+  pasteboardResults = [v4 pasteboardResults];
+  [pasteboardResults count];
 
   v6 = objc_opt_class();
-  v7 = [(EKCalendarItemEditItem *)self delegate];
+  delegate = [(EKCalendarItemEditItem *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) == 0 || (-[EKCalendarItemEditItem delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), -[objc_class reuseIdentifier](v6, "reuseIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), [v9 cellWithReuseIdentifier:v10 forEditItem:self], v11 = objc_claimAutoreleasedReturnValue(), v10, v9, !v11))
   {
     v12 = [v6 alloc];
-    v13 = [(objc_class *)v6 reuseIdentifier];
-    v11 = [v12 initWithStyle:0 reuseIdentifier:v13];
+    reuseIdentifier = [(objc_class *)v6 reuseIdentifier];
+    v11 = [v12 initWithStyle:0 reuseIdentifier:reuseIdentifier];
   }
 
   [v11 updateWithResult:v4];
@@ -229,11 +229,11 @@ LABEL_17:
   return v11;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
-  v5 = [(NSArray *)self->_results objectAtIndexedSubscript:a3];
-  v6 = [v5 pasteboardResults];
-  v7 = [v6 count];
+  v5 = [(NSArray *)self->_results objectAtIndexedSubscript:index];
+  pasteboardResults = [v5 pasteboardResults];
+  v7 = [pasteboardResults count];
 
   v8 = off_1E843D990;
   if (v7 <= 1)
@@ -241,25 +241,25 @@ LABEL_17:
     v8 = off_1E843D708;
   }
 
-  [(__objc2_class *)*v8 cellHeightForResult:v5 forWidth:a4];
+  [(__objc2_class *)*v8 cellHeightForResult:v5 forWidth:width];
   v10 = v9;
 
   return v10;
 }
 
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
-  v9 = [(NSArray *)self->_results objectAtIndexedSubscript:a4];
-  v5 = [v9 pasteboardResults];
-  self->_suggestionApplied = [v5 count] < 2;
+  v9 = [(NSArray *)self->_results objectAtIndexedSubscript:subitem];
+  pasteboardResults = [v9 pasteboardResults];
+  self->_suggestionApplied = [pasteboardResults count] < 2;
 
-  v6 = [(EKCalendarItemEditItem *)self delegate];
+  delegate = [(EKCalendarItemEditItem *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(EKCalendarItemEditItem *)self delegate];
-    [v8 autocompleteResultsEditItem:self resultSelected:v9];
+    delegate2 = [(EKCalendarItemEditItem *)self delegate];
+    [delegate2 autocompleteResultsEditItem:self resultSelected:v9];
   }
 }
 
@@ -284,10 +284,10 @@ LABEL_17:
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) preferredLocation];
-        v7 = [v6 isPrediction];
+        preferredLocation = [*(*(&v9 + 1) + 8 * i) preferredLocation];
+        isPrediction = [preferredLocation isPrediction];
 
-        if (v7)
+        if (isPrediction)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;

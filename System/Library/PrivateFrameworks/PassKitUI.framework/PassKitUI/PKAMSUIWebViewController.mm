@@ -1,23 +1,23 @@
 @interface PKAMSUIWebViewController
-- (_TtC9PassKitUI24PKAMSUIWebViewController)initWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5;
-- (_TtC9PassKitUI24PKAMSUIWebViewController)initWithCoder:(id)a3;
+- (_TtC9PassKitUI24PKAMSUIWebViewController)initWithBag:(id)bag account:(id)account clientInfo:(id)info;
+- (_TtC9PassKitUI24PKAMSUIWebViewController)initWithCoder:(id)coder;
 @end
 
 @implementation PKAMSUIWebViewController
 
-- (_TtC9PassKitUI24PKAMSUIWebViewController)initWithBag:(id)a3 account:(id)a4 clientInfo:(id)a5
+- (_TtC9PassKitUI24PKAMSUIWebViewController)initWithBag:(id)bag account:(id)account clientInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for PKAMSUIWebViewController();
-  return [(AMSUIWebViewController *)&v9 initWithBag:a3 account:a4 clientInfo:a5];
+  return [(AMSUIWebViewController *)&v9 initWithBag:bag account:account clientInfo:info];
 }
 
-- (_TtC9PassKitUI24PKAMSUIWebViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI24PKAMSUIWebViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PKAMSUIWebViewController();
-  v4 = a3;
-  v5 = [(PKAMSUIWebViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PKAMSUIWebViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

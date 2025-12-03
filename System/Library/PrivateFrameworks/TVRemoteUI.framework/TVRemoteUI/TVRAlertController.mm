@@ -1,79 +1,79 @@
 @interface TVRAlertController
 - (CGRect)previousKeyboardFrame;
-- (TVRAlertController)initWithCoder:(id)a3;
-- (TVRAlertController)initWithKeyboardAttributes:(id)a3 styleProvider:(id)a4;
-- (TVRAlertController)initWithNibName:(id)a3 bundle:(id)a4;
-- (TVRAlertController)initWithTitle:(id)a3 PINEntryAttributes:(id)a4 styleProvider:(id)a5;
-- (TVRAlertController)initWithTitle:(id)a3 keyboardAttributes:(id)a4 styleProvider:(id)a5;
-- (TVRAlertController)initWithTitle:(id)a3 passcodeSize:(int64_t)a4;
+- (TVRAlertController)initWithCoder:(id)coder;
+- (TVRAlertController)initWithKeyboardAttributes:(id)attributes styleProvider:(id)provider;
+- (TVRAlertController)initWithNibName:(id)name bundle:(id)bundle;
+- (TVRAlertController)initWithTitle:(id)title PINEntryAttributes:(id)attributes styleProvider:(id)provider;
+- (TVRAlertController)initWithTitle:(id)title keyboardAttributes:(id)attributes styleProvider:(id)provider;
+- (TVRAlertController)initWithTitle:(id)title passcodeSize:(int64_t)size;
 - (TVRAlertControllerDelegate)delegate;
 - (id)_contentViewBasedOnType;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)initForTextPasswordType:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)initForTextPasswordType:(id)type;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_cancel;
-- (void)_dictationDidFinish:(id)a3;
-- (void)_keyboardChanged:(id)a3 completion:(id)a4;
-- (void)_keyboardHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_layoutForKeyboardFrame:(CGRect)a3;
+- (void)_dictationDidFinish:(id)finish;
+- (void)_keyboardChanged:(id)changed completion:(id)completion;
+- (void)_keyboardHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
+- (void)_layoutForKeyboardFrame:(CGRect)frame;
 - (void)_observeKeyboardNotifications;
-- (void)alertView:(id)a3 didUpdateText:(id)a4;
-- (void)alertViewDidCancel:(id)a3;
-- (void)keyboardView:(id)a3 didUpdateText:(id)a4;
-- (void)keyboardView:(id)a3 generatedTextInputPayload:(id)a4;
-- (void)keyboardViewDidCancel:(id)a3;
-- (void)keyboardViewDidHitReturnKey:(id)a3;
-- (void)keyboardViewPressedDictationButton:(id)a3;
-- (void)keyboardViewReleasedDictationButton:(id)a3;
+- (void)alertView:(id)view didUpdateText:(id)text;
+- (void)alertViewDidCancel:(id)cancel;
+- (void)keyboardView:(id)view didUpdateText:(id)text;
+- (void)keyboardView:(id)view generatedTextInputPayload:(id)payload;
+- (void)keyboardViewDidCancel:(id)cancel;
+- (void)keyboardViewDidHitReturnKey:(id)key;
+- (void)keyboardViewPressedDictationButton:(id)button;
+- (void)keyboardViewReleasedDictationButton:(id)button;
 - (void)loadView;
-- (void)setKeyboardAttributes:(id)a3;
-- (void)setText:(id)a3;
+- (void)setKeyboardAttributes:(id)attributes;
+- (void)setText:(id)text;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVRAlertController
 
-- (TVRAlertController)initWithKeyboardAttributes:(id)a3 styleProvider:(id)a4
+- (TVRAlertController)initWithKeyboardAttributes:(id)attributes styleProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 title];
-  v9 = [(TVRAlertController *)self initWithTitle:v8 keyboardAttributes:v7 styleProvider:v6];
+  providerCopy = provider;
+  attributesCopy = attributes;
+  title = [attributesCopy title];
+  v9 = [(TVRAlertController *)self initWithTitle:title keyboardAttributes:attributesCopy styleProvider:providerCopy];
 
   return v9;
 }
 
-- (TVRAlertController)initWithTitle:(id)a3 keyboardAttributes:(id)a4 styleProvider:(id)a5
+- (TVRAlertController)initWithTitle:(id)title keyboardAttributes:(id)attributes styleProvider:(id)provider
 {
-  objc_storeStrong(&self->_keyboardAttributes, a4);
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v9 PINEntryAttributes];
+  objc_storeStrong(&self->_keyboardAttributes, attributes);
+  attributesCopy = attributes;
+  providerCopy = provider;
+  titleCopy = title;
+  pINEntryAttributes = [attributesCopy PINEntryAttributes];
 
-  v13 = [(TVRAlertController *)self initWithTitle:v11 PINEntryAttributes:v12 styleProvider:v10];
+  v13 = [(TVRAlertController *)self initWithTitle:titleCopy PINEntryAttributes:pINEntryAttributes styleProvider:providerCopy];
   return v13;
 }
 
-- (TVRAlertController)initWithTitle:(id)a3 passcodeSize:(int64_t)a4
+- (TVRAlertController)initWithTitle:(id)title passcodeSize:(int64_t)size
 {
   v6 = MEMORY[0x277D6C510];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithDigitCount:a4];
-  v9 = [(TVRAlertController *)self initWithTitle:v7 PINEntryAttributes:v8 styleProvider:0];
+  titleCopy = title;
+  v8 = [[v6 alloc] initWithDigitCount:size];
+  v9 = [(TVRAlertController *)self initWithTitle:titleCopy PINEntryAttributes:v8 styleProvider:0];
 
   return v9;
 }
 
-- (TVRAlertController)initWithTitle:(id)a3 PINEntryAttributes:(id)a4 styleProvider:(id)a5
+- (TVRAlertController)initWithTitle:(id)title PINEntryAttributes:(id)attributes styleProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  attributesCopy = attributes;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = TVRAlertController;
   v11 = [(TVRAlertController *)&v19 initWithNibName:0 bundle:0];
@@ -82,9 +82,9 @@
   {
     [(TVRAlertController *)v11 setModalPresentationStyle:4];
     [(TVRAlertController *)v12 setTransitioningDelegate:v12];
-    [(TVRAlertController *)v12 setTitle:v8];
+    [(TVRAlertController *)v12 setTitle:titleCopy];
     [(TVRAlertController *)v12 _observeKeyboardNotifications];
-    if (v9)
+    if (attributesCopy)
     {
       v12->_type = 0;
       v13 = objc_alloc_init(TVRAlertView);
@@ -92,14 +92,14 @@
       alertView = v12->_alertView;
       v12->_alertView = v13;
 
-      [(TVRAlertView *)v12->_alertView setTitle:v8];
-      [(TVRAlertView *)v12->_alertView setPINEntryAttributes:v9];
+      [(TVRAlertView *)v12->_alertView setTitle:titleCopy];
+      [(TVRAlertView *)v12->_alertView setPINEntryAttributes:attributesCopy];
     }
 
     else
     {
       v12->_type = 1;
-      v16 = [[TVRKeyboardView alloc] initWithStyleProvider:v10];
+      v16 = [[TVRKeyboardView alloc] initWithStyleProvider:providerCopy];
       p_alertView = &v12->_keyboardView;
       keyboardView = v12->_keyboardView;
       v12->_keyboardView = v16;
@@ -114,9 +114,9 @@
   return v12;
 }
 
-- (id)initForTextPasswordType:(id)a3
+- (id)initForTextPasswordType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = TVRAlertController;
   v5 = [(TVRAlertController *)&v12 initWithNibName:0 bundle:0];
@@ -125,12 +125,12 @@
   {
     [(TVRAlertController *)v5 setModalPresentationStyle:4];
     [(TVRAlertController *)v6 setTransitioningDelegate:v6];
-    [(TVRAlertController *)v6 setTitle:v4];
+    [(TVRAlertController *)v6 setTitle:typeCopy];
     [(TVRAlertController *)v6 _observeKeyboardNotifications];
     v6->_type = 2;
-    v7 = [objc_alloc(MEMORY[0x277D6C508]) _init];
+    _init = [objc_alloc(MEMORY[0x277D6C508]) _init];
     keyboardAttributes = v6->_keyboardAttributes;
-    v6->_keyboardAttributes = v7;
+    v6->_keyboardAttributes = _init;
 
     [(TVRCKeyboardAttributes *)v6->_keyboardAttributes _setSecure:1];
     [(TVRCKeyboardAttributes *)v6->_keyboardAttributes _setAutocorrectionType:1];
@@ -147,7 +147,7 @@
   return v6;
 }
 
-- (TVRAlertController)initWithCoder:(id)a3
+- (TVRAlertController)initWithCoder:(id)coder
 {
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"TVRemoteUIAlertTitle" value:&stru_287E6AEF8 table:@"Localizable"];
@@ -156,7 +156,7 @@
   return v6;
 }
 
-- (TVRAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (TVRAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"TVRemoteUIAlertTitle" value:&stru_287E6AEF8 table:@"Localizable"];
@@ -167,8 +167,8 @@
 
 - (void)loadView
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -203,8 +203,8 @@
   }
 
   [v21 addSubview:alertView];
-  v20 = [(TVRAlertController *)self traitOverrides];
-  [v20 setUserInterfaceStyle:2];
+  traitOverrides = [(TVRAlertController *)self traitOverrides];
+  [traitOverrides setUserInterfaceStyle:2];
 
   [(TVRAlertController *)self setView:v21];
 }
@@ -226,20 +226,20 @@
   [(TVRAlertController *)self _layoutForKeyboardFrame:self->_previousKeyboardFrame.origin.x, self->_previousKeyboardFrame.origin.y, self->_previousKeyboardFrame.size.width, self->_previousKeyboardFrame.size.height];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = TVRAlertController;
-  [(TVRAlertController *)&v5 viewWillAppear:a3];
+  [(TVRAlertController *)&v5 viewWillAppear:appear];
   self->_shouldDismiss = 0;
-  v4 = [(TVRAlertController *)self _contentViewBasedOnType];
-  [v4 becomeFirstResponder];
+  _contentViewBasedOnType = [(TVRAlertController *)self _contentViewBasedOnType];
+  [_contentViewBasedOnType becomeFirstResponder];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(TVRAlertController *)self traitCollection];
-  if ([v2 userInterfaceIdiom] == 1)
+  traitCollection = [(TVRAlertController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
     v3 = 30;
   }
@@ -252,10 +252,10 @@
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  textCopy = text;
   v6 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -263,58 +263,58 @@
     v8 = 136315650;
     v9 = "[TVRAlertController setText:]";
     v10 = 2114;
-    v11 = text;
+    textCopy2 = text;
     v12 = 2114;
-    v13 = v5;
+    v13 = textCopy;
     _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "%s setting text:%{public}@ to new text:%{public}@", &v8, 0x20u);
   }
 
-  if (self->_text != v5)
+  if (self->_text != textCopy)
   {
-    objc_storeStrong(&self->_text, a3);
-    [(TVRKeyboardView *)self->_keyboardView setText:v5];
-    [(TVRAlertView *)self->_alertView setText:v5];
+    objc_storeStrong(&self->_text, text);
+    [(TVRKeyboardView *)self->_keyboardView setText:textCopy];
+    [(TVRAlertView *)self->_alertView setText:textCopy];
   }
 }
 
-- (void)setKeyboardAttributes:(id)a3
+- (void)setKeyboardAttributes:(id)attributes
 {
-  v5 = a3;
-  if (self->_keyboardAttributes != v5)
+  attributesCopy = attributes;
+  if (self->_keyboardAttributes != attributesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_keyboardAttributes, a3);
+    v6 = attributesCopy;
+    objc_storeStrong(&self->_keyboardAttributes, attributes);
     [(TVRKeyboardView *)self->_keyboardView setAttributes:v6];
-    v5 = v6;
+    attributesCopy = v6;
   }
 }
 
-- (void)keyboardView:(id)a3 didUpdateText:(id)a4
+- (void)keyboardView:(id)view didUpdateText:(id)text
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  textCopy = text;
   v7 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[TVRAlertController keyboardView:didUpdateText:]";
     v13 = 2048;
-    v14 = [v6 length];
+    v14 = [textCopy length];
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "%s text length: %lu", &v11, 0x16u);
   }
 
-  objc_storeStrong(&self->_text, a4);
+  objc_storeStrong(&self->_text, text);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 alertController:self enteredText:v6];
+    [v10 alertController:self enteredText:textCopy];
   }
 }
 
-- (void)keyboardViewPressedDictationButton:(id)a3
+- (void)keyboardViewPressedDictationButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -326,7 +326,7 @@
   }
 }
 
-- (void)keyboardViewReleasedDictationButton:(id)a3
+- (void)keyboardViewReleasedDictationButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -338,7 +338,7 @@
   }
 }
 
-- (void)keyboardViewDidCancel:(id)a3
+- (void)keyboardViewDidCancel:(id)cancel
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -352,7 +352,7 @@
   [(TVRAlertController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)keyboardViewDidHitReturnKey:(id)a3
+- (void)keyboardViewDidHitReturnKey:(id)key
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -364,34 +364,34 @@
   }
 }
 
-- (void)keyboardView:(id)a3 generatedTextInputPayload:(id)a4
+- (void)keyboardView:(id)view generatedTextInputPayload:(id)payload
 {
-  v8 = a4;
+  payloadCopy = payload;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 alertController:self generatedTextInputPayload:v8];
+    [v7 alertController:self generatedTextInputPayload:payloadCopy];
   }
 }
 
-- (void)alertView:(id)a3 didUpdateText:(id)a4
+- (void)alertView:(id)view didUpdateText:(id)text
 {
-  v9 = a4;
-  objc_storeStrong(&self->_text, a4);
+  textCopy = text;
+  objc_storeStrong(&self->_text, text);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 alertController:self enteredText:v9];
+    [v8 alertController:self enteredText:textCopy];
   }
 }
 
-- (void)alertViewDidCancel:(id)a3
+- (void)alertViewDidCancel:(id)cancel
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -405,24 +405,24 @@
   [(TVRAlertController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[TVRPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v8 = [[TVRPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   return v8;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v6 = objc_alloc_init(_TVRMAlertControllerTransitioning);
   [(_TVRMAlertControllerTransitioning *)v6 setIsPresentation:1];
   [(TVRAlertController *)self loadViewIfNeeded];
   if (!self->_type)
   {
-    v7 = [(TVRAlertController *)self _contentViewBasedOnType];
-    [(_TVRMAlertControllerTransitioning *)v6 setContentView:v7];
+    _contentViewBasedOnType = [(TVRAlertController *)self _contentViewBasedOnType];
+    [(_TVRMAlertControllerTransitioning *)v6 setContentView:_contentViewBasedOnType];
 
     [(_TVRMAlertControllerTransitioning *)v6 setDimmingView:self->_dimmingView];
   }
@@ -430,14 +430,14 @@
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v4 = objc_alloc_init(_TVRMAlertControllerTransitioning);
   [(_TVRMAlertControllerTransitioning *)v4 setIsPresentation:0];
   if (!self->_type)
   {
-    v5 = [(TVRAlertController *)self _contentViewBasedOnType];
-    [(_TVRMAlertControllerTransitioning *)v4 setContentView:v5];
+    _contentViewBasedOnType = [(TVRAlertController *)self _contentViewBasedOnType];
+    [(_TVRMAlertControllerTransitioning *)v4 setContentView:_contentViewBasedOnType];
 
     [(_TVRMAlertControllerTransitioning *)v4 setDimmingView:self->_dimmingView];
   }
@@ -447,27 +447,27 @@
 
 - (void)_observeKeyboardNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__keyboardHide_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardHide_ name:*MEMORY[0x277D76C50] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__dictationDidFinish_ name:*MEMORY[0x277D76888] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__dictationDidFinish_ name:*MEMORY[0x277D76888] object:0];
 }
 
-- (void)_keyboardHide:(id)a3
+- (void)_keyboardHide:(id)hide
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hideCopy = hide;
   v5 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v9 = "[TVRAlertController _keyboardHide:]";
     v10 = 2114;
-    v11 = v4;
+    v11 = hideCopy;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s note:%{public}@", buf, 0x16u);
   }
 
@@ -478,7 +478,7 @@
   v6[3] = &unk_279D87AE0;
   objc_copyWeak(&v7, buf);
   v6[4] = self;
-  [(TVRAlertController *)self _keyboardChanged:v4 completion:v6];
+  [(TVRAlertController *)self _keyboardChanged:hideCopy completion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(buf);
 }
@@ -522,45 +522,45 @@ void __36__TVRAlertController__keyboardHide___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_keyboardChanged:(id)a3 completion:(id)a4
+- (void)_keyboardChanged:(id)changed completion:(id)completion
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  completionCopy = completion;
   v8 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v51 = "[TVRAlertController _keyboardChanged:completion:]";
     v52 = 2114;
-    v53 = v6;
+    v53 = changedCopy;
     _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "%s note:%{public}@", buf, 0x16u);
   }
 
-  v9 = [v6 userInfo];
-  v10 = [v9 valueForKey:*MEMORY[0x277D76BB0]];
+  userInfo = [changedCopy userInfo];
+  v10 = [userInfo valueForKey:*MEMORY[0x277D76BB0]];
   [v10 CGRectValue];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [v6 userInfo];
-  v20 = [v19 valueForKey:*MEMORY[0x277D76BB8]];
+  userInfo2 = [changedCopy userInfo];
+  v20 = [userInfo2 valueForKey:*MEMORY[0x277D76BB8]];
   [v20 CGRectValue];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
 
-  v29 = [v6 userInfo];
-  v30 = [v29 valueForKey:*MEMORY[0x277D76B78]];
+  userInfo3 = [changedCopy userInfo];
+  v30 = [userInfo3 valueForKey:*MEMORY[0x277D76B78]];
   [v30 floatValue];
   v42 = v31;
 
-  v32 = [v6 userInfo];
-  v33 = [v32 valueForKey:*MEMORY[0x277D76B70]];
-  v34 = [v33 integerValue];
+  userInfo4 = [changedCopy userInfo];
+  v33 = [userInfo4 valueForKey:*MEMORY[0x277D76B70]];
+  integerValue = [v33 integerValue];
 
   v35 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -591,8 +591,8 @@ void __36__TVRAlertController__keyboardHide___block_invoke_2(uint64_t a1)
   v58.size.width = v26;
   v58.size.height = v28;
   v38 = CGRectEqualToRect(v57, v58);
-  v39 = [v6 name];
-  v40 = [v39 isEqualToString:*MEMORY[0x277D76C50]];
+  name = [changedCopy name];
+  v40 = [name isEqualToString:*MEMORY[0x277D76C50]];
 
   if (v38)
   {
@@ -636,8 +636,8 @@ void __36__TVRAlertController__keyboardHide___block_invoke_2(uint64_t a1)
     v44[1] = 3221225472;
     v44[2] = __50__TVRAlertController__keyboardChanged_completion___block_invoke_3;
     v44[3] = &unk_279D87B30;
-    v45 = v7;
-    [v41 animateWithDuration:v34 << 16 delay:v46 options:v44 animations:v42 completion:0.0];
+    v45 = completionCopy;
+    [v41 animateWithDuration:integerValue << 16 delay:v46 options:v44 animations:v42 completion:0.0];
   }
 
   self->_previousKeyboardFrame.origin.x = v22;
@@ -712,36 +712,36 @@ uint64_t __50__TVRAlertController__keyboardChanged_completion___block_invoke_3(u
   return result;
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  showCopy = show;
   v5 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[TVRAlertController _keyboardWillShow:]";
     v8 = 2114;
-    v9 = v4;
+    v9 = showCopy;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s note:%{public}@", &v6, 0x16u);
   }
 
-  [(TVRAlertController *)self _keyboardChanged:v4 completion:0];
+  [(TVRAlertController *)self _keyboardChanged:showCopy completion:0];
 }
 
-- (void)_layoutForKeyboardFrame:(CGRect)a3
+- (void)_layoutForKeyboardFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = frame.size.width;
+  height = frame.size.height;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v40 = *MEMORY[0x277D85DE8];
-  v6 = [(TVRAlertController *)self _contentViewBasedOnType];
-  [v6 sizeThatFits:{270.0, 0.0}];
+  _contentViewBasedOnType = [(TVRAlertController *)self _contentViewBasedOnType];
+  [_contentViewBasedOnType sizeThatFits:{270.0, 0.0}];
   v8 = v7;
   v10 = v9;
-  v11 = [(TVRAlertController *)self view];
-  [v11 bounds];
+  view = [(TVRAlertController *)self view];
+  [view bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -797,7 +797,7 @@ uint64_t __50__TVRAlertController__keyboardChanged_completion___block_invoke_3(u
     v28 = _TVRUIKeyboardLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      [v6 frame];
+      [_contentViewBasedOnType frame];
       v29 = NSStringFromCGRect(v47);
       v30 = 16.0;
       v48.origin.x = 16.0;
@@ -817,7 +817,7 @@ uint64_t __50__TVRAlertController__keyboardChanged_completion___block_invoke_3(u
       v30 = 16.0;
     }
 
-    [v6 setFrame:{v30, v21, v8 + -32.0, v20}];
+    [_contentViewBasedOnType setFrame:{v30, v21, v8 + -32.0, v20}];
   }
 
   else
@@ -853,16 +853,16 @@ uint64_t __50__TVRAlertController__keyboardChanged_completion___block_invoke_3(u
     }
 
     UIRectGetCenter();
-    [v6 setCenter:?];
-    [v6 setBounds:{0.0, 0.0, v34, v35}];
+    [_contentViewBasedOnType setCenter:?];
+    [_contentViewBasedOnType setBounds:{0.0, 0.0, v34, v35}];
   }
 }
 
-- (void)_dictationDidFinish:(id)a3
+- (void)_dictationDidFinish:(id)finish
 {
   keyboardView = self->_keyboardView;
-  v4 = [(TVRKeyboardView *)keyboardView text];
-  [(TVRKeyboardView *)keyboardView setText:v4];
+  text = [(TVRKeyboardView *)keyboardView text];
+  [(TVRKeyboardView *)keyboardView setText:text];
 }
 
 - (id)_contentViewBasedOnType
@@ -891,8 +891,8 @@ uint64_t __50__TVRAlertController__keyboardChanged_completion___block_invoke_3(u
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "%s", &v5, 0xCu);
   }
 
-  v4 = [(TVRAlertController *)self view];
-  [v4 endEditing:1];
+  view = [(TVRAlertController *)self view];
+  [view endEditing:1];
 
   self->_shouldDismiss = 1;
 }

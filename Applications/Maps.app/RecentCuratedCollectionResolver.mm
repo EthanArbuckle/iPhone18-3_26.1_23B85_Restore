@@ -1,12 +1,12 @@
 @interface RecentCuratedCollectionResolver
 - (GEOObserverHashTable)observers;
 - (id)_collectionsNeedingResolution;
-- (id)resolvedGEOPlaceCollectionForMapsSyncHistoryCuratedCollection:(id)a3;
+- (id)resolvedGEOPlaceCollectionForMapsSyncHistoryCuratedCollection:(id)collection;
 - (void)_cancelTicket;
-- (void)_mergeCollections:(id)a3 error:(id)a4;
+- (void)_mergeCollections:(id)collections error:(id)error;
 - (void)_startTicket;
 - (void)dealloc;
-- (void)setRecentCuratedCollections:(id)a3;
+- (void)setRecentCuratedCollections:(id)collections;
 @end
 
 @implementation RecentCuratedCollectionResolver
@@ -26,16 +26,16 @@
   return observers;
 }
 
-- (void)_mergeCollections:(id)a3 error:(id)a4
+- (void)_mergeCollections:(id)collections error:(id)error
 {
-  v5 = a3;
-  v33 = a4;
-  v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v5 count]);
+  collectionsCopy = collections;
+  errorCopy = error;
+  v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [collectionsCopy count]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = v5;
+  v7 = collectionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v8)
   {
@@ -51,8 +51,8 @@
         }
 
         v12 = *(*(&v39 + 1) + 8 * i);
-        v13 = [v12 collectionIdentifier];
-        [v6 setObject:v12 forKeyedSubscript:v13];
+        collectionIdentifier = [v12 collectionIdentifier];
+        [v6 setObject:v12 forKeyedSubscript:collectionIdentifier];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v39 objects:v48 count:16];
@@ -66,11 +66,11 @@
   v14 = sub_10079890C();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v6 allKeys];
+    allKeys = [v6 allKeys];
     *buf = 138412546;
-    v45 = v15;
+    v45 = allKeys;
     v46 = 2112;
-    v47 = v33;
+    v47 = errorCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Received resolved curated collections: %@, error = %@", buf, 0x16u);
   }
 
@@ -95,9 +95,9 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v35 + 1) + 8 * v21) mapItemIdentifier];
-        v23 = [(NSDictionary *)self->_resolvedCuratedCollections objectForKeyedSubscript:v22];
-        v24 = [v6 objectForKeyedSubscript:v22];
+        mapItemIdentifier = [*(*(&v35 + 1) + 8 * v21) mapItemIdentifier];
+        v23 = [(NSDictionary *)self->_resolvedCuratedCollections objectForKeyedSubscript:mapItemIdentifier];
+        v24 = [v6 objectForKeyedSubscript:mapItemIdentifier];
         if (v24)
         {
           v25 = [Result resultWithValue:v24];
@@ -111,7 +111,7 @@ LABEL_21:
           goto LABEL_18;
         }
 
-        if (v33)
+        if (errorCopy)
         {
           v25 = [Result resultWithError:?];
           goto LABEL_21;
@@ -129,7 +129,7 @@ LABEL_18:
         v26 = [Result resultWithError:v31];
 
 LABEL_22:
-        [v16 setObject:v26 forKeyedSubscript:v22];
+        [v16 setObject:v26 forKeyedSubscript:mapItemIdentifier];
 
         v21 = v21 + 1;
       }
@@ -152,8 +152,8 @@ LABEL_22:
 - (void)_startTicket
 {
   [(RecentCuratedCollectionResolver *)self _cancelTicket];
-  v3 = [(RecentCuratedCollectionResolver *)self _collectionsNeedingResolution];
-  v4 = sub_100021DB0(v3, &stru_101632E00);
+  _collectionsNeedingResolution = [(RecentCuratedCollectionResolver *)self _collectionsNeedingResolution];
+  v4 = sub_100021DB0(_collectionsNeedingResolution, &stru_101632E00);
   if ([v4 count])
   {
     v5 = sub_10079890C();
@@ -204,12 +204,12 @@ LABEL_22:
   return v3;
 }
 
-- (id)resolvedGEOPlaceCollectionForMapsSyncHistoryCuratedCollection:(id)a3
+- (id)resolvedGEOPlaceCollectionForMapsSyncHistoryCuratedCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   resolvedCuratedCollections = self->_resolvedCuratedCollections;
-  v6 = [v4 mapItemIdentifier];
-  v7 = [(NSDictionary *)resolvedCuratedCollections objectForKeyedSubscript:v6];
+  mapItemIdentifier = [collectionCopy mapItemIdentifier];
+  v7 = [(NSDictionary *)resolvedCuratedCollections objectForKeyedSubscript:mapItemIdentifier];
 
   if (v7)
   {
@@ -237,14 +237,14 @@ LABEL_22:
   return v8;
 }
 
-- (void)setRecentCuratedCollections:(id)a3
+- (void)setRecentCuratedCollections:(id)collections
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_recentCuratedCollections != v4)
+  collectionsCopy = collections;
+  v5 = collectionsCopy;
+  if (self->_recentCuratedCollections != collectionsCopy)
   {
-    v16 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v16 = collectionsCopy;
+    v6 = [(NSArray *)collectionsCopy isEqual:?];
     v5 = v16;
     if ((v6 & 1) == 0)
     {
@@ -253,13 +253,13 @@ LABEL_22:
       self->_recentCuratedCollections = v7;
 
       v9 = [NSSet setWithArray:self->_recentCuratedCollections];
-      v10 = [(NSDictionary *)self->_resolvedCuratedCollections allKeys];
-      v11 = [NSMutableSet setWithArray:v10];
+      allKeys = [(NSDictionary *)self->_resolvedCuratedCollections allKeys];
+      v11 = [NSMutableSet setWithArray:allKeys];
 
       [v11 minusSet:v9];
       v12 = [NSMutableDictionary dictionaryWithDictionary:self->_resolvedCuratedCollections];
-      v13 = [v11 allObjects];
-      [v12 removeObjectsForKeys:v13];
+      allObjects = [v11 allObjects];
+      [v12 removeObjectsForKeys:allObjects];
 
       v14 = [v12 copy];
       resolvedCuratedCollections = self->_resolvedCuratedCollections;

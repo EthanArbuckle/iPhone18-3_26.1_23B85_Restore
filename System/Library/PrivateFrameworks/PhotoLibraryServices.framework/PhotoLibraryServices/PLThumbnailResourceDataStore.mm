@@ -1,23 +1,23 @@
 @interface PLThumbnailResourceDataStore
-+ (BOOL)resourceIsSquare:(id)a3;
-+ (id)_tableFormatsByTableTypeFromFormats:(id)a3;
-- (BOOL)thumbnailForKey:(id)a3 matchesAssetID:(id)a4;
-- (CGImage)newTableThumbImageForKey:(id)a3;
++ (BOOL)resourceIsSquare:(id)square;
++ (id)_tableFormatsByTableTypeFromFormats:(id)formats;
+- (BOOL)thumbnailForKey:(id)key matchesAssetID:(id)d;
+- (CGImage)newTableThumbImageForKey:(id)key;
 - (NSArray)thumbnailFormats;
-- (PLImageTableEntryFooter_s)_tableFooterForKey:(id)a3;
-- (PLThumbnailResourceDataStore)initWithPathManager:(id)a3;
+- (PLImageTableEntryFooter_s)_tableFooterForKey:(id)key;
+- (PLThumbnailResourceDataStore)initWithPathManager:(id)manager;
 - (id)_makeThumbnailManager;
-- (id)keyFromKeyStruct:(const void *)a3;
-- (id)requestLocalAvailabilityChange:(signed __int16)a3 forResource:(id)a4 options:(id)a5 completion:(id)a6;
-- (id)resourceDataForKey:(id)a3 assetID:(id)a4;
-- (id)resourceURLForKey:(id)a3;
-- (id)virtualResourcesForAsset:(id)a3 options:(unsigned __int16)a4;
+- (id)keyFromKeyStruct:(const void *)struct;
+- (id)requestLocalAvailabilityChange:(signed __int16)change forResource:(id)resource options:(id)options completion:(id)completion;
+- (id)resourceDataForKey:(id)key assetID:(id)d;
+- (id)resourceURLForKey:(id)key;
+- (id)virtualResourcesForAsset:(id)asset options:(unsigned __int16)options;
 - (void)_installBackgroundWatcher;
 - (void)_startWatchingThumbnailConfigFile;
 - (void)_stopWatchingThumbnailConfigFile;
 - (void)dealloc;
 - (void)invalidateThumbnailManager;
-- (void)overrideThumbnailFormatsWithFormatIDs:(id)a3;
+- (void)overrideThumbnailFormatsWithFormatIDs:(id)ds;
 @end
 
 @implementation PLThumbnailResourceDataStore
@@ -25,21 +25,21 @@
 - (id)_makeThumbnailManager
 {
   v3 = [PLThumbnailManager alloc];
-  v4 = [(PLResourceDataStore *)self pathManager];
-  v5 = [(PLThumbnailManager *)v3 initWithPhotoLibraryPathManager:v4 storeFromMigration:0];
+  pathManager = [(PLResourceDataStore *)self pathManager];
+  v5 = [(PLThumbnailManager *)v3 initWithPhotoLibraryPathManager:pathManager storeFromMigration:0];
 
-  v6 = [(PLResourceDataStore *)self pathManager];
-  LODWORD(v4) = [(PLThumbnailManagerCore *)PLThumbnailManager isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:v6];
+  pathManager2 = [(PLResourceDataStore *)self pathManager];
+  LODWORD(pathManager) = [(PLThumbnailManagerCore *)PLThumbnailManager isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:pathManager2];
 
-  if (v4)
+  if (pathManager)
   {
     [(PLThumbnailResourceDataStore *)self _startWatchingThumbnailConfigFile];
   }
 
   if ((PLIsForegroundApplication() & 1) != 0 || MEMORY[0x19EAEE520]())
   {
-    v7 = [(PLResourceDataStore *)self pathManager];
-    v8 = [(PLThumbnailManagerCore *)PLThumbnailManager isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:v7];
+    pathManager3 = [(PLResourceDataStore *)self pathManager];
+    v8 = [(PLThumbnailManagerCore *)PLThumbnailManager isSuppressingTargetConfigDueToPendingThumbMigrationForPathManager:pathManager3];
 
     if (v8)
     {
@@ -55,27 +55,27 @@
   overridenThumbnailFormats = self->_overridenThumbnailFormats;
   if (overridenThumbnailFormats)
   {
-    v3 = overridenThumbnailFormats;
+    objectValue = overridenThumbnailFormats;
   }
 
   else
   {
-    v3 = [(PLLazyObject *)self->_lazyThumbnailFormats objectValue];
+    objectValue = [(PLLazyObject *)self->_lazyThumbnailFormats objectValue];
   }
 
-  return v3;
+  return objectValue;
 }
 
-- (BOOL)thumbnailForKey:(id)a3 matchesAssetID:(id)a4
+- (BOOL)thumbnailForKey:(id)key matchesAssetID:(id)d
 {
-  v6 = a4;
-  v7 = [(PLThumbnailResourceDataStore *)self _tableFooterForKey:a3];
+  dCopy = d;
+  v7 = [(PLThumbnailResourceDataStore *)self _tableFooterForKey:key];
   if (v7)
   {
     v8 = v7;
     v9 = [objc_alloc(MEMORY[0x1E69BF320]) initWithCFUUIDBytes:{*&v8->var0.var0, *&v8->var0.var8}];
-    v10 = [v6 uuid];
-    v11 = [v9 isEqualToString:v10];
+    uuid = [dCopy uuid];
+    v11 = [v9 isEqualToString:uuid];
 
     free(v8);
   }
@@ -88,37 +88,37 @@
   return v11;
 }
 
-- (CGImage)newTableThumbImageForKey:(id)a3
+- (CGImage)newTableThumbImageForKey:(id)key
 {
   v11 = -1;
   v12 = 0;
-  [a3 tableType:&v12 index:&v11];
-  v4 = [(PLThumbnailResourceDataStore *)self thumbnailFormatsByTableType];
+  [key tableType:&v12 index:&v11];
+  thumbnailFormatsByTableType = [(PLThumbnailResourceDataStore *)self thumbnailFormatsByTableType];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v12];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [thumbnailFormatsByTableType objectForKeyedSubscript:v5];
 
-  v7 = [(PLThumbnailResourceDataStore *)self thumbnailManager];
-  v8 = [v7 thumbManagerForFormatID:{objc_msgSend(v6, "formatID")}];
+  thumbnailManager = [(PLThumbnailResourceDataStore *)self thumbnailManager];
+  v8 = [thumbnailManager thumbManagerForFormatID:{objc_msgSend(v6, "formatID")}];
 
   v9 = [v8 createImageWithIdentifier:0 orIndex:v11];
   return v9;
 }
 
-- (id)requestLocalAvailabilityChange:(signed __int16)a3 forResource:(id)a4 options:(id)a5 completion:(id)a6
+- (id)requestLocalAvailabilityChange:(signed __int16)change forResource:(id)resource options:(id)options completion:(id)completion
 {
-  v7 = a6;
-  [a4 localAvailability];
+  completionCopy = completion;
+  [resource localAvailability];
   v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PLThumbnailResourceDataStore" code:0 userInfo:0];
-  (*(v7 + 2))(v7, v8, 0, 0);
+  (*(completionCopy + 2))(completionCopy, v8, 0, 0);
 
   return 0;
 }
 
-- (id)virtualResourcesForAsset:(id)a3 options:(unsigned __int16)a4
+- (id)virtualResourcesForAsset:(id)asset options:(unsigned __int16)options
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![v5 hasTableThumbs] || (objc_msgSend(v5, "isDeleted") & 1) != 0)
+  assetCopy = asset;
+  if (![assetCopy hasTableThumbs] || (objc_msgSend(assetCopy, "isDeleted") & 1) != 0)
   {
     v35 = MEMORY[0x1E695E0F0];
     goto LABEL_4;
@@ -144,14 +144,14 @@
         }
 
         v11 = *(*(&v38 + 1) + 8 * i);
-        v12 = [(PLThumbnailResourceDataStore *)self thumbnailFormatsByTableType];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        thumbnailFormatsByTableType = [(PLThumbnailResourceDataStore *)self thumbnailFormatsByTableType];
+        v13 = [thumbnailFormatsByTableType objectForKeyedSubscript:v11];
 
         if (v13 && [v13 isTable])
         {
-          v14 = [v11 longValue];
+          longValue = [v11 longValue];
           v15 = +[PLResourceRecipe recipeFromID:](PLResourceRecipe, "recipeFromID:", (2 * [v13 formatID]) | 0x30001);
-          v16 = [(PLVirtualResource *)[PLTableThumbnailVirtualResource alloc] initWithRecipe:v15 forAsset:v5];
+          v16 = [(PLVirtualResource *)[PLTableThumbnailVirtualResource alloc] initWithRecipe:v15 forAsset:assetCopy];
           if ([v13 isSquare])
           {
             [v13 dimension];
@@ -162,55 +162,55 @@
 
           if ([v13 formatMode] == 2)
           {
-            v19 = [v5 width];
-            v20 = [v5 height];
-            if (v19 <= v20)
+            width = [assetCopy width];
+            height = [assetCopy height];
+            if (width <= height)
             {
-              v21 = v20;
+              v21 = height;
             }
 
             else
             {
-              v21 = v19;
+              v21 = width;
             }
 
             v22 = v21;
             [v13 dimension];
             v24 = v23 / v22;
-            -[PLVirtualResource setUnorientedWidth:](v16, "setUnorientedWidth:", (v24 * [v5 width]));
-            v18 = v24 * [v5 height];
+            -[PLVirtualResource setUnorientedWidth:](v16, "setUnorientedWidth:", (v24 * [assetCopy width]));
+            v18 = v24 * [assetCopy height];
 LABEL_21:
             [(PLVirtualResource *)v16 setUnorientedHeight:v18];
           }
 
-          v25 = [v5 width];
-          if ([v5 height] * v25 < 1)
+          width2 = [assetCopy width];
+          if ([assetCopy height] * width2 < 1)
           {
             v29 = 0.0;
           }
 
           else
           {
-            v26 = [(PLVirtualResource *)v16 unorientedWidth];
-            v27 = ([(PLVirtualResource *)v16 unorientedHeight]* v26);
-            v28 = [v5 width];
-            *&v29 = v27 / ([v5 height] * v28);
+            unorientedWidth = [(PLVirtualResource *)v16 unorientedWidth];
+            v27 = ([(PLVirtualResource *)v16 unorientedHeight]* unorientedWidth);
+            width3 = [assetCopy width];
+            *&v29 = v27 / ([assetCopy height] * width3);
           }
 
           [(PLVirtualResource *)v16 setScale:v29];
-          v30 = [v15 codecFourCharCodeName];
-          [(PLVirtualResource *)v16 setCodecFourCharCodeName:v30];
+          codecFourCharCodeName = [v15 codecFourCharCodeName];
+          [(PLVirtualResource *)v16 setCodecFourCharCodeName:codecFourCharCodeName];
 
           v31 = [v15 uti];
           [(PLVirtualResource *)v16 setUniformTypeIdentifier:v31];
 
           [(PLVirtualResource *)v16 setDataStore:self];
-          [(PLVirtualResource *)v16 setDataStoreSubtype:v14];
+          [(PLVirtualResource *)v16 setDataStoreSubtype:longValue];
           v37 = 0;
-          v36 = 4 * (v14 & 7);
-          v32 = [v5 effectiveThumbnailIndex];
-          v33 = ((v32 & 0x7FFFFFF) << 6) | v36 & 0x3F | (v37 << 32) & 0xFFFFFFFE0000003FLL;
-          v36 = (v32 << 6) | v36 & 0x3F;
+          v36 = 4 * (longValue & 7);
+          effectiveThumbnailIndex = [assetCopy effectiveThumbnailIndex];
+          v33 = ((effectiveThumbnailIndex & 0x7FFFFFF) << 6) | v36 & 0x3F | (v37 << 32) & 0xFFFFFFFE0000003FLL;
+          v36 = (effectiveThumbnailIndex << 6) | v36 & 0x3F;
           v37 = BYTE4(v33);
           v34 = [[PLThumbnailResourceDataStoreKey alloc] initWithKeyStruct:&v36];
           [(PLVirtualResource *)v16 setDataStoreKey:v34];
@@ -229,25 +229,25 @@ LABEL_4:
   return v35;
 }
 
-- (id)resourceURLForKey:(id)a3
+- (id)resourceURLForKey:(id)key
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PLThumbnailResourceDataStore.m" lineNumber:258 description:@"resourceURLForKey is not supported for PLThumbnailResourceDataStore."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLThumbnailResourceDataStore.m" lineNumber:258 description:@"resourceURLForKey is not supported for PLThumbnailResourceDataStore."];
 
   return 0;
 }
 
-- (id)resourceDataForKey:(id)a3 assetID:(id)a4
+- (id)resourceDataForKey:(id)key assetID:(id)d
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PLThumbnailResourceDataStore.m" lineNumber:252 description:@"resourceDataForKey is not supported for PLThumbnailResourceDataStore."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLThumbnailResourceDataStore.m" lineNumber:252 description:@"resourceDataForKey is not supported for PLThumbnailResourceDataStore."];
 
   return 0;
 }
 
-- (id)keyFromKeyStruct:(const void *)a3
+- (id)keyFromKeyStruct:(const void *)struct
 {
-  v3 = [[PLThumbnailResourceDataStoreKey alloc] initWithKeyStruct:a3];
+  v3 = [[PLThumbnailResourceDataStoreKey alloc] initWithKeyStruct:struct];
 
   return v3;
 }
@@ -259,8 +259,8 @@ LABEL_4:
   {
     v4 = MEMORY[0x1E696AD88];
     v5 = clientBackgroundTransitionObserverToken;
-    v6 = [v4 defaultCenter];
-    [v6 removeObserver:v5];
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter removeObserver:v5];
   }
 
   v7.receiver = self;
@@ -268,21 +268,21 @@ LABEL_4:
   [(PLThumbnailResourceDataStore *)&v7 dealloc];
 }
 
-- (PLThumbnailResourceDataStore)initWithPathManager:(id)a3
+- (PLThumbnailResourceDataStore)initWithPathManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v33.receiver = self;
   v33.super_class = PLThumbnailResourceDataStore;
-  v6 = [(PLResourceDataStore *)&v33 initWithPathManager:v5];
+  v6 = [(PLResourceDataStore *)&v33 initWithPathManager:managerCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [(PLResourceDataStore *)v6 pathManager];
+    pathManager = [(PLResourceDataStore *)v6 pathManager];
 
-    if (!v8)
+    if (!pathManager)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:v7 file:@"PLThumbnailResourceDataStore.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"self.pathManager"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"PLThumbnailResourceDataStore.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"self.pathManager"}];
     }
 
     v9 = objc_initWeak(&location, v7);
@@ -306,7 +306,7 @@ LABEL_4:
     v27[2] = __52__PLThumbnailResourceDataStore_initWithPathManager___block_invoke_2;
     v27[3] = &unk_1E7573318;
     objc_copyWeak(&v29, &location);
-    v28 = v5;
+    v28 = managerCopy;
     v15 = [v14 initWithRetriableBlock:v27];
 
     objc_destroyWeak(&v29);
@@ -390,16 +390,16 @@ id __52__PLThumbnailResourceDataStore_initWithPathManager___block_invoke_3(uint6
   return v4;
 }
 
-- (void)overrideThumbnailFormatsWithFormatIDs:(id)a3
+- (void)overrideThumbnailFormatsWithFormatIDs:(id)ds
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -452,14 +452,14 @@ id __52__PLThumbnailResourceDataStore_initWithPathManager___block_invoke_3(uint6
   if (!self->_clientBackgroundTransitionObserverToken)
   {
     objc_initWeak(&location, self);
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = DCIM_applicationBackgroundedNotificationName();
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __57__PLThumbnailResourceDataStore__installBackgroundWatcher__block_invoke;
     v7[3] = &unk_1E75668F0;
     objc_copyWeak(&v8, &location);
-    v5 = [v3 addObserverForName:v4 object:0 queue:0 usingBlock:v7];
+    v5 = [defaultCenter addObserverForName:v4 object:0 queue:0 usingBlock:v7];
     clientBackgroundTransitionObserverToken = self->_clientBackgroundTransitionObserverToken;
     self->_clientBackgroundTransitionObserverToken = v5;
 
@@ -496,8 +496,8 @@ void __57__PLThumbnailResourceDataStore__installBackgroundWatcher__block_invoke(
   os_unfair_lock_lock(&self->_observersLock);
   if (!self->_configWatcherSource)
   {
-    v3 = [(PLResourceDataStore *)self pathManager];
-    v4 = [(PLThumbnailManagerCore *)PLThumbnailManager thumbnailConfigurationPathWithPathManager:v3];
+    pathManager = [(PLResourceDataStore *)self pathManager];
+    v4 = [(PLThumbnailManagerCore *)PLThumbnailManager thumbnailConfigurationPathWithPathManager:pathManager];
 
     v5 = open([v4 fileSystemRepresentation], 0x8000);
     if (v5 < 0)
@@ -560,24 +560,24 @@ void __65__PLThumbnailResourceDataStore__startWatchingThumbnailConfigFile__block
   }
 }
 
-- (PLImageTableEntryFooter_s)_tableFooterForKey:(id)a3
+- (PLImageTableEntryFooter_s)_tableFooterForKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
   v11 = -1;
   v12 = 0;
-  [a3 tableType:&v12 index:&v11];
-  v4 = [(PLThumbnailResourceDataStore *)self thumbnailFormatsByTableType];
+  [key tableType:&v12 index:&v11];
+  thumbnailFormatsByTableType = [(PLThumbnailResourceDataStore *)self thumbnailFormatsByTableType];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v12];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [thumbnailFormatsByTableType objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    v7 = [(PLThumbnailResourceDataStore *)self thumbnailManager];
-    v8 = [v7 thumbManagerForFormatID:{objc_msgSend(v6, "formatID")}];
+    thumbnailManager = [(PLThumbnailResourceDataStore *)self thumbnailManager];
+    v8 = [thumbnailManager thumbManagerForFormatID:{objc_msgSend(v6, "formatID")}];
 
     if (v8)
     {
@@ -598,24 +598,24 @@ void __65__PLThumbnailResourceDataStore__startWatchingThumbnailConfigFile__block
   return v9;
 }
 
-+ (BOOL)resourceIsSquare:(id)a3
++ (BOOL)resourceIsSquare:(id)square
 {
-  v3 = a3;
-  v4 = [v3 dataStoreSubtype] == 1 || objc_msgSend(v3, "dataStoreSubtype") == 0;
+  squareCopy = square;
+  v4 = [squareCopy dataStoreSubtype] == 1 || objc_msgSend(squareCopy, "dataStoreSubtype") == 0;
 
   return v4;
 }
 
-+ (id)_tableFormatsByTableTypeFromFormats:(id)a3
++ (id)_tableFormatsByTableTypeFromFormats:(id)formats
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  formatsCopy = formats;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dimension" ascending:1];
   v26[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  v20 = v3;
-  v7 = [v3 sortedArrayUsingDescriptors:v6];
+  v20 = formatsCopy;
+  v7 = [formatsCopy sortedArrayUsingDescriptors:v6];
 
   v23 = 0u;
   v24 = 0u;

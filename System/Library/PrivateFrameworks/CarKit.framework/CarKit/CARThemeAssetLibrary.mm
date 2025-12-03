@@ -1,32 +1,32 @@
 @interface CARThemeAssetLibrary
-- (CARThemeAssetLibrary)initWithVehicle:(id)a3;
+- (CARThemeAssetLibrary)initWithVehicle:(id)vehicle;
 - (id)_setupServiceConnection;
-- (void)_queue_findCurrentAssetWithCompletion:(id)a3;
+- (void)_queue_findCurrentAssetWithCompletion:(id)completion;
 - (void)_queue_startObserving;
 - (void)_queue_stopObserving;
-- (void)addObserver:(id)a3;
-- (void)findCurrentAssetWithCompletion:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)findCurrentAssetWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CARThemeAssetLibrary
 
-- (CARThemeAssetLibrary)initWithVehicle:(id)a3
+- (CARThemeAssetLibrary)initWithVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v22.receiver = self;
   v22.super_class = CARThemeAssetLibrary;
   v5 = [(CARThemeAssetLibrary *)&v22 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [vehicleCopy identifier];
     vehicleIdentifier = v5->_vehicleIdentifier;
-    v5->_vehicleIdentifier = v6;
+    v5->_vehicleIdentifier = identifier;
 
-    v8 = [v4 clusterAssetIdentifier];
+    clusterAssetIdentifier = [vehicleCopy clusterAssetIdentifier];
     assetIdentifier = v5->_assetIdentifier;
-    v5->_assetIdentifier = v8;
+    v5->_assetIdentifier = clusterAssetIdentifier;
 
     if (!v5->_assetIdentifier)
     {
@@ -47,17 +47,17 @@
     v5->_observerProxy = v14;
 
     [(CARThemeAssetLibraryObserverProxy *)v5->_observerProxy setAssetLibrary:v5];
-    v16 = [(CARThemeAssetLibrary *)v5 _setupServiceConnection];
+    _setupServiceConnection = [(CARThemeAssetLibrary *)v5 _setupServiceConnection];
     serviceConnection = v5->_serviceConnection;
-    v5->_serviceConnection = v16;
+    v5->_serviceConnection = _setupServiceConnection;
 
-    v18 = [(CARThemeAssetLibrary *)v5 queue];
+    queue = [(CARThemeAssetLibrary *)v5 queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __40__CARThemeAssetLibrary_initWithVehicle___block_invoke;
     block[3] = &unk_1E82FBF70;
     v21 = v5;
-    dispatch_async(v18, block);
+    dispatch_async(queue, block);
   }
 
   return v5;
@@ -65,13 +65,13 @@
 
 - (void)invalidate
 {
-  v3 = [(CARThemeAssetLibrary *)self queue];
+  queue = [(CARThemeAssetLibrary *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__CARThemeAssetLibrary_invalidate__block_invoke;
   block[3] = &unk_1E82FBF70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __34__CARThemeAssetLibrary_invalidate__block_invoke(uint64_t a1)
@@ -88,8 +88,8 @@ void __34__CARThemeAssetLibrary_invalidate__block_invoke(uint64_t a1)
   [v3 setRemoteObjectInterface:v4];
   v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F47F4F88];
   [v3 setExportedInterface:v5];
-  v6 = [(CARThemeAssetLibrary *)self observerProxy];
-  [v3 setExportedObject:v6];
+  observerProxy = [(CARThemeAssetLibrary *)self observerProxy];
+  [v3 setExportedObject:observerProxy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -150,32 +150,32 @@ void __47__CARThemeAssetLibrary__setupServiceConnection__block_invoke_2()
   }
 }
 
-- (void)findCurrentAssetWithCompletion:(id)a3
+- (void)findCurrentAssetWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CARThemeAssetLibrary *)self queue];
+  completionCopy = completion;
+  queue = [(CARThemeAssetLibrary *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__CARThemeAssetLibrary_findCurrentAssetWithCompletion___block_invoke;
   v7[3] = &unk_1E82FC270;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CARThemeAssetLibrary *)self queue];
+  observerCopy = observer;
+  queue = [(CARThemeAssetLibrary *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__CARThemeAssetLibrary_addObserver___block_invoke;
   v7[3] = &unk_1E82FBE38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __36__CARThemeAssetLibrary_addObserver___block_invoke(uint64_t a1)
@@ -196,18 +196,18 @@ void __36__CARThemeAssetLibrary_addObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CARThemeAssetLibrary *)self queue];
+  observerCopy = observer;
+  queue = [(CARThemeAssetLibrary *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__CARThemeAssetLibrary_removeObserver___block_invoke;
   v7[3] = &unk_1E82FBE38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __39__CARThemeAssetLibrary_removeObserver___block_invoke(uint64_t a1)
@@ -228,36 +228,36 @@ void __39__CARThemeAssetLibrary_removeObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_queue_findCurrentAssetWithCompletion:(id)a3
+- (void)_queue_findCurrentAssetWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CARThemeAssetLibrary *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(CARThemeAssetLibrary *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CARThemeAssetLibrary *)self vehicleIdentifier];
-  v7 = [(CARThemeAssetLibrary *)self assetIdentifier];
+  vehicleIdentifier = [(CARThemeAssetLibrary *)self vehicleIdentifier];
+  assetIdentifier = [(CARThemeAssetLibrary *)self assetIdentifier];
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = vehicleIdentifier;
     v18 = 2112;
-    v19 = v7;
+    v19 = assetIdentifier;
     _os_log_impl(&dword_1C81FC000, v8, OS_LOG_TYPE_INFO, "findCurrentAsset vehicleID: %@ assetID: %@", buf, 0x16u);
   }
 
-  if (v6 && v7)
+  if (vehicleIdentifier && assetIdentifier)
   {
-    v9 = [(CARThemeAssetLibrary *)self serviceConnection];
+    serviceConnection = [(CARThemeAssetLibrary *)self serviceConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __62__CARThemeAssetLibrary__queue_findCurrentAssetWithCompletion___block_invoke;
     v14[3] = &unk_1E82FC298;
     v14[4] = self;
-    v10 = v4;
+    v10 = completionCopy;
     v15 = v10;
-    v11 = [v9 remoteObjectProxyWithErrorHandler:v14];
+    v11 = [serviceConnection remoteObjectProxyWithErrorHandler:v14];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -265,12 +265,12 @@ void __39__CARThemeAssetLibrary_removeObserver___block_invoke(uint64_t a1)
     v12[3] = &unk_1E82FC2E8;
     v12[4] = self;
     v13 = v10;
-    [v11 service_currentAssetsForVehicleIdentifier:v6 reply:v12];
+    [v11 service_currentAssetsForVehicleIdentifier:vehicleIdentifier reply:v12];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -361,11 +361,11 @@ void __62__CARThemeAssetLibrary__queue_findCurrentAssetWithCompletion___block_in
 
 - (void)_queue_startObserving
 {
-  v3 = [(CARThemeAssetLibrary *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CARThemeAssetLibrary *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CARThemeAssetLibrary *)self serviceConnection];
-  v4 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_93];
+  serviceConnection = [(CARThemeAssetLibrary *)self serviceConnection];
+  v4 = [serviceConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_93];
   [v4 service_startObservingWithReply:&__block_literal_global_96];
 }
 
@@ -391,11 +391,11 @@ void __45__CARThemeAssetLibrary__queue_startObserving__block_invoke_94()
 
 - (void)_queue_stopObserving
 {
-  v3 = [(CARThemeAssetLibrary *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CARThemeAssetLibrary *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CARThemeAssetLibrary *)self serviceConnection];
-  v4 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_98];
+  serviceConnection = [(CARThemeAssetLibrary *)self serviceConnection];
+  v4 = [serviceConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_98];
   [v4 service_stopObservingWithReply:&__block_literal_global_101];
 }
 

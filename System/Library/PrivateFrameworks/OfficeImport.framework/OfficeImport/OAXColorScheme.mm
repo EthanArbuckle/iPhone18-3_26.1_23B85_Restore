@@ -1,9 +1,9 @@
 @interface OAXColorScheme
-+ (id)colorForScheme:(id)a3 colorMap:(id)a4 value:(id)a5;
-+ (id)colorForScheme:(id)a3 value:(id)a4;
++ (id)colorForScheme:(id)scheme colorMap:(id)map value:(id)value;
++ (id)colorForScheme:(id)scheme value:(id)value;
 + (id)schemeColorEnumMap;
-+ (void)readFromXmlNode:(_xmlNode *)a3 toColorScheme:(id)a4;
-+ (void)writeColorScheme:(id)a3 to:(id)a4 state:(id)a5;
++ (void)readFromXmlNode:(_xmlNode *)node toColorScheme:(id)scheme;
++ (void)writeColorScheme:(id)scheme to:(id)to state:(id)state;
 @end
 
 @implementation OAXColorScheme
@@ -20,19 +20,19 @@
   return v3;
 }
 
-+ (void)readFromXmlNode:(_xmlNode *)a3 toColorScheme:(id)a4
++ (void)readFromXmlNode:(_xmlNode *)node toColorScheme:(id)scheme
 {
-  v12 = a4;
-  v6 = CXDefaultStringAttribute(a3, CXNoNamespace, "name", 0);
-  [v12 setName:v6];
+  schemeCopy = scheme;
+  v6 = CXDefaultStringAttribute(node, CXNoNamespace, "name", 0);
+  [schemeCopy setName:v6];
 
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  for (i = OCXFirstChild(node); i; i = OCXNextSibling(i))
   {
     if (i->type == XML_ELEMENT_NODE && i->name)
     {
       v8 = [MEMORY[0x277CCACA8] tc_stringWithXmlString:?];
-      v9 = [a1 schemeColorEnumMap];
-      v10 = [v9 valueForString:v8];
+      schemeColorEnumMap = [self schemeColorEnumMap];
+      v10 = [schemeColorEnumMap valueForString:v8];
 
       if (v10 == -130883970)
       {
@@ -40,7 +40,7 @@
       }
 
       v11 = [OAXColor readColorFromParentXmlNode:i];
-      [v12 addColor:v11 index:v10];
+      [schemeCopy addColor:v11 index:v10];
     }
   }
 }
@@ -57,68 +57,68 @@ void __36__OAXColorScheme_schemeColorEnumMap__block_invoke()
   +[OAXColorScheme schemeColorEnumMap]::schemeColorEnumMap = v0;
 }
 
-+ (id)colorForScheme:(id)a3 value:(id)a4
++ (id)colorForScheme:(id)scheme value:(id)value
 {
-  v4 = [a1 colorForScheme:a3 colorMap:0 value:a4];
+  v4 = [self colorForScheme:scheme colorMap:0 value:value];
 
   return v4;
 }
 
-+ (id)colorForScheme:(id)a3 colorMap:(id)a4 value:(id)a5
++ (id)colorForScheme:(id)scheme colorMap:(id)map value:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  schemeCopy = scheme;
+  mapCopy = map;
+  valueCopy = value;
+  if (!valueCopy)
   {
     [TCMessageException raise:OABadFormat];
   }
 
-  v11 = [a1 schemeColorEnumMap];
-  v12 = [v11 valueForString:v10];
+  schemeColorEnumMap = [self schemeColorEnumMap];
+  v12 = [schemeColorEnumMap valueForString:valueCopy];
 
   if (v12 == -130883970)
   {
-    if (!v9 || (+[OAXColorMap mapColorEnumMap](OAXColorMap, "mapColorEnumMap"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 valueForString:v10], v13, v12 = objc_msgSend(v9, "mappingForIndex:", v14), v12 == -130883970))
+    if (!mapCopy || (+[OAXColorMap mapColorEnumMap](OAXColorMap, "mapColorEnumMap"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 valueForString:valueCopy], v13, v12 = objc_msgSend(mapCopy, "mappingForIndex:", v14), v12 == -130883970))
     {
       [TCMessageException raise:OABadFormat];
       v12 = 4164083326;
     }
   }
 
-  v15 = [v8 colorForIndex:v12];
+  v15 = [schemeCopy colorForIndex:v12];
 
   return v15;
 }
 
-+ (void)writeColorScheme:(id)a3 to:(id)a4 state:(id)a5
++ (void)writeColorScheme:(id)scheme to:(id)to state:(id)state
 {
-  v15 = a3;
-  v7 = a4;
-  [v7 startElement:@"clrScheme"];
-  v8 = [v15 name];
-  [v7 writeAttribute:@"name" content:v8];
+  schemeCopy = scheme;
+  toCopy = to;
+  [toCopy startElement:@"clrScheme"];
+  name = [schemeCopy name];
+  [toCopy writeAttribute:@"name" content:name];
 
-  v9 = [v15 colorCount];
-  if (v9)
+  colorCount = [schemeCopy colorCount];
+  if (colorCount)
   {
-    for (i = 0; i != v9; ++i)
+    for (i = 0; i != colorCount; ++i)
     {
-      v11 = [a1 schemeColorEnumMap];
-      v12 = [v11 stringForValue:i];
+      schemeColorEnumMap = [self schemeColorEnumMap];
+      v12 = [schemeColorEnumMap stringForValue:i];
 
-      v13 = [v15 colorForIndex:i];
+      v13 = [schemeCopy colorForIndex:i];
       v14 = v13;
       if (v12 && v13)
       {
-        [v7 startElement:v12];
-        [OAXColor writeColor:v14 to:v7];
-        [v7 endElement];
+        [toCopy startElement:v12];
+        [OAXColor writeColor:v14 to:toCopy];
+        [toCopy endElement];
       }
     }
   }
 
-  [v7 endElement];
+  [toCopy endElement];
 }
 
 void __36__OAXColorScheme_schemeColorEnumMap__block_invoke_cold_1()

@@ -1,10 +1,10 @@
 @interface DSBlockingController
 + (_TtC19DigitalSeparationUI20DSBlockingController)sharedInstance;
 - (_TtC19DigitalSeparationUI20DSBlockingController)init;
-- (void)blockWithContact:(CNContact *)a3 completionHandler:(id)a4;
-- (void)blockWithContacts:(NSArray *)a3 completionHandler:(id)a4;
-- (void)prefetchSharingWithCompletionHandler:(id)a3;
-- (void)safetyCheckControllerFor:(NSArray *)a3 completionHandler:(id)a4;
+- (void)blockWithContact:(CNContact *)contact completionHandler:(id)handler;
+- (void)blockWithContacts:(NSArray *)contacts completionHandler:(id)handler;
+- (void)prefetchSharingWithCompletionHandler:(id)handler;
+- (void)safetyCheckControllerFor:(NSArray *)for completionHandler:(id)handler;
 @end
 
 @implementation DSBlockingController
@@ -19,12 +19,12 @@
   return v2;
 }
 
-- (void)prefetchSharingWithCompletionHandler:(id)a3
+- (void)prefetchSharingWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EECB368, &qword_248CDE7F0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -44,14 +44,14 @@
   sub_248CC6CC0(0, 0, v7, &unk_248CDEA98, v12);
 }
 
-- (void)blockWithContact:(CNContact *)a3 completionHandler:(id)a4
+- (void)blockWithContact:(CNContact *)contact completionHandler:(id)handler
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EECB368, &qword_248CDE7F0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = contact;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_248CD46CC();
@@ -66,19 +66,19 @@
   v14[3] = 0;
   v14[4] = &unk_248CDEA70;
   v14[5] = v13;
-  v15 = a3;
+  contactCopy = contact;
 
   sub_248CC6CC0(0, 0, v9, &unk_248CDEA78, v14);
 }
 
-- (void)blockWithContacts:(NSArray *)a3 completionHandler:(id)a4
+- (void)blockWithContacts:(NSArray *)contacts completionHandler:(id)handler
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EECB368, &qword_248CDE7F0) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = contacts;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_248CD46CC();
@@ -93,20 +93,20 @@
   v14[3] = 0;
   v14[4] = &unk_248CDEA50;
   v14[5] = v13;
-  v15 = a3;
+  contactsCopy = contacts;
 
   sub_248CC6CC0(0, 0, v9, &unk_248CDEA58, v14);
 }
 
-- (void)safetyCheckControllerFor:(NSArray *)a3 completionHandler:(id)a4
+- (void)safetyCheckControllerFor:(NSArray *)for completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EECB368, &qword_248CDE7F0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = for;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_248CD46CC();
@@ -121,7 +121,7 @@
   v15[3] = 0;
   v15[4] = &unk_248CDEA10;
   v15[5] = v14;
-  v16 = a3;
+  forCopy = for;
 
   sub_248CC6CC0(0, 0, v10, &unk_248CDEA20, v15);
 }

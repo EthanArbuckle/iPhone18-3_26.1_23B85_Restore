@@ -1,17 +1,17 @@
 @interface SearchUIDetailedRowModel
-+ (BOOL)urlIsDraggable:(id)a3;
-+ (id)richTextWithFormattedText:(id)a3;
++ (BOOL)urlIsDraggable:(id)draggable;
++ (id)richTextWithFormattedText:(id)text;
 - (BOOL)isContact;
 - (BOOL)isDraggable;
 - (BOOL)isTappable;
 - (BOOL)useCompactVersionOfUI;
 - (Class)cardSectionViewClass;
 - (NSArray)details;
-- (SearchUIDetailedRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7;
-- (SearchUIDetailedRowModel)initWithResult:(id)a3 suggestion:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6;
+- (SearchUIDetailedRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier;
+- (SearchUIDetailedRowModel)initWithResult:(id)result suggestion:(id)suggestion queryId:(unint64_t)id itemIdentifier:(id)identifier;
 - (id)backgroundColor;
 - (id)contactIdentifiers;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionText;
 - (id)dragAppBundleID;
 - (id)dragSubtitle;
@@ -21,29 +21,29 @@
 - (id)populatedMapsCardSectionIfApplicable;
 - (id)punchouts;
 - (id)requestAppClipObjects;
-- (id)richTextFromText:(id)a3;
+- (id)richTextFromText:(id)text;
 - (int)separatorStyle;
-- (void)fillOutPropertiesForCardSection:(id)a3;
+- (void)fillOutPropertiesForCardSection:(id)section;
 @end
 
 @implementation SearchUIDetailedRowModel
 
 - (id)populatedMapsCardSectionIfApplicable
 {
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [SearchUIUtilities cardSectionsForRenderingResult:v3];
-  v5 = [(SearchUIRowModel *)self cardSection];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  v4 = [SearchUIUtilities cardSectionsForRenderingResult:identifyingResult];
+  cardSection = [(SearchUIRowModel *)self cardSection];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(SearchUIRowModel *)self cardSection];
-    v8 = [v7 mapsData];
-    v9 = [v7 pinText];
-    [(SearchUIDetailedRowModel *)self setPinText:v9];
+    cardSection2 = [(SearchUIRowModel *)self cardSection];
+    mapsData = [cardSection2 mapsData];
+    pinText = [cardSection2 pinText];
+    [(SearchUIDetailedRowModel *)self setPinText:pinText];
 
-    if (v8)
+    if (mapsData)
     {
 LABEL_3:
       v10 = objc_alloc(MEMORY[0x1E696F390]);
@@ -57,20 +57,20 @@ LABEL_3:
         v11 = 4;
       }
 
-      v12 = [MEMORY[0x1E696AAE8] mainBundle];
-      v13 = [v12 bundleIdentifier];
-      v14 = [v10 initWithMapsData:v8 iconSize:v11 bundleID:v13];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v14 = [v10 initWithMapsData:mapsData iconSize:v11 bundleID:bundleIdentifier];
       [(SearchUIDetailedRowModel *)self setMapsResult:v14];
 
-      v15 = [(SearchUIDetailedRowModel *)self mapsResult];
-      v16 = [v15 inlineCard];
-      v17 = [v16 cardSections];
-      v18 = [v17 firstObject];
+      mapsResult = [(SearchUIDetailedRowModel *)self mapsResult];
+      inlineCard = [mapsResult inlineCard];
+      cardSections = [inlineCard cardSections];
+      firstObject = [cardSections firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = v18;
+        v19 = firstObject;
       }
 
       else
@@ -85,10 +85,10 @@ LABEL_3:
 
   else
   {
-    v18 = [v3 mapsData];
-    if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    firstObject = [identifyingResult mapsData];
+    if (!firstObject || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v8 = 0;
+      mapsData = 0;
       v20 = 0;
 LABEL_13:
 
@@ -97,13 +97,13 @@ LABEL_13:
 
     if (v4)
     {
-      v8 = 0;
+      mapsData = 0;
     }
 
     else
     {
-      v8 = [v3 mapsData];
-      if (v8)
+      mapsData = [identifyingResult mapsData];
+      if (mapsData)
       {
         goto LABEL_3;
       }
@@ -112,19 +112,19 @@ LABEL_13:
 
   v20 = 0;
 LABEL_17:
-  v21 = [(SearchUIRowModel *)self cardSection];
+  cardSection3 = [(SearchUIRowModel *)self cardSection];
   objc_opt_class();
   v22 = objc_opt_isKindOfClass();
 
   if (v22)
   {
-    v23 = [(SearchUIRowModel *)self cardSection];
-    [v23 setInternalDetailedRowCardSection:v20];
+    cardSection4 = [(SearchUIRowModel *)self cardSection];
+    [cardSection4 setInternalDetailedRowCardSection:v20];
   }
 
-  v24 = [v4 firstObject];
-  v25 = [v24 backgroundColor];
-  [v20 setBackgroundColor:v25];
+  firstObject2 = [v4 firstObject];
+  backgroundColor = [firstObject2 backgroundColor];
+  [v20 setBackgroundColor:backgroundColor];
 
   v26 = v20;
   return v20;
@@ -133,61 +133,61 @@ LABEL_17:
 - (id)punchouts
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [v3 sectionBundleIdentifier];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  sectionBundleIdentifier = [identifyingResult sectionBundleIdentifier];
   v5 = [SearchUIUtilities bundleIdentifierForApp:6];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [sectionBundleIdentifier isEqualToString:v5];
 
   if (v6)
   {
-    v7 = 0;
+    punchouts = 0;
   }
 
   else
   {
-    v8 = [(SearchUIRowModel *)self cardSection];
+    cardSection = [(SearchUIRowModel *)self cardSection];
 
-    if (v8)
+    if (cardSection)
     {
       v14.receiver = self;
       v14.super_class = SearchUIDetailedRowModel;
-      v7 = [(SearchUICardSectionRowModel *)&v14 punchouts];
+      punchouts = [(SearchUICardSectionRowModel *)&v14 punchouts];
     }
 
     else
     {
-      v9 = [(SearchUIRowModel *)self identifyingResult];
-      v10 = [v9 punchout];
-      if (v10)
+      identifyingResult2 = [(SearchUIRowModel *)self identifyingResult];
+      punchout = [identifyingResult2 punchout];
+      if (punchout)
       {
-        v11 = [(SearchUIRowModel *)self identifyingResult];
-        v12 = [v11 punchout];
-        v15[0] = v12;
-        v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
+        identifyingResult3 = [(SearchUIRowModel *)self identifyingResult];
+        punchout2 = [identifyingResult3 punchout];
+        v15[0] = punchout2;
+        punchouts = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
       }
 
       else
       {
-        v7 = 0;
+        punchouts = 0;
       }
     }
   }
 
-  return v7;
+  return punchouts;
 }
 
 - (BOOL)useCompactVersionOfUI
 {
-  v3 = [(SearchUIRowModel *)self cardSection];
+  cardSection = [(SearchUIRowModel *)self cardSection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 shouldUseCompactDisplay];
+    shouldUseCompactDisplay = [cardSection shouldUseCompactDisplay];
   }
 
   else
   {
-    v4 = 0;
+    shouldUseCompactDisplay = 0;
   }
 
   objc_opt_class();
@@ -201,13 +201,13 @@ LABEL_17:
     LOBYTE(v5) = 0;
   }
 
-  v6 = [(SearchUIRowModel *)self identifyingResult];
-  if ([v6 usesCompactDisplay])
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  if ([identifyingResult usesCompactDisplay])
   {
-    v7 = [(SearchUIRowModel *)self identifyingResult];
-    v8 = [v7 compactCard];
-    v9 = [v8 cardSections];
-    v10 = [v9 count] == 0;
+    identifyingResult2 = [(SearchUIRowModel *)self identifyingResult];
+    compactCard = [identifyingResult2 compactCard];
+    cardSections = [compactCard cardSections];
+    v10 = [cardSections count] == 0;
   }
 
   else
@@ -215,20 +215,20 @@ LABEL_17:
     v10 = 0;
   }
 
-  return (v5 | v4 | v10) & 1;
+  return (v5 | shouldUseCompactDisplay | v10) & 1;
 }
 
 - (id)contactIdentifiers
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [v3 contactIdentifier];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  contactIdentifier = [identifyingResult contactIdentifier];
 
-  if (v4)
+  if (contactIdentifier)
   {
-    v5 = [(SearchUIRowModel *)self identifyingResult];
-    v6 = [v5 contactIdentifier];
-    v14[0] = v6;
+    identifyingResult2 = [(SearchUIRowModel *)self identifyingResult];
+    contactIdentifier2 = [identifyingResult2 contactIdentifier];
+    v14[0] = contactIdentifier2;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
 LABEL_7:
     v12 = v7;
@@ -236,19 +236,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(SearchUIDetailedRowModel *)self leadingImage];
+  leadingImage = [(SearchUIDetailedRowModel *)self leadingImage];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(SearchUIDetailedRowModel *)self leadingImage];
-    v10 = [v5 contactIdentifiers];
-    v6 = v10;
+    identifyingResult2 = [(SearchUIDetailedRowModel *)self leadingImage];
+    contactIdentifiers = [identifyingResult2 contactIdentifiers];
+    contactIdentifier2 = contactIdentifiers;
     v11 = MEMORY[0x1E695E0F0];
-    if (v10)
+    if (contactIdentifiers)
     {
-      v11 = v10;
+      v11 = contactIdentifiers;
     }
 
     v7 = v11;
@@ -264,17 +264,17 @@ LABEL_8:
 - (id)requestAppClipObjects
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIDetailedRowModel *)self buttonItems];
+  buttonItems = [(SearchUIDetailedRowModel *)self buttonItems];
 
-  if (v3)
+  if (buttonItems)
   {
-    v3 = objc_opt_new();
+    buttonItems = objc_opt_new();
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(SearchUIDetailedRowModel *)self buttonItems];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    buttonItems2 = [(SearchUIDetailedRowModel *)self buttonItems];
+    v5 = [buttonItems2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -285,34 +285,34 @@ LABEL_8:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(buttonItems2);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * i) _searchUI_requestAppClipCommand];
-          if (v9)
+          _searchUI_requestAppClipCommand = [*(*(&v11 + 1) + 8 * i) _searchUI_requestAppClipCommand];
+          if (_searchUI_requestAppClipCommand)
           {
-            [v3 addObject:v9];
+            [buttonItems addObject:_searchUI_requestAppClipCommand];
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [buttonItems2 countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
     }
   }
 
-  return v3;
+  return buttonItems;
 }
 
 - (Class)cardSectionViewClass
 {
   v7.receiver = self;
   v7.super_class = SearchUIDetailedRowModel;
-  v3 = [(SearchUICardSectionRowModel *)&v7 cardSectionViewClass];
-  if (v3)
+  cardSectionViewClass = [(SearchUICardSectionRowModel *)&v7 cardSectionViewClass];
+  if (cardSectionViewClass)
   {
-    v4 = v3;
+    v4 = cardSectionViewClass;
   }
 
   else
@@ -328,38 +328,38 @@ LABEL_8:
 {
   if ([(SearchUIDetailedRowModel *)self useCompactVersionOfUI])
   {
-    v3 = 0;
+    backgroundColor = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SearchUIDetailedRowModel;
-    v3 = [(SearchUICardSectionRowModel *)&v5 backgroundColor];
+    backgroundColor = [(SearchUICardSectionRowModel *)&v5 backgroundColor];
   }
 
-  return v3;
+  return backgroundColor;
 }
 
 - (int)separatorStyle
 {
   v7.receiver = self;
   v7.super_class = SearchUIDetailedRowModel;
-  v3 = [(SearchUICardSectionRowModel *)&v7 separatorStyle];
+  separatorStyle = [(SearchUICardSectionRowModel *)&v7 separatorStyle];
   if ([MEMORY[0x1E69D9240] isMacOS] && -[SearchUIDetailedRowModel useCompactVersionOfUI](self, "useCompactVersionOfUI"))
   {
     return 1;
   }
 
-  if (-[SearchUIDetailedRowModel useCompactVersionOfUI](self, "useCompactVersionOfUI") && !v3 && ![MEMORY[0x1E69D91A8] isSuperLargeAccessibilitySize])
+  if (-[SearchUIDetailedRowModel useCompactVersionOfUI](self, "useCompactVersionOfUI") && !separatorStyle && ![MEMORY[0x1E69D91A8] isSuperLargeAccessibilitySize])
   {
     return 3;
   }
 
-  v5 = [(SearchUIRowModel *)self cardSection];
-  if (v5)
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  if (cardSection)
   {
-    v4 = v3;
+    v4 = separatorStyle;
   }
 
   else
@@ -373,17 +373,17 @@ LABEL_8:
 - (NSArray)details
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIRowModel *)self identifyingResult];
-  v4 = [v3 resultBundleId];
-  if (([v4 isEqualToString:*MEMORY[0x1E69D3EB0]] & 1) == 0)
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  resultBundleId = [identifyingResult resultBundleId];
+  if (([resultBundleId isEqualToString:*MEMORY[0x1E69D3EB0]] & 1) == 0)
   {
 
     goto LABEL_11;
   }
 
-  v5 = [(NSArray *)self->_details firstObject];
+  firstObject = [(NSArray *)self->_details firstObject];
 
-  if (!v5)
+  if (!firstObject)
   {
 LABEL_11:
     v6 = self->_details;
@@ -391,27 +391,27 @@ LABEL_11:
   }
 
   v6 = [(NSArray *)self->_details mutableCopy];
-  v7 = [(NSArray *)self->_details firstObject];
-  v8 = [v7 copy];
+  firstObject2 = [(NSArray *)self->_details firstObject];
+  v8 = [firstObject2 copy];
 
   v9 = +[SearchUICalendarStore colorForDefaultCalendarForNewEvents];
 
   if (!v9)
   {
     v26 = MEMORY[0x1E69CA0F0];
-    v19 = [v8 text];
-    v20 = [v26 textWithString:v19];
+    text = [v8 text];
+    v20 = [v26 textWithString:text];
     v28 = v20;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
     [v8 setFormattedTextPieces:v22];
     goto LABEL_13;
   }
 
-  v10 = [v8 formattedTextPieces];
-  if (![v10 count])
+  formattedTextPieces = [v8 formattedTextPieces];
+  if (![formattedTextPieces count])
   {
-    v11 = [v8 text];
-    v12 = [v11 length];
+    text2 = [v8 text];
+    v12 = [text2 length];
 
     if (!v12)
     {
@@ -419,25 +419,25 @@ LABEL_11:
     }
 
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [v8 text];
-    v10 = [v13 stringWithFormat:@" %@", v14];
+    text3 = [v8 text];
+    formattedTextPieces = [v13 stringWithFormat:@" %@", text3];
 
     [v8 setText:0];
-    v15 = [MEMORY[0x1E69CA0F0] textWithString:v10];
+    v15 = [MEMORY[0x1E69CA0F0] textWithString:formattedTextPieces];
     v30[0] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
     [v8 setFormattedTextPieces:v16];
   }
 
 LABEL_8:
-  v17 = [v8 formattedTextPieces];
-  v18 = [v17 count];
+  formattedTextPieces2 = [v8 formattedTextPieces];
+  v18 = [formattedTextPieces2 count];
 
   if (v18 == 1)
   {
-    v19 = objc_opt_new();
-    [v19 setSymbolName:@"circle.fill"];
-    v20 = [(SearchUIImage *)SearchUISymbolImage imageWithSFImage:v19];
+    text = objc_opt_new();
+    [text setSymbolName:@"circle.fill"];
+    v20 = [(SearchUIImage *)SearchUISymbolImage imageWithSFImage:text];
     v21 = +[SearchUICalendarStore colorForDefaultCalendarForNewEvents];
     [v20 setCustomForegroundColor:v21];
 
@@ -446,8 +446,8 @@ LABEL_8:
     [v22 setGlyph:v20];
     v29 = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
-    v24 = [v8 formattedTextPieces];
-    v25 = [v23 arrayByAddingObjectsFromArray:v24];
+    formattedTextPieces3 = [v8 formattedTextPieces];
+    v25 = [v23 arrayByAddingObjectsFromArray:formattedTextPieces3];
     [v8 setFormattedTextPieces:v25];
 
 LABEL_13:
@@ -460,23 +460,23 @@ LABEL_15:
   return v6;
 }
 
-- (SearchUIDetailedRowModel)initWithResult:(id)a3 suggestion:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6
+- (SearchUIDetailedRowModel)initWithResult:(id)result suggestion:(id)suggestion queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  suggestionCopy = suggestion;
   v24.receiver = self;
   v24.super_class = SearchUIDetailedRowModel;
-  v11 = [(SearchUICardSectionRowModel *)&v24 initWithResult:a3 cardSection:v10 isInline:1 queryId:a5 itemIdentifier:a6];
+  v11 = [(SearchUICardSectionRowModel *)&v24 initWithResult:result cardSection:suggestionCopy isInline:1 queryId:id itemIdentifier:identifier];
   if (v11)
   {
-    v12 = [v10 suggestionText];
-    [(SearchUIDetailedRowModel *)v11 setTitle:v12];
+    suggestionText = [suggestionCopy suggestionText];
+    [(SearchUIDetailedRowModel *)v11 setTitle:suggestionText];
 
-    v13 = [v10 detailText];
-    if (v13)
+    detailText = [suggestionCopy detailText];
+    if (detailText)
     {
-      v14 = [v10 detailText];
-      v26[0] = v14;
+      detailText2 = [suggestionCopy detailText];
+      v26[0] = detailText2;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
       [(SearchUIDetailedRowModel *)v11 setDetails:v15];
     }
@@ -486,21 +486,21 @@ LABEL_15:
       [(SearchUIDetailedRowModel *)v11 setDetails:0];
     }
 
-    v16 = [(SearchUIDetailedRowModel *)v11 populatedMapsCardSectionIfApplicable];
-    v17 = [v16 thumbnail];
-    if (v17)
+    populatedMapsCardSectionIfApplicable = [(SearchUIDetailedRowModel *)v11 populatedMapsCardSectionIfApplicable];
+    thumbnail = [populatedMapsCardSectionIfApplicable thumbnail];
+    if (thumbnail)
     {
-      [(SearchUIDetailedRowModel *)v11 setLeadingImage:v17];
+      [(SearchUIDetailedRowModel *)v11 setLeadingImage:thumbnail];
     }
 
     else
     {
-      v18 = [v10 thumbnail];
-      [(SearchUIDetailedRowModel *)v11 setLeadingImage:v18];
+      thumbnail2 = [suggestionCopy thumbnail];
+      [(SearchUIDetailedRowModel *)v11 setLeadingImage:thumbnail2];
     }
 
-    [(SearchUIDetailedRowModel *)v11 setTruncateTitleMiddle:v10 != 0];
-    if ([v10 suggestionType] == 4)
+    [(SearchUIDetailedRowModel *)v11 setTruncateTitleMiddle:suggestionCopy != 0];
+    if ([suggestionCopy suggestionType] == 4)
     {
       if (+[SearchUIUtilities isSpotlightPlusEnabled])
       {
@@ -525,32 +525,32 @@ LABEL_15:
   return v11;
 }
 
-- (SearchUIDetailedRowModel)initWithResult:(id)a3 cardSection:(id)a4 isInline:(BOOL)a5 queryId:(unint64_t)a6 itemIdentifier:(id)a7
+- (SearchUIDetailedRowModel)initWithResult:(id)result cardSection:(id)section isInline:(BOOL)inline queryId:(unint64_t)id itemIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
+  resultCopy = result;
+  sectionCopy = section;
   v83.receiver = self;
   v83.super_class = SearchUIDetailedRowModel;
-  v13 = [(SearchUICardSectionRowModel *)&v83 initWithResult:v11 cardSection:v12 isInline:1 queryId:a6 itemIdentifier:a7];
+  v13 = [(SearchUICardSectionRowModel *)&v83 initWithResult:resultCopy cardSection:sectionCopy isInline:1 queryId:id itemIdentifier:identifier];
   v14 = v13;
   if (!v13)
   {
-    v22 = v12;
+    v22 = sectionCopy;
     goto LABEL_44;
   }
 
-  v15 = [(SearchUIRowModel *)v13 applicationBundleIdentifier];
-  v16 = [(SearchUIDetailedRowModel *)v14 populatedMapsCardSectionIfApplicable];
-  v17 = [(SearchUIRowModel *)v14 cardSection];
+  applicationBundleIdentifier = [(SearchUIRowModel *)v13 applicationBundleIdentifier];
+  populatedMapsCardSectionIfApplicable = [(SearchUIDetailedRowModel *)v14 populatedMapsCardSectionIfApplicable];
+  cardSection = [(SearchUIRowModel *)v14 cardSection];
   objc_opt_class();
-  v18 = v12;
+  v18 = sectionCopy;
   if (objc_opt_isKindOfClass())
   {
-    v19 = [(SearchUIRowModel *)v14 cardSection];
-    v20 = [v19 mapsData];
-    if ([v20 length])
+    cardSection2 = [(SearchUIRowModel *)v14 cardSection];
+    mapsData = [cardSection2 mapsData];
+    if ([mapsData length])
     {
-      v18 = v12;
+      v18 = sectionCopy;
     }
 
     else
@@ -559,9 +559,9 @@ LABEL_15:
     }
   }
 
-  if (v16)
+  if (populatedMapsCardSectionIfApplicable)
   {
-    v21 = v16;
+    v21 = populatedMapsCardSectionIfApplicable;
   }
 
   else
@@ -571,21 +571,21 @@ LABEL_15:
 
   v22 = v21;
 
-  v23 = [SearchUIImageView thumbnailForRowModel:v14];
-  v24 = [SearchUIUtilities cardSectionsForRenderingResult:v11];
+  fallbackImage = [SearchUIImageView thumbnailForRowModel:v14];
+  v24 = [SearchUIUtilities cardSectionsForRenderingResult:resultCopy];
   v82 = v24;
-  if (!v15)
+  if (!applicationBundleIdentifier)
   {
     goto LABEL_15;
   }
 
   v25 = v24;
-  v26 = [v11 contactIdentifier];
-  if ([v26 length])
+  contactIdentifier = [resultCopy contactIdentifier];
+  if ([contactIdentifier length])
   {
 LABEL_29:
 
-    if (!v23)
+    if (!fallbackImage)
     {
       goto LABEL_30;
     }
@@ -597,86 +597,86 @@ LABEL_15:
     }
 
 LABEL_31:
-    [(SearchUIDetailedRowModel *)v14 setLeadingImage:v23];
-    v38 = [v11 action];
-    [(SearchUIDetailedRowModel *)v14 setAction:v38];
+    [(SearchUIDetailedRowModel *)v14 setLeadingImage:fallbackImage];
+    action = [resultCopy action];
+    [(SearchUIDetailedRowModel *)v14 setAction:action];
 
-    -[SearchUIDetailedRowModel setPreventThumbnailImageScaling:](v14, "setPreventThumbnailImageScaling:", [v11 preventThumbnailImageScaling]);
-    v39 = [v11 title];
-    v40 = [(SearchUIDetailedRowModel *)v14 richTextFromText:v39];
+    -[SearchUIDetailedRowModel setPreventThumbnailImageScaling:](v14, "setPreventThumbnailImageScaling:", [resultCopy preventThumbnailImageScaling]);
+    title = [resultCopy title];
+    v40 = [(SearchUIDetailedRowModel *)v14 richTextFromText:title];
     [(SearchUIDetailedRowModel *)v14 setTitle:v40];
 
-    v41 = [v11 title];
-    v42 = [v41 maxLines];
+    title2 = [resultCopy title];
+    maxLines = [title2 maxLines];
     [(SearchUIDetailedRowModel *)v14 title];
-    v43 = v23;
-    v45 = v44 = v16;
-    [v45 setMaxLines:v42];
+    v43 = fallbackImage;
+    v45 = v44 = populatedMapsCardSectionIfApplicable;
+    [v45 setMaxLines:maxLines];
 
     v46 = MEMORY[0x1E69CA0F0];
-    v47 = [v11 secondaryTitle];
-    v48 = [v46 textWithString:v47];
+    secondaryTitle = [resultCopy secondaryTitle];
+    v48 = [v46 textWithString:secondaryTitle];
     [(SearchUIDetailedRowModel *)v14 setSecondaryTitle:v48];
 
-    -[SearchUIDetailedRowModel setSecondaryTitleIsDetached:](v14, "setSecondaryTitleIsDetached:", [v11 isSecondaryTitleDetached]);
-    v49 = [v11 secondaryTitleImage];
-    [(SearchUIDetailedRowModel *)v14 setSecondaryTitleImage:v49];
+    -[SearchUIDetailedRowModel setSecondaryTitleIsDetached:](v14, "setSecondaryTitleIsDetached:", [resultCopy isSecondaryTitleDetached]);
+    secondaryTitleImage = [resultCopy secondaryTitleImage];
+    [(SearchUIDetailedRowModel *)v14 setSecondaryTitleImage:secondaryTitleImage];
 
-    v50 = [v11 descriptions];
-    [(SearchUIDetailedRowModel *)v14 setDetails:v50];
+    descriptions = [resultCopy descriptions];
+    [(SearchUIDetailedRowModel *)v14 setDetails:descriptions];
 
     v51 = MEMORY[0x1E69CA3A0];
-    v52 = [v11 footnote];
-    v53 = [v51 textWithString:v52];
+    footnote = [resultCopy footnote];
+    v53 = [v51 textWithString:footnote];
     [(SearchUIDetailedRowModel *)v14 setFootnote:v53];
 
     v54 = MEMORY[0x1E69CA3A0];
-    v55 = [v11 auxiliaryTopText];
-    v56 = [v54 textWithString:v55];
+    auxiliaryTopText = [resultCopy auxiliaryTopText];
+    v56 = [v54 textWithString:auxiliaryTopText];
     [(SearchUIDetailedRowModel *)v14 setTrailingTopText:v56];
 
     v57 = MEMORY[0x1E69CA3A0];
-    v58 = [v11 auxiliaryMiddleText];
-    v59 = [v57 textWithString:v58];
+    auxiliaryMiddleText = [resultCopy auxiliaryMiddleText];
+    v59 = [v57 textWithString:auxiliaryMiddleText];
     [(SearchUIDetailedRowModel *)v14 setTrailingMiddleText:v59];
 
     v60 = MEMORY[0x1E69CA3A0];
-    v16 = v44;
-    v23 = v43;
-    v61 = [v11 auxiliaryBottomText];
-    v62 = [v60 textWithString:v61];
+    populatedMapsCardSectionIfApplicable = v44;
+    fallbackImage = v43;
+    auxiliaryBottomText = [resultCopy auxiliaryBottomText];
+    v62 = [v60 textWithString:auxiliaryBottomText];
     [(SearchUIDetailedRowModel *)v14 setTrailingBottomText:v62];
 
     goto LABEL_32;
   }
 
-  v78 = v15;
-  v27 = [v25 firstObject];
+  v78 = applicationBundleIdentifier;
+  firstObject = [v25 firstObject];
   objc_opt_class();
-  v80 = v23;
+  v80 = fallbackImage;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
     goto LABEL_22;
   }
 
-  v28 = [v25 firstObject];
-  v29 = [v28 leadingCardSections];
-  [v29 firstObject];
+  firstObject2 = [v25 firstObject];
+  leadingCardSections = [firstObject2 leadingCardSections];
+  [leadingCardSections firstObject];
   v30 = v22;
-  v32 = v31 = v16;
+  v32 = v31 = populatedMapsCardSectionIfApplicable;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v16 = v31;
+  populatedMapsCardSectionIfApplicable = v31;
   v22 = v30;
-  v23 = v80;
+  fallbackImage = v80;
 
-  v15 = v78;
+  applicationBundleIdentifier = v78;
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_22:
-    v33 = v16;
+    v33 = populatedMapsCardSectionIfApplicable;
     if ([(SearchUIDetailedRowModel *)v14 useCompactVersionOfUI])
     {
       +[SearchUISuggestionImageUtilities maximumSize];
@@ -688,24 +688,24 @@ LABEL_22:
       v34 = 4;
     }
 
-    v26 = [(SearchUIRowModel *)v14 identifyingResult];
-    v35 = [v26 applicationBundleIdentifier];
-    if (v35)
+    contactIdentifier = [(SearchUIRowModel *)v14 identifyingResult];
+    applicationBundleIdentifier2 = [contactIdentifier applicationBundleIdentifier];
+    if (applicationBundleIdentifier2)
     {
-      v36 = [(SearchUIRowModel *)v14 identifyingResult];
-      v37 = [SearchUIAppIconImage appIconForResult:v36 variant:v34];
+      identifyingResult = [(SearchUIRowModel *)v14 identifyingResult];
+      v37 = [SearchUIAppIconImage appIconForResult:identifyingResult variant:v34];
       [(SearchUIDetailedRowModel *)v14 setFallbackImage:v37];
     }
 
     else
     {
-      v36 = [SearchUIAppIconImage appIconForBundleIdentifier:v78 variant:v34];
-      [(SearchUIDetailedRowModel *)v14 setFallbackImage:v36];
+      identifyingResult = [SearchUIAppIconImage appIconForBundleIdentifier:v78 variant:v34];
+      [(SearchUIDetailedRowModel *)v14 setFallbackImage:identifyingResult];
     }
 
-    v16 = v33;
-    v15 = v78;
-    v23 = v80;
+    populatedMapsCardSectionIfApplicable = v33;
+    applicationBundleIdentifier = v78;
+    fallbackImage = v80;
     goto LABEL_29;
   }
 
@@ -715,77 +715,77 @@ LABEL_22:
   }
 
 LABEL_30:
-  v23 = [(SearchUIDetailedRowModel *)v14 fallbackImage];
+  fallbackImage = [(SearchUIDetailedRowModel *)v14 fallbackImage];
   if (!v22)
   {
     goto LABEL_31;
   }
 
 LABEL_16:
-  if (v23 && !v16)
+  if (fallbackImage && !populatedMapsCardSectionIfApplicable)
   {
-    [v18 setThumbnail:v23];
+    [v18 setThumbnail:fallbackImage];
   }
 
   [(SearchUIDetailedRowModel *)v14 fillOutPropertiesForCardSection:v22];
 LABEL_32:
-  v63 = [v11 nearbyBusinessesString];
-  [(SearchUIDetailedRowModel *)v14 setNearbyBusinessesString:v63];
+  nearbyBusinessesString = [resultCopy nearbyBusinessesString];
+  [(SearchUIDetailedRowModel *)v14 setNearbyBusinessesString:nearbyBusinessesString];
 
-  -[SearchUIDetailedRowModel setIsLocalApplicationResult:](v14, "setIsLocalApplicationResult:", [v11 isLocalApplicationResult]);
-  v64 = [(SearchUIDetailedRowModel *)v14 leadingImage];
-  if (!v64)
+  -[SearchUIDetailedRowModel setIsLocalApplicationResult:](v14, "setIsLocalApplicationResult:", [resultCopy isLocalApplicationResult]);
+  leadingImage = [(SearchUIDetailedRowModel *)v14 leadingImage];
+  if (!leadingImage)
   {
     goto LABEL_40;
   }
 
-  v65 = v64;
-  v66 = [(SearchUIDetailedRowModel *)v14 nearbyBusinessesString];
-  if (v66)
+  leadingImage3 = leadingImage;
+  nearbyBusinessesString2 = [(SearchUIDetailedRowModel *)v14 nearbyBusinessesString];
+  if (nearbyBusinessesString2)
   {
-    v67 = v66;
+    v67 = nearbyBusinessesString2;
     v79 = v22;
-    v81 = v23;
-    v68 = v16;
-    v69 = v15;
-    v70 = [(SearchUIRowModel *)v14 identifyingResult];
-    v71 = [v70 identifier];
-    if ([v71 hasPrefix:*MEMORY[0x1E69DE790]])
+    v81 = fallbackImage;
+    v68 = populatedMapsCardSectionIfApplicable;
+    v69 = applicationBundleIdentifier;
+    identifyingResult2 = [(SearchUIRowModel *)v14 identifyingResult];
+    identifier = [identifyingResult2 identifier];
+    if ([identifier hasPrefix:*MEMORY[0x1E69DE790]])
     {
-      v72 = [(SearchUIDetailedRowModel *)v14 leadingImage];
+      leadingImage2 = [(SearchUIDetailedRowModel *)v14 leadingImage];
       objc_opt_class();
       v73 = objc_opt_isKindOfClass();
 
-      v15 = v69;
-      v16 = v68;
+      applicationBundleIdentifier = v69;
+      populatedMapsCardSectionIfApplicable = v68;
       v22 = v79;
-      v23 = v81;
+      fallbackImage = v81;
       if (v73)
       {
         goto LABEL_40;
       }
 
       v74 = [SearchUIAppClipImage alloc];
-      v65 = [(SearchUIDetailedRowModel *)v14 leadingImage];
-      v67 = [(SearchUIAppClipImage *)v74 initWithSFImage:v65];
+      leadingImage3 = [(SearchUIDetailedRowModel *)v14 leadingImage];
+      v67 = [(SearchUIAppClipImage *)v74 initWithSFImage:leadingImage3];
       [(SearchUIDetailedRowModel *)v14 setLeadingImage:v67];
     }
 
     else
     {
 
-      v15 = v69;
-      v16 = v68;
+      applicationBundleIdentifier = v69;
+      populatedMapsCardSectionIfApplicable = v68;
       v22 = v79;
-      v23 = v81;
+      fallbackImage = v81;
     }
   }
 
 LABEL_40:
   if ([(SearchUIDetailedRowModel *)v14 useCompactVersionOfUI])
   {
-    v75 = [(SearchUIDetailedRowModel *)v14 title];
-    [v75 setMaxLines:1];
+    title3 = [(SearchUIDetailedRowModel *)v14 title];
+    [title3 setMaxLines:1];
 
     [(SearchUIDetailedRowModel *)v14 setTrailingTopText:0];
     [(SearchUIDetailedRowModel *)v14 setSecondaryTitleImage:0];
@@ -802,140 +802,140 @@ LABEL_44:
   return v14;
 }
 
-- (id)richTextFromText:(id)a3
+- (id)richTextFromText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = textCopy;
   }
 
   else
   {
     v5 = MEMORY[0x1E69CA3A0];
-    v6 = [v3 text];
-    v4 = [v5 textWithString:v6];
+    text = [textCopy text];
+    v4 = [v5 textWithString:text];
 
-    [v4 setMaxLines:{objc_msgSend(v3, "maxLines")}];
+    [v4 setMaxLines:{objc_msgSend(textCopy, "maxLines")}];
   }
 
   return v4;
 }
 
-- (void)fillOutPropertiesForCardSection:(id)a3
+- (void)fillOutPropertiesForCardSection:(id)section
 {
   v82[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 thumbnail];
-  [(SearchUIDetailedRowModel *)self setLeadingImage:v5];
+  sectionCopy = section;
+  thumbnail = [sectionCopy thumbnail];
+  [(SearchUIDetailedRowModel *)self setLeadingImage:thumbnail];
 
-  v6 = [v4 button];
-  [(SearchUIDetailedRowModel *)self setLeadingButton:v6];
+  button = [sectionCopy button];
+  [(SearchUIDetailedRowModel *)self setLeadingButton:button];
 
-  -[SearchUIDetailedRowModel setPreventThumbnailImageScaling:](self, "setPreventThumbnailImageScaling:", [v4 preventThumbnailImageScaling]);
-  v7 = [v4 topText];
-  [(SearchUIDetailedRowModel *)self setTopText:v7];
+  -[SearchUIDetailedRowModel setPreventThumbnailImageScaling:](self, "setPreventThumbnailImageScaling:", [sectionCopy preventThumbnailImageScaling]);
+  topText = [sectionCopy topText];
+  [(SearchUIDetailedRowModel *)self setTopText:topText];
 
-  v8 = [v4 title];
-  [(SearchUIDetailedRowModel *)self setTitle:v8];
+  title = [sectionCopy title];
+  [(SearchUIDetailedRowModel *)self setTitle:title];
 
-  v9 = [v4 secondaryTitle];
-  [(SearchUIDetailedRowModel *)self setSecondaryTitle:v9];
+  secondaryTitle = [sectionCopy secondaryTitle];
+  [(SearchUIDetailedRowModel *)self setSecondaryTitle:secondaryTitle];
 
-  -[SearchUIDetailedRowModel setSecondaryTitleIsDetached:](self, "setSecondaryTitleIsDetached:", [v4 isSecondaryTitleDetached]);
-  v10 = [v4 secondaryTitleImage];
-  [(SearchUIDetailedRowModel *)self setSecondaryTitleImage:v10];
+  -[SearchUIDetailedRowModel setSecondaryTitleIsDetached:](self, "setSecondaryTitleIsDetached:", [sectionCopy isSecondaryTitleDetached]);
+  secondaryTitleImage = [sectionCopy secondaryTitleImage];
+  [(SearchUIDetailedRowModel *)self setSecondaryTitleImage:secondaryTitleImage];
 
-  v11 = [v4 descriptions];
-  [(SearchUIDetailedRowModel *)self setDetails:v11];
+  descriptions = [sectionCopy descriptions];
+  [(SearchUIDetailedRowModel *)self setDetails:descriptions];
 
-  v12 = [v4 footnote];
-  [(SearchUIDetailedRowModel *)self setFootnote:v12];
+  footnote = [sectionCopy footnote];
+  [(SearchUIDetailedRowModel *)self setFootnote:footnote];
 
-  v13 = [v4 action];
-  [(SearchUIDetailedRowModel *)self setAction:v13];
-  v14 = [v4 richTrailingTopText];
-  if (v14)
+  action = [sectionCopy action];
+  [(SearchUIDetailedRowModel *)self setAction:action];
+  richTrailingTopText = [sectionCopy richTrailingTopText];
+  if (richTrailingTopText)
   {
-    [(SearchUIDetailedRowModel *)self setTrailingTopText:v14];
+    [(SearchUIDetailedRowModel *)self setTrailingTopText:richTrailingTopText];
   }
 
   else
   {
     v15 = objc_opt_class();
-    v16 = [v4 trailingTopText];
-    v17 = [v15 richTextWithFormattedText:v16];
+    trailingTopText = [sectionCopy trailingTopText];
+    v17 = [v15 richTextWithFormattedText:trailingTopText];
     [(SearchUIDetailedRowModel *)self setTrailingTopText:v17];
   }
 
-  v18 = [v4 richTrailingMiddleText];
-  if (v18)
+  richTrailingMiddleText = [sectionCopy richTrailingMiddleText];
+  if (richTrailingMiddleText)
   {
-    [(SearchUIDetailedRowModel *)self setTrailingMiddleText:v18];
+    [(SearchUIDetailedRowModel *)self setTrailingMiddleText:richTrailingMiddleText];
   }
 
   else
   {
     v19 = objc_opt_class();
-    v20 = [v4 trailingMiddleText];
-    v21 = [v19 richTextWithFormattedText:v20];
+    trailingMiddleText = [sectionCopy trailingMiddleText];
+    v21 = [v19 richTextWithFormattedText:trailingMiddleText];
     [(SearchUIDetailedRowModel *)self setTrailingMiddleText:v21];
   }
 
-  v22 = [v4 richTrailingBottomText];
-  if (v22)
+  richTrailingBottomText = [sectionCopy richTrailingBottomText];
+  if (richTrailingBottomText)
   {
-    [(SearchUIDetailedRowModel *)self setTrailingBottomText:v22];
+    [(SearchUIDetailedRowModel *)self setTrailingBottomText:richTrailingBottomText];
   }
 
   else
   {
     v23 = objc_opt_class();
-    v24 = [v4 trailingBottomText];
-    v25 = [v23 richTextWithFormattedText:v24];
+    trailingBottomText = [sectionCopy trailingBottomText];
+    v25 = [v23 richTextWithFormattedText:trailingBottomText];
     [(SearchUIDetailedRowModel *)self setTrailingBottomText:v25];
   }
 
-  -[SearchUIDetailedRowModel setButtonItemsAreTrailing:](self, "setButtonItemsAreTrailing:", [v4 buttonItemsAreTrailing]);
-  v26 = [v4 trailingThumbnail];
-  [(SearchUIDetailedRowModel *)self setTrailingThumbnail:v26];
+  -[SearchUIDetailedRowModel setButtonItemsAreTrailing:](self, "setButtonItemsAreTrailing:", [sectionCopy buttonItemsAreTrailing]);
+  trailingThumbnail = [sectionCopy trailingThumbnail];
+  [(SearchUIDetailedRowModel *)self setTrailingThumbnail:trailingThumbnail];
 
-  v27 = [v4 buttonItems];
-  v28 = v27;
-  if (!v27)
+  buttonItems = [sectionCopy buttonItems];
+  v28 = buttonItems;
+  if (!buttonItems)
   {
-    v27 = MEMORY[0x1E695E0F0];
+    buttonItems = MEMORY[0x1E695E0F0];
   }
 
-  v29 = [v27 mutableCopy];
+  v29 = [buttonItems mutableCopy];
 
   if (![v29 count])
   {
-    v30 = [v13 contactIdentifier];
-    if (v30 || ([v13 phoneNumber], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
+    contactIdentifier = [action contactIdentifier];
+    if (contactIdentifier || ([action phoneNumber], (contactIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v51 = [v13 email];
+      email = [action email];
 
-      if (!v51)
+      if (!email)
       {
         goto LABEL_27;
       }
     }
 
     v31 = objc_opt_new();
-    v32 = [v13 contactIdentifier];
-    [v31 setContactIdentifier:v32];
+    contactIdentifier2 = [action contactIdentifier];
+    [v31 setContactIdentifier:contactIdentifier2];
 
-    v33 = [v13 phoneNumber];
-    if (v33)
+    phoneNumber = [action phoneNumber];
+    if (phoneNumber)
     {
-      v34 = [v13 phoneNumber];
-      v82[0] = v34;
+      phoneNumber2 = [action phoneNumber];
+      v82[0] = phoneNumber2;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:1];
       [v31 setPhoneNumbers:v35];
     }
@@ -945,11 +945,11 @@ LABEL_44:
       [v31 setPhoneNumbers:0];
     }
 
-    v36 = [v13 email];
-    if (v36)
+    email2 = [action email];
+    if (email2)
     {
-      v37 = [v13 email];
-      v81 = v37;
+      email3 = [action email];
+      v81 = email3;
       v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v81 count:1];
       [v31 setEmailAddresses:v38];
     }
@@ -960,16 +960,16 @@ LABEL_44:
     }
 
     v39 = objc_opt_new();
-    v40 = [v13 phoneNumber];
-    v41 = [v40 length];
+    phoneNumber3 = [action phoneNumber];
+    v41 = [phoneNumber3 length];
 
     if (v41)
     {
       [v39 addObject:&unk_1F55DD460];
     }
 
-    v42 = [v13 email];
-    v43 = [v42 length];
+    email4 = [action email];
+    v43 = [email4 length];
 
     if (v43)
     {
@@ -982,26 +982,26 @@ LABEL_44:
     [v29 addObject:v44];
 
 LABEL_27:
-    v45 = [v13 mapsData];
-    if (v45 || ([v13 location], (v45 = objc_claimAutoreleasedReturnValue()) != 0))
+    mapsData = [action mapsData];
+    if (mapsData || ([action location], (mapsData = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v52 = [v13 customDirectionsPunchout];
+      customDirectionsPunchout = [action customDirectionsPunchout];
 
-      if (!v52)
+      if (!customDirectionsPunchout)
       {
 LABEL_41:
-        v56 = [v13 messageURL];
+        messageURL = [action messageURL];
 
-        if (v56)
+        if (messageURL)
         {
           v57 = objc_opt_new();
           v58 = MEMORY[0x1E69CA320];
-          v59 = [v13 messageURL];
-          v60 = [v58 punchoutWithURL:v59];
+          messageURL2 = [action messageURL];
+          v60 = [v58 punchoutWithURL:messageURL2];
           [v57 setPunchout:v60];
 
           v61 = objc_opt_new();
@@ -1014,30 +1014,30 @@ LABEL_41:
 
         if (![(SearchUIDetailedRowModel *)self useCompactVersionOfUI])
         {
-          v63 = [v13 applicationBundleIdentifier];
-          if (v63)
+          applicationBundleIdentifier = [action applicationBundleIdentifier];
+          if (applicationBundleIdentifier)
           {
-            v64 = v63;
-            v65 = [v13 isOverlay];
+            v64 = applicationBundleIdentifier;
+            isOverlay = [action isOverlay];
 
-            if ((v65 & 1) == 0)
+            if ((isOverlay & 1) == 0)
             {
-              v66 = [v13 storeIdentifiers];
-              v67 = [v66 firstObject];
-              v68 = v67;
-              if (v67)
+              storeIdentifiers = [action storeIdentifiers];
+              firstObject = [storeIdentifiers firstObject];
+              v68 = firstObject;
+              if (firstObject)
               {
-                v69 = v67;
+                storeIdentifier = firstObject;
               }
 
               else
               {
-                v70 = [(SearchUIRowModel *)self identifyingResult];
-                v69 = [v70 storeIdentifier];
+                identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+                storeIdentifier = [identifyingResult storeIdentifier];
               }
 
               v71 = objc_opt_new();
-              [v71 setIdentifier:v69];
+              [v71 setIdentifier:storeIdentifier];
               [v29 addObject:v71];
             }
           }
@@ -1045,26 +1045,26 @@ LABEL_41:
 
         if (![v29 count])
         {
-          v72 = [v13 label];
-          v73 = [v72 length];
+          label = [action label];
+          v73 = [label length];
 
           if (v73)
           {
             v74 = objc_opt_new();
-            v75 = [v13 label];
-            [v74 setTitle:v75];
+            label2 = [action label];
+            [v74 setTitle:label2];
 
             [v29 addObject:v74];
           }
         }
 
-        v76 = [v13 localMediaIdentifier];
+        localMediaIdentifier = [action localMediaIdentifier];
 
-        if (v76)
+        if (localMediaIdentifier)
         {
           v77 = objc_opt_new();
-          v78 = [v13 localMediaIdentifier];
-          [v77 setMediaIdentifier:v78];
+          localMediaIdentifier2 = [action localMediaIdentifier];
+          [v77 setMediaIdentifier:localMediaIdentifier2];
 
           v79 = objc_opt_new();
           [v79 setMediaMetadata:v77];
@@ -1076,38 +1076,38 @@ LABEL_41:
       }
     }
 
-    v46 = [v13 customDirectionsPunchout];
+    customDirectionsPunchout2 = [action customDirectionsPunchout];
 
-    if (v46)
+    if (customDirectionsPunchout2)
     {
       v47 = objc_opt_new();
-      v48 = [v13 customDirectionsPunchout];
-      [v47 setPunchout:v48];
+      customDirectionsPunchout3 = [action customDirectionsPunchout];
+      [v47 setPunchout:customDirectionsPunchout3];
     }
 
     else
     {
       v47 = objc_opt_new();
-      v49 = [v13 mapsData];
-      [v47 setMapsData:v49];
+      mapsData2 = [action mapsData];
+      [v47 setMapsData:mapsData2];
 
-      v50 = [v13 label];
-      if (v50)
+      label3 = [action label];
+      if (label3)
       {
-        [v47 setName:v50];
+        [v47 setName:label3];
       }
 
       else
       {
-        v53 = [(SearchUIDetailedRowModel *)self title];
-        v54 = [v53 text];
-        [v47 setName:v54];
+        title2 = [(SearchUIDetailedRowModel *)self title];
+        text = [title2 text];
+        [v47 setName:text];
       }
 
-      [v47 setDirectionsMode:{objc_msgSend(v13, "directionsMode")}];
-      [v47 setShouldSearchDirectionsAlongCurrentRoute:{objc_msgSend(v13, "shouldSearchDirectionsAlongCurrentRoute")}];
-      v48 = [v13 location];
-      [v47 setLocation:v48];
+      [v47 setDirectionsMode:{objc_msgSend(action, "directionsMode")}];
+      [v47 setShouldSearchDirectionsAlongCurrentRoute:{objc_msgSend(action, "shouldSearchDirectionsAlongCurrentRoute")}];
+      customDirectionsPunchout3 = [action location];
+      [v47 setLocation:customDirectionsPunchout3];
     }
 
     v55 = objc_opt_new();
@@ -1122,14 +1122,14 @@ LABEL_56:
   [(SearchUIDetailedRowModel *)self setButtonItems:v80];
 }
 
-+ (id)richTextWithFormattedText:(id)a3
++ (id)richTextWithFormattedText:(id)text
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (text)
   {
-    v3 = a3;
+    textCopy = text;
     v4 = objc_opt_new();
-    v7[0] = v3;
+    v7[0] = textCopy;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
     [v4 setFormattedTextPieces:v5];
@@ -1145,10 +1145,10 @@ LABEL_56:
 
 - (BOOL)isContact
 {
-  v2 = [(SearchUIRowModel *)self identifyingResult];
-  v3 = [v2 sectionBundleIdentifier];
+  identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+  sectionBundleIdentifier = [identifyingResult sectionBundleIdentifier];
   v4 = [SearchUIUtilities bundleIdentifierForApp:5];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [sectionBundleIdentifier isEqualToString:v4];
 
   return v5;
 }
@@ -1157,21 +1157,21 @@ LABEL_56:
 {
   if ([(SearchUIDetailedRowModel *)self isLocalApplicationResult])
   {
-    v3 = [(SearchUIRowModel *)self applicationBundleIdentifier];
+    applicationBundleIdentifier = [(SearchUIRowModel *)self applicationBundleIdentifier];
   }
 
   else
   {
-    v3 = 0;
+    applicationBundleIdentifier = 0;
   }
 
-  return v3;
+  return applicationBundleIdentifier;
 }
 
 - (id)dragTitle
 {
-  v2 = [(SearchUIDetailedRowModel *)self title];
-  v3 = [SearchUIUtilities stringForSFRichText:v2 emphasizedOnly:1];
+  title = [(SearchUIDetailedRowModel *)self title];
+  v3 = [SearchUIUtilities stringForSFRichText:title emphasizedOnly:1];
 
   return v3;
 }
@@ -1180,27 +1180,27 @@ LABEL_56:
 {
   if ([(SearchUIDetailedRowModel *)self isContact]|| [(SearchUICardSectionRowModel *)self isQuerySuggestion])
   {
-    v3 = 0;
+    host = 0;
   }
 
   else
   {
-    v5 = [(SearchUIDetailedRowModel *)self dragURL];
-    v3 = [v5 host];
+    dragURL = [(SearchUIDetailedRowModel *)self dragURL];
+    host = [dragURL host];
 
-    if (!v3)
+    if (!host)
     {
-      v3 = [(SearchUIDetailedRowModel *)self descriptionText];
+      host = [(SearchUIDetailedRowModel *)self descriptionText];
     }
   }
 
-  return v3;
+  return host;
 }
 
 - (id)descriptionText
 {
-  v2 = [(SearchUIDetailedRowModel *)self details];
-  v3 = [SearchUIUtilities stringForSFRichTextArray:v2];
+  details = [(SearchUIDetailedRowModel *)self details];
+  v3 = [SearchUIUtilities stringForSFRichTextArray:details];
 
   return v3;
 }
@@ -1208,10 +1208,10 @@ LABEL_56:
 - (id)dragText
 {
   v3 = objc_opt_new();
-  v4 = [(SearchUIDetailedRowModel *)self dragTitle];
-  if ([v4 length])
+  dragTitle = [(SearchUIDetailedRowModel *)self dragTitle];
+  if ([dragTitle length])
   {
-    [v3 appendString:v4];
+    [v3 appendString:dragTitle];
   }
 
   if ([v3 length])
@@ -1219,37 +1219,37 @@ LABEL_56:
     [v3 appendString:@"\n"];
   }
 
-  v5 = [(SearchUIDetailedRowModel *)self descriptionText];
-  if ([v5 length])
+  descriptionText = [(SearchUIDetailedRowModel *)self descriptionText];
+  if ([descriptionText length])
   {
-    v6 = [(SearchUIDetailedRowModel *)self descriptionText];
-    [v3 appendString:v6];
+    descriptionText2 = [(SearchUIDetailedRowModel *)self descriptionText];
+    [v3 appendString:descriptionText2];
   }
 
   return v3;
 }
 
-+ (BOOL)urlIsDraggable:(id)a3
++ (BOOL)urlIsDraggable:(id)draggable
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"http"])
+  draggableCopy = draggable;
+  scheme = [draggableCopy scheme];
+  if ([scheme isEqualToString:@"http"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 scheme];
-    if ([v6 isEqualToString:@"https"])
+    scheme2 = [draggableCopy scheme];
+    if ([scheme2 isEqualToString:@"https"])
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [v3 scheme];
-      v5 = [v7 isEqualToString:@"file"];
+      scheme3 = [draggableCopy scheme];
+      v5 = [scheme3 isEqualToString:@"file"];
     }
   }
 
@@ -1259,9 +1259,9 @@ LABEL_56:
 - (id)dragURL
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIDetailedRowModel *)self dragAppBundleID];
+  dragAppBundleID = [(SearchUIDetailedRowModel *)self dragAppBundleID];
 
-  if (v3)
+  if (dragAppBundleID)
   {
     v4 = 0;
   }
@@ -1272,11 +1272,11 @@ LABEL_56:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [(SearchUIDetailedRowModel *)self punchouts];
-    v6 = [v5 firstObject];
-    v7 = [v6 urls];
+    punchouts = [(SearchUIDetailedRowModel *)self punchouts];
+    firstObject = [punchouts firstObject];
+    urls = [firstObject urls];
 
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v8 = [urls countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1287,7 +1287,7 @@ LABEL_5:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(urls);
         }
 
         v12 = *(*(&v20 + 1) + 8 * v11);
@@ -1298,7 +1298,7 @@ LABEL_5:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v9 = [urls countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v9)
           {
             goto LABEL_5;
@@ -1321,12 +1321,12 @@ LABEL_5:
 LABEL_11:
     }
 
-    v13 = [(SearchUIRowModel *)self identifyingResult];
-    v14 = [v13 url];
+    identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+    v14 = [identifyingResult url];
     if ([SearchUIDetailedRowModel urlIsDraggable:v14])
     {
-      v15 = [(SearchUIRowModel *)self identifyingResult];
-      v4 = [v15 url];
+      identifyingResult2 = [(SearchUIRowModel *)self identifyingResult];
+      v4 = [identifyingResult2 url];
     }
 
     else
@@ -1336,13 +1336,13 @@ LABEL_11:
   }
 
 LABEL_17:
-  v16 = [(SearchUIDetailedRowModel *)self dragTitle];
-  v17 = [v16 length];
+  dragTitle = [(SearchUIDetailedRowModel *)self dragTitle];
+  v17 = [dragTitle length];
 
   if (v17)
   {
-    v18 = [(SearchUIDetailedRowModel *)self dragTitle];
-    [v4 _setTitle:v18];
+    dragTitle2 = [(SearchUIDetailedRowModel *)self dragTitle];
+    [v4 _setTitle:dragTitle2];
   }
 
   return v4;
@@ -1350,111 +1350,111 @@ LABEL_17:
 
 - (BOOL)isTappable
 {
-  v3 = [(SearchUIRowModel *)self cardSection];
-  if (v3)
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  if (cardSection)
   {
     v6.receiver = self;
     v6.super_class = SearchUIDetailedRowModel;
-    v4 = [(SearchUICardSectionRowModel *)&v6 isTappable];
+    isTappable = [(SearchUICardSectionRowModel *)&v6 isTappable];
   }
 
   else
   {
-    v4 = 1;
+    isTappable = 1;
   }
 
-  return v4;
+  return isTappable;
 }
 
 - (BOOL)isDraggable
 {
-  v3 = [(SearchUIRowModel *)self cardSection];
-  if (v3 && (v4 = v3, v10.receiver = self, v10.super_class = SearchUIDetailedRowModel, v5 = [(SearchUICardSectionRowModel *)&v10 isDraggable], v4, !v5))
+  cardSection = [(SearchUIRowModel *)self cardSection];
+  if (cardSection && (v4 = cardSection, v10.receiver = self, v10.super_class = SearchUIDetailedRowModel, v5 = [(SearchUICardSectionRowModel *)&v10 isDraggable], v4, !v5))
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v6 = [(SearchUIRowModel *)self identifyingResult];
-    if ([SearchUIUtilities resultIsSiriAction:v6])
+    identifyingResult = [(SearchUIRowModel *)self identifyingResult];
+    if ([SearchUIUtilities resultIsSiriAction:identifyingResult])
     {
       LOBYTE(v7) = 0;
     }
 
     else
     {
-      v8 = [(SearchUIRowModel *)self identifyingResult];
-      v7 = [v8 isLocalApplicationResult] ^ 1;
+      identifyingResult2 = [(SearchUIRowModel *)self identifyingResult];
+      v7 = [identifyingResult2 isLocalApplicationResult] ^ 1;
     }
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24.receiver = self;
   v24.super_class = SearchUIDetailedRowModel;
-  v4 = [(SearchUICardSectionRowModel *)&v24 copyWithZone:a3];
-  v5 = [(SearchUIDetailedRowModel *)self leadingImage];
-  [v4 setLeadingImage:v5];
+  v4 = [(SearchUICardSectionRowModel *)&v24 copyWithZone:zone];
+  leadingImage = [(SearchUIDetailedRowModel *)self leadingImage];
+  [v4 setLeadingImage:leadingImage];
 
-  v6 = [(SearchUIDetailedRowModel *)self fallbackImage];
-  [v4 setFallbackImage:v6];
+  fallbackImage = [(SearchUIDetailedRowModel *)self fallbackImage];
+  [v4 setFallbackImage:fallbackImage];
 
-  v7 = [(SearchUIDetailedRowModel *)self leadingButton];
-  [v4 setLeadingButton:v7];
+  leadingButton = [(SearchUIDetailedRowModel *)self leadingButton];
+  [v4 setLeadingButton:leadingButton];
 
   [v4 setPreventThumbnailImageScaling:{-[SearchUIDetailedRowModel preventThumbnailImageScaling](self, "preventThumbnailImageScaling")}];
-  v8 = [(SearchUIDetailedRowModel *)self buttonItems];
-  [v4 setButtonItems:v8];
+  buttonItems = [(SearchUIDetailedRowModel *)self buttonItems];
+  [v4 setButtonItems:buttonItems];
 
   [v4 setButtonItemsAreTrailing:{-[SearchUIDetailedRowModel buttonItemsAreTrailing](self, "buttonItemsAreTrailing")}];
   [v4 setIsLocalApplicationResult:{-[SearchUIDetailedRowModel isLocalApplicationResult](self, "isLocalApplicationResult")}];
-  v9 = [(SearchUIDetailedRowModel *)self nearbyBusinessesString];
-  [v4 setNearbyBusinessesString:v9];
+  nearbyBusinessesString = [(SearchUIDetailedRowModel *)self nearbyBusinessesString];
+  [v4 setNearbyBusinessesString:nearbyBusinessesString];
 
-  v10 = [(SearchUIDetailedRowModel *)self topText];
-  [v4 setTopText:v10];
+  topText = [(SearchUIDetailedRowModel *)self topText];
+  [v4 setTopText:topText];
 
-  v11 = [(SearchUIDetailedRowModel *)self title];
-  [v4 setTitle:v11];
+  title = [(SearchUIDetailedRowModel *)self title];
+  [v4 setTitle:title];
 
   [v4 setTruncateTitleMiddle:{-[SearchUIDetailedRowModel truncateTitleMiddle](self, "truncateTitleMiddle")}];
-  v12 = [(SearchUIDetailedRowModel *)self secondaryTitle];
-  [v4 setSecondaryTitle:v12];
+  secondaryTitle = [(SearchUIDetailedRowModel *)self secondaryTitle];
+  [v4 setSecondaryTitle:secondaryTitle];
 
   [v4 setSecondaryTitleIsDetached:{-[SearchUIDetailedRowModel secondaryTitleIsDetached](self, "secondaryTitleIsDetached")}];
-  v13 = [(SearchUIDetailedRowModel *)self secondaryTitleImage];
-  [v4 setSecondaryTitleImage:v13];
+  secondaryTitleImage = [(SearchUIDetailedRowModel *)self secondaryTitleImage];
+  [v4 setSecondaryTitleImage:secondaryTitleImage];
 
-  v14 = [(SearchUIDetailedRowModel *)self details];
-  [v4 setDetails:v14];
+  details = [(SearchUIDetailedRowModel *)self details];
+  [v4 setDetails:details];
 
-  v15 = [(SearchUIDetailedRowModel *)self footnote];
-  [v4 setFootnote:v15];
+  footnote = [(SearchUIDetailedRowModel *)self footnote];
+  [v4 setFootnote:footnote];
 
-  v16 = [(SearchUIDetailedRowModel *)self footnoteButtonText];
-  [v4 setFootnoteButtonText:v16];
+  footnoteButtonText = [(SearchUIDetailedRowModel *)self footnoteButtonText];
+  [v4 setFootnoteButtonText:footnoteButtonText];
 
-  v17 = [(SearchUIDetailedRowModel *)self action];
-  [v4 setAction:v17];
+  action = [(SearchUIDetailedRowModel *)self action];
+  [v4 setAction:action];
 
-  v18 = [(SearchUIDetailedRowModel *)self trailingTopText];
-  [v4 setTrailingTopText:v18];
+  trailingTopText = [(SearchUIDetailedRowModel *)self trailingTopText];
+  [v4 setTrailingTopText:trailingTopText];
 
-  v19 = [(SearchUIDetailedRowModel *)self trailingMiddleText];
-  [v4 setTrailingMiddleText:v19];
+  trailingMiddleText = [(SearchUIDetailedRowModel *)self trailingMiddleText];
+  [v4 setTrailingMiddleText:trailingMiddleText];
 
-  v20 = [(SearchUIDetailedRowModel *)self trailingBottomText];
-  [v4 setTrailingBottomText:v20];
+  trailingBottomText = [(SearchUIDetailedRowModel *)self trailingBottomText];
+  [v4 setTrailingBottomText:trailingBottomText];
 
-  v21 = [(SearchUIDetailedRowModel *)self trailingThumbnail];
-  [v4 setTrailingThumbnail:v21];
+  trailingThumbnail = [(SearchUIDetailedRowModel *)self trailingThumbnail];
+  [v4 setTrailingThumbnail:trailingThumbnail];
 
-  v22 = [(SearchUIDetailedRowModel *)self mapsResult];
-  [v4 setMapsResult:v22];
+  mapsResult = [(SearchUIDetailedRowModel *)self mapsResult];
+  [v4 setMapsResult:mapsResult];
 
   return v4;
 }

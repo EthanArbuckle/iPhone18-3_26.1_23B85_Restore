@@ -1,11 +1,11 @@
 @interface AXLoggingSubsystem
 + (BOOL)willLogDebug;
 + (BOOL)willLogInfo;
-+ (id)_errorWithMessage:(id)a3 underlyingError:(id)a4;
-+ (id)errorWithDescription:(id)a3;
++ (id)_errorWithMessage:(id)message underlyingError:(id)error;
++ (id)errorWithDescription:(id)description;
 + (id)sharedInstance;
 + (id)subsystems;
-+ (id)wrapError:(id)a3 description:(id)a4;
++ (id)wrapError:(id)error description:(id)description;
 + (void)initialize;
 + (void)initializeSubsytem;
 @end
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __36__AXLoggingSubsystem_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -62,7 +62,7 @@ uint64_t __32__AXLoggingSubsystem_initialize__block_invoke()
   block[1] = 3221225472;
   block[2] = __40__AXLoggingSubsystem_initializeSubsytem__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initializeSubsytem_onceToken != -1)
   {
     dispatch_once(&initializeSubsytem_onceToken, block);
@@ -105,42 +105,42 @@ void __40__AXLoggingSubsystem_initializeSubsytem__block_invoke(uint64_t a1)
 
 + (id)subsystems
 {
-  [a1 initializeSubsytem];
+  [self initializeSubsytem];
   v2 = [Subsystems copy];
 
   return v2;
 }
 
-+ (id)_errorWithMessage:(id)a3 underlyingError:(id)a4
++ (id)_errorWithMessage:(id)message underlyingError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = v8;
-  if (v6)
+  messageCopy = message;
+  errorCopy = error;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v9 = dictionary;
+  if (messageCopy)
   {
-    [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696A588]];
+    [dictionary setObject:messageCopy forKeyedSubscript:*MEMORY[0x1E696A588]];
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [v9 setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
   }
 
   v10 = MEMORY[0x1E696ABC0];
-  v11 = [a1 identifier];
-  v12 = [v10 errorWithDomain:v11 code:0 userInfo:v9];
+  identifier = [self identifier];
+  v12 = [v10 errorWithDomain:identifier code:0 userInfo:v9];
 
   return v12;
 }
 
-+ (id)errorWithDescription:(id)a3
++ (id)errorWithDescription:(id)description
 {
-  if (a3)
+  if (description)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithFormat:v5 arguments:&v10];
+    descriptionCopy = description;
+    v6 = [[v4 alloc] initWithFormat:descriptionCopy arguments:&v10];
   }
 
   else
@@ -148,38 +148,38 @@ void __40__AXLoggingSubsystem_initializeSubsytem__block_invoke(uint64_t a1)
     v6 = 0;
   }
 
-  v7 = [a1 _errorWithMessage:v6 underlyingError:0];
+  v7 = [self _errorWithMessage:v6 underlyingError:0];
 
   return v7;
 }
 
-+ (id)wrapError:(id)a3 description:(id)a4
++ (id)wrapError:(id)error description:(id)description
 {
-  v6 = a3;
-  if (a4)
+  errorCopy = error;
+  if (description)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = a4;
-    a4 = [[v7 alloc] initWithFormat:v8 arguments:&v12];
+    descriptionCopy = description;
+    description = [[v7 alloc] initWithFormat:descriptionCopy arguments:&v12];
   }
 
-  v9 = [a1 _errorWithMessage:a4 underlyingError:v6];
+  v9 = [self _errorWithMessage:description underlyingError:errorCopy];
 
   return v9;
 }
 
 + (BOOL)willLogInfo
 {
-  v2 = [a1 identifier];
-  v3 = AXWillLogInfoWithFacility(v2);
+  identifier = [self identifier];
+  v3 = AXWillLogInfoWithFacility(identifier);
 
   return v3;
 }
 
 + (BOOL)willLogDebug
 {
-  v2 = [a1 identifier];
-  v3 = AXWillLogDebugWithFacility(v2);
+  identifier = [self identifier];
+  v3 = AXWillLogDebugWithFacility(identifier);
 
   return v3;
 }

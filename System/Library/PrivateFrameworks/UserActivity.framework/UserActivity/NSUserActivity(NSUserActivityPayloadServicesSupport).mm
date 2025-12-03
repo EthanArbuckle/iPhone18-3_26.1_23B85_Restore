@@ -13,8 +13,8 @@
 - (id)_payloadForIdentifier:()NSUserActivityPayloadServicesSupport
 {
   v4 = a3;
-  v5 = [a1 _internalUserActivity];
-  v6 = [v5 payloadForIdentifier:v4];
+  _internalUserActivity = [self _internalUserActivity];
+  v6 = [_internalUserActivity payloadForIdentifier:v4];
 
   return v6;
 }
@@ -22,8 +22,8 @@
 - (id)_objectForIdentifier:()NSUserActivityPayloadServicesSupport
 {
   v4 = a3;
-  v5 = [a1 _internalUserActivity];
-  v6 = [v5 objectForIdentifier:v4];
+  _internalUserActivity = [self _internalUserActivity];
+  v6 = [_internalUserActivity objectForIdentifier:v4];
 
   return v6;
 }
@@ -34,7 +34,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __89__NSUserActivity_NSUserActivityPayloadServicesSupport___payloadUpdateBlockForIdentifier___block_invoke;
   aBlock[3] = &unk_2785C3F10;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v1 = _Block_copy(aBlock);
   v2 = _Block_copy(v1);
 
@@ -46,8 +46,8 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [a1 _internalUserActivity];
-  [v11 setPayload:v10 object:v9 identifier:v8];
+  _internalUserActivity = [self _internalUserActivity];
+  [_internalUserActivity setPayload:v10 object:v9 identifier:v8];
 }
 
 - (void)_setPayload:()NSUserActivityPayloadServicesSupport object:identifier:dirty:
@@ -55,8 +55,8 @@
   v10 = a5;
   v11 = a4;
   v12 = a3;
-  v13 = [a1 _internalUserActivity];
-  [v13 setPayload:v12 object:v11 identifier:v10 dirty:a6];
+  _internalUserActivity = [self _internalUserActivity];
+  [_internalUserActivity setPayload:v12 object:v11 identifier:v10 dirty:a6];
 }
 
 - (void)_setPayloadIdentifier:()NSUserActivityPayloadServicesSupport object:withBlock:
@@ -73,15 +73,15 @@
   v11 = v9;
   v12 = a4;
   v13 = _Block_copy(&v15);
-  v14 = [a1 _internalUserActivity];
-  [v14 setPayloadIdentifier:v10 object:v12 withBlock:v13];
+  _internalUserActivity = [self _internalUserActivity];
+  [_internalUserActivity setPayloadIdentifier:v10 object:v12 withBlock:v13];
 }
 
 - (void)_setDirty:()NSUserActivityPayloadServicesSupport identifier:
 {
   v6 = a4;
-  v7 = [a1 _internalUserActivity];
-  [v7 setDirty:a3 identifier:v6];
+  _internalUserActivity = [self _internalUserActivity];
+  [_internalUserActivity setDirty:a3 identifier:v6];
 }
 
 @end

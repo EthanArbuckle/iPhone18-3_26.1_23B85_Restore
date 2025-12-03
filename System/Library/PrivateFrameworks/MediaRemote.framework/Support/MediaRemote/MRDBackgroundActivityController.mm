@@ -1,43 +1,43 @@
 @interface MRDBackgroundActivityController
-+ (id)controllerForBackgroundActivityIdentifier:(id)a3;
-- (MRDBackgroundActivityController)initWithBackgroundActivityIdentifier:(id)a3;
++ (id)controllerForBackgroundActivityIdentifier:(id)identifier;
+- (MRDBackgroundActivityController)initWithBackgroundActivityIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)handleUserInteractionsWithBlock:(id)a3;
+- (void)handleUserInteractionsWithBlock:(id)block;
 - (void)publishNewData;
-- (void)setIsBackgroundActivityActive:(BOOL)a3;
-- (void)setShouldShowInForeground:(BOOL)a3;
+- (void)setIsBackgroundActivityActive:(BOOL)active;
+- (void)setShouldShowInForeground:(BOOL)foreground;
 @end
 
 @implementation MRDBackgroundActivityController
 
-+ (id)controllerForBackgroundActivityIdentifier:(id)a3
++ (id)controllerForBackgroundActivityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (qword_1005292D8 != -1)
   {
     sub_1003A6A18();
   }
 
-  v5 = [qword_1005292E0 objectForKeyedSubscript:v4];
+  v5 = [qword_1005292E0 objectForKeyedSubscript:identifierCopy];
   v6 = v5;
-  if (v4 && !v5)
+  if (identifierCopy && !v5)
   {
-    v6 = [[a1 alloc] initWithBackgroundActivityIdentifier:v4];
-    [qword_1005292E0 setObject:v6 forKeyedSubscript:v4];
+    v6 = [[self alloc] initWithBackgroundActivityIdentifier:identifierCopy];
+    [qword_1005292E0 setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
   return v6;
 }
 
-- (MRDBackgroundActivityController)initWithBackgroundActivityIdentifier:(id)a3
+- (MRDBackgroundActivityController)initWithBackgroundActivityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = MRDBackgroundActivityController;
   v5 = [(MRDBackgroundActivityController *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     backgroundActivityIdentifier = v5->_backgroundActivityIdentifier;
     v5->_backgroundActivityIdentifier = v6;
 
@@ -66,27 +66,27 @@
   [(MRDBackgroundActivityController *)&v3 dealloc];
 }
 
-- (void)setShouldShowInForeground:(BOOL)a3
+- (void)setShouldShowInForeground:(BOOL)foreground
 {
-  if (self->_shouldShowInForeground != a3)
+  if (self->_shouldShowInForeground != foreground)
   {
-    self->_shouldShowInForeground = a3;
+    self->_shouldShowInForeground = foreground;
     [(MRDBackgroundActivityController *)self publishNewData];
   }
 }
 
-- (void)setIsBackgroundActivityActive:(BOOL)a3
+- (void)setIsBackgroundActivityActive:(BOOL)active
 {
-  if (self->_backgroundActivityActive != a3)
+  if (self->_backgroundActivityActive != active)
   {
-    self->_backgroundActivityActive = a3;
+    self->_backgroundActivityActive = active;
     [(MRDBackgroundActivityController *)self publishNewData];
   }
 }
 
-- (void)handleUserInteractionsWithBlock:(id)a3
+- (void)handleUserInteractionsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   publisher = self->_publisher;
   v7[0] = _NSConcreteStackBlock;
@@ -94,7 +94,7 @@
   v7[2] = sub_1000AFA48;
   v7[3] = &unk_1004BA430;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   [(STBackgroundActivitiesStatusDomainPublisher *)publisher handleUserInteractionsWithBlock:v7];
 

@@ -1,39 +1,39 @@
 @interface AMSUIWebContainerViewController
 - (AMSUIWebClientContext)context;
-- (AMSUIWebContainerViewController)initWithViewController:(id)a3 appearance:(id)a4 navigationBar:(id)a5 context:(id)a6;
+- (AMSUIWebContainerViewController)initWithViewController:(id)controller appearance:(id)appearance navigationBar:(id)bar context:(id)context;
 - (AMSUIWebContainerViewController)nextContainer;
 - (AMSUIWebPresentationDelegate)modalPresentationDelegate;
 - (AMSUIWebPresentationDelegate)pushPresentationDelegate;
 - (CGPoint)scrollPosition;
 - (NSDictionary)pageMetrics;
 - (UINavigationItem)lastNavigationItem;
-- (id)_actionBlockForWebButtonModel:(id)a3;
-- (id)_buttonModelForBarButtonItemModel:(id)a3;
-- (id)_createBarButtonItemWithModel:(id)a3 navigationBarModel:(id)a4;
-- (id)_makeCustomNavigationBarAppearanceWithModel:(id)a3;
-- (id)_refreshWithOptions:(id)a3;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
+- (id)_actionBlockForWebButtonModel:(id)model;
+- (id)_buttonModelForBarButtonItemModel:(id)model;
+- (id)_createBarButtonItemWithModel:(id)model navigationBarModel:(id)barModel;
+- (id)_makeCustomNavigationBarAppearanceWithModel:(id)model;
+- (id)_refreshWithOptions:(id)options;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
 - (id)navigationItem;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (unint64_t)_determineActivePresentationType;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_adjustWebViewScrollFor:(id)a3 completion:(id)a4;
+- (void)_adjustWebViewScrollFor:(id)for completion:(id)completion;
 - (void)_applyAppearance;
 - (void)_handlePushDismissal;
-- (void)_postEvent:(id)a3;
-- (void)_prepareToMoveWebViewToVC:(id)a3 completion:(id)a4;
+- (void)_postEvent:(id)event;
+- (void)_prepareToMoveWebViewToVC:(id)c completion:(id)completion;
 - (void)_refreshForInitialAppear;
-- (void)_scrollTo:(CGPoint)a3 webView:(id)a4 completion:(id)a5;
-- (void)applyNavigationModel:(id)a3;
-- (void)cacheScrollViewPositionFor:(id)a3;
+- (void)_scrollTo:(CGPoint)to webView:(id)view completion:(id)completion;
+- (void)applyNavigationModel:(id)model;
+- (void)cacheScrollViewPositionFor:(id)for;
 - (void)dealloc;
-- (void)didDismissController:(id)a3;
+- (void)didDismissController:(id)controller;
 - (void)handleModalDismissal;
 - (void)loadView;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)replaceContentWithViewController:(id)a3 animated:(BOOL)a4 pageModel:(id)a5 completion:(id)a6;
-- (void)updateRefreshControlForPageModel:(id)a3;
-- (void)updateSafeAreaEdgesForPageModel:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)replaceContentWithViewController:(id)controller animated:(BOOL)animated pageModel:(id)model completion:(id)completion;
+- (void)updateRefreshControlForPageModel:(id)model;
+- (void)updateSafeAreaEdgesForPageModel:(id)model;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
 - (void)viewWillLayoutSubviews;
@@ -41,25 +41,25 @@
 
 @implementation AMSUIWebContainerViewController
 
-- (AMSUIWebContainerViewController)initWithViewController:(id)a3 appearance:(id)a4 navigationBar:(id)a5 context:(id)a6
+- (AMSUIWebContainerViewController)initWithViewController:(id)controller appearance:(id)appearance navigationBar:(id)bar context:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  controllerCopy = controller;
+  appearanceCopy = appearance;
+  barCopy = bar;
+  contextCopy = context;
   v15 = [(AMSUIWebContainerViewController *)self initWithNibName:0 bundle:0];
   v16 = v15;
   if (v15)
   {
     v15->_activePresentationType = 0;
-    v17 = [v12 copy];
+    v17 = [appearanceCopy copy];
     appearance = v16->_appearance;
     v16->_appearance = v17;
 
-    objc_storeStrong(&v16->_containedViewController, a3);
-    objc_storeWeak(&v16->_context, v14);
+    objc_storeStrong(&v16->_containedViewController, controller);
+    objc_storeWeak(&v16->_context, contextCopy);
     v16->_dismissCalled = 0;
-    objc_storeStrong(&v16->_navigationBarModel, a5);
+    objc_storeStrong(&v16->_navigationBarModel, bar);
   }
 
   return v16;
@@ -69,9 +69,9 @@
 {
   if (![(AMSUIWebContainerViewController *)self dismissCalled])
   {
-    v3 = [(AMSUIWebContainerViewController *)self pushPresentationDelegate];
+    pushPresentationDelegate = [(AMSUIWebContainerViewController *)self pushPresentationDelegate];
 
-    if (!v3)
+    if (!pushPresentationDelegate)
     {
       [(AMSUIWebContainerViewController *)self handleModalDismissal];
     }
@@ -82,28 +82,28 @@
   [(AMSUIWebContainerViewController *)&v4 dealloc];
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v4 = [(AMSUIWebContainerViewController *)self containedViewController];
-  v5 = [v4 contentScrollViewForEdge:a3];
+  containedViewController = [(AMSUIWebContainerViewController *)self containedViewController];
+  v5 = [containedViewController contentScrollViewForEdge:edge];
 
   return v5;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(AMSUIWebContainerViewController *)self containedViewController];
-  v3 = [v2 supportedInterfaceOrientations];
+  containedViewController = [(AMSUIWebContainerViewController *)self containedViewController];
+  supportedInterfaceOrientations = [containedViewController supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
 - (int64_t)preferredInterfaceOrientationForPresentation
 {
-  v2 = [(AMSUIWebContainerViewController *)self containedViewController];
-  v3 = [v2 preferredInterfaceOrientationForPresentation];
+  containedViewController = [(AMSUIWebContainerViewController *)self containedViewController];
+  preferredInterfaceOrientationForPresentation = [containedViewController preferredInterfaceOrientationForPresentation];
 
-  return v3;
+  return preferredInterfaceOrientationForPresentation;
 }
 
 - (void)loadView
@@ -112,39 +112,39 @@
   v11.super_class = AMSUIWebContainerViewController;
   [(AMSUICommonViewController *)&v11 loadView];
   [(AMSUIWebContainerViewController *)self setTransitioningDelegate:self];
-  v3 = [(AMSUIWebContainerViewController *)self containedViewController];
-  [(AMSUICommonViewController *)self setChildViewController:v3];
+  containedViewController = [(AMSUIWebContainerViewController *)self containedViewController];
+  [(AMSUICommonViewController *)self setChildViewController:containedViewController];
 
   v4 = objc_alloc(MEMORY[0x1E698CAB0]);
-  v5 = [(AMSUIWebContainerViewController *)self context];
-  v6 = [v5 bag];
-  v7 = [(AMSUIWebContainerViewController *)self context];
-  v8 = [v7 metrics];
-  v9 = [v4 initWithBag:v6 metrics:v8];
+  context = [(AMSUIWebContainerViewController *)self context];
+  v6 = [context bag];
+  context2 = [(AMSUIWebContainerViewController *)self context];
+  metrics = [context2 metrics];
+  v9 = [v4 initWithBag:v6 metrics:metrics];
   [(AMSUIWebContainerViewController *)self setPageRenderPresenter:v9];
 
-  v10 = [(AMSUIWebContainerViewController *)self pageRenderPresenter];
-  [v10 startWithActivity:0];
+  pageRenderPresenter = [(AMSUIWebContainerViewController *)self pageRenderPresenter];
+  [pageRenderPresenter startWithActivity:0];
 }
 
 - (id)navigationItem
 {
-  v3 = [(AMSUIWebContainerViewController *)self parentViewController];
-  v4 = [v3 ams_navigationItemViewController];
+  parentViewController = [(AMSUIWebContainerViewController *)self parentViewController];
+  ams_navigationItemViewController = [parentViewController ams_navigationItemViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 navigationItem];
+    navigationItem = [ams_navigationItemViewController navigationItem];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AMSUIWebContainerViewController;
-    v5 = [(AMSUIWebContainerViewController *)&v8 navigationItem];
+    navigationItem = [(AMSUIWebContainerViewController *)&v8 navigationItem];
   }
 
-  v6 = v5;
+  v6 = navigationItem;
 
   return v6;
 }
@@ -154,8 +154,8 @@
   v4.receiver = self;
   v4.super_class = AMSUIWebContainerViewController;
   [(AMSUIWebContainerViewController *)&v4 viewDidLoad];
-  v3 = [(AMSUIWebContainerViewController *)self pageRenderPresenter];
-  [v3 viewDidLoad];
+  pageRenderPresenter = [(AMSUIWebContainerViewController *)self pageRenderPresenter];
+  [pageRenderPresenter viewDidLoad];
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -171,36 +171,36 @@
   v14.receiver = self;
   v14.super_class = AMSUIWebContainerViewController;
   [(AMSUIWebContainerViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUIWebContainerViewController *)self containedViewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  containedViewController = [(AMSUIWebContainerViewController *)self containedViewController];
+  view2 = [containedViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)applyNavigationModel:(id)a3
+- (void)applyNavigationModel:(id)model
 {
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_navigationBarModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_navigationBarModel, model);
     [(AMSUIWebContainerViewController *)self _setupNavBarAnimated:0];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
-- (void)cacheScrollViewPositionFor:(id)a3
+- (void)cacheScrollViewPositionFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = forCopy;
   }
 
   else
@@ -208,18 +208,18 @@
     v5 = 0;
   }
 
-  v6 = [v5 webView];
+  webView = [v5 webView];
 
-  if (v6)
+  if (webView)
   {
     objc_initWeak(&location, self);
-    v7 = [v6 underlyingWebView];
+    underlyingWebView = [webView underlyingWebView];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __62__AMSUIWebContainerViewController_cacheScrollViewPositionFor___block_invoke;
     v8[3] = &unk_1E7F25EA8;
     objc_copyWeak(&v9, &location);
-    [v7 evaluateJavaScript:@"window.scrollY;" completionHandler:v8];
+    [underlyingWebView evaluateJavaScript:@"window.scrollY;" completionHandler:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -243,74 +243,74 @@ void __62__AMSUIWebContainerViewController_cacheScrollViewPositionFor___block_in
   if (![(AMSUIWebContainerViewController *)self dismissCalled])
   {
     [(AMSUIWebContainerViewController *)self setDismissCalled:1];
-    v3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v3)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v3 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v4 = [v3 OSLogObject];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v5 = objc_opt_class();
-      v6 = [(AMSUIWebContainerViewController *)self context];
-      v7 = [v6 logKey];
+      context = [(AMSUIWebContainerViewController *)self context];
+      logKey = [context logKey];
       v10 = 138543618;
       v11 = v5;
       v12 = 2114;
-      v13 = v7;
-      _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling modal dismissal", &v10, 0x16u);
+      v13 = logKey;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling modal dismissal", &v10, 0x16u);
     }
 
-    v8 = [(AMSUIWebContainerViewController *)self modalPresentationDelegate];
-    [v8 didDismissController:self];
+    modalPresentationDelegate = [(AMSUIWebContainerViewController *)self modalPresentationDelegate];
+    [modalPresentationDelegate didDismissController:self];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceContentWithViewController:(id)a3 animated:(BOOL)a4 pageModel:(id)a5 completion:(id)a6
+- (void)replaceContentWithViewController:(id)controller animated:(BOOL)animated pageModel:(id)model completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  controllerCopy = controller;
+  modelCopy = model;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  [(AMSUIWebContainerViewController *)self setPageModel:v11];
-  v13 = [(AMSUIWebContainerViewController *)self containedViewController];
-  v14 = v10;
-  if (v13 == v14)
+  [(AMSUIWebContainerViewController *)self setPageModel:modelCopy];
+  containedViewController = [(AMSUIWebContainerViewController *)self containedViewController];
+  v14 = controllerCopy;
+  if (containedViewController == v14)
   {
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_containedViewController, a3);
-    v15 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v15)
+    objc_storeStrong(&self->_containedViewController, controller);
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v15 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v17 = objc_opt_class();
-      v18 = [(AMSUIWebContainerViewController *)self context];
-      v19 = [v18 logKey];
+      context = [(AMSUIWebContainerViewController *)self context];
+      logKey = [context logKey];
       *buf = 138544130;
       v29 = v17;
       v30 = 2114;
-      v31 = v19;
+      v31 = logKey;
       v32 = 2114;
-      v33 = v13;
+      v33 = containedViewController;
       v34 = 2114;
       v35 = v14;
-      _os_log_impl(&dword_1BB036000, v16, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Replacing fromVC with toVC (fromVC: %{public}@, toVC: %{public}@)", buf, 0x2Au);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Replacing fromVC with toVC (fromVC: %{public}@, toVC: %{public}@)", buf, 0x2Au);
     }
 
     objc_initWeak(buf, self);
@@ -320,9 +320,9 @@ void __62__AMSUIWebContainerViewController_cacheScrollViewPositionFor___block_in
     v22[3] = &unk_1E7F25F20;
     objc_copyWeak(&v26, buf);
     v23 = v14;
-    v24 = v13;
-    v25 = v12;
-    v27 = a4;
+    v24 = containedViewController;
+    v25 = completionCopy;
+    animatedCopy = animated;
     [(AMSUIWebContainerViewController *)self _prepareToMoveWebViewToVC:v23 completion:v22];
 
     objc_destroyWeak(&v26);
@@ -502,13 +502,13 @@ uint64_t __98__AMSUIWebContainerViewController_replaceContentWithViewController_
   return [v2 contentWasReplacedAnimated:v3];
 }
 
-- (void)updateRefreshControlForPageModel:(id)a3
+- (void)updateRefreshControlForPageModel:(id)model
 {
-  v10 = a3;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v10;
+    v4 = modelCopy;
   }
 
   else
@@ -518,30 +518,30 @@ uint64_t __98__AMSUIWebContainerViewController_replaceContentWithViewController_
 
   if (v4)
   {
-    v5 = [v4 supportsRefresh];
-    v6 = [(AMSUIWebContainerViewController *)self context];
-    v7 = [v6 webPage];
-    v8 = [v7 webView];
-    v9 = v8;
-    if (v5)
+    supportsRefresh = [v4 supportsRefresh];
+    context = [(AMSUIWebContainerViewController *)self context];
+    webPage = [context webPage];
+    webView = [webPage webView];
+    v9 = webView;
+    if (supportsRefresh)
     {
-      [v8 _setupRefreshControl];
+      [webView _setupRefreshControl];
     }
 
     else
     {
-      [v8 _tearDownRefreshControl];
+      [webView _tearDownRefreshControl];
     }
   }
 }
 
-- (void)updateSafeAreaEdgesForPageModel:(id)a3
+- (void)updateSafeAreaEdgesForPageModel:(id)model
 {
-  v9 = a3;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v9;
+    v4 = modelCopy;
   }
 
   else
@@ -566,55 +566,55 @@ uint64_t __98__AMSUIWebContainerViewController_replaceContentWithViewController_
       v5 |= 4uLL;
     }
 
-    v6 = [(AMSUIWebContainerViewController *)self context];
-    v7 = [v6 webPage];
-    v8 = [v7 view];
+    context = [(AMSUIWebContainerViewController *)self context];
+    webPage = [context webPage];
+    view = [webPage view];
 
-    if ([v8 edgesPropagatingSafeAreaInsetsToSubviews] != v5)
+    if ([view edgesPropagatingSafeAreaInsetsToSubviews] != v5)
     {
-      [v8 setEdgesPropagatingSafeAreaInsetsToSubviews:v5];
-      [v8 setFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+      [view setEdgesPropagatingSafeAreaInsetsToSubviews:v5];
+      [view setFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     }
   }
 }
 
-- (void)didDismissController:(id)a3
+- (void)didDismissController:(id)controller
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v4)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v4 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [(AMSUIWebContainerViewController *)self context];
-    v9 = [v8 logKey];
+    context = [(AMSUIWebContainerViewController *)self context];
+    logKey = [context logKey];
     v17 = 138543618;
     v18 = v6;
     v19 = 2114;
-    v20 = v9;
-    _os_log_impl(&dword_1BB036000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received container dismissal", &v17, 0x16u);
+    v20 = logKey;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Received container dismissal", &v17, 0x16u);
   }
 
-  v10 = [(AMSUIWebContainerViewController *)self containedViewController];
+  containedViewController = [(AMSUIWebContainerViewController *)self containedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [(AMSUIWebContainerViewController *)self containedViewController];
-    [v12 willAppearAfterDismiss];
+    containedViewController2 = [(AMSUIWebContainerViewController *)self containedViewController];
+    [containedViewController2 willAppearAfterDismiss];
   }
 
   [(AMSUIWebContainerViewController *)self setNextContainer:0];
   v13 = objc_alloc_init(AMSUIWebFlowOptions);
-  v14 = [(AMSUIWebContainerViewController *)self pageInfo];
-  [(AMSUIWebFlowOptions *)v13 setPageData:v14];
+  pageInfo = [(AMSUIWebContainerViewController *)self pageInfo];
+  [(AMSUIWebFlowOptions *)v13 setPageData:pageInfo];
 
   [(AMSUIWebFlowOptions *)v13 setDeferredPresentation:[(AMSUIWebContainerViewController *)self disableReappearPlaceholder]!= 0];
   [(AMSUIWebFlowOptions *)v13 setReuseExistingPage:1];
@@ -624,76 +624,76 @@ uint64_t __98__AMSUIWebContainerViewController_replaceContentWithViewController_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_prepareToMoveWebViewToVC:(id)a3 completion:(id)a4
+- (void)_prepareToMoveWebViewToVC:(id)c completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(AMSUIWebContainerViewController *)self navigationController];
-  v7 = [v6 isToolbarHidden];
+  completionCopy = completion;
+  navigationController = [(AMSUIWebContainerViewController *)self navigationController];
+  isToolbarHidden = [navigationController isToolbarHidden];
 
-  if ((v7 & 1) == 0)
+  if ((isToolbarHidden & 1) == 0)
   {
-    v8 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v8)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v8 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v10 = objc_opt_class();
-      v11 = [(AMSUIWebContainerViewController *)self context];
-      v12 = [v11 logKey];
+      context = [(AMSUIWebContainerViewController *)self context];
+      logKey = [context logKey];
       v15 = 138543618;
       v16 = v10;
       v17 = 2114;
-      v18 = v12;
-      _os_log_impl(&dword_1BB036000, v9, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Hiding toolbar", &v15, 0x16u);
+      v18 = logKey;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Hiding toolbar", &v15, 0x16u);
     }
 
-    v13 = [(AMSUIWebContainerViewController *)self navigationController];
-    [v13 setToolbarHidden:1 animated:1];
+    navigationController2 = [(AMSUIWebContainerViewController *)self navigationController];
+    [navigationController2 setToolbarHidden:1 animated:1];
 
     [(AMSUIWebContainerViewController *)self setToolbarItems:MEMORY[0x1E695E0F0] animated:0];
   }
 
-  v5[2](v5);
+  completionCopy[2](completionCopy);
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v19 = *MEMORY[0x1E69E9840];
   [(AMSUIWebContainerViewController *)self handleModalDismissal];
-  v4 = [(AMSUIWebContainerViewController *)self pageModel];
+  pageModel = [(AMSUIWebContainerViewController *)self pageModel];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v6)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v6 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
-      v9 = [(AMSUIWebContainerViewController *)self context];
-      v10 = [v9 logKey];
+      context = [(AMSUIWebContainerViewController *)self context];
+      logKey = [context logKey];
       v15 = 138543618;
       v16 = v8;
       v17 = 2114;
-      v18 = v10;
-      _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running swipe to dismiss action", &v15, 0x16u);
+      v18 = logKey;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running swipe to dismiss action", &v15, 0x16u);
     }
 
-    v11 = [(AMSUIWebContainerViewController *)self pageModel];
-    v12 = [v11 swipeToDismissAction];
-    v13 = [v12 runAction];
+    pageModel2 = [(AMSUIWebContainerViewController *)self pageModel];
+    swipeToDismissAction = [pageModel2 swipeToDismissAction];
+    runAction = [swipeToDismissAction runAction];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -702,25 +702,25 @@ uint64_t __98__AMSUIWebContainerViewController_replaceContentWithViewController_
 - (NSDictionary)pageMetrics
 {
   v3 = objc_alloc(MEMORY[0x1E695DF20]);
-  v4 = [(AMSUIWebContainerViewController *)self context];
-  v5 = [v4 URL];
-  v6 = [(AMSUIWebContainerViewController *)self pageInfo];
-  v7 = [v6 objectForKeyedSubscript:@"routeName"];
+  context = [(AMSUIWebContainerViewController *)self context];
+  v5 = [context URL];
+  pageInfo = [(AMSUIWebContainerViewController *)self pageInfo];
+  v7 = [pageInfo objectForKeyedSubscript:@"routeName"];
   v8 = [v3 initWithObjectsAndKeys:{@"pageRender", @"eventType", v5, @"pageUrl", v7, @"placement", 0}];
 
   return v8;
 }
 
-- (id)_actionBlockForWebButtonModel:(id)a3
+- (id)_actionBlockForWebButtonModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__AMSUIWebContainerViewController__actionBlockForWebButtonModel___block_invoke;
   v8[3] = &unk_1E7F24730;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = modelCopy;
   v9 = v5;
   v6 = [v8 copy];
 
@@ -784,21 +784,21 @@ void __65__AMSUIWebContainerViewController__actionBlockForWebButtonModel___block
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_adjustWebViewScrollFor:(id)a3 completion:(id)a4
+- (void)_adjustWebViewScrollFor:(id)for completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSUIWebContainerViewController *)self context];
-  v9 = [v8 webPage];
+  completionCopy = completion;
+  forCopy = for;
+  context = [(AMSUIWebContainerViewController *)self context];
+  webPage = [context webPage];
   objc_opt_class();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [(AMSUIWebContainerViewController *)self context];
-    v12 = [v11 webPage];
-    v13 = [v12 webView];
+    context2 = [(AMSUIWebContainerViewController *)self context];
+    webPage2 = [context2 webPage];
+    webView = [webPage2 webView];
 
     [(AMSUIWebContainerViewController *)self scrollPosition];
     v15 = v14;
@@ -807,15 +807,15 @@ void __65__AMSUIWebContainerViewController__actionBlockForWebButtonModel___block
     v19[1] = 3221225472;
     v19[2] = __70__AMSUIWebContainerViewController__adjustWebViewScrollFor_completion___block_invoke;
     v19[3] = &unk_1E7F245E0;
-    v20 = v13;
-    v21 = v6;
-    v18 = v13;
+    v20 = webView;
+    v21 = completionCopy;
+    v18 = webView;
     [(AMSUIWebContainerViewController *)self _scrollTo:v18 webView:v19 completion:v15, v17];
   }
 
   else
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -832,13 +832,13 @@ void __70__AMSUIWebContainerViewController__adjustWebViewScrollFor_completion___
 
 - (void)_applyAppearance
 {
-  v8 = [(AMSUIWebContainerViewController *)self appearance];
+  appearance = [(AMSUIWebContainerViewController *)self appearance];
   v3 = +[AMSUIWebAppearance defaultPlatformBackgroundColor];
-  v4 = [v8 backgroundColor];
-  v5 = v4;
-  if (v4)
+  backgroundColor = [appearance backgroundColor];
+  v5 = backgroundColor;
+  if (backgroundColor)
   {
-    v6 = v4;
+    v6 = backgroundColor;
   }
 
   else
@@ -846,30 +846,30 @@ void __70__AMSUIWebContainerViewController__adjustWebViewScrollFor_completion___
     v6 = v3;
   }
 
-  v7 = [(AMSUICommonViewController *)self view];
-  [v7 ams_setBackgroundColor:v6];
+  view = [(AMSUICommonViewController *)self view];
+  [view ams_setBackgroundColor:v6];
 }
 
-- (id)_buttonModelForBarButtonItemModel:(id)a3
+- (id)_buttonModelForBarButtonItemModel:(id)model
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 buttonModel];
-  v6 = v5;
-  if (v5)
+  modelCopy = model;
+  buttonModel = [modelCopy buttonModel];
+  v6 = buttonModel;
+  if (buttonModel)
   {
-    v7 = v5;
+    button = buttonModel;
   }
 
   else
   {
-    v8 = [(AMSUIWebContainerViewController *)self activePresentationType];
+    activePresentationType = [(AMSUIWebContainerViewController *)self activePresentationType];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [v4 conditionalButtonModels];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    conditionalButtonModels = [modelCopy conditionalButtonModels];
+    v10 = [conditionalButtonModels countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -880,13 +880,13 @@ void __70__AMSUIWebContainerViewController__adjustWebViewScrollFor_completion___
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(conditionalButtonModels);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
           if ([v14 hideOnPush])
           {
-            v15 = v8 == 2;
+            v15 = activePresentationType == 2;
           }
 
           else
@@ -894,46 +894,46 @@ void __70__AMSUIWebContainerViewController__adjustWebViewScrollFor_completion___
             v15 = 0;
           }
 
-          if (!v15 && (![v14 hideOnModal] || v8 != 1))
+          if (!v15 && (![v14 hideOnModal] || activePresentationType != 1))
           {
-            v7 = [v14 button];
+            button = [v14 button];
 
             goto LABEL_20;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [conditionalButtonModels countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v11);
     }
 
-    v7 = 0;
+    button = 0;
   }
 
 LABEL_20:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return button;
 }
 
-- (id)_createBarButtonItemWithModel:(id)a3 navigationBarModel:(id)a4
+- (id)_createBarButtonItemWithModel:(id)model navigationBarModel:(id)barModel
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSUIWebContainerViewController *)self _buttonModelForBarButtonItemModel:v6];
+  modelCopy = model;
+  barModelCopy = barModel;
+  v8 = [(AMSUIWebContainerViewController *)self _buttonModelForBarButtonItemModel:modelCopy];
   v9 = MEMORY[0x1E69DC708];
   if (v8)
   {
-    v10 = [(AMSUIWebContainerViewController *)self _actionBlockForWebButtonModel:v8];
-    [v9 barButtonItemWithWebButtonModel:v8 navigationBarModel:v7 actionBlock:v10];
+    appViewModel = [(AMSUIWebContainerViewController *)self _actionBlockForWebButtonModel:v8];
+    [v9 barButtonItemWithWebButtonModel:v8 navigationBarModel:barModelCopy actionBlock:appViewModel];
   }
 
   else
   {
-    v10 = [v6 appViewModel];
-    [v9 barButtonItemWithWebAppViewModel:v10];
+    appViewModel = [modelCopy appViewModel];
+    [v9 barButtonItemWithWebAppViewModel:appViewModel];
   }
   v11 = ;
 
@@ -942,27 +942,27 @@ LABEL_20:
 
 - (unint64_t)_determineActivePresentationType
 {
-  v3 = [(UIViewController *)self ams_navigationItemViewController];
-  v4 = [(UIViewController *)self ams_navigationController];
-  v5 = [v4 viewControllers];
+  ams_navigationItemViewController = [(UIViewController *)self ams_navigationItemViewController];
+  ams_navigationController = [(UIViewController *)self ams_navigationController];
+  viewControllers = [ams_navigationController viewControllers];
 
-  if ([v5 count])
+  if ([viewControllers count])
   {
     v6 = 0;
     v7 = 1;
     while (1)
     {
-      v8 = [v5 objectAtIndexedSubscript:v6];
+      v8 = [viewControllers objectAtIndexedSubscript:v6];
 
       if (v6)
       {
-        if (v8 == v3)
+        if (v8 == ams_navigationItemViewController)
         {
           break;
         }
       }
 
-      if (++v6 >= [v5 count])
+      if (++v6 >= [viewControllers count])
       {
         goto LABEL_9;
       }
@@ -983,21 +983,21 @@ LABEL_9:
 
 - (void)_handlePushDismissal
 {
-  v3 = [(AMSUIWebContainerViewController *)self pushPresentationDelegate];
-  [v3 didDismissController:self];
+  pushPresentationDelegate = [(AMSUIWebContainerViewController *)self pushPresentationDelegate];
+  [pushPresentationDelegate didDismissController:self];
 }
 
-- (id)_makeCustomNavigationBarAppearanceWithModel:(id)a3
+- (id)_makeCustomNavigationBarAppearanceWithModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
-  v5 = [v3 backgroundStyle];
-  if (v5 == 2)
+  backgroundStyle = [modelCopy backgroundStyle];
+  if (backgroundStyle == 2)
   {
     [v4 configureWithTransparentBackground];
   }
 
-  else if (v5 == 1)
+  else if (backgroundStyle == 1)
   {
     [v4 configureWithOpaqueBackground];
   }
@@ -1008,38 +1008,38 @@ LABEL_9:
   }
 
   v6 = MEMORY[0x1E69DC888];
-  v7 = [v3 backgroundColor];
-  v8 = [v6 ams_colorFromHexString:v7];
+  backgroundColor = [modelCopy backgroundColor];
+  v8 = [v6 ams_colorFromHexString:backgroundColor];
   [v4 setBackgroundColor:v8];
 
   return v4;
 }
 
-- (void)_postEvent:(id)a3
+- (void)_postEvent:(id)event
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSUIWebContainerViewController *)self context];
-  v6 = [v5 flowController];
-  v7 = [v6 currentContainer];
+  eventCopy = event;
+  context = [(AMSUIWebContainerViewController *)self context];
+  flowController = [context flowController];
+  currentContainer = [flowController currentContainer];
 
-  if (v7 == self)
+  if (currentContainer == self)
   {
     v16 = @"pageData";
-    v8 = [(AMSUIWebContainerViewController *)self pageInfo];
-    v9 = v8;
+    pageInfo = [(AMSUIWebContainerViewController *)self pageInfo];
+    v9 = pageInfo;
     v10 = MEMORY[0x1E695E0F8];
-    if (v8)
+    if (pageInfo)
     {
-      v10 = v8;
+      v10 = pageInfo;
     }
 
     v17[0] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
 
-    v12 = [(AMSUIWebContainerViewController *)self context];
-    v13 = [v12 dataProvider];
-    v14 = [v13 postEvent:v4 options:v11];
+    context2 = [(AMSUIWebContainerViewController *)self context];
+    dataProvider = [context2 dataProvider];
+    v14 = [dataProvider postEvent:eventCopy options:v11];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1050,28 +1050,28 @@ LABEL_9:
   v16 = *MEMORY[0x1E69E9840];
   if (![(AMSUIWebContainerViewController *)self didAppearOnce]&& ![(AMSUIWebContainerViewController *)self shouldSkipInitialRefresh])
   {
-    v3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v3)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v3 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v4 = [v3 OSLogObject];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v5 = objc_opt_class();
-      v6 = [(AMSUIWebContainerViewController *)self context];
-      v7 = [v6 logKey];
+      context = [(AMSUIWebContainerViewController *)self context];
+      logKey = [context logKey];
       v12 = 138543618;
       v13 = v5;
       v14 = 2114;
-      v15 = v7;
-      _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Refreshing for initial appearance", &v12, 0x16u);
+      v15 = logKey;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Refreshing for initial appearance", &v12, 0x16u);
     }
 
     v8 = objc_alloc_init(AMSUIWebFlowOptions);
-    v9 = [(AMSUIWebContainerViewController *)self pageInfo];
-    [(AMSUIWebFlowOptions *)v8 setPageData:v9];
+    pageInfo = [(AMSUIWebContainerViewController *)self pageInfo];
+    [(AMSUIWebFlowOptions *)v8 setPageData:pageInfo];
 
     [(AMSUIWebFlowOptions *)v8 setAnimated:1];
     v10 = [(AMSUIWebContainerViewController *)self _refreshWithOptions:v8];
@@ -1080,57 +1080,57 @@ LABEL_9:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_refreshWithOptions:(id)a3
+- (id)_refreshWithOptions:(id)options
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSUIWebContainerViewController *)self activeRefresh];
+  optionsCopy = options;
+  activeRefresh = [(AMSUIWebContainerViewController *)self activeRefresh];
 
-  if (v5)
+  if (activeRefresh)
   {
-    v6 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v6)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v6 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
-      v9 = [(AMSUIWebContainerViewController *)self context];
-      v10 = [v9 logKey];
+      context = [(AMSUIWebContainerViewController *)self context];
+      logKey = [context logKey];
       *buf = 138543618;
       v19 = v8;
       v20 = 2114;
-      v21 = v10;
-      _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Deduping refresh call", buf, 0x16u);
+      v21 = logKey;
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Deduping refresh call", buf, 0x16u);
     }
 
-    v11 = [(AMSUIWebContainerViewController *)self activeRefresh];
+    activeRefresh2 = [(AMSUIWebContainerViewController *)self activeRefresh];
   }
 
   else
   {
-    v12 = [(AMSUIWebContainerViewController *)self context];
-    v13 = [v12 flowController];
-    v11 = [v13 refreshPageForContainer:self options:v4];
+    context2 = [(AMSUIWebContainerViewController *)self context];
+    flowController = [context2 flowController];
+    activeRefresh2 = [flowController refreshPageForContainer:self options:optionsCopy];
 
     objc_initWeak(buf, self);
-    [(AMSUIWebContainerViewController *)self setActiveRefresh:v11];
+    [(AMSUIWebContainerViewController *)self setActiveRefresh:activeRefresh2];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __55__AMSUIWebContainerViewController__refreshWithOptions___block_invoke;
     v16[3] = &unk_1E7F255F0;
     objc_copyWeak(&v17, buf);
-    [v11 addFinishBlock:v16];
+    [activeRefresh2 addFinishBlock:v16];
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return activeRefresh2;
 }
 
 void __55__AMSUIWebContainerViewController__refreshWithOptions___block_invoke(uint64_t a1)
@@ -1139,13 +1139,13 @@ void __55__AMSUIWebContainerViewController__refreshWithOptions___block_invoke(ui
   [WeakRetained setActiveRefresh:0];
 }
 
-- (void)_scrollTo:(CGPoint)a3 webView:(id)a4 completion:(id)a5
+- (void)_scrollTo:(CGPoint)to webView:(id)view completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
+  y = to.y;
+  x = to.x;
   v19[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [a4 underlyingWebView];
+  completionCopy = completion;
+  underlyingWebView = [view underlyingWebView];
   v18[0] = @"scrollX";
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:x];
   v18[1] = @"scrollY";
@@ -1153,14 +1153,14 @@ void __55__AMSUIWebContainerViewController__refreshWithOptions___block_invoke(ui
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:y];
   v19[1] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
-  v13 = [MEMORY[0x1E6985318] defaultClientWorld];
+  defaultClientWorld = [MEMORY[0x1E6985318] defaultClientWorld];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__AMSUIWebContainerViewController__scrollTo_webView_completion___block_invoke;
   v16[3] = &unk_1E7F25F70;
-  v17 = v8;
-  v14 = v8;
-  [v9 callAsyncJavaScript:@"return new Promise( (resolve arguments:reject) => {    window.requestAnimationFrame(() => {        window.scrollTo(scrollX inFrame:scrollY);        window.requestAnimationFrame(() => {            setTimeout(() => {                resolve();            } inContentWorld:0);        });    });});" completionHandler:{v12, 0, v13, v16}];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [underlyingWebView callAsyncJavaScript:@"return new Promise( (resolve arguments:reject) => {    window.requestAnimationFrame(() => {        window.scrollTo(scrollX inFrame:scrollY);        window.requestAnimationFrame(() => {            setTimeout(() => {                resolve();            } inContentWorld:0);        });    });});" completionHandler:{v12, 0, defaultClientWorld, v16}];
 
   v15 = *MEMORY[0x1E69E9840];
 }

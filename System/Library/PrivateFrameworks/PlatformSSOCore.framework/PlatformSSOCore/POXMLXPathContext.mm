@@ -1,15 +1,15 @@
 @interface POXMLXPathContext
-- (BOOL)registerNamespaces:(id)a3;
-- (POXMLXPathContext)initWithXMLContext:(id)a3;
-- (id)evaluateXPath:(id)a3;
+- (BOOL)registerNamespaces:(id)namespaces;
+- (POXMLXPathContext)initWithXMLContext:(id)context;
+- (id)evaluateXPath:(id)path;
 - (void)dealloc;
 @end
 
 @implementation POXMLXPathContext
 
-- (POXMLXPathContext)initWithXMLContext:(id)a3
+- (POXMLXPathContext)initWithXMLContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = POXMLXPathContext;
   v6 = [(POXMLXPathContext *)&v11 init];
@@ -18,11 +18,11 @@
     goto LABEL_4;
   }
 
-  v7 = xmlXPathNewContext([v5 xmldoc]);
+  v7 = xmlXPathNewContext([contextCopy xmldoc]);
   v6->_xpathCtx = v7;
   if (v7)
   {
-    objc_storeStrong(&v6->_xmldocContext, a3);
+    objc_storeStrong(&v6->_xmldocContext, context);
 LABEL_4:
     v8 = v6;
     goto LABEL_8;
@@ -40,20 +40,20 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)registerNamespaces:(id)a3
+- (BOOL)registerNamespaces:(id)namespaces
 {
-  v4 = a3;
+  namespacesCopy = namespaces;
   if (![(POXMLXPathContext *)self xpathCtx])
   {
     [POXMLXPathContext registerNamespaces:];
   }
 
-  if (!v4)
+  if (!namespacesCopy)
   {
     [POXMLXPathContext registerNamespaces:];
   }
 
-  v5 = xmlStrdup([v4 UTF8String]);
+  v5 = xmlStrdup([namespacesCopy UTF8String]);
   if (v5)
   {
     v6 = v5;
@@ -130,11 +130,11 @@ LABEL_21:
   return v13;
 }
 
-- (id)evaluateXPath:(id)a3
+- (id)evaluateXPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_alloc_init(POXMLXPathResult);
-  -[POXMLXPathResult setXpathObj:](v5, "setXpathObj:", MEMORY[0x25F8C3FC0]([v4 UTF8String], -[POXMLXPathContext xpathCtx](self, "xpathCtx")));
+  -[POXMLXPathResult setXpathObj:](v5, "setXpathObj:", MEMORY[0x25F8C3FC0]([pathCopy UTF8String], -[POXMLXPathContext xpathCtx](self, "xpathCtx")));
   [(POXMLXPathResult *)v5 setXpathContext:self];
   if ([(POXMLXPathResult *)v5 xpathObj])
   {
@@ -146,7 +146,7 @@ LABEL_21:
     v7 = PO_LOG_POXMLHelper();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(POXMLXPathContext *)v4 evaluateXPath:v7];
+      [(POXMLXPathContext *)pathCopy evaluateXPath:v7];
     }
 
     v6 = 0;

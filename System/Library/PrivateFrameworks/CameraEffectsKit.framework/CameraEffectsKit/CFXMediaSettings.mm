@@ -5,10 +5,10 @@
 - (CGSize)renderSize;
 - (int)frameRate;
 - (int)timeScale;
-- (void)setFrameRate:(int)a3;
-- (void)setFrameSize:(CGSize)a3;
-- (void)setRenderSize:(CGSize)a3;
-- (void)setTimeScale:(int)a3;
+- (void)setFrameRate:(int)rate;
+- (void)setFrameSize:(CGSize)size;
+- (void)setRenderSize:(CGSize)size;
+- (void)setTimeScale:(int)scale;
 @end
 
 @implementation CFXMediaSettings
@@ -46,14 +46,14 @@ uint64_t __34__CFXMediaSettings_sharedInstance__block_invoke()
     *(v2 + 40) = kDefaultRenderSize;
     *(v2 + 24) = kDefaultRenderSize;
     v4 = MEMORY[0x277CCACA8];
-    v5 = [MEMORY[0x277CCA8D8] jfxBundle];
-    v6 = [v5 bundleIdentifier];
+    jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+    bundleIdentifier = [jfxBundle bundleIdentifier];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v4 stringWithFormat:@"%@.%@.queue", v6, v8];
+    v9 = [v4 stringWithFormat:@"%@.%@.queue", bundleIdentifier, v8];
 
-    v10 = [v9 UTF8String];
-    v11 = dispatch_queue_create(v10, MEMORY[0x277D85CD8]);
+    uTF8String = [v9 UTF8String];
+    v11 = dispatch_queue_create(uTF8String, MEMORY[0x277D85CD8]);
     queue = v3->_queue;
     v3->_queue = v11;
   }
@@ -63,68 +63,68 @@ uint64_t __34__CFXMediaSettings_sharedInstance__block_invoke()
 
 - (int)timeScale
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CFXMediaSettings *)self queue];
+  queue = [(CFXMediaSettings *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __29__CFXMediaSettings_timeScale__block_invoke;
   v5[3] = &unk_278D79C60;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LODWORD(v2) = *(v7 + 6);
+  LODWORD(selfCopy) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setTimeScale:(int)a3
+- (void)setTimeScale:(int)scale
 {
-  v5 = [(CFXMediaSettings *)self queue];
+  queue = [(CFXMediaSettings *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__CFXMediaSettings_setTimeScale___block_invoke;
   v6[3] = &unk_278D7B1F0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_async(v5, v6);
+  scaleCopy = scale;
+  dispatch_barrier_async(queue, v6);
 }
 
 - (int)frameRate
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CFXMediaSettings *)self queue];
+  queue = [(CFXMediaSettings *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __29__CFXMediaSettings_frameRate__block_invoke;
   v5[3] = &unk_278D79C60;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LODWORD(v2) = *(v7 + 6);
+  LODWORD(selfCopy) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setFrameRate:(int)a3
+- (void)setFrameRate:(int)rate
 {
-  v5 = [(CFXMediaSettings *)self queue];
+  queue = [(CFXMediaSettings *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__CFXMediaSettings_setFrameRate___block_invoke;
   v6[3] = &unk_278D7B1F0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_barrier_async(v5, v6);
+  rateCopy = rate;
+  dispatch_barrier_async(queue, v6);
 }
 
 - (CGSize)frameSize
@@ -135,14 +135,14 @@ uint64_t __34__CFXMediaSettings_sharedInstance__block_invoke()
   v13 = 0;
   v14 = 0;
   v12 = "";
-  v3 = [(CFXMediaSettings *)self queue];
+  queue = [(CFXMediaSettings *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __29__CFXMediaSettings_frameSize__block_invoke;
   v8[3] = &unk_278D79C60;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v3, v8);
+  dispatch_sync(queue, v8);
 
   v4 = v10[4];
   v5 = v10[5];
@@ -161,11 +161,11 @@ __n128 __29__CFXMediaSettings_frameSize__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setFrameSize:(CGSize)a3
+- (void)setFrameSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CFXMediaSettings *)self queue];
+  height = size.height;
+  width = size.width;
+  queue = [(CFXMediaSettings *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__CFXMediaSettings_setFrameSize___block_invoke;
@@ -173,7 +173,7 @@ __n128 __29__CFXMediaSettings_frameSize__block_invoke(uint64_t a1)
   *&block[5] = width;
   *&block[6] = height;
   block[4] = self;
-  dispatch_barrier_async(v6, block);
+  dispatch_barrier_async(queue, block);
 }
 
 __n128 __33__CFXMediaSettings_setFrameSize___block_invoke(uint64_t a1)
@@ -197,14 +197,14 @@ __n128 __33__CFXMediaSettings_setFrameSize___block_invoke(uint64_t a1)
   v13 = 0;
   v14 = 0;
   v12 = "";
-  v3 = [(CFXMediaSettings *)self queue];
+  queue = [(CFXMediaSettings *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __30__CFXMediaSettings_renderSize__block_invoke;
   v8[3] = &unk_278D79C60;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v3, v8);
+  dispatch_sync(queue, v8);
 
   v4 = v10[4];
   v5 = v10[5];
@@ -223,11 +223,11 @@ __n128 __30__CFXMediaSettings_renderSize__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setRenderSize:(CGSize)a3
+- (void)setRenderSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CFXMediaSettings *)self queue];
+  height = size.height;
+  width = size.width;
+  queue = [(CFXMediaSettings *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__CFXMediaSettings_setRenderSize___block_invoke;
@@ -235,7 +235,7 @@ __n128 __30__CFXMediaSettings_renderSize__block_invoke(uint64_t a1)
   *&block[5] = width;
   *&block[6] = height;
   block[4] = self;
-  dispatch_barrier_async(v6, block);
+  dispatch_barrier_async(queue, block);
 }
 
 __n128 __34__CFXMediaSettings_setRenderSize___block_invoke(uint64_t a1)

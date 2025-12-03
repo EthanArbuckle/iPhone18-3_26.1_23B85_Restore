@@ -1,56 +1,56 @@
 @interface SUUIMenuBarTemplateShelfPageSectionConfiguration
-- (CGSize)cellSizeForShelfViewElement:(id)a3 indexPath:(id)a4 numberOfShelfItems:(int64_t)a5;
-- (SUUIMenuBarTemplateShelfPageSectionConfiguration)initWithNumberOfIterations:(unint64_t)a3;
+- (CGSize)cellSizeForShelfViewElement:(id)element indexPath:(id)path numberOfShelfItems:(int64_t)items;
+- (SUUIMenuBarTemplateShelfPageSectionConfiguration)initWithNumberOfIterations:(unint64_t)iterations;
 - (id)_focusedViewElement;
-- (id)cellForShelfViewElement:(id)a3 indexPath:(id)a4;
-- (id)effectiveViewElementForShelfItemViewElement:(id)a3;
+- (id)cellForShelfViewElement:(id)element indexPath:(id)path;
+- (id)effectiveViewElementForShelfItemViewElement:(id)element;
 - (int64_t)numberOfSectionCells;
 - (void)_focusedViewElement;
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3;
-- (void)registerReusableClassesForCollectionView:(id)a3;
-- (void)reloadShelfLayoutDataForShelfViewElement:(id)a3 withShelfItemViewElements:(id)a4 requestCellLayouts:(BOOL)a5 numberOfShelfItems:(int64_t)a6;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes;
+- (void)registerReusableClassesForCollectionView:(id)view;
+- (void)reloadShelfLayoutDataForShelfViewElement:(id)element withShelfItemViewElements:(id)elements requestCellLayouts:(BOOL)layouts numberOfShelfItems:(int64_t)items;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation SUUIMenuBarTemplateShelfPageSectionConfiguration
 
-- (SUUIMenuBarTemplateShelfPageSectionConfiguration)initWithNumberOfIterations:(unint64_t)a3
+- (SUUIMenuBarTemplateShelfPageSectionConfiguration)initWithNumberOfIterations:(unint64_t)iterations
 {
   v6.receiver = self;
   v6.super_class = SUUIMenuBarTemplateShelfPageSectionConfiguration;
   result = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)&v6 init];
   if (result)
   {
-    if (a3 <= 1)
+    if (iterations <= 1)
     {
-      v5 = 1;
+      iterationsCopy = 1;
     }
 
     else
     {
-      v5 = a3;
+      iterationsCopy = iterations;
     }
 
-    result->_numberOfIterations = v5;
+    result->_numberOfIterations = iterationsCopy;
   }
 
   return result;
 }
 
-- (id)effectiveViewElementForShelfItemViewElement:(id)a3
+- (id)effectiveViewElementForShelfItemViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v9[0] = 0;
   v9[1] = 0;
   v10 = 0;
-  SUUIZoomingShelfMenuBarGetValidationInfoForViewElement(v5, v9);
+  SUUIZoomingShelfMenuBarGetValidationInfoForViewElement(elementCopy, v9);
   if ((v9[0] & 1) == 0)
   {
     [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)a2 effectiveViewElementForShelfItemViewElement:?];
   }
 
-  v6 = [v5 children];
-  v7 = [v6 objectAtIndex:v10];
+  children = [elementCopy children];
+  v7 = [children objectAtIndex:v10];
 
   return v7;
 }
@@ -62,23 +62,23 @@
   return [(SUUIShelfPageSectionConfiguration *)&v3 numberOfSectionCells]+ 1;
 }
 
-- (id)cellForShelfViewElement:(id)a3 indexPath:(id)a4
+- (id)cellForShelfViewElement:(id)element indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 item] + 1;
+  elementCopy = element;
+  pathCopy = path;
+  v8 = [pathCopy item] + 1;
   if (v8 == [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self numberOfSectionCells])
   {
-    v9 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
-    v10 = [v9 collectionView];
-    v11 = [v10 dequeueReusableCellWithReuseIdentifier:0x286AFA820 forIndexPath:v7];
+    pageSectionContext = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
+    collectionView = [pageSectionContext collectionView];
+    v11 = [collectionView dequeueReusableCellWithReuseIdentifier:0x286AFA820 forIndexPath:pathCopy];
 
-    v12 = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self _focusedViewElement];
-    v13 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
-    [v13 activePageWidth];
+    _focusedViewElement = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self _focusedViewElement];
+    pageSectionContext2 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
+    [pageSectionContext2 activePageWidth];
     v15 = v14;
-    v16 = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
-    [v11 reloadWithViewElement:v12 width:v16 context:v15];
+    cellLayoutContext = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
+    [v11 reloadWithViewElement:_focusedViewElement width:cellLayoutContext context:v15];
 
     fixedElementsCollectionViewCell = self->_fixedElementsCollectionViewCell;
     self->_fixedElementsCollectionViewCell = v11;
@@ -90,26 +90,26 @@
   {
     v20.receiver = self;
     v20.super_class = SUUIMenuBarTemplateShelfPageSectionConfiguration;
-    v18 = [(SUUIShelfPageSectionConfiguration *)&v20 cellForShelfViewElement:v6 indexPath:v7];
+    v18 = [(SUUIShelfPageSectionConfiguration *)&v20 cellForShelfViewElement:elementCopy indexPath:pathCopy];
   }
 
   return v18;
 }
 
-- (CGSize)cellSizeForShelfViewElement:(id)a3 indexPath:(id)a4 numberOfShelfItems:(int64_t)a5
+- (CGSize)cellSizeForShelfViewElement:(id)element indexPath:(id)path numberOfShelfItems:(int64_t)items
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 item] + 1;
+  elementCopy = element;
+  pathCopy = path;
+  v10 = [pathCopy item] + 1;
   if (v10 == [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self numberOfSectionCells])
   {
-    v11 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
-    [v11 activePageWidth];
+    pageSectionContext = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
+    [pageSectionContext activePageWidth];
     v13 = v12;
 
-    v14 = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self _focusedViewElement];
-    v15 = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
-    [SUUIMenuBarTemplateShelfFixedElementsCollectionViewCell sizeThatFitsWidth:v14 viewElement:v15 context:v13];
+    _focusedViewElement = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self _focusedViewElement];
+    cellLayoutContext = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
+    [SUUIMenuBarTemplateShelfFixedElementsCollectionViewCell sizeThatFitsWidth:_focusedViewElement viewElement:cellLayoutContext context:v13];
     v17 = v16;
   }
 
@@ -117,7 +117,7 @@
   {
     v25.receiver = self;
     v25.super_class = SUUIMenuBarTemplateShelfPageSectionConfiguration;
-    [(SUUIShelfPageSectionConfiguration *)&v25 cellSizeForShelfViewElement:v8 indexPath:v9 numberOfShelfItems:a5];
+    [(SUUIShelfPageSectionConfiguration *)&v25 cellSizeForShelfViewElement:elementCopy indexPath:pathCopy numberOfShelfItems:items];
     v13 = v18;
     v17 = v19;
     if ([(SUUIShelfPageSectionConfiguration *)self wantsZoomingShelfLayout])
@@ -136,92 +136,92 @@
   return result;
 }
 
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v8.receiver = self;
   v8.super_class = SUUIMenuBarTemplateShelfPageSectionConfiguration;
-  [(SUUIShelfPageSectionConfiguration *)&v8 collectionViewWillApplyLayoutAttributes:v4];
-  v5 = [v4 indexPath];
-  v6 = [v5 item] + 1;
-  v7 = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self numberOfSectionCells];
+  [(SUUIShelfPageSectionConfiguration *)&v8 collectionViewWillApplyLayoutAttributes:attributesCopy];
+  indexPath = [attributesCopy indexPath];
+  v6 = [indexPath item] + 1;
+  numberOfSectionCells = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self numberOfSectionCells];
 
-  if (v6 == v7)
+  if (v6 == numberOfSectionCells)
   {
-    [v4 setZIndex:1];
+    [attributesCopy setZIndex:1];
   }
 }
 
-- (void)registerReusableClassesForCollectionView:(id)a3
+- (void)registerReusableClassesForCollectionView:(id)view
 {
   v4.receiver = self;
   v4.super_class = SUUIMenuBarTemplateShelfPageSectionConfiguration;
-  v3 = a3;
-  [(SUUIShelfPageSectionConfiguration *)&v4 registerReusableClassesForCollectionView:v3];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:{0x286AFA820, v4.receiver, v4.super_class}];
+  viewCopy = view;
+  [(SUUIShelfPageSectionConfiguration *)&v4 registerReusableClassesForCollectionView:viewCopy];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:{0x286AFA820, v4.receiver, v4.super_class}];
 }
 
-- (void)reloadShelfLayoutDataForShelfViewElement:(id)a3 withShelfItemViewElements:(id)a4 requestCellLayouts:(BOOL)a5 numberOfShelfItems:(int64_t)a6
+- (void)reloadShelfLayoutDataForShelfViewElement:(id)element withShelfItemViewElements:(id)elements requestCellLayouts:(BOOL)layouts numberOfShelfItems:(int64_t)items
 {
-  v6 = a5;
+  layoutsCopy = layouts;
   v16.receiver = self;
   v16.super_class = SUUIMenuBarTemplateShelfPageSectionConfiguration;
-  [(SUUIShelfPageSectionConfiguration *)&v16 reloadShelfLayoutDataForShelfViewElement:a3 withShelfItemViewElements:a4 requestCellLayouts:a5 numberOfShelfItems:a6];
-  if (v6)
+  [(SUUIShelfPageSectionConfiguration *)&v16 reloadShelfLayoutDataForShelfViewElement:element withShelfItemViewElements:elements requestCellLayouts:layouts numberOfShelfItems:items];
+  if (layoutsCopy)
   {
-    v8 = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self _focusedViewElement];
-    v9 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
-    [v9 activePageWidth];
+    _focusedViewElement = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self _focusedViewElement];
+    pageSectionContext = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
+    [pageSectionContext activePageWidth];
     v11 = v10;
-    v12 = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
-    [SUUIMenuBarTemplateShelfFixedElementsCollectionViewCell requestLayoutForViewElement:v8 width:v12 context:v11];
+    cellLayoutContext = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
+    [SUUIMenuBarTemplateShelfFixedElementsCollectionViewCell requestLayoutForViewElement:_focusedViewElement width:cellLayoutContext context:v11];
 
-    v13 = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
-    v14 = [v13 labelLayoutCache];
-    v15 = [v14 layoutCache];
-    [v15 commitLayoutRequests];
+    cellLayoutContext2 = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
+    labelLayoutCache = [cellLayoutContext2 labelLayoutCache];
+    layoutCache = [labelLayoutCache layoutCache];
+    [layoutCache commitLayoutRequests];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   v22.receiver = self;
   v22.super_class = SUUIMenuBarTemplateShelfPageSectionConfiguration;
-  [(SUUIShelfPageSectionConfiguration *)&v22 scrollViewDidScroll:v4];
+  [(SUUIShelfPageSectionConfiguration *)&v22 scrollViewDidScroll:scrollCopy];
   if ([(SUUIShelfPageSectionConfiguration *)self wantsZoomingShelfLayout])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 collectionViewLayout];
+      collectionViewLayout = [scrollCopy collectionViewLayout];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [v5 menuBarFocusedItemIndexPathWithTransitionProgress:0];
+        v6 = [collectionViewLayout menuBarFocusedItemIndexPathWithTransitionProgress:0];
         focusedIndex = self->_focusedIndex;
         if (focusedIndex != [v6 item])
         {
           self->_focusedIndex = [v6 item];
-          v8 = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self _focusedViewElement];
-          v9 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
-          [v9 activePageWidth];
+          _focusedViewElement = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self _focusedViewElement];
+          pageSectionContext = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
+          [pageSectionContext activePageWidth];
           v11 = v10;
-          v12 = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
-          [SUUIMenuBarTemplateShelfFixedElementsCollectionViewCell requestLayoutForViewElement:v8 width:v12 context:v11];
+          cellLayoutContext = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
+          [SUUIMenuBarTemplateShelfFixedElementsCollectionViewCell requestLayoutForViewElement:_focusedViewElement width:cellLayoutContext context:v11];
 
-          v13 = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
-          v14 = [v13 labelLayoutCache];
-          v15 = [v14 layoutCache];
-          [v15 commitLayoutRequests];
+          cellLayoutContext2 = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
+          labelLayoutCache = [cellLayoutContext2 labelLayoutCache];
+          layoutCache = [labelLayoutCache layoutCache];
+          [layoutCache commitLayoutRequests];
 
           fixedElementsCollectionViewCell = self->_fixedElementsCollectionViewCell;
-          v17 = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self _focusedViewElement];
-          v18 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
-          [v18 activePageWidth];
+          _focusedViewElement2 = [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)self _focusedViewElement];
+          pageSectionContext2 = [(SUUIShelfPageSectionConfiguration *)self pageSectionContext];
+          [pageSectionContext2 activePageWidth];
           v20 = v19;
-          v21 = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
-          [fixedElementsCollectionViewCell reloadWithViewElement:v17 width:v21 context:v20];
+          cellLayoutContext3 = [(SUUIShelfPageSectionConfiguration *)self cellLayoutContext];
+          [fixedElementsCollectionViewCell reloadWithViewElement:_focusedViewElement2 width:cellLayoutContext3 context:v20];
         }
       }
     }
@@ -230,8 +230,8 @@
 
 - (id)_focusedViewElement
 {
-  v4 = [(SUUIShelfPageSectionConfiguration *)self dataSource];
-  v5 = [v4 shelfPageSectionConfiguration:self viewElementAtIndex:self->_focusedIndex];
+  dataSource = [(SUUIShelfPageSectionConfiguration *)self dataSource];
+  v5 = [dataSource shelfPageSectionConfiguration:self viewElementAtIndex:self->_focusedIndex];
   v9 = 0;
   v10 = 0;
   v11 = 0;
@@ -241,8 +241,8 @@
     [(SUUIMenuBarTemplateShelfPageSectionConfiguration *)a2 _focusedViewElement];
   }
 
-  v6 = [v5 children];
-  v7 = [v6 objectAtIndex:v10];
+  children = [v5 children];
+  v7 = [children objectAtIndex:v10];
 
   return v7;
 }
@@ -255,8 +255,8 @@
 
 - (void)_focusedViewElement
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SUUIMenuBarTemplateShelfPageSectionConfiguration.m" lineNumber:133 description:@"All shelf items vended by the shelf page section need to be valid."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SUUIMenuBarTemplateShelfPageSectionConfiguration.m" lineNumber:133 description:@"All shelf items vended by the shelf page section need to be valid."];
 }
 
 @end

@@ -1,132 +1,132 @@
 @interface CHReflowableSynthesisResultToken
-+ (id)reflowableTokensFromSynthesisResult:(id)a3 principalPoints:(id)a4 shouldCancel:(id)a5;
-- (CHReflowableSynthesisResultToken)initWithDrawing:(id)a3 string:(id)a4 principalLines:(id *)a5 principalPoints:(id)a6 textSize:(id)a7 bounds:(CGRect)a8 hasPrecedingSpace:(BOOL)a9;
-- (CHReflowableSynthesisResultToken)initWithDrawing:(id)a3 string:(id)a4 principalLines:(id *)a5 textSize:(id)a6 bounds:(CGRect)a7 hasPrecedingSpace:(BOOL)a8;
-- (CHReflowableSynthesisResultToken)initWithSynthesisResult:(id)a3 principalLines:(id *)a4 textSize:(id)a5 bounds:(CGRect)a6 hasPrecedingSpace:(BOOL)a7;
++ (id)reflowableTokensFromSynthesisResult:(id)result principalPoints:(id)points shouldCancel:(id)cancel;
+- (CHReflowableSynthesisResultToken)initWithDrawing:(id)drawing string:(id)string principalLines:(id *)lines principalPoints:(id)points textSize:(id)size bounds:(CGRect)bounds hasPrecedingSpace:(BOOL)space;
+- (CHReflowableSynthesisResultToken)initWithDrawing:(id)drawing string:(id)string principalLines:(id *)lines textSize:(id)size bounds:(CGRect)bounds hasPrecedingSpace:(BOOL)space;
+- (CHReflowableSynthesisResultToken)initWithSynthesisResult:(id)result principalLines:(id *)lines textSize:(id)size bounds:(CGRect)bounds hasPrecedingSpace:(BOOL)space;
 @end
 
 @implementation CHReflowableSynthesisResultToken
 
-- (CHReflowableSynthesisResultToken)initWithSynthesisResult:(id)a3 principalLines:(id *)a4 textSize:(id)a5 bounds:(CGRect)a6 hasPrecedingSpace:(BOOL)a7
+- (CHReflowableSynthesisResultToken)initWithSynthesisResult:(id)result principalLines:(id *)lines textSize:(id)size bounds:(CGRect)bounds hasPrecedingSpace:(BOOL)space
 {
-  v7 = a7;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v15 = a3;
-  v16 = a5;
-  v22 = objc_msgSend_drawing(v15, v17, v18, v19, v20, v21);
-  v28 = objc_msgSend_content(v15, v23, v24, v25, v26, v27);
-  var1 = a4->var2.var1;
-  v36[4] = a4->var2.var0;
+  spaceCopy = space;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  resultCopy = result;
+  sizeCopy = size;
+  v22 = objc_msgSend_drawing(resultCopy, v17, v18, v19, v20, v21);
+  v28 = objc_msgSend_content(resultCopy, v23, v24, v25, v26, v27);
+  var1 = lines->var2.var1;
+  v36[4] = lines->var2.var0;
   v36[5] = var1;
-  v30 = a4->var3.var1;
-  v36[6] = a4->var3.var0;
+  v30 = lines->var3.var1;
+  v36[6] = lines->var3.var0;
   v36[7] = v30;
-  v31 = a4->var0.var1;
-  v36[0] = a4->var0.var0;
+  v31 = lines->var0.var1;
+  v36[0] = lines->var0.var0;
   v36[1] = v31;
-  v32 = a4->var1.var1;
-  v36[2] = a4->var1.var0;
+  v32 = lines->var1.var1;
+  v36[2] = lines->var1.var0;
   v36[3] = v32;
-  hasPrecedingSpace = objc_msgSend_initWithDrawing_string_principalLines_textSize_bounds_hasPrecedingSpace_(self, v33, v22, v28, v36, v16, v7, x, y, width, height);
+  hasPrecedingSpace = objc_msgSend_initWithDrawing_string_principalLines_textSize_bounds_hasPrecedingSpace_(self, v33, v22, v28, v36, sizeCopy, spaceCopy, x, y, width, height);
 
   return hasPrecedingSpace;
 }
 
-- (CHReflowableSynthesisResultToken)initWithDrawing:(id)a3 string:(id)a4 principalLines:(id *)a5 textSize:(id)a6 bounds:(CGRect)a7 hasPrecedingSpace:(BOOL)a8
+- (CHReflowableSynthesisResultToken)initWithDrawing:(id)drawing string:(id)string principalLines:(id *)lines textSize:(id)size bounds:(CGRect)bounds hasPrecedingSpace:(BOOL)space
 {
-  v8 = a8;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
+  spaceCopy = space;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  drawingCopy = drawing;
+  stringCopy = string;
+  sizeCopy = size;
   v20 = MEMORY[0x1E695DF70];
-  v26 = objc_msgSend_strokeCount(v17, v21, v22, v23, v24, v25);
+  v26 = objc_msgSend_strokeCount(drawingCopy, v21, v22, v23, v24, v25);
   v36 = objc_msgSend_arrayWithCapacity_(v20, v27, v26, v28, v29, v30);
   v37 = 0;
   v38 = MEMORY[0x1E695E0F0];
-  while (v37 < objc_msgSend_strokeCount(v17, v31, v32, v33, v34, v35))
+  while (v37 < objc_msgSend_strokeCount(drawingCopy, v31, v32, v33, v34, v35))
   {
     objc_msgSend_addObject_(v36, v39, v38, v40, v41, v42);
     ++v37;
   }
 
-  var1 = a5->var2.var1;
-  v49[4] = a5->var2.var0;
+  var1 = lines->var2.var1;
+  v49[4] = lines->var2.var0;
   v49[5] = var1;
-  v44 = a5->var3.var1;
-  v49[6] = a5->var3.var0;
+  v44 = lines->var3.var1;
+  v49[6] = lines->var3.var0;
   v49[7] = v44;
-  v45 = a5->var0.var1;
-  v49[0] = a5->var0.var0;
+  v45 = lines->var0.var1;
+  v49[0] = lines->var0.var0;
   v49[1] = v45;
-  v46 = a5->var1.var1;
-  v49[2] = a5->var1.var0;
+  v46 = lines->var1.var1;
+  v49[2] = lines->var1.var0;
   v49[3] = v46;
-  hasPrecedingSpace = objc_msgSend_initWithDrawing_string_principalLines_principalPoints_textSize_bounds_hasPrecedingSpace_(self, v39, v17, v18, v49, v36, v19, v8, x, y, width, height);
+  hasPrecedingSpace = objc_msgSend_initWithDrawing_string_principalLines_principalPoints_textSize_bounds_hasPrecedingSpace_(self, v39, drawingCopy, stringCopy, v49, v36, sizeCopy, spaceCopy, x, y, width, height);
 
   return hasPrecedingSpace;
 }
 
-- (CHReflowableSynthesisResultToken)initWithDrawing:(id)a3 string:(id)a4 principalLines:(id *)a5 principalPoints:(id)a6 textSize:(id)a7 bounds:(CGRect)a8 hasPrecedingSpace:(BOOL)a9
+- (CHReflowableSynthesisResultToken)initWithDrawing:(id)drawing string:(id)string principalLines:(id *)lines principalPoints:(id)points textSize:(id)size bounds:(CGRect)bounds hasPrecedingSpace:(BOOL)space
 {
-  v9 = a9;
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v19 = a3;
-  v20 = a4;
-  v21 = a6;
-  v22 = a7;
-  var1 = a5->var2.var1;
-  v37[4] = a5->var2.var0;
+  spaceCopy = space;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  drawingCopy = drawing;
+  stringCopy = string;
+  pointsCopy = points;
+  sizeCopy = size;
+  var1 = lines->var2.var1;
+  v37[4] = lines->var2.var0;
   v37[5] = var1;
-  v24 = a5->var3.var1;
-  v37[6] = a5->var3.var0;
+  v24 = lines->var3.var1;
+  v37[6] = lines->var3.var0;
   v37[7] = v24;
-  v25 = a5->var0.var1;
-  v37[0] = a5->var0.var0;
+  v25 = lines->var0.var1;
+  v37[0] = lines->var0.var0;
   v37[1] = v25;
-  v26 = a5->var1.var1;
-  v37[2] = a5->var1.var0;
+  v26 = lines->var1.var1;
+  v37[2] = lines->var1.var0;
   v37[3] = v26;
   v36.receiver = self;
   v36.super_class = CHReflowableSynthesisResultToken;
-  v32 = [(CHReflowableTextToken *)&v36 initWithString:v20 principalLines:v37 principalPoints:v21 textSize:v22 bounds:v9 hasPrecedingSpace:x, y, width, height];
-  if (v32)
+  height = [(CHReflowableTextToken *)&v36 initWithString:stringCopy principalLines:v37 principalPoints:pointsCopy textSize:sizeCopy bounds:spaceCopy hasPrecedingSpace:x, y, width, height];
+  if (height)
   {
-    v33 = objc_msgSend_copy(v19, v27, v28, v29, v30, v31);
-    drawing = v32->_drawing;
-    v32->_drawing = v33;
+    v33 = objc_msgSend_copy(drawingCopy, v27, v28, v29, v30, v31);
+    drawing = height->_drawing;
+    height->_drawing = v33;
   }
 
-  return v32;
+  return height;
 }
 
-+ (id)reflowableTokensFromSynthesisResult:(id)a3 principalPoints:(id)a4 shouldCancel:(id)a5
++ (id)reflowableTokensFromSynthesisResult:(id)result principalPoints:(id)points shouldCancel:(id)cancel
 {
   v286 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v254 = a4;
-  v248 = a5;
-  v256 = v7;
+  resultCopy = result;
+  pointsCopy = points;
+  cancelCopy = cancel;
+  v256 = resultCopy;
   v249 = objc_msgSend_localeWithLocaleIdentifier_(MEMORY[0x1E695DF58], v8, @"en_US", v9, v10, v11);
-  if (objc_msgSend_hasPrincipalLines(v7, v12, v13, v14, v15, v16))
+  if (objc_msgSend_hasPrincipalLines(resultCopy, v12, v13, v14, v15, v16))
   {
     v17 = objc_opt_class();
-    v23 = objc_msgSend_drawing(v7, v18, v19, v20, v21, v22);
-    v29 = objc_msgSend_segmentContents(v7, v24, v25, v26, v27, v28);
-    v35 = objc_msgSend_segmentStrokeIndexes(v7, v30, v31, v32, v33, v34);
-    v46 = objc_msgSend_content(v7, v36, v37, v38, v39, v40);
-    if (v7)
+    v23 = objc_msgSend_drawing(resultCopy, v18, v19, v20, v21, v22);
+    v29 = objc_msgSend_segmentContents(resultCopy, v24, v25, v26, v27, v28);
+    v35 = objc_msgSend_segmentStrokeIndexes(resultCopy, v30, v31, v32, v33, v34);
+    v46 = objc_msgSend_content(resultCopy, v36, v37, v38, v39, v40);
+    if (resultCopy)
     {
-      objc_msgSend_principalLines(v7, v41, v42, v43, v44, v45);
+      objc_msgSend_principalLines(resultCopy, v41, v42, v43, v44, v45);
     }
 
     else
@@ -141,7 +141,7 @@
       v278 = 0u;
     }
 
-    v250 = objc_msgSend_textLineForDrawing_transcriptions_strokeIndexes_fullText_principalLines_locale_strokeClassification_shouldCancel_(v17, v41, v23, v29, v35, v46, &v277, v249, 1, v248);
+    v250 = objc_msgSend_textLineForDrawing_transcriptions_strokeIndexes_fullText_principalLines_locale_strokeClassification_shouldCancel_(v17, v41, v23, v29, v35, v46, &v277, v249, 1, cancelCopy);
 
     v78 = v250;
     if (!v250)
@@ -153,11 +153,11 @@
   else
   {
     v47 = objc_opt_class();
-    v53 = objc_msgSend_drawing(v7, v48, v49, v50, v51, v52);
-    v59 = objc_msgSend_segmentContents(v7, v54, v55, v56, v57, v58);
-    v65 = objc_msgSend_segmentStrokeIndexes(v7, v60, v61, v62, v63, v64);
-    v71 = objc_msgSend_content(v7, v66, v67, v68, v69, v70);
-    v250 = objc_msgSend_textLineForDrawing_transcriptions_strokeIndexes_fullText_principalPoints_locale_strokeClassification_shouldCancel_(v47, v72, v53, v59, v65, v71, v254, v249, 1, v248);
+    v53 = objc_msgSend_drawing(resultCopy, v48, v49, v50, v51, v52);
+    v59 = objc_msgSend_segmentContents(resultCopy, v54, v55, v56, v57, v58);
+    v65 = objc_msgSend_segmentStrokeIndexes(resultCopy, v60, v61, v62, v63, v64);
+    v71 = objc_msgSend_content(resultCopy, v66, v67, v68, v69, v70);
+    v250 = objc_msgSend_textLineForDrawing_transcriptions_strokeIndexes_fullText_principalPoints_locale_strokeClassification_shouldCancel_(v47, v72, v53, v59, v65, v71, pointsCopy, v249, 1, cancelCopy);
 
     v78 = v250;
     if (!v250)
@@ -237,10 +237,10 @@ LABEL_24:
     }
   }
 
-  v88 = objc_msgSend_segmentStrokeIndexes(v7, v79, v80, v81, v82, v83, v86, v85, v84);
+  v88 = objc_msgSend_segmentStrokeIndexes(resultCopy, v79, v80, v81, v82, v83, v86, v85, v84);
   if (objc_msgSend_count(v88, v89, v90, v91, v92, v93) == 1)
   {
-    v99 = objc_msgSend_content(v7, v94, v95, v96, v97, v98);
+    v99 = objc_msgSend_content(resultCopy, v94, v95, v96, v97, v98);
     if (objc_msgSend_countCharacters(v99, v100, v101, v102, v103, v104) > 3)
     {
       v253 = 0;
@@ -248,7 +248,7 @@ LABEL_24:
 
     else
     {
-      v253 = objc_msgSend_hasPrincipalLines(v7, v105, v106, v107, v108, v109) ^ 1;
+      v253 = objc_msgSend_hasPrincipalLines(resultCopy, v105, v106, v107, v108, v109) ^ 1;
     }
   }
 
@@ -293,7 +293,7 @@ LABEL_24:
         v164 = objc_msgSend_segmentStrokeIndexes(v256, v159, v160, v161, v162, v163);
         v170 = objc_msgSend_count(v87, v165, v166, v167, v168, v169);
         v175 = objc_msgSend_objectAtIndexedSubscript_(v164, v171, v170, v172, v173, v174);
-        v180 = objc_msgSend_objectsAtIndexes_(v254, v176, v175, v177, v178, v179);
+        v180 = objc_msgSend_objectsAtIndexes_(pointsCopy, v176, v175, v177, v178, v179);
 
         if (v253)
         {

@@ -1,22 +1,22 @@
 @interface PGHighlightTailorContext
 - (PGBusinessLocationFeatureSummarySource)businessFeatureSummarySource;
-- (PGHighlightTailorContext)initWithPhotoLibrary:(id)a3 graph:(id)a4 serviceManager:(id)a5 loggingConnection:(id)a6;
+- (PGHighlightTailorContext)initWithPhotoLibrary:(id)library graph:(id)graph serviceManager:(id)manager loggingConnection:(id)connection;
 - (PGHolidayDateFeatureSummarySource)holidayDateFeatureSummarySource;
 - (PGLocationFeatureSummarySource)locationFeatureSummarySource;
 - (PGMeaningFeatureSummarySource)meaningFeatureSummarySource;
 - (PGPublicEventFeatureSummarySource)publicEventFeatureSummarySource;
 - (id)initForTesting;
-- (unsigned)pendingEnrichmentStateForHighlightUUID:(id)a3;
+- (unsigned)pendingEnrichmentStateForHighlightUUID:(id)d;
 @end
 
 @implementation PGHighlightTailorContext
 
-- (unsigned)pendingEnrichmentStateForHighlightUUID:(id)a3
+- (unsigned)pendingEnrichmentStateForHighlightUUID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_pendingEnrichmentStateByHighlightUUID objectForKeyedSubscript:a3];
-  v4 = [v3 unsignedShortValue];
+  v3 = [(NSMutableDictionary *)self->_pendingEnrichmentStateByHighlightUUID objectForKeyedSubscript:d];
+  unsignedShortValue = [v3 unsignedShortValue];
 
-  return v4;
+  return unsignedShortValue;
 }
 
 - (PGHolidayDateFeatureSummarySource)holidayDateFeatureSummarySource
@@ -109,19 +109,19 @@
   return v2;
 }
 
-- (PGHighlightTailorContext)initWithPhotoLibrary:(id)a3 graph:(id)a4 serviceManager:(id)a5 loggingConnection:(id)a6
+- (PGHighlightTailorContext)initWithPhotoLibrary:(id)library graph:(id)graph serviceManager:(id)manager loggingConnection:(id)connection
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  libraryCopy = library;
+  graphCopy = graph;
+  managerCopy = manager;
+  connectionCopy = connection;
   v28.receiver = self;
   v28.super_class = PGHighlightTailorContext;
   v15 = [(PGHighlightTailorContext *)&v28 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_photoLibrary, a3);
+    objc_storeStrong(&v15->_photoLibrary, library);
     v17 = objc_alloc_init(PGNeighborScoreComputer);
     neighborScoreComputer = v16->_neighborScoreComputer;
     v16->_neighborScoreComputer = v17;
@@ -130,16 +130,16 @@
     curationContext = v16->_curationContext;
     v16->_curationContext = v19;
 
-    objc_storeStrong(&v16->_loggingConnection, a6);
-    v21 = [[PGTitleGenerationContext alloc] initWithGraph:v12 serviceManager:v13];
+    objc_storeStrong(&v16->_loggingConnection, connection);
+    v21 = [[PGTitleGenerationContext alloc] initWithGraph:graphCopy serviceManager:managerCopy];
     titleGenerationContext = v16->_titleGenerationContext;
     v16->_titleGenerationContext = v21;
 
-    v23 = [v12 infoNode];
-    [v23 topTierAestheticScore];
+    infoNode = [graphCopy infoNode];
+    [infoNode topTierAestheticScore];
     v16->_topTierAestheticScore = v24;
 
-    objc_storeStrong(&v16->_graph, a4);
+    objc_storeStrong(&v16->_graph, graph);
     v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
     pendingEnrichmentStateByHighlightUUID = v16->_pendingEnrichmentStateByHighlightUUID;
     v16->_pendingEnrichmentStateByHighlightUUID = v25;

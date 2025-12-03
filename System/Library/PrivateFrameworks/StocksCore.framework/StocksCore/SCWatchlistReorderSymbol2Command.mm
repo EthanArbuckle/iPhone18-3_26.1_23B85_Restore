@@ -1,40 +1,40 @@
 @interface SCWatchlistReorderSymbol2Command
-- (SCWatchlistReorderSymbol2Command)initWithCoder:(id)a3;
-- (SCWatchlistReorderSymbol2Command)initWithSymbol:(id)a3 toIndex:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithZone:(id)a3;
+- (SCWatchlistReorderSymbol2Command)initWithCoder:(id)coder;
+- (SCWatchlistReorderSymbol2Command)initWithSymbol:(id)symbol toIndex:(unint64_t)index;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithZone:(id)zone;
 @end
 
 @implementation SCWatchlistReorderSymbol2Command
 
-- (SCWatchlistReorderSymbol2Command)initWithSymbol:(id)a3 toIndex:(unint64_t)a4
+- (SCWatchlistReorderSymbol2Command)initWithSymbol:(id)symbol toIndex:(unint64_t)index
 {
-  v6 = a3;
+  symbolCopy = symbol;
   v11.receiver = self;
   v11.super_class = SCWatchlistReorderSymbol2Command;
   v7 = [(SCWatchlistReorderSymbol2Command *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [symbolCopy copy];
     symbol = v7->_symbol;
     v7->_symbol = v8;
 
-    v7->_toIndex = a4;
+    v7->_toIndex = index;
   }
 
   return v7;
 }
 
-- (void)executeWithZone:(id)a3
+- (void)executeWithZone:(id)zone
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __52__SCWatchlistReorderSymbol2Command_executeWithZone___block_invoke;
   aBlock[3] = &unk_1E85E3320;
   aBlock[4] = self;
-  v3 = a3;
+  zoneCopy = zone;
   v4 = _Block_copy(aBlock);
-  [v3 createOrUpdateRecordWithName:@"watchlist" recordType:@"Watchlist" modifyBlock:v4];
+  [zoneCopy createOrUpdateRecordWithName:@"watchlist" recordType:@"Watchlist" modifyBlock:v4];
 }
 
 void __52__SCWatchlistReorderSymbol2Command_executeWithZone___block_invoke(uint64_t a1, void *a2)
@@ -69,11 +69,11 @@ void __52__SCWatchlistReorderSymbol2Command_executeWithZone___block_invoke(uint6
   [v13 setObject:v12 forKeyedSubscript:@"symbols"];
 }
 
-- (SCWatchlistReorderSymbol2Command)initWithCoder:(id)a3
+- (SCWatchlistReorderSymbol2Command)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"toIndex"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"toIndex"];
 
   if (v5)
   {
@@ -87,28 +87,28 @@ void __52__SCWatchlistReorderSymbol2Command_executeWithZone___block_invoke(uint6
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = -[SCWatchlistReorderSymbol2Command initWithSymbol:toIndex:](self, "initWithSymbol:toIndex:", v5, [v6 unsignedIntegerValue]);
-    v8 = self;
+    selfCopy = self;
   }
 
-  v9 = v8;
+  v9 = selfCopy;
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCWatchlistReorderSymbol2Command *)self symbol];
-  [v4 encodeObject:v5 forKey:@"symbol"];
+  coderCopy = coder;
+  symbol = [(SCWatchlistReorderSymbol2Command *)self symbol];
+  [coderCopy encodeObject:symbol forKey:@"symbol"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SCWatchlistReorderSymbol2Command toIndex](self, "toIndex")}];
-  [v4 encodeObject:v6 forKey:@"toIndex"];
+  [coderCopy encodeObject:v6 forKey:@"toIndex"];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface SUScriptGiftViewController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (id)newNativeViewController;
 - (id)scriptAttributeKeys;
-- (void)setCreditGiftStyle:(int64_t)a3;
-- (void)setProductGiftItem:(id)a3;
+- (void)setCreditGiftStyle:(int64_t)style;
+- (void)setProductGiftItem:(id)item;
 @end
 
 @implementation SUScriptGiftViewController
@@ -35,18 +35,18 @@
   return v8;
 }
 
-- (void)setCreditGiftStyle:(int64_t)a3
+- (void)setCreditGiftStyle:(int64_t)style
 {
   [(SUScriptObject *)self lock];
-  self->_giftCategory = a3;
+  self->_giftCategory = style;
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setProductGiftItem:(id)a3
+- (void)setProductGiftItem:(id)item
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass)
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !item) || (isKindOfClass)
   {
     [(SUScriptObject *)self lock];
 
@@ -60,7 +60,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [a3 copyArrayOrDictionaryWithContext:{-[SUScriptObject copyJavaScriptContext](self, "copyJavaScriptContext")}];
+      v9 = [item copyArrayOrDictionaryWithContext:{-[SUScriptObject copyJavaScriptContext](self, "copyJavaScriptContext")}];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -82,27 +82,27 @@
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_80 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptGiftViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_60, 2);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_60, 2);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptGiftViewController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -112,14 +112,14 @@
 {
   v4.receiver = self;
   v4.super_class = SUScriptGiftViewController;
-  v2 = [(SUScriptViewController *)&v4 scriptAttributeKeys];
-  [v2 addObjectsFromArray:{objc_msgSend(__KeyMapping_80, "allKeys")}];
-  return v2;
+  scriptAttributeKeys = [(SUScriptViewController *)&v4 scriptAttributeKeys];
+  [scriptAttributeKeys addObjectsFromArray:{objc_msgSend(__KeyMapping_80, "allKeys")}];
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_60 = sel_setCreditGiftStyle_;
     unk_1EBF3B9E0 = @"setCreditGiftStyle";

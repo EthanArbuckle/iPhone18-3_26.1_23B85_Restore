@@ -1,36 +1,36 @@
 @interface PKIDSService
-- (PKIDSService)initWithService:(id)a3;
-- (PKIDSService)initWithServiceName:(id)a3;
-- (void)_enumerateDelegatesWithBlock:(id)a3;
-- (void)_receivedMessage:(id)a3 isRequest:(BOOL)a4 service:(id)a5 account:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)_setProtobufAction:(SEL)a3 target:(id)a4 messageType:(unsigned __int16)a5 isRequest:(BOOL)a6 queue:(id)a7;
-- (void)addDelegate:(id)a3;
+- (PKIDSService)initWithService:(id)service;
+- (PKIDSService)initWithServiceName:(id)name;
+- (void)_enumerateDelegatesWithBlock:(id)block;
+- (void)_receivedMessage:(id)message isRequest:(BOOL)request service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_setProtobufAction:(SEL)action target:(id)target messageType:(unsigned __int16)type isRequest:(BOOL)request queue:(id)queue;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)executeWhenAccountsReadyAndDevicesSet:(id)a3 timeoutSeconds:(int64_t)a4;
-- (void)registerListenerForMessageType:(unsigned __int16)a3 isRequest:(BOOL)a4 referenceObject:(id)a5 queue:(id)a6 onMessageReceived:(id)a7;
-- (void)removeDelegate:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)unregisterListenersForTarget:(id)a3;
+- (void)executeWhenAccountsReadyAndDevicesSet:(id)set timeoutSeconds:(int64_t)seconds;
+- (void)registerListenerForMessageType:(unsigned __int16)type isRequest:(BOOL)request referenceObject:(id)object queue:(id)queue onMessageReceived:(id)received;
+- (void)removeDelegate:(id)delegate;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)unregisterListenersForTarget:(id)target;
 @end
 
 @implementation PKIDSService
 
-- (PKIDSService)initWithServiceName:(id)a3
+- (PKIDSService)initWithServiceName:(id)name
 {
   v4 = MEMORY[0x1E69A48A8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithService:v5];
+  nameCopy = name;
+  v6 = [[v4 alloc] initWithService:nameCopy];
 
   v7 = [(PKIDSService *)self initWithService:v6];
   return v7;
 }
 
-- (PKIDSService)initWithService:(id)a3
+- (PKIDSService)initWithService:(id)service
 {
-  result = a3;
+  result = service;
   if (result)
   {
     v6 = result;
@@ -40,14 +40,14 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_underlyingService, a3);
+      objc_storeStrong(&v7->_underlyingService, service);
       v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
       listeners = v8->_listeners;
       v8->_listeners = v9;
 
-      v11 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+      pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
       delegates = v8->_delegates;
-      v8->_delegates = v11;
+      v8->_delegates = pk_weakObjectsHashTableUsingPointerPersonality;
 
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
       pendingAccountDevicesReadyCompletions = v8->_pendingAccountDevicesReadyCompletions;
@@ -86,13 +86,13 @@
   [(PKIDSService *)&v3 dealloc];
 }
 
-- (void)_setProtobufAction:(SEL)a3 target:(id)a4 messageType:(unsigned __int16)a5 isRequest:(BOOL)a6 queue:(id)a7
+- (void)_setProtobufAction:(SEL)action target:(id)target messageType:(unsigned __int16)type isRequest:(BOOL)request queue:(id)queue
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a4;
-  v13 = a7;
-  objc_initWeak(&location, v12);
+  requestCopy = request;
+  typeCopy = type;
+  targetCopy = target;
+  queueCopy = queue;
+  objc_initWeak(&location, targetCopy);
   objc_initWeak(&from, self);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -100,8 +100,8 @@
   v14[3] = &unk_1E79D0AA8;
   objc_copyWeak(&v15, &location);
   objc_copyWeak(v16, &from);
-  v16[1] = a3;
-  [(PKIDSService *)self registerListenerForMessageType:v9 isRequest:v8 referenceObject:v12 queue:v13 onMessageReceived:v14];
+  v16[1] = action;
+  [(PKIDSService *)self registerListenerForMessageType:typeCopy isRequest:requestCopy referenceObject:targetCopy queue:queueCopy onMessageReceived:v14];
   objc_destroyWeak(v16);
   objc_destroyWeak(&v15);
   objc_destroyWeak(&from);
@@ -134,22 +134,22 @@ void __70__PKIDSService__setProtobufAction_target_messageType_isRequest_queue___
   }
 }
 
-- (void)registerListenerForMessageType:(unsigned __int16)a3 isRequest:(BOOL)a4 referenceObject:(id)a5 queue:(id)a6 onMessageReceived:(id)a7
+- (void)registerListenerForMessageType:(unsigned __int16)type isRequest:(BOOL)request referenceObject:(id)object queue:(id)queue onMessageReceived:(id)received
 {
-  v9 = a4;
-  v10 = a3;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
+  requestCopy = request;
+  typeCopy = type;
+  receivedCopy = received;
+  queueCopy = queue;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  v15 = [[PKIDSServiceListenerRegistrationKey alloc] initWithMessageType:v10 isRequest:v9];
+  v15 = [[PKIDSServiceListenerRegistrationKey alloc] initWithMessageType:typeCopy isRequest:requestCopy];
   v16 = [(NSMutableDictionary *)self->_listeners objectForKeyedSubscript:v15];
   if (v16)
   {
     v17 = v16;
-    v18 = [[PKIDSServiceListener alloc] initWithReferenceObject:v14 onMessageReceived:v12];
+    v18 = [[PKIDSServiceListener alloc] initWithReferenceObject:objectCopy onMessageReceived:receivedCopy];
 
-    [(PKIDSServiceListener *)v18 setReplyQueue:v13];
+    [(PKIDSServiceListener *)v18 setReplyQueue:queueCopy];
     [v17 addObject:v18];
 
     os_unfair_lock_unlock(&self->_lock);
@@ -159,37 +159,37 @@ void __70__PKIDSService__setProtobufAction_target_messageType_isRequest_queue___
   {
     v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(NSMutableDictionary *)self->_listeners setObject:v19 forKeyedSubscript:v15];
-    v20 = [[PKIDSServiceListener alloc] initWithReferenceObject:v14 onMessageReceived:v12];
+    v20 = [[PKIDSServiceListener alloc] initWithReferenceObject:objectCopy onMessageReceived:receivedCopy];
 
-    [(PKIDSServiceListener *)v20 setReplyQueue:v13];
+    [(PKIDSServiceListener *)v20 setReplyQueue:queueCopy];
     [v19 addObject:v20];
 
     os_unfair_lock_unlock(&self->_lock);
     underlyingService = self->_underlyingService;
-    if (v9)
+    if (requestCopy)
     {
 
-      [(IDSService *)underlyingService setProtobufAction:sel__receivedRequestMessage_service_account_fromID_context_ forIncomingRequestsOfType:v10];
+      [(IDSService *)underlyingService setProtobufAction:sel__receivedRequestMessage_service_account_fromID_context_ forIncomingRequestsOfType:typeCopy];
     }
 
     else
     {
 
-      [(IDSService *)underlyingService setProtobufAction:sel__receivedResponseMessage_service_account_fromID_context_ forIncomingResponsesOfType:v10];
+      [(IDSService *)underlyingService setProtobufAction:sel__receivedResponseMessage_service_account_fromID_context_ forIncomingResponsesOfType:typeCopy];
     }
   }
 }
 
-- (void)_receivedMessage:(id)a3 isRequest:(BOOL)a4 service:(id)a5 account:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)_receivedMessage:(id)message isRequest:(BOOL)request service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v11 = a4;
+  requestCopy = request;
   v40 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  messageCopy = message;
+  accountCopy = account;
+  dCopy = d;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
-  v17 = -[PKIDSServiceListenerRegistrationKey initWithMessageType:isRequest:]([PKIDSServiceListenerRegistrationKey alloc], "initWithMessageType:isRequest:", [v13 type], v11);
+  v17 = -[PKIDSServiceListenerRegistrationKey initWithMessageType:isRequest:]([PKIDSServiceListenerRegistrationKey alloc], "initWithMessageType:isRequest:", [messageCopy type], requestCopy);
   v18 = [(NSMutableDictionary *)self->_listeners objectForKeyedSubscript:v17];
   v19 = [v18 pk_objectsPassingTest:&__block_literal_global_80];
   v20 = [v19 mutableCopy];
@@ -218,25 +218,25 @@ void __70__PKIDSService__setProtobufAction_target_messageType_isRequest_queue___
         }
 
         v26 = *(*(&v35 + 1) + 8 * i);
-        v27 = [v26 replyQueue];
-        if (v27)
+        replyQueue = [v26 replyQueue];
+        if (replyQueue)
         {
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __74__PKIDSService__receivedMessage_isRequest_service_account_fromID_context___block_invoke_2;
           block[3] = &unk_1E79C7D80;
           block[4] = v26;
-          v31 = v13;
-          v32 = v14;
-          v33 = v15;
-          v34 = v16;
-          dispatch_async(v27, block);
+          v31 = messageCopy;
+          v32 = accountCopy;
+          v33 = dCopy;
+          v34 = contextCopy;
+          dispatch_async(replyQueue, block);
         }
 
         else
         {
-          v28 = [v26 onMessageReceived];
-          (v28)[2](v28, v13, v14, v15, v16);
+          onMessageReceived = [v26 onMessageReceived];
+          (onMessageReceived)[2](onMessageReceived, messageCopy, accountCopy, dCopy, contextCopy);
         }
       }
 
@@ -261,10 +261,10 @@ void __74__PKIDSService__receivedMessage_isRequest_service_account_fromID_contex
   (*(v2 + 2))(v2, *(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64));
 }
 
-- (void)unregisterListenersForTarget:(id)a3
+- (void)unregisterListenersForTarget:(id)target
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  targetCopy = target;
   os_unfair_lock_lock(&self->_lock);
   v19 = 0u;
   v20 = 0u;
@@ -291,7 +291,7 @@ void __74__PKIDSService__receivedMessage_isRequest_service_account_fromID_contex
         v15[1] = 3221225472;
         v15[2] = __45__PKIDSService_unregisterListenersForTarget___block_invoke;
         v15[3] = &unk_1E79D0AF0;
-        v16 = v4;
+        v16 = targetCopy;
         v11 = [v10 pk_objectsPassingTest:v15];
         v12 = [v11 mutableCopy];
 
@@ -325,34 +325,34 @@ BOOL __45__PKIDSService_unregisterListenersForTarget___block_invoke(uint64_t a1,
   return v4;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_delegates addObject:v4];
+  [(NSHashTable *)self->_delegates addObject:delegateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_delegates removeObject:v4];
+  [(NSHashTable *)self->_delegates removeObject:delegateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   v8 = PKLogFacilityTypeGetObject(0x22uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138477827;
-    v17 = v7;
+    v17 = changedCopy;
     _os_log_debug_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEBUG, "IDSService: devicesChanged: %{private}@", buf, 0xCu);
   }
 
@@ -360,10 +360,10 @@ BOOL __45__PKIDSService_unregisterListenersForTarget___block_invoke(uint64_t a1,
   v13[1] = 3221225472;
   v13[2] = __39__PKIDSService_service_devicesChanged___block_invoke;
   v13[3] = &unk_1E79D0B18;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = serviceCopy;
+  v15 = changedCopy;
+  v9 = changedCopy;
+  v10 = serviceCopy;
   [(PKIDSService *)self _enumerateDelegatesWithBlock:v13];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -447,24 +447,24 @@ void __39__PKIDSService_service_devicesChanged___block_invoke_82(uint64_t a1)
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  contextCopy = context;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __71__PKIDSService_service_account_identifier_hasBeenDeliveredWithContext___block_invoke;
   v18[3] = &unk_1E79D0B60;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = serviceCopy;
+  v20 = accountCopy;
+  v21 = identifierCopy;
+  v22 = contextCopy;
+  v14 = contextCopy;
+  v15 = identifierCopy;
+  v16 = accountCopy;
+  v17 = serviceCopy;
   [(PKIDSService *)self _enumerateDelegatesWithBlock:v18];
 }
 
@@ -477,27 +477,27 @@ void __71__PKIDSService_service_account_identifier_hasBeenDeliveredWithContext__
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  protobufCopy = protobuf;
+  dCopy = d;
+  contextCopy = context;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __73__PKIDSService_service_account_incomingUnhandledProtobuf_fromID_context___block_invoke;
   v22[3] = &unk_1E79D0B88;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v26 = v15;
-  v27 = v16;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
+  v23 = serviceCopy;
+  v24 = accountCopy;
+  v25 = protobufCopy;
+  v26 = dCopy;
+  v27 = contextCopy;
+  v17 = contextCopy;
+  v18 = dCopy;
+  v19 = protobufCopy;
+  v20 = accountCopy;
+  v21 = serviceCopy;
   [(PKIDSService *)self _enumerateDelegatesWithBlock:v22];
 }
 
@@ -510,28 +510,28 @@ void __73__PKIDSService_service_account_incomingUnhandledProtobuf_fromID_context
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
+  contextCopy = context;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __76__PKIDSService_service_account_identifier_didSendWithSuccess_error_context___block_invoke;
   v24[3] = &unk_1E79D0BB0;
-  v25 = v14;
-  v26 = v15;
-  v30 = a6;
-  v27 = v16;
-  v28 = v17;
-  v29 = v18;
-  v19 = v18;
-  v20 = v17;
-  v21 = v16;
-  v22 = v15;
-  v23 = v14;
+  v25 = serviceCopy;
+  v26 = accountCopy;
+  successCopy = success;
+  v27 = identifierCopy;
+  v28 = errorCopy;
+  v29 = contextCopy;
+  v19 = contextCopy;
+  v20 = errorCopy;
+  v21 = identifierCopy;
+  v22 = accountCopy;
+  v23 = serviceCopy;
   [(PKIDSService *)self _enumerateDelegatesWithBlock:v24];
 }
 
@@ -549,10 +549,10 @@ void __76__PKIDSService_service_account_identifier_didSendWithSuccess_error_cont
   }
 }
 
-- (void)_enumerateDelegatesWithBlock:(id)a3
+- (void)_enumerateDelegatesWithBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSHashTable *)self->_delegates copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -582,7 +582,7 @@ void __76__PKIDSService_service_account_identifier_didSendWithSuccess_error_cont
         block[1] = 3221225472;
         block[2] = __45__PKIDSService__enumerateDelegatesWithBlock___block_invoke;
         block[3] = &unk_1E79C44A0;
-        v12 = v4;
+        v12 = blockCopy;
         block[4] = v10;
         v15 = v12;
         dispatch_async(replyQueue, block);
@@ -598,18 +598,18 @@ void __76__PKIDSService_service_account_identifier_didSendWithSuccess_error_cont
   }
 }
 
-- (void)executeWhenAccountsReadyAndDevicesSet:(id)a3 timeoutSeconds:(int64_t)a4
+- (void)executeWhenAccountsReadyAndDevicesSet:(id)set timeoutSeconds:(int64_t)seconds
 {
-  v6 = a3;
+  setCopy = set;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__PKIDSService_executeWhenAccountsReadyAndDevicesSet_timeoutSeconds___block_invoke;
   block[3] = &unk_1E79C4EA0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = setCopy;
+  secondsCopy = seconds;
+  v8 = setCopy;
   dispatch_async(internalQueue, block);
 }
 

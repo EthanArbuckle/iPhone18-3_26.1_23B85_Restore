@@ -1,14 +1,14 @@
 @interface MNAudioSystemEventQueue
 - (BOOL)empty;
-- (BOOL)enqueue:(id)a3 withOptions:(unint64_t)a4 andReport:(id *)a5;
+- (BOOL)enqueue:(id)enqueue withOptions:(unint64_t)options andReport:(id *)report;
 - (BOOL)full;
 - (MNAudioEventQueueDelegate)delegate;
-- (MNAudioSystemEventQueue)initWithCapacity:(unint64_t)a3;
+- (MNAudioSystemEventQueue)initWithCapacity:(unint64_t)capacity;
 - (id)_dequeue;
 - (id)dequeue;
 - (unint64_t)count;
-- (void)_enqueue:(id)a3;
-- (void)_removeEventsMatching:(id)a3;
+- (void)_enqueue:(id)_enqueue;
+- (void)_removeEventsMatching:(id)matching;
 - (void)clear;
 @end
 
@@ -78,17 +78,17 @@ void __35__MNAudioSystemEventQueue__dequeue__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enqueue:(id)a3
+- (void)_enqueue:(id)_enqueue
 {
-  v4 = a3;
+  _enqueueCopy = _enqueue;
   syncQueue = self->_syncQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__MNAudioSystemEventQueue__enqueue___block_invoke;
   v7[3] = &unk_1E8430D50;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = _enqueueCopy;
+  selfCopy = self;
+  v6 = _enqueueCopy;
   dispatch_async(syncQueue, v7);
 }
 
@@ -138,28 +138,28 @@ uint64_t __36__MNAudioSystemEventQueue__enqueue___block_invoke(uint64_t a1)
       _os_log_impl(&dword_1D311E000, v3, OS_LOG_TYPE_ERROR, "⒬ Trying to dequeue from an empty queue", v6, 2u);
     }
 
-    v4 = 0;
+    _dequeue = 0;
   }
 
   else
   {
-    v4 = [(MNAudioSystemEventQueue *)self _dequeue];
+    _dequeue = [(MNAudioSystemEventQueue *)self _dequeue];
   }
 
-  return v4;
+  return _dequeue;
 }
 
-- (void)_removeEventsMatching:(id)a3
+- (void)_removeEventsMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   syncQueue = self->_syncQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__MNAudioSystemEventQueue__removeEventsMatching___block_invoke;
   v7[3] = &unk_1E8430D50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = matchingCopy;
+  v6 = matchingCopy;
   dispatch_async(syncQueue, v7);
 }
 
@@ -193,11 +193,11 @@ void __49__MNAudioSystemEventQueue__removeEventsMatching___block_invoke(uint64_t
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)enqueue:(id)a3 withOptions:(unint64_t)a4 andReport:(id *)a5
+- (BOOL)enqueue:(id)enqueue withOptions:(unint64_t)options andReport:(id *)report
 {
-  v6 = a4;
+  optionsCopy = options;
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  enqueueCopy = enqueue;
   if ([(MNAudioSystemEventQueue *)self full])
   {
     v9 = GetAudioLogForMNAudioSystemEventQueueCategory();
@@ -207,7 +207,7 @@ void __49__MNAudioSystemEventQueue__removeEventsMatching___block_invoke(uint64_t
       _os_log_impl(&dword_1D311E000, v9, OS_LOG_TYPE_ERROR, "⒬ Trying to enqueue to a full queue", buf, 2u);
     }
 
-    if (!a5)
+    if (!report)
     {
       goto LABEL_22;
     }
@@ -217,14 +217,14 @@ void __49__MNAudioSystemEventQueue__removeEventsMatching___block_invoke(uint64_t
     v12 = v10;
     v13 = 2000;
 LABEL_21:
-    *a5 = [v12 errorWithDomain:@"MNAudioSystemError" code:v13 userInfo:0];
+    *report = [v12 errorWithDomain:@"MNAudioSystemError" code:v13 userInfo:0];
 
 LABEL_22:
     v21 = 0;
     goto LABEL_23;
   }
 
-  if (!v8)
+  if (!enqueueCopy)
   {
     v15 = GetAudioLogForMNAudioSystemEventQueueCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -233,7 +233,7 @@ LABEL_22:
       _os_log_impl(&dword_1D311E000, v15, OS_LOG_TYPE_ERROR, "⒬ Trying to enqueue a nil event", buf, 2u);
     }
 
-    if (!a5)
+    if (!report)
     {
       goto LABEL_22;
     }
@@ -252,11 +252,11 @@ LABEL_22:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138477827;
-      v34 = v8;
+      v34 = enqueueCopy;
       _os_log_impl(&dword_1D311E000, v18, OS_LOG_TYPE_ERROR, "⒬ Trying to enqueue a non-MNAudioSystemEvent object : %{private}@", buf, 0xCu);
     }
 
-    if (!a5)
+    if (!report)
     {
       goto LABEL_22;
     }
@@ -268,59 +268,59 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  if ((v6 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
     v24 = GetAudioLogForMNAudioSystemEventQueueCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v34 = v8;
+      v34 = enqueueCopy;
       _os_log_impl(&dword_1D311E000, v24, OS_LOG_TYPE_INFO, "ⓠ Event will clear the queue before enqueuing : %{private}@", buf, 0xCu);
     }
 
     [(MNAudioSystemEventQueue *)self clear];
   }
 
-  else if ((v6 & 8) != 0)
+  else if ((optionsCopy & 8) != 0)
   {
     v14 = GetAudioLogForMNAudioSystemEventQueueCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v34 = v8;
+      v34 = enqueueCopy;
       _os_log_impl(&dword_1D311E000, v14, OS_LOG_TYPE_INFO, "ⓠ Event will remove duplicates before enqueuing : %{private}@", buf, 0xCu);
     }
 
-    [(MNAudioSystemEventQueue *)self _removeEventsMatching:v8];
+    [(MNAudioSystemEventQueue *)self _removeEventsMatching:enqueueCopy];
   }
 
-  if ((v6 & 3) != 0)
+  if ((optionsCopy & 3) != 0)
   {
     v25 = GetAudioLogForMNAudioSystemEventQueueCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v34 = v8;
+      v34 = enqueueCopy;
       _os_log_impl(&dword_1D311E000, v25, OS_LOG_TYPE_INFO, "ⓠ Event is enqueued as an interrupt : %{private}@", buf, 0xCu);
     }
 
-    v26 = [(MNAudioSystemEventQueue *)self delegate];
+    delegate = [(MNAudioSystemEventQueue *)self delegate];
     v27 = objc_opt_respondsToSelector();
 
     if (v27)
     {
-      v28 = [(MNAudioSystemEventQueue *)self delegate];
-      [v28 audioSystemEventQueue:self eventWillInterrupt:v8];
+      delegate2 = [(MNAudioSystemEventQueue *)self delegate];
+      [delegate2 audioSystemEventQueue:self eventWillInterrupt:enqueueCopy];
     }
   }
 
-  if (v6)
+  if (optionsCopy)
   {
     v29 = GetAudioLogForMNAudioSystemEventQueueCategory();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       *buf = 138477827;
-      v34 = v8;
+      v34 = enqueueCopy;
       _os_log_impl(&dword_1D311E000, v29, OS_LOG_TYPE_INFO, "ⓠ Enqueued event will be processed next : %{private}@", buf, 0xCu);
     }
 
@@ -330,13 +330,13 @@ LABEL_22:
     v31[2] = __57__MNAudioSystemEventQueue_enqueue_withOptions_andReport___block_invoke;
     v31[3] = &unk_1E8430D50;
     v31[4] = self;
-    v32 = v8;
+    v32 = enqueueCopy;
     dispatch_async(syncQueue, v31);
   }
 
   else
   {
-    [(MNAudioSystemEventQueue *)self _enqueue:v8];
+    [(MNAudioSystemEventQueue *)self _enqueue:enqueueCopy];
   }
 
   v21 = 1;
@@ -424,10 +424,10 @@ uint64_t __32__MNAudioSystemEventQueue_count__block_invoke(uint64_t a1)
   return result;
 }
 
-- (MNAudioSystemEventQueue)initWithCapacity:(unint64_t)a3
+- (MNAudioSystemEventQueue)initWithCapacity:(unint64_t)capacity
 {
   syncQueue = self;
-  if (!a3)
+  if (!capacity)
   {
     v10 = GetAudioLogForMNAudioSystemEventQueueCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -446,7 +446,7 @@ uint64_t __32__MNAudioSystemEventQueue_count__block_invoke(uint64_t a1)
   v6 = v5;
   if (v5)
   {
-    v5->_capacity = a3;
+    v5->_capacity = capacity;
     v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5->_capacity];
     container = v6->_container;
     v6->_container = v7;

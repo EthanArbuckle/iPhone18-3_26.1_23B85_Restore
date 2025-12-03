@@ -14,8 +14,8 @@
     if (Strong)
     {
       v5 = Strong;
-      v4 = self;
-      sub_1BEB4F128(v4);
+      selfCopy = self;
+      sub_1BEB4F128(selfCopy);
     }
   }
 }

@@ -1,56 +1,56 @@
 @interface VNPersonsModelConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VNPersonsModelConfiguration)init;
-- (VNPersonsModelConfiguration)initWithCoder:(id)a3;
-- (id)algorithmOfClass:(Class)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNPersonsModelConfiguration)initWithCoder:(id)coder;
+- (id)algorithmOfClass:(Class)class error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)resolvedAlgorithmAndReturnError:(id *)a3;
+- (id)resolvedAlgorithmAndReturnError:(id *)error;
 - (int)faceID2ModelMaximumElementsPerID;
 - (int)faceID3IndexMode;
 - (int)faceID3ModelMaximumElementsPerID;
 - (int)faceID3ModelMaximumIDs;
 - (unint64_t)maximumIdentities;
 - (unint64_t)maximumTrainingFaceprintsPerIdentity;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMaximumIdentities:(unint64_t)a3;
-- (void)setMaximumTrainingFaceprintsPerIdentity:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMaximumIdentities:(unint64_t)identities;
+- (void)setMaximumTrainingFaceprintsPerIdentity:(unint64_t)identity;
 @end
 
 @implementation VNPersonsModelConfiguration
 
 - (int)faceID2ModelMaximumElementsPerID
 {
-  v2 = [(VNPersonsModelConfiguration *)self maximumTrainingFaceprintsPerIdentity];
-  if (v2 >= 0x7FFFFFFF)
+  maximumTrainingFaceprintsPerIdentity = [(VNPersonsModelConfiguration *)self maximumTrainingFaceprintsPerIdentity];
+  if (maximumTrainingFaceprintsPerIdentity >= 0x7FFFFFFF)
   {
-    LODWORD(v2) = 0x7FFFFFFF;
+    LODWORD(maximumTrainingFaceprintsPerIdentity) = 0x7FFFFFFF;
   }
 
-  return v2;
+  return maximumTrainingFaceprintsPerIdentity;
 }
 
-- (VNPersonsModelConfiguration)initWithCoder:(id)a3
+- (VNPersonsModelConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VNPersonsModelConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"algorithm"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"algorithm"];
     algorithm = v5->_algorithm;
     v5->_algorithm = v6;
 
-    v5->_faceprintRequestRevision = [v4 decodeIntegerForKey:@"faceprintRequestRevision"];
-    if ([v4 containsValueForKey:@"maxIdentities"])
+    v5->_faceprintRequestRevision = [coderCopy decodeIntegerForKey:@"faceprintRequestRevision"];
+    if ([coderCopy containsValueForKey:@"maxIdentities"])
     {
-      v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "decodeIntegerForKey:", @"maxIdentities"}];
+      v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(coderCopy, "decodeIntegerForKey:", @"maxIdentities"}];
       explicitlySetMaximumIdentities = v5->_explicitlySetMaximumIdentities;
       v5->_explicitlySetMaximumIdentities = v8;
     }
 
-    if ([v4 containsValueForKey:@"faceprintsPerIdentity"])
+    if ([coderCopy containsValueForKey:@"faceprintsPerIdentity"])
     {
-      v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "decodeIntegerForKey:", @"faceprintsPerIdentity"}];
+      v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(coderCopy, "decodeIntegerForKey:", @"faceprintsPerIdentity"}];
       explicitlySetMaximumTrainingFaceprintsPerIdentity = v5->_explicitlySetMaximumTrainingFaceprintsPerIdentity;
       v5->_explicitlySetMaximumTrainingFaceprintsPerIdentity = v10;
     }
@@ -61,21 +61,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_algorithm forKey:@"algorithm"];
-  [v6 encodeInteger:self->_faceprintRequestRevision forKey:@"faceprintRequestRevision"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_algorithm forKey:@"algorithm"];
+  [coderCopy encodeInteger:self->_faceprintRequestRevision forKey:@"faceprintRequestRevision"];
   explicitlySetMaximumIdentities = self->_explicitlySetMaximumIdentities;
   if (explicitlySetMaximumIdentities)
   {
-    [v6 encodeInteger:-[NSNumber integerValue](explicitlySetMaximumIdentities forKey:{"integerValue"), @"maxIdentities"}];
+    [coderCopy encodeInteger:-[NSNumber integerValue](explicitlySetMaximumIdentities forKey:{"integerValue"), @"maxIdentities"}];
   }
 
   explicitlySetMaximumTrainingFaceprintsPerIdentity = self->_explicitlySetMaximumTrainingFaceprintsPerIdentity;
   if (explicitlySetMaximumTrainingFaceprintsPerIdentity)
   {
-    [v6 encodeInteger:-[NSNumber integerValue](explicitlySetMaximumTrainingFaceprintsPerIdentity forKey:{"integerValue"), @"faceprintsPerIdentity"}];
+    [coderCopy encodeInteger:-[NSNumber integerValue](explicitlySetMaximumTrainingFaceprintsPerIdentity forKey:{"integerValue"), @"faceprintsPerIdentity"}];
   }
 }
 
@@ -99,10 +99,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -112,15 +112,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNPersonsModelConfiguration *)self algorithm];
-      v7 = [(VNPersonsModelConfiguration *)v5 algorithm];
+      v5 = equalCopy;
+      algorithm = [(VNPersonsModelConfiguration *)self algorithm];
+      algorithm2 = [(VNPersonsModelConfiguration *)v5 algorithm];
       v8 = VisionCoreEqualOrNilObjects();
 
       if ((v8 & 1) != 0 && (v9 = [(VNPersonsModelConfiguration *)self maximumIdentities], v9 == [(VNPersonsModelConfiguration *)v5 maximumIdentities]) && (v10 = [(VNPersonsModelConfiguration *)self maximumTrainingFaceprintsPerIdentity], v10 == [(VNPersonsModelConfiguration *)v5 maximumTrainingFaceprintsPerIdentity]))
       {
-        v11 = [(VNPersonsModelConfiguration *)self faceprintRequestRevision];
-        v12 = v11 == [(VNPersonsModelConfiguration *)v5 faceprintRequestRevision];
+        faceprintRequestRevision = [(VNPersonsModelConfiguration *)self faceprintRequestRevision];
+        v12 = faceprintRequestRevision == [(VNPersonsModelConfiguration *)v5 faceprintRequestRevision];
       }
 
       else
@@ -138,9 +138,9 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(VNPersonsModelAlgorithm *)self->_algorithm copy];
@@ -160,10 +160,10 @@
   return v4;
 }
 
-- (id)algorithmOfClass:(Class)a3 error:(id *)a4
+- (id)algorithmOfClass:(Class)class error:(id *)error
 {
-  v4 = a4;
-  v6 = [(VNPersonsModelConfiguration *)self resolvedAlgorithmAndReturnError:a4];
+  errorCopy = error;
+  v6 = [(VNPersonsModelConfiguration *)self resolvedAlgorithmAndReturnError:error];
   if (!v6)
   {
     goto LABEL_6;
@@ -171,43 +171,43 @@
 
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
+    errorCopy = v6;
     goto LABEL_7;
   }
 
-  if (v4)
+  if (errorCopy)
   {
     v7 = objc_alloc(MEMORY[0x1E696AEC0]);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = NSStringFromClass(a3);
+    v10 = NSStringFromClass(class);
     v11 = [v7 initWithFormat:@"configuration %@ cannot provide a %@", v9, v10];
 
-    *v4 = [VNError errorForInvalidOperationWithLocalizedDescription:v11];
+    *errorCopy = [VNError errorForInvalidOperationWithLocalizedDescription:v11];
 
 LABEL_6:
-    v4 = 0;
+    errorCopy = 0;
   }
 
 LABEL_7:
 
-  return v4;
+  return errorCopy;
 }
 
-- (id)resolvedAlgorithmAndReturnError:(id *)a3
+- (id)resolvedAlgorithmAndReturnError:(id *)error
 {
-  v3 = [(VNPersonsModelConfiguration *)self algorithm];
-  if (!v3)
+  algorithm = [(VNPersonsModelConfiguration *)self algorithm];
+  if (!algorithm)
   {
-    v3 = objc_alloc_init(VNPersonsModelAlgorithmVIPv2);
+    algorithm = objc_alloc_init(VNPersonsModelAlgorithmVIPv2);
   }
 
-  return v3;
+  return algorithm;
 }
 
-- (void)setMaximumTrainingFaceprintsPerIdentity:(unint64_t)a3
+- (void)setMaximumTrainingFaceprintsPerIdentity:(unint64_t)identity
 {
-  self->_explicitlySetMaximumTrainingFaceprintsPerIdentity = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  self->_explicitlySetMaximumTrainingFaceprintsPerIdentity = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identity];
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -226,9 +226,9 @@ LABEL_7:
   }
 }
 
-- (void)setMaximumIdentities:(unint64_t)a3
+- (void)setMaximumIdentities:(unint64_t)identities
 {
-  self->_explicitlySetMaximumIdentities = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  self->_explicitlySetMaximumIdentities = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:identities];
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -279,24 +279,24 @@ LABEL_7:
 
 - (int)faceID3ModelMaximumElementsPerID
 {
-  v2 = [(VNPersonsModelConfiguration *)self maximumTrainingFaceprintsPerIdentity];
-  if (v2 >= 0x7FFFFFFF)
+  maximumTrainingFaceprintsPerIdentity = [(VNPersonsModelConfiguration *)self maximumTrainingFaceprintsPerIdentity];
+  if (maximumTrainingFaceprintsPerIdentity >= 0x7FFFFFFF)
   {
-    LODWORD(v2) = 0x7FFFFFFF;
+    LODWORD(maximumTrainingFaceprintsPerIdentity) = 0x7FFFFFFF;
   }
 
-  return v2;
+  return maximumTrainingFaceprintsPerIdentity;
 }
 
 - (int)faceID3ModelMaximumIDs
 {
-  v2 = [(VNPersonsModelConfiguration *)self maximumIdentities];
-  if (v2 >= 0x7FFFFFFF)
+  maximumIdentities = [(VNPersonsModelConfiguration *)self maximumIdentities];
+  if (maximumIdentities >= 0x7FFFFFFF)
   {
-    LODWORD(v2) = 0x7FFFFFFF;
+    LODWORD(maximumIdentities) = 0x7FFFFFFF;
   }
 
-  return v2;
+  return maximumIdentities;
 }
 
 @end

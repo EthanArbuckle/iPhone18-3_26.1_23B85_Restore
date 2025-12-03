@@ -3,27 +3,27 @@
 - (id)serialNumber;
 - (id)wifiAddress;
 - (id)wifiDeviceCount;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentWiFi
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentWiFi *)self wifiDeviceCount];
-  v3 = [v2 intValue] > 0;
+  wifiDeviceCount = [(ComponentWiFi *)self wifiDeviceCount];
+  v3 = [wifiDeviceCount intValue] > 0;
 
   return v3;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentWiFi *)self wifiAddress];
-  [v4 setObject:v5 forKeyedSubscript:@"wifiAddress"];
+  attributesCopy = attributes;
+  wifiAddress = [(ComponentWiFi *)self wifiAddress];
+  [attributesCopy setObject:wifiAddress forKeyedSubscript:@"wifiAddress"];
 
-  v6 = [(ComponentWiFi *)self serialNumber];
-  [v4 setObject:v6 forKeyedSubscript:@"serialNumber"];
+  serialNumber = [(ComponentWiFi *)self serialNumber];
+  [attributesCopy setObject:serialNumber forKeyedSubscript:@"serialNumber"];
 }
 
 - (id)wifiDeviceCount
@@ -33,8 +33,8 @@
   if (v2)
   {
     [v2 activate];
-    v4 = [v3 interfaceNames];
-    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
+    interfaceNames = [v3 interfaceNames];
+    v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [interfaceNames count]);
   }
 
   else

@@ -1,20 +1,20 @@
 @interface GKiOSAppIconBrushShare
 - (CGSize)outputSize;
-- (CGSize)sizeForInput:(id)a3;
+- (CGSize)sizeForInput:(id)input;
 @end
 
 @implementation GKiOSAppIconBrushShare
 
-- (CGSize)sizeForInput:(id)a3
+- (CGSize)sizeForInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   width = self->_outputSize.width;
   height = self->_outputSize.height;
   if (width == 0.0 && height == 0.0)
   {
     v11.receiver = self;
     v11.super_class = GKiOSAppIconBrushShare;
-    [(GKImageBrush *)&v11 sizeForInput:v4];
+    [(GKImageBrush *)&v11 sizeForInput:inputCopy];
     width = v7;
     height = v8;
   }

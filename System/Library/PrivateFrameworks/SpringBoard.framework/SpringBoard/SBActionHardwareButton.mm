@@ -1,35 +1,35 @@
 @interface SBActionHardwareButton
 + (SBActionHardwareButton)new;
 - (SBActionHardwareButton)init;
-- (id)_dateFromMachAbsoluteTimestamp:(uint64_t)a1;
+- (id)_dateFromMachAbsoluteTimestamp:(uint64_t)timestamp;
 - (uint64_t)_sendActionButtonDownToSceneOverride;
 - (uint64_t)handleRingerButtonEvent:(uint64_t)result;
 - (void)_configureButtonArbiter;
-- (void)_performActionForEvent:(uint64_t)a1 interactionTime:(uint64_t)a2;
+- (void)_performActionForEvent:(uint64_t)event interactionTime:(uint64_t)time;
 - (void)cancelHardwareButtonPress;
-- (void)initWithSystemActionControl:(void *)a3 suppressionManager:;
-- (void)performActionsForButtonDown:(id)a3;
-- (void)performActionsForButtonLongPress:(id)a3;
-- (void)performActionsForButtonUp:(id)a3;
-- (void)setParameters:(uint64_t)a1;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)systemActionControlDidUpdateActionInteractionConfiguration:(id)a3;
-- (void)systemActionSuppressionManager:(id)a3 didUpdateSuppressionStatus:(id)a4;
+- (void)initWithSystemActionControl:(void *)control suppressionManager:;
+- (void)performActionsForButtonDown:(id)down;
+- (void)performActionsForButtonLongPress:(id)press;
+- (void)performActionsForButtonUp:(id)up;
+- (void)setParameters:(uint64_t)parameters;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)systemActionControlDidUpdateActionInteractionConfiguration:(id)configuration;
+- (void)systemActionSuppressionManager:(id)manager didUpdateSuppressionStatus:(id)status;
 @end
 
 @implementation SBActionHardwareButton
 
 - (void)_configureButtonArbiter
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(SBSystemActionSuppressionManager *)*(a1 + 32) suppressionStatus];
-    v3 = [(SBCameraActivationManager *)v2 workspace];
-    v4 = *(a1 + 8);
+    suppressionStatus = [(SBSystemActionSuppressionManager *)*(self + 32) suppressionStatus];
+    workspace = [(SBCameraActivationManager *)suppressionStatus workspace];
+    v4 = *(self + 8);
     if (v4)
     {
       v5 = 8;
-      if (v3 == 1)
+      if (workspace == 1)
       {
         v5 = 16;
       }
@@ -42,7 +42,7 @@
       v6 = 0.0;
     }
 
-    [*(a1 + 88) setLongPressTimeout:v6];
+    [*(self + 88) setLongPressTimeout:v6];
     v7 = SBLogButtonsAction();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -65,7 +65,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBActionHardwareButton.m";
     v17 = 1024;
@@ -94,7 +94,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBActionHardwareButton.m";
     v17 = 1024;
@@ -110,15 +110,15 @@
   return result;
 }
 
-- (void)initWithSystemActionControl:(void *)a3 suppressionManager:
+- (void)initWithSystemActionControl:(void *)control suppressionManager:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  controlCopy = control;
+  if (self)
   {
     if ((SBUIHasHIDRingerButton() & 1) == 0 && (_os_feature_enabled_impl() & 1) == 0)
     {
-      [SBActionHardwareButton initWithSystemActionControl:a1 suppressionManager:?];
+      [SBActionHardwareButton initWithSystemActionControl:self suppressionManager:?];
     }
 
     if (!v5)
@@ -126,17 +126,17 @@
       [SBActionHardwareButton initWithSystemActionControl:? suppressionManager:?];
     }
 
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = SBActionHardwareButton;
     v7 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
-      [(SBActionHardwareButton *)v7 initWithSystemActionControl:v5 suppressionManager:v6];
+      [(SBActionHardwareButton *)v7 initWithSystemActionControl:v5 suppressionManager:controlCopy];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)handleRingerButtonEvent:(uint64_t)result
@@ -167,29 +167,29 @@
   return result;
 }
 
-- (void)_performActionForEvent:(uint64_t)a1 interactionTime:(uint64_t)a2
+- (void)_performActionForEvent:(uint64_t)event interactionTime:(uint64_t)time
 {
-  if (!a1)
+  if (!event)
   {
     return;
   }
 
-  v21 = *(a1 + 24);
-  v4 = [(SBSystemActionSuppressionManager *)*(a1 + 32) suppressionStatus];
-  if (a2 <= 1)
+  v21 = *(event + 24);
+  suppressionStatus = [(SBSystemActionSuppressionManager *)*(event + 32) suppressionStatus];
+  if (time <= 1)
   {
-    if (a2)
+    if (time)
     {
-      if (a2 != 1)
+      if (time != 1)
       {
         goto LABEL_11;
       }
 
-      v11 = [SBActionHardwareButton _dateFromMachAbsoluteTimestamp:a1];
-      v18 = [[SBSystemActionInteractionContext alloc] initWithPreciseTimestamp:v11 type:1 suppressionStatus:v4];
+      v11 = [SBActionHardwareButton _dateFromMachAbsoluteTimestamp:event];
+      v18 = [[SBSystemActionInteractionContext alloc] initWithPreciseTimestamp:v11 type:1 suppressionStatus:suppressionStatus];
       v19 = [(SBSystemActionControl *)v21 performSelectedActionFromSource:v18 withContext:?];
-      v20 = *(a1 + 72);
-      *(a1 + 72) = v19;
+      v20 = *(event + 72);
+      *(event + 72) = v19;
     }
 
     else
@@ -198,67 +198,67 @@
       BSMonotonicReferencedTimeFromMachTime();
       [(SBSystemActionAnalyticsTracker *)v6 trackPressDownForLatencyMeasurement:v7];
 
-      v8 = *(a1 + 32);
-      [*(a1 + 88) longPressTimeout];
+      v8 = *(event + 32);
+      [*(event + 88) longPressTimeout];
       [(SBSystemActionSuppressionManager *)v8 systemActionInteractionDidStartWithLongPressTimeout:v9];
-      v10 = [(SBSystemActionControl *)v21 previewSelectedActionFromSource:v4 withSuppressionStatus:?];
-      v11 = *(a1 + 64);
-      *(a1 + 64) = v10;
+      v10 = [(SBSystemActionControl *)v21 previewSelectedActionFromSource:suppressionStatus withSuppressionStatus:?];
+      v11 = *(event + 64);
+      *(event + 64) = v10;
     }
 
     goto LABEL_10;
   }
 
-  if (a2 == 2)
+  if (time == 2)
   {
     v5 = 0;
     goto LABEL_9;
   }
 
-  if (a2 == 3)
+  if (time == 3)
   {
     v5 = 1;
 LABEL_9:
     v12 = +[SBSystemActionAnalyticsTracker sharedTracker];
-    v13 = *(a1 + 72) != 0;
-    v14 = [(SBSystemActionControl *)*(a1 + 24) selectedActionAnalyticsData];
+    v13 = *(event + 72) != 0;
+    selectedActionAnalyticsData = [(SBSystemActionControl *)*(event + 24) selectedActionAnalyticsData];
     v16 = v15;
-    [(SBSystemActionAnalyticsTracker *)v12 trackPressUpForLatencyMeasurement:v4 cancelled:v5 longPressTriggered:v13 selectedActionIdentifier:v14];
+    [(SBSystemActionAnalyticsTracker *)v12 trackPressUpForLatencyMeasurement:suppressionStatus cancelled:v5 longPressTriggered:v13 selectedActionIdentifier:selectedActionAnalyticsData];
 
-    [*(a1 + 64) invalidate];
-    v17 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    [*(event + 64) invalidate];
+    v17 = *(event + 64);
+    *(event + 64) = 0;
 
-    [*(a1 + 72) invalidate];
-    v11 = *(a1 + 72);
-    *(a1 + 72) = 0;
+    [*(event + 72) invalidate];
+    v11 = *(event + 72);
+    *(event + 72) = 0;
 LABEL_10:
   }
 
 LABEL_11:
 }
 
-- (void)performActionsForButtonDown:(id)a3
+- (void)performActionsForButtonDown:(id)down
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  downCopy = down;
   if (self->_buttonActiveAssertion)
   {
-    v5 = SBLogButtonsAction();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    defaultCenter = SBLogButtonsAction();
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
+      pressSequence = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
       v17 = 67109120;
-      v18 = v6;
-      _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "button down (sq%d): skipping; already handled", &v17, 8u);
+      v18 = pressSequence;
+      _os_log_impl(&dword_21ED4E000, defaultCenter, OS_LOG_TYPE_DEFAULT, "button down (sq%d): skipping; already handled", &v17, 8u);
     }
   }
 
   else
   {
     hardwareButtonCoordinator = self->_hardwareButtonCoordinator;
-    v8 = [(SBActionHardwareButton *)self hardwareButtonIdentifier];
-    v9 = [(SBHardwareButtonCoordinator *)hardwareButtonCoordinator assertButtonIsActive:v8 dropletHintIdentifier:8];
+    hardwareButtonIdentifier = [(SBActionHardwareButton *)self hardwareButtonIdentifier];
+    v9 = [(SBHardwareButtonCoordinator *)hardwareButtonCoordinator assertButtonIsActive:hardwareButtonIdentifier dropletHintIdentifier:8];
     buttonActiveAssertion = self->_buttonActiveAssertion;
     self->_buttonActiveAssertion = v9;
 
@@ -269,16 +269,16 @@ LABEL_11:
       goto LABEL_6;
     }
 
-    v12 = [(SBActionHardwareButton *)self _sendActionButtonDownToSceneOverride];
+    _sendActionButtonDownToSceneOverride = [(SBActionHardwareButton *)self _sendActionButtonDownToSceneOverride];
     v13 = SBLogButtonsAction();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    if (_sendActionButtonDownToSceneOverride)
     {
       if (v14)
       {
-        v15 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
+        pressSequence2 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
         v17 = 67109120;
-        v18 = v15;
+        v18 = pressSequence2;
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "button down (sq%d): sent to scene override", &v17, 8u);
       }
     }
@@ -287,27 +287,27 @@ LABEL_11:
     {
       if (v14)
       {
-        v16 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
+        pressSequence3 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
         v17 = 67109120;
-        v18 = v16;
+        v18 = pressSequence3;
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "button down (sq%d): performing action", &v17, 8u);
       }
 
-      [v4 downTime];
+      [downCopy downTime];
       [SBActionHardwareButton _performActionForEvent:0 interactionTime:?];
     }
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:*MEMORY[0x277D679D8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D679D8] object:0];
   }
 
 LABEL_6:
 }
 
-- (void)performActionsForButtonLongPress:(id)a3
+- (void)performActionsForButtonLongPress:(id)press
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressCopy = press;
   if (!self->_inhibitActions)
   {
     if (self->_systemActionPerformedInteractionAssertion)
@@ -315,9 +315,9 @@ LABEL_6:
       v5 = SBLogButtonsAction();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
+        pressSequence = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
         v12 = 67109120;
-        v13 = v6;
+        v13 = pressSequence;
         v7 = "long press (sq%d): skipping; already handled";
 LABEL_8:
         _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, v7, &v12, 8u);
@@ -334,9 +334,9 @@ LABEL_8:
     {
       if (v9)
       {
-        v10 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
+        pressSequence2 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
         v12 = 67109120;
-        v13 = v10;
+        v13 = pressSequence2;
         v7 = "long press (sq%d): skipping due to override handler";
         goto LABEL_8;
       }
@@ -348,23 +348,23 @@ LABEL_9:
 
     if (v9)
     {
-      v11 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
+      pressSequence3 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
       v12 = 67109120;
-      v13 = v11;
+      v13 = pressSequence3;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "long press (sq%d): performing action", &v12, 8u);
     }
 
-    [v4 downTime];
+    [pressCopy downTime];
     [SBActionHardwareButton _performActionForEvent:1 interactionTime:?];
   }
 
 LABEL_10:
 }
 
-- (void)performActionsForButtonUp:(id)a3
+- (void)performActionsForButtonUp:(id)up
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  upCopy = up;
   [(BSInvalidatable *)self->_buttonActiveAssertion invalidate];
   buttonActiveAssertion = self->_buttonActiveAssertion;
   self->_buttonActiveAssertion = 0;
@@ -378,9 +378,9 @@ LABEL_10:
     {
       if (v8)
       {
-        v9 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
+        pressSequence = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
         v12 = 67109120;
-        v13 = v9;
+        v13 = pressSequence;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "button up (sq%d): invoking override", &v12, 8u);
       }
 
@@ -393,22 +393,22 @@ LABEL_10:
     {
       if (v8)
       {
-        v11 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
+        pressSequence2 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
         v12 = 67109120;
-        v13 = v11;
+        v13 = pressSequence2;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "button up (sq%d): performing action", &v12, 8u);
       }
 
-      [v4 downTime];
+      [upCopy downTime];
       [SBActionHardwareButton _performActionForEvent:2 interactionTime:?];
     }
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
   settings = self->_settings;
-  if (settings == a3)
+  if (settings == settings)
   {
     [SBActionHardwareButton settings:self changedValueForKey:?];
   }
@@ -425,9 +425,9 @@ LABEL_10:
   {
     if (v5)
     {
-      v6 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
+      pressSequence = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
       v9 = 67109120;
-      v10 = v6;
+      v10 = pressSequence;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "button cancelled (sq%d): invoking override", &v9, 8u);
     }
 
@@ -440,9 +440,9 @@ LABEL_10:
   {
     if (v5)
     {
-      v8 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
+      pressSequence2 = [(SBHIDButtonStateArbiter *)self->_buttonArbiter pressSequence];
       v9 = 67109120;
-      v10 = v8;
+      v10 = pressSequence2;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "button cancelled (sq%d): performing action", &v9, 8u);
     }
 
@@ -451,26 +451,26 @@ LABEL_10:
   }
 }
 
-- (void)setParameters:(uint64_t)a1
+- (void)setParameters:(uint64_t)parameters
 {
-  if (a1)
+  if (parameters)
   {
     v3 = [a2 copy];
-    v4 = *(a1 + 8);
-    *(a1 + 8) = v3;
+    v4 = *(parameters + 8);
+    *(parameters + 8) = v3;
 
-    [(SBActionHardwareButton *)a1 _configureButtonArbiter];
+    [(SBActionHardwareButton *)parameters _configureButtonArbiter];
   }
 }
 
-- (id)_dateFromMachAbsoluteTimestamp:(uint64_t)a1
+- (id)_dateFromMachAbsoluteTimestamp:(uint64_t)timestamp
 {
-  if (a1)
+  if (timestamp)
   {
-    v1 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     mach_absolute_time();
     BSTimeDifferenceFromMachTimeToMachTime();
-    v2 = [v1 dateByAddingTimeInterval:?];
+    v2 = [date dateByAddingTimeInterval:?];
   }
 
   else
@@ -483,22 +483,22 @@ LABEL_10:
 
 - (uint64_t)_sendActionButtonDownToSceneOverride
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v3 = [v2 physicalButtonSceneOverrideManager];
-    v4 = [(SBPhysicalButtonSceneOverrideManager *)v3 sendActionButtonDown];
-    v5 = *(v1 + 48);
-    *(v1 + 48) = v4;
+    physicalButtonSceneOverrideManager = [v2 physicalButtonSceneOverrideManager];
+    sendActionButtonDown = [(SBPhysicalButtonSceneOverrideManager *)physicalButtonSceneOverrideManager sendActionButtonDown];
+    v5 = *(selfCopy + 48);
+    *(selfCopy + 48) = sendActionButtonDown;
 
-    v1 = *(v1 + 48) != 0;
+    selfCopy = *(selfCopy + 48) != 0;
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)systemActionControlDidUpdateActionInteractionConfiguration:(id)a3
+- (void)systemActionControlDidUpdateActionInteractionConfiguration:(id)configuration
 {
   v4 = SBLogButtonsAction();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -510,21 +510,21 @@ LABEL_10:
   [(SBActionHardwareButton *)self _configureButtonArbiter];
 }
 
-- (void)systemActionSuppressionManager:(id)a3 didUpdateSuppressionStatus:(id)a4
+- (void)systemActionSuppressionManager:(id)manager didUpdateSuppressionStatus:(id)status
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  statusCopy = status;
   v6 = SBLogButtonsAction();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "(%{public}@) configuring button arbiter for system action suppression update", &v8, 0xCu);
   }
 
   [(SBActionHardwareButton *)self _configureButtonArbiter];
   v7 = +[SBSystemActionAnalyticsTracker sharedTracker];
-  [(SBSystemActionAnalyticsTracker *)v7 trackSuppressionStatusUpdate:v5];
+  [(SBSystemActionAnalyticsTracker *)v7 trackSuppressionStatusUpdate:statusCopy];
 }
 
 - (void)initWithSystemActionControl:(char *)a1 suppressionManager:(uint64_t)a2 .cold.1(char *a1, uint64_t a2)

@@ -3,16 +3,16 @@
 - (BOOL)makeMapImages;
 - (id)customAttributes;
 - (id)outputImage;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation RAWLensCorrectionVignetteFilter
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_hasPrefix_(v7, v8, @"inputVignetteTable", v9, v10))
+  valueCopy = value;
+  keyCopy = key;
+  if (objc_msgSend_hasPrefix_(keyCopy, v8, @"inputVignetteTable", v9, v10))
   {
     vigImg = self->vigImg;
     self->vigImg = 0;
@@ -20,7 +20,7 @@
 
   v12.receiver = self;
   v12.super_class = RAWLensCorrectionVignetteFilter;
-  [(RAWLensCorrectionVignetteFilter *)&v12 setValue:v6 forKey:v7];
+  [(RAWLensCorrectionVignetteFilter *)&v12 setValue:valueCopy forKey:keyCopy];
 }
 
 + (id)customAttributes

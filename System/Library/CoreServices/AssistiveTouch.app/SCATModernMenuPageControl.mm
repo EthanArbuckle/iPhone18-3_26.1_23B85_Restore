@@ -1,5 +1,5 @@
 @interface SCATModernMenuPageControl
-- (SCATModernMenuPageControl)initWithFrame:(CGRect)a3;
+- (SCATModernMenuPageControl)initWithFrame:(CGRect)frame;
 - (int64_t)semanticContentAttribute;
 - (void)didUpdateScatMenuItemStyle;
 - (void)layoutSubviews;
@@ -7,11 +7,11 @@
 
 @implementation SCATModernMenuPageControl
 
-- (SCATModernMenuPageControl)initWithFrame:(CGRect)a3
+- (SCATModernMenuPageControl)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = SCATModernMenuPageControl;
-  v3 = [(SCATModernMenuPageControl *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SCATModernMenuPageControl *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,27 +28,27 @@
     [(SCATModernMenuPageControl *)v4 addSubview:v4->_highlightView];
     [(SCATModernPageControlHighlightView *)v4->_highlightView setAlpha:0.0];
     [(SCATModernPageControlHighlightView *)v4->_highlightView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(SCATModernPageControlHighlightView *)v4->_highlightView centerXAnchor];
-    v9 = [(SCATModernMenuPageControl *)v4 centerXAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    centerXAnchor = [(SCATModernPageControlHighlightView *)v4->_highlightView centerXAnchor];
+    centerXAnchor2 = [(SCATModernMenuPageControl *)v4 centerXAnchor];
+    v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v10 setActive:1];
 
-    v11 = [(SCATModernPageControlHighlightView *)v4->_highlightView centerYAnchor];
-    v12 = [(SCATModernMenuPageControl *)v4 centerYAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    centerYAnchor = [(SCATModernPageControlHighlightView *)v4->_highlightView centerYAnchor];
+    centerYAnchor2 = [(SCATModernMenuPageControl *)v4 centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v13 setActive:1];
 
-    v14 = [(SCATModernPageControlHighlightView *)v4->_highlightView heightAnchor];
-    v15 = [v14 constraintEqualToConstant:15.0];
+    heightAnchor = [(SCATModernPageControlHighlightView *)v4->_highlightView heightAnchor];
+    v15 = [heightAnchor constraintEqualToConstant:15.0];
     [v15 setActive:1];
 
-    v16 = [(SCATModernPageControlHighlightView *)v4->_highlightView widthAnchor];
+    widthAnchor = [(SCATModernPageControlHighlightView *)v4->_highlightView widthAnchor];
     [(SCATModernMenuPageControl *)v4 _highlightViewWidth];
-    v17 = [v16 constraintEqualToConstant:?];
+    v17 = [widthAnchor constraintEqualToConstant:?];
     [(SCATModernPageControlHighlightView *)v4->_highlightView setWidthConstraint:v17];
 
-    v18 = [(SCATModernPageControlHighlightView *)v4->_highlightView widthConstraint];
-    [v18 setActive:1];
+    widthConstraint = [(SCATModernPageControlHighlightView *)v4->_highlightView widthConstraint];
+    [widthConstraint setActive:1];
 
     [(SCATModernMenuPageControl *)v4 didUpdateScatMenuItemStyle];
   }
@@ -63,8 +63,8 @@
   [(SCATModernMenuPageControl *)&v6 layoutSubviews];
   [(SCATModernMenuPageControl *)self _highlightViewWidth];
   v4 = v3;
-  v5 = [(SCATModernPageControlHighlightView *)self->_highlightView widthConstraint];
-  [v5 setConstant:v4];
+  widthConstraint = [(SCATModernPageControlHighlightView *)self->_highlightView widthConstraint];
+  [widthConstraint setConstant:v4];
 
   [(SCATModernPageControlHighlightView *)self->_highlightView layoutIfNeeded];
 }
@@ -72,12 +72,12 @@
 - (void)didUpdateScatMenuItemStyle
 {
   [(SCATModernMenuPageControl *)self setNeedsDisplay];
-  v3 = [(SCATModernMenuPageControl *)self scatMenuItemStyle];
-  if (v3 <= 1)
+  scatMenuItemStyle = [(SCATModernMenuPageControl *)self scatMenuItemStyle];
+  if (scatMenuItemStyle <= 1)
   {
-    if (v3)
+    if (scatMenuItemStyle)
     {
-      if (v3 != 1)
+      if (scatMenuItemStyle != 1)
       {
         return;
       }
@@ -88,27 +88,27 @@
 
   else
   {
-    if (v3 == 2)
+    if (scatMenuItemStyle == 2)
     {
       highlightView = self->_highlightView;
       v7 = 1.0;
       goto LABEL_13;
     }
 
-    if (v3 != 4)
+    if (scatMenuItemStyle != 4)
     {
-      if (v3 != 3)
+      if (scatMenuItemStyle != 3)
       {
         return;
       }
 
 LABEL_5:
       v8 = +[SCATStyleProvider sharedStyleProvider];
-      v4 = [v8 menuKnockoutColor];
-      [(SCATModernMenuPageControl *)self setPageIndicatorTintColor:v4];
+      menuKnockoutColor = [v8 menuKnockoutColor];
+      [(SCATModernMenuPageControl *)self setPageIndicatorTintColor:menuKnockoutColor];
 
-      v5 = [v8 menuKnockoutColor];
-      [(SCATModernMenuPageControl *)self setCurrentPageIndicatorTintColor:v5];
+      menuKnockoutColor2 = [v8 menuKnockoutColor];
+      [(SCATModernMenuPageControl *)self setCurrentPageIndicatorTintColor:menuKnockoutColor2];
 
       -[SCATModernMenuPageControl _setDrawsAsBackdropOverlayWithBlendMode:](self, "_setDrawsAsBackdropOverlayWithBlendMode:", [v8 menuKnockoutBorderOverlayBlendMode]);
       [v8 menuKnockoutBorderOpacity];

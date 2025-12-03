@@ -1,14 +1,14 @@
 @interface RecentDialog
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RecentDialog
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  RecentDialog.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  RecentDialog.encode(with:)(coderCopy);
 }
 
 @end

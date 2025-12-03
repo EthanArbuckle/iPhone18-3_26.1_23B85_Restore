@@ -1,12 +1,12 @@
 @interface CRLWPFallbackFontList
 + (id)sharedInstance;
-- (BOOL)isMasqueradingFontName:(id)a3;
+- (BOOL)isMasqueradingFontName:(id)name;
 - (CRLWPFallbackFontList)init;
-- (CRLWPFallbackFontList)initWithList:(id)a3;
+- (CRLWPFallbackFontList)initWithList:(id)list;
 - (NSSet)replaceableFontNames;
-- (id)fallbackFontNameForFontWithName:(id)a3;
-- (id)fallbackListForPostscriptFontName:(id)a3;
-- (id)localizedNameForMasqueradingFontName:(id)a3;
+- (id)fallbackFontNameForFontWithName:(id)name;
+- (id)fallbackListForPostscriptFontName:(id)name;
+- (id)localizedNameForMasqueradingFontName:(id)name;
 @end
 
 @implementation CRLWPFallbackFontList
@@ -34,16 +34,16 @@
   return v6;
 }
 
-- (CRLWPFallbackFontList)initWithList:(id)a3
+- (CRLWPFallbackFontList)initWithList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v10.receiver = self;
   v10.super_class = CRLWPFallbackFontList;
   v6 = [(CRLWPFallbackFontList *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fallbackFontList, a3);
+    objc_storeStrong(&v6->_fallbackFontList, list);
     localizedFontFamilyNameResolver = v7->_localizedFontFamilyNameResolver;
     v7->_localizedFontFamilyNameResolver = &stru_101845790;
   }
@@ -53,19 +53,19 @@
 
 - (NSSet)replaceableFontNames
 {
-  v2 = [(CRLWPFallbackFontList *)self fallbackFontList];
-  v3 = [v2 allKeys];
-  v4 = [NSSet setWithArray:v3];
+  fallbackFontList = [(CRLWPFallbackFontList *)self fallbackFontList];
+  allKeys = [fallbackFontList allKeys];
+  v4 = [NSSet setWithArray:allKeys];
 
   return v4;
 }
 
-- (id)fallbackListForPostscriptFontName:(id)a3
+- (id)fallbackListForPostscriptFontName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[NSMutableArray array];
-  v6 = [(CRLWPFallbackFontList *)self fallbackFontList];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  fallbackFontList = [(CRLWPFallbackFontList *)self fallbackFontList];
+  v7 = [fallbackFontList objectForKeyedSubscript:nameCopy];
 
   v17 = 0u;
   v18 = 0u;
@@ -99,11 +99,11 @@
   return v5;
 }
 
-- (id)fallbackFontNameForFontWithName:(id)a3
+- (id)fallbackFontNameForFontWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(CRLWPFallbackFontList *)self fallbackFontList];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  fallbackFontList = [(CRLWPFallbackFontList *)self fallbackFontList];
+  v6 = [fallbackFontList objectForKeyedSubscript:nameCopy];
 
   v18 = 0u;
   v19 = 0u;
@@ -155,22 +155,22 @@ LABEL_9:
   return v12;
 }
 
-- (id)localizedNameForMasqueradingFontName:(id)a3
+- (id)localizedNameForMasqueradingFontName:(id)name
 {
-  v4 = a3;
-  v5 = [(CRLWPFallbackFontList *)self localizedFontFamilyNameResolver];
-  v6 = v5[2]();
+  nameCopy = name;
+  localizedFontFamilyNameResolver = [(CRLWPFallbackFontList *)self localizedFontFamilyNameResolver];
+  v6 = localizedFontFamilyNameResolver[2]();
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:nameCopy];
 
   return v7;
 }
 
-- (BOOL)isMasqueradingFontName:(id)a3
+- (BOOL)isMasqueradingFontName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[CRLWPFontVerifier sharedInstance];
-  v6 = [v5 isFontWithPostscriptNameInstalled:v4];
+  v6 = [v5 isFontWithPostscriptNameInstalled:nameCopy];
 
   if (v6)
   {
@@ -179,11 +179,11 @@ LABEL_9:
 
   else
   {
-    v8 = [(CRLWPFallbackFontList *)self fallbackFontNameForFontWithName:v4];
+    v8 = [(CRLWPFallbackFontList *)self fallbackFontNameForFontWithName:nameCopy];
     if ([v8 length])
     {
-      v9 = [(CRLWPFallbackFontList *)self masqueradingFontNames];
-      v7 = [v9 containsObject:v8];
+      masqueradingFontNames = [(CRLWPFallbackFontList *)self masqueradingFontNames];
+      v7 = [masqueradingFontNames containsObject:v8];
     }
 
     else

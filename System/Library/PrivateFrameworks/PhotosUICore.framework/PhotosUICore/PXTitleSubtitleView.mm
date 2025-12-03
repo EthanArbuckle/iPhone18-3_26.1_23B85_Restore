@@ -1,6 +1,6 @@
 @interface PXTitleSubtitleView
 - (CGRect)clippingRect;
-- (PXTitleSubtitleView)initWithFrame:(CGRect)a3;
+- (PXTitleSubtitleView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PXTitleSubtitleView
@@ -18,16 +18,16 @@
   return result;
 }
 
-- (PXTitleSubtitleView)initWithFrame:(CGRect)a3
+- (PXTitleSubtitleView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PXTitleSubtitleView;
-  result = [(PXTitleSubtitleView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(PXTitleSubtitleView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     v5 = result;
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:v5 file:@"PXTitleSubtitleView.m" lineNumber:21 description:@"This code path is not implemented."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v5 file:@"PXTitleSubtitleView.m" lineNumber:21 description:@"This code path is not implemented."];
 
     abort();
   }

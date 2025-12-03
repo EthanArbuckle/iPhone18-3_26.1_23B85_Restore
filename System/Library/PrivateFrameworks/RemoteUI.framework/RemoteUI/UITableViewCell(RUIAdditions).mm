@@ -19,7 +19,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 customLinkTextLabel];
+    customLinkTextLabel = [self customLinkTextLabel];
   }
 
   else
@@ -28,16 +28,16 @@
     if (objc_opt_isKindOfClass())
     {
 LABEL_2:
-      v2 = [a1 customTextLabel];
+      customLinkTextLabel = [self customTextLabel];
       goto LABEL_7;
     }
 
-    v2 = [a1 textLabel];
+    customLinkTextLabel = [self textLabel];
   }
 
 LABEL_7:
 
-  return v2;
+  return customLinkTextLabel;
 }
 
 - (id)ruiDetailTextLabel
@@ -45,7 +45,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 customDetailTextLabel];
+    customDetailTextLabel = [self customDetailTextLabel];
   }
 
   else
@@ -53,7 +53,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v2 = [a1 effectiveDetailTextLabel];
+      customDetailTextLabel = [self effectiveDetailTextLabel];
     }
 
     else
@@ -61,18 +61,18 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a1 customLinkDetailTextLabel];
+        [self customLinkDetailTextLabel];
       }
 
       else
       {
-        [a1 detailTextLabel];
+        [self detailTextLabel];
       }
-      v2 = ;
+      customDetailTextLabel = ;
     }
   }
 
-  return v2;
+  return customDetailTextLabel;
 }
 
 - (id)ruiValueLabel
@@ -80,7 +80,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 customValueLabel];
+    customValueLabel = [self customValueLabel];
   }
 
   else
@@ -88,7 +88,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v2 = [a1 effectiveValueTextLabel];
+      customValueLabel = [self effectiveValueTextLabel];
     }
 
     else
@@ -96,17 +96,17 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v2 = [a1 customLinkSubLabel];
+        customValueLabel = [self customLinkSubLabel];
       }
 
       else
       {
-        v2 = 0;
+        customValueLabel = 0;
       }
     }
   }
 
-  return v2;
+  return customValueLabel;
 }
 
 - (id)ruiEditableTextField
@@ -114,12 +114,12 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 customEditableTextField];
+    [self customEditableTextField];
   }
 
   else
   {
-    [a1 editableTextField];
+    [self editableTextField];
   }
   v2 = ;
 
@@ -137,7 +137,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 customLinkImageView];
+    customLinkImageView = [self customLinkImageView];
   }
 
   else
@@ -146,16 +146,16 @@ LABEL_7:
     if (objc_opt_isKindOfClass())
     {
 LABEL_2:
-      v2 = [a1 customImageView];
+      customLinkImageView = [self customImageView];
       goto LABEL_7;
     }
 
-    v2 = [a1 imageView];
+    customLinkImageView = [self imageView];
   }
 
 LABEL_7:
 
-  return v2;
+  return customLinkImageView;
 }
 
 @end

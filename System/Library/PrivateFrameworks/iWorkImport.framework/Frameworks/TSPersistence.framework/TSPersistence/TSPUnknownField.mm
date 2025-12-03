@@ -1,18 +1,18 @@
 @interface TSPUnknownField
-+ (id)unknownFieldWithFieldSet:(void *)a3 fieldInfo:(const void *)a4;
-- (TSPUnknownField)initWithFieldSet:(void *)a3 fieldInfo:(const void *)a4;
++ (id)unknownFieldWithFieldSet:(void *)set fieldInfo:(const void *)info;
+- (TSPUnknownField)initWithFieldSet:(void *)set fieldInfo:(const void *)info;
 - (id).cxx_construct;
 - (id)debugDescription;
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4;
-- (void)mergeToUnknownFieldSet:(void *)a3;
-- (void)updateMessageInfo:(void *)a3;
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection;
+- (void)mergeToUnknownFieldSet:(void *)set;
+- (void)updateMessageInfo:(void *)info;
 @end
 
 @implementation TSPUnknownField
 
-+ (id)unknownFieldWithFieldSet:(void *)a3 fieldInfo:(const void *)a4
++ (id)unknownFieldWithFieldSet:(void *)set fieldInfo:(const void *)info
 {
-  v6 = *(a4 + 28) - 1;
+  v6 = *(info + 28) - 1;
   if (v6 > 2)
   {
     v7 = off_27A6E21E0;
@@ -24,12 +24,12 @@
   }
 
   v8 = objc_alloc(*v7);
-  v10 = objc_msgSend_initWithFieldSet_fieldInfo_(v8, v9, a3, a4);
+  v10 = objc_msgSend_initWithFieldSet_fieldInfo_(v8, v9, set, info);
 
   return v10;
 }
 
-- (TSPUnknownField)initWithFieldSet:(void *)a3 fieldInfo:(const void *)a4
+- (TSPUnknownField)initWithFieldSet:(void *)set fieldInfo:(const void *)info
 {
   v13.receiver = self;
   v13.super_class = TSPUnknownField;
@@ -38,8 +38,8 @@
   v8 = v6;
   if (v6)
   {
-    v10 = *a3;
-    v9 = *(a3 + 1);
+    v10 = *set;
+    v9 = *(set + 1);
     if (v9)
     {
       atomic_fetch_add_explicit((v9 + 8), 1uLL, memory_order_relaxed);
@@ -53,24 +53,24 @@
       sub_2769C1430(cntrl);
     }
 
-    sub_2769E211C(&v7->_fieldInfo, a4);
+    sub_2769E211C(&v7->_fieldInfo, info);
   }
 
   return v8;
 }
 
-- (void)mergeToUnknownFieldSet:(void *)a3
+- (void)mergeToUnknownFieldSet:(void *)set
 {
-  if (a3)
+  if (set)
   {
-    google::protobuf::UnknownFieldSet::MergeFrom(a3, self->_fieldSet.__ptr_);
+    google::protobuf::UnknownFieldSet::MergeFrom(set, self->_fieldSet.__ptr_);
   }
 }
 
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPUnknownField mergeToMessage:reflection:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPUnknownField mergeToMessage:reflection:]", reflection);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPUnknownField.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 95, 0, "Do not call method");
 
@@ -84,39 +84,39 @@
   objc_exception_throw(v16);
 }
 
-- (void)updateMessageInfo:(void *)a3
+- (void)updateMessageInfo:(void *)info
 {
-  v5 = *(a3 + 8);
+  v5 = *(info + 8);
   if (!v5)
   {
-    v7 = *(a3 + 15);
+    v7 = *(info + 15);
 LABEL_6:
-    google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 12, v7 + 1);
-    v5 = *(a3 + 8);
+    google::protobuf::internal::RepeatedPtrFieldBase::Reserve(info + 12, v7 + 1);
+    v5 = *(info + 8);
     v7 = *v5;
     goto LABEL_7;
   }
 
-  v6 = *(a3 + 14);
+  v6 = *(info + 14);
   v7 = *v5;
   if (v6 < *v5)
   {
-    *(a3 + 14) = v6 + 1;
+    *(info + 14) = v6 + 1;
     v8 = *&v5[2 * v6 + 2];
     goto LABEL_8;
   }
 
-  if (v7 == *(a3 + 15))
+  if (v7 == *(info + 15))
   {
     goto LABEL_6;
   }
 
 LABEL_7:
   *v5 = v7 + 1;
-  v8 = sub_2769F4F5C(*(a3 + 6));
-  v9 = *(a3 + 14);
-  v10 = *(a3 + 8) + 8 * v9;
-  *(a3 + 14) = v9 + 1;
+  v8 = sub_2769F4F5C(*(info + 6));
+  v9 = *(info + 14);
+  v10 = *(info + 8) + 8 * v9;
+  *(info + 14) = v9 + 1;
   *(v10 + 8) = v8;
 LABEL_8:
 

@@ -1,18 +1,18 @@
 @interface UIPrintFormatter
-- (CGRect)_pageContentRect:(BOOL)a3;
+- (CGRect)_pageContentRect:(BOOL)rect;
 - (CGRect)rectForPageAtIndex:(NSInteger)pageIndex;
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)perPageContentInsets;
 - (UIPrintFormatter)init;
 - (UIPrintPageRenderer)printPageRenderer;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_recalcIfNecessary;
 - (void)removeFromPrintPageRenderer;
 - (void)setContentInsets:(UIEdgeInsets)contentInsets;
 - (void)setMaximumContentHeight:(CGFloat)maximumContentHeight;
 - (void)setMaximumContentWidth:(CGFloat)maximumContentWidth;
 - (void)setPerPageContentInsets:(UIEdgeInsets)perPageContentInsets;
-- (void)setPrintPageRenderer:(id)a3;
+- (void)setPrintPageRenderer:(id)renderer;
 @end
 
 @implementation UIPrintFormatter
@@ -36,7 +36,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   *(result + 3) = *&self->_maximumContentHeight;
@@ -52,9 +52,9 @@
 
 - (void)removeFromPrintPageRenderer
 {
-  v4 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_printPageRenderer);
-  [WeakRetained _removePrintFormatter:v4];
+  [WeakRetained _removePrintFormatter:selfCopy];
 }
 
 - (void)setMaximumContentWidth:(CGFloat)maximumContentWidth
@@ -101,9 +101,9 @@
   }
 }
 
-- (void)setPrintPageRenderer:(id)a3
+- (void)setPrintPageRenderer:(id)renderer
 {
-  obj = a3;
+  obj = renderer;
   WeakRetained = objc_loadWeakRetained(&self->_printPageRenderer);
 
   v5 = obj;
@@ -124,9 +124,9 @@
   }
 }
 
-- (CGRect)_pageContentRect:(BOOL)a3
+- (CGRect)_pageContentRect:(BOOL)rect
 {
-  v3 = a3;
+  rectCopy = rect;
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   remainder.origin = *MEMORY[0x277CBF3A0];
   remainder.size = v5;
@@ -153,7 +153,7 @@
     [v7 footerHeight];
     CGRectDivide(remainder, &v41, &remainder, v18, CGRectMaxYEdge);
     top = 0.0;
-    if (v3)
+    if (rectCopy)
     {
       top = self->_contentInsets.top;
     }

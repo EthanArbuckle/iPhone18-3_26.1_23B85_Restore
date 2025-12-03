@@ -1,40 +1,40 @@
 @interface CRLCanvas
-+ (CGPoint)p_transformedUnscaledPoint:(CGPoint)result forTestingHitRep:(id)a4 withTransformFromBlock:(id)a5;
-+ (id)p_hitRep:(CGPoint)a3 withPrecision:(BOOL)a4 inTopLevelReps:(id)a5 smallRepOutset:(double)a6 unscaledPointTransformForRep:(id)a7 passingTest:(id)a8;
-+ (void)p_recursivelyAddOrderedChildrenOfRep:(id)a3 toArray:(id)a4;
-- (BOOL)i_areContentLayersInvalidForRep:(id)a3;
-- (BOOL)i_areOverlayLayersInvalidForRep:(id)a3;
++ (CGPoint)p_transformedUnscaledPoint:(CGPoint)result forTestingHitRep:(id)rep withTransformFromBlock:(id)block;
++ (id)p_hitRep:(CGPoint)rep withPrecision:(BOOL)precision inTopLevelReps:(id)reps smallRepOutset:(double)outset unscaledPointTransformForRep:(id)forRep passingTest:(id)test;
++ (void)p_recursivelyAddOrderedChildrenOfRep:(id)rep toArray:(id)array;
+- (BOOL)i_areContentLayersInvalidForRep:(id)rep;
+- (BOOL)i_areOverlayLayersInvalidForRep:(id)rep;
 - (BOOL)i_needsLayout;
 - (BOOL)isCanvasInteractive;
 - (BOOL)isDrawingIntoPDF;
 - (BOOL)isPrinting;
 - (BOOL)p_canvasShouldAlwaysUpdateLayers;
-- (BOOL)p_isLayoutCompleteIncludingLayers:(BOOL)a3;
+- (BOOL)p_isLayoutCompleteIncludingLayers:(BOOL)layers;
 - (BOOL)p_updateRepsFromLayouts;
-- (BOOL)shouldShowInstructionalTextForLayout:(id)a3;
+- (BOOL)shouldShowInstructionalTextForLayout:(id)layout;
 - (BOOL)shouldShowTextOverflowGlyphs;
 - (BOOL)shouldSuppressBackgrounds;
 - (BOOL)spellCheckingSupported;
 - (BOOL)spellCheckingSuppressed;
 - (BOOL)textLayoutMustIncludeAdornments;
-- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 distortedToMatch:(BOOL)a5 returningBounds:(CGRect *)a6 integralBounds:(CGRect *)a7;
-- (CGImage)i_imageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 distortedToMatch:(BOOL)a5 keepingChildrenPassingTest:(id)a6;
-- (CGImage)i_newImageInContext:(CGContext *)a3 bounds:(CGRect)a4 integralBounds:(CGRect)a5 distortedToMatch:(BOOL)a6 keepingChildrenPassingTest:(id)a7;
-- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)a3;
-- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)a3;
-- (CGRect)convertBoundsToUnscaledRect:(CGRect)a3;
-- (CGRect)convertUnscaledToBoundsRect:(CGRect)a3;
-- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)a3;
+- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size distortedToMatch:(BOOL)match returningBounds:(CGRect *)bounds integralBounds:(CGRect *)integralBounds;
+- (CGImage)i_imageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size distortedToMatch:(BOOL)match keepingChildrenPassingTest:(id)test;
+- (CGImage)i_newImageInContext:(CGContext *)context bounds:(CGRect)bounds integralBounds:(CGRect)integralBounds distortedToMatch:(BOOL)match keepingChildrenPassingTest:(id)test;
+- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)point;
+- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)point;
+- (CGRect)convertBoundsToUnscaledRect:(CGRect)rect;
+- (CGRect)convertUnscaledToBoundsRect:(CGRect)rect;
+- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)point;
 - (CGRect)i_clipRectForCreatingRepsFromLayouts;
 - (CGRect)p_bounds;
 - (CGRect)unscaledRectOfLayouts;
 - (CGRect)visibleUnscaledRectForClippingReps;
-- (CGSize)convertBoundsToUnscaledSize:(CGSize)a3;
-- (CGSize)convertUnscaledToBoundsSize:(CGSize)a3;
+- (CGSize)convertBoundsToUnscaledSize:(CGSize)size;
+- (CGSize)convertUnscaledToBoundsSize:(CGSize)size;
 - (CGSize)unscaledSize;
 - (CRLBoardItemOwning)boardItemOwner;
 - (CRLCanvas)init;
-- (CRLCanvas)initWithLayoutControllerClass:(Class)a3 delegate:(id)a4;
+- (CRLCanvas)initWithLayoutControllerClass:(Class)class delegate:(id)delegate;
 - (CRLCanvasDelegate)delegate;
 - (CRLChangeNotifier)changeNotifier;
 - (CRLInteractiveCanvasController)canvasController;
@@ -42,39 +42,39 @@
 - (NSArray)allRepsOrdered;
 - (UIEdgeInsets)contentInset;
 - (id)initForTemporaryLayout;
-- (id)repForLayout:(id)a3;
-- (id)textRendererForLayer:(id)a3 context:(CGContext *)a4;
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4;
-- (void)afterLayoutIncludingLayers:(BOOL)a3 performBlock:(id)a4;
-- (void)canvasInvalidatedForLayout:(id)a3;
-- (void)canvasInvalidatedForRep:(id)a3;
+- (id)repForLayout:(id)layout;
+- (id)textRendererForLayer:(id)layer context:(CGContext *)context;
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context;
+- (void)afterLayoutIncludingLayers:(BOOL)layers performBlock:(id)block;
+- (void)canvasInvalidatedForLayout:(id)layout;
+- (void)canvasInvalidatedForRep:(id)rep;
 - (void)dealloc;
-- (void)i_drawBackgroundInContext:(CGContext *)a3;
-- (void)i_drawBackgroundInContext:(CGContext *)a3 bounds:(CGRect)a4;
-- (void)i_drawRepsInContext:(CGContext *)a3 passingTest:(id)a4;
-- (void)i_drawRepsInContext:(CGContext *)a3 passingTest:(id)a4 distort:(CGAffineTransform *)a5;
+- (void)i_drawBackgroundInContext:(CGContext *)context;
+- (void)i_drawBackgroundInContext:(CGContext *)context bounds:(CGRect)bounds;
+- (void)i_drawRepsInContext:(CGContext *)context passingTest:(id)test;
+- (void)i_drawRepsInContext:(CGContext *)context passingTest:(id)test distort:(CGAffineTransform *)distort;
 - (void)i_layoutIfNeededUpdatingLayerTree;
-- (void)i_performBlockWhileIgnoringClickThrough:(id)a3;
-- (void)i_registerRep:(id)a3;
-- (void)i_setCanvasController:(id)a3;
-- (void)i_setInfosToDisplay:(id)a3 updatingLayoutController:(BOOL)a4;
+- (void)i_performBlockWhileIgnoringClickThrough:(id)through;
+- (void)i_registerRep:(id)rep;
+- (void)i_setCanvasController:(id)controller;
+- (void)i_setInfosToDisplay:(id)display updatingLayoutController:(BOOL)controller;
 - (void)i_setLayersInvalidWithoutInvalidatingAnySpecificLayers;
-- (void)i_unregisterRep:(id)a3;
+- (void)i_unregisterRep:(id)rep;
 - (void)i_updateInfosInLayoutController;
 - (void)invalidateAllLayers;
-- (void)invalidateContentLayersForRep:(id)a3;
-- (void)invalidateOverlayLayersForRep:(id)a3;
+- (void)invalidateContentLayersForRep:(id)rep;
+- (void)invalidateOverlayLayersForRep:(id)rep;
 - (void)invalidateReps;
 - (void)invalidateVisibleBounds;
 - (void)nonInteractiveLayoutIfNeeded;
-- (void)orderRepsForLayout:(id)a3;
+- (void)orderRepsForLayout:(id)layout;
 - (void)p_layoutWithReadLock;
 - (void)p_removeAllReps;
 - (void)p_setInvalidLayoutFlagAndCallDelegate;
 - (void)recreateAllLayoutsAndReps;
-- (void)setEnableInstructionalText:(BOOL)a3;
-- (void)setSuppressesShadowsAndReflections:(BOOL)a3;
-- (void)setViewScale:(double)a3;
+- (void)setEnableInstructionalText:(BOOL)text;
+- (void)setSuppressesShadowsAndReflections:(BOOL)reflections;
+- (void)setViewScale:(double)scale;
 - (void)teardown;
 @end
 
@@ -87,9 +87,9 @@
   return [(CRLCanvas *)self initWithLayoutControllerClass:v3 delegate:0];
 }
 
-- (CRLCanvas)initWithLayoutControllerClass:(Class)a3 delegate:(id)a4
+- (CRLCanvas)initWithLayoutControllerClass:(Class)class delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = CRLCanvas;
   v7 = [(CRLCanvas *)&v27 init];
@@ -117,8 +117,8 @@
     mRepsByLayout = v8->mRepsByLayout;
     v8->mRepsByLayout = v16;
 
-    objc_storeWeak(&v8->mDelegate, v6);
-    v18 = [[a3 alloc] initWithCanvas:v8];
+    objc_storeWeak(&v8->mDelegate, delegateCopy);
+    v18 = [[class alloc] initWithCanvas:v8];
     mLayoutController = v8->mLayoutController;
     v8->mLayoutController = v18;
 
@@ -160,8 +160,8 @@
   mInfos = self->mInfos;
   self->mInfos = 0;
 
-  v4 = [(CRLCanvas *)self layoutController];
-  [v4 i_removeAllLayouts];
+  layoutController = [(CRLCanvas *)self layoutController];
+  [layoutController i_removeAllLayouts];
 
   [(CRLCanvas *)self p_removeAllReps];
   if ([(CRLCanvas *)self isCanvasInteractive])
@@ -283,27 +283,27 @@
 
 - (Class)rootLayoutClass
 {
-  v3 = objc_opt_class();
+  canvasRootLayoutClass = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->mDelegate);
-    v3 = [v6 canvasRootLayoutClass];
+    canvasRootLayoutClass = [v6 canvasRootLayoutClass];
   }
 
-  return v3;
+  return canvasRootLayoutClass;
 }
 
-- (BOOL)p_isLayoutCompleteIncludingLayers:(BOOL)a3
+- (BOOL)p_isLayoutCompleteIncludingLayers:(BOOL)layers
 {
   if (self->mInLayout)
   {
     return 0;
   }
 
-  if (a3)
+  if (layers)
   {
     v6 = [(CRLCanvas *)self i_needsLayout:v3];
   }
@@ -316,23 +316,23 @@
   return v6 ^ 1;
 }
 
-- (void)afterLayoutIncludingLayers:(BOOL)a3 performBlock:(id)a4
+- (void)afterLayoutIncludingLayers:(BOOL)layers performBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6)
+  layersCopy = layers;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v14 = v6;
-    if ([(CRLCanvas *)self p_isLayoutCompleteIncludingLayers:v4])
+    v14 = blockCopy;
+    if ([(CRLCanvas *)self p_isLayoutCompleteIncludingLayers:layersCopy])
     {
       v14[2]();
 LABEL_10:
-      v6 = v14;
+      blockCopy = v14;
       goto LABEL_11;
     }
 
     os_unfair_lock_lock(&self->mBlocksToPerformLock);
-    if (v4)
+    if (layersCopy)
     {
       p_mBlocksToPerformAfterLayoutAndLayerUpdating = &self->mBlocksToPerformAfterLayoutAndLayerUpdating;
       mBlocksToPerformAfterLayoutAndLayerUpdating = self->mBlocksToPerformAfterLayoutAndLayerUpdating;
@@ -381,16 +381,16 @@ LABEL_11:
 
 - (CRLChangeNotifier)changeNotifier
 {
-  v2 = [(CRLCanvas *)self canvasController];
-  v3 = [v2 editingCoordinator];
-  v4 = [v3 changeNotifier];
+  canvasController = [(CRLCanvas *)self canvasController];
+  editingCoordinator = [canvasController editingCoordinator];
+  changeNotifier = [editingCoordinator changeNotifier];
 
-  return v4;
+  return changeNotifier;
 }
 
-- (void)i_setCanvasController:(id)a3
+- (void)i_setCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->mCanvasController);
 
   if (WeakRetained)
@@ -422,7 +422,7 @@ LABEL_11:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:260 isFatal:0 description:"expected nil value for '%{public}s'", "mCanvasController"];
   }
 
-  if (!v4)
+  if (!controllerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -455,7 +455,7 @@ LABEL_11:
 
   if (!v12)
   {
-    objc_storeWeak(&self->mCanvasController, v4);
+    objc_storeWeak(&self->mCanvasController, controllerCopy);
   }
 }
 
@@ -466,14 +466,14 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (void)i_setInfosToDisplay:(id)a3 updatingLayoutController:(BOOL)a4
+- (void)i_setInfosToDisplay:(id)display updatingLayoutController:(BOOL)controller
 {
-  v4 = a4;
-  v6 = a3;
-  v9 = v6;
-  if (v6)
+  controllerCopy = controller;
+  displayCopy = display;
+  v9 = displayCopy;
+  if (displayCopy)
   {
-    v7 = [v6 copy];
+    v7 = [displayCopy copy];
   }
 
   else
@@ -484,7 +484,7 @@ LABEL_11:
   mInfos = self->mInfos;
   self->mInfos = v7;
 
-  if (v4)
+  if (controllerCopy)
   {
     [(CRLCanvas *)self i_updateInfosInLayoutController];
   }
@@ -492,13 +492,13 @@ LABEL_11:
 
 - (void)i_updateInfosInLayoutController
 {
-  v3 = [(CRLCanvas *)self layoutController];
-  [v3 setInfos:self->mInfos];
+  layoutController = [(CRLCanvas *)self layoutController];
+  [layoutController setInfos:self->mInfos];
 }
 
-- (id)repForLayout:(id)a3
+- (id)repForLayout:(id)layout
 {
-  if (a3)
+  if (layout)
   {
     v4 = [(NSMapTable *)self->mRepsByLayout objectForKey:?];
   }
@@ -513,8 +513,8 @@ LABEL_11:
 
 - (void)recreateAllLayoutsAndReps
 {
-  v3 = [(CRLCanvas *)self layoutController];
-  [v3 i_removeAllLayouts];
+  layoutController = [(CRLCanvas *)self layoutController];
+  [layoutController i_removeAllLayouts];
 
   [(CRLCanvas *)self p_updateRepsFromLayouts];
   if ([(CRLCanvas *)self isCanvasInteractive])
@@ -529,23 +529,23 @@ LABEL_11:
     }
   }
 
-  v7 = [(CRLCanvas *)self layoutController];
-  [v7 setInfos:self->mInfos];
+  layoutController2 = [(CRLCanvas *)self layoutController];
+  [layoutController2 setInfos:self->mInfos];
 
   [(CRLCanvas *)self layoutInvalidated];
 }
 
-- (void)canvasInvalidatedForRep:(id)a3
+- (void)canvasInvalidatedForRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   [(CRLCanvas *)self p_setInvalidLayoutFlagAndCallDelegate];
-  [(CRLCanvas *)self invalidateContentLayersForRep:v4];
-  [(CRLCanvas *)self invalidateOverlayLayersForRep:v4];
+  [(CRLCanvas *)self invalidateContentLayersForRep:repCopy];
+  [(CRLCanvas *)self invalidateOverlayLayersForRep:repCopy];
 }
 
-- (void)canvasInvalidatedForLayout:(id)a3
+- (void)canvasInvalidatedForLayout:(id)layout
 {
-  v4 = [(CRLCanvas *)self repForLayout:a3];
+  v4 = [(CRLCanvas *)self repForLayout:layout];
   v5 = v4;
   if (v4)
   {
@@ -612,16 +612,16 @@ LABEL_11:
   [(CRLCanvas *)self i_setLayersInvalidWithoutInvalidatingAnySpecificLayers];
 }
 
-- (void)invalidateContentLayersForRep:(id)a3
+- (void)invalidateContentLayersForRep:(id)rep
 {
-  [(NSMutableSet *)self->mRepsWithInvalidContentLayers addObject:a3];
+  [(NSMutableSet *)self->mRepsWithInvalidContentLayers addObject:rep];
 
   [(CRLCanvas *)self i_setLayersInvalidWithoutInvalidatingAnySpecificLayers];
 }
 
-- (void)invalidateOverlayLayersForRep:(id)a3
+- (void)invalidateOverlayLayersForRep:(id)rep
 {
-  [(NSMutableSet *)self->mRepsWithInvalidOverlayLayers addObject:a3];
+  [(NSMutableSet *)self->mRepsWithInvalidOverlayLayers addObject:rep];
 
   [(CRLCanvas *)self i_setLayersInvalidWithoutInvalidatingAnySpecificLayers];
 }
@@ -730,47 +730,47 @@ LABEL_11:
     if (objc_opt_respondsToSelector())
     {
       v4 = objc_loadWeakRetained(&self->mDelegate);
-      v5 = [v4 spellCheckingSupported];
+      spellCheckingSupported = [v4 spellCheckingSupported];
     }
 
     else
     {
-      v5 = 1;
+      spellCheckingSupported = 1;
     }
   }
 
   else
   {
-    v5 = 0;
+    spellCheckingSupported = 0;
   }
 
-  return v5 & 1;
+  return spellCheckingSupported & 1;
 }
 
 - (BOOL)spellCheckingSuppressed
 {
-  v3 = [(CRLCanvas *)self spellCheckingSupported];
-  if (v3)
+  spellCheckingSupported = [(CRLCanvas *)self spellCheckingSupported];
+  if (spellCheckingSupported)
   {
     WeakRetained = objc_loadWeakRetained(&self->mDelegate);
     if (objc_opt_respondsToSelector())
     {
       v5 = objc_loadWeakRetained(&self->mDelegate);
-      v6 = [v5 spellCheckingSuppressed];
+      spellCheckingSuppressed = [v5 spellCheckingSuppressed];
     }
 
     else
     {
-      v6 = 0;
+      spellCheckingSuppressed = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    spellCheckingSuppressed = 0;
   }
 
-  return v6 | v3 ^ 1;
+  return spellCheckingSuppressed | spellCheckingSupported ^ 1;
 }
 
 - (BOOL)isCanvasInteractive
@@ -782,21 +782,21 @@ LABEL_11:
     if (objc_opt_respondsToSelector())
     {
       v5 = objc_loadWeakRetained(&self->mDelegate);
-      v6 = [v5 isCanvasInteractive];
+      isCanvasInteractive = [v5 isCanvasInteractive];
     }
 
     else
     {
-      v6 = 0;
+      isCanvasInteractive = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    isCanvasInteractive = 0;
   }
 
-  return v6;
+  return isCanvasInteractive;
 }
 
 - (BOOL)isPrinting
@@ -808,21 +808,21 @@ LABEL_11:
     if (objc_opt_respondsToSelector())
     {
       v5 = objc_loadWeakRetained(&self->mDelegate);
-      v6 = [v5 isPrintingCanvas];
+      isPrintingCanvas = [v5 isPrintingCanvas];
     }
 
     else
     {
-      v6 = 0;
+      isPrintingCanvas = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    isPrintingCanvas = 0;
   }
 
-  return v6;
+  return isPrintingCanvas;
 }
 
 - (BOOL)shouldShowTextOverflowGlyphs
@@ -843,12 +843,12 @@ LABEL_11:
   }
 
   v7 = objc_loadWeakRetained(&self->mDelegate);
-  v8 = [v7 shouldShowTextOverflowGlyphs];
+  shouldShowTextOverflowGlyphs = [v7 shouldShowTextOverflowGlyphs];
 
-  return v8;
+  return shouldShowTextOverflowGlyphs;
 }
 
-- (void)setEnableInstructionalText:(BOOL)a3
+- (void)setEnableInstructionalText:(BOOL)text
 {
   if ([(CRLCanvas *)self isCanvasInteractive])
   {
@@ -879,30 +879,30 @@ LABEL_11:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:572 isFatal:0 description:"Setting enableInstructionalText on an interactive canvas is not allowed."];
   }
 
-  self->mEnableInstructionalText = a3;
+  self->mEnableInstructionalText = text;
 }
 
-- (BOOL)shouldShowInstructionalTextForLayout:(id)a3
+- (BOOL)shouldShowInstructionalTextForLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   if (WeakRetained && (v6 = WeakRetained, v7 = objc_loadWeakRetained(&self->mDelegate), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
     v9 = objc_loadWeakRetained(&self->mDelegate);
-    v10 = [v9 shouldShowInstructionalTextForLayout:v4];
+    enableInstructionalText = [v9 shouldShowInstructionalTextForLayout:layoutCopy];
   }
 
   else if ([(CRLCanvas *)self isCanvasInteractive]|| [(CRLCanvas *)self isTemporaryForLayout])
   {
-    v10 = 1;
+    enableInstructionalText = 1;
   }
 
   else
   {
-    v10 = [(CRLCanvas *)self enableInstructionalText];
+    enableInstructionalText = [(CRLCanvas *)self enableInstructionalText];
   }
 
-  return v10;
+  return enableInstructionalText;
 }
 
 - (BOOL)shouldSuppressBackgrounds
@@ -914,21 +914,21 @@ LABEL_11:
     if (objc_opt_respondsToSelector())
     {
       v5 = objc_loadWeakRetained(&self->mDelegate);
-      v6 = [v5 shouldSuppressBackgrounds];
+      shouldSuppressBackgrounds = [v5 shouldSuppressBackgrounds];
     }
 
     else
     {
-      v6 = 0;
+      shouldSuppressBackgrounds = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    shouldSuppressBackgrounds = 0;
   }
 
-  return v6;
+  return shouldSuppressBackgrounds;
 }
 
 - (BOOL)isDrawingIntoPDF
@@ -972,12 +972,12 @@ LABEL_11:
   }
 
   v7 = objc_loadWeakRetained(&self->mDelegate);
-  v8 = [v7 textLayoutMustIncludeAdornments];
+  textLayoutMustIncludeAdornments = [v7 textLayoutMustIncludeAdornments];
 
-  return v8;
+  return textLayoutMustIncludeAdornments;
 }
 
-- (void)setSuppressesShadowsAndReflections:(BOOL)a3
+- (void)setSuppressesShadowsAndReflections:(BOOL)reflections
 {
   if ([(CRLCanvas *)self isCanvasInteractive])
   {
@@ -1008,12 +1008,12 @@ LABEL_11:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:638 isFatal:0 description:"Caller is trying to suppress shadows and reflections on an interactive canvas; this is not supported"];
   }
 
-  self->mSuppressesShadowsAndReflections = a3;
+  self->mSuppressesShadowsAndReflections = reflections;
 }
 
-- (void)setViewScale:(double)a3
+- (void)setViewScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
     v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1034,7 +1034,7 @@ LABEL_11:
       v17 = 1024;
       v18 = 651;
       v19 = 2048;
-      v20 = a3;
+      scaleCopy = scale;
       v21 = 2048;
       v22 = mViewScale;
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Caller is trying to set the canvas view scale to invalid value: %f (Falling back to current value: %f)", buf, 0x36u);
@@ -1053,21 +1053,21 @@ LABEL_11:
 
     v8 = [NSString stringWithUTF8String:"[CRLCanvas setViewScale:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCanvas.m"];
-    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:651 isFatal:0 description:"Caller is trying to set the canvas view scale to invalid value: %f (Falling back to current value: %f)", *&a3, *&self->mViewScale];
+    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:651 isFatal:0 description:"Caller is trying to set the canvas view scale to invalid value: %f (Falling back to current value: %f)", *&scale, *&self->mViewScale];
   }
 
   else
   {
-    self->mViewScale = a3;
+    self->mViewScale = scale;
   }
 }
 
-- (CGRect)convertUnscaledToBoundsRect:(CGRect)a3
+- (CGRect)convertUnscaledToBoundsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CRLCanvas *)self viewScale];
 
   v8 = sub_10011FFD8(x, y, width, height, v7);
@@ -1078,12 +1078,12 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)convertBoundsToUnscaledRect:(CGRect)a3
+- (CGRect)convertBoundsToUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CRLCanvas *)self viewScale];
 
   v8 = sub_10011FFD8(x, y, width, height, 1.0 / v7);
@@ -1094,10 +1094,10 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)a3
+- (CGPoint)convertUnscaledToBoundsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLCanvas *)self viewScale];
 
   v6 = sub_10011F340(x, y, v5);
@@ -1106,10 +1106,10 @@ LABEL_11:
   return result;
 }
 
-- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)a3
+- (CGPoint)convertBoundsToUnscaledPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLCanvas *)self viewScale];
 
   v6 = sub_10011F340(x, y, 1.0 / v5);
@@ -1118,10 +1118,10 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)convertUnscaledToBoundsSize:(CGSize)a3
+- (CGSize)convertUnscaledToBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CRLCanvas *)self viewScale];
 
   v6 = sub_10011F340(width, height, v5);
@@ -1130,10 +1130,10 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)convertBoundsToUnscaledSize:(CGSize)a3
+- (CGSize)convertBoundsToUnscaledSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CRLCanvas *)self viewScale];
 
   v6 = sub_10011F340(width, height, 1.0 / v5);
@@ -1169,20 +1169,20 @@ LABEL_11:
   return result;
 }
 
-+ (id)p_hitRep:(CGPoint)a3 withPrecision:(BOOL)a4 inTopLevelReps:(id)a5 smallRepOutset:(double)a6 unscaledPointTransformForRep:(id)a7 passingTest:(id)a8
++ (id)p_hitRep:(CGPoint)rep withPrecision:(BOOL)precision inTopLevelReps:(id)reps smallRepOutset:(double)outset unscaledPointTransformForRep:(id)forRep passingTest:(id)test
 {
-  v41 = a4;
-  y = a3.y;
-  x = a3.x;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
+  precisionCopy = precision;
+  y = rep.y;
+  x = rep.x;
+  repsCopy = reps;
+  forRepCopy = forRep;
+  testCopy = test;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v17 = [v14 reverseObjectEnumerator];
-  v18 = [v17 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  reverseObjectEnumerator = [repsCopy reverseObjectEnumerator];
+  v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v18)
   {
     v19 = v18;
@@ -1193,13 +1193,13 @@ LABEL_11:
       {
         if (*v49 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v22 = *(*(&v48 + 1) + 8 * i);
-        [a1 p_transformedUnscaledPoint:v22 forTestingHitRep:v15 withTransformFromBlock:{x, y}];
+        [self p_transformedUnscaledPoint:v22 forTestingHitRep:forRepCopy withTransformFromBlock:{x, y}];
         [v22 convertNaturalPointFromUnscaledCanvas:?];
-        v23 = [v22 hitRepChrome:v16 passingTest:?];
+        v23 = [v22 hitRepChrome:testCopy passingTest:?];
         if (v23)
         {
           v32 = v23;
@@ -1207,7 +1207,7 @@ LABEL_11:
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v48 objects:v53 count:16];
       if (v19)
       {
         continue;
@@ -1221,25 +1221,25 @@ LABEL_11:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v40 = v14;
-  v24 = [v14 reverseObjectEnumerator];
-  v25 = [v24 countByEnumeratingWithState:&v44 objects:v52 count:16];
+  v40 = repsCopy;
+  reverseObjectEnumerator2 = [repsCopy reverseObjectEnumerator];
+  v25 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (!v25)
   {
 
-    v17 = 0;
+    reverseObjectEnumerator = 0;
     v32 = 0;
 LABEL_33:
-    v14 = v40;
+    repsCopy = v40;
     goto LABEL_34;
   }
 
   v26 = v25;
-  v17 = 0;
+  reverseObjectEnumerator = 0;
   v27 = *v45;
   v28 = INFINITY;
-  v29 = v41;
-  obj = v24;
+  v29 = precisionCopy;
+  obj = reverseObjectEnumerator2;
   while (2)
   {
     for (j = 0; j != v26; j = j + 1)
@@ -1250,9 +1250,9 @@ LABEL_33:
       }
 
       v31 = *(*(&v44 + 1) + 8 * j);
-      [a1 p_transformedUnscaledPoint:v31 forTestingHitRep:v15 withTransformFromBlock:{x, y}];
+      [self p_transformedUnscaledPoint:v31 forTestingHitRep:forRepCopy withTransformFromBlock:{x, y}];
       [v31 convertNaturalPointFromUnscaledCanvas:?];
-      v32 = [v31 hitRep:v29 withPrecision:v16 passingTest:?];
+      v32 = [v31 hitRep:v29 withPrecision:testCopy passingTest:?];
       if (v32)
       {
         v37 = obj;
@@ -1263,7 +1263,7 @@ LABEL_33:
       {
         [v31 convertNaturalPointFromUnscaledCanvas:{x, y}];
         v43 = v28;
-        v33 = [v31 i_smallHitRepNearPoint:&v43 smallRepOutset:v15 forShortestDistance:v16 unscaledPointTransformForRep:? passingTest:?];
+        v33 = [v31 i_smallHitRepNearPoint:&v43 smallRepOutset:forRepCopy forShortestDistance:testCopy unscaledPointTransformForRep:? passingTest:?];
         v34 = v33;
         if (v33)
         {
@@ -1280,8 +1280,8 @@ LABEL_33:
           v36 = v33;
 
           v28 = v43;
-          v17 = v36;
-          v29 = v41;
+          reverseObjectEnumerator = v36;
+          v29 = precisionCopy;
         }
       }
     }
@@ -1298,21 +1298,21 @@ LABEL_33:
 
 LABEL_28:
 
-  if (!v17)
+  if (!reverseObjectEnumerator)
   {
     goto LABEL_33;
   }
 
-  v14 = v40;
-  if (([v32 i_shouldCountAsClosestSmallRepForSizeLimit:a6] & 1) == 0)
+  repsCopy = v40;
+  if (([v32 i_shouldCountAsClosestSmallRepForSizeLimit:outset] & 1) == 0)
   {
-    [a1 p_transformedUnscaledPoint:v32 forTestingHitRep:v15 withTransformFromBlock:{x, y}];
+    [self p_transformedUnscaledPoint:v32 forTestingHitRep:forRepCopy withTransformFromBlock:{x, y}];
     LOBYTE(v43) = 0;
     [v32 convertNaturalPointFromUnscaledCanvas:?];
     [v32 shortestDistanceToPoint:&v43 countAsHit:?];
     if ((LOBYTE(v43) & 1) == 0)
     {
-      v38 = v17;
+      v38 = reverseObjectEnumerator;
 
       v32 = v38;
     }
@@ -1323,17 +1323,17 @@ LABEL_34:
   return v32;
 }
 
-+ (CGPoint)p_transformedUnscaledPoint:(CGPoint)result forTestingHitRep:(id)a4 withTransformFromBlock:(id)a5
++ (CGPoint)p_transformedUnscaledPoint:(CGPoint)result forTestingHitRep:(id)rep withTransformFromBlock:(id)block
 {
   y = result.y;
-  if (a4 && a5)
+  if (rep && block)
   {
     x = result.x;
     v9 = result;
     v11 = 0u;
     v12 = 0u;
     v10 = 0u;
-    (*(a5 + 2))(&v10, a5, a4);
+    (*(block + 2))(&v10, block, rep);
     result = vaddq_f64(v12, vmlaq_n_f64(vmulq_laneq_f64(v11, v9, 1), v10, x));
   }
 
@@ -1342,52 +1342,52 @@ LABEL_34:
   return result;
 }
 
-- (void)i_performBlockWhileIgnoringClickThrough:(id)a3
+- (void)i_performBlockWhileIgnoringClickThrough:(id)through
 {
   mIgnoringClickThrough = self->mIgnoringClickThrough;
   self->mIgnoringClickThrough = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(through + 2))(through, a2);
   self->mIgnoringClickThrough = mIgnoringClickThrough;
 }
 
-- (void)i_registerRep:(id)a3
+- (void)i_registerRep:(id)rep
 {
-  v4 = a3;
-  if (v4 && self->mRepsByLayout)
+  repCopy = rep;
+  if (repCopy && self->mRepsByLayout)
   {
-    v6 = v4;
-    v5 = [v4 layout];
-    if (v5)
+    v6 = repCopy;
+    layout = [repCopy layout];
+    if (layout)
     {
-      [(NSMapTable *)self->mRepsByLayout setObject:v6 forKey:v5];
+      [(NSMapTable *)self->mRepsByLayout setObject:v6 forKey:layout];
     }
 
-    v4 = v6;
+    repCopy = v6;
   }
 }
 
-- (void)i_unregisterRep:(id)a3
+- (void)i_unregisterRep:(id)rep
 {
-  v4 = a3;
-  if (v4 && self->mRepsByLayout)
+  repCopy = rep;
+  if (repCopy && self->mRepsByLayout)
   {
-    v7 = v4;
-    v5 = [v4 layout];
-    if (v5)
+    v7 = repCopy;
+    layout = [repCopy layout];
+    if (layout)
     {
-      v6 = [(NSMapTable *)self->mRepsByLayout objectForKey:v5];
+      v6 = [(NSMapTable *)self->mRepsByLayout objectForKey:layout];
 
       if (v6 == v7)
       {
-        [(NSMapTable *)self->mRepsByLayout removeObjectForKey:v5];
+        [(NSMapTable *)self->mRepsByLayout removeObjectForKey:layout];
       }
     }
 
-    v4 = v7;
+    repCopy = v7;
   }
 }
 
-- (BOOL)i_areContentLayersInvalidForRep:(id)a3
+- (BOOL)i_areContentLayersInvalidForRep:(id)rep
 {
   if (self->mInvalidFlags.allContentAndOverlayLayers)
   {
@@ -1396,11 +1396,11 @@ LABEL_34:
 
   else
   {
-    return [(NSMutableSet *)self->mRepsWithInvalidContentLayers containsObject:a3];
+    return [(NSMutableSet *)self->mRepsWithInvalidContentLayers containsObject:rep];
   }
 }
 
-- (BOOL)i_areOverlayLayersInvalidForRep:(id)a3
+- (BOOL)i_areOverlayLayersInvalidForRep:(id)rep
 {
   if (self->mInvalidFlags.allContentAndOverlayLayers)
   {
@@ -1409,13 +1409,13 @@ LABEL_34:
 
   else
   {
-    return [(NSMutableSet *)self->mRepsWithInvalidOverlayLayers containsObject:a3];
+    return [(NSMutableSet *)self->mRepsWithInvalidOverlayLayers containsObject:rep];
   }
 }
 
-- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)a3
+- (CGRect)i_approximateScaledFrameOfEditingMenuAtPoint:(CGPoint)point
 {
-  v3 = sub_10011EC70(a3.x, a3.y + -30.0, 200.0);
+  v3 = sub_10011EC70(point.x, point.y + -30.0, 200.0);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -1452,38 +1452,38 @@ LABEL_34:
   return result;
 }
 
-- (void)i_drawBackgroundInContext:(CGContext *)a3
+- (void)i_drawBackgroundInContext:(CGContext *)context
 {
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   v7 = CGRectIntegral(ClipBoundingBox);
 
-  [(CRLCanvas *)self i_drawBackgroundInContext:a3 bounds:v7.origin.x, v7.origin.y, v7.size.width, v7.size.height];
+  [(CRLCanvas *)self i_drawBackgroundInContext:context bounds:v7.origin.x, v7.origin.y, v7.size.width, v7.size.height];
 }
 
-- (void)i_drawBackgroundInContext:(CGContext *)a3 bounds:(CGRect)a4
+- (void)i_drawBackgroundInContext:(CGContext *)context bounds:(CGRect)bounds
 {
   if (self->mBackgroundColor)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    CGContextSaveGState(a3);
-    CGContextSetFillColorWithColor(a3, [(CRLColor *)self->mBackgroundColor CGColor]);
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
+    CGContextSaveGState(context);
+    CGContextSetFillColorWithColor(context, [(CRLColor *)self->mBackgroundColor CGColor]);
     v11.origin.x = x;
     v11.origin.y = y;
     v11.size.width = width;
     v11.size.height = height;
-    CGContextFillRect(a3, v11);
+    CGContextFillRect(context, v11);
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context
 {
-  v6 = a3;
-  if (v6)
+  infoCopy = info;
+  if (infoCopy)
   {
     v14 = 0u;
     v15 = 0u;
@@ -1504,7 +1504,7 @@ LABEL_34:
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v12 + 1) + 8 * i) recursivelyPerformSelector:"addBitmapsToRenderingQualityInfo:inContext:" withObject:v6 withObject:{a4, v12}];
+          [*(*(&v12 + 1) + 8 * i) recursivelyPerformSelector:"addBitmapsToRenderingQualityInfo:inContext:" withObject:infoCopy withObject:{context, v12}];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1515,20 +1515,20 @@ LABEL_34:
   }
 }
 
-- (void)i_drawRepsInContext:(CGContext *)a3 passingTest:(id)a4 distort:(CGAffineTransform *)a5
+- (void)i_drawRepsInContext:(CGContext *)context passingTest:(id)test distort:(CGAffineTransform *)distort
 {
-  v8 = a4;
-  if (a3)
+  testCopy = test;
+  if (context)
   {
-    CGContextSaveGState(a3);
-    CGContextScaleCTM(a3, self->mViewScale, self->mViewScale);
-    v9 = a5->b == 0.0 && a5->c == 0.0 && a5->tx == 0.0 && a5->ty == 0.0 && fabs(a5->a + -1.0) < 0.001 && fabs(a5->d + -1.0) < 0.001;
-    sub_100510D7C(a3);
+    CGContextSaveGState(context);
+    CGContextScaleCTM(context, self->mViewScale, self->mViewScale);
+    v9 = distort->b == 0.0 && distort->c == 0.0 && distort->tx == 0.0 && distort->ty == 0.0 && fabs(distort->a + -1.0) < 0.001 && fabs(distort->d + -1.0) < 0.001;
+    sub_100510D7C(context);
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v20 = self;
+    selfCopy = self;
     v10 = self->mTopLevelReps;
     v11 = [(NSArray *)v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
@@ -1546,20 +1546,20 @@ LABEL_34:
           }
 
           v15 = *(*(&v22 + 1) + 8 * v14);
-          if (!v8 || v8[2](v8, *(*(&v22 + 1) + 8 * v14)))
+          if (!testCopy || testCopy[2](testCopy, *(*(&v22 + 1) + 8 * v14)))
           {
-            CGContextSaveGState(a3);
+            CGContextSaveGState(context);
             if (!v9 || [v15 wantsToDistortWithImagerContext])
             {
-              v16 = *&a5->c;
-              *&transform.a = *&a5->a;
+              v16 = *&distort->c;
+              *&transform.a = *&distort->a;
               *&transform.c = v16;
-              *&transform.tx = *&a5->tx;
-              CGContextConcatCTM(a3, &transform);
+              *&transform.tx = *&distort->tx;
+              CGContextConcatCTM(context, &transform);
             }
 
-            [v15 recursivelyDrawInContext:a3 keepingChildrenPassingTest:v8];
-            CGContextRestoreGState(a3);
+            [v15 recursivelyDrawInContext:context keepingChildrenPassingTest:testCopy];
+            CGContextRestoreGState(context);
           }
 
           v14 = v14 + 1;
@@ -1572,43 +1572,43 @@ LABEL_34:
       while (v12);
     }
 
-    v17 = sub_1005113C0(a3);
+    v17 = sub_1005113C0(context);
     v18 = [v17 copy];
-    mPreviousRenderDatasNeedingDownload = v20->mPreviousRenderDatasNeedingDownload;
-    v20->mPreviousRenderDatasNeedingDownload = v18;
+    mPreviousRenderDatasNeedingDownload = selfCopy->mPreviousRenderDatasNeedingDownload;
+    selfCopy->mPreviousRenderDatasNeedingDownload = v18;
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)i_drawRepsInContext:(CGContext *)a3 passingTest:(id)a4
+- (void)i_drawRepsInContext:(CGContext *)context passingTest:(id)test
 {
   v4 = *&CGAffineTransformIdentity.c;
   v5[0] = *&CGAffineTransformIdentity.a;
   v5[1] = v4;
   v5[2] = *&CGAffineTransformIdentity.tx;
-  [(CRLCanvas *)self i_drawRepsInContext:a3 passingTest:a4 distort:v5];
+  [(CRLCanvas *)self i_drawRepsInContext:context passingTest:test distort:v5];
 }
 
-- (CGImage)i_imageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 distortedToMatch:(BOOL)a5 keepingChildrenPassingTest:(id)a6
+- (CGImage)i_imageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size distortedToMatch:(BOOL)match keepingChildrenPassingTest:(id)test
 {
-  v6 = a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a6;
+  matchCopy = match;
+  height = size.height;
+  width = size.width;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  testCopy = test;
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v15 = [(CRLCanvas *)self i_createContextToDrawImageInScaledRect:v6 withTargetIntegralSize:&v21 distortedToMatch:&v19 returningBounds:x integralBounds:y, v10, v9, width, height];
-  if (v15)
+  height = [(CRLCanvas *)self i_createContextToDrawImageInScaledRect:matchCopy withTargetIntegralSize:&v21 distortedToMatch:&v19 returningBounds:x integralBounds:y, v10, v9, width, height];
+  if (height)
   {
-    v16 = v15;
-    v17 = [(CRLCanvas *)self i_newImageInContext:v15 bounds:v6 integralBounds:v14 distortedToMatch:v21 keepingChildrenPassingTest:v22, v19, v20];
+    v16 = height;
+    v17 = [(CRLCanvas *)self i_newImageInContext:height bounds:matchCopy integralBounds:testCopy distortedToMatch:v21 keepingChildrenPassingTest:v22, v19, v20];
     CGContextRelease(v16);
   }
 
@@ -1620,15 +1620,15 @@ LABEL_34:
   return v17;
 }
 
-- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)a3 withTargetIntegralSize:(CGSize)a4 distortedToMatch:(BOOL)a5 returningBounds:(CGRect *)a6 integralBounds:(CGRect *)a7
+- (CGContext)i_createContextToDrawImageInScaledRect:(CGRect)rect withTargetIntegralSize:(CGSize)size distortedToMatch:(BOOL)match returningBounds:(CGRect *)bounds integralBounds:(CGRect *)integralBounds
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3.size.height;
-  v13 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = sub_1001221E0(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  height = size.height;
+  width = size.width;
+  v12 = rect.size.height;
+  v13 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v17 = sub_1001221E0(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
   v43 = v18;
   v45 = v17;
   v20 = v19;
@@ -1639,7 +1639,7 @@ LABEL_34:
   }
 
   v23 = sub_10012211C(width);
-  if (a5)
+  if (match)
   {
     v20 = v23;
 LABEL_5:
@@ -1733,64 +1733,64 @@ LABEL_6:
   v38 = v37;
   [(CRLCanvas *)self contentsScale];
   CGContextScaleCTM(v36, v38, v39);
-  if (a6)
+  if (bounds)
   {
-    a6->origin.x = x;
-    a6->origin.y = y;
-    a6->size.width = v13;
-    a6->size.height = v12;
+    bounds->origin.x = x;
+    bounds->origin.y = y;
+    bounds->size.width = v13;
+    bounds->size.height = v12;
   }
 
-  if (a7)
+  if (integralBounds)
   {
-    a7->origin.x = v46;
-    a7->origin.y = v44;
-    a7->size.width = v20;
-    a7->size.height = v22;
+    integralBounds->origin.x = v46;
+    integralBounds->origin.y = v44;
+    integralBounds->size.width = v20;
+    integralBounds->size.height = v22;
   }
 
   return v36;
 }
 
-- (CGImage)i_newImageInContext:(CGContext *)a3 bounds:(CGRect)a4 integralBounds:(CGRect)a5 distortedToMatch:(BOOL)a6 keepingChildrenPassingTest:(id)a7
+- (CGImage)i_newImageInContext:(CGContext *)context bounds:(CGRect)bounds integralBounds:(CGRect)integralBounds distortedToMatch:(BOOL)match keepingChildrenPassingTest:(id)test
 {
-  if (!a3)
+  if (!context)
   {
     return 0;
   }
 
-  v7 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a4.size.height;
-  v13 = a4.size.width;
-  v16 = a7;
-  CGContextSaveGState(a3);
-  CGContextTranslateCTM(a3, 0.0, height);
-  CGContextScaleCTM(a3, 1.0, -1.0);
-  CGContextTranslateCTM(a3, -x, -y);
+  matchCopy = match;
+  height = integralBounds.size.height;
+  width = integralBounds.size.width;
+  y = integralBounds.origin.y;
+  x = integralBounds.origin.x;
+  v12 = bounds.size.height;
+  v13 = bounds.size.width;
+  testCopy = test;
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, 0.0, height);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextTranslateCTM(context, -x, -y);
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
-  CGContextClipToRect(a3, v21);
+  CGContextClipToRect(context, v21);
   v17 = *&CGAffineTransformIdentity.c;
   *&v20.a = *&CGAffineTransformIdentity.a;
   *&v20.c = v17;
   *&v20.tx = *&CGAffineTransformIdentity.tx;
-  if (v7)
+  if (matchCopy)
   {
     CGAffineTransformMakeScale(&v20, width / v13, height / v12);
   }
 
-  [(CRLCanvas *)self i_drawBackgroundInContext:a3];
+  [(CRLCanvas *)self i_drawBackgroundInContext:context];
   v19 = v20;
-  [(CRLCanvas *)self i_drawRepsInContext:a3 passingTest:v16 distort:&v19];
+  [(CRLCanvas *)self i_drawRepsInContext:context passingTest:testCopy distort:&v19];
 
-  CGContextRestoreGState(a3);
-  return CGBitmapContextCreateImage(a3);
+  CGContextRestoreGState(context);
+  return CGBitmapContextCreateImage(context);
 }
 
 - (CGRect)p_bounds
@@ -1817,7 +1817,7 @@ LABEL_6:
   }
 
   self->mInLayout = 1;
-  v3 = [(CRLCanvas *)self crlaxIsPreventingReloadingChildren];
+  crlaxIsPreventingReloadingChildren = [(CRLCanvas *)self crlaxIsPreventingReloadingChildren];
   [(CRLCanvas *)self crlaxPreventReloadingChildren];
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v11 = sub_1003035DC(WeakRetained, 1, v5, v6, v7, v8, v9, v10, &OBJC_PROTOCOL___CRLDynamicCanvasDelegate);
@@ -1839,8 +1839,8 @@ LABEL_6:
       [v15 canvasWillValidateLayouts:self];
     }
 
-    v16 = [(CRLCanvas *)self layoutController];
-    [v16 validateLayouts];
+    layoutController = [(CRLCanvas *)self layoutController];
+    [layoutController validateLayouts];
 
     v17 = objc_loadWeakRetained(&self->mDelegate);
     v18 = objc_opt_respondsToSelector();
@@ -1861,7 +1861,7 @@ LABEL_11:
       [v22 canvasWillUpdateRepsFromLayouts:self];
     }
 
-    v23 = [(CRLCanvas *)self p_updateRepsFromLayouts];
+    p_updateRepsFromLayouts = [(CRLCanvas *)self p_updateRepsFromLayouts];
     *&self->mInvalidFlags.reps = 0;
     v24 = objc_loadWeakRetained(&self->mDelegate);
     v25 = objc_opt_respondsToSelector();
@@ -1912,14 +1912,14 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v23 = 0;
+  p_updateRepsFromLayouts = 0;
   if (layout)
   {
     goto LABEL_25;
   }
 
 LABEL_23:
-  if ((v23 & 1) == 0 && !self->mInvalidFlags.layers)
+  if ((p_updateRepsFromLayouts & 1) == 0 && !self->mInvalidFlags.layers)
   {
     v34 = 0;
     if (!layout)
@@ -2000,7 +2000,7 @@ LABEL_36:
   os_unfair_lock_unlock(&self->mBlocksToPerformLock);
   [v38 makeObjectsPerformSelector:"invoke"];
 
-  [(CRLCanvas *)self crlaxRevertReloadingChildrenTo:v3 andReloadForChanges:v34];
+  [(CRLCanvas *)self crlaxRevertReloadingChildrenTo:crlaxIsPreventingReloadingChildren andReloadForChanges:v34];
 }
 
 - (BOOL)p_updateRepsFromLayouts
@@ -2014,8 +2014,8 @@ LABEL_36:
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(CRLCanvas *)self layoutController];
-    v19 = [v18 layoutsInRect:{v11, v13, v15, v17}];
+    layoutController = [(CRLCanvas *)self layoutController];
+    v19 = [layoutController layoutsInRect:{v11, v13, v15, v17}];
 
     v20 = objc_loadWeakRetained(&self->mDelegate);
     v21 = objc_opt_respondsToSelector();
@@ -2092,8 +2092,8 @@ LABEL_36:
               }
 
               v42 = *(*(&v108 + 1) + 8 * j);
-              v43 = [v42 info];
-              v44 = [v35 containsObject:v43];
+              info = [v42 info];
+              v44 = [v35 containsObject:info];
 
               if (v44)
               {
@@ -2132,8 +2132,8 @@ LABEL_36:
             objc_enumerationMutation(v8);
           }
 
-          v50 = [*(*(&v104 + 1) + 8 * k) additionalLayoutsForRepCreation];
-          [v45 addObjectsFromArray:v50];
+          additionalLayoutsForRepCreation = [*(*(&v104 + 1) + 8 * k) additionalLayoutsForRepCreation];
+          [v45 addObjectsFromArray:additionalLayoutsForRepCreation];
         }
 
         v47 = [(NSArray *)v8 countByEnumeratingWithState:&v104 objects:v120 count:16];
@@ -2336,14 +2336,14 @@ LABEL_51:
   return 0;
 }
 
-- (void)orderRepsForLayout:(id)a3
+- (void)orderRepsForLayout:(id)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v32 count:16];
+  v4 = [layoutCopy countByEnumeratingWithState:&v20 objects:v32 count:16];
   if (v4)
   {
     v6 = v4;
@@ -2357,7 +2357,7 @@ LABEL_51:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(layoutCopy);
         }
 
         v9 = *(*(&v20 + 1) + 8 * v8);
@@ -2411,13 +2411,13 @@ LABEL_51:
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v20 objects:v32 count:16];
+      v6 = [layoutCopy countByEnumeratingWithState:&v20 objects:v32 count:16];
     }
 
     while (v6);
   }
 
-  [v3 sortUsingComparator:{&stru_1018709F0, v19}];
+  [layoutCopy sortUsingComparator:{&stru_1018709F0, v19}];
 }
 
 - (void)p_removeAllReps
@@ -2517,8 +2517,8 @@ LABEL_51:
 
 - (CGRect)unscaledRectOfLayouts
 {
-  v2 = [(CRLCanvas *)self layoutController];
-  [v2 rectOfTopLevelLayouts];
+  layoutController = [(CRLCanvas *)self layoutController];
+  [layoutController rectOfTopLevelLayouts];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2535,17 +2535,17 @@ LABEL_51:
   return result;
 }
 
-+ (void)p_recursivelyAddOrderedChildrenOfRep:(id)a3 toArray:(id)a4
++ (void)p_recursivelyAddOrderedChildrenOfRep:(id)rep toArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 addObject:v6];
+  repCopy = rep;
+  arrayCopy = array;
+  [arrayCopy addObject:repCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [v6 childReps];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  childReps = [repCopy childReps];
+  v9 = [childReps countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2557,15 +2557,15 @@ LABEL_51:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childReps);
         }
 
-        [a1 p_recursivelyAddOrderedChildrenOfRep:*(*(&v13 + 1) + 8 * v12) toArray:v7];
+        [self p_recursivelyAddOrderedChildrenOfRep:*(*(&v13 + 1) + 8 * v12) toArray:arrayCopy];
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [childReps countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
@@ -2601,11 +2601,11 @@ LABEL_51:
   return result;
 }
 
-- (id)textRendererForLayer:(id)a3 context:(CGContext *)a4
+- (id)textRendererForLayer:(id)layer context:(CGContext *)context
 {
   v5 = objc_allocWithZone(CRLWPRenderer);
-  v6 = a4;
-  result = [v5 initWithContext:v6];
+  contextCopy = context;
+  result = [v5 initWithContext:contextCopy];
   if (result)
   {
     v8 = result;

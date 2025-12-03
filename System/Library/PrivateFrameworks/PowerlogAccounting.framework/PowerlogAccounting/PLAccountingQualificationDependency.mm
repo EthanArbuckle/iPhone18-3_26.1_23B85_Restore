@@ -1,57 +1,57 @@
 @interface PLAccountingQualificationDependency
-- (PLAccountingQualificationDependency)initWithQualificationEvent:(id)a3;
+- (PLAccountingQualificationDependency)initWithQualificationEvent:(id)event;
 - (id)ID;
 - (id)activationDate;
 - (id)range;
-- (void)setRange:(id)a3;
+- (void)setRange:(id)range;
 @end
 
 @implementation PLAccountingQualificationDependency
 
 - (id)ID
 {
-  v2 = [(PLAccountingQualificationDependency *)self qualificationEvent];
-  v3 = [v2 qualificationID];
+  qualificationEvent = [(PLAccountingQualificationDependency *)self qualificationEvent];
+  qualificationID = [qualificationEvent qualificationID];
 
-  return v3;
+  return qualificationID;
 }
 
 - (id)range
 {
-  v2 = [(PLAccountingQualificationDependency *)self qualificationEvent];
-  v3 = [v2 range];
+  qualificationEvent = [(PLAccountingQualificationDependency *)self qualificationEvent];
+  range = [qualificationEvent range];
 
-  return v3;
+  return range;
 }
 
-- (PLAccountingQualificationDependency)initWithQualificationEvent:(id)a3
+- (PLAccountingQualificationDependency)initWithQualificationEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = PLAccountingQualificationDependency;
   v6 = [(PLAccountingQualificationDependency *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_qualificationEvent, a3);
+    objc_storeStrong(&v6->_qualificationEvent, event);
   }
 
   return v7;
 }
 
-- (void)setRange:(id)a3
+- (void)setRange:(id)range
 {
-  v4 = a3;
-  v5 = [(PLAccountingQualificationDependency *)self qualificationEvent];
-  [v5 setRange:v4];
+  rangeCopy = range;
+  qualificationEvent = [(PLAccountingQualificationDependency *)self qualificationEvent];
+  [qualificationEvent setRange:rangeCopy];
 }
 
 - (id)activationDate
 {
-  v2 = [(PLAccountingQualificationDependency *)self qualificationEvent];
-  v3 = [v2 entryDate];
+  qualificationEvent = [(PLAccountingQualificationDependency *)self qualificationEvent];
+  entryDate = [qualificationEvent entryDate];
 
-  return v3;
+  return entryDate;
 }
 
 @end

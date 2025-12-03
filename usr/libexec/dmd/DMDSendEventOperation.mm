@@ -1,7 +1,7 @@
 @interface DMDSendEventOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,31 +21,31 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DMDTaskOperation *)self configurationEngine];
+  requestCopy = request;
+  configurationEngine = [(DMDTaskOperation *)self configurationEngine];
 
-  if (v5)
+  if (configurationEngine)
   {
     v6 = [DMDEventStreamEvent alloc];
-    v7 = [v4 eventType];
-    v8 = [v4 details];
-    v9 = [(DMDEventStreamEvent *)v6 initWithEventType:v7 details:v8];
+    eventType = [requestCopy eventType];
+    details = [requestCopy details];
+    v9 = [(DMDEventStreamEvent *)v6 initWithEventType:eventType details:details];
 
-    v10 = [v4 inReplyTo];
-    v11 = [(DMDEventStreamEvent *)v9 eventStatusMessageWithPayloadIdentifier:v10];
+    inReplyTo = [requestCopy inReplyTo];
+    v11 = [(DMDEventStreamEvent *)v9 eventStatusMessageWithPayloadIdentifier:inReplyTo];
 
-    v12 = [(DMDTaskOperation *)self configurationEngine];
+    configurationEngine2 = [(DMDTaskOperation *)self configurationEngine];
     v16 = v11;
     v13 = [NSArray arrayWithObjects:&v16 count:1];
-    v14 = [v4 organizationIdentifier];
+    organizationIdentifier = [requestCopy organizationIdentifier];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10006BCD0;
     v15[3] = &unk_1000CEE68;
     v15[4] = self;
-    [v12 sendEvents:v13 organizationIdentifier:v14 completionHandler:v15];
+    [configurationEngine2 sendEvents:v13 organizationIdentifier:organizationIdentifier completionHandler:v15];
   }
 
   else
@@ -55,21 +55,21 @@
   }
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v14.receiver = a1;
+  requestCopy = request;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___DMDSendEventOperation;
-  if (!objc_msgSendSuper2(&v14, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v14, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_13;
   }
 
-  v7 = [v6 organizationIdentifier];
+  organizationIdentifier = [requestCopy organizationIdentifier];
 
-  if (!v7)
+  if (!organizationIdentifier)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -81,11 +81,11 @@
     goto LABEL_12;
   }
 
-  v8 = [v6 inReplyTo];
+  inReplyTo = [requestCopy inReplyTo];
 
-  if (!v8)
+  if (!inReplyTo)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -97,11 +97,11 @@
     goto LABEL_12;
   }
 
-  v9 = [v6 eventType];
+  eventType = [requestCopy eventType];
 
-  if (!v9)
+  if (!eventType)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -112,17 +112,17 @@
     v11 = &v15;
 LABEL_12:
     v12 = [NSDictionary dictionaryWithObjects:v10 forKeys:v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_13:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_14;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_14:
 
-  return a4;
+  return error;
 }
 
 @end

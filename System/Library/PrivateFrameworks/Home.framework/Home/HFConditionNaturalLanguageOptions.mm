@@ -1,21 +1,21 @@
 @interface HFConditionNaturalLanguageOptions
-+ (id)optionsForCondition:(id)a3 inHome:(id)a4 formattingContext:(int64_t)a5 formattingStyle:(int64_t)a6;
++ (id)optionsForCondition:(id)condition inHome:(id)home formattingContext:(int64_t)context formattingStyle:(int64_t)style;
 @end
 
 @implementation HFConditionNaturalLanguageOptions
 
-+ (id)optionsForCondition:(id)a3 inHome:(id)a4 formattingContext:(int64_t)a5 formattingStyle:(int64_t)a6
++ (id)optionsForCondition:(id)condition inHome:(id)home formattingContext:(int64_t)context formattingStyle:(int64_t)style
 {
-  v9 = a3;
-  v10 = a4;
+  conditionCopy = condition;
+  homeCopy = home;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v9;
+    v11 = conditionCopy;
     v12 = [HFTimeConditionNaturalLanguageOptions alloc];
-    v13 = [v11 timeConditionType];
+    timeConditionType = [v11 timeConditionType];
 
-    v14 = [(HFTimeConditionNaturalLanguageOptions *)v12 initWithFormattingContext:a5 formattingStyle:a6 type:v13];
+    v14 = [(HFTimeConditionNaturalLanguageOptions *)v12 initWithFormattingContext:context formattingStyle:style type:timeConditionType];
   }
 
   else
@@ -23,7 +23,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [[HFPresenceConditionNaturalLanguageOptions alloc] initWithHome:v10 formattingContext:a5 formattingStyle:a6];
+      v14 = [[HFPresenceConditionNaturalLanguageOptions alloc] initWithHome:homeCopy formattingContext:context formattingStyle:style];
     }
 
     else
@@ -31,12 +31,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [[HFCharacteristicConditionNaturalLanguageOptions alloc] initWithFormattingContext:a5];
+        v14 = [[HFCharacteristicConditionNaturalLanguageOptions alloc] initWithFormattingContext:context];
       }
 
       else
       {
-        v14 = [(HFSubstringNaturalLanguageOptions *)[HFConditionNaturalLanguageOptions alloc] initWithFormattingContext:a5 formattingStyle:a6];
+        v14 = [(HFSubstringNaturalLanguageOptions *)[HFConditionNaturalLanguageOptions alloc] initWithFormattingContext:context formattingStyle:style];
       }
     }
   }

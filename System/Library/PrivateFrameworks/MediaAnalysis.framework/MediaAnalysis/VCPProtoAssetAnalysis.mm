@@ -1,118 +1,118 @@
 @interface VCPProtoAssetAnalysis
 + (id)faceResultKeys;
-+ (id)filesystemMovieAnalysisFromLegacyDictionary:(id)a3;
-+ (id)imageAnalysisComputeSyncPayloadFromLegacyDictionary:(id)a3;
-+ (id)imageAnalysisFromLegacyDictionary:(id)a3 assetCloudIdentifier:(id)a4;
-+ (id)movieAnalysisComputeSyncPayloadFromLegacyDictionary:(id)a3;
-+ (id)movieAnalysisFromLegacyDictionary:(id)a3 assetCloudIdentifier:(id)a4;
-- (BOOL)exportResultsWithPropertyKey:(id)a3 toLegacyDictionary:(id)a4 withKey:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setAttributesFromLegacyDictionary:(id)a3;
-- (BOOL)setImageAnalysisFromLegacyDictionary:(id)a3;
-- (BOOL)setMovieAnalysisFromLegacyDictionary:(id)a3;
-- (BOOL)setResults:(id)a3 withClass:(Class)a4 forPropertyKey:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)filesystemMovieAnalysisFromLegacyDictionary:(id)dictionary;
++ (id)imageAnalysisComputeSyncPayloadFromLegacyDictionary:(id)dictionary;
++ (id)imageAnalysisFromLegacyDictionary:(id)dictionary assetCloudIdentifier:(id)identifier;
++ (id)movieAnalysisComputeSyncPayloadFromLegacyDictionary:(id)dictionary;
++ (id)movieAnalysisFromLegacyDictionary:(id)dictionary assetCloudIdentifier:(id)identifier;
+- (BOOL)exportResultsWithPropertyKey:(id)key toLegacyDictionary:(id)dictionary withKey:(id)withKey;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setAttributesFromLegacyDictionary:(id)dictionary;
+- (BOOL)setImageAnalysisFromLegacyDictionary:(id)dictionary;
+- (BOOL)setMovieAnalysisFromLegacyDictionary:(id)dictionary;
+- (BOOL)setResults:(id)results withClass:(Class)class forPropertyKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportFilesystemAnalysisToLegacyDictionary;
 - (id)exportToLegacyDictionary;
-- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)a3;
-- (id)videoEmbeddingVSKAssetWithLocalIdentifier:(id)a3 mediaAnalysisResults:(id)a4;
+- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)identifier;
+- (id)videoEmbeddingVSKAssetWithLocalIdentifier:(id)identifier mediaAnalysisResults:(id)results;
 - (unint64_t)hash;
-- (void)addAnimatedStickerResults:(id)a3;
-- (void)addAudioFusedVideoEmbeddingResults:(id)a3;
-- (void)addFilesystemMovieApplauseResults:(id)a3;
-- (void)addFilesystemMovieBabbleResults:(id)a3;
-- (void)addFilesystemMovieCheeringResults:(id)a3;
-- (void)addFilesystemMovieClassificationResults:(id)a3;
-- (void)addFilesystemMovieHumanActionClassificationResults:(id)a3;
-- (void)addFilesystemMovieLaughterResults:(id)a3;
-- (void)addFilesystemMovieMusicResults:(id)a3;
-- (void)addFilesystemMovieVoiceResults:(id)a3;
-- (void)addImageBlurResults:(id)a3;
-- (void)addImageCaptionResults:(id)a3;
-- (void)addImageCompositionResults:(id)a3;
-- (void)addImageEmbeddingResults:(id)a3;
-- (void)addImageExposureResults:(id)a3;
-- (void)addImageFaceResults:(id)a3;
-- (void)addImageFeatureResults:(id)a3;
-- (void)addImageHumanPoseResults:(id)a3;
-- (void)addImageJunkResults:(id)a3;
-- (void)addImagePetsFaceResults:(id)a3;
-- (void)addImagePetsResults:(id)a3;
-- (void)addImageSaliencyResults:(id)a3;
-- (void)addImageSceneprintResults:(id)a3;
-- (void)addImageShotTypeResults:(id)a3;
-- (void)addLivePhotoEffectsResults:(id)a3;
-- (void)addLivePhotoHumanActionClassificationResults:(id)a3;
-- (void)addLivePhotoKeyFrameResults:(id)a3;
-- (void)addLivePhotoKeyFrameStillResults:(id)a3;
-- (void)addLivePhotoRecommendationResults:(id)a3;
-- (void)addLivePhotoSettlingEffectGatingResults:(id)a3;
-- (void)addLivePhotoSharpnessResults:(id)a3;
-- (void)addMovieActivityLevelResults:(id)a3;
-- (void)addMovieAnimalResults:(id)a3;
-- (void)addMovieAnimalprintResults:(id)a3;
-- (void)addMovieApplauseResults:(id)a3;
-- (void)addMovieAudioQualityResults:(id)a3;
-- (void)addMovieBabbleResults:(id)a3;
-- (void)addMovieCameraMotionResults:(id)a3;
-- (void)addMovieCheeringResults:(id)a3;
-- (void)addMovieClassificationResults:(id)a3;
-- (void)addMovieFaceResults:(id)a3;
-- (void)addMovieFaceprintResults:(id)a3;
-- (void)addMovieFeatureResults:(id)a3;
-- (void)addMovieFineSubjectMotionResults:(id)a3;
-- (void)addMovieHighlightResults:(id)a3;
-- (void)addMovieHighlightScoreResults:(id)a3;
-- (void)addMovieHumanActionClassificationResults:(id)a3;
-- (void)addMovieHumanActionResults:(id)a3;
-- (void)addMovieHumanPoseResults:(id)a3;
-- (void)addMovieInterestingnessResults:(id)a3;
-- (void)addMovieLaughterResults:(id)a3;
-- (void)addMovieLoudnessResults:(id)a3;
-- (void)addMovieMovingObjectResults:(id)a3;
-- (void)addMovieMusicResults:(id)a3;
-- (void)addMovieObstructionResults:(id)a3;
-- (void)addMovieOrientationResults:(id)a3;
-- (void)addMoviePetsFaceResults:(id)a3;
-- (void)addMoviePetsResults:(id)a3;
-- (void)addMoviePreEncodeResults:(id)a3;
-- (void)addMovieQualityResults:(id)a3;
-- (void)addMovieSafetyResults:(id)a3;
-- (void)addMovieSaliencyResults:(id)a3;
-- (void)addMovieSceneResults:(id)a3;
-- (void)addMovieSceneprintResults:(id)a3;
-- (void)addMovieStabilizationResults:(id)a3;
-- (void)addMovieSubjectMotionResults:(id)a3;
-- (void)addMovieSubtleMotionResults:(id)a3;
-- (void)addMovieSummaryResults:(id)a3;
-- (void)addMovieTorsoResults:(id)a3;
-- (void)addMovieUtteranceResults:(id)a3;
-- (void)addMovieVoiceResults:(id)a3;
-- (void)addSummarizedEmbeddingResults:(id)a3;
-- (void)addVideoCaptionPreferenceResults:(id)a3;
-- (void)addVideoCaptionResults:(id)a3;
-- (void)addVideoEmbeddingResults:(id)a3;
-- (void)addVideoSceneThumbnailResults:(id)a3;
-- (void)addVideoSegmentCaptionResults:(id)a3;
-- (void)addVideoThumbnailResults:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)persistToPhotosAsset:(id)a3;
-- (void)setHasImageEmbeddingVersion:(BOOL)a3;
-- (void)setHasStatsFlags:(BOOL)a3;
-- (void)setHasTypesWide:(BOOL)a3;
-- (void)setHasVideoEmbeddingVersion:(BOOL)a3;
-- (void)setImageEmbeddingResultsFromVSKAsset:(id)a3 imageEmbeddingVersion:(signed __int16)a4;
-- (void)writeTo:(id)a3;
+- (void)addAnimatedStickerResults:(id)results;
+- (void)addAudioFusedVideoEmbeddingResults:(id)results;
+- (void)addFilesystemMovieApplauseResults:(id)results;
+- (void)addFilesystemMovieBabbleResults:(id)results;
+- (void)addFilesystemMovieCheeringResults:(id)results;
+- (void)addFilesystemMovieClassificationResults:(id)results;
+- (void)addFilesystemMovieHumanActionClassificationResults:(id)results;
+- (void)addFilesystemMovieLaughterResults:(id)results;
+- (void)addFilesystemMovieMusicResults:(id)results;
+- (void)addFilesystemMovieVoiceResults:(id)results;
+- (void)addImageBlurResults:(id)results;
+- (void)addImageCaptionResults:(id)results;
+- (void)addImageCompositionResults:(id)results;
+- (void)addImageEmbeddingResults:(id)results;
+- (void)addImageExposureResults:(id)results;
+- (void)addImageFaceResults:(id)results;
+- (void)addImageFeatureResults:(id)results;
+- (void)addImageHumanPoseResults:(id)results;
+- (void)addImageJunkResults:(id)results;
+- (void)addImagePetsFaceResults:(id)results;
+- (void)addImagePetsResults:(id)results;
+- (void)addImageSaliencyResults:(id)results;
+- (void)addImageSceneprintResults:(id)results;
+- (void)addImageShotTypeResults:(id)results;
+- (void)addLivePhotoEffectsResults:(id)results;
+- (void)addLivePhotoHumanActionClassificationResults:(id)results;
+- (void)addLivePhotoKeyFrameResults:(id)results;
+- (void)addLivePhotoKeyFrameStillResults:(id)results;
+- (void)addLivePhotoRecommendationResults:(id)results;
+- (void)addLivePhotoSettlingEffectGatingResults:(id)results;
+- (void)addLivePhotoSharpnessResults:(id)results;
+- (void)addMovieActivityLevelResults:(id)results;
+- (void)addMovieAnimalResults:(id)results;
+- (void)addMovieAnimalprintResults:(id)results;
+- (void)addMovieApplauseResults:(id)results;
+- (void)addMovieAudioQualityResults:(id)results;
+- (void)addMovieBabbleResults:(id)results;
+- (void)addMovieCameraMotionResults:(id)results;
+- (void)addMovieCheeringResults:(id)results;
+- (void)addMovieClassificationResults:(id)results;
+- (void)addMovieFaceResults:(id)results;
+- (void)addMovieFaceprintResults:(id)results;
+- (void)addMovieFeatureResults:(id)results;
+- (void)addMovieFineSubjectMotionResults:(id)results;
+- (void)addMovieHighlightResults:(id)results;
+- (void)addMovieHighlightScoreResults:(id)results;
+- (void)addMovieHumanActionClassificationResults:(id)results;
+- (void)addMovieHumanActionResults:(id)results;
+- (void)addMovieHumanPoseResults:(id)results;
+- (void)addMovieInterestingnessResults:(id)results;
+- (void)addMovieLaughterResults:(id)results;
+- (void)addMovieLoudnessResults:(id)results;
+- (void)addMovieMovingObjectResults:(id)results;
+- (void)addMovieMusicResults:(id)results;
+- (void)addMovieObstructionResults:(id)results;
+- (void)addMovieOrientationResults:(id)results;
+- (void)addMoviePetsFaceResults:(id)results;
+- (void)addMoviePetsResults:(id)results;
+- (void)addMoviePreEncodeResults:(id)results;
+- (void)addMovieQualityResults:(id)results;
+- (void)addMovieSafetyResults:(id)results;
+- (void)addMovieSaliencyResults:(id)results;
+- (void)addMovieSceneResults:(id)results;
+- (void)addMovieSceneprintResults:(id)results;
+- (void)addMovieStabilizationResults:(id)results;
+- (void)addMovieSubjectMotionResults:(id)results;
+- (void)addMovieSubtleMotionResults:(id)results;
+- (void)addMovieSummaryResults:(id)results;
+- (void)addMovieTorsoResults:(id)results;
+- (void)addMovieUtteranceResults:(id)results;
+- (void)addMovieVoiceResults:(id)results;
+- (void)addSummarizedEmbeddingResults:(id)results;
+- (void)addVideoCaptionPreferenceResults:(id)results;
+- (void)addVideoCaptionResults:(id)results;
+- (void)addVideoEmbeddingResults:(id)results;
+- (void)addVideoSceneThumbnailResults:(id)results;
+- (void)addVideoSegmentCaptionResults:(id)results;
+- (void)addVideoThumbnailResults:(id)results;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)persistToPhotosAsset:(id)asset;
+- (void)setHasImageEmbeddingVersion:(BOOL)version;
+- (void)setHasStatsFlags:(BOOL)flags;
+- (void)setHasTypesWide:(BOOL)wide;
+- (void)setHasVideoEmbeddingVersion:(BOOL)version;
+- (void)setImageEmbeddingResultsFromVSKAsset:(id)asset imageEmbeddingVersion:(signed __int16)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoAssetAnalysis
 
-- (void)setHasStatsFlags:(BOOL)a3
+- (void)setHasStatsFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 2;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTypesWide:(BOOL)a3
+- (void)setHasTypesWide:(BOOL)wide
 {
-  if (a3)
+  if (wide)
   {
     v3 = 4;
   }
@@ -140,1377 +140,1377 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addImageBlurResults:(id)a3
+- (void)addImageBlurResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageBlurResults = self->_imageBlurResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageBlurResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageBlurResults;
     self->_imageBlurResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageBlurResults = self->_imageBlurResults;
   }
 
-  [(NSMutableArray *)imageBlurResults addObject:v4];
+  [(NSMutableArray *)imageBlurResults addObject:resultsCopy];
 }
 
-- (void)addImageCompositionResults:(id)a3
+- (void)addImageCompositionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageCompositionResults = self->_imageCompositionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageCompositionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageCompositionResults;
     self->_imageCompositionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageCompositionResults = self->_imageCompositionResults;
   }
 
-  [(NSMutableArray *)imageCompositionResults addObject:v4];
+  [(NSMutableArray *)imageCompositionResults addObject:resultsCopy];
 }
 
-- (void)addImageFaceResults:(id)a3
+- (void)addImageFaceResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageFaceResults = self->_imageFaceResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageFaceResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageFaceResults;
     self->_imageFaceResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageFaceResults = self->_imageFaceResults;
   }
 
-  [(NSMutableArray *)imageFaceResults addObject:v4];
+  [(NSMutableArray *)imageFaceResults addObject:resultsCopy];
 }
 
-- (void)addImageFeatureResults:(id)a3
+- (void)addImageFeatureResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageFeatureResults = self->_imageFeatureResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageFeatureResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageFeatureResults;
     self->_imageFeatureResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageFeatureResults = self->_imageFeatureResults;
   }
 
-  [(NSMutableArray *)imageFeatureResults addObject:v4];
+  [(NSMutableArray *)imageFeatureResults addObject:resultsCopy];
 }
 
-- (void)addImageJunkResults:(id)a3
+- (void)addImageJunkResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageJunkResults = self->_imageJunkResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageJunkResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageJunkResults;
     self->_imageJunkResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageJunkResults = self->_imageJunkResults;
   }
 
-  [(NSMutableArray *)imageJunkResults addObject:v4];
+  [(NSMutableArray *)imageJunkResults addObject:resultsCopy];
 }
 
-- (void)addImageSaliencyResults:(id)a3
+- (void)addImageSaliencyResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageSaliencyResults = self->_imageSaliencyResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageSaliencyResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageSaliencyResults;
     self->_imageSaliencyResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageSaliencyResults = self->_imageSaliencyResults;
   }
 
-  [(NSMutableArray *)imageSaliencyResults addObject:v4];
+  [(NSMutableArray *)imageSaliencyResults addObject:resultsCopy];
 }
 
-- (void)addImageShotTypeResults:(id)a3
+- (void)addImageShotTypeResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageShotTypeResults = self->_imageShotTypeResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageShotTypeResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageShotTypeResults;
     self->_imageShotTypeResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageShotTypeResults = self->_imageShotTypeResults;
   }
 
-  [(NSMutableArray *)imageShotTypeResults addObject:v4];
+  [(NSMutableArray *)imageShotTypeResults addObject:resultsCopy];
 }
 
-- (void)addImagePetsResults:(id)a3
+- (void)addImagePetsResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imagePetsResults = self->_imagePetsResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imagePetsResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imagePetsResults;
     self->_imagePetsResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imagePetsResults = self->_imagePetsResults;
   }
 
-  [(NSMutableArray *)imagePetsResults addObject:v4];
+  [(NSMutableArray *)imagePetsResults addObject:resultsCopy];
 }
 
-- (void)addImagePetsFaceResults:(id)a3
+- (void)addImagePetsFaceResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imagePetsFaceResults = self->_imagePetsFaceResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imagePetsFaceResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imagePetsFaceResults;
     self->_imagePetsFaceResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imagePetsFaceResults = self->_imagePetsFaceResults;
   }
 
-  [(NSMutableArray *)imagePetsFaceResults addObject:v4];
+  [(NSMutableArray *)imagePetsFaceResults addObject:resultsCopy];
 }
 
-- (void)addImageSceneprintResults:(id)a3
+- (void)addImageSceneprintResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageSceneprintResults = self->_imageSceneprintResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageSceneprintResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageSceneprintResults;
     self->_imageSceneprintResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageSceneprintResults = self->_imageSceneprintResults;
   }
 
-  [(NSMutableArray *)imageSceneprintResults addObject:v4];
+  [(NSMutableArray *)imageSceneprintResults addObject:resultsCopy];
 }
 
-- (void)addLivePhotoEffectsResults:(id)a3
+- (void)addLivePhotoEffectsResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   livePhotoEffectsResults = self->_livePhotoEffectsResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!livePhotoEffectsResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_livePhotoEffectsResults;
     self->_livePhotoEffectsResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     livePhotoEffectsResults = self->_livePhotoEffectsResults;
   }
 
-  [(NSMutableArray *)livePhotoEffectsResults addObject:v4];
+  [(NSMutableArray *)livePhotoEffectsResults addObject:resultsCopy];
 }
 
-- (void)addLivePhotoRecommendationResults:(id)a3
+- (void)addLivePhotoRecommendationResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   livePhotoRecommendationResults = self->_livePhotoRecommendationResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!livePhotoRecommendationResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_livePhotoRecommendationResults;
     self->_livePhotoRecommendationResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     livePhotoRecommendationResults = self->_livePhotoRecommendationResults;
   }
 
-  [(NSMutableArray *)livePhotoRecommendationResults addObject:v4];
+  [(NSMutableArray *)livePhotoRecommendationResults addObject:resultsCopy];
 }
 
-- (void)addLivePhotoSharpnessResults:(id)a3
+- (void)addLivePhotoSharpnessResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   livePhotoSharpnessResults = self->_livePhotoSharpnessResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!livePhotoSharpnessResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_livePhotoSharpnessResults;
     self->_livePhotoSharpnessResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     livePhotoSharpnessResults = self->_livePhotoSharpnessResults;
   }
 
-  [(NSMutableArray *)livePhotoSharpnessResults addObject:v4];
+  [(NSMutableArray *)livePhotoSharpnessResults addObject:resultsCopy];
 }
 
-- (void)addLivePhotoKeyFrameResults:(id)a3
+- (void)addLivePhotoKeyFrameResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   livePhotoKeyFrameResults = self->_livePhotoKeyFrameResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!livePhotoKeyFrameResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_livePhotoKeyFrameResults;
     self->_livePhotoKeyFrameResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     livePhotoKeyFrameResults = self->_livePhotoKeyFrameResults;
   }
 
-  [(NSMutableArray *)livePhotoKeyFrameResults addObject:v4];
+  [(NSMutableArray *)livePhotoKeyFrameResults addObject:resultsCopy];
 }
 
-- (void)addLivePhotoKeyFrameStillResults:(id)a3
+- (void)addLivePhotoKeyFrameStillResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   livePhotoKeyFrameStillResults = self->_livePhotoKeyFrameStillResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!livePhotoKeyFrameStillResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_livePhotoKeyFrameStillResults;
     self->_livePhotoKeyFrameStillResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     livePhotoKeyFrameStillResults = self->_livePhotoKeyFrameStillResults;
   }
 
-  [(NSMutableArray *)livePhotoKeyFrameStillResults addObject:v4];
+  [(NSMutableArray *)livePhotoKeyFrameStillResults addObject:resultsCopy];
 }
 
-- (void)addLivePhotoSettlingEffectGatingResults:(id)a3
+- (void)addLivePhotoSettlingEffectGatingResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   livePhotoSettlingEffectGatingResults = self->_livePhotoSettlingEffectGatingResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!livePhotoSettlingEffectGatingResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_livePhotoSettlingEffectGatingResults;
     self->_livePhotoSettlingEffectGatingResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     livePhotoSettlingEffectGatingResults = self->_livePhotoSettlingEffectGatingResults;
   }
 
-  [(NSMutableArray *)livePhotoSettlingEffectGatingResults addObject:v4];
+  [(NSMutableArray *)livePhotoSettlingEffectGatingResults addObject:resultsCopy];
 }
 
-- (void)addMovieActivityLevelResults:(id)a3
+- (void)addMovieActivityLevelResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieActivityLevelResults = self->_movieActivityLevelResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieActivityLevelResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieActivityLevelResults;
     self->_movieActivityLevelResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieActivityLevelResults = self->_movieActivityLevelResults;
   }
 
-  [(NSMutableArray *)movieActivityLevelResults addObject:v4];
+  [(NSMutableArray *)movieActivityLevelResults addObject:resultsCopy];
 }
 
-- (void)addMovieCameraMotionResults:(id)a3
+- (void)addMovieCameraMotionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieCameraMotionResults = self->_movieCameraMotionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieCameraMotionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieCameraMotionResults;
     self->_movieCameraMotionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieCameraMotionResults = self->_movieCameraMotionResults;
   }
 
-  [(NSMutableArray *)movieCameraMotionResults addObject:v4];
+  [(NSMutableArray *)movieCameraMotionResults addObject:resultsCopy];
 }
 
-- (void)addMovieClassificationResults:(id)a3
+- (void)addMovieClassificationResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieClassificationResults = self->_movieClassificationResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieClassificationResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieClassificationResults;
     self->_movieClassificationResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieClassificationResults = self->_movieClassificationResults;
   }
 
-  [(NSMutableArray *)movieClassificationResults addObject:v4];
+  [(NSMutableArray *)movieClassificationResults addObject:resultsCopy];
 }
 
-- (void)addMovieFaceResults:(id)a3
+- (void)addMovieFaceResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieFaceResults = self->_movieFaceResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieFaceResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieFaceResults;
     self->_movieFaceResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieFaceResults = self->_movieFaceResults;
   }
 
-  [(NSMutableArray *)movieFaceResults addObject:v4];
+  [(NSMutableArray *)movieFaceResults addObject:resultsCopy];
 }
 
-- (void)addMovieFaceprintResults:(id)a3
+- (void)addMovieFaceprintResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieFaceprintResults = self->_movieFaceprintResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieFaceprintResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieFaceprintResults;
     self->_movieFaceprintResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieFaceprintResults = self->_movieFaceprintResults;
   }
 
-  [(NSMutableArray *)movieFaceprintResults addObject:v4];
+  [(NSMutableArray *)movieFaceprintResults addObject:resultsCopy];
 }
 
-- (void)addMovieFeatureResults:(id)a3
+- (void)addMovieFeatureResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieFeatureResults = self->_movieFeatureResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieFeatureResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieFeatureResults;
     self->_movieFeatureResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieFeatureResults = self->_movieFeatureResults;
   }
 
-  [(NSMutableArray *)movieFeatureResults addObject:v4];
+  [(NSMutableArray *)movieFeatureResults addObject:resultsCopy];
 }
 
-- (void)addMovieFineSubjectMotionResults:(id)a3
+- (void)addMovieFineSubjectMotionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieFineSubjectMotionResults = self->_movieFineSubjectMotionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieFineSubjectMotionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieFineSubjectMotionResults;
     self->_movieFineSubjectMotionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieFineSubjectMotionResults = self->_movieFineSubjectMotionResults;
   }
 
-  [(NSMutableArray *)movieFineSubjectMotionResults addObject:v4];
+  [(NSMutableArray *)movieFineSubjectMotionResults addObject:resultsCopy];
 }
 
-- (void)addMovieInterestingnessResults:(id)a3
+- (void)addMovieInterestingnessResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieInterestingnessResults = self->_movieInterestingnessResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieInterestingnessResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieInterestingnessResults;
     self->_movieInterestingnessResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieInterestingnessResults = self->_movieInterestingnessResults;
   }
 
-  [(NSMutableArray *)movieInterestingnessResults addObject:v4];
+  [(NSMutableArray *)movieInterestingnessResults addObject:resultsCopy];
 }
 
-- (void)addMovieMovingObjectResults:(id)a3
+- (void)addMovieMovingObjectResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieMovingObjectResults = self->_movieMovingObjectResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieMovingObjectResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieMovingObjectResults;
     self->_movieMovingObjectResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieMovingObjectResults = self->_movieMovingObjectResults;
   }
 
-  [(NSMutableArray *)movieMovingObjectResults addObject:v4];
+  [(NSMutableArray *)movieMovingObjectResults addObject:resultsCopy];
 }
 
-- (void)addMovieMusicResults:(id)a3
+- (void)addMovieMusicResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieMusicResults = self->_movieMusicResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieMusicResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieMusicResults;
     self->_movieMusicResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieMusicResults = self->_movieMusicResults;
   }
 
-  [(NSMutableArray *)movieMusicResults addObject:v4];
+  [(NSMutableArray *)movieMusicResults addObject:resultsCopy];
 }
 
-- (void)addMovieObstructionResults:(id)a3
+- (void)addMovieObstructionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieObstructionResults = self->_movieObstructionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieObstructionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieObstructionResults;
     self->_movieObstructionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieObstructionResults = self->_movieObstructionResults;
   }
 
-  [(NSMutableArray *)movieObstructionResults addObject:v4];
+  [(NSMutableArray *)movieObstructionResults addObject:resultsCopy];
 }
 
-- (void)addMovieOrientationResults:(id)a3
+- (void)addMovieOrientationResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieOrientationResults = self->_movieOrientationResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieOrientationResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieOrientationResults;
     self->_movieOrientationResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieOrientationResults = self->_movieOrientationResults;
   }
 
-  [(NSMutableArray *)movieOrientationResults addObject:v4];
+  [(NSMutableArray *)movieOrientationResults addObject:resultsCopy];
 }
 
-- (void)addMoviePreEncodeResults:(id)a3
+- (void)addMoviePreEncodeResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   moviePreEncodeResults = self->_moviePreEncodeResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!moviePreEncodeResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_moviePreEncodeResults;
     self->_moviePreEncodeResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     moviePreEncodeResults = self->_moviePreEncodeResults;
   }
 
-  [(NSMutableArray *)moviePreEncodeResults addObject:v4];
+  [(NSMutableArray *)moviePreEncodeResults addObject:resultsCopy];
 }
 
-- (void)addMovieQualityResults:(id)a3
+- (void)addMovieQualityResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieQualityResults = self->_movieQualityResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieQualityResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieQualityResults;
     self->_movieQualityResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieQualityResults = self->_movieQualityResults;
   }
 
-  [(NSMutableArray *)movieQualityResults addObject:v4];
+  [(NSMutableArray *)movieQualityResults addObject:resultsCopy];
 }
 
-- (void)addMovieSaliencyResults:(id)a3
+- (void)addMovieSaliencyResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieSaliencyResults = self->_movieSaliencyResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieSaliencyResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieSaliencyResults;
     self->_movieSaliencyResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieSaliencyResults = self->_movieSaliencyResults;
   }
 
-  [(NSMutableArray *)movieSaliencyResults addObject:v4];
+  [(NSMutableArray *)movieSaliencyResults addObject:resultsCopy];
 }
 
-- (void)addMovieSceneResults:(id)a3
+- (void)addMovieSceneResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieSceneResults = self->_movieSceneResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieSceneResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieSceneResults;
     self->_movieSceneResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieSceneResults = self->_movieSceneResults;
   }
 
-  [(NSMutableArray *)movieSceneResults addObject:v4];
+  [(NSMutableArray *)movieSceneResults addObject:resultsCopy];
 }
 
-- (void)addMovieSceneprintResults:(id)a3
+- (void)addMovieSceneprintResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieSceneprintResults = self->_movieSceneprintResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieSceneprintResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieSceneprintResults;
     self->_movieSceneprintResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieSceneprintResults = self->_movieSceneprintResults;
   }
 
-  [(NSMutableArray *)movieSceneprintResults addObject:v4];
+  [(NSMutableArray *)movieSceneprintResults addObject:resultsCopy];
 }
 
-- (void)addMovieSubjectMotionResults:(id)a3
+- (void)addMovieSubjectMotionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieSubjectMotionResults = self->_movieSubjectMotionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieSubjectMotionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieSubjectMotionResults;
     self->_movieSubjectMotionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieSubjectMotionResults = self->_movieSubjectMotionResults;
   }
 
-  [(NSMutableArray *)movieSubjectMotionResults addObject:v4];
+  [(NSMutableArray *)movieSubjectMotionResults addObject:resultsCopy];
 }
 
-- (void)addMovieSubtleMotionResults:(id)a3
+- (void)addMovieSubtleMotionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieSubtleMotionResults = self->_movieSubtleMotionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieSubtleMotionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieSubtleMotionResults;
     self->_movieSubtleMotionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieSubtleMotionResults = self->_movieSubtleMotionResults;
   }
 
-  [(NSMutableArray *)movieSubtleMotionResults addObject:v4];
+  [(NSMutableArray *)movieSubtleMotionResults addObject:resultsCopy];
 }
 
-- (void)addMovieUtteranceResults:(id)a3
+- (void)addMovieUtteranceResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieUtteranceResults = self->_movieUtteranceResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieUtteranceResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieUtteranceResults;
     self->_movieUtteranceResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieUtteranceResults = self->_movieUtteranceResults;
   }
 
-  [(NSMutableArray *)movieUtteranceResults addObject:v4];
+  [(NSMutableArray *)movieUtteranceResults addObject:resultsCopy];
 }
 
-- (void)addMovieVoiceResults:(id)a3
+- (void)addMovieVoiceResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieVoiceResults = self->_movieVoiceResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieVoiceResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieVoiceResults;
     self->_movieVoiceResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieVoiceResults = self->_movieVoiceResults;
   }
 
-  [(NSMutableArray *)movieVoiceResults addObject:v4];
+  [(NSMutableArray *)movieVoiceResults addObject:resultsCopy];
 }
 
-- (void)addMovieSummaryResults:(id)a3
+- (void)addMovieSummaryResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieSummaryResults = self->_movieSummaryResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieSummaryResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieSummaryResults;
     self->_movieSummaryResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieSummaryResults = self->_movieSummaryResults;
   }
 
-  [(NSMutableArray *)movieSummaryResults addObject:v4];
+  [(NSMutableArray *)movieSummaryResults addObject:resultsCopy];
 }
 
-- (void)addMovieHighlightResults:(id)a3
+- (void)addMovieHighlightResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieHighlightResults = self->_movieHighlightResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieHighlightResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieHighlightResults;
     self->_movieHighlightResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieHighlightResults = self->_movieHighlightResults;
   }
 
-  [(NSMutableArray *)movieHighlightResults addObject:v4];
+  [(NSMutableArray *)movieHighlightResults addObject:resultsCopy];
 }
 
-- (void)addImageExposureResults:(id)a3
+- (void)addImageExposureResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageExposureResults = self->_imageExposureResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageExposureResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageExposureResults;
     self->_imageExposureResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageExposureResults = self->_imageExposureResults;
   }
 
-  [(NSMutableArray *)imageExposureResults addObject:v4];
+  [(NSMutableArray *)imageExposureResults addObject:resultsCopy];
 }
 
-- (void)addImageHumanPoseResults:(id)a3
+- (void)addImageHumanPoseResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageHumanPoseResults = self->_imageHumanPoseResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageHumanPoseResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageHumanPoseResults;
     self->_imageHumanPoseResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageHumanPoseResults = self->_imageHumanPoseResults;
   }
 
-  [(NSMutableArray *)imageHumanPoseResults addObject:v4];
+  [(NSMutableArray *)imageHumanPoseResults addObject:resultsCopy];
 }
 
-- (void)addMovieHumanPoseResults:(id)a3
+- (void)addMovieHumanPoseResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieHumanPoseResults = self->_movieHumanPoseResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieHumanPoseResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieHumanPoseResults;
     self->_movieHumanPoseResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieHumanPoseResults = self->_movieHumanPoseResults;
   }
 
-  [(NSMutableArray *)movieHumanPoseResults addObject:v4];
+  [(NSMutableArray *)movieHumanPoseResults addObject:resultsCopy];
 }
 
-- (void)addMovieApplauseResults:(id)a3
+- (void)addMovieApplauseResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieApplauseResults = self->_movieApplauseResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieApplauseResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieApplauseResults;
     self->_movieApplauseResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieApplauseResults = self->_movieApplauseResults;
   }
 
-  [(NSMutableArray *)movieApplauseResults addObject:v4];
+  [(NSMutableArray *)movieApplauseResults addObject:resultsCopy];
 }
 
-- (void)addMovieBabbleResults:(id)a3
+- (void)addMovieBabbleResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieBabbleResults = self->_movieBabbleResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieBabbleResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieBabbleResults;
     self->_movieBabbleResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieBabbleResults = self->_movieBabbleResults;
   }
 
-  [(NSMutableArray *)movieBabbleResults addObject:v4];
+  [(NSMutableArray *)movieBabbleResults addObject:resultsCopy];
 }
 
-- (void)addMovieCheeringResults:(id)a3
+- (void)addMovieCheeringResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieCheeringResults = self->_movieCheeringResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieCheeringResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieCheeringResults;
     self->_movieCheeringResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieCheeringResults = self->_movieCheeringResults;
   }
 
-  [(NSMutableArray *)movieCheeringResults addObject:v4];
+  [(NSMutableArray *)movieCheeringResults addObject:resultsCopy];
 }
 
-- (void)addMovieLaughterResults:(id)a3
+- (void)addMovieLaughterResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieLaughterResults = self->_movieLaughterResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieLaughterResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieLaughterResults;
     self->_movieLaughterResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieLaughterResults = self->_movieLaughterResults;
   }
 
-  [(NSMutableArray *)movieLaughterResults addObject:v4];
+  [(NSMutableArray *)movieLaughterResults addObject:resultsCopy];
 }
 
-- (void)addMovieHumanActionResults:(id)a3
+- (void)addMovieHumanActionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieHumanActionResults = self->_movieHumanActionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieHumanActionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieHumanActionResults;
     self->_movieHumanActionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieHumanActionResults = self->_movieHumanActionResults;
   }
 
-  [(NSMutableArray *)movieHumanActionResults addObject:v4];
+  [(NSMutableArray *)movieHumanActionResults addObject:resultsCopy];
 }
 
-- (void)addMovieLoudnessResults:(id)a3
+- (void)addMovieLoudnessResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieLoudnessResults = self->_movieLoudnessResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieLoudnessResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieLoudnessResults;
     self->_movieLoudnessResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieLoudnessResults = self->_movieLoudnessResults;
   }
 
-  [(NSMutableArray *)movieLoudnessResults addObject:v4];
+  [(NSMutableArray *)movieLoudnessResults addObject:resultsCopy];
 }
 
-- (void)addMoviePetsResults:(id)a3
+- (void)addMoviePetsResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   moviePetsResults = self->_moviePetsResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!moviePetsResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_moviePetsResults;
     self->_moviePetsResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     moviePetsResults = self->_moviePetsResults;
   }
 
-  [(NSMutableArray *)moviePetsResults addObject:v4];
+  [(NSMutableArray *)moviePetsResults addObject:resultsCopy];
 }
 
-- (void)addMoviePetsFaceResults:(id)a3
+- (void)addMoviePetsFaceResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   moviePetsFaceResults = self->_moviePetsFaceResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!moviePetsFaceResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_moviePetsFaceResults;
     self->_moviePetsFaceResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     moviePetsFaceResults = self->_moviePetsFaceResults;
   }
 
-  [(NSMutableArray *)moviePetsFaceResults addObject:v4];
+  [(NSMutableArray *)moviePetsFaceResults addObject:resultsCopy];
 }
 
-- (void)addMovieStabilizationResults:(id)a3
+- (void)addMovieStabilizationResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieStabilizationResults = self->_movieStabilizationResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieStabilizationResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieStabilizationResults;
     self->_movieStabilizationResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieStabilizationResults = self->_movieStabilizationResults;
   }
 
-  [(NSMutableArray *)movieStabilizationResults addObject:v4];
+  [(NSMutableArray *)movieStabilizationResults addObject:resultsCopy];
 }
 
-- (void)addMovieHighlightScoreResults:(id)a3
+- (void)addMovieHighlightScoreResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieHighlightScoreResults = self->_movieHighlightScoreResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieHighlightScoreResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieHighlightScoreResults;
     self->_movieHighlightScoreResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieHighlightScoreResults = self->_movieHighlightScoreResults;
   }
 
-  [(NSMutableArray *)movieHighlightScoreResults addObject:v4];
+  [(NSMutableArray *)movieHighlightScoreResults addObject:resultsCopy];
 }
 
-- (void)addLivePhotoHumanActionClassificationResults:(id)a3
+- (void)addLivePhotoHumanActionClassificationResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   livePhotoHumanActionClassificationResults = self->_livePhotoHumanActionClassificationResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!livePhotoHumanActionClassificationResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_livePhotoHumanActionClassificationResults;
     self->_livePhotoHumanActionClassificationResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     livePhotoHumanActionClassificationResults = self->_livePhotoHumanActionClassificationResults;
   }
 
-  [(NSMutableArray *)livePhotoHumanActionClassificationResults addObject:v4];
+  [(NSMutableArray *)livePhotoHumanActionClassificationResults addObject:resultsCopy];
 }
 
-- (void)addMovieAudioQualityResults:(id)a3
+- (void)addMovieAudioQualityResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieAudioQualityResults = self->_movieAudioQualityResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieAudioQualityResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieAudioQualityResults;
     self->_movieAudioQualityResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieAudioQualityResults = self->_movieAudioQualityResults;
   }
 
-  [(NSMutableArray *)movieAudioQualityResults addObject:v4];
+  [(NSMutableArray *)movieAudioQualityResults addObject:resultsCopy];
 }
 
-- (void)addMovieSafetyResults:(id)a3
+- (void)addMovieSafetyResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieSafetyResults = self->_movieSafetyResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieSafetyResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieSafetyResults;
     self->_movieSafetyResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieSafetyResults = self->_movieSafetyResults;
   }
 
-  [(NSMutableArray *)movieSafetyResults addObject:v4];
+  [(NSMutableArray *)movieSafetyResults addObject:resultsCopy];
 }
 
-- (void)addFilesystemMovieClassificationResults:(id)a3
+- (void)addFilesystemMovieClassificationResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   filesystemMovieClassificationResults = self->_filesystemMovieClassificationResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!filesystemMovieClassificationResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_filesystemMovieClassificationResults;
     self->_filesystemMovieClassificationResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     filesystemMovieClassificationResults = self->_filesystemMovieClassificationResults;
   }
 
-  [(NSMutableArray *)filesystemMovieClassificationResults addObject:v4];
+  [(NSMutableArray *)filesystemMovieClassificationResults addObject:resultsCopy];
 }
 
-- (void)addFilesystemMovieHumanActionClassificationResults:(id)a3
+- (void)addFilesystemMovieHumanActionClassificationResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   filesystemMovieHumanActionClassificationResults = self->_filesystemMovieHumanActionClassificationResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!filesystemMovieHumanActionClassificationResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_filesystemMovieHumanActionClassificationResults;
     self->_filesystemMovieHumanActionClassificationResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     filesystemMovieHumanActionClassificationResults = self->_filesystemMovieHumanActionClassificationResults;
   }
 
-  [(NSMutableArray *)filesystemMovieHumanActionClassificationResults addObject:v4];
+  [(NSMutableArray *)filesystemMovieHumanActionClassificationResults addObject:resultsCopy];
 }
 
-- (void)addFilesystemMovieApplauseResults:(id)a3
+- (void)addFilesystemMovieApplauseResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   filesystemMovieApplauseResults = self->_filesystemMovieApplauseResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!filesystemMovieApplauseResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_filesystemMovieApplauseResults;
     self->_filesystemMovieApplauseResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     filesystemMovieApplauseResults = self->_filesystemMovieApplauseResults;
   }
 
-  [(NSMutableArray *)filesystemMovieApplauseResults addObject:v4];
+  [(NSMutableArray *)filesystemMovieApplauseResults addObject:resultsCopy];
 }
 
-- (void)addFilesystemMovieBabbleResults:(id)a3
+- (void)addFilesystemMovieBabbleResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   filesystemMovieBabbleResults = self->_filesystemMovieBabbleResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!filesystemMovieBabbleResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_filesystemMovieBabbleResults;
     self->_filesystemMovieBabbleResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     filesystemMovieBabbleResults = self->_filesystemMovieBabbleResults;
   }
 
-  [(NSMutableArray *)filesystemMovieBabbleResults addObject:v4];
+  [(NSMutableArray *)filesystemMovieBabbleResults addObject:resultsCopy];
 }
 
-- (void)addFilesystemMovieCheeringResults:(id)a3
+- (void)addFilesystemMovieCheeringResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   filesystemMovieCheeringResults = self->_filesystemMovieCheeringResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!filesystemMovieCheeringResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_filesystemMovieCheeringResults;
     self->_filesystemMovieCheeringResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     filesystemMovieCheeringResults = self->_filesystemMovieCheeringResults;
   }
 
-  [(NSMutableArray *)filesystemMovieCheeringResults addObject:v4];
+  [(NSMutableArray *)filesystemMovieCheeringResults addObject:resultsCopy];
 }
 
-- (void)addFilesystemMovieLaughterResults:(id)a3
+- (void)addFilesystemMovieLaughterResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   filesystemMovieLaughterResults = self->_filesystemMovieLaughterResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!filesystemMovieLaughterResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_filesystemMovieLaughterResults;
     self->_filesystemMovieLaughterResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     filesystemMovieLaughterResults = self->_filesystemMovieLaughterResults;
   }
 
-  [(NSMutableArray *)filesystemMovieLaughterResults addObject:v4];
+  [(NSMutableArray *)filesystemMovieLaughterResults addObject:resultsCopy];
 }
 
-- (void)addFilesystemMovieMusicResults:(id)a3
+- (void)addFilesystemMovieMusicResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   filesystemMovieMusicResults = self->_filesystemMovieMusicResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!filesystemMovieMusicResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_filesystemMovieMusicResults;
     self->_filesystemMovieMusicResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     filesystemMovieMusicResults = self->_filesystemMovieMusicResults;
   }
 
-  [(NSMutableArray *)filesystemMovieMusicResults addObject:v4];
+  [(NSMutableArray *)filesystemMovieMusicResults addObject:resultsCopy];
 }
 
-- (void)addFilesystemMovieVoiceResults:(id)a3
+- (void)addFilesystemMovieVoiceResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   filesystemMovieVoiceResults = self->_filesystemMovieVoiceResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!filesystemMovieVoiceResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_filesystemMovieVoiceResults;
     self->_filesystemMovieVoiceResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     filesystemMovieVoiceResults = self->_filesystemMovieVoiceResults;
   }
 
-  [(NSMutableArray *)filesystemMovieVoiceResults addObject:v4];
+  [(NSMutableArray *)filesystemMovieVoiceResults addObject:resultsCopy];
 }
 
-- (void)addAnimatedStickerResults:(id)a3
+- (void)addAnimatedStickerResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   animatedStickerResults = self->_animatedStickerResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!animatedStickerResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_animatedStickerResults;
     self->_animatedStickerResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     animatedStickerResults = self->_animatedStickerResults;
   }
 
-  [(NSMutableArray *)animatedStickerResults addObject:v4];
+  [(NSMutableArray *)animatedStickerResults addObject:resultsCopy];
 }
 
-- (void)addMovieTorsoResults:(id)a3
+- (void)addMovieTorsoResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieTorsoResults = self->_movieTorsoResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieTorsoResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieTorsoResults;
     self->_movieTorsoResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieTorsoResults = self->_movieTorsoResults;
   }
 
-  [(NSMutableArray *)movieTorsoResults addObject:v4];
+  [(NSMutableArray *)movieTorsoResults addObject:resultsCopy];
 }
 
-- (void)addMovieHumanActionClassificationResults:(id)a3
+- (void)addMovieHumanActionClassificationResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieHumanActionClassificationResults = self->_movieHumanActionClassificationResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieHumanActionClassificationResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieHumanActionClassificationResults;
     self->_movieHumanActionClassificationResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieHumanActionClassificationResults = self->_movieHumanActionClassificationResults;
   }
 
-  [(NSMutableArray *)movieHumanActionClassificationResults addObject:v4];
+  [(NSMutableArray *)movieHumanActionClassificationResults addObject:resultsCopy];
 }
 
-- (void)addVideoEmbeddingResults:(id)a3
+- (void)addVideoEmbeddingResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   videoEmbeddingResults = self->_videoEmbeddingResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!videoEmbeddingResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_videoEmbeddingResults;
     self->_videoEmbeddingResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     videoEmbeddingResults = self->_videoEmbeddingResults;
   }
 
-  [(NSMutableArray *)videoEmbeddingResults addObject:v4];
+  [(NSMutableArray *)videoEmbeddingResults addObject:resultsCopy];
 }
 
-- (void)addSummarizedEmbeddingResults:(id)a3
+- (void)addSummarizedEmbeddingResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   summarizedEmbeddingResults = self->_summarizedEmbeddingResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!summarizedEmbeddingResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_summarizedEmbeddingResults;
     self->_summarizedEmbeddingResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     summarizedEmbeddingResults = self->_summarizedEmbeddingResults;
   }
 
-  [(NSMutableArray *)summarizedEmbeddingResults addObject:v4];
+  [(NSMutableArray *)summarizedEmbeddingResults addObject:resultsCopy];
 }
 
-- (void)addAudioFusedVideoEmbeddingResults:(id)a3
+- (void)addAudioFusedVideoEmbeddingResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   audioFusedVideoEmbeddingResults = self->_audioFusedVideoEmbeddingResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!audioFusedVideoEmbeddingResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_audioFusedVideoEmbeddingResults;
     self->_audioFusedVideoEmbeddingResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     audioFusedVideoEmbeddingResults = self->_audioFusedVideoEmbeddingResults;
   }
 
-  [(NSMutableArray *)audioFusedVideoEmbeddingResults addObject:v4];
+  [(NSMutableArray *)audioFusedVideoEmbeddingResults addObject:resultsCopy];
 }
 
-- (void)addImageEmbeddingResults:(id)a3
+- (void)addImageEmbeddingResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageEmbeddingResults = self->_imageEmbeddingResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageEmbeddingResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageEmbeddingResults;
     self->_imageEmbeddingResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageEmbeddingResults = self->_imageEmbeddingResults;
   }
 
-  [(NSMutableArray *)imageEmbeddingResults addObject:v4];
+  [(NSMutableArray *)imageEmbeddingResults addObject:resultsCopy];
 }
 
-- (void)addImageCaptionResults:(id)a3
+- (void)addImageCaptionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   imageCaptionResults = self->_imageCaptionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!imageCaptionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_imageCaptionResults;
     self->_imageCaptionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     imageCaptionResults = self->_imageCaptionResults;
   }
 
-  [(NSMutableArray *)imageCaptionResults addObject:v4];
+  [(NSMutableArray *)imageCaptionResults addObject:resultsCopy];
 }
 
-- (void)addVideoCaptionResults:(id)a3
+- (void)addVideoCaptionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   videoCaptionResults = self->_videoCaptionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!videoCaptionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_videoCaptionResults;
     self->_videoCaptionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     videoCaptionResults = self->_videoCaptionResults;
   }
 
-  [(NSMutableArray *)videoCaptionResults addObject:v4];
+  [(NSMutableArray *)videoCaptionResults addObject:resultsCopy];
 }
 
-- (void)addVideoCaptionPreferenceResults:(id)a3
+- (void)addVideoCaptionPreferenceResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   videoCaptionPreferenceResults = self->_videoCaptionPreferenceResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!videoCaptionPreferenceResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_videoCaptionPreferenceResults;
     self->_videoCaptionPreferenceResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     videoCaptionPreferenceResults = self->_videoCaptionPreferenceResults;
   }
 
-  [(NSMutableArray *)videoCaptionPreferenceResults addObject:v4];
+  [(NSMutableArray *)videoCaptionPreferenceResults addObject:resultsCopy];
 }
 
-- (void)addVideoSegmentCaptionResults:(id)a3
+- (void)addVideoSegmentCaptionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   videoSegmentCaptionResults = self->_videoSegmentCaptionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!videoSegmentCaptionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_videoSegmentCaptionResults;
     self->_videoSegmentCaptionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     videoSegmentCaptionResults = self->_videoSegmentCaptionResults;
   }
 
-  [(NSMutableArray *)videoSegmentCaptionResults addObject:v4];
+  [(NSMutableArray *)videoSegmentCaptionResults addObject:resultsCopy];
 }
 
-- (void)addMovieAnimalResults:(id)a3
+- (void)addMovieAnimalResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieAnimalResults = self->_movieAnimalResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieAnimalResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieAnimalResults;
     self->_movieAnimalResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieAnimalResults = self->_movieAnimalResults;
   }
 
-  [(NSMutableArray *)movieAnimalResults addObject:v4];
+  [(NSMutableArray *)movieAnimalResults addObject:resultsCopy];
 }
 
-- (void)addMovieAnimalprintResults:(id)a3
+- (void)addMovieAnimalprintResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   movieAnimalprintResults = self->_movieAnimalprintResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!movieAnimalprintResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_movieAnimalprintResults;
     self->_movieAnimalprintResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     movieAnimalprintResults = self->_movieAnimalprintResults;
   }
 
-  [(NSMutableArray *)movieAnimalprintResults addObject:v4];
+  [(NSMutableArray *)movieAnimalprintResults addObject:resultsCopy];
 }
 
-- (void)setHasImageEmbeddingVersion:(BOOL)a3
+- (void)setHasImageEmbeddingVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -1523,9 +1523,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasVideoEmbeddingVersion:(BOOL)a3
+- (void)setHasVideoEmbeddingVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }
@@ -1538,40 +1538,40 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addVideoSceneThumbnailResults:(id)a3
+- (void)addVideoSceneThumbnailResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   videoSceneThumbnailResults = self->_videoSceneThumbnailResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!videoSceneThumbnailResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_videoSceneThumbnailResults;
     self->_videoSceneThumbnailResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     videoSceneThumbnailResults = self->_videoSceneThumbnailResults;
   }
 
-  [(NSMutableArray *)videoSceneThumbnailResults addObject:v4];
+  [(NSMutableArray *)videoSceneThumbnailResults addObject:resultsCopy];
 }
 
-- (void)addVideoThumbnailResults:(id)a3
+- (void)addVideoThumbnailResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   videoThumbnailResults = self->_videoThumbnailResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!videoThumbnailResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_videoThumbnailResults;
     self->_videoThumbnailResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     videoThumbnailResults = self->_videoThumbnailResults;
   }
 
-  [(NSMutableArray *)videoThumbnailResults addObject:v4];
+  [(NSMutableArray *)videoThumbnailResults addObject:resultsCopy];
 }
 
 - (id)description
@@ -1580,8 +1580,8 @@
   v8.receiver = self;
   v8.super_class = VCPProtoAssetAnalysis;
   v4 = [(VCPProtoAssetAnalysis *)&v8 description];
-  v5 = [(VCPProtoAssetAnalysis *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoAssetAnalysis *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -1589,24 +1589,24 @@
 - (id)dictionaryRepresentation
 {
   v958 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v4 forKey:@"version"];
+  [dictionary setObject:v4 forKey:@"version"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_types];
-  [v3 setObject:v5 forKey:@"types"];
+  [dictionary setObject:v5 forKey:@"types"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_flags];
-  [v3 setObject:v6 forKey:@"flags"];
+  [dictionary setObject:v6 forKey:@"flags"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_date];
-  [v3 setObject:v7 forKey:@"date"];
+  [dictionary setObject:v7 forKey:@"date"];
 
   has = self->_has;
   if (has)
   {
     v566 = [MEMORY[0x1E696AD98] numberWithDouble:self->_quality];
-    [v3 setObject:v566 forKey:@"quality"];
+    [dictionary setObject:v566 forKey:@"quality"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -1627,41 +1627,41 @@ LABEL_3:
   }
 
   v567 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_statsFlags];
-  [v3 setObject:v567 forKey:@"statsFlags"];
+  [dictionary setObject:v567 forKey:@"statsFlags"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_typesWide];
-    [v3 setObject:v9 forKey:@"typesWide"];
+    [dictionary setObject:v9 forKey:@"typesWide"];
   }
 
 LABEL_5:
   assetIdentifier = self->_assetIdentifier;
   if (assetIdentifier)
   {
-    [v3 setObject:assetIdentifier forKey:@"assetIdentifier"];
+    [dictionary setObject:assetIdentifier forKey:@"assetIdentifier"];
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_assetModificationDate];
-  [v3 setObject:v11 forKey:@"assetModificationDate"];
+  [dictionary setObject:v11 forKey:@"assetModificationDate"];
 
   assetMasterFingerprint = self->_assetMasterFingerprint;
   if (assetMasterFingerprint)
   {
-    [v3 setObject:assetMasterFingerprint forKey:@"assetMasterFingerprint"];
+    [dictionary setObject:assetMasterFingerprint forKey:@"assetMasterFingerprint"];
   }
 
   assetAdjustedFingerprint = self->_assetAdjustedFingerprint;
   if (assetAdjustedFingerprint)
   {
-    [v3 setObject:assetAdjustedFingerprint forKey:@"assetAdjustedFingerprint"];
+    [dictionary setObject:assetAdjustedFingerprint forKey:@"assetAdjustedFingerprint"];
   }
 
   assetCloudIdentifier = self->_assetCloudIdentifier;
   if (assetCloudIdentifier)
   {
-    [v3 setObject:assetCloudIdentifier forKey:@"assetCloudIdentifier"];
+    [dictionary setObject:assetCloudIdentifier forKey:@"assetCloudIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_imageBlurResults count])
@@ -1686,8 +1686,8 @@ LABEL_5:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v876 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation = [*(*(&v876 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v876 objects:v957 count:16];
@@ -1696,7 +1696,7 @@ LABEL_5:
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"imageBlurResults"];
+    [dictionary setObject:v15 forKey:@"imageBlurResults"];
   }
 
   if ([(NSMutableArray *)self->_imageCompositionResults count])
@@ -1721,8 +1721,8 @@ LABEL_5:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v872 + 1) + 8 * j) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation2 = [*(*(&v872 + 1) + 8 * j) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation2];
         }
 
         v25 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v872 objects:v956 count:16];
@@ -1731,7 +1731,7 @@ LABEL_5:
       while (v25);
     }
 
-    [v3 setObject:v22 forKey:@"imageCompositionResults"];
+    [dictionary setObject:v22 forKey:@"imageCompositionResults"];
   }
 
   if ([(NSMutableArray *)self->_imageFaceResults count])
@@ -1756,8 +1756,8 @@ LABEL_5:
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v868 + 1) + 8 * k) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation3 = [*(*(&v868 + 1) + 8 * k) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation3];
         }
 
         v32 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v868 objects:v955 count:16];
@@ -1766,7 +1766,7 @@ LABEL_5:
       while (v32);
     }
 
-    [v3 setObject:v29 forKey:@"imageFaceResults"];
+    [dictionary setObject:v29 forKey:@"imageFaceResults"];
   }
 
   if ([(NSMutableArray *)self->_imageFeatureResults count])
@@ -1791,8 +1791,8 @@ LABEL_5:
             objc_enumerationMutation(v37);
           }
 
-          v42 = [*(*(&v864 + 1) + 8 * m) dictionaryRepresentation];
-          [v36 addObject:v42];
+          dictionaryRepresentation4 = [*(*(&v864 + 1) + 8 * m) dictionaryRepresentation];
+          [v36 addObject:dictionaryRepresentation4];
         }
 
         v39 = [(NSMutableArray *)v37 countByEnumeratingWithState:&v864 objects:v954 count:16];
@@ -1801,7 +1801,7 @@ LABEL_5:
       while (v39);
     }
 
-    [v3 setObject:v36 forKey:@"imageFeatureResults"];
+    [dictionary setObject:v36 forKey:@"imageFeatureResults"];
   }
 
   if ([(NSMutableArray *)self->_imageJunkResults count])
@@ -1826,8 +1826,8 @@ LABEL_5:
             objc_enumerationMutation(v44);
           }
 
-          v49 = [*(*(&v860 + 1) + 8 * n) dictionaryRepresentation];
-          [v43 addObject:v49];
+          dictionaryRepresentation5 = [*(*(&v860 + 1) + 8 * n) dictionaryRepresentation];
+          [v43 addObject:dictionaryRepresentation5];
         }
 
         v46 = [(NSMutableArray *)v44 countByEnumeratingWithState:&v860 objects:v953 count:16];
@@ -1836,7 +1836,7 @@ LABEL_5:
       while (v46);
     }
 
-    [v3 setObject:v43 forKey:@"imageJunkResults"];
+    [dictionary setObject:v43 forKey:@"imageJunkResults"];
   }
 
   if ([(NSMutableArray *)self->_imageSaliencyResults count])
@@ -1861,8 +1861,8 @@ LABEL_5:
             objc_enumerationMutation(v51);
           }
 
-          v56 = [*(*(&v856 + 1) + 8 * ii) dictionaryRepresentation];
-          [v50 addObject:v56];
+          dictionaryRepresentation6 = [*(*(&v856 + 1) + 8 * ii) dictionaryRepresentation];
+          [v50 addObject:dictionaryRepresentation6];
         }
 
         v53 = [(NSMutableArray *)v51 countByEnumeratingWithState:&v856 objects:v952 count:16];
@@ -1871,7 +1871,7 @@ LABEL_5:
       while (v53);
     }
 
-    [v3 setObject:v50 forKey:@"imageSaliencyResults"];
+    [dictionary setObject:v50 forKey:@"imageSaliencyResults"];
   }
 
   if ([(NSMutableArray *)self->_imageShotTypeResults count])
@@ -1896,8 +1896,8 @@ LABEL_5:
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v852 + 1) + 8 * jj) dictionaryRepresentation];
-          [v57 addObject:v63];
+          dictionaryRepresentation7 = [*(*(&v852 + 1) + 8 * jj) dictionaryRepresentation];
+          [v57 addObject:dictionaryRepresentation7];
         }
 
         v60 = [(NSMutableArray *)v58 countByEnumeratingWithState:&v852 objects:v951 count:16];
@@ -1906,7 +1906,7 @@ LABEL_5:
       while (v60);
     }
 
-    [v3 setObject:v57 forKey:@"imageShotTypeResults"];
+    [dictionary setObject:v57 forKey:@"imageShotTypeResults"];
   }
 
   if ([(NSMutableArray *)self->_imagePetsResults count])
@@ -1931,8 +1931,8 @@ LABEL_5:
             objc_enumerationMutation(v65);
           }
 
-          v70 = [*(*(&v848 + 1) + 8 * kk) dictionaryRepresentation];
-          [v64 addObject:v70];
+          dictionaryRepresentation8 = [*(*(&v848 + 1) + 8 * kk) dictionaryRepresentation];
+          [v64 addObject:dictionaryRepresentation8];
         }
 
         v67 = [(NSMutableArray *)v65 countByEnumeratingWithState:&v848 objects:v950 count:16];
@@ -1941,7 +1941,7 @@ LABEL_5:
       while (v67);
     }
 
-    [v3 setObject:v64 forKey:@"imagePetsResults"];
+    [dictionary setObject:v64 forKey:@"imagePetsResults"];
   }
 
   if ([(NSMutableArray *)self->_imagePetsFaceResults count])
@@ -1966,8 +1966,8 @@ LABEL_5:
             objc_enumerationMutation(v72);
           }
 
-          v77 = [*(*(&v844 + 1) + 8 * mm) dictionaryRepresentation];
-          [v71 addObject:v77];
+          dictionaryRepresentation9 = [*(*(&v844 + 1) + 8 * mm) dictionaryRepresentation];
+          [v71 addObject:dictionaryRepresentation9];
         }
 
         v74 = [(NSMutableArray *)v72 countByEnumeratingWithState:&v844 objects:v949 count:16];
@@ -1976,7 +1976,7 @@ LABEL_5:
       while (v74);
     }
 
-    [v3 setObject:v71 forKey:@"imagePetsFaceResults"];
+    [dictionary setObject:v71 forKey:@"imagePetsFaceResults"];
   }
 
   if ([(NSMutableArray *)self->_imageSceneprintResults count])
@@ -2001,8 +2001,8 @@ LABEL_5:
             objc_enumerationMutation(v79);
           }
 
-          v84 = [*(*(&v840 + 1) + 8 * nn) dictionaryRepresentation];
-          [v78 addObject:v84];
+          dictionaryRepresentation10 = [*(*(&v840 + 1) + 8 * nn) dictionaryRepresentation];
+          [v78 addObject:dictionaryRepresentation10];
         }
 
         v81 = [(NSMutableArray *)v79 countByEnumeratingWithState:&v840 objects:v948 count:16];
@@ -2011,7 +2011,7 @@ LABEL_5:
       while (v81);
     }
 
-    [v3 setObject:v78 forKey:@"imageSceneprintResults"];
+    [dictionary setObject:v78 forKey:@"imageSceneprintResults"];
   }
 
   if ([(NSMutableArray *)self->_livePhotoEffectsResults count])
@@ -2036,8 +2036,8 @@ LABEL_5:
             objc_enumerationMutation(v86);
           }
 
-          v91 = [*(*(&v836 + 1) + 8 * i1) dictionaryRepresentation];
-          [v85 addObject:v91];
+          dictionaryRepresentation11 = [*(*(&v836 + 1) + 8 * i1) dictionaryRepresentation];
+          [v85 addObject:dictionaryRepresentation11];
         }
 
         v88 = [(NSMutableArray *)v86 countByEnumeratingWithState:&v836 objects:v947 count:16];
@@ -2046,7 +2046,7 @@ LABEL_5:
       while (v88);
     }
 
-    [v3 setObject:v85 forKey:@"livePhotoEffectsResults"];
+    [dictionary setObject:v85 forKey:@"livePhotoEffectsResults"];
   }
 
   if ([(NSMutableArray *)self->_livePhotoRecommendationResults count])
@@ -2071,8 +2071,8 @@ LABEL_5:
             objc_enumerationMutation(v93);
           }
 
-          v98 = [*(*(&v832 + 1) + 8 * i2) dictionaryRepresentation];
-          [v92 addObject:v98];
+          dictionaryRepresentation12 = [*(*(&v832 + 1) + 8 * i2) dictionaryRepresentation];
+          [v92 addObject:dictionaryRepresentation12];
         }
 
         v95 = [(NSMutableArray *)v93 countByEnumeratingWithState:&v832 objects:v946 count:16];
@@ -2081,7 +2081,7 @@ LABEL_5:
       while (v95);
     }
 
-    [v3 setObject:v92 forKey:@"livePhotoRecommendationResults"];
+    [dictionary setObject:v92 forKey:@"livePhotoRecommendationResults"];
   }
 
   if ([(NSMutableArray *)self->_livePhotoSharpnessResults count])
@@ -2106,8 +2106,8 @@ LABEL_5:
             objc_enumerationMutation(v100);
           }
 
-          v105 = [*(*(&v828 + 1) + 8 * i3) dictionaryRepresentation];
-          [v99 addObject:v105];
+          dictionaryRepresentation13 = [*(*(&v828 + 1) + 8 * i3) dictionaryRepresentation];
+          [v99 addObject:dictionaryRepresentation13];
         }
 
         v102 = [(NSMutableArray *)v100 countByEnumeratingWithState:&v828 objects:v945 count:16];
@@ -2116,7 +2116,7 @@ LABEL_5:
       while (v102);
     }
 
-    [v3 setObject:v99 forKey:@"livePhotoSharpnessResults"];
+    [dictionary setObject:v99 forKey:@"livePhotoSharpnessResults"];
   }
 
   if ([(NSMutableArray *)self->_livePhotoKeyFrameResults count])
@@ -2141,8 +2141,8 @@ LABEL_5:
             objc_enumerationMutation(v107);
           }
 
-          v112 = [*(*(&v824 + 1) + 8 * i4) dictionaryRepresentation];
-          [v106 addObject:v112];
+          dictionaryRepresentation14 = [*(*(&v824 + 1) + 8 * i4) dictionaryRepresentation];
+          [v106 addObject:dictionaryRepresentation14];
         }
 
         v109 = [(NSMutableArray *)v107 countByEnumeratingWithState:&v824 objects:v944 count:16];
@@ -2151,7 +2151,7 @@ LABEL_5:
       while (v109);
     }
 
-    [v3 setObject:v106 forKey:@"livePhotoKeyFrameResults"];
+    [dictionary setObject:v106 forKey:@"livePhotoKeyFrameResults"];
   }
 
   if ([(NSMutableArray *)self->_livePhotoKeyFrameStillResults count])
@@ -2176,8 +2176,8 @@ LABEL_5:
             objc_enumerationMutation(v114);
           }
 
-          v119 = [*(*(&v820 + 1) + 8 * i5) dictionaryRepresentation];
-          [v113 addObject:v119];
+          dictionaryRepresentation15 = [*(*(&v820 + 1) + 8 * i5) dictionaryRepresentation];
+          [v113 addObject:dictionaryRepresentation15];
         }
 
         v116 = [(NSMutableArray *)v114 countByEnumeratingWithState:&v820 objects:v943 count:16];
@@ -2186,7 +2186,7 @@ LABEL_5:
       while (v116);
     }
 
-    [v3 setObject:v113 forKey:@"livePhotoKeyFrameStillResults"];
+    [dictionary setObject:v113 forKey:@"livePhotoKeyFrameStillResults"];
   }
 
   if ([(NSMutableArray *)self->_livePhotoSettlingEffectGatingResults count])
@@ -2211,8 +2211,8 @@ LABEL_5:
             objc_enumerationMutation(v121);
           }
 
-          v126 = [*(*(&v816 + 1) + 8 * i6) dictionaryRepresentation];
-          [v120 addObject:v126];
+          dictionaryRepresentation16 = [*(*(&v816 + 1) + 8 * i6) dictionaryRepresentation];
+          [v120 addObject:dictionaryRepresentation16];
         }
 
         v123 = [(NSMutableArray *)v121 countByEnumeratingWithState:&v816 objects:v942 count:16];
@@ -2221,7 +2221,7 @@ LABEL_5:
       while (v123);
     }
 
-    [v3 setObject:v120 forKey:@"livePhotoSettlingEffectGatingResults"];
+    [dictionary setObject:v120 forKey:@"livePhotoSettlingEffectGatingResults"];
   }
 
   if ([(NSMutableArray *)self->_movieActivityLevelResults count])
@@ -2246,8 +2246,8 @@ LABEL_5:
             objc_enumerationMutation(v128);
           }
 
-          v133 = [*(*(&v812 + 1) + 8 * i7) dictionaryRepresentation];
-          [v127 addObject:v133];
+          dictionaryRepresentation17 = [*(*(&v812 + 1) + 8 * i7) dictionaryRepresentation];
+          [v127 addObject:dictionaryRepresentation17];
         }
 
         v130 = [(NSMutableArray *)v128 countByEnumeratingWithState:&v812 objects:v941 count:16];
@@ -2256,7 +2256,7 @@ LABEL_5:
       while (v130);
     }
 
-    [v3 setObject:v127 forKey:@"movieActivityLevelResults"];
+    [dictionary setObject:v127 forKey:@"movieActivityLevelResults"];
   }
 
   if ([(NSMutableArray *)self->_movieCameraMotionResults count])
@@ -2281,8 +2281,8 @@ LABEL_5:
             objc_enumerationMutation(v135);
           }
 
-          v140 = [*(*(&v808 + 1) + 8 * i8) dictionaryRepresentation];
-          [v134 addObject:v140];
+          dictionaryRepresentation18 = [*(*(&v808 + 1) + 8 * i8) dictionaryRepresentation];
+          [v134 addObject:dictionaryRepresentation18];
         }
 
         v137 = [(NSMutableArray *)v135 countByEnumeratingWithState:&v808 objects:v940 count:16];
@@ -2291,7 +2291,7 @@ LABEL_5:
       while (v137);
     }
 
-    [v3 setObject:v134 forKey:@"movieCameraMotionResults"];
+    [dictionary setObject:v134 forKey:@"movieCameraMotionResults"];
   }
 
   if ([(NSMutableArray *)self->_movieClassificationResults count])
@@ -2316,8 +2316,8 @@ LABEL_5:
             objc_enumerationMutation(v142);
           }
 
-          v147 = [*(*(&v804 + 1) + 8 * i9) dictionaryRepresentation];
-          [v141 addObject:v147];
+          dictionaryRepresentation19 = [*(*(&v804 + 1) + 8 * i9) dictionaryRepresentation];
+          [v141 addObject:dictionaryRepresentation19];
         }
 
         v144 = [(NSMutableArray *)v142 countByEnumeratingWithState:&v804 objects:v939 count:16];
@@ -2326,7 +2326,7 @@ LABEL_5:
       while (v144);
     }
 
-    [v3 setObject:v141 forKey:@"movieClassificationResults"];
+    [dictionary setObject:v141 forKey:@"movieClassificationResults"];
   }
 
   if ([(NSMutableArray *)self->_movieFaceResults count])
@@ -2351,8 +2351,8 @@ LABEL_5:
             objc_enumerationMutation(v149);
           }
 
-          v154 = [*(*(&v800 + 1) + 8 * i10) dictionaryRepresentation];
-          [v148 addObject:v154];
+          dictionaryRepresentation20 = [*(*(&v800 + 1) + 8 * i10) dictionaryRepresentation];
+          [v148 addObject:dictionaryRepresentation20];
         }
 
         v151 = [(NSMutableArray *)v149 countByEnumeratingWithState:&v800 objects:v938 count:16];
@@ -2361,7 +2361,7 @@ LABEL_5:
       while (v151);
     }
 
-    [v3 setObject:v148 forKey:@"movieFaceResults"];
+    [dictionary setObject:v148 forKey:@"movieFaceResults"];
   }
 
   if ([(NSMutableArray *)self->_movieFaceprintResults count])
@@ -2386,8 +2386,8 @@ LABEL_5:
             objc_enumerationMutation(v156);
           }
 
-          v161 = [*(*(&v796 + 1) + 8 * i11) dictionaryRepresentation];
-          [v155 addObject:v161];
+          dictionaryRepresentation21 = [*(*(&v796 + 1) + 8 * i11) dictionaryRepresentation];
+          [v155 addObject:dictionaryRepresentation21];
         }
 
         v158 = [(NSMutableArray *)v156 countByEnumeratingWithState:&v796 objects:v937 count:16];
@@ -2396,7 +2396,7 @@ LABEL_5:
       while (v158);
     }
 
-    [v3 setObject:v155 forKey:@"movieFaceprintResults"];
+    [dictionary setObject:v155 forKey:@"movieFaceprintResults"];
   }
 
   if ([(NSMutableArray *)self->_movieFeatureResults count])
@@ -2421,8 +2421,8 @@ LABEL_5:
             objc_enumerationMutation(v163);
           }
 
-          v168 = [*(*(&v792 + 1) + 8 * i12) dictionaryRepresentation];
-          [v162 addObject:v168];
+          dictionaryRepresentation22 = [*(*(&v792 + 1) + 8 * i12) dictionaryRepresentation];
+          [v162 addObject:dictionaryRepresentation22];
         }
 
         v165 = [(NSMutableArray *)v163 countByEnumeratingWithState:&v792 objects:v936 count:16];
@@ -2431,7 +2431,7 @@ LABEL_5:
       while (v165);
     }
 
-    [v3 setObject:v162 forKey:@"movieFeatureResults"];
+    [dictionary setObject:v162 forKey:@"movieFeatureResults"];
   }
 
   if ([(NSMutableArray *)self->_movieFineSubjectMotionResults count])
@@ -2456,8 +2456,8 @@ LABEL_5:
             objc_enumerationMutation(v170);
           }
 
-          v175 = [*(*(&v788 + 1) + 8 * i13) dictionaryRepresentation];
-          [v169 addObject:v175];
+          dictionaryRepresentation23 = [*(*(&v788 + 1) + 8 * i13) dictionaryRepresentation];
+          [v169 addObject:dictionaryRepresentation23];
         }
 
         v172 = [(NSMutableArray *)v170 countByEnumeratingWithState:&v788 objects:v935 count:16];
@@ -2466,7 +2466,7 @@ LABEL_5:
       while (v172);
     }
 
-    [v3 setObject:v169 forKey:@"movieFineSubjectMotionResults"];
+    [dictionary setObject:v169 forKey:@"movieFineSubjectMotionResults"];
   }
 
   if ([(NSMutableArray *)self->_movieInterestingnessResults count])
@@ -2491,8 +2491,8 @@ LABEL_5:
             objc_enumerationMutation(v177);
           }
 
-          v182 = [*(*(&v784 + 1) + 8 * i14) dictionaryRepresentation];
-          [v176 addObject:v182];
+          dictionaryRepresentation24 = [*(*(&v784 + 1) + 8 * i14) dictionaryRepresentation];
+          [v176 addObject:dictionaryRepresentation24];
         }
 
         v179 = [(NSMutableArray *)v177 countByEnumeratingWithState:&v784 objects:v934 count:16];
@@ -2501,7 +2501,7 @@ LABEL_5:
       while (v179);
     }
 
-    [v3 setObject:v176 forKey:@"movieInterestingnessResults"];
+    [dictionary setObject:v176 forKey:@"movieInterestingnessResults"];
   }
 
   if ([(NSMutableArray *)self->_movieMovingObjectResults count])
@@ -2526,8 +2526,8 @@ LABEL_5:
             objc_enumerationMutation(v184);
           }
 
-          v189 = [*(*(&v780 + 1) + 8 * i15) dictionaryRepresentation];
-          [v183 addObject:v189];
+          dictionaryRepresentation25 = [*(*(&v780 + 1) + 8 * i15) dictionaryRepresentation];
+          [v183 addObject:dictionaryRepresentation25];
         }
 
         v186 = [(NSMutableArray *)v184 countByEnumeratingWithState:&v780 objects:v933 count:16];
@@ -2536,7 +2536,7 @@ LABEL_5:
       while (v186);
     }
 
-    [v3 setObject:v183 forKey:@"movieMovingObjectResults"];
+    [dictionary setObject:v183 forKey:@"movieMovingObjectResults"];
   }
 
   if ([(NSMutableArray *)self->_movieMusicResults count])
@@ -2561,8 +2561,8 @@ LABEL_5:
             objc_enumerationMutation(v191);
           }
 
-          v196 = [*(*(&v776 + 1) + 8 * i16) dictionaryRepresentation];
-          [v190 addObject:v196];
+          dictionaryRepresentation26 = [*(*(&v776 + 1) + 8 * i16) dictionaryRepresentation];
+          [v190 addObject:dictionaryRepresentation26];
         }
 
         v193 = [(NSMutableArray *)v191 countByEnumeratingWithState:&v776 objects:v932 count:16];
@@ -2571,7 +2571,7 @@ LABEL_5:
       while (v193);
     }
 
-    [v3 setObject:v190 forKey:@"movieMusicResults"];
+    [dictionary setObject:v190 forKey:@"movieMusicResults"];
   }
 
   if ([(NSMutableArray *)self->_movieObstructionResults count])
@@ -2596,8 +2596,8 @@ LABEL_5:
             objc_enumerationMutation(v198);
           }
 
-          v203 = [*(*(&v772 + 1) + 8 * i17) dictionaryRepresentation];
-          [v197 addObject:v203];
+          dictionaryRepresentation27 = [*(*(&v772 + 1) + 8 * i17) dictionaryRepresentation];
+          [v197 addObject:dictionaryRepresentation27];
         }
 
         v200 = [(NSMutableArray *)v198 countByEnumeratingWithState:&v772 objects:v931 count:16];
@@ -2606,7 +2606,7 @@ LABEL_5:
       while (v200);
     }
 
-    [v3 setObject:v197 forKey:@"movieObstructionResults"];
+    [dictionary setObject:v197 forKey:@"movieObstructionResults"];
   }
 
   if ([(NSMutableArray *)self->_movieOrientationResults count])
@@ -2631,8 +2631,8 @@ LABEL_5:
             objc_enumerationMutation(v205);
           }
 
-          v210 = [*(*(&v768 + 1) + 8 * i18) dictionaryRepresentation];
-          [v204 addObject:v210];
+          dictionaryRepresentation28 = [*(*(&v768 + 1) + 8 * i18) dictionaryRepresentation];
+          [v204 addObject:dictionaryRepresentation28];
         }
 
         v207 = [(NSMutableArray *)v205 countByEnumeratingWithState:&v768 objects:v930 count:16];
@@ -2641,7 +2641,7 @@ LABEL_5:
       while (v207);
     }
 
-    [v3 setObject:v204 forKey:@"movieOrientationResults"];
+    [dictionary setObject:v204 forKey:@"movieOrientationResults"];
   }
 
   if ([(NSMutableArray *)self->_moviePreEncodeResults count])
@@ -2666,8 +2666,8 @@ LABEL_5:
             objc_enumerationMutation(v212);
           }
 
-          v217 = [*(*(&v764 + 1) + 8 * i19) dictionaryRepresentation];
-          [v211 addObject:v217];
+          dictionaryRepresentation29 = [*(*(&v764 + 1) + 8 * i19) dictionaryRepresentation];
+          [v211 addObject:dictionaryRepresentation29];
         }
 
         v214 = [(NSMutableArray *)v212 countByEnumeratingWithState:&v764 objects:v929 count:16];
@@ -2676,7 +2676,7 @@ LABEL_5:
       while (v214);
     }
 
-    [v3 setObject:v211 forKey:@"moviePreEncodeResults"];
+    [dictionary setObject:v211 forKey:@"moviePreEncodeResults"];
   }
 
   if ([(NSMutableArray *)self->_movieQualityResults count])
@@ -2701,8 +2701,8 @@ LABEL_5:
             objc_enumerationMutation(v219);
           }
 
-          v224 = [*(*(&v760 + 1) + 8 * i20) dictionaryRepresentation];
-          [v218 addObject:v224];
+          dictionaryRepresentation30 = [*(*(&v760 + 1) + 8 * i20) dictionaryRepresentation];
+          [v218 addObject:dictionaryRepresentation30];
         }
 
         v221 = [(NSMutableArray *)v219 countByEnumeratingWithState:&v760 objects:v928 count:16];
@@ -2711,7 +2711,7 @@ LABEL_5:
       while (v221);
     }
 
-    [v3 setObject:v218 forKey:@"movieQualityResults"];
+    [dictionary setObject:v218 forKey:@"movieQualityResults"];
   }
 
   if ([(NSMutableArray *)self->_movieSaliencyResults count])
@@ -2736,8 +2736,8 @@ LABEL_5:
             objc_enumerationMutation(v226);
           }
 
-          v231 = [*(*(&v756 + 1) + 8 * i21) dictionaryRepresentation];
-          [v225 addObject:v231];
+          dictionaryRepresentation31 = [*(*(&v756 + 1) + 8 * i21) dictionaryRepresentation];
+          [v225 addObject:dictionaryRepresentation31];
         }
 
         v228 = [(NSMutableArray *)v226 countByEnumeratingWithState:&v756 objects:v927 count:16];
@@ -2746,7 +2746,7 @@ LABEL_5:
       while (v228);
     }
 
-    [v3 setObject:v225 forKey:@"movieSaliencyResults"];
+    [dictionary setObject:v225 forKey:@"movieSaliencyResults"];
   }
 
   if ([(NSMutableArray *)self->_movieSceneResults count])
@@ -2771,8 +2771,8 @@ LABEL_5:
             objc_enumerationMutation(v233);
           }
 
-          v238 = [*(*(&v752 + 1) + 8 * i22) dictionaryRepresentation];
-          [v232 addObject:v238];
+          dictionaryRepresentation32 = [*(*(&v752 + 1) + 8 * i22) dictionaryRepresentation];
+          [v232 addObject:dictionaryRepresentation32];
         }
 
         v235 = [(NSMutableArray *)v233 countByEnumeratingWithState:&v752 objects:v926 count:16];
@@ -2781,7 +2781,7 @@ LABEL_5:
       while (v235);
     }
 
-    [v3 setObject:v232 forKey:@"movieSceneResults"];
+    [dictionary setObject:v232 forKey:@"movieSceneResults"];
   }
 
   if ([(NSMutableArray *)self->_movieSceneprintResults count])
@@ -2806,8 +2806,8 @@ LABEL_5:
             objc_enumerationMutation(v240);
           }
 
-          v245 = [*(*(&v748 + 1) + 8 * i23) dictionaryRepresentation];
-          [v239 addObject:v245];
+          dictionaryRepresentation33 = [*(*(&v748 + 1) + 8 * i23) dictionaryRepresentation];
+          [v239 addObject:dictionaryRepresentation33];
         }
 
         v242 = [(NSMutableArray *)v240 countByEnumeratingWithState:&v748 objects:v925 count:16];
@@ -2816,7 +2816,7 @@ LABEL_5:
       while (v242);
     }
 
-    [v3 setObject:v239 forKey:@"movieSceneprintResults"];
+    [dictionary setObject:v239 forKey:@"movieSceneprintResults"];
   }
 
   if ([(NSMutableArray *)self->_movieSubjectMotionResults count])
@@ -2841,8 +2841,8 @@ LABEL_5:
             objc_enumerationMutation(v247);
           }
 
-          v252 = [*(*(&v744 + 1) + 8 * i24) dictionaryRepresentation];
-          [v246 addObject:v252];
+          dictionaryRepresentation34 = [*(*(&v744 + 1) + 8 * i24) dictionaryRepresentation];
+          [v246 addObject:dictionaryRepresentation34];
         }
 
         v249 = [(NSMutableArray *)v247 countByEnumeratingWithState:&v744 objects:v924 count:16];
@@ -2851,7 +2851,7 @@ LABEL_5:
       while (v249);
     }
 
-    [v3 setObject:v246 forKey:@"movieSubjectMotionResults"];
+    [dictionary setObject:v246 forKey:@"movieSubjectMotionResults"];
   }
 
   if ([(NSMutableArray *)self->_movieSubtleMotionResults count])
@@ -2876,8 +2876,8 @@ LABEL_5:
             objc_enumerationMutation(v254);
           }
 
-          v259 = [*(*(&v740 + 1) + 8 * i25) dictionaryRepresentation];
-          [v253 addObject:v259];
+          dictionaryRepresentation35 = [*(*(&v740 + 1) + 8 * i25) dictionaryRepresentation];
+          [v253 addObject:dictionaryRepresentation35];
         }
 
         v256 = [(NSMutableArray *)v254 countByEnumeratingWithState:&v740 objects:v923 count:16];
@@ -2886,7 +2886,7 @@ LABEL_5:
       while (v256);
     }
 
-    [v3 setObject:v253 forKey:@"movieSubtleMotionResults"];
+    [dictionary setObject:v253 forKey:@"movieSubtleMotionResults"];
   }
 
   if ([(NSMutableArray *)self->_movieUtteranceResults count])
@@ -2911,8 +2911,8 @@ LABEL_5:
             objc_enumerationMutation(v261);
           }
 
-          v266 = [*(*(&v736 + 1) + 8 * i26) dictionaryRepresentation];
-          [v260 addObject:v266];
+          dictionaryRepresentation36 = [*(*(&v736 + 1) + 8 * i26) dictionaryRepresentation];
+          [v260 addObject:dictionaryRepresentation36];
         }
 
         v263 = [(NSMutableArray *)v261 countByEnumeratingWithState:&v736 objects:v922 count:16];
@@ -2921,7 +2921,7 @@ LABEL_5:
       while (v263);
     }
 
-    [v3 setObject:v260 forKey:@"movieUtteranceResults"];
+    [dictionary setObject:v260 forKey:@"movieUtteranceResults"];
   }
 
   if ([(NSMutableArray *)self->_movieVoiceResults count])
@@ -2946,8 +2946,8 @@ LABEL_5:
             objc_enumerationMutation(v268);
           }
 
-          v273 = [*(*(&v732 + 1) + 8 * i27) dictionaryRepresentation];
-          [v267 addObject:v273];
+          dictionaryRepresentation37 = [*(*(&v732 + 1) + 8 * i27) dictionaryRepresentation];
+          [v267 addObject:dictionaryRepresentation37];
         }
 
         v270 = [(NSMutableArray *)v268 countByEnumeratingWithState:&v732 objects:v921 count:16];
@@ -2956,7 +2956,7 @@ LABEL_5:
       while (v270);
     }
 
-    [v3 setObject:v267 forKey:@"movieVoiceResults"];
+    [dictionary setObject:v267 forKey:@"movieVoiceResults"];
   }
 
   if ([(NSMutableArray *)self->_movieSummaryResults count])
@@ -2981,8 +2981,8 @@ LABEL_5:
             objc_enumerationMutation(v275);
           }
 
-          v280 = [*(*(&v728 + 1) + 8 * i28) dictionaryRepresentation];
-          [v274 addObject:v280];
+          dictionaryRepresentation38 = [*(*(&v728 + 1) + 8 * i28) dictionaryRepresentation];
+          [v274 addObject:dictionaryRepresentation38];
         }
 
         v277 = [(NSMutableArray *)v275 countByEnumeratingWithState:&v728 objects:v920 count:16];
@@ -2991,7 +2991,7 @@ LABEL_5:
       while (v277);
     }
 
-    [v3 setObject:v274 forKey:@"movieSummaryResults"];
+    [dictionary setObject:v274 forKey:@"movieSummaryResults"];
   }
 
   if ([(NSMutableArray *)self->_movieHighlightResults count])
@@ -3016,8 +3016,8 @@ LABEL_5:
             objc_enumerationMutation(v282);
           }
 
-          v287 = [*(*(&v724 + 1) + 8 * i29) dictionaryRepresentation];
-          [v281 addObject:v287];
+          dictionaryRepresentation39 = [*(*(&v724 + 1) + 8 * i29) dictionaryRepresentation];
+          [v281 addObject:dictionaryRepresentation39];
         }
 
         v284 = [(NSMutableArray *)v282 countByEnumeratingWithState:&v724 objects:v919 count:16];
@@ -3026,7 +3026,7 @@ LABEL_5:
       while (v284);
     }
 
-    [v3 setObject:v281 forKey:@"movieHighlightResults"];
+    [dictionary setObject:v281 forKey:@"movieHighlightResults"];
   }
 
   if ([(NSMutableArray *)self->_imageExposureResults count])
@@ -3051,8 +3051,8 @@ LABEL_5:
             objc_enumerationMutation(v289);
           }
 
-          v294 = [*(*(&v720 + 1) + 8 * i30) dictionaryRepresentation];
-          [v288 addObject:v294];
+          dictionaryRepresentation40 = [*(*(&v720 + 1) + 8 * i30) dictionaryRepresentation];
+          [v288 addObject:dictionaryRepresentation40];
         }
 
         v291 = [(NSMutableArray *)v289 countByEnumeratingWithState:&v720 objects:v918 count:16];
@@ -3061,7 +3061,7 @@ LABEL_5:
       while (v291);
     }
 
-    [v3 setObject:v288 forKey:@"imageExposureResults"];
+    [dictionary setObject:v288 forKey:@"imageExposureResults"];
   }
 
   if ([(NSMutableArray *)self->_imageHumanPoseResults count])
@@ -3086,8 +3086,8 @@ LABEL_5:
             objc_enumerationMutation(v296);
           }
 
-          v301 = [*(*(&v716 + 1) + 8 * i31) dictionaryRepresentation];
-          [v295 addObject:v301];
+          dictionaryRepresentation41 = [*(*(&v716 + 1) + 8 * i31) dictionaryRepresentation];
+          [v295 addObject:dictionaryRepresentation41];
         }
 
         v298 = [(NSMutableArray *)v296 countByEnumeratingWithState:&v716 objects:v917 count:16];
@@ -3096,7 +3096,7 @@ LABEL_5:
       while (v298);
     }
 
-    [v3 setObject:v295 forKey:@"imageHumanPoseResults"];
+    [dictionary setObject:v295 forKey:@"imageHumanPoseResults"];
   }
 
   if ([(NSMutableArray *)self->_movieHumanPoseResults count])
@@ -3121,8 +3121,8 @@ LABEL_5:
             objc_enumerationMutation(v303);
           }
 
-          v308 = [*(*(&v712 + 1) + 8 * i32) dictionaryRepresentation];
-          [v302 addObject:v308];
+          dictionaryRepresentation42 = [*(*(&v712 + 1) + 8 * i32) dictionaryRepresentation];
+          [v302 addObject:dictionaryRepresentation42];
         }
 
         v305 = [(NSMutableArray *)v303 countByEnumeratingWithState:&v712 objects:v916 count:16];
@@ -3131,7 +3131,7 @@ LABEL_5:
       while (v305);
     }
 
-    [v3 setObject:v302 forKey:@"movieHumanPoseResults"];
+    [dictionary setObject:v302 forKey:@"movieHumanPoseResults"];
   }
 
   if ([(NSMutableArray *)self->_movieApplauseResults count])
@@ -3156,8 +3156,8 @@ LABEL_5:
             objc_enumerationMutation(v310);
           }
 
-          v315 = [*(*(&v708 + 1) + 8 * i33) dictionaryRepresentation];
-          [v309 addObject:v315];
+          dictionaryRepresentation43 = [*(*(&v708 + 1) + 8 * i33) dictionaryRepresentation];
+          [v309 addObject:dictionaryRepresentation43];
         }
 
         v312 = [(NSMutableArray *)v310 countByEnumeratingWithState:&v708 objects:v915 count:16];
@@ -3166,7 +3166,7 @@ LABEL_5:
       while (v312);
     }
 
-    [v3 setObject:v309 forKey:@"movieApplauseResults"];
+    [dictionary setObject:v309 forKey:@"movieApplauseResults"];
   }
 
   if ([(NSMutableArray *)self->_movieBabbleResults count])
@@ -3191,8 +3191,8 @@ LABEL_5:
             objc_enumerationMutation(v317);
           }
 
-          v322 = [*(*(&v704 + 1) + 8 * i34) dictionaryRepresentation];
-          [v316 addObject:v322];
+          dictionaryRepresentation44 = [*(*(&v704 + 1) + 8 * i34) dictionaryRepresentation];
+          [v316 addObject:dictionaryRepresentation44];
         }
 
         v319 = [(NSMutableArray *)v317 countByEnumeratingWithState:&v704 objects:v914 count:16];
@@ -3201,7 +3201,7 @@ LABEL_5:
       while (v319);
     }
 
-    [v3 setObject:v316 forKey:@"movieBabbleResults"];
+    [dictionary setObject:v316 forKey:@"movieBabbleResults"];
   }
 
   if ([(NSMutableArray *)self->_movieCheeringResults count])
@@ -3226,8 +3226,8 @@ LABEL_5:
             objc_enumerationMutation(v324);
           }
 
-          v329 = [*(*(&v700 + 1) + 8 * i35) dictionaryRepresentation];
-          [v323 addObject:v329];
+          dictionaryRepresentation45 = [*(*(&v700 + 1) + 8 * i35) dictionaryRepresentation];
+          [v323 addObject:dictionaryRepresentation45];
         }
 
         v326 = [(NSMutableArray *)v324 countByEnumeratingWithState:&v700 objects:v913 count:16];
@@ -3236,7 +3236,7 @@ LABEL_5:
       while (v326);
     }
 
-    [v3 setObject:v323 forKey:@"movieCheeringResults"];
+    [dictionary setObject:v323 forKey:@"movieCheeringResults"];
   }
 
   if ([(NSMutableArray *)self->_movieLaughterResults count])
@@ -3261,8 +3261,8 @@ LABEL_5:
             objc_enumerationMutation(v331);
           }
 
-          v336 = [*(*(&v696 + 1) + 8 * i36) dictionaryRepresentation];
-          [v330 addObject:v336];
+          dictionaryRepresentation46 = [*(*(&v696 + 1) + 8 * i36) dictionaryRepresentation];
+          [v330 addObject:dictionaryRepresentation46];
         }
 
         v333 = [(NSMutableArray *)v331 countByEnumeratingWithState:&v696 objects:v912 count:16];
@@ -3271,7 +3271,7 @@ LABEL_5:
       while (v333);
     }
 
-    [v3 setObject:v330 forKey:@"movieLaughterResults"];
+    [dictionary setObject:v330 forKey:@"movieLaughterResults"];
   }
 
   if ([(NSMutableArray *)self->_movieHumanActionResults count])
@@ -3296,8 +3296,8 @@ LABEL_5:
             objc_enumerationMutation(v338);
           }
 
-          v343 = [*(*(&v692 + 1) + 8 * i37) dictionaryRepresentation];
-          [v337 addObject:v343];
+          dictionaryRepresentation47 = [*(*(&v692 + 1) + 8 * i37) dictionaryRepresentation];
+          [v337 addObject:dictionaryRepresentation47];
         }
 
         v340 = [(NSMutableArray *)v338 countByEnumeratingWithState:&v692 objects:v911 count:16];
@@ -3306,7 +3306,7 @@ LABEL_5:
       while (v340);
     }
 
-    [v3 setObject:v337 forKey:@"movieHumanActionResults"];
+    [dictionary setObject:v337 forKey:@"movieHumanActionResults"];
   }
 
   if ([(NSMutableArray *)self->_movieLoudnessResults count])
@@ -3331,8 +3331,8 @@ LABEL_5:
             objc_enumerationMutation(v345);
           }
 
-          v350 = [*(*(&v688 + 1) + 8 * i38) dictionaryRepresentation];
-          [v344 addObject:v350];
+          dictionaryRepresentation48 = [*(*(&v688 + 1) + 8 * i38) dictionaryRepresentation];
+          [v344 addObject:dictionaryRepresentation48];
         }
 
         v347 = [(NSMutableArray *)v345 countByEnumeratingWithState:&v688 objects:v910 count:16];
@@ -3341,7 +3341,7 @@ LABEL_5:
       while (v347);
     }
 
-    [v3 setObject:v344 forKey:@"movieLoudnessResults"];
+    [dictionary setObject:v344 forKey:@"movieLoudnessResults"];
   }
 
   if ([(NSMutableArray *)self->_moviePetsResults count])
@@ -3366,8 +3366,8 @@ LABEL_5:
             objc_enumerationMutation(v352);
           }
 
-          v357 = [*(*(&v684 + 1) + 8 * i39) dictionaryRepresentation];
-          [v351 addObject:v357];
+          dictionaryRepresentation49 = [*(*(&v684 + 1) + 8 * i39) dictionaryRepresentation];
+          [v351 addObject:dictionaryRepresentation49];
         }
 
         v354 = [(NSMutableArray *)v352 countByEnumeratingWithState:&v684 objects:v909 count:16];
@@ -3376,7 +3376,7 @@ LABEL_5:
       while (v354);
     }
 
-    [v3 setObject:v351 forKey:@"moviePetsResults"];
+    [dictionary setObject:v351 forKey:@"moviePetsResults"];
   }
 
   if ([(NSMutableArray *)self->_moviePetsFaceResults count])
@@ -3401,8 +3401,8 @@ LABEL_5:
             objc_enumerationMutation(v359);
           }
 
-          v364 = [*(*(&v680 + 1) + 8 * i40) dictionaryRepresentation];
-          [v358 addObject:v364];
+          dictionaryRepresentation50 = [*(*(&v680 + 1) + 8 * i40) dictionaryRepresentation];
+          [v358 addObject:dictionaryRepresentation50];
         }
 
         v361 = [(NSMutableArray *)v359 countByEnumeratingWithState:&v680 objects:v908 count:16];
@@ -3411,7 +3411,7 @@ LABEL_5:
       while (v361);
     }
 
-    [v3 setObject:v358 forKey:@"moviePetsFaceResults"];
+    [dictionary setObject:v358 forKey:@"moviePetsFaceResults"];
   }
 
   if ([(NSMutableArray *)self->_movieStabilizationResults count])
@@ -3436,8 +3436,8 @@ LABEL_5:
             objc_enumerationMutation(v366);
           }
 
-          v371 = [*(*(&v676 + 1) + 8 * i41) dictionaryRepresentation];
-          [v365 addObject:v371];
+          dictionaryRepresentation51 = [*(*(&v676 + 1) + 8 * i41) dictionaryRepresentation];
+          [v365 addObject:dictionaryRepresentation51];
         }
 
         v368 = [(NSMutableArray *)v366 countByEnumeratingWithState:&v676 objects:v907 count:16];
@@ -3446,7 +3446,7 @@ LABEL_5:
       while (v368);
     }
 
-    [v3 setObject:v365 forKey:@"movieStabilizationResults"];
+    [dictionary setObject:v365 forKey:@"movieStabilizationResults"];
   }
 
   if ([(NSMutableArray *)self->_movieHighlightScoreResults count])
@@ -3471,8 +3471,8 @@ LABEL_5:
             objc_enumerationMutation(v373);
           }
 
-          v378 = [*(*(&v672 + 1) + 8 * i42) dictionaryRepresentation];
-          [v372 addObject:v378];
+          dictionaryRepresentation52 = [*(*(&v672 + 1) + 8 * i42) dictionaryRepresentation];
+          [v372 addObject:dictionaryRepresentation52];
         }
 
         v375 = [(NSMutableArray *)v373 countByEnumeratingWithState:&v672 objects:v906 count:16];
@@ -3481,7 +3481,7 @@ LABEL_5:
       while (v375);
     }
 
-    [v3 setObject:v372 forKey:@"movieHighlightScoreResults"];
+    [dictionary setObject:v372 forKey:@"movieHighlightScoreResults"];
   }
 
   if ([(NSMutableArray *)self->_livePhotoHumanActionClassificationResults count])
@@ -3506,8 +3506,8 @@ LABEL_5:
             objc_enumerationMutation(v380);
           }
 
-          v385 = [*(*(&v668 + 1) + 8 * i43) dictionaryRepresentation];
-          [v379 addObject:v385];
+          dictionaryRepresentation53 = [*(*(&v668 + 1) + 8 * i43) dictionaryRepresentation];
+          [v379 addObject:dictionaryRepresentation53];
         }
 
         v382 = [(NSMutableArray *)v380 countByEnumeratingWithState:&v668 objects:v905 count:16];
@@ -3516,7 +3516,7 @@ LABEL_5:
       while (v382);
     }
 
-    [v3 setObject:v379 forKey:@"livePhotoHumanActionClassificationResults"];
+    [dictionary setObject:v379 forKey:@"livePhotoHumanActionClassificationResults"];
   }
 
   if ([(NSMutableArray *)self->_movieAudioQualityResults count])
@@ -3541,8 +3541,8 @@ LABEL_5:
             objc_enumerationMutation(v387);
           }
 
-          v392 = [*(*(&v664 + 1) + 8 * i44) dictionaryRepresentation];
-          [v386 addObject:v392];
+          dictionaryRepresentation54 = [*(*(&v664 + 1) + 8 * i44) dictionaryRepresentation];
+          [v386 addObject:dictionaryRepresentation54];
         }
 
         v389 = [(NSMutableArray *)v387 countByEnumeratingWithState:&v664 objects:v904 count:16];
@@ -3551,7 +3551,7 @@ LABEL_5:
       while (v389);
     }
 
-    [v3 setObject:v386 forKey:@"movieAudioQualityResults"];
+    [dictionary setObject:v386 forKey:@"movieAudioQualityResults"];
   }
 
   if ([(NSMutableArray *)self->_movieSafetyResults count])
@@ -3576,8 +3576,8 @@ LABEL_5:
             objc_enumerationMutation(v394);
           }
 
-          v399 = [*(*(&v660 + 1) + 8 * i45) dictionaryRepresentation];
-          [v393 addObject:v399];
+          dictionaryRepresentation55 = [*(*(&v660 + 1) + 8 * i45) dictionaryRepresentation];
+          [v393 addObject:dictionaryRepresentation55];
         }
 
         v396 = [(NSMutableArray *)v394 countByEnumeratingWithState:&v660 objects:v903 count:16];
@@ -3586,7 +3586,7 @@ LABEL_5:
       while (v396);
     }
 
-    [v3 setObject:v393 forKey:@"movieSafetyResults"];
+    [dictionary setObject:v393 forKey:@"movieSafetyResults"];
   }
 
   if ([(NSMutableArray *)self->_filesystemMovieClassificationResults count])
@@ -3611,8 +3611,8 @@ LABEL_5:
             objc_enumerationMutation(v401);
           }
 
-          v406 = [*(*(&v656 + 1) + 8 * i46) dictionaryRepresentation];
-          [v400 addObject:v406];
+          dictionaryRepresentation56 = [*(*(&v656 + 1) + 8 * i46) dictionaryRepresentation];
+          [v400 addObject:dictionaryRepresentation56];
         }
 
         v403 = [(NSMutableArray *)v401 countByEnumeratingWithState:&v656 objects:v902 count:16];
@@ -3621,7 +3621,7 @@ LABEL_5:
       while (v403);
     }
 
-    [v3 setObject:v400 forKey:@"filesystemMovieClassificationResults"];
+    [dictionary setObject:v400 forKey:@"filesystemMovieClassificationResults"];
   }
 
   if ([(NSMutableArray *)self->_filesystemMovieHumanActionClassificationResults count])
@@ -3646,8 +3646,8 @@ LABEL_5:
             objc_enumerationMutation(v408);
           }
 
-          v413 = [*(*(&v652 + 1) + 8 * i47) dictionaryRepresentation];
-          [v407 addObject:v413];
+          dictionaryRepresentation57 = [*(*(&v652 + 1) + 8 * i47) dictionaryRepresentation];
+          [v407 addObject:dictionaryRepresentation57];
         }
 
         v410 = [(NSMutableArray *)v408 countByEnumeratingWithState:&v652 objects:v901 count:16];
@@ -3656,7 +3656,7 @@ LABEL_5:
       while (v410);
     }
 
-    [v3 setObject:v407 forKey:@"filesystemMovieHumanActionClassificationResults"];
+    [dictionary setObject:v407 forKey:@"filesystemMovieHumanActionClassificationResults"];
   }
 
   if ([(NSMutableArray *)self->_filesystemMovieApplauseResults count])
@@ -3681,8 +3681,8 @@ LABEL_5:
             objc_enumerationMutation(v415);
           }
 
-          v420 = [*(*(&v648 + 1) + 8 * i48) dictionaryRepresentation];
-          [v414 addObject:v420];
+          dictionaryRepresentation58 = [*(*(&v648 + 1) + 8 * i48) dictionaryRepresentation];
+          [v414 addObject:dictionaryRepresentation58];
         }
 
         v417 = [(NSMutableArray *)v415 countByEnumeratingWithState:&v648 objects:v900 count:16];
@@ -3691,7 +3691,7 @@ LABEL_5:
       while (v417);
     }
 
-    [v3 setObject:v414 forKey:@"filesystemMovieApplauseResults"];
+    [dictionary setObject:v414 forKey:@"filesystemMovieApplauseResults"];
   }
 
   if ([(NSMutableArray *)self->_filesystemMovieBabbleResults count])
@@ -3716,8 +3716,8 @@ LABEL_5:
             objc_enumerationMutation(v422);
           }
 
-          v427 = [*(*(&v644 + 1) + 8 * i49) dictionaryRepresentation];
-          [v421 addObject:v427];
+          dictionaryRepresentation59 = [*(*(&v644 + 1) + 8 * i49) dictionaryRepresentation];
+          [v421 addObject:dictionaryRepresentation59];
         }
 
         v424 = [(NSMutableArray *)v422 countByEnumeratingWithState:&v644 objects:v899 count:16];
@@ -3726,7 +3726,7 @@ LABEL_5:
       while (v424);
     }
 
-    [v3 setObject:v421 forKey:@"filesystemMovieBabbleResults"];
+    [dictionary setObject:v421 forKey:@"filesystemMovieBabbleResults"];
   }
 
   if ([(NSMutableArray *)self->_filesystemMovieCheeringResults count])
@@ -3751,8 +3751,8 @@ LABEL_5:
             objc_enumerationMutation(v429);
           }
 
-          v434 = [*(*(&v640 + 1) + 8 * i50) dictionaryRepresentation];
-          [v428 addObject:v434];
+          dictionaryRepresentation60 = [*(*(&v640 + 1) + 8 * i50) dictionaryRepresentation];
+          [v428 addObject:dictionaryRepresentation60];
         }
 
         v431 = [(NSMutableArray *)v429 countByEnumeratingWithState:&v640 objects:v898 count:16];
@@ -3761,7 +3761,7 @@ LABEL_5:
       while (v431);
     }
 
-    [v3 setObject:v428 forKey:@"filesystemMovieCheeringResults"];
+    [dictionary setObject:v428 forKey:@"filesystemMovieCheeringResults"];
   }
 
   if ([(NSMutableArray *)self->_filesystemMovieLaughterResults count])
@@ -3786,8 +3786,8 @@ LABEL_5:
             objc_enumerationMutation(v436);
           }
 
-          v441 = [*(*(&v636 + 1) + 8 * i51) dictionaryRepresentation];
-          [v435 addObject:v441];
+          dictionaryRepresentation61 = [*(*(&v636 + 1) + 8 * i51) dictionaryRepresentation];
+          [v435 addObject:dictionaryRepresentation61];
         }
 
         v438 = [(NSMutableArray *)v436 countByEnumeratingWithState:&v636 objects:v897 count:16];
@@ -3796,7 +3796,7 @@ LABEL_5:
       while (v438);
     }
 
-    [v3 setObject:v435 forKey:@"filesystemMovieLaughterResults"];
+    [dictionary setObject:v435 forKey:@"filesystemMovieLaughterResults"];
   }
 
   if ([(NSMutableArray *)self->_filesystemMovieMusicResults count])
@@ -3821,8 +3821,8 @@ LABEL_5:
             objc_enumerationMutation(v443);
           }
 
-          v448 = [*(*(&v632 + 1) + 8 * i52) dictionaryRepresentation];
-          [v442 addObject:v448];
+          dictionaryRepresentation62 = [*(*(&v632 + 1) + 8 * i52) dictionaryRepresentation];
+          [v442 addObject:dictionaryRepresentation62];
         }
 
         v445 = [(NSMutableArray *)v443 countByEnumeratingWithState:&v632 objects:v896 count:16];
@@ -3831,7 +3831,7 @@ LABEL_5:
       while (v445);
     }
 
-    [v3 setObject:v442 forKey:@"filesystemMovieMusicResults"];
+    [dictionary setObject:v442 forKey:@"filesystemMovieMusicResults"];
   }
 
   if ([(NSMutableArray *)self->_filesystemMovieVoiceResults count])
@@ -3856,8 +3856,8 @@ LABEL_5:
             objc_enumerationMutation(v450);
           }
 
-          v455 = [*(*(&v628 + 1) + 8 * i53) dictionaryRepresentation];
-          [v449 addObject:v455];
+          dictionaryRepresentation63 = [*(*(&v628 + 1) + 8 * i53) dictionaryRepresentation];
+          [v449 addObject:dictionaryRepresentation63];
         }
 
         v452 = [(NSMutableArray *)v450 countByEnumeratingWithState:&v628 objects:v895 count:16];
@@ -3866,7 +3866,7 @@ LABEL_5:
       while (v452);
     }
 
-    [v3 setObject:v449 forKey:@"filesystemMovieVoiceResults"];
+    [dictionary setObject:v449 forKey:@"filesystemMovieVoiceResults"];
   }
 
   if ([(NSMutableArray *)self->_animatedStickerResults count])
@@ -3891,8 +3891,8 @@ LABEL_5:
             objc_enumerationMutation(v457);
           }
 
-          v462 = [*(*(&v624 + 1) + 8 * i54) dictionaryRepresentation];
-          [v456 addObject:v462];
+          dictionaryRepresentation64 = [*(*(&v624 + 1) + 8 * i54) dictionaryRepresentation];
+          [v456 addObject:dictionaryRepresentation64];
         }
 
         v459 = [(NSMutableArray *)v457 countByEnumeratingWithState:&v624 objects:v894 count:16];
@@ -3901,7 +3901,7 @@ LABEL_5:
       while (v459);
     }
 
-    [v3 setObject:v456 forKey:@"animatedStickerResults"];
+    [dictionary setObject:v456 forKey:@"animatedStickerResults"];
   }
 
   if ([(NSMutableArray *)self->_movieTorsoResults count])
@@ -3926,8 +3926,8 @@ LABEL_5:
             objc_enumerationMutation(v464);
           }
 
-          v469 = [*(*(&v620 + 1) + 8 * i55) dictionaryRepresentation];
-          [v463 addObject:v469];
+          dictionaryRepresentation65 = [*(*(&v620 + 1) + 8 * i55) dictionaryRepresentation];
+          [v463 addObject:dictionaryRepresentation65];
         }
 
         v466 = [(NSMutableArray *)v464 countByEnumeratingWithState:&v620 objects:v893 count:16];
@@ -3936,7 +3936,7 @@ LABEL_5:
       while (v466);
     }
 
-    [v3 setObject:v463 forKey:@"movieTorsoResults"];
+    [dictionary setObject:v463 forKey:@"movieTorsoResults"];
   }
 
   if ([(NSMutableArray *)self->_movieHumanActionClassificationResults count])
@@ -3961,8 +3961,8 @@ LABEL_5:
             objc_enumerationMutation(v471);
           }
 
-          v476 = [*(*(&v616 + 1) + 8 * i56) dictionaryRepresentation];
-          [v470 addObject:v476];
+          dictionaryRepresentation66 = [*(*(&v616 + 1) + 8 * i56) dictionaryRepresentation];
+          [v470 addObject:dictionaryRepresentation66];
         }
 
         v473 = [(NSMutableArray *)v471 countByEnumeratingWithState:&v616 objects:v892 count:16];
@@ -3971,7 +3971,7 @@ LABEL_5:
       while (v473);
     }
 
-    [v3 setObject:v470 forKey:@"movieHumanActionClassificationResults"];
+    [dictionary setObject:v470 forKey:@"movieHumanActionClassificationResults"];
   }
 
   if ([(NSMutableArray *)self->_videoEmbeddingResults count])
@@ -3996,8 +3996,8 @@ LABEL_5:
             objc_enumerationMutation(v478);
           }
 
-          v483 = [*(*(&v612 + 1) + 8 * i57) dictionaryRepresentation];
-          [v477 addObject:v483];
+          dictionaryRepresentation67 = [*(*(&v612 + 1) + 8 * i57) dictionaryRepresentation];
+          [v477 addObject:dictionaryRepresentation67];
         }
 
         v480 = [(NSMutableArray *)v478 countByEnumeratingWithState:&v612 objects:v891 count:16];
@@ -4006,7 +4006,7 @@ LABEL_5:
       while (v480);
     }
 
-    [v3 setObject:v477 forKey:@"videoEmbeddingResults"];
+    [dictionary setObject:v477 forKey:@"videoEmbeddingResults"];
   }
 
   if ([(NSMutableArray *)self->_summarizedEmbeddingResults count])
@@ -4031,8 +4031,8 @@ LABEL_5:
             objc_enumerationMutation(v485);
           }
 
-          v490 = [*(*(&v608 + 1) + 8 * i58) dictionaryRepresentation];
-          [v484 addObject:v490];
+          dictionaryRepresentation68 = [*(*(&v608 + 1) + 8 * i58) dictionaryRepresentation];
+          [v484 addObject:dictionaryRepresentation68];
         }
 
         v487 = [(NSMutableArray *)v485 countByEnumeratingWithState:&v608 objects:v890 count:16];
@@ -4041,7 +4041,7 @@ LABEL_5:
       while (v487);
     }
 
-    [v3 setObject:v484 forKey:@"summarizedEmbeddingResults"];
+    [dictionary setObject:v484 forKey:@"summarizedEmbeddingResults"];
   }
 
   if ([(NSMutableArray *)self->_audioFusedVideoEmbeddingResults count])
@@ -4066,8 +4066,8 @@ LABEL_5:
             objc_enumerationMutation(v492);
           }
 
-          v497 = [*(*(&v604 + 1) + 8 * i59) dictionaryRepresentation];
-          [v491 addObject:v497];
+          dictionaryRepresentation69 = [*(*(&v604 + 1) + 8 * i59) dictionaryRepresentation];
+          [v491 addObject:dictionaryRepresentation69];
         }
 
         v494 = [(NSMutableArray *)v492 countByEnumeratingWithState:&v604 objects:v889 count:16];
@@ -4076,7 +4076,7 @@ LABEL_5:
       while (v494);
     }
 
-    [v3 setObject:v491 forKey:@"audioFusedVideoEmbeddingResults"];
+    [dictionary setObject:v491 forKey:@"audioFusedVideoEmbeddingResults"];
   }
 
   if ([(NSMutableArray *)self->_imageEmbeddingResults count])
@@ -4101,8 +4101,8 @@ LABEL_5:
             objc_enumerationMutation(v499);
           }
 
-          v504 = [*(*(&v600 + 1) + 8 * i60) dictionaryRepresentation];
-          [v498 addObject:v504];
+          dictionaryRepresentation70 = [*(*(&v600 + 1) + 8 * i60) dictionaryRepresentation];
+          [v498 addObject:dictionaryRepresentation70];
         }
 
         v501 = [(NSMutableArray *)v499 countByEnumeratingWithState:&v600 objects:v888 count:16];
@@ -4111,7 +4111,7 @@ LABEL_5:
       while (v501);
     }
 
-    [v3 setObject:v498 forKey:@"imageEmbeddingResults"];
+    [dictionary setObject:v498 forKey:@"imageEmbeddingResults"];
   }
 
   if ([(NSMutableArray *)self->_imageCaptionResults count])
@@ -4136,8 +4136,8 @@ LABEL_5:
             objc_enumerationMutation(v506);
           }
 
-          v511 = [*(*(&v596 + 1) + 8 * i61) dictionaryRepresentation];
-          [v505 addObject:v511];
+          dictionaryRepresentation71 = [*(*(&v596 + 1) + 8 * i61) dictionaryRepresentation];
+          [v505 addObject:dictionaryRepresentation71];
         }
 
         v508 = [(NSMutableArray *)v506 countByEnumeratingWithState:&v596 objects:v887 count:16];
@@ -4146,7 +4146,7 @@ LABEL_5:
       while (v508);
     }
 
-    [v3 setObject:v505 forKey:@"imageCaptionResults"];
+    [dictionary setObject:v505 forKey:@"imageCaptionResults"];
   }
 
   if ([(NSMutableArray *)self->_videoCaptionResults count])
@@ -4171,8 +4171,8 @@ LABEL_5:
             objc_enumerationMutation(v513);
           }
 
-          v518 = [*(*(&v592 + 1) + 8 * i62) dictionaryRepresentation];
-          [v512 addObject:v518];
+          dictionaryRepresentation72 = [*(*(&v592 + 1) + 8 * i62) dictionaryRepresentation];
+          [v512 addObject:dictionaryRepresentation72];
         }
 
         v515 = [(NSMutableArray *)v513 countByEnumeratingWithState:&v592 objects:v886 count:16];
@@ -4181,7 +4181,7 @@ LABEL_5:
       while (v515);
     }
 
-    [v3 setObject:v512 forKey:@"videoCaptionResults"];
+    [dictionary setObject:v512 forKey:@"videoCaptionResults"];
   }
 
   if ([(NSMutableArray *)self->_videoCaptionPreferenceResults count])
@@ -4206,8 +4206,8 @@ LABEL_5:
             objc_enumerationMutation(v520);
           }
 
-          v525 = [*(*(&v588 + 1) + 8 * i63) dictionaryRepresentation];
-          [v519 addObject:v525];
+          dictionaryRepresentation73 = [*(*(&v588 + 1) + 8 * i63) dictionaryRepresentation];
+          [v519 addObject:dictionaryRepresentation73];
         }
 
         v522 = [(NSMutableArray *)v520 countByEnumeratingWithState:&v588 objects:v885 count:16];
@@ -4216,7 +4216,7 @@ LABEL_5:
       while (v522);
     }
 
-    [v3 setObject:v519 forKey:@"videoCaptionPreferenceResults"];
+    [dictionary setObject:v519 forKey:@"videoCaptionPreferenceResults"];
   }
 
   if ([(NSMutableArray *)self->_videoSegmentCaptionResults count])
@@ -4241,8 +4241,8 @@ LABEL_5:
             objc_enumerationMutation(v527);
           }
 
-          v532 = [*(*(&v584 + 1) + 8 * i64) dictionaryRepresentation];
-          [v526 addObject:v532];
+          dictionaryRepresentation74 = [*(*(&v584 + 1) + 8 * i64) dictionaryRepresentation];
+          [v526 addObject:dictionaryRepresentation74];
         }
 
         v529 = [(NSMutableArray *)v527 countByEnumeratingWithState:&v584 objects:v884 count:16];
@@ -4251,7 +4251,7 @@ LABEL_5:
       while (v529);
     }
 
-    [v3 setObject:v526 forKey:@"videoSegmentCaptionResults"];
+    [dictionary setObject:v526 forKey:@"videoSegmentCaptionResults"];
   }
 
   if ([(NSMutableArray *)self->_movieAnimalResults count])
@@ -4276,8 +4276,8 @@ LABEL_5:
             objc_enumerationMutation(v534);
           }
 
-          v539 = [*(*(&v580 + 1) + 8 * i65) dictionaryRepresentation];
-          [v533 addObject:v539];
+          dictionaryRepresentation75 = [*(*(&v580 + 1) + 8 * i65) dictionaryRepresentation];
+          [v533 addObject:dictionaryRepresentation75];
         }
 
         v536 = [(NSMutableArray *)v534 countByEnumeratingWithState:&v580 objects:v883 count:16];
@@ -4286,7 +4286,7 @@ LABEL_5:
       while (v536);
     }
 
-    [v3 setObject:v533 forKey:@"movieAnimalResults"];
+    [dictionary setObject:v533 forKey:@"movieAnimalResults"];
   }
 
   if ([(NSMutableArray *)self->_movieAnimalprintResults count])
@@ -4311,8 +4311,8 @@ LABEL_5:
             objc_enumerationMutation(v541);
           }
 
-          v546 = [*(*(&v576 + 1) + 8 * i66) dictionaryRepresentation];
-          [v540 addObject:v546];
+          dictionaryRepresentation76 = [*(*(&v576 + 1) + 8 * i66) dictionaryRepresentation];
+          [v540 addObject:dictionaryRepresentation76];
         }
 
         v543 = [(NSMutableArray *)v541 countByEnumeratingWithState:&v576 objects:v882 count:16];
@@ -4321,14 +4321,14 @@ LABEL_5:
       while (v543);
     }
 
-    [v3 setObject:v540 forKey:@"movieAnimalprintResults"];
+    [dictionary setObject:v540 forKey:@"movieAnimalprintResults"];
   }
 
   v547 = self->_has;
   if ((v547 & 8) != 0)
   {
     v548 = [MEMORY[0x1E696AD98] numberWithInt:self->_imageEmbeddingVersion];
-    [v3 setObject:v548 forKey:@"imageEmbeddingVersion"];
+    [dictionary setObject:v548 forKey:@"imageEmbeddingVersion"];
 
     v547 = self->_has;
   }
@@ -4336,7 +4336,7 @@ LABEL_5:
   if ((v547 & 0x10) != 0)
   {
     v549 = [MEMORY[0x1E696AD98] numberWithInt:self->_videoEmbeddingVersion];
-    [v3 setObject:v549 forKey:@"videoEmbeddingVersion"];
+    [dictionary setObject:v549 forKey:@"videoEmbeddingVersion"];
   }
 
   if ([(NSMutableArray *)self->_videoSceneThumbnailResults count])
@@ -4361,8 +4361,8 @@ LABEL_5:
             objc_enumerationMutation(v551);
           }
 
-          v556 = [*(*(&v572 + 1) + 8 * i67) dictionaryRepresentation];
-          [v550 addObject:v556];
+          dictionaryRepresentation77 = [*(*(&v572 + 1) + 8 * i67) dictionaryRepresentation];
+          [v550 addObject:dictionaryRepresentation77];
         }
 
         v553 = [(NSMutableArray *)v551 countByEnumeratingWithState:&v572 objects:v881 count:16];
@@ -4371,7 +4371,7 @@ LABEL_5:
       while (v553);
     }
 
-    [v3 setObject:v550 forKey:@"videoSceneThumbnailResults"];
+    [dictionary setObject:v550 forKey:@"videoSceneThumbnailResults"];
   }
 
   if ([(NSMutableArray *)self->_videoThumbnailResults count])
@@ -4396,8 +4396,8 @@ LABEL_5:
             objc_enumerationMutation(v558);
           }
 
-          v563 = [*(*(&v568 + 1) + 8 * i68) dictionaryRepresentation];
-          [v557 addObject:v563];
+          dictionaryRepresentation78 = [*(*(&v568 + 1) + 8 * i68) dictionaryRepresentation];
+          [v557 addObject:dictionaryRepresentation78];
         }
 
         v560 = [(NSMutableArray *)v558 countByEnumeratingWithState:&v568 objects:v880 count:16];
@@ -4406,18 +4406,18 @@ LABEL_5:
       while (v560);
     }
 
-    [v3 setObject:v557 forKey:@"videoThumbnailResults"];
+    [dictionary setObject:v557 forKey:@"videoThumbnailResults"];
   }
 
-  v564 = v3;
+  v564 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v786 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   PBDataWriterWriteUint32Field();
   PBDataWriterWriteUint32Field();
@@ -6651,21 +6651,21 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[169] = self->_version;
-  v4[168] = self->_types;
-  v4[40] = self->_flags;
-  *(v4 + 2) = *&self->_date;
+  toCopy = to;
+  toCopy[169] = self->_version;
+  toCopy[168] = self->_types;
+  toCopy[40] = self->_flags;
+  *(toCopy + 2) = *&self->_date;
   if (*&self->_has)
   {
-    *(v4 + 3) = *&self->_quality;
-    *(v4 + 736) |= 1u;
+    *(toCopy + 3) = *&self->_quality;
+    *(toCopy + 736) |= 1u;
   }
 
-  v318 = v4;
-  [v4 setAssetIdentifier:self->_assetIdentifier];
+  v318 = toCopy;
+  [toCopy setAssetIdentifier:self->_assetIdentifier];
   v318[1] = *&self->_assetModificationDate;
   if (self->_assetMasterFingerprint)
   {
@@ -6680,10 +6680,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageBlurResultsCount])
   {
     [v318 clearImageBlurResults];
-    v5 = [(VCPProtoAssetAnalysis *)self imageBlurResultsCount];
-    if (v5)
+    imageBlurResultsCount = [(VCPProtoAssetAnalysis *)self imageBlurResultsCount];
+    if (imageBlurResultsCount)
     {
-      v6 = v5;
+      v6 = imageBlurResultsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(VCPProtoAssetAnalysis *)self imageBlurResultsAtIndex:i];
@@ -6695,10 +6695,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageCompositionResultsCount])
   {
     [v318 clearImageCompositionResults];
-    v9 = [(VCPProtoAssetAnalysis *)self imageCompositionResultsCount];
-    if (v9)
+    imageCompositionResultsCount = [(VCPProtoAssetAnalysis *)self imageCompositionResultsCount];
+    if (imageCompositionResultsCount)
     {
-      v10 = v9;
+      v10 = imageCompositionResultsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(VCPProtoAssetAnalysis *)self imageCompositionResultsAtIndex:j];
@@ -6710,10 +6710,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageFaceResultsCount])
   {
     [v318 clearImageFaceResults];
-    v13 = [(VCPProtoAssetAnalysis *)self imageFaceResultsCount];
-    if (v13)
+    imageFaceResultsCount = [(VCPProtoAssetAnalysis *)self imageFaceResultsCount];
+    if (imageFaceResultsCount)
     {
-      v14 = v13;
+      v14 = imageFaceResultsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(VCPProtoAssetAnalysis *)self imageFaceResultsAtIndex:k];
@@ -6725,10 +6725,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageFeatureResultsCount])
   {
     [v318 clearImageFeatureResults];
-    v17 = [(VCPProtoAssetAnalysis *)self imageFeatureResultsCount];
-    if (v17)
+    imageFeatureResultsCount = [(VCPProtoAssetAnalysis *)self imageFeatureResultsCount];
+    if (imageFeatureResultsCount)
     {
-      v18 = v17;
+      v18 = imageFeatureResultsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(VCPProtoAssetAnalysis *)self imageFeatureResultsAtIndex:m];
@@ -6740,10 +6740,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageJunkResultsCount])
   {
     [v318 clearImageJunkResults];
-    v21 = [(VCPProtoAssetAnalysis *)self imageJunkResultsCount];
-    if (v21)
+    imageJunkResultsCount = [(VCPProtoAssetAnalysis *)self imageJunkResultsCount];
+    if (imageJunkResultsCount)
     {
-      v22 = v21;
+      v22 = imageJunkResultsCount;
       for (n = 0; n != v22; ++n)
       {
         v24 = [(VCPProtoAssetAnalysis *)self imageJunkResultsAtIndex:n];
@@ -6755,10 +6755,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageSaliencyResultsCount])
   {
     [v318 clearImageSaliencyResults];
-    v25 = [(VCPProtoAssetAnalysis *)self imageSaliencyResultsCount];
-    if (v25)
+    imageSaliencyResultsCount = [(VCPProtoAssetAnalysis *)self imageSaliencyResultsCount];
+    if (imageSaliencyResultsCount)
     {
-      v26 = v25;
+      v26 = imageSaliencyResultsCount;
       for (ii = 0; ii != v26; ++ii)
       {
         v28 = [(VCPProtoAssetAnalysis *)self imageSaliencyResultsAtIndex:ii];
@@ -6770,10 +6770,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageShotTypeResultsCount])
   {
     [v318 clearImageShotTypeResults];
-    v29 = [(VCPProtoAssetAnalysis *)self imageShotTypeResultsCount];
-    if (v29)
+    imageShotTypeResultsCount = [(VCPProtoAssetAnalysis *)self imageShotTypeResultsCount];
+    if (imageShotTypeResultsCount)
     {
-      v30 = v29;
+      v30 = imageShotTypeResultsCount;
       for (jj = 0; jj != v30; ++jj)
       {
         v32 = [(VCPProtoAssetAnalysis *)self imageShotTypeResultsAtIndex:jj];
@@ -6785,10 +6785,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self livePhotoRecommendationResultsCount])
   {
     [v318 clearLivePhotoRecommendationResults];
-    v33 = [(VCPProtoAssetAnalysis *)self livePhotoRecommendationResultsCount];
-    if (v33)
+    livePhotoRecommendationResultsCount = [(VCPProtoAssetAnalysis *)self livePhotoRecommendationResultsCount];
+    if (livePhotoRecommendationResultsCount)
     {
-      v34 = v33;
+      v34 = livePhotoRecommendationResultsCount;
       for (kk = 0; kk != v34; ++kk)
       {
         v36 = [(VCPProtoAssetAnalysis *)self livePhotoRecommendationResultsAtIndex:kk];
@@ -6800,10 +6800,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self livePhotoSharpnessResultsCount])
   {
     [v318 clearLivePhotoSharpnessResults];
-    v37 = [(VCPProtoAssetAnalysis *)self livePhotoSharpnessResultsCount];
-    if (v37)
+    livePhotoSharpnessResultsCount = [(VCPProtoAssetAnalysis *)self livePhotoSharpnessResultsCount];
+    if (livePhotoSharpnessResultsCount)
     {
-      v38 = v37;
+      v38 = livePhotoSharpnessResultsCount;
       for (mm = 0; mm != v38; ++mm)
       {
         v40 = [(VCPProtoAssetAnalysis *)self livePhotoSharpnessResultsAtIndex:mm];
@@ -6815,10 +6815,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieActivityLevelResultsCount])
   {
     [v318 clearMovieActivityLevelResults];
-    v41 = [(VCPProtoAssetAnalysis *)self movieActivityLevelResultsCount];
-    if (v41)
+    movieActivityLevelResultsCount = [(VCPProtoAssetAnalysis *)self movieActivityLevelResultsCount];
+    if (movieActivityLevelResultsCount)
     {
-      v42 = v41;
+      v42 = movieActivityLevelResultsCount;
       for (nn = 0; nn != v42; ++nn)
       {
         v44 = [(VCPProtoAssetAnalysis *)self movieActivityLevelResultsAtIndex:nn];
@@ -6830,10 +6830,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieCameraMotionResultsCount])
   {
     [v318 clearMovieCameraMotionResults];
-    v45 = [(VCPProtoAssetAnalysis *)self movieCameraMotionResultsCount];
-    if (v45)
+    movieCameraMotionResultsCount = [(VCPProtoAssetAnalysis *)self movieCameraMotionResultsCount];
+    if (movieCameraMotionResultsCount)
     {
-      v46 = v45;
+      v46 = movieCameraMotionResultsCount;
       for (i1 = 0; i1 != v46; ++i1)
       {
         v48 = [(VCPProtoAssetAnalysis *)self movieCameraMotionResultsAtIndex:i1];
@@ -6845,10 +6845,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieClassificationResultsCount])
   {
     [v318 clearMovieClassificationResults];
-    v49 = [(VCPProtoAssetAnalysis *)self movieClassificationResultsCount];
-    if (v49)
+    movieClassificationResultsCount = [(VCPProtoAssetAnalysis *)self movieClassificationResultsCount];
+    if (movieClassificationResultsCount)
     {
-      v50 = v49;
+      v50 = movieClassificationResultsCount;
       for (i2 = 0; i2 != v50; ++i2)
       {
         v52 = [(VCPProtoAssetAnalysis *)self movieClassificationResultsAtIndex:i2];
@@ -6860,10 +6860,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieFaceResultsCount])
   {
     [v318 clearMovieFaceResults];
-    v53 = [(VCPProtoAssetAnalysis *)self movieFaceResultsCount];
-    if (v53)
+    movieFaceResultsCount = [(VCPProtoAssetAnalysis *)self movieFaceResultsCount];
+    if (movieFaceResultsCount)
     {
-      v54 = v53;
+      v54 = movieFaceResultsCount;
       for (i3 = 0; i3 != v54; ++i3)
       {
         v56 = [(VCPProtoAssetAnalysis *)self movieFaceResultsAtIndex:i3];
@@ -6875,10 +6875,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieFaceprintResultsCount])
   {
     [v318 clearMovieFaceprintResults];
-    v57 = [(VCPProtoAssetAnalysis *)self movieFaceprintResultsCount];
-    if (v57)
+    movieFaceprintResultsCount = [(VCPProtoAssetAnalysis *)self movieFaceprintResultsCount];
+    if (movieFaceprintResultsCount)
     {
-      v58 = v57;
+      v58 = movieFaceprintResultsCount;
       for (i4 = 0; i4 != v58; ++i4)
       {
         v60 = [(VCPProtoAssetAnalysis *)self movieFaceprintResultsAtIndex:i4];
@@ -6890,10 +6890,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieFeatureResultsCount])
   {
     [v318 clearMovieFeatureResults];
-    v61 = [(VCPProtoAssetAnalysis *)self movieFeatureResultsCount];
-    if (v61)
+    movieFeatureResultsCount = [(VCPProtoAssetAnalysis *)self movieFeatureResultsCount];
+    if (movieFeatureResultsCount)
     {
-      v62 = v61;
+      v62 = movieFeatureResultsCount;
       for (i5 = 0; i5 != v62; ++i5)
       {
         v64 = [(VCPProtoAssetAnalysis *)self movieFeatureResultsAtIndex:i5];
@@ -6905,10 +6905,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieFineSubjectMotionResultsCount])
   {
     [v318 clearMovieFineSubjectMotionResults];
-    v65 = [(VCPProtoAssetAnalysis *)self movieFineSubjectMotionResultsCount];
-    if (v65)
+    movieFineSubjectMotionResultsCount = [(VCPProtoAssetAnalysis *)self movieFineSubjectMotionResultsCount];
+    if (movieFineSubjectMotionResultsCount)
     {
-      v66 = v65;
+      v66 = movieFineSubjectMotionResultsCount;
       for (i6 = 0; i6 != v66; ++i6)
       {
         v68 = [(VCPProtoAssetAnalysis *)self movieFineSubjectMotionResultsAtIndex:i6];
@@ -6920,10 +6920,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieInterestingnessResultsCount])
   {
     [v318 clearMovieInterestingnessResults];
-    v69 = [(VCPProtoAssetAnalysis *)self movieInterestingnessResultsCount];
-    if (v69)
+    movieInterestingnessResultsCount = [(VCPProtoAssetAnalysis *)self movieInterestingnessResultsCount];
+    if (movieInterestingnessResultsCount)
     {
-      v70 = v69;
+      v70 = movieInterestingnessResultsCount;
       for (i7 = 0; i7 != v70; ++i7)
       {
         v72 = [(VCPProtoAssetAnalysis *)self movieInterestingnessResultsAtIndex:i7];
@@ -6935,10 +6935,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieMovingObjectResultsCount])
   {
     [v318 clearMovieMovingObjectResults];
-    v73 = [(VCPProtoAssetAnalysis *)self movieMovingObjectResultsCount];
-    if (v73)
+    movieMovingObjectResultsCount = [(VCPProtoAssetAnalysis *)self movieMovingObjectResultsCount];
+    if (movieMovingObjectResultsCount)
     {
-      v74 = v73;
+      v74 = movieMovingObjectResultsCount;
       for (i8 = 0; i8 != v74; ++i8)
       {
         v76 = [(VCPProtoAssetAnalysis *)self movieMovingObjectResultsAtIndex:i8];
@@ -6950,10 +6950,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieMusicResultsCount])
   {
     [v318 clearMovieMusicResults];
-    v77 = [(VCPProtoAssetAnalysis *)self movieMusicResultsCount];
-    if (v77)
+    movieMusicResultsCount = [(VCPProtoAssetAnalysis *)self movieMusicResultsCount];
+    if (movieMusicResultsCount)
     {
-      v78 = v77;
+      v78 = movieMusicResultsCount;
       for (i9 = 0; i9 != v78; ++i9)
       {
         v80 = [(VCPProtoAssetAnalysis *)self movieMusicResultsAtIndex:i9];
@@ -6965,10 +6965,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieObstructionResultsCount])
   {
     [v318 clearMovieObstructionResults];
-    v81 = [(VCPProtoAssetAnalysis *)self movieObstructionResultsCount];
-    if (v81)
+    movieObstructionResultsCount = [(VCPProtoAssetAnalysis *)self movieObstructionResultsCount];
+    if (movieObstructionResultsCount)
     {
-      v82 = v81;
+      v82 = movieObstructionResultsCount;
       for (i10 = 0; i10 != v82; ++i10)
       {
         v84 = [(VCPProtoAssetAnalysis *)self movieObstructionResultsAtIndex:i10];
@@ -6980,10 +6980,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieOrientationResultsCount])
   {
     [v318 clearMovieOrientationResults];
-    v85 = [(VCPProtoAssetAnalysis *)self movieOrientationResultsCount];
-    if (v85)
+    movieOrientationResultsCount = [(VCPProtoAssetAnalysis *)self movieOrientationResultsCount];
+    if (movieOrientationResultsCount)
     {
-      v86 = v85;
+      v86 = movieOrientationResultsCount;
       for (i11 = 0; i11 != v86; ++i11)
       {
         v88 = [(VCPProtoAssetAnalysis *)self movieOrientationResultsAtIndex:i11];
@@ -6995,10 +6995,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self moviePreEncodeResultsCount])
   {
     [v318 clearMoviePreEncodeResults];
-    v89 = [(VCPProtoAssetAnalysis *)self moviePreEncodeResultsCount];
-    if (v89)
+    moviePreEncodeResultsCount = [(VCPProtoAssetAnalysis *)self moviePreEncodeResultsCount];
+    if (moviePreEncodeResultsCount)
     {
-      v90 = v89;
+      v90 = moviePreEncodeResultsCount;
       for (i12 = 0; i12 != v90; ++i12)
       {
         v92 = [(VCPProtoAssetAnalysis *)self moviePreEncodeResultsAtIndex:i12];
@@ -7010,10 +7010,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieQualityResultsCount])
   {
     [v318 clearMovieQualityResults];
-    v93 = [(VCPProtoAssetAnalysis *)self movieQualityResultsCount];
-    if (v93)
+    movieQualityResultsCount = [(VCPProtoAssetAnalysis *)self movieQualityResultsCount];
+    if (movieQualityResultsCount)
     {
-      v94 = v93;
+      v94 = movieQualityResultsCount;
       for (i13 = 0; i13 != v94; ++i13)
       {
         v96 = [(VCPProtoAssetAnalysis *)self movieQualityResultsAtIndex:i13];
@@ -7025,10 +7025,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieSaliencyResultsCount])
   {
     [v318 clearMovieSaliencyResults];
-    v97 = [(VCPProtoAssetAnalysis *)self movieSaliencyResultsCount];
-    if (v97)
+    movieSaliencyResultsCount = [(VCPProtoAssetAnalysis *)self movieSaliencyResultsCount];
+    if (movieSaliencyResultsCount)
     {
-      v98 = v97;
+      v98 = movieSaliencyResultsCount;
       for (i14 = 0; i14 != v98; ++i14)
       {
         v100 = [(VCPProtoAssetAnalysis *)self movieSaliencyResultsAtIndex:i14];
@@ -7040,10 +7040,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieSceneResultsCount])
   {
     [v318 clearMovieSceneResults];
-    v101 = [(VCPProtoAssetAnalysis *)self movieSceneResultsCount];
-    if (v101)
+    movieSceneResultsCount = [(VCPProtoAssetAnalysis *)self movieSceneResultsCount];
+    if (movieSceneResultsCount)
     {
-      v102 = v101;
+      v102 = movieSceneResultsCount;
       for (i15 = 0; i15 != v102; ++i15)
       {
         v104 = [(VCPProtoAssetAnalysis *)self movieSceneResultsAtIndex:i15];
@@ -7055,10 +7055,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieSubjectMotionResultsCount])
   {
     [v318 clearMovieSubjectMotionResults];
-    v105 = [(VCPProtoAssetAnalysis *)self movieSubjectMotionResultsCount];
-    if (v105)
+    movieSubjectMotionResultsCount = [(VCPProtoAssetAnalysis *)self movieSubjectMotionResultsCount];
+    if (movieSubjectMotionResultsCount)
     {
-      v106 = v105;
+      v106 = movieSubjectMotionResultsCount;
       for (i16 = 0; i16 != v106; ++i16)
       {
         v108 = [(VCPProtoAssetAnalysis *)self movieSubjectMotionResultsAtIndex:i16];
@@ -7070,10 +7070,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieUtteranceResultsCount])
   {
     [v318 clearMovieUtteranceResults];
-    v109 = [(VCPProtoAssetAnalysis *)self movieUtteranceResultsCount];
-    if (v109)
+    movieUtteranceResultsCount = [(VCPProtoAssetAnalysis *)self movieUtteranceResultsCount];
+    if (movieUtteranceResultsCount)
     {
-      v110 = v109;
+      v110 = movieUtteranceResultsCount;
       for (i17 = 0; i17 != v110; ++i17)
       {
         v112 = [(VCPProtoAssetAnalysis *)self movieUtteranceResultsAtIndex:i17];
@@ -7085,10 +7085,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieVoiceResultsCount])
   {
     [v318 clearMovieVoiceResults];
-    v113 = [(VCPProtoAssetAnalysis *)self movieVoiceResultsCount];
-    if (v113)
+    movieVoiceResultsCount = [(VCPProtoAssetAnalysis *)self movieVoiceResultsCount];
+    if (movieVoiceResultsCount)
     {
-      v114 = v113;
+      v114 = movieVoiceResultsCount;
       for (i18 = 0; i18 != v114; ++i18)
       {
         v116 = [(VCPProtoAssetAnalysis *)self movieVoiceResultsAtIndex:i18];
@@ -7100,10 +7100,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imagePetsResultsCount])
   {
     [v318 clearImagePetsResults];
-    v117 = [(VCPProtoAssetAnalysis *)self imagePetsResultsCount];
-    if (v117)
+    imagePetsResultsCount = [(VCPProtoAssetAnalysis *)self imagePetsResultsCount];
+    if (imagePetsResultsCount)
     {
-      v118 = v117;
+      v118 = imagePetsResultsCount;
       for (i19 = 0; i19 != v118; ++i19)
       {
         v120 = [(VCPProtoAssetAnalysis *)self imagePetsResultsAtIndex:i19];
@@ -7115,10 +7115,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieSummaryResultsCount])
   {
     [v318 clearMovieSummaryResults];
-    v121 = [(VCPProtoAssetAnalysis *)self movieSummaryResultsCount];
-    if (v121)
+    movieSummaryResultsCount = [(VCPProtoAssetAnalysis *)self movieSummaryResultsCount];
+    if (movieSummaryResultsCount)
     {
-      v122 = v121;
+      v122 = movieSummaryResultsCount;
       for (i20 = 0; i20 != v122; ++i20)
       {
         v124 = [(VCPProtoAssetAnalysis *)self movieSummaryResultsAtIndex:i20];
@@ -7130,10 +7130,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieHighlightResultsCount])
   {
     [v318 clearMovieHighlightResults];
-    v125 = [(VCPProtoAssetAnalysis *)self movieHighlightResultsCount];
-    if (v125)
+    movieHighlightResultsCount = [(VCPProtoAssetAnalysis *)self movieHighlightResultsCount];
+    if (movieHighlightResultsCount)
     {
-      v126 = v125;
+      v126 = movieHighlightResultsCount;
       for (i21 = 0; i21 != v126; ++i21)
       {
         v128 = [(VCPProtoAssetAnalysis *)self movieHighlightResultsAtIndex:i21];
@@ -7145,10 +7145,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageExposureResultsCount])
   {
     [v318 clearImageExposureResults];
-    v129 = [(VCPProtoAssetAnalysis *)self imageExposureResultsCount];
-    if (v129)
+    imageExposureResultsCount = [(VCPProtoAssetAnalysis *)self imageExposureResultsCount];
+    if (imageExposureResultsCount)
     {
-      v130 = v129;
+      v130 = imageExposureResultsCount;
       for (i22 = 0; i22 != v130; ++i22)
       {
         v132 = [(VCPProtoAssetAnalysis *)self imageExposureResultsAtIndex:i22];
@@ -7160,10 +7160,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self livePhotoEffectsResultsCount])
   {
     [v318 clearLivePhotoEffectsResults];
-    v133 = [(VCPProtoAssetAnalysis *)self livePhotoEffectsResultsCount];
-    if (v133)
+    livePhotoEffectsResultsCount = [(VCPProtoAssetAnalysis *)self livePhotoEffectsResultsCount];
+    if (livePhotoEffectsResultsCount)
     {
-      v134 = v133;
+      v134 = livePhotoEffectsResultsCount;
       for (i23 = 0; i23 != v134; ++i23)
       {
         v136 = [(VCPProtoAssetAnalysis *)self livePhotoEffectsResultsAtIndex:i23];
@@ -7181,10 +7181,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imagePetsFaceResultsCount])
   {
     [v318 clearImagePetsFaceResults];
-    v137 = [(VCPProtoAssetAnalysis *)self imagePetsFaceResultsCount];
-    if (v137)
+    imagePetsFaceResultsCount = [(VCPProtoAssetAnalysis *)self imagePetsFaceResultsCount];
+    if (imagePetsFaceResultsCount)
     {
-      v138 = v137;
+      v138 = imagePetsFaceResultsCount;
       for (i24 = 0; i24 != v138; ++i24)
       {
         v140 = [(VCPProtoAssetAnalysis *)self imagePetsFaceResultsAtIndex:i24];
@@ -7196,10 +7196,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageSceneprintResultsCount])
   {
     [v318 clearImageSceneprintResults];
-    v141 = [(VCPProtoAssetAnalysis *)self imageSceneprintResultsCount];
-    if (v141)
+    imageSceneprintResultsCount = [(VCPProtoAssetAnalysis *)self imageSceneprintResultsCount];
+    if (imageSceneprintResultsCount)
     {
-      v142 = v141;
+      v142 = imageSceneprintResultsCount;
       for (i25 = 0; i25 != v142; ++i25)
       {
         v144 = [(VCPProtoAssetAnalysis *)self imageSceneprintResultsAtIndex:i25];
@@ -7211,10 +7211,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieSceneprintResultsCount])
   {
     [v318 clearMovieSceneprintResults];
-    v145 = [(VCPProtoAssetAnalysis *)self movieSceneprintResultsCount];
-    if (v145)
+    movieSceneprintResultsCount = [(VCPProtoAssetAnalysis *)self movieSceneprintResultsCount];
+    if (movieSceneprintResultsCount)
     {
-      v146 = v145;
+      v146 = movieSceneprintResultsCount;
       for (i26 = 0; i26 != v146; ++i26)
       {
         v148 = [(VCPProtoAssetAnalysis *)self movieSceneprintResultsAtIndex:i26];
@@ -7226,10 +7226,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageHumanPoseResultsCount])
   {
     [v318 clearImageHumanPoseResults];
-    v149 = [(VCPProtoAssetAnalysis *)self imageHumanPoseResultsCount];
-    if (v149)
+    imageHumanPoseResultsCount = [(VCPProtoAssetAnalysis *)self imageHumanPoseResultsCount];
+    if (imageHumanPoseResultsCount)
     {
-      v150 = v149;
+      v150 = imageHumanPoseResultsCount;
       for (i27 = 0; i27 != v150; ++i27)
       {
         v152 = [(VCPProtoAssetAnalysis *)self imageHumanPoseResultsAtIndex:i27];
@@ -7241,10 +7241,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieHumanPoseResultsCount])
   {
     [v318 clearMovieHumanPoseResults];
-    v153 = [(VCPProtoAssetAnalysis *)self movieHumanPoseResultsCount];
-    if (v153)
+    movieHumanPoseResultsCount = [(VCPProtoAssetAnalysis *)self movieHumanPoseResultsCount];
+    if (movieHumanPoseResultsCount)
     {
-      v154 = v153;
+      v154 = movieHumanPoseResultsCount;
       for (i28 = 0; i28 != v154; ++i28)
       {
         v156 = [(VCPProtoAssetAnalysis *)self movieHumanPoseResultsAtIndex:i28];
@@ -7256,10 +7256,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieApplauseResultsCount])
   {
     [v318 clearMovieApplauseResults];
-    v157 = [(VCPProtoAssetAnalysis *)self movieApplauseResultsCount];
-    if (v157)
+    movieApplauseResultsCount = [(VCPProtoAssetAnalysis *)self movieApplauseResultsCount];
+    if (movieApplauseResultsCount)
     {
-      v158 = v157;
+      v158 = movieApplauseResultsCount;
       for (i29 = 0; i29 != v158; ++i29)
       {
         v160 = [(VCPProtoAssetAnalysis *)self movieApplauseResultsAtIndex:i29];
@@ -7271,10 +7271,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieBabbleResultsCount])
   {
     [v318 clearMovieBabbleResults];
-    v161 = [(VCPProtoAssetAnalysis *)self movieBabbleResultsCount];
-    if (v161)
+    movieBabbleResultsCount = [(VCPProtoAssetAnalysis *)self movieBabbleResultsCount];
+    if (movieBabbleResultsCount)
     {
-      v162 = v161;
+      v162 = movieBabbleResultsCount;
       for (i30 = 0; i30 != v162; ++i30)
       {
         v164 = [(VCPProtoAssetAnalysis *)self movieBabbleResultsAtIndex:i30];
@@ -7286,10 +7286,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieCheeringResultsCount])
   {
     [v318 clearMovieCheeringResults];
-    v165 = [(VCPProtoAssetAnalysis *)self movieCheeringResultsCount];
-    if (v165)
+    movieCheeringResultsCount = [(VCPProtoAssetAnalysis *)self movieCheeringResultsCount];
+    if (movieCheeringResultsCount)
     {
-      v166 = v165;
+      v166 = movieCheeringResultsCount;
       for (i31 = 0; i31 != v166; ++i31)
       {
         v168 = [(VCPProtoAssetAnalysis *)self movieCheeringResultsAtIndex:i31];
@@ -7301,10 +7301,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieLaughterResultsCount])
   {
     [v318 clearMovieLaughterResults];
-    v169 = [(VCPProtoAssetAnalysis *)self movieLaughterResultsCount];
-    if (v169)
+    movieLaughterResultsCount = [(VCPProtoAssetAnalysis *)self movieLaughterResultsCount];
+    if (movieLaughterResultsCount)
     {
-      v170 = v169;
+      v170 = movieLaughterResultsCount;
       for (i32 = 0; i32 != v170; ++i32)
       {
         v172 = [(VCPProtoAssetAnalysis *)self movieLaughterResultsAtIndex:i32];
@@ -7316,10 +7316,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self livePhotoKeyFrameResultsCount])
   {
     [v318 clearLivePhotoKeyFrameResults];
-    v173 = [(VCPProtoAssetAnalysis *)self livePhotoKeyFrameResultsCount];
-    if (v173)
+    livePhotoKeyFrameResultsCount = [(VCPProtoAssetAnalysis *)self livePhotoKeyFrameResultsCount];
+    if (livePhotoKeyFrameResultsCount)
     {
-      v174 = v173;
+      v174 = livePhotoKeyFrameResultsCount;
       for (i33 = 0; i33 != v174; ++i33)
       {
         v176 = [(VCPProtoAssetAnalysis *)self livePhotoKeyFrameResultsAtIndex:i33];
@@ -7331,10 +7331,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self livePhotoKeyFrameStillResultsCount])
   {
     [v318 clearLivePhotoKeyFrameStillResults];
-    v177 = [(VCPProtoAssetAnalysis *)self livePhotoKeyFrameStillResultsCount];
-    if (v177)
+    livePhotoKeyFrameStillResultsCount = [(VCPProtoAssetAnalysis *)self livePhotoKeyFrameStillResultsCount];
+    if (livePhotoKeyFrameStillResultsCount)
     {
-      v178 = v177;
+      v178 = livePhotoKeyFrameStillResultsCount;
       for (i34 = 0; i34 != v178; ++i34)
       {
         v180 = [(VCPProtoAssetAnalysis *)self livePhotoKeyFrameStillResultsAtIndex:i34];
@@ -7346,10 +7346,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieHumanActionResultsCount])
   {
     [v318 clearMovieHumanActionResults];
-    v181 = [(VCPProtoAssetAnalysis *)self movieHumanActionResultsCount];
-    if (v181)
+    movieHumanActionResultsCount = [(VCPProtoAssetAnalysis *)self movieHumanActionResultsCount];
+    if (movieHumanActionResultsCount)
     {
-      v182 = v181;
+      v182 = movieHumanActionResultsCount;
       for (i35 = 0; i35 != v182; ++i35)
       {
         v184 = [(VCPProtoAssetAnalysis *)self movieHumanActionResultsAtIndex:i35];
@@ -7361,10 +7361,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieSubtleMotionResultsCount])
   {
     [v318 clearMovieSubtleMotionResults];
-    v185 = [(VCPProtoAssetAnalysis *)self movieSubtleMotionResultsCount];
-    if (v185)
+    movieSubtleMotionResultsCount = [(VCPProtoAssetAnalysis *)self movieSubtleMotionResultsCount];
+    if (movieSubtleMotionResultsCount)
     {
-      v186 = v185;
+      v186 = movieSubtleMotionResultsCount;
       for (i36 = 0; i36 != v186; ++i36)
       {
         v188 = [(VCPProtoAssetAnalysis *)self movieSubtleMotionResultsAtIndex:i36];
@@ -7376,10 +7376,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieLoudnessResultsCount])
   {
     [v318 clearMovieLoudnessResults];
-    v189 = [(VCPProtoAssetAnalysis *)self movieLoudnessResultsCount];
-    if (v189)
+    movieLoudnessResultsCount = [(VCPProtoAssetAnalysis *)self movieLoudnessResultsCount];
+    if (movieLoudnessResultsCount)
     {
-      v190 = v189;
+      v190 = movieLoudnessResultsCount;
       for (i37 = 0; i37 != v190; ++i37)
       {
         v192 = [(VCPProtoAssetAnalysis *)self movieLoudnessResultsAtIndex:i37];
@@ -7391,10 +7391,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self moviePetsResultsCount])
   {
     [v318 clearMoviePetsResults];
-    v193 = [(VCPProtoAssetAnalysis *)self moviePetsResultsCount];
-    if (v193)
+    moviePetsResultsCount = [(VCPProtoAssetAnalysis *)self moviePetsResultsCount];
+    if (moviePetsResultsCount)
     {
-      v194 = v193;
+      v194 = moviePetsResultsCount;
       for (i38 = 0; i38 != v194; ++i38)
       {
         v196 = [(VCPProtoAssetAnalysis *)self moviePetsResultsAtIndex:i38];
@@ -7406,10 +7406,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self moviePetsFaceResultsCount])
   {
     [v318 clearMoviePetsFaceResults];
-    v197 = [(VCPProtoAssetAnalysis *)self moviePetsFaceResultsCount];
-    if (v197)
+    moviePetsFaceResultsCount = [(VCPProtoAssetAnalysis *)self moviePetsFaceResultsCount];
+    if (moviePetsFaceResultsCount)
     {
-      v198 = v197;
+      v198 = moviePetsFaceResultsCount;
       for (i39 = 0; i39 != v198; ++i39)
       {
         v200 = [(VCPProtoAssetAnalysis *)self moviePetsFaceResultsAtIndex:i39];
@@ -7421,10 +7421,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieStabilizationResultsCount])
   {
     [v318 clearMovieStabilizationResults];
-    v201 = [(VCPProtoAssetAnalysis *)self movieStabilizationResultsCount];
-    if (v201)
+    movieStabilizationResultsCount = [(VCPProtoAssetAnalysis *)self movieStabilizationResultsCount];
+    if (movieStabilizationResultsCount)
     {
-      v202 = v201;
+      v202 = movieStabilizationResultsCount;
       for (i40 = 0; i40 != v202; ++i40)
       {
         v204 = [(VCPProtoAssetAnalysis *)self movieStabilizationResultsAtIndex:i40];
@@ -7442,10 +7442,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieHighlightScoreResultsCount])
   {
     [v318 clearMovieHighlightScoreResults];
-    v205 = [(VCPProtoAssetAnalysis *)self movieHighlightScoreResultsCount];
-    if (v205)
+    movieHighlightScoreResultsCount = [(VCPProtoAssetAnalysis *)self movieHighlightScoreResultsCount];
+    if (movieHighlightScoreResultsCount)
     {
-      v206 = v205;
+      v206 = movieHighlightScoreResultsCount;
       for (i41 = 0; i41 != v206; ++i41)
       {
         v208 = [(VCPProtoAssetAnalysis *)self movieHighlightScoreResultsAtIndex:i41];
@@ -7457,10 +7457,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self livePhotoHumanActionClassificationResultsCount])
   {
     [v318 clearLivePhotoHumanActionClassificationResults];
-    v209 = [(VCPProtoAssetAnalysis *)self livePhotoHumanActionClassificationResultsCount];
-    if (v209)
+    livePhotoHumanActionClassificationResultsCount = [(VCPProtoAssetAnalysis *)self livePhotoHumanActionClassificationResultsCount];
+    if (livePhotoHumanActionClassificationResultsCount)
     {
-      v210 = v209;
+      v210 = livePhotoHumanActionClassificationResultsCount;
       for (i42 = 0; i42 != v210; ++i42)
       {
         v212 = [(VCPProtoAssetAnalysis *)self livePhotoHumanActionClassificationResultsAtIndex:i42];
@@ -7472,10 +7472,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieAudioQualityResultsCount])
   {
     [v318 clearMovieAudioQualityResults];
-    v213 = [(VCPProtoAssetAnalysis *)self movieAudioQualityResultsCount];
-    if (v213)
+    movieAudioQualityResultsCount = [(VCPProtoAssetAnalysis *)self movieAudioQualityResultsCount];
+    if (movieAudioQualityResultsCount)
     {
-      v214 = v213;
+      v214 = movieAudioQualityResultsCount;
       for (i43 = 0; i43 != v214; ++i43)
       {
         v216 = [(VCPProtoAssetAnalysis *)self movieAudioQualityResultsAtIndex:i43];
@@ -7487,10 +7487,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieSafetyResultsCount])
   {
     [v318 clearMovieSafetyResults];
-    v217 = [(VCPProtoAssetAnalysis *)self movieSafetyResultsCount];
-    if (v217)
+    movieSafetyResultsCount = [(VCPProtoAssetAnalysis *)self movieSafetyResultsCount];
+    if (movieSafetyResultsCount)
     {
-      v218 = v217;
+      v218 = movieSafetyResultsCount;
       for (i44 = 0; i44 != v218; ++i44)
       {
         v220 = [(VCPProtoAssetAnalysis *)self movieSafetyResultsAtIndex:i44];
@@ -7502,10 +7502,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self filesystemMovieClassificationResultsCount])
   {
     [v318 clearFilesystemMovieClassificationResults];
-    v221 = [(VCPProtoAssetAnalysis *)self filesystemMovieClassificationResultsCount];
-    if (v221)
+    filesystemMovieClassificationResultsCount = [(VCPProtoAssetAnalysis *)self filesystemMovieClassificationResultsCount];
+    if (filesystemMovieClassificationResultsCount)
     {
-      v222 = v221;
+      v222 = filesystemMovieClassificationResultsCount;
       for (i45 = 0; i45 != v222; ++i45)
       {
         v224 = [(VCPProtoAssetAnalysis *)self filesystemMovieClassificationResultsAtIndex:i45];
@@ -7517,10 +7517,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self filesystemMovieHumanActionClassificationResultsCount])
   {
     [v318 clearFilesystemMovieHumanActionClassificationResults];
-    v225 = [(VCPProtoAssetAnalysis *)self filesystemMovieHumanActionClassificationResultsCount];
-    if (v225)
+    filesystemMovieHumanActionClassificationResultsCount = [(VCPProtoAssetAnalysis *)self filesystemMovieHumanActionClassificationResultsCount];
+    if (filesystemMovieHumanActionClassificationResultsCount)
     {
-      v226 = v225;
+      v226 = filesystemMovieHumanActionClassificationResultsCount;
       for (i46 = 0; i46 != v226; ++i46)
       {
         v228 = [(VCPProtoAssetAnalysis *)self filesystemMovieHumanActionClassificationResultsAtIndex:i46];
@@ -7532,10 +7532,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self filesystemMovieApplauseResultsCount])
   {
     [v318 clearFilesystemMovieApplauseResults];
-    v229 = [(VCPProtoAssetAnalysis *)self filesystemMovieApplauseResultsCount];
-    if (v229)
+    filesystemMovieApplauseResultsCount = [(VCPProtoAssetAnalysis *)self filesystemMovieApplauseResultsCount];
+    if (filesystemMovieApplauseResultsCount)
     {
-      v230 = v229;
+      v230 = filesystemMovieApplauseResultsCount;
       for (i47 = 0; i47 != v230; ++i47)
       {
         v232 = [(VCPProtoAssetAnalysis *)self filesystemMovieApplauseResultsAtIndex:i47];
@@ -7547,10 +7547,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self filesystemMovieBabbleResultsCount])
   {
     [v318 clearFilesystemMovieBabbleResults];
-    v233 = [(VCPProtoAssetAnalysis *)self filesystemMovieBabbleResultsCount];
-    if (v233)
+    filesystemMovieBabbleResultsCount = [(VCPProtoAssetAnalysis *)self filesystemMovieBabbleResultsCount];
+    if (filesystemMovieBabbleResultsCount)
     {
-      v234 = v233;
+      v234 = filesystemMovieBabbleResultsCount;
       for (i48 = 0; i48 != v234; ++i48)
       {
         v236 = [(VCPProtoAssetAnalysis *)self filesystemMovieBabbleResultsAtIndex:i48];
@@ -7562,10 +7562,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self filesystemMovieCheeringResultsCount])
   {
     [v318 clearFilesystemMovieCheeringResults];
-    v237 = [(VCPProtoAssetAnalysis *)self filesystemMovieCheeringResultsCount];
-    if (v237)
+    filesystemMovieCheeringResultsCount = [(VCPProtoAssetAnalysis *)self filesystemMovieCheeringResultsCount];
+    if (filesystemMovieCheeringResultsCount)
     {
-      v238 = v237;
+      v238 = filesystemMovieCheeringResultsCount;
       for (i49 = 0; i49 != v238; ++i49)
       {
         v240 = [(VCPProtoAssetAnalysis *)self filesystemMovieCheeringResultsAtIndex:i49];
@@ -7577,10 +7577,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self filesystemMovieLaughterResultsCount])
   {
     [v318 clearFilesystemMovieLaughterResults];
-    v241 = [(VCPProtoAssetAnalysis *)self filesystemMovieLaughterResultsCount];
-    if (v241)
+    filesystemMovieLaughterResultsCount = [(VCPProtoAssetAnalysis *)self filesystemMovieLaughterResultsCount];
+    if (filesystemMovieLaughterResultsCount)
     {
-      v242 = v241;
+      v242 = filesystemMovieLaughterResultsCount;
       for (i50 = 0; i50 != v242; ++i50)
       {
         v244 = [(VCPProtoAssetAnalysis *)self filesystemMovieLaughterResultsAtIndex:i50];
@@ -7592,10 +7592,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self filesystemMovieMusicResultsCount])
   {
     [v318 clearFilesystemMovieMusicResults];
-    v245 = [(VCPProtoAssetAnalysis *)self filesystemMovieMusicResultsCount];
-    if (v245)
+    filesystemMovieMusicResultsCount = [(VCPProtoAssetAnalysis *)self filesystemMovieMusicResultsCount];
+    if (filesystemMovieMusicResultsCount)
     {
-      v246 = v245;
+      v246 = filesystemMovieMusicResultsCount;
       for (i51 = 0; i51 != v246; ++i51)
       {
         v248 = [(VCPProtoAssetAnalysis *)self filesystemMovieMusicResultsAtIndex:i51];
@@ -7607,10 +7607,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self filesystemMovieVoiceResultsCount])
   {
     [v318 clearFilesystemMovieVoiceResults];
-    v249 = [(VCPProtoAssetAnalysis *)self filesystemMovieVoiceResultsCount];
-    if (v249)
+    filesystemMovieVoiceResultsCount = [(VCPProtoAssetAnalysis *)self filesystemMovieVoiceResultsCount];
+    if (filesystemMovieVoiceResultsCount)
     {
-      v250 = v249;
+      v250 = filesystemMovieVoiceResultsCount;
       for (i52 = 0; i52 != v250; ++i52)
       {
         v252 = [(VCPProtoAssetAnalysis *)self filesystemMovieVoiceResultsAtIndex:i52];
@@ -7622,10 +7622,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self animatedStickerResultsCount])
   {
     [v318 clearAnimatedStickerResults];
-    v253 = [(VCPProtoAssetAnalysis *)self animatedStickerResultsCount];
-    if (v253)
+    animatedStickerResultsCount = [(VCPProtoAssetAnalysis *)self animatedStickerResultsCount];
+    if (animatedStickerResultsCount)
     {
-      v254 = v253;
+      v254 = animatedStickerResultsCount;
       for (i53 = 0; i53 != v254; ++i53)
       {
         v256 = [(VCPProtoAssetAnalysis *)self animatedStickerResultsAtIndex:i53];
@@ -7637,10 +7637,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self livePhotoSettlingEffectGatingResultsCount])
   {
     [v318 clearLivePhotoSettlingEffectGatingResults];
-    v257 = [(VCPProtoAssetAnalysis *)self livePhotoSettlingEffectGatingResultsCount];
-    if (v257)
+    livePhotoSettlingEffectGatingResultsCount = [(VCPProtoAssetAnalysis *)self livePhotoSettlingEffectGatingResultsCount];
+    if (livePhotoSettlingEffectGatingResultsCount)
     {
-      v258 = v257;
+      v258 = livePhotoSettlingEffectGatingResultsCount;
       for (i54 = 0; i54 != v258; ++i54)
       {
         v260 = [(VCPProtoAssetAnalysis *)self livePhotoSettlingEffectGatingResultsAtIndex:i54];
@@ -7657,10 +7657,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieTorsoResultsCount])
   {
     [v318 clearMovieTorsoResults];
-    v261 = [(VCPProtoAssetAnalysis *)self movieTorsoResultsCount];
-    if (v261)
+    movieTorsoResultsCount = [(VCPProtoAssetAnalysis *)self movieTorsoResultsCount];
+    if (movieTorsoResultsCount)
     {
-      v262 = v261;
+      v262 = movieTorsoResultsCount;
       for (i55 = 0; i55 != v262; ++i55)
       {
         v264 = [(VCPProtoAssetAnalysis *)self movieTorsoResultsAtIndex:i55];
@@ -7672,10 +7672,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieHumanActionClassificationResultsCount])
   {
     [v318 clearMovieHumanActionClassificationResults];
-    v265 = [(VCPProtoAssetAnalysis *)self movieHumanActionClassificationResultsCount];
-    if (v265)
+    movieHumanActionClassificationResultsCount = [(VCPProtoAssetAnalysis *)self movieHumanActionClassificationResultsCount];
+    if (movieHumanActionClassificationResultsCount)
     {
-      v266 = v265;
+      v266 = movieHumanActionClassificationResultsCount;
       for (i56 = 0; i56 != v266; ++i56)
       {
         v268 = [(VCPProtoAssetAnalysis *)self movieHumanActionClassificationResultsAtIndex:i56];
@@ -7687,10 +7687,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self videoEmbeddingResultsCount])
   {
     [v318 clearVideoEmbeddingResults];
-    v269 = [(VCPProtoAssetAnalysis *)self videoEmbeddingResultsCount];
-    if (v269)
+    videoEmbeddingResultsCount = [(VCPProtoAssetAnalysis *)self videoEmbeddingResultsCount];
+    if (videoEmbeddingResultsCount)
     {
-      v270 = v269;
+      v270 = videoEmbeddingResultsCount;
       for (i57 = 0; i57 != v270; ++i57)
       {
         v272 = [(VCPProtoAssetAnalysis *)self videoEmbeddingResultsAtIndex:i57];
@@ -7702,10 +7702,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self summarizedEmbeddingResultsCount])
   {
     [v318 clearSummarizedEmbeddingResults];
-    v273 = [(VCPProtoAssetAnalysis *)self summarizedEmbeddingResultsCount];
-    if (v273)
+    summarizedEmbeddingResultsCount = [(VCPProtoAssetAnalysis *)self summarizedEmbeddingResultsCount];
+    if (summarizedEmbeddingResultsCount)
     {
-      v274 = v273;
+      v274 = summarizedEmbeddingResultsCount;
       for (i58 = 0; i58 != v274; ++i58)
       {
         v276 = [(VCPProtoAssetAnalysis *)self summarizedEmbeddingResultsAtIndex:i58];
@@ -7717,10 +7717,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self audioFusedVideoEmbeddingResultsCount])
   {
     [v318 clearAudioFusedVideoEmbeddingResults];
-    v277 = [(VCPProtoAssetAnalysis *)self audioFusedVideoEmbeddingResultsCount];
-    if (v277)
+    audioFusedVideoEmbeddingResultsCount = [(VCPProtoAssetAnalysis *)self audioFusedVideoEmbeddingResultsCount];
+    if (audioFusedVideoEmbeddingResultsCount)
     {
-      v278 = v277;
+      v278 = audioFusedVideoEmbeddingResultsCount;
       for (i59 = 0; i59 != v278; ++i59)
       {
         v280 = [(VCPProtoAssetAnalysis *)self audioFusedVideoEmbeddingResultsAtIndex:i59];
@@ -7732,10 +7732,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageEmbeddingResultsCount])
   {
     [v318 clearImageEmbeddingResults];
-    v281 = [(VCPProtoAssetAnalysis *)self imageEmbeddingResultsCount];
-    if (v281)
+    imageEmbeddingResultsCount = [(VCPProtoAssetAnalysis *)self imageEmbeddingResultsCount];
+    if (imageEmbeddingResultsCount)
     {
-      v282 = v281;
+      v282 = imageEmbeddingResultsCount;
       for (i60 = 0; i60 != v282; ++i60)
       {
         v284 = [(VCPProtoAssetAnalysis *)self imageEmbeddingResultsAtIndex:i60];
@@ -7747,10 +7747,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self imageCaptionResultsCount])
   {
     [v318 clearImageCaptionResults];
-    v285 = [(VCPProtoAssetAnalysis *)self imageCaptionResultsCount];
-    if (v285)
+    imageCaptionResultsCount = [(VCPProtoAssetAnalysis *)self imageCaptionResultsCount];
+    if (imageCaptionResultsCount)
     {
-      v286 = v285;
+      v286 = imageCaptionResultsCount;
       for (i61 = 0; i61 != v286; ++i61)
       {
         v288 = [(VCPProtoAssetAnalysis *)self imageCaptionResultsAtIndex:i61];
@@ -7762,10 +7762,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self videoCaptionResultsCount])
   {
     [v318 clearVideoCaptionResults];
-    v289 = [(VCPProtoAssetAnalysis *)self videoCaptionResultsCount];
-    if (v289)
+    videoCaptionResultsCount = [(VCPProtoAssetAnalysis *)self videoCaptionResultsCount];
+    if (videoCaptionResultsCount)
     {
-      v290 = v289;
+      v290 = videoCaptionResultsCount;
       for (i62 = 0; i62 != v290; ++i62)
       {
         v292 = [(VCPProtoAssetAnalysis *)self videoCaptionResultsAtIndex:i62];
@@ -7777,10 +7777,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self videoCaptionPreferenceResultsCount])
   {
     [v318 clearVideoCaptionPreferenceResults];
-    v293 = [(VCPProtoAssetAnalysis *)self videoCaptionPreferenceResultsCount];
-    if (v293)
+    videoCaptionPreferenceResultsCount = [(VCPProtoAssetAnalysis *)self videoCaptionPreferenceResultsCount];
+    if (videoCaptionPreferenceResultsCount)
     {
-      v294 = v293;
+      v294 = videoCaptionPreferenceResultsCount;
       for (i63 = 0; i63 != v294; ++i63)
       {
         v296 = [(VCPProtoAssetAnalysis *)self videoCaptionPreferenceResultsAtIndex:i63];
@@ -7792,10 +7792,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self videoSegmentCaptionResultsCount])
   {
     [v318 clearVideoSegmentCaptionResults];
-    v297 = [(VCPProtoAssetAnalysis *)self videoSegmentCaptionResultsCount];
-    if (v297)
+    videoSegmentCaptionResultsCount = [(VCPProtoAssetAnalysis *)self videoSegmentCaptionResultsCount];
+    if (videoSegmentCaptionResultsCount)
     {
-      v298 = v297;
+      v298 = videoSegmentCaptionResultsCount;
       for (i64 = 0; i64 != v298; ++i64)
       {
         v300 = [(VCPProtoAssetAnalysis *)self videoSegmentCaptionResultsAtIndex:i64];
@@ -7807,10 +7807,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieAnimalResultsCount])
   {
     [v318 clearMovieAnimalResults];
-    v301 = [(VCPProtoAssetAnalysis *)self movieAnimalResultsCount];
-    if (v301)
+    movieAnimalResultsCount = [(VCPProtoAssetAnalysis *)self movieAnimalResultsCount];
+    if (movieAnimalResultsCount)
     {
-      v302 = v301;
+      v302 = movieAnimalResultsCount;
       for (i65 = 0; i65 != v302; ++i65)
       {
         v304 = [(VCPProtoAssetAnalysis *)self movieAnimalResultsAtIndex:i65];
@@ -7822,10 +7822,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self movieAnimalprintResultsCount])
   {
     [v318 clearMovieAnimalprintResults];
-    v305 = [(VCPProtoAssetAnalysis *)self movieAnimalprintResultsCount];
-    if (v305)
+    movieAnimalprintResultsCount = [(VCPProtoAssetAnalysis *)self movieAnimalprintResultsCount];
+    if (movieAnimalprintResultsCount)
     {
-      v306 = v305;
+      v306 = movieAnimalprintResultsCount;
       for (i66 = 0; i66 != v306; ++i66)
       {
         v308 = [(VCPProtoAssetAnalysis *)self movieAnimalprintResultsAtIndex:i66];
@@ -7851,10 +7851,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self videoSceneThumbnailResultsCount])
   {
     [v318 clearVideoSceneThumbnailResults];
-    v310 = [(VCPProtoAssetAnalysis *)self videoSceneThumbnailResultsCount];
-    if (v310)
+    videoSceneThumbnailResultsCount = [(VCPProtoAssetAnalysis *)self videoSceneThumbnailResultsCount];
+    if (videoSceneThumbnailResultsCount)
     {
-      v311 = v310;
+      v311 = videoSceneThumbnailResultsCount;
       for (i67 = 0; i67 != v311; ++i67)
       {
         v313 = [(VCPProtoAssetAnalysis *)self videoSceneThumbnailResultsAtIndex:i67];
@@ -7866,10 +7866,10 @@ LABEL_5:
   if ([(VCPProtoAssetAnalysis *)self videoThumbnailResultsCount])
   {
     [v318 clearVideoThumbnailResults];
-    v314 = [(VCPProtoAssetAnalysis *)self videoThumbnailResultsCount];
-    if (v314)
+    videoThumbnailResultsCount = [(VCPProtoAssetAnalysis *)self videoThumbnailResultsCount];
+    if (videoThumbnailResultsCount)
     {
-      v315 = v314;
+      v315 = videoThumbnailResultsCount;
       for (i68 = 0; i68 != v315; ++i68)
       {
         v317 = [(VCPProtoAssetAnalysis *)self videoThumbnailResultsAtIndex:i68];
@@ -7879,10 +7879,10 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v876 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   *(v5 + 676) = self->_version;
   *(v5 + 672) = self->_types;
@@ -7894,16 +7894,16 @@ LABEL_5:
     *(v5 + 736) |= 1u;
   }
 
-  v7 = [(NSString *)self->_assetIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_assetIdentifier copyWithZone:zone];
   v8 = *(v6 + 72);
   *(v6 + 72) = v7;
 
   *(v6 + 8) = self->_assetModificationDate;
-  v9 = [(NSString *)self->_assetMasterFingerprint copyWithZone:a3];
+  v9 = [(NSString *)self->_assetMasterFingerprint copyWithZone:zone];
   v10 = *(v6 + 80);
   *(v6 + 80) = v9;
 
-  v11 = [(NSString *)self->_assetAdjustedFingerprint copyWithZone:a3];
+  v11 = [(NSString *)self->_assetAdjustedFingerprint copyWithZone:zone];
   v12 = *(v6 + 56);
   *(v6 + 56) = v11;
 
@@ -7926,7 +7926,7 @@ LABEL_5:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v794 + 1) + 8 * i) copyWithZone:a3];
+        v18 = [*(*(&v794 + 1) + 8 * i) copyWithZone:zone];
         [v6 addImageBlurResults:v18];
       }
 
@@ -7955,7 +7955,7 @@ LABEL_5:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v790 + 1) + 8 * j) copyWithZone:a3];
+        v24 = [*(*(&v790 + 1) + 8 * j) copyWithZone:zone];
         [v6 addImageCompositionResults:v24];
       }
 
@@ -7984,7 +7984,7 @@ LABEL_5:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v786 + 1) + 8 * k) copyWithZone:a3];
+        v30 = [*(*(&v786 + 1) + 8 * k) copyWithZone:zone];
         [v6 addImageFaceResults:v30];
       }
 
@@ -8013,7 +8013,7 @@ LABEL_5:
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v782 + 1) + 8 * m) copyWithZone:a3];
+        v36 = [*(*(&v782 + 1) + 8 * m) copyWithZone:zone];
         [v6 addImageFeatureResults:v36];
       }
 
@@ -8042,7 +8042,7 @@ LABEL_5:
           objc_enumerationMutation(v37);
         }
 
-        v42 = [*(*(&v778 + 1) + 8 * n) copyWithZone:a3];
+        v42 = [*(*(&v778 + 1) + 8 * n) copyWithZone:zone];
         [v6 addImageJunkResults:v42];
       }
 
@@ -8071,7 +8071,7 @@ LABEL_5:
           objc_enumerationMutation(v43);
         }
 
-        v48 = [*(*(&v774 + 1) + 8 * ii) copyWithZone:a3];
+        v48 = [*(*(&v774 + 1) + 8 * ii) copyWithZone:zone];
         [v6 addImageSaliencyResults:v48];
       }
 
@@ -8100,7 +8100,7 @@ LABEL_5:
           objc_enumerationMutation(v49);
         }
 
-        v54 = [*(*(&v770 + 1) + 8 * jj) copyWithZone:a3];
+        v54 = [*(*(&v770 + 1) + 8 * jj) copyWithZone:zone];
         [v6 addImageShotTypeResults:v54];
       }
 
@@ -8129,7 +8129,7 @@ LABEL_5:
           objc_enumerationMutation(v55);
         }
 
-        v60 = [*(*(&v766 + 1) + 8 * kk) copyWithZone:a3];
+        v60 = [*(*(&v766 + 1) + 8 * kk) copyWithZone:zone];
         [v6 addLivePhotoRecommendationResults:v60];
       }
 
@@ -8158,7 +8158,7 @@ LABEL_5:
           objc_enumerationMutation(v61);
         }
 
-        v66 = [*(*(&v762 + 1) + 8 * mm) copyWithZone:a3];
+        v66 = [*(*(&v762 + 1) + 8 * mm) copyWithZone:zone];
         [v6 addLivePhotoSharpnessResults:v66];
       }
 
@@ -8187,7 +8187,7 @@ LABEL_5:
           objc_enumerationMutation(v67);
         }
 
-        v72 = [*(*(&v758 + 1) + 8 * nn) copyWithZone:a3];
+        v72 = [*(*(&v758 + 1) + 8 * nn) copyWithZone:zone];
         [v6 addMovieActivityLevelResults:v72];
       }
 
@@ -8216,7 +8216,7 @@ LABEL_5:
           objc_enumerationMutation(v73);
         }
 
-        v78 = [*(*(&v754 + 1) + 8 * i1) copyWithZone:a3];
+        v78 = [*(*(&v754 + 1) + 8 * i1) copyWithZone:zone];
         [v6 addMovieCameraMotionResults:v78];
       }
 
@@ -8245,7 +8245,7 @@ LABEL_5:
           objc_enumerationMutation(v79);
         }
 
-        v84 = [*(*(&v750 + 1) + 8 * i2) copyWithZone:a3];
+        v84 = [*(*(&v750 + 1) + 8 * i2) copyWithZone:zone];
         [v6 addMovieClassificationResults:v84];
       }
 
@@ -8274,7 +8274,7 @@ LABEL_5:
           objc_enumerationMutation(v85);
         }
 
-        v90 = [*(*(&v746 + 1) + 8 * i3) copyWithZone:a3];
+        v90 = [*(*(&v746 + 1) + 8 * i3) copyWithZone:zone];
         [v6 addMovieFaceResults:v90];
       }
 
@@ -8303,7 +8303,7 @@ LABEL_5:
           objc_enumerationMutation(v91);
         }
 
-        v96 = [*(*(&v742 + 1) + 8 * i4) copyWithZone:a3];
+        v96 = [*(*(&v742 + 1) + 8 * i4) copyWithZone:zone];
         [v6 addMovieFaceprintResults:v96];
       }
 
@@ -8332,7 +8332,7 @@ LABEL_5:
           objc_enumerationMutation(v97);
         }
 
-        v102 = [*(*(&v738 + 1) + 8 * i5) copyWithZone:a3];
+        v102 = [*(*(&v738 + 1) + 8 * i5) copyWithZone:zone];
         [v6 addMovieFeatureResults:v102];
       }
 
@@ -8361,7 +8361,7 @@ LABEL_5:
           objc_enumerationMutation(v103);
         }
 
-        v108 = [*(*(&v734 + 1) + 8 * i6) copyWithZone:a3];
+        v108 = [*(*(&v734 + 1) + 8 * i6) copyWithZone:zone];
         [v6 addMovieFineSubjectMotionResults:v108];
       }
 
@@ -8390,7 +8390,7 @@ LABEL_5:
           objc_enumerationMutation(v109);
         }
 
-        v114 = [*(*(&v730 + 1) + 8 * i7) copyWithZone:a3];
+        v114 = [*(*(&v730 + 1) + 8 * i7) copyWithZone:zone];
         [v6 addMovieInterestingnessResults:v114];
       }
 
@@ -8419,7 +8419,7 @@ LABEL_5:
           objc_enumerationMutation(v115);
         }
 
-        v120 = [*(*(&v726 + 1) + 8 * i8) copyWithZone:a3];
+        v120 = [*(*(&v726 + 1) + 8 * i8) copyWithZone:zone];
         [v6 addMovieMovingObjectResults:v120];
       }
 
@@ -8448,7 +8448,7 @@ LABEL_5:
           objc_enumerationMutation(v121);
         }
 
-        v126 = [*(*(&v722 + 1) + 8 * i9) copyWithZone:a3];
+        v126 = [*(*(&v722 + 1) + 8 * i9) copyWithZone:zone];
         [v6 addMovieMusicResults:v126];
       }
 
@@ -8477,7 +8477,7 @@ LABEL_5:
           objc_enumerationMutation(v127);
         }
 
-        v132 = [*(*(&v718 + 1) + 8 * i10) copyWithZone:a3];
+        v132 = [*(*(&v718 + 1) + 8 * i10) copyWithZone:zone];
         [v6 addMovieObstructionResults:v132];
       }
 
@@ -8506,7 +8506,7 @@ LABEL_5:
           objc_enumerationMutation(v133);
         }
 
-        v138 = [*(*(&v714 + 1) + 8 * i11) copyWithZone:a3];
+        v138 = [*(*(&v714 + 1) + 8 * i11) copyWithZone:zone];
         [v6 addMovieOrientationResults:v138];
       }
 
@@ -8535,7 +8535,7 @@ LABEL_5:
           objc_enumerationMutation(v139);
         }
 
-        v144 = [*(*(&v710 + 1) + 8 * i12) copyWithZone:a3];
+        v144 = [*(*(&v710 + 1) + 8 * i12) copyWithZone:zone];
         [v6 addMoviePreEncodeResults:v144];
       }
 
@@ -8564,7 +8564,7 @@ LABEL_5:
           objc_enumerationMutation(v145);
         }
 
-        v150 = [*(*(&v706 + 1) + 8 * i13) copyWithZone:a3];
+        v150 = [*(*(&v706 + 1) + 8 * i13) copyWithZone:zone];
         [v6 addMovieQualityResults:v150];
       }
 
@@ -8593,7 +8593,7 @@ LABEL_5:
           objc_enumerationMutation(v151);
         }
 
-        v156 = [*(*(&v702 + 1) + 8 * i14) copyWithZone:a3];
+        v156 = [*(*(&v702 + 1) + 8 * i14) copyWithZone:zone];
         [v6 addMovieSaliencyResults:v156];
       }
 
@@ -8622,7 +8622,7 @@ LABEL_5:
           objc_enumerationMutation(v157);
         }
 
-        v162 = [*(*(&v698 + 1) + 8 * i15) copyWithZone:a3];
+        v162 = [*(*(&v698 + 1) + 8 * i15) copyWithZone:zone];
         [v6 addMovieSceneResults:v162];
       }
 
@@ -8651,7 +8651,7 @@ LABEL_5:
           objc_enumerationMutation(v163);
         }
 
-        v168 = [*(*(&v694 + 1) + 8 * i16) copyWithZone:a3];
+        v168 = [*(*(&v694 + 1) + 8 * i16) copyWithZone:zone];
         [v6 addMovieSubjectMotionResults:v168];
       }
 
@@ -8680,7 +8680,7 @@ LABEL_5:
           objc_enumerationMutation(v169);
         }
 
-        v174 = [*(*(&v690 + 1) + 8 * i17) copyWithZone:a3];
+        v174 = [*(*(&v690 + 1) + 8 * i17) copyWithZone:zone];
         [v6 addMovieUtteranceResults:v174];
       }
 
@@ -8709,7 +8709,7 @@ LABEL_5:
           objc_enumerationMutation(v175);
         }
 
-        v180 = [*(*(&v686 + 1) + 8 * i18) copyWithZone:a3];
+        v180 = [*(*(&v686 + 1) + 8 * i18) copyWithZone:zone];
         [v6 addMovieVoiceResults:v180];
       }
 
@@ -8738,7 +8738,7 @@ LABEL_5:
           objc_enumerationMutation(v181);
         }
 
-        v186 = [*(*(&v682 + 1) + 8 * i19) copyWithZone:a3];
+        v186 = [*(*(&v682 + 1) + 8 * i19) copyWithZone:zone];
         [v6 addImagePetsResults:v186];
       }
 
@@ -8767,7 +8767,7 @@ LABEL_5:
           objc_enumerationMutation(v187);
         }
 
-        v192 = [*(*(&v678 + 1) + 8 * i20) copyWithZone:a3];
+        v192 = [*(*(&v678 + 1) + 8 * i20) copyWithZone:zone];
         [v6 addMovieSummaryResults:v192];
       }
 
@@ -8796,7 +8796,7 @@ LABEL_5:
           objc_enumerationMutation(v193);
         }
 
-        v198 = [*(*(&v674 + 1) + 8 * i21) copyWithZone:a3];
+        v198 = [*(*(&v674 + 1) + 8 * i21) copyWithZone:zone];
         [v6 addMovieHighlightResults:v198];
       }
 
@@ -8825,7 +8825,7 @@ LABEL_5:
           objc_enumerationMutation(v199);
         }
 
-        v204 = [*(*(&v670 + 1) + 8 * i22) copyWithZone:a3];
+        v204 = [*(*(&v670 + 1) + 8 * i22) copyWithZone:zone];
         [v6 addImageExposureResults:v204];
       }
 
@@ -8854,7 +8854,7 @@ LABEL_5:
           objc_enumerationMutation(v205);
         }
 
-        v210 = [*(*(&v666 + 1) + 8 * i23) copyWithZone:a3];
+        v210 = [*(*(&v666 + 1) + 8 * i23) copyWithZone:zone];
         [v6 addLivePhotoEffectsResults:v210];
       }
 
@@ -8889,7 +8889,7 @@ LABEL_5:
           objc_enumerationMutation(v211);
         }
 
-        v216 = [*(*(&v662 + 1) + 8 * i24) copyWithZone:a3];
+        v216 = [*(*(&v662 + 1) + 8 * i24) copyWithZone:zone];
         [v6 addImagePetsFaceResults:v216];
       }
 
@@ -8918,7 +8918,7 @@ LABEL_5:
           objc_enumerationMutation(v217);
         }
 
-        v222 = [*(*(&v658 + 1) + 8 * i25) copyWithZone:a3];
+        v222 = [*(*(&v658 + 1) + 8 * i25) copyWithZone:zone];
         [v6 addImageSceneprintResults:v222];
       }
 
@@ -8947,7 +8947,7 @@ LABEL_5:
           objc_enumerationMutation(v223);
         }
 
-        v228 = [*(*(&v654 + 1) + 8 * i26) copyWithZone:a3];
+        v228 = [*(*(&v654 + 1) + 8 * i26) copyWithZone:zone];
         [v6 addMovieSceneprintResults:v228];
       }
 
@@ -8976,7 +8976,7 @@ LABEL_5:
           objc_enumerationMutation(v229);
         }
 
-        v234 = [*(*(&v650 + 1) + 8 * i27) copyWithZone:a3];
+        v234 = [*(*(&v650 + 1) + 8 * i27) copyWithZone:zone];
         [v6 addImageHumanPoseResults:v234];
       }
 
@@ -9005,7 +9005,7 @@ LABEL_5:
           objc_enumerationMutation(v235);
         }
 
-        v240 = [*(*(&v646 + 1) + 8 * i28) copyWithZone:a3];
+        v240 = [*(*(&v646 + 1) + 8 * i28) copyWithZone:zone];
         [v6 addMovieHumanPoseResults:v240];
       }
 
@@ -9034,7 +9034,7 @@ LABEL_5:
           objc_enumerationMutation(v241);
         }
 
-        v246 = [*(*(&v642 + 1) + 8 * i29) copyWithZone:a3];
+        v246 = [*(*(&v642 + 1) + 8 * i29) copyWithZone:zone];
         [v6 addMovieApplauseResults:v246];
       }
 
@@ -9063,7 +9063,7 @@ LABEL_5:
           objc_enumerationMutation(v247);
         }
 
-        v252 = [*(*(&v638 + 1) + 8 * i30) copyWithZone:a3];
+        v252 = [*(*(&v638 + 1) + 8 * i30) copyWithZone:zone];
         [v6 addMovieBabbleResults:v252];
       }
 
@@ -9092,7 +9092,7 @@ LABEL_5:
           objc_enumerationMutation(v253);
         }
 
-        v258 = [*(*(&v634 + 1) + 8 * i31) copyWithZone:a3];
+        v258 = [*(*(&v634 + 1) + 8 * i31) copyWithZone:zone];
         [v6 addMovieCheeringResults:v258];
       }
 
@@ -9121,7 +9121,7 @@ LABEL_5:
           objc_enumerationMutation(v259);
         }
 
-        v264 = [*(*(&v630 + 1) + 8 * i32) copyWithZone:a3];
+        v264 = [*(*(&v630 + 1) + 8 * i32) copyWithZone:zone];
         [v6 addMovieLaughterResults:v264];
       }
 
@@ -9150,7 +9150,7 @@ LABEL_5:
           objc_enumerationMutation(v265);
         }
 
-        v270 = [*(*(&v626 + 1) + 8 * i33) copyWithZone:a3];
+        v270 = [*(*(&v626 + 1) + 8 * i33) copyWithZone:zone];
         [v6 addLivePhotoKeyFrameResults:v270];
       }
 
@@ -9179,7 +9179,7 @@ LABEL_5:
           objc_enumerationMutation(v271);
         }
 
-        v276 = [*(*(&v622 + 1) + 8 * i34) copyWithZone:a3];
+        v276 = [*(*(&v622 + 1) + 8 * i34) copyWithZone:zone];
         [v6 addLivePhotoKeyFrameStillResults:v276];
       }
 
@@ -9208,7 +9208,7 @@ LABEL_5:
           objc_enumerationMutation(v277);
         }
 
-        v282 = [*(*(&v618 + 1) + 8 * i35) copyWithZone:a3];
+        v282 = [*(*(&v618 + 1) + 8 * i35) copyWithZone:zone];
         [v6 addMovieHumanActionResults:v282];
       }
 
@@ -9237,7 +9237,7 @@ LABEL_5:
           objc_enumerationMutation(v283);
         }
 
-        v288 = [*(*(&v614 + 1) + 8 * i36) copyWithZone:a3];
+        v288 = [*(*(&v614 + 1) + 8 * i36) copyWithZone:zone];
         [v6 addMovieSubtleMotionResults:v288];
       }
 
@@ -9266,7 +9266,7 @@ LABEL_5:
           objc_enumerationMutation(v289);
         }
 
-        v294 = [*(*(&v610 + 1) + 8 * i37) copyWithZone:a3];
+        v294 = [*(*(&v610 + 1) + 8 * i37) copyWithZone:zone];
         [v6 addMovieLoudnessResults:v294];
       }
 
@@ -9295,7 +9295,7 @@ LABEL_5:
           objc_enumerationMutation(v295);
         }
 
-        v300 = [*(*(&v606 + 1) + 8 * i38) copyWithZone:a3];
+        v300 = [*(*(&v606 + 1) + 8 * i38) copyWithZone:zone];
         [v6 addMoviePetsResults:v300];
       }
 
@@ -9324,7 +9324,7 @@ LABEL_5:
           objc_enumerationMutation(v301);
         }
 
-        v306 = [*(*(&v602 + 1) + 8 * i39) copyWithZone:a3];
+        v306 = [*(*(&v602 + 1) + 8 * i39) copyWithZone:zone];
         [v6 addMoviePetsFaceResults:v306];
       }
 
@@ -9353,7 +9353,7 @@ LABEL_5:
           objc_enumerationMutation(v307);
         }
 
-        v312 = [*(*(&v598 + 1) + 8 * i40) copyWithZone:a3];
+        v312 = [*(*(&v598 + 1) + 8 * i40) copyWithZone:zone];
         [v6 addMovieStabilizationResults:v312];
       }
 
@@ -9388,7 +9388,7 @@ LABEL_5:
           objc_enumerationMutation(v313);
         }
 
-        v318 = [*(*(&v594 + 1) + 8 * i41) copyWithZone:a3];
+        v318 = [*(*(&v594 + 1) + 8 * i41) copyWithZone:zone];
         [v6 addMovieHighlightScoreResults:v318];
       }
 
@@ -9417,7 +9417,7 @@ LABEL_5:
           objc_enumerationMutation(v319);
         }
 
-        v324 = [*(*(&v590 + 1) + 8 * i42) copyWithZone:a3];
+        v324 = [*(*(&v590 + 1) + 8 * i42) copyWithZone:zone];
         [v6 addLivePhotoHumanActionClassificationResults:v324];
       }
 
@@ -9446,7 +9446,7 @@ LABEL_5:
           objc_enumerationMutation(v325);
         }
 
-        v330 = [*(*(&v586 + 1) + 8 * i43) copyWithZone:a3];
+        v330 = [*(*(&v586 + 1) + 8 * i43) copyWithZone:zone];
         [v6 addMovieAudioQualityResults:v330];
       }
 
@@ -9475,7 +9475,7 @@ LABEL_5:
           objc_enumerationMutation(v331);
         }
 
-        v336 = [*(*(&v582 + 1) + 8 * i44) copyWithZone:a3];
+        v336 = [*(*(&v582 + 1) + 8 * i44) copyWithZone:zone];
         [v6 addMovieSafetyResults:v336];
       }
 
@@ -9504,7 +9504,7 @@ LABEL_5:
           objc_enumerationMutation(v337);
         }
 
-        v342 = [*(*(&v578 + 1) + 8 * i45) copyWithZone:a3];
+        v342 = [*(*(&v578 + 1) + 8 * i45) copyWithZone:zone];
         [v6 addFilesystemMovieClassificationResults:v342];
       }
 
@@ -9533,7 +9533,7 @@ LABEL_5:
           objc_enumerationMutation(v343);
         }
 
-        v348 = [*(*(&v574 + 1) + 8 * i46) copyWithZone:a3];
+        v348 = [*(*(&v574 + 1) + 8 * i46) copyWithZone:zone];
         [v6 addFilesystemMovieHumanActionClassificationResults:v348];
       }
 
@@ -9562,7 +9562,7 @@ LABEL_5:
           objc_enumerationMutation(v349);
         }
 
-        v354 = [*(*(&v570 + 1) + 8 * i47) copyWithZone:a3];
+        v354 = [*(*(&v570 + 1) + 8 * i47) copyWithZone:zone];
         [v6 addFilesystemMovieApplauseResults:v354];
       }
 
@@ -9591,7 +9591,7 @@ LABEL_5:
           objc_enumerationMutation(v355);
         }
 
-        v360 = [*(*(&v566 + 1) + 8 * i48) copyWithZone:a3];
+        v360 = [*(*(&v566 + 1) + 8 * i48) copyWithZone:zone];
         [v6 addFilesystemMovieBabbleResults:v360];
       }
 
@@ -9620,7 +9620,7 @@ LABEL_5:
           objc_enumerationMutation(v361);
         }
 
-        v366 = [*(*(&v562 + 1) + 8 * i49) copyWithZone:a3];
+        v366 = [*(*(&v562 + 1) + 8 * i49) copyWithZone:zone];
         [v6 addFilesystemMovieCheeringResults:v366];
       }
 
@@ -9649,7 +9649,7 @@ LABEL_5:
           objc_enumerationMutation(v367);
         }
 
-        v372 = [*(*(&v558 + 1) + 8 * i50) copyWithZone:a3];
+        v372 = [*(*(&v558 + 1) + 8 * i50) copyWithZone:zone];
         [v6 addFilesystemMovieLaughterResults:v372];
       }
 
@@ -9678,7 +9678,7 @@ LABEL_5:
           objc_enumerationMutation(v373);
         }
 
-        v378 = [*(*(&v554 + 1) + 8 * i51) copyWithZone:a3];
+        v378 = [*(*(&v554 + 1) + 8 * i51) copyWithZone:zone];
         [v6 addFilesystemMovieMusicResults:v378];
       }
 
@@ -9707,7 +9707,7 @@ LABEL_5:
           objc_enumerationMutation(v379);
         }
 
-        v384 = [*(*(&v550 + 1) + 8 * i52) copyWithZone:a3];
+        v384 = [*(*(&v550 + 1) + 8 * i52) copyWithZone:zone];
         [v6 addFilesystemMovieVoiceResults:v384];
       }
 
@@ -9736,7 +9736,7 @@ LABEL_5:
           objc_enumerationMutation(v385);
         }
 
-        v390 = [*(*(&v546 + 1) + 8 * i53) copyWithZone:a3];
+        v390 = [*(*(&v546 + 1) + 8 * i53) copyWithZone:zone];
         [v6 addAnimatedStickerResults:v390];
       }
 
@@ -9765,7 +9765,7 @@ LABEL_5:
           objc_enumerationMutation(v391);
         }
 
-        v396 = [*(*(&v542 + 1) + 8 * i54) copyWithZone:a3];
+        v396 = [*(*(&v542 + 1) + 8 * i54) copyWithZone:zone];
         [v6 addLivePhotoSettlingEffectGatingResults:v396];
       }
 
@@ -9775,7 +9775,7 @@ LABEL_5:
     while (v393);
   }
 
-  v397 = [(NSString *)self->_assetCloudIdentifier copyWithZone:a3];
+  v397 = [(NSString *)self->_assetCloudIdentifier copyWithZone:zone];
   v398 = *(v6 + 64);
   *(v6 + 64) = v397;
 
@@ -9798,7 +9798,7 @@ LABEL_5:
           objc_enumerationMutation(v399);
         }
 
-        v404 = [*(*(&v538 + 1) + 8 * i55) copyWithZone:a3];
+        v404 = [*(*(&v538 + 1) + 8 * i55) copyWithZone:zone];
         [v6 addMovieTorsoResults:v404];
       }
 
@@ -9827,7 +9827,7 @@ LABEL_5:
           objc_enumerationMutation(v405);
         }
 
-        v410 = [*(*(&v534 + 1) + 8 * i56) copyWithZone:a3];
+        v410 = [*(*(&v534 + 1) + 8 * i56) copyWithZone:zone];
         [v6 addMovieHumanActionClassificationResults:v410];
       }
 
@@ -9856,7 +9856,7 @@ LABEL_5:
           objc_enumerationMutation(v411);
         }
 
-        v416 = [*(*(&v530 + 1) + 8 * i57) copyWithZone:a3];
+        v416 = [*(*(&v530 + 1) + 8 * i57) copyWithZone:zone];
         [v6 addVideoEmbeddingResults:v416];
       }
 
@@ -9885,7 +9885,7 @@ LABEL_5:
           objc_enumerationMutation(v417);
         }
 
-        v422 = [*(*(&v526 + 1) + 8 * i58) copyWithZone:a3];
+        v422 = [*(*(&v526 + 1) + 8 * i58) copyWithZone:zone];
         [v6 addSummarizedEmbeddingResults:v422];
       }
 
@@ -9914,7 +9914,7 @@ LABEL_5:
           objc_enumerationMutation(v423);
         }
 
-        v428 = [*(*(&v522 + 1) + 8 * i59) copyWithZone:a3];
+        v428 = [*(*(&v522 + 1) + 8 * i59) copyWithZone:zone];
         [v6 addAudioFusedVideoEmbeddingResults:v428];
       }
 
@@ -9943,7 +9943,7 @@ LABEL_5:
           objc_enumerationMutation(v429);
         }
 
-        v434 = [*(*(&v518 + 1) + 8 * i60) copyWithZone:a3];
+        v434 = [*(*(&v518 + 1) + 8 * i60) copyWithZone:zone];
         [v6 addImageEmbeddingResults:v434];
       }
 
@@ -9972,7 +9972,7 @@ LABEL_5:
           objc_enumerationMutation(v435);
         }
 
-        v440 = [*(*(&v514 + 1) + 8 * i61) copyWithZone:a3];
+        v440 = [*(*(&v514 + 1) + 8 * i61) copyWithZone:zone];
         [v6 addImageCaptionResults:v440];
       }
 
@@ -10001,7 +10001,7 @@ LABEL_5:
           objc_enumerationMutation(v441);
         }
 
-        v446 = [*(*(&v510 + 1) + 8 * i62) copyWithZone:a3];
+        v446 = [*(*(&v510 + 1) + 8 * i62) copyWithZone:zone];
         [v6 addVideoCaptionResults:v446];
       }
 
@@ -10030,7 +10030,7 @@ LABEL_5:
           objc_enumerationMutation(v447);
         }
 
-        v452 = [*(*(&v506 + 1) + 8 * i63) copyWithZone:a3];
+        v452 = [*(*(&v506 + 1) + 8 * i63) copyWithZone:zone];
         [v6 addVideoCaptionPreferenceResults:v452];
       }
 
@@ -10059,7 +10059,7 @@ LABEL_5:
           objc_enumerationMutation(v453);
         }
 
-        v458 = [*(*(&v502 + 1) + 8 * i64) copyWithZone:a3];
+        v458 = [*(*(&v502 + 1) + 8 * i64) copyWithZone:zone];
         [v6 addVideoSegmentCaptionResults:v458];
       }
 
@@ -10088,7 +10088,7 @@ LABEL_5:
           objc_enumerationMutation(v459);
         }
 
-        v464 = [*(*(&v498 + 1) + 8 * i65) copyWithZone:a3];
+        v464 = [*(*(&v498 + 1) + 8 * i65) copyWithZone:zone];
         [v6 addMovieAnimalResults:v464];
       }
 
@@ -10117,7 +10117,7 @@ LABEL_5:
           objc_enumerationMutation(v465);
         }
 
-        v470 = [*(*(&v494 + 1) + 8 * i66) copyWithZone:a3];
+        v470 = [*(*(&v494 + 1) + 8 * i66) copyWithZone:zone];
         [v6 addMovieAnimalprintResults:v470];
       }
 
@@ -10160,7 +10160,7 @@ LABEL_5:
           objc_enumerationMutation(v472);
         }
 
-        v477 = [*(*(&v490 + 1) + 8 * i67) copyWithZone:a3];
+        v477 = [*(*(&v490 + 1) + 8 * i67) copyWithZone:zone];
         [v6 addVideoSceneThumbnailResults:v477];
       }
 
@@ -10189,7 +10189,7 @@ LABEL_5:
           objc_enumerationMutation(v478);
         }
 
-        v483 = [*(*(&v486 + 1) + 8 * i68) copyWithZone:{a3, v486}];
+        v483 = [*(*(&v486 + 1) + 8 * i68) copyWithZone:{zone, v486}];
         [v6 addVideoThumbnailResults:v483];
       }
 
@@ -10203,23 +10203,23 @@ LABEL_5:
   return v484;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_version != *(v4 + 169) || self->_types != *(v4 + 168) || self->_flags != *(v4 + 40) || self->_date != *(v4 + 2))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_version != *(equalCopy + 169) || self->_types != *(equalCopy + 168) || self->_flags != *(equalCopy + 40) || self->_date != *(equalCopy + 2))
   {
     goto LABEL_196;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 736) & 1) == 0 || self->_quality != *(v4 + 3))
+    if ((*(equalCopy + 736) & 1) == 0 || self->_quality != *(equalCopy + 3))
     {
       goto LABEL_196;
     }
   }
 
-  else if (*(v4 + 736))
+  else if (*(equalCopy + 736))
   {
 LABEL_196:
     v87 = 0;
@@ -10227,18 +10227,18 @@ LABEL_196:
   }
 
   assetIdentifier = self->_assetIdentifier;
-  if (assetIdentifier | *(v4 + 9) && ![(NSString *)assetIdentifier isEqual:?])
+  if (assetIdentifier | *(equalCopy + 9) && ![(NSString *)assetIdentifier isEqual:?])
   {
     goto LABEL_196;
   }
 
-  if (self->_assetModificationDate != *(v4 + 1))
+  if (self->_assetModificationDate != *(equalCopy + 1))
   {
     goto LABEL_196;
   }
 
   assetMasterFingerprint = self->_assetMasterFingerprint;
-  if (assetMasterFingerprint | *(v4 + 10))
+  if (assetMasterFingerprint | *(equalCopy + 10))
   {
     if (![(NSString *)assetMasterFingerprint isEqual:?])
     {
@@ -10247,7 +10247,7 @@ LABEL_196:
   }
 
   assetAdjustedFingerprint = self->_assetAdjustedFingerprint;
-  if (assetAdjustedFingerprint | *(v4 + 7))
+  if (assetAdjustedFingerprint | *(equalCopy + 7))
   {
     if (![(NSString *)assetAdjustedFingerprint isEqual:?])
     {
@@ -10256,7 +10256,7 @@ LABEL_196:
   }
 
   imageBlurResults = self->_imageBlurResults;
-  if (imageBlurResults | *(v4 + 21))
+  if (imageBlurResults | *(equalCopy + 21))
   {
     if (![(NSMutableArray *)imageBlurResults isEqual:?])
     {
@@ -10265,7 +10265,7 @@ LABEL_196:
   }
 
   imageCompositionResults = self->_imageCompositionResults;
-  if (imageCompositionResults | *(v4 + 23))
+  if (imageCompositionResults | *(equalCopy + 23))
   {
     if (![(NSMutableArray *)imageCompositionResults isEqual:?])
     {
@@ -10274,7 +10274,7 @@ LABEL_196:
   }
 
   imageFaceResults = self->_imageFaceResults;
-  if (imageFaceResults | *(v4 + 27))
+  if (imageFaceResults | *(equalCopy + 27))
   {
     if (![(NSMutableArray *)imageFaceResults isEqual:?])
     {
@@ -10283,7 +10283,7 @@ LABEL_196:
   }
 
   imageFeatureResults = self->_imageFeatureResults;
-  if (imageFeatureResults | *(v4 + 28))
+  if (imageFeatureResults | *(equalCopy + 28))
   {
     if (![(NSMutableArray *)imageFeatureResults isEqual:?])
     {
@@ -10292,7 +10292,7 @@ LABEL_196:
   }
 
   imageJunkResults = self->_imageJunkResults;
-  if (imageJunkResults | *(v4 + 30))
+  if (imageJunkResults | *(equalCopy + 30))
   {
     if (![(NSMutableArray *)imageJunkResults isEqual:?])
     {
@@ -10301,7 +10301,7 @@ LABEL_196:
   }
 
   imageSaliencyResults = self->_imageSaliencyResults;
-  if (imageSaliencyResults | *(v4 + 33))
+  if (imageSaliencyResults | *(equalCopy + 33))
   {
     if (![(NSMutableArray *)imageSaliencyResults isEqual:?])
     {
@@ -10310,7 +10310,7 @@ LABEL_196:
   }
 
   imageShotTypeResults = self->_imageShotTypeResults;
-  if (imageShotTypeResults | *(v4 + 35))
+  if (imageShotTypeResults | *(equalCopy + 35))
   {
     if (![(NSMutableArray *)imageShotTypeResults isEqual:?])
     {
@@ -10319,7 +10319,7 @@ LABEL_196:
   }
 
   livePhotoRecommendationResults = self->_livePhotoRecommendationResults;
-  if (livePhotoRecommendationResults | *(v4 + 40))
+  if (livePhotoRecommendationResults | *(equalCopy + 40))
   {
     if (![(NSMutableArray *)livePhotoRecommendationResults isEqual:?])
     {
@@ -10328,7 +10328,7 @@ LABEL_196:
   }
 
   livePhotoSharpnessResults = self->_livePhotoSharpnessResults;
-  if (livePhotoSharpnessResults | *(v4 + 42))
+  if (livePhotoSharpnessResults | *(equalCopy + 42))
   {
     if (![(NSMutableArray *)livePhotoSharpnessResults isEqual:?])
     {
@@ -10337,7 +10337,7 @@ LABEL_196:
   }
 
   movieActivityLevelResults = self->_movieActivityLevelResults;
-  if (movieActivityLevelResults | *(v4 + 43))
+  if (movieActivityLevelResults | *(equalCopy + 43))
   {
     if (![(NSMutableArray *)movieActivityLevelResults isEqual:?])
     {
@@ -10346,7 +10346,7 @@ LABEL_196:
   }
 
   movieCameraMotionResults = self->_movieCameraMotionResults;
-  if (movieCameraMotionResults | *(v4 + 49))
+  if (movieCameraMotionResults | *(equalCopy + 49))
   {
     if (![(NSMutableArray *)movieCameraMotionResults isEqual:?])
     {
@@ -10355,7 +10355,7 @@ LABEL_196:
   }
 
   movieClassificationResults = self->_movieClassificationResults;
-  if (movieClassificationResults | *(v4 + 51))
+  if (movieClassificationResults | *(equalCopy + 51))
   {
     if (![(NSMutableArray *)movieClassificationResults isEqual:?])
     {
@@ -10364,7 +10364,7 @@ LABEL_196:
   }
 
   movieFaceResults = self->_movieFaceResults;
-  if (movieFaceResults | *(v4 + 52))
+  if (movieFaceResults | *(equalCopy + 52))
   {
     if (![(NSMutableArray *)movieFaceResults isEqual:?])
     {
@@ -10373,7 +10373,7 @@ LABEL_196:
   }
 
   movieFaceprintResults = self->_movieFaceprintResults;
-  if (movieFaceprintResults | *(v4 + 53))
+  if (movieFaceprintResults | *(equalCopy + 53))
   {
     if (![(NSMutableArray *)movieFaceprintResults isEqual:?])
     {
@@ -10382,7 +10382,7 @@ LABEL_196:
   }
 
   movieFeatureResults = self->_movieFeatureResults;
-  if (movieFeatureResults | *(v4 + 54))
+  if (movieFeatureResults | *(equalCopy + 54))
   {
     if (![(NSMutableArray *)movieFeatureResults isEqual:?])
     {
@@ -10391,7 +10391,7 @@ LABEL_196:
   }
 
   movieFineSubjectMotionResults = self->_movieFineSubjectMotionResults;
-  if (movieFineSubjectMotionResults | *(v4 + 55))
+  if (movieFineSubjectMotionResults | *(equalCopy + 55))
   {
     if (![(NSMutableArray *)movieFineSubjectMotionResults isEqual:?])
     {
@@ -10400,7 +10400,7 @@ LABEL_196:
   }
 
   movieInterestingnessResults = self->_movieInterestingnessResults;
-  if (movieInterestingnessResults | *(v4 + 61))
+  if (movieInterestingnessResults | *(equalCopy + 61))
   {
     if (![(NSMutableArray *)movieInterestingnessResults isEqual:?])
     {
@@ -10409,7 +10409,7 @@ LABEL_196:
   }
 
   movieMovingObjectResults = self->_movieMovingObjectResults;
-  if (movieMovingObjectResults | *(v4 + 64))
+  if (movieMovingObjectResults | *(equalCopy + 64))
   {
     if (![(NSMutableArray *)movieMovingObjectResults isEqual:?])
     {
@@ -10418,7 +10418,7 @@ LABEL_196:
   }
 
   movieMusicResults = self->_movieMusicResults;
-  if (movieMusicResults | *(v4 + 65))
+  if (movieMusicResults | *(equalCopy + 65))
   {
     if (![(NSMutableArray *)movieMusicResults isEqual:?])
     {
@@ -10427,7 +10427,7 @@ LABEL_196:
   }
 
   movieObstructionResults = self->_movieObstructionResults;
-  if (movieObstructionResults | *(v4 + 66))
+  if (movieObstructionResults | *(equalCopy + 66))
   {
     if (![(NSMutableArray *)movieObstructionResults isEqual:?])
     {
@@ -10436,7 +10436,7 @@ LABEL_196:
   }
 
   movieOrientationResults = self->_movieOrientationResults;
-  if (movieOrientationResults | *(v4 + 67))
+  if (movieOrientationResults | *(equalCopy + 67))
   {
     if (![(NSMutableArray *)movieOrientationResults isEqual:?])
     {
@@ -10445,7 +10445,7 @@ LABEL_196:
   }
 
   moviePreEncodeResults = self->_moviePreEncodeResults;
-  if (moviePreEncodeResults | *(v4 + 70))
+  if (moviePreEncodeResults | *(equalCopy + 70))
   {
     if (![(NSMutableArray *)moviePreEncodeResults isEqual:?])
     {
@@ -10454,7 +10454,7 @@ LABEL_196:
   }
 
   movieQualityResults = self->_movieQualityResults;
-  if (movieQualityResults | *(v4 + 71))
+  if (movieQualityResults | *(equalCopy + 71))
   {
     if (![(NSMutableArray *)movieQualityResults isEqual:?])
     {
@@ -10463,7 +10463,7 @@ LABEL_196:
   }
 
   movieSaliencyResults = self->_movieSaliencyResults;
-  if (movieSaliencyResults | *(v4 + 73))
+  if (movieSaliencyResults | *(equalCopy + 73))
   {
     if (![(NSMutableArray *)movieSaliencyResults isEqual:?])
     {
@@ -10472,7 +10472,7 @@ LABEL_196:
   }
 
   movieSceneResults = self->_movieSceneResults;
-  if (movieSceneResults | *(v4 + 74))
+  if (movieSceneResults | *(equalCopy + 74))
   {
     if (![(NSMutableArray *)movieSceneResults isEqual:?])
     {
@@ -10481,7 +10481,7 @@ LABEL_196:
   }
 
   movieSubjectMotionResults = self->_movieSubjectMotionResults;
-  if (movieSubjectMotionResults | *(v4 + 77))
+  if (movieSubjectMotionResults | *(equalCopy + 77))
   {
     if (![(NSMutableArray *)movieSubjectMotionResults isEqual:?])
     {
@@ -10490,7 +10490,7 @@ LABEL_196:
   }
 
   movieUtteranceResults = self->_movieUtteranceResults;
-  if (movieUtteranceResults | *(v4 + 81))
+  if (movieUtteranceResults | *(equalCopy + 81))
   {
     if (![(NSMutableArray *)movieUtteranceResults isEqual:?])
     {
@@ -10499,7 +10499,7 @@ LABEL_196:
   }
 
   movieVoiceResults = self->_movieVoiceResults;
-  if (movieVoiceResults | *(v4 + 82))
+  if (movieVoiceResults | *(equalCopy + 82))
   {
     if (![(NSMutableArray *)movieVoiceResults isEqual:?])
     {
@@ -10508,7 +10508,7 @@ LABEL_196:
   }
 
   imagePetsResults = self->_imagePetsResults;
-  if (imagePetsResults | *(v4 + 32))
+  if (imagePetsResults | *(equalCopy + 32))
   {
     if (![(NSMutableArray *)imagePetsResults isEqual:?])
     {
@@ -10517,7 +10517,7 @@ LABEL_196:
   }
 
   movieSummaryResults = self->_movieSummaryResults;
-  if (movieSummaryResults | *(v4 + 79))
+  if (movieSummaryResults | *(equalCopy + 79))
   {
     if (![(NSMutableArray *)movieSummaryResults isEqual:?])
     {
@@ -10526,7 +10526,7 @@ LABEL_196:
   }
 
   movieHighlightResults = self->_movieHighlightResults;
-  if (movieHighlightResults | *(v4 + 56))
+  if (movieHighlightResults | *(equalCopy + 56))
   {
     if (![(NSMutableArray *)movieHighlightResults isEqual:?])
     {
@@ -10535,7 +10535,7 @@ LABEL_196:
   }
 
   imageExposureResults = self->_imageExposureResults;
-  if (imageExposureResults | *(v4 + 26))
+  if (imageExposureResults | *(equalCopy + 26))
   {
     if (![(NSMutableArray *)imageExposureResults isEqual:?])
     {
@@ -10544,7 +10544,7 @@ LABEL_196:
   }
 
   livePhotoEffectsResults = self->_livePhotoEffectsResults;
-  if (livePhotoEffectsResults | *(v4 + 36))
+  if (livePhotoEffectsResults | *(equalCopy + 36))
   {
     if (![(NSMutableArray *)livePhotoEffectsResults isEqual:?])
     {
@@ -10554,25 +10554,25 @@ LABEL_196:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 736) & 2) == 0 || self->_statsFlags != *(v4 + 4))
+    if ((*(equalCopy + 736) & 2) == 0 || self->_statsFlags != *(equalCopy + 4))
     {
       goto LABEL_196;
     }
   }
 
-  else if ((*(v4 + 736) & 2) != 0)
+  else if ((*(equalCopy + 736) & 2) != 0)
   {
     goto LABEL_196;
   }
 
   imagePetsFaceResults = self->_imagePetsFaceResults;
-  if (imagePetsFaceResults | *(v4 + 31) && ![(NSMutableArray *)imagePetsFaceResults isEqual:?])
+  if (imagePetsFaceResults | *(equalCopy + 31) && ![(NSMutableArray *)imagePetsFaceResults isEqual:?])
   {
     goto LABEL_196;
   }
 
   imageSceneprintResults = self->_imageSceneprintResults;
-  if (imageSceneprintResults | *(v4 + 34))
+  if (imageSceneprintResults | *(equalCopy + 34))
   {
     if (![(NSMutableArray *)imageSceneprintResults isEqual:?])
     {
@@ -10581,7 +10581,7 @@ LABEL_196:
   }
 
   movieSceneprintResults = self->_movieSceneprintResults;
-  if (movieSceneprintResults | *(v4 + 75))
+  if (movieSceneprintResults | *(equalCopy + 75))
   {
     if (![(NSMutableArray *)movieSceneprintResults isEqual:?])
     {
@@ -10590,7 +10590,7 @@ LABEL_196:
   }
 
   imageHumanPoseResults = self->_imageHumanPoseResults;
-  if (imageHumanPoseResults | *(v4 + 29))
+  if (imageHumanPoseResults | *(equalCopy + 29))
   {
     if (![(NSMutableArray *)imageHumanPoseResults isEqual:?])
     {
@@ -10599,7 +10599,7 @@ LABEL_196:
   }
 
   movieHumanPoseResults = self->_movieHumanPoseResults;
-  if (movieHumanPoseResults | *(v4 + 60))
+  if (movieHumanPoseResults | *(equalCopy + 60))
   {
     if (![(NSMutableArray *)movieHumanPoseResults isEqual:?])
     {
@@ -10608,7 +10608,7 @@ LABEL_196:
   }
 
   movieApplauseResults = self->_movieApplauseResults;
-  if (movieApplauseResults | *(v4 + 46))
+  if (movieApplauseResults | *(equalCopy + 46))
   {
     if (![(NSMutableArray *)movieApplauseResults isEqual:?])
     {
@@ -10617,7 +10617,7 @@ LABEL_196:
   }
 
   movieBabbleResults = self->_movieBabbleResults;
-  if (movieBabbleResults | *(v4 + 48))
+  if (movieBabbleResults | *(equalCopy + 48))
   {
     if (![(NSMutableArray *)movieBabbleResults isEqual:?])
     {
@@ -10626,7 +10626,7 @@ LABEL_196:
   }
 
   movieCheeringResults = self->_movieCheeringResults;
-  if (movieCheeringResults | *(v4 + 50))
+  if (movieCheeringResults | *(equalCopy + 50))
   {
     if (![(NSMutableArray *)movieCheeringResults isEqual:?])
     {
@@ -10635,7 +10635,7 @@ LABEL_196:
   }
 
   movieLaughterResults = self->_movieLaughterResults;
-  if (movieLaughterResults | *(v4 + 62))
+  if (movieLaughterResults | *(equalCopy + 62))
   {
     if (![(NSMutableArray *)movieLaughterResults isEqual:?])
     {
@@ -10644,7 +10644,7 @@ LABEL_196:
   }
 
   livePhotoKeyFrameResults = self->_livePhotoKeyFrameResults;
-  if (livePhotoKeyFrameResults | *(v4 + 38))
+  if (livePhotoKeyFrameResults | *(equalCopy + 38))
   {
     if (![(NSMutableArray *)livePhotoKeyFrameResults isEqual:?])
     {
@@ -10653,7 +10653,7 @@ LABEL_196:
   }
 
   livePhotoKeyFrameStillResults = self->_livePhotoKeyFrameStillResults;
-  if (livePhotoKeyFrameStillResults | *(v4 + 39))
+  if (livePhotoKeyFrameStillResults | *(equalCopy + 39))
   {
     if (![(NSMutableArray *)livePhotoKeyFrameStillResults isEqual:?])
     {
@@ -10662,7 +10662,7 @@ LABEL_196:
   }
 
   movieHumanActionResults = self->_movieHumanActionResults;
-  if (movieHumanActionResults | *(v4 + 59))
+  if (movieHumanActionResults | *(equalCopy + 59))
   {
     if (![(NSMutableArray *)movieHumanActionResults isEqual:?])
     {
@@ -10671,7 +10671,7 @@ LABEL_196:
   }
 
   movieSubtleMotionResults = self->_movieSubtleMotionResults;
-  if (movieSubtleMotionResults | *(v4 + 78))
+  if (movieSubtleMotionResults | *(equalCopy + 78))
   {
     if (![(NSMutableArray *)movieSubtleMotionResults isEqual:?])
     {
@@ -10680,7 +10680,7 @@ LABEL_196:
   }
 
   movieLoudnessResults = self->_movieLoudnessResults;
-  if (movieLoudnessResults | *(v4 + 63))
+  if (movieLoudnessResults | *(equalCopy + 63))
   {
     if (![(NSMutableArray *)movieLoudnessResults isEqual:?])
     {
@@ -10689,7 +10689,7 @@ LABEL_196:
   }
 
   moviePetsResults = self->_moviePetsResults;
-  if (moviePetsResults | *(v4 + 69))
+  if (moviePetsResults | *(equalCopy + 69))
   {
     if (![(NSMutableArray *)moviePetsResults isEqual:?])
     {
@@ -10698,7 +10698,7 @@ LABEL_196:
   }
 
   moviePetsFaceResults = self->_moviePetsFaceResults;
-  if (moviePetsFaceResults | *(v4 + 68))
+  if (moviePetsFaceResults | *(equalCopy + 68))
   {
     if (![(NSMutableArray *)moviePetsFaceResults isEqual:?])
     {
@@ -10707,7 +10707,7 @@ LABEL_196:
   }
 
   movieStabilizationResults = self->_movieStabilizationResults;
-  if (movieStabilizationResults | *(v4 + 76))
+  if (movieStabilizationResults | *(equalCopy + 76))
   {
     if (![(NSMutableArray *)movieStabilizationResults isEqual:?])
     {
@@ -10717,25 +10717,25 @@ LABEL_196:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 736) & 4) == 0 || self->_typesWide != *(v4 + 5))
+    if ((*(equalCopy + 736) & 4) == 0 || self->_typesWide != *(equalCopy + 5))
     {
       goto LABEL_196;
     }
   }
 
-  else if ((*(v4 + 736) & 4) != 0)
+  else if ((*(equalCopy + 736) & 4) != 0)
   {
     goto LABEL_196;
   }
 
   movieHighlightScoreResults = self->_movieHighlightScoreResults;
-  if (movieHighlightScoreResults | *(v4 + 57) && ![(NSMutableArray *)movieHighlightScoreResults isEqual:?])
+  if (movieHighlightScoreResults | *(equalCopy + 57) && ![(NSMutableArray *)movieHighlightScoreResults isEqual:?])
   {
     goto LABEL_196;
   }
 
   livePhotoHumanActionClassificationResults = self->_livePhotoHumanActionClassificationResults;
-  if (livePhotoHumanActionClassificationResults | *(v4 + 37))
+  if (livePhotoHumanActionClassificationResults | *(equalCopy + 37))
   {
     if (![(NSMutableArray *)livePhotoHumanActionClassificationResults isEqual:?])
     {
@@ -10744,7 +10744,7 @@ LABEL_196:
   }
 
   movieAudioQualityResults = self->_movieAudioQualityResults;
-  if (movieAudioQualityResults | *(v4 + 47))
+  if (movieAudioQualityResults | *(equalCopy + 47))
   {
     if (![(NSMutableArray *)movieAudioQualityResults isEqual:?])
     {
@@ -10753,7 +10753,7 @@ LABEL_196:
   }
 
   movieSafetyResults = self->_movieSafetyResults;
-  if (movieSafetyResults | *(v4 + 72))
+  if (movieSafetyResults | *(equalCopy + 72))
   {
     if (![(NSMutableArray *)movieSafetyResults isEqual:?])
     {
@@ -10762,7 +10762,7 @@ LABEL_196:
   }
 
   filesystemMovieClassificationResults = self->_filesystemMovieClassificationResults;
-  if (filesystemMovieClassificationResults | *(v4 + 15))
+  if (filesystemMovieClassificationResults | *(equalCopy + 15))
   {
     if (![(NSMutableArray *)filesystemMovieClassificationResults isEqual:?])
     {
@@ -10771,7 +10771,7 @@ LABEL_196:
   }
 
   filesystemMovieHumanActionClassificationResults = self->_filesystemMovieHumanActionClassificationResults;
-  if (filesystemMovieHumanActionClassificationResults | *(v4 + 16))
+  if (filesystemMovieHumanActionClassificationResults | *(equalCopy + 16))
   {
     if (![(NSMutableArray *)filesystemMovieHumanActionClassificationResults isEqual:?])
     {
@@ -10780,7 +10780,7 @@ LABEL_196:
   }
 
   filesystemMovieApplauseResults = self->_filesystemMovieApplauseResults;
-  if (filesystemMovieApplauseResults | *(v4 + 12))
+  if (filesystemMovieApplauseResults | *(equalCopy + 12))
   {
     if (![(NSMutableArray *)filesystemMovieApplauseResults isEqual:?])
     {
@@ -10789,7 +10789,7 @@ LABEL_196:
   }
 
   filesystemMovieBabbleResults = self->_filesystemMovieBabbleResults;
-  if (filesystemMovieBabbleResults | *(v4 + 13))
+  if (filesystemMovieBabbleResults | *(equalCopy + 13))
   {
     if (![(NSMutableArray *)filesystemMovieBabbleResults isEqual:?])
     {
@@ -10798,7 +10798,7 @@ LABEL_196:
   }
 
   filesystemMovieCheeringResults = self->_filesystemMovieCheeringResults;
-  if (filesystemMovieCheeringResults | *(v4 + 14))
+  if (filesystemMovieCheeringResults | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)filesystemMovieCheeringResults isEqual:?])
     {
@@ -10807,7 +10807,7 @@ LABEL_196:
   }
 
   filesystemMovieLaughterResults = self->_filesystemMovieLaughterResults;
-  if (filesystemMovieLaughterResults | *(v4 + 17))
+  if (filesystemMovieLaughterResults | *(equalCopy + 17))
   {
     if (![(NSMutableArray *)filesystemMovieLaughterResults isEqual:?])
     {
@@ -10816,7 +10816,7 @@ LABEL_196:
   }
 
   filesystemMovieMusicResults = self->_filesystemMovieMusicResults;
-  if (filesystemMovieMusicResults | *(v4 + 18))
+  if (filesystemMovieMusicResults | *(equalCopy + 18))
   {
     if (![(NSMutableArray *)filesystemMovieMusicResults isEqual:?])
     {
@@ -10825,7 +10825,7 @@ LABEL_196:
   }
 
   filesystemMovieVoiceResults = self->_filesystemMovieVoiceResults;
-  if (filesystemMovieVoiceResults | *(v4 + 19))
+  if (filesystemMovieVoiceResults | *(equalCopy + 19))
   {
     if (![(NSMutableArray *)filesystemMovieVoiceResults isEqual:?])
     {
@@ -10834,7 +10834,7 @@ LABEL_196:
   }
 
   animatedStickerResults = self->_animatedStickerResults;
-  if (animatedStickerResults | *(v4 + 6))
+  if (animatedStickerResults | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)animatedStickerResults isEqual:?])
     {
@@ -10843,7 +10843,7 @@ LABEL_196:
   }
 
   livePhotoSettlingEffectGatingResults = self->_livePhotoSettlingEffectGatingResults;
-  if (livePhotoSettlingEffectGatingResults | *(v4 + 41))
+  if (livePhotoSettlingEffectGatingResults | *(equalCopy + 41))
   {
     if (![(NSMutableArray *)livePhotoSettlingEffectGatingResults isEqual:?])
     {
@@ -10852,7 +10852,7 @@ LABEL_196:
   }
 
   assetCloudIdentifier = self->_assetCloudIdentifier;
-  if (assetCloudIdentifier | *(v4 + 8))
+  if (assetCloudIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)assetCloudIdentifier isEqual:?])
     {
@@ -10861,7 +10861,7 @@ LABEL_196:
   }
 
   movieTorsoResults = self->_movieTorsoResults;
-  if (movieTorsoResults | *(v4 + 80))
+  if (movieTorsoResults | *(equalCopy + 80))
   {
     if (![(NSMutableArray *)movieTorsoResults isEqual:?])
     {
@@ -10870,7 +10870,7 @@ LABEL_196:
   }
 
   movieHumanActionClassificationResults = self->_movieHumanActionClassificationResults;
-  if (movieHumanActionClassificationResults | *(v4 + 58))
+  if (movieHumanActionClassificationResults | *(equalCopy + 58))
   {
     if (![(NSMutableArray *)movieHumanActionClassificationResults isEqual:?])
     {
@@ -10879,7 +10879,7 @@ LABEL_196:
   }
 
   videoEmbeddingResults = self->_videoEmbeddingResults;
-  if (videoEmbeddingResults | *(v4 + 87))
+  if (videoEmbeddingResults | *(equalCopy + 87))
   {
     if (![(NSMutableArray *)videoEmbeddingResults isEqual:?])
     {
@@ -10888,7 +10888,7 @@ LABEL_196:
   }
 
   summarizedEmbeddingResults = self->_summarizedEmbeddingResults;
-  if (summarizedEmbeddingResults | *(v4 + 83))
+  if (summarizedEmbeddingResults | *(equalCopy + 83))
   {
     if (![(NSMutableArray *)summarizedEmbeddingResults isEqual:?])
     {
@@ -10897,7 +10897,7 @@ LABEL_196:
   }
 
   audioFusedVideoEmbeddingResults = self->_audioFusedVideoEmbeddingResults;
-  if (audioFusedVideoEmbeddingResults | *(v4 + 11))
+  if (audioFusedVideoEmbeddingResults | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)audioFusedVideoEmbeddingResults isEqual:?])
     {
@@ -10906,7 +10906,7 @@ LABEL_196:
   }
 
   imageEmbeddingResults = self->_imageEmbeddingResults;
-  if (imageEmbeddingResults | *(v4 + 24))
+  if (imageEmbeddingResults | *(equalCopy + 24))
   {
     if (![(NSMutableArray *)imageEmbeddingResults isEqual:?])
     {
@@ -10915,7 +10915,7 @@ LABEL_196:
   }
 
   imageCaptionResults = self->_imageCaptionResults;
-  if (imageCaptionResults | *(v4 + 22))
+  if (imageCaptionResults | *(equalCopy + 22))
   {
     if (![(NSMutableArray *)imageCaptionResults isEqual:?])
     {
@@ -10924,7 +10924,7 @@ LABEL_196:
   }
 
   videoCaptionResults = self->_videoCaptionResults;
-  if (videoCaptionResults | *(v4 + 86))
+  if (videoCaptionResults | *(equalCopy + 86))
   {
     if (![(NSMutableArray *)videoCaptionResults isEqual:?])
     {
@@ -10933,7 +10933,7 @@ LABEL_196:
   }
 
   videoCaptionPreferenceResults = self->_videoCaptionPreferenceResults;
-  if (videoCaptionPreferenceResults | *(v4 + 85))
+  if (videoCaptionPreferenceResults | *(equalCopy + 85))
   {
     if (![(NSMutableArray *)videoCaptionPreferenceResults isEqual:?])
     {
@@ -10942,7 +10942,7 @@ LABEL_196:
   }
 
   videoSegmentCaptionResults = self->_videoSegmentCaptionResults;
-  if (videoSegmentCaptionResults | *(v4 + 90))
+  if (videoSegmentCaptionResults | *(equalCopy + 90))
   {
     if (![(NSMutableArray *)videoSegmentCaptionResults isEqual:?])
     {
@@ -10951,7 +10951,7 @@ LABEL_196:
   }
 
   movieAnimalResults = self->_movieAnimalResults;
-  if (movieAnimalResults | *(v4 + 44))
+  if (movieAnimalResults | *(equalCopy + 44))
   {
     if (![(NSMutableArray *)movieAnimalResults isEqual:?])
     {
@@ -10960,7 +10960,7 @@ LABEL_196:
   }
 
   movieAnimalprintResults = self->_movieAnimalprintResults;
-  if (movieAnimalprintResults | *(v4 + 45))
+  if (movieAnimalprintResults | *(equalCopy + 45))
   {
     if (![(NSMutableArray *)movieAnimalprintResults isEqual:?])
     {
@@ -10970,38 +10970,38 @@ LABEL_196:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 736) & 8) == 0 || self->_imageEmbeddingVersion != *(v4 + 50))
+    if ((*(equalCopy + 736) & 8) == 0 || self->_imageEmbeddingVersion != *(equalCopy + 50))
     {
       goto LABEL_196;
     }
   }
 
-  else if ((*(v4 + 736) & 8) != 0)
+  else if ((*(equalCopy + 736) & 8) != 0)
   {
     goto LABEL_196;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 736) & 0x10) == 0 || self->_videoEmbeddingVersion != *(v4 + 176))
+    if ((*(equalCopy + 736) & 0x10) == 0 || self->_videoEmbeddingVersion != *(equalCopy + 176))
     {
       goto LABEL_196;
     }
   }
 
-  else if ((*(v4 + 736) & 0x10) != 0)
+  else if ((*(equalCopy + 736) & 0x10) != 0)
   {
     goto LABEL_196;
   }
 
   videoSceneThumbnailResults = self->_videoSceneThumbnailResults;
-  if (videoSceneThumbnailResults | *(v4 + 89) && ![(NSMutableArray *)videoSceneThumbnailResults isEqual:?])
+  if (videoSceneThumbnailResults | *(equalCopy + 89) && ![(NSMutableArray *)videoSceneThumbnailResults isEqual:?])
   {
     goto LABEL_196;
   }
 
   videoThumbnailResults = self->_videoThumbnailResults;
-  if (videoThumbnailResults | *(v4 + 91))
+  if (videoThumbnailResults | *(equalCopy + 91))
   {
     v87 = [(NSMutableArray *)videoThumbnailResults isEqual:?];
   }
@@ -11234,22 +11234,22 @@ LABEL_32:
   return (2654435761 * types) ^ (2654435761 * version) ^ (2654435761 * flags) ^ v110 ^ v106 ^ v111 ^ v105 ^ v104 ^ v103 ^ v102 ^ v101 ^ v100 ^ v99 ^ v98 ^ v97 ^ v96 ^ v95 ^ v94 ^ v93 ^ v92 ^ v91 ^ v90 ^ v89 ^ v88 ^ v87 ^ v86 ^ v85 ^ v84 ^ v83 ^ v82 ^ v81 ^ v80 ^ v79 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v31 ^ [(NSMutableArray *)self->_videoThumbnailResults hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v787 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  self->_version = *(v4 + 169);
-  self->_types = *(v4 + 168);
-  self->_flags = *(v4 + 40);
-  self->_date = *(v4 + 2);
-  if (*(v4 + 736))
+  fromCopy = from;
+  v5 = fromCopy;
+  self->_version = *(fromCopy + 169);
+  self->_types = *(fromCopy + 168);
+  self->_flags = *(fromCopy + 40);
+  self->_date = *(fromCopy + 2);
+  if (*(fromCopy + 736))
   {
-    self->_quality = *(v4 + 3);
+    self->_quality = *(fromCopy + 3);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(VCPProtoAssetAnalysis *)self setAssetIdentifier:?];
   }
@@ -13481,17 +13481,17 @@ LABEL_32:
   }
 }
 
-- (void)setImageEmbeddingResultsFromVSKAsset:(id)a3 imageEmbeddingVersion:(signed __int16)a4
+- (void)setImageEmbeddingResultsFromVSKAsset:(id)asset imageEmbeddingVersion:(signed __int16)version
 {
-  v4 = a4;
-  v9 = a3;
+  versionCopy = version;
+  assetCopy = asset;
   v6 = [VCPProtoEmbeddingResult resultsFromVSKAsset:?];
   [(VCPProtoAssetAnalysis *)self setImageEmbeddingResults:v6];
 
-  v7 = [(VCPProtoAssetAnalysis *)self imageEmbeddingResults];
-  if ([v7 count])
+  imageEmbeddingResults = [(VCPProtoAssetAnalysis *)self imageEmbeddingResults];
+  if ([imageEmbeddingResults count])
   {
-    v8 = v4;
+    v8 = versionCopy;
   }
 
   else
@@ -13502,18 +13502,18 @@ LABEL_32:
   [(VCPProtoAssetAnalysis *)self setImageEmbeddingVersion:v8];
 }
 
-- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)a3
+- (id)imageEmbeddingVSKAssetWithLocalIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(VCPProtoAssetAnalysis *)self hasImageEmbeddingVersion]&& [(VCPProtoAssetAnalysis *)self imageEmbeddingVersion]< 73)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412802;
-      v11 = v4;
+      v11 = identifierCopy;
       v12 = 1024;
-      v13 = [(VCPProtoAssetAnalysis *)self imageEmbeddingVersion];
+      imageEmbeddingVersion = [(VCPProtoAssetAnalysis *)self imageEmbeddingVersion];
       v14 = 1024;
       v15 = 73;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[VCPProtoAssetAnalysis->VSKAsset][%@] Image embedding version %d < forward compatible version %d", &v10, 0x18u);
@@ -13524,13 +13524,13 @@ LABEL_32:
 
   else
   {
-    v6 = [(VCPProtoAssetAnalysis *)self imageEmbeddingResults];
-    v5 = [VCPProtoEmbeddingResult imageEmbeddingVSKAssetFromResults:v6 localIdentifier:v4];
+    imageEmbeddingResults = [(VCPProtoAssetAnalysis *)self imageEmbeddingResults];
+    v5 = [VCPProtoEmbeddingResult imageEmbeddingVSKAssetFromResults:imageEmbeddingResults localIdentifier:identifierCopy];
 
-    v7 = [(VCPProtoAssetAnalysis *)self hasImageEmbeddingVersion];
+    hasImageEmbeddingVersion = [(VCPProtoAssetAnalysis *)self hasImageEmbeddingVersion];
     if (v5)
     {
-      v8 = v7;
+      v8 = hasImageEmbeddingVersion;
     }
 
     else
@@ -13547,19 +13547,19 @@ LABEL_32:
   return v5;
 }
 
-- (id)videoEmbeddingVSKAssetWithLocalIdentifier:(id)a3 mediaAnalysisResults:(id)a4
+- (id)videoEmbeddingVSKAssetWithLocalIdentifier:(id)identifier mediaAnalysisResults:(id)results
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  resultsCopy = results;
   if ([(VCPProtoAssetAnalysis *)self hasVideoEmbeddingVersion]&& [(VCPProtoAssetAnalysis *)self videoEmbeddingVersion]< 73)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412802;
-      v13 = v6;
+      v13 = identifierCopy;
       v14 = 1024;
-      v15 = [(VCPProtoAssetAnalysis *)self videoEmbeddingVersion];
+      videoEmbeddingVersion = [(VCPProtoAssetAnalysis *)self videoEmbeddingVersion];
       v16 = 1024;
       v17 = 73;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[VCPProtoAssetAnalysis->VSKAsset][%@] Video embedding version %d < forward compatible version %d", &v12, 0x18u);
@@ -13570,11 +13570,11 @@ LABEL_32:
 
   else
   {
-    v8 = [MEMORY[0x1E69DF5F8] mad_videoAssetWithLocalIdentifier:v6 mediaAnalysisResults:v7 error:0];
-    v9 = [(VCPProtoAssetAnalysis *)self hasVideoEmbeddingVersion];
+    v8 = [MEMORY[0x1E69DF5F8] mad_videoAssetWithLocalIdentifier:identifierCopy mediaAnalysisResults:resultsCopy error:0];
+    hasVideoEmbeddingVersion = [(VCPProtoAssetAnalysis *)self hasVideoEmbeddingVersion];
     if (v8)
     {
-      v10 = v9;
+      v10 = hasVideoEmbeddingVersion;
     }
 
     else
@@ -13591,12 +13591,12 @@ LABEL_32:
   return v8;
 }
 
-- (void)persistToPhotosAsset:(id)a3
+- (void)persistToPhotosAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
   {
-    v4 = [MEMORY[0x1E6978640] changeRequestForAsset:v5];
+    v4 = [MEMORY[0x1E6978640] changeRequestForAsset:assetCopy];
     if ([(VCPProtoAssetAnalysis *)self imageEmbeddingVersion]>= 73)
     {
       [v4 setImageEmbeddingVersion:{-[VCPProtoAssetAnalysis imageEmbeddingVersion](self, "imageEmbeddingVersion")}];
@@ -13609,18 +13609,18 @@ LABEL_32:
   }
 }
 
-- (BOOL)setAttributesFromLegacyDictionary:(id)a3
+- (BOOL)setAttributesFromLegacyDictionary:(id)dictionary
 {
-  v4 = a3;
-  v20 = [v4 objectForKeyedSubscript:@"version"];
-  v5 = [v4 objectForKeyedSubscript:@"performedAnalysisTypes"];
-  v6 = [v4 objectForKeyedSubscript:@"flags"];
-  v19 = [v4 objectForKeyedSubscript:@"statsFlags"];
-  v7 = [v4 objectForKeyedSubscript:@"dateAnalyzed"];
-  v18 = [v4 objectForKeyedSubscript:@"quality"];
-  v8 = [v4 objectForKeyedSubscript:@"dateModified"];
-  v9 = [v4 objectForKeyedSubscript:@"masterFingerprint"];
-  v10 = [v4 objectForKeyedSubscript:@"adjustedFingerprint"];
+  dictionaryCopy = dictionary;
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"version"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"performedAnalysisTypes"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"flags"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"statsFlags"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"dateAnalyzed"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"quality"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"dateModified"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"masterFingerprint"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"adjustedFingerprint"];
   if (v20)
   {
     v11 = v7 == 0;
@@ -13644,14 +13644,14 @@ LABEL_32:
 
   else
   {
-    v16 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
     if (_os_feature_enabled_impl())
     {
-      v16 &= 0xFFFFFFFFBFBFFFF3;
+      unsignedIntegerValue &= 0xFFFFFFFFBFBFFFF3;
     }
 
     -[VCPProtoAssetAnalysis setVersion:](self, "setVersion:", [v20 unsignedIntValue]);
-    [(VCPProtoAssetAnalysis *)self setTypesWide:v16];
+    [(VCPProtoAssetAnalysis *)self setTypesWide:unsignedIntegerValue];
     -[VCPProtoAssetAnalysis setFlags:](self, "setFlags:", [v6 unsignedIntValue]);
     [v7 timeIntervalSinceReferenceDate];
     [(VCPProtoAssetAnalysis *)self setDate:?];
@@ -13686,15 +13686,15 @@ LABEL_32:
   return v2;
 }
 
-- (BOOL)setResults:(id)a3 withClass:(Class)a4 forPropertyKey:(id)a5
+- (BOOL)setResults:(id)results withClass:(Class)class forPropertyKey:(id)key
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v25 = a5;
+  resultsCopy = results;
+  keyCopy = key;
   if (_os_feature_enabled_impl())
   {
     v9 = +[VCPProtoAssetAnalysis faceResultKeys];
-    v10 = [v9 containsObject:v25];
+    v10 = [v9 containsObject:keyCopy];
 
     if (v10)
     {
@@ -13702,14 +13702,14 @@ LABEL_32:
     }
   }
 
-  if (v8 && (objc_opt_respondsToSelector() & 1) == 0)
+  if (resultsCopy && (objc_opt_respondsToSelector() & 1) == 0)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       *buf = 138412546;
-      v32 = v25;
+      v32 = keyCopy;
       v33 = 2112;
       v34 = v20;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[LegacyDict->Proto] Failed to set property %@ due to invalid type for results (should be NSArray, is %@)", buf, 0x16u);
@@ -13719,19 +13719,19 @@ LABEL_32:
     goto LABEL_29;
   }
 
-  if (![v8 count])
+  if (![resultsCopy count])
   {
 LABEL_16:
     v18 = 1;
     goto LABEL_29;
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = v8;
+  v12 = resultsCopy;
   v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v13)
   {
@@ -13751,14 +13751,14 @@ LABEL_8:
         break;
       }
 
-      v17 = [(objc_class *)a4 resultFromLegacyDictionary:v16];
+      v17 = [(objc_class *)class resultFromLegacyDictionary:v16];
       if (!v17)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v23 = NSStringFromClass(a4);
+          v23 = NSStringFromClass(class);
           *buf = 138412546;
-          v32 = v25;
+          v32 = keyCopy;
           v33 = 2112;
           v34 = v23;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[LegacyDict->Proto] Failed to set property %@ due to nil %@", buf, 0x16u);
@@ -13770,7 +13770,7 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      [v11 addObject:v17];
+      [array addObject:v17];
 
       if (v13 == ++v15)
       {
@@ -13789,7 +13789,7 @@ LABEL_27:
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
       *buf = 138412546;
-      v32 = v25;
+      v32 = keyCopy;
       v33 = 2112;
       v34 = v22;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[LegacyDict->Proto] Failed to set property %@ due to invalid type for result entry (should be NSDictionary, is %@)", buf, 0x16u);
@@ -13800,7 +13800,7 @@ LABEL_27:
 
 LABEL_15:
 
-  [(VCPProtoAssetAnalysis *)self setValue:v11 forKey:v25];
+  [(VCPProtoAssetAnalysis *)self setValue:array forKey:keyCopy];
   v18 = 1;
 LABEL_28:
 
@@ -13808,9 +13808,9 @@ LABEL_29:
   return v18;
 }
 
-- (BOOL)setImageAnalysisFromLegacyDictionary:(id)a3
+- (BOOL)setImageAnalysisFromLegacyDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"metadataRanges"];
+  v4 = [dictionary objectForKeyedSubscript:@"metadataRanges"];
   v5 = [v4 objectForKeyedSubscript:@"BlurResults"];
   v6 = [(VCPProtoAssetAnalysis *)self setResults:v5 withClass:objc_opt_class() forPropertyKey:@"imageBlurResults"];
 
@@ -13877,9 +13877,9 @@ LABEL_29:
   return v106;
 }
 
-- (BOOL)setMovieAnalysisFromLegacyDictionary:(id)a3
+- (BOOL)setMovieAnalysisFromLegacyDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"metadataRanges"];
+  v4 = [dictionary objectForKeyedSubscript:@"metadataRanges"];
   v5 = [v4 objectForKeyedSubscript:@"ActivityLevelResults"];
   v6 = [(VCPProtoAssetAnalysis *)self setResults:v5 withClass:objc_opt_class() forPropertyKey:@"movieActivityLevelResults"];
 
@@ -13944,17 +13944,17 @@ LABEL_29:
   return v102;
 }
 
-+ (id)imageAnalysisFromLegacyDictionary:(id)a3 assetCloudIdentifier:(id)a4
++ (id)imageAnalysisFromLegacyDictionary:(id)dictionary assetCloudIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v7 = objc_alloc_init(VCPProtoAssetAnalysis);
-    [(VCPProtoAssetAnalysis *)v7 setAssetCloudIdentifier:v6];
-    if ([(VCPProtoAssetAnalysis *)v7 setAttributesFromLegacyDictionary:v5])
+    [(VCPProtoAssetAnalysis *)v7 setAssetCloudIdentifier:identifierCopy];
+    if ([(VCPProtoAssetAnalysis *)v7 setAttributesFromLegacyDictionary:dictionaryCopy])
     {
-      if ([(VCPProtoAssetAnalysis *)v7 setImageAnalysisFromLegacyDictionary:v5])
+      if ([(VCPProtoAssetAnalysis *)v7 setImageAnalysisFromLegacyDictionary:dictionaryCopy])
       {
         v8 = v7;
 LABEL_17:
@@ -14004,17 +14004,17 @@ LABEL_18:
   return v8;
 }
 
-+ (id)movieAnalysisFromLegacyDictionary:(id)a3 assetCloudIdentifier:(id)a4
++ (id)movieAnalysisFromLegacyDictionary:(id)dictionary assetCloudIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v7 = objc_alloc_init(VCPProtoAssetAnalysis);
-    [(VCPProtoAssetAnalysis *)v7 setAssetCloudIdentifier:v6];
-    if ([(VCPProtoAssetAnalysis *)v7 setAttributesFromLegacyDictionary:v5])
+    [(VCPProtoAssetAnalysis *)v7 setAssetCloudIdentifier:identifierCopy];
+    if ([(VCPProtoAssetAnalysis *)v7 setAttributesFromLegacyDictionary:dictionaryCopy])
     {
-      if ([(VCPProtoAssetAnalysis *)v7 setMovieAnalysisFromLegacyDictionary:v5])
+      if ([(VCPProtoAssetAnalysis *)v7 setMovieAnalysisFromLegacyDictionary:dictionaryCopy])
       {
         v8 = v7;
 LABEL_17:
@@ -14064,11 +14064,11 @@ LABEL_18:
   return v8;
 }
 
-+ (id)imageAnalysisComputeSyncPayloadFromLegacyDictionary:(id)a3
++ (id)imageAnalysisComputeSyncPayloadFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(VCPProtoAssetAnalysis);
-  if (![(VCPProtoAssetAnalysis *)v4 setAttributesFromLegacyDictionary:v3])
+  if (![(VCPProtoAssetAnalysis *)v4 setAttributesFromLegacyDictionary:dictionaryCopy])
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -14082,7 +14082,7 @@ LABEL_18:
     goto LABEL_10;
   }
 
-  if ([(VCPProtoAssetAnalysis *)v4 setImageAnalysisFromLegacyDictionary:v3])
+  if ([(VCPProtoAssetAnalysis *)v4 setImageAnalysisFromLegacyDictionary:dictionaryCopy])
   {
     v5 = v4;
     goto LABEL_12;
@@ -14105,11 +14105,11 @@ LABEL_12:
   return v5;
 }
 
-+ (id)movieAnalysisComputeSyncPayloadFromLegacyDictionary:(id)a3
++ (id)movieAnalysisComputeSyncPayloadFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(VCPProtoAssetAnalysis);
-  if (![(VCPProtoAssetAnalysis *)v4 setAttributesFromLegacyDictionary:v3])
+  if (![(VCPProtoAssetAnalysis *)v4 setAttributesFromLegacyDictionary:dictionaryCopy])
   {
     if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -14123,7 +14123,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if ([(VCPProtoAssetAnalysis *)v4 setMovieAnalysisFromLegacyDictionary:v3])
+  if ([(VCPProtoAssetAnalysis *)v4 setMovieAnalysisFromLegacyDictionary:dictionaryCopy])
   {
     v5 = v4;
     goto LABEL_12;
@@ -14146,11 +14146,11 @@ LABEL_12:
   return v5;
 }
 
-+ (id)filesystemMovieAnalysisFromLegacyDictionary:(id)a3
++ (id)filesystemMovieAnalysisFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(VCPProtoAssetAnalysis);
-  v5 = [v3 objectForKeyedSubscript:@"metadataRanges"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"metadataRanges"];
   v6 = [v5 objectForKeyedSubscript:@"ClassificationResults"];
   v7 = [(VCPProtoAssetAnalysis *)v4 setResults:v6 withClass:objc_opt_class() forPropertyKey:@"filesystemMovieClassificationResults"];
 
@@ -14167,23 +14167,23 @@ LABEL_12:
   return v22;
 }
 
-- (BOOL)exportResultsWithPropertyKey:(id)a3 toLegacyDictionary:(id)a4 withKey:(id)a5
+- (BOOL)exportResultsWithPropertyKey:(id)key toLegacyDictionary:(id)dictionary withKey:(id)withKey
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (_os_feature_enabled_impl() && (+[VCPProtoAssetAnalysis faceResultKeys](VCPProtoAssetAnalysis, "faceResultKeys"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 containsObject:v8], v11, (v12 & 1) != 0))
+  keyCopy = key;
+  dictionaryCopy = dictionary;
+  withKeyCopy = withKey;
+  if (_os_feature_enabled_impl() && (+[VCPProtoAssetAnalysis faceResultKeys](VCPProtoAssetAnalysis, "faceResultKeys"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 containsObject:keyCopy], v11, (v12 & 1) != 0))
   {
     v13 = 1;
   }
 
   else
   {
-    v14 = [(VCPProtoAssetAnalysis *)self valueForKey:v8];
+    v14 = [(VCPProtoAssetAnalysis *)self valueForKey:keyCopy];
     if ([v14 count])
     {
-      v15 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
@@ -14202,13 +14202,13 @@ LABEL_12:
               objc_enumerationMutation(v16);
             }
 
-            v20 = [*(*(&v22 + 1) + 8 * i) exportToLegacyDictionary];
-            if (!v20)
+            exportToLegacyDictionary = [*(*(&v22 + 1) + 8 * i) exportToLegacyDictionary];
+            if (!exportToLegacyDictionary)
             {
               if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v27 = v8;
+                v27 = keyCopy;
                 _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[Proto->LegacyDict] Failed to export entry from property %@", buf, 0xCu);
               }
 
@@ -14216,7 +14216,7 @@ LABEL_12:
               goto LABEL_18;
             }
 
-            [v15 addObject:v20];
+            [array addObject:exportToLegacyDictionary];
           }
 
           v17 = [v16 countByEnumeratingWithState:&v22 objects:v28 count:16];
@@ -14229,7 +14229,7 @@ LABEL_12:
         }
       }
 
-      [v9 setObject:v15 forKeyedSubscript:v10];
+      [dictionaryCopy setObject:array forKeyedSubscript:withKeyCopy];
       v13 = 1;
 LABEL_18:
     }
@@ -14245,12 +14245,12 @@ LABEL_18:
 
 - (id)exportFilesystemAnalysisToLegacyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  if ([(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieClassificationResults" toLegacyDictionary:v3 withKey:@"ClassificationResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieHumanActionClassificationResults" toLegacyDictionary:v3 withKey:@"HumanActionClassificationResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieApplauseResults" toLegacyDictionary:v3 withKey:@"ApplauseResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieBabbleResults" toLegacyDictionary:v3 withKey:@"BabbleResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieCheeringResults" toLegacyDictionary:v3 withKey:@"CheeringResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieLaughterResults" toLegacyDictionary:v3 withKey:@"LaughterResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieMusicResults" toLegacyDictionary:v3 withKey:@"MusicResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieVoiceResults" toLegacyDictionary:v3 withKey:@"VoiceResults"])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieClassificationResults" toLegacyDictionary:dictionary withKey:@"ClassificationResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieHumanActionClassificationResults" toLegacyDictionary:dictionary withKey:@"HumanActionClassificationResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieApplauseResults" toLegacyDictionary:dictionary withKey:@"ApplauseResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieBabbleResults" toLegacyDictionary:dictionary withKey:@"BabbleResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieCheeringResults" toLegacyDictionary:dictionary withKey:@"CheeringResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieLaughterResults" toLegacyDictionary:dictionary withKey:@"LaughterResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieMusicResults" toLegacyDictionary:dictionary withKey:@"MusicResults"]&& [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"filesystemMovieVoiceResults" toLegacyDictionary:dictionary withKey:@"VoiceResults"])
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCPProtoAssetAnalysis version](self, "version")}];
-    [v4 setObject:v5 forKeyedSubscript:@"version"];
+    [dictionary2 setObject:v5 forKeyedSubscript:@"version"];
 
     if ([(VCPProtoAssetAnalysis *)self hasTypesWide])
     {
@@ -14262,137 +14262,137 @@ LABEL_18:
       [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCPProtoAssetAnalysis types](self, "types")}];
     }
     v6 = ;
-    [v4 setObject:v6 forKeyedSubscript:@"performedAnalysisTypes"];
+    [dictionary2 setObject:v6 forKeyedSubscript:@"performedAnalysisTypes"];
 
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCPProtoAssetAnalysis flags](self, "flags")}];
-    [v4 setObject:v8 forKeyedSubscript:@"flags"];
+    [dictionary2 setObject:v8 forKeyedSubscript:@"flags"];
 
     v9 = MEMORY[0x1E695DF00];
     [(VCPProtoAssetAnalysis *)self date];
     v10 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
-    [v4 setObject:v10 forKeyedSubscript:@"dateAnalyzed"];
+    [dictionary2 setObject:v10 forKeyedSubscript:@"dateAnalyzed"];
 
     v11 = MEMORY[0x1E695DF00];
     [(VCPProtoAssetAnalysis *)self assetModificationDate];
     v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
-    [v4 setObject:v12 forKeyedSubscript:@"dateModified"];
+    [dictionary2 setObject:v12 forKeyedSubscript:@"dateModified"];
 
     if ([(VCPProtoAssetAnalysis *)self hasQuality])
     {
       v13 = MEMORY[0x1E696AD98];
       [(VCPProtoAssetAnalysis *)self quality];
       v14 = [v13 numberWithDouble:?];
-      [v4 setObject:v14 forKeyedSubscript:@"quality"];
+      [dictionary2 setObject:v14 forKeyedSubscript:@"quality"];
     }
 
     if ([(VCPProtoAssetAnalysis *)self hasStatsFlags])
     {
       v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VCPProtoAssetAnalysis statsFlags](self, "statsFlags")}];
-      [v4 setObject:v15 forKeyedSubscript:@"statsFlags"];
+      [dictionary2 setObject:v15 forKeyedSubscript:@"statsFlags"];
     }
 
     if ([(VCPProtoAssetAnalysis *)self hasAssetMasterFingerprint])
     {
-      v16 = [(VCPProtoAssetAnalysis *)self assetMasterFingerprint];
-      [v4 setObject:v16 forKeyedSubscript:@"masterFingerprint"];
+      assetMasterFingerprint = [(VCPProtoAssetAnalysis *)self assetMasterFingerprint];
+      [dictionary2 setObject:assetMasterFingerprint forKeyedSubscript:@"masterFingerprint"];
     }
 
     if ([(VCPProtoAssetAnalysis *)self hasAssetAdjustedFingerprint])
     {
-      v17 = [(VCPProtoAssetAnalysis *)self assetAdjustedFingerprint];
-      [v4 setObject:v17 forKeyedSubscript:@"adjustedFingerprint"];
+      assetAdjustedFingerprint = [(VCPProtoAssetAnalysis *)self assetAdjustedFingerprint];
+      [dictionary2 setObject:assetAdjustedFingerprint forKeyedSubscript:@"adjustedFingerprint"];
     }
 
-    if ([v3 count])
+    if ([dictionary count])
     {
-      [v4 setObject:v3 forKeyedSubscript:@"metadataRanges"];
+      [dictionary2 setObject:dictionary forKeyedSubscript:@"metadataRanges"];
     }
   }
 
   else
   {
-    v4 = 0;
+    dictionary2 = 0;
   }
 
-  return v4;
+  return dictionary2;
 }
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  if ([(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageBlurResults" toLegacyDictionary:v3 withKey:@"BlurResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageCompositionResults" toLegacyDictionary:v3 withKey:@"CompositionResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageExposureResults" toLegacyDictionary:v3 withKey:@"ExposureResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageFaceResults" toLegacyDictionary:v3 withKey:@"FaceResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageFeatureResults" toLegacyDictionary:v3 withKey:@"FeatureVectorResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageJunkResults" toLegacyDictionary:v3 withKey:@"JunkResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imagePetsResults" toLegacyDictionary:v3 withKey:@"PetsResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imagePetsFaceResults" toLegacyDictionary:v3 withKey:@"PetsFaceResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageSaliencyResults" toLegacyDictionary:v3 withKey:@"SaliencyResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageSceneprintResults" toLegacyDictionary:v3 withKey:@"SceneprintResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageShotTypeResults" toLegacyDictionary:v3 withKey:@"ShotTypeResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageHumanPoseResults" toLegacyDictionary:v3 withKey:@"HumanPoseResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoRecommendationResults" toLegacyDictionary:v3 withKey:@"IrisRecommendResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoSharpnessResults" toLegacyDictionary:v3 withKey:@"IrisSharpnessResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoHumanActionClassificationResults" toLegacyDictionary:v3 withKey:?]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoEffectsResults" toLegacyDictionary:v3 withKey:@"LivePhotoEffectsResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoKeyFrameResults" toLegacyDictionary:v3 withKey:@"KeyFrameResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoKeyFrameStillResults" toLegacyDictionary:v3 withKey:@"KeyFrameStillResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoSettlingEffectGatingResults" toLegacyDictionary:v3 withKey:@"SettlingEffectsGatingResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieActivityLevelResults" toLegacyDictionary:v3 withKey:@"ActivityLevelResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieAnimalResults" toLegacyDictionary:v3 withKey:@"AnimalResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieAnimalprintResults" toLegacyDictionary:v3 withKey:@"AnimalPrintResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieCameraMotionResults" toLegacyDictionary:v3 withKey:@"CameraMotionResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieClassificationResults" toLegacyDictionary:v3 withKey:@"ClassificationResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieFaceResults" toLegacyDictionary:v3 withKey:@"FaceResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieFaceprintResults" toLegacyDictionary:v3 withKey:@"FacePrintResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieFeatureResults" toLegacyDictionary:v3 withKey:@"FeatureVectorResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieFineSubjectMotionResults" toLegacyDictionary:v3 withKey:@"FineSubjectMotionResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieInterestingnessResults" toLegacyDictionary:v3 withKey:@"InterestingnessResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieMovingObjectResults" toLegacyDictionary:v3 withKey:@"MovingObjectsResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieMusicResults" toLegacyDictionary:v3 withKey:@"MusicResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieObstructionResults" toLegacyDictionary:v3 withKey:@"ObstructionResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieOrientationResults" toLegacyDictionary:v3 withKey:@"OrientationResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"moviePreEncodeResults" toLegacyDictionary:v3 withKey:@"PreEncodeResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieQualityResults" toLegacyDictionary:v3 withKey:@"QualityResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSaliencyResults" toLegacyDictionary:v3 withKey:@"SaliencyResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSceneResults" toLegacyDictionary:v3 withKey:@"SceneResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSceneprintResults" toLegacyDictionary:v3 withKey:@"SceneprintResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSubjectMotionResults" toLegacyDictionary:v3 withKey:@"SubjectMotionResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSubtleMotionResults" toLegacyDictionary:v3 withKey:@"SubtleMotionResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieUtteranceResults" toLegacyDictionary:v3 withKey:@"UtteranceResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieVoiceResults" toLegacyDictionary:v3 withKey:@"VoiceResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"animatedStickerResults" toLegacyDictionary:v3 withKey:@"AnimatedStickerResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSummaryResults" toLegacyDictionary:v3 withKey:@"MovieSummaryResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieHighlightScoreResults" toLegacyDictionary:v3 withKey:@"MovieHighlightScoreResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieHighlightResults" toLegacyDictionary:v3 withKey:@"MovieHighlightResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieHumanPoseResults" toLegacyDictionary:v3 withKey:@"HumanPoseResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieApplauseResults" toLegacyDictionary:v3 withKey:@"ApplauseResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieAudioQualityResults" toLegacyDictionary:v3 withKey:@"AudioQualityResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieBabbleResults" toLegacyDictionary:v3 withKey:@"BabbleResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieCheeringResults" toLegacyDictionary:v3 withKey:@"CheeringResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieLaughterResults" toLegacyDictionary:v3 withKey:@"LaughterResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieHumanActionResults" toLegacyDictionary:v3 withKey:@"HumanActionResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieLoudnessResults" toLegacyDictionary:v3 withKey:@"LoudnessResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"moviePetsFaceResults" toLegacyDictionary:v3 withKey:@"PetsFaceResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"moviePetsResults" toLegacyDictionary:v3 withKey:@"PetsResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieStabilizationResults" toLegacyDictionary:v3 withKey:@"VideoStabilizationResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSafetyResults" toLegacyDictionary:v3 withKey:@"SafetyResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieTorsoResults" toLegacyDictionary:v3 withKey:@"TorsoResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieHumanActionClassificationResults" toLegacyDictionary:v3 withKey:@"HumanActionClassificationResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoEmbeddingResults" toLegacyDictionary:v3 withKey:@"VideoEmbeddingResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"summarizedEmbeddingResults" toLegacyDictionary:v3 withKey:@"SummarizedEmbeddingResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"audioFusedVideoEmbeddingResults" toLegacyDictionary:v3 withKey:@"AudioFusedVideoEmbeddingResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageCaptionResults" toLegacyDictionary:v3 withKey:@"MiCaImageCaptionResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoCaptionResults" toLegacyDictionary:v3 withKey:@"MiCaVideoCaptionResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoCaptionPreferenceResults" toLegacyDictionary:v3 withKey:@"VideoCaptionPreferenceResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoSegmentCaptionResults" toLegacyDictionary:v3 withKey:@"VideoSegmentCaptionResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoSceneThumbnailResults" toLegacyDictionary:v3 withKey:@"VideoSceneThumbnailResults"]
-    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoThumbnailResults" toLegacyDictionary:v3 withKey:@"VideoThumbnailResults"])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageBlurResults" toLegacyDictionary:dictionary withKey:@"BlurResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageCompositionResults" toLegacyDictionary:dictionary withKey:@"CompositionResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageExposureResults" toLegacyDictionary:dictionary withKey:@"ExposureResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageFaceResults" toLegacyDictionary:dictionary withKey:@"FaceResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageFeatureResults" toLegacyDictionary:dictionary withKey:@"FeatureVectorResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageJunkResults" toLegacyDictionary:dictionary withKey:@"JunkResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imagePetsResults" toLegacyDictionary:dictionary withKey:@"PetsResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imagePetsFaceResults" toLegacyDictionary:dictionary withKey:@"PetsFaceResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageSaliencyResults" toLegacyDictionary:dictionary withKey:@"SaliencyResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageSceneprintResults" toLegacyDictionary:dictionary withKey:@"SceneprintResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageShotTypeResults" toLegacyDictionary:dictionary withKey:@"ShotTypeResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageHumanPoseResults" toLegacyDictionary:dictionary withKey:@"HumanPoseResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoRecommendationResults" toLegacyDictionary:dictionary withKey:@"IrisRecommendResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoSharpnessResults" toLegacyDictionary:dictionary withKey:@"IrisSharpnessResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoHumanActionClassificationResults" toLegacyDictionary:dictionary withKey:?]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoEffectsResults" toLegacyDictionary:dictionary withKey:@"LivePhotoEffectsResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoKeyFrameResults" toLegacyDictionary:dictionary withKey:@"KeyFrameResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoKeyFrameStillResults" toLegacyDictionary:dictionary withKey:@"KeyFrameStillResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"livePhotoSettlingEffectGatingResults" toLegacyDictionary:dictionary withKey:@"SettlingEffectsGatingResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieActivityLevelResults" toLegacyDictionary:dictionary withKey:@"ActivityLevelResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieAnimalResults" toLegacyDictionary:dictionary withKey:@"AnimalResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieAnimalprintResults" toLegacyDictionary:dictionary withKey:@"AnimalPrintResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieCameraMotionResults" toLegacyDictionary:dictionary withKey:@"CameraMotionResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieClassificationResults" toLegacyDictionary:dictionary withKey:@"ClassificationResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieFaceResults" toLegacyDictionary:dictionary withKey:@"FaceResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieFaceprintResults" toLegacyDictionary:dictionary withKey:@"FacePrintResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieFeatureResults" toLegacyDictionary:dictionary withKey:@"FeatureVectorResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieFineSubjectMotionResults" toLegacyDictionary:dictionary withKey:@"FineSubjectMotionResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieInterestingnessResults" toLegacyDictionary:dictionary withKey:@"InterestingnessResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieMovingObjectResults" toLegacyDictionary:dictionary withKey:@"MovingObjectsResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieMusicResults" toLegacyDictionary:dictionary withKey:@"MusicResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieObstructionResults" toLegacyDictionary:dictionary withKey:@"ObstructionResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieOrientationResults" toLegacyDictionary:dictionary withKey:@"OrientationResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"moviePreEncodeResults" toLegacyDictionary:dictionary withKey:@"PreEncodeResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieQualityResults" toLegacyDictionary:dictionary withKey:@"QualityResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSaliencyResults" toLegacyDictionary:dictionary withKey:@"SaliencyResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSceneResults" toLegacyDictionary:dictionary withKey:@"SceneResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSceneprintResults" toLegacyDictionary:dictionary withKey:@"SceneprintResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSubjectMotionResults" toLegacyDictionary:dictionary withKey:@"SubjectMotionResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSubtleMotionResults" toLegacyDictionary:dictionary withKey:@"SubtleMotionResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieUtteranceResults" toLegacyDictionary:dictionary withKey:@"UtteranceResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieVoiceResults" toLegacyDictionary:dictionary withKey:@"VoiceResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"animatedStickerResults" toLegacyDictionary:dictionary withKey:@"AnimatedStickerResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSummaryResults" toLegacyDictionary:dictionary withKey:@"MovieSummaryResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieHighlightScoreResults" toLegacyDictionary:dictionary withKey:@"MovieHighlightScoreResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieHighlightResults" toLegacyDictionary:dictionary withKey:@"MovieHighlightResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieHumanPoseResults" toLegacyDictionary:dictionary withKey:@"HumanPoseResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieApplauseResults" toLegacyDictionary:dictionary withKey:@"ApplauseResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieAudioQualityResults" toLegacyDictionary:dictionary withKey:@"AudioQualityResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieBabbleResults" toLegacyDictionary:dictionary withKey:@"BabbleResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieCheeringResults" toLegacyDictionary:dictionary withKey:@"CheeringResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieLaughterResults" toLegacyDictionary:dictionary withKey:@"LaughterResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieHumanActionResults" toLegacyDictionary:dictionary withKey:@"HumanActionResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieLoudnessResults" toLegacyDictionary:dictionary withKey:@"LoudnessResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"moviePetsFaceResults" toLegacyDictionary:dictionary withKey:@"PetsFaceResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"moviePetsResults" toLegacyDictionary:dictionary withKey:@"PetsResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieStabilizationResults" toLegacyDictionary:dictionary withKey:@"VideoStabilizationResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieSafetyResults" toLegacyDictionary:dictionary withKey:@"SafetyResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieTorsoResults" toLegacyDictionary:dictionary withKey:@"TorsoResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"movieHumanActionClassificationResults" toLegacyDictionary:dictionary withKey:@"HumanActionClassificationResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoEmbeddingResults" toLegacyDictionary:dictionary withKey:@"VideoEmbeddingResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"summarizedEmbeddingResults" toLegacyDictionary:dictionary withKey:@"SummarizedEmbeddingResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"audioFusedVideoEmbeddingResults" toLegacyDictionary:dictionary withKey:@"AudioFusedVideoEmbeddingResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"imageCaptionResults" toLegacyDictionary:dictionary withKey:@"MiCaImageCaptionResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoCaptionResults" toLegacyDictionary:dictionary withKey:@"MiCaVideoCaptionResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoCaptionPreferenceResults" toLegacyDictionary:dictionary withKey:@"VideoCaptionPreferenceResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoSegmentCaptionResults" toLegacyDictionary:dictionary withKey:@"VideoSegmentCaptionResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoSceneThumbnailResults" toLegacyDictionary:dictionary withKey:@"VideoSceneThumbnailResults"]
+    && [(VCPProtoAssetAnalysis *)self exportResultsWithPropertyKey:@"videoThumbnailResults" toLegacyDictionary:dictionary withKey:@"VideoThumbnailResults"])
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCPProtoAssetAnalysis version](self, "version")}];
-    [v4 setObject:v5 forKeyedSubscript:@"version"];
+    [dictionary2 setObject:v5 forKeyedSubscript:@"version"];
 
     if ([(VCPProtoAssetAnalysis *)self hasTypesWide])
     {
@@ -14404,59 +14404,59 @@ LABEL_18:
       [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCPProtoAssetAnalysis types](self, "types")}];
     }
     v6 = ;
-    [v4 setObject:v6 forKeyedSubscript:@"performedAnalysisTypes"];
+    [dictionary2 setObject:v6 forKeyedSubscript:@"performedAnalysisTypes"];
 
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCPProtoAssetAnalysis flags](self, "flags")}];
-    [v4 setObject:v8 forKeyedSubscript:@"flags"];
+    [dictionary2 setObject:v8 forKeyedSubscript:@"flags"];
 
     v9 = MEMORY[0x1E695DF00];
     [(VCPProtoAssetAnalysis *)self date];
     v10 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
-    [v4 setObject:v10 forKeyedSubscript:@"dateAnalyzed"];
+    [dictionary2 setObject:v10 forKeyedSubscript:@"dateAnalyzed"];
 
     v11 = MEMORY[0x1E695DF00];
     [(VCPProtoAssetAnalysis *)self assetModificationDate];
     v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
-    [v4 setObject:v12 forKeyedSubscript:@"dateModified"];
+    [dictionary2 setObject:v12 forKeyedSubscript:@"dateModified"];
 
     if ([(VCPProtoAssetAnalysis *)self hasQuality])
     {
       v13 = MEMORY[0x1E696AD98];
       [(VCPProtoAssetAnalysis *)self quality];
       v14 = [v13 numberWithDouble:?];
-      [v4 setObject:v14 forKeyedSubscript:@"quality"];
+      [dictionary2 setObject:v14 forKeyedSubscript:@"quality"];
     }
 
     if ([(VCPProtoAssetAnalysis *)self hasStatsFlags])
     {
       v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VCPProtoAssetAnalysis statsFlags](self, "statsFlags")}];
-      [v4 setObject:v15 forKeyedSubscript:@"statsFlags"];
+      [dictionary2 setObject:v15 forKeyedSubscript:@"statsFlags"];
     }
 
     if ([(VCPProtoAssetAnalysis *)self hasAssetMasterFingerprint])
     {
-      v16 = [(VCPProtoAssetAnalysis *)self assetMasterFingerprint];
-      [v4 setObject:v16 forKeyedSubscript:@"masterFingerprint"];
+      assetMasterFingerprint = [(VCPProtoAssetAnalysis *)self assetMasterFingerprint];
+      [dictionary2 setObject:assetMasterFingerprint forKeyedSubscript:@"masterFingerprint"];
     }
 
     if ([(VCPProtoAssetAnalysis *)self hasAssetAdjustedFingerprint])
     {
-      v17 = [(VCPProtoAssetAnalysis *)self assetAdjustedFingerprint];
-      [v4 setObject:v17 forKeyedSubscript:@"adjustedFingerprint"];
+      assetAdjustedFingerprint = [(VCPProtoAssetAnalysis *)self assetAdjustedFingerprint];
+      [dictionary2 setObject:assetAdjustedFingerprint forKeyedSubscript:@"adjustedFingerprint"];
     }
 
-    if ([v3 count])
+    if ([dictionary count])
     {
-      [v4 setObject:v3 forKeyedSubscript:@"metadataRanges"];
+      [dictionary2 setObject:dictionary forKeyedSubscript:@"metadataRanges"];
     }
   }
 
   else
   {
-    v4 = 0;
+    dictionary2 = 0;
   }
 
-  return v4;
+  return dictionary2;
 }
 
 @end

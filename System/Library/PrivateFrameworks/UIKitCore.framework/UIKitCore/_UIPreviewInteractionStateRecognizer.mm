@@ -1,13 +1,13 @@
 @interface _UIPreviewInteractionStateRecognizer
 - (_UIPreviewInteractionStateRecognizer)init;
-- (double)_thresholdForForceLevel:(int64_t)a3;
-- (double)currentProgressToState:(int64_t)a3;
+- (double)_thresholdForForceLevel:(int64_t)level;
+- (double)currentProgressToState:(int64_t)state;
 - (double)velocity;
 - (id)description;
 - (void)dealloc;
-- (void)evaluateWithTouchForce:(double)a3 atTimestamp:(double)a4 withCentroidAtLocation:(CGPoint)a5;
+- (void)evaluateWithTouchForce:(double)force atTimestamp:(double)timestamp withCentroidAtLocation:(CGPoint)location;
 - (void)reset;
-- (void)setShouldDelayReveal:(BOOL)a3;
+- (void)setShouldDelayReveal:(BOOL)reveal;
 @end
 
 @implementation _UIPreviewInteractionStateRecognizer
@@ -28,8 +28,8 @@
     v2->_popReductionForce = 60.0;
     v2->_popAlwaysThreshold = 5000.0;
     [(_UIPreviewInteractionStateRecognizer *)v2 reset];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__accessibilityForceSensitivityChanged_ name:@"UIAccessibilityForceTouchSensitivityChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__accessibilityForceSensitivityChanged_ name:@"UIAccessibilityForceTouchSensitivityChangedNotification" object:0];
 
     v5 = v3;
   }
@@ -39,8 +39,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityForceTouchSensitivityChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityForceTouchSensitivityChangedNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIPreviewInteractionStateRecognizer;
@@ -53,15 +53,15 @@
   v9.receiver = self;
   v9.super_class = _UIPreviewInteractionStateRecognizer;
   v4 = [(_UIPreviewInteractionStateRecognizer *)&v9 description];
-  v5 = [(_UIPreviewInteractionStateRecognizer *)self currentState];
-  if ((v5 - 1) > 2)
+  currentState = [(_UIPreviewInteractionStateRecognizer *)self currentState];
+  if ((currentState - 1) > 2)
   {
     v6 = @"_UILegacyPreviewInteractionStateInactive";
   }
 
   else
   {
-    v6 = off_1E711B078[v5 - 1];
+    v6 = off_1E711B078[currentState - 1];
   }
 
   v7 = [v3 stringWithFormat:@"%@ {currentState = %@}", v4, v6];
@@ -69,21 +69,21 @@
   return v7;
 }
 
-- (void)setShouldDelayReveal:(BOOL)a3
+- (void)setShouldDelayReveal:(BOOL)reveal
 {
-  if (self->_shouldDelayReveal != a3)
+  if (self->_shouldDelayReveal != reveal)
   {
-    self->_shouldDelayReveal = a3;
+    self->_shouldDelayReveal = reveal;
     [(_UIPreviewInteractionStateRecognizer *)self reset];
   }
 }
 
-- (double)currentProgressToState:(int64_t)a3
+- (double)currentProgressToState:(int64_t)state
 {
   result = 0.0;
-  if (a3 >= 2)
+  if (state >= 2)
   {
-    if (a3 == 3)
+    if (state == 3)
     {
       return self->_progressToStrongThreshold;
     }
@@ -122,9 +122,9 @@
   return result;
 }
 
-- (void)evaluateWithTouchForce:(double)a3 atTimestamp:(double)a4 withCentroidAtLocation:(CGPoint)a5
+- (void)evaluateWithTouchForce:(double)force atTimestamp:(double)timestamp withCentroidAtLocation:(CGPoint)location
 {
-  [(_UIPreviewInteractionStateRecognizer *)self _denormalizedTouchForceValue:a3, a4, a5.x, a5.y];
+  [(_UIPreviewInteractionStateRecognizer *)self _denormalizedTouchForceValue:force, timestamp, location.x, location.y];
   if (v7 <= self->_saturationForce)
   {
     saturationForce = v7;
@@ -138,9 +138,9 @@
   timeMark = self->_timeMark;
   if (timeMark == 0.0)
   {
-    self->_timeMark = a4;
-    timeMark = a4;
-    currentTime = a4;
+    self->_timeMark = timestamp;
+    timeMark = timestamp;
+    currentTime = timestamp;
   }
 
   else
@@ -148,9 +148,9 @@
     currentTime = self->_currentTime;
   }
 
-  self->_currentTime = a4;
+  self->_currentTime = timestamp;
   self->_previousTime = currentTime;
-  v11 = a4 - currentTime;
+  v11 = timestamp - currentTime;
   smoothedForce = self->_smoothedForce;
   maximumForce = self->_maximumForce;
   if (saturationForce >= maximumForce)
@@ -246,18 +246,18 @@
       }
 
       self->_progressToStrongThreshold = v35;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 3;
 LABEL_37:
 
-      [(_UIPreviewInteractionStateRecognizer *)v36 setCurrentState:v37];
+      [(_UIPreviewInteractionStateRecognizer *)selfCopy2 setCurrentState:v37];
     }
   }
 
   else
   {
-    v24 = [(_UIPreviewInteractionStateRecognizer *)self currentState];
-    if (a4 - timeMark >= self->_hintAndPeekInterval)
+    currentState = [(_UIPreviewInteractionStateRecognizer *)self currentState];
+    if (timestamp - timeMark >= self->_hintAndPeekInterval)
     {
       if (saturationForce - maximumForce < -self->_hintReductionForce)
       {
@@ -266,7 +266,7 @@ LABEL_37:
         return;
       }
 
-      if (!v24 && saturationForce >= self->_revealThreshold)
+      if (!currentState && saturationForce >= self->_revealThreshold)
       {
         self->_actualHintTime = self->_currentTime;
         self->_actualHintForce = saturationForce;
@@ -287,7 +287,7 @@ LABEL_37:
         }
 
         self->_highPopThreshold = self->_popOffsetInitial + standardThreshold;
-        v36 = self;
+        selfCopy2 = self;
         v37 = 2;
         goto LABEL_37;
       }
@@ -297,21 +297,21 @@ LABEL_37:
 
 - (void)reset
 {
-  v3 = [(_UIPreviewInteractionStateRecognizer *)self shouldDelayReveal];
+  shouldDelayReveal = [(_UIPreviewInteractionStateRecognizer *)self shouldDelayReveal];
   v4 = 70.0;
-  if (!v3)
+  if (!shouldDelayReveal)
   {
     v4 = 0.0;
   }
 
   v5 = 0.2;
-  if (!v3)
+  if (!shouldDelayReveal)
   {
     v5 = 0.0;
   }
 
   self->_revealThreshold = v4;
-  if (v3)
+  if (shouldDelayReveal)
   {
     v6 = 30.0;
   }
@@ -338,18 +338,18 @@ LABEL_37:
   self->_previousTime = 0.0;
   self->_timeMark = 0.0;
   v7 = UIApp;
-  v8 = [objc_opt_self() mainScreen];
-  v9 = [v7 _keyWindowForScreen:v8];
+  mainScreen = [objc_opt_self() mainScreen];
+  v9 = [v7 _keyWindowForScreen:mainScreen];
   v10 = [v7 _touchesEventForWindow:v9];
 
-  v11 = [v10 allTouches];
-  v15 = [v11 anyObject];
+  allTouches = [v10 allTouches];
+  anyObject = [allTouches anyObject];
 
-  if (v15)
+  if (anyObject)
   {
-    if (fabs(v15[36]) >= 2.22044605e-16)
+    if (fabs(anyObject[36]) >= 2.22044605e-16)
     {
-      v12 = v15[36];
+      v12 = anyObject[36];
     }
 
     else
@@ -373,9 +373,9 @@ LABEL_37:
   self->_saturationForce = v14;
 }
 
-- (double)_thresholdForForceLevel:(int64_t)a3
+- (double)_thresholdForForceLevel:(int64_t)level
 {
-  switch(a3)
+  switch(level)
   {
     case 3:
       strongThreshold = self->_strongThreshold;

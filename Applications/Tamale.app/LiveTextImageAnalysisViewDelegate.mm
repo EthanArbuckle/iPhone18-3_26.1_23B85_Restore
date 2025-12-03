@@ -1,18 +1,18 @@
 @interface LiveTextImageAnalysisViewDelegate
-- (CGRect)contentsRectForImageAnalysisInteraction:(id)a3;
+- (CGRect)contentsRectForImageAnalysisInteraction:(id)interaction;
 - (_TtC6Tamale33LiveTextImageAnalysisViewDelegate)init;
 @end
 
 @implementation LiveTextImageAnalysisViewDelegate
 
-- (CGRect)contentsRectForImageAnalysisInteraction:(id)a3
+- (CGRect)contentsRectForImageAnalysisInteraction:(id)interaction
 {
   sub_100005650(self + OBJC_IVAR____TtC6Tamale33LiveTextImageAnalysisViewDelegate_frame, v15);
   memset(v18, 0, sizeof(v18));
   v19 = 1;
-  v5 = a3;
-  v6 = self;
-  sub_10005C9A0(v5, v15, v18, v16);
+  interactionCopy = interaction;
+  selfCopy = self;
+  sub_10005C9A0(interactionCopy, v15, v18, v16);
   v7 = *v16;
   v8 = *&v16[1];
   v9 = *&v16[2];

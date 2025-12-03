@@ -5,10 +5,10 @@
 - (BOOL)has_apple_email;
 - (BOOL)is_automated_device_group;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)processInstalledVisibleProfileIdentifiers:(id)a3;
-- (void)setABCUIUserConsent:(BOOL)a3;
-- (void)setABCUserConsent:(BOOL)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)processInstalledVisibleProfileIdentifiers:(id)identifiers;
+- (void)setABCUIUserConsent:(BOOL)consent;
+- (void)setABCUserConsent:(BOOL)consent;
 @end
 
 @implementation ABCPreferences
@@ -33,51 +33,51 @@
       v2->_observedAutoBugCaptureUIPreference = 1;
     }
 
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v7 = +[ABCPreferences initialValuesDictionary];
-    [v6 registerDefaults:v7];
-    [v6 addObserver:v2 forKeyPath:@"disable_internal_build" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"carrier_seed_flag" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"seed_flag" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"vendor_flag" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"disable_autobugcapture" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"optin_autobugcapture" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"dut_flag" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"npi_flag" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"arbitrator_disable_dampening" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"arbitrator_daily_count_limit" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"ABCUserConsent" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"apns_enable" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"apns_dev_environment" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"max_upload_retries" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"arbitrator_dampened_ips_limit" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"dampening_restriction_factor" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"disable_api_rate_limit" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"api_rate_limit" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"api_limit_window" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"database_container_path" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"ignore_automated_device_group" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"autoFeedbackAssistantEnable" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"cloudkit_enable" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"cloudkit_sandbox_environment" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"cloudkit_upload_expiration_timeout" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"cloudkit_upload_connection_timeout" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"cloudkit_upload_max_fallback_log_count" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"cloudkit_container_identifier" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"cloudkit_inverness_service" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"cloudkit_prefers_anonymous" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"case_summary_maximum_per_submission" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"case_summary_submitted_retention_days" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"case_summary_unsubmitted_retention_days" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"case_summary_enable" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"diagnostic_pipeline_submission" options:5 context:0];
-    [v6 addObserver:v2 forKeyPath:@"diagnostic_pipeline_submission_rate" options:5 context:0];
+    [standardUserDefaults registerDefaults:v7];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"disable_internal_build" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"carrier_seed_flag" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"seed_flag" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"vendor_flag" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"disable_autobugcapture" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"optin_autobugcapture" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"dut_flag" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"npi_flag" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"arbitrator_disable_dampening" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"arbitrator_daily_count_limit" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"ABCUserConsent" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"apns_enable" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"apns_dev_environment" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"max_upload_retries" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"arbitrator_dampened_ips_limit" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"dampening_restriction_factor" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"disable_api_rate_limit" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"api_rate_limit" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"api_limit_window" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"database_container_path" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"ignore_automated_device_group" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"autoFeedbackAssistantEnable" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"cloudkit_enable" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"cloudkit_sandbox_environment" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"cloudkit_upload_expiration_timeout" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"cloudkit_upload_connection_timeout" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"cloudkit_upload_max_fallback_log_count" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"cloudkit_container_identifier" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"cloudkit_inverness_service" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"cloudkit_prefers_anonymous" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"case_summary_maximum_per_submission" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"case_summary_submitted_retention_days" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"case_summary_unsubmitted_retention_days" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"case_summary_enable" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"diagnostic_pipeline_submission" options:5 context:0];
+    [standardUserDefaults addObserver:v2 forKeyPath:@"diagnostic_pipeline_submission_rate" options:5 context:0];
     v8 = configurationLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(ABCPreferences *)v2 autoFeedbackAssistantEnable];
+      autoFeedbackAssistantEnable = [(ABCPreferences *)v2 autoFeedbackAssistantEnable];
       v10 = "off";
-      if (v9)
+      if (autoFeedbackAssistantEnable)
       {
         v10 = "on";
       }
@@ -164,12 +164,12 @@
   {
     if (is_automated_device_group_foundAutomatedDeviceGroup)
     {
-      v2 = configurationLogHandle();
-      if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
+      automatedDeviceGroup = configurationLogHandle();
+      if (os_log_type_enabled(automatedDeviceGroup, OS_LOG_TYPE_DEBUG))
       {
         LOWORD(v13) = 0;
         v3 = "Automated device group set. Skipping further OSAnalytics queries";
-        v4 = v2;
+        v4 = automatedDeviceGroup;
         v5 = 2;
 LABEL_8:
         _os_log_impl(&dword_241804000, v4, OS_LOG_TYPE_DEBUG, v3, &v13, v5);
@@ -178,21 +178,21 @@ LABEL_8:
 
     else
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
-      [v6 timeIntervalSinceReferenceDate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceReferenceDate];
       v8 = v7;
 
       if (v8 - *&is_automated_device_group_lastQueryTimestamp >= *&is_automated_device_group_queryHysteresis)
       {
-        v2 = [MEMORY[0x277D36B80] automatedDeviceGroup];
+        automatedDeviceGroup = [MEMORY[0x277D36B80] automatedDeviceGroup];
         v9 = configurationLogHandle();
         v10 = v9;
-        if (v2)
+        if (automatedDeviceGroup)
         {
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
           {
             v13 = 138412290;
-            v14 = v2;
+            v14 = automatedDeviceGroup;
             _os_log_impl(&dword_241804000, v10, OS_LOG_TYPE_DEFAULT, "AutomatedDeviceGroup is configured as: '%@'", &v13, 0xCu);
           }
 
@@ -215,13 +215,13 @@ LABEL_8:
         goto LABEL_17;
       }
 
-      v2 = configurationLogHandle();
-      if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
+      automatedDeviceGroup = configurationLogHandle();
+      if (os_log_type_enabled(automatedDeviceGroup, OS_LOG_TYPE_DEBUG))
       {
         v13 = 134217984;
         v14 = is_automated_device_group_lastQueryTimestamp;
         v3 = "Skipping this OSAnalytics query (last queried 'automatedDeviceGroup' at %.3lf)";
-        v4 = v2;
+        v4 = automatedDeviceGroup;
         v5 = 12;
         goto LABEL_8;
       }
@@ -310,12 +310,12 @@ LABEL_15:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v99 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+  pathCopy = path;
+  changeCopy = change;
+  v10 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -344,13 +344,13 @@ LABEL_15:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v96 = v8;
+    v96 = pathCopy;
     v97 = 2112;
-    v98 = v9;
+    v98 = changeCopy;
     _os_log_impl(&dword_241804000, v15, OS_LOG_TYPE_INFO, "%@ preference notification. change: %@ ", buf, 0x16u);
   }
 
-  if ([v8 isEqualToString:@"disable_internal_build"])
+  if ([pathCopy isEqualToString:@"disable_internal_build"])
   {
     if (v12)
     {
@@ -373,11 +373,11 @@ LABEL_41:
         v17 = "NO";
       }
 
-      v18 = [(ABCPreferences *)self disable_internal_build];
+      disable_internal_build = [(ABCPreferences *)self disable_internal_build];
       *buf = 136315394;
       v96 = v17;
       v97 = 2048;
-      v98 = v18;
+      v98 = disable_internal_build;
       v19 = "disable_internal_build override is %s (%ld)";
       v20 = v16;
       v21 = 22;
@@ -404,7 +404,7 @@ LABEL_70:
     goto LABEL_71;
   }
 
-  if ([v8 isEqualToString:@"carrier_seed_flag"])
+  if ([pathCopy isEqualToString:@"carrier_seed_flag"])
   {
     if (!v12)
     {
@@ -429,8 +429,8 @@ LABEL_71:
       goto LABEL_41;
     }
 
-    v22 = [(ABCPreferences *)self carrier_seed_flag];
-    if ([v22 BOOLValue])
+    carrier_seed_flag = [(ABCPreferences *)self carrier_seed_flag];
+    if ([carrier_seed_flag BOOLValue])
     {
       v23 = "YES";
     }
@@ -440,12 +440,12 @@ LABEL_71:
       v23 = "NO";
     }
 
-    v24 = [(ABCPreferences *)self carrier_seed_flag];
-    v25 = [v24 BOOLValue];
+    carrier_seed_flag2 = [(ABCPreferences *)self carrier_seed_flag];
+    bOOLValue = [carrier_seed_flag2 BOOLValue];
     *buf = 136315394;
     v96 = v23;
     v97 = 1024;
-    LODWORD(v98) = v25;
+    LODWORD(v98) = bOOLValue;
     v26 = "carrier_seed_flag override is %s (%d)";
 LABEL_40:
     _os_log_impl(&dword_241804000, v16, OS_LOG_TYPE_DEFAULT, v26, buf, 0x12u);
@@ -453,7 +453,7 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if ([v8 isEqualToString:@"seed_flag"])
+  if ([pathCopy isEqualToString:@"seed_flag"])
   {
     if (!v12)
     {
@@ -476,8 +476,8 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v22 = [(ABCPreferences *)self seed_flag];
-    if ([v22 BOOLValue])
+    carrier_seed_flag = [(ABCPreferences *)self seed_flag];
+    if ([carrier_seed_flag BOOLValue])
     {
       v27 = "YES";
     }
@@ -487,17 +487,17 @@ LABEL_40:
       v27 = "NO";
     }
 
-    v24 = [(ABCPreferences *)self seed_flag];
-    v28 = [v24 BOOLValue];
+    carrier_seed_flag2 = [(ABCPreferences *)self seed_flag];
+    bOOLValue2 = [carrier_seed_flag2 BOOLValue];
     *buf = 136315394;
     v96 = v27;
     v97 = 1024;
-    LODWORD(v98) = v28;
+    LODWORD(v98) = bOOLValue2;
     v26 = "seed_flag override is %s (%d)";
     goto LABEL_40;
   }
 
-  if ([v8 isEqualToString:@"vendor_flag"])
+  if ([pathCopy isEqualToString:@"vendor_flag"])
   {
     if (!v12)
     {
@@ -520,8 +520,8 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v22 = [(ABCPreferences *)self vendor_flag];
-    if ([v22 BOOLValue])
+    carrier_seed_flag = [(ABCPreferences *)self vendor_flag];
+    if ([carrier_seed_flag BOOLValue])
     {
       v31 = "YES";
     }
@@ -531,17 +531,17 @@ LABEL_40:
       v31 = "NO";
     }
 
-    v24 = [(ABCPreferences *)self vendor_flag];
-    v32 = [v24 BOOLValue];
+    carrier_seed_flag2 = [(ABCPreferences *)self vendor_flag];
+    bOOLValue3 = [carrier_seed_flag2 BOOLValue];
     *buf = 136315394;
     v96 = v31;
     v97 = 1024;
-    LODWORD(v98) = v32;
+    LODWORD(v98) = bOOLValue3;
     v26 = "vendor_flag override is %s (%d)";
     goto LABEL_40;
   }
 
-  if ([v8 isEqualToString:@"database_container_path"])
+  if ([pathCopy isEqualToString:@"database_container_path"])
   {
     if (!v14)
     {
@@ -564,9 +564,9 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v33 = [(ABCPreferences *)self database_container_path];
+    database_container_path = [(ABCPreferences *)self database_container_path];
     *buf = 138412290;
-    v96 = v33;
+    v96 = database_container_path;
     v34 = "database_container_path override is %@";
 LABEL_48:
     _os_log_impl(&dword_241804000, v16, OS_LOG_TYPE_DEFAULT, v34, buf, 0xCu);
@@ -574,7 +574,7 @@ LABEL_48:
     goto LABEL_41;
   }
 
-  if ([v8 isEqualToString:@"disable_autobugcapture"])
+  if ([pathCopy isEqualToString:@"disable_autobugcapture"])
   {
     if (!v12)
     {
@@ -598,11 +598,11 @@ LABEL_48:
       v35 = "NO";
     }
 
-    v36 = [(ABCPreferences *)self disable_autobugcapture];
+    disable_autobugcapture = [(ABCPreferences *)self disable_autobugcapture];
     *buf = 136315394;
     v96 = v35;
     v97 = 1024;
-    LODWORD(v98) = v36;
+    LODWORD(v98) = disable_autobugcapture;
     v19 = "disable_autobugcapture configuration is %s (%d)";
 LABEL_80:
     v20 = v16;
@@ -610,7 +610,7 @@ LABEL_80:
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"optin_autobugcapture"])
+  if ([pathCopy isEqualToString:@"optin_autobugcapture"])
   {
     if (!v12)
     {
@@ -634,16 +634,16 @@ LABEL_80:
       v37 = "NO";
     }
 
-    v38 = [(ABCPreferences *)self optin_autobugcapture];
+    optin_autobugcapture = [(ABCPreferences *)self optin_autobugcapture];
     *buf = 136315394;
     v96 = v37;
     v97 = 1024;
-    LODWORD(v98) = v38;
+    LODWORD(v98) = optin_autobugcapture;
     v19 = "optin_autobugcapture configuration is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"dut_flag"])
+  if ([pathCopy isEqualToString:@"dut_flag"])
   {
     if (!v12)
     {
@@ -667,16 +667,16 @@ LABEL_80:
       v43 = "NO";
     }
 
-    v44 = [(ABCPreferences *)self dut_flag];
+    dut_flag = [(ABCPreferences *)self dut_flag];
     *buf = 136315394;
     v96 = v43;
     v97 = 1024;
-    LODWORD(v98) = v44;
+    LODWORD(v98) = dut_flag;
     v19 = "dut_flag configuration is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"npi_flag"])
+  if ([pathCopy isEqualToString:@"npi_flag"])
   {
     if (!v12)
     {
@@ -699,8 +699,8 @@ LABEL_80:
       goto LABEL_41;
     }
 
-    v22 = [(ABCPreferences *)self npi_flag];
-    if ([v22 BOOLValue])
+    carrier_seed_flag = [(ABCPreferences *)self npi_flag];
+    if ([carrier_seed_flag BOOLValue])
     {
       v45 = "YES";
     }
@@ -710,17 +710,17 @@ LABEL_80:
       v45 = "NO";
     }
 
-    v24 = [(ABCPreferences *)self npi_flag];
-    v46 = [v24 BOOLValue];
+    carrier_seed_flag2 = [(ABCPreferences *)self npi_flag];
+    bOOLValue4 = [carrier_seed_flag2 BOOLValue];
     *buf = 136315394;
     v96 = v45;
     v97 = 1024;
-    LODWORD(v98) = v46;
+    LODWORD(v98) = bOOLValue4;
     v26 = "npi_flag override is %s (%d)";
     goto LABEL_40;
   }
 
-  if ([v8 isEqualToString:@"arbitrator_disable_dampening"])
+  if ([pathCopy isEqualToString:@"arbitrator_disable_dampening"])
   {
     if (!v12)
     {
@@ -744,16 +744,16 @@ LABEL_80:
       v47 = "NO";
     }
 
-    v48 = [(ABCPreferences *)self arbitrator_disable_dampening];
+    arbitrator_disable_dampening = [(ABCPreferences *)self arbitrator_disable_dampening];
     *buf = 136315394;
     v96 = v47;
     v97 = 1024;
-    LODWORD(v98) = v48;
+    LODWORD(v98) = arbitrator_disable_dampening;
     v19 = "arbitrator_disable_dampening override is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"arbitrator_daily_count_limit"])
+  if ([pathCopy isEqualToString:@"arbitrator_daily_count_limit"])
   {
     if (!v12)
     {
@@ -767,9 +767,9 @@ LABEL_80:
       goto LABEL_41;
     }
 
-    v49 = [(ABCPreferences *)self arbitrator_daily_count_limit];
+    arbitrator_daily_count_limit = [(ABCPreferences *)self arbitrator_daily_count_limit];
     *buf = 134217984;
-    v96 = v49;
+    v96 = arbitrator_daily_count_limit;
     v19 = "arbitrator_daily_count_limit configuration is %ld";
 LABEL_99:
     v20 = v16;
@@ -777,7 +777,7 @@ LABEL_99:
     goto LABEL_16;
   }
 
-  if ([v8 isEqualToString:@"apns_enable"])
+  if ([pathCopy isEqualToString:@"apns_enable"])
   {
     if (!v12)
     {
@@ -801,16 +801,16 @@ LABEL_99:
       v50 = "NO";
     }
 
-    v51 = [(ABCPreferences *)self apns_enable];
+    apns_enable = [(ABCPreferences *)self apns_enable];
     *buf = 136315394;
     v96 = v50;
     v97 = 1024;
-    LODWORD(v98) = v51;
+    LODWORD(v98) = apns_enable;
     v19 = "apns_enable configuration is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"apns_dev_environment"])
+  if ([pathCopy isEqualToString:@"apns_dev_environment"])
   {
     if (!v12)
     {
@@ -834,16 +834,16 @@ LABEL_99:
       v52 = "NO";
     }
 
-    v53 = [(ABCPreferences *)self apns_dev_environment];
+    apns_dev_environment = [(ABCPreferences *)self apns_dev_environment];
     *buf = 136315394;
     v96 = v52;
     v97 = 1024;
-    LODWORD(v98) = v53;
+    LODWORD(v98) = apns_dev_environment;
     v19 = "apns_dev_environment configuration is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"max_upload_retries"])
+  if ([pathCopy isEqualToString:@"max_upload_retries"])
   {
     if (!v12)
     {
@@ -857,14 +857,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v54 = [(ABCPreferences *)self max_upload_retries];
+    max_upload_retries = [(ABCPreferences *)self max_upload_retries];
     *buf = 134217984;
-    v96 = v54;
+    v96 = max_upload_retries;
     v19 = "max_upload_retries configuration is %ld";
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"arbitrator_dampened_ips_limit"])
+  if ([pathCopy isEqualToString:@"arbitrator_dampened_ips_limit"])
   {
     if (!v12)
     {
@@ -878,14 +878,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v55 = [(ABCPreferences *)self arbitrator_dampened_ips_limit];
+    arbitrator_dampened_ips_limit = [(ABCPreferences *)self arbitrator_dampened_ips_limit];
     *buf = 134217984;
-    v96 = v55;
+    v96 = arbitrator_dampened_ips_limit;
     v19 = "arbitrator_dampened_ips_limit configuration is %ld";
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"ABCUserConsent"])
+  if ([pathCopy isEqualToString:@"ABCUserConsent"])
   {
     if (!v12)
     {
@@ -899,14 +899,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v56 = [(ABCPreferences *)self ABCUserConsent];
+    aBCUserConsent = [(ABCPreferences *)self ABCUserConsent];
     *buf = 134217984;
-    v96 = v56;
+    v96 = aBCUserConsent;
     v19 = "ABCUserConsent configuration is %ld";
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"dampening_restriction_factor"])
+  if ([pathCopy isEqualToString:@"dampening_restriction_factor"])
   {
     if (!v12)
     {
@@ -920,14 +920,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v57 = [(ABCPreferences *)self dampening_restriction_factor];
+    dampening_restriction_factor = [(ABCPreferences *)self dampening_restriction_factor];
     *buf = 134217984;
-    v96 = v57;
+    v96 = dampening_restriction_factor;
     v19 = "dampening_restriction_factor configuration is %ld";
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"disable_api_rate_limit"])
+  if ([pathCopy isEqualToString:@"disable_api_rate_limit"])
   {
     if (!v12)
     {
@@ -951,16 +951,16 @@ LABEL_99:
       v58 = "NO";
     }
 
-    v59 = [(ABCPreferences *)self disable_api_rate_limit];
+    disable_api_rate_limit = [(ABCPreferences *)self disable_api_rate_limit];
     *buf = 136315394;
     v96 = v58;
     v97 = 1024;
-    LODWORD(v98) = v59;
+    LODWORD(v98) = disable_api_rate_limit;
     v19 = "disable_api_rate_limit override is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"api_rate_limit"])
+  if ([pathCopy isEqualToString:@"api_rate_limit"])
   {
     if (!v12)
     {
@@ -982,7 +982,7 @@ LABEL_99:
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"api_limit_window"])
+  if ([pathCopy isEqualToString:@"api_limit_window"])
   {
     if (!v12)
     {
@@ -1004,7 +1004,7 @@ LABEL_99:
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"ignore_automated_device_group"])
+  if ([pathCopy isEqualToString:@"ignore_automated_device_group"])
   {
     if (!v12)
     {
@@ -1028,16 +1028,16 @@ LABEL_99:
       v62 = "NO";
     }
 
-    v63 = [(ABCPreferences *)self ignore_automated_device_group];
+    ignore_automated_device_group = [(ABCPreferences *)self ignore_automated_device_group];
     *buf = 136315394;
     v96 = v62;
     v97 = 1024;
-    LODWORD(v98) = v63;
+    LODWORD(v98) = ignore_automated_device_group;
     v19 = "ignore_automated_device_group override is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"cloudkit_enable"])
+  if ([pathCopy isEqualToString:@"cloudkit_enable"])
   {
     if (!v12)
     {
@@ -1061,16 +1061,16 @@ LABEL_99:
       v64 = "NO";
     }
 
-    v65 = [(ABCPreferences *)self cloudkit_enable];
+    cloudkit_enable = [(ABCPreferences *)self cloudkit_enable];
     *buf = 136315394;
     v96 = v64;
     v97 = 1024;
-    LODWORD(v98) = v65;
+    LODWORD(v98) = cloudkit_enable;
     v19 = "cloudkit_enable configuration is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"cloudkit_sandbox_environment"])
+  if ([pathCopy isEqualToString:@"cloudkit_sandbox_environment"])
   {
     if (!v12)
     {
@@ -1094,16 +1094,16 @@ LABEL_99:
       v66 = "NO";
     }
 
-    v67 = [(ABCPreferences *)self cloudkit_sandbox_environment];
+    cloudkit_sandbox_environment = [(ABCPreferences *)self cloudkit_sandbox_environment];
     *buf = 136315394;
     v96 = v66;
     v97 = 1024;
-    LODWORD(v98) = v67;
+    LODWORD(v98) = cloudkit_sandbox_environment;
     v19 = "cloudkit_sandbox_environment override is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"cloudkit_container_identifier"])
+  if ([pathCopy isEqualToString:@"cloudkit_container_identifier"])
   {
     if (!v14)
     {
@@ -1117,14 +1117,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v33 = [(ABCPreferences *)self cloudkit_container_identifier];
+    database_container_path = [(ABCPreferences *)self cloudkit_container_identifier];
     *buf = 138412290;
-    v96 = v33;
+    v96 = database_container_path;
     v34 = "cloudkit_container_identifier configuration is %@";
     goto LABEL_48;
   }
 
-  if ([v8 isEqualToString:@"cloudkit_inverness_service"])
+  if ([pathCopy isEqualToString:@"cloudkit_inverness_service"])
   {
     if (!v14)
     {
@@ -1138,14 +1138,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v33 = [(ABCPreferences *)self cloudkit_inverness_service];
+    database_container_path = [(ABCPreferences *)self cloudkit_inverness_service];
     *buf = 138412290;
-    v96 = v33;
+    v96 = database_container_path;
     v34 = "cloudkit_inverness_service configuration is %@";
     goto LABEL_48;
   }
 
-  if ([v8 isEqualToString:@"cloudkit_upload_expiration_timeout"])
+  if ([pathCopy isEqualToString:@"cloudkit_upload_expiration_timeout"])
   {
     if (!v12)
     {
@@ -1159,14 +1159,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v68 = [(ABCPreferences *)self cloudkit_upload_expiration_timeout];
+    cloudkit_upload_expiration_timeout = [(ABCPreferences *)self cloudkit_upload_expiration_timeout];
     *buf = 134217984;
-    v96 = v68;
+    v96 = cloudkit_upload_expiration_timeout;
     v19 = "cloudkit_upload_expiration_timeout configuration is %ld";
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"cloudkit_upload_connection_timeout"])
+  if ([pathCopy isEqualToString:@"cloudkit_upload_connection_timeout"])
   {
     if (!v12)
     {
@@ -1180,14 +1180,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v69 = [(ABCPreferences *)self cloudkit_upload_connection_timeout];
+    cloudkit_upload_connection_timeout = [(ABCPreferences *)self cloudkit_upload_connection_timeout];
     *buf = 134217984;
-    v96 = v69;
+    v96 = cloudkit_upload_connection_timeout;
     v19 = "cloudkit_upload_connection_timeout configuration is %ld";
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"cloudkit_upload_max_fallback_log_count"])
+  if ([pathCopy isEqualToString:@"cloudkit_upload_max_fallback_log_count"])
   {
     if (!v12)
     {
@@ -1201,14 +1201,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v70 = [(ABCPreferences *)self cloudkit_upload_max_fallback_log_count];
+    cloudkit_upload_max_fallback_log_count = [(ABCPreferences *)self cloudkit_upload_max_fallback_log_count];
     *buf = 134217984;
-    v96 = v70;
+    v96 = cloudkit_upload_max_fallback_log_count;
     v19 = "cloudkit_upload_max_fallback_log_count configuration is %ld";
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"cloudkit_prefers_anonymous"])
+  if ([pathCopy isEqualToString:@"cloudkit_prefers_anonymous"])
   {
     if (!v12)
     {
@@ -1232,16 +1232,16 @@ LABEL_99:
       v71 = "NO";
     }
 
-    v72 = [(ABCPreferences *)self cloudkit_prefers_anonymous];
+    cloudkit_prefers_anonymous = [(ABCPreferences *)self cloudkit_prefers_anonymous];
     *buf = 136315394;
     v96 = v71;
     v97 = 1024;
-    LODWORD(v98) = v72;
+    LODWORD(v98) = cloudkit_prefers_anonymous;
     v19 = "cloudkit_prefers_anonymous configuration is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"case_summary_maximum_per_submission"])
+  if ([pathCopy isEqualToString:@"case_summary_maximum_per_submission"])
   {
     if (!v12)
     {
@@ -1255,14 +1255,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v73 = [(ABCPreferences *)self case_summary_maximum_per_submission];
+    case_summary_maximum_per_submission = [(ABCPreferences *)self case_summary_maximum_per_submission];
     *buf = 134217984;
-    v96 = v73;
+    v96 = case_summary_maximum_per_submission;
     v19 = "case_summary_maximum_per_submission configuration is %ld";
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"case_summary_submitted_retention_days"])
+  if ([pathCopy isEqualToString:@"case_summary_submitted_retention_days"])
   {
     if (!v12)
     {
@@ -1276,14 +1276,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v74 = [(ABCPreferences *)self case_summary_submitted_retention_days];
+    case_summary_submitted_retention_days = [(ABCPreferences *)self case_summary_submitted_retention_days];
     *buf = 134217984;
-    v96 = v74;
+    v96 = case_summary_submitted_retention_days;
     v19 = "case_summary_submitted_retention_days configuration is %ld";
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"case_summary_unsubmitted_retention_days"])
+  if ([pathCopy isEqualToString:@"case_summary_unsubmitted_retention_days"])
   {
     if (!v12)
     {
@@ -1297,14 +1297,14 @@ LABEL_99:
       goto LABEL_41;
     }
 
-    v75 = [(ABCPreferences *)self case_summary_unsubmitted_retention_days];
+    case_summary_unsubmitted_retention_days = [(ABCPreferences *)self case_summary_unsubmitted_retention_days];
     *buf = 134217984;
-    v96 = v75;
+    v96 = case_summary_unsubmitted_retention_days;
     v19 = "case_summary_unsubmitted_retention_days configuration is %ld";
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"case_summary_enable"])
+  if ([pathCopy isEqualToString:@"case_summary_enable"])
   {
     if (!v12)
     {
@@ -1328,16 +1328,16 @@ LABEL_99:
       v76 = "NO";
     }
 
-    v77 = [(ABCPreferences *)self case_summary_enable];
+    case_summary_enable = [(ABCPreferences *)self case_summary_enable];
     *buf = 136315394;
     v96 = v76;
     v97 = 1024;
-    LODWORD(v98) = v77;
+    LODWORD(v98) = case_summary_enable;
     v19 = "case_summary_enable configuration is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"diagnostic_pipeline_submission"])
+  if ([pathCopy isEqualToString:@"diagnostic_pipeline_submission"])
   {
     if (!v12)
     {
@@ -1361,16 +1361,16 @@ LABEL_99:
       v78 = "NO";
     }
 
-    v79 = [(ABCPreferences *)self diagnostic_pipeline_submission];
+    diagnostic_pipeline_submission = [(ABCPreferences *)self diagnostic_pipeline_submission];
     *buf = 136315394;
     v96 = v78;
     v97 = 1024;
-    LODWORD(v98) = v79;
+    LODWORD(v98) = diagnostic_pipeline_submission;
     v19 = "diagnostic_pipeline_submission configuration is %s (%d)";
     goto LABEL_80;
   }
 
-  if ([v8 isEqualToString:@"diagnostic_pipeline_submission_rate"])
+  if ([pathCopy isEqualToString:@"diagnostic_pipeline_submission_rate"])
   {
     if (!v12)
     {
@@ -1392,7 +1392,7 @@ LABEL_99:
     goto LABEL_99;
   }
 
-  if ([v8 isEqualToString:@"autoFeedbackAssistantEnable"])
+  if ([pathCopy isEqualToString:@"autoFeedbackAssistantEnable"])
   {
     if (v12)
     {
@@ -1410,11 +1410,11 @@ LABEL_99:
           v82 = "NO";
         }
 
-        v83 = [(ABCPreferences *)self autoFeedbackAssistantEnable];
+        autoFeedbackAssistantEnable = [(ABCPreferences *)self autoFeedbackAssistantEnable];
         *buf = 136315394;
         v96 = v82;
         v97 = 1024;
-        LODWORD(v98) = v83;
+        LODWORD(v98) = autoFeedbackAssistantEnable;
         _os_log_impl(&dword_241804000, v81, OS_LOG_TYPE_DEFAULT, "autoFeedbackAssistantEnable configuration is %s (%d)", buf, 0x12u);
       }
 
@@ -1445,7 +1445,7 @@ LABEL_99:
 
   else
   {
-    if ([v8 isEqualToString:@"diagnosticsAndUsageEnabled"])
+    if ([pathCopy isEqualToString:@"diagnosticsAndUsageEnabled"])
     {
       if (!v12)
       {
@@ -1469,16 +1469,16 @@ LABEL_99:
         v90 = "NO";
       }
 
-      v91 = [(ABCPreferences *)self diagnosticsAndUsageEnabled];
+      diagnosticsAndUsageEnabled = [(ABCPreferences *)self diagnosticsAndUsageEnabled];
       *buf = 136315394;
       v96 = v90;
       v97 = 1024;
-      LODWORD(v98) = v91;
+      LODWORD(v98) = diagnosticsAndUsageEnabled;
       v19 = "diagnosticsAndUsageEnabled configuration is %s (%d)";
       goto LABEL_80;
     }
 
-    if (![v8 isEqualToString:@"installedVisibleProfileIdentifiers"])
+    if (![pathCopy isEqualToString:@"installedVisibleProfileIdentifiers"])
     {
       v29 = configurationLogHandle();
       if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -1487,9 +1487,9 @@ LABEL_99:
       }
 
       *buf = 138412546;
-      v96 = v9;
+      v96 = changeCopy;
       v97 = 2112;
-      v98 = v8;
+      v98 = pathCopy;
       v30 = "Received an unexpected symptomsd-diag preference change: %@ for %@";
       v39 = v29;
       v40 = OS_LOG_TYPE_DEFAULT;
@@ -1569,10 +1569,10 @@ void __65__ABCPreferences_observeValueForKeyPath_ofObject_change_context___block
   return 1;
 }
 
-- (void)processInstalledVisibleProfileIdentifiers:(id)a3
+- (void)processInstalledVisibleProfileIdentifiers:(id)identifiers
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [a3 containsObject:@"com.apple.basebandlogging"];
+  v4 = [identifiers containsObject:@"com.apple.basebandlogging"];
   if (self->_autoFeedbackAssistantEnable && (v4 & 1) == 0)
   {
     v5 = configurationLogHandle();
@@ -1583,8 +1583,8 @@ void __65__ABCPreferences_observeValueForKeyPath_ofObject_change_context___block
       _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_INFO, "Disabling the %s Preference", &v9, 0xCu);
     }
 
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v6 setBool:0 forKey:@"autoFeedbackAssistantEnable"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setBool:0 forKey:@"autoFeedbackAssistantEnable"];
 
     if (self->_observingInstalledProfiles)
     {
@@ -1600,43 +1600,43 @@ void __65__ABCPreferences_observeValueForKeyPath_ofObject_change_context___block
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 removeObserver:self forKeyPath:@"disable_internal_build"];
-  [v3 removeObserver:self forKeyPath:@"carrier_seed_flag"];
-  [v3 removeObserver:self forKeyPath:@"seed_flag"];
-  [v3 removeObserver:self forKeyPath:@"vendor_flag"];
-  [v3 removeObserver:self forKeyPath:@"disable_autobugcapture"];
-  [v3 removeObserver:self forKeyPath:@"optin_autobugcapture"];
-  [v3 removeObserver:self forKeyPath:@"dut_flag"];
-  [v3 removeObserver:self forKeyPath:@"npi_flag"];
-  [v3 removeObserver:self forKeyPath:@"arbitrator_disable_dampening"];
-  [v3 removeObserver:self forKeyPath:@"arbitrator_daily_count_limit"];
-  [v3 removeObserver:self forKeyPath:@"ABCUserConsent"];
-  [v3 removeObserver:self forKeyPath:@"apns_enable"];
-  [v3 removeObserver:self forKeyPath:@"apns_dev_environment"];
-  [v3 removeObserver:self forKeyPath:@"max_upload_retries"];
-  [v3 removeObserver:self forKeyPath:@"arbitrator_dampened_ips_limit"];
-  [v3 removeObserver:self forKeyPath:@"dampening_restriction_factor"];
-  [v3 removeObserver:self forKeyPath:@"disable_api_rate_limit"];
-  [v3 removeObserver:self forKeyPath:@"api_rate_limit"];
-  [v3 removeObserver:self forKeyPath:@"api_limit_window"];
-  [v3 removeObserver:self forKeyPath:@"database_container_path"];
-  [v3 removeObserver:self forKeyPath:@"ignore_automated_device_group"];
-  [v3 removeObserver:self forKeyPath:@"autoFeedbackAssistantEnable"];
-  [v3 removeObserver:self forKeyPath:@"cloudkit_enable"];
-  [v3 removeObserver:self forKeyPath:@"cloudkit_sandbox_environment"];
-  [v3 removeObserver:self forKeyPath:@"cloudkit_upload_expiration_timeout"];
-  [v3 removeObserver:self forKeyPath:@"cloudkit_upload_connection_timeout"];
-  [v3 removeObserver:self forKeyPath:@"cloudkit_upload_max_fallback_log_count"];
-  [v3 removeObserver:self forKeyPath:@"cloudkit_container_identifier"];
-  [v3 removeObserver:self forKeyPath:@"cloudkit_inverness_service"];
-  [v3 removeObserver:self forKeyPath:@"cloudkit_prefers_anonymous"];
-  [v3 removeObserver:self forKeyPath:@"case_summary_maximum_per_submission"];
-  [v3 removeObserver:self forKeyPath:@"case_summary_submitted_retention_days"];
-  [v3 removeObserver:self forKeyPath:@"case_summary_unsubmitted_retention_days"];
-  [v3 removeObserver:self forKeyPath:@"case_summary_enable"];
-  [v3 removeObserver:self forKeyPath:@"diagnostic_pipeline_submission"];
-  [v3 removeObserver:self forKeyPath:@"diagnostic_pipeline_submission_rate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObserver:self forKeyPath:@"disable_internal_build"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"carrier_seed_flag"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"seed_flag"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"vendor_flag"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"disable_autobugcapture"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"optin_autobugcapture"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"dut_flag"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"npi_flag"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"arbitrator_disable_dampening"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"arbitrator_daily_count_limit"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"ABCUserConsent"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"apns_enable"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"apns_dev_environment"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"max_upload_retries"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"arbitrator_dampened_ips_limit"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"dampening_restriction_factor"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"disable_api_rate_limit"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"api_rate_limit"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"api_limit_window"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"database_container_path"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"ignore_automated_device_group"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"autoFeedbackAssistantEnable"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"cloudkit_enable"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"cloudkit_sandbox_environment"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"cloudkit_upload_expiration_timeout"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"cloudkit_upload_connection_timeout"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"cloudkit_upload_max_fallback_log_count"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"cloudkit_container_identifier"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"cloudkit_inverness_service"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"cloudkit_prefers_anonymous"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"case_summary_maximum_per_submission"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"case_summary_submitted_retention_days"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"case_summary_unsubmitted_retention_days"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"case_summary_enable"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"diagnostic_pipeline_submission"];
+  [standardUserDefaults removeObserver:self forKeyPath:@"diagnostic_pipeline_submission_rate"];
   if (self->_observedAutoBugCaptureUIPreference)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -1664,12 +1664,12 @@ void __65__ABCPreferences_observeValueForKeyPath_ofObject_change_context___block
   [(ABCPreferences *)&v8 dealloc];
 }
 
-- (void)setABCUIUserConsent:(BOOL)a3
+- (void)setABCUIUserConsent:(BOOL)consent
 {
-  if (self->_abcUIUserConsent != a3)
+  if (self->_abcUIUserConsent != consent)
   {
     [(ABCPreferences *)self willChangeValueForKey:@"abcUIUserConsent"];
-    self->_abcUIUserConsent = a3;
+    self->_abcUIUserConsent = consent;
     [(ABCPreferences *)self didChangeValueForKey:@"abcUIUserConsent"];
     abcUIUserConsent = self->_abcUIUserConsent;
 
@@ -1677,12 +1677,12 @@ void __65__ABCPreferences_observeValueForKeyPath_ofObject_change_context___block
   }
 }
 
-- (void)setABCUserConsent:(BOOL)a3
+- (void)setABCUserConsent:(BOOL)consent
 {
-  if (self->_ABCUserConsent != a3)
+  if (self->_ABCUserConsent != consent)
   {
     [(ABCPreferences *)self willChangeValueForKey:@"ABCUserConsent"];
-    self->_ABCUserConsent = a3;
+    self->_ABCUserConsent = consent;
 
     [(ABCPreferences *)self didChangeValueForKey:@"ABCUserConsent"];
   }

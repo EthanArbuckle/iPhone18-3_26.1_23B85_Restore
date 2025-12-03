@@ -1,6 +1,6 @@
 @interface HDHAHealthPluginHostFeedGenerator
 - (HDHAHealthPluginHostFeedGenerator)init;
-- (void)handleJournaledSharingEntries:(id)a3;
+- (void)handleJournaledSharingEntries:(id)entries;
 - (void)invalidateStoreCache;
 @end
 
@@ -59,10 +59,10 @@ void __73__HDHAHealthPluginHostFeedGenerator_runBackgroundGenerationForAllPlugin
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleJournaledSharingEntries:(id)a3
+- (void)handleJournaledSharingEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(HDHAHealthPluginHostFeedGenerator *)self healthAppPluginHost];
+  entriesCopy = entries;
+  healthAppPluginHost = [(HDHAHealthPluginHostFeedGenerator *)self healthAppPluginHost];
   _HKInitializeLogging();
   v6 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -71,7 +71,7 @@ void __73__HDHAHealthPluginHostFeedGenerator_runBackgroundGenerationForAllPlugin
     _os_log_impl(&dword_22939E000, v6, OS_LOG_TYPE_DEFAULT, "Attempting to handle journaled sharing entries", v7, 2u);
   }
 
-  [v5 handleJournaledSharingEntries:v4 completion:&__block_literal_global_299];
+  [healthAppPluginHost handleJournaledSharingEntries:entriesCopy completion:&__block_literal_global_299];
 }
 
 void __67__HDHAHealthPluginHostFeedGenerator_handleJournaledSharingEntries___block_invoke(uint64_t a1, char a2, void *a3)
@@ -103,8 +103,8 @@ void __67__HDHAHealthPluginHostFeedGenerator_handleJournaledSharingEntries___blo
     _os_log_impl(&dword_22939E000, v3, OS_LOG_TYPE_DEFAULT, "Wiping Health app store cache", v5, 2u);
   }
 
-  v4 = [(HDHAHealthPluginHostFeedGenerator *)self synchronousHealthAppPluginHost];
-  [v4 invalidateStoreCache];
+  synchronousHealthAppPluginHost = [(HDHAHealthPluginHostFeedGenerator *)self synchronousHealthAppPluginHost];
+  [synchronousHealthAppPluginHost invalidateStoreCache];
 }
 
 @end

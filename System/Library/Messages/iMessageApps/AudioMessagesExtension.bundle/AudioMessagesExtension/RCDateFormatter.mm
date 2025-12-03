@@ -2,13 +2,13 @@
 + (id)sharedDateFormatter;
 - (RCDateFormatter)init;
 - (id)_defaultDateFormatter;
-- (id)_formattedDateStringFromDate:(id)a3 remainingTimeValid:(double *)a4;
-- (id)_newFormattedDateStringFromDate:(id)a3 forUUID:(id)a4;
+- (id)_formattedDateStringFromDate:(id)date remainingTimeValid:(double *)valid;
+- (id)_newFormattedDateStringFromDate:(id)date forUUID:(id)d;
 - (id)_thisWeekDateFormatter;
 - (id)_todayDateFormatter;
 - (id)_yesterdayDateFormatter;
-- (id)dateFormatterForStyle:(int)a3;
-- (id)formattedDateStringFromDate:(id)a3 forUUID:(id)a4;
+- (id)dateFormatterForStyle:(int)style;
+- (id)formattedDateStringFromDate:(id)date forUUID:(id)d;
 @end
 
 @implementation RCDateFormatter
@@ -43,41 +43,41 @@
   return v2;
 }
 
-- (id)formattedDateStringFromDate:(id)a3 forUUID:(id)a4
+- (id)formattedDateStringFromDate:(id)date forUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dateCopy = date;
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = [(NSMutableDictionary *)self->_dateItemCache objectForKeyedSubscript:v7];
+    v8 = [(NSMutableDictionary *)self->_dateItemCache objectForKeyedSubscript:dCopy];
     if (v8 && (+[NSDate date](NSDate, "date"), v9 = objc_claimAutoreleasedReturnValue(), [v9 timeIntervalSince1970], v11 = v10, v9, objc_msgSend(v8, "expiration"), v11 <= v12))
     {
-      v13 = [v8 formattedDate];
+      formattedDate = [v8 formattedDate];
     }
 
     else
     {
-      v13 = [(RCDateFormatter *)self _newFormattedDateStringFromDate:v6 forUUID:v7];
+      formattedDate = [(RCDateFormatter *)self _newFormattedDateStringFromDate:dateCopy forUUID:dCopy];
     }
 
-    v14 = v13;
+    v14 = formattedDate;
   }
 
   else
   {
-    v14 = [(RCDateFormatter *)self _formattedDateStringFromDate:v6 remainingTimeValid:0];
+    v14 = [(RCDateFormatter *)self _formattedDateStringFromDate:dateCopy remainingTimeValid:0];
   }
 
   return v14;
 }
 
-- (id)_newFormattedDateStringFromDate:(id)a3 forUUID:(id)a4
+- (id)_newFormattedDateStringFromDate:(id)date forUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  dateCopy = date;
   v8 = objc_opt_new();
   v15 = 0.0;
-  v9 = [(RCDateFormatter *)self _formattedDateStringFromDate:v7 remainingTimeValid:&v15];
+  v9 = [(RCDateFormatter *)self _formattedDateStringFromDate:dateCopy remainingTimeValid:&v15];
 
   [v8 setFormattedDate:v9];
   v10 = +[NSDate date];
@@ -85,41 +85,41 @@
   v12 = v11;
 
   [v8 setExpiration:v12 + v15];
-  [(NSMutableDictionary *)self->_dateItemCache setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_dateItemCache setObject:v8 forKeyedSubscript:dCopy];
 
-  v13 = [v8 formattedDate];
+  formattedDate = [v8 formattedDate];
 
-  return v13;
+  return formattedDate;
 }
 
-- (id)_formattedDateStringFromDate:(id)a3 remainingTimeValid:(double *)a4
+- (id)_formattedDateStringFromDate:(id)date remainingTimeValid:(double *)valid
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = +[NSCalendar currentCalendar];
-  if ([v7 isDateInToday:v6])
+  if ([v7 isDateInToday:dateCopy])
   {
-    v8 = [(RCDateFormatter *)self _todayDateFormatter];
+    _todayDateFormatter = [(RCDateFormatter *)self _todayDateFormatter];
     goto LABEL_7;
   }
 
-  if ([v7 isDateInYesterday:v6])
+  if ([v7 isDateInYesterday:dateCopy])
   {
-    v8 = [(RCDateFormatter *)self _yesterdayDateFormatter];
+    _todayDateFormatter = [(RCDateFormatter *)self _yesterdayDateFormatter];
     goto LABEL_7;
   }
 
   v9 = +[NSDate date];
   v10 = [v9 dateByAddingDays:-7];
-  v11 = [v7 compareDate:v6 toDate:v10 toUnitGranularity:16];
+  v11 = [v7 compareDate:dateCopy toDate:v10 toUnitGranularity:16];
 
   if (v11 == &dword_0 + 1)
   {
-    v8 = [(RCDateFormatter *)self _thisWeekDateFormatter];
+    _todayDateFormatter = [(RCDateFormatter *)self _thisWeekDateFormatter];
 LABEL_7:
-    v12 = v8;
-    v13 = [v8 stringFromDate:v6];
+    v12 = _todayDateFormatter;
+    v13 = [_todayDateFormatter stringFromDate:dateCopy];
 
-    if (a4)
+    if (valid)
     {
       v14 = +[NSDate date];
       v15 = [v14 dateByAddingDays:1];
@@ -127,18 +127,18 @@ LABEL_7:
       v17 = [v16 startOfDayForDate:v15];
 
       [v17 timeIntervalSinceDate:v14];
-      *a4 = v18;
+      *valid = v18;
     }
 
     goto LABEL_9;
   }
 
-  v20 = [(RCDateFormatter *)self _defaultDateFormatter];
-  v13 = [v20 stringFromDate:v6];
+  _defaultDateFormatter = [(RCDateFormatter *)self _defaultDateFormatter];
+  v13 = [_defaultDateFormatter stringFromDate:dateCopy];
 
-  if (a4)
+  if (valid)
   {
-    *a4 = 1.79769313e308;
+    *valid = 1.79769313e308;
   }
 
 LABEL_9:
@@ -146,36 +146,36 @@ LABEL_9:
   return v13;
 }
 
-- (id)dateFormatterForStyle:(int)a3
+- (id)dateFormatterForStyle:(int)style
 {
-  v4 = 0;
-  if (a3 > 1)
+  _thisWeekDateFormatter = 0;
+  if (style > 1)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
-      v4 = [(RCDateFormatter *)self _thisWeekDateFormatter];
+      _thisWeekDateFormatter = [(RCDateFormatter *)self _thisWeekDateFormatter];
     }
 
-    else if (a3 == 3)
+    else if (style == 3)
     {
-      v4 = [(RCDateFormatter *)self _defaultDateFormatter];
+      _thisWeekDateFormatter = [(RCDateFormatter *)self _defaultDateFormatter];
     }
   }
 
-  else if (a3)
+  else if (style)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
-      v4 = [(RCDateFormatter *)self _yesterdayDateFormatter];
+      _thisWeekDateFormatter = [(RCDateFormatter *)self _yesterdayDateFormatter];
     }
   }
 
   else
   {
-    v4 = [(RCDateFormatter *)self _todayDateFormatter];
+    _thisWeekDateFormatter = [(RCDateFormatter *)self _todayDateFormatter];
   }
 
-  return v4;
+  return _thisWeekDateFormatter;
 }
 
 - (id)_todayDateFormatter

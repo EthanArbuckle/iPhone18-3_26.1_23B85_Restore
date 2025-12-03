@@ -1,10 +1,10 @@
 @interface MCDomainsPayload
-+ (BOOL)isPatternValid:(id)a3 forField:(id)a4 outError:(id *)a5;
-+ (id)invalidDomainPatternErrorWithPattern:(id)a3 field:(id)a4;
-+ (id)tooManyAppsErrorWithMaxCount:(id)a3 field:(id)a4;
-+ (id)tooManyDomainsErrorWithMaxCount:(id)a3 field:(id)a4;
++ (BOOL)isPatternValid:(id)valid forField:(id)field outError:(id *)error;
++ (id)invalidDomainPatternErrorWithPattern:(id)pattern field:(id)field;
++ (id)tooManyAppsErrorWithMaxCount:(id)count field:(id)field;
++ (id)tooManyDomainsErrorWithMaxCount:(id)count field:(id)field;
 + (id)typeStrings;
-- (MCDomainsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCDomainsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 @end
@@ -21,49 +21,49 @@
   return v2;
 }
 
-+ (id)invalidDomainPatternErrorWithPattern:(id)a3 field:(id)a4
++ (id)invalidDomainPatternErrorWithPattern:(id)pattern field:(id)field
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
-  v14 = MCErrorArray(@"DOMAINS_INVALID_PATTERN_P_PATTERN", v7, v8, v9, v10, v11, v12, v13, a3);
+  fieldCopy = field;
+  v14 = MCErrorArray(@"DOMAINS_INVALID_PATTERN_P_PATTERN", v7, v8, v9, v10, v11, v12, v13, pattern);
   v15 = [v5 MCErrorWithDomain:@"MCDomainsErrorDomain" code:38000 descriptionArray:v14 errorType:@"MCFatalError"];
-  v16 = [MCPayload badFieldValueErrorWithField:v6 underlyingError:v15];
+  v16 = [MCPayload badFieldValueErrorWithField:fieldCopy underlyingError:v15];
 
   return v16;
 }
 
-+ (id)tooManyDomainsErrorWithMaxCount:(id)a3 field:(id)a4
++ (id)tooManyDomainsErrorWithMaxCount:(id)count field:(id)field
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
-  v14 = MCErrorArray(@"DOMAINS_TOO_MANY_DOMAIN_ENTRIES_P_MAX", v7, v8, v9, v10, v11, v12, v13, a3);
+  fieldCopy = field;
+  v14 = MCErrorArray(@"DOMAINS_TOO_MANY_DOMAIN_ENTRIES_P_MAX", v7, v8, v9, v10, v11, v12, v13, count);
   v15 = [v5 MCErrorWithDomain:@"MCDomainsErrorDomain" code:38001 descriptionArray:v14 errorType:@"MCFatalError"];
-  v16 = [MCPayload badFieldValueErrorWithField:v6 underlyingError:v15];
+  v16 = [MCPayload badFieldValueErrorWithField:fieldCopy underlyingError:v15];
 
   return v16;
 }
 
-+ (id)tooManyAppsErrorWithMaxCount:(id)a3 field:(id)a4
++ (id)tooManyAppsErrorWithMaxCount:(id)count field:(id)field
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
-  v14 = MCErrorArray(@"DOMAINS_TOO_MANY_APP_ENTRIES_P_MAX", v7, v8, v9, v10, v11, v12, v13, a3);
+  fieldCopy = field;
+  v14 = MCErrorArray(@"DOMAINS_TOO_MANY_APP_ENTRIES_P_MAX", v7, v8, v9, v10, v11, v12, v13, count);
   v15 = [v5 MCErrorWithDomain:@"MCDomainsErrorDomain" code:38001 descriptionArray:v14 errorType:@"MCFatalError"];
-  v16 = [MCPayload badFieldValueErrorWithField:v6 underlyingError:v15];
+  v16 = [MCPayload badFieldValueErrorWithField:fieldCopy underlyingError:v15];
 
   return v16;
 }
 
-+ (BOOL)isPatternValid:(id)a3 forField:(id)a4 outError:(id *)a5
++ (BOOL)isPatternValid:(id)valid forField:(id)field outError:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 length])
+  validCopy = valid;
+  fieldCopy = field;
+  if ([validCopy length])
   {
-    v9 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v10 = [v7 stringByTrimmingCharactersInSet:v9];
-    v11 = [v7 isEqualToString:v10];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v10 = [validCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+    v11 = [validCopy isEqualToString:v10];
 
     if (v11)
     {
@@ -72,31 +72,31 @@
         +[MCDomainsPayload isPatternValid:forField:outError:];
       }
 
-      if ([v7 rangeOfCharacterFromSet:isPatternValid_forField_outError__punctuation] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([validCopy rangeOfCharacterFromSet:isPatternValid_forField_outError__punctuation] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = [v7 pathComponents];
-        if (![v12 count] || (objc_msgSend(v12, "objectAtIndexedSubscript:", 0), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"/"), v13, v14))
+        pathComponents = [validCopy pathComponents];
+        if (![pathComponents count] || (objc_msgSend(pathComponents, "objectAtIndexedSubscript:", 0), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"/"), v13, v14))
         {
-          v15 = [MCDomainsPayload invalidDomainPatternErrorWithPattern:v7 field:v8];
+          v15 = [MCDomainsPayload invalidDomainPatternErrorWithPattern:validCopy field:fieldCopy];
           goto LABEL_29;
         }
 
-        v18 = [v12 lastObject];
-        v19 = [v18 isEqualToString:@"/"];
+        lastObject = [pathComponents lastObject];
+        v19 = [lastObject isEqualToString:@"/"];
 
         if (v19)
         {
-          v20 = [v12 subarrayWithRange:{0, objc_msgSend(v12, "count") - 1}];
+          v20 = [pathComponents subarrayWithRange:{0, objc_msgSend(pathComponents, "count") - 1}];
 
-          v12 = v20;
+          pathComponents = v20;
         }
 
         v41 = 0u;
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v12 = v12;
-        v21 = [v12 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        pathComponents = pathComponents;
+        v21 = [pathComponents countByEnumeratingWithState:&v39 objects:v43 count:16];
         if (v21)
         {
           v22 = v21;
@@ -107,18 +107,18 @@
             {
               if (*v40 != v23)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(pathComponents);
               }
 
               if (![*(*(&v39 + 1) + 8 * i) length])
               {
-                v15 = [MCDomainsPayload invalidDomainPatternErrorWithPattern:v7 field:v8];
+                v15 = [MCDomainsPayload invalidDomainPatternErrorWithPattern:validCopy field:fieldCopy];
 
                 goto LABEL_29;
               }
             }
 
-            v22 = [v12 countByEnumeratingWithState:&v39 objects:v43 count:16];
+            v22 = [pathComponents countByEnumeratingWithState:&v39 objects:v43 count:16];
             if (v22)
             {
               continue;
@@ -128,7 +128,7 @@
           }
         }
 
-        v25 = [v12 objectAtIndexedSubscript:0];
+        v25 = [pathComponents objectAtIndexedSubscript:0];
         if (([v25 isEqualToString:@"*"] & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"*.") & 1) != 0 || objc_msgSend(v25, "isEqualToString:", @"."))
         {
           goto LABEL_26;
@@ -170,13 +170,13 @@
           if (v31 != [v25 length] - 1 && objc_msgSend(v25, "rangeOfString:options:range:", @":", 0, 0, v32) == 0x7FFFFFFFFFFFFFFFLL)
           {
             v33 = [v25 substringFromIndex:v32 + 1];
-            v34 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-            v35 = [v34 invertedSet];
-            v36 = [v33 rangeOfCharacterFromSet:v35];
+            decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+            invertedSet = [decimalDigitCharacterSet invertedSet];
+            v36 = [v33 rangeOfCharacterFromSet:invertedSet];
 
             if (v36 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v37 = [MCDomainsPayload invalidDomainPatternErrorWithPattern:v7 field:v8];
+              v37 = [MCDomainsPayload invalidDomainPatternErrorWithPattern:validCopy field:fieldCopy];
               v38 = v33;
               v15 = v37;
 
@@ -190,7 +190,7 @@ LABEL_40:
         }
 
 LABEL_26:
-        v15 = [MCDomainsPayload invalidDomainPatternErrorWithPattern:v7 field:v8, v39];
+        v15 = [MCDomainsPayload invalidDomainPatternErrorWithPattern:validCopy field:fieldCopy, v39];
 LABEL_27:
 
 LABEL_29:
@@ -204,7 +204,7 @@ LABEL_29:
     }
   }
 
-  v15 = [MCDomainsPayload invalidDomainPatternErrorWithPattern:v7 field:v8];
+  v15 = [MCDomainsPayload invalidDomainPatternErrorWithPattern:validCopy field:fieldCopy];
   if (!v15)
   {
 LABEL_30:
@@ -213,11 +213,11 @@ LABEL_30:
   }
 
 LABEL_10:
-  if (a5)
+  if (error)
   {
     v16 = v15;
     v17 = 0;
-    *a5 = v15;
+    *error = v15;
   }
 
   else
@@ -242,13 +242,13 @@ uint64_t __53__MCDomainsPayload_isPatternValid_forField_outError___block_invoke(
   return [v2 addCharactersInString:@"@#?!&"];
 }
 
-- (MCDomainsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCDomainsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v110 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v96.receiver = self;
   v96.super_class = MCDomainsPayload;
-  v9 = [(MCPayload *)&v96 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v96 initWithDictionary:dictionaryCopy profile:profile outError:error];
   v10 = v9;
   if (!v9)
   {
@@ -256,12 +256,12 @@ uint64_t __53__MCDomainsPayload_isPatternValid_forField_outError___block_invoke(
   }
 
   v70 = v9;
-  v71 = a5;
-  v69 = [MEMORY[0x1E695DF90] dictionary];
-  v68 = [MEMORY[0x1E695DF90] dictionary];
+  errorCopy = error;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v95 = 0;
-  v67 = v8;
-  v11 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"WebDomains" isRequired:0 outError:&v95];
+  v67 = dictionaryCopy;
+  v11 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"WebDomains" isRequired:0 outError:&v95];
   v12 = v95;
   v75 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v11, "count")}];
   v91 = 0u;
@@ -298,9 +298,9 @@ uint64_t __53__MCDomainsPayload_isPatternValid_forField_outError___block_invoke(
           v66 = 0;
           v72 = obj;
           v73 = 0;
-          v8 = v67;
-          v24 = v68;
-          v25 = v69;
+          dictionaryCopy = v67;
+          v24 = dictionary2;
+          v25 = dictionary;
           v10 = v70;
           goto LABEL_14;
         }
@@ -329,13 +329,13 @@ uint64_t __53__MCDomainsPayload_isPatternValid_forField_outError___block_invoke(
     v22 = 0;
     v73 = 0;
     v23 = 0;
-    v8 = v67;
-    v24 = v68;
-    v25 = v69;
+    dictionaryCopy = v67;
+    v24 = dictionary2;
+    v25 = dictionary;
     v10 = v70;
     v26 = 0x1E695D000;
-    v27 = v71;
-    if (!v71)
+    errorCopy2 = errorCopy;
+    if (!errorCopy)
     {
       goto LABEL_19;
     }
@@ -344,24 +344,24 @@ LABEL_17:
     if (v12)
     {
       v28 = v12;
-      *v27 = v12;
+      *errorCopy2 = v12;
     }
 
     goto LABEL_19;
   }
 
-  v8 = v67;
-  v24 = v68;
-  v25 = v69;
+  dictionaryCopy = v67;
+  v24 = dictionary2;
+  v25 = dictionary;
   v10 = v70;
-  v27 = a5;
+  errorCopy2 = error;
   if (v13)
   {
     v107 = @"values";
-    v34 = [v75 allObjects];
-    v108 = v34;
+    allObjects = [v75 allObjects];
+    v108 = allObjects;
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-    [v69 setObject:v35 forKeyedSubscript:@"managedWebDomains"];
+    [dictionary setObject:v35 forKeyedSubscript:@"managedWebDomains"];
   }
 
   v89 = 0;
@@ -374,7 +374,7 @@ LABEL_17:
     v22 = 0;
     v73 = 0;
     v26 = 0x1E695D000;
-    if (!v71)
+    if (!errorCopy)
     {
       goto LABEL_19;
     }
@@ -387,20 +387,20 @@ LABEL_17:
     v105 = @"values";
     v106 = v23;
     v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v106 forKeys:&v105 count:1];
-    [v68 setObject:v37 forKeyedSubscript:@"managedEmailDomains"];
+    [dictionary2 setObject:v37 forKeyedSubscript:@"managedEmailDomains"];
   }
 
-  v38 = [(MCPayload *)v70 profile];
-  if ([v38 isStub])
+  profile = [(MCPayload *)v70 profile];
+  if ([profile isStub])
   {
   }
 
   else
   {
-    v39 = [MEMORY[0x1E69AD420] sharedConfiguration];
-    v40 = [v39 isSupervised];
+    mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+    isSupervised = [mEMORY[0x1E69AD420] isSupervised];
 
-    if (!v40)
+    if (!isSupervised)
     {
       v12 = 0;
       v29 = 0;
@@ -448,9 +448,9 @@ LABEL_17:
           v21 = 0;
           v22 = 0;
           v19 = v73;
-          v8 = v67;
-          v24 = v68;
-          v25 = v69;
+          dictionaryCopy = v67;
+          v24 = dictionary2;
+          v25 = dictionary;
           v10 = v70;
           goto LABEL_47;
         }
@@ -477,25 +477,25 @@ LABEL_17:
   {
     v21 = 0;
     v22 = 0;
-    v8 = v67;
-    v24 = v68;
-    v25 = v69;
+    dictionaryCopy = v67;
+    v24 = dictionary2;
+    v25 = dictionary;
     v10 = v70;
     goto LABEL_15;
   }
 
-  v8 = v67;
-  v24 = v68;
-  v25 = v69;
-  v27 = v71;
+  dictionaryCopy = v67;
+  v24 = dictionary2;
+  v25 = dictionary;
+  errorCopy2 = errorCopy;
   v23 = v66;
   if (v42)
   {
     v102 = @"values";
-    v50 = [v72 allObjects];
-    v103 = v50;
+    allObjects2 = [v72 allObjects];
+    v103 = allObjects2;
     v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
-    [v69 setObject:v51 forKeyedSubscript:@"allowedSafariPasswordAutoFillDomains"];
+    [dictionary setObject:v51 forKeyedSubscript:@"allowedSafariPasswordAutoFillDomains"];
   }
 
   v52 = 0x1E696A000uLL;
@@ -568,9 +568,9 @@ LABEL_17:
 
 LABEL_66:
 
-      v25 = v69;
+      v25 = dictionary;
       v10 = v70;
-      v24 = v68;
+      v24 = dictionary2;
       v52 = 0x1E696A000;
       if (v12)
       {
@@ -579,7 +579,7 @@ LABEL_14:
 
 LABEL_15:
         v26 = 0x1E695D000uLL;
-        v27 = v71;
+        errorCopy2 = errorCopy;
         v23 = v66;
         goto LABEL_16;
       }
@@ -592,8 +592,8 @@ LABEL_15:
     if (v22)
     {
       v99 = @"values";
-      v59 = [v19 allObjects];
-      v100 = v59;
+      allObjects3 = [v19 allObjects];
+      v100 = allObjects3;
       v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v100 forKeys:&v99 count:1];
       [v24 setObject:v60 forKeyedSubscript:@"crossSiteTrackingPreventionRelaxedDomains"];
 
@@ -609,7 +609,7 @@ LABEL_15:
       v12 = v62;
     }
 
-    else if ([v21 count] < 0xB || (objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", 10), v63 = objc_claimAutoreleasedReturnValue(), v8 = v67, +[MCDomainsPayload tooManyAppsErrorWithMaxCount:field:](MCDomainsPayload, "tooManyAppsErrorWithMaxCount:field:", v63, @"CrossSiteTrackingPreventionRelaxedApps"), v12 = objc_claimAutoreleasedReturnValue(), v63, !v12))
+    else if ([v21 count] < 0xB || (objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", 10), v63 = objc_claimAutoreleasedReturnValue(), dictionaryCopy = v67, +[MCDomainsPayload tooManyAppsErrorWithMaxCount:field:](MCDomainsPayload, "tooManyAppsErrorWithMaxCount:field:", v63, @"CrossSiteTrackingPreventionRelaxedApps"), v12 = objc_claimAutoreleasedReturnValue(), v63, !v12))
     {
       if (v21)
       {
@@ -636,7 +636,7 @@ LABEL_53:
   v26 = 0x1E695D000;
 LABEL_16:
 
-  if (v27)
+  if (errorCopy2)
   {
     goto LABEL_17;
   }
@@ -644,19 +644,19 @@ LABEL_16:
 LABEL_19:
   v29 = v73;
 LABEL_20:
-  v30 = [*(v26 + 3984) dictionary];
+  dictionary3 = [*(v26 + 3984) dictionary];
   if ([v24 count])
   {
-    [(NSDictionary *)v30 setObject:v24 forKeyedSubscript:@"intersection"];
+    [(NSDictionary *)dictionary3 setObject:v24 forKeyedSubscript:@"intersection"];
   }
 
   if ([v25 count])
   {
-    [(NSDictionary *)v30 setObject:v25 forKeyedSubscript:@"union"];
+    [(NSDictionary *)dictionary3 setObject:v25 forKeyedSubscript:@"union"];
   }
 
   restrictions = v10->_restrictions;
-  v10->_restrictions = v30;
+  v10->_restrictions = dictionary3;
 
 LABEL_25:
   v32 = *MEMORY[0x1E69E9840];
@@ -667,55 +667,55 @@ LABEL_25:
 {
   v15.receiver = self;
   v15.super_class = MCDomainsPayload;
-  v3 = [(MCPayload *)&v15 stubDictionary];
-  v4 = [(MCDomainsPayload *)self restrictions];
-  v5 = [MCRestrictionManager unionValuesForFeature:@"managedWebDomains" withRestrictionsDictionary:v4];
+  stubDictionary = [(MCPayload *)&v15 stubDictionary];
+  restrictions = [(MCDomainsPayload *)self restrictions];
+  v5 = [MCRestrictionManager unionValuesForFeature:@"managedWebDomains" withRestrictionsDictionary:restrictions];
 
   if (v5)
   {
-    [v3 setObject:v5 forKeyedSubscript:@"WebDomains"];
+    [stubDictionary setObject:v5 forKeyedSubscript:@"WebDomains"];
   }
 
-  v6 = [(MCDomainsPayload *)self restrictions];
-  v7 = [MCRestrictionManager intersectedValuesForFeature:@"managedEmailDomains" withRestrictionsDictionary:v6];
+  restrictions2 = [(MCDomainsPayload *)self restrictions];
+  v7 = [MCRestrictionManager intersectedValuesForFeature:@"managedEmailDomains" withRestrictionsDictionary:restrictions2];
 
   if (v7)
   {
-    [v3 setObject:v7 forKeyedSubscript:@"EmailDomains"];
+    [stubDictionary setObject:v7 forKeyedSubscript:@"EmailDomains"];
   }
 
-  v8 = [(MCDomainsPayload *)self restrictions];
-  v9 = [MCRestrictionManager unionValuesForFeature:@"allowedSafariPasswordAutoFillDomains" withRestrictionsDictionary:v8];
+  restrictions3 = [(MCDomainsPayload *)self restrictions];
+  v9 = [MCRestrictionManager unionValuesForFeature:@"allowedSafariPasswordAutoFillDomains" withRestrictionsDictionary:restrictions3];
 
   if (v9)
   {
-    [v3 setObject:v9 forKeyedSubscript:@"SafariPasswordAutoFillDomains"];
+    [stubDictionary setObject:v9 forKeyedSubscript:@"SafariPasswordAutoFillDomains"];
   }
 
-  v10 = [(MCDomainsPayload *)self restrictions];
-  v11 = [MCRestrictionManager intersectedValuesForFeature:@"crossSiteTrackingPreventionRelaxedDomains" withRestrictionsDictionary:v10];
+  restrictions4 = [(MCDomainsPayload *)self restrictions];
+  v11 = [MCRestrictionManager intersectedValuesForFeature:@"crossSiteTrackingPreventionRelaxedDomains" withRestrictionsDictionary:restrictions4];
 
   if (v11)
   {
-    [v3 setObject:v11 forKeyedSubscript:@"CrossSiteTrackingPreventionRelaxedDomains"];
+    [stubDictionary setObject:v11 forKeyedSubscript:@"CrossSiteTrackingPreventionRelaxedDomains"];
   }
 
-  v12 = [(MCDomainsPayload *)self restrictions];
-  v13 = [MCRestrictionManager intersectedValuesForFeature:@"crossSiteTrackingPreventionRelaxedApps" withRestrictionsDictionary:v12];
+  restrictions5 = [(MCDomainsPayload *)self restrictions];
+  v13 = [MCRestrictionManager intersectedValuesForFeature:@"crossSiteTrackingPreventionRelaxedApps" withRestrictionsDictionary:restrictions5];
 
   if (v13)
   {
-    [v3 setObject:v13 forKeyedSubscript:@"CrossSiteTrackingPreventionRelaxedApps"];
+    [stubDictionary setObject:v13 forKeyedSubscript:@"CrossSiteTrackingPreventionRelaxedApps"];
   }
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)payloadDescriptionKeyValueSections
 {
   v3 = objc_opt_new();
-  v4 = [(MCDomainsPayload *)self restrictions];
-  v5 = [MCRestrictionManager unionValuesForFeature:@"managedWebDomains" withRestrictionsDictionary:v4];
+  restrictions = [(MCDomainsPayload *)self restrictions];
+  v5 = [MCRestrictionManager unionValuesForFeature:@"managedWebDomains" withRestrictionsDictionary:restrictions];
 
   if ([v5 count])
   {
@@ -725,8 +725,8 @@ LABEL_25:
     [v3 addObject:v7];
   }
 
-  v8 = [(MCDomainsPayload *)self restrictions];
-  v9 = [MCRestrictionManager intersectedValuesForFeature:@"managedEmailDomains" withRestrictionsDictionary:v8];
+  restrictions2 = [(MCDomainsPayload *)self restrictions];
+  v9 = [MCRestrictionManager intersectedValuesForFeature:@"managedEmailDomains" withRestrictionsDictionary:restrictions2];
 
   if ([v9 count])
   {
@@ -736,8 +736,8 @@ LABEL_25:
     [v3 addObject:v11];
   }
 
-  v12 = [(MCDomainsPayload *)self restrictions];
-  v13 = [MCRestrictionManager unionValuesForFeature:@"allowedSafariPasswordAutoFillDomains" withRestrictionsDictionary:v12];
+  restrictions3 = [(MCDomainsPayload *)self restrictions];
+  v13 = [MCRestrictionManager unionValuesForFeature:@"allowedSafariPasswordAutoFillDomains" withRestrictionsDictionary:restrictions3];
 
   if ([v13 count])
   {
@@ -747,8 +747,8 @@ LABEL_25:
     [v3 addObject:v15];
   }
 
-  v16 = [(MCDomainsPayload *)self restrictions];
-  v17 = [MCRestrictionManager intersectedValuesForFeature:@"crossSiteTrackingPreventionRelaxedDomains" withRestrictionsDictionary:v16];
+  restrictions4 = [(MCDomainsPayload *)self restrictions];
+  v17 = [MCRestrictionManager intersectedValuesForFeature:@"crossSiteTrackingPreventionRelaxedDomains" withRestrictionsDictionary:restrictions4];
 
   if ([v17 count])
   {
@@ -758,8 +758,8 @@ LABEL_25:
     [v3 addObject:v19];
   }
 
-  v20 = [(MCDomainsPayload *)self restrictions];
-  v21 = [MCRestrictionManager intersectedValuesForFeature:@"crossSiteTrackingPreventionRelaxedApps" withRestrictionsDictionary:v20];
+  restrictions5 = [(MCDomainsPayload *)self restrictions];
+  v21 = [MCRestrictionManager intersectedValuesForFeature:@"crossSiteTrackingPreventionRelaxedApps" withRestrictionsDictionary:restrictions5];
 
   if ([v21 count])
   {

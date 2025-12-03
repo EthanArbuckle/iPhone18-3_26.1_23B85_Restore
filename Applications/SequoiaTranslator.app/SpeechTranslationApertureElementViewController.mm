@@ -1,20 +1,20 @@
 @interface SpeechTranslationApertureElementViewController
 - (NSSet)backgroundActivitiesToSuppress;
 - (NSString)associatedScenePersistenceIdentifier;
-- (_TtC17SequoiaTranslator46SpeechTranslationApertureElementViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setAssociatedScenePersistenceIdentifier:(id)a3;
+- (_TtC17SequoiaTranslator46SpeechTranslationApertureElementViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setAssociatedScenePersistenceIdentifier:(id)identifier;
 - (void)viewDidLoad;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SpeechTranslationApertureElementViewController
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  v4 = self;
-  sub_100248398(a3);
+  selfCopy = self;
+  sub_100248398(mode);
 }
 
 - (NSString)associatedScenePersistenceIdentifier
@@ -33,9 +33,9 @@
   return v2;
 }
 
-- (void)setAssociatedScenePersistenceIdentifier:(id)a3
+- (void)setAssociatedScenePersistenceIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -51,9 +51,9 @@
   v6[1] = v5;
 }
 
-- (_TtC17SequoiaTranslator46SpeechTranslationApertureElementViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator46SpeechTranslationApertureElementViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -65,32 +65,32 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10024864C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10024864C(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100248998();
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_100249878();
   swift_unknownObjectRelease();
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for SpeechTranslationApertureElementViewController();
   swift_unknownObjectRetain();
   v4 = v8.receiver;
-  [(SpeechTranslationApertureElementViewController *)&v8 preferredContentSizeDidChangeForChildContentContainer:a3];
-  v5 = [v4 systemApertureElementContext];
+  [(SpeechTranslationApertureElementViewController *)&v8 preferredContentSizeDidChangeForChildContentContainer:container];
+  systemApertureElementContext = [v4 systemApertureElementContext];
   v7[4] = nullsub_1;
   v7[5] = 0;
   v7[0] = _NSConcreteStackBlock;
@@ -98,7 +98,7 @@
   v7[2] = sub_100096948;
   v7[3] = &unk_10038AE78;
   v6 = _Block_copy(v7);
-  [v5 setElementNeedsUpdateWithCoordinatedAnimations:v6];
+  [systemApertureElementContext setElementNeedsUpdateWithCoordinatedAnimations:v6];
   swift_unknownObjectRelease();
 
   _Block_release(v6);

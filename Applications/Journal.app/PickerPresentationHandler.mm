@@ -1,41 +1,41 @@
 @interface PickerPresentationHandler
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
 - (_TtC7JournalP33_5C692566AD29E277CBCA17308A33F5D425PickerPresentationHandler)init;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier;
 @end
 
 @implementation PickerPresentationHandler
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
   swift_unownedRetainStrong();
-  v6 = self;
+  selfCopy = self;
   sub_1001744FC();
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   swift_unownedRetainStrong();
-  v4 = self;
+  selfCopy = self;
   sub_1001748CC();
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   LOBYTE(self) = sub_100177988();
 
   return self & 1;
 }
 
-- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)a3
+- (void)sheetPresentationControllerDidChangeSelectedDetentIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  sub_100175050(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_100175050(identifierCopy);
 }
 
 - (_TtC7JournalP33_5C692566AD29E277CBCA17308A33F5D425PickerPresentationHandler)init

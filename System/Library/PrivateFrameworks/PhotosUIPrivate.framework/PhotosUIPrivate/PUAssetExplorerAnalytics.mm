@@ -1,49 +1,49 @@
 @interface PUAssetExplorerAnalytics
 - (PUAssetExplorerAnalytics)init;
-- (void)sendEvent:(id)a3 view:(unint64_t)a4 source:(unint64_t)a5 currentAssetCount:(int64_t)a6;
+- (void)sendEvent:(id)event view:(unint64_t)view source:(unint64_t)source currentAssetCount:(int64_t)count;
 @end
 
 @implementation PUAssetExplorerAnalytics
 
-- (void)sendEvent:(id)a3 view:(unint64_t)a4 source:(unint64_t)a5 currentAssetCount:(int64_t)a6
+- (void)sendEvent:(id)event view:(unint64_t)view source:(unint64_t)source currentAssetCount:(int64_t)count
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (([(NSMutableSet *)self->_eventsSent containsObject:v10]& 1) == 0)
+  eventCopy = event;
+  if (([(NSMutableSet *)self->_eventsSent containsObject:eventCopy]& 1) == 0)
   {
-    v16[0] = v10;
+    v16[0] = eventCopy;
     v15[0] = @"eventName";
     v15[1] = @"view";
-    if (a4 > 2)
+    if (view > 2)
     {
       v11 = @"unknown";
     }
 
     else
     {
-      v11 = off_1E7B7D490[a4];
+      v11 = off_1E7B7D490[view];
     }
 
     v16[1] = v11;
     v15[2] = @"source";
-    if (a5 > 3)
+    if (source > 3)
     {
       v12 = @"unknown";
     }
 
     else
     {
-      v12 = off_1E7B7D4A8[a5];
+      v12 = off_1E7B7D4A8[source];
     }
 
     v16[2] = v12;
     v15[3] = @"currentAssetCount";
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:count];
     v16[3] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
 
     AnalyticsSendEvent();
-    [(NSMutableSet *)self->_eventsSent addObject:v10];
+    [(NSMutableSet *)self->_eventsSent addObject:eventCopy];
   }
 }
 

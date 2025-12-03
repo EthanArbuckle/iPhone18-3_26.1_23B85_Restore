@@ -1,50 +1,50 @@
 @interface RFOptionalFloat
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFOptionalFloat)initWithCoder:(id)a3;
-- (RFOptionalFloat)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFOptionalFloat)initWithCoder:(id)coder;
+- (RFOptionalFloat)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFOptionalFloat
 
 - (unint64_t)hash
 {
-  v2 = [(RFOptionalFloat *)self value];
-  v3 = [v2 hash];
+  value = [(RFOptionalFloat *)self value];
+  v3 = [value hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(RFOptionalFloat *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(RFOptionalFloat *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(RFOptionalFloat *)self value];
-    v7 = [(RFOptionalFloat *)v5 value];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    value = [(RFOptionalFloat *)self value];
+    value2 = [(RFOptionalFloat *)v5 value];
+    if ((value != 0) == (value2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(RFOptionalFloat *)self value];
-      if (v8)
+      value3 = [(RFOptionalFloat *)self value];
+      if (value3)
       {
-        v9 = [(RFOptionalFloat *)self value];
-        v10 = [(RFOptionalFloat *)v5 value];
-        v11 = [v9 isEqual:v10];
+        value4 = [(RFOptionalFloat *)self value];
+        value5 = [(RFOptionalFloat *)v5 value];
+        v11 = [value4 isEqual:value5];
       }
 
       else
@@ -62,11 +62,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFOptionalFloat *)self value];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  value = [(RFOptionalFloat *)self value];
+  v6 = [value copy];
   [v4 setValue:v6];
 
   return v4;
@@ -75,31 +75,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFOptionalFloat alloc] initWithFacade:self];
-  v3 = [(_SFPBRFOptionalFloat *)v2 jsonData];
+  jsonData = [(_SFPBRFOptionalFloat *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFOptionalFloat alloc] initWithFacade:self];
-  v3 = [(_SFPBRFOptionalFloat *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFOptionalFloat *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFOptionalFloat alloc] initWithFacade:self];
-  v5 = [(_SFPBRFOptionalFloat *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFOptionalFloat *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFOptionalFloat)initWithCoder:(id)a3
+- (RFOptionalFloat)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFOptionalFloat alloc] initWithData:v5];
   v7 = [(RFOptionalFloat *)self initWithProtobuf:v6];
@@ -107,19 +107,19 @@
   return v7;
 }
 
-- (RFOptionalFloat)initWithProtobuf:(id)a3
+- (RFOptionalFloat)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v11.receiver = self;
   v11.super_class = RFOptionalFloat;
   v5 = [(RFOptionalFloat *)&v11 init];
   if (v5)
   {
-    [v4 value];
+    [protobufCopy value];
     if (v6 != 0.0)
     {
       v7 = MEMORY[0x1E696AD98];
-      [v4 value];
+      [protobufCopy value];
       v8 = [v7 numberWithFloat:?];
       [(RFOptionalFloat *)v5 setValue:v8];
     }

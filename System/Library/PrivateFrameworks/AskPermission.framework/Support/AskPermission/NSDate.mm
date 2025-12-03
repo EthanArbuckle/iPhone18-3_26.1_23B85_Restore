@@ -1,36 +1,36 @@
 @interface NSDate
-+ (BOOL)isDateExpired:(id)a3;
-+ (BOOL)isDateInFuture:(id)a3;
++ (BOOL)isDateExpired:(id)expired;
++ (BOOL)isDateInFuture:(id)future;
 @end
 
 @implementation NSDate
 
-+ (BOOL)isDateExpired:(id)a3
++ (BOOL)isDateExpired:(id)expired
 {
-  if (!a3)
+  if (!expired)
   {
     return 1;
   }
 
-  v3 = a3;
+  expiredCopy = expired;
   v4 = +[NSDate date];
-  [v4 timeIntervalSinceDate:v3];
+  [v4 timeIntervalSinceDate:expiredCopy];
   v6 = v5;
 
   v7 = v6 >= 2592000.0;
   return v7;
 }
 
-+ (BOOL)isDateInFuture:(id)a3
++ (BOOL)isDateInFuture:(id)future
 {
-  if (!a3)
+  if (!future)
   {
     return 0;
   }
 
-  v3 = a3;
+  futureCopy = future;
   v4 = +[NSDate date];
-  [v4 timeIntervalSinceDate:v3];
+  [v4 timeIntervalSinceDate:futureCopy];
   v6 = v5;
 
   v7 = v6 < 0.0;

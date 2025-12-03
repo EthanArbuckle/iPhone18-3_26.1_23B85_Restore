@@ -1,21 +1,21 @@
 @interface CUIKORTextDrawInfo
 - (CGSize)contentSize;
-- (CUIKORTextDrawInfo)initWithContentSize:(CGSize)a3 renderingBlock:(id)a4;
+- (CUIKORTextDrawInfo)initWithContentSize:(CGSize)size renderingBlock:(id)block;
 @end
 
 @implementation CUIKORTextDrawInfo
 
-- (CUIKORTextDrawInfo)initWithContentSize:(CGSize)a3 renderingBlock:(id)a4
+- (CUIKORTextDrawInfo)initWithContentSize:(CGSize)size renderingBlock:(id)block
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = CUIKORTextDrawInfo;
   v8 = [(CUIKORTextDrawInfo *)&v12 init];
   if (v8)
   {
-    v9 = _Block_copy(v7);
+    v9 = _Block_copy(blockCopy);
     renderingBlock = v8->_renderingBlock;
     v8->_renderingBlock = v9;
 

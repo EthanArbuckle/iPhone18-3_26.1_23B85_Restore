@@ -1,15 +1,15 @@
 @interface EMFIndexManager
-- (EMFIndexManager)initWithBundle:(id)a3;
+- (EMFIndexManager)initWithBundle:(id)bundle;
 - (EMFInvertedIndex)defaultIndex;
 - (EMFInvertedIndex)stemmedIndex;
 @end
 
 @implementation EMFIndexManager
 
-- (EMFIndexManager)initWithBundle:(id)a3
+- (EMFIndexManager)initWithBundle:(id)bundle
 {
-  v5 = a3;
-  if (v5)
+  bundleCopy = bundle;
+  if (bundleCopy)
   {
     v14.receiver = self;
     v14.super_class = EMFIndexManager;
@@ -17,7 +17,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_searchEngineBundle, a3);
+      objc_storeStrong(&v6->_searchEngineBundle, bundle);
       v8 = objc_alloc_init(MEMORY[0x1E696AD10]);
       defaultIndexLock = v7->_defaultIndexLock;
       v7->_defaultIndexLock = v8;
@@ -28,15 +28,15 @@
     }
 
     self = v7;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (EMFInvertedIndex)defaultIndex

@@ -1,35 +1,35 @@
 @interface DOCColumnViewController
-+ (BOOL)supportsDisplayInTraitCollection:(id)a3 availableArea:(CGSize)a4;
++ (BOOL)supportsDisplayInTraitCollection:(id)collection availableArea:(CGSize)area;
 + (NSString)DOCColumnViewControllerUpdatedNavigationItem;
 - (BOOL)showsHierarchyIndicator;
-- (DOCColumnViewController)initWithCollectionViewLayout:(id)a3;
-- (DOCColumnViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (DOCColumnViewController)initWithCollectionViewLayout:(id)layout;
+- (DOCColumnViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSArray)containerControllers;
 - (NSArray)preferredFocusEnvironments;
 - (NSString)description;
-- (id)_newCollectionViewWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)getCellFor:(id)a3 :(id)a4;
-- (void)getTransitionControllerForURL:(id)a3 completionBlock:(id)a4;
-- (void)getViewFor:(id)a3 waitForNewThumbnail:(BOOL)a4 :(id)a5;
-- (void)removeChildViewController:(id)a3;
-- (void)revealWithNodes:(id)a3 selectEvenIfVisible:(BOOL)a4 completionBlock:(id)a5;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setContainerControllers:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowsHierarchyIndicator:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (id)_newCollectionViewWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)getCellFor:(id)for :(id)a4;
+- (void)getTransitionControllerForURL:(id)l completionBlock:(id)block;
+- (void)getViewFor:(id)for waitForNewThumbnail:(BOOL)thumbnail :(id)a5;
+- (void)removeChildViewController:(id)controller;
+- (void)revealWithNodes:(id)nodes selectEvenIfVisible:(BOOL)visible completionBlock:(id)block;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setContainerControllers:(id)controllers;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setShowsHierarchyIndicator:(BOOL)indicator;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateFocusHierarchy;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -47,12 +47,12 @@
   return v3;
 }
 
-+ (BOOL)supportsDisplayInTraitCollection:(id)a3 availableArea:(CGSize)a4
++ (BOOL)supportsDisplayInTraitCollection:(id)collection availableArea:(CGSize)area
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  v7 = specialized static DOCColumnViewSpecs.specWithBrowsingContext(traitCollection:columnBrowserSize:)(v6, width, height);
+  height = area.height;
+  width = area.width;
+  collectionCopy = collection;
+  v7 = specialized static DOCColumnViewSpecs.specWithBrowsingContext(traitCollection:columnBrowserSize:)(collectionCopy, width, height);
 
   if (v7)
   {
@@ -71,14 +71,14 @@
   return v2.super.isa;
 }
 
-- (void)setContainerControllers:(id)a3
+- (void)setContainerControllers:(id)controllers
 {
   type metadata accessor for DOCBrowserContainerController();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = OBJC_IVAR___DOCColumnViewController_containerControllers;
   swift_beginAccess();
   v6 = *(self + v5);
-  v7 = self;
+  selfCopy = self;
 
   DOCColumnViewController.containerControllers.willset(v4);
   *(self + v5) = v4;
@@ -86,17 +86,17 @@
   DOCColumnViewController.containerControllers.didset(v6);
 }
 
-- (id)_newCollectionViewWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (id)_newCollectionViewWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  if (a4)
+  if (layout)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
     v9 = objc_allocWithZone(type metadata accessor for DOCColumnViewControllerCollectionView());
 
-    return [v9 initWithFrame:a4 collectionViewLayout:{x, y, width, height}];
+    return [v9 initWithFrame:layout collectionViewLayout:{x, y, width, height}];
   }
 
   else
@@ -109,7 +109,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCColumnViewController.description.getter();
   v5 = v4;
 
@@ -120,17 +120,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DOCColumnViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for DOCColumnViewController(0);
   v4 = v7.receiver;
-  v5 = [(DOCColumnViewController *)&v7 viewWillAppear:v3];
+  v5 = [(DOCColumnViewController *)&v7 viewWillAppear:appearCopy];
   if (*(v4 + OBJC_IVAR___DOCColumnViewController_needsUpdateDiffableSnapshot) == 1)
   {
     v6 = (*((*MEMORY[0x277D85000] & *v4) + 0xB0))(v5);
@@ -140,10 +140,10 @@
   DOCColumnViewController.updateContainerNavigationItem()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  DOCColumnViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  DOCColumnViewController.viewDidAppear(_:)(appear);
 }
 
 - (void)viewWillLayoutSubviews
@@ -161,87 +161,87 @@
   v6.receiver = self;
   v6.super_class = type metadata accessor for DOCColumnViewController(0);
   v2 = v6.receiver;
-  v3 = [(DOCColumnViewController *)&v6 viewDidLayoutSubviews];
+  viewDidLayoutSubviews = [(DOCColumnViewController *)&v6 viewDidLayoutSubviews];
   v4 = MEMORY[0x277D85000];
-  v5 = (*((*MEMORY[0x277D85000] & *v2) + 0x260))(v3);
+  v5 = (*((*MEMORY[0x277D85000] & *v2) + 0x260))(viewDidLayoutSubviews);
   (*((*v4 & *v2) + 0x238))(v5);
   DOCColumnViewController.updateCellScrollPositionRelatedLayout()();
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  DOCColumnViewController.setEditing(_:animated:)(a3, a4);
+  selfCopy = self;
+  DOCColumnViewController.setEditing(_:animated:)(editing, animated);
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v3 = self;
+  selfCopy = self;
   DOCColumnViewController.finishActiveScrollToItem(didComplete:)(1);
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v7 = a3;
-  v8 = self;
-  DOCColumnViewController.viewDidMove(to:shouldAppearOrDisappear:)(a3, a4);
+  windowCopy = window;
+  selfCopy = self;
+  DOCColumnViewController.viewDidMove(to:shouldAppearOrDisappear:)(window, disappear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   DOCColumnViewController.traitCollectionDidChange(_:)(v9);
 }
 
 - (void)viewLayoutMarginsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   DOCColumnViewController.viewLayoutMarginsDidChange()();
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8, v10);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  specialized DOCColumnViewController.collectionView(_:willDisplay:forItemAt:)(v14);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  specialized DOCColumnViewController.collectionView(_:willDisplay:forItemAt:)(cellCopy);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8, v10);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  specialized DOCColumnViewController.collectionView(_:didEndDisplaying:forItemAt:)(v14);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  specialized DOCColumnViewController.collectionView(_:didEndDisplaying:forItemAt:)(cellCopy);
 
   (*(v9 + 8))(v12, v8);
 }
 
 - (void)updateFocusHierarchy
 {
-  v2 = self;
+  selfCopy = self;
   DOCColumnViewController.updateFocusHierarchy()();
 }
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   DOCColumnViewController.preferredFocusEnvironments.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo18UIFocusEnvironment_pMd);
@@ -257,63 +257,63 @@
   return *(self + v3);
 }
 
-- (void)setShowsHierarchyIndicator:(BOOL)a3
+- (void)setShowsHierarchyIndicator:(BOOL)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   v5 = OBJC_IVAR___DOCColumnViewController_showsHierarchyIndicator;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
-  if (v6 != v3)
+  *(self + v5) = indicatorCopy;
+  if (v6 != indicatorCopy)
   {
-    v7 = self;
+    selfCopy = self;
     DOCColumnViewController.updateFakeSeparator()();
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = self;
+  selfCopy = self;
   DOCColumnViewController.updateFakeSeparator()();
   DOCColumnViewController.updateCellScrollPositionRelatedLayout()();
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v5 = a3;
-  v7 = self;
-  [v5 contentOffset];
+  draggingCopy = dragging;
+  selfCopy = self;
+  [draggingCopy contentOffset];
   if (v6 <= -100.0 && (DOCColumnViewController.canLoadAdditionalParents()() & 1) != 0)
   {
     DOCColumnViewController.beginLoadingAdditionalParents()();
   }
 }
 
-- (DOCColumnViewController)initWithCollectionViewLayout:(id)a3
+- (DOCColumnViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (DOCColumnViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (DOCColumnViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)removeChildViewController:(id)a3
+- (void)removeChildViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  DOCColumnViewController.removeChildViewController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  DOCColumnViewController.removeChildViewController(_:)(controllerCopy);
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v4 = *((*MEMORY[0x277D85000] & *self) + 0xB0);
-  v5 = self;
+  selfCopy = self;
   v6 = v4();
   if (v6 >> 62)
   {
@@ -328,53 +328,53 @@
   return v7;
 }
 
-- (void)getTransitionControllerForURL:(id)a3 completionBlock:(id)a4
+- (void)getTransitionControllerForURL:(id)l completionBlock:(id)block
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6, v8);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(block);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
-  v13 = self;
+  selfCopy = self;
   DOCColumnViewController.getTransitionController(forURL:completionBlock:)(v10, thunk for @escaping @callee_unowned @convention(block) (@unowned DOCServiceTransitionProtocol?) -> ()partial apply, v12);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)getViewFor:(id)a3 waitForNewThumbnail:(BOOL)a4 :(id)a5
+- (void)getViewFor:(id)for waitForNewThumbnail:(BOOL)thumbnail :(id)a5
 {
   v8 = _Block_copy(a5);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   swift_unknownObjectRetain();
-  v10 = self;
-  DOCColumnViewController.getView(for:waitForNewThumbnail:_:)(a3, a4, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned UIView?, @unowned UIBezierPath?) -> (), v9);
+  selfCopy = self;
+  DOCColumnViewController.getView(for:waitForNewThumbnail:_:)(for, thumbnail, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned UIView?, @unowned UIBezierPath?) -> (), v9);
   swift_unknownObjectRelease();
 }
 
-- (void)getCellFor:(id)a3 :(id)a4
+- (void)getCellFor:(id)for :(id)a4
 {
   v6 = _Block_copy(a4);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   swift_unknownObjectRetain();
-  v8 = self;
-  DOCColumnViewController.getCell(for:_:)(a3, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned DOCItemCollectionCell?) -> (), v7);
+  selfCopy = self;
+  DOCColumnViewController.getCell(for:_:)(for, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned DOCItemCollectionCell?) -> (), v7);
   swift_unknownObjectRelease();
 }
 
-- (void)revealWithNodes:(id)a3 selectEvenIfVisible:(BOOL)a4 completionBlock:(id)a5
+- (void)revealWithNodes:(id)nodes selectEvenIfVisible:(BOOL)visible completionBlock:(id)block
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(block);
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7DOCNode_pMd);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = self;
-  DOCColumnViewController.reveal(nodes:selectEvenIfVisible:completionBlock:)(v8, a4, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool) -> (), v9);
+  selfCopy = self;
+  DOCColumnViewController.reveal(nodes:selectEvenIfVisible:completionBlock:)(v8, visible, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool) -> (), v9);
 }
 
 @end

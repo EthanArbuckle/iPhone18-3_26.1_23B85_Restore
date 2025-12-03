@@ -1,26 +1,26 @@
 @interface VKCImageDataDetectorView_macOS
-- (BOOL)highlightedElementContainsPoint:(CGPoint)a3;
-- (BOOL)needsRotationOffsetForElementQuad:(id)a3 buttonQuad:(id)a4 isLTR:(BOOL)a5;
-- (CGSize)buttonImageSizeFromQuad:(id)a3 baseline:(CGPoint *)a4 LTR:(BOOL)a5 finalIsLTR:(BOOL *)a6;
-- (VKCImageDataDetectorView_macOS)initWithFrame:(CGRect)a3;
-- (VKEdgeDistance)edgeDistanceFromLine:(CGPoint *)a3 toRect:(CGRect)a4;
-- (double)angleOfQuad:(id)a3 LTR:(BOOL)a4;
-- (double)closestDistanceFromLine:(CGPoint *)a3 point:(CGPoint)a4 toRect:(CGRect)a5;
-- (id)elementAtPoint:(CGPoint)a3;
-- (id)pathForDataDetectorElement:(id)a3;
-- (id)quadAddingButtonQuad:(id)a3 toElementQuad:(id)a4 LTR:(BOOL)a5;
-- (id)setupButtonForElement:(id)a3;
-- (void)setHighlightedElement:(id)a3;
-- (void)updateHighlightForPoint:(CGPoint)a3;
+- (BOOL)highlightedElementContainsPoint:(CGPoint)point;
+- (BOOL)needsRotationOffsetForElementQuad:(id)quad buttonQuad:(id)buttonQuad isLTR:(BOOL)r;
+- (CGSize)buttonImageSizeFromQuad:(id)quad baseline:(CGPoint *)baseline LTR:(BOOL)r finalIsLTR:(BOOL *)tR;
+- (VKCImageDataDetectorView_macOS)initWithFrame:(CGRect)frame;
+- (VKEdgeDistance)edgeDistanceFromLine:(CGPoint *)line toRect:(CGRect)rect;
+- (double)angleOfQuad:(id)quad LTR:(BOOL)r;
+- (double)closestDistanceFromLine:(CGPoint *)line point:(CGPoint)point toRect:(CGRect)rect;
+- (id)elementAtPoint:(CGPoint)point;
+- (id)pathForDataDetectorElement:(id)element;
+- (id)quadAddingButtonQuad:(id)quad toElementQuad:(id)elementQuad LTR:(BOOL)r;
+- (id)setupButtonForElement:(id)element;
+- (void)setHighlightedElement:(id)element;
+- (void)updateHighlightForPoint:(CGPoint)point;
 @end
 
 @implementation VKCImageDataDetectorView_macOS
 
-- (VKCImageDataDetectorView_macOS)initWithFrame:(CGRect)a3
+- (VKCImageDataDetectorView_macOS)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = VKCImageDataDetectorView_macOS;
-  v3 = [(VKCImageDataDetectorView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VKCImageDataDetectorView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(VKCDataDetectorHighlightView);
@@ -39,27 +39,27 @@
   return v3;
 }
 
-- (id)pathForDataDetectorElement:(id)a3
+- (id)pathForDataDetectorElement:(id)element
 {
-  v3 = [(VKCImageDataDetectorView *)self viewSpaceQuadsForDataDetectorElement:a3];
+  v3 = [(VKCImageDataDetectorView *)self viewSpaceQuadsForDataDetectorElement:element];
   v4 = [v3 vk_compactMap:&__block_literal_global_39];
   v5 = [MEMORY[0x1E69DC728] vk_groupAndRoundPaths:v4 radius:4.0 offset:4.0];
 
   return v5;
 }
 
-- (BOOL)highlightedElementContainsPoint:(CGPoint)a3
+- (BOOL)highlightedElementContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCImageDataDetectorView_macOS *)self highlightView];
-  if (v6)
+  y = point.y;
+  x = point.x;
+  highlightView = [(VKCImageDataDetectorView_macOS *)self highlightView];
+  if (highlightView)
   {
-    [(VKCImageDataDetectorView_macOS *)self convertPoint:v6 toView:x, y];
+    [(VKCImageDataDetectorView_macOS *)self convertPoint:highlightView toView:x, y];
     v8 = v7;
     v10 = v9;
-    v11 = [v6 path];
-    v12 = [v11 containsPoint:{v8, v10}];
+    path = [highlightView path];
+    v12 = [path containsPoint:{v8, v10}];
   }
 
   else
@@ -70,10 +70,10 @@
   return v12;
 }
 
-- (void)updateHighlightForPoint:(CGPoint)a3
+- (void)updateHighlightForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (![(VKCImageDataDetectorView_macOS *)self highlightedElementContainsPoint:?])
   {
     v6 = [(VKCImageDataDetectorView_macOS *)self elementAtPoint:x, y];
@@ -81,33 +81,33 @@
     if (v6)
     {
       v7 = v6;
-      v8 = self;
+      selfCopy2 = self;
       v9 = v7;
     }
 
     else
     {
-      v8 = self;
+      selfCopy2 = self;
       v9 = 0;
     }
 
-    [(VKCImageDataDetectorView_macOS *)v8 setHighlightedElement:v9];
+    [(VKCImageDataDetectorView_macOS *)selfCopy2 setHighlightedElement:v9];
   }
 }
 
-- (void)setHighlightedElement:(id)a3
+- (void)setHighlightedElement:(id)element
 {
-  v5 = a3;
-  if (self->_highlightedElement != v5)
+  elementCopy = element;
+  if (self->_highlightedElement != elementCopy)
   {
-    objc_storeStrong(&self->_highlightedElement, a3);
-    v6 = [(VKCImageDataDetectorView_macOS *)self highlightView];
-    [v6 setHidden:self->_highlightedElement == 0];
+    objc_storeStrong(&self->_highlightedElement, element);
+    highlightView = [(VKCImageDataDetectorView_macOS *)self highlightView];
+    [highlightView setHidden:self->_highlightedElement == 0];
     if (self->_highlightedElement)
     {
       v7 = [(VKCImageDataDetectorView_macOS *)self setupButtonForElement:?];
-      v8 = [v7 ddBottomQuad];
-      [v8 sideLength];
+      ddBottomQuad = [v7 ddBottomQuad];
+      [ddBottomQuad sideLength];
       if (v9 >= v10)
       {
         v9 = v10;
@@ -115,41 +115,41 @@
 
       [(UIView *)self vk_windowLengthFromViewLength:v9];
       v12 = v11 < 6.0;
-      v13 = [v7 combinedElementHighlightPath];
-      v14 = [v7 buttonQuad];
-      [(VKCImageDataDetectorView_macOS *)self setButtonQuad:v14];
+      combinedElementHighlightPath = [v7 combinedElementHighlightPath];
+      buttonQuad = [v7 buttonQuad];
+      [(VKCImageDataDetectorView_macOS *)self setButtonQuad:buttonQuad];
 
-      v15 = [v7 ddBottomQuad];
-      [(VKCImageDataDetectorView_macOS *)self setDdBottomQuad:v15];
+      ddBottomQuad2 = [v7 ddBottomQuad];
+      [(VKCImageDataDetectorView_macOS *)self setDdBottomQuad:ddBottomQuad2];
 
-      [v13 bounds];
-      [v6 setFrame:?];
-      [v6 frame];
+      [combinedElementHighlightPath bounds];
+      [highlightView setFrame:?];
+      [highlightView frame];
       v17 = -v16;
-      [v6 frame];
+      [highlightView frame];
       CGAffineTransformMakeTranslation(&v21, v17, -v18);
-      [v13 vk_applyTransform:&v21];
-      [v6 setPath:v13];
-      [v6 setHideDashedLine:v12];
+      [combinedElementHighlightPath vk_applyTransform:&v21];
+      [highlightView setPath:combinedElementHighlightPath];
+      [highlightView setHideDashedLine:v12];
     }
 
     else
     {
-      v19 = [(VKCImageDataDetectorView_macOS *)self highlightButtonImageView];
-      [v19 setHidden:1];
+      highlightButtonImageView = [(VKCImageDataDetectorView_macOS *)self highlightButtonImageView];
+      [highlightButtonImageView setHidden:1];
 
-      v20 = [(VKCImageDataDetectorView_macOS *)self highlightView];
-      [v20 setPath:0];
+      highlightView2 = [(VKCImageDataDetectorView_macOS *)self highlightView];
+      [highlightView2 setPath:0];
 
       [(VKCImageDataDetectorView_macOS *)self setButtonQuad:0];
     }
   }
 }
 
-- (id)elementAtPoint:(CGPoint)a3
+- (id)elementAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(VKCImageDataDetectorView_macOS *)self highlightedElementContainsPoint:?])
   {
     [(VKCImageDataDetectorView_macOS *)self highlightedElement];
@@ -164,70 +164,70 @@
   return v6;
 }
 
-- (id)setupButtonForElement:(id)a3
+- (id)setupButtonForElement:(id)element
 {
   v69[4] = *MEMORY[0x1E69E9840];
-  v4 = [(VKCImageDataDetectorView *)self viewSpaceQuadsForDataDetectorElement:a3];
-  v5 = [v4 lastObject];
-  [v5 bottomLeft];
+  v4 = [(VKCImageDataDetectorView *)self viewSpaceQuadsForDataDetectorElement:element];
+  lastObject = [v4 lastObject];
+  [lastObject bottomLeft];
   v7 = v6;
   v9 = v8;
-  [v5 bottomRight];
+  [lastObject bottomRight];
   v12 = VKMAngleOfLine(v7, v9, v10, v11);
-  [v5 bottomLeft];
+  [lastObject bottomLeft];
   v14 = v13;
   v16 = v15;
-  [v5 bottomRight];
+  [lastObject bottomRight];
   v69[0] = v14;
   v69[1] = v16;
   v69[2] = v17;
   v69[3] = v18;
   v68 = 0;
-  [(VKCImageDataDetectorView_macOS *)self buttonImageSizeFromQuad:v5 baseline:v69 LTR:1 finalIsLTR:&v68];
+  [(VKCImageDataDetectorView_macOS *)self buttonImageSizeFromQuad:lastObject baseline:v69 LTR:1 finalIsLTR:&v68];
   v20 = v19;
-  [v5 bottomLeft];
+  [lastObject bottomLeft];
   v22 = v21;
   v24 = v23;
-  [v5 topLeft];
+  [lastObject topLeft];
   v26 = VKMMidpointOnLineSegment(v22, v24, v25);
   v28 = v27;
-  [v5 bottomRight];
+  [lastObject bottomRight];
   v30 = v29;
   v32 = v31;
-  [v5 topRight];
+  [lastObject topRight];
   v34 = VKMMidpointOnLineSegment(v30, v32, v33);
   v36 = VKMPointByExtendingLineFromPoints(v26, v28, v34, v35, v20 * 0.5);
   v38 = v37;
-  v39 = [(VKCImageDataDetectorView_macOS *)self highlightButtonImageView];
+  highlightButtonImageView = [(VKCImageDataDetectorView_macOS *)self highlightButtonImageView];
   v40 = VKMRectWithCenterAndSize(v36, v38, v20);
   v42 = v41;
   v44 = v43;
   v46 = v45;
-  [v39 setFrame:?];
-  [v39 setHidden:0];
-  [v39 setRotation:v12];
+  [highlightButtonImageView setFrame:?];
+  [highlightButtonImageView setHidden:0];
+  [highlightButtonImageView setRotation:v12];
   v47 = [[VKQuad alloc] initWithRect:v40, v42, v44, v46];
   v48 = [(VKQuad *)v47 quadFromRotatingAroundCentroidWithAngle:v12];
-  if ([(VKCImageDataDetectorView_macOS *)self needsRotationOffsetForElementQuad:v5 buttonQuad:v48 isLTR:1])
+  if ([(VKCImageDataDetectorView_macOS *)self needsRotationOffsetForElementQuad:lastObject buttonQuad:v48 isLTR:1])
   {
     v49 = v12 + 3.14159265;
-    [v39 setRotation:v49];
+    [highlightButtonImageView setRotation:v49];
     v50 = [(VKQuad *)v47 quadFromRotatingAroundCentroidWithAngle:v49];
 
     v48 = v50;
   }
 
-  v51 = [(VKCImageDataDetectorView_macOS *)self quadAddingButtonQuad:v48 toElementQuad:v5 LTR:1];
+  v51 = [(VKCImageDataDetectorView_macOS *)self quadAddingButtonQuad:v48 toElementQuad:lastObject LTR:1];
   v65[0] = MEMORY[0x1E69E9820];
   v65[1] = 3221225472;
   v65[2] = __56__VKCImageDataDetectorView_macOS_setupButtonForElement___block_invoke;
   v65[3] = &unk_1E7BE74A8;
   v66 = v51;
-  v67 = self;
+  selfCopy = self;
   v52 = v51;
   v53 = [v4 vk_map:v65];
-  v54 = [(VKCImageBaseOverlayView *)self recognitionResult];
-  [v54 imageSize];
+  recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
+  [recognitionResult imageSize];
   v57 = VKMAspectRatio(v55, v56);
 
   v58 = [MEMORY[0x1E69DC728] vk_roundAndGroupNormalizedQuadsForHighlight:v53 aspectRatio:v57 expansionScale:0.2 radiusToAvgHeightRatio:0.02];
@@ -238,44 +238,44 @@
   [v58 vk_applyTransform:&v63];
   v61 = objc_alloc_init(VKCImageDataDetectorViewQuadInfo);
   [(VKCImageDataDetectorViewQuadInfo *)v61 setButtonQuad:v48];
-  [(VKCImageDataDetectorViewQuadInfo *)v61 setDdBottomQuad:v5];
+  [(VKCImageDataDetectorViewQuadInfo *)v61 setDdBottomQuad:lastObject];
   [(VKCImageDataDetectorViewQuadInfo *)v61 setCombinedElementHighlightPath:v58];
 
   return v61;
 }
 
-- (BOOL)needsRotationOffsetForElementQuad:(id)a3 buttonQuad:(id)a4 isLTR:(BOOL)a5
+- (BOOL)needsRotationOffsetForElementQuad:(id)quad buttonQuad:(id)buttonQuad isLTR:(BOOL)r
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (v5)
+  rCopy = r;
+  buttonQuadCopy = buttonQuad;
+  quadCopy = quad;
+  v9 = quadCopy;
+  if (rCopy)
   {
-    [v8 bottomLeft];
+    [quadCopy bottomLeft];
     v11 = v10;
     v13 = v12;
-    [v7 bottomLeft];
+    [buttonQuadCopy bottomLeft];
     v16 = VKMDistance(v11, v13, v14, v15);
     [v9 bottomLeft];
     v18 = v17;
     v20 = v19;
 
-    [v7 bottomRight];
+    [buttonQuadCopy bottomRight];
   }
 
   else
   {
-    [v8 bottomRight];
+    [quadCopy bottomRight];
     v24 = v23;
     v26 = v25;
-    [v7 bottomRight];
+    [buttonQuadCopy bottomRight];
     v16 = VKMDistance(v24, v26, v27, v28);
     [v9 bottomRight];
     v18 = v29;
     v20 = v30;
 
-    [v7 bottomLeft];
+    [buttonQuadCopy bottomLeft];
   }
 
   v31 = v21;
@@ -284,14 +284,14 @@
   return v16 > VKMDistance(v18, v20, v31, v32);
 }
 
-- (double)angleOfQuad:(id)a3 LTR:(BOOL)a4
+- (double)angleOfQuad:(id)quad LTR:(BOOL)r
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  rCopy = r;
+  quadCopy = quad;
+  v6 = quadCopy;
+  if (rCopy)
   {
-    [v5 bottomLeft];
+    [quadCopy bottomLeft];
     v8 = v7;
     v10 = v9;
     [v6 bottomRight];
@@ -299,7 +299,7 @@
 
   else
   {
-    [v5 bottomRight];
+    [quadCopy bottomRight];
     v8 = v13;
     v10 = v14;
     [v6 bottomLeft];
@@ -311,33 +311,33 @@
   return VKMAngleOfLine(v8, v10, v15, v16);
 }
 
-- (VKEdgeDistance)edgeDistanceFromLine:(CGPoint *)a3 toRect:(CGRect)a4
+- (VKEdgeDistance)edgeDistanceFromLine:(CGPoint *)line toRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [(VKCImageDataDetectorView_macOS *)self closestDistanceFromLine:a3->x point:a3->y toRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(VKCImageDataDetectorView_macOS *)self closestDistanceFromLine:line->x point:line->y toRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v11 = v10;
-  [(VKCImageDataDetectorView_macOS *)self closestDistanceFromLine:a3 point:a3[1].x toRect:a3[1].y, x, y, width, height];
+  [(VKCImageDataDetectorView_macOS *)self closestDistanceFromLine:line point:line[1].x toRect:line[1].y, x, y, width, height];
   v13 = v11;
   result.var1 = v13;
   result.var0 = v12;
   return result;
 }
 
-- (double)closestDistanceFromLine:(CGPoint *)a3 point:(CGPoint)a4 toRect:(CGRect)a5
+- (double)closestDistanceFromLine:(CGPoint *)line point:(CGPoint)point toRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  v10 = point.x;
   v32[4] = *MEMORY[0x1E69E9840];
   v33.x = v10;
   v33.y = v9;
-  v12 = CGRectContainsPoint(a5, v33);
+  v12 = CGRectContainsPoint(rect, v33);
   result = -1.0;
   if (v12)
   {
@@ -396,9 +396,9 @@
     v26[1] = v22;
     v26[2] = v16;
     v26[3] = v29;
-    VKMDistanceFromLineToLineAtPoint(&a3->x, v32);
+    VKMDistanceFromLineToLineAtPoint(&line->x, v32);
     v18 = v17;
-    VKMDistanceFromLineToLineAtPoint(&a3->x, &v28);
+    VKMDistanceFromLineToLineAtPoint(&line->x, &v28);
     if (v18 >= v19)
     {
       v20 = v19;
@@ -409,13 +409,13 @@
       v20 = v18;
     }
 
-    VKMDistanceFromLineToLineAtPoint(&a3->x, v27);
+    VKMDistanceFromLineToLineAtPoint(&line->x, v27);
     if (v20 >= v21)
     {
       v20 = v21;
     }
 
-    VKMDistanceFromLineToLineAtPoint(&a3->x, v26);
+    VKMDistanceFromLineToLineAtPoint(&line->x, v26);
     if (v20 < result)
     {
       return v20;
@@ -425,14 +425,14 @@
   return result;
 }
 
-- (CGSize)buttonImageSizeFromQuad:(id)a3 baseline:(CGPoint *)a4 LTR:(BOOL)a5 finalIsLTR:(BOOL *)a6
+- (CGSize)buttonImageSizeFromQuad:(id)quad baseline:(CGPoint *)baseline LTR:(BOOL)r finalIsLTR:(BOOL *)tR
 {
-  v7 = a5;
-  *a6 = a5;
-  [a3 sideLength];
+  rCopy = r;
+  *tR = r;
+  [quad sideLength];
   v12 = v10;
   v13 = v11;
-  if (v7)
+  if (rCopy)
   {
     v14 = v11;
   }
@@ -445,8 +445,8 @@
   [(UIView *)self vk_viewPointRatioFromWindow];
   v16 = VKMClamp(v14, v15 * 12.0, v15 * 32.0);
   [(VKCImageDataDetectorView_macOS *)self bounds];
-  [(VKCImageDataDetectorView_macOS *)self edgeDistanceFromLine:a4 toRect:?];
-  if (v7)
+  [(VKCImageDataDetectorView_macOS *)self edgeDistanceFromLine:baseline toRect:?];
+  if (rCopy)
   {
     if (v17 >= 12.0)
     {
@@ -459,14 +459,14 @@
     else if (v18 > 12.0)
     {
       v16 = VKMClamp(v13, 12.0, 32.0);
-      *a6 = 0;
+      *tR = 0;
     }
   }
 
   else if (v18 < 12.0 && v17 > 12.0)
   {
     v16 = VKMClamp(v12, 12.0, 32.0);
-    *a6 = 1;
+    *tR = 1;
   }
 
   v20 = v16;
@@ -476,26 +476,26 @@
   return result;
 }
 
-- (id)quadAddingButtonQuad:(id)a3 toElementQuad:(id)a4 LTR:(BOOL)a5
+- (id)quadAddingButtonQuad:(id)quad toElementQuad:(id)elementQuad LTR:(BOOL)r
 {
-  v5 = a5;
+  rCopy = r;
   v67[4] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  [v7 topLeft];
+  elementQuadCopy = elementQuad;
+  quadCopy = quad;
+  [elementQuadCopy topLeft];
   v10 = v9;
   v12 = v11;
-  [v7 topRight];
+  [elementQuadCopy topRight];
   v14 = v13;
   v16 = v15;
-  [v7 bottomLeft];
+  [elementQuadCopy bottomLeft];
   v18 = v17;
   v20 = v19;
-  [v7 bottomRight];
+  [elementQuadCopy bottomRight];
   v22 = v21;
   v24 = v23;
 
-  if (v5)
+  if (rCopy)
   {
     v25 = v20;
   }
@@ -505,7 +505,7 @@
     v25 = v24;
   }
 
-  if (v5)
+  if (rCopy)
   {
     v26 = v18;
   }
@@ -519,7 +519,7 @@
   v67[1] = v25;
   v52 = v20;
   v53 = v18;
-  if (v5)
+  if (rCopy)
   {
     v20 = v24;
     v18 = v22;
@@ -531,7 +531,7 @@
     v27 = v16;
   }
 
-  if (v5)
+  if (rCopy)
   {
     v28 = v10;
   }
@@ -545,14 +545,14 @@
   v57 = v10;
   v54 = v16;
   v55 = v14;
-  if (v5)
+  if (rCopy)
   {
     v12 = v16;
   }
 
   v67[2] = v18;
   v67[3] = v20;
-  if (v5)
+  if (rCopy)
   {
     v10 = v14;
   }
@@ -561,20 +561,20 @@
   v66[1] = v27;
   v66[2] = v10;
   v66[3] = v12;
-  if (v5)
+  if (rCopy)
   {
-    [v8 bottomRight];
+    [quadCopy bottomRight];
     v62 = v29;
     v63 = v30;
-    [v8 topRight];
+    [quadCopy topRight];
   }
 
   else
   {
-    [v8 bottomLeft];
+    [quadCopy bottomLeft];
     v62 = v33;
     v63 = v34;
-    [v8 topLeft];
+    [quadCopy topLeft];
   }
 
   v35 = v31;
@@ -590,7 +590,7 @@
   v37 = VKMDistance(v18, v20, v58, v59);
   VKMIntersectionOfLines(v66, &v62, &v60, &v61, &v58, 1, 1);
   v38 = VKMDistance(v10, v12, v58, v59);
-  if (v5)
+  if (rCopy)
   {
     v40 = v56;
     v39 = v57;

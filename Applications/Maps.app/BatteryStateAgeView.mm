@@ -1,10 +1,10 @@
 @interface BatteryStateAgeView
-- (BatteryStateAgeView)initWithConfiguration:(int64_t)a3;
+- (BatteryStateAgeView)initWithConfiguration:(int64_t)configuration;
 - (void)_setupConstraints;
 - (void)_setupStyling;
 - (void)_updateContents;
-- (void)setDateOfLastSync:(id)a3;
-- (void)setShouldShowSeparator:(BOOL)a3;
+- (void)setDateOfLastSync:(id)sync;
+- (void)setShouldShowSeparator:(BOOL)separator;
 - (void)startAnimating;
 - (void)stopAnimating;
 @end
@@ -29,24 +29,24 @@
   [(UIActivityIndicatorView *)activityIndicator startAnimating];
 }
 
-- (void)setShouldShowSeparator:(BOOL)a3
+- (void)setShouldShowSeparator:(BOOL)separator
 {
-  if (self->_shouldShowSeparator != a3)
+  if (self->_shouldShowSeparator != separator)
   {
-    self->_shouldShowSeparator = a3;
+    self->_shouldShowSeparator = separator;
     [(BatteryStateAgeView *)self _updateContents];
   }
 }
 
-- (void)setDateOfLastSync:(id)a3
+- (void)setDateOfLastSync:(id)sync
 {
-  v5 = a3;
-  if (self->_dateOfLastSync != v5)
+  syncCopy = sync;
+  if (self->_dateOfLastSync != syncCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_dateOfLastSync, a3);
+    v6 = syncCopy;
+    objc_storeStrong(&self->_dateOfLastSync, sync);
     [(BatteryStateAgeView *)self _updateContents];
-    v5 = v6;
+    syncCopy = v6;
   }
 }
 
@@ -129,7 +129,7 @@
       v24 = [NSDateComponentsFormatter _mapkit_descriptionForTimeSinceDate:v22 referenceDate:v23 smallestUnit:128];
     }
 
-    v27 = [(BatteryStateAgeView *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(BatteryStateAgeView *)self effectiveUserInterfaceLayoutDirection];
     if ([(BatteryStateAgeView *)self shouldShowSeparator])
     {
       v28 = +[NSBundle mainBundle];
@@ -141,7 +141,7 @@
       v29 = &stru_1016631F0;
     }
 
-    if (v27 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       [NSString stringWithFormat:@"%@%@", v24, v29];
     }
@@ -178,45 +178,45 @@
 - (void)_setupConstraints
 {
   v34 = +[NSMutableArray array];
-  v33 = [(UILabel *)self->_stateUpdatedLabel topAnchor];
-  v32 = [(BatteryStateAgeView *)self topAnchor];
-  v31 = [v33 constraintGreaterThanOrEqualToAnchor:v32];
+  topAnchor = [(UILabel *)self->_stateUpdatedLabel topAnchor];
+  topAnchor2 = [(BatteryStateAgeView *)self topAnchor];
+  v31 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v35[0] = v31;
-  v30 = [(UILabel *)self->_stateUpdatedLabel leadingAnchor];
-  v29 = [(BatteryStateAgeView *)self leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  leadingAnchor = [(UILabel *)self->_stateUpdatedLabel leadingAnchor];
+  leadingAnchor2 = [(BatteryStateAgeView *)self leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v35[1] = v28;
-  v27 = [(UILabel *)self->_stateUpdatedLabel centerYAnchor];
-  v26 = [(BatteryStateAgeView *)self centerYAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  centerYAnchor = [(UILabel *)self->_stateUpdatedLabel centerYAnchor];
+  centerYAnchor2 = [(BatteryStateAgeView *)self centerYAnchor];
+  v25 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v35[2] = v25;
-  v24 = [(BatteryStateAgeView *)self trailingAnchor];
-  v23 = [(UILabel *)self->_stateUpdatedLabel trailingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  trailingAnchor = [(BatteryStateAgeView *)self trailingAnchor];
+  trailingAnchor2 = [(UILabel *)self->_stateUpdatedLabel trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v35[3] = v22;
-  v21 = [(BatteryStateAgeView *)self bottomAnchor];
-  v20 = [(UILabel *)self->_stateUpdatedLabel bottomAnchor];
-  v19 = [v21 constraintGreaterThanOrEqualToAnchor:v20];
+  bottomAnchor = [(BatteryStateAgeView *)self bottomAnchor];
+  bottomAnchor2 = [(UILabel *)self->_stateUpdatedLabel bottomAnchor];
+  v19 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   v35[4] = v19;
-  v18 = [(UIActivityIndicatorView *)self->_activityIndicator topAnchor];
-  v17 = [(BatteryStateAgeView *)self topAnchor];
-  v16 = [v18 constraintGreaterThanOrEqualToAnchor:v17];
+  topAnchor3 = [(UIActivityIndicatorView *)self->_activityIndicator topAnchor];
+  topAnchor4 = [(BatteryStateAgeView *)self topAnchor];
+  v16 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v35[5] = v16;
-  v15 = [(UIActivityIndicatorView *)self->_activityIndicator leadingAnchor];
-  v14 = [(BatteryStateAgeView *)self leadingAnchor];
-  v13 = [v15 constraintEqualToAnchor:v14 constant:8.0];
+  leadingAnchor3 = [(UIActivityIndicatorView *)self->_activityIndicator leadingAnchor];
+  leadingAnchor4 = [(BatteryStateAgeView *)self leadingAnchor];
+  v13 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:8.0];
   v35[6] = v13;
-  v3 = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
-  v4 = [(BatteryStateAgeView *)self centerYAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  centerYAnchor3 = [(UIActivityIndicatorView *)self->_activityIndicator centerYAnchor];
+  centerYAnchor4 = [(BatteryStateAgeView *)self centerYAnchor];
+  v5 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v35[7] = v5;
-  v6 = [(BatteryStateAgeView *)self trailingAnchor];
-  v7 = [(UIActivityIndicatorView *)self->_activityIndicator trailingAnchor];
-  v8 = [v6 constraintGreaterThanOrEqualToAnchor:v7];
+  trailingAnchor3 = [(BatteryStateAgeView *)self trailingAnchor];
+  trailingAnchor4 = [(UIActivityIndicatorView *)self->_activityIndicator trailingAnchor];
+  v8 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
   v35[8] = v8;
-  v9 = [(BatteryStateAgeView *)self bottomAnchor];
-  v10 = [(UIActivityIndicatorView *)self->_activityIndicator bottomAnchor];
-  v11 = [v9 constraintGreaterThanOrEqualToAnchor:v10];
+  bottomAnchor3 = [(BatteryStateAgeView *)self bottomAnchor];
+  bottomAnchor4 = [(UIActivityIndicatorView *)self->_activityIndicator bottomAnchor];
+  v11 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4];
   v35[9] = v11;
   v12 = [NSArray arrayWithObjects:v35 count:10];
   [v34 addObjectsFromArray:v12];
@@ -224,45 +224,45 @@
   [NSLayoutConstraint activateConstraints:v34];
 }
 
-- (BatteryStateAgeView)initWithConfiguration:(int64_t)a3
+- (BatteryStateAgeView)initWithConfiguration:(int64_t)configuration
 {
   v17.receiver = self;
   v17.super_class = BatteryStateAgeView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(BatteryStateAgeView *)&v17 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v7)
+  height = [(BatteryStateAgeView *)&v17 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [(BatteryStateAgeView *)v7 setAccessibilityIdentifier:v9];
+    [(BatteryStateAgeView *)height setAccessibilityIdentifier:v9];
 
-    v7->_configuration = a3;
+    height->_configuration = configuration;
     v10 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    stateUpdatedLabel = v7->_stateUpdatedLabel;
-    v7->_stateUpdatedLabel = v10;
+    stateUpdatedLabel = height->_stateUpdatedLabel;
+    height->_stateUpdatedLabel = v10;
 
-    [(UILabel *)v7->_stateUpdatedLabel setAccessibilityIdentifier:@"StateUpdatedLabel"];
-    [(UILabel *)v7->_stateUpdatedLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UILabel *)v7->_stateUpdatedLabel setAdjustsFontForContentSizeCategory:1];
+    [(UILabel *)height->_stateUpdatedLabel setAccessibilityIdentifier:@"StateUpdatedLabel"];
+    [(UILabel *)height->_stateUpdatedLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)height->_stateUpdatedLabel setAdjustsFontForContentSizeCategory:1];
     LODWORD(v12) = 1148846080;
-    [(UILabel *)v7->_stateUpdatedLabel setContentCompressionResistancePriority:1 forAxis:v12];
-    [(BatteryStateAgeView *)v7 addSubview:v7->_stateUpdatedLabel];
+    [(UILabel *)height->_stateUpdatedLabel setContentCompressionResistancePriority:1 forAxis:v12];
+    [(BatteryStateAgeView *)height addSubview:height->_stateUpdatedLabel];
     v13 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
-    activityIndicator = v7->_activityIndicator;
-    v7->_activityIndicator = v13;
+    activityIndicator = height->_activityIndicator;
+    height->_activityIndicator = v13;
 
-    [(UIActivityIndicatorView *)v7->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIActivityIndicatorView *)v7->_activityIndicator setAccessibilityIdentifier:@"BatteryStateActivityIndicator"];
+    [(UIActivityIndicatorView *)height->_activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIActivityIndicatorView *)height->_activityIndicator setAccessibilityIdentifier:@"BatteryStateActivityIndicator"];
     LODWORD(v15) = 1148846080;
-    [(UIActivityIndicatorView *)v7->_activityIndicator setContentCompressionResistancePriority:1 forAxis:v15];
-    [(BatteryStateAgeView *)v7 addSubview:v7->_activityIndicator];
-    [(BatteryStateAgeView *)v7 _setupConstraints];
-    [(BatteryStateAgeView *)v7 _setupStyling];
+    [(UIActivityIndicatorView *)height->_activityIndicator setContentCompressionResistancePriority:1 forAxis:v15];
+    [(BatteryStateAgeView *)height addSubview:height->_activityIndicator];
+    [(BatteryStateAgeView *)height _setupConstraints];
+    [(BatteryStateAgeView *)height _setupStyling];
   }
 
-  return v7;
+  return height;
 }
 
 @end

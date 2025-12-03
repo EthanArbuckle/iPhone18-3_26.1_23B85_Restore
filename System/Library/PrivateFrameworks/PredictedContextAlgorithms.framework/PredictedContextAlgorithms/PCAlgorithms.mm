@@ -1,12 +1,12 @@
 @interface PCAlgorithms
-- (BOOL)applyAlgorithmState:(id)a3 outError:(id *)a4;
-- (BOOL)computeWithInputSignals:(id)a3 outError:(id *)a4;
-- (BOOL)interruptComputeWithError:(id *)a3;
-- (BOOL)predictContextWithInputSignals:(id)a3 result:(id *)a4 outError:(id *)a5;
-- (BOOL)retrieveAlgorithmState:(id *)a3 outError:(id *)a4;
-- (BOOL)retrieveWorkoutClusters:(id *)a3 outError:(id *)a4;
+- (BOOL)applyAlgorithmState:(id)state outError:(id *)error;
+- (BOOL)computeWithInputSignals:(id)signals outError:(id *)error;
+- (BOOL)interruptComputeWithError:(id *)error;
+- (BOOL)predictContextWithInputSignals:(id)signals result:(id *)result outError:(id *)error;
+- (BOOL)retrieveAlgorithmState:(id *)state outError:(id *)error;
+- (BOOL)retrieveWorkoutClusters:(id *)clusters outError:(id *)error;
 - (PCAlgorithms)init;
-- (PCAlgorithms)initWithConfig:(id)a3;
+- (PCAlgorithms)initWithConfig:(id)config;
 - (void)_initVisitHistoryAndOutOfPattern;
 @end
 
@@ -20,10 +20,10 @@
   return v4;
 }
 
-- (PCAlgorithms)initWithConfig:(id)a3
+- (PCAlgorithms)initWithConfig:(id)config
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configCopy = config;
   v20.receiver = self;
   v20.super_class = PCAlgorithms;
   v5 = [(PCAlgorithms *)&v20 init];
@@ -33,28 +33,28 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v4;
+      v22 = configCopy;
       _os_log_impl(&dword_1CEE74000, v6, OS_LOG_TYPE_DEFAULT, "initializing PCAlgorithms with config: %@", buf, 0xCu);
     }
 
-    [(PCAlgorithms *)v5 setConfig:v4];
+    [(PCAlgorithms *)v5 setConfig:configCopy];
     v7 = objc_alloc_init(PCWorkoutPrediction);
     [(PCAlgorithms *)v5 setWorkoutPrediction:v7];
 
     v8 = [PCVisitHistoryPredictor alloc];
-    v9 = [v4 visitHistoryConfig];
-    v10 = [(PCVisitHistoryPredictor *)v8 initWithConfig:v9];
+    visitHistoryConfig = [configCopy visitHistoryConfig];
+    v10 = [(PCVisitHistoryPredictor *)v8 initWithConfig:visitHistoryConfig];
     [(PCAlgorithms *)v5 setVisitHistoryPred:v10];
 
     v11 = [[PCOutOfPatternLogic alloc] initWithModelCentroidLatLon:0];
     [(PCAlgorithms *)v5 setOutOfPatternLogic:v11];
 
     v12 = [PCDynamicsWeighting alloc];
-    v13 = [v4 dynamicsConfig];
-    v14 = [v13 directionScaleFactorEstimator];
-    v15 = [v4 dynamicsConfig];
-    v16 = [v15 etaScaleFactorEstimator];
-    v17 = [(PCDynamicsWeighting *)v12 initWithDirectionScaleFactorEstimator:v14 ETAScaleFactorEstimator:v16];
+    dynamicsConfig = [configCopy dynamicsConfig];
+    directionScaleFactorEstimator = [dynamicsConfig directionScaleFactorEstimator];
+    dynamicsConfig2 = [configCopy dynamicsConfig];
+    etaScaleFactorEstimator = [dynamicsConfig2 etaScaleFactorEstimator];
+    v17 = [(PCDynamicsWeighting *)v12 initWithDirectionScaleFactorEstimator:directionScaleFactorEstimator ETAScaleFactorEstimator:etaScaleFactorEstimator];
     [(PCAlgorithms *)v5 setDynamicsWeighting:v17];
   }
 
@@ -71,14 +71,14 @@
   [(PCAlgorithms *)self setOutOfPatternLogic:v4];
 }
 
-- (BOOL)applyAlgorithmState:(id)a3 outError:(id *)a4
+- (BOOL)applyAlgorithmState:(id)state outError:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stateCopy = state;
   v7 = objc_alloc(MEMORY[0x1E696ACD0]);
-  v8 = [v6 algorithmState];
+  algorithmState = [stateCopy algorithmState];
   v30 = 0;
-  v9 = [v7 initForReadingFromData:v8 error:&v30];
+  v9 = [v7 initForReadingFromData:algorithmState error:&v30];
   v10 = v30;
 
   if (!v10)
@@ -89,7 +89,7 @@
       v15 = [v9 decodeObjectOfClass:objc_opt_class() forKey:@"visit-history-predictor"];
       [(PCAlgorithms *)self setVisitHistoryPred:v15];
 
-      v16 = [(PCAlgorithms *)self visitHistoryPred];
+      visitHistoryPred = [(PCAlgorithms *)self visitHistoryPred];
 
       v17 = [v9 decodeObjectOfClass:objc_opt_class() forKey:@"LastTrainingDateCFAbsTime"];
       [(PCAlgorithms *)self setLastComputeDate:v17];
@@ -97,8 +97,8 @@
       v18 = [v9 decodeObjectOfClass:objc_opt_class() forKey:@"out-of-pattern-logic"];
       [(PCAlgorithms *)self setOutOfPatternLogic:v18];
 
-      v19 = [(PCAlgorithms *)self outOfPatternLogic];
-      LOBYTE(v18) = v19 == 0;
+      outOfPatternLogic = [(PCAlgorithms *)self outOfPatternLogic];
+      LOBYTE(v18) = outOfPatternLogic == 0;
 
       if (v18)
       {
@@ -112,7 +112,7 @@
         _os_log_impl(&dword_1CEE74000, v20, OS_LOG_TYPE_DEFAULT, "Successfully decoded outOfPatternLogic!", buf, 2u);
       }
 
-      if (!v16)
+      if (!visitHistoryPred)
       {
 LABEL_16:
         v23 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
@@ -134,8 +134,8 @@ LABEL_16:
       v24 = [v9 decodeObjectOfClass:objc_opt_class() forKey:@"WorkoutPrediction"];
       [(PCAlgorithms *)self setWorkoutPrediction:v24];
 
-      v25 = [(PCAlgorithms *)self workoutPrediction];
-      LODWORD(v24) = v25 == 0;
+      workoutPrediction = [(PCAlgorithms *)self workoutPrediction];
+      LODWORD(v24) = workoutPrediction == 0;
 
       if (v24)
       {
@@ -160,12 +160,12 @@ LABEL_16:
         }
       }
 
-      if (a4)
+      if (error)
       {
 LABEL_26:
         v10 = 0;
         v13 = 0;
-        *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PCErrorDomain" code:1 userInfo:0];
+        *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PCErrorDomain" code:1 userInfo:0];
         goto LABEL_29;
       }
     }
@@ -183,7 +183,7 @@ LABEL_26:
       }
 
       [(PCAlgorithms *)self _initVisitHistoryAndOutOfPattern];
-      if (a4)
+      if (error)
       {
         goto LABEL_26;
       }
@@ -203,21 +203,21 @@ LABEL_28:
   }
 
   [(PCAlgorithms *)self _initVisitHistoryAndOutOfPattern];
-  if (!a4)
+  if (!error)
   {
     goto LABEL_28;
   }
 
   v12 = v10;
   v13 = 0;
-  *a4 = v10;
+  *error = v10;
 LABEL_29:
 
   v28 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (BOOL)retrieveAlgorithmState:(id *)a3 outError:(id *)a4
+- (BOOL)retrieveAlgorithmState:(id *)state outError:(id *)error
 {
   v6 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -228,43 +228,43 @@ LABEL_29:
 
   v7 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v7 encodeInt:2 forKey:@"version"];
-  v8 = [(PCAlgorithms *)self visitHistoryPred];
-  [v7 encodeObject:v8 forKey:@"visit-history-predictor"];
+  visitHistoryPred = [(PCAlgorithms *)self visitHistoryPred];
+  [v7 encodeObject:visitHistoryPred forKey:@"visit-history-predictor"];
 
-  v9 = [(PCAlgorithms *)self lastComputeDate];
+  lastComputeDate = [(PCAlgorithms *)self lastComputeDate];
 
-  if (v9)
+  if (lastComputeDate)
   {
-    v10 = [(PCAlgorithms *)self lastComputeDate];
-    [v7 encodeObject:v10 forKey:@"LastTrainingDateCFAbsTime"];
+    lastComputeDate2 = [(PCAlgorithms *)self lastComputeDate];
+    [v7 encodeObject:lastComputeDate2 forKey:@"LastTrainingDateCFAbsTime"];
   }
 
-  v11 = [(PCAlgorithms *)self outOfPatternLogic];
-  [v7 encodeObject:v11 forKey:@"out-of-pattern-logic"];
+  outOfPatternLogic = [(PCAlgorithms *)self outOfPatternLogic];
+  [v7 encodeObject:outOfPatternLogic forKey:@"out-of-pattern-logic"];
 
-  v12 = [(PCAlgorithms *)self workoutPrediction];
-  [v7 encodeObject:v12 forKey:@"WorkoutPrediction"];
+  workoutPrediction = [(PCAlgorithms *)self workoutPrediction];
+  [v7 encodeObject:workoutPrediction forKey:@"WorkoutPrediction"];
 
-  v13 = [v7 encodedData];
+  encodedData = [v7 encodedData];
   v14 = objc_alloc_init(PCPAlgorithmState);
-  *a3 = v14;
-  [(PCPAlgorithmState *)v14 setAlgorithmState:v13];
+  *state = v14;
+  [(PCPAlgorithmState *)v14 setAlgorithmState:encodedData];
 
   return 1;
 }
 
-- (BOOL)retrieveWorkoutClusters:(id *)a3 outError:(id *)a4
+- (BOOL)retrieveWorkoutClusters:(id *)clusters outError:(id *)error
 {
-  v5 = [(PCAlgorithms *)self workoutPrediction:a3];
-  v6 = [v5 fetchClusters];
+  v5 = [(PCAlgorithms *)self workoutPrediction:clusters];
+  fetchClusters = [v5 fetchClusters];
 
-  v7 = v6;
-  *a3 = v6;
+  v7 = fetchClusters;
+  *clusters = fetchClusters;
 
   return 1;
 }
 
-- (BOOL)interruptComputeWithError:(id *)a3
+- (BOOL)interruptComputeWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
@@ -274,22 +274,22 @@ LABEL_29:
     _os_log_impl(&dword_1CEE74000, v5, OS_LOG_TYPE_DEFAULT, "interrupt training request received", buf, 2u);
   }
 
-  v6 = [(PCAlgorithms *)self visitHistoryPred];
+  visitHistoryPred = [(PCAlgorithms *)self visitHistoryPred];
 
-  if (!v6)
+  if (!visitHistoryPred)
   {
     v20 = 1;
     goto LABEL_17;
   }
 
-  v7 = [(PCAlgorithms *)self currentComputeDate];
-  if (v7 && (v8 = v7, [(PCAlgorithms *)self lastComputeDate], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+  currentComputeDate = [(PCAlgorithms *)self currentComputeDate];
+  if (currentComputeDate && (v8 = currentComputeDate, [(PCAlgorithms *)self lastComputeDate], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
   {
-    v10 = [(PCAlgorithms *)self currentComputeDate];
-    [v10 doubleValue];
+    currentComputeDate2 = [(PCAlgorithms *)self currentComputeDate];
+    [currentComputeDate2 doubleValue];
     v12 = v11;
-    v13 = [(PCAlgorithms *)self lastComputeDate];
-    [v13 doubleValue];
+    lastComputeDate = [(PCAlgorithms *)self lastComputeDate];
+    [lastComputeDate doubleValue];
     v15 = v12 - v14;
 
     if (v15 > 518400.0)
@@ -302,7 +302,7 @@ LABEL_29:
         _os_log_impl(&dword_1CEE74000, v16, OS_LOG_TYPE_ERROR, "age of model is greater than %d days, deferral will not be honored", buf, 8u);
       }
 
-      if (!a3)
+      if (!error)
       {
         v20 = 0;
         goto LABEL_17;
@@ -311,10 +311,10 @@ LABEL_29:
       v17 = objc_alloc(MEMORY[0x1E696ABC0]);
       v24 = *MEMORY[0x1E696A578];
       v25 = @"deferral request ignored due to model age";
-      v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-      v19 = [v17 initWithDomain:@"PCErrorDomain" code:6 userInfo:v18];
+      visitHistoryPred2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
+      v19 = [v17 initWithDomain:@"PCErrorDomain" code:6 userInfo:visitHistoryPred2];
       v20 = 0;
-      *a3 = v19;
+      *error = v19;
       goto LABEL_15;
     }
   }
@@ -329,8 +329,8 @@ LABEL_29:
     }
   }
 
-  v18 = [(PCAlgorithms *)self visitHistoryPred];
-  [v18 interruptTraining];
+  visitHistoryPred2 = [(PCAlgorithms *)self visitHistoryPred];
+  [visitHistoryPred2 interruptTraining];
   v20 = 1;
 LABEL_15:
 
@@ -339,45 +339,45 @@ LABEL_17:
   return v20;
 }
 
-- (BOOL)computeWithInputSignals:(id)a3 outError:(id *)a4
+- (BOOL)computeWithInputSignals:(id)signals outError:(id *)error
 {
-  v6 = a3;
-  v7 = [(PCAlgorithms *)self outOfPatternLogic];
-  v8 = [v7 processInputSignals:v6 isOutOfPattern:0];
+  signalsCopy = signals;
+  outOfPatternLogic = [(PCAlgorithms *)self outOfPatternLogic];
+  v8 = [outOfPatternLogic processInputSignals:signalsCopy isOutOfPattern:0];
 
-  v9 = [v6 currentTimeZoneAbbreviation];
+  currentTimeZoneAbbreviation = [signalsCopy currentTimeZoneAbbreviation];
 
-  v36 = a4;
-  if (v9)
+  errorCopy = error;
+  if (currentTimeZoneAbbreviation)
   {
     v10 = MEMORY[0x1E695DFE8];
-    v11 = [v6 currentTimeZoneAbbreviation];
-    v9 = [v10 timeZoneWithAbbreviation:v11];
+    currentTimeZoneAbbreviation2 = [signalsCopy currentTimeZoneAbbreviation];
+    currentTimeZoneAbbreviation = [v10 timeZoneWithAbbreviation:currentTimeZoneAbbreviation2];
   }
 
   v12 = MEMORY[0x1E696AD98];
-  [v6 currentTimeCFAbsolute];
+  [signalsCopy currentTimeCFAbsolute];
   v13 = [v12 numberWithDouble:?];
   [(PCAlgorithms *)self setCurrentComputeDate:v13];
 
-  v14 = [(PCAlgorithms *)self visitHistoryPred];
-  v15 = [v8 visits];
-  v16 = [v8 transitions];
-  v17 = [v8 locationOfInterests];
-  v18 = [v8 homeKitHomes];
+  visitHistoryPred = [(PCAlgorithms *)self visitHistoryPred];
+  visits = [v8 visits];
+  transitions = [v8 transitions];
+  locationOfInterests = [v8 locationOfInterests];
+  homeKitHomes = [v8 homeKitHomes];
   [v8 currentTimeCFAbsolute];
   v39 = 0;
-  v37 = v9;
-  [v14 computeWithHistory:v15 transitions:v16 locationsOfInterest:v17 homekitHomes:v18 atTime:v9 inTimeZone:&v39 withError:?];
+  v37 = currentTimeZoneAbbreviation;
+  [visitHistoryPred computeWithHistory:visits transitions:transitions locationsOfInterest:locationOfInterests homekitHomes:homeKitHomes atTime:currentTimeZoneAbbreviation inTimeZone:&v39 withError:?];
   v19 = v39;
 
   if (v19)
   {
-    if (v36)
+    if (errorCopy)
     {
       v20 = v19;
       v21 = 0;
-      *v36 = v19;
+      *errorCopy = v19;
     }
 
     else
@@ -389,43 +389,43 @@ LABEL_17:
   else
   {
     v22 = MEMORY[0x1E696AD98];
-    [v6 currentTimeCFAbsolute];
+    [signalsCopy currentTimeCFAbsolute];
     v23 = [v22 numberWithDouble:?];
     [(PCAlgorithms *)self setLastComputeDate:v23];
 
-    v24 = [v6 locationHistorys];
-    [v6 currentTimeCFAbsolute];
-    v25 = [PCLocationUtils currentLocationWithLocationHistory:v24 currentTime:?];
+    locationHistorys = [signalsCopy locationHistorys];
+    [signalsCopy currentTimeCFAbsolute];
+    v25 = [PCLocationUtils currentLocationWithLocationHistory:locationHistorys currentTime:?];
 
-    v26 = [(PCAlgorithms *)self outOfPatternLogic];
+    outOfPatternLogic2 = [(PCAlgorithms *)self outOfPatternLogic];
     v35 = v25;
-    [v26 resetAwaitingRetrainWithCurrentLocation:v25 inputSignals:v6];
+    [outOfPatternLogic2 resetAwaitingRetrainWithCurrentLocation:v25 inputSignals:signalsCopy];
 
-    v27 = [(PCAlgorithms *)self workoutPrediction];
-    v28 = [v6 visits];
-    v29 = [v6 workouts];
-    v30 = [v6 locationOfInterests];
-    [v6 currentTimeCFAbsolute];
+    workoutPrediction = [(PCAlgorithms *)self workoutPrediction];
+    visits2 = [signalsCopy visits];
+    workouts = [signalsCopy workouts];
+    locationOfInterests2 = [signalsCopy locationOfInterests];
+    [signalsCopy currentTimeCFAbsolute];
     v38 = 0;
-    v31 = [v27 computeWithLocationHistory:v28 workoutHistory:v29 LOIs:v30 atTime:&v38 error:?];
+    v31 = [workoutPrediction computeWithLocationHistory:visits2 workoutHistory:workouts LOIs:locationOfInterests2 atTime:&v38 error:?];
     v32 = v38;
 
     v21 = 1;
     if (v31)
     {
-      v9 = v37;
+      currentTimeZoneAbbreviation = v37;
     }
 
     else
     {
-      v9 = v37;
+      currentTimeZoneAbbreviation = v37;
       if (v32 && [v32 code] != 4)
       {
-        if (v36)
+        if (errorCopy)
         {
           v33 = v32;
           v21 = 0;
-          *v36 = v32;
+          *errorCopy = v32;
         }
 
         else
@@ -439,34 +439,34 @@ LABEL_17:
   return v21;
 }
 
-- (BOOL)predictContextWithInputSignals:(id)a3 result:(id *)a4 outError:(id *)a5
+- (BOOL)predictContextWithInputSignals:(id)signals result:(id *)result outError:(id *)error
 {
   v150 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  signalsCopy = signals;
   v145 = 0;
-  v7 = [v6 visits];
-  v8 = [PCNeuralNetworkUtilities sortVisitHistory:v7];
+  visits = [signalsCopy visits];
+  v8 = [PCNeuralNetworkUtilities sortVisitHistory:visits];
   v9 = [v8 mutableCopy];
-  [v6 setVisits:v9];
+  [signalsCopy setVisits:v9];
 
-  v10 = [v6 transitions];
-  v11 = [PCNeuralNetworkUtilities sortTransitionHistory:v10];
+  transitions = [signalsCopy transitions];
+  v11 = [PCNeuralNetworkUtilities sortTransitionHistory:transitions];
   v12 = [v11 mutableCopy];
-  [v6 setTransitions:v12];
+  [signalsCopy setTransitions:v12];
 
-  v13 = [v6 locationHistorys];
-  v14 = [PCNeuralNetworkUtilities sortLocationHistory:v13];
+  locationHistorys = [signalsCopy locationHistorys];
+  v14 = [PCNeuralNetworkUtilities sortLocationHistory:locationHistorys];
   v15 = [v14 mutableCopy];
-  [v6 setLocationHistorys:v15];
+  [signalsCopy setLocationHistorys:v15];
 
-  [PCLocationUtils cleanCurrentVisitWithMissingData:v6];
-  v16 = [(PCAlgorithms *)self outOfPatternLogic];
-  v124 = [v16 processInputSignals:v6 isOutOfPattern:&v145];
+  [PCLocationUtils cleanCurrentVisitWithMissingData:signalsCopy];
+  outOfPatternLogic = [(PCAlgorithms *)self outOfPatternLogic];
+  v124 = [outOfPatternLogic processInputSignals:signalsCopy isOutOfPattern:&v145];
 
-  v17 = [(PCAlgorithms *)self outOfPatternLogic];
-  v18 = [v17 isWaitingRetrain];
+  outOfPatternLogic2 = [(PCAlgorithms *)self outOfPatternLogic];
+  isWaitingRetrain = [outOfPatternLogic2 isWaitingRetrain];
 
-  if (v18)
+  if (isWaitingRetrain)
   {
     v19 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -476,58 +476,58 @@ LABEL_17:
     }
   }
 
-  v119 = v6;
-  v120 = self;
-  v20 = [(PCAlgorithms *)self config];
-  v21 = [v20 useVisitHistoryPredictor];
-  v22 = v18 ^ 1;
+  v119 = signalsCopy;
+  selfCopy = self;
+  config = [(PCAlgorithms *)self config];
+  useVisitHistoryPredictor = [config useVisitHistoryPredictor];
+  v22 = isWaitingRetrain ^ 1;
 
   v23 = 0;
   v24 = 0;
   v25 = 0;
-  if (!v21)
+  if (!useVisitHistoryPredictor)
   {
     v123 = 0;
     v26 = 0;
 LABEL_26:
-    v27 = v120;
+    v27 = selfCopy;
     goto LABEL_27;
   }
 
   v123 = 0;
   v26 = 0;
-  v27 = v120;
+  v27 = selfCopy;
   if (!v22)
   {
     goto LABEL_27;
   }
 
-  v28 = [(PCAlgorithms *)v120 visitHistoryPred];
-  v29 = [v28 hasTrainedModel];
+  visitHistoryPred = [(PCAlgorithms *)selfCopy visitHistoryPred];
+  hasTrainedModel = [visitHistoryPred hasTrainedModel];
 
   v30 = _plc_log_get_normal_handle(PCLogCategoryGeneral);
   v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-  if (v29)
+  if (hasTrainedModel)
   {
     if (v31)
     {
-      v32 = [v6 homeKitHomes];
+      homeKitHomes = [signalsCopy homeKitHomes];
       *buf = 138739971;
-      v149 = v32;
+      v149 = homeKitHomes;
       _os_log_impl(&dword_1CEE74000, v30, OS_LOG_TYPE_DEFAULT, "HomeKitHomes included in input signals: %{sensitive}@", buf, 0xCu);
     }
 
-    v33 = [(PCAlgorithms *)v120 visitHistoryPred];
-    v34 = [v124 visits];
-    v35 = [v124 transitions];
-    v36 = [v124 locationHistorys];
-    v37 = [v124 homeKitHomes];
+    visitHistoryPred2 = [(PCAlgorithms *)selfCopy visitHistoryPred];
+    visits2 = [v124 visits];
+    transitions2 = [v124 transitions];
+    locationHistorys2 = [v124 locationHistorys];
+    homeKitHomes2 = [v124 homeKitHomes];
     [v124 currentTimeCFAbsolute];
     v143 = 0;
     v144 = 0;
     v141 = 0;
     v142 = 0;
-    [v33 predictWithHistory:v34 transitionHistory:v35 locationHistory:v36 homekitHomes:v37 atTime:&v144 locations:&v143 transitions:&v142 containsHomeKitPredictions:&v141 missingLoiResults:?];
+    [visitHistoryPred2 predictWithHistory:visits2 transitionHistory:transitions2 locationHistory:locationHistorys2 homekitHomes:homeKitHomes2 atTime:&v144 locations:&v143 transitions:&v142 containsHomeKitPredictions:&v141 missingLoiResults:?];
     v38 = v144;
     v123 = v143;
     v25 = v142;
@@ -568,9 +568,9 @@ LABEL_26:
             }
 
             v46 = *(*(&v137 + 1) + 8 * i);
-            v47 = [(PCPPredictedContextAnalytics *)v24 rolledLoiAnalyticsDictionarys];
+            rolledLoiAnalyticsDictionarys = [(PCPPredictedContextAnalytics *)v24 rolledLoiAnalyticsDictionarys];
             v48 = [v23 objectForKeyedSubscript:v46];
-            [v47 addObject:v48];
+            [rolledLoiAnalyticsDictionarys addObject:v48];
           }
 
           v43 = [v23 countByEnumeratingWithState:&v137 objects:v147 count:16];
@@ -601,19 +601,19 @@ LABEL_26:
   v26 = 0;
   v145 = 1;
 LABEL_27:
-  v49 = [(PCAlgorithms *)v27 config];
-  v50 = [v49 useCalendarVisitPredictor] & v22;
+  config2 = [(PCAlgorithms *)v27 config];
+  v50 = [config2 useCalendarVisitPredictor] & v22;
 
   if (v50 == 1)
   {
-    v51 = [v124 visits];
-    v52 = [v124 calendarEvents];
+    visits3 = [v124 visits];
+    calendarEvents = [v124 calendarEvents];
     [v124 currentTimeCFAbsolute];
     v136 = 0;
-    [PCCalendarVisitPredictor predictWithHistory:v51 calendarEvents:v52 atTime:&v136 results:?];
+    [PCCalendarVisitPredictor predictWithHistory:visits3 calendarEvents:calendarEvents atTime:&v136 results:?];
     v53 = v136;
 
-    v27 = v120;
+    v27 = selfCopy;
     [v26 addObjectsFromArray:v53];
   }
 
@@ -622,38 +622,38 @@ LABEL_27:
     v53 = 0;
   }
 
-  v54 = [(PCAlgorithms *)v27 config];
-  v55 = [v54 useScheduledTravelPredictor];
+  config3 = [(PCAlgorithms *)v27 config];
+  useScheduledTravelPredictor = [config3 useScheduledTravelPredictor];
 
-  if (v55)
+  if (useScheduledTravelPredictor)
   {
 
-    v56 = [v124 mapsActiveNavigation];
-    v57 = [v124 mapsHistoricalNavigations];
-    v58 = [v124 visits];
-    v59 = [v124 locationHistorys];
+    mapsActiveNavigation = [v124 mapsActiveNavigation];
+    mapsHistoricalNavigations = [v124 mapsHistoricalNavigations];
+    visits4 = [v124 visits];
+    locationHistorys3 = [v124 locationHistorys];
     [v124 currentTimeCFAbsolute];
     v135 = 0;
-    [PCScheduledTravelPredictor predictWithScheduledTravelWithActiveNav:v56 previousNav:v57 visitHistory:v58 locationHistory:v59 atTime:&v135 results:?];
+    [PCScheduledTravelPredictor predictWithScheduledTravelWithActiveNav:mapsActiveNavigation previousNav:mapsHistoricalNavigations visitHistory:visits4 locationHistory:locationHistorys3 atTime:&v135 results:?];
     v60 = v135;
 
     v53 = v60;
-    v27 = v120;
+    v27 = selfCopy;
 
     [v26 addObjectsFromArray:v60];
   }
 
-  v61 = [(PCAlgorithms *)v27 config];
-  v62 = [v61 useMapsViewedPlacesPredictor] & v22;
+  config4 = [(PCAlgorithms *)v27 config];
+  v62 = [config4 useMapsViewedPlacesPredictor] & v22;
 
   if (v62 == 1)
   {
 
-    v63 = [v124 mapsViewedPlaces];
-    v64 = [v124 visits];
+    mapsViewedPlaces = [v124 mapsViewedPlaces];
+    visits5 = [v124 visits];
     [v124 currentTimeCFAbsolute];
     v134 = 0;
-    [PCMapsViewedPlacesPredictor predictWithViewedPlaces:v63 history:v64 atTime:&v134 results:?];
+    [PCMapsViewedPlacesPredictor predictWithViewedPlaces:mapsViewedPlaces history:visits5 atTime:&v134 results:?];
     v65 = v134;
 
     v53 = v65;
@@ -661,11 +661,11 @@ LABEL_27:
   }
 
   v66 = v119;
-  v67 = [(PCAlgorithms *)v27 config];
-  v68 = [v67 useHomeKitPredictor];
+  config5 = [(PCAlgorithms *)v27 config];
+  useHomeKitPredictor = [config5 useHomeKitPredictor];
 
   v118 = v26;
-  if (v68)
+  if (useHomeKitPredictor)
   {
 
     v69 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -673,8 +673,8 @@ LABEL_27:
     v131 = 0u;
     v132 = 0u;
     v133 = 0u;
-    v70 = [v119 homeKitHomes];
-    v71 = [v70 countByEnumeratingWithState:&v130 objects:v146 count:16];
+    homeKitHomes3 = [v119 homeKitHomes];
+    v71 = [homeKitHomes3 countByEnumeratingWithState:&v130 objects:v146 count:16];
     if (v71)
     {
       v72 = v71;
@@ -685,7 +685,7 @@ LABEL_27:
         {
           if (*v131 != v73)
           {
-            objc_enumerationMutation(v70);
+            objc_enumerationMutation(homeKitHomes3);
           }
 
           v75 = *(*(&v130 + 1) + 8 * j);
@@ -695,7 +695,7 @@ LABEL_27:
           }
         }
 
-        v72 = [v70 countByEnumeratingWithState:&v130 objects:v146 count:16];
+        v72 = [homeKitHomes3 countByEnumeratingWithState:&v130 objects:v146 count:16];
       }
 
       while (v72);
@@ -710,12 +710,12 @@ LABEL_27:
     }
 
     v66 = v119;
-    v77 = [v119 locationHistorys];
-    v78 = [v119 locationOfInterests];
+    locationHistorys4 = [v119 locationHistorys];
+    locationOfInterests = [v119 locationOfInterests];
     [v119 currentTimeCFAbsolute];
     v129 = 0;
     v26 = v118;
-    [PCHomeKitPredictor predictHomeKitLocation:v69 locationHistory:v77 locationsOfInterest:v78 candidateVisits:v118 atTime:&v129 locations:?];
+    [PCHomeKitPredictor predictHomeKitLocation:v69 locationHistory:locationHistorys4 locationsOfInterest:locationOfInterests candidateVisits:v118 atTime:&v129 locations:?];
     v79 = v129;
 
     v53 = v79;
@@ -728,69 +728,69 @@ LABEL_27:
     }
 
     [v118 addObjectsFromArray:v79];
-    v27 = v120;
+    v27 = selfCopy;
   }
 
-  v81 = [(PCAlgorithms *)v27 config];
-  v82 = [v81 useProbabilityModifier];
+  config6 = [(PCAlgorithms *)v27 config];
+  useProbabilityModifier = [config6 useProbabilityModifier];
 
-  if (v82)
+  if (useProbabilityModifier)
   {
-    v83 = [(PCAlgorithms *)v27 dynamicsWeighting];
+    dynamicsWeighting = [(PCAlgorithms *)v27 dynamicsWeighting];
     [v124 currentTimeCFAbsolute];
     v85 = v84;
-    v86 = [v124 visits];
+    visits6 = [v124 visits];
     [v124 locationHistorys];
     v87 = v121 = v53;
-    v88 = [v124 motionActivitys];
-    [v83 modifyCandidateProbabilities:v118 atTime:v86 visitHistory:v87 locationHistory:v88 motionActivity:v85];
+    motionActivitys = [v124 motionActivitys];
+    [dynamicsWeighting modifyCandidateProbabilities:v118 atTime:visits6 visitHistory:v87 locationHistory:motionActivitys motionActivity:v85];
 
     [v124 currentTimeCFAbsolute];
     v90 = v89;
-    v91 = [v124 visits];
+    visits7 = [v124 visits];
     v26 = v118;
-    v92 = [v124 transitions];
-    [PCConstraintsWeighting modifyCandidateVisitProbabilities:v118 transitProbabilities:v123 atTime:v91 withVisitHistory:v92 transitionHistory:v90];
+    transitions3 = [v124 transitions];
+    [PCConstraintsWeighting modifyCandidateVisitProbabilities:v118 transitProbabilities:v123 atTime:visits7 withVisitHistory:transitions3 transitionHistory:v90];
 
     v53 = v121;
   }
 
-  v93 = [(PCAlgorithms *)v27 config];
-  v94 = [v93 useProbabilityCuller];
+  config7 = [(PCAlgorithms *)v27 config];
+  useProbabilityCuller = [config7 useProbabilityCuller];
 
-  if (v94)
+  if (useProbabilityCuller)
   {
     [PCCullingLogic cullLowProbabilityVisits:v26];
   }
 
-  v95 = [(PCAlgorithms *)v27 config];
-  v96 = [v95 useParkedCarLocationPredictor];
+  config8 = [(PCAlgorithms *)v27 config];
+  useParkedCarLocationPredictor = [config8 useParkedCarLocationPredictor];
 
-  if (v96)
+  if (useParkedCarLocationPredictor)
   {
 
-    v97 = [v66 parkedCar];
-    v98 = [v66 locationHistorys];
-    v99 = [v66 locationOfInterests];
+    parkedCar = [v66 parkedCar];
+    locationHistorys5 = [v66 locationHistorys];
+    locationOfInterests2 = [v66 locationOfInterests];
     [v66 currentTimeCFAbsolute];
     v128 = 0;
-    [PCParkedCarLocationPredictor predictParkedCarLocation:v97 locationHistory:v98 locationsOfInterest:v99 candidateVisits:v26 atTime:&v128 locations:?];
+    [PCParkedCarLocationPredictor predictParkedCarLocation:parkedCar locationHistory:locationHistorys5 locationsOfInterest:locationOfInterests2 candidateVisits:v26 atTime:&v128 locations:?];
     v100 = v128;
 
     v53 = v100;
     [v26 addObjectsFromArray:v100];
   }
 
-  v101 = [(PCAlgorithms *)v27 config];
-  v102 = [v101 usePropagatedPosition];
+  config9 = [(PCAlgorithms *)v27 config];
+  usePropagatedPosition = [config9 usePropagatedPosition];
 
-  if (v102)
+  if (usePropagatedPosition)
   {
 
-    v103 = [v66 propagatedLocations];
+    propagatedLocations = [v66 propagatedLocations];
     v127 = 0;
     [v124 currentTimeCFAbsolute];
-    [PCPropagatedPositionPredictor predictPropagatedPosition:v103 locations:&v127 atTime:?];
+    [PCPropagatedPositionPredictor predictPropagatedPosition:propagatedLocations locations:&v127 atTime:?];
     v104 = v127;
 
     v122 = v104;
@@ -806,15 +806,15 @@ LABEL_27:
   [PCTravelPredictor predictTravel:v26 results:&v126];
   v116 = v126;
   [v123 addObjectsFromArray:?];
-  v105 = [(PCAlgorithms *)v27 workoutPrediction];
-  v106 = [v66 visits];
-  v107 = [v66 workouts];
-  v108 = [v66 locationOfInterests];
+  workoutPrediction = [(PCAlgorithms *)v27 workoutPrediction];
+  visits8 = [v66 visits];
+  workouts = [v66 workouts];
+  locationOfInterests3 = [v66 locationOfInterests];
   v109 = v66;
-  v110 = v108;
+  v110 = locationOfInterests3;
   [v109 currentTimeCFAbsolute];
   v125 = 0;
-  [v105 predictWithLocationHistory:v106 workoutHistory:v107 LOIs:v110 atTime:&v125 workoutPredictions:?];
+  [workoutPrediction predictWithLocationHistory:visits8 workoutHistory:workouts LOIs:v110 atTime:&v125 workoutPredictions:?];
   v111 = v125;
 
   v112 = objc_alloc_init(PCPPredictedContextResult);
@@ -823,10 +823,10 @@ LABEL_27:
   [(PCPPredictedContextResult *)v112 setPredictedContextWorkouts:v111];
   [(PCPPredictedContextResult *)v112 setPredictedContextAnalytics:v24];
   [(PCPPredictedContextResult *)v112 setComputeRequested:v145];
-  if (a4)
+  if (result)
   {
     v113 = v112;
-    *a4 = v112;
+    *result = v112;
   }
 
   v114 = *MEMORY[0x1E69E9840];

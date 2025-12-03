@@ -3,16 +3,16 @@
 - (BOOL)_needsViewLayout;
 - (CarMapsSuggestionsView)init;
 - (unint64_t)accessibilityTraits;
-- (void)_externalDeviceUpdated:(id)a3;
+- (void)_externalDeviceUpdated:(id)updated;
 - (void)_hideSelectLabel;
 - (void)_setNeedsViewLayout;
 - (void)_updateContents;
 - (void)_updateViewLayout;
 - (void)dealloc;
-- (void)setCurrentETA:(id)a3;
-- (void)setCurrentSuggestion:(id)a3;
-- (void)setNavigationAidedDrivingEnabled:(BOOL)a3;
-- (void)setShowSelectLabel:(BOOL)a3;
+- (void)setCurrentETA:(id)a;
+- (void)setCurrentSuggestion:(id)suggestion;
+- (void)setNavigationAidedDrivingEnabled:(BOOL)enabled;
+- (void)setShowSelectLabel:(BOOL)label;
 - (void)startHideSelectLabelTimer;
 - (void)stopHideSelectLabelTimer;
 @end
@@ -51,8 +51,8 @@
 {
   if ((MapsFeature_IsEnabled_LocationIntelligenceMaps() & 1) == 0)
   {
-    v3 = [(CarMapsSuggestionsView *)self hideSelectLabelTimer];
-    [v3 invalidate];
+    hideSelectLabelTimer = [(CarMapsSuggestionsView *)self hideSelectLabelTimer];
+    [hideSelectLabelTimer invalidate];
 
     [(CarMapsSuggestionsView *)self setHideSelectLabelTimer:0];
   }
@@ -72,26 +72,26 @@
   }
 }
 
-- (void)setCurrentETA:(id)a3
+- (void)setCurrentETA:(id)a
 {
-  v9 = a3;
-  v5 = [v9 remainingMinutes];
-  if (v5 != -[GuidanceETA remainingMinutes](self->_currentETA, "remainingMinutes") || ([v9 etaDate], v6 = objc_claimAutoreleasedReturnValue(), -[GuidanceETA etaDate](self->_currentETA, "etaDate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v6, (v8 & 1) == 0))
+  aCopy = a;
+  remainingMinutes = [aCopy remainingMinutes];
+  if (remainingMinutes != -[GuidanceETA remainingMinutes](self->_currentETA, "remainingMinutes") || ([aCopy etaDate], v6 = objc_claimAutoreleasedReturnValue(), -[GuidanceETA etaDate](self->_currentETA, "etaDate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "isEqual:", v7), v7, v6, (v8 & 1) == 0))
   {
-    objc_storeStrong(&self->_currentETA, a3);
+    objc_storeStrong(&self->_currentETA, a);
     [(CarMapsSuggestionsView *)self _updateContents];
   }
 }
 
-- (void)setCurrentSuggestion:(id)a3
+- (void)setCurrentSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   [(CarMapsSuggestionsView *)self setSuggestionKey:[(CarMapsSuggestionsView *)self suggestionKey]+ 1];
-  v5 = [v4 route];
-  if (v5)
+  route = [suggestionCopy route];
+  if (route)
   {
-    v6 = [v4 route];
-    -[CarMapsSuggestionsView setRouteIsNavigable:](self, "setRouteIsNavigable:", [v6 isNavigable]);
+    route2 = [suggestionCopy route];
+    -[CarMapsSuggestionsView setRouteIsNavigable:](self, "setRouteIsNavigable:", [route2 isNavigable]);
   }
 
   else
@@ -99,22 +99,22 @@
     [(CarMapsSuggestionsView *)self setRouteIsNavigable:0];
   }
 
-  v7 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
-  v13 = [v7 geoMapItem];
+  entry = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+  geoMapItem = [entry geoMapItem];
 
   currentSuggestion = self->_currentSuggestion;
-  self->_currentSuggestion = v4;
-  v9 = v4;
+  self->_currentSuggestion = suggestionCopy;
+  v9 = suggestionCopy;
 
-  v10 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+  entry2 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
 
-  v11 = [v10 geoMapItem];
+  geoMapItem2 = [entry2 geoMapItem];
 
   [(CarMapsSuggestionsView *)self _updateContents];
   if (![(CarMapsSuggestionsView *)self showSelectLabel])
   {
     v12 = 1;
-    if (v13 && v11)
+    if (geoMapItem && geoMapItem2)
     {
       v12 = GEOMapItemIsEqualToMapItemForPurpose() ^ 1;
     }
@@ -125,15 +125,15 @@
   [(CarMapsSuggestionsView *)self _setNeedsViewLayout];
 }
 
-- (void)setShowSelectLabel:(BOOL)a3
+- (void)setShowSelectLabel:(BOOL)label
 {
-  if (self->_showSelectLabel != a3)
+  if (self->_showSelectLabel != label)
   {
-    v4 = a3;
-    self->_showSelectLabel = a3;
+    labelCopy = label;
+    self->_showSelectLabel = label;
     if ((MapsFeature_IsEnabled_LocationIntelligenceMaps() & 1) == 0)
     {
-      if (v4)
+      if (labelCopy)
       {
         [(CarMapsSuggestionsView *)self startHideSelectLabelTimer];
       }
@@ -150,19 +150,19 @@
 
 - (void)_updateContents
 {
-  v4 = 16;
-  v5 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
-  v40 = [v5 stringForKey:@"MapsSuggestionsResumeRouteDefaultTitle"];
+  route3 = 16;
+  entry = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+  v40 = [entry stringForKey:@"MapsSuggestionsResumeRouteDefaultTitle"];
 
-  v6 = v40;
+  title = v40;
   if (!v40)
   {
-    v5 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
-    v6 = [v5 title];
+    entry = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion entry];
+    title = [entry title];
   }
 
-  v7 = [(CarMapsSuggestionsView *)self etaOnlyView];
-  [v7 setTitle:v6];
+  etaOnlyView = [(CarMapsSuggestionsView *)self etaOnlyView];
+  [etaOnlyView setTitle:title];
 
   if (!v40)
   {
@@ -170,28 +170,28 @@
 
   if (MapsFeature_IsEnabled_LocationIntelligenceMaps())
   {
-    v8 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion route];
-    v9 = [v8 mutableData];
-    v10 = [v9 routeOverviewDescriptionStrings];
+    route = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion route];
+    mutableData = [route mutableData];
+    routeOverviewDescriptionStrings = [mutableData routeOverviewDescriptionStrings];
 
-    v11 = [v10 firstObject];
-    v12 = [v11 stringWithDefaultOptions];
+    firstObject = [routeOverviewDescriptionStrings firstObject];
+    stringWithDefaultOptions = [firstObject stringWithDefaultOptions];
 
-    if (v12)
+    if (stringWithDefaultOptions)
     {
-      v13 = [(CarMapsSuggestionsView *)self etaOnlyView];
-      [v13 setDescriptionText:v12];
+      etaOnlyView2 = [(CarMapsSuggestionsView *)self etaOnlyView];
+      [etaOnlyView2 setDescriptionText:stringWithDefaultOptions];
     }
   }
 
-  v14 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion route];
-  v15 = [v14 legs];
-  v16 = [v15 count];
+  route2 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion route];
+  legs = [route2 legs];
+  v16 = [legs count];
   if (v16)
   {
-    v4 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion route];
-    v2 = [v4 legs];
-    v17 = [v2 count] - 1;
+    route3 = [(MapsSuggestionsRouteGeniusEntry *)self->_currentSuggestion route];
+    legs2 = [route3 legs];
+    v17 = [legs2 count] - 1;
   }
 
   else
@@ -199,48 +199,48 @@
     v17 = 0;
   }
 
-  v18 = [(CarMapsSuggestionsView *)self etaOnlyView];
-  [v18 setNumberOfStops:v17];
+  etaOnlyView3 = [(CarMapsSuggestionsView *)self etaOnlyView];
+  [etaOnlyView3 setNumberOfStops:v17];
 
   if (v16)
   {
   }
 
-  v19 = [(CarMapsSuggestionsView *)self routeIsNavigable];
-  if (v19)
+  routeIsNavigable = [(CarMapsSuggestionsView *)self routeIsNavigable];
+  if (routeIsNavigable)
   {
-    v20 = [(CarMapsSuggestionsView *)self currentETA];
+    currentETA = [(CarMapsSuggestionsView *)self currentETA];
   }
 
   else
   {
-    v20 = 0;
+    currentETA = 0;
   }
 
-  v21 = [(CarMapsSuggestionsView *)self etaOnlyView];
-  [v21 setLatestETA:v20];
+  etaOnlyView4 = [(CarMapsSuggestionsView *)self etaOnlyView];
+  [etaOnlyView4 setLatestETA:currentETA];
 
-  if (v19)
+  if (routeIsNavigable)
   {
   }
 
   if ([(CarMapsSuggestionsView *)self routeIsNavigable])
   {
-    v22 = [(CarMapsSuggestionsView *)self etaOnlyView];
-    [v22 setSubtitleOverride:0];
+    etaOnlyView5 = [(CarMapsSuggestionsView *)self etaOnlyView];
+    [etaOnlyView5 setSubtitleOverride:0];
   }
 
   else
   {
-    v22 = sub_100FA8E84();
-    v23 = [(CarMapsSuggestionsView *)self etaOnlyView];
-    [v23 setSubtitleOverride:v22];
+    etaOnlyView5 = sub_100FA8E84();
+    etaOnlyView6 = [(CarMapsSuggestionsView *)self etaOnlyView];
+    [etaOnlyView6 setSubtitleOverride:etaOnlyView5];
   }
 
   v24 = +[CarDisplayController sharedInstance];
-  v25 = [v24 supportsTouchInteractionModel];
+  supportsTouchInteractionModel = [v24 supportsTouchInteractionModel];
 
-  if (v25)
+  if (supportsTouchInteractionModel)
   {
     v26 = @"CAR_PROACTIVE_TAP";
   }
@@ -253,28 +253,28 @@
   v27 = +[NSBundle mainBundle];
   v28 = [v27 localizedStringForKey:v26 value:@"localized string not found" table:0];
 
-  v29 = [(CarMapsSuggestionsView *)self selectLabel];
-  [v29 setText:v28];
+  selectLabel = [(CarMapsSuggestionsView *)self selectLabel];
+  [selectLabel setText:v28];
 
   v30 = +[NSMutableArray array];
-  v31 = [(CarMapsSuggestionsView *)self etaOnlyView];
-  v32 = [v31 title];
+  etaOnlyView7 = [(CarMapsSuggestionsView *)self etaOnlyView];
+  title2 = [etaOnlyView7 title];
 
-  if (v32)
+  if (title2)
   {
-    v33 = [(CarMapsSuggestionsView *)self etaOnlyView];
-    v34 = [v33 title];
-    [v30 addObject:v34];
+    etaOnlyView8 = [(CarMapsSuggestionsView *)self etaOnlyView];
+    title3 = [etaOnlyView8 title];
+    [v30 addObject:title3];
   }
 
-  v35 = [(CarMapsSuggestionsView *)self selectLabel];
-  v36 = [v35 text];
+  selectLabel2 = [(CarMapsSuggestionsView *)self selectLabel];
+  text = [selectLabel2 text];
 
-  if (v36)
+  if (text)
   {
-    v37 = [(CarMapsSuggestionsView *)self selectLabel];
-    v38 = [v37 text];
-    [v30 addObject:v38];
+    selectLabel3 = [(CarMapsSuggestionsView *)self selectLabel];
+    text2 = [selectLabel3 text];
+    [v30 addObject:text2];
   }
 
   v39 = [v30 copy];
@@ -283,82 +283,82 @@
 
 - (void)_updateViewLayout
 {
-  v3 = [(CarMapsSuggestionsView *)self layoutUpdateTimer];
-  [v3 invalidate];
+  layoutUpdateTimer = [(CarMapsSuggestionsView *)self layoutUpdateTimer];
+  [layoutUpdateTimer invalidate];
 
   [(CarMapsSuggestionsView *)self setLayoutUpdateTimer:0];
-  v4 = [(CarMapsSuggestionsView *)self currentConstraints];
-  [NSLayoutConstraint deactivateConstraints:v4];
+  currentConstraints = [(CarMapsSuggestionsView *)self currentConstraints];
+  [NSLayoutConstraint deactivateConstraints:currentConstraints];
 
   v30 = objc_opt_new();
-  v5 = [(CarMapsSuggestionsView *)self selectLabel];
-  [v5 removeFromSuperview];
+  selectLabel = [(CarMapsSuggestionsView *)self selectLabel];
+  [selectLabel removeFromSuperview];
 
   if ([(CarMapsSuggestionsView *)self showSelectLabel])
   {
-    v6 = [(CarMapsSuggestionsView *)self selectLabel];
-    [(CarMapsSuggestionsView *)self addSubview:v6];
+    selectLabel2 = [(CarMapsSuggestionsView *)self selectLabel];
+    [(CarMapsSuggestionsView *)self addSubview:selectLabel2];
 
-    v7 = [(CarMapsSuggestionsView *)self selectLabel];
-    v8 = [v7 topAnchor];
-    v9 = [(CarMapsSuggestionsView *)self etaOnlyView];
-    v10 = [v9 bottomAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10 constant:10.0];
+    selectLabel3 = [(CarMapsSuggestionsView *)self selectLabel];
+    topAnchor = [selectLabel3 topAnchor];
+    etaOnlyView = [(CarMapsSuggestionsView *)self etaOnlyView];
+    bottomAnchor = [etaOnlyView bottomAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:10.0];
     [v30 addObject:v11];
 
-    v12 = [(CarMapsSuggestionsView *)self selectLabel];
-    v13 = [v12 leadingAnchor];
-    v14 = [(CarMapsSuggestionsView *)self leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:10.0];
+    selectLabel4 = [(CarMapsSuggestionsView *)self selectLabel];
+    leadingAnchor = [selectLabel4 leadingAnchor];
+    leadingAnchor2 = [(CarMapsSuggestionsView *)self leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     [v30 addObject:v15];
 
-    v16 = [(CarMapsSuggestionsView *)self selectLabel];
-    v17 = [v16 trailingAnchor];
-    v18 = [(CarMapsSuggestionsView *)self trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:-10.0];
+    selectLabel5 = [(CarMapsSuggestionsView *)self selectLabel];
+    trailingAnchor = [selectLabel5 trailingAnchor];
+    trailingAnchor2 = [(CarMapsSuggestionsView *)self trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
     [v30 addObject:v19];
 
-    v20 = [(CarMapsSuggestionsView *)self selectLabel];
-    v21 = [v20 bottomAnchor];
-    v22 = [(CarMapsSuggestionsView *)self bottomAnchor];
+    selectLabel6 = [(CarMapsSuggestionsView *)self selectLabel];
+    bottomAnchor2 = [selectLabel6 bottomAnchor];
+    bottomAnchor3 = [(CarMapsSuggestionsView *)self bottomAnchor];
     v23 = -10.0;
-    v24 = v21;
+    v24 = bottomAnchor2;
   }
 
   else
   {
-    v20 = [(CarMapsSuggestionsView *)self bottomAnchor];
-    v21 = [(CarMapsSuggestionsView *)self etaOnlyView];
-    v22 = [v21 bottomAnchor];
+    selectLabel6 = [(CarMapsSuggestionsView *)self bottomAnchor];
+    bottomAnchor2 = [(CarMapsSuggestionsView *)self etaOnlyView];
+    bottomAnchor3 = [bottomAnchor2 bottomAnchor];
     v23 = 10.0;
-    v24 = v20;
+    v24 = selectLabel6;
   }
 
-  v25 = [v24 constraintEqualToAnchor:v22 constant:v23];
+  v25 = [v24 constraintEqualToAnchor:bottomAnchor3 constant:v23];
   [v30 addObject:v25];
 
   [(CarMapsSuggestionsView *)self setCurrentConstraints:v30];
-  v26 = [(CarMapsSuggestionsView *)self showSelectLabel];
-  v27 = [(CarMapsSuggestionsView *)self navigationAidedDrivingEnabled];
-  v28 = [(CarMapsSuggestionsView *)self suggestionKey];
+  showSelectLabel = [(CarMapsSuggestionsView *)self showSelectLabel];
+  navigationAidedDrivingEnabled = [(CarMapsSuggestionsView *)self navigationAidedDrivingEnabled];
+  suggestionKey = [(CarMapsSuggestionsView *)self suggestionKey];
   v29 = 256;
-  if (!v27)
+  if (!navigationAidedDrivingEnabled)
   {
     v29 = 0;
   }
 
-  [(CarMapsSuggestionsView *)self setLastLayoutConfig:v29 | v26, v28];
+  [(CarMapsSuggestionsView *)self setLastLayoutConfig:v29 | showSelectLabel, suggestionKey];
   [NSLayoutConstraint activateConstraints:v30];
 }
 
 - (BOOL)_needsViewLayout
 {
-  v3 = [(CarMapsSuggestionsView *)self suggestionKey];
+  suggestionKey = [(CarMapsSuggestionsView *)self suggestionKey];
   [(CarMapsSuggestionsView *)self lastLayoutConfig];
-  if (v3 == v4 && (v5 = [(CarMapsSuggestionsView *)self showSelectLabel], v5 == ([(CarMapsSuggestionsView *)self lastLayoutConfig]& 1)))
+  if (suggestionKey == v4 && (v5 = [(CarMapsSuggestionsView *)self showSelectLabel], v5 == ([(CarMapsSuggestionsView *)self lastLayoutConfig]& 1)))
   {
-    v7 = [(CarMapsSuggestionsView *)self navigationAidedDrivingEnabled];
-    return v7 ^ ([(CarMapsSuggestionsView *)self lastLayoutConfig]>> 8) & 1;
+    navigationAidedDrivingEnabled = [(CarMapsSuggestionsView *)self navigationAidedDrivingEnabled];
+    return navigationAidedDrivingEnabled ^ ([(CarMapsSuggestionsView *)self lastLayoutConfig]>> 8) & 1;
   }
 
   else
@@ -373,12 +373,12 @@
 {
   if ((MapsFeature_IsEnabled_LocationIntelligenceMaps() & 1) == 0)
   {
-    v3 = [(CarMapsSuggestionsView *)self _needsViewLayout];
-    v4 = [(CarMapsSuggestionsView *)self layoutUpdateTimer];
+    _needsViewLayout = [(CarMapsSuggestionsView *)self _needsViewLayout];
+    layoutUpdateTimer = [(CarMapsSuggestionsView *)self layoutUpdateTimer];
 
-    if (v3)
+    if (_needsViewLayout)
     {
-      if (!v4)
+      if (!layoutUpdateTimer)
       {
         objc_initWeak(&location, self);
         v7 = _NSConcreteStackBlock;
@@ -394,26 +394,26 @@
       }
     }
 
-    else if (v4)
+    else if (layoutUpdateTimer)
     {
-      v6 = [(CarMapsSuggestionsView *)self layoutUpdateTimer];
-      [v6 invalidate];
+      layoutUpdateTimer2 = [(CarMapsSuggestionsView *)self layoutUpdateTimer];
+      [layoutUpdateTimer2 invalidate];
 
       [(CarMapsSuggestionsView *)self setLayoutUpdateTimer:0];
     }
   }
 }
 
-- (void)setNavigationAidedDrivingEnabled:(BOOL)a3
+- (void)setNavigationAidedDrivingEnabled:(BOOL)enabled
 {
-  if (self->_navigationAidedDrivingEnabled != a3)
+  if (self->_navigationAidedDrivingEnabled != enabled)
   {
-    self->_navigationAidedDrivingEnabled = a3;
+    self->_navigationAidedDrivingEnabled = enabled;
     [(CarMapsSuggestionsView *)self _setNeedsViewLayout];
   }
 }
 
-- (void)_externalDeviceUpdated:(id)a3
+- (void)_externalDeviceUpdated:(id)updated
 {
   v4 = +[MapsExternalDevice sharedInstance];
   -[CarMapsSuggestionsView setNavigationAidedDrivingEnabled:](self, "setNavigationAidedDrivingEnabled:", [v4 isNavigationAidedDrivingEnabled]);
@@ -436,12 +436,12 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v5 = [(CarMapsSuggestionsView *)&v29 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v7 = v5;
-  if (v5)
+  height = [(CarMapsSuggestionsView *)&v29 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v7 = height;
+  if (height)
   {
     LODWORD(v6) = 1144750080;
-    [(CarMapsSuggestionsView *)v5 setContentHuggingPriority:1 forAxis:v6];
+    [(CarMapsSuggestionsView *)height setContentHuggingPriority:1 forAxis:v6];
     v7->_routeIsNavigable = 1;
     v7->_showSelectLabel = 1;
     v8 = +[MapsExternalDevice sharedInstance];
@@ -451,9 +451,9 @@
     v7->_lastLayoutConfig.showSelectLabel = !v7->_showSelectLabel;
     v7->_lastLayoutConfig.navigationAidedDrivingEnabled = v9;
     v7->_lastLayoutConfig.suggestionKey = 0;
-    v10 = [[CarETAOnlyGuidanceSign alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height2 = [[CarETAOnlyGuidanceSign alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     etaOnlyView = v7->_etaOnlyView;
-    v7->_etaOnlyView = v10;
+    v7->_etaOnlyView = height2;
 
     [(CarETAOnlyGuidanceSign *)v7->_etaOnlyView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CarMapsSuggestionsView *)v7 addSubview:v7->_etaOnlyView];
@@ -477,17 +477,17 @@
     [(UILabel *)v7->_selectLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v16) = 1148846080;
     [(UILabel *)v7->_selectLabel setContentCompressionResistancePriority:1 forAxis:v16];
-    v28 = [(CarETAOnlyGuidanceSign *)v7->_etaOnlyView topAnchor];
-    v17 = [(CarMapsSuggestionsView *)v7 topAnchor];
-    v18 = [v28 constraintEqualToAnchor:v17];
+    topAnchor = [(CarETAOnlyGuidanceSign *)v7->_etaOnlyView topAnchor];
+    topAnchor2 = [(CarMapsSuggestionsView *)v7 topAnchor];
+    v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v30[0] = v18;
-    v19 = [(CarETAOnlyGuidanceSign *)v7->_etaOnlyView leadingAnchor];
-    v20 = [(CarMapsSuggestionsView *)v7 leadingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    leadingAnchor = [(CarETAOnlyGuidanceSign *)v7->_etaOnlyView leadingAnchor];
+    leadingAnchor2 = [(CarMapsSuggestionsView *)v7 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v30[1] = v21;
-    v22 = [(CarETAOnlyGuidanceSign *)v7->_etaOnlyView trailingAnchor];
-    v23 = [(CarMapsSuggestionsView *)v7 trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    trailingAnchor = [(CarETAOnlyGuidanceSign *)v7->_etaOnlyView trailingAnchor];
+    trailingAnchor2 = [(CarMapsSuggestionsView *)v7 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v30[2] = v24;
     v25 = [NSArray arrayWithObjects:v30 count:3];
     [NSLayoutConstraint activateConstraints:v25];

@@ -1,23 +1,23 @@
 @interface WLKSportsFavoriteCache
 - (BOOL)hasCache;
-- (WLKSportsFavoriteCache)initWithUserDefaults:(id)a3;
+- (WLKSportsFavoriteCache)initWithUserDefaults:(id)defaults;
 - (id)dictionaryRepresentation;
-- (void)addFavorites:(id)a3 completion:(id)a4;
-- (void)deleteLegacyCacheWithCompletion:(id)a3;
-- (void)getFavoritesWithCompletion:(id)a3;
-- (void)hasFavoritesSyncEnabledKey:(id)a3;
+- (void)addFavorites:(id)favorites completion:(id)completion;
+- (void)deleteLegacyCacheWithCompletion:(id)completion;
+- (void)getFavoritesWithCompletion:(id)completion;
+- (void)hasFavoritesSyncEnabledKey:(id)key;
 - (void)invalidate;
-- (void)isOptedIn:(id)a3;
-- (void)removeFavorites:(id)a3 completion:(id)a4;
-- (void)setCache:(id)a3 overrideLastModifiedDate:(BOOL)a4 completion:(id)a5;
-- (void)setOptInStatus:(BOOL)a3 overrideLastModifiedDate:(BOOL)a4 completion:(id)a5;
+- (void)isOptedIn:(id)in;
+- (void)removeFavorites:(id)favorites completion:(id)completion;
+- (void)setCache:(id)cache overrideLastModifiedDate:(BOOL)date completion:(id)completion;
+- (void)setOptInStatus:(BOOL)status overrideLastModifiedDate:(BOOL)date completion:(id)completion;
 @end
 
 @implementation WLKSportsFavoriteCache
 
-- (WLKSportsFavoriteCache)initWithUserDefaults:(id)a3
+- (WLKSportsFavoriteCache)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v10.receiver = self;
   v10.super_class = WLKSportsFavoriteCache;
   v6 = [(WLKSportsFavoriteCache *)&v10 init];
@@ -27,7 +27,7 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
   }
 
   return v6;
@@ -54,17 +54,17 @@ uint64_t __36__WLKSportsFavoriteCache_invalidate__block_invoke(uint64_t a1)
   return [v2 removeObjectForKey:@"my-sports-favorites-last-modified-date"];
 }
 
-- (void)deleteLegacyCacheWithCompletion:(id)a3
+- (void)deleteLegacyCacheWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__WLKSportsFavoriteCache_deleteLegacyCacheWithCompletion___block_invoke;
   v7[3] = &unk_279E5EFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -168,21 +168,21 @@ void __34__WLKSportsFavoriteCache_hasCache__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v2 != 0;
 }
 
-- (void)setCache:(id)a3 overrideLastModifiedDate:(BOOL)a4 completion:(id)a5
+- (void)setCache:(id)cache overrideLastModifiedDate:(BOOL)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  cacheCopy = cache;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__WLKSportsFavoriteCache_setCache_overrideLastModifiedDate_completion___block_invoke;
   v13[3] = &unk_279E603E0;
-  v14 = v8;
-  v15 = self;
-  v17 = a4;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = cacheCopy;
+  selfCopy = self;
+  dateCopy = date;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = cacheCopy;
   dispatch_async(queue, v13);
 }
 
@@ -236,17 +236,17 @@ void __71__WLKSportsFavoriteCache_setCache_overrideLastModifiedDate_completion__
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getFavoritesWithCompletion:(id)a3
+- (void)getFavoritesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__WLKSportsFavoriteCache_getFavoritesWithCompletion___block_invoke;
   v7[3] = &unk_279E5EFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -307,20 +307,20 @@ void __53__WLKSportsFavoriteCache_getFavoritesWithCompletion___block_invoke(uint
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addFavorites:(id)a3 completion:(id)a4
+- (void)addFavorites:(id)favorites completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  favoritesCopy = favorites;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__WLKSportsFavoriteCache_addFavorites_completion___block_invoke;
   block[3] = &unk_279E606B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = favoritesCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = favoritesCopy;
   dispatch_async(queue, block);
 }
 
@@ -380,20 +380,20 @@ void __50__WLKSportsFavoriteCache_addFavorites_completion___block_invoke(uint64_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeFavorites:(id)a3 completion:(id)a4
+- (void)removeFavorites:(id)favorites completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  favoritesCopy = favorites;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__WLKSportsFavoriteCache_removeFavorites_completion___block_invoke;
   block[3] = &unk_279E606B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = favoritesCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = favoritesCopy;
   dispatch_async(queue, block);
 }
 
@@ -453,17 +453,17 @@ void __53__WLKSportsFavoriteCache_removeFavorites_completion___block_invoke(uint
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasFavoritesSyncEnabledKey:(id)a3
+- (void)hasFavoritesSyncEnabledKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__WLKSportsFavoriteCache_hasFavoritesSyncEnabledKey___block_invoke;
   v7[3] = &unk_279E5EFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -476,17 +476,17 @@ uint64_t __53__WLKSportsFavoriteCache_hasFavoritesSyncEnabledKey___block_invoke(
   return v2();
 }
 
-- (void)isOptedIn:(id)a3
+- (void)isOptedIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__WLKSportsFavoriteCache_isOptedIn___block_invoke;
   v7[3] = &unk_279E5EFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = inCopy;
+  v6 = inCopy;
   dispatch_async(queue, v7);
 }
 
@@ -510,19 +510,19 @@ void __36__WLKSportsFavoriteCache_isOptedIn___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setOptInStatus:(BOOL)a3 overrideLastModifiedDate:(BOOL)a4 completion:(id)a5
+- (void)setOptInStatus:(BOOL)status overrideLastModifiedDate:(BOOL)date completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__WLKSportsFavoriteCache_setOptInStatus_overrideLastModifiedDate_completion___block_invoke;
   block[3] = &unk_279E606E0;
-  v13 = a3;
-  v14 = a4;
+  statusCopy = status;
+  dateCopy = date;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 

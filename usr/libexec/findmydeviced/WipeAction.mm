@@ -1,43 +1,43 @@
 @interface WipeAction
 - (FMDServiceProvider)provider;
-- (WipeAction)initWithProvider:(id)a3;
+- (WipeAction)initWithProvider:(id)provider;
 - (void)_abortWipe;
-- (void)_ackWipeCommand:(id)a3 withStatus:(int64_t)a4;
+- (void)_ackWipeCommand:(id)command withStatus:(int64_t)status;
 - (void)_sendWipeAck;
 - (void)_wipeNow;
 - (void)performWipe;
-- (void)runWithCompletion:(id)a3;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation WipeAction
 
-- (WipeAction)initWithProvider:(id)a3
+- (WipeAction)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = WipeAction;
   v5 = [(WipeAction *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(WipeAction *)v5 setProvider:v4];
+    [(WipeAction *)v5 setProvider:providerCopy];
   }
 
   return v6;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
   v4 = +[FMDPreferencesMgr wipeState];
   v5 = +[FMDPreferencesMgr wipeInfo];
   v6 = [v5 objectForKeyedSubscript:@"authId"];
 
-  v7 = [(WipeAction *)self provider];
-  v8 = [v7 account];
+  provider = [(WipeAction *)self provider];
+  account = [provider account];
 
-  if (v8 && ([v8 authId], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", v6), v9, (v10 & 1) != 0))
+  if (account && ([account authId], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", v6), v9, (v10 & 1) != 0))
   {
-    [v8 setActivityState:2];
+    [account setActivityState:2];
     if (v4 == 2)
     {
       v16 = sub_100002880();
@@ -52,8 +52,8 @@
 
     else if (v4 == 1)
     {
-      v11 = [v8 authToken];
-      v12 = [v11 length];
+      authToken = [account authToken];
+      v12 = [authToken length];
 
       v13 = sub_100002880();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -109,22 +109,22 @@
   [(WipeAction *)self _ackWipeCommand:v5 withStatus:200];
 }
 
-- (void)_ackWipeCommand:(id)a3 withStatus:(int64_t)a4
+- (void)_ackWipeCommand:(id)command withStatus:(int64_t)status
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"ackURL"];
-  v8 = [(WipeAction *)self provider];
+  commandCopy = command;
+  v7 = [commandCopy objectForKeyedSubscript:@"ackURL"];
+  provider = [(WipeAction *)self provider];
   if (v7)
   {
     v9 = [NSURL URLWithString:v7];
-    v10 = [[FMDRequestAckWipe alloc] initWithProvider:v8 wipeCommand:v6 cmdStatusCode:a4 ackURL:v9];
+    v10 = [[FMDRequestAckWipe alloc] initWithProvider:provider wipeCommand:commandCopy cmdStatusCode:status ackURL:v9];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1001C97D4;
     v12[3] = &unk_1002D1008;
     v12[4] = self;
     [(FMDRequest *)v10 setCompletionHandler:v12];
-    [v8 enqueueRequest:v10];
+    [provider enqueueRequest:v10];
   }
 
   else
@@ -149,10 +149,10 @@
 
   [FMDPreferencesMgr setWipeInfo:0];
   [FMDPreferencesMgr setWipeState:0];
-  v4 = [(WipeAction *)self provider];
-  v5 = [v4 account];
-  [v5 setActivityState:0];
-  [v4 reinitializeProviderWithAccount:v5];
+  provider = [(WipeAction *)self provider];
+  account = [provider account];
+  [account setActivityState:0];
+  [provider reinitializeProviderWithAccount:account];
 }
 
 - (void)_wipeNow
@@ -207,9 +207,9 @@
   [(WipeAction *)self maxDelayInterval];
   [v3 setMaxDelayInterval:?];
   v4 = +[FMSystemInfo sharedInstance];
-  v5 = [v4 isInternalBuild];
+  isInternalBuild = [v4 isInternalBuild];
 
-  if (v5)
+  if (isInternalBuild)
   {
     v6 = [FMPreferencesUtil integerForKey:@"wipeDelay" inDomain:kFMDPrefDomain];
     if (v6 >= 1)
@@ -219,9 +219,9 @@
   }
 
   v7 = +[FMSystemInfo sharedInstance];
-  v8 = [v7 isInternalBuild];
+  isInternalBuild2 = [v7 isInternalBuild];
 
-  if (v8)
+  if (isInternalBuild2)
   {
     [v3 setBrickDevice:{+[FMPreferencesUtil BOOLForKey:inDomain:](FMPreferencesUtil, "BOOLForKey:inDomain:", @"EnableRemoteBrickWithWipe", kFMDPrefDomain)}];
   }

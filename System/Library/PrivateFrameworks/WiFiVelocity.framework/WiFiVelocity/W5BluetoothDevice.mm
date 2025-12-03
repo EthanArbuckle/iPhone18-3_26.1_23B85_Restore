@@ -1,13 +1,13 @@
 @interface W5BluetoothDevice
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBluetoothDevice:(id)a3;
-- (W5BluetoothDevice)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBluetoothDevice:(id)device;
+- (W5BluetoothDevice)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation W5BluetoothDevice
@@ -95,27 +95,27 @@
   return v9;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5BluetoothDevice;
-  if (-[W5BluetoothDevice conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5BluetoothDevice conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (BOOL)isEqualToBluetoothDevice:(id)a3
+- (BOOL)isEqualToBluetoothDevice:(id)device
 {
   name = self->_name;
   if (!name)
   {
-    if (![a3 name])
+    if (![device name])
     {
       goto LABEL_5;
     }
@@ -123,7 +123,7 @@
     name = self->_name;
   }
 
-  v6 = -[NSString isEqual:](name, "isEqual:", [a3 name]);
+  v6 = -[NSString isEqual:](name, "isEqual:", [device name]);
   if (!v6)
   {
     return v6;
@@ -136,11 +136,11 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if ([a3 address])
+  if ([device address])
   {
     address = self->_address;
 LABEL_8:
-    v6 = -[NSString isEqual:](address, "isEqual:", [a3 address]);
+    v6 = -[NSString isEqual:](address, "isEqual:", [device address]);
     if (!v6)
     {
       return v6;
@@ -148,37 +148,37 @@ LABEL_8:
   }
 
   isPaired = self->_isPaired;
-  if (isPaired != [a3 isPaired])
+  if (isPaired != [device isPaired])
   {
     goto LABEL_27;
   }
 
   isConnected = self->_isConnected;
-  if (isConnected != [a3 isConnected])
+  if (isConnected != [device isConnected])
   {
     goto LABEL_27;
   }
 
   isCloudPaired = self->_isCloudPaired;
-  if (isCloudPaired != [a3 isCloudPaired])
+  if (isCloudPaired != [device isCloudPaired])
   {
     goto LABEL_27;
   }
 
   majorClass = self->_majorClass;
-  if (majorClass != [a3 majorClass])
+  if (majorClass != [device majorClass])
   {
     goto LABEL_27;
   }
 
   minorClass = self->_minorClass;
-  if (minorClass != [a3 minorClass])
+  if (minorClass != [device minorClass])
   {
     goto LABEL_27;
   }
 
   rssi = self->_rssi;
-  if (rssi != [a3 rssi])
+  if (rssi != [device rssi])
   {
     goto LABEL_27;
   }
@@ -186,32 +186,32 @@ LABEL_8:
   afhMap = self->_afhMap;
   if (!afhMap)
   {
-    if (![a3 afhMap])
+    if (![device afhMap])
     {
 LABEL_19:
       connectionMode = self->_connectionMode;
-      if (connectionMode == [a3 connectionMode])
+      if (connectionMode == [device connectionMode])
       {
         connectionModeInterval = self->_connectionModeInterval;
-        if (connectionModeInterval == [a3 connectionModeInterval])
+        if (connectionModeInterval == [device connectionModeInterval])
         {
           manufacturer = self->_manufacturer;
-          if (manufacturer == [a3 manufacturer])
+          if (manufacturer == [device manufacturer])
           {
             lmpVersion = self->_lmpVersion;
-            if (lmpVersion == [a3 lmpVersion])
+            if (lmpVersion == [device lmpVersion])
             {
               lmpSubversion = self->_lmpSubversion;
-              if (lmpSubversion == [a3 lmpSubversion])
+              if (lmpSubversion == [device lmpSubversion])
               {
                 role = self->_role;
-                if (role == [a3 role])
+                if (role == [device role])
                 {
                   isLowEnergy = self->_isLowEnergy;
-                  if (isLowEnergy == [a3 isLowEnergy])
+                  if (isLowEnergy == [device isLowEnergy])
                   {
                     isAppleDevice = self->_isAppleDevice;
-                    LOBYTE(v6) = isAppleDevice == [a3 isAppleDevice];
+                    LOBYTE(v6) = isAppleDevice == [device isAppleDevice];
                     return v6;
                   }
                 }
@@ -229,7 +229,7 @@ LABEL_27:
     afhMap = self->_afhMap;
   }
 
-  v6 = -[NSString isEqual:](afhMap, "isEqual:", [a3 afhMap]);
+  v6 = -[NSString isEqual:](afhMap, "isEqual:", [device afhMap]);
   if (v6)
   {
     goto LABEL_19;
@@ -238,14 +238,14 @@ LABEL_27:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -256,7 +256,7 @@ LABEL_27:
     return 0;
   }
 
-  return [(W5BluetoothDevice *)self isEqualToBluetoothDevice:a3];
+  return [(W5BluetoothDevice *)self isEqualToBluetoothDevice:equal];
 }
 
 - (unint64_t)hash
@@ -273,7 +273,7 @@ LABEL_27:
   return *&veor_s8(*v10.i8, *&vextq_s8(v10, v10, 8uLL)) ^ isPaired ^ (isConnected ^ isCloudPaired) & 1 ^ v9 ^ (self->_isLowEnergy ^ self->_isAppleDevice) & 1 ^ v8 ^ v3 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5BluetoothDevice allocWithZone:?]];
   [(W5BluetoothDevice *)v4 setName:self->_name];
@@ -296,53 +296,53 @@ LABEL_27:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_name forKey:@"_name"];
-  [a3 encodeObject:self->_address forKey:@"_address"];
-  [a3 encodeBool:self->_isPaired forKey:@"_isPaired"];
-  [a3 encodeBool:self->_isConnected forKey:@"_isConnected"];
-  [a3 encodeBool:self->_isCloudPaired forKey:@"_isCloudPaired"];
-  [a3 encodeInteger:self->_majorClass forKey:@"_majorClass"];
-  [a3 encodeInteger:self->_minorClass forKey:@"_minorClass"];
-  [a3 encodeInteger:self->_rssi forKey:@"_rssi"];
-  [a3 encodeObject:self->_afhMap forKey:@"_afhMap"];
-  [a3 encodeInteger:self->_connectionMode forKey:@"_connectionMode"];
-  [a3 encodeInteger:self->_connectionModeInterval forKey:@"_connectionModeInterval"];
-  [a3 encodeInteger:self->_manufacturer forKey:@"_manufacturer"];
-  [a3 encodeInteger:self->_lmpVersion forKey:@"_lmpVersion"];
-  [a3 encodeInteger:self->_lmpSubversion forKey:@"_lmpSubversion"];
-  [a3 encodeInteger:self->_role forKey:@"_role"];
-  [a3 encodeBool:self->_isLowEnergy forKey:@"_isLowEnergy"];
+  [coder encodeObject:self->_name forKey:@"_name"];
+  [coder encodeObject:self->_address forKey:@"_address"];
+  [coder encodeBool:self->_isPaired forKey:@"_isPaired"];
+  [coder encodeBool:self->_isConnected forKey:@"_isConnected"];
+  [coder encodeBool:self->_isCloudPaired forKey:@"_isCloudPaired"];
+  [coder encodeInteger:self->_majorClass forKey:@"_majorClass"];
+  [coder encodeInteger:self->_minorClass forKey:@"_minorClass"];
+  [coder encodeInteger:self->_rssi forKey:@"_rssi"];
+  [coder encodeObject:self->_afhMap forKey:@"_afhMap"];
+  [coder encodeInteger:self->_connectionMode forKey:@"_connectionMode"];
+  [coder encodeInteger:self->_connectionModeInterval forKey:@"_connectionModeInterval"];
+  [coder encodeInteger:self->_manufacturer forKey:@"_manufacturer"];
+  [coder encodeInteger:self->_lmpVersion forKey:@"_lmpVersion"];
+  [coder encodeInteger:self->_lmpSubversion forKey:@"_lmpSubversion"];
+  [coder encodeInteger:self->_role forKey:@"_role"];
+  [coder encodeBool:self->_isLowEnergy forKey:@"_isLowEnergy"];
   isAppleDevice = self->_isAppleDevice;
 
-  [a3 encodeBool:isAppleDevice forKey:@"_isAppleDevice"];
+  [coder encodeBool:isAppleDevice forKey:@"_isAppleDevice"];
 }
 
-- (W5BluetoothDevice)initWithCoder:(id)a3
+- (W5BluetoothDevice)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = W5BluetoothDevice;
   v4 = [(W5BluetoothDevice *)&v6 init];
   if (v4)
   {
-    v4->_name = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_name", "copy"}];
-    v4->_address = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_address", "copy"}];
-    v4->_isPaired = [a3 decodeBoolForKey:@"_isPaired"];
-    v4->_isConnected = [a3 decodeBoolForKey:@"_isConnected"];
-    v4->_isCloudPaired = [a3 decodeBoolForKey:@"_isCloudPaired"];
-    v4->_majorClass = [a3 decodeIntegerForKey:@"_majorClass"];
-    v4->_minorClass = [a3 decodeIntegerForKey:@"_minorClass"];
-    v4->_rssi = [a3 decodeIntegerForKey:@"_rssi"];
-    v4->_afhMap = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_afhMap", "copy"}];
-    v4->_connectionMode = [a3 decodeIntegerForKey:@"_connectionMode"];
-    v4->_connectionModeInterval = [a3 decodeIntegerForKey:@"_connectionModeInterval"];
-    v4->_manufacturer = [a3 decodeIntegerForKey:@"_manufacturer"];
-    v4->_lmpVersion = [a3 decodeIntegerForKey:@"_lmpVersion"];
-    v4->_lmpSubversion = [a3 decodeIntegerForKey:@"_lmpSubversion"];
-    v4->_role = [a3 decodeIntegerForKey:@"_role"];
-    v4->_isLowEnergy = [a3 decodeBoolForKey:@"_isLowEnergy"];
-    v4->_isAppleDevice = [a3 decodeBoolForKey:@"_isAppleDevice"];
+    v4->_name = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_name", "copy"}];
+    v4->_address = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_address", "copy"}];
+    v4->_isPaired = [coder decodeBoolForKey:@"_isPaired"];
+    v4->_isConnected = [coder decodeBoolForKey:@"_isConnected"];
+    v4->_isCloudPaired = [coder decodeBoolForKey:@"_isCloudPaired"];
+    v4->_majorClass = [coder decodeIntegerForKey:@"_majorClass"];
+    v4->_minorClass = [coder decodeIntegerForKey:@"_minorClass"];
+    v4->_rssi = [coder decodeIntegerForKey:@"_rssi"];
+    v4->_afhMap = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_afhMap", "copy"}];
+    v4->_connectionMode = [coder decodeIntegerForKey:@"_connectionMode"];
+    v4->_connectionModeInterval = [coder decodeIntegerForKey:@"_connectionModeInterval"];
+    v4->_manufacturer = [coder decodeIntegerForKey:@"_manufacturer"];
+    v4->_lmpVersion = [coder decodeIntegerForKey:@"_lmpVersion"];
+    v4->_lmpSubversion = [coder decodeIntegerForKey:@"_lmpSubversion"];
+    v4->_role = [coder decodeIntegerForKey:@"_role"];
+    v4->_isLowEnergy = [coder decodeBoolForKey:@"_isLowEnergy"];
+    v4->_isAppleDevice = [coder decodeBoolForKey:@"_isAppleDevice"];
   }
 
   return v4;

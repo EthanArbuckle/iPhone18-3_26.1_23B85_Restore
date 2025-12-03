@@ -1,21 +1,21 @@
 @interface NSSAccountsInfoRespMsgAccountInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAaPrimaryAccount:(BOOL)a3;
-- (void)setHasAuthenticated:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAaPrimaryAccount:(BOOL)account;
+- (void)setHasAuthenticated:(BOOL)authenticated;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSAccountsInfoRespMsgAccountInfo
 
-- (void)setHasAuthenticated:(BOOL)a3
+- (void)setHasAuthenticated:(BOOL)authenticated
 {
-  if (a3)
+  if (authenticated)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAaPrimaryAccount:(BOOL)a3
+- (void)setHasAaPrimaryAccount:(BOOL)account
 {
-  if (a3)
+  if (account)
   {
     v3 = 2;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = NSSAccountsInfoRespMsgAccountInfo;
   v4 = [(NSSAccountsInfoRespMsgAccountInfo *)&v8 description];
-  v5 = [(NSSAccountsInfoRespMsgAccountInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSAccountsInfoRespMsgAccountInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   username = self->_username;
@@ -113,45 +113,45 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_username)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_dSID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     authenticated = self->_authenticated;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_altDSID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_type)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -159,7 +159,7 @@
   {
     aaPrimaryAccount = self->_aaPrimaryAccount;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -167,77 +167,77 @@
   {
     aaIsManaged = self->_aaIsManaged;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v6;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_username)
   {
     [v6 setUsername:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dSID)
   {
     [v6 setDSID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[50] = self->_authenticated;
-    v4[52] |= 4u;
+    toCopy[50] = self->_authenticated;
+    toCopy[52] |= 4u;
   }
 
   if (self->_altDSID)
   {
     [v6 setAltDSID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_type)
   {
     [v6 setType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[49] = self->_aaPrimaryAccount;
-    v4[52] |= 2u;
+    toCopy[49] = self->_aaPrimaryAccount;
+    toCopy[52] |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[48] = self->_aaIsManaged;
-    v4[52] |= 1u;
+    toCopy[48] = self->_aaIsManaged;
+    toCopy[52] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_username copyWithZone:a3];
+  v8 = [(NSString *)self->_username copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSString *)self->_dSID copyWithZone:a3];
+  v10 = [(NSString *)self->_dSID copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -247,11 +247,11 @@
     *(v5 + 52) |= 4u;
   }
 
-  v12 = [(NSString *)self->_altDSID copyWithZone:a3];
+  v12 = [(NSString *)self->_altDSID copyWithZone:zone];
   v13 = *(v5 + 8);
   *(v5 + 8) = v12;
 
-  v14 = [(NSString *)self->_type copyWithZone:a3];
+  v14 = [(NSString *)self->_type copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
@@ -272,16 +272,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 3))
+  if (identifier | *(equalCopy + 3))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -290,7 +290,7 @@
   }
 
   username = self->_username;
-  if (username | *(v4 + 5))
+  if (username | *(equalCopy + 5))
   {
     if (![(NSString *)username isEqual:?])
     {
@@ -299,7 +299,7 @@
   }
 
   dSID = self->_dSID;
-  if (dSID | *(v4 + 2))
+  if (dSID | *(equalCopy + 2))
   {
     if (![(NSString *)dSID isEqual:?])
     {
@@ -307,42 +307,42 @@
     }
   }
 
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0)
+    if ((*(equalCopy + 52) & 4) == 0)
     {
       goto LABEL_22;
     }
 
-    v13 = *(v4 + 50);
+    v13 = *(equalCopy + 50);
     if (self->_authenticated)
     {
-      if ((*(v4 + 50) & 1) == 0)
+      if ((*(equalCopy + 50) & 1) == 0)
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(v4 + 50))
+    else if (*(equalCopy + 50))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_22;
   }
 
   altDSID = self->_altDSID;
-  if (altDSID | *(v4 + 1) && ![(NSString *)altDSID isEqual:?])
+  if (altDSID | *(equalCopy + 1) && ![(NSString *)altDSID isEqual:?])
   {
     goto LABEL_22;
   }
 
   type = self->_type;
-  if (type | *(v4 + 4))
+  if (type | *(equalCopy + 4))
   {
     if (![(NSString *)type isEqual:?])
     {
@@ -352,7 +352,7 @@
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 52) & 2) == 0)
+    if ((*(equalCopy + 52) & 2) == 0)
     {
       goto LABEL_16;
     }
@@ -362,40 +362,40 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ((*(v4 + 52) & 2) == 0)
+  if ((*(equalCopy + 52) & 2) == 0)
   {
     goto LABEL_22;
   }
 
-  v14 = *(v4 + 49);
+  v14 = *(equalCopy + 49);
   if (self->_aaPrimaryAccount)
   {
-    if ((*(v4 + 49) & 1) == 0)
+    if ((*(equalCopy + 49) & 1) == 0)
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 49))
+  else if (*(equalCopy + 49))
   {
     goto LABEL_22;
   }
 
 LABEL_16:
-  v11 = (*(v4 + 52) & 1) == 0;
+  v11 = (*(equalCopy + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if (*(v4 + 52))
+    if (*(equalCopy + 52))
     {
       if (self->_aaIsManaged)
       {
-        if (*(v4 + 48))
+        if (*(equalCopy + 48))
         {
           goto LABEL_36;
         }
       }
 
-      else if (!*(v4 + 48))
+      else if (!*(equalCopy + 48))
       {
 LABEL_36:
         v11 = 1;
@@ -452,57 +452,57 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(NSSAccountsInfoRespMsgAccountInfo *)self setIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NSSAccountsInfoRespMsgAccountInfo *)self setUsername:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NSSAccountsInfoRespMsgAccountInfo *)self setDSID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((v4[52] & 4) != 0)
+  if ((fromCopy[52] & 4) != 0)
   {
-    self->_authenticated = v4[50];
+    self->_authenticated = fromCopy[50];
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NSSAccountsInfoRespMsgAccountInfo *)self setAltDSID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NSSAccountsInfoRespMsgAccountInfo *)self setType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = v4[52];
+  v5 = fromCopy[52];
   if ((v5 & 2) != 0)
   {
-    self->_aaPrimaryAccount = v4[49];
+    self->_aaPrimaryAccount = fromCopy[49];
     *&self->_has |= 2u;
-    v5 = v4[52];
+    v5 = fromCopy[52];
   }
 
   if (v5)
   {
-    self->_aaIsManaged = v4[48];
+    self->_aaIsManaged = fromCopy[48];
     *&self->_has |= 1u;
   }
 }

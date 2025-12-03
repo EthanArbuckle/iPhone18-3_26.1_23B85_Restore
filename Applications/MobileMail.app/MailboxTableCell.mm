@@ -8,44 +8,44 @@
 - (BOOL)_shouldUnreadCountBeVisible;
 - (BOOL)isCellEnabled;
 - (CGPoint)destinationPointForAnimation;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MailboxTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MailboxTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIImageView)expansionAccessoryImageView;
 - (UIImageView)expansionEditingAccessoryImageView;
-- (id)_countQueryLabelForMailbox:(id)a3;
-- (id)_createMailboxesFromUids:(id)a3;
+- (id)_countQueryLabelForMailbox:(id)mailbox;
+- (id)_createMailboxesFromUids:(id)uids;
 - (id)_expansionAccessoryImageView;
 - (id)_scriptingInfo;
 - (void)_doCleanupExpansionAccessoryViews;
 - (void)_doRefreshExpansionAccessoryImageView;
-- (void)_preferredContentSizeCategoryDidChange:(id)a3;
+- (void)_preferredContentSizeCategoryDidChange:(id)change;
 - (void)_removeUnreadCount;
 - (void)_resetDebouncer;
-- (void)_setMailboxes:(id)a3 observeCount:(BOOL)a4 unreadCountIncludesRead:(BOOL)a5;
-- (void)_setUnreadCount:(unint64_t)a3;
-- (void)_setUnreadCountMailboxes:(id)a3 unreadCountIncludesRead:(BOOL)a4;
+- (void)_setMailboxes:(id)mailboxes observeCount:(BOOL)count unreadCountIncludesRead:(BOOL)read;
+- (void)_setUnreadCount:(unint64_t)count;
+- (void)_setUnreadCountMailboxes:(id)mailboxes unreadCountIncludesRead:(BOOL)read;
 - (void)_updateContentSizeSettings;
 - (void)_updateMailboxName;
-- (void)_updateUnreadCountLabelVisibilityAnimated:(BOOL)a3;
-- (void)_updateViewConfigurationsWithState:(unint64_t)a3;
+- (void)_updateUnreadCountLabelVisibilityAnimated:(BOOL)animated;
+- (void)_updateViewConfigurationsWithState:(unint64_t)state;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5;
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change;
 - (void)prepareForReuse;
-- (void)setCellEnabled:(BOOL)a3;
-- (void)setDetailsDisclosureButton:(id)a3;
-- (void)setDisabledForEditing:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setExpandable:(BOOL)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIcon:(id)a3 withOffset:(CGPoint)a4;
-- (void)setLegacyMailboxes:(id)a3 showUnreadCount:(BOOL)a4 unreadCountIncludesRead:(BOOL)a5;
-- (void)setMailboxes:(id)a3 observeCount:(BOOL)a4;
-- (void)setPreferredSubtitleFont:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setCellEnabled:(BOOL)enabled;
+- (void)setDetailsDisclosureButton:(id)button;
+- (void)setDisabledForEditing:(BOOL)editing;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setExpandable:(BOOL)expandable;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setIcon:(id)icon withOffset:(CGPoint)offset;
+- (void)setLegacyMailboxes:(id)mailboxes showUnreadCount:(BOOL)count unreadCountIncludesRead:(BOOL)read;
+- (void)setMailboxes:(id)mailboxes observeCount:(BOOL)count;
+- (void)setPreferredSubtitleFont:(id)font;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation MailboxTableCell
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = sub_100104038;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD020 != -1)
   {
     dispatch_once(&qword_1006DD020, block);
@@ -78,10 +78,10 @@
   qword_1006DD038 = 0;
   qword_1006DD040 = 0;
   v5 = +[NSNotificationCenter defaultCenter];
-  [v5 postNotificationName:@"_MailboxTableCellLayoutValuesDidChange" object:a1];
+  [v5 postNotificationName:@"_MailboxTableCellLayoutValuesDidChange" object:self];
 
   v6 = +[NSNotificationCenter defaultCenter];
-  [v6 removeObserver:a1 name:UIContentSizeCategoryDidChangeNotification object:0];
+  [v6 removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:0];
 }
 
 + (double)defaultRowHeight
@@ -89,25 +89,25 @@
   result = *&qword_1006DD038;
   if (*&qword_1006DD038 == 0.0)
   {
-    [a1 twoLineTopBottomPadding];
+    [self twoLineTopBottomPadding];
     *&qword_1006DD038 = v4 + v4;
-    v5 = [a1 titleFont];
-    [v5 capHeight];
+    titleFont = [self titleFont];
+    [titleFont capHeight];
     *&qword_1006DD038 = v6 + *&qword_1006DD038;
 
-    v7 = [a1 subtitleFont];
-    [v7 capHeight];
+    subtitleFont = [self subtitleFont];
+    [subtitleFont capHeight];
     *&qword_1006DD038 = v8 + *&qword_1006DD038;
 
-    v9 = [a1 subtitleFont];
-    [v9 _bodyLeading];
+    subtitleFont2 = [self subtitleFont];
+    [subtitleFont2 _bodyLeading];
     UIRoundToViewScale();
     *&qword_1006DD038 = v10 + *&qword_1006DD038;
 
     UIRoundToViewScale();
     qword_1006DD038 = v11;
     v12 = +[NSNotificationCenter defaultCenter];
-    [v12 addObserver:a1 selector:"_contentSizeCategoryChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
+    [v12 addObserver:self selector:"_contentSizeCategoryChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
     return *&qword_1006DD038;
   }
@@ -115,12 +115,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  height = fits.height;
+  width = fits.width;
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -151,8 +151,8 @@
   v2 = qword_1006DD040;
   if (*&qword_1006DD040 == 0.0)
   {
-    v3 = [a1 subtitleFont];
-    [v3 _bodyLeading];
+    subtitleFont = [self subtitleFont];
+    [subtitleFont _bodyLeading];
     UIRoundToViewScale();
     v2 = v4;
 
@@ -214,36 +214,36 @@
   return v2;
 }
 
-- (MailboxTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MailboxTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = MailboxTableCell;
-  v7 = [(MailboxTableCell *)&v18 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(MailboxTableCell *)&v18 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:v7 selector:"_invalidateLayout" name:@"_MailboxTableCellLayoutValuesDidChange" object:objc_opt_class()];
 
-    v9 = [(MailboxTableCell *)v7 textLabel];
-    v10 = [objc_opt_class() titleFont];
-    [v9 setFont:v10];
+    textLabel = [(MailboxTableCell *)v7 textLabel];
+    titleFont = [objc_opt_class() titleFont];
+    [textLabel setFont:titleFont];
 
-    v11 = [(MailboxTableCell *)v7 detailTextLabel];
-    v12 = [objc_opt_class() subtitleFont];
-    [v11 setFont:v12];
+    detailTextLabel = [(MailboxTableCell *)v7 detailTextLabel];
+    subtitleFont = [objc_opt_class() subtitleFont];
+    [detailTextLabel setFont:subtitleFont];
 
-    v13 = [(MailboxTableCell *)v7 imageView];
-    [v13 setContentMode:4];
+    imageView = [(MailboxTableCell *)v7 imageView];
+    [imageView setContentMode:4];
 
     v14 = +[NSNotificationCenter defaultCenter];
     [v14 addObserver:v7 selector:"_preferredContentSizeCategoryDidChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
     [(MailboxTableCell *)v7 _updateContentSizeSettings];
-    v15 = [(MailboxTableCell *)v7 traitCollection];
-    LOBYTE(v12) = [v15 mf_useSplitViewStyling];
+    traitCollection = [(MailboxTableCell *)v7 traitCollection];
+    LOBYTE(subtitleFont) = [traitCollection mf_useSplitViewStyling];
 
-    if ((v12 & 1) == 0)
+    if ((subtitleFont & 1) == 0)
     {
       v16 = objc_alloc_init(UIView);
       [(MailboxTableCell *)v7 setSelectedBackgroundView:v16];
@@ -291,26 +291,26 @@
   }
 }
 
-- (void)_preferredContentSizeCategoryDidChange:(id)a3
+- (void)_preferredContentSizeCategoryDidChange:(id)change
 {
   [(MailboxTableCell *)self _updateContentSizeSettings];
   if ([*(&self->super._shouldDisableWhileEditing + 1) count] == 1)
   {
-    v4 = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
-    v5 = [UIApp preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+    anyObject = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
+    preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
-      v7 = 0;
+      icon = 0;
     }
 
     else
     {
-      v7 = [v4 icon];
+      icon = [anyObject icon];
     }
 
-    [(MailboxTableCell *)self setIcon:v7];
+    [(MailboxTableCell *)self setIcon:icon];
     if (!IsAccessibilityCategory)
     {
     }
@@ -324,8 +324,8 @@
 
 - (void)_updateContentSizeSettings
 {
-  v7 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -337,11 +337,11 @@
     v4 = 1;
   }
 
-  v8 = [(MailboxTableCell *)self textLabel];
-  [v8 setNumberOfLines:v4];
+  textLabel = [(MailboxTableCell *)self textLabel];
+  [textLabel setNumberOfLines:v4];
 
-  v9 = [UIApp preferredContentSizeCategory];
-  v5 = UIContentSizeCategoryIsAccessibilityCategory(v9);
+  preferredContentSizeCategory2 = [UIApp preferredContentSizeCategory];
+  v5 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
   if (v5)
   {
@@ -353,8 +353,8 @@
     v6 = 1;
   }
 
-  v10 = [(MailboxTableCell *)self detailTextLabel];
-  [v10 setNumberOfLines:v6];
+  detailTextLabel = [(MailboxTableCell *)self detailTextLabel];
+  [detailTextLabel setNumberOfLines:v6];
 }
 
 - (void)dealloc
@@ -369,31 +369,31 @@
   [(MailboxTableCell *)&v4 dealloc];
 }
 
-- (void)setMailboxes:(id)a3 observeCount:(BOOL)a4
+- (void)setMailboxes:(id)mailboxes observeCount:(BOOL)count
 {
-  v4 = a4;
+  countCopy = count;
   v6 = *(&self->super._shouldDisableWhileEditing + 1);
   *(&self->super._shouldDisableWhileEditing + 1) = 0;
-  v7 = a3;
+  mailboxesCopy = mailboxes;
 
-  [(MailboxTableCell *)self _setMailboxes:v7 observeCount:v4 unreadCountIncludesRead:0];
+  [(MailboxTableCell *)self _setMailboxes:mailboxesCopy observeCount:countCopy unreadCountIncludesRead:0];
 }
 
-- (void)_setMailboxes:(id)a3 observeCount:(BOOL)a4 unreadCountIncludesRead:(BOOL)a5
+- (void)_setMailboxes:(id)mailboxes observeCount:(BOOL)count unreadCountIncludesRead:(BOOL)read
 {
-  v5 = a5;
-  v6 = a4;
-  v11 = a3;
-  v8 = [v11 copy];
+  readCopy = read;
+  countCopy = count;
+  mailboxesCopy = mailboxes;
+  v8 = [mailboxesCopy copy];
   v9 = *(&self->_legacyMailboxes + 1);
   *(&self->_legacyMailboxes + 1) = v8;
 
   [(MailboxTableCell *)self setShouldShowUnreadCount:1];
-  if (v6)
+  if (countCopy)
   {
     if ([*(&self->_legacyMailboxes + 1) count])
     {
-      v10 = v11;
+      v10 = mailboxesCopy;
     }
 
     else
@@ -407,21 +407,21 @@
     v10 = 0;
   }
 
-  [(MailboxTableCell *)self _setUnreadCountMailboxes:v10 unreadCountIncludesRead:v5];
+  [(MailboxTableCell *)self _setUnreadCountMailboxes:v10 unreadCountIncludesRead:readCopy];
 }
 
-- (void)_setUnreadCountMailboxes:(id)a3 unreadCountIncludesRead:(BOOL)a4
+- (void)_setUnreadCountMailboxes:(id)mailboxes unreadCountIncludesRead:(BOOL)read
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MailboxTableCell *)self unreadCountToken];
-  [v7 cancel];
+  readCopy = read;
+  mailboxesCopy = mailboxes;
+  unreadCountToken = [(MailboxTableCell *)self unreadCountToken];
+  [unreadCountToken cancel];
 
   [(MailboxTableCell *)self setUnreadCountToken:0];
-  if (v6 && [v6 count])
+  if (mailboxesCopy && [mailboxesCopy count])
   {
     v20 = [EMMessageListItemPredicates predicateForMessagesInMailboxes:*(&self->_legacyMailboxes + 1)];
-    if (v4)
+    if (readCopy)
     {
       v8 = v20;
     }
@@ -435,77 +435,77 @@
       v8 = [NSCompoundPredicate andPredicateWithSubpredicates:v10];
     }
 
-    v11 = [v6 firstObject];
-    v12 = [(MailboxTableCell *)self _countQueryLabelForMailbox:v11];
+    firstObject = [mailboxesCopy firstObject];
+    v12 = [(MailboxTableCell *)self _countQueryLabelForMailbox:firstObject];
 
     v13 = [[EMQuery alloc] initWithTargetClass:objc_opt_class() predicate:v8 sortDescriptors:&__NSArray0__struct queryOptions:0 label:v12];
-    v14 = [v6 ef_mapSelector:"objectID"];
+    v14 = [mailboxesCopy ef_mapSelector:"objectID"];
     v15 = [EMMailboxScope mailboxScopeForMailboxObjectIDs:v14 forExclusion:0];
 
     v16 = +[UIApplication sharedApplication];
-    v17 = [v16 daemonInterface];
-    v18 = [v17 messageRepository];
-    v19 = [v18 startCountingQuery:v13 includingServerCountsForMailboxScope:v15 withObserver:self];
+    daemonInterface = [v16 daemonInterface];
+    messageRepository = [daemonInterface messageRepository];
+    v19 = [messageRepository startCountingQuery:v13 includingServerCountsForMailboxScope:v15 withObserver:self];
     [(MailboxTableCell *)self setUnreadCountToken:v19];
   }
 
   [(MailboxTableCell *)self _resetDebouncer];
 }
 
-- (id)_countQueryLabelForMailbox:(id)a3
+- (id)_countQueryLabelForMailbox:(id)mailbox
 {
-  v3 = a3;
-  v4 = [v3 name];
-  if (([v3 descriptionUsesRealName] & 1) == 0)
+  mailboxCopy = mailbox;
+  name = [mailboxCopy name];
+  if (([mailboxCopy descriptionUsesRealName] & 1) == 0)
   {
-    v5 = [EFPrivacy fullyOrPartiallyRedactedStringForString:v4];
+    v5 = [EFPrivacy fullyOrPartiallyRedactedStringForString:name];
 
     v6 = [[NSString alloc] initWithFormat:@"Generic mailbox %@", v5];
-    v4 = v6;
+    name = v6;
   }
 
   v7 = [NSString alloc];
-  v8 = [v3 accountIdentifier];
-  v9 = [v7 initWithFormat:@"%@ (accountID: %@)", v4, v8];
+  accountIdentifier = [mailboxCopy accountIdentifier];
+  v9 = [v7 initWithFormat:@"%@ (accountID: %@)", name, accountIdentifier];
 
   return v9;
 }
 
-- (void)setLegacyMailboxes:(id)a3 showUnreadCount:(BOOL)a4 unreadCountIncludesRead:(BOOL)a5
+- (void)setLegacyMailboxes:(id)mailboxes showUnreadCount:(BOOL)count unreadCountIncludesRead:(BOOL)read
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  if (([v9 isEqualToSet:*(&self->super._shouldDisableWhileEditing + 1)] & 1) == 0)
+  readCopy = read;
+  countCopy = count;
+  mailboxesCopy = mailboxes;
+  if (([mailboxesCopy isEqualToSet:*(&self->super._shouldDisableWhileEditing + 1)] & 1) == 0)
   {
     v10 = +[NSNotificationCenter defaultCenter];
     v11 = MFMailboxUidWasRenamedNotification;
     [v10 removeObserver:self name:MFMailboxUidWasRenamedNotification object:0];
 
-    v12 = [(MailboxTableCell *)self unreadCountToken];
-    [v12 cancel];
+    unreadCountToken = [(MailboxTableCell *)self unreadCountToken];
+    [unreadCountToken cancel];
 
     [(MailboxTableCell *)self setUnreadCountToken:0];
-    objc_storeStrong((&self->super._shouldDisableWhileEditing + 1), a3);
-    [(MailboxTableCell *)self setShouldShowUnreadCount:v6];
+    objc_storeStrong((&self->super._shouldDisableWhileEditing + 1), mailboxes);
+    [(MailboxTableCell *)self setShouldShowUnreadCount:countCopy];
     if ([*(&self->super._shouldDisableWhileEditing + 1) count] == 1)
     {
-      v13 = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
-      v14 = [v13 icon];
-      [(MailboxTableCell *)self setIcon:v14];
+      anyObject = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
+      icon = [anyObject icon];
+      [(MailboxTableCell *)self setIcon:icon];
 
       v15 = +[MailChangeManager sharedChangeManager];
-      *(&self->_detailsDisclosureButton + 1) = [v15 levelForMailbox:v13];
+      *(&self->_detailsDisclosureButton + 1) = [v15 levelForMailbox:anyObject];
 
       v16 = +[NSNotificationCenter defaultCenter];
-      [v16 addObserver:self selector:"_updateMailboxName" name:v11 object:v13];
+      [v16 addObserver:self selector:"_updateMailboxName" name:v11 object:anyObject];
     }
 
     [(MailboxTableCell *)self _removeUnreadCount];
     if ([(MailboxTableCell *)self shouldShowUnreadCount]&& *(&self->super._shouldDisableWhileEditing + 1))
     {
-      v17 = [v9 allObjects];
-      v18 = [(MailboxTableCell *)self _createMailboxesFromUids:v17];
+      allObjects = [mailboxesCopy allObjects];
+      v18 = [(MailboxTableCell *)self _createMailboxesFromUids:allObjects];
 
       if (![v18 count])
       {
@@ -513,12 +513,12 @@
         if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
         {
           v20 = +[UIApplication sharedApplication];
-          v21 = [v20 mailboxProvider];
-          sub_100488468(v21, v22, v19, v20);
+          mailboxProvider = [v20 mailboxProvider];
+          sub_100488468(mailboxProvider, v22, v19, v20);
         }
       }
 
-      [(MailboxTableCell *)self _setMailboxes:v18 observeCount:1 unreadCountIncludesRead:v5];
+      [(MailboxTableCell *)self _setMailboxes:v18 observeCount:1 unreadCountIncludesRead:readCopy];
     }
 
     else
@@ -531,19 +531,19 @@
   [(MailboxTableCell *)self setNeedsLayout];
 }
 
-- (id)_createMailboxesFromUids:(id)a3
+- (id)_createMailboxesFromUids:(id)uids
 {
-  v3 = a3;
+  uidsCopy = uids;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 mailboxProvider];
+  mailboxProvider = [v4 mailboxProvider];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001056D4;
   v9[3] = &unk_10064FEA8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [v3 ef_compactMap:v9];
+  v10 = mailboxProvider;
+  v6 = mailboxProvider;
+  v7 = [uidsCopy ef_compactMap:v9];
 
   return v7;
 }
@@ -568,22 +568,22 @@
   return v3;
 }
 
-- (void)_updateUnreadCountLabelVisibilityAnimated:(BOOL)a3
+- (void)_updateUnreadCountLabelVisibilityAnimated:(BOOL)animated
 {
   if (*(&self->_iconOffset.y + 1))
   {
-    v3 = a3;
-    v5 = [(MailboxTableCell *)self _shouldUnreadCountBeVisible];
+    animatedCopy = animated;
+    _shouldUnreadCountBeVisible = [(MailboxTableCell *)self _shouldUnreadCountBeVisible];
     v6 = *(&self->_iconOffset.y + 1);
-    if (v5)
+    if (_shouldUnreadCountBeVisible)
     {
-      v7 = [v6 superview];
+      superview = [v6 superview];
 
-      if (!v7)
+      if (!superview)
       {
         [*(&self->_iconOffset.y + 1) setAlpha:0.0];
-        v8 = [(MailboxTableCell *)self contentView];
-        [v8 addSubview:*(&self->_iconOffset.y + 1)];
+        contentView = [(MailboxTableCell *)self contentView];
+        [contentView addSubview:*(&self->_iconOffset.y + 1)];
       }
 
       [*(&self->_iconOffset.y + 1) alpha];
@@ -614,7 +614,7 @@ LABEL_9:
         v14 = v13;
         if (v13)
         {
-          if (v3)
+          if (animatedCopy)
           {
             +[UIView inheritedAnimationDuration];
             [UIView animateWithDuration:v14 animations:0 completion:?];
@@ -635,19 +635,19 @@ LABEL_14:
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v17.receiver = self;
   v17.super_class = MailboxTableCell;
   [MailboxTableCell setEditing:"setEditing:animated:" animated:?];
-  v7 = [(MailboxTableCell *)self traitCollection];
-  v8 = [v7 mf_useSplitViewStyling];
+  traitCollection = [(MailboxTableCell *)self traitCollection];
+  mf_useSplitViewStyling = [traitCollection mf_useSplitViewStyling];
 
-  if ((v8 & 1) == 0)
+  if ((mf_useSplitViewStyling & 1) == 0)
   {
-    if (v5)
+    if (editingCopy)
     {
       if ((BYTE5(self->_detailsDisclosureButton) & 2) != 0)
       {
@@ -660,18 +660,18 @@ LABEL_14:
       }
 
       [(MailboxTableCell *)self setSelectionStyle:v9];
-      v10 = +[UIColor clearColor];
-      v11 = [(MailboxTableCell *)self selectedBackgroundView];
-      [v11 setBackgroundColor:v10];
+      traitCollection2 = +[UIColor clearColor];
+      selectedBackgroundView = [(MailboxTableCell *)self selectedBackgroundView];
+      [selectedBackgroundView setBackgroundColor:traitCollection2];
     }
 
     else
     {
       [(MailboxTableCell *)self setSelectionStyle:3];
-      v10 = [(MailboxTableCell *)self traitCollection];
-      v11 = +[UIColor mailCellSelectionStateColorForInterfaceLevel:](UIColor, "mailCellSelectionStateColorForInterfaceLevel:", [v10 userInterfaceLevel]);
-      v12 = [(MailboxTableCell *)self selectedBackgroundView];
-      [v12 setBackgroundColor:v11];
+      traitCollection2 = [(MailboxTableCell *)self traitCollection];
+      selectedBackgroundView = +[UIColor mailCellSelectionStateColorForInterfaceLevel:](UIColor, "mailCellSelectionStateColorForInterfaceLevel:", [traitCollection2 userInterfaceLevel]);
+      selectedBackgroundView2 = [(MailboxTableCell *)self selectedBackgroundView];
+      [selectedBackgroundView2 setBackgroundColor:selectedBackgroundView];
     }
   }
 
@@ -679,17 +679,17 @@ LABEL_14:
   v14[1] = 3221225472;
   v14[2] = sub_100105B4C;
   v14[3] = &unk_100650640;
-  v15 = v5;
-  v16 = v4;
+  v15 = editingCopy;
+  v16 = animatedCopy;
   v14[4] = self;
   v13 = objc_retainBlock(v14);
-  [(MailboxTableCell *)self _updateUnreadCountLabelVisibilityAnimated:v4];
+  [(MailboxTableCell *)self _updateUnreadCountLabelVisibilityAnimated:animatedCopy];
   (v13[2])(v13, *(&self->_unreadCountLabel + 1));
 }
 
-- (void)setDisabledForEditing:(BOOL)a3
+- (void)setDisabledForEditing:(BOOL)editing
 {
-  if (a3)
+  if (editing)
   {
     v3 = 2;
   }
@@ -714,29 +714,29 @@ LABEL_14:
     return 0;
   }
 
-  v4 = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
-  if (v4)
+  anyObject = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
+  if (anyObject)
   {
-    v5 = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
-    v3 = [v5 isStore];
+    anyObject2 = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
+    isStore = [anyObject2 isStore];
   }
 
   else
   {
-    v3 = 1;
+    isStore = 1;
   }
 
-  return v3;
+  return isStore;
 }
 
-- (void)setIcon:(id)a3 withOffset:(CGPoint)a4
+- (void)setIcon:(id)icon withOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
-  v7 = [(MailboxTableCell *)self imageView];
-  v8 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  y = offset.y;
+  x = offset.x;
+  iconCopy = icon;
+  imageView = [(MailboxTableCell *)self imageView];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -745,35 +745,35 @@ LABEL_14:
 
   else
   {
-    v10 = v11;
+    v10 = iconCopy;
   }
 
-  [v7 setImage:v10];
+  [imageView setImage:v10];
 
   [(MailboxTableCell *)self setIconOffset:x, y];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
-  v4 = [(MailboxTableCell *)self textLabel];
-  [v4 setText:v7];
+  titleCopy = title;
+  textLabel = [(MailboxTableCell *)self textLabel];
+  [textLabel setText:titleCopy];
 
-  v5 = [(MailboxTableCell *)self textLabel];
+  textLabel2 = [(MailboxTableCell *)self textLabel];
   v6 = +[MailboxTableCell titleFont];
-  [v5 setFont:v6];
+  [textLabel2 setFont:v6];
 
   [(MailboxTableCell *)self setSubtitle:0];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v12 = a3;
-  v4 = [(MailboxTableCell *)self preferredSubtitleFont];
-  v5 = v4;
-  if (v4)
+  subtitleCopy = subtitle;
+  preferredSubtitleFont = [(MailboxTableCell *)self preferredSubtitleFont];
+  v5 = preferredSubtitleFont;
+  if (preferredSubtitleFont)
   {
-    v6 = v4;
+    v6 = preferredSubtitleFont;
   }
 
   else
@@ -783,25 +783,25 @@ LABEL_14:
 
   v7 = v6;
 
-  v8 = [(MailboxTableCell *)self detailTextLabel];
-  [v8 setText:v12];
+  detailTextLabel = [(MailboxTableCell *)self detailTextLabel];
+  [detailTextLabel setText:subtitleCopy];
 
-  v9 = [(MailboxTableCell *)self detailTextLabel];
+  detailTextLabel2 = [(MailboxTableCell *)self detailTextLabel];
   v10 = +[UIColor secondaryLabelColor];
-  [v9 setTextColor:v10];
+  [detailTextLabel2 setTextColor:v10];
 
-  v11 = [(MailboxTableCell *)self detailTextLabel];
-  [v11 setFont:v7];
+  detailTextLabel3 = [(MailboxTableCell *)self detailTextLabel];
+  [detailTextLabel3 setFont:v7];
 
   [(MailboxTableCell *)self setNeedsLayout];
 }
 
-- (void)setDetailsDisclosureButton:(id)a3
+- (void)setDetailsDisclosureButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   v6 = *(&self->_unreadCountLabel + 1);
-  v9 = v5;
-  if (v6 != v5)
+  v9 = buttonCopy;
+  if (v6 != buttonCopy)
   {
     if (v6)
     {
@@ -812,32 +812,32 @@ LABEL_14:
 
     if (v9)
     {
-      objc_storeStrong((&self->_unreadCountLabel + 1), a3);
-      v8 = [(MailboxTableCell *)self contentView];
-      [v8 addSubview:*(&self->_unreadCountLabel + 1)];
+      objc_storeStrong((&self->_unreadCountLabel + 1), button);
+      contentView = [(MailboxTableCell *)self contentView];
+      [contentView addSubview:*(&self->_unreadCountLabel + 1)];
     }
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = MailboxTableCell;
   [(MailboxTableCell *)&v5 setUserInteractionEnabled:?];
-  [(MailboxTableCell *)self setCellEnabled:v3];
+  [(MailboxTableCell *)self setCellEnabled:enabledCopy];
 }
 
-- (void)setCellEnabled:(BOOL)a3
+- (void)setCellEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  BYTE5(self->_detailsDisclosureButton) = BYTE5(self->_detailsDisclosureButton) & 0xFE | !a3;
-  v5 = [(MailboxTableCell *)self traitCollection];
-  v6 = [v5 mf_useSplitViewStyling];
+  enabledCopy = enabled;
+  BYTE5(self->_detailsDisclosureButton) = BYTE5(self->_detailsDisclosureButton) & 0xFE | !enabled;
+  traitCollection = [(MailboxTableCell *)self traitCollection];
+  mf_useSplitViewStyling = [traitCollection mf_useSplitViewStyling];
 
-  if ((v6 & 1) == 0)
+  if ((mf_useSplitViewStyling & 1) == 0)
   {
-    if (v3)
+    if (enabledCopy)
     {
       v7 = 3;
     }
@@ -850,7 +850,7 @@ LABEL_14:
     [(MailboxTableCell *)self setSelectionStyle:v7];
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     v8 = 1;
   }
@@ -863,14 +863,14 @@ LABEL_14:
   [(MailboxTableCell *)self setTintAdjustmentMode:v8];
 }
 
-- (void)setPreferredSubtitleFont:(id)a3
+- (void)setPreferredSubtitleFont:(id)font
 {
-  v6 = a3;
+  fontCopy = font;
   if (([*(&self->_extraIndentLevel + 1) isEqual:?] & 1) == 0)
   {
-    objc_storeStrong((&self->_extraIndentLevel + 1), a3);
-    v5 = [(MailboxTableCell *)self detailTextLabel];
-    [v5 setFont:v6];
+    objc_storeStrong((&self->_extraIndentLevel + 1), font);
+    detailTextLabel = [(MailboxTableCell *)self detailTextLabel];
+    [detailTextLabel setFont:fontCopy];
   }
 }
 
@@ -885,9 +885,9 @@ LABEL_14:
   }
 }
 
-- (void)_setUnreadCount:(unint64_t)a3
+- (void)_setUnreadCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     if (!*(&self->_iconOffset.y + 1))
     {
@@ -908,7 +908,7 @@ LABEL_14:
       [(MailboxTableCell *)self _updateUnreadCountLabelVisibilityAnimated:0];
     }
 
-    v10 = [NSNumberFormatter ef_formatUnsignedInteger:a3 withGrouping:0];
+    v10 = [NSNumberFormatter ef_formatUnsignedInteger:count withGrouping:0];
     [*(&self->_iconOffset.y + 1) setText:v10];
 
     [(MailboxTableCell *)self setNeedsLayout];
@@ -926,40 +926,40 @@ LABEL_14:
   if ([*(&self->super._shouldDisableWhileEditing + 1) count] == 1)
   {
     v3 = +[MailChangeManager sharedChangeManager];
-    v4 = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
-    v5 = [v3 displayNameUsingSpecialNamesForMailbox:v4];
+    anyObject = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
+    v5 = [v3 displayNameUsingSpecialNamesForMailbox:anyObject];
 
     [(MailboxTableCell *)self setTitle:v5];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   v11.receiver = self;
   v11.super_class = MailboxTableCell;
-  [(MailboxTableCell *)&v11 setHighlighted:a3 animated:a4];
-  v6 = [(MailboxTableCell *)self traitCollection];
-  v7 = [v6 mf_useSplitViewStyling];
+  [(MailboxTableCell *)&v11 setHighlighted:highlighted animated:animated];
+  traitCollection = [(MailboxTableCell *)self traitCollection];
+  mf_useSplitViewStyling = [traitCollection mf_useSplitViewStyling];
 
-  if ((v7 & 1) == 0 && ([(MailboxTableCell *)self isEditing]& 1) == 0)
+  if ((mf_useSplitViewStyling & 1) == 0 && ([(MailboxTableCell *)self isEditing]& 1) == 0)
   {
-    if (v4)
+    if (highlightedCopy)
     {
       v8 = +[UIColor _tertiaryFillColor];
-      v9 = v8;
+      traitCollection2 = v8;
     }
 
     else
     {
-      v9 = [(MailboxTableCell *)self traitCollection];
-      v8 = +[UIColor mailCellSelectionStateColorForInterfaceLevel:](UIColor, "mailCellSelectionStateColorForInterfaceLevel:", [v9 userInterfaceLevel]);
+      traitCollection2 = [(MailboxTableCell *)self traitCollection];
+      v8 = +[UIColor mailCellSelectionStateColorForInterfaceLevel:](UIColor, "mailCellSelectionStateColorForInterfaceLevel:", [traitCollection2 userInterfaceLevel]);
     }
 
-    v10 = [(MailboxTableCell *)self selectedBackgroundView];
-    [v10 setBackgroundColor:v8];
+    selectedBackgroundView = [(MailboxTableCell *)self selectedBackgroundView];
+    [selectedBackgroundView setBackgroundColor:v8];
 
-    if (!v4)
+    if (!highlightedCopy)
     {
     }
   }
@@ -982,21 +982,21 @@ LABEL_14:
   [(MailboxTableCell *)self setSubtitle:0];
 }
 
-- (void)_updateViewConfigurationsWithState:(unint64_t)a3
+- (void)_updateViewConfigurationsWithState:(unint64_t)state
 {
-  v6 = [(MailboxTableCell *)self traitCollection];
-  v5 = [v6 mf_useSplitViewStyling];
+  traitCollection = [(MailboxTableCell *)self traitCollection];
+  mf_useSplitViewStyling = [traitCollection mf_useSplitViewStyling];
 
-  if (v5)
+  if (mf_useSplitViewStyling)
   {
     if ([(MailboxTableCell *)self isExpandable])
     {
-      [_UIBackgroundViewConfiguration defaultOutlineParentCellConfigurationForState:a3];
+      [_UIBackgroundViewConfiguration defaultOutlineParentCellConfigurationForState:state];
     }
 
     else
     {
-      [_UIBackgroundViewConfiguration defaultOutlineCellConfigurationForState:a3];
+      [_UIBackgroundViewConfiguration defaultOutlineCellConfigurationForState:state];
     }
     v7 = ;
     [v7 setEdgesAddingLayoutMarginsToBackgroundInsets:10];
@@ -1025,9 +1025,9 @@ LABEL_14:
   v3 = *(&self->_preferredSubtitleFont + 1);
   if (!v3)
   {
-    v4 = [(MailboxTableCell *)self _expansionAccessoryImageView];
+    _expansionAccessoryImageView = [(MailboxTableCell *)self _expansionAccessoryImageView];
     v5 = *(&self->_preferredSubtitleFont + 1);
-    *(&self->_preferredSubtitleFont + 1) = v4;
+    *(&self->_preferredSubtitleFont + 1) = _expansionAccessoryImageView;
 
     v3 = *(&self->_preferredSubtitleFont + 1);
   }
@@ -1040,9 +1040,9 @@ LABEL_14:
   v3 = *(&self->_expansionAccessoryImageView + 1);
   if (!v3)
   {
-    v4 = [(MailboxTableCell *)self _expansionAccessoryImageView];
+    _expansionAccessoryImageView = [(MailboxTableCell *)self _expansionAccessoryImageView];
     v5 = *(&self->_expansionAccessoryImageView + 1);
-    *(&self->_expansionAccessoryImageView + 1) = v4;
+    *(&self->_expansionAccessoryImageView + 1) = _expansionAccessoryImageView;
 
     v3 = *(&self->_expansionAccessoryImageView + 1);
   }
@@ -1070,31 +1070,31 @@ LABEL_14:
 {
   if ([(MailboxTableCell *)self isExpandable])
   {
-    v3 = [(MailboxTableCell *)self accessoryView];
-    v4 = [(MailboxTableCell *)self expansionAccessoryImageView];
+    accessoryView = [(MailboxTableCell *)self accessoryView];
+    expansionAccessoryImageView = [(MailboxTableCell *)self expansionAccessoryImageView];
 
-    if (v3 != v4)
+    if (accessoryView != expansionAccessoryImageView)
     {
-      v5 = [(MailboxTableCell *)self expansionAccessoryImageView];
-      [(MailboxTableCell *)self setAccessoryView:v5];
+      expansionAccessoryImageView2 = [(MailboxTableCell *)self expansionAccessoryImageView];
+      [(MailboxTableCell *)self setAccessoryView:expansionAccessoryImageView2];
     }
 
-    v6 = [(MailboxTableCell *)self editingAccessoryView];
-    v7 = [(MailboxTableCell *)self expansionEditingAccessoryImageView];
+    editingAccessoryView = [(MailboxTableCell *)self editingAccessoryView];
+    expansionEditingAccessoryImageView = [(MailboxTableCell *)self expansionEditingAccessoryImageView];
 
-    if (v6 != v7)
+    if (editingAccessoryView != expansionEditingAccessoryImageView)
     {
-      v8 = [(MailboxTableCell *)self expansionEditingAccessoryImageView];
-      [(MailboxTableCell *)self setEditingAccessoryView:v8];
+      expansionEditingAccessoryImageView2 = [(MailboxTableCell *)self expansionEditingAccessoryImageView];
+      [(MailboxTableCell *)self setEditingAccessoryView:expansionEditingAccessoryImageView2];
     }
 
-    v9 = [(MailboxTableCell *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(MailboxTableCell *)self _shouldReverseLayoutDirection];
     v10 = -1.57079633;
     *&v11 = -1;
     *(&v11 + 1) = -1;
     *&v18.c = v11;
     *&v18.tx = v11;
-    if (v9)
+    if (_shouldReverseLayoutDirection)
     {
       v10 = 1.57079633;
     }
@@ -1110,14 +1110,14 @@ LABEL_14:
     }
 
     v17 = v18;
-    v13 = [(MailboxTableCell *)self accessoryView];
+    accessoryView2 = [(MailboxTableCell *)self accessoryView];
     v16 = v17;
-    [v13 setTransform:&v16];
+    [accessoryView2 setTransform:&v16];
 
     v15 = v18;
-    v14 = [(MailboxTableCell *)self editingAccessoryView];
+    editingAccessoryView2 = [(MailboxTableCell *)self editingAccessoryView];
     v16 = v15;
-    [v14 setTransform:&v16];
+    [editingAccessoryView2 setTransform:&v16];
   }
 
   else
@@ -1127,22 +1127,22 @@ LABEL_14:
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (LOBYTE(self->_level) != a3)
+  if (LOBYTE(self->_level) != expanded)
   {
-    LOBYTE(self->_level) = a3;
+    LOBYTE(self->_level) = expanded;
     [(MailboxTableCell *)self _doRefreshExpansionAccessoryImageView];
 
     [(MailboxTableCell *)self _updateUnreadCountLabelVisibilityAnimated:0];
   }
 }
 
-- (void)setExpandable:(BOOL)a3
+- (void)setExpandable:(BOOL)expandable
 {
-  if (HIBYTE(self->_detailsDisclosureButton) != a3)
+  if (HIBYTE(self->_detailsDisclosureButton) != expandable)
   {
-    HIBYTE(self->_detailsDisclosureButton) = a3;
+    HIBYTE(self->_detailsDisclosureButton) = expandable;
     [(MailboxTableCell *)self _doRefreshExpansionAccessoryImageView];
 
     [(MailboxTableCell *)self _updateUnreadCountLabelVisibilityAnimated:0];
@@ -1151,17 +1151,17 @@ LABEL_14:
 
 - (void)layoutSubviews
 {
-  v3 = [(MailboxTableCell *)self imageView];
-  v4 = [v3 image];
+  imageView = [(MailboxTableCell *)self imageView];
+  image = [imageView image];
 
   if (*(&self->_iconOffset.y + 1))
   {
-    v5 = [(MailboxTableCell *)self _shouldUnreadCountBeVisible];
+    _shouldUnreadCountBeVisible = [(MailboxTableCell *)self _shouldUnreadCountBeVisible];
   }
 
   else
   {
-    v5 = 0;
+    _shouldUnreadCountBeVisible = 0;
   }
 
   if ((([(MailboxTableCell *)self isEditing]& 1) != 0 || ![(MailboxTableCell *)self accessoryType]) && [(MailboxTableCell *)self isEditing])
@@ -1169,7 +1169,7 @@ LABEL_14:
     [(MailboxTableCell *)self editingAccessoryType];
   }
 
-  v6 = [(MailboxTableCell *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(MailboxTableCell *)self effectiveUserInterfaceLayoutDirection];
   if ([(MailboxTableCell *)self flattenHierarchy])
   {
     v7 = 0;
@@ -1184,15 +1184,15 @@ LABEL_14:
   v172.receiver = self;
   v172.super_class = MailboxTableCell;
   [(MailboxTableCell *)&v172 layoutSubviews];
-  v9 = [(MailboxTableCell *)self contentView];
-  [v9 bounds];
+  contentView = [(MailboxTableCell *)self contentView];
+  [contentView bounds];
   v168 = v11;
   rect = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(MailboxTableCell *)self contentView];
-  [v16 frame];
+  contentView2 = [(MailboxTableCell *)self contentView];
+  [contentView2 frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -1200,11 +1200,11 @@ LABEL_14:
 
   if ([(MailboxTableCell *)self isExpandable])
   {
-    v25 = [UIApp preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v25);
+    preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     v27 = 12.5;
-    if (!v6)
+    if (!effectiveUserInterfaceLayoutDirection)
     {
       v27 = 0.0;
     }
@@ -1230,16 +1230,16 @@ LABEL_14:
       v30 = v22 + 12.5;
     }
 
-    v31 = [(MailboxTableCell *)self contentView];
-    [v31 setFrame:{v29, v20, v30, v24}];
+    contentView3 = [(MailboxTableCell *)self contentView];
+    [contentView3 setFrame:{v29, v20, v30, v24}];
 
-    v32 = [(MailboxTableCell *)self accessoryView];
-    [v32 frame];
+    accessoryView = [(MailboxTableCell *)self accessoryView];
+    [accessoryView frame];
     v34 = v33;
     v36 = v35;
     v38 = v37;
 
-    if (v6)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       v39 = 8.0;
     }
@@ -1249,19 +1249,19 @@ LABEL_14:
       v39 = v30;
     }
 
-    v40 = [(MailboxTableCell *)self accessoryView];
-    [v40 setFrame:{v39, v34, v36, v38}];
+    accessoryView2 = [(MailboxTableCell *)self accessoryView];
+    [accessoryView2 setFrame:{v39, v34, v36, v38}];
   }
 
-  if (v4)
+  if (image)
   {
-    v41 = [UIApp preferredContentSizeCategory];
-    v42 = UIContentSizeCategoryIsAccessibilityCategory(v41);
+    preferredContentSizeCategory2 = [UIApp preferredContentSizeCategory];
+    v42 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
     if (!v42)
     {
-      v48 = [(MailboxTableCell *)self imageView];
-      [v48 frame];
+      imageView2 = [(MailboxTableCell *)self imageView];
+      [imageView2 frame];
       v50 = v49;
       v52 = v51;
       v54 = v53;
@@ -1275,7 +1275,7 @@ LABEL_14:
       CGRectGetWidth(v173);
       UIRoundToViewScale();
       v58 = v57 + *(&self->_mailboxes + 1);
-      if (v6)
+      if (effectiveUserInterfaceLayoutDirection)
       {
         v174.origin.y = v168;
         v174.origin.x = rect;
@@ -1289,8 +1289,8 @@ LABEL_14:
         v58 = Width - CGRectGetMaxX(v175);
       }
 
-      v60 = [(MailboxTableCell *)self imageView];
-      [v60 setFrame:{v58, v52, v54, v56}];
+      imageView3 = [(MailboxTableCell *)self imageView];
+      [imageView3 setFrame:{v58, v52, v54, v56}];
 
 LABEL_35:
       v47 = 0;
@@ -1298,8 +1298,8 @@ LABEL_35:
     }
   }
 
-  v43 = [UIApp preferredContentSizeCategory];
-  v44 = UIContentSizeCategoryIsAccessibilityCategory(v43);
+  preferredContentSizeCategory3 = [UIApp preferredContentSizeCategory];
+  v44 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
 
   if (!v44)
   {
@@ -1314,10 +1314,10 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v45 = [UIApp preferredContentSizeCategory];
-  v46 = UIContentSizeCategoryIsAccessibilityCategory(v45);
+  preferredContentSizeCategory4 = [UIApp preferredContentSizeCategory];
+  v46 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory4);
 
-  if (v4)
+  if (image)
   {
     v47 = 0;
   }
@@ -1328,12 +1328,12 @@ LABEL_35:
   }
 
 LABEL_36:
-  v61 = [(MailboxTableCell *)self contentView];
-  [v61 bounds];
+  contentView4 = [(MailboxTableCell *)self contentView];
+  [contentView4 bounds];
   CGRectGetMaxX(v176);
 
   [(MailboxTableCell *)self isExpandable];
-  if (v6)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v177.origin.y = v168;
     v177.origin.x = rect;
@@ -1350,7 +1350,7 @@ LABEL_36:
     v67 = v64;
     v68 = v65;
     height = v66;
-    if (!v6)
+    if (!effectiveUserInterfaceLayoutDirection)
     {
       CGRectGetWidth(*&v63);
     }
@@ -1383,7 +1383,7 @@ LABEL_36:
     v78 = v75;
     v79 = v76;
     v80 = v77;
-    if (v6)
+    if (effectiveUserInterfaceLayoutDirection)
     {
       [*(&self->_iconOffset.y + 1) frame];
       CGRectGetMaxX(v179);
@@ -1411,25 +1411,25 @@ LABEL_36:
     v8 = v73;
   }
 
-  v84 = [(MailboxTableCell *)self traitCollection];
-  v85 = [v84 _splitViewControllerContext];
+  traitCollection = [(MailboxTableCell *)self traitCollection];
+  _splitViewControllerContext = [traitCollection _splitViewControllerContext];
 
-  v86 = [(MailboxTableCell *)self _viewConfigurationState];
+  _viewConfigurationState = [(MailboxTableCell *)self _viewConfigurationState];
   recta = height;
   if ([(MailboxTableCell *)self isExpandable])
   {
-    v87 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline addingSymbolicTraits:0x8000 options:0];
-    v88 = [(MailboxTableCell *)self textLabel];
-    v89 = [UIFont fontWithDescriptor:v87 size:0.0];
-    [v88 setFont:v89];
+    textLabel4 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleSubheadline addingSymbolicTraits:0x8000 options:0];
+    textLabel = [(MailboxTableCell *)self textLabel];
+    v89 = [UIFont fontWithDescriptor:textLabel4 size:0.0];
+    [textLabel setFont:v89];
 
-    v90 = [(MailboxTableCell *)self textLabel];
+    textLabel2 = [(MailboxTableCell *)self textLabel];
     v91 = +[UIColor mailAccountCellTitleColor];
-    [v90 setTextColor:v91];
+    [textLabel2 setTextColor:v91];
 
-    v92 = [(MailboxTableCell *)self textLabel];
+    textLabel3 = [(MailboxTableCell *)self textLabel];
     v93 = +[UIColor clearColor];
-    [v92 setBackgroundColor:v93];
+    [textLabel3 setBackgroundColor:v93];
 
     v8 = 8.0;
   }
@@ -1439,50 +1439,50 @@ LABEL_36:
     v94 = *(&self->_userInfo + 1);
     if (v94)
     {
-      v87 = [(MailboxTableCell *)self textLabel];
-      [v87 setTextColor:v94];
+      textLabel4 = [(MailboxTableCell *)self textLabel];
+      [textLabel4 setTextColor:v94];
       goto LABEL_57;
     }
 
-    v159 = [(MailboxTableCell *)self traitCollection];
-    v160 = [v159 mf_useSplitViewStyling] & ((v86 & 4) != 0);
+    traitCollection2 = [(MailboxTableCell *)self traitCollection];
+    v160 = [traitCollection2 mf_useSplitViewStyling] & ((_viewConfigurationState & 4) != 0);
 
-    if (v160 != 1 || v85 == 2)
+    if (v160 != 1 || _splitViewControllerContext == 2)
     {
-      v87 = +[UIColor labelColor];
-      v92 = [(MailboxTableCell *)self textLabel];
-      [v92 setTextColor:v87];
+      textLabel4 = +[UIColor labelColor];
+      textLabel3 = [(MailboxTableCell *)self textLabel];
+      [textLabel3 setTextColor:textLabel4];
     }
 
     else
     {
       v161 = +[UIColor systemWhiteColor];
-      v162 = [(MailboxTableCell *)self textLabel];
-      [v162 setTextColor:v161];
+      textLabel5 = [(MailboxTableCell *)self textLabel];
+      [textLabel5 setTextColor:v161];
 
-      v87 = +[UIColor systemWhiteColor];
-      v92 = [(MailboxTableCell *)self imageView];
-      [v92 setTintColor:v87];
+      textLabel4 = +[UIColor systemWhiteColor];
+      textLabel3 = [(MailboxTableCell *)self imageView];
+      [textLabel3 setTintColor:textLabel4];
     }
   }
 
   else
   {
-    v87 = [(MailboxTableCell *)self textLabel];
-    v92 = +[UIColor secondaryLabelColor];
-    [v87 setTextColor:v92];
+    textLabel4 = [(MailboxTableCell *)self textLabel];
+    textLabel3 = +[UIColor secondaryLabelColor];
+    [textLabel4 setTextColor:textLabel3];
   }
 
 LABEL_57:
-  v95 = [(MailboxTableCell *)self textLabel];
-  [v95 frame];
+  textLabel6 = [(MailboxTableCell *)self textLabel];
+  [textLabel6 frame];
   v97 = v96;
   v99 = v98;
 
   v163 = v68;
-  if (!v6)
+  if (!effectiveUserInterfaceLayoutDirection)
   {
-    if (v5)
+    if (_shouldUnreadCountBeVisible)
     {
       v184.origin.y = y;
       v184.origin.x = v169;
@@ -1497,8 +1497,8 @@ LABEL_57:
 
     else
     {
-      v106 = [(MailboxTableCell *)self contentView];
-      [v106 bounds];
+      contentView5 = [(MailboxTableCell *)self contentView];
+      [contentView5 bounds];
       v102 = CGRectGetMaxX(v187) - v8 + -5.0;
 
       if (v47)
@@ -1517,7 +1517,7 @@ LABEL_66:
   }
 
   v100 = 5.0;
-  if (v5)
+  if (_shouldUnreadCountBeVisible)
   {
     v182.origin.y = y;
     v182.origin.x = v169;
@@ -1526,8 +1526,8 @@ LABEL_66:
     v100 = CGRectGetMaxX(v182) + 5.0;
   }
 
-  v101 = [(MailboxTableCell *)self contentView];
-  [v101 bounds];
+  contentView6 = [(MailboxTableCell *)self contentView];
+  [contentView6 bounds];
   v102 = CGRectGetMaxX(v183) - v100 - v8;
 
   v8 = v100;
@@ -1548,8 +1548,8 @@ LABEL_64:
   v166 = v186.origin.y;
   v105 = v186.size.width;
 LABEL_67:
-  v107 = [(MailboxTableCell *)self detailTextLabel];
-  [v107 frame];
+  detailTextLabel = [(MailboxTableCell *)self detailTextLabel];
+  [detailTextLabel frame];
   v109 = v108;
   v111 = v110;
   v113 = v112;
@@ -1565,11 +1565,11 @@ LABEL_67:
     v103 = v109;
   }
 
-  v118 = [UIApp preferredContentSizeCategory];
-  v119 = UIContentSizeCategoryIsAccessibilityCategory(v118);
+  preferredContentSizeCategory5 = [UIApp preferredContentSizeCategory];
+  v119 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory5);
 
-  v120 = [(MailboxTableCell *)self textLabel];
-  v121 = v120;
+  textLabel7 = [(MailboxTableCell *)self textLabel];
+  v121 = textLabel7;
   if (v119)
   {
     v122 = +[MailboxTableCell titleFont];
@@ -1608,14 +1608,14 @@ LABEL_67:
     v135 = v192.origin.y;
     v136 = v192.size.width;
     v137 = v192.size.height;
-    v138 = [(MailboxTableCell *)self textLabel];
-    [v138 setFrame:{v130, v131, v132, v133}];
+    textLabel8 = [(MailboxTableCell *)self textLabel];
+    [textLabel8 setFrame:{v130, v131, v132, v133}];
 
-    v139 = [(MailboxTableCell *)self detailTextLabel];
-    [v139 setFrame:{v134, v135, v136, v137}];
+    detailTextLabel2 = [(MailboxTableCell *)self detailTextLabel];
+    [detailTextLabel2 setFrame:{v134, v135, v136, v137}];
 
-    v140 = [(MailboxTableCell *)self textLabel];
-    [v140 _firstLineBaselineFrameOriginY];
+    textLabel9 = [(MailboxTableCell *)self textLabel];
+    [textLabel9 _firstLineBaselineFrameOriginY];
     v142 = v141;
     v143 = +[MailboxTableCell titleFont];
     [v143 capHeight];
@@ -1632,54 +1632,54 @@ LABEL_67:
       [*(&self->_iconOffset.y + 1) setFrame:{v169, v145 - v146, v164, recta}];
     }
 
-    v147 = [(MailboxTableCell *)self accessoryView];
-    v148 = v147;
-    if (v147)
+    accessoryView3 = [(MailboxTableCell *)self accessoryView];
+    detailTextLabel3 = accessoryView3;
+    if (accessoryView3)
     {
-      [v147 frame];
+      [accessoryView3 frame];
       v149 = v194.origin.x;
       v150 = v194.size.width;
       v151 = v194.size.height;
       CGRectGetHeight(v194);
       UIRoundToViewScale();
-      [v148 setFrame:{v149, v145 - v152, v150, v151}];
+      [detailTextLabel3 setFrame:{v149, v145 - v152, v150, v151}];
     }
   }
 
   else
   {
-    [v120 setFrame:{v104, v166, v105, v165}];
+    [textLabel7 setFrame:{v104, v166, v105, v165}];
 
-    v148 = [(MailboxTableCell *)self detailTextLabel];
-    [v148 setFrame:{v103, v111, v113, v115}];
+    detailTextLabel3 = [(MailboxTableCell *)self detailTextLabel];
+    [detailTextLabel3 setFrame:{v103, v111, v113, v115}];
   }
 
-  v153 = [(MailboxTableCell *)self traitCollection];
-  if ([v153 mf_useSplitViewStyling])
+  traitCollection3 = [(MailboxTableCell *)self traitCollection];
+  if ([traitCollection3 mf_useSplitViewStyling])
   {
     goto LABEL_78;
   }
 
-  v154 = [(MailboxTableCell *)self isEditing];
+  isEditing = [(MailboxTableCell *)self isEditing];
 
-  if ((v154 & 1) == 0)
+  if ((isEditing & 1) == 0)
   {
-    v155 = [(MailboxTableCell *)self isHighlighted];
-    v156 = v155;
-    if (v155)
+    isHighlighted = [(MailboxTableCell *)self isHighlighted];
+    v156 = isHighlighted;
+    if (isHighlighted)
     {
       v157 = +[UIColor _tertiaryFillColor];
-      v153 = v157;
+      traitCollection3 = v157;
     }
 
     else
     {
-      v153 = [(MailboxTableCell *)self traitCollection];
-      v157 = +[UIColor mailCellSelectionStateColorForInterfaceLevel:](UIColor, "mailCellSelectionStateColorForInterfaceLevel:", [v153 userInterfaceLevel]);
+      traitCollection3 = [(MailboxTableCell *)self traitCollection];
+      v157 = +[UIColor mailCellSelectionStateColorForInterfaceLevel:](UIColor, "mailCellSelectionStateColorForInterfaceLevel:", [traitCollection3 userInterfaceLevel]);
     }
 
-    v158 = [(MailboxTableCell *)self selectedBackgroundView];
-    [v158 setBackgroundColor:v157];
+    selectedBackgroundView = [(MailboxTableCell *)self selectedBackgroundView];
+    [selectedBackgroundView setBackgroundColor:v157];
 
     if ((v156 & 1) == 0)
     {
@@ -1696,15 +1696,15 @@ LABEL_78:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MailboxTableCell *)self textLabel];
-  [v11 frame];
+  textLabel = [(MailboxTableCell *)self textLabel];
+  [textLabel frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [(MailboxTableCell *)self traitCollection];
-  v21 = [v20 horizontalSizeClass];
+  traitCollection = [(MailboxTableCell *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v28.origin.x = v4;
   v28.origin.y = v6;
@@ -1717,7 +1717,7 @@ LABEL_78:
   v29.size.height = v19;
   MidX = CGRectGetMidX(v29);
   v24 = 3.0;
-  if (v21 == 1)
+  if (horizontalSizeClass == 1)
   {
     v24 = 2.0;
   }
@@ -1738,22 +1738,22 @@ LABEL_78:
 {
   v8.receiver = self;
   v8.super_class = MailboxTableCell;
-  v3 = [(MailboxTableCell *)&v8 _scriptingInfo];
+  _scriptingInfo = [(MailboxTableCell *)&v8 _scriptingInfo];
   if ([*(&self->super._shouldDisableWhileEditing + 1) count] == 1)
   {
     v4 = +[MailChangeManager sharedChangeManager];
-    v5 = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
-    v6 = [v4 displayNameUsingSpecialNamesForMailbox:v5];
+    anyObject = [*(&self->super._shouldDisableWhileEditing + 1) anyObject];
+    v6 = [v4 displayNameUsingSpecialNamesForMailbox:anyObject];
 
-    [v3 setValue:v6 forKey:@"ID"];
+    [_scriptingInfo setValue:v6 forKey:@"ID"];
   }
 
-  return v3;
+  return _scriptingInfo;
 }
 
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change
 {
-  v5 = [EFScheduler mainThreadScheduler:a3];
+  v5 = [EFScheduler mainThreadScheduler:repository];
   [v5 performBlock:&v6];
 }
 

@@ -1,30 +1,30 @@
 @interface PKDashboardViewControllerFooterView
-- (BOOL)isEqualToFooter:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)isEqualToFooter:(id)footer;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSDirectionalEdgeInsets)contentInsets;
-- (PKDashboardViewControllerFooterView)initWithFrame:(CGRect)a3;
+- (PKDashboardViewControllerFooterView)initWithFrame:(CGRect)frame;
 - (PKDashboardViewControllerFooterViewDelegate)delegate;
-- (double)layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (id)_payButtonWithCircleLayout:(BOOL)a3;
-- (void)_buttonTapped:(id)a3;
+- (double)layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (id)_payButtonWithCircleLayout:(BOOL)layout;
+- (void)_buttonTapped:(id)tapped;
 - (void)_createSubviews;
 - (void)layoutSubviews;
 - (void)resetFonts;
-- (void)setButtonTintColor:(id)a3;
-- (void)setButtonTitle:(id)a3;
-- (void)setButtonTitleColor:(id)a3;
-- (void)setDetailNumberOfLines:(int64_t)a3;
-- (void)setPayButtonImage:(id)a3;
+- (void)setButtonTintColor:(id)color;
+- (void)setButtonTitle:(id)title;
+- (void)setButtonTitleColor:(id)color;
+- (void)setDetailNumberOfLines:(int64_t)lines;
+- (void)setPayButtonImage:(id)image;
 @end
 
 @implementation PKDashboardViewControllerFooterView
 
-- (PKDashboardViewControllerFooterView)initWithFrame:(CGRect)a3
+- (PKDashboardViewControllerFooterView)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKDashboardViewControllerFooterView;
-  v3 = [(PKDashboardViewControllerFooterView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardViewControllerFooterView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -49,7 +49,7 @@
 
 - (void)_createSubviews
 {
-  v24 = [MEMORY[0x1E69DC888] systemGrayColor];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
   v3 = objc_alloc(MEMORY[0x1E69DCC10]);
   v4 = *MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 8);
@@ -60,7 +60,7 @@
   self->_leadingTitle = v8;
 
   [(UILabel *)self->_leadingTitle setNumberOfLines:1];
-  [(UILabel *)self->_leadingTitle setTextColor:v24];
+  [(UILabel *)self->_leadingTitle setTextColor:systemGrayColor];
   [(UILabel *)self->_leadingTitle setAccessibilityIdentifier:*MEMORY[0x1E69B98E0]];
   [(PKDashboardViewControllerFooterView *)self addSubview:self->_leadingTitle];
   v10 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v4, v5, v6, v7}];
@@ -76,7 +76,7 @@
   self->_trailingTitle = v12;
 
   [(UILabel *)self->_trailingTitle setNumberOfLines:1];
-  [(UILabel *)self->_trailingTitle setTextColor:v24];
+  [(UILabel *)self->_trailingTitle setTextColor:systemGrayColor];
   [(UILabel *)self->_trailingTitle setAccessibilityIdentifier:*MEMORY[0x1E69B9D30]];
   [(PKDashboardViewControllerFooterView *)self addSubview:self->_trailingTitle];
   v14 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v4, v5, v6, v7}];
@@ -92,8 +92,8 @@
   self->_separatorView = v16;
 
   v18 = self->_separatorView;
-  v19 = [MEMORY[0x1E69DC888] systemLightGrayColor];
-  [(UIView *)v18 setBackgroundColor:v19];
+  systemLightGrayColor = [MEMORY[0x1E69DC888] systemLightGrayColor];
+  [(UIView *)v18 setBackgroundColor:systemLightGrayColor];
 
   [(PKDashboardViewControllerFooterView *)self addSubview:self->_separatorView];
   v20 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -101,8 +101,8 @@
   self->_topSeparatorView = v20;
 
   v22 = self->_topSeparatorView;
-  v23 = [MEMORY[0x1E69DC888] systemLightGrayColor];
-  [(UIView *)v22 setBackgroundColor:v23];
+  systemLightGrayColor2 = [MEMORY[0x1E69DC888] systemLightGrayColor];
+  [(UIView *)v22 setBackgroundColor:systemLightGrayColor2];
 
   [(PKDashboardViewControllerFooterView *)self addSubview:self->_topSeparatorView];
   [(PKDashboardViewControllerFooterView *)self setAccessibilityIdentifier:*MEMORY[0x1E69B9818]];
@@ -120,10 +120,10 @@
   [(PKDashboardViewControllerFooterView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = _UISolariumFeatureFlagEnabled();
   v7 = 0.0;
   if (v6)
@@ -149,15 +149,15 @@
   [(PKDashboardViewControllerFooterView *)self layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (double)layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (double)layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(PKDashboardViewControllerFooterView *)self _shouldReverseLayoutDirection];
-  v10 = v9;
-  if (v9)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _shouldReverseLayoutDirection = [(PKDashboardViewControllerFooterView *)self _shouldReverseLayoutDirection];
+  v10 = _shouldReverseLayoutDirection;
+  if (_shouldReverseLayoutDirection)
   {
     v11 = CGRectMaxXEdge;
   }
@@ -167,7 +167,7 @@
     v11 = CGRectMinXEdge;
   }
 
-  if (v9)
+  if (_shouldReverseLayoutDirection)
   {
     v12 = CGRectMinXEdge;
   }
@@ -214,26 +214,26 @@
   remainder.size.height = height;
   memset(&slice, 0, sizeof(slice));
   memset(&v59, 0, sizeof(v59));
-  v19 = [(UILabel *)self->_trailingTitle text];
-  if ([v19 length])
+  text = [(UILabel *)self->_trailingTitle text];
+  if ([text length])
   {
     v20 = 1;
   }
 
   else
   {
-    v21 = [(UILabel *)self->_trailingDetail text];
-    v20 = [v21 length] != 0;
+    text2 = [(UILabel *)self->_trailingDetail text];
+    v20 = [text2 length] != 0;
   }
 
-  v22 = [(PKContinuousButton *)self->_payButton titleLabel];
-  v23 = [v22 text];
-  v24 = [v23 length];
+  titleLabel = [(PKContinuousButton *)self->_payButton titleLabel];
+  text3 = [titleLabel text];
+  v24 = [text3 length];
 
-  v25 = [(PKContinuousButton *)self->_payButton currentImage];
+  currentImage = [(PKContinuousButton *)self->_payButton currentImage];
 
   v26 = 0x404B000000000000;
-  if (v24 >= 4 && !v25)
+  if (v24 >= 4 && !currentImage)
   {
     [(PKContinuousButton *)self->_payButton sizeThatFits:width, height];
   }
@@ -275,7 +275,7 @@
   PKFloatRoundToPixel();
   v54 = v33;
   v58 = v17;
-  if (v24 | v25)
+  if (v24 | currentImage)
   {
     v64.origin.x = v29;
     v64.origin.y = y + v17;
@@ -314,7 +314,7 @@
   v40 = v37 + v38 + 2.0;
   v41 = *(MEMORY[0x1E695F060] + 8);
   v42 = v41;
-  if (!(v24 | v25) && v20)
+  if (!(v24 | currentImage) && v20)
   {
     [(UILabel *)self->_trailingTitle pkui_sizeThatFits:slice.size.width, v59.size.height];
     v42 = v43;
@@ -323,7 +323,7 @@
   }
 
   v45 = fmax(v40, v41 + v42 + 2.0);
-  if (!a4)
+  if (!layout)
   {
     remainder = v59;
     CGRectDivide(v59, &v61, &remainder, v37, CGRectMinYEdge);
@@ -337,7 +337,7 @@
     PKContentAlignmentMake();
     PKSizeAlignedInRect();
     [(UILabel *)leadingDetail setFrame:?];
-    v48 = (v24 | v25) != 0 || !v20;
+    v48 = (v24 | currentImage) != 0 || !v20;
     separatorView = self->_separatorView;
     if (v48)
     {
@@ -367,8 +367,8 @@
     }
 
     [(UILabel *)*p_trailingDetail setHidden:v48];
-    [(PKContinuousButton *)self->_payButton setHidden:(v24 | v25) == 0];
-    if (v24 | v25)
+    [(PKContinuousButton *)self->_payButton setHidden:(v24 | currentImage) == 0];
+    if (v24 | currentImage)
     {
       PKContentAlignmentMake();
       PKSizeAlignedInRect();
@@ -379,14 +379,14 @@
   return v45 + v58 * 2.0;
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  v18 = a3;
-  v4 = [(PKContinuousButton *)self->_payButton titleLabel];
-  v5 = [v4 text];
-  v6 = [v5 length];
+  titleCopy = title;
+  titleLabel = [(PKContinuousButton *)self->_payButton titleLabel];
+  text = [titleLabel text];
+  v6 = [text length];
 
-  v7 = [v18 length];
+  v7 = [titleCopy length];
   if (v6 <= 3 && v7 >= 4)
   {
     payButton = self->_payButton;
@@ -440,38 +440,38 @@ LABEL_20:
   }
 
 LABEL_21:
-  [(PKContinuousButton *)self->_payButton setTitle:v18 forState:0];
+  [(PKContinuousButton *)self->_payButton setTitle:titleCopy forState:0];
 }
 
-- (void)setButtonTitleColor:(id)a3
+- (void)setButtonTitleColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_buttonTitleColor, a3);
-    [(PKContinuousButton *)self->_payButton updateTitleColorWithColor:v6];
-    v5 = [(PKContinuousButton *)self->_payButton imageView];
-    [v5 setTintColor:v6];
+    objc_storeStrong(&self->_buttonTitleColor, color);
+    [(PKContinuousButton *)self->_payButton updateTitleColorWithColor:colorCopy];
+    imageView = [(PKContinuousButton *)self->_payButton imageView];
+    [imageView setTintColor:colorCopy];
   }
 }
 
-- (void)setButtonTintColor:(id)a3
+- (void)setButtonTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_buttonTintColor, a3);
-    [(PKContinuousButton *)self->_payButton setTintColor:v5];
+    objc_storeStrong(&self->_buttonTintColor, color);
+    [(PKContinuousButton *)self->_payButton setTintColor:colorCopy];
   }
 }
 
-- (void)setPayButtonImage:(id)a3
+- (void)setPayButtonImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_payButtonImage, a3);
-    if (v5)
+    objc_storeStrong(&self->_payButtonImage, image);
+    if (imageCopy)
     {
       [(PKDashboardViewControllerFooterView *)self setButtonTitle:0];
     }
@@ -481,11 +481,11 @@ LABEL_21:
   }
 }
 
-- (id)_payButtonWithCircleLayout:(BOOL)a3
+- (id)_payButtonWithCircleLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v5 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC70], 2, 0);
-  if (v3)
+  if (layoutCopy)
   {
     v14 = 0;
     *v15 = 0;
@@ -511,12 +511,12 @@ LABEL_21:
   }
 
   self->_usingCircleButton = v7;
-  v11 = [(PKContinuousButton *)v6 titleLabel];
-  [v11 setFont:v5];
-  [v11 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [(PKContinuousButton *)v6 titleLabel];
+  [titleLabel setFont:v5];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
   [(PKContinuousButton *)v6 updateTitleColorWithColor:self->_buttonTitleColor];
-  v12 = [(PKContinuousButton *)v6 imageView];
-  [v12 setTintColor:self->_buttonTitleColor];
+  imageView = [(PKContinuousButton *)v6 imageView];
+  [imageView setTintColor:self->_buttonTitleColor];
 
   [(PKContinuousButton *)v6 setTintColor:self->_buttonTintColor];
   [(PKContinuousButton *)v6 addTarget:self action:sel__buttonTapped_ forControlEvents:64];
@@ -524,7 +524,7 @@ LABEL_21:
   return v6;
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -535,29 +535,29 @@ LABEL_21:
   }
 }
 
-- (void)setDetailNumberOfLines:(int64_t)a3
+- (void)setDetailNumberOfLines:(int64_t)lines
 {
-  if ([(UILabel *)self->_leadingDetail numberOfLines]!= a3)
+  if ([(UILabel *)self->_leadingDetail numberOfLines]!= lines)
   {
-    [(UILabel *)self->_leadingDetail setNumberOfLines:a3];
-    [(UILabel *)self->_trailingDetail setNumberOfLines:a3];
-    [(UILabel *)self->_leadingDetail setLineBreakMode:4 * (a3 == 1)];
-    [(UILabel *)self->_trailingDetail setLineBreakMode:4 * (a3 == 1)];
+    [(UILabel *)self->_leadingDetail setNumberOfLines:lines];
+    [(UILabel *)self->_trailingDetail setNumberOfLines:lines];
+    [(UILabel *)self->_leadingDetail setLineBreakMode:4 * (lines == 1)];
+    [(UILabel *)self->_trailingDetail setLineBreakMode:4 * (lines == 1)];
 
     [(PKDashboardViewControllerFooterView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)isEqualToFooter:(id)a3
+- (BOOL)isEqualToFooter:(id)footer
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  footerCopy = footer;
+  if ([footerCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(UILabel *)self->_leadingTitle text];
-    v7 = [v5[59] text];
-    v8 = v6;
-    v9 = v7;
+    v5 = footerCopy;
+    text = [(UILabel *)self->_leadingTitle text];
+    text2 = [v5[59] text];
+    v8 = text;
+    v9 = text2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -596,10 +596,10 @@ LABEL_35:
       }
     }
 
-    v16 = [(UILabel *)self->_leadingDetail text];
-    v17 = [v5[60] text];
-    v14 = v16;
-    v18 = v17;
+    text3 = [(UILabel *)self->_leadingDetail text];
+    text4 = [v5[60] text];
+    v14 = text3;
+    v18 = text4;
     v13 = v18;
     if (v14 == v18)
     {
@@ -624,10 +624,10 @@ LABEL_35:
       }
     }
 
-    v22 = [(UILabel *)self->_trailingTitle text];
-    v23 = [v5[61] text];
-    v24 = v22;
-    v25 = v23;
+    text5 = [(UILabel *)self->_trailingTitle text];
+    text6 = [v5[61] text];
+    v24 = text5;
+    v25 = text6;
     v26 = v24;
     v19 = v25;
     v33 = v5;
@@ -662,10 +662,10 @@ LABEL_33:
       }
     }
 
-    v29 = [(UILabel *)self->_trailingDetail text];
-    v30 = [v5[62] text];
-    v26 = v29;
-    v31 = v30;
+    text7 = [(UILabel *)self->_trailingDetail text];
+    text8 = [v5[62] text];
+    v26 = text7;
+    v31 = text8;
     v27 = v31;
     if (v26 == v31)
     {

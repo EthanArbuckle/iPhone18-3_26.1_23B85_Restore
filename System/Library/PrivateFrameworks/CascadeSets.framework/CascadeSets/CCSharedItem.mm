@@ -1,14 +1,14 @@
 @interface CCSharedItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSharedItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSharedItem:(id)item;
 - (CCSharedItem)init;
-- (CCSharedItem)initWithCoder:(id)a3;
-- (CCSharedItem)initWithContent:(id)a3 error:(id *)a4;
-- (CCSharedItem)initWithSharedIdentifier:(id)a3 content:(id)a4;
+- (CCSharedItem)initWithCoder:(id)coder;
+- (CCSharedItem)initWithContent:(id)content error:(id *)error;
+- (CCSharedItem)initWithSharedIdentifier:(id)identifier content:(id)content;
 - (NSNumber)sharedIdentifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CCSharedItem
@@ -18,8 +18,8 @@
   sharedIdentifier = self->_sharedIdentifier;
   if (!sharedIdentifier)
   {
-    v4 = [(CCItemContent *)self->_content data];
-    v5 = CCHash64(v4);
+    data = [(CCItemContent *)self->_content data];
+    v5 = CCHash64(data);
     v6 = self->_sharedIdentifier;
     self->_sharedIdentifier = v5;
 
@@ -35,10 +35,10 @@
   objc_exception_throw(v2);
 }
 
-- (CCSharedItem)initWithContent:(id)a3 error:(id *)a4
+- (CCSharedItem)initWithContent:(id)content error:(id *)error
 {
-  v7 = a3;
-  if (CCValidateNonNilField(@"content", v7, a4) && (v8 = objc_opt_class(), CCValidateIsInstanceOfExpectedClass(@"content", v7, v8, a4)))
+  contentCopy = content;
+  if (CCValidateNonNilField(@"content", contentCopy, error) && (v8 = objc_opt_class(), CCValidateIsInstanceOfExpectedClass(@"content", contentCopy, v8, error)))
   {
     v13.receiver = self;
     v13.super_class = CCSharedItem;
@@ -46,33 +46,33 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_content, a3);
+      objc_storeStrong(&v9->_content, content);
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (CCSharedItem)initWithSharedIdentifier:(id)a3 content:(id)a4
+- (CCSharedItem)initWithSharedIdentifier:(id)identifier content:(id)content
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  contentCopy = content;
   v12.receiver = self;
   v12.super_class = CCSharedItem;
   v9 = [(CCSharedItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_content, a4);
-    objc_storeStrong(&v10->_sharedIdentifier, a3);
+    objc_storeStrong(&v9->_content, content);
+    objc_storeStrong(&v10->_sharedIdentifier, identifier);
   }
 
   return v10;
@@ -83,73 +83,73 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CCSharedItem *)self sharedIdentifier];
-  v7 = [(CCSharedItem *)self content];
-  v8 = [v3 initWithFormat:@"<%@> sharedIdentifier: %@ content: %@", v5, v6, v7];
+  sharedIdentifier = [(CCSharedItem *)self sharedIdentifier];
+  content = [(CCSharedItem *)self content];
+  v8 = [v3 initWithFormat:@"<%@> sharedIdentifier: %@ content: %@", v5, sharedIdentifier, content];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCSharedItem *)self isEqualToSharedItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCSharedItem *)self isEqualToSharedItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSharedItem:(id)a3
+- (BOOL)isEqualToSharedItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CCSharedItem *)self sharedIdentifier];
-  v6 = [v4 sharedIdentifier];
+  itemCopy = item;
+  sharedIdentifier = [(CCSharedItem *)self sharedIdentifier];
+  sharedIdentifier2 = [itemCopy sharedIdentifier];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(itemCopy) = [sharedIdentifier isEqual:sharedIdentifier2];
+  return itemCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CCSharedItem *)self sharedIdentifier];
-  v3 = [v2 unsignedLongLongValue];
+  sharedIdentifier = [(CCSharedItem *)self sharedIdentifier];
+  unsignedLongLongValue = [sharedIdentifier unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   if (self->_content)
   {
-    [v6 encodeInt32:objc_msgSend(objc_opt_class() forKey:{"itemType"), @"t"}];
-    v4 = [(CCItemContent *)self->_content data];
-    [v6 encodeObject:v4 forKey:@"c"];
+    [coderCopy encodeInt32:objc_msgSend(objc_opt_class() forKey:{"itemType"), @"t"}];
+    data = [(CCItemContent *)self->_content data];
+    [coderCopy encodeObject:data forKey:@"c"];
   }
 
   sharedIdentifier = self->_sharedIdentifier;
   if (sharedIdentifier)
   {
-    [v6 encodeObject:sharedIdentifier forKey:@"s"];
+    [coderCopy encodeObject:sharedIdentifier forKey:@"s"];
   }
 }
 
-- (CCSharedItem)initWithCoder:(id)a3
+- (CCSharedItem)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"c"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"c"];
   if (v5)
   {
-    v6 = [v4 decodeInt32ForKey:@"t"];
+    v6 = [coderCopy decodeInt32ForKey:@"t"];
     v21 = 0;
     v7 = [CCItemMessage contentMessageForItemType:v6 data:v5 error:&v21];
     v8 = v21;
@@ -169,7 +169,7 @@
         _os_log_error_impl(&dword_1B6DB2000, v7, OS_LOG_TYPE_ERROR, "Failed to decode content from data: %@ itemType: %@ error: %@", buf, 0x20u);
       }
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_16;
     }
   }
@@ -180,7 +180,7 @@
     v8 = 0;
   }
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"s"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"s"];
   if (v10)
   {
     self = [(CCSharedItem *)self initWithSharedIdentifier:v10 content:v7];
@@ -211,11 +211,11 @@
     v8 = v12;
   }
 
-  v9 = self;
+  selfCopy = self;
 LABEL_16:
 
   v16 = *MEMORY[0x1E69E9840];
-  return v9;
+  return selfCopy;
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

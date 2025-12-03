@@ -1,13 +1,13 @@
 @interface MNTraceLoader
-- (BOOL)_executeQuery:(id)a3 rowHandler:(id)a4;
+- (BOOL)_executeQuery:(id)query rowHandler:(id)handler;
 - (BOOL)_loadAnnotatedUserBehaviorTable;
 - (BOOL)_loadAnnotatedUserEnvironmentTable;
 - (BOOL)_loadCompassHeadingDataTable;
-- (BOOL)_loadDirectionsTableAllowDeprecatedProtocol:(BOOL)a3 outError:(id *)a4;
+- (BOOL)_loadDirectionsTableAllowDeprecatedProtocol:(BOOL)protocol outError:(id *)error;
 - (BOOL)_loadETAUpdatesTable;
 - (BOOL)_loadEVDataTable;
 - (BOOL)_loadInfoTable;
-- (BOOL)_loadLocationsTable:(BOOL)a3;
+- (BOOL)_loadLocationsTable:(BOOL)table;
 - (BOOL)_loadMiscInfo;
 - (BOOL)_loadMotionDataTable;
 - (BOOL)_loadNavigationEventsTable;
@@ -16,21 +16,21 @@
 - (BOOL)_loadRouteCreationActionsTable;
 - (BOOL)_loadTraceVersion;
 - (BOOL)_loadVehicleDataTable;
-- (BOOL)_tableExists:(id)a3;
-- (BOOL)_updateTraceFromVersion:(unint64_t)a3 outError:(id *)a4;
-- (id)_errorWithCode:(int64_t)a3 errorDescriptionFormat:(id)a4;
+- (BOOL)_tableExists:(id)exists;
+- (BOOL)_updateTraceFromVersion:(unint64_t)version outError:(id *)error;
+- (id)_errorWithCode:(int64_t)code errorDescriptionFormat:(id)format;
 - (id)_handleUpdateError;
-- (id)loadTraceWithPath:(id)a3 options:(int64_t)a4 outError:(id *)a5;
+- (id)loadTraceWithPath:(id)path options:(int64_t)options outError:(id *)error;
 @end
 
 @implementation MNTraceLoader
 
-- (id)_errorWithCode:(int64_t)a3 errorDescriptionFormat:(id)a4
+- (id)_errorWithCode:(int64_t)code errorDescriptionFormat:(id)format
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithFormat:v6 arguments:&v15];
+  formatCopy = format;
+  v7 = [[v5 alloc] initWithFormat:formatCopy arguments:&v15];
 
   if (v7)
   {
@@ -44,16 +44,16 @@
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MNTraceErrorDomain" code:a3 userInfo:{v8, &v15}];
+  v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MNTraceErrorDomain" code:code userInfo:{v8, &v15}];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (BOOL)_tableExists:(id)a3
+- (BOOL)_tableExists:(id)exists
 {
-  v4 = a3;
+  existsCopy = exists;
   ppStmt = 0;
   if (sqlite3_prepare_v2(-[MNTrace db](self->_trace, "db"), [@"SELECT count(*) FROM sqlite_master WHERE type='table' AND name=?" UTF8String], objc_msgSend(@"SELECT count(*) FROM sqlite_master WHERE type='table' AND name=?", "length"), &ppStmt, 0))
   {
@@ -62,7 +62,7 @@
 
   else
   {
-    sqlite3_bind_text(ppStmt, 1, [v4 UTF8String], objc_msgSend(v4, "length"), 0);
+    sqlite3_bind_text(ppStmt, 1, [existsCopy UTF8String], objc_msgSend(existsCopy, "length"), 0);
     v5 = (sqlite3_step(ppStmt) & 0xFFFFFFFE) == 0x64 && sqlite3_column_int(ppStmt, 0) > 0;
     sqlite3_finalize(ppStmt);
   }
@@ -73,15 +73,15 @@
 - (id)_handleUpdateError
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(MNTrace *)self->_trace tracePath];
-  v5 = [v4 stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  tracePath = [(MNTrace *)self->_trace tracePath];
+  stringByDeletingLastPathComponent = [tracePath stringByDeletingLastPathComponent];
 
-  v6 = [v3 attributesOfItemAtPath:v5 error:0];
+  v6 = [defaultManager attributesOfItemAtPath:stringByDeletingLastPathComponent error:0];
   if (([v6 filePosixPermissions] & 0x80) != 0)
   {
-    v9 = [v6 fileOwnerAccountName];
-    v10 = [v9 isEqualToString:@"mobile"];
+    fileOwnerAccountName = [v6 fileOwnerAccountName];
+    v10 = [fileOwnerAccountName isEqualToString:@"mobile"];
 
     if (v10)
     {
@@ -92,8 +92,8 @@
     else
     {
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [v6 fileOwnerAccountName];
-      v7 = [v11 stringWithFormat:@"Error updating trace because traces directory owner is '%@' instead of 'mobile'. Try running as root:\nchown mobile: %@", v12, v5];
+      fileOwnerAccountName2 = [v6 fileOwnerAccountName];
+      v7 = [v11 stringWithFormat:@"Error updating trace because traces directory owner is '%@' instead of 'mobile'. Try running as root:\nchown mobile: %@", fileOwnerAccountName2, stringByDeletingLastPathComponent];
 
       v8 = 5;
     }
@@ -101,17 +101,17 @@
 
   else
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't update trace to current version because traces directory does not have write permission set. Try running as root:\n> chmod u+w %@", v5];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Can't update trace to current version because traces directory does not have write permission set. Try running as root:\n> chmod u+w %@", stringByDeletingLastPathComponent];
     v8 = 4;
   }
 
-  v13 = [(MNTrace *)self->_trace tracePath];
-  v14 = [v3 attributesOfItemAtPath:v13 error:0];
+  tracePath2 = [(MNTrace *)self->_trace tracePath];
+  v14 = [defaultManager attributesOfItemAtPath:tracePath2 error:0];
 
   if (([v14 filePosixPermissions] & 0x80) != 0)
   {
-    v18 = [v14 fileOwnerAccountName];
-    v19 = [v18 isEqualToString:@"mobile"];
+    fileOwnerAccountName3 = [v14 fileOwnerAccountName];
+    v19 = [fileOwnerAccountName3 isEqualToString:@"mobile"];
 
     if (v19)
     {
@@ -119,19 +119,19 @@
     }
 
     v20 = MEMORY[0x1E696AEC0];
-    v16 = [v14 fileOwnerAccountName];
-    v21 = [(MNTrace *)self->_trace tracePath];
-    v17 = [v20 stringWithFormat:@"Can't open file because owner is '%@' instead of 'mobile'. Try running as root:\n> chown mobile: %@", v16, v21];
+    fileOwnerAccountName4 = [v14 fileOwnerAccountName];
+    tracePath3 = [(MNTrace *)self->_trace tracePath];
+    v17 = [v20 stringWithFormat:@"Can't open file because owner is '%@' instead of 'mobile'. Try running as root:\n> chown mobile: %@", fileOwnerAccountName4, tracePath3];
 
     v8 = 3;
-    v7 = v21;
+    v7 = tracePath3;
   }
 
   else
   {
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [(MNTrace *)self->_trace tracePath];
-    v17 = [v15 stringWithFormat:@"Can't update trace to current version because file is readonly. Try running as root:\n> chmod u+w %@", v16];
+    fileOwnerAccountName4 = [(MNTrace *)self->_trace tracePath];
+    v17 = [v15 stringWithFormat:@"Can't update trace to current version because file is readonly. Try running as root:\n> chmod u+w %@", fileOwnerAccountName4];
     v8 = 2;
   }
 
@@ -155,11 +155,11 @@ LABEL_11:
   return v23;
 }
 
-- (BOOL)_executeQuery:(id)a3 rowHandler:(id)a4
+- (BOOL)_executeQuery:(id)query rowHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (ppStmt = 0, !sqlite3_prepare_v2(-[MNTrace db](self->_trace, "db"), [v6 UTF8String], objc_msgSend(v6, "length"), &ppStmt, 0)))
+  queryCopy = query;
+  handlerCopy = handler;
+  if (handlerCopy && (ppStmt = 0, !sqlite3_prepare_v2(-[MNTrace db](self->_trace, "db"), [queryCopy UTF8String], objc_msgSend(queryCopy, "length"), &ppStmt, 0)))
   {
     while (1)
     {
@@ -169,7 +169,7 @@ LABEL_11:
         break;
       }
 
-      v7[2](v7, ppStmt);
+      handlerCopy[2](handlerCopy, ppStmt);
     }
 
     v10 = v9;
@@ -185,12 +185,12 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_updateTraceFromVersion:(unint64_t)a3 outError:(id *)a4
+- (BOOL)_updateTraceFromVersion:(unint64_t)version outError:(id *)error
 {
   *&v31[5] = *MEMORY[0x1E69E9840];
-  if (+[MNTrace currentVersion]!= a3)
+  if (+[MNTrace currentVersion]!= version)
   {
-    if (+[MNTrace currentVersion]< a3)
+    if (+[MNTrace currentVersion]< version)
     {
       v8 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -199,22 +199,22 @@ LABEL_11:
         _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_ERROR, "Trace was recorded with a newer build than the current build. Trace load failed because we can't downgrade.", buf, 2u);
       }
 
-      if (!a4)
+      if (!error)
       {
-        v7 = 0;
+        execute = 0;
         goto LABEL_31;
       }
 
-      v9 = [(MNTraceLoader *)self _errorWithCode:6 errorDescriptionFormat:@"Attempting to update a trace with a newer trace version: %d. Current trace version: %d", a3, +[MNTrace currentVersion]];
-      v7 = 0;
-      *a4 = v9;
+      v9 = [(MNTraceLoader *)self _errorWithCode:6 errorDescriptionFormat:@"Attempting to update a trace with a newer trace version: %d. Current trace version: %d", version, +[MNTrace currentVersion]];
+      execute = 0;
+      *error = v9;
 LABEL_30:
 
       goto LABEL_31;
     }
 
     v29 = 0;
-    v10 = [MNTrace upgradeSchemaFromVersion:a3 error:&v29];
+    v10 = [MNTrace upgradeSchemaFromVersion:version error:&v29];
     v11 = v29;
     if (v11)
     {
@@ -222,17 +222,17 @@ LABEL_30:
       v12 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 138412290;
-        *v31 = v13;
+        *v31 = localizedDescription;
         _os_log_impl(&dword_1D311E000, v12, OS_LOG_TYPE_ERROR, "Error trying to upgrade trace schema: %@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v14 = v9;
-        v7 = 0;
-        *a4 = v9;
+        execute = 0;
+        *error = v9;
 LABEL_29:
 
         goto LABEL_30;
@@ -249,73 +249,73 @@ LABEL_29:
         v20 = [MNTracePreparedStatement preparedStatementForTrace:trace statement:@"UPDATE info SET version = :version" outError:&v27];
         v9 = v27;
         [v20 bindParameter:@":version" int:{+[MNTrace currentVersion](MNTrace, "currentVersion")}];
-        v7 = [v20 execute];
-        if (v7)
+        execute = [v20 execute];
+        if (execute)
         {
           v21 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             v22 = +[MNTrace currentVersion];
             *buf = 67109376;
-            v31[0] = a3;
+            v31[0] = version;
             LOWORD(v31[1]) = 1024;
             *(&v31[1] + 2) = v22;
             _os_log_impl(&dword_1D311E000, v21, OS_LOG_TYPE_DEFAULT, "Successfully updated trace from version %d to %d", buf, 0xEu);
           }
         }
 
-        else if (a4)
+        else if (error)
         {
           v23 = [(MNTraceLoader *)self _errorWithCode:11 errorDescriptionFormat:@"Unexpected error writing new trace version."];
 
           v24 = v23;
-          *a4 = v23;
+          *error = v23;
           v9 = v23;
         }
 
         goto LABEL_29;
       }
 
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error running migrator query for version %d. sqlite3 error description: %s", a3, errmsg];
+      errmsg = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error running migrator query for version %d. sqlite3 error description: %s", version, errmsg];
       v16 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *v31 = v15;
+        *v31 = errmsg;
         _os_log_impl(&dword_1D311E000, v16, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      v17 = [(MNTraceLoader *)self _errorWithCode:11 errorDescriptionFormat:@"%@", v15];
+      v17 = [(MNTraceLoader *)self _errorWithCode:11 errorDescriptionFormat:@"%@", errmsg];
       v9 = v17;
-      if (a4)
+      if (error)
       {
         v18 = v17;
-        *a4 = v9;
+        *error = v9;
       }
     }
 
-    v7 = 0;
+    execute = 0;
     goto LABEL_29;
   }
 
-  v7 = 1;
+  execute = 1;
 LABEL_31:
   v25 = *MEMORY[0x1E69E9840];
-  return v7;
+  return execute;
 }
 
 - (BOOL)_loadTraceVersion
 {
   v3 = [[_TtC10Navigation29MNTraceSelectStatementBuilder alloc] initWithTrace:self->_trace tableName:@"info"];
   [(MNTraceSelectStatementBuilder *)v3 addColumn:@"version"];
-  v4 = [(MNTraceSelectStatementBuilder *)v3 selectStatement];
-  v5 = [v4 stepRow];
-  if (v5)
+  selectStatement = [(MNTraceSelectStatementBuilder *)v3 selectStatement];
+  stepRow = [selectStatement stepRow];
+  if (stepRow)
   {
-    -[MNTrace setVersion:](self->_trace, "setVersion:", [v4 intValue:@"version"]);
+    -[MNTrace setVersion:](self->_trace, "setVersion:", [selectStatement intValue:@"version"]);
   }
 
-  return v5;
+  return stepRow;
 }
 
 - (BOOL)_loadRouteCreationActionsTable
@@ -339,10 +339,10 @@ LABEL_31:
   v8 = v7;
   if (v7)
   {
-    v38 = self;
+    selfCopy = self;
     v39 = v5;
     v40 = v8;
-    v34 = 0;
+    array = 0;
     if ([v4 stepRow])
     {
       v9 = 0x1E8428000uLL;
@@ -407,7 +407,7 @@ LABEL_31:
           {
             v41 = v15;
             v30 = v10;
-            v31 = v34;
+            v31 = array;
             v32 = v9;
             v33 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -418,37 +418,37 @@ LABEL_31:
             }
 
             v9 = v32;
-            v34 = v31;
+            array = v31;
             v10 = v30;
             v15 = v41;
           }
         }
 
         [v12 setAction:{objc_msgSend(v4, "columnInt:", 6)}];
-        if (!v34)
+        if (!array)
         {
-          v34 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        [v34 addObject:v12];
+        [array addObject:v12];
       }
 
       while (([v4 stepRow] & 1) != 0);
     }
 
-    [(MNTrace *)v38->_trace setRouteCreationActions:v34];
+    [(MNTrace *)selfCopy->_trace setRouteCreationActions:array];
     v8 = v40;
     v6 = v39;
   }
 
   else
   {
-    v34 = MNGetMNTraceLog();
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+    array = MNGetMNTraceLog();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v47 = v6;
-      _os_log_impl(&dword_1D311E000, v34, OS_LOG_TYPE_ERROR, "Error loading custom_route_creation_actions table with error: %@", buf, 0xCu);
+      _os_log_impl(&dword_1D311E000, array, OS_LOG_TYPE_ERROR, "Error loading custom_route_creation_actions table with error: %@", buf, 0xCu);
     }
   }
 
@@ -464,10 +464,10 @@ LABEL_31:
     v11 = 0;
     v4 = [MNTracePreparedStatement preparedStatementForTrace:trace statement:@"SELECT timestamp outError:wifi_on, cell_on, nlc_profile FROM network_events ORDER BY timestamp", &v11];
     v5 = v11;
-    v6 = 0;
+    array = 0;
     if ([v4 stepRow])
     {
-      v6 = 0;
+      array = 0;
       do
       {
         v7 = objc_alloc_init(MNTraceNetworkEvent);
@@ -488,18 +488,18 @@ LABEL_31:
         }
 
         [(MNTraceNetworkEvent *)v7 setNlcProfile:v9];
-        if (!v6)
+        if (!array)
         {
-          v6 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        [v6 addObject:v7];
+        [array addObject:v7];
       }
 
       while (([v4 stepRow] & 1) != 0);
     }
 
-    [(MNTrace *)self->_trace setNetworkEvents:v6];
+    [(MNTrace *)self->_trace setNetworkEvents:array];
   }
 
   return 1;
@@ -589,15 +589,15 @@ LABEL_10:
 - (BOOL)_loadNavigationUpdatesTable
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [[_TtC10Navigation29MNTraceSelectStatementBuilder alloc] initWithTrace:self->_trace tableName:@"navigation_updates"];
   [(MNTraceSelectStatementBuilder *)v4 addColumns:&unk_1F4EE2C68];
-  v5 = [(MNTraceSelectStatementBuilder *)v4 selectStatement];
-  v6 = v5;
-  if (v5)
+  selectStatement = [(MNTraceSelectStatementBuilder *)v4 selectStatement];
+  v6 = selectStatement;
+  if (selectStatement)
   {
-    v19 = self;
-    if ([v5 stepRow])
+    selfCopy = self;
+    if ([selectStatement stepRow])
     {
       while (1)
       {
@@ -655,14 +655,14 @@ LABEL_7:
 
       if (v8)
       {
-        [v3 addObject:v8];
+        [array addObject:v8];
       }
 
       goto LABEL_9;
     }
 
 LABEL_10:
-    [(MNTrace *)v19->_trace setNavigationUpdates:v3];
+    [(MNTrace *)selfCopy->_trace setNavigationUpdates:array];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -671,13 +671,13 @@ LABEL_10:
 
 - (BOOL)_loadAnnotatedUserEnvironmentTable
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__MNTraceLoader__loadAnnotatedUserEnvironmentTable__block_invoke;
   v7[3] = &unk_1E8430838;
-  v8 = v3;
-  v4 = v3;
+  v8 = array;
+  v4 = array;
   v5 = [(MNTraceLoader *)self _executeQuery:@"SELECT start_timestamp rowHandler:end_timestamp, environment_type FROM annotated_user_environments ORDER BY start_timestamp ASC", v7];
   [(MNTrace *)self->_trace setAnnotatedUserEnvironments:v4];
 
@@ -695,13 +695,13 @@ void __51__MNTraceLoader__loadAnnotatedUserEnvironmentTable__block_invoke(uint64
 
 - (BOOL)_loadAnnotatedUserBehaviorTable
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__MNTraceLoader__loadAnnotatedUserBehaviorTable__block_invoke;
   v7[3] = &unk_1E8430838;
-  v8 = v3;
-  v4 = v3;
+  v8 = array;
+  v4 = array;
   v5 = [(MNTraceLoader *)self _executeQuery:@"SELECT timestamp rowHandler:event FROM annotated_user_behavior ORDER BY timestamp ASC", v7];
   [(MNTrace *)self->_trace setAnnotatedUserBehavior:v4];
 
@@ -721,23 +721,23 @@ void __48__MNTraceLoader__loadAnnotatedUserBehaviorTable__block_invoke(uint64_t 
   v3 = [[_TtC10Navigation29MNTraceSelectStatementBuilder alloc] initWithTrace:self->_trace tableName:@"navigation_events"];
   [(MNTraceSelectStatementBuilder *)v3 addColumns:&unk_1F4EE2C50];
   [(MNTraceSelectStatementBuilder *)v3 innerJoin:@"navigation_event_types" where:@"event_id" equals:@"event_id"];
-  v4 = [(MNTraceSelectStatementBuilder *)v3 selectStatement];
-  if (v4)
+  selectStatement = [(MNTraceSelectStatementBuilder *)v3 selectStatement];
+  if (selectStatement)
   {
-    v16 = self;
+    selfCopy = self;
     v17 = v3;
-    v5 = [MEMORY[0x1E695DF70] array];
-    if ([v4 stepRow])
+    array = [MEMORY[0x1E695DF70] array];
+    if ([selectStatement stepRow])
     {
       do
       {
-        [v4 doubleValue:@"relative_timestamp"];
+        [selectStatement doubleValue:@"relative_timestamp"];
         v7 = v6;
-        [v4 doubleValue:@"absolute_timestamp"];
+        [selectStatement doubleValue:@"absolute_timestamp"];
         v9 = v8;
-        v10 = [v4 stringValue:@"event_name"];
-        v11 = [v4 stringValue:@"event_description"];
-        v12 = [v4 intValue:@"event_id"];
+        v10 = [selectStatement stringValue:@"event_name"];
+        v11 = [selectStatement stringValue:@"event_description"];
+        v12 = [selectStatement intValue:@"event_id"];
         v13 = objc_alloc_init(MNTraceNavigationEventRow);
         [(MNTraceNavigationEventRow *)v13 setRelativeTimestamp:v7];
         v14 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v9];
@@ -746,18 +746,18 @@ void __48__MNTraceLoader__loadAnnotatedUserBehaviorTable__block_invoke(uint64_t 
         [(MNTraceNavigationEventRow *)v13 setEventName:v10];
         [(MNTraceNavigationEventRow *)v13 setEventDescription:v11];
         [(MNTraceNavigationEventRow *)v13 setEventType:v12];
-        [v5 addObject:v13];
+        [array addObject:v13];
       }
 
-      while (([v4 stepRow] & 1) != 0);
+      while (([selectStatement stepRow] & 1) != 0);
     }
 
-    [(MNTrace *)v16->_trace setNavigationEvents:v5];
+    [(MNTrace *)selfCopy->_trace setNavigationEvents:array];
 
     v3 = v17;
   }
 
-  return v4 != 0;
+  return selectStatement != 0;
 }
 
 - (BOOL)_loadEVDataTable
@@ -767,10 +767,10 @@ void __48__MNTraceLoader__loadAnnotatedUserBehaviorTable__block_invoke(uint64_t 
   v3 = [MNTracePreparedStatement preparedStatementForTrace:trace statement:@"SELECT relative_timestamp outError:absolute_timestamp, identifier, current_range_m, max_range_m, battery_percentage, min_battery_capacity_kwh, current_battery_capacity_kwh, max_battery_capacity_kwh, consumption_arguments, charging_arguments, is_charging, active_connector, vehicle_state_origin, vehicle_data FROM ev_data ORDER BY relative_timestamp ASC", v71];
   v49 = v71[0];
   v4 = 0;
-  v5 = 0;
+  array = 0;
   if ([v3 stepRow])
   {
-    v5 = 0;
+    array = 0;
     v4 = 0;
     do
     {
@@ -799,7 +799,7 @@ void __48__MNTraceLoader__loadAnnotatedUserBehaviorTable__block_invoke(uint64_t 
       if (v27)
       {
         v28 = v27;
-        v68 = v5;
+        v68 = array;
         v29 = [v3 columnData:14];
         if (v29)
         {
@@ -833,25 +833,25 @@ void __48__MNTraceLoader__loadAnnotatedUserBehaviorTable__block_invoke(uint64_t 
         v57 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v9];
         v56 = [MEMORY[0x1E696AD98] numberWithDouble:v16];
         v31 = objc_alloc(MEMORY[0x1E696AD28]);
-        v63 = [MEMORY[0x1E696B058] meters];
-        v62 = [v31 initWithDoubleValue:v63 unit:v12];
-        v61 = [MEMORY[0x1E696B058] kilometers];
-        v52 = [v62 measurementByConvertingToUnit:v61];
+        meters = [MEMORY[0x1E696B058] meters];
+        v62 = [v31 initWithDoubleValue:meters unit:v12];
+        kilometers = [MEMORY[0x1E696B058] kilometers];
+        v52 = [v62 measurementByConvertingToUnit:kilometers];
         v32 = objc_alloc(MEMORY[0x1E696AD28]);
-        v55 = [MEMORY[0x1E696B058] meters];
-        v54 = [v32 initWithDoubleValue:v55 unit:v14];
-        v53 = [MEMORY[0x1E696B058] kilometers];
-        v33 = [v54 measurementByConvertingToUnit:v53];
+        meters2 = [MEMORY[0x1E696B058] meters];
+        v54 = [v32 initWithDoubleValue:meters2 unit:v14];
+        kilometers2 = [MEMORY[0x1E696B058] kilometers];
+        v33 = [v54 measurementByConvertingToUnit:kilometers2];
         v34 = objc_alloc(MEMORY[0x1E696AD28]);
         v35 = v10;
-        v51 = [MEMORY[0x1E696B030] kilowattHours];
-        v36 = [v34 initWithDoubleValue:v51 unit:v18];
+        kilowattHours = [MEMORY[0x1E696B030] kilowattHours];
+        v36 = [v34 initWithDoubleValue:kilowattHours unit:v18];
         v37 = objc_alloc(MEMORY[0x1E696AD28]);
-        v38 = [MEMORY[0x1E696B030] kilowattHours];
-        v39 = [v37 initWithDoubleValue:v38 unit:v20];
+        kilowattHours2 = [MEMORY[0x1E696B030] kilowattHours];
+        v39 = [v37 initWithDoubleValue:kilowattHours2 unit:v20];
         v40 = objc_alloc(MEMORY[0x1E696AD28]);
-        v41 = [MEMORY[0x1E696B030] kilowattHours];
-        v42 = [v40 initWithDoubleValue:v41 unit:v22];
+        kilowattHours3 = [MEMORY[0x1E696B030] kilowattHours];
+        v42 = [v40 initWithDoubleValue:kilowattHours3 unit:v22];
         v48 = v65;
         LOBYTE(v47) = v59;
         v66 = v35;
@@ -863,13 +863,13 @@ void __48__MNTraceLoader__loadAnnotatedUserBehaviorTable__block_invoke(uint64_t 
         v44 = objc_alloc_init(MNTraceEVDataRow);
         [(MNTraceEVDataRow *)v44 setTimestamp:v7];
         [(MNTraceEVDataRow *)v44 setVehicle:v43];
-        v5 = v68;
+        array = v68;
         if (!v68)
         {
-          v5 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        [v5 addObject:v44];
+        [array addObject:v44];
 
         v10 = v66;
         v24 = v69;
@@ -880,29 +880,29 @@ void __48__MNTraceLoader__loadAnnotatedUserBehaviorTable__block_invoke(uint64_t 
     while (([v3 stepRow] & 1) != 0);
   }
 
-  [(MNTrace *)self->_trace setEvData:v5];
+  [(MNTrace *)self->_trace setEvData:array];
 
   return 1;
 }
 
 - (BOOL)_loadVehicleDataTable
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __38__MNTraceLoader__loadVehicleDataTable__block_invoke;
   v14[3] = &unk_1E8430838;
-  v4 = v3;
+  v4 = array;
   v15 = v4;
   if ([(MNTraceLoader *)self _executeQuery:@"SELECT relative_timestamp rowHandler:heading FROM vehicle_heading_data ORDER BY relative_timestamp ASC", v14])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __38__MNTraceLoader__loadVehicleDataTable__block_invoke_2;
     v12 = &unk_1E8430838;
-    v13 = v5;
-    v6 = v5;
+    v13 = array2;
+    v6 = array2;
     v7 = [(MNTraceLoader *)self _executeQuery:@"SELECT relative_timestamp rowHandler:speed FROM vehicle_speed_data ORDER BY relative_timestamp ASC", &v9];
     [(MNTrace *)self->_trace setVehicleHeadingData:v4, v9, v10, v11, v12];
     [(MNTrace *)self->_trace setVehicleSpeedData:v6];
@@ -934,13 +934,13 @@ void __38__MNTraceLoader__loadVehicleDataTable__block_invoke_2(uint64_t a1, sqli
 
 - (BOOL)_loadMotionDataTable
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__MNTraceLoader__loadMotionDataTable__block_invoke;
   v7[3] = &unk_1E8430838;
-  v8 = v3;
-  v4 = v3;
+  v8 = array;
+  v4 = array;
   v5 = [(MNTraceLoader *)self _executeQuery:@"SELECT relative_timestamp rowHandler:type, exit_type, confidence FROM motion_data ORDER BY relative_timestamp ASC", v7];
   [(MNTrace *)self->_trace setMotionData:v4];
 
@@ -959,13 +959,13 @@ void __37__MNTraceLoader__loadMotionDataTable__block_invoke(uint64_t a1, sqlite3
 
 - (BOOL)_loadCompassHeadingDataTable
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__MNTraceLoader__loadCompassHeadingDataTable__block_invoke;
   v7[3] = &unk_1E8430838;
-  v8 = v3;
-  v4 = v3;
+  v8 = array;
+  v4 = array;
   v5 = [(MNTraceLoader *)self _executeQuery:@"SELECT relative_timestamp rowHandler:true_heading, magnetic_heading, accuracy FROM compass_heading_data ORDER BY relative_timestamp ASC", v7];
   [(MNTrace *)self->_trace setHeadingData:v4];
 
@@ -984,13 +984,13 @@ void __45__MNTraceLoader__loadCompassHeadingDataTable__block_invoke(uint64_t a1,
 
 - (BOOL)_loadETAUpdatesTable
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__MNTraceLoader__loadETAUpdatesTable__block_invoke;
   v7[3] = &unk_1E8430838;
-  v8 = v3;
-  v4 = v3;
+  v8 = array;
+  v4 = array;
   v5 = [(MNTraceLoader *)self _executeQuery:@"SELECT request_timestamp rowHandler:response_timestamp, request_data, response_data, response_error_data, destination_name FROM eta_traffic_updates ORDER BY request_timestamp ASC", v7];
   [(MNTrace *)self->_trace setEtaUpdates:v4];
 
@@ -1043,10 +1043,10 @@ void __37__MNTraceLoader__loadETAUpdatesTable__block_invoke(uint64_t a1, sqlite3
   [*(a1 + 32) addObject:v22];
 }
 
-- (BOOL)_loadDirectionsTableAllowDeprecatedProtocol:(BOOL)a3 outError:(id *)a4
+- (BOOL)_loadDirectionsTableAllowDeprecatedProtocol:(BOOL)protocol outError:(id *)error
 {
   v91 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_latestSchema)
   {
     v6 = @"SELECT request_timestamp, response_timestamp, request_data, response_data, response_error_data, waypoints_data, selected_route_index FROM directions";
@@ -1057,7 +1057,7 @@ void __37__MNTraceLoader__loadETAUpdatesTable__block_invoke(uint64_t a1, sqlite3
     v6 = @"SELECT request_timestamp, response_timestamp, request_data, response_data, response_error_data, waypoints_data, 0 FROM directions";
   }
 
-  v68 = self;
+  selfCopy = self;
   trace = self->_trace;
   v85 = 0;
   v8 = [MNTracePreparedStatement preparedStatementForTrace:trace statement:v6 outError:&v85];
@@ -1065,14 +1065,14 @@ void __37__MNTraceLoader__loadETAUpdatesTable__block_invoke(uint64_t a1, sqlite3
   if (![v8 stepRow])
   {
 LABEL_54:
-    [(MNTrace *)v68->_trace setDirections:v5];
+    [(MNTrace *)selfCopy->_trace setDirections:array];
     v58 = v67;
     v59 = v67 == 0;
     goto LABEL_55;
   }
 
   v70 = v8;
-  v64 = v5;
+  v64 = array;
   while (1)
   {
     v9 = objc_alloc_init(MNTraceDirectionsRow);
@@ -1135,12 +1135,12 @@ LABEL_29:
 
     if (v48)
     {
-      v49 = GEOFindOrCreateLog();
-      if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
+      waypoints = GEOFindOrCreateLog();
+      if (os_log_type_enabled(waypoints, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v88 = v48;
-        _os_log_impl(&dword_1D311E000, v49, OS_LOG_TYPE_ERROR, "Error decoding waypoints: %@", buf, 0xCu);
+        _os_log_impl(&dword_1D311E000, waypoints, OS_LOG_TYPE_ERROR, "Error decoding waypoints: %@", buf, 0xCu);
       }
 
 LABEL_48:
@@ -1148,14 +1148,14 @@ LABEL_48:
       goto LABEL_49;
     }
 
-    if ([(MNTrace *)v68->_trace version]<= 0x39)
+    if ([(MNTrace *)selfCopy->_trace version]<= 0x39)
     {
       v73 = 0u;
       v74 = 0u;
       v71 = 0u;
       v72 = 0u;
-      v49 = [(MNTraceDirectionsRow *)v9 waypoints];
-      v50 = [v49 countByEnumeratingWithState:&v71 objects:v86 count:16];
+      waypoints = [(MNTraceDirectionsRow *)v9 waypoints];
+      v50 = [waypoints countByEnumeratingWithState:&v71 objects:v86 count:16];
       if (v50)
       {
         v51 = v50;
@@ -1168,19 +1168,19 @@ LABEL_48:
           {
             if (*v72 != v52)
             {
-              objc_enumerationMutation(v49);
+              objc_enumerationMutation(waypoints);
             }
 
             v54 = *(*(&v71 + 1) + 8 * i);
-            v55 = [v54 waypoint];
-            [v54 setIsCurrentLocation:{objc_msgSend(v55, "isCurrentLocation")}];
+            waypoint = [v54 waypoint];
+            [v54 setIsCurrentLocation:{objc_msgSend(waypoint, "isCurrentLocation")}];
           }
 
-          v51 = [v49 countByEnumeratingWithState:&v71 objects:v86 count:16];
+          v51 = [waypoints countByEnumeratingWithState:&v71 objects:v86 count:16];
         }
 
         while (v51);
-        v5 = v64;
+        array = v64;
         v12 = v65;
         v8 = v70;
         v10 = v66;
@@ -1204,7 +1204,7 @@ LABEL_50:
     }
 
     [(MNTraceDirectionsRow *)v9 setSelectedRouteIndex:v57];
-    [v5 addObject:v9];
+    [array addObject:v9];
 
     if (([v8 stepRow] & 1) == 0)
     {
@@ -1215,22 +1215,22 @@ LABEL_50:
   v13 = [objc_alloc(MEMORY[0x1E69A1D10]) initWithData:v12];
   [(MNTraceDirectionsRow *)v9 setResponse:v13];
 
-  if (a3)
+  if (protocol)
   {
     goto LABEL_14;
   }
 
-  v14 = [(MNTraceDirectionsRow *)v9 response];
-  v15 = [v14 routes];
-  if (![v15 count])
+  response = [(MNTraceDirectionsRow *)v9 response];
+  routes = [response routes];
+  if (![routes count])
   {
 
     goto LABEL_14;
   }
 
-  v16 = [(MNTraceDirectionsRow *)v9 response];
-  v17 = [v16 waypointRoutes];
-  v18 = [v17 count];
+  response2 = [(MNTraceDirectionsRow *)v9 response];
+  waypointRoutes = [response2 waypointRoutes];
+  v18 = [waypointRoutes count];
 
   if (v18)
   {
@@ -1241,10 +1241,10 @@ LABEL_14:
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v21 = [(MNTraceDirectionsRow *)v9 response];
-    v22 = [v21 routes];
+    response3 = [(MNTraceDirectionsRow *)v9 response];
+    routes2 = [response3 routes];
 
-    v23 = [v22 countByEnumeratingWithState:&v81 objects:v90 count:16];
+    v23 = [routes2 countByEnumeratingWithState:&v81 objects:v90 count:16];
     if (v23)
     {
       v24 = v23;
@@ -1255,13 +1255,13 @@ LABEL_14:
         {
           if (*v82 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(routes2);
           }
 
           [*(*(&v81 + 1) + 8 * j) setUnpackedLatLngVertices:0];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v81 objects:v90 count:16];
+        v24 = [routes2 countByEnumeratingWithState:&v81 objects:v90 count:16];
       }
 
       while (v24);
@@ -1271,11 +1271,11 @@ LABEL_14:
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v27 = [(MNTraceDirectionsRow *)v9 response];
-    v28 = [v27 decoderData];
-    v29 = [v28 walkings];
+    response4 = [(MNTraceDirectionsRow *)v9 response];
+    decoderData = [response4 decoderData];
+    walkings = [decoderData walkings];
 
-    v30 = [v29 countByEnumeratingWithState:&v77 objects:v89 count:16];
+    v30 = [walkings countByEnumeratingWithState:&v77 objects:v89 count:16];
     if (v30)
     {
       v31 = v30;
@@ -1286,13 +1286,13 @@ LABEL_14:
         {
           if (*v78 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(walkings);
           }
 
           [*(*(&v77 + 1) + 8 * k) setUnpackedLatLngVertices:0];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v77 objects:v89 count:16];
+        v31 = [walkings countByEnumeratingWithState:&v77 objects:v89 count:16];
       }
 
       while (v31);
@@ -1304,10 +1304,10 @@ LABEL_14:
     goto LABEL_29;
   }
 
-  if (a4)
+  if (error)
   {
-    v62 = [(MNTraceLoader *)v68 _errorWithCode:12 errorDescriptionFormat:@"Navtrace is using a deprecated Routing protocol which is no longer supported. This trace will need to be manually re-generated."];
-    *a4 = v62;
+    v62 = [(MNTraceLoader *)selfCopy _errorWithCode:12 errorDescriptionFormat:@"Navtrace is using a deprecated Routing protocol which is no longer supported. This trace will need to be manually re-generated."];
+    *error = v62;
   }
 
   v59 = 0;
@@ -1318,10 +1318,10 @@ LABEL_55:
   return v59;
 }
 
-- (BOOL)_loadLocationsTable:(BOOL)a3
+- (BOOL)_loadLocationsTable:(BOOL)table
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  tableCopy = table;
+  array = [MEMORY[0x1E695DF70] array];
   v6 = [[_TtC10Navigation29MNTraceSelectStatementBuilder alloc] initWithTrace:self->_trace tableName:@"locations"];
   v7 = v6;
   if (self->_latestSchema)
@@ -1335,18 +1335,18 @@ LABEL_55:
   }
 
   [(MNTraceSelectStatementBuilder *)v6 addColumns:v8];
-  v79 = v3;
-  if (v3)
+  v79 = tableCopy;
+  if (tableCopy)
   {
     [(MNTraceSelectStatementBuilder *)v7 addColumns:&unk_1F4EE2C38];
   }
 
-  v9 = [(MNTraceSelectStatementBuilder *)v7 selectStatement];
-  v10 = v9;
-  if (v9)
+  selectStatement = [(MNTraceSelectStatementBuilder *)v7 selectStatement];
+  v10 = selectStatement;
+  if (selectStatement)
   {
     v78 = v7;
-    if ([v9 stepRow])
+    if ([selectStatement stepRow])
     {
       do
       {
@@ -1435,7 +1435,7 @@ LABEL_55:
         {
           v80 = objc_alloc(MEMORY[0x1E6985C48]);
           v82 = v43;
-          v52 = [(MNLocationMatchInfo *)v29 matchQuality];
+          matchQuality = [(MNLocationMatchInfo *)v29 matchQuality];
           [(MNLocationMatchInfo *)v29 matchCoordinate];
           v81 = v47;
           v53 = v42;
@@ -1447,12 +1447,12 @@ LABEL_55:
           v61 = v60;
           v62 = v11;
           v63 = v44;
-          v64 = self;
-          v65 = [(MNLocationMatchInfo *)v29 matchFormOfWay];
-          v66 = v5;
-          v67 = [(MNLocationMatchInfo *)v29 matchRoadClass];
-          v68 = [(MNLocationMatchInfo *)v29 matchShifted];
-          v69 = v52;
+          selfCopy = self;
+          matchFormOfWay = [(MNLocationMatchInfo *)v29 matchFormOfWay];
+          v66 = array;
+          matchRoadClass = [(MNLocationMatchInfo *)v29 matchRoadClass];
+          matchShifted = [(MNLocationMatchInfo *)v29 matchShifted];
+          v69 = matchQuality;
           v43 = v82;
           v70 = v55;
           v42 = v53;
@@ -1460,13 +1460,13 @@ LABEL_55:
           v71 = v59;
           v37 = v57;
           v49 = v56;
-          v72 = v65;
-          self = v64;
+          v72 = matchFormOfWay;
+          self = selfCopy;
           v44 = v63;
           v11 = v62;
-          v73 = v67;
-          v5 = v66;
-          v74 = [v80 initWithMatchQuality:v69 matchCoordinate:v72 matchCourse:v73 matchFormOfWay:v68 matchRoadClass:0 matchShifted:v70 matchDataArray:{v71, v61}];
+          v73 = matchRoadClass;
+          array = v66;
+          v74 = [v80 initWithMatchQuality:v69 matchCoordinate:v72 matchCourse:v73 matchFormOfWay:matchShifted matchRoadClass:0 matchShifted:v70 matchDataArray:{v71, v61}];
         }
 
         else
@@ -1500,19 +1500,19 @@ LABEL_55:
         v76 = [(MNLocation *)v75 initWithClientLocation:&v90 matchInfo:v74];
         if ((self->_options & 0x10000000) != 0)
         {
-          -[MNLocation setTraceIndex:](v76, "setTraceIndex:", [v5 count]);
+          -[MNLocation setTraceIndex:](v76, "setTraceIndex:", [array count]);
           [(MNTraceLocationRow *)v11 timestamp];
           [(MNLocation *)v76 setTraceTimestamp:?];
         }
 
         [(MNTraceLocationRow *)v11 setLocation:v76];
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
       while (([v10 stepRow] & 1) != 0);
     }
 
-    [(MNTrace *)self->_trace setLocations:v5];
+    [(MNTrace *)self->_trace setLocations:array];
     v7 = v78;
   }
 
@@ -1568,23 +1568,23 @@ LABEL_55:
   return v5 == 0;
 }
 
-- (id)loadTraceWithPath:(id)a3 options:(int64_t)a4 outError:(id *)a5
+- (id)loadTraceWithPath:(id)path options:(int64_t)options outError:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  pathCopy = path;
   if ((self->_options & 0x20000000) != 0)
   {
     self->_latestSchema = 1;
   }
 
   v9 = objc_alloc_init(MNTrace);
-  if (![(MNTrace *)v9 openTrace:v8 outError:a5])
+  if (![(MNTrace *)v9 openTrace:pathCopy outError:error])
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v37 = v8;
+      v37 = pathCopy;
       _os_log_impl(&dword_1D311E000, v12, OS_LOG_TYPE_ERROR, "Failed to open trace: %@", buf, 0xCu);
     }
 
@@ -1592,25 +1592,25 @@ LABEL_55:
   }
 
   objc_storeStrong(&self->_trace, v9);
-  self->_options = a4;
+  self->_options = options;
   [(MNTraceLoader *)self _loadTraceVersion];
-  v10 = [(MNTrace *)self->_trace version];
-  if (v10 <= +[MNTrace currentVersion])
+  version = [(MNTrace *)self->_trace version];
+  if (version <= +[MNTrace currentVersion])
   {
-    if (![(MNTraceLoader *)self _updateTraceFromVersion:[(MNTrace *)self->_trace version] outError:a5])
+    if (![(MNTraceLoader *)self _updateTraceFromVersion:[(MNTrace *)self->_trace version] outError:error])
     {
       v16 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v16, OS_LOG_TYPE_ERROR, "Failed to update trace to current version: %@", buf, 0xCu);
       }
 
-      if (a5 && !*a5)
+      if (error && !*error)
       {
         v17 = [(MNTraceLoader *)self _errorWithCode:0 errorDescriptionFormat:@"Unknown error."];
-        *a5 = v17;
+        *error = v17;
       }
 
       if ((self->_options & 0x40000000) != 0)
@@ -1620,10 +1620,10 @@ LABEL_55:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v11 = [(MNTraceLoader *)self _errorWithCode:6 errorDescriptionFormat:@"Attempting to open trace with version %d which is newer than this build's version of %d. Forward compatibility usually works, but is not guaranteed.", [(MNTrace *)self->_trace version], +[MNTrace currentVersion]];
-    *a5 = v11;
+    *error = v11;
   }
 
   if ((self->_options & 1) != 0 && ![(MNTraceLoader *)self _loadInfoTable])
@@ -1632,7 +1632,7 @@ LABEL_55:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v37 = v8;
+      v37 = pathCopy;
       _os_log_impl(&dword_1D311E000, v18, OS_LOG_TYPE_ERROR, "Failed to load info table for trace: %@", buf, 0xCu);
     }
 
@@ -1658,7 +1658,7 @@ LABEL_55:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v20, OS_LOG_TYPE_ERROR, "Failed to load locations for trace: %@", buf, 0xCu);
       }
 
@@ -1672,7 +1672,7 @@ LABEL_55:
 
   if ((options & 8) != 0)
   {
-    if ([(MNTraceLoader *)self _loadDirectionsTableAllowDeprecatedProtocol:(~options & 0xFFFFFFFF80000008) == 0 outError:a5])
+    if ([(MNTraceLoader *)self _loadDirectionsTableAllowDeprecatedProtocol:(~options & 0xFFFFFFFF80000008) == 0 outError:error])
     {
       options = self->_options;
     }
@@ -1683,7 +1683,7 @@ LABEL_55:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v21, OS_LOG_TYPE_ERROR, "Failed to load direction for trace: %@", buf, 0xCu);
       }
 
@@ -1708,7 +1708,7 @@ LABEL_55:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v22, OS_LOG_TYPE_ERROR, "Failed to load ETA updates for trace: %@", buf, 0xCu);
       }
 
@@ -1733,7 +1733,7 @@ LABEL_55:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v23, OS_LOG_TYPE_ERROR, "Failed to load compass heading data for trace: %@", buf, 0xCu);
       }
 
@@ -1758,7 +1758,7 @@ LABEL_55:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v24, OS_LOG_TYPE_ERROR, "Failed to load motion data for trace: %@", buf, 0xCu);
       }
 
@@ -1783,7 +1783,7 @@ LABEL_55:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v25, OS_LOG_TYPE_ERROR, "Failed to load vehicle data for trace: %@", buf, 0xCu);
       }
 
@@ -1801,7 +1801,7 @@ LABEL_55:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v37 = v8;
+      v37 = pathCopy;
       _os_log_impl(&dword_1D311E000, v26, OS_LOG_TYPE_ERROR, "Failed to load ev data for trace: %@", buf, 0xCu);
     }
   }
@@ -1820,7 +1820,7 @@ LABEL_55:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v28, OS_LOG_TYPE_ERROR, "Failed to load navigation events table for trace: %@", buf, 0xCu);
       }
 
@@ -1840,7 +1840,7 @@ LABEL_55:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v29, OS_LOG_TYPE_ERROR, "Failed to load annotated user behavior for trace: %@", buf, 0xCu);
       }
 
@@ -1861,7 +1861,7 @@ LABEL_55:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v30, OS_LOG_TYPE_ERROR, "Failed to load annotated user environment for trace: %@", buf, 0xCu);
       }
 
@@ -1886,7 +1886,7 @@ LABEL_55:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v31, OS_LOG_TYPE_ERROR, "Failed to load misc info table for trace: %@", buf, 0xCu);
       }
 
@@ -1911,7 +1911,7 @@ LABEL_55:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v32, OS_LOG_TYPE_ERROR, "Failed to navigation updates table for trace: %@", buf, 0xCu);
       }
 
@@ -1936,7 +1936,7 @@ LABEL_55:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v37 = v8;
+        v37 = pathCopy;
         _os_log_impl(&dword_1D311E000, v33, OS_LOG_TYPE_ERROR, "Failed to load network event table for trace: %@", buf, 0xCu);
       }
 
@@ -1954,7 +1954,7 @@ LABEL_55:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v37 = v8;
+      v37 = pathCopy;
       _os_log_impl(&dword_1D311E000, v34, OS_LOG_TYPE_ERROR, "Failed to load route creation actions table for trace: %@", buf, 0xCu);
     }
 
@@ -1970,7 +1970,7 @@ LABEL_55:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v37 = v8;
+      v37 = pathCopy;
       _os_log_impl(&dword_1D311E000, v35, OS_LOG_TYPE_ERROR, "Failed to load extra data for trace: %@", buf, 0xCu);
     }
 

@@ -17,12 +17,12 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 layer];
-  [AXInvertColorsAppHelper toggleInvertColors:v3];
+  layer = [v2 layer];
+  [AXInvertColorsAppHelper toggleInvertColors:layer];
 
-  v4 = [v2 titleLabel];
-  v5 = [v4 layer];
-  [AXInvertColorsAppHelper toggleInvertColors:v5];
+  titleLabel = [v2 titleLabel];
+  layer2 = [titleLabel layer];
+  [AXInvertColorsAppHelper toggleInvertColors:layer2];
 }
 
 @end

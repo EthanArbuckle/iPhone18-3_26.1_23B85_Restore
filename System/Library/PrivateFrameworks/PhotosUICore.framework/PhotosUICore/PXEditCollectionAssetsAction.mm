@@ -1,19 +1,19 @@
 @interface PXEditCollectionAssetsAction
-- (PXEditCollectionAssetsAction)initWithAssetCollection:(id)a3 assets:(id)a4;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXEditCollectionAssetsAction)initWithAssetCollection:(id)collection assets:(id)assets;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXEditCollectionAssetsAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__PXEditCollectionAssetsAction_performUndo___block_invoke;
   v3[3] = &unk_1E774C648;
   v3[4] = self;
-  [(PXPhotosAction *)self performChanges:v3 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v3 completionHandler:undo];
 }
 
 void __44__PXEditCollectionAssetsAction_performUndo___block_invoke(uint64_t a1)
@@ -31,9 +31,9 @@ void __44__PXEditCollectionAssetsAction_performUndo___block_invoke(uint64_t a1)
   [v8 insertAssets:v6 atIndexes:v7];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__PXEditCollectionAssetsAction_performAction___block_invoke;
@@ -44,8 +44,8 @@ void __44__PXEditCollectionAssetsAction_performUndo___block_invoke(uint64_t a1)
   v6[2] = __46__PXEditCollectionAssetsAction_performAction___block_invoke_2;
   v6[3] = &unk_1E774BD88;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = actionCopy;
+  v5 = actionCopy;
   [(PXPhotosAction *)self performChanges:v8 completionHandler:v6];
 }
 
@@ -73,51 +73,51 @@ void __46__PXEditCollectionAssetsAction_performAction___block_invoke_2(uint64_t 
   }
 }
 
-- (PXEditCollectionAssetsAction)initWithAssetCollection:(id)a3 assets:(id)a4
+- (PXEditCollectionAssetsAction)initWithAssetCollection:(id)collection assets:(id)assets
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = fetchAssetsInAssetCollection(v7);
-  v10 = [MEMORY[0x1E6978848] changeDetailsFromFetchResult:v9 toFetchResult:v8 changedObjects:MEMORY[0x1E695E0F0]];
+  collectionCopy = collection;
+  assetsCopy = assets;
+  v9 = fetchAssetsInAssetCollection(collectionCopy);
+  v10 = [MEMORY[0x1E6978848] changeDetailsFromFetchResult:v9 toFetchResult:assetsCopy changedObjects:MEMORY[0x1E695E0F0]];
 
-  v11 = [v10 removedIndexes];
-  v12 = [v11 count];
-  v13 = [v10 insertedIndexes];
-  v14 = [v13 count];
+  removedIndexes = [v10 removedIndexes];
+  v12 = [removedIndexes count];
+  insertedIndexes = [v10 insertedIndexes];
+  v14 = [insertedIndexes count];
 
   if (v12 + v14)
   {
-    v16 = [v7 photoLibrary];
+    photoLibrary = [collectionCopy photoLibrary];
     v25.receiver = self;
     v25.super_class = PXEditCollectionAssetsAction;
-    v17 = [(PXPhotosAction *)&v25 initWithPhotoLibrary:v16];
+    v17 = [(PXPhotosAction *)&v25 initWithPhotoLibrary:photoLibrary];
 
     if (v17)
     {
-      objc_storeStrong(&v17->_assetCollection, a3);
-      v18 = [v10 insertedObjects];
+      objc_storeStrong(&v17->_assetCollection, collection);
+      insertedObjects = [v10 insertedObjects];
       assetsToAdd = v17->_assetsToAdd;
-      v17->_assetsToAdd = v18;
+      v17->_assetsToAdd = insertedObjects;
 
-      v20 = [v10 removedObjects];
+      removedObjects = [v10 removedObjects];
       assetsToRemove = v17->_assetsToRemove;
-      v17->_assetsToRemove = v20;
+      v17->_assetsToRemove = removedObjects;
 
-      v22 = [v10 removedIndexes];
+      removedIndexes2 = [v10 removedIndexes];
       assetsToRemoveUndoIndexes = v17->_assetsToRemoveUndoIndexes;
-      v17->_assetsToRemoveUndoIndexes = v22;
+      v17->_assetsToRemoveUndoIndexes = removedIndexes2;
     }
 
     self = v17;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

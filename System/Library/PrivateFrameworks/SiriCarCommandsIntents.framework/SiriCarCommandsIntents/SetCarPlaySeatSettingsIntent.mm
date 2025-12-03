@@ -1,6 +1,6 @@
 @interface SetCarPlaySeatSettingsIntent
 - (SetCarPlaySeatSettingsIntent)init;
-- (SetCarPlaySeatSettingsIntent)initWithCoder:(id)a3;
+- (SetCarPlaySeatSettingsIntent)initWithCoder:(id)coder;
 @end
 
 @implementation SetCarPlaySeatSettingsIntent
@@ -12,12 +12,12 @@
   return [(SetCarPlaySeatSettingsIntent *)&v3 init];
 }
 
-- (SetCarPlaySeatSettingsIntent)initWithCoder:(id)a3
+- (SetCarPlaySeatSettingsIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SetCarPlaySeatSettingsIntent();
-  v4 = a3;
-  v5 = [(SetCarPlaySeatSettingsIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SetCarPlaySeatSettingsIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

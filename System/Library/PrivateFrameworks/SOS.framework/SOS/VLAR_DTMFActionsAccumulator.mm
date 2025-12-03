@@ -1,7 +1,7 @@
 @interface VLAR_DTMFActionsAccumulator
 - (VLAR_DTMFActionsAccumulator)init;
 - (id)analyticsDataDict;
-- (void)noteDTMFAction:(unint64_t)a3;
+- (void)noteDTMFAction:(unint64_t)action;
 @end
 
 @implementation VLAR_DTMFActionsAccumulator
@@ -21,12 +21,12 @@
   return v2;
 }
 
-- (void)noteDTMFAction:(unint64_t)a3
+- (void)noteDTMFAction:(unint64_t)action
 {
   actionsAccumulator = self->_actionsAccumulator;
-  if (a3 <= 299)
+  if (action <= 299)
   {
-    switch(a3)
+    switch(action)
     {
       case 0uLL:
         v4 = @"None";
@@ -44,15 +44,15 @@ LABEL_15:
     goto LABEL_6;
   }
 
-  if (a3 > 4999)
+  if (action > 4999)
   {
-    if (a3 == 5000)
+    if (action == 5000)
     {
       v4 = @"Resume";
       goto LABEL_6;
     }
 
-    if (a3 == 10000)
+    if (action == 10000)
     {
       v4 = @"Ignored";
       goto LABEL_6;
@@ -61,13 +61,13 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (a3 == 300)
+  if (action == 300)
   {
     v4 = @"StopSilent";
     goto LABEL_6;
   }
 
-  if (a3 != 400)
+  if (action != 400)
   {
     goto LABEL_15;
   }
@@ -90,9 +90,9 @@ LABEL_6:
   v4 = [(SOSAnalyticsEventAccumulator *)self->_actionsAccumulator analyticsDataDictForAccumulatedKeys:&unk_2875D2CB0 outputKeyPrefix:@"nDTMFAction_" summaryKeysDict:v3];
   v5 = [v4 mutableCopy];
   v6 = [v4 objectForKeyedSubscript:@"nDTMFActions_Known"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
   v8 = [v4 objectForKeyedSubscript:@"nDTMFAction_Ignored"];
-  v9 = v7 - [v8 integerValue];
+  v9 = integerValue - [v8 integerValue];
 
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
   [v5 setObject:v10 forKeyedSubscript:@"nDTMFActions_Acted"];

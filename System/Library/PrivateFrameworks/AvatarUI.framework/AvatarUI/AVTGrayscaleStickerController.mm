@@ -5,13 +5,13 @@
 - (AVTStickerSelectionDelegate)selectionDelegate;
 - (AVTStickerViewController)stickerViewController;
 - (AVTStickerViewControllerImageDelegate)imageDelegate;
-- (id)stickerSheetControllerForSelectedAvatar:(id)a3 stickerSheetModel:(id)a4 taskScheduler:(id)a5;
-- (id)stickerViewControllerForFetchRequest:(id)a3 allowedStickers:(id)a4 stickerPacks:(id)a5 allowPoseCapture:(BOOL)a6 showUserInfoView:(BOOL)a7 allowEditing:(BOOL)a8 backgroundColor:(id)a9 grayscaleConvertionDelegate:(id)a10 presenterDelegate:(id)a11 selectionDelegate:(id)a12;
-- (void)poseCaptureViewController:(id)a3 didCapturePoseWithConfiguration:(id)a4 avatar:(id)a5;
-- (void)poseCaptureViewController:(id)a3 willCaptureAvatarImage:(id)a4 completion:(id)a5;
-- (void)poseCaptureViewControllerDidCancel:(id)a3;
-- (void)stickerSheetController:(id)a3 didSelectCameraViewForRecord:(id)a4;
-- (void)wrapAndPresentViewController:(id)a3 animated:(BOOL)a4;
+- (id)stickerSheetControllerForSelectedAvatar:(id)avatar stickerSheetModel:(id)model taskScheduler:(id)scheduler;
+- (id)stickerViewControllerForFetchRequest:(id)request allowedStickers:(id)stickers stickerPacks:(id)packs allowPoseCapture:(BOOL)capture showUserInfoView:(BOOL)view allowEditing:(BOOL)editing backgroundColor:(id)color grayscaleConvertionDelegate:(id)self0 presenterDelegate:(id)self1 selectionDelegate:(id)self2;
+- (void)poseCaptureViewController:(id)controller didCapturePoseWithConfiguration:(id)configuration avatar:(id)avatar;
+- (void)poseCaptureViewController:(id)controller willCaptureAvatarImage:(id)image completion:(id)completion;
+- (void)poseCaptureViewControllerDidCancel:(id)cancel;
+- (void)stickerSheetController:(id)controller didSelectCameraViewForRecord:(id)record;
+- (void)wrapAndPresentViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation AVTGrayscaleStickerController
@@ -35,72 +35,72 @@
   return v2;
 }
 
-- (id)stickerViewControllerForFetchRequest:(id)a3 allowedStickers:(id)a4 stickerPacks:(id)a5 allowPoseCapture:(BOOL)a6 showUserInfoView:(BOOL)a7 allowEditing:(BOOL)a8 backgroundColor:(id)a9 grayscaleConvertionDelegate:(id)a10 presenterDelegate:(id)a11 selectionDelegate:(id)a12
+- (id)stickerViewControllerForFetchRequest:(id)request allowedStickers:(id)stickers stickerPacks:(id)packs allowPoseCapture:(BOOL)capture showUserInfoView:(BOOL)view allowEditing:(BOOL)editing backgroundColor:(id)color grayscaleConvertionDelegate:(id)self0 presenterDelegate:(id)self1 selectionDelegate:(id)self2
 {
-  v34 = a8;
-  v38 = a6;
-  v39 = a7;
-  v16 = a12;
-  v35 = a11;
-  v36 = a10;
-  v37 = a9;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  editingCopy = editing;
+  captureCopy = capture;
+  viewCopy = view;
+  selectionDelegateCopy = selectionDelegate;
+  presenterDelegateCopy = presenterDelegate;
+  delegateCopy = delegate;
+  colorCopy = color;
+  packsCopy = packs;
+  stickersCopy = stickers;
+  requestCopy = request;
   v20 = objc_alloc_init(AVTAvatarStore);
   v21 = [AVTViewSessionProvider alloc];
-  v22 = [(AVTGrayscaleStickerController *)self environment];
-  [AVTViewSessionProvider backingSizeForEnvironment:v22];
+  environment = [(AVTGrayscaleStickerController *)self environment];
+  [AVTViewSessionProvider backingSizeForEnvironment:environment];
   v24 = v23;
   v26 = v25;
   v27 = +[AVTViewSessionProvider creatorForAVTView];
-  v28 = [(AVTGrayscaleStickerController *)self environment];
-  v29 = [(AVTViewSessionProvider *)v21 initWithAVTViewBackingSize:v27 viewCreator:v28 environment:v24, v26];
+  environment2 = [(AVTGrayscaleStickerController *)self environment];
+  v29 = [(AVTViewSessionProvider *)v21 initWithAVTViewBackingSize:v27 viewCreator:environment2 environment:v24, v26];
 
   [(AVTGrayscaleStickerController *)self setViewSessionProvider:v29];
   LOBYTE(v33) = 0;
-  v30 = [AVTStickerViewController stickerViewControllerForStore:v20 fetchRequest:v19 stickerPacks:v17 stickerConfigurationNames:v18 avtViewSessionProvider:v29 allowEditing:v34 allowPeel:v33];
+  v30 = [AVTStickerViewController stickerViewControllerForStore:v20 fetchRequest:requestCopy stickerPacks:packsCopy stickerConfigurationNames:stickersCopy avtViewSessionProvider:v29 allowEditing:editingCopy allowPeel:v33];
 
-  [(AVTGrayscaleStickerController *)self setAllowedStickers:v18];
-  [(AVTGrayscaleStickerController *)self setPresenterDelegate:v35];
-  [(AVTGrayscaleStickerController *)self setImageDelegate:v36];
-  [(AVTGrayscaleStickerController *)self setSelectionDelegate:v16];
-  [(AVTGrayscaleStickerController *)self setAllowsPoseCapture:v38];
-  [(AVTGrayscaleStickerController *)self setShouldHideUserInfoView:!v39];
-  [(AVTGrayscaleStickerController *)self setBackgroundColor:v37];
-  [v30 setStickerSelectionDelegate:v16];
+  [(AVTGrayscaleStickerController *)self setAllowedStickers:stickersCopy];
+  [(AVTGrayscaleStickerController *)self setPresenterDelegate:presenterDelegateCopy];
+  [(AVTGrayscaleStickerController *)self setImageDelegate:delegateCopy];
+  [(AVTGrayscaleStickerController *)self setSelectionDelegate:selectionDelegateCopy];
+  [(AVTGrayscaleStickerController *)self setAllowsPoseCapture:captureCopy];
+  [(AVTGrayscaleStickerController *)self setShouldHideUserInfoView:!viewCopy];
+  [(AVTGrayscaleStickerController *)self setBackgroundColor:colorCopy];
+  [v30 setStickerSelectionDelegate:selectionDelegateCopy];
 
   [v30 setStickerSheetControllerProvider:self];
-  [v30 setPresenterDelegate:v35];
+  [v30 setPresenterDelegate:presenterDelegateCopy];
 
-  [v30 setImageDelegate:v36];
-  [v30 setShouldHideUserInfoView:!v39];
+  [v30 setImageDelegate:delegateCopy];
+  [v30 setShouldHideUserInfoView:!viewCopy];
   [v30 setEdgesForExtendedLayout:0];
-  v31 = [v30 view];
-  [v31 setBackgroundColor:v37];
+  view = [v30 view];
+  [view setBackgroundColor:colorCopy];
 
   [(AVTGrayscaleStickerController *)self setStickerViewController:v30];
 
   return v30;
 }
 
-- (void)stickerSheetController:(id)a3 didSelectCameraViewForRecord:(id)a4
+- (void)stickerSheetController:(id)controller didSelectCameraViewForRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTGrayscaleStickerController *)self presenterDelegate];
+  controllerCopy = controller;
+  recordCopy = record;
+  presenterDelegate = [(AVTGrayscaleStickerController *)self presenterDelegate];
 
-  if (v8)
+  if (presenterDelegate)
   {
     objc_initWeak(&location, self);
-    v9 = [(AVTGrayscaleStickerController *)self uiCapabilities];
+    uiCapabilities = [(AVTGrayscaleStickerController *)self uiCapabilities];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __85__AVTGrayscaleStickerController_stickerSheetController_didSelectCameraViewForRecord___block_invoke;
     v10[3] = &unk_1E7F3B310;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    [v9 requestAccessForCameraWithCompletionHandler:v10];
+    v11 = recordCopy;
+    [uiCapabilities requestAccessForCameraWithCompletionHandler:v10];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -147,24 +147,24 @@ void __85__AVTGrayscaleStickerController_stickerSheetController_didSelectCameraV
   }
 }
 
-- (void)wrapAndPresentViewController:(id)a3 animated:(BOOL)a4
+- (void)wrapAndPresentViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = [AVTUIControllerPresentation presentationWithWrappingForController:a3, a4];
-  v5 = [(AVTGrayscaleStickerController *)self presenterDelegate];
-  [v5 presentAvatarUIController:v6 animated:1];
+  animated = [AVTUIControllerPresentation presentationWithWrappingForController:controller, animated];
+  presenterDelegate = [(AVTGrayscaleStickerController *)self presenterDelegate];
+  [presenterDelegate presentAvatarUIController:animated animated:1];
 }
 
-- (id)stickerSheetControllerForSelectedAvatar:(id)a3 stickerSheetModel:(id)a4 taskScheduler:(id)a5
+- (id)stickerSheetControllerForSelectedAvatar:(id)avatar stickerSheetModel:(id)model taskScheduler:(id)scheduler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[AVTSelectableStickerSheetController alloc] initWithStickerSheetModel:v8 taskScheduler:v7 allowsPoseCapture:[(AVTGrayscaleStickerController *)self allowsPoseCapture]];
+  schedulerCopy = scheduler;
+  modelCopy = model;
+  v9 = [[AVTSelectableStickerSheetController alloc] initWithStickerSheetModel:modelCopy taskScheduler:schedulerCopy allowsPoseCapture:[(AVTGrayscaleStickerController *)self allowsPoseCapture]];
 
-  v10 = [(AVTGrayscaleStickerController *)self presenterDelegate];
-  [(AVTSelectableStickerSheetController *)v9 setPresenterDelegate:v10];
+  presenterDelegate = [(AVTGrayscaleStickerController *)self presenterDelegate];
+  [(AVTSelectableStickerSheetController *)v9 setPresenterDelegate:presenterDelegate];
 
-  v11 = [(AVTGrayscaleStickerController *)self imageDelegate];
-  [(AVTSelectableStickerSheetController *)v9 setImageDelegate:v11];
+  imageDelegate = [(AVTGrayscaleStickerController *)self imageDelegate];
+  [(AVTSelectableStickerSheetController *)v9 setImageDelegate:imageDelegate];
 
   [(AVTSelectableStickerSheetController *)v9 setShowCellSelectionLayer:[(AVTGrayscaleStickerController *)self shouldShowSelectionLayerForStickers]];
   [(AVTSelectableStickerSheetController *)v9 setStickerSheetDelegate:self];
@@ -172,41 +172,41 @@ void __85__AVTGrayscaleStickerController_stickerSheetController_didSelectCameraV
   return v9;
 }
 
-- (void)poseCaptureViewController:(id)a3 didCapturePoseWithConfiguration:(id)a4 avatar:(id)a5
+- (void)poseCaptureViewController:(id)controller didCapturePoseWithConfiguration:(id)configuration avatar:(id)avatar
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(AVTGrayscaleStickerController *)self stickerViewController];
-  [v9 clearStickerSelection];
+  avatarCopy = avatar;
+  configurationCopy = configuration;
+  stickerViewController = [(AVTGrayscaleStickerController *)self stickerViewController];
+  [stickerViewController clearStickerSelection];
 
-  v10 = [(AVTGrayscaleStickerController *)self selectionDelegate];
-  [v10 didSelectStickerWithConfiguration:v8 avatar:v7];
+  selectionDelegate = [(AVTGrayscaleStickerController *)self selectionDelegate];
+  [selectionDelegate didSelectStickerWithConfiguration:configurationCopy avatar:avatarCopy];
 
-  v11 = [(AVTGrayscaleStickerController *)self presenterDelegate];
-  [v11 dismissAvatarUIControllerAnimated:1];
+  presenterDelegate = [(AVTGrayscaleStickerController *)self presenterDelegate];
+  [presenterDelegate dismissAvatarUIControllerAnimated:1];
 }
 
-- (void)poseCaptureViewControllerDidCancel:(id)a3
+- (void)poseCaptureViewControllerDidCancel:(id)cancel
 {
-  v3 = [(AVTGrayscaleStickerController *)self presenterDelegate];
-  [v3 dismissAvatarUIControllerAnimated:1];
+  presenterDelegate = [(AVTGrayscaleStickerController *)self presenterDelegate];
+  [presenterDelegate dismissAvatarUIControllerAnimated:1];
 }
 
-- (void)poseCaptureViewController:(id)a3 willCaptureAvatarImage:(id)a4 completion:(id)a5
+- (void)poseCaptureViewController:(id)controller willCaptureAvatarImage:(id)image completion:(id)completion
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(AVTGrayscaleStickerController *)self imageDelegate];
+  imageCopy = image;
+  completionCopy = completion;
+  imageDelegate = [(AVTGrayscaleStickerController *)self imageDelegate];
 
-  if (v8)
+  if (imageDelegate)
   {
-    v9 = [(AVTGrayscaleStickerController *)self imageDelegate];
-    [v9 viewWillUpdateWithImage:v10 completion:v7];
+    imageDelegate2 = [(AVTGrayscaleStickerController *)self imageDelegate];
+    [imageDelegate2 viewWillUpdateWithImage:imageCopy completion:completionCopy];
   }
 
   else
   {
-    v7[2](v7, v10);
+    completionCopy[2](completionCopy, imageCopy);
   }
 }
 

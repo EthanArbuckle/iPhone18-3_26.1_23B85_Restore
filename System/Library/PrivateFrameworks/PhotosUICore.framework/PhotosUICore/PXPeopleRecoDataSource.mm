@@ -1,17 +1,17 @@
 @interface PXPeopleRecoDataSource
 - (BOOL)hasAnyRejectedItems;
-- (BOOL)isIndexRejected:(unint64_t)a3;
+- (BOOL)isIndexRejected:(unint64_t)rejected;
 - (BOOL)shouldAllowCommitting;
-- (BOOL)toggleRejectionForIndex:(unint64_t)a3;
+- (BOOL)toggleRejectionForIndex:(unint64_t)index;
 - (OS_dispatch_queue)processingQueue;
-- (PXPeopleRecoDataSource)initWithPerson:(id)a3 dataSourceDelegate:(id)a4;
+- (PXPeopleRecoDataSource)initWithPerson:(id)person dataSourceDelegate:(id)delegate;
 - (PXPeopleRecoDataSourceDelegate)dataSourceDelegate;
 - (unint64_t)numberOfItems;
 - (void)_clearIndexes;
-- (void)_fetchEverythingForPerson:(id)a3;
+- (void)_fetchEverythingForPerson:(id)person;
 - (void)commitChanges;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
-- (void)requestImageForItemAtIndex:(unint64_t)a3 targetSize:(CGSize)a4 displayScale:(double)a5 imageBlock:(id)a6;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
+- (void)requestImageForItemAtIndex:(unint64_t)index targetSize:(CGSize)size displayScale:(double)scale imageBlock:(id)block;
 @end
 
 @implementation PXPeopleRecoDataSource
@@ -25,66 +25,66 @@
 
 - (void)_clearIndexes
 {
-  v3 = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
-  [v3 removeAllIndexes];
+  rejectedFaceIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
+  [rejectedFaceIndexes removeAllIndexes];
 
-  v4 = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
-  [v4 removeAllIndexes];
+  rejectedFaceCropIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
+  [rejectedFaceCropIndexes removeAllIndexes];
 
-  v5 = [(PXPeopleRecoDataSource *)self dataSourceDelegate];
-  [v5 recoDataSourceDataChanged:self];
+  dataSourceDelegate = [(PXPeopleRecoDataSource *)self dataSourceDelegate];
+  [dataSourceDelegate recoDataSourceDataChanged:self];
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
-  v22 = a3;
-  v5 = [(PXPeopleRecoDataSource *)self person];
-  v6 = [v22 changeDetailsForObject:v5];
+  queueCopy = queue;
+  person = [(PXPeopleRecoDataSource *)self person];
+  v6 = [queueCopy changeDetailsForObject:person];
 
-  v7 = [v6 objectAfterChanges];
-  if (v7)
+  objectAfterChanges = [v6 objectAfterChanges];
+  if (objectAfterChanges)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      v21 = [v7 px_descriptionForAssertionMessage];
-      [v18 handleFailureInMethod:a2 object:self file:@"PXPeopleRecoDataSource.m" lineNumber:235 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"personChangeDetails.objectAfterChanges", v20, v21}];
+      px_descriptionForAssertionMessage = [objectAfterChanges px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleRecoDataSource.m" lineNumber:235 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"personChangeDetails.objectAfterChanges", v20, px_descriptionForAssertionMessage}];
     }
   }
 
-  if ([v7 verifiedType] == -2)
+  if ([objectAfterChanges verifiedType] == -2)
   {
-    v8 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:v7];
+    v8 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:objectAfterChanges];
     v9 = MEMORY[0x1E6978980];
-    v10 = [v7 uuid];
-    v11 = [v9 fetchFinalMergeTargetPersonsForPersonWithUUID:v10 options:v8];
-    v12 = [v11 firstObject];
+    uuid = [objectAfterChanges uuid];
+    v11 = [v9 fetchFinalMergeTargetPersonsForPersonWithUUID:uuid options:v8];
+    firstObject = [v11 firstObject];
 
-    [(PXPeopleRecoDataSource *)self setPerson:v12];
-    [(PXPeopleRecoDataSource *)self _fetchEverythingForPerson:v12];
+    [(PXPeopleRecoDataSource *)self setPerson:firstObject];
+    [(PXPeopleRecoDataSource *)self _fetchEverythingForPerson:firstObject];
   }
 
   else
   {
-    v13 = [(PXPeopleRecoDataSource *)self faces];
-    v8 = [v22 changeDetailsForFetchResult:v13];
+    faces = [(PXPeopleRecoDataSource *)self faces];
+    v8 = [queueCopy changeDetailsForFetchResult:faces];
 
     if (v8)
     {
-      v14 = [v8 fetchResultAfterChanges];
-      [(PXPeopleRecoDataSource *)self setFaces:v14];
+      fetchResultAfterChanges = [v8 fetchResultAfterChanges];
+      [(PXPeopleRecoDataSource *)self setFaces:fetchResultAfterChanges];
     }
 
-    v15 = [(PXPeopleRecoDataSource *)self faceCrops];
-    v12 = [v22 changeDetailsForFetchResult:v15];
+    faceCrops = [(PXPeopleRecoDataSource *)self faceCrops];
+    firstObject = [queueCopy changeDetailsForFetchResult:faceCrops];
 
-    if (v12)
+    if (firstObject)
     {
-      v16 = [v12 fetchResultAfterChanges];
-      [(PXPeopleRecoDataSource *)self setFaceCrops:v16];
+      fetchResultAfterChanges2 = [firstObject fetchResultAfterChanges];
+      [(PXPeopleRecoDataSource *)self setFaceCrops:fetchResultAfterChanges2];
     }
 
     else
@@ -122,25 +122,25 @@ LABEL_12:
   if ([(PXPeopleRecoDataSource *)self hasAnyRejectedItems]&& ![(PXPeopleRecoDataSource *)self isUsingMockedData])
   {
     v3 = +[PXPeopleUISettings sharedInstance];
-    v4 = [v3 enableReviewPhotosDemoMode];
+    enableReviewPhotosDemoMode = [v3 enableReviewPhotosDemoMode];
 
-    if ((v4 & 1) == 0)
+    if ((enableReviewPhotosDemoMode & 1) == 0)
     {
-      v5 = [(PXPeopleRecoDataSource *)self faces];
-      v6 = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
-      v7 = [v5 objectsAtIndexes:v6];
+      faces = [(PXPeopleRecoDataSource *)self faces];
+      rejectedFaceIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
+      v7 = [faces objectsAtIndexes:rejectedFaceIndexes];
 
-      v8 = [(PXPeopleRecoDataSource *)self faceCrops];
-      v9 = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
-      v10 = [v8 objectsAtIndexes:v9];
+      faceCrops = [(PXPeopleRecoDataSource *)self faceCrops];
+      rejectedFaceCropIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
+      v10 = [faceCrops objectsAtIndexes:rejectedFaceCropIndexes];
 
-      v11 = [(PXPeopleRecoDataSource *)self person];
-      v12 = [v11 photoLibrary];
+      person = [(PXPeopleRecoDataSource *)self person];
+      photoLibrary = [person photoLibrary];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __39__PXPeopleRecoDataSource_commitChanges__block_invoke;
       v19[3] = &unk_1E774A1B8;
-      v20 = v11;
+      v20 = person;
       v21 = v7;
       v22 = v10;
       v16[0] = MEMORY[0x1E69E9820];
@@ -148,11 +148,11 @@ LABEL_12:
       v16[2] = __39__PXPeopleRecoDataSource_commitChanges__block_invoke_2;
       v16[3] = &unk_1E774B730;
       v17 = v20;
-      v18 = self;
+      selfCopy = self;
       v13 = v20;
       v14 = v10;
       v15 = v7;
-      [v12 performChanges:v19 completionHandler:v16];
+      [photoLibrary performChanges:v19 completionHandler:v16];
     }
   }
 }
@@ -307,16 +307,16 @@ LABEL_6:
 
 - (BOOL)hasAnyRejectedItems
 {
-  v3 = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
-  if ([v3 count])
+  rejectedFaceIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
+  if ([rejectedFaceIndexes count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
-    v4 = [v5 count] != 0;
+    rejectedFaceCropIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
+    v4 = [rejectedFaceCropIndexes count] != 0;
   }
 
   return v4;
@@ -324,96 +324,96 @@ LABEL_6:
 
 - (BOOL)shouldAllowCommitting
 {
-  v3 = [(PXPeopleRecoDataSource *)self numberOfItems];
-  v4 = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
-  v5 = [v4 count];
-  v6 = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
-  LOBYTE(v3) = v3 > [v6 count] + v5;
+  numberOfItems = [(PXPeopleRecoDataSource *)self numberOfItems];
+  rejectedFaceIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
+  v5 = [rejectedFaceIndexes count];
+  rejectedFaceCropIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
+  LOBYTE(numberOfItems) = numberOfItems > [rejectedFaceCropIndexes count] + v5;
 
-  return v3;
+  return numberOfItems;
 }
 
-- (BOOL)toggleRejectionForIndex:(unint64_t)a3
+- (BOOL)toggleRejectionForIndex:(unint64_t)index
 {
   v5 = [(PXPeopleRecoDataSource *)self isIndexRejected:?];
-  v6 = [(PXPeopleRecoDataSource *)self faces];
-  v7 = [v6 count];
+  faces = [(PXPeopleRecoDataSource *)self faces];
+  v7 = [faces count];
 
-  v8 = a3 >= v7;
-  v9 = a3 - v7;
+  v8 = index >= v7;
+  v9 = index - v7;
   if (v5)
   {
     if (v8)
     {
-      v10 = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
-      v11 = v10;
-      v12 = v9;
+      rejectedFaceCropIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
+      v11 = rejectedFaceCropIndexes;
+      indexCopy = v9;
     }
 
     else
     {
-      v10 = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
-      v11 = v10;
-      v12 = a3;
+      rejectedFaceCropIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
+      v11 = rejectedFaceCropIndexes;
+      indexCopy = index;
     }
 
-    [v10 removeIndex:v12];
+    [rejectedFaceCropIndexes removeIndex:indexCopy];
   }
 
   else
   {
     if (v8)
     {
-      v13 = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
-      v11 = v13;
-      v14 = v9;
+      rejectedFaceCropIndexes2 = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
+      v11 = rejectedFaceCropIndexes2;
+      indexCopy2 = v9;
     }
 
     else
     {
-      v13 = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
-      v11 = v13;
-      v14 = a3;
+      rejectedFaceCropIndexes2 = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
+      v11 = rejectedFaceCropIndexes2;
+      indexCopy2 = index;
     }
 
-    [v13 addIndex:v14];
+    [rejectedFaceCropIndexes2 addIndex:indexCopy2];
   }
 
   return !v5;
 }
 
-- (BOOL)isIndexRejected:(unint64_t)a3
+- (BOOL)isIndexRejected:(unint64_t)rejected
 {
-  v5 = [(PXPeopleRecoDataSource *)self faces];
-  v6 = [v5 count];
+  faces = [(PXPeopleRecoDataSource *)self faces];
+  v6 = [faces count];
 
-  if (a3 >= v6)
+  if (rejected >= v6)
   {
-    v7 = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
-    v8 = v7;
-    v9 = a3 - v6;
+    rejectedFaceCropIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceCropIndexes];
+    v8 = rejectedFaceCropIndexes;
+    rejectedCopy = rejected - v6;
   }
 
   else
   {
-    v7 = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
-    v8 = v7;
-    v9 = a3;
+    rejectedFaceCropIndexes = [(PXPeopleRecoDataSource *)self rejectedFaceIndexes];
+    v8 = rejectedFaceCropIndexes;
+    rejectedCopy = rejected;
   }
 
-  v10 = [v7 containsIndex:v9];
+  v10 = [rejectedFaceCropIndexes containsIndex:rejectedCopy];
 
   return v10;
 }
 
-- (void)requestImageForItemAtIndex:(unint64_t)a3 targetSize:(CGSize)a4 displayScale:(double)a5 imageBlock:(id)a6
+- (void)requestImageForItemAtIndex:(unint64_t)index targetSize:(CGSize)size displayScale:(double)scale imageBlock:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
-  v12 = [(PXPeopleRecoDataSource *)self faces];
-  v13 = [v12 count];
-  if (v13 <= a3)
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
+  faces = [(PXPeopleRecoDataSource *)self faces];
+  v13 = [faces count];
+  if (v13 <= index)
   {
     v21 = v13;
     v22 = dispatch_get_global_queue(25, 0);
@@ -421,27 +421,27 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = __88__PXPeopleRecoDataSource_requestImageForItemAtIndex_targetSize_displayScale_imageBlock___block_invoke_2;
     block[3] = &unk_1E7749E20;
-    v25 = a3;
+    indexCopy = index;
     v26 = v21;
     block[4] = self;
-    v24 = v11;
-    v17 = v11;
+    v24 = blockCopy;
+    scale = blockCopy;
     dispatch_async(v22, block);
   }
 
   else
   {
     v14 = [PXPeopleFaceCropFetchOptions alloc];
-    v15 = [(PXPeopleRecoDataSource *)self person];
-    v16 = [v12 objectAtIndexedSubscript:a3];
-    v17 = [(PXPeopleFaceCropFetchOptions *)v14 initWithPerson:v15 face:v16 targetSize:width displayScale:height, a5];
+    person = [(PXPeopleRecoDataSource *)self person];
+    v16 = [faces objectAtIndexedSubscript:index];
+    scale = [(PXPeopleFaceCropFetchOptions *)v14 initWithPerson:person face:v16 targetSize:width displayScale:height, scale];
 
     v18 = +[PXPeopleUISettings sharedInstance];
     LOBYTE(v14) = [v18 showReviewPhotosObjectType];
 
     if ((v14 & 1) == 0)
     {
-      [(PXPeopleFaceCropFetchOptions *)v17 setCornerStyle:1];
+      [(PXPeopleFaceCropFetchOptions *)scale setCornerStyle:1];
     }
 
     v19 = +[PXPeopleFaceCropManager sharedManager];
@@ -449,9 +449,9 @@ LABEL_6:
     v27[1] = 3221225472;
     v27[2] = __88__PXPeopleRecoDataSource_requestImageForItemAtIndex_targetSize_displayScale_imageBlock___block_invoke;
     v27[3] = &unk_1E774B680;
-    v28 = v11;
-    v20 = v11;
-    [v19 requestFaceCropForOptions:v17 resultHandler:v27];
+    v28 = blockCopy;
+    v20 = blockCopy;
+    [v19 requestFaceCropForOptions:scale resultHandler:v27];
   }
 }
 
@@ -493,27 +493,27 @@ void __88__PXPeopleRecoDataSource_requestImageForItemAtIndex_targetSize_displayS
 
 - (unint64_t)numberOfItems
 {
-  v3 = [(PXPeopleRecoDataSource *)self faces];
-  v4 = [v3 count];
-  v5 = [(PXPeopleRecoDataSource *)self faceCrops];
-  v6 = [v5 count];
+  faces = [(PXPeopleRecoDataSource *)self faces];
+  v4 = [faces count];
+  faceCrops = [(PXPeopleRecoDataSource *)self faceCrops];
+  v6 = [faceCrops count];
 
   return v6 + v4;
 }
 
-- (void)_fetchEverythingForPerson:(id)a3
+- (void)_fetchEverythingForPerson:(id)person
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:v4];
+  personCopy = person;
+  v5 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:personCopy];
   [v5 setIncludeOnlyFacesNeedingFaceCrop:1];
-  v6 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v5 setIncludedDetectionTypes:v6];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [v5 setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  v7 = [MEMORY[0x1E69787C8] fetchFacesForPerson:v4 options:v5];
+  v7 = [MEMORY[0x1E69787C8] fetchFacesForPerson:personCopy options:v5];
   [(PXPeopleRecoDataSource *)self setFaces:v7];
 
-  v8 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:v4];
+  v8 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:personCopy];
   if ([(PXPeopleRecoDataSource *)self isUsingMockedData])
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"uuid" ascending:1];
@@ -530,25 +530,25 @@ void __88__PXPeopleRecoDataSource_requestImageForItemAtIndex_targetSize_displayS
     v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"type=%d||type=%d||type=%d", 1, 3, 5];
     [v8 setPredicate:v12];
 
-    v11 = [MEMORY[0x1E69787F0] fetchFaceCropsForPerson:v4 options:v8];
+    v11 = [MEMORY[0x1E69787F0] fetchFaceCropsForPerson:personCopy options:v8];
   }
 
   v13 = v11;
   [(PXPeopleRecoDataSource *)self setFaceCrops:v11];
 }
 
-- (PXPeopleRecoDataSource)initWithPerson:(id)a3 dataSourceDelegate:(id)a4
+- (PXPeopleRecoDataSource)initWithPerson:(id)person dataSourceDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  personCopy = person;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = PXPeopleRecoDataSource;
   v9 = [(PXPeopleRecoDataSource *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_person, a3);
-    objc_storeWeak(&v10->_dataSourceDelegate, v8);
+    objc_storeStrong(&v9->_person, person);
+    objc_storeWeak(&v10->_dataSourceDelegate, delegateCopy);
     v11 = objc_alloc_init(MEMORY[0x1E696AD50]);
     rejectedFaceIndexes = v10->_rejectedFaceIndexes;
     v10->_rejectedFaceIndexes = v11;
@@ -560,9 +560,9 @@ void __88__PXPeopleRecoDataSource_requestImageForItemAtIndex_targetSize_displayS
     v15 = +[PXPeopleUISettings sharedInstance];
     v10->_isUsingMockedData = [v15 useReviewPhotosMockDataSource];
 
-    [(PXPeopleRecoDataSource *)v10 _fetchEverythingForPerson:v7];
-    v16 = [v7 photoLibrary];
-    [v16 px_registerChangeObserver:v10];
+    [(PXPeopleRecoDataSource *)v10 _fetchEverythingForPerson:personCopy];
+    photoLibrary = [personCopy photoLibrary];
+    [photoLibrary px_registerChangeObserver:v10];
   }
 
   return v10;

@@ -1,40 +1,40 @@
 @interface SRWristDetection
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)offWristDate;
 - (NSDate)onWristDate;
 - (NSString)description;
-- (SRWristDetection)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRWristDetection)initWithCFOnWristDate:(double)a3 CFOffWristDate:(double)a4 onWrist:(BOOL)a5 wristLocation:(int64_t)a6 crownOrientation:(int64_t)a7;
-- (SRWristDetection)initWithCoder:(id)a3;
+- (SRWristDetection)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRWristDetection)initWithCFOnWristDate:(double)date CFOffWristDate:(double)wristDate onWrist:(BOOL)wrist wristLocation:(int64_t)location crownOrientation:(int64_t)orientation;
+- (SRWristDetection)initWithCoder:(id)coder;
 - (id)binarySampleRepresentation;
 - (id)sr_dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRWristDetection
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogWristDetection = os_log_create("com.apple.SensorKit", "SRLogWristDetection");
   }
 }
 
-- (SRWristDetection)initWithCoder:(id)a3
+- (SRWristDetection)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeBoolForKey:@"onWrist"];
-  v7 = [a3 decodeIntegerForKey:@"wristLocation"];
-  v8 = [a3 decodeIntegerForKey:@"crownOrientation"];
-  if ([a3 containsValueForKey:@"onWristDate"])
+  v6 = [coder decodeBoolForKey:@"onWrist"];
+  v7 = [coder decodeIntegerForKey:@"wristLocation"];
+  v8 = [coder decodeIntegerForKey:@"crownOrientation"];
+  if ([coder containsValueForKey:@"onWristDate"])
   {
-    [a3 decodeDoubleForKey:@"onWristDate"];
+    [coder decodeDoubleForKey:@"onWristDate"];
     v10 = v9;
   }
 
@@ -43,9 +43,9 @@
     v10 = NAN;
   }
 
-  if ([a3 containsValueForKey:@"offWristDate"])
+  if ([coder containsValueForKey:@"offWristDate"])
   {
-    [a3 decodeDoubleForKey:@"offWristDate"];
+    [coder decodeDoubleForKey:@"offWristDate"];
     v12 = v11;
   }
 
@@ -57,29 +57,29 @@
   return [(SRWristDetection *)self initWithCFOnWristDate:v6 CFOffWristDate:v7 onWrist:v8 wristLocation:v10 crownOrientation:v12];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeBool:-[SRWristDetection onWrist](self forKey:{"onWrist"), @"onWrist"}];
-  [a3 encodeInteger:-[SRWristDetection wristLocation](self forKey:{"wristLocation"), @"wristLocation"}];
-  [a3 encodeInteger:-[SRWristDetection crownOrientation](self forKey:{"crownOrientation"), @"crownOrientation"}];
+  [coder encodeBool:-[SRWristDetection onWrist](self forKey:{"onWrist"), @"onWrist"}];
+  [coder encodeInteger:-[SRWristDetection wristLocation](self forKey:{"wristLocation"), @"wristLocation"}];
+  [coder encodeInteger:-[SRWristDetection crownOrientation](self forKey:{"crownOrientation"), @"crownOrientation"}];
   [(SRWristDetection *)self cfOnWristDate];
   [(SRWristDetection *)self cfOnWristDate];
-  [a3 encodeDouble:@"onWristDate" forKey:?];
+  [coder encodeDouble:@"onWristDate" forKey:?];
   [(SRWristDetection *)self cfOffWristDate];
   [(SRWristDetection *)self cfOffWristDate];
 
-  [a3 encodeDouble:@"offWristDate" forKey:?];
+  [coder encodeDouble:@"offWristDate" forKey:?];
 }
 
-- (SRWristDetection)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRWristDetection)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![representation length])
   {
 
     v9 = SRLogWristDetection;
@@ -99,7 +99,7 @@ LABEL_9:
     return result;
   }
 
-  if ([a3 length] != 1)
+  if ([representation length] != 1)
   {
     v21.receiver = self;
     v21.super_class = SRWristDetection;
@@ -111,7 +111,7 @@ LABEL_9:
 
     v12 = result;
     v20 = 0;
-    v13 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v20];
+    v13 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v20];
     if (v13)
     {
       v14 = v13;
@@ -136,7 +136,7 @@ LABEL_19:
     goto LABEL_8;
   }
 
-  v7 = *[a3 bytes];
+  v7 = *[representation bytes];
   if (v7 >= 8)
   {
     v8 = SRLogWristDetection;
@@ -176,18 +176,18 @@ LABEL_19:
   return v2;
 }
 
-- (SRWristDetection)initWithCFOnWristDate:(double)a3 CFOffWristDate:(double)a4 onWrist:(BOOL)a5 wristLocation:(int64_t)a6 crownOrientation:(int64_t)a7
+- (SRWristDetection)initWithCFOnWristDate:(double)date CFOffWristDate:(double)wristDate onWrist:(BOOL)wrist wristLocation:(int64_t)location crownOrientation:(int64_t)orientation
 {
   v13.receiver = self;
   v13.super_class = SRWristDetection;
   result = [(SRWristDetection *)&v13 init];
   if (result)
   {
-    result->_cfOnWristDate = a3;
-    result->_cfOffWristDate = a4;
-    result->_onWrist = a5;
-    result->_wristLocation = a6;
-    result->_crownOrientation = a7;
+    result->_cfOnWristDate = date;
+    result->_cfOffWristDate = wristDate;
+    result->_onWrist = wrist;
+    result->_wristLocation = location;
+    result->_crownOrientation = orientation;
   }
 
   return result;
@@ -235,9 +235,9 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -248,27 +248,27 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(SRWristDetection *)self onWrist];
-  if (v5 != [a3 onWrist])
+  onWrist = [(SRWristDetection *)self onWrist];
+  if (onWrist != [equal onWrist])
   {
     return 0;
   }
 
-  v6 = [(SRWristDetection *)self wristLocation];
-  if (v6 != [a3 wristLocation])
+  wristLocation = [(SRWristDetection *)self wristLocation];
+  if (wristLocation != [equal wristLocation])
   {
     return 0;
   }
 
-  v7 = [(SRWristDetection *)self crownOrientation];
-  if (v7 != [a3 crownOrientation])
+  crownOrientation = [(SRWristDetection *)self crownOrientation];
+  if (crownOrientation != [equal crownOrientation])
   {
     return 0;
   }
 
   [(SRWristDetection *)self cfOnWristDate];
   v9 = v8;
-  [a3 cfOnWristDate];
+  [equal cfOnWristDate];
   if (v9 != v10)
   {
     return 0;
@@ -276,7 +276,7 @@ LABEL_19:
 
   [(SRWristDetection *)self cfOffWristDate];
   v12 = v11;
-  [a3 cfOffWristDate];
+  [equal cfOffWristDate];
   return v12 == v13;
 }
 

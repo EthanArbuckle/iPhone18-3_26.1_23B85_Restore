@@ -1,26 +1,26 @@
 @interface HKHRCardioFitnessStore
 + (id)taskIdentifier;
-- (HKHRCardioFitnessStore)initWithHealthStore:(id)a3;
-- (void)saveCardioFitnessEventWithValue:(id)a3 threshold:(id)a4 dateInterval:(id)a5 completion:(id)a6;
-- (void)saveCardioFitnessEventWithValue:(id)a3 threshold:(id)a4 dateInterval:(id)a5 options:(unint64_t)a6 completion:(id)a7;
+- (HKHRCardioFitnessStore)initWithHealthStore:(id)store;
+- (void)saveCardioFitnessEventWithValue:(id)value threshold:(id)threshold dateInterval:(id)interval completion:(id)completion;
+- (void)saveCardioFitnessEventWithValue:(id)value threshold:(id)threshold dateInterval:(id)interval options:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation HKHRCardioFitnessStore
 
-- (HKHRCardioFitnessStore)initWithHealthStore:(id)a3
+- (HKHRCardioFitnessStore)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = HKHRCardioFitnessStore;
   v6 = [(HKHRCardioFitnessStore *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = objc_alloc(MEMORY[0x277CCDAA0]);
     v9 = +[HKHRCardioFitnessStore taskIdentifier];
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v8 initWithHealthStore:v5 taskIdentifier:v9 exportedObject:v7 taskUUID:v10];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v11 = [v8 initWithHealthStore:storeCopy taskIdentifier:v9 exportedObject:v7 taskUUID:uUID];
     proxyProvider = v7->_proxyProvider;
     v7->_proxyProvider = v11;
 
@@ -30,20 +30,20 @@
   return v7;
 }
 
-- (void)saveCardioFitnessEventWithValue:(id)a3 threshold:(id)a4 dateInterval:(id)a5 completion:(id)a6
+- (void)saveCardioFitnessEventWithValue:(id)value threshold:(id)threshold dateInterval:(id)interval completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a6];
+  valueCopy = value;
+  thresholdCopy = threshold;
+  intervalCopy = interval;
+  v13 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __92__HKHRCardioFitnessStore_saveCardioFitnessEventWithValue_threshold_dateInterval_completion___block_invoke;
   v21[3] = &unk_27860A9A8;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
+  v22 = valueCopy;
+  v23 = thresholdCopy;
+  v24 = intervalCopy;
   v25 = v13;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -51,9 +51,9 @@
   v19[3] = &unk_27860A9D0;
   v20 = v25;
   v15 = v25;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v16 = intervalCopy;
+  v17 = thresholdCopy;
+  v18 = valueCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v21 errorHandler:v19];
 }
 
@@ -68,21 +68,21 @@ void __92__HKHRCardioFitnessStore_saveCardioFitnessEventWithValue_threshold_date
   [v6 remote_saveCardioFitnessAlertWithValue:v3 threshold:v4 startDate:v8 endDate:v7 options:0 completion:*(a1 + 56)];
 }
 
-- (void)saveCardioFitnessEventWithValue:(id)a3 threshold:(id)a4 dateInterval:(id)a5 options:(unint64_t)a6 completion:(id)a7
+- (void)saveCardioFitnessEventWithValue:(id)value threshold:(id)threshold dateInterval:(id)interval options:(unint64_t)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a7];
+  valueCopy = value;
+  thresholdCopy = threshold;
+  intervalCopy = interval;
+  v15 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __100__HKHRCardioFitnessStore_saveCardioFitnessEventWithValue_threshold_dateInterval_options_completion___block_invoke;
   v23[3] = &unk_27860A9F8;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v28 = a6;
+  v24 = valueCopy;
+  v25 = thresholdCopy;
+  v26 = intervalCopy;
+  optionsCopy = options;
   v27 = v15;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -90,9 +90,9 @@ void __92__HKHRCardioFitnessStore_saveCardioFitnessEventWithValue_threshold_date
   v21[3] = &unk_27860A9D0;
   v22 = v27;
   v17 = v27;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v18 = intervalCopy;
+  v19 = thresholdCopy;
+  v20 = valueCopy;
   [(HKTaskServerProxyProvider *)proxyProvider fetchProxyWithHandler:v23 errorHandler:v21];
 }
 

@@ -1,28 +1,28 @@
 @interface PRIncomingPosterConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PRIncomingPosterConfiguration)initWithConfigurationToDuplicate:(id)a3 destinationPosterUUID:(id)a4;
-- (PRIncomingPosterConfiguration)initWithNewPath:(id)a3 destinationPosterUUID:(id)a4 parentPosterUUID:(id)a5 sourceIdentity:(id)a6 configuredProperties:(id)a7 attributes:(id)a8;
-- (PRIncomingPosterConfiguration)initWithNewPath:(id)a3 destinationPosterUUID:(id)a4 sourceIdentity:(id)a5 configuredProperties:(id)a6 attributes:(id)a7;
-- (PRIncomingPosterConfiguration)initWithType:(unint64_t)a3 path:(id)a4 sourceIdentity:(id)a5 configuredProperties:(id)a6 attributes:(id)a7;
-- (PRIncomingPosterConfiguration)initWithUpdatedPath:(id)a3 updatedPosterUUID:(id)a4 parentPosterUUID:(id)a5 sourceIdentity:(id)a6 configuredProperties:(id)a7 attributes:(id)a8;
-- (PRIncomingPosterConfiguration)initWithUpdatedPath:(id)a3 updatedPosterUUID:(id)a4 sourceIdentity:(id)a5 configuredProperties:(id)a6 attributes:(id)a7;
-- (id)objectForUserInfoKey:(id)a3;
+- (PRIncomingPosterConfiguration)initWithConfigurationToDuplicate:(id)duplicate destinationPosterUUID:(id)d;
+- (PRIncomingPosterConfiguration)initWithNewPath:(id)path destinationPosterUUID:(id)d parentPosterUUID:(id)iD sourceIdentity:(id)identity configuredProperties:(id)properties attributes:(id)attributes;
+- (PRIncomingPosterConfiguration)initWithNewPath:(id)path destinationPosterUUID:(id)d sourceIdentity:(id)identity configuredProperties:(id)properties attributes:(id)attributes;
+- (PRIncomingPosterConfiguration)initWithType:(unint64_t)type path:(id)path sourceIdentity:(id)identity configuredProperties:(id)properties attributes:(id)attributes;
+- (PRIncomingPosterConfiguration)initWithUpdatedPath:(id)path updatedPosterUUID:(id)d parentPosterUUID:(id)iD sourceIdentity:(id)identity configuredProperties:(id)properties attributes:(id)attributes;
+- (PRIncomingPosterConfiguration)initWithUpdatedPath:(id)path updatedPosterUUID:(id)d sourceIdentity:(id)identity configuredProperties:(id)properties attributes:(id)attributes;
+- (id)objectForUserInfoKey:(id)key;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)trackTemporaryState:(id)a3;
+- (void)trackTemporaryState:(id)state;
 @end
 
 @implementation PRIncomingPosterConfiguration
 
-- (PRIncomingPosterConfiguration)initWithUpdatedPath:(id)a3 updatedPosterUUID:(id)a4 sourceIdentity:(id)a5 configuredProperties:(id)a6 attributes:(id)a7
+- (PRIncomingPosterConfiguration)initWithUpdatedPath:(id)path updatedPosterUUID:(id)d sourceIdentity:(id)identity configuredProperties:(id)properties attributes:(id)attributes
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = v14;
+  pathCopy = path;
+  dCopy = d;
+  identityCopy = identity;
+  propertiesCopy = properties;
+  attributesCopy = attributes;
+  v18 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v18)
   {
@@ -34,26 +34,26 @@
     [PRIncomingPosterConfiguration initWithUpdatedPath:a2 updatedPosterUUID:? sourceIdentity:? configuredProperties:? attributes:?];
   }
 
-  v19 = [(PRIncomingPosterConfiguration *)self initWithType:2 path:v13 sourceIdentity:v15 configuredProperties:v16 attributes:v17];
+  v19 = [(PRIncomingPosterConfiguration *)self initWithType:2 path:pathCopy sourceIdentity:identityCopy configuredProperties:propertiesCopy attributes:attributesCopy];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_destinationUUID, a4);
-    objc_storeStrong(&v20->_originalPosterUUID, a4);
+    objc_storeStrong(&v19->_destinationUUID, d);
+    objc_storeStrong(&v20->_originalPosterUUID, d);
   }
 
   return v20;
 }
 
-- (PRIncomingPosterConfiguration)initWithUpdatedPath:(id)a3 updatedPosterUUID:(id)a4 parentPosterUUID:(id)a5 sourceIdentity:(id)a6 configuredProperties:(id)a7 attributes:(id)a8
+- (PRIncomingPosterConfiguration)initWithUpdatedPath:(id)path updatedPosterUUID:(id)d parentPosterUUID:(id)iD sourceIdentity:(id)identity configuredProperties:(id)properties attributes:(id)attributes
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v15;
+  pathCopy = path;
+  dCopy = d;
+  iDCopy = iD;
+  identityCopy = identity;
+  propertiesCopy = properties;
+  attributesCopy = attributes;
+  v20 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v20)
   {
@@ -65,7 +65,7 @@
     [PRIncomingPosterConfiguration initWithUpdatedPath:a2 updatedPosterUUID:? parentPosterUUID:? sourceIdentity:? configuredProperties:? attributes:?];
   }
 
-  v21 = v16;
+  v21 = iDCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v21)
   {
@@ -77,26 +77,26 @@
     [PRIncomingPosterConfiguration initWithUpdatedPath:a2 updatedPosterUUID:? parentPosterUUID:? sourceIdentity:? configuredProperties:? attributes:?];
   }
 
-  v22 = [(PRIncomingPosterConfiguration *)self initWithType:5 path:v14 sourceIdentity:v17 configuredProperties:v18 attributes:v19];
+  v22 = [(PRIncomingPosterConfiguration *)self initWithType:5 path:pathCopy sourceIdentity:identityCopy configuredProperties:propertiesCopy attributes:attributesCopy];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_destinationUUID, a4);
-    objc_storeStrong(&v23->_parentPosterUUID, a5);
+    objc_storeStrong(&v22->_destinationUUID, d);
+    objc_storeStrong(&v23->_parentPosterUUID, iD);
   }
 
   return v23;
 }
 
-- (PRIncomingPosterConfiguration)initWithNewPath:(id)a3 destinationPosterUUID:(id)a4 parentPosterUUID:(id)a5 sourceIdentity:(id)a6 configuredProperties:(id)a7 attributes:(id)a8
+- (PRIncomingPosterConfiguration)initWithNewPath:(id)path destinationPosterUUID:(id)d parentPosterUUID:(id)iD sourceIdentity:(id)identity configuredProperties:(id)properties attributes:(id)attributes
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = v16;
+  pathCopy = path;
+  dCopy = d;
+  iDCopy = iD;
+  identityCopy = identity;
+  propertiesCopy = properties;
+  attributesCopy = attributes;
+  v21 = dCopy;
   if (v21)
   {
     NSClassFromString(&cfstr_Nsuuid.isa);
@@ -106,7 +106,7 @@
     }
   }
 
-  v22 = v17;
+  v22 = iDCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v22)
   {
@@ -118,36 +118,36 @@
     [PRIncomingPosterConfiguration initWithNewPath:a2 destinationPosterUUID:? parentPosterUUID:? sourceIdentity:? configuredProperties:? attributes:?];
   }
 
-  v23 = [(PRIncomingPosterConfiguration *)self initWithType:4 path:v15 sourceIdentity:v18 configuredProperties:v19 attributes:v20];
+  v23 = [(PRIncomingPosterConfiguration *)self initWithType:4 path:pathCopy sourceIdentity:identityCopy configuredProperties:propertiesCopy attributes:attributesCopy];
   if (v23)
   {
     if (v21)
     {
-      v24 = v21;
+      uUID = v21;
     }
 
     else
     {
-      v24 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
     }
 
     destinationUUID = v23->_destinationUUID;
-    v23->_destinationUUID = v24;
+    v23->_destinationUUID = uUID;
 
-    objc_storeStrong(&v23->_parentPosterUUID, a5);
+    objc_storeStrong(&v23->_parentPosterUUID, iD);
   }
 
   return v23;
 }
 
-- (PRIncomingPosterConfiguration)initWithNewPath:(id)a3 destinationPosterUUID:(id)a4 sourceIdentity:(id)a5 configuredProperties:(id)a6 attributes:(id)a7
+- (PRIncomingPosterConfiguration)initWithNewPath:(id)path destinationPosterUUID:(id)d sourceIdentity:(id)identity configuredProperties:(id)properties attributes:(id)attributes
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = v14;
+  pathCopy = path;
+  dCopy = d;
+  identityCopy = identity;
+  propertiesCopy = properties;
+  attributesCopy = attributes;
+  v18 = dCopy;
   if (v18)
   {
     NSClassFromString(&cfstr_Nsuuid.isa);
@@ -157,31 +157,31 @@
     }
   }
 
-  v19 = [(PRIncomingPosterConfiguration *)self initWithType:1 path:v13 sourceIdentity:v15 configuredProperties:v16 attributes:v17];
+  v19 = [(PRIncomingPosterConfiguration *)self initWithType:1 path:pathCopy sourceIdentity:identityCopy configuredProperties:propertiesCopy attributes:attributesCopy];
   if (v19)
   {
     if (v18)
     {
-      v20 = v18;
+      uUID = v18;
     }
 
     else
     {
-      v20 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
     }
 
     destinationUUID = v19->_destinationUUID;
-    v19->_destinationUUID = v20;
+    v19->_destinationUUID = uUID;
   }
 
   return v19;
 }
 
-- (PRIncomingPosterConfiguration)initWithConfigurationToDuplicate:(id)a3 destinationPosterUUID:(id)a4
+- (PRIncomingPosterConfiguration)initWithConfigurationToDuplicate:(id)duplicate destinationPosterUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  duplicateCopy = duplicate;
+  dCopy = d;
+  v9 = duplicateCopy;
   NSClassFromString(&cfstr_Prposterconfig.isa);
   if (!v9)
   {
@@ -193,7 +193,7 @@
     [PRIncomingPosterConfiguration initWithConfigurationToDuplicate:a2 destinationPosterUUID:?];
   }
 
-  v10 = v8;
+  v10 = dCopy;
   if (v10)
   {
     NSClassFromString(&cfstr_Nsuuid.isa);
@@ -203,44 +203,44 @@
     }
   }
 
-  v11 = [v9 _path];
-  v12 = [v9 _path];
-  v13 = [v12 serverIdentity];
+  _path = [v9 _path];
+  _path2 = [v9 _path];
+  serverIdentity = [_path2 serverIdentity];
   v14 = [v9 loadConfiguredPropertiesWithError:0];
-  v15 = [(PRIncomingPosterConfiguration *)self initWithType:3 path:v11 sourceIdentity:v13 configuredProperties:v14 attributes:0];
+  v15 = [(PRIncomingPosterConfiguration *)self initWithType:3 path:_path sourceIdentity:serverIdentity configuredProperties:v14 attributes:0];
 
   if (v15)
   {
-    v16 = [v9 _path];
-    v17 = [v16 serverIdentity];
-    v18 = [v17 posterUUID];
+    _path3 = [v9 _path];
+    serverIdentity2 = [_path3 serverIdentity];
+    posterUUID = [serverIdentity2 posterUUID];
     originalPosterUUID = v15->_originalPosterUUID;
-    v15->_originalPosterUUID = v18;
+    v15->_originalPosterUUID = posterUUID;
 
     if (v10)
     {
-      v20 = v10;
+      uUID = v10;
     }
 
     else
     {
-      v20 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
     }
 
     destinationUUID = v15->_destinationUUID;
-    v15->_destinationUUID = v20;
+    v15->_destinationUUID = uUID;
   }
 
   return v15;
 }
 
-- (PRIncomingPosterConfiguration)initWithType:(unint64_t)a3 path:(id)a4 sourceIdentity:(id)a5 configuredProperties:(id)a6 attributes:(id)a7
+- (PRIncomingPosterConfiguration)initWithType:(unint64_t)type path:(id)path sourceIdentity:(id)identity configuredProperties:(id)properties attributes:(id)attributes
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v13;
+  pathCopy = path;
+  identityCopy = identity;
+  propertiesCopy = properties;
+  attributesCopy = attributes;
+  v17 = pathCopy;
   NSClassFromString(&cfstr_Pfposterpath.isa);
   if (!v17)
   {
@@ -252,7 +252,7 @@
     [PRIncomingPosterConfiguration initWithType:a2 path:? sourceIdentity:? configuredProperties:? attributes:?];
   }
 
-  v18 = v14;
+  v18 = identityCopy;
   NSClassFromString(&cfstr_Pfserverposter.isa);
   if (!v18)
   {
@@ -264,7 +264,7 @@
     [PRIncomingPosterConfiguration initWithType:a2 path:? sourceIdentity:? configuredProperties:? attributes:?];
   }
 
-  v19 = v15;
+  v19 = propertiesCopy;
   NSClassFromString(&cfstr_Prposterconfig_0.isa);
   if (!v19)
   {
@@ -282,15 +282,15 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_path, a4);
-    objc_storeStrong(&v21->_sourceIdentity, a5);
-    objc_storeStrong(&v21->_configuredProperties, a6);
-    v21->_incomingPosterType = a3;
-    v22 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v20->_path, path);
+    objc_storeStrong(&v21->_sourceIdentity, identity);
+    objc_storeStrong(&v21->_configuredProperties, properties);
+    v21->_incomingPosterType = type;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     destinationUUID = v21->_destinationUUID;
-    v21->_destinationUUID = v22;
+    v21->_destinationUUID = uUID;
 
-    v24 = [v16 copy];
+    v24 = [attributesCopy copy];
     attributes = v21->_attributes;
     v21->_attributes = v24;
   }
@@ -345,11 +345,11 @@
   [(PRIncomingPosterConfiguration *)&v10 dealloc];
 }
 
-- (id)objectForUserInfoKey:(id)a3
+- (id)objectForUserInfoKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!keyCopy)
   {
     [PRIncomingPosterConfiguration objectForUserInfoKey:a2];
   }
@@ -360,25 +360,25 @@
   }
 
   v6 = [(PRIncomingPosterConfiguration *)self loadUserInfoWithError:0];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:keyCopy];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PFPosterPath *)self->_path contentsURL];
-  v4 = [v3 hash];
+  contentsURL = [(PFPosterPath *)self->_path contentsURL];
+  v4 = [contentsURL hash];
   v5 = [(PFServerPosterIdentity *)self->_sourceIdentity hash];
   v6 = v5 ^ [(PRPosterConfiguredProperties *)self->_configuredProperties hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -388,18 +388,18 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class() && BSEqualObjects() && BSEqualObjects())
     {
-      v6 = [(PFPosterPath *)self->_path isServerPosterPath];
+      isServerPosterPath = [(PFPosterPath *)self->_path isServerPosterPath];
       path = self->_path;
-      if (v6)
+      if (isServerPosterPath)
       {
-        v8 = [(PFPosterPath *)path contentsURL];
-        v9 = [(PFPosterPath *)v4->_path contentsURL];
+        contentsURL = [(PFPosterPath *)path contentsURL];
+        contentsURL2 = [(PFPosterPath *)equalCopy->_path contentsURL];
         v10 = BSEqualObjects();
       }
 
       else
       {
-        v10 = [(PFPosterPath *)path isEqual:v4->_path];
+        v10 = [(PFPosterPath *)path isEqual:equalCopy->_path];
       }
     }
 
@@ -417,28 +417,28 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PFServerPosterIdentity *)self->_sourceIdentity provider];
-  v7 = [v3 stringWithFormat:@"<%@:%p provider=%@ path=%@>", v5, self, v6, self->_path];
+  provider = [(PFServerPosterIdentity *)self->_sourceIdentity provider];
+  v7 = [v3 stringWithFormat:@"<%@:%p provider=%@ path=%@>", v5, self, provider, self->_path];
 
   return v7;
 }
 
-- (void)trackTemporaryState:(id)a3
+- (void)trackTemporaryState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   temporaryState = self->_temporaryState;
-  v8 = v4;
+  v8 = stateCopy;
   if (!temporaryState)
   {
     v6 = objc_opt_new();
     v7 = self->_temporaryState;
     self->_temporaryState = v6;
 
-    v4 = v8;
+    stateCopy = v8;
     temporaryState = self->_temporaryState;
   }
 
-  [(NSMutableSet *)temporaryState addObject:v4];
+  [(NSMutableSet *)temporaryState addObject:stateCopy];
 }
 
 - (void)initWithUpdatedPath:(char *)a1 updatedPosterUUID:sourceIdentity:configuredProperties:attributes:.cold.1(char *a1)

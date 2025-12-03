@@ -1,9 +1,9 @@
 @interface WBSFaviconProviderRecordCache
 - (WBSFaviconProviderRecordCache)init;
-- (id)dateAddedForFaviconURLString:(id)a3 iconUUID:(id *)a4 size:(CGSize *)a5;
+- (id)dateAddedForFaviconURLString:(id)string iconUUID:(id *)d size:(CGSize *)size;
 - (void)removeAllRecords;
-- (void)removeRecordForIconUUIDs:(id)a3;
-- (void)setDateAdded:(id)a3 forFaviconURLString:(id)a4 iconUUID:(id)a5 iconSize:(CGSize)a6 hasGeneratedResolutions:(BOOL)a7;
+- (void)removeRecordForIconUUIDs:(id)ds;
+- (void)setDateAdded:(id)added forFaviconURLString:(id)string iconUUID:(id)d iconSize:(CGSize)size hasGeneratedResolutions:(BOOL)resolutions;
 @end
 
 @implementation WBSFaviconProviderRecordCache
@@ -15,13 +15,13 @@
   v2 = [(WBSFaviconProviderRecordCache *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     iconURLStringToInfoDictionary = v2->_iconURLStringToInfoDictionary;
-    v2->_iconURLStringToInfoDictionary = v3;
+    v2->_iconURLStringToInfoDictionary = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     iconUUIDToURLStringDictionary = v2->_iconUUIDToURLStringDictionary;
-    v2->_iconUUIDToURLStringDictionary = v5;
+    v2->_iconUUIDToURLStringDictionary = dictionary2;
 
     v7 = v2;
   }
@@ -29,47 +29,47 @@
   return v2;
 }
 
-- (void)setDateAdded:(id)a3 forFaviconURLString:(id)a4 iconUUID:(id)a5 iconSize:(CGSize)a6 hasGeneratedResolutions:(BOOL)a7
+- (void)setDateAdded:(id)added forFaviconURLString:(id)string iconUUID:(id)d iconSize:(CGSize)size hasGeneratedResolutions:(BOOL)resolutions
 {
-  v7 = a7;
-  height = a6.height;
-  width = a6.width;
+  resolutionsCopy = resolutions;
+  height = size.height;
+  width = size.width;
   iconUUIDToURLStringDictionary = self->_iconUUIDToURLStringDictionary;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v18 = [(NSMutableDictionary *)iconUUIDToURLStringDictionary objectForKey:v14];
+  dCopy = d;
+  stringCopy = string;
+  addedCopy = added;
+  v18 = [(NSMutableDictionary *)iconUUIDToURLStringDictionary objectForKey:dCopy];
   if (v18)
   {
     [(NSMutableDictionary *)self->_iconURLStringToInfoDictionary removeObjectForKey:v18];
   }
 
-  [(NSMutableDictionary *)self->_iconUUIDToURLStringDictionary removeObjectForKey:v14];
-  v17 = [[WBSFaviconProviderIconInfo alloc] initWithPageURLString:0 iconURLString:v15 UUIDString:v14 dateAdded:v16 size:v7 hasGeneratedResolutions:0 isRejectedResource:width, height];
+  [(NSMutableDictionary *)self->_iconUUIDToURLStringDictionary removeObjectForKey:dCopy];
+  height = [[WBSFaviconProviderIconInfo alloc] initWithPageURLString:0 iconURLString:stringCopy UUIDString:dCopy dateAdded:addedCopy size:resolutionsCopy hasGeneratedResolutions:0 isRejectedResource:width, height];
 
-  [(NSMutableDictionary *)self->_iconURLStringToInfoDictionary setObject:v17 forKeyedSubscript:v15];
-  [(NSMutableDictionary *)self->_iconUUIDToURLStringDictionary setObject:v15 forKeyedSubscript:v14];
+  [(NSMutableDictionary *)self->_iconURLStringToInfoDictionary setObject:height forKeyedSubscript:stringCopy];
+  [(NSMutableDictionary *)self->_iconUUIDToURLStringDictionary setObject:stringCopy forKeyedSubscript:dCopy];
 }
 
-- (id)dateAddedForFaviconURLString:(id)a3 iconUUID:(id *)a4 size:(CGSize *)a5
+- (id)dateAddedForFaviconURLString:(id)string iconUUID:(id *)d size:(CGSize *)size
 {
-  v7 = [(NSMutableDictionary *)self->_iconURLStringToInfoDictionary objectForKeyedSubscript:a3];
+  v7 = [(NSMutableDictionary *)self->_iconURLStringToInfoDictionary objectForKeyedSubscript:string];
   v8 = v7;
-  if (a5 && v7)
+  if (size && v7)
   {
     [v7 size];
-    a5->width = v9;
-    a5->height = v10;
+    size->width = v9;
+    size->height = v10;
   }
 
-  if (a4 && v8)
+  if (d && v8)
   {
-    *a4 = [v8 UUIDString];
+    *d = [v8 UUIDString];
   }
 
-  v11 = [v8 dateAdded];
+  dateAdded = [v8 dateAdded];
 
-  return v11;
+  return dateAdded;
 }
 
 - (void)removeAllRecords
@@ -80,15 +80,15 @@
   [(NSMutableDictionary *)iconUUIDToURLStringDictionary removeAllObjects];
 }
 
-- (void)removeRecordForIconUUIDs:(id)a3
+- (void)removeRecordForIconUUIDs:(id)ds
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [dsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -99,7 +99,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -112,7 +112,7 @@
         [(NSMutableDictionary *)self->_iconUUIDToURLStringDictionary removeObjectForKey:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [dsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

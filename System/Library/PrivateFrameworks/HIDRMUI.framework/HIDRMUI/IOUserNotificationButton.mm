@@ -1,28 +1,28 @@
 @interface IOUserNotificationButton
-+ (id)buttonWithTitle:(id)a3;
-- (IOUserNotificationButton)initWithTitle:(id)a3;
++ (id)buttonWithTitle:(id)title;
+- (IOUserNotificationButton)initWithTitle:(id)title;
 - (id)description;
 @end
 
 @implementation IOUserNotificationButton
 
-+ (id)buttonWithTitle:(id)a3
++ (id)buttonWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTitle:v4];
+  titleCopy = title;
+  v5 = [[self alloc] initWithTitle:titleCopy];
 
   return v5;
 }
 
-- (IOUserNotificationButton)initWithTitle:(id)a3
+- (IOUserNotificationButton)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = IOUserNotificationButton;
   v5 = [(IOUserNotificationButton *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [titleCopy copy];
     title = v5->_title;
     v5->_title = v6;
 
@@ -37,8 +37,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(IOUserNotificationButton *)self title];
-  v7 = [v3 stringWithFormat:@"<%@: %p, title: %@, selected: %d>", v5, self, v6, -[IOUserNotificationButton selected](self, "selected")];
+  title = [(IOUserNotificationButton *)self title];
+  v7 = [v3 stringWithFormat:@"<%@: %p, title: %@, selected: %d>", v5, self, title, -[IOUserNotificationButton selected](self, "selected")];
 
   return v7;
 }

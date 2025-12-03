@@ -1,19 +1,19 @@
 @interface CPLSuggestionChange
-+ (BOOL)cplShouldIgnorePropertyForCoding:(id)a3;
-+ (id)_createTestSuggestionWithKeyAssets:(id)a3 representativeAssets:(id)a4;
-- (CPLSuggestionChange)initWithCoder:(id)a3;
-- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)cplShouldIgnorePropertyForCoding:(id)coding;
++ (id)_createTestSuggestionWithKeyAssets:(id)assets representativeAssets:(id)representativeAssets;
+- (CPLSuggestionChange)initWithCoder:(id)coder;
+- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)selector;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)scopedIdentifiersForMapping;
-- (id)translateToClientChangeUsingIDMapping:(id)a3 error:(id *)a4;
-- (id)translateToCloudChangeUsingIDMapping:(id)a3 error:(id *)a4;
+- (id)translateToClientChangeUsingIDMapping:(id)mapping error:(id *)error;
+- (id)translateToCloudChangeUsingIDMapping:(id)mapping error:(id *)error;
 @end
 
 @implementation CPLSuggestionChange
 
-- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)a3
+- (id)checkDefaultValueBlockForPropertyWithSelector:(SEL)selector
 {
-  if (sel_notificationState == a3)
+  if (sel_notificationState == selector)
   {
     v5 = &__block_literal_global_2300;
   }
@@ -30,30 +30,30 @@
   return v5;
 }
 
-+ (id)_createTestSuggestionWithKeyAssets:(id)a3 representativeAssets:(id)a4
++ (id)_createTestSuggestionWithKeyAssets:(id)assets representativeAssets:(id)representativeAssets
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 firstObject];
-  v8 = [v7 scopedIdentifier];
-  v9 = [v8 scopeIdentifier];
-  v10 = v9;
-  v46 = v6;
-  if (v9)
+  assetsCopy = assets;
+  representativeAssetsCopy = representativeAssets;
+  firstObject = [assetsCopy firstObject];
+  scopedIdentifier = [firstObject scopedIdentifier];
+  scopeIdentifier = [scopedIdentifier scopeIdentifier];
+  v10 = scopeIdentifier;
+  v46 = representativeAssetsCopy;
+  if (scopeIdentifier)
   {
-    v11 = v9;
+    v11 = scopeIdentifier;
   }
 
   else
   {
-    v12 = [v6 firstObject];
-    v13 = [v12 scopedIdentifier];
-    v14 = [v13 scopeIdentifier];
-    v15 = v14;
-    if (v14)
+    firstObject2 = [representativeAssetsCopy firstObject];
+    scopedIdentifier2 = [firstObject2 scopedIdentifier];
+    scopeIdentifier2 = [scopedIdentifier2 scopeIdentifier];
+    v15 = scopeIdentifier2;
+    if (scopeIdentifier2)
     {
-      v16 = v14;
+      v16 = scopeIdentifier2;
     }
 
     else
@@ -71,12 +71,12 @@
   [v17 setType:2];
   [v17 setSubtype:201];
   [v17 setState:1];
-  v18 = [MEMORY[0x1E695DF00] date];
-  [v17 setCreationDate:v18];
+  date = [MEMORY[0x1E695DF00] date];
+  [v17 setCreationDate:date];
 
   [v17 setVersion:1];
-  v19 = [MEMORY[0x1E695DF00] date];
-  [v17 setActivationDate:v19];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [v17 setActivationDate:date2];
 
   [v17 setNotificationState:0];
   v20 = [@"action data" dataUsingEncoding:4];
@@ -95,7 +95,7 @@
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v23 = v5;
+  v23 = assetsCopy;
   v24 = [v23 countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v24)
   {
@@ -115,8 +115,8 @@
         [(CPLSuggestionAssetFlag *)v29 setIsKeyAsset:1];
         [(CPLSuggestionAssetFlag *)v29 setIsRepresentative:0];
         v30 = objc_alloc_init(CPLSuggestionAsset);
-        v31 = [v28 _unscopedIdentifier];
-        [(CPLSuggestionAsset *)v30 setAssetIdentifier:v31];
+        _unscopedIdentifier = [v28 _unscopedIdentifier];
+        [(CPLSuggestionAsset *)v30 setAssetIdentifier:_unscopedIdentifier];
 
         [(CPLSuggestionAsset *)v30 setAssetFlag:v29];
         [(CPLSuggestionRecordList *)v22 addAsset:v30];
@@ -154,8 +154,8 @@
         [(CPLSuggestionAssetFlag *)v38 setIsKeyAsset:0, v43];
         [(CPLSuggestionAssetFlag *)v38 setIsRepresentative:1];
         v39 = objc_alloc_init(CPLSuggestionAsset);
-        v40 = [v37 _unscopedIdentifier];
-        [(CPLSuggestionAsset *)v39 setAssetIdentifier:v40];
+        _unscopedIdentifier2 = [v37 _unscopedIdentifier];
+        [(CPLSuggestionAsset *)v39 setAssetIdentifier:_unscopedIdentifier2];
 
         [(CPLSuggestionAsset *)v39 setAssetFlag:v38];
         [(CPLSuggestionRecordList *)v22 addAsset:v39];
@@ -173,27 +173,27 @@
   return v47;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 cplCopyPropertiesFromObject:self withCopyBlock:0];
   return v4;
 }
 
-- (CPLSuggestionChange)initWithCoder:(id)a3
+- (CPLSuggestionChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CPLSuggestionChange;
-  v5 = [(CPLRecordChange *)&v11 initWithCoder:v4];
+  v5 = [(CPLRecordChange *)&v11 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CPLSuggestionChange *)v5 recordList];
+    recordList = [(CPLSuggestionChange *)v5 recordList];
 
-    if (!v7)
+    if (!recordList)
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetList"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetList"];
       if ([v8 length])
       {
         v9 = [[CPLSuggestionRecordList alloc] initWithData:v8];
@@ -223,31 +223,31 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
   }
 }
 
-+ (BOOL)cplShouldIgnorePropertyForCoding:(id)a3
++ (BOOL)cplShouldIgnorePropertyForCoding:(id)coding
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"assetList"])
+  codingCopy = coding;
+  if ([codingCopy isEqualToString:@"assetList"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLSuggestionChange;
-    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForCoding_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForCoding_, codingCopy);
   }
 
   return v5;
 }
 
-- (id)translateToClientChangeUsingIDMapping:(id)a3 error:(id *)a4
+- (id)translateToClientChangeUsingIDMapping:(id)mapping error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  mappingCopy = mapping;
   v67.receiver = self;
   v67.super_class = CPLSuggestionChange;
-  v7 = [(CPLRecordChange *)&v67 translateToClientChangeUsingIDMapping:v6 error:a4];
+  v7 = [(CPLRecordChange *)&v67 translateToClientChangeUsingIDMapping:mappingCopy error:error];
   v8 = v7;
   if (v7)
   {
@@ -257,8 +257,8 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
     v64 = 0u;
     v65 = 0u;
     v54 = v66 = 0u;
-    v9 = [v54 assets];
-    v10 = [v9 countByEnumeratingWithState:&v63 objects:v70 count:16];
+    assets = [v54 assets];
+    v10 = [assets countByEnumeratingWithState:&v63 objects:v70 count:16];
     if (v10)
     {
       v11 = v10;
@@ -269,32 +269,32 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
         {
           if (*v64 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(assets);
           }
 
           v14 = *(*(&v63 + 1) + 8 * i);
-          v15 = [v14 assetIdentifier];
-          if (v15)
+          assetIdentifier = [v14 assetIdentifier];
+          if (assetIdentifier)
           {
-            v16 = v15;
+            v16 = assetIdentifier;
             v17 = [CPLScopedIdentifier alloc];
-            v18 = [(CPLRecordChange *)self scopedIdentifier];
-            v19 = [(CPLScopedIdentifier *)v17 initRelativeToScopedIdentifier:v18 identifier:v16];
+            scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+            v19 = [(CPLScopedIdentifier *)v17 initRelativeToScopedIdentifier:scopedIdentifier identifier:v16];
 
             if (v19)
             {
-              v20 = [v6 localScopedIdentifierForCloudScopedIdentifierIncludeRemappedRecords:v19];
+              v20 = [mappingCopy localScopedIdentifierForCloudScopedIdentifierIncludeRemappedRecords:v19];
               v21 = v20;
               if (v20)
               {
-                v22 = [v20 identifier];
-                [v14 setAssetIdentifier:v22];
+                identifier = [v20 identifier];
+                [v14 setAssetIdentifier:identifier];
               }
             }
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v63 objects:v70 count:16];
+        v11 = [assets countByEnumeratingWithState:&v63 objects:v70 count:16];
       }
 
       while (v11);
@@ -304,8 +304,8 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v23 = [v54 memorys];
-    v24 = [v23 countByEnumeratingWithState:&v59 objects:v69 count:16];
+    memorys = [v54 memorys];
+    v24 = [memorys countByEnumeratingWithState:&v59 objects:v69 count:16];
     if (v24)
     {
       v25 = v24;
@@ -316,32 +316,32 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
         {
           if (*v60 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(memorys);
           }
 
           v28 = *(*(&v59 + 1) + 8 * j);
-          v29 = [v28 memoryIdentifier];
-          if (v29)
+          memoryIdentifier = [v28 memoryIdentifier];
+          if (memoryIdentifier)
           {
-            v30 = v29;
+            v30 = memoryIdentifier;
             v31 = [CPLScopedIdentifier alloc];
-            v32 = [(CPLRecordChange *)self scopedIdentifier];
-            v33 = [(CPLScopedIdentifier *)v31 initRelativeToScopedIdentifier:v32 identifier:v30];
+            scopedIdentifier2 = [(CPLRecordChange *)self scopedIdentifier];
+            v33 = [(CPLScopedIdentifier *)v31 initRelativeToScopedIdentifier:scopedIdentifier2 identifier:v30];
 
             if (v33)
             {
-              v34 = [v6 localScopedIdentifierForCloudScopedIdentifierIncludeRemappedRecords:v33];
+              v34 = [mappingCopy localScopedIdentifierForCloudScopedIdentifierIncludeRemappedRecords:v33];
               v35 = v34;
               if (v34)
               {
-                v36 = [v34 identifier];
-                [v28 setMemoryIdentifier:v36];
+                identifier2 = [v34 identifier];
+                [v28 setMemoryIdentifier:identifier2];
               }
             }
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v59 objects:v69 count:16];
+        v25 = [memorys countByEnumeratingWithState:&v59 objects:v69 count:16];
       }
 
       while (v25);
@@ -351,8 +351,8 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v37 = [v54 persons];
-    v38 = [v37 countByEnumeratingWithState:&v55 objects:v68 count:16];
+    persons = [v54 persons];
+    v38 = [persons countByEnumeratingWithState:&v55 objects:v68 count:16];
     if (v38)
     {
       v39 = v38;
@@ -363,32 +363,32 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
         {
           if (*v56 != v40)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(persons);
           }
 
           v42 = *(*(&v55 + 1) + 8 * k);
-          v43 = [v42 personIdentifier];
-          if (v43)
+          personIdentifier = [v42 personIdentifier];
+          if (personIdentifier)
           {
-            v44 = v43;
+            v44 = personIdentifier;
             v45 = [CPLScopedIdentifier alloc];
-            v46 = [(CPLRecordChange *)self scopedIdentifier];
-            v47 = [(CPLScopedIdentifier *)v45 initRelativeToScopedIdentifier:v46 identifier:v44];
+            scopedIdentifier3 = [(CPLRecordChange *)self scopedIdentifier];
+            v47 = [(CPLScopedIdentifier *)v45 initRelativeToScopedIdentifier:scopedIdentifier3 identifier:v44];
 
             if (v47)
             {
-              v48 = [v6 localScopedIdentifierForCloudScopedIdentifierIncludeRemappedRecords:v47];
+              v48 = [mappingCopy localScopedIdentifierForCloudScopedIdentifierIncludeRemappedRecords:v47];
               v49 = v48;
               if (v48)
               {
-                v50 = [v48 identifier];
-                [v42 setPersonIdentifier:v50];
+                identifier3 = [v48 identifier];
+                [v42 setPersonIdentifier:identifier3];
               }
             }
           }
         }
 
-        v39 = [v37 countByEnumeratingWithState:&v55 objects:v68 count:16];
+        v39 = [persons countByEnumeratingWithState:&v55 objects:v68 count:16];
       }
 
       while (v39);
@@ -402,13 +402,13 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
   return v8;
 }
 
-- (id)translateToCloudChangeUsingIDMapping:(id)a3 error:(id *)a4
+- (id)translateToCloudChangeUsingIDMapping:(id)mapping error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  mappingCopy = mapping;
   v68.receiver = self;
   v68.super_class = CPLSuggestionChange;
-  v7 = [(CPLRecordChange *)&v68 translateToCloudChangeUsingIDMapping:v6 error:a4];
+  v7 = [(CPLRecordChange *)&v68 translateToCloudChangeUsingIDMapping:mappingCopy error:error];
   v8 = v7;
   if (v7)
   {
@@ -418,8 +418,8 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
     v65 = 0u;
     v66 = 0u;
     v54 = v67 = 0u;
-    v9 = [v54 assets];
-    v10 = [v9 countByEnumeratingWithState:&v64 objects:v71 count:16];
+    assets = [v54 assets];
+    v10 = [assets countByEnumeratingWithState:&v64 objects:v71 count:16];
     if (v10)
     {
       v11 = v10;
@@ -430,33 +430,33 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
         {
           if (*v65 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(assets);
           }
 
           v14 = *(*(&v64 + 1) + 8 * i);
-          v15 = [v14 assetIdentifier];
-          if (v15)
+          assetIdentifier = [v14 assetIdentifier];
+          if (assetIdentifier)
           {
-            v16 = v15;
+            v16 = assetIdentifier;
             v17 = [CPLScopedIdentifier alloc];
-            v18 = [(CPLRecordChange *)self scopedIdentifier];
-            v19 = [(CPLScopedIdentifier *)v17 initRelativeToScopedIdentifier:v18 identifier:v16];
+            scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+            v19 = [(CPLScopedIdentifier *)v17 initRelativeToScopedIdentifier:scopedIdentifier identifier:v16];
 
             if (v19)
             {
               v63 = 0;
-              v20 = [v6 cloudScopedIdentifierForLocalScopedIdentifier:v19 isFinal:&v63];
+              v20 = [mappingCopy cloudScopedIdentifierForLocalScopedIdentifier:v19 isFinal:&v63];
               v21 = v20;
               if (v20)
               {
-                v22 = [v20 identifier];
-                [v14 setAssetIdentifier:v22];
+                identifier = [v20 identifier];
+                [v14 setAssetIdentifier:identifier];
               }
             }
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v64 objects:v71 count:16];
+        v11 = [assets countByEnumeratingWithState:&v64 objects:v71 count:16];
       }
 
       while (v11);
@@ -466,8 +466,8 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v23 = [v54 memorys];
-    v24 = [v23 countByEnumeratingWithState:&v59 objects:v70 count:16];
+    memorys = [v54 memorys];
+    v24 = [memorys countByEnumeratingWithState:&v59 objects:v70 count:16];
     if (v24)
     {
       v25 = v24;
@@ -478,33 +478,33 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
         {
           if (*v60 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(memorys);
           }
 
           v28 = *(*(&v59 + 1) + 8 * j);
-          v29 = [v28 memoryIdentifier];
-          if (v29)
+          memoryIdentifier = [v28 memoryIdentifier];
+          if (memoryIdentifier)
           {
-            v30 = v29;
+            v30 = memoryIdentifier;
             v31 = [CPLScopedIdentifier alloc];
-            v32 = [(CPLRecordChange *)self scopedIdentifier];
-            v33 = [(CPLScopedIdentifier *)v31 initRelativeToScopedIdentifier:v32 identifier:v30];
+            scopedIdentifier2 = [(CPLRecordChange *)self scopedIdentifier];
+            v33 = [(CPLScopedIdentifier *)v31 initRelativeToScopedIdentifier:scopedIdentifier2 identifier:v30];
 
             if (v33)
             {
               v63 = 0;
-              v34 = [v6 cloudScopedIdentifierForLocalScopedIdentifier:v33 isFinal:&v63];
+              v34 = [mappingCopy cloudScopedIdentifierForLocalScopedIdentifier:v33 isFinal:&v63];
               v35 = v34;
               if (v34)
               {
-                v36 = [v34 identifier];
-                [v28 setMemoryIdentifier:v36];
+                identifier2 = [v34 identifier];
+                [v28 setMemoryIdentifier:identifier2];
               }
             }
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v59 objects:v70 count:16];
+        v25 = [memorys countByEnumeratingWithState:&v59 objects:v70 count:16];
       }
 
       while (v25);
@@ -514,8 +514,8 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v37 = [v54 persons];
-    v38 = [v37 countByEnumeratingWithState:&v55 objects:v69 count:16];
+    persons = [v54 persons];
+    v38 = [persons countByEnumeratingWithState:&v55 objects:v69 count:16];
     if (v38)
     {
       v39 = v38;
@@ -526,33 +526,33 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
         {
           if (*v56 != v40)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(persons);
           }
 
           v42 = *(*(&v55 + 1) + 8 * k);
-          v43 = [v42 personIdentifier];
-          if (v43)
+          personIdentifier = [v42 personIdentifier];
+          if (personIdentifier)
           {
-            v44 = v43;
+            v44 = personIdentifier;
             v45 = [CPLScopedIdentifier alloc];
-            v46 = [(CPLRecordChange *)self scopedIdentifier];
-            v47 = [(CPLScopedIdentifier *)v45 initRelativeToScopedIdentifier:v46 identifier:v44];
+            scopedIdentifier3 = [(CPLRecordChange *)self scopedIdentifier];
+            v47 = [(CPLScopedIdentifier *)v45 initRelativeToScopedIdentifier:scopedIdentifier3 identifier:v44];
 
             if (v47)
             {
               v63 = 0;
-              v48 = [v6 cloudScopedIdentifierForLocalScopedIdentifier:v47 isFinal:&v63];
+              v48 = [mappingCopy cloudScopedIdentifierForLocalScopedIdentifier:v47 isFinal:&v63];
               v49 = v48;
               if (v48)
               {
-                v50 = [v48 identifier];
-                [v42 setPersonIdentifier:v50];
+                identifier3 = [v48 identifier];
+                [v42 setPersonIdentifier:identifier3];
               }
             }
           }
         }
 
-        v39 = [v37 countByEnumeratingWithState:&v55 objects:v69 count:16];
+        v39 = [persons countByEnumeratingWithState:&v55 objects:v69 count:16];
       }
 
       while (v39);
@@ -572,16 +572,16 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
   v51.receiver = self;
   v51.super_class = CPLSuggestionChange;
-  v4 = [(CPLRecordChange *)&v51 scopedIdentifiersForMapping];
-  v5 = [v3 initWithArray:v4];
+  scopedIdentifiersForMapping = [(CPLRecordChange *)&v51 scopedIdentifiersForMapping];
+  v5 = [v3 initWithArray:scopedIdentifiersForMapping];
 
   [(CPLSuggestionChange *)self recordList];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v38 = v50 = 0u;
-  v6 = [v38 assets];
-  v7 = [v6 countByEnumeratingWithState:&v47 objects:v54 count:16];
+  assets = [v38 assets];
+  v7 = [assets countByEnumeratingWithState:&v47 objects:v54 count:16];
   if (v7)
   {
     v8 = v7;
@@ -592,16 +592,16 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
       {
         if (*v48 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(assets);
         }
 
-        v11 = [*(*(&v47 + 1) + 8 * i) assetIdentifier];
-        if (v11)
+        assetIdentifier = [*(*(&v47 + 1) + 8 * i) assetIdentifier];
+        if (assetIdentifier)
         {
-          v12 = v11;
+          v12 = assetIdentifier;
           v13 = [CPLScopedIdentifier alloc];
-          v14 = [(CPLRecordChange *)self scopedIdentifier];
-          v15 = [(CPLScopedIdentifier *)v13 initRelativeToScopedIdentifier:v14 identifier:v12];
+          scopedIdentifier = [(CPLRecordChange *)self scopedIdentifier];
+          v15 = [(CPLScopedIdentifier *)v13 initRelativeToScopedIdentifier:scopedIdentifier identifier:v12];
 
           if (v15)
           {
@@ -610,7 +610,7 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v47 objects:v54 count:16];
+      v8 = [assets countByEnumeratingWithState:&v47 objects:v54 count:16];
     }
 
     while (v8);
@@ -620,8 +620,8 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v16 = [v38 memorys];
-  v17 = [v16 countByEnumeratingWithState:&v43 objects:v53 count:16];
+  memorys = [v38 memorys];
+  v17 = [memorys countByEnumeratingWithState:&v43 objects:v53 count:16];
   if (v17)
   {
     v18 = v17;
@@ -632,16 +632,16 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
       {
         if (*v44 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(memorys);
         }
 
-        v21 = [*(*(&v43 + 1) + 8 * j) memoryIdentifier];
-        if (v21)
+        memoryIdentifier = [*(*(&v43 + 1) + 8 * j) memoryIdentifier];
+        if (memoryIdentifier)
         {
-          v22 = v21;
+          v22 = memoryIdentifier;
           v23 = [CPLScopedIdentifier alloc];
-          v24 = [(CPLRecordChange *)self scopedIdentifier];
-          v25 = [(CPLScopedIdentifier *)v23 initRelativeToScopedIdentifier:v24 identifier:v22];
+          scopedIdentifier2 = [(CPLRecordChange *)self scopedIdentifier];
+          v25 = [(CPLScopedIdentifier *)v23 initRelativeToScopedIdentifier:scopedIdentifier2 identifier:v22];
 
           if (v25)
           {
@@ -650,7 +650,7 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v43 objects:v53 count:16];
+      v18 = [memorys countByEnumeratingWithState:&v43 objects:v53 count:16];
     }
 
     while (v18);
@@ -660,8 +660,8 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v26 = [v38 persons];
-  v27 = [v26 countByEnumeratingWithState:&v39 objects:v52 count:16];
+  persons = [v38 persons];
+  v27 = [persons countByEnumeratingWithState:&v39 objects:v52 count:16];
   if (v27)
   {
     v28 = v27;
@@ -672,16 +672,16 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
       {
         if (*v40 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(persons);
         }
 
-        v31 = [*(*(&v39 + 1) + 8 * k) personIdentifier];
-        if (v31)
+        personIdentifier = [*(*(&v39 + 1) + 8 * k) personIdentifier];
+        if (personIdentifier)
         {
-          v32 = v31;
+          v32 = personIdentifier;
           v33 = [CPLScopedIdentifier alloc];
-          v34 = [(CPLRecordChange *)self scopedIdentifier];
-          v35 = [(CPLScopedIdentifier *)v33 initRelativeToScopedIdentifier:v34 identifier:v32];
+          scopedIdentifier3 = [(CPLRecordChange *)self scopedIdentifier];
+          v35 = [(CPLScopedIdentifier *)v33 initRelativeToScopedIdentifier:scopedIdentifier3 identifier:v32];
 
           if (v35)
           {
@@ -690,7 +690,7 @@ void __50__CPLSuggestionChange_CPLNSCoding__initWithCoder___block_invoke()
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v39 objects:v52 count:16];
+      v28 = [persons countByEnumeratingWithState:&v39 objects:v52 count:16];
     }
 
     while (v28);

@@ -1,6 +1,6 @@
 @interface UIWebContentStringProvider
 + (NSArray)additionalTrailingReadableTypeIdentifiersForItemProvider;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 requestedClass:(Class)a5 error:(id *)a6;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier requestedClass:(Class)class error:(id *)error;
 @end
 
 @implementation UIWebContentStringProvider
@@ -8,20 +8,20 @@
 + (NSArray)additionalTrailingReadableTypeIdentifiersForItemProvider
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v2 = [*MEMORY[0x1E6983098] identifier];
-  v6[0] = v2;
-  v3 = [*MEMORY[0x1E6982E18] identifier];
-  v6[1] = v3;
+  identifier = [*MEMORY[0x1E6983098] identifier];
+  v6[0] = identifier;
+  identifier2 = [*MEMORY[0x1E6982E18] identifier];
+  v6[1] = identifier2;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
 
   return v4;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 requestedClass:(Class)a5 error:(id *)a6
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier requestedClass:(Class)class error:(id *)error
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [MEMORY[0x1E6982C40] _typeWithIdentifier:a4 allowUndeclared:1];
+  dataCopy = data;
+  v10 = [MEMORY[0x1E6982C40] _typeWithIdentifier:identifier allowUndeclared:1];
   if ([v10 conformsToType:*MEMORY[0x1E6983098]])
   {
     v11 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -36,13 +36,13 @@
     v16 = v27;
 LABEL_5:
     v19 = [v14 dictionaryWithObjects:v15 forKeys:v16 count:2];
-    v20 = [v11 _initWithHTMLData:v9 options:v19 documentAttributes:0 error:a6];
+    v20 = [v11 _initWithHTMLData:dataCopy options:v19 documentAttributes:0 error:error];
 
     if (v20)
     {
-      v21 = [a5 alloc];
-      v22 = [v20 string];
-      v23 = [v21 initWithString:v22];
+      v21 = [class alloc];
+      string = [v20 string];
+      v23 = [v21 initWithString:string];
     }
 
     else

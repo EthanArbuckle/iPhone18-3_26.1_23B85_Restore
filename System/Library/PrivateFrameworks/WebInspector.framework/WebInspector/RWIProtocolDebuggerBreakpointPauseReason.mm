@@ -1,36 +1,36 @@
 @interface RWIProtocolDebuggerBreakpointPauseReason
 - (NSString)breakpointId;
-- (RWIProtocolDebuggerBreakpointPauseReason)initWithBreakpointId:(id)a3;
-- (void)setBreakpointId:(id)a3;
+- (RWIProtocolDebuggerBreakpointPauseReason)initWithBreakpointId:(id)id;
+- (void)setBreakpointId:(id)id;
 @end
 
 @implementation RWIProtocolDebuggerBreakpointPauseReason
 
-- (RWIProtocolDebuggerBreakpointPauseReason)initWithBreakpointId:(id)a3
+- (RWIProtocolDebuggerBreakpointPauseReason)initWithBreakpointId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v8.receiver = self;
   v8.super_class = RWIProtocolDebuggerBreakpointPauseReason;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!idCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"breakpointId"}];
     }
 
-    [(RWIProtocolDebuggerBreakpointPauseReason *)v5 setBreakpointId:v4];
+    [(RWIProtocolDebuggerBreakpointPauseReason *)v5 setBreakpointId:idCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setBreakpointId:(id)a3
+- (void)setBreakpointId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerBreakpointPauseReason;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"breakpointId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"breakpointId"];
 }
 
 - (NSString)breakpointId

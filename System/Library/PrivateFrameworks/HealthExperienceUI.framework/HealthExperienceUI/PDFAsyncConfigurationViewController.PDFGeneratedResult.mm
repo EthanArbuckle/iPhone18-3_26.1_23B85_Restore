@@ -12,7 +12,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 8);
-  v7 = self;
+  selfCopy = self;
   v6(&v9, v4, v5);
 
   if (v9)

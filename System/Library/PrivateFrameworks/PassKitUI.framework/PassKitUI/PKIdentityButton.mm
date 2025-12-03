@@ -1,7 +1,7 @@
 @interface PKIdentityButton
 + (PKIdentityButton)buttonWithLabel:(PKIdentityButtonLabel)label style:(PKIdentityButtonStyle)style;
 - (PKIdentityButton)init;
-- (PKIdentityButton)initWithCoder:(id)a3;
+- (PKIdentityButton)initWithCoder:(id)coder;
 - (PKIdentityButton)initWithLabel:(PKIdentityButtonLabel)label style:(PKIdentityButtonStyle)style;
 @end
 
@@ -21,10 +21,10 @@
   return v3;
 }
 
-- (PKIdentityButton)initWithCoder:(id)a3
+- (PKIdentityButton)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [[_PKIdentityButton alloc] initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [[_PKIdentityButton alloc] initWithCoder:coderCopy];
 
   return v5;
 }

@@ -1,14 +1,14 @@
 @interface TUKeyboardInputMonitor
-- (void)handle:(id)a3;
+- (void)handle:(id)handle;
 @end
 
 @implementation TUKeyboardInputMonitor
 
-- (void)handle:(id)a3
+- (void)handle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  KeyboardInputMonitor.handle(_:)(v4);
+  handleCopy = handle;
+  selfCopy = self;
+  KeyboardInputMonitor.handle(_:)(handleCopy);
 }
 
 @end

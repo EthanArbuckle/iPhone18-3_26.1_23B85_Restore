@@ -1,7 +1,7 @@
 @interface VIOSessionBatteryLevelMonitor
 - (BOOL)isBatteryLevelTooLow;
 - (NSString)description;
-- (VIOSessionBatteryLevelMonitor)initWithStateManager:(id)a3 platformController:(id)a4;
+- (VIOSessionBatteryLevelMonitor)initWithStateManager:(id)manager platformController:(id)controller;
 - (void)dealloc;
 - (void)reportStateToStateManager;
 @end
@@ -49,7 +49,7 @@
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     *buf = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Disabling %@", buf, 0x16u);
@@ -60,11 +60,11 @@
   [(VIOSessionBatteryLevelMonitor *)&v6 dealloc];
 }
 
-- (VIOSessionBatteryLevelMonitor)initWithStateManager:(id)a3 platformController:(id)a4
+- (VIOSessionBatteryLevelMonitor)initWithStateManager:(id)manager platformController:(id)controller
 {
   v12.receiver = self;
   v12.super_class = VIOSessionBatteryLevelMonitor;
-  v4 = [(VIOSessionMonitor *)&v12 initWithStateManager:a3 platformController:a4];
+  v4 = [(VIOSessionMonitor *)&v12 initWithStateManager:manager platformController:controller];
   if (v4)
   {
     v5 = sub_1009B3740();
@@ -80,9 +80,9 @@
     }
 
     v8 = +[BatteryMonitorController sharedInstance];
-    v9 = [v8 beginMonitoringBattery];
+    beginMonitoringBattery = [v8 beginMonitoringBattery];
     batteryMonitorToken = v4->_batteryMonitorToken;
-    v4->_batteryMonitorToken = v9;
+    v4->_batteryMonitorToken = beginMonitoringBattery;
 
     [(BatteryMonitorToken *)v4->_batteryMonitorToken setDelegate:v4];
     [(VIOSessionBatteryLevelMonitor *)v4 reportStateToStateManager];

@@ -1,6 +1,6 @@
 @interface CLSMediaAnalysisModel
-+ (unint64_t)baseMediaAnalysisVersionWithMediaAnalysisVersion:(unint64_t)a3;
-- (CLSMediaAnalysisModel)initWithMediaAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseMediaAnalysisVersionWithMediaAnalysisVersion:(unint64_t)version;
+- (CLSMediaAnalysisModel)initWithMediaAnalysisVersion:(unint64_t)version;
 - (void)setupVersion33;
 - (void)setupVersion59;
 - (void)setupVersion61;
@@ -39,7 +39,7 @@
   *&self->_autoplaySuggestionScoreThresholdToBeInteresting = xmmword_25E63DAC0;
 }
 
-- (CLSMediaAnalysisModel)initWithMediaAnalysisVersion:(unint64_t)a3
+- (CLSMediaAnalysisModel)initWithMediaAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -48,17 +48,17 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x3D)
+    if (version < 0x3D)
     {
-      if (a3 < 0x3B)
+      if (version < 0x3B)
       {
-        if (a3 < 0x21)
+        if (version < 0x21)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             v6 = objc_opt_class();
             *buf = 67109378;
-            v11 = a3;
+            versionCopy = version;
             v12 = 2112;
             v13 = v6;
             _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -89,21 +89,21 @@
   return v5;
 }
 
-+ (unint64_t)baseMediaAnalysisVersionWithMediaAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseMediaAnalysisVersionWithMediaAnalysisVersion:(unint64_t)version
 {
   v3 = 59;
   v4 = 33;
-  if (a3 < 0x21)
+  if (version < 0x21)
   {
     v4 = 0;
   }
 
-  if (a3 <= 0x3A)
+  if (version <= 0x3A)
   {
     v3 = v4;
   }
 
-  if (a3 <= 0x3C)
+  if (version <= 0x3C)
   {
     return v3;
   }

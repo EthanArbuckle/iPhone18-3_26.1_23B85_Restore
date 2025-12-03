@@ -161,9 +161,9 @@
       v44 = v43;
       if (v17 != 1.0)
       {
-        v31 = [(CIImage *)v15 imageByClampingToExtent];
+        imageByClampingToExtent = [(CIImage *)v15 imageByClampingToExtent];
         v43 = v44;
-        v15 = [(CIImage *)v31 imageByApplyingTransform:&v43 highQualityDownsample:1];
+        v15 = [(CIImage *)imageByClampingToExtent imageByApplyingTransform:&v43 highQualityDownsample:1];
         v12 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v12];
         [v12 setObject:&unk_1F10846F8 forKeyedSubscript:@"scale"];
         v32 = MEMORY[0x1E696AD98];

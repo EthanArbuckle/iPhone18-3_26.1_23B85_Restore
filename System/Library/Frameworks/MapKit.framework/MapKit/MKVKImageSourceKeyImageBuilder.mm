@@ -1,22 +1,22 @@
 @interface MKVKImageSourceKeyImageBuilder
-+ (id)calculateImagesForParameters:(id)a3;
-+ (void)_recursivelyGetImages:(id)a3 accumulator:(id)a4;
++ (id)calculateImagesForParameters:(id)parameters;
++ (void)_recursivelyGetImages:(id)images accumulator:(id)accumulator;
 @end
 
 @implementation MKVKImageSourceKeyImageBuilder
 
-+ (void)_recursivelyGetImages:(id)a3 accumulator:(id)a4
++ (void)_recursivelyGetImages:(id)images accumulator:(id)accumulator
 {
-  v37 = a1;
+  selfCopy = self;
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  imagesCopy = images;
+  accumulatorCopy = accumulator;
   v7 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v5;
+  obj = imagesCopy;
   v41 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v41)
   {
@@ -33,27 +33,27 @@
         }
 
         v11 = *(*(&v48 + 1) + 8 * i);
-        v12 = [*(v9 + 2832) sharedInstance];
-        v13 = [v6 parameters];
-        [v13 scale];
+        sharedInstance = [*(v9 + 2832) sharedInstance];
+        parameters = [accumulatorCopy parameters];
+        [parameters scale];
         v47 = 0;
-        v14 = [v12 transitArtworkImageWithDataSource:v11 size:8 featureType:2 scale:0 nightMode:&v47 withWidthPaddingMultiple:? fullBleedColor:?];
-        v15 = v47;
+        v14 = [sharedInstance transitArtworkImageWithDataSource:v11 size:8 featureType:2 scale:0 nightMode:&v47 withWidthPaddingMultiple:? fullBleedColor:?];
+        clearColor = v47;
 
         if (!v14)
         {
-          v16 = [*(v9 + 2832) sharedInstance];
-          v17 = [v6 parameters];
-          [v17 scale];
-          v46 = v15;
-          v14 = [v16 transitArtworkImageWithDataSource:v11 size:7 featureType:2 scale:0 nightMode:&v46 withWidthPaddingMultiple:? fullBleedColor:?];
+          sharedInstance2 = [*(v9 + 2832) sharedInstance];
+          parameters2 = [accumulatorCopy parameters];
+          [parameters2 scale];
+          v46 = clearColor;
+          v14 = [sharedInstance2 transitArtworkImageWithDataSource:v11 size:7 featureType:2 scale:0 nightMode:&v46 withWidthPaddingMultiple:? fullBleedColor:?];
           v18 = v46;
-          v19 = v15;
-          v15 = v18;
+          v19 = clearColor;
+          clearColor = v18;
         }
 
-        v20 = [v6 triedKeys];
-        [v20 addObject:v11];
+        triedKeys = [accumulatorCopy triedKeys];
+        [triedKeys addObject:v11];
 
         if (!v14)
         {
@@ -61,12 +61,12 @@
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v21 = [v11 fallbackImageKeys];
-          v28 = [v21 countByEnumeratingWithState:&v42 objects:v52 count:16];
+          fallbackImageKeys = [v11 fallbackImageKeys];
+          v28 = [fallbackImageKeys countByEnumeratingWithState:&v42 objects:v52 count:16];
           if (v28)
           {
             v29 = v28;
-            v39 = v15;
+            v39 = clearColor;
             v30 = *v43;
             do
             {
@@ -74,12 +74,12 @@
               {
                 if (*v43 != v30)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(fallbackImageKeys);
                 }
 
                 v32 = *(*(&v42 + 1) + 8 * j);
-                v33 = [v6 triedKeys];
-                if (containsKey(v33, v32))
+                triedKeys2 = [accumulatorCopy triedKeys];
+                if (containsKey(triedKeys2, v32))
                 {
                 }
 
@@ -94,12 +94,12 @@
                 }
               }
 
-              v29 = [v21 countByEnumeratingWithState:&v42 objects:v52 count:16];
+              v29 = [fallbackImageKeys countByEnumeratingWithState:&v42 objects:v52 count:16];
             }
 
             while (v29);
             v8 = v38;
-            v15 = v39;
+            clearColor = v39;
             v9 = 0x1E76C4000;
           }
 
@@ -109,34 +109,34 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v21 = UIImagePNGRepresentation(v14);
-        if (!v21)
+        fallbackImageKeys = UIImagePNGRepresentation(v14);
+        if (!fallbackImageKeys)
         {
           goto LABEL_28;
         }
 
-        v22 = [v6 imageDatas];
-        v23 = [v22 containsObject:v21];
+        imageDatas = [accumulatorCopy imageDatas];
+        v23 = [imageDatas containsObject:fallbackImageKeys];
 
         if (v23)
         {
           goto LABEL_28;
         }
 
-        if (!v15)
+        if (!clearColor)
         {
-          v15 = [MEMORY[0x1E69DC888] clearColor];
+          clearColor = [MEMORY[0x1E69DC888] clearColor];
         }
 
-        v24 = [v6 imageDatas];
-        [v24 addObject:v21];
+        imageDatas2 = [accumulatorCopy imageDatas];
+        [imageDatas2 addObject:fallbackImageKeys];
 
-        v25 = [v6 mutableImages];
-        [v25 addObject:v14];
+        mutableImages = [accumulatorCopy mutableImages];
+        [mutableImages addObject:v14];
 
-        [v6 addFullBleedColor:v15];
-        v26 = [v6 mutableImages];
-        v27 = [v26 count];
+        [accumulatorCopy addFullBleedColor:clearColor];
+        mutableImages2 = [accumulatorCopy mutableImages];
+        v27 = [mutableImages2 count];
 
         if (v27 >= 5)
         {
@@ -157,13 +157,13 @@ LABEL_31:
 
   if ([v7 count])
   {
-    v35 = [v6 mutableImages];
-    v36 = [v35 count];
+    mutableImages3 = [accumulatorCopy mutableImages];
+    v36 = [mutableImages3 count];
 
     if (v36 <= 4)
     {
       [v7 sortUsingComparator:&__block_literal_global_43673];
-      [v37 _recursivelyGetImages:v7 accumulator:v6];
+      [selfCopy _recursivelyGetImages:v7 accumulator:accumulatorCopy];
     }
   }
 }
@@ -238,14 +238,14 @@ LABEL_16:
   return v7;
 }
 
-+ (id)calculateImagesForParameters:(id)a3
++ (id)calculateImagesForParameters:(id)parameters
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[MKVKImageSourceKeyImageResult alloc] initWithParameters:v4];
-  v6 = [v4 imageSourceKeys];
+  parametersCopy = parameters;
+  v5 = [[MKVKImageSourceKeyImageResult alloc] initWithParameters:parametersCopy];
+  imageSourceKeys = [parametersCopy imageSourceKeys];
 
-  v7 = v6;
+  v7 = imageSourceKeys;
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v16 = 0u;
   v17 = 0u;
@@ -279,7 +279,7 @@ LABEL_16:
     while (v11);
   }
 
-  [a1 _recursivelyGetImages:v8 accumulator:v5];
+  [self _recursivelyGetImages:v8 accumulator:v5];
 
   return v5;
 }

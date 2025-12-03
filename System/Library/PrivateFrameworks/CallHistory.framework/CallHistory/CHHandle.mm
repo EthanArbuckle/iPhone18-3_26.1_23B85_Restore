@@ -1,89 +1,89 @@
 @interface CHHandle
-+ (id)normalizedEmailAddressHandleForValue:(id)a3;
-+ (id)normalizedGenericHandleForValue:(id)a3;
-+ (id)normalizedHandleWithType:(int64_t)a3 value:(id)a4 isoCountryCode:(id)a5;
-+ (id)normalizedPhoneNumberHandleForValue:(id)a3 isoCountryCode:(id)a4;
-+ (int64_t)handleTypeForValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHandle:(id)a3;
++ (id)normalizedEmailAddressHandleForValue:(id)value;
++ (id)normalizedGenericHandleForValue:(id)value;
++ (id)normalizedHandleWithType:(int64_t)type value:(id)value isoCountryCode:(id)code;
++ (id)normalizedPhoneNumberHandleForValue:(id)value isoCountryCode:(id)code;
++ (int64_t)handleTypeForValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHandle:(id)handle;
 - (BOOL)isPseudonym;
 - (BOOL)isTemporary;
-- (CHHandle)initWithCoder:(id)a3;
-- (CHHandle)initWithHandle:(id)a3;
-- (CHHandle)initWithType:(int64_t)a3 value:(id)a4;
-- (CHHandle)initWithType:(int64_t)a3 value:(id)a4 normalizedValue:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CHHandle)initWithCoder:(id)coder;
+- (CHHandle)initWithHandle:(id)handle;
+- (CHHandle)initWithType:(int64_t)type value:(id)value;
+- (CHHandle)initWithType:(int64_t)type value:(id)value normalizedValue:(id)normalizedValue;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHHandle
 
 - (unint64_t)hash
 {
-  v3 = [(CHHandle *)self type];
-  v4 = [(CHHandle *)self value];
-  v5 = [v4 hash];
-  v6 = [(CHHandle *)self normalizedValue];
-  [v6 hash];
-  v14 = CHHash(3uLL, v7, v8, v9, v10, v11, v12, v13, v3, v5);
+  type = [(CHHandle *)self type];
+  value = [(CHHandle *)self value];
+  v5 = [value hash];
+  normalizedValue = [(CHHandle *)self normalizedValue];
+  [normalizedValue hash];
+  v14 = CHHash(3uLL, v7, v8, v9, v10, v11, v12, v13, type, v5);
 
   return v14;
 }
 
 - (BOOL)isTemporary
 {
-  v2 = [(CHHandle *)self value];
-  v3 = [v2 hasPrefix:@"temp:"];
+  value = [(CHHandle *)self value];
+  v3 = [value hasPrefix:@"temp:"];
 
   return v3;
 }
 
 - (BOOL)isPseudonym
 {
-  v2 = [(CHHandle *)self value];
-  v3 = [v2 hasPrefix:@"pseud:"];
+  value = [(CHHandle *)self value];
+  v3 = [value hasPrefix:@"pseud:"];
 
   return v3;
 }
 
-- (CHHandle)initWithHandle:(id)a3
+- (CHHandle)initWithHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 value];
-  v7 = [v4 normalizedValue];
+  handleCopy = handle;
+  type = [handleCopy type];
+  value = [handleCopy value];
+  normalizedValue = [handleCopy normalizedValue];
 
-  v8 = [(CHHandle *)self initWithType:v5 value:v6 normalizedValue:v7];
+  v8 = [(CHHandle *)self initWithType:type value:value normalizedValue:normalizedValue];
   return v8;
 }
 
-- (CHHandle)initWithType:(int64_t)a3 value:(id)a4
+- (CHHandle)initWithType:(int64_t)type value:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = CHHandle;
   v7 = [(CHHandle *)&v12 init];
   if (v7)
   {
-    if (!v6)
+    if (!valueCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CHHandle initWithType:value:]", @"value"}];
     }
 
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      v8 = 1;
+      typeCopy = 1;
     }
 
     else
     {
-      v8 = a3;
+      typeCopy = type;
     }
 
-    v7->_type = v8;
-    v9 = [v6 copy];
+    v7->_type = typeCopy;
+    v9 = [valueCopy copy];
     value = v7->_value;
     v7->_value = v9;
   }
@@ -91,13 +91,13 @@
   return v7;
 }
 
-- (CHHandle)initWithType:(int64_t)a3 value:(id)a4 normalizedValue:(id)a5
+- (CHHandle)initWithType:(int64_t)type value:(id)value normalizedValue:(id)normalizedValue
 {
-  v8 = a5;
-  v9 = [(CHHandle *)self initWithType:a3 value:a4];
+  normalizedValueCopy = normalizedValue;
+  v9 = [(CHHandle *)self initWithType:type value:value];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [normalizedValueCopy copy];
     normalizedValue = v9->_normalizedValue;
     v9->_normalizedValue = v10;
   }
@@ -105,49 +105,49 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CHHandle allocWithZone:a3];
+  v4 = [CHHandle allocWithZone:zone];
 
   return [(CHHandle *)v4 initWithHandle:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_type);
-  [v5 encodeInteger:type forKey:v6];
+  [coderCopy encodeInteger:type forKey:v6];
 
   value = self->_value;
   v8 = NSStringFromSelector(sel_value);
-  [v5 encodeObject:value forKey:v8];
+  [coderCopy encodeObject:value forKey:v8];
 
   normalizedValue = self->_normalizedValue;
   v10 = NSStringFromSelector(sel_normalizedValue);
-  [v5 encodeObject:normalizedValue forKey:v10];
+  [coderCopy encodeObject:normalizedValue forKey:v10];
 }
 
-- (CHHandle)initWithCoder:(id)a3
+- (CHHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CHHandle;
   v5 = [(CHHandle *)&v16 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_type);
-    v5->_type = [v4 decodeIntegerForKey:v6];
+    v5->_type = [coderCopy decodeIntegerForKey:v6];
 
     v7 = objc_opt_class();
     v8 = NSStringFromSelector(sel_value);
-    v9 = [v4 decodeObjectOfClass:v7 forKey:v8];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
     value = v5->_value;
     v5->_value = v9;
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(sel_normalizedValue);
-    v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
     normalizedValue = v5->_normalizedValue;
     v5->_normalizedValue = v13;
   }
@@ -164,13 +164,13 @@
 
   [v3 appendFormat:@", "];
   v5 = NSStringFromSelector(sel_value);
-  v6 = [(CHHandle *)self value];
-  [v3 appendFormat:@"%@=%@", v5, v6];
+  value = [(CHHandle *)self value];
+  [v3 appendFormat:@"%@=%@", v5, value];
 
   [v3 appendFormat:@", "];
   v7 = NSStringFromSelector(sel_normalizedValue);
-  v8 = [(CHHandle *)self normalizedValue];
-  [v3 appendFormat:@"%@=%@", v7, v8];
+  normalizedValue = [(CHHandle *)self normalizedValue];
+  [v3 appendFormat:@"%@=%@", v7, normalizedValue];
 
   [v3 appendFormat:@">"];
   v9 = [v3 copy];
@@ -178,10 +178,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -189,29 +189,29 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CHHandle *)self isEqualToHandle:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CHHandle *)self isEqualToHandle:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToHandle:(id)a3
+- (BOOL)isEqualToHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(CHHandle *)self type];
-  if (v5 == [v4 type])
+  handleCopy = handle;
+  type = [(CHHandle *)self type];
+  if (type == [handleCopy type])
   {
-    v6 = [(CHHandle *)self value];
-    v7 = [v4 value];
-    v8 = v6;
-    v9 = v7;
+    value = [(CHHandle *)self value];
+    value2 = [handleCopy value];
+    v8 = value;
+    v9 = value2;
     v10 = v9;
     if (v8 | v9)
     {
       if (!v9)
       {
         v14 = 0;
-        v12 = v8;
+        normalizedValue = v8;
 LABEL_10:
 
 LABEL_11:
@@ -227,12 +227,12 @@ LABEL_11:
       }
     }
 
-    v12 = [(CHHandle *)self normalizedValue];
-    v13 = [v4 normalizedValue];
-    v14 = (v12 | v13) == 0;
-    if (v13)
+    normalizedValue = [(CHHandle *)self normalizedValue];
+    normalizedValue2 = [handleCopy normalizedValue];
+    v14 = (normalizedValue | normalizedValue2) == 0;
+    if (normalizedValue2)
     {
-      v14 = [v12 isEqualToString:v13];
+      v14 = [normalizedValue isEqualToString:normalizedValue2];
     }
 
     goto LABEL_10;
@@ -244,23 +244,23 @@ LABEL_12:
   return v14;
 }
 
-+ (id)normalizedHandleWithType:(int64_t)a3 value:(id)a4 isoCountryCode:(id)a5
++ (id)normalizedHandleWithType:(int64_t)type value:(id)value isoCountryCode:(id)code
 {
-  v7 = a4;
-  v8 = a5;
-  switch(a3)
+  valueCopy = value;
+  codeCopy = code;
+  switch(type)
   {
     case 1:
-      v9 = [CHHandle normalizedGenericHandleForValue:v7];
+      v9 = [CHHandle normalizedGenericHandleForValue:valueCopy];
       break;
     case 2:
-      v9 = [CHHandle normalizedPhoneNumberHandleForValue:v7 isoCountryCode:v8];
+      v9 = [CHHandle normalizedPhoneNumberHandleForValue:valueCopy isoCountryCode:codeCopy];
       break;
     case 3:
-      v9 = [CHHandle normalizedEmailAddressHandleForValue:v7];
+      v9 = [CHHandle normalizedEmailAddressHandleForValue:valueCopy];
       break;
     default:
-      v9 = [[CHHandle alloc] initWithType:1 value:v7];
+      v9 = [[CHHandle alloc] initWithType:1 value:valueCopy];
       break;
   }
 
@@ -269,14 +269,14 @@ LABEL_12:
   return v10;
 }
 
-+ (id)normalizedEmailAddressHandleForValue:(id)a3
++ (id)normalizedEmailAddressHandleForValue:(id)value
 {
-  v3 = a3;
-  if ([v3 length])
+  valueCopy = value;
+  if ([valueCopy length])
   {
     v4 = [CHHandle alloc];
-    v5 = [v3 lowercaseString];
-    v6 = [(CHHandle *)v4 initWithType:3 value:v3 normalizedValue:v5];
+    lowercaseString = [valueCopy lowercaseString];
+    v6 = [(CHHandle *)v4 initWithType:3 value:valueCopy normalizedValue:lowercaseString];
   }
 
   else
@@ -287,14 +287,14 @@ LABEL_12:
   return v6;
 }
 
-+ (id)normalizedGenericHandleForValue:(id)a3
++ (id)normalizedGenericHandleForValue:(id)value
 {
-  v3 = a3;
-  if ([v3 length])
+  valueCopy = value;
+  if ([valueCopy length])
   {
     v4 = [CHHandle alloc];
-    v5 = [v3 lowercaseString];
-    v6 = [(CHHandle *)v4 initWithType:1 value:v3 normalizedValue:v5];
+    lowercaseString = [valueCopy lowercaseString];
+    v6 = [(CHHandle *)v4 initWithType:1 value:valueCopy normalizedValue:lowercaseString];
   }
 
   else
@@ -305,13 +305,13 @@ LABEL_12:
   return v6;
 }
 
-+ (id)normalizedPhoneNumberHandleForValue:(id)a3 isoCountryCode:(id)a4
++ (id)normalizedPhoneNumberHandleForValue:(id)value isoCountryCode:(id)code
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  valueCopy = value;
+  codeCopy = code;
+  if ([valueCopy length])
   {
-    v7 = v6;
+    v7 = codeCopy;
     if (![v7 length])
     {
       v8 = PNCopyBestGuessCountryCodeForNumber();
@@ -321,8 +321,8 @@ LABEL_12:
 
     if ([v7 length])
     {
-      v9 = CHPhoneNumberNormalizedPhoneNumberString(v5, v7);
-      v10 = [[CHHandle alloc] initWithType:2 value:v5 normalizedValue:v9];
+      v9 = CHPhoneNumberNormalizedPhoneNumberString(valueCopy, v7);
+      v10 = [[CHHandle alloc] initWithType:2 value:valueCopy normalizedValue:v9];
     }
 
     else
@@ -339,14 +339,14 @@ LABEL_12:
   return v10;
 }
 
-+ (int64_t)handleTypeForValue:(id)a3
++ (int64_t)handleTypeForValue:(id)value
 {
-  if (!a3)
+  if (!value)
   {
     return 0;
   }
 
-  if ([a3 containsString:@"@"])
+  if ([value containsString:@"@"])
   {
     return 3;
   }

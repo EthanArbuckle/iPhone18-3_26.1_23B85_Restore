@@ -9,7 +9,7 @@
   v12 = a3;
   if (v12)
   {
-    [a1 setObject:v12 forKeyedSubscript:a9];
+    [self setObject:v12 forKeyedSubscript:a9];
     v19 = &a11;
     v13 = a10;
     if (v13)
@@ -21,7 +21,7 @@
         v16 = v15;
         v15 = *v19;
 
-        [a1 setObject:v14 forKeyedSubscript:v15];
+        [self setObject:v14 forKeyedSubscript:v15];
         v17 = v19 + 1;
         v19 += 2;
         v18 = *v17;

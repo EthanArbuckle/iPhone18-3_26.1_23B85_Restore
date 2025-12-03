@@ -1,25 +1,25 @@
 @interface AVTAdaptativeLayoutView
-- (AVTAdaptativeLayoutView)initWithFrame:(CGRect)a3 contentView:(id)a4;
+- (AVTAdaptativeLayoutView)initWithFrame:(CGRect)frame contentView:(id)view;
 - (void)layoutSubviews;
-- (void)setLayout:(id)a3;
+- (void)setLayout:(id)layout;
 @end
 
 @implementation AVTAdaptativeLayoutView
 
-- (AVTAdaptativeLayoutView)initWithFrame:(CGRect)a3 contentView:(id)a4
+- (AVTAdaptativeLayoutView)initWithFrame:(CGRect)frame contentView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = AVTAdaptativeLayoutView;
-  v11 = [(AVTAdaptativeLayoutView *)&v16 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(AVTAdaptativeLayoutView *)&v16 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_contentView, a4);
+    objc_storeStrong(&height->_contentView, view);
     [(AVTAdaptativeLayoutView *)v12 addSubview:v12->_contentView];
     v13 = objc_alloc_init(_AVTAdaptiveFullSizeLayout);
     layout = v12->_layout;
@@ -29,37 +29,37 @@
   return v12;
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_layout != v5)
+  layoutCopy = layout;
+  if (self->_layout != layoutCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_layout, a3);
+    v6 = layoutCopy;
+    objc_storeStrong(&self->_layout, layout);
     [(AVTAdaptativeLayoutView *)self setNeedsLayout];
-    v5 = v6;
+    layoutCopy = v6;
   }
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(AVTAdaptativeLayoutView *)self layout];
+  layout = [(AVTAdaptativeLayoutView *)self layout];
   [(AVTAdaptativeLayoutView *)self bounds];
-  [v3 contentViewSizeForSize:{v4, v5}];
+  [layout contentViewSizeForSize:{v4, v5}];
 
   [(AVTAdaptativeLayoutView *)self bounds];
   UIRectGetCenter();
-  v6 = [(AVTAdaptativeLayoutView *)self window];
-  v7 = [v6 screen];
-  [v7 scale];
+  window = [(AVTAdaptativeLayoutView *)self window];
+  screen = [window screen];
+  [screen scale];
   UIRectCenteredAboutPointScale();
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(AVTAdaptativeLayoutView *)self contentView];
-  [v16 frame];
+  contentView = [(AVTAdaptativeLayoutView *)self contentView];
+  [contentView frame];
   v24.origin.x = v17;
   v24.origin.y = v18;
   v24.size.width = v19;
@@ -68,12 +68,12 @@
   v23.origin.y = v11;
   v23.size.width = v13;
   v23.size.height = v15;
-  LOBYTE(v7) = CGRectEqualToRect(v23, v24);
+  LOBYTE(screen) = CGRectEqualToRect(v23, v24);
 
-  if ((v7 & 1) == 0)
+  if ((screen & 1) == 0)
   {
-    v21 = [(AVTAdaptativeLayoutView *)self contentView];
-    [v21 setFrame:{v9, v11, v13, v15}];
+    contentView2 = [(AVTAdaptativeLayoutView *)self contentView];
+    [contentView2 setFrame:{v9, v11, v13, v15}];
   }
 }
 

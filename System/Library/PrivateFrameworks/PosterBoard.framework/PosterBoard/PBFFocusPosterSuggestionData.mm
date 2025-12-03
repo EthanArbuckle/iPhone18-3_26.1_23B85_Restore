@@ -1,33 +1,33 @@
 @interface PBFFocusPosterSuggestionData
-- (PBFFocusPosterSuggestionData)initWithPreviews:(id)a3 previewsToSnapshotsMapTable:(id)a4;
-- (id)previewForUniqueIdentifier:(id)a3;
+- (PBFFocusPosterSuggestionData)initWithPreviews:(id)previews previewsToSnapshotsMapTable:(id)table;
+- (id)previewForUniqueIdentifier:(id)identifier;
 @end
 
 @implementation PBFFocusPosterSuggestionData
 
-- (PBFFocusPosterSuggestionData)initWithPreviews:(id)a3 previewsToSnapshotsMapTable:(id)a4
+- (PBFFocusPosterSuggestionData)initWithPreviews:(id)previews previewsToSnapshotsMapTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
+  previewsCopy = previews;
+  tableCopy = table;
   v12.receiver = self;
   v12.super_class = PBFFocusPosterSuggestionData;
   v8 = [(PBFFocusPosterSuggestionData *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [previewsCopy copy];
     previews = v8->_previews;
     v8->_previews = v9;
 
-    objc_storeStrong(&v8->_previewsToSnapshotsMapTable, a4);
+    objc_storeStrong(&v8->_previewsToSnapshotsMapTable, table);
   }
 
   return v8;
 }
 
-- (id)previewForUniqueIdentifier:(id)a3
+- (id)previewForUniqueIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -47,8 +47,8 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 previewUniqueIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        previewUniqueIdentifier = [v9 previewUniqueIdentifier];
+        v11 = [previewUniqueIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {

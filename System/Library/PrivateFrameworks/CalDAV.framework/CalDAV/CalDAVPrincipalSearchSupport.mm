@@ -1,45 +1,45 @@
 @interface CalDAVPrincipalSearchSupport
-+ (id)nameForWellKnownType:(int)a3;
-+ (id)namespaceForWellKnownType:(int)a3;
-+ (id)parserMappingsWithServerSupportSet:(id)a3 includeEmail:(BOOL)a4;
-+ (id)resultTypeForRecordType:(id)a3;
++ (id)nameForWellKnownType:(int)type;
++ (id)namespaceForWellKnownType:(int)type;
++ (id)parserMappingsWithServerSupportSet:(id)set includeEmail:(BOOL)email;
++ (id)resultTypeForRecordType:(id)type;
 @end
 
 @implementation CalDAVPrincipalSearchSupport
 
-+ (id)nameForWellKnownType:(int)a3
++ (id)nameForWellKnownType:(int)type
 {
-  if ((a3 - 1) > 6)
+  if ((type - 1) > 6)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_278D66BB0[a3 - 1];
+    v4 = *off_278D66BB0[type - 1];
   }
 
   return v4;
 }
 
-+ (id)namespaceForWellKnownType:(int)a3
++ (id)namespaceForWellKnownType:(int)type
 {
-  if ((a3 - 1) > 6)
+  if ((type - 1) > 6)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&unk_278D66BE8 + (a3 - 1));
+    v4 = **(&unk_278D66BE8 + (type - 1));
   }
 
   return v4;
 }
 
-+ (id)resultTypeForRecordType:(id)a3
++ (id)resultTypeForRecordType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = recordToResultMapping;
   if (!recordToResultMapping)
   {
@@ -51,7 +51,7 @@
     v4 = recordToResultMapping;
   }
 
-  v8 = [v4 objectForKey:v3];
+  v8 = [v4 objectForKey:typeCopy];
   v9 = v8;
   if (v8)
   {
@@ -68,10 +68,10 @@
   return v10;
 }
 
-+ (id)parserMappingsWithServerSupportSet:(id)a3 includeEmail:(BOOL)a4
++ (id)parserMappingsWithServerSupportSet:(id)set includeEmail:(BOOL)email
 {
-  v4 = a4;
-  v5 = a3;
+  emailCopy = email;
+  setCopy = set;
   v6 = [MEMORY[0x277CBEB58] set];
   v7 = objc_alloc(MEMORY[0x277CFDBE8]);
   v8 = [v7 initWithNameSpace:*MEMORY[0x277CFDEF8] name:*MEMORY[0x277CFDFC0] parseClass:objc_opt_class()];
@@ -80,7 +80,7 @@
   v21[1] = 3221225472;
   v21[2] = __80__CalDAVPrincipalSearchSupport_parserMappingsWithServerSupportSet_includeEmail___block_invoke;
   v21[3] = &unk_278D66B90;
-  v9 = v5;
+  v9 = setCopy;
   v22 = v9;
   v10 = v6;
   v23 = v10;
@@ -91,7 +91,7 @@
   v11[2](v11, 5, v13, 1);
   v14 = objc_opt_class();
   v11[2](v11, 7, v14, 1);
-  if (v4)
+  if (emailCopy)
   {
     v15 = objc_opt_class();
     v11[2](v11, 4, v15, 0);

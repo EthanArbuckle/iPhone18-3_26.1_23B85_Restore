@@ -1,16 +1,16 @@
 @interface HDOntologyEducationContentProvider
-+ (BOOL)localizedEducationContentForConceptWithIdentifier:(id)a3 ontologyTransaction:(id)a4 localizedEducationContentOut:(id *)a5 error:(id *)a6;
-+ (id)_localizedEducationContentSectionsForConcept:(uint64_t)a1;
-+ (id)_localizedSectionDataForAttribute:(void *)a3 timestamp:;
++ (BOOL)localizedEducationContentForConceptWithIdentifier:(id)identifier ontologyTransaction:(id)transaction localizedEducationContentOut:(id *)out error:(id *)error;
++ (id)_localizedEducationContentSectionsForConcept:(uint64_t)concept;
++ (id)_localizedSectionDataForAttribute:(void *)attribute timestamp:;
 @end
 
 @implementation HDOntologyEducationContentProvider
 
-+ (BOOL)localizedEducationContentForConceptWithIdentifier:(id)a3 ontologyTransaction:(id)a4 localizedEducationContentOut:(id *)a5 error:(id *)a6
++ (BOOL)localizedEducationContentForConceptWithIdentifier:(id)identifier ontologyTransaction:(id)transaction localizedEducationContentOut:(id *)out error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [HDOntologyConceptManager predicateMatchingRelationshipsWithSubjectId:v10 relationshipType:988];
+  identifierCopy = identifier;
+  transactionCopy = transaction;
+  v12 = [HDOntologyConceptManager predicateMatchingRelationshipsWithSubjectId:identifierCopy relationshipType:988];
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0;
   v32 = &v31;
@@ -28,8 +28,8 @@
   v25 = &v27;
   v14 = v13;
   v23 = v14;
-  v26 = a1;
-  v15 = [HDOntologyConceptManager enumerateRelationshipsMatchingPredicate:v12 options:13 transaction:v11 error:a6 enumerationHandler:&v19];
+  selfCopy = self;
+  v15 = [HDOntologyConceptManager enumerateRelationshipsMatchingPredicate:v12 options:13 transaction:transactionCopy error:error enumerationHandler:&v19];
   if (v15)
   {
     if (v32[3] == -1)
@@ -52,10 +52,10 @@
       }
     }
 
-    if (a5)
+    if (out)
     {
       v16 = v16;
-      *a5 = v16;
+      *out = v16;
     }
   }
 
@@ -90,7 +90,7 @@ uint64_t __143__HDOntologyEducationContentProvider_localizedEducationContentForC
   return 1;
 }
 
-+ (id)_localizedEducationContentSectionsForConcept:(uint64_t)a1
++ (id)_localizedEducationContentSectionsForConcept:(uint64_t)concept
 {
   v85 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -109,8 +109,8 @@ uint64_t __143__HDOntologyEducationContentProvider_localizedEducationContentForC
   v55 = v5;
   v56 = v4;
   v68 = [obj countByEnumeratingWithState:&v78 objects:v84 count:16];
-  v7 = 0;
-  v8 = 0;
+  isDeleted2 = 0;
+  isDeleted = 0;
   v9 = 0;
   if (!v68)
   {
@@ -133,12 +133,12 @@ uint64_t __143__HDOntologyEducationContentProvider_localizedEducationContentForC
       }
 
       v12 = *(*(&v78 + 1) + 8 * v11);
-      v13 = [v12 type];
-      if (v13 <= 801)
+      type = [v12 type];
+      if (type <= 801)
       {
-        if (v13 <= 667)
+        if (type <= 667)
         {
-          if (v13 == 666)
+          if (type == 666)
           {
             v14 = [(HDOntologyEducationContentProvider *)Current _localizedSectionDataForAttribute:v3 timestamp:v12];
             v15 = v67;
@@ -148,7 +148,7 @@ uint64_t __143__HDOntologyEducationContentProvider_localizedEducationContentForC
 
           else
           {
-            if (v13 != 667)
+            if (type != 667)
             {
               goto LABEL_35;
             }
@@ -162,7 +162,7 @@ uint64_t __143__HDOntologyEducationContentProvider_localizedEducationContentForC
 
         else
         {
-          switch(v13)
+          switch(type)
           {
             case 668:
               v14 = [(HDOntologyEducationContentProvider *)Current _localizedSectionDataForAttribute:v3 timestamp:v12];
@@ -190,9 +190,9 @@ uint64_t __143__HDOntologyEducationContentProvider_localizedEducationContentForC
         goto LABEL_34;
       }
 
-      if (v13 <= 803)
+      if (type <= 803)
       {
-        if (v13 == 802)
+        if (type == 802)
         {
           v27 = [(HDOntologyEducationContentProvider *)Current _localizedSectionDataForAttribute:v3 timestamp:v12];
           [v54 addObject:v27];
@@ -200,51 +200,51 @@ uint64_t __143__HDOntologyEducationContentProvider_localizedEducationContentForC
 
         else
         {
-          v24 = [v12 stringValue];
-          [v4 hk_addNonNilObject:v24];
+          stringValue = [v12 stringValue];
+          [v4 hk_addNonNilObject:stringValue];
 
-          v25 = [v12 version];
+          version = [v12 version];
           v26 = v61;
-          if (v61 <= v25)
+          if (v61 <= version)
           {
-            v26 = v25;
+            v26 = version;
           }
 
           v61 = v26;
-          if (v8)
+          if (isDeleted)
           {
-            v8 = 1;
+            isDeleted = 1;
           }
 
           else
           {
-            v8 = [v12 isDeleted];
+            isDeleted = [v12 isDeleted];
           }
         }
       }
 
       else
       {
-        switch(v13)
+        switch(type)
         {
           case 804:
-            v28 = [v12 stringValue];
-            [v5 hk_addNonNilObject:v28];
+            stringValue2 = [v12 stringValue];
+            [v5 hk_addNonNilObject:stringValue2];
 
-            v29 = [v12 version];
-            if (v10 <= v29)
+            version2 = [v12 version];
+            if (v10 <= version2)
             {
-              v10 = v29;
+              v10 = version2;
             }
 
-            if (v7)
+            if (isDeleted2)
             {
-              v7 = 1;
+              isDeleted2 = 1;
             }
 
             else
             {
-              v7 = [v12 isDeleted];
+              isDeleted2 = [v12 isDeleted];
             }
 
             break;
@@ -259,21 +259,21 @@ LABEL_34:
             break;
           case 959:
             v57 = objc_alloc(MEMORY[0x277CCD748]);
-            v18 = [v12 stringValue];
-            [v18 componentsSeparatedByString:{@", "}];
-            v19 = v59 = v8;
+            stringValue3 = [v12 stringValue];
+            [stringValue3 componentsSeparatedByString:{@", "}];
+            v19 = v59 = isDeleted;
             v20 = v3;
             v21 = v10;
-            v22 = v7;
+            v22 = isDeleted2;
             v23 = v9;
             v9 = [v57 initWithStringValues:v19 sectionDataType:HDOntologyEducationContentSectionDataTypeForAttributeType(objc_msgSend(v12 version:"type")) timestamp:objc_msgSend(v12 deleted:{"version"), objc_msgSend(v12, "isDeleted"), Current}];
 
-            v7 = v22;
+            isDeleted2 = v22;
             v10 = v21;
             v3 = v20;
             v4 = v56;
 
-            v8 = v59;
+            isDeleted = v59;
             v5 = v55;
             break;
         }
@@ -296,8 +296,8 @@ LABEL_42:
   if ([v4 count])
   {
     v32 = objc_alloc(MEMORY[0x277CCD748]);
-    v33 = [v4 allObjects];
-    v34 = [v32 initWithStringValues:v33 sectionDataType:4 version:v61 timestamp:v8 & 1 deleted:Current];
+    allObjects = [v4 allObjects];
+    v34 = [v32 initWithStringValues:allObjects sectionDataType:4 version:v61 timestamp:isDeleted & 1 deleted:Current];
 
     [v31 addObject:v34];
   }
@@ -306,8 +306,8 @@ LABEL_42:
   if ([v5 count])
   {
     v35 = objc_alloc(MEMORY[0x277CCD748]);
-    v36 = [v5 allObjects];
-    v37 = [v35 initWithStringValues:v36 sectionDataType:5 version:v10 timestamp:v7 & 1 deleted:Current];
+    allObjects2 = [v5 allObjects];
+    v37 = [v35 initWithStringValues:allObjects2 sectionDataType:5 version:v10 timestamp:isDeleted2 & 1 deleted:Current];
 
     [v31 addObject:v37];
   }
@@ -385,24 +385,24 @@ LABEL_42:
   return v38;
 }
 
-+ (id)_localizedSectionDataForAttribute:(void *)a3 timestamp:
++ (id)_localizedSectionDataForAttribute:(void *)attribute timestamp:
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributeCopy = attribute;
   objc_opt_self();
-  v5 = [v4 stringValue];
-  v6 = [v5 mutableCopy];
+  stringValue = [attributeCopy stringValue];
+  v6 = [stringValue mutableCopy];
 
   [v6 replaceOccurrencesOfString:@"\\n" withString:@"\n" options:0 range:{0, objc_msgSend(v6, "length")}];
   [v6 replaceOccurrencesOfString:@"\\t" withString:@"\t" options:0 range:{0, objc_msgSend(v6, "length")}];
   v7 = objc_alloc(MEMORY[0x277CCD748]);
   v15[0] = v6;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v9 = HDOntologyEducationContentSectionDataTypeForAttributeType([v4 type]);
-  v10 = [v4 version];
-  v11 = [v4 isDeleted];
+  v9 = HDOntologyEducationContentSectionDataTypeForAttributeType([attributeCopy type]);
+  version = [attributeCopy version];
+  isDeleted = [attributeCopy isDeleted];
 
-  v12 = [v7 initWithStringValues:v8 sectionDataType:v9 version:v10 timestamp:v11 deleted:a1];
+  v12 = [v7 initWithStringValues:v8 sectionDataType:v9 version:version timestamp:isDeleted deleted:self];
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;

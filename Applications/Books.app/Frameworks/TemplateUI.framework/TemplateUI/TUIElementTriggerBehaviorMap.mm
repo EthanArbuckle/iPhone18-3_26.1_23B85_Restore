@@ -1,31 +1,31 @@
 @interface TUIElementTriggerBehaviorMap
-- (BOOL)isEqual:(id)a3;
-- (TUIElementTriggerBehaviorMap)initWithMap:(id)a3 refIdMap:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TUIElementTriggerBehaviorMap)initWithMap:(id)map refIdMap:(id)idMap;
 @end
 
 @implementation TUIElementTriggerBehaviorMap
 
-- (TUIElementTriggerBehaviorMap)initWithMap:(id)a3 refIdMap:(id)a4
+- (TUIElementTriggerBehaviorMap)initWithMap:(id)map refIdMap:(id)idMap
 {
-  v7 = a3;
-  v8 = a4;
+  mapCopy = map;
+  idMapCopy = idMap;
   v12.receiver = self;
   v12.super_class = TUIElementTriggerBehaviorMap;
   v9 = [(TUIElementTriggerBehaviorMap *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_triggerBehaviorMap, a3);
-    objc_storeStrong(&v10->_triggerRefIdMap, a4);
+    objc_storeStrong(&v9->_triggerBehaviorMap, map);
+    objc_storeStrong(&v10->_triggerRefIdMap, idMap);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -35,7 +35,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v6 = v4;
+      v6 = equalCopy;
     }
 
     else
@@ -46,19 +46,19 @@
     v7 = v6;
     if (v7)
     {
-      v8 = [(TUIElementTriggerBehaviorMap *)self triggerBehaviorMap];
-      v9 = [(TUIElementTriggerBehaviorMap *)v7 triggerBehaviorMap];
+      triggerBehaviorMap = [(TUIElementTriggerBehaviorMap *)self triggerBehaviorMap];
+      triggerBehaviorMap2 = [(TUIElementTriggerBehaviorMap *)v7 triggerBehaviorMap];
 
-      if (v8 == v9)
+      if (triggerBehaviorMap == triggerBehaviorMap2)
       {
         v12 = 1;
       }
 
       else
       {
-        v10 = [(TUIElementTriggerBehaviorMap *)self triggerBehaviorMap];
-        v11 = [(TUIElementTriggerBehaviorMap *)v7 triggerBehaviorMap];
-        v12 = [v10 isEqualToDictionary:v11];
+        triggerBehaviorMap3 = [(TUIElementTriggerBehaviorMap *)self triggerBehaviorMap];
+        triggerBehaviorMap4 = [(TUIElementTriggerBehaviorMap *)v7 triggerBehaviorMap];
+        v12 = [triggerBehaviorMap3 isEqualToDictionary:triggerBehaviorMap4];
       }
     }
 

@@ -1,31 +1,31 @@
 @interface PKPaymentRemoteContentPassActionGroupResponse
-- (PKPaymentRemoteContentPassActionGroupResponse)initWithExistingActionGroup:(id)a3 data:(id)a4 pass:(id)a5;
+- (PKPaymentRemoteContentPassActionGroupResponse)initWithExistingActionGroup:(id)group data:(id)data pass:(id)pass;
 @end
 
 @implementation PKPaymentRemoteContentPassActionGroupResponse
 
-- (PKPaymentRemoteContentPassActionGroupResponse)initWithExistingActionGroup:(id)a3 data:(id)a4 pass:(id)a5
+- (PKPaymentRemoteContentPassActionGroupResponse)initWithExistingActionGroup:(id)group data:(id)data pass:(id)pass
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  passCopy = pass;
   v40.receiver = self;
   v40.super_class = PKPaymentRemoteContentPassActionGroupResponse;
-  v8 = [(PKWebServiceResponse *)&v40 initWithData:a4];
+  v8 = [(PKWebServiceResponse *)&v40 initWithData:data];
   v9 = v8;
   if (v8)
   {
-    v10 = [(PKWebServiceResponse *)v8 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v8 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v35 = v10;
-      v11 = v10;
+      v35 = jSONObject;
+      v11 = jSONObject;
       v12 = [(PKPaymentRemoteContentPassActionGroupResponse *)v11 PKDictionaryForKey:@"actionGroup"];
       v33 = v11;
       v13 = [(PKPaymentRemoteContentPassActionGroupResponse *)v11 PKArrayForKey:@"actions"];
-      v14 = [v7 actionLocalizations];
+      actionLocalizations = [passCopy actionLocalizations];
       v34 = v12;
-      v15 = [[PKPaymentPassActionGroup alloc] initWithDictionary:v12 localizations:v14];
+      v15 = [[PKPaymentPassActionGroup alloc] initWithDictionary:v12 localizations:actionLocalizations];
       updatedActionGroup = v9->_updatedActionGroup;
       v9->_updatedActionGroup = v15;
 
@@ -49,7 +49,7 @@
               objc_enumerationMutation(v18);
             }
 
-            v23 = [[PKPaymentPassAction alloc] initWithDictionary:*(*(&v36 + 1) + 8 * i) localizations:v14];
+            v23 = [[PKPaymentPassAction alloc] initWithDictionary:*(*(&v36 + 1) + 8 * i) localizations:actionLocalizations];
             [v17 safelyAddObject:v23];
           }
 
@@ -63,7 +63,7 @@
       v25 = [v17 copy];
       [(PKPaymentPassActionGroup *)v24 setActions:v25];
 
-      v10 = v35;
+      jSONObject = v35;
       v27 = v33;
       v26 = v34;
     }

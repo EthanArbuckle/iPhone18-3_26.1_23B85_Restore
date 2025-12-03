@@ -1,10 +1,10 @@
 @interface MUScrollableSegmentedPickerSegmentView
-- (MUScrollableSegmentedPickerSegmentView)initWithFrame:(CGRect)a3;
+- (MUScrollableSegmentedPickerSegmentView)initWithFrame:(CGRect)frame;
 - (void)_setupLabel;
 - (void)_updateAppearance;
 - (void)_updateFont;
 - (void)_updateSelectionAppearance;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUScrollableSegmentedPickerSegmentView
@@ -45,19 +45,19 @@
 
 - (void)_updateAppearance
 {
-  v3 = [(MUScrollableSegmentedPickerCategory *)self->_viewModel categoryName];
-  [(UILabel *)self->_label setText:v3];
+  categoryName = [(MUScrollableSegmentedPickerCategory *)self->_viewModel categoryName];
+  [(UILabel *)self->_label setText:categoryName];
 
-  v4 = [(MUScrollableSegmentedPickerCategory *)self->_viewModel categoryName];
-  [(MUScrollableSegmentedPickerSegmentView *)self setAccessibilityLabel:v4];
+  categoryName2 = [(MUScrollableSegmentedPickerCategory *)self->_viewModel categoryName];
+  [(MUScrollableSegmentedPickerSegmentView *)self setAccessibilityLabel:categoryName2];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_viewModel] & 1) == 0)
+  modelCopy = model;
+  if (([modelCopy isEqual:self->_viewModel] & 1) == 0)
   {
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(MUScrollableSegmentedPickerSegmentView *)self _updateAppearance];
   }
 }
@@ -87,11 +87,11 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (MUScrollableSegmentedPickerSegmentView)initWithFrame:(CGRect)a3
+- (MUScrollableSegmentedPickerSegmentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUScrollableSegmentedPickerSegmentView;
-  v3 = [(MUScrollableSegmentedPickerSegmentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUScrollableSegmentedPickerSegmentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

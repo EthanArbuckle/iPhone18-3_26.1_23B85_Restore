@@ -1,18 +1,18 @@
 @interface UIFieldEditorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)insertText:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)insertText:(id)text;
 @end
 
 @implementation UIFieldEditorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = "@";
   v4 = @"UIFieldEditor";
   v5 = "v";
@@ -21,14 +21,14 @@
   objc_storeStrong(v7, v6);
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, text);
   MEMORY[0x29ED3DFA0](*MEMORY[0x29EDC74D0]);
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = UIFieldEditorAccessibility;
   [(UIFieldEditorAccessibility *)&v3 insertText:location[0]];
   MEMORY[0x29ED3DFA0](0);

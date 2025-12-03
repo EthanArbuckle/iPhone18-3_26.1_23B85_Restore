@@ -1,22 +1,22 @@
 @interface SXFullscreenCaptionViewFactory
-- (SXFullscreenCaptionViewFactory)initWithTextSourceFactory:(id)a3 actionHandler:(id)a4;
+- (SXFullscreenCaptionViewFactory)initWithTextSourceFactory:(id)factory actionHandler:(id)handler;
 - (id)createCaptionView;
 @end
 
 @implementation SXFullscreenCaptionViewFactory
 
-- (SXFullscreenCaptionViewFactory)initWithTextSourceFactory:(id)a3 actionHandler:(id)a4
+- (SXFullscreenCaptionViewFactory)initWithTextSourceFactory:(id)factory actionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  factoryCopy = factory;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = SXFullscreenCaptionViewFactory;
   v9 = [(SXFullscreenCaptionViewFactory *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_textSourceFactory, a3);
-    objc_storeStrong(&v10->_actionHandler, a4);
+    objc_storeStrong(&v9->_textSourceFactory, factory);
+    objc_storeStrong(&v10->_actionHandler, handler);
   }
 
   return v10;
@@ -25,9 +25,9 @@
 - (id)createCaptionView
 {
   v3 = [SXFullscreenCaptionView alloc];
-  v4 = [(SXFullscreenCaptionViewFactory *)self textSourceFactory];
-  v5 = [(SXFullscreenCaptionViewFactory *)self actionHandler];
-  v6 = [(SXFullscreenCaptionView *)v3 initWithTextSourceFactory:v4 actionHandler:v5];
+  textSourceFactory = [(SXFullscreenCaptionViewFactory *)self textSourceFactory];
+  actionHandler = [(SXFullscreenCaptionViewFactory *)self actionHandler];
+  v6 = [(SXFullscreenCaptionView *)v3 initWithTextSourceFactory:textSourceFactory actionHandler:actionHandler];
 
   return v6;
 }

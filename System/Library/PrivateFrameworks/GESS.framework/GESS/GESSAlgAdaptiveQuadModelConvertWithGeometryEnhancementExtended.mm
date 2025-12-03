@@ -1,52 +1,52 @@
 @interface GESSAlgAdaptiveQuadModelConvertWithGeometryEnhancementExtended
-- (BOOL)run:(id)a3 output:(id)a4;
-- (BOOL)setErrorCallback:(id)a3;
-- (BOOL)setProgressCallback:(id)a3;
+- (BOOL)run:(id)run output:(id)output;
+- (BOOL)setErrorCallback:(id)callback;
+- (BOOL)setProgressCallback:(id)callback;
 - (id).cxx_construct;
 - (id)returnReport;
 @end
 
 @implementation GESSAlgAdaptiveQuadModelConvertWithGeometryEnhancementExtended
 
-- (BOOL)setProgressCallback:(id)a3
+- (BOOL)setProgressCallback:(id)callback
 {
-  v4 = MEMORY[0x24C254FE0](a3, a2);
+  v4 = MEMORY[0x24C254FE0](callback, a2);
   progress_cb = self->_progress_cb;
   self->_progress_cb = v4;
 
   return 1;
 }
 
-- (BOOL)setErrorCallback:(id)a3
+- (BOOL)setErrorCallback:(id)callback
 {
-  v4 = MEMORY[0x24C254FE0](a3, a2);
+  v4 = MEMORY[0x24C254FE0](callback, a2);
   error_cb = self->_error_cb;
   self->_error_cb = v4;
 
   return 1;
 }
 
-- (BOOL)run:(id)a3 output:(id)a4
+- (BOOL)run:(id)run output:(id)output
 {
   v95 = *MEMORY[0x277D85DE8];
-  v74 = self;
-  v6 = a3;
-  v7 = a4;
+  selfCopy = self;
+  runCopy = run;
+  outputCopy = output;
   objc_msgSend_setAlgStatus_(self, v8, 1, v9);
-  if (objc_msgSend_valid(v6, v10, v11, v12) && objc_msgSend_meshType(v6, v13, v14, v15) == 1 && objc_msgSend_meshType(v7, v13, v16, v15) == 11)
+  if (objc_msgSend_valid(runCopy, v10, v11, v12) && objc_msgSend_meshType(runCopy, v13, v14, v15) == 1 && objc_msgSend_meshType(outputCopy, v13, v16, v15) == 11)
   {
-    v18 = objc_msgSend_meshImpl(v6, v13, v17, v15);
-    if (!objc_msgSend_meshImpl(v7, v19, v20, v21))
+    v18 = objc_msgSend_meshImpl(runCopy, v13, v17, v15);
+    if (!objc_msgSend_meshImpl(outputCopy, v19, v20, v21))
     {
       sub_24BD2A7F0();
     }
 
-    v25 = objc_msgSend_meshImpl(v7, v22, v23, v24, v74);
-    if (!v74->_options)
+    v25 = objc_msgSend_meshImpl(outputCopy, v22, v23, v24, selfCopy);
+    if (!selfCopy->_options)
     {
       v26 = objc_alloc_init(GESSAlgAdaptiveQuadModelConvertWithGeometryEnhancementOptions);
-      options = v74->_options;
-      v74->_options = v26;
+      options = selfCopy->_options;
+      selfCopy->_options = v26;
     }
 
     sub_24BD29B54(&v83);
@@ -54,61 +54,61 @@
     v89 = 981668463;
     v90 = 0x1400000005;
     v91 = 1;
-    v83 = objc_msgSend_outputFaceNumber(v74->_options, v28, v29, v30);
-    v84 = objc_msgSend_enableSimplify(v74->_options, v31, v32, v33);
-    v87 = objc_msgSend_textureResolution(v74->_options, v34, v35, v36);
-    v40 = objc_msgSend_textureTransferOptions(v74->_options, v37, v38, v39);
+    v83 = objc_msgSend_outputFaceNumber(selfCopy->_options, v28, v29, v30);
+    v84 = objc_msgSend_enableSimplify(selfCopy->_options, v31, v32, v33);
+    v87 = objc_msgSend_textureResolution(selfCopy->_options, v34, v35, v36);
+    v40 = objc_msgSend_textureTransferOptions(selfCopy->_options, v37, v38, v39);
     v44 = objc_msgSend_inputTangentialSpaceType(v40, v41, v42, v43);
     v85 = sub_24BE74A64(v44);
 
-    v48 = objc_msgSend_textureTransferOptions(v74->_options, v45, v46, v47);
+    v48 = objc_msgSend_textureTransferOptions(selfCopy->_options, v45, v46, v47);
     v52 = objc_msgSend_outputTangentialSpaceType(v48, v49, v50, v51);
     v86 = sub_24BE74A64(v52);
 
-    v56 = objc_msgSend_smoothOptions(v74->_options, v53, v54, v55);
+    v56 = objc_msgSend_smoothOptions(selfCopy->_options, v53, v54, v55);
     sub_24BCD278C(v56, &v88);
 
     v79[3] = 0;
     v80[3] = 0;
     v81[3] = 0;
     v82[3] = 0;
-    v57 = v74;
-    if (v74->_progress_cb)
+    v57 = selfCopy;
+    if (selfCopy->_progress_cb)
     {
       v92 = &unk_285F95370;
-      v93 = &v74;
+      v93 = &selfCopy;
       v94 = &v92;
       sub_24BCA3290(&v92, v79);
       sub_24BC9F00C(&v92);
-      v57 = v74;
+      v57 = selfCopy;
     }
 
     if (v57->_error_cb)
     {
       v92 = &unk_285F953B8;
-      v93 = &v74;
+      v93 = &selfCopy;
       v94 = &v92;
       sub_24BCA4ECC(&v92, v80);
       sub_24BC9F08C(&v92);
     }
 
     v92 = &unk_285F95400;
-    v93 = &v74;
+    v93 = &selfCopy;
     v94 = &v92;
     sub_24BD2BA44(&v92, v82);
     sub_24BD2A770(&v92);
-    if (!objc_msgSend_materialImpl(v6, v60, v61, v62))
+    if (!objc_msgSend_materialImpl(runCopy, v60, v61, v62))
     {
       operator new();
     }
 
-    v66 = objc_msgSend_materialImpl(v6, v63, v64, v65);
-    if (!objc_msgSend_materialImpl(v7, v67, v68, v69))
+    v66 = objc_msgSend_materialImpl(runCopy, v63, v64, v65);
+    if (!objc_msgSend_materialImpl(outputCopy, v67, v68, v69))
     {
       operator new();
     }
 
-    v73 = objc_msgSend_materialImpl(v7, v70, v71, v72);
+    v73 = objc_msgSend_materialImpl(outputCopy, v70, v71, v72);
     sub_24BCA1524(v75, v79);
     sub_24BCA2D38(&v76, v80);
     sub_24BCA2DD0(&v77, v81);
@@ -116,7 +116,7 @@
     sub_24BE3C2B0(v18, v66, v25, v73, &v83, v75);
   }
 
-  objc_msgSend_setAlgStatus_(v74, v13, 2, v15, v74);
+  objc_msgSend_setAlgStatus_(selfCopy, v13, 2, v15, selfCopy);
 
   v58 = *MEMORY[0x277D85DE8];
   return 0;

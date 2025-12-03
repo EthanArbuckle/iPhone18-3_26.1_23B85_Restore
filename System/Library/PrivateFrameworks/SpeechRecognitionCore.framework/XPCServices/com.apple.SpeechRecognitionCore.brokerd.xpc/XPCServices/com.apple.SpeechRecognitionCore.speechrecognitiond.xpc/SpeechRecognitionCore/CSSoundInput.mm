@@ -1,24 +1,24 @@
 @interface CSSoundInput
 - (BOOL)startRecording;
-- (CSSoundInput)initWithDeliverSamples:(id)a3;
-- (void)commandControlListener:(id)a3 didStopUnexpectedly:(BOOL)a4;
-- (void)commandControlListener:(id)a3 hasLPCMBufferAvailable:(id)a4;
+- (CSSoundInput)initWithDeliverSamples:(id)samples;
+- (void)commandControlListener:(id)listener didStopUnexpectedly:(BOOL)unexpectedly;
+- (void)commandControlListener:(id)listener hasLPCMBufferAvailable:(id)available;
 - (void)dealloc;
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
 - (void)stopRecording;
 @end
 
 @implementation CSSoundInput
 
-- (CSSoundInput)initWithDeliverSamples:(id)a3
+- (CSSoundInput)initWithDeliverSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   v15.receiver = self;
   v15.super_class = CSSoundInput;
   v5 = [(CSSoundInput *)&v15 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(samplesCopy);
     deliverSamples = v5->_deliverSamples;
     v5->_deliverSamples = v6;
 
@@ -165,28 +165,28 @@
   }
 }
 
-- (void)commandControlListener:(id)a3 hasLPCMBufferAvailable:(id)a4
+- (void)commandControlListener:(id)listener hasLPCMBufferAvailable:(id)available
 {
-  v10 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  availableCopy = available;
   if (!self->_isSiriListeningOrSpeaking || !+[RDSoundInputImpl_iOS_Shared isCarPlayActive])
   {
-    v7 = [v6 bytes];
-    v8 = [v6 length];
+    bytes = [availableCopy bytes];
+    v8 = [availableCopy length];
     deliverSamples = self->_deliverSamples;
     if (deliverSamples)
     {
       if (self->_recording)
       {
-        deliverSamples[2](deliverSamples, v7, v8 >> 1);
+        deliverSamples[2](deliverSamples, bytes, v8 >> 1);
       }
     }
   }
 }
 
-- (void)commandControlListener:(id)a3 didStopUnexpectedly:(BOOL)a4
+- (void)commandControlListener:(id)listener didStopUnexpectedly:(BOOL)unexpectedly
 {
-  v4 = a4;
+  unexpectedlyCopy = unexpectedly;
   v6 = RXOSLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -195,7 +195,7 @@
   }
 
   self->_recording = 0;
-  if (v4)
+  if (unexpectedlyCopy)
   {
     if (+[RDSoundInputImpl isCSVADPresent])
     {
@@ -209,15 +209,15 @@
   }
 }
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
   v8 = RXOSLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 134218240;
-    v22 = a4;
+    fromCopy = from;
     v23 = 2048;
-    v24 = a5;
+    toCopy = to;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CS notification didChangeStateFrom %lld to %lld ", &v21, 0x16u);
   }
 
@@ -225,13 +225,13 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"YES";
-    if ((a5 & 4) == 0)
+    if ((to & 4) == 0)
     {
       v10 = @"NO";
     }
 
     v21 = 138412290;
-    v22 = v10;
+    fromCopy = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Siri is listening: %@", &v21, 0xCu);
   }
 
@@ -239,18 +239,18 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"YES";
-    if ((a5 & 8) == 0)
+    if ((to & 8) == 0)
     {
       v12 = @"NO";
     }
 
     v21 = 138412290;
-    v22 = v12;
+    fromCopy = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Siri is speaking: %@", &v21, 0xCu);
   }
 
-  self->_isSiriListeningOrSpeaking = (a5 & 0xC) != 0;
-  self->_isSiriIdle = a5 == 0;
+  self->_isSiriListeningOrSpeaking = (to & 0xC) != 0;
+  self->_isSiriIdle = to == 0;
   v13 = RXOSLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -265,7 +265,7 @@
     }
 
     v21 = 138412290;
-    v22 = v14;
+    fromCopy = v14;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Siri is idle: %@", &v21, 0xCu);
   }
 
@@ -282,7 +282,7 @@
       }
 
       v21 = 138412290;
-      v22 = v17;
+      fromCopy = v17;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "CarPlay Active?: %@", &v21, 0xCu);
     }
 

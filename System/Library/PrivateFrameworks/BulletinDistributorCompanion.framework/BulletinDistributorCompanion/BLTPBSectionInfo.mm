@@ -1,63 +1,63 @@
 @interface BLTPBSectionInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)requestWithKeypaths:(id)a3;
-- (int)StringAsGroupingSetting:(id)a3;
-- (int)StringAsLockScreenSetting:(id)a3;
-- (int)StringAsNotificationCenterSetting:(id)a3;
-- (int)StringAsSpokenNotificationSetting:(id)a3;
+- (id)requestWithKeypaths:(id)keypaths;
+- (int)StringAsGroupingSetting:(id)setting;
+- (int)StringAsLockScreenSetting:(id)setting;
+- (int)StringAsNotificationCenterSetting:(id)setting;
+- (int)StringAsSpokenNotificationSetting:(id)setting;
 - (int)groupingSetting;
 - (int)lockScreenSetting;
 - (int)notificationCenterSetting;
 - (int)spokenNotificationSetting;
 - (unint64_t)hash;
-- (void)addSubsections:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAlertType:(BOOL)a3;
-- (void)setHasAllowsNotifications:(BOOL)a3;
-- (void)setHasAuthorizationStatus:(BOOL)a3;
-- (void)setHasCriticalAlertSetting:(BOOL)a3;
-- (void)setHasDisplaysCriticalBulletinsLegacy:(BOOL)a3;
-- (void)setHasExcludeFromBulletinBoard:(BOOL)a3;
-- (void)setHasGroupingSetting:(BOOL)a3;
-- (void)setHasIconsStripped:(BOOL)a3;
-- (void)setHasLastUserGrantedAuthorizationDate:(BOOL)a3;
-- (void)setHasLockScreenSetting:(BOOL)a3;
-- (void)setHasNotificationCenterLimit:(BOOL)a3;
-- (void)setHasNotificationCenterSetting:(BOOL)a3;
-- (void)setHasPhoneAllowsNotifications:(BOOL)a3;
-- (void)setHasPhoneAuthorizationStatus:(BOOL)a3;
-- (void)setHasPushSettings:(BOOL)a3;
-- (void)setHasSectionCategory:(BOOL)a3;
-- (void)setHasSectionType:(BOOL)a3;
-- (void)setHasShowsInLockScreen:(BOOL)a3;
-- (void)setHasShowsInNotificationCenter:(BOOL)a3;
-- (void)setHasShowsMessagePreview:(BOOL)a3;
-- (void)setHasShowsOnExternalDevices:(BOOL)a3;
-- (void)setHasSpokenNotificationSetting:(BOOL)a3;
-- (void)setHasSubsectionPriority:(BOOL)a3;
-- (void)setHasSuppressFromSettings:(BOOL)a3;
-- (void)setHasSuppressedSettings:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSubsections:(id)subsections;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAlertType:(BOOL)type;
+- (void)setHasAllowsNotifications:(BOOL)notifications;
+- (void)setHasAuthorizationStatus:(BOOL)status;
+- (void)setHasCriticalAlertSetting:(BOOL)setting;
+- (void)setHasDisplaysCriticalBulletinsLegacy:(BOOL)legacy;
+- (void)setHasExcludeFromBulletinBoard:(BOOL)board;
+- (void)setHasGroupingSetting:(BOOL)setting;
+- (void)setHasIconsStripped:(BOOL)stripped;
+- (void)setHasLastUserGrantedAuthorizationDate:(BOOL)date;
+- (void)setHasLockScreenSetting:(BOOL)setting;
+- (void)setHasNotificationCenterLimit:(BOOL)limit;
+- (void)setHasNotificationCenterSetting:(BOOL)setting;
+- (void)setHasPhoneAllowsNotifications:(BOOL)notifications;
+- (void)setHasPhoneAuthorizationStatus:(BOOL)status;
+- (void)setHasPushSettings:(BOOL)settings;
+- (void)setHasSectionCategory:(BOOL)category;
+- (void)setHasSectionType:(BOOL)type;
+- (void)setHasShowsInLockScreen:(BOOL)screen;
+- (void)setHasShowsInNotificationCenter:(BOOL)center;
+- (void)setHasShowsMessagePreview:(BOOL)preview;
+- (void)setHasShowsOnExternalDevices:(BOOL)devices;
+- (void)setHasSpokenNotificationSetting:(BOOL)setting;
+- (void)setHasSubsectionPriority:(BOOL)priority;
+- (void)setHasSuppressFromSettings:(BOOL)settings;
+- (void)setHasSuppressedSettings:(BOOL)settings;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBSectionInfo
 
-- (id)requestWithKeypaths:(id)a3
+- (id)requestWithKeypaths:(id)keypaths
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keypathsCopy = keypaths;
   v5 = objc_alloc_init(BLTPBSetSectionInfoRequest);
   [(BLTPBSetSectionInfoRequest *)v5 setSectionInfo:self];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = keypathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -81,9 +81,9 @@
     while (v8);
   }
 
-  v11 = [(BLTPBSectionInfo *)self icon];
+  icon = [(BLTPBSectionInfo *)self icon];
 
-  if (v11)
+  if (icon)
   {
     v12 = [(BLTPBSectionInfo *)self copy];
     [v12 setIcon:0];
@@ -96,9 +96,9 @@
   return v5;
 }
 
-- (void)setHasSectionType:(BOOL)a3
+- (void)setHasSectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2048;
   }
@@ -111,9 +111,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasSectionCategory:(BOOL)a3
+- (void)setHasSectionCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 1024;
   }
@@ -126,9 +126,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasSuppressFromSettings:(BOOL)a3
+- (void)setHasSuppressFromSettings:(BOOL)settings
 {
-  if (a3)
+  if (settings)
   {
     v3 = 0x4000000;
   }
@@ -141,9 +141,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasShowsInNotificationCenter:(BOOL)a3
+- (void)setHasShowsInNotificationCenter:(BOOL)center
 {
-  if (a3)
+  if (center)
   {
     v3 = 0x800000;
   }
@@ -156,9 +156,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasShowsInLockScreen:(BOOL)a3
+- (void)setHasShowsInLockScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 0x400000;
   }
@@ -171,9 +171,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasShowsOnExternalDevices:(BOOL)a3
+- (void)setHasShowsOnExternalDevices:(BOOL)devices
 {
-  if (a3)
+  if (devices)
   {
     v3 = 0x2000000;
   }
@@ -186,9 +186,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasNotificationCenterLimit:(BOOL)a3
+- (void)setHasNotificationCenterLimit:(BOOL)limit
 {
-  if (a3)
+  if (limit)
   {
     v3 = 64;
   }
@@ -201,9 +201,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasPushSettings:(BOOL)a3
+- (void)setHasPushSettings:(BOOL)settings
 {
-  if (a3)
+  if (settings)
   {
     v3 = 512;
   }
@@ -216,9 +216,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasAlertType:(BOOL)a3
+- (void)setHasAlertType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -231,9 +231,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasShowsMessagePreview:(BOOL)a3
+- (void)setHasShowsMessagePreview:(BOOL)preview
 {
-  if (a3)
+  if (preview)
   {
     v3 = 0x1000000;
   }
@@ -246,9 +246,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasAllowsNotifications:(BOOL)a3
+- (void)setHasAllowsNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = 0x10000;
   }
@@ -261,9 +261,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasSuppressedSettings:(BOOL)a3
+- (void)setHasSuppressedSettings:(BOOL)settings
 {
-  if (a3)
+  if (settings)
   {
     v3 = 0x4000;
   }
@@ -276,9 +276,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasDisplaysCriticalBulletinsLegacy:(BOOL)a3
+- (void)setHasDisplaysCriticalBulletinsLegacy:(BOOL)legacy
 {
-  if (a3)
+  if (legacy)
   {
     v3 = 0x40000;
   }
@@ -291,27 +291,27 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)addSubsections:(id)a3
+- (void)addSubsections:(id)subsections
 {
-  v4 = a3;
+  subsectionsCopy = subsections;
   subsections = self->_subsections;
-  v8 = v4;
+  v8 = subsectionsCopy;
   if (!subsections)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_subsections;
     self->_subsections = v6;
 
-    v4 = v8;
+    subsectionsCopy = v8;
     subsections = self->_subsections;
   }
 
-  [(NSMutableArray *)subsections addObject:v4];
+  [(NSMutableArray *)subsections addObject:subsectionsCopy];
 }
 
-- (void)setHasSubsectionPriority:(BOOL)a3
+- (void)setHasSubsectionPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 0x2000;
   }
@@ -324,9 +324,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 0x8000;
   }
@@ -339,9 +339,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasIconsStripped:(BOOL)a3
+- (void)setHasIconsStripped:(BOOL)stripped
 {
-  if (a3)
+  if (stripped)
   {
     v3 = 0x100000;
   }
@@ -354,9 +354,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasPhoneAllowsNotifications:(BOOL)a3
+- (void)setHasPhoneAllowsNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = 0x200000;
   }
@@ -369,9 +369,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasCriticalAlertSetting:(BOOL)a3
+- (void)setHasCriticalAlertSetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 0x20000;
   }
@@ -397,9 +397,9 @@
   }
 }
 
-- (void)setHasGroupingSetting:(BOOL)a3
+- (void)setHasGroupingSetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 16;
   }
@@ -412,20 +412,20 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (int)StringAsGroupingSetting:(id)a3
+- (int)StringAsGroupingSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Default"])
+  settingCopy = setting;
+  if ([settingCopy isEqualToString:@"Default"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Section"])
+  else if ([settingCopy isEqualToString:@"Section"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Off"])
+  else if ([settingCopy isEqualToString:@"Off"])
   {
     v4 = 2;
   }
@@ -438,9 +438,9 @@
   return v4;
 }
 
-- (void)setHasExcludeFromBulletinBoard:(BOOL)a3
+- (void)setHasExcludeFromBulletinBoard:(BOOL)board
 {
-  if (a3)
+  if (board)
   {
     v3 = 0x80000;
   }
@@ -453,9 +453,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasAuthorizationStatus:(BOOL)a3
+- (void)setHasAuthorizationStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 8;
   }
@@ -468,9 +468,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasPhoneAuthorizationStatus:(BOOL)a3
+- (void)setHasPhoneAuthorizationStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 256;
   }
@@ -496,9 +496,9 @@
   }
 }
 
-- (void)setHasLockScreenSetting:(BOOL)a3
+- (void)setHasLockScreenSetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 32;
   }
@@ -511,20 +511,20 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (int)StringAsLockScreenSetting:(id)a3
+- (int)StringAsLockScreenSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NotSupported"])
+  settingCopy = setting;
+  if ([settingCopy isEqualToString:@"NotSupported"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Disabled"])
+  else if ([settingCopy isEqualToString:@"Disabled"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Enabled"])
+  else if ([settingCopy isEqualToString:@"Enabled"])
   {
     v4 = 2;
   }
@@ -550,9 +550,9 @@
   }
 }
 
-- (void)setHasNotificationCenterSetting:(BOOL)a3
+- (void)setHasNotificationCenterSetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 128;
   }
@@ -565,20 +565,20 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (int)StringAsNotificationCenterSetting:(id)a3
+- (int)StringAsNotificationCenterSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NotSupported"])
+  settingCopy = setting;
+  if ([settingCopy isEqualToString:@"NotSupported"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Disabled"])
+  else if ([settingCopy isEqualToString:@"Disabled"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Enabled"])
+  else if ([settingCopy isEqualToString:@"Enabled"])
   {
     v4 = 2;
   }
@@ -604,9 +604,9 @@
   }
 }
 
-- (void)setHasSpokenNotificationSetting:(BOOL)a3
+- (void)setHasSpokenNotificationSetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 4096;
   }
@@ -619,20 +619,20 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (int)StringAsSpokenNotificationSetting:(id)a3
+- (int)StringAsSpokenNotificationSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NotSupported"])
+  settingCopy = setting;
+  if ([settingCopy isEqualToString:@"NotSupported"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Disabled"])
+  else if ([settingCopy isEqualToString:@"Disabled"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Enabled"])
+  else if ([settingCopy isEqualToString:@"Enabled"])
   {
     v4 = 2;
   }
@@ -645,9 +645,9 @@
   return v4;
 }
 
-- (void)setHasLastUserGrantedAuthorizationDate:(BOOL)a3
+- (void)setHasLastUserGrantedAuthorizationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -666,8 +666,8 @@
   v8.receiver = self;
   v8.super_class = BLTPBSectionInfo;
   v4 = [(BLTPBSectionInfo *)&v8 description];
-  v5 = [(BLTPBSectionInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBSectionInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -675,12 +675,12 @@
 - (id)dictionaryRepresentation
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   sectionID = self->_sectionID;
   if (sectionID)
   {
-    [v3 setObject:sectionID forKey:@"sectionID"];
+    [dictionary setObject:sectionID forKey:@"sectionID"];
   }
 
   subsectionID = self->_subsectionID;
@@ -902,8 +902,8 @@ LABEL_18:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v60 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation = [*(*(&v60 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v60 objects:v64 count:16];
@@ -945,8 +945,8 @@ LABEL_18:
   icon = self->_icon;
   if (icon)
   {
-    v24 = [(BLTPBSectionIcon *)icon dictionaryRepresentation];
-    [v4 setObject:v24 forKey:@"icon"];
+    dictionaryRepresentation2 = [(BLTPBSectionIcon *)icon dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"icon"];
   }
 
   v25 = self->_has;
@@ -1160,8 +1160,8 @@ LABEL_86:
   sectionInfoSettings = self->_sectionInfoSettings;
   if (sectionInfoSettings)
   {
-    v56 = [(BLTPBSectionInfoSettings *)sectionInfoSettings dictionaryRepresentation];
-    [v4 setObject:v56 forKey:@"sectionInfoSettings"];
+    dictionaryRepresentation3 = [(BLTPBSectionInfoSettings *)sectionInfoSettings dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"sectionInfoSettings"];
   }
 
   v57 = v4;
@@ -1170,10 +1170,10 @@ LABEL_86:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_sectionID)
   {
     PBDataWriterWriteStringField();
@@ -1589,27 +1589,27 @@ LABEL_50:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v14 = v4;
+  toCopy = to;
+  v14 = toCopy;
   if (self->_sectionID)
   {
-    [v4 setSectionID:?];
-    v4 = v14;
+    [toCopy setSectionID:?];
+    toCopy = v14;
   }
 
   if (self->_subsectionID)
   {
     [v14 setSubsectionID:?];
-    v4 = v14;
+    toCopy = v14;
   }
 
   has = self->_has;
   if ((*&has & 0x800) != 0)
   {
-    v4[26] = self->_sectionType;
-    v4[45] |= 0x800u;
+    toCopy[26] = self->_sectionType;
+    toCopy[45] |= 0x800u;
     has = self->_has;
     if ((*&has & 0x400) == 0)
     {
@@ -1628,8 +1628,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4[21] = self->_sectionCategory;
-  v4[45] |= 0x400u;
+  toCopy[21] = self->_sectionCategory;
+  toCopy[45] |= 0x400u;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1643,8 +1643,8 @@ LABEL_8:
   }
 
 LABEL_60:
-  *(v4 + 178) = self->_suppressFromSettings;
-  v4[45] |= 0x4000000u;
+  *(toCopy + 178) = self->_suppressFromSettings;
+  toCopy[45] |= 0x4000000u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1658,8 +1658,8 @@ LABEL_9:
   }
 
 LABEL_61:
-  *(v4 + 175) = self->_showsInNotificationCenter;
-  v4[45] |= 0x800000u;
+  *(toCopy + 175) = self->_showsInNotificationCenter;
+  toCopy[45] |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1673,8 +1673,8 @@ LABEL_10:
   }
 
 LABEL_62:
-  *(v4 + 174) = self->_showsInLockScreen;
-  v4[45] |= 0x400000u;
+  *(toCopy + 174) = self->_showsInLockScreen;
+  toCopy[45] |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -1688,8 +1688,8 @@ LABEL_11:
   }
 
 LABEL_63:
-  *(v4 + 177) = self->_showsOnExternalDevices;
-  v4[45] |= 0x2000000u;
+  *(toCopy + 177) = self->_showsOnExternalDevices;
+  toCopy[45] |= 0x2000000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1703,8 +1703,8 @@ LABEL_12:
   }
 
 LABEL_64:
-  v4[17] = self->_notificationCenterLimit;
-  v4[45] |= 0x40u;
+  toCopy[17] = self->_notificationCenterLimit;
+  toCopy[45] |= 0x40u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1718,8 +1718,8 @@ LABEL_13:
   }
 
 LABEL_65:
-  v4[20] = self->_pushSettings;
-  v4[45] |= 0x200u;
+  toCopy[20] = self->_pushSettings;
+  toCopy[45] |= 0x200u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1733,8 +1733,8 @@ LABEL_14:
   }
 
 LABEL_66:
-  v4[6] = self->_alertType;
-  v4[45] |= 4u;
+  toCopy[6] = self->_alertType;
+  toCopy[45] |= 4u;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1748,8 +1748,8 @@ LABEL_15:
   }
 
 LABEL_67:
-  *(v4 + 176) = self->_showsMessagePreview;
-  v4[45] |= 0x1000000u;
+  *(toCopy + 176) = self->_showsMessagePreview;
+  toCopy[45] |= 0x1000000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1763,35 +1763,35 @@ LABEL_16:
   }
 
 LABEL_68:
-  *(v4 + 168) = self->_allowsNotifications;
-  v4[45] |= 0x10000u;
+  *(toCopy + 168) = self->_allowsNotifications;
+  toCopy[45] |= 0x10000u;
   if ((*&self->_has & 0x4000) != 0)
   {
 LABEL_17:
-    v4[34] = self->_suppressedSettings;
-    v4[45] |= 0x4000u;
+    toCopy[34] = self->_suppressedSettings;
+    toCopy[45] |= 0x4000u;
   }
 
 LABEL_18:
   if (self->_displayName)
   {
     [v14 setDisplayName:?];
-    v4 = v14;
+    toCopy = v14;
   }
 
   if ((*(&self->_has + 2) & 4) != 0)
   {
-    *(v4 + 170) = self->_displaysCriticalBulletinsLegacy;
-    v4[45] |= 0x40000u;
+    *(toCopy + 170) = self->_displaysCriticalBulletinsLegacy;
+    toCopy[45] |= 0x40000u;
   }
 
   if ([(BLTPBSectionInfo *)self subsectionsCount])
   {
     [v14 clearSubsections];
-    v6 = [(BLTPBSectionInfo *)self subsectionsCount];
-    if (v6)
+    subsectionsCount = [(BLTPBSectionInfo *)self subsectionsCount];
+    if (subsectionsCount)
     {
-      v7 = v6;
+      v7 = subsectionsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(BLTPBSectionInfo *)self subsectionsAtIndex:i];
@@ -1998,15 +1998,15 @@ LABEL_47:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sectionID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sectionID copyWithZone:zone];
   v7 = *(v5 + 88);
   *(v5 + 88) = v6;
 
-  v8 = [(NSString *)self->_subsectionID copyWithZone:a3];
+  v8 = [(NSString *)self->_subsectionID copyWithZone:zone];
   v9 = *(v5 + 112);
   *(v5 + 112) = v8;
 
@@ -2178,7 +2178,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  v11 = [(NSString *)self->_displayName copyWithZone:a3];
+  v11 = [(NSString *)self->_displayName copyWithZone:zone];
   v12 = *(v5 + 32);
   *(v5 + 32) = v11;
 
@@ -2208,7 +2208,7 @@ LABEL_14:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v34 + 1) + 8 * v17) copyWithZone:{a3, v34}];
+        v18 = [*(*(&v34 + 1) + 8 * v17) copyWithZone:{zone, v34}];
         [v5 addSubsections:v18];
 
         ++v17;
@@ -2235,15 +2235,15 @@ LABEL_14:
     *(v5 + 180) |= 0x8000u;
   }
 
-  v20 = [(NSString *)self->_factorySectionID copyWithZone:a3, v34];
+  v20 = [(NSString *)self->_factorySectionID copyWithZone:zone, v34];
   v21 = *(v5 + 40);
   *(v5 + 40) = v20;
 
-  v22 = [(NSString *)self->_universalSectionID copyWithZone:a3];
+  v22 = [(NSString *)self->_universalSectionID copyWithZone:zone];
   v23 = *(v5 + 144);
   *(v5 + 144) = v22;
 
-  v24 = [(BLTPBSectionIcon *)self->_icon copyWithZone:a3];
+  v24 = [(BLTPBSectionIcon *)self->_icon copyWithZone:zone];
   v25 = *(v5 + 56);
   *(v5 + 56) = v24;
 
@@ -2385,7 +2385,7 @@ LABEL_37:
   }
 
 LABEL_38:
-  v27 = [(NSString *)self->_watchSectionID copyWithZone:a3];
+  v27 = [(NSString *)self->_watchSectionID copyWithZone:zone];
   v28 = *(v5 + 160);
   *(v5 + 160) = v27;
 
@@ -2403,7 +2403,7 @@ LABEL_38:
     *(v5 + 180) |= 2u;
   }
 
-  v30 = [(BLTPBSectionInfoSettings *)self->_sectionInfoSettings copyWithZone:a3];
+  v30 = [(BLTPBSectionInfoSettings *)self->_sectionInfoSettings copyWithZone:zone];
   v31 = *(v5 + 96);
   *(v5 + 96) = v30;
 
@@ -2411,16 +2411,16 @@ LABEL_38:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_191;
   }
 
   sectionID = self->_sectionID;
-  if (sectionID | *(v4 + 11))
+  if (sectionID | *(equalCopy + 11))
   {
     if (![(NSString *)sectionID isEqual:?])
     {
@@ -2429,7 +2429,7 @@ LABEL_38:
   }
 
   subsectionID = self->_subsectionID;
-  if (subsectionID | *(v4 + 14))
+  if (subsectionID | *(equalCopy + 14))
   {
     if (![(NSString *)subsectionID isEqual:?])
     {
@@ -2438,10 +2438,10 @@ LABEL_38:
   }
 
   has = self->_has;
-  v8 = *(v4 + 45);
+  v8 = *(equalCopy + 45);
   if ((*&has & 0x800) != 0)
   {
-    if ((v8 & 0x800) == 0 || self->_sectionType != *(v4 + 26))
+    if ((v8 & 0x800) == 0 || self->_sectionType != *(equalCopy + 26))
     {
       goto LABEL_191;
     }
@@ -2454,7 +2454,7 @@ LABEL_38:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v8 & 0x400) == 0 || self->_sectionCategory != *(v4 + 21))
+    if ((v8 & 0x400) == 0 || self->_sectionCategory != *(equalCopy + 21))
     {
       goto LABEL_191;
     }
@@ -2472,16 +2472,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v9 = *(v4 + 178);
+    v9 = *(equalCopy + 178);
     if (self->_suppressFromSettings)
     {
-      if ((*(v4 + 178) & 1) == 0)
+      if ((*(equalCopy + 178) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 178))
+    else if (*(equalCopy + 178))
     {
       goto LABEL_191;
     }
@@ -2499,16 +2499,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v10 = *(v4 + 175);
+    v10 = *(equalCopy + 175);
     if (self->_showsInNotificationCenter)
     {
-      if ((*(v4 + 175) & 1) == 0)
+      if ((*(equalCopy + 175) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 175))
+    else if (*(equalCopy + 175))
     {
       goto LABEL_191;
     }
@@ -2526,16 +2526,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v11 = *(v4 + 174);
+    v11 = *(equalCopy + 174);
     if (self->_showsInLockScreen)
     {
-      if ((*(v4 + 174) & 1) == 0)
+      if ((*(equalCopy + 174) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 174))
+    else if (*(equalCopy + 174))
     {
       goto LABEL_191;
     }
@@ -2553,16 +2553,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v12 = *(v4 + 177);
+    v12 = *(equalCopy + 177);
     if (self->_showsOnExternalDevices)
     {
-      if ((*(v4 + 177) & 1) == 0)
+      if ((*(equalCopy + 177) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 177))
+    else if (*(equalCopy + 177))
     {
       goto LABEL_191;
     }
@@ -2575,7 +2575,7 @@ LABEL_38:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_notificationCenterLimit != *(v4 + 17))
+    if ((v8 & 0x40) == 0 || self->_notificationCenterLimit != *(equalCopy + 17))
     {
       goto LABEL_191;
     }
@@ -2588,7 +2588,7 @@ LABEL_38:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v8 & 0x200) == 0 || self->_pushSettings != *(v4 + 20))
+    if ((v8 & 0x200) == 0 || self->_pushSettings != *(equalCopy + 20))
     {
       goto LABEL_191;
     }
@@ -2601,7 +2601,7 @@ LABEL_38:
 
   if ((*&has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_alertType != *(v4 + 6))
+    if ((v8 & 4) == 0 || self->_alertType != *(equalCopy + 6))
     {
       goto LABEL_191;
     }
@@ -2619,16 +2619,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v13 = *(v4 + 176);
+    v13 = *(equalCopy + 176);
     if (self->_showsMessagePreview)
     {
-      if ((*(v4 + 176) & 1) == 0)
+      if ((*(equalCopy + 176) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 176))
+    else if (*(equalCopy + 176))
     {
       goto LABEL_191;
     }
@@ -2646,16 +2646,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v14 = *(v4 + 168);
+    v14 = *(equalCopy + 168);
     if (self->_allowsNotifications)
     {
-      if ((*(v4 + 168) & 1) == 0)
+      if ((*(equalCopy + 168) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 168))
+    else if (*(equalCopy + 168))
     {
       goto LABEL_191;
     }
@@ -2668,7 +2668,7 @@ LABEL_38:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v8 & 0x4000) == 0 || self->_suppressedSettings != *(v4 + 34))
+    if ((v8 & 0x4000) == 0 || self->_suppressedSettings != *(equalCopy + 34))
     {
       goto LABEL_191;
     }
@@ -2680,7 +2680,7 @@ LABEL_38:
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 4))
+  if (displayName | *(equalCopy + 4))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -2690,7 +2690,7 @@ LABEL_38:
     has = self->_has;
   }
 
-  v16 = *(v4 + 45);
+  v16 = *(equalCopy + 45);
   if ((*&has & 0x40000) != 0)
   {
     if ((v16 & 0x40000) == 0)
@@ -2698,16 +2698,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v19 = *(v4 + 170);
+    v19 = *(equalCopy + 170);
     if (self->_displaysCriticalBulletinsLegacy)
     {
-      if ((*(v4 + 170) & 1) == 0)
+      if ((*(equalCopy + 170) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 170))
+    else if (*(equalCopy + 170))
     {
       goto LABEL_191;
     }
@@ -2719,7 +2719,7 @@ LABEL_38:
   }
 
   subsections = self->_subsections;
-  if (subsections | *(v4 + 16))
+  if (subsections | *(equalCopy + 16))
   {
     if (![(NSMutableArray *)subsections isEqual:?])
     {
@@ -2729,10 +2729,10 @@ LABEL_38:
     has = self->_has;
   }
 
-  v18 = *(v4 + 45);
+  v18 = *(equalCopy + 45);
   if ((*&has & 0x2000) != 0)
   {
-    if ((v18 & 0x2000) == 0 || self->_subsectionPriority != *(v4 + 30))
+    if ((v18 & 0x2000) == 0 || self->_subsectionPriority != *(equalCopy + 30))
     {
       goto LABEL_191;
     }
@@ -2745,7 +2745,7 @@ LABEL_38:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v18 & 0x8000) == 0 || self->_version != *(v4 + 38))
+    if ((v18 & 0x8000) == 0 || self->_version != *(equalCopy + 38))
     {
       goto LABEL_191;
     }
@@ -2757,13 +2757,13 @@ LABEL_38:
   }
 
   factorySectionID = self->_factorySectionID;
-  if (factorySectionID | *(v4 + 5) && ![(NSString *)factorySectionID isEqual:?])
+  if (factorySectionID | *(equalCopy + 5) && ![(NSString *)factorySectionID isEqual:?])
   {
     goto LABEL_191;
   }
 
   universalSectionID = self->_universalSectionID;
-  if (universalSectionID | *(v4 + 18))
+  if (universalSectionID | *(equalCopy + 18))
   {
     if (![(NSString *)universalSectionID isEqual:?])
     {
@@ -2772,7 +2772,7 @@ LABEL_38:
   }
 
   icon = self->_icon;
-  if (icon | *(v4 + 7))
+  if (icon | *(equalCopy + 7))
   {
     if (![(BLTPBSectionIcon *)icon isEqual:?])
     {
@@ -2781,7 +2781,7 @@ LABEL_38:
   }
 
   v23 = self->_has;
-  v24 = *(v4 + 45);
+  v24 = *(equalCopy + 45);
   if ((*&v23 & 0x100000) != 0)
   {
     if ((v24 & 0x100000) == 0)
@@ -2789,16 +2789,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v25 = *(v4 + 172);
+    v25 = *(equalCopy + 172);
     if (self->_iconsStripped)
     {
-      if ((*(v4 + 172) & 1) == 0)
+      if ((*(equalCopy + 172) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 172))
+    else if (*(equalCopy + 172))
     {
       goto LABEL_191;
     }
@@ -2816,16 +2816,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v26 = *(v4 + 173);
+    v26 = *(equalCopy + 173);
     if (self->_phoneAllowsNotifications)
     {
-      if ((*(v4 + 173) & 1) == 0)
+      if ((*(equalCopy + 173) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 173))
+    else if (*(equalCopy + 173))
     {
       goto LABEL_191;
     }
@@ -2843,16 +2843,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v27 = *(v4 + 169);
+    v27 = *(equalCopy + 169);
     if (self->_criticalAlertSetting)
     {
-      if ((*(v4 + 169) & 1) == 0)
+      if ((*(equalCopy + 169) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 169))
+    else if (*(equalCopy + 169))
     {
       goto LABEL_191;
     }
@@ -2865,7 +2865,7 @@ LABEL_38:
 
   if ((*&v23 & 0x10) != 0)
   {
-    if ((v24 & 0x10) == 0 || self->_groupingSetting != *(v4 + 12))
+    if ((v24 & 0x10) == 0 || self->_groupingSetting != *(equalCopy + 12))
     {
       goto LABEL_191;
     }
@@ -2883,16 +2883,16 @@ LABEL_38:
       goto LABEL_191;
     }
 
-    v28 = *(v4 + 171);
+    v28 = *(equalCopy + 171);
     if (self->_excludeFromBulletinBoard)
     {
-      if ((*(v4 + 171) & 1) == 0)
+      if ((*(equalCopy + 171) & 1) == 0)
       {
         goto LABEL_191;
       }
     }
 
-    else if (*(v4 + 171))
+    else if (*(equalCopy + 171))
     {
       goto LABEL_191;
     }
@@ -2905,7 +2905,7 @@ LABEL_38:
 
   if ((*&v23 & 8) != 0)
   {
-    if ((v24 & 8) == 0 || self->_authorizationStatus != *(v4 + 7))
+    if ((v24 & 8) == 0 || self->_authorizationStatus != *(equalCopy + 7))
     {
       goto LABEL_191;
     }
@@ -2918,7 +2918,7 @@ LABEL_38:
 
   if ((*&v23 & 0x100) != 0)
   {
-    if ((v24 & 0x100) == 0 || self->_phoneAuthorizationStatus != *(v4 + 19))
+    if ((v24 & 0x100) == 0 || self->_phoneAuthorizationStatus != *(equalCopy + 19))
     {
       goto LABEL_191;
     }
@@ -2931,7 +2931,7 @@ LABEL_38:
 
   if ((*&v23 & 0x20) != 0)
   {
-    if ((v24 & 0x20) == 0 || self->_lockScreenSetting != *(v4 + 16))
+    if ((v24 & 0x20) == 0 || self->_lockScreenSetting != *(equalCopy + 16))
     {
       goto LABEL_191;
     }
@@ -2944,7 +2944,7 @@ LABEL_38:
 
   if ((*&v23 & 0x80) != 0)
   {
-    if ((v24 & 0x80) == 0 || self->_notificationCenterSetting != *(v4 + 18))
+    if ((v24 & 0x80) == 0 || self->_notificationCenterSetting != *(equalCopy + 18))
     {
       goto LABEL_191;
     }
@@ -2957,7 +2957,7 @@ LABEL_38:
 
   if ((*&v23 & 0x1000) != 0)
   {
-    if ((v24 & 0x1000) == 0 || self->_spokenNotificationSetting != *(v4 + 27))
+    if ((v24 & 0x1000) == 0 || self->_spokenNotificationSetting != *(equalCopy + 27))
     {
       goto LABEL_191;
     }
@@ -2969,7 +2969,7 @@ LABEL_38:
   }
 
   watchSectionID = self->_watchSectionID;
-  if (watchSectionID | *(v4 + 20))
+  if (watchSectionID | *(equalCopy + 20))
   {
     if ([(NSString *)watchSectionID isEqual:?])
     {
@@ -2983,10 +2983,10 @@ LABEL_191:
   }
 
 LABEL_179:
-  v30 = *(v4 + 45);
+  v30 = *(equalCopy + 45);
   if (*&v23)
   {
-    if ((v30 & 1) == 0 || self->_authorizationExpirationDate != *(v4 + 1))
+    if ((v30 & 1) == 0 || self->_authorizationExpirationDate != *(equalCopy + 1))
     {
       goto LABEL_191;
     }
@@ -2999,7 +2999,7 @@ LABEL_179:
 
   if ((*&v23 & 2) != 0)
   {
-    if ((v30 & 2) == 0 || self->_lastUserGrantedAuthorizationDate != *(v4 + 2))
+    if ((v30 & 2) == 0 || self->_lastUserGrantedAuthorizationDate != *(equalCopy + 2))
     {
       goto LABEL_191;
     }
@@ -3011,7 +3011,7 @@ LABEL_179:
   }
 
   sectionInfoSettings = self->_sectionInfoSettings;
-  if (sectionInfoSettings | *(v4 + 12))
+  if (sectionInfoSettings | *(equalCopy + 12))
   {
     v32 = [(BLTPBSectionInfoSettings *)sectionInfoSettings isEqual:?];
   }
@@ -3438,26 +3438,26 @@ LABEL_55:
   return v50 ^ v51 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v17 ^ v21 ^ [(BLTPBSectionInfoSettings *)self->_sectionInfoSettings hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 11))
+  fromCopy = from;
+  if (*(fromCopy + 11))
   {
     [(BLTPBSectionInfo *)self setSectionID:?];
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(BLTPBSectionInfo *)self setSubsectionID:?];
   }
 
-  v5 = *(v4 + 45);
+  v5 = *(fromCopy + 45);
   if ((v5 & 0x800) != 0)
   {
-    self->_sectionType = *(v4 + 26);
+    self->_sectionType = *(fromCopy + 26);
     *&self->_has |= 0x800u;
-    v5 = *(v4 + 45);
+    v5 = *(fromCopy + 45);
     if ((v5 & 0x400) == 0)
     {
 LABEL_7:
@@ -3475,9 +3475,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_sectionCategory = *(v4 + 21);
+  self->_sectionCategory = *(fromCopy + 21);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 45);
+  v5 = *(fromCopy + 45);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_8:
@@ -3490,9 +3490,9 @@ LABEL_8:
   }
 
 LABEL_42:
-  self->_suppressFromSettings = *(v4 + 178);
+  self->_suppressFromSettings = *(fromCopy + 178);
   *&self->_has |= 0x4000000u;
-  v5 = *(v4 + 45);
+  v5 = *(fromCopy + 45);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_9:
@@ -3505,9 +3505,9 @@ LABEL_9:
   }
 
 LABEL_43:
-  self->_showsInNotificationCenter = *(v4 + 175);
+  self->_showsInNotificationCenter = *(fromCopy + 175);
   *&self->_has |= 0x800000u;
-  v5 = *(v4 + 45);
+  v5 = *(fromCopy + 45);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_10:
@@ -3520,9 +3520,9 @@ LABEL_10:
   }
 
 LABEL_44:
-  self->_showsInLockScreen = *(v4 + 174);
+  self->_showsInLockScreen = *(fromCopy + 174);
   *&self->_has |= 0x400000u;
-  v5 = *(v4 + 45);
+  v5 = *(fromCopy + 45);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_11:
@@ -3535,9 +3535,9 @@ LABEL_11:
   }
 
 LABEL_45:
-  self->_showsOnExternalDevices = *(v4 + 177);
+  self->_showsOnExternalDevices = *(fromCopy + 177);
   *&self->_has |= 0x2000000u;
-  v5 = *(v4 + 45);
+  v5 = *(fromCopy + 45);
   if ((v5 & 0x40) == 0)
   {
 LABEL_12:
@@ -3550,9 +3550,9 @@ LABEL_12:
   }
 
 LABEL_46:
-  self->_notificationCenterLimit = *(v4 + 17);
+  self->_notificationCenterLimit = *(fromCopy + 17);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 45);
+  v5 = *(fromCopy + 45);
   if ((v5 & 0x200) == 0)
   {
 LABEL_13:
@@ -3565,9 +3565,9 @@ LABEL_13:
   }
 
 LABEL_47:
-  self->_pushSettings = *(v4 + 20);
+  self->_pushSettings = *(fromCopy + 20);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 45);
+  v5 = *(fromCopy + 45);
   if ((v5 & 4) == 0)
   {
 LABEL_14:
@@ -3580,9 +3580,9 @@ LABEL_14:
   }
 
 LABEL_48:
-  self->_alertType = *(v4 + 6);
+  self->_alertType = *(fromCopy + 6);
   *&self->_has |= 4u;
-  v5 = *(v4 + 45);
+  v5 = *(fromCopy + 45);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_15:
@@ -3595,9 +3595,9 @@ LABEL_15:
   }
 
 LABEL_49:
-  self->_showsMessagePreview = *(v4 + 176);
+  self->_showsMessagePreview = *(fromCopy + 176);
   *&self->_has |= 0x1000000u;
-  v5 = *(v4 + 45);
+  v5 = *(fromCopy + 45);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_16:
@@ -3610,24 +3610,24 @@ LABEL_16:
   }
 
 LABEL_50:
-  self->_allowsNotifications = *(v4 + 168);
+  self->_allowsNotifications = *(fromCopy + 168);
   *&self->_has |= 0x10000u;
-  if ((*(v4 + 45) & 0x4000) != 0)
+  if ((*(fromCopy + 45) & 0x4000) != 0)
   {
 LABEL_17:
-    self->_suppressedSettings = *(v4 + 34);
+    self->_suppressedSettings = *(fromCopy + 34);
     *&self->_has |= 0x4000u;
   }
 
 LABEL_18:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BLTPBSectionInfo *)self setDisplayName:?];
   }
 
-  if ((*(v4 + 182) & 4) != 0)
+  if ((*(fromCopy + 182) & 4) != 0)
   {
-    self->_displaysCriticalBulletinsLegacy = *(v4 + 170);
+    self->_displaysCriticalBulletinsLegacy = *(fromCopy + 170);
     *&self->_has |= 0x40000u;
   }
 
@@ -3635,7 +3635,7 @@ LABEL_18:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = *(v4 + 16);
+  v6 = *(fromCopy + 16);
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -3659,32 +3659,32 @@ LABEL_18:
     while (v8);
   }
 
-  v11 = *(v4 + 45);
+  v11 = *(fromCopy + 45);
   if ((v11 & 0x2000) != 0)
   {
-    self->_subsectionPriority = *(v4 + 30);
+    self->_subsectionPriority = *(fromCopy + 30);
     *&self->_has |= 0x2000u;
-    v11 = *(v4 + 45);
+    v11 = *(fromCopy + 45);
   }
 
   if ((v11 & 0x8000) != 0)
   {
-    self->_version = *(v4 + 38);
+    self->_version = *(fromCopy + 38);
     *&self->_has |= 0x8000u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BLTPBSectionInfo *)self setFactorySectionID:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(BLTPBSectionInfo *)self setUniversalSectionID:?];
   }
 
   icon = self->_icon;
-  v13 = *(v4 + 7);
+  v13 = *(fromCopy + 7);
   if (icon)
   {
     if (v13)
@@ -3698,12 +3698,12 @@ LABEL_18:
     [(BLTPBSectionInfo *)self setIcon:?];
   }
 
-  v14 = *(v4 + 45);
+  v14 = *(fromCopy + 45);
   if ((v14 & 0x100000) != 0)
   {
-    self->_iconsStripped = *(v4 + 172);
+    self->_iconsStripped = *(fromCopy + 172);
     *&self->_has |= 0x100000u;
-    v14 = *(v4 + 45);
+    v14 = *(fromCopy + 45);
     if ((v14 & 0x200000) == 0)
     {
 LABEL_56:
@@ -3721,9 +3721,9 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  self->_phoneAllowsNotifications = *(v4 + 173);
+  self->_phoneAllowsNotifications = *(fromCopy + 173);
   *&self->_has |= 0x200000u;
-  v14 = *(v4 + 45);
+  v14 = *(fromCopy + 45);
   if ((v14 & 0x20000) == 0)
   {
 LABEL_57:
@@ -3736,9 +3736,9 @@ LABEL_57:
   }
 
 LABEL_76:
-  self->_criticalAlertSetting = *(v4 + 169);
+  self->_criticalAlertSetting = *(fromCopy + 169);
   *&self->_has |= 0x20000u;
-  v14 = *(v4 + 45);
+  v14 = *(fromCopy + 45);
   if ((v14 & 0x10) == 0)
   {
 LABEL_58:
@@ -3751,9 +3751,9 @@ LABEL_58:
   }
 
 LABEL_77:
-  self->_groupingSetting = *(v4 + 12);
+  self->_groupingSetting = *(fromCopy + 12);
   *&self->_has |= 0x10u;
-  v14 = *(v4 + 45);
+  v14 = *(fromCopy + 45);
   if ((v14 & 0x80000) == 0)
   {
 LABEL_59:
@@ -3766,9 +3766,9 @@ LABEL_59:
   }
 
 LABEL_78:
-  self->_excludeFromBulletinBoard = *(v4 + 171);
+  self->_excludeFromBulletinBoard = *(fromCopy + 171);
   *&self->_has |= 0x80000u;
-  v14 = *(v4 + 45);
+  v14 = *(fromCopy + 45);
   if ((v14 & 8) == 0)
   {
 LABEL_60:
@@ -3781,9 +3781,9 @@ LABEL_60:
   }
 
 LABEL_79:
-  self->_authorizationStatus = *(v4 + 7);
+  self->_authorizationStatus = *(fromCopy + 7);
   *&self->_has |= 8u;
-  v14 = *(v4 + 45);
+  v14 = *(fromCopy + 45);
   if ((v14 & 0x100) == 0)
   {
 LABEL_61:
@@ -3796,9 +3796,9 @@ LABEL_61:
   }
 
 LABEL_80:
-  self->_phoneAuthorizationStatus = *(v4 + 19);
+  self->_phoneAuthorizationStatus = *(fromCopy + 19);
   *&self->_has |= 0x100u;
-  v14 = *(v4 + 45);
+  v14 = *(fromCopy + 45);
   if ((v14 & 0x20) == 0)
   {
 LABEL_62:
@@ -3811,9 +3811,9 @@ LABEL_62:
   }
 
 LABEL_81:
-  self->_lockScreenSetting = *(v4 + 16);
+  self->_lockScreenSetting = *(fromCopy + 16);
   *&self->_has |= 0x20u;
-  v14 = *(v4 + 45);
+  v14 = *(fromCopy + 45);
   if ((v14 & 0x80) == 0)
   {
 LABEL_63:
@@ -3826,37 +3826,37 @@ LABEL_63:
   }
 
 LABEL_82:
-  self->_notificationCenterSetting = *(v4 + 18);
+  self->_notificationCenterSetting = *(fromCopy + 18);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 45) & 0x1000) != 0)
+  if ((*(fromCopy + 45) & 0x1000) != 0)
   {
 LABEL_64:
-    self->_spokenNotificationSetting = *(v4 + 27);
+    self->_spokenNotificationSetting = *(fromCopy + 27);
     *&self->_has |= 0x1000u;
   }
 
 LABEL_65:
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(BLTPBSectionInfo *)self setWatchSectionID:?];
   }
 
-  v15 = *(v4 + 45);
+  v15 = *(fromCopy + 45);
   if (v15)
   {
-    self->_authorizationExpirationDate = *(v4 + 1);
+    self->_authorizationExpirationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v15 = *(v4 + 45);
+    v15 = *(fromCopy + 45);
   }
 
   if ((v15 & 2) != 0)
   {
-    self->_lastUserGrantedAuthorizationDate = *(v4 + 2);
+    self->_lastUserGrantedAuthorizationDate = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
   sectionInfoSettings = self->_sectionInfoSettings;
-  v17 = *(v4 + 12);
+  v17 = *(fromCopy + 12);
   if (sectionInfoSettings)
   {
     if (v17)

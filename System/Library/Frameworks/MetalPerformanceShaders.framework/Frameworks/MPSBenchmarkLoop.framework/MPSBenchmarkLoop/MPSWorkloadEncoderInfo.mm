@@ -1,9 +1,9 @@
 @interface MPSWorkloadEncoderInfo
 - (MPSWorkloadEncoderInfo)init;
 - (id)currentDispatch;
-- (void)addComputePipelineState:(id)a3;
-- (void)addDispatchWithThreadgroupsPerGrid:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)addThreadgroupMemoryLength:(unint64_t)a3;
+- (void)addComputePipelineState:(id)state;
+- (void)addDispatchWithThreadgroupsPerGrid:(id *)grid threadsPerThreadgroup:(id *)threadgroup;
+- (void)addThreadgroupMemoryLength:(unint64_t)length;
 - (void)dealloc;
 @end
 
@@ -30,9 +30,9 @@
   return objc_msgSend_objectAtIndexedSubscript_(dispatches, v6, v7, v8, v9);
 }
 
-- (void)addComputePipelineState:(id)a3
+- (void)addComputePipelineState:(id)state
 {
-  self->_currentComputePipelineStateLabel = objc_msgSend_label(a3, a2, a3, v3, v4);
+  self->_currentComputePipelineStateLabel = objc_msgSend_label(state, a2, state, v3, v4);
   v10 = objc_msgSend_newDispatchInfo(MPSWorkloadDispatchInfo, v6, v7, v8, v9);
   objc_msgSend_setComputePipelineStateLabel_(v10, v11, self->_currentComputePipelineStateLabel, v12, v13);
   dispatches = self->_dispatches;
@@ -40,19 +40,19 @@
   objc_msgSend_addObject_(dispatches, v14, v10, v15, v16);
 }
 
-- (void)addDispatchWithThreadgroupsPerGrid:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)addDispatchWithThreadgroupsPerGrid:(id *)grid threadsPerThreadgroup:(id *)threadgroup
 {
-  v7 = objc_msgSend_currentDispatch(self, a2, a3, a4, v4);
-  v14 = *a3;
+  v7 = objc_msgSend_currentDispatch(self, a2, grid, threadgroup, v4);
+  v14 = *grid;
   objc_msgSend_setThreadgroupsPerGrid_(v7, v8, &v14, v9, v10);
-  v14 = *a4;
+  v14 = *threadgroup;
   objc_msgSend_setThreadsPerThreadgroup_(v7, v11, &v14, v12, v13);
 }
 
-- (void)addThreadgroupMemoryLength:(unint64_t)a3
+- (void)addThreadgroupMemoryLength:(unint64_t)length
 {
-  v6 = objc_msgSend_currentDispatch(self, a2, a3, v3, v4);
-  v11 = objc_msgSend_threadsgroupMemoryLength(v6, v7, v8, v9, v10) + a3;
+  v6 = objc_msgSend_currentDispatch(self, a2, length, v3, v4);
+  v11 = objc_msgSend_threadsgroupMemoryLength(v6, v7, v8, v9, v10) + length;
 
   MEMORY[0x2821F9670](v6, sel_setThreadsgroupMemoryLength_, v11, v12, v13);
 }

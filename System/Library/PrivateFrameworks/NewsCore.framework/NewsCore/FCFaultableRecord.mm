@@ -1,11 +1,11 @@
 @interface FCFaultableRecord
-+ (FCFaultableRecord)faultableRecordWithRecord:(uint64_t)a1;
-+ (id)readValueFromKeyValuePair:(id)a3;
++ (FCFaultableRecord)faultableRecordWithRecord:(uint64_t)record;
++ (id)readValueFromKeyValuePair:(id)pair;
 - (FCFaultableRecord)init;
 - (id)record;
 - (id)recordBase;
-- (void)writeToKeyValuePair:(id)a3;
-- (void)writeValueToDataWriter:(id)a3;
+- (void)writeToKeyValuePair:(id)pair;
+- (void)writeValueToDataWriter:(id)writer;
 @end
 
 @implementation FCFaultableRecord
@@ -26,14 +26,14 @@
 - (id)recordBase
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v2 = (a1 + 24);
-    v3 = *(a1 + 24);
-    v4 = *(a1 + 32);
-    v5 = *(a1 + 16);
-    os_unfair_lock_unlock((a1 + 8));
+    v2 = (self + 24);
+    v3 = *(self + 24);
+    v4 = *(self + 32);
+    v5 = *(self + 16);
+    os_unfair_lock_unlock((self + 8));
     if (!v3)
     {
       if (v5)
@@ -51,14 +51,14 @@
       {
         v6 = *v2;
 
-        os_unfair_lock_unlock((a1 + 8));
+        os_unfair_lock_unlock((self + 8));
         v3 = v6;
       }
 
       else
       {
-        objc_storeStrong((a1 + 24), v3);
-        os_unfair_lock_unlock((a1 + 8));
+        objc_storeStrong((self + 24), v3);
+        os_unfair_lock_unlock((self + 8));
         if (!v3)
         {
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
@@ -81,9 +81,9 @@
       }
     }
 
-    v7 = [v3 identifier];
+    identifier = [v3 identifier];
 
-    if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
+    if (!identifier && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
       v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"faultable record loaded base without an identifier"];
       v13 = 136315906;
@@ -113,12 +113,12 @@ LABEL_13:
 - (id)record
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
-    v2 = *(a1 + 16);
-    v3 = *(a1 + 32);
-    os_unfair_lock_unlock((a1 + 8));
+    v2 = *(self + 16);
+    v3 = *(self + 32);
+    os_unfair_lock_unlock((self + 8));
     if (v2)
     {
       v4 = 1;
@@ -134,10 +134,10 @@ LABEL_13:
       goto LABEL_20;
     }
 
-    v5 = [(FCFaultableRecord *)a1 recordBase];
-    v6 = [v5 recordType];
+    recordBase = [(FCFaultableRecord *)self recordBase];
+    recordType = [recordBase recordType];
 
-    switch(v6)
+    switch(recordType)
     {
       case 0:
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -212,7 +212,7 @@ LABEL_25:
     }
 
     os_unfair_lock_lock_with_options();
-    v12 = *(a1 + 16);
+    v12 = *(self + 16);
     if (v12)
     {
       v2 = v12;
@@ -221,11 +221,11 @@ LABEL_25:
     else
     {
       v2 = v9;
-      v9 = *(a1 + 16);
-      *(a1 + 16) = v2;
+      v9 = *(self + 16);
+      *(self + 16) = v2;
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
 LABEL_20:
 
     goto LABEL_21;
@@ -238,7 +238,7 @@ LABEL_21:
   return v2;
 }
 
-+ (FCFaultableRecord)faultableRecordWithRecord:(uint64_t)a1
++ (FCFaultableRecord)faultableRecordWithRecord:(uint64_t)record
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
@@ -269,11 +269,11 @@ LABEL_21:
   return v5;
 }
 
-+ (id)readValueFromKeyValuePair:(id)a3
++ (id)readValueFromKeyValuePair:(id)pair
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 recordData];
-  v4 = v3;
+  recordData = [pair recordData];
+  v4 = recordData;
   objc_opt_self();
   if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -293,7 +293,7 @@ LABEL_21:
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_recordData, v3);
+    objc_storeStrong(&v5->_recordData, recordData);
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -301,7 +301,7 @@ LABEL_21:
   return v6;
 }
 
-- (void)writeToKeyValuePair:(id)a3
+- (void)writeToKeyValuePair:(id)pair
 {
   v13 = *MEMORY[0x1E69E9840];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -321,9 +321,9 @@ LABEL_21:
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeValueToDataWriter:(id)a3
+- (void)writeValueToDataWriter:(id)writer
 {
-  v4 = a3;
+  writerCopy = writer;
   os_unfair_lock_lock_with_options();
   recordData = self->_recordData;
   v6 = self->_record;

@@ -1,40 +1,40 @@
 @interface BMSiriRemembersFieldFieldValue
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriRemembersFieldFieldValue)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriRemembersFieldFieldValue)initWithValueSequence:(id)a3 valueDictionary:(id)a4 value:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriRemembersFieldFieldValue)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriRemembersFieldFieldValue)initWithValueSequence:(id)sequence valueDictionary:(id)dictionary value:(id)value;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_valueDictionaryJSONArray;
 - (id)_valueSequenceJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriRemembersFieldFieldValue
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriRemembersFieldFieldValue *)self valueSequence];
-    v7 = [v5 valueSequence];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    valueSequence = [(BMSiriRemembersFieldFieldValue *)self valueSequence];
+    valueSequence2 = [v5 valueSequence];
+    v8 = valueSequence2;
+    if (valueSequence == valueSequence2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriRemembersFieldFieldValue *)self valueSequence];
-      v10 = [v5 valueSequence];
-      v11 = [v9 isEqual:v10];
+      valueSequence3 = [(BMSiriRemembersFieldFieldValue *)self valueSequence];
+      valueSequence4 = [v5 valueSequence];
+      v11 = [valueSequence3 isEqual:valueSequence4];
 
       if (!v11)
       {
@@ -42,18 +42,18 @@
       }
     }
 
-    v13 = [(BMSiriRemembersFieldFieldValue *)self valueDictionary];
-    v14 = [v5 valueDictionary];
-    v15 = v14;
-    if (v13 == v14)
+    valueDictionary = [(BMSiriRemembersFieldFieldValue *)self valueDictionary];
+    valueDictionary2 = [v5 valueDictionary];
+    v15 = valueDictionary2;
+    if (valueDictionary == valueDictionary2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriRemembersFieldFieldValue *)self valueDictionary];
-      v17 = [v5 valueDictionary];
-      v18 = [v16 isEqual:v17];
+      valueDictionary3 = [(BMSiriRemembersFieldFieldValue *)self valueDictionary];
+      valueDictionary4 = [v5 valueDictionary];
+      v18 = [valueDictionary3 isEqual:valueDictionary4];
 
       if (!v18)
       {
@@ -65,18 +65,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMSiriRemembersFieldFieldValue *)self value];
-    v20 = [v5 value];
-    if (v19 == v20)
+    value = [(BMSiriRemembersFieldFieldValue *)self value];
+    value2 = [v5 value];
+    if (value == value2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMSiriRemembersFieldFieldValue *)self value];
-      v22 = [v5 value];
-      v12 = [v21 isEqual:v22];
+      value3 = [(BMSiriRemembersFieldFieldValue *)self value];
+      value4 = [v5 value];
+      v12 = [value3 isEqual:value4];
     }
 
     goto LABEL_15;
@@ -91,46 +91,46 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriRemembersFieldFieldValue *)self _valueSequenceJSONArray];
-  v4 = [(BMSiriRemembersFieldFieldValue *)self _valueDictionaryJSONArray];
-  v5 = [(BMSiriRemembersFieldFieldValue *)self value];
-  v6 = [v5 jsonDictionary];
+  _valueSequenceJSONArray = [(BMSiriRemembersFieldFieldValue *)self _valueSequenceJSONArray];
+  _valueDictionaryJSONArray = [(BMSiriRemembersFieldFieldValue *)self _valueDictionaryJSONArray];
+  value = [(BMSiriRemembersFieldFieldValue *)self value];
+  jsonDictionary = [value jsonDictionary];
 
   v13[0] = @"valueSequence";
-  v7 = v3;
-  if (!v3)
+  null = _valueSequenceJSONArray;
+  if (!_valueSequenceJSONArray)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v7;
+  v14[0] = null;
   v13[1] = @"valueDictionary";
-  v8 = v4;
-  if (!v4)
+  null2 = _valueDictionaryJSONArray;
+  if (!_valueDictionaryJSONArray)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v8;
+  v14[1] = null2;
   v13[2] = @"value";
-  v9 = v6;
-  if (!v6)
+  null3 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v9;
+  v14[2] = null3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
-  if (v6)
+  if (jsonDictionary)
   {
-    if (v4)
+    if (_valueDictionaryJSONArray)
     {
       goto LABEL_9;
     }
 
 LABEL_14:
 
-    if (v3)
+    if (_valueSequenceJSONArray)
     {
       goto LABEL_10;
     }
@@ -138,13 +138,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!_valueDictionaryJSONArray)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (v3)
+  if (_valueSequenceJSONArray)
   {
     goto LABEL_10;
   }
@@ -165,8 +165,8 @@ LABEL_10:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMSiriRemembersFieldFieldValue *)self valueDictionary];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  valueDictionary = [(BMSiriRemembersFieldFieldValue *)self valueDictionary];
+  v5 = [valueDictionary countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -177,14 +177,14 @@ LABEL_10:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(valueDictionary);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [valueDictionary countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -203,8 +203,8 @@ LABEL_10:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMSiriRemembersFieldFieldValue *)self valueSequence];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  valueSequence = [(BMSiriRemembersFieldFieldValue *)self valueSequence];
+  v5 = [valueSequence countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -215,14 +215,14 @@ LABEL_10:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(valueSequence);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [valueSequence countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -233,18 +233,18 @@ LABEL_10:
   return v3;
 }
 
-- (BMSiriRemembersFieldFieldValue)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriRemembersFieldFieldValue)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v92[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"valueSequence"];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  v8 = [v6 isEqual:v7];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"valueSequence"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v8 = [v6 isEqual:null];
 
-  v64 = v5;
+  v64 = dictionaryCopy;
   if (v8)
   {
-    v62 = self;
+    selfCopy2 = self;
 
     v6 = 0;
   }
@@ -256,9 +256,9 @@ LABEL_10:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
-          v28 = 0;
+          selfCopy3 = 0;
           goto LABEL_61;
         }
 
@@ -268,15 +268,15 @@ LABEL_10:
         v65 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"valueSequence"];
         v92[0] = v65;
         v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:&v91 count:1];
-        v28 = 0;
-        *a4 = [v40 initWithDomain:v41 code:2 userInfo:v42];
+        selfCopy3 = 0;
+        *error = [v40 initWithDomain:v41 code:2 userInfo:v42];
 LABEL_46:
         v29 = v42;
         goto LABEL_60;
       }
     }
 
-    v62 = self;
+    selfCopy2 = self;
   }
 
   v65 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
@@ -306,8 +306,8 @@ LABEL_46:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v22 = objc_alloc(MEMORY[0x1E696ABC0]);
           v23 = *MEMORY[0x1E698F240];
@@ -321,18 +321,18 @@ LABEL_46:
         }
 
 LABEL_47:
-        v28 = 0;
+        selfCopy3 = 0;
         v29 = v6;
-        v5 = v64;
-        self = v62;
+        dictionaryCopy = v64;
+        self = selfCopy2;
         goto LABEL_60;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v21 = a4;
-        if (!a4)
+        errorCopy2 = error;
+        if (!error)
         {
           goto LABEL_47;
         }
@@ -347,13 +347,13 @@ LABEL_47:
         v26 = &v86;
 LABEL_22:
         v27 = [v24 dictionaryWithObjects:v25 forKeys:v26 count:1];
-        v28 = 0;
-        *v21 = [v22 initWithDomain:v23 code:2 userInfo:v27];
+        selfCopy3 = 0;
+        *errorCopy2 = [v22 initWithDomain:v23 code:2 userInfo:v27];
         v29 = v6;
 LABEL_23:
-        v5 = v64;
+        dictionaryCopy = v64;
 LABEL_27:
-        self = v62;
+        self = selfCopy2;
         goto LABEL_59;
       }
 
@@ -365,14 +365,14 @@ LABEL_27:
       if (v17)
       {
         v27 = v17;
-        v5 = v64;
-        if (a4)
+        dictionaryCopy = v64;
+        if (error)
         {
           v30 = v17;
-          *a4 = v27;
+          *error = v27;
         }
 
-        v28 = 0;
+        selfCopy3 = 0;
         v29 = v6;
         goto LABEL_27;
       }
@@ -386,10 +386,10 @@ LABEL_27:
   while (v10);
 LABEL_16:
 
-  v5 = v64;
+  dictionaryCopy = v64;
   v18 = [v64 objectForKeyedSubscript:@"valueDictionary"];
-  v19 = [MEMORY[0x1E695DFB0] null];
-  v20 = [v18 isEqual:v19];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v20 = [v18 isEqual:null2];
 
   if (v20)
   {
@@ -404,8 +404,8 @@ LABEL_16:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v42 = v18;
-      self = v62;
-      if (a4)
+      self = selfCopy2;
+      if (error)
       {
         v54 = objc_alloc(MEMORY[0x1E696ABC0]);
         v55 = *MEMORY[0x1E698F240];
@@ -413,13 +413,13 @@ LABEL_16:
         v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"valueDictionary"];
         v85 = v14;
         v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-        v28 = 0;
-        *a4 = [v54 initWithDomain:v55 code:2 userInfo:v27];
+        selfCopy3 = 0;
+        *error = [v54 initWithDomain:v55 code:2 userInfo:v27];
         v29 = v42;
         goto LABEL_59;
       }
 
-      v28 = 0;
+      selfCopy3 = 0;
       goto LABEL_46;
     }
   }
@@ -453,8 +453,8 @@ LABEL_30:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v43 = a4;
-        if (a4)
+        errorCopy4 = error;
+        if (error)
         {
           v44 = objc_alloc(MEMORY[0x1E696ABC0]);
           v45 = *MEMORY[0x1E698F240];
@@ -466,19 +466,19 @@ LABEL_30:
           v48 = &v81;
 LABEL_53:
           v49 = [v46 dictionaryWithObjects:v47 forKeys:v48 count:1];
-          *v43 = [v44 initWithDomain:v45 code:2 userInfo:v49];
+          *errorCopy4 = [v44 initWithDomain:v45 code:2 userInfo:v49];
 
 LABEL_57:
-          v28 = 0;
+          selfCopy3 = 0;
           v29 = obj;
-          self = v62;
+          self = selfCopy2;
           v27 = obj;
-          v5 = v64;
+          dictionaryCopy = v64;
           goto LABEL_58;
         }
 
 LABEL_64:
-        v28 = 0;
+        selfCopy3 = 0;
         v29 = obj;
         v27 = obj;
         goto LABEL_23;
@@ -487,8 +487,8 @@ LABEL_64:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v43 = a4;
-        if (a4)
+        errorCopy4 = error;
+        if (error)
         {
           v44 = objc_alloc(MEMORY[0x1E696ABC0]);
           v45 = *MEMORY[0x1E698F240];
@@ -512,10 +512,10 @@ LABEL_64:
       if (v39)
       {
         v50 = v39;
-        if (a4)
+        if (error)
         {
           v51 = v39;
-          *a4 = v50;
+          *error = v50;
         }
 
         goto LABEL_57;
@@ -532,7 +532,7 @@ LABEL_64:
     }
 
     v32 = [obj countByEnumeratingWithState:&v68 objects:v83 count:16];
-    v5 = v64;
+    dictionaryCopy = v64;
     if (v32)
     {
       continue;
@@ -544,11 +544,11 @@ LABEL_64:
 LABEL_40:
   v29 = obj;
 
-  v27 = [v5 objectForKeyedSubscript:@"value"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"value"];
   if (!v27 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v36 = 0;
-    self = v62;
+    self = selfCopy2;
     goto LABEL_43;
   }
 
@@ -559,16 +559,16 @@ LABEL_40:
     v66 = 0;
     v36 = [[BMSiriRemembersFieldFieldValueBasicValue alloc] initWithJSONDictionary:v56 error:&v66];
     v57 = v66;
-    self = v62;
+    self = selfCopy2;
     if (v57)
     {
-      if (a4)
+      if (error)
       {
         v57 = v57;
-        *a4 = v57;
+        *error = v57;
       }
 
-      v28 = 0;
+      selfCopy3 = 0;
       v27 = v56;
     }
 
@@ -577,7 +577,7 @@ LABEL_40:
 
 LABEL_43:
       self = [(BMSiriRemembersFieldFieldValue *)self initWithValueSequence:v65 valueDictionary:v14 value:v36];
-      v28 = self;
+      selfCopy3 = self;
     }
 
 LABEL_58:
@@ -585,7 +585,7 @@ LABEL_58:
 
   else
   {
-    if (a4)
+    if (error)
     {
       v58 = objc_alloc(MEMORY[0x1E696ABC0]);
       v59 = *MEMORY[0x1E698F240];
@@ -593,17 +593,17 @@ LABEL_58:
       v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"value"];
       v78 = v36;
       v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
-      *a4 = [v58 initWithDomain:v59 code:2 userInfo:v60];
+      *error = [v58 initWithDomain:v59 code:2 userInfo:v60];
 
-      v28 = 0;
+      selfCopy3 = 0;
       v29 = obj;
-      self = v62;
+      self = selfCopy2;
       goto LABEL_58;
     }
 
-    v28 = 0;
+    selfCopy3 = 0;
     v29 = obj;
-    self = v62;
+    self = selfCopy2;
   }
 
 LABEL_59:
@@ -612,22 +612,22 @@ LABEL_60:
 LABEL_61:
 
   v52 = *MEMORY[0x1E69E9840];
-  return v28;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriRemembersFieldFieldValue *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -651,7 +651,7 @@ LABEL_61:
         v10 = *(*(&v23 + 1) + 8 * v9);
         v22 = 0;
         PBDataWriterPlaceMark();
-        [v10 writeTo:v4];
+        [v10 writeTo:toCopy];
         PBDataWriterRecallMark();
         ++v9;
       }
@@ -686,7 +686,7 @@ LABEL_61:
         v16 = *(*(&v18 + 1) + 8 * v15);
         v22 = 0;
         PBDataWriterPlaceMark();
-        [v16 writeTo:{v4, v18}];
+        [v16 writeTo:{toCopy, v18}];
         PBDataWriterRecallMark();
         ++v15;
       }
@@ -702,16 +702,16 @@ LABEL_61:
   {
     v22 = 0;
     PBDataWriterPlaceMark();
-    [(BMSiriRemembersFieldFieldValueBasicValue *)self->_value writeTo:v4];
+    [(BMSiriRemembersFieldFieldValueBasicValue *)self->_value writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMSiriRemembersFieldFieldValue;
   v5 = [(BMEventBase *)&v32 init];
@@ -722,12 +722,12 @@ LABEL_61:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -738,18 +738,18 @@ LABEL_61:
       while (1)
       {
         LOBYTE(v33) = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (v33 & 0x7F) << v9;
@@ -766,9 +766,9 @@ LABEL_61:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         break;
       }
@@ -778,7 +778,7 @@ LABEL_16:
       {
         v33 = 0;
         v34 = 0;
-        if (!PBReaderPlaceMark() || (v22 = [[BMSiriRemembersFieldFieldValueBasicValue alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v22 = [[BMSiriRemembersFieldFieldValueBasicValue alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_35:
 
@@ -802,7 +802,7 @@ LABEL_35:
             goto LABEL_35;
           }
 
-          v21 = [[BMSiriRemembersFieldFieldValueNamedValue alloc] initByReadFrom:v4];
+          v21 = [[BMSiriRemembersFieldFieldValueNamedValue alloc] initByReadFrom:fromCopy];
           if (!v21)
           {
             goto LABEL_35;
@@ -822,7 +822,7 @@ LABEL_35:
             goto LABEL_35;
           }
 
-          v18 = [[BMSiriRemembersFieldFieldValueBasicValue alloc] initByReadFrom:v4];
+          v18 = [[BMSiriRemembersFieldFieldValueBasicValue alloc] initByReadFrom:fromCopy];
           if (!v18)
           {
             goto LABEL_35;
@@ -844,10 +844,10 @@ LABEL_27:
       }
 
 LABEL_32:
-      v24 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v24 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v25 = [v6 copy];
@@ -858,8 +858,8 @@ LABEL_32:
   valueDictionary = v5->_valueDictionary;
   v5->_valueDictionary = v27;
 
-  v29 = [v4 hasError];
-  if (v29)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_36:
     v30 = 0;
@@ -877,28 +877,28 @@ LABEL_34:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriRemembersFieldFieldValue *)self valueSequence];
-  v5 = [(BMSiriRemembersFieldFieldValue *)self valueDictionary];
-  v6 = [(BMSiriRemembersFieldFieldValue *)self value];
-  v7 = [v3 initWithFormat:@"BMSiriRemembersFieldFieldValue with valueSequence: %@, valueDictionary: %@, value: %@", v4, v5, v6];
+  valueSequence = [(BMSiriRemembersFieldFieldValue *)self valueSequence];
+  valueDictionary = [(BMSiriRemembersFieldFieldValue *)self valueDictionary];
+  value = [(BMSiriRemembersFieldFieldValue *)self value];
+  v7 = [v3 initWithFormat:@"BMSiriRemembersFieldFieldValue with valueSequence: %@, valueDictionary: %@, value: %@", valueSequence, valueDictionary, value];
 
   return v7;
 }
 
-- (BMSiriRemembersFieldFieldValue)initWithValueSequence:(id)a3 valueDictionary:(id)a4 value:(id)a5
+- (BMSiriRemembersFieldFieldValue)initWithValueSequence:(id)sequence valueDictionary:(id)dictionary value:(id)value
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sequenceCopy = sequence;
+  dictionaryCopy = dictionary;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = BMSiriRemembersFieldFieldValue;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_valueSequence, a3);
-    objc_storeStrong(&v12->_valueDictionary, a4);
-    objc_storeStrong(&v12->_value, a5);
+    objc_storeStrong(&v12->_valueSequence, sequence);
+    objc_storeStrong(&v12->_valueDictionary, dictionary);
+    objc_storeStrong(&v12->_value, value);
   }
 
   return v12;
@@ -963,9 +963,9 @@ id __41__BMSiriRemembersFieldFieldValue_columns__block_invoke(uint64_t a1, void 
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -973,8 +973,8 @@ id __41__BMSiriRemembersFieldFieldValue_columns__block_invoke(uint64_t a1, void 
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriRemembersFieldFieldValue alloc] initByReadFrom:v7];
     v4 = v8;

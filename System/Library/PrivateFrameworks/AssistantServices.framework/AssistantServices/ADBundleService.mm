@@ -1,20 +1,20 @@
 @interface ADBundleService
 + (id)requiredInfoDictionaryKeys;
-- (ADBundleService)initWithBundlePath:(id)a3 infoDictionary:(id)a4 instanceContext:(id)a5;
-- (BOOL)_isValidRestrictionsDomainInfo:(id)a3;
-- (BOOL)implementsCommand:(id)a3 forDomain:(id)a4;
+- (ADBundleService)initWithBundlePath:(id)path infoDictionary:(id)dictionary instanceContext:(id)context;
+- (BOOL)_isValidRestrictionsDomainInfo:(id)info;
+- (BOOL)implementsCommand:(id)command forDomain:(id)domain;
 - (id)_connection;
-- (id)_informCommandCenter:(id)a3 willPerformLaunchApp:(id)a4;
-- (id)commandsForDomain:(id)a3;
-- (void)_parseInfoDictionary:(id)a3;
-- (void)beginSyncForInfo:(id)a3 chunkHandler:(id)a4;
+- (id)_informCommandCenter:(id)center willPerformLaunchApp:(id)app;
+- (id)commandsForDomain:(id)domain;
+- (void)_parseInfoDictionary:(id)dictionary;
+- (void)beginSyncForInfo:(id)info chunkHandler:(id)handler;
 - (void)clearDomainObjects;
-- (void)getInfoWithCompletion:(id)a3;
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
-- (void)preheatDomain:(id)a3;
+- (void)getInfoWithCompletion:(id)completion;
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
+- (void)preheatDomain:(id)domain;
 - (void)reload;
 - (void)resetExternalResources;
-- (void)runMaintenanceWorkWithCompletion:(id)a3;
+- (void)runMaintenanceWorkWithCompletion:(id)completion;
 - (void)serviceConnectionTimedoutForSync;
 @end
 
@@ -25,7 +25,7 @@
   if (!self->_connection)
   {
     v15 = [ADServiceConnection alloc];
-    v3 = [(ADService *)self identifier];
+    identifier = [(ADService *)self identifier];
     path = self->_path;
     domains = self->_domains;
     syncKeys = self->_syncKeys;
@@ -33,7 +33,7 @@
     maintenanceClassName = self->_maintenanceClassName;
     instanceContext = self->_instanceContext;
     v10 = +[ADCommandCenter sharedQueue];
-    v11 = [(ADServiceConnection *)v15 initWithIdentifier:v3 path:path commandMap:domains anchorMap:syncKeys clearingClass:clearsDomainObjectsClassName maintenanceClass:maintenanceClassName instanceContext:instanceContext queue:v10];
+    v11 = [(ADServiceConnection *)v15 initWithIdentifier:identifier path:path commandMap:domains anchorMap:syncKeys clearingClass:clearsDomainObjectsClassName maintenanceClass:maintenanceClassName instanceContext:instanceContext queue:v10];
     connection = self->_connection;
     self->_connection = v11;
 
@@ -55,8 +55,8 @@
   {
     if (self->_connection)
     {
-      v5 = [(ADBundleService *)self _connection];
-      [v5 sendClearDomainObjects];
+      _connection = [(ADBundleService *)self _connection];
+      [_connection sendClearDomainObjects];
     }
 
     else
@@ -79,43 +79,43 @@
 
 - (void)serviceConnectionTimedoutForSync
 {
-  v3 = [(ADService *)self delegate];
-  [v3 serviceTimedoutForSync:self];
+  delegate = [(ADService *)self delegate];
+  [delegate serviceTimedoutForSync:self];
 }
 
 - (void)reload
 {
-  v3 = [(ADBundleService *)self _connection];
-  [v3 reloadServiceBundleAtPath:self->_path];
+  _connection = [(ADBundleService *)self _connection];
+  [_connection reloadServiceBundleAtPath:self->_path];
 }
 
-- (void)runMaintenanceWorkWithCompletion:(id)a3
+- (void)runMaintenanceWorkWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(ADBundleService *)self _connection];
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  _connection = [(ADBundleService *)self _connection];
+  v5 = _connection;
+  if (_connection)
   {
-    [v4 runMaintenanceWorkWithCompletion:v6];
+    [_connection runMaintenanceWorkWithCompletion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)getInfoWithCompletion:(id)a3
+- (void)getInfoWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1002ED254;
   v5[3] = &unk_10051D188;
-  v6 = self;
-  v7 = a3;
-  v4.receiver = v6;
+  selfCopy = self;
+  completionCopy = completion;
+  v4.receiver = selfCopy;
   v4.super_class = ADBundleService;
-  v3 = v7;
+  v3 = completionCopy;
   [(ADService *)&v4 getInfoWithCompletion:v5];
 }
 
@@ -138,42 +138,42 @@
   }
 }
 
-- (void)beginSyncForInfo:(id)a3 chunkHandler:(id)a4
+- (void)beginSyncForInfo:(id)info chunkHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ADBundleService *)self _connection];
-  [v8 setDelegate:self];
+  handlerCopy = handler;
+  infoCopy = info;
+  _connection = [(ADBundleService *)self _connection];
+  [_connection setDelegate:self];
 
-  v9 = [(ADBundleService *)self _connection];
+  _connection2 = [(ADBundleService *)self _connection];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1002ED5BC;
   v13[3] = &unk_10051AE10;
-  v14 = v6;
+  v14 = handlerCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002ED5DC;
   v11[3] = &unk_10051D2F0;
   v12 = v14;
   v10 = v14;
-  [v9 sendBeginSyncWithInfo:v7 chunkHandler:v13 completion:v11];
+  [_connection2 sendBeginSyncWithInfo:infoCopy chunkHandler:v13 completion:v11];
 }
 
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ADBundleService *)self _connection];
+  commandCopy = command;
+  domainCopy = domain;
+  contextCopy = context;
+  replyCopy = reply;
+  _connection = [(ADBundleService *)self _connection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v15 = +[ADCommandCenter sharedCommandCenter];
-    v16 = [(ADBundleService *)self _informCommandCenter:v15 willPerformLaunchApp:v10];
+    v16 = [(ADBundleService *)self _informCommandCenter:v15 willPerformLaunchApp:commandCopy];
 
-    if (!v14)
+    if (!_connection)
     {
       goto LABEL_6;
     }
@@ -182,7 +182,7 @@
   }
 
   v16 = 0;
-  if (v14)
+  if (_connection)
   {
 LABEL_5:
     dispatch_group_enter(self->_group);
@@ -191,61 +191,61 @@ LABEL_5:
     v17[2] = sub_1002ED780;
     v17[3] = &unk_10051ADE8;
     v17[4] = self;
-    v18 = v13;
+    v18 = replyCopy;
     v19 = v16;
-    [v14 sendClientBoundCommand:v10 domain:v11 executionContext:v12 reply:v17];
+    [_connection sendClientBoundCommand:commandCopy domain:domainCopy executionContext:contextCopy reply:v17];
   }
 
 LABEL_6:
 }
 
-- (void)preheatDomain:(id)a3
+- (void)preheatDomain:(id)domain
 {
-  v3 = [(ADBundleService *)self _connection];
-  [v3 preheatServiceBundle];
+  _connection = [(ADBundleService *)self _connection];
+  [_connection preheatServiceBundle];
 }
 
-- (BOOL)implementsCommand:(id)a3 forDomain:(id)a4
+- (BOOL)implementsCommand:(id)command forDomain:(id)domain
 {
   domains = self->_domains;
-  v6 = a3;
-  v7 = [(NSDictionary *)domains objectForKey:a4];
-  v8 = [v7 objectForKey:v6];
+  commandCopy = command;
+  v7 = [(NSDictionary *)domains objectForKey:domain];
+  v8 = [v7 objectForKey:commandCopy];
 
   return v8 != 0;
 }
 
-- (id)commandsForDomain:(id)a3
+- (id)commandsForDomain:(id)domain
 {
-  v3 = [(NSDictionary *)self->_domains objectForKey:a3];
-  v4 = [v3 allKeys];
+  v3 = [(NSDictionary *)self->_domains objectForKey:domain];
+  allKeys = [v3 allKeys];
 
-  return v4;
+  return allKeys;
 }
 
-- (ADBundleService)initWithBundlePath:(id)a3 infoDictionary:(id)a4 instanceContext:(id)a5
+- (ADBundleService)initWithBundlePath:(id)path infoDictionary:(id)dictionary instanceContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = ADBundleService;
   v11 = [(ADBundleService *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [pathCopy copy];
     path = v11->_path;
     v11->_path = v12;
 
-    v14 = [v9 objectForKey:kCFBundleIdentifierKey];
-    v15 = v10;
-    if (!v10)
+    v14 = [dictionaryCopy objectForKey:kCFBundleIdentifierKey];
+    v15 = contextCopy;
+    if (!contextCopy)
     {
       v15 = +[AFInstanceContext defaultContext];
     }
 
     objc_storeStrong(&v11->_instanceContext, v15);
-    if (!v10)
+    if (!contextCopy)
     {
     }
 
@@ -255,7 +255,7 @@ LABEL_6:
       [(ADService *)v11 setIdentifier:v14];
     }
 
-    [(ADBundleService *)v11 _parseInfoDictionary:v9];
+    [(ADBundleService *)v11 _parseInfoDictionary:dictionaryCopy];
     v16 = dispatch_group_create();
     group = v11->_group;
     v11->_group = v16;
@@ -264,20 +264,20 @@ LABEL_6:
   return v11;
 }
 
-- (id)_informCommandCenter:(id)a3 willPerformLaunchApp:(id)a4
+- (id)_informCommandCenter:(id)center willPerformLaunchApp:(id)app
 {
-  v5 = a3;
-  v6 = [a4 launchId];
-  [v5 willProcessAppLaunchWithBundleIdentifier:v6];
-  objc_initWeak(&location, v5);
+  centerCopy = center;
+  launchId = [app launchId];
+  [centerCopy willProcessAppLaunchWithBundleIdentifier:launchId];
+  objc_initWeak(&location, centerCopy);
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1002EDBA8;
   v10[3] = &unk_10051ADC0;
   objc_copyWeak(&v12, &location);
-  v11 = v6;
-  v7 = v6;
+  v11 = launchId;
+  v7 = launchId;
   v8 = objc_retainBlock(v10);
 
   objc_destroyWeak(&v12);
@@ -286,9 +286,9 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)_isValidRestrictionsDomainInfo:(id)a3
+- (BOOL)_isValidRestrictionsDomainInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -296,7 +296,7 @@ LABEL_6:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v4 = v3;
+    v4 = infoCopy;
     v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v5)
     {
@@ -389,10 +389,10 @@ LABEL_24:
   return v14;
 }
 
-- (void)_parseInfoDictionary:(id)a3
+- (void)_parseInfoDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"AssistantDomains"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"AssistantDomains"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -467,8 +467,8 @@ LABEL_4:
     {
       v12 = v11;
       v13 = *v102;
-      v84 = v4;
-      v85 = self;
+      v84 = dictionaryCopy;
+      selfCopy = self;
       while (2)
       {
         for (i = 0; i != v12; i = i + 1)
@@ -483,15 +483,15 @@ LABEL_4:
           if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
 
-            v4 = v84;
-            self = v85;
+            dictionaryCopy = v84;
+            self = selfCopy;
             goto LABEL_25;
           }
         }
 
         v12 = [v10 countByEnumeratingWithState:&v101 objects:v117 count:16];
-        v4 = v84;
-        self = v85;
+        dictionaryCopy = v84;
+        self = selfCopy;
         if (v12)
         {
           continue;
@@ -533,19 +533,19 @@ LABEL_26:
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
   {
     v18 = v17;
-    v19 = [(ADService *)self identifier];
+    identifier = [(ADService *)self identifier];
     *buf = 136315650;
     v112 = "[ADBundleService _parseInfoDictionary:]";
     v113 = 2114;
     v114 = @"AssistantDomains";
     v115 = 2114;
-    v116 = v19;
+    v116 = identifier;
     _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s Malformed info plist value for key %{public}@ in bundle %{public}@", buf, 0x20u);
   }
 
 LABEL_31:
 
-  v22 = [v4 objectForKey:@"AssistantFirstUnlockRestrictedDomains"];
+  v22 = [dictionaryCopy objectForKey:@"AssistantFirstUnlockRestrictedDomains"];
   if (v22)
   {
     if ([(ADBundleService *)self _isValidRestrictionsDomainInfo:v22])
@@ -568,19 +568,19 @@ LABEL_31:
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
       {
         v76 = v25;
-        v77 = [(ADService *)self identifier];
+        identifier2 = [(ADService *)self identifier];
         *buf = 136315650;
         v112 = "[ADBundleService _parseInfoDictionary:]";
         v113 = 2114;
         v114 = @"AssistantFirstUnlockRestrictedDomains";
         v115 = 2114;
-        v116 = v77;
+        v116 = identifier2;
         _os_log_error_impl(&_mh_execute_header, v76, OS_LOG_TYPE_ERROR, "%s Malformed info plist value for key %{public}@ in bundle %{public}@", buf, 0x20u);
       }
     }
   }
 
-  v26 = [v4 objectForKey:@"AssistantLockRestrictedDomains"];
+  v26 = [dictionaryCopy objectForKey:@"AssistantLockRestrictedDomains"];
   if (v26)
   {
     if ([(ADBundleService *)self _isValidRestrictionsDomainInfo:v26])
@@ -605,19 +605,19 @@ LABEL_31:
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
       {
         v78 = v31;
-        v79 = [(ADService *)self identifier];
+        identifier3 = [(ADService *)self identifier];
         *buf = 136315650;
         v112 = "[ADBundleService _parseInfoDictionary:]";
         v113 = 2114;
         v114 = @"AssistantLockRestrictedDomains";
         v115 = 2114;
-        v116 = v79;
+        v116 = identifier3;
         _os_log_error_impl(&_mh_execute_header, v78, OS_LOG_TYPE_ERROR, "%s Malformed info plist value for key %{public}@ in bundle %{public}@", buf, 0x20u);
       }
     }
   }
 
-  v32 = [v4 objectForKey:@"AssistantControlCenterLockRestrictedDomains"];
+  v32 = [dictionaryCopy objectForKey:@"AssistantControlCenterLockRestrictedDomains"];
   if (v32)
   {
     if ([(ADBundleService *)self _isValidRestrictionsDomainInfo:v32])
@@ -640,19 +640,19 @@ LABEL_31:
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
       {
         v80 = v35;
-        v81 = [(ADService *)self identifier];
+        identifier4 = [(ADService *)self identifier];
         *buf = 136315650;
         v112 = "[ADBundleService _parseInfoDictionary:]";
         v113 = 2114;
         v114 = @"AssistantControlCenterLockRestrictedDomains";
         v115 = 2114;
-        v116 = v81;
+        v116 = identifier4;
         _os_log_error_impl(&_mh_execute_header, v80, OS_LOG_TYPE_ERROR, "%s Malformed info plist value for key %{public}@ in bundle %{public}@", buf, 0x20u);
       }
     }
   }
 
-  v36 = [v4 objectForKey:@"AssistantManagedStorageDomains"];
+  v36 = [dictionaryCopy objectForKey:@"AssistantManagedStorageDomains"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -717,13 +717,13 @@ LABEL_59:
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
     {
       v44 = v43;
-      v45 = [(ADService *)self identifier];
+      identifier5 = [(ADService *)self identifier];
       *buf = 136315650;
       v112 = "[ADBundleService _parseInfoDictionary:]";
       v113 = 2114;
       v114 = @"AssistantManagedStorageDomains";
       v115 = 2114;
-      v116 = v45;
+      v116 = identifier5;
       _os_log_error_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "%s Malformed info plist value for key %{public}@ in bundle %{public}@", buf, 0x20u);
     }
 
@@ -739,11 +739,11 @@ LABEL_63:
 
 LABEL_65:
 
-  v47 = [v4 objectForKey:@"AssistantSyncAnchorKeys"];
+  v47 = [dictionaryCopy objectForKey:@"AssistantSyncAnchorKeys"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v86 = self;
+    selfCopy2 = self;
     v89 = 0u;
     v90 = 0u;
     v87 = 0u;
@@ -785,7 +785,7 @@ LABEL_65:
 
     v54 = v48;
 LABEL_79:
-    self = v86;
+    self = selfCopy2;
     if (!v47)
     {
       goto LABEL_83;
@@ -807,13 +807,13 @@ LABEL_79:
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
     {
       v56 = v55;
-      v57 = [(ADService *)self identifier];
+      identifier6 = [(ADService *)self identifier];
       *buf = 136315650;
       v112 = "[ADBundleService _parseInfoDictionary:]";
       v113 = 2114;
       v114 = @"AssistantSyncAnchorKeys";
       v115 = 2114;
-      v116 = v57;
+      v116 = identifier6;
       _os_log_error_impl(&_mh_execute_header, v56, OS_LOG_TYPE_ERROR, "%s Malformed info plist value for key %{public}@ in bundle %{public}@", buf, 0x20u);
     }
 
@@ -830,7 +830,7 @@ LABEL_83:
 
 LABEL_85:
 
-  v60 = [v4 objectForKey:@"AssistantClearsDomainObjects"];
+  v60 = [dictionaryCopy objectForKey:@"AssistantClearsDomainObjects"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -867,19 +867,19 @@ LABEL_92:
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
   {
     v63 = v62;
-    v64 = [(ADService *)self identifier];
+    identifier7 = [(ADService *)self identifier];
     *buf = 136315650;
     v112 = "[ADBundleService _parseInfoDictionary:]";
     v113 = 2114;
     v114 = @"AssistantClearsDomainObjects";
     v115 = 2114;
-    v116 = v64;
+    v116 = identifier7;
     _os_log_error_impl(&_mh_execute_header, v63, OS_LOG_TYPE_ERROR, "%s Malformed info plist value for key %{public}@ in bundle %{public}@", buf, 0x20u);
   }
 
 LABEL_94:
 
-  v67 = [v4 objectForKey:@"AssistantMaintenance"];
+  v67 = [dictionaryCopy objectForKey:@"AssistantMaintenance"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -905,13 +905,13 @@ LABEL_94:
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
     {
       v74 = v69;
-      v75 = [(ADService *)self identifier];
+      identifier8 = [(ADService *)self identifier];
       *buf = 136315650;
       v112 = "[ADBundleService _parseInfoDictionary:]";
       v113 = 2114;
       v114 = @"AssistantMaintenance";
       v115 = 2114;
-      v116 = v75;
+      v116 = identifier8;
       _os_log_error_impl(&_mh_execute_header, v74, OS_LOG_TYPE_ERROR, "%s Malformed info plist value for key %{public}@ in bundle %{public}@", buf, 0x20u);
     }
   }
@@ -921,7 +921,7 @@ LABEL_101:
   maintenanceClassName = self->_maintenanceClassName;
   self->_maintenanceClassName = v70;
 
-  v72 = [v4 objectForKey:@"AssistantRequiresBootMaintenance"];
+  v72 = [dictionaryCopy objectForKey:@"AssistantRequiresBootMaintenance"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

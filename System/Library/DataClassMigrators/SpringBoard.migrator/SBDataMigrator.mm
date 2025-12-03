@@ -6,7 +6,7 @@
 - (float)estimatedDuration;
 - (float)migrationProgress;
 - (id)currentDeviceSupportsAlwaysOnByDefault;
-- (id)sourceDeviceSupportsAODByDefaultWithUserDefaults:(id)a3;
+- (id)sourceDeviceSupportsAODByDefaultWithUserDefaults:(id)defaults;
 - (void)_saveNewLastBuildVersion;
 - (void)informPaperBoardOfMigration;
 - (void)performALSMigration;
@@ -22,7 +22,7 @@
 - (void)performPosterBoardMigration;
 - (void)performShortcutStoreMigrationIfNecessary;
 - (void)performSplashBoardLaunchImagesMigration;
-- (void)performSplashBoardSystemLaunchImagesMigrationRecreating:(id)a3;
+- (void)performSplashBoardSystemLaunchImagesMigrationRecreating:(id)recreating;
 - (void)performTigrisDataStoreMigrationIfNecessary;
 - (void)warmUpIcons;
 @end
@@ -83,8 +83,8 @@
     v2->_migratorDefaults = v12;
 
     v14 = [SBFBuildVersion alloc];
-    v15 = [(SBDataMigratorDefaults *)v2->_migratorDefaults lastSystemBuildVersion];
-    v16 = [v14 initWithString:v15];
+    lastSystemBuildVersion = [(SBDataMigratorDefaults *)v2->_migratorDefaults lastSystemBuildVersion];
+    v16 = [v14 initWithString:lastSystemBuildVersion];
     lastBuildVersion = v2->_lastBuildVersion;
     v2->_lastBuildVersion = v16;
   }
@@ -95,8 +95,8 @@
 - (float)estimatedDuration
 {
   v3 = [(NSMutableArray *)self->_allInstalledApps count]* 0.1 + 0.5;
-  v4 = [(SBSplashBoardMigrationController *)self->_xbController allSplashBoardApplications];
-  v5 = v3 + [v4 count] * 0.2;
+  allSplashBoardApplications = [(SBSplashBoardMigrationController *)self->_xbController allSplashBoardApplications];
+  v5 = v3 + [allSplashBoardApplications count] * 0.2;
 
   if ([(SBDataMigrator *)self _needsTigrisDataStoreMigration])
   {
@@ -121,9 +121,9 @@
 - (BOOL)performMigration
 {
   [(SBDataMigrator *)self warmUpIcons];
-  v3 = [(SBSplashBoardMigrationController *)self->_xbController systemAppsNeedingMigrationLaunchImages];
+  systemAppsNeedingMigrationLaunchImages = [(SBSplashBoardMigrationController *)self->_xbController systemAppsNeedingMigrationLaunchImages];
   [(SBDataMigrator *)self performSplashBoardLaunchImagesMigration];
-  [(SBDataMigrator *)self performSplashBoardSystemLaunchImagesMigrationRecreating:v3];
+  [(SBDataMigrator *)self performSplashBoardSystemLaunchImagesMigrationRecreating:systemAppsNeedingMigrationLaunchImages];
   [(SBDataMigrator *)self performALSMigration];
   [(SBDataMigrator *)self performBadgingDisabledMigration];
   [(SBDataMigrator *)self performTigrisDataStoreMigrationIfNecessary];
@@ -151,19 +151,19 @@
   v5 = [v3 objectForKey:_kCFSystemVersionBuildVersionKey];
   v6 = [v4 initWithString:v5];
 
-  v7 = [v6 stringRepresentation];
+  stringRepresentation = [v6 stringRepresentation];
   v8 = SBLogCommon();
   v9 = v8;
-  if (v7)
+  if (stringRepresentation)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v7;
+      v11 = stringRepresentation;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Saving new migrator last build version: %@", &v10, 0xCu);
     }
 
-    [(SBDataMigratorDefaults *)self->_migratorDefaults setLastSystemBuildVersion:v7];
+    [(SBDataMigratorDefaults *)self->_migratorDefaults setLastSystemBuildVersion:stringRepresentation];
     [(SBDataMigratorDefaults *)self->_migratorDefaults synchronizeDefaults];
   }
 
@@ -181,8 +181,8 @@
   v2 = +[UMUserManager sharedManager];
   if ([v2 isMultiUser])
   {
-    v3 = [v2 currentUser];
-    v4 = [v3 userType] == &dword_0 + 1;
+    currentUser = [v2 currentUser];
+    v4 = [currentUser userType] == &dword_0 + 1;
   }
 
   else
@@ -230,10 +230,10 @@
             objc_enumerationMutation(v4);
           }
 
-          v8 = [*(*(&v12 + 1) + 8 * v7) bundleIdentifier];
-          if (v8)
+          bundleIdentifier = [*(*(&v12 + 1) + 8 * v7) bundleIdentifier];
+          if (bundleIdentifier)
           {
-            v9 = [[ISIcon alloc] initWithBundleIdentifier:v8];
+            v9 = [[ISIcon alloc] initWithBundleIdentifier:bundleIdentifier];
             v23 = v3;
             v10 = [NSArray arrayWithObjects:&v23 count:1];
             [v9 prepareImagesForImageDescriptors:v10];
@@ -257,9 +257,9 @@
 {
   v7 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.springboard"];
   v2 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.backboardd"];
-  v3 = [v7 dictionaryRepresentation];
-  v4 = [v3 allKeys];
-  v5 = [v4 containsObject:@"SBEnableALS"];
+  dictionaryRepresentation = [v7 dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
+  v5 = [allKeys containsObject:@"SBEnableALS"];
 
   if (v5)
   {
@@ -289,19 +289,19 @@
   }
 }
 
-- (void)performSplashBoardSystemLaunchImagesMigrationRecreating:(id)a3
+- (void)performSplashBoardSystemLaunchImagesMigrationRecreating:(id)recreating
 {
-  v4 = a3;
+  recreatingCopy = recreating;
   if (![(SBDataMigrator *)self isEphemeralMultiUser])
   {
-    [(SBSplashBoardMigrationController *)self->_xbController performSystemAppMigrationRecreating:v4];
+    [(SBSplashBoardMigrationController *)self->_xbController performSystemAppMigrationRecreating:recreatingCopy];
   }
 }
 
 - (BOOL)_needsTigrisDataStoreMigration
 {
-  v3 = [(SBDataMigratorDefaults *)self->_migratorDefaults _store];
-  v4 = [v3 bs_defaultExists:@"lastBuildVersion"];
+  _store = [(SBDataMigratorDefaults *)self->_migratorDefaults _store];
+  v4 = [_store bs_defaultExists:@"lastBuildVersion"];
 
   lastBuildVersion = self->_lastBuildVersion;
   if (!lastBuildVersion)
@@ -426,9 +426,9 @@ LABEL_6:
 {
   v5 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.springboard"];
   v3 = +[BSPlatform sharedInstance];
-  v4 = [v3 homeButtonType];
+  homeButtonType = [v3 homeButtonType];
 
-  if (v4 == &dword_0 + 2)
+  if (homeButtonType == &dword_0 + 2)
   {
     if (-[SBDataMigrator didMigrateBackupFromDifferentDevice](self, "didMigrateBackupFromDifferentDevice") && ([v5 BOOLForKey:@"SBDidCheckLiftToWakeForDeviceWithoutHomeButton"] & 1) == 0)
     {
@@ -474,9 +474,9 @@ LABEL_6:
   if ((MGGetBoolAnswer() & 1) == 0)
   {
     v2 = +[BSPlatform sharedInstance];
-    v3 = [v2 deviceClass];
+    deviceClass = [v2 deviceClass];
 
-    if (v3 == 2)
+    if (deviceClass == 2)
     {
       v5 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.springboard"];
       v4 = [v5 objectForKey:@"SBDisableNaturalVolumeButtonArrangement"];
@@ -491,16 +491,16 @@ LABEL_6:
 
 - (void)informPaperBoardOfMigration
 {
-  v3 = [(SBDataMigrator *)self restoredBackupBuildVersion];
+  restoredBackupBuildVersion = [(SBDataMigrator *)self restoredBackupBuildVersion];
   v4 = +[BSPlatform sharedInstance];
-  v5 = [v4 deviceClass];
+  deviceClass = [v4 deviceClass];
 
-  if (v3)
+  if (restoredBackupBuildVersion)
   {
-    v6 = [(SBDataMigrator *)self restoredBackupBuildVersion];
-    v7 = [BSBuildVersion fromString:v6];
+    restoredBackupBuildVersion2 = [(SBDataMigrator *)self restoredBackupBuildVersion];
+    v7 = [BSBuildVersion fromString:restoredBackupBuildVersion2];
 
-    if (v5 == 2 && [v7 majorBuildNumber] < 21)
+    if (deviceClass == 2 && [v7 majorBuildNumber] < 21)
     {
       v8 = 1;
       goto LABEL_9;
@@ -613,14 +613,14 @@ LABEL_9:
 
     if (v14)
     {
-      v15 = [v14 BSColor];
+      bSColor = [v14 BSColor];
       v16 = SBLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         sub_E224();
       }
 
-      [v6 setHomeScreenTintColor:v15];
+      [v6 setHomeScreenTintColor:bSColor];
       v10 = 1;
     }
   }
@@ -729,8 +729,8 @@ LABEL_35:
   }
 
   v27 = objc_alloc_init(PBUIWallpaperConfigurationManager);
-  v28 = [v27 dataStores];
-  [v28 enumerateObjectsUsingBlock:&stru_18600];
+  dataStores = [v27 dataStores];
+  [dataStores enumerateObjectsUsingBlock:&stru_18600];
 
   _Block_object_dispose(&v35, 8);
 LABEL_46:
@@ -739,14 +739,14 @@ LABEL_46:
 - (void)performBatteryPercentageSettingMigrationIfNecessary
 {
   v3 = +[BSPlatform sharedInstance];
-  v4 = [v3 deviceClass];
+  deviceClass = [v3 deviceClass];
 
-  if (!v4)
+  if (!deviceClass)
   {
     v5 = +[BSPlatform sharedInstance];
-    v6 = [v5 homeButtonType];
+    homeButtonType = [v5 homeButtonType];
 
-    if (v6 == &dword_0 + 2 && [(SBFBuildVersion *)self->_lastBuildVersion majorBuildNumber]<= 19)
+    if (homeButtonType == &dword_0 + 2 && [(SBFBuildVersion *)self->_lastBuildVersion majorBuildNumber]<= 19)
     {
       v7 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.springboard"];
       [v7 setBool:0 forKey:SBDefaultKeyShowBatteryPercentage];
@@ -754,9 +754,9 @@ LABEL_46:
   }
 }
 
-- (id)sourceDeviceSupportsAODByDefaultWithUserDefaults:(id)a3
+- (id)sourceDeviceSupportsAODByDefaultWithUserDefaults:(id)defaults
 {
-  v4 = [a3 objectForKey:@"SBDeviceEnablesAlwaysOnByDefault"];
+  v4 = [defaults objectForKey:@"SBDeviceEnablesAlwaysOnByDefault"];
   v5 = v4;
   if (v4)
   {
@@ -765,18 +765,18 @@ LABEL_46:
 
   else
   {
-    v7 = [(SBDataMigrator *)self restoredBackupProductType];
+    restoredBackupProductType = [(SBDataMigrator *)self restoredBackupProductType];
     v8 = SBLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v7;
+      v11 = restoredBackupProductType;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "[AOD migration] product type: %@", &v10, 0xCu);
     }
 
-    if (v7)
+    if (restoredBackupProductType)
     {
-      v6 = [&off_1AA80 objectForKeyedSubscript:v7];
+      v6 = [&off_1AA80 objectForKeyedSubscript:restoredBackupProductType];
     }
 
     else
@@ -815,8 +815,8 @@ LABEL_46:
 
     v7 = v5;
 
-    v8 = [v7 BOOLValue];
-    v6 = [NSNumber numberWithInt:v8 ^ 1];
+    bOOLValue = [v7 BOOLValue];
+    v6 = [NSNumber numberWithInt:bOOLValue ^ 1];
   }
 
   else
@@ -859,8 +859,8 @@ LABEL_46:
     if (!v8)
     {
       v9 = [(SBDataMigrator *)self sourceDeviceSupportsAODByDefaultWithUserDefaults:v3];
-      v10 = [(SBDataMigrator *)self currentDeviceSupportsAlwaysOnByDefault];
-      v11 = [v10 BOOLValue];
+      currentDeviceSupportsAlwaysOnByDefault = [(SBDataMigrator *)self currentDeviceSupportsAlwaysOnByDefault];
+      bOOLValue = [currentDeviceSupportsAlwaysOnByDefault BOOLValue];
 
       v12 = SBLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -868,16 +868,16 @@ LABEL_46:
         v17 = 138412546;
         *v18 = v9;
         *&v18[8] = 1024;
-        v19 = v11;
+        v19 = bOOLValue;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[AOD migration] default is unset. Old device on-by-default: %@. New device on-by-default: %{BOOL}u", &v17, 0x12u);
       }
 
-      if (v9 && v11 != [v9 BOOLValue])
+      if (v9 && bOOLValue != [v9 BOOLValue])
       {
-        v13 = [v9 BOOLValue];
+        bOOLValue2 = [v9 BOOLValue];
         v14 = SBLogCommon();
         v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-        if (v13)
+        if (bOOLValue2)
         {
           if (v15)
           {
@@ -900,8 +900,8 @@ LABEL_46:
     }
   }
 
-  v16 = [(SBDataMigrator *)self currentDeviceSupportsAlwaysOnByDefault];
-  [v3 setObject:v16 forKey:@"SBDeviceEnablesAlwaysOnByDefault"];
+  currentDeviceSupportsAlwaysOnByDefault2 = [(SBDataMigrator *)self currentDeviceSupportsAlwaysOnByDefault];
+  [v3 setObject:currentDeviceSupportsAlwaysOnByDefault2 forKey:@"SBDeviceEnablesAlwaysOnByDefault"];
 }
 
 @end

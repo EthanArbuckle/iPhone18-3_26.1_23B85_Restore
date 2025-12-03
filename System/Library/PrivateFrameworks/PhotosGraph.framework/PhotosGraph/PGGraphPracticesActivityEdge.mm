@@ -1,15 +1,15 @@
 @interface PGGraphPracticesActivityEdge
 + (id)filter;
-- (id)initFromPersonNode:(id)a3 toActivityNode:(id)a4;
+- (id)initFromPersonNode:(id)node toActivityNode:(id)activityNode;
 @end
 
 @implementation PGGraphPracticesActivityEdge
 
-- (id)initFromPersonNode:(id)a3 toActivityNode:(id)a4
+- (id)initFromPersonNode:(id)node toActivityNode:(id)activityNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphPracticesActivityEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:activityNode];
 }
 
 + (id)filter

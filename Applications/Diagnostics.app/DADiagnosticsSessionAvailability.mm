@@ -2,20 +2,20 @@
 - (BOOL)isInternalInstall;
 - (id)getSessionID;
 - (id)serialNumbers;
-- (void)checkAvailabilityWithReply:(id)a3;
-- (void)checkAvailabilityWithTicketNumber:(id)a3 timeout:(double)a4 exitWhenDone:(BOOL)a5 completion:(id)a6;
-- (void)checkAvailabilityWithTicketNumber:(id)a3 timeout:(double)a4 exitWhenDone:(BOOL)a5 response:(id)a6;
-- (void)checkEnhancedLoggingStateWithReply:(id)a3;
+- (void)checkAvailabilityWithReply:(id)reply;
+- (void)checkAvailabilityWithTicketNumber:(id)number timeout:(double)timeout exitWhenDone:(BOOL)done completion:(id)completion;
+- (void)checkAvailabilityWithTicketNumber:(id)number timeout:(double)timeout exitWhenDone:(BOOL)done response:(id)response;
+- (void)checkEnhancedLoggingStateWithReply:(id)reply;
 - (void)clearASTServerURL;
 - (void)rebootIntoCheckerBoard;
-- (void)setASTServerURL:(id)a3;
+- (void)setASTServerURL:(id)l;
 @end
 
 @implementation DADiagnosticsSessionAvailability
 
-- (void)checkAvailabilityWithReply:(id)a3
+- (void)checkAvailabilityWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   xpc_transaction_interrupt_clean_exit();
   objc_initWeak(&location, self);
   v8[0] = 0;
@@ -23,7 +23,7 @@
   v8[2] = 0x3032000000;
   v8[3] = sub_10000CFA4;
   v8[4] = sub_10000CFD0;
-  v9 = [v4 copy];
+  v9 = [replyCopy copy];
   v5 = dispatch_get_global_queue(21, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -39,34 +39,34 @@
   objc_destroyWeak(&location);
 }
 
-- (void)checkAvailabilityWithTicketNumber:(id)a3 timeout:(double)a4 exitWhenDone:(BOOL)a5 response:(id)a6
+- (void)checkAvailabilityWithTicketNumber:(id)number timeout:(double)timeout exitWhenDone:(BOOL)done response:(id)response
 {
-  v6 = a5;
+  doneCopy = done;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000D3B0;
   v11[3] = &unk_1001BC9B0;
-  v12 = a6;
-  v10 = v12;
-  [(DADiagnosticsSessionAvailability *)self checkAvailabilityWithTicketNumber:a3 timeout:v6 exitWhenDone:v11 completion:a4];
+  responseCopy = response;
+  v10 = responseCopy;
+  [(DADiagnosticsSessionAvailability *)self checkAvailabilityWithTicketNumber:number timeout:doneCopy exitWhenDone:v11 completion:timeout];
 }
 
-- (void)checkAvailabilityWithTicketNumber:(id)a3 timeout:(double)a4 exitWhenDone:(BOOL)a5 completion:(id)a6
+- (void)checkAvailabilityWithTicketNumber:(id)number timeout:(double)timeout exitWhenDone:(BOOL)done completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  numberCopy = number;
+  completionCopy = completion;
   v12 = dispatch_get_global_queue(21, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000D4BC;
   block[3] = &unk_1001BCA00;
   block[4] = self;
-  v16 = v10;
-  v18 = a4;
-  v17 = v11;
-  v19 = a5;
-  v13 = v11;
-  v14 = v10;
+  v16 = numberCopy;
+  timeoutCopy = timeout;
+  v17 = completionCopy;
+  doneCopy = done;
+  v13 = completionCopy;
+  v14 = numberCopy;
   dispatch_async(v12, block);
 }
 
@@ -79,14 +79,14 @@
   }
 }
 
-- (void)setASTServerURL:(id)a3
+- (void)setASTServerURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   if ([(DADiagnosticsSessionAvailability *)self isInternalInstall])
   {
     v4 = +[DANvramUtil sharedInstance];
     v5 = [off_1001FBD28 copy];
-    [v4 _writeNVRamVariable:v5 value:v6];
+    [v4 _writeNVRamVariable:v5 value:lCopy];
   }
 }
 
@@ -177,16 +177,16 @@
   return byte_100202D20;
 }
 
-- (void)checkEnhancedLoggingStateWithReply:(id)a3
+- (void)checkEnhancedLoggingStateWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[ELSManager sharedManager];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000DE3C;
   v6[3] = &unk_1001BCA70;
-  v7 = v3;
-  v5 = v3;
+  v7 = replyCopy;
+  v5 = replyCopy;
   [v4 refreshWithCompletion:v6];
 }
 

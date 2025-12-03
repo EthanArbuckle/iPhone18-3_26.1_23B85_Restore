@@ -1,11 +1,11 @@
 @interface UAFBiomeInstrumenter
-+ (id)_constructBiomeAssetSet:(id)a3 storeManager:(id)a4;
++ (id)_constructBiomeAssetSet:(id)set storeManager:(id)manager;
 + (id)_getBiomeEventDeviceMetadata;
 + (id)_getBiomeStreamForScheduledDailyAssetStatus;
-+ (id)_getBiomeUAFAssetSet:(id)a3 assetSetId:(id)a4 entries:(id)a5 errorCodes:(id)a6 fromPSUS:(BOOL)a7;
++ (id)_getBiomeUAFAssetSet:(id)set assetSetId:(id)id entries:(id)entries errorCodes:(id)codes fromPSUS:(BOOL)s;
 + (id)_getSubscriptionsStatus;
 + (id)defaultDeviceId;
-+ (int)_getAssetSource:(id)a3;
++ (int)_getAssetSource:(id)source;
 + (void)logScheduledDailyAssetStatus;
 @end
 
@@ -50,11 +50,11 @@ void __39__UAFBiomeInstrumenter_defaultDeviceId__block_invoke()
   v24 = *MEMORY[0x1E69E9840];
   v3 = [UAFCommonUtilities mobileGestaltQuery:@"ProductType"];
   v4 = [UAFCommonUtilities mobileGestaltQuery:@"BuildVersion"];
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   v6 = objc_alloc(MEMORY[0x1E698EFB8]);
-  v7 = [v5 languageCode];
-  v8 = [v5 regionCode];
-  v9 = [v6 initWithLanguageCode:v7 countryCode:v8];
+  languageCode = [currentLocale languageCode];
+  regionCode = [currentLocale regionCode];
+  v9 = [v6 initWithLanguageCode:languageCode countryCode:regionCode];
 
   v10 = UAFGetLogCategory(&UAFLogContextInstrumentation);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -64,14 +64,14 @@ void __39__UAFBiomeInstrumenter_defaultDeviceId__block_invoke()
     _os_log_impl(&dword_1BCF2C000, v10, OS_LOG_TYPE_DEFAULT, "%s Captured device metadata for UAFAssetDailyStatusWithDeviceProperties event", &v22, 0xCu);
   }
 
-  v11 = [a1 defaultDeviceId];
+  defaultDeviceId = [self defaultDeviceId];
   v12 = MEMORY[0x1E696AD98];
-  v13 = [MEMORY[0x1E695DF00] date];
-  [v13 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v15 = [v12 numberWithUnsignedLongLong:(v14 * 1000000000.0)];
 
   v16 = objc_alloc(MEMORY[0x1E698EFB0]);
-  v17 = [v11 dataUsingEncoding:4];
+  v17 = [defaultDeviceId dataUsingEncoding:4];
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:1];
   v19 = [v16 initWithDeviceId:v17 deviceType:v3 programCode:v18 systemBuild:v4 inputLocale:v9 nanoSecondsSinceLastBoot:v15];
 
@@ -86,14 +86,14 @@ void __39__UAFBiomeInstrumenter_defaultDeviceId__block_invoke()
   if ([objc_opt_class() isBiomeAvailable])
   {
     v3 = BiomeLibrary();
-    v4 = [v3 AssetDelivery];
-    v5 = [v4 UAF];
-    v6 = [v5 DailyStatus];
+    assetDelivery = [v3 AssetDelivery];
+    v5 = [assetDelivery UAF];
+    dailyStatus = [v5 DailyStatus];
 
-    v7 = [v6 source];
-    v8 = [a1 _getBiomeEventDeviceMetadata];
-    v9 = [a1 _getBiomeStreamForScheduledDailyAssetStatus];
-    v10 = [objc_alloc(MEMORY[0x1E698EB38]) initWithDeviceMetadata:v8 availableAssetDailyStatus:v9];
+    source = [dailyStatus source];
+    _getBiomeEventDeviceMetadata = [self _getBiomeEventDeviceMetadata];
+    _getBiomeStreamForScheduledDailyAssetStatus = [self _getBiomeStreamForScheduledDailyAssetStatus];
+    v10 = [objc_alloc(MEMORY[0x1E698EB38]) initWithDeviceMetadata:_getBiomeEventDeviceMetadata availableAssetDailyStatus:_getBiomeStreamForScheduledDailyAssetStatus];
     v11 = UAFGetLogCategory(&UAFLogContextInstrumentation);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -102,17 +102,17 @@ void __39__UAFBiomeInstrumenter_defaultDeviceId__block_invoke()
       _os_log_impl(&dword_1BCF2C000, v11, OS_LOG_TYPE_DEFAULT, "%s Using Biome to send scheduled daily status event", &v13, 0xCu);
     }
 
-    [v7 sendEvent:v10];
+    [source sendEvent:v10];
   }
 
   else
   {
-    v6 = UAFGetLogCategory(&UAFLogContextClient);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    dailyStatus = UAFGetLogCategory(&UAFLogContextClient);
+    if (os_log_type_enabled(dailyStatus, OS_LOG_TYPE_ERROR))
     {
       v13 = 136315138;
       v14 = "+[UAFBiomeInstrumenter logScheduledDailyAssetStatus]";
-      _os_log_error_impl(&dword_1BCF2C000, v6, OS_LOG_TYPE_ERROR, "%s Can't log daily asset status as this system doesn't support Biome.", &v13, 0xCu);
+      _os_log_error_impl(&dword_1BCF2C000, dailyStatus, OS_LOG_TYPE_ERROR, "%s Can't log daily asset status as this system doesn't support Biome.", &v13, 0xCu);
     }
   }
 
@@ -122,10 +122,10 @@ void __39__UAFBiomeInstrumenter_defaultDeviceId__block_invoke()
 + (id)_getBiomeStreamForScheduledDailyAssetStatus
 {
   v3 = objc_opt_new();
-  v4 = [a1 _getSubscriptionsStatus];
-  if (v4)
+  _getSubscriptionsStatus = [self _getSubscriptionsStatus];
+  if (_getSubscriptionsStatus)
   {
-    [v3 addObject:v4];
+    [v3 addObject:_getSubscriptionsStatus];
   }
 
   v5 = [objc_alloc(MEMORY[0x1E698EFA8]) initWithAssetSetStatus:v3 statusReason:1];
@@ -147,7 +147,7 @@ void __39__UAFBiomeInstrumenter_defaultDeviceId__block_invoke()
   v6[2] = __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke;
   v6[3] = &unk_1E7FFDDB8;
   v6[4] = &v7;
-  v6[5] = a1;
+  v6[5] = self;
   dispatch_sync(v3, v6);
 
   v4 = v8[5];
@@ -580,21 +580,21 @@ void __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke(uint64_t a
   v81 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_getBiomeUAFAssetSet:(id)a3 assetSetId:(id)a4 entries:(id)a5 errorCodes:(id)a6 fromPSUS:(BOOL)a7
++ (id)_getBiomeUAFAssetSet:(id)set assetSetId:(id)id entries:(id)entries errorCodes:(id)codes fromPSUS:(BOOL)s
 {
-  v39 = a7;
+  sCopy = s;
   v56 = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v40 = a4;
-  v10 = a5;
-  v11 = a6;
+  setCopy = set;
+  idCopy = id;
+  entriesCopy = entries;
+  codesCopy = codes;
   v44 = objc_opt_new();
   v12 = objc_opt_new();
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v13 = v11;
+  v13 = codesCopy;
   v14 = [v13 countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v14)
   {
@@ -626,7 +626,7 @@ void __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke(uint64_t a
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v10;
+  obj = entriesCopy;
   v45 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v45)
   {
@@ -642,15 +642,15 @@ void __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke(uint64_t a
 
         v20 = *(*(&v46 + 1) + 8 * j);
         v21 = objc_alloc(MEMORY[0x1E698EF70]);
-        v22 = [v20 fullAssetSelector];
-        v23 = [v22 assetSpecifier];
-        v24 = [v20 fullAssetSelector];
-        v25 = [v24 assetSpecifier];
-        v26 = [v20 fullAssetSelector];
-        v27 = [v26 assetVersion];
-        v28 = [v20 localContentURL];
-        v29 = [v28 absoluteString];
-        v30 = [v21 initWithAssetName:v23 assetSpecifier:v25 assetVersion:v27 assetLocale:0 assetSource:4 isAssetPathValid:0 assetPath:v29 assetDownloadSizeInBytes:0 assetUnarchivedSizeInBytes:{0, v37}];
+        fullAssetSelector = [v20 fullAssetSelector];
+        assetSpecifier = [fullAssetSelector assetSpecifier];
+        fullAssetSelector2 = [v20 fullAssetSelector];
+        assetSpecifier2 = [fullAssetSelector2 assetSpecifier];
+        fullAssetSelector3 = [v20 fullAssetSelector];
+        assetVersion = [fullAssetSelector3 assetVersion];
+        localContentURL = [v20 localContentURL];
+        absoluteString = [localContentURL absoluteString];
+        v30 = [v21 initWithAssetName:assetSpecifier assetSpecifier:assetSpecifier2 assetVersion:assetVersion assetLocale:0 assetSource:4 isAssetPathValid:0 assetPath:absoluteString assetDownloadSizeInBytes:0 assetUnarchivedSizeInBytes:{0, v37}];
 
         [v44 addObject:v30];
       }
@@ -662,26 +662,26 @@ void __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke(uint64_t a
   }
 
   v31 = objc_alloc(MEMORY[0x1E698EF78]);
-  v32 = [v41 assetSetIdentifier];
-  v33 = [MEMORY[0x1E696AD98] numberWithBool:v39];
-  v34 = [v31 initWithAssetSetName:v32 assets:v44 assetType:0 assetSetId:v40 audienceId:0 mobileAssetDownloadErrorCodeFrequency:v38 fromPreSoftwareUpdateStaging:v33 expensiveCellularDownloadRequested:0];
+  assetSetIdentifier = [setCopy assetSetIdentifier];
+  v33 = [MEMORY[0x1E696AD98] numberWithBool:sCopy];
+  v34 = [v31 initWithAssetSetName:assetSetIdentifier assets:v44 assetType:0 assetSetId:idCopy audienceId:0 mobileAssetDownloadErrorCodeFrequency:v38 fromPreSoftwareUpdateStaging:v33 expensiveCellularDownloadRequested:0];
 
   v35 = *MEMORY[0x1E69E9840];
 
   return v34;
 }
 
-+ (id)_constructBiomeAssetSet:(id)a3 storeManager:(id)a4
++ (id)_constructBiomeAssetSet:(id)set storeManager:(id)manager
 {
   v90[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  managerCopy = manager;
   v7 = objc_opt_new();
-  v8 = [v6 getSystemAssetSetUsages:v5];
+  v8 = [managerCopy getSystemAssetSetUsages:setCopy];
   v9 = v8;
   if (v8)
   {
-    v89 = v5;
+    v89 = setCopy;
     v90[0] = v8;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:&v89 count:1];
   }
@@ -692,12 +692,12 @@ void __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke(uint64_t a
   }
 
   v11 = +[UAFAssetSetManager sharedManager];
-  v12 = [v11 retrieveAssetSet:v5 usages:0];
+  v12 = [v11 retrieveAssetSet:setCopy usages:0];
 
   if (v12)
   {
     v53 = v9;
-    v54 = v6;
+    v54 = managerCopy;
     v80 = 0;
     v51 = [v12 assetSetIdForSELF:1 stagedDuringSU:&v80];
     v13 = UAFGetLogCategory(&UAFLogContextInstrumentation);
@@ -706,28 +706,28 @@ void __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke(uint64_t a
       *buf = 136315650;
       v84 = "+[UAFBiomeInstrumenter _constructBiomeAssetSet:storeManager:]";
       v85 = 2114;
-      v86 = v5;
+      v86 = setCopy;
       v87 = 1024;
       v88 = v80;
       _os_log_impl(&dword_1BCF2C000, v13, OS_LOG_TYPE_DEFAULT, "%s Emitting daily status scheduled event for asset set %{public}@, pre-staged: %d", buf, 0x1Cu);
     }
 
-    v55 = v5;
+    v55 = setCopy;
 
     v52 = v12;
-    v14 = [v12 autoAssetSet];
-    v15 = [v14 getMAAutoAssetDownloadErrorsSync];
+    autoAssetSet = [v12 autoAssetSet];
+    getMAAutoAssetDownloadErrorsSync = [autoAssetSet getMAAutoAssetDownloadErrorsSync];
 
     v58 = objc_opt_new();
-    v56 = v15;
-    if ([v15 count])
+    v56 = getMAAutoAssetDownloadErrorsSync;
+    if ([getMAAutoAssetDownloadErrorsSync count])
     {
       v16 = v10;
       v78 = 0u;
       v79 = 0u;
       v76 = 0u;
       v77 = 0u;
-      v17 = v15;
+      v17 = getMAAutoAssetDownloadErrorsSync;
       v18 = [v17 countByEnumeratingWithState:&v76 objects:v82 count:16];
       if (v18)
       {
@@ -783,10 +783,10 @@ void __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke(uint64_t a
           [v27 metadata];
           v28 = v66 = v26;
           v29 = [v28 objectForKeyedSubscript:@"com.apple.UnifiedAssetFramework.Source"];
-          v30 = [a1 _getAssetSource:v29];
+          v30 = [self _getAssetSource:v29];
 
-          v31 = [v27 metadata];
-          v32 = v31;
+          metadata = [v27 metadata];
+          v32 = metadata;
           v33 = v30;
           if (v30 == 4)
           {
@@ -798,26 +798,26 @@ void __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke(uint64_t a
             v34 = @"version";
           }
 
-          v69 = [v31 objectForKeyedSubscript:v34];
+          v69 = [metadata objectForKeyedSubscript:v34];
 
           v67 = objc_alloc(MEMORY[0x1E698EF70]);
-          v63 = [v27 name];
-          v71 = [v27 metadata];
-          v65 = [v71 objectForKeyedSubscript:@"com.apple.UnifiedAssetFramework.AssetId"];
+          name = [v27 name];
+          metadata2 = [v27 metadata];
+          v65 = [metadata2 objectForKeyedSubscript:@"com.apple.UnifiedAssetFramework.AssetId"];
           v35 = MEMORY[0x1E696AD98];
-          v70 = [v27 location];
-          v36 = [v35 numberWithBool:v70 != 0];
-          v68 = [v27 location];
-          v37 = [v68 absoluteString];
+          location = [v27 location];
+          v36 = [v35 numberWithBool:location != 0];
+          location2 = [v27 location];
+          absoluteString = [location2 absoluteString];
           v38 = MEMORY[0x1E696AD98];
-          v64 = [v27 metadata];
-          v39 = [v64 objectForKeyedSubscript:@"com.apple.UnifiedAssetFramework.ReportedDownloadSize"];
+          metadata3 = [v27 metadata];
+          v39 = [metadata3 objectForKeyedSubscript:@"com.apple.UnifiedAssetFramework.ReportedDownloadSize"];
           v40 = [v38 numberWithLongLong:{objc_msgSend(v39, "longLongValue")}];
           v41 = MEMORY[0x1E696AD98];
-          v42 = [v27 metadata];
-          v43 = [v42 objectForKeyedSubscript:@"com.apple.UnifiedAssetFramework.UnarchivedSize"];
+          metadata4 = [v27 metadata];
+          v43 = [metadata4 objectForKeyedSubscript:@"com.apple.UnifiedAssetFramework.UnarchivedSize"];
           v44 = [v41 numberWithLongLong:{objc_msgSend(v43, "longLongValue")}];
-          v45 = [v67 initWithAssetName:v63 assetSpecifier:v65 assetVersion:v69 assetLocale:0 assetSource:v33 isAssetPathValid:v36 assetPath:v37 assetDownloadSizeInBytes:v40 assetUnarchivedSizeInBytes:v44];
+          v45 = [v67 initWithAssetName:name assetSpecifier:v65 assetVersion:v69 assetLocale:0 assetSource:v33 isAssetPathValid:v36 assetPath:absoluteString assetDownloadSizeInBytes:v40 assetUnarchivedSizeInBytes:v44];
 
           v7 = v60;
           [v60 addObject:v45];
@@ -834,11 +834,11 @@ void __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke(uint64_t a
 
     v46 = objc_alloc(MEMORY[0x1E698EF78]);
     v47 = [MEMORY[0x1E696AD98] numberWithBool:v80];
-    v5 = v55;
+    setCopy = v55;
     v48 = [v46 initWithAssetSetName:v55 assets:v7 assetType:0 assetSetId:v51 audienceId:0 mobileAssetDownloadErrorCodeFrequency:v58 fromPreSoftwareUpdateStaging:v47 expensiveCellularDownloadRequested:0];
 
     v9 = v53;
-    v6 = v54;
+    managerCopy = v54;
     v12 = v52;
   }
 
@@ -852,20 +852,20 @@ void __47__UAFBiomeInstrumenter__getSubscriptionsStatus__block_invoke(uint64_t a
   return v48;
 }
 
-+ (int)_getAssetSource:(id)a3
++ (int)_getAssetSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Factory"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"Factory"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Root"])
+  else if ([sourceCopy isEqualToString:@"Root"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MA"])
+  else if ([sourceCopy isEqualToString:@"MA"])
   {
     v4 = 4;
   }

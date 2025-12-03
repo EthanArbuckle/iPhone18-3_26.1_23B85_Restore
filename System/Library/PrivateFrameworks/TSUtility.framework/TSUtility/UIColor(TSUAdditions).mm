@@ -9,7 +9,7 @@
 
 + (uint64_t)checkerboardColorWithColor:()TSUAdditions andColor:squareSize:
 {
-  v16.width = a1 + a1;
+  v16.width = self + self;
   width = v16.width;
   v16.height = a2 + a2;
   height = v16.height;
@@ -23,12 +23,12 @@
   [a6 setFill];
   v18.origin.x = 0.0;
   v18.origin.y = 0.0;
-  v18.size.width = a1;
+  v18.size.width = self;
   v18.size.height = a2;
   UIRectFill(v18);
-  v19.origin.x = a1;
+  v19.origin.x = self;
   v19.origin.y = a2;
-  v19.size.width = a1;
+  v19.size.width = self;
   v19.size.height = a2;
   UIRectFill(v19);
   ImageFromCurrentImageContext = UIGraphicsGetImageFromCurrentImageContext();
@@ -48,8 +48,8 @@
   result = grayCheckerboardColor_sColor;
   if (!grayCheckerboardColor_sColor)
   {
-    v3 = [MEMORY[0x277D75348] darkGrayColor];
-    result = [a1 checkerboardColorWithColor:v3 andColor:objc_msgSend(MEMORY[0x277D75348] squareSize:{"lightGrayColor"), 16.0, 16.0}];
+    darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+    result = [self checkerboardColorWithColor:darkGrayColor andColor:objc_msgSend(MEMORY[0x277D75348] squareSize:{"lightGrayColor"), 16.0, 16.0}];
     grayCheckerboardColor_sColor = result;
   }
 
@@ -62,7 +62,7 @@
   if (!transparentGrayCheckerboardColor_sColor)
   {
     v3 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.25];
-    result = [a1 checkerboardColorWithColor:v3 andColor:objc_msgSend(MEMORY[0x277D75348] squareSize:{"colorWithWhite:alpha:", 0.0, 0.25), 16.0, 16.0}];
+    result = [self checkerboardColorWithColor:v3 andColor:objc_msgSend(MEMORY[0x277D75348] squareSize:{"colorWithWhite:alpha:", 0.0, 0.25), 16.0, 16.0}];
     transparentGrayCheckerboardColor_sColor = result;
   }
 

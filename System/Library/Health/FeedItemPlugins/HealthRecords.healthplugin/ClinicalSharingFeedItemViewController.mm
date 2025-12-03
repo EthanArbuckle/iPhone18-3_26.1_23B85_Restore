@@ -1,26 +1,26 @@
 @interface ClinicalSharingFeedItemViewController
-- (_TtC13HealthRecords37ClinicalSharingFeedItemViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)sharingRecipientAuthorizationStore:(void *)a1 didRemoveSharingAuthorizations:;
+- (_TtC13HealthRecords37ClinicalSharingFeedItemViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)sharingRecipientAuthorizationStore:(void *)store didRemoveSharingAuthorizations:;
 - (void)viewDidLoad;
 @end
 
 @implementation ClinicalSharingFeedItemViewController
 
-- (void)sharingRecipientAuthorizationStore:(void *)a1 didRemoveSharingAuthorizations:
+- (void)sharingRecipientAuthorizationStore:(void *)store didRemoveSharingAuthorizations:
 {
-  v1 = a1;
+  storeCopy = store;
   sub_29D55B334();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D55858C();
 }
 
-- (_TtC13HealthRecords37ClinicalSharingFeedItemViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13HealthRecords37ClinicalSharingFeedItemViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_29D5B3E5C();
     v7 = v6;
@@ -32,8 +32,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_29D55C378(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_29D55C378(v5, v7, bundle);
 }
 
 @end

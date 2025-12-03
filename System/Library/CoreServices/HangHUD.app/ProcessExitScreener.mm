@@ -1,9 +1,9 @@
 @interface ProcessExitScreener
 + (id)sharedInstance;
-- (BOOL)allowedExitReasonsMatchRecordReasons:(id)a3;
-- (BOOL)isProcessExitRecordAllowed:(id)a3;
+- (BOOL)allowedExitReasonsMatchRecordReasons:(id)reasons;
+- (BOOL)isProcessExitRecordAllowed:(id)allowed;
 - (ProcessExitScreener)init;
-- (void)setFilteringConfiguration:(id)a3;
+- (void)setFilteringConfiguration:(id)configuration;
 @end
 
 @implementation ProcessExitScreener
@@ -35,10 +35,10 @@
   return v3;
 }
 
-- (BOOL)isProcessExitRecordAllowed:(id)a3
+- (BOOL)isProcessExitRecordAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [v4 processName];
+  allowedCopy = allowed;
+  processName = [allowedCopy processName];
   if (!self->_filteringConfiguration)
   {
     v8 = sub_10000A9AC();
@@ -50,7 +50,7 @@
     goto LABEL_11;
   }
 
-  if (![v4 exitReasonNamespace])
+  if (![allowedCopy exitReasonNamespace])
   {
     v8 = sub_10000A9AC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -63,7 +63,7 @@
 
   if (![(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowsAllProcesses])
   {
-    if ([(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowsCriticalProcesses]&& [(NSArray *)self->_knownCriticalProcesses containsObject:v5])
+    if ([(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowsCriticalProcesses]&& [(NSArray *)self->_knownCriticalProcesses containsObject:processName])
     {
       v6 = sub_10000A9AC();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -74,13 +74,13 @@
       goto LABEL_6;
     }
 
-    v10 = [(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowedProcessNames];
-    v11 = [v10 count];
+    allowedProcessNames = [(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowedProcessNames];
+    v11 = [allowedProcessNames count];
 
     if (v11)
     {
-      v12 = [(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowedProcessNames];
-      v13 = [v12 containsObject:v5];
+      allowedProcessNames2 = [(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowedProcessNames];
+      v13 = [allowedProcessNames2 containsObject:processName];
 
       v6 = sub_10000A9AC();
       v14 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
@@ -123,17 +123,17 @@ LABEL_11:
 
 LABEL_6:
 
-  v7 = [(ProcessExitScreener *)self allowedExitReasonsMatchRecordReasons:v4];
+  v7 = [(ProcessExitScreener *)self allowedExitReasonsMatchRecordReasons:allowedCopy];
 LABEL_13:
 
   return v7;
 }
 
-- (BOOL)allowedExitReasonsMatchRecordReasons:(id)a3
+- (BOOL)allowedExitReasonsMatchRecordReasons:(id)reasons
 {
-  v4 = a3;
-  v5 = [v4 processName];
-  v6 = 1 << [v4 exitReasonNamespace];
+  reasonsCopy = reasons;
+  processName = [reasonsCopy processName];
+  v6 = 1 << [reasonsCopy exitReasonNamespace];
   if ([(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowedReasons]== 1 || ([(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowedReasons]& v6) != 0)
   {
     v7 = sub_1000101C0(v6);
@@ -141,21 +141,21 @@ LABEL_13:
 
     if (v8)
     {
-      v9 = [(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowedSubReasons];
+      allowedSubReasons = [(HTProcessExitFilteringConfiguration *)self->_filteringConfiguration allowedSubReasons];
       v10 = [NSNumber numberWithUnsignedLongLong:v6];
-      v11 = [v9 objectForKeyedSubscript:v10];
+      v11 = [allowedSubReasons objectForKeyedSubscript:v10];
 
       if (v11)
       {
-        v12 = [v11 unsignedLongLongValue];
-        v13 = sub_10000FE7C(v6, [v4 exitReasonCode]);
+        unsignedLongLongValue = [v11 unsignedLongLongValue];
+        v13 = sub_10000FE7C(v6, [reasonsCopy exitReasonCode]);
         v14 = sub_10000A9AC();
         v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG);
-        if (v12 != 1 && (v13 & v12) == 0)
+        if (unsignedLongLongValue != 1 && (v13 & unsignedLongLongValue) == 0)
         {
           if (v15)
           {
-            sub_100019650(v5, v4);
+            sub_100019650(processName, reasonsCopy);
           }
 
           v16 = 0;
@@ -164,7 +164,7 @@ LABEL_13:
 
         if (v15)
         {
-          sub_1000195B0(v5, v4);
+          sub_1000195B0(processName, reasonsCopy);
         }
       }
 
@@ -173,7 +173,7 @@ LABEL_13:
         v14 = sub_10000A9AC();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          sub_1000196F0(v5, v4);
+          sub_1000196F0(processName, reasonsCopy);
         }
       }
 
@@ -186,7 +186,7 @@ LABEL_21:
     v11 = sub_10000A9AC();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      sub_100019778(v5, v4);
+      sub_100019778(processName, reasonsCopy);
     }
 
     v16 = 1;
@@ -197,7 +197,7 @@ LABEL_21:
     v11 = sub_10000A9AC();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      sub_100019528(v5, v4);
+      sub_100019528(processName, reasonsCopy);
     }
 
     v16 = 0;
@@ -208,15 +208,15 @@ LABEL_22:
   return v16;
 }
 
-- (void)setFilteringConfiguration:(id)a3
+- (void)setFilteringConfiguration:(id)configuration
 {
-  v5 = a3;
-  objc_storeStrong(&self->_filteringConfiguration, a3);
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_filteringConfiguration, configuration);
   v6 = sub_10000A9AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Process Terminations: applied filtering configuration:\n%@", &v7, 0xCu);
   }
 }

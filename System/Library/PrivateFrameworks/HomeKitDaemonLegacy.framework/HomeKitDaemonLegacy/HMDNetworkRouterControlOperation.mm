@@ -1,12 +1,12 @@
 @interface HMDNetworkRouterControlOperation
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterControlOperation)init;
-- (HMDNetworkRouterControlOperation)initWithOperation:(int64_t)a3;
+- (HMDNetworkRouterControlOperation)initWithOperation:(int64_t)operation;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterControlOperation
@@ -14,15 +14,15 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDNetworkRouterControlOperation *)self operation];
-  if ((v3 - 1) >= 5)
+  operation = [(HMDNetworkRouterControlOperation *)self operation];
+  if ((operation - 1) >= 5)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDNetworkRouterControlOperationType %ld", v3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDNetworkRouterControlOperationType %ld", operation];
   }
 
   else
   {
-    v4 = off_27972A828[v3 - 1];
+    v4 = off_27972A828[operation - 1];
   }
 
   v5 = [v2 stringWithFormat:@"<HMDNetworkRouterControlOperation operation=%@>", v4];
@@ -30,10 +30,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -43,11 +43,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMDNetworkRouterControlOperation *)self operation];
-      v7 = [(HMDNetworkRouterControlOperation *)v5 operation];
+      v5 = equalCopy;
+      operation = [(HMDNetworkRouterControlOperation *)self operation];
+      operation2 = [(HMDNetworkRouterControlOperation *)v5 operation];
 
-      v8 = v6 == v7;
+      v8 = operation == operation2;
     }
 
     else
@@ -59,28 +59,28 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterControlOperation allocWithZone:a3];
-  v5 = [(HMDNetworkRouterControlOperation *)self operation];
+  v4 = [HMDNetworkRouterControlOperation allocWithZone:zone];
+  operation = [(HMDNetworkRouterControlOperation *)self operation];
 
-  return [(HMDNetworkRouterControlOperation *)v4 initWithOperation:v5];
+  return [(HMDNetworkRouterControlOperation *)v4 initWithOperation:operation];
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
-  v3 = [(HMDNetworkRouterControlOperation *)self operation];
+  operation = [(HMDNetworkRouterControlOperation *)self operation];
 
-  return MEMORY[0x2821501D8](v3);
+  return MEMORY[0x2821501D8](operation);
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!error)
   {
-    if (![v6 length])
+    if (![dataCopy length])
     {
       v8 = 0;
       goto LABEL_7;
@@ -89,8 +89,8 @@
     goto LABEL_5;
   }
 
-  *a4 = 0;
-  if ([v6 length])
+  *error = 0;
+  if ([dataCopy length])
   {
 LABEL_5:
     [v7 bytes];
@@ -101,20 +101,20 @@ LABEL_5:
   }
 
   [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:3 userInfo:0];
-  *a4 = v8 = 0;
+  *error = v8 = 0;
 LABEL_7:
 
   return v8;
 }
 
-- (HMDNetworkRouterControlOperation)initWithOperation:(int64_t)a3
+- (HMDNetworkRouterControlOperation)initWithOperation:(int64_t)operation
 {
   v5.receiver = self;
   v5.super_class = HMDNetworkRouterControlOperation;
   result = [(HMDNetworkRouterControlOperation *)&v5 init];
   if (result)
   {
-    result->_operation = a3;
+    result->_operation = operation;
   }
 
   return result;
@@ -133,24 +133,24 @@ LABEL_7:
   return result;
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterControlOperation);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterControlOperation *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterControlOperation *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

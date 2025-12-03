@@ -1,10 +1,10 @@
 @interface RAPHomeDataSource
 - (BOOL)_isInternalInstall;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (RAPHomeDataSource)initWithCollectionView:(id)a3 updateLocation:(BOOL)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (RAPHomeDataSource)initWithCollectionView:(id)view updateLocation:(BOOL)location;
 - (SupplementaryElementsDataSourceDelegate)supplementaryElementsDelegate;
-- (double)footerHeightForSection:(int64_t)a3 collectionView:(id)a4;
-- (double)headerHeightForSection:(int64_t)a3 collectionView:(id)a4;
+- (double)footerHeightForSection:(int64_t)section collectionView:(id)view;
+- (double)headerHeightForSection:(int64_t)section collectionView:(id)view;
 - (id)RAPHomeReportMenu;
 - (id)_footerLinkText;
 - (id)_footerString90Days;
@@ -16,22 +16,22 @@
 - (id)_headerStringIssuesReportedSection;
 - (id)_headerStringReviewedSection;
 - (id)_headerStringTellUsMoreSection;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)sectionForIndex:(unint64_t)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)sectionForIndex:(unint64_t)index;
 - (void)_addSections;
 - (void)_buildReportHistoryContent;
-- (void)_layoutManagerDidLoadLayoutItems:(id)a3;
+- (void)_layoutManagerDidLoadLayoutItems:(id)items;
 - (void)_loadReportHistoryContent;
 - (void)_populateActionSectionWithNonZeroTrafficIncidentLayoutItems;
 - (void)_reloadTrafficIncidentLayoutItems;
 - (void)_updateNonZeroTrafficLayoutItems;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)privacyTextTapped;
-- (void)reportHistoryManagerDidUpdate:(id)a3;
-- (void)seeAllTappedForReportForSection:(int64_t)a3;
+- (void)reportHistoryManagerDidUpdate:(id)update;
+- (void)seeAllTappedForReportForSection:(int64_t)section;
 @end
 
 @implementation RAPHomeDataSource
@@ -43,14 +43,14 @@
   return WeakRetained;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v6 = a4;
-  if (-[RAPHomeDataSource _isInternalInstall](self, "_isInternalInstall") && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 BOOLForKey:@"__internal__EnableTapRAPForReportID"], v7, v8) && objc_msgSend(v6, "count") == 1)
+  pathsCopy = paths;
+  if (-[RAPHomeDataSource _isInternalInstall](self, "_isInternalInstall") && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 BOOLForKey:@"__internal__EnableTapRAPForReportID"], v7, v8) && objc_msgSend(pathsCopy, "count") == 1)
   {
-    v9 = [v6 firstObject];
-    v10 = [v9 row];
-    v11 = -[RAPHomeDataSource sectionForIndex:](self, "sectionForIndex:", [v9 section]);
+    firstObject = [pathsCopy firstObject];
+    v10 = [firstObject row];
+    v11 = -[RAPHomeDataSource sectionForIndex:](self, "sectionForIndex:", [firstObject section]);
     if ((v11 - 2) <= 2 && ([*(&self->super.super.isa + **(&off_10162A6E0 + v11 - 2)) objectAtIndexedSubscript:v10], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v16[0] = _NSConcreteStackBlock;
@@ -79,12 +79,12 @@
 - (BOOL)_isInternalInstall
 {
   v2 = +[GEOPlatform sharedPlatform];
-  v3 = [v2 isInternalInstall];
+  isInternalInstall = [v2 isInternalInstall];
 
-  return v3;
+  return isInternalInstall;
 }
 
-- (void)reportHistoryManagerDidUpdate:(id)a3
+- (void)reportHistoryManagerDidUpdate:(id)update
 {
   v5 = sub_100026868();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -104,25 +104,25 @@
   [(RAPHomeDataSource *)self _loadReportHistoryContent];
 }
 
-- (double)headerHeightForSection:(int64_t)a3 collectionView:(id)a4
+- (double)headerHeightForSection:(int64_t)section collectionView:(id)view
 {
-  v6 = a4;
-  v7 = 0;
-  if (a3 > 2)
+  viewCopy = view;
+  string = 0;
+  if (section > 2)
   {
-    switch(a3)
+    switch(section)
     {
       case 3:
-        v8 = [(RAPHomeDataSource *)self _headerStringReviewedSection];
+        _headerStringReviewedSection = [(RAPHomeDataSource *)self _headerStringReviewedSection];
         goto LABEL_11;
       case 4:
-        v8 = [(RAPHomeDataSource *)self _headerStringIssuesReportedSection];
+        _headerStringReviewedSection = [(RAPHomeDataSource *)self _headerStringIssuesReportedSection];
         goto LABEL_11;
       case 5:
-        v8 = [(RAPHomeDataSource *)self _headerStringIncidentsReportedSection];
+        _headerStringReviewedSection = [(RAPHomeDataSource *)self _headerStringIncidentsReportedSection];
 LABEL_11:
-        v10 = v8;
-        v7 = [v8 string];
+        v10 = _headerStringReviewedSection;
+        string = [_headerStringReviewedSection string];
 
         goto LABEL_12;
     }
@@ -131,60 +131,60 @@ LABEL_11:
   }
 
   v9 = 0.0;
-  if (a3)
+  if (section)
   {
-    if (a3 == 2)
+    if (section == 2)
     {
-      v8 = [(RAPHomeDataSource *)self _headerStringInReviewSection];
+      _headerStringReviewedSection = [(RAPHomeDataSource *)self _headerStringInReviewSection];
       goto LABEL_11;
     }
 
 LABEL_12:
-    v11 = [(DataSource *)self collectionView];
-    [v11 bounds];
+    collectionView = [(DataSource *)self collectionView];
+    [collectionView bounds];
     Width = CGRectGetWidth(v17);
-    v13 = [(DataSource *)self collectionView];
-    v14 = [v13 traitCollection];
-    [SectionHeaderCollectionReusableView heightWhenFirstNonEmptySection:v7 == 0 title:v7 actionTitle:0 availableWidth:v14 traitCollection:Width];
+    collectionView2 = [(DataSource *)self collectionView];
+    traitCollection = [collectionView2 traitCollection];
+    [SectionHeaderCollectionReusableView heightWhenFirstNonEmptySection:string == 0 title:string actionTitle:0 availableWidth:traitCollection traitCollection:Width];
     v9 = v15;
   }
 
   return v9;
 }
 
-- (double)footerHeightForSection:(int64_t)a3 collectionView:(id)a4
+- (double)footerHeightForSection:(int64_t)section collectionView:(id)view
 {
-  [a4 frame];
+  [view frame];
   v7 = v6;
   height = UILayoutFittingExpandedSize.height;
   v9 = objc_alloc_init(UserProfileSectionFooterView);
   v10 = 0;
-  if (a3 > 2)
+  if (section > 2)
   {
-    if (a3 == 3)
+    if (section == 3)
     {
       v11 = [UserProfileSectionFooterViewModel alloc];
-      v12 = [(RAPHomeDataSource *)self _footerStringReviewedSection];
+      _footerStringReviewedSection = [(RAPHomeDataSource *)self _footerStringReviewedSection];
       goto LABEL_11;
     }
 
-    if (a3 == 4)
+    if (section == 4)
     {
 LABEL_7:
       v11 = [UserProfileSectionFooterViewModel alloc];
-      v12 = [(RAPHomeDataSource *)self _footerString90Days];
+      _footerStringReviewedSection = [(RAPHomeDataSource *)self _footerString90Days];
 LABEL_11:
-      v15 = v12;
-      v10 = [(UserProfileSectionFooterViewModel *)v11 initWithContentString:v12];
+      v15 = _footerStringReviewedSection;
+      v10 = [(UserProfileSectionFooterViewModel *)v11 initWithContentString:_footerStringReviewedSection];
 LABEL_12:
     }
   }
 
   else
   {
-    if (a3)
+    if (section)
     {
-      if (a3 != 2)
+      if (section != 2)
       {
         goto LABEL_13;
       }
@@ -193,13 +193,13 @@ LABEL_12:
     }
 
     v13 = +[UserProfileReportHistoryManager sharedInstance];
-    v14 = [v13 inChina];
+    inChina = [v13 inChina];
 
-    if ((v14 & 1) == 0)
+    if ((inChina & 1) == 0)
     {
-      v21 = [(RAPHomeDataSource *)self _footerStringActionsSection];
-      v22 = [(RAPHomeDataSource *)self _footerLinkText];
-      v15 = [v21 stringByAppendingString:v22];
+      _footerStringActionsSection = [(RAPHomeDataSource *)self _footerStringActionsSection];
+      _footerLinkText = [(RAPHomeDataSource *)self _footerLinkText];
+      v15 = [_footerStringActionsSection stringByAppendingString:_footerLinkText];
 
       v23 = [UserProfileSectionFooterViewModel alloc];
       v24 = [[NSAttributedString alloc] initWithString:v15];
@@ -221,9 +221,9 @@ LABEL_13:
   return v19;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = -[RAPHomeDataSource sectionForIndex:](self, "sectionForIndex:", [a4 section]);
+  v5 = -[RAPHomeDataSource sectionForIndex:](self, "sectionForIndex:", [path section]);
   if (-[RAPHomeDataSource _isInternalInstall](self, "_isInternalInstall") && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 BOOLForKey:@"__internal__EnableTapRAPForReportID"], v6, v7))
   {
     LOBYTE(v8) = v5 != 5;
@@ -241,12 +241,12 @@ LABEL_13:
   return v8 & 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [v6 row];
-  v8 = -[RAPHomeDataSource sectionForIndex:](self, "sectionForIndex:", [v6 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [pathCopy row];
+  v8 = -[RAPHomeDataSource sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   if (v8 == 3)
   {
     v15 = 136;
@@ -257,9 +257,9 @@ LABEL_13:
   {
     v15 = 144;
 LABEL_7:
-    v13 = [*(&self->super.super.isa + v15) objectAtIndexedSubscript:v7];
-    v14 = [(DataSource *)self delegate];
-    [v14 dataSource:self itemTapped:v13];
+    collectionView = [*(&self->super.super.isa + v15) objectAtIndexedSubscript:v7];
+    delegate = [(DataSource *)self delegate];
+    [delegate dataSource:self itemTapped:collectionView];
     goto LABEL_8;
   }
 
@@ -269,90 +269,90 @@ LABEL_7:
   }
 
   v9 = [(NSMutableArray *)self->_reportActionSections objectAtIndexedSubscript:v7];
-  v10 = [v9 integerValue];
+  integerValue = [v9 integerValue];
 
   reportMenuProvider = self->_reportMenuProvider;
-  v12 = [(RAPHomeDataSource *)self entryPoint];
-  v13 = [(DataSource *)self collectionView];
-  v14 = [v13 _maps_mapsSceneDelegate];
-  [(RAPReportMenuProvider *)reportMenuProvider handleMenuActionWithLinkType:v10 entryPoint:v12 sceneDelegate:v14];
+  entryPoint = [(RAPHomeDataSource *)self entryPoint];
+  collectionView = [(DataSource *)self collectionView];
+  delegate = [collectionView _maps_mapsSceneDelegate];
+  [(RAPReportMenuProvider *)reportMenuProvider handleMenuActionWithLinkType:integerValue entryPoint:entryPoint sceneDelegate:delegate];
 LABEL_8:
 
 LABEL_9:
-  [v16 deselectItemAtIndexPath:v6 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
 }
 
-- (void)seeAllTappedForReportForSection:(int64_t)a3
+- (void)seeAllTappedForReportForSection:(int64_t)section
 {
-  switch(a3)
+  switch(section)
   {
     case 4:
-      v5 = [(RAPHomeDataSource *)self _headerStringIssuesReportedSection];
+      _headerStringIssuesReportedSection = [(RAPHomeDataSource *)self _headerStringIssuesReportedSection];
       goto LABEL_7;
     case 3:
-      v5 = [(RAPHomeDataSource *)self _headerStringReviewedSection];
+      _headerStringIssuesReportedSection = [(RAPHomeDataSource *)self _headerStringReviewedSection];
       goto LABEL_7;
     case 2:
-      v5 = [(RAPHomeDataSource *)self _headerStringInReviewSection];
+      _headerStringIssuesReportedSection = [(RAPHomeDataSource *)self _headerStringInReviewSection];
 LABEL_7:
-      v6 = v5;
-      v8 = [v5 string];
+      v6 = _headerStringIssuesReportedSection;
+      string = [_headerStringIssuesReportedSection string];
 
       goto LABEL_9;
   }
 
-  v8 = 0;
+  string = 0;
 LABEL_9:
-  v7 = [(RAPHomeDataSource *)self supplementaryElementsDelegate];
-  [v7 didTapOnMoreButtonForSectionType:a3 sectionTitle:v8];
+  supplementaryElementsDelegate = [(RAPHomeDataSource *)self supplementaryElementsDelegate];
+  [supplementaryElementsDelegate didTapOnMoreButtonForSectionType:section sectionTitle:string];
 }
 
 - (void)privacyTextTapped
 {
-  v2 = [(RAPHomeDataSource *)self supplementaryElementsDelegate];
-  [v2 didTapOnPrivacyText];
+  supplementaryElementsDelegate = [(RAPHomeDataSource *)self supplementaryElementsDelegate];
+  [supplementaryElementsDelegate didTapOnPrivacyText];
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = -[RAPHomeDataSource sectionForIndex:](self, "sectionForIndex:", [v10 section]);
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  v11 = -[RAPHomeDataSource sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   v12 = v11;
   v13 = 0;
   if (v11 > 2)
   {
     if (v11 == 3)
     {
-      v14 = [(RAPHomeDataSource *)self _headerStringReviewedSection];
-      v15 = [(RAPHomeDataSource *)self _footerStringReviewedSection];
+      _headerStringReviewedSection = [(RAPHomeDataSource *)self _headerStringReviewedSection];
+      _footerStringReviewedSection = [(RAPHomeDataSource *)self _footerStringReviewedSection];
     }
 
     else
     {
       if (v11 != 4)
       {
-        v14 = 0;
+        _headerStringReviewedSection = 0;
         if (v11 != 5)
         {
           goto LABEL_18;
         }
 
-        v16 = [(RAPHomeDataSource *)self _headerStringIncidentsReportedSection];
+        _headerStringIncidentsReportedSection = [(RAPHomeDataSource *)self _headerStringIncidentsReportedSection];
 LABEL_14:
-        v14 = v16;
+        _headerStringReviewedSection = _headerStringIncidentsReportedSection;
 LABEL_15:
         v13 = 0;
         goto LABEL_18;
       }
 
-      v14 = [(RAPHomeDataSource *)self _headerStringIssuesReportedSection];
-      v15 = [(RAPHomeDataSource *)self _footerString90Days];
+      _headerStringReviewedSection = [(RAPHomeDataSource *)self _headerStringIssuesReportedSection];
+      _footerStringReviewedSection = [(RAPHomeDataSource *)self _footerString90Days];
     }
 
 LABEL_17:
-    v13 = v15;
+    v13 = _footerStringReviewedSection;
     goto LABEL_18;
   }
 
@@ -360,41 +360,41 @@ LABEL_17:
   {
     if (v11 != 1)
     {
-      v14 = 0;
+      _headerStringReviewedSection = 0;
       if (v11 != 2)
       {
         goto LABEL_18;
       }
 
-      v14 = [(RAPHomeDataSource *)self _headerStringInReviewSection];
-      v15 = [(RAPHomeDataSource *)self _footerString90Days];
+      _headerStringReviewedSection = [(RAPHomeDataSource *)self _headerStringInReviewSection];
+      _footerStringReviewedSection = [(RAPHomeDataSource *)self _footerString90Days];
       goto LABEL_17;
     }
 
-    v16 = [(RAPHomeDataSource *)self _headerStringTellUsMoreSection];
+    _headerStringIncidentsReportedSection = [(RAPHomeDataSource *)self _headerStringTellUsMoreSection];
     goto LABEL_14;
   }
 
-  if (sub_10000FA08(v8) == 5)
+  if (sub_10000FA08(viewCopy) == 5)
   {
-    v14 = [(RAPHomeDataSource *)self _headerStringActionsSection];
+    _headerStringReviewedSection = [(RAPHomeDataSource *)self _headerStringActionsSection];
   }
 
   else
   {
-    v14 = 0;
+    _headerStringReviewedSection = 0;
   }
 
   v20 = +[UserProfileReportHistoryManager sharedInstance];
-  v21 = [v20 inChina];
+  inChina = [v20 inChina];
 
-  if (v21)
+  if (inChina)
   {
     goto LABEL_15;
   }
 
-  v30 = [(RAPHomeDataSource *)self _footerStringActionsSection];
-  v28 = [(RAPHomeDataSource *)self _footerLinkText];
+  _footerStringActionsSection = [(RAPHomeDataSource *)self _footerStringActionsSection];
+  _footerLinkText = [(RAPHomeDataSource *)self _footerLinkText];
   v22 = objc_alloc_init(NSMutableParagraphStyle);
   [v22 setLineBreakMode:0];
   v27 = v22;
@@ -410,12 +410,12 @@ LABEL_17:
   v50 = v24;
   v25 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
 
-  v13 = [[NSMutableAttributedString alloc] initWithString:v30 attributes:v29];
-  v26 = [[NSMutableAttributedString alloc] initWithString:v28 attributes:v25];
+  v13 = [[NSMutableAttributedString alloc] initWithString:_footerStringActionsSection attributes:v29];
+  v26 = [[NSMutableAttributedString alloc] initWithString:_footerLinkText attributes:v25];
   [v13 appendAttributedString:v26];
 
 LABEL_18:
-  if ([v9 isEqualToString:_UICollectionViewListLayoutElementKindSectionHeader])
+  if ([kindCopy isEqualToString:_UICollectionViewListLayoutElementKindSectionHeader])
   {
     v43 = 0;
     v44 = &v43;
@@ -430,9 +430,9 @@ LABEL_18:
     v36[3] = &unk_10162A698;
     objc_copyWeak(v41, &location);
     v40 = &v43;
-    v37 = v8;
-    v38 = v10;
-    v39 = v14;
+    v37 = viewCopy;
+    v38 = pathCopy;
+    v39 = _headerStringReviewedSection;
     v41[1] = v12;
     [UIView performWithoutAnimation:v36];
     v17 = v44[5];
@@ -448,10 +448,10 @@ LABEL_18:
     v31[1] = 3221225472;
     v31[2] = sub_1007D61A4;
     v31[3] = &unk_10162A6C0;
-    v32 = v8;
-    v34 = self;
+    v32 = viewCopy;
+    selfCopy = self;
     v35 = v12;
-    v33 = v10;
+    v33 = pathCopy;
     v18 = objc_retainBlock(v31);
     v17 = (v18[2])(v18, v13, 1);
   }
@@ -558,17 +558,17 @@ LABEL_18:
 - (id)RAPHomeReportMenu
 {
   reportMenuProvider = self->_reportMenuProvider;
-  v4 = [(RAPHomeDataSource *)self entryPoint];
-  v5 = [(DataSource *)self collectionView];
-  v6 = [v5 _maps_mapsSceneDelegate];
-  v7 = [(RAPReportMenuProvider *)reportMenuProvider getReportMenuFromEntryPoint:v4 sceneDelegate:v6];
+  entryPoint = [(RAPHomeDataSource *)self entryPoint];
+  collectionView = [(DataSource *)self collectionView];
+  _maps_mapsSceneDelegate = [collectionView _maps_mapsSceneDelegate];
+  v7 = [(RAPReportMenuProvider *)reportMenuProvider getReportMenuFromEntryPoint:entryPoint sceneDelegate:_maps_mapsSceneDelegate];
 
   return v7;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(RAPHomeDataSource *)self sectionForIndex:a4];
+  v5 = [(RAPHomeDataSource *)self sectionForIndex:section];
   result = 1;
   if (v5 > 2)
   {
@@ -641,12 +641,12 @@ LABEL_21:
   return [v10 count];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[RAPHomeDataSource sectionForIndex:](self, "sectionForIndex:", [v7 section]);
-  v9 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[RAPHomeDataSource sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
+  v9 = [pathCopy row];
   v10 = objc_alloc_init(ReportLinkFactory);
   v11 = 0;
   if (v8 > 2)
@@ -660,7 +660,7 @@ LABEL_21:
         v12 = &OBJC_IVAR___RAPHomeDataSource__allReports;
         goto LABEL_16;
       case 5:
-        v13 = [v6 dequeueReusableCellWithReuseIdentifier:@"IncidentsCell" forIndexPath:v7];
+        v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"IncidentsCell" forIndexPath:pathCopy];
         if (sub_10000FA08(v13) == 5)
         {
           +[UIColor clearColor];
@@ -674,15 +674,15 @@ LABEL_21:
         [v13 setBackgroundColor:v19];
 
         v11 = [(NSArray *)self->_nonZeroTrafficIncidentLayoutItems objectAtIndexedSubscript:v9];
-        v20 = [v11 displayText];
-        [v13 setTitle:v20];
+        displayText = [v11 displayText];
+        [v13 setTitle:displayText];
 
         v21 = +[UserProfileReportHistoryManager sharedInstance];
         v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [v21 countForGEOTrafficIncidentType:{objc_msgSend(v11, "incidentType")}]);
         [v13 setSubtitle:v22];
 
-        v17 = [v11 displayImage];
-        [v13 setIcon:v17];
+        displayImage = [v11 displayImage];
+        [v13 setIcon:displayImage];
         goto LABEL_18;
     }
   }
@@ -692,18 +692,18 @@ LABEL_21:
     switch(v8)
     {
       case 0:
-        v13 = [v6 dequeueReusableCellWithReuseIdentifier:@"ReportLinkCell" forIndexPath:v7];
+        v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"ReportLinkCell" forIndexPath:pathCopy];
         v14 = [(NSMutableArray *)self->_reportActionSections objectAtIndexedSubscript:v9];
-        v15 = [v14 integerValue];
+        integerValue = [v14 integerValue];
 
-        if (v15 > 4)
+        if (integerValue > 4)
         {
           v11 = 0;
         }
 
         else
         {
-          v11 = [(ReportLinkFactory *)v10 createModelForType:v15];
+          v11 = [(ReportLinkFactory *)v10 createModelForType:integerValue];
         }
 
         [v13 setReportLink:v11];
@@ -720,10 +720,10 @@ LABEL_16:
   }
 
   v16 = +[(TwoLineCollectionViewListCell *)TwoLinesCollectionViewInsetGroupedListCell];
-  v13 = [v6 dequeueReusableCellWithReuseIdentifier:v16 forIndexPath:v7];
+  v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v16 forIndexPath:pathCopy];
 
-  v17 = [TwoLinesContentViewModelComposer cellModelForRAPReportsHistory:v11 allowDisclosureIndicator:1];
-  [v13 setViewModel:v17];
+  displayImage = [TwoLinesContentViewModelComposer cellModelForRAPReportsHistory:v11 allowDisclosureIndicator:1];
+  [v13 setViewModel:displayImage];
 LABEL_18:
 
 LABEL_19:
@@ -731,17 +731,17 @@ LABEL_19:
   return v13;
 }
 
-- (int64_t)sectionForIndex:(unint64_t)a3
+- (int64_t)sectionForIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_homeViewSections count]<= a3)
+  if ([(NSMutableArray *)self->_homeViewSections count]<= index)
   {
     return 0;
   }
 
-  v5 = [(NSMutableArray *)self->_homeViewSections objectAtIndexedSubscript:a3];
-  v6 = [v5 integerValue];
+  v5 = [(NSMutableArray *)self->_homeViewSections objectAtIndexedSubscript:index];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 - (void)_addSections
@@ -756,9 +756,9 @@ LABEL_19:
   }
 
   v5 = +[UserProfileReportHistoryManager sharedInstance];
-  v6 = [v5 inChina];
+  inChina = [v5 inChina];
 
-  if (v6)
+  if (inChina)
   {
     if (![(NSArray *)self->_allReports count])
     {
@@ -772,26 +772,26 @@ LABEL_19:
   if ([(RAPHomeDataSource *)self _isRAPNewUI])
   {
     v8 = +[UserProfileReportHistoryManager sharedInstance];
-    v9 = [v8 hasTellUsMoreRAPs];
+    hasTellUsMoreRAPs = [v8 hasTellUsMoreRAPs];
 
-    if (v9)
+    if (hasTellUsMoreRAPs)
     {
       [(NSMutableArray *)self->_homeViewSections addObject:&off_1016E6F20];
     }
   }
 
   v10 = +[UserProfileReportHistoryManager sharedInstance];
-  v11 = [v10 hasInReviewRAPs];
+  hasInReviewRAPs = [v10 hasInReviewRAPs];
 
-  if (v11)
+  if (hasInReviewRAPs)
   {
     [(NSMutableArray *)self->_homeViewSections addObject:&off_1016E6F38];
   }
 
   v12 = +[UserProfileReportHistoryManager sharedInstance];
-  v13 = [v12 hasReviewedRAPs];
+  hasReviewedRAPs = [v12 hasReviewedRAPs];
 
-  if (v13)
+  if (hasReviewedRAPs)
   {
     v7 = &off_1016E6F50;
 LABEL_15:
@@ -804,8 +804,8 @@ LABEL_16:
     [(NSMutableArray *)self->_homeViewSections addObject:&off_1016E6F68];
   }
 
-  v14 = [(DataSource *)self collectionView];
-  [v14 reloadData];
+  collectionView = [(DataSource *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)_buildReportHistoryContent
@@ -824,7 +824,7 @@ LABEL_16:
   self->_reportsTellUsMore = v7;
 
   v9 = +[UserProfileReportHistoryManager sharedInstance];
-  v10 = [v9 rapHistory];
+  rapHistory = [v9 rapHistory];
 
   v11 = +[NSMutableArray array];
   v12 = +[NSMutableArray array];
@@ -833,7 +833,7 @@ LABEL_16:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v14 = v10;
+  v14 = rapHistory;
   v15 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v15)
   {
@@ -849,14 +849,14 @@ LABEL_16:
         }
 
         v19 = *(*(&v31 + 1) + 8 * i);
-        v20 = [v19 reportStatus];
+        reportStatus = [v19 reportStatus];
         v21 = v11;
-        if (!v20)
+        if (!reportStatus)
         {
           goto LABEL_11;
         }
 
-        if (v20 == 2)
+        if (reportStatus == 2)
         {
           v21 = v13;
 LABEL_11:
@@ -865,7 +865,7 @@ LABEL_11:
         }
 
         v21 = v12;
-        if (v20 == 1)
+        if (reportStatus == 1)
         {
           goto LABEL_11;
         }
@@ -897,8 +897,8 @@ LABEL_11:
 - (void)_loadReportHistoryContent
 {
   [(RAPHomeDataSource *)self _buildReportHistoryContent];
-  v3 = [(DataSource *)self delegate];
-  [v3 dataSourceUpdated:self];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSourceUpdated:self];
 }
 
 - (void)_populateActionSectionWithNonZeroTrafficIncidentLayoutItems
@@ -908,16 +908,16 @@ LABEL_11:
   self->_reportActionSections = v3;
 
   v5 = +[GEOPlatform sharedPlatform];
-  v6 = [v5 supportsNavigation];
+  supportsNavigation = [v5 supportsNavigation];
 
-  if (v6)
+  if (supportsNavigation)
   {
     [(NSMutableArray *)self->_reportActionSections addObject:&off_1016E6EC0];
     if ([(NSArray *)self->_nonZeroTrafficIncidentLayoutItems count])
     {
       [(NSMutableArray *)self->_reportActionSections addObject:&off_1016E6ED8];
-      v7 = [(DataSource *)self collectionView];
-      [v7 reloadData];
+      collectionView = [(DataSource *)self collectionView];
+      [collectionView reloadData];
     }
   }
 }
@@ -968,9 +968,9 @@ LABEL_11:
   self->_nonZeroTrafficIncidentLayoutItems = v3;
 }
 
-- (void)_layoutManagerDidLoadLayoutItems:(id)a3
+- (void)_layoutManagerDidLoadLayoutItems:(id)items
 {
-  objc_storeStrong(&self->_trafficIncidentLayoutItems, a3);
+  objc_storeStrong(&self->_trafficIncidentLayoutItems, items);
   [(RAPHomeDataSource *)self _updateNonZeroTrafficLayoutItems];
   [(RAPHomeDataSource *)self _populateActionSectionWithNonZeroTrafficIncidentLayoutItems];
 
@@ -992,45 +992,45 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (RAPHomeDataSource)initWithCollectionView:(id)a3 updateLocation:(BOOL)a4
+- (RAPHomeDataSource)initWithCollectionView:(id)view updateLocation:(BOOL)location
 {
-  v4 = a4;
-  v6 = a3;
+  locationCopy = location;
+  viewCopy = view;
   v25.receiver = self;
   v25.super_class = RAPHomeDataSource;
-  v7 = [(DataSource *)&v25 initWithCollectionView:v6 updateLocation:v4];
+  v7 = [(DataSource *)&v25 initWithCollectionView:viewCopy updateLocation:locationCopy];
   if (v7)
   {
     v8 = +[UserProfileReportHistoryManager sharedInstance];
-    v9 = [v8 rapHistory];
+    rapHistory = [v8 rapHistory];
     allReports = v7->_allReports;
-    v7->_allReports = v9;
+    v7->_allReports = rapHistory;
 
     v11 = +[UserProfileReportHistoryManager sharedInstance];
     [v11 refineRAPHistory];
 
     v12 = +[UserProfileReportHistoryManager sharedInstance];
-    v13 = [v12 observers];
-    [v13 registerObserver:v7];
+    observers = [v12 observers];
+    [observers registerObserver:v7];
 
     v14 = objc_alloc_init(RAPReportMenuProvider);
     reportMenuProvider = v7->_reportMenuProvider;
     v7->_reportMenuProvider = v14;
 
-    [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ReportLinkCell"];
-    [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"IncidentsCell"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ReportLinkCell"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"IncidentsCell"];
     v16 = objc_opt_class();
     v17 = +[(TwoLineCollectionViewListCell *)TwoLinesCollectionViewInsetGroupedListCell];
-    [v6 registerClass:v16 forCellWithReuseIdentifier:v17];
+    [viewCopy registerClass:v16 forCellWithReuseIdentifier:v17];
 
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    [v6 registerClass:v18 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v20];
+    [viewCopy registerClass:v18 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v20];
 
     v21 = objc_opt_class();
     v22 = +[SectionHeaderCollectionReusableView reuseIdentifier];
-    [v6 registerClass:v21 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v22];
+    [viewCopy registerClass:v21 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v22];
 
     v23 = +[TrafficIncidentLayoutManager sharedInstance];
     [v23 addObserver:v7];

@@ -1,10 +1,10 @@
 @interface _MKRightImageButton
 - (CGSize)intrinsicContentSize;
-- (_MKRightImageButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setTarget:(id)a3 action:(SEL)a4;
-- (void)setTitle:(id)a3;
+- (_MKRightImageButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setTarget:(id)target action:(SEL)action;
+- (void)setTitle:(id)title;
 - (void)updateConstraints;
 @end
 
@@ -45,10 +45,10 @@ LABEL_12:
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   [(UIImageView *)self->_imageView setImage:?];
-  [(UIImageView *)self->_imageView setHidden:a3 == 0];
+  [(UIImageView *)self->_imageView setHidden:image == 0];
   [(_MKUILabel *)self->_titleLabel setText:0];
   if ([(UIImageView *)self->_imageView isHidden])
   {
@@ -63,9 +63,9 @@ LABEL_12:
   [(UIView *)self _mapkit_setNeedsUpdateConstraints];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(_MKUILabel *)self->_titleLabel setText:a3];
+  [(_MKUILabel *)self->_titleLabel setText:title];
 
   [(UIView *)self _mapkit_setNeedsUpdateConstraints];
 }
@@ -77,20 +77,20 @@ LABEL_12:
   {
     self->_titleConstraintsAdded = 1;
     v3 = MEMORY[0x1E696ACD8];
-    v4 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
-    v5 = [(_MKRightImageButton *)self leadingAnchor];
-    v6 = [v4 constraintEqualToAnchor:v5];
+    leadingAnchor = [(_MKUILabel *)self->_titleLabel leadingAnchor];
+    leadingAnchor2 = [(_MKRightImageButton *)self leadingAnchor];
+    v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v15[0] = v6;
-    v7 = [(_MKUILabel *)self->_titleLabel centerYAnchor];
-    v8 = [(_MKRightImageButton *)self centerYAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    centerYAnchor = [(_MKUILabel *)self->_titleLabel centerYAnchor];
+    centerYAnchor2 = [(_MKRightImageButton *)self centerYAnchor];
+    v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v15[1] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     [v3 activateConstraints:v10];
   }
 
-  v11 = [(UIImageView *)self->_imageView isHidden];
-  if (v11)
+  isHidden = [(UIImageView *)self->_imageView isHidden];
+  if (isHidden)
   {
     v12 = &OBJC_IVAR____MKRightImageButton__titleAndImageConstraints;
   }
@@ -100,7 +100,7 @@ LABEL_12:
     v12 = &OBJC_IVAR____MKRightImageButton__titleOnlyConstraints;
   }
 
-  if (v11)
+  if (isHidden)
   {
     v13 = &OBJC_IVAR____MKRightImageButton__titleOnlyConstraints;
   }
@@ -117,13 +117,13 @@ LABEL_12:
   [(_MKRightImageButton *)&v14 updateConstraints];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     titleLabel = self->_titleLabel;
-    if (a3)
+    if (highlighted)
     {
       v4 = &__block_literal_global_5;
     }
@@ -137,14 +137,14 @@ LABEL_12:
   }
 }
 
-- (void)setTarget:(id)a3 action:(SEL)a4
+- (void)setTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
-  v7 = v6;
+  targetCopy = target;
+  v7 = targetCopy;
   gestureRecognizer = self->_gestureRecognizer;
-  if (v6 && a4)
+  if (targetCopy && action)
   {
-    v12 = v6;
+    v12 = targetCopy;
     if (!gestureRecognizer)
     {
       v9 = objc_alloc_init(MEMORY[0x1E69DD060]);
@@ -156,7 +156,7 @@ LABEL_12:
       gestureRecognizer = self->_gestureRecognizer;
     }
 
-    [(UITapGestureRecognizer *)gestureRecognizer addTarget:v7 action:a4];
+    [(UITapGestureRecognizer *)gestureRecognizer addTarget:v7 action:action];
   }
 
   else
@@ -166,7 +166,7 @@ LABEL_12:
       goto LABEL_9;
     }
 
-    v12 = v6;
+    v12 = targetCopy;
     [(_MKRightImageButton *)self removeGestureRecognizer:?];
     v11 = self->_gestureRecognizer;
     self->_gestureRecognizer = 0;
@@ -176,12 +176,12 @@ LABEL_12:
 LABEL_9:
 }
 
-- (_MKRightImageButton)initWithFrame:(CGRect)a3
+- (_MKRightImageButton)initWithFrame:(CGRect)frame
 {
   v29[1] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = _MKRightImageButton;
-  v3 = [(_MKRightImageButton *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_MKRightImageButton *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(_MKUILabel);
@@ -199,28 +199,28 @@ LABEL_9:
     [(UIImageView *)v3->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_imageView setHidden:1];
     [(UIImageView *)v3->_imageView setContentMode:1];
-    v9 = [(UIImageView *)v3->_imageView leadingAnchor];
-    v10 = [(_MKUILabel *)v3->_titleLabel trailingAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:4.0];
+    leadingAnchor = [(UIImageView *)v3->_imageView leadingAnchor];
+    trailingAnchor = [(_MKUILabel *)v3->_titleLabel trailingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:4.0];
 
     LODWORD(v12) = 1148829696;
     [v11 setPriority:v12];
-    v13 = [(_MKUILabel *)v3->_titleLabel trailingAnchor];
-    v14 = [(_MKRightImageButton *)v3 trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    trailingAnchor2 = [(_MKUILabel *)v3->_titleLabel trailingAnchor];
+    trailingAnchor3 = [(_MKRightImageButton *)v3 trailingAnchor];
+    v15 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v29[0] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
     titleOnlyConstraints = v3->_titleOnlyConstraints;
     v3->_titleOnlyConstraints = v16;
 
     v28[0] = v11;
-    v18 = [(UIImageView *)v3->_imageView centerYAnchor];
-    v19 = [(_MKUILabel *)v3->_titleLabel centerYAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerYAnchor = [(UIImageView *)v3->_imageView centerYAnchor];
+    centerYAnchor2 = [(_MKUILabel *)v3->_titleLabel centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v28[1] = v20;
-    v21 = [(UIImageView *)v3->_imageView trailingAnchor];
-    v22 = [(_MKRightImageButton *)v3 trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    trailingAnchor4 = [(UIImageView *)v3->_imageView trailingAnchor];
+    trailingAnchor5 = [(_MKRightImageButton *)v3 trailingAnchor];
+    v23 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v28[2] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3];
     titleAndImageConstraints = v3->_titleAndImageConstraints;

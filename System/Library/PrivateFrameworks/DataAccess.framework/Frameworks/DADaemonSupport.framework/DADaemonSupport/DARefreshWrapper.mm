@@ -4,8 +4,8 @@
 - (const)fetchActivityIdentifier;
 - (const)retryActivityIdentifier;
 - (id)_fetchActivityCriteriaInOnPowerMode;
-- (id)_fetchActivityCriteriaWithInterval:(int64_t)a3;
-- (id)_stringForStyle:(int)a3;
+- (id)_fetchActivityCriteriaWithInterval:(int64_t)interval;
+- (id)_stringForStyle:(int)style;
 - (id)description;
 - (int64_t)XPCActivityInterval;
 - (void)_retryActivityFired;
@@ -14,14 +14,14 @@
 - (void)cancelFetchActivity;
 - (void)cancelRetryActivity;
 - (void)dailyRefreshActivityFired;
-- (void)performTokenRegistrationRequestsWithToken:(id)a3 onBehalfOf:(id)a4;
-- (void)setCurStyle:(int)a3;
+- (void)performTokenRegistrationRequestsWithToken:(id)token onBehalfOf:(id)of;
+- (void)setCurStyle:(int)style;
 - (void)startDailyRefreshActivity;
 - (void)startFetchActivityForFetch;
 - (void)startFetchActivityForPush;
-- (void)startFetchActivityWithInterval:(int64_t)a3;
+- (void)startFetchActivityWithInterval:(int64_t)interval;
 - (void)stopCollectionsRefresh;
-- (void)tokenRegistrationRequest:(id)a3 finishedWithError:(id)a4;
+- (void)tokenRegistrationRequest:(id)request finishedWithError:(id)error;
 @end
 
 @implementation DARefreshWrapper
@@ -45,12 +45,12 @@
 - (const)retryActivityIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(DARefreshWrapper *)self delegate];
-  v4 = [v3 scheduleIdentifier];
-  v5 = [v2 stringWithFormat:@"com.apple.dataaccess.dataaccessd.retry.%@", v4];
+  delegate = [(DARefreshWrapper *)self delegate];
+  scheduleIdentifier = [delegate scheduleIdentifier];
+  v5 = [v2 stringWithFormat:@"com.apple.dataaccess.dataaccessd.retry.%@", scheduleIdentifier];
 
-  v6 = [v5 UTF8String];
-  return v6;
+  uTF8String = [v5 UTF8String];
+  return uTF8String;
 }
 
 - (void)cancelRetryActivity
@@ -60,18 +60,18 @@
   v4 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v3, v4))
   {
-    v5 = [(DARefreshWrapper *)self delegate];
-    v6 = [v5 getDAAccount];
-    v7 = [v6 accountDescription];
-    v8 = [(DARefreshWrapper *)self delegate];
-    v9 = [v8 getDAAccount];
-    v10 = [v9 publicDescription];
+    delegate = [(DARefreshWrapper *)self delegate];
+    getDAAccount = [delegate getDAAccount];
+    accountDescription = [getDAAccount accountDescription];
+    delegate2 = [(DARefreshWrapper *)self delegate];
+    getDAAccount2 = [delegate2 getDAAccount];
+    publicDescription = [getDAAccount2 publicDescription];
     v12 = 138412802;
-    v13 = v7;
+    v13 = accountDescription;
     v14 = 2114;
-    v15 = v10;
+    v15 = publicDescription;
     v16 = 2080;
-    v17 = [(DARefreshWrapper *)self retryActivityIdentifier];
+    retryActivityIdentifier = [(DARefreshWrapper *)self retryActivityIdentifier];
     _os_log_impl(&dword_248524000, v3, v4, "XPC: Cancelling Retry Activity for account %@ (%{public}@) retryActivityIdentifier: %s", &v12, 0x20u);
   }
 
@@ -99,7 +99,7 @@
   if (os_log_type_enabled(v3, v4))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_248524000, v3, v4, "%@: Stopping XPC Activities for Refreshing Collections", &v7, 0xCu);
   }
 
@@ -110,7 +110,7 @@
   if (os_log_type_enabled(v5, v4))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_248524000, v5, v4, "%@: Cancelling pending Token Registration request", &v7, 0xCu);
   }
 
@@ -118,42 +118,42 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_stringForStyle:(int)a3
+- (id)_stringForStyle:(int)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     return @"UNKNOWN!";
   }
 
   else
   {
-    return off_278F1D4A8[a3];
+    return off_278F1D4A8[style];
   }
 }
 
 - (const)fetchActivityIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(DARefreshWrapper *)self delegate];
-  v4 = [v3 getDAAccount];
-  v5 = [v4 accountID];
-  v6 = [v2 stringWithFormat:@"com.apple.dataaccess.dataaccessd.fetch.%@", v5];
+  delegate = [(DARefreshWrapper *)self delegate];
+  getDAAccount = [delegate getDAAccount];
+  accountID = [getDAAccount accountID];
+  v6 = [v2 stringWithFormat:@"com.apple.dataaccess.dataaccessd.fetch.%@", accountID];
 
-  v7 = [v6 UTF8String];
-  return v7;
+  uTF8String = [v6 UTF8String];
+  return uTF8String;
 }
 
 - (int64_t)XPCActivityInterval
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(DARefreshWrapper *)self delegate];
+  delegate = [(DARefreshWrapper *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 fetchInterval];
-    v5 = v4;
-    if (v4 >= -2)
+    fetchInterval = [delegate fetchInterval];
+    v5 = fetchInterval;
+    if (fetchInterval >= -2)
     {
-      if (v4 != -2)
+      if (fetchInterval != -2)
       {
         goto LABEL_10;
       }
@@ -166,7 +166,7 @@
       if (os_log_type_enabled(v6, v7))
       {
         v11 = 138412546;
-        v12 = v3;
+        v12 = delegate;
         v13 = 2048;
         v14 = v5;
         _os_log_impl(&dword_248524000, v6, v7, "Delegate (%@) returned invalid fetch interval %lli; using system default", &v11, 0x16u);
@@ -174,8 +174,8 @@
     }
   }
 
-  v8 = [(DARefreshWrapper *)self delegate];
-  [v8 scheduleIdentifier];
+  delegate2 = [(DARefreshWrapper *)self delegate];
+  [delegate2 scheduleIdentifier];
   LODWORD(v5) = PCSettingsGetPollInterval();
 
   if (v5 <= -2)
@@ -194,12 +194,12 @@ LABEL_10:
   return v5;
 }
 
-- (id)_fetchActivityCriteriaWithInterval:(int64_t)a3
+- (id)_fetchActivityCriteriaWithInterval:(int64_t)interval
 {
   v4 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86360], 1);
-  xpc_dictionary_set_int64(v4, *MEMORY[0x277D86250], a3);
-  xpc_dictionary_set_int64(v4, *MEMORY[0x277D86270], a3 / 5);
+  xpc_dictionary_set_int64(v4, *MEMORY[0x277D86250], interval);
+  xpc_dictionary_set_int64(v4, *MEMORY[0x277D86270], interval / 5);
   xpc_dictionary_set_BOOL(v4, *MEMORY[0x277D86398], 1);
   xpc_dictionary_set_string(v4, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
 
@@ -219,52 +219,52 @@ LABEL_10:
   return v2;
 }
 
-- (void)startFetchActivityWithInterval:(int64_t)a3
+- (void)startFetchActivityWithInterval:(int64_t)interval
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [(DARefreshWrapper *)self delegate];
-  v6 = [v5 getDAAccount];
-  if (v6)
+  delegate = [(DARefreshWrapper *)self delegate];
+  getDAAccount = [delegate getDAAccount];
+  if (getDAAccount)
   {
-    v7 = v6;
-    v8 = [(DARefreshWrapper *)self delegate];
-    v9 = [v8 getDAAccount];
-    v10 = [v9 accountDescription];
+    v7 = getDAAccount;
+    delegate2 = [(DARefreshWrapper *)self delegate];
+    getDAAccount2 = [delegate2 getDAAccount];
+    accountDescription = [getDAAccount2 accountDescription];
 
-    if (v10)
+    if (accountDescription)
     {
       v11 = DALoggingwithCategory();
       v12 = *(MEMORY[0x277D03988] + 6);
       if (os_log_type_enabled(v11, v12))
       {
-        v24 = [(DARefreshWrapper *)self delegate];
-        v13 = [v24 getDAAccount];
-        v14 = [v13 accountDescription];
-        v15 = [(DARefreshWrapper *)self delegate];
-        v16 = [v15 getDAAccount];
-        v17 = [v16 publicDescription];
+        delegate3 = [(DARefreshWrapper *)self delegate];
+        getDAAccount3 = [delegate3 getDAAccount];
+        accountDescription2 = [getDAAccount3 accountDescription];
+        delegate4 = [(DARefreshWrapper *)self delegate];
+        getDAAccount4 = [delegate4 getDAAccount];
+        publicDescription = [getDAAccount4 publicDescription];
         *buf = 138413058;
-        v27 = v14;
+        v27 = accountDescription2;
         v28 = 2114;
-        v29 = v17;
+        v29 = publicDescription;
         v30 = 2080;
-        v31 = [(DARefreshWrapper *)self fetchActivityIdentifier];
+        fetchActivityIdentifier = [(DARefreshWrapper *)self fetchActivityIdentifier];
         v32 = 2048;
-        v33 = [(DARefreshWrapper *)self fetchInterval];
+        fetchInterval = [(DARefreshWrapper *)self fetchInterval];
         _os_log_impl(&dword_248524000, v11, v12, "XPC: Registering Fetch Activity for account %@ (%{public}@) retryActivityIdentifier: %s, Interval %lld", buf, 0x2Au);
       }
 
-      v18 = [(DARefreshWrapper *)self fetchInterval];
-      v19 = [(DARefreshWrapper *)self fetchActivityIdentifier];
+      fetchInterval2 = [(DARefreshWrapper *)self fetchInterval];
+      fetchActivityIdentifier2 = [(DARefreshWrapper *)self fetchActivityIdentifier];
       v20 = *MEMORY[0x277D86238];
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __51__DARefreshWrapper_startFetchActivityWithInterval___block_invoke;
       handler[3] = &unk_278F1D488;
       handler[4] = self;
-      handler[5] = a3;
-      handler[6] = v18;
-      xpc_activity_register(v19, v20, handler);
+      handler[5] = interval;
+      handler[6] = fetchInterval2;
+      xpc_activity_register(fetchActivityIdentifier2, v20, handler);
       goto LABEL_10;
     }
   }
@@ -450,20 +450,20 @@ void __51__DARefreshWrapper_startFetchActivityWithInterval___block_invoke_21(uin
     v6 = *(MEMORY[0x277D03988] + 6);
     if (os_log_type_enabled(v5, v6))
     {
-      v7 = [(DARefreshWrapper *)self delegate];
-      v8 = [v7 getDAAccount];
-      v9 = [v8 accountDescription];
-      v10 = [(DARefreshWrapper *)self delegate];
-      v11 = [v10 getDAAccount];
-      v12 = [v11 publicDescription];
+      delegate = [(DARefreshWrapper *)self delegate];
+      getDAAccount = [delegate getDAAccount];
+      accountDescription = [getDAAccount accountDescription];
+      delegate2 = [(DARefreshWrapper *)self delegate];
+      getDAAccount2 = [delegate2 getDAAccount];
+      publicDescription = [getDAAccount2 publicDescription];
       v14 = 138413058;
-      v15 = v9;
+      v15 = accountDescription;
       v16 = 2114;
-      v17 = v12;
+      v17 = publicDescription;
       v18 = 2080;
-      v19 = [(DARefreshWrapper *)self fetchActivityIdentifier];
+      fetchActivityIdentifier = [(DARefreshWrapper *)self fetchActivityIdentifier];
       v20 = 2048;
-      v21 = [(DARefreshWrapper *)self XPCActivityInterval];
+      xPCActivityInterval = [(DARefreshWrapper *)self XPCActivityInterval];
       _os_log_impl(&dword_248524000, v5, v6, "XPC: Manual Sync Fetch Activity for account %@ (%{public}@) fetchActivityIdentifier %s, Interval %lld", &v14, 0x2Au);
     }
 
@@ -473,10 +473,10 @@ void __51__DARefreshWrapper_startFetchActivityWithInterval___block_invoke_21(uin
 
   else
   {
-    v3 = [(DARefreshWrapper *)self fetchInterval];
+    fetchInterval = [(DARefreshWrapper *)self fetchInterval];
     v4 = *MEMORY[0x277D85DE8];
 
-    [(DARefreshWrapper *)self startFetchActivityWithInterval:v3];
+    [(DARefreshWrapper *)self startFetchActivityWithInterval:fetchInterval];
   }
 }
 
@@ -488,20 +488,20 @@ void __51__DARefreshWrapper_startFetchActivityWithInterval___block_invoke_21(uin
   v4 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v3, v4))
   {
-    v5 = [(DARefreshWrapper *)self delegate];
-    v6 = [v5 getDAAccount];
-    v7 = [v6 accountDescription];
-    v8 = [(DARefreshWrapper *)self delegate];
-    v9 = [v8 getDAAccount];
-    v10 = [v9 publicDescription];
+    delegate = [(DARefreshWrapper *)self delegate];
+    getDAAccount = [delegate getDAAccount];
+    accountDescription = [getDAAccount accountDescription];
+    delegate2 = [(DARefreshWrapper *)self delegate];
+    getDAAccount2 = [delegate2 getDAAccount];
+    publicDescription = [getDAAccount2 publicDescription];
     v12 = 138413058;
-    v13 = v7;
+    v13 = accountDescription;
     v14 = 2114;
-    v15 = v10;
+    v15 = publicDescription;
     v16 = 2080;
-    v17 = [(DARefreshWrapper *)self fetchActivityIdentifier];
+    fetchActivityIdentifier = [(DARefreshWrapper *)self fetchActivityIdentifier];
     v18 = 2048;
-    v19 = [(DARefreshWrapper *)self fetchInterval];
+    fetchInterval = [(DARefreshWrapper *)self fetchInterval];
     _os_log_impl(&dword_248524000, v3, v4, "XPC: Starting a Temp Sync Fetch Activity before Transitioning to Push for account %@ (%{public}@) fetchActivityIdentifier %s, Interval %lld", &v12, 0x2Au);
   }
 
@@ -516,18 +516,18 @@ void __51__DARefreshWrapper_startFetchActivityWithInterval___block_invoke_21(uin
   v4 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v3, v4))
   {
-    v5 = [(DARefreshWrapper *)self delegate];
-    v6 = [v5 getDAAccount];
-    v7 = [v6 accountDescription];
-    v8 = [(DARefreshWrapper *)self delegate];
-    v9 = [v8 getDAAccount];
-    v10 = [v9 publicDescription];
+    delegate = [(DARefreshWrapper *)self delegate];
+    getDAAccount = [delegate getDAAccount];
+    accountDescription = [getDAAccount accountDescription];
+    delegate2 = [(DARefreshWrapper *)self delegate];
+    getDAAccount2 = [delegate2 getDAAccount];
+    publicDescription = [getDAAccount2 publicDescription];
     v12 = 138412802;
-    v13 = v7;
+    v13 = accountDescription;
     v14 = 2114;
-    v15 = v10;
+    v15 = publicDescription;
     v16 = 2080;
-    v17 = [(DARefreshWrapper *)self fetchActivityIdentifier];
+    fetchActivityIdentifier = [(DARefreshWrapper *)self fetchActivityIdentifier];
     _os_log_impl(&dword_248524000, v3, v4, "XPC: Cancelling Fetch Activity for account %@ (%{public}@) fetchActivityIdentifier %s", &v12, 0x20u);
   }
 
@@ -539,23 +539,23 @@ void __51__DARefreshWrapper_startFetchActivityWithInterval___block_invoke_21(uin
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<DARefreshWrapper "];
   [v3 appendFormat:@"%p", self];
-  v4 = [(DARefreshWrapper *)self delegate];
-  [v3 appendFormat:@" for delegate %@", v4];
+  delegate = [(DARefreshWrapper *)self delegate];
+  [v3 appendFormat:@" for delegate %@", delegate];
 
-  v5 = [(DARefreshWrapper *)self pushState];
+  pushState = [(DARefreshWrapper *)self pushState];
   v6 = [(DARefreshWrapper *)self _stringForStyle:self->_curStyle];
-  [v3 appendFormat:@": Push state %d, style %@", v5, v6];
+  [v3 appendFormat:@": Push state %d, style %@", pushState, v6];
 
-  v7 = [(DARefreshWrapper *)self pushRegistrationTime];
-  [v3 appendFormat:@", last registration: %@", v7];
+  pushRegistrationTime = [(DARefreshWrapper *)self pushRegistrationTime];
+  [v3 appendFormat:@", last registration: %@", pushRegistrationTime];
 
-  v8 = [(DARefreshWrapper *)self tokenRegistrations];
-  v9 = [v8 count];
+  tokenRegistrations = [(DARefreshWrapper *)self tokenRegistrations];
+  v9 = [tokenRegistrations count];
 
   if (v9)
   {
-    v10 = [(DARefreshWrapper *)self tokenRegistrations];
-    [v3 appendFormat:@", %ld outstanding token registrations", objc_msgSend(v10, "count")];
+    tokenRegistrations2 = [(DARefreshWrapper *)self tokenRegistrations];
+    [v3 appendFormat:@", %ld outstanding token registrations", objc_msgSend(tokenRegistrations2, "count")];
   }
 
   [v3 appendString:@">"];
@@ -563,27 +563,27 @@ void __51__DARefreshWrapper_startFetchActivityWithInterval___block_invoke_21(uin
   return v3;
 }
 
-- (void)setCurStyle:(int)a3
+- (void)setCurStyle:(int)style
 {
-  if (a3)
+  if (style)
   {
     [(DARefreshWrapper *)self cancelDailyRefreshActivity];
   }
 
-  self->_curStyle = a3;
+  self->_curStyle = style;
 }
 
 - (void)cancelAllTokenRegistrations
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(DARefreshWrapper *)self tokenRegistrations];
-  objc_sync_enter(v3);
+  tokenRegistrations = [(DARefreshWrapper *)self tokenRegistrations];
+  objc_sync_enter(tokenRegistrations);
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(DARefreshWrapper *)self tokenRegistrations];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  tokenRegistrations2 = [(DARefreshWrapper *)self tokenRegistrations];
+  v5 = [tokenRegistrations2 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -594,40 +594,40 @@ void __51__DARefreshWrapper_startFetchActivityWithInterval___block_invoke_21(uin
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tokenRegistrations2);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) cancel];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [tokenRegistrations2 countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(DARefreshWrapper *)self tokenRegistrations];
-  [v8 removeAllObjects];
+  tokenRegistrations3 = [(DARefreshWrapper *)self tokenRegistrations];
+  [tokenRegistrations3 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(tokenRegistrations);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tokenRegistrationRequest:(id)a3 finishedWithError:(id)a4
+- (void)tokenRegistrationRequest:(id)request finishedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DARefreshWrapper *)self tokenRegistrations];
-  objc_sync_enter(v8);
-  if (v7)
+  requestCopy = request;
+  errorCopy = error;
+  tokenRegistrations = [(DARefreshWrapper *)self tokenRegistrations];
+  objc_sync_enter(tokenRegistrations);
+  if (errorCopy)
   {
     v9 = +[DARefreshManager sharedManager];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __63__DARefreshWrapper_tokenRegistrationRequest_finishedWithError___block_invoke;
     v11[3] = &unk_278F1CDC0;
-    v12 = v6;
+    v12 = requestCopy;
     [v9 _performBlockOnRefreshManagerThread:v11];
   }
 
@@ -636,10 +636,10 @@ void __51__DARefreshWrapper_startFetchActivityWithInterval___block_invoke_21(uin
     [(DARefreshWrapper *)self startDailyRefreshActivity];
   }
 
-  v10 = [(DARefreshWrapper *)self tokenRegistrations];
-  [v10 removeObject:v6];
+  tokenRegistrations2 = [(DARefreshWrapper *)self tokenRegistrations];
+  [tokenRegistrations2 removeObject:requestCopy];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(tokenRegistrations);
 }
 
 void __63__DARefreshWrapper_tokenRegistrationRequest_finishedWithError___block_invoke(uint64_t a1)
@@ -649,24 +649,24 @@ void __63__DARefreshWrapper_tokenRegistrationRequest_finishedWithError___block_i
   [v3 _pushRegistrationForDelegateFailed:v2];
 }
 
-- (void)performTokenRegistrationRequestsWithToken:(id)a3 onBehalfOf:(id)a4
+- (void)performTokenRegistrationRequestsWithToken:(id)token onBehalfOf:(id)of
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  ofCopy = of;
   obj = [(DARefreshWrapper *)self tokenRegistrations];
   objc_sync_enter(obj);
   v8 = DALoggingwithCategory();
   v9 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v8, v9))
   {
-    v10 = [(DARefreshWrapper *)self delegate];
-    v11 = [(DARefreshWrapper *)self delegate];
-    v12 = [v11 watchedCollections];
+    delegate = [(DARefreshWrapper *)self delegate];
+    delegate2 = [(DARefreshWrapper *)self delegate];
+    watchedCollections = [delegate2 watchedCollections];
     *buf = 138412546;
-    v30 = v10;
+    v30 = delegate;
     v31 = 2112;
-    v32 = v12;
+    v32 = watchedCollections;
     _os_log_impl(&dword_248524000, v8, v9, "Performing token registration request for %@ with watched collections %@", buf, 0x16u);
   }
 
@@ -674,10 +674,10 @@ void __63__DARefreshWrapper_tokenRegistrationRequest_finishedWithError___block_i
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = [(DARefreshWrapper *)self delegate];
-  v23 = [v13 watchedCollections];
+  delegate3 = [(DARefreshWrapper *)self delegate];
+  watchedCollections2 = [delegate3 watchedCollections];
 
-  v14 = [v23 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v14 = [watchedCollections2 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
     v15 = *v25;
@@ -687,21 +687,21 @@ void __63__DARefreshWrapper_tokenRegistrationRequest_finishedWithError___block_i
       {
         if (*v25 != v15)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(watchedCollections2);
         }
 
-        v17 = [DATokenRegistrationRequest requestWithToken:v6 pushKey:*(*(&v24 + 1) + 8 * i) wrapper:self onBehalfOf:v7, obj];
+        v17 = [DATokenRegistrationRequest requestWithToken:tokenCopy pushKey:*(*(&v24 + 1) + 8 * i) wrapper:self onBehalfOf:ofCopy, obj];
         [v17 setDelegate:self];
-        v18 = [(DARefreshWrapper *)self tokenRegistrations];
-        [v18 addObject:v17];
+        tokenRegistrations = [(DARefreshWrapper *)self tokenRegistrations];
+        [tokenRegistrations addObject:v17];
 
-        v19 = [(DARefreshWrapper *)self delegate];
-        v20 = [v19 getDAAccount];
+        delegate4 = [(DARefreshWrapper *)self delegate];
+        getDAAccount = [delegate4 getDAAccount];
 
-        [v17 sendRegistrationRequestForAccount:v20];
+        [v17 sendRegistrationRequestForAccount:getDAAccount];
       }
 
-      v14 = [v23 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v14 = [watchedCollections2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v14);
@@ -718,15 +718,15 @@ void __63__DARefreshWrapper_tokenRegistrationRequest_finishedWithError___block_i
   v4 = *(MEMORY[0x277D03988] + 5);
   if (os_log_type_enabled(v3, v4))
   {
-    v5 = [(DARefreshWrapper *)self delegate];
-    v6 = [v5 scheduleIdentifier];
+    delegate = [(DARefreshWrapper *)self delegate];
+    scheduleIdentifier = [delegate scheduleIdentifier];
     v9 = 138543362;
-    v10 = v6;
+    v10 = scheduleIdentifier;
     _os_log_impl(&dword_248524000, v3, v4, "Retry activity  fired for delegate %{public}@", &v9, 0xCu);
   }
 
-  v7 = [(DARefreshWrapper *)self refreshCollections];
-  [(DARefreshWrapper *)self refreshCollections:v7 withReason:[(DARefreshWrapper *)self refreshReason]];
+  refreshCollections = [(DARefreshWrapper *)self refreshCollections];
+  [(DARefreshWrapper *)self refreshCollections:refreshCollections withReason:[(DARefreshWrapper *)self refreshReason]];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -738,16 +738,16 @@ void __63__DARefreshWrapper_tokenRegistrationRequest_finishedWithError___block_i
   v4 = *(MEMORY[0x277D03988] + 5);
   if (os_log_type_enabled(v3, v4))
   {
-    v5 = [(DARefreshWrapper *)self delegate];
-    v6 = [v5 scheduleIdentifier];
+    delegate = [(DARefreshWrapper *)self delegate];
+    scheduleIdentifier = [delegate scheduleIdentifier];
     v10 = 138543362;
-    v11 = v6;
+    v11 = scheduleIdentifier;
     _os_log_impl(&dword_248524000, v3, v4, "Daily refresh activity fired for delegate %{public}@", &v10, 0xCu);
   }
 
-  v7 = [(DARefreshWrapper *)self delegate];
-  v8 = [v7 watchedCollections];
-  [(DARefreshWrapper *)self refreshCollections:v8 withReason:1];
+  delegate2 = [(DARefreshWrapper *)self delegate];
+  watchedCollections = [delegate2 watchedCollections];
+  [(DARefreshWrapper *)self refreshCollections:watchedCollections withReason:1];
 
   v9 = *MEMORY[0x277D85DE8];
 }

@@ -1,6 +1,6 @@
 @interface ATXUIFeedbackMetrics
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXUIFeedbackMetrics:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXUIFeedbackMetrics:(id)metrics;
 - (double)engagementRate;
 - (double)rejectionRate;
 - (void)engagementRate;
@@ -53,27 +53,27 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUIFeedbackMetrics *)self isEqualToATXUIFeedbackMetrics:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUIFeedbackMetrics *)self isEqualToATXUIFeedbackMetrics:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXUIFeedbackMetrics:(id)a3
+- (BOOL)isEqualToATXUIFeedbackMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = *&self->_impressionCount == *(v4 + 8) && self->_rejectionCount == *(v4 + 3);
+  metricsCopy = metrics;
+  v5 = *&self->_impressionCount == *(metricsCopy + 8) && self->_rejectionCount == *(metricsCopy + 3);
 
   return v5;
 }

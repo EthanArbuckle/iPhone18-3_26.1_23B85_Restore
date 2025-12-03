@@ -1,33 +1,33 @@
 @interface _CDPSimpleModelParameterManagerTuningValue
-- (_CDPSimpleModelParameterManagerTuningValue)initWithCoder:(id)a3;
-- (_CDPSimpleModelParameterManagerTuningValue)initWithLambda:(float)a3 w0:(float)a4 threshold:(float)a5 score:(float)a6;
-- (void)encodeWithCoder:(id)a3;
+- (_CDPSimpleModelParameterManagerTuningValue)initWithCoder:(id)coder;
+- (_CDPSimpleModelParameterManagerTuningValue)initWithLambda:(float)lambda w0:(float)w0 threshold:(float)threshold score:(float)score;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDPSimpleModelParameterManagerTuningValue
 
-- (_CDPSimpleModelParameterManagerTuningValue)initWithLambda:(float)a3 w0:(float)a4 threshold:(float)a5 score:(float)a6
+- (_CDPSimpleModelParameterManagerTuningValue)initWithLambda:(float)lambda w0:(float)w0 threshold:(float)threshold score:(float)score
 {
   v11.receiver = self;
   v11.super_class = _CDPSimpleModelParameterManagerTuningValue;
   result = [(_CDPSimpleModelParameterManagerTuningValue *)&v11 init];
-  result->_lambda = a3;
-  result->_w0 = a4;
-  result->_threshold = a5;
-  result->_score = a6;
+  result->_lambda = lambda;
+  result->_w0 = w0;
+  result->_threshold = threshold;
+  result->_score = score;
   return result;
 }
 
-- (_CDPSimpleModelParameterManagerTuningValue)initWithCoder:(id)a3
+- (_CDPSimpleModelParameterManagerTuningValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"lambda"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"lambda"];
   v6 = v5;
-  [v4 decodeFloatForKey:@"w0"];
+  [coderCopy decodeFloatForKey:@"w0"];
   v8 = v7;
-  [v4 decodeFloatForKey:@"threshold"];
+  [coderCopy decodeFloatForKey:@"threshold"];
   v10 = v9;
-  [v4 decodeFloatForKey:@"score"];
+  [coderCopy decodeFloatForKey:@"score"];
   v12 = v11;
 
   LODWORD(v13) = v6;
@@ -38,18 +38,18 @@
   return [(_CDPSimpleModelParameterManagerTuningValue *)self initWithLambda:v13 w0:v14 threshold:v15 score:v16];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lambda = self->_lambda;
-  v9 = a3;
+  coderCopy = coder;
   *&v5 = lambda;
-  [v9 encodeFloat:@"lambda" forKey:v5];
+  [coderCopy encodeFloat:@"lambda" forKey:v5];
   *&v6 = self->_w0;
-  [v9 encodeFloat:@"w0" forKey:v6];
+  [coderCopy encodeFloat:@"w0" forKey:v6];
   *&v7 = self->_threshold;
-  [v9 encodeFloat:@"threshold" forKey:v7];
+  [coderCopy encodeFloat:@"threshold" forKey:v7];
   *&v8 = self->_score;
-  [v9 encodeFloat:@"score" forKey:v8];
+  [coderCopy encodeFloat:@"score" forKey:v8];
 }
 
 @end

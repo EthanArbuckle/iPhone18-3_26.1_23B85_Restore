@@ -1,13 +1,13 @@
 @interface MSVMessageParser
-+ (id)createHeader:(unint64_t)a3;
++ (id)createHeader:(unint64_t)header;
 - (MSVMessageParserDelegate)delegate;
-- (void)_notifyDelegate:(id)a3;
-- (void)processData:(id)a3;
+- (void)_notifyDelegate:(id)delegate;
+- (void)processData:(id)data;
 @end
 
 @implementation MSVMessageParser
 
-+ (id)createHeader:(unint64_t)a3
++ (id)createHeader:(unint64_t)header
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF88]);
@@ -24,29 +24,29 @@
   return WeakRetained;
 }
 
-- (void)_notifyDelegate:(id)a3
+- (void)_notifyDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained parser:self didParseMessage:v5];
+    [WeakRetained parser:self didParseMessage:delegateCopy];
   }
 
   [(MSVMessageParser *)self setUnhandledPartialObjectData:0];
   [(MSVMessageParser *)self setUnhandledObjectDataExpectedLength:0];
 }
 
-- (void)processData:(id)a3
+- (void)processData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = [v4 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v6 = [dataCopy length];
   unhandledPartialData = self->_unhandledPartialData;
   if (unhandledPartialData)
   {
-    [(NSMutableData *)unhandledPartialData appendData:v4];
-    v5 = [(NSMutableData *)self->_unhandledPartialData bytes];
+    [(NSMutableData *)unhandledPartialData appendData:dataCopy];
+    bytes = [(NSMutableData *)self->_unhandledPartialData bytes];
     v6 = [(NSMutableData *)self->_unhandledPartialData length];
   }
 
@@ -66,7 +66,7 @@
       v12 = unhandledObjectDataExpectedLength - v10;
     }
 
-    v13 = [MEMORY[0x1E695DF88] dataWithBytesNoCopy:v5 length:v12 freeWhenDone:0];
+    v13 = [MEMORY[0x1E695DF88] dataWithBytesNoCopy:bytes length:v12 freeWhenDone:0];
     -[NSMutableData appendBytes:length:](self->_unhandledPartialObjectData, "appendBytes:length:", [v13 bytes], objc_msgSend(v13, "length"));
     if (v11 <= v6)
     {
@@ -90,7 +90,7 @@ LABEL_17:
   {
     while (PBReaderReadVarIntBuf())
     {
-      v14 = v5 + v12;
+      v14 = bytes + v12;
       if (v6 - v12 >= 0)
       {
         v15 = [MEMORY[0x1E695DF88] dataWithBytesNoCopy:v14 length:0 freeWhenDone:0];
@@ -112,7 +112,7 @@ LABEL_17:
       }
     }
 
-    v17 = [MEMORY[0x1E695DF88] dataWithBytes:v5 + v12 length:v6 - v12];
+    v17 = [MEMORY[0x1E695DF88] dataWithBytes:bytes + v12 length:v6 - v12];
     v16 = self->_unhandledPartialData;
     self->_unhandledPartialData = v17;
   }

@@ -1,7 +1,7 @@
 @interface NUVisionDetectionJob
-- (BOOL)render:(id *)a3;
-- (NUVisionDetectionJob)initWithRequest:(id)a3;
-- (NUVisionDetectionJob)initWithVisionDetectionRequest:(id)a3;
+- (BOOL)render:(id *)render;
+- (NUVisionDetectionJob)initWithRequest:(id)request;
+- (NUVisionDetectionJob)initWithVisionDetectionRequest:(id)request;
 - (id)result;
 - (id)scalePolicy;
 - (void)cleanUp;
@@ -20,20 +20,20 @@
 - (id)result
 {
   v3 = objc_alloc_init(_NUVisionDetectionResult);
-  v4 = [(NUVisionDetectionJob *)self observations];
-  [(_NUVisionDetectionResult *)v3 setObservations:v4];
+  observations = [(NUVisionDetectionJob *)self observations];
+  [(_NUVisionDetectionResult *)v3 setObservations:observations];
 
-  v5 = [(NURenderJob *)self outputGeometry];
-  v6 = [v5 size];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  v6 = [outputGeometry size];
   [(_NUVisionDetectionResult *)v3 setImageSize:v6, v7];
 
   return v3;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v59 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v27 = NUAssertLogger_17661();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -54,8 +54,8 @@
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v35 callStackSymbols];
+        v38 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v56 = v34;
         v57 = 2114;
@@ -66,8 +66,8 @@
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v56 = v33;
       _os_log_error_impl(&dword_1C0184000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -79,35 +79,35 @@
   v5 = [(NURenderJob *)self renderer:?];
   if (v5)
   {
-    v6 = [(NURenderJob *)self outputImage];
-    v7 = [v5 context];
+    outputImage = [(NURenderJob *)self outputImage];
+    context = [v5 context];
     v8 = objc_alloc(MEMORY[0x1E69845B8]);
     v53 = *MEMORY[0x1E6984998];
-    v54 = v7;
+    v54 = context;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
     v10 = +[NUFactory sharedFactory];
-    v11 = [v10 visionSession];
-    v12 = [v8 initWithCIImage:v6 options:v9 session:v11];
+    visionSession = [v10 visionSession];
+    v12 = [v8 initWithCIImage:outputImage options:v9 session:visionSession];
 
-    v13 = [(NUVisionDetectionJob *)self detectionRequest];
-    v14 = [v13 visionRequests];
+    detectionRequest = [(NUVisionDetectionJob *)self detectionRequest];
+    visionRequests = [detectionRequest visionRequests];
 
     v51 = 0;
-    v15 = [v12 performRequests:v14 error:&v51];
+    v15 = [v12 performRequests:visionRequests error:&v51];
     v16 = v51;
     v17 = v16;
     if (v15)
     {
       v43 = v16;
       v44 = v12;
-      v45 = v7;
-      v46 = v6;
+      v45 = context;
+      v46 = outputImage;
       v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v19 = v14;
+      v19 = visionRequests;
       v20 = [v19 countByEnumeratingWithState:&v47 objects:v52 count:16];
       if (v20)
       {
@@ -122,10 +122,10 @@
               objc_enumerationMutation(v19);
             }
 
-            v24 = [*(*(&v47 + 1) + 8 * i) results];
-            if (v24)
+            results = [*(*(&v47 + 1) + 8 * i) results];
+            if (results)
             {
-              [v18 addObjectsFromArray:v24];
+              [v18 addObjectsFromArray:results];
             }
           }
 
@@ -138,15 +138,15 @@
       v25 = [v18 copy];
       [(NUVisionDetectionJob *)self setObservations:v25];
 
-      v7 = v45;
-      v6 = v46;
+      context = v45;
+      outputImage = v46;
       v17 = v43;
       v12 = v44;
     }
 
     else
     {
-      *a3 = [NUError errorWithCode:1 reason:@"Vision detection failed" object:v14 underlyingError:v16];
+      *render = [NUError errorWithCode:1 reason:@"Vision detection failed" object:visionRequests underlyingError:v16];
     }
   }
 
@@ -160,16 +160,16 @@
 
 - (id)scalePolicy
 {
-  v2 = [(NUVisionDetectionJob *)self detectionRequest];
-  v3 = [v2 scalePolicy];
+  detectionRequest = [(NUVisionDetectionJob *)self detectionRequest];
+  scalePolicy = [detectionRequest scalePolicy];
 
-  return v3;
+  return scalePolicy;
 }
 
-- (NUVisionDetectionJob)initWithRequest:(id)a3
+- (NUVisionDetectionJob)initWithRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_150);
@@ -213,8 +213,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -230,8 +230,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -247,11 +247,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUVisionDetectionJob initWithRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVisionDetectionRequest.m", 94, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-- (NUVisionDetectionJob)initWithVisionDetectionRequest:(id)a3
+- (NUVisionDetectionJob)initWithVisionDetectionRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = NUVisionDetectionJob;
-  return [(NURenderJob *)&v4 initWithRequest:a3];
+  return [(NURenderJob *)&v4 initWithRequest:request];
 }
 
 @end

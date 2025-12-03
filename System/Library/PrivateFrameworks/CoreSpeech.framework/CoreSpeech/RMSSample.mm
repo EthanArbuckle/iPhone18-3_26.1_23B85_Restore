@@ -1,30 +1,30 @@
 @interface RMSSample
-- (RMSSample)initWithRMSScore:(double)a3 lastSampleCount:(unint64_t)a4;
-- (int64_t)compareScoresDesc:(id)a3;
+- (RMSSample)initWithRMSScore:(double)score lastSampleCount:(unint64_t)count;
+- (int64_t)compareScoresDesc:(id)desc;
 @end
 
 @implementation RMSSample
 
-- (int64_t)compareScoresDesc:(id)a3
+- (int64_t)compareScoresDesc:(id)desc
 {
-  v4 = a3;
+  descCopy = desc;
   [(RMSSample *)self RMSScore];
   v6 = v5;
-  [v4 RMSScore];
+  [descCopy RMSScore];
   v8 = v7;
 
   return v6 < v8;
 }
 
-- (RMSSample)initWithRMSScore:(double)a3 lastSampleCount:(unint64_t)a4
+- (RMSSample)initWithRMSScore:(double)score lastSampleCount:(unint64_t)count
 {
   v7.receiver = self;
   v7.super_class = RMSSample;
   result = [(RMSSample *)&v7 init];
   if (result)
   {
-    result->_RMSScore = a3;
-    result->_lastSampleCount = a4;
+    result->_RMSScore = score;
+    result->_lastSampleCount = count;
   }
 
   return result;

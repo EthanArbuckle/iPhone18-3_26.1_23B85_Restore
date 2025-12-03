@@ -1,10 +1,10 @@
 @interface MediaSuggesterXPCServiceServer.Server
-- (void)candidatesWithOptionsData:(id)a3 startDate:(id)a4 endDate:(id)a5 with:(id)a6;
+- (void)candidatesWithOptionsData:(id)data startDate:(id)date endDate:(id)endDate with:(id)with;
 @end
 
 @implementation MediaSuggesterXPCServiceServer.Server
 
-- (void)candidatesWithOptionsData:(id)a3 startDate:(id)a4 endDate:(id)a5 with:(id)a6
+- (void)candidatesWithOptionsData:(id)data startDate:(id)date endDate:(id)endDate with:(id)with
 {
   v11 = sub_22C9C6350();
   v12 = *(v11 - 8);
@@ -13,11 +13,11 @@
   v16 = &v27 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x28223BE20](v14);
   v18 = &v27 - v17;
-  v19 = _Block_copy(a6);
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v28 = self;
+  v19 = _Block_copy(with);
+  dataCopy = data;
+  dateCopy = date;
+  endDateCopy = endDate;
+  selfCopy = self;
   v23 = sub_22C9C6310();
   v25 = v24;
 

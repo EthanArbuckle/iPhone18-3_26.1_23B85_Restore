@@ -1,36 +1,36 @@
 @interface CompactMonthWeekTodayCircle
-+ (CGSize)roundedRectSizeForNumberString:(id)a3 overlayString:(id)a4 fontSize:(double)a5 overlayFontSize:(double)a6;
-+ (double)roundedRectDayNumberBaselineOffsetWithOverlay:(BOOL)a3 fontSize:(double)a4 overlayFontSize:(double)a5;
++ (CGSize)roundedRectSizeForNumberString:(id)string overlayString:(id)overlayString fontSize:(double)size overlayFontSize:(double)fontSize;
++ (double)roundedRectDayNumberBaselineOffsetWithOverlay:(BOOL)overlay fontSize:(double)size overlayFontSize:(double)fontSize;
 - (CGRect)dayNumberFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CompactMonthWeekTodayCircle)initWithCalendarDate:(id)a3;
-- (id)_dayNumberFontForSize:(double)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CompactMonthWeekTodayCircle)initWithCalendarDate:(id)date;
+- (id)_dayNumberFontForSize:(double)size;
 - (void)_updateTextColor;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setDrawCircle:(BOOL)a3;
-- (void)setFontOverride:(id)a3;
-- (void)setFontSize:(double)a3;
-- (void)setNonTodayColor:(id)a3;
-- (void)setOverlayFontSize:(double)a3;
-- (void)setShowOverlay:(BOOL)a3;
-- (void)setUseTodayColors:(BOOL)a3;
+- (void)setDrawCircle:(BOOL)circle;
+- (void)setFontOverride:(id)override;
+- (void)setFontSize:(double)size;
+- (void)setNonTodayColor:(id)color;
+- (void)setOverlayFontSize:(double)size;
+- (void)setShowOverlay:(BOOL)overlay;
+- (void)setUseTodayColors:(BOOL)colors;
 - (void)updateOverlay;
 @end
 
 @implementation CompactMonthWeekTodayCircle
 
-- (CompactMonthWeekTodayCircle)initWithCalendarDate:(id)a3
+- (CompactMonthWeekTodayCircle)initWithCalendarDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = CompactMonthWeekTodayCircle;
   v6 = [(CompactMonthWeekTodayCircle *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_calendarDate, a3);
-    v7->_day = [v5 day];
+    objc_storeStrong(&v6->_calendarDate, date);
+    v7->_day = [dateCopy day];
     v8 = CUIKLocalizedStringForInteger();
     dayString = v7->_dayString;
     v7->_dayString = v8;
@@ -70,17 +70,17 @@
   return v7;
 }
 
-+ (CGSize)roundedRectSizeForNumberString:(id)a3 overlayString:(id)a4 fontSize:(double)a5 overlayFontSize:(double)a6
++ (CGSize)roundedRectSizeForNumberString:(id)string overlayString:(id)overlayString fontSize:(double)size overlayFontSize:(double)fontSize
 {
-  v10 = a4;
-  v11 = a3;
+  overlayStringCopy = overlayString;
+  stringCopy = string;
   CalRoundToScreenScale();
   v13 = v12;
   v28 = NSFontAttributeName;
-  v14 = [a1 dayNumberFontForSize:a5];
+  v14 = [self dayNumberFontForSize:size];
   v29 = v14;
   v15 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-  [v11 sizeWithAttributes:v15];
+  [stringCopy sizeWithAttributes:v15];
 
   CalRoundToScreenScale();
   v17 = v16 + 10.0;
@@ -89,13 +89,13 @@
     v13 = v17;
   }
 
-  if (v10)
+  if (overlayStringCopy)
   {
     v26 = NSFontAttributeName;
-    v18 = [a1 dayOverlayFontForSize:a6];
+    v18 = [self dayOverlayFontForSize:fontSize];
     v27 = v18;
     v19 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    [v10 sizeWithAttributes:v19];
+    [overlayStringCopy sizeWithAttributes:v19];
 
     CalRoundToScreenScale();
     v21 = v20 + 10.0;
@@ -105,7 +105,7 @@
     }
   }
 
-  [a1 roundedRectHeightWithOverlay:v10 != 0 fontSize:a5 overlayFontSize:a6];
+  [self roundedRectHeightWithOverlay:overlayStringCopy != 0 fontSize:size overlayFontSize:fontSize];
   v23 = v22;
 
   v24 = v13;
@@ -125,17 +125,17 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  if ([(CompactMonthWeekTodayCircle *)self usesRoundedRectInsteadOfCircle:a3.width])
+  if ([(CompactMonthWeekTodayCircle *)self usesRoundedRectInsteadOfCircle:fits.width])
   {
     v4 = objc_opt_class();
     dayString = self->_dayString;
-    v6 = [(UILabel *)self->_overlayLabel text];
+    text = [(UILabel *)self->_overlayLabel text];
     [(CompactMonthWeekTodayCircle *)self fontSize];
     v8 = v7;
     [(CompactMonthWeekTodayCircle *)self overlayFontSize];
-    [v4 roundedRectSizeForNumberString:dayString overlayString:v6 fontSize:v8 overlayFontSize:v9];
+    [v4 roundedRectSizeForNumberString:dayString overlayString:text fontSize:v8 overlayFontSize:v9];
     v11 = v10;
     v13 = v12;
 
@@ -181,11 +181,11 @@
   return result;
 }
 
-- (void)setUseTodayColors:(BOOL)a3
+- (void)setUseTodayColors:(BOOL)colors
 {
-  if (self->_useTodayColors != a3)
+  if (self->_useTodayColors != colors)
   {
-    self->_useTodayColors = a3;
+    self->_useTodayColors = colors;
     [(CompactMonthWeekTodayCircle *)self fontSize];
     v5 = [(CompactMonthWeekTodayCircle *)self _dayNumberFontForSize:?];
     [(UILabel *)self->_dayLabel setFont:v5];
@@ -196,39 +196,39 @@
   }
 }
 
-- (void)setFontOverride:(id)a3
+- (void)setFontOverride:(id)override
 {
-  v5 = a3;
-  if (self->_fontOverride != v5)
+  overrideCopy = override;
+  if (self->_fontOverride != overrideCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_fontOverride, a3);
+    v7 = overrideCopy;
+    objc_storeStrong(&self->_fontOverride, override);
     [(CompactMonthWeekTodayCircle *)self fontSize];
     v6 = [(CompactMonthWeekTodayCircle *)self _dayNumberFontForSize:?];
     [(UILabel *)self->_dayLabel setFont:v6];
 
     [(CompactMonthWeekTodayCircle *)self setNeedsDisplay];
-    v5 = v7;
+    overrideCopy = v7;
   }
 }
 
-- (void)setDrawCircle:(BOOL)a3
+- (void)setDrawCircle:(BOOL)circle
 {
-  if (self->_drawCircle != a3)
+  if (self->_drawCircle != circle)
   {
-    self->_drawCircle = a3;
+    self->_drawCircle = circle;
     [(CompactMonthWeekTodayCircle *)self _updateTextColor];
 
     [(CompactMonthWeekTodayCircle *)self setNeedsDisplay];
   }
 }
 
-- (void)setShowOverlay:(BOOL)a3
+- (void)setShowOverlay:(BOOL)overlay
 {
-  if (self->_showOverlay != a3)
+  if (self->_showOverlay != overlay)
   {
-    self->_showOverlay = a3;
-    if (a3)
+    self->_showOverlay = overlay;
+    if (overlay)
     {
       v5 = objc_alloc_init(UILabel);
       overlayLabel = self->_overlayLabel;
@@ -242,9 +242,9 @@
       v9 = +[UIColor clearColor];
       [(UILabel *)self->_overlayLabel setBackgroundColor:v9];
 
-      v10 = [(EKCalendarDate *)self->_calendarDate date];
+      date = [(EKCalendarDate *)self->_calendarDate date];
       v11 = CUIKGetOverlayCalendar();
-      v12 = [CUIKDateStrings overlayShortStringForDate:v10 inCalendar:v11];
+      v12 = [CUIKDateStrings overlayShortStringForDate:date inCalendar:v11];
       [(UILabel *)self->_overlayLabel setText:v12];
 
       [(UILabel *)self->_overlayLabel sizeToFit];
@@ -267,9 +267,9 @@
 {
   if (self->_showOverlay)
   {
-    v4 = [(EKCalendarDate *)self->_calendarDate date];
+    date = [(EKCalendarDate *)self->_calendarDate date];
     v5 = CUIKGetOverlayCalendar();
-    v6 = [CUIKDateStrings overlayShortStringForDate:v4 inCalendar:v5];
+    v6 = [CUIKDateStrings overlayShortStringForDate:date inCalendar:v5];
     [(UILabel *)self->_overlayLabel setText:v6];
 
     [(UILabel *)self->_overlayLabel sizeToFit];
@@ -278,18 +278,18 @@
   }
 }
 
-- (void)setNonTodayColor:(id)a3
+- (void)setNonTodayColor:(id)color
 {
-  objc_storeStrong(&self->_nonTodayColor, a3);
+  objc_storeStrong(&self->_nonTodayColor, color);
 
   [(CompactMonthWeekTodayCircle *)self _updateTextColor];
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
-  if (vabdd_f64(self->_fontSize, a3) >= 2.22044605e-16)
+  if (vabdd_f64(self->_fontSize, size) >= 2.22044605e-16)
   {
-    self->_fontSize = a3;
+    self->_fontSize = size;
     v5 = [(CompactMonthWeekTodayCircle *)self _dayNumberFontForSize:?];
     [(UILabel *)self->_dayLabel setFont:v5];
 
@@ -299,12 +299,12 @@
   }
 }
 
-- (void)setOverlayFontSize:(double)a3
+- (void)setOverlayFontSize:(double)size
 {
-  if (vabdd_f64(self->_overlayFontSize, a3) >= 2.22044605e-16)
+  if (vabdd_f64(self->_overlayFontSize, size) >= 2.22044605e-16)
   {
-    self->_overlayFontSize = a3;
-    v4 = [objc_opt_class() dayOverlayFontForSize:a3];
+    self->_overlayFontSize = size;
+    v4 = [objc_opt_class() dayOverlayFontForSize:size];
     [(UILabel *)self->_overlayLabel setFont:v4];
 
     overlayLabel = self->_overlayLabel;
@@ -333,13 +333,13 @@
   {
     if (![(CompactMonthWeekTodayCircle *)self useTodayColors])
     {
-      v4 = [(CompactMonthWeekTodayCircle *)self nonTodayColor];
-      if (v4)
+      nonTodayColor = [(CompactMonthWeekTodayCircle *)self nonTodayColor];
+      if (nonTodayColor)
       {
-        v5 = v4;
-        v8 = [(CompactMonthWeekTodayCircle *)self nonTodayColor];
+        v5 = nonTodayColor;
+        nonTodayColor2 = [(CompactMonthWeekTodayCircle *)self nonTodayColor];
 
-        v6 = v8;
+        v6 = nonTodayColor2;
         goto LABEL_8;
       }
     }
@@ -354,44 +354,44 @@ LABEL_8:
   [(UILabel *)self->_overlayLabel setTextColor:v9];
 }
 
-- (id)_dayNumberFontForSize:(double)a3
+- (id)_dayNumberFontForSize:(double)size
 {
-  v5 = [(CompactMonthWeekTodayCircle *)self fontOverride];
+  fontOverride = [(CompactMonthWeekTodayCircle *)self fontOverride];
 
-  if (v5)
+  if (fontOverride)
   {
-    v6 = [(CompactMonthWeekTodayCircle *)self fontOverride];
-    v7 = [v6 fontDescriptor];
-    v8 = [UIFont fontWithDescriptor:v7 size:a3];
+    fontOverride2 = [(CompactMonthWeekTodayCircle *)self fontOverride];
+    fontDescriptor = [fontOverride2 fontDescriptor];
+    v8 = [UIFont fontWithDescriptor:fontDescriptor size:size];
   }
 
   else
   {
-    v8 = [UIFont systemFontOfSize:a3 weight:UIFontWeightBold];
+    v8 = [UIFont systemFontOfSize:size weight:UIFontWeightBold];
   }
 
   return v8;
 }
 
-+ (double)roundedRectDayNumberBaselineOffsetWithOverlay:(BOOL)a3 fontSize:(double)a4 overlayFontSize:(double)a5
++ (double)roundedRectDayNumberBaselineOffsetWithOverlay:(BOOL)overlay fontSize:(double)size overlayFontSize:(double)fontSize
 {
-  v7 = a3;
+  overlayCopy = overlay;
   if (qword_100251AB8 != -1)
   {
     sub_100170680();
   }
 
-  v9 = [a1 dayNumberFontForSize:a4];
+  v9 = [self dayNumberFontForSize:size];
   [qword_100251AA8 setFont:v9];
 
   [qword_100251AA8 sizeToFit];
-  [a1 roundedRectHeightWithOverlay:v7 fontSize:a4 overlayFontSize:a5];
+  [self roundedRectHeightWithOverlay:overlayCopy fontSize:size overlayFontSize:fontSize];
   [qword_100251AA8 frame];
   CGRectGetHeight(v13);
   CalRoundToScreenScale();
-  if (v7)
+  if (overlayCopy)
   {
-    v10 = [a1 dayOverlayFontForSize:a5];
+    v10 = [self dayOverlayFontForSize:fontSize];
     [qword_100251AB0 setFont:v10];
 
     [qword_100251AB0 sizeToFit];
@@ -484,9 +484,9 @@ LABEL_8:
   [(UILabel *)self->_dayLabel setFrame:?];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  if ([(CompactMonthWeekTodayCircle *)self drawCircle:a3.origin.x])
+  if ([(CompactMonthWeekTodayCircle *)self drawCircle:rect.origin.x])
   {
     if ([(CompactMonthWeekTodayCircle *)self useTodayColors])
     {
@@ -508,8 +508,8 @@ LABEL_8:
     v13 = v12;
     if ([(CompactMonthWeekTodayCircle *)self usesRoundedRectInsteadOfCircle])
     {
-      v16 = [UIBezierPath bezierPathWithRoundedRect:v7 cornerRadius:v9, v11, v13, EKUILargeTextRoundedRectCornerRadius];
-      [v16 fill];
+      eKUILargeTextRoundedRectCornerRadius = [UIBezierPath bezierPathWithRoundedRect:v7 cornerRadius:v9, v11, v13, EKUILargeTextRoundedRectCornerRadius];
+      [eKUILargeTextRoundedRectCornerRadius fill];
     }
 
     else

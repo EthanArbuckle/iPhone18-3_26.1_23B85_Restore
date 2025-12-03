@@ -1,25 +1,25 @@
 @interface GKFriendPlayerInternal
-- (void)updateWithCacheObject:(id)a3;
+- (void)updateWithCacheObject:(id)object;
 @end
 
 @implementation GKFriendPlayerInternal
 
-- (void)updateWithCacheObject:(id)a3
+- (void)updateWithCacheObject:(id)object
 {
   v8.receiver = self;
   v8.super_class = GKFriendPlayerInternal;
-  v4 = a3;
-  [(GKFriendPlayerInternal *)&v8 updateWithCacheObject:v4];
-  v5 = [v4 status];
-  [(GKFriendPlayerInternal *)self setStatus:v5];
+  objectCopy = object;
+  [(GKFriendPlayerInternal *)&v8 updateWithCacheObject:objectCopy];
+  status = [objectCopy status];
+  [(GKFriendPlayerInternal *)self setStatus:status];
 
-  v6 = [v4 lastPlayedDate];
-  [(GKFriendPlayerInternal *)self setLastPlayedDate:v6];
+  lastPlayedDate = [objectCopy lastPlayedDate];
+  [(GKFriendPlayerInternal *)self setLastPlayedDate:lastPlayedDate];
 
-  -[GKFriendPlayerInternal setChallengedTogether:](self, "setChallengedTogether:", [v4 challengedTogether]);
-  v7 = [v4 lastChallengedDate];
+  -[GKFriendPlayerInternal setChallengedTogether:](self, "setChallengedTogether:", [objectCopy challengedTogether]);
+  lastChallengedDate = [objectCopy lastChallengedDate];
 
-  [(GKFriendPlayerInternal *)self setLastChallengedDate:v7];
+  [(GKFriendPlayerInternal *)self setLastChallengedDate:lastChallengedDate];
 }
 
 @end

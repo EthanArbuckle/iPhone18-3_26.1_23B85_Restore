@@ -1,6 +1,6 @@
 @interface UIKBFloatingKeyView
-- (UIKBFloatingKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5;
-- (UIKBFloatingKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5 renderTraits:(id)a6;
+- (UIKBFloatingKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key;
+- (UIKBFloatingKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key renderTraits:(id)traits;
 - (void)_updateLayouts;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
@@ -8,11 +8,11 @@
 
 @implementation UIKBFloatingKeyView
 
-- (UIKBFloatingKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5
+- (UIKBFloatingKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key
 {
   v11.receiver = self;
   v11.super_class = UIKBFloatingKeyView;
-  v5 = [(UIKBContainerKeyView *)&v11 initWithFrame:a4 keyplane:a5 key:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIKBContainerKeyView *)&v11 initWithFrame:keyplane keyplane:key key:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = [_UIKBFloatingContentView alloc];
@@ -28,76 +28,76 @@
     [(_UIFloatingContentView *)v5->_floatingContentView setShadowVerticalOffset:25.0];
     [(_UIFloatingContentView *)v5->_floatingContentView setShadowOpacity:0.1];
     [(UIView *)v5 insertSubview:v5->_floatingContentView atIndex:0];
-    v9 = [(UIKBContainerKeyView *)v5 contentsKeyView];
-    [(UIView *)v5 addSubview:v9];
+    contentsKeyView = [(UIKBContainerKeyView *)v5 contentsKeyView];
+    [(UIView *)v5 addSubview:contentsKeyView];
   }
 
   return v5;
 }
 
-- (UIKBFloatingKeyView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5 renderTraits:(id)a6
+- (UIKBFloatingKeyView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key renderTraits:(id)traits
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  traitsCopy = traits;
   v29.receiver = self;
   v29.super_class = UIKBFloatingKeyView;
-  v14 = [(UIKBContainerKeyView *)&v29 initWithFrame:a4 keyplane:a5 key:x, y, width, height];
-  if (v14)
+  height = [(UIKBContainerKeyView *)&v29 initWithFrame:keyplane keyplane:key key:x, y, width, height];
+  if (height)
   {
     v15 = [_UIKBFloatingContentView alloc];
     v16 = [(_UIFloatingContentView *)v15 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    floatingContentView = v14->_floatingContentView;
-    v14->_floatingContentView = v16;
+    floatingContentView = height->_floatingContentView;
+    height->_floatingContentView = v16;
 
-    v18 = v14->_floatingContentView;
-    [v13 floatingContentViewCornerRadius];
+    v18 = height->_floatingContentView;
+    [traitsCopy floatingContentViewCornerRadius];
     [(_UIFloatingContentView *)v18 setCornerRadius:?];
-    [(_UIFloatingContentView *)v14->_floatingContentView setContinuousCornerEnabled:0];
-    [(_UIFloatingContentView *)v14->_floatingContentView setShadowExpansion:-4.0, -4.0];
-    [v13 floatingContentViewFocusedIncreaseSize];
-    v20 = v14->_floatingContentView;
+    [(_UIFloatingContentView *)height->_floatingContentView setContinuousCornerEnabled:0];
+    [(_UIFloatingContentView *)height->_floatingContentView setShadowExpansion:-4.0, -4.0];
+    [traitsCopy floatingContentViewFocusedIncreaseSize];
+    v20 = height->_floatingContentView;
     if (v21 == *MEMORY[0x1E695F060] && v19 == *(MEMORY[0x1E695F060] + 8))
     {
-      [v13 floatingContentViewControlFocusedIncreaseSize];
+      [traitsCopy floatingContentViewControlFocusedIncreaseSize];
       [(_UIFloatingContentView *)v20 setFocusedSizeIncrease:?];
     }
 
     else
     {
-      [v13 floatingContentViewFocusedIncreaseSize];
+      [traitsCopy floatingContentViewFocusedIncreaseSize];
       [(_UIFloatingContentView *)v20 setAsymmetricFocusedSizeIncrease:?];
     }
 
-    [(_UIFloatingContentView *)v14->_floatingContentView setContentMotionRotation:*MEMORY[0x1E695EFF8] translation:*(MEMORY[0x1E695EFF8] + 8), 6.0, 3.0];
-    [(_UIFloatingContentView *)v14->_floatingContentView set_disableOutsetShadowPath:1];
-    v23 = v14->_floatingContentView;
-    [v13 floatingContentViewShadowRadius];
+    [(_UIFloatingContentView *)height->_floatingContentView setContentMotionRotation:*MEMORY[0x1E695EFF8] translation:*(MEMORY[0x1E695EFF8] + 8), 6.0, 3.0];
+    [(_UIFloatingContentView *)height->_floatingContentView set_disableOutsetShadowPath:1];
+    v23 = height->_floatingContentView;
+    [traitsCopy floatingContentViewShadowRadius];
     [(_UIFloatingContentView *)v23 setShadowRadius:?];
-    v24 = v14->_floatingContentView;
-    [v13 floatingContentViewShadowVerticalOffset];
+    v24 = height->_floatingContentView;
+    [traitsCopy floatingContentViewShadowVerticalOffset];
     [(_UIFloatingContentView *)v24 setShadowVerticalOffset:?];
-    v25 = v14->_floatingContentView;
-    [v13 floatingContentViewShadowOpacity];
+    v25 = height->_floatingContentView;
+    [traitsCopy floatingContentViewShadowOpacity];
     [(_UIFloatingContentView *)v25 setShadowOpacity:?];
-    [(UIView *)v14 insertSubview:v14->_floatingContentView atIndex:0];
+    [(UIView *)height insertSubview:height->_floatingContentView atIndex:0];
     if (_UISolariumMetricsEnabled())
     {
-      v26 = [(_UIFloatingContentView *)v14->_floatingContentView contentView];
-      v27 = [(UIKBContainerKeyView *)v14 contentsKeyView];
-      [v26 addSubview:v27];
+      contentView = [(_UIFloatingContentView *)height->_floatingContentView contentView];
+      contentsKeyView = [(UIKBContainerKeyView *)height contentsKeyView];
+      [contentView addSubview:contentsKeyView];
     }
 
     else
     {
-      v26 = [(UIKBContainerKeyView *)v14 contentsKeyView];
-      [(UIView *)v14 addSubview:v26];
+      contentView = [(UIKBContainerKeyView *)height contentsKeyView];
+      [(UIView *)height addSubview:contentView];
     }
   }
 
-  return v14;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -121,16 +121,16 @@
   v5.receiver = self;
   v5.super_class = UIKBFloatingKeyView;
   [(UIKBContainerKeyView *)&v5 prepareForDisplay];
-  v3 = [(UIView *)self layer];
-  if ([v3 needsDisplay])
+  layer = [(UIView *)self layer];
+  if ([layer needsDisplay])
   {
   }
 
   else
   {
-    v4 = [(UIKBContainerKeyView *)self hasRendered];
+    hasRendered = [(UIKBContainerKeyView *)self hasRendered];
 
-    if (v4)
+    if (hasRendered)
     {
       return;
     }

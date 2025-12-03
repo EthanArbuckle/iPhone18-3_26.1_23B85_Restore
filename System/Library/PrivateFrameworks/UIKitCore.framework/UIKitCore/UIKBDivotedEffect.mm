@@ -1,6 +1,6 @@
 @interface UIKBDivotedEffect
 - (CGColor)CGColor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIKBDivotedEffect
@@ -12,9 +12,9 @@
   return CGColorRetain(v2);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [UIKBDivotedEffect allocWithZone:a3];
+  v3 = [UIKBDivotedEffect allocWithZone:zone];
 
   return [(UIKBDivotedEffect *)v3 init];
 }

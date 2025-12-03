@@ -4,9 +4,9 @@
 - (id)anyLocation;
 - (id)currentLocation;
 - (id)previousLocation;
-- (id)startLocationUpdatesWithIdentifier:(id)a3 handler:(id)a4;
-- (id)startLocationUpdatesWithIdentifier:(id)a3 wantsGroundElevation:(BOOL)a4 handler:(id)a5;
-- (void)stopLocationUpdatesForToken:(id)a3;
+- (id)startLocationUpdatesWithIdentifier:(id)identifier handler:(id)handler;
+- (id)startLocationUpdatesWithIdentifier:(id)identifier wantsGroundElevation:(BOOL)elevation handler:(id)handler;
+- (void)stopLocationUpdatesForToken:(id)token;
 @end
 
 @implementation NTKLocationManager
@@ -49,7 +49,7 @@ void __43__NTKLocationManager_sharedLocationManager__block_invoke()
   return [v2 fallbackLocation];
 }
 
-- (id)startLocationUpdatesWithIdentifier:(id)a3 handler:(id)a4
+- (id)startLocationUpdatesWithIdentifier:(id)identifier handler:(id)handler
 {
   OUTLINED_FUNCTION_1_6();
   OUTLINED_FUNCTION_0_7();
@@ -57,7 +57,7 @@ void __43__NTKLocationManager_sharedLocationManager__block_invoke()
   return &stru_284110E98;
 }
 
-- (id)startLocationUpdatesWithIdentifier:(id)a3 wantsGroundElevation:(BOOL)a4 handler:(id)a5
+- (id)startLocationUpdatesWithIdentifier:(id)identifier wantsGroundElevation:(BOOL)elevation handler:(id)handler
 {
   OUTLINED_FUNCTION_1_6();
   OUTLINED_FUNCTION_0_7();
@@ -65,7 +65,7 @@ void __43__NTKLocationManager_sharedLocationManager__block_invoke()
   return &stru_284110E98;
 }
 
-- (void)stopLocationUpdatesForToken:(id)a3
+- (void)stopLocationUpdatesForToken:(id)token
 {
   OUTLINED_FUNCTION_1_6();
   OUTLINED_FUNCTION_0_7();

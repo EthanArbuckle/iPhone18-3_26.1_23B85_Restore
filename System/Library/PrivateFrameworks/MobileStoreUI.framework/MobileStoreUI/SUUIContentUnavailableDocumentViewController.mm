@@ -1,29 +1,29 @@
 @interface SUUIContentUnavailableDocumentViewController
-- (SUUIContentUnavailableDocumentViewController)initWithTemplateElement:(id)a3;
+- (SUUIContentUnavailableDocumentViewController)initWithTemplateElement:(id)element;
 - (UIEdgeInsets)_contentInsets;
 - (id)_layoutContext;
-- (void)_reloadContentUnavailableView:(id)a3 width:(double)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (void)_reloadContentUnavailableView:(id)view width:(double)width;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
-- (void)layoutCacheDidFinishBatch:(id)a3;
+- (void)documentDidUpdate:(id)update;
+- (void)layoutCacheDidFinishBatch:(id)batch;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIContentUnavailableDocumentViewController
 
-- (SUUIContentUnavailableDocumentViewController)initWithTemplateElement:(id)a3
+- (SUUIContentUnavailableDocumentViewController)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUIContentUnavailableDocumentViewController;
   v6 = [(SUUIContentUnavailableDocumentViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_templateElement, a3);
+    objc_storeStrong(&v6->_templateElement, element);
   }
 
   return v7;
@@ -39,28 +39,28 @@
   [(SUUIViewController *)&v3 dealloc];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = [a3 templateElement];
+  templateElement = [update templateElement];
   templateElement = self->_templateElement;
-  self->_templateElement = v4;
+  self->_templateElement = templateElement;
 
   if (self->_contentUnavailableView)
   {
-    v6 = [(SUUIContentUnavailableTemplateElement *)self->_templateElement style];
-    v7 = [v6 ikBackgroundColor];
-    v12 = [v7 color];
+    style = [(SUUIContentUnavailableTemplateElement *)self->_templateElement style];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
 
     contentUnavailableView = self->_contentUnavailableView;
-    if (v12)
+    if (color)
     {
-      [(SUUIViewReuseView *)self->_contentUnavailableView setBackgroundColor:v12];
+      [(SUUIViewReuseView *)self->_contentUnavailableView setBackgroundColor:color];
     }
 
     else
     {
-      v9 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [(SUUIViewReuseView *)contentUnavailableView setBackgroundColor:v9];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+      [(SUUIViewReuseView *)contentUnavailableView setBackgroundColor:systemBackgroundColor];
     }
 
     v10 = self->_contentUnavailableView;
@@ -77,35 +77,35 @@
   contentUnavailableView = self->_contentUnavailableView;
   if (!contentUnavailableView)
   {
-    v4 = [(SUUIContentUnavailableTemplateElement *)self->_templateElement style];
-    v5 = [v4 ikBackgroundColor];
-    v6 = [v5 color];
+    style = [(SUUIContentUnavailableTemplateElement *)self->_templateElement style];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
 
     v7 = [SUUIContentUnavailableView alloc];
-    v8 = [(SUUIContentUnavailableDocumentViewController *)self view];
-    [v8 bounds];
+    view = [(SUUIContentUnavailableDocumentViewController *)self view];
+    [view bounds];
     v9 = [(SUUIViewReuseView *)v7 initWithFrame:?];
     v10 = self->_contentUnavailableView;
     self->_contentUnavailableView = v9;
 
     v11 = self->_contentUnavailableView;
-    if (v6)
+    if (color)
     {
-      [(SUUIViewReuseView *)self->_contentUnavailableView setBackgroundColor:v6];
+      [(SUUIViewReuseView *)self->_contentUnavailableView setBackgroundColor:color];
     }
 
     else
     {
-      v12 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [(SUUIViewReuseView *)v11 setBackgroundColor:v12];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+      [(SUUIViewReuseView *)v11 setBackgroundColor:systemBackgroundColor];
     }
 
     contentUnavailableView = self->_contentUnavailableView;
   }
 
   [(SUUIContentUnavailableView *)contentUnavailableView setAutoresizingMask:18];
-  v13 = [(SUUIContentUnavailableDocumentViewController *)self view];
-  [v13 addSubview:self->_contentUnavailableView];
+  view2 = [(SUUIContentUnavailableDocumentViewController *)self view];
+  [view2 addSubview:self->_contentUnavailableView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -125,44 +125,44 @@
   [(SUUIContentUnavailableDocumentViewController *)&v6 viewWillLayoutSubviews];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   contentUnavailableView = self->_contentUnavailableView;
-  v8 = a4;
+  coordinatorCopy = coordinator;
   [(SUUIContentUnavailableDocumentViewController *)self _reloadContentUnavailableView:contentUnavailableView width:width];
   v9.receiver = self;
   v9.super_class = SUUIContentUnavailableDocumentViewController;
-  [(SUUIContentUnavailableDocumentViewController *)&v9 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
+  [(SUUIContentUnavailableDocumentViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   contentUnavailableView = self->_contentUnavailableView;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SUUIContentUnavailableDocumentViewController *)self _layoutContext];
-  [(SUUIContentUnavailableView *)contentUnavailableView setImage:v7 forArtworkRequest:v8 context:v9];
+  imageCopy = image;
+  requestCopy = request;
+  _layoutContext = [(SUUIContentUnavailableDocumentViewController *)self _layoutContext];
+  [(SUUIContentUnavailableView *)contentUnavailableView setImage:imageCopy forArtworkRequest:requestCopy context:_layoutContext];
 }
 
-- (void)layoutCacheDidFinishBatch:(id)a3
+- (void)layoutCacheDidFinishBatch:(id)batch
 {
   contentUnavailableView = self->_contentUnavailableView;
   templateElement = self->_templateElement;
   [(SUUIContentUnavailableView *)contentUnavailableView bounds];
   v7 = v6;
-  v8 = [(SUUIContentUnavailableDocumentViewController *)self _layoutContext];
-  [(SUUIContentUnavailableView *)contentUnavailableView reloadWithViewElement:templateElement width:v8 context:v7];
+  _layoutContext = [(SUUIContentUnavailableDocumentViewController *)self _layoutContext];
+  [(SUUIContentUnavailableView *)contentUnavailableView reloadWithViewElement:templateElement width:_layoutContext context:v7];
 }
 
 - (UIEdgeInsets)_contentInsets
 {
-  v3 = [(SUUIContentUnavailableDocumentViewController *)self topLayoutGuide];
-  [v3 length];
+  topLayoutGuide = [(SUUIContentUnavailableDocumentViewController *)self topLayoutGuide];
+  [topLayoutGuide length];
   v5 = v4;
-  v6 = [(SUUIContentUnavailableDocumentViewController *)self bottomLayoutGuide];
-  [v6 length];
+  bottomLayoutGuide = [(SUUIContentUnavailableDocumentViewController *)self bottomLayoutGuide];
+  [bottomLayoutGuide length];
   v8 = v7;
 
   v9 = 15.0;
@@ -187,8 +187,8 @@
 
     [(SUUIViewElementLayoutContext *)self->_layoutContext setArtworkRequestDelegate:self];
     v6 = self->_layoutContext;
-    v7 = [(SUUIViewController *)self clientContext];
-    [(SUUIViewElementLayoutContext *)v6 setClientContext:v7];
+    clientContext = [(SUUIViewController *)self clientContext];
+    [(SUUIViewElementLayoutContext *)v6 setClientContext:clientContext];
 
     [(SUUIViewElementLayoutContext *)self->_layoutContext setContainerViewElementType:[(SUUIContentUnavailableTemplateElement *)self->_templateElement elementType]];
     [(SUUIViewElementLayoutContext *)self->_layoutContext setParentViewController:self];
@@ -200,9 +200,9 @@
     v10 = [[SUUIViewElementTextLayoutCache alloc] initWithLayoutCache:self->_textLayoutCache];
     [(SUUIViewElementLayoutContext *)self->_layoutContext setLabelLayoutCache:v10];
     v11 = [SUUIResourceLoader alloc];
-    v12 = [(SUUIViewController *)self operationQueue];
-    v13 = [(SUUIViewController *)self clientContext];
-    v14 = [(SUUIResourceLoader *)v11 initWithOperationQueue:v12 clientContext:v13];
+    operationQueue = [(SUUIViewController *)self operationQueue];
+    clientContext2 = [(SUUIViewController *)self clientContext];
+    v14 = [(SUUIResourceLoader *)v11 initWithOperationQueue:operationQueue clientContext:clientContext2];
 
     [(SUUIViewElementLayoutContext *)self->_layoutContext setResourceLoader:v14];
     layoutContext = self->_layoutContext;
@@ -211,23 +211,23 @@
   return layoutContext;
 }
 
-- (void)_reloadContentUnavailableView:(id)a3 width:(double)a4
+- (void)_reloadContentUnavailableView:(id)view width:(double)width
 {
-  if (a4 > 0.00000011920929)
+  if (width > 0.00000011920929)
   {
-    v6 = a3;
-    v10 = [(SUUIContentUnavailableDocumentViewController *)self _layoutContext];
-    v7 = [v6 tintColor];
-    [v10 setTintColor:v7];
+    viewCopy = view;
+    _layoutContext = [(SUUIContentUnavailableDocumentViewController *)self _layoutContext];
+    tintColor = [viewCopy tintColor];
+    [_layoutContext setTintColor:tintColor];
 
-    [objc_opt_class() prefetchResourcesForViewElement:self->_templateElement reason:1 context:v10];
-    v8 = a4 + -30.0;
+    [objc_opt_class() prefetchResourcesForViewElement:self->_templateElement reason:1 context:_layoutContext];
+    v8 = width + -30.0;
     v9 = floorf(v8);
-    [objc_opt_class() requestLayoutForViewElement:self->_templateElement width:v10 context:v9];
+    [objc_opt_class() requestLayoutForViewElement:self->_templateElement width:_layoutContext context:v9];
     [(SUUILayoutCache *)self->_textLayoutCache commitLayoutRequests];
-    [v6 reloadWithViewElement:self->_templateElement width:v10 context:v9];
+    [viewCopy reloadWithViewElement:self->_templateElement width:_layoutContext context:v9];
     [(SUUIContentUnavailableDocumentViewController *)self _contentInsets];
-    [v6 setContentInset:?];
+    [viewCopy setContentInset:?];
   }
 }
 

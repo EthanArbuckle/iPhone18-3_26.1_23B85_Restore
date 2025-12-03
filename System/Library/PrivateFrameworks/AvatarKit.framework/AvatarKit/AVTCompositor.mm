@@ -1,7 +1,7 @@
 @interface AVTCompositor
 - (AVTCompositor)init;
-- (void)componentDidChangeForTypes:(unint64_t)a3;
-- (void)configureMaterial:(id)a3 propertyNamed:(id)a4 memoji:(id)a5;
+- (void)componentDidChangeForTypes:(unint64_t)types;
+- (void)configureMaterial:(id)material propertyNamed:(id)named memoji:(id)memoji;
 - (void)skinColorDidChange;
 @end
 
@@ -58,10 +58,10 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)componentDidChangeForTypes:(unint64_t)a3
+- (void)componentDidChangeForTypes:(unint64_t)types
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (types)
   {
     v12 = 0u;
     v13 = 0u;
@@ -83,7 +83,7 @@
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v10 + 1) + 8 * v8++) componentDidChangeForTypes:{a3, v10}];
+          [*(*(&v10 + 1) + 8 * v8++) componentDidChangeForTypes:{types, v10}];
         }
 
         while (v6 != v8);
@@ -97,23 +97,23 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureMaterial:(id)a3 propertyNamed:(id)a4 memoji:(id)a5
+- (void)configureMaterial:(id)material propertyNamed:(id)named memoji:(id)memoji
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v13 valueForKey:v8];
+  materialCopy = material;
+  namedCopy = named;
+  memojiCopy = memoji;
+  v10 = [materialCopy valueForKey:namedCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x1E69DF300]);
-    [v13 setValue:v10 forKey:v8];
+    [materialCopy setValue:v10 forKey:namedCopy];
   }
 
-  v11 = [v10 contents];
+  contents = [v10 contents];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [[AVTCompositorTextureProvider alloc] initWithCompositor:self memoji:v9 propertyName:v8];
+    v12 = [[AVTCompositorTextureProvider alloc] initWithCompositor:self memoji:memojiCopy propertyName:namedCopy];
     [v10 setContents:v12];
   }
 }

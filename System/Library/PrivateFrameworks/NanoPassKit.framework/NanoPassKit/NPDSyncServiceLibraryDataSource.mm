@@ -1,10 +1,10 @@
 @interface NPDSyncServiceLibraryDataSource
 - (NPDSyncServiceLibraryDataSource)init;
-- (NPDSyncServiceLibraryDataSource)initWithPassLibrary:(id)a3 passesFilter:(id)a4;
+- (NPDSyncServiceLibraryDataSource)initWithPassLibrary:(id)library passesFilter:(id)filter;
 - (PKCatalog)passesCatalog;
-- (id)passLibrarySyncStateForDevice:(id)a3;
-- (id)passWithUniqueID:(id)a3;
-- (void)addPasses:(id)a3 withCompletionHandler:(id)a4;
+- (id)passLibrarySyncStateForDevice:(id)device;
+- (id)passWithUniqueID:(id)d;
+- (void)addPasses:(id)passes withCompletionHandler:(id)handler;
 @end
 
 @implementation NPDSyncServiceLibraryDataSource
@@ -17,18 +17,18 @@
   return v4;
 }
 
-- (NPDSyncServiceLibraryDataSource)initWithPassLibrary:(id)a3 passesFilter:(id)a4
+- (NPDSyncServiceLibraryDataSource)initWithPassLibrary:(id)library passesFilter:(id)filter
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  filterCopy = filter;
   v14.receiver = self;
   v14.super_class = NPDSyncServiceLibraryDataSource;
   v9 = [(NPDSyncServiceLibraryDataSource *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_passLibrary, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_passLibrary, library);
+    v11 = objc_retainBlock(filterCopy);
     passFilter = v10->_passFilter;
     v10->_passFilter = v11;
   }
@@ -36,22 +36,22 @@
   return v10;
 }
 
-- (id)passLibrarySyncStateForDevice:(id)a3
+- (id)passLibrarySyncStateForDevice:(id)device
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10003AC44;
   v13[3] = &unk_100072888;
   v13[4] = self;
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_retainBlock(v13);
-  v6 = [(PKPassLibrary *)self->_passLibrary passes];
+  passes = [(PKPassLibrary *)self->_passLibrary passes];
   v7 = [NSPredicate predicateWithBlock:v5];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  v8 = [passes filteredArrayUsingPredicate:v7];
 
   v9 = [NPKPassLibrarySyncState alloc];
   v10 = [NSSet setWithArray:v8];
-  v11 = [v9 initWithPasses:v10 device:v4];
+  v11 = [v9 initWithPasses:v10 device:deviceCopy];
 
   return v11;
 }
@@ -78,9 +78,9 @@
   return v3;
 }
 
-- (id)passWithUniqueID:(id)a3
+- (id)passWithUniqueID:(id)d
 {
-  v4 = [(PKPassLibrary *)self->_passLibrary passWithUniqueID:a3];
+  v4 = [(PKPassLibrary *)self->_passLibrary passWithUniqueID:d];
   if ((*(self->_passFilter + 2))())
   {
     v5 = v4;
@@ -96,10 +96,10 @@
   return v5;
 }
 
-- (void)addPasses:(id)a3 withCompletionHandler:(id)a4
+- (void)addPasses:(id)passes withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  passesCopy = passes;
+  handlerCopy = handler;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -110,13 +110,13 @@
   v8[3] = &unk_1000728D8;
   v8[4] = self;
   v8[5] = &v9;
-  [v6 enumerateObjectsUsingBlock:v8];
+  [passesCopy enumerateObjectsUsingBlock:v8];
   if ((v10[3] & 1) == 0)
   {
-    v7[2](v7, 2);
+    handlerCopy[2](handlerCopy, 2);
   }
 
-  [(PKPassLibrary *)self->_passLibrary addPasses:v6 withCompletionHandler:v7];
+  [(PKPassLibrary *)self->_passLibrary addPasses:passesCopy withCompletionHandler:handlerCopy];
   _Block_object_dispose(&v9, 8);
 }
 

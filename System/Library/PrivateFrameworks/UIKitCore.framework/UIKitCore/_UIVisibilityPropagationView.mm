@@ -1,6 +1,6 @@
 @interface _UIVisibilityPropagationView
-- (_UIVisibilityPropagationView)initWithCoder:(id)a3;
-- (_UIVisibilityPropagationView)initWithFrame:(CGRect)a3;
+- (_UIVisibilityPropagationView)initWithCoder:(id)coder;
+- (_UIVisibilityPropagationView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 @end
 
@@ -22,11 +22,11 @@
   [(UIView *)&v4 dealloc];
 }
 
-- (_UIVisibilityPropagationView)initWithFrame:(CGRect)a3
+- (_UIVisibilityPropagationView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UIVisibilityPropagationView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_UIVisibilityPropagationInteraction alloc];
@@ -50,11 +50,11 @@
   return v3;
 }
 
-- (_UIVisibilityPropagationView)initWithCoder:(id)a3
+- (_UIVisibilityPropagationView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _UIVisibilityPropagationView;
-  v3 = [(UIView *)&v7 initWithCoder:a3];
+  v3 = [(UIView *)&v7 initWithCoder:coder];
   if (v3)
   {
     v4 = [_UIVisibilityPropagationInteraction alloc];

@@ -1,16 +1,16 @@
 @interface WKUserContentController
-- (void)be_addScriptMessageHandler:(id)a3 name:(id)a4;
+- (void)be_addScriptMessageHandler:(id)handler name:(id)name;
 @end
 
 @implementation WKUserContentController
 
-- (void)be_addScriptMessageHandler:(id)a3 name:(id)a4
+- (void)be_addScriptMessageHandler:(id)handler name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_BEWKUserContentControllerScriptMessageHandlerProxy alloc] initWithHandler:v7];
+  nameCopy = name;
+  handlerCopy = handler;
+  v8 = [[_BEWKUserContentControllerScriptMessageHandlerProxy alloc] initWithHandler:handlerCopy];
 
-  [(WKUserContentController *)self addScriptMessageHandler:v8 name:v6];
+  [(WKUserContentController *)self addScriptMessageHandler:v8 name:nameCopy];
 }
 
 @end

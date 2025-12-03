@@ -1,26 +1,26 @@
 @interface HMDPredicateUtilities
 + (NSSet)predicateCodingClasses;
-+ (id)decodePredicateFromData:(id)a3 error:(id *)a4;
-+ (id)encodePredicate:(id)a3 error:(id *)a4;
-+ (id)filteredPredicate:(id)a3 withUserUUIDs:(id)a4;
++ (id)decodePredicateFromData:(id)data error:(id *)error;
++ (id)encodePredicate:(id)predicate error:(id *)error;
++ (id)filteredPredicate:(id)predicate withUserUUIDs:(id)ds;
 + (id)logCategory;
-+ (id)unarchiveFromData:(id)a3 error:(id *)a4;
-- (BOOL)containsPresenceEvents:(id)a3;
++ (id)unarchiveFromData:(id)data error:(id *)error;
+- (BOOL)containsPresenceEvents:(id)events;
 - (HMDHome)home;
-- (HMDPredicateUtilities)initWithHome:(id)a3 logIdentifier:(id)a4 homePresenceProvider:(id)a5;
-- (id)_updatePredicate:(id)a3 staleCharacteristicInCurrentPredicate:(BOOL *)a4 accessory:(id)a5 conditionModified:(BOOL *)a6;
-- (id)addDeltaToNow:(id)a3;
-- (id)comparePresence:(id)a3 operatorType:(id)a4 homePresence:(id)a5;
-- (id)dateTodayMatchingComponents:(id)a3;
-- (id)generateAnalyticsData:(id)a3;
-- (id)predicateWithoutStaleCharacteristicsFromPredicate:(id)a3 accessory:(id)a4 conditionModified:(BOOL *)a5;
-- (id)rewriteNowAdjustedForHomeTimeZone:(id)a3;
-- (id)rewritePredicate:(id)a3 currentCharacteristicInPredicate:(id *)a4 characteristicsToRead:(id)a5 homePresence:(id)a6;
+- (HMDPredicateUtilities)initWithHome:(id)home logIdentifier:(id)identifier homePresenceProvider:(id)provider;
+- (id)_updatePredicate:(id)predicate staleCharacteristicInCurrentPredicate:(BOOL *)currentPredicate accessory:(id)accessory conditionModified:(BOOL *)modified;
+- (id)addDeltaToNow:(id)now;
+- (id)comparePresence:(id)presence operatorType:(id)type homePresence:(id)homePresence;
+- (id)dateTodayMatchingComponents:(id)components;
+- (id)generateAnalyticsData:(id)data;
+- (id)predicateWithoutStaleCharacteristicsFromPredicate:(id)predicate accessory:(id)accessory conditionModified:(BOOL *)modified;
+- (id)rewriteNowAdjustedForHomeTimeZone:(id)zone;
+- (id)rewritePredicate:(id)predicate currentCharacteristicInPredicate:(id *)inPredicate characteristicsToRead:(id)read homePresence:(id)presence;
 - (id)sunrise;
 - (id)sunset;
-- (id)updatePredicate:(id)a3 currentCharacteristicInPredicate:(id *)a4 conditionModified:(BOOL *)a5 removedCharacteristic:(id)a6 underService:(id)a7 underAccessory:(id)a8;
-- (id)updatePredicate:(id)a3 removedUser:(id)a4 conditionModified:(BOOL *)a5;
-- (void)fillAnalyticsData:(id)a3 forPredicate:(id)a4;
+- (id)updatePredicate:(id)predicate currentCharacteristicInPredicate:(id *)inPredicate conditionModified:(BOOL *)modified removedCharacteristic:(id)characteristic underService:(id)service underAccessory:(id)accessory;
+- (id)updatePredicate:(id)predicate removedUser:(id)user conditionModified:(BOOL *)modified;
+- (void)fillAnalyticsData:(id)data forPredicate:(id)predicate;
 @end
 
 @implementation HMDPredicateUtilities
@@ -32,11 +32,11 @@
   return WeakRetained;
 }
 
-- (void)fillAnalyticsData:(id)a3 forPredicate:(id)a4
+- (void)fillAnalyticsData:(id)data forPredicate:(id)predicate
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -44,8 +44,8 @@
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v8 = [v7 subpredicates];
-    v9 = [v8 countByEnumeratingWithState:&v50 objects:v54 count:16];
+    subpredicates = [predicateCopy subpredicates];
+    v9 = [subpredicates countByEnumeratingWithState:&v50 objects:v54 count:16];
     if (v9)
     {
       v10 = v9;
@@ -56,13 +56,13 @@
         {
           if (*v51 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subpredicates);
           }
 
-          [(HMDPredicateUtilities *)self fillAnalyticsData:v6 forPredicate:*(*(&v50 + 1) + 8 * i)];
+          [(HMDPredicateUtilities *)self fillAnalyticsData:dataCopy forPredicate:*(*(&v50 + 1) + 8 * i)];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v50 objects:v54 count:16];
+        v10 = [subpredicates countByEnumeratingWithState:&v50 objects:v54 count:16];
       }
 
       while (v10);
@@ -74,45 +74,45 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v13 = [v8 rightExpression];
-    v14 = [v8 leftExpression];
-    if ([v13 expressionType] == 4)
+    subpredicates = predicateCopy;
+    rightExpression = [subpredicates rightExpression];
+    leftExpression = [subpredicates leftExpression];
+    if ([rightExpression expressionType] == 4)
     {
-      v15 = [v13 function];
-      v16 = [v15 isEqualToString:@"add:to:"];
+      function = [rightExpression function];
+      v16 = [function isEqualToString:@"add:to:"];
 
       if (v16)
       {
-        v17 = [v13 arguments];
-        v18 = [v17 objectAtIndexedSubscript:0];
+        arguments = [rightExpression arguments];
+        v18 = [arguments objectAtIndexedSubscript:0];
         if ([v18 expressionType] != 4)
         {
           goto LABEL_51;
         }
 
-        v19 = [v18 function];
-        v20 = [v19 isEqualToString:@"now"];
+        function2 = [v18 function];
+        v20 = [function2 isEqualToString:@"now"];
 
         if (!v20)
         {
           goto LABEL_51;
         }
 
-        v21 = [v17 objectAtIndexedSubscript:1];
+        v21 = [arguments objectAtIndexedSubscript:1];
         if (![v21 expressionType])
         {
-          v22 = [v21 constantValue];
+          constantValue = [v21 constantValue];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
-          if ((isKindOfClass & 1) != 0 && [v14 expressionType] == 3)
+          if ((isKindOfClass & 1) != 0 && [leftExpression expressionType] == 3)
           {
-            v24 = [v14 keyPath];
-            if ([v24 isEqualToString:*MEMORY[0x277CD0FA8]])
+            keyPath = [leftExpression keyPath];
+            if ([keyPath isEqualToString:*MEMORY[0x277CD0FA8]])
             {
 
-              if (!v6)
+              if (!dataCopy)
               {
                 goto LABEL_50;
               }
@@ -120,17 +120,17 @@
 
             else
             {
-              v46 = [v14 keyPath];
-              v49 = [v46 isEqualToString:*MEMORY[0x277CD0FB0]];
+              keyPath2 = [leftExpression keyPath];
+              v49 = [keyPath2 isEqualToString:*MEMORY[0x277CD0FB0]];
 
-              if (!v6 || !v49)
+              if (!dataCopy || !v49)
               {
                 goto LABEL_50;
               }
             }
 
-            v6[11] = 1;
-            v6[10] = 1;
+            dataCopy[11] = 1;
+            dataCopy[10] = 1;
           }
         }
 
@@ -141,25 +141,25 @@ LABEL_51:
       }
     }
 
-    if ([v14 expressionType] == 4 && (objc_msgSend(v14, "function"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", @"now"), v25, v26))
+    if ([leftExpression expressionType] == 4 && (objc_msgSend(leftExpression, "function"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", @"now"), v25, v26))
     {
-      if (v6)
+      if (dataCopy)
       {
         v27 = 8;
 LABEL_46:
-        v6[v27] = 1;
+        dataCopy[v27] = 1;
       }
     }
 
-    else if ([v13 expressionType] == 4 && (objc_msgSend(v13, "function"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "isEqualToString:", @"now"), v28, v29))
+    else if ([rightExpression expressionType] == 4 && (objc_msgSend(rightExpression, "function"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "isEqualToString:", @"now"), v28, v29))
     {
-      if ([v14 expressionType] == 3)
+      if ([leftExpression expressionType] == 3)
       {
-        v30 = [v14 keyPath];
-        if ([v30 isEqualToString:*MEMORY[0x277CD0FA8]])
+        keyPath3 = [leftExpression keyPath];
+        if ([keyPath3 isEqualToString:*MEMORY[0x277CD0FA8]])
         {
 
-          if (!v6)
+          if (!dataCopy)
           {
             goto LABEL_52;
           }
@@ -167,10 +167,10 @@ LABEL_46:
 
         else
         {
-          v44 = [v14 keyPath];
-          v45 = [v44 isEqualToString:*MEMORY[0x277CD0FB0]];
+          keyPath4 = [leftExpression keyPath];
+          v45 = [keyPath4 isEqualToString:*MEMORY[0x277CD0FB0]];
 
-          if (!v6 || !v45)
+          if (!dataCopy || !v45)
           {
             goto LABEL_52;
           }
@@ -183,32 +183,32 @@ LABEL_46:
 
     else
     {
-      if ([v14 expressionType] != 3 || (objc_msgSend(v14, "keyPath"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "isEqualToString:", *MEMORY[0x277CCF6A8]), v31, !v32))
+      if ([leftExpression expressionType] != 3 || (objc_msgSend(leftExpression, "keyPath"), v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "isEqualToString:", *MEMORY[0x277CCF6A8]), v31, !v32))
       {
-        if ([v14 expressionType] == 3)
+        if ([leftExpression expressionType] == 3)
         {
-          v33 = [v14 keyPath];
-          v34 = [v33 isEqualToString:*MEMORY[0x277CD0C40]];
+          keyPath5 = [leftExpression keyPath];
+          v34 = [keyPath5 isEqualToString:*MEMORY[0x277CD0C40]];
 
           if (v34)
           {
-            v35 = [v8 rightExpression];
+            rightExpression2 = [subpredicates rightExpression];
 
-            if (![v35 expressionType])
+            if (![rightExpression2 expressionType])
             {
-              v36 = [v35 constantValue];
+              constantValue2 = [rightExpression2 constantValue];
               objc_opt_class();
               v37 = objc_opt_isKindOfClass();
 
               if (v37)
               {
-                v38 = [(HMDPredicateUtilities *)self home];
-                v48 = [v35 constantValue];
+                home = [(HMDPredicateUtilities *)self home];
+                constantValue3 = [rightExpression2 constantValue];
                 v39 = [HMDPresenceEventModel eventModelWithDictionary:"eventModelWithDictionary:home:eventTriggerUUID:message:" home:? eventTriggerUUID:? message:?];
-                v40 = [[HMDPresenceEvent alloc] initWithModel:v39 home:v38];
-                if (v6)
+                v40 = [[HMDPresenceEvent alloc] initWithModel:v39 home:home];
+                if (dataCopy)
                 {
-                  v41 = *(v6 + 2);
+                  v41 = *(dataCopy + 2);
                 }
 
                 else
@@ -217,19 +217,19 @@ LABEL_46:
                 }
 
                 v42 = v41;
-                v43 = [(HMDPresenceEvent *)v40 analyticsPresenceEventData];
-                [v42 addObject:v43];
+                analyticsPresenceEventData = [(HMDPresenceEvent *)v40 analyticsPresenceEventData];
+                [v42 addObject:analyticsPresenceEventData];
               }
             }
 
-            v13 = v35;
+            rightExpression = rightExpression2;
           }
         }
 
         goto LABEL_52;
       }
 
-      if (v6)
+      if (dataCopy)
       {
         v27 = 9;
         goto LABEL_46;
@@ -244,19 +244,19 @@ LABEL_53:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateAnalyticsData:(id)a3
+- (id)generateAnalyticsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(HMDAnalyticsPredicateData);
-  [(HMDPredicateUtilities *)self fillAnalyticsData:v5 forPredicate:v4];
+  [(HMDPredicateUtilities *)self fillAnalyticsData:v5 forPredicate:dataCopy];
 
   return v5;
 }
 
-- (BOOL)containsPresenceEvents:(id)a3
+- (BOOL)containsPresenceEvents:(id)events
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -264,8 +264,8 @@ LABEL_53:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [v4 subpredicates];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    subpredicates = [eventsCopy subpredicates];
+    v6 = [subpredicates countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
       v7 = v6;
@@ -277,7 +277,7 @@ LABEL_53:
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subpredicates);
           }
 
           if (isKindOfClass)
@@ -291,7 +291,7 @@ LABEL_53:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [subpredicates countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v7);
@@ -308,12 +308,12 @@ LABEL_53:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v4;
-      v12 = [v11 rightExpression];
-      v13 = [v11 leftExpression];
-      if ([v13 expressionType] == 3 && (objc_msgSend(v13, "keyPath"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", *MEMORY[0x277CD0C40]), v14, v15) && !objc_msgSend(v12, "expressionType"))
+      v11 = eventsCopy;
+      rightExpression = [v11 rightExpression];
+      leftExpression = [v11 leftExpression];
+      if ([leftExpression expressionType] == 3 && (objc_msgSend(leftExpression, "keyPath"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", *MEMORY[0x277CD0C40]), v14, v15) && !objc_msgSend(rightExpression, "expressionType"))
       {
-        v18 = [v12 constantValue];
+        constantValue = [rightExpression constantValue];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
       }
@@ -334,109 +334,109 @@ LABEL_53:
   return isKindOfClass & 1;
 }
 
-- (id)dateTodayMatchingComponents:(id)a3
+- (id)dateTodayMatchingComponents:(id)components
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v6 components:124 fromDate:v5];
-  [v7 setHour:{objc_msgSend(v4, "hour")}];
-  v8 = [v4 minute];
+  componentsCopy = components;
+  date = [v3 date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [currentCalendar components:124 fromDate:date];
+  [v7 setHour:{objc_msgSend(componentsCopy, "hour")}];
+  minute = [componentsCopy minute];
 
-  [v7 setMinute:v8];
-  v9 = [v6 dateFromComponents:v7];
+  [v7 setMinute:minute];
+  v9 = [currentCalendar dateFromComponents:v7];
 
   return v9;
 }
 
-- (id)addDeltaToNow:(id)a3
+- (id)addDeltaToNow:(id)now
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [MEMORY[0x277CBEBB0] localTimeZone];
-  [v6 setTimeZone:v7];
+  nowCopy = now;
+  date = [v3 date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  [currentCalendar setTimeZone:localTimeZone];
 
-  v8 = [v6 dateByAddingComponents:v4 toDate:v5 options:0];
+  v8 = [currentCalendar dateByAddingComponents:nowCopy toDate:date options:0];
 
   return v8;
 }
 
-- (id)rewriteNowAdjustedForHomeTimeZone:(id)a3
+- (id)rewriteNowAdjustedForHomeTimeZone:(id)zone
 {
   v3 = MEMORY[0x277CBEAB8];
-  v4 = a3;
+  zoneCopy = zone;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v7 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v7 setDateStyle:4];
   [v7 setTimeStyle:4];
-  [v7 setTimeZone:v4];
+  [v7 setTimeZone:zoneCopy];
   [v7 setDateFormat:@"HH"];
-  v8 = [v7 stringFromDate:v6];
+  v8 = [v7 stringFromDate:date];
   [v5 setHour:{objc_msgSend(v8, "intValue")}];
 
   [v7 setDateFormat:@"mm"];
-  v9 = [v7 stringFromDate:v6];
+  v9 = [v7 stringFromDate:date];
   [v5 setMinute:{objc_msgSend(v9, "intValue")}];
 
-  [v5 setTimeZone:v4];
+  [v5 setTimeZone:zoneCopy];
   v10 = [MEMORY[0x277CCA9C0] expressionWithFormat:@"FUNCTION($THIS_OBJECT, 'dateTodayMatchingComponents:', %@)", v5];
 
   return v10;
 }
 
-- (id)_updatePredicate:(id)a3 staleCharacteristicInCurrentPredicate:(BOOL *)a4 accessory:(id)a5 conditionModified:(BOOL *)a6
+- (id)_updatePredicate:(id)predicate staleCharacteristicInCurrentPredicate:(BOOL *)currentPredicate accessory:(id)accessory conditionModified:(BOOL *)modified
 {
   v61 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
+  predicateCopy = predicate;
+  accessoryCopy = accessory;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = v10;
-      v23 = [v22 rightExpression];
-      v24 = [v22 leftExpression];
-      if ([v24 expressionType] == 3 && (objc_msgSend(v24, "keyPath"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", *MEMORY[0x277CCF6A8]), v25, v26))
+      v22 = predicateCopy;
+      rightExpression = [v22 rightExpression];
+      leftExpression = [v22 leftExpression];
+      if ([leftExpression expressionType] == 3 && (objc_msgSend(leftExpression, "keyPath"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", *MEMORY[0x277CCF6A8]), v25, v26))
       {
-        if (![v23 expressionType])
+        if (![rightExpression expressionType])
         {
-          v27 = [v23 constantValue];
+          constantValue = [rightExpression constantValue];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v29 = [v23 constantValue];
-            v49 = [v29 hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
-            v30 = [v29 hmf_numberForKey:*MEMORY[0x277CD25F8]];
+            constantValue2 = [rightExpression constantValue];
+            v49 = [constantValue2 hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
+            v30 = [constantValue2 hmf_numberForKey:*MEMORY[0x277CD25F8]];
             v47 = HAPInstanceIDFromValue();
 
-            v46 = v29;
-            v31 = [v29 hmf_numberForKey:*MEMORY[0x277CD2140]];
+            v46 = constantValue2;
+            v31 = [constantValue2 hmf_numberForKey:*MEMORY[0x277CD2140]];
             v32 = HAPInstanceIDFromValue();
 
-            v33 = [v11 uuid];
+            uuid = [accessoryCopy uuid];
             v45 = v32;
-            if ([v33 isEqual:v49])
+            if ([uuid isEqual:v49])
             {
-              v34 = [v11 findCharacteristic:v32 forService:v47];
+              v34 = [accessoryCopy findCharacteristic:v32 forService:v47];
 
               if (!v34)
               {
-                v51 = v10;
+                v51 = predicateCopy;
                 v35 = objc_autoreleasePoolPush();
-                v36 = self;
+                selfCopy = self;
                 v37 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
                 {
                   HMFGetLogIdentifier();
-                  v38 = v36;
+                  v38 = selfCopy;
                   v40 = v39 = v35;
                   *buf = 138543618;
                   v57 = v40;
@@ -445,14 +445,14 @@ LABEL_53:
                   _os_log_impl(&dword_2531F8000, v37, OS_LOG_TYPE_INFO, "%{public}@Removing predicate %@ because referenced characteristic no longer exists", buf, 0x16u);
 
                   v35 = v39;
-                  v36 = v38;
+                  selfCopy = v38;
                 }
 
                 objc_autoreleasePoolPop(v35);
-                *a4 = 1;
-                *a6 = 1;
+                *currentPredicate = 1;
+                *modified = 1;
 
-                v10 = v51;
+                predicateCopy = v51;
                 goto LABEL_30;
               }
             }
@@ -464,17 +464,17 @@ LABEL_53:
         }
       }
 
-      else if ([v24 expressionType] == 3)
+      else if ([leftExpression expressionType] == 3)
       {
-        v41 = [v24 keyPath];
-        v42 = [v41 isEqualToString:*MEMORY[0x277CCFBD0]];
+        keyPath = [leftExpression keyPath];
+        v42 = [keyPath isEqualToString:*MEMORY[0x277CCFBD0]];
 
         if (v42)
         {
-          if (![v23 expressionType] && *a4)
+          if (![rightExpression expressionType] && *currentPredicate)
           {
-            *a4 = 0;
-            *a6 = 1;
+            *currentPredicate = 0;
+            *modified = 1;
 LABEL_30:
 
             v21 = 0;
@@ -484,20 +484,20 @@ LABEL_30:
       }
     }
 
-    v21 = v10;
+    v21 = predicateCopy;
     goto LABEL_35;
   }
 
-  v50 = v10;
-  v12 = v10;
-  v13 = [MEMORY[0x277CBEB18] array];
+  v50 = predicateCopy;
+  v12 = predicateCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v48 = v12;
-  v14 = [v12 subpredicates];
-  v15 = [v14 countByEnumeratingWithState:&v52 objects:v60 count:16];
+  subpredicates = [v12 subpredicates];
+  v15 = [subpredicates countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v15)
   {
     v16 = v15;
@@ -508,26 +508,26 @@ LABEL_30:
       {
         if (*v53 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(subpredicates);
         }
 
-        v19 = [(HMDPredicateUtilities *)self _updatePredicate:*(*(&v52 + 1) + 8 * i) staleCharacteristicInCurrentPredicate:a4 accessory:v11 conditionModified:a6];
+        v19 = [(HMDPredicateUtilities *)self _updatePredicate:*(*(&v52 + 1) + 8 * i) staleCharacteristicInCurrentPredicate:currentPredicate accessory:accessoryCopy conditionModified:modified];
         if (v19)
         {
-          [v13 addObject:v19];
+          [array addObject:v19];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v52 objects:v60 count:16];
+      v16 = [subpredicates countByEnumeratingWithState:&v52 objects:v60 count:16];
     }
 
     while (v16);
   }
 
-  if ([v13 count])
+  if ([array count])
   {
     v20 = v48;
-    v21 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:objc_msgSend(v48 subpredicates:{"compoundPredicateType"), v13}];
+    v21 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:objc_msgSend(v48 subpredicates:{"compoundPredicateType"), array}];
   }
 
   else
@@ -536,7 +536,7 @@ LABEL_30:
     v20 = v48;
   }
 
-  v10 = v50;
+  predicateCopy = v50;
 LABEL_35:
 
   v43 = *MEMORY[0x277D85DE8];
@@ -544,33 +544,33 @@ LABEL_35:
   return v21;
 }
 
-- (id)predicateWithoutStaleCharacteristicsFromPredicate:(id)a3 accessory:(id)a4 conditionModified:(BOOL *)a5
+- (id)predicateWithoutStaleCharacteristicsFromPredicate:(id)predicate accessory:(id)accessory conditionModified:(BOOL *)modified
 {
   v7 = 0;
-  v5 = [(HMDPredicateUtilities *)self _updatePredicate:a3 staleCharacteristicInCurrentPredicate:&v7 accessory:a4 conditionModified:a5];
+  v5 = [(HMDPredicateUtilities *)self _updatePredicate:predicate staleCharacteristicInCurrentPredicate:&v7 accessory:accessory conditionModified:modified];
 
   return v5;
 }
 
-- (id)updatePredicate:(id)a3 removedUser:(id)a4 conditionModified:(BOOL *)a5
+- (id)updatePredicate:(id)predicate removedUser:(id)user conditionModified:(BOOL *)modified
 {
   v66 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDPredicateUtilities *)self home];
+  predicateCopy = predicate;
+  userCopy = user;
+  home = [(HMDPredicateUtilities *)self home];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v51 = v8;
-    v53 = v10;
-    v11 = v8;
-    v12 = [MEMORY[0x277CBEB18] array];
+    v51 = predicateCopy;
+    v53 = home;
+    v11 = predicateCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v13 = [v11 subpredicates];
-    v14 = [v13 countByEnumeratingWithState:&v57 objects:v65 count:16];
+    subpredicates = [v11 subpredicates];
+    v14 = [subpredicates countByEnumeratingWithState:&v57 objects:v65 count:16];
     if (v14)
     {
       v15 = v14;
@@ -581,25 +581,25 @@ LABEL_35:
         {
           if (*v58 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(subpredicates);
           }
 
-          v18 = [(HMDPredicateUtilities *)self updatePredicate:*(*(&v57 + 1) + 8 * i) removedUser:v9 conditionModified:a5];
+          v18 = [(HMDPredicateUtilities *)self updatePredicate:*(*(&v57 + 1) + 8 * i) removedUser:userCopy conditionModified:modified];
           if (v18)
           {
-            [v12 addObject:v18];
+            [array addObject:v18];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v57 objects:v65 count:16];
+        v15 = [subpredicates countByEnumeratingWithState:&v57 objects:v65 count:16];
       }
 
       while (v15);
     }
 
-    if ([v12 count])
+    if ([array count])
     {
-      v19 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:objc_msgSend(v11 subpredicates:{"compoundPredicateType"), v12}];
+      v19 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:objc_msgSend(v11 subpredicates:{"compoundPredicateType"), array}];
     }
 
     else
@@ -607,9 +607,9 @@ LABEL_35:
       v19 = 0;
     }
 
-    v10 = v53;
+    home = v53;
 
-    v8 = v51;
+    predicateCopy = v51;
     goto LABEL_27;
   }
 
@@ -617,30 +617,30 @@ LABEL_35:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_26:
-    v19 = v8;
+    v19 = predicateCopy;
     goto LABEL_27;
   }
 
-  v20 = v8;
-  v52 = [v20 predicateOperatorType];
-  v21 = [v20 leftExpression];
-  if ([v21 expressionType] != 3 || (objc_msgSend(v21, "keyPath"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", *MEMORY[0x277CD0C40]), v22, !v23))
+  v20 = predicateCopy;
+  predicateOperatorType = [v20 predicateOperatorType];
+  leftExpression = [v20 leftExpression];
+  if ([leftExpression expressionType] != 3 || (objc_msgSend(leftExpression, "keyPath"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", *MEMORY[0x277CD0C40]), v22, !v23))
   {
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v24 = [v20 rightExpression];
-  if ([v24 expressionType] || (objc_msgSend(v24, "constantValue"), v50 = v24, v25 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v25, v24 = v50, (isKindOfClass & 1) == 0))
+  rightExpression = [v20 rightExpression];
+  if ([rightExpression expressionType] || (objc_msgSend(rightExpression, "constantValue"), v50 = rightExpression, v25 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v25, rightExpression = v50, (isKindOfClass & 1) == 0))
   {
 
     goto LABEL_25;
   }
 
-  v49 = [v50 constantValue];
+  constantValue = [v50 constantValue];
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
@@ -649,7 +649,7 @@ LABEL_25:
     *buf = 138543618;
     v62 = v30;
     v63 = 2112;
-    v64 = v49;
+    v64 = constantValue;
     _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_INFO, "%{public}@presence event dictionary: %@", buf, 0x16u);
 
     v27 = v54;
@@ -657,15 +657,15 @@ LABEL_25:
 
   objc_autoreleasePoolPop(v27);
   v55 = *MEMORY[0x277CD24D0];
-  v31 = [v49 hmf_arrayForKey:?];
+  v31 = [constantValue hmf_arrayForKey:?];
   v32 = [v31 mutableCopy];
 
-  v33 = [v9 uuid];
-  v34 = [v33 UUIDString];
+  uuid = [userCopy uuid];
+  uUIDString = [uuid UUIDString];
 
-  v48 = v34;
-  v35 = [v32 indexOfObject:v34];
-  v36 = v49;
+  v48 = uUIDString;
+  v35 = [v32 indexOfObject:uUIDString];
+  v36 = constantValue;
   if (v35 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = 0;
@@ -674,26 +674,26 @@ LABEL_25:
   else
   {
     [v32 removeObjectAtIndex:v35];
-    v39 = [v49 mutableCopy];
+    v39 = [constantValue mutableCopy];
     v47 = v32;
     [v39 setObject:v32 forKey:v55];
     v46 = v39;
-    v45 = [HMDPresenceEventModel eventModelWithDictionary:v39 home:v10 eventTriggerUUID:0 message:0];
-    v56 = v10;
-    v40 = [[HMDPresenceEvent alloc] initWithModel:v45 home:v10];
+    v45 = [HMDPresenceEventModel eventModelWithDictionary:v39 home:home eventTriggerUUID:0 message:0];
+    v56 = home;
+    v40 = [[HMDPresenceEvent alloc] initWithModel:v45 home:home];
     v41 = MEMORY[0x277CCA9C0];
     v42 = v40;
     v43 = [(HMDPresenceEvent *)v40 createPresenceEventPayload:1];
     v44 = [v41 expressionForConstantValue:v43];
 
-    v19 = [objc_alloc(MEMORY[0x277CCA918]) initWithLeftExpression:v21 rightExpression:v44 modifier:objc_msgSend(v20 type:"comparisonPredicateModifier") options:{v52, objc_msgSend(v20, "options")}];
-    if (a5)
+    v19 = [objc_alloc(MEMORY[0x277CCA918]) initWithLeftExpression:leftExpression rightExpression:v44 modifier:objc_msgSend(v20 type:"comparisonPredicateModifier") options:{predicateOperatorType, objc_msgSend(v20, "options")}];
+    if (modified)
     {
-      *a5 = 1;
+      *modified = 1;
     }
 
-    v10 = v56;
-    v36 = v49;
+    home = v56;
+    v36 = constantValue;
     v32 = v47;
   }
 
@@ -703,14 +703,14 @@ LABEL_27:
   return v19;
 }
 
-- (id)updatePredicate:(id)a3 currentCharacteristicInPredicate:(id *)a4 conditionModified:(BOOL *)a5 removedCharacteristic:(id)a6 underService:(id)a7 underAccessory:(id)a8
+- (id)updatePredicate:(id)predicate currentCharacteristicInPredicate:(id *)inPredicate conditionModified:(BOOL *)modified removedCharacteristic:(id)characteristic underService:(id)service underAccessory:(id)accessory
 {
   v85 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v75 = a6;
-  v74 = a7;
-  v15 = a8;
-  v16 = [(HMDPredicateUtilities *)self home];
+  predicateCopy = predicate;
+  characteristicCopy = characteristic;
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  home = [(HMDPredicateUtilities *)self home];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -718,18 +718,18 @@ LABEL_27:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_53:
-      v26 = v14;
+      v26 = predicateCopy;
       goto LABEL_54;
     }
 
-    v27 = v14;
-    v28 = [v27 rightExpression];
-    v29 = [v27 leftExpression];
-    v69 = v28;
-    if ([v29 expressionType] == 4)
+    v27 = predicateCopy;
+    rightExpression = [v27 rightExpression];
+    leftExpression = [v27 leftExpression];
+    v69 = rightExpression;
+    if ([leftExpression expressionType] == 4)
     {
-      v30 = [v29 function];
-      if (![v30 isEqualToString:@"now"])
+      function = [leftExpression function];
+      if (![function isEqualToString:@"now"])
       {
 LABEL_18:
 
@@ -737,76 +737,76 @@ LABEL_18:
       }
 
       v71 = v27;
-      v31 = v14;
-      v32 = [v16 homeLocationHandler];
-      v33 = [v32 timeZone];
+      v31 = predicateCopy;
+      homeLocationHandler = [home homeLocationHandler];
+      timeZone = [homeLocationHandler timeZone];
 
-      if (v33)
+      if (timeZone)
       {
-        v30 = [v16 homeLocationHandler];
-        v34 = [v30 timeZone];
-        v35 = [(HMDPredicateUtilities *)self rewriteNowAdjustedForHomeTimeZone:v34];
+        function = [home homeLocationHandler];
+        timeZone2 = [function timeZone];
+        v35 = [(HMDPredicateUtilities *)self rewriteNowAdjustedForHomeTimeZone:timeZone2];
 
-        v29 = v35;
-        v14 = v31;
-        v28 = v69;
+        leftExpression = v35;
+        predicateCopy = v31;
+        rightExpression = v69;
         v27 = v71;
         goto LABEL_18;
       }
 
-      v14 = v31;
-      v28 = v69;
+      predicateCopy = v31;
+      rightExpression = v69;
       v27 = v71;
     }
 
 LABEL_19:
-    if ([v28 expressionType] == 4)
+    if ([rightExpression expressionType] == 4)
     {
-      v36 = [v28 function];
-      if ([v36 isEqualToString:@"now"])
+      function2 = [rightExpression function];
+      if ([function2 isEqualToString:@"now"])
       {
         v72 = v27;
-        v37 = v14;
-        v38 = [v16 homeLocationHandler];
-        v39 = [v38 timeZone];
+        v37 = predicateCopy;
+        homeLocationHandler2 = [home homeLocationHandler];
+        timeZone3 = [homeLocationHandler2 timeZone];
 
-        if (!v39)
+        if (!timeZone3)
         {
-          v14 = v37;
+          predicateCopy = v37;
           v27 = v72;
           goto LABEL_24;
         }
 
-        v36 = [v16 homeLocationHandler];
-        v40 = [v36 timeZone];
-        v41 = [(HMDPredicateUtilities *)self rewriteNowAdjustedForHomeTimeZone:v40];
+        function2 = [home homeLocationHandler];
+        timeZone4 = [function2 timeZone];
+        v41 = [(HMDPredicateUtilities *)self rewriteNowAdjustedForHomeTimeZone:timeZone4];
 
         v69 = v41;
-        v14 = v37;
+        predicateCopy = v37;
         v27 = v72;
       }
     }
 
 LABEL_24:
-    if ([v29 expressionType] != 3 || (objc_msgSend(v29, "keyPath"), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "isEqualToString:", *MEMORY[0x277CCF6A8]), v42, !v43))
+    if ([leftExpression expressionType] != 3 || (objc_msgSend(leftExpression, "keyPath"), v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "isEqualToString:", *MEMORY[0x277CCF6A8]), v42, !v43))
     {
-      if ([v29 expressionType] == 3)
+      if ([leftExpression expressionType] == 3)
       {
-        v57 = [v29 keyPath];
-        v58 = [v57 isEqualToString:*MEMORY[0x277CCFBD0]];
+        keyPath = [leftExpression keyPath];
+        v58 = [keyPath isEqualToString:*MEMORY[0x277CCFBD0]];
 
         if (v58)
         {
-          v59 = [v69 expressionType];
-          if (a4)
+          expressionType = [v69 expressionType];
+          if (inPredicate)
           {
-            if (!v59 && *a4)
+            if (!expressionType && *inPredicate)
             {
-              *a4 = 0;
+              *inPredicate = 0;
               v56 = v69;
-              if (a5)
+              if (modified)
               {
-                *a5 = 1;
+                *modified = 1;
               }
 
               goto LABEL_46;
@@ -825,31 +825,31 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    v46 = [v69 constantValue];
-    v67 = [v46 hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
-    v47 = [v46 hmf_numberForKey:*MEMORY[0x277CD25F8]];
+    constantValue = [v69 constantValue];
+    v67 = [constantValue hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
+    v47 = [constantValue hmf_numberForKey:*MEMORY[0x277CD25F8]];
     v64 = HAPInstanceIDFromValue();
 
-    v48 = [v46 hmf_numberForKey:*MEMORY[0x277CD2140]];
+    v48 = [constantValue hmf_numberForKey:*MEMORY[0x277CD2140]];
     v65 = HAPInstanceIDFromValue();
 
-    v49 = [v15 uuid];
-    if ([v67 isEqual:v49])
+    uuid = [accessoryCopy uuid];
+    if ([v67 isEqual:uuid])
     {
-      v63 = v46;
-      v50 = [v75 instanceID];
-      if ([v65 isEqual:v50])
+      v63 = constantValue;
+      instanceID = [characteristicCopy instanceID];
+      if ([v65 isEqual:instanceID])
       {
-        [v74 instanceID];
-        v51 = v73 = v14;
+        [serviceCopy instanceID];
+        v51 = v73 = predicateCopy;
         v62 = [v64 isEqual:v51];
 
-        v14 = v73;
-        v46 = v63;
+        predicateCopy = v73;
+        constantValue = v63;
         if (v62)
         {
           v52 = objc_autoreleasePoolPush();
-          v53 = self;
+          selfCopy = self;
           v54 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
           {
@@ -857,20 +857,20 @@ LABEL_52:
             *buf = 138543618;
             v81 = v55;
             v82 = 2112;
-            v83 = v75;
+            v83 = characteristicCopy;
             _os_log_impl(&dword_2531F8000, v54, OS_LOG_TYPE_INFO, "%{public}@Char %@ has been removed, and it has reference in the condition, updating the condition", buf, 0x16u);
 
-            v14 = v73;
+            predicateCopy = v73;
           }
 
           objc_autoreleasePoolPop(v52);
-          v46 = v63;
-          if (a4)
+          constantValue = v63;
+          if (inPredicate)
           {
-            *a4 = v75;
-            if (a5)
+            *inPredicate = characteristicCopy;
+            if (modified)
             {
-              *a5 = 1;
+              *modified = 1;
             }
 
             v56 = v69;
@@ -884,24 +884,24 @@ LABEL_46:
         goto LABEL_51;
       }
 
-      v46 = v63;
+      constantValue = v63;
     }
 
 LABEL_51:
     goto LABEL_52;
   }
 
-  v68 = v16;
-  v70 = v14;
-  v17 = v14;
-  v18 = [MEMORY[0x277CBEB18] array];
+  v68 = home;
+  v70 = predicateCopy;
+  v17 = predicateCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v66 = v17;
-  v19 = [v17 subpredicates];
-  v20 = [v19 countByEnumeratingWithState:&v76 objects:v84 count:16];
+  subpredicates = [v17 subpredicates];
+  v20 = [subpredicates countByEnumeratingWithState:&v76 objects:v84 count:16];
   if (v20)
   {
     v21 = v20;
@@ -912,26 +912,26 @@ LABEL_51:
       {
         if (*v77 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(subpredicates);
         }
 
-        v24 = [(HMDPredicateUtilities *)self updatePredicate:*(*(&v76 + 1) + 8 * i) currentCharacteristicInPredicate:a4 conditionModified:a5 removedCharacteristic:v75 underService:v74 underAccessory:v15];
+        v24 = [(HMDPredicateUtilities *)self updatePredicate:*(*(&v76 + 1) + 8 * i) currentCharacteristicInPredicate:inPredicate conditionModified:modified removedCharacteristic:characteristicCopy underService:serviceCopy underAccessory:accessoryCopy];
         if (v24)
         {
-          [v18 addObject:v24];
+          [array addObject:v24];
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v76 objects:v84 count:16];
+      v21 = [subpredicates countByEnumeratingWithState:&v76 objects:v84 count:16];
     }
 
     while (v21);
   }
 
-  if ([v18 count])
+  if ([array count])
   {
     v25 = v66;
-    v26 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:objc_msgSend(v66 subpredicates:{"compoundPredicateType"), v18}];
+    v26 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:objc_msgSend(v66 subpredicates:{"compoundPredicateType"), array}];
   }
 
   else
@@ -940,9 +940,9 @@ LABEL_51:
     v25 = v66;
   }
 
-  v16 = v68;
+  home = v68;
 
-  v14 = v70;
+  predicateCopy = v70;
 LABEL_54:
 
   v60 = *MEMORY[0x277D85DE8];
@@ -950,23 +950,23 @@ LABEL_54:
   return v26;
 }
 
-- (id)comparePresence:(id)a3 operatorType:(id)a4 homePresence:(id)a5
+- (id)comparePresence:(id)presence operatorType:(id)type homePresence:(id)homePresence
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDPredicateUtilities *)self home];
-  if (v11 && [v9 unsignedIntegerValue] == 4)
+  presenceCopy = presence;
+  typeCopy = type;
+  homePresenceCopy = homePresence;
+  home = [(HMDPredicateUtilities *)self home];
+  if (home && [typeCopy unsignedIntegerValue] == 4)
   {
-    if (!v10)
+    if (!homePresenceCopy)
     {
-      v12 = [(HMDPredicateUtilities *)self homePresenceProvider];
-      v10 = (v12)[2](v12, v11);
+      homePresenceProvider = [(HMDPredicateUtilities *)self homePresenceProvider];
+      homePresenceCopy = (homePresenceProvider)[2](homePresenceProvider, home);
     }
 
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -974,14 +974,14 @@ LABEL_54:
       v21 = 138543874;
       v22 = v16;
       v23 = 2112;
-      v24 = v10;
+      v24 = homePresenceCopy;
       v25 = 2112;
-      v26 = v8;
+      v26 = presenceCopy;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_INFO, "%{public}@Checking whether the homePresence %@ agree with the presence events in condition: %@", &v21, 0x20u);
     }
 
     objc_autoreleasePoolPop(v13);
-    v17 = [v8 evaluateWithHomePresence:v10];
+    v17 = [presenceCopy evaluateWithHomePresence:homePresenceCopy];
   }
 
   else
@@ -996,39 +996,39 @@ LABEL_54:
   return v18;
 }
 
-- (id)rewritePredicate:(id)a3 currentCharacteristicInPredicate:(id *)a4 characteristicsToRead:(id)a5 homePresence:(id)a6
+- (id)rewritePredicate:(id)predicate currentCharacteristicInPredicate:(id *)inPredicate characteristicsToRead:(id)read homePresence:(id)presence
 {
   v101 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(HMDPredicateUtilities *)self home];
+  predicateCopy = predicate;
+  readCopy = read;
+  presenceCopy = presence;
+  home = [(HMDPredicateUtilities *)self home];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v24 = 0x277CCA000uLL;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v26 = v10;
+    v26 = predicateCopy;
     v23 = v26;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_63;
     }
 
-    v95 = v13;
-    v90 = [v26 predicateOperatorType];
-    v27 = [v23 rightExpression];
-    v28 = [v23 leftExpression];
-    if ([v27 expressionType] == 4)
+    v95 = home;
+    predicateOperatorType = [v26 predicateOperatorType];
+    rightExpression = [v23 rightExpression];
+    leftExpression = [v23 leftExpression];
+    if ([rightExpression expressionType] == 4)
     {
-      v29 = [v27 function];
-      v30 = [v29 isEqualToString:@"add:to:"];
+      function = [rightExpression function];
+      v30 = [function isEqualToString:@"add:to:"];
 
       if (v30)
       {
-        v31 = [v27 arguments];
-        v32 = [v31 objectAtIndexedSubscript:0];
+        arguments = [rightExpression arguments];
+        v32 = [arguments objectAtIndexedSubscript:0];
         if ([v32 expressionType] != 4)
         {
 LABEL_43:
@@ -1036,8 +1036,8 @@ LABEL_43:
           goto LABEL_60;
         }
 
-        v33 = [v32 function];
-        v34 = [v33 isEqualToString:@"now"];
+        function2 = [v32 function];
+        v34 = [function2 isEqualToString:@"now"];
 
         if (!v34)
         {
@@ -1045,7 +1045,7 @@ LABEL_43:
           goto LABEL_43;
         }
 
-        v35 = [v31 objectAtIndexedSubscript:1];
+        v35 = [arguments objectAtIndexedSubscript:1];
         if (![v35 expressionType])
         {
           [v35 constantValue];
@@ -1062,10 +1062,10 @@ LABEL_43:
 
           v82 = MEMORY[0x277CCA9C0];
           v35 = v86;
-          v38 = [v86 constantValue];
-          v83 = [v82 expressionWithFormat:@"FUNCTION($THIS_OBJECT, 'addDeltaToNow:', %@)", v38];
+          constantValue = [v86 constantValue];
+          v83 = [v82 expressionWithFormat:@"FUNCTION($THIS_OBJECT, 'addDeltaToNow:', %@)", constantValue];
 
-          v27 = v83;
+          rightExpression = v83;
         }
 
         v24 = 0x277CCA000;
@@ -1075,54 +1075,54 @@ LABEL_22:
       }
     }
 
-    if (![v27 expressionType])
+    if (![rightExpression expressionType])
     {
-      v39 = [v27 constantValue];
+      constantValue2 = [rightExpression constantValue];
       objc_opt_class();
       v40 = objc_opt_isKindOfClass();
 
       if (v40)
       {
         v41 = MEMORY[0x277CCA9C0];
-        v42 = [v27 constantValue];
-        v43 = [v41 expressionWithFormat:@"FUNCTION($THIS_OBJECT, 'dateTodayMatchingComponents:', %@)", v42];
+        constantValue3 = [rightExpression constantValue];
+        v43 = [v41 expressionWithFormat:@"FUNCTION($THIS_OBJECT, 'dateTodayMatchingComponents:', %@)", constantValue3];
 
-        v27 = v43;
+        rightExpression = v43;
         goto LABEL_59;
       }
     }
 
-    if ([v28 expressionType] == 3)
+    if ([leftExpression expressionType] == 3)
     {
-      v44 = [v28 keyPath];
-      v45 = [v44 isEqualToString:*MEMORY[0x277CCF6A8]];
+      keyPath = [leftExpression keyPath];
+      v45 = [keyPath isEqualToString:*MEMORY[0x277CCF6A8]];
 
       if (v45)
       {
-        v46 = [v23 rightExpression];
+        rightExpression2 = [v23 rightExpression];
 
         v24 = 0x277CCA000;
-        if ([v46 expressionType])
+        if ([rightExpression2 expressionType])
         {
-          v27 = v46;
+          rightExpression = rightExpression2;
 LABEL_60:
-          v56 = v90;
+          v56 = predicateOperatorType;
           goto LABEL_61;
         }
 
-        v60 = [v46 constantValue];
+        constantValue4 = [rightExpression2 constantValue];
         objc_opt_class();
         v61 = objc_opt_isKindOfClass();
 
         if (v61)
         {
-          v62 = [v46 constantValue];
-          v92 = [v62 hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
-          v63 = [v62 hmf_numberForKey:*MEMORY[0x277CD25F8]];
+          constantValue5 = [rightExpression2 constantValue];
+          v92 = [constantValue5 hmf_UUIDForKey:*MEMORY[0x277CCF0B0]];
+          v63 = [constantValue5 hmf_numberForKey:*MEMORY[0x277CD25F8]];
           v87 = HAPInstanceIDFromValue();
 
-          v84 = v62;
-          v64 = [v62 hmf_numberForKey:*MEMORY[0x277CD2140]];
+          v84 = constantValue5;
+          v64 = [constantValue5 hmf_numberForKey:*MEMORY[0x277CD2140]];
           v65 = HAPInstanceIDFromValue();
 
           v66 = [v95 accessoryWithUUID:v92];
@@ -1144,15 +1144,15 @@ LABEL_60:
             v69 = v68;
             v70 = [v68 findCharacteristic:v65 forService:v87];
             v71 = v70;
-            if (a4 && v70)
+            if (inPredicate && v70)
             {
               v72 = v70;
-              *a4 = v71;
-              v73 = [v11 objectForKey:v69];
+              *inPredicate = v71;
+              v73 = [readCopy objectForKey:v69];
               if (!v73)
               {
                 v73 = [MEMORY[0x277CBEB58] set];
-                [v11 setObject:v73 forKey:v69];
+                [readCopy setObject:v73 forKey:v69];
               }
 
               [v73 addObject:v71];
@@ -1165,91 +1165,91 @@ LABEL_60:
           goto LABEL_62;
         }
 
-        v27 = v46;
+        rightExpression = rightExpression2;
 LABEL_59:
         v24 = 0x277CCA000uLL;
         goto LABEL_60;
       }
     }
 
-    if ([v28 expressionType] == 3)
+    if ([leftExpression expressionType] == 3)
     {
-      v47 = [v28 keyPath];
-      v48 = [v47 isEqualToString:*MEMORY[0x277CCFBD0]];
+      keyPath2 = [leftExpression keyPath];
+      v48 = [keyPath2 isEqualToString:*MEMORY[0x277CCFBD0]];
 
       if (v48)
       {
-        v46 = [v23 rightExpression];
+        rightExpression2 = [v23 rightExpression];
 
-        v49 = [v46 expressionType];
+        expressionType = [rightExpression2 expressionType];
         v50 = 0;
-        if (!a4 || v49)
+        if (!inPredicate || expressionType)
         {
           goto LABEL_62;
         }
 
-        v91 = v10;
-        v51 = *a4;
-        if (!*a4)
+        v91 = predicateCopy;
+        v51 = *inPredicate;
+        if (!*inPredicate)
         {
           v50 = 0;
-          v10 = v91;
+          predicateCopy = v91;
           goto LABEL_62;
         }
 
         v52 = MEMORY[0x277CCA9C0];
-        v53 = [v46 constantValue];
+        constantValue6 = [rightExpression2 constantValue];
         v54 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v23, "predicateOperatorType")}];
-        v55 = [v52 expressionWithFormat:@"FUNCTION($THIS_OBJECT, 'compareValueOfCharacteristic:againstValue:operatorType:', %@, %@, %@)", v51, v53, v54];
+        v55 = [v52 expressionWithFormat:@"FUNCTION($THIS_OBJECT, 'compareValueOfCharacteristic:againstValue:operatorType:', %@, %@, %@)", v51, constantValue6, v54];
 
-        v27 = [MEMORY[0x277CCA9C0] expressionForConstantValue:MEMORY[0x277CBEC38]];
+        rightExpression = [MEMORY[0x277CCA9C0] expressionForConstantValue:MEMORY[0x277CBEC38]];
 
-        *a4 = 0;
+        *inPredicate = 0;
         v56 = 4;
-        v28 = v55;
-        v10 = v91;
+        leftExpression = v55;
+        predicateCopy = v91;
         goto LABEL_68;
       }
     }
 
-    if ([v28 expressionType] != 3)
+    if ([leftExpression expressionType] != 3)
     {
       goto LABEL_59;
     }
 
-    v57 = [v28 keyPath];
-    v58 = [v57 isEqualToString:*MEMORY[0x277CD0C40]];
+    keyPath3 = [leftExpression keyPath];
+    v58 = [keyPath3 isEqualToString:*MEMORY[0x277CD0C40]];
 
     v24 = 0x277CCA000;
-    v56 = v90;
+    v56 = predicateOperatorType;
     if (v58)
     {
-      v59 = [v23 rightExpression];
+      rightExpression3 = [v23 rightExpression];
 
-      if (![v59 expressionType])
+      if (![rightExpression3 expressionType])
       {
-        v74 = [v59 constantValue];
+        constantValue7 = [rightExpression3 constantValue];
         objc_opt_class();
         v75 = objc_opt_isKindOfClass();
 
         if (v75)
         {
-          v93 = [v59 constantValue];
-          v88 = [HMDPresenceEventModel eventModelWithDictionary:v93 home:v95 eventTriggerUUID:0 message:0];
+          constantValue8 = [rightExpression3 constantValue];
+          v88 = [HMDPresenceEventModel eventModelWithDictionary:constantValue8 home:v95 eventTriggerUUID:0 message:0];
           v76 = [[HMDPresenceEvent alloc] initWithModel:v88 home:v95];
           v77 = MEMORY[0x277CCA9C0];
           v78 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v23, "predicateOperatorType")}];
-          v79 = [v77 expressionWithFormat:@"FUNCTION($THIS_OBJECT, 'comparePresence:operatorType:homePresence:', %@, %@, %@)", v76, v78, v12];
+          presenceCopy = [v77 expressionWithFormat:@"FUNCTION($THIS_OBJECT, 'comparePresence:operatorType:homePresence:', %@, %@, %@)", v76, v78, presenceCopy];
 
-          v27 = [MEMORY[0x277CCA9C0] expressionForConstantValue:MEMORY[0x277CBEC38]];
+          rightExpression = [MEMORY[0x277CCA9C0] expressionForConstantValue:MEMORY[0x277CBEC38]];
 
-          v28 = v79;
+          leftExpression = presenceCopy;
           v56 = 4;
         }
 
         else
         {
-          v27 = v59;
+          rightExpression = rightExpression3;
         }
 
 LABEL_68:
@@ -1257,30 +1257,30 @@ LABEL_68:
         goto LABEL_61;
       }
 
-      v27 = v59;
+      rightExpression = rightExpression3;
     }
 
 LABEL_61:
-    v50 = [objc_alloc(*(v24 + 2328)) initWithLeftExpression:v28 rightExpression:v27 modifier:objc_msgSend(v23 type:"comparisonPredicateModifier") options:{v56, objc_msgSend(v23, "options")}];
-    v46 = v27;
+    v50 = [objc_alloc(*(v24 + 2328)) initWithLeftExpression:leftExpression rightExpression:rightExpression modifier:objc_msgSend(v23 type:"comparisonPredicateModifier") options:{v56, objc_msgSend(v23, "options")}];
+    rightExpression2 = rightExpression;
 LABEL_62:
 
     v23 = v50;
-    v13 = v95;
+    home = v95;
     goto LABEL_63;
   }
 
-  v89 = v10;
-  v94 = v13;
-  v14 = v10;
-  v15 = [MEMORY[0x277CBEB18] array];
+  v89 = predicateCopy;
+  v94 = home;
+  v14 = predicateCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
   v85 = v14;
-  v16 = [v14 subpredicates];
-  v17 = [v16 countByEnumeratingWithState:&v96 objects:v100 count:16];
+  subpredicates = [v14 subpredicates];
+  v17 = [subpredicates countByEnumeratingWithState:&v96 objects:v100 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1291,37 +1291,37 @@ LABEL_62:
       {
         if (*v97 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(subpredicates);
         }
 
-        v21 = [(HMDPredicateUtilities *)self rewritePredicate:*(*(&v96 + 1) + 8 * i) currentCharacteristicInPredicate:a4 characteristicsToRead:v11 homePresence:v12];
+        v21 = [(HMDPredicateUtilities *)self rewritePredicate:*(*(&v96 + 1) + 8 * i) currentCharacteristicInPredicate:inPredicate characteristicsToRead:readCopy homePresence:presenceCopy];
         if (v21)
         {
-          [v15 addObject:v21];
+          [array addObject:v21];
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v96 objects:v100 count:16];
+      v18 = [subpredicates countByEnumeratingWithState:&v96 objects:v100 count:16];
     }
 
     while (v18);
   }
 
-  if ([v15 count])
+  if ([array count])
   {
     v22 = v85;
-    v23 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:objc_msgSend(v85 subpredicates:{"compoundPredicateType"), v15}];
-    v13 = v94;
+    v23 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:objc_msgSend(v85 subpredicates:{"compoundPredicateType"), array}];
+    home = v94;
   }
 
   else
   {
     v23 = 0;
-    v13 = v94;
+    home = v94;
     v22 = v85;
   }
 
-  v10 = v89;
+  predicateCopy = v89;
 LABEL_63:
 
   v80 = *MEMORY[0x277D85DE8];
@@ -1332,22 +1332,22 @@ LABEL_63:
 - (id)sunset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPredicateUtilities *)self home];
-  v4 = [v3 homeLocationHandler];
-  v5 = [v4 location];
-  v6 = [HMDLocation sunsetTimeForLocation:v5];
+  home = [(HMDPredicateUtilities *)self home];
+  homeLocationHandler = [home homeLocationHandler];
+  location = [homeLocationHandler location];
+  v6 = [HMDLocation sunsetTimeForLocation:location];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 hmf_localTimeDescription];
+    hmf_localTimeDescription = [v6 hmf_localTimeDescription];
     v14 = 138543618;
     v15 = v10;
     v16 = 2112;
-    v17 = v11;
+    v17 = hmf_localTimeDescription;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Sunset time: %@", &v14, 0x16u);
   }
 
@@ -1360,22 +1360,22 @@ LABEL_63:
 - (id)sunrise
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPredicateUtilities *)self home];
-  v4 = [v3 homeLocationHandler];
-  v5 = [v4 location];
-  v6 = [HMDLocation sunriseTimeForLocation:v5];
+  home = [(HMDPredicateUtilities *)self home];
+  homeLocationHandler = [home homeLocationHandler];
+  location = [homeLocationHandler location];
+  v6 = [HMDLocation sunriseTimeForLocation:location];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 hmf_localTimeDescription];
+    hmf_localTimeDescription = [v6 hmf_localTimeDescription];
     v14 = 138543618;
     v15 = v10;
     v16 = 2112;
-    v17 = v11;
+    v17 = hmf_localTimeDescription;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Sunrise time: %@", &v14, 0x16u);
   }
 
@@ -1385,22 +1385,22 @@ LABEL_63:
   return v6;
 }
 
-- (HMDPredicateUtilities)initWithHome:(id)a3 logIdentifier:(id)a4 homePresenceProvider:(id)a5
+- (HMDPredicateUtilities)initWithHome:(id)home logIdentifier:(id)identifier homePresenceProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  homeCopy = home;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  if (providerCopy)
   {
-    v11 = v10;
+    v11 = providerCopy;
     v23.receiver = self;
     v23.super_class = HMDPredicateUtilities;
     v12 = [(HMDPredicateUtilities *)&v23 init];
     v13 = v12;
     if (v12)
     {
-      objc_storeWeak(&v12->_home, v8);
-      v14 = [v9 copy];
+      objc_storeWeak(&v12->_home, homeCopy);
+      v14 = [identifierCopy copy];
       logIdentifier = v13->_logIdentifier;
       v13->_logIdentifier = v14;
 
@@ -1427,15 +1427,15 @@ id __52__HMDPredicateUtilities_initWithHome_logIdentifier___block_invoke(uint64_
   return v3;
 }
 
-+ (id)unarchiveFromData:(id)a3 error:(id *)a4
++ (id)unarchiveFromData:(id)data error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
   v20 = 0;
-  v10 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v9 fromData:v6 error:&v20];
+  v10 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v9 fromData:dataCopy error:&v20];
   v11 = v20;
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -1445,7 +1445,7 @@ id __52__HMDPredicateUtilities_initWithHome_logIdentifier___block_invoke(uint64_
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = a1;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -1458,11 +1458,11 @@ id __52__HMDPredicateUtilities_initWithHome_logIdentifier___block_invoke(uint64_
     }
 
     objc_autoreleasePoolPop(v13);
-    if (a4)
+    if (error)
     {
       v17 = v11;
       v12 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -1476,27 +1476,27 @@ id __52__HMDPredicateUtilities_initWithHome_logIdentifier___block_invoke(uint64_
   return v12;
 }
 
-+ (id)filteredPredicate:(id)a3 withUserUUIDs:(id)a4
++ (id)filteredPredicate:(id)predicate withUserUUIDs:(id)ds
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  dsCopy = ds;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [MEMORY[0x277CBEB18] array];
+    v8 = predicateCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v10 = [v8 subpredicates];
-    v11 = [v10 countByEnumeratingWithState:&v47 objects:v51 count:16];
+    subpredicates = [v8 subpredicates];
+    v11 = [subpredicates countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v11)
     {
       v12 = v11;
       v41 = v8;
-      v43 = v6;
+      v43 = predicateCopy;
       v13 = 0;
       v14 = *v48;
       do
@@ -1505,35 +1505,35 @@ id __52__HMDPredicateUtilities_initWithHome_logIdentifier___block_invoke(uint64_
         {
           if (*v48 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(subpredicates);
           }
 
           v16 = *(*(&v47 + 1) + 8 * i);
-          v17 = [a1 filteredPredicate:v16 withUserUUIDs:v7];
+          v17 = [self filteredPredicate:v16 withUserUUIDs:dsCopy];
           if (v17)
           {
-            [v9 addObject:v17];
+            [array addObject:v17];
           }
 
           v13 |= v17 != v16;
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v47 objects:v51 count:16];
+        v12 = [subpredicates countByEnumeratingWithState:&v47 objects:v51 count:16];
       }
 
       while (v12);
 
       v8 = v41;
-      v6 = v43;
+      predicateCopy = v43;
       if (v13)
       {
-        if (![v9 count])
+        if (![array count])
         {
           v37 = 0;
           goto LABEL_26;
         }
 
-        v18 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:objc_msgSend(v41 subpredicates:{"compoundPredicateType"), v9}];
+        v18 = [objc_alloc(MEMORY[0x277CCA920]) initWithType:objc_msgSend(v41 subpredicates:{"compoundPredicateType"), array}];
 LABEL_25:
         v37 = v18;
 LABEL_26:
@@ -1553,35 +1553,35 @@ LABEL_26:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [v8 leftExpression];
-    if ([v9 expressionType] == 3)
+    v8 = predicateCopy;
+    array = [v8 leftExpression];
+    if ([array expressionType] == 3)
     {
-      v19 = [v9 keyPath];
-      v20 = [v19 isEqualToString:*MEMORY[0x277CD0C40]];
+      keyPath = [array keyPath];
+      v20 = [keyPath isEqualToString:*MEMORY[0x277CD0C40]];
 
       if (v20)
       {
-        v21 = [v8 rightExpression];
-        if (![v21 expressionType])
+        rightExpression = [v8 rightExpression];
+        if (![rightExpression expressionType])
         {
-          v22 = [v21 constantValue];
+          constantValue = [rightExpression constantValue];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v24 = [v21 constantValue];
+            constantValue2 = [rightExpression constantValue];
             v25 = *MEMORY[0x277CD24D0];
-            v26 = [v24 hmf_arrayForKey:*MEMORY[0x277CD24D0]];
+            v26 = [constantValue2 hmf_arrayForKey:*MEMORY[0x277CD24D0]];
             if ([v26 count])
             {
-              v44 = v24;
+              v44 = constantValue2;
               v45[0] = MEMORY[0x277D85DD0];
               v45[1] = 3221225472;
               v45[2] = __57__HMDPredicateUtilities_filteredPredicate_withUserUUIDs___block_invoke;
               v45[3] = &unk_27972D738;
-              v46 = v7;
+              v46 = dsCopy;
               v27 = [v26 hmf_objectsPassingTest:v45];
               v28 = [v27 count];
               if (v28 < [v26 count])
@@ -1596,12 +1596,12 @@ LABEL_26:
 
                   v31 = v44;
                   v32 = objc_alloc(MEMORY[0x277CCA918]);
-                  v33 = [v8 comparisonPredicateModifier];
-                  v34 = [v8 predicateOperatorType];
-                  v35 = [v8 options];
+                  comparisonPredicateModifier = [v8 comparisonPredicateModifier];
+                  predicateOperatorType = [v8 predicateOperatorType];
+                  options = [v8 options];
                   v36 = v32;
-                  v21 = v40;
-                  v37 = [v36 initWithLeftExpression:v9 rightExpression:v40 modifier:v33 type:v34 options:v35];
+                  rightExpression = v40;
+                  v37 = [v36 initWithLeftExpression:array rightExpression:v40 modifier:comparisonPredicateModifier type:predicateOperatorType options:options];
                 }
 
                 else
@@ -1613,7 +1613,7 @@ LABEL_26:
                 goto LABEL_26;
               }
 
-              v24 = v44;
+              constantValue2 = v44;
             }
           }
         }
@@ -1621,7 +1621,7 @@ LABEL_26:
     }
   }
 
-  v37 = v6;
+  v37 = predicateCopy;
 LABEL_33:
 
   v38 = *MEMORY[0x277D85DE8];
@@ -1662,11 +1662,11 @@ uint64_t __36__HMDPredicateUtilities_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)encodePredicate:(id)a3 error:(id *)a4
++ (id)encodePredicate:(id)predicate error:(id *)error
 {
-  if (a3)
+  if (predicate)
   {
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:a4];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:predicate requiringSecureCoding:1 error:error];
   }
 
   else
@@ -1677,14 +1677,14 @@ uint64_t __36__HMDPredicateUtilities_logCategory__block_invoke()
   return v5;
 }
 
-+ (id)decodePredicateFromData:(id)a3 error:(id *)a4
++ (id)decodePredicateFromData:(id)data error:(id *)error
 {
-  if (a3)
+  if (data)
   {
     v6 = MEMORY[0x277CCAAC8];
-    v7 = a3;
-    v8 = [a1 predicateCodingClasses];
-    v9 = [v6 unarchivedObjectOfClasses:v8 fromData:v7 error:a4];
+    dataCopy = data;
+    predicateCodingClasses = [self predicateCodingClasses];
+    v9 = [v6 unarchivedObjectOfClasses:predicateCodingClasses fromData:dataCopy error:error];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1692,10 +1692,10 @@ uint64_t __36__HMDPredicateUtilities_logCategory__block_invoke()
       v10 = v9;
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] hmErrorWithCode:22];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else

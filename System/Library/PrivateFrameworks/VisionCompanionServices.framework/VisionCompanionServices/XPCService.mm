@@ -1,18 +1,18 @@
 @interface XPCService
-- (void)transport:(unsigned int)a3 completionHandler:(id)a4;
-- (void)transport:(unsigned int)a3 data:(NSData *)a4 completionHandler:(id)a5;
+- (void)transport:(unsigned int)transport completionHandler:(id)handler;
+- (void)transport:(unsigned int)transport data:(NSData *)data completionHandler:(id)handler;
 @end
 
 @implementation XPCService
 
-- (void)transport:(unsigned int)a3 completionHandler:(id)a4
+- (void)transport:(unsigned int)transport completionHandler:(id)handler
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_280870F78, &qword_270FFA558) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  *(v11 + 16) = a3;
+  *(v11 + 16) = transport;
   *(v11 + 24) = v10;
   *(v11 + 32) = self;
   v12 = sub_270FF8B58();
@@ -31,15 +31,15 @@
   sub_270FEB920(0, 0, v9, &unk_270FFA5C0, v14);
 }
 
-- (void)transport:(unsigned int)a3 data:(NSData *)a4 completionHandler:(id)a5
+- (void)transport:(unsigned int)transport data:(NSData *)data completionHandler:(id)handler
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_280870F78, &qword_270FFA558) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = transport;
+  *(v13 + 24) = data;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_270FF8B58();
@@ -54,7 +54,7 @@
   v16[3] = 0;
   v16[4] = &unk_270FFA578;
   v16[5] = v15;
-  v17 = a4;
+  dataCopy = data;
 
   sub_270FEB920(0, 0, v11, &unk_270FFA588, v16);
 }

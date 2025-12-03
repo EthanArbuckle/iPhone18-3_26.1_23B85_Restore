@@ -1,13 +1,13 @@
 @interface BWBracketSettings
-+ (id)bracketSettingsForBracketingMode:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BWBracketSettings)initWithCoder:(id)a3;
++ (id)bracketSettingsForBracketingMode:(int)mode;
+- (BOOL)isEqual:(id)equal;
+- (BWBracketSettings)initWithCoder:(id)coder;
 - (id)description;
 - (int)bracketFrameCount;
 - (uint64_t)classesForExposureValues;
 - (uint64_t)classesForManualExposureBracketedCaptureParams;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWBracketSettings
@@ -19,37 +19,37 @@
   [(BWBracketSettings *)&v3 dealloc];
 }
 
-- (BWBracketSettings)initWithCoder:(id)a3
+- (BWBracketSettings)initWithCoder:(id)coder
 {
   v4 = [(BWBracketSettings *)self init];
   if (v4)
   {
-    v4->_bracketingMode = [a3 decodeInt32ForKey:@"bracketingMode"];
-    v4->_providePreBracketedEV0 = [a3 decodeBoolForKey:@"providePreBracketedEV0"];
-    v4->_lensStabilizationEnabledForClientBracket = [a3 decodeBoolForKey:@"lensStabilizationEnabledForClientBracket"];
-    v4->_exposureValues = [a3 decodeObjectOfClasses:-[BWBracketSettings classesForExposureValues](v4) forKey:@"exposureValues"];
-    v4->_manualExposureBracketedCaptureParams = [a3 decodeObjectOfClasses:-[BWBracketSettings classesForManualExposureBracketedCaptureParams](v4) forKey:@"manualExposureBracketedCaptureParams"];
-    v4->_oisBracketedCaptureParams = [a3 decodeObjectOfClasses:-[BWBracketSettings classesForManualExposureBracketedCaptureParams](v4) forKey:@"oisBracketedCaptureParams"];
+    v4->_bracketingMode = [coder decodeInt32ForKey:@"bracketingMode"];
+    v4->_providePreBracketedEV0 = [coder decodeBoolForKey:@"providePreBracketedEV0"];
+    v4->_lensStabilizationEnabledForClientBracket = [coder decodeBoolForKey:@"lensStabilizationEnabledForClientBracket"];
+    v4->_exposureValues = [coder decodeObjectOfClasses:-[BWBracketSettings classesForExposureValues](v4) forKey:@"exposureValues"];
+    v4->_manualExposureBracketedCaptureParams = [coder decodeObjectOfClasses:-[BWBracketSettings classesForManualExposureBracketedCaptureParams](v4) forKey:@"manualExposureBracketedCaptureParams"];
+    v4->_oisBracketedCaptureParams = [coder decodeObjectOfClasses:-[BWBracketSettings classesForManualExposureBracketedCaptureParams](v4) forKey:@"oisBracketedCaptureParams"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt32:self->_bracketingMode forKey:@"bracketingMode"];
-  [a3 encodeBool:self->_providePreBracketedEV0 forKey:@"providePreBracketedEV0"];
-  [a3 encodeBool:self->_lensStabilizationEnabledForClientBracket forKey:@"lensStabilizationEnabledForClientBracket"];
-  [a3 encodeObject:self->_exposureValues forKey:@"exposureValues"];
-  [a3 encodeObject:self->_manualExposureBracketedCaptureParams forKey:@"manualExposureBracketedCaptureParams"];
+  [coder encodeInt32:self->_bracketingMode forKey:@"bracketingMode"];
+  [coder encodeBool:self->_providePreBracketedEV0 forKey:@"providePreBracketedEV0"];
+  [coder encodeBool:self->_lensStabilizationEnabledForClientBracket forKey:@"lensStabilizationEnabledForClientBracket"];
+  [coder encodeObject:self->_exposureValues forKey:@"exposureValues"];
+  [coder encodeObject:self->_manualExposureBracketedCaptureParams forKey:@"manualExposureBracketedCaptureParams"];
   oisBracketedCaptureParams = self->_oisBracketedCaptureParams;
 
-  [a3 encodeObject:oisBracketedCaptureParams forKey:@"oisBracketedCaptureParams"];
+  [coder encodeObject:oisBracketedCaptureParams forKey:@"oisBracketedCaptureParams"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v15) = 1;
   }
@@ -60,16 +60,16 @@
     v20 = v4;
     v21 = v3;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (bracketingMode = self->_bracketingMode, bracketingMode == [a3 bracketingMode]) && (providePreBracketedEV0 = self->_providePreBracketedEV0, providePreBracketedEV0 == objc_msgSend(a3, "providePreBracketedEV0")) && (lensStabilizationEnabledForClientBracket = self->_lensStabilizationEnabledForClientBracket, lensStabilizationEnabledForClientBracket == objc_msgSend(a3, "lensStabilizationEnabledForClientBracket")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (bracketingMode = self->_bracketingMode, bracketingMode == [equal bracketingMode]) && (providePreBracketedEV0 = self->_providePreBracketedEV0, providePreBracketedEV0 == objc_msgSend(equal, "providePreBracketedEV0")) && (lensStabilizationEnabledForClientBracket = self->_lensStabilizationEnabledForClientBracket, lensStabilizationEnabledForClientBracket == objc_msgSend(equal, "lensStabilizationEnabledForClientBracket")))
     {
       exposureValues = self->_exposureValues;
-      if (exposureValues == [a3 exposureValues] || (v15 = -[NSArray isEqual:](self->_exposureValues, "isEqual:", objc_msgSend(a3, "exposureValues"))) != 0)
+      if (exposureValues == [equal exposureValues] || (v15 = -[NSArray isEqual:](self->_exposureValues, "isEqual:", objc_msgSend(equal, "exposureValues"))) != 0)
       {
         manualExposureBracketedCaptureParams = self->_manualExposureBracketedCaptureParams;
-        if (manualExposureBracketedCaptureParams == [a3 manualExposureBracketedCaptureParams] || (v15 = -[NSArray isEqual:](self->_manualExposureBracketedCaptureParams, "isEqual:", objc_msgSend(a3, "manualExposureBracketedCaptureParams"))) != 0)
+        if (manualExposureBracketedCaptureParams == [equal manualExposureBracketedCaptureParams] || (v15 = -[NSArray isEqual:](self->_manualExposureBracketedCaptureParams, "isEqual:", objc_msgSend(equal, "manualExposureBracketedCaptureParams"))) != 0)
         {
           oisBracketedCaptureParams = self->_oisBracketedCaptureParams;
-          if (oisBracketedCaptureParams == [a3 oisBracketedCaptureParams] || (v15 = -[NSDictionary isEqual:](self->_oisBracketedCaptureParams, "isEqual:", objc_msgSend(a3, "oisBracketedCaptureParams"))) != 0)
+          if (oisBracketedCaptureParams == [equal oisBracketedCaptureParams] || (v15 = -[NSDictionary isEqual:](self->_oisBracketedCaptureParams, "isEqual:", objc_msgSend(equal, "oisBracketedCaptureParams"))) != 0)
           {
             LOBYTE(v15) = 1;
           }
@@ -95,17 +95,17 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p>: pre-bracket: %d, frame count: %d, bracketingMode: %@", v5, self, self->_providePreBracketedEV0, -[BWBracketSettings bracketFrameCount](self, "bracketFrameCount"), BWPhotoEncoderStringFromEncodingScheme(self->_bracketingMode)];
+  [string appendFormat:@"<%@ %p>: pre-bracket: %d, frame count: %d, bracketingMode: %@", v5, self, self->_providePreBracketedEV0, -[BWBracketSettings bracketFrameCount](self, "bracketFrameCount"), BWPhotoEncoderStringFromEncodingScheme(self->_bracketingMode)];
   exposureValues = self->_exposureValues;
   if (exposureValues)
   {
     v7 = @", exposureValues: %@";
 LABEL_7:
-    [v3 appendFormat:v7, objc_msgSend(exposureValues, "description")];
-    return v3;
+    [string appendFormat:v7, objc_msgSend(exposureValues, "description")];
+    return string;
   }
 
   exposureValues = self->_oisBracketedCaptureParams;
@@ -122,10 +122,10 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  return v3;
+  return string;
 }
 
-+ (id)bracketSettingsForBracketingMode:(int)a3
++ (id)bracketSettingsForBracketingMode:(int)mode
 {
   v4 = [BWBracketSettings alloc];
   if (v4)
@@ -135,7 +135,7 @@ LABEL_7:
     v4 = objc_msgSendSuper2(&v6, sel_init);
     if (v4)
     {
-      v4->_bracketingMode = a3;
+      v4->_bracketingMode = mode;
     }
   }
 

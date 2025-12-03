@@ -1,6 +1,6 @@
 @interface AVEventManagerBlockAction
-- (AVEventManagerBlockAction)initWithBlock:(id)a3 event:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (AVEventManagerBlockAction)initWithBlock:(id)block event:(id)event;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -14,10 +14,10 @@
   return [(AVEventManagerBlockAction *)&v5 hash]& v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -27,7 +27,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8.receiver = self;
       v8.super_class = AVEventManagerBlockAction;
       if ([(AVEventManagerAction *)&v8 isEqual:v5])
@@ -50,15 +50,15 @@
   return v6;
 }
 
-- (AVEventManagerBlockAction)initWithBlock:(id)a3 event:(id)a4
+- (AVEventManagerBlockAction)initWithBlock:(id)block event:(id)event
 {
-  v6 = a3;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = AVEventManagerBlockAction;
-  v7 = [(AVEventManagerAction *)&v11 initWithEvent:a4];
+  v7 = [(AVEventManagerAction *)&v11 initWithEvent:event];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(blockCopy);
     block = v7->_block;
     v7->_block = v8;
   }

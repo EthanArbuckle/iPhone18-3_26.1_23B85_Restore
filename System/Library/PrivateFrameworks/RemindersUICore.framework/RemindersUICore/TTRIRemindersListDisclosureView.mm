@@ -1,12 +1,12 @@
 @interface TTRIRemindersListDisclosureView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIColor)tintColor;
-- (_TtC15RemindersUICore31TTRIRemindersListDisclosureView)initWithArrangedSubviews:(id)a3;
-- (_TtC15RemindersUICore31TTRIRemindersListDisclosureView)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICore31TTRIRemindersListDisclosureView)initWithArrangedSubviews:(id)subviews;
+- (_TtC15RemindersUICore31TTRIRemindersListDisclosureView)initWithFrame:(CGRect)frame;
 - (void)buttonShapesSettingDidChange;
 - (void)dealloc;
-- (void)setTintColor:(id)a3;
-- (void)subtaskDisclosureButtonAction:(id)a3;
+- (void)setTintColor:(id)color;
+- (void)subtaskDisclosureButtonAction:(id)action;
 @end
 
 @implementation TTRIRemindersListDisclosureView
@@ -15,29 +15,29 @@
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  v2 = [(TTRIRemindersListDisclosureView *)&v4 tintColor];
+  tintColor = [(TTRIRemindersListDisclosureView *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   ObjectType = swift_getObjectType();
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v6 = a3;
-  v7 = self;
-  [(TTRIRemindersListDisclosureView *)&v14 setTintColor:v6];
-  v8 = *(&v7->super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore31TTRIRemindersListDisclosureView_collapsed);
-  v13.receiver = v7;
+  colorCopy = color;
+  selfCopy = self;
+  [(TTRIRemindersListDisclosureView *)&v14 setTintColor:colorCopy];
+  v8 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore31TTRIRemindersListDisclosureView_collapsed);
+  v13.receiver = selfCopy;
   v13.super_class = ObjectType;
-  v9 = [(TTRIRemindersListDisclosureView *)&v13 tintColor];
+  tintColor = [(TTRIRemindersListDisclosureView *)&v13 tintColor];
   [v8 setTintColor_];
 
-  v10 = *(&v7->super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore31TTRIRemindersListDisclosureView_expanded);
-  v12.receiver = v7;
+  v10 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore31TTRIRemindersListDisclosureView_expanded);
+  v12.receiver = selfCopy;
   v12.super_class = ObjectType;
-  v11 = [(TTRIRemindersListDisclosureView *)&v12 tintColor];
+  tintColor2 = [(TTRIRemindersListDisclosureView *)&v12 tintColor];
   [v10 setTintColor_];
 }
 
@@ -45,33 +45,33 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:v5 name:*MEMORY[0x277D76450] object:0];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:*MEMORY[0x277D76450] object:0];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(NUIContainerBoxView *)&v7 dealloc];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v11.value.super.isa = v4;
-  LOBYTE(v4) = NUIContainerView.ttr_pointIncludingExpandedHitTestInsets(inside:with:)(__PAIR128__(*&y, *&x), v11);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  v11.value.super.isa = eventCopy;
+  LOBYTE(eventCopy) = NUIContainerView.ttr_pointIncludingExpandedHitTestInsets(inside:with:)(__PAIR128__(*&y, *&x), v11);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
-- (void)subtaskDisclosureButtonAction:(id)a3
+- (void)subtaskDisclosureButtonAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_21DBFBC1C();
     swift_unknownObjectRelease();
@@ -80,7 +80,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = self + OBJC_IVAR____TtC15RemindersUICore31TTRIRemindersListDisclosureView_actionDelegate;
@@ -103,18 +103,18 @@
 
 - (void)buttonShapesSettingDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D55DB60();
 }
 
-- (_TtC15RemindersUICore31TTRIRemindersListDisclosureView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore31TTRIRemindersListDisclosureView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore31TTRIRemindersListDisclosureView)initWithArrangedSubviews:(id)a3
+- (_TtC15RemindersUICore31TTRIRemindersListDisclosureView)initWithArrangedSubviews:(id)subviews
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

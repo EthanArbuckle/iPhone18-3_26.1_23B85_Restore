@@ -1,6 +1,6 @@
 @interface SFShadowView
-- (SFShadowView)initWithFrame:(CGRect)a3;
-- (void)setVibrancyEnabled:(BOOL)a3;
+- (SFShadowView)initWithFrame:(CGRect)frame;
+- (void)setVibrancyEnabled:(BOOL)enabled;
 - (void)updateAppearance;
 @end
 
@@ -12,8 +12,8 @@
   vibrancyEnabled = self->_vibrancyEnabled;
   if (vibrancyEnabled)
   {
-    v2 = [(SFShadowView *)self traitCollection];
-    if ([v2 userInterfaceStyle] == 2)
+    traitCollection = [(SFShadowView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       v5 = &darkColorMatrix;
     }
@@ -48,20 +48,20 @@
     v6 = MEMORY[0x1E695E0F0];
   }
 
-  v11 = [(SFShadowView *)self layer];
-  [v11 setFilters:v6];
+  layer = [(SFShadowView *)self layer];
+  [layer setFilters:v6];
 
   if (vibrancyEnabled)
   {
   }
 }
 
-- (SFShadowView)initWithFrame:(CGRect)a3
+- (SFShadowView)initWithFrame:(CGRect)frame
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = SFShadowView;
-  v3 = [(SFShadowView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFShadowView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (shadowImage_onceToken_1 != -1)
@@ -92,11 +92,11 @@
   return v3;
 }
 
-- (void)setVibrancyEnabled:(BOOL)a3
+- (void)setVibrancyEnabled:(BOOL)enabled
 {
-  if (self->_vibrancyEnabled != a3)
+  if (self->_vibrancyEnabled != enabled)
   {
-    self->_vibrancyEnabled = a3;
+    self->_vibrancyEnabled = enabled;
     [(SFShadowView *)self updateAppearance];
   }
 }

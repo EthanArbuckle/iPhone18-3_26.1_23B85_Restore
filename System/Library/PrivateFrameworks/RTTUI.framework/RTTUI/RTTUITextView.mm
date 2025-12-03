@@ -2,53 +2,53 @@
 - (BOOL)_isKeyboardPredictionsEnabled;
 - (BOOL)_shouldShowTTYPredictions;
 - (BOOL)disableInputBars;
-- (RTTUITextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (RTTUITextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (double)ttyBarHeight;
 - (float)_predictionsCellBuffer;
 - (float)_predictionsCellHeight;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)inputAccessoryView;
 - (id)keyCommands;
 - (int)_predictionsPerPage;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (unint64_t)accessibilityTraits;
-- (void)_didPanPredictions:(id)a3;
-- (void)_didSwipeLeft:(id)a3;
-- (void)_inlineTTYAbbreviationSelected:(id)a3;
+- (void)_didPanPredictions:(id)predictions;
+- (void)_didSwipeLeft:(id)left;
+- (void)_inlineTTYAbbreviationSelected:(id)selected;
 - (void)_insertWhitespaceIfNeeded;
-- (void)_kbFrameChanged:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
+- (void)_kbFrameChanged:(id)changed;
+- (void)_keyboardWillHide:(id)hide;
 - (void)_loadTTYAbbreviations;
 - (void)_resetTTYBarPosition;
 - (void)_setupOverlayPredictions;
-- (void)_showInlineRTTAbbreviations:(BOOL)a3;
-- (void)_tapTTYBarCell:(id)a3;
+- (void)_showInlineRTTAbbreviations:(BOOL)abbreviations;
+- (void)_tapTTYBarCell:(id)cell;
 - (void)_updateBlackBarPositioning;
 - (void)_updateTTYBarFrame;
 - (void)_updateTTYBarPosition;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)overrideTTYPredictionsHidden:(BOOL)a3;
-- (void)setShowTTYPredictions:(BOOL)a3;
+- (void)overrideTTYPredictionsHidden:(BOOL)hidden;
+- (void)setShowTTYPredictions:(BOOL)predictions;
 - (void)updateTTYBar;
 @end
 
 @implementation RTTUITextView
 
-- (RTTUITextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (RTTUITextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = RTTUITextView;
-  v4 = [(RTTUITextView *)&v9 initWithFrame:a4 textContainer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(RTTUITextView *)&v9 initWithFrame:container textContainer:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
     [(RTTUITextView *)v4 setKeyboardType:1];
     [(RTTUITextView *)v5 _loadTTYAbbreviations];
-    v6 = [MEMORY[0x277D440D8] sharedInstance];
-    v7 = [v6 rttInlineAbbreviationBarEnabled];
+    mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+    rttInlineAbbreviationBarEnabled = [mEMORY[0x277D440D8] rttInlineAbbreviationBarEnabled];
 
-    if (v7)
+    if (rttInlineAbbreviationBarEnabled)
     {
       [(RTTUITextView *)v5 _showInlineRTTAbbreviations:1];
     }
@@ -66,8 +66,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(RTTUITextView *)self setPredictionsCollectionView:0];
   [(RTTUITextView *)self setTtyAbbreviations:0];
@@ -78,11 +78,11 @@
 
 - (void)_setupOverlayPredictions
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__kbFrameChanged_ name:*MEMORY[0x277D76C48] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__kbFrameChanged_ name:*MEMORY[0x277D76C48] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 
   self->_currentKeyboardWidth = -1.0;
   v5 = objc_alloc_init(MEMORY[0x277D752F0]);
@@ -96,24 +96,24 @@
   [(RTTUITextView *)self _predictionsCellHeight];
   v24 = [v7 initWithFrame:self->_flowLayout collectionViewLayout:{0.0, 0.0, 768.0, v8}];
   [(RTTUITextView *)self setPredictionsCollectionView:v24];
-  v9 = [(RTTUITextView *)self predictionsCollectionView];
-  [v9 setDataSource:self];
+  predictionsCollectionView = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView setDataSource:self];
 
   v10 = [MEMORY[0x277D75348] colorWithRed:0.5 green:0.5 blue:0.5 alpha:1.0];
-  v11 = [(RTTUITextView *)self predictionsCollectionView];
-  [v11 setBackgroundColor:v10];
+  predictionsCollectionView2 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView2 setBackgroundColor:v10];
 
-  v12 = [(RTTUITextView *)self predictionsCollectionView];
-  [v12 setDelegate:self];
+  predictionsCollectionView3 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView3 setDelegate:self];
 
-  v13 = [(RTTUITextView *)self predictionsCollectionView];
-  [v13 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ttyAbbreviationsCell"];
+  predictionsCollectionView4 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ttyAbbreviationsCell"];
 
-  v14 = [(RTTUITextView *)self predictionsCollectionView];
-  [v14 setScrollEnabled:0];
+  predictionsCollectionView5 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView5 setScrollEnabled:0];
 
-  v15 = [(RTTUITextView *)self predictionsCollectionView];
-  [v15 setAccessibilityIdentifier:@"TTYAbbreviationsBar"];
+  predictionsCollectionView6 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView6 setAccessibilityIdentifier:@"TTYAbbreviationsBar"];
 
   [(RTTUITextView *)self setIsHandlingKeyboardFrameChanged:0];
   v16 = objc_alloc(MEMORY[0x277D75D18]);
@@ -123,35 +123,35 @@
 
   [(UIView *)self->_inputAccessoryPlaceholderView setUserInteractionEnabled:0];
   [(UIView *)self->_inputAccessoryPlaceholderView setAlpha:0.0];
-  v19 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)self->_inputAccessoryPlaceholderView setBackgroundColor:v19];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)self->_inputAccessoryPlaceholderView setBackgroundColor:clearColor];
 
-  v20 = [(RTTUITextView *)self predictionsCollectionView];
-  [v20 setAutoresizesSubviews:1];
+  predictionsCollectionView7 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView7 setAutoresizesSubviews:1];
 
   v21 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel__didPanPredictions_];
   [v21 setDelegate:self];
-  v22 = [(RTTUITextView *)self predictionsCollectionView];
-  [v22 addGestureRecognizer:v21];
+  predictionsCollectionView8 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView8 addGestureRecognizer:v21];
 
   [(RTTUITextView *)self reloadInputViews];
-  v23 = [(RTTUITextView *)self predictionsCollectionView];
-  [v23 reloadData];
+  predictionsCollectionView9 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView9 reloadData];
 }
 
 - (double)ttyBarHeight
 {
-  v3 = [MEMORY[0x277D440D8] sharedInstance];
-  v4 = [v3 rttInlineAbbreviationBarEnabled];
+  mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+  rttInlineAbbreviationBarEnabled = [mEMORY[0x277D440D8] rttInlineAbbreviationBarEnabled];
 
   v5 = 0.0;
-  if ((v4 & 1) == 0)
+  if ((rttInlineAbbreviationBarEnabled & 1) == 0)
   {
-    v6 = [(RTTUITextView *)self predictionsCollectionView];
-    if (([v6 isHidden] & 1) == 0)
+    predictionsCollectionView = [(RTTUITextView *)self predictionsCollectionView];
+    if (([predictionsCollectionView isHidden] & 1) == 0)
     {
-      v7 = [(RTTUITextView *)self predictionsCollectionView];
-      [v7 frame];
+      predictionsCollectionView2 = [(RTTUITextView *)self predictionsCollectionView];
+      [predictionsCollectionView2 frame];
       Height = CGRectGetHeight(v11);
       [(RTTUITextView *)self _predictionsCellBuffer];
       v5 = Height + v9;
@@ -161,27 +161,27 @@
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = [a3 cellForItemAtIndexPath:a4];
+  v5 = [view cellForItemAtIndexPath:path];
   [(RTTUITextView *)self _tapTTYBarCell:v5];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(RTTUITextView *)self ttyAbbreviations:a3];
+  v5 = [(RTTUITextView *)self ttyAbbreviations:view];
   v6 = [v5 count];
 
-  v7 = [(RTTUITextView *)self text];
-  v8 = [v7 length];
+  text = [(RTTUITextView *)self text];
+  v8 = [text length];
 
   if (v8)
   {
     return v6;
   }
 
-  v10 = [(RTTUITextView *)self ttyAbbreviations];
-  v11 = [v10 indexesOfObjectsPassingTest:&__block_literal_global_3];
+  ttyAbbreviations = [(RTTUITextView *)self ttyAbbreviations];
+  v11 = [ttyAbbreviations indexesOfObjectsPassingTest:&__block_literal_global_3];
 
   v12 = [v11 count];
   return v12;
@@ -195,26 +195,26 @@ uint64_t __55__RTTUITextView_collectionView_numberOfItemsInSection___block_invok
   return v3 ^ 1u;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"ttyAbbreviationsCell" forIndexPath:v6];
-  v8 = [(RTTUITextView *)self ttyAbbreviations];
-  v9 = [(RTTUITextView *)self text];
-  v10 = [v9 length];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"ttyAbbreviationsCell" forIndexPath:pathCopy];
+  ttyAbbreviations = [(RTTUITextView *)self ttyAbbreviations];
+  text = [(RTTUITextView *)self text];
+  v10 = [text length];
 
   if (!v10)
   {
-    v11 = [v8 indexesOfObjectsPassingTest:&__block_literal_global_326];
-    v12 = [v8 objectsAtIndexes:v11];
+    v11 = [ttyAbbreviations indexesOfObjectsPassingTest:&__block_literal_global_326];
+    v12 = [ttyAbbreviations objectsAtIndexes:v11];
 
-    v8 = v12;
+    ttyAbbreviations = v12;
   }
 
-  v13 = [v8 count];
-  if (v13 > [v6 row])
+  v13 = [ttyAbbreviations count];
+  if (v13 > [pathCopy row])
   {
-    v14 = [v8 objectAtIndex:{objc_msgSend(v6, "row")}];
+    v14 = [ttyAbbreviations objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     [v7 setAbbreviationData:v14];
   }
 
@@ -229,67 +229,67 @@ uint64_t __55__RTTUITextView_collectionView_cellForItemAtIndexPath___block_invok
   return v3 ^ 1u;
 }
 
-- (void)_didPanPredictions:(id)a3
+- (void)_didPanPredictions:(id)predictions
 {
-  v15 = a3;
-  v4 = [(RTTUITextView *)self predictionsCollectionView];
-  if ([v15 state] == 3)
+  predictionsCopy = predictions;
+  predictionsCollectionView = [(RTTUITextView *)self predictionsCollectionView];
+  if ([predictionsCopy state] == 3)
   {
-    [v15 translationInView:v4];
+    [predictionsCopy translationInView:predictionsCollectionView];
     v6 = v5;
-    [v15 velocityInView:v4];
+    [predictionsCopy velocityInView:predictionsCollectionView];
     v8 = self->_panContentOffset.x + v7 * -0.25 - v6;
-    [v4 contentSize];
+    [predictionsCollectionView contentSize];
     v10 = v9 + -1.0;
     if (v8 < v10)
     {
       v10 = v8;
     }
 
-    v11 = [v4 indexPathForItemAtPoint:{fmax(v10, 0.0)}];
+    v11 = [predictionsCollectionView indexPathForItemAtPoint:{fmax(v10, 0.0)}];
     self->_leftIndex = [v11 row];
     [(RTTUITextView *)self _updateTTYBarPosition];
   }
 
   else
   {
-    if ([v15 state] == 1)
+    if ([predictionsCopy state] == 1)
     {
-      [v4 contentOffset];
+      [predictionsCollectionView contentOffset];
       self->_panContentOffset.x = v12;
       self->_panContentOffset.y = v13;
     }
 
-    [v15 translationInView:v4];
-    [v4 setContentOffset:{self->_panContentOffset.x - v14, 0.0}];
+    [predictionsCopy translationInView:predictionsCollectionView];
+    [predictionsCollectionView setContentOffset:{self->_panContentOffset.x - v14, 0.0}];
   }
 }
 
-- (void)_didSwipeLeft:(id)a3
+- (void)_didSwipeLeft:(id)left
 {
   v4 = self->_leftIndex + [(RTTUITextView *)self _predictionsPerPage];
   self->_leftIndex = v4;
-  v5 = [(RTTUITextView *)self ttyAbbreviations];
-  v6 = [v5 count];
+  ttyAbbreviations = [(RTTUITextView *)self ttyAbbreviations];
+  v6 = [ttyAbbreviations count];
 
   if (v4 >= v6)
   {
-    v7 = [(RTTUITextView *)self ttyAbbreviations];
-    v8 = [v7 count];
+    ttyAbbreviations2 = [(RTTUITextView *)self ttyAbbreviations];
+    v8 = [ttyAbbreviations2 count];
     self->_leftIndex = v8 - [(RTTUITextView *)self _predictionsPerPage];
   }
 
   [(RTTUITextView *)self _updateTTYBarPosition];
 }
 
-- (void)_kbFrameChanged:(id)a3
+- (void)_kbFrameChanged:(id)changed
 {
-  v8 = a3;
+  changedCopy = changed;
   if (![(RTTUITextView *)self isHandlingKeyboardFrameChanged])
   {
     [(RTTUITextView *)self setIsHandlingKeyboardFrameChanged:1];
-    v4 = [v8 userInfo];
-    v5 = [v4 valueForKey:*MEMORY[0x277D76BB8]];
+    userInfo = [changedCopy userInfo];
+    v5 = [userInfo valueForKey:*MEMORY[0x277D76BB8]];
     [v5 CGRectValue];
     v7 = v6;
 
@@ -310,7 +310,7 @@ uint64_t __55__RTTUITextView_collectionView_cellForItemAtIndexPath___block_invok
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
   self->_showTTYPredictions = 0;
   [(UICollectionView *)self->_predictionsCollectionView setHidden:1];
@@ -331,10 +331,10 @@ uint64_t __55__RTTUITextView_collectionView_cellForItemAtIndexPath___block_invok
 
 - (id)inputAccessoryView
 {
-  v3 = [MEMORY[0x277D440D8] sharedInstance];
-  v4 = [v3 rttInlineAbbreviationBarEnabled];
+  mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+  rttInlineAbbreviationBarEnabled = [mEMORY[0x277D440D8] rttInlineAbbreviationBarEnabled];
 
-  if (v4)
+  if (rttInlineAbbreviationBarEnabled)
   {
     v5 = 0;
   }
@@ -351,74 +351,74 @@ uint64_t __55__RTTUITextView_collectionView_cellForItemAtIndexPath___block_invok
 
 - (BOOL)disableInputBars
 {
-  v3 = [MEMORY[0x277D440D8] sharedInstance];
-  v4 = [v3 rttInlineAbbreviationBarEnabled];
+  mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+  rttInlineAbbreviationBarEnabled = [mEMORY[0x277D440D8] rttInlineAbbreviationBarEnabled];
 
-  if ((v4 & 1) != 0 || !self->_showTTYPredictions)
+  if ((rttInlineAbbreviationBarEnabled & 1) != 0 || !self->_showTTYPredictions)
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75678] activeInstance];
-    v6 = [v5 accessibilityUsesExtendedKeyboardPredictionsEnabled] ^ 1;
+    activeInstance = [MEMORY[0x277D75678] activeInstance];
+    v6 = [activeInstance accessibilityUsesExtendedKeyboardPredictionsEnabled] ^ 1;
   }
 
   return v6;
 }
 
-- (void)overrideTTYPredictionsHidden:(BOOL)a3
+- (void)overrideTTYPredictionsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D440D8] sharedInstance];
-  v6 = [v5 rttInlineAbbreviationBarEnabled];
+  hiddenCopy = hidden;
+  mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+  rttInlineAbbreviationBarEnabled = [mEMORY[0x277D440D8] rttInlineAbbreviationBarEnabled];
 
-  if ((v6 & 1) == 0 && self->_showTTYPredictions == v3)
+  if ((rttInlineAbbreviationBarEnabled & 1) == 0 && self->_showTTYPredictions == hiddenCopy)
   {
-    self->_showTTYPredictions = !v3;
+    self->_showTTYPredictions = !hiddenCopy;
     [(RTTUITextView *)self _resetTTYBarPosition];
 
     [(RTTUITextView *)self updateTTYBar];
   }
 }
 
-- (void)_showInlineRTTAbbreviations:(BOOL)a3
+- (void)_showInlineRTTAbbreviations:(BOOL)abbreviations
 {
-  v3 = a3;
-  v5 = [(RTTUITextView *)self inputAssistantItem];
-  v6 = v5;
-  if (v3)
+  abbreviationsCopy = abbreviations;
+  inputAssistantItem = [(RTTUITextView *)self inputAssistantItem];
+  v6 = inputAssistantItem;
+  if (abbreviationsCopy)
   {
-    v7 = [v5 trailingBarButtonGroups];
-    v8 = [v7 ax_containsObjectUsingBlock:&__block_literal_global_337];
+    trailingBarButtonGroups = [inputAssistantItem trailingBarButtonGroups];
+    v8 = [trailingBarButtonGroups ax_containsObjectUsingBlock:&__block_literal_global_337];
 
     if ((v8 & 1) == 0)
     {
       [v6 _setShowsBarButtonItemsInline:1];
-      v9 = [MEMORY[0x277D75418] currentDevice];
-      v10 = [v9 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
-        v11 = [v6 trailingBarButtonGroups];
-        v12 = [v11 mutableCopy];
+        trailingBarButtonGroups2 = [v6 trailingBarButtonGroups];
+        array = [trailingBarButtonGroups2 mutableCopy];
       }
 
       else
       {
-        v12 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
       }
 
-      v14 = [MEMORY[0x277CBEB18] array];
-      v15 = [MEMORY[0x277D75678] activeInstance];
-      [v15 frame];
+      array2 = [MEMORY[0x277CBEB18] array];
+      activeInstance = [MEMORY[0x277D75678] activeInstance];
+      [activeInstance frame];
       v17 = v16;
 
       if (v17 == 0.0)
       {
-        v18 = [MEMORY[0x277D759A0] mainScreen];
-        [v18 bounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen bounds];
         v17 = v19;
       }
 
@@ -432,7 +432,7 @@ uint64_t __55__RTTUITextView_collectionView_cellForItemAtIndexPath___block_invok
       v33 = &v32;
       v34 = 0x2020000000;
       v35 = 0;
-      v23 = [(RTTUITextView *)self ttyAbbreviations];
+      ttyAbbreviations = [(RTTUITextView *)self ttyAbbreviations];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __45__RTTUITextView__showInlineRTTAbbreviations___block_invoke_2;
@@ -441,19 +441,19 @@ uint64_t __55__RTTUITextView_collectionView_cellForItemAtIndexPath___block_invok
       v31 = &v32;
       v24 = v22;
       v30 = v24;
-      [v23 enumerateObjectsUsingBlock:v29];
+      [ttyAbbreviations enumerateObjectsUsingBlock:v29];
 
       v25 = v33[3];
       [(RTTUITextView *)self _predictionsCellHeight];
       [(RTTUIAbbreviationViewContainer *)v24 setContentSize:v25, v26];
       v27 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v24];
-      [v14 addObject:v27];
+      [array2 addObject:v27];
 
-      v28 = [objc_alloc(MEMORY[0x277D751F0]) initWithBarButtonItems:v14 representativeItem:0];
+      v28 = [objc_alloc(MEMORY[0x277D751F0]) initWithBarButtonItems:array2 representativeItem:0];
       [v28 setAccessibilityIdentifier:@"RTTGroup"];
-      [v12 addObject:v28];
+      [array addObject:v28];
       [v6 setLeadingBarButtonGroups:MEMORY[0x277CBEBF8]];
-      [v6 setTrailingBarButtonGroups:v12];
+      [v6 setTrailingBarButtonGroups:array];
 
       _Block_object_dispose(&v32, 8);
     }
@@ -461,7 +461,7 @@ uint64_t __55__RTTUITextView_collectionView_cellForItemAtIndexPath___block_invok
 
   else
   {
-    [v5 _setShowsBarButtonItemsInline:0];
+    [inputAssistantItem _setShowsBarButtonItemsInline:0];
     v13 = MEMORY[0x277CBEBF8];
     [v6 setTrailingBarButtonGroups:MEMORY[0x277CBEBF8]];
     [v6 setLeadingBarButtonGroups:v13];
@@ -497,38 +497,38 @@ void __45__RTTUITextView__showInlineRTTAbbreviations___block_invoke_2(uint64_t a
   *(*(*(a1 + 48) + 8) + 24) = v9 + *(*(*(a1 + 48) + 8) + 24);
 }
 
-- (void)_inlineTTYAbbreviationSelected:(id)a3
+- (void)_inlineTTYAbbreviationSelected:(id)selected
 {
-  v4 = [a3 view];
+  view = [selected view];
   v5 = MEMORY[0x277CCACA8];
-  v19 = v4;
-  v6 = [v4 abbreviationText];
-  v7 = [v5 stringWithFormat:@"%@ ", v6];
+  v19 = view;
+  abbreviationText = [view abbreviationText];
+  v7 = [v5 stringWithFormat:@"%@ ", abbreviationText];
 
   [(RTTUITextView *)self _insertWhitespaceIfNeeded];
   [(RTTUITextView *)self insertText:v7];
   [(RTTUITextView *)self setShowTTYPredictions:0];
-  v8 = [(RTTUITextView *)self inputAssistantItem];
-  v9 = [v8 trailingBarButtonGroups];
-  v10 = [v9 ax_containsObjectUsingBlock:&__block_literal_global_356];
+  inputAssistantItem = [(RTTUITextView *)self inputAssistantItem];
+  trailingBarButtonGroups = [inputAssistantItem trailingBarButtonGroups];
+  v10 = [trailingBarButtonGroups ax_containsObjectUsingBlock:&__block_literal_global_356];
 
   if (v10)
   {
-    v11 = [(RTTUITextView *)self inputAssistantItem];
-    v12 = [v11 trailingBarButtonGroups];
-    v13 = [v12 firstObject];
+    inputAssistantItem2 = [(RTTUITextView *)self inputAssistantItem];
+    trailingBarButtonGroups2 = [inputAssistantItem2 trailingBarButtonGroups];
+    firstObject = [trailingBarButtonGroups2 firstObject];
 
-    v14 = [v13 barButtonItems];
-    v15 = [v14 firstObject];
+    barButtonItems = [firstObject barButtonItems];
+    firstObject2 = [barButtonItems firstObject];
 
-    v16 = [v15 customView];
-    [v16 scrollRectToVisible:0 animated:{0.0, 0.0, 1.0, 1.0}];
-    v17 = [(RTTUITextView *)self inputAssistantItem];
-    [v17 _setShowsBarButtonItemsInline:0];
+    customView = [firstObject2 customView];
+    [customView scrollRectToVisible:0 animated:{0.0, 0.0, 1.0, 1.0}];
+    inputAssistantItem3 = [(RTTUITextView *)self inputAssistantItem];
+    [inputAssistantItem3 _setShowsBarButtonItemsInline:0];
 
     [(RTTUITextView *)self reloadInputViews];
-    v18 = [(RTTUITextView *)self inputAssistantItem];
-    [v18 _setShowsBarButtonItemsInline:1];
+    inputAssistantItem4 = [(RTTUITextView *)self inputAssistantItem];
+    [inputAssistantItem4 _setShowsBarButtonItemsInline:1];
 
     [(RTTUITextView *)self reloadInputViews];
   }
@@ -542,15 +542,15 @@ uint64_t __48__RTTUITextView__inlineTTYAbbreviationSelected___block_invoke(uint6
   return v3;
 }
 
-- (void)setShowTTYPredictions:(BOOL)a3
+- (void)setShowTTYPredictions:(BOOL)predictions
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D440D8] sharedInstance];
-  v6 = [v5 rttInlineAbbreviationBarEnabled];
+  predictionsCopy = predictions;
+  mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+  rttInlineAbbreviationBarEnabled = [mEMORY[0x277D440D8] rttInlineAbbreviationBarEnabled];
 
-  if ((v6 & 1) == 0 && self->_showTTYPredictions != v3)
+  if ((rttInlineAbbreviationBarEnabled & 1) == 0 && self->_showTTYPredictions != predictionsCopy)
   {
-    if (v3 && [(RTTUITextView *)self _shouldShowTTYPredictions])
+    if (predictionsCopy && [(RTTUITextView *)self _shouldShowTTYPredictions])
     {
       LOBYTE(v7) = 1;
     }
@@ -597,38 +597,38 @@ uint64_t __48__RTTUITextView__inlineTTYAbbreviationSelected___block_invoke(uint6
 
 - (void)_updateBlackBarPositioning
 {
-  v3 = [(RTTUITextView *)self predictionsCollectionView];
-  [v3 frame];
+  predictionsCollectionView = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView frame];
   v5 = v4;
 
-  v6 = [(RTTUITextView *)self predictionsCollectionView];
-  [v6 contentOffset];
+  predictionsCollectionView2 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView2 contentOffset];
   v8 = v5 + v7 + -1.0;
   [(RTTUITextView *)self _predictionsCellHeight];
   [(UIView *)self->_rightBackgroundColorEdge setFrame:v8, 0.0, 1.0, v9];
 
-  v10 = [(RTTUITextView *)self predictionsCollectionView];
-  [v10 contentOffset];
+  predictionsCollectionView3 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView3 contentOffset];
   v12 = v11;
   [(RTTUITextView *)self _predictionsCellHeight];
   [(UIView *)self->_leftBackgroundColorEdge setFrame:v12, 0.0, 1.0, v13];
 
-  v14 = [(RTTUITextView *)self predictionsCollectionView];
-  [v14 contentOffset];
+  predictionsCollectionView4 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView4 contentOffset];
   v16 = v5 * 0.5 + v15 + -2.0;
   [(RTTUITextView *)self _predictionsCellHeight];
   [(UIView *)self->_middleBackgroundColorEdge setFrame:v16, 0.0, 4.0, v17];
 
-  v18 = [(UIView *)self->_middleBackgroundColorEdge superview];
-  [v18 sendSubviewToBack:self->_middleBackgroundColorEdge];
+  superview = [(UIView *)self->_middleBackgroundColorEdge superview];
+  [superview sendSubviewToBack:self->_middleBackgroundColorEdge];
 }
 
 - (void)updateTTYBar
 {
-  v3 = [MEMORY[0x277D440D8] sharedInstance];
-  v4 = [v3 rttInlineAbbreviationBarEnabled];
+  mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+  rttInlineAbbreviationBarEnabled = [mEMORY[0x277D440D8] rttInlineAbbreviationBarEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((rttInlineAbbreviationBarEnabled & 1) == 0)
   {
     v32 = 0;
     v33 = &v32;
@@ -680,30 +680,30 @@ uint64_t __48__RTTUITextView__inlineTTYAbbreviationSelected___block_invoke(uint6
         v11(v13, v14, v15, v16);
         if (v17 != 0.0)
         {
-          v20 = [(RTTUITextView *)self predictionsCollectionView];
-          v21 = [v20 window];
+          predictionsCollectionView = [(RTTUITextView *)self predictionsCollectionView];
+          window = [predictionsCollectionView window];
 
-          if (v21)
+          if (window)
           {
-            v22 = [(RTTUITextView *)self predictionsCollectionView];
-            v23 = [v22 superview];
-            v24 = [(RTTUITextView *)self predictionsCollectionView];
-            [v23 bringSubviewToFront:v24];
+            predictionsCollectionView2 = [(RTTUITextView *)self predictionsCollectionView];
+            superview = [predictionsCollectionView2 superview];
+            predictionsCollectionView3 = [(RTTUITextView *)self predictionsCollectionView];
+            [superview bringSubviewToFront:predictionsCollectionView3];
           }
 
           else
           {
-            v22 = [(RTTUITextView *)self window];
-            v23 = [v22 rootViewController];
-            v24 = [v23 view];
-            v25 = [(RTTUITextView *)self predictionsCollectionView];
-            [v24 addSubview:v25];
+            predictionsCollectionView2 = [(RTTUITextView *)self window];
+            superview = [predictionsCollectionView2 rootViewController];
+            predictionsCollectionView3 = [superview view];
+            predictionsCollectionView4 = [(RTTUITextView *)self predictionsCollectionView];
+            [predictionsCollectionView3 addSubview:predictionsCollectionView4];
           }
 
           [(RTTUITextView *)self reloadInputViews];
           [(RTTUITextView *)self _updateTTYBarFrame];
-          v19 = [(RTTUITextView *)self predictionsCollectionView];
-          [v19 reloadData];
+          predictionsCollectionView5 = [(RTTUITextView *)self predictionsCollectionView];
+          [predictionsCollectionView5 reloadData];
           goto LABEL_13;
         }
 
@@ -715,8 +715,8 @@ LABEL_10:
           _os_log_impl(&dword_261725000, v18, OS_LOG_TYPE_DEFAULT, "No keyboard on screen, removing predictions", &v27, 2u);
         }
 
-        v19 = [(RTTUITextView *)self predictionsCollectionView];
-        [v19 removeFromSuperview];
+        predictionsCollectionView5 = [(RTTUITextView *)self predictionsCollectionView];
+        [predictionsCollectionView5 removeFromSuperview];
 LABEL_13:
 
         return;
@@ -736,8 +736,8 @@ LABEL_13:
 
 - (void)_updateTTYBarFrame
 {
-  v3 = [MEMORY[0x277D75678] activeInstance];
-  [v3 frame];
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
+  [activeInstance frame];
   self->_currentKeyboardWidth = v4;
 
   currentKeyboardWidth = self->_currentKeyboardWidth;
@@ -748,8 +748,8 @@ LABEL_13:
     [(UICollectionViewFlowLayout *)self->_flowLayout setItemSize:v6, v7];
   }
 
-  v8 = [(RTTUITextView *)self predictionsCollectionView];
-  [v8 setHidden:!self->_showTTYPredictions];
+  predictionsCollectionView = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView setHidden:!self->_showTTYPredictions];
 
   inputAccessoryPlaceholderView = self->_inputAccessoryPlaceholderView;
   [(UIView *)inputAccessoryPlaceholderView bounds];
@@ -757,9 +757,9 @@ LABEL_13:
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(RTTUITextView *)self predictionsCollectionView];
-  v19 = [v18 superview];
-  [(UIView *)inputAccessoryPlaceholderView convertRect:v19 toView:v11, v13, v15, v17];
+  predictionsCollectionView2 = [(RTTUITextView *)self predictionsCollectionView];
+  superview = [predictionsCollectionView2 superview];
+  [(UIView *)inputAccessoryPlaceholderView convertRect:superview toView:v11, v13, v15, v17];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -772,8 +772,8 @@ LABEL_13:
   v32 = self->_currentKeyboardWidth;
   [(RTTUITextView *)self _predictionsCellHeight];
   v34 = v33;
-  v35 = [(RTTUITextView *)self predictionsCollectionView];
-  [v35 setFrame:{v21, v31, v32, v34}];
+  predictionsCollectionView3 = [(RTTUITextView *)self predictionsCollectionView];
+  [predictionsCollectionView3 setFrame:{v21, v31, v32, v34}];
 
   if ([MEMORY[0x277D12B60] deviceIsPad])
   {
@@ -790,12 +790,12 @@ LABEL_13:
     }
 
     v40 = v25;
-    v41 = [(RTTUITextView *)self predictionsCollectionView];
-    if (([v41 isHidden] & 1) == 0)
+    predictionsCollectionView4 = [(RTTUITextView *)self predictionsCollectionView];
+    if (([predictionsCollectionView4 isHidden] & 1) == 0)
     {
-      v42 = [(UIView *)self->_iPadBufferView superview];
+      superview2 = [(UIView *)self->_iPadBufferView superview];
 
-      if (v42)
+      if (superview2)
       {
 LABEL_10:
         v44 = self->_iPadBufferView;
@@ -816,23 +816,23 @@ LABEL_10:
         v72.size.height = v34;
         [(UIView *)v44 setFrame:v21, MaxY, v46, MinY - CGRectGetMaxY(v72)];
         v48 = self->_iPadBufferView;
-        v49 = [(RTTUITextView *)self predictionsCollectionView];
-        -[UIView setHidden:](v48, "setHidden:", [v49 isHidden]);
+        predictionsCollectionView5 = [(RTTUITextView *)self predictionsCollectionView];
+        -[UIView setHidden:](v48, "setHidden:", [predictionsCollectionView5 isHidden]);
 
         goto LABEL_16;
       }
 
-      v41 = [(RTTUITextView *)self predictionsCollectionView];
-      v43 = [v41 superview];
-      [v43 addSubview:self->_iPadBufferView];
+      predictionsCollectionView4 = [(RTTUITextView *)self predictionsCollectionView];
+      superview3 = [predictionsCollectionView4 superview];
+      [superview3 addSubview:self->_iPadBufferView];
     }
 
     goto LABEL_10;
   }
 
-  v50 = [(RTTUITextView *)self predictionsCollectionView];
-  v51 = [v50 superview];
-  if (!v51)
+  predictionsCollectionView6 = [(RTTUITextView *)self predictionsCollectionView];
+  superview4 = [predictionsCollectionView6 superview];
+  if (!superview4)
   {
     goto LABEL_14;
   }
@@ -841,7 +841,7 @@ LABEL_10:
 
   if (!leftBackgroundColorEdge)
   {
-    v50 = [MEMORY[0x277D75348] colorWithRed:0.15 green:0.15 blue:0.15 alpha:1.0];
+    predictionsCollectionView6 = [MEMORY[0x277D75348] colorWithRed:0.15 green:0.15 blue:0.15 alpha:1.0];
     v53 = objc_alloc(MEMORY[0x277D75D18]);
     v54 = *MEMORY[0x277CBF3A0];
     v55 = *(MEMORY[0x277CBF3A0] + 8);
@@ -851,26 +851,26 @@ LABEL_10:
     v59 = self->_leftBackgroundColorEdge;
     self->_leftBackgroundColorEdge = v58;
 
-    v60 = [(RTTUITextView *)self predictionsCollectionView];
-    [v60 addSubview:self->_leftBackgroundColorEdge];
+    predictionsCollectionView7 = [(RTTUITextView *)self predictionsCollectionView];
+    [predictionsCollectionView7 addSubview:self->_leftBackgroundColorEdge];
 
-    [(UIView *)self->_leftBackgroundColorEdge setBackgroundColor:v50];
+    [(UIView *)self->_leftBackgroundColorEdge setBackgroundColor:predictionsCollectionView6];
     v61 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v54, v55, v56, v57}];
     rightBackgroundColorEdge = self->_rightBackgroundColorEdge;
     self->_rightBackgroundColorEdge = v61;
 
-    v63 = [(RTTUITextView *)self predictionsCollectionView];
-    [v63 addSubview:self->_rightBackgroundColorEdge];
+    predictionsCollectionView8 = [(RTTUITextView *)self predictionsCollectionView];
+    [predictionsCollectionView8 addSubview:self->_rightBackgroundColorEdge];
 
-    [(UIView *)self->_rightBackgroundColorEdge setBackgroundColor:v50];
+    [(UIView *)self->_rightBackgroundColorEdge setBackgroundColor:predictionsCollectionView6];
     v64 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v54, v55, v56, v57}];
     middleBackgroundColorEdge = self->_middleBackgroundColorEdge;
     self->_middleBackgroundColorEdge = v64;
 
-    v66 = [(RTTUITextView *)self predictionsCollectionView];
-    [v66 insertSubview:self->_middleBackgroundColorEdge atIndex:0];
+    predictionsCollectionView9 = [(RTTUITextView *)self predictionsCollectionView];
+    [predictionsCollectionView9 insertSubview:self->_middleBackgroundColorEdge atIndex:0];
 
-    [(UIView *)self->_middleBackgroundColorEdge setBackgroundColor:v50];
+    [(UIView *)self->_middleBackgroundColorEdge setBackgroundColor:predictionsCollectionView6];
 LABEL_14:
   }
 
@@ -885,15 +885,15 @@ LABEL_16:
   self->_leftIndex = 0;
   if (self->_showTTYPredictions)
   {
-    v3 = [(RTTUITextView *)self predictionsCollectionView];
-    v4 = [v3 numberOfItemsInSection:0];
+    predictionsCollectionView = [(RTTUITextView *)self predictionsCollectionView];
+    v4 = [predictionsCollectionView numberOfItemsInSection:0];
     leftIndex = self->_leftIndex;
 
     if (v4 > leftIndex)
     {
-      v7 = [(RTTUITextView *)self predictionsCollectionView];
+      predictionsCollectionView2 = [(RTTUITextView *)self predictionsCollectionView];
       v6 = [MEMORY[0x277CCAA70] indexPathForRow:self->_leftIndex inSection:0];
-      [v7 scrollToItemAtIndexPath:v6 atScrollPosition:8 animated:0];
+      [predictionsCollectionView2 scrollToItemAtIndexPath:v6 atScrollPosition:8 animated:0];
     }
   }
 }
@@ -902,19 +902,19 @@ LABEL_16:
 {
   if (self->_showTTYPredictions)
   {
-    v4 = [(RTTUITextView *)self predictionsCollectionView];
+    predictionsCollectionView = [(RTTUITextView *)self predictionsCollectionView];
     v5 = [MEMORY[0x277CCAA70] indexPathForRow:self->_leftIndex inSection:0];
-    [v4 scrollToItemAtIndexPath:v5 atScrollPosition:8 animated:1];
+    [predictionsCollectionView scrollToItemAtIndexPath:v5 atScrollPosition:8 animated:1];
 
     [(RTTUITextView *)self _updateBlackBarPositioning];
   }
 }
 
-- (void)_tapTTYBarCell:(id)a3
+- (void)_tapTTYBarCell:(id)cell
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [a3 abbreviationText];
-  v6 = [v4 stringWithFormat:@"%@ ", v5];
+  abbreviationText = [cell abbreviationText];
+  v6 = [v4 stringWithFormat:@"%@ ", abbreviationText];
 
   [(RTTUITextView *)self _insertWhitespaceIfNeeded];
   [(RTTUITextView *)self insertText:v6];
@@ -923,21 +923,21 @@ LABEL_16:
 
 - (void)_insertWhitespaceIfNeeded
 {
-  v3 = [(RTTUITextView *)self beginningOfDocument];
-  v4 = [(RTTUITextView *)self selectedTextRange];
-  v5 = [v4 start];
-  v6 = [(RTTUITextView *)self offsetFromPosition:v3 toPosition:v5];
+  beginningOfDocument = [(RTTUITextView *)self beginningOfDocument];
+  selectedTextRange = [(RTTUITextView *)self selectedTextRange];
+  start = [selectedTextRange start];
+  v6 = [(RTTUITextView *)self offsetFromPosition:beginningOfDocument toPosition:start];
 
-  v7 = [(RTTUITextView *)self text];
-  v8 = [v7 length];
+  text = [(RTTUITextView *)self text];
+  v8 = [text length];
 
   if (v6 >= 1 && v6 - 1 < v8)
   {
-    v9 = [(RTTUITextView *)self text];
-    v10 = [v9 characterAtIndex:v6 - 1];
+    text2 = [(RTTUITextView *)self text];
+    v10 = [text2 characterAtIndex:v6 - 1];
 
-    v11 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    LOBYTE(v10) = [v11 characterIsMember:v10];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    LOBYTE(v10) = [whitespaceCharacterSet characterIsMember:v10];
 
     if ((v10 & 1) == 0)
     {
@@ -953,7 +953,7 @@ LABEL_16:
   v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v21 = [v2 pathForResource:@"TTYAbbreviationsOrder" ofType:@"plist"];
   v20 = [MEMORY[0x277CBEA60] arrayWithContentsOfFile:?];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -973,11 +973,11 @@ LABEL_16:
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [v3 objectForKeyedSubscript:v8];
-        if (!v9)
+        dictionary2 = [dictionary objectForKeyedSubscript:v8];
+        if (!dictionary2)
         {
-          v9 = [MEMORY[0x277CBEB38] dictionary];
-          [v3 setObject:v9 forKeyedSubscript:v8];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:dictionary2 forKeyedSubscript:v8];
         }
 
         v10 = [v8 stringByAppendingString:@"_Abbrevation"];
@@ -985,7 +985,7 @@ LABEL_16:
 
         if ([v11 length])
         {
-          [v9 setObject:v11 forKeyedSubscript:@"abbr"];
+          [dictionary2 setObject:v11 forKeyedSubscript:@"abbr"];
         }
 
         v12 = [v8 stringByAppendingString:@"_Definition"];
@@ -993,7 +993,7 @@ LABEL_16:
 
         if ([v13 length])
         {
-          [v9 setObject:v13 forKeyedSubscript:@"hint"];
+          [dictionary2 setObject:v13 forKeyedSubscript:@"hint"];
         }
       }
 
@@ -1003,17 +1003,17 @@ LABEL_16:
     while (v5);
   }
 
-  v14 = v3;
-  v15 = [v3 allKeys];
+  v14 = dictionary;
+  allKeys = [dictionary allKeys];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __38__RTTUITextView__loadTTYAbbreviations__block_invoke;
   v23[3] = &unk_279AE5438;
   v24 = v20;
   v16 = v20;
-  v17 = [v15 sortedArrayUsingComparator:v23];
-  v18 = [MEMORY[0x277CBEB68] null];
-  v19 = [v3 objectsForKeys:v17 notFoundMarker:v18];
+  v17 = [allKeys sortedArrayUsingComparator:v23];
+  null = [MEMORY[0x277CBEB68] null];
+  v19 = [dictionary objectsForKeys:v17 notFoundMarker:null];
 
   [(RTTUITextView *)self setTtyAbbreviations:v19];
 }
@@ -1035,9 +1035,9 @@ uint64_t __38__RTTUITextView__loadTTYAbbreviations__block_invoke(uint64_t a1, ui
 
 - (float)_predictionsCellBuffer
 {
-  v2 = [MEMORY[0x277D12B60] deviceIsPad];
+  deviceIsPad = [MEMORY[0x277D12B60] deviceIsPad];
   result = 0.0;
-  if (v2)
+  if (deviceIsPad)
   {
     return 5.0;
   }
@@ -1052,8 +1052,8 @@ uint64_t __38__RTTUITextView__loadTTYAbbreviations__block_invoke(uint64_t a1, ui
     return 50.0;
   }
 
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   Width = CGRectGetWidth(v5);
 
   result = 38.0;

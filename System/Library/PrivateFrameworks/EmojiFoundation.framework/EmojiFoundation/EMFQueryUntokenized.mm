@@ -7,9 +7,9 @@
 
 - (id)tokens
 {
-  v3 = [(EMFQuery *)self queryString];
-  v4 = [(EMFQuery *)self locale];
-  v5 = _createNormalizedString(v3, v4);
+  queryString = [(EMFQuery *)self queryString];
+  locale = [(EMFQuery *)self locale];
+  v5 = _createNormalizedString(queryString, locale);
 
   v6 = [MEMORY[0x1E695DEC8] arrayWithObject:v5];
   v10.receiver = self;
@@ -17,17 +17,17 @@
   [(EMFQuery *)&v10 setTokens:v6];
   v9.receiver = self;
   v9.super_class = EMFQueryUntokenized;
-  v7 = [(EMFQuery *)&v9 tokens];
+  tokens = [(EMFQuery *)&v9 tokens];
 
-  return v7;
+  return tokens;
 }
 
 - (BOOL)hasMultipleConstituentTokens
 {
   v5.receiver = self;
   v5.super_class = EMFQueryUntokenized;
-  v2 = [(EMFQuery *)&v5 tokens];
-  v3 = [v2 count] > 1;
+  tokens = [(EMFQuery *)&v5 tokens];
+  v3 = [tokens count] > 1;
 
   return v3;
 }

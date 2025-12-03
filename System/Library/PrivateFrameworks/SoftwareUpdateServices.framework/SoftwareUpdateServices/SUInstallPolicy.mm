@@ -1,18 +1,18 @@
 @interface SUInstallPolicy
-- (BOOL)isEqual:(id)a3;
-- (SUInstallPolicy)initWithCoder:(id)a3;
-- (SUInstallPolicy)initWithInstallPolicyType:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (SUInstallPolicy)initWithCoder:(id)coder;
+- (SUInstallPolicy)initWithInstallPolicyType:(unint64_t)type;
 - (id)description;
-- (void)_setAutoUpdateEnabled:(BOOL)a3;
-- (void)_setClientName:(id)a3;
-- (void)_setDarkBoolEnabled:(BOOL)a3;
-- (void)_setType:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setAutoUpdateEnabled:(BOOL)enabled;
+- (void)_setClientName:(id)name;
+- (void)_setDarkBoolEnabled:(BOOL)enabled;
+- (void)_setType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUInstallPolicy
 
-- (SUInstallPolicy)initWithInstallPolicyType:(unint64_t)a3
+- (SUInstallPolicy)initWithInstallPolicyType:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = SUInstallPolicy;
@@ -23,30 +23,30 @@
     clientName = v4->_clientName;
     v4->_clientName = 0;
 
-    [(SUInstallPolicy *)v5 _setType:a3];
+    [(SUInstallPolicy *)v5 _setType:type];
     *&v5->_autoUpdateEnabled = 0;
   }
 
   return v5;
 }
 
-- (void)_setClientName:(id)a3
+- (void)_setClientName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   clientName = self->_clientName;
   p_clientName = &self->_clientName;
-  v8 = v5;
+  v8 = nameCopy;
   if (![(NSString *)clientName isEqualToString:?])
   {
-    objc_storeStrong(p_clientName, a3);
+    objc_storeStrong(p_clientName, name);
   }
 }
 
-- (void)_setType:(unint64_t)a3
+- (void)_setType:(unint64_t)type
 {
   v12 = +[SUUtility currentReleaseTypeIsInternal];
-  self->_type = a3;
-  if (a3 == 1)
+  self->_type = type;
+  if (type == 1)
   {
     SULogInfo(@"Setting required install policy of 3 days", v5, v6, v7, v8, v9, v10, v11, v36);
     [(SUInstallPolicy *)self setSkipsAllowed:3];
@@ -59,9 +59,9 @@
     v20 = 1;
   }
 
-  else if (a3)
+  else if (type)
   {
-    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     SULogInfo(@"Unknown InstallPolicyType provided: %@", v29, v30, v31, v32, v33, v34, v35, v28);
 
     v20 = -1;
@@ -83,32 +83,32 @@
   [(SUInstallPolicy *)self setSkipsAllowed:v20];
 }
 
-- (void)_setAutoUpdateEnabled:(BOOL)a3
+- (void)_setAutoUpdateEnabled:(BOOL)enabled
 {
-  if (self->_autoUpdateEnabled != a3)
+  if (self->_autoUpdateEnabled != enabled)
   {
-    self->_autoUpdateEnabled = a3;
+    self->_autoUpdateEnabled = enabled;
   }
 }
 
-- (void)_setDarkBoolEnabled:(BOOL)a3
+- (void)_setDarkBoolEnabled:(BOOL)enabled
 {
-  if (self->_useDarkBoot != a3)
+  if (self->_useDarkBoot != enabled)
   {
-    self->_useDarkBoot = a3;
+    self->_useDarkBoot = enabled;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_9;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
     goto LABEL_11;
@@ -118,12 +118,12 @@
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(SUInstallPolicy *)self clientName];
-    v8 = [(SUInstallPolicy *)v6 clientName];
-    if ([v7 isEqualToString:v8] && (v9 = -[SUInstallPolicy type](self, "type"), v9 == -[SUInstallPolicy type](v6, "type")) && (v10 = -[SUInstallPolicy autoUpdateEnabled](self, "autoUpdateEnabled"), v10 == -[SUInstallPolicy autoUpdateEnabled](v6, "autoUpdateEnabled")))
+    clientName = [(SUInstallPolicy *)self clientName];
+    clientName2 = [(SUInstallPolicy *)v6 clientName];
+    if ([clientName isEqualToString:clientName2] && (v9 = -[SUInstallPolicy type](self, "type"), v9 == -[SUInstallPolicy type](v6, "type")) && (v10 = -[SUInstallPolicy autoUpdateEnabled](self, "autoUpdateEnabled"), v10 == -[SUInstallPolicy autoUpdateEnabled](v6, "autoUpdateEnabled")))
     {
-      v13 = [(SUInstallPolicy *)self useDarkBoot];
-      v11 = v13 ^ [(SUInstallPolicy *)v6 useDarkBoot]^ 1;
+      useDarkBoot = [(SUInstallPolicy *)self useDarkBoot];
+      v11 = useDarkBoot ^ [(SUInstallPolicy *)v6 useDarkBoot]^ 1;
     }
 
     else
@@ -146,7 +146,7 @@ LABEL_11:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUInstallPolicy *)self clientName];
+  clientName = [(SUInstallPolicy *)self clientName];
   if (self->_type)
   {
     v5 = @"Required";
@@ -158,7 +158,7 @@ LABEL_11:
   }
 
   v6 = v5;
-  v7 = [(SUInstallPolicy *)self skipsAllowed];
+  skipsAllowed = [(SUInstallPolicy *)self skipsAllowed];
   if ([(SUInstallPolicy *)self autoUpdateEnabled])
   {
     v8 = @"YES";
@@ -179,44 +179,44 @@ LABEL_11:
     v9 = @"NO";
   }
 
-  v10 = [v3 stringWithFormat:@"\n            clientName:%@\n            type: %@\n            skipsAllowed: %d\n            autoUpdateEnabled: %@\n            DarkBoot: %@", v4, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"\n            clientName:%@\n            type: %@\n            skipsAllowed: %d\n            autoUpdateEnabled: %@\n            DarkBoot: %@", clientName, v6, skipsAllowed, v8, v9];
 
   return v10;
 }
 
-- (SUInstallPolicy)initWithCoder:(id)a3
+- (SUInstallPolicy)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SUInstallPolicy;
   v5 = [(SUInstallPolicy *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientName"];
     [(SUInstallPolicy *)v5 setClientName:v6];
 
-    -[SUInstallPolicy setType:](v5, "setType:", [v4 decodeIntegerForKey:@"type"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"skipsAllowed"];
+    -[SUInstallPolicy setType:](v5, "setType:", [coderCopy decodeIntegerForKey:@"type"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"skipsAllowed"];
     -[SUInstallPolicy setSkipsAllowed:](v5, "setSkipsAllowed:", [v7 unsignedIntegerValue]);
 
-    -[SUInstallPolicy _setAutoUpdateEnabled:](v5, "_setAutoUpdateEnabled:", [v4 decodeBoolForKey:@"autoUpdateEnabled"]);
-    -[SUInstallPolicy _setDarkBoolEnabled:](v5, "_setDarkBoolEnabled:", [v4 decodeBoolForKey:@"darkBootEnabled"]);
+    -[SUInstallPolicy _setAutoUpdateEnabled:](v5, "_setAutoUpdateEnabled:", [coderCopy decodeBoolForKey:@"autoUpdateEnabled"]);
+    -[SUInstallPolicy _setDarkBoolEnabled:](v5, "_setDarkBoolEnabled:", [coderCopy decodeBoolForKey:@"darkBootEnabled"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientName = self->_clientName;
-  v6 = a3;
-  [v6 encodeObject:clientName forKey:@"clientName"];
-  [v6 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:clientName forKey:@"clientName"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_skipsAllowed];
-  [v6 encodeObject:v5 forKey:@"skipsAllowed"];
+  [coderCopy encodeObject:v5 forKey:@"skipsAllowed"];
 
-  [v6 encodeBool:self->_autoUpdateEnabled forKey:@"autoUpdateEnabled"];
-  [v6 encodeBool:self->_useDarkBoot forKey:@"darkBootEnabled"];
+  [coderCopy encodeBool:self->_autoUpdateEnabled forKey:@"autoUpdateEnabled"];
+  [coderCopy encodeBool:self->_useDarkBoot forKey:@"darkBootEnabled"];
 }
 
 @end

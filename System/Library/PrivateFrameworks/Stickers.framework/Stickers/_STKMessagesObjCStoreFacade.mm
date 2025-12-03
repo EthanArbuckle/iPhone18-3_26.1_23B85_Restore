@@ -1,5 +1,5 @@
 @interface _STKMessagesObjCStoreFacade
-- (BOOL)donateStickerToRecentsWithIdentifier:(id)a3 representations:(id)a4 stickerEffectEnum:(int64_t)a5 externalURI:(id)a6 name:(id)a7 accessibilityName:(id)a8 metadata:(id)a9 attributionInfo:(id)a10 error:(id *)a11;
+- (BOOL)donateStickerToRecentsWithIdentifier:(id)identifier representations:(id)representations stickerEffectEnum:(int64_t)enum externalURI:(id)i name:(id)name accessibilityName:(id)accessibilityName metadata:(id)metadata attributionInfo:(id)self0 error:(id *)self1;
 - (_STKMessagesObjCStoreFacade)init;
 @end
 
@@ -26,18 +26,18 @@
   return [(_STKMessagesObjCStoreFacade *)&v13 init];
 }
 
-- (BOOL)donateStickerToRecentsWithIdentifier:(id)a3 representations:(id)a4 stickerEffectEnum:(int64_t)a5 externalURI:(id)a6 name:(id)a7 accessibilityName:(id)a8 metadata:(id)a9 attributionInfo:(id)a10 error:(id *)a11
+- (BOOL)donateStickerToRecentsWithIdentifier:(id)identifier representations:(id)representations stickerEffectEnum:(int64_t)enum externalURI:(id)i name:(id)name accessibilityName:(id)accessibilityName metadata:(id)metadata attributionInfo:(id)self0 error:(id *)self1
 {
   v15 = sub_1B8A23F24();
   v36 = v16;
   type metadata accessor for _STKStickerUIStickerRepresentation();
   v34 = sub_1B8A240F4();
-  if (a6)
+  if (i)
   {
     v17 = sub_1B8A23F24();
     v35 = v18;
-    v19 = a9;
-    if (a7)
+    metadataCopy2 = metadata;
+    if (name)
     {
       goto LABEL_3;
     }
@@ -45,8 +45,8 @@
 LABEL_6:
     v31 = 0;
     v32 = 0;
-    v21 = a10;
-    if (a8)
+    infoCopy2 = info;
+    if (accessibilityName)
     {
       goto LABEL_4;
     }
@@ -56,8 +56,8 @@ LABEL_6:
 
   v17 = 0;
   v35 = 0;
-  v19 = a9;
-  if (!a7)
+  metadataCopy2 = metadata;
+  if (!name)
   {
     goto LABEL_6;
   }
@@ -65,21 +65,21 @@ LABEL_6:
 LABEL_3:
   v31 = sub_1B8A23F24();
   v32 = v20;
-  v21 = a10;
-  if (a8)
+  infoCopy2 = info;
+  if (accessibilityName)
   {
 LABEL_4:
     v22 = sub_1B8A23F24();
-    a8 = v23;
+    accessibilityName = v23;
     goto LABEL_8;
   }
 
 LABEL_7:
   v22 = 0;
 LABEL_8:
-  v24 = v19;
-  v30 = v21;
-  v25 = self;
+  v24 = metadataCopy2;
+  v30 = infoCopy2;
+  selfCopy = self;
   if (v24)
   {
     v26 = sub_1B8A237C4();
@@ -92,7 +92,7 @@ LABEL_8:
     v28 = 0xF000000000000000;
   }
 
-  sub_1B89ED028(v15, v36, v34, a5, v17, v35, v31, v32, v22, a8, v26, v28, v21);
+  sub_1B89ED028(v15, v36, v34, enum, v17, v35, v31, v32, v22, accessibilityName, v26, v28, infoCopy2);
 
   sub_1B89B4A04(v26, v28);
 

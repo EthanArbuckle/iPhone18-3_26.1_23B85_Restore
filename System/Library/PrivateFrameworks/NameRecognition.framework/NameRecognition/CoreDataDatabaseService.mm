@@ -1,10 +1,10 @@
 @interface CoreDataDatabaseService
-- (void)handleRemoteChanges:(id)a3;
+- (void)handleRemoteChanges:(id)changes;
 @end
 
 @implementation CoreDataDatabaseService
 
-- (void)handleRemoteChanges:(id)a3
+- (void)handleRemoteChanges:(id)changes
 {
   v3 = sub_25AEA0BB8();
   v4 = *(v3 - 8);

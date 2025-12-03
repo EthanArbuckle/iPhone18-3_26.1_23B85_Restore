@@ -62,7 +62,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v12 = self;
+  selfCopy = self;
   v4 = self->_directoryContents;
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v5)
@@ -82,9 +82,9 @@
         v10 = IMLogHandleForCategory("DiskSpace");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [v9 rootPath];
+          rootPath = [v9 rootPath];
           *buf = 138412290;
-          v18 = v11;
+          v18 = rootPath;
           _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Gathering directory info for: %@", buf, 0xCu);
         }
 
@@ -97,18 +97,18 @@
     while (v6);
   }
 
-  v12->_needsGathering = 0;
+  selfCopy->_needsGathering = 0;
 }
 
 - (BOOL)gatherIfNeeded
 {
-  v3 = [(IMMessageDirectoryContents *)self needsGathering];
-  if (v3)
+  needsGathering = [(IMMessageDirectoryContents *)self needsGathering];
+  if (needsGathering)
   {
     [(IMMessageDirectoryContents *)self gather];
   }
 
-  return v3;
+  return needsGathering;
 }
 
 @end

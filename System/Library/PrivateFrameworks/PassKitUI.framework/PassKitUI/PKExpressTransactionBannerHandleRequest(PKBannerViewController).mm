@@ -6,12 +6,12 @@
 
 - (PKExpressTransactionBannerViewController)createBannerViewController
 {
-  v1 = [a1 passUniqueIdentifier];
+  passUniqueIdentifier = [self passUniqueIdentifier];
   objc_opt_self();
-  if (v1)
+  if (passUniqueIdentifier)
   {
-    v2 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v3 = [v2 passWithUniqueID:v1];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v3 = [mEMORY[0x1E69B8A58] passWithUniqueID:passUniqueIdentifier];
 
     if (v3)
     {
@@ -28,9 +28,9 @@
         if (v7)
         {
           objc_storeStrong(&v7->_pass, v3);
-          v8 = [MEMORY[0x1E69B8DB8] paymentService];
+          paymentService = [MEMORY[0x1E69B8DB8] paymentService];
           paymentService = v5->_paymentService;
-          v5->_paymentService = v8;
+          v5->_paymentService = paymentService;
 
           [(PKPaymentService *)v5->_paymentService registerObserver:v5];
           v5->_state = 0;
@@ -45,8 +45,8 @@
               transitBalanceModel = v5->_transitBalanceModel;
               v5->_transitBalanceModel = v12;
 
-              v22 = [(PKPass *)v5->_pass uniqueID];
-              v14 = [(PKPass *)v11 devicePrimaryPaymentApplication];
+              uniqueID = [(PKPass *)v5->_pass uniqueID];
+              devicePrimaryPaymentApplication = [(PKPass *)v11 devicePrimaryPaymentApplication];
               v15 = dispatch_group_create();
               objc_initWeak(&location, v5);
               v35[0] = 0;
@@ -68,13 +68,13 @@
               v28[2] = __58__PKExpressTransactionBannerViewController__initWithPass___block_invoke;
               v28[3] = &unk_1E8016A48;
               v32 = v35;
-              v17 = v14;
+              v17 = devicePrimaryPaymentApplication;
               v29 = v17;
               v11 = v11;
               v30 = v11;
               v18 = v15;
               v31 = v18;
-              [(PKPaymentService *)v16 transitStateWithPassUniqueIdentifier:v22 paymentApplication:v17 completion:v28];
+              [(PKPaymentService *)v16 transitStateWithPassUniqueIdentifier:uniqueID paymentApplication:v17 completion:v28];
               dispatch_group_enter(v18);
               v19 = v5->_paymentService;
               v25[0] = MEMORY[0x1E69E9820];
@@ -84,7 +84,7 @@
               v27 = v33;
               v20 = v18;
               v26 = v20;
-              [(PKPaymentService *)v19 balancesForPaymentPassWithUniqueIdentifier:v22 completion:v25];
+              [(PKPaymentService *)v19 balancesForPaymentPassWithUniqueIdentifier:uniqueID completion:v25];
               block[0] = MEMORY[0x1E69E9820];
               block[1] = 3221225472;
               block[2] = __58__PKExpressTransactionBannerViewController__initWithPass___block_invoke_3;

@@ -1,9 +1,9 @@
 @interface SBLockScreenOrientationManager
 - (SBLockScreenOrientationManager)init;
-- (void)_lockStateChanged:(id)a3;
-- (void)_updateDeviceOrientationIfNeededForPhoneUnlockToOrientation:(int64_t)a3;
-- (void)assistantDidAppear:(id)a3 windowScene:(id)a4;
-- (void)updateInterfaceOrientationWithRequestedOrientation:(int64_t)a3 animated:(BOOL)a4;
+- (void)_lockStateChanged:(id)changed;
+- (void)_updateDeviceOrientationIfNeededForPhoneUnlockToOrientation:(int64_t)orientation;
+- (void)assistantDidAppear:(id)appear windowScene:(id)scene;
+- (void)updateInterfaceOrientationWithRequestedOrientation:(int64_t)orientation animated:(BOOL)animated;
 @end
 
 @implementation SBLockScreenOrientationManager
@@ -18,7 +18,7 @@
     v3 = +[SBAssistantController sharedInstance];
     [v3 addObserver:v2];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     if (__sb__runningInSpringBoard())
     {
       if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
@@ -29,10 +29,10 @@
 
     else
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v6)
+      if (userInterfaceIdiom)
       {
 LABEL_8:
 
@@ -40,35 +40,35 @@ LABEL_8:
       }
     }
 
-    [v4 addObserver:v2 selector:sel__lockStateChanged_ name:@"SBAggregateLockStateDidChangeNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__lockStateChanged_ name:@"SBAggregateLockStateDidChangeNotification" object:0];
     goto LABEL_8;
   }
 
   return v2;
 }
 
-- (void)assistantDidAppear:(id)a3 windowScene:(id)a4
+- (void)assistantDidAppear:(id)appear windowScene:(id)scene
 {
-  v10 = a3;
+  appearCopy = appear;
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheet") & 1) == 0)
   {
     v5 = +[SBLockScreenManager sharedInstance];
-    v6 = [v5 lockScreenEnvironment];
-    v7 = [v6 rootViewController];
+    lockScreenEnvironment = [v5 lockScreenEnvironment];
+    rootViewController = [lockScreenEnvironment rootViewController];
 
-    if ([v7 bs_isAppearingOrAppeared])
+    if ([rootViewController bs_isAppearingOrAppeared])
     {
-      v8 = [v10 window];
-      v9 = [v8 interfaceOrientation];
+      window = [appearCopy window];
+      interfaceOrientation = [window interfaceOrientation];
 
-      [(SBLockScreenOrientationManager *)self updateInterfaceOrientationWithRequestedOrientation:v9 animated:1];
+      [(SBLockScreenOrientationManager *)self updateInterfaceOrientationWithRequestedOrientation:interfaceOrientation animated:1];
     }
   }
 }
 
-- (void)updateInterfaceOrientationWithRequestedOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)updateInterfaceOrientationWithRequestedOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheet"))
   {
     return;
@@ -76,16 +76,16 @@ LABEL_8:
 
   v21 = +[SBCoverSheetPresentationManager sharedInstance];
   v7 = +[SBLockScreenManager sharedInstance];
-  v8 = [v7 coverSheetViewController];
+  coverSheetViewController = [v7 coverSheetViewController];
 
   v9 = +[SBOrientationLockManager sharedInstance];
   [v21 setActiveInterfaceOrientationLocked:0];
   if ([v9 isUserLocked])
   {
-    a3 = [v9 userLockOrientation];
+    orientation = [v9 userLockOrientation];
   }
 
-  if ((a3 - 1) >= 4)
+  if ((orientation - 1) >= 4)
   {
     if (__sb__runningInSpringBoard())
     {
@@ -97,29 +97,29 @@ LABEL_8:
 
     else
     {
-      v10 = [MEMORY[0x277D75418] currentDevice];
-      v11 = [v10 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (!v11)
+      if (!userInterfaceIdiom)
       {
 LABEL_8:
-        a3 = 1;
+        orientation = 1;
         [(SBLockScreenOrientationManager *)self _updateDeviceOrientationIfNeededForPhoneUnlockToOrientation:1];
         goto LABEL_11;
       }
     }
 
-    a3 = [SBApp interfaceOrientationForCurrentDeviceOrientation:0];
+    orientation = [SBApp interfaceOrientationForCurrentDeviceOrientation:0];
   }
 
 LABEL_11:
-  [SBApp pushTransientActiveInterfaceOrientation:a3 forReason:@"SBLockScreenTransientActiveInterfaceOrientationForUndimReason"];
-  [SBApp updateNativeOrientationWithOrientation:a3 updateMirroredDisplays:1 animated:v4 logMessage:@"LockScreen updated interface orientation"];
+  [SBApp pushTransientActiveInterfaceOrientation:orientation forReason:@"SBLockScreenTransientActiveInterfaceOrientationForUndimReason"];
+  [SBApp updateNativeOrientationWithOrientation:orientation updateMirroredDisplays:1 animated:animatedCopy logMessage:@"LockScreen updated interface orientation"];
   [SBApp popTransientActiveInterfaceOrientationForReason:@"SBLockScreenTransientActiveInterfaceOrientationForUndimReason"];
-  v12 = [v8 _sbWindowScene];
-  v13 = [v12 homeScreenController];
-  v14 = [v13 homeScreenViewController];
-  [v14 nudgeIconInterfaceOrientation:a3 duration:0.0];
+  _sbWindowScene = [coverSheetViewController _sbWindowScene];
+  homeScreenController = [_sbWindowScene homeScreenController];
+  homeScreenViewController = [homeScreenController homeScreenViewController];
+  [homeScreenViewController nudgeIconInterfaceOrientation:orientation duration:0.0];
 
   if (__sb__runningInSpringBoard())
   {
@@ -131,36 +131,36 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if (v16 == 1)
+  if (userInterfaceIdiom2 == 1)
   {
 LABEL_15:
-    [SBApp setStatusBarOrientation:a3 forEmbeddedDisplayAnimated:0];
+    [SBApp setStatusBarOrientation:orientation forEmbeddedDisplayAnimated:0];
     v17 = +[SBUIController sharedInstance];
-    v18 = [v17 window];
-    v19 = [v18 rootViewController];
-    [v19 setInterfaceOrientation:a3];
+    window = [v17 window];
+    rootViewController = [window rootViewController];
+    [rootViewController setInterfaceOrientation:orientation];
   }
 
 LABEL_16:
-  v20 = [SBApp activeInterfaceOrientation];
-  [v21 updateInterfaceOrientationToMatchOrientation:v20];
-  [v8 setEffectiveInterfaceOrientationOverride:v20];
+  activeInterfaceOrientation = [SBApp activeInterfaceOrientation];
+  [v21 updateInterfaceOrientationToMatchOrientation:activeInterfaceOrientation];
+  [coverSheetViewController setEffectiveInterfaceOrientationOverride:activeInterfaceOrientation];
   [v21 setActiveInterfaceOrientationLocked:1];
 }
 
-- (void)_lockStateChanged:(id)a3
+- (void)_lockStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheet") & 1) == 0)
   {
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKeyedSubscript:@"SBAggregateLockStateKey"];
-    v7 = [v6 unsignedIntegerValue];
+    userInfo = [changedCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:@"SBAggregateLockStateKey"];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-    v8 = v7 & 1;
+    v8 = unsignedIntegerValue & 1;
     if (self->_wasUILocked != v8)
     {
       if (v8)
@@ -193,7 +193,7 @@ LABEL_16:
   }
 }
 
-- (void)_updateDeviceOrientationIfNeededForPhoneUnlockToOrientation:(int64_t)a3
+- (void)_updateDeviceOrientationIfNeededForPhoneUnlockToOrientation:(int64_t)orientation
 {
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheet") & 1) == 0)
   {
@@ -207,28 +207,28 @@ LABEL_16:
 
     else
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v6)
+      if (userInterfaceIdiom)
       {
         return;
       }
     }
 
-    v7 = [SBApp deviceOrientationForDeferredUpdateIfAny];
-    if (!v7)
+    deviceOrientationForDeferredUpdateIfAny = [SBApp deviceOrientationForDeferredUpdateIfAny];
+    if (!deviceOrientationForDeferredUpdateIfAny)
     {
-      v8 = [MEMORY[0x277D75418] currentDevice];
-      v7 = [v8 orientation];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      deviceOrientationForDeferredUpdateIfAny = [currentDevice2 orientation];
     }
 
-    if ((v7 - 1) < 4)
+    if ((deviceOrientationForDeferredUpdateIfAny - 1) < 4)
     {
       v9 = BKLogOrientationDevice();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        [(SBLockScreenOrientationManager *)v7 _updateDeviceOrientationIfNeededForPhoneUnlockToOrientation:v9];
+        [(SBLockScreenOrientationManager *)deviceOrientationForDeferredUpdateIfAny _updateDeviceOrientationIfNeededForPhoneUnlockToOrientation:v9];
       }
 
 LABEL_18:
@@ -236,8 +236,8 @@ LABEL_18:
       return;
     }
 
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [v10 isAfterDate:self->_updateForAmbiguousOrientationsAfterDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    v11 = [date isAfterDate:self->_updateForAmbiguousOrientationsAfterDate];
 
     if (!v11)
     {
@@ -253,7 +253,7 @@ LABEL_18:
 
     v12 = SBApp;
 
-    [v12 _setDeviceOrientation:a3 animated:0 logMessage:@"Forcibly updating SpringBoard's device orientation for unlock in an ambiguous orientation"];
+    [v12 _setDeviceOrientation:orientation animated:0 logMessage:@"Forcibly updating SpringBoard's device orientation for unlock in an ambiguous orientation"];
   }
 }
 

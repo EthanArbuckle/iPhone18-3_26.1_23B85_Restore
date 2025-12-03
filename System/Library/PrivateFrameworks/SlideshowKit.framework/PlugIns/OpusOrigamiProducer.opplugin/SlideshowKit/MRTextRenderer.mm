@@ -1,22 +1,22 @@
 @interface MRTextRenderer
-- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfGlyphsForWordsInRange:(id)a3;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfGlyphsOnLine:(int64_t)a3;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfStringForGlyphIndex:(int64_t)a3;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfWordsOnLine:(int64_t)a3;
-- (CGContext)_retainedContextFromAttributedString:(id)a3 withSize:(CGSize)a4;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfGlyphsForWordsInRange:(id)range;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfGlyphsOnLine:(int64_t)line;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfStringForGlyphIndex:(int64_t)index;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfWordsOnLine:(int64_t)line;
+- (CGContext)_retainedContextFromAttributedString:(id)string withSize:(CGSize)size;
 - (CGContext)retainedContext;
-- (CGContext)retainedContextOfGlyphAtIndex:(int64_t)a3;
-- (CGContext)retainedContextOfWordsInRange:(id)a3;
-- (CGPoint)originOfGlyphAtIndex:(int64_t)a3;
-- (CGPoint)originOfWordAtIndex:(int64_t)a3;
-- (CGRect)_textClipRectForString:(id)a3;
-- (CGRect)_tightFrameOfLineAtIndex:(int64_t)a3 inString:(id)a4 withSize:(CGSize)a5;
-- (CGRect)frameOfLineWithGlyphAtIndex:(int64_t)a3 range:(_NSRange *)a4;
+- (CGContext)retainedContextOfGlyphAtIndex:(int64_t)index;
+- (CGContext)retainedContextOfWordsInRange:(id)range;
+- (CGPoint)originOfGlyphAtIndex:(int64_t)index;
+- (CGPoint)originOfWordAtIndex:(int64_t)index;
+- (CGRect)_textClipRectForString:(id)string;
+- (CGRect)_tightFrameOfLineAtIndex:(int64_t)index inString:(id)string withSize:(CGSize)size;
+- (CGRect)frameOfLineWithGlyphAtIndex:(int64_t)index range:(_NSRange *)range;
 - (CGRect)imageRect;
 - (CGRect)tightFrameOfAllLines;
-- (CGRect)tightFrameOfLineAtIndex:(int64_t)a3;
-- (CGSize)_shadowSizeOffsetForString:(id)a3;
-- (CGSize)_sizeOfString:(id)a3;
+- (CGRect)tightFrameOfLineAtIndex:(int64_t)index;
+- (CGSize)_shadowSizeOffsetForString:(id)string;
+- (CGSize)_sizeOfString:(id)string;
 - (CGSize)_sizeToRendererAt;
 - (CGSize)definedSize;
 - (CGSize)inset;
@@ -25,27 +25,27 @@
 - (CGSize)sizeOfContext;
 - (CGSize)sizeOfText;
 - (MRTextRenderer)init;
-- (MRTextRenderer)initWithText:(id)a3 resolution:(CGSize)a4;
+- (MRTextRenderer)initWithText:(id)text resolution:(CGSize)resolution;
 - (NSAttributedString)text;
-- (double)_strikethroughThinkness:(int64_t)a3 baselineOffset:(double)a4 lineRect:(CGRect)a5;
-- (id)_invertRect:(CGRect)a3 inRect:(CGRect)a4;
-- (id)_truncateTextToFitInSize:(CGSize)a3 fromCenter:(BOOL)a4 outSize:(CGSize *)a5;
+- (double)_strikethroughThinkness:(int64_t)thinkness baselineOffset:(double)offset lineRect:(CGRect)rect;
+- (id)_invertRect:(CGRect)rect inRect:(CGRect)inRect;
+- (id)_truncateTextToFitInSize:(CGSize)size fromCenter:(BOOL)center outSize:(CGSize *)outSize;
 - (id)truncatedText;
-- (int64_t)_glyphIndexForStringIndex:(int64_t)a3 inString:(id)a4 forSize:(CGSize)a5;
-- (int64_t)_numberOfLinesInString:(id)a3;
+- (int64_t)_glyphIndexForStringIndex:(int64_t)index inString:(id)string forSize:(CGSize)size;
+- (int64_t)_numberOfLinesInString:(id)string;
 - (int64_t)countOfGlyphs;
 - (int64_t)countOfWords;
-- (int64_t)glyphIndexForStringIndex:(int64_t)a3;
+- (int64_t)glyphIndexForStringIndex:(int64_t)index;
 - (int64_t)numberOfLines;
 - (int64_t)numberOfLinesForTruncatedText;
-- (void)_drawInContext:(CGContext *)a3 withAttributedString:(id)a4 withSize:(CGSize)a5 andScale:(double)a6;
+- (void)_drawInContext:(CGContext *)context withAttributedString:(id)string withSize:(CGSize)size andScale:(double)scale;
 - (void)cacheText;
 - (void)cleanup;
 - (void)clearCache;
 - (void)dealloc;
-- (void)setPlaceholderText:(id)a3;
-- (void)setText:(id)a3;
-- (void)squeezeWidthForLineCount:(int64_t)a3;
+- (void)setPlaceholderText:(id)text;
+- (void)setText:(id)text;
+- (void)squeezeWidthForLineCount:(int64_t)count;
 - (void)trimWhitespace;
 - (void)updateLineSpacing;
 @end
@@ -78,24 +78,24 @@
   return result;
 }
 
-- (MRTextRenderer)initWithText:(id)a3 resolution:(CGSize)a4
+- (MRTextRenderer)initWithText:(id)text resolution:(CGSize)resolution
 {
-  height = a4.height;
-  width = a4.width;
+  height = resolution.height;
+  width = resolution.width;
   v7 = [(MRTextRenderer *)self init];
   if (v7)
   {
-    if (a3)
+    if (text)
     {
-      v8 = a3;
+      textCopy = text;
     }
 
     else
     {
-      v8 = 0;
+      textCopy = 0;
     }
 
-    v7->_text = v8;
+    v7->_text = textCopy;
     v7->_resolution.width = width;
     v7->_resolution.height = height;
     v7->_placeholderText = 0;
@@ -141,7 +141,7 @@
   return *p_text;
 }
 
-- (void)setPlaceholderText:(id)a3
+- (void)setPlaceholderText:(id)text
 {
   placeholderText = self->_placeholderText;
   if (placeholderText)
@@ -150,18 +150,18 @@
     self->_placeholderText = 0;
   }
 
-  if (a3)
+  if (text)
   {
-    v6 = [[NSMutableAttributedString alloc] initWithAttributedString:a3];
+    v6 = [[NSMutableAttributedString alloc] initWithAttributedString:text];
     [(NSAttributedString *)v6 replaceCharactersInRange:0 withString:[(NSAttributedString *)v6 length], @"                                      "];
     self->_placeholderText = v6;
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   text = self->_text;
-  if (text != a3)
+  if (text != text)
   {
     if (text)
     {
@@ -174,13 +174,13 @@
       self->_cachedText = 0;
     }
 
-    if (a3)
+    if (text)
     {
-      v8 = a3;
-      self->_text = v8;
-      if (v8)
+      textCopy = text;
+      self->_text = textCopy;
+      if (textCopy)
       {
-        v9 = [(NSAttributedString *)v8 length];
+        v9 = [(NSAttributedString *)textCopy length];
         if (v9)
         {
           v9 = [(MRTextRenderer *)self glyphIndexForStringIndex:v9 - 1];
@@ -228,7 +228,7 @@
     [(MRTextRenderer *)self _sizeToRendererAt];
     v5 = v4;
     v7 = v6;
-    v8 = [(MRTextRenderer *)self text];
+    text = [(MRTextRenderer *)self text];
     v13 = v5;
     v14 = v7;
     if (self->_truncate)
@@ -240,7 +240,7 @@
 
     else
     {
-      v9 = v8;
+      v9 = text;
       v11 = v7;
       v10 = v5;
     }
@@ -334,12 +334,12 @@
 
 - (CGRect)tightFrameOfAllLines
 {
-  v3 = [(MRTextRenderer *)self numberOfLines];
+  numberOfLines = [(MRTextRenderer *)self numberOfLines];
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  if (v3 < 1)
+  if (numberOfLines < 1)
   {
     v17 = CGRectZero.size.height;
     v15 = CGRectZero.size.width;
@@ -349,7 +349,7 @@
 
   else
   {
-    v8 = v3;
+    v8 = numberOfLines;
     v9 = 0;
     v24 = CGRectZero.origin.y;
     v25 = CGRectZero.origin.x;
@@ -408,17 +408,17 @@
   return result;
 }
 
-- (CGRect)tightFrameOfLineAtIndex:(int64_t)a3
+- (CGRect)tightFrameOfLineAtIndex:(int64_t)index
 {
   [(MRTextRenderer *)self _sizeToRendererAt];
   v6 = v5;
   v8 = v7;
   v18 = v5;
   v19 = v7;
-  v9 = [(MRTextRenderer *)self text];
+  text = [(MRTextRenderer *)self text];
   if (self->_truncate)
   {
-    v9 = [(MRTextRenderer *)self _truncateTextToFitInSize:0 fromCenter:&v18 outSize:v6, v8];
+    text = [(MRTextRenderer *)self _truncateTextToFitInSize:0 fromCenter:&v18 outSize:v6, v8];
   }
 
   v10 = v18;
@@ -431,7 +431,7 @@
 
   v12 = v10;
   v13 = v11;
-  [(MRTextRenderer *)self _tightFrameOfLineAtIndex:a3 inString:v9 withSize:ceilf(v12), ceilf(v13)];
+  [(MRTextRenderer *)self _tightFrameOfLineAtIndex:index inString:text withSize:ceilf(v12), ceilf(v13)];
   result.size.height = v17;
   result.size.width = v16;
   result.origin.y = v15;
@@ -439,10 +439,10 @@
   return result;
 }
 
-- (CGRect)_tightFrameOfLineAtIndex:(int64_t)a3 inString:(id)a4 withSize:(CGSize)a5
+- (CGRect)_tightFrameOfLineAtIndex:(int64_t)index inString:(id)string withSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v11 = CGBitmapContextCreate(0, width, height, 8uLL, vcvtd_n_s64_f64(width, 2uLL), DeviceRGB, 0x2002u);
   CGColorSpaceRelease(DeviceRGB);
@@ -459,7 +459,7 @@
   y = CGRectZero.origin.y;
   v18 = CGRectZero.size.width;
   v19 = CGRectZero.size.height;
-  v20 = CTFramesetterCreateWithAttributedString(a4);
+  v20 = CTFramesetterCreateWithAttributedString(string);
   if (v20)
   {
     v21 = v20;
@@ -470,12 +470,12 @@
     {
       v23 = Frame;
       Lines = CTFrameGetLines(Frame);
-      if (CFArrayGetCount(Lines) > a3)
+      if (CFArrayGetCount(Lines) > index)
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(Lines, a3);
+        ValueAtIndex = CFArrayGetValueAtIndex(Lines, index);
         v36.x = 0.0;
         v36.y = 0.0;
-        v38.location = a3;
+        v38.location = index;
         v38.length = 1;
         CTFrameGetLineOrigins(v23, v38, &v36);
         ImageBounds = CTLineGetImageBounds(ValueAtIndex, v11);
@@ -522,35 +522,35 @@
   return result;
 }
 
-- (CGContext)_retainedContextFromAttributedString:(id)a3 withSize:(CGSize)a4
+- (CGContext)_retainedContextFromAttributedString:(id)string withSize:(CGSize)size
 {
-  v6 = a4.width + self->_inset.width * 2.0;
+  v6 = size.width + self->_inset.width * 2.0;
   v7 = ceilf(v6);
-  v8 = a4.height + self->_inset.height * 2.0;
+  v8 = size.height + self->_inset.height * 2.0;
   [(MRTextRenderer *)self _scale];
   v10 = v9;
   v11 = +[MRUtilities newColorSpaceForDevice];
   v12 = CGBitmapContextCreate(0, vcvtps_u32_f32(v6), vcvtps_u32_f32(v8), 8uLL, vcvtd_n_s64_f64(v7, 2uLL), v11, 0x2002u);
   CGContextSetShouldSmoothFonts(v12, 0);
-  [(MRTextRenderer *)self _drawInContext:v12 withAttributedString:a3 withSize:v7 andScale:ceilf(v8), v10];
+  [(MRTextRenderer *)self _drawInContext:v12 withAttributedString:string withSize:v7 andScale:ceilf(v8), v10];
   CGColorSpaceRelease(v11);
   return v12;
 }
 
-- (double)_strikethroughThinkness:(int64_t)a3 baselineOffset:(double)a4 lineRect:(CGRect)a5
+- (double)_strikethroughThinkness:(int64_t)thinkness baselineOffset:(double)offset lineRect:(CGRect)rect
 {
-  if ((a3 & 7) == 0)
+  if ((thinkness & 7) == 0)
   {
     return 1.0;
   }
 
-  height = a4 * 5.3636991;
-  if (height > a5.size.height)
+  height = offset * 5.3636991;
+  if (height > rect.size.height)
   {
-    height = a5.size.height;
+    height = rect.size.height;
   }
 
-  result = height * 0.0440277313 * (a3 & 7);
+  result = height * 0.0440277313 * (thinkness & 7);
   v7 = ceil(result);
   if (result > 0.35)
   {
@@ -560,11 +560,11 @@
   return result;
 }
 
-- (void)_drawInContext:(CGContext *)a3 withAttributedString:(id)a4 withSize:(CGSize)a5 andScale:(double)a6
+- (void)_drawInContext:(CGContext *)context withAttributedString:(id)string withSize:(CGSize)size andScale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  if (![a4 length])
+  height = size.height;
+  width = size.width;
+  if (![string length])
   {
     return;
   }
@@ -573,7 +573,7 @@
   columnCount = self->_columnCount;
   if (columnCount)
   {
-    v12 = (height + self->_inset.height * -2.0) / a6;
+    v12 = (height + self->_inset.height * -2.0) / scale;
     v13 = vcvtps_s32_f32(v12);
   }
 
@@ -590,7 +590,7 @@
   }
 
   v108 = columnCount;
-  Attribute = CFAttributedStringGetAttribute(a4, 0, @"shadow", 0);
+  Attribute = CFAttributedStringGetAttribute(string, 0, @"shadow", 0);
   v16 = Attribute;
   v18 = CGSizeZero.width;
   v17 = CGSizeZero.height;
@@ -625,7 +625,7 @@ LABEL_26:
           v130.origin.y = v22;
           v130.size.width = v34;
           v130.size.height = v23;
-          CGContextClipToRect(a3, v130);
+          CGContextClipToRect(context, v130);
         }
 
         v18 = v116;
@@ -696,22 +696,22 @@ LABEL_26:
   }
 
 LABEL_29:
-  framesetter = CTFramesetterCreateWithAttributedString(a4);
+  framesetter = CTFramesetterCreateWithAttributedString(string);
   if (framesetter)
   {
     if (v108 >= 1)
     {
       v36 = 0;
       v37 = 0;
-      v38 = (width + v14 * v10) / a6;
+      v38 = (width + v14 * v10) / scale;
       v103 = vcvtps_s32_f32(v38);
       y = CGRectZero.origin.y;
       v97 = CGRectZero.size.height;
       v98 = CGRectZero.size.width;
-      v94 = v17 * a6;
-      v95 = v18 * a6;
-      v92 = height / a6 * 0.5;
-      blur = v19 * a6;
+      v94 = v17 * scale;
+      v95 = v18 * scale;
+      v92 = height / scale * 0.5;
+      blur = v19 * scale;
       v39 = v18;
       v40 = ceilf(-v39) + 0.0;
       if (v17 <= 0.0)
@@ -726,8 +726,8 @@ LABEL_29:
 
       v42 = v17 * v41;
       v102 = ceilf(v42) + 0.0;
-      v96 = height / a6;
-      v43 = height / a6;
+      v96 = height / scale;
+      v43 = height / scale;
       v101 = 30000.0 - ceilf(v43) + -1.0;
       if (v18 >= 0.0)
       {
@@ -770,8 +770,8 @@ LABEL_29:
         Mutable = CGPathCreateMutable();
         if (self->_centerVertically)
         {
-          [(MRTextRenderer *)self _sizeOfString:a4];
-          v51 = v50 / a6;
+          [(MRTextRenderer *)self _sizeOfString:string];
+          v51 = v50 / scale;
           v52 = 0.0;
           if (v51 < v96)
           {
@@ -789,12 +789,12 @@ LABEL_29:
           v52 = 0.0;
           if (!v53)
           {
-            v87 = [(MRTextRenderer *)self _invertRect:self->_imageRect.origin.x inRect:self->_imageRect.origin.y, self->_imageRect.size.width, self->_imageRect.size.height, v46, 0.0, v45, rect];
+            rect = [(MRTextRenderer *)self _invertRect:self->_imageRect.origin.x inRect:self->_imageRect.origin.y, self->_imageRect.size.width, self->_imageRect.size.height, v46, 0.0, v45, rect];
             v120 = 0u;
             v121 = 0u;
             v122 = 0u;
             v123 = 0u;
-            v88 = [v87 countByEnumeratingWithState:&v120 objects:v124 count:16];
+            v88 = [rect countByEnumeratingWithState:&v120 objects:v124 count:16];
             if (v88)
             {
               v89 = v88;
@@ -805,14 +805,14 @@ LABEL_29:
                 {
                   if (*v121 != v90)
                   {
-                    objc_enumerationMutation(v87);
+                    objc_enumerationMutation(rect);
                   }
 
                   [*(*(&v120 + 1) + 8 * i) CGRectValue];
                   CGPathAddRect(Mutable, 0, v131);
                 }
 
-                v89 = [v87 countByEnumeratingWithState:&v120 objects:v124 count:16];
+                v89 = [rect countByEnumeratingWithState:&v120 objects:v124 count:16];
               }
 
               while (v89);
@@ -835,25 +835,25 @@ LABEL_48:
           v58 = v57;
           v110 = Mutable;
           v111 = v37;
-          CGContextScaleCTM(a3, a6, a6);
+          CGContextScaleCTM(context, scale, scale);
           if (v16)
           {
             v59 = [v16 objectForKey:@"color"];
             v129.height = v94;
             v129.width = v95;
-            CGContextSetShadowWithColor(a3, v129, blur, v59);
+            CGContextSetShadowWithColor(context, v129, blur, v59);
           }
 
           v60 = v102 - self->_inset.height;
-          v61 = self;
+          selfCopy = self;
           if (!self->_columnCount)
           {
             v60 = v60 - v101;
           }
 
-          CGContextTranslateCTM(a3, v100 + self->_inset.width, v60);
-          CTFrameDraw(v58, a3);
-          CGContextSetTextPosition(a3, 0.0, 0.0);
+          CGContextTranslateCTM(context, v100 + self->_inset.width, v60);
+          CTFrameDraw(v58, context);
+          CGContextSetTextPosition(context, 0.0, 0.0);
           Lines = CTFrameGetLines(v58);
           Count = CFArrayGetCount(Lines);
           v64 = malloc_type_calloc(Count, 0x10uLL, 0x1000040451B5BE8uLL);
@@ -885,7 +885,7 @@ LABEL_48:
                     v73 = v72;
                     v128.location = 0;
                     v128.length = 0;
-                    v74 = COERCE_DOUBLE(CTRunGetImageBounds(v70, a3, v128));
+                    v74 = COERCE_DOUBLE(CTRunGetImageBounds(v70, context, v128));
                     location = CTRunGetStringRange(v70).location;
                     v76 = v74 + CTLineGetOffsetForStringIndex(ValueAtIndex, location, 0) + v46 + *p_x;
                     descent = 0.0;
@@ -894,7 +894,7 @@ LABEL_48:
                     v127.length = 0;
                     TypographicBounds = CTRunGetTypographicBounds(v70, v127, &ascent, &descent, 0);
                     v78 = [(__CFDictionary *)Attributes objectForKey:kCTFontAttributeName];
-                    [(MRTextRenderer *)v61 _strikethroughThinkness:v73 baselineOffset:descent lineRect:0.0, 0.0, TypographicBounds, descent + ascent];
+                    [(MRTextRenderer *)selfCopy _strikethroughThinkness:v73 baselineOffset:descent lineRect:0.0, 0.0, TypographicBounds, descent + ascent];
                     v80 = v79;
                     v81 = p_x[1];
                     v82 = v81 + CTFontGetXHeight(v78) * 0.5;
@@ -909,19 +909,19 @@ LABEL_48:
                       v84 = v82;
                     }
 
-                    CGContextSetStrokeColorWithColor(a3, [(__CFDictionary *)Attributes objectForKey:kCTForegroundColorAttributeName, *&v92]);
-                    CGContextSetLineWidth(a3, v80);
+                    CGContextSetStrokeColorWithColor(context, [(__CFDictionary *)Attributes objectForKey:kCTForegroundColorAttributeName, *&v92]);
+                    CGContextSetLineWidth(context, v80);
                     v85 = v76 - v74;
-                    CGContextMoveToPoint(a3, v85, v84);
+                    CGContextMoveToPoint(context, v85, v84);
                     v86 = v85 + TypographicBounds;
-                    CGContextAddLineToPoint(a3, v86, v84);
+                    CGContextAddLineToPoint(context, v86, v84);
                     if ((v73 & 8) != 0)
                     {
-                      CGContextMoveToPoint(a3, v85, v83 + v80 * 2.0);
-                      CGContextAddLineToPoint(a3, v86, v83 + v80 * 2.0);
+                      CGContextMoveToPoint(context, v85, v83 + v80 * 2.0);
+                      CGContextAddLineToPoint(context, v86, v83 + v80 * 2.0);
                     }
 
-                    CGContextStrokePath(a3);
+                    CGContextStrokePath(context);
                   }
 
                   ++v68;
@@ -940,7 +940,7 @@ LABEL_48:
           free(v114);
           v36 = CTFrameGetVisibleStringRange(frame).length + v112;
           CFRelease(frame);
-          self = v61;
+          self = selfCopy;
           v16 = v104;
           Mutable = v110;
           v37 = v111;
@@ -957,7 +957,7 @@ LABEL_48:
   }
 }
 
-- (CGRect)_textClipRectForString:(id)a3
+- (CGRect)_textClipRectForString:(id)string
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -966,7 +966,7 @@ LABEL_48:
   [(MRTextRenderer *)self _sizeOfString:?];
   v30 = v10;
   v31 = v9;
-  v11 = [(MRTextRenderer *)self _numberOfLinesInString:a3];
+  v11 = [(MRTextRenderer *)self _numberOfLinesInString:string];
   if (v11 >= 1)
   {
     v12 = v11;
@@ -977,7 +977,7 @@ LABEL_48:
     v27 = width;
     while (1)
     {
-      [(MRTextRenderer *)self _tightFrameOfLineAtIndex:v13 inString:a3 withSize:v31, v30, *&v26, *&v27, *&v28, *&v29];
+      [(MRTextRenderer *)self _tightFrameOfLineAtIndex:v13 inString:string withSize:v31, v30, *&v26, *&v27, *&v28, *&v29];
       if (v15 < 0.0)
       {
         break;
@@ -1081,7 +1081,7 @@ LABEL_9:
   return [v4 count];
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfWordsOnLine:(int64_t)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfWordsOnLine:(int64_t)line
 {
   if ([(MRTextRenderer *)self text])
   {
@@ -1117,20 +1117,20 @@ LABEL_9:
       if (Lines)
       {
         v14 = Lines;
-        if (CFArrayGetCount(Lines) <= a3)
+        if (CFArrayGetCount(Lines) <= line)
         {
           v16 = 0;
           v15 = 0x7FFFFFFFFFFFFFFFLL;
           goto LABEL_28;
         }
 
-        if ((a3 & 0x8000000000000000) == 0)
+        if ((line & 0x8000000000000000) == 0)
         {
           v15 = 0;
           v16 = 0;
           v17 = 0;
           v35 = v14;
-          v36 = a3;
+          lineCopy = line;
           do
           {
             ValueAtIndex = CFArrayGetValueAtIndex(v14, v17);
@@ -1172,8 +1172,8 @@ LABEL_9:
             v27 = [v21 count];
 
             v14 = v35;
-            v28 = v17 == v36;
-            if (v17 == v36)
+            v28 = v17 == lineCopy;
+            if (v17 == lineCopy)
             {
               v16 = v27;
               v29 = 0;
@@ -1215,7 +1215,7 @@ LABEL_29:
   return result;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfGlyphsOnLine:(int64_t)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfGlyphsOnLine:(int64_t)line
 {
   if (![(MRTextRenderer *)self text])
   {
@@ -1262,10 +1262,10 @@ LABEL_13:
   }
 
   Lines = CTFrameGetLines(Frame);
-  if (Lines && (v15 = Lines, CFArrayGetCount(Lines) > a3))
+  if (Lines && (v15 = Lines, CFArrayGetCount(Lines) > line))
   {
     v16 = 0;
-    if (a3)
+    if (line)
     {
       v17 = 0;
       do
@@ -1275,10 +1275,10 @@ LABEL_13:
         ++v17;
       }
 
-      while (a3 != v17);
+      while (line != v17);
     }
 
-    v19 = CFArrayGetValueAtIndex(v15, a3);
+    v19 = CFArrayGetValueAtIndex(v15, line);
     GlyphCount = CTLineGetGlyphCount(v19);
   }
 
@@ -1297,21 +1297,21 @@ LABEL_16:
   return result;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfGlyphsForWordsInRange:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfGlyphsForWordsInRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v4 = self;
+  var1 = range.var1;
+  var0 = range.var0;
+  selfCopy = self;
   if ([(MRTextRenderer *)self text])
   {
     v33 = 0.0;
     v34 = 0.0;
-    [(MRTextRenderer *)v4 _sizeToRendererAt];
-    v5 = [(MRTextRenderer *)v4 _truncateTextToFitInSize:0 fromCenter:&v33 outSize:?];
-    v6 = [v5 string];
-    v27 = [v6 length];
-    v7 = [v6 componentsSeparatedByCharactersInSet:{+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
-    v8 = [v6 length];
+    [(MRTextRenderer *)selfCopy _sizeToRendererAt];
+    v5 = [(MRTextRenderer *)selfCopy _truncateTextToFitInSize:0 fromCenter:&v33 outSize:?];
+    string = [v5 string];
+    v27 = [string length];
+    v7 = [string componentsSeparatedByCharactersInSet:{+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
+    v8 = [string length];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -1322,7 +1322,7 @@ LABEL_16:
     {
       v10 = v9;
       v24 = v5;
-      v25 = v4;
+      v25 = selfCopy;
       v11 = 0;
       v12 = 0;
       v13 = 0;
@@ -1340,7 +1340,7 @@ LABEL_16:
           v17 = *(*(&v29 + 1) + 8 * i);
           if ([v17 length])
           {
-            v18 = [v6 rangeOfString:v17 options:2 range:{v12, v8}];
+            v18 = [string rangeOfString:v17 options:2 range:{v12, v8}];
             v12 = &v18[v19];
             if (v11 == var0)
             {
@@ -1369,7 +1369,7 @@ LABEL_16:
       v20 = 0;
 LABEL_17:
       v5 = v24;
-      v4 = v25;
+      selfCopy = v25;
     }
 
     else
@@ -1378,8 +1378,8 @@ LABEL_17:
       v13 = 0;
     }
 
-    v21 = [(MRTextRenderer *)v4 _glyphIndexForStringIndex:v13 inString:v5 forSize:v33, v34];
-    v22 = ([(MRTextRenderer *)v4 _glyphIndexForStringIndex:&v13[v20] inString:v5 forSize:v33, v34]- v21);
+    v21 = [(MRTextRenderer *)selfCopy _glyphIndexForStringIndex:v13 inString:v5 forSize:v33, v34];
+    v22 = ([(MRTextRenderer *)selfCopy _glyphIndexForStringIndex:&v13[v20] inString:v5 forSize:v33, v34]- v21);
   }
 
   else
@@ -1394,11 +1394,11 @@ LABEL_17:
   return result;
 }
 
-- (CGContext)retainedContextOfWordsInRange:(id)a3
+- (CGContext)retainedContextOfWordsInRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v4 = self;
+  var1 = range.var1;
+  var0 = range.var0;
+  selfCopy = self;
   if (![(MRTextRenderer *)self text])
   {
     return 0;
@@ -1406,12 +1406,12 @@ LABEL_17:
 
   v33[0] = 0;
   v33[1] = 0;
-  [(MRTextRenderer *)v4 _sizeToRendererAt];
-  v5 = [(MRTextRenderer *)v4 _truncateTextToFitInSize:0 fromCenter:v33 outSize:?];
-  v6 = [v5 string];
-  v27 = [v6 length];
-  v7 = [v6 componentsSeparatedByCharactersInSet:{+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
-  v8 = [v6 length];
+  [(MRTextRenderer *)selfCopy _sizeToRendererAt];
+  v5 = [(MRTextRenderer *)selfCopy _truncateTextToFitInSize:0 fromCenter:v33 outSize:?];
+  string = [v5 string];
+  v27 = [string length];
+  v7 = [string componentsSeparatedByCharactersInSet:{+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
+  v8 = [string length];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -1422,7 +1422,7 @@ LABEL_17:
   {
     v10 = v9;
     v24 = v5;
-    v25 = v4;
+    v25 = selfCopy;
     v11 = 0;
     v12 = 0;
     v13 = 0;
@@ -1440,7 +1440,7 @@ LABEL_17:
         v17 = *(*(&v29 + 1) + 8 * i);
         if ([v17 length])
         {
-          v18 = [v6 rangeOfString:v17 options:2 range:{v11, v8}];
+          v18 = [string rangeOfString:v17 options:2 range:{v11, v8}];
           v11 = &v18[v19];
           if (v12 == var0)
           {
@@ -1469,7 +1469,7 @@ LABEL_17:
     v20.length = 0;
 LABEL_17:
     v5 = v24;
-    v4 = v25;
+    selfCopy = v25;
   }
 
   else
@@ -1480,25 +1480,25 @@ LABEL_17:
 
   v20.location = v13;
   v22 = CFAttributedStringCreateWithSubstring(kCFAllocatorDefault, v5, v20);
-  [(MRTextRenderer *)v4 _sizeOfString:v22];
-  v21 = [(MRTextRenderer *)v4 _retainedContextFromAttributedString:v22 withSize:?];
+  [(MRTextRenderer *)selfCopy _sizeOfString:v22];
+  v21 = [(MRTextRenderer *)selfCopy _retainedContextFromAttributedString:v22 withSize:?];
 
   return v21;
 }
 
-- (CGPoint)originOfWordAtIndex:(int64_t)a3
+- (CGPoint)originOfWordAtIndex:(int64_t)index
 {
   if ([(MRTextRenderer *)self text])
   {
     v27 = 0.0;
     v28 = 0.0;
     [(MRTextRenderer *)self _sizeToRendererAt];
-    v20 = self;
+    selfCopy = self;
     v19 = [(MRTextRenderer *)self _truncateTextToFitInSize:0 fromCenter:&v27 outSize:?];
-    v4 = [v19 string];
-    v21 = [v4 length];
-    v5 = [v4 componentsSeparatedByCharactersInSet:{+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
-    v6 = [v4 length];
+    string = [v19 string];
+    v21 = [string length];
+    v5 = [string componentsSeparatedByCharactersInSet:{+[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
+    v6 = [string length];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -1523,9 +1523,9 @@ LABEL_17:
           v14 = *(*(&v23 + 1) + 8 * i);
           if ([v14 length])
           {
-            v15 = [v4 rangeOfString:v14 options:2 range:{v10, v6}];
+            v15 = [string rangeOfString:v14 options:2 range:{v10, v6}];
             v9 = v15;
-            if (v11 == a3)
+            if (v11 == index)
             {
               goto LABEL_15;
             }
@@ -1548,7 +1548,7 @@ LABEL_17:
     }
 
 LABEL_15:
-    [(MRTextRenderer *)v20 originOfGlyphAtIndex:[(MRTextRenderer *)v20 _glyphIndexForStringIndex:v9 inString:v19 forSize:v27, v28]];
+    [(MRTextRenderer *)selfCopy originOfGlyphAtIndex:[(MRTextRenderer *)selfCopy _glyphIndexForStringIndex:v9 inString:v19 forSize:v27, v28]];
   }
 
   else
@@ -1618,9 +1618,9 @@ LABEL_15:
   return v14;
 }
 
-- (CGContext)retainedContextOfGlyphAtIndex:(int64_t)a3
+- (CGContext)retainedContextOfGlyphAtIndex:(int64_t)index
 {
-  v4 = [(MRTextRenderer *)self rangeOfStringForGlyphIndex:a3];
+  v4 = [(MRTextRenderer *)self rangeOfStringForGlyphIndex:index];
   v6 = v5;
   [(MRTextRenderer *)self _sizeToRendererAt];
   v13[0] = v7;
@@ -1652,7 +1652,7 @@ LABEL_15:
   return v11;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfStringForGlyphIndex:(int64_t)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)rangeOfStringForGlyphIndex:(int64_t)index
 {
   v47[0] = 0.0;
   v47[1] = 0.0;
@@ -1683,7 +1683,7 @@ LABEL_15:
         v13 = 0;
         v14 = 0;
         v15 = 0;
-        v42 = a3;
+        indexCopy = index;
         v43 = 1;
         v38 = v12;
         do
@@ -1693,7 +1693,7 @@ LABEL_15:
           v45 = v13;
           v40 = v17;
           v41 = v15;
-          if (v14 <= a3 && v17 > a3)
+          if (v14 <= index && v17 > index)
           {
             GlyphRuns = CTLineGetGlyphRuns(ValueAtIndex);
             if (GlyphRuns)
@@ -1711,8 +1711,8 @@ LABEL_15:
                   GlyphCount = CTRunGetGlyphCount(v22);
                   StringRange = CTRunGetStringRange(v22);
                   v14 += GlyphCount;
-                  v25 = a3 - v21;
-                  if (a3 >= v21 && v14 > a3)
+                  v25 = index - v21;
+                  if (index >= v21 && v14 > index)
                   {
                     Status = CTRunGetStatus(v22);
                     StringIndicesPtr = CTRunGetStringIndicesPtr(v22);
@@ -1758,7 +1758,7 @@ LABEL_15:
                       free(v28);
                     }
 
-                    a3 = v42;
+                    index = indexCopy;
                     v19 = v44;
                   }
 
@@ -1814,24 +1814,24 @@ LABEL_15:
   return result;
 }
 
-- (int64_t)glyphIndexForStringIndex:(int64_t)a3
+- (int64_t)glyphIndexForStringIndex:(int64_t)index
 {
   v7 = 0.0;
   v8 = 0.0;
   [(MRTextRenderer *)self _sizeToRendererAt];
   v5 = [(MRTextRenderer *)self _truncateTextToFitInSize:0 fromCenter:&v7 outSize:?];
-  if ([v5 length] <= a3)
+  if ([v5 length] <= index)
   {
-    a3 = [v5 length] - 1;
+    index = [v5 length] - 1;
   }
 
-  return [(MRTextRenderer *)self _glyphIndexForStringIndex:a3 inString:v5 forSize:v7, v8];
+  return [(MRTextRenderer *)self _glyphIndexForStringIndex:index inString:v5 forSize:v7, v8];
 }
 
-- (int64_t)_glyphIndexForStringIndex:(int64_t)a3 inString:(id)a4 forSize:(CGSize)a5
+- (int64_t)_glyphIndexForStringIndex:(int64_t)index inString:(id)string forSize:(CGSize)size
 {
-  width = a5.width;
-  v8 = CTFramesetterCreateWithAttributedString(a4);
+  width = size.width;
+  v8 = CTFramesetterCreateWithAttributedString(string);
   if (!v8)
   {
     return 0;
@@ -1873,7 +1873,7 @@ LABEL_15:
           v45 = v18;
           v46 = v17;
           v44 = GlyphCount;
-          if (StringRange.location <= a3 && StringRange.location + StringRange.length > a3)
+          if (StringRange.location <= index && StringRange.location + StringRange.length > index)
           {
             GlyphRuns = CTLineGetGlyphRuns(ValueAtIndex);
             if (GlyphRuns)
@@ -1904,7 +1904,7 @@ LABEL_29:
           v27 = CFArrayGetValueAtIndex(v23, v26);
           v28 = CTRunGetGlyphCount(v27);
           v29 = CTRunGetStringRange(v27);
-          if (v29.location <= a3 && v29.location + v29.length > a3)
+          if (v29.location <= index && v29.location + v29.length > index)
           {
             break;
           }
@@ -1930,7 +1930,7 @@ LABEL_28:
         v32 = v28 - 2;
         if (v28 >= 2)
         {
-          if (v31[1] > a3)
+          if (v31[1] > index)
           {
             v33 = 1;
             v34 = 1;
@@ -1959,7 +1959,7 @@ LABEL_26:
             v37 = *v35++;
             --v36;
             --v32;
-            if (v37 > a3)
+            if (v37 > index)
             {
               v34 = -v36;
               v33 = -v36 < v28;
@@ -1995,9 +1995,9 @@ LABEL_33:
   return v16;
 }
 
-- (CGPoint)originOfGlyphAtIndex:(int64_t)a3
+- (CGPoint)originOfGlyphAtIndex:(int64_t)index
 {
-  if (self->_lastGlyphIndex >= a3)
+  if (self->_lastGlyphIndex >= index)
   {
     [(MRTextRenderer *)self _scale];
     v8 = v7;
@@ -2042,7 +2042,7 @@ LABEL_33:
         {
           ValueAtIndex = CFArrayGetValueAtIndex(Lines, v20);
           GlyphCount = CTLineGetGlyphCount(ValueAtIndex);
-          if (v19 <= a3 && GlyphCount + v19 > a3)
+          if (v19 <= index && GlyphCount + v19 > index)
           {
             break;
           }
@@ -2058,7 +2058,7 @@ LABEL_33:
         v34.location = v20;
         v34.length = 1;
         CTFrameGetLineOrigins(Frame, v34, &v30);
-        v24 = [(MRTextRenderer *)self rangeOfStringForGlyphIndex:a3];
+        v24 = [(MRTextRenderer *)self rangeOfStringForGlyphIndex:index];
         v25 = v30.x;
         x = v25 + CTLineGetOffsetForStringIndex(ValueAtIndex, v24, 0);
         y = v30.y - v21;
@@ -2099,10 +2099,10 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)frameOfLineWithGlyphAtIndex:(int64_t)a3 range:(_NSRange *)a4
+- (CGRect)frameOfLineWithGlyphAtIndex:(int64_t)index range:(_NSRange *)range
 {
   lastGlyphIndex = self->_lastGlyphIndex;
-  if (lastGlyphIndex >= a3)
+  if (lastGlyphIndex >= index)
   {
     v12 = CTFramesetterCreateWithAttributedString([(MRTextRenderer *)self text]);
     [(MRTextRenderer *)self _scale];
@@ -2147,7 +2147,7 @@ LABEL_16:
         {
           ValueAtIndex = CFArrayGetValueAtIndex(Lines, v27);
           GlyphCount = CTLineGetGlyphCount(ValueAtIndex);
-          if (v26 <= a3 && GlyphCount + v26 > a3)
+          if (v26 <= index && GlyphCount + v26 > index)
           {
             break;
           }
@@ -2161,8 +2161,8 @@ LABEL_16:
           }
         }
 
-        a4->location = v26;
-        a4->length = GlyphCount;
+        range->location = v26;
+        range->length = GlyphCount;
         v56.location = v27;
         v56.length = 1;
         CTFrameGetLineOrigins(Frame, v56, &origins);
@@ -2172,7 +2172,7 @@ LABEL_16:
         ascent = 0.0;
         leading = 0.0;
         StringRange = CTLineGetStringRange(ValueAtIndex);
-        v33 = [(NSAttributedString *)[(MRTextRenderer *)self text] string];
+        string = [(NSAttributedString *)[(MRTextRenderer *)self text] string];
         v34 = [(NSAttributedString *)[(MRTextRenderer *)self text] length];
         if (StringRange.length + StringRange.location - 1 >= v34 - 1)
         {
@@ -2185,7 +2185,7 @@ LABEL_16:
         }
 
         TrailingWhitespaceWidth = 0.0;
-        if ([(NSString *)v33 characterAtIndex:v35, v48]== 10)
+        if ([(NSString *)string characterAtIndex:v35, v48]== 10)
         {
           TrailingWhitespaceWidth = CTLineGetTrailingWhitespaceWidth(ValueAtIndex);
         }
@@ -2246,8 +2246,8 @@ LABEL_20:
 
   else
   {
-    a4->location = lastGlyphIndex + 1;
-    a4->length = 0;
+    range->location = lastGlyphIndex + 1;
+    range->length = 0;
     v6 = CGRectZero.origin.x;
     v7 = CGRectZero.origin.y;
     v8 = CGRectZero.size.width;
@@ -2261,14 +2261,14 @@ LABEL_20:
   return result;
 }
 
-- (CGSize)_sizeOfString:(id)a3
+- (CGSize)_sizeOfString:(id)string
 {
-  if (!a3 || ![a3 length])
+  if (!string || ![string length])
   {
     goto LABEL_37;
   }
 
-  v5 = CTFramesetterCreateWithAttributedString(a3);
+  v5 = CTFramesetterCreateWithAttributedString(string);
   Mutable = CGPathCreateMutable();
   [(MRTextRenderer *)self _scale];
   v8 = v7;
@@ -2300,7 +2300,7 @@ LABEL_37:
   v12 = Frame;
   cf = Mutable;
   v47 = v5;
-  v48 = self;
+  selfCopy = self;
   Path = CTFrameGetPath(Frame);
   BoundingBox = CGPathGetBoundingBox(Path);
   x = BoundingBox.origin.x;
@@ -2326,14 +2326,14 @@ LABEL_37:
       location = StringRange.location;
       length = StringRange.length;
       TrailingWhitespaceWidth = 0.0;
-      if (([objc_msgSend(a3 string] & 1) == 0)
+      if (([objc_msgSend(string string] & 1) == 0)
       {
-        v51 = [a3 string];
-        v28 = [a3 length];
+        string = [string string];
+        v28 = [string length];
         v29 = StringRange.length + StringRange.location - 1 >= (v28 - 1) ? (v28 - 1) : StringRange.length + StringRange.location - 1;
         location = StringRange.location;
         length = StringRange.length;
-        if ([v51 characterAtIndex:v29] == 10)
+        if ([string characterAtIndex:v29] == 10)
         {
           TrailingWhitespaceWidth = CTLineGetTrailingWhitespaceWidth(ValueAtIndex);
         }
@@ -2341,11 +2341,11 @@ LABEL_37:
 
       v30 = CTLineGetTypographicBounds(ValueAtIndex, ascent, &descent, &leading) - TrailingWhitespaceWidth;
       v31 = 0;
-      if (([objc_msgSend(a3 "string")] & 1) == 0 && v30 > v16)
+      if (([objc_msgSend(string "string")] & 1) == 0 && v30 > v16)
       {
-        v32 = [a3 string];
+        string2 = [string string];
         v33 = length + location - 1;
-        v34 = [a3 length];
+        v34 = [string length];
         if (v33 >= (v34 - 1))
         {
           v35 = v34 - 1;
@@ -2356,7 +2356,7 @@ LABEL_37:
           v35 = v33;
         }
 
-        if ([v32 characterAtIndex:v35] == 32)
+        if ([string2 characterAtIndex:v35] == 32)
         {
           v30 = v30 - CTLineGetTrailingWhitespaceWidth(ValueAtIndex);
           v31 = 1;
@@ -2386,7 +2386,7 @@ LABEL_37:
         v61.size.height = v17;
         v36 = CGRectGetMaxY(v61) - origins.y + descent;
         v10 = range_8 == 1 ? v36 : v36 + leading;
-        if ((([objc_msgSend(a3 "string")] != 10) & ~v31) == 0)
+        if ((([objc_msgSend(string "string")] != 10) & ~v31) == 0)
         {
           v10 = v10 + ascent[0] + descent + leading;
         }
@@ -2402,7 +2402,7 @@ LABEL_37:
   CFRelease(cf);
   CFRelease(v12);
   CFRelease(v47);
-  Attribute = CFAttributedStringGetAttribute(a3, 0, kCTParagraphStyleAttributeName, 0);
+  Attribute = CFAttributedStringGetAttribute(string, 0, kCTParagraphStyleAttributeName, 0);
   if (Attribute)
   {
     origins.x = 0.0;
@@ -2412,9 +2412,9 @@ LABEL_37:
     }
   }
 
-  if ([a3 length])
+  if ([string length])
   {
-    [(MRTextRenderer *)v48 _shadowSizeOffsetForString:a3];
+    [(MRTextRenderer *)selfCopy _shadowSizeOffsetForString:string];
   }
 
   else
@@ -2427,10 +2427,10 @@ LABEL_37:
   v43 = ceilf(v42);
   v44 = v8 * (v10 + v39);
   height = ceilf(v44);
-  v45 = v48->_definedSize.height;
+  v45 = selfCopy->_definedSize.height;
   if (v45 <= 0.0)
   {
-    v45 = v48->_resolution.height;
+    v45 = selfCopy->_resolution.height;
   }
 
   v40 = v43;
@@ -2447,9 +2447,9 @@ LABEL_43:
 
 - (int64_t)numberOfLines
 {
-  v3 = [(MRTextRenderer *)self text];
+  text = [(MRTextRenderer *)self text];
 
-  return [(MRTextRenderer *)self _numberOfLinesInString:v3];
+  return [(MRTextRenderer *)self _numberOfLinesInString:text];
 }
 
 - (int64_t)numberOfLinesForTruncatedText
@@ -2466,15 +2466,15 @@ LABEL_43:
   return [(MRTextRenderer *)self _truncateTextToFitInSize:0 fromCenter:v3 outSize:self->_definedSize.width, self->_definedSize.height];
 }
 
-- (int64_t)_numberOfLinesInString:(id)a3
+- (int64_t)_numberOfLinesInString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
   Mutable = CGPathCreateMutable();
-  v6 = CTFramesetterCreateWithAttributedString(a3);
+  v6 = CTFramesetterCreateWithAttributedString(string);
   [(MRTextRenderer *)self _scale];
   width = self->_definedSize.width;
   if (width <= 0.0)
@@ -2502,7 +2502,7 @@ LABEL_43:
       {
         ValueAtIndex = CFArrayGetValueAtIndex(v12, Count - 1);
         StringRange = CTLineGetStringRange(ValueAtIndex);
-        if (StringRange.location + StringRange.length < [a3 length] || ((v16 = objc_msgSend(a3, "string"), v17 = objc_msgSend(a3, "length"), StringRange.location + StringRange.length - 1 >= (v17 - 1)) ? (v18 = (v17 - 1)) : (v18 = StringRange.location + StringRange.length - 1), objc_msgSend(v16, "characterAtIndex:", v18) == 10))
+        if (StringRange.location + StringRange.length < [string length] || ((v16 = objc_msgSend(string, "string"), v17 = objc_msgSend(string, "length"), StringRange.location + StringRange.length - 1 >= (v17 - 1)) ? (v18 = (v17 - 1)) : (v18 = StringRange.location + StringRange.length - 1), objc_msgSend(v16, "characterAtIndex:", v18) == 10))
         {
           ++Count;
         }
@@ -2585,14 +2585,14 @@ LABEL_43:
   return result;
 }
 
-- (CGSize)_shadowSizeOffsetForString:(id)a3
+- (CGSize)_shadowSizeOffsetForString:(id)string
 {
-  v4 = [a3 length];
+  v4 = [string length];
   width = CGSizeZero.width;
   height = CGSizeZero.height;
   if (v4)
   {
-    Attribute = CFAttributedStringGetAttribute(a3, 0, @"shadow", 0);
+    Attribute = CFAttributedStringGetAttribute(string, 0, @"shadow", 0);
     if (Attribute)
     {
       v8 = Attribute;
@@ -2611,9 +2611,9 @@ LABEL_43:
   return result;
 }
 
-- (void)squeezeWidthForLineCount:(int64_t)a3
+- (void)squeezeWidthForLineCount:(int64_t)count
 {
-  if ([(MRTextRenderer *)self numberOfLines]<= a3)
+  if ([(MRTextRenderer *)self numberOfLines]<= count)
   {
     do
     {
@@ -2621,7 +2621,7 @@ LABEL_43:
       self->_definedSize.width = width + -5.0;
     }
 
-    while ([(MRTextRenderer *)self numberOfLines]<= a3);
+    while ([(MRTextRenderer *)self numberOfLines]<= count);
     self->_definedSize.width = width;
 
     [(MRTextRenderer *)self updateLineSpacing];
@@ -2635,10 +2635,10 @@ LABEL_43:
     v3 = [(NSAttributedString *)self->_text mutableCopy];
     v19 = 0;
     v20 = 0;
-    v4 = [(MRTextRenderer *)self numberOfLines];
-    if (v4)
+    numberOfLines = [(MRTextRenderer *)self numberOfLines];
+    if (numberOfLines)
     {
-      v5 = v4;
+      v5 = numberOfLines;
       v6 = 0;
       v15 = v22;
       do
@@ -2716,56 +2716,56 @@ LABEL_43:
   }
 }
 
-- (id)_truncateTextToFitInSize:(CGSize)a3 fromCenter:(BOOL)a4 outSize:(CGSize *)a5
+- (id)_truncateTextToFitInSize:(CGSize)size fromCenter:(BOOL)center outSize:(CGSize *)outSize
 {
-  height = a3.height;
-  width = a3.width;
-  if (self->_originalCacheSize.width == a3.width && self->_originalCacheSize.height == a3.height)
+  height = size.height;
+  width = size.width;
+  if (self->_originalCacheSize.width == size.width && self->_originalCacheSize.height == size.height)
   {
-    *a5 = self->_cachedSize;
+    *outSize = self->_cachedSize;
     return self->_cachedText;
   }
 
-  v10 = a4;
-  if (a5)
+  centerCopy = center;
+  if (outSize)
   {
-    *a5 = a3;
+    *outSize = size;
   }
 
-  v11 = [(MRTextRenderer *)self text];
-  v12 = [(NSAttributedString *)v11 length];
-  if (v12)
+  text = [(MRTextRenderer *)self text];
+  height = [(NSAttributedString *)text length];
+  if (height)
   {
-    v12 = [(MRTextRenderer *)self _glyphIndexForStringIndex:v12 - 1 inString:v11 forSize:width, height];
+    height = [(MRTextRenderer *)self _glyphIndexForStringIndex:height - 1 inString:text forSize:width, height];
   }
 
-  self->_lastGlyphIndex = v12;
+  self->_lastGlyphIndex = height;
   if (!self->_truncate)
   {
     goto LABEL_12;
   }
 
-  v13 = [(MRTextRenderer *)self numberOfLines];
-  v14 = [(MRTextRenderer *)self maxNumberOfLines];
-  v15 = [(MRTextRenderer *)self text];
-  if (v13 <= v14)
+  numberOfLines = [(MRTextRenderer *)self numberOfLines];
+  maxNumberOfLines = [(MRTextRenderer *)self maxNumberOfLines];
+  text2 = [(MRTextRenderer *)self text];
+  if (numberOfLines <= maxNumberOfLines)
   {
-    return v15;
+    return text2;
   }
 
-  if (![(NSString *)[(NSAttributedString *)v15 string] isEqualToString:@"                                      "])
+  if (![(NSString *)[(NSAttributedString *)text2 string] isEqualToString:@"                                      "])
   {
-    v17 = [(NSAttributedString *)v11 mutableCopy];
-    v18 = [(NSAttributedString *)v11 mutableCopy];
-    v19 = [[NSAttributedString alloc] initWithString:@"..." attributes:{-[NSAttributedString attributesAtIndex:effectiveRange:](v11, "attributesAtIndex:effectiveRange:", 0, 0)}];
-    v20 = [(NSAttributedString *)v11 length];
+    v17 = [(NSAttributedString *)text mutableCopy];
+    v18 = [(NSAttributedString *)text mutableCopy];
+    v19 = [[NSAttributedString alloc] initWithString:@"..." attributes:{-[NSAttributedString attributesAtIndex:effectiveRange:](text, "attributesAtIndex:effectiveRange:", 0, 0)}];
+    v20 = [(NSAttributedString *)text length];
     if ([v17 length] && (v20 & 0x8000000000000000) == 0)
     {
       v21 = 0;
       do
       {
         v22 = [v17 length];
-        if (v10)
+        if (centerCopy)
         {
           v23 = (v22 >> 1);
         }
@@ -2792,32 +2792,32 @@ LABEL_43:
       }
 
       while (v21++ < v20);
-      v11 = v18;
+      text = v18;
     }
 
-    if ([(NSString *)[(NSAttributedString *)v11 string] hasSuffix:@"..."])
+    if ([(NSString *)[(NSAttributedString *)text string] hasSuffix:@"..."])
     {
-      v11 = [(NSAttributedString *)v11 mutableCopy];
+      text = [(NSAttributedString *)text mutableCopy];
     }
 
-    [(MRTextRenderer *)self _sizeOfString:v11];
+    [(MRTextRenderer *)self _sizeOfString:text];
     v30 = v28;
     v31 = v29;
-    if (a5)
+    if (outSize)
     {
-      a5->width = v28;
-      a5->height = v29;
+      outSize->width = v28;
+      outSize->height = v29;
     }
 
-    v32 = [(NSAttributedString *)v11 length];
+    v32 = [(NSAttributedString *)text length];
     if (v32)
     {
-      v32 = [(MRTextRenderer *)self _glyphIndexForStringIndex:v32 - 1 inString:v11 forSize:v30, v31];
+      v32 = [(MRTextRenderer *)self _glyphIndexForStringIndex:v32 - 1 inString:text forSize:v30, v31];
     }
 
     self->_lastGlyphIndex = v32;
 
-    return v11;
+    return text;
   }
 
 LABEL_12:
@@ -2873,39 +2873,39 @@ LABEL_12:
   return result;
 }
 
-- (id)_invertRect:(CGRect)a3 inRect:(CGRect)a4
+- (id)_invertRect:(CGRect)rect inRect:(CGRect)inRect
 {
-  width = a4.size.width;
-  height = a3.size.height;
-  v6 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a3.size.width <= a3.size.height;
-  v10 = a3.origin.y + a3.size.height;
-  v11 = a4.size.height - (a3.origin.y + a3.size.height);
-  if (a3.size.width > a3.size.height)
+  width = inRect.size.width;
+  height = rect.size.height;
+  v6 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = rect.size.width <= rect.size.height;
+  v10 = rect.origin.y + rect.size.height;
+  v11 = inRect.size.height - (rect.origin.y + rect.size.height);
+  if (rect.size.width > rect.size.height)
   {
     v12 = x;
   }
 
   else
   {
-    v12 = a4.origin.x;
+    v12 = inRect.origin.x;
   }
 
   if (v9)
   {
-    v13 = a4.origin.y;
+    v13 = inRect.origin.y;
   }
 
   else
   {
-    v13 = a3.origin.y + a3.size.height;
+    v13 = rect.origin.y + rect.size.height;
   }
 
   if (v9)
   {
-    v14 = a4.size.width;
+    v14 = inRect.size.width;
   }
 
   else
@@ -2930,7 +2930,7 @@ LABEL_12:
 
   else
   {
-    v16 = a4.origin.y;
+    v16 = inRect.origin.y;
   }
 
   if (v9)
@@ -2945,7 +2945,7 @@ LABEL_12:
 
   if (v6 < height)
   {
-    v18 = a4.origin.x;
+    v18 = inRect.origin.x;
   }
 
   else
@@ -2955,7 +2955,7 @@ LABEL_12:
 
   if (v6 < height)
   {
-    v19 = a4.origin.y;
+    v19 = inRect.origin.y;
   }
 
   else
@@ -2963,7 +2963,7 @@ LABEL_12:
     v19 = v13;
   }
 
-  v46 = a4.origin.x;
+  v46 = inRect.origin.x;
   v47 = v19;
   if (v6 < height)
   {
@@ -3012,7 +3012,7 @@ LABEL_12:
 
   else
   {
-    v24 = a4.origin.y;
+    v24 = inRect.origin.y;
   }
 
   if (v6 < height)
@@ -3022,7 +3022,7 @@ LABEL_12:
 
   else
   {
-    v25 = a4.size.height;
+    v25 = inRect.size.height;
   }
 
   if (v6 < height)
@@ -3032,7 +3032,7 @@ LABEL_12:
 
   else
   {
-    v26 = a4.origin.y;
+    v26 = inRect.origin.y;
   }
 
   rect1 = v26;

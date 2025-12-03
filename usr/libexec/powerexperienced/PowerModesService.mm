@@ -1,11 +1,11 @@
 @interface PowerModesService
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PowerModesService)init;
-- (void)initialStateUpdateForClient:(id)a3;
-- (void)registerWithIdentifier:(id)a3 forModes:(id)a4;
+- (void)initialStateUpdateForClient:(id)client;
+- (void)registerWithIdentifier:(id)identifier forModes:(id)modes;
 - (void)start;
-- (void)updateClientsforMode:(id)a3 withState:(BOOL)a4;
+- (void)updateClientsforMode:(id)mode withState:(BOOL)state;
 @end
 
 @implementation PowerModesService
@@ -55,42 +55,42 @@
   notify_post("com.apple.powerexperienced.restart");
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____ContextualPowerModesProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____ContextualPowerModesCallbackProtocol];
-  [v5 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
   v8 = qword_100036BB8;
   if (os_log_type_enabled(qword_100036BB8, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
     v11[0] = 67109120;
-    v11[1] = [v5 processIdentifier];
+    v11[1] = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "PowerModesManager: listener: accepted new connection from pid %d", v11, 8u);
   }
 
-  [v5 resume];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)initialStateUpdateForClient:(id)a3
+- (void)initialStateUpdateForClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v4 = +[PowerModesManager sharedInstance];
-  v5 = [v4 activeModes];
-  if ([v5 count])
+  activeModes = [v4 activeModes];
+  if ([activeModes count])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v5;
+    v6 = activeModes;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -106,17 +106,17 @@
           }
 
           v11 = [*(*(&v17 + 1) + 8 * i) description];
-          v12 = [v3 connection];
+          connection = [clientCopy connection];
 
-          if (v12)
+          if (connection)
           {
-            v13 = [v3 connection];
+            connection2 = [clientCopy connection];
             v15[0] = _NSConcreteStackBlock;
             v15[1] = 3221225472;
             v15[2] = sub_10000B370;
             v15[3] = &unk_10002C878;
-            v16 = v3;
-            v14 = [v13 remoteObjectProxyWithErrorHandler:v15];
+            v16 = clientCopy;
+            v14 = [connection2 remoteObjectProxyWithErrorHandler:v15];
             [v14 updateState:1 forMode:v11];
           }
         }
@@ -129,39 +129,39 @@
   }
 }
 
-- (void)updateClientsforMode:(id)a3 withState:(BOOL)a4
+- (void)updateClientsforMode:(id)mode withState:(BOOL)state
 {
-  v6 = a3;
-  v7 = [(PowerModesService *)self queue];
+  modeCopy = mode;
+  queue = [(PowerModesService *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B474;
   block[3] = &unk_10002C8A0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = modeCopy;
+  stateCopy = state;
+  v8 = modeCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)registerWithIdentifier:(id)a3 forModes:(id)a4
+- (void)registerWithIdentifier:(id)identifier forModes:(id)modes
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  modesCopy = modes;
   v8 = +[NSXPCConnection currentConnection];
-  v9 = [(PowerModesService *)self queue];
+  queue = [(PowerModesService *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000B81C;
   v13[3] = &unk_10002C6C0;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = modesCopy;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v9, v13);
+  v11 = modesCopy;
+  v12 = identifierCopy;
+  dispatch_async(queue, v13);
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface TIAssistantSettings
-+ (void)connectForOperations:(id)a3 withErrorHandler:(id)a4;
++ (void)connectForOperations:(id)operations withErrorHandler:(id)handler;
 + (void)dismissDialog;
-+ (void)dismissedDataSharingWithResponse:(int64_t)a3;
-+ (void)presentDialogForType:(int64_t)a3 withCompletionHandler:(id)a4;
-+ (void)setTestBlock:(id)a3;
++ (void)dismissedDataSharingWithResponse:(int64_t)response;
++ (void)presentDialogForType:(int64_t)type withCompletionHandler:(id)handler;
++ (void)setTestBlock:(id)block;
 @end
 
 @implementation TIAssistantSettings
@@ -24,7 +24,7 @@
 
   if (*(v6 + 24) == 1)
   {
-    [a1 connectForOperations:&__block_literal_global_22 withErrorHandler:0];
+    [self connectForOperations:&__block_literal_global_22 withErrorHandler:0];
   }
 
   _Block_object_dispose(&v5, 8);
@@ -42,32 +42,32 @@ void __36__TIAssistantSettings_dismissDialog__block_invoke_2(uint64_t a1, void *
   [a2 dismissDialogWithCompletionHandler:v6];
 }
 
-+ (void)dismissedDataSharingWithResponse:(int64_t)a3
++ (void)dismissedDataSharingWithResponse:(int64_t)response
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __56__TIAssistantSettings_dismissedDataSharingWithResponse___block_invoke;
   v3[3] = &__block_descriptor_40_e40_v24__0___TIAssistantSettings__8___v___16l;
-  v3[4] = a3;
-  [a1 connectForOperations:v3 withErrorHandler:0];
+  v3[4] = response;
+  [self connectForOperations:v3 withErrorHandler:0];
 }
 
-+ (void)presentDialogForType:(int64_t)a3 withCompletionHandler:(id)a4
++ (void)presentDialogForType:(int64_t)type withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66__TIAssistantSettings_presentDialogForType_withCompletionHandler___block_invoke;
   v10[3] = &unk_1E6F4C288;
-  v12 = a3;
-  v11 = v6;
+  typeCopy = type;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__TIAssistantSettings_presentDialogForType_withCompletionHandler___block_invoke_3;
   v8[3] = &unk_1E6F4C2B0;
   v9 = v11;
   v7 = v11;
-  [a1 connectForOperations:v10 withErrorHandler:v8];
+  [self connectForOperations:v10 withErrorHandler:v8];
 }
 
 void __66__TIAssistantSettings_presentDialogForType_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -100,10 +100,10 @@ uint64_t __66__TIAssistantSettings_presentDialogForType_withCompletionHandler___
   return result;
 }
 
-+ (void)connectForOperations:(id)a3 withErrorHandler:(id)a4
++ (void)connectForOperations:(id)operations withErrorHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  operationsCopy = operations;
+  handlerCopy = handler;
   v9 = _assistantInternalQueue();
   v10 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.TextInput.rdt" options:4096];
   v11 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EF7F8018];
@@ -124,7 +124,7 @@ uint64_t __66__TIAssistantSettings_presentDialogForType_withCompletionHandler___
   objc_copyWeak(&v24, location);
   v12 = MEMORY[0x1866068F0](v23);
   v13 = v12;
-  if (v8)
+  if (handlerCopy)
   {
     v14 = v20;
     v20[0] = MEMORY[0x1E69E9820];
@@ -134,7 +134,7 @@ uint64_t __66__TIAssistantSettings_presentDialogForType_withCompletionHandler___
     v4 = &v21;
     v21 = v12;
     v5 = &v22;
-    v22 = v8;
+    v22 = handlerCopy;
   }
 
   else
@@ -152,7 +152,7 @@ uint64_t __66__TIAssistantSettings_presentDialogForType_withCompletionHandler___
   v17 = [v10 remoteObjectProxyWithErrorHandler:v18];
   if (v17)
   {
-    v7[2](v7, v17, v13);
+    operationsCopy[2](operationsCopy, v17, v13);
   }
 
   else
@@ -160,7 +160,7 @@ uint64_t __66__TIAssistantSettings_presentDialogForType_withCompletionHandler___
     v16[2](v16);
   }
 
-  if (v8)
+  if (handlerCopy)
   {
   }
 
@@ -194,9 +194,9 @@ uint64_t __61__TIAssistantSettings_connectForOperations_withErrorHandler___block
   return v3();
 }
 
-+ (void)setTestBlock:(id)a3
++ (void)setTestBlock:(id)block
 {
-  _assistantTestBlock = [a3 copy];
+  _assistantTestBlock = [block copy];
 
   MEMORY[0x1EEE66BB8]();
 }

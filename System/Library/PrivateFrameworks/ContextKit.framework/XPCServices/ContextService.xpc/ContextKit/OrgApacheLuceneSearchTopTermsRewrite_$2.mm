@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneSearchTopTermsRewrite_$2
-- (BOOL)collectWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (BOOL)compareToLastTermWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (BOOL)collectWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (BOOL)compareToLastTermWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
-- (void)setNextEnumWithOrgApacheLuceneIndexTermsEnum:(id)a3;
+- (void)setNextEnumWithOrgApacheLuceneIndexTermsEnum:(id)enum;
 @end
 
 @implementation OrgApacheLuceneSearchTopTermsRewrite_$2
 
-- (void)setNextEnumWithOrgApacheLuceneIndexTermsEnum:(id)a3
+- (void)setNextEnumWithOrgApacheLuceneIndexTermsEnum:(id)enum
 {
-  JreStrongAssign(&self->termsEnum_, a3);
+  JreStrongAssign(&self->termsEnum_, enum);
   if (!self->st_)
   {
     v5 = new_OrgApacheLuceneIndexTermContext_initWithOrgApacheLuceneIndexIndexReaderContext_(self->super.topReaderContext_);
@@ -17,7 +17,7 @@
     JreStrongAssignAndConsume(&self->st_, v6);
   }
 
-  if (!a3 || (v7 = [a3 attributes]) == 0)
+  if (!enum || (v7 = [enum attributes]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -27,14 +27,14 @@
   JreStrongAssign(&self->boostAtt_, v8);
 }
 
-- (BOOL)compareToLastTermWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)compareToLastTermWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   lastTerm = self->lastTerm_;
-  if (!a3 || lastTerm)
+  if (!ref || lastTerm)
   {
-    if (a3)
+    if (ref)
     {
-      [(OrgApacheLuceneUtilBytesRefBuilder *)lastTerm copyBytesWithOrgApacheLuceneUtilBytesRef:a3];
+      [(OrgApacheLuceneUtilBytesRefBuilder *)lastTerm copyBytesWithOrgApacheLuceneUtilBytesRef:ref];
     }
 
     else
@@ -47,13 +47,13 @@
   {
     v6 = new_OrgApacheLuceneUtilBytesRefBuilder_init();
     JreStrongAssignAndConsume(&self->lastTerm_, v6);
-    [(OrgApacheLuceneUtilBytesRefBuilder *)self->lastTerm_ appendWithOrgApacheLuceneUtilBytesRef:a3];
+    [(OrgApacheLuceneUtilBytesRefBuilder *)self->lastTerm_ appendWithOrgApacheLuceneUtilBytesRef:ref];
   }
 
   return 1;
 }
 
-- (BOOL)collectWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)collectWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   boostAtt = self->boostAtt_;
   if (!boostAtt)
@@ -74,13 +74,13 @@
     goto LABEL_10;
   }
 
-  v9 = [(JavaUtilPriorityQueue *)self->val$stQueue_ peek];
-  if (!v9)
+  peek = [(JavaUtilPriorityQueue *)self->val$stQueue_ peek];
+  if (!peek)
   {
     goto LABEL_28;
   }
 
-  v10 = v9[4];
+  v10 = peek[4];
   if (v8 >= v10)
   {
     if (v8 != v10)
@@ -88,28 +88,28 @@
       goto LABEL_10;
     }
 
-    if (!a3)
+    if (!ref)
     {
       goto LABEL_28;
     }
 
-    v11 = *(v9 + 1);
+    v11 = *(peek + 1);
     if (!v11)
     {
       goto LABEL_28;
     }
 
-    if ([a3 compareToWithId:{objc_msgSend(v11, "get")}] <= 0)
+    if ([ref compareToWithId:{objc_msgSend(v11, "get")}] <= 0)
     {
 LABEL_10:
       visitedTerms = self->visitedTerms_;
       if (visitedTerms)
       {
-        v13 = [(JavaUtilMap *)visitedTerms getWithId:a3];
+        v13 = [(JavaUtilMap *)visitedTerms getWithId:ref];
         termsEnum = self->termsEnum_;
         if (termsEnum)
         {
-          v15 = [(OrgApacheLuceneIndexTermsEnum *)termsEnum termState];
+          termState = [(OrgApacheLuceneIndexTermsEnum *)termsEnum termState];
           if (v13)
           {
             v16 = v13[3];
@@ -118,7 +118,7 @@ LABEL_10:
               readerContext = self->super.readerContext_;
               if (readerContext)
               {
-                [v16 register__WithOrgApacheLuceneIndexTermState:v15 withInt:*(&readerContext->super.ordInParent_ + 1) withInt:-[OrgApacheLuceneIndexTermsEnum docFreq](self->termsEnum_ withLong:{"docFreq"), -[OrgApacheLuceneIndexTermsEnum totalTermFreq](self->termsEnum_, "totalTermFreq")}];
+                [v16 register__WithOrgApacheLuceneIndexTermState:termState withInt:*(&readerContext->super.ordInParent_ + 1) withInt:-[OrgApacheLuceneIndexTermsEnum docFreq](self->termsEnum_ withLong:{"docFreq"), -[OrgApacheLuceneIndexTermsEnum totalTermFreq](self->termsEnum_, "totalTermFreq")}];
                 return 1;
               }
             }
@@ -132,13 +132,13 @@ LABEL_10:
               bytes = st->bytes_;
               if (bytes)
               {
-                [(OrgApacheLuceneUtilBytesRefBuilder *)bytes copyBytesWithOrgApacheLuceneUtilBytesRef:a3];
+                [(OrgApacheLuceneUtilBytesRefBuilder *)bytes copyBytesWithOrgApacheLuceneUtilBytesRef:ref];
                 self->st_->boost_ = v8;
                 [(JavaUtilMap *)self->visitedTerms_ putWithId:[(OrgApacheLuceneUtilBytesRefBuilder *)self->st_->bytes_ get] withId:self->st_];
                 v20 = self->super.readerContext_;
                 if (v20)
                 {
-                  [(OrgApacheLuceneIndexTermContext *)self->st_->termState_ register__WithOrgApacheLuceneIndexTermState:v15 withInt:*(&v20->super.ordInParent_ + 1) withInt:[(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ docFreq] withLong:[(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ totalTermFreq]];
+                  [(OrgApacheLuceneIndexTermContext *)self->st_->termState_ register__WithOrgApacheLuceneIndexTermState:termState withInt:*(&v20->super.ordInParent_ + 1) withInt:[(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ docFreq] withLong:[(OrgApacheLuceneIndexTermsEnum *)self->termsEnum_ totalTermFreq]];
                   [(JavaUtilPriorityQueue *)self->val$stQueue_ offerWithId:self->st_];
                   if ([(JavaUtilPriorityQueue *)self->val$stQueue_ size]<= self->val$maxSize_)
                   {
@@ -165,13 +165,13 @@ LABEL_10:
                     return 1;
                   }
 
-                  v24 = [(JavaUtilPriorityQueue *)self->val$stQueue_ peek];
+                  peek2 = [(JavaUtilPriorityQueue *)self->val$stQueue_ peek];
                   maxBoostAtt = self->maxBoostAtt_;
-                  if (maxBoostAtt && v24)
+                  if (maxBoostAtt && peek2)
                   {
-                    LODWORD(v25) = *(v24 + 4);
+                    LODWORD(v25) = *(peek2 + 4);
                     [(OrgApacheLuceneSearchMaxNonCompetitiveBoostAttribute *)maxBoostAtt setMaxNonCompetitiveBoostWithFloat:v25];
-                    -[OrgApacheLuceneSearchMaxNonCompetitiveBoostAttribute setCompetitiveTermWithOrgApacheLuceneUtilBytesRef:](self->maxBoostAtt_, "setCompetitiveTermWithOrgApacheLuceneUtilBytesRef:", [*(v24 + 1) get]);
+                    -[OrgApacheLuceneSearchMaxNonCompetitiveBoostAttribute setCompetitiveTermWithOrgApacheLuceneUtilBytesRef:](self->maxBoostAtt_, "setCompetitiveTermWithOrgApacheLuceneUtilBytesRef:", [*(peek2 + 1) get]);
                     return 1;
                   }
                 }

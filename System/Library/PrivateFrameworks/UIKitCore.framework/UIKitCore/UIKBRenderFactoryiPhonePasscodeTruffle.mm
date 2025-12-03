@@ -69,23 +69,23 @@
 
 - (id)lightKeycapsFontName
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self boldTextEnabled];
+  boldTextEnabled = [(UIKBRenderFactory *)self boldTextEnabled];
   v6 = @".KeycapsA-Keys";
-  if (v5)
+  if (boldTextEnabled)
   {
     v6 = @".PhoneKeyCaps";
   }
 
   v7 = @"UIKBRenderFactorySystemCompactFontName";
-  if (v5)
+  if (boldTextEnabled)
   {
     v7 = @".SFCompact-Bold";
   }
 
-  if (v4)
+  if (usesCompactKeycapsFont)
   {
     v8 = v7;
   }

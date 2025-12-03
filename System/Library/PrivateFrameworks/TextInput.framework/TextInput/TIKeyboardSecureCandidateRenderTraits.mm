@@ -1,15 +1,15 @@
 @interface TIKeyboardSecureCandidateRenderTraits
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TIKeyboardSecureCandidateLayoutTraits)layoutTraits;
 - (TIKeyboardSecureCandidateRenderTraits)init;
-- (TIKeyboardSecureCandidateRenderTraits)initWithCoder:(id)a3;
+- (TIKeyboardSecureCandidateRenderTraits)initWithCoder:(id)coder;
 - (TIKeyboardSecureCandidateTextTraits)headerTextTraits;
 - (TIKeyboardSecureCandidateTextTraits)inputTextTraits;
 - (double)singleCellWidth;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSingleCellWidth:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSingleCellWidth:(double)width;
 @end
 
 @implementation TIKeyboardSecureCandidateRenderTraits
@@ -28,30 +28,30 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     layoutTraits = self->_layoutTraits;
     if (layoutTraits != v5[2] && ![(TIKeyboardSecureCandidateLayoutTraits *)layoutTraits isEqual:?])
     {
       goto LABEL_30;
     }
 
-    v7 = [(TIKeyboardSecureCandidateRenderTraits *)self headerTextTraits];
-    v8 = [v5 headerTextTraits];
-    v9 = v8;
-    if (v7 == v8)
+    headerTextTraits = [(TIKeyboardSecureCandidateRenderTraits *)self headerTextTraits];
+    headerTextTraits2 = [v5 headerTextTraits];
+    v9 = headerTextTraits2;
+    if (headerTextTraits == headerTextTraits2)
     {
     }
 
     else
     {
-      v10 = [(TIKeyboardSecureCandidateRenderTraits *)self headerTextTraits];
-      v11 = [v5 headerTextTraits];
-      v12 = [v10 isEqual:v11];
+      headerTextTraits3 = [(TIKeyboardSecureCandidateRenderTraits *)self headerTextTraits];
+      headerTextTraits4 = [v5 headerTextTraits];
+      v12 = [headerTextTraits3 isEqual:headerTextTraits4];
 
       if (!v12)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v14 = [(TIKeyboardSecureCandidateRenderTraits *)self inputTextTraits];
-    v15 = [v5 inputTextTraits];
-    v16 = v15;
-    if (v14 == v15)
+    inputTextTraits = [(TIKeyboardSecureCandidateRenderTraits *)self inputTextTraits];
+    inputTextTraits2 = [v5 inputTextTraits];
+    v16 = inputTextTraits2;
+    if (inputTextTraits == inputTextTraits2)
     {
     }
 
     else
     {
-      v17 = [(TIKeyboardSecureCandidateRenderTraits *)self inputTextTraits];
-      v18 = [v5 inputTextTraits];
-      v19 = [v17 isEqual:v18];
+      inputTextTraits3 = [(TIKeyboardSecureCandidateRenderTraits *)self inputTextTraits];
+      inputTextTraits4 = [v5 inputTextTraits];
+      v19 = [inputTextTraits3 isEqual:inputTextTraits4];
 
       if (!v19)
       {
@@ -79,9 +79,9 @@
     }
 
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [(TIKeyboardSecureCandidateRenderTraits *)self prefixText];
-    v22 = [v5 prefixText];
-    LODWORD(v20) = [v20 _string:v21 matchesString:v22];
+    prefixText = [(TIKeyboardSecureCandidateRenderTraits *)self prefixText];
+    prefixText2 = [v5 prefixText];
+    LODWORD(v20) = [v20 _string:prefixText matchesString:prefixText2];
 
     if (!v20)
     {
@@ -89,27 +89,27 @@
     }
 
     v23 = MEMORY[0x1E696AEC0];
-    v24 = [(TIKeyboardSecureCandidateRenderTraits *)self suffixText];
-    v25 = [v5 suffixText];
-    LODWORD(v23) = [v23 _string:v24 matchesString:v25];
+    suffixText = [(TIKeyboardSecureCandidateRenderTraits *)self suffixText];
+    suffixText2 = [v5 suffixText];
+    LODWORD(v23) = [v23 _string:suffixText matchesString:suffixText2];
 
     if (!v23)
     {
       goto LABEL_30;
     }
 
-    v26 = [(TIKeyboardSecureCandidateRenderTraits *)self resultCountToSingleCellWidth];
-    v27 = [v5 resultCountToSingleCellWidth];
-    v28 = v27;
-    if (v26 == v27)
+    resultCountToSingleCellWidth = [(TIKeyboardSecureCandidateRenderTraits *)self resultCountToSingleCellWidth];
+    resultCountToSingleCellWidth2 = [v5 resultCountToSingleCellWidth];
+    v28 = resultCountToSingleCellWidth2;
+    if (resultCountToSingleCellWidth == resultCountToSingleCellWidth2)
     {
     }
 
     else
     {
-      v29 = [(TIKeyboardSecureCandidateRenderTraits *)self resultCountToSingleCellWidth];
-      v30 = [v5 resultCountToSingleCellWidth];
-      v31 = [v29 isEqual:v30];
+      resultCountToSingleCellWidth3 = [(TIKeyboardSecureCandidateRenderTraits *)self resultCountToSingleCellWidth];
+      resultCountToSingleCellWidth4 = [v5 resultCountToSingleCellWidth];
+      v31 = [resultCountToSingleCellWidth3 isEqual:resultCountToSingleCellWidth4];
 
       if (!v31)
       {
@@ -117,18 +117,18 @@
       }
     }
 
-    v32 = [(TIKeyboardSecureCandidateRenderTraits *)self cellWidthOptions];
-    v33 = [v5 cellWidthOptions];
-    v34 = v33;
-    if (v32 == v33)
+    cellWidthOptions = [(TIKeyboardSecureCandidateRenderTraits *)self cellWidthOptions];
+    cellWidthOptions2 = [v5 cellWidthOptions];
+    v34 = cellWidthOptions2;
+    if (cellWidthOptions == cellWidthOptions2)
     {
     }
 
     else
     {
-      v35 = [(TIKeyboardSecureCandidateRenderTraits *)self cellWidthOptions];
-      v36 = [v5 cellWidthOptions];
-      v37 = [v35 isEqual:v36];
+      cellWidthOptions3 = [(TIKeyboardSecureCandidateRenderTraits *)self cellWidthOptions];
+      cellWidthOptions4 = [v5 cellWidthOptions];
+      v37 = [cellWidthOptions3 isEqual:cellWidthOptions4];
 
       if (!v37)
       {
@@ -151,22 +151,22 @@
         [v5 dividerLineWidth];
         if (v45 == v46)
         {
-          v47 = [(TIKeyboardSecureCandidateRenderTraits *)self maxCellCount];
-          if (v47 == [v5 maxCellCount])
+          maxCellCount = [(TIKeyboardSecureCandidateRenderTraits *)self maxCellCount];
+          if (maxCellCount == [v5 maxCellCount])
           {
-            v48 = [(TIKeyboardSecureCandidateRenderTraits *)self sharedCellCount];
-            if (v48 == [v5 sharedCellCount])
+            sharedCellCount = [(TIKeyboardSecureCandidateRenderTraits *)self sharedCellCount];
+            if (sharedCellCount == [v5 sharedCellCount])
             {
               [(TIKeyboardSecureCandidateRenderTraits *)self screenScale];
               v50 = v49;
               [v5 screenScale];
               if (v50 == v51)
               {
-                v52 = [(TIKeyboardSecureCandidateRenderTraits *)self isCandidateUI];
-                if (v52 == [v5 isCandidateUI])
+                isCandidateUI = [(TIKeyboardSecureCandidateRenderTraits *)self isCandidateUI];
+                if (isCandidateUI == [v5 isCandidateUI])
                 {
-                  v54 = [(TIKeyboardSecureCandidateRenderTraits *)self isInlinePromptUI];
-                  v13 = v54 ^ [v5 isInlinePromptUI] ^ 1;
+                  isInlinePromptUI = [(TIKeyboardSecureCandidateRenderTraits *)self isInlinePromptUI];
+                  v13 = isInlinePromptUI ^ [v5 isInlinePromptUI] ^ 1;
                   goto LABEL_31;
                 }
               }
@@ -193,34 +193,34 @@ LABEL_32:
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p", objc_opt_class(), self];
   [v3 appendFormat:@"; layoutTraits = %@", self->_layoutTraits];
-  v4 = [(TIKeyboardSecureCandidateRenderTraits *)self headerTextTraits];
-  [v3 appendFormat:@"; headerTextTraits = %@", v4];
+  headerTextTraits = [(TIKeyboardSecureCandidateRenderTraits *)self headerTextTraits];
+  [v3 appendFormat:@"; headerTextTraits = %@", headerTextTraits];
 
-  v5 = [(TIKeyboardSecureCandidateRenderTraits *)self inputTextTraits];
-  [v3 appendFormat:@"; inputTextTraits = %@", v5];
+  inputTextTraits = [(TIKeyboardSecureCandidateRenderTraits *)self inputTextTraits];
+  [v3 appendFormat:@"; inputTextTraits = %@", inputTextTraits];
 
-  v6 = [(TIKeyboardSecureCandidateRenderTraits *)self prefixText];
+  prefixText = [(TIKeyboardSecureCandidateRenderTraits *)self prefixText];
 
-  if (v6)
+  if (prefixText)
   {
-    v7 = [(TIKeyboardSecureCandidateRenderTraits *)self prefixText];
-    [v3 appendFormat:@"; prefixText = %@", v7];
+    prefixText2 = [(TIKeyboardSecureCandidateRenderTraits *)self prefixText];
+    [v3 appendFormat:@"; prefixText = %@", prefixText2];
   }
 
-  v8 = [(TIKeyboardSecureCandidateRenderTraits *)self suffixText];
+  suffixText = [(TIKeyboardSecureCandidateRenderTraits *)self suffixText];
 
-  if (v8)
+  if (suffixText)
   {
-    v9 = [(TIKeyboardSecureCandidateRenderTraits *)self suffixText];
-    [v3 appendFormat:@"; suffixText = %@", v9];
+    suffixText2 = [(TIKeyboardSecureCandidateRenderTraits *)self suffixText];
+    [v3 appendFormat:@"; suffixText = %@", suffixText2];
   }
 
-  v10 = [(TIKeyboardSecureCandidateRenderTraits *)self resultCountToSingleCellWidth];
-  v11 = [v10 componentsJoinedByString:{@", "}];
+  resultCountToSingleCellWidth = [(TIKeyboardSecureCandidateRenderTraits *)self resultCountToSingleCellWidth];
+  v11 = [resultCountToSingleCellWidth componentsJoinedByString:{@", "}];
   [v3 appendFormat:@"; resultCountToSingleCellWidth = (%@)", v11];
 
-  v12 = [(TIKeyboardSecureCandidateRenderTraits *)self cellWidthOptions];
-  v13 = [v12 description];
+  cellWidthOptions = [(TIKeyboardSecureCandidateRenderTraits *)self cellWidthOptions];
+  v13 = [cellWidthOptions description];
   [v3 appendFormat:@"; cellWidthOptions = %@", v13];
 
   [(TIKeyboardSecureCandidateRenderTraits *)self singleCellHeight];
@@ -260,57 +260,57 @@ LABEL_32:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   layoutTraits = self->_layoutTraits;
-  v17 = v4;
+  v17 = coderCopy;
   if (layoutTraits)
   {
-    [v4 encodeObject:layoutTraits forKey:@"layoutTraits"];
-    v4 = v17;
+    [coderCopy encodeObject:layoutTraits forKey:@"layoutTraits"];
+    coderCopy = v17;
   }
 
   headerTextTraits = self->_headerTextTraits;
   if (headerTextTraits)
   {
     [v17 encodeObject:headerTextTraits forKey:@"headerTextTraits"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   inputTextTraits = self->_inputTextTraits;
   if (inputTextTraits)
   {
     [v17 encodeObject:inputTextTraits forKey:@"inputTextTraits"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   prefixText = self->_prefixText;
   if (prefixText)
   {
     [v17 encodeObject:prefixText forKey:@"prefixText"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   suffixText = self->_suffixText;
   if (suffixText)
   {
     [v17 encodeObject:suffixText forKey:@"suffixText"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   resultCountToSingleCellWidth = self->_resultCountToSingleCellWidth;
   if (resultCountToSingleCellWidth)
   {
     [v17 encodeObject:resultCountToSingleCellWidth forKey:@"resultCountToSingleCellWidth"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   cellWidthOptions = self->_cellWidthOptions;
   if (cellWidthOptions)
   {
     [v17 encodeObject:cellWidthOptions forKey:@"cellWidthOptions"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   singleCellHeight = self->_singleCellHeight;
@@ -318,7 +318,7 @@ LABEL_32:
   {
     *&singleCellHeight = singleCellHeight;
     [v17 encodeFloat:@"singleCellHeight" forKey:singleCellHeight];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   singleCellVerticalPadding = self->_singleCellVerticalPadding;
@@ -326,7 +326,7 @@ LABEL_32:
   {
     *&singleCellVerticalPadding = singleCellVerticalPadding;
     [v17 encodeFloat:@"singleCellVerticalPadding" forKey:singleCellVerticalPadding];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   dividerLineWidth = self->_dividerLineWidth;
@@ -334,14 +334,14 @@ LABEL_32:
   {
     *&dividerLineWidth = dividerLineWidth;
     [v17 encodeFloat:@"dividerLineWidth" forKey:dividerLineWidth];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   maxCellCount = self->_maxCellCount;
   if (maxCellCount)
   {
     [v17 encodeInteger:maxCellCount forKey:@"maxCellCount"];
-    v4 = v17;
+    coderCopy = v17;
   }
 
   screenScale = self->_screenScale;
@@ -349,39 +349,39 @@ LABEL_32:
   {
     *&screenScale = screenScale;
     [v17 encodeFloat:@"screenScale" forKey:screenScale];
-    v4 = v17;
+    coderCopy = v17;
   }
 
-  [v4 encodeBool:self->_isCandidateUI forKey:@"isCandidateUI"];
+  [coderCopy encodeBool:self->_isCandidateUI forKey:@"isCandidateUI"];
   [v17 encodeBool:self->_isInlinePromptUI forKey:@"isInlinePromptUI"];
 }
 
-- (TIKeyboardSecureCandidateRenderTraits)initWithCoder:(id)a3
+- (TIKeyboardSecureCandidateRenderTraits)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = TIKeyboardSecureCandidateRenderTraits;
   v5 = [(TIKeyboardSecureCandidateRenderTraits *)&v36 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutTraits"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutTraits"];
     layoutTraits = v5->_layoutTraits;
     v5->_layoutTraits = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"headerTextTraits"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"headerTextTraits"];
     headerTextTraits = v5->_headerTextTraits;
     v5->_headerTextTraits = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputTextTraits"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputTextTraits"];
     inputTextTraits = v5->_inputTextTraits;
     v5->_inputTextTraits = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prefixText"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prefixText"];
     v13 = [v12 copy];
     prefixText = v5->_prefixText;
     v5->_prefixText = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suffixText"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suffixText"];
     v16 = [v15 copy];
     suffixText = v5->_suffixText;
     v5->_suffixText = v16;
@@ -389,7 +389,7 @@ LABEL_32:
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"resultCountToSingleCellWidth"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"resultCountToSingleCellWidth"];
     v22 = [v21 copy];
     resultCountToSingleCellWidth = v5->_resultCountToSingleCellWidth;
     v5->_resultCountToSingleCellWidth = v22;
@@ -398,58 +398,58 @@ LABEL_32:
     v25 = objc_opt_class();
     v26 = objc_opt_class();
     v27 = [v24 setWithObjects:{v25, v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"cellWidthOptions"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"cellWidthOptions"];
     v29 = [v28 copy];
     cellWidthOptions = v5->_cellWidthOptions;
     v5->_cellWidthOptions = v29;
 
-    [v4 decodeFloatForKey:@"singleCellHeight"];
+    [coderCopy decodeFloatForKey:@"singleCellHeight"];
     v5->_singleCellHeight = v31;
-    [v4 decodeFloatForKey:@"singleCellVerticalPadding"];
+    [coderCopy decodeFloatForKey:@"singleCellVerticalPadding"];
     v5->_singleCellVerticalPadding = v32;
-    [v4 decodeFloatForKey:@"dividerLineWidth"];
+    [coderCopy decodeFloatForKey:@"dividerLineWidth"];
     v5->_dividerLineWidth = v33;
-    v5->_maxCellCount = [v4 decodeIntegerForKey:@"maxCellCount"];
+    v5->_maxCellCount = [coderCopy decodeIntegerForKey:@"maxCellCount"];
     v5->_sharedCellCount = 0;
-    [v4 decodeFloatForKey:@"screenScale"];
+    [coderCopy decodeFloatForKey:@"screenScale"];
     v5->_screenScale = v34;
-    v5->_isCandidateUI = [v4 decodeBoolForKey:@"isCandidateUI"];
-    v5->_isInlinePromptUI = [v4 decodeBoolForKey:@"isInlinePromptUI"];
+    v5->_isCandidateUI = [coderCopy decodeBoolForKey:@"isCandidateUI"];
+    v5->_isInlinePromptUI = [coderCopy decodeBoolForKey:@"isInlinePromptUI"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(TIKeyboardSecureCandidateRenderTraits);
   if (v5)
   {
-    v6 = [(TIKeyboardSecureCandidateLayoutTraits *)self->_layoutTraits copyWithZone:a3];
+    v6 = [(TIKeyboardSecureCandidateLayoutTraits *)self->_layoutTraits copyWithZone:zone];
     layoutTraits = v5->_layoutTraits;
     v5->_layoutTraits = v6;
 
-    v8 = [(TIKeyboardSecureCandidateTextTraits *)self->_headerTextTraits copyWithZone:a3];
+    v8 = [(TIKeyboardSecureCandidateTextTraits *)self->_headerTextTraits copyWithZone:zone];
     headerTextTraits = v5->_headerTextTraits;
     v5->_headerTextTraits = v8;
 
-    v10 = [(TIKeyboardSecureCandidateTextTraits *)self->_inputTextTraits copyWithZone:a3];
+    v10 = [(TIKeyboardSecureCandidateTextTraits *)self->_inputTextTraits copyWithZone:zone];
     inputTextTraits = v5->_inputTextTraits;
     v5->_inputTextTraits = v10;
 
-    v12 = [(NSString *)self->_prefixText copyWithZone:a3];
+    v12 = [(NSString *)self->_prefixText copyWithZone:zone];
     prefixText = v5->_prefixText;
     v5->_prefixText = v12;
 
-    v14 = [(NSString *)self->_suffixText copyWithZone:a3];
+    v14 = [(NSString *)self->_suffixText copyWithZone:zone];
     suffixText = v5->_suffixText;
     v5->_suffixText = v14;
 
-    v16 = [(NSArray *)self->_resultCountToSingleCellWidth copyWithZone:a3];
+    v16 = [(NSArray *)self->_resultCountToSingleCellWidth copyWithZone:zone];
     resultCountToSingleCellWidth = v5->_resultCountToSingleCellWidth;
     v5->_resultCountToSingleCellWidth = v16;
 
-    v18 = [(NSDictionary *)self->_cellWidthOptions copyWithZone:a3];
+    v18 = [(NSDictionary *)self->_cellWidthOptions copyWithZone:zone];
     cellWidthOptions = v5->_cellWidthOptions;
     v5->_cellWidthOptions = v18;
 
@@ -512,10 +512,10 @@ LABEL_32:
   return layoutTraits;
 }
 
-- (void)setSingleCellWidth:(double)a3
+- (void)setSingleCellWidth:(double)width
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:width];
   v6[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   [(TIKeyboardSecureCandidateRenderTraits *)self setResultCountToSingleCellWidth:v5];
@@ -523,11 +523,11 @@ LABEL_32:
 
 - (double)singleCellWidth
 {
-  v2 = [(TIKeyboardSecureCandidateRenderTraits *)self resultCountToSingleCellWidth];
-  if ([v2 count])
+  resultCountToSingleCellWidth = [(TIKeyboardSecureCandidateRenderTraits *)self resultCountToSingleCellWidth];
+  if ([resultCountToSingleCellWidth count])
   {
-    v3 = [v2 lastObject];
-    [v3 doubleValue];
+    lastObject = [resultCountToSingleCellWidth lastObject];
+    [lastObject doubleValue];
     v5 = v4;
   }
 

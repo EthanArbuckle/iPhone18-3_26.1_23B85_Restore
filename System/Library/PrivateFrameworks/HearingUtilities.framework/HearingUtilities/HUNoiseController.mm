@@ -4,35 +4,35 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)_fetchDeviceState;
 - (BOOL)shouldEnableNoiseMeasurements;
 - (HUNoiseController)init;
-- (float)calculateLeqForBuffer:(id)a3;
-- (id)registerForEnvironmentalDosimetryUpdates:(id)a3;
-- (unint64_t)alertTypeFromLevel:(float)a3;
+- (float)calculateLeqForBuffer:(id)buffer;
+- (id)registerForEnvironmentalDosimetryUpdates:(id)updates;
+- (unint64_t)alertTypeFromLevel:(float)level;
 - (void)_clearCachedValues;
 - (void)_initializeInternalDataCollectionIfNeeded;
-- (void)_internalDataCollectionLogSPLValue:(id)a3 metaData:(id)a4;
+- (void)_internalDataCollectionLogSPLValue:(id)value metaData:(id)data;
 - (void)_sendUpdateMessageForCurrentValues;
-- (void)addNoiseSample:(id)a3 toCircularBuffer:(id)a4 forMinTime:(float)a5;
-- (void)applyAnalyticsNotificationLogicForSPL:(float)a3 withDuration:(float)a4;
-- (void)applyNotificationLogicForSPL:(float)a3 withDuration:(float)a4;
-- (void)checkToResetAnalyticsNotificationsForSPL:(float)a3 withDuration:(float)a4 andBuffer:(id)a5 forTime:(float)a6 andThreshold:(int64_t)a7;
-- (void)checkToResetNotificationsForSPL:(float)a3 withDuration:(float)a4 andBuffer:(id)a5 forTime:(float)a6;
-- (void)checkToSurfaceAnalyticsNotificationForSPL:(float)a3 withDuration:(float)a4 andBuffer:(id)a5 forTime:(float)a6 andThreshold:(int64_t)a7;
-- (void)checkToSurfaceNotificationForSPL:(float)a3 withDuration:(float)a4 andBuffer:(id)a5 forTime:(float)a6;
+- (void)addNoiseSample:(id)sample toCircularBuffer:(id)buffer forMinTime:(float)time;
+- (void)applyAnalyticsNotificationLogicForSPL:(float)l withDuration:(float)duration;
+- (void)applyNotificationLogicForSPL:(float)l withDuration:(float)duration;
+- (void)checkToResetAnalyticsNotificationsForSPL:(float)l withDuration:(float)duration andBuffer:(id)buffer forTime:(float)time andThreshold:(int64_t)threshold;
+- (void)checkToResetNotificationsForSPL:(float)l withDuration:(float)duration andBuffer:(id)buffer forTime:(float)time;
+- (void)checkToSurfaceAnalyticsNotificationForSPL:(float)l withDuration:(float)duration andBuffer:(id)buffer forTime:(float)time andThreshold:(int64_t)threshold;
+- (void)checkToSurfaceNotificationForSPL:(float)l withDuration:(float)duration andBuffer:(id)buffer forTime:(float)time;
 - (void)dealloc;
-- (void)logNoiseBuffer:(id)a3 calculatedLeq:(float)a4;
-- (void)logThresholdTransitionForSample:(id)a3;
-- (void)lowPowerModeChanged:(id)a3;
-- (void)maintainCircularBuffer:(id)a3 forTime:(float)a4;
-- (void)processMeasurement:(id)a3 withMetadata:(id)a4;
+- (void)logNoiseBuffer:(id)buffer calculatedLeq:(float)leq;
+- (void)logThresholdTransitionForSample:(id)sample;
+- (void)lowPowerModeChanged:(id)changed;
+- (void)maintainCircularBuffer:(id)buffer forTime:(float)time;
+- (void)processMeasurement:(id)measurement withMetadata:(id)metadata;
 - (void)readEnvironmentalDosimetryLevels;
 - (void)restartADAMTimer;
-- (void)sendNotificationRequestWithTitle:(id)a3 body:(id)a4 suggestANCMode:(BOOL)a5 suggestHearingProtection:(BOOL)a6;
-- (void)setInternalDataCollectionEnabled:(BOOL)a3;
-- (void)showNotificationForAlertType:(unint64_t)a3;
+- (void)sendNotificationRequestWithTitle:(id)title body:(id)body suggestANCMode:(BOOL)mode suggestHearingProtection:(BOOL)protection;
+- (void)setInternalDataCollectionEnabled:(BOOL)enabled;
+- (void)showNotificationForAlertType:(unint64_t)type;
 - (void)stopReceivingAudioDosageSamples;
 - (void)subscribeToSharedNotifications;
 - (void)writeAttentuationSampleToHealth;
-- (void)writeNotificationSampleToHKWithSPL:(float)a3 startDate:(id)a4 endDate:(id)a5;
+- (void)writeNotificationSampleToHKWithSPL:(float)l startDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation HUNoiseController
@@ -98,8 +98,8 @@ uint64_t __57__HUNoiseController_deviceSupportsEnvironmentalDosimetry__block_inv
     [(HUNoiseController *)v2 setDataQueue:v7];
 
     [(HUNoiseController *)v2 _clearCachedValues];
-    v8 = [MEMORY[0x1E695DF70] array];
-    [(HUNoiseController *)v2 setAttenuationBuffer:v8];
+    array = [MEMORY[0x1E695DF70] array];
+    [(HUNoiseController *)v2 setAttenuationBuffer:array];
 
     v70 = 0;
     v71 = &v70;
@@ -190,15 +190,15 @@ uint64_t __57__HUNoiseController_deviceSupportsEnvironmentalDosimetry__block_inv
     v20 = v19;
     _Block_object_dispose(&v70, 8);
     v21 = [v19 alloc];
-    v22 = [(HUNoiseController *)v2 healthStore];
-    v23 = [v21 initWithHealthStore:v22 bundleIdentifier:@"com.apple.Noise" quantityType:v18];
+    healthStore = [(HUNoiseController *)v2 healthStore];
+    v23 = [v21 initWithHealthStore:healthStore bundleIdentifier:@"com.apple.Noise" quantityType:v18];
     attenuationDataCollector = v2->_attenuationDataCollector;
     v2->_attenuationDataCollector = v23;
 
     v25 = +[HUNoiseSettings sharedInstance];
-    v26 = [v25 thresholdVersion];
+    thresholdVersion = [v25 thresholdVersion];
 
-    if (!v26)
+    if (!thresholdVersion)
     {
       v27 = +[HUNoiseSettings sharedInstance];
       [v27 setThresholdVersion:1];
@@ -213,8 +213,8 @@ uint64_t __57__HUNoiseController_deviceSupportsEnvironmentalDosimetry__block_inv
 
     objc_initWeak(&location, v2);
     v31 = +[HUNoiseSettings sharedInstance];
-    v32 = [v31 notificationMuteDate];
-    [v32 timeIntervalSinceNow];
+    notificationMuteDate = [v31 notificationMuteDate];
+    [notificationMuteDate timeIntervalSinceNow];
     [(HUNoiseController *)v2 setMuted:v33 > 0.0];
 
     v34 = +[HUNoiseSettings sharedInstance];
@@ -271,16 +271,16 @@ uint64_t __57__HUNoiseController_deviceSupportsEnvironmentalDosimetry__block_inv
     v47 = v46;
     _Block_object_dispose(&v70, 8);
     v48 = [v46 alloc];
-    v49 = [MEMORY[0x1E696AAE8] mainBundle];
-    v50 = [v49 bundleIdentifier];
-    v51 = [v48 initWithIdentifier:v50];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v51 = [v48 initWithIdentifier:bundleIdentifier];
     edDataReceiver = v2->_edDataReceiver;
     v2->_edDataReceiver = v51;
 
     [(ADAMAudioDataReceiver *)v2->_edDataReceiver stopMeasuringAudioSampleType:1702260324];
-    v53 = [(HUNoiseController *)v2 shouldEnableNoiseMeasurements];
-    [(HUNoiseController *)v2 _logNoiseEnabledStateToPowerlog:v53];
-    if (v53)
+    shouldEnableNoiseMeasurements = [(HUNoiseController *)v2 shouldEnableNoiseMeasurements];
+    [(HUNoiseController *)v2 _logNoiseEnabledStateToPowerlog:shouldEnableNoiseMeasurements];
+    if (shouldEnableNoiseMeasurements)
     {
       v54 = dispatch_time(0, 100000000);
       v55 = dispatch_get_global_queue(21, 0);
@@ -354,7 +354,7 @@ void __25__HUNoiseController_init__block_invoke_312(uint64_t a1)
   [(HUNoiseController *)&v4 dealloc];
 }
 
-- (void)showNotificationForAlertType:(unint64_t)a3
+- (void)showNotificationForAlertType:(unint64_t)type
 {
   v5 = hearingLocString(@"NoiseAlertTitle");
   v6 = hearingLocString(@"NoiseAlertLevelContent80");
@@ -369,9 +369,9 @@ void __25__HUNoiseController_init__block_invoke_312(uint64_t a1)
     v9 = [v11 localizedStringForKey:@"NoiseAlertAirPodsDetail" value:@"NoiseAlertAirPodsDetail" table:@"HearingAidSupport-B698"];
   }
 
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 1uLL:
         v12 = @"NoiseAlertLevelDetailedContent80";
@@ -399,9 +399,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a3 - 5 >= 2)
+  if (type - 5 >= 2)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       v12 = @"NoiseAlertLevelDetailedContent95";
       v13 = @"NoiseAlertLevelContent95";
@@ -409,7 +409,7 @@ LABEL_17:
     }
 
 LABEL_18:
-    v18 = [(HUNoiseController *)self shouldSuggestANCMode];
+    shouldSuggestANCMode = [(HUNoiseController *)self shouldSuggestANCMode];
     v14 = v6;
     v17 = v10;
     goto LABEL_19;
@@ -421,8 +421,8 @@ LABEL_18:
   v16 = hearingLocString(@"NoiseAlertLevelDetailedContent100");
   v17 = [v15 stringWithFormat:v16, v14, v9];
 
-  v18 = [(HUNoiseController *)self shouldSuggestANCMode];
-  if (a3 == 6)
+  shouldSuggestANCMode = [(HUNoiseController *)self shouldSuggestANCMode];
+  if (type == 6)
   {
     v19 = HCLogHearingProtection();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -439,7 +439,7 @@ LABEL_19:
   if (!_os_feature_enabled_impl())
   {
 LABEL_23:
-    [(HUNoiseController *)self sendNotificationRequestWithTitle:v5 body:v17 suggestANCMode:v18 suggestHearingProtection:0];
+    [(HUNoiseController *)self sendNotificationRequestWithTitle:v5 body:v17 suggestANCMode:shouldSuggestANCMode suggestHearingProtection:0];
     goto LABEL_24;
   }
 
@@ -459,7 +459,7 @@ LABEL_23:
   v27 = v5;
   v17 = v17;
   v28 = v17;
-  v29 = v18;
+  v29 = shouldSuggestANCMode;
   [v25 getPairedDeviceSupportsHearingProtection:v26];
 
 LABEL_24:
@@ -481,13 +481,13 @@ uint64_t __50__HUNoiseController_showNotificationForAlertType___block_invoke(uin
   return result;
 }
 
-- (void)sendNotificationRequestWithTitle:(id)a3 body:(id)a4 suggestANCMode:(BOOL)a5 suggestHearingProtection:(BOOL)a6
+- (void)sendNotificationRequestWithTitle:(id)title body:(id)body suggestANCMode:(BOOL)mode suggestHearingProtection:(BOOL)protection
 {
-  v7 = a5;
+  modeCopy = mode;
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (a6)
+  titleCopy = title;
+  bodyCopy = body;
+  if (protection)
   {
     if (_os_feature_enabled_impl())
     {
@@ -500,7 +500,7 @@ uint64_t __50__HUNoiseController_showNotificationForAlertType___block_invoke(uin
     v14 = @"NoiseAlertDamageWarning";
   }
 
-  else if (v7)
+  else if (modeCopy)
   {
     v14 = @"NoiseAlertDamageWarningConsiderSuggestionANC";
   }
@@ -512,7 +512,7 @@ uint64_t __50__HUNoiseController_showNotificationForAlertType___block_invoke(uin
 
   v13 = hearingLocString(v14);
 LABEL_9:
-  v15 = [v11 stringByAppendingFormat:@"\n\n%@", v13];
+  v15 = [bodyCopy stringByAppendingFormat:@"\n\n%@", v13];
 
   v16 = [MEMORY[0x1E6983278] categoryWithIdentifier:@"com.apple.noise.threshold" actions:MEMORY[0x1E695E0F0] intentIdentifiers:MEMORY[0x1E695E0F0] options:0];
   userNotificationCenter = self->_userNotificationCenter;
@@ -523,16 +523,16 @@ LABEL_9:
   [v19 setCategoryIdentifier:@"com.apple.noise.threshold"];
   [v19 setThreadIdentifier:@"com.apple.noise.threshold"];
   [v19 setExpirationDate:0];
-  [v19 setTitle:v10];
+  [v19 setTitle:titleCopy];
   [v19 setBody:v15];
-  v20 = [MEMORY[0x1E69832B8] defaultSound];
-  [v19 setSound:v20];
+  defaultSound = [MEMORY[0x1E69832B8] defaultSound];
+  [v19 setSound:defaultSound];
 
   [v19 setInterruptionLevel:2];
   v21 = MEMORY[0x1E6983298];
-  v22 = [MEMORY[0x1E696AFB0] UUID];
-  v23 = [v22 UUIDString];
-  v24 = [v21 requestWithIdentifier:v23 content:v19 trigger:0 destinations:15];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v24 = [v21 requestWithIdentifier:uUIDString content:v19 trigger:0 destinations:15];
 
   [(UNUserNotificationCenter *)self->_userNotificationCenter addNotificationRequest:v24 withCompletionHandler:&__block_literal_global_391];
   v25 = HCLogHearingProtection();
@@ -559,34 +559,34 @@ void __99__HUNoiseController_sendNotificationRequestWithTitle_body_suggestANCMod
   }
 }
 
-- (unint64_t)alertTypeFromLevel:(float)a3
+- (unint64_t)alertTypeFromLevel:(float)level
 {
-  if (a3 >= 80.0 && a3 < 85.0)
+  if (level >= 80.0 && level < 85.0)
   {
     return 1;
   }
 
-  if (a3 >= 85.0 && a3 < 90.0)
+  if (level >= 85.0 && level < 90.0)
   {
     return 2;
   }
 
-  if (a3 >= 90.0 && a3 < 95.0)
+  if (level >= 90.0 && level < 95.0)
   {
     return 3;
   }
 
-  if (a3 >= 95.0 && a3 < 100.0)
+  if (level >= 95.0 && level < 100.0)
   {
     return 4;
   }
 
-  if (a3 >= 100.0 && a3 <= 110.0)
+  if (level >= 100.0 && level <= 110.0)
   {
     return 5;
   }
 
-  if (a3 > 110.0)
+  if (level > 110.0)
   {
     return 6;
   }
@@ -642,23 +642,23 @@ void __37__HUNoiseController_restartADAMTimer__block_invoke_392(uint64_t a1)
   [WeakRetained _sendUpdateMessageForCurrentValues];
 }
 
-- (void)processMeasurement:(id)a3 withMetadata:(id)a4
+- (void)processMeasurement:(id)measurement withMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  measurementCopy = measurement;
+  metadataCopy = metadata;
   [(HUNoiseController *)self setMeasurementEnabled:1];
   [(HUNoiseController *)self restartADAMTimer];
-  v8 = [(HUNoiseController *)self dataQueue];
+  dataQueue = [(HUNoiseController *)self dataQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__HUNoiseController_processMeasurement_withMetadata___block_invoke;
   block[3] = &unk_1E85CA468;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = measurementCopy;
+  selfCopy = self;
+  v14 = metadataCopy;
+  v9 = metadataCopy;
+  v10 = measurementCopy;
+  dispatch_async(dataQueue, block);
 }
 
 uint64_t __53__HUNoiseController_processMeasurement_withMetadata___block_invoke(id *a1)
@@ -789,14 +789,14 @@ uint64_t __53__HUNoiseController_processMeasurement_withMetadata___block_invoke(
 - (void)readEnvironmentalDosimetryLevels
 {
   objc_initWeak(&location, self);
-  v3 = [(HUNoiseController *)self dataQueue];
+  dataQueue = [(HUNoiseController *)self dataQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__HUNoiseController_readEnvironmentalDosimetryLevels__block_invoke;
   block[3] = &unk_1E85CAA40;
   block[4] = self;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, block);
+  dispatch_async(dataQueue, block);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -916,21 +916,21 @@ void __53__HUNoiseController_readEnvironmentalDosimetryLevels__block_invoke_403(
 
 - (void)_sendUpdateMessageForCurrentValues
 {
-  v3 = [(HUNoiseController *)self dataQueue];
-  dispatch_assert_queue_V2(v3);
+  dataQueue = [(HUNoiseController *)self dataQueue];
+  dispatch_assert_queue_V2(dataQueue);
 
   [(HUNoiseController *)self slowLeq];
   if (v4 != 1.1755e-38 && ([(HUNoiseController *)self fastLeq], v5 != 1.1755e-38) || ![(HUNoiseController *)self isMeasurementEnabled])
   {
-    v6 = [(HUNoiseController *)self _fetchDeviceState];
+    _fetchDeviceState = [(HUNoiseController *)self _fetchDeviceState];
     v8 = v7;
     [(HUNoiseController *)self slowLeq];
     v10 = v9;
     [(HUNoiseController *)self fastLeq];
     v12 = v11;
-    [HUNoiseUtilities attenuationForExposure:v6 deviceType:v8 andListeningState:v10];
+    [HUNoiseUtilities attenuationForExposure:_fetchDeviceState deviceType:v8 andListeningState:v10];
     v14 = v13;
-    [HUNoiseUtilities attenuationForExposure:v6 deviceType:v8 andListeningState:v12];
+    [HUNoiseUtilities attenuationForExposure:_fetchDeviceState deviceType:v8 andListeningState:v12];
     v16 = v15;
     if ((v10 - v14) >= 80.0)
     {
@@ -957,7 +957,7 @@ void __53__HUNoiseController_readEnvironmentalDosimetryLevels__block_invoke_403(
     *&v23 = v16;
     v24 = [MEMORY[0x1E696AD98] numberWithFloat:v23];
     v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[HUNoiseController isWearingAirPods](self, "isWearingAirPods")}];
-    v26 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+    v26 = [MEMORY[0x1E696AD98] numberWithInteger:_fetchDeviceState];
     v27 = [v33 dictionaryWithObjectsAndKeys:{v32, @"HUEDSlowLeqIdentifier", v31, @"HUEDFastLeqIdentifier", v30, @"HUEDEnabledIdentifier", v20, @"HUEDThresholdCrossedIdentifier", v22, @"HUEDSlowAttenuationLevelIdentifier", v24, @"HUEDFastAttenuationLevelIdentifier", v25, @"HUEDWearingAirPodsIdentifier", v26, @"HUEDDeviceTypeIdentifier", 0}];
 
     v34 = [MEMORY[0x1E69A4560] messagePayloadFromDictionary:v27 andIdentifier:0x40000];
@@ -970,13 +970,13 @@ void __53__HUNoiseController_readEnvironmentalDosimetryLevels__block_invoke_403(
 
 - (void)_clearCachedValues
 {
-  v3 = [(HUNoiseController *)self dataQueue];
+  dataQueue = [(HUNoiseController *)self dataQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__HUNoiseController__clearCachedValues__block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dataQueue, block);
 }
 
 uint64_t __39__HUNoiseController__clearCachedValues__block_invoke(uint64_t a1, double a2)
@@ -1013,13 +1013,13 @@ uint64_t __39__HUNoiseController__clearCachedValues__block_invoke(uint64_t a1, d
   v14 = 0;
   v12 = &unk_1DA69C252;
   v2 = +[HUAccessoryManager sharedInstance];
-  v3 = [v2 sharedQueue];
+  sharedQueue = [v2 sharedQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__HUNoiseController__fetchDeviceState__block_invoke;
   block[3] = &unk_1E85C9FB0;
   block[4] = &v9;
-  dispatch_sync(v3, block);
+  dispatch_sync(sharedQueue, block);
 
   v4 = v10[4];
   v5 = v10[5];
@@ -1040,13 +1040,13 @@ void __38__HUNoiseController__fetchDeviceState__block_invoke(uint64_t a1)
   *(v3 + 40) = v4;
 }
 
-- (void)applyNotificationLogicForSPL:(float)a3 withDuration:(float)a4
+- (void)applyNotificationLogicForSPL:(float)l withDuration:(float)duration
 {
   v30 = *MEMORY[0x1E69E9840];
   v7 = +[HUNoiseSettings sharedInstance];
-  v8 = [v7 notificationsEnabled];
+  notificationsEnabled = [v7 notificationsEnabled];
 
-  if (!v8)
+  if (!notificationsEnabled)
   {
 LABEL_8:
     v23 = *MEMORY[0x1E69E9840];
@@ -1057,10 +1057,10 @@ LABEL_8:
   {
     if ([(HUNoiseController *)self isMuted])
     {
-      v15 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v16 = +[HUNoiseSettings sharedInstance];
-      v17 = [v16 notificationMuteDate];
-      [v15 timeIntervalSinceDate:v17];
+      notificationMuteDate = [v16 notificationMuteDate];
+      [date timeIntervalSinceDate:notificationMuteDate];
       v19 = v18;
 
       if (v19 > 0.0)
@@ -1069,9 +1069,9 @@ LABEL_8:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           v21 = +[HUNoiseSettings sharedInstance];
-          v22 = [v21 notificationMuteDate];
+          notificationMuteDate2 = [v21 notificationMuteDate];
           v28 = 138412290;
-          v29 = v22;
+          v29 = notificationMuteDate2;
           _os_log_impl(&dword_1DA5E2000, v20, OS_LOG_TYPE_DEFAULT, "Resetting notifications since it has past the notification mute date of %@", &v28, 0xCu);
         }
 
@@ -1085,8 +1085,8 @@ LABEL_8:
     leqBuffer = self->_leqBuffer;
     v27 = *MEMORY[0x1E69E9840];
     LODWORD(v14) = 1230748160;
-    *&v12 = a3;
-    *&v13 = a4;
+    *&v12 = l;
+    *&v13 = duration;
 
     [(HUNoiseController *)self checkToResetNotificationsForSPL:leqBuffer withDuration:v12 andBuffer:v13 forTime:v14];
   }
@@ -1096,44 +1096,44 @@ LABEL_8:
     v24 = self->_leqBuffer;
     v25 = *MEMORY[0x1E69E9840];
     LODWORD(v11) = 1211090944;
-    *&v9 = a3;
-    *&v10 = a4;
+    *&v9 = l;
+    *&v10 = duration;
 
     [(HUNoiseController *)self checkToSurfaceNotificationForSPL:v24 withDuration:v9 andBuffer:v10 forTime:v11];
   }
 }
 
-- (void)checkToResetNotificationsForSPL:(float)a3 withDuration:(float)a4 andBuffer:(id)a5 forTime:(float)a6
+- (void)checkToResetNotificationsForSPL:(float)l withDuration:(float)duration andBuffer:(id)buffer forTime:(float)time
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  bufferCopy = buffer;
   v11 = [HUNoiseSample alloc];
-  v12 = [MEMORY[0x1E695DF00] date];
-  *&v13 = a3;
-  *&v14 = a4;
-  v15 = [(HUNoiseSample *)v11 initWithSampleDate:v12 splValue:v13 andDuration:v14];
+  date = [MEMORY[0x1E695DF00] date];
+  *&v13 = l;
+  *&v14 = duration;
+  v15 = [(HUNoiseSample *)v11 initWithSampleDate:date splValue:v13 andDuration:v14];
 
-  *&v16 = a6;
-  [(HUNoiseController *)self addNoiseSample:v15 toCircularBuffer:v10 forMinTime:v16];
-  if ([v10 count])
+  *&v16 = time;
+  [(HUNoiseController *)self addNoiseSample:v15 toCircularBuffer:bufferCopy forMinTime:v16];
+  if ([bufferCopy count])
   {
-    v17 = [v10 firstObject];
-    v18 = [v17 sampleDate];
+    firstObject = [bufferCopy firstObject];
+    sampleDate = [firstObject sampleDate];
 
-    v19 = [v10 lastObject];
-    v20 = [v19 sampleDate];
+    lastObject = [bufferCopy lastObject];
+    sampleDate2 = [lastObject sampleDate];
 
-    v21 = [v10 lastObject];
-    [v21 sampleDuration];
+    lastObject2 = [bufferCopy lastObject];
+    [lastObject2 sampleDuration];
     v23 = v22;
 
-    [v20 timeIntervalSinceDate:v18];
+    [sampleDate2 timeIntervalSinceDate:sampleDate];
     v25 = v24;
-    v26 = [MEMORY[0x1E695DF00] date];
-    [v26 timeIntervalSinceDate:self->_timeNotified];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:self->_timeNotified];
     v28 = (v27 * 1000.0);
 
-    if (v28 >= a6 && (v29 = v23 + v25 * 1000.0, (a6 * 90.0) / 100.0 <= v29) && (-[HUNoiseController calculateLeqForBuffer:](self, "calculateLeqForBuffer:", v10), v31 = v30, +[HUNoiseSettings sharedInstance](HUNoiseSettings, "sharedInstance"), v32 = objc_claimAutoreleasedReturnValue(), v33 = [v32 notificationThreshold], v32, v31 < v33))
+    if (v28 >= time && (v29 = v23 + v25 * 1000.0, (time * 90.0) / 100.0 <= v29) && (-[HUNoiseController calculateLeqForBuffer:](self, "calculateLeqForBuffer:", bufferCopy), v31 = v30, +[HUNoiseSettings sharedInstance](HUNoiseSettings, "sharedInstance"), v32 = objc_claimAutoreleasedReturnValue(), v33 = [v32 notificationThreshold], v32, v31 < v33))
     {
       v34 = HCLogHearingProtection();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -1142,7 +1142,7 @@ LABEL_8:
         v37 = 134218240;
         v38 = v31;
         v39 = 1024;
-        v40 = [v35 notificationThreshold];
+        notificationThreshold = [v35 notificationThreshold];
         _os_log_impl(&dword_1DA5E2000, v34, OS_LOG_TYPE_DEFAULT, "Resetting notifications for Leq %0.1f dB being under %i dB threshold for minimum reset time", &v37, 0x12u);
       }
     }
@@ -1168,8 +1168,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v18 = HCLogHearingProtection();
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+  sampleDate = HCLogHearingProtection();
+  if (os_log_type_enabled(sampleDate, OS_LOG_TYPE_ERROR))
   {
     [HUNoiseController checkToResetNotificationsForSPL:withDuration:andBuffer:forTime:];
   }
@@ -1179,35 +1179,35 @@ LABEL_14:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkToSurfaceNotificationForSPL:(float)a3 withDuration:(float)a4 andBuffer:(id)a5 forTime:(float)a6
+- (void)checkToSurfaceNotificationForSPL:(float)l withDuration:(float)duration andBuffer:(id)buffer forTime:(float)time
 {
   v71 = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  bufferCopy = buffer;
   v11 = [HUNoiseSample alloc];
-  v12 = [MEMORY[0x1E695DF00] date];
-  *&v13 = a3;
-  *&v14 = a4;
-  v15 = [(HUNoiseSample *)v11 initWithSampleDate:v12 splValue:v13 andDuration:v14];
+  date = [MEMORY[0x1E695DF00] date];
+  *&v13 = l;
+  *&v14 = duration;
+  v15 = [(HUNoiseSample *)v11 initWithSampleDate:date splValue:v13 andDuration:v14];
 
   [(HUNoiseController *)self logThresholdTransitionForSample:v15];
-  *&v16 = a6;
-  [(HUNoiseController *)self addNoiseSample:v15 toCircularBuffer:v10 forMinTime:v16];
-  if ([v10 count])
+  *&v16 = time;
+  [(HUNoiseController *)self addNoiseSample:v15 toCircularBuffer:bufferCopy forMinTime:v16];
+  if ([bufferCopy count])
   {
-    v17 = [v10 firstObject];
-    v18 = [v17 sampleDate];
+    firstObject = [bufferCopy firstObject];
+    sampleDate = [firstObject sampleDate];
 
-    v19 = [v10 lastObject];
-    v20 = [v19 sampleDate];
+    lastObject = [bufferCopy lastObject];
+    sampleDate2 = [lastObject sampleDate];
 
-    v21 = [v10 lastObject];
-    [v21 sampleDuration];
+    lastObject2 = [bufferCopy lastObject];
+    [lastObject2 sampleDuration];
     v23 = v22;
 
-    [v20 timeIntervalSinceDate:v18];
+    [sampleDate2 timeIntervalSinceDate:sampleDate];
     v25 = v24;
     v26 = +[HUNoiseSettings sharedInstance];
-    if ([v26 notificationThreshold] <= a3 && (v27 = v23 + v25 * 1000.0, (a6 * 90.0) / 100.0 <= v27))
+    if ([v26 notificationThreshold] <= l && (v27 = v23 + v25 * 1000.0, (time * 90.0) / 100.0 <= v27))
     {
 
       if (v27 > 15000.0)
@@ -1219,11 +1219,11 @@ LABEL_14:
           LODWORD(buf) = 67109376;
           DWORD1(buf) = [v30 notificationThreshold];
           WORD4(buf) = 1024;
-          *(&buf + 10) = a6;
+          *(&buf + 10) = time;
           _os_log_impl(&dword_1DA5E2000, v29, OS_LOG_TYPE_DEFAULT, "Sample is above threshold of %i dB and buffered more than %i ms", &buf, 0xEu);
         }
 
-        v31 = [v20 dateByAddingTimeInterval:-15.0];
+        v31 = [sampleDate2 dateByAddingTimeInterval:-15.0];
         v32 = HCLogHearingProtection();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
@@ -1241,7 +1241,7 @@ LABEL_14:
         v63 = v60;
         v34 = v33;
         v64 = v34;
-        [v10 enumerateObjectsUsingBlock:v62];
+        [bufferCopy enumerateObjectsUsingBlock:v62];
         if ([v34 count])
         {
           v35 = HCLogHearingProtection();
@@ -1280,17 +1280,17 @@ LABEL_14:
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
             {
               v42 = +[HUNoiseSettings sharedInstance];
-              v43 = [v42 notificationThreshold];
+              notificationThreshold = [v42 notificationThreshold];
               *v65 = 67109632;
               *v66 = v40;
               *&v66[4] = 1024;
               *&v66[6] = 15;
               LOWORD(v67) = 1024;
-              *(&v67 + 2) = v43;
+              *(&v67 + 2) = notificationThreshold;
               _os_log_impl(&dword_1DA5E2000, v41, OS_LOG_TYPE_DEFAULT, "Checking to surface notification: %i percent of last %i seconds of samples are above %i dB set threshold - calculating leq", v65, 0x14u);
             }
 
-            [(HUNoiseController *)self calculateLeqForBuffer:v10];
+            [(HUNoiseController *)self calculateLeqForBuffer:bufferCopy];
             v45 = v44;
             v46 = HCLogHearingProtection();
             if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
@@ -1309,24 +1309,24 @@ LABEL_14:
               if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
               {
                 v50 = +[HUNoiseSettings sharedInstance];
-                v51 = [v50 notificationThreshold];
+                notificationThreshold2 = [v50 notificationThreshold];
                 *v65 = 134218240;
                 *v66 = v45;
                 *&v66[8] = 1024;
-                LODWORD(v67) = v51;
+                LODWORD(v67) = notificationThreshold2;
                 _os_log_impl(&dword_1DA5E2000, v49, OS_LOG_TYPE_DEFAULT, "Leq over last 3 minutes is %0.0f dB, which is over set threshold of %i dB.", v65, 0x12u);
               }
 
               *&v52 = v45;
-              [(HUNoiseController *)self logNoiseBuffer:v10 calculatedLeq:v52];
+              [(HUNoiseController *)self logNoiseBuffer:bufferCopy calculatedLeq:v52];
               *&v53 = v45;
               [(HUNoiseController *)self showNotificationForAlertType:[(HUNoiseController *)self alertTypeFromLevel:v53]];
               [(HUNoiseController *)self setNotified:1];
-              v54 = [MEMORY[0x1E695DF00] date];
-              [(HUNoiseController *)self setTimeNotified:v54];
+              date2 = [MEMORY[0x1E695DF00] date];
+              [(HUNoiseController *)self setTimeNotified:date2];
 
               *&v55 = v45;
-              [(HUNoiseController *)self writeNotificationSampleToHKWithSPL:v18 startDate:v20 endDate:v55];
+              [(HUNoiseController *)self writeNotificationSampleToHKWithSPL:sampleDate startDate:sampleDate2 endDate:v55];
               v56 = HCLogHearingProtection();
               if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
               {
@@ -1338,10 +1338,10 @@ LABEL_14:
                 _os_log_impl(&dword_1DA5E2000, v56, OS_LOG_TYPE_DEFAULT, "Completed surfacing notification at %@ for Leq %0.1f dB and writing sample to HK", v65, 0x16u);
               }
 
-              v58 = [MEMORY[0x1E69ADFB8] sharedConnection];
-              v59 = [v58 isHealthDataSubmissionAllowed];
+              mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+              isHealthDataSubmissionAllowed = [mEMORY[0x1E69ADFB8] isHealthDataSubmissionAllowed];
 
-              if (v59)
+              if (isHealthDataSubmissionAllowed)
               {
                 AnalyticsSendEventLazy();
               }
@@ -1366,8 +1366,8 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v18 = HCLogHearingProtection();
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+  sampleDate = HCLogHearingProtection();
+  if (os_log_type_enabled(sampleDate, OS_LOG_TYPE_ERROR))
   {
     [HUNoiseController checkToSurfaceNotificationForSPL:withDuration:andBuffer:forTime:];
   }
@@ -1439,56 +1439,56 @@ id __85__HUNoiseController_checkToSurfaceNotificationForSPL_withDuration_andBuff
   return v8;
 }
 
-- (void)applyAnalyticsNotificationLogicForSPL:(float)a3 withDuration:(float)a4
+- (void)applyAnalyticsNotificationLogicForSPL:(float)l withDuration:(float)duration
 {
   v7 = +[HUNoiseSettings sharedInstance];
-  v8 = [v7 notificationsEnabled];
+  notificationsEnabled = [v7 notificationsEnabled];
 
-  if (v8)
+  if (notificationsEnabled)
   {
-    v9 = [(HUNoiseController *)self isNotified80];
+    isNotified80 = [(HUNoiseController *)self isNotified80];
     leqBuffer80Threshold = self->_leqBuffer80Threshold;
-    if (v9)
+    if (isNotified80)
     {
       LODWORD(v12) = 1230748160;
-      *&v10 = a3;
-      *&v11 = a4;
+      *&v10 = l;
+      *&v11 = duration;
       [(HUNoiseController *)self checkToResetAnalyticsNotificationsForSPL:leqBuffer80Threshold withDuration:0 andBuffer:v10 forTime:v11 andThreshold:v12];
     }
 
     else
     {
       LODWORD(v12) = 1211090944;
-      *&v10 = a3;
-      *&v11 = a4;
+      *&v10 = l;
+      *&v11 = duration;
       [(HUNoiseController *)self checkToSurfaceAnalyticsNotificationForSPL:leqBuffer80Threshold withDuration:0 andBuffer:v10 forTime:v11 andThreshold:v12];
     }
 
-    v14 = [(HUNoiseController *)self isNotified85];
+    isNotified85 = [(HUNoiseController *)self isNotified85];
     leqBuffer85Threshold = self->_leqBuffer85Threshold;
-    if (v14)
+    if (isNotified85)
     {
       LODWORD(v17) = 1230748160;
-      *&v15 = a3;
-      *&v16 = a4;
+      *&v15 = l;
+      *&v16 = duration;
       [(HUNoiseController *)self checkToResetAnalyticsNotificationsForSPL:leqBuffer85Threshold withDuration:1 andBuffer:v15 forTime:v16 andThreshold:v17];
     }
 
     else
     {
       LODWORD(v17) = 1211090944;
-      *&v15 = a3;
-      *&v16 = a4;
+      *&v15 = l;
+      *&v16 = duration;
       [(HUNoiseController *)self checkToSurfaceAnalyticsNotificationForSPL:leqBuffer85Threshold withDuration:1 andBuffer:v15 forTime:v16 andThreshold:v17];
     }
 
-    v19 = [(HUNoiseController *)self isNotified90];
+    isNotified90 = [(HUNoiseController *)self isNotified90];
     leqBuffer90Threshold = self->_leqBuffer90Threshold;
-    if (v19)
+    if (isNotified90)
     {
       LODWORD(v22) = 1230748160;
-      *&v20 = a3;
-      *&v21 = a4;
+      *&v20 = l;
+      *&v21 = duration;
 
       [(HUNoiseController *)self checkToResetAnalyticsNotificationsForSPL:leqBuffer90Threshold withDuration:2 andBuffer:v20 forTime:v21 andThreshold:v22];
     }
@@ -1496,42 +1496,42 @@ id __85__HUNoiseController_checkToSurfaceNotificationForSPL_withDuration_andBuff
     else
     {
       LODWORD(v22) = 1211090944;
-      *&v20 = a3;
-      *&v21 = a4;
+      *&v20 = l;
+      *&v21 = duration;
 
       [(HUNoiseController *)self checkToSurfaceAnalyticsNotificationForSPL:leqBuffer90Threshold withDuration:2 andBuffer:v20 forTime:v21 andThreshold:v22];
     }
   }
 }
 
-- (void)checkToResetAnalyticsNotificationsForSPL:(float)a3 withDuration:(float)a4 andBuffer:(id)a5 forTime:(float)a6 andThreshold:(int64_t)a7
+- (void)checkToResetAnalyticsNotificationsForSPL:(float)l withDuration:(float)duration andBuffer:(id)buffer forTime:(float)time andThreshold:(int64_t)threshold
 {
   v43 = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  bufferCopy = buffer;
   v13 = [HUNoiseSample alloc];
-  v14 = [MEMORY[0x1E695DF00] date];
-  *&v15 = a3;
-  *&v16 = a4;
-  v17 = [(HUNoiseSample *)v13 initWithSampleDate:v14 splValue:v15 andDuration:v16];
+  date = [MEMORY[0x1E695DF00] date];
+  *&v15 = l;
+  *&v16 = duration;
+  v17 = [(HUNoiseSample *)v13 initWithSampleDate:date splValue:v15 andDuration:v16];
 
-  [v12 addObject:v17];
-  *&v18 = a6;
-  [(HUNoiseController *)self maintainCircularBuffer:v12 forTime:v18];
-  if ([v12 count])
+  [bufferCopy addObject:v17];
+  *&v18 = time;
+  [(HUNoiseController *)self maintainCircularBuffer:bufferCopy forTime:v18];
+  if ([bufferCopy count])
   {
-    v19 = [v12 firstObject];
-    v20 = [v19 sampleDate];
+    firstObject = [bufferCopy firstObject];
+    sampleDate = [firstObject sampleDate];
 
-    v21 = [v12 lastObject];
-    v22 = [v21 sampleDate];
+    lastObject = [bufferCopy lastObject];
+    sampleDate2 = [lastObject sampleDate];
 
-    v23 = [v12 lastObject];
-    [v23 sampleDuration];
+    lastObject2 = [bufferCopy lastObject];
+    [lastObject2 sampleDuration];
     v25 = v24;
 
-    [v22 timeIntervalSinceDate:v20];
+    [sampleDate2 timeIntervalSinceDate:sampleDate];
     v27 = v26;
-    if (a7 > 2)
+    if (threshold > 2)
     {
       v31 = 0;
       v28 = 0.0;
@@ -1539,17 +1539,17 @@ id __85__HUNoiseController_checkToSurfaceNotificationForSPL_withDuration_andBuff
 
     else
     {
-      v28 = flt_1DA6876E8[a7];
-      v29 = [MEMORY[0x1E695DF00] date];
-      [v29 timeIntervalSinceDate:(&self->_timeNotified80)[a7]];
+      v28 = flt_1DA6876E8[threshold];
+      date2 = [MEMORY[0x1E695DF00] date];
+      [date2 timeIntervalSinceDate:(&self->_timeNotified80)[threshold]];
       v31 = (v30 * 1000.0);
     }
 
     *&v26 = v31;
-    if (v31 >= a6 && (v32 = v25 + v27 * 1000.0, v26 = v32, (a6 * 90.0) / 100.0 <= v26) && ([(HUNoiseController *)self calculateLeqForBuffer:v12], *&v26 < v28))
+    if (v31 >= time && (v32 = v25 + v27 * 1000.0, v26 = v32, (time * 90.0) / 100.0 <= v26) && ([(HUNoiseController *)self calculateLeqForBuffer:bufferCopy], *&v26 < v28))
     {
       v33 = *&v26;
-      switch(a7)
+      switch(threshold)
       {
         case 2:
           [(HUNoiseController *)self setNotified90:0];
@@ -1586,7 +1586,7 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      switch(a7)
+      switch(threshold)
       {
         case 2:
           [(HUNoiseController *)self setNotified90:0, v26];
@@ -1618,8 +1618,8 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v20 = HCLogHearingProtection();
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+  sampleDate = HCLogHearingProtection();
+  if (os_log_type_enabled(sampleDate, OS_LOG_TYPE_ERROR))
   {
     [HUNoiseController checkToResetAnalyticsNotificationsForSPL:withDuration:andBuffer:forTime:andThreshold:];
   }
@@ -1629,28 +1629,28 @@ LABEL_30:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkToSurfaceAnalyticsNotificationForSPL:(float)a3 withDuration:(float)a4 andBuffer:(id)a5 forTime:(float)a6 andThreshold:(int64_t)a7
+- (void)checkToSurfaceAnalyticsNotificationForSPL:(float)l withDuration:(float)duration andBuffer:(id)buffer forTime:(float)time andThreshold:(int64_t)threshold
 {
   v65 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v14 = [v13 isHealthDataSubmissionAllowed];
+  bufferCopy = buffer;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isHealthDataSubmissionAllowed = [mEMORY[0x1E69ADFB8] isHealthDataSubmissionAllowed];
 
-  if (v14)
+  if (isHealthDataSubmissionAllowed)
   {
     v15 = [HUNoiseSample alloc];
-    v16 = [MEMORY[0x1E695DF00] date];
-    *&v17 = a3;
-    *&v18 = a4;
-    v19 = [(HUNoiseSample *)v15 initWithSampleDate:v16 splValue:v17 andDuration:v18];
+    date = [MEMORY[0x1E695DF00] date];
+    *&v17 = l;
+    *&v18 = duration;
+    v19 = [(HUNoiseSample *)v15 initWithSampleDate:date splValue:v17 andDuration:v18];
 
-    [v12 addObject:v19];
-    *&v20 = a6;
-    [(HUNoiseController *)self maintainCircularBuffer:v12 forTime:v20];
-    if (![v12 count])
+    [bufferCopy addObject:v19];
+    *&v20 = time;
+    [(HUNoiseController *)self maintainCircularBuffer:bufferCopy forTime:v20];
+    if (![bufferCopy count])
     {
-      v22 = HCLogHearingProtection();
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      sampleDate = HCLogHearingProtection();
+      if (os_log_type_enabled(sampleDate, OS_LOG_TYPE_ERROR))
       {
         [HUNoiseController checkToSurfaceAnalyticsNotificationForSPL:withDuration:andBuffer:forTime:andThreshold:];
       }
@@ -1658,24 +1658,24 @@ LABEL_30:
       goto LABEL_41;
     }
 
-    v21 = [v12 firstObject];
-    v22 = [v21 sampleDate];
+    firstObject = [bufferCopy firstObject];
+    sampleDate = [firstObject sampleDate];
 
-    v23 = [v12 lastObject];
-    v24 = [v23 sampleDate];
+    lastObject = [bufferCopy lastObject];
+    sampleDate2 = [lastObject sampleDate];
 
-    v25 = [v12 lastObject];
-    [v25 sampleDuration];
+    lastObject2 = [bufferCopy lastObject];
+    [lastObject2 sampleDuration];
     v27 = v26;
 
-    [v24 timeIntervalSinceDate:v22];
+    [sampleDate2 timeIntervalSinceDate:sampleDate];
     v29 = 0.0;
-    if (a7 <= 2)
+    if (threshold <= 2)
     {
-      v29 = flt_1DA6876E8[a7];
+      v29 = flt_1DA6876E8[threshold];
     }
 
-    if (v29 > a3 || ((v30 = v27 + v28 * 1000.0, v30 > 15000.0) ? (v31 = (a6 * 90.0) / 100.0 > v30) : (v31 = 1), v31))
+    if (v29 > l || ((v30 = v27 + v28 * 1000.0, v30 > 15000.0) ? (v31 = (time * 90.0) / 100.0 > v30) : (v31 = 1), v31))
     {
 LABEL_40:
 
@@ -1689,11 +1689,11 @@ LABEL_41:
       *buf = 67109376;
       *&buf[4] = v29;
       LOWORD(v63) = 1024;
-      *(&v63 + 2) = a6;
+      *(&v63 + 2) = time;
       _os_log_impl(&dword_1DA5E2000, v32, OS_LOG_TYPE_DEFAULT, "[Analytics] Sample is above threshold of %i dB and buffered more than %i ms", buf, 0xEu);
     }
 
-    v33 = [v24 dateByAddingTimeInterval:-15.0];
+    v33 = [sampleDate2 dateByAddingTimeInterval:-15.0];
     v34 = HCLogHearingProtection();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
@@ -1714,7 +1714,7 @@ LABEL_41:
     v36 = v35;
     v57 = v36;
     v58 = v29;
-    [v12 enumerateObjectsUsingBlock:v55];
+    [bufferCopy enumerateObjectsUsingBlock:v55];
     if (![v36 count])
     {
 LABEL_39:
@@ -1774,7 +1774,7 @@ LABEL_39:
       _os_log_impl(&dword_1DA5E2000, v43, OS_LOG_TYPE_DEFAULT, "[Analytics] Checking to surface notification: %i percent of last %i seconds of samples are above %i dB set threshold - calculating leq", v59, 0x14u);
     }
 
-    [(HUNoiseController *)self calculateLeqForBuffer:v12];
+    [(HUNoiseController *)self calculateLeqForBuffer:bufferCopy];
     v45 = v44;
     if (v44 < v29)
     {
@@ -1793,27 +1793,27 @@ LABEL_38:
       _os_log_impl(&dword_1DA5E2000, v46, OS_LOG_TYPE_DEFAULT, "[Analytics] Leq over last 3 minutes is %0.0f dB, which is over set threshold of %i dB.", v59, 0x12u);
     }
 
-    v47 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v48 = [v47 isHealthDataSubmissionAllowed];
+    mEMORY[0x1E69ADFB8]2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+    isHealthDataSubmissionAllowed2 = [mEMORY[0x1E69ADFB8]2 isHealthDataSubmissionAllowed];
 
-    if (v48)
+    if (isHealthDataSubmissionAllowed2)
     {
-      switch(a7)
+      switch(threshold)
       {
         case 2:
           [(HUNoiseController *)self setNotified90:1];
-          v49 = [MEMORY[0x1E695DF00] date];
-          [(HUNoiseController *)self setTimeNotified90:v49];
+          date2 = [MEMORY[0x1E695DF00] date];
+          [(HUNoiseController *)self setTimeNotified90:date2];
           goto LABEL_34;
         case 1:
           [(HUNoiseController *)self setNotified85:1];
-          v49 = [MEMORY[0x1E695DF00] date];
-          [(HUNoiseController *)self setTimeNotified85:v49];
+          date2 = [MEMORY[0x1E695DF00] date];
+          [(HUNoiseController *)self setTimeNotified85:date2];
           goto LABEL_34;
         case 0:
           [(HUNoiseController *)self setNotified80:1];
-          v49 = [MEMORY[0x1E695DF00] date];
-          [(HUNoiseController *)self setTimeNotified80:v49];
+          date2 = [MEMORY[0x1E695DF00] date];
+          [(HUNoiseController *)self setTimeNotified80:date2];
 LABEL_34:
 
           AnalyticsSendEventLazy();
@@ -1880,37 +1880,37 @@ uint64_t __107__HUNoiseController_checkToSurfaceAnalyticsNotificationForSPL_with
   return result;
 }
 
-- (void)addNoiseSample:(id)a3 toCircularBuffer:(id)a4 forMinTime:(float)a5
+- (void)addNoiseSample:(id)sample toCircularBuffer:(id)buffer forMinTime:(float)time
 {
-  v11 = a4;
-  v8 = a3;
-  v9 = [(HUNoiseController *)self dataQueue];
-  dispatch_assert_queue_V2(v9);
+  bufferCopy = buffer;
+  sampleCopy = sample;
+  dataQueue = [(HUNoiseController *)self dataQueue];
+  dispatch_assert_queue_V2(dataQueue);
 
-  [v11 addObject:v8];
-  *&v10 = a5;
-  [(HUNoiseController *)self maintainCircularBuffer:v11 forTime:v10];
+  [bufferCopy addObject:sampleCopy];
+  *&v10 = time;
+  [(HUNoiseController *)self maintainCircularBuffer:bufferCopy forTime:v10];
 }
 
-- (void)maintainCircularBuffer:(id)a3 forTime:(float)a4
+- (void)maintainCircularBuffer:(id)buffer forTime:(float)time
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count])
+  bufferCopy = buffer;
+  if ([bufferCopy count])
   {
-    v6 = [v5 lastObject];
-    [v6 sampleDuration];
+    lastObject = [bufferCopy lastObject];
+    [lastObject sampleDuration];
     v8 = v7;
 
-    v9 = [v5 lastObject];
-    v10 = [v9 sampleDate];
+    lastObject2 = [bufferCopy lastObject];
+    sampleDate = [lastObject2 sampleDate];
 
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v12 = v5;
+    v12 = bufferCopy;
     v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
@@ -1927,10 +1927,10 @@ uint64_t __107__HUNoiseController_checkToSurfaceAnalyticsNotificationForSPL_with
           }
 
           v18 = *(*(&v22 + 1) + 8 * i);
-          v19 = [v18 sampleDate];
-          [v10 timeIntervalSinceDate:v19];
+          sampleDate2 = [v18 sampleDate];
+          [sampleDate timeIntervalSinceDate:sampleDate2];
           *&v20 = v16 + v20 * 1000.0;
-          if (*&v20 >= a4)
+          if (*&v20 >= time)
           {
             [v11 addObject:v18];
           }
@@ -1950,8 +1950,8 @@ uint64_t __107__HUNoiseController_checkToSurfaceAnalyticsNotificationForSPL_with
 
   else
   {
-    v10 = HCLogHearingProtection();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    sampleDate = HCLogHearingProtection();
+    if (os_log_type_enabled(sampleDate, OS_LOG_TYPE_ERROR))
     {
       [HUNoiseController maintainCircularBuffer:forTime:];
     }
@@ -1960,17 +1960,17 @@ uint64_t __107__HUNoiseController_checkToSurfaceAnalyticsNotificationForSPL_with
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (float)calculateLeqForBuffer:(id)a3
+- (float)calculateLeqForBuffer:(id)buffer
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  bufferCopy = buffer;
+  if ([bufferCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = v3;
+    v4 = bufferCopy;
     v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v5)
     {
@@ -2025,20 +2025,20 @@ uint64_t __107__HUNoiseController_checkToSurfaceAnalyticsNotificationForSPL_with
   return v16;
 }
 
-- (void)writeNotificationSampleToHKWithSPL:(float)a3 startDate:(id)a4 endDate:(id)a5
+- (void)writeNotificationSampleToHKWithSPL:(float)l startDate:(id)date endDate:(id)endDate
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
   HKQuantityClass = getHKQuantityClass();
-  v11 = [getHKUnitClass() decibelAWeightedSoundPressureLevelUnit];
-  v12 = a3;
-  v43 = [HKQuantityClass quantityWithUnit:v11 doubleValue:v12];
+  decibelAWeightedSoundPressureLevelUnit = [getHKUnitClass() decibelAWeightedSoundPressureLevelUnit];
+  lCopy = l;
+  v43 = [HKQuantityClass quantityWithUnit:decibelAWeightedSoundPressureLevelUnit doubleValue:lCopy];
 
   v13 = getHKQuantityClass();
-  v14 = [getHKUnitClass() decibelAWeightedSoundPressureLevelUnit];
+  decibelAWeightedSoundPressureLevelUnit2 = [getHKUnitClass() decibelAWeightedSoundPressureLevelUnit];
   v15 = +[HUNoiseSettings sharedInstance];
-  v16 = [v13 quantityWithUnit:v14 doubleValue:{objc_msgSend(v15, "notificationThreshold")}];
+  v16 = [v13 quantityWithUnit:decibelAWeightedSoundPressureLevelUnit2 doubleValue:{objc_msgSend(v15, "notificationThreshold")}];
 
   v44 = 0;
   v45 = &v44;
@@ -2164,24 +2164,24 @@ LABEL_17:
 
   v34 = *v31;
   v35 = [v29 categoryTypeForIdentifier:v34];
-  v36 = [getHKDeviceClass() localDevice];
-  v37 = [v27 categorySampleWithType:v35 value:1 startDate:v8 endDate:v9 device:v36 metadata:v26];
+  localDevice = [getHKDeviceClass() localDevice];
+  v37 = [v27 categorySampleWithType:v35 value:1 startDate:dateCopy endDate:endDateCopy device:localDevice metadata:v26];
   p_notificationSample = &self->_notificationSample;
   notificationSample = self->_notificationSample;
   self->_notificationSample = v37;
 
-  v40 = [(HUNoiseController *)self healthStore];
-  [v40 saveObject:*p_notificationSample withCompletion:&__block_literal_global_461];
+  healthStore = [(HUNoiseController *)self healthStore];
+  [healthStore saveObject:*p_notificationSample withCompletion:&__block_literal_global_461];
 
   v41 = HCLogHearingProtection();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    *&buf[4] = v12;
+    *&buf[4] = lCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = dateCopy;
     *&buf[22] = 2112;
-    v52 = v9;
+    v52 = endDateCopy;
     _os_log_impl(&dword_1DA5E2000, v41, OS_LOG_TYPE_DEFAULT, "Wrote sample to HK for Leq: %0.1f dB, StartDate: %@, EndDate: %@", buf, 0x20u);
   }
 
@@ -2204,21 +2204,21 @@ void __74__HUNoiseController_writeNotificationSampleToHKWithSPL_startDate_endDat
 - (void)writeAttentuationSampleToHealth
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(HUNoiseController *)self attenuationBuffer];
-  v4 = [v3 copy];
+  attenuationBuffer = [(HUNoiseController *)self attenuationBuffer];
+  v4 = [attenuationBuffer copy];
 
-  v5 = [(HUNoiseController *)self attenuationBuffer];
-  [v5 removeAllObjects];
+  attenuationBuffer2 = [(HUNoiseController *)self attenuationBuffer];
+  [attenuationBuffer2 removeAllObjects];
 
   [(HUNoiseController *)self calculateLeqForBuffer:v4];
   v7 = v6;
-  v8 = [v4 firstObject];
-  v9 = [v8 sampleDate];
+  firstObject = [v4 firstObject];
+  sampleDate = [firstObject sampleDate];
 
-  v10 = [v4 lastObject];
-  v11 = [v10 sampleDate];
+  lastObject = [v4 lastObject];
+  sampleDate2 = [lastObject sampleDate];
 
-  if (v7 < 1.0 || ([v11 timeIntervalSinceDate:v9], v12 <= 0.0))
+  if (v7 < 1.0 || ([sampleDate2 timeIntervalSinceDate:sampleDate], v12 <= 0.0))
   {
     v15 = HCLogHearingProtection();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2232,10 +2232,10 @@ void __74__HUNoiseController_writeNotificationSampleToHKWithSPL_startDate_endDat
   else
   {
     HKQuantityClass = getHKQuantityClass();
-    v14 = [getHKUnitClass() decibelAWeightedSoundPressureLevelUnit];
-    v15 = [HKQuantityClass quantityWithUnit:v14 doubleValue:v7];
+    decibelAWeightedSoundPressureLevelUnit = [getHKUnitClass() decibelAWeightedSoundPressureLevelUnit];
+    v15 = [HKQuantityClass quantityWithUnit:decibelAWeightedSoundPressureLevelUnit doubleValue:v7];
 
-    v16 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v9 endDate:v11];
+    v16 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:sampleDate endDate:sampleDate2];
     v26 = 0;
     v27 = &v26;
     v28 = 0x2050000000;
@@ -2255,14 +2255,14 @@ void __74__HUNoiseController_writeNotificationSampleToHKWithSPL_startDate_endDat
     v18 = v17;
     _Block_object_dispose(&v26, 8);
     v19 = [v17 alloc];
-    v20 = [MEMORY[0x1E696AFB0] UUID];
-    v21 = [v19 initWithIdentifier:v20 dateInterval:v16 quantity:v15 resumeContext:0];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v21 = [v19 initWithIdentifier:uUID dateInterval:v16 quantity:v15 resumeContext:0];
 
     attenuationDataCollector = self->_attenuationDataCollector;
     v30 = v21;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-    v24 = [getHKDeviceClass() localDevice];
-    [(HKDataCollector *)attenuationDataCollector insertDatums:v23 device:v24 metadata:0 completion:&__block_literal_global_465];
+    localDevice = [getHKDeviceClass() localDevice];
+    [(HKDataCollector *)attenuationDataCollector insertDatums:v23 device:localDevice metadata:0 completion:&__block_literal_global_465];
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -2293,16 +2293,16 @@ void __52__HUNoiseController_writeAttentuationSampleToHealth__block_invoke(uint6
   v13[4] = self;
   [v3 registerUpdateBlock:v13 forRetrieveSelector:sel_noiseEnabled withListener:self];
 
-  v4 = [(HUNoiseController *)self dataQueue];
+  dataQueue = [(HUNoiseController *)self dataQueue];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __51__HUNoiseController_subscribeToSharedNotifications__block_invoke_485;
   v11 = &unk_1E85CAF10;
   objc_copyWeak(&v12, &location);
-  notify_register_dispatch("com.apple.coreaudio.envsenseagent", &self->_measurementSuspensionNotifyToken, v4, &v8);
+  notify_register_dispatch("com.apple.coreaudio.envsenseagent", &self->_measurementSuspensionNotifyToken, dataQueue, &v8);
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_lowPowerModeChanged_ name:*MEMORY[0x1E696A7D8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_lowPowerModeChanged_ name:*MEMORY[0x1E696A7D8] object:0];
 
   [(HUNoiseController *)self lowPowerModeChanged:0];
   if (AXIsInternalInstall())
@@ -2439,7 +2439,7 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)lowPowerModeChanged:(id)a3
+- (void)lowPowerModeChanged:(id)changed
 {
   v4 = HCLogHearingProtection();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2448,10 +2448,10 @@ LABEL_12:
     _os_log_impl(&dword_1DA5E2000, v4, OS_LOG_TYPE_DEFAULT, "Low power changed", buf, 2u);
   }
 
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = [v5 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if (v6)
+  if (isLowPowerModeEnabled)
   {
     [(HUNoiseController *)self sampleDuration];
     if (v7 == 5000.0)
@@ -2464,20 +2464,20 @@ LABEL_12:
       }
 
       [(HUNoiseController *)self setMeasurementEnabled:0];
-      v9 = [(HUNoiseController *)self edDataReceiver];
-      [v9 stopReceivingAudioSampleType:1702260324];
+      edDataReceiver = [(HUNoiseController *)self edDataReceiver];
+      [edDataReceiver stopReceivingAudioSampleType:1702260324];
 
-      v10 = [(HUNoiseController *)self edDataReceiver];
-      [v10 stopMeasuringAudioSampleType:1702260324];
+      edDataReceiver2 = [(HUNoiseController *)self edDataReceiver];
+      [edDataReceiver2 stopMeasuringAudioSampleType:1702260324];
     }
   }
 
   else
   {
     v11 = +[HUNoiseSettings sharedInstance];
-    v12 = [v11 noiseEnabled];
+    noiseEnabled = [v11 noiseEnabled];
 
-    if (v12)
+    if (noiseEnabled)
     {
       v13 = HCLogHearingProtection();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -2491,28 +2491,28 @@ LABEL_12:
     }
   }
 
-  v14 = [(HUNoiseController *)self dataQueue];
+  dataQueue = [(HUNoiseController *)self dataQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__HUNoiseController_lowPowerModeChanged___block_invoke;
   block[3] = &unk_1E85C9F60;
   block[4] = self;
-  dispatch_async(v14, block);
+  dispatch_async(dataQueue, block);
 }
 
-- (id)registerForEnvironmentalDosimetryUpdates:(id)a3
+- (id)registerForEnvironmentalDosimetryUpdates:(id)updates
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 payload];
-  v33 = [v4 objectForKey:?];
+  updatesCopy = updates;
+  payload = [updatesCopy payload];
+  v33 = [payload objectForKey:?];
 
-  v5 = [v3 payload];
+  payload2 = [updatesCopy payload];
   v6 = *MEMORY[0x1E69A4550];
-  v32 = [v5 valueForKey:*MEMORY[0x1E69A4550]];
+  v32 = [payload2 valueForKey:*MEMORY[0x1E69A4550]];
 
-  v7 = [v3 payload];
-  v8 = [v7 objectForKey:@"ax_hearing_should_register_client_key"];
+  payload3 = [updatesCopy payload];
+  v8 = [payload3 objectForKey:@"ax_hearing_should_register_client_key"];
 
   if (!v33 || ![v32 length])
   {
@@ -2527,21 +2527,21 @@ LABEL_12:
 
   [v33 doubleValue];
   v10 = v9;
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__10;
   v43 = __Block_byref_object_dispose__10;
   v44 = 0;
-  v12 = [(HUNoiseController *)self dataQueue];
+  dataQueue = [(HUNoiseController *)self dataQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__HUNoiseController_registerForEnvironmentalDosimetryUpdates___block_invoke;
   block[3] = &unk_1E85CAF38;
   block[4] = self;
   block[5] = &v39;
-  dispatch_sync(v12, block);
+  dispatch_sync(dataQueue, block);
 
   v36 = 0u;
   v37 = 0u;
@@ -2562,15 +2562,15 @@ LABEL_12:
         }
 
         v17 = *(*(&v34 + 1) + 8 * i);
-        v18 = [v17 sampleDate];
-        v19 = v18;
-        if (v18)
+        sampleDate = [v17 sampleDate];
+        v19 = sampleDate;
+        if (sampleDate)
         {
-          [v18 timeIntervalSinceNow];
+          [sampleDate timeIntervalSinceNow];
           if (fabs(v20) <= v10)
           {
-            v21 = [v17 transportRepresentation];
-            [v11 hcSafeAddObject:v21];
+            transportRepresentation = [v17 transportRepresentation];
+            [array hcSafeAddObject:transportRepresentation];
           }
         }
       }
@@ -2582,23 +2582,23 @@ LABEL_12:
   }
 
   v45[0] = v6;
-  v22 = [v3 payload];
-  v23 = [v22 valueForKey:v6];
+  payload4 = [updatesCopy payload];
+  v23 = [payload4 valueForKey:v6];
   v45[1] = @"HUEDSampleIntervalKey";
   v46[0] = v23;
-  v46[1] = v11;
+  v46[1] = array;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:2];
 
   v25 = [MEMORY[0x1E69A4560] messagePayloadFromDictionary:v24 andIdentifier:0x40000];
-  v26 = [v3 replyMessageWithPayload:v25];
+  v26 = [updatesCopy replyMessageWithPayload:v25];
 
   _Block_object_dispose(&v39, 8);
   if (v8)
   {
 LABEL_16:
-    v27 = [v8 BOOLValue];
-    v28 = [v3 client];
-    [v28 setWantsUpdates:v27 forIdentifier:0x40000];
+    bOOLValue = [v8 BOOLValue];
+    client = [updatesCopy client];
+    [client setWantsUpdates:bOOLValue forIdentifier:0x40000];
 
     [(HUNoiseController *)self readEnvironmentalDosimetryLevels];
   }
@@ -2633,40 +2633,40 @@ void __62__HUNoiseController_registerForEnvironmentalDosimetryUpdates___block_in
   v2 = +[HUNoiseSettings sharedInstance];
   if ([v2 noiseEnabled])
   {
-    v3 = 1;
+    contextualVolumeNeedsEnvironmentalMeasurements = 1;
   }
 
   else
   {
     v4 = +[HUNoiseSettings sharedInstance];
-    v3 = [v4 contextualVolumeNeedsEnvironmentalMeasurements];
+    contextualVolumeNeedsEnvironmentalMeasurements = [v4 contextualVolumeNeedsEnvironmentalMeasurements];
   }
 
-  return v3;
+  return contextualVolumeNeedsEnvironmentalMeasurements;
 }
 
-- (void)logThresholdTransitionForSample:(id)a3
+- (void)logThresholdTransitionForSample:(id)sample
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sampleCopy = sample;
   v5 = +[HUNoiseSettings sharedInstance];
-  v6 = [v5 notificationThreshold];
+  notificationThreshold = [v5 notificationThreshold];
 
-  v7 = [(HUNoiseController *)self leqBuffer];
-  v8 = [v7 lastObject];
+  leqBuffer = [(HUNoiseController *)self leqBuffer];
+  lastObject = [leqBuffer lastObject];
 
-  [v4 splValue];
-  v9 = v6;
-  if (v10 >= v6)
+  [sampleCopy splValue];
+  v9 = notificationThreshold;
+  if (v10 >= notificationThreshold)
   {
-    if (!v8 || ([v8 splValue], v15 < v9))
+    if (!lastObject || ([lastObject splValue], v15 < v9))
     {
       v12 = HCLogHearingProtection();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v4 detailedDescription];
+        detailedDescription = [sampleCopy detailedDescription];
         v17 = 138412290;
-        v18 = v13;
+        v18 = detailedDescription;
         v14 = "[Notifications] Sample rises above threshold: %@";
         goto LABEL_9;
       }
@@ -2677,15 +2677,15 @@ LABEL_10:
 
   else
   {
-    [v8 splValue];
+    [lastObject splValue];
     if (v11 >= v9)
     {
       v12 = HCLogHearingProtection();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v4 detailedDescription];
+        detailedDescription = [sampleCopy detailedDescription];
         v17 = 138412290;
-        v18 = v13;
+        v18 = detailedDescription;
         v14 = "[Notifications] Sample falls below threshold: %@";
 LABEL_9:
         _os_log_impl(&dword_1DA5E2000, v12, OS_LOG_TYPE_DEFAULT, v14, &v17, 0xCu);
@@ -2700,18 +2700,18 @@ LABEL_9:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logNoiseBuffer:(id)a3 calculatedLeq:(float)a4
+- (void)logNoiseBuffer:(id)buffer calculatedLeq:(float)leq
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  bufferCopy = buffer;
   v6 = +[HUNoiseSettings sharedInstance];
-  v7 = [v6 notificationThreshold];
+  notificationThreshold = [v6 notificationThreshold];
 
   v8 = HCLogHearingProtection();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
-    *&v10 = a4;
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(bufferCopy, "count")}];
+    *&v10 = leq;
     v11 = [MEMORY[0x1E696AD98] numberWithFloat:v10];
     *buf = 138412546;
     v32 = v9;
@@ -2724,7 +2724,7 @@ LABEL_9:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = v5;
+  v12 = bufferCopy;
   v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v13)
   {
@@ -2747,7 +2747,7 @@ LABEL_9:
         v21 = HCLogHearingProtection();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          if (v20 < v7)
+          if (v20 < notificationThreshold)
           {
             v22 = @" ";
           }
@@ -2757,11 +2757,11 @@ LABEL_9:
             v22 = @"+";
           }
 
-          v23 = [v18 detailedDescription];
+          detailedDescription = [v18 detailedDescription];
           *buf = v25;
           v32 = v22;
           v33 = 2112;
-          v34 = v23;
+          v34 = detailedDescription;
           _os_log_impl(&dword_1DA5E2000, v21, OS_LOG_TYPE_DEFAULT, "[Notifications] %@ %@", buf, 0x16u);
         }
       }
@@ -2775,13 +2775,13 @@ LABEL_9:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setInternalDataCollectionEnabled:(BOOL)a3
+- (void)setInternalDataCollectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (AXIsInternalInstall())
   {
-    self->_internalDataCollectionEnabled = v3;
-    if (v3)
+    self->_internalDataCollectionEnabled = enabledCopy;
+    if (enabledCopy)
     {
 
       [(HUNoiseController *)self _initializeInternalDataCollectionIfNeeded];
@@ -2793,17 +2793,17 @@ LABEL_9:
 {
   if (AXIsInternalInstall())
   {
-    v3 = [(HUNoiseController *)self internalDataCollectionQueue];
+    internalDataCollectionQueue = [(HUNoiseController *)self internalDataCollectionQueue];
 
-    if (!v3)
+    if (!internalDataCollectionQueue)
     {
       v4 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
       v5 = dispatch_queue_create("com.apple.HearingUtilities.HUNoiseController.InternalDataCollectionQueue", v4);
       [(HUNoiseController *)self setInternalDataCollectionQueue:v5];
     }
 
-    v6 = [(HUNoiseController *)self internalDataCollectionQueue];
-    dispatch_async(v6, &__block_literal_global_501);
+    internalDataCollectionQueue2 = [(HUNoiseController *)self internalDataCollectionQueue];
+    dispatch_async(internalDataCollectionQueue2, &__block_literal_global_501);
   }
 }
 
@@ -2859,20 +2859,20 @@ void __62__HUNoiseController__initializeInternalDataCollectionIfNeeded__block_in
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_internalDataCollectionLogSPLValue:(id)a3 metaData:(id)a4
+- (void)_internalDataCollectionLogSPLValue:(id)value metaData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  dataCopy = data;
   if (AXIsInternalInstall())
   {
-    v8 = [(HUNoiseController *)self internalDataCollectionQueue];
+    internalDataCollectionQueue = [(HUNoiseController *)self internalDataCollectionQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __65__HUNoiseController__internalDataCollectionLogSPLValue_metaData___block_invoke;
     v9[3] = &unk_1E85C9F38;
-    v10 = v7;
-    v11 = v6;
-    dispatch_async(v8, v9);
+    v10 = dataCopy;
+    v11 = valueCopy;
+    dispatch_async(internalDataCollectionQueue, v9);
   }
 }
 

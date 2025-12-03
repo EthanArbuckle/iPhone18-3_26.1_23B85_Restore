@@ -1,24 +1,24 @@
 @interface MBSkippedFileTracker
-- (BOOL)writeSkippedFilesToPlistWithError:(id *)a3;
-- (MBSkippedFileTracker)initWithPlistPath:(id)a3;
+- (BOOL)writeSkippedFilesToPlistWithError:(id *)error;
+- (MBSkippedFileTracker)initWithPlistPath:(id)path;
 - (NSMutableDictionary)skippedFiles;
-- (id)_keyForRecord:(id)a3;
+- (id)_keyForRecord:(id)record;
 - (id)skippedFilesPlistValue;
 - (void)_loadPreviouslySkippedFiles;
 @end
 
 @implementation MBSkippedFileTracker
 
-- (MBSkippedFileTracker)initWithPlistPath:(id)a3
+- (MBSkippedFileTracker)initWithPlistPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = MBSkippedFileTracker;
   v6 = [(MBSkippedFileTracker *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_plistPath, a3);
+    objc_storeStrong(&v6->_plistPath, path);
     skippedFiles = v7->_skippedFiles;
     v7->_skippedFiles = 0;
 
@@ -46,12 +46,12 @@
 
 - (void)_loadPreviouslySkippedFiles
 {
-  v3 = [(MBSkippedFileTracker *)self plistPath];
+  plistPath = [(MBSkippedFileTracker *)self plistPath];
   v4 = +[NSFileManager defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  if ([v4 fileExistsAtPath:plistPath])
   {
     v26 = 0;
-    v5 = [NSData dataWithContentsOfFile:v3 options:0 error:&v26];
+    v5 = [NSData dataWithContentsOfFile:plistPath options:0 error:&v26];
     v6 = v26;
     if (!v5)
     {
@@ -59,7 +59,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v29 = v3;
+        v29 = plistPath;
         v30 = 2112;
         v31 = v6;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "dataWithContentsOfFile returned nil for path %@ %@", buf, 0x16u);
@@ -93,7 +93,7 @@ LABEL_24:
       if (objc_opt_isKindOfClass())
       {
         v19 = v5;
-        v20 = v3;
+        v20 = plistPath;
         v9 = objc_opt_new();
         v21 = 0u;
         v22 = 0u;
@@ -134,7 +134,7 @@ LABEL_24:
         }
 
         [(MBSkippedFileTracker *)self setPreviouslySkippedFiles:v9];
-        v3 = v20;
+        plistPath = v20;
         v5 = v19;
         v8 = 0;
         goto LABEL_25;
@@ -147,7 +147,7 @@ LABEL_24:
         *buf = 138412546;
         v29 = v18;
         v30 = 2112;
-        v31 = v3;
+        v31 = plistPath;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Found unexpected class (%@) when reading plist %@", buf, 0x16u);
         objc_opt_class();
         goto LABEL_24;
@@ -160,38 +160,38 @@ LABEL_26:
   }
 }
 
-- (id)_keyForRecord:(id)a3
+- (id)_keyForRecord:(id)record
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if (!v4)
+  recordCopy = record;
+  domain = [recordCopy domain];
+  if (!domain)
   {
-    v5 = [v3 relativePath];
-    if (!v5)
+    relativePath = [recordCopy relativePath];
+    if (!relativePath)
     {
       __assert_rtn("[MBSkippedFileTracker _keyForRecord:]", "MBSkippedFileTracker.m", 120, "record.domain || record.relativePath");
     }
   }
 
-  v6 = [v3 domain];
-  v7 = [v3 relativePath];
-  v8 = [NSString stringWithFormat:@"%@-%@", v6, v7];
+  domain2 = [recordCopy domain];
+  relativePath2 = [recordCopy relativePath];
+  v8 = [NSString stringWithFormat:@"%@-%@", domain2, relativePath2];
 
   return v8;
 }
 
-- (BOOL)writeSkippedFilesToPlistWithError:(id *)a3
+- (BOOL)writeSkippedFilesToPlistWithError:(id *)error
 {
-  v5 = [(MBSkippedFileTracker *)self plistPath];
+  plistPath = [(MBSkippedFileTracker *)self plistPath];
   v6 = +[NSFileManager defaultManager];
   if ([(NSMutableDictionary *)self->_skippedFiles count])
   {
-    v7 = [(MBSkippedFileTracker *)self skippedFilesPlistValue];
-    v8 = [NSPropertyListSerialization dataWithPropertyList:v7 format:200 options:0 error:a3];
+    skippedFilesPlistValue = [(MBSkippedFileTracker *)self skippedFilesPlistValue];
+    v8 = [NSPropertyListSerialization dataWithPropertyList:skippedFilesPlistValue format:200 options:0 error:error];
 
     if (v8)
     {
-      v9 = [v8 writeToFile:v5 options:268435457 error:a3];
+      v9 = [v8 writeToFile:plistPath options:268435457 error:error];
     }
 
     else
@@ -202,7 +202,7 @@ LABEL_26:
 
   else
   {
-    v9 = ![v6 fileExistsAtPath:v5] || objc_msgSend(v6, "removeItemAtPath:error:", v5, a3);
+    v9 = ![v6 fileExistsAtPath:plistPath] || objc_msgSend(v6, "removeItemAtPath:error:", plistPath, error);
   }
 
   return v9;
@@ -217,8 +217,8 @@ LABEL_26:
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(NSMutableDictionary *)self->_skippedFiles allValues];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allValues = [(NSMutableDictionary *)self->_skippedFiles allValues];
+    v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -229,14 +229,14 @@ LABEL_26:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * i) dictionaryRepresentation];
-          [v3 addObject:v9];
+          dictionaryRepresentation = [*(*(&v11 + 1) + 8 * i) dictionaryRepresentation];
+          [v3 addObject:dictionaryRepresentation];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);

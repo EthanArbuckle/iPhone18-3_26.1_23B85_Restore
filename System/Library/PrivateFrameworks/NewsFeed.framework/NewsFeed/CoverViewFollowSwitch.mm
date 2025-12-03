@@ -1,11 +1,11 @@
 @interface CoverViewFollowSwitch
-- (_TtC8NewsFeed21CoverViewFollowSwitch)initWithCoder:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC8NewsFeed21CoverViewFollowSwitch)initWithCoder:(id)coder;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CoverViewFollowSwitch
 
-- (_TtC8NewsFeed21CoverViewFollowSwitch)initWithCoder:(id)a3
+- (_TtC8NewsFeed21CoverViewFollowSwitch)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed21CoverViewFollowSwitch_titleLabel;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DCC10]) init];
@@ -18,13 +18,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   CoverViewFollowSwitch.traitCollectionDidChange(_:)(v9);
 }
 

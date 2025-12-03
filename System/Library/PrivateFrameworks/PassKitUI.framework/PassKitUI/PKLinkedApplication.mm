@@ -1,28 +1,28 @@
 @interface PKLinkedApplication
-+ (id)_openOptionsWithURL:(id)a3;
++ (id)_openOptionsWithURL:(id)l;
 - (BOOL)_useLibraryItem;
 - (BOOL)canOpenApplication;
 - (CGSize)expectedIconSize;
 - (NSNumber)storeIdentifier;
 - (NSString)displayName;
-- (PKLinkedApplication)initWithPass:(id)a3;
-- (PKLinkedApplication)initWithStoreIDs:(id)a3 systemAppBundleIdentifiers:(id)a4 defaultLaunchURL:(id)a5 applicationIdentifiers:(id)a6;
+- (PKLinkedApplication)initWithPass:(id)pass;
+- (PKLinkedApplication)initWithStoreIDs:(id)ds systemAppBundleIdentifiers:(id)identifiers defaultLaunchURL:(id)l applicationIdentifiers:(id)applicationIdentifiers;
 - (id)_foundStoreItemProductPageURL;
-- (id)_iconImageDescriptorForScale:(double)a3;
+- (id)_iconImageDescriptorForScale:(double)scale;
 - (int64_t)state;
 - (void)_notifyObserversOfStateChange;
-- (void)_reloadApplicationStateWithCompletion:(id)a3;
+- (void)_reloadApplicationStateWithCompletion:(id)completion;
 - (void)_unloadApplicationState;
-- (void)_updateApplicationStateWithCompletion:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateApplicationStateWithCompletion:(id)completion;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)installedApplicationsDidChangeNotification:(id)a3;
-- (void)openApplication:(id)a3 withLaunchOptions:(unint64_t)a4 launchURL:(id)a5;
-- (void)productViewControllerDidFinish:(id)a3;
-- (void)reloadApplicationStateIfNecessaryWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setStoreIDs:(id)a3;
-- (void)setUseSmallIcon:(BOOL)a3;
+- (void)installedApplicationsDidChangeNotification:(id)notification;
+- (void)openApplication:(id)application withLaunchOptions:(unint64_t)options launchURL:(id)l;
+- (void)productViewControllerDidFinish:(id)finish;
+- (void)reloadApplicationStateIfNecessaryWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)setStoreIDs:(id)ds;
+- (void)setUseSmallIcon:(BOOL)icon;
 @end
 
 @implementation PKLinkedApplication
@@ -41,14 +41,14 @@
   return result;
 }
 
-+ (id)_openOptionsWithURL:(id)a3
++ (id)_openOptionsWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E699F970]];
-  if (v3)
+  if (lCopy)
   {
-    [v4 setObject:v3 forKeyedSubscript:*MEMORY[0x1E699F960]];
+    [v4 setObject:lCopy forKeyedSubscript:*MEMORY[0x1E699F960]];
   }
 
   v5 = [MEMORY[0x1E699FB70] optionsWithDictionary:v4];
@@ -56,23 +56,23 @@
   return v5;
 }
 
-- (PKLinkedApplication)initWithPass:(id)a3
+- (PKLinkedApplication)initWithPass:(id)pass
 {
-  v4 = a3;
-  v5 = [v4 storeIdentifiers];
-  v6 = [v4 systemAppBundleIdentifiers];
-  v7 = [v4 appLaunchURL];
+  passCopy = pass;
+  storeIdentifiers = [passCopy storeIdentifiers];
+  systemAppBundleIdentifiers = [passCopy systemAppBundleIdentifiers];
+  appLaunchURL = [passCopy appLaunchURL];
 
-  v8 = [(PKLinkedApplication *)self initWithStoreIDs:v5 systemAppBundleIdentifiers:v6 defaultLaunchURL:v7 applicationIdentifiers:0];
+  v8 = [(PKLinkedApplication *)self initWithStoreIDs:storeIdentifiers systemAppBundleIdentifiers:systemAppBundleIdentifiers defaultLaunchURL:appLaunchURL applicationIdentifiers:0];
   return v8;
 }
 
-- (PKLinkedApplication)initWithStoreIDs:(id)a3 systemAppBundleIdentifiers:(id)a4 defaultLaunchURL:(id)a5 applicationIdentifiers:(id)a6
+- (PKLinkedApplication)initWithStoreIDs:(id)ds systemAppBundleIdentifiers:(id)identifiers defaultLaunchURL:(id)l applicationIdentifiers:(id)applicationIdentifiers
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dsCopy = ds;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  applicationIdentifiersCopy = applicationIdentifiers;
   v34.receiver = self;
   v34.super_class = PKLinkedApplication;
   v14 = [(PKLinkedApplication *)&v34 init];
@@ -80,33 +80,33 @@
   if (v14)
   {
     v14->_pendingLock._os_unfair_lock_opaque = 0;
-    v16 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v15->_observers;
-    v15->_observers = v16;
+    v15->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
     completionHandlers = v15->_completionHandlers;
     v15->_completionHandlers = v18;
 
-    v20 = [v10 copy];
+    v20 = [dsCopy copy];
     storeIDs = v15->_storeIDs;
     v15->_storeIDs = v20;
 
-    v22 = [v11 copy];
+    v22 = [identifiersCopy copy];
     systemAppBundleIdentifiers = v15->_systemAppBundleIdentifiers;
     v15->_systemAppBundleIdentifiers = v22;
 
-    v24 = [v12 copy];
+    v24 = [lCopy copy];
     defaultLaunchURL = v15->_defaultLaunchURL;
     v15->_defaultLaunchURL = v24;
 
-    v26 = [v13 copy];
+    v26 = [applicationIdentifiersCopy copy];
     applicationIdentifiers = v15->_applicationIdentifiers;
     v15->_applicationIdentifiers = v26;
 
-    v28 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v28 addObserver:v15 selector:sel_installedApplicationsDidChangeNotification_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-    [v28 addObserver:v15 selector:sel_installedApplicationsDidChangeNotification_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel_installedApplicationsDidChangeNotification_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+    [defaultCenter addObserver:v15 selector:sel_installedApplicationsDidChangeNotification_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
     *&v15->_shouldApplyMask = 257;
     v29 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
     v30 = dispatch_queue_attr_make_with_autorelease_frequency(v29, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -121,9 +121,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
-  [v3 removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+  [defaultCenter removeObserver:self name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
   [(PKCancelable *)self->_pendingUpdate cancel];
 
   v4.receiver = self;
@@ -131,14 +131,14 @@
   [(PKLinkedApplication *)&v4 dealloc];
 }
 
-- (void)_reloadApplicationStateWithCompletion:(id)a3
+- (void)_reloadApplicationStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     completionHandlers = self->_completionHandlers;
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(completionCopy);
     [(NSMutableArray *)completionHandlers addObject:v7];
   }
 
@@ -206,11 +206,11 @@ void __61__PKLinkedApplication__reloadApplicationStateWithCompletion___block_inv
   }
 }
 
-- (void)reloadApplicationStateIfNecessaryWithCompletion:(id)a3
+- (void)reloadApplicationStateIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v8 = v4;
-  if (!self->_loaded || ((v5 = v4, (foundLibraryItem = self->_foundLibraryItem) == 0) || (v7 = [(SSSoftwareLibraryItem *)foundLibraryItem isPlaceholder], v5 = v8, v7)) && !self->_foundStoreItem)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!self->_loaded || ((v5 = completionCopy, (foundLibraryItem = self->_foundLibraryItem) == 0) || (v7 = [(SSSoftwareLibraryItem *)foundLibraryItem isPlaceholder], v5 = v8, v7)) && !self->_foundStoreItem)
   {
     [(PKLinkedApplication *)self _reloadApplicationStateWithCompletion:v8];
     v5 = v8;
@@ -246,9 +246,9 @@ void __61__PKLinkedApplication__reloadApplicationStateWithCompletion___block_inv
   else
   {
 LABEL_7:
-    v8 = [(PKLinkedApplication *)self _foundStoreItemProductPageURL];
+    _foundStoreItemProductPageURL = [(PKLinkedApplication *)self _foundStoreItemProductPageURL];
 
-    if (v8)
+    if (_foundStoreItemProductPageURL)
     {
       v9 = *MEMORY[0x1E69BB738];
 
@@ -262,23 +262,23 @@ LABEL_7:
   }
 }
 
-- (void)openApplication:(id)a3 withLaunchOptions:(unint64_t)a4 launchURL:(id)a5
+- (void)openApplication:(id)application withLaunchOptions:(unint64_t)options launchURL:(id)l
 {
-  v6 = a4;
+  optionsCopy = options;
   v51 = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v8 = a5;
+  applicationCopy = application;
+  lCopy = l;
   presentedViewController = self->_presentedViewController;
   if (presentedViewController)
   {
-    v10 = [(SKStoreProductViewController *)presentedViewController presentingViewController];
+    presentingViewController = [(SKStoreProductViewController *)presentedViewController presentingViewController];
 
-    if (!v10)
+    if (!presentingViewController)
     {
       v17 = self->_presentedViewController;
       self->_presentedViewController = 0;
 
-      if (v8)
+      if (lCopy)
       {
         goto LABEL_5;
       }
@@ -287,17 +287,17 @@ LABEL_7:
     }
   }
 
-  if (!v8)
+  if (!lCopy)
   {
 LABEL_4:
-    v8 = self->_defaultLaunchURL;
+    lCopy = self->_defaultLaunchURL;
   }
 
 LABEL_5:
-  v11 = [(PKAMSLookupItem *)self->_foundStoreItem distributionIdentifier];
-  if (!v11 || [(PKLinkedApplication *)self isInstalled])
+  distributionIdentifier = [(PKAMSLookupItem *)self->_foundStoreItem distributionIdentifier];
+  if (!distributionIdentifier || [(PKLinkedApplication *)self isInstalled])
   {
-    if (PKRunningInViewService() && (v12 = v41) != 0)
+    if (PKRunningInViewService() && (v12 = applicationCopy) != 0)
     {
       v13 = v12;
       objc_opt_class();
@@ -310,22 +310,22 @@ LABEL_5:
       {
         while (1)
         {
-          v15 = [v13 parentViewController];
-          if (!v15)
+          parentViewController = [v13 parentViewController];
+          if (!parentViewController)
           {
-            v15 = [v13 presentingViewController];
-            if (!v15)
+            parentViewController = [v13 presentingViewController];
+            if (!parentViewController)
             {
               break;
             }
           }
 
           objc_opt_class();
-          v13 = v15;
+          v13 = parentViewController;
           if (objc_opt_isKindOfClass())
           {
             v14 = 1;
-            v13 = v15;
+            v13 = parentViewController;
             goto LABEL_30;
           }
         }
@@ -380,7 +380,7 @@ LABEL_30:
       v14 = 0;
     }
 
-    v21 = [(PKLinkedApplication *)self storeIdentifier];
+    storeIdentifier = [(PKLinkedApplication *)self storeIdentifier];
     if ((v14 | PKRunningInLockScreenPlugin()) == 1)
     {
       v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -400,7 +400,7 @@ LABEL_30:
         if (v32)
         {
           [v22 setObject:v32 forKeyedSubscript:@"bundleID"];
-          v30 = v8;
+          v30 = lCopy;
         }
 
         else
@@ -411,11 +411,11 @@ LABEL_30:
 
       else
       {
-        v29 = [(PKLinkedApplication *)self _foundStoreItemProductPageURL];
-        v30 = v29;
-        if (v29)
+        _foundStoreItemProductPageURL = [(PKLinkedApplication *)self _foundStoreItemProductPageURL];
+        v30 = _foundStoreItemProductPageURL;
+        if (_foundStoreItemProductPageURL)
         {
-          v31 = v29;
+          v31 = _foundStoreItemProductPageURL;
           v32 = @"com.apple.AppStore";
         }
 
@@ -425,13 +425,13 @@ LABEL_30:
         }
       }
 
-      v36 = [v41 viewIfLoaded];
-      v37 = [v36 window];
+      viewIfLoaded = [applicationCopy viewIfLoaded];
+      window = [viewIfLoaded window];
 
-      if (v32 && v37)
+      if (v32 && window)
       {
         v38 = [objc_opt_class() _openOptionsWithURL:v30];
-        PKPostOpenApplicationNotification(v37, v32, v38);
+        PKPostOpenApplicationNotification(window, v32, v38);
       }
 
       goto LABEL_65;
@@ -452,7 +452,7 @@ LABEL_30:
       v34 = ;
       if (v34)
       {
-        v35 = [objc_opt_class() _openOptionsWithURL:v8];
+        v35 = [objc_opt_class() _openOptionsWithURL:lCopy];
         PKOpenApplication(v34, v35);
       }
 
@@ -461,38 +461,38 @@ LABEL_30:
       goto LABEL_65;
     }
 
-    if (v6)
+    if (optionsCopy)
     {
-      v27 = [(PKLinkedApplication *)self _foundStoreItemProductPageURL];
-      if (v27)
+      _foundStoreItemProductPageURL2 = [(PKLinkedApplication *)self _foundStoreItemProductPageURL];
+      if (_foundStoreItemProductPageURL2)
       {
-        v33 = [objc_opt_class() _openOptionsWithURL:v27];
+        v33 = [objc_opt_class() _openOptionsWithURL:_foundStoreItemProductPageURL2];
         PKOpenApplication(@"com.apple.AppStore", v33);
       }
     }
 
     else
     {
-      if (v41)
+      if (applicationCopy)
       {
         if (!self->_presentedViewController)
         {
-          if (v21)
+          if (storeIdentifier)
           {
-            v25 = [v41 presentedViewController];
-            v26 = v25 == 0;
+            presentedViewController = [applicationCopy presentedViewController];
+            v26 = presentedViewController == 0;
 
             if (v26)
             {
               objc_initWeak(&location, self);
               v39 = [[PKStoreProductViewPresenter alloc] initWithProductDelegate:self];
-              [(PKStoreProductViewPresenter *)v39 loadProductForItemIdentifier:v21 customProductPageIdentifier:self->_customProductPageIdentifier];
+              [(PKStoreProductViewPresenter *)v39 loadProductForItemIdentifier:storeIdentifier customProductPageIdentifier:self->_customProductPageIdentifier];
               v42[0] = MEMORY[0x1E69E9820];
               v42[1] = 3221225472;
               v42[2] = __67__PKLinkedApplication_openApplication_withLaunchOptions_launchURL___block_invoke;
               v42[3] = &unk_1E8014110;
               objc_copyWeak(&v44, &location);
-              v43 = v41;
+              v43 = applicationCopy;
               [(PKStoreProductViewPresenter *)v39 presentStoreViewWithBlock:v42];
 
               objc_destroyWeak(&v44);
@@ -503,10 +503,10 @@ LABEL_30:
         }
       }
 
-      v27 = [(PKLinkedApplication *)self _foundStoreItemProductPageURL];
-      if (v27)
+      _foundStoreItemProductPageURL2 = [(PKLinkedApplication *)self _foundStoreItemProductPageURL];
+      if (_foundStoreItemProductPageURL2)
       {
-        v28 = [objc_opt_class() _openOptionsWithURL:v27];
+        v28 = [objc_opt_class() _openOptionsWithURL:_foundStoreItemProductPageURL2];
         PKOpenApplication(@"com.apple.AppStore", v28);
       }
     }
@@ -515,8 +515,8 @@ LABEL_65:
     goto LABEL_66;
   }
 
-  v16 = [(PKAMSLookupItem *)self->_foundStoreItem appStoreIdentifier];
-  +[_PKDistributedAppLauncher launchAppWithDistributorBundleID:itemID:completion:](_TtC9PassKitUI25_PKDistributedAppLauncher, "launchAppWithDistributorBundleID:itemID:completion:", v11, [v16 integerValue], 0);
+  appStoreIdentifier = [(PKAMSLookupItem *)self->_foundStoreItem appStoreIdentifier];
+  +[_PKDistributedAppLauncher launchAppWithDistributorBundleID:itemID:completion:](_TtC9PassKitUI25_PKDistributedAppLauncher, "launchAppWithDistributorBundleID:itemID:completion:", distributionIdentifier, [appStoreIdentifier integerValue], 0);
 
 LABEL_66:
 }
@@ -536,17 +536,17 @@ void __67__PKLinkedApplication_openApplication_withLaunchOptions_launchURL___blo
   MEMORY[0x1BFB41980](*MEMORY[0x1E69B9ED8], 0);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers addObject:?];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -580,9 +580,9 @@ void __67__PKLinkedApplication_openApplication_withLaunchOptions_launchURL___blo
   [(PKLinkedApplication *)self _notifyObserversOfStateChange];
 }
 
-- (void)_updateApplicationStateWithCompletion:(id)a3
+- (void)_updateApplicationStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_storeIDs;
   v18 = self->_systemAppBundleIdentifiers;
   v6 = self->_applicationIdentifiers;
@@ -622,7 +622,7 @@ void __67__PKLinkedApplication_openApplication_withLaunchOptions_launchURL___blo
       v47[3] = &unk_1E8014160;
       v48 = v18;
       v49 = v7;
-      v50 = self;
+      selfCopy = self;
       v51 = from;
       v52 = v53;
       [v8 addOperation:v47];
@@ -637,7 +637,7 @@ void __67__PKLinkedApplication_openApplication_withLaunchOptions_launchURL___blo
       v45 = v53;
       v42 = v6;
       v43 = v7;
-      v44 = self;
+      selfCopy2 = self;
       v46 = from;
       [v8 addOperation:v41];
     }
@@ -677,7 +677,7 @@ void __67__PKLinkedApplication_openApplication_withLaunchOptions_launchURL___blo
     }
 
     objc_initWeak(&location, self);
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __61__PKLinkedApplication__updateApplicationStateWithCompletion___block_invoke_9;
@@ -687,8 +687,8 @@ void __67__PKLinkedApplication_openApplication_withLaunchOptions_launchURL___blo
     v25 = v57;
     v26 = v55;
     v27 = v53;
-    v23 = v4;
-    v14 = [v8 evaluateWithInput:v13 completion:v22];
+    v23 = completionCopy;
+    v14 = [v8 evaluateWithInput:null completion:v22];
     v15 = self->_pendingUpdate;
     self->_pendingUpdate = v14;
 
@@ -721,7 +721,7 @@ void __67__PKLinkedApplication_openApplication_withLaunchOptions_launchURL___blo
     block[2] = __61__PKLinkedApplication__updateApplicationStateWithCompletion___block_invoke_11;
     block[3] = &unk_1E80111D0;
     objc_copyWeak(&v21, from);
-    v20 = v4;
+    v20 = completionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(&v21);
@@ -1109,7 +1109,7 @@ void __61__PKLinkedApplication__updateApplicationStateWithCompletion___block_inv
   }
 }
 
-- (id)_iconImageDescriptorForScale:(double)a3
+- (id)_iconImageDescriptorForScale:(double)scale
 {
   if (PKUserInterfaceIdiomSupportsLargeLayouts())
   {
@@ -1132,7 +1132,7 @@ void __61__PKLinkedApplication__updateApplicationStateWithCompletion___block_inv
 
   v7 = [v5 imageDescriptorNamed:v6];
 LABEL_7:
-  [v7 setScale:a3];
+  [v7 setScale:scale];
   [v7 setDrawBorder:self->_shouldApplyBorder];
   [v7 setShouldApplyMask:self->_shouldApplyMask];
 
@@ -1174,7 +1174,7 @@ LABEL_7:
   }
 }
 
-- (void)installedApplicationsDidChangeNotification:(id)a3
+- (void)installedApplicationsDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1184,12 +1184,12 @@ LABEL_7:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setStoreIDs:(id)a3
+- (void)setStoreIDs:(id)ds
 {
-  v6 = a3;
+  dsCopy = ds;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dsCopy copy];
     storeIDs = self->_storeIDs;
     self->_storeIDs = v4;
 
@@ -1218,11 +1218,11 @@ LABEL_7:
   return 2;
 }
 
-- (void)setUseSmallIcon:(BOOL)a3
+- (void)setUseSmallIcon:(BOOL)icon
 {
-  if (self->_useSmallIcon == !a3)
+  if (self->_useSmallIcon == !icon)
   {
-    self->_useSmallIcon = a3;
+    self->_useSmallIcon = icon;
     [(PKLinkedApplication *)self _unloadApplicationState];
   }
 }
@@ -1261,7 +1261,7 @@ LABEL_7:
   foundSystemAppRecord = self->_foundSystemAppRecord;
   if (foundSystemAppRecord)
   {
-    v4 = [(LSApplicationRecord *)foundSystemAppRecord localizedName];
+    localizedName = [(LSApplicationRecord *)foundSystemAppRecord localizedName];
   }
 
   else
@@ -1275,10 +1275,10 @@ LABEL_7:
     {
       [(PKAMSLookupItem *)self->_foundStoreItem displayName];
     }
-    v4 = ;
+    localizedName = ;
   }
 
-  return v4;
+  return localizedName;
 }
 
 - (id)_foundStoreItemProductPageURL
@@ -1288,8 +1288,8 @@ LABEL_7:
   if (foundStoreItem)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [(PKAMSLookupItem *)foundStoreItem appStoreIdentifier];
-    v6 = [v4 stringWithFormat:@"itms-appss://apps.apple.com/app/id%@", v5];
+    appStoreIdentifier = [(PKAMSLookupItem *)foundStoreItem appStoreIdentifier];
+    v6 = [v4 stringWithFormat:@"itms-appss://apps.apple.com/app/id%@", appStoreIdentifier];
 
     v7 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:v6];
     if (self->_customProductPageIdentifier)
@@ -1311,13 +1311,13 @@ LABEL_7:
   return v10;
 }
 
-- (void)productViewControllerDidFinish:(id)a3
+- (void)productViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  [(SKStoreProductViewController *)v4 dismissViewControllerAnimated:1 completion:0];
+  finishCopy = finish;
+  [(SKStoreProductViewController *)finishCopy dismissViewControllerAnimated:1 completion:0];
   presentedViewController = self->_presentedViewController;
 
-  if (presentedViewController == v4)
+  if (presentedViewController == finishCopy)
   {
     self->_presentedViewController = 0;
   }

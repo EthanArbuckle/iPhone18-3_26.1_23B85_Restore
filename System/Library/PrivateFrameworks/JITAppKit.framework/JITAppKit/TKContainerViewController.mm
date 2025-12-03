@@ -2,192 +2,192 @@
 - (unint64_t)edgesForExtendedLayout;
 - (void)dealloc;
 - (void)observeChild;
-- (void)setChildViewController:(id)a3;
-- (void)updateInternals:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setChildViewController:(id)controller;
+- (void)updateInternals:(id)internals;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TKContainerViewController
 
 - (void)viewDidLoad
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = TKContainerViewController;
   [(TKContainerViewController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  v2 = [(TKContainerViewController *)v6 view];
-  [v2 setBackgroundColor:v3];
-  MEMORY[0x277D82BD8](v2);
-  MEMORY[0x277D82BD8](v3);
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  view = [(TKContainerViewController *)selfCopy view];
+  [view setBackgroundColor:whiteColor];
+  MEMORY[0x277D82BD8](view);
+  MEMORY[0x277D82BD8](whiteColor);
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(TKKeyPathObserver *)self->_observer stopObserving];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = TKContainerViewController;
   [(TKContainerViewController *)&v2 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = TKContainerViewController;
-  [(TKContainerViewController *)&v3 viewWillAppear:a3];
-  v6->_appearing = 1;
-  [(TKContainerViewController *)v6 observeChild];
+  [(TKContainerViewController *)&v3 viewWillAppear:appear];
+  selfCopy->_appearing = 1;
+  [(TKContainerViewController *)selfCopy observeChild];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = TKContainerViewController;
-  [(TKContainerViewController *)&v3 viewDidAppear:a3];
-  v6->_appearing = 0;
+  [(TKContainerViewController *)&v3 viewDidAppear:appear];
+  selfCopy->_appearing = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  disappearCopy = disappear;
   [(TKKeyPathObserver *)self->_observer stopObserving];
-  v3.receiver = v6;
+  v3.receiver = selfCopy;
   v3.super_class = TKContainerViewController;
-  [(TKContainerViewController *)&v3 viewWillDisappear:v4];
+  [(TKContainerViewController *)&v3 viewWillDisappear:disappearCopy];
 }
 
 - (unint64_t)edgesForExtendedLayout
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_childViewController)
   {
-    return [(UIViewController *)v5->_childViewController edgesForExtendedLayout];
+    return [(UIViewController *)selfCopy->_childViewController edgesForExtendedLayout];
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = TKContainerViewController;
   return [(TKContainerViewController *)&v3 edgesForExtendedLayout];
 }
 
-- (void)setChildViewController:(id)a3
+- (void)setChildViewController:(id)controller
 {
-  v56 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v56->_childViewController == location[0])
+  objc_storeStrong(location, controller);
+  if (selfCopy->_childViewController == location[0])
   {
     v54 = 1;
   }
 
   else
   {
-    [(TKKeyPathObserver *)v56->_observer stopObserving];
-    objc_storeStrong(&v56->_childNavigationItem, 0);
-    if (v56->_childViewController)
+    [(TKKeyPathObserver *)selfCopy->_observer stopObserving];
+    objc_storeStrong(&selfCopy->_childNavigationItem, 0);
+    if (selfCopy->_childViewController)
     {
-      [(UIViewController *)v56->_childViewController willMoveToParentViewController:0];
-      v23 = [(UIViewController *)v56->_childViewController view];
-      [(UIView *)v23 removeFromSuperview];
-      MEMORY[0x277D82BD8](v23);
-      [(UIViewController *)v56->_childViewController removeFromParentViewController];
+      [(UIViewController *)selfCopy->_childViewController willMoveToParentViewController:0];
+      view = [(UIViewController *)selfCopy->_childViewController view];
+      [(UIView *)view removeFromSuperview];
+      MEMORY[0x277D82BD8](view);
+      [(UIViewController *)selfCopy->_childViewController removeFromParentViewController];
     }
 
-    objc_storeStrong(&v56->_childViewController, location[0]);
+    objc_storeStrong(&selfCopy->_childViewController, location[0]);
     if (location[0])
     {
-      v53 = [(TKContainerViewController *)v56 view];
-      [(TKContainerViewController *)v56 addChildViewController:location[0]];
-      v52 = [location[0] view];
-      [v52 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v53 bounds];
+      view2 = [(TKContainerViewController *)selfCopy view];
+      [(TKContainerViewController *)selfCopy addChildViewController:location[0]];
+      view3 = [location[0] view];
+      [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [view2 bounds];
       *&v50 = v3;
       *(&v50 + 1) = v4;
       *&v51 = v5;
       *(&v51 + 1) = v6;
       v48 = v50;
       v49 = v51;
-      [v52 setFrame:{v3, v4, v5, v6}];
-      [v52 setAutoresizingMask:18];
-      v19 = [MEMORY[0x277D75128] sharedApplication];
-      [v19 statusBarOrientationAnimationDuration];
+      [view3 setFrame:{v3, v4, v5, v6}];
+      [view3 setAutoresizingMask:18];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      [mEMORY[0x277D75128] statusBarOrientationAnimationDuration];
       v20 = v7 / 2.0;
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
       v47[1] = *&v20;
       v22 = MEMORY[0x277D75D18];
-      v21 = v53;
+      v21 = view2;
       v41 = MEMORY[0x277D85DD0];
       v42 = -1073741824;
       v43 = 0;
       v44 = __52__TKContainerViewController_setChildViewController___block_invoke;
       v45 = &unk_2797EE270;
-      v46 = MEMORY[0x277D82BE0](v53);
-      v47[0] = MEMORY[0x277D82BE0](v52);
+      v46 = MEMORY[0x277D82BE0](view2);
+      v47[0] = MEMORY[0x277D82BE0](view3);
       v34 = MEMORY[0x277D85DD0];
       v35 = -1073741824;
       v36 = 0;
       v37 = __52__TKContainerViewController_setChildViewController___block_invoke_2;
       v38 = &unk_2797EE1F8;
       v39 = MEMORY[0x277D82BE0](location[0]);
-      v40 = MEMORY[0x277D82BE0](v56);
+      v40 = MEMORY[0x277D82BE0](selfCopy);
       [v22 transitionWithView:v21 duration:5243008 options:&v41 animations:&v34 completion:v20];
-      v8 = [location[0] navigationItem];
-      childNavigationItem = v56->_childNavigationItem;
-      v56->_childNavigationItem = v8;
+      navigationItem = [location[0] navigationItem];
+      childNavigationItem = selfCopy->_childNavigationItem;
+      selfCopy->_childNavigationItem = navigationItem;
       MEMORY[0x277D82BD8](childNavigationItem);
-      v33 = [(UINavigationItem *)v56->_childNavigationItem rightBarButtonItems];
-      if (v33)
+      rightBarButtonItems = [(UINavigationItem *)selfCopy->_childNavigationItem rightBarButtonItems];
+      if (rightBarButtonItems)
       {
-        v18 = [(TKContainerViewController *)v56 navigationItem];
-        [v18 setRightBarButtonItems:v33];
-        MEMORY[0x277D82BD8](v18);
+        navigationItem2 = [(TKContainerViewController *)selfCopy navigationItem];
+        [navigationItem2 setRightBarButtonItems:rightBarButtonItems];
+        MEMORY[0x277D82BD8](navigationItem2);
       }
 
-      v10 = [(UINavigationItem *)v56->_childNavigationItem leftBarButtonItems];
-      v11 = v33;
-      v33 = v10;
+      leftBarButtonItems = [(UINavigationItem *)selfCopy->_childNavigationItem leftBarButtonItems];
+      v11 = rightBarButtonItems;
+      rightBarButtonItems = leftBarButtonItems;
       MEMORY[0x277D82BD8](v11);
-      if (v33)
+      if (rightBarButtonItems)
       {
-        v17 = [(TKContainerViewController *)v56 navigationItem];
-        [v17 setLeftBarButtonItems:v33];
-        MEMORY[0x277D82BD8](v17);
+        navigationItem3 = [(TKContainerViewController *)selfCopy navigationItem];
+        [navigationItem3 setLeftBarButtonItems:rightBarButtonItems];
+        MEMORY[0x277D82BD8](navigationItem3);
       }
 
-      v32 = [(UINavigationItem *)v56->_childNavigationItem title];
-      if (v32)
+      title = [(UINavigationItem *)selfCopy->_childNavigationItem title];
+      if (title)
       {
-        v16 = [(TKContainerViewController *)v56 navigationItem];
-        [v16 setTitle:v32];
-        MEMORY[0x277D82BD8](v16);
+        navigationItem4 = [(TKContainerViewController *)selfCopy navigationItem];
+        [navigationItem4 setTitle:title];
+        MEMORY[0x277D82BD8](navigationItem4);
       }
 
-      v31 = [(UINavigationItem *)v56->_childNavigationItem titleView];
-      if (v31)
+      titleView = [(UINavigationItem *)selfCopy->_childNavigationItem titleView];
+      if (titleView)
       {
-        v15 = [(TKContainerViewController *)v56 navigationItem];
-        [v15 setTitleView:v31];
-        MEMORY[0x277D82BD8](v15);
+        navigationItem5 = [(TKContainerViewController *)selfCopy navigationItem];
+        [navigationItem5 setTitleView:titleView];
+        MEMORY[0x277D82BD8](navigationItem5);
       }
 
-      if (!v56->_observer)
+      if (!selfCopy->_observer)
       {
-        objc_initWeak(&from, v56);
+        objc_initWeak(&from, selfCopy);
         v14 = [TKKeyPathObserver alloc];
         v24 = MEMORY[0x277D85DD0];
         v25 = -1073741824;
@@ -196,23 +196,23 @@
         v28 = &unk_2797EE820;
         objc_copyWeak(&v29, &from);
         v13 = [(TKKeyPathObserver *)v14 initWithBlock:&v24];
-        observer = v56->_observer;
-        v56->_observer = v13;
+        observer = selfCopy->_observer;
+        selfCopy->_observer = v13;
         MEMORY[0x277D82BD8](observer);
         objc_destroyWeak(&v29);
         objc_destroyWeak(&from);
       }
 
-      [(TKContainerViewController *)v56 observeChild];
-      objc_storeStrong(&v31, 0);
-      objc_storeStrong(&v32, 0);
-      objc_storeStrong(&v33, 0);
+      [(TKContainerViewController *)selfCopy observeChild];
+      objc_storeStrong(&titleView, 0);
+      objc_storeStrong(&title, 0);
+      objc_storeStrong(&rightBarButtonItems, 0);
       objc_storeStrong(&v40, 0);
       objc_storeStrong(&v39, 0);
       objc_storeStrong(v47, 0);
       objc_storeStrong(&v46, 0);
-      objc_storeStrong(&v52, 0);
-      objc_storeStrong(&v53, 0);
+      objc_storeStrong(&view3, 0);
+      objc_storeStrong(&view2, 0);
       v54 = 0;
     }
 
@@ -315,51 +315,51 @@ void __52__TKContainerViewController_setChildViewController___block_invoke_3(id 
   }
 }
 
-- (void)updateInternals:(id)a3
+- (void)updateInternals:(id)internals
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, internals);
   if ([location[0] isEqualToString:@"navigationItem"])
   {
-    [(TKKeyPathObserver *)v12->_observer stopObserving];
+    [(TKKeyPathObserver *)selfCopy->_observer stopObserving];
   }
 
   else if ([location[0] isEqualToString:@"rightBarButtonItems"])
   {
-    v10 = [(UINavigationItem *)v12->_childNavigationItem rightBarButtonItems];
-    v9 = [(TKContainerViewController *)v12 navigationItem];
-    [v9 setRightBarButtonItems:v10];
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    rightBarButtonItems = [(UINavigationItem *)selfCopy->_childNavigationItem rightBarButtonItems];
+    navigationItem = [(TKContainerViewController *)selfCopy navigationItem];
+    [navigationItem setRightBarButtonItems:rightBarButtonItems];
+    MEMORY[0x277D82BD8](navigationItem);
+    MEMORY[0x277D82BD8](rightBarButtonItems);
   }
 
   else if ([location[0] isEqualToString:@"leftBarButtonItems"])
   {
-    v8 = [(UINavigationItem *)v12->_childNavigationItem leftBarButtonItems];
-    v7 = [(TKContainerViewController *)v12 navigationItem];
-    [v7 setLeftBarButtonItems:v8];
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    leftBarButtonItems = [(UINavigationItem *)selfCopy->_childNavigationItem leftBarButtonItems];
+    navigationItem2 = [(TKContainerViewController *)selfCopy navigationItem];
+    [navigationItem2 setLeftBarButtonItems:leftBarButtonItems];
+    MEMORY[0x277D82BD8](navigationItem2);
+    MEMORY[0x277D82BD8](leftBarButtonItems);
   }
 
   else if ([location[0] isEqualToString:@"title"])
   {
-    v6 = [(UINavigationItem *)v12->_childNavigationItem title];
-    v5 = [(TKContainerViewController *)v12 navigationItem];
-    [v5 setTitle:v6];
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    title = [(UINavigationItem *)selfCopy->_childNavigationItem title];
+    navigationItem3 = [(TKContainerViewController *)selfCopy navigationItem];
+    [navigationItem3 setTitle:title];
+    MEMORY[0x277D82BD8](navigationItem3);
+    MEMORY[0x277D82BD8](title);
   }
 
   else if ([location[0] isEqualToString:@"titleView"])
   {
-    v4 = [(UINavigationItem *)v12->_childNavigationItem titleView];
-    v3 = [(TKContainerViewController *)v12 navigationItem];
-    [v3 setTitleView:v4];
-    MEMORY[0x277D82BD8](v3);
-    MEMORY[0x277D82BD8](v4);
+    titleView = [(UINavigationItem *)selfCopy->_childNavigationItem titleView];
+    navigationItem4 = [(TKContainerViewController *)selfCopy navigationItem];
+    [navigationItem4 setTitleView:titleView];
+    MEMORY[0x277D82BD8](navigationItem4);
+    MEMORY[0x277D82BD8](titleView);
   }
 
   objc_storeStrong(location, 0);

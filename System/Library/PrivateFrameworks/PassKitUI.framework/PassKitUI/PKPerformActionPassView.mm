@@ -1,11 +1,11 @@
 @interface PKPerformActionPassView
 - (CGSize)_passImageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKPerformActionPassView)init;
-- (PKPerformActionPassView)initWithPass:(id)a3 frame:(CGRect)a4;
+- (PKPerformActionPassView)initWithPass:(id)pass frame:(CGRect)frame;
 - (void)_createSubviews;
 - (void)_loadSnapshotView;
-- (void)configureWithPass:(id)a3 frame:(CGRect)a4;
+- (void)configureWithPass:(id)pass frame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -18,18 +18,18 @@
   return [(PKPerformActionBackdropView *)&v3 init];
 }
 
-- (PKPerformActionPassView)initWithPass:(id)a3 frame:(CGRect)a4
+- (PKPerformActionPassView)initWithPass:(id)pass frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v8 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  passCopy = pass;
   v18.receiver = self;
   v18.super_class = PKPerformActionPassView;
   v9 = [(PKPerformActionBackdropView *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pass, a3);
+    objc_storeStrong(&v9->_pass, pass);
     v11 = objc_alloc_init(PKPassSnapshotter);
     snapshotter = v10->_snapshotter;
     v10->_snapshotter = v11;
@@ -47,12 +47,12 @@
   return v10;
 }
 
-- (void)configureWithPass:(id)a3 frame:(CGRect)a4
+- (void)configureWithPass:(id)pass frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  objc_storeStrong(&self->_pass, a3);
-  v8 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  objc_storeStrong(&self->_pass, pass);
+  passCopy = pass;
   v9 = objc_alloc_init(PKPassSnapshotter);
   snapshotter = self->_snapshotter;
   self->_snapshotter = v9;
@@ -79,10 +79,10 @@
   [(UIImageView *)self->_passView setFrame:v4 * 0.5 - v5 * 0.5, 0.0, v5, v6];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKPerformActionPassView *)self _passImageSize:a3.width];
+  width = fits.width;
+  [(PKPerformActionPassView *)self _passImageSize:fits.width];
   v5 = fmax(v4, 88.0);
   v6 = width;
   result.height = v5;
@@ -96,22 +96,22 @@
   passView = self->_passView;
   self->_passView = v3;
 
-  v5 = [(UIImageView *)self->_passView layer];
-  [v5 setShadowRadius:12.0];
+  layer = [(UIImageView *)self->_passView layer];
+  [layer setShadowRadius:12.0];
 
-  v6 = [(UIImageView *)self->_passView layer];
+  layer2 = [(UIImageView *)self->_passView layer];
   v7 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.15];
-  [v6 setShadowColor:{objc_msgSend(v7, "CGColor")}];
+  [layer2 setShadowColor:{objc_msgSend(v7, "CGColor")}];
 
-  v8 = [(UIImageView *)self->_passView layer];
-  [v8 setShadowOffset:{0.0, 12.0}];
+  layer3 = [(UIImageView *)self->_passView layer];
+  [layer3 setShadowOffset:{0.0, 12.0}];
 
-  v9 = [(UIImageView *)self->_passView layer];
+  layer4 = [(UIImageView *)self->_passView layer];
   LODWORD(v10) = 1.0;
-  [v9 setShadowOpacity:v10];
+  [layer4 setShadowOpacity:v10];
 
-  v11 = [(UIImageView *)self->_passView layer];
-  [v11 setMasksToBounds:0];
+  layer5 = [(UIImageView *)self->_passView layer];
+  [layer5 setMasksToBounds:0];
 
   [(UIImageView *)self->_passView setAccessibilityIgnoresInvertColors:1];
   v12 = self->_passView;
@@ -147,10 +147,10 @@ void __44__PKPerformActionPassView__loadSnapshotView__block_invoke(uint64_t a1, 
 
 - (CGSize)_passImageSize
 {
-  v2 = [(PKPass *)self->_pass passType];
+  passType = [(PKPass *)self->_pass passType];
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);
-  if (v2 == PKPassTypeSecureElement)
+  if (passType == PKPassTypeSecureElement)
   {
     v3 = 190.0;
     v4 = 121.0;

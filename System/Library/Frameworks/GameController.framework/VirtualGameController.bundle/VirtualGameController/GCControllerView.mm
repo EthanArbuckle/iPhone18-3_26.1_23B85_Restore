@@ -1,58 +1,58 @@
 @interface GCControllerView
-- (GCControllerView)initWithCoder:(id)a3;
-- (GCControllerView)initWithFrame:(CGRect)a3;
-- (GCControllerView)initWithFrame:(CGRect)a3 configuration:(id)a4;
+- (GCControllerView)initWithCoder:(id)coder;
+- (GCControllerView)initWithFrame:(CGRect)frame;
+- (GCControllerView)initWithFrame:(CGRect)frame configuration:(id)configuration;
 - (id)applyPadLayout;
-- (id)getConfigurationForElement:(id)a3;
-- (id)getUIControlForName:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)getConfigurationForElement:(id)element;
+- (id)getUIControlForName:(id)name;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)applyPhoneLayout;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setConfigurationForElement:(id)a3 configuration:(id)a4;
-- (void)setController:(id)a3;
+- (void)setConfigurationForElement:(id)element configuration:(id)configuration;
+- (void)setController:(id)controller;
 - (void)setupPositions;
-- (void)setupSide:(id)a3 thumbstick:(id)a4 buttons:(id)a5;
+- (void)setupSide:(id)side thumbstick:(id)thumbstick buttons:(id)buttons;
 @end
 
 @implementation GCControllerView
 
-- (GCControllerView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (GCControllerView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v76.receiver = self;
   v76.super_class = GCControllerView;
-  v10 = [(GCControllerView *)&v76 initWithFrame:x, y, width, height];
-  if (!v10)
+  height = [(GCControllerView *)&v76 initWithFrame:x, y, width, height];
+  if (!height)
   {
     goto LABEL_33;
   }
 
   v11 = [[UIView alloc] initWithFrame:{0.0, 0.0, 190.0, 190.0}];
-  leftSide = v10->_leftSide;
-  v10->_leftSide = v11;
+  leftSide = height->_leftSide;
+  height->_leftSide = v11;
 
   v13 = [[UIView alloc] initWithFrame:{0.0, 0.0, 190.0, 190.0}];
-  rightSide = v10->_rightSide;
-  v10->_rightSide = v13;
+  rightSide = height->_rightSide;
+  height->_rightSide = v13;
 
-  [(GCControllerView *)v10 addSubview:v10->_leftSide];
-  [(GCControllerView *)v10 addSubview:v10->_rightSide];
+  [(GCControllerView *)height addSubview:height->_leftSide];
+  [(GCControllerView *)height addSubview:height->_rightSide];
   if (GCCurrentProcessLinkedOnAfter())
   {
     v15 = [NSSet setWithObjects:GCInputButtonA, GCInputButtonB, GCInputButtonX, GCInputButtonY, GCInputLeftShoulder, GCInputRightShoulder, GCInputLeftTrigger, GCInputRightTrigger, GCInputDirectionPad, GCInputLeftThumbstick, GCInputRightThumbstick, 0];
-    v16 = [v9 elements];
+    elements = [configurationCopy elements];
     v74[0] = _NSConcreteStackBlock;
     v74[1] = 3221225472;
     v74[2] = __48__GCControllerView_initWithFrame_configuration___block_invoke;
     v74[3] = &unk_10518;
     v17 = v15;
     v75 = v17;
-    v18 = [v16 objectsPassingTest:v74];
+    v18 = [elements objectsPassingTest:v74];
 
     if ([v18 count])
     {
@@ -66,11 +66,11 @@
       objc_exception_throw(v72);
     }
 
-    v19 = [v9 elements];
-    if ([v19 containsObject:GCInputLeftThumbstick])
+    elements2 = [configurationCopy elements];
+    if ([elements2 containsObject:GCInputLeftThumbstick])
     {
-      v20 = [v9 elements];
-      v21 = [v20 containsObject:GCInputDirectionPad];
+      elements3 = [configurationCopy elements];
+      v21 = [elements3 containsObject:GCInputDirectionPad];
 
       if (v21)
       {
@@ -84,8 +84,8 @@
     }
   }
 
-  v23 = [v9 elements];
-  v24 = [v23 member:GCInputLeftThumbstick];
+  elements4 = [configurationCopy elements];
+  v24 = [elements4 member:GCInputLeftThumbstick];
 
   if (v24)
   {
@@ -93,163 +93,163 @@
     v26 = &OBJC_IVAR___GCControllerView__leftThumbstick;
 LABEL_13:
     v30 = *v26;
-    v31 = *(&v10->super.super.super.isa + v30);
-    *(&v10->super.super.super.isa + v30) = v25;
+    v31 = *(&height->super.super.super.isa + v30);
+    *(&height->super.super.super.isa + v30) = v25;
 
-    [(UIView *)v10->_leftSide addSubview:*(&v10->super.super.super.isa + v30)];
+    [(UIView *)height->_leftSide addSubview:*(&height->super.super.super.isa + v30)];
     goto LABEL_14;
   }
 
-  v27 = [v9 elements];
-  v28 = [v27 member:GCInputDirectionPad];
+  elements5 = [configurationCopy elements];
+  v28 = [elements5 member:GCInputDirectionPad];
 
   if (v28)
   {
     v29 = [GCControllerDpadInputView alloc];
-    [(UIView *)v10->_leftSide frame];
+    [(UIView *)height->_leftSide frame];
     v25 = [(GCControllerDpadInputView *)v29 initWithFrame:?];
     v26 = &OBJC_IVAR___GCControllerView__dpad;
     goto LABEL_13;
   }
 
 LABEL_14:
-  v32 = [v9 elements];
-  v33 = [v32 member:GCInputRightThumbstick];
+  elements6 = [configurationCopy elements];
+  v33 = [elements6 member:GCInputRightThumbstick];
 
   if (v33)
   {
     v34 = objc_alloc_init(GCControllerThumbstickInputView);
-    rightThumbstick = v10->_rightThumbstick;
-    v10->_rightThumbstick = v34;
+    rightThumbstick = height->_rightThumbstick;
+    height->_rightThumbstick = v34;
 
-    [(UIView *)v10->_rightSide addSubview:v10->_rightThumbstick];
+    [(UIView *)height->_rightSide addSubview:height->_rightThumbstick];
   }
 
-  v36 = [v9 elements];
-  v37 = [v36 member:GCInputButtonA];
+  elements7 = [configurationCopy elements];
+  v37 = [elements7 member:GCInputButtonA];
 
   if (v37)
   {
     v38 = [[GCControllerButtonInputView alloc] initWithText:@"A"];
-    buttonA = v10->_buttonA;
-    v10->_buttonA = v38;
+    buttonA = height->_buttonA;
+    height->_buttonA = v38;
 
-    [(UIView *)v10->_rightSide addSubview:v10->_buttonA];
+    [(UIView *)height->_rightSide addSubview:height->_buttonA];
   }
 
-  v40 = [v9 elements];
-  v41 = [v40 member:GCInputButtonB];
+  elements8 = [configurationCopy elements];
+  v41 = [elements8 member:GCInputButtonB];
 
   if (v41)
   {
     v42 = [[GCControllerButtonInputView alloc] initWithText:@"B"];
-    buttonB = v10->_buttonB;
-    v10->_buttonB = v42;
+    buttonB = height->_buttonB;
+    height->_buttonB = v42;
 
-    [(UIView *)v10->_rightSide addSubview:v10->_buttonB];
+    [(UIView *)height->_rightSide addSubview:height->_buttonB];
   }
 
-  v44 = [v9 elements];
-  v45 = [v44 member:GCInputButtonX];
+  elements9 = [configurationCopy elements];
+  v45 = [elements9 member:GCInputButtonX];
 
   if (v45)
   {
     v46 = [[GCControllerButtonInputView alloc] initWithText:@"X"];
-    buttonX = v10->_buttonX;
-    v10->_buttonX = v46;
+    buttonX = height->_buttonX;
+    height->_buttonX = v46;
 
-    [(UIView *)v10->_rightSide addSubview:v10->_buttonX];
+    [(UIView *)height->_rightSide addSubview:height->_buttonX];
   }
 
-  v48 = [v9 elements];
-  v49 = [v48 member:GCInputButtonY];
+  elements10 = [configurationCopy elements];
+  v49 = [elements10 member:GCInputButtonY];
 
   if (v49)
   {
     v50 = [[GCControllerButtonInputView alloc] initWithText:@"Y"];
-    buttonY = v10->_buttonY;
-    v10->_buttonY = v50;
+    buttonY = height->_buttonY;
+    height->_buttonY = v50;
 
-    [(UIView *)v10->_rightSide addSubview:v10->_buttonY];
+    [(UIView *)height->_rightSide addSubview:height->_buttonY];
   }
 
-  v52 = [v9 elements];
-  v53 = [v52 member:GCInputLeftShoulder];
+  elements11 = [configurationCopy elements];
+  v53 = [elements11 member:GCInputLeftShoulder];
 
   if (v53)
   {
     v54 = [[GCControllerButtonInputView alloc] initWithText:0];
-    leftShoulder = v10->_leftShoulder;
-    v10->_leftShoulder = v54;
+    leftShoulder = height->_leftShoulder;
+    height->_leftShoulder = v54;
 
-    [(UIView *)v10->_leftSide addSubview:v10->_leftShoulder];
+    [(UIView *)height->_leftSide addSubview:height->_leftShoulder];
   }
 
-  v56 = [v9 elements];
-  v57 = [v56 member:GCInputRightShoulder];
+  elements12 = [configurationCopy elements];
+  v57 = [elements12 member:GCInputRightShoulder];
 
   if (v57)
   {
     v58 = [[GCControllerButtonInputView alloc] initWithText:0];
-    rightShoulder = v10->_rightShoulder;
-    v10->_rightShoulder = v58;
+    rightShoulder = height->_rightShoulder;
+    height->_rightShoulder = v58;
 
-    [(UIView *)v10->_leftSide addSubview:v10->_rightShoulder];
+    [(UIView *)height->_leftSide addSubview:height->_rightShoulder];
   }
 
-  v60 = [v9 elements];
-  v61 = [v60 member:GCInputLeftTrigger];
+  elements13 = [configurationCopy elements];
+  v61 = [elements13 member:GCInputLeftTrigger];
 
   if (v61)
   {
     v62 = [[GCControllerButtonInputView alloc] initWithText:0];
-    leftTrigger = v10->_leftTrigger;
-    v10->_leftTrigger = v62;
+    leftTrigger = height->_leftTrigger;
+    height->_leftTrigger = v62;
 
-    [(UIView *)v10->_leftSide addSubview:v10->_leftTrigger];
+    [(UIView *)height->_leftSide addSubview:height->_leftTrigger];
   }
 
-  v64 = [v9 elements];
-  v65 = [v64 member:GCInputRightTrigger];
+  elements14 = [configurationCopy elements];
+  v65 = [elements14 member:GCInputRightTrigger];
 
   if (v65)
   {
     v66 = [[GCControllerButtonInputView alloc] initWithText:0];
-    rightTrigger = v10->_rightTrigger;
-    v10->_rightTrigger = v66;
+    rightTrigger = height->_rightTrigger;
+    height->_rightTrigger = v66;
 
-    [(UIView *)v10->_leftSide addSubview:v10->_rightTrigger];
+    [(UIView *)height->_leftSide addSubview:height->_rightTrigger];
   }
 
-  [(GCControllerView *)v10 setOpaque:0];
-  [(GCControllerView *)v10 setupPositions];
+  [(GCControllerView *)height setOpaque:0];
+  [(GCControllerView *)height setupPositions];
   v68 = +[GCControllerViewFeedback sharedInstance];
 LABEL_33:
 
-  return v10;
+  return height;
 }
 
-- (GCControllerView)initWithFrame:(CGRect)a3
+- (GCControllerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_opt_new();
-  v9 = [(GCControllerView *)self initWithFrame:v8 configuration:x, y, width, height];
+  height = [(GCControllerView *)self initWithFrame:v8 configuration:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  v5 = a3;
-  objc_storeStrong(&self->_controller, a3);
+  controllerCopy = controller;
+  objc_storeStrong(&self->_controller, controller);
   newValue[0] = _NSConcreteStackBlock;
   newValue[1] = 3221225472;
   newValue[2] = __34__GCControllerView_setController___block_invoke;
   newValue[3] = &unk_10540;
-  v6 = v5;
+  v6 = controllerCopy;
   v39 = v6;
   [(GCControllerThumbstickInputView *)self->_leftThumbstick setValueChangedHandler:?];
   v36[0] = _NSConcreteStackBlock;
@@ -342,31 +342,31 @@ LABEL_33:
   }
 }
 
-- (void)setupSide:(id)a3 thumbstick:(id)a4 buttons:(id)a5
+- (void)setupSide:(id)side thumbstick:(id)thumbstick buttons:(id)buttons
 {
-  v43 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 count];
-  [v43 frame];
+  sideCopy = side;
+  thumbstickCopy = thumbstick;
+  buttonsCopy = buttons;
+  v9 = [buttonsCopy count];
+  [sideCopy frame];
   v11 = v10 * 0.5;
-  [v43 frame];
+  [sideCopy frame];
   v13 = v12 * 0.5;
-  if (!v7)
+  if (!thumbstickCopy)
   {
     if (v9 > 2)
     {
       if (v9 == (&dword_0 + 3))
       {
-        v41 = [v8 objectAtIndexedSubscript:0];
+        v41 = [buttonsCopy objectAtIndexedSubscript:0];
         [v41 setCenter:{v11 + -47.6314011, v13 + 27.4999943}];
 
-        v42 = [v8 objectAtIndexedSubscript:1];
+        v42 = [buttonsCopy objectAtIndexedSubscript:1];
         [v42 setCenter:{v11 + 47.6313972, v13 + 27.5000038}];
 
         v11 = v11 + 0.0;
         v13 = v13 + -55.0;
-        v36 = v8;
+        v36 = buttonsCopy;
         v37 = 2;
       }
 
@@ -377,24 +377,24 @@ LABEL_33:
           goto LABEL_18;
         }
 
-        v38 = [v8 objectAtIndexedSubscript:0];
+        v38 = [buttonsCopy objectAtIndexedSubscript:0];
         [v38 setCenter:{v11, v13 + 55.0}];
 
-        v39 = [v8 objectAtIndexedSubscript:1];
+        v39 = [buttonsCopy objectAtIndexedSubscript:1];
         [v39 setCenter:{v11 + 55.0, v13}];
 
-        v40 = [v8 objectAtIndexedSubscript:2];
+        v40 = [buttonsCopy objectAtIndexedSubscript:2];
         [v40 setCenter:{v11 + -55.0, v13}];
 
         v13 = v13 + -55.0;
-        v36 = v8;
+        v36 = buttonsCopy;
         v37 = 3;
       }
     }
 
     else if (v9 == (&dword_0 + 1))
     {
-      v36 = v8;
+      v36 = buttonsCopy;
       v37 = 0;
     }
 
@@ -405,12 +405,12 @@ LABEL_33:
         goto LABEL_18;
       }
 
-      v35 = [v8 objectAtIndexedSubscript:0];
+      v35 = [buttonsCopy objectAtIndexedSubscript:0];
       [v35 setCenter:{v11 + -38.890873, v13 + 38.890873}];
 
       v11 = v11 + 38.890873;
       v13 = v13 + -38.890873;
-      v36 = v8;
+      v36 = buttonsCopy;
       v37 = 1;
     }
 
@@ -421,40 +421,40 @@ LABEL_33:
     goto LABEL_17;
   }
 
-  [v7 setCenter:{v11, v13}];
+  [thumbstickCopy setCenter:{v11, v13}];
   if (v9)
   {
-    v14 = [v8 objectAtIndexedSubscript:0];
+    v14 = [buttonsCopy objectAtIndexedSubscript:0];
     [v14 frame];
     v16 = v15 * 0.5;
-    v17 = [v8 objectAtIndexedSubscript:0];
+    v17 = [buttonsCopy objectAtIndexedSubscript:0];
     [v17 frame];
     v19 = v18 * 0.5;
 
-    [v43 frame];
+    [sideCopy frame];
     v21 = v20 - v19;
-    v22 = [v8 objectAtIndexedSubscript:0];
+    v22 = [buttonsCopy objectAtIndexedSubscript:0];
     [v22 setCenter:{v16, v21}];
 
     if (v9 != (&dword_0 + 1))
     {
-      [v43 frame];
+      [sideCopy frame];
       v24 = v23 - v16;
-      [v43 frame];
+      [sideCopy frame];
       v26 = v25 - v19;
-      v27 = [v8 objectAtIndexedSubscript:1];
+      v27 = [buttonsCopy objectAtIndexedSubscript:1];
       [v27 setCenter:{v24, v26}];
 
       if (v9 >= 3)
       {
-        v28 = [v8 objectAtIndexedSubscript:2];
+        v28 = [buttonsCopy objectAtIndexedSubscript:2];
         [v28 setCenter:{v16, v19}];
 
         if (v9 != (&dword_0 + 3))
         {
-          [v43 frame];
+          [sideCopy frame];
           v30 = v29 - v16;
-          v31 = [v8 objectAtIndexedSubscript:3];
+          v31 = [buttonsCopy objectAtIndexedSubscript:3];
           v32 = v31;
           v33 = v30;
           v34 = v19;
@@ -529,10 +529,10 @@ LABEL_18:
   [(GCControllerView *)self setupSide:self->_leftSide thumbstick:leftThumbstick buttons:v6];
 }
 
-- (id)getUIControlForName:(id)a3
+- (id)getUIControlForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:GCInputButtonA])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:GCInputButtonA])
   {
     v5 = &OBJC_IVAR___GCControllerView__buttonA;
 LABEL_23:
@@ -540,61 +540,61 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ([v4 isEqualToString:GCInputButtonB])
+  if ([nameCopy isEqualToString:GCInputButtonB])
   {
     v5 = &OBJC_IVAR___GCControllerView__buttonB;
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:GCInputButtonX])
+  if ([nameCopy isEqualToString:GCInputButtonX])
   {
     v5 = &OBJC_IVAR___GCControllerView__buttonX;
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:GCInputButtonY])
+  if ([nameCopy isEqualToString:GCInputButtonY])
   {
     v5 = &OBJC_IVAR___GCControllerView__buttonY;
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:GCInputDirectionPad])
+  if ([nameCopy isEqualToString:GCInputDirectionPad])
   {
     v5 = &OBJC_IVAR___GCControllerView__dpad;
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:GCInputLeftThumbstick])
+  if ([nameCopy isEqualToString:GCInputLeftThumbstick])
   {
     v5 = &OBJC_IVAR___GCControllerView__leftThumbstick;
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:GCInputRightThumbstick])
+  if ([nameCopy isEqualToString:GCInputRightThumbstick])
   {
     v5 = &OBJC_IVAR___GCControllerView__rightThumbstick;
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:GCInputLeftShoulder])
+  if ([nameCopy isEqualToString:GCInputLeftShoulder])
   {
     v5 = &OBJC_IVAR___GCControllerView__leftShoulder;
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:GCInputRightShoulder])
+  if ([nameCopy isEqualToString:GCInputRightShoulder])
   {
     v5 = &OBJC_IVAR___GCControllerView__rightShoulder;
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:GCInputLeftTrigger])
+  if ([nameCopy isEqualToString:GCInputLeftTrigger])
   {
     v5 = &OBJC_IVAR___GCControllerView__leftTrigger;
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:GCInputRightTrigger])
+  if ([nameCopy isEqualToString:GCInputRightTrigger])
   {
     v5 = &OBJC_IVAR___GCControllerView__rightTrigger;
     goto LABEL_23;
@@ -606,9 +606,9 @@ LABEL_24:
   return v6;
 }
 
-- (id)getConfigurationForElement:(id)a3
+- (id)getConfigurationForElement:(id)element
 {
-  v3 = [(GCControllerView *)self getUIControlForName:a3];
+  v3 = [(GCControllerView *)self getUIControlForName:element];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -618,8 +618,8 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v3 customImage];
-      [v4 setPath:v5];
+      customImage = [v3 customImage];
+      [v4 setPath:customImage];
     }
 
     else
@@ -640,19 +640,19 @@ LABEL_24:
   return v4;
 }
 
-- (void)setConfigurationForElement:(id)a3 configuration:(id)a4
+- (void)setConfigurationForElement:(id)element configuration:(id)configuration
 {
-  v9 = a4;
-  v6 = [(GCControllerView *)self getUIControlForName:a3];
+  configurationCopy = configuration;
+  v6 = [(GCControllerView *)self getUIControlForName:element];
   if (v6)
   {
-    [v6 setHidden:{objc_msgSend(v9, "isHidden")}];
+    [v6 setHidden:{objc_msgSend(configurationCopy, "isHidden")}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
-      v8 = [v9 path];
-      [v7 setCustomImage:v8];
+      path = [configurationCopy path];
+      [v7 setCustomImage:path];
     }
 
     else
@@ -663,19 +663,19 @@ LABEL_24:
         goto LABEL_7;
       }
 
-      v8 = v6;
-      [v8 setActsAsTouchpad:{objc_msgSend(v9, "actsAsTouchpad")}];
+      path = v6;
+      [path setActsAsTouchpad:{objc_msgSend(configurationCopy, "actsAsTouchpad")}];
     }
   }
 
 LABEL_7:
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = GCControllerView;
-  v5 = [(GCControllerView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(GCControllerView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self || v5 == self->_leftSide || v5 == self->_rightSide)
   {
@@ -690,16 +690,16 @@ LABEL_7:
   return v7;
 }
 
-- (GCControllerView)initWithCoder:(id)a3
+- (GCControllerView)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"GCControllerView shoukd not be encoded!" userInfo:0];
   objc_exception_throw(v4);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"GCControllerView shoukd not be encoded!" userInfo:0];
   objc_exception_throw(v4);
 }
@@ -737,26 +737,26 @@ LABEL_7:
 
 - (void)applyPhoneLayout
 {
-  if (a1)
+  if (self)
   {
-    [a1 bounds];
+    [self bounds];
     OUTLINED_FUNCTION_4();
-    v29 = [a1 superview];
-    [v29 frame];
-    [a1 setFrame:?];
-    v2 = [v29 window];
-    [v2 safeAreaInsets];
-    *(a1 + 24) = v3;
-    *(a1 + 32) = v4;
-    *(a1 + 40) = v5;
-    *(a1 + 48) = v6;
+    superview = [self superview];
+    [superview frame];
+    [self setFrame:?];
+    window = [superview window];
+    [window safeAreaInsets];
+    *(self + 24) = v3;
+    *(self + 32) = v4;
+    *(self + 40) = v5;
+    *(self + 48) = v6;
 
     __asm { FMOV            V0.2D, #4.0 }
 
-    v12 = vaddq_f64(*(a1 + 24), _Q0);
-    v13 = vaddq_f64(*(a1 + 40), _Q0);
-    *(a1 + 24) = v12;
-    *(a1 + 40) = v13;
+    v12 = vaddq_f64(*(self + 24), _Q0);
+    v13 = vaddq_f64(*(self + 40), _Q0);
+    *(self + 24) = v12;
+    *(self + 40) = v13;
     v31.origin.x = OUTLINED_FUNCTION_0();
     MaxX = CGRectGetMaxX(v31);
     v32.origin.x = OUTLINED_FUNCTION_0();
@@ -765,18 +765,18 @@ LABEL_7:
     Height = CGRectGetHeight(v33);
     v34.origin.x = OUTLINED_FUNCTION_0();
     Width = CGRectGetWidth(v34);
-    [*(a1 + 16) frame];
-    v19 = MaxX - v18 * 0.5 - *(a1 + 48);
+    [*(self + 16) frame];
+    v19 = MaxX - v18 * 0.5 - *(self + 48);
     v20 = MaxY;
-    [*(a1 + 16) frame];
+    [*(self + 16) frame];
     OUTLINED_FUNCTION_2(MaxY - v21 * 0.5);
-    [*(a1 + 16) setCenter:v19];
+    [*(self + 16) setCenter:v19];
     v22 = OUTLINED_FUNCTION_1();
     if (Height <= Width)
     {
       [v22 setHidden:0];
       [OUTLINED_FUNCTION_1() frame];
-      v27 = *(a1 + 32) + v26 * 0.5 + 0.0;
+      v27 = *(self + 32) + v26 * 0.5 + 0.0;
       [OUTLINED_FUNCTION_1() frame];
       OUTLINED_FUNCTION_2(v20 - v28 * 0.5);
       v24 = OUTLINED_FUNCTION_1();

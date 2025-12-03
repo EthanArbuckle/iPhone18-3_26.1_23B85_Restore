@@ -1,17 +1,17 @@
 @interface _PASLRUCache
-- (_PASLRUCache)initWithCountLimit:(unint64_t)a3;
-- (id)objectForKey:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (_PASLRUCache)initWithCountLimit:(unint64_t)limit;
+- (id)objectForKey:(id)key;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation _PASLRUCache
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -53,7 +53,7 @@ LABEL_3:
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v11 = [v26[5] objectForKeyedSubscript:{v10, v13}];
-      v4[2](v4, v10, v11, &v17);
+      blockCopy[2](blockCopy, v10, v11, &v17);
       LOBYTE(v10) = v17;
 
       if (v10)
@@ -80,39 +80,39 @@ LABEL_3:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35___PASLRUCache_removeObjectForKey___block_invoke;
   v7[3] = &unk_1E77F20E0;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   lock = self->_lock;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __33___PASLRUCache_setObject_forKey___block_invoke;
   v11[3] = &unk_1E77F20B8;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = objectCopy;
+  selfCopy = self;
+  v9 = objectCopy;
+  v10 = keyCopy;
   [(_PASLock *)lock runWithLockAcquired:v11];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -125,7 +125,7 @@ LABEL_3:
   v9[2] = __29___PASLRUCache_objectForKey___block_invoke;
   v9[3] = &unk_1E77F2090;
   v11 = &v12;
-  v6 = v4;
+  v6 = keyCopy;
   v10 = v6;
   [(_PASLock *)lock runWithLockAcquired:v9];
   v7 = v13[5];
@@ -135,7 +135,7 @@ LABEL_3:
   return v7;
 }
 
-- (_PASLRUCache)initWithCountLimit:(unint64_t)a3
+- (_PASLRUCache)initWithCountLimit:(unint64_t)limit
 {
   v11.receiver = self;
   v11.super_class = _PASLRUCache;
@@ -143,7 +143,7 @@ LABEL_3:
   v5 = v4;
   if (v4)
   {
-    v4->_countLimit = a3;
+    v4->_countLimit = limit;
     v6 = [_PASLock alloc];
     v7 = objc_opt_new();
     v8 = [(_PASLock *)v6 initWithGuardedData:v7];

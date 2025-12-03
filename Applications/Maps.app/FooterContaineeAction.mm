@@ -1,14 +1,14 @@
 @interface FooterContaineeAction
-- (void)loadSubtitleWithCompletion:(id)a3;
+- (void)loadSubtitleWithCompletion:(id)completion;
 @end
 
 @implementation FooterContaineeAction
 
-- (void)loadSubtitleWithCompletion:(id)a3
+- (void)loadSubtitleWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, &stru_1016631F0);
+    (*(completion + 2))(completion, &stru_1016631F0);
   }
 }
 

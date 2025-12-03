@@ -1,13 +1,13 @@
 @interface CPUISwitch
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation CPUISwitch
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v9 = [a3 anyObject];
-  [v9 locationInView:self];
+  anyObject = [ended anyObject];
+  [anyObject locationInView:self];
   v6 = v5;
   v8 = v7;
   [(CPUISwitch *)self bounds];

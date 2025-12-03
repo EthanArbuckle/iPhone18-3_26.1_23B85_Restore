@@ -1,10 +1,10 @@
 @interface THWControlContainerRep
-- (BOOL)allowTrackingContainedRep:(id)a3;
+- (BOOL)allowTrackingContainedRep:(id)rep;
 - (BOOL)masksToBounds;
 - (id)controlHostRep;
-- (id)viewControllerForView:(id)a3;
-- (void)addAdditionalChildLayersToArray:(id)a3;
-- (void)addChildViewsToArray:(id)a3;
+- (id)viewControllerForView:(id)view;
+- (void)addAdditionalChildLayersToArray:(id)array;
+- (void)addChildViewsToArray:(id)array;
 - (void)wasAddedToParent;
 - (void)willBeRemoved;
 - (void)willBeRemovedFromParent;
@@ -51,65 +51,65 @@
 
 - (BOOL)masksToBounds
 {
-  v3 = [(THWControlContainerRep *)self delegate];
+  delegate = [(THWControlContainerRep *)self delegate];
   v6.receiver = self;
   v6.super_class = THWControlContainerRep;
-  v4 = [(THWControlContainerRep *)&v6 masksToBounds];
+  masksToBounds = [(THWControlContainerRep *)&v6 masksToBounds];
   if (objc_opt_respondsToSelector())
   {
-    return [(THWControlContainerRepDelegate *)v3 controlContainerMasksToBounds:self];
+    return [(THWControlContainerRepDelegate *)delegate controlContainerMasksToBounds:self];
   }
 
-  return v4;
+  return masksToBounds;
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
-  v5 = [(THWControlContainerRep *)self delegate];
-  if (objc_opt_respondsToSelector())
-  {
-
-    [(THWControlContainerRepDelegate *)v5 controlContainer:self addChildLayersToArray:a3];
-  }
-}
-
-- (void)addChildViewsToArray:(id)a3
-{
-  v5 = [(THWControlContainerRep *)self delegate];
+  delegate = [(THWControlContainerRep *)self delegate];
   if (objc_opt_respondsToSelector())
   {
 
-    [(THWControlContainerRepDelegate *)v5 controlContainer:self addChildViewsToArray:a3];
+    [(THWControlContainerRepDelegate *)delegate controlContainer:self addChildLayersToArray:array];
   }
 }
 
-- (id)viewControllerForView:(id)a3
+- (void)addChildViewsToArray:(id)array
 {
-  v5 = [(THWControlContainerRep *)self delegate];
+  delegate = [(THWControlContainerRep *)self delegate];
+  if (objc_opt_respondsToSelector())
+  {
+
+    [(THWControlContainerRepDelegate *)delegate controlContainer:self addChildViewsToArray:array];
+  }
+}
+
+- (id)viewControllerForView:(id)view
+{
+  delegate = [(THWControlContainerRep *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(THWControlContainerRepDelegate *)v5 controlContainer:self viewControllerForView:a3];
+  return [(THWControlContainerRepDelegate *)delegate controlContainer:self viewControllerForView:view];
 }
 
-- (BOOL)allowTrackingContainedRep:(id)a3
+- (BOOL)allowTrackingContainedRep:(id)rep
 {
-  v5 = [(THWControlContainerRep *)self delegate];
+  delegate = [(THWControlContainerRep *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 1;
   }
 
-  return [(THWControlContainerRepDelegate *)v5 controlContainer:self allowTrackingContainedRep:a3];
+  return [(THWControlContainerRepDelegate *)delegate controlContainer:self allowTrackingContainedRep:rep];
 }
 
 - (id)controlHostRep
 {
-  v3 = [(THWControlContainerRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWControlContainerRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWControlHosting];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWControlHosting];
 }
 
 @end

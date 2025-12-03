@@ -1,14 +1,14 @@
 @interface UIInputViewSetPlacementOffScreenLeft
-- (id)horizontalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
+- (id)horizontalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
 @end
 
 @implementation UIInputViewSetPlacementOffScreenLeft
 
-- (id)horizontalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)horizontalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  if (a4)
+  if (view)
   {
-    v6 = [MEMORY[0x1E69977A0] constraintWithItem:a4 attribute:2 relatedBy:0 toItem:a5 attribute:1 multiplier:1.0 constant:0.0];
+    v6 = [MEMORY[0x1E69977A0] constraintWithItem:view attribute:2 relatedBy:0 toItem:containerView attribute:1 multiplier:1.0 constant:0.0];
   }
 
   else

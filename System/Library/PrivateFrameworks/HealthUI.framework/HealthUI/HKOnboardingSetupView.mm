@@ -1,5 +1,5 @@
 @interface HKOnboardingSetupView
-- (HKOnboardingSetupView)initWithFrame:(CGRect)a3;
+- (HKOnboardingSetupView)initWithFrame:(CGRect)frame;
 - (HKOnboardingSetupViewDelegate)delegate;
 - (NSString)bodyString;
 - (NSString)buttonTitleString;
@@ -12,19 +12,19 @@
 
 @implementation HKOnboardingSetupView
 
-- (HKOnboardingSetupView)initWithFrame:(CGRect)a3
+- (HKOnboardingSetupView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = HKOnboardingSetupView;
-  v3 = [(HKOnboardingSetupView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKOnboardingSetupView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [(HKOnboardingSetupView *)v3 setBackgroundColor:v4];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [(HKOnboardingSetupView *)v3 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
-    v5 = [(HKOnboardingSetupView *)v3 createHeroView];
+    createHeroView = [(HKOnboardingSetupView *)v3 createHeroView];
     heroView = v3->_heroView;
-    v3->_heroView = v5;
+    v3->_heroView = createHeroView;
 
     [(UIView *)v3->_heroView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HKOnboardingSetupView *)v3 addSubview:v3->_heroView];
@@ -35,11 +35,11 @@
     [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
     [(UILabel *)v3->_titleLabel setTextAlignment:4];
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v3->_titleLabel setTextColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v3->_titleLabel setTextColor:labelColor];
 
-    v10 = [(HKOnboardingSetupView *)v3 titleString];
-    [(UILabel *)v3->_titleLabel setText:v10];
+    titleString = [(HKOnboardingSetupView *)v3 titleString];
+    [(UILabel *)v3->_titleLabel setText:titleString];
 
     v11 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:-[HKOnboardingSetupView accessibilityGroupID](v3 suffix:{"accessibilityGroupID"), @"Welcome.SetupTitle"}];
     [(UILabel *)v3->_titleLabel setAccessibilityIdentifier:v11];
@@ -56,11 +56,11 @@
     [(UILabel *)v3->_bodyLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->_bodyLabel setNumberOfLines:0];
     [(UILabel *)v3->_bodyLabel setTextAlignment:4];
-    v15 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v3->_bodyLabel setTextColor:v15];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v3->_bodyLabel setTextColor:labelColor2];
 
-    v16 = [(HKOnboardingSetupView *)v3 bodyString];
-    [(UILabel *)v3->_bodyLabel setText:v16];
+    bodyString = [(HKOnboardingSetupView *)v3 bodyString];
+    [(UILabel *)v3->_bodyLabel setText:bodyString];
 
     v17 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [(UILabel *)v3->_bodyLabel setFont:v17];
@@ -69,16 +69,16 @@
     [(HKOnboardingSetupView *)v3 addSubview:v3->_bodyLabel];
     v18 = MEMORY[0x1E69DC738];
     v19 = HKHealthKeyColor();
-    v20 = [(HKOnboardingSetupView *)v3 buttonTitleString];
-    v21 = [v18 hk_multiLineRoundRectButtonTintedWithColor:v19 title:v20 target:v3 action:sel__didTapOnboardingButton];
+    buttonTitleString = [(HKOnboardingSetupView *)v3 buttonTitleString];
+    v21 = [v18 hk_multiLineRoundRectButtonTintedWithColor:v19 title:buttonTitleString target:v3 action:sel__didTapOnboardingButton];
     onboardingButton = v3->_onboardingButton;
     v3->_onboardingButton = v21;
 
     v23 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:-[HKOnboardingSetupView accessibilityGroupID](v3 suffix:{"accessibilityGroupID"), @"Welcome.SetupButton"}];
     [(UIButton *)v3->_onboardingButton setAccessibilityIdentifier:v23];
 
-    v24 = [(UIButton *)v3->_onboardingButton layer];
-    [v24 setCornerRadius:24.0];
+    layer = [(UIButton *)v3->_onboardingButton layer];
+    [layer setCornerRadius:24.0];
 
     [(UIButton *)v3->_onboardingButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HKOnboardingSetupView *)v3 addSubview:v3->_onboardingButton];
@@ -90,95 +90,95 @@
 
 - (void)_setUpConstraints
 {
-  v3 = [(HKOnboardingSetupView *)self heroView];
-  v4 = [v3 centerXAnchor];
-  v5 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
-  v6 = [v5 centerXAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  heroView = [(HKOnboardingSetupView *)self heroView];
+  centerXAnchor = [heroView centerXAnchor];
+  safeAreaLayoutGuide = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v7 setActive:1];
 
-  v8 = [(HKOnboardingSetupView *)self heroView];
-  v9 = [v8 topAnchor];
-  v10 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
-  v11 = [v10 topAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:16.0];
+  heroView2 = [(HKOnboardingSetupView *)self heroView];
+  topAnchor = [heroView2 topAnchor];
+  safeAreaLayoutGuide2 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide2 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   [v12 setActive:1];
 
-  v13 = [(HKOnboardingSetupView *)self titleLabel];
-  v14 = [v13 topAnchor];
-  v15 = [(HKOnboardingSetupView *)self heroView];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:17.0];
+  titleLabel = [(HKOnboardingSetupView *)self titleLabel];
+  topAnchor3 = [titleLabel topAnchor];
+  heroView3 = [(HKOnboardingSetupView *)self heroView];
+  bottomAnchor = [heroView3 bottomAnchor];
+  v17 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:17.0];
   [v17 setActive:1];
 
-  v18 = [(HKOnboardingSetupView *)self titleLabel];
-  v19 = [v18 leadingAnchor];
-  v20 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
-  v21 = [v20 leadingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:16.0];
+  titleLabel2 = [(HKOnboardingSetupView *)self titleLabel];
+  leadingAnchor = [titleLabel2 leadingAnchor];
+  safeAreaLayoutGuide3 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide3 leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v22 setActive:1];
 
-  v23 = [(HKOnboardingSetupView *)self titleLabel];
-  v24 = [v23 trailingAnchor];
-  v25 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
-  v26 = [v25 trailingAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26 constant:-16.0];
+  titleLabel3 = [(HKOnboardingSetupView *)self titleLabel];
+  trailingAnchor = [titleLabel3 trailingAnchor];
+  safeAreaLayoutGuide4 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide4 trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   [v27 setActive:1];
 
-  v28 = [(HKOnboardingSetupView *)self bodyLabel];
-  v29 = [v28 topAnchor];
-  v30 = [(HKOnboardingSetupView *)self titleLabel];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31 constant:2.0];
+  bodyLabel = [(HKOnboardingSetupView *)self bodyLabel];
+  topAnchor4 = [bodyLabel topAnchor];
+  titleLabel4 = [(HKOnboardingSetupView *)self titleLabel];
+  bottomAnchor2 = [titleLabel4 bottomAnchor];
+  v32 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:2.0];
   [v32 setActive:1];
 
-  v33 = [(HKOnboardingSetupView *)self bodyLabel];
-  v34 = [v33 leadingAnchor];
-  v35 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
-  v36 = [v35 leadingAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36 constant:16.0];
+  bodyLabel2 = [(HKOnboardingSetupView *)self bodyLabel];
+  leadingAnchor3 = [bodyLabel2 leadingAnchor];
+  safeAreaLayoutGuide5 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide5 leadingAnchor];
+  v37 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   [v37 setActive:1];
 
-  v38 = [(HKOnboardingSetupView *)self bodyLabel];
-  v39 = [v38 trailingAnchor];
-  v40 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
-  v41 = [v40 trailingAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41 constant:-16.0];
+  bodyLabel3 = [(HKOnboardingSetupView *)self bodyLabel];
+  trailingAnchor3 = [bodyLabel3 trailingAnchor];
+  safeAreaLayoutGuide6 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide6 trailingAnchor];
+  v42 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   [v42 setActive:1];
 
-  v43 = [(HKOnboardingSetupView *)self onboardingButton];
-  v44 = [v43 topAnchor];
-  v45 = [(HKOnboardingSetupView *)self bodyLabel];
-  v46 = [v45 bottomAnchor];
-  v47 = [v44 constraintEqualToAnchor:v46 constant:17.0];
+  onboardingButton = [(HKOnboardingSetupView *)self onboardingButton];
+  topAnchor5 = [onboardingButton topAnchor];
+  bodyLabel4 = [(HKOnboardingSetupView *)self bodyLabel];
+  bottomAnchor3 = [bodyLabel4 bottomAnchor];
+  v47 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:17.0];
   [v47 setActive:1];
 
-  v48 = [(HKOnboardingSetupView *)self onboardingButton];
-  v49 = [v48 leadingAnchor];
-  v50 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
-  v51 = [v50 leadingAnchor];
-  v52 = [v49 constraintEqualToAnchor:v51 constant:16.0];
+  onboardingButton2 = [(HKOnboardingSetupView *)self onboardingButton];
+  leadingAnchor5 = [onboardingButton2 leadingAnchor];
+  safeAreaLayoutGuide7 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
+  leadingAnchor6 = [safeAreaLayoutGuide7 leadingAnchor];
+  v52 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:16.0];
   [v52 setActive:1];
 
-  v53 = [(HKOnboardingSetupView *)self onboardingButton];
-  v54 = [v53 trailingAnchor];
-  v55 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
-  v56 = [v55 trailingAnchor];
-  v57 = [v54 constraintEqualToAnchor:v56 constant:-16.0];
+  onboardingButton3 = [(HKOnboardingSetupView *)self onboardingButton];
+  trailingAnchor5 = [onboardingButton3 trailingAnchor];
+  safeAreaLayoutGuide8 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
+  trailingAnchor6 = [safeAreaLayoutGuide8 trailingAnchor];
+  v57 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
   [v57 setActive:1];
 
-  v62 = [(HKOnboardingSetupView *)self onboardingButton];
-  v58 = [v62 bottomAnchor];
-  v59 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
-  v60 = [v59 bottomAnchor];
-  v61 = [v58 constraintEqualToAnchor:v60 constant:-16.0];
+  onboardingButton4 = [(HKOnboardingSetupView *)self onboardingButton];
+  bottomAnchor4 = [onboardingButton4 bottomAnchor];
+  safeAreaLayoutGuide9 = [(HKOnboardingSetupView *)self safeAreaLayoutGuide];
+  bottomAnchor5 = [safeAreaLayoutGuide9 bottomAnchor];
+  v61 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-16.0];
   [v61 setActive:1];
 }
 
 - (void)_didTapOnboardingButton
 {
-  v3 = [(HKOnboardingSetupView *)self delegate];
-  [v3 beginOnboardingForOnboardingSetupView:self];
+  delegate = [(HKOnboardingSetupView *)self delegate];
+  [delegate beginOnboardingForOnboardingSetupView:self];
 }
 
 - (HKOnboardingSetupViewDelegate)delegate

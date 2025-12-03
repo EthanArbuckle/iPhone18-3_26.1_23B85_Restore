@@ -1,43 +1,43 @@
 @interface SPOfflineAdvertisingConfiguration
-- (SPOfflineAdvertisingConfiguration)initWithCoder:(id)a3;
-- (SPOfflineAdvertisingConfiguration)initWithDictionaryRepresentation:(id)a3;
-- (SPOfflineAdvertisingConfiguration)initWithShortIntervalCount:(int64_t)a3 longIntervalCount:(int64_t)a4;
+- (SPOfflineAdvertisingConfiguration)initWithCoder:(id)coder;
+- (SPOfflineAdvertisingConfiguration)initWithDictionaryRepresentation:(id)representation;
+- (SPOfflineAdvertisingConfiguration)initWithShortIntervalCount:(int64_t)count longIntervalCount:(int64_t)intervalCount;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPOfflineAdvertisingConfiguration
 
-- (SPOfflineAdvertisingConfiguration)initWithShortIntervalCount:(int64_t)a3 longIntervalCount:(int64_t)a4
+- (SPOfflineAdvertisingConfiguration)initWithShortIntervalCount:(int64_t)count longIntervalCount:(int64_t)intervalCount
 {
   v7.receiver = self;
   v7.super_class = SPOfflineAdvertisingConfiguration;
   result = [(SPOfflineAdvertisingConfiguration *)&v7 init];
   if (result)
   {
-    result->_shortIntervalCount = a3;
-    result->_longIntervalCount = a4;
+    result->_shortIntervalCount = count;
+    result->_longIntervalCount = intervalCount;
   }
 
   return result;
 }
 
-- (SPOfflineAdvertisingConfiguration)initWithDictionaryRepresentation:(id)a3
+- (SPOfflineAdvertisingConfiguration)initWithDictionaryRepresentation:(id)representation
 {
   v10.receiver = self;
   v10.super_class = SPOfflineAdvertisingConfiguration;
-  v3 = a3;
+  representationCopy = representation;
   v4 = [(SPOfflineAdvertisingConfiguration *)&v10 init];
-  v5 = [v3 objectForKeyedSubscript:{@"s", v10.receiver, v10.super_class}];
-  v6 = [v5 integerValue];
+  v5 = [representationCopy objectForKeyedSubscript:{@"s", v10.receiver, v10.super_class}];
+  integerValue = [v5 integerValue];
 
-  v7 = [v3 objectForKeyedSubscript:@"l"];
+  v7 = [representationCopy objectForKeyedSubscript:@"l"];
 
-  v8 = [v7 integerValue];
+  integerValue2 = [v7 integerValue];
   if (v4)
   {
-    v4->_shortIntervalCount = v6;
-    v4->_longIntervalCount = v8;
+    v4->_shortIntervalCount = integerValue;
+    v4->_longIntervalCount = integerValue2;
   }
 
   return v4;
@@ -59,19 +59,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   shortIntervalCount = self->_shortIntervalCount;
-  v5 = a3;
-  [v5 encodeInteger:shortIntervalCount forKey:@"s"];
-  [v5 encodeInteger:self->_longIntervalCount forKey:@"l"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:shortIntervalCount forKey:@"s"];
+  [coderCopy encodeInteger:self->_longIntervalCount forKey:@"l"];
 }
 
-- (SPOfflineAdvertisingConfiguration)initWithCoder:(id)a3
+- (SPOfflineAdvertisingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_shortIntervalCount = [v4 decodeIntegerForKey:@"s"];
-  v5 = [v4 decodeIntegerForKey:@"l"];
+  coderCopy = coder;
+  self->_shortIntervalCount = [coderCopy decodeIntegerForKey:@"s"];
+  v5 = [coderCopy decodeIntegerForKey:@"l"];
 
   self->_longIntervalCount = v5;
   return self;

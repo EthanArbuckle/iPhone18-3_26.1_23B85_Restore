@@ -1,10 +1,10 @@
 @interface VCPClientDatabaseManager
-+ (id)sharedDatabaseForPhotoLibrary:(id)a3;
-+ (id)sharedDatabaseForPhotoLibraryURL:(id)a3;
++ (id)sharedDatabaseForPhotoLibrary:(id)library;
++ (id)sharedDatabaseForPhotoLibraryURL:(id)l;
 + (id)sharedDatabaseManager;
 - (VCPClientDatabaseManager)init;
-- (id)sharedDatabaseForPhotoLibrary:(id)a3;
-- (id)sharedDatabaseForPhotoLibraryURL:(id)a3;
+- (id)sharedDatabaseForPhotoLibrary:(id)library;
+- (id)sharedDatabaseForPhotoLibraryURL:(id)l;
 @end
 
 @implementation VCPClientDatabaseManager
@@ -20,9 +20,9 @@
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     databases = v2->_databases;
-    v2->_databases = v5;
+    v2->_databases = dictionary;
   }
 
   return v2;
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __49__VCPClientDatabaseManager_sharedDatabaseManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDatabaseManager_once != -1)
   {
     dispatch_once(&sharedDatabaseManager_once, block);
@@ -52,20 +52,20 @@ void __49__VCPClientDatabaseManager_sharedDatabaseManager__block_invoke()
   sharedDatabaseManager_instance = v0;
 }
 
-- (id)sharedDatabaseForPhotoLibrary:(id)a3
+- (id)sharedDatabaseForPhotoLibrary:(id)library
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  libraryCopy = library;
+  v5 = libraryCopy;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__14;
   v19 = __Block_byref_object_dispose__14;
   v20 = 0;
-  if (v4)
+  if (libraryCopy)
   {
-    [v4 photoLibraryURL];
+    [libraryCopy photoLibraryURL];
   }
 
   else
@@ -136,7 +136,7 @@ void __58__VCPClientDatabaseManager_sharedDatabaseForPhotoLibrary___block_invoke
   }
 }
 
-- (id)sharedDatabaseForPhotoLibraryURL:(id)a3
+- (id)sharedDatabaseForPhotoLibraryURL:(id)l
 {
   v13 = 0;
   v14 = &v13;
@@ -144,9 +144,9 @@ void __58__VCPClientDatabaseManager_sharedDatabaseForPhotoLibrary___block_invoke
   v16 = __Block_byref_object_copy__14;
   v17 = __Block_byref_object_dispose__14;
   v18 = 0;
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -155,7 +155,7 @@ void __58__VCPClientDatabaseManager_sharedDatabaseForPhotoLibrary___block_invoke
     block[3] = &unk_1E834D498;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = lCopy;
     dispatch_sync(queue, block);
   }
 
@@ -206,20 +206,20 @@ void __61__VCPClientDatabaseManager_sharedDatabaseForPhotoLibraryURL___block_inv
   }
 }
 
-+ (id)sharedDatabaseForPhotoLibrary:(id)a3
++ (id)sharedDatabaseForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_opt_class() sharedDatabaseManager];
-  v5 = [v4 sharedDatabaseForPhotoLibrary:v3];
+  libraryCopy = library;
+  sharedDatabaseManager = [objc_opt_class() sharedDatabaseManager];
+  v5 = [sharedDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
 
   return v5;
 }
 
-+ (id)sharedDatabaseForPhotoLibraryURL:(id)a3
++ (id)sharedDatabaseForPhotoLibraryURL:(id)l
 {
-  v3 = a3;
-  v4 = [objc_opt_class() sharedDatabaseManager];
-  v5 = [v4 sharedDatabaseForPhotoLibraryURL:v3];
+  lCopy = l;
+  sharedDatabaseManager = [objc_opt_class() sharedDatabaseManager];
+  v5 = [sharedDatabaseManager sharedDatabaseForPhotoLibraryURL:lCopy];
 
   return v5;
 }

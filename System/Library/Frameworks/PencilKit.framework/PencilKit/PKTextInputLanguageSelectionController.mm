@@ -1,21 +1,21 @@
 @interface PKTextInputLanguageSelectionController
 + (BOOL)hasSomeSupportedAndEnabledLocale;
 + (id)_currentLanguageIdentifiersForEmojiAlternatives;
-+ (id)_filterEnglishWithLanguages:(id)a3 outRemapTarget:(id *)a4;
-+ (id)_preferredRecognitionLocaleIdentifierFromIdentifiers:(id)a3;
-+ (id)_sortedStringsArray:(id)a3 withArray:(id)a4;
++ (id)_filterEnglishWithLanguages:(id)languages outRemapTarget:(id *)target;
++ (id)_preferredRecognitionLocaleIdentifierFromIdentifiers:(id)identifiers;
++ (id)_sortedStringsArray:(id)array withArray:(id)withArray;
 + (id)activeInputModes;
 + (id)filteredEnabledLocaleIdentifiers;
 + (id)sharedInstance;
 + (id)supportedAndEnabledLocaleIdentifiers;
-+ (void)_enumerateSupportedAndEnabledLocaleIdentifiersWithBlock:(id)a3;
-+ (void)_getNormalizedLanguageIdentifier:(id *)a3 dedupLanguageKey:(id *)a4 forInputMode:(id)a5 mappingYueToZh:(BOOL)a6;
-+ (void)_getNormalizedLanguageIdentifier:(id *)a3 dedupLanguageKey:(id *)a4 forInputModeIdentifier:(id)a5 mappingYueToZh:(BOOL)a6;
-+ (void)_performOperations:(id)a3 withActiveInputModeIdentifiers:(id)a4 preferencesLanguages:(id)a5 preferredLanguages:(id)a6;
-+ (void)_performOperations:(id)a3 withActiveInputModes:(id)a4 preferencesLanguages:(id)a5 preferredLanguages:(id)a6;
-+ (void)set_inputModesForTesting:(id)a3;
-+ (void)set_preferencesLanguagesForTesting:(id)a3;
-+ (void)set_preferredLanguagesForTesting:(id)a3;
++ (void)_enumerateSupportedAndEnabledLocaleIdentifiersWithBlock:(id)block;
++ (void)_getNormalizedLanguageIdentifier:(id *)identifier dedupLanguageKey:(id *)key forInputMode:(id)mode mappingYueToZh:(BOOL)zh;
++ (void)_getNormalizedLanguageIdentifier:(id *)identifier dedupLanguageKey:(id *)key forInputModeIdentifier:(id)modeIdentifier mappingYueToZh:(BOOL)zh;
++ (void)_performOperations:(id)operations withActiveInputModeIdentifiers:(id)identifiers preferencesLanguages:(id)languages preferredLanguages:(id)preferredLanguages;
++ (void)_performOperations:(id)operations withActiveInputModes:(id)modes preferencesLanguages:(id)languages preferredLanguages:(id)preferredLanguages;
++ (void)set_inputModesForTesting:(id)testing;
++ (void)set_preferencesLanguagesForTesting:(id)testing;
++ (void)set_preferredLanguagesForTesting:(id)testing;
 - (BOOL)shouldIdentifyLanguages;
 - (NSArray)currentLanguageIdentifiers;
 - (NSArray)currentLanguageIdentifiersForEmojiAlternatives;
@@ -24,16 +24,16 @@
 - (UIMenu)languageSelectionMenu;
 - (id)_currentKeyboardIdentifier;
 - (id)_enabledLanguagesByPreference;
-- (id)_iconForLanguageIdentifier:(id)a3;
-- (id)registerObserver:(id)a3;
+- (id)_iconForLanguageIdentifier:(id)identifier;
+- (id)registerObserver:(id)observer;
 - (void)_clearCachesAndUpdateIconObservers;
-- (void)_handleKeyboardCurrentInputModeChanged:(id)a3;
+- (void)_handleKeyboardCurrentInputModeChanged:(id)changed;
 - (void)_notifyLanguageSelectionDidChange;
-- (void)_pencilPreferencesChangedCallback:(id)a3;
-- (void)_switchToLanguageIfSupported:(id)a3;
+- (void)_pencilPreferencesChangedCallback:(id)callback;
+- (void)_switchToLanguageIfSupported:(id)supported;
 - (void)_updateLanguageMenuIfNecessary;
 - (void)_updateSelectedLanguageInCachedMenu;
-- (void)_updateWithLanguageIdentifiers:(id)a3;
+- (void)_updateWithLanguageIdentifiers:(id)identifiers;
 - (void)dealloc;
 - (void)ensureKeyboardLanguageConsistencyIfNeeded;
 - (void)notifyLanguageDidChange;
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __56__PKTextInputLanguageSelectionController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6A5030 != -1)
   {
     dispatch_once(&qword_1ED6A5030, block);
@@ -76,17 +76,17 @@ void __56__PKTextInputLanguageSelectionController_sharedInstance__block_invoke(u
     observers = v2->_observers;
     v2->_observers = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handleKeyboardPreferencesChanged_ name:*MEMORY[0x1E69DDFE8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleKeyboardPreferencesChanged_ name:*MEMORY[0x1E69DDFE8] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel__handleKeyboardCurrentInputModeChanged_ name:*MEMORY[0x1E69DE6B8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleKeyboardCurrentInputModeChanged_ name:*MEMORY[0x1E69DE6B8] object:0];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, NotificationCallback, @"com.apple.PencilKit", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     languageSelectionControllerObservers = v2->_languageSelectionControllerObservers;
-    v2->_languageSelectionControllerObservers = v8;
+    v2->_languageSelectionControllerObservers = weakObjectsHashTable;
   }
 
   return v2;
@@ -94,11 +94,11 @@ void __56__PKTextInputLanguageSelectionController_sharedInstance__block_invoke(u
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDFE8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDFE8] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DE6B8] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DE6B8] object:0];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.PencilKit", 0);
@@ -107,24 +107,24 @@ void __56__PKTextInputLanguageSelectionController_sharedInstance__block_invoke(u
   [(PKTextInputLanguageSelectionController *)&v6 dealloc];
 }
 
-- (void)_pencilPreferencesChangedCallback:(id)a3
+- (void)_pencilPreferencesChangedCallback:(id)callback
 {
-  v4 = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiers];
+  _cachedLanguageIdentifiers = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiers];
 
-  if (!v4)
+  if (!_cachedLanguageIdentifiers)
   {
     return;
   }
 
-  v5 = [(PKTextInputLanguageSelectionController *)self _enabledLanguagesByPreference];
-  v6 = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiers];
-  v7 = v5;
-  if (v7 | v6)
+  _enabledLanguagesByPreference = [(PKTextInputLanguageSelectionController *)self _enabledLanguagesByPreference];
+  _cachedLanguageIdentifiers2 = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiers];
+  v7 = _enabledLanguagesByPreference;
+  if (v7 | _cachedLanguageIdentifiers2)
   {
     v9 = v7;
-    if (v7 && v6)
+    if (v7 && _cachedLanguageIdentifiers2)
     {
-      v8 = [v6 isEqual:v7];
+      v8 = [_cachedLanguageIdentifiers2 isEqual:v7];
 
       v7 = v9;
       if (v8)
@@ -145,11 +145,11 @@ void __56__PKTextInputLanguageSelectionController_sharedInstance__block_invoke(u
 LABEL_10:
 }
 
-- (void)_handleKeyboardCurrentInputModeChanged:(id)a3
+- (void)_handleKeyboardCurrentInputModeChanged:(id)changed
 {
-  v4 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v5 = [v4 additionalTextInputLocales];
-  v6 = [v5 count];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  additionalTextInputLocales = [mEMORY[0x1E69DCBF0] additionalTextInputLocales];
+  v6 = [additionalTextInputLocales count];
 
   if (v6)
   {
@@ -231,42 +231,42 @@ LABEL_10:
 
 LABEL_13:
 
-  v13 = [objc_opt_class() filteredEnabledLocaleIdentifiers];
-  v14 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v15 = [v14 additionalTextInputLocales];
-  v16 = [v15 count];
+  filteredEnabledLocaleIdentifiers = [objc_opt_class() filteredEnabledLocaleIdentifiers];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  additionalTextInputLocales = [mEMORY[0x1E69DCBF0] additionalTextInputLocales];
+  v16 = [additionalTextInputLocales count];
 
-  v17 = v13;
+  v17 = filteredEnabledLocaleIdentifiers;
   if (!v16)
   {
-    v17 = [objc_opt_class() _sortedStringsArray:v13 withArray:v9];
+    v17 = [objc_opt_class() _sortedStringsArray:filteredEnabledLocaleIdentifiers withArray:v9];
   }
 
   return v17;
 }
 
-- (void)_switchToLanguageIfSupported:(id)a3
+- (void)_switchToLanguageIfSupported:(id)supported
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() supportedAndEnabledLocaleIdentifiers];
+  supportedCopy = supported;
+  supportedAndEnabledLocaleIdentifiers = [objc_opt_class() supportedAndEnabledLocaleIdentifiers];
   v17 = 0;
-  v6 = [objc_opt_class() _filterEnglishWithLanguages:v5 outRemapTarget:&v17];
+  v6 = [objc_opt_class() _filterEnglishWithLanguages:supportedAndEnabledLocaleIdentifiers outRemapTarget:&v17];
   v7 = v17;
-  if ([v6 containsObject:v4])
+  if ([v6 containsObject:supportedCopy])
   {
-    v8 = v4;
+    v8 = supportedCopy;
 LABEL_8:
-    v10 = [(PKTextInputLanguageSelectionController *)self currentLanguageIdentifiers];
-    v11 = [v10 firstObject];
-    v12 = [v11 isEqualToString:v8];
+    currentLanguageIdentifiers = [(PKTextInputLanguageSelectionController *)self currentLanguageIdentifiers];
+    firstObject = [currentLanguageIdentifiers firstObject];
+    v12 = [firstObject isEqualToString:v8];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [v10 mutableCopy];
+      v13 = [currentLanguageIdentifiers mutableCopy];
       [v13 removeObject:v8];
       [v13 insertObject:v8 atIndex:0];
-      v14 = [objc_opt_class() _sortedStringsArray:v5 withArray:v13];
+      v14 = [objc_opt_class() _sortedStringsArray:supportedAndEnabledLocaleIdentifiers withArray:v13];
       [(PKTextInputLanguageSelectionController *)self _updateWithLanguageIdentifiers:v14];
       [(PKTextInputLanguageSelectionController *)self notifyLanguageDidChange];
       v15 = os_log_create("com.apple.pencilkit", "PencilTextInput");
@@ -284,7 +284,7 @@ LABEL_8:
     goto LABEL_15;
   }
 
-  if (v7 && [v5 containsObject:v4])
+  if (v7 && [supportedAndEnabledLocaleIdentifiers containsObject:supportedCopy])
   {
     v8 = v7;
 
@@ -299,21 +299,21 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v10 = os_log_create("com.apple.pencilkit", "PencilTextInput");
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  currentLanguageIdentifiers = os_log_create("com.apple.pencilkit", "PencilTextInput");
+  if (os_log_type_enabled(currentLanguageIdentifiers, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
-    _os_log_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_DEFAULT, "LanguageController: Rejected switching to unsupported language: %@", buf, 0xCu);
+    v19 = supportedCopy;
+    _os_log_impl(&dword_1C7CCA000, currentLanguageIdentifiers, OS_LOG_TYPE_DEFAULT, "LanguageController: Rejected switching to unsupported language: %@", buf, 0xCu);
   }
 
-  v8 = v4;
+  v8 = supportedCopy;
 LABEL_15:
 }
 
-- (void)_updateWithLanguageIdentifiers:(id)a3
+- (void)_updateWithLanguageIdentifiers:(id)identifiers
 {
-  [(PKTextInputLanguageSelectionController *)self set_cachedLanguageIdentifiers:a3];
+  [(PKTextInputLanguageSelectionController *)self set_cachedLanguageIdentifiers:identifiers];
   if (self->_cachedLanguageMenu)
   {
 
@@ -324,44 +324,44 @@ LABEL_15:
 - (NSArray)currentLanguageIdentifiers
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiers];
+  _cachedLanguageIdentifiers = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiers];
 
-  if (!v3)
+  if (!_cachedLanguageIdentifiers)
   {
-    v4 = [(PKTextInputLanguageSelectionController *)self _enabledLanguagesByPreference];
+    _enabledLanguagesByPreference = [(PKTextInputLanguageSelectionController *)self _enabledLanguagesByPreference];
     v5 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 componentsJoinedByString:{@", "}];
+      v6 = [_enabledLanguagesByPreference componentsJoinedByString:{@", "}];
       v9 = 138412290;
       v10 = v6;
       _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "LanguageController: Loading preferences. Languages: %@", &v9, 0xCu);
     }
 
-    [(PKTextInputLanguageSelectionController *)self _updateWithLanguageIdentifiers:v4];
+    [(PKTextInputLanguageSelectionController *)self _updateWithLanguageIdentifiers:_enabledLanguagesByPreference];
   }
 
-  v7 = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiers];
+  _cachedLanguageIdentifiers2 = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiers];
 
-  return v7;
+  return _cachedLanguageIdentifiers2;
 }
 
 - (BOOL)shouldIdentifyLanguages
 {
-  v2 = [(PKTextInputLanguageSelectionController *)self currentLanguageIdentifiers];
-  v3 = [v2 count] > 1;
+  currentLanguageIdentifiers = [(PKTextInputLanguageSelectionController *)self currentLanguageIdentifiers];
+  v3 = [currentLanguageIdentifiers count] > 1;
 
   return v3;
 }
 
 - (UIImage)languageIdentificationIcon
 {
-  v3 = [(PKTextInputLanguageSelectionController *)self currentLanguageIdentifiers];
-  v4 = [v3 firstObject];
+  currentLanguageIdentifiers = [(PKTextInputLanguageSelectionController *)self currentLanguageIdentifiers];
+  firstObject = [currentLanguageIdentifiers firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [(PKTextInputLanguageSelectionController *)self _iconForLanguageIdentifier:v4];
+    v5 = [(PKTextInputLanguageSelectionController *)self _iconForLanguageIdentifier:firstObject];
   }
 
   else
@@ -372,16 +372,16 @@ LABEL_15:
   return v5;
 }
 
-- (id)_iconForLanguageIdentifier:(id)a3
+- (id)_iconForLanguageIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69DCBF0];
-  v4 = a3;
-  v5 = [v3 sharedInputModeController];
-  v6 = [v5 inputModeWithIdentifier:v4];
+  identifierCopy = identifier;
+  sharedInputModeController = [v3 sharedInputModeController];
+  v6 = [sharedInputModeController inputModeWithIdentifier:identifierCopy];
 
-  v7 = [v6 indicatorTextIcon];
+  indicatorTextIcon = [v6 indicatorTextIcon];
 
-  return v7;
+  return indicatorTextIcon;
 }
 
 - (void)_updateLanguageMenuIfNecessary
@@ -389,14 +389,14 @@ LABEL_15:
   v39 = *MEMORY[0x1E69E9840];
   if (!self->_cachedLanguageMenu)
   {
-    v2 = self;
-    v3 = [objc_opt_class() filteredEnabledLocaleIdentifiers];
-    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+    selfCopy = self;
+    filteredEnabledLocaleIdentifiers = [objc_opt_class() filteredEnabledLocaleIdentifiers];
+    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(filteredEnabledLocaleIdentifiers, "count")}];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = v3;
+    obj = filteredEnabledLocaleIdentifiers;
     v30 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v30)
     {
@@ -414,47 +414,47 @@ LABEL_15:
           }
 
           v7 = *(*(&v32 + 1) + 8 * v6);
-          v8 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-          v9 = [v8 inputModeWithIdentifier:v7];
+          mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+          v9 = [mEMORY[0x1E69DCBF0] inputModeWithIdentifier:v7];
 
-          v10 = [v9 indicatorIcon];
-          v11 = [v9 extendedDisplayName];
-          if (v11)
+          indicatorIcon = [v9 indicatorIcon];
+          extendedDisplayName = [v9 extendedDisplayName];
+          if (extendedDisplayName)
           {
-            v12 = v11;
-            v13 = [v9 languageWithRegion];
+            v12 = extendedDisplayName;
+            languageWithRegion = [v9 languageWithRegion];
 
-            if (v13)
+            if (languageWithRegion)
             {
               v14 = objc_alloc(MEMORY[0x1E696AAB0]);
-              v15 = [v9 extendedDisplayName];
+              extendedDisplayName2 = [v9 extendedDisplayName];
               v36 = v27;
               [v9 languageWithRegion];
               v16 = v4;
-              v18 = v17 = v2;
+              v18 = v17 = selfCopy;
               v37 = v18;
               v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-              v20 = [v14 initWithString:v15 attributes:v19];
-              [v10 setAccessibilityAttributedLabel:v20];
+              v20 = [v14 initWithString:extendedDisplayName2 attributes:v19];
+              [indicatorIcon setAccessibilityAttributedLabel:v20];
 
-              v2 = v17;
+              selfCopy = v17;
               v4 = v16;
               v5 = v28;
             }
           }
 
           v21 = MEMORY[0x1E69DC628];
-          v22 = [v9 extendedDisplayName];
+          extendedDisplayName3 = [v9 extendedDisplayName];
           v31[0] = MEMORY[0x1E69E9820];
           v31[1] = 3221225472;
           v31[2] = __72__PKTextInputLanguageSelectionController__updateLanguageMenuIfNecessary__block_invoke;
           v31[3] = &unk_1E82D7DB0;
           v31[4] = v7;
-          v31[5] = v2;
-          v23 = [v21 actionWithTitle:v22 image:v10 identifier:v7 handler:v31];
+          v31[5] = selfCopy;
+          v23 = [v21 actionWithTitle:extendedDisplayName3 image:indicatorIcon identifier:v7 handler:v31];
 
-          v24 = [v9 languageWithRegion];
-          [v23 setAccessibilityLanguage:v24];
+          languageWithRegion2 = [v9 languageWithRegion];
+          [v23 setAccessibilityLanguage:languageWithRegion2];
 
           [v4 addObject:v23];
           ++v6;
@@ -468,8 +468,8 @@ LABEL_15:
     }
 
     v25 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F476BD20 image:0 identifier:0 options:1 children:v4];
-    cachedLanguageMenu = v2->_cachedLanguageMenu;
-    v2->_cachedLanguageMenu = v25;
+    cachedLanguageMenu = selfCopy->_cachedLanguageMenu;
+    selfCopy->_cachedLanguageMenu = v25;
   }
 }
 
@@ -529,15 +529,15 @@ uint64_t __72__PKTextInputLanguageSelectionController__updateLanguageMenuIfNeces
   v22 = *MEMORY[0x1E69E9840];
   if (self->_cachedLanguageMenu)
   {
-    v3 = [(PKTextInputLanguageSelectionController *)self currentLanguageIdentifiers];
-    v4 = [v3 firstObject];
+    currentLanguageIdentifiers = [(PKTextInputLanguageSelectionController *)self currentLanguageIdentifiers];
+    firstObject = [currentLanguageIdentifiers firstObject];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(UIMenu *)self->_cachedLanguageMenu children];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    children = [(UIMenu *)self->_cachedLanguageMenu children];
+    v6 = [children countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -548,43 +548,43 @@ uint64_t __72__PKTextInputLanguageSelectionController__updateLanguageMenuIfNeces
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(children);
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v10 identifier];
-          v12 = [v11 isEqualToString:v4];
+          identifier = [v10 identifier];
+          v12 = [identifier isEqualToString:firstObject];
 
           [v10 setState:v12];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [children countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v7);
     }
 
     v13 = MEMORY[0x1E69DCC60];
-    v14 = [(UIMenu *)self->_cachedLanguageMenu children];
-    v15 = [v13 menuWithTitle:&stru_1F476BD20 image:0 identifier:0 options:1 children:v14];
+    children2 = [(UIMenu *)self->_cachedLanguageMenu children];
+    v15 = [v13 menuWithTitle:&stru_1F476BD20 image:0 identifier:0 options:1 children:children2];
     cachedLanguageMenu = self->_cachedLanguageMenu;
     self->_cachedLanguageMenu = v15;
   }
 }
 
-- (id)registerObserver:(id)a3
+- (id)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = [PKTextInputLanguageSelectionToken tokenWithStore:self];
   observers = self->_observers;
-  v7 = [v4 copy];
+  v7 = [observerCopy copy];
   [(NSMutableDictionary *)observers setObject:v7 forKey:v5];
 
   if ([(PKTextInputLanguageSelectionController *)self shouldIdentifyLanguages])
   {
-    v8 = [(PKTextInputLanguageSelectionController *)self languageIdentificationIcon];
-    v9 = [(PKTextInputLanguageSelectionController *)self languageSelectionMenu];
-    (*(v4 + 2))(v4, v8, v9);
+    languageIdentificationIcon = [(PKTextInputLanguageSelectionController *)self languageIdentificationIcon];
+    languageSelectionMenu = [(PKTextInputLanguageSelectionController *)self languageSelectionMenu];
+    (*(observerCopy + 2))(observerCopy, languageIdentificationIcon, languageSelectionMenu);
   }
 
   return v5;
@@ -596,24 +596,24 @@ uint64_t __72__PKTextInputLanguageSelectionController__updateLanguageMenuIfNeces
   {
     if ([(PKTextInputLanguageSelectionController *)self shouldIdentifyLanguages])
     {
-      v3 = [(PKTextInputLanguageSelectionController *)self languageIdentificationIcon];
+      languageIdentificationIcon = [(PKTextInputLanguageSelectionController *)self languageIdentificationIcon];
     }
 
     else
     {
-      v3 = 0;
+      languageIdentificationIcon = 0;
     }
 
-    v4 = [(PKTextInputLanguageSelectionController *)self languageSelectionMenu];
+    languageSelectionMenu = [(PKTextInputLanguageSelectionController *)self languageSelectionMenu];
     observers = self->_observers;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __65__PKTextInputLanguageSelectionController_notifyLanguageDidChange__block_invoke;
     v8[3] = &unk_1E82D7DD8;
-    v9 = v3;
-    v10 = v4;
-    v6 = v4;
-    v7 = v3;
+    v9 = languageIdentificationIcon;
+    v10 = languageSelectionMenu;
+    v6 = languageSelectionMenu;
+    v7 = languageIdentificationIcon;
     [(NSMutableDictionary *)observers enumerateKeysAndObjectsUsingBlock:v8];
   }
 }
@@ -640,14 +640,14 @@ uint64_t __72__PKTextInputLanguageSelectionController__updateLanguageMenuIfNeces
   v13 = *MEMORY[0x1E69E9840];
   if ([MEMORY[0x1E69DCBB8] hasInputOrAssistantViewsOnScreen])
   {
-    v3 = [(PKTextInputLanguageSelectionController *)self _currentKeyboardIdentifier];
-    v4 = [(PKTextInputLanguageSelectionController *)self currentLanguageIdentifiers];
-    v5 = [v4 firstObject];
+    _currentKeyboardIdentifier = [(PKTextInputLanguageSelectionController *)self _currentKeyboardIdentifier];
+    currentLanguageIdentifiers = [(PKTextInputLanguageSelectionController *)self currentLanguageIdentifiers];
+    firstObject = [currentLanguageIdentifiers firstObject];
 
-    if (v3)
+    if (_currentKeyboardIdentifier)
     {
-      v6 = v5;
-      v7 = v3;
+      v6 = firstObject;
+      v7 = _currentKeyboardIdentifier;
       v8 = v7;
       if (v6 != v7)
       {
@@ -684,11 +684,11 @@ LABEL_12:
 
 - (id)_currentKeyboardIdentifier
 {
-  v2 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v3 = [v2 currentInputMode];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
 
   v7 = 0;
-  [objc_opt_class() _getNormalizedLanguageIdentifier:&v7 dedupLanguageKey:0 forInputMode:v3];
+  [objc_opt_class() _getNormalizedLanguageIdentifier:&v7 dedupLanguageKey:0 forInputMode:currentInputMode];
   v4 = v7;
   v5 = v7;
 
@@ -698,25 +698,25 @@ LABEL_12:
 + (id)activeInputModes
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v4 = [v3 activeInputModes];
-  v5 = [a1 _inputModesForTesting];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  activeInputModes = [mEMORY[0x1E69DCBF0] activeInputModes];
+  _inputModesForTesting = [self _inputModesForTesting];
 
-  if (v5)
+  if (_inputModesForTesting)
   {
-    v6 = [a1 _inputModesForTesting];
+    _inputModesForTesting2 = [self _inputModesForTesting];
 
-    v4 = v6;
+    activeInputModes = _inputModesForTesting2;
   }
 
-  v7 = [v3 additionalTextInputLocales];
-  v8 = [v7 count];
+  additionalTextInputLocales = [mEMORY[0x1E69DCBF0] additionalTextInputLocales];
+  v8 = [additionalTextInputLocales count];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(activeInputModes, "count")}];
     v10 = +[PKPaletteKeyboardUtilities textInputResponderForEditing];
-    v11 = [v3 textInputModeForResponder:v10];
+    v11 = [mEMORY[0x1E69DCBF0] textInputModeForResponder:v10];
     if (v11)
     {
       [v9 addObject:v11];
@@ -725,16 +725,16 @@ LABEL_12:
     else
     {
       v26 = v10;
-      v12 = [v3 additionalTextInputLocales];
-      v13 = [v12 firstObject];
-      v14 = [v13 localeIdentifier];
+      additionalTextInputLocales2 = [mEMORY[0x1E69DCBF0] additionalTextInputLocales];
+      firstObject = [additionalTextInputLocales2 firstObject];
+      localeIdentifier = [firstObject localeIdentifier];
 
-      v15 = [MEMORY[0x1E695DF58] currentLocale];
-      v16 = [v15 localeIdentifier];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      localeIdentifier2 = [currentLocale localeIdentifier];
 
-      v24 = v16;
-      v25 = v14;
-      v17 = [MEMORY[0x1E69D95B8] _inputModesForLocale:v16 language:v14 modeFetcher:&__block_literal_global_23];
+      v24 = localeIdentifier2;
+      v25 = localeIdentifier;
+      v17 = [MEMORY[0x1E69D95B8] _inputModesForLocale:localeIdentifier2 language:localeIdentifier modeFetcher:&__block_literal_global_23];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
@@ -766,28 +766,28 @@ LABEL_12:
       v10 = v26;
     }
 
-    [v9 addObjectsFromArray:v4];
+    [v9 addObjectsFromArray:activeInputModes];
   }
 
   else
   {
-    v9 = v4;
+    v9 = activeInputModes;
   }
 
   return v9;
 }
 
-+ (void)_enumerateSupportedAndEnabledLocaleIdentifiersWithBlock:(id)a3
++ (void)_enumerateSupportedAndEnabledLocaleIdentifiersWithBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v4 = [a1 activeInputModes];
-  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+  blockCopy = block;
+  activeInputModes = [self activeInputModes];
+  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(activeInputModes, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = activeInputModes;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -805,7 +805,7 @@ LABEL_12:
         v11 = *(*(&v20 + 1) + 8 * i);
         v18 = 0;
         v19 = 0;
-        [a1 _getNormalizedLanguageIdentifier:&v19 dedupLanguageKey:&v18 forInputMode:v11];
+        [self _getNormalizedLanguageIdentifier:&v19 dedupLanguageKey:&v18 forInputMode:v11];
         v12 = v19;
         v13 = v18;
         if (v12 && ([v5 containsObject:v13] & 1) == 0)
@@ -815,7 +815,7 @@ LABEL_12:
           if ([MEMORY[0x1E6997B78] isLocaleSupported:v14])
           {
             [v5 addObject:v13];
-            v16[2](v16, v12, &v17);
+            blockCopy[2](blockCopy, v12, &v17);
           }
 
           v15 = v17;
@@ -843,9 +843,9 @@ LABEL_15:
 
 - (NSArray)currentLanguageIdentifiersForEmojiAlternatives
 {
-  v3 = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiersForEmojiAlternatives];
+  _cachedLanguageIdentifiersForEmojiAlternatives = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiersForEmojiAlternatives];
 
-  if (!v3)
+  if (!_cachedLanguageIdentifiersForEmojiAlternatives)
   {
     v4 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -854,25 +854,25 @@ LABEL_15:
       _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "LanguageController: Loading language identifiers for emoji alternatives.", v8, 2u);
     }
 
-    v5 = [objc_opt_class() _currentLanguageIdentifiersForEmojiAlternatives];
-    [(PKTextInputLanguageSelectionController *)self set_cachedLanguageIdentifiersForEmojiAlternatives:v5];
+    _currentLanguageIdentifiersForEmojiAlternatives = [objc_opt_class() _currentLanguageIdentifiersForEmojiAlternatives];
+    [(PKTextInputLanguageSelectionController *)self set_cachedLanguageIdentifiersForEmojiAlternatives:_currentLanguageIdentifiersForEmojiAlternatives];
   }
 
-  v6 = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiersForEmojiAlternatives];
+  _cachedLanguageIdentifiersForEmojiAlternatives2 = [(PKTextInputLanguageSelectionController *)self _cachedLanguageIdentifiersForEmojiAlternatives];
 
-  return v6;
+  return _cachedLanguageIdentifiersForEmojiAlternatives2;
 }
 
 + (id)_currentLanguageIdentifiersForEmojiAlternatives
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v4 = [v3 currentInputMode];
-  v27[0] = v4;
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
+  v27[0] = currentInputMode;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
 
-  v6 = [a1 activeInputModes];
-  v7 = [v5 arrayByAddingObjectsFromArray:v6];
+  activeInputModes = [self activeInputModes];
+  v7 = [v5 arrayByAddingObjectsFromArray:activeInputModes];
 
   v8 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:{objc_msgSend(v7, "count")}];
   v22 = 0u;
@@ -897,7 +897,7 @@ LABEL_15:
         v14 = *(*(&v22 + 1) + 8 * i);
         v20 = 0;
         v21 = 0;
-        [a1 _getNormalizedLanguageIdentifier:&v21 dedupLanguageKey:&v20 forInputMode:v14 mappingYueToZh:0];
+        [self _getNormalizedLanguageIdentifier:&v21 dedupLanguageKey:&v20 forInputMode:v14 mappingYueToZh:0];
         v15 = v21;
         v16 = v20;
         if (v15 && ([v8 containsObject:v16] & 1) == 0)
@@ -916,29 +916,29 @@ LABEL_15:
     while (v11);
   }
 
-  v18 = [v8 array];
+  array = [v8 array];
 
-  return v18;
+  return array;
 }
 
-+ (id)_filterEnglishWithLanguages:(id)a3 outRemapTarget:(id *)a4
++ (id)_filterEnglishWithLanguages:(id)languages outRemapTarget:(id *)target
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v8 = [a1 _preferredLanguagesForTesting];
+  languagesCopy = languages;
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  _preferredLanguagesForTesting = [self _preferredLanguagesForTesting];
 
-  if (v8)
+  if (_preferredLanguagesForTesting)
   {
-    v9 = [a1 _preferredLanguagesForTesting];
+    _preferredLanguagesForTesting2 = [self _preferredLanguagesForTesting];
 
-    v7 = v9;
+    preferredLanguages = _preferredLanguagesForTesting2;
   }
 
-  v10 = [v7 firstObject];
+  firstObject = [preferredLanguages firstObject];
   v38 = 0;
-  [a1 _getNormalizedLanguageIdentifier:&v38 dedupLanguageKey:0 forInputModeIdentifier:v10];
+  [self _getNormalizedLanguageIdentifier:&v38 dedupLanguageKey:0 forInputModeIdentifier:firstObject];
   v11 = v38;
-  v12 = v6;
+  v12 = languagesCopy;
   v13 = MEMORY[0x1CCA6E790](v11);
   v14 = [v13 isEqualToString:@"zh"];
 
@@ -955,14 +955,14 @@ LABEL_15:
     v31 = __Block_byref_object_copy__5;
     v32 = __Block_byref_object_dispose__5;
     v33 = 0;
-    v16 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __85__PKTextInputLanguageSelectionController__filterEnglishWithLanguages_outRemapTarget___block_invoke;
     v24 = &unk_1E82D7E20;
     v26 = &v34;
     v27 = &v28;
-    v17 = v16;
+    v17 = indexSet;
     v25 = v17;
     [v12 enumerateObjectsUsingBlock:&v21];
     v15 = v12;
@@ -972,10 +972,10 @@ LABEL_15:
       [v18 removeObjectsAtIndexes:v17];
       v15 = [v18 copy];
 
-      if (a4)
+      if (target)
       {
         v19 = [@"zh_" stringByAppendingString:v29[5]];
-        [a1 _getNormalizedLanguageIdentifier:a4 dedupLanguageKey:0 forInputModeIdentifier:v19];
+        [self _getNormalizedLanguageIdentifier:target dedupLanguageKey:0 forInputModeIdentifier:v19];
       }
     }
 
@@ -1026,8 +1026,8 @@ void __85__PKTextInputLanguageSelectionController__filterEnglishWithLanguages_ou
   v7[3] = &unk_1E82D7E48;
   v8 = v3;
   v4 = v3;
-  [a1 _enumerateSupportedAndEnabledLocaleIdentifiersWithBlock:v7];
-  v5 = [a1 _filterEnglishWithLanguages:v4 outRemapTarget:0];
+  [self _enumerateSupportedAndEnabledLocaleIdentifiersWithBlock:v7];
+  v5 = [self _filterEnglishWithLanguages:v4 outRemapTarget:0];
 
   return v5;
 }
@@ -1041,7 +1041,7 @@ void __85__PKTextInputLanguageSelectionController__filterEnglishWithLanguages_ou
   v6[3] = &unk_1E82D7E48;
   v4 = v3;
   v7 = v4;
-  [a1 _enumerateSupportedAndEnabledLocaleIdentifiersWithBlock:v6];
+  [self _enumerateSupportedAndEnabledLocaleIdentifiersWithBlock:v6];
 
   return v4;
 }
@@ -1057,7 +1057,7 @@ void __85__PKTextInputLanguageSelectionController__filterEnglishWithLanguages_ou
   v4[2] = __74__PKTextInputLanguageSelectionController_hasSomeSupportedAndEnabledLocale__block_invoke;
   v4[3] = &unk_1E82D7E70;
   v4[4] = &v5;
-  [a1 _enumerateSupportedAndEnabledLocaleIdentifiersWithBlock:v4];
+  [self _enumerateSupportedAndEnabledLocaleIdentifiersWithBlock:v4];
   v2 = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
   return v2;
@@ -1070,15 +1070,15 @@ uint64_t __74__PKTextInputLanguageSelectionController_hasSomeSupportedAndEnabled
   return result;
 }
 
-+ (id)_preferredRecognitionLocaleIdentifierFromIdentifiers:(id)a3
++ (id)_preferredRecognitionLocaleIdentifierFromIdentifiers:(id)identifiers
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  identifiersCopy = identifiers;
+  v4 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1089,7 +1089,7 @@ LABEL_3:
     {
       if (*v13 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(identifiersCopy);
       }
 
       v8 = *(*(&v12 + 1) + 8 * v7);
@@ -1101,7 +1101,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -1111,9 +1111,9 @@ LABEL_3:
       }
     }
 
-    v10 = v8;
+    firstObject = v8;
 
-    if (v10)
+    if (firstObject)
     {
       goto LABEL_12;
     }
@@ -1124,27 +1124,27 @@ LABEL_3:
 LABEL_9:
   }
 
-  v10 = [v3 firstObject];
+  firstObject = [identifiersCopy firstObject];
 LABEL_12:
 
-  return v10;
+  return firstObject;
 }
 
-+ (void)_getNormalizedLanguageIdentifier:(id *)a3 dedupLanguageKey:(id *)a4 forInputMode:(id)a5 mappingYueToZh:(BOOL)a6
++ (void)_getNormalizedLanguageIdentifier:(id *)identifier dedupLanguageKey:(id *)key forInputMode:(id)mode mappingYueToZh:(BOOL)zh
 {
-  v6 = a6;
-  v10 = [a5 languageWithRegion];
-  [a1 _getNormalizedLanguageIdentifier:a3 dedupLanguageKey:a4 forInputModeIdentifier:v10 mappingYueToZh:v6];
+  zhCopy = zh;
+  languageWithRegion = [mode languageWithRegion];
+  [self _getNormalizedLanguageIdentifier:identifier dedupLanguageKey:key forInputModeIdentifier:languageWithRegion mappingYueToZh:zhCopy];
 }
 
-+ (void)_getNormalizedLanguageIdentifier:(id *)a3 dedupLanguageKey:(id *)a4 forInputModeIdentifier:(id)a5 mappingYueToZh:(BOOL)a6
++ (void)_getNormalizedLanguageIdentifier:(id *)identifier dedupLanguageKey:(id *)key forInputModeIdentifier:(id)modeIdentifier mappingYueToZh:(BOOL)zh
 {
-  v6 = a6;
-  v9 = a5;
+  zhCopy = zh;
+  modeIdentifierCopy = modeIdentifier;
   v10 = MEMORY[0x1CCA6E790]();
-  v11 = MEMORY[0x1CCA6E7A0](v9);
+  v11 = MEMORY[0x1CCA6E7A0](modeIdentifierCopy);
 
-  if (v6 && [(__CFString *)v10 isEqualToString:@"yue"])
+  if (zhCopy && [(__CFString *)v10 isEqualToString:@"yue"])
   {
 
     v10 = @"zh";
@@ -1162,34 +1162,34 @@ LABEL_12:
 
   v13 = v12;
   v17 = v10;
-  if (([(__CFString *)v17 isEqualToString:@"zh"]& 1) != 0 || (v14 = v17, !v6) && (v14 = v17, [(__CFString *)v17 isEqualToString:@"yue"]))
+  if (([(__CFString *)v17 isEqualToString:@"zh"]& 1) != 0 || (v14 = v17, !zhCopy) && (v14 = v17, [(__CFString *)v17 isEqualToString:@"yue"]))
   {
     v14 = v13;
   }
 
-  if (a3)
+  if (identifier)
   {
     v15 = v13;
-    *a3 = v13;
+    *identifier = v13;
   }
 
-  if (a4)
+  if (key)
   {
     v16 = v14;
-    *a4 = v14;
+    *key = v14;
   }
 }
 
-+ (id)_sortedStringsArray:(id)a3 withArray:(id)a4
++ (id)_sortedStringsArray:(id)array withArray:(id)withArray
 {
-  v5 = a4;
+  withArrayCopy = withArray;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__PKTextInputLanguageSelectionController__sortedStringsArray_withArray___block_invoke;
   v9[3] = &unk_1E82D7E98;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 sortedArrayWithOptions:16 usingComparator:v9];
+  v10 = withArrayCopy;
+  v6 = withArrayCopy;
+  v7 = [array sortedArrayWithOptions:16 usingComparator:v9];
 
   return v7;
 }
@@ -1215,46 +1215,46 @@ uint64_t __72__PKTextInputLanguageSelectionController__sortedStringsArray_withAr
   return v12 << 63 >> 63;
 }
 
-+ (void)set_inputModesForTesting:(id)a3
++ (void)set_inputModesForTesting:(id)testing
 {
-  objc_storeStrong(&__inputModesForTesting, a3);
-  v4 = a3;
+  objc_storeStrong(&__inputModesForTesting, testing);
+  testingCopy = testing;
   v5 = +[PKTextInputLanguageSelectionController sharedInstance];
 
   [v5 set_cachedLanguageIdentifiers:0];
 }
 
-+ (void)set_preferencesLanguagesForTesting:(id)a3
++ (void)set_preferencesLanguagesForTesting:(id)testing
 {
-  objc_storeStrong(&__preferencesLanguagesForTesting, a3);
-  v4 = a3;
+  objc_storeStrong(&__preferencesLanguagesForTesting, testing);
+  testingCopy = testing;
   v5 = +[PKTextInputLanguageSelectionController sharedInstance];
 
   [v5 set_cachedLanguageIdentifiers:0];
 }
 
-+ (void)set_preferredLanguagesForTesting:(id)a3
++ (void)set_preferredLanguagesForTesting:(id)testing
 {
-  objc_storeStrong(&__preferredLanguagesForTesting, a3);
-  v4 = a3;
+  objc_storeStrong(&__preferredLanguagesForTesting, testing);
+  testingCopy = testing;
   v5 = +[PKTextInputLanguageSelectionController sharedInstance];
 
   [v5 set_cachedLanguageIdentifiers:0];
 }
 
-+ (void)_performOperations:(id)a3 withActiveInputModeIdentifiers:(id)a4 preferencesLanguages:(id)a5 preferredLanguages:(id)a6
++ (void)_performOperations:(id)operations withActiveInputModeIdentifiers:(id)identifiers preferencesLanguages:(id)languages preferredLanguages:(id)preferredLanguages
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  operationsCopy = operations;
+  identifiersCopy = identifiers;
+  languagesCopy = languages;
+  preferredLanguagesCopy = preferredLanguages;
+  v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = v10;
+  v14 = identifiersCopy;
   v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
@@ -1286,24 +1286,24 @@ uint64_t __72__PKTextInputLanguageSelectionController__sortedStringsArray_withAr
     while (v16);
   }
 
-  [a1 _performOperations:v9 withActiveInputModes:v13 preferencesLanguages:v11 preferredLanguages:v12];
+  [self _performOperations:operationsCopy withActiveInputModes:v13 preferencesLanguages:languagesCopy preferredLanguages:preferredLanguagesCopy];
 }
 
-+ (void)_performOperations:(id)a3 withActiveInputModes:(id)a4 preferencesLanguages:(id)a5 preferredLanguages:(id)a6
++ (void)_performOperations:(id)operations withActiveInputModes:(id)modes preferencesLanguages:(id)languages preferredLanguages:(id)preferredLanguages
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  [a1 set_inputModesForTesting:a4];
-  [a1 set_preferencesLanguagesForTesting:v11];
+  preferredLanguagesCopy = preferredLanguages;
+  languagesCopy = languages;
+  operationsCopy = operations;
+  [self set_inputModesForTesting:modes];
+  [self set_preferencesLanguagesForTesting:languagesCopy];
 
-  [a1 set_preferredLanguagesForTesting:v10];
-  v12[2](v12);
+  [self set_preferredLanguagesForTesting:preferredLanguagesCopy];
+  operationsCopy[2](operationsCopy);
 
-  [a1 set_inputModesForTesting:0];
-  [a1 set_preferencesLanguagesForTesting:0];
+  [self set_inputModesForTesting:0];
+  [self set_preferencesLanguagesForTesting:0];
 
-  [a1 set_preferredLanguagesForTesting:0];
+  [self set_preferredLanguagesForTesting:0];
 }
 
 @end

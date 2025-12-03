@@ -2,26 +2,26 @@
 - (CGRect)_frameOfPresentedViewControllerViewInSuperview;
 - (CGRect)finalFrameForContainerView;
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_UISearchFormSheetPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_UISearchFormSheetPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (double)resultsControllerContentOffset;
-- (id)_presentationControllerForTraitCollection:(id)a3;
+- (id)_presentationControllerForTraitCollection:(id)collection;
 - (void)_horizontalSizeClassChanged;
-- (void)_presentedView:(id)a3 enableFormSheetAccoutrements:(BOOL)a4;
-- (void)_transitionToPresentationController:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)_presentedView:(id)view enableFormSheetAccoutrements:(BOOL)accoutrements;
+- (void)_transitionToPresentationController:(id)controller withTransitionCoordinator:(id)coordinator;
 - (void)_transitionToWillBegin;
 - (void)containerViewWillLayoutSubviews;
 - (void)dealloc;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)setContentVisible:(BOOL)a3;
+- (void)setContentVisible:(BOOL)visible;
 @end
 
 @implementation _UISearchFormSheetPresentationController
 
-- (_UISearchFormSheetPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_UISearchFormSheetPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v11[1] = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -32,7 +32,7 @@
 
   v10.receiver = self;
   v10.super_class = _UISearchFormSheetPresentationController;
-  v8 = [(UIPresentationController *)&v10 initWithPresentedViewController:a3 presentingViewController:a4];
+  v8 = [(UIPresentationController *)&v10 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v8)
   {
     v8->_assistant = [[_UISearchPresentationAssistant alloc] initWithSearchPresentationController:v8];
@@ -53,32 +53,32 @@
 
 - (void)presentationTransitionWillBegin
 {
-  v3 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
-  -[_UISearchPresentationAssistant setPresentationWasAnimated:](self->_assistant, "setPresentationWasAnimated:", [v3 isAnimated]);
+  transitionCoordinator = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
+  -[_UISearchPresentationAssistant setPresentationWasAnimated:](self->_assistant, "setPresentationWasAnimated:", [transitionCoordinator isAnimated]);
   [(_UISearchPresentationAssistant *)self->_assistant ensureAppropriatelySizedSearchBar:[(UIViewController *)[(UIPresentationController *)self presentedViewController] searchBar]];
-  v4 = [(_UISearchFormSheetPresentationController *)self searchBarContainerView];
+  searchBarContainerView = [(_UISearchFormSheetPresentationController *)self searchBarContainerView];
   if ([(_UISearchFormSheetPresentationController *)self searchBarToBecomeTopAttached])
   {
-    [(UIView *)v4 frame];
+    [(UIView *)searchBarContainerView frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
     [(_UISearchFormSheetPresentationController *)self statusBarAdjustment];
-    [(UIView *)v4 setFrame:v6, v8, v10, v13 + v12];
+    [(UIView *)searchBarContainerView setFrame:v6, v8, v10, v13 + v12];
   }
 
   if ([(UIViewController *)[(UIPresentationController *)self presentedViewController] obscuresBackgroundDuringPresentation])
   {
     [(UIView *)[(UIPresentationController *)self containerView] addSubview:[(_UISearchPresentationAssistant *)self->_assistant dimmingView]];
-    if ([v3 isAnimated])
+    if ([transitionCoordinator isAnimated])
     {
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __75___UISearchFormSheetPresentationController_presentationTransitionWillBegin__block_invoke;
       v21[3] = &unk_1E711EC78;
       v21[4] = self;
-      [v3 animateAlongsideTransition:v21 completion:0];
+      [transitionCoordinator animateAlongsideTransition:v21 completion:0];
     }
 
     else
@@ -97,14 +97,14 @@
   [[(UIViewController *)[(UIPresentationController *)self presentedViewController] view] setAutoresizingMask:18];
   [(UIView *)self->_wrapperView addSubview:[(UIViewController *)[(UIPresentationController *)self presentedViewController] view]];
   [(_UISearchFormSheetPresentationController *)self _presentedView:self->_wrapperView enableFormSheetAccoutrements:1];
-  if ([v3 isAnimated])
+  if ([transitionCoordinator isAnimated])
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __75___UISearchFormSheetPresentationController_presentationTransitionWillBegin__block_invoke_2;
     v20[3] = &unk_1E711EC78;
     v20[4] = self;
-    [v3 animateAlongsideTransition:v20 completion:0];
+    [transitionCoordinator animateAlongsideTransition:v20 completion:0];
   }
 
   else
@@ -115,40 +115,40 @@
   [(_UISearchFormSheetPresentationController *)self setContentVisible:[(UIViewController *)[(UIPresentationController *)self presentedViewController] _showsSearchResultsController]];
   if ([(_UISearchFormSheetPresentationController *)self _shouldSubscribeToKeyboardNotifications])
   {
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:-[UIPresentationController presentedViewController](self selector:"presentedViewController") name:sel__keyboardWillShow_ object:{@"UIKeyboardPrivateWillShowNotification", 0}];
-    [v19 addObserver:-[UIPresentationController presentedViewController](self selector:"presentedViewController") name:sel__keyboardWillHide_ object:{@"UIKeyboardPrivateWillHideNotification", 0}];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:-[UIPresentationController presentedViewController](self selector:"presentedViewController") name:sel__keyboardWillShow_ object:{@"UIKeyboardPrivateWillShowNotification", 0}];
+    [defaultCenter addObserver:-[UIPresentationController presentedViewController](self selector:"presentedViewController") name:sel__keyboardWillHide_ object:{@"UIKeyboardPrivateWillHideNotification", 0}];
   }
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  if (!a3)
+  if (!end)
   {
     if ([(UIViewController *)[(UIPresentationController *)self presentedViewController] obscuresBackgroundDuringPresentation])
     {
       [-[_UISearchPresentationAssistant dimmingView](self->_assistant "dimmingView")];
     }
 
-    v5 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] view];
+    view = [(UIViewController *)[(UIPresentationController *)self presentingViewController] view];
 
-    [(UIView *)v5 _endOcclusion:self];
+    [(UIView *)view _endOcclusion:self];
   }
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v3 = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
+  transitionCoordinator = [(UIViewController *)[(UIPresentationController *)self presentingViewController] transitionCoordinator];
   if ([(UIViewController *)[(UIPresentationController *)self presentedViewController] obscuresBackgroundDuringPresentation])
   {
-    if ([v3 isAnimated])
+    if ([transitionCoordinator isAnimated])
     {
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __72___UISearchFormSheetPresentationController_dismissalTransitionWillBegin__block_invoke;
       v5[3] = &unk_1E711EC78;
       v5[4] = self;
-      [v3 animateAlongsideTransition:v5 completion:0];
+      [transitionCoordinator animateAlongsideTransition:v5 completion:0];
     }
 
     else
@@ -157,14 +157,14 @@
     }
   }
 
-  if ([v3 isAnimated])
+  if ([transitionCoordinator isAnimated])
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __72___UISearchFormSheetPresentationController_dismissalTransitionWillBegin__block_invoke_2;
     v4[3] = &unk_1E711EC78;
     v4[4] = self;
-    [v3 animateAlongsideTransition:v4 completion:0];
+    [transitionCoordinator animateAlongsideTransition:v4 completion:0];
   }
 
   else
@@ -173,9 +173,9 @@
   }
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     if ([(UIViewController *)[(UIPresentationController *)self presentedViewController] obscuresBackgroundDuringPresentation])
     {
@@ -185,30 +185,30 @@
     [(UIView *)[(_UISearchFormSheetPresentationController *)self searchBarContainerView] removeFromSuperview];
     if ([(_UISearchFormSheetPresentationController *)self _shouldSubscribeToKeyboardNotifications])
     {
-      v4 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v4 removeObserver:-[UIPresentationController presentingViewController](self name:"presentingViewController") object:{@"UIKeyboardPrivateWillShowNotification", 0}];
-      [v4 removeObserver:-[UIPresentationController presentingViewController](self name:"presentingViewController") object:{@"UIKeyboardPrivateWillHideNotification", 0}];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:-[UIPresentationController presentingViewController](self name:"presentingViewController") object:{@"UIKeyboardPrivateWillShowNotification", 0}];
+      [defaultCenter removeObserver:-[UIPresentationController presentingViewController](self name:"presentingViewController") object:{@"UIKeyboardPrivateWillHideNotification", 0}];
     }
 
     self->_wrapperView = 0;
-    v5 = [(UIViewController *)[(UIPresentationController *)self presentedViewController] view];
+    view = [(UIViewController *)[(UIPresentationController *)self presentedViewController] view];
 
-    [(_UISearchFormSheetPresentationController *)self _presentedView:v5 enableFormSheetAccoutrements:0];
+    [(_UISearchFormSheetPresentationController *)self _presentedView:view enableFormSheetAccoutrements:0];
   }
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(UIViewController *)[(UIPresentationController *)self presentedViewController] searchBar];
-  v4 = [(UIPresentationController *)self containerView];
-  [-[UIView searchField](v3 "searchField")];
+  searchBar = [(UIViewController *)[(UIPresentationController *)self presentedViewController] searchBar];
+  containerView = [(UIPresentationController *)self containerView];
+  [-[UIView searchField](searchBar "searchField")];
   v6 = v5;
-  [-[UIView searchField](v3 "searchField")];
+  [-[UIView searchField](searchBar "searchField")];
   Width = CGRectGetWidth(v20);
   if ([(UIViewController *)[(UIPresentationController *)self presentedViewController] _barPresentationStyle]== 3)
   {
-    v8 = [(_UISearchFormSheetPresentationController *)self searchBarContainerView];
-    v3 = v8;
+    searchBarContainerView = [(_UISearchFormSheetPresentationController *)self searchBarContainerView];
+    searchBar = searchBarContainerView;
     goto LABEL_3;
   }
 
@@ -216,38 +216,38 @@
   if ([(UIViewController *)[(UIPresentationController *)self presentedViewController] _barPresentationStyle]== 2)
   {
     objc_opt_class();
-    if (v3)
+    if (searchBar)
     {
-      v11 = v3;
+      superview = searchBar;
       while ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v11 = [(UIView *)v11 superview];
-        if (!v11)
+        superview = [(UIView *)superview superview];
+        if (!superview)
         {
           objc_opt_class();
-          v11 = v3;
+          superview = searchBar;
           while ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v11 = [(UIView *)v11 superview];
-            if (!v11)
+            superview = [(UIView *)superview superview];
+            if (!superview)
             {
               objc_opt_class();
-              v12 = v3;
+              superview2 = searchBar;
               while ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                v12 = [(UIView *)v12 superview];
-                if (!v12)
+                superview2 = [(UIView *)superview2 superview];
+                if (!superview2)
                 {
                   goto LABEL_19;
                 }
               }
 
-              [(UIView *)v12 bounds];
-              [(UIView *)v12 convertRect:v4 toView:?];
+              [(UIView *)superview2 bounds];
+              [(UIView *)superview2 convertRect:containerView toView:?];
               MaxY = CGRectGetMaxY(v22);
               if ([(UIViewController *)[(UIPresentationController *)self presentedViewController] _hidesNavigationBarDuringPresentationRespectingInlineSearch])
               {
-                [objc_msgSend(-[UIView navController](v12 "navController")];
+                [objc_msgSend(-[UIView navController](superview2 "navController")];
                 MaxY = MaxY - CGRectGetHeight(v23);
               }
 
@@ -259,25 +259,25 @@
         }
       }
 
-      [(UIView *)v11 bounds];
-      v9 = v11;
+      [(UIView *)superview bounds];
+      v9 = superview;
       goto LABEL_4;
     }
 
     objc_opt_class();
     objc_opt_class();
 LABEL_19:
-    v8 = v3;
+    searchBarContainerView = searchBar;
 LABEL_3:
-    [(UIView *)v8 bounds];
-    v9 = v3;
+    [(UIView *)searchBarContainerView bounds];
+    v9 = searchBar;
 LABEL_4:
-    [(UIView *)v9 convertRect:v4 toView:?];
+    [(UIView *)v9 convertRect:containerView toView:?];
     MaxY = CGRectGetMaxY(v21);
   }
 
 LABEL_22:
-  [[(UIView *)v4 window] bounds];
+  [[(UIView *)containerView window] bounds];
   v13 = CGRectGetHeight(v24) - MaxY + -25.0;
   if ([(UIViewController *)[(UIPresentationController *)self presentedViewController] _shouldRespectPreferredContentSize])
   {
@@ -308,7 +308,7 @@ LABEL_22:
   [-[_UISearchFormSheetPresentationController presentedView](self "presentedView")];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   [(UIView *)[(UIPresentationController *)self containerView] setNeedsLayout];
   v4[0] = MEMORY[0x1E69E9820];
@@ -329,10 +329,10 @@ LABEL_22:
   return result;
 }
 
-- (void)_presentedView:(id)a3 enableFormSheetAccoutrements:(BOOL)a4
+- (void)_presentedView:(id)view enableFormSheetAccoutrements:(BOOL)accoutrements
 {
-  v4 = a4;
-  if (a4)
+  accoutrementsCopy = accoutrements;
+  if (accoutrements)
   {
     v6 = 5.0;
   }
@@ -342,9 +342,9 @@ LABEL_22:
     v6 = 0.0;
   }
 
-  [objc_msgSend(a3 "layer")];
+  [objc_msgSend(view "layer")];
 
-  [a3 setClipsToBounds:v4];
+  [view setClipsToBounds:accoutrementsCopy];
 }
 
 - (void)_horizontalSizeClassChanged
@@ -356,9 +356,9 @@ LABEL_22:
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(_UISearchFormSheetPresentationController *)self presentedView];
+    presentedView = [(_UISearchFormSheetPresentationController *)self presentedView];
 
-    [v11 setFrame:{v4, v6, v8, v10}];
+    [presentedView setFrame:{v4, v6, v8, v10}];
   }
 }
 
@@ -369,22 +369,22 @@ LABEL_22:
   [(UIPresentationController *)self _presentationTransitionWillBegin];
 }
 
-- (void)_transitionToPresentationController:(id)a3 withTransitionCoordinator:(id)a4
+- (void)_transitionToPresentationController:(id)controller withTransitionCoordinator:(id)coordinator
 {
   v15.receiver = self;
   v15.super_class = _UISearchFormSheetPresentationController;
-  [(UIPresentationController *)&v15 _transitionToPresentationController:a3 withTransitionCoordinator:a4];
-  [objc_msgSend(a3 "searchBarContainerView")];
-  [a3 resultsControllerContentOffset];
+  [(UIPresentationController *)&v15 _transitionToPresentationController:controller withTransitionCoordinator:coordinator];
+  [objc_msgSend(controller "searchBarContainerView")];
+  [controller resultsControllerContentOffset];
   v7 = v6;
-  v8 = [(UIViewController *)[(UIPresentationController *)self presentedViewController] searchResultsController];
-  v9 = [v8 _contentOrObservableScrollViewForEdge:1];
-  if (v8)
+  searchResultsController = [(UIViewController *)[(UIPresentationController *)self presentedViewController] searchResultsController];
+  v9 = [searchResultsController _contentOrObservableScrollViewForEdge:1];
+  if (searchResultsController)
   {
     v10 = v9;
     if (v9)
     {
-      if ([v8 automaticallyAdjustsScrollViewInsets])
+      if ([searchResultsController automaticallyAdjustsScrollViewInsets])
       {
         [v10 contentOffset];
         v12 = v11;
@@ -396,9 +396,9 @@ LABEL_22:
   }
 }
 
-- (id)_presentationControllerForTraitCollection:(id)a3
+- (id)_presentationControllerForTraitCollection:(id)collection
 {
-  if ([a3 horizontalSizeClass] == 1)
+  if ([collection horizontalSizeClass] == 1)
   {
     v4 = [[_UISearchPresentationController alloc] initWithPresentedViewController:[(UIPresentationController *)self presentedViewController] presentingViewController:[(UIPresentationController *)self presentingViewController]];
     [(_UISearchPresentationAssistant *)self->_assistant setAdaptivePresentationController:v4];
@@ -408,13 +408,13 @@ LABEL_22:
   return self;
 }
 
-- (void)setContentVisible:(BOOL)a3
+- (void)setContentVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [-[_UISearchPresentationAssistant dimmingView](self->_assistant "dimmingView")];
-  v5 = [(_UISearchFormSheetPresentationController *)self presentedView];
+  presentedView = [(_UISearchFormSheetPresentationController *)self presentedView];
 
-  [v5 setHidden:!v3];
+  [presentedView setHidden:!visibleCopy];
 }
 
 - (double)resultsControllerContentOffset

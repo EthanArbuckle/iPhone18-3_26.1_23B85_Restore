@@ -1,23 +1,23 @@
 @interface RDAnalyticsEventListener
 + (void)initialize;
 - (void)dealloc;
-- (void)gizmoSync:(id)a3 didDeliverAndUnarchive:(id)a4 sensor:(id)a5 keyName:(id)a6 archiveStatus:(int64_t)a7;
-- (void)gizmoSync:(id)a3 willRunXPCActivityNamed:(id)a4;
-- (void)gizmoSyncDidSyncTime:(id)a3;
-- (void)service:(id)a3 didDeliverMessageWithIDSIdentifier:(id)a4;
-- (void)service:(id)a3 didFailIDSMessage:(id)a4 IDSIdentifier:(id)a5 withError:(id)a6;
-- (void)service:(id)a3 didFailMessageWithIDSIdentifier:(id)a4 error:(id)a5;
-- (void)service:(id)a3 didReceiveArchive:(id)a4 sensor:(id)a5 gizmoSnapshotURL:(id)a6 metadata:(id)a7 fromID:(id)a8;
-- (void)service:(id)a3 didReceiveKeyServiceMessage:(id)a4 fromID:(id)a5 key:(id)a6 keyName:(id)a7 sensor:(id)a8 archiveURLPath:(id)a9 deviceID:(id)a10;
-- (void)service:(id)a3 didReceiveResourceServiceMessage:(id)a4 fromID:(id)a5 incomingResponseIdentifier:(id)a6 outgoingResponseIdentifier:(id)a7;
-- (void)service:(id)a3 didRequestToSendIDSMessage:(id)a4 withIDSIdentifier:(id)a5;
+- (void)gizmoSync:(id)sync didDeliverAndUnarchive:(id)unarchive sensor:(id)sensor keyName:(id)name archiveStatus:(int64_t)status;
+- (void)gizmoSync:(id)sync willRunXPCActivityNamed:(id)named;
+- (void)gizmoSyncDidSyncTime:(id)time;
+- (void)service:(id)service didDeliverMessageWithIDSIdentifier:(id)identifier;
+- (void)service:(id)service didFailIDSMessage:(id)message IDSIdentifier:(id)identifier withError:(id)error;
+- (void)service:(id)service didFailMessageWithIDSIdentifier:(id)identifier error:(id)error;
+- (void)service:(id)service didReceiveArchive:(id)archive sensor:(id)sensor gizmoSnapshotURL:(id)l metadata:(id)metadata fromID:(id)d;
+- (void)service:(id)service didReceiveKeyServiceMessage:(id)message fromID:(id)d key:(id)key keyName:(id)name sensor:(id)sensor archiveURLPath:(id)path deviceID:(id)self0;
+- (void)service:(id)service didReceiveResourceServiceMessage:(id)message fromID:(id)d incomingResponseIdentifier:(id)identifier outgoingResponseIdentifier:(id)responseIdentifier;
+- (void)service:(id)service didRequestToSendIDSMessage:(id)message withIDSIdentifier:(id)identifier;
 @end
 
 @implementation RDAnalyticsEventListener
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100071B40 = os_log_create("com.apple.SensorKit", "AnalyticsGizmoSyncEventListener");
   }
@@ -35,14 +35,14 @@
   [(RDAnalyticsEventListener *)&v3 dealloc];
 }
 
-- (void)service:(id)a3 didRequestToSendIDSMessage:(id)a4 withIDSIdentifier:(id)a5
+- (void)service:(id)service didRequestToSendIDSMessage:(id)message withIDSIdentifier:(id)identifier
 {
-  v9 = [a4 objectForKeyedSubscript:@"RDGizmoSyncMessageTypeKey"];
+  v9 = [message objectForKeyedSubscript:@"RDGizmoSyncMessageTypeKey"];
   if (v9)
   {
-    [(NSCache *)self->_messageTypesByIDSIdentifier setObject:v9 forKey:a5];
-    v10 = [v9 integerValue];
-    if (v10 > 0xA)
+    [(NSCache *)self->_messageTypesByIDSIdentifier setObject:v9 forKey:identifier];
+    integerValue = [v9 integerValue];
+    if (integerValue > 0xA)
     {
       return;
     }
@@ -54,10 +54,10 @@
     if (os_log_type_enabled(qword_100071B40, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543362;
-      v14 = a4;
+      messageCopy = message;
       _os_log_fault_impl(&_mh_execute_header, v11, OS_LOG_TYPE_FAULT, "Failed to find message type in IDS message %{public}@", buf, 0xCu);
-      v10 = [0 integerValue];
-      if (v10 > 0xA)
+      integerValue = [0 integerValue];
+      if (integerValue > 0xA)
       {
         return;
       }
@@ -65,23 +65,23 @@
 
     else
     {
-      v10 = [0 integerValue];
-      if (v10 > 0xA)
+      integerValue = [0 integerValue];
+      if (integerValue > 0xA)
       {
         return;
       }
     }
   }
 
-  if (((1 << v10) & 0x17E) != 0)
+  if (((1 << integerValue) & 0x17E) != 0)
   {
-    if (a3)
+    if (service)
     {
-      v12 = *(a3 + 2);
+      v12 = *(service + 2);
     }
   }
 
-  else if (((1 << v10) & 0x480) == 0)
+  else if (((1 << integerValue) & 0x480) == 0)
   {
     return;
   }
@@ -89,16 +89,16 @@
   AnalyticsSendEventLazy();
 }
 
-- (void)service:(id)a3 didFailIDSMessage:(id)a4 IDSIdentifier:(id)a5 withError:(id)a6
+- (void)service:(id)service didFailIDSMessage:(id)message IDSIdentifier:(id)identifier withError:(id)error
 {
-  [(NSCache *)self->_messageTypesByIDSIdentifier removeObjectForKey:a5];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncMessageTypeKey", "integerValue"}];
+  [(NSCache *)self->_messageTypesByIDSIdentifier removeObjectForKey:identifier];
+  [objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncMessageTypeKey", "integerValue"}];
   AnalyticsSendEventLazy();
 }
 
-- (void)service:(id)a3 didFailMessageWithIDSIdentifier:(id)a4 error:(id)a5
+- (void)service:(id)service didFailMessageWithIDSIdentifier:(id)identifier error:(id)error
 {
-  if ([(NSCache *)self->_messageTypesByIDSIdentifier objectForKey:a4])
+  if ([(NSCache *)self->_messageTypesByIDSIdentifier objectForKey:identifier])
   {
     AnalyticsSendEventLazy();
   }
@@ -109,15 +109,15 @@
     if (os_log_type_enabled(qword_100071B40, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v8 = a4;
+      identifierCopy = identifier;
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "No message found for IDS Identifier %{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)service:(id)a3 didDeliverMessageWithIDSIdentifier:(id)a4
+- (void)service:(id)service didDeliverMessageWithIDSIdentifier:(id)identifier
 {
-  if ([(NSCache *)self->_messageTypesByIDSIdentifier objectForKey:a4])
+  if ([(NSCache *)self->_messageTypesByIDSIdentifier objectForKey:identifier])
   {
     AnalyticsSendEventLazy();
   }
@@ -128,13 +128,13 @@
     if (os_log_type_enabled(qword_100071B40, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v7 = a4;
+      identifierCopy = identifier;
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "No message found for IDS Identifier %{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)service:(id)a3 didReceiveArchive:(id)a4 sensor:(id)a5 gizmoSnapshotURL:(id)a6 metadata:(id)a7 fromID:(id)a8
+- (void)service:(id)service didReceiveArchive:(id)archive sensor:(id)sensor gizmoSnapshotURL:(id)l metadata:(id)metadata fromID:(id)d
 {
   stateCache = self->_stateCache;
   if (stateCache)
@@ -162,7 +162,7 @@
   }
 }
 
-- (void)service:(id)a3 didReceiveKeyServiceMessage:(id)a4 fromID:(id)a5 key:(id)a6 keyName:(id)a7 sensor:(id)a8 archiveURLPath:(id)a9 deviceID:(id)a10
+- (void)service:(id)service didReceiveKeyServiceMessage:(id)message fromID:(id)d key:(id)key keyName:(id)name sensor:(id)sensor archiveURLPath:(id)path deviceID:(id)self0
 {
   stateCache = self->_stateCache;
   if (stateCache)
@@ -188,7 +188,7 @@
     }
   }
 
-  v17 = [objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncMessageTypeKey", a4, a5, a6), "integerValue"}];
+  v17 = [objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncMessageTypeKey", message, d, key), "integerValue"}];
   v18 = v17;
   if ((v17 - 1) < 6)
   {
@@ -214,21 +214,21 @@ LABEL_9:
   }
 }
 
-- (void)service:(id)a3 didReceiveResourceServiceMessage:(id)a4 fromID:(id)a5 incomingResponseIdentifier:(id)a6 outgoingResponseIdentifier:(id)a7
+- (void)service:(id)service didReceiveResourceServiceMessage:(id)message fromID:(id)d incomingResponseIdentifier:(id)identifier outgoingResponseIdentifier:(id)responseIdentifier
 {
-  v9 = [objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncMessageTypeKey", "integerValue"}];
+  v9 = [objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncMessageTypeKey", "integerValue"}];
   if (self && v9 == 8)
   {
     if (objc_loadWeak(&self->_delegate))
     {
-      [a4 objectForKeyedSubscript:@"RDGizmoSyncGizmoRecordingStatesKey"];
-      [objc_msgSend(a4 objectForKeyedSubscript:{@"RDGizmoSyncGizmoPrerequisitesKey", "integerValue"}];
+      [message objectForKeyedSubscript:@"RDGizmoSyncGizmoRecordingStatesKey"];
+      [objc_msgSend(message objectForKeyedSubscript:{@"RDGizmoSyncGizmoPrerequisitesKey", "integerValue"}];
       AnalyticsSendEventLazy();
     }
   }
 }
 
-- (void)gizmoSync:(id)a3 willRunXPCActivityNamed:(id)a4
+- (void)gizmoSync:(id)sync willRunXPCActivityNamed:(id)named
 {
   stateCache = self->_stateCache;
   if (stateCache)
@@ -255,20 +255,20 @@ LABEL_9:
   }
 }
 
-- (void)gizmoSync:(id)a3 didDeliverAndUnarchive:(id)a4 sensor:(id)a5 keyName:(id)a6 archiveStatus:(int64_t)a7
+- (void)gizmoSync:(id)sync didDeliverAndUnarchive:(id)unarchive sensor:(id)sensor keyName:(id)name archiveStatus:(int64_t)status
 {
   if (AnalyticsIsEventUsed())
   {
-    if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [a4 path]))
+    if (-[NSFileManager fileExistsAtPath:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "fileExistsAtPath:", [unarchive path]))
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_100040894;
       v11[3] = &unk_100061938;
-      v11[4] = a4;
-      v11[5] = a5;
-      v11[6] = a6;
-      sub_10000978C(RDUnarchiver, a4, v11);
+      v11[4] = unarchive;
+      v11[5] = sensor;
+      v11[6] = name;
+      sub_10000978C(RDUnarchiver, unarchive, v11);
     }
 
     v12[0] = @"RDAnalyticsWatchSyncEventKey";
@@ -276,17 +276,17 @@ LABEL_9:
     v13[0] = &off_100065538;
     v13[1] = &off_100065598;
     v12[2] = @"RDAnalyticsArchiveStatusKey";
-    v13[2] = [NSNumber numberWithInteger:a7];
-    v13[3] = a5;
+    v13[2] = [NSNumber numberWithInteger:status];
+    v13[3] = sensor;
     v12[3] = @"RDAnalyticsSensorIdentifierKey";
     v12[4] = @"RDAnalyticsKeyNameKey";
-    v13[4] = a6;
+    v13[4] = name;
     sub_10002DADC([NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:5]);
     AnalyticsSendEvent();
   }
 }
 
-- (void)gizmoSyncDidSyncTime:(id)a3
+- (void)gizmoSyncDidSyncTime:(id)time
 {
   v3[0] = @"RDAnalyticsWatchSyncEventKey";
   v3[1] = @"RDAnalyticsSyncSideKey";

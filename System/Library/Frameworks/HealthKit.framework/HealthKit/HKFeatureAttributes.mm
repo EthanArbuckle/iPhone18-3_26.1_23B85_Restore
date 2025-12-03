@@ -1,90 +1,90 @@
 @interface HKFeatureAttributes
-+ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)a3;
-+ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)a3 deviceIdentifier:(id)a4;
-+ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)a3 watchDeviceIdentifier:(id)a4 phoneDeviceIdentifier:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAttributes)initWithCoder:(id)a3;
-- (HKFeatureAttributes)initWithFeatureVersion:(id)a3 updateVersion:(id)a4 UDIDeviceIdentifier:(id)a5 yearOfRelease:(id)a6;
++ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)version;
++ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)version deviceIdentifier:(id)identifier;
++ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)version watchDeviceIdentifier:(id)identifier phoneDeviceIdentifier:(id)deviceIdentifier;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAttributes)initWithCoder:(id)coder;
+- (HKFeatureAttributes)initWithFeatureVersion:(id)version updateVersion:(id)updateVersion UDIDeviceIdentifier:(id)identifier yearOfRelease:(id)release;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFeatureAttributes
 
-+ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)a3
++ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = +[_HKBehavior sharedBehavior];
-  v5 = [v4 currentOSBuild];
-  v6 = HKFeatureUpdateVersionFromMajorVersionAndBuildVersion(v3, v5);
+  currentOSBuild = [v4 currentOSBuild];
+  v6 = HKFeatureUpdateVersionFromMajorVersionAndBuildVersion(versionCopy, currentOSBuild);
 
-  v7 = [[HKFeatureAttributes alloc] initWithFeatureVersion:v3 updateVersion:v6 UDIDeviceIdentifier:0 yearOfRelease:0];
+  v7 = [[HKFeatureAttributes alloc] initWithFeatureVersion:versionCopy updateVersion:v6 UDIDeviceIdentifier:0 yearOfRelease:0];
 
   return v7;
 }
 
-+ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)a3 watchDeviceIdentifier:(id)a4 phoneDeviceIdentifier:(id)a5
++ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)version watchDeviceIdentifier:(id)identifier phoneDeviceIdentifier:(id)deviceIdentifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  deviceIdentifierCopy = deviceIdentifier;
+  identifierCopy = identifier;
+  versionCopy = version;
   v11 = +[_HKBehavior sharedBehavior];
   if ([v11 isAppleWatch])
   {
-    v12 = v9;
+    v12 = identifierCopy;
   }
 
   else
   {
-    v12 = v8;
+    v12 = deviceIdentifierCopy;
   }
 
   v13 = v12;
 
-  v14 = [a1 featureAttributesDerivedFromOSBuildAndFeatureVersion:v10 deviceIdentifier:v13];
+  v14 = [self featureAttributesDerivedFromOSBuildAndFeatureVersion:versionCopy deviceIdentifier:v13];
 
   return v14;
 }
 
-+ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)a3 deviceIdentifier:(id)a4
++ (id)featureAttributesDerivedFromOSBuildAndFeatureVersion:(id)version deviceIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  versionCopy = version;
   v7 = +[_HKBehavior sharedBehavior];
-  v8 = [v7 currentOSBuild];
-  v9 = HKFeatureUpdateVersionFromMajorVersionAndBuildVersion(v6, v8);
+  currentOSBuild = [v7 currentOSBuild];
+  v9 = HKFeatureUpdateVersionFromMajorVersionAndBuildVersion(versionCopy, currentOSBuild);
 
-  v10 = HKUDIDeviceIdentifierFromDeviceIdentifierAndBatchNumber(v5, v9);
+  v10 = HKUDIDeviceIdentifierFromDeviceIdentifierAndBatchNumber(identifierCopy, v9);
 
-  v11 = [[HKFeatureAttributes alloc] initWithFeatureVersion:v6 updateVersion:v9 UDIDeviceIdentifier:v10 yearOfRelease:@"2025"];
+  v11 = [[HKFeatureAttributes alloc] initWithFeatureVersion:versionCopy updateVersion:v9 UDIDeviceIdentifier:v10 yearOfRelease:@"2025"];
 
   return v11;
 }
 
-- (HKFeatureAttributes)initWithFeatureVersion:(id)a3 updateVersion:(id)a4 UDIDeviceIdentifier:(id)a5 yearOfRelease:(id)a6
+- (HKFeatureAttributes)initWithFeatureVersion:(id)version updateVersion:(id)updateVersion UDIDeviceIdentifier:(id)identifier yearOfRelease:(id)release
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  versionCopy = version;
+  updateVersionCopy = updateVersion;
+  identifierCopy = identifier;
+  releaseCopy = release;
   v24.receiver = self;
   v24.super_class = HKFeatureAttributes;
   v14 = [(HKFeatureAttributes *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [versionCopy copy];
     featureVersion = v14->_featureVersion;
     v14->_featureVersion = v15;
 
-    v17 = [v11 copy];
+    v17 = [updateVersionCopy copy];
     updateVersion = v14->_updateVersion;
     v14->_updateVersion = v17;
 
-    v19 = [v12 copy];
+    v19 = [identifierCopy copy];
     UDIDeviceIdentifier = v14->_UDIDeviceIdentifier;
     v14->_UDIDeviceIdentifier = v19;
 
-    v21 = [v13 copy];
+    v21 = [releaseCopy copy];
     yearOfRelease = v14->_yearOfRelease;
     v14->_yearOfRelease = v21;
   }
@@ -92,12 +92,12 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = HKFeatureAttributes;
-  if (![(HKFeatureAttributes *)&v16 isEqual:v4])
+  if (![(HKFeatureAttributes *)&v16 isEqual:equalCopy])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -106,7 +106,7 @@
       goto LABEL_19;
     }
 
-    v6 = v4;
+    v6 = equalCopy;
     featureVersion = self->_featureVersion;
     v8 = v6[1];
     if (featureVersion != v8 && (!v8 || ![(NSString *)featureVersion isEqualToString:?]))
@@ -166,27 +166,27 @@ LABEL_19:
   return v4 ^ v5 ^ [(NSString *)self->_yearOfRelease hash];
 }
 
-- (HKFeatureAttributes)initWithCoder:(id)a3
+- (HKFeatureAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HKFeatureAttributes;
   v5 = [(HKFeatureAttributes *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureVersion"];
     featureVersion = v5->_featureVersion;
     v5->_featureVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updateVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updateVersion"];
     updateVersion = v5->_updateVersion;
     v5->_updateVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UDIDeviceIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UDIDeviceIdentifier"];
     UDIDeviceIdentifier = v5->_UDIDeviceIdentifier;
     v5->_UDIDeviceIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"yearOfRelease"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"yearOfRelease"];
     yearOfRelease = v5->_yearOfRelease;
     v5->_yearOfRelease = v12;
   }
@@ -194,14 +194,14 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   featureVersion = self->_featureVersion;
-  v5 = a3;
-  [v5 encodeObject:featureVersion forKey:@"featureVersion"];
-  [v5 encodeObject:self->_updateVersion forKey:@"updateVersion"];
-  [v5 encodeObject:self->_UDIDeviceIdentifier forKey:@"UDIDeviceIdentifier"];
-  [v5 encodeObject:self->_yearOfRelease forKey:@"yearOfRelease"];
+  coderCopy = coder;
+  [coderCopy encodeObject:featureVersion forKey:@"featureVersion"];
+  [coderCopy encodeObject:self->_updateVersion forKey:@"updateVersion"];
+  [coderCopy encodeObject:self->_UDIDeviceIdentifier forKey:@"UDIDeviceIdentifier"];
+  [coderCopy encodeObject:self->_yearOfRelease forKey:@"yearOfRelease"];
 }
 
 @end

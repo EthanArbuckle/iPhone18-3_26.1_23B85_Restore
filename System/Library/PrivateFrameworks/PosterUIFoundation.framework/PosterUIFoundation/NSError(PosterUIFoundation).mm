@@ -12,7 +12,7 @@
   v5 = PUIErrorCodeToDebugDescription(a3);
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [a1 pui_errorWithCode:a3 underlyingError:0 userInfo:v6];
+  v7 = [self pui_errorWithCode:a3 underlyingError:0 userInfo:v6];
 
   return v7;
 }
@@ -41,7 +41,7 @@
 
   v13 = PUIErrorCodeToDebugDescription(a3);
   [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E696A588]];
-  v14 = [a1 errorWithDomain:@"com.apple.PosterUIFoundation.errorDomain" code:a3 userInfo:v12];
+  v14 = [self errorWithDomain:@"com.apple.PosterUIFoundation.errorDomain" code:a3 userInfo:v12];
 
   return v14;
 }

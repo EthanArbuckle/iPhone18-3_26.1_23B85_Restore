@@ -1,43 +1,43 @@
 @interface AFAggregator
-+ (id)_fullAggDKeyWithPrefix:(id)a3 error:(id)a4;
-+ (id)_stringForGatekeeperType:(unint64_t)a3;
-+ (void)logCDMAssetEvictedForAssetType:(id)a3 language:(id)a4;
++ (id)_fullAggDKeyWithPrefix:(id)prefix error:(id)error;
++ (id)_stringForGatekeeperType:(unint64_t)type;
++ (void)logCDMAssetEvictedForAssetType:(id)type language:(id)language;
 + (void)logCreateAssistant;
-+ (void)logDESEvaluationForLanguage:(id)a3 error:(id)a4;
-+ (void)logDESRecordingForLanguage:(id)a3 error:(id)a4;
++ (void)logDESEvaluationForLanguage:(id)language error:(id)error;
++ (void)logDESRecordingForLanguage:(id)language error:(id)error;
 + (void)logDictationCancelled;
-+ (void)logDictationFailedWithError:(id)a3;
-+ (void)logDictationFollowedByContinueOccurredForLanguage:(id)a3;
-+ (void)logDictationFollowedByKeyboardDeleteOccurredForLanguage:(id)a3;
-+ (void)logDictationFollowedByKeyboardInputOccurredForLanguage:(id)a3;
++ (void)logDictationFailedWithError:(id)error;
++ (void)logDictationFollowedByContinueOccurredForLanguage:(id)language;
++ (void)logDictationFollowedByKeyboardDeleteOccurredForLanguage:(id)language;
++ (void)logDictationFollowedByKeyboardInputOccurredForLanguage:(id)language;
 + (void)logDictationStarted;
 + (void)logDictationSucceeded;
-+ (void)logEnabledState:(unint64_t)a3;
-+ (void)logKeyboardInputFollowedByContinueOccurredForLanguage:(id)a3;
++ (void)logEnabledState:(unint64_t)state;
++ (void)logKeyboardInputFollowedByContinueOccurredForLanguage:(id)language;
 + (void)logLoadAssistant;
-+ (void)logLocalRecognitionAssetEvictedForLanguage:(id)a3;
-+ (void)logLocalRecognitionLoadedForLanguage:(id)a3 duration:(double)a4;
-+ (void)logLocalRecognitionLostForLanguage:(id)a3;
-+ (void)logLocalRecognitionWonForLanguage:(id)a3;
-+ (void)logRequestCancelAfterSeconds:(double)a3;
-+ (void)logRequestCompletedWithDuration:(double)a3;
++ (void)logLocalRecognitionAssetEvictedForLanguage:(id)language;
++ (void)logLocalRecognitionLoadedForLanguage:(id)language duration:(double)duration;
++ (void)logLocalRecognitionLostForLanguage:(id)language;
++ (void)logLocalRecognitionWonForLanguage:(id)language;
++ (void)logRequestCancelAfterSeconds:(double)seconds;
++ (void)logRequestCompletedWithDuration:(double)duration;
 + (void)logRequestLaunchedApp;
-+ (void)logSiriInvokedVia:(int64_t)a3;
-+ (void)logSiriMediaVolumeAction:(int64_t)a3;
++ (void)logSiriInvokedVia:(int64_t)via;
++ (void)logSiriMediaVolumeAction:(int64_t)action;
 + (void)logSiriOtherRequestStarted;
-+ (void)logSiriQuickStopAction:(unint64_t)a3;
++ (void)logSiriQuickStopAction:(unint64_t)action;
 + (void)logSiriRequestCancelled;
-+ (void)logSiriRequestFailedWithError:(id)a3;
++ (void)logSiriRequestFailedWithError:(id)error;
 + (void)logSiriRequestSucceeded;
 + (void)logSiriSpeechRequestStarted;
-+ (void)logStarkGatekeeperAppearedForType:(unint64_t)a3;
-+ (void)logStarkGatekeeperDismissedManuallyForType:(unint64_t)a3;
++ (void)logStarkGatekeeperAppearedForType:(unint64_t)type;
++ (void)logStarkGatekeeperDismissedManuallyForType:(unint64_t)type;
 + (void)logUILockCanceledVTActivation;
 - (void)connectionDidDrop;
 - (void)connectionDidFail;
-- (void)recordFailure:(int)a3 forConnectionType:(unint64_t)a4;
+- (void)recordFailure:(int)failure forConnectionType:(unint64_t)type;
 - (void)recordSessionRetrySuccess;
-- (void)recordSuccessForConnectionType:(unint64_t)a3 isWarm:(BOOL)a4 forTimeInterval:(double)a5;
+- (void)recordSuccessForConnectionType:(unint64_t)type isWarm:(BOOL)warm forTimeInterval:(double)interval;
 - (void)speechResponseReceived;
 @end
 
@@ -95,36 +95,36 @@
   AnalyticsSendEvent();
 }
 
-+ (void)logCDMAssetEvictedForAssetType:(id)a3 language:(id)a4
++ (void)logCDMAssetEvictedForAssetType:(id)type language:(id)language
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  typeCopy = type;
+  languageCopy = language;
   v7 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v11 = "+[AFAggregator logCDMAssetEvictedForAssetType:language:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = typeCopy;
     v14 = 2112;
-    v15 = v6;
+    v15 = languageCopy;
     _os_log_impl(&dword_1912FE000, v7, OS_LOG_TYPE_INFO, "%s %@ %@", buf, 0x20u);
   }
 
-  v8 = [@"com.apple.siri.CDMAssetEvicted." stringByAppendingFormat:@"%@-%@", v5, v6];
-  _AFAggregatorClientAddValueForScalarKey(v8, 1);
+  languageCopy = [@"com.apple.siri.CDMAssetEvicted." stringByAppendingFormat:@"%@-%@", typeCopy, languageCopy];
+  _AFAggregatorClientAddValueForScalarKey(languageCopy, 1);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logDESEvaluationForLanguage:(id)a3 error:(id)a4
++ (void)logDESEvaluationForLanguage:(id)language error:(id)error
 {
-  v5 = a4;
-  if (a3)
+  errorCopy = error;
+  if (language)
   {
-    v8 = v5;
-    v6 = [@"com.apple.siri.DESEvaluation." stringByAppendingString:a3];
+    v8 = errorCopy;
+    v6 = [@"com.apple.siri.DESEvaluation." stringByAppendingString:language];
     if (v8)
     {
       v7 = [v6 stringByAppendingFormat:@".%ld", objc_msgSend(v8, "code")];
@@ -134,17 +134,17 @@
 
     _AFAggregatorClientAddValueForScalarKey(v6, 1);
 
-    v5 = v8;
+    errorCopy = v8;
   }
 }
 
-+ (void)logDESRecordingForLanguage:(id)a3 error:(id)a4
++ (void)logDESRecordingForLanguage:(id)language error:(id)error
 {
-  v5 = a4;
-  if (a3)
+  errorCopy = error;
+  if (language)
   {
-    v8 = v5;
-    v6 = [@"com.apple.siri.DESRecording." stringByAppendingString:a3];
+    v8 = errorCopy;
+    v6 = [@"com.apple.siri.DESRecording." stringByAppendingString:language];
     if (v8)
     {
       v7 = [v6 stringByAppendingFormat:@".%ld", objc_msgSend(v8, "code")];
@@ -154,58 +154,58 @@
 
     _AFAggregatorClientAddValueForScalarKey(v6, 1);
 
-    v5 = v8;
+    errorCopy = v8;
   }
 }
 
-+ (void)logLocalRecognitionLostForLanguage:(id)a3
++ (void)logLocalRecognitionLostForLanguage:(id)language
 {
-  if (a3)
+  if (language)
   {
     v3 = [@"com.apple.siri.LocalRecognitionLost." stringByAppendingString:?];
     _AFAggregatorClientAddValueForScalarKey(v3, 1);
   }
 }
 
-+ (void)logLocalRecognitionWonForLanguage:(id)a3
++ (void)logLocalRecognitionWonForLanguage:(id)language
 {
-  if (a3)
+  if (language)
   {
     v3 = [@"com.apple.siri.LocalRecognitionWon." stringByAppendingString:?];
     _AFAggregatorClientAddValueForScalarKey(v3, 1);
   }
 }
 
-+ (void)logLocalRecognitionLoadedForLanguage:(id)a3 duration:(double)a4
++ (void)logLocalRecognitionLoadedForLanguage:(id)language duration:(double)duration
 {
-  if (a3)
+  if (language)
   {
     v5 = [@"com.apple.siri.LocalRecognitionLoaded." stringByAppendingString:?];
-    _AFAggregatorClientPushValueForDistributionKey(v5, a4);
+    _AFAggregatorClientPushValueForDistributionKey(v5, duration);
   }
 }
 
-+ (void)logLocalRecognitionAssetEvictedForLanguage:(id)a3
++ (void)logLocalRecognitionAssetEvictedForLanguage:(id)language
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  languageCopy = language;
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     v7 = 136315394;
     v8 = "+[AFAggregator logLocalRecognitionAssetEvictedForLanguage:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = languageCopy;
     _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %@", &v7, 0x16u);
   }
 
-  v5 = [@"com.apple.siri.LocalRecognitionAssetEvicted." stringByAppendingString:v3];
+  v5 = [@"com.apple.siri.LocalRecognitionAssetEvicted." stringByAppendingString:languageCopy];
   _AFAggregatorClientAddValueForScalarKey(v5, 1);
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logEnabledState:(unint64_t)a3
++ (void)logEnabledState:(unint64_t)state
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = AFSiriLogContextUtility;
@@ -214,11 +214,11 @@
     *buf = 136315394;
     v12 = "+[AFAggregator logEnabledState:]";
     v13 = 2048;
-    v14 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %tu", buf, 0x16u);
   }
 
-  if ((a3 & 2) != 0)
+  if ((state & 2) != 0)
   {
     v5 = @"YES";
   }
@@ -230,7 +230,7 @@
 
   v9[0] = @"com.apple.message.siri.enabled";
   v9[1] = @"com.apple.message.dictation.enabled";
-  if ((a3 & 4) != 0)
+  if ((state & 4) != 0)
   {
     v6 = @"YES";
   }
@@ -270,23 +270,23 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logKeyboardInputFollowedByContinueOccurredForLanguage:(id)a3
++ (void)logKeyboardInputFollowedByContinueOccurredForLanguage:(id)language
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  languageCopy = language;
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "+[AFAggregator logKeyboardInputFollowedByContinueOccurredForLanguage:]";
     v10 = 2112;
-    v11 = v3;
+    v11 = languageCopy;
     _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %@", &v8, 0x16u);
   }
 
-  if (v3)
+  if (languageCopy)
   {
-    v5 = v3;
+    v5 = languageCopy;
   }
 
   else
@@ -300,23 +300,23 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logDictationFollowedByKeyboardDeleteOccurredForLanguage:(id)a3
++ (void)logDictationFollowedByKeyboardDeleteOccurredForLanguage:(id)language
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  languageCopy = language;
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "+[AFAggregator logDictationFollowedByKeyboardDeleteOccurredForLanguage:]";
     v10 = 2112;
-    v11 = v3;
+    v11 = languageCopy;
     _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %@", &v8, 0x16u);
   }
 
-  if (v3)
+  if (languageCopy)
   {
-    v5 = v3;
+    v5 = languageCopy;
   }
 
   else
@@ -330,23 +330,23 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logDictationFollowedByKeyboardInputOccurredForLanguage:(id)a3
++ (void)logDictationFollowedByKeyboardInputOccurredForLanguage:(id)language
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  languageCopy = language;
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "+[AFAggregator logDictationFollowedByKeyboardInputOccurredForLanguage:]";
     v10 = 2112;
-    v11 = v3;
+    v11 = languageCopy;
     _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %@", &v8, 0x16u);
   }
 
-  if (v3)
+  if (languageCopy)
   {
-    v5 = v3;
+    v5 = languageCopy;
   }
 
   else
@@ -360,23 +360,23 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logDictationFollowedByContinueOccurredForLanguage:(id)a3
++ (void)logDictationFollowedByContinueOccurredForLanguage:(id)language
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  languageCopy = language;
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "+[AFAggregator logDictationFollowedByContinueOccurredForLanguage:]";
     v10 = 2112;
-    v11 = v3;
+    v11 = languageCopy;
     _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %@", &v8, 0x16u);
   }
 
-  if (v3)
+  if (languageCopy)
   {
-    v5 = v3;
+    v5 = languageCopy;
   }
 
   else
@@ -420,21 +420,21 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logDictationFailedWithError:(id)a3
++ (void)logDictationFailedWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
   {
     v8 = 136315394;
     v9 = "+[AFAggregator logDictationFailedWithError:]";
     v10 = 2114;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_error_impl(&dword_1912FE000, v5, OS_LOG_TYPE_ERROR, "%s %{public}@", &v8, 0x16u);
   }
 
-  v6 = [a1 _fullAggDKeyWithPrefix:@"com.apple.siri.DictationFailed." error:v4];
+  v6 = [self _fullAggDKeyWithPrefix:@"com.apple.siri.DictationFailed." error:errorCopy];
   _AFAggregatorClientAddValueForScalarKey(v6, 1);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -470,21 +470,21 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logSiriRequestFailedWithError:(id)a3
++ (void)logSiriRequestFailedWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
   {
     v8 = 136315394;
     v9 = "+[AFAggregator logSiriRequestFailedWithError:]";
     v10 = 2114;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_error_impl(&dword_1912FE000, v5, OS_LOG_TYPE_ERROR, "%s %{public}@", &v8, 0x16u);
   }
 
-  v6 = [a1 _fullAggDKeyWithPrefix:@"com.apple.siri.SiriFailed." error:v4];
+  v6 = [self _fullAggDKeyWithPrefix:@"com.apple.siri.SiriFailed." error:errorCopy];
   _AFAggregatorClientAddValueForScalarKey(v6, 1);
 
   v7 = *MEMORY[0x1E69E9840];
@@ -506,27 +506,27 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_fullAggDKeyWithPrefix:(id)a3 error:(id)a4
++ (id)_fullAggDKeyWithPrefix:(id)prefix error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = [v6 domain];
-  v9 = [v6 code];
-  v10 = [v6 userInfo];
-  v11 = [v10 objectForKey:*MEMORY[0x1E696AA08]];
+  prefixCopy = prefix;
+  errorCopy = error;
+  v7 = prefixCopy;
+  domain = [errorCopy domain];
+  code = [errorCopy code];
+  userInfo = [errorCopy userInfo];
+  v11 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-  v12 = [v6 domain];
-  v13 = [v12 isEqualToString:@"kAFAssistantErrorDomain"];
+  domain2 = [errorCopy domain];
+  v13 = [domain2 isEqualToString:@"kAFAssistantErrorDomain"];
 
   if (!v13)
   {
     goto LABEL_8;
   }
 
-  if (v9 == 1 && v11)
+  if (code == 1 && v11)
   {
-    v14 = [v7 stringByAppendingFormat:@"%@.%ld.", v8, 1];
+    v14 = [v7 stringByAppendingFormat:@"%@.%ld.", domain, 1];
 
     goto LABEL_6;
   }
@@ -536,7 +536,7 @@
   {
 LABEL_8:
     v14 = v7;
-    if (!v8)
+    if (!domain)
     {
       goto LABEL_7;
     }
@@ -547,12 +547,12 @@ LABEL_8:
 LABEL_6:
   v15 = v11;
 
-  v16 = [v15 domain];
+  domain3 = [v15 domain];
 
-  v9 = [v15 code];
-  v6 = v15;
-  v8 = v16;
-  if (!v16)
+  code = [v15 code];
+  errorCopy = v15;
+  domain = domain3;
+  if (!domain3)
   {
 LABEL_7:
     v17 = [v14 stringByAppendingString:@"Other"];
@@ -560,47 +560,47 @@ LABEL_7:
   }
 
 LABEL_9:
-  if ([v8 length] >= 0x1F)
+  if ([domain length] >= 0x1F)
   {
-    v18 = [v8 substringToIndex:30];
+    v18 = [domain substringToIndex:30];
 
-    v8 = v18;
+    domain = v18;
   }
 
-  v17 = [v14 stringByAppendingFormat:@"%@.%ld", v8, v9];
+  v17 = [v14 stringByAppendingFormat:@"%@.%ld", domain, code];
 
-  v7 = v8;
+  v7 = domain;
 LABEL_12:
 
   return v17;
 }
 
-+ (void)logSiriMediaVolumeAction:(int64_t)a3
++ (void)logSiriMediaVolumeAction:(int64_t)action
 {
-  if ((a3 - 2) <= 2)
+  if ((action - 2) <= 2)
   {
-    v3 = off_1E73477B0[a3 - 2];
+    v3 = off_1E73477B0[action - 2];
     ADClientAddValueForScalarKey();
   }
 }
 
-+ (void)logSiriQuickStopAction:(unint64_t)a3
++ (void)logSiriQuickStopAction:(unint64_t)action
 {
-  v3 = a3;
-  if (a3)
+  actionCopy = action;
+  if (action)
   {
     ADClientAddValueForScalarKey();
-    if ((v3 & 2) == 0)
+    if ((actionCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((actionCopy & 4) == 0)
       {
         goto LABEL_4;
       }
 
 LABEL_8:
       ADClientAddValueForScalarKey();
-      if ((v3 & 8) == 0)
+      if ((actionCopy & 8) == 0)
       {
         return;
       }
@@ -609,19 +609,19 @@ LABEL_8:
     }
   }
 
-  else if ((a3 & 2) == 0)
+  else if ((action & 2) == 0)
   {
     goto LABEL_3;
   }
 
   ADClientAddValueForScalarKey();
-  if ((v3 & 4) != 0)
+  if ((actionCopy & 4) != 0)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  if ((v3 & 8) == 0)
+  if ((actionCopy & 8) == 0)
   {
     return;
   }
@@ -631,16 +631,16 @@ LABEL_9:
   ADClientAddValueForScalarKey();
 }
 
-+ (void)logSiriInvokedVia:(int64_t)a3
++ (void)logSiriInvokedVia:(int64_t)via
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (a3 == 1)
+  if (via == 1)
   {
     v3 = @"hardware_button";
     goto LABEL_5;
   }
 
-  if (a3 == 8)
+  if (via == 8)
   {
     v3 = @"voice_trigger";
 LABEL_5:
@@ -654,49 +654,49 @@ LABEL_5:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logRequestCancelAfterSeconds:(double)a3
++ (void)logRequestCancelAfterSeconds:(double)seconds
 {
-  if (a3 >= 0.0)
+  if (seconds >= 0.0)
   {
-    if (a3 >= 1.0)
+    if (seconds >= 1.0)
     {
-      if (a3 >= 2.0)
+      if (seconds >= 2.0)
       {
-        if (a3 >= 3.0)
+        if (seconds >= 3.0)
         {
-          if (a3 >= 4.0)
+          if (seconds >= 4.0)
           {
-            if (a3 >= 5.0)
+            if (seconds >= 5.0)
             {
-              if (a3 >= 6.0)
+              if (seconds >= 6.0)
               {
-                if (a3 >= 7.0)
+                if (seconds >= 7.0)
                 {
-                  if (a3 >= 8.0)
+                  if (seconds >= 8.0)
                   {
-                    if (a3 >= 9.0)
+                    if (seconds >= 9.0)
                     {
-                      if (a3 >= 10.0)
+                      if (seconds >= 10.0)
                       {
-                        if (a3 >= 11.0)
+                        if (seconds >= 11.0)
                         {
-                          if (a3 >= 12.0)
+                          if (seconds >= 12.0)
                           {
-                            if (a3 >= 13.0)
+                            if (seconds >= 13.0)
                             {
-                              if (a3 >= 14.0)
+                              if (seconds >= 14.0)
                               {
-                                if (a3 >= 15.0)
+                                if (seconds >= 15.0)
                                 {
-                                  if (a3 >= 20.0)
+                                  if (seconds >= 20.0)
                                   {
-                                    if (a3 >= 25.0)
+                                    if (seconds >= 25.0)
                                     {
-                                      if (a3 >= 30.0)
+                                      if (seconds >= 30.0)
                                       {
-                                        if (a3 >= 35.0)
+                                        if (seconds >= 35.0)
                                         {
-                                          if (a3 >= 40.0)
+                                          if (seconds >= 40.0)
                                           {
                                             v3 = @"com.apple.siri.RequestCancel.40SecondsOrMore";
                                           }
@@ -824,31 +824,31 @@ LABEL_5:
   }
 }
 
-+ (void)logRequestCompletedWithDuration:(double)a3
++ (void)logRequestCompletedWithDuration:(double)duration
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 < 0.0)
+  if (duration < 0.0)
   {
-    a3 = 0.0;
+    duration = 0.0;
   }
 
-  if (a3 > 10.0)
+  if (duration > 10.0)
   {
-    a3 = 10.0;
+    duration = 10.0;
   }
 
-  v3 = a3;
+  durationCopy = duration;
   v4 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     v6 = 136315394;
     v7 = "+[AFAggregator logRequestCompletedWithDuration:]";
     v8 = 1024;
-    v9 = v3;
+    v9 = durationCopy;
     _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %d", &v6, 0x12u);
   }
 
-  _AFAggregatorClientAddValueForScalarKey(*(&off_1E73476B0 + v3), 1);
+  _AFAggregatorClientAddValueForScalarKey(*(&off_1E73476B0 + durationCopy), 1);
   v5 = *MEMORY[0x1E69E9840];
 }
 
@@ -907,22 +907,22 @@ LABEL_5:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordFailure:(int)a3 forConnectionType:(unint64_t)a4
+- (void)recordFailure:(int)failure forConnectionType:(unint64_t)type
 {
   Mutable = CFStringCreateMutable(0, 31);
   CFStringAppendCString(Mutable, "com.apple.siri.", 0x600u);
-  if (a4 - 1 > 8)
+  if (type - 1 > 8)
   {
     v7 = "Unknown.";
   }
 
   else
   {
-    v7 = off_1E7347768[a4 - 1];
+    v7 = off_1E7347768[type - 1];
   }
 
   CFStringAppendCString(Mutable, v7, 0x600u);
-  if (a3)
+  if (failure)
   {
     v8 = "Dropped";
   }
@@ -938,12 +938,12 @@ LABEL_5:
   CFRelease(Mutable);
 }
 
-- (void)recordSuccessForConnectionType:(unint64_t)a3 isWarm:(BOOL)a4 forTimeInterval:(double)a5
+- (void)recordSuccessForConnectionType:(unint64_t)type isWarm:(BOOL)warm forTimeInterval:(double)interval
 {
-  v6 = a4;
+  warmCopy = warm;
   Mutable = CFStringCreateMutable(0, 52);
   CFStringAppendCString(Mutable, "com.apple.siri.", 0x600u);
-  if (v6)
+  if (warmCopy)
   {
     v9 = "";
   }
@@ -954,51 +954,51 @@ LABEL_5:
   }
 
   CFStringAppendCString(Mutable, v9, 0x600u);
-  if (a3 - 1 > 8)
+  if (type - 1 > 8)
   {
     v10 = "Unknown.";
   }
 
   else
   {
-    v10 = off_1E7347768[a3 - 1];
+    v10 = off_1E7347768[type - 1];
   }
 
   CFStringAppendCString(Mutable, v10, 0x600u);
-  v11 = 0.0;
-  if (a5 >= 0.0)
+  intervalCopy = 0.0;
+  if (interval >= 0.0)
   {
-    v11 = a5;
+    intervalCopy = interval;
   }
 
-  if (v11 > 10.0)
+  if (intervalCopy > 10.0)
   {
-    v11 = 10.0;
+    intervalCopy = 10.0;
   }
 
-  CFStringAppendCString(Mutable, off_1E7347710[v11], 0x600u);
+  CFStringAppendCString(Mutable, off_1E7347710[intervalCopy], 0x600u);
   _AFAggregatorClientAddValueForScalarKey(Mutable, 1);
 
   CFRelease(Mutable);
 }
 
-+ (id)_stringForGatekeeperType:(unint64_t)a3
++ (id)_stringForGatekeeperType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73477C8[a3];
+    return off_1E73477C8[type];
   }
 }
 
-+ (void)logStarkGatekeeperAppearedForType:(unint64_t)a3
++ (void)logStarkGatekeeperAppearedForType:(unint64_t)type
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [a1 _stringForGatekeeperType:a3];
+  v3 = [self _stringForGatekeeperType:type];
   v4 = v3;
   if (v3)
   {
@@ -1024,10 +1024,10 @@ LABEL_5:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logStarkGatekeeperDismissedManuallyForType:(unint64_t)a3
++ (void)logStarkGatekeeperDismissedManuallyForType:(unint64_t)type
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [a1 _stringForGatekeeperType:a3];
+  v3 = [self _stringForGatekeeperType:type];
   v4 = v3;
   if (v3)
   {

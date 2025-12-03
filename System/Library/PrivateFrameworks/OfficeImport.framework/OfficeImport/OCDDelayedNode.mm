@@ -1,6 +1,6 @@
 @interface OCDDelayedNode
 - (BOOL)load;
-- (void)setDelayedContext:(id)a3;
+- (void)setDelayedContext:(id)context;
 @end
 
 @implementation OCDDelayedNode
@@ -28,16 +28,16 @@
   return v3;
 }
 
-- (void)setDelayedContext:(id)a3
+- (void)setDelayedContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   mDelayedContext = self->mDelayedContext;
   p_mDelayedContext = &self->mDelayedContext;
-  if (mDelayedContext != v5)
+  if (mDelayedContext != contextCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mDelayedContext, a3);
-    v5 = v8;
+    v8 = contextCopy;
+    objc_storeStrong(p_mDelayedContext, context);
+    contextCopy = v8;
   }
 }
 

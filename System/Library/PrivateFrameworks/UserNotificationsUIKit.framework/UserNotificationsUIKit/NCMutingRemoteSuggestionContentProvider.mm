@@ -1,35 +1,35 @@
 @interface NCMutingRemoteSuggestionContentProvider
-- (NCMutingRemoteSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 uuid:(id)a7 scope:(unint64_t)a8;
+- (NCMutingRemoteSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate uuid:(id)uuid scope:(unint64_t)scope;
 - (id)auxiliaryOptionActions;
-- (void)handleAcceptAction:(id)a3;
-- (void)handleRejectAction:(id)a3;
-- (void)logSuggestionEvent:(int64_t)a3;
+- (void)handleAcceptAction:(id)action;
+- (void)handleRejectAction:(id)action;
+- (void)logSuggestionEvent:(int64_t)event;
 @end
 
 @implementation NCMutingRemoteSuggestionContentProvider
 
-- (NCMutingRemoteSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 uuid:(id)a7 scope:(unint64_t)a8
+- (NCMutingRemoteSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate uuid:(id)uuid scope:(unint64_t)scope
 {
-  v14 = a4;
+  nameCopy = name;
   v26.receiver = self;
   v26.super_class = NCMutingRemoteSuggestionContentProvider;
-  v15 = [(NCRemoteSuggestionContentProvider *)&v26 initWithNotificationRequest:a3 bundleDisplayName:v14 managementDelegate:a5 suggestionDelegate:a6 uuid:a7];
+  v15 = [(NCRemoteSuggestionContentProvider *)&v26 initWithNotificationRequest:request bundleDisplayName:nameCopy managementDelegate:delegate suggestionDelegate:suggestionDelegate uuid:uuid];
   v16 = v15;
   if (v15)
   {
-    v15->_scope = a8;
-    if (a8)
+    v15->_scope = scope;
+    if (scope)
     {
-      if (a8 != 1)
+      if (scope != 1)
       {
         v17 = @"NOTIFICATION_REMOTE_MANAGEMENT_MUTING_SUGGESTION_EXPLANATION";
-        v19 = &stru_282FE84F8;
+        nameCopy = &stru_282FE84F8;
         goto LABEL_10;
       }
 
       v17 = [@"NOTIFICATION_REMOTE_MANAGEMENT_MUTING_SUGGESTION_EXPLANATION" stringByAppendingString:@"_THREAD"];
       v18 = NCUserNotificationsUIKitFrameworkBundle();
-      v19 = [v18 localizedStringForKey:v17 value:&stru_282FE84F8 table:0];
+      nameCopy = [v18 localizedStringForKey:v17 value:&stru_282FE84F8 table:0];
     }
 
     else
@@ -39,7 +39,7 @@
       v21 = NCUserNotificationsUIKitFrameworkBundle();
       v22 = [v21 localizedStringForKey:v17 value:&stru_282FE84F8 table:0];
       v25 = 0;
-      v19 = [v20 stringWithValidatedFormat:v22 validFormatSpecifiers:@"%@" error:&v25, v14];
+      nameCopy = [v20 stringWithValidatedFormat:v22 validFormatSpecifiers:@"%@" error:&v25, nameCopy];
       v18 = v25;
 
       if (v18)
@@ -47,13 +47,13 @@
         v23 = *MEMORY[0x277D77DD8];
         if (os_log_type_enabled(*MEMORY[0x277D77DD8], OS_LOG_TYPE_FAULT))
         {
-          [NCModeConfigurationRemoteSuggestionContentProvider(Testing) _localizedSummaryStringForSuggestionType:v19 configurationType:v23 scope:v18 semanticType:? modeName:? bundleDisplayName:? preferredSenderSummary:? localizedStringForKeyBlock:?];
+          [NCModeConfigurationRemoteSuggestionContentProvider(Testing) _localizedSummaryStringForSuggestionType:nameCopy configurationType:v23 scope:v18 semanticType:? modeName:? bundleDisplayName:? preferredSenderSummary:? localizedStringForKeyBlock:?];
         }
       }
     }
 
 LABEL_10:
-    [(NCNotificationManagementSuggestionContentProvider *)v16 setAuxiliaryOptionsSummaryText:v19];
+    [(NCNotificationManagementSuggestionContentProvider *)v16 setAuxiliaryOptionsSummaryText:nameCopy];
   }
 
   return v16;
@@ -112,22 +112,22 @@ void __65__NCMutingRemoteSuggestionContentProvider_auxiliaryOptionActions__block
   [WeakRetained handleAcceptAction:v4];
 }
 
-- (void)handleRejectAction:(id)a3
+- (void)handleRejectAction:(id)action
 {
-  v4 = [MEMORY[0x277CEB1B8] sharedInstance];
-  v5 = [(NCRemoteSuggestionContentProvider *)self uuid];
+  mEMORY[0x277CEB1B8] = [MEMORY[0x277CEB1B8] sharedInstance];
+  uuid = [(NCRemoteSuggestionContentProvider *)self uuid];
   v6 = [MEMORY[0x277CBEAA8] now];
-  [v4 logSuggestionEvent:1 suggestionType:4 suggestionIdentifier:v5 timestamp:v6];
+  [mEMORY[0x277CEB1B8] logSuggestionEvent:1 suggestionType:4 suggestionIdentifier:uuid timestamp:v6];
 
-  v8 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v7 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v8 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v7];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest];
 }
 
-- (void)handleAcceptAction:(id)a3
+- (void)handleAcceptAction:(id)action
 {
-  v8 = a3;
-  v4 = [(NCNotificationManagementContentProvider *)self managementDelegate];
+  actionCopy = action;
+  managementDelegate = [(NCNotificationManagementContentProvider *)self managementDelegate];
   scope = self->_scope;
   if (scope)
   {
@@ -144,18 +144,18 @@ void __65__NCMutingRemoteSuggestionContentProvider_auxiliaryOptionActions__block
     v6 = 6;
   }
 
-  v7 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v4 notificationManagementContentProvider:self requestsPresentingNotificationManagementViewType:v6 forNotificationRequest:v7 withPresentingView:v8];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [managementDelegate notificationManagementContentProvider:self requestsPresentingNotificationManagementViewType:v6 forNotificationRequest:notificationRequest withPresentingView:actionCopy];
 
 LABEL_6:
 }
 
-- (void)logSuggestionEvent:(int64_t)a3
+- (void)logSuggestionEvent:(int64_t)event
 {
-  v7 = [MEMORY[0x277CEB1B8] sharedInstance];
-  v5 = [(NCRemoteSuggestionContentProvider *)self uuid];
+  mEMORY[0x277CEB1B8] = [MEMORY[0x277CEB1B8] sharedInstance];
+  uuid = [(NCRemoteSuggestionContentProvider *)self uuid];
   v6 = [MEMORY[0x277CBEAA8] now];
-  [v7 logSuggestionEvent:a3 suggestionType:4 suggestionIdentifier:v5 timestamp:v6];
+  [mEMORY[0x277CEB1B8] logSuggestionEvent:event suggestionType:4 suggestionIdentifier:uuid timestamp:v6];
 }
 
 @end

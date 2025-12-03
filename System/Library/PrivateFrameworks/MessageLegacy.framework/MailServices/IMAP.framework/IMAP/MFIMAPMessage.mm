@@ -1,21 +1,21 @@
 @interface MFIMAPMessage
 - (BOOL)isMessageContentsLocallyAvailable;
-- (MFIMAPMessage)initWithFlags:(unint64_t)a3 customFlags:(id)a4 size:(unint64_t)a5 uid:(unsigned int)a6;
+- (MFIMAPMessage)initWithFlags:(unint64_t)flags customFlags:(id)customFlags size:(unint64_t)size uid:(unsigned int)uid;
 - (id)_privacySafeDescription;
 - (id)customFlags;
 - (id)mailboxName;
 - (id)messageID;
 - (id)remoteID;
 - (id)remoteMailboxURL;
-- (int64_t)compareByNumberWithMessage:(id)a3;
+- (int64_t)compareByNumberWithMessage:(id)message;
 - (void)dealloc;
-- (void)setIsPartial:(BOOL)a3;
-- (void)setPreferredEncoding:(unsigned int)a3;
+- (void)setIsPartial:(BOOL)partial;
+- (void)setPreferredEncoding:(unsigned int)encoding;
 @end
 
 @implementation MFIMAPMessage
 
-- (MFIMAPMessage)initWithFlags:(unint64_t)a3 customFlags:(id)a4 size:(unint64_t)a5 uid:(unsigned int)a6
+- (MFIMAPMessage)initWithFlags:(unint64_t)flags customFlags:(id)customFlags size:(unint64_t)size uid:(unsigned int)uid
 {
   v13.receiver = self;
   v13.super_class = MFIMAPMessage;
@@ -23,10 +23,10 @@
   v11 = v10;
   if (v10)
   {
-    [(MFMailMessage *)v10 setMessageFlags:a3];
-    v11->_size = a5;
-    v11->_uid = a6;
-    v11->_customFlags = a4;
+    [(MFMailMessage *)v10 setMessageFlags:flags];
+    v11->_size = size;
+    v11->_uid = uid;
+    v11->_customFlags = customFlags;
   }
 
   return v11;
@@ -65,17 +65,17 @@
   return result;
 }
 
-- (int64_t)compareByNumberWithMessage:(id)a3
+- (int64_t)compareByNumberWithMessage:(id)message
 {
-  if (!a3)
+  if (!message)
   {
     return 1;
   }
 
-  v3 = (*(&self->super.super.super.isa + *MEMORY[0x277D284C0] + 4) & 1) + ((*(a3 + *MEMORY[0x277D284C0]) >> 1) >> 31);
+  v3 = (*(&self->super.super.super.isa + *MEMORY[0x277D284C0] + 4) & 1) + ((*(message + *MEMORY[0x277D284C0]) >> 1) >> 31);
   if (!v3)
   {
-    v3 = self->_uid - *(a3 + 60);
+    v3 = self->_uid - *(message + 60);
   }
 
   v4 = v3 < 0;
@@ -91,10 +91,10 @@
   }
 }
 
-- (void)setIsPartial:(BOOL)a3
+- (void)setIsPartial:(BOOL)partial
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!partial)
   {
     v3 = 0;
   }
@@ -104,14 +104,14 @@
 
 - (BOOL)isMessageContentsLocallyAvailable
 {
-  v3 = [(MFMailMessage *)self messageStore];
+  messageStore = [(MFMailMessage *)self messageStore];
 
-  return [v3 hasValidCacheFileForMessage:self];
+  return [messageStore hasValidCacheFileForMessage:self];
 }
 
-- (void)setPreferredEncoding:(unsigned int)a3
+- (void)setPreferredEncoding:(unsigned int)encoding
 {
-  *(&self->super.super.super.isa + *MEMORY[0x277D284C0]) = (*(&self->super.super.super.isa + *MEMORY[0x277D284C0]) & 0xFFFFFFF7FFFFFFFFLL | ((a3 != -1) << 35));
+  *(&self->super.super.super.isa + *MEMORY[0x277D284C0]) = (*(&self->super.super.super.isa + *MEMORY[0x277D284C0]) & 0xFFFFFFF7FFFFFFFFLL | ((encoding != -1) << 35));
   v3.receiver = self;
   v3.super_class = MFIMAPMessage;
   [(MFIMAPMessage *)&v3 setPreferredEncoding:?];
@@ -126,9 +126,9 @@
 
 - (id)mailboxName
 {
-  v2 = [(MFMailMessage *)self messageStore];
+  messageStore = [(MFMailMessage *)self messageStore];
 
-  return [v2 mailboxName];
+  return [messageStore mailboxName];
 }
 
 - (id)remoteID
@@ -140,9 +140,9 @@
 
 - (id)remoteMailboxURL
 {
-  v2 = [(MFMailMessage *)self mailbox];
+  mailbox = [(MFMailMessage *)self mailbox];
 
-  return [(MFMailboxUid *)v2 URLString];
+  return [(MFMailboxUid *)mailbox URLString];
 }
 
 @end

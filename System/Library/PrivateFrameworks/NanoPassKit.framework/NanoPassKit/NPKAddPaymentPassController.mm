@@ -1,21 +1,21 @@
 @interface NPKAddPaymentPassController
-- (NPKAddPaymentPassController)initWithRequestConfiguration:(id)a3 delegate:(id)a4;
-- (void)_sendDidFinishWithPass:(id)a3 error:(id)a4;
-- (void)didFinishWithPass:(id)a3 error:(id)a4;
-- (void)dismissWithCompletion:(id)a3;
-- (void)generateRequestWithCertificateChain:(id)a3 nonce:(id)a4 nonceSignature:(id)a5 completionHandler:(id)a6;
-- (void)presentWithCompletion:(id)a3;
-- (void)remoteService:(id)a3 didInterruptConnection:(id)a4;
+- (NPKAddPaymentPassController)initWithRequestConfiguration:(id)configuration delegate:(id)delegate;
+- (void)_sendDidFinishWithPass:(id)pass error:(id)error;
+- (void)didFinishWithPass:(id)pass error:(id)error;
+- (void)dismissWithCompletion:(id)completion;
+- (void)generateRequestWithCertificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler;
+- (void)presentWithCompletion:(id)completion;
+- (void)remoteService:(id)service didInterruptConnection:(id)connection;
 @end
 
 @implementation NPKAddPaymentPassController
 
-- (NPKAddPaymentPassController)initWithRequestConfiguration:(id)a3 delegate:(id)a4
+- (NPKAddPaymentPassController)initWithRequestConfiguration:(id)configuration delegate:(id)delegate
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = NPKAddPaymentPassController;
-  v8 = [(PKAddPaymentPassController *)&v15 initWithRequestConfiguration:v7 delegate:a4];
+  v8 = [(PKAddPaymentPassController *)&v15 initWithRequestConfiguration:configurationCopy delegate:delegate];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277D38348]);
@@ -25,21 +25,21 @@
     remoteService = v8->_remoteService;
     v8->_remoteService = v12;
 
-    objc_storeStrong(&v8->_configuration, a3);
+    objc_storeStrong(&v8->_configuration, configuration);
     [(PKXPCService *)v8->_remoteService setDelegate:v8];
   }
 
   return v8;
 }
 
-- (void)presentWithCompletion:(id)a3
+- (void)presentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__NPKAddPaymentPassController_presentWithCompletion___block_invoke;
   v11[3] = &unk_279945218;
-  v5 = v4;
+  v5 = completionCopy;
   v12 = v5;
   v6 = [(NPKAddPaymentPassController *)self _remoteObjectProxyWithErrorHandler:v11];
   configuration = self->_configuration;
@@ -135,14 +135,14 @@ uint64_t __53__NPKAddPaymentPassController_presentWithCompletion___block_invoke_
   return result;
 }
 
-- (void)dismissWithCompletion:(id)a3
+- (void)dismissWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__NPKAddPaymentPassController_dismissWithCompletion___block_invoke;
   v10[3] = &unk_279945218;
-  v5 = v4;
+  v5 = completionCopy;
   v11 = v5;
   v6 = [(NPKAddPaymentPassController *)self _remoteObjectProxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x277D85DD0];
@@ -192,21 +192,21 @@ uint64_t __53__NPKAddPaymentPassController_dismissWithCompletion___block_invoke_
   return result;
 }
 
-- (void)remoteService:(id)a3 didInterruptConnection:(id)a4
+- (void)remoteService:(id)service didInterruptConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v5 = PKDisplayableErrorForCommonType();
   [(NPKAddPaymentPassController *)self _sendDidFinishWithPass:0 error:v5];
 
-  [v6 invalidate];
+  [connectionCopy invalidate];
 }
 
-- (void)generateRequestWithCertificateChain:(id)a3 nonce:(id)a4 nonceSignature:(id)a5 completionHandler:(id)a6
+- (void)generateRequestWithCertificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  chainCopy = chain;
+  nonceCopy = nonce;
+  signatureCopy = signature;
+  handlerCopy = handler;
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -225,14 +225,14 @@ uint64_t __53__NPKAddPaymentPassController_dismissWithCompletion___block_invoke_
   block[2] = __106__NPKAddPaymentPassController_generateRequestWithCertificateChain_nonce_nonceSignature_completionHandler___block_invoke;
   block[3] = &unk_2799467F8;
   block[4] = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v25 = v13;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  v20 = v10;
+  v22 = chainCopy;
+  v23 = nonceCopy;
+  v24 = signatureCopy;
+  v25 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = signatureCopy;
+  v19 = nonceCopy;
+  v20 = chainCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -242,10 +242,10 @@ void __106__NPKAddPaymentPassController_generateRequestWithCertificateChain_nonc
   [v2 addPaymentPassController:*(a1 + 32) generateRequestWithCertificateChain:*(a1 + 40) nonce:*(a1 + 48) nonceSignature:*(a1 + 56) completionHandler:*(a1 + 64)];
 }
 
-- (void)didFinishWithPass:(id)a3 error:(id)a4
+- (void)didFinishWithPass:(id)pass error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  errorCopy = error;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -259,22 +259,22 @@ void __106__NPKAddPaymentPassController_generateRequestWithCertificateChain_nonc
     }
   }
 
-  [(NPKAddPaymentPassController *)self _sendDidFinishWithPass:v6 error:v7];
+  [(NPKAddPaymentPassController *)self _sendDidFinishWithPass:passCopy error:errorCopy];
 }
 
-- (void)_sendDidFinishWithPass:(id)a3 error:(id)a4
+- (void)_sendDidFinishWithPass:(id)pass error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  errorCopy = error;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__NPKAddPaymentPassController__sendDidFinishWithPass_error___block_invoke;
   block[3] = &unk_279945880;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = passCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = passCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

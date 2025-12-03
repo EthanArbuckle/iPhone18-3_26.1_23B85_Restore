@@ -1,7 +1,7 @@
 @interface NotesMetadataActivityItemProvider
-- (_TtC11AppStoreKit33NotesMetadataActivityItemProvider)initWithPlaceholderItem:(id)a3;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (_TtC11AppStoreKit33NotesMetadataActivityItemProvider)initWithPlaceholderItem:(id)item;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 - (id)item;
 @end
 
@@ -9,7 +9,7 @@
 
 - (id)item
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E14703E8(v5);
 
   __swift_project_boxed_opaque_existential_1Tm(v5, v5[3]);
@@ -19,12 +19,12 @@
   return v3;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1E14704E4(a4, v17);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  sub_1E14704E4(type, v17);
 
   v9 = v18;
   if (v18)
@@ -47,19 +47,19 @@
   return v15;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1E1470908(a4);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  sub_1E1470908(type);
 
   v9 = sub_1E1AF5DBC();
 
   return v9;
 }
 
-- (_TtC11AppStoreKit33NotesMetadataActivityItemProvider)initWithPlaceholderItem:(id)a3
+- (_TtC11AppStoreKit33NotesMetadataActivityItemProvider)initWithPlaceholderItem:(id)item
 {
   swift_unknownObjectRetain();
   sub_1E1AF6EBC();

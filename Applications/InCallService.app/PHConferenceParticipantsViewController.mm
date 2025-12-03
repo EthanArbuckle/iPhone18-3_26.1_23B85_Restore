@@ -1,28 +1,28 @@
 @interface PHConferenceParticipantsViewController
-- (PHConferenceParticipantsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)callStatusChanged:(id)a3;
-- (void)conferenceParticipantCellRequestedEndCall:(id)a3;
-- (void)conferenceParticipantCellRequestedTakeCallPrivate:(id)a3;
+- (PHConferenceParticipantsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)callStatusChanged:(id)changed;
+- (void)conferenceParticipantCellRequestedEndCall:(id)call;
+- (void)conferenceParticipantCellRequestedTakeCallPrivate:(id)private;
 - (void)dealloc;
 - (void)dismissAfterPrivate;
 - (void)dismissConferenceView;
-- (void)handleCallModelChangedNotification:(id)a3;
+- (void)handleCallModelChangedNotification:(id)notification;
 - (void)loadView;
-- (void)removeCall:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)removeCall:(id)call;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PHConferenceParticipantsViewController
 
-- (PHConferenceParticipantsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHConferenceParticipantsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v11.receiver = self;
   v11.super_class = PHConferenceParticipantsViewController;
-  v4 = [(PHConferenceParticipantsViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v4 = [(PHConferenceParticipantsViewController *)&v11 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -63,30 +63,30 @@
   [(PHConferenceParticipantsViewController *)self setView:v12];
 
   v13 = +[UIColor clearColor];
-  v14 = [(PHConferenceParticipantsViewController *)self view];
-  [v14 setBackgroundColor:v13];
+  view = [(PHConferenceParticipantsViewController *)self view];
+  [view setBackgroundColor:v13];
 
-  v15 = [(PHConferenceParticipantsViewController *)self view];
-  [v15 setOpaque:0];
+  view2 = [(PHConferenceParticipantsViewController *)self view];
+  [view2 setOpaque:0];
 
   v16 = +[NSBundle mainBundle];
   v17 = [v16 localizedStringForKey:@"CONFERENCE" value:&stru_100361FD0 table:@"InCallService"];
-  v18 = [(PHConferenceParticipantsViewController *)self navigationItem];
-  [v18 setTitle:v17];
+  navigationItem = [(PHConferenceParticipantsViewController *)self navigationItem];
+  [navigationItem setTitle:v17];
 
-  v19 = [(PHConferenceParticipantsViewController *)self view];
-  [v19 bounds];
+  view3 = [(PHConferenceParticipantsViewController *)self view];
+  [view3 bounds];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
-  v28 = [(PHConferenceParticipantsViewController *)self navigationController];
-  v29 = [v28 navigationBar];
-  [v29 frame];
+  navigationController = [(PHConferenceParticipantsViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v31 = v30;
-  v32 = [UIApp statusBar];
-  [v32 defaultHeight];
+  statusBar = [UIApp statusBar];
+  [statusBar defaultHeight];
   v34 = v31 + v33;
 
   v35 = [[UITableView alloc] initWithFrame:{v21, v23 + v34, v25, v27 - v34}];
@@ -105,8 +105,8 @@
   [(UITableView *)self->_conferenceTable setDelaysContentTouches:0];
   [(UITableView *)self->_conferenceTable setCanCancelContentTouches:0];
   [(UITableView *)self->_conferenceTable setRowHeight:UITableViewAutomaticDimension];
-  v38 = [(PHConferenceParticipantsViewController *)self view];
-  [v38 addSubview:self->_conferenceTable];
+  view4 = [(PHConferenceParticipantsViewController *)self view];
+  [view4 addSubview:self->_conferenceTable];
 }
 
 - (void)viewDidLoad
@@ -118,28 +118,28 @@
   {
     v3 = [UIImage systemImageNamed:@"chevron.backward"];
     v4 = [[UIBarButtonItem alloc] initWithImage:v3 style:0 target:self action:"dismissConferenceView"];
-    v5 = [(PHConferenceParticipantsViewController *)self navigationItem];
-    [v5 setLeftBarButtonItem:v4];
+    navigationItem = [(PHConferenceParticipantsViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v4];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = PHConferenceParticipantsViewController;
-  [(PHConferenceParticipantsViewController *)&v15 viewWillAppear:a3];
+  [(PHConferenceParticipantsViewController *)&v15 viewWillAppear:appear];
   v4 = +[TUCallCenter sharedInstance];
-  v5 = [v4 frontmostCall];
-  v6 = [v5 isConversation];
+  frontmostCall = [v4 frontmostCall];
+  isConversation = [frontmostCall isConversation];
 
   v7 = +[TUCallCenter sharedInstance];
   v8 = v7;
-  if (v6)
+  if (isConversation)
   {
-    v9 = [v7 frontmostCall];
-    v10 = [v9 remoteParticipantHandles];
-    v11 = [v10 allObjects];
-    v12 = [v11 mutableCopy];
+    frontmostCall2 = [v7 frontmostCall];
+    remoteParticipantHandles = [frontmostCall2 remoteParticipantHandles];
+    allObjects = [remoteParticipantHandles allObjects];
+    v12 = [allObjects mutableCopy];
     [(PHConferenceParticipantsViewController *)self setRemoteParticipantHandles:v12];
 
     [(PHConferenceParticipantsViewController *)self setShowingMultiwayParticipants:1];
@@ -147,40 +147,40 @@
 
   else
   {
-    v13 = [v7 conferenceParticipantCalls];
-    v14 = [v13 mutableCopy];
+    conferenceParticipantCalls = [v7 conferenceParticipantCalls];
+    v14 = [conferenceParticipantCalls mutableCopy];
     [(PHConferenceParticipantsViewController *)self setConferenceParticipantCalls:v14];
   }
 }
 
 - (void)dismissConferenceView
 {
-  v3 = [(PHConferenceParticipantsViewController *)self navigationController];
-  v2 = [v3 popToRootViewControllerAnimated:1];
+  navigationController = [(PHConferenceParticipantsViewController *)self navigationController];
+  v2 = [navigationController popToRootViewControllerAnimated:1];
 }
 
-- (void)callStatusChanged:(id)a3
+- (void)callStatusChanged:(id)changed
 {
-  v4 = [a3 object];
-  if ([v4 status] == 6)
+  object = [changed object];
+  if ([object status] == 6)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = object;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Call was disconnected, we'll remove that call and pop %@", &v9, 0xCu);
     }
 
-    [(PHConferenceParticipantsViewController *)self removeCall:v4];
+    [(PHConferenceParticipantsViewController *)self removeCall:object];
   }
 
   else
   {
-    v6 = [v4 status];
+    status = [object status];
     v7 = sub_100004F84();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v6 == 4)
+    if (status == 4)
     {
       if (v8)
       {
@@ -196,71 +196,71 @@
       if (v8)
       {
         v9 = 138412290;
-        v10 = v4;
+        v10 = object;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Saw a call change but won't do anything with it: %@", &v9, 0xCu);
       }
     }
   }
 }
 
-- (void)handleCallModelChangedNotification:(id)a3
+- (void)handleCallModelChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
-  v6 = [v4 object];
-  if (v6)
+  object = [notificationCopy object];
+  if (object)
   {
-    v7 = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
-    v8 = [v7 indexOfObject:v6];
+    conferenceParticipantCalls = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
+    v8 = [conferenceParticipantCalls indexOfObject:object];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = sub_100004F84();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      conferenceTable = sub_100004F84();
+      if (os_log_type_enabled(conferenceTable, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v14 = v6;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Skipping table row reload, did not find a call in the conference participants list that matches (%@).", buf, 0xCu);
+        v14 = object;
+        _os_log_impl(&_mh_execute_header, conferenceTable, OS_LOG_TYPE_DEFAULT, "Skipping table row reload, did not find a call in the conference participants list that matches (%@).", buf, 0xCu);
       }
     }
 
     else
     {
-      v9 = [(PHConferenceParticipantsViewController *)self conferenceTable];
+      conferenceTable = [(PHConferenceParticipantsViewController *)self conferenceTable];
       v10 = [NSIndexPath indexPathForRow:v8 inSection:0];
       v12 = v10;
       v11 = [NSArray arrayWithObjects:&v12 count:1];
-      [v9 reloadRowsAtIndexPaths:v11 withRowAnimation:0];
+      [conferenceTable reloadRowsAtIndexPaths:v11 withRowAnimation:0];
     }
   }
 }
 
-- (void)removeCall:(id)a3
+- (void)removeCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
-  v6 = [v5 indexOfObject:v4];
+  callCopy = call;
+  conferenceParticipantCalls = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
+  v6 = [conferenceParticipantCalls indexOfObject:callCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
-    [v7 removeObjectAtIndex:v6];
+    conferenceParticipantCalls2 = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
+    [conferenceParticipantCalls2 removeObjectAtIndex:v6];
 
     v8 = [NSIndexPath indexPathForRow:v6 inSection:0];
-    v9 = [(PHConferenceParticipantsViewController *)self conferenceTable];
+    conferenceTable = [(PHConferenceParticipantsViewController *)self conferenceTable];
     v15 = v8;
     v10 = [NSArray arrayWithObjects:&v15 count:1];
-    [v9 deleteRowsAtIndexPaths:v10 withRowAnimation:2];
+    [conferenceTable deleteRowsAtIndexPaths:v10 withRowAnimation:2];
 
-    v11 = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
-    v12 = [v11 count];
+    conferenceParticipantCalls3 = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
+    v12 = [conferenceParticipantCalls3 count];
 
     if (v12 <= 1)
     {
@@ -275,9 +275,9 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(PHConferenceParticipantsViewController *)self isShowingMultiwayParticipants:a3])
+  if ([(PHConferenceParticipantsViewController *)self isShowingMultiwayParticipants:view])
   {
     [(PHConferenceParticipantsViewController *)self remoteParticipantHandles];
   }
@@ -292,18 +292,18 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = objc_alloc_init(PHConferenceParticipantCell);
   [(PHConferenceParticipantCell *)v6 setSelectionStyle:0];
   [(PHConferenceParticipantCell *)v6 setDelegate:self];
   if ([(PHConferenceParticipantsViewController *)self isShowingMultiwayParticipants])
   {
-    v7 = [(PHConferenceParticipantsViewController *)self remoteParticipantHandles];
-    v8 = [v5 row];
+    remoteParticipantHandles = [(PHConferenceParticipantsViewController *)self remoteParticipantHandles];
+    v8 = [pathCopy row];
 
-    v9 = [v7 objectAtIndexedSubscript:v8];
+    v9 = [remoteParticipantHandles objectAtIndexedSubscript:v8];
 
     [(PHConferenceParticipantCell *)v6 setRepresentedHandle:v9];
     [(PHConferenceParticipantCell *)v6 setPrivateButtonHidden:1];
@@ -312,29 +312,29 @@
 
   else
   {
-    v10 = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
-    v11 = [v5 row];
+    conferenceParticipantCalls = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
+    v11 = [pathCopy row];
 
-    v9 = [v10 objectAtIndexedSubscript:v11];
+    v9 = [conferenceParticipantCalls objectAtIndexedSubscript:v11];
 
     [(PHConferenceParticipantCell *)v6 setRepresentedCall:v9];
-    v12 = [v9 provider];
-    v13 = [v12 prioritizedSenderIdentities];
-    v14 = [v13 count];
+    provider = [v9 provider];
+    prioritizedSenderIdentities = [provider prioritizedSenderIdentities];
+    v14 = [prioritizedSenderIdentities count];
 
     if (v14 >= 2)
     {
-      v15 = [v9 localSenderIdentity];
-      v16 = [v15 localizedShortName];
-      [(PHConferenceParticipantCell *)v6 setLocalizedSenderIdentity:v16];
+      localSenderIdentity = [v9 localSenderIdentity];
+      localizedShortName = [localSenderIdentity localizedShortName];
+      [(PHConferenceParticipantCell *)v6 setLocalizedSenderIdentity:localizedShortName];
     }
 
-    v17 = [v9 model];
-    if ([v17 supportsUngrouping])
+    model = [v9 model];
+    if ([model supportsUngrouping])
     {
       v18 = +[TUCallCenter sharedInstance];
-      v19 = [v18 currentCallGroups];
-      -[PHConferenceParticipantCell setPrivateButtonEnabled:](v6, "setPrivateButtonEnabled:", [v19 count] == 1);
+      currentCallGroups = [v18 currentCallGroups];
+      -[PHConferenceParticipantCell setPrivateButtonEnabled:](v6, "setPrivateButtonEnabled:", [currentCallGroups count] == 1);
     }
 
     else
@@ -346,21 +346,21 @@
   return v6;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  cellCopy = cell;
   v6 = +[UIColor clearColor];
-  [v5 setBackgroundColor:v6];
+  [cellCopy setBackgroundColor:v6];
 }
 
-- (void)conferenceParticipantCellRequestedEndCall:(id)a3
+- (void)conferenceParticipantCellRequestedEndCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHConferenceParticipantsViewController *)self conferenceTable];
-  v6 = [v5 indexPathForCell:v4];
+  callCopy = call;
+  conferenceTable = [(PHConferenceParticipantsViewController *)self conferenceTable];
+  v6 = [conferenceTable indexPathForCell:callCopy];
 
-  v7 = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
-  v8 = [v7 objectAtIndex:{objc_msgSend(v6, "row")}];
+  conferenceParticipantCalls = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
+  v8 = [conferenceParticipantCalls objectAtIndex:{objc_msgSend(v6, "row")}];
 
   v9 = sub_100004F84();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -374,19 +374,19 @@
   [v10 disconnectCall:v8];
 }
 
-- (void)conferenceParticipantCellRequestedTakeCallPrivate:(id)a3
+- (void)conferenceParticipantCellRequestedTakeCallPrivate:(id)private
 {
   conferenceTable = self->_conferenceTable;
-  v5 = a3;
-  v6 = [(UITableView *)conferenceTable visibleCells];
-  v7 = [v6 mutableCopy];
+  privateCopy = private;
+  visibleCells = [(UITableView *)conferenceTable visibleCells];
+  v7 = [visibleCells mutableCopy];
 
-  [v7 removeObject:v5];
+  [v7 removeObject:privateCopy];
   [v7 makeObjectsPerformSelector:"makeHeld"];
-  v8 = [(UITableView *)self->_conferenceTable indexPathForCell:v5];
+  v8 = [(UITableView *)self->_conferenceTable indexPathForCell:privateCopy];
 
-  v9 = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
-  v10 = [v9 objectAtIndex:{objc_msgSend(v8, "row")}];
+  conferenceParticipantCalls = [(PHConferenceParticipantsViewController *)self conferenceParticipantCalls];
+  v10 = [conferenceParticipantCalls objectAtIndex:{objc_msgSend(v8, "row")}];
 
   v11 = +[TUCallCenter sharedInstance];
   [v11 ungroupCall:v10];
@@ -406,8 +406,8 @@
 - (void)dismissAfterPrivate
 {
   [UIApp setIgnoresInteractionEvents:0];
-  v4 = [(PHConferenceParticipantsViewController *)self navigationController];
-  v3 = [v4 popToRootViewControllerAnimated:1];
+  navigationController = [(PHConferenceParticipantsViewController *)self navigationController];
+  v3 = [navigationController popToRootViewControllerAnimated:1];
 }
 
 @end

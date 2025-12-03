@@ -1,7 +1,7 @@
 @interface AccountButton
 - (CGSize)intrinsicContentSize;
 - (void)dealloc;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AccountButton
@@ -10,12 +10,12 @@
 {
   ObjectType = swift_getObjectType();
   v4 = qword_DE67A8;
-  v5 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
-    v8 = v5;
+    v8 = selfCopy;
     swift_once();
-    v5 = v8;
+    selfCopy = v8;
   }
 
   v6 = qword_E70D38;
@@ -23,7 +23,7 @@
   v12 = 0;
   v13 = 0;
   v11 = 0;
-  v7 = v5;
+  v7 = selfCopy;
   sub_405000(&v10, v7, v6);
 
   v9.receiver = v7;
@@ -31,11 +31,11 @@
   [(AccountButton *)&v9 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_8EDB0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_8EDB0(change);
 }
 
 - (CGSize)intrinsicContentSize

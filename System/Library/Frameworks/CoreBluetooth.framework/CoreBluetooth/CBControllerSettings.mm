@@ -1,68 +1,68 @@
 @interface CBControllerSettings
-- (CBControllerSettings)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (CBControllerSettings)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBControllerSettings
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   discoverableState = self->_discoverableState;
-  xdict = v4;
+  xdict = objectCopy;
   if (discoverableState)
   {
-    xpc_dictionary_set_int64(v4, "dsSt", discoverableState);
-    v4 = xdict;
+    xpc_dictionary_set_int64(objectCopy, "dsSt", discoverableState);
+    objectCopy = xdict;
   }
 
   if (self->_gameControllerAutoSwitchMode)
   {
     xpc_dictionary_set_int64(xdict, "gAsM", self->_gameControllerAutoSwitchMode);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 
   if (self->_gameControllerUSBBluetoothPairing)
   {
     xpc_dictionary_set_int64(xdict, "gUbP", self->_gameControllerUSBBluetoothPairing);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 
   if (self->_hid3ppLELegacyMode)
   {
     xpc_dictionary_set_int64(xdict, "hFMs", self->_hid3ppLELegacyMode);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 
   if (self->_bleAdvRSSI)
   {
     xpc_dictionary_set_int64(xdict, "rssi", self->_bleAdvRSSI);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 
   if (self->_setupAssistantIfNoKeyboard)
   {
     xpc_dictionary_set_int64(xdict, "saKB", self->_setupAssistantIfNoKeyboard);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 
   if (self->_setupAssistantIfNoPointingDevice)
   {
     xpc_dictionary_set_int64(xdict, "saPD", self->_setupAssistantIfNoPointingDevice);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 
   if (self->_spatialSoundProfileAllowed)
   {
     xpc_dictionary_set_int64(xdict, "spSP", self->_spatialSoundProfileAllowed);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if (a3 <= 0x14u)
+  if (level <= 0x14u)
   {
     v69 = 0;
     discoverableState = self->_discoverableState;
@@ -139,7 +139,7 @@
     goto LABEL_35;
   }
 
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v6 = 0;
     v60 = 0;
@@ -250,9 +250,9 @@ LABEL_35:
   return v48;
 }
 
-- (CBControllerSettings)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBControllerSettings)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

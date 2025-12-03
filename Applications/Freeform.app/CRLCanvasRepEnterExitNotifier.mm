@@ -1,24 +1,24 @@
 @interface CRLCanvasRepEnterExitNotifier
-- (CRLCanvasRepEnterExitNotifier)initWithInteractiveCanvasController:(id)a3;
-- (void)cursorEnteredAtPoint:(CGPoint)a3 withPlatformObject:(id)a4;
-- (void)cursorExitedAtPoint:(CGPoint)a3 withPlatformObject:(id)a4;
-- (void)p_updateEnteredKnobsAtPoint:(CGPoint)a3 withPlatformObject:(id)a4;
-- (void)p_updateEnteredRepsAtPoint:(CGPoint)a3 withPlatformObject:(id)a4;
-- (void)updateEnteredExitedRepStateAtPoint:(CGPoint)a3 withPlatformObject:(id)a4;
+- (CRLCanvasRepEnterExitNotifier)initWithInteractiveCanvasController:(id)controller;
+- (void)cursorEnteredAtPoint:(CGPoint)point withPlatformObject:(id)object;
+- (void)cursorExitedAtPoint:(CGPoint)point withPlatformObject:(id)object;
+- (void)p_updateEnteredKnobsAtPoint:(CGPoint)point withPlatformObject:(id)object;
+- (void)p_updateEnteredRepsAtPoint:(CGPoint)point withPlatformObject:(id)object;
+- (void)updateEnteredExitedRepStateAtPoint:(CGPoint)point withPlatformObject:(id)object;
 @end
 
 @implementation CRLCanvasRepEnterExitNotifier
 
-- (CRLCanvasRepEnterExitNotifier)initWithInteractiveCanvasController:(id)a3
+- (CRLCanvasRepEnterExitNotifier)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = CRLCanvasRepEnterExitNotifier;
   v5 = [(CRLCanvasRepEnterExitNotifier *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_interactiveCanvasController, v4);
+    objc_storeWeak(&v5->_interactiveCanvasController, controllerCopy);
     v7 = objc_alloc_init(NSMutableSet);
     currentlyHitReps = v6->_currentlyHitReps;
     v6->_currentlyHitReps = v7;
@@ -27,31 +27,31 @@
   return v6;
 }
 
-- (void)cursorEnteredAtPoint:(CGPoint)a3 withPlatformObject:(id)a4
+- (void)cursorEnteredAtPoint:(CGPoint)point withPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [(CRLCanvasRepEnterExitNotifier *)self p_updateEnteredKnobsAtPoint:v7 withPlatformObject:x, y];
-  [(CRLCanvasRepEnterExitNotifier *)self p_updateEnteredRepsAtPoint:v7 withPlatformObject:x, y];
+  y = point.y;
+  x = point.x;
+  objectCopy = object;
+  [(CRLCanvasRepEnterExitNotifier *)self p_updateEnteredKnobsAtPoint:objectCopy withPlatformObject:x, y];
+  [(CRLCanvasRepEnterExitNotifier *)self p_updateEnteredRepsAtPoint:objectCopy withPlatformObject:x, y];
 }
 
-- (void)updateEnteredExitedRepStateAtPoint:(CGPoint)a3 withPlatformObject:(id)a4
+- (void)updateEnteredExitedRepStateAtPoint:(CGPoint)point withPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  [(CRLCanvasRepEnterExitNotifier *)self p_updateEnteredKnobsAtPoint:v7 withPlatformObject:x, y];
-  [(CRLCanvasRepEnterExitNotifier *)self p_updateEnteredRepsAtPoint:v7 withPlatformObject:x, y];
+  y = point.y;
+  x = point.x;
+  objectCopy = object;
+  [(CRLCanvasRepEnterExitNotifier *)self p_updateEnteredKnobsAtPoint:objectCopy withPlatformObject:x, y];
+  [(CRLCanvasRepEnterExitNotifier *)self p_updateEnteredRepsAtPoint:objectCopy withPlatformObject:x, y];
 }
 
-- (void)cursorExitedAtPoint:(CGPoint)a3 withPlatformObject:(id)a4
+- (void)cursorExitedAtPoint:(CGPoint)point withPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  objectCopy = object;
   self->_currentlyExiting = 1;
-  [(CRLCanvasKnob *)self->_overKnob cursorExitedKnobAtPoint:v7 withPlatformObject:x, y];
+  [(CRLCanvasKnob *)self->_overKnob cursorExitedKnobAtPoint:objectCopy withPlatformObject:x, y];
   overKnob = self->_overKnob;
   self->_overKnob = 0;
 
@@ -75,7 +75,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13) cursorExitedAtPoint:v7 withPlatformObject:{x, y, v14}];
+        [*(*(&v14 + 1) + 8 * v13) cursorExitedAtPoint:objectCopy withPlatformObject:{x, y, v14}];
         v13 = v13 + 1;
       }
 
@@ -90,11 +90,11 @@
   self->_currentlyExiting = 0;
 }
 
-- (void)p_updateEnteredKnobsAtPoint:(CGPoint)a3 withPlatformObject:(id)a4
+- (void)p_updateEnteredKnobsAtPoint:(CGPoint)point withPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  objectCopy = object;
   if (!self->_currentlyExiting)
   {
     WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
@@ -107,7 +107,7 @@
     v11 = overKnob;
     if (v9 == overKnob)
     {
-      [(CRLCanvasKnob *)v11 cursorMovedAtPoint:v7 withPlatformObject:x, y];
+      [(CRLCanvasKnob *)v11 cursorMovedAtPoint:objectCopy withPlatformObject:x, y];
       goto LABEL_10;
     }
 
@@ -125,19 +125,19 @@ LABEL_10:
       v11 = *p_overKnob;
     }
 
-    [(CRLCanvasKnob *)v11 cursorExitedKnobAtPoint:v7 withPlatformObject:x, y];
-    [(CRLCanvasKnob *)v9 cursorEnteredKnobAtPoint:v7 withPlatformObject:x, y];
+    [(CRLCanvasKnob *)v11 cursorExitedKnobAtPoint:objectCopy withPlatformObject:x, y];
+    [(CRLCanvasKnob *)v9 cursorEnteredKnobAtPoint:objectCopy withPlatformObject:x, y];
     goto LABEL_8;
   }
 
 LABEL_11:
 }
 
-- (void)p_updateEnteredRepsAtPoint:(CGPoint)a3 withPlatformObject:(id)a4
+- (void)p_updateEnteredRepsAtPoint:(CGPoint)point withPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  objectCopy = object;
   if (!self->_currentlyExiting)
   {
     v8 = self->_currentlyHitReps;
@@ -156,12 +156,12 @@ LABEL_11:
       do
       {
         [(NSMutableSet *)self->_currentlyHitReps addObject:v15];
-        v16 = [v15 parentRep];
+        parentRep = [v15 parentRep];
 
-        v15 = v16;
+        v15 = parentRep;
       }
 
-      while (v16);
+      while (parentRep);
     }
 
     v17 = [(NSMutableSet *)v8 mutableCopy];
@@ -186,7 +186,7 @@ LABEL_11:
             objc_enumerationMutation(v18);
           }
 
-          [*(*(&v43 + 1) + 8 * v22) cursorExitedAtPoint:v7 withPlatformObject:{x, y}];
+          [*(*(&v43 + 1) + 8 * v22) cursorExitedAtPoint:objectCopy withPlatformObject:{x, y}];
           v22 = v22 + 1;
         }
 
@@ -219,7 +219,7 @@ LABEL_11:
             objc_enumerationMutation(v24);
           }
 
-          [*(*(&v39 + 1) + 8 * v28) cursorEnteredAtPoint:v7 withPlatformObject:{x, y}];
+          [*(*(&v39 + 1) + 8 * v28) cursorEnteredAtPoint:objectCopy withPlatformObject:{x, y}];
           v28 = v28 + 1;
         }
 
@@ -234,7 +234,7 @@ LABEL_11:
     {
       if ([(NSMutableSet *)v8 containsObject:v14])
       {
-        [v14 cursorMovedAtPoint:v7 withPlatformObject:{x, y}];
+        [v14 cursorMovedAtPoint:objectCopy withPlatformObject:{x, y}];
       }
 
       v29 = [(NSMutableSet *)self->_currentlyHitReps mutableCopy];
@@ -259,7 +259,7 @@ LABEL_11:
               objc_enumerationMutation(v30);
             }
 
-            [*(*(&v35 + 1) + 8 * v34) cursorMovedAtPoint:v7 withPlatformObject:{x, y, v35}];
+            [*(*(&v35 + 1) + 8 * v34) cursorMovedAtPoint:objectCopy withPlatformObject:{x, y, v35}];
             v34 = v34 + 1;
           }
 

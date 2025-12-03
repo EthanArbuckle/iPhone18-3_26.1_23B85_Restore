@@ -6,12 +6,12 @@
 - (double)distance;
 - (double)fastestPaceInMetersPerSecond;
 - (unint64_t)downhillRunCount;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
-- (void)downhillRunDidComplete:(id)a3;
-- (void)recoverWithDownhillRunEvents:(NSArray *)a3 pauseResumeEvents:(NSArray *)a4 healthStore:(HKHealthStore *)a5 completionHandler:(id)a6;
-- (void)setDescent:(double)a3;
-- (void)setDistance:(double)a3;
-- (void)setDownhillRunCount:(unint64_t)a3;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
+- (void)downhillRunDidComplete:(id)complete;
+- (void)recoverWithDownhillRunEvents:(NSArray *)events pauseResumeEvents:(NSArray *)resumeEvents healthStore:(HKHealthStore *)store completionHandler:(id)handler;
+- (void)setDescent:(double)descent;
+- (void)setDistance:(double)distance;
+- (void)setDownhillRunCount:(unint64_t)count;
 @end
 
 @implementation NLSessionActivityDownhillSnowSportsAccumulator
@@ -46,11 +46,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setDistance:(double)a3
+- (void)setDistance:(double)distance
 {
   v5 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_distance;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = distance;
 }
 
 - (double)descent
@@ -60,11 +60,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setDescent:(double)a3
+- (void)setDescent:(double)descent
 {
   v5 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_descent;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = descent;
 }
 
 - (unint64_t)downhillRunCount
@@ -74,21 +74,21 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setDownhillRunCount:(unint64_t)a3
+- (void)setDownhillRunCount:(unint64_t)count
 {
   v5 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_downhillRunCount;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = count;
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v15 - v9;
-  v11 = _Block_copy(a4);
-  if (a3)
+  v11 = _Block_copy(handler);
+  if (date)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for Date();
@@ -107,31 +107,31 @@
     v11 = _sIeyB_Ieg_TRTA_7;
   }
 
-  v14 = self;
+  selfCopy = self;
   specialized DownhillSnowSportsAccumulator.accumulatorDidStart(withStart:handler:)();
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v11);
 
   _sSo8NSObjectCSgWOhTm_16(v10, &_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
 }
 
-- (void)downhillRunDidComplete:(id)a3
+- (void)downhillRunDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = self;
-  DownhillSnowSportsAccumulator.downhillRunDidComplete(_:)(v4);
+  completeCopy = complete;
+  selfCopy = self;
+  DownhillSnowSportsAccumulator.downhillRunDidComplete(_:)(completeCopy);
 }
 
-- (void)recoverWithDownhillRunEvents:(NSArray *)a3 pauseResumeEvents:(NSArray *)a4 healthStore:(HKHealthStore *)a5 completionHandler:(id)a6
+- (void)recoverWithDownhillRunEvents:(NSArray *)events pauseResumeEvents:(NSArray *)resumeEvents healthStore:(HKHealthStore *)store completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x28223BE20](v11 - 8);
   v14 = &v24 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = events;
+  v16[3] = resumeEvents;
+  v16[4] = store;
   v16[5] = v15;
   v16[6] = self;
   v17 = type metadata accessor for TaskPriority();
@@ -146,10 +146,10 @@
   v19[3] = 0;
   v19[4] = &_sIeghH_IeAgH_TRTATu;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = self;
+  eventsCopy = events;
+  resumeEventsCopy = resumeEvents;
+  storeCopy = store;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v14, &_sIeAgH_ytIeAgHr_TRTATu, v19);
 }
 

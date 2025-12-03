@@ -2,15 +2,15 @@
 - (SFDeviceOperationHandlerCDPSetup)init;
 - (void)_activate;
 - (void)_handleCDP;
-- (void)_handleCDPSetupRequest:(id)a3 responseHandler:(id)a4;
+- (void)_handleCDPSetupRequest:(id)request responseHandler:(id)handler;
 - (void)_repairCDP;
 - (void)activate;
-- (void)cdpContext:(id)a3 promptForAdoptionOfMultipleICSC:(id)a4;
-- (void)cdpContext:(id)a3 promptForICSCWithIsNumeric:(BOOL)a4 numericLength:(id)a5 isRandom:(BOOL)a6 validator:(id)a7;
-- (void)cdpContext:(id)a3 promptForInteractiveAuthenticationWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForLocalSecretWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 offeringRemoteApproval:(BOOL)a5 validator:(id)a6;
-- (void)cdpRecoveryFlowContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 validator:(id)a5;
+- (void)cdpContext:(id)context promptForAdoptionOfMultipleICSC:(id)c;
+- (void)cdpContext:(id)context promptForICSCWithIsNumeric:(BOOL)numeric numericLength:(id)length isRandom:(BOOL)random validator:(id)validator;
+- (void)cdpContext:(id)context promptForInteractiveAuthenticationWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForLocalSecretWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForRemoteSecretWithDevices:(id)devices offeringRemoteApproval:(BOOL)approval validator:(id)validator;
+- (void)cdpRecoveryFlowContext:(id)context promptForRemoteSecretWithDevices:(id)devices validator:(id)validator;
 - (void)invalidate;
 @end
 
@@ -114,14 +114,14 @@ void __46__SFDeviceOperationHandlerCDPSetup_invalidate__block_invoke(uint64_t a1
   *(v9 + 64) = 0;
 }
 
-- (void)_handleCDPSetupRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleCDPSetupRequest:(id)request responseHandler:(id)handler
 {
-  v18 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (!self->_responseHandler)
   {
-    v7 = [(SFSession *)self->_sfSession messageSessionTemplate];
-    if (v7)
+    messageSessionTemplate = [(SFSession *)self->_sfSession messageSessionTemplate];
+    if (messageSessionTemplate)
     {
       if (gLogCategory_SFDeviceOperationCDPSetup <= 30 && (gLogCategory_SFDeviceOperationCDPSetup != -1 || _LogCategory_Initialize()))
       {
@@ -146,13 +146,13 @@ void __46__SFDeviceOperationHandlerCDPSetup_invalidate__block_invoke(uint64_t a1
       v13 = self->_cdpContext;
       if (v13)
       {
-        [(CDPContext *)v13 setSharingChannel:v7];
+        [(CDPContext *)v13 setSharingChannel:messageSessionTemplate];
         v14 = [objc_alloc(getCDPStateControllerClass()) initWithContext:self->_cdpContext];
         cdpController = self->_cdpController;
         self->_cdpController = v14;
 
         [(CDPStateController *)self->_cdpController setUiProvider:self];
-        v16 = _Block_copy(v6);
+        v16 = _Block_copy(handlerCopy);
         responseHandler = self->_responseHandler;
         self->_responseHandler = v16;
 
@@ -173,7 +173,7 @@ void __46__SFDeviceOperationHandlerCDPSetup_invalidate__block_invoke(uint64_t a1
       if (gLogCategory_SFDeviceOperationCDPSetup > 90 || gLogCategory_SFDeviceOperationCDPSetup == -1 && !_LogCategory_Initialize())
       {
 LABEL_23:
-        (*(v6 + 2))(v6, v11, 0, 0);
+        (*(handlerCopy + 2))(handlerCopy, v11, 0, 0);
 
         goto LABEL_24;
       }
@@ -192,13 +192,13 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v7 = NSErrorWithOSStatusF();
+  messageSessionTemplate = NSErrorWithOSStatusF();
   if (gLogCategory_SFDeviceOperationCDPSetup <= 90 && (gLogCategory_SFDeviceOperationCDPSetup != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationHandlerCDPSetup _handleCDPSetupRequest:responseHandler:];
   }
 
-  (*(v6 + 2))(v6, v7, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, messageSessionTemplate, 0, 0);
 LABEL_24:
 }
 
@@ -364,77 +364,77 @@ LABEL_19:
   }
 }
 
-- (void)cdpContext:(id)a3 promptForAdoptionOfMultipleICSC:(id)a4
+- (void)cdpContext:(id)context promptForAdoptionOfMultipleICSC:(id)c
 {
   v5 = MEMORY[0x1E696ABC0];
-  v6 = a4;
+  cCopy = c;
   v7 = [v5 errorWithDomain:@"com.apple.sharing.operation.cdp" code:-8000 userInfo:0];
-  (*(a4 + 2))(v6, 0, v7);
+  (*(c + 2))(cCopy, 0, v7);
 }
 
-- (void)cdpContext:(id)a3 promptForICSCWithIsNumeric:(BOOL)a4 numericLength:(id)a5 isRandom:(BOOL)a6 validator:(id)a7
+- (void)cdpContext:(id)context promptForICSCWithIsNumeric:(BOOL)numeric numericLength:(id)length isRandom:(BOOL)random validator:(id)validator
 {
-  v12 = a3;
-  v9 = a5;
-  v10 = a7;
+  contextCopy = context;
+  lengthCopy = length;
+  validatorCopy = validator;
   if (gLogCategory_SFDeviceOperationCDPSetup <= 30 && (gLogCategory_SFDeviceOperationCDPSetup != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationHandlerCDPSetup cdpContext:promptForICSCWithIsNumeric:numericLength:isRandom:validator:];
   }
 
   v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.sharing.operation.cdp" code:-8001 userInfo:0];
-  [v10 cancelValidationWithError:v11];
+  [validatorCopy cancelValidationWithError:v11];
 }
 
-- (void)cdpContext:(id)a3 promptForInteractiveAuthenticationWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForInteractiveAuthenticationWithCompletion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (gLogCategory_SFDeviceOperationCDPSetup <= 30 && (gLogCategory_SFDeviceOperationCDPSetup != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationHandlerCDPSetup cdpContext:promptForInteractiveAuthenticationWithCompletion:];
   }
 
   v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.sharing.operation.cdp" code:-8002 userInfo:0];
-  v5[2](v5, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 }
 
-- (void)cdpContext:(id)a3 promptForLocalSecretWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForLocalSecretWithCompletion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (gLogCategory_SFDeviceOperationCDPSetup <= 30 && (gLogCategory_SFDeviceOperationCDPSetup != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationHandlerCDPSetup cdpContext:promptForLocalSecretWithCompletion:];
   }
 
   v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.sharing.operation.cdp" code:-8003 userInfo:0];
-  v5[2](v5, 0, v6);
+  completionCopy[2](completionCopy, 0, v6);
 }
 
-- (void)cdpContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 offeringRemoteApproval:(BOOL)a5 validator:(id)a6
+- (void)cdpContext:(id)context promptForRemoteSecretWithDevices:(id)devices offeringRemoteApproval:(BOOL)approval validator:(id)validator
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a6;
+  contextCopy = context;
+  devicesCopy = devices;
+  validatorCopy = validator;
   if (gLogCategory_SFDeviceOperationCDPSetup <= 30 && (gLogCategory_SFDeviceOperationCDPSetup != -1 || _LogCategory_Initialize()))
   {
     [SFDeviceOperationHandlerCDPSetup cdpContext:promptForRemoteSecretWithDevices:offeringRemoteApproval:validator:];
   }
 
   v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.sharing.operation.cdp" code:-8004 userInfo:0];
-  [v9 cancelValidationWithError:v10];
+  [validatorCopy cancelValidationWithError:v10];
 }
 
-- (void)cdpRecoveryFlowContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 validator:(id)a5
+- (void)cdpRecoveryFlowContext:(id)context promptForRemoteSecretWithDevices:(id)devices validator:(id)validator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [v10 context];
-  v11 = [v10 hasPeersForRemoteApproval];
+  validatorCopy = validator;
+  devicesCopy = devices;
+  contextCopy = context;
+  context = [contextCopy context];
+  hasPeersForRemoteApproval = [contextCopy hasPeersForRemoteApproval];
 
-  [(SFDeviceOperationHandlerCDPSetup *)self cdpContext:v12 promptForRemoteSecretWithDevices:v9 offeringRemoteApproval:v11 validator:v8];
+  [(SFDeviceOperationHandlerCDPSetup *)self cdpContext:context promptForRemoteSecretWithDevices:devicesCopy offeringRemoteApproval:hasPeersForRemoteApproval validator:validatorCopy];
 }
 
 uint64_t __46__SFDeviceOperationHandlerCDPSetup__handleCDP__block_invoke_2_cold_1(uint64_t a1)

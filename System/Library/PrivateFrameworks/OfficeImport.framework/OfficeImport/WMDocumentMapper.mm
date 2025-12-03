@@ -1,5 +1,5 @@
 @interface WMDocumentMapper
-- (BOOL)hasSessionBreakAtIndex:(unint64_t)a3;
+- (BOOL)hasSessionBreakAtIndex:(unint64_t)index;
 - (CGSize)contentSizeForDevice;
 - (CGSize)pageSizeForDevice;
 - (double)bottomMargin;
@@ -8,21 +8,21 @@
 - (double)rightMargin;
 - (double)topMargin;
 - (id)backgroundColor;
-- (id)blipAtIndex:(unsigned int)a3;
+- (id)blipAtIndex:(unsigned int)index;
 - (id)documentTitle;
 - (id)styleMatrix;
 - (int)defaultTabWidth;
-- (void)mapDefaultCssStylesAt:(id)a3;
-- (void)mapWithState:(id)a3;
+- (void)mapDefaultCssStylesAt:(id)at;
+- (void)mapWithState:(id)state;
 @end
 
 @implementation WMDocumentMapper
 
 - (CGSize)pageSizeForDevice
 {
-  v2 = [(CMMapper *)self document];
-  v3 = [v2 sections];
-  v4 = [v3 objectAtIndex:0];
+  document = [(CMMapper *)self document];
+  sections = [document sections];
+  v4 = [sections objectAtIndex:0];
 
   v5 = 980.0;
   if (v4)
@@ -57,15 +57,15 @@
 
 - (CGSize)contentSizeForDevice
 {
-  v3 = [(CMMapper *)self document];
-  v4 = [v3 sections];
-  v5 = [v4 objectAtIndex:0];
+  document = [(CMMapper *)self document];
+  sections = [document sections];
+  v5 = [sections objectAtIndex:0];
 
   if ([v5 isPageWidthOverridden])
   {
-    v6 = [v5 pageWidth];
-    v7 = [v5 leftMargin];
-    v8 = ((v6 - (v7 + [v5 rightMargin])) / 20.0);
+    pageWidth = [v5 pageWidth];
+    leftMargin = [v5 leftMargin];
+    v8 = ((pageWidth - (leftMargin + [v5 rightMargin])) / 20.0);
   }
 
   else
@@ -78,9 +78,9 @@
 
   if ([v5 isPageHeightOverridden])
   {
-    v12 = [v5 pageHeight];
-    v13 = [v5 topMargin];
-    v14 = ((v12 - (v13 + [v5 bottomMargin])) / 20.0);
+    pageHeight = [v5 pageHeight];
+    topMargin = [v5 topMargin];
+    v14 = ((pageHeight - (topMargin + [v5 bottomMargin])) / 20.0);
   }
 
   else
@@ -100,9 +100,9 @@
 
 - (double)leftMargin
 {
-  v2 = [(CMMapper *)self document];
-  v3 = [v2 sections];
-  v4 = [v3 objectAtIndex:0];
+  document = [(CMMapper *)self document];
+  sections = [document sections];
+  v4 = [sections objectAtIndex:0];
 
   if (!v4 || ![v4 isLeftMarginOverridden] || (v5 = objc_msgSend(v4, "leftMargin") / 20.0, v5 > 300.0))
   {
@@ -114,9 +114,9 @@
 
 - (double)rightMargin
 {
-  v2 = [(CMMapper *)self document];
-  v3 = [v2 sections];
-  v4 = [v3 objectAtIndex:0];
+  document = [(CMMapper *)self document];
+  sections = [document sections];
+  v4 = [sections objectAtIndex:0];
 
   if (!v4 || ![v4 isRightMarginOverridden] || (v5 = objc_msgSend(v4, "rightMargin") / 20.0, v5 > 300.0))
   {
@@ -128,9 +128,9 @@
 
 - (double)topMargin
 {
-  v2 = [(CMMapper *)self document];
-  v3 = [v2 sections];
-  v4 = [v3 objectAtIndex:0];
+  document = [(CMMapper *)self document];
+  sections = [document sections];
+  v4 = [sections objectAtIndex:0];
 
   if (!v4 || ![v4 isTopMarginOverridden] || (v5 = objc_msgSend(v4, "topMargin") / 20.0, v5 > 500.0))
   {
@@ -142,24 +142,24 @@
 
 - (double)headerMargin
 {
-  v2 = [(CMMapper *)self document];
-  v3 = [v2 sections];
-  v4 = [v3 objectAtIndex:0];
+  document = [(CMMapper *)self document];
+  sections = [document sections];
+  v4 = [sections objectAtIndex:0];
 
   v5 = 0.0;
   if (v4)
   {
-    v6 = [v4 firstPageHeader];
-    if ([v6 blockCount])
+    firstPageHeader = [v4 firstPageHeader];
+    if ([firstPageHeader blockCount])
     {
     }
 
     else
     {
-      v7 = [v4 oddPageHeader];
-      v8 = [v7 blockCount];
+      oddPageHeader = [v4 oddPageHeader];
+      blockCount = [oddPageHeader blockCount];
 
-      if (!v8)
+      if (!blockCount)
       {
         goto LABEL_8;
       }
@@ -178,9 +178,9 @@ LABEL_8:
 
 - (double)bottomMargin
 {
-  v2 = [(CMMapper *)self document];
-  v3 = [v2 sections];
-  v4 = [v3 objectAtIndex:0];
+  document = [(CMMapper *)self document];
+  sections = [document sections];
+  v4 = [sections objectAtIndex:0];
 
   if (!v4 || ![v4 isBottomMarginOverridden] || (v5 = objc_msgSend(v4, "bottomMargin") / 20.0, v5 > 500.0))
   {
@@ -192,15 +192,15 @@ LABEL_8:
 
 - (id)documentTitle
 {
-  v3 = [(CMMapper *)self document];
-  v4 = [v3 summary];
+  document = [(CMMapper *)self document];
+  summary = [document summary];
 
-  if (v4)
+  if (summary)
   {
-    v5 = [v3 summary];
-    v6 = [v5 title];
+    summary2 = [document summary];
+    title = [summary2 title];
 
-    if (v6 && [v6 length])
+    if (title && [title length])
     {
       goto LABEL_11;
     }
@@ -208,81 +208,81 @@ LABEL_8:
 
   else
   {
-    v6 = 0;
+    title = 0;
   }
 
-  v7 = [v3 oleFilename];
+  oleFilename = [document oleFilename];
 
-  if (v7 && [v7 length])
+  if (oleFilename && [oleFilename length])
   {
-    v8 = v7;
+    v8 = oleFilename;
 LABEL_12:
-    v9 = v8;
-    v6 = v8;
+    lastPathComponent = v8;
+    title = v8;
     goto LABEL_13;
   }
 
-  v6 = [(WMDocumentMapper *)self fileName];
+  title = [(WMDocumentMapper *)self fileName];
 
-  if (v6 && [v6 length])
+  if (title && [title length])
   {
 LABEL_11:
-    v8 = v6;
+    v8 = title;
     goto LABEL_12;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [(CMArchiveManager *)self->super.super.mArchiver name];
-    v9 = [v11 lastPathComponent];
+    name = [(CMArchiveManager *)self->super.super.mArchiver name];
+    lastPathComponent = [name lastPathComponent];
   }
 
   else
   {
-    v9 = 0;
+    lastPathComponent = 0;
   }
 
 LABEL_13:
 
-  return v9;
+  return lastPathComponent;
 }
 
 - (int)defaultTabWidth
 {
-  v2 = [(CMMapper *)self document];
-  v3 = v2;
-  if (v2 && [v2 defaultTabWidth])
+  document = [(CMMapper *)self document];
+  v3 = document;
+  if (document && [document defaultTabWidth])
   {
-    v4 = [v3 defaultTabWidth];
+    defaultTabWidth = [v3 defaultTabWidth];
   }
 
   else
   {
-    v4 = 720;
+    defaultTabWidth = 720;
   }
 
-  return v4;
+  return defaultTabWidth;
 }
 
-- (id)blipAtIndex:(unsigned int)a3
+- (id)blipAtIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v4 = [(CMMapper *)self document];
-  v5 = [v4 blips];
-  v6 = [v5 blipAtIndex:v3];
+  v3 = *&index;
+  document = [(CMMapper *)self document];
+  blips = [document blips];
+  v6 = [blips blipAtIndex:v3];
 
   return v6;
 }
 
-- (void)mapDefaultCssStylesAt:(id)a3
+- (void)mapDefaultCssStylesAt:(id)at
 {
-  v8 = a3;
+  atCopy = at;
   v3 = [OIXMLElement elementWithType:17 stringValue:@"body\n{\n-webkit-text-size-adjust: none\nfont-size:18;\n}\ndiv\n{\nmargin-top: 0;\nmargin-bottom: 0;\n}\n p\n{\nmargin-top: 0;\nmargin-bottom: 0;\nline-height: 120%\n}\n span\n{\nline-height: 120%\n}\ntable\n{\nborder-collapse: collapse;\nborder-color: black;\nfont-size:12;\n}\ntd\n{\nword-wrap:break-word\n}\n"];;
   v4 = [OIXMLAttribute attributeWithName:0x286F007F0 stringValue:0x286F07970];
   [v3 addAttribute:v4];
 
-  [v8 addChild:v3];
+  [atCopy addChild:v3];
   v5 = [OIXMLElement elementWithType:17 stringValue:@".bumpedFont15\n{\nfont-size:1.5em\n}\n.bumpedFont17\n{\nfont-size:1.7em;\n}\n.bumpedFont20\n{\nfont-size:2.0em;\n}\n"];;
 
   v6 = [OIXMLAttribute attributeWithName:0x286F007F0 stringValue:0x286F07970];
@@ -291,61 +291,61 @@ LABEL_13:
   v7 = [OIXMLAttribute attributeWithName:0x286F06370 stringValue:0x286F07DD0];
   [v5 addAttribute:v7];
 
-  [v8 addChild:v5];
+  [atCopy addChild:v5];
 }
 
 - (id)backgroundColor
 {
-  v2 = [(CMMapper *)self document];
-  v3 = [v2 documentBackground];
+  document = [(CMMapper *)self document];
+  documentBackground = [document documentBackground];
 
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (documentBackground && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 fill];
-    if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    fill = [documentBackground fill];
+    if (fill && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = fill;
       if ([v5 isColorOverridden])
       {
-        v6 = [v5 color];
+        color = [v5 color];
 
-        if (v6)
+        if (color)
         {
-          v6 = [v5 color];
-          v4 = v5;
+          color = [v5 color];
+          fill = v5;
         }
       }
 
       else
       {
-        v6 = 0;
+        color = 0;
       }
     }
 
     else
     {
-      v6 = 0;
+      color = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    color = 0;
   }
 
-  return v6;
+  return color;
 }
 
-- (void)mapWithState:(id)a3
+- (void)mapWithState:(id)state
 {
-  v64 = a3;
-  v4 = [(CMMapper *)self document];
-  if ([v4 sectionCount])
+  stateCopy = state;
+  document = [(CMMapper *)self document];
+  if ([document sectionCount])
   {
     v5 = objc_autoreleasePoolPush();
     v6 = +[CMXmlUtils copyXhtmlDocument];
     v59 = v6;
-    v62 = [v6 rootElement];
+    rootElement = [v6 rootElement];
     [(WMDocumentMapper *)self pageSizeForDevice];
     v8 = v7;
     v10 = v9;
@@ -363,11 +363,11 @@ LABEL_13:
     v20 = v19;
     [(WMDocumentMapper *)self bottomMargin];
     v22 = v21;
-    v23 = [(WMDocumentMapper *)self documentTitle];
-    v24 = [CMXmlUtils copyHeadElementWithTitle:v23 deviceWidth:v10];
+    documentTitle = [(WMDocumentMapper *)self documentTitle];
+    v24 = [CMXmlUtils copyHeadElementWithTitle:documentTitle deviceWidth:v10];
 
     v61 = v24;
-    [v62 addChild:v24];
+    [rootElement addChild:v24];
     v63 = [OIXMLElement elementWithType:1];
     v25 = objc_alloc_init(CMStyle);
     [(CMStyle *)v25 appendPropertyForName:0x286EF67B0 intValue:0];
@@ -395,57 +395,57 @@ LABEL_13:
 
     [(CMStyle *)v27 appendPropertyForName:0x286F081F0 intValue:v28];
     [(CMStyle *)v27 appendPropertyForName:0x286F08190 intValue:v22];
-    v60 = [(WMDocumentMapper *)self backgroundColor];
-    if (v60)
+    backgroundColor = [(WMDocumentMapper *)self backgroundColor];
+    if (backgroundColor)
     {
-      v29 = [CMColorProperty nsColorFromOADColor:v60 state:v64];
+      v29 = [CMColorProperty nsColorFromOADColor:backgroundColor state:stateCopy];
       [(CMStyle *)v27 appendPropertyForName:0x286F07DF0 color:v29];
     }
 
     [(CMMapper *)self addStyleUsingGlobalCacheTo:v26 style:v27];
     [v63 addChild:v26];
-    v58 = [v4 theme];
-    v57 = [v58 baseStyles];
-    v30 = [v57 colorScheme];
-    [v64 setColorScheme:v30];
+    theme = [document theme];
+    baseStyles = [theme baseStyles];
+    colorScheme = [baseStyles colorScheme];
+    [stateCopy setColorScheme:colorScheme];
 
     [(WMDocumentMapper *)self mapDefaultCssStylesAt:v24];
     mArchiver = self->super.super.mArchiver;
-    v32 = [v6 openingTagString];
-    [(CMArchiveManager *)mArchiver pushText:v32 toPath:0];
+    openingTagString = [v6 openingTagString];
+    [(CMArchiveManager *)mArchiver pushText:openingTagString toPath:0];
 
     v33 = self->super.super.mArchiver;
-    v34 = [v62 openingTagString];
-    [(CMArchiveManager *)v33 pushText:v34 toPath:0];
+    openingTagString2 = [rootElement openingTagString];
+    [(CMArchiveManager *)v33 pushText:openingTagString2 toPath:0];
 
     v35 = self->super.super.mArchiver;
-    v36 = [v24 XMLString];
-    [(CMArchiveManager *)v35 pushText:v36 toPath:0];
+    xMLString = [v24 XMLString];
+    [(CMArchiveManager *)v35 pushText:xMLString toPath:0];
 
     [(CMArchiveManager *)self->super.super.mArchiver pushCssToPath:0];
     v37 = self->super.super.mArchiver;
-    v38 = [v63 openingTagString];
-    [(CMArchiveManager *)v37 pushText:v38 toPath:0];
+    openingTagString3 = [v63 openingTagString];
+    [(CMArchiveManager *)v37 pushText:openingTagString3 toPath:0];
 
     v39 = self->super.super.mArchiver;
-    v40 = [v26 openingTagString];
+    openingTagString4 = [v26 openingTagString];
     context = v5;
-    [(CMArchiveManager *)v39 pushText:v40 toPath:0];
+    [(CMArchiveManager *)v39 pushText:openingTagString4 toPath:0];
 
-    v41 = v4;
-    v42 = [v4 sectionCount];
-    v43 = v42;
-    if (v42)
+    v41 = document;
+    sectionCount = [document sectionCount];
+    v43 = sectionCount;
+    if (sectionCount)
     {
       v44 = 0;
-      v45 = v42 - 1;
+      v45 = sectionCount - 1;
       do
       {
         v46 = [v41 sectionAt:v44];
         v47 = [(WMDocumentMapper *)self hasSessionBreakAtIndex:v44];
         v48 = v45 == v44 || [(WMDocumentMapper *)self hasSessionBreakAtIndex:v44 + 1];
         v49 = [[WMSectionMapper alloc] initWithWDSection:v46 breakAtStart:v47 breakAtEnd:v48 parent:self];
-        [(WMSectionMapper *)v49 mapAt:v26 withState:v64];
+        [(WMSectionMapper *)v49 mapAt:v26 withState:stateCopy];
 
         ++v44;
       }
@@ -453,74 +453,74 @@ LABEL_13:
       while (v43 != v44);
     }
 
-    [v62 addChild:v63];
+    [rootElement addChild:v63];
     [(CMArchiveManager *)self->super.super.mArchiver pushCssToPath:0];
     v50 = self->super.super.mArchiver;
-    v51 = [v26 closingTagString];
-    [(CMArchiveManager *)v50 pushText:v51 toPath:0];
+    closingTagString = [v26 closingTagString];
+    [(CMArchiveManager *)v50 pushText:closingTagString toPath:0];
 
     v52 = self->super.super.mArchiver;
-    v53 = [v63 closingTagString];
-    [(CMArchiveManager *)v52 pushText:v53 toPath:0];
+    closingTagString2 = [v63 closingTagString];
+    [(CMArchiveManager *)v52 pushText:closingTagString2 toPath:0];
 
     v54 = self->super.super.mArchiver;
-    v55 = [v62 closingTagString];
-    [(CMArchiveManager *)v54 pushText:v55 toPath:0];
+    closingTagString3 = [rootElement closingTagString];
+    [(CMArchiveManager *)v54 pushText:closingTagString3 toPath:0];
 
     [(CMArchiveManager *)self->super.super.mArchiver commitDataAtPath:0];
     [(CMArchiveManager *)self->super.super.mArchiver closeResourceAtPath:0];
 
-    v4 = v41;
+    document = v41;
     objc_autoreleasePoolPop(context);
   }
 }
 
 - (id)styleMatrix
 {
-  v2 = [(CMMapper *)self document];
-  v3 = [v2 theme];
-  v4 = v3;
-  if (v3)
+  document = [(CMMapper *)self document];
+  theme = [document theme];
+  v4 = theme;
+  if (theme)
   {
-    v5 = [v3 baseStyles];
-    v6 = v5;
-    if (v5)
+    baseStyles = [theme baseStyles];
+    v6 = baseStyles;
+    if (baseStyles)
     {
-      v7 = [v5 styleMatrix];
+      styleMatrix = [baseStyles styleMatrix];
     }
 
     else
     {
-      v7 = 0;
+      styleMatrix = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    styleMatrix = 0;
   }
 
-  return v7;
+  return styleMatrix;
 }
 
-- (BOOL)hasSessionBreakAtIndex:(unint64_t)a3
+- (BOOL)hasSessionBreakAtIndex:(unint64_t)index
 {
-  v4 = [(CMMapper *)self document];
-  v5 = v4;
-  if (a3)
+  document = [(CMMapper *)self document];
+  v5 = document;
+  if (index)
   {
-    v6 = [v4 sectionAt:a3];
+    v6 = [document sectionAt:index];
     if ([v6 isBreakTypeOverridden])
     {
-      v7 = [v6 breakType];
+      breakType = [v6 breakType];
     }
 
     else
     {
-      v7 = 2;
+      breakType = 2;
     }
 
-    v8 = v7 > 1;
+    v8 = breakType > 1;
   }
 
   else

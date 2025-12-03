@@ -1,34 +1,34 @@
 @interface PXCaptionHashtagsEntryView
-- (BOOL)_needsUpdateSize:(BOOL *)a3;
+- (BOOL)_needsUpdateSize:(BOOL *)size;
 - (BOOL)_shouldShowMoreButton;
 - (BOOL)isEditing;
-- (BOOL)textViewShouldBeginEditing:(id)a3;
-- (BOOL)textViewShouldEndEditing:(id)a3;
+- (BOOL)textViewShouldBeginEditing:(id)editing;
+- (BOOL)textViewShouldEndEditing:(id)editing;
 - (NSString)text;
-- (PXCaptionHashtagsEntryView)initWithFrame:(CGRect)a3;
+- (PXCaptionHashtagsEntryView)initWithFrame:(CGRect)frame;
 - (PXCaptionHashtagsEntryViewDelegate)delegate;
 - (UIEdgeInsets)textContainerInsets;
 - (double)_ellipsisWidth;
 - (double)_maxHeight;
-- (double)_preferredHeight:(BOOL *)a3 forWidth:(double)a4;
+- (double)_preferredHeight:(BOOL *)height forWidth:(double)width;
 - (double)minimumHeightInEdit;
-- (double)preferredHeightForWidth:(double)a3;
+- (double)preferredHeightForWidth:(double)width;
 - (int64_t)_currentMaxLines;
 - (void)_addLinkAttributeToHashtagsInTextView;
-- (void)_handleEscape:(id)a3;
+- (void)_handleEscape:(id)escape;
 - (void)_hideShowButton;
 - (void)_removeLinkAttributeInTextView;
 - (void)_updateFonts;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)exitEditing;
-- (void)moreButtonTapped:(id)a3;
+- (void)moreButtonTapped:(id)tapped;
 - (void)resetToOriginalText;
-- (void)setFont:(id)a3;
-- (void)setOriginalText:(id)a3;
-- (void)setSpec:(id)a3;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)setFont:(id)font;
+- (void)setOriginalText:(id)text;
+- (void)setSpec:(id)spec;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation PXCaptionHashtagsEntryView
@@ -40,92 +40,92 @@
   return WeakRetained;
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(PXCaptionHashtagsEntryView *)self textView];
+  editingCopy = editing;
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
 
-  if (v5 == v4)
+  if (textView == editingCopy)
   {
-    v6 = [(PXCaptionHashtagsEntryView *)self textView];
-    [v6 setEditable:0];
+    textView2 = [(PXCaptionHashtagsEntryView *)self textView];
+    [textView2 setEditable:0];
 
-    v7 = [(PXCaptionHashtagsEntryView *)self text];
-    if (v7)
+    text = [(PXCaptionHashtagsEntryView *)self text];
+    if (text)
     {
-      v8 = v7;
-      v9 = [(PXCaptionHashtagsEntryView *)self text];
-      v10 = [v9 length];
+      v8 = text;
+      text2 = [(PXCaptionHashtagsEntryView *)self text];
+      v10 = [text2 length];
 
       if (v10)
       {
         v11 = PXLocalizedStringFromTable(@"PXWidgetCaptionAndHashtagsAXLabel", @"PhotosUICore");
-        v12 = [(PXCaptionHashtagsEntryView *)self textView];
-        [v12 setAccessibilityLabel:v11];
+        textView3 = [(PXCaptionHashtagsEntryView *)self textView];
+        [textView3 setAccessibilityLabel:v11];
       }
     }
 
     [(PXCaptionHashtagsEntryView *)self _addLinkAttributeToHashtagsInTextView];
-    v13 = [(PXCaptionHashtagsEntryView *)self delegate];
-    [v13 captionHashtagsEntryViewDidEndEditing:self];
+    delegate = [(PXCaptionHashtagsEntryView *)self delegate];
+    [delegate captionHashtagsEntryViewDidEndEditing:self];
   }
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = [(PXCaptionHashtagsEntryView *)self delegate];
-  [v4 captionHashtagsEntryViewDidBeginEditing:self];
+  delegate = [(PXCaptionHashtagsEntryView *)self delegate];
+  [delegate captionHashtagsEntryViewDidBeginEditing:self];
 
   [(PXCaptionHashtagsEntryView *)self _hideShowButton];
   [(PXCaptionHashtagsEntryView *)self _removeLinkAttributeInTextView];
   v5 = MEMORY[0x1E695DF90];
-  v6 = [(PXCaptionHashtagsEntryView *)self textView];
-  v7 = [v6 typingAttributes];
-  v8 = [v5 dictionaryWithDictionary:v7];
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
+  typingAttributes = [textView typingAttributes];
+  v8 = [v5 dictionaryWithDictionary:typingAttributes];
 
   [v8 removeObjectForKey:*MEMORY[0x1E69DB670]];
-  v9 = [(PXCaptionHashtagsEntryView *)self textView];
-  [v9 setTypingAttributes:v8];
+  textView2 = [(PXCaptionHashtagsEntryView *)self textView];
+  [textView2 setTypingAttributes:v8];
 
   v11 = 1;
   [(PXCaptionHashtagsEntryView *)self _preferredHeight:&v11];
-  LOBYTE(v7) = v11;
-  v10 = [(PXCaptionHashtagsEntryView *)self textView];
-  [v10 setScrollEnabled:(v7 & 1) == 0];
+  LOBYTE(typingAttributes) = v11;
+  textView3 = [(PXCaptionHashtagsEntryView *)self textView];
+  [textView3 setScrollEnabled:(typingAttributes & 1) == 0];
 }
 
-- (BOOL)textViewShouldEndEditing:(id)a3
+- (BOOL)textViewShouldEndEditing:(id)editing
 {
-  v3 = self;
-  v4 = [(PXCaptionHashtagsEntryView *)self delegate];
-  LOBYTE(v3) = [v4 captionHashtagsEntryViewShouldEndEditing:v3];
+  selfCopy = self;
+  delegate = [(PXCaptionHashtagsEntryView *)self delegate];
+  LOBYTE(selfCopy) = [delegate captionHashtagsEntryViewShouldEndEditing:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)textViewShouldBeginEditing:(id)a3
+- (BOOL)textViewShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(PXCaptionHashtagsEntryView *)self delegate];
-  if (v5 && (v6 = v5, -[PXCaptionHashtagsEntryView delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 captionHashtagsEntryViewShouldBeginEditing:self], v7, v6, !v8))
+  editingCopy = editing;
+  delegate = [(PXCaptionHashtagsEntryView *)self delegate];
+  if (delegate && (v6 = delegate, -[PXCaptionHashtagsEntryView delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 captionHashtagsEntryViewShouldBeginEditing:self], v7, v6, !v8))
   {
     v14 = 0;
   }
 
   else
   {
-    v9 = [v4 text];
-    v10 = [(PXCaptionHashtagsEntryView *)self originalText];
-    v11 = [v9 isEqualToString:v10];
+    text = [editingCopy text];
+    originalText = [(PXCaptionHashtagsEntryView *)self originalText];
+    v11 = [text isEqualToString:originalText];
 
     if ((v11 & 1) == 0)
     {
-      v12 = [(PXCaptionHashtagsEntryView *)self originalText];
-      [v4 setText:v12];
+      originalText2 = [(PXCaptionHashtagsEntryView *)self originalText];
+      [editingCopy setText:originalText2];
     }
 
-    v13 = [(PXCaptionHashtagsEntryView *)self delegate];
-    [v13 captionHashtagsEntryViewWillBeginEditing:self];
+    delegate2 = [(PXCaptionHashtagsEntryView *)self delegate];
+    [delegate2 captionHashtagsEntryViewWillBeginEditing:self];
 
     v14 = 1;
   }
@@ -133,43 +133,43 @@
   return v14;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
   if ([(PXCaptionHashtagsEntryView *)self isEditing])
   {
     v8 = 1;
     if ([(PXCaptionHashtagsEntryView *)self _needsUpdateSize:&v8])
     {
-      v4 = [(PXCaptionHashtagsEntryView *)self delegate];
-      [v4 captionHashtagsEntryViewPreferredHeightDidChange:self];
+      delegate = [(PXCaptionHashtagsEntryView *)self delegate];
+      [delegate captionHashtagsEntryViewPreferredHeightDidChange:self];
     }
 
     v5 = v8;
-    v6 = [(PXCaptionHashtagsEntryView *)self textView];
-    [v6 setScrollEnabled:(v5 & 1) == 0];
+    textView = [(PXCaptionHashtagsEntryView *)self textView];
+    [textView setScrollEnabled:(v5 & 1) == 0];
   }
 
   else
   {
     [(PXCaptionHashtagsEntryView *)self _addLinkAttributeToHashtagsInTextView];
-    v7 = [(PXCaptionHashtagsEntryView *)self delegate];
-    [v7 captionHashtagsEntryViewDidEndEditing:self];
+    delegate2 = [(PXCaptionHashtagsEntryView *)self delegate];
+    [delegate2 captionHashtagsEntryViewDidEndEditing:self];
   }
 }
 
 - (void)_hideShowButton
 {
   [(PXCaptionHashtagsEntryView *)self setShowAllText:1];
-  v3 = [(PXCaptionHashtagsEntryView *)self moreButton];
-  [v3 setHidden:1];
+  moreButton = [(PXCaptionHashtagsEntryView *)self moreButton];
+  [moreButton setHidden:1];
 }
 
-- (BOOL)_needsUpdateSize:(BOOL *)a3
+- (BOOL)_needsUpdateSize:(BOOL *)size
 {
-  [(PXCaptionHashtagsEntryView *)self _preferredHeight:a3];
+  [(PXCaptionHashtagsEntryView *)self _preferredHeight:size];
   [(PXCaptionHashtagsEntryView *)self frame];
-  v4 = [(PXCaptionHashtagsEntryView *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(PXCaptionHashtagsEntryView *)self traitCollection];
+  [traitCollection displayScale];
 
   PXFloatRoundToPixel();
 }
@@ -191,44 +191,44 @@
   return v3 & 1;
 }
 
-- (double)_preferredHeight:(BOOL *)a3 forWidth:(double)a4
+- (double)_preferredHeight:(BOOL *)height forWidth:(double)width
 {
-  v5 = [(PXCaptionHashtagsEntryView *)self textView];
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
   if (![(PXCaptionHashtagsEntryView *)self isEditing])
   {
-    v6 = [v5 text];
-    v7 = [(PXCaptionHashtagsEntryView *)self originalText];
-    v8 = [v6 isEqualToString:v7];
+    text = [textView text];
+    originalText = [(PXCaptionHashtagsEntryView *)self originalText];
+    v8 = [text isEqualToString:originalText];
 
     if ((v8 & 1) == 0)
     {
-      [v5 text];
+      [textView text];
       objc_claimAutoreleasedReturnValue();
-      v9 = [(PXCaptionHashtagsEntryView *)self originalText];
-      [v5 setText:v9];
+      originalText2 = [(PXCaptionHashtagsEntryView *)self originalText];
+      [textView setText:originalText2];
     }
   }
 
-  v10 = [(PXCaptionHashtagsEntryView *)self traitCollection];
-  [v10 displayScale];
+  traitCollection = [(PXCaptionHashtagsEntryView *)self traitCollection];
+  [traitCollection displayScale];
 
-  [v5 textContainerInset];
-  [v5 font];
+  [textView textContainerInset];
+  [textView font];
   [objc_claimAutoreleasedReturnValue() lineHeight];
   PXFloatCeilingToPixel();
 }
 
 - (double)_maxHeight
 {
-  v3 = [(PXCaptionHashtagsEntryView *)self textView];
-  [v3 textContainerInset];
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
+  [textView textContainerInset];
   v5 = v4;
   v7 = v6;
 
   v8 = v5 + v7;
-  v9 = [(PXCaptionHashtagsEntryView *)self textView];
-  v10 = [v9 font];
-  [v10 lineHeight];
+  textView2 = [(PXCaptionHashtagsEntryView *)self textView];
+  font = [textView2 font];
+  [font lineHeight];
   v12 = v11;
 
   return v8 + v12 * [(PXCaptionHashtagsEntryView *)self _currentMaxLines];
@@ -236,10 +236,10 @@
 
 - (int64_t)_currentMaxLines
 {
-  v2 = [(PXCaptionHashtagsEntryView *)self traitCollection];
-  v3 = [v2 verticalSizeClass];
+  traitCollection = [(PXCaptionHashtagsEntryView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v3 == 1)
+  if (verticalSizeClass == 1)
   {
     return 2;
   }
@@ -252,36 +252,36 @@
 
 - (void)_removeLinkAttributeInTextView
 {
-  v2 = [(PXCaptionHashtagsEntryView *)self textView];
-  v4 = [v2 textStorage];
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
+  textStorage = [textView textStorage];
 
-  v3 = [v4 length];
-  [v4 removeAttribute:*MEMORY[0x1E69DB670] range:{0, v3}];
+  v3 = [textStorage length];
+  [textStorage removeAttribute:*MEMORY[0x1E69DB670] range:{0, v3}];
 }
 
 - (void)_addLinkAttributeToHashtagsInTextView
 {
   v3 = +[PXPhotosDetailsSettings sharedInstance];
-  v4 = [v3 captionWidgetEnableHashtags];
+  captionWidgetEnableHashtags = [v3 captionWidgetEnableHashtags];
 
-  if (v4)
+  if (captionWidgetEnableHashtags)
   {
-    v5 = [(PXCaptionHashtagsEntryView *)self textView];
-    v6 = [v5 text];
+    textView = [(PXCaptionHashtagsEntryView *)self textView];
+    text = [textView text];
 
-    if ([v6 length])
+    if ([text length])
     {
-      v7 = [(PXCaptionHashtagsEntryView *)self textView];
-      v8 = [v7 textStorage];
+      textView2 = [(PXCaptionHashtagsEntryView *)self textView];
+      textStorage = [textView2 textStorage];
 
-      [v8 removeAttribute:*MEMORY[0x1E69DB670] range:{0, objc_msgSend(v8, "length")}];
+      [textStorage removeAttribute:*MEMORY[0x1E69DB670] range:{0, objc_msgSend(textStorage, "length")}];
       v9 = PLParseHashtags();
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __67__PXCaptionHashtagsEntryView__addLinkAttributeToHashtagsInTextView__block_invoke;
       v11[3] = &unk_1E773AEE0;
-      v12 = v8;
-      v10 = v8;
+      v12 = textStorage;
+      v10 = textStorage;
       [v9 enumerateKeysAndObjectsUsingBlock:v11];
       self->_numberOfHashtagsInText = [v9 count];
     }
@@ -315,10 +315,10 @@ void __67__PXCaptionHashtagsEntryView__addLinkAttributeToHashtagsInTextView__blo
 - (void)_updateFonts
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PXCaptionHashtagsEntryView *)self spec];
-  v4 = [v3 userInterfaceIdiom];
+  spec = [(PXCaptionHashtagsEntryView *)self spec];
+  userInterfaceIdiom = [spec userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     MEMORY[0x1A590C420](8, 0x8000, 3, *MEMORY[0x1E69DB970]);
   }
@@ -329,17 +329,17 @@ void __67__PXCaptionHashtagsEntryView__addLinkAttributeToHashtagsInTextView__blo
   }
   v5 = ;
   [(PXCaptionHashtagsEntryView *)self setFont:v5];
-  v6 = [(PXCaptionHashtagsEntryView *)self textView];
-  [v6 setFont:v5];
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
+  [textView setFont:v5];
 
-  v7 = [(PXCaptionHashtagsEntryView *)self moreButton];
-  v8 = [v7 titleLabel];
-  [v8 setFont:v5];
+  moreButton = [(PXCaptionHashtagsEntryView *)self moreButton];
+  titleLabel = [moreButton titleLabel];
+  [titleLabel setFont:v5];
 
-  v9 = [(PXCaptionHashtagsEntryView *)self spec];
-  v10 = [v9 sizeClass];
+  spec2 = [(PXCaptionHashtagsEntryView *)self spec];
+  sizeClass = [spec2 sizeClass];
 
-  if (v10 == 2)
+  if (sizeClass == 2)
   {
     [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
@@ -368,8 +368,8 @@ void __67__PXCaptionHashtagsEntryView__addLinkAttributeToHashtagsInTextView__blo
   v15 = objc_alloc(MEMORY[0x1E696AAB0]);
   v16 = PXLocalizedStringFromTable(@"PXWidgetCaptionAndHashtagsPlaceholderTitle", @"PhotosUICore");
   v17 = [v15 initWithString:v16 attributes:v14];
-  v18 = [(PXCaptionHashtagsEntryView *)self textView];
-  [v18 setAttributedPlaceholder:v17];
+  textView2 = [(PXCaptionHashtagsEntryView *)self textView];
+  [textView2 setAttributedPlaceholder:v17];
 }
 
 - (double)_ellipsisWidth
@@ -381,8 +381,8 @@ void __67__PXCaptionHashtagsEntryView__addLinkAttributeToHashtagsInTextView__blo
   if (v5 == 0.0)
   {
     v10 = *MEMORY[0x1E69DB648];
-    v6 = [(PXCaptionHashtagsEntryView *)self font];
-    v11[0] = v6;
+    font = [(PXCaptionHashtagsEntryView *)self font];
+    v11[0] = font;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     [@"…" sizeWithAttributes:v7];
     v4 = v8;
@@ -393,25 +393,25 @@ void __67__PXCaptionHashtagsEntryView__addLinkAttributeToHashtagsInTextView__blo
   return v4;
 }
 
-- (void)_handleEscape:(id)a3
+- (void)_handleEscape:(id)escape
 {
   [(PXCaptionHashtagsEntryView *)self resetToOriginalText];
 
   [(PXCaptionHashtagsEntryView *)self exitEditing];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_font != v5)
+  fontCopy = font;
+  v6 = fontCopy;
+  if (self->_font != fontCopy)
   {
-    v8 = v5;
-    v7 = [(UIFont *)v5 isEqual:?];
+    v8 = fontCopy;
+    v7 = [(UIFont *)fontCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_font, a3);
+      objc_storeStrong(&self->_font, font);
       [(PXCaptionHashtagsEntryView *)self setCachedEllipsisWidth:0.0];
       v6 = v8;
     }
@@ -420,35 +420,35 @@ void __67__PXCaptionHashtagsEntryView__addLinkAttributeToHashtagsInTextView__blo
 
 - (BOOL)isEditing
 {
-  v2 = [(PXCaptionHashtagsEntryView *)self textView];
-  v3 = [v2 isEditing];
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
+  isEditing = [textView isEditing];
 
-  return v3;
+  return isEditing;
 }
 
-- (void)moreButtonTapped:(id)a3
+- (void)moreButtonTapped:(id)tapped
 {
   [(PXCaptionHashtagsEntryView *)self _hideShowButton];
-  v4 = [(PXCaptionHashtagsEntryView *)self delegate];
-  [v4 captionHashtagsEntryViewRequestFocus:self];
+  delegate = [(PXCaptionHashtagsEntryView *)self delegate];
+  [delegate captionHashtagsEntryViewRequestFocus:self];
 
-  v5 = [(PXCaptionHashtagsEntryView *)self delegate];
-  [v5 captionHashtagsEntryViewPreferredHeightDidChange:self];
+  delegate2 = [(PXCaptionHashtagsEntryView *)self delegate];
+  [delegate2 captionHashtagsEntryViewPreferredHeightDidChange:self];
 }
 
 - (void)resetToOriginalText
 {
-  v3 = [(PXCaptionHashtagsEntryView *)self originalText];
-  v4 = [(PXCaptionHashtagsEntryView *)self textView];
-  [v4 setText:v3];
+  originalText = [(PXCaptionHashtagsEntryView *)self originalText];
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
+  [textView setText:originalText];
 
   [(PXCaptionHashtagsEntryView *)self _addLinkAttributeToHashtagsInTextView];
 }
 
 - (void)exitEditing
 {
-  v2 = [(PXCaptionHashtagsEntryView *)self textView];
-  [v2 resignFirstResponder];
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
+  [textView resignFirstResponder];
 }
 
 uint64_t __44__PXCaptionHashtagsEntryView_layoutSubviews__block_invoke_332(uint64_t a1, void *a2, void *a3, CGFloat a4, CGFloat a5, CGFloat a6, CGFloat a7)
@@ -592,30 +592,30 @@ uint64_t __44__PXCaptionHashtagsEntryView_layoutSubviews__block_invoke_2(uint64_
   return 0;
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_spec, a3);
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    v7 = [(PXCaptionHashtagsEntryView *)self textView];
-    [v7 setBackgroundColor:v6];
+    v8 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    textView = [(PXCaptionHashtagsEntryView *)self textView];
+    [textView setBackgroundColor:clearColor];
 
     [(PXCaptionHashtagsEntryView *)self _updateFonts];
-    v5 = v8;
+    specCopy = v8;
   }
 }
 
-- (void)setOriginalText:(id)a3
+- (void)setOriginalText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_originalText != v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (self->_originalText != textCopy)
   {
-    v13 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v13 = textCopy;
+    v6 = [(NSString *)textCopy isEqualToString:?];
     v5 = v13;
     if (!v6)
     {
@@ -629,18 +629,18 @@ uint64_t __44__PXCaptionHashtagsEntryView_layoutSubviews__block_invoke_2(uint64_
         [(_PXUITextView *)self->_textView setAccessibilityLabel:v9];
       }
 
-      v10 = [(PXCaptionHashtagsEntryView *)self textView];
-      v11 = [v10 text];
-      if ([v11 isEqualToString:self->_originalText])
+      textView = [(PXCaptionHashtagsEntryView *)self textView];
+      text = [textView text];
+      if ([text isEqualToString:self->_originalText])
       {
       }
 
       else
       {
-        v12 = [(PXCaptionHashtagsEntryView *)self isEditing];
+        isEditing = [(PXCaptionHashtagsEntryView *)self isEditing];
 
         v5 = v13;
-        if (v12)
+        if (isEditing)
         {
           goto LABEL_11;
         }
@@ -657,12 +657,12 @@ LABEL_11:
 
 - (NSString)text
 {
-  v2 = [(PXCaptionHashtagsEntryView *)self textView];
-  v3 = [v2 text];
-  v4 = v3;
-  if (v3)
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
+  text = [textView text];
+  v4 = text;
+  if (text)
   {
-    v5 = v3;
+    v5 = text;
   }
 
   else
@@ -677,8 +677,8 @@ LABEL_11:
 
 - (UIEdgeInsets)textContainerInsets
 {
-  v2 = [(PXCaptionHashtagsEntryView *)self textView];
-  [v2 textContainerInset];
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
+  [textView textContainerInset];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -697,52 +697,52 @@ LABEL_11:
 
 - (double)minimumHeightInEdit
 {
-  v3 = [(PXCaptionHashtagsEntryView *)self textView];
-  v4 = [(PXCaptionHashtagsEntryView *)self traitCollection];
-  [v4 displayScale];
+  textView = [(PXCaptionHashtagsEntryView *)self textView];
+  traitCollection = [(PXCaptionHashtagsEntryView *)self traitCollection];
+  [traitCollection displayScale];
 
-  [v3 textContainerInset];
-  [v3 font];
+  [textView textContainerInset];
+  [textView font];
   [objc_claimAutoreleasedReturnValue() lineHeight];
   PXFloatCeilingToPixel();
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
-  v3 = a3;
-  if (a3 == 0.0)
+  widthCopy = width;
+  if (width == 0.0)
   {
-    v5 = [(PXCaptionHashtagsEntryView *)self textView];
-    [v5 frame];
-    v3 = v6;
+    textView = [(PXCaptionHashtagsEntryView *)self textView];
+    [textView frame];
+    widthCopy = v6;
   }
 
-  v7 = [(PXCaptionHashtagsEntryView *)self textView];
-  v8 = [v7 textContainer];
-  [v8 lineFragmentPadding];
+  textView2 = [(PXCaptionHashtagsEntryView *)self textView];
+  textContainer = [textView2 textContainer];
+  [textContainer lineFragmentPadding];
   v10 = v9;
 
-  [(PXCaptionHashtagsEntryView *)self _preferredHeight:0 forWidth:v3 + v10 * 2.0];
+  [(PXCaptionHashtagsEntryView *)self _preferredHeight:0 forWidth:widthCopy + v10 * 2.0];
   return result;
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
   [(PXCaptionHashtagsEntryView *)self _updateFonts];
-  v4 = [(PXCaptionHashtagsEntryView *)self delegate];
-  [v4 captionHashtagsEntryViewPreferredHeightDidChange:self];
+  delegate = [(PXCaptionHashtagsEntryView *)self delegate];
+  [delegate captionHashtagsEntryViewPreferredHeightDidChange:self];
 }
 
-- (PXCaptionHashtagsEntryView)initWithFrame:(CGRect)a3
+- (PXCaptionHashtagsEntryView)initWithFrame:(CGRect)frame
 {
   v36[1] = *MEMORY[0x1E69E9840];
   v34.receiver = self;
   v34.super_class = PXCaptionHashtagsEntryView;
-  v3 = [(PXCaptionHashtagsEntryView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXCaptionHashtagsEntryView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[PXPhotosDetailsSettings sharedInstance];
-    v5 = [v4 captionWidgetEnableHashtags];
+    captionWidgetEnableHashtags = [v4 captionWidgetEnableHashtags];
 
     v6 = [_PXUITextView alloc];
     v7 = [(_PXUITextView *)v6 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -750,16 +750,16 @@ LABEL_11:
     v3->_textView = v7;
 
     [(_PXUITextView *)v3->_textView setDelegate:v3];
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [(_PXUITextView *)v3->_textView setTextColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(_PXUITextView *)v3->_textView setTextColor:labelColor];
 
     v35 = *MEMORY[0x1E69DB650];
-    v10 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v36[0] = v10;
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v36[0] = systemBlueColor;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     [(_PXUITextView *)v3->_textView setLinkTextAttributes:v11];
 
-    if (v5)
+    if (captionWidgetEnableHashtags)
     {
       v12 = 9;
     }
@@ -780,7 +780,7 @@ LABEL_11:
     v31 = v14;
     v32 = v15;
     v33 = v16;
-    v17 = [(_PXUITextView *)v3->_textView font];
+    font = [(_PXUITextView *)v3->_textView font];
     CTFontGetLanguageAwareOutsets();
 
     [(_PXUITextView *)v3->_textView setTextContainerInset:v30, v31, v32, v33];
@@ -802,14 +802,14 @@ LABEL_11:
     [(UIButton *)v24 setTitle:v25 forState:0];
 
     v26 = v3->_moreButton;
-    v27 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(UIButton *)v26 setTitleColor:v27 forState:0];
+    systemBlueColor2 = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(UIButton *)v26 setTitleColor:systemBlueColor2 forState:0];
 
     [(UIButton *)v3->_moreButton addTarget:v3 action:sel_moreButtonTapped_ forControlEvents:64];
     [(PXCaptionHashtagsEntryView *)v3 insertSubview:v3->_moreButton aboveSubview:v3->_textView];
     [(PXCaptionHashtagsEntryView *)v3 _updateFonts];
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v3 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;

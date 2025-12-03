@@ -1,7 +1,7 @@
 @interface NWConcrete_nw_connection
 - (NSString)description;
 - (id)redactedDescription;
-- (uint64_t)initWithEndpoint:(void *)a3 parameters:(int)a4 identifier:;
+- (uint64_t)initWithEndpoint:(void *)endpoint parameters:(int)parameters identifier:;
 - (void)dealloc;
 @end
 
@@ -369,17 +369,17 @@ LABEL_11:
   return v2;
 }
 
-- (uint64_t)initWithEndpoint:(void *)a3 parameters:(int)a4 identifier:
+- (uint64_t)initWithEndpoint:(void *)endpoint parameters:(int)parameters identifier:
 {
   v75 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a3;
-  if (!a1)
+  endpointCopy = endpoint;
+  if (!self)
   {
     goto LABEL_58;
   }
 
-  v65.receiver = a1;
+  v65.receiver = self;
   v65.super_class = NWConcrete_nw_connection;
   v10 = objc_msgSendSuper2(&v65, sel_init);
   if (!v10)
@@ -453,7 +453,7 @@ LABEL_94:
       free(v56);
     }
 
-    a1 = 0;
+    self = 0;
     goto LABEL_58;
   }
 
@@ -485,7 +485,7 @@ LABEL_94:
 LABEL_6:
     *(v11 + 39) = v12;
 
-    objc_storeStrong(v11 + 2, a3);
+    objc_storeStrong(v11 + 2, endpoint);
     if (nw_endpoint_get_type(v8) == nw_endpoint_type_url)
     {
       v16 = nw_endpoint_copy_host_port_endpoint_for_url(v8);
@@ -505,8 +505,8 @@ LABEL_6:
       nw_endpoint_set_do_not_redact(*(v11 + 1));
     }
 
-    *(v11 + 112) = a4;
-    if (!a4)
+    *(v11 + 112) = parameters;
+    if (!parameters)
     {
       *(v11 + 112) = nw_endpoint_handler_get_next_top_id();
     }
@@ -639,10 +639,10 @@ LABEL_57:
       v25[33] = 0;
       v25[34] = v25 + 33;
       *(v25 + 126) = 0;
-      a1 = v25;
+      self = v25;
 LABEL_58:
 
-      return a1;
+      return self;
     }
 
     v36 = *(v11 + 2);

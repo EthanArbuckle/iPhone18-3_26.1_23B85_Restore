@@ -1,40 +1,40 @@
 @interface CAFDAppLinksAgent
-- (_TtC13caraccessoryd17CAFDAppLinksAgent)initWithCarManager:(id)a3;
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)automakerSettingService:(id)a3 didUpdateProminenceInfo:(id)a4;
-- (void)automakerSettingService:(id)a3 didUpdateSymbolName:(id)a4;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
+- (_TtC13caraccessoryd17CAFDAppLinksAgent)initWithCarManager:(id)manager;
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)automakerSettingService:(id)service didUpdateProminenceInfo:(id)info;
+- (void)automakerSettingService:(id)service didUpdateSymbolName:(id)name;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
 @end
 
 @implementation CAFDAppLinksAgent
 
-- (_TtC13caraccessoryd17CAFDAppLinksAgent)initWithCarManager:(id)a3
+- (_TtC13caraccessoryd17CAFDAppLinksAgent)initWithCarManager:(id)manager
 {
-  v3 = a3;
-  v4 = specialized CAFDAppLinksAgent.init(carManager:)(v3);
+  managerCopy = manager;
+  v4 = specialized CAFDAppLinksAgent.init(carManager:)(managerCopy);
 
   return v4;
 }
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = self;
-  CAFDAppLinksAgent.carDidUpdateAccessories(_:)(v4);
+  accessoriesCopy = accessories;
+  selfCopy = self;
+  CAFDAppLinksAgent.carDidUpdateAccessories(_:)(accessoriesCopy);
 }
 
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  if (a4)
+  if (values)
   {
-    v5 = a3;
-    v8 = self;
-    v6 = [v5 car];
+    updateCopy = update;
+    selfCopy = self;
+    v6 = [updateCopy car];
     if (v6)
     {
       v7 = v6;
-      [(CAFDAppLinksAgent *)v8 carDidUpdateAccessories:v6];
+      [(CAFDAppLinksAgent *)selfCopy carDidUpdateAccessories:v6];
     }
 
     else
@@ -44,17 +44,17 @@
   }
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateProminenceInfo:(id)a4
+- (void)automakerSettingService:(id)service didUpdateProminenceInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFDAppLinksAgent.automakerSettingService(_:didUpdateProminenceInfo:)(v6, a4);
+  serviceCopy = service;
+  infoCopy = info;
+  selfCopy = self;
+  CAFDAppLinksAgent.automakerSettingService(_:didUpdateProminenceInfo:)(serviceCopy, info);
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateSymbolName:(id)a4
+- (void)automakerSettingService:(id)service didUpdateSymbolName:(id)name
 {
-  if (a4)
+  if (name)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -66,17 +66,17 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  CAFDAppLinksAgent.automakerSettingService(_:didUpdateSymbolName:)(v9, v6, v8);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFDAppLinksAgent.automakerSettingService(_:didUpdateSymbolName:)(serviceCopy, v6, v8);
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  specialized CAFDAppLinksAgent.carManager(_:didUpdateCurrentCar:)(a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  specialized CAFDAppLinksAgent.carManager(_:didUpdateCurrentCar:)(car);
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface CKDetailsAddGroupNameView
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKDetailsAddGroupNameView)initWithFrame:(CGRect)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKDetailsAddGroupNameView)initWithFrame:(CGRect)frame;
 - (CKDetailsAddGroupNameViewDelegate)delegate;
 - (void)commitGroupName;
-- (void)setEnabled:(BOOL)a3;
-- (void)setGroupName:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setGroupName:(id)name;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation CKDetailsAddGroupNameView
 
-- (CKDetailsAddGroupNameView)initWithFrame:(CGRect)a3
+- (CKDetailsAddGroupNameView)initWithFrame:(CGRect)frame
 {
   v69[2] = *MEMORY[0x1E69E9840];
   v66.receiver = self;
   v66.super_class = CKDetailsAddGroupNameView;
-  v3 = [(CKDetailsAddGroupNameView *)&v66 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKDetailsAddGroupNameView *)&v66 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -35,14 +35,14 @@
     v12 = v4->_placeholderLabel;
     v13 = CKFrameworkBundle();
     v14 = [v13 localizedStringForKey:@"GROUP_NAME_LABEL" value:&stru_1F04268F8 table:@"ChatKit"];
-    v15 = [v14 localizedUppercaseString];
-    [(UILabel *)v12 setText:v15];
+    localizedUppercaseString = [v14 localizedUppercaseString];
+    [(UILabel *)v12 setText:localizedUppercaseString];
 
     v16 = v4->_placeholderLabel;
     v17 = +[CKUIBehavior sharedBehaviors];
-    v18 = [v17 theme];
-    v19 = [v18 primaryLabelColor];
-    [(UILabel *)v16 setTextColor:v19];
+    theme = [v17 theme];
+    primaryLabelColor = [theme primaryLabelColor];
+    [(UILabel *)v16 setTextColor:primaryLabelColor];
 
     v20 = v4->_placeholderLabel;
     v21 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
@@ -55,8 +55,8 @@
     v4->_inputField = v22;
 
     v24 = v4->_inputField;
-    v25 = [MEMORY[0x1E69DC888] clearColor];
-    [(CKDetailsViewAddGroupNameViewUITextField *)v24 setBackgroundColor:v25];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CKDetailsViewAddGroupNameViewUITextField *)v24 setBackgroundColor:clearColor];
 
     [(CKDetailsViewAddGroupNameViewUITextField *)v4->_inputField setReturnKeyType:9];
     v26 = v4->_inputField;
@@ -68,14 +68,14 @@
     [(CKDetailsViewAddGroupNameViewUITextField *)v4->_inputField setDelegate:v4];
     v29 = v4->_inputField;
     v30 = +[CKUIBehavior sharedBehaviors];
-    v31 = [v30 theme];
-    v32 = [v31 primaryLabelColor];
-    [(CKDetailsViewAddGroupNameViewUITextField *)v29 setTextColor:v32];
+    theme2 = [v30 theme];
+    primaryLabelColor2 = [theme2 primaryLabelColor];
+    [(CKDetailsViewAddGroupNameViewUITextField *)v29 setTextColor:primaryLabelColor2];
 
     v33 = v4->_inputField;
     v34 = +[CKUIBehavior sharedBehaviors];
-    v35 = [v34 theme];
-    -[CKDetailsViewAddGroupNameViewUITextField setKeyboardAppearance:](v33, "setKeyboardAppearance:", [v35 keyboardAppearance]);
+    theme3 = [v34 theme];
+    -[CKDetailsViewAddGroupNameViewUITextField setKeyboardAppearance:](v33, "setKeyboardAppearance:", [theme3 keyboardAppearance]);
 
     v36 = v4->_inputField;
     v37 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -94,30 +94,30 @@
     [(CKDetailsAddGroupNameView *)v4 addSubview:v4->_inputField];
     [(CKDetailsViewAddGroupNameViewUITextField *)v4->_inputField setTranslatesAutoresizingMaskIntoConstraints:0];
     v57 = MEMORY[0x1E696ACD8];
-    v65 = [(UILabel *)v4->_placeholderLabel topAnchor];
-    v64 = [(CKDetailsAddGroupNameView *)v4 topAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64 constant:4.0];
+    topAnchor = [(UILabel *)v4->_placeholderLabel topAnchor];
+    topAnchor2 = [(CKDetailsAddGroupNameView *)v4 topAnchor];
+    v63 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
     v67[0] = v63;
-    v62 = [(UILabel *)v4->_placeholderLabel leadingAnchor];
-    v61 = [(CKDetailsAddGroupNameView *)v4 leadingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    leadingAnchor = [(UILabel *)v4->_placeholderLabel leadingAnchor];
+    leadingAnchor2 = [(CKDetailsAddGroupNameView *)v4 leadingAnchor];
+    v60 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v67[1] = v60;
-    v59 = [(UILabel *)v4->_placeholderLabel trailingAnchor];
-    v58 = [(CKDetailsAddGroupNameView *)v4 trailingAnchor];
-    v56 = [v59 constraintEqualToAnchor:v58];
+    trailingAnchor = [(UILabel *)v4->_placeholderLabel trailingAnchor];
+    trailingAnchor2 = [(CKDetailsAddGroupNameView *)v4 trailingAnchor];
+    v56 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v67[2] = v56;
-    v54 = [(CKDetailsViewAddGroupNameViewUITextField *)v4->_inputField topAnchor];
-    v55 = [(CKDetailsAddGroupNameView *)v4 placeholderLabel];
-    v44 = [v55 bottomAnchor];
-    v45 = [v54 constraintEqualToAnchor:v44 constant:4.0];
+    topAnchor3 = [(CKDetailsViewAddGroupNameViewUITextField *)v4->_inputField topAnchor];
+    placeholderLabel = [(CKDetailsAddGroupNameView *)v4 placeholderLabel];
+    bottomAnchor = [placeholderLabel bottomAnchor];
+    v45 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:4.0];
     v67[3] = v45;
-    v46 = [(CKDetailsViewAddGroupNameViewUITextField *)v4->_inputField leadingAnchor];
-    v47 = [(CKDetailsAddGroupNameView *)v4 leadingAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    leadingAnchor3 = [(CKDetailsViewAddGroupNameViewUITextField *)v4->_inputField leadingAnchor];
+    leadingAnchor4 = [(CKDetailsAddGroupNameView *)v4 leadingAnchor];
+    v48 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v67[4] = v48;
-    v49 = [(CKDetailsViewAddGroupNameViewUITextField *)v4->_inputField trailingAnchor];
-    v50 = [(CKDetailsAddGroupNameView *)v4 trailingAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    trailingAnchor3 = [(CKDetailsViewAddGroupNameViewUITextField *)v4->_inputField trailingAnchor];
+    trailingAnchor4 = [(CKDetailsAddGroupNameView *)v4 trailingAnchor];
+    v51 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v67[5] = v51;
     v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:6];
     [v57 activateConstraints:v52];
@@ -128,60 +128,60 @@
 
 - (void)commitGroupName
 {
-  v3 = [(CKDetailsAddGroupNameView *)self inputField];
-  [v3 setCanResignFirstResponderInternal:1];
+  inputField = [(CKDetailsAddGroupNameView *)self inputField];
+  [inputField setCanResignFirstResponderInternal:1];
 
-  v4 = [(CKDetailsAddGroupNameView *)self inputField];
-  [v4 resignFirstResponder];
+  inputField2 = [(CKDetailsAddGroupNameView *)self inputField];
+  [inputField2 resignFirstResponder];
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v5 = a3;
-  if (self->_groupName != v5)
+  nameCopy = name;
+  if (self->_groupName != nameCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_groupName, a3);
-    v6 = [(CKDetailsAddGroupNameView *)self inputField];
-    [v6 setText:self->_groupName];
+    v11 = nameCopy;
+    objc_storeStrong(&self->_groupName, name);
+    inputField = [(CKDetailsAddGroupNameView *)self inputField];
+    [inputField setText:self->_groupName];
 
-    v7 = [(CKDetailsAddGroupNameView *)self inputField];
+    inputField2 = [(CKDetailsAddGroupNameView *)self inputField];
     v8 = +[CKUIBehavior sharedBehaviors];
-    v9 = [v8 theme];
-    v10 = [v9 primaryLabelColor];
-    [v7 setTextColor:v10];
+    theme = [v8 theme];
+    primaryLabelColor = [theme primaryLabelColor];
+    [inputField2 setTextColor:primaryLabelColor];
 
     [(CKDetailsAddGroupNameView *)self setNeedsLayout];
-    v5 = v11;
+    nameCopy = v11;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    v4 = [(CKDetailsAddGroupNameView *)self inputField];
+    self->_enabled = enabled;
+    inputField = [(CKDetailsAddGroupNameView *)self inputField];
     v5 = objc_alloc(MEMORY[0x1E696AAB0]);
     v6 = CKFrameworkBundle();
     v7 = [v6 localizedStringForKey:@"GROUP_NAME_PLACEHOLDER" value:&stru_1F04268F8 table:@"ChatKit"];
     v12 = *MEMORY[0x1E69DB650];
-    v8 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v13[0] = v8;
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    v13[0] = systemGrayColor;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v10 = [v5 initWithString:v7 attributes:v9];
-    [v4 setAttributedPlaceholder:v10];
+    [inputField setAttributedPlaceholder:v10];
 
-    v11 = [(CKDetailsAddGroupNameView *)self inputField];
-    [v11 setEnabled:self->_enabled];
+    inputField2 = [(CKDetailsAddGroupNameView *)self inputField];
+    [inputField2 setEnabled:self->_enabled];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(CKDetailsViewAddGroupNameViewUITextField *)self->_inputField sizeThatFits:?];
   v7 = v6;
   [(UILabel *)self->_placeholderLabel sizeThatFits:width, height];
@@ -196,42 +196,42 @@
   return result;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v3 = [(CKDetailsAddGroupNameView *)self inputField];
-  [v3 setCanResignFirstResponderInternal:0];
+  inputField = [(CKDetailsAddGroupNameView *)self inputField];
+  [inputField setCanResignFirstResponderInternal:0];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = [(CKDetailsAddGroupNameView *)self inputField];
-  [v4 setCanResignFirstResponderInternal:1];
+  inputField = [(CKDetailsAddGroupNameView *)self inputField];
+  [inputField setCanResignFirstResponderInternal:1];
 
-  v5 = [(CKDetailsAddGroupNameView *)self inputField];
-  [v5 resignFirstResponder];
+  inputField2 = [(CKDetailsAddGroupNameView *)self inputField];
+  [inputField2 resignFirstResponder];
 
   return 1;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(CKDetailsAddGroupNameView *)self inputField];
-  [v5 setCanResignFirstResponderInternal:1];
+  editingCopy = editing;
+  inputField = [(CKDetailsAddGroupNameView *)self inputField];
+  [inputField setCanResignFirstResponderInternal:1];
 
-  v7 = [(CKDetailsAddGroupNameView *)self delegate];
-  v6 = [v4 text];
+  delegate = [(CKDetailsAddGroupNameView *)self delegate];
+  text = [editingCopy text];
 
-  [v7 detailsAddGroupNameView:self didCommitGroupName:v6];
+  [delegate detailsAddGroupNameView:self didCommitGroupName:text];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  v7 = a5;
-  v8 = [a3 text];
-  v9 = [v8 length];
-  v10 = [v7 length];
+  length = range.length;
+  stringCopy = string;
+  text = [field text];
+  v9 = [text length];
+  v10 = [stringCopy length];
 
   return v9 - length + v10 <= *MEMORY[0x1E69A7030];
 }

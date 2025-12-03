@@ -1,16 +1,16 @@
 @interface MUISearchInstantAnswersSuggestion
 - (EMCollectionItemID)itemID;
-- (MUISearchInstantAnswersSuggestion)initWithInstantAnswer:(id)a3;
-- (MUISearchInstantAnswersSuggestion)initWithMessage:(id)a3 instantAnswer:(id)a4 messageList:(id)a5;
+- (MUISearchInstantAnswersSuggestion)initWithInstantAnswer:(id)answer;
+- (MUISearchInstantAnswersSuggestion)initWithMessage:(id)message instantAnswer:(id)answer messageList:(id)list;
 - (id)_conversationID;
 - (void)populateInlineCard;
 @end
 
 @implementation MUISearchInstantAnswersSuggestion
 
-- (MUISearchInstantAnswersSuggestion)initWithInstantAnswer:(id)a3
+- (MUISearchInstantAnswersSuggestion)initWithInstantAnswer:(id)answer
 {
-  v4 = a3;
+  answerCopy = answer;
   v10.receiver = self;
   v10.super_class = MUISearchInstantAnswersSuggestion;
   v5 = [(MUISearchInstantAnswersSuggestion *)&v10 init];
@@ -19,19 +19,19 @@
     goto LABEL_8;
   }
 
-  if ([v4 instantAnswersKind])
+  if ([answerCopy instantAnswersKind])
   {
-    if ([v4 instantAnswersKind] != 1)
+    if ([answerCopy instantAnswersKind] != 1)
     {
       goto LABEL_7;
     }
 
-    v6 = [[MUISearchInstantAnswer alloc] initHotelAnswerWithCSInstantAnswer:v4];
+    v6 = [[MUISearchInstantAnswer alloc] initHotelAnswerWithCSInstantAnswer:answerCopy];
   }
 
   else
   {
-    v6 = [[MUISearchInstantAnswer alloc] initFlightAnswerWithCSInstantAnswer:v4];
+    v6 = [[MUISearchInstantAnswer alloc] initFlightAnswerWithCSInstantAnswer:answerCopy];
   }
 
   instantAnswer = v5->_instantAnswer;
@@ -51,11 +51,11 @@ LABEL_10:
   return v8;
 }
 
-- (MUISearchInstantAnswersSuggestion)initWithMessage:(id)a3 instantAnswer:(id)a4 messageList:(id)a5
+- (MUISearchInstantAnswersSuggestion)initWithMessage:(id)message instantAnswer:(id)answer messageList:(id)list
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  messageCopy = message;
+  answerCopy = answer;
+  listCopy = list;
   v18.receiver = self;
   v18.super_class = MUISearchInstantAnswersSuggestion;
   v12 = [(MUISearchInstantAnswersSuggestion *)&v18 init];
@@ -65,17 +65,17 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v12->_message, a3);
-  objc_storeStrong(&v13->_messageList, a5);
-  if (![v10 instantAnswersKind])
+  objc_storeStrong(&v12->_message, message);
+  objc_storeStrong(&v13->_messageList, list);
+  if (![answerCopy instantAnswersKind])
   {
-    v14 = [[MUISearchInstantAnswer alloc] initFlightAnswerWithCSInstantAnswer:v10];
+    v14 = [[MUISearchInstantAnswer alloc] initFlightAnswerWithCSInstantAnswer:answerCopy];
     goto LABEL_6;
   }
 
-  if ([v10 instantAnswersKind] == 1)
+  if ([answerCopy instantAnswersKind] == 1)
   {
-    v14 = [[MUISearchInstantAnswer alloc] initHotelAnswerWithCSInstantAnswer:v10];
+    v14 = [[MUISearchInstantAnswer alloc] initHotelAnswerWithCSInstantAnswer:answerCopy];
 LABEL_6:
     instantAnswer = v13->_instantAnswer;
     v13->_instantAnswer = v14;
@@ -98,26 +98,26 @@ LABEL_11:
 - (id)_conversationID
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(MUISearchInstantAnswersSuggestion *)self message];
-  v4 = [v2 numberWithLongLong:{objc_msgSend(v3, "conversationID")}];
-  v5 = [v4 stringValue];
+  message = [(MUISearchInstantAnswersSuggestion *)self message];
+  v4 = [v2 numberWithLongLong:{objc_msgSend(message, "conversationID")}];
+  stringValue = [v4 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
 - (EMCollectionItemID)itemID
 {
-  v2 = [(MUISearchInstantAnswersSuggestion *)self message];
-  v3 = [v2 itemID];
+  message = [(MUISearchInstantAnswersSuggestion *)self message];
+  itemID = [message itemID];
 
-  return v3;
+  return itemID;
 }
 
 - (void)populateInlineCard
 {
-  v3 = [(MUISearchInstantAnswer *)self->_instantAnswer instantAnswersKind];
+  instantAnswersKind = [(MUISearchInstantAnswer *)self->_instantAnswer instantAnswersKind];
   instantAnswer = self->_instantAnswer;
-  if (v3)
+  if (instantAnswersKind)
   {
     if ([(MUISearchInstantAnswer *)instantAnswer instantAnswersKind]!= 1)
     {
@@ -128,8 +128,8 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  v7 = [(MUISearchInstantAnswer *)instantAnswer flightCheckInUrl];
-  if (v7)
+  flightCheckInUrl = [(MUISearchInstantAnswer *)instantAnswer flightCheckInUrl];
+  if (flightCheckInUrl)
   {
     v6 = 1;
   }
@@ -139,19 +139,19 @@ LABEL_11:
     if ([(MUISearchInstantAnswer *)self->_instantAnswer instantAnswersKind]== 1)
     {
 LABEL_3:
-      v5 = [(MUISearchInstantAnswer *)self->_instantAnswer hotelReservationForAddress];
-      v6 = v5 != 0;
+      hotelReservationForAddress = [(MUISearchInstantAnswer *)self->_instantAnswer hotelReservationForAddress];
+      v6 = hotelReservationForAddress != 0;
 
-      if (v3)
+      if (instantAnswersKind)
       {
         goto LABEL_11;
       }
 
-      v7 = 0;
+      flightCheckInUrl = 0;
       goto LABEL_10;
     }
 
-    v7 = 0;
+    flightCheckInUrl = 0;
     v6 = 0;
   }
 
@@ -159,9 +159,9 @@ LABEL_10:
 
 LABEL_11:
   v8 = MEMORY[0x277D06E70];
-  v12 = [(MUISearchInstantAnswer *)self->_instantAnswer bodyCardSectionID];
-  v9 = [(MUISearchInstantAnswer *)self->_instantAnswer buttonsCardSectionID];
-  v10 = [v8 inlineCardWithManageReservationButton:v6 bodyCardSectionID:v12 buttonsCardSectionID:v9];
+  bodyCardSectionID = [(MUISearchInstantAnswer *)self->_instantAnswer bodyCardSectionID];
+  buttonsCardSectionID = [(MUISearchInstantAnswer *)self->_instantAnswer buttonsCardSectionID];
+  v10 = [v8 inlineCardWithManageReservationButton:v6 bodyCardSectionID:bodyCardSectionID buttonsCardSectionID:buttonsCardSectionID];
   feedbackInlineCard = self->_feedbackInlineCard;
   self->_feedbackInlineCard = v10;
 }

@@ -3,7 +3,7 @@
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 - (void)dealloc;
-- (void)respondWithPayload:(id)a3 error:(id)a4;
+- (void)respondWithPayload:(id)payload error:(id)error;
 @end
 
 @implementation HMDCameraSnapshotSession
@@ -12,8 +12,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDCameraSnapshotSession *)self sessionID];
-  v5 = [v3 initWithName:@"ID" value:v4];
+  sessionID = [(HMDCameraSnapshotSession *)self sessionID];
+  v5 = [v3 initWithName:@"ID" value:sessionID];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -24,27 +24,27 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraSnapshotSession *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraSnapshotSession *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
-- (void)respondWithPayload:(id)a3 error:(id)a4
+- (void)respondWithPayload:(id)payload error:(id)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v6 = a4;
-  v7 = [(HMDCameraSnapshotSession *)self sessionMessages];
-  v8 = [v7 count];
+  payloadCopy = payload;
+  errorCopy = error;
+  sessionMessages = [(HMDCameraSnapshotSession *)self sessionMessages];
+  v8 = [sessionMessages count];
 
   if (v8)
   {
-    v9 = [(HMDCameraSnapshotSession *)self sessionID];
-    [v9 markMilestoneFor:@"SentSnapshotResponse"];
+    sessionID = [(HMDCameraSnapshotSession *)self sessionID];
+    [sessionID markMilestoneFor:@"SentSnapshotResponse"];
 
-    v10 = [(HMDCameraSnapshotSession *)self snapshotMetrics];
-    [v10 setError:v6];
+    snapshotMetrics = [(HMDCameraSnapshotSession *)self snapshotMetrics];
+    [snapshotMetrics setError:errorCopy];
 
     v29 = 0u;
     v30 = 0u;
@@ -68,21 +68,21 @@
 
           v15 = *(*(&v27 + 1) + 8 * i);
           v16 = objc_autoreleasePoolPush();
-          v17 = self;
+          selfCopy = self;
           v18 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             HMFGetLogIdentifier();
             v20 = v19 = self;
-            v21 = [v15 shortDescription];
+            shortDescription = [v15 shortDescription];
             *buf = 138544130;
             v32 = v20;
             v33 = 2112;
-            v34 = v21;
+            v34 = shortDescription;
             v35 = 2112;
-            v36 = v26;
+            v36 = payloadCopy;
             v37 = 2112;
-            v38 = v6;
+            v38 = errorCopy;
             _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Responding to %@ with payload: %@, error: %@", buf, 0x2Au);
 
             self = v19;
@@ -90,7 +90,7 @@
           }
 
           objc_autoreleasePoolPop(v16);
-          [v15 respondWithPayload:v26 error:v6];
+          [v15 respondWithPayload:payloadCopy error:errorCopy];
         }
 
         v12 = [obj countByEnumeratingWithState:&v27 objects:v39 count:16];
@@ -99,8 +99,8 @@
       while (v12);
     }
 
-    v22 = [(HMDCameraSnapshotSession *)self sessionMessages];
-    [v22 removeAllObjects];
+    sessionMessages2 = [(HMDCameraSnapshotSession *)self sessionMessages];
+    [sessionMessages2 removeAllObjects];
   }
 
   v23 = *MEMORY[0x277D85DE8];

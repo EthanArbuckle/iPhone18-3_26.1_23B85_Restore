@@ -1,15 +1,15 @@
 @interface CanvasAttachment
 - (_TtC8PaperKit16CanvasAttachment)init;
-- (void)setBoundingPath:(const CGPath *)a3;
+- (void)setBoundingPath:(const CGPath *)path;
 @end
 
 @implementation CanvasAttachment
 
-- (void)setBoundingPath:(const CGPath *)a3
+- (void)setBoundingPath:(const CGPath *)path
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8PaperKit16CanvasAttachment_boundingPath);
-  *(&self->super.isa + OBJC_IVAR____TtC8PaperKit16CanvasAttachment_boundingPath) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC8PaperKit16CanvasAttachment_boundingPath) = path;
+  pathCopy = path;
 }
 
 - (_TtC8PaperKit16CanvasAttachment)init

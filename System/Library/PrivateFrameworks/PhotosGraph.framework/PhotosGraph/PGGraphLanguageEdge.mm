@@ -1,15 +1,15 @@
 @interface PGGraphLanguageEdge
 + (id)filter;
-- (id)initFromLocationNode:(id)a3 toLanguageNode:(id)a4;
+- (id)initFromLocationNode:(id)node toLanguageNode:(id)languageNode;
 @end
 
 @implementation PGGraphLanguageEdge
 
-- (id)initFromLocationNode:(id)a3 toLanguageNode:(id)a4
+- (id)initFromLocationNode:(id)node toLanguageNode:(id)languageNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphLanguageEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:languageNode];
 }
 
 + (id)filter

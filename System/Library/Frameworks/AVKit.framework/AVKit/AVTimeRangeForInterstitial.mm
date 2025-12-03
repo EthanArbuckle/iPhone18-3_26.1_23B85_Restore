@@ -1,29 +1,29 @@
 @interface AVTimeRangeForInterstitial
-- (AVTimeRangeForInterstitial)initWithInterstice:(id)a3;
+- (AVTimeRangeForInterstitial)initWithInterstice:(id)interstice;
 @end
 
 @implementation AVTimeRangeForInterstitial
 
-- (AVTimeRangeForInterstitial)initWithInterstice:(id)a3
+- (AVTimeRangeForInterstitial)initWithInterstice:(id)interstice
 {
-  v5 = a3;
-  v6 = v5;
+  intersticeCopy = interstice;
+  v6 = intersticeCopy;
   memset(v20, 0, sizeof(v20));
   v19 = 0u;
-  if (v5)
+  if (intersticeCopy)
   {
-    [v5 timeRange];
+    [intersticeCopy timeRange];
   }
 
-  v7 = [v6 playerInterstitialEvent];
+  playerInterstitialEvent = [v6 playerInterstitialEvent];
 
-  if (v7)
+  if (playerInterstitialEvent)
   {
-    v8 = [v6 playerInterstitialEvent];
-    v9 = v8;
-    if (v8)
+    playerInterstitialEvent2 = [v6 playerInterstitialEvent];
+    v9 = playerInterstitialEvent2;
+    if (playerInterstitialEvent2)
     {
-      [v8 plannedDuration];
+      [playerInterstitialEvent2 plannedDuration];
     }
 
     else
@@ -50,14 +50,14 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_interstice, a3);
+    objc_storeStrong(&v13->_interstice, interstice);
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v6 startDate];
-      if (v15)
+      startDate = [v6 startDate];
+      if (startDate)
       {
         [(AVTimeRange *)v14 startTime];
-        [(AVTimeRange *)v14 setMapTime:v15 toDate:?];
+        [(AVTimeRange *)v14 setMapTime:startDate toDate:?];
       }
     }
   }

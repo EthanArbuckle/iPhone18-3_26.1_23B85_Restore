@@ -5,11 +5,11 @@
 - (id)_makePlaceActionButton;
 - (id)infoCardChildPossibleActions;
 - (void)_setUpSectionViews;
-- (void)placeCardActionSectionView:(id)a3 buttonWithActionItemPressed:(id)a4;
-- (void)sectionView:(id)a3 didSelectRow:(id)a4 atIndex:(unint64_t)a5;
-- (void)setActionItemArray:(id)a3;
-- (void)setAllowRowSelection:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)placeCardActionSectionView:(id)view buttonWithActionItemPressed:(id)pressed;
+- (void)sectionView:(id)view didSelectRow:(id)row atIndex:(unint64_t)index;
+- (void)setActionItemArray:(id)array;
+- (void)setAllowRowSelection:(BOOL)selection;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -32,7 +32,7 @@
 - (id)infoCardChildPossibleActions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -56,7 +56,7 @@
         if (v9 <= 0x11 && ((0x201F9u >> v9) & 1) != 0)
         {
           v10 = [MEMORY[0x1E696AD98] numberWithInteger:qword_1A30F7540[v9]];
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -66,83 +66,83 @@
     while (v6);
   }
 
-  v11 = [v3 copy];
+  v11 = [array copy];
 
   return v11;
 }
 
-- (void)placeCardActionSectionView:(id)a3 buttonWithActionItemPressed:(id)a4
+- (void)placeCardActionSectionView:(id)view buttonWithActionItemPressed:(id)pressed
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  pressedCopy = pressed;
+  if (view)
   {
     v10 = @"view";
-    v11[0] = a3;
+    v11[0] = view;
     v7 = MEMORY[0x1E695DF20];
-    v8 = a3;
-    a3 = [v7 dictionaryWithObjects:v11 forKeys:&v10 count:1];
+    viewCopy = view;
+    view = [v7 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_actionManager);
-  [WeakRetained performAction:v6 options:a3 completion:&__block_literal_global_5429];
+  [WeakRetained performAction:pressedCopy options:view completion:&__block_literal_global_5429];
 }
 
-- (void)sectionView:(id)a3 didSelectRow:(id)a4 atIndex:(unint64_t)a5
+- (void)sectionView:(id)view didSelectRow:(id)row atIndex:(unint64_t)index
 {
-  v8 = a4;
+  rowCopy = row;
   v23.receiver = self;
   v23.super_class = MKPlaceCardActionsViewController;
-  [(MKPlaceSectionViewController *)&v23 sectionView:a3 didSelectRow:v8 atIndex:a5];
+  [(MKPlaceSectionViewController *)&v23 sectionView:view didSelectRow:rowCopy atIndex:index];
   if (self->_allowRowSelection)
   {
-    v9 = [v8 leftItem];
-    if (v9)
+    leftItem = [rowCopy leftItem];
+    if (leftItem)
     {
     }
 
     else
     {
-      v10 = [v8 rightItem];
+      rightItem = [rowCopy rightItem];
 
-      if (!v10)
+      if (!rightItem)
       {
         goto LABEL_15;
       }
     }
 
-    v11 = [v8 leftItem];
-    if (!v11 || (v12 = v11, [v8 rightItem], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, !v13))
+    leftItem2 = [rowCopy leftItem];
+    if (!leftItem2 || (v12 = leftItem2, [rowCopy rightItem], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, !v13))
     {
-      v14 = [v8 currentLeftItem];
-      v15 = v14;
-      if (v14)
+      currentLeftItem = [rowCopy currentLeftItem];
+      v15 = currentLeftItem;
+      if (currentLeftItem)
       {
-        v16 = v14;
+        rightItem2 = currentLeftItem;
       }
 
       else
       {
-        v16 = [v8 rightItem];
+        rightItem2 = [rowCopy rightItem];
       }
 
-      v17 = v16;
+      v17 = rightItem2;
 
-      v18 = [v8 leftItem];
-      v19 = [v18 enabled];
+      leftItem3 = [rowCopy leftItem];
+      enabled = [leftItem3 enabled];
 
-      if (v19)
+      if (enabled)
       {
-        v20 = [v8 leftItem];
-        v21 = [v20 selectedItem];
+        leftItem4 = [rowCopy leftItem];
+        selectedItem = [leftItem4 selectedItem];
 
-        if (v21)
+        if (selectedItem)
         {
-          v22 = [v8 leftItem];
-          [v22 setEnabled:0];
+          leftItem5 = [rowCopy leftItem];
+          [leftItem5 setEnabled:0];
         }
 
-        [(MKPlaceCardActionsViewController *)self placeCardActionSectionView:v8 buttonWithActionItemPressed:v17];
+        [(MKPlaceCardActionsViewController *)self placeCardActionSectionView:rowCopy buttonWithActionItemPressed:v17];
       }
     }
   }
@@ -150,20 +150,20 @@
 LABEL_15:
 }
 
-- (void)setAllowRowSelection:(BOOL)a3
+- (void)setAllowRowSelection:(BOOL)selection
 {
-  self->_allowRowSelection = a3;
+  self->_allowRowSelection = selection;
   if ([(MKPlaceCardActionsViewController *)self isViewLoaded])
   {
     allowRowSelection = self->_allowRowSelection;
-    v5 = [(MKPlaceSectionViewController *)self sectionView];
-    [v5 setHighlightsTouches:allowRowSelection];
+    sectionView = [(MKPlaceSectionViewController *)self sectionView];
+    [sectionView setHighlightsTouches:allowRowSelection];
   }
 }
 
-- (void)setActionItemArray:(id)a3
+- (void)setActionItemArray:(id)array
 {
-  v4 = [a3 copy];
+  v4 = [array copy];
   actionItemArray = self->_actionItemArray;
   self->_actionItemArray = v4;
 
@@ -173,12 +173,12 @@ LABEL_15:
 - (void)_setUpSectionViews
 {
   v67 = *MEMORY[0x1E69E9840];
-  v3 = [(MKPlaceCardActionsViewController *)self viewIfLoaded];
-  if (v3)
+  viewIfLoaded = [(MKPlaceCardActionsViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v4 = v3;
-    v5 = [(MKPlaceCardActionsViewController *)self viewIfLoaded];
-    [v5 frame];
+    v4 = viewIfLoaded;
+    viewIfLoaded2 = [(MKPlaceCardActionsViewController *)self viewIfLoaded];
+    [viewIfLoaded2 frame];
     v7 = v6;
 
     if (v7 != 0.0)
@@ -187,14 +187,14 @@ LABEL_15:
       v9 = &OBJC_IVAR___MKLookAroundView__storefrontFullyDrawn;
       if (self->_haveTwoColumns)
       {
-        v10 = [(MKPlaceCardActionsViewController *)self view];
-        [v10 frame];
+        view = [(MKPlaceCardActionsViewController *)self view];
+        [view frame];
         v12 = v11;
         v14 = v13;
         v16 = v15;
         v18 = v17;
-        v19 = [(MKPlaceCardActionsViewController *)self view];
-        [v19 layoutMargins];
+        view2 = [(MKPlaceCardActionsViewController *)self view];
+        [view2 layoutMargins];
         v21 = v14 + v20;
         v24 = v16 - (v22 + v23);
         v68.size.height = v18 - (v20 + v25);
@@ -225,12 +225,12 @@ LABEL_15:
                 objc_enumerationMutation(obj);
               }
 
-              v34 = [*(*(&v60 + 1) + 8 * i) displayString];
+              displayString = [*(*(&v60 + 1) + 8 * i) displayString];
               v64 = v32;
               v65 = v27;
               v35 = 1;
               v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
-              [v34 sizeWithAttributes:v36];
+              [displayString sizeWithAttributes:v36];
               v38 = v37;
 
               if (v38 > v30)
@@ -267,7 +267,7 @@ LABEL_15:
         v35 = 0;
       }
 
-      v39 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v40 = v9[434];
       if ([*(&self->super.super.super.super.isa + v40) count])
       {
@@ -311,26 +311,26 @@ LABEL_26:
           [(MKPlaceCardActionSectionView *)v50 setDelegate:self];
           [(MKPlaceCardActionSectionView *)v50 setTopHairlineHidden:!self->_showTopButtonSeparator];
           [(MKViewWithHairline *)v50 setBottomHairlineHidden:1];
-          [v39 addObject:v50];
+          [array addObject:v50];
         }
       }
 
       showTopSeparator = self->_showTopSeparator;
-      v53 = [v39 firstObject];
-      [v53 setTopHairlineHidden:!showTopSeparator];
+      firstObject = [array firstObject];
+      [firstObject setTopHairlineHidden:!showTopSeparator];
 
-      v54 = [v39 lastObject];
-      [v54 setBottomHairlineHidden:1];
+      lastObject = [array lastObject];
+      [lastObject setBottomHairlineHidden:1];
 
-      v55 = [v39 copy];
+      v55 = [array copy];
       viewArray = self->_viewArray;
       self->_viewArray = v55;
 
-      v57 = [(MKPlaceSectionViewController *)self sectionView];
-      [v57 setRowViews:v39];
+      sectionView = [(MKPlaceSectionViewController *)self sectionView];
+      [sectionView setRowViews:array];
 
-      v58 = [(MKPlaceCardActionsViewController *)self view];
-      [v58 _mapkit_setNeedsLayout];
+      view3 = [(MKPlaceCardActionsViewController *)self view];
+      [view3 _mapkit_setNeedsLayout];
     }
   }
 }
@@ -343,11 +343,11 @@ LABEL_26:
   return v2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MKPlaceCardActionsViewController;
-  [(MKPlaceCardActionsViewController *)&v4 viewDidAppear:a3];
+  [(MKPlaceCardActionsViewController *)&v4 viewDidAppear:appear];
   if (![(NSArray *)self->_viewArray count])
   {
     [(MKPlaceCardActionsViewController *)self _setUpSectionViews];
@@ -359,15 +359,15 @@ LABEL_26:
   v7.receiver = self;
   v7.super_class = MKPlaceCardActionsViewController;
   [(MKPlaceCardActionsViewController *)&v7 viewDidLoad];
-  v3 = [(MKPlaceSectionViewController *)self sectionView];
-  [v3 setStackDelegate:self];
+  sectionView = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView setStackDelegate:self];
 
-  v4 = [(MKPlaceSectionViewController *)self sectionView];
-  [v4 setPreservesSuperviewLayoutMargins:1];
+  sectionView2 = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView2 setPreservesSuperviewLayoutMargins:1];
 
   allowRowSelection = self->_allowRowSelection;
-  v6 = [(MKPlaceSectionViewController *)self sectionView];
-  [v6 setHighlightsTouches:allowRowSelection];
+  sectionView3 = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView3 setHighlightsTouches:allowRowSelection];
 }
 
 - (MKPlaceCardActionsViewController)init

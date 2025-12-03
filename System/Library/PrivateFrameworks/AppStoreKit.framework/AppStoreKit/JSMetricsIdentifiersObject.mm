@@ -1,9 +1,9 @@
 @interface JSMetricsIdentifiersObject
 - (NSString)currentTopic;
 - (_TtC11AppStoreKit26JSMetricsIdentifiersObject)init;
-- (id)getIdentifierForContext:(id)a3;
-- (id)getIdentifierForContextSync:(id)a3;
-- (id)getMetricsFieldsForContexts:(id)a3;
+- (id)getIdentifierForContext:(id)context;
+- (id)getIdentifierForContextSync:(id)sync;
+- (id)getMetricsFieldsForContexts:(id)contexts;
 @end
 
 @implementation JSMetricsIdentifiersObject
@@ -16,31 +16,31 @@
   return v2;
 }
 
-- (id)getIdentifierForContext:(id)a3
+- (id)getIdentifierForContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1E15DA248(v4, "MetricIdentifierPromise", "MetricIdentifier", sub_1E15DBCDC);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_1E15DA248(contextCopy, "MetricIdentifierPromise", "MetricIdentifier", sub_1E15DBCDC);
 
   return v6;
 }
 
-- (id)getIdentifierForContextSync:(id)a3
+- (id)getIdentifierForContextSync:(id)sync
 {
   sub_1E13006E4(0, &qword_1EE1E2DB8);
-  v5 = a3;
-  v6 = self;
+  syncCopy = sync;
+  selfCopy = self;
   v7 = sub_1E1AF6D4C();
   v8 = sub_1E1AF6D5C();
 
   return v8;
 }
 
-- (id)getMetricsFieldsForContexts:(id)a3
+- (id)getMetricsFieldsForContexts:(id)contexts
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1E15DA248(v4, "MetricFieldsPromise", "MetricFields", sub_1E15DBA64);
+  contextsCopy = contexts;
+  selfCopy = self;
+  v6 = sub_1E15DA248(contextsCopy, "MetricFieldsPromise", "MetricFields", sub_1E15DBA64);
 
   return v6;
 }

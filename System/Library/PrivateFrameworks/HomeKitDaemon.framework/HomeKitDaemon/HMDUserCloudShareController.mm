@@ -1,28 +1,28 @@
 @interface HMDUserCloudShareController
-+ (id)identifierForConnection:(id)a3;
++ (id)identifierForConnection:(id)connection;
 + (id)logCategory;
-- (HMDUserCloudShareController)initWithDelegate:(id)a3 queue:(id)a4 pendingRequestTimeoutInterval:(double)a5;
+- (HMDUserCloudShareController)initWithDelegate:(id)delegate queue:(id)queue pendingRequestTimeoutInterval:(double)interval;
 - (HMDUserCloudShareControllerDelegate)delegate;
 - (NSHashTable)connectedClients;
 - (NSMutableDictionary)containerIdToConnectionIdentifierMap;
-- (id)_connectionForContainerID:(id)a3;
-- (void)_addRequestToPending:(id)a3;
-- (void)_deregisterXpcClient:(id)a3;
+- (id)_connectionForContainerID:(id)d;
+- (void)_addRequestToPending:(id)pending;
+- (void)_deregisterXpcClient:(id)client;
 - (void)_handlePendingRequestTimeouts;
-- (void)_handleShareForRemoteClientRequest:(id)a3;
-- (void)_invalidateXpcClient:(id)a3;
-- (void)_registerWithXpcClient:(id)a3 containerIDs:(id)a4;
+- (void)_handleShareForRemoteClientRequest:(id)request;
+- (void)_invalidateXpcClient:(id)client;
+- (void)_registerWithXpcClient:(id)client containerIDs:(id)ds;
 - (void)_removeTimerIfNotNeeded;
-- (void)_resumeRequestsForContainerID:(id)a3 connection:(id)a4;
-- (void)_sendRepairRequest:(id)a3 toConnection:(id)a4;
-- (void)_sendShareRequest:(id)a3 toConnection:(id)a4;
+- (void)_resumeRequestsForContainerID:(id)d connection:(id)connection;
+- (void)_sendRepairRequest:(id)request toConnection:(id)connection;
+- (void)_sendShareRequest:(id)request toConnection:(id)connection;
 - (void)_startTimerIfNeeded;
-- (void)deregisterXpcClient:(id)a3;
-- (void)handleShareForRemoteClientRequest:(id)a3 home:(id)a4 completionHandler:(id)a5;
-- (void)handleShareRepairForRemoteClientRequest:(id)a3 home:(id)a4 completion:(id)a5;
-- (void)invalidateXpcClient:(id)a3;
-- (void)registerWithXpcClient:(id)a3 containerIDs:(id)a4;
-- (void)timerDidFire:(id)a3;
+- (void)deregisterXpcClient:(id)client;
+- (void)handleShareForRemoteClientRequest:(id)request home:(id)home completionHandler:(id)handler;
+- (void)handleShareRepairForRemoteClientRequest:(id)request home:(id)home completion:(id)completion;
+- (void)invalidateXpcClient:(id)client;
+- (void)registerWithXpcClient:(id)client containerIDs:(id)ds;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDUserCloudShareController
@@ -34,34 +34,34 @@
   return WeakRetained;
 }
 
-- (void)invalidateXpcClient:(id)a3
+- (void)invalidateXpcClient:(id)client
 {
-  v4 = a3;
-  v5 = [(HMDUserCloudShareController *)self clientQueue];
+  clientCopy = client;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HMDUserCloudShareController_invalidateXpcClient___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = clientCopy;
+  v6 = clientCopy;
+  dispatch_async(clientQueue, v7);
 }
 
-- (void)_invalidateXpcClient:(id)a3
+- (void)_invalidateXpcClient:(id)client
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  clientCopy = client;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v6 = [(HMDUserCloudShareController *)self connectedClients];
-  v7 = [v6 containsObject:v4];
+  connectedClients = [(HMDUserCloudShareController *)self connectedClients];
+  v7 = [connectedClients containsObject:clientCopy];
 
   if (v7)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -69,48 +69,48 @@
       v13 = 138543618;
       v14 = v11;
       v15 = 2112;
-      v16 = v4;
+      v16 = clientCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Found invalidated connection %@ will de-register.", &v13, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    [(HMDUserCloudShareController *)v9 _deregisterXpcClient:v4];
+    [(HMDUserCloudShareController *)selfCopy _deregisterXpcClient:clientCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterXpcClient:(id)a3
+- (void)deregisterXpcClient:(id)client
 {
-  v4 = a3;
-  v5 = [(HMDUserCloudShareController *)self clientQueue];
+  clientCopy = client;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HMDUserCloudShareController_deregisterXpcClient___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = clientCopy;
+  v6 = clientCopy;
+  dispatch_async(clientQueue, v7);
 }
 
-- (void)_deregisterXpcClient:(id)a3
+- (void)_deregisterXpcClient:(id)client
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  clientCopy = client;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v27 = v4;
-  v6 = [HMDUserCloudShareController identifierForConnection:v4];
-  v7 = [(HMDUserCloudShareController *)self containerIdToConnectionIdentifierMap];
-  v8 = [v7 allKeys];
+  v27 = clientCopy;
+  v6 = [HMDUserCloudShareController identifierForConnection:clientCopy];
+  containerIdToConnectionIdentifierMap = [(HMDUserCloudShareController *)self containerIdToConnectionIdentifierMap];
+  allKeys = [containerIdToConnectionIdentifierMap allKeys];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = v8;
+  v9 = allKeys;
   v10 = [v9 countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v10)
   {
@@ -129,18 +129,18 @@
         }
 
         v14 = *(*(&v30 + 1) + 8 * v13);
-        v15 = [(HMDUserCloudShareController *)self containerIdToConnectionIdentifierMap];
-        v16 = [v15 objectForKeyedSubscript:v14];
+        containerIdToConnectionIdentifierMap2 = [(HMDUserCloudShareController *)self containerIdToConnectionIdentifierMap];
+        v16 = [containerIdToConnectionIdentifierMap2 objectForKeyedSubscript:v14];
 
         if ([v16 isEqualToString:v6])
         {
           v17 = objc_autoreleasePoolPush();
-          v18 = self;
+          selfCopy = self;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
             HMFGetLogIdentifier();
-            v20 = self;
+            selfCopy2 = self;
             v21 = v9;
             v23 = v22 = v6;
             *buf = 138543874;
@@ -153,13 +153,13 @@
 
             v6 = v22;
             v9 = v21;
-            self = v20;
+            self = selfCopy2;
             v12 = v28;
           }
 
           objc_autoreleasePoolPop(v17);
-          v24 = [(HMDUserCloudShareController *)v18 containerIdToConnectionIdentifierMap];
-          [v24 removeObjectForKey:v14];
+          containerIdToConnectionIdentifierMap3 = [(HMDUserCloudShareController *)selfCopy containerIdToConnectionIdentifierMap];
+          [containerIdToConnectionIdentifierMap3 removeObjectForKey:v14];
 
           v11 = v29;
         }
@@ -174,47 +174,47 @@
     while (v11);
   }
 
-  v25 = [(HMDUserCloudShareController *)self connectedClients];
-  [v25 removeObject:v27];
+  connectedClients = [(HMDUserCloudShareController *)self connectedClients];
+  [connectedClients removeObject:v27];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerWithXpcClient:(id)a3 containerIDs:(id)a4
+- (void)registerWithXpcClient:(id)client containerIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserCloudShareController *)self clientQueue];
+  clientCopy = client;
+  dsCopy = ds;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__HMDUserCloudShareController_registerWithXpcClient_containerIDs___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = clientCopy;
+  v13 = dsCopy;
+  v9 = dsCopy;
+  v10 = clientCopy;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)_registerWithXpcClient:(id)a3 containerIDs:(id)a4
+- (void)_registerWithXpcClient:(id)client containerIDs:(id)ds
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v8);
+  clientCopy = client;
+  dsCopy = ds;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v39 = [HMDUserCloudShareController identifierForConnection:v6];
+  v39 = [HMDUserCloudShareController identifierForConnection:clientCopy];
   if (v39)
   {
-    v36 = v7;
-    v37 = v6;
+    v36 = dsCopy;
+    v37 = clientCopy;
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = v7;
+    obj = dsCopy;
     v9 = [obj countByEnumeratingWithState:&v44 objects:v55 count:16];
     if (v9)
     {
@@ -230,13 +230,13 @@
           }
 
           v13 = *(*(&v44 + 1) + 8 * i);
-          v14 = [(HMDUserCloudShareController *)self containerIdToConnectionIdentifierMap];
-          v15 = [v14 objectForKeyedSubscript:v13];
+          containerIdToConnectionIdentifierMap = [(HMDUserCloudShareController *)self containerIdToConnectionIdentifierMap];
+          v15 = [containerIdToConnectionIdentifierMap objectForKeyedSubscript:v13];
 
           if (v15 && ([v15 isEqual:v39] & 1) == 0)
           {
             v21 = objc_autoreleasePoolPush();
-            v22 = self;
+            selfCopy = self;
             v23 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
@@ -256,7 +256,7 @@
           else
           {
             v16 = objc_autoreleasePoolPush();
-            v17 = self;
+            selfCopy2 = self;
             v18 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
             {
@@ -271,8 +271,8 @@
             }
 
             objc_autoreleasePoolPop(v16);
-            v20 = [(HMDUserCloudShareController *)v17 containerIdToConnectionIdentifierMap];
-            [v20 setObject:v39 forKeyedSubscript:v13];
+            containerIdToConnectionIdentifierMap2 = [(HMDUserCloudShareController *)selfCopy2 containerIdToConnectionIdentifierMap];
+            [containerIdToConnectionIdentifierMap2 setObject:v39 forKeyedSubscript:v13];
           }
         }
 
@@ -282,9 +282,9 @@
       while (v10);
     }
 
-    v25 = [(HMDUserCloudShareController *)self connectedClients];
-    v6 = v37;
-    [v25 addObject:v37];
+    connectedClients = [(HMDUserCloudShareController *)self connectedClients];
+    clientCopy = v37;
+    [connectedClients addObject:v37];
 
     v42 = 0u;
     v43 = 0u;
@@ -314,13 +314,13 @@
       while (v28);
     }
 
-    v7 = v36;
+    dsCopy = v36;
   }
 
   else
   {
     v31 = objc_autoreleasePoolPush();
-    v32 = self;
+    selfCopy3 = self;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -336,15 +336,15 @@
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = [(HMDUserCloudShareController *)self clientQueue];
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__HMDUserCloudShareController_timerDidFire___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue, block);
 }
 
 uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t a1)
@@ -358,8 +358,8 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
 
 - (NSHashTable)connectedClients
 {
-  v3 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   connectedClients = self->_connectedClients;
 
@@ -368,24 +368,24 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
 
 - (NSMutableDictionary)containerIdToConnectionIdentifierMap
 {
-  v3 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   containerIdToConnectionIdentifierMap = self->_containerIdToConnectionIdentifierMap;
 
   return containerIdToConnectionIdentifierMap;
 }
 
-- (void)handleShareRepairForRemoteClientRequest:(id)a3 home:(id)a4 completion:(id)a5
+- (void)handleShareRepairForRemoteClientRequest:(id)request home:(id)home completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v11);
+  requestCopy = request;
+  homeCopy = home;
+  completionCopy = completion;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v12 = [v8 objectForKeyedSubscript:*MEMORY[0x277CD1468]];
+  v12 = [requestCopy objectForKeyedSubscript:*MEMORY[0x277CD1468]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -399,7 +399,7 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
 
   v14 = v13;
 
-  v15 = [v8 objectForKeyedSubscript:*MEMORY[0x277CD1498]];
+  v15 = [requestCopy objectForKeyedSubscript:*MEMORY[0x277CD1498]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -429,7 +429,7 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
   if (v19)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -440,17 +440,17 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
     }
 
     objc_autoreleasePoolPop(v20);
-    v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3 description:@"Could not decode payload" reason:@"Unable to find required items in payload" suggestion:0];
-    v10[2](v10, v24);
+    delegate = [MEMORY[0x277CCA9B8] hmErrorWithCode:3 description:@"Could not decode payload" reason:@"Unable to find required items in payload" suggestion:0];
+    completionCopy[2](completionCopy, delegate);
   }
 
   else
   {
-    v24 = [(HMDUserCloudShareController *)self delegate];
+    delegate = [(HMDUserCloudShareController *)self delegate];
     v25 = [HMDUserCloudShareRepairRequest alloc];
-    v26 = [v24 currentDateForUserCloudShareController:self];
-    v35 = v9;
-    v27 = [(HMDUserCloudShareRepairRequest *)v25 initWithStartDate:v26 containerID:v14 home:v9 repairInfo:v18];
+    v26 = [delegate currentDateForUserCloudShareController:self];
+    v35 = homeCopy;
+    v27 = [(HMDUserCloudShareRepairRequest *)v25 initWithStartDate:v26 containerID:v14 home:homeCopy repairInfo:v18];
 
     v28 = [(HMDUserCloudShareController *)self _connectionForContainerID:v14];
     v29 = v28;
@@ -462,7 +462,7 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
     else
     {
       context = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy2 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
@@ -477,27 +477,27 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
       }
 
       objc_autoreleasePoolPop(context);
-      [(HMDUserCloudShareController *)v30 _addRequestToPending:v27];
-      [v24 userCloudShareController:v30 wakeClientForRepairWithContainerID:v14];
+      [(HMDUserCloudShareController *)selfCopy2 _addRequestToPending:v27];
+      [delegate userCloudShareController:selfCopy2 wakeClientForRepairWithContainerID:v14];
     }
 
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
 
-    v9 = v35;
+    homeCopy = v35;
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleShareForRemoteClientRequest:(id)a3 home:(id)a4 completionHandler:(id)a5
+- (void)handleShareForRemoteClientRequest:(id)request home:(id)home completionHandler:(id)handler
 {
   v79 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
-  v11 = v8;
-  v67 = v9;
+  requestCopy = request;
+  homeCopy = home;
+  handlerCopy = handler;
+  v10 = requestCopy;
+  v11 = homeCopy;
+  v67 = handlerCopy;
   v71 = v11;
   if (v10)
   {
@@ -518,8 +518,8 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
 
     v68 = v15;
     v16 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v15];
-    v17 = [v12 uuid];
-    LODWORD(v15) = [v17 isEqual:v16];
+    uuid = [v12 uuid];
+    LODWORD(v15) = [uuid isEqual:v16];
 
     if (v15)
     {
@@ -618,7 +618,7 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
       v31 = 0;
     }
 
-    v9 = v67;
+    handlerCopy = v67;
   }
 
   else
@@ -653,21 +653,21 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
   {
     v66 = v48;
     v50 = objc_autoreleasePoolPush();
-    v51 = self;
+    selfCopy = self;
     v52 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v54 = v53 = v9;
+      v54 = v53 = handlerCopy;
       *buf = 138543362;
       v78 = v54;
       _os_log_impl(&dword_229538000, v52, OS_LOG_TYPE_ERROR, "%{public}@Could not decode payload.", buf, 0xCu);
 
-      v9 = v53;
+      handlerCopy = v53;
     }
 
     objc_autoreleasePoolPop(v50);
-    v9[2](v9, 0, v33);
+    handlerCopy[2](handlerCopy, 0, v33);
     v55 = v71;
     v56 = v66;
   }
@@ -688,16 +688,16 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
     aBlock[3] = &unk_27867A5B0;
     aBlock[4] = self;
     v76 = 0xEEEEB0B5B2B2EEEELL;
-    v75 = v9;
+    v75 = handlerCopy;
     v65 = _Block_copy(aBlock);
     v58 = [HMDUserCloudShareEstablishShareRequest alloc];
-    v59 = [(HMDUserCloudShareController *)self delegate];
-    [v59 currentDateForUserCloudShareController:self];
+    delegate = [(HMDUserCloudShareController *)self delegate];
+    [delegate currentDateForUserCloudShareController:self];
     v60 = v56 = v49;
     v55 = v71;
     v61 = [(HMDUserCloudShareEstablishShareRequest *)v58 initWithHome:v71 fromUser:v44 toUser:v45 encodedShareURL:v46 shareToken:v47 containerID:v56 currentDate:v60 completion:v65];
 
-    v62 = [(HMDUserCloudShareController *)self clientQueue];
+    clientQueue = [(HMDUserCloudShareController *)self clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_completionHandler___block_invoke_109;
@@ -705,9 +705,9 @@ uint64_t __44__HMDUserCloudShareController_timerDidFire___block_invoke(uint64_t 
     block[4] = self;
     v73 = v61;
     v63 = v61;
-    dispatch_async(v62, block);
+    dispatch_async(clientQueue, block);
 
-    v9 = v67;
+    handlerCopy = v67;
     v33 = 0;
   }
 
@@ -733,57 +733,57 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleShareForRemoteClientRequest:(id)a3
+- (void)_handleShareForRemoteClientRequest:(id)request
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v6 = [v4 containerID];
-  v7 = [(HMDUserCloudShareController *)self _connectionForContainerID:v6];
+  containerID = [requestCopy containerID];
+  v7 = [(HMDUserCloudShareController *)self _connectionForContainerID:containerID];
 
   if (v7)
   {
-    [(HMDUserCloudShareController *)self _sendShareRequest:v4 toConnection:v7];
+    [(HMDUserCloudShareController *)self _sendShareRequest:requestCopy toConnection:v7];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v4 containerID];
+      containerID2 = [requestCopy containerID];
       v16 = 138543618;
       v17 = v11;
       v18 = 2112;
-      v19 = v12;
+      v19 = containerID2;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_DEBUG, "%{public}@No process registered to handle container %@", &v16, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    [(HMDUserCloudShareController *)v9 _addRequestToPending:v4];
-    v13 = [(HMDUserCloudShareController *)v9 delegate];
-    v14 = [v4 containerID];
-    [v13 userCloudShareController:v9 wakeClientWithContainerID:v14];
+    [(HMDUserCloudShareController *)selfCopy _addRequestToPending:requestCopy];
+    delegate = [(HMDUserCloudShareController *)selfCopy delegate];
+    containerID3 = [requestCopy containerID];
+    [delegate userCloudShareController:selfCopy wakeClientWithContainerID:containerID3];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendRepairRequest:(id)a3 toConnection:(id)a4
+- (void)_sendRepairRequest:(id)request toConnection:(id)connection
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v8);
+  requestCopy = request;
+  connectionCopy = connection;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -791,56 +791,56 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
     v18 = 138543874;
     v19 = v12;
     v20 = 2112;
-    v21 = v6;
+    v21 = requestCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = connectionCopy;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Sending repair request %@ to client %@", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMDUserCloudShareController *)v10 delegate];
-  v14 = [v6 repairInfo];
-  v15 = [v6 home];
-  v16 = [v6 containerID];
-  [v13 userCloudShareController:v10 sendRepairInfo:v14 toConnection:v7 home:v15 containerID:v16];
+  delegate = [(HMDUserCloudShareController *)selfCopy delegate];
+  repairInfo = [requestCopy repairInfo];
+  home = [requestCopy home];
+  containerID = [requestCopy containerID];
+  [delegate userCloudShareController:selfCopy sendRepairInfo:repairInfo toConnection:connectionCopy home:home containerID:containerID];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendShareRequest:(id)a3 toConnection:(id)a4
+- (void)_sendShareRequest:(id)request toConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v8);
+  connectionCopy = connection;
+  requestCopy = request;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v16 = [(HMDUserCloudShareController *)self delegate];
-  v9 = [v7 fromUser];
-  v10 = [v7 toUser];
-  v11 = [v7 home];
-  v12 = [v7 encodedShareURL];
-  v13 = [v7 shareToken];
-  v14 = [v7 containerID];
-  v15 = [v7 completion];
+  delegate = [(HMDUserCloudShareController *)self delegate];
+  fromUser = [requestCopy fromUser];
+  toUser = [requestCopy toUser];
+  home = [requestCopy home];
+  encodedShareURL = [requestCopy encodedShareURL];
+  shareToken = [requestCopy shareToken];
+  containerID = [requestCopy containerID];
+  completion = [requestCopy completion];
 
-  [v16 userCloudShareController:self sendShareRequestMessageWithConnection:v6 fromUser:v9 toUser:v10 home:v11 shareURL:v12 shareToken:v13 containerID:v14 completion:v15];
+  [delegate userCloudShareController:self sendShareRequestMessageWithConnection:connectionCopy fromUser:fromUser toUser:toUser home:home shareURL:encodedShareURL shareToken:shareToken containerID:containerID completion:completion];
 }
 
-- (void)_resumeRequestsForContainerID:(id)a3 connection:(id)a4
+- (void)_resumeRequestsForContainerID:(id)d connection:(id)connection
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v35 = a4;
-  v7 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  connectionCopy = connection;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v36 = self;
-  v8 = [(HMDUserCloudShareController *)self pendingRequests];
-  v9 = [v8 copy];
+  selfCopy = self;
+  pendingRequests = [(HMDUserCloudShareController *)self pendingRequests];
+  v9 = [pendingRequests copy];
 
   obj = v9;
   v10 = [v9 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -860,13 +860,13 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
         }
 
         v15 = *(*(&v38 + 1) + 8 * i);
-        v16 = [v15 containerID];
-        v17 = [v16 isEqualToString:v6];
+        containerID = [v15 containerID];
+        v17 = [containerID isEqualToString:dCopy];
 
         if (v17)
         {
           v18 = objc_autoreleasePoolPush();
-          v19 = v36;
+          v19 = selfCopy;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
           {
@@ -909,12 +909,12 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
 
           if (v24)
           {
-            [(HMDUserCloudShareController *)v19 _sendShareRequest:v24 toConnection:v35];
+            [(HMDUserCloudShareController *)v19 _sendShareRequest:v24 toConnection:connectionCopy];
           }
 
           else if (v27)
           {
-            [(HMDUserCloudShareController *)v19 _sendRepairRequest:v27 toConnection:v35];
+            [(HMDUserCloudShareController *)v19 _sendRepairRequest:v27 toConnection:connectionCopy];
           }
 
           else
@@ -933,8 +933,8 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
             objc_autoreleasePoolPop(context);
           }
 
-          v30 = [(HMDUserCloudShareController *)v19 pendingRequests];
-          [v30 removeObject:v25];
+          pendingRequests2 = [(HMDUserCloudShareController *)v19 pendingRequests];
+          [pendingRequests2 removeObject:v25];
         }
       }
 
@@ -944,22 +944,22 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
     while (v12);
   }
 
-  [(HMDUserCloudShareController *)v36 _removeTimerIfNotNeeded];
+  [(HMDUserCloudShareController *)selfCopy _removeTimerIfNotNeeded];
   v31 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_handlePendingRequestTimeouts
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [(HMDUserCloudShareController *)self pendingRequests];
-  v5 = [v4 copy];
+  pendingRequests = [(HMDUserCloudShareController *)self pendingRequests];
+  v5 = [pendingRequests copy];
 
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v6)
@@ -978,8 +978,8 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v11 startDate];
-        [v12 timeIntervalSinceNow];
+        startDate = [v11 startDate];
+        [startDate timeIntervalSinceNow];
         v14 = -v13;
         [(HMDUserCloudShareController *)self pendingRequestTimeoutInterval];
         v16 = v15;
@@ -987,7 +987,7 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
         if (v16 < v14)
         {
           v17 = objc_autoreleasePoolPush();
-          v18 = self;
+          selfCopy = self;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
@@ -1016,13 +1016,13 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
 
           if (v23)
           {
-            v24 = [v23 completion];
+            completion = [v23 completion];
             v25 = [MEMORY[0x277CCA9B8] hmErrorWithCode:8 description:@"No process received pending request in time" reason:@"No process received share message in required time." suggestion:0];
-            (v24)[2](v24, 0, v25);
+            (completion)[2](completion, 0, v25);
           }
 
-          v26 = [(HMDUserCloudShareController *)v18 pendingRequests];
-          [v26 removeObject:v21];
+          pendingRequests2 = [(HMDUserCloudShareController *)selfCopy pendingRequests];
+          [pendingRequests2 removeObject:v21];
         }
       }
 
@@ -1035,15 +1035,15 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addRequestToPending:(id)a3
+- (void)_addRequestToPending:(id)pending
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  pendingCopy = pending;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1051,38 +1051,38 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
     v12 = 138543618;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = pendingCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Adding request to pending %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDUserCloudShareController *)v7 pendingRequests];
-  [v10 addObject:v4];
+  pendingRequests = [(HMDUserCloudShareController *)selfCopy pendingRequests];
+  [pendingRequests addObject:pendingCopy];
 
-  [(HMDUserCloudShareController *)v7 _startTimerIfNeeded];
+  [(HMDUserCloudShareController *)selfCopy _startTimerIfNeeded];
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_removeTimerIfNotNeeded
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v11 = [(HMDUserCloudShareController *)self pendingRequests];
-  if ([v11 count])
+  pendingRequests = [(HMDUserCloudShareController *)self pendingRequests];
+  if ([pendingRequests count])
   {
     v4 = *MEMORY[0x277D85DE8];
   }
 
   else
   {
-    v5 = [(HMDUserCloudShareController *)self pendingRequestTimer];
+    pendingRequestTimer = [(HMDUserCloudShareController *)self pendingRequestTimer];
 
-    if (v5)
+    if (pendingRequestTimer)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = self;
+      selfCopy = self;
       v8 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
@@ -1093,7 +1093,7 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
       }
 
       objc_autoreleasePoolPop(v6);
-      [(HMDUserCloudShareController *)v7 setPendingRequestTimer:0];
+      [(HMDUserCloudShareController *)selfCopy setPendingRequestTimer:0];
     }
 
     v10 = *MEMORY[0x277D85DE8];
@@ -1102,41 +1102,41 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
 
 - (void)_startTimerIfNeeded
 {
-  v3 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v3);
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v8 = [(HMDUserCloudShareController *)self pendingRequests];
-  if ([v8 count])
+  pendingRequests = [(HMDUserCloudShareController *)self pendingRequests];
+  if ([pendingRequests count])
   {
-    v4 = [(HMDUserCloudShareController *)self pendingRequestTimer];
+    pendingRequestTimer = [(HMDUserCloudShareController *)self pendingRequestTimer];
 
-    if (v4)
+    if (pendingRequestTimer)
     {
       return;
     }
 
-    v5 = [(HMDUserCloudShareController *)self delegate];
+    delegate = [(HMDUserCloudShareController *)self delegate];
     [(HMDUserCloudShareController *)self pendingRequestTimeoutInterval];
-    v6 = [v5 userCloudShareController:self timerWithInterval:?];
+    v6 = [delegate userCloudShareController:self timerWithInterval:?];
     [(HMDUserCloudShareController *)self setPendingRequestTimer:v6];
 
-    v7 = [(HMDUserCloudShareController *)self pendingRequestTimer];
-    [v7 setDelegate:self];
+    pendingRequestTimer2 = [(HMDUserCloudShareController *)self pendingRequestTimer];
+    [pendingRequestTimer2 setDelegate:self];
 
-    v8 = [(HMDUserCloudShareController *)self pendingRequestTimer];
-    [v8 resume];
+    pendingRequests = [(HMDUserCloudShareController *)self pendingRequestTimer];
+    [pendingRequests resume];
   }
 }
 
-- (id)_connectionForContainerID:(id)a3
+- (id)_connectionForContainerID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserCloudShareController *)self clientQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  clientQueue = [(HMDUserCloudShareController *)self clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v6 = [(HMDUserCloudShareController *)self containerIdToConnectionIdentifierMap];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  containerIdToConnectionIdentifierMap = [(HMDUserCloudShareController *)self containerIdToConnectionIdentifierMap];
+  v7 = [containerIdToConnectionIdentifierMap objectForKeyedSubscript:dCopy];
 
   if (v7)
   {
@@ -1144,8 +1144,8 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(HMDUserCloudShareController *)self connectedClients];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    connectedClients = [(HMDUserCloudShareController *)self connectedClients];
+    v9 = [connectedClients countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = *v17;
@@ -1155,7 +1155,7 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(connectedClients);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
@@ -1168,7 +1168,7 @@ void __88__HMDUserCloudShareController_handleShareForRemoteClientRequest_home_co
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [connectedClients countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v9)
         {
           continue;
@@ -1191,10 +1191,10 @@ LABEL_12:
   return v9;
 }
 
-- (HMDUserCloudShareController)initWithDelegate:(id)a3 queue:(id)a4 pendingRequestTimeoutInterval:(double)a5
+- (HMDUserCloudShareController)initWithDelegate:(id)delegate queue:(id)queue pendingRequestTimeoutInterval:(double)interval
 {
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = HMDUserCloudShareController;
   v10 = [(HMDUserCloudShareController *)&v20 init];
@@ -1204,21 +1204,21 @@ LABEL_12:
     logger = v10->_logger;
     v10->_logger = v11;
 
-    objc_storeWeak(&v10->_delegate, v8);
-    objc_storeStrong(&v10->_clientQueue, a4);
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_clientQueue, queue);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     connectedClients = v10->_connectedClients;
-    v10->_connectedClients = v13;
+    v10->_connectedClients = weakObjectsHashTable;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     containerIdToConnectionIdentifierMap = v10->_containerIdToConnectionIdentifierMap;
-    v10->_containerIdToConnectionIdentifierMap = v15;
+    v10->_containerIdToConnectionIdentifierMap = dictionary;
 
-    v17 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingRequests = v10->_pendingRequests;
-    v10->_pendingRequests = v17;
+    v10->_pendingRequests = array;
 
-    v10->_pendingRequestTimeoutInterval = a5;
+    v10->_pendingRequestTimeoutInterval = interval;
   }
 
   return v10;
@@ -1244,23 +1244,23 @@ void __42__HMDUserCloudShareController_logCategory__block_invoke()
   logCategory__hmf_once_v28_137249 = v1;
 }
 
-+ (id)identifierForConnection:(id)a3
++ (id)identifierForConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 processInfo];
-  v6 = [v4 processInfo];
-  v7 = [v6 bundleIdentifier];
+  connectionCopy = connection;
+  processInfo = [connectionCopy processInfo];
+  processInfo2 = [connectionCopy processInfo];
+  bundleIdentifier = [processInfo2 bundleIdentifier];
 
-  if (v7)
+  if (bundleIdentifier)
   {
-    v8 = v7;
+    v8 = bundleIdentifier;
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -1268,9 +1268,9 @@ void __42__HMDUserCloudShareController_logCategory__block_invoke()
       v15 = 138543874;
       v16 = v12;
       v17 = 2112;
-      v18 = v4;
+      v18 = connectionCopy;
       v19 = 2112;
-      v20 = v5;
+      v20 = processInfo;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to get identifier for connection: %@ process info: %@", &v15, 0x20u);
     }
 
@@ -1279,7 +1279,7 @@ void __42__HMDUserCloudShareController_logCategory__block_invoke()
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return bundleIdentifier;
 }
 
 @end

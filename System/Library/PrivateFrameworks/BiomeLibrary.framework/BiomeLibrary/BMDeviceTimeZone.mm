@@ -1,16 +1,16 @@
 @interface BMDeviceTimeZone
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceTimeZone)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMDeviceTimeZone)initWithSecondsFromGMT:(id)a3 name:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceTimeZone)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMDeviceTimeZone)initWithSecondsFromGMT:(id)t name:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
 - (id)timeZone;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceTimeZone
@@ -31,13 +31,13 @@
 
 - (id)timeZone
 {
-  v3 = [(BMDeviceTimeZone *)self name];
+  name = [(BMDeviceTimeZone *)self name];
 
-  if (v3)
+  if (name)
   {
     v4 = MEMORY[0x1E695DFE8];
-    v5 = [(BMDeviceTimeZone *)self name];
-    v6 = [v4 timeZoneWithName:v5];
+    name2 = [(BMDeviceTimeZone *)self name];
+    v6 = [v4 timeZoneWithName:name2];
   }
 
   else if ([(BMDeviceTimeZone *)self hasSecondsFromGMT])
@@ -55,27 +55,27 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (!-[BMDeviceTimeZone hasSecondsFromGMT](self, "hasSecondsFromGMT") && ![v5 hasSecondsFromGMT] || -[BMDeviceTimeZone hasSecondsFromGMT](self, "hasSecondsFromGMT") && objc_msgSend(v5, "hasSecondsFromGMT") && (-[BMDeviceTimeZone secondsFromGMT](self, "secondsFromGMT"), v7 = v6, objc_msgSend(v5, "secondsFromGMT"), v7 == v8))
     {
-      v9 = [(BMDeviceTimeZone *)self name];
-      v10 = [v5 name];
-      if (v9 == v10)
+      name = [(BMDeviceTimeZone *)self name];
+      name2 = [v5 name];
+      if (name == name2)
       {
         v13 = 1;
       }
 
       else
       {
-        v11 = [(BMDeviceTimeZone *)self name];
-        v12 = [v5 name];
-        v13 = [v11 isEqual:v12];
+        name3 = [(BMDeviceTimeZone *)self name];
+        name4 = [v5 name];
+        v13 = [name3 isEqual:name4];
       }
     }
 
@@ -109,25 +109,25 @@
     v5 = [v4 numberWithDouble:?];
   }
 
-  v6 = [(BMDeviceTimeZone *)self name];
+  name = [(BMDeviceTimeZone *)self name];
   v12[0] = @"secondsFromGMT";
-  v7 = v5;
+  null = v5;
   if (!v5)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v12[1] = @"name";
-  v13[0] = v7;
-  v8 = v6;
-  if (!v6)
+  v13[0] = null;
+  null2 = name;
+  if (!name)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (v6)
+  if (name)
   {
     if (v5)
     {
@@ -150,20 +150,20 @@ LABEL_11:
   return v9;
 }
 
-- (BMDeviceTimeZone)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceTimeZone)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"secondsFromGMT"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"secondsFromGMT"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v8 = 0;
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_9;
       }
 
@@ -175,8 +175,8 @@ LABEL_11:
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v16 = [v14 initWithDomain:v15 code:2 userInfo:v9];
       v8 = 0;
-      v11 = 0;
-      *a4 = v16;
+      selfCopy = 0;
+      *error = v16;
       goto LABEL_8;
     }
 
@@ -188,13 +188,13 @@ LABEL_11:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"name"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v17 = objc_alloc(MEMORY[0x1E696ABC0]);
         v18 = *MEMORY[0x1E698F240];
@@ -202,11 +202,11 @@ LABEL_11:
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"name"];
         v22 = v19;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        *a4 = [v17 initWithDomain:v18 code:2 userInfo:v20];
+        *error = [v17 initWithDomain:v18 code:2 userInfo:v20];
       }
 
       v10 = 0;
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_8;
     }
 
@@ -219,44 +219,44 @@ LABEL_11:
   }
 
   self = [(BMDeviceTimeZone *)self initWithSecondsFromGMT:v8 name:v10];
-  v11 = self;
+  selfCopy = self;
 LABEL_8:
 
 LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMDeviceTimeZone *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_hasSecondsFromGMT)
   {
     secondsFromGMT = self->_secondsFromGMT;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMDeviceTimeZone;
   v5 = [(BMEventBase *)&v23 init];
@@ -265,12 +265,12 @@ LABEL_9:
     goto LABEL_31;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -281,18 +281,18 @@ LABEL_9:
       while (1)
       {
         LOBYTE(v24) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v24) & 0x7F) << v7;
@@ -309,9 +309,9 @@ LABEL_9:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -327,18 +327,18 @@ LABEL_16:
       {
         v5->_hasSecondsFromGMT = 1;
         v24 = 0.0;
-        v15 = [v4 position] + 8;
-        if (v15 >= [v4 position] && (v16 = objc_msgSend(v4, "position") + 8, v16 <= objc_msgSend(v4, "length")))
+        v15 = [fromCopy position] + 8;
+        if (v15 >= [fromCopy position] && (v16 = objc_msgSend(fromCopy, "position") + 8, v16 <= objc_msgSend(fromCopy, "length")))
         {
-          v19 = [v4 data];
-          [v19 getBytes:&v24 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_secondsFromGMT = v24;
@@ -349,13 +349,13 @@ LABEL_16:
         goto LABEL_30;
       }
 
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_30:
     v21 = 0;
@@ -376,26 +376,26 @@ LABEL_31:
   v4 = MEMORY[0x1E696AD98];
   [(BMDeviceTimeZone *)self secondsFromGMT];
   v5 = [v4 numberWithDouble:?];
-  v6 = [(BMDeviceTimeZone *)self name];
-  v7 = [v3 initWithFormat:@"BMDeviceTimeZone with secondsFromGMT: %@, name: %@", v5, v6];
+  name = [(BMDeviceTimeZone *)self name];
+  v7 = [v3 initWithFormat:@"BMDeviceTimeZone with secondsFromGMT: %@, name: %@", v5, name];
 
   return v7;
 }
 
-- (BMDeviceTimeZone)initWithSecondsFromGMT:(id)a3 name:(id)a4
+- (BMDeviceTimeZone)initWithSecondsFromGMT:(id)t name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  tCopy = t;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = BMDeviceTimeZone;
   v8 = [(BMEventBase *)&v11 init];
   if (v8)
   {
     v8->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v6)
+    if (tCopy)
     {
       v8->_hasSecondsFromGMT = 1;
-      [v6 doubleValue];
+      [tCopy doubleValue];
     }
 
     else
@@ -405,7 +405,7 @@ LABEL_31:
     }
 
     v8->_secondsFromGMT = v9;
-    objc_storeStrong(&v8->_name, a4);
+    objc_storeStrong(&v8->_name, name);
   }
 
   return v8;
@@ -425,9 +425,9 @@ LABEL_31:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -435,8 +435,8 @@ LABEL_31:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceTimeZone alloc] initByReadFrom:v7];
     v4 = v8;

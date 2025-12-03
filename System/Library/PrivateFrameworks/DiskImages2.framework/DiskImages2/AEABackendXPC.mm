@@ -1,24 +1,24 @@
 @interface AEABackendXPC
-- (AEABackendXPC)initWithBackend:(id)a3 key:(shared_ptr<unsigned char>)a4;
-- (AEABackendXPC)initWithCoder:(id)a3;
+- (AEABackendXPC)initWithBackend:(id)backend key:(shared_ptr<unsigned char>)key;
+- (AEABackendXPC)initWithCoder:(id)coder;
 - (id).cxx_construct;
 - (shared_ptr<unsigned)key;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AEABackendXPC
 
-- (AEABackendXPC)initWithBackend:(id)a3 key:(shared_ptr<unsigned char>)a4
+- (AEABackendXPC)initWithBackend:(id)backend key:(shared_ptr<unsigned char>)key
 {
-  ptr = a4.__ptr_;
-  v7 = a3;
+  ptr = key.__ptr_;
+  backendCopy = backend;
   v15.receiver = self;
   v15.super_class = AEABackendXPC;
   v8 = [(AEABackendXPC *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_baseBackendXPC, a3);
+    objc_storeStrong(&v8->_baseBackendXPC, backend);
     v11 = *ptr;
     v10 = *(ptr + 1);
     if (v10)
@@ -46,16 +46,16 @@
   return 0;
 }
 
-- (AEABackendXPC)initWithCoder:(id)a3
+- (AEABackendXPC)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AEABackendXPC;
-  v5 = [(BackendXPC *)&v9 initWithCoder:v4];
+  v5 = [(BackendXPC *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
     v8 = 0;
-    if ([v4 decodeBytesForKey:@"encKeys" returnedLength:&v8] && v8 == 32)
+    if ([coderCopy decodeBytesForKey:@"encKeys" returnedLength:&v8] && v8 == 32)
     {
       operator new[]();
     }
@@ -71,15 +71,15 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = AEABackendXPC;
-  [(BackendXPC *)&v6 encodeWithCoder:v4];
-  [v4 encodeBytes:self->_key.__ptr_ length:32 forKey:@"encKeys"];
-  v5 = [(AEABackendXPC *)self baseBackendXPC];
-  [v4 encodeObject:v5 forKey:@"baseBackend"];
+  [(BackendXPC *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeBytes:self->_key.__ptr_ length:32 forKey:@"encKeys"];
+  baseBackendXPC = [(AEABackendXPC *)self baseBackendXPC];
+  [coderCopy encodeObject:baseBackendXPC forKey:@"baseBackend"];
 }
 
 - (shared_ptr<unsigned)key

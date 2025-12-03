@@ -1,45 +1,45 @@
 @interface ENTestResultUploadRequest
-+ (id)uploadRequestWithCertificate:(id)a3 healthAuthorityID:(id)a4 revisionToken:(id)a5 symmetricKey:(id)a6 temporaryExposureKeys:(id)a7 userMetadata:(id)a8 requestURL:(id)a9 URLSession:(id)a10 queue:(id)a11 error:(id *)a12;
++ (id)uploadRequestWithCertificate:(id)certificate healthAuthorityID:(id)d revisionToken:(id)token symmetricKey:(id)key temporaryExposureKeys:(id)keys userMetadata:(id)metadata requestURL:(id)l URLSession:(id)self0 queue:(id)self1 error:(id *)self2;
 - (id)bodyJSON;
-- (id)handleResponse:(id)a3 body:(id)a4;
+- (id)handleResponse:(id)response body:(id)body;
 @end
 
 @implementation ENTestResultUploadRequest
 
-+ (id)uploadRequestWithCertificate:(id)a3 healthAuthorityID:(id)a4 revisionToken:(id)a5 symmetricKey:(id)a6 temporaryExposureKeys:(id)a7 userMetadata:(id)a8 requestURL:(id)a9 URLSession:(id)a10 queue:(id)a11 error:(id *)a12
++ (id)uploadRequestWithCertificate:(id)certificate healthAuthorityID:(id)d revisionToken:(id)token symmetricKey:(id)key temporaryExposureKeys:(id)keys userMetadata:(id)metadata requestURL:(id)l URLSession:(id)self0 queue:(id)self1 error:(id *)self2
 {
-  v17 = a8;
+  metadataCopy = metadata;
   v18 = *MEMORY[0x277CC5BB0];
-  v19 = a11;
-  v20 = a10;
-  v21 = a9;
-  v48 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  queueCopy = queue;
+  sessionCopy = session;
+  lCopy = l;
+  keysCopy = keys;
+  keyCopy = key;
+  tokenCopy = token;
+  dCopy = d;
+  certificateCopy = certificate;
   CFDateGetTypeID();
-  v49 = v17;
+  v49 = metadataCopy;
   v26 = CFDictionaryGetTypedValue();
-  v27 = [[a1 alloc] initWithRequestURL:v21 URLSession:v20 queue:v19];
+  v27 = [[self alloc] initWithRequestURL:lCopy URLSession:sessionCopy queue:queueCopy];
 
-  v28 = [v25 copy];
+  v28 = [certificateCopy copy];
   v29 = *(v27 + 80);
   *(v27 + 80) = v28;
 
-  v30 = [v24 copy];
+  v30 = [dCopy copy];
   v31 = *(v27 + 88);
   *(v27 + 88) = v30;
 
-  v32 = [v23 copy];
+  v32 = [tokenCopy copy];
   v33 = *(v27 + 96);
   *(v27 + 96) = v32;
 
-  v34 = [v22 copy];
+  v34 = [keyCopy copy];
   v35 = *(v27 + 104);
   *(v27 + 104) = v34;
 
-  v36 = [v48 copy];
+  v36 = [keysCopy copy];
   v37 = *(v27 + 112);
   *(v27 + 112) = v36;
 
@@ -91,8 +91,8 @@
 
         v7 = *(*(&v24 + 1) + 8 * i);
         v28[0] = @"key";
-        v8 = [v7 keyData];
-        v9 = [v8 base64EncodedStringWithOptions:0];
+        keyData = [v7 keyData];
+        v9 = [keyData base64EncodedStringWithOptions:0];
         v29[0] = v9;
         v28[1] = @"rollingStartNumber";
         v10 = [MEMORY[0x277CCABA8] numberWithUnsignedInt:{objc_msgSend(v7, "rollingStartNumber")}];
@@ -145,9 +145,9 @@
   return v19;
 }
 
-- (id)handleResponse:(id)a3 body:(id)a4
+- (id)handleResponse:(id)response body:(id)body
 {
-  v5 = a4;
+  bodyCopy = body;
   CFStringGetTypeID();
   v6 = CFDictionaryGetTypedValue();
   responseRevisionToken = self->_responseRevisionToken;

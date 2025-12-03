@@ -1,23 +1,23 @@
 @interface BSUIVibrancyEffectValues
-+ (CAColorMatrix)_colorizedMaterialBackdropMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5;
-+ (CAColorMatrix)_colorizedVibrancyMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5;
-+ (CAColorMatrix)_materialBackdropColorMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5;
-+ (CAColorMatrix)_vibrancyMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5;
++ (CAColorMatrix)_colorizedMaterialBackdropMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType;
++ (CAColorMatrix)_colorizedVibrancyMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType;
++ (CAColorMatrix)_materialBackdropColorMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType;
++ (CAColorMatrix)_vibrancyMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType;
 - (CAColorMatrix)backdropColorMatrix;
 - (CAColorMatrix)vibrantColorMatrix;
-- (id)transformBackdropColor:(id)a3;
-- (id)transformColor:(id)a3 withVibrantMask:(id)a4;
-- (id)transformVibrantColor:(id)a3;
-- (void)calculateValuesForConfiguration:(id)a3;
+- (id)transformBackdropColor:(id)color;
+- (id)transformColor:(id)color withVibrantMask:(id)mask;
+- (id)transformVibrantColor:(id)color;
+- (void)calculateValuesForConfiguration:(id)configuration;
 @end
 
 @implementation BSUIVibrancyEffectValues
 
-- (void)calculateValuesForConfiguration:(id)a3
+- (void)calculateValuesForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 groupName];
-  v6 = v5;
+  configurationCopy = configuration;
+  groupName = [configurationCopy groupName];
+  v6 = groupName;
   v8 = *MEMORY[0x1E6979280];
   v7 = *(MEMORY[0x1E6979280] + 4);
   v9 = *(MEMORY[0x1E6979280] + 12);
@@ -38,7 +38,7 @@
   v43 = *(MEMORY[0x1E6979280] + 68);
   v33 = *(MEMORY[0x1E6979280] + 72);
   v34 = *(MEMORY[0x1E6979280] + 76);
-  if (v4)
+  if (configurationCopy)
   {
     v10 = 1.0;
     v11 = *(MEMORY[0x1E6979280] + 8);
@@ -63,21 +63,21 @@
     v41 = *(MEMORY[0x1E6979280] + 76);
     do
     {
-      v14 = [v4 color];
-      v15 = [v4 effectType];
-      v16 = [v4 backgroundType];
+      color = [configurationCopy color];
+      effectType = [configurationCopy effectType];
+      backgroundType = [configurationCopy backgroundType];
       v108 = 0u;
       v109 = 0u;
       v106 = 0u;
       v107 = 0u;
       v105 = 0u;
-      [BSUIVibrancyEffectValues _materialBackdropColorMatrixForType:v15 heroColor:v14 backgroundType:v16];
+      [BSUIVibrancyEffectValues _materialBackdropColorMatrixForType:effectType heroColor:color backgroundType:backgroundType];
       v103 = 0u;
       v104 = 0u;
       v101 = 0u;
       v102 = 0u;
       v100 = 0u;
-      [BSUIVibrancyEffectValues _vibrancyMatrixForType:v15 heroColor:v14 backgroundType:v16];
+      [BSUIVibrancyEffectValues _vibrancyMatrixForType:effectType heroColor:color backgroundType:backgroundType];
       v61 = __PAIR64__(LODWORD(v54), LODWORD(v55));
       v62 = v11;
       v63 = v53;
@@ -168,17 +168,17 @@
       v39 = v97;
       v40 = v98;
       v41 = v99;
-      [v4 blendAmount];
+      [configurationCopy blendAmount];
       v18 = v17;
-      v19 = [v4 blendConfiguration];
+      blendConfiguration = [configurationCopy blendConfiguration];
 
-      if (!v19)
+      if (!blendConfiguration)
       {
         break;
       }
 
       v10 = v10 * v18;
-      v4 = v19;
+      configurationCopy = blendConfiguration;
     }
 
     while (v10 > 0.00000011920929);
@@ -190,7 +190,7 @@
 
   else
   {
-    v19 = 0;
+    blendConfiguration = 0;
     v40 = *(MEMORY[0x1E6979280] + 72);
     v41 = *(MEMORY[0x1E6979280] + 76);
     v38 = *(MEMORY[0x1E6979280] + 64);
@@ -211,7 +211,7 @@
     v23 = *(MEMORY[0x1E6979280] + 8);
     v24 = v12;
     v11 = v23;
-    if (v5)
+    if (groupName)
     {
 LABEL_6:
       v20 = v22;
@@ -270,58 +270,58 @@ LABEL_9:
   self->_vibrantColorMatrix.m45 = v41;
 }
 
-- (id)transformVibrantColor:(id)a3
+- (id)transformVibrantColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(BSUIVibrancyEffectValues *)self vibrantColorMatrix];
-  v5 = _transformUIColor(v4, &v7);
+  v5 = _transformUIColor(colorCopy, &v7);
 
   return v5;
 }
 
-- (id)transformBackdropColor:(id)a3
+- (id)transformBackdropColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(BSUIVibrancyEffectValues *)self backdropColorMatrix];
-  v5 = _transformUIColor(v4, &v7);
+  v5 = _transformUIColor(colorCopy, &v7);
 
   return v5;
 }
 
-- (id)transformColor:(id)a3 withVibrantMask:(id)a4
+- (id)transformColor:(id)color withVibrantMask:(id)mask
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BSUIVibrancyEffectValues *)self transformBackdropColor:v6];
-  [v7 alphaComponent];
+  colorCopy = color;
+  maskCopy = mask;
+  v8 = [(BSUIVibrancyEffectValues *)self transformBackdropColor:colorCopy];
+  [maskCopy alphaComponent];
   v9 = [v8 colorWithAlphaComponent:?];
-  v10 = [v6 _colorBlendedWithColor:v9];
+  v10 = [colorCopy _colorBlendedWithColor:v9];
   v11 = [(BSUIVibrancyEffectValues *)self transformVibrantColor:v10];
-  [v7 _luminance];
+  [maskCopy _luminance];
   v13 = v12;
-  [v7 alphaComponent];
+  [maskCopy alphaComponent];
   v15 = [v11 colorWithAlphaComponent:v13 * v14];
   v16 = [v10 _colorBlendedWithColor:v15];
 
   return v16;
 }
 
-+ (CAColorMatrix)_materialBackdropColorMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5
++ (CAColorMatrix)_materialBackdropColorMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType
 {
-  v10 = a5;
-  v15 = v10;
-  if (a4 < 2)
+  backgroundTypeCopy = backgroundType;
+  v15 = backgroundTypeCopy;
+  if (color < 2)
   {
-    [a2 _colorizedMaterialBackdropMatrixForType:a4 heroColor:v10 backgroundType:a6];
+    [a2 _colorizedMaterialBackdropMatrixForType:color heroColor:backgroundTypeCopy backgroundType:a6];
     goto LABEL_11;
   }
 
-  if (a4 == 3)
+  if (color == 3)
   {
     goto LABEL_9;
   }
 
-  if (a4 != 2)
+  if (color != 2)
   {
     goto LABEL_11;
   }
@@ -364,15 +364,15 @@ LABEL_11:
   return result;
 }
 
-+ (CAColorMatrix)_colorizedMaterialBackdropMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5
++ (CAColorMatrix)_colorizedMaterialBackdropMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType
 {
-  v8 = a5;
+  backgroundTypeCopy = backgroundType;
   v35 = 0.0;
   v36 = 0.0;
   v33 = 0.0;
   v34 = 0.0;
-  [v8 getRed:&v36 green:&v35 blue:&v34 alpha:&v33];
-  if (a4)
+  [backgroundTypeCopy getRed:&v36 green:&v35 blue:&v34 alpha:&v33];
+  if (color)
   {
     HIDWORD(v9) = HIDWORD(v34);
     v10 = v36;
@@ -398,7 +398,7 @@ LABEL_11:
   *&retstr->m15 = unk_1A2D52A50;
   LODWORD(v9) = 0.5;
   _curve(COERCE_DOUBLE(__PAIR64__(unk_1A2D52A54, LODWORD(v13))), 0.0, v9, xmmword_1A2D528D0);
-  if (a4)
+  if (color)
   {
     LODWORD(v15) = 0.5;
     *&v14 = v13;
@@ -433,7 +433,7 @@ LABEL_11:
   v21 = v29;
   *&retstr->m11 = v28;
   *&retstr->m15 = v21;
-  if (a4)
+  if (color)
   {
     v22 = *&retstr->m33;
     v23 = v13 * 0.25 / (v13 * 0.5 + -0.25 - v13 + 1.0) + 0.0;
@@ -457,16 +457,16 @@ LABEL_11:
   return result;
 }
 
-+ (CAColorMatrix)_vibrancyMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5
++ (CAColorMatrix)_vibrancyMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType
 {
-  v10 = a5;
-  v15 = v10;
-  if (a4 < 2)
+  backgroundTypeCopy = backgroundType;
+  v15 = backgroundTypeCopy;
+  if (color < 2)
   {
     goto LABEL_8;
   }
 
-  if (a4 == 3)
+  if (color == 3)
   {
     v11 = MEMORY[0x1E6979280];
     v12 = *(MEMORY[0x1E6979280] + 48);
@@ -479,7 +479,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a4 != 2)
+  if (color != 2)
   {
     goto LABEL_12;
   }
@@ -500,7 +500,7 @@ LABEL_11:
   if (a6 != 1)
   {
 LABEL_8:
-    [a2 _colorizedVibrancyMatrixForType:a4 heroColor:v10 backgroundType:a6];
+    [a2 _colorizedVibrancyMatrixForType:color heroColor:backgroundTypeCopy backgroundType:a6];
     goto LABEL_12;
   }
 
@@ -516,14 +516,14 @@ LABEL_12:
   return result;
 }
 
-+ (CAColorMatrix)_colorizedVibrancyMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5
++ (CAColorMatrix)_colorizedVibrancyMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType
 {
   v34 = 0.0;
   v35 = 0.0;
   v32 = 0.0;
   v33 = 0.0;
-  [a5 getRed:&v35 green:&v34 blue:&v33 alpha:&v32];
-  if (!a4)
+  [backgroundType getRed:&v35 green:&v34 blue:&v33 alpha:&v32];
+  if (!color)
   {
     v33 = 0.9;
     v34 = 0.9;
@@ -572,7 +572,7 @@ LABEL_12:
   *&v26[44] = xmmword_1A2D528E0;
   *&v26[60] = 0;
   CAColorMatrixConcat();
-  if (a4)
+  if (color)
   {
     v25 = 0uLL;
     v17 = v9 * 0.2 / (v9 * 0.4 + -0.2 - v9 + 1.0) + 0.0;

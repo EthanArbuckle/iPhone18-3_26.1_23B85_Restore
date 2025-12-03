@@ -1,9 +1,9 @@
 @interface SBSceneRenderingEnvironmentManager
 - (SBSceneRenderingEnvironmentManager)init;
-- (SBSceneRenderingEnvironmentManager)initWithBKSInterface:(id)a3;
-- (id)registerParticipantForSceneWithIdentifier:(id)a3 displayConfiguration:(id)a4;
-- (void)_cleanupForPotentiallyInvalidAssertionForSanitizedDisplayUUID:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
+- (SBSceneRenderingEnvironmentManager)initWithBKSInterface:(id)interface;
+- (id)registerParticipantForSceneWithIdentifier:(id)identifier displayConfiguration:(id)configuration;
+- (void)_cleanupForPotentiallyInvalidAssertionForSanitizedDisplayUUID:(id)d;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)dealloc;
 @end
 
@@ -17,10 +17,10 @@
   return v4;
 }
 
-- (SBSceneRenderingEnvironmentManager)initWithBKSInterface:(id)a3
+- (SBSceneRenderingEnvironmentManager)initWithBKSInterface:(id)interface
 {
-  v6 = a3;
-  if (!v6)
+  interfaceCopy = interface;
+  if (!interfaceCopy)
   {
     [(SBSceneRenderingEnvironmentManager *)a2 initWithBKSInterface:?];
   }
@@ -31,7 +31,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_bksInterface, a3);
+    objc_storeStrong(&v7->_bksInterface, interface);
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
     displayUUIDToAssertion = v8->_displayUUIDToAssertion;
     v8->_displayUUIDToAssertion = v9;
@@ -80,29 +80,29 @@ id __59__SBSceneRenderingEnvironmentManager_initWithBKSInterface___block_invoke(
   [(SBSceneRenderingEnvironmentManager *)&v3 dealloc];
 }
 
-- (id)registerParticipantForSceneWithIdentifier:(id)a3 displayConfiguration:(id)a4
+- (id)registerParticipantForSceneWithIdentifier:(id)identifier displayConfiguration:(id)configuration
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  if (!identifierCopy)
   {
     [SBSceneRenderingEnvironmentManager registerParticipantForSceneWithIdentifier:a2 displayConfiguration:self];
   }
 
-  if (!v7)
+  if (!configurationCopy)
   {
     [SBSceneRenderingEnvironmentManager registerParticipantForSceneWithIdentifier:a2 displayConfiguration:self];
   }
 
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v27 = [v7 hardwareIdentifier];
-  v8 = [v7 hardwareIdentifier];
-  v9 = v8;
+  hardwareIdentifier = [configurationCopy hardwareIdentifier];
+  hardwareIdentifier2 = [configurationCopy hardwareIdentifier];
+  v9 = hardwareIdentifier2;
   v10 = @"main";
-  if (v8)
+  if (hardwareIdentifier2)
   {
-    v10 = v8;
+    v10 = hardwareIdentifier2;
   }
 
   v11 = v10;
@@ -110,13 +110,13 @@ id __59__SBSceneRenderingEnvironmentManager_initWithBKSInterface___block_invoke(
   v12 = [(NSMutableDictionary *)self->_displayUUIDToAssertion objectForKey:v11];
   if (!v12)
   {
-    v13 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v14 = SBLogShellScene();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v13 UUIDString];
+      uUIDString = [uUID UUIDString];
       *buf = 138543618;
-      v34 = v15;
+      v34 = uUIDString;
       v35 = 2114;
       v36 = v11;
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Generated scene rendering environment identifier %{public}@ for displayUUID %{public}@", buf, 0x16u);
@@ -130,9 +130,9 @@ id __59__SBSceneRenderingEnvironmentManager_initWithBKSInterface___block_invoke(
     v28[2] = __101__SBSceneRenderingEnvironmentManager_registerParticipantForSceneWithIdentifier_displayConfiguration___block_invoke;
     v28[3] = &unk_2783B46A0;
     objc_copyWeak(&v32, buf);
-    v18 = v13;
+    v18 = uUID;
     v29 = v18;
-    v30 = v27;
+    v30 = hardwareIdentifier;
     v19 = v11;
     v31 = v19;
     v12 = [v16 assertionWithIdentifier:v17 stateDidChangeHandler:v28];
@@ -147,16 +147,16 @@ id __59__SBSceneRenderingEnvironmentManager_initWithBKSInterface___block_invoke(
     objc_destroyWeak(buf);
   }
 
-  v21 = [v12 acquireForReason:v6];
+  v21 = [v12 acquireForReason:identifierCopy];
   v22 = [(NSMutableDictionary *)self->_displayUUIDToIdentifier objectForKey:v11];
-  v23 = [v22 UUIDString];
+  uUIDString2 = [v22 UUIDString];
 
-  if (!v23)
+  if (!uUIDString2)
   {
     [(SBSceneRenderingEnvironmentManager *)&self->_displayUUIDToIdentifier registerParticipantForSceneWithIdentifier:a2 displayConfiguration:self, v11];
   }
 
-  v24 = [[SBSceneRenderingEnvironmentParticipant alloc] initWithRenderingEnvironmentIdentifier:v23 assertion:v21];
+  v24 = [[SBSceneRenderingEnvironmentParticipant alloc] initWithRenderingEnvironmentIdentifier:uUIDString2 assertion:v21];
 
   return v24;
 }
@@ -214,21 +214,21 @@ void __101__SBSceneRenderingEnvironmentManager_registerParticipantForSceneWithId
   }
 }
 
-- (void)_cleanupForPotentiallyInvalidAssertionForSanitizedDisplayUUID:(id)a3
+- (void)_cleanupForPotentiallyInvalidAssertionForSanitizedDisplayUUID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(NSMutableDictionary *)self->_displayUUIDToAssertion objectForKey:v4];
-  v6 = [v5 isActive];
+  v5 = [(NSMutableDictionary *)self->_displayUUIDToAssertion objectForKey:dCopy];
+  isActive = [v5 isActive];
   v7 = SBLogShellScene();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isActive)
   {
     if (v8)
     {
       v11 = 138543362;
-      v12 = v4;
+      v12 = dCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "No cleanup of scene rendering environment for displayUUID %{public}@ necessary - it is still active", &v11, 0xCu);
     }
   }
@@ -238,11 +238,11 @@ void __101__SBSceneRenderingEnvironmentManager_registerParticipantForSceneWithId
     if (v8)
     {
       v11 = 138543362;
-      v12 = v4;
+      v12 = dCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Cleaning up scene rendering environment for displayUUID %{public}@", &v11, 0xCu);
     }
 
-    v9 = v4;
+    v9 = dCopy;
     if ([@"main" isEqualToString:v9])
     {
       v10 = 0;
@@ -262,16 +262,16 @@ void __101__SBSceneRenderingEnvironmentManager_registerParticipantForSceneWithId
   }
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__SBSceneRenderingEnvironmentManager_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 

@@ -1,45 +1,45 @@
 @interface IAPTransportServer
 + (id)sharedIAPTransportServer;
-- (BOOL)createNewClientPort:(id)a3 connection:(id)a4;
+- (BOOL)createNewClientPort:(id)port connection:(id)connection;
 - (BOOL)isDeviceInLowPowerMode;
 - (IAPTransportServer)init;
-- (id)iapPortManagerForDevPort:(IapTransport *)a3;
-- (void)_detachClientPort:(IapTransport *)a3;
+- (id)iapPortManagerForDevPort:(IapTransport *)port;
+- (void)_detachClientPort:(IapTransport *)port;
 - (void)_listenForAccessoryPortChanges;
 - (void)_setupiAPInterfaceNotifications;
-- (void)_updatePlistWithApplicationUninstall:(id)a3;
+- (void)_updatePlistWithApplicationUninstall:(id)uninstall;
 - (void)attachPowerModeNotifications;
 - (void)bringdownPlatform;
 - (void)bringupPlatform;
 - (void)checkXPCConnections;
 - (void)cleanupPhysicalConnectorConnections;
-- (void)cleanupStaleClientPorts:(int)a3;
-- (void)clientPortReceivedData:(id)a3 dataPtr:(char *)a4 length:(unsigned __int16)a5;
+- (void)cleanupStaleClientPorts:(int)ports;
+- (void)clientPortReceivedData:(id)data dataPtr:(char *)ptr length:(unsigned __int16)length;
 - (void)dealloc;
 - (void)deleteAllPorts;
-- (void)deleteClientPortsUsingConnection:(id)a3;
+- (void)deleteClientPortsUsingConnection:(id)connection;
 - (void)deleteWiredPorts;
-- (void)detachIOKitPort:(IapTransport *)a3;
+- (void)detachIOKitPort:(IapTransport *)port;
 - (void)detachPowerModeNotifications;
 - (void)enterLowPowerMode;
 - (void)exitLowPowerMode;
-- (void)handleLowPowerModeStateChange:(BOOL)a3;
+- (void)handleLowPowerModeStateChange:(BOOL)change;
 - (void)iap2Disconnect;
 - (void)iapDisconnect;
-- (void)preventIdleSleep:(BOOL)a3;
-- (void)radioPreferencesChanged:(unsigned int)a3;
-- (void)registerClientPortAccessory:(id)a3 connection:(id)a4;
+- (void)preventIdleSleep:(BOOL)sleep;
+- (void)radioPreferencesChanged:(unsigned int)changed;
+- (void)registerClientPortAccessory:(id)accessory connection:(id)connection;
 - (void)run;
 - (void)sendValidAccResistorIDToIAPD;
-- (void)setHasAdaptor:(BOOL)a3;
-- (void)setUSBMode:(IapTransport *)a3 forMode:(int)a4;
-- (void)setWiredPortPacketParsingState:(BOOL)a3;
-- (void)setiaptransportdhighPriorityRootQueue:(id)a3;
-- (void)startAccPowerTimer:(unsigned int)a3;
-- (void)startAccPowerTimer:(unsigned int)a3 ForPortService:(unsigned int)a4;
-- (void)startIOAccMgrPortDetectTimer:(unsigned int)a3;
-- (void)stopServer:(int)a3 forceExitingImmediately:(BOOL)a4;
-- (void)unregisterClientPortAccessory:(id)a3;
+- (void)setHasAdaptor:(BOOL)adaptor;
+- (void)setUSBMode:(IapTransport *)mode forMode:(int)forMode;
+- (void)setWiredPortPacketParsingState:(BOOL)state;
+- (void)setiaptransportdhighPriorityRootQueue:(id)queue;
+- (void)startAccPowerTimer:(unsigned int)timer;
+- (void)startAccPowerTimer:(unsigned int)timer ForPortService:(unsigned int)service;
+- (void)startIOAccMgrPortDetectTimer:(unsigned int)timer;
+- (void)stopServer:(int)server forceExitingImmediately:(BOOL)immediately;
+- (void)unregisterClientPortAccessory:(id)accessory;
 - (void)updateDeviceUUIDState;
 - (void)updatePortManagers;
 - (void)updateSleepAssertionState;
@@ -57,7 +57,7 @@
   return qword_100031DC0;
 }
 
-- (void)setiaptransportdhighPriorityRootQueue:(id)a3
+- (void)setiaptransportdhighPriorityRootQueue:(id)queue
 {
   iaptransportdhighPriorityRootQueue = self->_iaptransportdhighPriorityRootQueue;
   if (iaptransportdhighPriorityRootQueue)
@@ -65,11 +65,11 @@
     dispatch_release(iaptransportdhighPriorityRootQueue);
   }
 
-  self->_iaptransportdhighPriorityRootQueue = a3;
-  if (a3)
+  self->_iaptransportdhighPriorityRootQueue = queue;
+  if (queue)
   {
 
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 }
 
@@ -139,7 +139,7 @@
   }
 }
 
-- (void)startAccPowerTimer:(unsigned int)a3
+- (void)startAccPowerTimer:(unsigned int)timer
 {
   if (!self->_isShuttingDown)
   {
@@ -156,12 +156,12 @@
     }
 
     accPowerTimer = self->_accPowerTimer;
-    v8 = dispatch_time(0, 1000000 * a3);
+    v8 = dispatch_time(0, 1000000 * timer);
     dispatch_source_set_timer(accPowerTimer, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
   }
 }
 
-- (void)startAccPowerTimer:(unsigned int)a3 ForPortService:(unsigned int)a4
+- (void)startAccPowerTimer:(unsigned int)timer ForPortService:(unsigned int)service
 {
   if (!self->_isShuttingDown)
   {
@@ -172,19 +172,19 @@
     v10[2] = sub_100012A08;
     v10[3] = &unk_10002D6B8;
     v10[4] = self;
-    v11 = a4;
+    serviceCopy = service;
     if (initAccPowerForPortServiceTimerOnce != -1)
     {
       dispatch_once(p_initAccPowerForPortServiceTimerOnce, v10);
     }
 
     accPowerForPortServiceTimer = self->_accPowerForPortServiceTimer;
-    v9 = dispatch_time(0, 1000000 * a3);
+    v9 = dispatch_time(0, 1000000 * timer);
     dispatch_source_set_timer(accPowerForPortServiceTimer, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
   }
 }
 
-- (void)startIOAccMgrPortDetectTimer:(unsigned int)a3
+- (void)startIOAccMgrPortDetectTimer:(unsigned int)timer
 {
   if (!self->_isShuttingDown)
   {
@@ -195,7 +195,7 @@
     v6[2] = sub_100012CA4;
     v6[3] = &unk_10002D6B8;
     v6[4] = self;
-    v7 = a3;
+    timerCopy = timer;
     if (initIOAccMgrPortDetectTimerOnce != -1)
     {
       dispatch_once(p_initIOAccMgrPortDetectTimerOnce, v6);
@@ -225,14 +225,14 @@
   dispatch_async(shutdownQ, block);
 }
 
-- (void)setUSBMode:(IapTransport *)a3 forMode:(int)a4
+- (void)setUSBMode:(IapTransport *)mode forMode:(int)forMode
 {
-  v4 = [(IAPTransportServer *)self iapPortManagerForDevPort:a3];
+  v4 = [(IAPTransportServer *)self iapPortManagerForDevPort:mode];
   if (v4)
   {
-    v5 = [v4 service];
+    service = [v4 service];
     connect = 0;
-    v6 = IOServiceOpen(v5, mach_task_self_, 0, &connect);
+    v6 = IOServiceOpen(service, mach_task_self_, 0, &connect);
     if (v6)
     {
       v7 = 1;
@@ -269,13 +269,13 @@
   }
 }
 
-- (void)setWiredPortPacketParsingState:(BOOL)a3
+- (void)setWiredPortPacketParsingState:(BOOL)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10001364C;
   v3[3] = &unk_10002D728;
-  v4 = a3;
+  stateCopy = state;
   pthread_mutex_lock(&stru_100031AA8);
   sub_10001364C(v3);
   pthread_mutex_unlock(&stru_100031AA8);
@@ -333,9 +333,9 @@
   return radiosPreferences;
 }
 
-- (void)handleLowPowerModeStateChange:(BOOL)a3
+- (void)handleLowPowerModeStateChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     [(IAPTransportServer *)self enterLowPowerMode];
   }
@@ -346,16 +346,16 @@
   }
 }
 
-- (void)radioPreferencesChanged:(unsigned int)a3
+- (void)radioPreferencesChanged:(unsigned int)changed
 {
-  if ((a3 & 2) != 0)
+  if ((changed & 2) != 0)
   {
-    v4 = [(IAPTransportServer *)self isDeviceInLowPowerMode];
-    if (self->_lowPowerModeEnabled != v4)
+    isDeviceInLowPowerMode = [(IAPTransportServer *)self isDeviceInLowPowerMode];
+    if (self->_lowPowerModeEnabled != isDeviceInLowPowerMode)
     {
-      self->_lowPowerModeEnabled = v4;
+      self->_lowPowerModeEnabled = isDeviceInLowPowerMode;
 
-      [(IAPTransportServer *)self handleLowPowerModeStateChange:v4];
+      [(IAPTransportServer *)self handleLowPowerModeStateChange:isDeviceInLowPowerMode];
     }
   }
 }
@@ -855,11 +855,11 @@ LABEL_36:
   qword_100031DC0 = 0;
 }
 
-- (void)stopServer:(int)a3 forceExitingImmediately:(BOOL)a4
+- (void)stopServer:(int)server forceExitingImmediately:(BOOL)immediately
 {
   serverFlags = self->serverFlags;
   self->serverFlags = (*&serverFlags | 2);
-  if (a4)
+  if (immediately)
   {
     self->serverFlags = (*&serverFlags | 3);
     CFRunLoopStop(self->_serverRunLoop);
@@ -871,14 +871,14 @@ LABEL_36:
   }
 }
 
-- (id)iapPortManagerForDevPort:(IapTransport *)a3
+- (id)iapPortManagerForDevPort:(IapTransport *)port
 {
-  if (!a3)
+  if (!port)
   {
     return 0;
   }
 
-  v4 = [[NSNumber alloc] initWithInt:sub_100003EB8(a3)];
+  v4 = [[NSNumber alloc] initWithInt:sub_100003EB8(port)];
   if (!v4)
   {
     return 0;
@@ -1017,21 +1017,21 @@ LABEL_26:
   IOObjectRelease(existing);
 }
 
-- (void)detachIOKitPort:(IapTransport *)a3
+- (void)detachIOKitPort:(IapTransport *)port
 {
-  if (a3)
+  if (port)
   {
-    v5 = [(NSMutableDictionary *)self->_iapPortManagers objectForKey:[NSNumber numberWithInt:sub_100003EB8(a3)]];
-    sub_10000ED60(a3, 8, 0);
-    sub_100011860(a3);
+    v5 = [(NSMutableDictionary *)self->_iapPortManagers objectForKey:[NSNumber numberWithInt:sub_100003EB8(port)]];
+    sub_10000ED60(port, 8, 0);
+    sub_100011860(port);
     if (v5)
     {
       if (sub_100003EC4([objc_msgSend(v5 "portNumber")]))
       {
         iapPortManagers = self->_iapPortManagers;
-        v7 = [v5 portNumber];
+        portNumber = [v5 portNumber];
 
-        [(NSMutableDictionary *)iapPortManagers removeObjectForKey:v7];
+        [(NSMutableDictionary *)iapPortManagers removeObjectForKey:portNumber];
       }
     }
   }
@@ -1073,7 +1073,7 @@ LABEL_26:
   v7 = 3221225472;
   v8 = sub_1000154A8;
   v9 = &unk_10002D7F8;
-  v10 = self;
+  selfCopy = self;
   v11 = &v14;
   v12 = &v22;
   v13 = &v18;
@@ -1113,24 +1113,24 @@ LABEL_26:
   pthread_mutex_unlock(&stru_100031AA8);
 }
 
-- (void)cleanupStaleClientPorts:(int)a3
+- (void)cleanupStaleClientPorts:(int)ports
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000157C0;
   v3[3] = &unk_10002D6B8;
-  v4 = a3;
+  portsCopy = ports;
   v3[4] = self;
   pthread_mutex_lock(&stru_100031AA8);
   sub_1000157C0(v3);
   pthread_mutex_unlock(&stru_100031AA8);
 }
 
-- (void)preventIdleSleep:(BOOL)a3
+- (void)preventIdleSleep:(BOOL)sleep
 {
-  v3 = a3;
+  sleepCopy = sleep;
   pthread_mutex_lock(&stru_100031BB8);
-  if (v3)
+  if (sleepCopy)
   {
     if (!self->_hasSleepAssertion)
     {
@@ -1215,46 +1215,46 @@ LABEL_11:
   [(IAPTransportServer *)self preventIdleSleep:v3];
 }
 
-- (void)registerClientPortAccessory:(id)a3 connection:(id)a4
+- (void)registerClientPortAccessory:(id)accessory connection:(id)connection
 {
   if (byte_100031DE0 == 1)
   {
     v15 = v4;
     v16 = v5;
-    if (a3)
+    if (accessory)
     {
       v9 = _NSConcreteStackBlock;
       v10 = 3221225472;
       v11 = sub_100015C84;
       v12 = &unk_10002D820;
-      v13 = a3;
-      v14 = self;
+      accessoryCopy = accessory;
+      selfCopy = self;
       pthread_mutex_lock(&stru_100031AA8);
       sub_100015C84(&v9);
       pthread_mutex_unlock(&stru_100031AA8);
-      [(IAPTransportServer *)self createNewClientPort:a3 connection:a4, v9, v10];
+      [(IAPTransportServer *)self createNewClientPort:accessory connection:connection, v9, v10];
     }
 
     else
     {
-      NSLog(@"registerClientPortAccessory bad params", a2, 0, a4);
+      NSLog(@"registerClientPortAccessory bad params", a2, 0, connection);
     }
   }
 }
 
-- (void)unregisterClientPortAccessory:(id)a3
+- (void)unregisterClientPortAccessory:(id)accessory
 {
   if (byte_100031DE0 == 1)
   {
     v5[8] = v3;
     v5[9] = v4;
-    if (a3)
+    if (accessory)
     {
       v5[0] = _NSConcreteStackBlock;
       v5[1] = 3221225472;
       v5[2] = sub_100015DF0;
       v5[3] = &unk_10002D820;
-      v5[4] = a3;
+      v5[4] = accessory;
       v5[5] = self;
       pthread_mutex_lock(&stru_100031AA8);
       sub_100015DF0(v5);
@@ -1268,19 +1268,19 @@ LABEL_11:
   }
 }
 
-- (void)deleteClientPortsUsingConnection:(id)a3
+- (void)deleteClientPortsUsingConnection:(id)connection
 {
   if (byte_100031DE0 == 1)
   {
     v5[8] = v3;
     v5[9] = v4;
-    if (a3)
+    if (connection)
     {
       v5[0] = _NSConcreteStackBlock;
       v5[1] = 3221225472;
       v5[2] = sub_100015F5C;
       v5[3] = &unk_10002D820;
-      v5[4] = a3;
+      v5[4] = connection;
       v5[5] = self;
       pthread_mutex_lock(&stru_100031AA8);
       sub_100015F5C(v5);
@@ -1294,21 +1294,21 @@ LABEL_11:
   }
 }
 
-- (void)clientPortReceivedData:(id)a3 dataPtr:(char *)a4 length:(unsigned __int16)a5
+- (void)clientPortReceivedData:(id)data dataPtr:(char *)ptr length:(unsigned __int16)length
 {
   if (byte_100031DE0 == 1)
   {
     v9 = v5;
     v10 = v6;
-    if (a3 && a4 && a5)
+    if (data && ptr && length)
     {
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_1000160B8;
       v7[3] = &unk_10002D848;
-      v7[4] = a3;
-      v7[5] = a4;
-      v8 = a5;
+      v7[4] = data;
+      v7[5] = ptr;
+      lengthCopy = length;
       pthread_mutex_lock(&stru_100031AA8);
       sub_1000160B8(v7);
       pthread_mutex_unlock(&stru_100031AA8);
@@ -1321,9 +1321,9 @@ LABEL_11:
   }
 }
 
-- (BOOL)createNewClientPort:(id)a3 connection:(id)a4
+- (BOOL)createNewClientPort:(id)port connection:(id)connection
 {
-  v4 = sub_1000056E4(a3, a4);
+  v4 = sub_1000056E4(port, connection);
   v5 = v4;
   if (v4)
   {
@@ -1333,7 +1333,7 @@ LABEL_11:
   return v5 != 0;
 }
 
-- (void)setHasAdaptor:(BOOL)a3
+- (void)setHasAdaptor:(BOOL)adaptor
 {
   byte_100031DB0 = 1;
   sub_100004B78(1);
@@ -1365,16 +1365,16 @@ LABEL_11:
   }
 }
 
-- (void)_detachClientPort:(IapTransport *)a3
+- (void)_detachClientPort:(IapTransport *)port
 {
-  if (a3)
+  if (port)
   {
-    nullsub_15(a3, 8, 0);
+    nullsub_15(port, 8, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000163B0;
     block[3] = &unk_10002CA90;
-    block[4] = a3;
+    block[4] = port;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
@@ -1468,7 +1468,7 @@ LABEL_11:
   }
 }
 
-- (void)_updatePlistWithApplicationUninstall:(id)a3
+- (void)_updatePlistWithApplicationUninstall:(id)uninstall
 {
   v4 = CFPreferencesCopyAppValue(@"OptionalSDKProtocolsShownKey", @"com.apple.iapd");
   if (v4)
@@ -1479,10 +1479,10 @@ LABEL_11:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v20 = [a3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    v20 = [uninstall countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v20)
     {
-      obj = a3;
+      obj = uninstall;
       v7 = 0;
       v19 = *v27;
       do
@@ -1496,12 +1496,12 @@ LABEL_11:
           }
 
           v21 = v8;
-          v9 = [*(*(&v26 + 1) + 8 * v8) externalAccessoryProtocols];
+          externalAccessoryProtocols = [*(*(&v26 + 1) + 8 * v8) externalAccessoryProtocols];
           v22 = 0u;
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v10 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v10 = [externalAccessoryProtocols countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v10)
           {
             v11 = v10;
@@ -1512,7 +1512,7 @@ LABEL_11:
               {
                 if (*v23 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(externalAccessoryProtocols);
                 }
 
                 v14 = *(*(&v22 + 1) + 8 * i);
@@ -1527,7 +1527,7 @@ LABEL_11:
                 }
               }
 
-              v11 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+              v11 = [externalAccessoryProtocols countByEnumeratingWithState:&v22 objects:v30 count:16];
             }
 
             while (v11);

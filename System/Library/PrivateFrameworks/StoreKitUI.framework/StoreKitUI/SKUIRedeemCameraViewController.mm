@@ -1,33 +1,33 @@
 @interface SKUIRedeemCameraViewController
 - (BOOL)_enabled;
-- (SKUIRedeemCameraViewController)initWithRedeemCategory:(int64_t)a3;
-- (SKUIRedeemCameraViewController)initWithRedeemCategoryFullscreen:(int64_t)a3;
+- (SKUIRedeemCameraViewController)initWithRedeemCategory:(int64_t)category;
+- (SKUIRedeemCameraViewController)initWithRedeemCategoryFullscreen:(int64_t)fullscreen;
 - (SKUIRedeemCameraViewControllerDelegate)delegate;
 - (SKUIRedeemViewCameraOverrideDelegate)cameraOverrideDelegate;
-- (id)redeemerViewForSKUIRedeemCameraView:(id)a3;
-- (void)SKUIRedeemCameraView:(id)a3 textFieldDidChange:(id)a4;
-- (void)SKUIRedeemPreflightImagesDidLoad:(id)a3;
-- (void)_cameraRedeemDidFinish:(id)a3 error:(id)a4;
-- (void)_cancelAction:(id)a3;
-- (void)_performRedeemOperationWithCode:(id)a3 cameraRecognized:(BOOL)a4 allowOverride:(BOOL)a5 completion:(id)a6;
-- (void)_redeemAction:(id)a3;
-- (void)_redeemDidFinish:(id)a3 error:(id)a4;
-- (void)_setEnabled:(BOOL)a3;
-- (void)_updateRightBarButtonItemsForRedeemInputState:(int64_t)a3;
-- (void)cancelRedeemerViewForSKUIRedeemCameraView:(id)a3;
-- (void)codeRedeemerController:(id)a3 didEndWithInfo:(id)a4;
-- (void)codeRedeemerControllerDidDisplayMessage:(id)a3;
+- (id)redeemerViewForSKUIRedeemCameraView:(id)view;
+- (void)SKUIRedeemCameraView:(id)view textFieldDidChange:(id)change;
+- (void)SKUIRedeemPreflightImagesDidLoad:(id)load;
+- (void)_cameraRedeemDidFinish:(id)finish error:(id)error;
+- (void)_cancelAction:(id)action;
+- (void)_performRedeemOperationWithCode:(id)code cameraRecognized:(BOOL)recognized allowOverride:(BOOL)override completion:(id)completion;
+- (void)_redeemAction:(id)action;
+- (void)_redeemDidFinish:(id)finish error:(id)error;
+- (void)_setEnabled:(BOOL)enabled;
+- (void)_updateRightBarButtonItemsForRedeemInputState:(int64_t)state;
+- (void)cancelRedeemerViewForSKUIRedeemCameraView:(id)view;
+- (void)codeRedeemerController:(id)controller didEndWithInfo:(id)info;
+- (void)codeRedeemerControllerDidDisplayMessage:(id)message;
 - (void)dealloc;
 - (void)loadView;
-- (void)presentFullScreenCameraViewForSKUIRedeemCameraView:(id)a3;
-- (void)redeemCameraViewController:(id)a3 didFinishWithRedeem:(id)a4;
-- (void)showITunesPassLearnMoreForSKUIRedeemCameraView:(id)a3;
-- (void)startRedeemerViewForSKUIRedeemCameraView:(id)a3;
+- (void)presentFullScreenCameraViewForSKUIRedeemCameraView:(id)view;
+- (void)redeemCameraViewController:(id)controller didFinishWithRedeem:(id)redeem;
+- (void)showITunesPassLearnMoreForSKUIRedeemCameraView:(id)view;
+- (void)startRedeemerViewForSKUIRedeemCameraView:(id)view;
 @end
 
 @implementation SKUIRedeemCameraViewController
 
-- (SKUIRedeemCameraViewController)initWithRedeemCategory:(int64_t)a3
+- (SKUIRedeemCameraViewController)initWithRedeemCategory:(int64_t)category
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -40,7 +40,7 @@
   v6 = v5;
   if (v5)
   {
-    v5->_category = a3;
+    v5->_category = category;
     v5->_fullscreen = 0;
     [(SKUIRedeemCameraViewController *)v5 setEdgesForExtendedLayout:0];
   }
@@ -48,7 +48,7 @@
   return v6;
 }
 
-- (SKUIRedeemCameraViewController)initWithRedeemCategoryFullscreen:(int64_t)a3
+- (SKUIRedeemCameraViewController)initWithRedeemCategoryFullscreen:(int64_t)fullscreen
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -60,7 +60,7 @@
   result = [(SKUIRedeemCameraViewController *)&v6 initWithNibName:0 bundle:0];
   if (result)
   {
-    result->_category = a3;
+    result->_category = fullscreen;
     result->_fullscreen = 1;
   }
 
@@ -69,9 +69,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [(SKUIRedeemStepViewController *)self configuration];
-  [v3 removeObserver:self name:0x2828123E8 object:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  configuration = [(SKUIRedeemStepViewController *)self configuration];
+  [defaultCenter removeObserver:self name:0x2828123E8 object:configuration];
 
   v5.receiver = self;
   v5.super_class = SKUIRedeemCameraViewController;
@@ -80,15 +80,15 @@
 
 - (void)loadView
 {
-  v32 = [(SKUIRedeemStepViewController *)self clientContext];
-  v3 = [(SKUIRedeemCameraViewController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+  navigationItem = [(SKUIRedeemCameraViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
   v4 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v4 setAction:sel__cancelAction_];
   [v4 setTarget:self];
-  if (v32)
+  if (clientContext)
   {
-    [v32 localizedStringForKey:@"CAMERA_REDEEM_CANCEL_BUTTON" inTable:@"Redeem"];
+    [clientContext localizedStringForKey:@"CAMERA_REDEEM_CANCEL_BUTTON" inTable:@"Redeem"];
   }
 
   else
@@ -98,7 +98,7 @@
   v5 = ;
   [v4 setTitle:v5];
 
-  [v3 setLeftBarButtonItem:v4];
+  [navigationItem setLeftBarButtonItem:v4];
   v6 = objc_alloc_init(MEMORY[0x277D751E0]);
   redeemButton = self->_redeemButton;
   self->_redeemButton = v6;
@@ -106,9 +106,9 @@
   [(UIBarButtonItem *)self->_redeemButton setAction:sel__redeemAction_];
   [(UIBarButtonItem *)self->_redeemButton setTarget:self];
   v8 = self->_redeemButton;
-  if (v32)
+  if (clientContext)
   {
-    [v32 localizedStringForKey:@"CAMERA_REDEEM_REDEEM_BUTTON" inTable:@"Redeem"];
+    [clientContext localizedStringForKey:@"CAMERA_REDEEM_REDEEM_BUTTON" inTable:@"Redeem"];
   }
 
   else
@@ -142,21 +142,21 @@
   }
 
   [(SKUIRedeemCameraViewController *)self _updateRightBarButtonItemsForRedeemInputState:1];
-  v19 = [(SKUIRedeemStepViewController *)self configuration];
-  v20 = [v19 landingImage];
+  configuration = [(SKUIRedeemStepViewController *)self configuration];
+  landingImage = [configuration landingImage];
 
-  v21 = [MEMORY[0x277CCAB98] defaultCenter];
-  v22 = [(SKUIRedeemStepViewController *)self configuration];
-  [v21 addObserver:self selector:sel_SKUIRedeemPreflightImagesDidLoad_ name:0x2828123E8 object:v22];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  configuration2 = [(SKUIRedeemStepViewController *)self configuration];
+  [defaultCenter addObserver:self selector:sel_SKUIRedeemPreflightImagesDidLoad_ name:0x2828123E8 object:configuration2];
 
   if (self->_fullscreen)
   {
-    v23 = [[SKUIFullscreenRedeemCameraView alloc] initWithClientContext:v32];
-    v24 = [(SKUIRedeemStepViewController *)self clientContext];
-    v25 = v24;
-    if (v24)
+    v23 = [[SKUIFullscreenRedeemCameraView alloc] initWithClientContext:clientContext];
+    clientContext2 = [(SKUIRedeemStepViewController *)self clientContext];
+    v25 = clientContext2;
+    if (clientContext2)
     {
-      [v24 localizedStringForKey:@"CAMERA_REDEEM_TITLE" inTable:@"Redeem"];
+      [clientContext2 localizedStringForKey:@"CAMERA_REDEEM_TITLE" inTable:@"Redeem"];
     }
 
     else
@@ -169,53 +169,53 @@
 
   else
   {
-    v26 = [MEMORY[0x277D75418] currentDevice];
-    v27 = [v26 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v27 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v23 = [[SKUIIPadRedeemCameraView alloc] initWithClientContext:v32];
+      v23 = [[SKUIIPadRedeemCameraView alloc] initWithClientContext:clientContext];
     }
 
     else
     {
-      v23 = [[SKUIRedeemCameraView alloc] initWithClientContext:v32];
+      v23 = [[SKUIRedeemCameraView alloc] initWithClientContext:clientContext];
       if ([(SKUIRedeemStepViewController *)self shouldShowPassbookLearnMore])
       {
-        v28 = [(SKUIRedeemStepViewController *)self configuration];
-        v29 = [v28 ITunesPassConfiguration];
-        [(SKUIFullscreenRedeemCameraView *)v23 setITunesPassConfiguration:v29];
+        configuration3 = [(SKUIRedeemStepViewController *)self configuration];
+        iTunesPassConfiguration = [configuration3 ITunesPassConfiguration];
+        [(SKUIFullscreenRedeemCameraView *)v23 setITunesPassConfiguration:iTunesPassConfiguration];
       }
     }
   }
 
-  v31 = [MEMORY[0x277D75348] whiteColor];
-  [(SKUIFullscreenRedeemCameraView *)v23 setBackgroundColor:v31];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(SKUIFullscreenRedeemCameraView *)v23 setBackgroundColor:whiteColor];
 
   [(SKUIFullscreenRedeemCameraView *)v23 setText:self->_initialCode];
-  [(SKUIFullscreenRedeemCameraView *)v23 setImage:v20];
+  [(SKUIFullscreenRedeemCameraView *)v23 setImage:landingImage];
   [(SKUIFullscreenRedeemCameraView *)v23 setDelegate:self];
   [(SKUIFullscreenRedeemCameraView *)v23 start];
   [(SKUIRedeemCameraViewController *)self setView:v23];
 }
 
-- (void)_cancelAction:(id)a3
+- (void)_cancelAction:(id)action
 {
-  v4 = [(SKUIRedeemCameraViewController *)self parentViewController];
-  v5 = v4;
-  if (!v4)
+  selfCopy = [(SKUIRedeemCameraViewController *)self parentViewController];
+  v5 = selfCopy;
+  if (!selfCopy)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_redeemAction:(id)a3
+- (void)_redeemAction:(id)action
 {
-  v4 = a3;
-  v5 = [(SKUIRedeemCameraViewController *)self view];
-  v6 = [v5 text];
+  actionCopy = action;
+  view = [(SKUIRedeemCameraViewController *)self view];
+  text = [view text];
 
   [(SKUIRedeemCameraViewController *)self _updateRightBarButtonItemsForRedeemInputState:2];
   [(SKUIRedeemCameraViewController *)self _setEnabled:0];
@@ -225,7 +225,7 @@
   v7[2] = __48__SKUIRedeemCameraViewController__redeemAction___block_invoke;
   v7[3] = &unk_2781FBA58;
   objc_copyWeak(&v8, &location);
-  [(SKUIRedeemCameraViewController *)self _performRedeemOperationWithCode:v6 cameraRecognized:0 allowOverride:1 completion:v7];
+  [(SKUIRedeemCameraViewController *)self _performRedeemOperationWithCode:text cameraRecognized:0 allowOverride:1 completion:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
@@ -238,7 +238,7 @@ void __48__SKUIRedeemCameraViewController__redeemAction___block_invoke(uint64_t 
   [WeakRetained _redeemDidFinish:v6 error:v5];
 }
 
-- (void)cancelRedeemerViewForSKUIRedeemCameraView:(id)a3
+- (void)cancelRedeemerViewForSKUIRedeemCameraView:(id)view
 {
   [(SKUIRedeemCameraViewController *)self _updateRightBarButtonItemsForRedeemInputState:1];
   camera = self->_camera;
@@ -246,45 +246,45 @@ void __48__SKUIRedeemCameraViewController__redeemAction___block_invoke(uint64_t 
   [(CRCodeRedeemerController *)camera cancel];
 }
 
-- (void)presentFullScreenCameraViewForSKUIRedeemCameraView:(id)a3
+- (void)presentFullScreenCameraViewForSKUIRedeemCameraView:(id)view
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 & 0xFFFFFFFFFFFFFFFBLL) == 1 && ([(SKUIRedeemCameraViewController *)self cameraOverrideDelegate], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, (v7))
+  if (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && ([(SKUIRedeemCameraViewController *)self cameraOverrideDelegate], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, (v7))
   {
-    v8 = [(SKUIRedeemCameraViewController *)self cameraOverrideDelegate];
+    cameraOverrideDelegate = [(SKUIRedeemCameraViewController *)self cameraOverrideDelegate];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __85__SKUIRedeemCameraViewController_presentFullScreenCameraViewForSKUIRedeemCameraView___block_invoke;
     v14[3] = &unk_2781FBD10;
     v14[4] = self;
-    [v8 overrideIPadRedeemCamera:self completion:v14];
+    [cameraOverrideDelegate overrideIPadRedeemCamera:self completion:v14];
   }
 
   else
   {
     v13 = [[SKUIRedeemViewControllerLegacy alloc] initWithRedeemCategory:0];
-    v9 = [(SKUIRedeemCameraViewController *)self delegate];
-    [(SKUIRedeemViewControllerLegacy *)v13 setCameraDelegate:v9];
+    delegate = [(SKUIRedeemCameraViewController *)self delegate];
+    [(SKUIRedeemViewControllerLegacy *)v13 setCameraDelegate:delegate];
 
     [(SKUIRedeemViewControllerLegacy *)v13 setModalPresentationStyle:0];
-    v10 = [(SKUIRedeemStepViewController *)self clientContext];
-    [(SKUIRedeemViewControllerLegacy *)v13 setClientContext:v10];
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    [(SKUIRedeemViewControllerLegacy *)v13 setClientContext:clientContext];
 
-    v11 = [(SKUIRedeemStepViewController *)self operationQueue];
-    [(SKUIRedeemViewControllerLegacy *)v13 setOperationQueue:v11];
+    operationQueue = [(SKUIRedeemStepViewController *)self operationQueue];
+    [(SKUIRedeemViewControllerLegacy *)v13 setOperationQueue:operationQueue];
 
     [(SKUIRedeemViewControllerLegacy *)v13 setCameraRedeemVisible:1];
-    v12 = [(SKUIRedeemStepViewController *)self configuration];
-    [(SKUIRedeemViewControllerLegacy *)v13 setRedeemConfiguration:v12];
+    configuration = [(SKUIRedeemStepViewController *)self configuration];
+    [(SKUIRedeemViewControllerLegacy *)v13 setRedeemConfiguration:configuration];
 
     [(SKUIRedeemViewControllerLegacy *)v13 setShouldPerformInitialOperationOnAppear:0];
     [(SKUIRedeemCameraViewController *)self presentViewController:v13 animated:1 completion:0];
   }
 }
 
-- (id)redeemerViewForSKUIRedeemCameraView:(id)a3
+- (id)redeemerViewForSKUIRedeemCameraView:(id)view
 {
   [(SKUIRedeemCameraViewController *)self _updateRightBarButtonItemsForRedeemInputState:0];
   if (!self->_camera)
@@ -297,16 +297,16 @@ void __48__SKUIRedeemCameraViewController__redeemAction___block_invoke(uint64_t 
     [(CRCodeRedeemerController *)self->_camera setDelegate:self];
   }
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v8 = [(SKUIRedeemStepViewController *)self clientContext];
-    v9 = v8;
-    if (v8)
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    v9 = clientContext;
+    if (clientContext)
     {
-      [v8 localizedStringForKey:@"CAMERA_REDEEM_TITLE" inTable:@"Redeem"];
+      [clientContext localizedStringForKey:@"CAMERA_REDEEM_TITLE" inTable:@"Redeem"];
     }
 
     else
@@ -322,32 +322,32 @@ void __48__SKUIRedeemCameraViewController__redeemAction___block_invoke(uint64_t 
   return [(CRCodeRedeemerController *)v11 view];
 }
 
-- (void)showITunesPassLearnMoreForSKUIRedeemCameraView:(id)a3
+- (void)showITunesPassLearnMoreForSKUIRedeemCameraView:(id)view
 {
   v8 = objc_alloc_init(SKUIRedeemITunesPassLearnMoreViewController);
-  v4 = [(SKUIRedeemStepViewController *)self clientContext];
-  [(SKUIRedeemStepViewController *)v8 setClientContext:v4];
+  clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+  [(SKUIRedeemStepViewController *)v8 setClientContext:clientContext];
 
-  v5 = [(SKUIRedeemStepViewController *)self configuration];
-  [(SKUIRedeemStepViewController *)v8 setConfiguration:v5];
+  configuration = [(SKUIRedeemStepViewController *)self configuration];
+  [(SKUIRedeemStepViewController *)v8 setConfiguration:configuration];
 
-  v6 = [(SKUIRedeemStepViewController *)self operationQueue];
-  [(SKUIRedeemStepViewController *)v8 setOperationQueue:v6];
+  operationQueue = [(SKUIRedeemStepViewController *)self operationQueue];
+  [(SKUIRedeemStepViewController *)v8 setOperationQueue:operationQueue];
 
   v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v8];
   [(SKUIRedeemCameraViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)SKUIRedeemCameraView:(id)a3 textFieldDidChange:(id)a4
+- (void)SKUIRedeemCameraView:(id)view textFieldDidChange:(id)change
 {
-  v8 = a4;
-  v5 = [(SKUIRedeemCameraViewController *)self _enabled];
+  changeCopy = change;
+  _enabled = [(SKUIRedeemCameraViewController *)self _enabled];
   redeemButton = self->_redeemButton;
-  v7 = v5 && [v8 length] != 0;
+  v7 = _enabled && [changeCopy length] != 0;
   [(UIBarButtonItem *)redeemButton setEnabled:v7];
 }
 
-- (void)startRedeemerViewForSKUIRedeemCameraView:(id)a3
+- (void)startRedeemerViewForSKUIRedeemCameraView:(id)view
 {
   [(SKUIRedeemCameraViewController *)self _updateRightBarButtonItemsForRedeemInputState:0];
   v4 = dispatch_time(0, 50000000);
@@ -359,36 +359,36 @@ void __48__SKUIRedeemCameraViewController__redeemAction___block_invoke(uint64_t 
   dispatch_after(v4, MEMORY[0x277D85CD0], block);
 }
 
-- (void)redeemCameraViewController:(id)a3 didFinishWithRedeem:(id)a4
+- (void)redeemCameraViewController:(id)controller didFinishWithRedeem:(id)redeem
 {
-  v5 = a4;
+  redeemCopy = redeem;
   [(SKUIRedeemCameraViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v10 = [[SKUIRedeemResultsViewController alloc] initWithRedeem:v5];
+  v10 = [[SKUIRedeemResultsViewController alloc] initWithRedeem:redeemCopy];
 
-  v6 = [(SKUIRedeemStepViewController *)self clientContext];
-  [(SKUIRedeemStepViewController *)v10 setClientContext:v6];
+  clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+  [(SKUIRedeemStepViewController *)v10 setClientContext:clientContext];
 
   [(SKUIRedeemResultsViewController *)v10 setRedeemCategory:self->_category];
-  v7 = [(SKUIRedeemStepViewController *)self operationQueue];
-  [(SKUIRedeemStepViewController *)v10 setOperationQueue:v7];
+  operationQueue = [(SKUIRedeemStepViewController *)self operationQueue];
+  [(SKUIRedeemStepViewController *)v10 setOperationQueue:operationQueue];
 
-  v8 = [(SKUIRedeemStepViewController *)self configuration];
-  [(SKUIRedeemStepViewController *)v10 setConfiguration:v8];
+  configuration = [(SKUIRedeemStepViewController *)self configuration];
+  [(SKUIRedeemStepViewController *)v10 setConfiguration:configuration];
 
-  v9 = [(SKUIRedeemCameraViewController *)self navigationController];
-  [v9 pushViewController:v10 animated:1];
+  navigationController = [(SKUIRedeemCameraViewController *)self navigationController];
+  [navigationController pushViewController:v10 animated:1];
 }
 
-- (void)codeRedeemerController:(id)a3 didEndWithInfo:(id)a4
+- (void)codeRedeemerController:(id)controller didEndWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__SKUIRedeemCameraViewController_codeRedeemerController_didEndWithInfo___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -455,12 +455,12 @@ void __72__SKUIRedeemCameraViewController_codeRedeemerController_didEndWithInfo_
   [WeakRetained _cameraRedeemDidFinish:v6 error:v5];
 }
 
-- (void)codeRedeemerControllerDidDisplayMessage:(id)a3
+- (void)codeRedeemerControllerDidDisplayMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (self->_successfulRedeem)
   {
-    v12 = v4;
+    v12 = messageCopy;
     if (self->_fullscreen && (v5 = objc_loadWeakRetained(&self->_delegate), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -470,109 +470,109 @@ void __72__SKUIRedeemCameraViewController_codeRedeemerController_didEndWithInfo_
     else
     {
       WeakRetained = [[SKUIRedeemResultsViewController alloc] initWithRedeem:self->_successfulRedeem];
-      v8 = [(SKUIRedeemStepViewController *)self clientContext];
-      [(SKUIRedeemStepViewController *)WeakRetained setClientContext:v8];
+      clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+      [(SKUIRedeemStepViewController *)WeakRetained setClientContext:clientContext];
 
       [(SKUIRedeemResultsViewController *)WeakRetained setRedeemCategory:self->_category];
-      v9 = [(SKUIRedeemStepViewController *)self operationQueue];
-      [(SKUIRedeemStepViewController *)WeakRetained setOperationQueue:v9];
+      operationQueue = [(SKUIRedeemStepViewController *)self operationQueue];
+      [(SKUIRedeemStepViewController *)WeakRetained setOperationQueue:operationQueue];
 
-      v10 = [(SKUIRedeemStepViewController *)self configuration];
-      [(SKUIRedeemStepViewController *)WeakRetained setConfiguration:v10];
+      configuration = [(SKUIRedeemStepViewController *)self configuration];
+      [(SKUIRedeemStepViewController *)WeakRetained setConfiguration:configuration];
 
-      v11 = [(SKUIRedeemCameraViewController *)self navigationController];
-      [v11 pushViewController:WeakRetained animated:1];
+      navigationController = [(SKUIRedeemCameraViewController *)self navigationController];
+      [navigationController pushViewController:WeakRetained animated:1];
 
       UIKeyboardOrderOutAutomatic();
     }
 
-    v4 = v12;
+    messageCopy = v12;
   }
 }
 
-- (void)SKUIRedeemPreflightImagesDidLoad:(id)a3
+- (void)SKUIRedeemPreflightImagesDidLoad:(id)load
 {
-  v6 = [(SKUIRedeemCameraViewController *)self view];
-  v4 = [(SKUIRedeemStepViewController *)self configuration];
-  v5 = [v4 landingImage];
-  [v6 setImage:v5];
+  view = [(SKUIRedeemCameraViewController *)self view];
+  configuration = [(SKUIRedeemStepViewController *)self configuration];
+  landingImage = [configuration landingImage];
+  [view setImage:landingImage];
 }
 
-- (void)_performRedeemOperationWithCode:(id)a3 cameraRecognized:(BOOL)a4 allowOverride:(BOOL)a5 completion:(id)a6
+- (void)_performRedeemOperationWithCode:(id)code cameraRecognized:(BOOL)recognized allowOverride:(BOOL)override completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v16 = a3;
-  v10 = a6;
-  if (v7 && ([(SKUIRedeemCameraViewController *)self delegate], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_opt_respondsToSelector(), v11, (v12 & 1) != 0))
+  overrideCopy = override;
+  recognizedCopy = recognized;
+  codeCopy = code;
+  completionCopy = completion;
+  if (overrideCopy && ([(SKUIRedeemCameraViewController *)self delegate], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_opt_respondsToSelector(), v11, (v12 & 1) != 0))
   {
-    v13 = [(SKUIRedeemCameraViewController *)self delegate];
-    [(SKUIRedeemOperation *)v13 overrideRedeemOperationWithCode:v16 cameraRecognized:v8 completion:v10];
+    delegate = [(SKUIRedeemCameraViewController *)self delegate];
+    [(SKUIRedeemOperation *)delegate overrideRedeemOperationWithCode:codeCopy cameraRecognized:recognizedCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [[SKUIRedeemOperation alloc] initWithCode:v16];
-    [(SKUIRedeemOperation *)v13 setCameraRecognized:v8];
-    v14 = [(SKUIRedeemStepViewController *)self clientContext];
-    [(SKUIRedeemOperation *)v13 setClientContext:v14];
+    delegate = [[SKUIRedeemOperation alloc] initWithCode:codeCopy];
+    [(SKUIRedeemOperation *)delegate setCameraRecognized:recognizedCopy];
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    [(SKUIRedeemOperation *)delegate setClientContext:clientContext];
 
-    [(SKUIRedeemOperation *)v13 setResultBlock:v10];
-    v15 = [(SKUIRedeemStepViewController *)self operationQueue];
-    [v15 addOperation:v13];
+    [(SKUIRedeemOperation *)delegate setResultBlock:completionCopy];
+    operationQueue = [(SKUIRedeemStepViewController *)self operationQueue];
+    [operationQueue addOperation:delegate];
   }
 }
 
-- (void)_setEnabled:(BOOL)a3
+- (void)_setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SKUIRedeemCameraViewController *)self view];
-  v8 = v5;
-  if (v3)
+  enabledCopy = enabled;
+  view = [(SKUIRedeemCameraViewController *)self view];
+  v8 = view;
+  if (enabledCopy)
   {
-    [v5 setEnabled:1];
+    [view setEnabled:1];
     redeemButton = self->_redeemButton;
-    v7 = [v8 text];
-    -[UIBarButtonItem setEnabled:](redeemButton, "setEnabled:", [v7 length] != 0);
+    text = [v8 text];
+    -[UIBarButtonItem setEnabled:](redeemButton, "setEnabled:", [text length] != 0);
   }
 
   else
   {
-    [v5 setEnabled:0];
+    [view setEnabled:0];
     [(UIBarButtonItem *)self->_redeemButton setEnabled:0];
   }
 }
 
 - (BOOL)_enabled
 {
-  v2 = [(SKUIRedeemCameraViewController *)self view];
-  v3 = [v2 isEnabled];
+  view = [(SKUIRedeemCameraViewController *)self view];
+  isEnabled = [view isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)_cameraRedeemDidFinish:(id)a3 error:(id)a4
+- (void)_cameraRedeemDidFinish:(id)finish error:(id)error
 {
-  v15 = a3;
-  v7 = a4;
-  if (v15)
+  finishCopy = finish;
+  errorCopy = error;
+  if (finishCopy)
   {
     camera = self->_camera;
-    v9 = [MEMORY[0x277D75348] greenColor];
-    [(CRCodeRedeemerController *)camera showMessage:0 color:v9 style:2 duration:1.0];
+    greenColor = [MEMORY[0x277D75348] greenColor];
+    [(CRCodeRedeemerController *)camera showMessage:0 color:greenColor style:2 duration:1.0];
 
-    objc_storeStrong(&self->_successfulRedeem, a3);
+    objc_storeStrong(&self->_successfulRedeem, finish);
   }
 
   else
   {
     [(SKUIRedeemCameraViewController *)self _setEnabled:1];
-    if (v7 && ([v7 userInfo], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "valueForKey:", @"hideError"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
+    if (errorCopy && ([errorCopy userInfo], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "valueForKey:", @"hideError"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, !v11))
     {
       v12 = self->_camera;
-      v13 = [v7 localizedDescription];
-      v14 = [MEMORY[0x277D75348] redColor];
-      [(CRCodeRedeemerController *)v12 showMessage:v13 color:v14 style:3 duration:1.0];
+      localizedDescription = [errorCopy localizedDescription];
+      redColor = [MEMORY[0x277D75348] redColor];
+      [(CRCodeRedeemerController *)v12 showMessage:localizedDescription color:redColor style:3 duration:1.0];
     }
 
     else
@@ -584,45 +584,45 @@ void __72__SKUIRedeemCameraViewController_codeRedeemerController_didEndWithInfo_
   [(SKUIRedeemCameraViewController *)self _updateRightBarButtonItemsForRedeemInputState:0];
 }
 
-- (void)_redeemDidFinish:(id)a3 error:(id)a4
+- (void)_redeemDidFinish:(id)finish error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  finishCopy = finish;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (finishCopy)
   {
     UIKeyboardOrderOutAutomatic();
-    v9 = [[SKUIRedeemResultsViewController alloc] initWithRedeem:v6];
-    v10 = [(SKUIRedeemStepViewController *)self clientContext];
-    [(SKUIRedeemStepViewController *)v9 setClientContext:v10];
+    view = [[SKUIRedeemResultsViewController alloc] initWithRedeem:finishCopy];
+    clientContext = [(SKUIRedeemStepViewController *)self clientContext];
+    [(SKUIRedeemStepViewController *)view setClientContext:clientContext];
 
-    [(SKUIRedeemResultsViewController *)v9 setRedeemCategory:self->_category];
-    v11 = [(SKUIRedeemStepViewController *)self operationQueue];
-    [(SKUIRedeemStepViewController *)v9 setOperationQueue:v11];
+    [(SKUIRedeemResultsViewController *)view setRedeemCategory:self->_category];
+    operationQueue = [(SKUIRedeemStepViewController *)self operationQueue];
+    [(SKUIRedeemStepViewController *)view setOperationQueue:operationQueue];
 
-    v12 = [(SKUIRedeemStepViewController *)self configuration];
-    [(SKUIRedeemStepViewController *)v9 setConfiguration:v12];
+    configuration = [(SKUIRedeemStepViewController *)self configuration];
+    [(SKUIRedeemStepViewController *)view setConfiguration:configuration];
 
-    v13 = [(SKUIRedeemCameraViewController *)self navigationController];
-    [v13 pushViewController:v9 animated:1];
+    navigationController = [(SKUIRedeemCameraViewController *)self navigationController];
+    [navigationController pushViewController:view animated:1];
   }
 
   else
   {
-    if (!v7 || ([v7 userInfo], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "valueForKey:", @"hideError"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+    if (!errorCopy || ([errorCopy userInfo], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "valueForKey:", @"hideError"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
     {
       [(SKUIRedeemCameraViewController *)self _setEnabled:1];
-      v9 = [(SKUIRedeemCameraViewController *)self view];
-      [(SKUIRedeemResultsViewController *)v9 showKeyboard];
+      view = [(SKUIRedeemCameraViewController *)self view];
+      [(SKUIRedeemResultsViewController *)view showKeyboard];
       goto LABEL_7;
     }
 
-    v16 = [(SKUIRedeemStepViewController *)self clientContext];
-    v9 = v16;
+    clientContext2 = [(SKUIRedeemStepViewController *)self clientContext];
+    view = clientContext2;
     v17 = MEMORY[0x277D75110];
-    if (v16)
+    if (clientContext2)
     {
-      [(SKUIRedeemResultsViewController *)v16 localizedStringForKey:@"CAMERA_REDEEM_ERROR_TITLE" inTable:@"Redeem"];
+      [(SKUIRedeemResultsViewController *)clientContext2 localizedStringForKey:@"CAMERA_REDEEM_ERROR_TITLE" inTable:@"Redeem"];
     }
 
     else
@@ -630,13 +630,13 @@ void __72__SKUIRedeemCameraViewController_codeRedeemerController_didEndWithInfo_
       [SKUIClientContext localizedStringForKey:@"CAMERA_REDEEM_ERROR_TITLE" inBundles:0 inTable:@"Redeem"];
     }
     v18 = ;
-    v19 = [v8 localizedDescription];
-    v13 = [v17 alertControllerWithTitle:v18 message:v19 preferredStyle:1];
+    localizedDescription = [v8 localizedDescription];
+    navigationController = [v17 alertControllerWithTitle:v18 message:localizedDescription preferredStyle:1];
 
     v20 = MEMORY[0x277D750F8];
-    if (v9)
+    if (view)
     {
-      [(SKUIRedeemResultsViewController *)v9 localizedStringForKey:@"CAMERA_REDEEM_OK_BUTTON" inTable:@"Redeem"];
+      [(SKUIRedeemResultsViewController *)view localizedStringForKey:@"CAMERA_REDEEM_OK_BUTTON" inTable:@"Redeem"];
     }
 
     else
@@ -649,11 +649,11 @@ void __72__SKUIRedeemCameraViewController_codeRedeemerController_didEndWithInfo_
     v25 = __57__SKUIRedeemCameraViewController__redeemDidFinish_error___block_invoke;
     v26 = &unk_2781FBDB8;
     v27 = v8;
-    v28 = self;
+    selfCopy = self;
     v22 = [v20 actionWithTitle:v21 style:0 handler:&v23];
-    [v13 addAction:{v22, v23, v24, v25, v26}];
+    [navigationController addAction:{v22, v23, v24, v25, v26}];
 
-    [(SKUIRedeemCameraViewController *)self presentViewController:v13 animated:1 completion:0];
+    [(SKUIRedeemCameraViewController *)self presentViewController:navigationController animated:1 completion:0];
   }
 
 LABEL_7:
@@ -678,12 +678,12 @@ void __57__SKUIRedeemCameraViewController__redeemDidFinish_error___block_invoke(
   }
 }
 
-- (void)_updateRightBarButtonItemsForRedeemInputState:(int64_t)a3
+- (void)_updateRightBarButtonItemsForRedeemInputState:(int64_t)state
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (state == 2)
   {
-    v4 = [(SKUIRedeemCameraViewController *)self navigationItem];
+    navigationItem = [(SKUIRedeemCameraViewController *)self navigationItem];
     activityBarButtonItem = self->_activityBarButtonItem;
     v10[0] = self->_redeemButton;
     v10[1] = activityBarButtonItem;
@@ -694,9 +694,9 @@ void __57__SKUIRedeemCameraViewController__redeemDidFinish_error___block_invoke(
 
   else
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v4 = [(SKUIRedeemCameraViewController *)self navigationItem];
+      navigationItem = [(SKUIRedeemCameraViewController *)self navigationItem];
       redeemButton = self->_redeemButton;
       v5 = MEMORY[0x277CBEA60];
       p_redeemButton = &redeemButton;
@@ -704,12 +704,12 @@ void __57__SKUIRedeemCameraViewController__redeemDidFinish_error___block_invoke(
 
     else
     {
-      if (a3)
+      if (state)
       {
         return;
       }
 
-      v4 = [(SKUIRedeemCameraViewController *)self navigationItem];
+      navigationItem = [(SKUIRedeemCameraViewController *)self navigationItem];
       v12[0] = self->_flipButton;
       v5 = MEMORY[0x277CBEA60];
       p_redeemButton = v12;
@@ -719,7 +719,7 @@ void __57__SKUIRedeemCameraViewController__redeemDidFinish_error___block_invoke(
   }
 
   v9 = [v5 arrayWithObjects:p_redeemButton count:v7];
-  [v4 setRightBarButtonItems:v9];
+  [navigationItem setRightBarButtonItems:v9];
 }
 
 - (SKUIRedeemCameraViewControllerDelegate)delegate

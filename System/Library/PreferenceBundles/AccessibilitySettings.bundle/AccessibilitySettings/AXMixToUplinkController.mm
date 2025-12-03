@@ -1,10 +1,10 @@
 @interface AXMixToUplinkController
-- (id)_appSupportsUplink:(id)a3;
-- (id)mixToUplink:(id)a3;
+- (id)_appSupportsUplink:(id)uplink;
+- (id)mixToUplink:(id)uplink;
 - (id)specifiers;
 - (void)_generateAppSpecifiers;
-- (void)_setAppSupportsUplink:(id)a3 specifier:(id)a4;
-- (void)setMixToUplink:(id)a3 specifier:(id)a4;
+- (void)_setAppSupportsUplink:(id)uplink specifier:(id)specifier;
+- (void)setMixToUplink:(id)uplink specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -120,16 +120,16 @@
 
         v9 = *(*(&v28 + 1) + 8 * i);
         deniedApps = self->_deniedApps;
-        v11 = [v9 bundleIdentifier];
-        if ([(NSArray *)deniedApps containsObject:v11])
+        bundleIdentifier = [v9 bundleIdentifier];
+        if ([(NSArray *)deniedApps containsObject:bundleIdentifier])
         {
         }
 
         else
         {
           supportedApps = self->_supportedApps;
-          v13 = [v9 bundleIdentifier];
-          LODWORD(supportedApps) = [(NSArray *)supportedApps containsObject:v13];
+          bundleIdentifier2 = [v9 bundleIdentifier];
+          LODWORD(supportedApps) = [(NSArray *)supportedApps containsObject:bundleIdentifier2];
 
           if (!supportedApps)
           {
@@ -137,32 +137,32 @@
           }
         }
 
-        v14 = [v9 localizedName];
-        v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:"_setAppSupportsUplink:specifier:" get:"_appSupportsUplink:" detail:0 cell:6 edit:0];
+        localizedName = [v9 localizedName];
+        v15 = [PSSpecifier preferenceSpecifierNamed:localizedName target:self set:"_setAppSupportsUplink:specifier:" get:"_appSupportsUplink:" detail:0 cell:6 edit:0];
 
-        v16 = [v9 bundleIdentifier];
-        [v15 setProperty:v16 forKey:v27];
+        bundleIdentifier3 = [v9 bundleIdentifier];
+        [v15 setProperty:bundleIdentifier3 forKey:v27];
 
-        v17 = [v9 bundleIdentifier];
-        [v15 setProperty:v17 forKey:@"BundleIdentifier"];
+        bundleIdentifier4 = [v9 bundleIdentifier];
+        [v15 setProperty:bundleIdentifier4 forKey:@"BundleIdentifier"];
 
-        v18 = [v9 bundleContainerURL];
-        [v15 setProperty:v18 forKey:@"url"];
+        bundleContainerURL = [v9 bundleContainerURL];
+        [v15 setProperty:bundleContainerURL forKey:@"url"];
 
-        v19 = [v9 bundleIdentifier];
-        LODWORD(v14) = AXFlipsIconRightToLeftForAppID(v19);
+        bundleIdentifier5 = [v9 bundleIdentifier];
+        LODWORD(localizedName) = AXFlipsIconRightToLeftForAppID(bundleIdentifier5);
 
-        v20 = [v9 bundleIdentifier];
-        v21 = v20;
-        if (v14)
+        bundleIdentifier6 = [v9 bundleIdentifier];
+        v21 = bundleIdentifier6;
+        if (localizedName)
         {
-          v22 = AXImageIconForAppID(v20);
+          v22 = AXImageIconForAppID(bundleIdentifier6);
           [v15 setProperty:v22 forKey:v23];
         }
 
         else
         {
-          [v15 setProperty:v20 forKey:v25];
+          [v15 setProperty:bundleIdentifier6 forKey:v25];
 
           [v15 setProperty:&__kCFBooleanTrue forKey:v24];
         }
@@ -179,21 +179,21 @@
   [(AXMixToUplinkController *)self reloadSpecifiers];
 }
 
-- (id)_appSupportsUplink:(id)a3
+- (id)_appSupportsUplink:(id)uplink
 {
-  v4 = [a3 propertyForKey:@"BundleIdentifier"];
+  v4 = [uplink propertyForKey:@"BundleIdentifier"];
   v5 = [NSNumber numberWithBool:[(NSArray *)self->_supportedApps containsObject:v4]];
 
   return v5;
 }
 
-- (void)_setAppSupportsUplink:(id)a3 specifier:(id)a4
+- (void)_setAppSupportsUplink:(id)uplink specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [a4 propertyForKey:@"BundleIdentifier"];
+  uplinkCopy = uplink;
+  v6 = [specifier propertyForKey:@"BundleIdentifier"];
   if (v6)
   {
-    [v5 BOOLValue];
+    [uplinkCopy BOOLValue];
     v7 = TCCAccessSetForBundleId();
     v8 = AXLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -202,7 +202,7 @@
       v10 = 138412802;
       v11 = v6;
       v12 = 2112;
-      v13 = v5;
+      v13 = uplinkCopy;
       v14 = 2112;
       v15 = v9;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Setting TCC microphone for %@=%@ result=%@", &v10, 0x20u);
@@ -210,14 +210,14 @@
   }
 }
 
-- (void)setMixToUplink:(id)a3 specifier:(id)a4
+- (void)setMixToUplink:(id)uplink specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [uplink BOOLValue];
 
-  __AXSSetAllowsMixToUplink(v4);
+  __AXSSetAllowsMixToUplink(bOOLValue);
 }
 
-- (id)mixToUplink:(id)a3
+- (id)mixToUplink:(id)uplink
 {
   v3 = _AXSAllowsMixToUplink();
 

@@ -1,18 +1,18 @@
 @interface CPLDirectPullChangeSession
 + (id)selfCrashResetReason;
-- (void)acknowledgeChangeBatch:(id)a3 withCompletionHandler:(id)a4;
-- (void)beginDirectSessionWithKnownLibraryVersion:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)finalizeWithCompletionHandler:(id)a3;
-- (void)getChangeBatchWithCompletionHandler:(id)a3;
+- (void)acknowledgeChangeBatch:(id)batch withCompletionHandler:(id)handler;
+- (void)beginDirectSessionWithKnownLibraryVersion:(id)version context:(id)context completionHandler:(id)handler;
+- (void)finalizeWithCompletionHandler:(id)handler;
+- (void)getChangeBatchWithCompletionHandler:(id)handler;
 @end
 
 @implementation CPLDirectPullChangeSession
 
-- (void)beginDirectSessionWithKnownLibraryVersion:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)beginDirectSessionWithKnownLibraryVersion:(id)version context:(id)context completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  versionCopy = version;
+  contextCopy = context;
+  handlerCopy = handler;
   if ([(CPLDirectChangeSession *)self tearedDown])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -31,39 +31,39 @@
     v38[1] = 3221225472;
     v38[2] = sub_100139948;
     v38[3] = &unk_100271E98;
-    v39 = v11;
-    v14 = v11;
+    v39 = handlerCopy;
+    v14 = handlerCopy;
     [(CPLDirectChangeSession *)self dispatchCallback:v38];
     v15 = v39;
   }
 
   else
   {
-    v16 = [(CPLDirectPullChangeSession *)self abstractObject];
-    v17 = [v16 libraryManager];
-    v18 = [v17 platformObject];
-    v19 = [v18 engineLibrary];
-    objc_storeWeak((&self->_lastSeenLibraryVersion + 1), v19);
+    abstractObject = [(CPLDirectPullChangeSession *)self abstractObject];
+    libraryManager = [abstractObject libraryManager];
+    platformObject = [libraryManager platformObject];
+    engineLibrary = [platformObject engineLibrary];
+    objc_storeWeak((&self->_lastSeenLibraryVersion + 1), engineLibrary);
 
     WeakRetained = objc_loadWeakRetained((&self->_lastSeenLibraryVersion + 1));
-    v21 = [WeakRetained store];
-    objc_storeWeak((&self->_engineLibrary + 1), v21);
+    store = [WeakRetained store];
+    objc_storeWeak((&self->_engineLibrary + 1), store);
 
     v22 = objc_loadWeakRetained((&self->_engineLibrary + 1));
-    v23 = [v22 scopes];
-    objc_storeWeak((&self->_store + 1), v23);
+    scopes = [v22 scopes];
+    objc_storeWeak((&self->_store + 1), scopes);
 
     v24 = objc_loadWeakRetained((&self->_engineLibrary + 1));
-    v25 = [v24 pullQueue];
-    objc_storeWeak((&self->_scopes + 1), v25);
+    pullQueue = [v24 pullQueue];
+    objc_storeWeak((&self->_scopes + 1), pullQueue);
 
     v26 = objc_loadWeakRetained((&self->_engineLibrary + 1));
-    v27 = [v26 idMapping];
-    objc_storeWeak((&self->_pullQueue + 1), v27);
+    idMapping = [v26 idMapping];
+    objc_storeWeak((&self->_pullQueue + 1), idMapping);
 
     v28 = objc_loadWeakRetained((&self->_lastSeenLibraryVersion + 1));
-    v29 = [v28 scheduler];
-    objc_storeWeak((&self->_idMapping + 1), v29);
+    scheduler = [v28 scheduler];
+    objc_storeWeak((&self->_idMapping + 1), scheduler);
 
     v30 = objc_loadWeakRetained((&self->_engineLibrary + 1));
     v35[0] = _NSConcreteStackBlock;
@@ -71,24 +71,24 @@
     v35[2] = sub_1001399AC;
     v35[3] = &unk_1002797C0;
     v35[4] = self;
-    v36 = v9;
-    v37 = v10;
+    v36 = versionCopy;
+    v37 = contextCopy;
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_100139BB0;
     v33[3] = &unk_10027A198;
     v33[4] = self;
-    v34 = v11;
-    v31 = v11;
+    v34 = handlerCopy;
+    v31 = handlerCopy;
     v32 = [v30 performWriteTransactionWithBlock:v35 completionHandler:v33];
 
     v15 = v36;
   }
 }
 
-- (void)getChangeBatchWithCompletionHandler:(id)a3
+- (void)getChangeBatchWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(CPLDirectChangeSession *)self discardTentativeResetReason];
   if ([(CPLDirectChangeSession *)self tearedDown])
   {
@@ -108,7 +108,7 @@
     v18[1] = 3221225472;
     v18[2] = sub_100139FB0;
     v18[3] = &unk_100271E98;
-    v19 = v5;
+    v19 = handlerCopy;
     [(CPLDirectChangeSession *)self dispatchCallback:v18];
   }
 
@@ -138,7 +138,7 @@
     v10[2] = sub_10013A89C;
     v10[3] = &unk_10027AD50;
     v10[4] = self;
-    v11 = v5;
+    v11 = handlerCopy;
     v12 = v16;
     p_buf = &buf;
     v14 = a2;
@@ -149,10 +149,10 @@
   }
 }
 
-- (void)acknowledgeChangeBatch:(id)a3 withCompletionHandler:(id)a4
+- (void)acknowledgeChangeBatch:(id)batch withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  batchCopy = batch;
+  handlerCopy = handler;
   if ([(CPLDirectChangeSession *)self tearedDown])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -171,7 +171,7 @@
     v20[1] = 3221225472;
     v20[2] = sub_10013ADBC;
     v20[3] = &unk_100271E98;
-    v21 = v8;
+    v21 = handlerCopy;
     [(CPLDirectChangeSession *)self dispatchCallback:v20];
   }
 
@@ -191,23 +191,23 @@
     v16[4] = self;
     p_buf = &buf;
     v19 = a2;
-    v17 = v7;
+    v17 = batchCopy;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10013B464;
     v13[3] = &unk_10027AE10;
     v15 = &buf;
     v13[4] = self;
-    v14 = v8;
+    v14 = handlerCopy;
     v12 = [WeakRetained performWriteTransactionWithBlock:v16 completionHandler:v13];
 
     _Block_object_dispose(&buf, 8);
   }
 }
 
-- (void)finalizeWithCompletionHandler:(id)a3
+- (void)finalizeWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(CPLDirectChangeSession *)self discardTentativeResetReason];
   if ([(CPLDirectChangeSession *)self tearedDown])
   {
@@ -227,8 +227,8 @@
     v16[1] = 3221225472;
     v16[2] = sub_10013B904;
     v16[3] = &unk_100271E98;
-    v17 = v5;
-    v8 = v5;
+    v17 = handlerCopy;
+    v8 = handlerCopy;
     [(CPLDirectChangeSession *)self dispatchCallback:v16];
     v9 = v17;
   }
@@ -246,8 +246,8 @@
     v13[2] = sub_10013BAD4;
     v13[3] = &unk_10027A198;
     v13[4] = self;
-    v14 = v5;
-    v11 = v5;
+    v14 = handlerCopy;
+    v11 = handlerCopy;
     v12 = [WeakRetained performWriteTransactionWithBlock:v15 completionHandler:v13];
 
     v9 = v14;

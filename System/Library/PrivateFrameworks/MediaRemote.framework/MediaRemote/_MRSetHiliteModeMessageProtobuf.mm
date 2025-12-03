@@ -1,12 +1,12 @@
 @interface _MRSetHiliteModeMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRSetHiliteModeMessageProtobuf
@@ -17,25 +17,25 @@
   v8.receiver = self;
   v8.super_class = _MRSetHiliteModeMessageProtobuf;
   v4 = [(_MRSetHiliteModeMessageProtobuf *)&v8 description];
-  v5 = [(_MRSetHiliteModeMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRSetHiliteModeMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_hiliteMode];
-    [v3 setObject:v4 forKey:@"hiliteMode"];
+    [dictionary setObject:v4 forKey:@"hiliteMode"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -44,18 +44,18 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 8) = self->_hiliteMode;
-    *(a3 + 12) |= 1u;
+    *(to + 8) = self->_hiliteMode;
+    *(to + 12) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 8) = self->_hiliteMode;
@@ -65,18 +65,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_4;
   }
 
-  v5 = (v4[12] & 1) == 0;
+  v5 = (equalCopy[12] & 1) == 0;
   if (*&self->_has)
   {
-    if ((v4[12] & 1) == 0)
+    if ((equalCopy[12] & 1) == 0)
     {
 LABEL_4:
       v5 = 0;
@@ -85,13 +85,13 @@ LABEL_4:
 
     if (self->_hiliteMode)
     {
-      if ((v4[8] & 1) == 0)
+      if ((equalCopy[8] & 1) == 0)
       {
         goto LABEL_4;
       }
     }
 
-    else if (v4[8])
+    else if (equalCopy[8])
     {
       goto LABEL_4;
     }
@@ -117,11 +117,11 @@ LABEL_5:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_hiliteMode = *(a3 + 8);
+    self->_hiliteMode = *(from + 8);
     *&self->_has |= 1u;
   }
 }

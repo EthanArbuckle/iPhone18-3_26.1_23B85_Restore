@@ -1,25 +1,25 @@
 @interface SGContactSharingModel
-+ (id)newTransformerInstanceForLanguage:(id)a3;
-+ (int64_t)labelForProbabilities:(id)a3;
++ (id)newTransformerInstanceForLanguage:(id)language;
++ (int64_t)labelForProbabilities:(id)probabilities;
 @end
 
 @implementation SGContactSharingModel
 
-+ (int64_t)labelForProbabilities:(id)a3
++ (int64_t)labelForProbabilities:(id)probabilities
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count] != 7)
+  probabilitiesCopy = probabilities;
+  if ([probabilitiesCopy count] != 7)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"SGContactSharingModel.m" lineNumber:71 description:{@"SGContactSharingModel - Provided probabilities (count %ld) do not match valid SGContactSharingLabels (count %ld).", objc_msgSend(v5, "count"), 7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGContactSharingModel.m" lineNumber:71 description:{@"SGContactSharingModel - Provided probabilities (count %ld) do not match valid SGContactSharingLabels (count %ld).", objc_msgSend(probabilitiesCopy, "count"), 7}];
   }
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v5;
+  v6 = probabilitiesCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -69,12 +69,12 @@
   return v10;
 }
 
-+ (id)newTransformerInstanceForLanguage:(id)a3
++ (id)newTransformerInstanceForLanguage:(id)language
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D02558] asset];
-  v5 = [v4 filesystemPathForAssetDataRelativePath:@"PQT_ContactSharing_TrainingTransformers.plist"];
+  languageCopy = language;
+  asset = [MEMORY[0x277D02558] asset];
+  v5 = [asset filesystemPathForAssetDataRelativePath:@"PQT_ContactSharing_TrainingTransformers.plist"];
 
   if (v5)
   {
@@ -82,14 +82,14 @@
     if (v6)
     {
       v7 = v6;
-      v8 = [v6 objectForKeyedSubscript:v3];
+      v8 = [v6 objectForKeyedSubscript:languageCopy];
       if (!v8)
       {
         v10 = sgLogHandle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           v23 = 138412290;
-          v24 = v3;
+          v24 = languageCopy;
           _os_log_error_impl(&dword_231E60000, v10, OS_LOG_TYPE_ERROR, "SGContactSharingModel - Could not find transformer instance for language: %@", &v23, 0xCu);
         }
 

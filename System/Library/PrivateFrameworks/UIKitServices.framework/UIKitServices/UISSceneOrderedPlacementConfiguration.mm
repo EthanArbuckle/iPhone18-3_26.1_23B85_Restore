@@ -1,55 +1,55 @@
 @interface UISSceneOrderedPlacementConfiguration
-- (BOOL)isEqual:(id)a3;
-- (UISSceneOrderedPlacementConfiguration)initWithBSXPCCoder:(id)a3;
-- (UISSceneOrderedPlacementConfiguration)initWithCoder:(id)a3;
-- (UISSceneOrderedPlacementConfiguration)initWithOrder:(int64_t)a3 relativeScenePersistenceIdentifer:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UISSceneOrderedPlacementConfiguration)initWithBSXPCCoder:(id)coder;
+- (UISSceneOrderedPlacementConfiguration)initWithCoder:(id)coder;
+- (UISSceneOrderedPlacementConfiguration)initWithOrder:(int64_t)order relativeScenePersistenceIdentifer:(id)identifer;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISSceneOrderedPlacementConfiguration
 
-- (UISSceneOrderedPlacementConfiguration)initWithOrder:(int64_t)a3 relativeScenePersistenceIdentifer:(id)a4
+- (UISSceneOrderedPlacementConfiguration)initWithOrder:(int64_t)order relativeScenePersistenceIdentifer:(id)identifer
 {
-  v7 = a4;
+  identiferCopy = identifer;
   v11.receiver = self;
   v11.super_class = UISSceneOrderedPlacementConfiguration;
   v8 = [(UISScenePlacementConfiguration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_order = a3;
-    objc_storeStrong(&v8->_relativeScenePersistenceIdentifier, a4);
+    v8->_order = order;
+    objc_storeStrong(&v8->_relativeScenePersistenceIdentifier, identifer);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UISSceneOrderedPlacementConfiguration alloc];
-  v5 = [(UISSceneOrderedPlacementConfiguration *)self order];
-  v6 = [(UISSceneOrderedPlacementConfiguration *)self relativeScenePersistenceIdentifier];
-  v7 = [(UISSceneOrderedPlacementConfiguration *)v4 initWithOrder:v5 relativeScenePersistenceIdentifer:v6];
+  order = [(UISSceneOrderedPlacementConfiguration *)self order];
+  relativeScenePersistenceIdentifier = [(UISSceneOrderedPlacementConfiguration *)self relativeScenePersistenceIdentifier];
+  v7 = [(UISSceneOrderedPlacementConfiguration *)v4 initWithOrder:order relativeScenePersistenceIdentifer:relativeScenePersistenceIdentifier];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = UISSceneOrderedPlacementConfiguration;
-  if ([(UISScenePlacementConfiguration *)&v10 isEqual:v4])
+  if ([(UISScenePlacementConfiguration *)&v10 isEqual:equalCopy])
   {
-    v5 = [v4 relativeScenePersistenceIdentifier];
-    v6 = [v4 order];
-    v7 = [(UISSceneOrderedPlacementConfiguration *)self relativeScenePersistenceIdentifier];
-    if ([v7 isEqualToString:v5])
+    relativeScenePersistenceIdentifier = [equalCopy relativeScenePersistenceIdentifier];
+    order = [equalCopy order];
+    relativeScenePersistenceIdentifier2 = [(UISSceneOrderedPlacementConfiguration *)self relativeScenePersistenceIdentifier];
+    if ([relativeScenePersistenceIdentifier2 isEqualToString:relativeScenePersistenceIdentifier])
     {
-      v8 = [(UISSceneOrderedPlacementConfiguration *)self order]== v6;
+      v8 = [(UISSceneOrderedPlacementConfiguration *)self order]== order;
     }
 
     else
@@ -66,16 +66,16 @@
   return v8;
 }
 
-- (UISSceneOrderedPlacementConfiguration)initWithCoder:(id)a3
+- (UISSceneOrderedPlacementConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UISSceneOrderedPlacementConfiguration;
-  v5 = [(UISScenePlacementConfiguration *)&v9 initWithCoder:v4];
+  v5 = [(UISScenePlacementConfiguration *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_order = [v4 decodeInt64ForKey:@"kOrderKey"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kRelativeScenePersistenceIdentifierKey"];
+    v5->_order = [coderCopy decodeInt64ForKey:@"kOrderKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kRelativeScenePersistenceIdentifierKey"];
     relativeScenePersistenceIdentifier = v5->_relativeScenePersistenceIdentifier;
     v5->_relativeScenePersistenceIdentifier = v6;
   }
@@ -83,27 +83,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UISSceneOrderedPlacementConfiguration;
-  v4 = a3;
-  [(UISScenePlacementConfiguration *)&v6 encodeWithCoder:v4];
-  [v4 encodeInt64:-[UISSceneOrderedPlacementConfiguration order](self forKey:{"order", v6.receiver, v6.super_class), @"kOrderKey"}];
-  v5 = [(UISSceneOrderedPlacementConfiguration *)self relativeScenePersistenceIdentifier];
-  [v4 encodeObject:v5 forKey:@"kRelativeScenePersistenceIdentifierKey"];
+  coderCopy = coder;
+  [(UISScenePlacementConfiguration *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:-[UISSceneOrderedPlacementConfiguration order](self forKey:{"order", v6.receiver, v6.super_class), @"kOrderKey"}];
+  relativeScenePersistenceIdentifier = [(UISSceneOrderedPlacementConfiguration *)self relativeScenePersistenceIdentifier];
+  [coderCopy encodeObject:relativeScenePersistenceIdentifier forKey:@"kRelativeScenePersistenceIdentifierKey"];
 }
 
-- (UISSceneOrderedPlacementConfiguration)initWithBSXPCCoder:(id)a3
+- (UISSceneOrderedPlacementConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UISSceneOrderedPlacementConfiguration;
-  v5 = [(UISScenePlacementConfiguration *)&v9 initWithBSXPCCoder:v4];
+  v5 = [(UISScenePlacementConfiguration *)&v9 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_order = [v4 decodeInt64ForKey:@"kOrderKey"];
-    v6 = [v4 decodeStringForKey:@"kRelativeScenePersistenceIdentifierKey"];
+    v5->_order = [coderCopy decodeInt64ForKey:@"kOrderKey"];
+    v6 = [coderCopy decodeStringForKey:@"kRelativeScenePersistenceIdentifierKey"];
     relativeScenePersistenceIdentifier = v5->_relativeScenePersistenceIdentifier;
     v5->_relativeScenePersistenceIdentifier = v6;
   }
@@ -111,31 +111,31 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UISSceneOrderedPlacementConfiguration;
-  v4 = a3;
-  [(UISScenePlacementConfiguration *)&v6 encodeWithBSXPCCoder:v4];
-  [v4 encodeInt64:-[UISSceneOrderedPlacementConfiguration order](self forKey:{"order", v6.receiver, v6.super_class), @"kOrderKey"}];
-  v5 = [(UISSceneOrderedPlacementConfiguration *)self relativeScenePersistenceIdentifier];
-  [v4 encodeObject:v5 forKey:@"kRelativeScenePersistenceIdentifierKey"];
+  coderCopy = coder;
+  [(UISScenePlacementConfiguration *)&v6 encodeWithBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:-[UISSceneOrderedPlacementConfiguration order](self forKey:{"order", v6.receiver, v6.super_class), @"kOrderKey"}];
+  relativeScenePersistenceIdentifier = [(UISSceneOrderedPlacementConfiguration *)self relativeScenePersistenceIdentifier];
+  [coderCopy encodeObject:relativeScenePersistenceIdentifier forKey:@"kRelativeScenePersistenceIdentifierKey"];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v12.receiver = self;
   v12.super_class = UISSceneOrderedPlacementConfiguration;
-  v4 = a3;
-  v5 = [(UISScenePlacementConfiguration *)&v12 descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(UISScenePlacementConfiguration *)&v12 descriptionBuilderWithMultilinePrefix:prefixCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__UISSceneOrderedPlacementConfiguration_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E7458FE0;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:&stru_1F0A7B1D8 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:&stru_1F0A7B1D8 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

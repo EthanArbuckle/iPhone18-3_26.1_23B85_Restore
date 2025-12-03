@@ -1,31 +1,31 @@
 @interface _SFFindOnPageToolbar
 - (BOOL)_keyboardIsSplit;
-- (BOOL)_updateEditing:(BOOL)a3;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
+- (BOOL)_updateEditing:(BOOL)editing;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
 - (CGRect)_toolbarFrame;
 - (CGSize)intrinsicContentSize;
-- (_SFFindOnPageToolbar)initWithDelegate:(id)a3;
+- (_SFFindOnPageToolbar)initWithDelegate:(id)delegate;
 - (double)_toolbarVerticalInset;
 - (id)_matchLabelText;
 - (void)_doUpdateSearchText;
 - (void)_done;
 - (void)_initializeToolbarItems;
-- (void)_keyboardWillChangeFrame:(id)a3;
+- (void)_keyboardWillChangeFrame:(id)frame;
 - (void)layoutSubviews;
-- (void)next:(id)a3;
-- (void)previous:(id)a3;
+- (void)next:(id)next;
+- (void)previous:(id)previous;
 - (void)safeAreaInsetsDidChange;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)setUsesNarrowLayout:(BOOL)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)setUsesNarrowLayout:(BOOL)layout;
 - (void)updateUI;
 @end
 
 @implementation _SFFindOnPageToolbar
 
-- (_SFFindOnPageToolbar)initWithDelegate:(id)a3
+- (_SFFindOnPageToolbar)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   [(_SFFindOnPageToolbar *)self _accessoryViewHeight];
   v13.receiver = self;
   v13.super_class = _SFFindOnPageToolbar;
@@ -44,9 +44,9 @@
     [(_SFFindOnPageToolbar *)v6 addSubview:v6->_toolbar];
     [(_SFFindOnPageToolbar *)v6 _initializeToolbarItems];
     [(UIToolbar *)v6->_toolbar setItems:v6->_toolbarItems];
-    objc_storeWeak(&v6->_findDelegate, v4);
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v6 selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
+    objc_storeWeak(&v6->_findDelegate, delegateCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
 
     v11 = v6;
   }
@@ -54,18 +54,18 @@
   return v6;
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+  userInfo = [frame userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v14 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -173,32 +173,32 @@
   [(_SFFindOnPageToolbar *)&v5 layoutSubviews];
   [(_SFFindOnPageToolbar *)self _toolbarFrame];
   [(UIToolbar *)self->_toolbar setFrame:?];
-  v3 = [(_SFFindOnPageInputBar *)self->_inputBar searchField];
-  v4 = [v3 font];
-  [(UILabel *)self->_inFieldMatchLabel setFont:v4];
+  searchField = [(_SFFindOnPageInputBar *)self->_inputBar searchField];
+  font = [searchField font];
+  [(UILabel *)self->_inFieldMatchLabel setFont:font];
 }
 
 - (void)updateUI
 {
   [(_SFFindOnPageToolbar *)self _toolbarFrame];
   [(UIToolbar *)self->_toolbar setFrame:?];
-  v40 = [(_SFFindOnPageInputBar *)self->_inputBar searchField];
+  searchField = [(_SFFindOnPageInputBar *)self->_inputBar searchField];
   WeakRetained = objc_loadWeakRetained(&self->_findDelegate);
-  v4 = [WeakRetained hasMatches];
+  hasMatches = [WeakRetained hasMatches];
 
-  [(UIBarButtonItem *)self->_previousButtonItem setEnabled:v4];
-  [(UIBarButtonItem *)self->_nextButtonItem setEnabled:v4];
-  v5 = [(_SFFindOnPageInputBar *)self->_inputBar text];
-  LOBYTE(v4) = [v5 isEqualToString:self->_searchText];
+  [(UIBarButtonItem *)self->_previousButtonItem setEnabled:hasMatches];
+  [(UIBarButtonItem *)self->_nextButtonItem setEnabled:hasMatches];
+  text = [(_SFFindOnPageInputBar *)self->_inputBar text];
+  LOBYTE(hasMatches) = [text isEqualToString:self->_searchText];
 
-  if ((v4 & 1) == 0)
+  if ((hasMatches & 1) == 0)
   {
     [(_SFFindOnPageInputBar *)self->_inputBar setText:self->_searchText];
   }
 
-  [v40 setRightViewMode:3];
-  v6 = [(_SFFindOnPageToolbar *)self _matchLabelText];
-  [(UILabel *)self->_inFieldMatchLabel setText:v6];
+  [searchField setRightViewMode:3];
+  _matchLabelText = [(_SFFindOnPageToolbar *)self _matchLabelText];
+  [(UILabel *)self->_inFieldMatchLabel setText:_matchLabelText];
 
   [(UILabel *)self->_inFieldMatchLabel frame];
   v37 = v8;
@@ -207,30 +207,30 @@
   v10 = *(MEMORY[0x1E695F060] + 8);
   [(UILabel *)self->_inFieldMatchLabel sizeThatFits:*MEMORY[0x1E695F060], v10];
   v39 = v11;
-  [v40 bounds];
+  [searchField bounds];
   v13 = v12;
-  [v40 textRectForBounds:?];
+  [searchField textRectForBounds:?];
   v36 = v14;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [v40 sizeThatFits:{v9, v10}];
+  [searchField sizeThatFits:{v9, v10}];
   v22 = v21;
-  [v40 _contentMargin];
+  [searchField _contentMargin];
   v24 = v23;
-  [v40 _imageButtonMargin];
+  [searchField _imageButtonMargin];
   v26 = v25;
-  [v40 _textButtonMargin];
+  [searchField _textButtonMargin];
   if (self->_usesNarrowLayout && (v28 = v27, [(_SFFindOnPageInputBar *)self->_inputBar isFirstResponder]) && v39 + v22 - v24 - v26 - v28 >= v13)
   {
-    [v40 setRightViewMode:0];
+    [searchField setRightViewMode:0];
   }
 
   else
   {
-    [v40 setRightViewMode:3];
-    v29 = [v40 font];
-    [v29 lineHeight];
+    [searchField setRightViewMode:3];
+    font = [searchField font];
+    [font lineHeight];
     v31 = floor((v20 - v30) * 0.5);
 
     v42.origin.x = v36;
@@ -250,7 +250,7 @@
     v44.size.width = v18;
     v44.size.height = v20;
     [(UILabel *)self->_inFieldMatchLabel setFrame:v38, v37, v39, CGRectGetMaxY(v44) - v35];
-    [v40 _setRightViewOffset:{0.0, v35}];
+    [searchField _setRightViewOffset:{0.0, v35}];
   }
 }
 
@@ -259,27 +259,27 @@
   if ([(NSString *)self->_searchText length])
   {
     WeakRetained = objc_loadWeakRetained(&self->_findDelegate);
-    v4 = [WeakRetained matchLabelText];
+    matchLabelText = [WeakRetained matchLabelText];
   }
 
   else
   {
-    v4 = 0;
+    matchLabelText = 0;
   }
 
-  return v4;
+  return matchLabelText;
 }
 
-- (void)setUsesNarrowLayout:(BOOL)a3
+- (void)setUsesNarrowLayout:(BOOL)layout
 {
-  if (self->_usesNarrowLayout != a3)
+  if (self->_usesNarrowLayout != layout)
   {
-    self->_usesNarrowLayout = a3;
+    self->_usesNarrowLayout = layout;
     [(_SFFindOnPageToolbar *)self updateUI];
   }
 }
 
-- (void)previous:(id)a3
+- (void)previous:(id)previous
 {
   WeakRetained = objc_loadWeakRetained(&self->_findDelegate);
   [WeakRetained previous];
@@ -287,7 +287,7 @@
   [(_SFFindOnPageToolbar *)self updateUI];
 }
 
-- (void)next:(id)a3
+- (void)next:(id)next
 {
   WeakRetained = objc_loadWeakRetained(&self->_findDelegate);
   [WeakRetained next];
@@ -302,7 +302,7 @@
   [WeakRetained done];
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
   v4 = [(_SFFindOnPageToolbar *)self _updateEditing:1];
   if (v4)
@@ -313,18 +313,18 @@
   return !v4;
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   [(_SFFindOnPageToolbar *)self updateUI];
-  v5 = [v4 searchField];
+  searchField = [editingCopy searchField];
 
-  [v5 performSelector:sel_selectAll_ withObject:0 afterDelay:0.0];
+  [searchField performSelector:sel_selectAll_ withObject:0 afterDelay:0.0];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  if ([a3 isFirstResponder])
+  if ([bar isFirstResponder])
   {
     textChangedUpdateTimer = self->_textChangedUpdateTimer;
     if (textChangedUpdateTimer)
@@ -332,8 +332,8 @@
       [(NSTimer *)textChangedUpdateTimer invalidate];
     }
 
-    v6 = [(_SFFindOnPageInputBar *)self->_inputBar text];
-    v7 = [v6 copy];
+    text = [(_SFFindOnPageInputBar *)self->_inputBar text];
+    v7 = [text copy];
     searchText = self->_searchText;
     self->_searchText = v7;
 
@@ -350,15 +350,15 @@
   previousButtonItem = self->_previousButtonItem;
   self->_previousButtonItem = v3;
 
-  v5 = [MEMORY[0x1E69DC888] labelColor];
-  [(UIBarButtonItem *)self->_previousButtonItem setTintColor:v5];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UIBarButtonItem *)self->_previousButtonItem setTintColor:labelColor];
 
   v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:104 target:self action:sel_next_];
   nextButtonItem = self->_nextButtonItem;
   self->_nextButtonItem = v6;
 
-  v8 = [MEMORY[0x1E69DC888] labelColor];
-  [(UIBarButtonItem *)self->_nextButtonItem setTintColor:v8];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  [(UIBarButtonItem *)self->_nextButtonItem setTintColor:labelColor2];
 
   v33 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:6 target:0 action:0];
   [v33 setWidth:2.0];
@@ -369,24 +369,24 @@
   [(_SFFindOnPageInputBar *)self->_inputBar setDelegate:self];
   [(_SFFindOnPageInputBar *)self->_inputBar _setDisableDictationButton:1];
   WeakRetained = objc_loadWeakRetained(&self->_findDelegate);
-  v12 = [WeakRetained textForToolbarLabel];
-  [(_SFFindOnPageInputBar *)self->_inputBar setPlaceholder:v12];
+  textForToolbarLabel = [WeakRetained textForToolbarLabel];
+  [(_SFFindOnPageInputBar *)self->_inputBar setPlaceholder:textForToolbarLabel];
 
   [(_SFFindOnPageInputBar *)self->_inputBar setContentInset:0.0, 4.0, 0.0, 7.0];
   v13 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:self->_inputBar];
   [v13 _setFlexible:1];
-  v14 = [(_SFFindOnPageInputBar *)self->_inputBar searchField];
+  searchField = [(_SFFindOnPageInputBar *)self->_inputBar searchField];
   v15 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   inFieldMatchLabel = self->_inFieldMatchLabel;
   self->_inFieldMatchLabel = v15;
 
-  v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_inFieldMatchLabel setTextColor:v17];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_inFieldMatchLabel setTextColor:secondaryLabelColor];
 
-  [v14 setRightView:self->_inFieldMatchLabel];
-  [v14 setClearButtonMode:1];
-  v18 = [MEMORY[0x1E69DC668] sharedApplication];
-  if ([v18 safari_prefersRTLLayout])
+  [searchField setRightView:self->_inFieldMatchLabel];
+  [searchField setClearButtonMode:1];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  if ([mEMORY[0x1E69DC668] safari_prefersRTLLayout])
   {
     v19 = 2;
   }
@@ -396,10 +396,10 @@
     v19 = 0;
   }
 
-  [v14 setTextAlignment:v19];
+  [searchField setTextAlignment:v19];
 
-  v20 = [MEMORY[0x1E69DC888] labelColor];
-  [v14 setTextColor:v20];
+  labelColor3 = [MEMORY[0x1E69DC888] labelColor];
+  [searchField setTextColor:labelColor3];
 
   v21 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_dismiss_];
   doneBarButtonItem = self->_doneBarButtonItem;
@@ -413,8 +413,8 @@
 
   [(UIBarButtonItem *)self->_doneBarButtonItem setTitleTextAttributes:v25 forState:0];
   [(UIBarButtonItem *)self->_doneBarButtonItem setTitleTextAttributes:v25 forState:1];
-  v26 = [MEMORY[0x1E69DC888] labelColor];
-  [(UIBarButtonItem *)self->_doneBarButtonItem setTintColor:v26];
+  labelColor4 = [MEMORY[0x1E69DC888] labelColor];
+  [(UIBarButtonItem *)self->_doneBarButtonItem setTintColor:labelColor4];
 
   if (_SFDeviceIsPad())
   {
@@ -458,14 +458,14 @@
   self->_textChangedUpdateTimer = 0;
 }
 
-- (BOOL)_updateEditing:(BOOL)a3
+- (BOOL)_updateEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   editing = self->_editing;
-  if (editing != a3)
+  if (editing != editing)
   {
-    self->_editing = a3;
-    if (!a3)
+    self->_editing = editing;
+    if (!editing)
     {
       [(_SFFindOnPageInputBar *)self->_inputBar resignFirstResponder];
     }
@@ -473,22 +473,22 @@
     [(_SFFindOnPageToolbar *)self updateUI];
   }
 
-  return editing != v3;
+  return editing != editingCopy;
 }
 
 - (BOOL)_keyboardIsSplit
 {
-  v2 = self;
-  v3 = [(UIInputView *)self leftContentView];
-  [v3 frame];
+  selfCopy = self;
+  leftContentView = [(UIInputView *)self leftContentView];
+  [leftContentView frame];
   Width = CGRectGetWidth(v8);
-  v5 = [(UIInputView *)v2 rightContentView];
-  [v5 frame];
+  rightContentView = [(UIInputView *)selfCopy rightContentView];
+  [rightContentView frame];
   v6 = Width + CGRectGetWidth(v9);
-  [(_SFFindOnPageToolbar *)v2 bounds];
-  LOBYTE(v2) = v6 < CGRectGetWidth(v10);
+  [(_SFFindOnPageToolbar *)selfCopy bounds];
+  LOBYTE(selfCopy) = v6 < CGRectGetWidth(v10);
 
-  return v2;
+  return selfCopy;
 }
 
 @end

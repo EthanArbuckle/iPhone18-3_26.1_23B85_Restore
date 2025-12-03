@@ -1,24 +1,24 @@
 @interface SHServerHapticsResponseParser
-+ (id)hapticSongItemFromResourcesResponse:(id)a3 hapticItemIDs:(id)a4 songDuration:(double)a5;
-+ (id)hapticSongItemFromServerData:(id)a3 songDuration:(double)a4 error:(id *)a5;
++ (id)hapticSongItemFromResourcesResponse:(id)response hapticItemIDs:(id)ds songDuration:(double)duration;
++ (id)hapticSongItemFromServerData:(id)data songDuration:(double)duration error:(id *)error;
 @end
 
 @implementation SHServerHapticsResponseParser
 
-+ (id)hapticSongItemFromServerData:(id)a3 songDuration:(double)a4 error:(id *)a5
++ (id)hapticSongItemFromServerData:(id)data songDuration:(double)duration error:(id *)error
 {
   v17 = 0;
-  v7 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v17];
+  v7 = [NSJSONSerialization JSONObjectWithData:data options:0 error:&v17];
   v8 = v17;
   if (v7)
   {
-    v9 = [SHServerGetResponseParser resourcesResponseFromServerObjects:v7 error:a5];
-    v10 = [SHServerGetResponseParser dataResponseFromServerObjects:v7 error:a5];
-    v11 = [v10 hapticItemIDs];
-    v12 = [objc_opt_class() hapticSongItemFromResourcesResponse:v9 hapticItemIDs:v11 songDuration:a4];
-    v13 = [v12 hapticsURL];
+    v9 = [SHServerGetResponseParser resourcesResponseFromServerObjects:v7 error:error];
+    v10 = [SHServerGetResponseParser dataResponseFromServerObjects:v7 error:error];
+    hapticItemIDs = [v10 hapticItemIDs];
+    v12 = [objc_opt_class() hapticSongItemFromResourcesResponse:v9 hapticItemIDs:hapticItemIDs songDuration:duration];
+    hapticsURL = [v12 hapticsURL];
 
-    if (!v13)
+    if (!hapticsURL)
     {
       v14 = sh_log_object();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -39,35 +39,35 @@
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Server response parser: No response %@", buf, 0xCu);
     }
 
-    [SHError annotateClientError:a5 code:202 underlyingError:v8];
+    [SHError annotateClientError:error code:202 underlyingError:v8];
     v12 = 0;
   }
 
   return v12;
 }
 
-+ (id)hapticSongItemFromResourcesResponse:(id)a3 hapticItemIDs:(id)a4 songDuration:(double)a5
++ (id)hapticSongItemFromResourcesResponse:(id)response hapticItemIDs:(id)ds songDuration:(double)duration
 {
-  v7 = a3;
-  v8 = a4;
+  responseCopy = response;
+  dsCopy = ds;
   v9 = sh_log_object();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v42 = a5;
+    durationCopy = duration;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Converting duration of %f from seconds to milliseconds", buf, 0xCu);
   }
 
-  v10 = fmax(a5 * 1000.0, 0.0);
+  v10 = fmax(duration * 1000.0, 0.0);
   v11 = sh_log_object();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v42 = v10;
+    durationCopy = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Parsing song using new duration %fms", buf, 0xCu);
   }
 
-  if ([v8 count] == 1)
+  if ([dsCopy count] == 1)
   {
     v12 = sh_log_object();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -76,11 +76,11 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Only one song item in response, returning its haptics url.", buf, 2u);
     }
 
-    v13 = [v7 songsResponse];
-    v14 = [v8 firstObject];
-    v47 = v14;
+    songsResponse = [responseCopy songsResponse];
+    firstObject = [dsCopy firstObject];
+    v47 = firstObject;
     v15 = [NSArray arrayWithObjects:&v47 count:1];
-    v16 = [v13 itemForIdentifiers:v15];
+    v16 = [songsResponse itemForIdentifiers:v15];
   }
 
   else
@@ -89,12 +89,12 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v13 = v8;
-    v17 = [v13 countByEnumeratingWithState:&v37 objects:v46 count:16];
+    songsResponse = dsCopy;
+    v17 = [songsResponse countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v17)
     {
       v18 = v17;
-      v36 = v8;
+      v36 = dsCopy;
       v16 = 0;
       v19 = *v38;
       v20 = 1.79769313e308;
@@ -104,33 +104,33 @@
         {
           if (*v38 != v19)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(songsResponse);
           }
 
           v22 = *(*(&v37 + 1) + 8 * i);
-          v23 = [v7 songsResponse];
+          songsResponse2 = [responseCopy songsResponse];
           v45 = v22;
           v24 = [NSArray arrayWithObjects:&v45 count:1];
-          v25 = [v23 itemForIdentifiers:v24];
+          v25 = [songsResponse2 itemForIdentifiers:v24];
 
-          v26 = [v25 durationInMilliseconds];
-          [v26 doubleValue];
+          durationInMilliseconds = [v25 durationInMilliseconds];
+          [durationInMilliseconds doubleValue];
           v28 = vabdd_f64(v10, v27);
 
           if (v28 < v20)
           {
-            v29 = [v25 hapticsURL];
+            hapticsURL = [v25 hapticsURL];
 
-            if (v29)
+            if (hapticsURL)
             {
               v30 = sh_log_object();
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
               {
-                v31 = [v25 hapticsURL];
+                hapticsURL2 = [v25 hapticsURL];
                 *buf = 134218242;
-                v42 = v28;
+                durationCopy = v28;
                 v43 = 2112;
-                v44 = v31;
+                v44 = hapticsURL2;
                 _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "New difference %f is smaller than existing difference, setting hapticsURL to: %@", buf, 0x16u);
               }
 
@@ -139,9 +139,9 @@
             }
           }
 
-          v33 = [v25 hapticsURL];
+          hapticsURL3 = [v25 hapticsURL];
 
-          if (v33)
+          if (hapticsURL3)
           {
             v34 = sh_log_object();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -154,11 +154,11 @@
           }
         }
 
-        v18 = [v13 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        v18 = [songsResponse countByEnumeratingWithState:&v37 objects:v46 count:16];
       }
 
       while (v18);
-      v8 = v36;
+      dsCopy = v36;
     }
 
     else

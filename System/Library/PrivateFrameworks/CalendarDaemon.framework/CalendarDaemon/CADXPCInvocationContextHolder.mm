@@ -1,6 +1,6 @@
 @interface CADXPCInvocationContextHolder
 - (void)clear;
-- (void)retainProxy:(id)a3 andArgumentsInInvocation:(id)a4;
+- (void)retainProxy:(id)proxy andArgumentsInInvocation:(id)invocation;
 @end
 
 @implementation CADXPCInvocationContextHolder
@@ -14,25 +14,25 @@
   self->_proxy = 0;
 }
 
-- (void)retainProxy:(id)a3 andArgumentsInInvocation:(id)a4
+- (void)retainProxy:(id)proxy andArgumentsInInvocation:(id)invocation
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_proxy, a3);
-  v9 = [v8 methodSignature];
-  v10 = [v9 numberOfArguments];
-  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v10 - 2];
+  proxyCopy = proxy;
+  invocationCopy = invocation;
+  objc_storeStrong(&self->_proxy, proxy);
+  methodSignature = [invocationCopy methodSignature];
+  numberOfArguments = [methodSignature numberOfArguments];
+  v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:numberOfArguments - 2];
   retainedArguments = self->_retainedArguments;
   self->_retainedArguments = v11;
 
-  if (v10 >= 3)
+  if (numberOfArguments >= 3)
   {
-    for (i = 2; i != v10; ++i)
+    for (i = 2; i != numberOfArguments; ++i)
     {
-      if (*[v9 getArgumentTypeAtIndex:i] == 64)
+      if (*[methodSignature getArgumentTypeAtIndex:i] == 64)
       {
         v14 = 0;
-        [v8 getArgument:&v14 atIndex:i];
+        [invocationCopy getArgument:&v14 atIndex:i];
         if (v14)
         {
           [(NSMutableArray *)self->_retainedArguments addObject:?];

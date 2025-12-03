@@ -1,38 +1,38 @@
 @interface AccessoryDetection
-- (AccessoryDetection)initWithAABC:(void *)a3;
-- (void)accessoryEndpointAttached:(id)a3 transportType:(int)a4 protocol:(int)a5 properties:(id)a6 forConnection:(id)a7;
-- (void)accessoryEndpointDetached:(id)a3 forConnection:(id)a4;
+- (AccessoryDetection)initWithAABC:(void *)c;
+- (void)accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol properties:(id)properties forConnection:(id)connection;
+- (void)accessoryEndpointDetached:(id)detached forConnection:(id)connection;
 - (void)start;
 @end
 
 @implementation AccessoryDetection
 
-- (AccessoryDetection)initWithAABC:(void *)a3
+- (AccessoryDetection)initWithAABC:(void *)c
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  cCopy = c;
   v6.receiver = self;
   v6.super_class = AccessoryDetection;
-  v9 = [(AccessoryDetection *)&v6 init];
+  selfCopy = [(AccessoryDetection *)&v6 init];
   v3 = os_log_create("com.apple.CoreBrightness.AccessoryDetection", "default");
-  v9->_logHandle = v3;
-  v4 = [MEMORY[0x1E6997728] sharedInstance];
-  v9->_connection = v4;
-  v9->_aabc = v7;
-  return v9;
+  selfCopy->_logHandle = v3;
+  mEMORY[0x1E6997728] = [MEMORY[0x1E6997728] sharedInstance];
+  selfCopy->_connection = mEMORY[0x1E6997728];
+  selfCopy->_aabc = cCopy;
+  return selfCopy;
 }
 
 - (void)start
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v9 = [(ACCConnectionInfo *)self->_connection registerDelegate:self];
   if ((v9 & 1) == 0)
   {
-    if (v11->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v11->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -62,19 +62,19 @@
   }
 }
 
-- (void)accessoryEndpointAttached:(id)a3 transportType:(int)a4 protocol:(int)a5 properties:(id)a6 forConnection:(id)a7
+- (void)accessoryEndpointAttached:(id)attached transportType:(int)type protocol:(int)protocol properties:(id)properties forConnection:(id)connection
 {
   v29 = *MEMORY[0x1E69E9840];
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
+  attachedCopy = attached;
+  typeCopy = type;
+  protocolCopy = protocol;
+  propertiesCopy = properties;
+  connectionCopy = connection;
   if (self->_logHandle)
   {
-    logHandle = v27->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -96,24 +96,24 @@
   v19 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_32_8_64(v28, [v25 UTF8String], v22);
+    __os_log_helper_16_2_2_8_32_8_64(v28, [attachedCopy UTF8String], propertiesCopy);
     _os_log_debug_impl(&dword_1DE8E5000, v20, v19, "CoreAccessories endpoint %s attached with properties=%@", v28, 0x16u);
   }
 
-  if (v24 == 13)
+  if (typeCopy == 13)
   {
-    if (v22)
+    if (propertiesCopy)
     {
-      v18 = [v22 objectForKey:*MEMORY[0x1E6997738]];
+      v18 = [propertiesCopy objectForKey:*MEMORY[0x1E6997738]];
       if (v18)
       {
         valuePtr = 0;
         CFNumberGetValue(v18, kCFNumberIntType, &valuePtr);
         if (valuePtr == 86)
         {
-          if (v27->_logHandle)
+          if (selfCopy->_logHandle)
           {
-            v11 = v27->_logHandle;
+            v11 = selfCopy->_logHandle;
           }
 
           else
@@ -141,9 +141,9 @@
             _os_log_debug_impl(&dword_1DE8E5000, v8, v9, "Sleeve attached", v14, 2u);
           }
 
-          v7 = MEMORY[0x1E69E5928](v25);
-          v27->_sleeveUUID = v7;
-          AABC::SetDeviceInSleeve(v27->_aabc, 1);
+          v7 = MEMORY[0x1E69E5928](attachedCopy);
+          selfCopy->_sleeveUUID = v7;
+          AABC::SetDeviceInSleeve(selfCopy->_aabc, 1);
         }
       }
     }
@@ -152,16 +152,16 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)accessoryEndpointDetached:(id)a3 forConnection:(id)a4
+- (void)accessoryEndpointDetached:(id)detached forConnection:(id)connection
 {
   v20 = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v15 = a4;
+  detachedCopy = detached;
+  connectionCopy = connection;
   if (self->_logHandle)
   {
-    logHandle = v18->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -183,18 +183,18 @@
   v13 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_1_8_32(v19, [v16 UTF8String]);
+    __os_log_helper_16_2_1_8_32(v19, [detachedCopy UTF8String]);
     _os_log_debug_impl(&dword_1DE8E5000, v14, v13, "CoreAccessories endpoint %s detached", v19, 0xCu);
   }
 
-  if (v18->_sleeveUUID && ([v16 isEqualToString:v18->_sleeveUUID] & 1) != 0)
+  if (selfCopy->_sleeveUUID && ([detachedCopy isEqualToString:selfCopy->_sleeveUUID] & 1) != 0)
   {
-    MEMORY[0x1E69E5920](v18->_sleeveUUID);
-    v18->_sleeveUUID = 0;
-    AABC::SetDeviceInSleeve(v18->_aabc, 0);
-    if (v18->_logHandle)
+    MEMORY[0x1E69E5920](selfCopy->_sleeveUUID);
+    selfCopy->_sleeveUUID = 0;
+    AABC::SetDeviceInSleeve(selfCopy->_aabc, 0);
+    if (selfCopy->_logHandle)
     {
-      v7 = v18->_logHandle;
+      v7 = selfCopy->_logHandle;
     }
 
     else

@@ -1,28 +1,28 @@
 @interface _UIStatusBarSignalViewCacheKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCacheKey:(id)a3;
-- (double)initWithClass:(double)a3 size:(double)a4 rect:(double)a5 radius:(double)a6 lineWidth:(double)a7 secondarySize:(double)a8 secondaryRect:(double)a9 alternate:(uint64_t)a10 scale:(uint64_t)a11;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCacheKey:(id)key;
+- (double)initWithClass:(double)class size:(double)size rect:(double)rect radius:(double)radius lineWidth:(double)width secondarySize:(double)secondarySize secondaryRect:(double)secondaryRect alternate:(uint64_t)self0 scale:(uint64_t)self1;
 - (unint64_t)hash;
 @end
 
 @implementation _UIStatusBarSignalViewCacheKey
 
-- (double)initWithClass:(double)a3 size:(double)a4 rect:(double)a5 radius:(double)a6 lineWidth:(double)a7 secondarySize:(double)a8 secondaryRect:(double)a9 alternate:(uint64_t)a10 scale:(uint64_t)a11
+- (double)initWithClass:(double)class size:(double)size rect:(double)rect radius:(double)radius lineWidth:(double)width secondarySize:(double)secondarySize secondaryRect:(double)secondaryRect alternate:(uint64_t)self0 scale:(uint64_t)self1
 {
-  v34.receiver = a1;
+  v34.receiver = self;
   v34.super_class = _UIStatusBarSignalViewCacheKey;
   result = objc_msgSendSuper2(&v34, sel_init);
   if (result)
   {
-    *(result + 1) = a11;
+    *(result + 1) = scale;
     result[2] = a2;
-    result[3] = a3;
-    result[4] = a4;
-    result[5] = a5;
-    result[6] = a6;
-    result[7] = a7;
-    result[8] = a8;
-    result[9] = a9;
+    result[3] = class;
+    result[4] = size;
+    result[5] = rect;
+    result[6] = radius;
+    result[7] = width;
+    result[8] = secondarySize;
+    result[9] = secondaryRect;
     *(result + 10) = a17;
     *(result + 11) = a18;
     *(result + 12) = a19;
@@ -43,10 +43,10 @@
   return *&veor_s8(*v4.i8, *&vextq_s8(v4, v4, 8uLL)) ^ self->_secondaryRect.size.width ^ self->_secondaryRect.size.height ^ self->_scale ^ v3 ^ self->_alternate;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -54,17 +54,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UIStatusBarSignalViewCacheKey *)self isEqualToCacheKey:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_UIStatusBarSignalViewCacheKey *)self isEqualToCacheKey:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCacheKey:(id)a3
+- (BOOL)isEqualToCacheKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_classType != *&v4->origin.y || (self->_size.width == v4->size.width ? (v6 = self->_size.height == v4->size.height) : (v6 = 0), !v6 || !CGRectEqualToRect(self->_rect, v4[1]) || vabdd_f64(self->_radius, v5[2].origin.x) > 0.00000011920929 || vabdd_f64(self->_lineWidth, v5[2].origin.y) > 0.00000011920929))
+  keyCopy = key;
+  v5 = keyCopy;
+  if (self->_classType != *&keyCopy->origin.y || (self->_size.width == keyCopy->size.width ? (v6 = self->_size.height == keyCopy->size.height) : (v6 = 0), !v6 || !CGRectEqualToRect(self->_rect, keyCopy[1]) || vabdd_f64(self->_radius, v5[2].origin.x) > 0.00000011920929 || vabdd_f64(self->_lineWidth, v5[2].origin.y) > 0.00000011920929))
   {
 LABEL_10:
     v7 = 0;

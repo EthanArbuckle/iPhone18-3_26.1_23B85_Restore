@@ -1,5 +1,5 @@
 @interface CKKSFetchAllRecordZoneChangesOperation
-- (CKKSFetchAllRecordZoneChangesOperation)initWithContainer:(id)a3 fetchClass:(Class)a4 clientMap:(id)a5 fetchReasons:(id)a6 apnsPushes:(id)a7 forceResync:(BOOL)a8 ckoperationGroup:(id)a9 altDSID:(id)a10 sendMetric:(BOOL)a11;
+- (CKKSFetchAllRecordZoneChangesOperation)initWithContainer:(id)container fetchClass:(Class)class clientMap:(id)map fetchReasons:(id)reasons apnsPushes:(id)pushes forceResync:(BOOL)resync ckoperationGroup:(id)group altDSID:(id)self0 sendMetric:(BOOL)self1;
 - (id)ckksFetchBecauseMap;
 - (void)cancel;
 - (void)groupStart;
@@ -11,8 +11,8 @@
 
 - (void)cancel
 {
-  v3 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-  [v3 cancel];
+  fetchRecordZoneChangesOperation = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+  [fetchRecordZoneChangesOperation cancel];
 
   v4.receiver = self;
   v4.super_class = CKKSFetchAllRecordZoneChangesOperation;
@@ -27,10 +27,10 @@
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v4 = [(CKKSFetchAllRecordZoneChangesOperation *)self allClientOptions];
-  v5 = [v4 allKeys];
+  allClientOptions = [(CKKSFetchAllRecordZoneChangesOperation *)self allClientOptions];
+  allKeys = [allClientOptions allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v96 objects:v115 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v96 objects:v115 count:16];
   if (v6)
   {
     v7 = *v97;
@@ -41,12 +41,12 @@
       {
         if (*v97 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v96 + 1) + 8 * v8);
-        v10 = [(CKKSFetchAllRecordZoneChangesOperation *)self clientMap];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        clientMap = [(CKKSFetchAllRecordZoneChangesOperation *)self clientMap];
+        v11 = [clientMap objectForKeyedSubscript:v9];
         v12 = [v11 zoneIsReadyForFetching:v9];
 
         if ((v12 & 1) == 0)
@@ -58,7 +58,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v96 objects:v115 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v96 objects:v115 count:16];
     }
 
     while (v6);
@@ -69,9 +69,9 @@
   v113 = kSecurityRTCFieldIsPrioritized;
   v114 = &__kCFBooleanFalse;
   v14 = [NSDictionary dictionaryWithObjects:&v114 forKeys:&v113 count:1];
-  v15 = [(CKKSFetchAllRecordZoneChangesOperation *)self altDSID];
-  v16 = [(CKKSFetchAllRecordZoneChangesOperation *)self sendMetric];
-  v75 = [v13 initWithCKKSMetrics:v14 altDSID:v15 eventName:kSecurityRTCEventNameZoneChangeFetch testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:v16];
+  altDSID = [(CKKSFetchAllRecordZoneChangesOperation *)self altDSID];
+  sendMetric = [(CKKSFetchAllRecordZoneChangesOperation *)self sendMetric];
+  v75 = [v13 initWithCKKSMetrics:v14 altDSID:altDSID eventName:kSecurityRTCEventNameZoneChangeFetch testsAreEnabled:0 category:kSecurityRTCEventCategoryAccountDataAccessRecovery sendMetric:sendMetric];
 
   if ([v3 count])
   {
@@ -103,11 +103,11 @@
           }
 
           v22 = *(*(&v92 + 1) + 8 * v21);
-          v23 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
-          [v23 removeObject:v22];
+          fetchedZoneIDs = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
+          [fetchedZoneIDs removeObject:v22];
 
-          v24 = [(CKKSFetchAllRecordZoneChangesOperation *)self allClientOptions];
-          [v24 setObject:0 forKeyedSubscript:v22];
+          allClientOptions2 = [(CKKSFetchAllRecordZoneChangesOperation *)self allClientOptions];
+          [allClientOptions2 setObject:0 forKeyedSubscript:v22];
 
           v21 = v21 + 1;
         }
@@ -120,14 +120,14 @@
     }
   }
 
-  v25 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
-  v26 = [v25 count] == 0;
+  fetchedZoneIDs2 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
+  v26 = [fetchedZoneIDs2 count] == 0;
 
   if (!v26)
   {
     v110 = kSecurityRTCFieldNumViews;
-    v27 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
-    v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v27 count]);
+    fetchedZoneIDs3 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
+    v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [fetchedZoneIDs3 count]);
     v111 = v28;
     v29 = [NSDictionary dictionaryWithObjects:&v111 forKeys:&v110 count:1];
     [v75 addMetrics:v29];
@@ -135,38 +135,38 @@
     v30 = sub_100019104(@"ckksfetch", 0);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
-      v32 = [(CKKSFetchAllRecordZoneChangesOperation *)self allClientOptions];
+      fetchedZoneIDs4 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
+      allClientOptions3 = [(CKKSFetchAllRecordZoneChangesOperation *)self allClientOptions];
       *buf = 138412546;
-      v107 = v31;
+      v107 = fetchedZoneIDs4;
       v108 = 2112;
-      v109 = v32;
+      v109 = allClientOptions3;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Beginning fetch: %@ options: %@", buf, 0x16u);
     }
 
     v33 = [(objc_class *)[(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperationClass] alloc];
-    v34 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
-    v35 = [(CKKSFetchAllRecordZoneChangesOperation *)self allClientOptions];
-    v36 = [(objc_class *)v33 initWithRecordZoneIDs:v34 configurationsByRecordZoneID:v35];
+    fetchedZoneIDs5 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
+    allClientOptions4 = [(CKKSFetchAllRecordZoneChangesOperation *)self allClientOptions];
+    v36 = [(objc_class *)v33 initWithRecordZoneIDs:fetchedZoneIDs5 configurationsByRecordZoneID:allClientOptions4];
     [(CKKSFetchAllRecordZoneChangesOperation *)self setFetchRecordZoneChangesOperation:v36];
 
-    v37 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    [v37 setFetchAllChanges:0];
+    fetchRecordZoneChangesOperation = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    [fetchRecordZoneChangesOperation setFetchAllChanges:0];
 
-    v38 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    v39 = [v38 configuration];
-    [v39 setIsCloudKitSupportOperation:1];
+    fetchRecordZoneChangesOperation2 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    configuration = [fetchRecordZoneChangesOperation2 configuration];
+    [configuration setIsCloudKitSupportOperation:1];
 
-    v40 = [(CKKSFetchAllRecordZoneChangesOperation *)self ckoperationGroup];
-    v41 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    [v41 setGroup:v40];
+    ckoperationGroup = [(CKKSFetchAllRecordZoneChangesOperation *)self ckoperationGroup];
+    fetchRecordZoneChangesOperation3 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    [fetchRecordZoneChangesOperation3 setGroup:ckoperationGroup];
 
     v42 = sub_100019104(@"ckksfetch", 0);
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
-      v43 = [(CKKSFetchAllRecordZoneChangesOperation *)self ckoperationGroup];
+      ckoperationGroup2 = [(CKKSFetchAllRecordZoneChangesOperation *)self ckoperationGroup];
       *buf = 138412290;
-      v107 = v43;
+      v107 = ckoperationGroup2;
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Operation group is %@", buf, 0xCu);
     }
 
@@ -174,8 +174,8 @@
     v91 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v44 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchReasons];
-    v45 = [v44 countByEnumeratingWithState:&v88 objects:v105 count:16];
+    fetchReasons = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchReasons];
+    v45 = [fetchReasons countByEnumeratingWithState:&v88 objects:v105 count:16];
     if (v45)
     {
       v46 = *v89;
@@ -186,17 +186,17 @@
         {
           if (*v89 != v46)
           {
-            objc_enumerationMutation(v44);
+            objc_enumerationMutation(fetchReasons);
           }
 
           v48 = *(*(&v88 + 1) + 8 * v47);
-          v49 = [(CKKSFetchAllRecordZoneChangesOperation *)self ckksFetchBecauseMap];
-          v50 = [v49 objectForKey:v48];
+          ckksFetchBecauseMap = [(CKKSFetchAllRecordZoneChangesOperation *)self ckksFetchBecauseMap];
+          v50 = [ckksFetchBecauseMap objectForKey:v48];
 
           if (v50)
           {
-            v51 = [(CKKSFetchAllRecordZoneChangesOperation *)self ckksFetchBecauseMap];
-            v52 = [v51 objectForKeyedSubscript:v48];
+            ckksFetchBecauseMap2 = [(CKKSFetchAllRecordZoneChangesOperation *)self ckksFetchBecauseMap];
+            v52 = [ckksFetchBecauseMap2 objectForKeyedSubscript:v48];
             v103 = v52;
             v104 = &__kCFBooleanTrue;
             v53 = [NSDictionary dictionaryWithObjects:&v104 forKeys:&v103 count:1];
@@ -207,23 +207,23 @@
         }
 
         while (v45 != v47);
-        v45 = [v44 countByEnumeratingWithState:&v88 objects:v105 count:16];
+        v45 = [fetchReasons countByEnumeratingWithState:&v88 objects:v105 count:16];
       }
 
       while (v45);
     }
 
-    v54 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchReasons];
-    if (([v54 containsObject:@"api"] & 1) == 0)
+    fetchReasons2 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchReasons];
+    if (([fetchReasons2 containsObject:@"api"] & 1) == 0)
     {
-      v55 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchReasons];
-      if (([v55 containsObject:@"initialfetch"] & 1) == 0)
+      fetchReasons3 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchReasons];
+      if (([fetchReasons3 containsObject:@"initialfetch"] & 1) == 0)
       {
-        v56 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchReasons];
-        if (![v56 containsObject:@"more-coming"])
+        fetchReasons4 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchReasons];
+        if (![fetchReasons4 containsObject:@"more-coming"])
         {
-          v72 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchReasons];
-          v73 = [v72 containsObject:@"keyhierarchy"];
+          fetchReasons5 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchReasons];
+          v73 = [fetchReasons5 containsObject:@"keyhierarchy"];
 
           if ((v73 & 1) == 0)
           {
@@ -236,8 +236,8 @@
     }
 
 LABEL_41:
-    v57 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    [v57 setQualityOfService:25];
+    fetchRecordZoneChangesOperation4 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    [fetchRecordZoneChangesOperation4 setQualityOfService:25];
 
     v101 = v74;
     v102 = &__kCFBooleanTrue;
@@ -250,24 +250,24 @@ LABEL_42:
     v86[2] = sub_10011BD3C;
     v86[3] = &unk_100337620;
     objc_copyWeak(&v87, &location);
-    v59 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    [v59 setRecordChangedBlock:v86];
+    fetchRecordZoneChangesOperation5 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    [fetchRecordZoneChangesOperation5 setRecordChangedBlock:v86];
 
     v84[0] = _NSConcreteStackBlock;
     v84[1] = 3221225472;
     v84[2] = sub_10011BEB4;
     v84[3] = &unk_100337648;
     objc_copyWeak(&v85, &location);
-    v60 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    [v60 setRecordWithIDWasDeletedBlock:v84];
+    fetchRecordZoneChangesOperation6 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    [fetchRecordZoneChangesOperation6 setRecordWithIDWasDeletedBlock:v84];
 
     v82[0] = _NSConcreteStackBlock;
     v82[1] = 3221225472;
     v82[2] = sub_10011C020;
     v82[3] = &unk_100337670;
     objc_copyWeak(&v83, &location);
-    v61 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    [v61 setRecordZoneChangeTokensUpdatedBlock:v82];
+    fetchRecordZoneChangesOperation7 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    [fetchRecordZoneChangesOperation7 setRecordZoneChangeTokensUpdatedBlock:v82];
 
     v79[0] = _NSConcreteStackBlock;
     v79[1] = 3221225472;
@@ -276,8 +276,8 @@ LABEL_42:
     objc_copyWeak(&v81, &location);
     v62 = v75;
     v80 = v62;
-    v63 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    [v63 setRecordZoneFetchCompletionBlock:v79];
+    fetchRecordZoneChangesOperation8 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    [fetchRecordZoneChangesOperation8 setRecordZoneFetchCompletionBlock:v79];
 
     v76[0] = _NSConcreteStackBlock;
     v76[1] = 3221225472;
@@ -285,19 +285,19 @@ LABEL_42:
     v76[3] = &unk_1003376C0;
     objc_copyWeak(&v78, &location);
     v77 = v62;
-    v64 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    [v64 setFetchRecordZoneChangesCompletionBlock:v76];
+    fetchRecordZoneChangesOperation9 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    [fetchRecordZoneChangesOperation9 setFetchRecordZoneChangesCompletionBlock:v76];
 
-    v65 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchCompletedOperation];
-    [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v65];
+    fetchCompletedOperation = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchCompletedOperation];
+    [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:fetchCompletedOperation];
 
-    v66 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v66];
+    fetchRecordZoneChangesOperation10 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:fetchRecordZoneChangesOperation10];
 
-    v67 = [(CKKSFetchAllRecordZoneChangesOperation *)self container];
-    v68 = [v67 privateCloudDatabase];
-    v69 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
-    [v68 addOperation:v69];
+    container = [(CKKSFetchAllRecordZoneChangesOperation *)self container];
+    privateCloudDatabase = [container privateCloudDatabase];
+    fetchRecordZoneChangesOperation11 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchRecordZoneChangesOperation];
+    [privateCloudDatabase addOperation:fetchRecordZoneChangesOperation11];
 
     objc_destroyWeak(&v78);
     objc_destroyWeak(&v81);
@@ -314,8 +314,8 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "No zones to fetch. Skipping operation.", buf, 2u);
   }
 
-  v71 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchCompletedOperation];
-  [(CKKSGroupOperation *)self runBeforeGroupFinished:v71];
+  fetchCompletedOperation2 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchCompletedOperation];
+  [(CKKSGroupOperation *)self runBeforeGroupFinished:fetchCompletedOperation2];
 
 LABEL_46:
   objc_destroyWeak(&location);
@@ -365,8 +365,8 @@ LABEL_46:
   [(CKKSFetchAllRecordZoneChangesOperation *)self setFetchedZoneIDs:v4];
 
   [(CKKSFetchAllRecordZoneChangesOperation *)self queryClientsForChangeTokens];
-  v5 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
-  v6 = [v5 count];
+  fetchedZoneIDs = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
+  v6 = [fetchedZoneIDs count];
 
   if (v6)
   {
@@ -382,9 +382,9 @@ LABEL_46:
     v8 = sub_100019104(@"ckksfetch", 0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(CKKSResultOperation *)self error];
+      error = [(CKKSResultOperation *)self error];
       v10 = 138412290;
-      v11 = v9;
+      v11 = error;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Cancelling fetch: %@", &v10, 0xCu);
     }
 
@@ -398,8 +398,8 @@ LABEL_46:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v3 = [(CKKSFetchAllRecordZoneChangesOperation *)self clientMap];
-  v4 = [v3 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  clientMap = [(CKKSFetchAllRecordZoneChangesOperation *)self clientMap];
+  v4 = [clientMap countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v4)
   {
     v6 = v4;
@@ -415,77 +415,77 @@ LABEL_46:
       {
         if (*v31 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(clientMap);
         }
 
         v9 = *(*(&v30 + 1) + 8 * v8);
-        v10 = [(CKKSFetchAllRecordZoneChangesOperation *)self clientMap];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        clientMap2 = [(CKKSFetchAllRecordZoneChangesOperation *)self clientMap];
+        v11 = [clientMap2 objectForKeyedSubscript:v9];
 
         v12 = [v11 participateInFetch:v9];
         if ([v12 participateInFetch])
         {
-          v13 = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
-          [v13 addObject:v9];
+          fetchedZoneIDs = [(CKKSFetchAllRecordZoneChangesOperation *)self fetchedZoneIDs];
+          [fetchedZoneIDs addObject:v9];
 
           v14 = objc_alloc_init(CKFetchRecordZoneChangesConfiguration);
           if (![(CKKSFetchAllRecordZoneChangesOperation *)self forceResync])
           {
-            v15 = v3;
-            v16 = [(CKKSFetchAllRecordZoneChangesOperation *)self changeTokens];
-            v17 = [v16 objectForKeyedSubscript:v9];
+            v15 = clientMap;
+            changeTokens = [(CKKSFetchAllRecordZoneChangesOperation *)self changeTokens];
+            v17 = [changeTokens objectForKeyedSubscript:v9];
 
             if (v17)
             {
-              v18 = [(CKKSFetchAllRecordZoneChangesOperation *)self changeTokens];
-              v19 = [v18 objectForKeyedSubscript:v9];
+              changeTokens2 = [(CKKSFetchAllRecordZoneChangesOperation *)self changeTokens];
+              v19 = [changeTokens2 objectForKeyedSubscript:v9];
               [v14 setPreviousServerChangeToken:v19];
 
-              v20 = sub_100019104(@"ckksfetch", 0);
-              if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+              changeToken = sub_100019104(@"ckksfetch", 0);
+              if (os_log_type_enabled(changeToken, OS_LOG_TYPE_DEFAULT))
               {
-                v21 = [(CKKSFetchAllRecordZoneChangesOperation *)self changeTokens];
-                v22 = [v21 objectForKeyedSubscript:v9];
+                changeTokens3 = [(CKKSFetchAllRecordZoneChangesOperation *)self changeTokens];
+                v22 = [changeTokens3 objectForKeyedSubscript:v9];
                 *buf = v27;
                 v35 = v9;
                 v36 = 2112;
                 v37 = v22;
-                _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Using cached change token for %@: %@", buf, 0x16u);
+                _os_log_impl(&_mh_execute_header, changeToken, OS_LOG_TYPE_DEFAULT, "Using cached change token for %@: %@", buf, 0x16u);
               }
             }
 
             else
             {
-              v20 = [v12 changeToken];
-              [v14 setPreviousServerChangeToken:v20];
+              changeToken = [v12 changeToken];
+              [v14 setPreviousServerChangeToken:changeToken];
             }
 
-            v3 = v15;
+            clientMap = v15;
 
             v7 = v28;
           }
 
           if (([v12 resync] & 1) != 0 || -[CKKSFetchAllRecordZoneChangesOperation forceResync](self, "forceResync"))
           {
-            v23 = [(CKKSFetchAllRecordZoneChangesOperation *)self resyncingZones];
-            [v23 addObject:v9];
+            resyncingZones = [(CKKSFetchAllRecordZoneChangesOperation *)self resyncingZones];
+            [resyncingZones addObject:v9];
 
-            v24 = [(CKKSFetchAllRecordZoneChangesOperation *)self reverseSyncingZones];
-            [v24 addObject:v9];
+            reverseSyncingZones = [(CKKSFetchAllRecordZoneChangesOperation *)self reverseSyncingZones];
+            [reverseSyncingZones addObject:v9];
 
             [v14 setFetchNewestChangesFirst:1];
           }
 
           if ([v12 fetchNewestChangesFirst])
           {
-            v25 = [(CKKSFetchAllRecordZoneChangesOperation *)self reverseSyncingZones];
-            [v25 addObject:v9];
+            reverseSyncingZones2 = [(CKKSFetchAllRecordZoneChangesOperation *)self reverseSyncingZones];
+            [reverseSyncingZones2 addObject:v9];
 
             [v14 setFetchNewestChangesFirst:1];
           }
 
-          v26 = [(CKKSFetchAllRecordZoneChangesOperation *)self allClientOptions];
-          [v26 setObject:v14 forKeyedSubscript:v9];
+          allClientOptions = [(CKKSFetchAllRecordZoneChangesOperation *)self allClientOptions];
+          [allClientOptions setObject:v14 forKeyedSubscript:v9];
 
           v6 = v29;
         }
@@ -494,34 +494,34 @@ LABEL_46:
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v6 = [clientMap countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v6);
   }
 }
 
-- (CKKSFetchAllRecordZoneChangesOperation)initWithContainer:(id)a3 fetchClass:(Class)a4 clientMap:(id)a5 fetchReasons:(id)a6 apnsPushes:(id)a7 forceResync:(BOOL)a8 ckoperationGroup:(id)a9 altDSID:(id)a10 sendMetric:(BOOL)a11
+- (CKKSFetchAllRecordZoneChangesOperation)initWithContainer:(id)container fetchClass:(Class)class clientMap:(id)map fetchReasons:(id)reasons apnsPushes:(id)pushes forceResync:(BOOL)resync ckoperationGroup:(id)group altDSID:(id)self0 sendMetric:(BOOL)self1
 {
-  v38 = a3;
-  v37 = a5;
-  v36 = a6;
-  v35 = a7;
-  v34 = a9;
-  v18 = a10;
+  containerCopy = container;
+  mapCopy = map;
+  reasonsCopy = reasons;
+  pushesCopy = pushes;
+  groupCopy = group;
+  dCopy = d;
   v39.receiver = self;
   v39.super_class = CKKSFetchAllRecordZoneChangesOperation;
   v19 = [(CKKSGroupOperation *)&v39 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong((v19 + 142), a3);
-    objc_storeStrong((v20 + 134), a4);
-    objc_storeStrong((v20 + 214), a5);
-    objc_storeStrong((v20 + 222), a9);
-    v20[129] = a8;
-    objc_storeStrong((v20 + 158), a6);
-    objc_storeStrong((v20 + 166), a7);
+    objc_storeStrong((v19 + 142), container);
+    objc_storeStrong((v20 + 134), class);
+    objc_storeStrong((v20 + 214), map);
+    objc_storeStrong((v20 + 222), group);
+    v20[129] = resync;
+    objc_storeStrong((v20 + 158), reasons);
+    objc_storeStrong((v20 + 166), pushes);
     v21 = objc_alloc_init(NSMutableDictionary);
     v22 = *(v20 + 174);
     *(v20 + 174) = v21;
@@ -549,8 +549,8 @@ LABEL_46:
     *(v20 + 278) = v31;
 
     v20[130] = 0;
-    objc_storeStrong((v20 + 238), a10);
-    v20[131] = a11;
+    objc_storeStrong((v20 + 238), d);
+    v20[131] = metric;
     [v20 setQualityOfService:25];
   }
 

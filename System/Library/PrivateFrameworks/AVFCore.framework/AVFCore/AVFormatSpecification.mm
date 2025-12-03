@@ -1,22 +1,22 @@
 @interface AVFormatSpecification
-+ (id)formatSpecificationWithOutputSettings:(id)a3 sourceFormatDescription:(opaqueCMFormatDescription *)a4;
-- (AVFormatSpecification)initWithOutputSettings:(id)a3 sourceFormatDescription:(opaqueCMFormatDescription *)a4;
++ (id)formatSpecificationWithOutputSettings:(id)settings sourceFormatDescription:(opaqueCMFormatDescription *)description;
+- (AVFormatSpecification)initWithOutputSettings:(id)settings sourceFormatDescription:(opaqueCMFormatDescription *)description;
 - (void)dealloc;
 @end
 
 @implementation AVFormatSpecification
 
-- (AVFormatSpecification)initWithOutputSettings:(id)a3 sourceFormatDescription:(opaqueCMFormatDescription *)a4
+- (AVFormatSpecification)initWithOutputSettings:(id)settings sourceFormatDescription:(opaqueCMFormatDescription *)description
 {
   v9.receiver = self;
   v9.super_class = AVFormatSpecification;
   v6 = [(AVFormatSpecification *)&v9 init];
   if (v6)
   {
-    v6->_outputSettings = a3;
-    if (a4)
+    v6->_outputSettings = settings;
+    if (description)
     {
-      v7 = CFRetain(a4);
+      v7 = CFRetain(description);
       v6->_sourceFormatDescription = CFMakeCollectable(v7);
     }
   }
@@ -24,9 +24,9 @@
   return v6;
 }
 
-+ (id)formatSpecificationWithOutputSettings:(id)a3 sourceFormatDescription:(opaqueCMFormatDescription *)a4
++ (id)formatSpecificationWithOutputSettings:(id)settings sourceFormatDescription:(opaqueCMFormatDescription *)description
 {
-  v4 = [[a1 alloc] initWithOutputSettings:a3 sourceFormatDescription:a4];
+  v4 = [[self alloc] initWithOutputSettings:settings sourceFormatDescription:description];
 
   return v4;
 }

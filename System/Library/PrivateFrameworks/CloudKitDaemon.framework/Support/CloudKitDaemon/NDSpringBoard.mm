@@ -1,14 +1,14 @@
 @interface NDSpringBoard
 + (id)sharedSpringBoard;
-- (BOOL)identifierIsForSpringBoardApplication:(id)a3;
+- (BOOL)identifierIsForSpringBoardApplication:(id)application;
 - (NDSpringBoard)init;
-- (unsigned)applicationStateForBundleID:(id)a3;
-- (void)addObserver:(id)a3 forApplication:(id)a4;
-- (void)handleApplicationStateChange:(id)a3;
-- (void)removeObserver:(id)a3 forApplication:(id)a4;
+- (unsigned)applicationStateForBundleID:(id)d;
+- (void)addObserver:(id)observer forApplication:(id)application;
+- (void)handleApplicationStateChange:(id)change;
+- (void)removeObserver:(id)observer forApplication:(id)application;
 - (void)setupMonitor;
-- (void)startMonitoringBundleID:(id)a3;
-- (void)stopMonitoringBundleID:(id)a3;
+- (void)startMonitoringBundleID:(id)d;
+- (void)stopMonitoringBundleID:(id)d;
 @end
 
 @implementation NDSpringBoard
@@ -60,93 +60,93 @@
 - (void)setupMonitor
 {
   monitor = self->_monitor;
-  v4 = [(NSMutableSet *)self->_monitoredBundleIDs allObjects];
-  [(BKSApplicationStateMonitor *)monitor updateInterestedBundleIDs:v4];
+  allObjects = [(NSMutableSet *)self->_monitoredBundleIDs allObjects];
+  [(BKSApplicationStateMonitor *)monitor updateInterestedBundleIDs:allObjects];
 
   v5 = self->_monitor;
 
   [(BKSApplicationStateMonitor *)v5 setHandler:&stru_1000105E8];
 }
 
-- (void)handleApplicationStateChange:(id)a3
+- (void)handleApplicationStateChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002C64;
   v7[3] = &unk_100010610;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addObserver:(id)a3 forApplication:(id)a4
+- (void)addObserver:(id)observer forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  applicationCopy = application;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000030D0;
   block[3] = &unk_100010638;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = applicationCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = applicationCopy;
   dispatch_async(queue, block);
 }
 
-- (void)removeObserver:(id)a3 forApplication:(id)a4
+- (void)removeObserver:(id)observer forApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  applicationCopy = application;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003234;
   block[3] = &unk_100010638;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = applicationCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = applicationCopy;
   dispatch_async(queue, block);
 }
 
-- (void)startMonitoringBundleID:(id)a3
+- (void)startMonitoringBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003324;
   v7[3] = &unk_100010610;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)stopMonitoringBundleID:(id)a3
+- (void)stopMonitoringBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003484;
   v7[3] = &unk_100010610;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
-- (unsigned)applicationStateForBundleID:(id)a3
+- (unsigned)applicationStateForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -157,9 +157,9 @@
   block[2] = sub_1000035C8;
   block[3] = &unk_100010660;
   block[4] = self;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   LODWORD(queue) = *(v12 + 6);
 
@@ -167,29 +167,29 @@
   return queue;
 }
 
-- (BOOL)identifierIsForSpringBoardApplication:(id)a3
+- (BOOL)identifierIsForSpringBoardApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[LSApplicationWorkspace defaultWorkspace];
-  v5 = [v4 applicationIsInstalled:v3];
+  v5 = [v4 applicationIsInstalled:applicationCopy];
 
   if (v5)
   {
     v9 = 0;
-    v6 = 1;
-    v7 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v9];
+    isUpdate = 1;
+    v7 = [[LSApplicationRecord alloc] initWithBundleIdentifier:applicationCopy allowPlaceholder:1 error:&v9];
     if ([v7 isPlaceholder])
     {
-      v6 = [v7 isUpdate];
+      isUpdate = [v7 isUpdate];
     }
   }
 
   else
   {
-    v6 = 0;
+    isUpdate = 0;
   }
 
-  return v6;
+  return isUpdate;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface ReminderColorDeserializer
-+ (id)deserializeFrom:(id)a3 error:(id *)a4;
++ (id)deserializeFrom:(id)from error:(id *)error;
 - (_TtC21CalendarUIKitInternal25ReminderColorDeserializer)init;
 @end
 
 @implementation ReminderColorDeserializer
 
-+ (id)deserializeFrom:(id)a3 error:(id *)a4
++ (id)deserializeFrom:(id)from error:(id *)error
 {
-  v4 = a3;
+  fromCopy = from;
   v5 = sub_2429B6E40();
   v7 = v6;
 

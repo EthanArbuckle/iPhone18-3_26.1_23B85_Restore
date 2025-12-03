@@ -1,6 +1,6 @@
 @interface DepthAutoLaunchModel
 - (_TtC27CompanionAutoLaunchSettings20DepthAutoLaunchModel)init;
-- (void)depthAutoLaunchAppSettingDidUpdate:(id)a3;
+- (void)depthAutoLaunchAppSettingDidUpdate:(id)update;
 @end
 
 @implementation DepthAutoLaunchModel
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)depthAutoLaunchAppSettingDidUpdate:(id)a3
+- (void)depthAutoLaunchAppSettingDidUpdate:(id)update
 {
   type metadata accessor for DepthAutoLaunchModel();
   sub_1EAD0(&qword_3C080, v4, type metadata accessor for DepthAutoLaunchModel);
-  v5 = self;
+  selfCopy = self;
   sub_26194();
   sub_261A4();
 }

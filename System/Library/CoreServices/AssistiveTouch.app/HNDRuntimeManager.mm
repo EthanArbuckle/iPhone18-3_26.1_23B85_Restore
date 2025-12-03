@@ -1,7 +1,7 @@
 @interface HNDRuntimeManager
-- (BOOL)_accessibilityHandleAccessibilityEvent:(id)a3;
-- (BOOL)_handleSoundEvent:(int64_t)a3;
-- (BOOL)_urlMatchesLoadableCode:(id)a3;
+- (BOOL)_accessibilityHandleAccessibilityEvent:(id)event;
+- (BOOL)_handleSoundEvent:(int64_t)event;
+- (BOOL)_urlMatchesLoadableCode:(id)code;
 - (BOOL)setupRuntime;
 - (HNDRuntimeManager)init;
 - (HNDRuntimeManagerDelegate)delegate;
@@ -10,16 +10,16 @@
 - (void)_assistiveTouchSettingsChanged;
 - (void)_attemptStopAfterDelay;
 - (void)_disableUserInterfaceClient;
-- (void)_languageChanged:(id)a3;
+- (void)_languageChanged:(id)changed;
 - (void)_scannerEnabledChange;
 - (void)_sendASTEnabledTipSignal;
-- (void)_springBoardDied:(id)a3;
+- (void)_springBoardDied:(id)died;
 - (void)_startAccessibilityEventProcessor;
 - (void)_stopEventProcessor;
 - (void)cleanupRuntime;
 - (void)dealloc;
 - (void)initializeSystemSettings;
-- (void)showBannerWithTitle:(id)a3 text:(id)a4;
+- (void)showBannerWithTitle:(id)title text:(id)text;
 - (void)startRuntime;
 - (void)stop;
 - (void)stopIfAllowed;
@@ -84,9 +84,9 @@
     objc_copyWeak(&v49, buf);
     v6 = objc_retainBlock(v48);
     v7 = +[AXSettings sharedInstance];
-    v8 = [v7 appValidationTestingMode];
+    appValidationTestingMode = [v7 appValidationTestingMode];
 
-    if (v8)
+    if (appValidationTestingMode)
     {
       AXPerformBlockOnMainThreadAfterDelay();
     }
@@ -102,8 +102,8 @@
   }
 
   v46 = +[NSProcessInfo processInfo];
-  v10 = [v46 environment];
-  v11 = [v10 objectForKey:@"AX_DEBUG_SCAT"];
+  environment = [v46 environment];
+  v11 = [environment objectForKey:@"AX_DEBUG_SCAT"];
 
   if (v11)
   {
@@ -274,9 +274,9 @@ LABEL_63:
   }
 
   v21 = +[AXSettings sharedInstance];
-  v22 = [v21 switchControlIsEnabledAsReceiver];
+  switchControlIsEnabledAsReceiver = [v21 switchControlIsEnabledAsReceiver];
 
-  if (!v22)
+  if (!switchControlIsEnabledAsReceiver)
   {
     goto LABEL_15;
   }
@@ -394,9 +394,9 @@ LABEL_64:
   [(HNDRuntimeManager *)&v4 dealloc];
 }
 
-- (void)_languageChanged:(id)a3
+- (void)_languageChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = ASTLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -407,9 +407,9 @@ LABEL_64:
   exit(1);
 }
 
-- (void)_springBoardDied:(id)a3
+- (void)_springBoardDied:(id)died
 {
-  v3 = a3;
+  diedCopy = died;
   v4 = ASTLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -463,10 +463,10 @@ LABEL_64:
 {
   v2 = _AXSAssistiveTouchEnabled() != 0;
   v3 = BiomeLibrary();
-  v4 = [v3 Discoverability];
-  v5 = [v4 Signals];
+  discoverability = [v3 Discoverability];
+  signals = [discoverability Signals];
 
-  v6 = [v5 source];
+  source = [signals source];
   v11 = @"enabled";
   v7 = [NSNumber numberWithBool:v2];
   v12 = v7;
@@ -474,7 +474,7 @@ LABEL_64:
   v9 = [NSJSONSerialization dataWithJSONObject:v8 options:0 error:0];
 
   v10 = [[BMDiscoverabilitySignals alloc] initWithContentIdentifier:@"com.apple.assistivetouchd.ios-enabled" context:@"AssistiveTouch" osBuild:0 userInfo:v9];
-  [v6 sendEvent:v10];
+  [source sendEvent:v10];
 }
 
 - (void)_scannerEnabledChange
@@ -554,7 +554,7 @@ LABEL_64:
       v11 = 1024;
       v12 = v7;
       v13 = 1024;
-      v14 = [v8 isHandlingInterDeviceCommunication];
+      isHandlingInterDeviceCommunication = [v8 isHandlingInterDeviceCommunication];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Not allowed to stop. AST: %i, Switch Control: %i, inter device communication: %i", v10, 0x14u);
     }
   }
@@ -574,10 +574,10 @@ LABEL_64:
   }
 }
 
-- (BOOL)_urlMatchesLoadableCode:(id)a3
+- (BOOL)_urlMatchesLoadableCode:(id)code
 {
-  v3 = [a3 absoluteString];
-  if ([v3 containsString:@"AccessibilityBundles"] & 1) != 0 || (objc_msgSend(v3, "containsString:", @"Accessibility.framework") & 1) != 0 || objc_msgSend(v3, "containsString:", @"AX") && (objc_msgSend(v3, "containsString:", @"ServerInstance"))
+  absoluteString = [code absoluteString];
+  if ([absoluteString containsString:@"AccessibilityBundles"] & 1) != 0 || (objc_msgSend(absoluteString, "containsString:", @"Accessibility.framework") & 1) != 0 || objc_msgSend(absoluteString, "containsString:", @"AX") && (objc_msgSend(absoluteString, "containsString:", @"ServerInstance"))
   {
 LABEL_3:
     v4 = 0;
@@ -602,7 +602,7 @@ LABEL_9:
         objc_enumerationMutation(&off_1001E4F38);
       }
 
-      if ([v3 containsString:*(*(&v10 + 1) + 8 * v9)])
+      if ([absoluteString containsString:*(*(&v10 + 1) + 8 * v9)])
       {
         goto LABEL_3;
       }
@@ -620,14 +620,14 @@ LABEL_9:
     }
   }
 
-  if ([v3 hasSuffix:@"bundle/"])
+  if ([absoluteString hasSuffix:@"bundle/"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasSuffix:@"framework/"];
+    v4 = [absoluteString hasSuffix:@"framework/"];
   }
 
 LABEL_4:
@@ -638,9 +638,9 @@ LABEL_4:
 - (void)_assistAppValidationMode
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 appValidationTestingMode];
+  appValidationTestingMode = [v3 appValidationTestingMode];
 
-  if (v4)
+  if (appValidationTestingMode)
   {
     v5 = +[HNDDefaults sharedDefaults];
     [v5 setPreference:&__kCFBooleanTrue forKey:@"AppValidationAssistanceInProgress"];
@@ -716,20 +716,20 @@ LABEL_4:
 
 - (void)_startAccessibilityEventProcessor
 {
-  v3 = [(HNDRuntimeManager *)self eventProcessor];
-  if (!v3)
+  eventProcessor = [(HNDRuntimeManager *)self eventProcessor];
+  if (!eventProcessor)
   {
-    v3 = [[AXEventProcessor alloc] initWithHIDTapIdentifier:@"AX AssistiveTouch" HIDEventTapPriority:25 systemEventTapIdentifier:0 systemEventTapPriority:25];
-    [v3 setHIDEventFilterMask:32];
+    eventProcessor = [[AXEventProcessor alloc] initWithHIDTapIdentifier:@"AX AssistiveTouch" HIDEventTapPriority:25 systemEventTapIdentifier:0 systemEventTapPriority:25];
+    [eventProcessor setHIDEventFilterMask:32];
     objc_initWeak(&location, self);
     v4 = _NSConcreteStackBlock;
     v5 = 3221225472;
     v6 = sub_1000C86A0;
     v7 = &unk_1001D5BC0;
     objc_copyWeak(&v8, &location);
-    [v3 setHIDEventHandler:&v4];
-    [v3 beginHandlingHIDEventsForReason:{@"AX AssistiveTouch Accessibility Event Handler", v4, v5, v6, v7}];
-    [(HNDRuntimeManager *)self setEventProcessor:v3];
+    [eventProcessor setHIDEventHandler:&v4];
+    [eventProcessor beginHandlingHIDEventsForReason:{@"AX AssistiveTouch Accessibility Event Handler", v4, v5, v6, v7}];
+    [(HNDRuntimeManager *)self setEventProcessor:eventProcessor];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -737,16 +737,16 @@ LABEL_4:
 
 - (void)_stopEventProcessor
 {
-  v2 = [(HNDRuntimeManager *)self eventProcessor];
-  [v2 endHandlingHIDEventsForReason:@"AX AssistiveTouch Accessibility Event Handler"];
+  eventProcessor = [(HNDRuntimeManager *)self eventProcessor];
+  [eventProcessor endHandlingHIDEventsForReason:@"AX AssistiveTouch Accessibility Event Handler"];
 }
 
-- (BOOL)_accessibilityHandleAccessibilityEvent:(id)a3
+- (BOOL)_accessibilityHandleAccessibilityEvent:(id)event
 {
-  v4 = [a3 accessibilityData];
-  if ([v4 page] == 3)
+  accessibilityData = [event accessibilityData];
+  if ([accessibilityData page] == 3)
   {
-    v5 = -[HNDRuntimeManager _handleSoundEvent:](self, "_handleSoundEvent:", [v4 usage]);
+    v5 = -[HNDRuntimeManager _handleSoundEvent:](self, "_handleSoundEvent:", [accessibilityData usage]);
   }
 
   else
@@ -757,28 +757,28 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)_handleSoundEvent:(int64_t)a3
+- (BOOL)_handleSoundEvent:(int64_t)event
 {
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchActionsBySoundAction];
+  assistiveTouchActionsBySoundAction = [v4 assistiveTouchActionsBySoundAction];
 
-  if (_AXSAssistiveTouchEnabled() && [v5 count] && AXDeviceSupportsOnDeviceEyeTracking() && (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "assistiveTouchMouseOnDeviceEyeTrackingEnabled"), v6, v7))
+  if (_AXSAssistiveTouchEnabled() && [assistiveTouchActionsBySoundAction count] && AXDeviceSupportsOnDeviceEyeTracking() && (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "assistiveTouchMouseOnDeviceEyeTrackingEnabled"), v6, v7))
   {
-    v8 = [NSNumber numberWithLong:a3];
-    v9 = [v8 stringValue];
-    v10 = [v5 objectForKeyedSubscript:v9];
+    v8 = [NSNumber numberWithLong:event];
+    stringValue = [v8 stringValue];
+    v10 = [assistiveTouchActionsBySoundAction objectForKeyedSubscript:stringValue];
 
     v11 = v10 != 0;
     if (v10)
     {
-      if ((a3 - 1) > 0xD)
+      if ((event - 1) > 0xD)
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = *(&off_1001D6FF8 + a3 - 1);
+        v12 = *(&off_1001D6FF8 + event - 1);
       }
 
       v14 = v12;
@@ -795,18 +795,18 @@ LABEL_4:
   return v11;
 }
 
-- (void)showBannerWithTitle:(id)a3 text:(id)a4
+- (void)showBannerWithTitle:(id)title text:(id)text
 {
-  v6 = a4;
-  v7 = a3;
+  textCopy = text;
+  titleCopy = title;
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_disableUserInterfaceClient" object:0];
   v8 = +[HNDHandManager sharedManager];
-  v9 = [v8 currentDisplayManager];
-  [v9 addUserInterfaceClientEnabler:@"AssistiveTouchSoundActions"];
+  currentDisplayManager = [v8 currentDisplayManager];
+  [currentDisplayManager addUserInterfaceClientEnabler:@"AssistiveTouchSoundActions"];
 
   v10 = +[HNDHandManager sharedManager];
-  v11 = [v10 currentDisplayManager];
-  [v11 showSimpleBannerWithTitle:v7 text:v6];
+  currentDisplayManager2 = [v10 currentDisplayManager];
+  [currentDisplayManager2 showSimpleBannerWithTitle:titleCopy text:textCopy];
 
   [(HNDRuntimeManager *)self performSelector:"_disableUserInterfaceClient" withObject:0 afterDelay:15.0];
 }
@@ -814,8 +814,8 @@ LABEL_4:
 - (void)_disableUserInterfaceClient
 {
   v3 = +[HNDHandManager sharedManager];
-  v2 = [v3 currentDisplayManager];
-  [v2 removeUserInterfaceClientEnabler:@"AssistiveTouchSoundActions"];
+  currentDisplayManager = [v3 currentDisplayManager];
+  [currentDisplayManager removeUserInterfaceClientEnabler:@"AssistiveTouchSoundActions"];
 }
 
 - (HNDRuntimeManagerDelegate)delegate

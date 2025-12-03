@@ -1,19 +1,19 @@
 @interface VSAProcessor
 - (BOOL)finishProcessing;
-- (BOOL)processWithMotionBlurParams:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithMotionBlurConfig:(id)a3 error:(id *)a4;
-- (VSAProcessor)initWithFrameWidth:(int64_t)a3 FrameHeight:(int64_t)a4 usePrecomputedFlow:(BOOL)a5;
+- (BOOL)processWithMotionBlurParams:(id)params error:(id *)error;
+- (BOOL)startSessionWithMotionBlurConfig:(id)config error:(id *)error;
+- (VSAProcessor)initWithFrameWidth:(int64_t)width FrameHeight:(int64_t)height usePrecomputedFlow:(BOOL)flow;
 @end
 
 @implementation VSAProcessor
 
-- (BOOL)processWithMotionBlurParams:(id)a3 error:(id *)a4
+- (BOOL)processWithMotionBlurParams:(id)params error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  paramsCopy = params;
+  v7 = paramsCopy;
+  if (!paramsCopy)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_72;
     }
@@ -26,26 +26,26 @@ LABEL_70:
 
   if (!self->_motionBlurEngine)
   {
-    if (a4)
+    if (error)
     {
       v91 = @"Error: Session Not Started";
       v92 = 3;
 LABEL_71:
       errorMessage(v92, v91);
-      *a4 = v64 = 0;
+      *error = v64 = 0;
       goto LABEL_57;
     }
 
     goto LABEL_72;
   }
 
-  v8 = [v6 sourceFrame];
-  PixelFormatType = CVPixelBufferGetPixelFormatType([v8 buffer]);
+  sourceFrame = [paramsCopy sourceFrame];
+  PixelFormatType = CVPixelBufferGetPixelFormatType([sourceFrame buffer]);
   v10 = isPixelFormatSupported(PixelFormatType);
 
   if ((v10 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_72;
     }
@@ -54,12 +54,12 @@ LABEL_71:
     goto LABEL_70;
   }
 
-  v11 = [v7 sourceFrame];
-  v12 = [(BaseProcessor *)self matchPixelFormat:v11];
+  sourceFrame2 = [v7 sourceFrame];
+  v12 = [(BaseProcessor *)self matchPixelFormat:sourceFrame2];
 
   if (!v12)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_72;
     }
@@ -68,12 +68,12 @@ LABEL_71:
     goto LABEL_70;
   }
 
-  v13 = [v7 sourceFrame];
-  v14 = [(BaseProcessor *)self matchBufferResolution:v13];
+  sourceFrame3 = [v7 sourceFrame];
+  v14 = [(BaseProcessor *)self matchBufferResolution:sourceFrame3];
 
   if (!v14)
   {
-    if (a4)
+    if (error)
     {
       v91 = @"motionBlurParams buffer resolution mismatch with VSAProcessor's buffer resolution for the DVPFrameProcessor session";
       goto LABEL_70;
@@ -85,13 +85,13 @@ LABEL_72:
   }
 
   v15 = [DVPFrame alloc];
-  v16 = [v7 sourceFrame];
-  v17 = [v16 buffer];
-  v18 = [v7 sourceFrame];
-  v19 = v18;
-  if (v18)
+  sourceFrame4 = [v7 sourceFrame];
+  buffer = [sourceFrame4 buffer];
+  sourceFrame5 = [v7 sourceFrame];
+  v19 = sourceFrame5;
+  if (sourceFrame5)
   {
-    [v18 presentationTimeStamp];
+    [sourceFrame5 presentationTimeStamp];
   }
 
   else
@@ -101,20 +101,20 @@ LABEL_72:
     v100 = 0;
   }
 
-  v20 = [(DVPFrame *)v15 initWithBuffer:v17 presentationTimeStamp:&v98];
+  v20 = [(DVPFrame *)v15 initWithBuffer:buffer presentationTimeStamp:&v98];
 
   if (!v20)
   {
-    if (a4)
+    if (error)
     {
       v93 = @"Error allocating currentFrame";
 LABEL_79:
       v94 = errorMessage(9, v93);
       v97 = 0;
 LABEL_83:
-      v31 = 0;
+      nextFrame = 0;
       v64 = 0;
-      *a4 = v94;
+      *error = v94;
       goto LABEL_56;
     }
 
@@ -123,23 +123,23 @@ LABEL_80:
     goto LABEL_84;
   }
 
-  v21 = [v7 previousFrame];
-  if (v21)
+  previousFrame = [v7 previousFrame];
+  if (previousFrame)
   {
-    v22 = v21;
-    v23 = [v7 previousFrame];
-    v24 = [v23 buffer];
+    v22 = previousFrame;
+    previousFrame2 = [v7 previousFrame];
+    buffer2 = [previousFrame2 buffer];
 
-    if (v24)
+    if (buffer2)
     {
       v25 = [DVPFrame alloc];
-      v26 = [v7 previousFrame];
-      v27 = [v26 buffer];
-      v28 = [v7 previousFrame];
-      v29 = v28;
-      if (v28)
+      previousFrame3 = [v7 previousFrame];
+      buffer3 = [previousFrame3 buffer];
+      previousFrame4 = [v7 previousFrame];
+      v29 = previousFrame4;
+      if (previousFrame4)
       {
-        [v28 presentationTimeStamp];
+        [previousFrame4 presentationTimeStamp];
       }
 
       else
@@ -149,7 +149,7 @@ LABEL_80:
         v100 = 0;
       }
 
-      v30 = [(DVPFrame *)v25 initWithBuffer:v27 presentationTimeStamp:&v98];
+      v30 = [(DVPFrame *)v25 initWithBuffer:buffer3 presentationTimeStamp:&v98];
 
       v97 = v30;
       if (v30)
@@ -157,7 +157,7 @@ LABEL_80:
         goto LABEL_17;
       }
 
-      if (a4)
+      if (error)
       {
         v93 = @"Error allocating previousFrame";
         goto LABEL_79;
@@ -169,26 +169,26 @@ LABEL_80:
 
   v97 = 0;
 LABEL_17:
-  v31 = [v7 nextFrame];
-  if (v31)
+  nextFrame = [v7 nextFrame];
+  if (nextFrame)
   {
-    v32 = [v7 nextFrame];
-    v33 = [v32 buffer];
+    nextFrame2 = [v7 nextFrame];
+    buffer4 = [nextFrame2 buffer];
 
-    if (!v33)
+    if (!buffer4)
     {
-      v31 = 0;
+      nextFrame = 0;
       goto LABEL_24;
     }
 
     v34 = [DVPFrame alloc];
-    v35 = [v7 nextFrame];
-    v36 = [v35 buffer];
-    v37 = [v7 nextFrame];
-    v38 = v37;
-    if (v37)
+    nextFrame3 = [v7 nextFrame];
+    buffer5 = [nextFrame3 buffer];
+    nextFrame4 = [v7 nextFrame];
+    v38 = nextFrame4;
+    if (nextFrame4)
     {
-      [v37 presentationTimeStamp];
+      [nextFrame4 presentationTimeStamp];
     }
 
     else
@@ -198,18 +198,18 @@ LABEL_17:
       v100 = 0;
     }
 
-    v31 = [(DVPFrame *)v34 initWithBuffer:v36 presentationTimeStamp:&v98];
+    nextFrame = [(DVPFrame *)v34 initWithBuffer:buffer5 presentationTimeStamp:&v98];
 
-    if (!v31)
+    if (!nextFrame)
     {
-      if (a4)
+      if (error)
       {
         v94 = errorMessage(9, @"Error allocating nextFrame");
         goto LABEL_83;
       }
 
 LABEL_84:
-      v31 = 0;
+      nextFrame = 0;
 LABEL_85:
       v64 = 0;
       goto LABEL_56;
@@ -219,10 +219,10 @@ LABEL_85:
 LABEL_24:
   if ([v7 motionBlurStrength] > 100 || objc_msgSend(v7, "motionBlurStrength") <= 0)
   {
-    if (a4)
+    if (error)
     {
       v90 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: Invalid virtualShutterAngleDegrees %d", objc_msgSend(v7, "motionBlurStrength")];
-      *a4 = errorMessage(12, v90);
+      *error = errorMessage(12, v90);
     }
 
     goto LABEL_85;
@@ -234,37 +234,37 @@ LABEL_24:
   -[MotionBlurEngine setStreamingMode:](self->_motionBlurEngine, "setStreamingMode:", [v7 submissionMode] == 2);
   kdebug_trace();
   usePrecomputedFlow = self->_usePrecomputedFlow;
-  v42 = [v7 previousFrame];
-  flowPairs = v42;
+  previousFrame5 = [v7 previousFrame];
+  flowPairs = previousFrame5;
   if (usePrecomputedFlow)
   {
-    v44 = a4;
-    if (!v42)
+    errorCopy = error;
+    if (!previousFrame5)
     {
       goto LABEL_39;
     }
 
-    v45 = [v7 previousFrame];
-    v46 = [v45 buffer];
+    previousFrame6 = [v7 previousFrame];
+    buffer6 = [previousFrame6 buffer];
 
-    if (v46)
+    if (buffer6)
     {
       flowBufferWidth = self->_flowBufferWidth;
-      v48 = [v7 previousOpticalFlow];
-      if (flowBufferWidth == CVPixelBufferGetWidth([v48 forwardFlow]))
+      previousOpticalFlow = [v7 previousOpticalFlow];
+      if (flowBufferWidth == CVPixelBufferGetWidth([previousOpticalFlow forwardFlow]))
       {
         flowBufferHeight = self->_flowBufferHeight;
-        v50 = [v7 previousOpticalFlow];
-        Height = CVPixelBufferGetHeight([v50 forwardFlow]);
+        previousOpticalFlow2 = [v7 previousOpticalFlow];
+        Height = CVPixelBufferGetHeight([previousOpticalFlow2 forwardFlow]);
 
         if (flowBufferHeight == Height)
         {
-          v52 = [v7 previousOpticalFlow];
+          previousOpticalFlow3 = [v7 previousOpticalFlow];
           flowPairs = self->_flowPairs;
-          self->_flowPairs[0].forwardFlow = [v52 forwardFlow];
+          self->_flowPairs[0].forwardFlow = [previousOpticalFlow3 forwardFlow];
 
-          v53 = [v7 previousOpticalFlow];
-          self->_flowPairs[0].backwardFlow = [v53 backwardFlow];
+          previousOpticalFlow4 = [v7 previousOpticalFlow];
+          self->_flowPairs[0].backwardFlow = [previousOpticalFlow4 backwardFlow];
 
           goto LABEL_39;
         }
@@ -274,10 +274,10 @@ LABEL_24:
       {
       }
 
-      if (v44)
+      if (errorCopy)
       {
         errorMessage(8, @"Error: invalid precomputed optical flow, expect Rev2 flow 2C0h");
-        *v44 = v64 = 0;
+        *errorCopy = v64 = 0;
       }
 
       else
@@ -291,37 +291,37 @@ LABEL_24:
 
     flowPairs = 0;
 LABEL_39:
-    v65 = [v7 nextFrame];
-    if (v65)
+    nextFrame5 = [v7 nextFrame];
+    if (nextFrame5)
     {
-      v66 = [v7 nextFrame];
-      v67 = [v66 buffer];
+      nextFrame6 = [v7 nextFrame];
+      buffer7 = [nextFrame6 buffer];
 
-      if (v67)
+      if (buffer7)
       {
-        v95 = v31;
+        v95 = nextFrame;
         v68 = v20;
         v69 = self->_flowBufferWidth;
-        v70 = [v7 nextOpticalFlow];
-        if (v69 == CVPixelBufferGetWidth([v70 forwardFlow]))
+        nextOpticalFlow = [v7 nextOpticalFlow];
+        if (v69 == CVPixelBufferGetWidth([nextOpticalFlow forwardFlow]))
         {
           v71 = self->_flowBufferHeight;
-          v72 = [v7 nextOpticalFlow];
-          v73 = CVPixelBufferGetHeight([v72 forwardFlow]);
+          nextOpticalFlow2 = [v7 nextOpticalFlow];
+          v73 = CVPixelBufferGetHeight([nextOpticalFlow2 forwardFlow]);
 
           if (v71 == v73)
           {
-            v74 = [v7 nextOpticalFlow];
-            self->_flowPairs[1].forwardFlow = [v74 forwardFlow];
-            v65 = &self->_flowPairs[1];
+            nextOpticalFlow3 = [v7 nextOpticalFlow];
+            self->_flowPairs[1].forwardFlow = [nextOpticalFlow3 forwardFlow];
+            nextFrame5 = &self->_flowPairs[1];
 
-            v75 = [v7 nextOpticalFlow];
-            self->_flowPairs[1].backwardFlow = [v75 backwardFlow];
+            nextOpticalFlow4 = [v7 nextOpticalFlow];
+            self->_flowPairs[1].backwardFlow = [nextOpticalFlow4 backwardFlow];
 
-            a4 = v44;
+            error = errorCopy;
             v20 = v68;
 LABEL_50:
-            v31 = v95;
+            nextFrame = v95;
             goto LABEL_53;
           }
         }
@@ -331,10 +331,10 @@ LABEL_50:
         }
 
         v20 = v68;
-        if (v44)
+        if (errorCopy)
         {
           errorMessage(8, @"Error: invalid precomputed optical flow, expect Rev2 flow 2C0h");
-          *v44 = v64 = 0;
+          *errorCopy = v64 = 0;
         }
 
         else
@@ -345,15 +345,15 @@ LABEL_50:
         goto LABEL_98;
       }
 
-      v65 = 0;
+      nextFrame5 = 0;
     }
 
-    a4 = v44;
+    error = errorCopy;
 LABEL_53:
     motionBlurEngine = self->_motionBlurEngine;
-    v87 = [v7 destinationFrame];
+    destinationFrame = [v7 destinationFrame];
     v88 = v96;
-    LOBYTE(motionBlurEngine) = -[MotionBlurEngine motionBlurForCurrentFrame:futureFrame:prevFrame:prevFlowPair:currFlowPair:shutterAngle:destination:withError:](motionBlurEngine, "motionBlurForCurrentFrame:futureFrame:prevFrame:prevFlowPair:currFlowPair:shutterAngle:destination:withError:", v20, v31, v97, flowPairs, v65, v96, [v87 buffer], a4);
+    LOBYTE(motionBlurEngine) = -[MotionBlurEngine motionBlurForCurrentFrame:futureFrame:prevFrame:prevFlowPair:currFlowPair:shutterAngle:destination:withError:](motionBlurEngine, "motionBlurForCurrentFrame:futureFrame:prevFrame:prevFlowPair:currFlowPair:shutterAngle:destination:withError:", v20, nextFrame, v97, flowPairs, nextFrame5, v96, [destinationFrame buffer], error);
 
     if (motionBlurEngine)
     {
@@ -361,10 +361,10 @@ LABEL_53:
       v64 = 1;
     }
 
-    else if (a4)
+    else if (error)
     {
       errorMessage(5, @"motionBlurForCurrentFrame fail");
-      *a4 = v64 = 0;
+      *error = v64 = 0;
     }
 
     else
@@ -375,13 +375,13 @@ LABEL_53:
     goto LABEL_55;
   }
 
-  v95 = v31;
-  if (v42)
+  v95 = nextFrame;
+  if (previousFrame5)
   {
-    v54 = [v7 previousFrame];
-    v55 = [v54 buffer];
+    previousFrame7 = [v7 previousFrame];
+    buffer8 = [previousFrame7 buffer];
 
-    if (v55)
+    if (buffer8)
     {
       flowPairs = &self->_flowPairs[self->_prevIndex];
       if (![(MotionBlurEngine *)self->_motionBlurEngine streamingMode])
@@ -391,14 +391,14 @@ LABEL_53:
         self->_prevOpticalFlowBuffers = v56;
 
         v58 = [DVPOpticalFlowParameters alloc];
-        v59 = [v7 previousFrame];
+        previousFrame8 = [v7 previousFrame];
         [v7 sourceFrame];
-        v61 = v60 = a4;
-        v62 = -[DVPOpticalFlowParameters initWithSourceFrame:nextFrame:submissionMode:opticalFlow:](v58, "initWithSourceFrame:nextFrame:submissionMode:opticalFlow:", v59, v61, [v7 submissionMode], self->_prevOpticalFlowBuffers);
+        v61 = v60 = error;
+        v62 = -[DVPOpticalFlowParameters initWithSourceFrame:nextFrame:submissionMode:opticalFlow:](v58, "initWithSourceFrame:nextFrame:submissionMode:opticalFlow:", previousFrame8, v61, [v7 submissionMode], self->_prevOpticalFlowBuffers);
         opticalFlowParams = self->_opticalFlowParams;
         self->_opticalFlowParams = v62;
 
-        a4 = v60;
+        error = v60;
         if (![(OpticalFlowProcessor *)self->_opticalFlowProcessor processWithOpticalFlowParams:self->_opticalFlowParams error:v60])
         {
           if (v60)
@@ -423,47 +423,47 @@ LABEL_53:
     }
   }
 
-  v65 = [v7 nextFrame];
-  if (!v65)
+  nextFrame5 = [v7 nextFrame];
+  if (!nextFrame5)
   {
     goto LABEL_50;
   }
 
-  v76 = a4;
-  v77 = [v7 nextFrame];
-  v78 = [v77 buffer];
+  errorCopy2 = error;
+  nextFrame7 = [v7 nextFrame];
+  buffer9 = [nextFrame7 buffer];
 
-  if (!v78)
+  if (!buffer9)
   {
-    v65 = 0;
-    a4 = v76;
+    nextFrame5 = 0;
+    error = errorCopy2;
     goto LABEL_50;
   }
 
-  v65 = &self->_flowPairs[self->_nextIndex];
-  v79 = [[DVPFrameOpticalFlow alloc] initWithForwardFlow:v65->forwardFlow backwardFlow:v65->backwardFlow];
+  nextFrame5 = &self->_flowPairs[self->_nextIndex];
+  v79 = [[DVPFrameOpticalFlow alloc] initWithForwardFlow:nextFrame5->forwardFlow backwardFlow:nextFrame5->backwardFlow];
   nextOpticalFlowBuffers = self->_nextOpticalFlowBuffers;
   self->_nextOpticalFlowBuffers = v79;
 
   v81 = [DVPOpticalFlowParameters alloc];
-  v82 = [v7 sourceFrame];
-  v83 = [v7 nextFrame];
-  v84 = -[DVPOpticalFlowParameters initWithSourceFrame:nextFrame:submissionMode:opticalFlow:](v81, "initWithSourceFrame:nextFrame:submissionMode:opticalFlow:", v82, v83, [v7 submissionMode], self->_nextOpticalFlowBuffers);
+  sourceFrame6 = [v7 sourceFrame];
+  nextFrame8 = [v7 nextFrame];
+  v84 = -[DVPOpticalFlowParameters initWithSourceFrame:nextFrame:submissionMode:opticalFlow:](v81, "initWithSourceFrame:nextFrame:submissionMode:opticalFlow:", sourceFrame6, nextFrame8, [v7 submissionMode], self->_nextOpticalFlowBuffers);
   v85 = self->_opticalFlowParams;
   self->_opticalFlowParams = v84;
 
-  a4 = v76;
-  if ([(OpticalFlowProcessor *)self->_opticalFlowProcessor processWithOpticalFlowParams:self->_opticalFlowParams error:v76])
+  error = errorCopy2;
+  if ([(OpticalFlowProcessor *)self->_opticalFlowProcessor processWithOpticalFlowParams:self->_opticalFlowParams error:errorCopy2])
   {
     self->_prevIndex = 1 - self->_prevIndex;
     self->_nextIndex = 1 - self->_nextIndex;
     goto LABEL_50;
   }
 
-  if (v76)
+  if (errorCopy2)
   {
     errorMessage(11, @"processWithOpticalFlowParams fail");
-    *v76 = v64 = 0;
+    *errorCopy2 = v64 = 0;
   }
 
   else
@@ -472,7 +472,7 @@ LABEL_53:
   }
 
 LABEL_98:
-  v31 = v95;
+  nextFrame = v95;
   v88 = v96;
 LABEL_55:
 
@@ -513,7 +513,7 @@ LABEL_57:
   return 1;
 }
 
-- (VSAProcessor)initWithFrameWidth:(int64_t)a3 FrameHeight:(int64_t)a4 usePrecomputedFlow:(BOOL)a5
+- (VSAProcessor)initWithFrameWidth:(int64_t)width FrameHeight:(int64_t)height usePrecomputedFlow:(BOOL)flow
 {
   v12.receiver = self;
   v12.super_class = VSAProcessor;
@@ -521,9 +521,9 @@ LABEL_57:
   v9 = v8;
   if (v8)
   {
-    v8->_frameWidth = a3;
-    v8->_frameHeight = a4;
-    v8->_usePrecomputedFlow = a5;
+    v8->_frameWidth = width;
+    v8->_frameHeight = height;
+    v8->_usePrecomputedFlow = flow;
     OUTLINED_FUNCTION_3_0(32);
     OUTLINED_FUNCTION_3_0(40);
     OUTLINED_FUNCTION_3_0(48);
@@ -537,13 +537,13 @@ LABEL_57:
   return v9;
 }
 
-- (BOOL)startSessionWithMotionBlurConfig:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithMotionBlurConfig:(id)config error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  configCopy = config;
+  v7 = configCopy;
   if (self->_motionBlurEngine)
   {
-    if (a4)
+    if (error)
     {
       v29 = @"MotionBlurEngine already initialized";
       v30 = 4;
@@ -551,7 +551,7 @@ LABEL_22:
       v32 = errorMessage(v30, v29);
 LABEL_29:
       v25 = 0;
-      *a4 = v32;
+      *error = v32;
       goto LABEL_14;
     }
 
@@ -560,7 +560,7 @@ LABEL_23:
     goto LABEL_14;
   }
 
-  v34 = v6;
+  v34 = configCopy;
   if (self->_usePrecomputedFlow)
   {
     [DVPOpticalFlowConfiguration getFlowBufferDimensionsFromFrameWidth:self->_frameWidth frameHeight:self->_frameHeight revision:1];
@@ -570,7 +570,7 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  v33 = a4;
+  errorCopy = error;
   v11 = [DVPOpticalFlowConfiguration alloc];
   v12 = -[DVPOpticalFlowConfiguration initWithFrameWidth:frameHeight:qualityPrioritization:revision:](v11, "initWithFrameWidth:frameHeight:qualityPrioritization:revision:", self->_frameWidth, self->_frameHeight, [v34 qualityPrioritization], 1);
   opticalFlowConfig = self->_opticalFlowConfig;
@@ -583,7 +583,7 @@ LABEL_23:
 
   if (!self->_opticalFlowProcessor)
   {
-    if (a4)
+    if (error)
     {
       v31 = @"Could not init OpticalFlowProcessor";
       goto LABEL_28;
@@ -595,8 +595,8 @@ LABEL_30:
   }
 
   [(DVPOpticalFlowConfiguration *)self->_opticalFlowConfig flowBufferWidth];
-  v17 = [OUTLINED_FUNCTION_1_3() flowBufferHeight];
-  v18 = OUTLINED_FUNCTION_3(v17);
+  flowBufferHeight = [OUTLINED_FUNCTION_1_3() flowBufferHeight];
+  v18 = OUTLINED_FUNCTION_3(flowBufferHeight);
   self->_flowPairs[0].forwardFlow = v18;
   if (!v18 || (-[DVPOpticalFlowConfiguration flowBufferWidth](self->_opticalFlowConfig, "flowBufferWidth"), v19 = [OUTLINED_FUNCTION_1_3() flowBufferHeight], v20 = OUTLINED_FUNCTION_3(v19), (self->_flowPairs[0].backwardFlow = v20) == 0) || (-[DVPOpticalFlowConfiguration flowBufferWidth](self->_opticalFlowConfig, "flowBufferWidth"), v21 = objc_msgSend(OUTLINED_FUNCTION_1_3(), "flowBufferHeight"), v22 = OUTLINED_FUNCTION_3(v21), (self->_flowPairs[1].forwardFlow = v22) == 0))
   {
@@ -605,8 +605,8 @@ LABEL_30:
   }
 
   [(DVPOpticalFlowConfiguration *)self->_opticalFlowConfig flowBufferWidth];
-  v23 = [OUTLINED_FUNCTION_1_3() flowBufferHeight];
-  v24 = OUTLINED_FUNCTION_3(v23);
+  flowBufferHeight2 = [OUTLINED_FUNCTION_1_3() flowBufferHeight];
+  v24 = OUTLINED_FUNCTION_3(flowBufferHeight2);
   self->_flowPairs[1].backwardFlow = v24;
   v25 = 1;
   if (!v24)
@@ -627,7 +627,7 @@ LABEL_10:
 
   if (!self->_motionBlurEngine)
   {
-    if (a4)
+    if (error)
     {
       v31 = @"Could not init MotionBlurEngine";
 LABEL_28:
@@ -644,9 +644,9 @@ LABEL_28:
   {
     [(OpticalFlowProcessor *)self->_opticalFlowProcessor setStreamingMode:1];
     [(OpticalFlowProcessor *)self->_opticalFlowProcessor setFlowOnlyMode:0];
-    if (![(OpticalFlowProcessor *)self->_opticalFlowProcessor startSessionWithOpticalFlowConfig:self->_opticalFlowConfig error:a4])
+    if (![(OpticalFlowProcessor *)self->_opticalFlowProcessor startSessionWithOpticalFlowConfig:self->_opticalFlowConfig error:error])
     {
-      if (a4)
+      if (error)
       {
         v31 = @"Could not start the session";
         goto LABEL_28;
@@ -658,9 +658,9 @@ LABEL_28:
 
   v7 = v34;
   v25 = 1;
-  if (!-[MotionBlurEngine startSessionWithQualityMode:useExternalFlow:streamingMode:pseudoDepth:error:](self->_motionBlurEngine, "startSessionWithQualityMode:useExternalFlow:streamingMode:pseudoDepth:error:", [v34 qualityPrioritization], objc_msgSend(v34, "usePrecomputedFlow"), 1, 1, a4))
+  if (!-[MotionBlurEngine startSessionWithQualityMode:useExternalFlow:streamingMode:pseudoDepth:error:](self->_motionBlurEngine, "startSessionWithQualityMode:useExternalFlow:streamingMode:pseudoDepth:error:", [v34 qualityPrioritization], objc_msgSend(v34, "usePrecomputedFlow"), 1, 1, error))
   {
-    if (a4)
+    if (error)
     {
       v29 = @"Could not start the session";
       v30 = 7;

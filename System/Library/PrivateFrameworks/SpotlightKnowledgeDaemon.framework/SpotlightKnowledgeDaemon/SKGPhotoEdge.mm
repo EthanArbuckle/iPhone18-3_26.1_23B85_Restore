@@ -1,14 +1,14 @@
 @interface SKGPhotoEdge
-+ (id)edgeFromPhoto:(id)a3 toNode:(id)a4;
++ (id)edgeFromPhoto:(id)photo toNode:(id)node;
 @end
 
 @implementation SKGPhotoEdge
 
-+ (id)edgeFromPhoto:(id)a3 toNode:(id)a4
++ (id)edgeFromPhoto:(id)photo toNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(SKGEdge *)[SKGPhotoEdge alloc] initWithSourceNode:v5 targetNode:v6];
+  photoCopy = photo;
+  nodeCopy = node;
+  v7 = [(SKGEdge *)[SKGPhotoEdge alloc] initWithSourceNode:photoCopy targetNode:nodeCopy];
 
   return v7;
 }

@@ -1,9 +1,9 @@
 @interface HMSiriEndpointApplyOnboardingSelectionsResponsePayload
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMSiriEndpointApplyOnboardingSelectionsResponsePayload)initWithOnboardingResult:(int64_t)a3;
-- (HMSiriEndpointApplyOnboardingSelectionsResponsePayload)initWithPayload:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMSiriEndpointApplyOnboardingSelectionsResponsePayload)initWithOnboardingResult:(int64_t)result;
+- (HMSiriEndpointApplyOnboardingSelectionsResponsePayload)initWithPayload:(id)payload;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)payloadCopy;
@@ -11,10 +11,10 @@
 
 @implementation HMSiriEndpointApplyOnboardingSelectionsResponsePayload
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -24,7 +24,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -35,8 +35,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMSiriEndpointApplyOnboardingSelectionsResponsePayload *)self onboardingResult];
-      v8 = v7 == [(HMSiriEndpointApplyOnboardingSelectionsResponsePayload *)v6 onboardingResult];
+      onboardingResult = [(HMSiriEndpointApplyOnboardingSelectionsResponsePayload *)self onboardingResult];
+      v8 = onboardingResult == [(HMSiriEndpointApplyOnboardingSelectionsResponsePayload *)v6 onboardingResult];
     }
 
     else
@@ -69,17 +69,17 @@
   return [v2 shortDescription];
 }
 
-- (HMSiriEndpointApplyOnboardingSelectionsResponsePayload)initWithPayload:(id)a3
+- (HMSiriEndpointApplyOnboardingSelectionsResponsePayload)initWithPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  payloadCopy = payload;
   v14 = 0;
-  v5 = [v4 hmf_integerForKey:@"HMSiriEndpointOnboardingResultPayloadKey" error:&v14];
+  v5 = [payloadCopy hmf_integerForKey:@"HMSiriEndpointOnboardingResultPayloadKey" error:&v14];
   v6 = v14;
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -87,7 +87,7 @@
       *buf = 138543874;
       v16 = v10;
       v17 = 2112;
-      v18 = v4;
+      v18 = payloadCopy;
       v19 = 2112;
       v20 = v6;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_INFO, "%{public}@Failed to decode apply onboarding selections payload: %@ error: %@", buf, 0x20u);
@@ -99,8 +99,8 @@
 
   else
   {
-    v8 = [(HMSiriEndpointApplyOnboardingSelectionsResponsePayload *)self initWithOnboardingResult:v5];
-    v11 = v8;
+    selfCopy = [(HMSiriEndpointApplyOnboardingSelectionsResponsePayload *)self initWithOnboardingResult:v5];
+    v11 = selfCopy;
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -120,14 +120,14 @@
   return v3;
 }
 
-- (HMSiriEndpointApplyOnboardingSelectionsResponsePayload)initWithOnboardingResult:(int64_t)a3
+- (HMSiriEndpointApplyOnboardingSelectionsResponsePayload)initWithOnboardingResult:(int64_t)result
 {
   v5.receiver = self;
   v5.super_class = HMSiriEndpointApplyOnboardingSelectionsResponsePayload;
   result = [(HMSiriEndpointApplyOnboardingSelectionsResponsePayload *)&v5 init];
   if (result)
   {
-    result->_onboardingResult = a3;
+    result->_onboardingResult = result;
   }
 
   return result;

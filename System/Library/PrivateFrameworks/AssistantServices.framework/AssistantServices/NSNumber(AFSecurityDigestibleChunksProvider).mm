@@ -23,20 +23,20 @@
     (*v8)(v7, AFSecurityDigestibleChunksProviderData, 4);
   }
 
-  v9 = *[a1 objCType] - 66;
+  v9 = *[self objCType] - 66;
   if (v9 <= 0x31)
   {
     if (((1 << v9) & 0x28483) != 0)
     {
-      v10 = [a1 unsignedLongLongValue];
+      unsignedLongLongValue = [self unsignedLongLongValue];
       goto LABEL_9;
     }
 
     if (((1 << v9) & 0x2848200000000) != 0)
     {
-      v10 = [a1 longLongValue];
+      unsignedLongLongValue = [self longLongValue];
 LABEL_9:
-      v13[0] = v10;
+      v13[0] = unsignedLongLongValue;
 LABEL_10:
       (*(v7 + 2))(v7, v13, 8);
       goto LABEL_11;
@@ -44,7 +44,7 @@ LABEL_10:
 
     if (((1 << v9) & 0x1400000000) != 0)
     {
-      [a1 doubleValue];
+      [self doubleValue];
       v13[0] = v12;
       goto LABEL_10;
     }

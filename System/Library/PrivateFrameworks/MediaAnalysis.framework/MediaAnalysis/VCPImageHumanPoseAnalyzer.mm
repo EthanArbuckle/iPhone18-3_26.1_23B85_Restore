@@ -1,34 +1,34 @@
 @interface VCPImageHumanPoseAnalyzer
-+ (id)sharedModel:(id)a3;
-- (VCPImageHumanPoseAnalyzer)initWithKeypointsOption:(BOOL)a3 aspectRatio:(id)a4 lightweight:(BOOL)a5 forceCPU:(BOOL)a6 sharedModel:(BOOL)a7 flushModel:(BOOL)a8;
++ (id)sharedModel:(id)model;
+- (VCPImageHumanPoseAnalyzer)initWithKeypointsOption:(BOOL)option aspectRatio:(id)ratio lightweight:(BOOL)lightweight forceCPU:(BOOL)u sharedModel:(BOOL)model flushModel:(BOOL)flushModel;
 - (id).cxx_construct;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6;
-- (int)configForAspectRatio:(id)a3;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4 withChannels:(int)a5;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 modelInputHeight:(int)a5 modelInputWidth:(int)a6;
-- (int)createModelWithHeight:(int)a3 srcWidth:(int)a4;
-- (int)generateHumanPose:(__CVBuffer *)a3;
-- (int)parsePersons:(float)a3 width:(int)a4 height:(int)a5;
-- (int)preferredInputFormat:(int *)a3 height:(int *)a4 format:(unsigned int *)a5;
-- (int)processPersons:(float)a3 width:(int)a4 height:(int)a5;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel;
+- (int)configForAspectRatio:(id)ratio;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data withChannels:(int)channels;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer modelInputHeight:(int)height modelInputWidth:(int)width;
+- (int)createModelWithHeight:(int)height srcWidth:(int)width;
+- (int)generateHumanPose:(__CVBuffer *)pose;
+- (int)parsePersons:(float)persons width:(int)width height:(int)height;
+- (int)preferredInputFormat:(int *)format height:(int *)height format:(unsigned int *)a5;
+- (int)processPersons:(float)persons width:(int)width height:(int)height;
 - (int)reInitModel;
-- (int)updateModelForAspectRatio:(id)a3;
+- (int)updateModelForAspectRatio:(id)ratio;
 - (void)dealloc;
 @end
 
 @implementation VCPImageHumanPoseAnalyzer
 
-- (VCPImageHumanPoseAnalyzer)initWithKeypointsOption:(BOOL)a3 aspectRatio:(id)a4 lightweight:(BOOL)a5 forceCPU:(BOOL)a6 sharedModel:(BOOL)a7 flushModel:(BOOL)a8
+- (VCPImageHumanPoseAnalyzer)initWithKeypointsOption:(BOOL)option aspectRatio:(id)ratio lightweight:(BOOL)lightweight forceCPU:(BOOL)u sharedModel:(BOOL)model flushModel:(BOOL)flushModel
 {
-  v36 = a6;
-  v37 = a7;
-  v8 = a5;
+  uCopy = u;
+  modelCopy = model;
+  lightweightCopy = lightweight;
   v40[2] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-  v12 = [v11 resourceURL];
+  ratioCopy = ratio;
+  vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+  resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-  v13 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_human_pose.espresso.net" relativeToURL:v12];
+  v13 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_human_pose.espresso.net" relativeToURL:resourceURL];
   netFileUrl = self->_netFileUrl;
   self->_netFileUrl = v13;
 
@@ -46,7 +46,7 @@
 
   v16->_inputWidth = 256;
   v16->_inputHeight = 256;
-  if (v8)
+  if (lightweightCopy)
   {
     v18 = v16->_resConfig;
     v16->_resConfig = @"res_192x192";
@@ -56,7 +56,7 @@
     goto LABEL_6;
   }
 
-  if (v10 && [(VCPImageHumanPoseAnalyzer *)v16 configForAspectRatio:v10])
+  if (ratioCopy && [(VCPImageHumanPoseAnalyzer *)v16 configForAspectRatio:ratioCopy])
   {
 LABEL_12:
     v31 = 0;
@@ -66,23 +66,23 @@ LABEL_12:
 LABEL_6:
   v16->_inputData = 0;
   v16->_trackingMode = 0;
-  v19 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   persons = v16->_persons;
-  v16->_persons = v19;
+  v16->_persons = array;
 
-  v21 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   results = v16->_results;
-  v16->_results = v21;
+  v16->_results = array2;
 
-  if ((DeviceHasANE() & v37) != 1 || v36)
+  if ((DeviceHasANE() & modelCopy) != 1 || uCopy)
   {
     v25 = [VCPCNNModelEspresso alloc];
     v26 = v16->_netFileUrl;
     v39[0] = @"forceCPU";
-    v24 = [MEMORY[0x1E696AD98] numberWithBool:v36];
+    v24 = [MEMORY[0x1E696AD98] numberWithBool:uCopy];
     v40[0] = v24;
     v39[1] = @"sharedContext";
-    v27 = [MEMORY[0x1E696AD98] numberWithBool:v37];
+    v27 = [MEMORY[0x1E696AD98] numberWithBool:modelCopy];
     v40[1] = v27;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
     v29 = [(VCPCNNModelEspresso *)v25 initWithParameters:v26 inputNames:0 outputNames:0 properties:v28];
@@ -102,11 +102,11 @@ LABEL_6:
   {
     if (![(VCPImageHumanPoseAnalyzer *)v16 createModelWithHeight:v16->_inputHeight srcWidth:v16->_inputWidth])
     {
-      v16->_saveKeypoints = a3;
+      v16->_saveKeypoints = option;
       v16->_heatmapNms = 0;
-      v16->_forceCPU = v36;
-      v16->_sharedModel = v37;
-      v16->_flushModel = a8;
+      v16->_forceCPU = uCopy;
+      v16->_sharedModel = modelCopy;
+      v16->_flushModel = flushModel;
       v31 = v16;
       goto LABEL_13;
     }
@@ -147,15 +147,15 @@ LABEL_13:
   }
 }
 
-+ (id)sharedModel:(id)a3
++ (id)sharedModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = +[VCPSharedInstanceManager sharedManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__VCPImageHumanPoseAnalyzer_sharedModel___block_invoke;
   v8[3] = &unk_1E834CF10;
-  v5 = v3;
+  v5 = modelCopy;
   v9 = v5;
   v6 = [v4 sharedInstanceWithIdentifier:@"VCPHumanPoseEspresso" andCreationBlock:v8];
 
@@ -188,13 +188,13 @@ VCPCNNModelEspresso *__41__VCPImageHumanPoseAnalyzer_sharedModel___block_invoke(
   [(VCPImageHumanPoseAnalyzer *)&v5 dealloc];
 }
 
-- (int)configForAspectRatio:(id)a3
+- (int)configForAspectRatio:(id)ratio
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  ratioCopy = ratio;
+  v5 = ratioCopy;
+  if (ratioCopy)
   {
-    [v4 floatValue];
+    [ratioCopy floatValue];
     if (v6 <= 1.4)
     {
       [v5 floatValue];
@@ -229,10 +229,10 @@ VCPCNNModelEspresso *__41__VCPImageHumanPoseAnalyzer_sharedModel___block_invoke(
   return 0;
 }
 
-- (int)updateModelForAspectRatio:(id)a3
+- (int)updateModelForAspectRatio:(id)ratio
 {
   v5 = self->_resConfig;
-  v6 = [(VCPImageHumanPoseAnalyzer *)self configForAspectRatio:a3];
+  v6 = [(VCPImageHumanPoseAnalyzer *)self configForAspectRatio:ratio];
   if (!v6)
   {
     if (v5 == self->_resConfig)
@@ -254,16 +254,16 @@ VCPCNNModelEspresso *__41__VCPImageHumanPoseAnalyzer_sharedModel___block_invoke(
   return v6;
 }
 
-- (int)preferredInputFormat:(int *)a3 height:(int *)a4 format:(unsigned int *)a5
+- (int)preferredInputFormat:(int *)format height:(int *)height format:(unsigned int *)a5
 {
   result = -50;
-  if (a3 && a4)
+  if (format && height)
   {
     if (a5)
     {
       result = 0;
-      *a3 = self->_inputWidth;
-      *a4 = self->_inputHeight;
+      *format = self->_inputWidth;
+      *height = self->_inputHeight;
       *a5 = 1111970369;
     }
   }
@@ -271,7 +271,7 @@ VCPCNNModelEspresso *__41__VCPImageHumanPoseAnalyzer_sharedModel___block_invoke(
   return result;
 }
 
-- (int)parsePersons:(float)a3 width:(int)a4 height:(int)a5
+- (int)parsePersons:(float)persons width:(int)width height:(int)height
 {
   v133 = *MEMORY[0x1E69E9840];
   modelEspresso = self->_modelEspresso;
@@ -280,7 +280,7 @@ VCPCNNModelEspresso *__41__VCPImageHumanPoseAnalyzer_sharedModel___block_invoke(
     return -18;
   }
 
-  v110 = self;
+  selfCopy = self;
   [(VCPCNNModelEspresso *)modelEspresso outputBlob];
   __src = v125;
   if (!v125)
@@ -288,30 +288,30 @@ VCPCNNModelEspresso *__41__VCPImageHumanPoseAnalyzer_sharedModel___block_invoke(
     return -18;
   }
 
-  heatmapNms = v110->_heatmapNms;
-  v106 = a5 * a4;
+  heatmapNms = selfCopy->_heatmapNms;
+  v106 = height * width;
   if (!heatmapNms)
   {
     operator new[]();
   }
 
-  memcpy(heatmapNms, v125, 68 * a5 * a4);
+  memcpy(heatmapNms, v125, 68 * height * width);
   v11 = 0;
   v12 = 0;
-  v13 = v110->_heatmapNms;
-  v14 = 4 * a4;
+  v13 = selfCopy->_heatmapNms;
+  v14 = 4 * width;
   LODWORD(v15) = -1.0;
   do
   {
-    if (a5 >= 1)
+    if (height >= 1)
     {
       v16 = 0;
       LODWORD(v17) = 0;
-      v18 = &v13[v11 - 3 + -3 * a4];
+      v18 = &v13[v11 - 3 + -3 * width];
       v19 = &v13[v106 * v12];
       do
       {
-        if (a4 >= 1)
+        if (width >= 1)
         {
           v20 = 0;
           v17 = v17;
@@ -320,7 +320,7 @@ VCPCNNModelEspresso *__41__VCPImageHumanPoseAnalyzer_sharedModel___block_invoke(
           do
           {
             v23 = v19[v17];
-            if (v23 >= a3)
+            if (v23 >= persons)
             {
               v24 = -3;
               v25 = v22;
@@ -328,7 +328,7 @@ VCPCNNModelEspresso *__41__VCPImageHumanPoseAnalyzer_sharedModel___block_invoke(
               {
                 v26 = 0;
                 v27 = v21;
-                while (v24 + v16 >= a5 || v27 >= a4 || *(v25 + v26) <= v23)
+                while (v24 + v16 >= height || v27 >= width || *(v25 + v26) <= v23)
                 {
                   ++v27;
                   v26 += 4;
@@ -359,14 +359,14 @@ LABEL_20:
             v22 += 4;
           }
 
-          while (v20 != a4);
+          while (v20 != width);
         }
 
         ++v16;
         v18 += v14;
       }
 
-      while (v16 != a5);
+      while (v16 != height);
     }
 
     ++v12;
@@ -374,12 +374,12 @@ LABEL_20:
   }
 
   while (v12 != 17);
-  v107 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v109 = 0;
-  v28 = v110;
+  v28 = selfCopy;
   do
   {
-    if (a5 < 1)
+    if (height < 1)
     {
       goto LABEL_52;
     }
@@ -389,7 +389,7 @@ LABEL_20:
     v113 = &v28->_heatmapNms[v106 * v109];
     do
     {
-      if (a4 < 1)
+      if (width < 1)
       {
         goto LABEL_51;
       }
@@ -398,7 +398,7 @@ LABEL_20:
       v30 = v29;
       do
       {
-        if (*(v113 + 4 * v30) <= a3)
+        if (*(v113 + 4 * v30) <= persons)
         {
           goto LABEL_49;
         }
@@ -409,7 +409,7 @@ LABEL_20:
         v124 = 0u;
         v121 = 0u;
         v122 = 0u;
-        v32 = v107;
+        v32 = array;
         v33 = [v32 countByEnumeratingWithState:&v121 objects:v132 count:16];
         if (v33)
         {
@@ -457,7 +457,7 @@ LABEL_20:
 
           if ((v36 & 0x80000000) == 0 && v37 < 0.3)
           {
-            v45 = [(NSMutableArray *)v110->_persons objectAtIndexedSubscript:v36];
+            array2 = [(NSMutableArray *)selfCopy->_persons objectAtIndexedSubscript:v36];
             v46 = [v32 objectAtIndexedSubscript:v36];
             v47 = [v46 objectAtIndexedSubscript:0];
             [v47 floatValue];
@@ -478,7 +478,7 @@ LABEL_20:
             [v32 setObject:v58 atIndexedSubscript:v36];
 
             v59 = *(v113 + 4 * obj);
-            v60 = [v45 objectAtIndexedSubscript:v109];
+            v60 = [array2 objectAtIndexedSubscript:v109];
             v61 = [v60 objectAtIndexedSubscript:2];
             [v61 floatValue];
             LODWORD(v55) = v59 > v62;
@@ -493,7 +493,7 @@ LABEL_20:
               v66 = [MEMORY[0x1E696AD98] numberWithFloat:v65];
               v130[2] = v66;
               v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v130 count:3];
-              [v45 setObject:v67 atIndexedSubscript:v109];
+              [array2 setObject:v67 atIndexedSubscript:v109];
             }
 
             goto LABEL_48;
@@ -511,11 +511,11 @@ LABEL_20:
         v69 = [MEMORY[0x1E695DEC8] arrayWithObjects:v129 count:2];
         [v32 addObject:v69];
 
-        v45 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v70 = 17;
         do
         {
-          [v45 addObject:&unk_1F49BF1C0];
+          [array2 addObject:&unk_1F49BF1C0];
           --v70;
         }
 
@@ -528,25 +528,25 @@ LABEL_20:
         v74 = [MEMORY[0x1E696AD98] numberWithFloat:v73];
         v128[2] = v74;
         v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:v128 count:3];
-        [v45 setObject:v75 atIndexedSubscript:v109];
+        [array2 setObject:v75 atIndexedSubscript:v109];
 
-        [(NSMutableArray *)v110->_persons addObject:v45];
+        [(NSMutableArray *)selfCopy->_persons addObject:array2];
 LABEL_48:
 
-        v28 = v110;
+        v28 = selfCopy;
         v30 = obj;
 LABEL_49:
         v30 = v30 + 1;
         ++v115;
       }
 
-      while (v115 != a4);
+      while (v115 != width);
       v29 = v30;
 LABEL_51:
       ++v108;
     }
 
-    while (v108 != a5);
+    while (v108 != height);
 LABEL_52:
     ++v109;
   }
@@ -588,25 +588,25 @@ LABEL_52:
           if (v83)
           {
             v84 = [v80 objectAtIndexedSubscript:0];
-            v85 = [v84 intValue];
+            intValue = [v84 intValue];
 
             v86 = [v80 objectAtIndexedSubscript:1];
-            v87 = [v86 intValue];
+            intValue2 = [v86 intValue];
 
-            v89 = a4 * (v87 - 3);
+            v89 = width * (intValue2 - 3);
             v90 = 0.0;
             v91 = -3;
             v92 = 0.0;
             v93 = 0.0;
             do
             {
-              v94 = v91 + v87;
-              *&v88 = (v91 + v87);
+              v94 = v91 + intValue2;
+              *&v88 = (v91 + intValue2);
               v95 = 7;
-              v96 = v85 - 3;
+              v96 = intValue - 3;
               do
               {
-                if ((v94 & 0x80000000) == 0 && v94 < a5 && (v96 & 0x80000000) == 0 && v96 < a4)
+                if ((v94 & 0x80000000) == 0 && v94 < height && (v96 & 0x80000000) == 0 && v96 < width)
                 {
                   v97 = __src[v106 * j + v89 + v96];
                   if (v97 > 0.05)
@@ -623,7 +623,7 @@ LABEL_52:
 
               while (v95);
               ++v91;
-              v89 += a4;
+              v89 += width;
             }
 
             while (v91 != 4);
@@ -660,7 +660,7 @@ LABEL_81:
   return v103;
 }
 
-- (int)processPersons:(float)a3 width:(int)a4 height:(int)a5
+- (int)processPersons:(float)persons width:(int)width height:(int)height
 {
   v95 = *MEMORY[0x1E69E9840];
   v87 = 0u;
@@ -671,9 +671,9 @@ LABEL_81:
   v79 = [(NSMutableArray *)obj countByEnumeratingWithState:&v87 objects:v94 count:16];
   if (v79)
   {
-    v77 = a3;
-    v84 = a5;
-    v85 = a4;
+    personsCopy = persons;
+    heightCopy = height;
+    widthCopy = width;
     v81 = *v88;
     v8 = 1.0;
     HIDWORD(v9) = 1072850534;
@@ -711,14 +711,14 @@ LABEL_81:
           v20 = [v86 objectAtIndexedSubscript:v10];
           v21 = [v20 objectAtIndexedSubscript:0];
           [v21 floatValue];
-          *&v23 = v22 / v85;
+          *&v23 = v22 / widthCopy;
           v24 = [v19 numberWithFloat:v23];
           v93[0] = v24;
           v25 = MEMORY[0x1E696AD98];
           v26 = [v86 objectAtIndexedSubscript:v10];
           v27 = [v26 objectAtIndexedSubscript:1];
           [v27 floatValue];
-          *&v29 = v8 - (v28 / v84);
+          *&v29 = v8 - (v28 / heightCopy);
           v30 = [v25 numberWithFloat:v29];
           v93[1] = v30;
           v31 = [v86 objectAtIndexedSubscript:v10];
@@ -800,23 +800,23 @@ LABEL_81:
             *&v9 = v9;
             v8 = 1.0;
             v67 = *&v9 <= 1.0 ? *&v9 : 1.0;
-            if (v60 > v77)
+            if (v60 > personsCopy)
             {
-              v68 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
               v96.origin.x = v62;
               v96.origin.y = v64;
               v96.size.width = (v66 - v62);
               v96.size.height = (v67 - v64);
               v69 = NSStringFromRect(v96);
-              [v68 setObject:v69 forKeyedSubscript:@"humanBounds"];
+              [dictionary setObject:v69 forKeyedSubscript:@"humanBounds"];
 
               *&v70 = v60;
               v71 = [MEMORY[0x1E696AD98] numberWithFloat:v70];
-              [v68 setObject:v71 forKeyedSubscript:@"humanConfidence"];
+              [dictionary setObject:v71 forKeyedSubscript:@"humanConfidence"];
 
               if (self->_saveKeypoints)
               {
-                [v68 setObject:v86 forKeyedSubscript:@"humanKeypoints"];
+                [dictionary setObject:v86 forKeyedSubscript:@"humanKeypoints"];
               }
 
               results = self->_results;
@@ -824,7 +824,7 @@ LABEL_81:
               v73 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v80];
               v91[1] = @"attributes";
               v92[0] = v73;
-              v92[1] = v68;
+              v92[1] = dictionary;
               v74 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:v91 count:2];
               [(NSMutableArray *)results addObject:v74];
             }
@@ -853,7 +853,7 @@ LABEL_49:
   return v75;
 }
 
-- (int)generateHumanPose:(__CVBuffer *)a3
+- (int)generateHumanPose:(__CVBuffer *)pose
 {
   result = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:self->_inputData];
   if (!result)
@@ -894,18 +894,18 @@ LABEL_49:
   return result;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4 withChannels:(int)a5
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data withChannels:(int)channels
 {
-  if (a5 != 3 || CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (channels != 3 || CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -916,7 +916,7 @@ LABEL_49:
   }
 
   v9 = Height;
-  v10 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v10 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v24 = v10;
   if (v10)
   {
@@ -929,14 +929,14 @@ LABEL_49:
 
   else
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    bzero(a4, 3 * 4 * Width * v9);
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+    bzero(data, 3 * 4 * Width * v9);
     if (v9 >= 1)
     {
       v16 = 0;
-      v17 = &a4[2 * v9 * Width];
-      v18 = &a4[v9 * Width];
+      v17 = &data[2 * v9 * Width];
+      v18 = &data[v9 * Width];
       v19 = 4 * Width;
       do
       {
@@ -948,7 +948,7 @@ LABEL_49:
           {
             LOBYTE(v15) = BaseAddress[(v20 * 4) + 2];
             *&v22 = LODWORD(v15) / 255.0;
-            a4[v20] = *&v22;
+            data[v20] = *&v22;
             LOBYTE(v22) = BaseAddress[(v20 * 4) + 1];
             *&v23 = v22 / 255.0;
             v18[v20] = *&v23;
@@ -965,7 +965,7 @@ LABEL_49:
         ++v16;
         v17 = (v17 + v19);
         v18 = (v18 + v19);
-        a4 = (a4 + v19);
+        data = (data + v19);
       }
 
       while (v16 != v9);
@@ -981,23 +981,23 @@ LABEL_49:
   return v11;
 }
 
-- (int)createModelWithHeight:(int)a3 srcWidth:(int)a4
+- (int)createModelWithHeight:(int)height srcWidth:(int)width
 {
   inputData = self->_inputData;
   if (inputData)
   {
-    MEMORY[0x1CCA95C10](inputData, 0x1000C8052888210, *&a3, *&a4);
+    MEMORY[0x1CCA95C10](inputData, 0x1000C8052888210, *&height, *&width);
     self->_inputData = 0;
   }
 
   heatmapNms = self->_heatmapNms;
   if (heatmapNms)
   {
-    MEMORY[0x1CCA95C10](heatmapNms, 0x1000C8052888210, *&a3, *&a4);
+    MEMORY[0x1CCA95C10](heatmapNms, 0x1000C8052888210, *&height, *&width);
     self->_heatmapNms = 0;
   }
 
-  result = [(VCPCNNModelEspresso *)self->_modelEspresso prepareModelWithConfig:self->_resConfig, *&a4];
+  result = [(VCPCNNModelEspresso *)self->_modelEspresso prepareModelWithConfig:self->_resConfig, *&width];
   if (!result)
   {
     modelEspresso = self->_modelEspresso;
@@ -1048,27 +1048,27 @@ LABEL_12:
   return result;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 modelInputHeight:(int)a5 modelInputWidth:(int)a6
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer modelInputHeight:(int)height modelInputWidth:(int)width
 {
-  if (!a3)
+  if (!input)
   {
     return -108;
   }
 
-  v6 = *&a6;
-  v7 = *&a5;
+  v6 = *&width;
+  v7 = *&height;
   cf = 0;
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  if (CVPixelBufferGetPixelFormatType(a4) == 1111970369 && Width == v6 && Height == v7)
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  if (CVPixelBufferGetPixelFormatType(buffer) == 1111970369 && Width == v6 && Height == v7)
   {
-    v13 = CFRetain(a4);
+    v13 = CFRetain(buffer);
     cf = v13;
   }
 
   else
   {
-    Scaler::Scale(&self->_scaler, a4, &cf, v6, v7, 1111970369);
+    Scaler::Scale(&self->_scaler, buffer, &cf, v6, v7, 1111970369);
     v14 = v15;
     if (v15)
     {
@@ -1078,7 +1078,7 @@ LABEL_12:
     v13 = cf;
   }
 
-  v14 = [(VCPImageHumanPoseAnalyzer *)self copyImage:v13 toData:a3 withChannels:3];
+  v14 = [(VCPImageHumanPoseAnalyzer *)self copyImage:v13 toData:input withChannels:3];
 LABEL_10:
   if (cf)
   {
@@ -1088,26 +1088,26 @@ LABEL_10:
   return v14;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v9 = a6;
+  cancelCopy = cancel;
   [(NSMutableArray *)self->_persons removeAllObjects];
   [(NSMutableArray *)self->_results removeAllObjects];
-  *a5 = 0;
-  if (v9 && (v9[2](v9) & 1) != 0)
+  *results = 0;
+  if (cancelCopy && (cancelCopy[2](cancelCopy) & 1) != 0)
   {
-    v10 = -128;
+    reInitModel = -128;
     goto LABEL_22;
   }
 
   v11 = objc_autoreleasePoolPush();
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   if (self->_flushModel && !self->_modelEspresso)
   {
-    v10 = [(VCPImageHumanPoseAnalyzer *)self reInitModel];
-    if (v10)
+    reInitModel = [(VCPImageHumanPoseAnalyzer *)self reInitModel];
+    if (reInitModel)
     {
 LABEL_18:
       v15 = 0;
@@ -1127,11 +1127,11 @@ LABEL_18:
 
   if (v14 >= 64)
   {
-    v10 = [(VCPImageHumanPoseAnalyzer *)self createInput:self->_inputData withBuffer:a3 modelInputHeight:self->_inputHeight modelInputWidth:self->_inputWidth];
-    if (!v10)
+    reInitModel = [(VCPImageHumanPoseAnalyzer *)self createInput:self->_inputData withBuffer:buffer modelInputHeight:self->_inputHeight modelInputWidth:self->_inputWidth];
+    if (!reInitModel)
     {
-      v10 = [(VCPImageHumanPoseAnalyzer *)self generateHumanPose:a3];
-      if (!v10)
+      reInitModel = [(VCPImageHumanPoseAnalyzer *)self generateHumanPose:buffer];
+      if (!reInitModel)
       {
         if (self->_flushModel)
         {
@@ -1142,7 +1142,7 @@ LABEL_18:
           }
         }
 
-        v10 = 0;
+        reInitModel = 0;
         v15 = 1;
         goto LABEL_19;
       }
@@ -1152,7 +1152,7 @@ LABEL_18:
   }
 
   v15 = 0;
-  v10 = 0;
+  reInitModel = 0;
 LABEL_19:
   objc_autoreleasePoolPop(v11);
   if (v15 && [(NSMutableArray *)self->_results count])
@@ -1160,12 +1160,12 @@ LABEL_19:
     results = self->_results;
     v19 = @"HumanPoseResults";
     v20[0] = results;
-    *a5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
+    *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
   }
 
 LABEL_22:
 
-  return v10;
+  return reInitModel;
 }
 
 - (id).cxx_construct

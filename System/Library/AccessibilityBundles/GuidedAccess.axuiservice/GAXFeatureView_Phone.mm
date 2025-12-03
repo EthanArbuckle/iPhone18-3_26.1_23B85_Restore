@@ -1,42 +1,42 @@
 @interface GAXFeatureView_Phone
 - (CGRect)popoverOriginRect;
-- (GAXFeatureView_Phone)initWithIdentifier:(id)a3 type:(int64_t)a4 icon:(id)a5 text:(id)a6 detailText:(id)a7 initialState:(BOOL)a8 styleProvider:(id)a9;
-- (void)_applyAutolayoutConstraintsForAXSizesWithIcon:(id)a3 text:(id)a4 detailText:(id)a5 initialFeatureState:(BOOL)a6 styleProvider:(id)a7;
-- (void)_applyAutolayoutConstraintsForNonAXSizesWithIcon:(id)a3 text:(id)a4 detailText:(id)a5 initialFeatureState:(BOOL)a6 styleProvider:(id)a7;
-- (void)_applyAutolayoutConstraintsWithIcon:(id)a3 text:(id)a4 detailText:(id)a5 initialFeatureState:(BOOL)a6 styleProvider:(id)a7;
-- (void)_constructViewHierarchyWithIcon:(id)a3 text:(id)a4 detailText:(id)a5 initialFeatureState:(BOOL)a6 styleProvider:(id)a7;
+- (GAXFeatureView_Phone)initWithIdentifier:(id)identifier type:(int64_t)type icon:(id)icon text:(id)text detailText:(id)detailText initialState:(BOOL)state styleProvider:(id)provider;
+- (void)_applyAutolayoutConstraintsForAXSizesWithIcon:(id)icon text:(id)text detailText:(id)detailText initialFeatureState:(BOOL)state styleProvider:(id)provider;
+- (void)_applyAutolayoutConstraintsForNonAXSizesWithIcon:(id)icon text:(id)text detailText:(id)detailText initialFeatureState:(BOOL)state styleProvider:(id)provider;
+- (void)_applyAutolayoutConstraintsWithIcon:(id)icon text:(id)text detailText:(id)detailText initialFeatureState:(BOOL)state styleProvider:(id)provider;
+- (void)_constructViewHierarchyWithIcon:(id)icon text:(id)text detailText:(id)detailText initialFeatureState:(BOOL)state styleProvider:(id)provider;
 @end
 
 @implementation GAXFeatureView_Phone
 
-- (GAXFeatureView_Phone)initWithIdentifier:(id)a3 type:(int64_t)a4 icon:(id)a5 text:(id)a6 detailText:(id)a7 initialState:(BOOL)a8 styleProvider:(id)a9
+- (GAXFeatureView_Phone)initWithIdentifier:(id)identifier type:(int64_t)type icon:(id)icon text:(id)text detailText:(id)detailText initialState:(BOOL)state styleProvider:(id)provider
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
-  if (a4 > 1)
+  identifierCopy = identifier;
+  iconCopy = icon;
+  textCopy = text;
+  detailTextCopy = detailText;
+  providerCopy = provider;
+  if (type > 1)
   {
-    if (a4 == 2 || a4 == 3 && (!v15 || !v16 || v17))
+    if (type == 2 || type == 3 && (!iconCopy || !textCopy || detailTextCopy))
     {
       goto LABEL_18;
     }
   }
 
-  else if (a4)
+  else if (type)
   {
-    if (a4 == 1 && (!v15 || !v16 || v17))
+    if (type == 1 && (!iconCopy || !textCopy || detailTextCopy))
     {
       goto LABEL_18;
     }
   }
 
-  else if (!v16)
+  else if (!textCopy)
   {
 LABEL_18:
     _AXLogWithFacility();
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
@@ -46,40 +46,40 @@ LABEL_18:
   v20 = v19;
   if (v19)
   {
-    [(GAXFeatureView *)v19 setIdentifier:v14];
-    [(GAXFeatureView *)v20 setType:a4];
+    [(GAXFeatureView *)v19 setIdentifier:identifierCopy];
+    [(GAXFeatureView *)v20 setType:type];
   }
 
   self = v20;
-  v21 = self;
+  selfCopy = self;
 LABEL_19:
 
-  return v21;
+  return selfCopy;
 }
 
-- (void)_constructViewHierarchyWithIcon:(id)a3 text:(id)a4 detailText:(id)a5 initialFeatureState:(BOOL)a6 styleProvider:(id)a7
+- (void)_constructViewHierarchyWithIcon:(id)icon text:(id)text detailText:(id)detailText initialFeatureState:(BOOL)state styleProvider:(id)provider
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  stateCopy = state;
+  iconCopy = icon;
+  textCopy = text;
+  detailTextCopy = detailText;
+  providerCopy = provider;
   v27.receiver = self;
   v27.super_class = GAXFeatureView_Phone;
-  [(GAXFeatureView *)&v27 _constructViewHierarchyWithIcon:v12 text:v13 detailText:v14 initialFeatureState:v8 styleProvider:v15];
+  [(GAXFeatureView *)&v27 _constructViewHierarchyWithIcon:iconCopy text:textCopy detailText:detailTextCopy initialFeatureState:stateCopy styleProvider:providerCopy];
   v16 = [UISwitch alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
   v20 = [v16 initWithFrame:{CGRectZero.origin.x, y, width, height}];
-  [v20 setOn:v8];
+  [v20 setOn:stateCopy];
   [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v20 addTarget:self action:"_handleValueChanged:" forControlEvents:4096];
   [(GAXFeatureView *)self setToggleSwitch:v20];
   [(GAXFeatureView_Phone *)self addSubview:v20];
-  if (v12)
+  if (iconCopy)
   {
-    v21 = [[GAXIconView alloc] initWithIcon:v12 styleProvider:v15];
+    v21 = [[GAXIconView alloc] initWithIcon:iconCopy styleProvider:providerCopy];
     [(GAXIconView *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(GAXFeatureView_Phone *)self addSubview:v21];
     [(GAXFeatureView *)self setIconView:v21];
@@ -89,101 +89,101 @@ LABEL_19:
   [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(GAXFeatureView_Phone *)self addSubview:v22];
   [(GAXFeatureView_Phone *)self setTextContainerView:v22];
-  v23 = [v15 featureViewTextFont];
-  v24 = [GAXInterfaceUtilities labelWithText:v13 font:v23 allowMultipleLines:1 textAlignment:4 styleProvider:v15];
+  featureViewTextFont = [providerCopy featureViewTextFont];
+  v24 = [GAXInterfaceUtilities labelWithText:textCopy font:featureViewTextFont allowMultipleLines:1 textAlignment:4 styleProvider:providerCopy];
 
   [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(GAXFeatureView *)self setTextLabel:v24];
   [v22 addSubview:v24];
-  if (v14)
+  if (detailTextCopy)
   {
-    v25 = [v15 featureViewDetailTextFont];
-    v26 = [GAXInterfaceUtilities labelWithText:v14 font:v25 allowMultipleLines:1 textAlignment:4 styleProvider:v15];
+    featureViewDetailTextFont = [providerCopy featureViewDetailTextFont];
+    v26 = [GAXInterfaceUtilities labelWithText:detailTextCopy font:featureViewDetailTextFont allowMultipleLines:1 textAlignment:4 styleProvider:providerCopy];
 
     [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v22 addSubview:v26];
     [(GAXFeatureView_Phone *)self setDetailTextLabel:v26];
-    [(GAXFeatureView_Phone *)self setAccessibilityHint:v14];
+    [(GAXFeatureView_Phone *)self setAccessibilityHint:detailTextCopy];
   }
 
-  [(GAXFeatureView_Phone *)self setAccessibilityLabel:v13];
+  [(GAXFeatureView_Phone *)self setAccessibilityLabel:textCopy];
   -[GAXFeatureView_Phone setAccessibilityTraits:](self, "setAccessibilityTraits:", [v20 accessibilityTraits]);
   [(GAXFeatureView_Phone *)self setIsAccessibilityElement:1];
 }
 
-- (void)_applyAutolayoutConstraintsWithIcon:(id)a3 text:(id)a4 detailText:(id)a5 initialFeatureState:(BOOL)a6 styleProvider:(id)a7
+- (void)_applyAutolayoutConstraintsWithIcon:(id)icon text:(id)text detailText:(id)detailText initialFeatureState:(BOOL)state styleProvider:(id)provider
 {
-  v7 = a6;
+  stateCopy = state;
   v19.receiver = self;
   v19.super_class = GAXFeatureView_Phone;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  [(GAXFeatureView *)&v19 _applyAutolayoutConstraintsWithIcon:v15 text:v14 detailText:v13 initialFeatureState:v7 styleProvider:v12];
+  providerCopy = provider;
+  detailTextCopy = detailText;
+  textCopy = text;
+  iconCopy = icon;
+  [(GAXFeatureView *)&v19 _applyAutolayoutConstraintsWithIcon:iconCopy text:textCopy detailText:detailTextCopy initialFeatureState:stateCopy styleProvider:providerCopy];
   v16 = [UIApplication sharedApplication:v19.receiver];
-  v17 = [v16 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v16 preferredContentSizeCategory];
   v18 = _UIContentSizeCategoryCompareToContentSizeCategory();
 
   if (v18 == -1)
   {
-    [(GAXFeatureView_Phone *)self _applyAutolayoutConstraintsForNonAXSizesWithIcon:v15 text:v14 detailText:v13 initialFeatureState:v7 styleProvider:v12];
+    [(GAXFeatureView_Phone *)self _applyAutolayoutConstraintsForNonAXSizesWithIcon:iconCopy text:textCopy detailText:detailTextCopy initialFeatureState:stateCopy styleProvider:providerCopy];
   }
 
   else
   {
-    [(GAXFeatureView_Phone *)self _applyAutolayoutConstraintsForAXSizesWithIcon:v15 text:v14 detailText:v13 initialFeatureState:v7 styleProvider:v12];
+    [(GAXFeatureView_Phone *)self _applyAutolayoutConstraintsForAXSizesWithIcon:iconCopy text:textCopy detailText:detailTextCopy initialFeatureState:stateCopy styleProvider:providerCopy];
   }
 }
 
-- (void)_applyAutolayoutConstraintsForAXSizesWithIcon:(id)a3 text:(id)a4 detailText:(id)a5 initialFeatureState:(BOOL)a6 styleProvider:(id)a7
+- (void)_applyAutolayoutConstraintsForAXSizesWithIcon:(id)icon text:(id)text detailText:(id)detailText initialFeatureState:(BOOL)state styleProvider:(id)provider
 {
-  v9 = a7;
-  v10 = [(GAXFeatureView *)self toggleSwitch];
-  v11 = [(GAXFeatureView *)self iconView];
-  v12 = [(GAXFeatureView_Phone *)self textContainerView];
-  v13 = [(GAXFeatureView *)self textLabel];
-  v96 = [(GAXFeatureView_Phone *)self detailTextLabel];
-  [v9 featureViewToggleOffset];
+  providerCopy = provider;
+  toggleSwitch = [(GAXFeatureView *)self toggleSwitch];
+  iconView = [(GAXFeatureView *)self iconView];
+  textContainerView = [(GAXFeatureView_Phone *)self textContainerView];
+  textLabel = [(GAXFeatureView *)self textLabel];
+  detailTextLabel = [(GAXFeatureView_Phone *)self detailTextLabel];
+  [providerCopy featureViewToggleOffset];
   v15 = v14;
-  [v9 featureViewTextHorizontalPadding];
+  [providerCopy featureViewTextHorizontalPadding];
   v17 = v16;
   LODWORD(v16) = 0.5;
-  [v13 _setHyphenationFactor:v16];
+  [textLabel _setHyphenationFactor:v16];
   v18 = +[NSMutableArray array];
-  v97 = v11;
-  if (a3)
+  v97 = iconView;
+  if (icon)
   {
-    v94 = v10;
-    v19 = [v11 topAnchor];
-    v20 = [(GAXFeatureView_Phone *)self topAnchor];
-    [v19 constraintGreaterThanOrEqualToAnchor:v20];
-    v22 = v21 = v13;
+    v94 = toggleSwitch;
+    topAnchor = [iconView topAnchor];
+    topAnchor2 = [(GAXFeatureView_Phone *)self topAnchor];
+    [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
+    v22 = v21 = textLabel;
     [v18 addObject:v22];
 
-    v23 = [v11 bottomAnchor];
-    v24 = [(GAXFeatureView_Phone *)self bottomAnchor];
-    v25 = [v23 constraintLessThanOrEqualToAnchor:v24];
+    bottomAnchor = [iconView bottomAnchor];
+    bottomAnchor2 = [(GAXFeatureView_Phone *)self bottomAnchor];
+    v25 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     [v18 addObject:v25];
 
-    v26 = [v21 font];
-    [v26 capHeight];
+    font = [v21 font];
+    [font capHeight];
     v28 = v27;
 
-    v29 = [v11 centerYAnchor];
-    v30 = [v21 firstBaselineAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:v28 * -0.5];
+    centerYAnchor = [iconView centerYAnchor];
+    firstBaselineAnchor = [v21 firstBaselineAnchor];
+    v31 = [centerYAnchor constraintEqualToAnchor:firstBaselineAnchor constant:v28 * -0.5];
     [v18 addObject:v31];
 
     v32 = v21;
-    v33 = [v21 attributedText];
-    v92 = [v33 attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:0];
+    attributedText = [v21 attributedText];
+    v92 = [attributedText attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:0];
     v34 = [v92 mutableCopy];
-    v35 = v9;
-    [v9 featureViewIconLargeTextLayoutTextIndent];
+    v35 = providerCopy;
+    [providerCopy featureViewIconLargeTextLayoutTextIndent];
     [v34 setFirstLineHeadIndent:?];
-    v93 = v33;
-    v36 = [v33 mutableCopy];
+    v93 = attributedText;
+    v36 = [attributedText mutableCopy];
     if ([v36 length])
     {
       v98 = NSParagraphStyleAttributeName;
@@ -195,220 +195,220 @@ LABEL_19:
     [v32 setAttributedText:v36];
     v38 = objc_opt_new();
     [(GAXFeatureView_Phone *)self addLayoutGuide:v38];
-    v39 = [v38 leadingAnchor];
-    v40 = [(GAXFeatureView_Phone *)self leadingAnchor];
-    [v39 constraintEqualToAnchor:v40];
+    leadingAnchor = [v38 leadingAnchor];
+    leadingAnchor2 = [(GAXFeatureView_Phone *)self leadingAnchor];
+    [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v41 = v91 = v34;
     [v18 addObject:v41];
 
-    v42 = [v38 widthAnchor];
+    widthAnchor = [v38 widthAnchor];
     [v35 featureViewIconStandardLayoutWidth];
-    v44 = [v42 constraintEqualToConstant:v43 * 0.5];
+    v44 = [widthAnchor constraintEqualToConstant:v43 * 0.5];
     [v18 addObject:v44];
 
-    v45 = [v97 centerXAnchor];
-    v46 = [v38 trailingAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46];
+    centerXAnchor = [v97 centerXAnchor];
+    trailingAnchor = [v38 trailingAnchor];
+    v47 = [centerXAnchor constraintEqualToAnchor:trailingAnchor];
     [v18 addObject:v47];
 
-    v9 = v35;
-    v13 = v32;
+    providerCopy = v35;
+    textLabel = v32;
 
-    v10 = v94;
+    toggleSwitch = v94;
   }
 
-  v48 = [v12 topAnchor];
-  v49 = [(GAXFeatureView_Phone *)self topAnchor];
-  v50 = [v48 constraintGreaterThanOrEqualToAnchor:v49];
+  topAnchor3 = [textContainerView topAnchor];
+  topAnchor4 = [(GAXFeatureView_Phone *)self topAnchor];
+  v50 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   [v18 addObject:v50];
 
-  v51 = [v12 trailingAnchor];
-  v52 = [(GAXFeatureView_Phone *)self trailingAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52 constant:v15];
+  trailingAnchor2 = [textContainerView trailingAnchor];
+  trailingAnchor3 = [(GAXFeatureView_Phone *)self trailingAnchor];
+  v53 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:v15];
   [v18 addObject:v53];
 
-  v54 = [v12 leadingAnchor];
-  v55 = [(GAXFeatureView_Phone *)self leadingAnchor];
-  v56 = [v54 constraintEqualToAnchor:v55 constant:v17];
+  leadingAnchor3 = [textContainerView leadingAnchor];
+  leadingAnchor4 = [(GAXFeatureView_Phone *)self leadingAnchor];
+  v56 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v17];
   [v18 addObject:v56];
 
-  v57 = [v13 topAnchor];
-  v58 = [v12 topAnchor];
-  v59 = [v57 constraintEqualToAnchor:v58];
+  topAnchor5 = [textLabel topAnchor];
+  topAnchor6 = [textContainerView topAnchor];
+  v59 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   [v18 addObject:v59];
 
-  v60 = [v13 leadingAnchor];
-  v61 = [v12 leadingAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61];
+  leadingAnchor5 = [textLabel leadingAnchor];
+  leadingAnchor6 = [textContainerView leadingAnchor];
+  v62 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v18 addObject:v62];
 
-  v63 = [v13 widthAnchor];
-  v64 = [v12 widthAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
+  widthAnchor2 = [textLabel widthAnchor];
+  widthAnchor3 = [textContainerView widthAnchor];
+  v65 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   [v18 addObject:v65];
 
-  v66 = [v13 bottomAnchor];
-  if (a5)
+  bottomAnchor3 = [textLabel bottomAnchor];
+  if (detailText)
   {
-    v67 = [v96 topAnchor];
-    v68 = [v66 constraintEqualToAnchor:v67];
+    topAnchor7 = [detailTextLabel topAnchor];
+    v68 = [bottomAnchor3 constraintEqualToAnchor:topAnchor7];
     [v18 addObject:v68];
 
-    v69 = [v96 leadingAnchor];
-    v70 = [v12 leadingAnchor];
-    v71 = [v69 constraintEqualToAnchor:v70];
+    leadingAnchor7 = [detailTextLabel leadingAnchor];
+    leadingAnchor8 = [textContainerView leadingAnchor];
+    v71 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     [v18 addObject:v71];
 
-    v72 = [v96 widthAnchor];
-    v73 = [v12 widthAnchor];
-    v74 = [v72 constraintEqualToAnchor:v73];
+    widthAnchor4 = [detailTextLabel widthAnchor];
+    widthAnchor5 = [textContainerView widthAnchor];
+    v74 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
     [v18 addObject:v74];
 
-    v66 = [v96 bottomAnchor];
+    bottomAnchor3 = [detailTextLabel bottomAnchor];
   }
 
-  v75 = [v12 bottomAnchor];
-  v76 = [v66 constraintEqualToAnchor:v75];
+  bottomAnchor4 = [textContainerView bottomAnchor];
+  v76 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v18 addObject:v76];
 
   LODWORD(v77) = AXResistAllCompressingAndStretching[0];
   LODWORD(v78) = AXResistAllCompressingAndStretching[1];
   LODWORD(v79) = AXResistAllCompressingAndStretching[2];
   LODWORD(v80) = AXResistAllCompressingAndStretching[3];
-  [v10 ax_setContentHuggingAndCompressionResistance:{v77, v78, v79, v80}];
-  v81 = [v10 topAnchor];
-  v82 = [v12 bottomAnchor];
-  v83 = [v81 constraintEqualToAnchor:v82];
+  [toggleSwitch ax_setContentHuggingAndCompressionResistance:{v77, v78, v79, v80}];
+  topAnchor8 = [toggleSwitch topAnchor];
+  bottomAnchor5 = [textContainerView bottomAnchor];
+  v83 = [topAnchor8 constraintEqualToAnchor:bottomAnchor5];
   [v18 addObject:v83];
 
-  v84 = [v10 leadingAnchor];
-  v85 = [v12 leadingAnchor];
-  v86 = [v84 constraintEqualToAnchor:v85];
+  leadingAnchor9 = [toggleSwitch leadingAnchor];
+  leadingAnchor10 = [textContainerView leadingAnchor];
+  v86 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   [v18 addObject:v86];
 
-  v87 = [v10 bottomAnchor];
-  v88 = [(GAXFeatureView_Phone *)self bottomAnchor];
-  [v9 featureViewAdditionalBottomOffsetForLargeText];
-  v90 = [v87 constraintLessThanOrEqualToAnchor:v88 constant:-v89];
+  bottomAnchor6 = [toggleSwitch bottomAnchor];
+  bottomAnchor7 = [(GAXFeatureView_Phone *)self bottomAnchor];
+  [providerCopy featureViewAdditionalBottomOffsetForLargeText];
+  v90 = [bottomAnchor6 constraintLessThanOrEqualToAnchor:bottomAnchor7 constant:-v89];
   [v18 addObject:v90];
 
   [NSLayoutConstraint activateConstraints:v18];
 }
 
-- (void)_applyAutolayoutConstraintsForNonAXSizesWithIcon:(id)a3 text:(id)a4 detailText:(id)a5 initialFeatureState:(BOOL)a6 styleProvider:(id)a7
+- (void)_applyAutolayoutConstraintsForNonAXSizesWithIcon:(id)icon text:(id)text detailText:(id)detailText initialFeatureState:(BOOL)state styleProvider:(id)provider
 {
-  v10 = a7;
-  v11 = [(GAXFeatureView *)self toggleSwitch];
-  v12 = [(GAXFeatureView *)self iconView];
-  v13 = [(GAXFeatureView_Phone *)self textContainerView];
-  v14 = [(GAXFeatureView *)self textLabel];
-  v15 = [(GAXFeatureView_Phone *)self detailTextLabel];
-  [v10 featureViewToggleOffset];
+  providerCopy = provider;
+  toggleSwitch = [(GAXFeatureView *)self toggleSwitch];
+  iconView = [(GAXFeatureView *)self iconView];
+  textContainerView = [(GAXFeatureView_Phone *)self textContainerView];
+  textLabel = [(GAXFeatureView *)self textLabel];
+  detailTextLabel = [(GAXFeatureView_Phone *)self detailTextLabel];
+  [providerCopy featureViewToggleOffset];
   v17 = v16;
-  [v10 featureViewToggleOffset];
+  [providerCopy featureViewToggleOffset];
   v19 = v18;
   LODWORD(v18) = 1144750080;
-  [v11 ax_constrainLayoutAttribute:4 asEqualToValueOfView:self priority:v18];
-  [v11 ax_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfView:self];
-  [v11 ax_constrainLayoutAttribute:10 asEqualToValueOfView:self withOffset:v17];
-  [v11 ax_constrainLayoutAttribute:6 asEqualToValueOfView:self withOffset:v19];
+  [toggleSwitch ax_constrainLayoutAttribute:4 asEqualToValueOfView:self priority:v18];
+  [toggleSwitch ax_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfView:self];
+  [toggleSwitch ax_constrainLayoutAttribute:10 asEqualToValueOfView:self withOffset:v17];
+  [toggleSwitch ax_constrainLayoutAttribute:6 asEqualToValueOfView:self withOffset:v19];
   LODWORD(v20) = 1144750080;
-  [v11 ax_constrainLayoutAttribute:3 asEqualToValueOfView:self priority:v20];
-  [v11 ax_constrainLayoutAttribute:3 asGreaterThanOrEqualToValueOfView:self];
+  [toggleSwitch ax_constrainLayoutAttribute:3 asEqualToValueOfView:self priority:v20];
+  [toggleSwitch ax_constrainLayoutAttribute:3 asGreaterThanOrEqualToValueOfView:self];
   LODWORD(v21) = 1148846080;
-  [v11 setContentHuggingPriority:0 forAxis:v21];
+  [toggleSwitch setContentHuggingPriority:0 forAxis:v21];
   LODWORD(v22) = 1148846080;
-  [v11 setContentHuggingPriority:1 forAxis:v22];
+  [toggleSwitch setContentHuggingPriority:1 forAxis:v22];
   LODWORD(v23) = 1148846080;
-  [v11 setContentCompressionResistancePriority:0 forAxis:v23];
+  [toggleSwitch setContentCompressionResistancePriority:0 forAxis:v23];
   LODWORD(v24) = 1148846080;
-  [v11 setContentCompressionResistancePriority:1 forAxis:v24];
-  if (a3)
+  [toggleSwitch setContentCompressionResistancePriority:1 forAxis:v24];
+  if (icon)
   {
     LODWORD(v25) = 1144750080;
-    [(GAXFeatureView_Phone *)v12 ax_constrainLayoutAttribute:4 asEqualToValueOfView:self priority:v25];
-    [(GAXFeatureView_Phone *)v12 ax_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfView:self];
-    [(GAXFeatureView_Phone *)v12 ax_constrainLayoutAttribute:10 asEqualToValueOfView:self];
-    [(GAXFeatureView_Phone *)v12 ax_constrainLayoutAttribute:5 asEqualToValueOfView:self];
+    [(GAXFeatureView_Phone *)iconView ax_constrainLayoutAttribute:4 asEqualToValueOfView:self priority:v25];
+    [(GAXFeatureView_Phone *)iconView ax_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfView:self];
+    [(GAXFeatureView_Phone *)iconView ax_constrainLayoutAttribute:10 asEqualToValueOfView:self];
+    [(GAXFeatureView_Phone *)iconView ax_constrainLayoutAttribute:5 asEqualToValueOfView:self];
     LODWORD(v26) = 1144750080;
-    [(GAXFeatureView_Phone *)v12 ax_constrainLayoutAttribute:3 asEqualToValueOfView:self priority:v26];
-    [(GAXFeatureView_Phone *)v12 ax_constrainLayoutAttribute:3 asGreaterThanOrEqualToValueOfView:self];
-    v27 = [(GAXFeatureView_Phone *)v12 widthAnchor];
-    [v10 featureViewIconStandardLayoutWidth];
-    [v27 constraintEqualToConstant:?];
-    v55 = v54 = a5;
+    [(GAXFeatureView_Phone *)iconView ax_constrainLayoutAttribute:3 asEqualToValueOfView:self priority:v26];
+    [(GAXFeatureView_Phone *)iconView ax_constrainLayoutAttribute:3 asGreaterThanOrEqualToValueOfView:self];
+    widthAnchor = [(GAXFeatureView_Phone *)iconView widthAnchor];
+    [providerCopy featureViewIconStandardLayoutWidth];
+    [widthAnchor constraintEqualToConstant:?];
+    v55 = v54 = detailText;
     v28 = v55;
     [NSArray arrayWithObjects:&v55 count:1];
-    v29 = v15;
-    v30 = v10;
-    v32 = v31 = v12;
+    v29 = detailTextLabel;
+    v30 = providerCopy;
+    v32 = v31 = iconView;
     [NSLayoutConstraint activateConstraints:v32];
 
-    v12 = v31;
-    v10 = v30;
-    v15 = v29;
+    iconView = v31;
+    providerCopy = v30;
+    detailTextLabel = v29;
 
-    a5 = v54;
+    detailText = v54;
     v33 = 6;
-    v34 = v12;
+    selfCopy = iconView;
   }
 
   else
   {
     v33 = 5;
-    v34 = self;
+    selfCopy = self;
   }
 
-  [v10 featureViewTextHorizontalPadding];
+  [providerCopy featureViewTextHorizontalPadding];
   v36 = v35;
-  [v10 featureViewTextHorizontalPadding];
+  [providerCopy featureViewTextHorizontalPadding];
   v38 = v37 * -0.5;
-  [v13 ax_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfView:self];
-  [v13 ax_constrainLayoutAttribute:10 asEqualToValueOfView:self];
-  [v13 ax_constrainLayoutAttribute:5 asEqualToLayoutAttribute:v33 ofView:v34 withOffset:v36];
-  [v13 ax_constrainLayoutAttribute:6 asEqualToLayoutAttribute:5 ofView:v11 withOffset:v38];
-  [v10 featureViewTextVerticalPadding];
-  [v13 ax_constrainLayoutAttribute:3 asGreaterThanOrEqualToValueOfView:self withOffset:?];
+  [textContainerView ax_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfView:self];
+  [textContainerView ax_constrainLayoutAttribute:10 asEqualToValueOfView:self];
+  [textContainerView ax_constrainLayoutAttribute:5 asEqualToLayoutAttribute:v33 ofView:selfCopy withOffset:v36];
+  [textContainerView ax_constrainLayoutAttribute:6 asEqualToLayoutAttribute:5 ofView:toggleSwitch withOffset:v38];
+  [providerCopy featureViewTextVerticalPadding];
+  [textContainerView ax_constrainLayoutAttribute:3 asGreaterThanOrEqualToValueOfView:self withOffset:?];
   LODWORD(v39) = 1144750080;
-  [v14 ax_constrainLayoutAttribute:4 asEqualToValueOfView:v13 priority:v39];
-  [v14 ax_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfView:v13];
+  [textLabel ax_constrainLayoutAttribute:4 asEqualToValueOfView:textContainerView priority:v39];
+  [textLabel ax_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfView:textContainerView];
   LODWORD(v40) = 1144750080;
-  [v14 ax_constrainLayoutAttribute:5 asEqualToValueOfView:v13 priority:v40];
-  [v14 ax_constrainLayoutAttribute:5 asGreaterThanOrEqualToValueOfView:v13];
+  [textLabel ax_constrainLayoutAttribute:5 asEqualToValueOfView:textContainerView priority:v40];
+  [textLabel ax_constrainLayoutAttribute:5 asGreaterThanOrEqualToValueOfView:textContainerView];
   LODWORD(v41) = 1144750080;
-  [v14 ax_constrainLayoutAttribute:6 asEqualToValueOfView:v13 priority:v41];
-  [v14 ax_constrainLayoutAttribute:6 asLessThanOrEqualToValueOfView:v13];
+  [textLabel ax_constrainLayoutAttribute:6 asEqualToValueOfView:textContainerView priority:v41];
+  [textLabel ax_constrainLayoutAttribute:6 asLessThanOrEqualToValueOfView:textContainerView];
   LODWORD(v42) = 1144750080;
-  [v14 ax_constrainLayoutAttribute:3 asEqualToValueOfView:v13 priority:v42];
-  [v14 ax_constrainLayoutAttribute:3 asGreaterThanOrEqualToValueOfView:v13];
+  [textLabel ax_constrainLayoutAttribute:3 asEqualToValueOfView:textContainerView priority:v42];
+  [textLabel ax_constrainLayoutAttribute:3 asGreaterThanOrEqualToValueOfView:textContainerView];
   LODWORD(v43) = 1132068864;
-  [v14 setContentHuggingPriority:0 forAxis:v43];
+  [textLabel setContentHuggingPriority:0 forAxis:v43];
   LODWORD(v44) = 1148846080;
-  [v14 setContentHuggingPriority:1 forAxis:v44];
+  [textLabel setContentHuggingPriority:1 forAxis:v44];
   LODWORD(v45) = 1144750080;
-  [v14 setContentCompressionResistancePriority:0 forAxis:v45];
+  [textLabel setContentCompressionResistancePriority:0 forAxis:v45];
   LODWORD(v46) = 1148846080;
-  [v14 setContentCompressionResistancePriority:1 forAxis:v46];
-  if (a5)
+  [textLabel setContentCompressionResistancePriority:1 forAxis:v46];
+  if (detailText)
   {
     LODWORD(v47) = 1144750080;
-    [v15 ax_constrainLayoutAttribute:4 asEqualToValueOfView:v13 priority:v47];
-    [v15 ax_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfView:v13];
+    [detailTextLabel ax_constrainLayoutAttribute:4 asEqualToValueOfView:textContainerView priority:v47];
+    [detailTextLabel ax_constrainLayoutAttribute:4 asLessThanOrEqualToValueOfView:textContainerView];
     LODWORD(v48) = 1144750080;
-    [v15 ax_constrainLayoutAttribute:5 asEqualToValueOfView:v13 priority:v48];
-    [v15 ax_constrainLayoutAttribute:5 asGreaterThanOrEqualToValueOfView:v13];
+    [detailTextLabel ax_constrainLayoutAttribute:5 asEqualToValueOfView:textContainerView priority:v48];
+    [detailTextLabel ax_constrainLayoutAttribute:5 asGreaterThanOrEqualToValueOfView:textContainerView];
     LODWORD(v49) = 1144750080;
-    [v15 ax_constrainLayoutAttribute:6 asEqualToValueOfView:v13 priority:v49];
-    [v15 ax_constrainLayoutAttribute:6 asLessThanOrEqualToValueOfView:v13];
-    [v15 ax_constrainLayoutAttribute:3 asEqualToLayoutAttribute:4 ofView:v14];
+    [detailTextLabel ax_constrainLayoutAttribute:6 asEqualToValueOfView:textContainerView priority:v49];
+    [detailTextLabel ax_constrainLayoutAttribute:6 asLessThanOrEqualToValueOfView:textContainerView];
+    [detailTextLabel ax_constrainLayoutAttribute:3 asEqualToLayoutAttribute:4 ofView:textLabel];
     LODWORD(v50) = 1132068864;
-    [v15 setContentHuggingPriority:0 forAxis:v50];
+    [detailTextLabel setContentHuggingPriority:0 forAxis:v50];
     LODWORD(v51) = 1148846080;
-    [v15 setContentHuggingPriority:1 forAxis:v51];
+    [detailTextLabel setContentHuggingPriority:1 forAxis:v51];
     LODWORD(v52) = 1144750080;
-    [v15 setContentCompressionResistancePriority:0 forAxis:v52];
+    [detailTextLabel setContentCompressionResistancePriority:0 forAxis:v52];
     LODWORD(v53) = 1148846080;
-    [v15 setContentCompressionResistancePriority:1 forAxis:v53];
+    [detailTextLabel setContentCompressionResistancePriority:1 forAxis:v53];
   }
 }
 

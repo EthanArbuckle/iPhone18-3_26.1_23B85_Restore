@@ -1,9 +1,9 @@
 @interface MTRNetworkCommissioningClusterQueryIdentityResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRNetworkCommissioningClusterQueryIdentityResponseParams)init;
-- (MTRNetworkCommissioningClusterQueryIdentityResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRNetworkCommissioningClusterQueryIdentityResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRNetworkCommissioningClusterQueryIdentityResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRNetworkCommissioningClusterQueryIdentityResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,9 +16,9 @@
   v2 = [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     identity = v2->_identity;
-    v2->_identity = v3;
+    v2->_identity = data;
 
     possessionSignature = v2->_possessionSignature;
     v2->_possessionSignature = 0;
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRNetworkCommissioningClusterQueryIdentityResponseParams);
-  v5 = [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)self identity];
-  [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)v4 setIdentity:v5];
+  identity = [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)self identity];
+  [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)v4 setIdentity:identity];
 
-  v6 = [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)self possessionSignature];
-  [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)v4 setPossessionSignature:v6];
+  possessionSignature = [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)self possessionSignature];
+  [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)v4 setPossessionSignature:possessionSignature];
 
   return v4;
 }
@@ -51,9 +51,9 @@
   return v8;
 }
 
-- (MTRNetworkCommissioningClusterQueryIdentityResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRNetworkCommissioningClusterQueryIdentityResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = MTRNetworkCommissioningClusterQueryIdentityResponseParams;
   v7 = [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)&v16 init];
@@ -63,7 +63,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:49 commandID:10 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:49 commandID:10 error:error];
   if (v15)
   {
     sub_2393C5AAC(v14);
@@ -85,7 +85,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -96,7 +96,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRNetworkCommissioningClusterQueryIdentityResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRNetworkCommissioningClusterQueryIdentityResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRNetworkCommissioningClusterQueryIdentityResponseParams;
@@ -104,7 +104,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -120,13 +120,13 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CBEA90] dataWithBytes:*a3 length:*(a3 + 1)];
+  v5 = [MEMORY[0x277CBEA90] dataWithBytes:*struct length:*(struct + 1)];
   [(MTRNetworkCommissioningClusterQueryIdentityResponseParams *)self setIdentity:v5];
 
-  v7 = *(a3 + 16);
-  v6 = a3 + 16;
+  v7 = *(struct + 16);
+  v6 = struct + 16;
   if (v7 == 1)
   {
     v8 = sub_238DE36B8(v6);

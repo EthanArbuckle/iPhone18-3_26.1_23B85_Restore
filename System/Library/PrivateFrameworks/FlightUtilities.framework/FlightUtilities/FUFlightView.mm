@@ -1,7 +1,7 @@
 @interface FUFlightView
 - (BOOL)landscapeMode;
 - (BOOL)mapOnly;
-- (BOOL)setFlights:(id)a3 selectedFlight:(int64_t)a4 selectedLeg:(int64_t)a5;
+- (BOOL)setFlights:(id)flights selectedFlight:(int64_t)flight selectedLeg:(int64_t)leg;
 - (FUFlightViewDelegate)delegate;
 - (MKMapView)mapView;
 - (NSLayoutConstraint)lanscapeConstraint1;
@@ -19,32 +19,32 @@
 - (id)currentLeg;
 - (id)departureCamera;
 - (id)flightCamera;
-- (id)flightForLeg:(id)a3;
+- (id)flightForLeg:(id)leg;
 - (id)infoViewControllerCreate;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
 - (unint64_t)absoluteLegIndex;
-- (void)addTrack:(id)a3;
+- (void)addTrack:(id)track;
 - (void)awakeFromNib;
-- (void)changeCurrentPage:(id)a3;
+- (void)changeCurrentPage:(id)page;
 - (void)cleanupView;
 - (void)didMoveToWindow;
-- (void)flightInfoView:(id)a3 didUpdateFocus:(int64_t)a4;
+- (void)flightInfoView:(id)view didUpdateFocus:(int64_t)focus;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
 - (void)removeMapBackground;
-- (void)setAbsoluteIndex:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setDisplayStyle:(unint64_t)a3;
-- (void)setSelectedLeg:(int64_t)a3;
-- (void)setShowInfoPanel:(BOOL)a3;
+- (void)setAbsoluteIndex:(unint64_t)index animated:(BOOL)animated;
+- (void)setDisplayStyle:(unint64_t)style;
+- (void)setSelectedLeg:(int64_t)leg;
+- (void)setShowInfoPanel:(BOOL)panel;
 - (void)showError;
 - (void)showInfo;
 - (void)showLoading;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateBorderLines;
 - (void)updateConstraints;
 - (void)updateMapAppearance;
@@ -58,8 +58,8 @@
 
 - (BOOL)mapOnly
 {
-  v2 = [(FUFlightView *)self borderLineViewPortrait];
-  v3 = v2 == 0;
+  borderLineViewPortrait = [(FUFlightView *)self borderLineViewPortrait];
+  v3 = borderLineViewPortrait == 0;
 
   return v3;
 }
@@ -71,39 +71,39 @@
   [(FUFlightView *)&v49 awakeFromNib];
   self->_selectedFlight = 0x7FFFFFFFFFFFFFFFLL;
   self->_selectedLeg = 0x7FFFFFFFFFFFFFFFLL;
-  v3 = [(FUFlightView *)self mapView];
-  [v3 setPitchEnabled:0];
+  mapView = [(FUFlightView *)self mapView];
+  [mapView setPitchEnabled:0];
 
-  v4 = [(FUFlightView *)self mapView];
-  [v4 setShowsAttribution:1];
+  mapView2 = [(FUFlightView *)self mapView];
+  [mapView2 setShowsAttribution:1];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_updateMapAppearance name:*MEMORY[0x277D77548] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_updateMapAppearance name:*MEMORY[0x277D77548] object:0];
 
   [(FUFlightView *)self updateMapAppearance];
-  v6 = [(FUFlightView *)self mapView];
-  [v6 setAlpha:0.0];
+  mapView3 = [(FUFlightView *)self mapView];
+  [mapView3 setAlpha:0.0];
 
   if ([(FUFlightView *)self mapOnly])
   {
-    v7 = [(FUFlightView *)self backBlurView];
-    [v7 setAlpha:1.0];
+    backBlurView = [(FUFlightView *)self backBlurView];
+    [backBlurView setAlpha:1.0];
   }
 
-  v8 = [(FUFlightView *)self pageControl];
-  [v8 setAlpha:0.0];
+  pageControl = [(FUFlightView *)self pageControl];
+  [pageControl setAlpha:0.0];
 
-  v9 = [(FUFlightView *)self mapView];
-  [v9 _setShowsAppleLogo:0];
+  mapView4 = [(FUFlightView *)self mapView];
+  [mapView4 _setShowsAppleLogo:0];
 
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 bundleIdentifier];
-  v12 = [v11 isEqualToString:@"com.apple.datadetectors.DDActionsService"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v12 = [bundleIdentifier isEqualToString:@"com.apple.datadetectors.DDActionsService"];
 
   if (v12)
   {
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:*MEMORY[0x277CD4B40] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:*MEMORY[0x277CD4B40] object:0];
   }
 
   [(FUFlightView *)self setupStyles];
@@ -116,8 +116,8 @@
 
     [(UIPageViewController *)self->_pageViewController setDelegate:self];
     [(UIPageViewController *)self->_pageViewController setDataSource:self];
-    v16 = [(UIPageViewController *)self->_pageViewController view];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(UIPageViewController *)self->_pageViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v17 = objc_alloc_init(MEMORY[0x277D759D8]);
     objc_storeStrong(&self->_pageViewContainer, v17);
@@ -132,8 +132,8 @@
       v19 = [objc_alloc(MEMORY[0x277D763B0]) initWithVariant:0];
       [WeakRetained _setBackground:v19];
       [v17 setContentInsetAdjustmentBehavior:2];
-      v20 = [v17 topEdgeEffect];
-      [v20 setHidden:1];
+      topEdgeEffect = [v17 topEdgeEffect];
+      [topEdgeEffect setHidden:1];
     }
 
     else
@@ -142,79 +142,79 @@
       [WeakRetained setEffect:v19];
     }
 
-    v21 = [WeakRetained contentView];
-    v22 = [v21 safeAreaLayoutGuide];
-    [v21 addSubview:v17];
-    v23 = [v17 leadingAnchor];
-    v24 = [v22 leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    contentView = [WeakRetained contentView];
+    safeAreaLayoutGuide = [contentView safeAreaLayoutGuide];
+    [contentView addSubview:v17];
+    leadingAnchor = [v17 leadingAnchor];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v25 setActive:1];
 
-    v26 = [v17 trailingAnchor];
-    v27 = [v21 trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    trailingAnchor = [v17 trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v28 setActive:1];
 
-    v29 = [v17 topAnchor];
+    topAnchor = [v17 topAnchor];
     if (_UISolariumEnabled())
     {
-      v30 = v21;
+      v30 = contentView;
     }
 
     else
     {
-      v30 = v22;
+      v30 = safeAreaLayoutGuide;
     }
 
-    v31 = [v30 topAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31];
+    topAnchor2 = [v30 topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v32 setActive:1];
 
-    v33 = [v17 bottomAnchor];
-    v34 = [v22 bottomAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    bottomAnchor = [v17 bottomAnchor];
+    bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+    v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v35 setActive:1];
 
-    v36 = [(UIPageViewController *)self->_pageViewController view];
-    [v17 addSubview:v36];
-    v37 = [v36 leadingAnchor];
-    v38 = [v17 safeAreaLayoutGuide];
-    v39 = [v38 leadingAnchor];
-    v40 = [v37 constraintEqualToAnchor:v39];
+    view2 = [(UIPageViewController *)self->_pageViewController view];
+    [v17 addSubview:view2];
+    leadingAnchor3 = [view2 leadingAnchor];
+    safeAreaLayoutGuide2 = [v17 safeAreaLayoutGuide];
+    leadingAnchor4 = [safeAreaLayoutGuide2 leadingAnchor];
+    v40 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v40 setActive:1];
 
-    v41 = [v36 widthAnchor];
-    v42 = [v17 widthAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    widthAnchor = [view2 widthAnchor];
+    widthAnchor2 = [v17 widthAnchor];
+    v43 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v43 setActive:1];
 
-    v44 = [v36 topAnchor];
-    v45 = [v17 topAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45];
+    topAnchor3 = [view2 topAnchor];
+    topAnchor4 = [v17 topAnchor];
+    v46 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [v46 setActive:1];
 
-    v47 = [(FUFlightView *)self borderLineViewLandscape];
-    [v47 setProminence:3];
+    borderLineViewLandscape = [(FUFlightView *)self borderLineViewLandscape];
+    [borderLineViewLandscape setProminence:3];
 
-    v48 = [(FUFlightView *)self borderLineViewPortrait];
-    [v48 setProminence:3];
+    borderLineViewPortrait = [(FUFlightView *)self borderLineViewPortrait];
+    [borderLineViewPortrait setProminence:3];
   }
 }
 
-- (void)setDisplayStyle:(unint64_t)a3
+- (void)setDisplayStyle:(unint64_t)style
 {
-  if (self->_displayStyle != a3)
+  if (self->_displayStyle != style)
   {
-    self->_displayStyle = a3;
+    self->_displayStyle = style;
     [(FUFlightView *)self setupStyles];
   }
 }
 
 - (void)updateMapAppearance
 {
-  v4 = [MEMORY[0x277D6F1A0] bestAppearanceForSystem];
-  v3 = [(FUFlightView *)self mapView];
-  [v4 overrideAppearanceForView:v3];
+  bestAppearanceForSystem = [MEMORY[0x277D6F1A0] bestAppearanceForSystem];
+  mapView = [(FUFlightView *)self mapView];
+  [bestAppearanceForSystem overrideAppearanceForView:mapView];
 }
 
 - (void)removeMapBackground
@@ -224,23 +224,23 @@
   {
     self->_spotlightMode = 1;
     [(FUFlightView *)self updatePageControllerScrolling];
-    v3 = [(FUFlightView *)self backBlurView];
-    [v3 setEffect:0];
+    backBlurView = [(FUFlightView *)self backBlurView];
+    [backBlurView setEffect:0];
 
-    v4 = [(FUFlightView *)self backBlurView];
-    [v4 _setBackground:0];
+    backBlurView2 = [(FUFlightView *)self backBlurView];
+    [backBlurView2 _setBackground:0];
 
-    v5 = [(FUFlightView *)self mapView];
-    [v5 setScrollEnabled:0];
+    mapView = [(FUFlightView *)self mapView];
+    [mapView setScrollEnabled:0];
 
-    v6 = [(FUFlightView *)self mapView];
-    [v6 setRotateEnabled:0];
+    mapView2 = [(FUFlightView *)self mapView];
+    [mapView2 setRotateEnabled:0];
 
-    v7 = [(FUFlightView *)self mapView];
-    [v7 setPitchEnabled:0];
+    mapView3 = [(FUFlightView *)self mapView];
+    [mapView3 setPitchEnabled:0];
 
-    v8 = [(FUFlightView *)self mapView];
-    [v8 setZoomEnabled:0];
+    mapView4 = [(FUFlightView *)self mapView];
+    [mapView4 setZoomEnabled:0];
 
     [(FUFlightView *)self setNeedsUpdateConstraints];
     [(FUFlightView *)self setNeedsLayout];
@@ -264,8 +264,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v16 + 1) + 8 * v13) flightInfoView];
-          [v14 updateForFollowupContent:self->_spotlightMode];
+          flightInfoView = [*(*(&v16 + 1) + 8 * v13) flightInfoView];
+          [flightInfoView updateForFollowupContent:self->_spotlightMode];
 
           ++v13;
         }
@@ -281,28 +281,28 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v11.receiver = self;
   v11.super_class = FUFlightView;
-  v4 = a3;
-  [(FUFlightView *)&v11 tlk_updateForAppearance:v4];
-  v5 = [v4 secondaryColor];
-  v6 = [(FUFlightView *)self pageControl];
-  [v6 setPageIndicatorTintColor:v5];
+  appearanceCopy = appearance;
+  [(FUFlightView *)&v11 tlk_updateForAppearance:appearanceCopy];
+  secondaryColor = [appearanceCopy secondaryColor];
+  pageControl = [(FUFlightView *)self pageControl];
+  [pageControl setPageIndicatorTintColor:secondaryColor];
 
-  v7 = [v4 primaryColor];
-  v8 = [(FUFlightView *)self pageControl];
-  [v8 setCurrentPageIndicatorTintColor:v7];
+  primaryColor = [appearanceCopy primaryColor];
+  pageControl2 = [(FUFlightView *)self pageControl];
+  [pageControl2 setCurrentPageIndicatorTintColor:primaryColor];
 
-  v9 = [(FUFlightView *)self pageControl];
-  [v4 enableAppearanceForView:v9];
+  pageControl3 = [(FUFlightView *)self pageControl];
+  [appearanceCopy enableAppearanceForView:pageControl3];
 
   [(FUFlightView *)self updateOrientationConstraints];
-  v10 = [(FUFlightView *)self landscapeMode];
-  if (self->_landscapeMode != v10)
+  landscapeMode = [(FUFlightView *)self landscapeMode];
+  if (self->_landscapeMode != landscapeMode)
   {
-    self->_landscapeMode = v10;
+    self->_landscapeMode = landscapeMode;
     [(FUFlightView *)self setNeedsUpdateConstraints];
     [(FUFlightView *)self setNeedsLayout];
   }
@@ -310,11 +310,11 @@
 
 - (BOOL)landscapeMode
 {
-  v2 = self;
-  v3 = [(FUFlightView *)self traitCollection];
-  LOBYTE(v2) = [(FUFlightView *)v2 landscapeModeForTraits:v3];
+  selfCopy = self;
+  traitCollection = [(FUFlightView *)self traitCollection];
+  LOBYTE(selfCopy) = [(FUFlightView *)selfCopy landscapeModeForTraits:traitCollection];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)updateBorderLines
@@ -322,53 +322,53 @@
   if (self->_spotlightMode)
   {
     v3 = 1;
-    v4 = 1;
+    landscapeMode = 1;
   }
 
   else
   {
-    v4 = [(FUFlightView *)self landscapeMode];
-    v3 = v4 ^ 1;
+    landscapeMode = [(FUFlightView *)self landscapeMode];
+    v3 = landscapeMode ^ 1;
   }
 
-  v5 = [(FUFlightView *)self borderLineViewLandscape];
-  [v5 setHidden:v3];
+  borderLineViewLandscape = [(FUFlightView *)self borderLineViewLandscape];
+  [borderLineViewLandscape setHidden:v3];
 
-  v6 = [(FUFlightView *)self borderLineViewPortrait];
-  [v6 setHidden:v4];
+  borderLineViewPortrait = [(FUFlightView *)self borderLineViewPortrait];
+  [borderLineViewPortrait setHidden:landscapeMode];
 }
 
 - (void)showLoading
 {
-  v3 = [(FUFlightView *)self loadingView];
+  loadingView = [(FUFlightView *)self loadingView];
 
-  if (!v3)
+  if (!loadingView)
   {
     v4 = objc_opt_new();
     [(FUFlightView *)self setLoadingView:v4];
     [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     WeakRetained = objc_loadWeakRetained(&self->_backBlurView);
-    v6 = [WeakRetained contentView];
-    [v6 addSubview:v4];
+    contentView = [WeakRetained contentView];
+    [contentView addSubview:v4];
 
-    v7 = [v4 leftAnchor];
-    v8 = [WeakRetained leftAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    leftAnchor = [v4 leftAnchor];
+    leftAnchor2 = [WeakRetained leftAnchor];
+    v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v9 setActive:1];
 
-    v10 = [v4 rightAnchor];
-    v11 = [WeakRetained rightAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    rightAnchor = [v4 rightAnchor];
+    rightAnchor2 = [WeakRetained rightAnchor];
+    v12 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v12 setActive:1];
 
-    v13 = [v4 topAnchor];
-    v14 = [WeakRetained topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor = [v4 topAnchor];
+    topAnchor2 = [WeakRetained topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v15 setActive:1];
 
-    v16 = [v4 bottomAnchor];
-    v17 = [WeakRetained bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor = [v4 bottomAnchor];
+    bottomAnchor2 = [WeakRetained bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v18 setActive:1];
 
     [v4 setAlpha:0.0];
@@ -417,35 +417,35 @@ uint64_t __27__FUFlightView_showLoading__block_invoke(uint64_t a1)
 
 - (void)showError
 {
-  v3 = [(FUFlightView *)self errorView];
+  errorView = [(FUFlightView *)self errorView];
 
-  if (!v3)
+  if (!errorView)
   {
     v4 = objc_opt_new();
     [(FUFlightView *)self setErrorView:v4];
     [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     WeakRetained = objc_loadWeakRetained(&self->_backBlurView);
-    v6 = [WeakRetained contentView];
-    [v6 addSubview:v4];
+    contentView = [WeakRetained contentView];
+    [contentView addSubview:v4];
 
-    v7 = [v4 leftAnchor];
-    v8 = [WeakRetained leftAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    leftAnchor = [v4 leftAnchor];
+    leftAnchor2 = [WeakRetained leftAnchor];
+    v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v9 setActive:1];
 
-    v10 = [v4 rightAnchor];
-    v11 = [WeakRetained rightAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    rightAnchor = [v4 rightAnchor];
+    rightAnchor2 = [WeakRetained rightAnchor];
+    v12 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v12 setActive:1];
 
-    v13 = [v4 topAnchor];
-    v14 = [WeakRetained topAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    topAnchor = [v4 topAnchor];
+    topAnchor2 = [WeakRetained topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v15 setActive:1];
 
-    v16 = [v4 bottomAnchor];
-    v17 = [WeakRetained bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor = [v4 bottomAnchor];
+    bottomAnchor2 = [WeakRetained bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v18 setActive:1];
 
     [v4 setAlpha:0.0];
@@ -571,17 +571,17 @@ void __24__FUFlightView_showInfo__block_invoke(uint64_t a1)
     v6 = v10;
   }
 
-  v11 = [(FUFlightView *)self mapView];
-  [v11 _setAttributionInsets:{0.0, -v4, -v5, 0.0}];
+  mapView = [(FUFlightView *)self mapView];
+  [mapView _setAttributionInsets:{0.0, -v4, -v5, 0.0}];
 
-  v12 = [(FUFlightView *)self landscapeMode];
+  landscapeMode = [(FUFlightView *)self landscapeMode];
   spotlightMode = self->_spotlightMode;
-  if (v12)
+  if (landscapeMode)
   {
     if (!self->_spotlightMode && ![(FUFlightView *)self mapOnly])
     {
-      v14 = [(FUFlightView *)self backBlurView];
-      [v14 frame];
+      backBlurView = [(FUFlightView *)self backBlurView];
+      [backBlurView frame];
       v16 = v15;
 
       if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
@@ -598,15 +598,15 @@ void __24__FUFlightView_showInfo__block_invoke(uint64_t a1)
 
   else if (!self->_spotlightMode && ![(FUFlightView *)self mapOnly])
   {
-    v17 = [(FUFlightView *)self backBlurView];
-    [v17 frame];
+    backBlurView2 = [(FUFlightView *)self backBlurView];
+    [backBlurView2 frame];
     v19 = v18;
 
     v5 = v5 + v19;
   }
 
-  v20 = [(FUFlightView *)self mapView];
-  [v20 _setEdgeInsets:{v3, v4, v5, v6}];
+  mapView2 = [(FUFlightView *)self mapView];
+  [mapView2 _setEdgeInsets:{v3, v4, v5, v6}];
 
   [(FUFlightView *)self fitMap:0];
   [(FUFlightView *)self updateBorderLines];
@@ -621,65 +621,65 @@ void __24__FUFlightView_showInfo__block_invoke(uint64_t a1)
   v3 = ![(FUFlightView *)self landscapeMode];
   spotlightMode = self->_spotlightMode;
   v5 = v3 & spotlightMode;
-  v6 = [(FUFlightView *)self leadingMapConstraint];
-  [v6 setActive:0];
+  leadingMapConstraint = [(FUFlightView *)self leadingMapConstraint];
+  [leadingMapConstraint setActive:0];
 
   v7 = MEMORY[0x277CCAAD0];
   if ((v3 & 1) != 0 || !spotlightMode)
   {
-    v8 = [(FUFlightView *)self mapView];
-    v9 = [v7 constraintWithItem:self attribute:5 relatedBy:0 toItem:v8 attribute:5 multiplier:1.0 constant:0.0];
-    [(FUFlightView *)self setLeadingMapConstraint:v9];
+    mapView = [(FUFlightView *)self mapView];
+    mapView2 = [v7 constraintWithItem:self attribute:5 relatedBy:0 toItem:mapView attribute:5 multiplier:1.0 constant:0.0];
+    [(FUFlightView *)self setLeadingMapConstraint:mapView2];
   }
 
   else
   {
-    v8 = [(FUFlightView *)self backBlurView];
-    v9 = [(FUFlightView *)self mapView];
-    v10 = [v7 constraintWithItem:v8 attribute:6 relatedBy:0 toItem:v9 attribute:5 multiplier:1.0 constant:0.0];
+    mapView = [(FUFlightView *)self backBlurView];
+    mapView2 = [(FUFlightView *)self mapView];
+    v10 = [v7 constraintWithItem:mapView attribute:6 relatedBy:0 toItem:mapView2 attribute:5 multiplier:1.0 constant:0.0];
     [(FUFlightView *)self setLeadingMapConstraint:v10];
   }
 
-  v11 = [(FUFlightView *)self leadingMapConstraint];
-  [v11 setActive:1];
+  leadingMapConstraint2 = [(FUFlightView *)self leadingMapConstraint];
+  [leadingMapConstraint2 setActive:1];
 
-  v12 = [(FUFlightView *)self bottomMapConstraint];
-  [v12 setActive:0];
+  bottomMapConstraint = [(FUFlightView *)self bottomMapConstraint];
+  [bottomMapConstraint setActive:0];
 
   v13 = MEMORY[0x277CCAAD0];
   if (v5)
   {
-    v14 = [(FUFlightView *)self backBlurView];
-    v15 = [(FUFlightView *)self mapView];
-    v16 = [v13 constraintWithItem:v14 attribute:3 relatedBy:0 toItem:v15 attribute:4 multiplier:1.0 constant:0.0];
+    backBlurView = [(FUFlightView *)self backBlurView];
+    mapView3 = [(FUFlightView *)self mapView];
+    v16 = [v13 constraintWithItem:backBlurView attribute:3 relatedBy:0 toItem:mapView3 attribute:4 multiplier:1.0 constant:0.0];
     [(FUFlightView *)self setBottomMapConstraint:v16];
   }
 
   else
   {
-    v14 = [(FUFlightView *)self mapView];
-    v15 = [v13 constraintWithItem:self attribute:4 relatedBy:0 toItem:v14 attribute:4 multiplier:1.0 constant:0.0];
-    [(FUFlightView *)self setBottomMapConstraint:v15];
+    backBlurView = [(FUFlightView *)self mapView];
+    mapView3 = [v13 constraintWithItem:self attribute:4 relatedBy:0 toItem:backBlurView attribute:4 multiplier:1.0 constant:0.0];
+    [(FUFlightView *)self setBottomMapConstraint:mapView3];
   }
 
-  v17 = [(FUFlightView *)self bottomMapConstraint];
-  [v17 setActive:1];
+  bottomMapConstraint2 = [(FUFlightView *)self bottomMapConstraint];
+  [bottomMapConstraint2 setActive:1];
 }
 
 - (void)updateOrientationConstraints
 {
-  v3 = [(FUFlightView *)self landscapeMode];
-  v4 = [(FUFlightView *)self lanscapeConstraint1];
-  [v4 setActive:v3];
+  landscapeMode = [(FUFlightView *)self landscapeMode];
+  lanscapeConstraint1 = [(FUFlightView *)self lanscapeConstraint1];
+  [lanscapeConstraint1 setActive:landscapeMode];
 
-  v5 = [(FUFlightView *)self lanscapeConstraint2];
-  [v5 setActive:v3];
+  lanscapeConstraint2 = [(FUFlightView *)self lanscapeConstraint2];
+  [lanscapeConstraint2 setActive:landscapeMode];
 
-  v6 = [(FUFlightView *)self lanscapeConstraint3];
-  [v6 setActive:v3];
+  lanscapeConstraint3 = [(FUFlightView *)self lanscapeConstraint3];
+  [lanscapeConstraint3 setActive:landscapeMode];
 
-  v7 = [(FUFlightView *)self portraitConstraint1];
-  [v7 setActive:v3 ^ 1];
+  portraitConstraint1 = [(FUFlightView *)self portraitConstraint1];
+  [portraitConstraint1 setActive:landscapeMode ^ 1];
 }
 
 - (void)didMoveToWindow
@@ -690,23 +690,23 @@ void __24__FUFlightView_showInfo__block_invoke(uint64_t a1)
   [(FUFlightView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = FUFlightView;
-  [(FUFlightView *)&v10 traitCollectionDidChange:v4];
+  [(FUFlightView *)&v10 traitCollectionDidChange:changeCopy];
   [(FUFlightView *)self updateOrientationConstraints];
   [(FUFlightView *)self updateBorderLines];
-  v5 = [(FUFlightView *)self landscapeMode];
-  if (v5 != [(FUFlightView *)self landscapeModeForTraits:v4])
+  landscapeMode = [(FUFlightView *)self landscapeMode];
+  if (landscapeMode != [(FUFlightView *)self landscapeModeForTraits:changeCopy])
   {
     [(FUFlightView *)self setNeedsUpdateConstraints];
     [(FUFlightView *)self setNeedsLayout];
   }
 
-  v6 = [(FUFlightView *)self traitCollection];
-  if ([v6 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  traitCollection = [(FUFlightView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_6:
@@ -714,11 +714,11 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [(FUFlightView *)self traitCollection];
-  v8 = [v7 _vibrancy];
-  v9 = [v4 _vibrancy];
+  traitCollection2 = [(FUFlightView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v8 != v9)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_6;
   }
@@ -736,8 +736,8 @@ LABEL_7:
 
   else
   {
-    v6 = [(FUFlightView *)self flights];
-    v7 = [v6 objectAtIndexedSubscript:self->_selectedFlight];
+    flights = [(FUFlightView *)self flights];
+    v7 = [flights objectAtIndexedSubscript:self->_selectedFlight];
   }
 
   return v7;
@@ -745,39 +745,39 @@ LABEL_7:
 
 - (id)currentLeg
 {
-  v3 = [(FUFlightView *)self currentFlight];
-  v4 = v3;
+  currentFlight = [(FUFlightView *)self currentFlight];
+  v4 = currentFlight;
   selectedLeg = self->_selectedLeg;
-  if (selectedLeg == 0x7FFFFFFFFFFFFFFFLL || ([v3 legs], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, selectedLeg >= v7))
+  if (selectedLeg == 0x7FFFFFFFFFFFFFFFLL || ([currentFlight legs], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, selectedLeg >= v7))
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [v4 legs];
-    v9 = [v8 objectAtIndexedSubscript:self->_selectedLeg];
+    legs = [v4 legs];
+    v9 = [legs objectAtIndexedSubscript:self->_selectedLeg];
   }
 
   return v9;
 }
 
-- (void)setShowInfoPanel:(BOOL)a3
+- (void)setShowInfoPanel:(BOOL)panel
 {
-  v3 = a3;
-  self->_showInfoPanel = a3;
-  v5 = [(FUFlightView *)self backBlurView];
-  [v5 setHidden:!v3];
+  panelCopy = panel;
+  self->_showInfoPanel = panel;
+  backBlurView = [(FUFlightView *)self backBlurView];
+  [backBlurView setHidden:!panelCopy];
 
   [(FUFlightView *)self updateBorderLines];
 
   [(FUFlightView *)self setNeedsLayout];
 }
 
-- (id)flightForLeg:(id)a3
+- (id)flightForLeg:(id)leg
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  legCopy = leg;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -802,8 +802,8 @@ LABEL_7:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v11 = [v10 legs];
-        v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        legs = [v10 legs];
+        v12 = [legs countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v12)
         {
           v13 = v12;
@@ -814,10 +814,10 @@ LABEL_7:
             {
               if (*v20 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(legs);
               }
 
-              if (*(*(&v19 + 1) + 8 * j) == v4)
+              if (*(*(&v19 + 1) + 8 * j) == legCopy)
               {
                 v16 = v10;
 
@@ -825,7 +825,7 @@ LABEL_7:
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v13 = [legs countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v13)
             {
               continue;
@@ -858,8 +858,8 @@ LABEL_19:
 - (unint64_t)absoluteLegIndex
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(FUFlightView *)self currentLeg];
-  if (v3)
+  currentLeg = [(FUFlightView *)self currentLeg];
+  if (currentLeg)
   {
     v26 = 0u;
     v27 = 0u;
@@ -887,8 +887,8 @@ LABEL_19:
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v11 = [v10 legs];
-          v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          legs = [v10 legs];
+          v12 = [legs countByEnumeratingWithState:&v20 objects:v28 count:16];
           if (v12)
           {
             v13 = v12;
@@ -902,10 +902,10 @@ LABEL_19:
               {
                 if (*v21 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(legs);
                 }
 
-                if (v3 == *(*(&v20 + 1) + 8 * v15))
+                if (currentLeg == *(*(&v20 + 1) + 8 * v15))
                 {
 
                   goto LABEL_21;
@@ -916,7 +916,7 @@ LABEL_19:
               }
 
               while (v13 != v15);
-              v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+              v13 = [legs countByEnumeratingWithState:&v20 objects:v28 count:16];
               if (v13)
               {
                 continue;
@@ -953,17 +953,17 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)setFlights:(id)a3 selectedFlight:(int64_t)a4 selectedLeg:(int64_t)a5
+- (BOOL)setFlights:(id)flights selectedFlight:(int64_t)flight selectedLeg:(int64_t)leg
 {
   v96 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = v9;
-  if (*&self->_flights != __PAIR128__(a4, v9) || self->_selectedLeg != a5)
+  flightsCopy = flights;
+  v10 = flightsCopy;
+  if (*&self->_flights != __PAIR128__(flight, flightsCopy) || self->_selectedLeg != leg)
   {
-    v77 = a5;
-    v78 = a4;
-    v79 = v9;
-    objc_storeStrong(&self->_flights, a3);
+    legCopy = leg;
+    flightCopy = flight;
+    v79 = flightsCopy;
+    objc_storeStrong(&self->_flights, flights);
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     controllers = self->_controllers;
     self->_controllers = v12;
@@ -988,24 +988,24 @@ LABEL_21:
           }
 
           v15 = *(*(&v89 + 1) + 8 * i);
-          v84 = [v15 legs];
-          v16 = [v84 count];
+          legs = [v15 legs];
+          v16 = [legs count];
           if (v16)
           {
             v17 = v16;
-            [v81 addObjectsFromArray:v84];
+            [v81 addObjectsFromArray:legs];
             if (v17 >= 1)
             {
               for (j = 0; j != v17; ++j)
               {
-                v19 = [(FUFlightView *)self infoViewControllerCreate];
-                v20 = [v19 flightInfoView];
-                [v20 setFlight:v15 legIndex:j multiFlights:-[NSArray count](self->_flights spotlightMode:{"count") > 1, self->_spotlightMode}];
+                infoViewControllerCreate = [(FUFlightView *)self infoViewControllerCreate];
+                flightInfoView = [infoViewControllerCreate flightInfoView];
+                [flightInfoView setFlight:v15 legIndex:j multiFlights:-[NSArray count](self->_flights spotlightMode:{"count") > 1, self->_spotlightMode}];
 
-                v21 = [v19 flightInfoView];
-                [v21 setDelegate:self];
+                flightInfoView2 = [infoViewControllerCreate flightInfoView];
+                [flightInfoView2 setDelegate:self];
 
-                [(NSMutableArray *)self->_controllers addObject:v19];
+                [(NSMutableArray *)self->_controllers addObject:infoViewControllerCreate];
               }
             }
           }
@@ -1033,8 +1033,8 @@ LABEL_21:
       }
     }
 
-    v24 = [(FUFlightView *)self pageControl];
-    [v24 setAlpha:v23];
+    pageControl = [(FUFlightView *)self pageControl];
+    [pageControl setAlpha:v23];
 
     v10 = v79;
     if (!v79 || ![v79 count] || (objc_msgSend(v79, "firstObject"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "legs"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "count"), v26, v25, !v27))
@@ -1047,7 +1047,7 @@ LABEL_61:
     }
 
     self->_highlightCurrentFlightLeg = 1;
-    if (v78 == 0x7FFFFFFFFFFFFFFFLL || [v79 count] <= v78)
+    if (flightCopy == 0x7FFFFFFFFFFFFFFFLL || [v79 count] <= flightCopy)
     {
       if ([v79 count] == 1)
       {
@@ -1062,14 +1062,14 @@ LABEL_61:
           v32 = [v79 objectAtIndexedSubscript:v31];
           v33 = v31 + 1;
           v34 = [v79 objectAtIndexedSubscript:v31 + 1];
-          v35 = [v32 arrival];
-          v36 = [v35 time];
-          [v36 timeIntervalSinceNow];
+          arrival = [v32 arrival];
+          time = [arrival time];
+          [time timeIntervalSinceNow];
           v38 = v37;
 
-          v39 = [v34 departure];
-          v40 = [v39 time];
-          [v40 timeIntervalSinceNow];
+          departure = [v34 departure];
+          time2 = [departure time];
+          [time2 timeIntervalSinceNow];
           v42 = v41;
 
           if (v38 > 0.0)
@@ -1106,23 +1106,23 @@ LABEL_40:
 
     else
     {
-      self->_selectedFlight = v78;
-      if (v77 != 0x7FFFFFFFFFFFFFFFLL)
+      self->_selectedFlight = flightCopy;
+      if (legCopy != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v28 = [v79 objectAtIndexedSubscript:v78];
-        v29 = [v28 legs];
-        v30 = [v29 count];
+        v28 = [v79 objectAtIndexedSubscript:flightCopy];
+        legs2 = [v28 legs];
+        v30 = [legs2 count];
 
-        if (v30 <= v77)
+        if (v30 <= legCopy)
         {
-          v75 = [v79 objectAtIndexedSubscript:v78];
-          v76 = [v75 legs];
-          self->_selectedLeg = [v76 count] - 1;
+          v75 = [v79 objectAtIndexedSubscript:flightCopy];
+          legs3 = [v75 legs];
+          self->_selectedLeg = [legs3 count] - 1;
         }
 
         else
         {
-          self->_selectedLeg = v77;
+          self->_selectedLeg = legCopy;
           self->_highlightCurrentFlightLeg = 0;
         }
 
@@ -1154,10 +1154,10 @@ LABEL_42:
             objc_enumerationMutation(v43);
           }
 
-          v51 = [*(*(&v85 + 1) + 8 * k) view];
+          view = [*(*(&v85 + 1) + 8 * k) view];
           LODWORD(v52) = 1144750080;
           LODWORD(v53) = 1132068864;
-          [v51 systemLayoutSizeFittingSize:v47 withHorizontalFittingPriority:v48 verticalFittingPriority:{v52, v53}];
+          [view systemLayoutSizeFittingSize:v47 withHorizontalFittingPriority:v48 verticalFittingPriority:{v52, v53}];
           v55 = v54;
 
           if (v49 < v55)
@@ -1177,15 +1177,15 @@ LABEL_42:
       v49 = 0.0;
     }
 
-    v56 = [(FUFlightView *)self absoluteLegIndex];
+    absoluteLegIndex = [(FUFlightView *)self absoluteLegIndex];
     pageViewController = self->_pageViewController;
-    v58 = [(NSMutableArray *)self->_controllers objectAtIndexedSubscript:v56];
+    v58 = [(NSMutableArray *)self->_controllers objectAtIndexedSubscript:absoluteLegIndex];
     v93 = v58;
     v59 = [MEMORY[0x277CBEA60] arrayWithObjects:&v93 count:1];
     [(UIPageViewController *)pageViewController setViewControllers:v59 direction:0 animated:0 completion:0];
 
-    v60 = [(FUFlightView *)self pageControl];
-    [v60 setNumberOfPages:v22];
+    pageControl2 = [(FUFlightView *)self pageControl];
+    [pageControl2 setNumberOfPages:v22];
 
     [(FUFlightView *)self updatePageControllerScrolling];
     pageControllerHeightConstraint = self->_pageControllerHeightConstraint;
@@ -1201,14 +1201,14 @@ LABEL_42:
     else
     {
       v63 = MEMORY[0x277CCAAD0];
-      v64 = [(UIPageViewController *)self->_pageViewController view];
-      v65 = [v63 constraintWithItem:v64 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v49];
+      view2 = [(UIPageViewController *)self->_pageViewController view];
+      v65 = [v63 constraintWithItem:view2 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v49];
       v66 = self->_pageControllerHeightConstraint;
       self->_pageControllerHeightConstraint = v65;
 
-      v67 = [(UIPageViewController *)self->_pageViewController view];
-      v68 = [v67 superview];
-      [v68 addConstraint:self->_pageControllerHeightConstraint];
+      view3 = [(UIPageViewController *)self->_pageViewController view];
+      superview = [view3 superview];
+      [superview addConstraint:self->_pageControllerHeightConstraint];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_pageContainerHeightConstraint);
@@ -1225,7 +1225,7 @@ LABEL_42:
     [WeakRetained setPriority:v72];
     [(UIScrollView *)self->_pageViewContainer setContentSize:-1.0, v49];
     [(UIScrollView *)self->_pageViewContainer scrollRectToVisible:0 animated:0.0, 0.0, 1.0, 1.0];
-    [(FUFlightView *)self setAbsoluteIndex:v56 animated:0];
+    [(FUFlightView *)self setAbsoluteIndex:absoluteLegIndex animated:0];
 
     goto LABEL_61;
   }
@@ -1239,13 +1239,13 @@ LABEL_62:
 
 - (void)updatePageControllerScrolling
 {
-  v3 = [(FUFlightView *)self pageControl];
-  v4 = [v3 numberOfPages];
+  pageControl = [(FUFlightView *)self pageControl];
+  numberOfPages = [pageControl numberOfPages];
 
-  v5 = [(UIPageViewController *)self->_pageViewController view];
-  v6 = [v5 subviews];
-  v7 = [v6 firstObject];
-  [v7 setScrollEnabled:v4 > 1];
+  view = [(UIPageViewController *)self->_pageViewController view];
+  subviews = [view subviews];
+  firstObject = [subviews firstObject];
+  [firstObject setScrollEnabled:numberOfPages > 1];
 
   [(UIScrollView *)self->_pageViewContainer setScrollEnabled:!self->_spotlightMode];
   pageViewContainer = self->_pageViewContainer;
@@ -1254,18 +1254,18 @@ LABEL_62:
   [(UIScrollView *)pageViewContainer setShowsVerticalScrollIndicator:v9];
 }
 
-- (void)setSelectedLeg:(int64_t)a3
+- (void)setSelectedLeg:(int64_t)leg
 {
   selectedFlight = self->_selectedFlight;
   if (selectedFlight != 0x7FFFFFFFFFFFFFFFLL && selectedFlight < [(NSArray *)self->_flights count])
   {
     v6 = [(NSArray *)self->_flights objectAtIndexedSubscript:self->_selectedFlight];
-    v9 = [v6 legs];
+    legs = [v6 legs];
 
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL && [v9 count] > a3)
+    if (leg != 0x7FFFFFFFFFFFFFFFLL && [legs count] > leg)
     {
       allLegs = self->_allLegs;
-      v8 = [v9 objectAtIndexedSubscript:a3];
+      v8 = [legs objectAtIndexedSubscript:leg];
       [(FUFlightView *)self setAbsoluteIndex:[(NSArray *)allLegs indexOfObject:v8] animated:1];
     }
   }
@@ -1294,9 +1294,9 @@ LABEL_62:
         }
 
         v8 = *(*(&v37 + 1) + 8 * i);
-        v9 = [(FUFlightView *)self mapView];
-        v10 = [v8 polyline];
-        [v9 removeOverlay:v10];
+        mapView = [(FUFlightView *)self mapView];
+        polyline = [v8 polyline];
+        [mapView removeOverlay:polyline];
       }
 
       v5 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v37 objects:v43 count:16];
@@ -1328,15 +1328,15 @@ LABEL_62:
         }
 
         v17 = *(*(&v33 + 1) + 8 * j);
-        v18 = [v17 departure];
-        v19 = [v18 airport];
+        departure = [v17 departure];
+        airport = [departure airport];
 
-        v20 = [v17 arrival];
-        v21 = [v20 airport];
+        arrival = [v17 arrival];
+        airport2 = [arrival airport];
 
-        if (v19)
+        if (airport)
         {
-          v22 = v21 == 0;
+          v22 = airport2 == 0;
         }
 
         else
@@ -1346,14 +1346,14 @@ LABEL_62:
 
         if (!v22)
         {
-          [v19 location];
+          [airport location];
           v24 = v23;
-          [v19 location];
+          [airport location];
           v45 = CLLocationCoordinate2DMake(v24, v25);
           v41[0] = MKMapPointForCoordinate(v45);
-          [v21 location];
+          [airport2 location];
           v27 = v26;
-          [v21 location];
+          [airport2 location];
           v46 = CLLocationCoordinate2DMake(v27, v28);
           v41[1] = MKMapPointForCoordinate(v46);
           v29 = objc_opt_new();
@@ -1361,9 +1361,9 @@ LABEL_62:
           [v29 setPolyline:v30];
 
           [v29 setLeg:v17];
-          v31 = [(FUFlightView *)self currentLeg];
+          currentLeg = [(FUFlightView *)self currentLeg];
 
-          if (v17 == v31)
+          if (v17 == currentLeg)
           {
             objc_storeStrong(&self->_currentTrack, v29);
           }
@@ -1381,10 +1381,10 @@ LABEL_62:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAbsoluteIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)setAbsoluteIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v41 = a4;
-  if ([(NSArray *)self->_allLegs count]> a3)
+  animatedCopy = animated;
+  if ([(NSArray *)self->_allLegs count]> index)
   {
     self->_selectedFlight = 0x7FFFFFFFFFFFFFFFLL;
     self->_selectedLeg = 0x7FFFFFFFFFFFFFFFLL;
@@ -1395,8 +1395,8 @@ LABEL_62:
       while (1)
       {
         v8 = [(NSArray *)self->_flights objectAtIndexedSubscript:v6];
-        v9 = [v8 legs];
-        v10 = [v9 count];
+        legs = [v8 legs];
+        v10 = [legs count];
 
         if (v10)
         {
@@ -1416,12 +1416,12 @@ LABEL_10:
 
       v11 = 0;
       v12 = v7;
-      while (a3 != v12)
+      while (index != v12)
       {
         ++v12;
         ++v11;
-        v13 = [v8 legs];
-        v14 = [v13 count];
+        legs2 = [v8 legs];
+        v14 = [legs2 count];
 
         if (v11 >= v14)
         {
@@ -1430,7 +1430,7 @@ LABEL_10:
       }
 
       self->_selectedFlight = v6;
-      self->_selectedLeg = a3 - v7;
+      self->_selectedLeg = index - v7;
 
       if (!self->_planeTracker)
       {
@@ -1438,22 +1438,22 @@ LABEL_10:
         planeTracker = self->_planeTracker;
         self->_planeTracker = v15;
 
-        v17 = [(FUFlightView *)self mapView];
-        [v17 addAnnotation:self->_planeTracker];
+        mapView = [(FUFlightView *)self mapView];
+        [mapView addAnnotation:self->_planeTracker];
       }
 
-      v40 = [(FUFlightView *)self currentLeg];
-      [v40 currentProgress];
+      currentLeg = [(FUFlightView *)self currentLeg];
+      [currentLeg currentProgress];
       v19 = v18;
-      v20 = [v40 departure];
-      v21 = [v20 airport];
+      departure = [currentLeg departure];
+      airport = [departure airport];
 
-      v22 = [v40 arrival];
-      v23 = [v22 airport];
+      arrival = [currentLeg arrival];
+      airport2 = [arrival airport];
 
-      if (v21)
+      if (airport)
       {
-        v24 = v23 == 0;
+        v24 = airport2 == 0;
       }
 
       else
@@ -1476,57 +1476,57 @@ LABEL_10:
       if (v26)
       {
         v27 = self->_planeTracker;
-        [v21 location];
+        [airport location];
         v29 = v28;
-        [v21 location];
+        [airport location];
         v31 = v30;
-        [v23 location];
+        [airport2 location];
         v33 = v32;
-        [v23 location];
+        [airport2 location];
         [(FUPlaneTrackerAnnotationView *)v27 setStartLatitude:v29 startLongitude:v31 endLatitude:v33 endLongitude:v34];
         [(FUPlaneTrackerAnnotationView *)self->_planeTracker setCurrentProgress:v19];
       }
 
       [(FUFlightView *)self updateMapArcs];
-      [(FUFlightView *)self fitMap:v41];
-      v35 = [(UIPageViewController *)self->_pageViewController viewControllers];
-      v36 = [v35 firstObject];
-      v37 = [v36 flightInfoView];
-      [v37 setCurrentFocus:2];
+      [(FUFlightView *)self fitMap:animatedCopy];
+      viewControllers = [(UIPageViewController *)self->_pageViewController viewControllers];
+      firstObject = [viewControllers firstObject];
+      flightInfoView = [firstObject flightInfoView];
+      [flightInfoView setCurrentFocus:2];
 
-      v38 = [(FUFlightView *)self pageControl];
-      [v38 setCurrentPage:a3];
+      pageControl = [(FUFlightView *)self pageControl];
+      [pageControl setCurrentPage:index];
 
-      v39 = [(FUFlightView *)self delegate];
-      if (v39 && (objc_opt_respondsToSelector() & 1) != 0)
+      delegate = [(FUFlightView *)self delegate];
+      if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v39 flightView:self didSelectLeg:self->_selectedLeg ofFlight:self->_selectedFlight];
+        [delegate flightView:self didSelectLeg:self->_selectedLeg ofFlight:self->_selectedFlight];
       }
     }
   }
 }
 
-- (void)addTrack:(id)a3
+- (void)addTrack:(id)track
 {
-  v4 = a3;
-  v9 = v4;
+  trackCopy = track;
+  v9 = trackCopy;
   if (!self->_tracks)
   {
     v5 = objc_opt_new();
     tracks = self->_tracks;
     self->_tracks = v5;
 
-    v4 = v9;
+    trackCopy = v9;
   }
 
-  if (v4)
+  if (trackCopy)
   {
-    v7 = [(FUFlightView *)self mapView];
-    v8 = [v9 polyline];
-    [v7 addOverlay:v8];
+    mapView = [(FUFlightView *)self mapView];
+    polyline = [v9 polyline];
+    [mapView addOverlay:polyline];
 
     [(NSMutableArray *)self->_tracks addObject:v9];
-    v4 = v9;
+    trackCopy = v9;
   }
 }
 
@@ -1535,8 +1535,8 @@ LABEL_10:
   v20 = *MEMORY[0x277D85DE8];
   if (self->_planeTracker)
   {
-    v3 = [(FUFlightView *)self mapView];
-    [v3 removeAnnotation:self->_planeTracker];
+    mapView = [(FUFlightView *)self mapView];
+    [mapView removeAnnotation:self->_planeTracker];
 
     planeTracker = self->_planeTracker;
     self->_planeTracker = 0;
@@ -1563,9 +1563,9 @@ LABEL_10:
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
-        v11 = [(FUFlightView *)self mapView];
-        v12 = [v10 polyline];
-        [v11 removeOverlay:v12];
+        mapView2 = [(FUFlightView *)self mapView];
+        polyline = [v10 polyline];
+        [mapView2 removeOverlay:polyline];
 
         ++v9;
       }
@@ -1587,16 +1587,16 @@ LABEL_10:
 - (id)arrivalCamera
 {
   v3 = MEMORY[0x277CD4E58];
-  v4 = [(FUFlightView *)self currentLeg];
-  v5 = [v4 arrival];
-  v6 = [v5 airport];
-  [v6 location];
+  currentLeg = [(FUFlightView *)self currentLeg];
+  arrival = [currentLeg arrival];
+  airport = [arrival airport];
+  [airport location];
   v8 = v7;
   v10 = v9;
-  v11 = [(FUFlightView *)self currentLeg];
-  v12 = [v11 arrival];
-  v13 = [v12 airport];
-  [v13 location];
+  currentLeg2 = [(FUFlightView *)self currentLeg];
+  arrival2 = [currentLeg2 arrival];
+  airport2 = [arrival2 airport];
+  [airport2 location];
   v16 = [v3 cameraLookingAtCenterCoordinate:v8 fromEyeCoordinate:v10 eyeAltitude:{v14, v15, 300000.0}];
 
   [v16 setPitch:0.0];
@@ -1607,16 +1607,16 @@ LABEL_10:
 - (id)departureCamera
 {
   v3 = MEMORY[0x277CD4E58];
-  v4 = [(FUFlightView *)self currentLeg];
-  v5 = [v4 departure];
-  v6 = [v5 airport];
-  [v6 location];
+  currentLeg = [(FUFlightView *)self currentLeg];
+  departure = [currentLeg departure];
+  airport = [departure airport];
+  [airport location];
   v8 = v7;
   v10 = v9;
-  v11 = [(FUFlightView *)self currentLeg];
-  v12 = [v11 departure];
-  v13 = [v12 airport];
-  [v13 location];
+  currentLeg2 = [(FUFlightView *)self currentLeg];
+  departure2 = [currentLeg2 departure];
+  airport2 = [departure2 airport];
+  [airport2 location];
   v16 = [v3 cameraLookingAtCenterCoordinate:v8 fromEyeCoordinate:v10 eyeAltitude:{v14, v15, 300000.0}];
 
   [v16 setPitch:0.0];
@@ -1645,32 +1645,32 @@ LABEL_10:
   }
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a4;
+  overlayCopy = overlay;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [objc_alloc(MEMORY[0x277CD4EE8]) initWithOverlay:v5];
+    v7 = [objc_alloc(MEMORY[0x277CD4EE8]) initWithOverlay:overlayCopy];
     goto LABEL_9;
   }
 
-  v6 = v5;
+  v6 = overlayCopy;
   v7 = [objc_alloc(MEMORY[0x277CD4F30]) initWithPolyline:v6];
-  v8 = [MEMORY[0x277D75348] orangeColor];
-  [v7 setFillColor:v8];
-  [v7 setStrokeColor:v8];
-  v9 = [(FUFLightTrack *)self->_currentTrack polyline];
-  v10 = v9;
-  if (v9 == v6)
+  orangeColor = [MEMORY[0x277D75348] orangeColor];
+  [v7 setFillColor:orangeColor];
+  [v7 setStrokeColor:orangeColor];
+  polyline = [(FUFLightTrack *)self->_currentTrack polyline];
+  v10 = polyline;
+  if (polyline == v6)
   {
 
     goto LABEL_7;
   }
 
-  v11 = [(FUFlightView *)self highlightCurrentFlightLeg];
+  highlightCurrentFlightLeg = [(FUFlightView *)self highlightCurrentFlightLeg];
 
-  if (!v11)
+  if (!highlightCurrentFlightLeg)
   {
 LABEL_7:
     [v7 setLineWidth:2.0];
@@ -1687,13 +1687,13 @@ LABEL_9:
   return v7;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v4 = a4;
+  annotationCopy = annotation;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = v4;
+    v6 = annotationCopy;
   }
 
   else
@@ -1726,25 +1726,25 @@ void __48__FUFlightView_mapView_regionDidChangeAnimated___block_invoke_2(uint64_
   }
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  if (a6)
+  if (completed)
   {
-    v7 = [a3 viewControllers];
-    v12 = [v7 firstObject];
+    viewControllers = [controller viewControllers];
+    firstObject = [viewControllers firstObject];
 
     allLegs = self->_allLegs;
-    v9 = [v12 flightInfoView];
-    v10 = [v9 leg];
+    flightInfoView = [firstObject flightInfoView];
+    v10 = [flightInfoView leg];
     v11 = [(NSArray *)allLegs indexOfObject:v10];
 
     [(FUFlightView *)self setAbsoluteIndex:v11 animated:1];
   }
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = [(NSMutableArray *)self->_controllers indexOfObject:a4];
+  v5 = [(NSMutableArray *)self->_controllers indexOfObject:viewController];
   if (v5)
   {
     v6 = v5 == 0x7FFFFFFFFFFFFFFFLL;
@@ -1768,9 +1768,9 @@ void __48__FUFlightView_mapView_regionDidChangeAnimated___block_invoke_2(uint64_
   return v7;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = [(NSMutableArray *)self->_controllers indexOfObject:a4];
+  v5 = [(NSMutableArray *)self->_controllers indexOfObject:viewController];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL || (v6 = v5 + 1, v5 + 1 >= [(NSMutableArray *)self->_controllers count]))
   {
     v7 = 0;
@@ -1784,62 +1784,62 @@ void __48__FUFlightView_mapView_regionDidChangeAnimated___block_invoke_2(uint64_
   return v7;
 }
 
-- (void)changeCurrentPage:(id)a3
+- (void)changeCurrentPage:(id)page
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = [(FUFlightView *)self pageControl];
-  v5 = [v4 currentPage];
+  pageControl = [(FUFlightView *)self pageControl];
+  currentPage = [pageControl currentPage];
 
   allLegs = self->_allLegs;
-  v7 = [(FUFlightView *)self currentLeg];
-  v8 = [(NSArray *)allLegs indexOfObject:v7];
+  currentLeg = [(FUFlightView *)self currentLeg];
+  v8 = [(NSArray *)allLegs indexOfObject:currentLeg];
 
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL || v8 != v5)
+  if (v8 == 0x7FFFFFFFFFFFFFFFLL || v8 != currentPage)
   {
     pageViewController = self->_pageViewController;
-    v11 = [(NSMutableArray *)self->_controllers objectAtIndexedSubscript:v5];
+    v11 = [(NSMutableArray *)self->_controllers objectAtIndexedSubscript:currentPage];
     v14[0] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-    [(UIPageViewController *)pageViewController setViewControllers:v12 direction:v5 <= v8 animated:1 completion:0];
+    [(UIPageViewController *)pageViewController setViewControllers:v12 direction:currentPage <= v8 animated:1 completion:0];
 
-    [(FUFlightView *)self setAbsoluteIndex:v5 animated:1];
+    [(FUFlightView *)self setAbsoluteIndex:currentPage animated:1];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)flightInfoView:(id)a3 didUpdateFocus:(int64_t)a4
+- (void)flightInfoView:(id)view didUpdateFocus:(int64_t)focus
 {
-  v6 = a3;
-  if (!a4)
+  viewCopy = view;
+  if (!focus)
   {
-    v10 = v6;
-    v7 = [(FUFlightView *)self mapView];
-    v8 = [(FUFlightView *)self departureCamera];
+    v10 = viewCopy;
+    mapView = [(FUFlightView *)self mapView];
+    departureCamera = [(FUFlightView *)self departureCamera];
     goto LABEL_7;
   }
 
-  if (a4 == 1)
+  if (focus == 1)
   {
-    v10 = v6;
-    v7 = [(FUFlightView *)self mapView];
-    v8 = [(FUFlightView *)self arrivalCamera];
+    v10 = viewCopy;
+    mapView = [(FUFlightView *)self mapView];
+    departureCamera = [(FUFlightView *)self arrivalCamera];
 LABEL_7:
-    v9 = v8;
-    [v7 setCamera:v8 animated:1];
+    v9 = departureCamera;
+    [mapView setCamera:departureCamera animated:1];
 
     goto LABEL_8;
   }
 
-  if (a4 != 2)
+  if (focus != 2)
   {
     goto LABEL_9;
   }
 
-  v10 = v6;
+  v10 = viewCopy;
   [(FUFlightView *)self fitMap:1];
 LABEL_8:
-  v6 = v10;
+  viewCopy = v10;
 LABEL_9:
 }
 

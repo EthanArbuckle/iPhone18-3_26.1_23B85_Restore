@@ -1,6 +1,6 @@
 @interface MPSCNNNeuronNode
 + (MPSCNNNeuronNode)nodeWithSource:(MPSNNImageNode *)sourceNode descriptor:(MPSNNNeuronDescriptor *)descriptor;
-- (MPSCNNNeuronNode)initWithSource:(id)a3 type:(int)a4 a:(float)a5 b:(float)a6 c:(float)a7;
+- (MPSCNNNeuronNode)initWithSource:(id)source type:(int)type a:(float)a b:(float)b c:(float)c;
 - (id)debugDescription;
 - (id)descriptor;
 @end
@@ -73,20 +73,20 @@ LABEL_25:
     case 0xF:
       v9 = MPSCNNNeuronLogarithmNode;
 
-- (MPSCNNNeuronNode)initWithSource:(id)a3 type:(int)a4 a:(float)a5 b:(float)a6 c:(float)a7
+- (MPSCNNNeuronNode)initWithSource:(id)source type:(int)type a:(float)a b:(float)b c:(float)c
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v19[0] = a3;
+  v19[0] = source;
   v16 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], a2, v19, 1, v7, v8, v9, v10);
   v18.receiver = self;
   v18.super_class = MPSCNNNeuronNode;
   result = [(MPSNNFilterNode *)&v18 initWithSourceImages:v16 sourceStates:0 paddingPolicy:0];
   if (result)
   {
-    result->_type = a4;
-    result->_a = a5;
-    result->_b = a6;
-    result->_c = a7;
+    result->_type = type;
+    result->_a = a;
+    result->_b = b;
+    result->_c = c;
   }
 
   return result;

@@ -28,7 +28,7 @@ uint64_t __39__AXSimpleRuntimeManager_sharedManager__block_invoke()
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 134217984;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BF78E000, a2, OS_LOG_TYPE_ERROR, "Could not register system wide server: %ld", &v2, 0xCu);
 }
 

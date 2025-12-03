@@ -3,19 +3,19 @@
 - (CGRect)frame;
 - (TabBar)tabBar;
 - (TabBarItem)tabBarItem;
-- (TabBarItemLayoutInfo)initWithTabBar:(id)a3 item:(id)a4;
+- (TabBarItemLayoutInfo)initWithTabBar:(id)bar item:(id)item;
 - (TabBarItemView)tabBarItemPreviewView;
 - (TabBarItemView)tabBarItemView;
 - (TabBarItemView)viewForDragPreview;
 - (id)_reusableView;
-- (id)tabEntityUUIDForView:(id)a3;
+- (id)tabEntityUUIDForView:(id)view;
 - (int64_t)_visibleEdge;
-- (void)_clearView:(id)a3;
+- (void)_clearView:(id)view;
 - (void)_clearViews;
 - (void)_clearViewsIfNeeded;
 - (void)_updateHidesTitleText;
 - (void)clearPreviewView;
-- (void)closeButtonTapped:(id)a3;
+- (void)closeButtonTapped:(id)tapped;
 - (void)dealloc;
 - (void)itemDidUpdateIcon;
 - (void)itemDidUpdateIsActive;
@@ -25,30 +25,30 @@
 - (void)itemDidUpdateMediaState;
 - (void)itemDidUpdateShareParticipants;
 - (void)itemDidUpdateTitle;
-- (void)mediaStateMuteButtonTapped:(id)a3;
-- (void)setActiveAnimationCount:(unint64_t)a3;
-- (void)setCanClose:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setLeadingEdgeVisible:(BOOL)a3;
-- (void)setRemovedFromTabBar:(BOOL)a3;
-- (void)setTrailingActiveItem:(BOOL)a3;
-- (void)setTrailingEdgeVisible:(BOOL)a3;
+- (void)mediaStateMuteButtonTapped:(id)tapped;
+- (void)setActiveAnimationCount:(unint64_t)count;
+- (void)setCanClose:(BOOL)close;
+- (void)setFrame:(CGRect)frame;
+- (void)setLeadingEdgeVisible:(BOOL)visible;
+- (void)setRemovedFromTabBar:(BOOL)bar;
+- (void)setTrailingActiveItem:(BOOL)item;
+- (void)setTrailingEdgeVisible:(BOOL)visible;
 @end
 
 @implementation TabBarItemLayoutInfo
 
-- (TabBarItemLayoutInfo)initWithTabBar:(id)a3 item:(id)a4
+- (TabBarItemLayoutInfo)initWithTabBar:(id)bar item:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  barCopy = bar;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = TabBarItemLayoutInfo;
   v8 = [(TabBarItemLayoutInfo *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_tabBar, v6);
-    objc_storeWeak(&v9->_tabBarItem, v7);
+    objc_storeWeak(&v8->_tabBar, barCopy);
+    objc_storeWeak(&v9->_tabBarItem, itemCopy);
     v10 = v9;
   }
 
@@ -67,29 +67,29 @@
 - (void)itemDidUpdateTitle
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarItem);
-  v3 = [WeakRetained title];
-  [(TabBarItemView *)self->_tabBarItemView setTitleText:v3];
+  title = [WeakRetained title];
+  [(TabBarItemView *)self->_tabBarItemView setTitleText:title];
 }
 
 - (void)itemDidUpdateIcon
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarItem);
-  v4 = [WeakRetained icon];
+  icon = [WeakRetained icon];
 
-  [(TabBarItemView *)self->_tabBarItemView setIcon:v4];
+  [(TabBarItemView *)self->_tabBarItemView setIcon:icon];
 }
 
 - (void)itemDidUpdateIsActive
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarItem);
-  v4 = [WeakRetained isActive];
+  isActive = [WeakRetained isActive];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__TabBarItemLayoutInfo_itemDidUpdateIsActive__block_invoke;
   v6[3] = &unk_2781D51B8;
   v6[4] = self;
-  v7 = v4;
+  v7 = isActive;
   [MEMORY[0x277D75D18] _animateUsingDefaultTimingWithOptions:2 animations:v6 completion:0];
   if ([(TabBarItemLayoutInfo *)self hasViews])
   {
@@ -101,9 +101,9 @@
 - (void)itemDidUpdateIsPlaceholder
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarItem);
-  v4 = [WeakRetained isPlaceholder];
+  isPlaceholder = [WeakRetained isPlaceholder];
 
-  [(TabBarItemView *)self->_tabBarItemView setIsPlaceholder:v4];
+  [(TabBarItemView *)self->_tabBarItemView setIsPlaceholder:isPlaceholder];
 
   [(TabBarItemLayoutInfo *)self _updateHidesTitleText];
 }
@@ -111,11 +111,11 @@
 - (void)itemDidUpdateMediaState
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarItem);
-  v4 = [WeakRetained mediaStateIcon];
+  mediaStateIcon = [WeakRetained mediaStateIcon];
 
   tabBarItemView = self->_tabBarItemView;
 
-  [(TabBarItemView *)tabBarItemView setMediaStateIcon:v4];
+  [(TabBarItemView *)tabBarItemView setMediaStateIcon:mediaStateIcon];
 }
 
 - (void)itemDidUpdateIsPinned
@@ -123,10 +123,10 @@
   WeakRetained = objc_loadWeakRetained(&self->_tabBarItem);
   -[TabBarItemView setPinned:](self->_tabBarItemView, "setPinned:", [WeakRetained isPinned]);
 
-  v4 = [(TabBarItemLayoutInfo *)self _visibleEdge];
+  _visibleEdge = [(TabBarItemLayoutInfo *)self _visibleEdge];
   tabBarItemView = self->_tabBarItemView;
 
-  [(TabBarItemView *)tabBarItemView setVisibleEdge:v4];
+  [(TabBarItemView *)tabBarItemView setVisibleEdge:_visibleEdge];
 }
 
 - (void)itemDidUpdateIsUnread
@@ -138,11 +138,11 @@
 - (void)itemDidUpdateShareParticipants
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarItem);
-  v3 = [WeakRetained shareParticipants];
-  [(TabBarItemView *)self->_tabBarItemView setShareParticipants:v3];
+  shareParticipants = [WeakRetained shareParticipants];
+  [(TabBarItemView *)self->_tabBarItemView setShareParticipants:shareParticipants];
 }
 
-- (void)closeButtonTapped:(id)a3
+- (void)closeButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBar);
   v4 = objc_loadWeakRetained(&self->_tabBarItem);
@@ -152,20 +152,20 @@
   }
 }
 
-- (void)mediaStateMuteButtonTapped:(id)a3
+- (void)mediaStateMuteButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBar);
   v4 = objc_loadWeakRetained(&self->_tabBarItem);
-  v5 = [v4 mediaStateIcon];
-  if (WeakRetained && v5)
+  mediaStateIcon = [v4 mediaStateIcon];
+  if (WeakRetained && mediaStateIcon)
   {
     [WeakRetained _toggleMediaStateMutedForItem:v4];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  self->_frame = a3;
+  self->_frame = frame;
   [(TabBarItemView *)self->_tabBarItemView setFrame:?];
   x = self->_frame.origin.x;
   y = self->_frame.origin.y;
@@ -176,12 +176,12 @@
   [(UIView *)itemSnapshotView setFrame:x, y, width, height];
 }
 
-- (void)setCanClose:(BOOL)a3
+- (void)setCanClose:(BOOL)close
 {
-  v3 = a3;
-  self->_canClose = a3;
-  v4 = [(TabBarItemView *)self->_tabBarItemView closeButton];
-  [v4 setHidden:!v3];
+  closeCopy = close;
+  self->_canClose = close;
+  closeButton = [(TabBarItemView *)self->_tabBarItemView closeButton];
+  [closeButton setHidden:!closeCopy];
 }
 
 - (int64_t)_visibleEdge
@@ -217,31 +217,31 @@
   return 0;
 }
 
-- (void)setLeadingEdgeVisible:(BOOL)a3
+- (void)setLeadingEdgeVisible:(BOOL)visible
 {
-  self->_leadingEdgeVisible = a3;
-  v4 = [(TabBarItemLayoutInfo *)self _visibleEdge];
+  self->_leadingEdgeVisible = visible;
+  _visibleEdge = [(TabBarItemLayoutInfo *)self _visibleEdge];
   tabBarItemView = self->_tabBarItemView;
 
-  [(TabBarItemView *)tabBarItemView setVisibleEdge:v4];
+  [(TabBarItemView *)tabBarItemView setVisibleEdge:_visibleEdge];
 }
 
-- (void)setTrailingEdgeVisible:(BOOL)a3
+- (void)setTrailingEdgeVisible:(BOOL)visible
 {
-  self->_trailingEdgeVisible = a3;
-  v4 = [(TabBarItemLayoutInfo *)self _visibleEdge];
+  self->_trailingEdgeVisible = visible;
+  _visibleEdge = [(TabBarItemLayoutInfo *)self _visibleEdge];
   tabBarItemView = self->_tabBarItemView;
 
-  [(TabBarItemView *)tabBarItemView setVisibleEdge:v4];
+  [(TabBarItemView *)tabBarItemView setVisibleEdge:_visibleEdge];
 }
 
-- (void)setTrailingActiveItem:(BOOL)a3
+- (void)setTrailingActiveItem:(BOOL)item
 {
-  if (self->_trailingActiveItem != a3)
+  if (self->_trailingActiveItem != item)
   {
     v9[7] = v3;
     v9[8] = v4;
-    self->_trailingActiveItem = a3;
+    self->_trailingActiveItem = item;
     [(TabBarItemView *)self->_tabBarItemView setVisibleEdge:[(TabBarItemLayoutInfo *)self _visibleEdge]];
     if (self->_trailingActiveItem)
     {
@@ -357,11 +357,11 @@ void __37__TabBarItemLayoutInfo__reusableView__block_invoke(uint64_t a1)
 
 - (TabBarItemView)viewForDragPreview
 {
-  v2 = [(TabBarItemLayoutInfo *)self _reusableView];
-  [v2 removeFromSuperview];
-  [v2 configureForDragPreview];
+  _reusableView = [(TabBarItemLayoutInfo *)self _reusableView];
+  [_reusableView removeFromSuperview];
+  [_reusableView configureForDragPreview];
 
-  return v2;
+  return _reusableView;
 }
 
 - (TabBarItemView)tabBarItemPreviewView
@@ -369,9 +369,9 @@ void __37__TabBarItemLayoutInfo__reusableView__block_invoke(uint64_t a1)
   tabBarItemPreviewView = self->_tabBarItemPreviewView;
   if (!tabBarItemPreviewView)
   {
-    v4 = [(TabBarItemLayoutInfo *)self viewForDragPreview];
+    viewForDragPreview = [(TabBarItemLayoutInfo *)self viewForDragPreview];
     v5 = self->_tabBarItemPreviewView;
-    self->_tabBarItemPreviewView = v4;
+    self->_tabBarItemPreviewView = viewForDragPreview;
 
     tabBarItemPreviewView = self->_tabBarItemPreviewView;
   }
@@ -379,17 +379,17 @@ void __37__TabBarItemLayoutInfo__reusableView__block_invoke(uint64_t a1)
   return tabBarItemPreviewView;
 }
 
-- (void)_clearView:(id)a3
+- (void)_clearView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 closeButton];
-  [v5 removeTarget:self action:sel_closeButtonTapped_ forControlEvents:64];
+  viewCopy = view;
+  closeButton = [viewCopy closeButton];
+  [closeButton removeTarget:self action:sel_closeButtonTapped_ forControlEvents:64];
 
-  v6 = [v4 mediaStateMuteButton];
-  [v6 removeTarget:self action:sel_mediaStateMuteButtonTapped_ forControlEvents:0x2000];
+  mediaStateMuteButton = [viewCopy mediaStateMuteButton];
+  [mediaStateMuteButton removeTarget:self action:sel_mediaStateMuteButtonTapped_ forControlEvents:0x2000];
 
   WeakRetained = objc_loadWeakRetained(&self->_tabBar);
-  [WeakRetained _relinquishReusableTabBarItemView:v4];
+  [WeakRetained _relinquishReusableTabBarItemView:viewCopy];
 }
 
 - (void)_clearViewsIfNeeded
@@ -424,9 +424,9 @@ void __37__TabBarItemLayoutInfo__reusableView__block_invoke(uint64_t a1)
 {
   if (!self->_tabBarItemView && [(TabBarItemLayoutInfo *)self _requiresViews])
   {
-    v3 = [(TabBarItemLayoutInfo *)self _reusableView];
+    _reusableView = [(TabBarItemLayoutInfo *)self _reusableView];
     tabBarItemView = self->_tabBarItemView;
-    self->_tabBarItemView = v3;
+    self->_tabBarItemView = _reusableView;
 
     [(TabBarItemView *)self->_tabBarItemView safari_setTabEntityProviderWithInfoProvider:self];
   }
@@ -455,42 +455,42 @@ void __37__TabBarItemLayoutInfo__reusableView__block_invoke(uint64_t a1)
 {
   if (self->_hidesTitleText)
   {
-    v3 = 1;
+    isPlaceholder = 1;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_tabBarItem);
-    v3 = [WeakRetained isPlaceholder];
+    isPlaceholder = [WeakRetained isPlaceholder];
   }
 
   tabBarItemView = self->_tabBarItemView;
 
-  [(TabBarItemView *)tabBarItemView setHidesTitleText:v3];
+  [(TabBarItemView *)tabBarItemView setHidesTitleText:isPlaceholder];
 }
 
-- (void)setRemovedFromTabBar:(BOOL)a3
+- (void)setRemovedFromTabBar:(BOOL)bar
 {
-  self->_removedFromTabBar = a3;
-  if (a3)
+  self->_removedFromTabBar = bar;
+  if (bar)
   {
     [(TabBarItemLayoutInfo *)self _clearViewsIfNeeded];
   }
 }
 
-- (void)setActiveAnimationCount:(unint64_t)a3
+- (void)setActiveAnimationCount:(unint64_t)count
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->_activeAnimationCount != a3)
+  if (self->_activeAnimationCount != count)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(TabBarItemView *)self->_tabBarItemView closeButton];
-    v6 = [v5 interactions];
+    closeButton = [(TabBarItemView *)self->_tabBarItemView closeButton];
+    interactions = [closeButton interactions];
 
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [interactions countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -502,7 +502,7 @@ void __37__TabBarItemLayoutInfo__reusableView__block_invoke(uint64_t a1)
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(interactions);
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
@@ -516,14 +516,14 @@ void __37__TabBarItemLayoutInfo__reusableView__block_invoke(uint64_t a1)
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [interactions countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
     }
   }
 
-  self->_activeAnimationCount = a3;
+  self->_activeAnimationCount = count;
   [(TabBarItemLayoutInfo *)self _clearViewsIfNeeded];
   if (self->_activeAnimationCount)
   {
@@ -533,20 +533,20 @@ void __37__TabBarItemLayoutInfo__reusableView__block_invoke(uint64_t a1)
   }
 }
 
-- (id)tabEntityUUIDForView:(id)a3
+- (id)tabEntityUUIDForView:(id)view
 {
-  if (self->_tabBarItemView == a3)
+  if (self->_tabBarItemView == view)
   {
     WeakRetained = objc_loadWeakRetained(&self->_tabBarItem);
-    v3 = [WeakRetained UUID];
+    uUID = [WeakRetained UUID];
   }
 
   else
   {
-    v3 = 0;
+    uUID = 0;
   }
 
-  return v3;
+  return uUID;
 }
 
 - (TabBar)tabBar

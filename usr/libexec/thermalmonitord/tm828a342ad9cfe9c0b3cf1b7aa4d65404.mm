@@ -1,17 +1,17 @@
 @interface tm828a342ad9cfe9c0b3cf1b7aa4d65404
-- (id)initProduct:(id)a3;
+- (id)initProduct:(id)product;
 - (int)computeMaxCGTemp;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tm828a342ad9cfe9c0b3cf1b7aa4d65404
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v6.receiver = self;
   v6.super_class = tm828a342ad9cfe9c0b3cf1b7aa4d65404;
-  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v3 = [(CommonProduct *)&v6 initProduct:product];
   v4 = v3;
   if (v3)
   {
@@ -21,10 +21,10 @@
   return v4;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
-  v3 = a3;
-  v5 = [(tm828a342ad9cfe9c0b3cf1b7aa4d65404 *)self gasGaugeBatteryTemperature];
+  loadCopy = load;
+  gasGaugeBatteryTemperature = [(tm828a342ad9cfe9c0b3cf1b7aa4d65404 *)self gasGaugeBatteryTemperature];
   v6 = HIDWORD(qword_1000AB824);
   v7 = qword_1000AB82C;
   v8 = HIDWORD(qword_1000AB82C);
@@ -40,7 +40,7 @@
     v9 = 4294967196;
   }
 
-  if (v3)
+  if (loadCopy)
   {
     [(tm828a342ad9cfe9c0b3cf1b7aa4d65404 *)self resetVTFilterState];
   }
@@ -63,8 +63,8 @@
   sub_10000533C(46, (v7 * 0.55 + -33.0 + v8 * 0.11));
   sub_10000533C(44, (v7 * 0.57 + -30.0 + v8 * 0.09));
   sub_10000533C(50, (v6 * 0.11 + -54.0 + v8 * 0.24));
-  sub_10000533C(51, (v5 * 1.27 + -108.08 + v7 * -0.23));
-  sub_10000533C(48, (v5 * -0.79 + 199.0 + v7 * 0.6));
+  sub_10000533C(51, (gasGaugeBatteryTemperature * 1.27 + -108.08 + v7 * -0.23));
+  sub_10000533C(48, (gasGaugeBatteryTemperature * -0.79 + 199.0 + v7 * 0.6));
   sub_10000533C(47, (v7 * 0.26 + -87.0 + v8 * 0.51));
   sub_10000533C(49, (v6 * -0.02 + 61.0 + self->_filteredBacklightCurrentLI2 * 7.56));
   sub_10000533C(45, v9);

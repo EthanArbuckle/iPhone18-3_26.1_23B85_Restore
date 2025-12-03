@@ -11,8 +11,8 @@
 - (id)intent
 {
   v3 = objc_alloc(MEMORY[0x1E696E9C8]);
-  v4 = [(SearchUIOpenMediaHandler *)self mediaMetadata];
-  v5 = [SearchUIMediaUtilities mediaSearchForMetadata:v4];
+  mediaMetadata = [(SearchUIOpenMediaHandler *)self mediaMetadata];
+  v5 = [SearchUIMediaUtilities mediaSearchForMetadata:mediaMetadata];
   v6 = [v3 initWithMediaItems:0 mediaSearch:v5];
 
   return v6;
@@ -20,57 +20,57 @@
 
 - (id)mediaMetadata
 {
-  v2 = [(SearchUICommandHandler *)self command];
-  v3 = [v2 mediaMetadata];
+  command = [(SearchUICommandHandler *)self command];
+  mediaMetadata = [command mediaMetadata];
 
-  return v3;
+  return mediaMetadata;
 }
 
 - (BOOL)supportsIntentPath
 {
-  v2 = [(SearchUIOpenMediaHandler *)self clientSelectedBundleIdentifier];
-  v3 = [SearchUIMediaUtilities bundleIdentifierSupportsOpenIntent:v2];
+  clientSelectedBundleIdentifier = [(SearchUIOpenMediaHandler *)self clientSelectedBundleIdentifier];
+  v3 = [SearchUIMediaUtilities bundleIdentifierSupportsOpenIntent:clientSelectedBundleIdentifier];
 
   return v3;
 }
 
 - (id)clientSelectedBundleIdentifier
 {
-  v3 = [(SearchUICommandHandler *)self command];
-  v4 = [v3 clientSelectedBundleIdentifier];
-  v5 = v4;
-  if (v4)
+  command = [(SearchUICommandHandler *)self command];
+  clientSelectedBundleIdentifier = [command clientSelectedBundleIdentifier];
+  v5 = clientSelectedBundleIdentifier;
+  if (clientSelectedBundleIdentifier)
   {
-    v6 = v4;
+    clientSelectedBundleIdentifier2 = clientSelectedBundleIdentifier;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SearchUIOpenMediaHandler;
-    v6 = [(SearchUIMediaHandler *)&v9 clientSelectedBundleIdentifier];
+    clientSelectedBundleIdentifier2 = [(SearchUIMediaHandler *)&v9 clientSelectedBundleIdentifier];
   }
 
-  v7 = v6;
+  v7 = clientSelectedBundleIdentifier2;
 
   return v7;
 }
 
 - (id)actionProvider
 {
-  v3 = [(SearchUICommandHandler *)self command];
-  v4 = [(SearchUICommandHandler *)self environment];
-  v5 = [(SearchUICommandHandler *)self rowModel];
+  command = [(SearchUICommandHandler *)self command];
+  environment = [(SearchUICommandHandler *)self environment];
+  rowModel = [(SearchUICommandHandler *)self rowModel];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __42__SearchUIOpenMediaHandler_actionProvider__block_invoke;
   aBlock[3] = &unk_1E85B27E8;
-  v12 = v3;
-  v13 = v5;
-  v14 = v4;
-  v6 = v4;
-  v7 = v5;
-  v8 = v3;
+  v12 = command;
+  v13 = rowModel;
+  v14 = environment;
+  v6 = environment;
+  v7 = rowModel;
+  v8 = command;
   v9 = _Block_copy(aBlock);
 
   return v9;

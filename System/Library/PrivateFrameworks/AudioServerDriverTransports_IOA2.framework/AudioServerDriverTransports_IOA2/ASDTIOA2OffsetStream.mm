@@ -9,8 +9,8 @@
 {
   v9.receiver = self;
   v9.super_class = ASDTIOA2OffsetStream;
-  v3 = [(ASDTExclavesStream *)&v9 readInputBlock];
-  v4 = [(ASDTIOA2OffsetStream *)self sampleTimeOffset];
+  readInputBlock = [(ASDTExclavesStream *)&v9 readInputBlock];
+  sampleTimeOffset = [(ASDTIOA2OffsetStream *)self sampleTimeOffset];
   v5 = ASDTIOA2LogType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -21,8 +21,8 @@
   v8[1] = 3221225472;
   v8[2] = __38__ASDTIOA2OffsetStream_readInputBlock__block_invoke;
   v8[3] = &unk_278CE8D50;
-  *&v8[5] = v4;
-  v8[4] = v3;
+  *&v8[5] = sampleTimeOffset;
+  v8[4] = readInputBlock;
   v6 = MEMORY[0x245CEDA00](v8);
 
   return v6;

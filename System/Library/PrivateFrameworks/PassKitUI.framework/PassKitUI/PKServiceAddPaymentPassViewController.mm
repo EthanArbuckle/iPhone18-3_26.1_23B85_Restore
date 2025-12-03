@@ -1,17 +1,17 @@
 @interface PKServiceAddPaymentPassViewController
 - (PKServiceAddPaymentPassViewController)init;
-- (void)_applyCancelItem:(id)a3;
+- (void)_applyCancelItem:(id)item;
 - (void)_cancel;
 - (void)_hostApplicationDidEnterBackground;
 - (void)_hostApplicationWillEnterForeground;
 - (void)_launchFlowWithFlowManager;
 - (void)dealloc;
-- (void)generateRequestWithCertificateChain:(id)a3 nonce:(id)a4 nonceSignature:(id)a5 completionHandler:(id)a6;
+- (void)generateRequestWithCertificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler;
 - (void)loadView;
-- (void)setConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKServiceAddPaymentPassViewController
@@ -26,22 +26,22 @@
     v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
     if (PKSecureElementIsAvailable() || PKIsSimulator())
     {
-      v4 = [MEMORY[0x1E69B8EF8] sharedService];
-      if (v4)
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      if (mEMORY[0x1E69B8EF8])
       {
-        objc_storeStrong(&v2->_managingDeviceWebService, v4);
-        [v3 addObject:v4];
+        objc_storeStrong(&v2->_managingDeviceWebService, mEMORY[0x1E69B8EF8]);
+        [v3 addObject:mEMORY[0x1E69B8EF8]];
       }
     }
 
-    v5 = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
-    if ([v5 _hasRemoteLibrary] && objc_msgSend(v5, "isWatchIssuerAppProvisioningSupported"))
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
+    if ([mEMORY[0x1E69B8A58] _hasRemoteLibrary] && objc_msgSend(mEMORY[0x1E69B8A58], "isWatchIssuerAppProvisioningSupported"))
     {
       v6 = objc_alloc_init(_MergedGlobals_1_14());
-      v7 = [v6 watchPaymentWebService];
-      if (v7)
+      watchPaymentWebService = [v6 watchPaymentWebService];
+      if (watchPaymentWebService)
       {
-        [v3 addObject:v7];
+        [v3 addObject:watchPaymentWebService];
       }
     }
 
@@ -76,9 +76,9 @@
   v5.receiver = self;
   v5.super_class = PKServiceAddPaymentPassViewController;
   [(PKServiceAddPaymentPassViewController *)&v5 loadView];
-  v3 = [(PKServiceAddPaymentPassViewController *)self view];
+  view = [(PKServiceAddPaymentPassViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 }
 
 - (void)_hostApplicationWillEnterForeground
@@ -97,28 +97,28 @@
   [MEMORY[0x1E69B8540] endSubjectReporting:*MEMORY[0x1E69BB6E8]];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [MEMORY[0x1E69B8540] endSubjectReporting:*MEMORY[0x1E69BB6E8]];
   v5.receiver = self;
   v5.super_class = PKServiceAddPaymentPassViewController;
-  [(PKServiceAddPaymentPassViewController *)&v5 viewDidDisappear:v3];
+  [(PKServiceAddPaymentPassViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [MEMORY[0x1E69B8540] beginSubjectReporting:*MEMORY[0x1E69BB6E8]];
   v5.receiver = self;
   v5.super_class = PKServiceAddPaymentPassViewController;
-  [(PKServiceAddPaymentPassViewController *)&v5 viewWillAppear:v3];
+  [(PKServiceAddPaymentPassViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13 = *MEMORY[0x1E69E9840];
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -129,18 +129,18 @@
     v9 = 138543618;
     v10 = v8;
     v11 = 2048;
-    v12 = a4;
+    scaleCopy = scale;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Setting display properties with screenSize=%{public}@ scale=%.f", &v9, 0x16u);
   }
 
   PKSetDisplayProperties();
 }
 
-- (void)setConfiguration:(id)a3 completionHandler:(id)a4
+- (void)setConfiguration:(id)configuration completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   [(PKServiceAddPaymentPassViewController *)self _hostAuditToken];
   v9 = SecTaskCreateWithAuditToken(0, &v27);
   if (v9)
@@ -157,10 +157,10 @@
     }
 
     v14 = objc_alloc(MEMORY[0x1E69B8840]);
-    v15 = [(PKServiceAddPaymentPassViewController *)self _hostProcessIdentifier];
+    _hostProcessIdentifier = [(PKServiceAddPaymentPassViewController *)self _hostProcessIdentifier];
     [(PKServiceAddPaymentPassViewController *)self _hostAuditToken];
-    v16 = [v14 initWithProcessIdentifier:v15 auditToken:&v27];
-    [v7 updateAllowManagedAppleIDWithEntitlements:v16];
+    v16 = [v14 initWithProcessIdentifier:_hostProcessIdentifier auditToken:&v27];
+    [configurationCopy updateAllowManagedAppleIDWithEntitlements:v16];
     self->_entitled = [v16 paymentPassProvisioning];
     CFRelease(v10);
   }
@@ -169,7 +169,7 @@
   {
     if (self->_entitled)
     {
-      objc_storeStrong(&self->_configuration, a3);
+      objc_storeStrong(&self->_configuration, configuration);
       v17 = [(PKAddPaymentPassRequestConfiguration *)self->_configuration _filterWebServices:self->_webServices primaryAccountIdentifierRequired:0];
       v18 = v17;
       if (v17)
@@ -185,9 +185,9 @@
       objc_storeStrong(&self->_webServices, v19);
 
       [(PKServiceAddPaymentPassViewController *)self _launchFlowWithFlowManager];
-      if (v8)
+      if (handlerCopy)
       {
-        v8[2](v8);
+        handlerCopy[2](handlerCopy);
       }
 
       goto LABEL_19;
@@ -196,13 +196,13 @@
     v24 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v26 = [(PKServiceAddPaymentPassViewController *)self _hostApplicationBundleIdentifier];
+      _hostApplicationBundleIdentifier = [(PKServiceAddPaymentPassViewController *)self _hostApplicationBundleIdentifier];
       v27.val[0] = 138543362;
-      *&v27.val[1] = v26;
+      *&v27.val[1] = _hostApplicationBundleIdentifier;
       _os_log_error_impl(&dword_1BD026000, v24, OS_LOG_TYPE_ERROR, "%{public}@ missing entitlement: com.apple.developer.payment-pass-provisioning", &v27, 0xCu);
     }
 
-    v20 = [(PKServiceAddPaymentPassViewController *)self _remoteViewControllerProxy];
+    _remoteViewControllerProxy = [(PKServiceAddPaymentPassViewController *)self _remoteViewControllerProxy];
     v21 = MEMORY[0x1E696ABC0];
     v22 = *MEMORY[0x1E69BBBC8];
     v23 = 2;
@@ -210,18 +210,18 @@
 
   else
   {
-    v20 = [(PKServiceAddPaymentPassViewController *)self _remoteViewControllerProxy];
+    _remoteViewControllerProxy = [(PKServiceAddPaymentPassViewController *)self _remoteViewControllerProxy];
     v21 = MEMORY[0x1E696ABC0];
     v22 = *MEMORY[0x1E69BBBC8];
     v23 = 0;
   }
 
   v25 = [v21 errorWithDomain:v22 code:v23 userInfo:0];
-  [v20 didFinishWithPass:0 error:v25];
+  [_remoteViewControllerProxy didFinishWithPass:0 error:v25];
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_19:
@@ -246,8 +246,8 @@ LABEL_19:
   v7 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:self->_managingDeviceWebService];
   v8 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:7 provisioningController:v7 groupsController:0];
   [v8 setTeamIdentifier:self->_teamID];
-  v9 = [(PKServiceAddPaymentPassViewController *)self _hostApplicationBundleIdentifier];
-  [v8 setHostApplicationBundleIdentifier:v9];
+  _hostApplicationBundleIdentifier = [(PKServiceAddPaymentPassViewController *)self _hostApplicationBundleIdentifier];
+  [v8 setHostApplicationBundleIdentifier:_hostApplicationBundleIdentifier];
 
   objc_initWeak(&location, self);
   configuration = self->_configuration;
@@ -313,27 +313,27 @@ void __67__PKServiceAddPaymentPassViewController__launchFlowWithFlowManager__blo
   }
 }
 
-- (void)generateRequestWithCertificateChain:(id)a3 nonce:(id)a4 nonceSignature:(id)a5 completionHandler:(id)a6
+- (void)generateRequestWithCertificateChain:(id)chain nonce:(id)nonce nonceSignature:(id)signature completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  chainCopy = chain;
+  nonceCopy = nonce;
+  signatureCopy = signature;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __116__PKServiceAddPaymentPassViewController_generateRequestWithCertificateChain_nonce_nonceSignature_completionHandler___block_invoke;
     v53[3] = &unk_1E8012C28;
-    v29 = v13;
-    v14 = v13;
+    v29 = handlerCopy;
+    v14 = handlerCopy;
     v54 = v14;
     v15 = [(PKServiceAddPaymentPassViewController *)self _remoteViewControllerProxyWithErrorHandler:v53];
-    v33 = [(PKAddPaymentPassRequestConfiguration *)self->_configuration encryptionScheme];
+    encryptionScheme = [(PKAddPaymentPassRequestConfiguration *)self->_configuration encryptionScheme];
     v16 = self->_teamID;
-    v17 = [(PKServiceAddPaymentPassViewController *)self _hostApplicationBundleIdentifier];
-    v28 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v17 allowPlaceholder:1 error:0];
-    v18 = [v28 shortVersionString];
+    _hostApplicationBundleIdentifier = [(PKServiceAddPaymentPassViewController *)self _hostApplicationBundleIdentifier];
+    v28 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:_hostApplicationBundleIdentifier allowPlaceholder:1 error:0];
+    shortVersionString = [v28 shortVersionString];
     v51[0] = 0;
     v51[1] = v51;
     v51[2] = 0x3032000000;
@@ -346,20 +346,20 @@ void __67__PKServiceAddPaymentPassViewController__launchFlowWithFlowManager__blo
     aBlock[3] = &unk_1E80197F0;
     v27 = v15;
     v41 = v27;
-    v32 = v10;
-    v42 = v10;
-    v31 = v11;
-    v19 = v11;
+    v32 = chainCopy;
+    v42 = chainCopy;
+    v31 = nonceCopy;
+    v19 = nonceCopy;
     v43 = v19;
-    v30 = v12;
-    v44 = v12;
-    v20 = v33;
+    v30 = signatureCopy;
+    v44 = signatureCopy;
+    v20 = encryptionScheme;
     v45 = v20;
     v21 = v16;
     v46 = v21;
-    v22 = v17;
+    v22 = _hostApplicationBundleIdentifier;
     v47 = v22;
-    v23 = v18;
+    v23 = shortVersionString;
     v48 = v23;
     v50 = v51;
     v49 = v14;
@@ -388,10 +388,10 @@ void __67__PKServiceAddPaymentPassViewController__launchFlowWithFlowManager__blo
     }
 
     _Block_object_dispose(v51, 8);
-    v11 = v31;
-    v10 = v32;
-    v13 = v29;
-    v12 = v30;
+    nonceCopy = v31;
+    chainCopy = v32;
+    handlerCopy = v29;
+    signatureCopy = v30;
   }
 }
 
@@ -457,19 +457,19 @@ void __116__PKServiceAddPaymentPassViewController_generateRequestWithCertificate
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_applyCancelItem:(id)a3
+- (void)_applyCancelItem:(id)item
 {
   v4 = MEMORY[0x1E69DC708];
-  v5 = a3;
+  itemCopy = item;
   v6 = [[v4 alloc] initWithBarButtonSystemItem:24 target:self action:sel__cancel];
-  [v5 setLeftBarButtonItem:v6];
+  [itemCopy setLeftBarButtonItem:v6];
 }
 
 - (void)_cancel
 {
-  v3 = [(PKServiceAddPaymentPassViewController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(PKServiceAddPaymentPassViewController *)self _remoteViewControllerProxy];
   v2 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BBBC8] code:1 userInfo:0];
-  [v3 didFinishWithPass:0 error:v2];
+  [_remoteViewControllerProxy didFinishWithPass:0 error:v2];
 
   MEMORY[0x1BFB41980](*MEMORY[0x1E69B9F88], &unk_1F3CC8898);
 }

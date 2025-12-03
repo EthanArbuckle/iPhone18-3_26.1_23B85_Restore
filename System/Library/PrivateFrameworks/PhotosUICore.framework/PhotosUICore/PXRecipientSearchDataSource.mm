@@ -1,34 +1,34 @@
 @interface PXRecipientSearchDataSource
-- (id)recipientSearchResultAtIndexPath:(id)a3;
-- (id)recipientSearchResultAtSimpleIndexPath:(PXSimpleIndexPath *)a3;
-- (id)recipientSearchResultsInSection:(unint64_t)a3;
+- (id)recipientSearchResultAtIndexPath:(id)path;
+- (id)recipientSearchResultAtSimpleIndexPath:(PXSimpleIndexPath *)path;
+- (id)recipientSearchResultsInSection:(unint64_t)section;
 @end
 
 @implementation PXRecipientSearchDataSource
 
-- (id)recipientSearchResultAtSimpleIndexPath:(PXSimpleIndexPath *)a3
+- (id)recipientSearchResultAtSimpleIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v6[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v6[0] = *&path->dataSourceIdentifier;
   v6[1] = v3;
   v4 = [(PXRecipientSearchDataSource *)self objectAtIndexPath:v6];
 
   return v4;
 }
 
-- (id)recipientSearchResultAtIndexPath:(id)a3
+- (id)recipientSearchResultAtIndexPath:(id)path
 {
   v6 = 0u;
   v7 = 0u;
-  v4 = a3;
+  pathCopy = path;
   [(PXRecipientSearchDataSource *)self identifier];
   PXSimpleIndexPathFromIndexPath();
 }
 
-- (id)recipientSearchResultsInSection:(unint64_t)a3
+- (id)recipientSearchResultsInSection:(unint64_t)section
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [MEMORY[0x1E696AC90] indexSetWithIndex:a3];
+  v6 = [MEMORY[0x1E696AC90] indexSetWithIndex:section];
   v7 = [off_1E7721768 indexPathSetWithSectionIndexes:v6 dataSourceIdentifier:{-[PXRecipientSearchDataSource identifier](self, "identifier")}];
 
   v8 = [(PXRecipientSearchDataSource *)self itemIndexPathsForSections:v7];

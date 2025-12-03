@@ -2,7 +2,7 @@
 + (id)sharedManager;
 - (ACCAppLinksIconInfo)init;
 - (id)_init;
-- (void)getIconDataForBundleID:(id)a3 forIconSize:(double)a4 withReply:(id)a5;
+- (void)getIconDataForBundleID:(id)d forIconSize:(double)size withReply:(id)reply;
 @end
 
 @implementation ACCAppLinksIconInfo
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __36__ACCAppLinksIconInfo_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_0 != -1)
   {
     dispatch_once(&sharedManager_once_0, block);
@@ -65,26 +65,26 @@ uint64_t __36__ACCAppLinksIconInfo_sharedManager__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)getIconDataForBundleID:(id)a3 forIconSize:(double)a4 withReply:(id)a5
+- (void)getIconDataForBundleID:(id)d forIconSize:(double)size withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v10 = [(ACCAppLinksIconInfo *)self xpcConnection];
+    xpcConnection = [(ACCAppLinksIconInfo *)self xpcConnection];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __68__ACCAppLinksIconInfo_getIconDataForBundleID_forIconSize_withReply___block_invoke;
     v18[3] = &unk_278486CA8;
-    v11 = v9;
+    v11 = replyCopy;
     v19 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v18];
+    v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v18];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __68__ACCAppLinksIconInfo_getIconDataForBundleID_forIconSize_withReply___block_invoke_13;
     v16[3] = &unk_278486F88;
     v17 = v11;
-    [v12 getIconDataForBundleID:v8 forIconSize:v16 withReply:a4];
+    [v12 getIconDataForBundleID:dCopy forIconSize:v16 withReply:size];
 
     v13 = v19;
   }

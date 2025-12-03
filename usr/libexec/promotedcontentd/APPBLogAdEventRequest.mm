@@ -1,13 +1,13 @@
 @interface APPBLogAdEventRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addEvent:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEvent:(id)event;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBLogAdEventRequest
@@ -24,22 +24,22 @@
   return v3;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   events = self->_events;
-  v8 = v4;
+  v8 = eventCopy;
   if (!events)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_events;
     self->_events = v6;
 
-    v4 = v8;
+    eventCopy = v8;
     events = self->_events;
   }
 
-  [(NSMutableArray *)events addObject:v4];
+  [(NSMutableArray *)events addObject:eventCopy];
 }
 
 - (id)description
@@ -47,8 +47,8 @@
   v7.receiver = self;
   v7.super_class = APPBLogAdEventRequest;
   v3 = [(APPBLogAdEventRequest *)&v7 description];
-  v4 = [(APPBLogAdEventRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBLogAdEventRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -59,8 +59,8 @@
   metaData = self->_metaData;
   if (metaData)
   {
-    v5 = [(APPBLogMetaData *)metaData dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"metaData"];
+    dictionaryRepresentation = [(APPBLogMetaData *)metaData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"metaData"];
   }
 
   if ([(NSMutableArray *)self->_events count])
@@ -85,8 +85,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -101,9 +101,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_metaData)
   {
     PBDataWriterWriteSubmessage();
@@ -141,34 +141,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_metaData)
   {
-    [v8 setMetaData:?];
+    [toCopy setMetaData:?];
   }
 
   if ([(APPBLogAdEventRequest *)self eventsCount])
   {
-    [v8 clearEvents];
-    v4 = [(APPBLogAdEventRequest *)self eventsCount];
-    if (v4)
+    [toCopy clearEvents];
+    eventsCount = [(APPBLogAdEventRequest *)self eventsCount];
+    if (eventsCount)
     {
-      v5 = v4;
+      v5 = eventsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBLogAdEventRequest *)self eventAtIndex:i];
-        [v8 addEvent:v7];
+        [toCopy addEvent:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(APPBLogMetaData *)self->_metaData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(APPBLogMetaData *)self->_metaData copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -192,7 +192,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addEvent:v13];
 
         v12 = v12 + 1;
@@ -208,13 +208,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((metaData = self->_metaData, !(metaData | v4[2])) || -[APPBLogMetaData isEqual:](metaData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((metaData = self->_metaData, !(metaData | equalCopy[2])) || -[APPBLogMetaData isEqual:](metaData, "isEqual:")))
   {
     events = self->_events;
-    if (events | v4[1])
+    if (events | equalCopy[1])
     {
       v7 = [(NSMutableArray *)events isEqual:?];
     }
@@ -233,11 +233,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   metaData = self->_metaData;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (metaData)
   {
     if (v6)
@@ -255,7 +255,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

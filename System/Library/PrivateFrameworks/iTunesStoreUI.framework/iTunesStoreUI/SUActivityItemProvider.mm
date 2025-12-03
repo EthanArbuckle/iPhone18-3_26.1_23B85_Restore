@@ -1,23 +1,23 @@
 @interface SUActivityItemProvider
-- (SUActivityItemProvider)initWithPlaceholderItem:(id)a3;
+- (SUActivityItemProvider)initWithPlaceholderItem:(id)item;
 - (SUActivityItemProviderDelegate)delegate;
 - (UIActivity)suActivity;
 - (UIImage)suPreviewImage;
 - (id)item;
 - (id)suLastProvidedItem;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)setSUActivity:(id)a3;
-- (void)setSUPreviewImage:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setSUActivity:(id)activity;
+- (void)setSUPreviewImage:(id)image;
 @end
 
 @implementation SUActivityItemProvider
 
-- (SUActivityItemProvider)initWithPlaceholderItem:(id)a3
+- (SUActivityItemProvider)initWithPlaceholderItem:(id)item
 {
   v6.receiver = self;
   v6.super_class = SUActivityItemProvider;
-  v3 = [(UIActivityItemProvider *)&v6 initWithPlaceholderItem:a3];
+  v3 = [(UIActivityItemProvider *)&v6 initWithPlaceholderItem:item];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.iTunesStoreUI.SUActivityItemProvider.%p", v3];
@@ -68,7 +68,7 @@ id __34__SUActivityItemProvider_delegate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -76,11 +76,11 @@ id __34__SUActivityItemProvider_delegate__block_invoke(uint64_t a1)
   v4[2] = __38__SUActivityItemProvider_setDelegate___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = delegate;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setSUActivity:(id)a3
+- (void)setSUActivity:(id)activity
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -88,7 +88,7 @@ id __34__SUActivityItemProvider_delegate__block_invoke(uint64_t a1)
   v4[2] = __40__SUActivityItemProvider_setSUActivity___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = activity;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -106,7 +106,7 @@ void *__40__SUActivityItemProvider_setSUActivity___block_invoke(void *result)
   return result;
 }
 
-- (void)setSUPreviewImage:(id)a3
+- (void)setSUPreviewImage:(id)image
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -114,7 +114,7 @@ void *__40__SUActivityItemProvider_setSUActivity___block_invoke(void *result)
   v4[2] = __44__SUActivityItemProvider_setSUPreviewImage___block_invoke;
   v4[3] = &unk_1E8164370;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = image;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -224,7 +224,7 @@ id __40__SUActivityItemProvider_suPreviewImage__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__50;
   v14 = __Block_byref_object_dispose__50;
   v15 = 0;
-  v3 = [(SUActivityItemProvider *)self delegate];
+  delegate = [(SUActivityItemProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v4 = dispatch_semaphore_create(0);
@@ -234,7 +234,7 @@ id __40__SUActivityItemProvider_suPreviewImage__block_invoke(uint64_t a1)
     v9[3] = &unk_1E8167160;
     v9[4] = v4;
     v9[5] = &v10;
-    [(SUActivityItemProviderDelegate *)v3 activityItemProvider:self provideItemUsingBlock:v9];
+    [(SUActivityItemProviderDelegate *)delegate activityItemProvider:self provideItemUsingBlock:v9];
     dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
     dispatch_release(v4);
   }

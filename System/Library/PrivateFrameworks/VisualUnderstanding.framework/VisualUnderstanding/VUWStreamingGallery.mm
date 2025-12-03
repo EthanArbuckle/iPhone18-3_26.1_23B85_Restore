@@ -1,25 +1,25 @@
 @interface VUWStreamingGallery
 - (VUWStreamingGallery)init;
-- (VUWStreamingGallery)initWithConfiguration:(id)a3 error:(id *)a4;
-- (VUWStreamingGallery)initWithPath:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (id)addObservation:(id)a3 tag:(id)a4 error:(id *)a5;
-- (id)addObservations:(id)a3 tag:(id)a4 error:(id *)a5;
-- (id)recognizeWithObservation:(id)a3 k:(id)a4 confirmedOnly:(BOOL)a5 error:(id *)a6;
-- (id)updateWithMaxKeyFacesPerCluster:(id)a3 sortBy:(id)a4 error:(id *)a5;
+- (VUWStreamingGallery)initWithConfiguration:(id)configuration error:(id *)error;
+- (VUWStreamingGallery)initWithPath:(id)path configuration:(id)configuration error:(id *)error;
+- (id)addObservation:(id)observation tag:(id)tag error:(id *)error;
+- (id)addObservations:(id)observations tag:(id)tag error:(id *)error;
+- (id)recognizeWithObservation:(id)observation k:(id)k confirmedOnly:(BOOL)only error:(id *)error;
+- (id)updateWithMaxKeyFacesPerCluster:(id)cluster sortBy:(id)by error:(id *)error;
 @end
 
 @implementation VUWStreamingGallery
 
-- (VUWStreamingGallery)initWithConfiguration:(id)a3 error:(id *)a4
+- (VUWStreamingGallery)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = *(a3 + OBJC_IVAR___VUWStreamingGalleryConfiguration_configuration + 16);
-  v11[0] = *(a3 + OBJC_IVAR___VUWStreamingGalleryConfiguration_configuration);
+  v6 = *(configuration + OBJC_IVAR___VUWStreamingGalleryConfiguration_configuration + 16);
+  v11[0] = *(configuration + OBJC_IVAR___VUWStreamingGalleryConfiguration_configuration);
   v11[1] = v6;
-  v11[2] = *(a3 + OBJC_IVAR___VUWStreamingGalleryConfiguration_configuration + 32);
-  v12 = *(a3 + OBJC_IVAR___VUWStreamingGalleryConfiguration_configuration + 48);
+  v11[2] = *(configuration + OBJC_IVAR___VUWStreamingGalleryConfiguration_configuration + 32);
+  v12 = *(configuration + OBJC_IVAR___VUWStreamingGalleryConfiguration_configuration + 48);
   type metadata accessor for VUStreamingGallery(0);
   swift_allocObject();
-  v7 = a3;
+  configurationCopy = configuration;
   *(&self->super.isa + OBJC_IVAR___VUWStreamingGallery_streamingGallery) = VUStreamingGallery.init(with:)(v11);
   v10.receiver = self;
   v10.super_class = VUWStreamingGallery;
@@ -28,32 +28,32 @@
   return v8;
 }
 
-- (VUWStreamingGallery)initWithPath:(id)a3 configuration:(id)a4 error:(id *)a5
+- (VUWStreamingGallery)initWithPath:(id)path configuration:(id)configuration error:(id *)error
 {
   v6 = sub_1D22503FC();
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D225038C();
-  return sub_1D21C5744(v8, a4);
+  return sub_1D21C5744(v8, configuration);
 }
 
-- (id)addObservation:(id)a3 tag:(id)a4 error:(id *)a5
+- (id)addObservation:(id)observation tag:(id)tag error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1D21C5AB0(v7, a4);
+  observationCopy = observation;
+  tagCopy = tag;
+  selfCopy = self;
+  v10 = sub_1D21C5AB0(observationCopy, tag);
 
   return v10;
 }
 
-- (id)addObservations:(id)a3 tag:(id)a4 error:(id *)a5
+- (id)addObservations:(id)observations tag:(id)tag error:(id *)error
 {
   type metadata accessor for VUWObservation(self);
   v7 = sub_1D2250AFC();
-  v8 = a4;
-  v9 = self;
-  sub_1D21C5F40(v7, a4);
+  tagCopy = tag;
+  selfCopy = self;
+  sub_1D21C5F40(v7, tag);
 
   sub_1D2174E10(0, &qword_1EDC876F8);
   v10 = sub_1D2250AEC();
@@ -61,12 +61,12 @@
   return v10;
 }
 
-- (id)updateWithMaxKeyFacesPerCluster:(id)a3 sortBy:(id)a4 error:(id *)a5
+- (id)updateWithMaxKeyFacesPerCluster:(id)cluster sortBy:(id)by error:(id *)error
 {
   v7 = sub_1D2250AFC();
-  v8 = a3;
-  v9 = self;
-  sub_1D21C6424(v8, v7);
+  clusterCopy = cluster;
+  selfCopy = self;
+  sub_1D21C6424(clusterCopy, v7);
 
   type metadata accessor for VUWClusterResult(v10);
   v11 = sub_1D2250AEC();
@@ -74,13 +74,13 @@
   return v11;
 }
 
-- (id)recognizeWithObservation:(id)a3 k:(id)a4 confirmedOnly:(BOOL)a5 error:(id *)a6
+- (id)recognizeWithObservation:(id)observation k:(id)k confirmedOnly:(BOOL)only error:(id *)error
 {
-  v6 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_1D21C66B8(v9, v10, v6);
+  onlyCopy = only;
+  observationCopy = observation;
+  kCopy = k;
+  selfCopy = self;
+  sub_1D21C66B8(observationCopy, kCopy, onlyCopy);
 
   type metadata accessor for VUWRecognition(v12);
   v13 = sub_1D2250AEC();

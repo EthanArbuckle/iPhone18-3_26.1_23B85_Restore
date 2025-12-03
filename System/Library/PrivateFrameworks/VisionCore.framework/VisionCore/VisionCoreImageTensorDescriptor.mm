@@ -1,43 +1,43 @@
 @interface VisionCoreImageTensorDescriptor
-- (BOOL)isEqual:(id)a3;
-- (VisionCoreImageTensorDescriptor)initWithANSTPixelBufferDescriptor:(id)a3;
-- (VisionCoreImageTensorDescriptor)initWithCoder:(id)a3;
-- (VisionCoreImageTensorDescriptor)initWithName:(id)a3 pixelFormatType:(unsigned int)a4 pixelWidth:(unint64_t)a5 pixelHeight:(unint64_t)a6;
-- (id)E5RTExecutionContextNewIOSurfacePropertiesAndReturnError:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (VisionCoreImageTensorDescriptor)initWithANSTPixelBufferDescriptor:(id)descriptor;
+- (VisionCoreImageTensorDescriptor)initWithCoder:(id)coder;
+- (VisionCoreImageTensorDescriptor)initWithName:(id)name pixelFormatType:(unsigned int)type pixelWidth:(unint64_t)width pixelHeight:(unint64_t)height;
+- (id)E5RTExecutionContextNewIOSurfacePropertiesAndReturnError:(id *)error;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VisionCoreImageTensorDescriptor
 
-- (VisionCoreImageTensorDescriptor)initWithCoder:(id)a3
+- (VisionCoreImageTensorDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   if (v5)
   {
-    self = -[VisionCoreImageTensorDescriptor initWithName:pixelFormatType:pixelWidth:pixelHeight:](self, "initWithName:pixelFormatType:pixelWidth:pixelHeight:", v5, [v4 decodeInt32ForKey:@"pixelFormat"], objc_msgSend(v4, "decodeInt32ForKey:", @"w"), objc_msgSend(v4, "decodeInt32ForKey:", @"h"));
-    v6 = self;
+    self = -[VisionCoreImageTensorDescriptor initWithName:pixelFormatType:pixelWidth:pixelHeight:](self, "initWithName:pixelFormatType:pixelWidth:pixelHeight:", v5, [coderCopy decodeInt32ForKey:@"pixelFormat"], objc_msgSend(coderCopy, "decodeInt32ForKey:", @"w"), objc_msgSend(coderCopy, "decodeInt32ForKey:", @"h"));
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(VisionCoreTensorDescriptor *)self name];
-  [v5 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(VisionCoreTensorDescriptor *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v5 encodeInt32:-[VisionCoreImageTensorDescriptor pixelFormatType](self forKey:{"pixelFormatType"), @"pixelFormat"}];
-  [v5 encodeInt32:-[VisionCoreImageTensorDescriptor pixelWidth](self forKey:{"pixelWidth"), @"w"}];
-  [v5 encodeInt32:-[VisionCoreImageTensorDescriptor pixelHeight](self forKey:{"pixelHeight"), @"h"}];
+  [coderCopy encodeInt32:-[VisionCoreImageTensorDescriptor pixelFormatType](self forKey:{"pixelFormatType"), @"pixelFormat"}];
+  [coderCopy encodeInt32:-[VisionCoreImageTensorDescriptor pixelWidth](self forKey:{"pixelWidth"), @"w"}];
+  [coderCopy encodeInt32:-[VisionCoreImageTensorDescriptor pixelHeight](self forKey:{"pixelHeight"), @"h"}];
 }
 
 - (id)description
@@ -52,10 +52,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -65,12 +65,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VisionCoreImageTensorDescriptor *)self pixelFormatType];
-      if (v6 == [(VisionCoreImageTensorDescriptor *)v5 pixelFormatType]&& (v7 = [(VisionCoreImageTensorDescriptor *)self pixelWidth], v7 == [(VisionCoreImageTensorDescriptor *)v5 pixelWidth]) && (v8 = [(VisionCoreImageTensorDescriptor *)self pixelHeight], v8 == [(VisionCoreImageTensorDescriptor *)v5 pixelHeight]))
+      v5 = equalCopy;
+      pixelFormatType = [(VisionCoreImageTensorDescriptor *)self pixelFormatType];
+      if (pixelFormatType == [(VisionCoreImageTensorDescriptor *)v5 pixelFormatType]&& (v7 = [(VisionCoreImageTensorDescriptor *)self pixelWidth], v7 == [(VisionCoreImageTensorDescriptor *)v5 pixelWidth]) && (v8 = [(VisionCoreImageTensorDescriptor *)self pixelHeight], v8 == [(VisionCoreImageTensorDescriptor *)v5 pixelHeight]))
       {
-        v9 = [(VisionCoreImageTensorDescriptor *)self bytesPerRow];
-        v10 = v9 == [(VisionCoreImageTensorDescriptor *)v5 bytesPerRow];
+        bytesPerRow = [(VisionCoreImageTensorDescriptor *)self bytesPerRow];
+        v10 = bytesPerRow == [(VisionCoreImageTensorDescriptor *)v5 bytesPerRow];
       }
 
       else
@@ -93,16 +93,16 @@
   v8.receiver = self;
   v8.super_class = VisionCoreImageTensorDescriptor;
   v3 = [(VisionCoreTensorDescriptor *)&v8 hash];
-  v4 = [(VisionCoreImageTensorDescriptor *)self pixelFormatType];
-  v5 = v4 ^ [(VisionCoreImageTensorDescriptor *)self pixelWidth];
+  pixelFormatType = [(VisionCoreImageTensorDescriptor *)self pixelFormatType];
+  v5 = pixelFormatType ^ [(VisionCoreImageTensorDescriptor *)self pixelWidth];
   v6 = v5 ^ [(VisionCoreImageTensorDescriptor *)self pixelHeight];
   return v3 ^ v6 ^ [(VisionCoreImageTensorDescriptor *)self bytesPerRow];
 }
 
-- (VisionCoreImageTensorDescriptor)initWithName:(id)a3 pixelFormatType:(unsigned int)a4 pixelWidth:(unint64_t)a5 pixelHeight:(unint64_t)a6
+- (VisionCoreImageTensorDescriptor)initWithName:(id)name pixelFormatType:(unsigned int)type pixelWidth:(unint64_t)width pixelHeight:(unint64_t)height
 {
-  v8 = *&a4;
-  v10 = a3;
+  v8 = *&type;
+  nameCopy = name;
   if (v8 <= 1278226487)
   {
     if (v8 <= 39)
@@ -180,17 +180,17 @@ LABEL_18:
   }
 
 LABEL_22:
-  v13 = [[VisionCoreTensorShape alloc] initWithPixelFormatType:v8 width:a5 height:a6];
+  v13 = [[VisionCoreTensorShape alloc] initWithPixelFormatType:v8 width:width height:height];
   v17.receiver = self;
   v17.super_class = VisionCoreImageTensorDescriptor;
-  v14 = [(VisionCoreTensorDescriptor *)&v17 initWithName:v10 dataType:v12 shape:v13 strides:0];
+  v14 = [(VisionCoreTensorDescriptor *)&v17 initWithName:nameCopy dataType:v12 shape:v13 strides:0];
 
   if (v14)
   {
     v14->_pixelFormatType = v8;
-    v14->_pixelWidth = a5;
-    v14->_pixelHeight = a6;
-    v15 = ((v12 >> 3) & 0xF) * a5;
+    v14->_pixelWidth = width;
+    v14->_pixelHeight = height;
+    v15 = ((v12 >> 3) & 0xF) * width;
     if (v11)
     {
       v15 = 0;
@@ -202,23 +202,23 @@ LABEL_22:
   return v14;
 }
 
-- (VisionCoreImageTensorDescriptor)initWithANSTPixelBufferDescriptor:(id)a3
+- (VisionCoreImageTensorDescriptor)initWithANSTPixelBufferDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 pixelFormatType];
-  v6 = [v4 width];
-  v7 = [v4 height];
-  v8 = [v4 name];
+  descriptorCopy = descriptor;
+  pixelFormatType = [descriptorCopy pixelFormatType];
+  width = [descriptorCopy width];
+  height = [descriptorCopy height];
+  name = [descriptorCopy name];
 
-  v9 = [(VisionCoreImageTensorDescriptor *)self initWithName:v8 pixelFormatType:v5 pixelWidth:v6 pixelHeight:v7];
+  v9 = [(VisionCoreImageTensorDescriptor *)self initWithName:name pixelFormatType:pixelFormatType pixelWidth:width pixelHeight:height];
   return v9;
 }
 
-- (id)E5RTExecutionContextNewIOSurfacePropertiesAndReturnError:(id *)a3
+- (id)E5RTExecutionContextNewIOSurfacePropertiesAndReturnError:(id *)error
 {
   v11.receiver = self;
   v11.super_class = VisionCoreImageTensorDescriptor;
-  v4 = [(VisionCoreTensorDescriptor *)&v11 E5RTExecutionContextNewIOSurfacePropertiesAndReturnError:a3];
+  v4 = [(VisionCoreTensorDescriptor *)&v11 E5RTExecutionContextNewIOSurfacePropertiesAndReturnError:error];
   if (v4)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{-[VisionCoreImageTensorDescriptor pixelWidth](self, "pixelWidth")}];

@@ -1,17 +1,17 @@
 @interface SSVMediaContentTasteController
-- (BOOL)_isRetryableError:(id)a3;
+- (BOOL)_isRetryableError:(id)error;
 - (SSVMediaContentTasteController)init;
-- (unint64_t)contentTasteTypeForPlaylistGlobalID:(id)a3;
-- (unint64_t)contentTasteTypeForStoreAdamID:(int64_t)a3;
-- (void)_contentTasteForItemUpdate:(id)a3 finishedWithError:(id)a4;
-- (void)_handleContentTasteItemsUpdateResponse:(id)a3 allowNotifications:(BOOL)a4;
+- (unint64_t)contentTasteTypeForPlaylistGlobalID:(id)d;
+- (unint64_t)contentTasteTypeForStoreAdamID:(int64_t)d;
+- (void)_contentTasteForItemUpdate:(id)update finishedWithError:(id)error;
+- (void)_handleContentTasteItemsUpdateResponse:(id)response allowNotifications:(BOOL)notifications;
 - (void)_refreshContentTasteItems;
-- (void)_retryOperationForItemUpdates:(id)a3 finishedWithError:(id)a4;
+- (void)_retryOperationForItemUpdates:(id)updates finishedWithError:(id)error;
 - (void)_scheduleContentTasteUpdateOperationForFailedItems;
-- (void)_sendUpdateWithItemUpdates:(id)a3 completionHandler:(id)a4;
+- (void)_sendUpdateWithItemUpdates:(id)updates completionHandler:(id)handler;
 - (void)dealloc;
-- (void)setContentTasteType:(unint64_t)a3 forPlaylistGlobalID:(id)a4 withCompletionHandler:(id)a5;
-- (void)setContentTasteType:(unint64_t)a3 forStoreAdamID:(int64_t)a4 withContentType:(unint64_t)a5 completionHandler:(id)a6;
+- (void)setContentTasteType:(unint64_t)type forPlaylistGlobalID:(id)d withCompletionHandler:(id)handler;
+- (void)setContentTasteType:(unint64_t)type forStoreAdamID:(int64_t)d withContentType:(unint64_t)contentType completionHandler:(id)handler;
 @end
 
 @implementation SSVMediaContentTasteController
@@ -42,17 +42,17 @@
     notify_register_dispatch(v7, &v2->_itemsDidChangeNotifyToken, v8, &v16);
     v2->_havePendingRetryOperation = 0;
     v2->_exponentialBackOffSeconds = 120;
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     contentTasteItemsToRetry = v2->_contentTasteItemsToRetry;
-    v2->_contentTasteItemsToRetry = v9;
+    v2->_contentTasteItemsToRetry = dictionary;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     storeAdamIDToContentTasteItem = v2->_storeAdamIDToContentTasteItem;
-    v2->_storeAdamIDToContentTasteItem = v11;
+    v2->_storeAdamIDToContentTasteItem = dictionary2;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     storeAdamIDToPendingContentTasteItem = v2->_storeAdamIDToPendingContentTasteItem;
-    v2->_storeAdamIDToPendingContentTasteItem = v13;
+    v2->_storeAdamIDToPendingContentTasteItem = dictionary3;
 
     [(SSVMediaContentTasteController *)v2 _refreshContentTasteItems];
     objc_destroyWeak(&v20);
@@ -185,9 +185,9 @@ LABEL_27:
   [(SSVMediaContentTasteController *)&v3 dealloc];
 }
 
-- (unint64_t)contentTasteTypeForPlaylistGlobalID:(id)a3
+- (unint64_t)contentTasteTypeForPlaylistGlobalID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -201,13 +201,13 @@ LABEL_27:
   block[3] = &unk_1E84AD8F0;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
   dispatch_sync(accessSerialQueue, block);
-  v7 = [v13[5] tasteType];
+  tasteType = [v13[5] tasteType];
 
   _Block_object_dispose(&v12, 8);
-  return v7;
+  return tasteType;
 }
 
 void __70__SSVMediaContentTasteController_contentTasteTypeForPlaylistGlobalID___block_invoke(void *a1)
@@ -226,7 +226,7 @@ void __70__SSVMediaContentTasteController_contentTasteTypeForPlaylistGlobalID___
   }
 }
 
-- (unint64_t)contentTasteTypeForStoreAdamID:(int64_t)a3
+- (unint64_t)contentTasteTypeForStoreAdamID:(int64_t)d
 {
   v7 = 0;
   v8 = &v7;
@@ -241,12 +241,12 @@ void __70__SSVMediaContentTasteController_contentTasteTypeForPlaylistGlobalID___
   block[3] = &unk_1E84AD918;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = d;
   dispatch_sync(accessSerialQueue, block);
-  v4 = [v8[5] tasteType];
+  tasteType = [v8[5] tasteType];
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return tasteType;
 }
 
 void __65__SSVMediaContentTasteController_contentTasteTypeForStoreAdamID___block_invoke(void *a1)
@@ -269,12 +269,12 @@ void __65__SSVMediaContentTasteController_contentTasteTypeForStoreAdamID___block
   }
 }
 
-- (void)setContentTasteType:(unint64_t)a3 forPlaylistGlobalID:(id)a4 withCompletionHandler:(id)a5
+- (void)setContentTasteType:(unint64_t)type forPlaylistGlobalID:(id)d withCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  dCopy = d;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (dCopy)
   {
     accessSerialQueue = self->_accessSerialQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -282,8 +282,8 @@ void __65__SSVMediaContentTasteController_contentTasteTypeForStoreAdamID___block
     block[2] = __96__SSVMediaContentTasteController_setContentTasteType_forPlaylistGlobalID_withCompletionHandler___block_invoke_2;
     block[3] = &unk_1E84AD9E0;
     block[4] = self;
-    v15 = v8;
-    v17 = a3;
+    v15 = dCopy;
+    typeCopy = type;
     v16 = v10;
     dispatch_async(accessSerialQueue, block);
 
@@ -293,14 +293,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v9)
+  if (handlerCopy)
   {
     calloutSerialQueue = self->_calloutSerialQueue;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __96__SSVMediaContentTasteController_setContentTasteType_forPlaylistGlobalID_withCompletionHandler___block_invoke;
     v18[3] = &unk_1E84AD940;
-    v19 = v9;
+    v19 = handlerCopy;
     dispatch_async(calloutSerialQueue, v18);
     v12 = v19;
     goto LABEL_5;
@@ -410,22 +410,22 @@ uint64_t __96__SSVMediaContentTasteController_setContentTasteType_forPlaylistGlo
   return result;
 }
 
-- (void)setContentTasteType:(unint64_t)a3 forStoreAdamID:(int64_t)a4 withContentType:(unint64_t)a5 completionHandler:(id)a6
+- (void)setContentTasteType:(unint64_t)type forStoreAdamID:(int64_t)d withContentType:(unint64_t)contentType completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = v10;
-  if (a4)
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (d)
   {
     accessSerialQueue = self->_accessSerialQueue;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __103__SSVMediaContentTasteController_setContentTasteType_forStoreAdamID_withContentType_completionHandler___block_invoke_2;
     v15[3] = &unk_1E84ADA58;
-    v18 = a5;
-    v19 = a3;
-    v17 = a4;
+    contentTypeCopy = contentType;
+    typeCopy = type;
+    dCopy = d;
     v15[4] = self;
-    v16 = v10;
+    v16 = handlerCopy;
     dispatch_async(accessSerialQueue, v15);
     v13 = v16;
 LABEL_5:
@@ -433,14 +433,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     calloutSerialQueue = self->_calloutSerialQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __103__SSVMediaContentTasteController_setContentTasteType_forStoreAdamID_withContentType_completionHandler___block_invoke;
     block[3] = &unk_1E84AD940;
-    v21 = v10;
+    v21 = handlerCopy;
     dispatch_async(calloutSerialQueue, block);
     v13 = v21;
     goto LABEL_5;
@@ -545,19 +545,19 @@ uint64_t __103__SSVMediaContentTasteController_setContentTasteType_forStoreAdamI
   return result;
 }
 
-- (void)_handleContentTasteItemsUpdateResponse:(id)a3 allowNotifications:(BOOL)a4
+- (void)_handleContentTasteItemsUpdateResponse:(id)response allowNotifications:(BOOL)notifications
 {
-  v4 = a4;
+  notificationsCopy = notifications;
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 responseRevisionID];
-  if (self->_currentResponseRevisionID < v7)
+  responseCopy = response;
+  responseRevisionID = [responseCopy responseRevisionID];
+  if (self->_currentResponseRevisionID < responseRevisionID)
   {
-    self->_currentResponseRevisionID = v7;
+    self->_currentResponseRevisionID = responseRevisionID;
     [(NSMutableDictionary *)self->_storeAdamIDToContentTasteItem removeAllObjects];
     [(NSMutableDictionary *)self->_playlistGlobalIDToContentTasteItem removeAllObjects];
-    v22 = v4;
-    [v6 contentTasteItems];
+    v22 = notificationsCopy;
+    [responseCopy contentTasteItems];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -576,8 +576,8 @@ uint64_t __103__SSVMediaContentTasteController_setContentTasteType_forStoreAdamI
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
-          v13 = [v12 playlistGlobalID];
-          if ([v13 length])
+          playlistGlobalID = [v12 playlistGlobalID];
+          if ([playlistGlobalID length])
           {
             playlistGlobalIDToContentTasteItem = self->_playlistGlobalIDToContentTasteItem;
             if (!playlistGlobalIDToContentTasteItem)
@@ -589,16 +589,16 @@ uint64_t __103__SSVMediaContentTasteController_setContentTasteType_forStoreAdamI
               playlistGlobalIDToContentTasteItem = self->_playlistGlobalIDToContentTasteItem;
             }
 
-            [(NSMutableDictionary *)playlistGlobalIDToContentTasteItem setObject:v12 forKey:v13];
+            [(NSMutableDictionary *)playlistGlobalIDToContentTasteItem setObject:v12 forKey:playlistGlobalID];
           }
 
           else
           {
-            v17 = [v12 storeAdamID];
-            if (v17)
+            storeAdamID = [v12 storeAdamID];
+            if (storeAdamID)
             {
               storeAdamIDToContentTasteItem = self->_storeAdamIDToContentTasteItem;
-              v19 = [MEMORY[0x1E696AD98] numberWithLongLong:v17];
+              v19 = [MEMORY[0x1E696AD98] numberWithLongLong:storeAdamID];
               [(NSMutableDictionary *)storeAdamIDToContentTasteItem setObject:v12 forKey:v19];
             }
           }
@@ -664,59 +664,59 @@ void __59__SSVMediaContentTasteController__refreshContentTasteItems__block_invok
   }
 }
 
-- (void)_contentTasteForItemUpdate:(id)a3 finishedWithError:(id)a4
+- (void)_contentTasteForItemUpdate:(id)update finishedWithError:(id)error
 {
-  v19 = a3;
-  v6 = a4;
-  if (!v6 || ![(SSVMediaContentTasteController *)self _isRetryableError:v6])
+  updateCopy = update;
+  errorCopy = error;
+  if (!errorCopy || ![(SSVMediaContentTasteController *)self _isRetryableError:errorCopy])
   {
     goto LABEL_18;
   }
 
-  v7 = [v19 item];
-  v8 = [v7 storeAdamID];
+  item = [updateCopy item];
+  storeAdamID = [item storeAdamID];
 
-  if (v8)
+  if (storeAdamID)
   {
     v9 = MEMORY[0x1E696AD98];
-    v10 = [v19 item];
-    v11 = [v9 numberWithLongLong:{objc_msgSend(v10, "storeAdamID")}];
+    item2 = [updateCopy item];
+    playlistGlobalID2 = [v9 numberWithLongLong:{objc_msgSend(item2, "storeAdamID")}];
   }
 
   else
   {
-    v12 = [v19 item];
-    v13 = [v12 playlistGlobalID];
+    item3 = [updateCopy item];
+    playlistGlobalID = [item3 playlistGlobalID];
 
-    if (!v13)
+    if (!playlistGlobalID)
     {
       v14 = 0;
       goto LABEL_11;
     }
 
-    v10 = [v19 item];
-    v11 = [v10 playlistGlobalID];
+    item2 = [updateCopy item];
+    playlistGlobalID2 = [item2 playlistGlobalID];
   }
 
-  v14 = v11;
+  v14 = playlistGlobalID2;
 
   if (v14)
   {
-    v13 = [(NSMutableDictionary *)self->_contentTasteItemsToRetry objectForKey:v14];
+    playlistGlobalID = [(NSMutableDictionary *)self->_contentTasteItemsToRetry objectForKey:v14];
     v15 = 0;
     goto LABEL_12;
   }
 
-  v13 = 0;
+  playlistGlobalID = 0;
 LABEL_11:
   v15 = 1;
 LABEL_12:
-  v16 = [v19 updateDate];
-  if (!v13 || ([v13 updateDate], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "compare:", v17), v17, v18 == 1))
+  updateDate = [updateCopy updateDate];
+  if (!playlistGlobalID || ([playlistGlobalID updateDate], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(updateDate, "compare:", v17), v17, v18 == 1))
   {
     if ((v15 & 1) == 0)
     {
-      [(NSMutableDictionary *)self->_contentTasteItemsToRetry setObject:v19 forKey:v14];
+      [(NSMutableDictionary *)self->_contentTasteItemsToRetry setObject:updateCopy forKey:v14];
     }
 
     [(SSVMediaContentTasteController *)self _scheduleContentTasteUpdateOperationForFailedItems];
@@ -725,13 +725,13 @@ LABEL_12:
 LABEL_18:
 }
 
-- (void)_retryOperationForItemUpdates:(id)a3 finishedWithError:(id)a4
+- (void)_retryOperationForItemUpdates:(id)updates finishedWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  updatesCopy = updates;
+  errorCopy = error;
+  if (errorCopy)
   {
-    if ([(SSVMediaContentTasteController *)self _isRetryableError:v7])
+    if ([(SSVMediaContentTasteController *)self _isRetryableError:errorCopy])
     {
       exponentialBackOffSeconds = self->_exponentialBackOffSeconds;
       if (exponentialBackOffSeconds <= 1799)
@@ -767,7 +767,7 @@ LABEL_18:
   v11[3] = &unk_1E84ADAF8;
   v11[4] = self;
   v11[5] = v10;
-  [v6 enumerateObjectsUsingBlock:v11];
+  [updatesCopy enumerateObjectsUsingBlock:v11];
 }
 
 void __82__SSVMediaContentTasteController__retryOperationForItemUpdates_finishedWithError___block_invoke(uint64_t a1, void *a2)
@@ -825,23 +825,23 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)_isRetryableError:(id)a3
+- (BOOL)_isRetryableError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E696A978]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E696A978]];
 
   if (!v5)
   {
-    v7 = [v3 domain];
-    if ([v7 isEqualToString:@"SSErrorDomain"])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:@"SSErrorDomain"])
     {
-      v8 = [v3 code];
+      code = [errorCopy code];
 
-      if (v8 == 109)
+      if (code == 109)
       {
-        v9 = [v3 userInfo];
-        v10 = [v9 valueForKey:@"SSErrorHTTPStatusCodeKey"];
+        userInfo = [errorCopy userInfo];
+        v10 = [userInfo valueForKey:@"SSErrorHTTPStatusCodeKey"];
         v6 = [v10 integerValue] == 500;
 
         goto LABEL_8;
@@ -856,7 +856,7 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  v6 = (([v3 code] + 1009) & 0xFFFFFFFFFFFFFFF7) == 0;
+  v6 = (([errorCopy code] + 1009) & 0xFFFFFFFFFFFFFFF7) == 0;
 LABEL_8:
 
   return v6;
@@ -956,19 +956,19 @@ uint64_t __84__SSVMediaContentTasteController__scheduleContentTasteUpdateOperati
   return result;
 }
 
-- (void)_sendUpdateWithItemUpdates:(id)a3 completionHandler:(id)a4
+- (void)_sendUpdateWithItemUpdates:(id)updates completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  updatesCopy = updates;
+  handlerCopy = handler;
   ++self->_pendingMutateRequestCount;
   v8 = objc_alloc_init(SSVMediaContentTasteUpdateRequest);
-  [(SSVMediaContentTasteUpdateRequest *)v8 setContentTasteItemUpdates:v6];
+  [(SSVMediaContentTasteUpdateRequest *)v8 setContentTasteItemUpdates:updatesCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__SSVMediaContentTasteController__sendUpdateWithItemUpdates_completionHandler___block_invoke;
   v10[3] = &unk_1E84ADBC0;
   v10[4] = self;
-  v9 = v7;
+  v9 = handlerCopy;
   v11 = v9;
   [(SSVMediaContentTasteUpdateRequest *)v8 startWithResponseBlock:v10];
 }

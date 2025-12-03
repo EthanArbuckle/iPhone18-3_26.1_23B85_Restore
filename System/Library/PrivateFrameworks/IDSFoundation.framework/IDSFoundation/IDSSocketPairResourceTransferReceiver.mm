@@ -1,10 +1,10 @@
 @interface IDSSocketPairResourceTransferReceiver
-+ (id)incomingFilePathForMessageUUID:(id)a3;
++ (id)incomingFilePathForMessageUUID:(id)d;
 + (id)modernIncomingFilePath;
-- (BOOL)appendMessage:(id)a3 receiverError:(unsigned __int8 *)a4;
-- (BOOL)writeResourceData:(id)a3;
-- (BOOL)writeResourceData:(id)a3 resourceByteOffset:(unint64_t)a4;
-- (IDSSocketPairResourceTransferReceiver)initWithMessage:(id)a3 resumeResourceTransfers:(BOOL)a4 receiverError:(unsigned __int8 *)a5;
+- (BOOL)appendMessage:(id)message receiverError:(unsigned __int8 *)error;
+- (BOOL)writeResourceData:(id)data;
+- (BOOL)writeResourceData:(id)data resourceByteOffset:(unint64_t)offset;
+- (IDSSocketPairResourceTransferReceiver)initWithMessage:(id)message resumeResourceTransfers:(BOOL)transfers receiverError:(unsigned __int8 *)error;
 - (id)finalizedMessageDictionaryIfDone;
 - (void)abortTransfer;
 - (void)dealloc;
@@ -12,11 +12,11 @@
 
 @implementation IDSSocketPairResourceTransferReceiver
 
-+ (id)incomingFilePathForMessageUUID:(id)a3
++ (id)incomingFilePathForMessageUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = sub_1A7C1CCBC(a3);
+    v4 = sub_1A7C1CCBC(d);
   }
 
   else
@@ -39,11 +39,11 @@
   return v7;
 }
 
-- (IDSSocketPairResourceTransferReceiver)initWithMessage:(id)a3 resumeResourceTransfers:(BOOL)a4 receiverError:(unsigned __int8 *)a5
+- (IDSSocketPairResourceTransferReceiver)initWithMessage:(id)message resumeResourceTransfers:(BOOL)transfers receiverError:(unsigned __int8 *)error
 {
-  v5 = a4;
+  transfersCopy = transfers;
   v105[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  messageCopy = message;
   v99.receiver = self;
   v99.super_class = IDSSocketPairResourceTransferReceiver;
   v8 = [(IDSSocketPairResourceTransferReceiver *)&v99 init];
@@ -54,32 +54,32 @@
   }
 
   v8->_fileDescriptor = -1;
-  if (v5)
+  if (transfersCopy)
   {
-    v10 = [v7 data];
-    v97 = [v10 subdataWithRangeNoCopy:{1, objc_msgSend(v10, "length") - 1}];
-    if ([v7 compressed])
+    data = [messageCopy data];
+    _FTDecompressData2 = [data subdataWithRangeNoCopy:{1, objc_msgSend(data, "length") - 1}];
+    if ([messageCopy compressed])
     {
-      v11 = [v97 _FTDecompressData];
+      _FTDecompressData = [_FTDecompressData2 _FTDecompressData];
 
-      v97 = v11;
+      _FTDecompressData2 = _FTDecompressData;
     }
 
     goto LABEL_7;
   }
 
-  v12 = [v7 compressed];
-  v13 = [v7 data];
-  v10 = v13;
-  if (v12)
+  compressed = [messageCopy compressed];
+  data2 = [messageCopy data];
+  data = data2;
+  if (compressed)
   {
-    v97 = [v13 _FTDecompressData];
+    _FTDecompressData2 = [data2 _FTDecompressData];
 LABEL_7:
 
     goto LABEL_9;
   }
 
-  v97 = v13;
+  _FTDecompressData2 = data2;
 LABEL_9:
   v14 = JWDecodeDictionary();
   v15 = objc_opt_class();
@@ -102,7 +102,7 @@ LABEL_19:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *v102 = v5;
+      *v102 = transfersCopy;
       _os_log_impl(&dword_1A7AD9000, v26, OS_LOG_TYPE_DEFAULT, "IDSSocketPairResourceTransferReceiver: missing header (%d)", buf, 8u);
     }
 
@@ -119,9 +119,9 @@ LABEL_19:
       }
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = 1;
+      *error = 1;
     }
 
     goto LABEL_52;
@@ -161,9 +161,9 @@ LABEL_18:
 LABEL_30:
   v9->_totalBytesExpected = [v96 unsignedLongLongValue];
   v94 = sub_1A7C1CCBC(0);
-  v27 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v98 = 0;
-  v92 = [v27 attributesOfFileSystemForPath:v94 error:&v98];
+  v92 = [defaultManager attributesOfFileSystemForPath:v94 error:&v98];
   v91 = v98;
 
   if (!v92)
@@ -172,7 +172,7 @@ LABEL_30:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
-      *v102 = v5;
+      *v102 = transfersCopy;
       *&v102[4] = 2112;
       *&v102[6] = v94;
       _os_log_impl(&dword_1A7AD9000, v33, OS_LOG_TYPE_DEFAULT, "IDSSocketPairResourceTransferReceiver: cannot get system attributes (%d) for path %@", buf, 0x12u);
@@ -192,7 +192,7 @@ LABEL_30:
     }
 
     v31 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_51;
     }
@@ -202,20 +202,20 @@ LABEL_30:
   }
 
   v28 = [v92 objectForKey:*MEMORY[0x1E696A3C0]];
-  v90 = [v28 unsignedLongLongValue];
+  unsignedLongLongValue = [v28 unsignedLongLongValue];
 
-  if (v90 >= v9->_totalBytesExpected)
+  if (unsignedLongLongValue >= v9->_totalBytesExpected)
   {
     v35 = objc_opt_class();
     v84 = sub_1A7B0A2C8(v35, v14, @"ids-message-resource-transfer-metadata");
-    v36 = [v7 messageUUID];
+    messageUUID = [messageCopy messageUUID];
     v37 = v16;
-    v88 = v36;
+    v88 = messageUUID;
     v89 = v37;
     v38 = [MEMORY[0x1E695DFF8] fileURLWithPath:v37];
-    v39 = [v38 lastPathComponent];
+    lastPathComponent = [v38 lastPathComponent];
 
-    if (!v39)
+    if (!lastPathComponent)
     {
       v54 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
@@ -279,9 +279,9 @@ LABEL_110:
         }
 
         v71 = 0;
-        if (a5)
+        if (error)
         {
-          *a5 = 2;
+          *error = 2;
         }
       }
 
@@ -322,7 +322,7 @@ LABEL_110:
         {
           expiryDate = v9->_expiryDate;
           *buf = 134218498;
-          *v102 = v90;
+          *v102 = unsignedLongLongValue;
           *&v102[8] = 2112;
           *&v102[10] = v63;
           v103 = 2112;
@@ -336,7 +336,7 @@ LABEL_110:
           {
             v80 = v63;
             v82 = v9->_expiryDate;
-            v78 = v90;
+            v78 = unsignedLongLongValue;
             MarcoLog();
           }
 
@@ -344,13 +344,13 @@ LABEL_110:
           {
             v80 = v63;
             v82 = v9->_expiryDate;
-            v78 = v90;
+            v78 = unsignedLongLongValue;
             IMLogString();
           }
         }
 
         v66 = [v14 objectForKey:{@"ids-message-resource-transfer-data", v78, v80, v82}];
-        if (v5)
+        if (transfersCopy)
         {
           v67 = [(IDSSocketPairResourceTransferReceiver *)v9 writeResourceData:v66 resourceByteOffset:0];
         }
@@ -363,24 +363,24 @@ LABEL_110:
         if (v67)
         {
           objc_storeStrong(&v9->_metadata, v84);
-          v72 = [v7 peerResponseIdentifier];
+          peerResponseIdentifier = [messageCopy peerResponseIdentifier];
           peerResponseIdentifier = v9->_peerResponseIdentifier;
-          v9->_peerResponseIdentifier = v72;
+          v9->_peerResponseIdentifier = peerResponseIdentifier;
 
-          v74 = [v7 messageUUID];
+          messageUUID2 = [messageCopy messageUUID];
           messageUUID = v9->_messageUUID;
-          v9->_messageUUID = v74;
+          v9->_messageUUID = messageUUID2;
 
-          v9->_resumeResourceTransfers = v5;
+          v9->_resumeResourceTransfers = transfersCopy;
           v71 = 1;
         }
 
         else
         {
           v71 = 0;
-          if (a5)
+          if (error)
           {
-            *a5 = 3;
+            *error = 3;
           }
         }
       }
@@ -398,7 +398,7 @@ LABEL_145:
     v86 = sub_1A7C1CCBC(v88);
     v40 = MEMORY[0x1E696AEC0];
     v105[0] = v86;
-    v105[1] = v39;
+    v105[1] = lastPathComponent;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:2];
     string = [v40 pathWithComponents:v41];
 
@@ -436,9 +436,9 @@ LABEL_145:
       goto LABEL_109;
     }
 
-    v42 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v100 = 0;
-    v43 = [v42 createDirectoryAtPath:v86 withIntermediateDirectories:1 attributes:0 error:&v100];
+    v43 = [defaultManager2 createDirectoryAtPath:v86 withIntermediateDirectories:1 attributes:0 error:&v100];
     v83 = v100;
 
     if ((v43 & 1) == 0)
@@ -490,8 +490,8 @@ LABEL_145:
       v49 = v48;
       if (v48 != -1)
       {
-        v50 = [MEMORY[0x1E696AC08] defaultManager];
-        v51 = [v50 stringWithFileSystemRepresentation:v47 length:strlen(v47)];
+        defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+        v51 = [defaultManager3 stringWithFileSystemRepresentation:v47 length:strlen(v47)];
         v52 = v51;
 
         free(v47);
@@ -558,8 +558,8 @@ LABEL_145:
       }
 
       IDSAssertNonFatalErrnoWithSource(v58, "SocketPairMessage open() failed", "/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSSocketPairMessage.m", 2082);
-      v60 = [MEMORY[0x1E696AC08] defaultManager];
-      [v60 removeItemAtPath:v86 error:0];
+      defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager4 removeItemAtPath:v86 error:0];
 
       free(v47);
     }
@@ -589,8 +589,8 @@ LABEL_145:
         }
       }
 
-      v57 = [MEMORY[0x1E696AC08] defaultManager];
-      [v57 removeItemAtPath:v86 error:0];
+      defaultManager5 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager5 removeItemAtPath:v86 error:0];
     }
 
     v51 = 0;
@@ -608,9 +608,9 @@ LABEL_109:
     *buf = 134218496;
     *v102 = totalBytesExpected;
     *&v102[8] = 2048;
-    *&v102[10] = v90;
+    *&v102[10] = unsignedLongLongValue;
     v103 = 1024;
-    LODWORD(v104) = v5;
+    LODWORD(v104) = transfersCopy;
     _os_log_impl(&dword_1A7AD9000, v29, OS_LOG_TYPE_DEFAULT, "IDSSocketPairResourceTransferReceiver: system space unavailable file %llu system %llu (%d)", buf, 0x1Cu);
   }
 
@@ -628,14 +628,14 @@ LABEL_109:
   }
 
   v31 = v92;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_51;
   }
 
   v32 = 4;
 LABEL_50:
-  *a5 = v32;
+  *error = v32;
 LABEL_51:
 
 LABEL_52:
@@ -693,11 +693,11 @@ LABEL_146:
   [(IDSSocketPairResourceTransferReceiver *)&v4 dealloc];
 }
 
-- (BOOL)writeResourceData:(id)a3
+- (BOOL)writeResourceData:(id)data
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   if (v5 <= 7)
   {
     v6 = v5;
@@ -730,7 +730,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v8 = bswap64(*[v4 bytes]);
+  v8 = bswap64(*[dataCopy bytes]);
   if (self->_totalBytesReceived != v8)
   {
     v11 = OSLogHandleForIDSCategory();
@@ -760,21 +760,21 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v9 = [v4 subdataWithRangeNoCopy:{8, objc_msgSend(v4, "length") - 8}];
+  v9 = [dataCopy subdataWithRangeNoCopy:{8, objc_msgSend(dataCopy, "length") - 8}];
   v10 = [(IDSSocketPairResourceTransferReceiver *)self writeResourceData:v9 resourceByteOffset:v8];
 
 LABEL_20:
   return v10;
 }
 
-- (BOOL)writeResourceData:(id)a3 resourceByteOffset:(unint64_t)a4
+- (BOOL)writeResourceData:(id)data resourceByteOffset:(unint64_t)offset
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (dataCopy)
   {
-    v8 = [v6 length];
+    v8 = [dataCopy length];
     v9 = write(self->_fileDescriptor, [v7 bytes], v8);
     if (v9 <= 0)
     {
@@ -864,7 +864,7 @@ LABEL_20:
       v38 = 2112;
       *v39 = v21;
       *&v39[8] = 2048;
-      *&v39[10] = a4;
+      *&v39[10] = offset;
       _os_log_impl(&dword_1A7AD9000, v18, OS_LOG_TYPE_DEBUG, "IDSSocketPairResourceTransferReceiver: wrote %lu (received %llu out of %llu total) bytes to file %@ at %llu", buf, 0x34u);
     }
 
@@ -962,11 +962,11 @@ LABEL_44:
   return v30;
 }
 
-- (BOOL)appendMessage:(id)a3 receiverError:(unsigned __int8 *)a4
+- (BOOL)appendMessage:(id)message receiverError:(unsigned __int8 *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  messageCopy = message;
+  v6 = messageCopy;
   if (self->_done)
   {
     v7 = OSLogHandleForIDSCategory();
@@ -997,28 +997,28 @@ LABEL_44:
   else
   {
     v10 = self->_messageUUID;
-    v11 = [v5 messageUUID];
-    LOBYTE(v10) = [(NSString *)v10 isEqualToString:v11];
+    messageUUID = [messageCopy messageUUID];
+    LOBYTE(v10) = [(NSString *)v10 isEqualToString:messageUUID];
 
     if (v10)
     {
       if (self->_resumeResourceTransfers)
       {
-        v12 = [v6 data];
-        v13 = [v12 bytes];
-        v14 = (v13[1] << 48) | (v13[2] << 40) | (v13[3] << 32) | (v13[4] << 24) | (v13[5] << 16) | (v13[6] << 8) | v13[7];
+        data = [v6 data];
+        bytes = [data bytes];
+        v14 = (bytes[1] << 48) | (bytes[2] << 40) | (bytes[3] << 32) | (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7];
         if (self->_totalBytesReceived == v14)
         {
-          v15 = [v12 subdataWithRangeNoCopy:{8, objc_msgSend(v12, "length") - 8}];
+          v15 = [data subdataWithRangeNoCopy:{8, objc_msgSend(data, "length") - 8}];
           if ([v6 compressed])
           {
-            v16 = [v15 _FTDecompressData];
+            _FTDecompressData = [v15 _FTDecompressData];
             v17 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
             {
               v18 = self->_messageUUID;
               v19 = [v15 length];
-              v20 = [v16 length];
+              v20 = [_FTDecompressData length];
               resourcePath = self->_resourcePath;
               *buf = 138413058;
               v58 = v18;
@@ -1035,7 +1035,7 @@ LABEL_44:
             {
               v22 = self->_messageUUID;
               v23 = [v15 length];
-              v55 = [v16 length];
+              v55 = [_FTDecompressData length];
               v56 = self->_resourcePath;
               v51 = v22;
               v54 = v23;
@@ -1069,10 +1069,10 @@ LABEL_44:
               _IDSLogV(1, @"IDSFoundation", @"SocketPairMessage", @"IDSSocketPairResourceTransferReceiver: appending message %@ (size: %lu) to file %@");
             }
 
-            v16 = v15;
+            _FTDecompressData = v15;
           }
 
-          v9 = [(IDSSocketPairResourceTransferReceiver *)self writeResourceData:v16 resourceByteOffset:v14, v51, v54, v55, v56];
+          v9 = [(IDSSocketPairResourceTransferReceiver *)self writeResourceData:_FTDecompressData resourceByteOffset:v14, v51, v54, v55, v56];
         }
 
         else
@@ -1107,18 +1107,18 @@ LABEL_44:
 
       else
       {
-        v27 = [v6 compressed];
-        v28 = [v6 data];
-        v29 = v28;
-        if (v27)
+        compressed = [v6 compressed];
+        data2 = [v6 data];
+        v29 = data2;
+        if (compressed)
         {
-          v30 = [v28 _FTDecompressData];
+          _FTDecompressData2 = [data2 _FTDecompressData];
           v31 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
           {
             v32 = self->_messageUUID;
             v33 = [v29 length];
-            v34 = [v30 length];
+            v34 = [_FTDecompressData2 length];
             v35 = self->_resourcePath;
             *buf = 138413058;
             v58 = v32;
@@ -1135,7 +1135,7 @@ LABEL_44:
           {
             v36 = self->_messageUUID;
             v37 = [v29 length];
-            v55 = [v30 length];
+            v55 = [_FTDecompressData2 length];
             v56 = self->_resourcePath;
             v51 = v36;
             v54 = v37;
@@ -1169,10 +1169,10 @@ LABEL_44:
             _IDSLogV(1, @"IDSFoundation", @"SocketPairMessage", @"IDSSocketPairResourceTransferReceiver: appending message %@ (size: %lu) to file %@");
           }
 
-          v30 = v29;
+          _FTDecompressData2 = v29;
         }
 
-        v9 = [(IDSSocketPairResourceTransferReceiver *)self writeResourceData:v30, v51, v54, v55, v56];
+        v9 = [(IDSSocketPairResourceTransferReceiver *)self writeResourceData:_FTDecompressData2, v51, v54, v55, v56];
       }
     }
 
@@ -1181,10 +1181,10 @@ LABEL_44:
       v24 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v6 messageUUID];
+        messageUUID2 = [v6 messageUUID];
         v26 = self->_messageUUID;
         *buf = 138412546;
-        v58 = v25;
+        v58 = messageUUID2;
         v59 = 2112;
         v60 = v26;
         _os_log_impl(&dword_1A7AD9000, v24, OS_LOG_TYPE_DEFAULT, "IDSSocketPairResourceTransferReceiver: messageUUID %@ does not match original messageUUID %@", buf, 0x16u);
@@ -1194,13 +1194,13 @@ LABEL_44:
       {
         if (MarcoShouldLog())
         {
-          v52 = [v6 messageUUID];
+          messageUUID3 = [v6 messageUUID];
           MarcoLog();
         }
 
         if (IMShouldLog())
         {
-          v53 = [v6 messageUUID];
+          messageUUID4 = [v6 messageUUID];
           IMLogString();
         }
       }
@@ -1218,7 +1218,7 @@ LABEL_44:
   v14 = *MEMORY[0x1E69E9840];
   if (self->_done)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     [(NSString *)self->_resourcePath UTF8String];
     v4 = sandbox_extension_issue_file();
     if (v4)
@@ -1227,7 +1227,7 @@ LABEL_44:
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v4];
       if (v6)
       {
-        CFDictionarySetValue(v3, @"ids-message-resource-transfer-sandbox-extension", v6);
+        CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-sandbox-extension", v6);
       }
 
       free(v5);
@@ -1261,22 +1261,22 @@ LABEL_44:
     v9 = self->_resourcePath;
     if (v9)
     {
-      CFDictionarySetValue(v3, @"ids-message-resource-transfer-url", v9);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-url", v9);
     }
 
     metadata = self->_metadata;
     if (metadata)
     {
-      CFDictionarySetValue(v3, @"ids-message-resource-transfer-metadata", metadata);
+      CFDictionarySetValue(dictionary, @"ids-message-resource-transfer-metadata", metadata);
     }
   }
 
   else
   {
-    v3 = 0;
+    dictionary = 0;
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

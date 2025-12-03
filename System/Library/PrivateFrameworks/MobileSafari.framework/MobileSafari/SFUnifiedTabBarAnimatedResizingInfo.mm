@@ -1,22 +1,22 @@
 @interface SFUnifiedTabBarAnimatedResizingInfo
 - (CGPoint)targetContentOffset;
-- (SFUnifiedTabBarAnimatedResizingInfo)initWithItemsToKeepVisible:(id)a3 targetContentOffset:(CGPoint)a4;
+- (SFUnifiedTabBarAnimatedResizingInfo)initWithItemsToKeepVisible:(id)visible targetContentOffset:(CGPoint)offset;
 @end
 
 @implementation SFUnifiedTabBarAnimatedResizingInfo
 
-- (SFUnifiedTabBarAnimatedResizingInfo)initWithItemsToKeepVisible:(id)a3 targetContentOffset:(CGPoint)a4
+- (SFUnifiedTabBarAnimatedResizingInfo)initWithItemsToKeepVisible:(id)visible targetContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
+  y = offset.y;
+  x = offset.x;
+  visibleCopy = visible;
   v13.receiver = self;
   v13.super_class = SFUnifiedTabBarAnimatedResizingInfo;
   v9 = [(SFUnifiedTabBarAnimatedResizingInfo *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_itemsToKeepVisible, a3);
+    objc_storeStrong(&v9->_itemsToKeepVisible, visible);
     v10->_targetContentOffset.x = x;
     v10->_targetContentOffset.y = y;
     v11 = v10;

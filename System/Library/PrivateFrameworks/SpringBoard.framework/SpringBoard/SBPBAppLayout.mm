@@ -9,24 +9,24 @@
 - (BOOL)hasPrimaryLayoutAttributes;
 - (BOOL)hasSecondaryDisplayItem;
 - (BOOL)hasSecondaryLayoutAttributes;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)centerConfigurationAsString:(__CFString *)a1;
-- (__CFString)environmentAsString:(__CFString *)a1;
-- (__CFString)layoutConfigurationAsString:(__CFString *)a1;
-- (__CFString)secondaryDisplayItemRoleAsString:(__CFString *)a1;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)centerConfigurationAsString:(__CFString *)string;
+- (__CFString)environmentAsString:(__CFString *)string;
+- (__CFString)layoutConfigurationAsString:(__CFString *)string;
+- (__CFString)secondaryDisplayItemRoleAsString:(__CFString *)string;
 - (double)relativeHeight;
 - (double)relativeWidth;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)displayItemLayoutAttributesAtIndex:(void *)a1;
-- (id)displayItemLayoutAttributesForNonPreferredDisplayAtIndex:(void *)a1;
-- (id)displayItemsAtIndex:(void *)a1;
-- (id)layoutAttributesEntriesAtIndex:(void *)a1;
-- (uint64_t)StringAsCenterConfiguration:(uint64_t)a1;
-- (uint64_t)StringAsEnvironment:(uint64_t)a1;
-- (uint64_t)StringAsLayoutConfiguration:(uint64_t)a1;
-- (uint64_t)StringAsSecondaryDisplayItemRole:(uint64_t)a1;
+- (id)displayItemLayoutAttributesAtIndex:(void *)index;
+- (id)displayItemLayoutAttributesForNonPreferredDisplayAtIndex:(void *)index;
+- (id)displayItemsAtIndex:(void *)index;
+- (id)layoutAttributesEntriesAtIndex:(void *)index;
+- (uint64_t)StringAsCenterConfiguration:(uint64_t)configuration;
+- (uint64_t)StringAsEnvironment:(uint64_t)environment;
+- (uint64_t)StringAsLayoutConfiguration:(uint64_t)configuration;
+- (uint64_t)StringAsSecondaryDisplayItemRole:(uint64_t)role;
 - (uint64_t)centerConfiguration;
 - (uint64_t)centerDisplayItem;
 - (uint64_t)centerDisplayItemRole;
@@ -36,7 +36,7 @@
 - (uint64_t)clearDisplayItems;
 - (uint64_t)clearLayoutAttributesEntries;
 - (uint64_t)continuousExposeIdentifier;
-- (uint64_t)copyTo:(uint64_t)a1;
+- (uint64_t)copyTo:(uint64_t)to;
 - (uint64_t)displayItemLayoutAttributes;
 - (uint64_t)displayItemLayoutAttributesCount;
 - (uint64_t)displayItemLayoutAttributesForNonPreferredDisplays;
@@ -68,23 +68,23 @@
 - (uint64_t)setRelativeWidth:(uint64_t)result;
 - (uint64_t)setSecondaryDisplayItemRole:(uint64_t)result;
 - (unint64_t)hash;
-- (void)addDisplayItemLayoutAttributes:(uint64_t)a1;
-- (void)addDisplayItemLayoutAttributesForNonPreferredDisplay:(uint64_t)a1;
-- (void)addDisplayItems:(uint64_t)a1;
-- (void)addLayoutAttributesEntries:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setCenterDisplayItem:(uint64_t)a1;
-- (void)setCenterLayoutAttributes:(uint64_t)a1;
-- (void)setContinuousExposeIdentifier:(uint64_t)a1;
-- (void)setDisplayItemLayoutAttributes:(uint64_t)a1;
-- (void)setDisplayItemLayoutAttributesForNonPreferredDisplays:(uint64_t)a1;
-- (void)setDisplayItems:(uint64_t)a1;
-- (void)setLayoutAttributesEntries:(uint64_t)a1;
-- (void)setPrimaryDisplayItem:(uint64_t)a1;
-- (void)setPrimaryLayoutAttributes:(uint64_t)a1;
-- (void)setSecondaryDisplayItem:(uint64_t)a1;
-- (void)setSecondaryLayoutAttributes:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)addDisplayItemLayoutAttributes:(uint64_t)attributes;
+- (void)addDisplayItemLayoutAttributesForNonPreferredDisplay:(uint64_t)display;
+- (void)addDisplayItems:(uint64_t)items;
+- (void)addLayoutAttributesEntries:(uint64_t)entries;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setCenterDisplayItem:(uint64_t)item;
+- (void)setCenterLayoutAttributes:(uint64_t)attributes;
+- (void)setContinuousExposeIdentifier:(uint64_t)identifier;
+- (void)setDisplayItemLayoutAttributes:(uint64_t)attributes;
+- (void)setDisplayItemLayoutAttributesForNonPreferredDisplays:(uint64_t)displays;
+- (void)setDisplayItems:(uint64_t)items;
+- (void)setLayoutAttributesEntries:(uint64_t)entries;
+- (void)setPrimaryDisplayItem:(uint64_t)item;
+- (void)setPrimaryLayoutAttributes:(uint64_t)attributes;
+- (void)setSecondaryDisplayItem:(uint64_t)item;
+- (void)setSecondaryLayoutAttributes:(uint64_t)attributes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SBPBAppLayout
@@ -116,8 +116,8 @@
   v8.receiver = self;
   v8.super_class = SBPBAppLayout;
   v4 = [(SBPBAppLayout *)&v8 description];
-  v5 = [(SBPBAppLayout *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SBPBAppLayout *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -125,7 +125,7 @@
 - (id)dictionaryRepresentation
 {
   v80 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   layoutConfiguration = self->_layoutConfiguration;
   if (layoutConfiguration >= 5)
   {
@@ -137,13 +137,13 @@
     v5 = off_2783BAC30[layoutConfiguration];
   }
 
-  [v3 setObject:v5 forKey:@"layoutConfiguration"];
+  [dictionary setObject:v5 forKey:@"layoutConfiguration"];
 
   primaryDisplayItem = self->_primaryDisplayItem;
   if (primaryDisplayItem)
   {
-    v7 = [(SBPBDisplayItem *)primaryDisplayItem dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"primaryDisplayItem"];
+    dictionaryRepresentation = [(SBPBDisplayItem *)primaryDisplayItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"primaryDisplayItem"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -159,14 +159,14 @@
       v9 = off_2783BAC78[secondaryDisplayItemRole];
     }
 
-    [v3 setObject:v9 forKey:@"secondaryDisplayItemRole"];
+    [dictionary setObject:v9 forKey:@"secondaryDisplayItemRole"];
   }
 
   secondaryDisplayItem = self->_secondaryDisplayItem;
   if (secondaryDisplayItem)
   {
-    v11 = [(SBPBDisplayItem *)secondaryDisplayItem dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"secondaryDisplayItem"];
+    dictionaryRepresentation2 = [(SBPBDisplayItem *)secondaryDisplayItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"secondaryDisplayItem"];
   }
 
   environment = self->_environment;
@@ -180,10 +180,10 @@
     v13 = off_2783BAC58[environment];
   }
 
-  [v3 setObject:v13 forKey:@"environment"];
+  [dictionary setObject:v13 forKey:@"environment"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_hidden];
-  [v3 setObject:v14 forKey:@"hidden"];
+  [dictionary setObject:v14 forKey:@"hidden"];
 
   if (*&self->_has)
   {
@@ -198,14 +198,14 @@
       v16 = off_2783BAC78[centerDisplayItemRole];
     }
 
-    [v3 setObject:v16 forKey:@"centerDisplayItemRole"];
+    [dictionary setObject:v16 forKey:@"centerDisplayItemRole"];
   }
 
   centerDisplayItem = self->_centerDisplayItem;
   if (centerDisplayItem)
   {
-    v18 = [(SBPBDisplayItem *)centerDisplayItem dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"centerDisplayItem"];
+    dictionaryRepresentation3 = [(SBPBDisplayItem *)centerDisplayItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"centerDisplayItem"];
   }
 
   centerConfiguration = self->_centerConfiguration;
@@ -219,33 +219,33 @@
     v20 = off_2783BACA0[centerConfiguration];
   }
 
-  [v3 setObject:v20 forKey:@"centerConfiguration"];
+  [dictionary setObject:v20 forKey:@"centerConfiguration"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithDouble:self->_relativeWidth];
-  [v3 setObject:v21 forKey:@"relativeWidth"];
+  [dictionary setObject:v21 forKey:@"relativeWidth"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithDouble:self->_relativeHeight];
-  [v3 setObject:v22 forKey:@"relativeHeight"];
+  [dictionary setObject:v22 forKey:@"relativeHeight"];
 
   primaryLayoutAttributes = self->_primaryLayoutAttributes;
   if (primaryLayoutAttributes)
   {
-    v24 = [(SBPBDisplayItemLayoutAttributes *)primaryLayoutAttributes dictionaryRepresentation];
-    [v3 setObject:v24 forKey:@"primaryLayoutAttributes"];
+    dictionaryRepresentation4 = [(SBPBDisplayItemLayoutAttributes *)primaryLayoutAttributes dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"primaryLayoutAttributes"];
   }
 
   secondaryLayoutAttributes = self->_secondaryLayoutAttributes;
   if (secondaryLayoutAttributes)
   {
-    v26 = [(SBPBDisplayItemLayoutAttributes *)secondaryLayoutAttributes dictionaryRepresentation];
-    [v3 setObject:v26 forKey:@"secondaryLayoutAttributes"];
+    dictionaryRepresentation5 = [(SBPBDisplayItemLayoutAttributes *)secondaryLayoutAttributes dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"secondaryLayoutAttributes"];
   }
 
   centerLayoutAttributes = self->_centerLayoutAttributes;
   if (centerLayoutAttributes)
   {
-    v28 = [(SBPBDisplayItemLayoutAttributes *)centerLayoutAttributes dictionaryRepresentation];
-    [v3 setObject:v28 forKey:@"centerLayoutAttributes"];
+    dictionaryRepresentation6 = [(SBPBDisplayItemLayoutAttributes *)centerLayoutAttributes dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"centerLayoutAttributes"];
   }
 
   if ([(NSMutableArray *)self->_displayItems count])
@@ -270,8 +270,8 @@
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v72 + 1) + 8 * i) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation7 = [*(*(&v72 + 1) + 8 * i) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation7];
         }
 
         v32 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v72 objects:v79 count:16];
@@ -280,7 +280,7 @@
       while (v32);
     }
 
-    [v3 setObject:v29 forKey:@"displayItems"];
+    [dictionary setObject:v29 forKey:@"displayItems"];
   }
 
   if ([(NSMutableArray *)self->_displayItemLayoutAttributes count])
@@ -305,8 +305,8 @@
             objc_enumerationMutation(v37);
           }
 
-          v42 = [*(*(&v68 + 1) + 8 * j) dictionaryRepresentation];
-          [v36 addObject:v42];
+          dictionaryRepresentation8 = [*(*(&v68 + 1) + 8 * j) dictionaryRepresentation];
+          [v36 addObject:dictionaryRepresentation8];
         }
 
         v39 = [(NSMutableArray *)v37 countByEnumeratingWithState:&v68 objects:v78 count:16];
@@ -315,16 +315,16 @@
       while (v39);
     }
 
-    [v3 setObject:v36 forKey:@"displayItemLayoutAttributes"];
+    [dictionary setObject:v36 forKey:@"displayItemLayoutAttributes"];
   }
 
   v43 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_preferredDisplayOrdinal];
-  [v3 setObject:v43 forKey:@"preferredDisplayOrdinal"];
+  [dictionary setObject:v43 forKey:@"preferredDisplayOrdinal"];
 
   continuousExposeIdentifier = self->_continuousExposeIdentifier;
   if (continuousExposeIdentifier)
   {
-    [v3 setObject:continuousExposeIdentifier forKey:@"continuousExposeIdentifier"];
+    [dictionary setObject:continuousExposeIdentifier forKey:@"continuousExposeIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_displayItemLayoutAttributesForNonPreferredDisplays count])
@@ -349,8 +349,8 @@
             objc_enumerationMutation(v46);
           }
 
-          v51 = [*(*(&v64 + 1) + 8 * k) dictionaryRepresentation];
-          [v45 addObject:v51];
+          dictionaryRepresentation9 = [*(*(&v64 + 1) + 8 * k) dictionaryRepresentation];
+          [v45 addObject:dictionaryRepresentation9];
         }
 
         v48 = [(NSMutableArray *)v46 countByEnumeratingWithState:&v64 objects:v77 count:16];
@@ -359,7 +359,7 @@
       while (v48);
     }
 
-    [v3 setObject:v45 forKey:@"displayItemLayoutAttributesForNonPreferredDisplay"];
+    [dictionary setObject:v45 forKey:@"displayItemLayoutAttributesForNonPreferredDisplay"];
   }
 
   if ([(NSMutableArray *)self->_layoutAttributesEntries count])
@@ -384,8 +384,8 @@
             objc_enumerationMutation(v53);
           }
 
-          v58 = [*(*(&v60 + 1) + 8 * m) dictionaryRepresentation];
-          [v52 addObject:v58];
+          dictionaryRepresentation10 = [*(*(&v60 + 1) + 8 * m) dictionaryRepresentation];
+          [v52 addObject:dictionaryRepresentation10];
         }
 
         v55 = [(NSMutableArray *)v53 countByEnumeratingWithState:&v60 objects:v76 count:16];
@@ -394,16 +394,16 @@
       while (v55);
     }
 
-    [v3 setObject:v52 forKey:@"layoutAttributesEntries"];
+    [dictionary setObject:v52 forKey:@"layoutAttributesEntries"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteInt32Field();
   if (self->_primaryDisplayItem)
   {
@@ -581,12 +581,12 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 112) = self->_layoutConfiguration;
-  v6 = [(SBPBDisplayItem *)self->_primaryDisplayItem copyWithZone:a3];
+  v6 = [(SBPBDisplayItem *)self->_primaryDisplayItem copyWithZone:zone];
   v7 = *(v5 + 120);
   *(v5 + 120) = v6;
 
@@ -596,7 +596,7 @@
     *(v5 + 164) |= 2u;
   }
 
-  v8 = [(SBPBDisplayItem *)self->_secondaryDisplayItem copyWithZone:a3];
+  v8 = [(SBPBDisplayItem *)self->_secondaryDisplayItem copyWithZone:zone];
   v9 = *(v5 + 136);
   *(v5 + 136) = v8;
 
@@ -608,22 +608,22 @@
     *(v5 + 164) |= 1u;
   }
 
-  v10 = [(SBPBDisplayItem *)self->_centerDisplayItem copyWithZone:a3];
+  v10 = [(SBPBDisplayItem *)self->_centerDisplayItem copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
   *(v5 + 32) = self->_centerConfiguration;
   *(v5 + 24) = self->_relativeWidth;
   *(v5 + 16) = self->_relativeHeight;
-  v12 = [(SBPBDisplayItemLayoutAttributes *)self->_primaryLayoutAttributes copyWithZone:a3];
+  v12 = [(SBPBDisplayItemLayoutAttributes *)self->_primaryLayoutAttributes copyWithZone:zone];
   v13 = *(v5 + 128);
   *(v5 + 128) = v12;
 
-  v14 = [(SBPBDisplayItemLayoutAttributes *)self->_secondaryLayoutAttributes copyWithZone:a3];
+  v14 = [(SBPBDisplayItemLayoutAttributes *)self->_secondaryLayoutAttributes copyWithZone:zone];
   v15 = *(v5 + 152);
   *(v5 + 152) = v14;
 
-  v16 = [(SBPBDisplayItemLayoutAttributes *)self->_centerLayoutAttributes copyWithZone:a3];
+  v16 = [(SBPBDisplayItemLayoutAttributes *)self->_centerLayoutAttributes copyWithZone:zone];
   v17 = *(v5 + 56);
   *(v5 + 56) = v16;
 
@@ -647,7 +647,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v57 + 1) + 8 * v22) copyWithZone:a3];
+        v23 = [*(*(&v57 + 1) + 8 * v22) copyWithZone:zone];
         [(SBPBAppLayout *)v5 addDisplayItems:v23];
 
         ++v22;
@@ -680,7 +680,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v53 + 1) + 8 * v28) copyWithZone:a3];
+        v29 = [*(*(&v53 + 1) + 8 * v28) copyWithZone:zone];
         [(SBPBAppLayout *)v5 addDisplayItemLayoutAttributes:v29];
 
         ++v28;
@@ -694,7 +694,7 @@
   }
 
   *(v5 + 8) = self->_preferredDisplayOrdinal;
-  v30 = [(NSString *)self->_continuousExposeIdentifier copyWithZone:a3];
+  v30 = [(NSString *)self->_continuousExposeIdentifier copyWithZone:zone];
   v31 = *(v5 + 64);
   *(v5 + 64) = v30;
 
@@ -718,7 +718,7 @@
           objc_enumerationMutation(v32);
         }
 
-        v37 = [*(*(&v49 + 1) + 8 * v36) copyWithZone:a3];
+        v37 = [*(*(&v49 + 1) + 8 * v36) copyWithZone:zone];
         [(SBPBAppLayout *)v5 addDisplayItemLayoutAttributesForNonPreferredDisplay:v37];
 
         ++v36;
@@ -751,7 +751,7 @@
           objc_enumerationMutation(v38);
         }
 
-        v43 = [*(*(&v45 + 1) + 8 * v42) copyWithZone:{a3, v45}];
+        v43 = [*(*(&v45 + 1) + 8 * v42) copyWithZone:{zone, v45}];
         [(SBPBAppLayout *)v5 addLayoutAttributesEntries:v43];
 
         ++v42;
@@ -767,21 +767,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
-  if (self->_layoutConfiguration != *(v4 + 28))
+  if (self->_layoutConfiguration != *(equalCopy + 28))
   {
     goto LABEL_44;
   }
 
   primaryDisplayItem = self->_primaryDisplayItem;
-  if (primaryDisplayItem | *(v4 + 15))
+  if (primaryDisplayItem | *(equalCopy + 15))
   {
     if (![(SBPBDisplayItem *)primaryDisplayItem isEqual:?])
     {
@@ -791,32 +791,32 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 164) & 2) == 0 || self->_secondaryDisplayItemRole != *(v4 + 36))
+    if ((*(equalCopy + 164) & 2) == 0 || self->_secondaryDisplayItemRole != *(equalCopy + 36))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 164) & 2) != 0)
+  else if ((*(equalCopy + 164) & 2) != 0)
   {
     goto LABEL_44;
   }
 
   secondaryDisplayItem = self->_secondaryDisplayItem;
-  if (secondaryDisplayItem | *(v4 + 17) && ![(SBPBDisplayItem *)secondaryDisplayItem isEqual:?]|| self->_environment != *(v4 + 24))
+  if (secondaryDisplayItem | *(equalCopy + 17) && ![(SBPBDisplayItem *)secondaryDisplayItem isEqual:?]|| self->_environment != *(equalCopy + 24))
   {
     goto LABEL_44;
   }
 
   if (self->_hidden)
   {
-    if ((*(v4 + 160) & 1) == 0)
+    if ((*(equalCopy + 160) & 1) == 0)
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 160))
+  else if (*(equalCopy + 160))
   {
 LABEL_44:
     v16 = 0;
@@ -825,40 +825,40 @@ LABEL_44:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 164) & 1) == 0 || self->_centerDisplayItemRole != *(v4 + 12))
+    if ((*(equalCopy + 164) & 1) == 0 || self->_centerDisplayItemRole != *(equalCopy + 12))
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 164))
+  else if (*(equalCopy + 164))
   {
     goto LABEL_44;
   }
 
   centerDisplayItem = self->_centerDisplayItem;
-  if (centerDisplayItem | *(v4 + 5) && ![(SBPBDisplayItem *)centerDisplayItem isEqual:?])
+  if (centerDisplayItem | *(equalCopy + 5) && ![(SBPBDisplayItem *)centerDisplayItem isEqual:?])
   {
     goto LABEL_44;
   }
 
-  if (self->_centerConfiguration != *(v4 + 8))
+  if (self->_centerConfiguration != *(equalCopy + 8))
   {
     goto LABEL_44;
   }
 
-  if (self->_relativeWidth != *(v4 + 3))
+  if (self->_relativeWidth != *(equalCopy + 3))
   {
     goto LABEL_44;
   }
 
-  if (self->_relativeHeight != *(v4 + 2))
+  if (self->_relativeHeight != *(equalCopy + 2))
   {
     goto LABEL_44;
   }
 
   primaryLayoutAttributes = self->_primaryLayoutAttributes;
-  if (primaryLayoutAttributes | *(v4 + 16))
+  if (primaryLayoutAttributes | *(equalCopy + 16))
   {
     if (![(SBPBDisplayItemLayoutAttributes *)primaryLayoutAttributes isEqual:?])
     {
@@ -867,7 +867,7 @@ LABEL_44:
   }
 
   secondaryLayoutAttributes = self->_secondaryLayoutAttributes;
-  if (secondaryLayoutAttributes | *(v4 + 19))
+  if (secondaryLayoutAttributes | *(equalCopy + 19))
   {
     if (![(SBPBDisplayItemLayoutAttributes *)secondaryLayoutAttributes isEqual:?])
     {
@@ -876,7 +876,7 @@ LABEL_44:
   }
 
   centerLayoutAttributes = self->_centerLayoutAttributes;
-  if (centerLayoutAttributes | *(v4 + 7))
+  if (centerLayoutAttributes | *(equalCopy + 7))
   {
     if (![(SBPBDisplayItemLayoutAttributes *)centerLayoutAttributes isEqual:?])
     {
@@ -885,7 +885,7 @@ LABEL_44:
   }
 
   displayItems = self->_displayItems;
-  if (displayItems | *(v4 + 11))
+  if (displayItems | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)displayItems isEqual:?])
     {
@@ -894,7 +894,7 @@ LABEL_44:
   }
 
   displayItemLayoutAttributes = self->_displayItemLayoutAttributes;
-  if (displayItemLayoutAttributes | *(v4 + 9))
+  if (displayItemLayoutAttributes | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)displayItemLayoutAttributes isEqual:?])
     {
@@ -902,13 +902,13 @@ LABEL_44:
     }
   }
 
-  if (self->_preferredDisplayOrdinal != *(v4 + 1))
+  if (self->_preferredDisplayOrdinal != *(equalCopy + 1))
   {
     goto LABEL_44;
   }
 
   continuousExposeIdentifier = self->_continuousExposeIdentifier;
-  if (continuousExposeIdentifier | *(v4 + 8))
+  if (continuousExposeIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)continuousExposeIdentifier isEqual:?])
     {
@@ -917,7 +917,7 @@ LABEL_44:
   }
 
   displayItemLayoutAttributesForNonPreferredDisplays = self->_displayItemLayoutAttributesForNonPreferredDisplays;
-  if (displayItemLayoutAttributesForNonPreferredDisplays | *(v4 + 10))
+  if (displayItemLayoutAttributesForNonPreferredDisplays | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)displayItemLayoutAttributesForNonPreferredDisplays isEqual:?])
     {
@@ -926,7 +926,7 @@ LABEL_44:
   }
 
   layoutAttributesEntries = self->_layoutAttributesEntries;
-  if (layoutAttributesEntries | *(v4 + 13))
+  if (layoutAttributesEntries | *(equalCopy + 13))
   {
     v16 = [(NSMutableArray *)layoutAttributesEntries isEqual:?];
   }
@@ -1035,31 +1035,31 @@ LABEL_45:
   return v30 ^ v36 ^ [(NSMutableArray *)self->_layoutAttributesEntries hash];
 }
 
-- (__CFString)layoutConfigurationAsString:(__CFString *)a1
+- (__CFString)layoutConfigurationAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 5)
   {
-    a1 = off_2783BAC30[a2];
+    string = off_2783BAC30[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsLayoutConfiguration:(uint64_t)a1
+- (uint64_t)StringAsLayoutConfiguration:(uint64_t)configuration
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (configuration)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Undefined"])
@@ -1170,31 +1170,31 @@ LABEL_4:
   return result;
 }
 
-- (__CFString)secondaryDisplayItemRoleAsString:(__CFString *)a1
+- (__CFString)secondaryDisplayItemRoleAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 5)
   {
-    a1 = off_2783BAC78[a2];
+    string = off_2783BAC78[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsSecondaryDisplayItemRole:(uint64_t)a1
+- (uint64_t)StringAsSecondaryDisplayItemRole:(uint64_t)role
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (role)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Undefined"])
@@ -1246,31 +1246,31 @@ LABEL_4:
   return result;
 }
 
-- (__CFString)environmentAsString:(__CFString *)a1
+- (__CFString)environmentAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 4)
   {
-    a1 = off_2783BAC58[a2];
+    string = off_2783BAC58[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsEnvironment:(uint64_t)a1
+- (uint64_t)StringAsEnvironment:(uint64_t)environment
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (environment)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Main"])
@@ -1366,31 +1366,31 @@ LABEL_4:
   return result;
 }
 
-- (__CFString)centerConfigurationAsString:(__CFString *)a1
+- (__CFString)centerConfigurationAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 3)
   {
-    a1 = off_2783BACA0[a2];
+    string = off_2783BACA0[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsCenterConfiguration:(uint64_t)a1
+- (uint64_t)StringAsCenterConfiguration:(uint64_t)configuration
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (configuration)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Undefined"])
@@ -1462,10 +1462,10 @@ LABEL_4:
   return result;
 }
 
-- (void)addDisplayItems:(uint64_t)a1
+- (void)addDisplayItems:(uint64_t)items
 {
   v3 = a2;
-  if (a1)
+  if (items)
   {
     v4 = OUTLINED_FUNCTION_19_0();
     v6 = v5;
@@ -1490,15 +1490,15 @@ LABEL_4:
   return result;
 }
 
-- (id)displayItemsAtIndex:(void *)a1
+- (id)displayItemsAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_22(a1 88)];
+    index = [OUTLINED_FUNCTION_22(index 88)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearDisplayItemLayoutAttributes
@@ -1511,10 +1511,10 @@ LABEL_4:
   return result;
 }
 
-- (void)addDisplayItemLayoutAttributes:(uint64_t)a1
+- (void)addDisplayItemLayoutAttributes:(uint64_t)attributes
 {
   v3 = a2;
-  if (a1)
+  if (attributes)
   {
     v4 = OUTLINED_FUNCTION_15_0();
     v6 = v5;
@@ -1539,15 +1539,15 @@ LABEL_4:
   return result;
 }
 
-- (id)displayItemLayoutAttributesAtIndex:(void *)a1
+- (id)displayItemLayoutAttributesAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_22(a1 72)];
+    index = [OUTLINED_FUNCTION_22(index 72)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (BOOL)hasContinuousExposeIdentifier
@@ -1570,10 +1570,10 @@ LABEL_4:
   return result;
 }
 
-- (void)addDisplayItemLayoutAttributesForNonPreferredDisplay:(uint64_t)a1
+- (void)addDisplayItemLayoutAttributesForNonPreferredDisplay:(uint64_t)display
 {
   v3 = a2;
-  if (a1)
+  if (display)
   {
     v4 = OUTLINED_FUNCTION_12_3();
     v6 = v5;
@@ -1598,15 +1598,15 @@ LABEL_4:
   return result;
 }
 
-- (id)displayItemLayoutAttributesForNonPreferredDisplayAtIndex:(void *)a1
+- (id)displayItemLayoutAttributesForNonPreferredDisplayAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_22(a1 80)];
+    index = [OUTLINED_FUNCTION_22(index 80)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearLayoutAttributesEntries
@@ -1619,10 +1619,10 @@ LABEL_4:
   return result;
 }
 
-- (void)addLayoutAttributesEntries:(uint64_t)a1
+- (void)addLayoutAttributesEntries:(uint64_t)entries
 {
   v3 = a2;
-  if (a1)
+  if (entries)
   {
     v4 = OUTLINED_FUNCTION_11_2();
     v6 = v5;
@@ -1647,24 +1647,24 @@ LABEL_4:
   return result;
 }
 
-- (id)layoutAttributesEntriesAtIndex:(void *)a1
+- (id)layoutAttributesEntriesAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_22(a1 104)];
+    index = [OUTLINED_FUNCTION_22(index 104)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
-- (uint64_t)copyTo:(uint64_t)a1
+- (uint64_t)copyTo:(uint64_t)to
 {
   v4 = a2;
-  if (a1)
+  if (to)
   {
     OUTLINED_FUNCTION_9_3(v4, 112);
-    v6 = *(a1 + 120);
+    v6 = *(to + 120);
     v62 = v5;
     if (v6)
     {
@@ -1672,13 +1672,13 @@ LABEL_4:
       v5 = v62;
     }
 
-    if ((*(a1 + 164) & 2) != 0)
+    if ((*(to + 164) & 2) != 0)
     {
       OUTLINED_FUNCTION_9_3(v5, 144);
       *(v5 + 164) |= 2u;
     }
 
-    v7 = *(a1 + 136);
+    v7 = *(to + 136);
     if (v7)
     {
       [(SBPBAppLayout *)v62 setSecondaryDisplayItem:v7];
@@ -1686,14 +1686,14 @@ LABEL_4:
     }
 
     OUTLINED_FUNCTION_9_3(v5, 96);
-    *(v8 + 160) = *(a1 + 160);
-    if (*(a1 + 164))
+    *(v8 + 160) = *(to + 160);
+    if (*(to + 164))
     {
       OUTLINED_FUNCTION_9_3(v8, 48);
       *(v8 + 164) |= 1u;
     }
 
-    v9 = *(a1 + 40);
+    v9 = *(to + 40);
     if (v9)
     {
       [(SBPBAppLayout *)v62 setCenterDisplayItem:v9];
@@ -1701,21 +1701,21 @@ LABEL_4:
     }
 
     OUTLINED_FUNCTION_9_3(v8, 32);
-    *(v10 + 24) = *(a1 + 24);
-    *(v10 + 16) = *(a1 + 16);
-    v11 = *(a1 + 128);
+    *(v10 + 24) = *(to + 24);
+    *(v10 + 16) = *(to + 16);
+    v11 = *(to + 128);
     if (v11)
     {
       [(SBPBAppLayout *)v62 setPrimaryLayoutAttributes:v11];
     }
 
-    v12 = *(a1 + 152);
+    v12 = *(to + 152);
     if (v12)
     {
       [(SBPBAppLayout *)v62 setSecondaryLayoutAttributes:v12];
     }
 
-    v13 = *(a1 + 56);
+    v13 = *(to + 56);
     if (v13)
     {
       [(SBPBAppLayout *)v62 setCenterLayoutAttributes:v13];
@@ -1765,8 +1765,8 @@ LABEL_4:
       }
     }
 
-    *(v62 + 8) = *(a1 + 8);
-    v37 = *(a1 + 64);
+    *(v62 + 8) = *(to + 8);
+    v37 = *(to + 64);
     if (v37)
     {
       [(SBPBAppLayout *)v62 setContinuousExposeIdentifier:v37];
@@ -1822,67 +1822,67 @@ LABEL_4:
   return MEMORY[0x2821F9730](v4);
 }
 
-- (void)setPrimaryDisplayItem:(uint64_t)a1
+- (void)setPrimaryDisplayItem:(uint64_t)item
 {
-  if (a1)
+  if (item)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 120);
+    OUTLINED_FUNCTION_0_18(item, a2, 120);
   }
 }
 
-- (void)setSecondaryDisplayItem:(uint64_t)a1
+- (void)setSecondaryDisplayItem:(uint64_t)item
 {
-  if (a1)
+  if (item)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 136);
+    OUTLINED_FUNCTION_0_18(item, a2, 136);
   }
 }
 
-- (void)setCenterDisplayItem:(uint64_t)a1
+- (void)setCenterDisplayItem:(uint64_t)item
 {
-  if (a1)
+  if (item)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 40);
+    OUTLINED_FUNCTION_0_18(item, a2, 40);
   }
 }
 
-- (void)setPrimaryLayoutAttributes:(uint64_t)a1
+- (void)setPrimaryLayoutAttributes:(uint64_t)attributes
 {
-  if (a1)
+  if (attributes)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 128);
+    OUTLINED_FUNCTION_0_18(attributes, a2, 128);
   }
 }
 
-- (void)setSecondaryLayoutAttributes:(uint64_t)a1
+- (void)setSecondaryLayoutAttributes:(uint64_t)attributes
 {
-  if (a1)
+  if (attributes)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 152);
+    OUTLINED_FUNCTION_0_18(attributes, a2, 152);
   }
 }
 
-- (void)setCenterLayoutAttributes:(uint64_t)a1
+- (void)setCenterLayoutAttributes:(uint64_t)attributes
 {
-  if (a1)
+  if (attributes)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 56);
+    OUTLINED_FUNCTION_0_18(attributes, a2, 56);
   }
 }
 
-- (void)setContinuousExposeIdentifier:(uint64_t)a1
+- (void)setContinuousExposeIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 64);
+    OUTLINED_FUNCTION_0_18(identifier, a2, 64);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v46 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (from)
   {
     OUTLINED_FUNCTION_8_3(112);
     v4 = OUTLINED_FUNCTION_7_2(120);
@@ -1896,13 +1896,13 @@ LABEL_4:
 
     else if (v5)
     {
-      [(SBPBAppLayout *)a1 setPrimaryDisplayItem:v5];
+      [(SBPBAppLayout *)from setPrimaryDisplayItem:v5];
     }
 
     if ((*(v3 + 164) & 2) != 0)
     {
       OUTLINED_FUNCTION_8_3(144);
-      *(a1 + 164) |= 2u;
+      *(from + 164) |= 2u;
     }
 
     v6 = OUTLINED_FUNCTION_7_2(136);
@@ -1916,15 +1916,15 @@ LABEL_4:
 
     else if (v7)
     {
-      [(SBPBAppLayout *)a1 setSecondaryDisplayItem:v7];
+      [(SBPBAppLayout *)from setSecondaryDisplayItem:v7];
     }
 
     OUTLINED_FUNCTION_8_3(96);
-    *(a1 + 160) = *(v3 + 160);
+    *(from + 160) = *(v3 + 160);
     if (*(v3 + 164))
     {
       OUTLINED_FUNCTION_8_3(48);
-      *(a1 + 164) |= 1u;
+      *(from + 164) |= 1u;
     }
 
     v8 = OUTLINED_FUNCTION_7_2(40);
@@ -1938,12 +1938,12 @@ LABEL_4:
 
     else if (v9)
     {
-      [(SBPBAppLayout *)a1 setCenterDisplayItem:v9];
+      [(SBPBAppLayout *)from setCenterDisplayItem:v9];
     }
 
     OUTLINED_FUNCTION_8_3(32);
-    *(a1 + 24) = *(v3 + 3);
-    *(a1 + 16) = *(v3 + 2);
+    *(from + 24) = *(v3 + 3);
+    *(from + 16) = *(v3 + 2);
     v10 = OUTLINED_FUNCTION_7_2(128);
     if (v10)
     {
@@ -1955,7 +1955,7 @@ LABEL_4:
 
     else if (v11)
     {
-      [(SBPBAppLayout *)a1 setPrimaryLayoutAttributes:v11];
+      [(SBPBAppLayout *)from setPrimaryLayoutAttributes:v11];
     }
 
     v12 = OUTLINED_FUNCTION_7_2(152);
@@ -1969,7 +1969,7 @@ LABEL_4:
 
     else if (v13)
     {
-      [(SBPBAppLayout *)a1 setSecondaryLayoutAttributes:v13];
+      [(SBPBAppLayout *)from setSecondaryLayoutAttributes:v13];
     }
 
     v14 = OUTLINED_FUNCTION_7_2(56);
@@ -1983,7 +1983,7 @@ LABEL_4:
 
     else if (v15)
     {
-      [(SBPBAppLayout *)a1 setCenterLayoutAttributes:v15];
+      [(SBPBAppLayout *)from setCenterLayoutAttributes:v15];
     }
 
     memset(v41, 0, sizeof(v41));
@@ -2026,11 +2026,11 @@ LABEL_4:
       while (!v17 || OUTLINED_FUNCTION_23(v25, v26, v40, v44));
     }
 
-    *(a1 + 8) = *(v3 + 1);
+    *(from + 8) = *(v3 + 1);
     v27 = *(v3 + 8);
     if (v27)
     {
-      [(SBPBAppLayout *)a1 setContinuousExposeIdentifier:v27];
+      [(SBPBAppLayout *)from setContinuousExposeIdentifier:v27];
     }
 
     memset(v39, 0, sizeof(v39));
@@ -2137,9 +2137,9 @@ LABEL_4:
 
 - (uint64_t)hidden
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 160);
+    v1 = *(self + 160);
   }
 
   else
@@ -2192,9 +2192,9 @@ LABEL_4:
 
 - (double)relativeWidth
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 24);
+    return *(self + 24);
   }
 
   else
@@ -2215,9 +2215,9 @@ LABEL_4:
 
 - (double)relativeHeight
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 16);
+    return *(self + 16);
   }
 
   else
@@ -2276,11 +2276,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setDisplayItems:(uint64_t)a1
+- (void)setDisplayItems:(uint64_t)items
 {
-  if (a1)
+  if (items)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 88);
+    OUTLINED_FUNCTION_0_18(items, a2, 88);
   }
 }
 
@@ -2294,11 +2294,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setDisplayItemLayoutAttributes:(uint64_t)a1
+- (void)setDisplayItemLayoutAttributes:(uint64_t)attributes
 {
-  if (a1)
+  if (attributes)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 72);
+    OUTLINED_FUNCTION_0_18(attributes, a2, 72);
   }
 }
 
@@ -2342,11 +2342,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setDisplayItemLayoutAttributesForNonPreferredDisplays:(uint64_t)a1
+- (void)setDisplayItemLayoutAttributesForNonPreferredDisplays:(uint64_t)displays
 {
-  if (a1)
+  if (displays)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 80);
+    OUTLINED_FUNCTION_0_18(displays, a2, 80);
   }
 }
 
@@ -2360,11 +2360,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setLayoutAttributesEntries:(uint64_t)a1
+- (void)setLayoutAttributesEntries:(uint64_t)entries
 {
-  if (a1)
+  if (entries)
   {
-    OUTLINED_FUNCTION_0_18(a1, a2, 104);
+    OUTLINED_FUNCTION_0_18(entries, a2, 104);
   }
 }
 

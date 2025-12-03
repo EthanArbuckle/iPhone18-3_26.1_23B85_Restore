@@ -1,23 +1,23 @@
 @interface CKSettingsMMSHelper
-+ (BOOL)mmsDefaultEnabledForPhoneNumber:(id)a3 simID:(id)a4;
++ (BOOL)mmsDefaultEnabledForPhoneNumber:(id)number simID:(id)d;
 @end
 
 @implementation CKSettingsMMSHelper
 
-+ (BOOL)mmsDefaultEnabledForPhoneNumber:(id)a3 simID:(id)a4
++ (BOOL)mmsDefaultEnabledForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v8 = [v7 isReadMMSDefaultFromCBEnabled];
+  numberCopy = number;
+  dCopy = d;
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isReadMMSDefaultFromCBEnabled = [mEMORY[0x277D1A9B8] isReadMMSDefaultFromCBEnabled];
 
-  if (v8)
+  if (isReadMMSDefaultFromCBEnabled)
   {
-    v9 = [MEMORY[0x277D1A908] sharedInstance];
-    v10 = [v9 ctSubscriptionInfo];
-    v11 = [v10 __im_subscriptionContextForForSimID:v6 phoneNumber:v5];
+    mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+    firstObject = [ctSubscriptionInfo __im_subscriptionContextForForSimID:dCopy phoneNumber:numberCopy];
 
-    if (v11)
+    if (firstObject)
     {
       goto LABEL_3;
     }
@@ -27,16 +27,16 @@
       goto LABEL_9;
     }
 
-    v17 = [MEMORY[0x277D1A908] sharedInstance];
-    v18 = [v17 ctSubscriptionInfo];
-    v19 = [v18 subscriptions];
-    v11 = [v19 firstObject];
+    mEMORY[0x277D1A908]2 = [MEMORY[0x277D1A908] sharedInstance];
+    ctSubscriptionInfo2 = [mEMORY[0x277D1A908]2 ctSubscriptionInfo];
+    subscriptions = [ctSubscriptionInfo2 subscriptions];
+    firstObject = [subscriptions firstObject];
 
-    if (v11)
+    if (firstObject)
     {
 LABEL_3:
-      v12 = [MEMORY[0x277D1A908] sharedInstance];
-      v13 = [v12 copyCarrierBundleValueForSubscriptionContext:v11 keyHierarchy:&unk_2856EB970 defaultValue:0 valueIfError:0];
+      mEMORY[0x277D1A908]3 = [MEMORY[0x277D1A908] sharedInstance];
+      v13 = [mEMORY[0x277D1A908]3 copyCarrierBundleValueForSubscriptionContext:firstObject keyHierarchy:&unk_2856EB970 defaultValue:0 valueIfError:0];
 
       if (v13)
       {
@@ -44,34 +44,34 @@ LABEL_3:
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 BOOLValue];
+          bOOLValue = [v14 BOOLValue];
         }
 
         else
         {
-          v16 = 1;
+          bOOLValue = 1;
         }
       }
 
       else
       {
-        v16 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
 LABEL_9:
-      v16 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v16 = 1;
+    bOOLValue = 1;
   }
 
-  return v16;
+  return bOOLValue;
 }
 
 @end

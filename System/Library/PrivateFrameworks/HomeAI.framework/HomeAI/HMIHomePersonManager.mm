@@ -1,46 +1,46 @@
 @interface HMIHomePersonManager
-- (HMIHomePersonManager)initWithUUID:(id)a3 homeUUID:(id)a4;
-- (HMIHomePersonManager)initWithUUID:(id)a3 homeUUID:(id)a4 watchdogTimer:(id)a5;
+- (HMIHomePersonManager)initWithUUID:(id)d homeUUID:(id)iD;
+- (HMIHomePersonManager)initWithUUID:(id)d homeUUID:(id)iD watchdogTimer:(id)timer;
 - (HMIHomePersonManagerDataSource)dataSource;
 - (HMIHomePersonManagerSettings)settings;
 - (id)logIdentifier;
-- (void)_updateSettings:(id)a3;
+- (void)_updateSettings:(id)settings;
 - (void)handleDataChanged;
-- (void)handleMisclassifiedPersonForFaceCrop:(id)a3;
-- (void)handleNewFaceEvents:(id)a3;
-- (void)handleRemovedFaceCropWithUUID:(id)a3;
-- (void)handleRemovedFaceprintWithUUID:(id)a3;
-- (void)handleRemovedPersonWithUUID:(id)a3;
-- (void)handleUpdatedFaceprint:(id)a3;
-- (void)handleUpdatedPerson:(id)a3;
-- (void)handleUpdatedPersonFaceCrop:(id)a3;
-- (void)handleUpdatedSettings:(id)a3;
-- (void)handleUpdatedUnassociatedFaceCrop:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)storeFaceprint:(id)a3 completion:(id)a4;
-- (void)storeUnassociatedFaceCrop:(id)a3 completion:(id)a4;
-- (void)timerDidFire:(id)a3;
+- (void)handleMisclassifiedPersonForFaceCrop:(id)crop;
+- (void)handleNewFaceEvents:(id)events;
+- (void)handleRemovedFaceCropWithUUID:(id)d;
+- (void)handleRemovedFaceprintWithUUID:(id)d;
+- (void)handleRemovedPersonWithUUID:(id)d;
+- (void)handleUpdatedFaceprint:(id)faceprint;
+- (void)handleUpdatedPerson:(id)person;
+- (void)handleUpdatedPersonFaceCrop:(id)crop;
+- (void)handleUpdatedSettings:(id)settings;
+- (void)handleUpdatedUnassociatedFaceCrop:(id)crop;
+- (void)setDataSource:(id)source;
+- (void)storeFaceprint:(id)faceprint completion:(id)completion;
+- (void)storeUnassociatedFaceCrop:(id)crop completion:(id)completion;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMIHomePersonManager
 
-- (HMIHomePersonManager)initWithUUID:(id)a3 homeUUID:(id)a4
+- (HMIHomePersonManager)initWithUUID:(id)d homeUUID:(id)iD
 {
   v6 = MEMORY[0x277D0F920];
-  v7 = a4;
-  v8 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v9 = [[v6 alloc] initWithTimeInterval:28 options:5.0];
-  v10 = [(HMIHomePersonManager *)self initWithUUID:v8 homeUUID:v7 watchdogTimer:v9];
+  v10 = [(HMIHomePersonManager *)self initWithUUID:dCopy homeUUID:iDCopy watchdogTimer:v9];
 
   return v10;
 }
 
-- (HMIHomePersonManager)initWithUUID:(id)a3 homeUUID:(id)a4 watchdogTimer:(id)a5
+- (HMIHomePersonManager)initWithUUID:(id)d homeUUID:(id)iD watchdogTimer:(id)timer
 {
-  v9 = a5;
+  timerCopy = timer;
   v18.receiver = self;
   v18.super_class = HMIHomePersonManager;
-  v10 = [(HMIPersonManager *)&v18 initWithUUID:a3 homeUUID:a4];
+  v10 = [(HMIPersonManager *)&v18 initWithUUID:d homeUUID:iD];
   if (v10)
   {
     v11 = objc_alloc_init(MEMORY[0x277CCABD8]);
@@ -48,7 +48,7 @@
     v10->_operationQueue = v11;
 
     [(NSOperationQueue *)v10->_operationQueue setMaxConcurrentOperationCount:1];
-    objc_storeStrong(&v10->_watchdogTimer, a5);
+    objc_storeStrong(&v10->_watchdogTimer, timer);
     [(HMFTimer *)v10->_watchdogTimer setDelegate:v10];
     v13 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:12 options:3600.0];
     analyticsTimer = v10->_analyticsTimer;
@@ -57,22 +57,22 @@
     [(HMFTimer *)v10->_analyticsTimer setDelegate:v10];
     [(HMFTimer *)v10->_analyticsTimer resume];
     v10->_lock._os_unfair_lock_opaque = 0;
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     unknownFacesSavedCounts = v10->_unknownFacesSavedCounts;
-    v10->_unknownFacesSavedCounts = v15;
+    v10->_unknownFacesSavedCounts = dictionary;
   }
 
   return v10;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_dataSource, v4);
+  objc_storeWeak(&self->_dataSource, sourceCopy);
   os_unfair_lock_unlock(&self->_lock);
-  if (v4)
+  if (sourceCopy)
   {
     v5 = [objc_alloc(MEMORY[0x277D0F780]) initWithTimeout:0.0];
     objc_initWeak(location, v5);
@@ -82,10 +82,10 @@
     v11[3] = &unk_278752AC0;
     objc_copyWeak(&v13, location);
     v11[4] = self;
-    v12 = v4;
+    v12 = sourceCopy;
     [v5 addExecutionBlock:v11];
-    v6 = [(HMIHomePersonManager *)self operationQueue];
-    [v6 addOperation:v5];
+    operationQueue = [(HMIHomePersonManager *)self operationQueue];
+    [operationQueue addOperation:v5];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(location);
@@ -94,7 +94,7 @@
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -182,7 +182,7 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -193,16 +193,16 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMIHomePersonManager *)v4 watchdogTimer];
-  [v7 resume];
+  watchdogTimer = [(HMIHomePersonManager *)selfCopy watchdogTimer];
+  [watchdogTimer resume];
 }
 
-- (void)handleUpdatedPerson:(id)a3
+- (void)handleUpdatedPerson:(id)person
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  personCopy = person;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -210,21 +210,21 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = personCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleUpdatedPerson: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMIHomePersonManager *)v6 watchdogTimer];
-  [v9 resume];
+  watchdogTimer = [(HMIHomePersonManager *)selfCopy watchdogTimer];
+  [watchdogTimer resume];
 }
 
-- (void)handleUpdatedUnassociatedFaceCrop:(id)a3
+- (void)handleUpdatedUnassociatedFaceCrop:(id)crop
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cropCopy = crop;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -232,19 +232,19 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
     v9 = 138543618;
     v10 = v8;
     v11 = 2112;
-    v12 = v4;
+    v12 = cropCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleUpdatedUnassociatedFaceCrop: %@", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)handleUpdatedPersonFaceCrop:(id)a3
+- (void)handleUpdatedPersonFaceCrop:(id)crop
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cropCopy = crop;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -252,21 +252,21 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = cropCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleUpdatedPersonFaceCrop: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMIHomePersonManager *)v6 watchdogTimer];
-  [v9 resume];
+  watchdogTimer = [(HMIHomePersonManager *)selfCopy watchdogTimer];
+  [watchdogTimer resume];
 }
 
-- (void)handleUpdatedFaceprint:(id)a3
+- (void)handleUpdatedFaceprint:(id)faceprint
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  faceprintCopy = faceprint;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -274,19 +274,19 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
     v9 = 138543618;
     v10 = v8;
     v11 = 2112;
-    v12 = v4;
+    v12 = faceprintCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleUpdatedFaceprint: %@", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)handleUpdatedSettings:(id)a3
+- (void)handleUpdatedSettings:(id)settings
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -294,20 +294,20 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
     v9 = 138543618;
     v10 = v8;
     v11 = 2112;
-    v12 = v4;
+    v12 = settingsCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_INFO, "%{public}@handleUpdatedSettings: %@", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMIHomePersonManager *)v6 _updateSettings:v4];
+  [(HMIHomePersonManager *)selfCopy _updateSettings:settingsCopy];
 }
 
-- (void)handleRemovedPersonWithUUID:(id)a3
+- (void)handleRemovedPersonWithUUID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -315,21 +315,21 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleRemovedPersonWithUUID: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMIHomePersonManager *)v6 watchdogTimer];
-  [v9 resume];
+  watchdogTimer = [(HMIHomePersonManager *)selfCopy watchdogTimer];
+  [watchdogTimer resume];
 }
 
-- (void)handleRemovedFaceCropWithUUID:(id)a3
+- (void)handleRemovedFaceCropWithUUID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -337,21 +337,21 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleRemovedFaceCropWithUUID: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMIHomePersonManager *)v6 watchdogTimer];
-  [v9 resume];
+  watchdogTimer = [(HMIHomePersonManager *)selfCopy watchdogTimer];
+  [watchdogTimer resume];
 }
 
-- (void)handleRemovedFaceprintWithUUID:(id)a3
+- (void)handleRemovedFaceprintWithUUID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -359,25 +359,25 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
     v9 = 138543618;
     v10 = v8;
     v11 = 2112;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_22D12F000, v7, OS_LOG_TYPE_DEBUG, "%{public}@handleRemovedFaceprintWithUUID: %@", &v9, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)handleMisclassifiedPersonForFaceCrop:(id)a3
+- (void)handleMisclassifiedPersonForFaceCrop:(id)crop
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cropCopy = crop;
   v5 = +[HMITaskService taskServiceClient];
   v19[0] = HMITaskTypeFaceMisclassificationTask;
   v18[0] = @"taskType";
   v18[1] = @"homeUUID";
-  v6 = [(HMIPersonManager *)self homeUUID];
+  homeUUID = [(HMIPersonManager *)self homeUUID];
   v18[2] = @"faceCrop";
-  v19[1] = v6;
-  v19[2] = v4;
+  v19[1] = homeUUID;
+  v19[2] = cropCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
 
   v13[0] = MEMORY[0x277D85DD0];
@@ -387,7 +387,7 @@ void __38__HMIHomePersonManager_setDataSource___block_invoke_4(uint64_t a1, void
   v13[4] = self;
   v8 = [v5 submitTaskWithOptions:v7 progressHandler:0 completionHandler:v13];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -448,24 +448,24 @@ LABEL_6:
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)storeUnassociatedFaceCrop:(id)a3 completion:(id)a4
+- (void)storeUnassociatedFaceCrop:(id)crop completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIHomePersonManager *)self dataSource];
-  if (v8)
+  cropCopy = crop;
+  completionCopy = completion;
+  dataSource = [(HMIHomePersonManager *)self dataSource];
+  if (dataSource)
   {
-    v9 = [[HMIStoreFaceCropOperation alloc] initWithDataSource:v8 faceCrop:v6];
+    v9 = [[HMIStoreFaceCropOperation alloc] initWithDataSource:dataSource faceCrop:cropCopy];
     objc_initWeak(&location, v9);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __61__HMIHomePersonManager_storeUnassociatedFaceCrop_completion___block_invoke;
     v11[3] = &unk_278752B10;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
+    v12 = completionCopy;
     [(HMIStoreFaceCropOperation *)v9 setCompletionBlock:v11];
-    v10 = [(HMIHomePersonManager *)self operationQueue];
-    [v10 addOperation:v9];
+    operationQueue = [(HMIHomePersonManager *)self operationQueue];
+    [operationQueue addOperation:v9];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -474,7 +474,7 @@ LABEL_6:
   else
   {
     v9 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1036];
-    (*(v7 + 2))(v7, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 }
 
@@ -486,24 +486,24 @@ void __61__HMIHomePersonManager_storeUnassociatedFaceCrop_completion___block_inv
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)storeFaceprint:(id)a3 completion:(id)a4
+- (void)storeFaceprint:(id)faceprint completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMIHomePersonManager *)self dataSource];
-  if (v8)
+  faceprintCopy = faceprint;
+  completionCopy = completion;
+  dataSource = [(HMIHomePersonManager *)self dataSource];
+  if (dataSource)
   {
-    v9 = [[HMIStoreFaceprintOperation alloc] initWithDataSource:v8 faceprint:v6];
+    v9 = [[HMIStoreFaceprintOperation alloc] initWithDataSource:dataSource faceprint:faceprintCopy];
     objc_initWeak(&location, v9);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __50__HMIHomePersonManager_storeFaceprint_completion___block_invoke;
     v11[3] = &unk_278752B10;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
+    v12 = completionCopy;
     [(HMIStoreFaceprintOperation *)v9 setCompletionBlock:v11];
-    v10 = [(HMIHomePersonManager *)self operationQueue];
-    [v10 addOperation:v9];
+    operationQueue = [(HMIHomePersonManager *)self operationQueue];
+    [operationQueue addOperation:v9];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -512,7 +512,7 @@ void __61__HMIHomePersonManager_storeUnassociatedFaceCrop_completion___block_inv
   else
   {
     v9 = [MEMORY[0x277CCA9B8] hmiPrivateErrorWithCode:1036];
-    (*(v7 + 2))(v7, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 }
 
@@ -524,14 +524,14 @@ void __50__HMIHomePersonManager_storeFaceprint_completion___block_invoke(uint64_
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)handleNewFaceEvents:(id)a3
+- (void)handleNewFaceEvents:(id)events
 {
   v58 = *MEMORY[0x277D85DE8];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = a3;
+  obj = events;
   v41 = [obj countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v41)
   {
@@ -548,52 +548,52 @@ void __50__HMIHomePersonManager_storeFaceprint_completion___block_invoke(uint64_
         }
 
         v6 = *(*(&v47 + 1) + 8 * i);
-        v7 = [v6 faceRecognition];
-        v8 = v7;
-        if (v7)
+        faceRecognition = [v6 faceRecognition];
+        v8 = faceRecognition;
+        if (faceRecognition)
         {
-          v9 = [v7 classifications];
+          classifications = [faceRecognition classifications];
           v46[0] = MEMORY[0x277D85DD0];
           v46[1] = 3221225472;
           v46[2] = __44__HMIHomePersonManager_handleNewFaceEvents___block_invoke;
           v46[3] = &unk_278752B38;
           v46[4] = self;
-          v10 = [v9 na_firstObjectPassingTest:v46];
+          v10 = [classifications na_firstObjectPassingTest:v46];
 
           if (v10)
           {
             os_unfair_lock_lock_with_options();
-            v11 = [(HMIHomePersonManager *)self unknownFacesSavedCounts];
-            v12 = [v10 sessionEntityUUID];
-            v13 = [v11 objectForKeyedSubscript:v12];
+            unknownFacesSavedCounts = [(HMIHomePersonManager *)self unknownFacesSavedCounts];
+            sessionEntityUUID = [v10 sessionEntityUUID];
+            v13 = [unknownFacesSavedCounts objectForKeyedSubscript:sessionEntityUUID];
 
             if (v13)
             {
-              v14 = [v13 intValue];
+              intValue = [v13 intValue];
             }
 
             else
             {
-              v14 = 0;
+              intValue = 0;
             }
 
             os_unfair_lock_unlock(&self->_lock);
-            if (v14 >= 0xA)
+            if (intValue >= 0xA)
             {
               v32 = objc_autoreleasePoolPush();
-              v33 = self;
+              selfCopy = self;
               v34 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
               {
                 v35 = HMFGetLogIdentifier();
-                v36 = [v10 sessionEntityUUID];
-                v37 = [(HMIPersonManager *)v33 UUID];
+                sessionEntityUUID2 = [v10 sessionEntityUUID];
+                uUID = [(HMIPersonManager *)selfCopy UUID];
                 *buf = v38;
                 v52 = v35;
                 v53 = 2112;
-                v54 = v36;
+                v54 = sessionEntityUUID2;
                 v55 = 2112;
-                v56 = v37;
+                v56 = uUID;
                 _os_log_impl(&dword_22D12F000, v34, OS_LOG_TYPE_DEBUG, "%{public}@Reached face crop limit for sessionEntityUUID:%@ for HMIHomePersonManager.UUID:%@; not storing", buf, 0x20u);
               }
 
@@ -603,64 +603,64 @@ void __50__HMIHomePersonManager_storeFaceprint_completion___block_invoke(uint64_
             else
             {
               os_unfair_lock_lock_with_options();
-              v20 = [MEMORY[0x277CCABB0] numberWithInt:v14 + 1];
-              v21 = [(HMIHomePersonManager *)self unknownFacesSavedCounts];
-              v22 = [v10 sessionEntityUUID];
-              [v21 setObject:v20 forKeyedSubscript:v22];
+              v20 = [MEMORY[0x277CCABB0] numberWithInt:intValue + 1];
+              unknownFacesSavedCounts2 = [(HMIHomePersonManager *)self unknownFacesSavedCounts];
+              sessionEntityUUID3 = [v10 sessionEntityUUID];
+              [unknownFacesSavedCounts2 setObject:v20 forKeyedSubscript:sessionEntityUUID3];
 
               os_unfair_lock_unlock(&self->_lock);
               v23 = objc_autoreleasePoolPush();
-              v24 = self;
+              selfCopy2 = self;
               v25 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
               {
                 v26 = HMFGetLogIdentifier();
-                v27 = [v8 faceCrop];
-                v28 = [v8 faceprint];
+                faceCrop = [v8 faceCrop];
+                faceprint = [v8 faceprint];
                 *buf = v38;
                 v52 = v26;
                 v53 = 2112;
-                v54 = v27;
+                v54 = faceCrop;
                 v55 = 2112;
-                v56 = v28;
+                v56 = faceprint;
                 _os_log_impl(&dword_22D12F000, v25, OS_LOG_TYPE_DEBUG, "%{public}@Storing unknown to Home face crop:%@ and faceprint:%@", buf, 0x20u);
               }
 
               objc_autoreleasePoolPop(v23);
-              v29 = [v8 faceCrop];
+              faceCrop2 = [v8 faceCrop];
               v44[0] = MEMORY[0x277D85DD0];
               v44[1] = 3221225472;
               v44[2] = __44__HMIHomePersonManager_handleNewFaceEvents___block_invoke_15;
               v44[3] = &unk_278752B60;
-              v44[4] = v24;
+              v44[4] = selfCopy2;
               v30 = v8;
               v45 = v30;
-              [(HMIHomePersonManager *)v24 storeUnassociatedFaceCrop:v29 completion:v44];
+              [(HMIHomePersonManager *)selfCopy2 storeUnassociatedFaceCrop:faceCrop2 completion:v44];
 
-              v31 = [v30 faceprint];
+              faceprint2 = [v30 faceprint];
               v42[0] = MEMORY[0x277D85DD0];
               v42[1] = 3221225472;
               v42[2] = __44__HMIHomePersonManager_handleNewFaceEvents___block_invoke_17;
               v42[3] = &unk_278752B60;
-              v42[4] = v24;
+              v42[4] = selfCopy2;
               v43 = v30;
-              [(HMIHomePersonManager *)v24 storeFaceprint:v31 completion:v42];
+              [(HMIHomePersonManager *)selfCopy2 storeFaceprint:faceprint2 completion:v42];
             }
           }
 
           else
           {
             v15 = objc_autoreleasePoolPush();
-            v16 = self;
+            selfCopy3 = self;
             v17 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
             {
               v18 = HMFGetLogIdentifier();
-              v19 = [(HMIPersonManager *)v16 UUID];
+              uUID2 = [(HMIPersonManager *)selfCopy3 UUID];
               *buf = v38;
               v52 = v18;
               v53 = 2112;
-              v54 = v19;
+              v54 = uUID2;
               v55 = 2112;
               v56 = v6;
               _os_log_impl(&dword_22D12F000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Not storing face crop and faceprint for HMIHomePersonManager.UUID:%@ from face event:%@", buf, 0x20u);
@@ -790,21 +790,21 @@ LABEL_6:
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(HMIHomePersonManager *)self watchdogTimer];
+  watchdogTimer = [(HMIHomePersonManager *)self watchdogTimer];
 
-  if (v6 == v4)
+  if (watchdogTimer == fireCopy)
   {
-    v12 = [(HMIPersonManager *)self isPersonDataAvailableViaHomeKit];
+    isPersonDataAvailableViaHomeKit = [(HMIPersonManager *)self isPersonDataAvailableViaHomeKit];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-    if (v12)
+    if (isPersonDataAvailableViaHomeKit)
     {
       if (v16)
       {
@@ -816,15 +816,15 @@ LABEL_6:
 
       objc_autoreleasePoolPop(v13);
       v18 = [HMIUpdatePersonsModelOperation alloc];
-      v19 = [(HMIPersonManager *)v14 UUID];
-      v20 = [(HMIPersonManager *)v14 homeUUID];
-      v21 = [(HMIUpdatePersonsModelOperation *)v18 initWithSourceUUID:v19 homeUUID:v20 external:0];
+      uUID = [(HMIPersonManager *)selfCopy UUID];
+      homeUUID = [(HMIPersonManager *)selfCopy homeUUID];
+      v21 = [(HMIUpdatePersonsModelOperation *)v18 initWithSourceUUID:uUID homeUUID:homeUUID external:0];
 
-      v22 = [(HMIHomePersonManager *)v14 operationQueue];
-      [v22 addOperation:v21];
+      operationQueue = [(HMIHomePersonManager *)selfCopy operationQueue];
+      [operationQueue addOperation:v21];
 
-      v23 = [(HMIHomePersonManager *)v14 watchdogTimer];
-      [v23 suspend];
+      watchdogTimer2 = [(HMIHomePersonManager *)selfCopy watchdogTimer];
+      [watchdogTimer2 suspend];
     }
 
     else
@@ -838,19 +838,19 @@ LABEL_6:
       }
 
       objc_autoreleasePoolPop(v13);
-      v39 = [(HMIHomePersonManager *)v14 watchdogTimer];
-      [v39 resume];
+      watchdogTimer3 = [(HMIHomePersonManager *)selfCopy watchdogTimer];
+      [watchdogTimer3 resume];
     }
   }
 
   else
   {
-    v7 = [(HMIHomePersonManager *)self analyticsTimer];
+    analyticsTimer = [(HMIHomePersonManager *)self analyticsTimer];
 
-    if (v7 != v4)
+    if (analyticsTimer != fireCopy)
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy3 = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -858,7 +858,7 @@ LABEL_6:
         *buf = 138543618;
         v48 = v11;
         v49 = 2112;
-        v50 = v4;
+        v50 = fireCopy;
         _os_log_impl(&dword_22D12F000, v10, OS_LOG_TYPE_ERROR, "%{public}@Unrecognized timer: %@", buf, 0x16u);
       }
 
@@ -868,21 +868,21 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v24 = [(HMIHomePersonManager *)self settings];
-    v25 = [v24 isFaceClassificationEnabled];
+    settings = [(HMIHomePersonManager *)self settings];
+    isFaceClassificationEnabled = [settings isFaceClassificationEnabled];
 
-    if (v25)
+    if (isFaceClassificationEnabled)
     {
-      v26 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v26 doubleForKey:@"HMICoreAnalyticsVIPModelReportTime"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults doubleForKey:@"HMICoreAnalyticsVIPModelReportTime"];
       v28 = v27;
 
-      v29 = [MEMORY[0x277CBEAA8] date];
-      [v29 timeIntervalSinceReferenceDate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceReferenceDate];
       v31 = v30 - v28 >= 86400.0;
 
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy3 = self;
       v10 = HMFGetOSLogHandle();
       v32 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
       if (!v31)
@@ -907,10 +907,10 @@ LABEL_20:
       }
 
       objc_autoreleasePoolPop(v8);
-      v34 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v35 = [MEMORY[0x277CBEAA8] date];
-      [v35 timeIntervalSinceReferenceDate];
-      [v34 setDouble:@"HMICoreAnalyticsVIPModelReportTime" forKey:?];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceReferenceDate];
+      [standardUserDefaults2 setDouble:@"HMICoreAnalyticsVIPModelReportTime" forKey:?];
 
       v36 = [objc_alloc(MEMORY[0x277D0F780]) initWithTimeout:0.0];
       objc_initWeak(buf, v36);
@@ -919,9 +919,9 @@ LABEL_20:
       v43 = __37__HMIHomePersonManager_timerDidFire___block_invoke;
       v44 = &unk_278752BB0;
       objc_copyWeak(&v46, buf);
-      v45 = v9;
+      v45 = selfCopy3;
       [v36 addExecutionBlock:&v41];
-      v37 = [(HMIHomePersonManager *)v9 operationQueue:v41];
+      v37 = [(HMIHomePersonManager *)selfCopy3 operationQueue:v41];
       [v37 addOperation:v36];
 
       objc_destroyWeak(&v46);
@@ -1016,19 +1016,19 @@ void __37__HMIHomePersonManager_timerDidFire___block_invoke_2(uint64_t a1, void 
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMIPersonManager *)self UUID];
-  v5 = [(HMIPersonManager *)self homeUUID];
-  v6 = [v3 stringWithFormat:@"UUID:%@ HomeUUID:%@", v4, v5];
+  uUID = [(HMIPersonManager *)self UUID];
+  homeUUID = [(HMIPersonManager *)self homeUUID];
+  v6 = [v3 stringWithFormat:@"UUID:%@ HomeUUID:%@", uUID, homeUUID];
 
   return v6;
 }
 
-- (void)_updateSettings:(id)a3
+- (void)_updateSettings:(id)settings
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  settingsCopy = settings;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1036,18 +1036,18 @@ void __37__HMIHomePersonManager_timerDidFire___block_invoke_2(uint64_t a1, void 
     v23 = 138543618;
     v24 = v9;
     v25 = 2112;
-    v26 = v5;
+    v26 = settingsCopy;
     _os_log_impl(&dword_22D12F000, v8, OS_LOG_TYPE_INFO, "%{public}@Updating with settings: %@", &v23, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   os_unfair_lock_lock_with_options();
-  objc_storeStrong(&v7->_settings, a3);
-  os_unfair_lock_unlock(&v7->_lock);
-  if (v5 && ([v5 isFaceClassificationEnabled] & 1) != 0)
+  objc_storeStrong(&selfCopy->_settings, settings);
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  if (settingsCopy && ([settingsCopy isFaceClassificationEnabled] & 1) != 0)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = v7;
+    v11 = selfCopy;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1058,14 +1058,14 @@ void __37__HMIHomePersonManager_timerDidFire___block_invoke_2(uint64_t a1, void 
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [(HMIHomePersonManager *)v11 watchdogTimer];
-    [(HMIRemovePersonsModelOperation *)v14 resume];
+    watchdogTimer = [(HMIHomePersonManager *)v11 watchdogTimer];
+    [(HMIRemovePersonsModelOperation *)watchdogTimer resume];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = v7;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -1077,12 +1077,12 @@ void __37__HMIHomePersonManager_timerDidFire___block_invoke_2(uint64_t a1, void 
 
     objc_autoreleasePoolPop(v15);
     v19 = [HMIRemovePersonsModelOperation alloc];
-    v20 = [(HMIPersonManager *)v16 UUID];
-    v21 = [(HMIPersonManager *)v16 homeUUID];
-    v14 = [(HMIRemovePersonsModelOperation *)v19 initWithSourceUUID:v20 homeUUID:v21 external:0];
+    uUID = [(HMIPersonManager *)v16 UUID];
+    homeUUID = [(HMIPersonManager *)v16 homeUUID];
+    watchdogTimer = [(HMIRemovePersonsModelOperation *)v19 initWithSourceUUID:uUID homeUUID:homeUUID external:0];
 
-    v22 = [(HMIHomePersonManager *)v16 operationQueue];
-    [v22 addOperation:v14];
+    operationQueue = [(HMIHomePersonManager *)v16 operationQueue];
+    [operationQueue addOperation:watchdogTimer];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface MusicCarPlayApplicationCapabilitiesController
 + (MusicCarPlayApplicationCapabilitiesController)sharedController;
-- (void)setSubscriptionCapabilities:(unint64_t)a3;
+- (void)setSubscriptionCapabilities:(unint64_t)capabilities;
 @end
 
 @implementation MusicCarPlayApplicationCapabilitiesController
@@ -17,11 +17,11 @@
   return v3;
 }
 
-- (void)setSubscriptionCapabilities:(unint64_t)a3
+- (void)setSubscriptionCapabilities:(unint64_t)capabilities
 {
-  if (self->_subscriptionCapabilities != a3)
+  if (self->_subscriptionCapabilities != capabilities)
   {
-    self->_subscriptionCapabilities = a3;
+    self->_subscriptionCapabilities = capabilities;
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 postNotificationName:@"MusicCarPlayApplicationCapabilitiesControllerSubscriptionCapabilitiesDidChangeNotification" object:self];
   }

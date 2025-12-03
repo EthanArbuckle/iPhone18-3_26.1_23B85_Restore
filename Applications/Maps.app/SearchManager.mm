@@ -1,40 +1,40 @@
 @interface SearchManager
-- (BOOL)_shouldEnableRAPForNoResultsWithError:(id)a3;
+- (BOOL)_shouldEnableRAPForNoResultsWithError:(id)error;
 - (SearchManagerDelegate)delegate;
-- (id)closestSearchResultOfType:(unsigned int)a3 fromSearchResults:(id)a4;
-- (id)correctedSearchResultsFrom:(id)a3;
-- (id)orderedSearchResults:(id)a3 itemsToFrame:(id)a4;
-- (void)_forwardGeocodeAddress:(id)a3 addressString:(id)a4 addressBookAddress:(id)a5 label:(id)a6 defaultSearchResultType:(unsigned int)a7 traits:(id)a8 source:(int)a9;
-- (void)_handleGeocoderError:(id)a3;
-- (void)_resolveRefinementForSearch:(id)a3 atIndex:(unint64_t)a4;
+- (id)closestSearchResultOfType:(unsigned int)type fromSearchResults:(id)results;
+- (id)correctedSearchResultsFrom:(id)from;
+- (id)orderedSearchResults:(id)results itemsToFrame:(id)frame;
+- (void)_forwardGeocodeAddress:(id)address addressString:(id)string addressBookAddress:(id)bookAddress label:(id)label defaultSearchResultType:(unsigned int)type traits:(id)traits source:(int)source;
+- (void)_handleGeocoderError:(id)error;
+- (void)_resolveRefinementForSearch:(id)search atIndex:(unint64_t)index;
 - (void)_searchCanceled;
-- (void)_searchFailedWithError:(id)a3;
-- (void)_searchFailedWithError:(id)a3 ticket:(id)a4 enableStructuredRAPAffordance:(BOOL)a5;
-- (void)_searchForAddress:(id)a3 completedQuery:(id)a4 traits:(id)a5 source:(int)a6;
-- (void)_searchForAutocompletePerson:(id)a3 traits:(id)a4 source:(int)a5;
-- (void)_searchForBookmarkSearchResult:(id)a3 origin:(int64_t)a4;
-- (void)_searchForCategory:(id)a3 traits:(id)a4 defaultSearchResultType:(unsigned int)a5 source:(int)a6 maxResults:(unsigned int)a7;
-- (void)_searchForChildPlace:(id)a3 traits:(id)a4 source:(int)a5;
-- (void)_searchForCompletion:(id)a3 traits:(id)a4 source:(int)a5;
-- (void)_searchForContactAddressedForAutocompletePerson:(id)a3 searchResults:(id)a4 traits:(id)a5 source:(int)a6;
-- (void)_searchForExternalURLQuery:(id)a3 coordinate:(CLLocationCoordinate2D)a4 muid:(unint64_t)a5 resultProviderId:(int)a6 contentProvider:(id)a7 traits:(id)a8 source:(int)a9;
-- (void)_searchForHistoryItem:(id)a3 completedQuery:(id)a4 traits:(id)a5 source:(int)a6 isRedoOrAutoRedoSearch:(BOOL)a7;
-- (void)_searchForMapKitHandle:(id)a3 traits:(id)a4 source:(int)a5;
-- (void)_searchForPlaceCategoryItem:(id)a3 traits:(id)a4 source:(int)a5;
-- (void)_searchForSearchInfo:(id)a3 completedQuery:(id)a4;
-- (void)_searchForSearchResults:(id)a3 completedQuery:(id)a4;
-- (void)_searchForString:(id)a3 traits:(id)a4 defaultSearchResultType:(unsigned int)a5 completedQuery:(id)a6 retainedSearchMetadata:(id)a7 source:(int)a8;
-- (void)_searchForSuggestion:(id)a3 traits:(id)a4 source:(int)a5;
-- (void)_searchForVenueCategoryItem:(id)a3 traits:(id)a4 source:(int)a5;
-- (void)_searchReceivedResults:(id)a3;
-- (void)_submitCategorySearchTicket:(id)a3 defaultSearchResultType:(unsigned int)a4 origin:(int64_t)a5;
-- (void)_submitSearchTicket:(id)a3 defaultSearchResultType:(unsigned int)a4 saveToHistory:(BOOL)a5 origin:(int64_t)a6 completionTitle:(id)a7;
-- (void)_submitTicket:(id)a3 defaultSearchResultType:(unsigned int)a4 origin:(int64_t)a5;
-- (void)_submitTicketForSearchForCategory:(id)a3 searchQuery:(id)a4 completionItem:(id)a5 traits:(id)a6 defaultSearchResultType:(unsigned int)a7 source:(int)a8 maxResults:(unsigned int)a9;
+- (void)_searchFailedWithError:(id)error;
+- (void)_searchFailedWithError:(id)error ticket:(id)ticket enableStructuredRAPAffordance:(BOOL)affordance;
+- (void)_searchForAddress:(id)address completedQuery:(id)query traits:(id)traits source:(int)source;
+- (void)_searchForAutocompletePerson:(id)person traits:(id)traits source:(int)source;
+- (void)_searchForBookmarkSearchResult:(id)result origin:(int64_t)origin;
+- (void)_searchForCategory:(id)category traits:(id)traits defaultSearchResultType:(unsigned int)type source:(int)source maxResults:(unsigned int)results;
+- (void)_searchForChildPlace:(id)place traits:(id)traits source:(int)source;
+- (void)_searchForCompletion:(id)completion traits:(id)traits source:(int)source;
+- (void)_searchForContactAddressedForAutocompletePerson:(id)person searchResults:(id)results traits:(id)traits source:(int)source;
+- (void)_searchForExternalURLQuery:(id)query coordinate:(CLLocationCoordinate2D)coordinate muid:(unint64_t)muid resultProviderId:(int)id contentProvider:(id)provider traits:(id)traits source:(int)source;
+- (void)_searchForHistoryItem:(id)item completedQuery:(id)query traits:(id)traits source:(int)source isRedoOrAutoRedoSearch:(BOOL)search;
+- (void)_searchForMapKitHandle:(id)handle traits:(id)traits source:(int)source;
+- (void)_searchForPlaceCategoryItem:(id)item traits:(id)traits source:(int)source;
+- (void)_searchForSearchInfo:(id)info completedQuery:(id)query;
+- (void)_searchForSearchResults:(id)results completedQuery:(id)query;
+- (void)_searchForString:(id)string traits:(id)traits defaultSearchResultType:(unsigned int)type completedQuery:(id)query retainedSearchMetadata:(id)metadata source:(int)source;
+- (void)_searchForSuggestion:(id)suggestion traits:(id)traits source:(int)source;
+- (void)_searchForVenueCategoryItem:(id)item traits:(id)traits source:(int)source;
+- (void)_searchReceivedResults:(id)results;
+- (void)_submitCategorySearchTicket:(id)ticket defaultSearchResultType:(unsigned int)type origin:(int64_t)origin;
+- (void)_submitSearchTicket:(id)ticket defaultSearchResultType:(unsigned int)type saveToHistory:(BOOL)history origin:(int64_t)origin completionTitle:(id)title;
+- (void)_submitTicket:(id)ticket defaultSearchResultType:(unsigned int)type origin:(int64_t)origin;
+- (void)_submitTicketForSearchForCategory:(id)category searchQuery:(id)query completionItem:(id)item traits:(id)traits defaultSearchResultType:(unsigned int)type source:(int)source maxResults:(unsigned int)results;
 - (void)cancelSearch;
 - (void)dealloc;
 - (void)reset;
-- (void)searchForSearchFieldItem:(id)a3 traits:(id)a4 source:(int)a5 isRedoOrAutoRedoSearch:(BOOL)a6 searchSessionData:(id)a7;
+- (void)searchForSearchFieldItem:(id)item traits:(id)traits source:(int)source isRedoOrAutoRedoSearch:(BOOL)search searchSessionData:(id)data;
 @end
 
 @implementation SearchManager
@@ -46,48 +46,48 @@
   return WeakRetained;
 }
 
-- (BOOL)_shouldEnableRAPForNoResultsWithError:(id)a3
+- (BOOL)_shouldEnableRAPForNoResultsWithError:(id)error
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:GEOErrorShouldEnableRAPForNoResultsKey];
+  userInfo = [error userInfo];
+  v4 = [userInfo objectForKeyedSubscript:GEOErrorShouldEnableRAPForNoResultsKey];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)_searchReceivedResults:(id)a3
+- (void)_searchReceivedResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 results];
+    results = [resultsCopy results];
     v11 = 138412546;
-    v12 = v6;
+    v12 = results;
     v13 = 2112;
-    v14 = v4;
+    v14 = resultsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Search received %@: Search Info: %@", &v11, 0x16u);
   }
 
-  v7 = [(SearchManager *)self searchFieldItem];
-  [v4 setSearchFieldItem:v7];
+  searchFieldItem = [(SearchManager *)self searchFieldItem];
+  [resultsCopy setSearchFieldItem:searchFieldItem];
 
-  v8 = [(SearchManager *)self activeTraits];
-  [v4 setSearchAlongRoute:{objc_msgSend(v8, "navigating")}];
+  activeTraits = [(SearchManager *)self activeTraits];
+  [resultsCopy setSearchAlongRoute:{objc_msgSend(activeTraits, "navigating")}];
 
-  v9 = [(SearchManager *)self delegate];
-  v10 = [v4 searchSessionData];
-  [v9 searchManager:self didReceiveSearchInfo:v4 searchSessionData:v10 error:0];
+  delegate = [(SearchManager *)self delegate];
+  searchSessionData = [resultsCopy searchSessionData];
+  [delegate searchManager:self didReceiveSearchInfo:resultsCopy searchSessionData:searchSessionData error:0];
 
   [(SearchManager *)self setActiveSearchTicket:0];
 }
@@ -95,15 +95,15 @@
 - (void)_searchCanceled
 {
   [(SearchManager *)self setActiveSearchTicket:0];
-  v3 = [(SearchManager *)self delegate];
-  [v3 searchManager:self didReceiveSearchInfo:0 searchSessionData:0 error:0];
+  delegate = [(SearchManager *)self delegate];
+  [delegate searchManager:self didReceiveSearchInfo:0 searchSessionData:0 error:0];
 }
 
-- (void)_searchFailedWithError:(id)a3 ticket:(id)a4 enableStructuredRAPAffordance:(BOOL)a5
+- (void)_searchFailedWithError:(id)error ticket:(id)ticket enableStructuredRAPAffordance:(BOOL)affordance
 {
-  IsEnabled_RAPSydney = a5;
-  v17 = a4;
-  v8 = a3;
+  IsEnabled_RAPSydney = affordance;
+  ticketCopy = ticket;
+  errorCopy = error;
   [(SearchManager *)self setActiveSearchTicket:0];
   if (IsEnabled_RAPSydney)
   {
@@ -118,22 +118,22 @@
     }
   }
 
-  v9 = [v17 searchAutoRedoThreshold];
-  if (v9)
+  searchAutoRedoThreshold = [ticketCopy searchAutoRedoThreshold];
+  if (searchAutoRedoThreshold)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [v17 searchRedoButtonThreshold];
-    v10 = v11 != 0;
+    searchRedoButtonThreshold = [ticketCopy searchRedoButtonThreshold];
+    v10 = searchRedoButtonThreshold != 0;
   }
 
-  v12 = [v17 resultRefinementGroup];
-  if ((v12 != 0) | IsEnabled_RAPSydney & 1 || v10)
+  resultRefinementGroup = [ticketCopy resultRefinementGroup];
+  if ((resultRefinementGroup != 0) | IsEnabled_RAPSydney & 1 || v10)
   {
-    v13 = [SearchInfo searchInfoWithResults:&__NSArray0__struct ticket:v17];
+    v13 = [SearchInfo searchInfoWithResults:&__NSArray0__struct ticket:ticketCopy];
   }
 
   else
@@ -141,26 +141,26 @@
     v13 = 0;
   }
 
-  v14 = [v17 resultRefinementGroup];
-  [v13 setResultRefinementGroup:v14];
+  resultRefinementGroup2 = [ticketCopy resultRefinementGroup];
+  [v13 setResultRefinementGroup:resultRefinementGroup2];
 
   [v13 setEnableStructuredRAPAffordance:IsEnabled_RAPSydney];
-  v15 = [(SearchManager *)self delegate];
-  v16 = [v13 searchSessionData];
-  [v15 searchManager:self didReceiveSearchInfo:v13 searchSessionData:v16 error:v8];
+  delegate = [(SearchManager *)self delegate];
+  searchSessionData = [v13 searchSessionData];
+  [delegate searchManager:self didReceiveSearchInfo:v13 searchSessionData:searchSessionData error:errorCopy];
 }
 
-- (void)_searchFailedWithError:(id)a3
+- (void)_searchFailedWithError:(id)error
 {
-  v4 = a3;
-  [(SearchManager *)self _searchFailedWithError:v4 ticket:0 enableStructuredRAPAffordance:[(SearchManager *)self _shouldEnableRAPForNoResultsWithError:v4]];
+  errorCopy = error;
+  [(SearchManager *)self _searchFailedWithError:errorCopy ticket:0 enableStructuredRAPAffordance:[(SearchManager *)self _shouldEnableRAPForNoResultsWithError:errorCopy]];
 }
 
-- (void)_handleGeocoderError:(id)a3
+- (void)_handleGeocoderError:(id)error
 {
-  v4 = a3;
-  v5 = [(SearchManager *)self delegate];
-  [v5 searchManager:self didReceiveSearchInfo:0 searchSessionData:0 error:v4];
+  errorCopy = error;
+  delegate = [(SearchManager *)self delegate];
+  [delegate searchManager:self didReceiveSearchInfo:0 searchSessionData:0 error:errorCopy];
 }
 
 - (void)cancelSearch
@@ -168,22 +168,22 @@
   v3 = sub_100067540();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(SearchManager *)self activeSearchTicket];
+    activeSearchTicket = [(SearchManager *)self activeSearchTicket];
     v6 = 138412290;
-    v7 = v4;
+    v7 = activeSearchTicket;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Search is being cancelled, ticket %@:", &v6, 0xCu);
   }
 
-  v5 = [(SearchManager *)self activeSearchTicket];
-  [v5 cancel];
+  activeSearchTicket2 = [(SearchManager *)self activeSearchTicket];
+  [activeSearchTicket2 cancel];
 }
 
-- (void)_searchForBookmarkSearchResult:(id)a3 origin:(int64_t)a4
+- (void)_searchForBookmarkSearchResult:(id)result origin:(int64_t)origin
 {
-  v5 = a3;
-  if ([v5 originalType] == 3)
+  resultCopy = result;
+  if ([resultCopy originalType] == 3)
   {
-    v21 = v5;
+    v21 = resultCopy;
     v6 = [NSArray arrayWithObjects:&v21 count:1];
     [(SearchManager *)self _searchForSearchResults:v6 completedQuery:0];
   }
@@ -192,15 +192,15 @@
   {
     [(SearchManager *)self reset];
     [(SearchManager *)self setActiveSearchTicket:0];
-    v7 = [(SearchManager *)self delegate];
-    v8 = [(SearchManager *)self searchFieldItem];
-    [v7 searchManager:self willProcessSearchFieldItem:v8];
+    delegate = [(SearchManager *)self delegate];
+    searchFieldItem = [(SearchManager *)self searchFieldItem];
+    [delegate searchManager:self willProcessSearchFieldItem:searchFieldItem];
 
     v6 = +[MKMapService sharedService];
-    v9 = [v6 defaultTraits];
-    [v9 setSource:17];
-    v10 = [v5 mapItem];
-    v11 = [v6 ticketForMapItemToRefine:v10 traits:v9];
+    defaultTraits = [v6 defaultTraits];
+    [defaultTraits setSource:17];
+    mapItem = [resultCopy mapItem];
+    v11 = [v6 ticketForMapItemToRefine:mapItem traits:defaultTraits];
 
     v19[0] = 0;
     v19[1] = v19;
@@ -218,19 +218,19 @@
     v14[1] = 3221225472;
     v14[2] = sub_1005EC584;
     v14[3] = &unk_101623960;
-    v15 = v5;
+    v15 = resultCopy;
     v13 = v11;
     v16 = v13;
-    v17 = self;
+    selfCopy = self;
     [v13 submitWithRefinedHandler:v14 networkActivity:v12];
 
     _Block_object_dispose(v19, 8);
   }
 }
 
-- (void)_resolveRefinementForSearch:(id)a3 atIndex:(unint64_t)a4
+- (void)_resolveRefinementForSearch:(id)search atIndex:(unint64_t)index
 {
-  v5 = [SearchInfo searchInfoWithSearchInfo:a3 refinedIndex:a4];
+  v5 = [SearchInfo searchInfoWithSearchInfo:search refinedIndex:index];
   if (v5)
   {
     [(SearchManager *)self reset];
@@ -243,18 +243,18 @@
   }
 }
 
-- (void)_searchForHistoryItem:(id)a3 completedQuery:(id)a4 traits:(id)a5 source:(int)a6 isRedoOrAutoRedoSearch:(BOOL)a7
+- (void)_searchForHistoryItem:(id)item completedQuery:(id)query traits:(id)traits source:(int)source isRedoOrAutoRedoSearch:(BOOL)search
 {
-  v8 = *&a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  v8 = *&source;
+  itemCopy = item;
+  queryCopy = query;
+  traitsCopy = traits;
   v48 = 0;
   v49 = &v48;
   v50 = 0x2020000000;
   v51 = 0;
   objc_opt_class();
-  v15 = v12;
+  v15 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v16 = v15;
@@ -267,28 +267,28 @@
 
   v17 = v16;
 
-  v18 = [v17 historyEntry];
+  historyEntry = [v17 historyEntry];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_1005ECB68;
   v42[3] = &unk_1016238D0;
   v45 = &v48;
   v46 = v8;
-  v47 = a7;
-  v43 = v14;
-  v44 = self;
+  searchCopy = search;
+  v43 = traitsCopy;
+  selfCopy = self;
   v33 = _NSConcreteStackBlock;
   v34 = 3221225472;
   v35 = sub_1005ECC24;
   v36 = &unk_101623918;
   v40 = &v48;
-  v37 = self;
+  selfCopy2 = self;
   v19 = v43;
   v38 = v19;
   v41 = v8;
-  v20 = v13;
+  v20 = queryCopy;
   v39 = v20;
-  [v18 ifSearch:v42 ifRoute:&stru_1016238F0 ifPlaceDisplay:&v33 ifTransitLineItem:&stru_101623938];
+  [historyEntry ifSearch:v42 ifRoute:&stru_1016238F0 ifPlaceDisplay:&v33 ifTransitLineItem:&stru_101623938];
 
   objc_opt_class();
   v21 = v15;
@@ -307,8 +307,8 @@
   if (v23)
   {
     *(v49 + 24) = 1;
-    v24 = [v23 searchResult];
-    v52 = v24;
+    searchResult = [v23 searchResult];
+    v52 = searchResult;
     v25 = [NSArray arrayWithObjects:&v52 count:1];
     [(SearchManager *)self _searchForSearchResults:v25 completedQuery:v20];
   }
@@ -350,61 +350,61 @@
   if (v31)
   {
     *(v49 + 24) = 1;
-    v32 = [v31 address];
-    [(SearchManager *)self _searchForAddressString:v32 label:0 defaultSearchResultType:0 traits:v19 source:v8];
+    address = [v31 address];
+    [(SearchManager *)self _searchForAddressString:address label:0 defaultSearchResultType:0 traits:v19 source:v8];
   }
 
   _Block_object_dispose(&v48, 8);
 }
 
-- (void)_searchForSearchResults:(id)a3 completedQuery:(id)a4
+- (void)_searchForSearchResults:(id)results completedQuery:(id)query
 {
-  v6 = a4;
-  v7 = [SearchInfo searchInfoWithResults:a3];
-  [(SearchManager *)self _searchForSearchInfo:v7 completedQuery:v6];
+  queryCopy = query;
+  v7 = [SearchInfo searchInfoWithResults:results];
+  [(SearchManager *)self _searchForSearchInfo:v7 completedQuery:queryCopy];
 }
 
-- (void)_searchForSearchInfo:(id)a3 completedQuery:(id)a4
+- (void)_searchForSearchInfo:(id)info completedQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  infoCopy = info;
+  queryCopy = query;
+  v8 = queryCopy;
+  if (!queryCopy)
   {
-    v9 = [v6 selectedResult];
-    v10 = v9;
-    if (v9)
+    selectedResult = [infoCopy selectedResult];
+    v10 = selectedResult;
+    if (selectedResult)
     {
-      v11 = v9;
+      firstObject = selectedResult;
     }
 
     else
     {
-      v12 = [v6 results];
-      v11 = [v12 firstObject];
+      results = [infoCopy results];
+      firstObject = [results firstObject];
     }
 
-    v13 = [v11 title];
+    title = [firstObject title];
 
-    if (v13)
+    if (title)
     {
-      [v11 title];
+      [firstObject title];
     }
 
     else
     {
-      [v11 singleLineAddress];
+      [firstObject singleLineAddress];
     }
     v8 = ;
   }
 
-  if (([v6 shouldPreserveResults] & 1) == 0)
+  if (([infoCopy shouldPreserveResults] & 1) == 0)
   {
     [(SearchManager *)self reset];
     [(SearchManager *)self setActiveSearchTicket:0];
-    v14 = [(SearchManager *)self delegate];
-    v15 = [(SearchManager *)self searchFieldItem];
-    [v14 searchManager:self willProcessSearchFieldItem:v15];
+    delegate = [(SearchManager *)self delegate];
+    searchFieldItem = [(SearchManager *)self searchFieldItem];
+    [delegate searchManager:self willProcessSearchFieldItem:searchFieldItem];
   }
 
   v17[0] = _NSConcreteStackBlock;
@@ -412,52 +412,52 @@
   v17[2] = sub_1005ED02C;
   v17[3] = &unk_101661A90;
   v17[4] = self;
-  v18 = v6;
-  v16 = v6;
+  v18 = infoCopy;
+  v16 = infoCopy;
   dispatch_async(&_dispatch_main_q, v17);
 }
 
-- (void)_searchForAddress:(id)a3 completedQuery:(id)a4 traits:(id)a5 source:(int)a6
+- (void)_searchForAddress:(id)address completedQuery:(id)query traits:(id)traits source:(int)source
 {
-  v19 = a5;
-  v9 = a3;
-  v10 = [v9 contact];
-  v11 = [v10 _maps_mapsData];
+  traitsCopy = traits;
+  addressCopy = address;
+  contact = [addressCopy contact];
+  _maps_mapsData = [contact _maps_mapsData];
 
-  v12 = [(SearchManager *)self delegate];
-  v13 = [(SearchManager *)self searchFieldItem];
-  [v12 searchManager:self willProcessSearchFieldItem:v13];
+  delegate = [(SearchManager *)self delegate];
+  searchFieldItem = [(SearchManager *)self searchFieldItem];
+  [delegate searchManager:self willProcessSearchFieldItem:searchFieldItem];
 
-  if (v11)
+  if (_maps_mapsData)
   {
-    v14 = [v9 contact];
-    v15 = [v14 _maps_mapsData];
-    v16 = [v9 compositeName];
+    contact2 = [addressCopy contact];
+    _maps_mapsData2 = [contact2 _maps_mapsData];
+    compositeName = [addressCopy compositeName];
 
-    v17 = [MKMapItem ticketForMapsDataString:v15 name:v16];
+    v17 = [MKMapItem ticketForMapsDataString:_maps_mapsData2 name:compositeName];
 
     [(SearchManager *)self _submitSearchTicket:v17 defaultSearchResultType:0 saveToHistory:0 origin:0];
   }
 
   else
   {
-    v17 = [[GEOAddress alloc] initWithAddressBookAddress:v9];
-    LODWORD(v18) = a6;
-    [(SearchManager *)self _forwardGeocodeAddress:v17 addressString:0 addressBookAddress:v9 label:0 defaultSearchResultType:0 traits:v19 source:v18];
+    v17 = [[GEOAddress alloc] initWithAddressBookAddress:addressCopy];
+    LODWORD(v18) = source;
+    [(SearchManager *)self _forwardGeocodeAddress:v17 addressString:0 addressBookAddress:addressCopy label:0 defaultSearchResultType:0 traits:traitsCopy source:v18];
   }
 }
 
-- (void)_forwardGeocodeAddress:(id)a3 addressString:(id)a4 addressBookAddress:(id)a5 label:(id)a6 defaultSearchResultType:(unsigned int)a7 traits:(id)a8 source:(int)a9
+- (void)_forwardGeocodeAddress:(id)address addressString:(id)string addressBookAddress:(id)bookAddress label:(id)label defaultSearchResultType:(unsigned int)type traits:(id)traits source:(int)source
 {
-  v16 = a3;
-  v35 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  addressCopy = address;
+  stringCopy = string;
+  bookAddressCopy = bookAddress;
+  labelCopy = label;
+  traitsCopy = traits;
   [(SearchManager *)self reset];
-  v20 = [(SearchManager *)self delegate];
-  v21 = [(SearchManager *)self searchFieldItem];
-  [v20 searchManager:self willProcessSearchFieldItem:v21];
+  delegate = [(SearchManager *)self delegate];
+  searchFieldItem = [(SearchManager *)self searchFieldItem];
+  [delegate searchManager:self willProcessSearchFieldItem:searchFieldItem];
 
   v50 = 0;
   v51 = &v50;
@@ -472,30 +472,30 @@
   v47 = &v50;
   v48 = a2;
   v44[4] = self;
-  v22 = v17;
+  v22 = bookAddressCopy;
   v45 = v22;
-  v49 = a7;
-  v23 = v18;
+  typeCopy = type;
+  v23 = labelCopy;
   v46 = v23;
   v24 = objc_retainBlock(v44);
-  [v19 setSource:a9];
+  [traitsCopy setSource:source];
   if (!v22 || ![v22 isValid] || !objc_msgSend(v22, "isMeCard"))
   {
-    if (v16)
+    if (addressCopy)
     {
       v29 = +[MKMapService sharedService];
-      v30 = [v29 ticketForForwardGeocodeAddress:v16 traits:v19];
+      v30 = [v29 ticketForForwardGeocodeAddress:addressCopy traits:traitsCopy];
     }
 
     else
     {
-      if (!v35 || ![v35 length])
+      if (!stringCopy || ![stringCopy length])
       {
         goto LABEL_9;
       }
 
       v29 = +[MKMapService sharedService];
-      v30 = [v29 ticketForForwardGeocodeString:v35 traits:v19];
+      v30 = [v29 ticketForForwardGeocodeString:stringCopy traits:traitsCopy];
     }
 
     v31 = v51[5];
@@ -520,11 +520,11 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v33 = v16;
+  v33 = addressCopy;
   v34 = +[AddressBookManager sharedManager];
-  v25 = [v22 addressValue];
-  v26 = [v25 identifier];
-  v27 = [v34 addressForIdentifier:v26];
+  addressValue = [v22 addressValue];
+  identifier = [addressValue identifier];
+  v27 = [v34 addressForIdentifier:identifier];
 
   if (v27)
   {
@@ -545,116 +545,116 @@ LABEL_9:
   v41 = &v50;
   v42 = a2;
   v39[4] = self;
-  v43 = a7;
+  typeCopy2 = type;
   v22 = v22;
   v40 = v22;
   [v22 forwardGeocodeAddress:v39];
 
-  v16 = v33;
+  addressCopy = v33;
 LABEL_10:
 
   _Block_object_dispose(&v50, 8);
 }
 
-- (void)_searchForMapKitHandle:(id)a3 traits:(id)a4 source:(int)a5
+- (void)_searchForMapKitHandle:(id)handle traits:(id)traits source:(int)source
 {
-  v5 = *&a5;
-  v8 = a3;
-  [a4 setSource:v5];
+  v5 = *&source;
+  handleCopy = handle;
+  [traits setSource:v5];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1005EDB1C;
   v9[3] = &unk_101630438;
   v9[4] = self;
-  [MKMapItem _mapItemFromHandle:v8 completionHandler:v9];
+  [MKMapItem _mapItemFromHandle:handleCopy completionHandler:v9];
 }
 
-- (void)_searchForChildPlace:(id)a3 traits:(id)a4 source:(int)a5
+- (void)_searchForChildPlace:(id)place traits:(id)traits source:(int)source
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = a3;
-  [v8 setSource:v5];
+  v5 = *&source;
+  traitsCopy = traits;
+  placeCopy = place;
+  [traitsCopy setSource:v5];
   v10 = +[MKMapService sharedService];
-  v11 = [v10 ticketForChildPlace:v9 traits:v8];
+  v11 = [v10 ticketForChildPlace:placeCopy traits:traitsCopy];
 
   [(SearchManager *)self _submitTicket:v11 defaultSearchResultType:0 origin:((v5 - 6) & 0xFFFFFFF9) == 0];
 }
 
-- (void)_searchForExternalURLQuery:(id)a3 coordinate:(CLLocationCoordinate2D)a4 muid:(unint64_t)a5 resultProviderId:(int)a6 contentProvider:(id)a7 traits:(id)a8 source:(int)a9
+- (void)_searchForExternalURLQuery:(id)query coordinate:(CLLocationCoordinate2D)coordinate muid:(unint64_t)muid resultProviderId:(int)id contentProvider:(id)provider traits:(id)traits source:(int)source
 {
-  v9 = *&a9;
-  v11 = *&a6;
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v17 = a8;
-  v18 = a7;
-  v19 = a3;
+  v9 = *&source;
+  v11 = *&id;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  traitsCopy = traits;
+  providerCopy = provider;
+  queryCopy = query;
   v20 = +[MKMapService sharedService];
-  v21 = [[MKMapItemIdentifier alloc] initWithMUID:a5 resultProviderID:v11 coordinate:{latitude, longitude}];
-  v22 = [v20 ticketForURLQuery:v19 identifier:v21 resultProviderId:v11 contentProvider:v18 traits:v17 source:v9];
+  v21 = [[MKMapItemIdentifier alloc] initWithMUID:muid resultProviderID:v11 coordinate:{latitude, longitude}];
+  v22 = [v20 ticketForURLQuery:queryCopy identifier:v21 resultProviderId:v11 contentProvider:providerCopy traits:traitsCopy source:v9];
 
-  LODWORD(v9) = [v17 navigating];
+  LODWORD(v9) = [traitsCopy navigating];
   [(SearchManager *)self _submitSearchTicket:v22 defaultSearchResultType:0 saveToHistory:v9 ^ 1 origin:0];
 }
 
-- (void)_searchForCompletion:(id)a3 traits:(id)a4 source:(int)a5
+- (void)_searchForCompletion:(id)completion traits:(id)traits source:(int)source
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = a3;
-  [v8 setSource:v5];
+  v5 = *&source;
+  traitsCopy = traits;
+  completionCopy = completion;
+  [traitsCopy setSource:v5];
   v10 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-  v16 = [v10 updatedTraitsForCurrentGarageState:v8];
+  v16 = [v10 updatedTraitsForCurrentGarageState:traitsCopy];
 
   v11 = +[MKMapService sharedService];
-  v12 = [v9 queryLine];
-  v13 = [v9 geoCompletionItem];
-  v14 = [v11 ticketForSearchQuery:v12 completionItem:v13 traits:v16 searchSessionData:self->_searchSessionData];
+  queryLine = [completionCopy queryLine];
+  geoCompletionItem = [completionCopy geoCompletionItem];
+  v14 = [v11 ticketForSearchQuery:queryLine completionItem:geoCompletionItem traits:v16 searchSessionData:self->_searchSessionData];
 
   LODWORD(v11) = [v16 navigating];
-  v15 = [v9 title];
+  title = [completionCopy title];
 
-  [(SearchManager *)self _submitSearchTicket:v14 defaultSearchResultType:0 saveToHistory:v11 ^ 1 origin:((v5 - 6) & 0xFFFFFFF9) == 0 completionTitle:v15];
+  [(SearchManager *)self _submitSearchTicket:v14 defaultSearchResultType:0 saveToHistory:v11 ^ 1 origin:((v5 - 6) & 0xFFFFFFF9) == 0 completionTitle:title];
 }
 
-- (void)_searchForPlaceCategoryItem:(id)a3 traits:(id)a4 source:(int)a5
+- (void)_searchForPlaceCategoryItem:(id)item traits:(id)traits source:(int)source
 {
-  v8 = a4;
-  v9 = a3;
+  traitsCopy = traits;
+  itemCopy = item;
   v10 = +[MKMapService sharedService];
-  v11 = [v9 searchCategory];
-  v12 = [v9 parentMuid];
+  searchCategory = [itemCopy searchCategory];
+  parentMuid = [itemCopy parentMuid];
 
-  v13 = [v10 ticketForPlaceLookupWithSearchCategory:v11 parentMuid:v12 traits:v8];
+  v13 = [v10 ticketForPlaceLookupWithSearchCategory:searchCategory parentMuid:parentMuid traits:traitsCopy];
 
-  [(SearchManager *)self _submitCategorySearchTicket:v13 defaultSearchResultType:0 origin:((a5 - 6) & 0xFFFFFFF9) == 0];
+  [(SearchManager *)self _submitCategorySearchTicket:v13 defaultSearchResultType:0 origin:((source - 6) & 0xFFFFFFF9) == 0];
 }
 
-- (void)_searchForVenueCategoryItem:(id)a3 traits:(id)a4 source:(int)a5
+- (void)_searchForVenueCategoryItem:(id)item traits:(id)traits source:(int)source
 {
-  v8 = a4;
-  v9 = a3;
+  traitsCopy = traits;
+  itemCopy = item;
   v10 = +[MKMapService sharedService];
-  v11 = [v9 searchCategory];
-  v12 = [v9 venueIdentifier];
+  searchCategory = [itemCopy searchCategory];
+  venueIdentifier = [itemCopy venueIdentifier];
 
-  v13 = [v10 ticketForSearchCategory:v11 venueIdentifier:v12 maxResults:+[MKMapService venuesCategorySearchMaxResults](MKMapService traits:{"venuesCategorySearchMaxResults"), v8}];
+  v13 = [v10 ticketForSearchCategory:searchCategory venueIdentifier:venueIdentifier maxResults:+[MKMapService venuesCategorySearchMaxResults](MKMapService traits:{"venuesCategorySearchMaxResults"), traitsCopy}];
 
-  [(SearchManager *)self _submitCategorySearchTicket:v13 defaultSearchResultType:0 origin:((a5 - 6) & 0xFFFFFFF9) == 0];
+  [(SearchManager *)self _submitCategorySearchTicket:v13 defaultSearchResultType:0 origin:((source - 6) & 0xFFFFFFF9) == 0];
 }
 
-- (void)_submitTicketForSearchForCategory:(id)a3 searchQuery:(id)a4 completionItem:(id)a5 traits:(id)a6 defaultSearchResultType:(unsigned int)a7 source:(int)a8 maxResults:(unsigned int)a9
+- (void)_submitTicketForSearchForCategory:(id)category searchQuery:(id)query completionItem:(id)item traits:(id)traits defaultSearchResultType:(unsigned int)type source:(int)source maxResults:(unsigned int)results
 {
-  v9 = *&a8;
-  v34 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a3;
-  if ([v15 navigating])
+  v9 = *&source;
+  queryCopy = query;
+  itemCopy = item;
+  traitsCopy = traits;
+  categoryCopy = category;
+  if ([traitsCopy navigating])
   {
     v17 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-    v33 = [v17 updatedTraitsForCurrentGarageState:v15];
+    v33 = [v17 updatedTraitsForCurrentGarageState:traitsCopy];
 
     v18 = [NavigationRouteHistoryInfoProvider alloc];
     v19 = +[MNNavigationService sharedService];
@@ -662,111 +662,111 @@ LABEL_10:
 
     [v33 setSource:v9];
     v30 = +[MKMapService sharedService];
-    v21 = [v14 geoCompletionItem];
-    v22 = [(NavigationRouteHistoryInfoProvider *)v20 originalWaypointRouteRepresentation];
-    v23 = [(NavigationRouteHistoryInfoProvider *)v20 legacyRouteRepresentation];
+    geoCompletionItem = [itemCopy geoCompletionItem];
+    originalWaypointRouteRepresentation = [(NavigationRouteHistoryInfoProvider *)v20 originalWaypointRouteRepresentation];
+    legacyRouteRepresentation = [(NavigationRouteHistoryInfoProvider *)v20 legacyRouteRepresentation];
     [(NavigationRouteHistoryInfoProvider *)v20 sessionState];
     v32 = v9;
     v24 = v9 = self;
     [(NavigationRouteHistoryInfoProvider *)v20 routeId];
-    v25 = v31 = v14;
-    v26 = [(NavigationRouteHistoryInfoProvider *)v20 routeAttributes];
+    v25 = v31 = itemCopy;
+    routeAttributes = [(NavigationRouteHistoryInfoProvider *)v20 routeAttributes];
     LODWORD(v29) = +[MKMapService searchMaxResults];
-    v27 = v23;
-    v28 = [v30 ticketForSearchAlongRouteWithCategory:v16 searchQuery:v34 completionItem:v21 originalWaypointRouteData:v22 zilchData:v23 sessionState:v24 routeId:v25 routeAttributes:v26 maxResults:v29 traits:v33 searchSessionData:v9->_searchSessionData];
+    v27 = legacyRouteRepresentation;
+    v28 = [v30 ticketForSearchAlongRouteWithCategory:categoryCopy searchQuery:queryCopy completionItem:geoCompletionItem originalWaypointRouteData:originalWaypointRouteRepresentation zilchData:legacyRouteRepresentation sessionState:v24 routeId:v25 routeAttributes:routeAttributes maxResults:v29 traits:v33 searchSessionData:v9->_searchSessionData];
 
-    v14 = v31;
+    itemCopy = v31;
     self = v9;
     LODWORD(v9) = v32;
 
-    v16 = v30;
-    v15 = v33;
+    categoryCopy = v30;
+    traitsCopy = v33;
   }
 
   else
   {
     v20 = +[MKMapService sharedService];
-    v28 = [(NavigationRouteHistoryInfoProvider *)v20 ticketForCategory:v16 maxResults:a9 traits:v15 searchSessionData:self->_searchSessionData];
+    v28 = [(NavigationRouteHistoryInfoProvider *)v20 ticketForCategory:categoryCopy maxResults:results traits:traitsCopy searchSessionData:self->_searchSessionData];
   }
 
   [(SearchManager *)self _submitCategorySearchTicket:v28 defaultSearchResultType:0 origin:((v9 - 6) & 0xFFFFFFF9) == 0];
 }
 
-- (void)_searchForCategory:(id)a3 traits:(id)a4 defaultSearchResultType:(unsigned int)a5 source:(int)a6 maxResults:(unsigned int)a7
+- (void)_searchForCategory:(id)category traits:(id)traits defaultSearchResultType:(unsigned int)type source:(int)source maxResults:(unsigned int)results
 {
-  v8 = *&a6;
-  v9 = *&a5;
-  v12 = a4;
-  v13 = a3;
+  v8 = *&source;
+  v9 = *&type;
+  traitsCopy = traits;
+  categoryCopy = category;
   [(SearchManager *)self reset];
-  [v12 setSource:v8];
-  v14 = [v12 searchOriginationType];
-  if (v14 <= 3)
+  [traitsCopy setSource:v8];
+  searchOriginationType = [traitsCopy searchOriginationType];
+  if (searchOriginationType <= 3)
   {
-    v15 = 1u >> (v14 & 0xF);
-    [v12 setSupportDirectionIntentSearch:v15];
-    [v12 setSupportUnresolvedDirectionIntent:v15];
-    [v12 setSupportStructuredRapAffordance:v15];
+    v15 = 1u >> (searchOriginationType & 0xF);
+    [traitsCopy setSupportDirectionIntentSearch:v15];
+    [traitsCopy setSupportUnresolvedDirectionIntent:v15];
+    [traitsCopy setSupportStructuredRapAffordance:v15];
   }
 
   v16 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-  v18 = [v16 updatedTraitsForCurrentGarageState:v12];
+  v18 = [v16 updatedTraitsForCurrentGarageState:traitsCopy];
 
-  LODWORD(v17) = a7;
-  [(SearchManager *)self _submitTicketForSearchForCategory:v13 searchQuery:0 completionItem:0 traits:v18 defaultSearchResultType:v9 source:v8 maxResults:v17];
+  LODWORD(v17) = results;
+  [(SearchManager *)self _submitTicketForSearchForCategory:categoryCopy searchQuery:0 completionItem:0 traits:v18 defaultSearchResultType:v9 source:v8 maxResults:v17];
 }
 
-- (void)_searchForSuggestion:(id)a3 traits:(id)a4 source:(int)a5
+- (void)_searchForSuggestion:(id)suggestion traits:(id)traits source:(int)source
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = a3;
+  v5 = *&source;
+  traitsCopy = traits;
+  suggestionCopy = suggestion;
   [(SearchManager *)self reset];
-  [v8 setSource:v5];
+  [traitsCopy setSource:v5];
   v10 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-  v13 = [v10 updatedTraitsForCurrentGarageState:v8];
+  v13 = [v10 updatedTraitsForCurrentGarageState:traitsCopy];
 
   v11 = +[MKMapService sharedService];
-  v12 = [v11 ticketForSearchQuery:&stru_1016631F0 completionItem:0 relatedSearchSuggestion:v9 maxResults:+[MKMapService searchMaxResults](MKMapService traits:"searchMaxResults") searchSessionData:{v13, self->_searchSessionData}];
+  v12 = [v11 ticketForSearchQuery:&stru_1016631F0 completionItem:0 relatedSearchSuggestion:suggestionCopy maxResults:+[MKMapService searchMaxResults](MKMapService traits:"searchMaxResults") searchSessionData:{v13, self->_searchSessionData}];
 
   [(SearchManager *)self _submitCategorySearchTicket:v12 defaultSearchResultType:0 origin:((v5 - 6) & 0xFFFFFFF9) == 0];
 }
 
-- (void)_searchForString:(id)a3 traits:(id)a4 defaultSearchResultType:(unsigned int)a5 completedQuery:(id)a6 retainedSearchMetadata:(id)a7 source:(int)a8
+- (void)_searchForString:(id)string traits:(id)traits defaultSearchResultType:(unsigned int)type completedQuery:(id)query retainedSearchMetadata:(id)metadata source:(int)source
 {
-  v8 = *&a8;
-  v12 = a4;
-  v13 = a7;
-  v14 = a3;
-  [v12 setSource:v8];
-  v15 = [v12 navigating];
-  v16 = [v12 searchOriginationType];
-  if (v16 <= 3)
+  v8 = *&source;
+  traitsCopy = traits;
+  metadataCopy = metadata;
+  stringCopy = string;
+  [traitsCopy setSource:v8];
+  navigating = [traitsCopy navigating];
+  searchOriginationType = [traitsCopy searchOriginationType];
+  if (searchOriginationType <= 3)
   {
-    v17 = 1u >> (v16 & 0xF);
-    [v12 setSupportDirectionIntentSearch:v17];
-    [v12 setSupportUnresolvedDirectionIntent:v17];
-    [v12 setSupportStructuredRapAffordance:v17];
+    v17 = 1u >> (searchOriginationType & 0xF);
+    [traitsCopy setSupportDirectionIntentSearch:v17];
+    [traitsCopy setSupportUnresolvedDirectionIntent:v17];
+    [traitsCopy setSupportStructuredRapAffordance:v17];
   }
 
   v18 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-  v21 = [v18 updatedTraitsForCurrentGarageState:v12];
+  v21 = [v18 updatedTraitsForCurrentGarageState:traitsCopy];
 
   v19 = +[MKMapService sharedService];
-  v20 = [v19 ticketForSearchQuery:v14 completionItem:0 retainedSearch:v13 traits:v21 searchSessionData:self->_searchSessionData];
+  v20 = [v19 ticketForSearchQuery:stringCopy completionItem:0 retainedSearch:metadataCopy traits:v21 searchSessionData:self->_searchSessionData];
 
-  [(SearchManager *)self _submitSearchTicket:v20 defaultSearchResultType:0 saveToHistory:v15 ^ 1 origin:((v8 - 6) & 0xFFFFFFF9) == 0];
+  [(SearchManager *)self _submitSearchTicket:v20 defaultSearchResultType:0 saveToHistory:navigating ^ 1 origin:((v8 - 6) & 0xFFFFFFF9) == 0];
 }
 
-- (id)closestSearchResultOfType:(unsigned int)a3 fromSearchResults:(id)a4
+- (id)closestSearchResultOfType:(unsigned int)type fromSearchResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1005EEA38;
   v23[3] = &unk_101623830;
-  v24 = a3;
-  v6 = sub_1000282CC(v5, v23);
+  typeCopy = type;
+  v6 = sub_1000282CC(resultsCopy, v23);
   if ([v6 count])
   {
     v17 = 0;
@@ -778,9 +778,9 @@ LABEL_10:
     v7 = +[SearchResult currentLocationSearchResult];
     if ([v6 count])
     {
-      v8 = [v6 firstObject];
+      firstObject = [v6 firstObject];
       v9 = v18[5];
-      v18[5] = v8;
+      v18[5] = firstObject;
 
       v16[0] = 0;
       v16[1] = v16;
@@ -811,52 +811,52 @@ LABEL_10:
   return v10;
 }
 
-- (id)orderedSearchResults:(id)a3 itemsToFrame:(id)a4
+- (id)orderedSearchResults:(id)results itemsToFrame:(id)frame
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
+  frameCopy = frame;
+  v7 = [results mutableCopy];
   while (1)
   {
-    if ([v6 count] == 4 || objc_msgSend(v6, "count") == 4)
+    if ([frameCopy count] == 4 || objc_msgSend(frameCopy, "count") == 4)
     {
-      v12 = v6;
+      v12 = frameCopy;
       goto LABEL_26;
     }
 
     v8 = [(SearchManager *)self closestSearchResultOfType:1 fromSearchResults:v7];
-    if (v8 && ([v6 containsObject:v8] & 1) == 0)
+    if (v8 && ([frameCopy containsObject:v8] & 1) == 0)
     {
       [v7 removeObject:v8];
-      [v6 addObject:v8];
+      [frameCopy addObject:v8];
     }
 
-    if ([v6 count] == 4)
+    if ([frameCopy count] == 4)
     {
-      v13 = v6;
+      v13 = frameCopy;
       goto LABEL_25;
     }
 
     v9 = [(SearchManager *)self closestSearchResultOfType:2 fromSearchResults:v7];
-    if (v9 && ([v6 containsObject:v9] & 1) == 0)
+    if (v9 && ([frameCopy containsObject:v9] & 1) == 0)
     {
       [v7 removeObject:v9];
-      [v6 addObject:v9];
+      [frameCopy addObject:v9];
     }
 
-    if ([v6 count] == 4)
+    if ([frameCopy count] == 4)
     {
-      v14 = v6;
+      v14 = frameCopy;
       goto LABEL_24;
     }
 
     v10 = [(SearchManager *)self closestSearchResultOfType:3 fromSearchResults:v7];
-    if (v10 && ([v6 containsObject:v10] & 1) == 0)
+    if (v10 && ([frameCopy containsObject:v10] & 1) == 0)
     {
       [v7 removeObject:v10];
-      [v6 addObject:v10];
+      [frameCopy addObject:v10];
     }
 
-    if ([v6 count] == 4)
+    if ([frameCopy count] == 4)
     {
       break;
     }
@@ -864,54 +864,54 @@ LABEL_10:
     v11 = [(SearchManager *)self closestSearchResultOfType:0 fromSearchResults:v7];
     if (v11)
     {
-      if (([v6 containsObject:v11] & 1) == 0)
+      if (([frameCopy containsObject:v11] & 1) == 0)
       {
         [v7 removeObject:v11];
-        [v6 addObject:v11];
+        [frameCopy addObject:v11];
       }
     }
   }
 
-  v15 = v6;
+  v15 = frameCopy;
 
 LABEL_24:
 LABEL_25:
 
 LABEL_26:
 
-  return v6;
+  return frameCopy;
 }
 
-- (id)correctedSearchResultsFrom:(id)a3
+- (id)correctedSearchResultsFrom:(id)from
 {
-  v3 = a3;
-  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = sub_1000282CC(v3, &stru_101623790);
+  fromCopy = from;
+  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(fromCopy, "count")}];
+  v5 = sub_1000282CC(fromCopy, &stru_101623790);
   if ([v5 count])
   {
-    v6 = [v5 firstObject];
-    [v4 addObject:v6];
+    firstObject = [v5 firstObject];
+    [v4 addObject:firstObject];
   }
 
-  v7 = sub_1000282CC(v3, &stru_1016237B0);
+  v7 = sub_1000282CC(fromCopy, &stru_1016237B0);
   if ([v7 count])
   {
     [v4 addObjectsFromArray:v7];
   }
 
-  v8 = sub_1000282CC(v3, &stru_1016237D0);
+  v8 = sub_1000282CC(fromCopy, &stru_1016237D0);
   if ([v8 count])
   {
     [v4 addObjectsFromArray:v8];
   }
 
-  v9 = sub_1000282CC(v3, &stru_1016237F0);
+  v9 = sub_1000282CC(fromCopy, &stru_1016237F0);
   if ([v9 count])
   {
     [v4 addObjectsFromArray:v9];
   }
 
-  v10 = sub_1000282CC(v3, &stru_101623810);
+  v10 = sub_1000282CC(fromCopy, &stru_101623810);
   if ([v10 count])
   {
     [v4 addObjectsFromArray:v10];
@@ -920,18 +920,18 @@ LABEL_26:
   return v4;
 }
 
-- (void)_searchForContactAddressedForAutocompletePerson:(id)a3 searchResults:(id)a4 traits:(id)a5 source:(int)a6
+- (void)_searchForContactAddressedForAutocompletePerson:(id)person searchResults:(id)results traits:(id)traits source:(int)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  personCopy = person;
+  resultsCopy = results;
+  traitsCopy = traits;
   v12 = sub_100798AD4();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v9 contact];
-    v14 = [v13 identifier];
+    contact = [personCopy contact];
+    identifier = [contact identifier];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v14;
+    *(&buf + 4) = identifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Rev geo addresses for ContactIdentifier:%@", &buf, 0xCu);
   }
 
@@ -941,7 +941,7 @@ LABEL_26:
   v55 = 0x3032000000;
   v56 = sub_1005EC4D0;
   v57 = sub_1005EC4E0;
-  v58 = [v9 contact];
+  contact2 = [personCopy contact];
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -954,16 +954,16 @@ LABEL_26:
   v46[3] = sub_1005EC4D0;
   v46[4] = sub_1005EC4E0;
   v47 = 0;
-  if ([v10 count])
+  if ([resultsCopy count])
   {
-    v16 = [v10 firstObject];
-    v17 = [v16 mapItem];
+    firstObject = [resultsCopy firstObject];
+    mapItem = [firstObject mapItem];
     v18 = v49[5];
-    v49[5] = v17;
+    v49[5] = mapItem;
   }
 
   v19 = objc_alloc_init(CNPostalAddressFormatter);
-  v20 = [*(*(&buf + 1) + 40) postalAddresses];
+  postalAddresses = [*(*(&buf + 1) + 40) postalAddresses];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_1005EF3E0;
@@ -973,16 +973,16 @@ LABEL_26:
   v22 = v19;
   v38 = v22;
   p_buf = &buf;
-  v23 = v11;
+  v23 = traitsCopy;
   v44 = v46;
   v39 = v23;
-  v40 = self;
-  v24 = v9;
+  selfCopy = self;
+  v24 = personCopy;
   v41 = v24;
   v45 = &v48;
-  v25 = v10;
+  v25 = resultsCopy;
   v42 = v25;
-  [v20 enumerateObjectsUsingBlock:v36];
+  [postalAddresses enumerateObjectsUsingBlock:v36];
 
   objc_initWeak(&location, self);
   v26 = dispatch_get_global_queue(25, 0);
@@ -1008,21 +1008,21 @@ LABEL_26:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)_searchForAutocompletePerson:(id)a3 traits:(id)a4 source:(int)a5
+- (void)_searchForAutocompletePerson:(id)person traits:(id)traits source:(int)source
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&source;
+  personCopy = person;
+  traitsCopy = traits;
   [(SearchManager *)self reset];
-  v10 = [(SearchManager *)self delegate];
-  v11 = [(SearchManager *)self searchFieldItem];
-  [v10 searchManager:self willProcessSearchFieldItem:v11];
+  delegate = [(SearchManager *)self delegate];
+  searchFieldItem = [(SearchManager *)self searchFieldItem];
+  [delegate searchManager:self willProcessSearchFieldItem:searchFieldItem];
 
   v12 = objc_alloc_init(NSMutableArray);
   v13 = +[MapsOfflineUIHelper sharedHelper];
-  v14 = [v13 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v13 isUsingOfflineMaps];
 
-  if (v14)
+  if (isUsingOfflineMaps)
   {
     v15 = sub_100067540();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -1034,231 +1034,231 @@ LABEL_26:
     goto LABEL_7;
   }
 
-  v16 = [v8 handle];
+  handle = [personCopy handle];
 
-  if (!v16)
+  if (!handle)
   {
 LABEL_7:
-    [(SearchManager *)self _searchForContactAddressedForAutocompletePerson:v8 searchResults:v12 traits:v9 source:v5];
+    [(SearchManager *)self _searchForContactAddressedForAutocompletePerson:personCopy searchResults:v12 traits:traitsCopy source:v5];
     goto LABEL_8;
   }
 
   v17 = [_TtC4Maps33SearchFindMyFriendshipCoordinator alloc];
-  v18 = [v8 handle];
-  v19 = [v18 handle];
-  v20 = [v19 handleIdentifier];
-  v21 = [(SearchFindMyFriendshipCoordinator *)v17 initWith:v20];
+  handle2 = [personCopy handle];
+  v18Handle = [handle2 handle];
+  handleIdentifier = [v18Handle handleIdentifier];
+  v21 = [(SearchFindMyFriendshipCoordinator *)v17 initWith:handleIdentifier];
   searchFriendshipCoordinator = self->_searchFriendshipCoordinator;
   self->_searchFriendshipCoordinator = v21;
 
   v23 = self->_searchFriendshipCoordinator;
-  v24 = [v8 handle];
-  v25 = [v24 handle];
+  handle3 = [personCopy handle];
+  v24Handle = [handle3 handle];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1005F0230;
   v26[3] = &unk_101623678;
-  v27 = v8;
-  v28 = self;
+  v27 = personCopy;
+  selfCopy = self;
   v29 = v12;
-  v30 = v9;
+  v30 = traitsCopy;
   v31 = v5;
-  [(SearchFindMyFriendshipCoordinator *)v23 getLatestLocationsFor:v25 completion:v26];
+  [(SearchFindMyFriendshipCoordinator *)v23 getLatestLocationsFor:v24Handle completion:v26];
 
 LABEL_8:
 }
 
-- (void)searchForSearchFieldItem:(id)a3 traits:(id)a4 source:(int)a5 isRedoOrAutoRedoSearch:(BOOL)a6 searchSessionData:(id)a7
+- (void)searchForSearchFieldItem:(id)item traits:(id)traits source:(int)source isRedoOrAutoRedoSearch:(BOOL)search searchSessionData:(id)data
 {
-  v9 = *&a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v66 = [v12 address];
-  v65 = [v12 searchResult];
-  v69 = [v12 completion];
-  v73 = [v12 suggestion];
-  v72 = [v12 currentCategory];
-  v15 = [v12 historyItem];
-  v74 = [v12 externalURLQuery];
-  v71 = [v12 venueCategoryItem];
-  v70 = [v12 placeCategoryItem];
-  v68 = [v12 childPlace];
-  v67 = [v12 mapKitHandle];
-  v64 = [v12 addressString];
-  v63 = [v12 autocompletePerson];
-  [(SearchManager *)self setSearchFieldItem:v12];
-  objc_storeStrong(&self->_searchSessionData, a7);
+  v9 = *&source;
+  itemCopy = item;
+  traitsCopy = traits;
+  dataCopy = data;
+  address = [itemCopy address];
+  searchResult = [itemCopy searchResult];
+  completion = [itemCopy completion];
+  suggestion = [itemCopy suggestion];
+  currentCategory = [itemCopy currentCategory];
+  historyItem = [itemCopy historyItem];
+  externalURLQuery = [itemCopy externalURLQuery];
+  venueCategoryItem = [itemCopy venueCategoryItem];
+  placeCategoryItem = [itemCopy placeCategoryItem];
+  childPlace = [itemCopy childPlace];
+  mapKitHandle = [itemCopy mapKitHandle];
+  addressString = [itemCopy addressString];
+  autocompletePerson = [itemCopy autocompletePerson];
+  [(SearchManager *)self setSearchFieldItem:itemCopy];
+  objc_storeStrong(&self->_searchSessionData, data);
   if (MapsFeature_IsEnabled_OptimizeSearchResultComponents())
   {
     v16 = sub_100067540();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = v9;
-      v18 = v14;
+      v18 = dataCopy;
       searchSessionData = self->_searchSessionData;
-      v20 = [v13 recentAutocompleteSessionData];
+      recentAutocompleteSessionData = [traitsCopy recentAutocompleteSessionData];
       *buf = 138412802;
-      v86 = v12;
+      v86 = itemCopy;
       v87 = 2112;
       v88 = searchSessionData;
-      v14 = v18;
+      dataCopy = v18;
       v9 = v17;
       v89 = 2112;
-      v90 = v20;
+      v90 = recentAutocompleteSessionData;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Performing optimized search request for: %@, searchSessionData: %@, acSessionData: %@", buf, 0x20u);
     }
 
-    [v13 setOptimizeSearchRequestComponents:1];
+    [traitsCopy setOptimizeSearchRequestComponents:1];
   }
 
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
     v21 = +[SearchSessionAnalyticsAggregator sharedAggregator];
-    v22 = [v21 collectedAnalytics];
-    [v13 setUserActionMetadata:v22];
+    collectedAnalytics = [v21 collectedAnalytics];
+    [traitsCopy setUserActionMetadata:collectedAnalytics];
 
     v23 = sub_100067540();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [v13 userActionMetadata];
+      userActionMetadata = [traitsCopy userActionMetadata];
       *buf = 138412546;
-      v86 = v12;
+      v86 = itemCopy;
       v87 = 2112;
-      v88 = v24;
+      v88 = userActionMetadata;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Adding search session user action data for %@. \nActions: %@", buf, 0x16u);
     }
   }
 
-  if (!v15)
+  if (!historyItem)
   {
-    v27 = v73;
-    if (v73)
+    v27 = suggestion;
+    if (suggestion)
     {
-      [(SearchManager *)self _searchForSuggestion:v73 traits:v13 source:v9];
-      v26 = v65;
+      [(SearchManager *)self _searchForSuggestion:suggestion traits:traitsCopy source:v9];
+      v26 = searchResult;
       goto LABEL_17;
     }
 
-    v26 = v65;
-    if (v74)
+    v26 = searchResult;
+    if (externalURLQuery)
     {
-      v28 = [v74 query];
-      [v74 coordinate];
+      query = [externalURLQuery query];
+      [externalURLQuery coordinate];
       v30 = v29;
       v32 = v31;
-      v33 = [v74 muid];
-      v34 = [v74 resultProviderId];
-      v35 = [v74 contentProvider];
-      v36 = v33;
+      muid = [externalURLQuery muid];
+      resultProviderId = [externalURLQuery resultProviderId];
+      contentProvider = [externalURLQuery contentProvider];
+      v36 = muid;
       v27 = 0;
-      [(SearchManager *)self _searchForExternalURLQuery:v28 coordinate:v36 muid:v34 resultProviderId:v35 contentProvider:v13 traits:1 source:v30, v32];
+      [(SearchManager *)self _searchForExternalURLQuery:query coordinate:v36 muid:resultProviderId resultProviderId:contentProvider contentProvider:traitsCopy traits:1 source:v30, v32];
 
       goto LABEL_17;
     }
 
-    if (v72)
+    if (currentCategory)
     {
-      v38 = [v13 navigating];
+      navigating = [traitsCopy navigating];
       v39 = +[MKMapService searchMaxResults];
-      if (v38)
+      if (navigating)
       {
         LODWORD(v61) = v39;
-        [(SearchManager *)self _submitTicketForSearchForCategory:v72 searchQuery:0 completionItem:0 traits:v13 defaultSearchResultType:0 source:v9 maxResults:v61];
+        [(SearchManager *)self _submitTicketForSearchForCategory:currentCategory searchQuery:0 completionItem:0 traits:traitsCopy defaultSearchResultType:0 source:v9 maxResults:v61];
       }
 
       else
       {
-        [(SearchManager *)self _searchForCategory:v72 traits:v13 defaultSearchResultType:0 source:v9 maxResults:v39];
+        [(SearchManager *)self _searchForCategory:currentCategory traits:traitsCopy defaultSearchResultType:0 source:v9 maxResults:v39];
       }
 
       goto LABEL_12;
     }
 
-    if (v71)
+    if (venueCategoryItem)
     {
-      if (![v71 isAutoCompleteCategory])
+      if (![venueCategoryItem isAutoCompleteCategory])
       {
-        [(SearchManager *)self _searchForVenueCategoryItem:v71 traits:v13 source:v9];
+        [(SearchManager *)self _searchForVenueCategoryItem:venueCategoryItem traits:traitsCopy source:v9];
         goto LABEL_17;
       }
 
-      v40 = [v71 searchCategory];
-      [(SearchManager *)self _searchForCategory:v40 traits:v13 defaultSearchResultType:0 source:v9 maxResults:+[MKMapService venuesCategorySearchMaxResults]];
+      searchCategory = [venueCategoryItem searchCategory];
+      [(SearchManager *)self _searchForCategory:searchCategory traits:traitsCopy defaultSearchResultType:0 source:v9 maxResults:+[MKMapService venuesCategorySearchMaxResults]];
       goto LABEL_24;
     }
 
-    if (v70)
+    if (placeCategoryItem)
     {
-      [(SearchManager *)self _searchForPlaceCategoryItem:v70 traits:v13 source:v9];
+      [(SearchManager *)self _searchForPlaceCategoryItem:placeCategoryItem traits:traitsCopy source:v9];
       goto LABEL_17;
     }
 
-    if (v69)
+    if (completion)
     {
-      if (![v13 navigating])
+      if (![traitsCopy navigating])
       {
-        [(SearchManager *)self _searchForCompletion:v69 traits:v13 source:v9];
+        [(SearchManager *)self _searchForCompletion:completion traits:traitsCopy source:v9];
         goto LABEL_17;
       }
 
-      v40 = [v69 queryLine];
+      searchCategory = [completion queryLine];
       LODWORD(v61) = +[MKMapService searchMaxResults];
-      [(SearchManager *)self _submitTicketForSearchForCategory:0 searchQuery:v40 completionItem:v69 traits:v13 defaultSearchResultType:0 source:v9 maxResults:v61];
+      [(SearchManager *)self _submitTicketForSearchForCategory:0 searchQuery:searchCategory completionItem:completion traits:traitsCopy defaultSearchResultType:0 source:v9 maxResults:v61];
 LABEL_24:
 
       goto LABEL_12;
     }
 
-    if (v68)
+    if (childPlace)
     {
-      [(SearchManager *)self _searchForChildPlace:v68 traits:v13 source:v9];
+      [(SearchManager *)self _searchForChildPlace:childPlace traits:traitsCopy source:v9];
       goto LABEL_17;
     }
 
-    if (v67)
+    if (mapKitHandle)
     {
-      [(SearchManager *)self _searchForMapKitHandle:v67 traits:v13 source:v9];
+      [(SearchManager *)self _searchForMapKitHandle:mapKitHandle traits:traitsCopy source:v9];
       goto LABEL_17;
     }
 
-    if (v65)
+    if (searchResult)
     {
       goto LABEL_17;
     }
 
-    v62 = v14;
-    if (v66)
+    v62 = dataCopy;
+    if (address)
     {
-      [(SearchManager *)self _searchForAddress:v66 traits:v13 source:v9];
+      [(SearchManager *)self _searchForAddress:address traits:traitsCopy source:v9];
     }
 
     else
     {
-      v41 = [v12 coreRecentContact];
+      coreRecentContact = [itemCopy coreRecentContact];
 
-      if (v41)
+      if (coreRecentContact)
       {
-        v42 = [v12 coreRecentContact];
-        v43 = [v42 address];
+        coreRecentContact2 = [itemCopy coreRecentContact];
+        address2 = [coreRecentContact2 address];
 
-        [(SearchManager *)self _searchForAddressString:v43 label:0 defaultSearchResultType:0 traits:v13 source:v9];
+        [(SearchManager *)self _searchForAddressString:address2 label:0 defaultSearchResultType:0 traits:traitsCopy source:v9];
       }
 
       else
       {
-        if (v64)
+        if (addressString)
         {
-          v44 = [v12 addressStringLabel];
-          [(SearchManager *)self _searchForAddressString:v64 label:v44 defaultSearchResultType:0 traits:v13 source:v9];
+          addressStringLabel = [itemCopy addressStringLabel];
+          [(SearchManager *)self _searchForAddressString:addressString label:addressStringLabel defaultSearchResultType:0 traits:traitsCopy source:v9];
 
           goto LABEL_45;
         }
 
-        if (!v63)
+        if (!autocompletePerson)
         {
-          v48 = [v12 searchString];
-          if (v48 || ([v13 searchImplicitFilterInfo], (v48 = objc_claimAutoreleasedReturnValue()) != 0))
+          searchString = [itemCopy searchString];
+          if (searchString || ([traitsCopy searchImplicitFilterInfo], (searchString = objc_claimAutoreleasedReturnValue()) != 0))
           {
           }
 
@@ -1266,76 +1266,76 @@ LABEL_24:
           {
             v26 = 0;
             v27 = 0;
-            if (([v12 isSpotlightSearch] & 1) == 0)
+            if (([itemCopy isSpotlightSearch] & 1) == 0)
             {
               goto LABEL_17;
             }
           }
 
-          v49 = [v12 searchString];
-          if ([v13 navigating])
+          searchString2 = [itemCopy searchString];
+          if ([traitsCopy navigating])
           {
             v50 = [NavigationRouteHistoryInfoProvider alloc];
             v51 = +[MNNavigationService sharedService];
             v52 = [(NavigationRouteHistoryInfoProvider *)v50 initWithNavigationService:v51];
 
             v53 = objc_alloc_init(GEOAddStopRouteInfo);
-            v54 = [(NavigationRouteHistoryInfoProvider *)v52 originalWaypointRouteRepresentation];
-            [v53 setOriginalWaypointRouteRepresentation:v54];
+            originalWaypointRouteRepresentation = [(NavigationRouteHistoryInfoProvider *)v52 originalWaypointRouteRepresentation];
+            [v53 setOriginalWaypointRouteRepresentation:originalWaypointRouteRepresentation];
 
-            v55 = [(NavigationRouteHistoryInfoProvider *)v52 legacyRouteRepresentation];
-            [v53 setZilchData:v55];
+            legacyRouteRepresentation = [(NavigationRouteHistoryInfoProvider *)v52 legacyRouteRepresentation];
+            [v53 setZilchData:legacyRouteRepresentation];
 
-            v56 = [(NavigationRouteHistoryInfoProvider *)v52 sessionState];
-            [v53 setSessionState:v56];
+            sessionState = [(NavigationRouteHistoryInfoProvider *)v52 sessionState];
+            [v53 setSessionState:sessionState];
 
-            v57 = [(NavigationRouteHistoryInfoProvider *)v52 routeId];
-            [v53 setRouteId:v57];
+            routeId = [(NavigationRouteHistoryInfoProvider *)v52 routeId];
+            [v53 setRouteId:routeId];
 
-            v58 = [(NavigationRouteHistoryInfoProvider *)v52 routeAttributes];
-            [v53 setRouteAttributes:v58];
+            routeAttributes = [(NavigationRouteHistoryInfoProvider *)v52 routeAttributes];
+            [v53 setRouteAttributes:routeAttributes];
 
-            [v13 setAddStopRouteInfo:v53];
+            [traitsCopy setAddStopRouteInfo:v53];
           }
 
-          v59 = [v12 completedQuery];
-          v60 = [v12 retainedSearchMetadata];
-          [(SearchManager *)self _searchForString:v49 traits:v13 defaultSearchResultType:0 completedQuery:v59 retainedSearchMetadata:v60 source:v9];
+          completedQuery = [itemCopy completedQuery];
+          retainedSearchMetadata = [itemCopy retainedSearchMetadata];
+          [(SearchManager *)self _searchForString:searchString2 traits:traitsCopy defaultSearchResultType:0 completedQuery:completedQuery retainedSearchMetadata:retainedSearchMetadata source:v9];
 
           goto LABEL_45;
         }
 
-        v45 = [v63 contact];
-        v46 = [v45 _maps_mapsData];
+        contact = [autocompletePerson contact];
+        _maps_mapsData = [contact _maps_mapsData];
 
-        if (!v46)
+        if (!_maps_mapsData)
         {
-          [(SearchManager *)self _searchForAutocompletePerson:v63 traits:v13 source:v9];
+          [(SearchManager *)self _searchForAutocompletePerson:autocompletePerson traits:traitsCopy source:v9];
           goto LABEL_45;
         }
 
-        v43 = [v63 contact];
-        v47 = [AddressBookAddress singleAddressForContact:v43];
-        [(SearchManager *)self _searchForAddress:v47 traits:v13 source:v9];
+        address2 = [autocompletePerson contact];
+        v47 = [AddressBookAddress singleAddressForContact:address2];
+        [(SearchManager *)self _searchForAddress:v47 traits:traitsCopy source:v9];
       }
     }
 
 LABEL_45:
-    v14 = v62;
-    v15 = 0;
+    dataCopy = v62;
+    historyItem = 0;
     goto LABEL_11;
   }
 
-  v25 = [v15 historyEntry];
+  historyEntry = [historyItem historyEntry];
   v80[0] = _NSConcreteStackBlock;
   v80[1] = 3221225472;
   v80[2] = sub_1005F12A0;
   v80[3] = &unk_1016235C0;
   v80[4] = self;
-  v81 = v15;
-  v82 = v13;
+  v81 = historyItem;
+  v82 = traitsCopy;
   v83 = v9;
-  v84 = a6;
+  searchCopy = search;
   v75[0] = _NSConcreteStackBlock;
   v75[1] = 3221225472;
   v75[2] = sub_1005F12BC;
@@ -1344,28 +1344,28 @@ LABEL_45:
   v76 = v81;
   v77 = v82;
   v78 = v9;
-  v79 = a6;
-  [v25 ifSearch:v80 ifRoute:&stru_1016235E0 ifPlaceDisplay:v75 ifTransitLineItem:&stru_101623628];
+  searchCopy2 = search;
+  [historyEntry ifSearch:v80 ifRoute:&stru_1016235E0 ifPlaceDisplay:v75 ifTransitLineItem:&stru_101623628];
 
 LABEL_11:
-  v26 = v65;
+  v26 = searchResult;
 LABEL_12:
-  v27 = v73;
+  v27 = suggestion;
 LABEL_17:
-  v37 = [v13 copy];
+  v37 = [traitsCopy copy];
   [(SearchManager *)self setActiveTraits:v37];
 }
 
-- (void)_submitSearchTicket:(id)a3 defaultSearchResultType:(unsigned int)a4 saveToHistory:(BOOL)a5 origin:(int64_t)a6 completionTitle:(id)a7
+- (void)_submitSearchTicket:(id)ticket defaultSearchResultType:(unsigned int)type saveToHistory:(BOOL)history origin:(int64_t)origin completionTitle:(id)title
 {
-  v12 = a3;
-  v13 = a7;
+  ticketCopy = ticket;
+  titleCopy = title;
   [(SearchManager *)self reset];
-  v14 = [(SearchManager *)self delegate];
-  v15 = [(SearchManager *)self searchFieldItem];
-  [v14 searchManager:self willProcessSearchFieldItem:v15];
+  delegate = [(SearchManager *)self delegate];
+  searchFieldItem = [(SearchManager *)self searchFieldItem];
+  [delegate searchManager:self willProcessSearchFieldItem:searchFieldItem];
 
-  [(SearchManager *)self setActiveSearchTicket:v12];
+  [(SearchManager *)self setActiveSearchTicket:ticketCopy];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
@@ -1384,13 +1384,13 @@ LABEL_17:
   v20[2] = sub_1005F15E4;
   v20[3] = &unk_101623598;
   objc_copyWeak(v23, &location);
-  v17 = v12;
+  v17 = ticketCopy;
   v21 = v17;
-  v24 = a4;
-  v25 = a5;
-  v18 = v13;
+  typeCopy = type;
+  historyCopy = history;
+  v18 = titleCopy;
   v22 = v18;
-  v23[1] = a6;
+  v23[1] = origin;
   [v17 submitWithRefinedHandler:v20 networkActivity:v16];
   v19 = +[NSNotificationCenter defaultCenter];
   [v19 postNotificationName:@"SearchManagerSearchForStringRequestSentNotification" object:0];
@@ -1401,15 +1401,15 @@ LABEL_17:
   _Block_object_dispose(v28, 8);
 }
 
-- (void)_submitTicket:(id)a3 defaultSearchResultType:(unsigned int)a4 origin:(int64_t)a5
+- (void)_submitTicket:(id)ticket defaultSearchResultType:(unsigned int)type origin:(int64_t)origin
 {
-  v7 = a3;
+  ticketCopy = ticket;
   [(SearchManager *)self reset];
-  v8 = [(SearchManager *)self delegate];
-  v9 = [(SearchManager *)self searchFieldItem];
-  [v8 searchManager:self willProcessSearchFieldItem:v9];
+  delegate = [(SearchManager *)self delegate];
+  searchFieldItem = [(SearchManager *)self searchFieldItem];
+  [delegate searchManager:self willProcessSearchFieldItem:searchFieldItem];
 
-  [(SearchManager *)self setActiveSearchTicket:v7];
+  [(SearchManager *)self setActiveSearchTicket:ticketCopy];
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -1426,10 +1426,10 @@ LABEL_17:
   v14 = 3221225472;
   v15 = sub_1005F1BB0;
   v16 = &unk_101623570;
-  v17 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = ticketCopy;
   v18 = v11;
-  v19 = a4;
+  typeCopy = type;
   [v11 submitWithHandler:&v13 networkActivity:v10];
   v12 = [NSNotificationCenter defaultCenter:v13];
   [v12 postNotificationName:@"SearchManagerSearchForStringRequestSentNotification" object:0];
@@ -1437,14 +1437,14 @@ LABEL_17:
   _Block_object_dispose(v21, 8);
 }
 
-- (void)_submitCategorySearchTicket:(id)a3 defaultSearchResultType:(unsigned int)a4 origin:(int64_t)a5
+- (void)_submitCategorySearchTicket:(id)ticket defaultSearchResultType:(unsigned int)type origin:(int64_t)origin
 {
-  v7 = a3;
-  v8 = [(SearchManager *)self delegate];
-  v9 = [(SearchManager *)self searchFieldItem];
-  [v8 searchManager:self willProcessSearchFieldItem:v9];
+  ticketCopy = ticket;
+  delegate = [(SearchManager *)self delegate];
+  searchFieldItem = [(SearchManager *)self searchFieldItem];
+  [delegate searchManager:self willProcessSearchFieldItem:searchFieldItem];
 
-  [(SearchManager *)self setActiveSearchTicket:v7];
+  [(SearchManager *)self setActiveSearchTicket:ticketCopy];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -1463,9 +1463,9 @@ LABEL_17:
   v13[2] = sub_1005F1F84;
   v13[3] = &unk_101623548;
   objc_copyWeak(&v15, &location);
-  v11 = v7;
+  v11 = ticketCopy;
   v14 = v11;
-  v16 = a4;
+  typeCopy = type;
   [v11 submitWithRefinedHandler:v13 networkActivity:v10];
   v12 = +[NSNotificationCenter defaultCenter];
   [v12 postNotificationName:@"SearchManagerSearchForStringRequestSentNotification" object:0];
@@ -1484,16 +1484,16 @@ LABEL_17:
   {
     v4 = +[NSThread callStackSymbols];
     searchSessionData = self->_searchSessionData;
-    v6 = [(SearchManager *)self searchFieldItem];
-    v7 = [(SearchManager *)self activeSearchTicket];
+    searchFieldItem = [(SearchManager *)self searchFieldItem];
+    activeSearchTicket = [(SearchManager *)self activeSearchTicket];
     v9 = 138413058;
     v10 = v4;
     v11 = 2112;
     v12 = searchSessionData;
     v13 = 2112;
-    v14 = v6;
+    v14 = searchFieldItem;
     v15 = 2112;
-    v16 = v7;
+    v16 = activeSearchTicket;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Reset is called. Call stack: %@. Search Session: %@, Search field: %@, active ticket: %@", &v9, 0x2Au);
   }
 
@@ -1512,12 +1512,12 @@ LABEL_17:
   v4 = sub_100067540();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(SearchManager *)self activeSearchTicket];
-    v6 = [(SearchManager *)self searchFieldItem];
+    activeSearchTicket = [(SearchManager *)self activeSearchTicket];
+    searchFieldItem = [(SearchManager *)self searchFieldItem];
     *buf = 138412546;
-    v9 = v5;
+    v9 = activeSearchTicket;
     v10 = 2112;
-    v11 = v6;
+    v11 = searchFieldItem;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Dealloc is called. %@: SearchFieldItem: %@: ", buf, 0x16u);
   }
 

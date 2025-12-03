@@ -1,21 +1,21 @@
 @interface UIPDFTextRangeWidget
-- (BOOL)hitTest:(CGPoint)a3 fixedPoint:(CGPoint *)a4 preceeds:(BOOL *)a5;
+- (BOOL)hitTest:(CGPoint)test fixedPoint:(CGPoint *)point preceeds:(BOOL *)preceeds;
 - (CGPoint)currentSelectionPointOnPage;
 - (CGPoint)initialSelectionPointOnPage;
-- (CGPoint)selectedPointFor:(CGPoint)a3;
+- (CGPoint)selectedPointFor:(CGPoint)for;
 - (CGPoint)viewOffset;
 - (CGRect)selectionRectangle;
 - (NSString)description;
 - (UIPDFTextRangeWidget)init;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)hide;
-- (void)layoutEndSelectionGrabber:(CGRect)a3 transform:(CGAffineTransform *)a4 width:(double)a5 extraHeight:(double)a6 unitSize:(CGSize)a7;
-- (void)layoutStartSelectionGrabber:(CGRect)a3 transform:(CGAffineTransform *)a4 width:(double)a5 extraHeight:(double)a6 unitSize:(CGSize)a7;
+- (void)layoutEndSelectionGrabber:(CGRect)grabber transform:(CGAffineTransform *)transform width:(double)width extraHeight:(double)height unitSize:(CGSize)size;
+- (void)layoutStartSelectionGrabber:(CGRect)grabber transform:(CGAffineTransform *)transform width:(double)width extraHeight:(double)height unitSize:(CGSize)size;
 - (void)layoutWidget;
 - (void)remove;
-- (void)setSelectedGrabber:(unint64_t)a3;
-- (void)setSelection:(id)a3;
+- (void)setSelectedGrabber:(unint64_t)grabber;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation UIPDFTextRangeWidget
@@ -49,15 +49,15 @@
     v2->_handleWidth = v6;
     [(CALayer *)v2->_startHandle setBounds:0.0, 0.0, v6, v6];
     [(CALayer *)v2->_startHandle setDelegate:v2];
-    v7 = [MEMORY[0x1E69794A0] layer];
-    v2->_startBar = v7;
-    [(CALayer *)v7 setBackgroundColor:v2->_grabberColor];
+    layer = [MEMORY[0x1E69794A0] layer];
+    v2->_startBar = layer;
+    [(CALayer *)layer setBackgroundColor:v2->_grabberColor];
     [(CALayer *)v2->_startSelectionGrabber addSublayer:v2->_startBar];
     [(CALayer *)v2->_startSelectionGrabber addSublayer:v2->_startHandle];
     v2->_endSelectionGrabber = [MEMORY[0x1E6979398] layer];
-    v8 = [MEMORY[0x1E6979398] layer];
-    v2->_endHandle = v8;
-    [(CALayer *)v8 setBounds:0.0, 0.0, v2->_handleWidth, v2->_handleHeight];
+    layer2 = [MEMORY[0x1E6979398] layer];
+    v2->_endHandle = layer2;
+    [(CALayer *)layer2 setBounds:0.0, 0.0, v2->_handleWidth, v2->_handleHeight];
     [(CALayer *)v2->_endHandle setDelegate:v2];
     if (v5)
     {
@@ -66,9 +66,9 @@
       [(CALayer *)v2->_endHandle setContentsScale:v9];
     }
 
-    v10 = [MEMORY[0x1E69794A0] layer];
-    v2->_endBar = v10;
-    [(CALayer *)v10 setBackgroundColor:v2->_grabberColor];
+    layer3 = [MEMORY[0x1E69794A0] layer];
+    v2->_endBar = layer3;
+    [(CALayer *)layer3 setBackgroundColor:v2->_grabberColor];
     [(CALayer *)v2->_endSelectionGrabber addSublayer:v2->_endBar];
     [(CALayer *)v2->_endSelectionGrabber addSublayer:v2->_endHandle];
     CGImageRelease(v4);
@@ -87,31 +87,31 @@
   [(UIPDFTextRangeWidget *)&v3 dealloc];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  [a3 bounds];
+  [layer bounds];
   grabberColor = self->_grabberColor;
 
-  CPCGInsetFillEllipseInRect(a4, grabberColor, v6, v7, v8, v9);
+  CPCGInsetFillEllipseInRect(context, grabberColor, v6, v7, v8, v9);
 }
 
-- (void)layoutStartSelectionGrabber:(CGRect)a3 transform:(CGAffineTransform *)a4 width:(double)a5 extraHeight:(double)a6 unitSize:(CGSize)a7
+- (void)layoutStartSelectionGrabber:(CGRect)grabber transform:(CGAffineTransform *)transform width:(double)width extraHeight:(double)height unitSize:(CGSize)size
 {
-  width = a7.width;
-  height = a3.size.height;
-  v12 = a3.size.width;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  v14 = [[(UIPDFPageView *)self->_pageView page:a3.origin.x] rotation];
-  v15 = *&a4->c;
-  *&v41.m11 = *&a4->a;
+  width = size.width;
+  height = grabber.size.height;
+  v12 = grabber.size.width;
+  x = grabber.origin.x;
+  y = grabber.origin.y;
+  rotation = [[(UIPDFPageView *)self->_pageView page:grabber.origin.x] rotation];
+  v15 = *&transform->c;
+  *&v41.m11 = *&transform->a;
   *&v41.m13 = v15;
-  *&v41.m21 = *&a4->tx;
+  *&v41.m21 = *&transform->tx;
   CPRotationDegreesFromTransform(&v41.m11);
   v17 = v16;
   [(UIPDFPageView *)self->_pageView convertRectFromPDFPageSpace:x, y, v12, height];
   [(CALayer *)[(UIPDFPageView *)self->_pageView effectsLayer] convertRect:[(UIView *)self->_pageView layer] fromLayer:v18, v19, v20, v21];
-  if (v14 == 180 || v14 == 0)
+  if (rotation == 180 || rotation == 0)
   {
     v27 = CGRectGetHeight(*&v22);
   }
@@ -122,13 +122,13 @@
   }
 
   v28 = v27;
-  v29 = v17 - v14;
-  [(UIPDFPageView *)self->_pageView convertPointFromPDFPageSpace:vaddq_f64(*&a4->tx, vaddq_f64(vmulq_n_f64(*&a4->a, x), vmulq_n_f64(*&a4->c, y)))];
+  v29 = v17 - rotation;
+  [(UIPDFPageView *)self->_pageView convertPointFromPDFPageSpace:vaddq_f64(*&transform->tx, vaddq_f64(vmulq_n_f64(*&transform->a, x), vmulq_n_f64(*&transform->c, y)))];
   [(CALayer *)[(UIPDFPageView *)self->_pageView effectsLayer] convertPoint:[(UIView *)self->_pageView layer] fromLayer:v30, v31];
   v33 = v32;
   v35 = v34;
   [(CALayer *)self->_startSelectionGrabber setAnchorPoint:0.5, 1.0];
-  [(CALayer *)self->_startSelectionGrabber setBounds:0.0, 0.0, a5, v28 + a6];
+  [(CALayer *)self->_startSelectionGrabber setBounds:0.0, 0.0, width, v28 + height];
   [(CALayer *)self->_startSelectionGrabber setPosition:v33, v35];
   CATransform3DMakeRotation(&v42, v29 * -0.0174532925, 0.0, 0.0, 1.0);
   startSelectionGrabber = self->_startSelectionGrabber;
@@ -137,7 +137,7 @@
   [(CALayer *)self->_startSelectionGrabber bounds];
   MidX = CGRectGetMidX(v43);
   [(CALayer *)self->_startSelectionGrabber bounds];
-  [(CALayer *)self->_startHandle setPosition:MidX, a6 * 0.5 + CGRectGetMinY(v44)];
+  [(CALayer *)self->_startHandle setPosition:MidX, height * 0.5 + CGRectGetMinY(v44)];
   [(CALayer *)self->_startBar setBounds:0.0, 0.0, width + width, v28];
   [(CALayer *)self->_startBar setAnchorPoint:0.5, 1.0];
   [(CALayer *)self->_startSelectionGrabber bounds];
@@ -147,23 +147,23 @@
   [(CALayer *)self->_startHandle setNeedsDisplay];
 }
 
-- (void)layoutEndSelectionGrabber:(CGRect)a3 transform:(CGAffineTransform *)a4 width:(double)a5 extraHeight:(double)a6 unitSize:(CGSize)a7
+- (void)layoutEndSelectionGrabber:(CGRect)grabber transform:(CGAffineTransform *)transform width:(double)width extraHeight:(double)height unitSize:(CGSize)size
 {
-  width = a7.width;
-  height = a3.size.height;
-  v12 = a3.size.width;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  v14 = [[(UIPDFPageView *)self->_pageView page:a3.origin.x] rotation];
-  v15 = *&a4->c;
-  *&v41.m11 = *&a4->a;
+  width = size.width;
+  height = grabber.size.height;
+  v12 = grabber.size.width;
+  x = grabber.origin.x;
+  y = grabber.origin.y;
+  rotation = [[(UIPDFPageView *)self->_pageView page:grabber.origin.x] rotation];
+  v15 = *&transform->c;
+  *&v41.m11 = *&transform->a;
   *&v41.m13 = v15;
-  *&v41.m21 = *&a4->tx;
+  *&v41.m21 = *&transform->tx;
   CPRotationDegreesFromTransform(&v41.m11);
   v17 = v16;
   [(UIPDFPageView *)self->_pageView convertRectFromPDFPageSpace:x, y, v12, height];
   [(CALayer *)[(UIPDFPageView *)self->_pageView effectsLayer] convertRect:[(UIView *)self->_pageView layer] fromLayer:v18, v19, v20, v21];
-  if (v14 == 180 || v14 == 0)
+  if (rotation == 180 || rotation == 0)
   {
     v27 = CGRectGetHeight(*&v22);
   }
@@ -174,13 +174,13 @@
   }
 
   v28 = v27;
-  v29 = v17 - v14;
-  [(UIPDFPageView *)self->_pageView convertPointFromPDFPageSpace:vaddq_f64(*&a4->tx, vaddq_f64(vmulq_n_f64(*&a4->a, x), vmulq_n_f64(*&a4->c, y)))];
+  v29 = v17 - rotation;
+  [(UIPDFPageView *)self->_pageView convertPointFromPDFPageSpace:vaddq_f64(*&transform->tx, vaddq_f64(vmulq_n_f64(*&transform->a, x), vmulq_n_f64(*&transform->c, y)))];
   [(CALayer *)[(UIPDFPageView *)self->_pageView effectsLayer] convertPoint:[(UIView *)self->_pageView layer] fromLayer:v30, v31];
   v33 = v32;
   v35 = v34;
   [(CALayer *)self->_endSelectionGrabber setAnchorPoint:0.5, 1.0];
-  [(CALayer *)self->_endSelectionGrabber setBounds:0.0, 0.0, a5, v28 + a6];
+  [(CALayer *)self->_endSelectionGrabber setBounds:0.0, 0.0, width, v28 + height];
   [(CALayer *)self->_endSelectionGrabber setPosition:v33, v35];
   CATransform3DMakeRotation(&v42, v29 * -0.0174532925, 0.0, 0.0, 1.0);
   endSelectionGrabber = self->_endSelectionGrabber;
@@ -189,7 +189,7 @@
   [(CALayer *)self->_endSelectionGrabber bounds];
   MidX = CGRectGetMidX(v43);
   [(CALayer *)self->_endSelectionGrabber bounds];
-  [(CALayer *)self->_endHandle setPosition:MidX, a6 * 0.5 + CGRectGetMaxY(v44)];
+  [(CALayer *)self->_endHandle setPosition:MidX, height * 0.5 + CGRectGetMaxY(v44)];
   [(CALayer *)self->_endBar setBounds:0.0, 0.0, width + width, v28];
   [(CALayer *)self->_endBar setAnchorPoint:0.5, 1.0];
   [(CALayer *)self->_endSelectionGrabber bounds];
@@ -207,18 +207,18 @@
   [(CALayer *)self->_startSelectionGrabber setOpacity:v3];
   LODWORD(v4) = 1.0;
   [(CALayer *)self->_endSelectionGrabber setOpacity:v4];
-  v5 = [[(UIPDFPageView *)self->_pageView page] selection];
-  if ([(UIPDFSelection *)v5 numberOfRectangles])
+  selection = [[(UIPDFPageView *)self->_pageView page] selection];
+  if ([(UIPDFSelection *)selection numberOfRectangles])
   {
-    v6 = [(UIPDFPageView *)self->_pageView effectsLayer];
-    [(CALayer *)v6 convertRect:0 fromLayer:0.0, 0.0, 1.0, 1.0];
+    effectsLayer = [(UIPDFPageView *)self->_pageView effectsLayer];
+    [(CALayer *)effectsLayer convertRect:0 fromLayer:0.0, 0.0, 1.0, 1.0];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
     if ([(UIView *)self->_pageView window])
     {
-      [(CALayer *)v6 convertRect:[(UIView *)self->_pageView layer] toLayer:v8, v10, v12, v14];
+      [(CALayer *)effectsLayer convertRect:[(UIView *)self->_pageView layer] toLayer:v8, v10, v12, v14];
       [(UIWindow *)[(UIView *)self->_pageView window] convertRect:0 toWindow:v15, v16, v17, v18];
       v12 = v19;
       v14 = v20;
@@ -232,20 +232,20 @@
     [(CALayer *)self->_startHandle setTransform:&v21];
     v21 = v24;
     [(CALayer *)self->_endHandle setTransform:&v21];
-    [(UIPDFSelection *)v5 getBounds:v23 transform:v22 index:self->_startRectangle];
+    [(UIPDFSelection *)selection getBounds:v23 transform:v22 index:self->_startRectangle];
     *v23 = self->_startX;
     [UIPDFTextRangeWidget layoutStartSelectionGrabber:"layoutStartSelectionGrabber:transform:width:extraHeight:unitSize:" transform:v22 width:? extraHeight:? unitSize:?];
-    [(UIPDFSelection *)v5 getBounds:v23 transform:v22 index:self->_endRectangle];
+    [(UIPDFSelection *)selection getBounds:v23 transform:v22 index:self->_endRectangle];
     *v23 = self->_endX;
     [UIPDFTextRangeWidget layoutEndSelectionGrabber:"layoutEndSelectionGrabber:transform:width:extraHeight:unitSize:" transform:v22 width:? extraHeight:? unitSize:?];
     [MEMORY[0x1E6979518] commit];
   }
 }
 
-- (void)setSelectedGrabber:(unint64_t)a3
+- (void)setSelectedGrabber:(unint64_t)grabber
 {
   v3 = 8;
-  if (!a3)
+  if (!grabber)
   {
     v3 = 24;
   }
@@ -253,14 +253,14 @@
   self->_fixedSelectionGrabber = *(&self->super.isa + v3);
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  if (a3)
+  if (selection)
   {
-    if ([a3 CGSelection])
+    if ([selection CGSelection])
     {
-      self->_startIndex = [a3 startIndex];
-      self->_endIndex = [a3 endIndex];
+      self->_startIndex = [selection startIndex];
+      self->_endIndex = [selection endIndex];
       if (CGPDFSelectionGetNumberOfRectsAndTransforms())
       {
         NumberOfRectsAndTransforms = CGPDFSelectionGetNumberOfRectsAndTransforms();
@@ -324,11 +324,11 @@
         self->_startRectangle = v12;
         self->_endRectangle = v11 - (v11 == v6);
         [(UIPDFTextRangeWidget *)self layoutWidget];
-        v18 = [(UIPDFPageView *)self->_pageView effectsLayer];
-        [(CALayer *)v18 addSublayer:self->_startSelectionGrabber];
+        effectsLayer = [(UIPDFPageView *)self->_pageView effectsLayer];
+        [(CALayer *)effectsLayer addSublayer:self->_startSelectionGrabber];
         endSelectionGrabber = self->_endSelectionGrabber;
 
-        [(CALayer *)v18 addSublayer:endSelectionGrabber];
+        [(CALayer *)effectsLayer addSublayer:endSelectionGrabber];
       }
     }
   }
@@ -342,24 +342,24 @@
   self->_endSelectionGrabber = 0;
 }
 
-- (CGPoint)selectedPointFor:(CGPoint)a3
+- (CGPoint)selectedPointFor:(CGPoint)for
 {
-  v3 = a3.x + self->_offsetX;
-  v4 = a3.y + self->_offsetY;
+  v3 = for.x + self->_offsetX;
+  v4 = for.y + self->_offsetY;
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (BOOL)hitTest:(CGPoint)a3 fixedPoint:(CGPoint *)a4 preceeds:(BOOL *)a5
+- (BOOL)hitTest:(CGPoint)test fixedPoint:(CGPoint *)point preceeds:(BOOL *)preceeds
 {
-  y = a3.y;
-  x = a3.x;
-  [(CALayer *)[(UIPDFPageView *)self->_pageView effectsLayer] convertPoint:[(UIView *)self->_pageView layer] fromLayer:a3.x, a3.y];
+  y = test.y;
+  x = test.x;
+  [(CALayer *)[(UIPDFPageView *)self->_pageView effectsLayer] convertPoint:[(UIView *)self->_pageView layer] fromLayer:test.x, test.y];
   v11 = v10;
   v13 = v12;
-  *a4 = *MEMORY[0x1E695EFF8];
-  *a5 = 0;
+  *point = *MEMORY[0x1E695EFF8];
+  *preceeds = 0;
   [(CALayer *)self->_startHandle position];
   [(CALayer *)[(UIPDFPageView *)self->_pageView effectsLayer] convertPoint:self->_startSelectionGrabber fromLayer:v14, v15];
   *&v16 = (v16 - v11) * (v16 - v11) + (v17 - v13) * (v17 - v13);
@@ -382,8 +382,8 @@
       v27 = v18 < v23;
     }
 
-    v28 = [[(UIPDFPageView *)self->_pageView page] selection];
-    [(UIPDFSelection *)v28 numberOfRectangles];
+    selection = [[(UIPDFPageView *)self->_pageView page] selection];
+    [(UIPDFSelection *)selection numberOfRectangles];
     memset(&v57, 0, sizeof(v57));
     memset(&v56, 0, sizeof(v56));
     v54 = 0u;
@@ -392,8 +392,8 @@
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    [(UIPDFSelection *)v28 getBounds:&v57 transform:&v53 index:self->_startRectangle];
-    [(UIPDFSelection *)v28 getBounds:&v56 transform:&v50 index:self->_endRectangle];
+    [(UIPDFSelection *)selection getBounds:&v57 transform:&v53 index:self->_startRectangle];
+    [(UIPDFSelection *)selection getBounds:&v56 transform:&v50 index:self->_endRectangle];
     if (v27)
     {
       v29 = v57;
@@ -422,8 +422,8 @@
 
       v47 = MaxX;
       *&v39 = CGRectGetMidY(v56);
-      a4->x = v47;
-      *&a4->y = v39;
+      point->x = v47;
+      *&point->y = v39;
       v46 = v39;
       *&v49.a = v53;
       *&v49.c = v54;
@@ -433,11 +433,11 @@
         v40 = vmuld_lane_f64(v33, v53, 1);
         v33 = v55.f64[0] + v33 * v53.f64[0] + MidY * v54.f64[0];
         MidY = v55.f64[1] + v40 + vmuld_lane_f64(MidY, v54, 1);
-        *a4 = vaddq_f64(v55, vaddq_f64(vmulq_n_f64(v53, v47), vmulq_n_f64(v54, *&v46)));
+        *point = vaddq_f64(v55, vaddq_f64(vmulq_n_f64(v53, v47), vmulq_n_f64(v54, *&v46)));
       }
 
       self->_fixedSelectionGrabber = self->_endSelectionGrabber;
-      *a5 = 1;
+      *preceeds = 1;
     }
 
     else
@@ -468,8 +468,8 @@
 
       v48 = v38;
       *&v41 = CGRectGetMidY(v57);
-      a4->x = v48;
-      *&a4->y = v41;
+      point->x = v48;
+      *&point->y = v41;
       v46 = v41;
       *&v49.a = v50;
       *&v49.c = v51;
@@ -479,10 +479,10 @@
         v42 = vmuld_lane_f64(v33, v50, 1);
         v33 = v52.f64[0] + v33 * v50.f64[0] + MidY * v51.f64[0];
         MidY = v52.f64[1] + v42 + vmuld_lane_f64(MidY, v51, 1);
-        *a4 = vaddq_f64(v52, vaddq_f64(vmulq_n_f64(v50, v48), vmulq_n_f64(v51, *&v46)));
+        *point = vaddq_f64(v52, vaddq_f64(vmulq_n_f64(v50, v48), vmulq_n_f64(v51, *&v46)));
       }
 
-      *a5 = 0;
+      *preceeds = 0;
       self->_fixedSelectionGrabber = self->_startSelectionGrabber;
     }
 
@@ -536,16 +536,16 @@
 
 - (CGPoint)currentSelectionPointOnPage
 {
-  v3 = [[(UIPDFPageView *)self->_pageView page] selection];
-  if ([(UIPDFSelection *)v3 numberOfRectangles])
+  selection = [[(UIPDFPageView *)self->_pageView page] selection];
+  if ([(UIPDFSelection *)selection numberOfRectangles])
   {
     memset(&v19, 0, sizeof(v19));
     memset(&v18, 0, sizeof(v18));
     v16 = 0u;
     v17 = 0u;
     v15 = 0u;
-    [(UIPDFSelection *)v3 getBounds:&v19 transform:&v15 index:self->_startRectangle];
-    [(UIPDFSelection *)v3 getBounds:&v18 transform:&v15 index:self->_endRectangle];
+    [(UIPDFSelection *)selection getBounds:&v19 transform:&v15 index:self->_startRectangle];
+    [(UIPDFSelection *)selection getBounds:&v18 transform:&v15 index:self->_endRectangle];
     if (self->_fixedSelectionGrabber == self->_endSelectionGrabber)
     {
       v7 = v19;

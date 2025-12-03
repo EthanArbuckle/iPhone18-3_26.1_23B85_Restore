@@ -1,8 +1,8 @@
 @interface FCAudioConfigurationOperation
 - (BOOL)validateOperation;
 - (FCAudioConfigurationOperation)init;
-- (FCAudioConfigurationOperation)initWithContext:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCAudioConfigurationOperation)initWithContext:(id)context;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -34,16 +34,16 @@
   objc_exception_throw(v6);
 }
 
-- (FCAudioConfigurationOperation)initWithContext:(id)a3
+- (FCAudioConfigurationOperation)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = FCAudioConfigurationOperation;
   v6 = [(FCOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -171,17 +171,17 @@ uint64_t __49__FCAudioConfigurationOperation_performOperation__block_invoke_3(ui
   return 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v5 = FCOperationLog;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(FCOperation *)self shortOperationDescription];
-      v7 = v6;
+      shortOperationDescription = [(FCOperation *)self shortOperationDescription];
+      v7 = shortOperationDescription;
       if (self)
       {
         resultConfigString = self->_resultConfigString;
@@ -193,19 +193,19 @@ uint64_t __49__FCAudioConfigurationOperation_performOperation__block_invoke_3(ui
       }
 
       v14 = 138543618;
-      v15 = v6;
+      v15 = shortOperationDescription;
       v16 = 2114;
       v17 = resultConfigString;
       _os_log_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ finished with config %{public}@", &v14, 0x16u);
     }
   }
 
-  v9 = [(FCAudioConfigurationOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCAudioConfigurationOperation *)self fetchCompletionHandler];
 
-  if (v9)
+  if (fetchCompletionHandler)
   {
-    v10 = [(FCAudioConfigurationOperation *)self fetchCompletionHandler];
-    v11 = v10;
+    fetchCompletionHandler2 = [(FCAudioConfigurationOperation *)self fetchCompletionHandler];
+    v11 = fetchCompletionHandler2;
     if (self)
     {
       v12 = self->_resultConfigString;
@@ -216,7 +216,7 @@ uint64_t __49__FCAudioConfigurationOperation_performOperation__block_invoke_3(ui
       v12 = 0;
     }
 
-    (*(v10 + 16))(v10, v12, v4);
+    (*(fetchCompletionHandler2 + 16))(fetchCompletionHandler2, v12, errorCopy);
   }
 
   v13 = *MEMORY[0x1E69E9840];

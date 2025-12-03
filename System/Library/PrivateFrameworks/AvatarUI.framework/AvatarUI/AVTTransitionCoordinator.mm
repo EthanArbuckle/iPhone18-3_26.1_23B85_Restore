@@ -1,15 +1,15 @@
 @interface AVTTransitionCoordinator
-+ (id)concurrentTransitionCoordinatorWithDelay:(double)a3;
-+ (id)eventHandlerForCoordinator:(id)a3;
++ (id)concurrentTransitionCoordinatorWithDelay:(double)delay;
++ (id)eventHandlerForCoordinator:(id)coordinator;
 + (id)synchronousTransitionCoordinator;
 - (AVTTransitionCoordinator)init;
 - (id)allTransitions;
-- (id)transitionsMatchingModel:(id)a3;
-- (void)addTransition:(id)a3;
+- (id)transitionsMatchingModel:(id)model;
+- (void)addTransition:(id)transition;
 - (void)cancelAllTransitions;
-- (void)cancelTransitionsMatchingModel:(id)a3;
+- (void)cancelTransitionsMatchingModel:(id)model;
 - (void)dealloc;
-- (void)didCompleteRunningTransition:(id)a3;
+- (void)didCompleteRunningTransition:(id)transition;
 - (void)startNextTransition;
 @end
 
@@ -18,26 +18,26 @@
 + (id)synchronousTransitionCoordinator
 {
   v3 = objc_alloc_init(AVTTransitionCoordinator);
-  v4 = [a1 eventHandlerForCoordinator:v3];
+  v4 = [self eventHandlerForCoordinator:v3];
   v5 = [AVTTransitionSchedulerFactory synchronousTransitionSchedulerWithEventHandler:v4];
   [(AVTTransitionCoordinator *)v3 setScheduler:v5];
 
   return v3;
 }
 
-+ (id)concurrentTransitionCoordinatorWithDelay:(double)a3
++ (id)concurrentTransitionCoordinatorWithDelay:(double)delay
 {
   v5 = objc_alloc_init(AVTTransitionCoordinator);
-  v6 = [a1 eventHandlerForCoordinator:v5];
-  v7 = [AVTTransitionSchedulerFactory concurrentTransitionSchedulerWithEventHandler:v6 delay:a3];
+  v6 = [self eventHandlerForCoordinator:v5];
+  v7 = [AVTTransitionSchedulerFactory concurrentTransitionSchedulerWithEventHandler:v6 delay:delay];
   [(AVTTransitionCoordinator *)v5 setScheduler:v7];
 
   return v5;
 }
 
-+ (id)eventHandlerForCoordinator:(id)a3
++ (id)eventHandlerForCoordinator:(id)coordinator
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, coordinator);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__AVTTransitionCoordinator_eventHandlerForCoordinator___block_invoke;
@@ -65,13 +65,13 @@ void __55__AVTTransitionCoordinator_eventHandlerForCoordinator___block_invoke(ui
   v2 = [(AVTTransitionCoordinator *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingTransitions = v2->_pendingTransitions;
-    v2->_pendingTransitions = v3;
+    v2->_pendingTransitions = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     runningTransitions = v2->_runningTransitions;
-    v2->_runningTransitions = v5;
+    v2->_runningTransitions = array2;
   }
 
   return v2;
@@ -79,65 +79,65 @@ void __55__AVTTransitionCoordinator_eventHandlerForCoordinator___block_invoke(ui
 
 - (void)dealloc
 {
-  v3 = [(AVTTransitionCoordinator *)self scheduler];
-  [v3 stop];
+  scheduler = [(AVTTransitionCoordinator *)self scheduler];
+  [scheduler stop];
 
   v4.receiver = self;
   v4.super_class = AVTTransitionCoordinator;
   [(AVTTransitionCoordinator *)&v4 dealloc];
 }
 
-- (void)addTransition:(id)a3
+- (void)addTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(AVTTransitionCoordinator *)self pendingTransitions];
-  [v5 addObject:v4];
+  transitionCopy = transition;
+  pendingTransitions = [(AVTTransitionCoordinator *)self pendingTransitions];
+  [pendingTransitions addObject:transitionCopy];
 
-  v6 = [(AVTTransitionCoordinator *)self scheduler];
-  [v6 scheduleEvent];
+  scheduler = [(AVTTransitionCoordinator *)self scheduler];
+  [scheduler scheduleEvent];
 }
 
-- (void)didCompleteRunningTransition:(id)a3
+- (void)didCompleteRunningTransition:(id)transition
 {
-  v8 = a3;
-  v4 = [(AVTTransitionCoordinator *)self runningTransitions];
-  v5 = [v4 containsObject:v8];
+  transitionCopy = transition;
+  runningTransitions = [(AVTTransitionCoordinator *)self runningTransitions];
+  v5 = [runningTransitions containsObject:transitionCopy];
 
   if (v5)
   {
-    v6 = [(AVTTransitionCoordinator *)self runningTransitions];
-    [v6 removeObject:v8];
+    runningTransitions2 = [(AVTTransitionCoordinator *)self runningTransitions];
+    [runningTransitions2 removeObject:transitionCopy];
 
-    v7 = [(AVTTransitionCoordinator *)self scheduler];
-    [v7 didCompleteEvent];
+    scheduler = [(AVTTransitionCoordinator *)self scheduler];
+    [scheduler didCompleteEvent];
   }
 }
 
 - (void)startNextTransition
 {
-  v3 = [(AVTTransitionCoordinator *)self pendingTransitions];
-  v4 = [v3 firstObject];
+  pendingTransitions = [(AVTTransitionCoordinator *)self pendingTransitions];
+  firstObject = [pendingTransitions firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [v4 completionHandler];
-    objc_initWeak(&location, v4);
+    completionHandler = [firstObject completionHandler];
+    objc_initWeak(&location, firstObject);
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __47__AVTTransitionCoordinator_startNextTransition__block_invoke;
     v13 = &unk_1E7F3CE98;
-    v6 = v5;
+    v6 = completionHandler;
     v15 = v6;
     objc_copyWeak(&v16, &location);
-    v14 = self;
-    [v4 setCompletionHandler:&v10];
+    selfCopy = self;
+    [firstObject setCompletionHandler:&v10];
     v7 = [(AVTTransitionCoordinator *)self runningTransitions:v10];
-    [v7 addObject:v4];
+    [v7 addObject:firstObject];
 
-    v8 = [(AVTTransitionCoordinator *)self pendingTransitions];
-    [v8 removeObject:v4];
+    pendingTransitions2 = [(AVTTransitionCoordinator *)self pendingTransitions];
+    [pendingTransitions2 removeObject:firstObject];
 
-    [v4 start];
+    [firstObject start];
     objc_destroyWeak(&v16);
 
     objc_destroyWeak(&location);
@@ -145,8 +145,8 @@ void __55__AVTTransitionCoordinator_eventHandlerForCoordinator___block_invoke(ui
 
   else
   {
-    v9 = [(AVTTransitionCoordinator *)self scheduler];
-    [v9 stop];
+    scheduler = [(AVTTransitionCoordinator *)self scheduler];
+    [scheduler stop];
   }
 }
 
@@ -170,20 +170,20 @@ uint64_t __47__AVTTransitionCoordinator_startNextTransition__block_invoke(uint64
   return MEMORY[0x1EEE66BB8](WeakRetained, v4);
 }
 
-- (id)transitionsMatchingModel:(id)a3
+- (id)transitionsMatchingModel:(id)model
 {
-  v4 = a3;
-  v5 = [(AVTTransitionCoordinator *)self allTransitions];
+  modelCopy = model;
+  allTransitions = [(AVTTransitionCoordinator *)self allTransitions];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__AVTTransitionCoordinator_transitionsMatchingModel___block_invoke;
   v10[3] = &unk_1E7F3CEC0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 indexesOfObjectsPassingTest:v10];
+  v11 = modelCopy;
+  v6 = modelCopy;
+  v7 = [allTransitions indexesOfObjectsPassingTest:v10];
   if ([v7 count])
   {
-    v8 = [v5 objectsAtIndexes:v7];
+    v8 = [allTransitions objectsAtIndexes:v7];
   }
 
   else
@@ -204,18 +204,18 @@ BOOL __53__AVTTransitionCoordinator_transitionsMatchingModel___block_invoke(uint
 
 - (id)allTransitions
 {
-  v3 = [(AVTTransitionCoordinator *)self pendingTransitions];
-  v4 = [(AVTTransitionCoordinator *)self runningTransitions];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  pendingTransitions = [(AVTTransitionCoordinator *)self pendingTransitions];
+  runningTransitions = [(AVTTransitionCoordinator *)self runningTransitions];
+  v5 = [pendingTransitions arrayByAddingObjectsFromArray:runningTransitions];
 
   return v5;
 }
 
-- (void)cancelTransitionsMatchingModel:(id)a3
+- (void)cancelTransitionsMatchingModel:(id)model
 {
-  v5 = [(AVTTransitionCoordinator *)self transitionsMatchingModel:a3];
-  v4 = [(AVTTransitionCoordinator *)self pendingTransitions];
-  [v4 removeObjectsInArray:v5];
+  v5 = [(AVTTransitionCoordinator *)self transitionsMatchingModel:model];
+  pendingTransitions = [(AVTTransitionCoordinator *)self pendingTransitions];
+  [pendingTransitions removeObjectsInArray:v5];
 
   [v5 enumerateObjectsUsingBlock:&__block_literal_global_28];
 }
@@ -223,18 +223,18 @@ BOOL __53__AVTTransitionCoordinator_transitionsMatchingModel___block_invoke(uint
 - (void)cancelAllTransitions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(AVTTransitionCoordinator *)self allTransitions];
-  v4 = [(AVTTransitionCoordinator *)self pendingTransitions];
-  [v4 removeAllObjects];
+  allTransitions = [(AVTTransitionCoordinator *)self allTransitions];
+  pendingTransitions = [(AVTTransitionCoordinator *)self pendingTransitions];
+  [pendingTransitions removeAllObjects];
 
-  v5 = [(AVTTransitionCoordinator *)self runningTransitions];
-  [v5 removeAllObjects];
+  runningTransitions = [(AVTTransitionCoordinator *)self runningTransitions];
+  [runningTransitions removeAllObjects];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v3;
+  v6 = allTransitions;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -260,12 +260,12 @@ BOOL __53__AVTTransitionCoordinator_transitionsMatchingModel___block_invoke(uint
     while (v8);
   }
 
-  v11 = [(AVTTransitionCoordinator *)self scheduler];
+  scheduler = [(AVTTransitionCoordinator *)self scheduler];
 
-  if (v11)
+  if (scheduler)
   {
-    v12 = [(AVTTransitionCoordinator *)self scheduler];
-    [v12 stop];
+    scheduler2 = [(AVTTransitionCoordinator *)self scheduler];
+    [scheduler2 stop];
   }
 }
 

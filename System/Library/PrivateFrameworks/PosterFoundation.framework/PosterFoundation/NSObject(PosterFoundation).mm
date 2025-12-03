@@ -23,21 +23,21 @@
   {
     v11 = [v10 length];
     v12 = 0;
-    if (!a1 || !v11)
+    if (!self || !v11)
     {
       goto LABEL_20;
     }
 
     v13 = objc_autoreleasePoolPush();
     v19 = 0;
-    v14 = [MEMORY[0x1E696ACD0] pf_unarchivedObjectOfClass:a1 fromData:v10 classReplacementMap:v9 error:&v19];
+    v14 = [MEMORY[0x1E696ACD0] pf_unarchivedObjectOfClass:self fromData:v10 classReplacementMap:v9 error:&v19];
     v15 = v19;
     if (v15)
     {
       v16 = PFLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [NSObject(PosterFoundation) pf_secureDecodedFromData:a1 classReplacementMap:?];
+        [NSObject(PosterFoundation) pf_secureDecodedFromData:self classReplacementMap:?];
       }
     }
 
@@ -57,7 +57,7 @@ LABEL_19:
         v17 = PFLogCommon();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          [NSObject(PosterFoundation) pf_secureDecodedFromData:a1 classReplacementMap:?];
+          [NSObject(PosterFoundation) pf_secureDecodedFromData:self classReplacementMap:?];
         }
       }
     }
@@ -77,7 +77,7 @@ LABEL_21:
 + (id)pf_secureDecodedFromData:()PosterFoundation ofClasses:classReplacementMap:
 {
   v40 = *MEMORY[0x1E69E9840];
-  v33 = a1;
+  selfCopy = self;
   v7 = a3;
   v8 = a4;
   v9 = a5;
@@ -87,7 +87,7 @@ LABEL_21:
     goto LABEL_32;
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:&v33 count:1];
+  v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:&selfCopy count:1];
   v11 = v10;
   if (v8)
   {

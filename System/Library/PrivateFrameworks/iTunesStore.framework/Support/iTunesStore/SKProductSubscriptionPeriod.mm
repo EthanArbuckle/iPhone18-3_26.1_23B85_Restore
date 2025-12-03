@@ -1,7 +1,7 @@
 @interface SKProductSubscriptionPeriod
 - (SKProductSubscriptionPeriod)init;
-- (SKProductSubscriptionPeriod)initWithISO8601String:(id)a3;
-- (SKProductSubscriptionPeriod)initWithXPCEncoding:(id)a3;
+- (SKProductSubscriptionPeriod)initWithISO8601String:(id)string;
+- (SKProductSubscriptionPeriod)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 @end
 
@@ -22,16 +22,16 @@
   return v2;
 }
 
-- (SKProductSubscriptionPeriod)initWithISO8601String:(id)a3
+- (SKProductSubscriptionPeriod)initWithISO8601String:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(SKProductSubscriptionPeriod *)self init];
   if (!v5)
   {
     goto LABEL_16;
   }
 
-  v6 = [NSScanner scannerWithString:v4];
+  v6 = [NSScanner scannerWithString:stringCopy];
   v17 = 0;
   [v6 scanString:@"P" intoString:&v17];
   v7 = v17;
@@ -100,11 +100,11 @@ LABEL_19:
   return v13;
 }
 
-- (SKProductSubscriptionPeriod)initWithXPCEncoding:(id)a3
+- (SKProductSubscriptionPeriod)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && xpc_get_type(v4) == &_xpc_type_dictionary)
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && xpc_get_type(encodingCopy) == &_xpc_type_dictionary)
   {
     v6 = [(SKProductSubscriptionPeriod *)self init];
     if (v6)

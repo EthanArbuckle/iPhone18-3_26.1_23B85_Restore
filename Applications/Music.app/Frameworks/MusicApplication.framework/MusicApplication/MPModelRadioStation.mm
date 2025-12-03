@@ -1,19 +1,19 @@
 @interface MPModelRadioStation
 - (NSString)musicTypeIdentifier;
-- (id)pickableObjectFor:(unint64_t)a3;
+- (id)pickableObjectFor:(unint64_t)for;
 @end
 
 @implementation MPModelRadioStation
 
-- (id)pickableObjectFor:(unint64_t)a3
+- (id)pickableObjectFor:(unint64_t)for
 {
-  v5 = 0;
-  if (a3 <= 4 && ((1 << a3) & 0x13) != 0)
+  selfCopy = 0;
+  if (for <= 4 && ((1 << for) & 0x13) != 0)
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSString)musicTypeIdentifier

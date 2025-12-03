@@ -1,19 +1,19 @@
 @interface CSVibrantWallpaperButton
-- (CSVibrantWallpaperButton)initWithFrame:(CGRect)a3;
+- (CSVibrantWallpaperButton)initWithFrame:(CGRect)frame;
 - (CSWallpaperColorProvider)wallpaperColorProvider;
 - (CSWallpaperProviding)wallpaperProvider;
 - (void)_updateVibrancy;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setWallpaperProvider:(id)a3;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setWallpaperProvider:(id)provider;
 @end
 
 @implementation CSVibrantWallpaperButton
 
-- (CSVibrantWallpaperButton)initWithFrame:(CGRect)a3
+- (CSVibrantWallpaperButton)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = CSVibrantWallpaperButton;
-  v3 = [(SBUIVibrantButton *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUIVibrantButton *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [(SBUIVibrantButton *)v3 setVibrancyAllowed:+[CSVibrancyUtility supportsVibrancy]];
@@ -22,9 +22,9 @@
   return v3;
 }
 
-- (void)setWallpaperProvider:(id)a3
+- (void)setWallpaperProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_wallpaperProvider);
   if (WeakRetained != obj)
   {
@@ -39,11 +39,11 @@
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
   v4.receiver = self;
   v4.super_class = CSVibrantWallpaperButton;
-  [(SBUIVibrantButton *)&v4 setLegibilitySettings:a3];
+  [(SBUIVibrantButton *)&v4 setLegibilitySettings:settings];
   [(CSVibrantWallpaperButton *)self _updateVibrancy];
 }
 

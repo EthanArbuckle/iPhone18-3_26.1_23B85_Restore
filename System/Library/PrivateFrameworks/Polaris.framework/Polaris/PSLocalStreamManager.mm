@@ -1,30 +1,30 @@
 @interface PSLocalStreamManager
-- (PRMWriterInstance)createWriterInstForKey:(id)a3 withResStream:(id)a4;
-- (PSLocalStreamManager)initWithContext:(id)a3 withTransitionManager:(id)a4 withDevice:(id)a5 withGSM:(ps_gsm_s *)a6 withPRMManager:(PSResourceManager *)a7;
+- (PRMWriterInstance)createWriterInstForKey:(id)key withResStream:(id)stream;
+- (PSLocalStreamManager)initWithContext:(id)context withTransitionManager:(id)manager withDevice:(id)device withGSM:(ps_gsm_s *)m withPRMManager:(PSResourceManager *)mManager;
 - (PSTransitionManager)transitionManager;
-- (void)startEventSource:(id)a3 withResStream:(id)a4;
-- (void)startIMUSource:(id)a3 withResStream:(id)a4;
-- (void)startPolarisdCommsStream:(id)a3 withResStream:(id)a4;
-- (void)startSourceForKey:(id)a3;
-- (void)stopSourceForKey:(id)a3;
+- (void)startEventSource:(id)source withResStream:(id)stream;
+- (void)startIMUSource:(id)source withResStream:(id)stream;
+- (void)startPolarisdCommsStream:(id)stream withResStream:(id)resStream;
+- (void)startSourceForKey:(id)key;
+- (void)stopSourceForKey:(id)key;
 @end
 
 @implementation PSLocalStreamManager
 
-- (PSLocalStreamManager)initWithContext:(id)a3 withTransitionManager:(id)a4 withDevice:(id)a5 withGSM:(ps_gsm_s *)a6 withPRMManager:(PSResourceManager *)a7
+- (PSLocalStreamManager)initWithContext:(id)context withTransitionManager:(id)manager withDevice:(id)device withGSM:(ps_gsm_s *)m withPRMManager:(PSResourceManager *)mManager
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  contextCopy = context;
+  managerCopy = manager;
+  deviceCopy = device;
   v23.receiver = self;
   v23.super_class = PSLocalStreamManager;
   v16 = [(PSLocalStreamManager *)&v23 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_context, a3);
-    objc_storeWeak(&v17->_transitionManager, v14);
-    objc_storeStrong(&v17->_device, a5);
+    objc_storeStrong(&v16->_context, context);
+    objc_storeWeak(&v17->_transitionManager, managerCopy);
+    objc_storeStrong(&v17->_device, device);
     v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
     activeStreams = v17->_activeStreams;
     v17->_activeStreams = v18;
@@ -33,60 +33,60 @@
     retainedBufferIndexers = v17->_retainedBufferIndexers;
     v17->_retainedBufferIndexers = v20;
 
-    v17->_prm_mgr = a7;
-    v17->_gsm = a6;
+    v17->_prm_mgr = mManager;
+    v17->_gsm = m;
   }
 
   return v17;
 }
 
-- (void)startSourceForKey:(id)a3
+- (void)startSourceForKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 136315138;
-    v18 = [v4 UTF8String];
+    uTF8String = [keyCopy UTF8String];
     _os_log_impl(&dword_25EA3A000, v5, OS_LOG_TYPE_DEFAULT, "Starting local stream for key %s", &v17, 0xCu);
   }
 
-  v6 = [(NSMutableDictionary *)self->_activeStreams objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_activeStreams objectForKeyedSubscript:keyCopy];
 
   if (v6)
   {
-    [(PSLocalStreamManager *)&v17 startSourceForKey:v4];
+    [(PSLocalStreamManager *)&v17 startSourceForKey:keyCopy];
     goto LABEL_12;
   }
 
-  v7 = [(PSContext *)self->_context resourceStreamForKey:v4];
+  v7 = [(PSContext *)self->_context resourceStreamForKey:keyCopy];
   if (!v7)
   {
 LABEL_12:
-    [(PSLocalStreamManager *)&v17 startSourceForKey:v4];
+    [(PSLocalStreamManager *)&v17 startSourceForKey:keyCopy];
 LABEL_13:
-    [(PSLocalStreamManager *)&v17 startSourceForKey:v4];
+    [(PSLocalStreamManager *)&v17 startSourceForKey:keyCopy];
   }
 
   v8 = v7;
-  v9 = [(PLSDevice *)self->_device propertiesForKey:v4];
+  v9 = [(PLSDevice *)self->_device propertiesForKey:keyCopy];
   if (!v9)
   {
     goto LABEL_13;
   }
 
   v10 = v9;
-  v11 = [v9 type];
-  if (v11 == 7)
+  type = [v9 type];
+  if (type == 7)
   {
-    [(PSLocalStreamManager *)self startEventSource:v4 withResStream:v8];
+    [(PSLocalStreamManager *)self startEventSource:keyCopy withResStream:v8];
     goto LABEL_10;
   }
 
-  if (v11 == 1)
+  if (type == 1)
   {
-    [(PSLocalStreamManager *)self startIMUSource:v4 withResStream:v8];
+    [(PSLocalStreamManager *)self startIMUSource:keyCopy withResStream:v8];
 LABEL_10:
 
     v12 = *MEMORY[0x277D85DE8];
@@ -97,20 +97,20 @@ LABEL_10:
   [(PSLocalStreamManager *)v13 createWriterInstForKey:v14 withResStream:v15, v16];
 }
 
-- (PRMWriterInstance)createWriterInstForKey:(id)a3 withResStream:(id)a4
+- (PRMWriterInstance)createWriterInstForKey:(id)key withResStream:(id)stream
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  streamCopy = stream;
   v8 = ps_prm_opts_create();
   retainedBufferIndexers = self->_retainedBufferIndexers;
-  [PSGraphCompiler populateWriterOpts:v8 forKey:v6 withCapacity:1 forGraph:0 withResStream:v7 withContext:self->_context retainedBufferIndexers:retainedBufferIndexers withGSM:self->_gsm];
+  [PSGraphCompiler populateWriterOpts:v8 forKey:keyCopy withCapacity:1 forGraph:0 withResStream:streamCopy withContext:self->_context retainedBufferIndexers:retainedBufferIndexers withGSM:self->_gsm];
 
   v10 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v15 = [v6 UTF8String];
+    uTF8String = [keyCopy UTF8String];
     _os_log_impl(&dword_25EA3A000, v10, OS_LOG_TYPE_DEFAULT, "Creating writer instance for source %s", buf, 0xCu);
   }
 
@@ -121,59 +121,59 @@ LABEL_10:
   return writer_instance;
 }
 
-- (void)startIMUSource:(id)a3 withResStream:(id)a4
+- (void)startIMUSource:(id)source withResStream:(id)stream
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PSLocalStreamManager *)self createWriterInstForKey:v7 withResStream:v6];
-  v15 = [PSDispatchQueueCreator createGCDQueueWithQOS:0 key:v7];
+  streamCopy = stream;
+  sourceCopy = source;
+  v8 = [(PSLocalStreamManager *)self createWriterInstForKey:sourceCopy withResStream:streamCopy];
+  v15 = [PSDispatchQueueCreator createGCDQueueWithQOS:0 key:sourceCopy];
   v9 = [PSHIDStream alloc];
-  v10 = [v6 framerate];
+  framerate = [streamCopy framerate];
 
   WeakRetained = objc_loadWeakRetained(&self->_transitionManager);
-  v12 = [WeakRetained executionSession];
-  v13 = [v12 name];
-  v14 = [(PSHIDStream *)v9 initWithKey:v7 rate:v10 queue:v15 writerInstance:v8 execSessionName:v13];
+  executionSession = [WeakRetained executionSession];
+  name = [executionSession name];
+  v14 = [(PSHIDStream *)v9 initWithKey:sourceCopy rate:framerate queue:v15 writerInstance:v8 execSessionName:name];
 
   [(PSHIDStream *)v14 start];
-  [(NSMutableDictionary *)self->_activeStreams setObject:v14 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_activeStreams setObject:v14 forKeyedSubscript:sourceCopy];
 }
 
-- (void)startEventSource:(id)a3 withResStream:(id)a4
+- (void)startEventSource:(id)source withResStream:(id)stream
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSLocalStreamManager *)self createWriterInstForKey:v6 withResStream:v7];
+  sourceCopy = source;
+  streamCopy = stream;
+  v8 = [(PSLocalStreamManager *)self createWriterInstForKey:sourceCopy withResStream:streamCopy];
   v9 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 136315138;
-    v18 = [v6 UTF8String];
+    uTF8String = [sourceCopy UTF8String];
     _os_log_impl(&dword_25EA3A000, v9, OS_LOG_TYPE_DEFAULT, "Starting event source for key %s", &v17, 0xCu);
   }
 
-  v10 = [(PLSDevice *)self->_device isTimer:v6];
+  v10 = [(PLSDevice *)self->_device isTimer:sourceCopy];
   if (v10)
   {
-    v11 = [v7 framerate];
+    framerate = [streamCopy framerate];
   }
 
   else
   {
-    v11 = 0;
+    framerate = 0;
   }
 
-  v12 = [PSDispatchQueueCreator createGCDQueueWithQOS:0 key:v6];
+  v12 = [PSDispatchQueueCreator createGCDQueueWithQOS:0 key:sourceCopy];
   if (!v10)
   {
-    [PSLocalStreamManager startEventSource:v6 withResStream:?];
+    [PSLocalStreamManager startEventSource:sourceCopy withResStream:?];
 LABEL_10:
-    [PSLocalStreamManager startEventSource:v6 withResStream:?];
+    [PSLocalStreamManager startEventSource:sourceCopy withResStream:?];
   }
 
   v13 = v12;
-  v14 = [[PSSystemEventStream alloc] initWithKey:v6 event:1 rate:v11 queue:v12 writerInstance:v8];
+  v14 = [[PSSystemEventStream alloc] initWithKey:sourceCopy event:1 rate:framerate queue:v12 writerInstance:v8];
   if (!v14)
   {
     goto LABEL_10;
@@ -181,38 +181,38 @@ LABEL_10:
 
   v15 = v14;
   [(PSSystemEventStream *)v14 start];
-  [(NSMutableDictionary *)self->_activeStreams setObject:v15 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_activeStreams setObject:v15 forKeyedSubscript:sourceCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startPolarisdCommsStream:(id)a3 withResStream:(id)a4
+- (void)startPolarisdCommsStream:(id)stream withResStream:(id)resStream
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  streamCopy = stream;
   v6 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315138;
-    v10 = [v5 UTF8String];
+    uTF8String = [streamCopy UTF8String];
     _os_log_impl(&dword_25EA3A000, v6, OS_LOG_TYPE_DEFAULT, "Starting polarisd comms for key %s", &v9, 0xCu);
   }
 
-  v7 = [[PSDaemonCommsStream alloc] initWithKey:v5];
+  v7 = [[PSDaemonCommsStream alloc] initWithKey:streamCopy];
   [(PSDaemonCommsStream *)v7 start];
-  [(NSMutableDictionary *)self->_activeStreams setObject:v7 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_activeStreams setObject:v7 forKeyedSubscript:streamCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSourceForKey:(id)a3
+- (void)stopSourceForKey:(id)key
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_activeStreams objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_activeStreams objectForKeyedSubscript:keyCopy];
   if (!v5)
   {
-    [(PSLocalStreamManager *)&v9 stopSourceForKey:v4];
+    [(PSLocalStreamManager *)&v9 stopSourceForKey:keyCopy];
   }
 
   v6 = v5;
@@ -220,7 +220,7 @@ LABEL_10:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315138;
-    v10 = [v4 UTF8String];
+    uTF8String = [keyCopy UTF8String];
     _os_log_impl(&dword_25EA3A000, v7, OS_LOG_TYPE_DEFAULT, "Stopping stream for key %s", &v9, 0xCu);
   }
 
@@ -228,10 +228,10 @@ LABEL_10:
   if ([v6 writer_inst])
   {
     ps_prm_delete_writer_instance(self->_prm_mgr, [v6 writer_inst]);
-    [(NSMutableDictionary *)self->_retainedBufferIndexers removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_retainedBufferIndexers removeObjectForKey:keyCopy];
   }
 
-  [(NSMutableDictionary *)self->_activeStreams removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_activeStreams removeObjectForKey:keyCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }

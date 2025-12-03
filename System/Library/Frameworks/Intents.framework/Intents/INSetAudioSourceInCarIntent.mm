@@ -5,17 +5,17 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAudioSource:(int64_t)a3;
-- (void)setRelativeAudioSourceReference:(int64_t)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAudioSource:(int64_t)source;
+- (void)setRelativeAudioSourceReference:(int64_t)reference;
 @end
 
 @implementation INSetAudioSourceInCarIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore:a3];
+  v6 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -24,28 +24,28 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"audioSource";
-  v3 = [(INSetAudioSourceInCarIntent *)self audioSource];
-  if ((v3 - 1) > 8)
+  audioSource = [(INSetAudioSourceInCarIntent *)self audioSource];
+  if ((audioSource - 1) > 8)
   {
     v4 = @"unknown";
   }
 
   else
   {
-    v4 = *(&off_1E727E498 + v3 - 1);
+    v4 = *(&off_1E727E498 + audioSource - 1);
   }
 
   v5 = v4;
   v12[1] = @"relativeAudioSourceReference";
   v13[0] = v5;
-  v6 = [(INSetAudioSourceInCarIntent *)self relativeAudioSourceReference];
+  relativeAudioSourceReference = [(INSetAudioSourceInCarIntent *)self relativeAudioSourceReference];
   v7 = @"unknown";
-  if (v6 == INRelativeReferencePrevious)
+  if (relativeAudioSourceReference == INRelativeReferencePrevious)
   {
     v7 = @"previous";
   }
 
-  if (v6 == INRelativeReferenceNext)
+  if (relativeAudioSourceReference == INRelativeReferenceNext)
   {
     v7 = @"next";
   }
@@ -59,9 +59,9 @@
   return v9;
 }
 
-- (void)setRelativeAudioSourceReference:(int64_t)a3
+- (void)setRelativeAudioSourceReference:(int64_t)reference
 {
-  if (a3 == 1)
+  if (reference == 1)
   {
     v3 = 1;
   }
@@ -71,7 +71,7 @@
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 2)
+  if (reference == 2)
   {
     v4 = 2;
   }
@@ -81,32 +81,32 @@
     v4 = v3;
   }
 
-  v5 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
-  v6 = v5;
+  _typedBackingStore = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
+  v6 = _typedBackingStore;
   if (v4 == 0x7FFFFFFF)
   {
-    [v5 setHasRelativeAudioSourceReference:0];
+    [_typedBackingStore setHasRelativeAudioSourceReference:0];
   }
 
   else
   {
-    [v5 setRelativeAudioSourceReference:v4];
+    [_typedBackingStore setRelativeAudioSourceReference:v4];
   }
 }
 
 - (INRelativeReference)relativeAudioSourceReference
 {
-  v3 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
-  v4 = [v3 hasRelativeAudioSourceReference];
-  v5 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
-  v6 = [v5 relativeAudioSourceReference];
-  v7 = 2 * (v6 == 2);
-  if (v6 == 1)
+  _typedBackingStore = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
+  hasRelativeAudioSourceReference = [_typedBackingStore hasRelativeAudioSourceReference];
+  _typedBackingStore2 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
+  relativeAudioSourceReference = [_typedBackingStore2 relativeAudioSourceReference];
+  v7 = 2 * (relativeAudioSourceReference == 2);
+  if (relativeAudioSourceReference == 1)
   {
     v7 = 1;
   }
 
-  if (v4)
+  if (hasRelativeAudioSourceReference)
   {
     v8 = v7;
   }
@@ -119,31 +119,31 @@
   return v8;
 }
 
-- (void)setAudioSource:(int64_t)a3
+- (void)setAudioSource:(int64_t)source
 {
-  v3 = a3 - 1;
-  v4 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = source - 1;
+  _typedBackingStore = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 8)
   {
-    [v4 setHasAudioSource:0];
+    [_typedBackingStore setHasAudioSource:0];
   }
 
   else
   {
-    [v4 setAudioSource:?];
+    [_typedBackingStore setAudioSource:?];
   }
 }
 
 - (INCarAudioSource)audioSource
 {
-  v3 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
-  v4 = [v3 hasAudioSource];
-  v5 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
-  v6 = [v5 audioSource];
-  if (((v6 - 1 < 9) & v4) != 0)
+  _typedBackingStore = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
+  hasAudioSource = [_typedBackingStore hasAudioSource];
+  _typedBackingStore2 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
+  audioSource = [_typedBackingStore2 audioSource];
+  if (((audioSource - 1 < 9) & hasAudioSource) != 0)
   {
-    v7 = v6;
+    v7 = audioSource;
   }
 
   else
@@ -169,28 +169,28 @@
   return v7;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSetAudioSourceInCarIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

@@ -1,24 +1,24 @@
 @interface ICCollaborationBeginRequest
-- (id)_requestBodyWithPlaylistCloudLibraryID:(unint64_t)a3 sharingMode:(unint64_t)a4;
-- (id)canonicalResponseForResponse:(id)a3;
+- (id)_requestBodyWithPlaylistCloudLibraryID:(unint64_t)d sharingMode:(unint64_t)mode;
+- (id)canonicalResponseForResponse:(id)response;
 @end
 
 @implementation ICCollaborationBeginRequest
 
-- (id)_requestBodyWithPlaylistCloudLibraryID:(unint64_t)a3 sharingMode:(unint64_t)a4
+- (id)_requestBodyWithPlaylistCloudLibraryID:(unint64_t)d sharingMode:(unint64_t)mode
 {
   v4 = ICDAAPUtilitiesCreateDataForItemKindContainer();
 
   return v4;
 }
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v3 = [(ICDResponse *)ICCollaborationBeginResponse responseWithResponse:a3];
-  v4 = [v3 responseData];
-  if ([v4 length])
+  v3 = [(ICDResponse *)ICCollaborationBeginResponse responseWithResponse:response];
+  responseData = [v3 responseData];
+  if ([responseData length])
   {
-    v5 = [NSInputStream inputStreamWithData:v4];
+    v5 = [NSInputStream inputStreamWithData:responseData];
     v6 = [[DKDAAPParser alloc] initWithStream:v5];
     v7 = [[ICCollaborationBeginResponseParserDelegate alloc] initWithResponse:v3];
     [v6 setDelegate:v7];

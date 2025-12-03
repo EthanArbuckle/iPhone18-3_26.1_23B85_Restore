@@ -39,15 +39,15 @@
 
 - (uint64_t)safari_BOOLForKey:()SafariCoreExtras
 {
-  v1 = [a1 safari_numberForKey:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self safari_numberForKey:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)safari_stringForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -66,7 +66,7 @@
 
 - (void)safari_numberForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -85,7 +85,7 @@
 
 - (void)safari_stringForKey:()SafariCoreExtras returningNilIfEmpty:
 {
-  v5 = [a1 safari_stringForKey:?];
+  v5 = [self safari_stringForKey:?];
   v6 = v5;
   if (a4 && ![v5 length])
   {
@@ -104,7 +104,7 @@
 
 - (void)safari_dataForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -123,7 +123,7 @@
 
 - (void)safari_dateForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -142,7 +142,7 @@
 
 - (void)safari_arrayForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -161,7 +161,7 @@
 
 - (void)safari_mutableArrayForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -180,7 +180,7 @@
 
 - (id)safari_arrayContainingObjectsOfClass:()SafariCoreExtras forKey:
 {
-  v5 = [a1 objectForKey:a4];
+  v5 = [self objectForKey:a4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -202,7 +202,7 @@
 
 - (void)safari_dictionaryForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -221,7 +221,7 @@
 
 - (void)safari_URLForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -240,7 +240,7 @@
 
 - (void)safari_UUIDForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -259,7 +259,7 @@
 
 - (void)safari_setForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -278,7 +278,7 @@
 
 - (void)safari_userActivityForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -301,25 +301,25 @@
   v4 = a3;
   if (![v4 count])
   {
-    v14 = a1;
+    selfCopy = self;
 LABEL_15:
-    v5 = v14;
+    v5 = selfCopy;
     goto LABEL_16;
   }
 
-  if (![a1 count])
+  if (![self count])
   {
-    v14 = v4;
+    selfCopy = v4;
     goto LABEL_15;
   }
 
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v4 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [v4 allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -330,11 +330,11 @@ LABEL_15:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [a1 objectForKeyedSubscript:v11];
+        v12 = [self objectForKeyedSubscript:v11];
 
         if (!v12)
         {
@@ -343,7 +343,7 @@ LABEL_15:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -361,25 +361,25 @@ LABEL_16:
   v4 = a3;
   if (![v4 count])
   {
-    v13 = a1;
+    selfCopy = self;
 LABEL_13:
-    v5 = v13;
+    v5 = selfCopy;
     goto LABEL_14;
   }
 
-  if (![a1 count])
+  if (![self count])
   {
-    v13 = v4;
+    selfCopy = v4;
     goto LABEL_13;
   }
 
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v4 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [v4 allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -390,7 +390,7 @@ LABEL_13:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -398,7 +398,7 @@ LABEL_13:
         [v5 setObject:v12 forKeyedSubscript:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -413,15 +413,15 @@ LABEL_14:
 - (id)safari_dictionaryWithLowercaseKeys
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+    v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v3 = [a1 allKeys];
-    v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allKeys = [self allKeys];
+    v4 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v4)
     {
       v5 = v4;
@@ -432,20 +432,20 @@ LABEL_14:
         {
           if (*v14 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allKeys);
           }
 
           v8 = *(*(&v13 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = [a1 objectForKeyedSubscript:v8];
-            v10 = [v8 lowercaseString];
-            [v2 setObject:v9 forKeyedSubscript:v10];
+            v9 = [self objectForKeyedSubscript:v8];
+            lowercaseString = [v8 lowercaseString];
+            [v2 setObject:v9 forKeyedSubscript:lowercaseString];
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v5);
@@ -464,7 +464,7 @@ LABEL_14:
 
 - (id)safari_jsonRepresentation
 {
-  v1 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a1 options:0 error:0];
+  v1 = [MEMORY[0x1E696ACB0] dataWithJSONObject:self options:0 error:0];
   if (v1)
   {
     v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v1 encoding:4];
@@ -480,7 +480,7 @@ LABEL_14:
 
 - (void)safari_mapTableForKey:()SafariCoreExtras
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -500,9 +500,9 @@ LABEL_14:
 - (id)safari_mapAndFilterKeysAndObjectsUsingBlock:()SafariCoreExtras
 {
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+    v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __78__NSDictionary_SafariCoreExtras__safari_mapAndFilterKeysAndObjectsUsingBlock___block_invoke;
@@ -510,7 +510,7 @@ LABEL_14:
     v12 = v4;
     v6 = v5;
     v11 = v6;
-    [a1 enumerateKeysAndObjectsUsingBlock:v10];
+    [self enumerateKeysAndObjectsUsingBlock:v10];
     v7 = v11;
     v8 = v6;
   }
@@ -526,9 +526,9 @@ LABEL_14:
 - (id)safari_mapAndFilterKeysUsingBlock:()SafariCoreExtras
 {
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+    v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __68__NSDictionary_SafariCoreExtras__safari_mapAndFilterKeysUsingBlock___block_invoke;
@@ -536,7 +536,7 @@ LABEL_14:
     v12 = v4;
     v6 = v5;
     v11 = v6;
-    [a1 enumerateKeysAndObjectsUsingBlock:v10];
+    [self enumerateKeysAndObjectsUsingBlock:v10];
     v7 = v11;
     v8 = v6;
   }
@@ -553,8 +553,8 @@ LABEL_14:
 {
   v21 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [a1 allKeys];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [self allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v17 = 0u;
   v18 = 0u;
@@ -576,7 +576,7 @@ LABEL_14:
         }
 
         v19[0] = *(*(&v15 + 1) + 8 * i);
-        v10 = [a1 objectForKeyedSubscript:v15];
+        v10 = [self objectForKeyedSubscript:v15];
         v19[1] = v10;
         v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
         [v2 addObject:v11];
@@ -597,10 +597,10 @@ LABEL_14:
 - (id)safari_diffWithDictionary:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 _safari_sortedTupleArray];
-  v6 = [v4 _safari_sortedTupleArray];
+  _safari_sortedTupleArray = [self _safari_sortedTupleArray];
+  _safari_sortedTupleArray2 = [v4 _safari_sortedTupleArray];
 
-  v7 = [v5 safari_diffWithArray:v6];
+  v7 = [_safari_sortedTupleArray safari_diffWithArray:_safari_sortedTupleArray2];
 
   return v7;
 }
@@ -617,9 +617,9 @@ LABEL_14:
   v6[1] = 3221225472;
   v6[2] = __72__NSDictionary_SafariCoreExtras__safari_dictionaryByRemovingNullObjects__block_invoke;
   v6[3] = &unk_1E7CF26A0;
-  v6[4] = a1;
+  v6[4] = self;
   v6[5] = &v7;
-  [a1 enumerateKeysAndObjectsUsingBlock:v6];
+  [self enumerateKeysAndObjectsUsingBlock:v6];
   v2 = v8[5];
   if (v2)
   {
@@ -628,7 +628,7 @@ LABEL_14:
 
   else
   {
-    v3 = [a1 copy];
+    v3 = [self copy];
   }
 
   v4 = v3;
@@ -648,7 +648,7 @@ LABEL_14:
     v9[2] = __56__NSDictionary_SafariCoreExtras__safari_containsObject___block_invoke;
     v9[3] = &unk_1E7CF26C8;
     v10 = v4;
-    v6 = [a1 keysOfEntriesPassingTest:v9];
+    v6 = [self keysOfEntriesPassingTest:v9];
     v7 = [v6 count] != 0;
   }
 
@@ -669,7 +669,7 @@ LABEL_14:
   v9[3] = &unk_1E7CF26F0;
   v10 = v4;
   v5 = v4;
-  v6 = [a1 keysOfEntriesPassingTest:v9];
+  v6 = [self keysOfEntriesPassingTest:v9];
   v7 = [v6 count] != 0;
 
   return v7;
@@ -720,10 +720,10 @@ LABEL_14:
 + (id)safari_dictionaryWithJSONOrPropertyListData:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 safari_dictionaryWithJSONData:v4 options:0];
+  v5 = [self safari_dictionaryWithJSONData:v4 options:0];
   if (!v5)
   {
-    v5 = [a1 safari_dictionaryWithPropertyListData:v4];
+    v5 = [self safari_dictionaryWithPropertyListData:v4];
   }
 
   return v5;
@@ -785,7 +785,7 @@ LABEL_14:
 
 - (id)safari_mutableDeepCopy
 {
-  v1 = [a1 safari_mapAndFilterKeysAndObjectsUsingBlock:&__block_literal_global_21];
+  v1 = [self safari_mapAndFilterKeysAndObjectsUsingBlock:&__block_literal_global_21];
   v2 = [v1 mutableCopy];
 
   return v2;
@@ -795,7 +795,7 @@ LABEL_14:
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -815,8 +815,8 @@ LABEL_14:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 objectForKeyedSubscript:{*(*(&v15 + 1) + 8 * i), v15}];
-        [v5 safari_addObjectUnlessNil:v11];
+        v11 = [self objectForKeyedSubscript:{*(*(&v15 + 1) + 8 * i), v15}];
+        [array safari_addObjectUnlessNil:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -825,7 +825,7 @@ LABEL_14:
     while (v8);
   }
 
-  v12 = [v5 copy];
+  v12 = [array copy];
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
@@ -840,9 +840,9 @@ LABEL_14:
   v10[3] = &unk_1E7CF2738;
   v11 = v4;
   v5 = v4;
-  v6 = [a1 keysOfEntriesPassingTest:v10];
-  v7 = [v6 anyObject];
-  v8 = [a1 objectForKeyedSubscript:v7];
+  v6 = [self keysOfEntriesPassingTest:v10];
+  anyObject = [v6 anyObject];
+  v8 = [self objectForKeyedSubscript:anyObject];
 
   return v8;
 }
@@ -859,7 +859,7 @@ LABEL_14:
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v10];
+  [self enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;

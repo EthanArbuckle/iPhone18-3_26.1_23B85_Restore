@@ -1,21 +1,21 @@
 @interface DOCKeyCommandController
-+ (id)cancellingKeyCommandsWithAction:(SEL)a3;
-+ (id)dismissingKeyCommandsWithAction:(SEL)a3;
-- (id)_commandWithTitle:(id)a3 discoverabilityTitle:(id)a4 image:(id)a5 action:(SEL)a6 alternates:(id)a7;
-- (id)_keyCommandWithTitle:(id)a3 discoverabilityTitle:(id)a4 image:(id)a5 action:(SEL)a6 input:(id)a7 modifierFlags:(int64_t)a8 attributes:(unint64_t)a9 alternates:(id)a10;
-- (id)_keyCommandsInMenu:(id)a3;
++ (id)cancellingKeyCommandsWithAction:(SEL)action;
++ (id)dismissingKeyCommandsWithAction:(SEL)action;
+- (id)_commandWithTitle:(id)title discoverabilityTitle:(id)discoverabilityTitle image:(id)image action:(SEL)action alternates:(id)alternates;
+- (id)_keyCommandWithTitle:(id)title discoverabilityTitle:(id)discoverabilityTitle image:(id)image action:(SEL)action input:(id)input modifierFlags:(int64_t)flags attributes:(unint64_t)attributes alternates:(id)self0;
+- (id)_keyCommandsInMenu:(id)menu;
 - (id)_menuDefinition;
 - (id)_menuOrder;
-- (id)_menuTitleForCustomMenuWithIdentifier:(id)a3;
+- (id)_menuTitleForCustomMenuWithIdentifier:(id)identifier;
 - (id)_unwantedMenuIdentifiers;
 - (id)allKeyCommands;
-- (id)allKeyCommandsWithAction:(SEL)a3 attributes:(unint64_t)a4;
-- (void)buildWithBuilder:(id)a3;
+- (id)allKeyCommandsWithAction:(SEL)action attributes:(unint64_t)attributes;
+- (void)buildWithBuilder:(id)builder;
 @end
 
 @implementation DOCKeyCommandController
 
-+ (id)cancellingKeyCommandsWithAction:(SEL)a3
++ (id)cancellingKeyCommandsWithAction:(SEL)action
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DCBA0];
@@ -23,20 +23,20 @@
   v15 = @"com.apple.DocumentManager.keyCommands.cancel";
   v16 = &unk_1F5F533F0;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  v7 = [v4 commandWithTitle:&stru_1F5F4AEF8 image:0 action:a3 input:v5 modifierFlags:0 propertyList:v6];
+  v7 = [v4 commandWithTitle:&stru_1F5F4AEF8 image:0 action:action input:v5 modifierFlags:0 propertyList:v6];
   v17[0] = v7;
   v8 = MEMORY[0x1E69DCBA0];
   v13 = @"com.apple.DocumentManager.keyCommands.cancel";
   v14 = &unk_1F5F53408;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  v10 = [v8 commandWithTitle:&stru_1F5F4AEF8 image:0 action:a3 input:@"." modifierFlags:0x100000 propertyList:v9];
+  v10 = [v8 commandWithTitle:&stru_1F5F4AEF8 image:0 action:action input:@"." modifierFlags:0x100000 propertyList:v9];
   v17[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
 
   return v11;
 }
 
-+ (id)dismissingKeyCommandsWithAction:(SEL)a3
++ (id)dismissingKeyCommandsWithAction:(SEL)action
 {
   v22[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DCBA0];
@@ -44,64 +44,64 @@
   v20 = @"com.apple.DocumentManager.keyCommands.dismiss";
   v21 = &unk_1F5F533F0;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-  v7 = [v4 commandWithTitle:&stru_1F5F4AEF8 image:0 action:a3 input:v5 modifierFlags:0 propertyList:v6];
+  v7 = [v4 commandWithTitle:&stru_1F5F4AEF8 image:0 action:action input:v5 modifierFlags:0 propertyList:v6];
   v22[0] = v7;
   v8 = MEMORY[0x1E69DCBA0];
   v18 = @"com.apple.DocumentManager.keyCommands.dismiss";
   v19 = &unk_1F5F53408;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-  v10 = [v8 commandWithTitle:&stru_1F5F4AEF8 image:0 action:a3 input:@"." modifierFlags:0x100000 propertyList:v9];
+  v10 = [v8 commandWithTitle:&stru_1F5F4AEF8 image:0 action:action input:@"." modifierFlags:0x100000 propertyList:v9];
   v22[1] = v10;
   v11 = MEMORY[0x1E69DCBA0];
   v16 = @"com.apple.DocumentManager.keyCommands.dismiss";
   v17 = &unk_1F5F53420;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-  v13 = [v11 commandWithTitle:&stru_1F5F4AEF8 image:0 action:a3 input:@"w" modifierFlags:0x100000 propertyList:v12];
+  v13 = [v11 commandWithTitle:&stru_1F5F4AEF8 image:0 action:action input:@"w" modifierFlags:0x100000 propertyList:v12];
   v22[2] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
 
   return v14;
 }
 
-- (id)_keyCommandWithTitle:(id)a3 discoverabilityTitle:(id)a4 image:(id)a5 action:(SEL)a6 input:(id)a7 modifierFlags:(int64_t)a8 attributes:(unint64_t)a9 alternates:(id)a10
+- (id)_keyCommandWithTitle:(id)title discoverabilityTitle:(id)discoverabilityTitle image:(id)image action:(SEL)action input:(id)input modifierFlags:(int64_t)flags attributes:(unint64_t)attributes alternates:(id)self0
 {
   v15 = MEMORY[0x1E69DCBA0];
-  v16 = MEMORY[0x1E695E0F8] & ((a9 << 61) >> 63);
-  if (a10)
+  v16 = MEMORY[0x1E695E0F8] & ((attributes << 61) >> 63);
+  if (alternates)
   {
-    v17 = a10;
+    alternatesCopy = alternates;
   }
 
   else
   {
-    v17 = MEMORY[0x1E695E0F0];
+    alternatesCopy = MEMORY[0x1E695E0F0];
   }
 
-  v18 = a4;
-  v19 = [v15 commandWithTitle:a3 image:a5 action:a6 input:a7 modifierFlags:a8 propertyList:v16 alternates:v17];
-  [v19 setDiscoverabilityTitle:v18];
+  discoverabilityTitleCopy = discoverabilityTitle;
+  v19 = [v15 commandWithTitle:title image:image action:action input:input modifierFlags:flags propertyList:v16 alternates:alternatesCopy];
+  [v19 setDiscoverabilityTitle:discoverabilityTitleCopy];
 
-  [v19 setAttributes:a9];
+  [v19 setAttributes:attributes];
 
   return v19;
 }
 
-- (id)_commandWithTitle:(id)a3 discoverabilityTitle:(id)a4 image:(id)a5 action:(SEL)a6 alternates:(id)a7
+- (id)_commandWithTitle:(id)title discoverabilityTitle:(id)discoverabilityTitle image:(id)image action:(SEL)action alternates:(id)alternates
 {
   v10 = MEMORY[0x1E69DC8B0];
-  if (a7)
+  if (alternates)
   {
-    v11 = a7;
+    alternatesCopy = alternates;
   }
 
   else
   {
-    v11 = MEMORY[0x1E695E0F0];
+    alternatesCopy = MEMORY[0x1E695E0F0];
   }
 
-  v12 = a4;
-  v13 = [v10 commandWithTitle:a3 image:a5 action:a6 propertyList:MEMORY[0x1E695E0F8] alternates:v11];
-  [v13 setDiscoverabilityTitle:v12];
+  discoverabilityTitleCopy = discoverabilityTitle;
+  v13 = [v10 commandWithTitle:title image:image action:action propertyList:MEMORY[0x1E695E0F8] alternates:alternatesCopy];
+  [v13 setDiscoverabilityTitle:discoverabilityTitleCopy];
 
   return v13;
 }
@@ -119,7 +119,7 @@
   v9 = [v6 alternateWithTitle:v8 action:sel_performEmptyTrashNow_ modifierFlags:1703936];
   v563[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v563 count:1];
-  v533 = self;
+  selfCopy = self;
   v11 = [(DOCKeyCommandController *)self _keyCommandWithTitle:v3 discoverabilityTitle:0 image:v4 action:sel_performEmptyTrash_ input:v5 modifierFlags:1179648 attributes:2 alternates:v10];
 
   v12 = MEMORY[0x1E69DCC60];
@@ -128,13 +128,13 @@
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v562 count:1];
   v532 = [v12 menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:v13];
 
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (DOCDebugMenuEnabled())
   {
     v15 = [MEMORY[0x1E69DCBA0] commandWithTitle:&stru_1F5F4AEF8 image:0 action:sel_performShowDebugMenu_ input:@"\\"" modifierFlags:0x100000 propertyList:MEMORY[0x1E695E0F8]];
     [v15 setDiscoverabilityTitle:&stru_1F5F4AEF8];
     [v15 setAttributes:4];
-    [v14 addObject:v15];
+    [array addObject:v15];
   }
 
   v16 = MEMORY[0x1E69DCBA0];
@@ -147,7 +147,7 @@
   [v19 setDiscoverabilityTitle:v21];
 
   v497 = v19;
-  [v14 addObject:v19];
+  [array addObject:v19];
   v22 = MEMORY[0x1E69DCBA0];
   v23 = _DocumentManagerBundle();
   v24 = [v23 localizedStringForKey:@"New Folder" value:@"New Folder" table:@"Localizable"];
@@ -159,7 +159,7 @@
   [v26 setDiscoverabilityTitle:v28];
 
   v496 = v26;
-  [v14 addObject:v26];
+  [array addObject:v26];
   v29 = MEMORY[0x1E69DCBA0];
   v30 = _DocumentManagerBundle();
   v31 = [v30 localizedStringForKey:@"New Folder with Selection" value:@"New Folder with Selection" table:@"Localizable"];
@@ -170,7 +170,7 @@
   [v32 setDiscoverabilityTitle:v34];
 
   v495 = v32;
-  [v14 addObject:v32];
+  [array addObject:v32];
   v35 = MEMORY[0x1E69DCBA0];
   v36 = _DocumentManagerBundle();
   v37 = [v36 localizedStringForKey:@"Open" value:@"Open" table:@"Localizable"];
@@ -182,7 +182,7 @@
   [v39 setDiscoverabilityTitle:v41];
 
   v494 = v39;
-  [v14 addObject:v39];
+  [array addObject:v39];
   v42 = MEMORY[0x1E69DCBA0];
   v43 = _DocumentManagerBundle();
   v44 = [v43 localizedStringForKey:@"Open" value:@"Open" table:@"Localizable"];
@@ -195,7 +195,7 @@
 
   [v46 setAttributes:4];
   v493 = v46;
-  [v14 addObject:v46];
+  [array addObject:v46];
   v49 = MEMORY[0x1E69DCC60];
   v50 = _DocumentManagerBundle();
   v51 = [v50 localizedStringForKey:@"Open With" value:@"Open With" table:@"Localizable"];
@@ -205,13 +205,13 @@
   v54 = [v49 menuWithTitle:v51 image:0 identifier:0 options:0 children:v53];
 
   v492 = v54;
-  [v14 addObject:v54];
+  [array addObject:v54];
   v55 = [MEMORY[0x1E69DCBA0] commandWithTitle:&stru_1F5F4AEF8 image:0 action:sel_performCommandReturnKey_ input:@"\r" modifierFlags:0x100000 propertyList:v45];
   [v55 setDiscoverabilityTitle:&stru_1F5F4AEF8];
   [v55 setAttributes:4];
   [v55 setWantsPriorityOverSystemBehavior:1];
   v491 = v55;
-  [v14 addObject:v55];
+  [array addObject:v55];
   v56 = MEMORY[0x1E69DCBA0];
   v57 = _DocumentManagerBundle();
   v58 = [v57 localizedStringForKey:@"Save" value:@"Save" table:@"Localizable"];
@@ -223,10 +223,10 @@
 
   [v59 setAttributes:4];
   v490 = v59;
-  [v14 addObject:v59];
-  v498 = v14;
-  v530 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:v14];
-  v62 = [MEMORY[0x1E695DF70] array];
+  [array addObject:v59];
+  v498 = array;
+  v530 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v63 = MEMORY[0x1E69DCBA0];
   v64 = _DocumentManagerBundle();
   v65 = [v64 localizedStringForKey:@"Get Info" value:@"Get Info" table:@"Localizable"];
@@ -238,7 +238,7 @@
   [v67 setDiscoverabilityTitle:v69];
 
   v488 = v67;
-  [v62 addObject:v67];
+  [array2 addObject:v67];
   v70 = MEMORY[0x1E69DCBA0];
   v71 = _DocumentManagerBundle();
   v72 = [v71 localizedStringForKey:@"Rename" value:@"Rename" table:@"Localizable"];
@@ -251,14 +251,14 @@
 
   [v74 setWantsPriorityOverSystemBehavior:1];
   v487 = v74;
-  [v62 addObject:v74];
+  [array2 addObject:v74];
   v77 = _DocumentManagerBundle();
   v78 = [v77 localizedStringForKey:@"Compress" value:@"Compress" table:@"Localizable"];
   v79 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"zipper.page"];
-  v80 = [(DOCKeyCommandController *)v533 _commandWithTitle:v78 discoverabilityTitle:0 image:v79 action:sel_performCompress_ alternates:0];
+  v80 = [(DOCKeyCommandController *)selfCopy _commandWithTitle:v78 discoverabilityTitle:0 image:v79 action:sel_performCompress_ alternates:0];
 
   v486 = v80;
-  [v62 addObject:v80];
+  [array2 addObject:v80];
   v81 = MEMORY[0x1E69DCBA0];
   v82 = _DocumentManagerBundle();
   v83 = [v82 localizedStringForKey:@"Duplicate" value:@"Duplicate" table:@"Localizable"];
@@ -270,7 +270,7 @@
   [v85 setDiscoverabilityTitle:v87];
 
   v485 = v85;
-  [v62 addObject:v85];
+  [array2 addObject:v85];
   v88 = MEMORY[0x1E69DCBA0];
   v89 = _DocumentManagerBundle();
   v90 = [v89 localizedStringForKey:@"Quick Look" value:@"Quick Look" table:@"Localizable"];
@@ -282,7 +282,7 @@
   [v92 setDiscoverabilityTitle:v94];
 
   v484 = v92;
-  [v62 addObject:v92];
+  [array2 addObject:v92];
   v95 = MEMORY[0x1E69DCBA0];
   v96 = _DocumentManagerBundle();
   v97 = [v96 localizedStringForKey:@"Quick Look" value:@"Quick Look" table:@"Localizable"];
@@ -295,13 +295,13 @@
   [v98 setAttributes:4];
   [v98 setWantsPriorityOverSystemBehavior:1];
   v483 = v98;
-  [v62 addObject:v98];
-  v489 = v62;
-  v529 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:v62];
+  [array2 addObject:v98];
+  v489 = array2;
+  v529 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:array2];
   v101 = _DocumentManagerBundle();
   v102 = [v101 localizedStringForKey:@"Share…" value:@"Share…" table:@"Localizable"];
   v103 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"square.and.arrow.up"];
-  v104 = [(DOCKeyCommandController *)v533 _commandWithTitle:v102 discoverabilityTitle:0 image:v103 action:sel_performShare_ alternates:0];
+  v104 = [(DOCKeyCommandController *)selfCopy _commandWithTitle:v102 discoverabilityTitle:0 image:v103 action:sel_performShare_ alternates:0];
 
   v105 = MEMORY[0x1E69DCC60];
   v482 = v104;
@@ -372,7 +372,7 @@
   v144 = [v141 alternateWithTitle:v143 action:sel_performDeleteNow_ modifierFlags:1572864];
   v558 = v144;
   v145 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v558 count:1];
-  v526 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v137 discoverabilityTitle:v139 image:v140 action:sel_performDelete_ input:@"\b" modifierFlags:0x100000 attributes:2 alternates:v145];
+  v526 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v137 discoverabilityTitle:v139 image:v140 action:sel_performDelete_ input:@"\b" modifierFlags:0x100000 attributes:2 alternates:v145];
 
   v146 = MEMORY[0x1E69DCBA0];
   v524 = _DocumentManagerBundle();
@@ -405,7 +405,7 @@
   v161 = _DocumentManagerBundle();
   v162 = [v161 localizedStringForKey:@"Scan Documents" value:@"Scan Documents" table:@"Localizable"];
   v163 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"doc.viewfinder"];
-  v164 = [(DOCKeyCommandController *)v533 _commandWithTitle:v162 discoverabilityTitle:0 image:v163 action:sel_performScanDocuments_ alternates:0];
+  v164 = [(DOCKeyCommandController *)selfCopy _commandWithTitle:v162 discoverabilityTitle:0 image:v163 action:sel_performScanDocuments_ alternates:0];
 
   v165 = MEMORY[0x1E69DCC60];
   v476 = v164;
@@ -524,21 +524,21 @@
   v232 = _DocumentManagerBundle();
   v233 = [v232 localizedStringForKey:@"View as Icons" value:@"View as Icons" table:@"Localizable"];
   v234 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"square.grid.2x2"];
-  v514 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v231 discoverabilityTitle:v233 image:v234 action:sel_performViewAsIcons_ input:@"1" modifierFlags:0x100000 attributes:0 alternates:0];
+  v514 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v231 discoverabilityTitle:v233 image:v234 action:sel_performViewAsIcons_ input:@"1" modifierFlags:0x100000 attributes:0 alternates:0];
 
   v235 = _DocumentManagerBundle();
   v236 = [v235 localizedStringForKey:@"as List" value:@"as List" table:@"Localizable"];
   v237 = _DocumentManagerBundle();
   v238 = [v237 localizedStringForKey:@"View as List" value:@"View as List" table:@"Localizable"];
   v239 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"list.bullet"];
-  v240 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v236 discoverabilityTitle:v238 image:v239 action:sel_performViewAsList_ input:@"2" modifierFlags:0x100000 attributes:0 alternates:0];
+  v240 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v236 discoverabilityTitle:v238 image:v239 action:sel_performViewAsList_ input:@"2" modifierFlags:0x100000 attributes:0 alternates:0];
 
   v241 = _DocumentManagerBundle();
   v242 = [v241 localizedStringForKey:@"as Columns" value:@"as Columns" table:@"Localizable"];
   v243 = _DocumentManagerBundle();
   v244 = [v243 localizedStringForKey:@"View as Columns" value:@"View as Columns" table:@"Localizable"];
   v245 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"rectangle.split.3x1"];
-  v246 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v242 discoverabilityTitle:v244 image:v245 action:sel_performViewAsColumns_ input:@"3" modifierFlags:0x100000 attributes:0 alternates:0];
+  v246 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v242 discoverabilityTitle:v244 image:v245 action:sel_performViewAsColumns_ input:@"3" modifierFlags:0x100000 attributes:0 alternates:0];
 
   v247 = MEMORY[0x1E69DCC60];
   v549[0] = v514;
@@ -563,49 +563,49 @@
   v256 = [v255 localizedStringForKey:@"Name" value:@"Name" table:@"Localizable"];
   v257 = _DocumentManagerBundle();
   v258 = [v257 localizedStringForKey:@"Sort by Name" value:@"Sort by Name" table:@"Localizable"];
-  v511 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v256 discoverabilityTitle:v258 image:0 action:sel_performSortByName_ input:@"1" modifierFlags:1835008 attributes:0 alternates:0];
+  v511 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v256 discoverabilityTitle:v258 image:0 action:sel_performSortByName_ input:@"1" modifierFlags:1835008 attributes:0 alternates:0];
 
   v259 = _DocumentManagerBundle();
   v260 = [v259 localizedStringForKey:@"Kind" value:@"Kind" table:@"Localizable"];
   v261 = _DocumentManagerBundle();
   v262 = [v261 localizedStringForKey:@"Sort by Kind" value:@"Sort by Kind" table:@"Localizable"];
-  v510 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v260 discoverabilityTitle:v262 image:0 action:sel_performSortByKind_ input:@"2" modifierFlags:1835008 attributes:0 alternates:0];
+  v510 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v260 discoverabilityTitle:v262 image:0 action:sel_performSortByKind_ input:@"2" modifierFlags:1835008 attributes:0 alternates:0];
 
   v263 = _DocumentManagerBundle();
   v264 = [v263 localizedStringForKey:@"Date Last Opened" value:@"Date Last Opened" table:@"Localizable"];
   v265 = _DocumentManagerBundle();
   v266 = [v265 localizedStringForKey:@"Sort by Date Last Opened" value:@"Sort by Date Last Opened" table:@"Localizable"];
-  v509 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v264 discoverabilityTitle:v266 image:0 action:sel_performSortByDateLastOpened_ input:@"3" modifierFlags:1835008 attributes:0 alternates:0];
+  v509 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v264 discoverabilityTitle:v266 image:0 action:sel_performSortByDateLastOpened_ input:@"3" modifierFlags:1835008 attributes:0 alternates:0];
 
   v267 = _DocumentManagerBundle();
   v268 = [v267 localizedStringForKey:@"Date Added" value:@"Date Added" table:@"Localizable"];
   v269 = _DocumentManagerBundle();
   v270 = [v269 localizedStringForKey:@"Sort by Date Added" value:@"Sort by Date Added" table:@"Localizable"];
-  v508 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v268 discoverabilityTitle:v270 image:0 action:sel_performSortByDateAdded_ input:@"4" modifierFlags:1835008 attributes:0 alternates:0];
+  v508 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v268 discoverabilityTitle:v270 image:0 action:sel_performSortByDateAdded_ input:@"4" modifierFlags:1835008 attributes:0 alternates:0];
 
   v271 = _DocumentManagerBundle();
   v272 = [v271 localizedStringForKey:@"Date Modified" value:@"Date Modified" table:@"Localizable"];
   v273 = _DocumentManagerBundle();
   v274 = [v273 localizedStringForKey:@"Sort by Date Modified" value:@"Sort by Date Modified" table:@"Localizable"];
-  v507 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v272 discoverabilityTitle:v274 image:0 action:sel_performSortByDateModified_ input:@"5" modifierFlags:1835008 attributes:0 alternates:0];
+  v507 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v272 discoverabilityTitle:v274 image:0 action:sel_performSortByDateModified_ input:@"5" modifierFlags:1835008 attributes:0 alternates:0];
 
   v275 = _DocumentManagerBundle();
   v276 = [v275 localizedStringForKey:@"Date Created" value:@"Date Created" table:@"Localizable"];
   v277 = _DocumentManagerBundle();
   v278 = [v277 localizedStringForKey:@"Sort by Date Created" value:@"Sort by Date Created" table:@"Localizable"];
-  v279 = [(DOCKeyCommandController *)v533 _commandWithTitle:v276 discoverabilityTitle:v278 image:0 action:sel_performSortByDateCreated_ alternates:0];
+  v279 = [(DOCKeyCommandController *)selfCopy _commandWithTitle:v276 discoverabilityTitle:v278 image:0 action:sel_performSortByDateCreated_ alternates:0];
 
   v280 = _DocumentManagerBundle();
   v281 = [v280 localizedStringForKey:@"Size" value:@"Size" table:@"Localizable"];
   v282 = _DocumentManagerBundle();
   v283 = [v282 localizedStringForKey:@"Sort by Size" value:@"Sort by Size" table:@"Localizable"];
-  v284 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v281 discoverabilityTitle:v283 image:0 action:sel_performSortBySize_ input:@"6" modifierFlags:1835008 attributes:0 alternates:0];
+  v284 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v281 discoverabilityTitle:v283 image:0 action:sel_performSortBySize_ input:@"6" modifierFlags:1835008 attributes:0 alternates:0];
 
   v285 = _DocumentManagerBundle();
   v286 = [v285 localizedStringForKey:@"Tags" value:@"Tags" table:@"Localizable"];
   v287 = _DocumentManagerBundle();
   v288 = [v287 localizedStringForKey:@"Sort by Tags" value:@"Sort by Tags" table:@"Localizable"];
-  v289 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v286 discoverabilityTitle:v288 image:0 action:sel_performSortByTags_ input:@"7" modifierFlags:1835008 attributes:0 alternates:0];
+  v289 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v286 discoverabilityTitle:v288 image:0 action:sel_performSortByTags_ input:@"7" modifierFlags:1835008 attributes:0 alternates:0];
 
   v290 = MEMORY[0x1E69DCC60];
   v291 = _DocumentManagerBundle();
@@ -627,7 +627,7 @@
 
   v295 = _DocumentManagerBundle();
   v296 = [v295 localizedStringForKey:@"None" value:@"None" table:@"Localizable"];
-  v297 = [(DOCKeyCommandController *)v533 _commandWithTitle:v296 discoverabilityTitle:0 image:0 action:sel_performGroupByNone_ alternates:0];
+  v297 = [(DOCKeyCommandController *)selfCopy _commandWithTitle:v296 discoverabilityTitle:0 image:0 action:sel_performGroupByNone_ alternates:0];
 
   v298 = MEMORY[0x1E69DCC60];
   v467 = v297;
@@ -639,31 +639,31 @@
   v301 = [v300 localizedStringForKey:@"Kind" value:@"Kind" table:@"Localizable"];
   v302 = _DocumentManagerBundle();
   v303 = [v302 localizedStringForKey:@"Group by Kind" value:@"Group by Kind" table:@"Localizable"];
-  v504 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v301 discoverabilityTitle:v303 image:0 action:sel_performGroupByKind_ input:@"2" modifierFlags:1310720 attributes:0 alternates:0];
+  v504 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v301 discoverabilityTitle:v303 image:0 action:sel_performGroupByKind_ input:@"2" modifierFlags:1310720 attributes:0 alternates:0];
 
   v304 = _DocumentManagerBundle();
   v305 = [v304 localizedStringForKey:@"Date" value:@"Date" table:@"Localizable"];
   v306 = _DocumentManagerBundle();
   v307 = [v306 localizedStringForKey:@"Group by Date" value:@"Group by Date" table:@"Localizable"];
-  v308 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v305 discoverabilityTitle:v307 image:0 action:sel_performGroupByDate_ input:@"5" modifierFlags:1310720 attributes:0 alternates:0];
+  v308 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v305 discoverabilityTitle:v307 image:0 action:sel_performGroupByDate_ input:@"5" modifierFlags:1310720 attributes:0 alternates:0];
 
   v309 = _DocumentManagerBundle();
   v310 = [v309 localizedStringForKey:@"Date" value:@"Date" table:@"Localizable"];
   v311 = _DocumentManagerBundle();
   v312 = [v311 localizedStringForKey:@"Group by Date" value:@"Group by Date" table:@"Localizable"];
-  v313 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v310 discoverabilityTitle:v312 image:0 action:sel_performGroupByDate_ input:@"3" modifierFlags:1310720 attributes:4 alternates:0];
+  v313 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v310 discoverabilityTitle:v312 image:0 action:sel_performGroupByDate_ input:@"3" modifierFlags:1310720 attributes:4 alternates:0];
 
   v314 = _DocumentManagerBundle();
   v315 = [v314 localizedStringForKey:@"Size" value:@"Size" table:@"Localizable"];
   v316 = _DocumentManagerBundle();
   v317 = [v316 localizedStringForKey:@"Group by Size" value:@"Group by Size" table:@"Localizable"];
-  v318 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v315 discoverabilityTitle:v317 image:0 action:sel_performGroupBySize_ input:@"6" modifierFlags:1310720 attributes:0 alternates:0];
+  v318 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v315 discoverabilityTitle:v317 image:0 action:sel_performGroupBySize_ input:@"6" modifierFlags:1310720 attributes:0 alternates:0];
 
   v319 = _DocumentManagerBundle();
   v320 = [v319 localizedStringForKey:@"Shared by" value:@"Shared by" table:@"Localizable"];
   v321 = _DocumentManagerBundle();
   v322 = [v321 localizedStringForKey:@"Group by Shared by" value:@"Group by Shared by" table:@"Localizable"];
-  v323 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v320 discoverabilityTitle:v322 image:0 action:sel_performGroupBySharedBy_ input:@"8" modifierFlags:1310720 attributes:0 alternates:0];
+  v323 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v320 discoverabilityTitle:v322 image:0 action:sel_performGroupBySharedBy_ input:@"8" modifierFlags:1310720 attributes:0 alternates:0];
 
   v324 = MEMORY[0x1E69DCC60];
   v325 = _DocumentManagerBundle();
@@ -689,7 +689,7 @@
   v330 = [MEMORY[0x1E695DEC8] arrayWithObjects:v545 count:3];
   v461 = [v329 menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:v330];
 
-  v331 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v332 = MEMORY[0x1E69DCBA0];
   v333 = _DocumentManagerBundle();
   v334 = [v333 localizedStringForKey:@"Show View Options" value:@"Show View Options" table:@"Localizable"];
@@ -701,9 +701,9 @@
   [v336 setDiscoverabilityTitle:v338];
 
   v459 = v336;
-  [v331 addObject:v336];
-  v339 = [MEMORY[0x1E699A3F0] viewOptionsSizeSetting];
-  LODWORD(v338) = [v339 isEnabled];
+  [array3 addObject:v336];
+  viewOptionsSizeSetting = [MEMORY[0x1E699A3F0] viewOptionsSizeSetting];
+  LODWORD(v338) = [viewOptionsSizeSetting isEnabled];
 
   if (v338)
   {
@@ -718,7 +718,7 @@
     [v344 setDiscoverabilityTitle:v346];
 
     [v344 setAttributes:4];
-    [v331 addObject:v344];
+    [array3 addObject:v344];
     v347 = MEMORY[0x1E69DCBA0];
     v348 = _DocumentManagerBundle();
     v349 = [v348 localizedStringForKey:@"Make Icons Bigger" value:@"Make Icons Bigger" table:@"Localizable"];
@@ -729,24 +729,24 @@
     [v350 setDiscoverabilityTitle:v352];
 
     [v350 setAttributes:4];
-    [v331 addObject:v350];
+    [array3 addObject:v350];
   }
 
-  v460 = v331;
-  v458 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:v331];
+  v460 = array3;
+  v458 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:array3];
   v353 = _DocumentManagerBundle();
   v354 = [v353 localizedStringForKey:@"Back" value:@"Back" table:@"Localizable"];
   v355 = _DocumentManagerBundle();
   v356 = [v355 localizedStringForKey:@"Go Back" value:@"Go Back" table:@"Localizable"];
   v357 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.backward"];
-  v503 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v354 discoverabilityTitle:v356 image:v357 action:sel_performGoBackInHistory_ input:@"[" modifierFlags:0x100000 attributes:0 alternates:0];
+  v503 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v354 discoverabilityTitle:v356 image:v357 action:sel_performGoBackInHistory_ input:@"[" modifierFlags:0x100000 attributes:0 alternates:0];
 
   v358 = _DocumentManagerBundle();
   v359 = [v358 localizedStringForKey:@"Forward" value:@"Forward" table:@"Localizable"];
   v360 = _DocumentManagerBundle();
   v361 = [v360 localizedStringForKey:@"Go Forward" value:@"Go Forward" table:@"Localizable"];
   v362 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward"];
-  v502 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v359 discoverabilityTitle:v361 image:v362 action:sel_performGoForwardInHistory_ input:@"]" modifierFlags:0x100000 attributes:0 alternates:0];
+  v502 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v359 discoverabilityTitle:v361 image:v362 action:sel_performGoForwardInHistory_ input:@"]" modifierFlags:0x100000 attributes:0 alternates:0];
 
   v500 = _DocumentManagerBundle();
   v363 = [v500 localizedStringForKey:@"Enclosing Folder" value:@"Enclosing Folder" table:@"Localizable"];
@@ -760,7 +760,7 @@
   v371 = [v368 alternateWithTitle:v370 action:sel_performGoToEnclosingFolderInNewWindow_ modifierFlags:1310720];
   v544 = v371;
   v372 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v544 count:1];
-  v373 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v363 discoverabilityTitle:v365 image:v366 action:sel_performGoToEnclosingFolder_ input:v367 modifierFlags:0x100000 attributes:0 alternates:v372];
+  v373 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v363 discoverabilityTitle:v365 image:v366 action:sel_performGoToEnclosingFolder_ input:v367 modifierFlags:0x100000 attributes:0 alternates:v372];
 
   v374 = MEMORY[0x1E69DCC60];
   v543[0] = v503;
@@ -770,33 +770,33 @@
   v375 = [MEMORY[0x1E695DEC8] arrayWithObjects:v543 count:3];
   v456 = [v374 menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:v375];
 
-  v501 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   v376 = _DocumentManagerBundle();
   v377 = [v376 localizedStringForKey:@"Recents" value:@"Recents" table:@"Localizable"];
   v378 = _DocumentManagerBundle();
   v379 = [v378 localizedStringForKey:@"Go to Recents" value:@"Go to Recents" table:@"Localizable"];
   v380 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"clock"];
-  v381 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v377 discoverabilityTitle:v379 image:v380 action:sel_performGoToRecents_ input:@"f" modifierFlags:1179648 attributes:0 alternates:0];
+  v381 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v377 discoverabilityTitle:v379 image:v380 action:sel_performGoToRecents_ input:@"f" modifierFlags:1179648 attributes:0 alternates:0];
 
-  [v501 addObject:v381];
+  [array4 addObject:v381];
   v382 = _DocumentManagerBundle();
   v383 = [v382 localizedStringForKey:@"Recents" value:@"Recents" table:@"Localizable"];
   v384 = _DocumentManagerBundle();
   v385 = [v384 localizedStringForKey:@"Go to Recents" value:@"Go to Recents" table:@"Localizable"];
   v386 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"clock"];
-  v387 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v383 discoverabilityTitle:v385 image:v386 action:sel_performGoToRecents_ input:@"r" modifierFlags:1179648 attributes:4 alternates:0];
+  v387 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v383 discoverabilityTitle:v385 image:v386 action:sel_performGoToRecents_ input:@"r" modifierFlags:1179648 attributes:4 alternates:0];
 
   v455 = v387;
-  [v501 addObject:v387];
+  [array4 addObject:v387];
   if (!DOCUsePadIdiomForTraits(0))
   {
     v388 = _DocumentManagerBundle();
     v389 = [v388 localizedStringForKey:@"Browse" value:@"Browse" table:@"Localizable"];
     v390 = _DocumentManagerBundle();
     v391 = [v390 localizedStringForKey:@"Go to Browse" value:@"Go to Browse" table:@"Localizable"];
-    v392 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v389 discoverabilityTitle:v391 image:0 action:sel_performGoToBrowse_ input:@"b" modifierFlags:1179648 attributes:0 alternates:0];
+    v392 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v389 discoverabilityTitle:v391 image:0 action:sel_performGoToBrowse_ input:@"b" modifierFlags:1179648 attributes:0 alternates:0];
 
-    [v501 addObject:v392];
+    [array4 addObject:v392];
   }
 
   v393 = _DocumentManagerBundle();
@@ -804,68 +804,68 @@
   v395 = _DocumentManagerBundle();
   v396 = [v395 localizedStringForKey:@"Go to Documents" value:@"Go to Documents" table:@"Localizable"];
   v397 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"document"];
-  v454 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v394 discoverabilityTitle:v396 image:v397 action:sel_performGoToDocuments_ input:@"o" modifierFlags:1179648 attributes:0 alternates:0];
+  v454 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v394 discoverabilityTitle:v396 image:v397 action:sel_performGoToDocuments_ input:@"o" modifierFlags:1179648 attributes:0 alternates:0];
 
-  [v501 addObject:v454];
+  [array4 addObject:v454];
   v398 = _DocumentManagerBundle();
   v399 = [v398 localizedStringForKey:@"Desktop" value:@"Desktop" table:@"Localizable"];
   v400 = _DocumentManagerBundle();
   v401 = [v400 localizedStringForKey:@"Go to Desktop" value:@"Go to Desktop" table:@"Localizable"];
   v402 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"menubar.dock.rectangle"];
-  v453 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v399 discoverabilityTitle:v401 image:v402 action:sel_performGoToDesktop_ input:@"d" modifierFlags:1179648 attributes:0 alternates:0];
+  v453 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v399 discoverabilityTitle:v401 image:v402 action:sel_performGoToDesktop_ input:@"d" modifierFlags:1179648 attributes:0 alternates:0];
 
-  [v501 addObject:v453];
+  [array4 addObject:v453];
   v403 = _DocumentManagerBundle();
   v404 = [v403 localizedStringForKey:@"Downloads" value:@"Downloads" table:@"Localizable"];
   v405 = _DocumentManagerBundle();
   v406 = [v405 localizedStringForKey:@"Go to Downloads" value:@"Go to Downloads" table:@"Localizable"];
   v407 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.down.circle"];
-  v452 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v404 discoverabilityTitle:v406 image:v407 action:sel_performGoToDownloads_ input:@"l" modifierFlags:1572864 attributes:0 alternates:0];
+  v452 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v404 discoverabilityTitle:v406 image:v407 action:sel_performGoToDownloads_ input:@"l" modifierFlags:1572864 attributes:0 alternates:0];
 
-  [v501 addObject:v452];
+  [array4 addObject:v452];
   v451 = [MEMORY[0x1E69673E8] providerDomainWithID:*MEMORY[0x1E699A390] cachePolicy:1 error:0];
   v408 = _DocumentManagerBundle();
   v450 = [v408 localizedStringForKey:@"Go to “%@”" value:@"Go to “%@”" table:@"Localizable"];
 
   v449 = DOCLocalizedDisplayName();
-  v409 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v450, v449];
+  v449 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v450, v449];
   v410 = MEMORY[0x1E69DCAB8];
-  v411 = [MEMORY[0x1E69DC938] currentDevice];
-  v412 = [v411 doc_symbolName];
-  v413 = [v410 systemImageNamed:v412];
-  v448 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v449 discoverabilityTitle:v409 image:v413 action:sel_performGoToOnMyDevice_ input:@"h" modifierFlags:1179648 attributes:0 alternates:0];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  doc_symbolName = [currentDevice doc_symbolName];
+  v413 = [v410 systemImageNamed:doc_symbolName];
+  v448 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v449 discoverabilityTitle:v449 image:v413 action:sel_performGoToOnMyDevice_ input:@"h" modifierFlags:1179648 attributes:0 alternates:0];
 
-  [v501 addObject:v448];
+  [array4 addObject:v448];
   v414 = _DocumentManagerBundle();
   v415 = [v414 localizedStringForKey:@"iCloud Drive" value:@"iCloud Drive" table:@"Localizable"];
   v416 = _DocumentManagerBundle();
   v417 = [v416 localizedStringForKey:@"Go to iCloud Drive" value:@"Go to iCloud Drive" table:@"Localizable"];
   v418 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"icloud"];
-  v447 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v415 discoverabilityTitle:v417 image:v418 action:sel_performGoToICloudDrive_ input:@"i" modifierFlags:1179648 attributes:0 alternates:0];
+  v447 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v415 discoverabilityTitle:v417 image:v418 action:sel_performGoToICloudDrive_ input:@"i" modifierFlags:1179648 attributes:0 alternates:0];
 
-  [v501 addObject:v447];
+  [array4 addObject:v447];
   v419 = _DocumentManagerBundle();
   v420 = [v419 localizedStringForKey:@"Shared" value:@"Shared" table:@"Localizable"];
   v421 = _DocumentManagerBundle();
   v422 = [v421 localizedStringForKey:@"Go to Shared" value:@"Go to Shared" table:@"Localizable"];
   v423 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"folder.badge.person.crop"];
-  v446 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v420 discoverabilityTitle:v422 image:v423 action:sel_performGoToShared_ input:@"s" modifierFlags:1179648 attributes:0 alternates:0];
+  v446 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v420 discoverabilityTitle:v422 image:v423 action:sel_performGoToShared_ input:@"s" modifierFlags:1179648 attributes:0 alternates:0];
 
-  [v501 addObject:v446];
-  v445 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:v501];
+  [array4 addObject:v446];
+  v445 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:array4];
   v424 = _DocumentManagerBundle();
   v425 = [v424 localizedStringForKey:@"Go to Folder…" value:@"Go to Folder…" table:@"Localizable"];
   v426 = _DocumentManagerBundle();
   v427 = [v426 localizedStringForKey:@"Go to Folder…" value:@"Go to Folder…" table:@"Localizable"];
   v428 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.forward.folder"];
-  v444 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v425 discoverabilityTitle:v427 image:v428 action:sel_performGoToLocation_ input:@"g" modifierFlags:1179648 attributes:0 alternates:0];
+  v444 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v425 discoverabilityTitle:v427 image:v428 action:sel_performGoToLocation_ input:@"g" modifierFlags:1179648 attributes:0 alternates:0];
 
   v429 = _DocumentManagerBundle();
   v430 = [v429 localizedStringForKey:@"Connect to Server…" value:@"Connect to Server…" table:@"Localizable"];
   v431 = _DocumentManagerBundle();
   v432 = [v431 localizedStringForKey:@"Connect to Server…" value:@"Connect to Server…" table:@"Localizable"];
   v433 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"rectangle.connected.to.line.below"];
-  v534 = [(DOCKeyCommandController *)v533 _keyCommandWithTitle:v430 discoverabilityTitle:v432 image:v433 action:sel_performConnectToServer_ input:@"k" modifierFlags:0x100000 attributes:0 alternates:0];
+  v534 = [(DOCKeyCommandController *)selfCopy _keyCommandWithTitle:v430 discoverabilityTitle:v432 image:v433 action:sel_performConnectToServer_ input:@"k" modifierFlags:0x100000 attributes:0 alternates:0];
 
   v434 = MEMORY[0x1E69DCC60];
   v542[0] = v444;
@@ -937,13 +937,13 @@
   return v4;
 }
 
-- (id)_menuTitleForCustomMenuWithIdentifier:(id)a3
+- (id)_menuTitleForCustomMenuWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"com.apple.DocumentManager.menu.main.go"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.DocumentManager.menu.main.go"])
   {
     v6 = _DocumentManagerBundle();
-    v7 = v6;
+    currentHandler = v6;
     v8 = @"Go [Menu title]";
     v9 = @"Go";
 LABEL_5:
@@ -951,38 +951,38 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69DE0F8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69DE0F8]])
   {
     v6 = _DocumentManagerBundle();
-    v7 = v6;
+    currentHandler = v6;
     v8 = @"Edit [Menu title]";
     v9 = @"Edit";
     goto LABEL_5;
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"DOCKeyCommandController.m" lineNumber:734 description:{@"Incomplete definition of menu titles, menu identifier missing: %@", v5}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DOCKeyCommandController.m" lineNumber:734 description:{@"Incomplete definition of menu titles, menu identifier missing: %@", identifierCopy}];
   v10 = 0;
 LABEL_7:
 
   return v10;
 }
 
-- (void)buildWithBuilder:(id)a3
+- (void)buildWithBuilder:(id)builder
 {
   v98 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DOCKeyCommandController *)self _menuDefinition];
-  v6 = [(DOCKeyCommandController *)self _menuOrder];
-  v71 = v5;
-  v7 = [v5 allKeys];
-  v72 = self;
-  v8 = [(DOCKeyCommandController *)self _unwantedMenuIdentifiers];
+  builderCopy = builder;
+  _menuDefinition = [(DOCKeyCommandController *)self _menuDefinition];
+  _menuOrder = [(DOCKeyCommandController *)self _menuOrder];
+  v71 = _menuDefinition;
+  allKeys = [_menuDefinition allKeys];
+  selfCopy = self;
+  _unwantedMenuIdentifiers = [(DOCKeyCommandController *)self _unwantedMenuIdentifiers];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v9 = v7;
+  v9 = allKeys;
   v10 = [v9 countByEnumeratingWithState:&v90 objects:v97 count:16];
   if (v10)
   {
@@ -997,7 +997,7 @@ LABEL_7:
           objc_enumerationMutation(v9);
         }
 
-        if (([v6 containsObject:*(*(&v90 + 1) + 8 * i)] & 1) == 0)
+        if (([_menuOrder containsObject:*(*(&v90 + 1) + 8 * i)] & 1) == 0)
         {
           [DOCKeyCommandController buildWithBuilder:];
         }
@@ -1013,7 +1013,7 @@ LABEL_7:
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v14 = v8;
+  v14 = _unwantedMenuIdentifiers;
   v15 = [v14 countByEnumeratingWithState:&v86 objects:v96 count:16];
   if (v15)
   {
@@ -1028,7 +1028,7 @@ LABEL_7:
           objc_enumerationMutation(v14);
         }
 
-        [v4 removeMenuForIdentifier:*(*(&v86 + 1) + 8 * j)];
+        [builderCopy removeMenuForIdentifier:*(*(&v86 + 1) + 8 * j)];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v86 objects:v96 count:16];
@@ -1037,15 +1037,15 @@ LABEL_7:
     while (v16);
   }
 
-  v74 = v6;
+  v74 = _menuOrder;
   v65 = v9;
 
   v84 = 0u;
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v19 = [(DOCKeyCommandController *)v72 _menuOrder];
-  v20 = [v19 countByEnumeratingWithState:&v82 objects:v95 count:16];
+  _menuOrder2 = [(DOCKeyCommandController *)selfCopy _menuOrder];
+  v20 = [_menuOrder2 countByEnumeratingWithState:&v82 objects:v95 count:16];
   v64 = v14;
   if (v20)
   {
@@ -1061,23 +1061,23 @@ LABEL_7:
       {
         if (*v83 != v23)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(_menuOrder2);
         }
 
         v26 = *(*(&v82 + 1) + 8 * v24);
-        v27 = [v4 menuForIdentifier:v26];
+        v27 = [builderCopy menuForIdentifier:v26];
         if (!v27)
         {
-          v28 = [(DOCKeyCommandController *)v72 _menuTitleForCustomMenuWithIdentifier:v26];
+          v28 = [(DOCKeyCommandController *)selfCopy _menuTitleForCustomMenuWithIdentifier:v26];
           v29 = [MEMORY[0x1E69DCC60] menuWithTitle:v28 image:0 identifier:v26 options:0 children:MEMORY[0x1E695E0F0]];
           if (v25)
           {
-            [v4 insertSiblingMenu:v29 afterMenuForIdentifier:v25];
+            [builderCopy insertSiblingMenu:v29 afterMenuForIdentifier:v25];
           }
 
           else
           {
-            [v4 insertChildMenu:v29 atStartOfMenuForIdentifier:obj];
+            [builderCopy insertChildMenu:v29 atStartOfMenuForIdentifier:obj];
           }
         }
 
@@ -1088,7 +1088,7 @@ LABEL_7:
       }
 
       while (v21 != v24);
-      v21 = [v19 countByEnumeratingWithState:&v82 objects:v95 count:16];
+      v21 = [_menuOrder2 countByEnumeratingWithState:&v82 objects:v95 count:16];
     }
 
     while (v21);
@@ -1138,7 +1138,7 @@ LABEL_7:
           }
 
           v38 = [v37 objectAtIndexedSubscript:0];
-          [v4 insertSiblingMenu:v38 afterMenuForIdentifier:v73];
+          [builderCopy insertSiblingMenu:v38 afterMenuForIdentifier:v73];
         }
 
         else if ([v36 isEqual:v75])
@@ -1148,45 +1148,45 @@ LABEL_7:
             [DOCKeyCommandController buildWithBuilder:];
           }
 
-          v39 = [v4 menuForIdentifier:v66];
+          v39 = [builderCopy menuForIdentifier:v66];
           v40 = [v37 objectAtIndexedSubscript:0];
-          v41 = [v40 children];
-          v42 = [v41 mutableCopy];
+          children = [v40 children];
+          v42 = [children mutableCopy];
 
-          v43 = [v39 children];
-          [v42 addObjectsFromArray:v43];
+          children2 = [v39 children];
+          [v42 addObjectsFromArray:children2];
 
           v38 = [v39 menuByReplacingChildren:v42];
 
-          [v4 replaceMenuForIdentifier:v66 withMenu:v38];
-          [v4 insertChildMenu:v38 atStartOfMenuForIdentifier:v36];
+          [builderCopy replaceMenuForIdentifier:v66 withMenu:v38];
+          [builderCopy insertChildMenu:v38 atStartOfMenuForIdentifier:v36];
           v44 = [v37 objectAtIndexedSubscript:1];
-          [v4 insertSiblingMenu:v44 afterMenuForIdentifier:v66];
+          [builderCopy insertSiblingMenu:v44 afterMenuForIdentifier:v66];
 
           v45 = [v37 objectAtIndexedSubscript:2];
           v46 = [v37 objectAtIndexedSubscript:1];
-          v47 = [v46 identifier];
-          [v4 insertSiblingMenu:v45 afterMenuForIdentifier:v47];
+          identifier = [v46 identifier];
+          [builderCopy insertSiblingMenu:v45 afterMenuForIdentifier:identifier];
 
           v48 = [v37 objectAtIndexedSubscript:3];
           v49 = [v37 objectAtIndexedSubscript:2];
-          v50 = [v49 identifier];
-          [v4 insertSiblingMenu:v48 afterMenuForIdentifier:v50];
+          identifier2 = [v49 identifier];
+          [builderCopy insertSiblingMenu:v48 afterMenuForIdentifier:identifier2];
 
           v51 = [v37 objectAtIndexedSubscript:4];
           v52 = [v37 objectAtIndexedSubscript:3];
-          v53 = [v52 identifier];
-          [v4 insertSiblingMenu:v51 afterMenuForIdentifier:v53];
+          identifier3 = [v52 identifier];
+          [builderCopy insertSiblingMenu:v51 afterMenuForIdentifier:identifier3];
 
           v54 = [v37 objectAtIndexedSubscript:5];
           v55 = [v37 objectAtIndexedSubscript:4];
-          v56 = [v55 identifier];
-          [v4 insertSiblingMenu:v54 afterMenuForIdentifier:v56];
+          identifier4 = [v55 identifier];
+          [builderCopy insertSiblingMenu:v54 afterMenuForIdentifier:identifier4];
 
           v57 = [v37 objectAtIndexedSubscript:6];
           v58 = [v37 objectAtIndexedSubscript:5];
-          v59 = [v58 identifier];
-          [v4 insertSiblingMenu:v57 afterMenuForIdentifier:v59];
+          identifier5 = [v58 identifier];
+          [builderCopy insertSiblingMenu:v57 afterMenuForIdentifier:identifier5];
 
           v33 = v70;
           v31 = v71;
@@ -1202,15 +1202,15 @@ LABEL_7:
           }
 
           v60 = [v37 objectAtIndexedSubscript:0];
-          [v4 insertChildMenu:v60 atStartOfMenuForIdentifier:v36];
+          [builderCopy insertChildMenu:v60 atStartOfMenuForIdentifier:v36];
 
           v61 = [v37 objectAtIndexedSubscript:1];
           v62 = [v37 objectAtIndexedSubscript:0];
-          v63 = [v62 identifier];
-          [v4 insertSiblingMenu:v61 afterMenuForIdentifier:v63];
+          identifier6 = [v62 identifier];
+          [builderCopy insertSiblingMenu:v61 afterMenuForIdentifier:identifier6];
 
           v38 = [v37 objectAtIndexedSubscript:2];
-          [v4 insertChildMenu:v38 atEndOfMenuForIdentifier:v36];
+          [builderCopy insertChildMenu:v38 atEndOfMenuForIdentifier:v36];
           v33 = v70;
           v31 = v71;
           v34 = v69;
@@ -1219,7 +1219,7 @@ LABEL_7:
         else
         {
           v38 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F5F4AEF8 image:0 identifier:0 options:1 children:v37];
-          [v4 insertChildMenu:v38 atEndOfMenuForIdentifier:v36];
+          [builderCopy insertChildMenu:v38 atEndOfMenuForIdentifier:v36];
         }
 
         ++v35;
@@ -1233,17 +1233,17 @@ LABEL_7:
   }
 }
 
-- (id)_keyCommandsInMenu:(id)a3
+- (id)_keyCommandsInMenu:(id)menu
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  menuCopy = menu;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 children];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children = [menuCopy children];
+  v7 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1254,14 +1254,14 @@ LABEL_7:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
         else
@@ -1270,24 +1270,24 @@ LABEL_7:
           if (objc_opt_isKindOfClass())
           {
             v12 = [(DOCKeyCommandController *)self _keyCommandsInMenu:v11];
-            [v5 addObjectsFromArray:v12];
+            [array addObjectsFromArray:v12];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (id)allKeyCommands
 {
   v28 = *MEMORY[0x1E69E9840];
-  v17 = [(DOCKeyCommandController *)self _menuDefinition];
+  _menuDefinition = [(DOCKeyCommandController *)self _menuDefinition];
   v3 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
@@ -1308,7 +1308,7 @@ LABEL_7:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [v17 objectForKeyedSubscript:*(*(&v22 + 1) + 8 * i)];
+        v8 = [_menuDefinition objectForKeyedSubscript:*(*(&v22 + 1) + 8 * i)];
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
@@ -1349,16 +1349,16 @@ LABEL_7:
   return v14;
 }
 
-- (id)allKeyCommandsWithAction:(SEL)a3 attributes:(unint64_t)a4
+- (id)allKeyCommandsWithAction:(SEL)action attributes:(unint64_t)attributes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = [(DOCKeyCommandController *)self allKeyCommands];
+  allKeyCommands = [(DOCKeyCommandController *)self allKeyCommands];
   v7 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v6;
+  v8 = allKeyCommands;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -1373,8 +1373,8 @@ LABEL_7:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) _doc_erasedKeyCommandWithWrappedAction:{a3, v15}];
-        [v13 setAttributes:{objc_msgSend(v13, "attributes") | a4}];
+        v13 = [*(*(&v15 + 1) + 8 * i) _doc_erasedKeyCommandWithWrappedAction:{action, v15}];
+        [v13 setAttributes:{objc_msgSend(v13, "attributes") | attributes}];
         [v7 addObject:v13];
       }
 

@@ -1,26 +1,26 @@
 @interface BWMovingWindowStats
-- (BOOL)addDataPointP:(double)a3;
-- (BWMovingWindowStats)initWithWindowSize:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)addDataPointP:(double)p;
+- (BWMovingWindowStats)initWithWindowSize:(int)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation BWMovingWindowStats
 
-- (BWMovingWindowStats)initWithWindowSize:(int)a3
+- (BWMovingWindowStats)initWithWindowSize:(int)size
 {
-  if (a3 <= 0)
+  if (size <= 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Window size needs to be greater than 0" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = BWMovingWindowStats;
-  result = [(BWMedianStats *)&v5 initWithMaxNumberOfSamplesForMedianCalculation:a3];
+  result = [(BWMedianStats *)&v5 initWithMaxNumberOfSamplesForMedianCalculation:size];
   if (result)
   {
-    result->_windowSize = a3;
+    result->_windowSize = size;
     result->_dataPointIndex = 0;
   }
 
@@ -34,11 +34,11 @@
   [(BWMedianStats *)&v2 dealloc];
 }
 
-- (BOOL)addDataPointP:(double)a3
+- (BOOL)addDataPointP:(double)p
 {
   if ([(BWStats *)self numberOfSamples]>= self->_windowSize)
   {
-    v5 = [(BWMedianStats *)self addDataPointP:a3 atIndex:?];
+    v5 = [(BWMedianStats *)self addDataPointP:p atIndex:?];
     if (v5)
     {
       dataPointIndex = self->_dataPointIndex;
@@ -62,7 +62,7 @@
   {
     v9.receiver = self;
     v9.super_class = BWMovingWindowStats;
-    LOBYTE(v5) = [(BWMedianStats *)&v9 addDataPointP:a3];
+    LOBYTE(v5) = [(BWMedianStats *)&v9 addDataPointP:p];
   }
 
   return v5;
@@ -75,11 +75,11 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"Moving Average: %@", -[BWMedianStats description](&v3, sel_description)];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = BWMovingWindowStats;
-  result = [(BWMedianStats *)&v5 copyWithZone:a3];
+  result = [(BWMedianStats *)&v5 copyWithZone:zone];
   *(result + 20) = self->_windowSize;
   *(result + 21) = self->_dataPointIndex;
   return result;

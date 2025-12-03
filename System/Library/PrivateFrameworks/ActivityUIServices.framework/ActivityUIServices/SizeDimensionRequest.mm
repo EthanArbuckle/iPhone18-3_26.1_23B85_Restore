@@ -1,37 +1,37 @@
 @interface SizeDimensionRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC18ActivityUIServices20SizeDimensionRequest)init;
-- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithCoder:(id)a3;
-- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithMinimum:(double)a3 maximum:(double)a4 type:(int64_t)a5;
-- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithCoder:(id)coder;
+- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithMinimum:(double)minimum maximum:(double)maximum type:(int64_t)type;
+- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SizeDimensionRequest
 
-- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithMinimum:(double)a3 maximum:(double)a4 type:(int64_t)a5
+- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithMinimum:(double)minimum maximum:(double)maximum type:(int64_t)type
 {
-  if (a3 <= 0.0)
+  if (minimum <= 0.0)
   {
-    a3 = 0.0;
+    minimum = 0.0;
   }
 
-  *(&self->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_minimum) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_maximum) = a4;
-  *(&self->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_type) = a5;
+  *(&self->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_minimum) = minimum;
+  *(&self->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_maximum) = maximum;
+  *(&self->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_type) = type;
   v6.receiver = self;
   v6.super_class = type metadata accessor for SizeDimensionRequest();
   return [(SizeDimensionRequest *)&v6 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18E65FB60();
     swift_unknownObjectRelease();
@@ -40,7 +40,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_18E65C7D8(v8);
@@ -51,7 +51,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_18E65C97C();
 
   v3 = sub_18E65F8F0();
@@ -59,9 +59,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_18E65CB60(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -70,40 +70,40 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_18E65CC80(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_18E65CC80(coderCopy);
 }
 
-- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithCoder:(id)a3
+- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_18E65D168(v3);
+  coderCopy = coder;
+  v4 = sub_18E65D168(coderCopy);
 
   return v4;
 }
 
-- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithXPCDictionary:(id)a3
+- (_TtC18ActivityUIServices20SizeDimensionRequest)initWithXPCDictionary:(id)dictionary
 {
   swift_unknownObjectRetain();
-  v4 = sub_18E65D28C(a3);
+  v4 = sub_18E65D28C(dictionary);
   swift_unknownObjectRelease();
   return v4;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = *(&self->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_minimum);
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     BSSerializeDoubleToXPCDictionaryWithKey();
-    v5 = *(&v6->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_maximum);
+    v5 = *(&selfCopy->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_maximum);
     BSSerializeDoubleToXPCDictionaryWithKey();
-    xpc_dictionary_set_int64(a3, "type", *(&v6->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_type));
+    xpc_dictionary_set_int64(dictionary, "type", *(&selfCopy->super.isa + OBJC_IVAR____TtC18ActivityUIServices20SizeDimensionRequest_type));
     swift_unknownObjectRelease();
   }
 }

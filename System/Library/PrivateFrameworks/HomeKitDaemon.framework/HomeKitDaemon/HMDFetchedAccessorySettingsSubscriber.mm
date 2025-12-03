@@ -1,16 +1,16 @@
 @interface HMDFetchedAccessorySettingsSubscriber
 + (id)logCategory;
-- (HMDFetchedAccessorySettingsSubscriber)initWithWorkQueue:(id)a3 subscriptionProvider:(id)a4 keyPaths:(id)a5 homeUUID:(id)a6;
+- (HMDFetchedAccessorySettingsSubscriber)initWithWorkQueue:(id)queue subscriptionProvider:(id)provider keyPaths:(id)paths homeUUID:(id)d;
 - (HMDFetchedAccessorySettingsSubscriberDelegate)delegate;
-- (id)cachedSettingForAccessory:(id)a3 keyPath:(id)a4;
+- (id)cachedSettingForAccessory:(id)accessory keyPath:(id)path;
 - (id)logIdentifier;
-- (id)topicsForKeyPaths:(void *)a3 accessoryUUID:(void *)a4 homeUUID:;
-- (void)_didReceiveEvent:(void *)a3 topic:;
-- (void)didReceiveCachedEvent:(id)a3 topic:(id)a4 source:(id)a5;
-- (void)didReceiveEvent:(id)a3 topic:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)subscribeToSettingsForAccessoryUUIDs:(id)a3;
-- (void)unsubscribeForAccessory:(id)a3;
+- (id)topicsForKeyPaths:(void *)paths accessoryUUID:(void *)d homeUUID:;
+- (void)_didReceiveEvent:(void *)event topic:;
+- (void)didReceiveCachedEvent:(id)event topic:(id)topic source:(id)source;
+- (void)didReceiveEvent:(id)event topic:(id)topic;
+- (void)setDelegate:(id)delegate;
+- (void)subscribeToSettingsForAccessoryUUIDs:(id)ds;
+- (void)unsubscribeForAccessory:(id)accessory;
 - (void)unsubscribeToAllAccessories;
 @end
 
@@ -27,10 +27,10 @@
   return [v2 stringWithFormat:@"%@", self];
 }
 
-- (void)didReceiveCachedEvent:(id)a3 topic:(id)a4 source:(id)a5
+- (void)didReceiveCachedEvent:(id)event topic:(id)topic source:(id)source
 {
-  v7 = a3;
-  v9 = a4;
+  eventCopy = event;
+  topicCopy = topic;
   if (self)
   {
     Property = objc_getProperty(self, v8, 32, 1);
@@ -46,24 +46,24 @@
   block[2] = __76__HMDFetchedAccessorySettingsSubscriber_didReceiveCachedEvent_topic_source___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v14 = v7;
-  v15 = v9;
-  v11 = v9;
-  v12 = v7;
+  v14 = eventCopy;
+  v15 = topicCopy;
+  v11 = topicCopy;
+  v12 = eventCopy;
   dispatch_async(Property, block);
 }
 
-- (void)_didReceiveEvent:(void *)a3 topic:
+- (void)_didReceiveEvent:(void *)event topic:
 {
   v50 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v7 = a3;
-  if (a1)
+  eventCopy = event;
+  if (self)
   {
-    Property = objc_getProperty(a1, v6, 32, 1);
+    Property = objc_getProperty(self, v6, 32, 1);
     dispatch_assert_queue_V2(Property);
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -73,7 +73,7 @@
       v44 = 2112;
       v45 = v5;
       v46 = 2112;
-      v47 = v7;
+      v47 = eventCopy;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Received event:%@ for topic:%@", buf, 0x20u);
     }
 
@@ -85,7 +85,7 @@
     if (!v13)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v10;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -115,7 +115,7 @@
     if (v19)
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = v10;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -132,21 +132,21 @@
 
     else
     {
-      v28 = objc_getProperty(v10, v18, 48, 1);
-      v29 = [v17 keyPath];
-      v30 = [v28 containsObject:v29];
+      v28 = objc_getProperty(selfCopy, v18, 48, 1);
+      keyPath = [v17 keyPath];
+      v30 = [v28 containsObject:keyPath];
 
       if (v30)
       {
         os_unfair_lock_lock_with_options();
-        v31 = *&v10[4]._os_unfair_lock_opaque;
-        v32 = [v17 keyPath];
-        v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v39, v32, v37];
+        v31 = *&selfCopy[4]._os_unfair_lock_opaque;
+        keyPath2 = [v17 keyPath];
+        v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v39, keyPath2, v37];
         [v31 setObject:v17 forKeyedSubscript:v33];
 
-        os_unfair_lock_unlock(v10 + 2);
-        v34 = [(os_unfair_lock_s *)v10 delegate];
-        [v34 didReceiveAccessorySetting:v17 accessoryUUID:v39];
+        os_unfair_lock_unlock(selfCopy + 2);
+        delegate = [(os_unfair_lock_s *)selfCopy delegate];
+        [delegate didReceiveAccessorySetting:v17 accessoryUUID:v39];
 
 LABEL_17:
 LABEL_18:
@@ -155,7 +155,7 @@ LABEL_18:
       }
 
       v20 = objc_autoreleasePoolPush();
-      v21 = v10;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -177,10 +177,10 @@ LABEL_19:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveEvent:(id)a3 topic:(id)a4
+- (void)didReceiveEvent:(id)event topic:(id)topic
 {
-  v6 = a3;
-  v8 = a4;
+  eventCopy = event;
+  topicCopy = topic;
   if (self)
   {
     Property = objc_getProperty(self, v7, 32, 1);
@@ -196,21 +196,21 @@ LABEL_19:
   block[2] = __63__HMDFetchedAccessorySettingsSubscriber_didReceiveEvent_topic___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v13 = v6;
-  v14 = v8;
-  v10 = v8;
-  v11 = v6;
+  v13 = eventCopy;
+  v14 = topicCopy;
+  v10 = topicCopy;
+  v11 = eventCopy;
   dispatch_async(Property, block);
 }
 
-- (id)cachedSettingForAccessory:(id)a3 keyPath:(id)a4
+- (id)cachedSettingForAccessory:(id)accessory keyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  pathCopy = path;
   os_unfair_lock_lock_with_options();
   cachedSettings = self->_cachedSettings;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v6, v7];
-  v10 = [(NSMutableDictionary *)cachedSettings objectForKeyedSubscript:v9];
+  pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", accessoryCopy, pathCopy];
+  v10 = [(NSMutableDictionary *)cachedSettings objectForKeyedSubscript:pathCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -319,21 +319,21 @@ LABEL_12:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unsubscribeForAccessory:(id)a3
+- (void)unsubscribeForAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   if (self)
   {
     v6 = objc_getProperty(self, v4, 48, 1);
     Property = objc_getProperty(self, v7, 56, 1);
-    v9 = [(HMDFetchedAccessorySettingsSubscriber *)self topicsForKeyPaths:v6 accessoryUUID:v5 homeUUID:Property];
+    v9 = [(HMDFetchedAccessorySettingsSubscriber *)self topicsForKeyPaths:v6 accessoryUUID:accessoryCopy homeUUID:Property];
 
     WeakRetained = objc_loadWeakRetained(&self->_subscriptionProvider);
   }
 
   else
   {
-    v9 = [(HMDFetchedAccessorySettingsSubscriber *)0 topicsForKeyPaths:v5 accessoryUUID:0 homeUUID:?];
+    v9 = [(HMDFetchedAccessorySettingsSubscriber *)0 topicsForKeyPaths:accessoryCopy accessoryUUID:0 homeUUID:?];
     WeakRetained = 0;
   }
 
@@ -342,24 +342,24 @@ LABEL_12:
   v12[2] = __65__HMDFetchedAccessorySettingsSubscriber_unsubscribeForAccessory___block_invoke;
   v12[3] = &unk_27868A1D8;
   v12[4] = self;
-  v13 = v5;
-  v11 = v5;
+  v13 = accessoryCopy;
+  v11 = accessoryCopy;
   [WeakRetained unregisterConsumer:self topicFilters:v9 completion:v12];
 }
 
-- (id)topicsForKeyPaths:(void *)a3 accessoryUUID:(void *)a4 homeUUID:
+- (id)topicsForKeyPaths:(void *)paths accessoryUUID:(void *)d homeUUID:
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a1)
+  pathsCopy = paths;
+  dCopy = d;
+  v9 = dCopy;
+  if (self)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __82__HMDFetchedAccessorySettingsSubscriber_topicsForKeyPaths_accessoryUUID_homeUUID___block_invoke;
     v12[3] = &unk_278689190;
-    v13 = v8;
-    v14 = v7;
+    v13 = dCopy;
+    v14 = pathsCopy;
     v10 = [a2 na_map:v12];
   }
 
@@ -468,15 +468,15 @@ void __82__HMDFetchedAccessorySettingsSubscriber_topicsForKeyPaths_accessoryUUID
   JUMPOUT(0x22AAD2730);
 }
 
-- (void)subscribeToSettingsForAccessoryUUIDs:(id)a3
+- (void)subscribeToSettingsForAccessoryUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__HMDFetchedAccessorySettingsSubscriber_subscribeToSettingsForAccessoryUUIDs___block_invoke;
   v10[3] = &unk_27867DB78;
   v10[4] = self;
-  v5 = [v4 na_flatMap:v10];
+  v5 = [dsCopy na_flatMap:v10];
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_subscriptionProvider);
@@ -492,8 +492,8 @@ void __82__HMDFetchedAccessorySettingsSubscriber_topicsForKeyPaths_accessoryUUID
   v8[2] = __78__HMDFetchedAccessorySettingsSubscriber_subscribeToSettingsForAccessoryUUIDs___block_invoke_2;
   v8[3] = &unk_27867DBA0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dsCopy;
+  v7 = dsCopy;
   [WeakRetained registerConsumer:self topicFilters:v5 completion:v8];
 }
 
@@ -626,11 +626,11 @@ LABEL_12:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -644,30 +644,30 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (HMDFetchedAccessorySettingsSubscriber)initWithWorkQueue:(id)a3 subscriptionProvider:(id)a4 keyPaths:(id)a5 homeUUID:(id)a6
+- (HMDFetchedAccessorySettingsSubscriber)initWithWorkQueue:(id)queue subscriptionProvider:(id)provider keyPaths:(id)paths homeUUID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  providerCopy = provider;
+  pathsCopy = paths;
+  dCopy = d;
   v24.receiver = self;
   v24.super_class = HMDFetchedAccessorySettingsSubscriber;
   v15 = [(HMDFetchedAccessorySettingsSubscriber *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_subscriptionProvider, v12);
-    objc_storeStrong(&v16->_workQueue, a3);
+    objc_storeWeak(&v15->_subscriptionProvider, providerCopy);
+    objc_storeStrong(&v16->_workQueue, queue);
     v16->_lock._os_unfair_lock_opaque = 0;
     v17 = objc_opt_new();
     cachedSettings = v16->_cachedSettings;
     v16->_cachedSettings = v17;
 
-    v19 = [v13 copy];
+    v19 = [pathsCopy copy];
     keyPaths = v16->_keyPaths;
     v16->_keyPaths = v19;
 
-    v21 = [v14 copy];
+    v21 = [dCopy copy];
     homeUUID = v16->_homeUUID;
     v16->_homeUUID = v21;
   }

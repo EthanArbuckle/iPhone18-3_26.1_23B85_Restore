@@ -1,12 +1,12 @@
 @interface CNGroupIdentityActionItem
-+ (id)imageForSystemImageNamed:(id)a3;
-+ (id)imageForSystemImageNamed:(id)a3 withPointSize:(double)a4;
-- (CNGroupIdentityActionItem)initWithTitle:(id)a3 actionType:(id)a4 image:(id)a5 actionBlock:(id)a6;
-- (CNGroupIdentityActionItem)initWithTitle:(id)a3 actionType:(id)a4 systemImageName:(id)a5 actionBlock:(id)a6;
-- (CNGroupIdentityActionItem)initWithTitle:(id)a3 actionType:(id)a4 systemImageName:(id)a5 overrideEnabledState:(BOOL)a6 actionBlock:(id)a7;
++ (id)imageForSystemImageNamed:(id)named;
++ (id)imageForSystemImageNamed:(id)named withPointSize:(double)size;
+- (CNGroupIdentityActionItem)initWithTitle:(id)title actionType:(id)type image:(id)image actionBlock:(id)block;
+- (CNGroupIdentityActionItem)initWithTitle:(id)title actionType:(id)type systemImageName:(id)name actionBlock:(id)block;
+- (CNGroupIdentityActionItem)initWithTitle:(id)title actionType:(id)type systemImageName:(id)name overrideEnabledState:(BOOL)state actionBlock:(id)block;
 - (CNGroupIdentityActionItemDelegate)delegate;
-- (void)setActionBlock:(id)a3;
-- (void)setOverrideEnabledState:(BOOL)a3;
+- (void)setActionBlock:(id)block;
+- (void)setOverrideEnabledState:(BOOL)state;
 @end
 
 @implementation CNGroupIdentityActionItem
@@ -18,63 +18,63 @@
   return WeakRetained;
 }
 
-- (void)setActionBlock:(id)a3
+- (void)setActionBlock:(id)block
 {
-  v4 = a3;
-  if (self->_actionBlock != v4)
+  blockCopy = block;
+  if (self->_actionBlock != blockCopy)
   {
-    v10 = v4;
-    v5 = _Block_copy(v4);
+    v10 = blockCopy;
+    v5 = _Block_copy(blockCopy);
     actionBlock = self->_actionBlock;
     self->_actionBlock = v5;
 
-    v7 = [(CNGroupIdentityActionItem *)self delegate];
+    delegate = [(CNGroupIdentityActionItem *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
-    v4 = v10;
+    blockCopy = v10;
     if (v8)
     {
-      v9 = [(CNGroupIdentityActionItem *)self delegate];
-      [v9 groupIdentityActionItem:self didUpdateActionBlock:v10];
+      delegate2 = [(CNGroupIdentityActionItem *)self delegate];
+      [delegate2 groupIdentityActionItem:self didUpdateActionBlock:v10];
 
-      v4 = v10;
+      blockCopy = v10;
     }
   }
 }
 
-- (void)setOverrideEnabledState:(BOOL)a3
+- (void)setOverrideEnabledState:(BOOL)state
 {
-  if (self->_overrideEnabledState != a3)
+  if (self->_overrideEnabledState != state)
   {
-    v3 = a3;
-    self->_overrideEnabledState = a3;
-    v5 = [(CNGroupIdentityActionItem *)self delegate];
+    stateCopy = state;
+    self->_overrideEnabledState = state;
+    delegate = [(CNGroupIdentityActionItem *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CNGroupIdentityActionItem *)self delegate];
-      [v7 groupIdentityActionItem:self didUpdateOverrideEnabledState:v3];
+      delegate2 = [(CNGroupIdentityActionItem *)self delegate];
+      [delegate2 groupIdentityActionItem:self didUpdateOverrideEnabledState:stateCopy];
     }
   }
 }
 
-- (CNGroupIdentityActionItem)initWithTitle:(id)a3 actionType:(id)a4 image:(id)a5 actionBlock:(id)a6
+- (CNGroupIdentityActionItem)initWithTitle:(id)title actionType:(id)type image:(id)image actionBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  typeCopy = type;
+  imageCopy = image;
+  blockCopy = block;
   v21.receiver = self;
   v21.super_class = CNGroupIdentityActionItem;
   v15 = [(CNGroupIdentityActionItem *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_title, a3);
-    v16->_actionType = v12;
-    v16->_image = v13;
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_title, title);
+    v16->_actionType = typeCopy;
+    v16->_image = imageCopy;
+    v17 = [blockCopy copy];
     actionBlock = v16->_actionBlock;
     v16->_actionBlock = v17;
 
@@ -85,46 +85,46 @@
   return v16;
 }
 
-- (CNGroupIdentityActionItem)initWithTitle:(id)a3 actionType:(id)a4 systemImageName:(id)a5 actionBlock:(id)a6
+- (CNGroupIdentityActionItem)initWithTitle:(id)title actionType:(id)type systemImageName:(id)name actionBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_opt_class() imageForSystemImageNamed:v11];
+  blockCopy = block;
+  nameCopy = name;
+  typeCopy = type;
+  titleCopy = title;
+  v14 = [objc_opt_class() imageForSystemImageNamed:nameCopy];
 
-  v15 = [(CNGroupIdentityActionItem *)self initWithTitle:v13 actionType:v12 image:v14 actionBlock:v10];
+  v15 = [(CNGroupIdentityActionItem *)self initWithTitle:titleCopy actionType:typeCopy image:v14 actionBlock:blockCopy];
   return v15;
 }
 
-- (CNGroupIdentityActionItem)initWithTitle:(id)a3 actionType:(id)a4 systemImageName:(id)a5 overrideEnabledState:(BOOL)a6 actionBlock:(id)a7
+- (CNGroupIdentityActionItem)initWithTitle:(id)title actionType:(id)type systemImageName:(id)name overrideEnabledState:(BOOL)state actionBlock:(id)block
 {
-  v8 = [(CNGroupIdentityActionItem *)self initWithTitle:a3 actionType:a4 systemImageName:a5 actionBlock:a7];
+  v8 = [(CNGroupIdentityActionItem *)self initWithTitle:title actionType:type systemImageName:name actionBlock:block];
   v9 = v8;
   if (v8)
   {
     v8->_shouldOverrideEnabledState = 1;
-    v8->_overrideEnabledState = a6;
+    v8->_overrideEnabledState = state;
     v10 = v8;
   }
 
   return v9;
 }
 
-+ (id)imageForSystemImageNamed:(id)a3 withPointSize:(double)a4
++ (id)imageForSystemImageNamed:(id)named withPointSize:(double)size
 {
   v5 = MEMORY[0x1E69DCAD8];
-  v6 = a3;
-  v7 = [v5 configurationWithPointSize:0 weight:2 scale:a4];
-  v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:v6 withConfiguration:v7];
+  namedCopy = named;
+  v7 = [v5 configurationWithPointSize:0 weight:2 scale:size];
+  v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:namedCopy withConfiguration:v7];
 
   return v8;
 }
 
-+ (id)imageForSystemImageNamed:(id)a3
++ (id)imageForSystemImageNamed:(id)named
 {
-  v3 = a3;
-  v4 = [objc_opt_class() imageForSystemImageNamed:v3 withTextStyle:*MEMORY[0x1E69DDDC8]];
+  namedCopy = named;
+  v4 = [objc_opt_class() imageForSystemImageNamed:namedCopy withTextStyle:*MEMORY[0x1E69DDDC8]];
 
   return v4;
 }

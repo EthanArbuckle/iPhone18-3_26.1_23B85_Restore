@@ -1,24 +1,24 @@
 @interface MPAVErrorResolverBlockHandler
-- (MPAVErrorResolverBlockHandler)initWithErrorResolver:(id)a3;
-- (void)errorResolver:(id)a3 didResolveError:(id)a4 withResolution:(int64_t)a5;
-- (void)resolveError:(id)a3;
+- (MPAVErrorResolverBlockHandler)initWithErrorResolver:(id)resolver;
+- (void)errorResolver:(id)resolver didResolveError:(id)error withResolution:(int64_t)resolution;
+- (void)resolveError:(id)error;
 @end
 
 @implementation MPAVErrorResolverBlockHandler
 
-- (void)resolveError:(id)a3
+- (void)resolveError:(id)error
 {
   objc_storeStrong(&self->_strongSelf, self);
-  v5 = a3;
-  [(MPAVErrorResolver *)self->_errorResolver resolveError:v5];
+  errorCopy = error;
+  [(MPAVErrorResolver *)self->_errorResolver resolveError:errorCopy];
 }
 
-- (void)errorResolver:(id)a3 didResolveError:(id)a4 withResolution:(int64_t)a5
+- (void)errorResolver:(id)resolver didResolveError:(id)error withResolution:(int64_t)resolution
 {
   resolutionHandler = self->_resolutionHandler;
   if (resolutionHandler)
   {
-    resolutionHandler[2](resolutionHandler, a5, a3, a4);
+    resolutionHandler[2](resolutionHandler, resolution, resolver, error);
     v7 = self->_resolutionHandler;
     self->_resolutionHandler = 0;
 
@@ -27,16 +27,16 @@
   }
 }
 
-- (MPAVErrorResolverBlockHandler)initWithErrorResolver:(id)a3
+- (MPAVErrorResolverBlockHandler)initWithErrorResolver:(id)resolver
 {
-  v5 = a3;
+  resolverCopy = resolver;
   v9.receiver = self;
   v9.super_class = MPAVErrorResolverBlockHandler;
   v6 = [(MPAVErrorResolverBlockHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_errorResolver, a3);
+    objc_storeStrong(&v6->_errorResolver, resolver);
     [(MPAVErrorResolver *)v7->_errorResolver setDelegate:v7];
   }
 

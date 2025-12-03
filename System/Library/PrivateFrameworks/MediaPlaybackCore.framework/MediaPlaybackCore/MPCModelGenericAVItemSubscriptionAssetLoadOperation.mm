@@ -1,30 +1,30 @@
 @interface MPCModelGenericAVItemSubscriptionAssetLoadOperation
-- (BOOL)_canRetrieveLoadResultsFromMiniSinfWithAssets:(id *)a3;
-- (BOOL)_canRetrieveLoadResultsFromServerObjectDatabaseWithAssets:(id *)a3 hlsAsset:(id *)a4;
+- (BOOL)_canRetrieveLoadResultsFromMiniSinfWithAssets:(id *)assets;
+- (BOOL)_canRetrieveLoadResultsFromServerObjectDatabaseWithAssets:(id *)assets hlsAsset:(id *)asset;
 - (MPCModelGenericAVItemSubscriptionAssetLoadOperation)init;
-- (id)_handlePlaybackResponse:(id)a3 withPlaybackCacheRequest:(id)a4 error:(id *)a5;
-- (id)_loadResultsFromServerObjectDatabaseAssets:(id)a3 hlsAsset:(id)a4;
-- (id)_loadResultsFromServerObjectDatabaseAssetsWithMiniSinf:(id)a3;
+- (id)_handlePlaybackResponse:(id)response withPlaybackCacheRequest:(id)request error:(id *)error;
+- (id)_loadResultsFromServerObjectDatabaseAssets:(id)assets hlsAsset:(id)asset;
+- (id)_loadResultsFromServerObjectDatabaseAssetsWithMiniSinf:(id)sinf;
 - (id)cancellationHandler;
 - (id)description;
 - (void)cancel;
 - (void)execute;
-- (void)setCancellationHandler:(id)a3;
+- (void)setCancellationHandler:(id)handler;
 @end
 
 @implementation MPCModelGenericAVItemSubscriptionAssetLoadOperation
 
-- (void)setCancellationHandler:(id)a3
+- (void)setCancellationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__MPCModelGenericAVItemSubscriptionAssetLoadOperation_setCancellationHandler___block_invoke;
   v7[3] = &unk_1E8239170;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -70,34 +70,34 @@ uint64_t __74__MPCModelGenericAVItemSubscriptionAssetLoadOperation_cancellationH
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)_handlePlaybackResponse:(id)a3 withPlaybackCacheRequest:(id)a4 error:(id *)a5
+- (id)_handlePlaybackResponse:(id)response withPlaybackCacheRequest:(id)request error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
-  v11 = [v8 items];
-  v12 = [v11 firstObject];
+  responseCopy = response;
+  requestCopy = request;
+  assetLoadProperties = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
+  items = [responseCopy items];
+  firstObject = [items firstObject];
 
-  if (v12)
+  if (firstObject)
   {
-    v41 = v10;
-    v39 = a5;
+    v41 = assetLoadProperties;
+    errorCopy = error;
     v13 = objc_alloc_init(MEMORY[0x1E6970820]);
-    v14 = [v12 assetExpirationDate];
-    [v13 setExpirationDate:v14];
+    assetExpirationDate = [firstObject assetExpirationDate];
+    [v13 setExpirationDate:assetExpirationDate];
 
-    v40 = v8;
-    v15 = [v8 dialog];
-    v16 = [v15 responseDictionary];
-    [v13 setDialogDictionary:v16];
+    v40 = responseCopy;
+    dialog = [responseCopy dialog];
+    responseDictionary = [dialog responseDictionary];
+    [v13 setDialogDictionary:responseDictionary];
 
-    v17 = [v12 fileAssets];
+    fileAssets = [firstObject fileAssets];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v18 = [v17 countByEnumeratingWithState:&v43 objects:v47 count:16];
+    v18 = [fileAssets countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v18)
     {
       v19 = v18;
@@ -109,7 +109,7 @@ uint64_t __74__MPCModelGenericAVItemSubscriptionAssetLoadOperation_cancellationH
         {
           if (*v44 != v21)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(fileAssets);
           }
 
           v23 = [objc_alloc(MEMORY[0x1E69709B0]) initWithiTunesCloudStoreFileAssetInfo:*(*(&v43 + 1) + 8 * i)];
@@ -117,14 +117,14 @@ uint64_t __74__MPCModelGenericAVItemSubscriptionAssetLoadOperation_cancellationH
           {
             if (!v20)
             {
-              v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v17, "count")}];
+              v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(fileAssets, "count")}];
             }
 
             [v20 addObject:v23];
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v43 objects:v47 count:16];
+        v19 = [fileAssets countByEnumeratingWithState:&v43 objects:v47 count:16];
       }
 
       while (v19);
@@ -136,10 +136,10 @@ uint64_t __74__MPCModelGenericAVItemSubscriptionAssetLoadOperation_cancellationH
     }
 
     [v13 setFileAssetInfoList:v20];
-    v33 = [v12 hlsAsset];
-    if (v33)
+    hlsAsset = [firstObject hlsAsset];
+    if (hlsAsset)
     {
-      v34 = [objc_alloc(MEMORY[0x1E69709B8]) initWithiTunesCloudStoreHLSAssetInfo:v33];
+      v34 = [objc_alloc(MEMORY[0x1E69709B8]) initWithiTunesCloudStoreHLSAssetInfo:hlsAsset];
       [v13 setHlsAssetInfo:v34];
     }
 
@@ -147,18 +147,18 @@ uint64_t __74__MPCModelGenericAVItemSubscriptionAssetLoadOperation_cancellationH
     v30 = v41;
     v32 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v13 assetLoadProperties:v41 source:6 error:&v42];
     v31 = v42;
-    v35 = [v32 allowsAssetInfoCaching];
-    v8 = v40;
-    if (v9 && v35)
+    allowsAssetInfoCaching = [v32 allowsAssetInfoCaching];
+    responseCopy = v40;
+    if (requestCopy && allowsAssetInfoCaching)
     {
-      v36 = [MEMORY[0x1E6970990] sharedCache];
-      [v36 addCachedResponse:v13 forRequest:v9];
+      mEMORY[0x1E6970990] = [MEMORY[0x1E6970990] sharedCache];
+      [mEMORY[0x1E6970990] addCachedResponse:v13 forRequest:requestCopy];
 
       v30 = v41;
     }
 
-    a5 = v39;
-    if (v39)
+    error = errorCopy;
+    if (errorCopy)
     {
       goto LABEL_23;
     }
@@ -166,50 +166,50 @@ uint64_t __74__MPCModelGenericAVItemSubscriptionAssetLoadOperation_cancellationH
 
   else
   {
-    v24 = v10;
+    v24 = assetLoadProperties;
     v25 = MEMORY[0x1E696ABC0];
-    v26 = [MEMORY[0x1E696ABC0] errorForICError:0 response:v8];
-    v27 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
-    v28 = [v27 itemIdentifiers];
+    v26 = [MEMORY[0x1E696ABC0] errorForICError:0 response:responseCopy];
+    assetLoadProperties2 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
+    itemIdentifiers = [assetLoadProperties2 itemIdentifiers];
     v29 = v25;
     v30 = v24;
-    v31 = [v29 msv_errorWithDomain:@"MPCError" code:54 underlyingError:v26 debugDescription:{@"Response did not contain asset for item identifiers: %@", v28}];
+    v31 = [v29 msv_errorWithDomain:@"MPCError" code:54 underlyingError:v26 debugDescription:{@"Response did not contain asset for item identifiers: %@", itemIdentifiers}];
 
     v32 = 0;
-    if (a5)
+    if (error)
     {
 LABEL_23:
       v37 = v31;
-      *a5 = v31;
+      *error = v31;
     }
   }
 
   return v32;
 }
 
-- (id)_loadResultsFromServerObjectDatabaseAssets:(id)a3 hlsAsset:(id)a4
+- (id)_loadResultsFromServerObjectDatabaseAssets:(id)assets hlsAsset:(id)asset
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 count];
-  v38 = v8;
-  if (!v8 && !v9)
+  assetsCopy = assets;
+  assetCopy = asset;
+  v9 = [assetsCopy count];
+  v38 = assetCopy;
+  if (!assetCopy && !v9)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"MPCModelGenericAVItemSubscriptionAssetLoadOperation.m" lineNumber:368 description:{@"Invalid parameter not satisfying: %@", @"assets.count > 0 || hlsAsset != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelGenericAVItemSubscriptionAssetLoadOperation.m" lineNumber:368 description:{@"Invalid parameter not satisfying: %@", @"assets.count > 0 || hlsAsset != nil"}];
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E6970820]);
   [v10 setSubscriptionRequired:1];
   v37 = v10;
   [v10 setOnlineSubscriptionKeysRequired:1];
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v7;
+  obj = assetsCopy;
   v12 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v12)
   {
@@ -225,28 +225,28 @@ LABEL_23:
         }
 
         v16 = *(*(&v40 + 1) + 8 * i);
-        v17 = [v16 sinfs];
+        sinfs = [v16 sinfs];
 
-        if (v17)
+        if (sinfs)
         {
           v44[0] = @"URL";
           v18 = [v16 url];
-          v19 = [v18 absoluteString];
-          v45[0] = v19;
+          absoluteString = [v18 absoluteString];
+          v45[0] = absoluteString;
           v44[1] = @"flavor";
-          v20 = [v16 flavor];
+          flavor = [v16 flavor];
           v21 = @"unknown";
-          if ((v20 - 1) <= 3)
+          if ((flavor - 1) <= 3)
           {
-            v21 = off_1E82334E8[v20 - 1];
+            v21 = off_1E82334E8[flavor - 1];
           }
 
           v45[1] = v21;
           v45[2] = &unk_1F4599A60;
           v44[2] = @"metadata";
           v44[3] = @"sinfs";
-          v22 = [v16 sinfs];
-          v45[3] = v22;
+          sinfs2 = [v16 sinfs];
+          v45[3] = sinfs2;
           v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:4];
 
           v24 = [objc_alloc(MEMORY[0x1E69E45F8]) initWithFileAssetResponseDictionary:v23];
@@ -266,53 +266,53 @@ LABEL_23:
   if (v38)
   {
     v26 = objc_alloc_init(MEMORY[0x1E69E4600]);
-    v27 = [v38 playlistURL];
-    [v26 setPlaylistURL:v27];
+    playlistURL = [v38 playlistURL];
+    [v26 setPlaylistURL:playlistURL];
 
-    v28 = [v38 keyCertificateURL];
-    [v26 setKeyCertificateURL:v28];
+    keyCertificateURL = [v38 keyCertificateURL];
+    [v26 setKeyCertificateURL:keyCertificateURL];
 
-    v29 = [v38 keyServerURL];
-    [v26 setKeyServerURL:v29];
+    keyServerURL = [v38 keyServerURL];
+    [v26 setKeyServerURL:keyServerURL];
 
-    v30 = [v38 keyServerProtocolType];
-    [v26 setKeyServerProtocolType:v30];
+    keyServerProtocolType = [v38 keyServerProtocolType];
+    [v26 setKeyServerProtocolType:keyServerProtocolType];
 
     [v26 setITunesStoreStream:{objc_msgSend(v38, "isiTunesStoreStream")}];
-    v31 = [v38 keyServerAdamID];
-    [v26 setKeyServerAdamID:v31];
+    keyServerAdamID = [v38 keyServerAdamID];
+    [v26 setKeyServerAdamID:keyServerAdamID];
 
     v32 = [objc_alloc(MEMORY[0x1E69709B8]) initWithiTunesCloudStoreHLSAssetInfo:v26];
     [v37 setHlsAssetInfo:v32];
   }
 
-  v33 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
-  v34 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v37 assetLoadProperties:v33 source:4 error:0];
+  assetLoadProperties = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
+  v34 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v37 assetLoadProperties:assetLoadProperties source:4 error:0];
 
   return v34;
 }
 
-- (id)_loadResultsFromServerObjectDatabaseAssetsWithMiniSinf:(id)a3
+- (id)_loadResultsFromServerObjectDatabaseAssetsWithMiniSinf:(id)sinf
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![v5 count])
+  sinfCopy = sinf;
+  if (![sinfCopy count])
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"MPCModelGenericAVItemSubscriptionAssetLoadOperation.m" lineNumber:338 description:{@"Invalid parameter not satisfying: %@", @"assets.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCModelGenericAVItemSubscriptionAssetLoadOperation.m" lineNumber:338 description:{@"Invalid parameter not satisfying: %@", @"assets.count > 0"}];
   }
 
-  v27 = self;
+  selfCopy = self;
   v6 = objc_alloc_init(MEMORY[0x1E6970820]);
   [v6 setSubscriptionRequired:1];
   v26 = v6;
   [v6 setOnlineSubscriptionKeysRequired:1];
-  v29 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v29 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(sinfCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = sinfCopy;
   v7 = [obj countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v7)
   {
@@ -330,14 +330,14 @@ LABEL_23:
         v11 = *(*(&v30 + 1) + 8 * i);
         v37[0] = @"URL";
         v12 = [v11 url];
-        v13 = [v12 absoluteString];
-        v38[0] = v13;
+        absoluteString = [v12 absoluteString];
+        v38[0] = absoluteString;
         v37[1] = @"flavor";
-        v14 = [v11 flavor];
+        flavor = [v11 flavor];
         v15 = @"unknown";
-        if ((v14 - 1) <= 3)
+        if ((flavor - 1) <= 3)
         {
-          v15 = off_1E82334E8[v14 - 1];
+          v15 = off_1E82334E8[flavor - 1];
         }
 
         v38[1] = v15;
@@ -347,8 +347,8 @@ LABEL_23:
         v34[0] = @"id";
         v34[1] = @"sinf2";
         v35[0] = &unk_1F4599310;
-        v16 = [v11 miniSINF];
-        v35[1] = v16;
+        miniSINF = [v11 miniSINF];
+        v35[1] = miniSINF;
         v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
         v36 = v17;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
@@ -368,41 +368,41 @@ LABEL_23:
   }
 
   [v26 setFileAssetInfoList:v29];
-  v22 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)v27 assetLoadProperties];
-  v23 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v26 assetLoadProperties:v22 source:5 error:0];
+  assetLoadProperties = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)selfCopy assetLoadProperties];
+  v23 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v26 assetLoadProperties:assetLoadProperties source:5 error:0];
 
   return v23;
 }
 
-- (BOOL)_canRetrieveLoadResultsFromServerObjectDatabaseWithAssets:(id *)a3 hlsAsset:(id *)a4
+- (BOOL)_canRetrieveLoadResultsFromServerObjectDatabaseWithAssets:(id *)assets hlsAsset:(id *)asset
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
-  if ([v7 isFollowUp])
+  assetLoadProperties = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
+  if ([assetLoadProperties isFollowUp])
   {
-    v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x1E6970950] = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (os_log_type_enabled(mEMORY[0x1E6970950], OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138543362;
-      v27 = self;
+      selfCopy5 = self;
       v9 = "[AL] - %{public}@: Skipping assets in the server object database [skipped due to asset load policy]";
 LABEL_15:
-      _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, v9, &v26, 0xCu);
+      _os_log_impl(&dword_1C5C61000, mEMORY[0x1E6970950], OS_LOG_TYPE_DEFAULT, v9, &v26, 0xCu);
     }
   }
 
   else
   {
-    v10 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
-    v11 = [v10 isDelegatedLeaseSession];
+    subscriptionLeaseSession = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
+    isDelegatedLeaseSession = [subscriptionLeaseSession isDelegatedLeaseSession];
 
-    if (v11)
+    if (isDelegatedLeaseSession)
     {
-      v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      mEMORY[0x1E6970950] = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+      if (os_log_type_enabled(mEMORY[0x1E6970950], OS_LOG_TYPE_DEFAULT))
       {
         v26 = 138543362;
-        v27 = self;
+        selfCopy5 = self;
         v9 = "[AL] - %{public}@: Skipping assets in the server object database [delegated lease]";
         goto LABEL_15;
       }
@@ -410,18 +410,18 @@ LABEL_15:
 
     else
     {
-      v12 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
-      v13 = [v12 leaseStatus];
-      v14 = [v13 hasOnlinePlaybackKeys];
+      subscriptionLeaseSession2 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
+      leaseStatus = [subscriptionLeaseSession2 leaseStatus];
+      hasOnlinePlaybackKeys = [leaseStatus hasOnlinePlaybackKeys];
 
-      if (v14)
+      if (hasOnlinePlaybackKeys)
       {
-        v8 = [MEMORY[0x1E6970950] sharedServerObjectDatabase];
-        v15 = [v7 preferredAudioAssetType];
-        v16 = [v7 itemIdentifiers];
-        if (v15 < 2)
+        mEMORY[0x1E6970950] = [MEMORY[0x1E6970950] sharedServerObjectDatabase];
+        preferredAudioAssetType = [assetLoadProperties preferredAudioAssetType];
+        itemIdentifiers = [assetLoadProperties itemIdentifiers];
+        if (preferredAudioAssetType < 2)
         {
-          v21 = [v8 assetsMatchingIdentifierSet:v16];
+          v21 = [mEMORY[0x1E6970950] assetsMatchingIdentifierSet:itemIdentifiers];
           v22 = [v21 msv_filter:&__block_literal_global_9964];
 
           if (![v22 count])
@@ -430,23 +430,23 @@ LABEL_15:
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
               v26 = 138543362;
-              v27 = self;
+              selfCopy5 = self;
               _os_log_impl(&dword_1C5C61000, v25, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Skipping assets in the server object database [no assets found]", &v26, 0xCu);
             }
 
             goto LABEL_16;
           }
 
-          if (a3)
+          if (assets)
           {
             v23 = v22;
-            *a3 = v22;
+            *assets = v22;
           }
         }
 
         else
         {
-          v17 = [v8 hlsAssetMatchingIdentifierSet:v16];
+          v17 = [mEMORY[0x1E6970950] hlsAssetMatchingIdentifierSet:itemIdentifiers];
 
           if (!v17)
           {
@@ -454,17 +454,17 @@ LABEL_15:
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
               v26 = 138543362;
-              v27 = self;
+              selfCopy5 = self;
               _os_log_impl(&dword_1C5C61000, v24, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Skipping assets in the server object database [no HLS assets found]", &v26, 0xCu);
             }
 
             goto LABEL_16;
           }
 
-          if (a4)
+          if (asset)
           {
             v18 = v17;
-            *a4 = v17;
+            *asset = v17;
           }
         }
 
@@ -472,11 +472,11 @@ LABEL_15:
         goto LABEL_17;
       }
 
-      v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      mEMORY[0x1E6970950] = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+      if (os_log_type_enabled(mEMORY[0x1E6970950], OS_LOG_TYPE_DEFAULT))
       {
         v26 = 138543362;
-        v27 = self;
+        selfCopy5 = self;
         v9 = "[AL] - %{public}@: Skipping assets in the server object database [no online lease]";
         goto LABEL_15;
       }
@@ -498,33 +498,33 @@ BOOL __122__MPCModelGenericAVItemSubscriptionAssetLoadOperation__canRetrieveLoad
   return v3;
 }
 
-- (BOOL)_canRetrieveLoadResultsFromMiniSinfWithAssets:(id *)a3
+- (BOOL)_canRetrieveLoadResultsFromMiniSinfWithAssets:(id *)assets
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
-  if ([v5 preferredAudioAssetType] >= 2)
+  assetLoadProperties = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
+  if ([assetLoadProperties preferredAudioAssetType] >= 2)
   {
-    v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x1E6970950] = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (os_log_type_enabled(mEMORY[0x1E6970950], OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138543362;
-      v24 = self;
+      selfCopy5 = self;
       v7 = "[AL] - %{public}@: Skipping miniSINF in the server object database [HLS playback]";
 LABEL_8:
-      _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, v7, &v23, 0xCu);
+      _os_log_impl(&dword_1C5C61000, mEMORY[0x1E6970950], OS_LOG_TYPE_DEFAULT, v7, &v23, 0xCu);
       goto LABEL_9;
     }
 
     goto LABEL_9;
   }
 
-  if (([v5 isFollowUp] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69708A8], "standardUserDefaults"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "disableMiniSINF"), v8, v9))
+  if (([assetLoadProperties isFollowUp] & 1) != 0 || (objc_msgSend(MEMORY[0x1E69708A8], "standardUserDefaults"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "disableMiniSINF"), v8, v9))
   {
-    v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x1E6970950] = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (os_log_type_enabled(mEMORY[0x1E6970950], OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138543362;
-      v24 = self;
+      selfCopy5 = self;
       v7 = "[AL] - %{public}@: Skipping miniSINF in the server object database [skipped due to asset load policy]";
       goto LABEL_8;
     }
@@ -534,54 +534,54 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
-  v13 = [v12 isDelegatedLeaseSession];
+  subscriptionLeaseSession = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
+  isDelegatedLeaseSession = [subscriptionLeaseSession isDelegatedLeaseSession];
 
-  if (v13)
+  if (isDelegatedLeaseSession)
   {
-    v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x1E6970950] = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (!os_log_type_enabled(mEMORY[0x1E6970950], OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_9;
     }
 
     v23 = 138543362;
-    v24 = self;
+    selfCopy5 = self;
     v7 = "[AL] - %{public}@: Skipping miniSINF in the server object database [delegated lease]";
     goto LABEL_8;
   }
 
-  v14 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
-  v15 = [v14 leaseStatus];
-  v16 = [v15 hasOnlinePlaybackKeys];
+  subscriptionLeaseSession2 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
+  leaseStatus = [subscriptionLeaseSession2 leaseStatus];
+  hasOnlinePlaybackKeys = [leaseStatus hasOnlinePlaybackKeys];
 
-  if ((v16 & 1) == 0)
+  if ((hasOnlinePlaybackKeys & 1) == 0)
   {
-    v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x1E6970950] = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
+    if (!os_log_type_enabled(mEMORY[0x1E6970950], OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_9;
     }
 
     v23 = 138543362;
-    v24 = self;
+    selfCopy5 = self;
     v7 = "[AL] - %{public}@: Skipping miniSINF in the server object database [no online lease]";
     goto LABEL_8;
   }
 
-  v6 = [MEMORY[0x1E6970950] sharedServerObjectDatabase];
-  v17 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
-  v18 = [v17 itemIdentifiers];
-  v19 = [v6 assetsWithMiniSINFsMatchingIdentifierSet:v18];
+  mEMORY[0x1E6970950] = [MEMORY[0x1E6970950] sharedServerObjectDatabase];
+  assetLoadProperties2 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
+  itemIdentifiers = [assetLoadProperties2 itemIdentifiers];
+  v19 = [mEMORY[0x1E6970950] assetsWithMiniSINFsMatchingIdentifierSet:itemIdentifiers];
 
   v20 = [v19 count];
   v10 = v20 != 0;
   if (v20)
   {
-    if (a3)
+    if (assets)
     {
       v21 = v19;
-      *a3 = v19;
+      *assets = v19;
     }
   }
 
@@ -591,7 +591,7 @@ LABEL_9:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138543362;
-      v24 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_1C5C61000, v22, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Skipping miniSINF in the server object database [no assets found]", &v23, 0xCu);
     }
   }
@@ -609,60 +609,60 @@ LABEL_10:
   aBlock[3] = &unk_1E8233480;
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
-  v5 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
-  v65 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self requestContext];
-  v6 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self operationType];
+  assetLoadProperties = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
+  requestContext = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self requestContext];
+  operationType = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self operationType];
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v83 = self;
+    selfCopy12 = self;
     v84 = 2048;
-    *v85 = v6;
+    *v85 = operationType;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Using subscription playback endpoint with operation type: %li", buf, 0x16u);
   }
 
-  v8 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v9 = [v8 isRemoteServerLikelyReachable];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  isRemoteServerLikelyReachable = [mEMORY[0x1E69E4428] isRemoteServerLikelyReachable];
 
-  if (v9)
+  if (isRemoteServerLikelyReachable)
   {
-    v10 = [v5 itemIdentifiers];
-    v11 = [v10 universalStore];
-    v12 = [v11 subscriptionAdamID];
+    itemIdentifiers = [assetLoadProperties itemIdentifiers];
+    universalStore = [itemIdentifiers universalStore];
+    subscriptionAdamID = [universalStore subscriptionAdamID];
 
-    if (!v12)
+    if (!subscriptionAdamID)
     {
-      v13 = [v10 universalStore];
-      v12 = [v13 adamID];
+      universalStore2 = [itemIdentifiers universalStore];
+      subscriptionAdamID = [universalStore2 adamID];
     }
 
     v14 = objc_alloc_init(MEMORY[0x1E6970998]);
-    [v14 setAccountID:{objc_msgSend(v5, "accountID")}];
-    [v14 setDelegatedAccountID:{objc_msgSend(v5, "delegatedAccountID")}];
-    if (v6 == 2)
+    [v14 setAccountID:{objc_msgSend(assetLoadProperties, "accountID")}];
+    [v14 setDelegatedAccountID:{objc_msgSend(assetLoadProperties, "delegatedAccountID")}];
+    if (operationType == 2)
     {
       v27 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v83 = self;
+        selfCopy12 = self;
         _os_log_impl(&dword_1C5C61000, v27, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Performing subscription accountless playback request...", buf, 0xCu);
       }
 
       [v14 setRequestType:2];
-      [v14 setStoreSubscriptionAdamID:v12];
-      v28 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
-      v29 = [v28 leaseStatus];
-      v30 = [v29 hasOnlinePlaybackKeys];
+      [v14 setStoreSubscriptionAdamID:subscriptionAdamID];
+      subscriptionLeaseSession = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
+      leaseStatus = [subscriptionLeaseSession leaseStatus];
+      hasOnlinePlaybackKeys = [leaseStatus hasOnlinePlaybackKeys];
 
-      if (v30)
+      if (hasOnlinePlaybackKeys)
       {
-        v16 = [MEMORY[0x1E6970990] sharedCache];
-        v31 = [v16 cachedResponseForRequest:v14];
+        mEMORY[0x1E6970990] = [MEMORY[0x1E6970990] sharedCache];
+        v31 = [mEMORY[0x1E6970990] cachedResponseForRequest:v14];
         if (v31)
         {
-          v32 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v31 assetLoadProperties:v5 source:3 error:0];
+          v32 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v31 assetLoadProperties:assetLoadProperties source:3 error:0];
         }
 
         else
@@ -676,7 +676,7 @@ LABEL_10:
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v83 = self;
+            selfCopy12 = self;
             v84 = 2114;
             *v85 = v31;
             _os_log_impl(&dword_1C5C61000, v39, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Using existing cached playback response: %{public}@", buf, 0x16u);
@@ -687,7 +687,7 @@ LABEL_10:
         }
       }
 
-      v16 = [objc_alloc(MEMORY[0x1E69E4488]) initWithRequestContext:v65 storeSubscriptionAdamID:v12];
+      mEMORY[0x1E6970990] = [objc_alloc(MEMORY[0x1E69E4488]) initWithRequestContext:requestContext storeSubscriptionAdamID:subscriptionAdamID];
       v69[0] = MEMORY[0x1E69E9820];
       v69[1] = 3221225472;
       v69[2] = __62__MPCModelGenericAVItemSubscriptionAssetLoadOperation_execute__block_invoke_33;
@@ -695,7 +695,7 @@ LABEL_10:
       v69[4] = self;
       v70 = v14;
       v71 = v4;
-      v40 = [v16 performWithResponseHandler:v69];
+      v40 = [mEMORY[0x1E6970990] performWithResponseHandler:v69];
       objc_initWeak(buf, self);
       v66[0] = MEMORY[0x1E69E9820];
       v66[1] = 3221225472;
@@ -712,40 +712,40 @@ LABEL_10:
 
     else
     {
-      if (v6 == 1)
+      if (operationType == 1)
       {
         v15 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v83 = self;
+          selfCopy12 = self;
           _os_log_impl(&dword_1C5C61000, v15, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Loading subscription lease session...", buf, 0xCu);
         }
 
-        v16 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
+        mEMORY[0x1E6970990] = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
         v17 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         v18 = v17;
-        if (!v16)
+        if (!mEMORY[0x1E6970990])
         {
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v83 = self;
+            selfCopy12 = self;
             _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_ERROR, "[AL] - %{public}@: Failed loading subscription asset due to missing lease session.", buf, 0xCu);
           }
 
-          v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:19 userInfo:0];
-          (*(v4 + 2))(v4, 0, 0, v16);
+          mEMORY[0x1E6970990] = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:19 userInfo:0];
+          (*(v4 + 2))(v4, 0, 0, mEMORY[0x1E6970990]);
           goto LABEL_70;
         }
 
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [v16 leaseStatus];
+          leaseStatus2 = [mEMORY[0x1E6970990] leaseStatus];
           *buf = 138543618;
-          v83 = self;
+          selfCopy12 = self;
           v84 = 2114;
-          *v85 = v19;
+          *v85 = leaseStatus2;
           _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, "[AL][Lease] - %{public}@: Has subscription lease session, using it. Lease status: %{public}@", buf, 0x16u);
         }
 
@@ -758,15 +758,15 @@ LABEL_10:
           v23 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v5 prefersVideoContent];
+            prefersVideoContent = [assetLoadProperties prefersVideoContent];
             v25 = @"audio";
-            if (v24)
+            if (prefersVideoContent)
             {
               v25 = @"video";
             }
 
             *buf = 138543618;
-            v83 = self;
+            selfCopy12 = self;
             v84 = 2114;
             *v85 = v25;
             _os_log_impl(&dword_1C5C61000, v23, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Loading %{public}@ asset from Mini Sinf...", buf, 0x16u);
@@ -789,22 +789,22 @@ LABEL_10:
         {
           if (v35)
           {
-            v36 = [v5 prefersVideoContent];
-            v37 = [v5 preferredAudioAssetType];
-            if ((v37 - 1) > 4)
+            prefersVideoContent2 = [assetLoadProperties prefersVideoContent];
+            preferredAudioAssetType = [assetLoadProperties preferredAudioAssetType];
+            if ((preferredAudioAssetType - 1) > 4)
             {
               v38 = @"Unspecified";
             }
 
             else
             {
-              v38 = off_1E82334C0[v37 - 1];
+              v38 = off_1E82334C0[preferredAudioAssetType - 1];
             }
 
             *buf = 138543875;
-            v83 = self;
+            selfCopy12 = self;
             v84 = 1024;
-            *v85 = v36;
+            *v85 = prefersVideoContent2;
             *&v85[4] = 2113;
             *&v85[6] = v38;
             _os_log_impl(&dword_1C5C61000, v34, OS_LOG_TYPE_DEFAULT, "[AL] %{public}@: MPCModelGenericAVItemSubscriptionAssetLoadOperation execute [loading asset from cache] prefersVideoContent=%{BOOL}u preferredAudio=%{private}@", buf, 0x1Cu);
@@ -822,7 +822,7 @@ LABEL_69:
 
         if (v35)
         {
-          if ([v5 prefersVideoContent])
+          if ([assetLoadProperties prefersVideoContent])
           {
             v42 = @"video";
           }
@@ -832,19 +832,19 @@ LABEL_69:
             v42 = @"audio";
           }
 
-          v43 = [v5 preferredAudioAssetType];
-          if ((v43 - 1) > 4)
+          preferredAudioAssetType2 = [assetLoadProperties preferredAudioAssetType];
+          if ((preferredAudioAssetType2 - 1) > 4)
           {
             v44 = @"Unspecified";
           }
 
           else
           {
-            v44 = off_1E82334C0[v43 - 1];
+            v44 = off_1E82334C0[preferredAudioAssetType2 - 1];
           }
 
           *buf = 138543875;
-          v83 = self;
+          selfCopy12 = self;
           v84 = 2114;
           *v85 = v42;
           *&v85[8] = 2113;
@@ -852,27 +852,27 @@ LABEL_69:
           _os_log_impl(&dword_1C5C61000, v34, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Loading %{public}@ asset - Preferred audio: %{private}@", buf, 0x20u);
         }
 
-        v63 = [objc_alloc(MEMORY[0x1E69E44A8]) initWithRequestContext:v65];
-        [v63 setFollowUp:{objc_msgSend(v5, "isFollowUp")}];
-        [v63 setStoreSubscriptionAdamID:v12];
-        [v14 setStoreSubscriptionAdamID:v12];
-        if ([v16 isDelegatedLeaseSession])
+        v63 = [objc_alloc(MEMORY[0x1E69E44A8]) initWithRequestContext:requestContext];
+        [v63 setFollowUp:{objc_msgSend(assetLoadProperties, "isFollowUp")}];
+        [v63 setStoreSubscriptionAdamID:subscriptionAdamID];
+        [v14 setStoreSubscriptionAdamID:subscriptionAdamID];
+        if ([mEMORY[0x1E6970990] isDelegatedLeaseSession])
         {
-          v45 = [v10 personalizedStore];
-          v46 = [v45 cloudID];
+          personalizedStore = [itemIdentifiers personalizedStore];
+          cloudID = [personalizedStore cloudID];
 
-          [v63 setStoreCloudID:v46];
-          [v14 setStoreCloudID:v46];
-          v47 = [v10 universalStore];
-          v48 = [v47 purchasedAdamID];
+          [v63 setStoreCloudID:cloudID];
+          [v14 setStoreCloudID:cloudID];
+          universalStore3 = [itemIdentifiers universalStore];
+          purchasedAdamID = [universalStore3 purchasedAdamID];
 
-          [v63 setStorePurchasedAdamID:v48];
-          [v14 setStorePurchasedAdamID:v48];
-          v49 = [v10 universalStore];
-          v50 = [v49 universalCloudLibraryID];
+          [v63 setStorePurchasedAdamID:purchasedAdamID];
+          [v14 setStorePurchasedAdamID:purchasedAdamID];
+          universalStore4 = [itemIdentifiers universalStore];
+          universalCloudLibraryID = [universalStore4 universalCloudLibraryID];
 
-          [v63 setCloudUniversalLibraryID:v50];
-          [v14 setCloudUniversalLibraryID:v50];
+          [v63 setCloudUniversalLibraryID:universalCloudLibraryID];
+          [v14 setCloudUniversalLibraryID:universalCloudLibraryID];
           [v14 setRequestType:4];
         }
 
@@ -881,18 +881,18 @@ LABEL_69:
           [v14 setRequestType:2];
         }
 
-        v51 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
-        v52 = [v51 leaseStatus];
-        v53 = [v52 hasOnlinePlaybackKeys];
+        subscriptionLeaseSession2 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self subscriptionLeaseSession];
+        leaseStatus3 = [subscriptionLeaseSession2 leaseStatus];
+        hasOnlinePlaybackKeys2 = [leaseStatus3 hasOnlinePlaybackKeys];
 
-        if (v53)
+        if (hasOnlinePlaybackKeys2)
         {
-          v61 = [MEMORY[0x1E6970990] sharedCache];
-          v54 = [v61 cachedResponseForRequest:v14];
+          mEMORY[0x1E6970990]2 = [MEMORY[0x1E6970990] sharedCache];
+          v54 = [mEMORY[0x1E6970990]2 cachedResponseForRequest:v14];
           v55 = v54;
           if (v54)
           {
-            v56 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v54 assetLoadProperties:v5 source:3 error:0];
+            v56 = [MPCModelGenericAVItemAssetLoadResult assetLoadResultWithStoreAssetPlaybackResponse:v54 assetLoadProperties:assetLoadProperties source:3 error:0];
           }
 
           else
@@ -906,7 +906,7 @@ LABEL_69:
             if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v83 = self;
+              selfCopy12 = self;
               v84 = 2114;
               *v85 = v55;
               _os_log_impl(&dword_1C5C61000, v57, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Using existing cached playback response: %{public}@", buf, 0x16u);
@@ -921,7 +921,7 @@ LABEL_69:
         if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v83 = self;
+          selfCopy12 = self;
           _os_log_impl(&dword_1C5C61000, v58, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Performing subscription playback request...", buf, 0xCu);
         }
 
@@ -932,7 +932,7 @@ LABEL_69:
         v75[4] = self;
         v76 = v14;
         v77 = v4;
-        v59 = [v16 performPlaybackRequest:v63 completionHandler:v75];
+        v59 = [mEMORY[0x1E6970990] performPlaybackRequest:v63 completionHandler:v75];
         objc_initWeak(buf, self);
         v72[0] = MEMORY[0x1E69E9820];
         v72[1] = 3221225472;
@@ -949,8 +949,8 @@ LABEL_69:
         goto LABEL_68;
       }
 
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"MPCModelGenericAVItemSubscriptionAssetLoadOperation.m" lineNumber:250 description:{@"Invalid operation type: %li", -[MPCModelGenericAVItemSubscriptionAssetLoadOperation operationType](self, "operationType")}];
+      mEMORY[0x1E6970990] = [MEMORY[0x1E696AAA8] currentHandler];
+      [mEMORY[0x1E6970990] handleFailureInMethod:a2 object:self file:@"MPCModelGenericAVItemSubscriptionAssetLoadOperation.m" lineNumber:250 description:{@"Invalid operation type: %li", -[MPCModelGenericAVItemSubscriptionAssetLoadOperation operationType](self, "operationType")}];
     }
 
 LABEL_70:
@@ -962,12 +962,12 @@ LABEL_70:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v83 = self;
+    selfCopy12 = self;
     _os_log_impl(&dword_1C5C61000, v26, OS_LOG_TYPE_ERROR, "[AL] - %{public}@: Short-circuiting Item Subscription Asset Loading [offline] - SOD/Cached Response/Server requests are unusable", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:56 userInfo:0];
-  (*(v4 + 2))(v4, 0, 0, v10);
+  itemIdentifiers = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:56 userInfo:0];
+  (*(v4 + 2))(v4, 0, 0, itemIdentifiers);
 LABEL_71:
 }
 
@@ -1131,20 +1131,20 @@ void __62__MPCModelGenericAVItemSubscriptionAssetLoadOperation_execute__block_in
   v5.receiver = self;
   v5.super_class = MPCModelGenericAVItemSubscriptionAssetLoadOperation;
   [(MPAsyncOperation *)&v5 cancel];
-  v3 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self cancellationHandler];
-  v4 = v3;
-  if (v3)
+  cancellationHandler = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self cancellationHandler];
+  v4 = cancellationHandler;
+  if (cancellationHandler)
   {
-    (*(v3 + 16))(v3);
+    (*(cancellationHandler + 16))(cancellationHandler);
   }
 }
 
 - (id)description
 {
-  v3 = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
-  v4 = [v3 isFollowUp];
+  assetLoadProperties = [(MPCModelGenericAVItemSubscriptionAssetLoadOperation *)self assetLoadProperties];
+  isFollowUp = [assetLoadProperties isFollowUp];
 
-  if (v4)
+  if (isFollowUp)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p followUp>", objc_opt_class(), self];
   }

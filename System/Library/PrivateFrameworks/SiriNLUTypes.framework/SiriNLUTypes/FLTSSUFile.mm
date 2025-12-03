@@ -1,14 +1,14 @@
 @interface FLTSSUFile
-- (FLTSSUFile)initWithFlatbuffData:(id)a3 root:(const SSUFile *)a4 verify:(BOOL)a5;
+- (FLTSSUFile)initWithFlatbuffData:(id)data root:(const SSUFile *)root verify:(BOOL)verify;
 - (FLTSSUMetadata)metadata;
 - (NSArray)categories;
 - (NSString)locale;
-- (Offset<SSUFile>)addObjectToBuffer:(void *)a3;
-- (id)categories_objectAtIndex:(unint64_t)a3;
+- (Offset<SSUFile>)addObjectToBuffer:(void *)buffer;
+- (id)categories_objectAtIndex:(unint64_t)index;
 - (id)flatbuffData;
 - (unint64_t)categories_count;
 - (unsigned)format_version;
-- (void)categories_enumerateObjectsUsingBlock:(id)a3;
+- (void)categories_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FLTSSUFile
@@ -42,26 +42,26 @@ apple::aiml::flatbuffers2::DetachedBuffer *__26__FLTSSUFile_flatbuffData__block_
   return result;
 }
 
-- (Offset<SSUFile>)addObjectToBuffer:(void *)a3
+- (Offset<SSUFile>)addObjectToBuffer:(void *)buffer
 {
   v35 = *MEMORY[0x1E69E9840];
-  v28 = [(FLTSSUFile *)self format_version];
-  v5 = [(FLTSSUFile *)self metadata];
-  v27 = [v5 addObjectToBuffer:a3];
+  format_version = [(FLTSSUFile *)self format_version];
+  metadata = [(FLTSSUFile *)self metadata];
+  v27 = [metadata addObjectToBuffer:buffer];
 
-  v6 = [(FLTSSUFile *)self locale];
-  v7 = v6;
-  if (!v6)
+  locale = [(FLTSSUFile *)self locale];
+  v7 = locale;
+  if (!locale)
   {
-    v6 = &stru_1F487A568;
+    locale = &stru_1F487A568;
   }
 
-  v8 = [(__CFString *)v6 UTF8String];
-  v9 = strlen(v8);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v8, v9);
+  uTF8String = [(__CFString *)locale UTF8String];
+  v9 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v9);
 
-  v10 = [(FLTSSUFile *)self categories];
-  v11 = [v10 count];
+  categories = [(FLTSSUFile *)self categories];
+  v11 = [categories count];
   if (v11)
   {
     if (!(v11 >> 62))
@@ -81,67 +81,67 @@ apple::aiml::flatbuffers2::DetachedBuffer *__26__FLTSSUFile_flatbuffData__block_
   {
     *v31;
     *v31;
-    [**(&v30 + 1) addObjectToBuffer:a3];
+    [**(&v30 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<float>>(1uLL);
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v12 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(a3, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v13 = *(a3 + 8);
-  v14 = *(a3 + 12);
-  v15 = *(a3 + 10);
-  v16 = a3;
-  if (v28 || *(a3 + 80) == 1)
+  apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v12 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(buffer, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v13 = *(buffer + 8);
+  v14 = *(buffer + 12);
+  v15 = *(buffer + 10);
+  bufferCopy = buffer;
+  if (format_version || *(buffer + 80) == 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::Align(a3, 2uLL);
-    apple::aiml::flatbuffers2::vector_downward::ensure_space(a3, 2uLL);
-    v17 = *(a3 + 6);
-    *(v17 - 2) = v28;
+    apple::aiml::flatbuffers2::FlatBufferBuilder::Align(buffer, 2uLL);
+    apple::aiml::flatbuffers2::vector_downward::ensure_space(buffer, 2uLL);
+    v17 = *(buffer + 6);
+    *(v17 - 2) = format_version;
     v17 -= 2;
-    *(a3 + 6) = v17;
-    v19 = *(a3 + 4);
-    v18 = *(v16 + 5);
-    apple::aiml::flatbuffers2::vector_downward::ensure_space(v16, 8uLL);
-    **(v16 + 7) = (v19 - v17 + v18) | 0x400000000;
-    *(v16 + 7) += 8;
-    ++*(v16 + 16);
-    v20 = *(v16 + 34);
+    *(buffer + 6) = v17;
+    v19 = *(buffer + 4);
+    v18 = *(bufferCopy + 5);
+    apple::aiml::flatbuffers2::vector_downward::ensure_space(bufferCopy, 8uLL);
+    **(bufferCopy + 7) = (v19 - v17 + v18) | 0x400000000;
+    *(bufferCopy + 7) += 8;
+    ++*(bufferCopy + 16);
+    v20 = *(bufferCopy + 34);
     if (v20 <= 4)
     {
       LOWORD(v20) = 4;
     }
 
-    *(v16 + 34) = v20;
+    *(bufferCopy + 34) = v20;
   }
 
   if (v27)
   {
-    v21 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(v16, v27);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(v16, 6, v21, 0);
+    v21 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(bufferCopy, v27);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(bufferCopy, 6, v21, 0);
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(v16, 8, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(bufferCopy, 8, String);
   if (v12)
   {
-    v22 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(v16, v12);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(v16, 10, v22, 0);
+    v22 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(bufferCopy, v12);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(bufferCopy, 10, v22, 0);
   }
 
-  v23.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(v16, v13 - v14 + v15);
+  v23.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(bufferCopy, v13 - v14 + v15);
   v24 = *MEMORY[0x1E69E9840];
   return v23;
 }
 
-- (void)categories_enumerateObjectsUsingBlock:(id)a3
+- (void)categories_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"categories"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -164,7 +164,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__26__FLTSSUFile_flatbuffData__block_
           do
           {
             v15 = [[FLTSSUCategory alloc] initWithFlatbuffData:self->_data root:&v14[*v14->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -212,13 +212,13 @@ apple::aiml::flatbuffers2::DetachedBuffer *__26__FLTSSUFile_flatbuffData__block_
   return v5;
 }
 
-- (id)categories_objectAtIndex:(unint64_t)a3
+- (id)categories_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"categories"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_9;
@@ -232,12 +232,12 @@ LABEL_3:
     if (v11)
     {
       v12 = &root[v11 + *root[v11].var0];
-      if (*v12->var0 <= a3)
+      if (*v12->var0 <= index)
       {
         __assert_rtn("Get", "flatbuffers.h", 275, "i < size()");
       }
 
-      v7 = [[FLTSSUCategory alloc] initWithFlatbuffData:self->_data root:&v12[4 * a3 + 4 + *v12[4 * a3 + 4].var0] verify:0];
+      v7 = [[FLTSSUCategory alloc] initWithFlatbuffData:self->_data root:&v12[4 * index + 4 + *v12[4 * index + 4].var0] verify:0];
       goto LABEL_3;
     }
   }
@@ -253,12 +253,12 @@ LABEL_9:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"categories"];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __24__FLTSSUFile_categories__block_invoke;
     v6[3] = &unk_1E8328338;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FLTSSUFile *)self categories_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"categories"];
@@ -330,10 +330,10 @@ LABEL_9:
   }
 }
 
-- (FLTSSUFile)initWithFlatbuffData:(id)a3 root:(const SSUFile *)a4 verify:(BOOL)a5
+- (FLTSSUFile)initWithFlatbuffData:(id)data root:(const SSUFile *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v34.receiver = self;
   v34.super_class = FLTSSUFile;
   v10 = [(FLTSSUFile *)&v34 init];
@@ -342,35 +342,35 @@ LABEL_9:
     goto LABEL_37;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_38;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_37;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_38;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v29 = v16;
+  v29 = bytes3;
   v30 = v17;
   v31 = xmmword_1C8C15D50;
   v32 = 0;

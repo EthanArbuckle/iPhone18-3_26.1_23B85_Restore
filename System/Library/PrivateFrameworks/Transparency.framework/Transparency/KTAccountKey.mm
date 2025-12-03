@@ -1,21 +1,21 @@
 @interface KTAccountKey
-+ (id)accountPublicID:(id)a3;
-+ (id)accountPublicKey:(id)a3;
-- (KTAccountKey)initWithApplication:(id)a3;
++ (id)accountPublicID:(id)d;
++ (id)accountPublicKey:(id)key;
+- (KTAccountKey)initWithApplication:(id)application;
 - (KTAccountPublicID)accountPublicID;
 - (NSData)accountPublicKeyInfo;
-- (void)rollKey:(id)a3;
-- (void)signData:(id)a3 completionBlock:(id)a4;
-- (void)signDataCIP:(id)a3 completionBlock:(id)a4;
+- (void)rollKey:(id)key;
+- (void)signData:(id)data completionBlock:(id)block;
+- (void)signDataCIP:(id)p completionBlock:(id)block;
 @end
 
 @implementation KTAccountKey
 
-- (KTAccountKey)initWithApplication:(id)a3
+- (KTAccountKey)initWithApplication:(id)application
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [TransparencyApplication applicationValueForIdentifier:v5];
+  applicationCopy = application;
+  v6 = [TransparencyApplication applicationValueForIdentifier:applicationCopy];
 
   if (v6)
   {
@@ -25,14 +25,14 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_applicationIdentifier, a3);
+      objc_storeStrong(&v7->_applicationIdentifier, application);
       v9 = [[TransparencyApplication alloc] initWithIdentifier:v8->_applicationIdentifier];
       application = v8->_application;
       v8->_application = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -46,15 +46,15 @@
     if (os_log_type_enabled(TRANSPARENCY_DEFAULT_LOG_INTERNAL_1, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = applicationCopy;
       _os_log_impl(&dword_1E10DB000, v12, OS_LOG_TYPE_ERROR, "Unknown application identifier: %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 uint64_t __36__KTAccountKey_initWithApplication___block_invoke()
@@ -64,9 +64,9 @@ uint64_t __36__KTAccountKey_initWithApplication___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)accountPublicKey:(id)a3
++ (id)accountPublicKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -77,7 +77,7 @@ uint64_t __36__KTAccountKey_initWithApplication___block_invoke()
   v7[1] = 3221225472;
   v7[2] = __33__KTAccountKey_accountPublicKey___block_invoke;
   v7[3] = &unk_1E8701440;
-  v4 = v3;
+  v4 = keyCopy;
   v8 = v4;
   v9 = &v10;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v7 errorHandler:&__block_literal_global_8];
@@ -126,9 +126,9 @@ uint64_t __33__KTAccountKey_accountPublicKey___block_invoke_4()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)accountPublicID:(id)a3
++ (id)accountPublicID:(id)d
 {
-  v3 = [a1 accountPublicKey:a3];
+  v3 = [self accountPublicKey:d];
   if (v3)
   {
     v4 = [KTAccountPublicID ktAccountPublicIDWithPublicKeyInfo:v3 error:0];
@@ -144,19 +144,19 @@ uint64_t __33__KTAccountKey_accountPublicKey___block_invoke_4()
 
 - (NSData)accountPublicKeyInfo
 {
-  v3 = [(KTAccountKey *)self _accountPublicKeyInfo];
-  objc_sync_enter(v3);
-  v4 = [(KTAccountKey *)self _accountPublicKeyInfo];
+  _accountPublicKeyInfo = [(KTAccountKey *)self _accountPublicKeyInfo];
+  objc_sync_enter(_accountPublicKeyInfo);
+  _accountPublicKeyInfo2 = [(KTAccountKey *)self _accountPublicKeyInfo];
 
-  if (v4)
+  if (_accountPublicKeyInfo2)
   {
-    v5 = [(KTAccountKey *)self _accountPublicKeyInfo];
-    objc_sync_exit(v3);
+    _accountPublicKeyInfo3 = [(KTAccountKey *)self _accountPublicKeyInfo];
+    objc_sync_exit(_accountPublicKeyInfo);
   }
 
   else
   {
-    objc_sync_exit(v3);
+    objc_sync_exit(_accountPublicKeyInfo);
 
     v8 = 0;
     v9 = &v8;
@@ -171,11 +171,11 @@ uint64_t __33__KTAccountKey_accountPublicKey___block_invoke_4()
     v7[4] = self;
     v7[5] = &v8;
     [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v7 errorHandler:&__block_literal_global_24_0];
-    v5 = v9[5];
+    _accountPublicKeyInfo3 = v9[5];
     _Block_object_dispose(&v8, 8);
   }
 
-  return v5;
+  return _accountPublicKeyInfo3;
 }
 
 void __36__KTAccountKey_accountPublicKeyInfo__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -311,10 +311,10 @@ uint64_t __36__KTAccountKey_accountPublicKeyInfo__block_invoke_2_25()
 
 - (KTAccountPublicID)accountPublicID
 {
-  v2 = [(KTAccountKey *)self accountPublicKeyInfo];
-  if (v2)
+  accountPublicKeyInfo = [(KTAccountKey *)self accountPublicKeyInfo];
+  if (accountPublicKeyInfo)
   {
-    v3 = [KTAccountPublicID ktAccountPublicIDWithPublicKeyInfo:v2 error:0];
+    v3 = [KTAccountPublicID ktAccountPublicIDWithPublicKeyInfo:accountPublicKeyInfo error:0];
   }
 
   else
@@ -325,36 +325,36 @@ uint64_t __36__KTAccountKey_accountPublicKeyInfo__block_invoke_2_25()
   return v3;
 }
 
-- (void)signData:(id)a3 completionBlock:(id)a4
+- (void)signData:(id)data completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__KTAccountKey_signData_completionBlock___block_invoke;
   v8[3] = &unk_1E8701490;
-  v9 = v6;
-  v7 = v6;
-  [(KTAccountKey *)self signDataCIP:a3 completionBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(KTAccountKey *)self signDataCIP:data completionBlock:v8];
 }
 
-- (void)signDataCIP:(id)a3 completionBlock:(id)a4
+- (void)signDataCIP:(id)p completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  pCopy = p;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__KTAccountKey_signDataCIP_completionBlock___block_invoke;
   v12[3] = &unk_1E87014E0;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
+  selfCopy = self;
+  v15 = blockCopy;
+  v13 = pCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__KTAccountKey_signDataCIP_completionBlock___block_invoke_2_34;
   v10[3] = &unk_1E87013C8;
   v11 = v15;
   v8 = v15;
-  v9 = v6;
+  v9 = pCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v12 errorHandler:v10];
 }
 
@@ -468,15 +468,15 @@ uint64_t __44__KTAccountKey_signDataCIP_completionBlock___block_invoke_3()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)rollKey:(id)a3
+- (void)rollKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __24__KTAccountKey_rollKey___block_invoke;
   v8[3] = &unk_1E8701530;
   v8[4] = self;
-  v9 = v4;
+  v9 = keyCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __24__KTAccountKey_rollKey___block_invoke_49;

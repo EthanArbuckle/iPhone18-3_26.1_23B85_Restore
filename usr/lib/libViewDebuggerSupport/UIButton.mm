@@ -1,6 +1,6 @@
 @interface UIButton
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UIButton
@@ -138,92 +138,92 @@
   return v12;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"dbgInspectedHasSingleTarget"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"dbgInspectedHasSingleTarget"])
   {
-    v10 = [v9 allTargets];
-    v11 = [v10 count] == &dword_0 + 1;
+    allTargets = [objectCopy allTargets];
+    v11 = [allTargets count] == &dword_0 + 1;
 LABEL_5:
-    v12 = [NSNumber numberWithInt:v11];
+    anyObject = [NSNumber numberWithInt:v11];
 LABEL_6:
-    a6 = v12;
+    error = anyObject;
     goto LABEL_7;
   }
 
-  if ([v8 isEqualToString:@"hasAttributedTitle"])
+  if ([nameCopy isEqualToString:@"hasAttributedTitle"])
   {
-    v10 = [v9 currentAttributedTitle];
-    v11 = v10 != 0;
+    allTargets = [objectCopy currentAttributedTitle];
+    v11 = allTargets != 0;
     goto LABEL_5;
   }
 
-  if ([v8 isEqualToString:@"target"])
+  if ([nameCopy isEqualToString:@"target"])
   {
-    v10 = [v9 allTargets];
-    v12 = [v10 anyObject];
+    allTargets = [objectCopy allTargets];
+    anyObject = [allTargets anyObject];
     goto LABEL_6;
   }
 
-  if ([v8 isEqualToString:@"touchUpAction"])
+  if ([nameCopy isEqualToString:@"touchUpAction"])
   {
-    v10 = [v9 allTargets];
-    v14 = [v10 anyObject];
-    v15 = [v9 actionsForTarget:v14 forControlEvent:64];
-    a6 = [v15 firstObject];
+    allTargets = [objectCopy allTargets];
+    anyObject2 = [allTargets anyObject];
+    v15 = [objectCopy actionsForTarget:anyObject2 forControlEvent:64];
+    error = [v15 firstObject];
   }
 
   else
   {
-    v10 = v9;
-    v14 = v8;
-    if (![v14 length])
+    allTargets = objectCopy;
+    anyObject2 = nameCopy;
+    if (![anyObject2 length])
     {
       goto LABEL_26;
     }
 
-    NSSelectorFromString(v14);
+    NSSelectorFromString(anyObject2);
     if (objc_opt_respondsToSelector())
     {
-      v16 = v14;
+      v16 = anyObject2;
     }
 
     else
     {
-      if ([v14 length] < 2)
+      if ([anyObject2 length] < 2)
       {
-        v20 = [v14 uppercaseString];
+        uppercaseString = [anyObject2 uppercaseString];
       }
 
       else
       {
-        v17 = [v14 substringToIndex:1];
-        v18 = [v17 uppercaseString];
-        v19 = [v14 substringFromIndex:1];
-        v20 = [v18 stringByAppendingString:v19];
+        v17 = [anyObject2 substringToIndex:1];
+        uppercaseString2 = [v17 uppercaseString];
+        v19 = [anyObject2 substringFromIndex:1];
+        uppercaseString = [uppercaseString2 stringByAppendingString:v19];
       }
 
-      v21 = [@"is" stringByAppendingString:v20];
+      v21 = [@"is" stringByAppendingString:uppercaseString];
       NSSelectorFromString(v21);
       v16 = (objc_opt_respondsToSelector() & 1) != 0 ? v21 : 0;
     }
 
     if (v16)
     {
-      a6 = [v10 valueForKey:v16];
+      error = [allTargets valueForKey:v16];
     }
 
     else
     {
 LABEL_26:
-      if (a6)
+      if (error)
       {
-        v22 = v14;
-        if (v10)
+        v22 = anyObject2;
+        if (allTargets)
         {
-          v23 = [NSString stringWithFormat:@"%@", v10];
+          v23 = [NSString stringWithFormat:@"%@", allTargets];
         }
 
         else
@@ -252,10 +252,10 @@ LABEL_26:
         v27 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v26];
 
         v28 = v27;
-        *a6 = v27;
+        *error = v27;
 
         v16 = 0;
-        a6 = 0;
+        error = 0;
       }
 
       else
@@ -267,7 +267,7 @@ LABEL_26:
 
 LABEL_7:
 
-  return a6;
+  return error;
 }
 
 @end

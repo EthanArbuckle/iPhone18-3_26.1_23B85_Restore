@@ -1,15 +1,15 @@
 @interface CCSetConfigurationRegistry
 + (id)allSetConfigurations;
-+ (id)configurationForSetIdentifier:(id)a3;
++ (id)configurationForSetIdentifier:(id)identifier;
 @end
 
 @implementation CCSetConfigurationRegistry
 
-+ (id)configurationForSetIdentifier:(id)a3
++ (id)configurationForSetIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = CCSetLibraryConfigurationRegistryBridge();
-  v5 = [v4 configurationForSetIdentifier:v3];
+  v5 = [v4 configurationForSetIdentifier:identifierCopy];
 
   return v5;
 }
@@ -17,9 +17,9 @@
 + (id)allSetConfigurations
 {
   v2 = CCSetLibraryConfigurationRegistryBridge();
-  v3 = [v2 allSetConfigurations];
+  allSetConfigurations = [v2 allSetConfigurations];
 
-  return v3;
+  return allSetConfigurations;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface CKRotationLockUtility
-- (CKRotationLockUtility)initWithWindow:(id)a3;
+- (CKRotationLockUtility)initWithWindow:(id)window;
 - (UIWindow)lockedWindow;
 - (void)dealloc;
 - (void)releaseRotationLock;
@@ -7,15 +7,15 @@
 
 @implementation CKRotationLockUtility
 
-- (CKRotationLockUtility)initWithWindow:(id)a3
+- (CKRotationLockUtility)initWithWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v5 = [(CKRotationLockUtility *)self init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_lockedWindow, v4);
-    [v4 beginDisablingInterfaceAutorotation];
+    v7 = objc_storeWeak(&v5->_lockedWindow, windowCopy);
+    [windowCopy beginDisablingInterfaceAutorotation];
   }
 
   return v6;

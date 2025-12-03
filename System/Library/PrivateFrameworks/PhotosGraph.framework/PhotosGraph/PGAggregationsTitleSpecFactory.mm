@@ -1,6 +1,6 @@
 @interface PGAggregationsTitleSpecFactory
-+ (id)_buildSpecCollectionForMeaningLabel:(id)a3 withSpecDefinition:(id)a4 features:(id)a5;
-+ (id)_featureTypesFromFeatureKey:(id)a3;
++ (id)_buildSpecCollectionForMeaningLabel:(id)label withSpecDefinition:(id)definition features:(id)features;
++ (id)_featureTypesFromFeatureKey:(id)key;
 + (id)_specCollectionForBirthday;
 + (id)_specCollectionForGathering;
 + (id)_specDefinitionForActivity;
@@ -16,29 +16,29 @@
 + (id)_specDefinitionForPerformance;
 + (id)_specDefinitionForSportEvent;
 + (id)_specDefinitionForWinterSport;
-+ (id)specCollectionForMeaningLabel:(id)a3 features:(id)a4;
++ (id)specCollectionForMeaningLabel:(id)label features:(id)features;
 @end
 
 @implementation PGAggregationsTitleSpecFactory
 
-+ (id)_buildSpecCollectionForMeaningLabel:(id)a3 withSpecDefinition:(id)a4 features:(id)a5
++ (id)_buildSpecCollectionForMeaningLabel:(id)label withSpecDefinition:(id)definition features:(id)features
 {
   v45 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  labelCopy = label;
+  definitionCopy = definition;
+  featuresCopy = features;
+  if (definitionCopy)
   {
-    v29 = a1;
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [MEMORY[0x277CBEB18] array];
+    selfCopy = self;
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v30 = v9;
-    v13 = v9;
+    v30 = featuresCopy;
+    v13 = featuresCopy;
     v14 = [v13 countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v14)
     {
@@ -68,14 +68,14 @@
     v32[2] = __98__PGAggregationsTitleSpecFactory__buildSpecCollectionForMeaningLabel_withSpecDefinition_features___block_invoke;
     v32[3] = &unk_27887F9B8;
     v33 = v12;
-    v38 = v29;
-    v34 = v8;
-    v19 = v31;
-    v35 = v31;
-    v36 = v11;
-    v37 = v10;
-    v20 = v10;
-    v21 = v11;
+    v38 = selfCopy;
+    v34 = definitionCopy;
+    v19 = labelCopy;
+    v35 = labelCopy;
+    v36 = array2;
+    v37 = array;
+    v20 = array;
+    v21 = array2;
     v22 = v12;
     [v34 enumerateKeysAndObjectsUsingBlock:v32];
     v23 = [PGTitleSpecPool poolWithSpecs:v20];
@@ -85,13 +85,13 @@
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:2];
     v26 = [PGTitleSpecCollection collectionWithSpecPools:v25];
 
-    v9 = v30;
+    featuresCopy = v30;
   }
 
   else
   {
     v26 = 0;
-    v19 = v31;
+    v19 = labelCopy;
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -246,12 +246,12 @@ LABEL_21:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_featureTypesFromFeatureKey:(id)a3
++ (id)_featureTypesFromFeatureKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v5 = [v3 isEqualToString:@"LocationIncludingAOI"];
-  if ([v3 isEqualToString:@"Location"] & 1) != 0 || ((objc_msgSend(v3, "isEqualToString:", @"LocationIncludingLineBreak") | v5))
+  v5 = [keyCopy isEqualToString:@"LocationIncludingAOI"];
+  if ([keyCopy isEqualToString:@"Location"] & 1) != 0 || ((objc_msgSend(keyCopy, "isEqualToString:", @"LocationIncludingLineBreak") | v5))
   {
     [v4 addObject:&unk_284482448];
     [v4 addObject:&unk_284482460];
@@ -264,7 +264,7 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"Person"])
+  if ([keyCopy isEqualToString:@"Person"])
   {
     v6 = &unk_284482490;
 LABEL_10:
@@ -272,7 +272,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (([v3 isEqualToString:@"Family"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"SocialGroup"))
+  if (([keyCopy isEqualToString:@"Family"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"SocialGroup"))
   {
     v6 = &unk_2844824A8;
     goto LABEL_10;
@@ -575,103 +575,103 @@ LABEL_11:
   return v11;
 }
 
-+ (id)specCollectionForMeaningLabel:(id)a3 features:(id)a4
++ (id)specCollectionForMeaningLabel:(id)label features:(id)features
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"Birthday"])
+  labelCopy = label;
+  featuresCopy = features;
+  if ([labelCopy isEqualToString:@"Birthday"])
   {
-    v8 = [a1 _specCollectionForBirthday];
+    _specCollectionForBirthday = [self _specCollectionForBirthday];
     goto LABEL_3;
   }
 
-  if ([v6 isEqualToString:@"Entertainment"])
+  if ([labelCopy isEqualToString:@"Entertainment"])
   {
-    v11 = [a1 _specDefinitionForEntertainment];
+    _specDefinitionForEntertainment = [self _specDefinitionForEntertainment];
 LABEL_31:
-    v10 = v11;
+    v10 = _specDefinitionForEntertainment;
     goto LABEL_32;
   }
 
-  if ([v6 isEqualToString:@"NightOut"])
+  if ([labelCopy isEqualToString:@"NightOut"])
   {
-    v11 = [a1 _specDefinitionForNightOut];
+    _specDefinitionForEntertainment = [self _specDefinitionForNightOut];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"SportEvent"])
+  if ([labelCopy isEqualToString:@"SportEvent"])
   {
-    v11 = [a1 _specDefinitionForSportEvent];
+    _specDefinitionForEntertainment = [self _specDefinitionForSportEvent];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"Performance"])
+  if ([labelCopy isEqualToString:@"Performance"])
   {
-    v11 = [a1 _specDefinitionForPerformance];
+    _specDefinitionForEntertainment = [self _specDefinitionForPerformance];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"Activity"])
+  if ([labelCopy isEqualToString:@"Activity"])
   {
-    v11 = [a1 _specDefinitionForActivity];
+    _specDefinitionForEntertainment = [self _specDefinitionForActivity];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"WinterSport"])
+  if ([labelCopy isEqualToString:@"WinterSport"])
   {
-    v11 = [a1 _specDefinitionForWinterSport];
+    _specDefinitionForEntertainment = [self _specDefinitionForWinterSport];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"Beaching"])
+  if ([labelCopy isEqualToString:@"Beaching"])
   {
-    v11 = [a1 _specDefinitionForBeaching];
+    _specDefinitionForEntertainment = [self _specDefinitionForBeaching];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"Hiking"])
+  if ([labelCopy isEqualToString:@"Hiking"])
   {
-    v11 = [a1 _specDefinitionForHiking];
+    _specDefinitionForEntertainment = [self _specDefinitionForHiking];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"Diving"])
+  if ([labelCopy isEqualToString:@"Diving"])
   {
-    v11 = [a1 _specDefinitionForDiving];
+    _specDefinitionForEntertainment = [self _specDefinitionForDiving];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"Climbing"])
+  if ([labelCopy isEqualToString:@"Climbing"])
   {
-    v11 = [a1 _specDefinitionForClimbing];
+    _specDefinitionForEntertainment = [self _specDefinitionForClimbing];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"Breakfast"])
+  if ([labelCopy isEqualToString:@"Breakfast"])
   {
-    v11 = [a1 _specDefinitionForBreakfast];
+    _specDefinitionForEntertainment = [self _specDefinitionForBreakfast];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"Lunch"])
+  if ([labelCopy isEqualToString:@"Lunch"])
   {
-    v11 = [a1 _specDefinitionForLunch];
+    _specDefinitionForEntertainment = [self _specDefinitionForLunch];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"Dinner"])
+  if ([labelCopy isEqualToString:@"Dinner"])
   {
-    v11 = [a1 _specDefinitionForDinner];
+    _specDefinitionForEntertainment = [self _specDefinitionForDinner];
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"Gathering"])
+  if ([labelCopy isEqualToString:@"Gathering"])
   {
-    v8 = [a1 _specCollectionForGathering];
+    _specCollectionForBirthday = [self _specCollectionForGathering];
 LABEL_3:
-    v9 = v8;
-    if (v8)
+    v9 = _specCollectionForBirthday;
+    if (_specCollectionForBirthday)
     {
       goto LABEL_33;
     }
@@ -680,19 +680,19 @@ LABEL_3:
   }
 
   v14 = +[PGLogging sharedLogging];
-  v15 = [v14 loggingConnection];
+  loggingConnection = [v14 loggingConnection];
 
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v6;
-    _os_log_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_INFO, "No spec definition for %@", &v16, 0xCu);
+    v17 = labelCopy;
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "No spec definition for %@", &v16, 0xCu);
   }
 
 LABEL_4:
   v10 = 0;
 LABEL_32:
-  v9 = [a1 _buildSpecCollectionForMeaningLabel:v6 withSpecDefinition:v10 features:v7];
+  v9 = [self _buildSpecCollectionForMeaningLabel:labelCopy withSpecDefinition:v10 features:featuresCopy];
 
 LABEL_33:
   v12 = *MEMORY[0x277D85DE8];

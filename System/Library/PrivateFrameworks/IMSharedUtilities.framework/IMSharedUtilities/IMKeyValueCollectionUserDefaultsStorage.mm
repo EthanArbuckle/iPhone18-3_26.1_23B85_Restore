@@ -1,14 +1,14 @@
 @interface IMKeyValueCollectionUserDefaultsStorage
 - (IMKeyValueCollectionUserDefaultsStorage)init;
-- (IMKeyValueCollectionUserDefaultsStorage)initWithDomain:(id)a3;
+- (IMKeyValueCollectionUserDefaultsStorage)initWithDomain:(id)domain;
 - (NSString)description;
-- (id)_actuallyReadObjectForKey:(id)a3;
-- (id)_decodeData:(id)a3 forKey:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectForKey:(id)a3;
-- (id)setWithMutableClassIfApplicableFor:(Class)a3;
-- (void)_actuallyWriteObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)_actuallyReadObjectForKey:(id)key;
+- (id)_decodeData:(id)data forKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectForKey:(id)key;
+- (id)setWithMutableClassIfApplicableFor:(Class)for;
+- (void)_actuallyWriteObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation IMKeyValueCollectionUserDefaultsStorage
@@ -20,15 +20,15 @@
   return 0;
 }
 
-- (IMKeyValueCollectionUserDefaultsStorage)initWithDomain:(id)a3
+- (IMKeyValueCollectionUserDefaultsStorage)initWithDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v9.receiver = self;
   v9.super_class = IMKeyValueCollectionUserDefaultsStorage;
   v5 = [(IMKeyValueCollectionUserDefaultsStorage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [domainCopy copy];
     domain = v5->_domain;
     v5->_domain = v6;
   }
@@ -36,13 +36,13 @@
   return v5;
 }
 
-- (id)_decodeData:(id)a3 forKey:(id)a4
+- (id)_decodeData:(id)data forKey:(id)key
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v7 stringByAppendingString:@"_class"];
+  dataCopy = data;
+  keyCopy = key;
+  v8 = dataCopy;
+  v9 = [keyCopy stringByAppendingString:@"_class"];
   v10 = [(IMKeyValueCollectionUserDefaultsStorage *)self _actuallyReadObjectForKey:v9];
 
   v11 = v8;
@@ -79,7 +79,7 @@
         *buf = 138412546;
         v28 = v10;
         v29 = 2112;
-        v30 = v7;
+        v30 = keyCopy;
         _os_log_impl(&dword_1A85E5000, v20, OS_LOG_TYPE_INFO, "Failed to inflate class of type: %@ for key %@", buf, 0x16u);
       }
     }
@@ -127,7 +127,7 @@ LABEL_26:
         *buf = 138412802;
         v28 = v10;
         v29 = 2112;
-        v30 = v7;
+        v30 = keyCopy;
         v31 = 2112;
         v32 = v18;
         _os_log_impl(&dword_1A85E5000, v22, OS_LOG_TYPE_INFO, "decodeTopLevelObjectOfClasses object of type: %@ for key %@ failed with error: %@", buf, 0x20u);
@@ -164,30 +164,30 @@ LABEL_31:
   return v21;
 }
 
-- (id)_actuallyReadObjectForKey:(id)a3
+- (id)_actuallyReadObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IMKeyValueCollectionUserDefaultsStorage *)self domain];
+  keyCopy = key;
+  domain = [(IMKeyValueCollectionUserDefaultsStorage *)self domain];
   v6 = IMGetCachedDomainValueForKey();
 
   return v6;
 }
 
-- (void)_actuallyWriteObject:(id)a3 forKey:(id)a4
+- (void)_actuallyWriteObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IMKeyValueCollectionUserDefaultsStorage *)self domain];
+  keyCopy = key;
+  objectCopy = object;
+  domain = [(IMKeyValueCollectionUserDefaultsStorage *)self domain];
   IMSetDomainValueForKey();
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IMKeyValueCollectionUserDefaultsStorage *)self _actuallyReadObjectForKey:v4];
+  keyCopy = key;
+  v5 = [(IMKeyValueCollectionUserDefaultsStorage *)self _actuallyReadObjectForKey:keyCopy];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(IMKeyValueCollectionUserDefaultsStorage *)self _decodeData:v5 forKey:v4];
+    v6 = [(IMKeyValueCollectionUserDefaultsStorage *)self _decodeData:v5 forKey:keyCopy];
   }
 
   else
@@ -200,15 +200,15 @@ LABEL_31:
   return v7;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = v17;
-  v8 = v6;
-  if (v17 && (v9 = [v17 isArchivable_im], v7 = v17, !v9))
+  objectCopy = object;
+  keyCopy = key;
+  v7 = objectCopy;
+  v8 = keyCopy;
+  if (objectCopy && (v9 = [objectCopy isArchivable_im], v7 = objectCopy, !v9))
   {
-    v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v17 requiringSecureCoding:0 error:0];
+    v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objectCopy requiringSecureCoding:0 error:0];
     if (!v10)
     {
       goto LABEL_7;
@@ -219,7 +219,7 @@ LABEL_31:
     v16 = [v8 stringByAppendingString:@"_class"];
     [(IMKeyValueCollectionUserDefaultsStorage *)self _actuallyWriteObject:v15 forKey:v16];
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = v10;
     v13 = v8;
   }
@@ -228,16 +228,16 @@ LABEL_31:
   {
     [(IMKeyValueCollectionUserDefaultsStorage *)self _actuallyWriteObject:v7 forKey:v8];
     v10 = [v8 stringByAppendingString:@"_class"];
-    v11 = self;
+    selfCopy2 = self;
     v12 = 0;
     v13 = v10;
   }
 
-  [(IMKeyValueCollectionUserDefaultsStorage *)v11 _actuallyWriteObject:v12 forKey:v13];
+  [(IMKeyValueCollectionUserDefaultsStorage *)selfCopy2 _actuallyWriteObject:v12 forKey:v13];
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_alloc(objc_opt_class());
 
@@ -255,7 +255,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)setWithMutableClassIfApplicableFor:(Class)a3
+- (id)setWithMutableClassIfApplicableFor:(Class)for
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -265,7 +265,7 @@ LABEL_7:
     v12 = objc_opt_class();
     v13 = 0;
     v6 = v4;
-    v7 = v5;
+    forCopy = v5;
   }
 
   else
@@ -275,7 +275,7 @@ LABEL_7:
     v11 = MEMORY[0x1E695DFD8];
     if (isKindOfClass)
     {
-      a3 = objc_opt_class();
+      for = objc_opt_class();
       v12 = objc_opt_class();
       v13 = 0;
     }
@@ -286,10 +286,10 @@ LABEL_7:
     }
 
     v6 = v11;
-    v7 = a3;
+    forCopy = for;
   }
 
-  v8 = [v6 setWithObjects:{v7, v12, v13}];
+  v8 = [v6 setWithObjects:{forCopy, v12, v13}];
 
   return v8;
 }

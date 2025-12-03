@@ -1,15 +1,15 @@
 @interface DeviceMainSceneDelegate
 - (_TtC12PreviewShell23DeviceMainSceneDelegate)init;
-- (void)setWindow:(id)a3;
+- (void)setWindow:(id)window;
 @end
 
 @implementation DeviceMainSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12PreviewShell23DeviceMainSceneDelegate_window);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC12PreviewShell23DeviceMainSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC12PreviewShell23DeviceMainSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
 - (_TtC12PreviewShell23DeviceMainSceneDelegate)init

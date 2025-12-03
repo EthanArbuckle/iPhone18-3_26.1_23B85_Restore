@@ -1,23 +1,23 @@
 @interface LAKeyStoreSecretCoder
 - (BOOL)_isCoderAvailable;
 - (id)_generateNonce;
-- (void)unwrapData:(id)a3 completion:(id)a4;
-- (void)wrapData:(id)a3 completion:(id)a4;
+- (void)unwrapData:(id)data completion:(id)completion;
+- (void)wrapData:(id)data completion:(id)completion;
 @end
 
 @implementation LAKeyStoreSecretCoder
 
-- (void)wrapData:(id)a3 completion:(id)a4
+- (void)wrapData:(id)data completion:(id)completion
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  dataCopy = data;
+  completionCopy = completion;
+  if (![dataCopy length])
   {
     v18 = @"Invalid data size";
 LABEL_10:
-    v8 = [LAAuthorizationError genericErrorWithMessage:v18];
-    v7[2](v7, 0, v8);
+    _generateNonce = [LAAuthorizationError genericErrorWithMessage:v18];
+    completionCopy[2](completionCopy, 0, _generateNonce);
     goto LABEL_14;
   }
 
@@ -27,59 +27,59 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8 = [(LAKeyStoreSecretCoder *)self _generateNonce];
-  if (v8 || [0 length] == 16)
+  _generateNonce = [(LAKeyStoreSecretCoder *)self _generateNonce];
+  if (_generateNonce || [0 length] == 16)
   {
     v9 = objc_alloc(getTKBERTLVRecordClass());
-    v10 = [objc_alloc(getTKBERTLVRecordClass()) initWithTag:2 value:v8];
+    v10 = [objc_alloc(getTKBERTLVRecordClass()) initWithTag:2 value:_generateNonce];
     v20[0] = v10;
-    v11 = [objc_alloc(getTKBERTLVRecordClass()) initWithTag:3 value:v6];
+    v11 = [objc_alloc(getTKBERTLVRecordClass()) initWithTag:3 value:dataCopy];
     v20[1] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v13 = [v9 initWithTag:1 records:v12];
 
-    v14 = [v13 data];
-    v15 = v14;
-    if (v14 && (v16 = [v14 length], v16 >= objc_msgSend(v6, "length") + 16))
+    data = [v13 data];
+    v15 = data;
+    if (data && (v16 = [data length], v16 >= objc_msgSend(dataCopy, "length") + 16))
     {
-      (v7)[2](v7, v15, 0);
+      (completionCopy)[2](completionCopy, v15, 0);
     }
 
     else
     {
       v17 = [LAAuthorizationError genericErrorWithMessage:@"Could not encode data"];
-      v7[2](v7, 0, v17);
+      completionCopy[2](completionCopy, 0, v17);
     }
   }
 
   else
   {
     v13 = [LAAuthorizationError genericErrorWithMessage:@"Could not generate nonce"];
-    v7[2](v7, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
 LABEL_14:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unwrapData:(id)a3 completion:(id)a4
+- (void)unwrapData:(id)data completion:(id)completion
 {
-  v21 = a3;
-  v6 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if (![(LAKeyStoreSecretCoder *)self _isCoderAvailable])
   {
     v8 = [LAAuthorizationError genericErrorWithMessage:@"Required data decoder not found"];
-    v6[2](v6, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
     goto LABEL_16;
   }
 
-  v7 = [getTKBERTLVRecordClass() recordFromData:v21];
+  v7 = [getTKBERTLVRecordClass() recordFromData:dataCopy];
   v8 = v7;
   if (v7 && [v7 tag] == 1)
   {
     TKBERTLVRecordClass = getTKBERTLVRecordClass();
-    v10 = [v8 value];
-    v11 = [TKBERTLVRecordClass sequenceOfRecordsFromData:v10];
+    value = [v8 value];
+    v11 = [TKBERTLVRecordClass sequenceOfRecordsFromData:value];
 
     if ([v11 count] == 2)
     {
@@ -90,8 +90,8 @@ LABEL_14:
       }
 
       v13 = [v11 objectAtIndexedSubscript:0];
-      v14 = [v13 value];
-      v15 = [v14 length];
+      value2 = [v13 value];
+      v15 = [value2 length];
 
       if (v15 != 16)
       {
@@ -107,14 +107,14 @@ LABEL_12:
       }
 
       v16 = [v11 objectAtIndexedSubscript:1];
-      v17 = [v16 value];
-      v18 = [v17 length];
+      value3 = [v16 value];
+      v18 = [value3 length];
 
       if (v18)
       {
         v19 = [v11 objectAtIndexedSubscript:1];
-        v20 = [v19 value];
-        (v6)[2](v6, v20, 0);
+        value4 = [v19 value];
+        (completionCopy)[2](completionCopy, value4, 0);
 
 LABEL_14:
         goto LABEL_15;
@@ -123,12 +123,12 @@ LABEL_14:
 
 LABEL_13:
     v19 = [LAAuthorizationError genericErrorWithMessage:@"Invalid format"];
-    v6[2](v6, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
     goto LABEL_14;
   }
 
   v11 = [LAAuthorizationError genericErrorWithMessage:@"Invalid format"];
-  v6[2](v6, 0, v11);
+  completionCopy[2](completionCopy, 0, v11);
 LABEL_15:
 
 LABEL_16:

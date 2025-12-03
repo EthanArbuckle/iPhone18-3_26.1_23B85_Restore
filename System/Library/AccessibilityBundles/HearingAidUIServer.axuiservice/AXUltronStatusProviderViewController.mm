@@ -1,5 +1,5 @@
 @interface AXUltronStatusProviderViewController
-- (void)updateDisplay:(id)a3 confidence:(double)a4;
+- (void)updateDisplay:(id)display confidence:(double)confidence;
 - (void)viewDidLoad;
 @end
 
@@ -22,57 +22,57 @@
   v10 = *(MEMORY[0x29EDB90E0] + 24);
   v11 = [v6 initWithFrame:{*MEMORY[0x29EDB90E0], v8, v9, v10}];
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [(AXUltronStatusProviderViewController *)self view];
-  [v12 addSubview:v11];
+  view = [(AXUltronStatusProviderViewController *)self view];
+  [view addSubview:v11];
 
-  v13 = [(AXUltronStatusProviderViewController *)self view];
+  view2 = [(AXUltronStatusProviderViewController *)self view];
   v14 = MEMORY[0x29EDBA008];
-  v15 = [(AXUltronStatusProviderViewController *)self view];
-  v16 = [v14 constraintWithItem:v11 attribute:7 relatedBy:0 toItem:v15 attribute:7 multiplier:0.25 constant:0.0];
-  [v13 addConstraint:v16];
+  view3 = [(AXUltronStatusProviderViewController *)self view];
+  v16 = [v14 constraintWithItem:v11 attribute:7 relatedBy:0 toItem:view3 attribute:7 multiplier:0.25 constant:0.0];
+  [view2 addConstraint:v16];
 
-  v17 = [(AXUltronStatusProviderViewController *)self view];
+  view4 = [(AXUltronStatusProviderViewController *)self view];
   v18 = [MEMORY[0x29EDBA008] constraintWithItem:v11 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:40.0];
-  [v17 addConstraint:v18];
+  [view4 addConstraint:v18];
 
-  v19 = [(AXUltronStatusProviderViewController *)self view];
+  view5 = [(AXUltronStatusProviderViewController *)self view];
   v20 = MEMORY[0x29EDBA008];
-  v21 = [(AXUltronStatusProviderViewController *)self view];
-  v22 = [v20 constraintWithItem:v11 attribute:6 relatedBy:0 toItem:v21 attribute:6 multiplier:1.0 constant:-10.0];
-  [v19 addConstraint:v22];
+  view6 = [(AXUltronStatusProviderViewController *)self view];
+  v22 = [v20 constraintWithItem:v11 attribute:6 relatedBy:0 toItem:view6 attribute:6 multiplier:1.0 constant:-10.0];
+  [view5 addConstraint:v22];
 
-  v23 = [(AXUltronStatusProviderViewController *)self view];
+  view7 = [(AXUltronStatusProviderViewController *)self view];
   v24 = MEMORY[0x29EDBA008];
-  v25 = [(AXUltronStatusProviderViewController *)self view];
-  v26 = [v24 constraintWithItem:v11 attribute:3 relatedBy:0 toItem:v25 attribute:3 multiplier:1.0 constant:10.0];
-  [v23 addConstraint:v26];
+  view8 = [(AXUltronStatusProviderViewController *)self view];
+  v26 = [v24 constraintWithItem:v11 attribute:3 relatedBy:0 toItem:view8 attribute:3 multiplier:1.0 constant:10.0];
+  [view7 addConstraint:v26];
 
-  v27 = [v11 layer];
-  [v27 setCornerRadius:8.0];
+  layer = [v11 layer];
+  [layer setCornerRadius:8.0];
 
-  v28 = [v11 layer];
-  [v28 setBorderWidth:3.0];
+  layer2 = [v11 layer];
+  [layer2 setBorderWidth:3.0];
 
-  v29 = [MEMORY[0x29EDC7A00] blackColor];
-  v30 = [v29 colorWithAlphaComponent:1.0];
-  v31 = [v30 CGColor];
-  v32 = [v11 layer];
-  [v32 setBorderColor:v31];
+  blackColor = [MEMORY[0x29EDC7A00] blackColor];
+  v30 = [blackColor colorWithAlphaComponent:1.0];
+  cGColor = [v30 CGColor];
+  layer3 = [v11 layer];
+  [layer3 setBorderColor:cGColor];
 
-  v33 = [MEMORY[0x29EDC7A00] yellowColor];
-  v34 = [v33 colorWithAlphaComponent:0.85];
+  yellowColor = [MEMORY[0x29EDC7A00] yellowColor];
+  v34 = [yellowColor colorWithAlphaComponent:0.85];
   [v11 setBackgroundColor:v34];
 
   v35 = [objc_alloc(MEMORY[0x29EDC7DA0]) initWithFrame:{v7, v8, v9, v10}];
   [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v11 addSubview:v35];
-  v36 = [(AXUltronStatusProviderViewController *)self view];
+  view9 = [(AXUltronStatusProviderViewController *)self view];
   v37 = [MEMORY[0x29EDBA008] constraintWithItem:v35 attribute:7 relatedBy:0 toItem:v11 attribute:7 multiplier:1.0 constant:-20.0];
-  [v36 addConstraint:v37];
+  [view9 addConstraint:v37];
 
-  v38 = [(AXUltronStatusProviderViewController *)self view];
+  view10 = [(AXUltronStatusProviderViewController *)self view];
   v39 = [MEMORY[0x29EDBA008] constraintWithItem:v35 attribute:10 relatedBy:0 toItem:v11 attribute:10 multiplier:1.0 constant:0.0];
-  [v38 addConstraint:v39];
+  [view10 addConstraint:v39];
 
   v40 = [objc_alloc(MEMORY[0x29EDC7B38]) initWithFrame:{v7, v8, v9, v10}];
   listenType = self->_listenType;
@@ -86,21 +86,21 @@
   [(UILabel *)v43 setFont:v45];
 
   v46 = self->_listenType;
-  v47 = [MEMORY[0x29EDC7A00] blackColor];
-  [(UILabel *)v46 setTextColor:v47];
+  blackColor2 = [MEMORY[0x29EDC7A00] blackColor];
+  [(UILabel *)v46 setTextColor:blackColor2];
 
   [(UILabel *)self->_listenType setTextAlignment:0];
   [(UILabel *)self->_listenType setText:@"Sound Detections"];
   [(UILabel *)self->_listenType setClipsToBounds:0];
   [(UILabel *)self->_listenType setTranslatesAutoresizingMaskIntoConstraints:0];
   [v35 addSubview:self->_listenType];
-  v48 = [(AXUltronStatusProviderViewController *)self view];
+  view11 = [(AXUltronStatusProviderViewController *)self view];
   v49 = [MEMORY[0x29EDBA008] constraintWithItem:self->_listenType attribute:5 relatedBy:0 toItem:v35 attribute:5 multiplier:1.0 constant:10.0];
-  [v48 addConstraint:v49];
+  [view11 addConstraint:v49];
 
-  v50 = [(AXUltronStatusProviderViewController *)self view];
+  view12 = [(AXUltronStatusProviderViewController *)self view];
   v51 = [MEMORY[0x29EDBA008] constraintWithItem:self->_listenType attribute:10 relatedBy:0 toItem:v35 attribute:10 multiplier:1.0 constant:0.0];
-  [v50 addConstraint:v51];
+  [view12 addConstraint:v51];
 
   v52 = objc_alloc_init(MEMORY[0x29EDC7B38]);
   confidence = self->_confidence;
@@ -115,44 +115,44 @@
   [(UILabel *)v55 setFont:v57];
 
   v58 = self->_confidence;
-  v59 = [MEMORY[0x29EDC7A00] blueColor];
-  [(UILabel *)v58 setTextColor:v59];
+  blueColor = [MEMORY[0x29EDC7A00] blueColor];
+  [(UILabel *)v58 setTextColor:blueColor];
 
   [(UILabel *)self->_confidence setTextAlignment:0];
   [(UILabel *)self->_confidence setClipsToBounds:0];
   [(UILabel *)self->_confidence setNumberOfLines:0];
   [(UILabel *)self->_confidence setTranslatesAutoresizingMaskIntoConstraints:0];
   [v35 addSubview:self->_confidence];
-  v60 = [(AXUltronStatusProviderViewController *)self view];
+  view13 = [(AXUltronStatusProviderViewController *)self view];
   v61 = [MEMORY[0x29EDBA008] constraintWithItem:self->_confidence attribute:5 relatedBy:0 toItem:self->_listenType attribute:6 multiplier:1.0 constant:5.0];
-  [v60 addConstraint:v61];
+  [view13 addConstraint:v61];
 
-  v62 = [(AXUltronStatusProviderViewController *)self view];
+  view14 = [(AXUltronStatusProviderViewController *)self view];
   v63 = [MEMORY[0x29EDBA008] constraintWithItem:self->_confidence attribute:10 relatedBy:0 toItem:v35 attribute:10 multiplier:1.0 constant:0.0];
-  [v62 addConstraint:v63];
+  [view14 addConstraint:v63];
 
-  v64 = [(AXUltronStatusProviderViewController *)self view];
+  view15 = [(AXUltronStatusProviderViewController *)self view];
   v65 = [MEMORY[0x29EDBA008] constraintWithItem:v35 attribute:8 relatedBy:1 toItem:self->_listenType attribute:8 multiplier:1.0 constant:0.0];
-  [v64 addConstraint:v65];
+  [view15 addConstraint:v65];
 
-  v66 = [(AXUltronStatusProviderViewController *)self view];
+  view16 = [(AXUltronStatusProviderViewController *)self view];
   v67 = [MEMORY[0x29EDBA008] constraintWithItem:v35 attribute:8 relatedBy:1 toItem:self->_confidence attribute:8 multiplier:1.0 constant:0.0];
-  [v66 addConstraint:v67];
+  [view16 addConstraint:v67];
 }
 
-- (void)updateDisplay:(id)a3 confidence:(double)a4
+- (void)updateDisplay:(id)display confidence:(double)confidence
 {
-  v6 = a3;
+  displayCopy = display;
   [(AXDispatchTimer *)self->_clearTimer cancel];
   v7 = MEMORY[0x29EDC7DA0];
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
   v11[2] = __65__AXUltronStatusProviderViewController_updateDisplay_confidence___block_invoke;
   v11[3] = &unk_29F2C4F68;
-  v12 = v6;
-  v13 = self;
-  v14 = a4;
-  v8 = v6;
+  v12 = displayCopy;
+  selfCopy = self;
+  confidenceCopy = confidence;
+  v8 = displayCopy;
   [v7 animateWithDuration:v11 animations:0.2];
   clearTimer = self->_clearTimer;
   v10[0] = MEMORY[0x29EDCA5F8];

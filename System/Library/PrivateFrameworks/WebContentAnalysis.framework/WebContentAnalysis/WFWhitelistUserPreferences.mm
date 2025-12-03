@@ -1,33 +1,33 @@
 @interface WFWhitelistUserPreferences
-+ (BOOL)_isURLMetasite:(id)a3;
-+ (id)_arrayByConvertingLinesInStringsAtPath:(id)a3;
-+ (id)_cachedWhitelistForPath:(id)a3 username:(id)a4;
++ (BOOL)_isURLMetasite:(id)metasite;
++ (id)_arrayByConvertingLinesInStringsAtPath:(id)path;
++ (id)_cachedWhitelistForPath:(id)path username:(id)username;
 + (id)_metasiteDomainNamesArray;
-+ (id)_modificationDateForFileAtPath:(id)a3;
++ (id)_modificationDateForFileAtPath:(id)path;
 + (id)_sharedMetasiteDomainNamesDictionary;
 + (id)_sharedMetasiteExceptionsDomainNamesArray;
-+ (id)defaultWhitelistForUser:(id)a3;
++ (id)defaultWhitelistForUser:(id)user;
 + (id)metasitesExceptionPath;
 + (id)metasitesPath;
-+ (id)preferencesPathForUsername:(id)a3;
-+ (id)whitelistForUser:(id)a3;
-+ (id)whitelistWithPreferences:(id)a3;
++ (id)preferencesPathForUsername:(id)username;
++ (id)whitelistForUser:(id)user;
++ (id)whitelistWithPreferences:(id)preferences;
 + (void)_metasiteDomainNamesArray;
-- (BOOL)isURL:(id)a3 onList:(id)a4;
-- (BOOL)isURLAllowed:(id)a3 reason:(id *)a4 shouldFilter:(BOOL *)a5 foundOnList:(BOOL *)a6;
+- (BOOL)isURL:(id)l onList:(id)list;
+- (BOOL)isURLAllowed:(id)allowed reason:(id *)reason shouldFilter:(BOOL *)filter foundOnList:(BOOL *)list;
 - (WFWhitelistUserPreferences)init;
-- (WFWhitelistUserPreferences)initWithPreferences:(id)a3;
-- (id)pronounceOnPageURLString:(id)a3 shouldFilter:(BOOL *)a4;
+- (WFWhitelistUserPreferences)initWithPreferences:(id)preferences;
+- (id)pronounceOnPageURLString:(id)string shouldFilter:(BOOL *)filter;
 - (void)dealloc;
 @end
 
 @implementation WFWhitelistUserPreferences
 
-+ (id)preferencesPathForUsername:(id)a3
++ (id)preferencesPathForUsername:(id)username
 {
-  if (a3)
+  if (username)
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"/Library/Managed Preferences/%@/com.apple.familycontrols.contentfilter.plist", a3];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"/Library/Managed Preferences/%@/com.apple.familycontrols.contentfilter.plist", username];
   }
 
   else
@@ -50,11 +50,11 @@
   return [v2 pathForResource:@"metasites_exceptions" ofType:@"txt"];
 }
 
-+ (id)_arrayByConvertingLinesInStringsAtPath:(id)a3
++ (id)_arrayByConvertingLinesInStringsAtPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:a3 encoding:4 error:0];
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:path encoding:4 error:0];
   if (v5)
   {
     v6 = [v5 componentsSeparatedByString:@"\n"];
@@ -79,7 +79,7 @@
           v11 = *(*(&v15 + 1) + 8 * i);
           if ([v11 length] && (objc_msgSend(v11, "hasPrefix:", @"#") & 1) == 0)
           {
-            [v4 addObject:v11];
+            [array addObject:v11];
           }
         }
 
@@ -89,7 +89,7 @@
       while (v8);
     }
 
-    result = [MEMORY[0x277CBEA60] arrayWithArray:v4];
+    result = [MEMORY[0x277CBEA60] arrayWithArray:array];
   }
 
   else
@@ -109,7 +109,7 @@
 
 + (id)_metasiteDomainNamesArray
 {
-  v2 = [a1 _arrayByConvertingLinesInStringsAtPath:{objc_msgSend(objc_opt_class(), "metasitesPath")}];
+  v2 = [self _arrayByConvertingLinesInStringsAtPath:{objc_msgSend(objc_opt_class(), "metasitesPath")}];
   if (!v2)
   {
     v3 = __WFDefaultLog();
@@ -126,7 +126,7 @@
 {
   if (!_sharedMetasiteExceptionsDomainNamesArray_result)
   {
-    _sharedMetasiteExceptionsDomainNamesArray_result = [a1 _arrayByConvertingLinesInStringsAtPath:{objc_msgSend(objc_opt_class(), "metasitesExceptionPath")}];
+    _sharedMetasiteExceptionsDomainNamesArray_result = [self _arrayByConvertingLinesInStringsAtPath:{objc_msgSend(objc_opt_class(), "metasitesExceptionPath")}];
     v2 = _sharedMetasiteExceptionsDomainNamesArray_result;
     if (!_sharedMetasiteExceptionsDomainNamesArray_result)
     {
@@ -146,8 +146,8 @@
   result = _sharedMetasiteDomainNamesDictionary_result;
   if (!_sharedMetasiteDomainNamesDictionary_result)
   {
-    v4 = [a1 _metasiteDomainNamesArray];
-    _sharedMetasiteDomainNamesDictionary_result = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v4 forKeys:v4];
+    _metasiteDomainNamesArray = [self _metasiteDomainNamesArray];
+    _sharedMetasiteDomainNamesDictionary_result = [MEMORY[0x277CBEAC0] dictionaryWithObjects:_metasiteDomainNamesArray forKeys:_metasiteDomainNamesArray];
     v5 = _sharedMetasiteDomainNamesDictionary_result;
     return _sharedMetasiteDomainNamesDictionary_result;
   }
@@ -155,24 +155,24 @@
   return result;
 }
 
-+ (BOOL)_isURLMetasite:(id)a3
++ (BOOL)_isURLMetasite:(id)metasite
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_opt_class() _sharedMetasiteDomainNamesDictionary];
-  v6 = [a3 host];
-  if (v6)
+  _sharedMetasiteDomainNamesDictionary = [objc_opt_class() _sharedMetasiteDomainNamesDictionary];
+  host = [metasite host];
+  if (host)
   {
-    v6 = [v5 objectForKey:v6];
-    if (v6)
+    host = [_sharedMetasiteDomainNamesDictionary objectForKey:host];
+    if (host)
     {
-      v7 = [a1 _sharedMetasiteExceptionsDomainNamesArray];
-      v8 = [a3 host];
-      v9 = [v8 length];
+      _sharedMetasiteExceptionsDomainNamesArray = [self _sharedMetasiteExceptionsDomainNamesArray];
+      host2 = [metasite host];
+      v9 = [host2 length];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [_sharedMetasiteExceptionsDomainNamesArray countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         v11 = v10;
@@ -183,20 +183,20 @@
           {
             if (*v19 != v12)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(_sharedMetasiteExceptionsDomainNamesArray);
             }
 
             v14 = *(*(&v18 + 1) + 8 * i);
             v15 = [v14 length];
-            if (v15 - 1 < v9 && ([objc_msgSend(v8 substringFromIndex:{v9 - v15), "isEqualToString:", v14}] & 1) != 0)
+            if (v15 - 1 < v9 && ([objc_msgSend(host2 substringFromIndex:{v9 - v15), "isEqualToString:", v14}] & 1) != 0)
             {
-              LOBYTE(v6) = 0;
+              LOBYTE(host) = 0;
               goto LABEL_15;
             }
           }
 
-          v11 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
-          LOBYTE(v6) = 1;
+          v11 = [_sharedMetasiteExceptionsDomainNamesArray countByEnumeratingWithState:&v18 objects:v22 count:16];
+          LOBYTE(host) = 1;
           if (v11)
           {
             continue;
@@ -208,30 +208,30 @@
 
       else
       {
-        LOBYTE(v6) = 1;
+        LOBYTE(host) = 1;
       }
     }
   }
 
 LABEL_15:
   v16 = *MEMORY[0x277D85DE8];
-  return v6;
+  return host;
 }
 
-+ (id)whitelistWithPreferences:(id)a3
++ (id)whitelistWithPreferences:(id)preferences
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithPreferences:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithPreferences:preferences];
 
   return v3;
 }
 
-+ (id)whitelistForUser:(id)a3
++ (id)whitelistForUser:(id)user
 {
-  if (a3)
+  if (user)
   {
-    v4 = [a1 preferencesPathForUsername:?];
+    v4 = [self preferencesPathForUsername:?];
 
-    return [a1 whitelistWithPreferences:v4];
+    return [self whitelistWithPreferences:v4];
   }
 
   else
@@ -246,7 +246,7 @@ LABEL_15:
   }
 }
 
-+ (id)_modificationDateForFileAtPath:(id)a3
++ (id)_modificationDateForFileAtPath:(id)path
 {
   v3 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
   if (!v3)
@@ -261,26 +261,26 @@ LABEL_15:
   return [v3 objectForKey:*MEMORY[0x277CCA150]];
 }
 
-+ (id)_cachedWhitelistForPath:(id)a3 username:(id)a4
++ (id)_cachedWhitelistForPath:(id)path username:(id)username
 {
-  v7 = [a1 _modificationDateForFileAtPath:?];
+  v7 = [self _modificationDateForFileAtPath:?];
   if (_cachedWhitelistForPath_username__static_sharedCache)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:?];
+    dictionary = [MEMORY[0x277CBEB38] dictionaryWithDictionary:?];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v9 = v8;
-  v10 = [v8 objectForKey:a4];
+  v9 = dictionary;
+  v10 = [dictionary objectForKey:username];
   if (!v10 || (v11 = v10, ![objc_msgSend(v10 objectForKey:{@"date", "isEqualToDate:", v7}]) || (v12 = objc_msgSend(v11, "objectForKey:", @"whitelist")) == 0)
   {
-    v12 = [a1 whitelistWithPreferences:a3];
-    [v12 setUsername:a4];
-    [v9 setObject:objc_msgSend(MEMORY[0x277CBEAC0] forKey:{"dictionaryWithObjectsAndKeys:", v7, @"date", v12, @"whitelist", 0), a4}];
+    v12 = [self whitelistWithPreferences:path];
+    [v12 setUsername:username];
+    [v9 setObject:objc_msgSend(MEMORY[0x277CBEAC0] forKey:{"dictionaryWithObjectsAndKeys:", v7, @"date", v12, @"whitelist", 0), username}];
     v13 = _cachedWhitelistForPath_username__static_sharedCache;
     _cachedWhitelistForPath_username__static_sharedCache = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v9];
   }
@@ -288,9 +288,9 @@ LABEL_15:
   return v12;
 }
 
-+ (id)defaultWhitelistForUser:(id)a3
++ (id)defaultWhitelistForUser:(id)user
 {
-  if (!a3)
+  if (!user)
   {
     v8 = __WFDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -301,7 +301,7 @@ LABEL_15:
     return 0;
   }
 
-  v5 = [objc_opt_class() preferencesPathForUsername:a3];
+  v5 = [objc_opt_class() preferencesPathForUsername:user];
   if (!v5)
   {
     v9 = __WFDefaultLog();
@@ -317,7 +317,7 @@ LABEL_15:
   v12 = 0;
   if ([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] & 1) != 0 || (v12)
   {
-    return [a1 _cachedWhitelistForPath:v6 username:a3];
+    return [self _cachedWhitelistForPath:v6 username:user];
   }
 
   v11 = __WFDefaultLog();
@@ -328,7 +328,7 @@ LABEL_15:
 
   objc_opt_class();
   v7 = objc_opt_new();
-  [v7 setUsername:a3];
+  [v7 setUsername:user];
   return v7;
 }
 
@@ -349,13 +349,13 @@ LABEL_15:
   return v2;
 }
 
-- (WFWhitelistUserPreferences)initWithPreferences:(id)a3
+- (WFWhitelistUserPreferences)initWithPreferences:(id)preferences
 {
   v47 = *MEMORY[0x277D85DE8];
   v3 = [(WFWhitelistUserPreferences *)self init];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:a3];
+    v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:preferences];
     if (v4)
     {
       v5 = v4;
@@ -466,7 +466,7 @@ LABEL_15:
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412290;
-                  v43 = a3;
+                  preferencesCopy = preferences;
                   _os_log_error_impl(&dword_272D73000, v25, OS_LOG_TYPE_ERROR, "**** ERROR: siteWhitelist is malformed in %@", buf, 0xCu);
                 }
               }
@@ -506,18 +506,18 @@ LABEL_15:
   [(WFWhitelistUserPreferences *)&v3 dealloc];
 }
 
-- (BOOL)isURLAllowed:(id)a3 reason:(id *)a4 shouldFilter:(BOOL *)a5 foundOnList:(BOOL *)a6
+- (BOOL)isURLAllowed:(id)allowed reason:(id *)reason shouldFilter:(BOOL *)filter foundOnList:(BOOL *)list
 {
-  v11 = [(WFWhitelistUserPreferences *)self username];
-  if (a4)
+  username = [(WFWhitelistUserPreferences *)self username];
+  if (reason)
   {
     v12 = @"User (null)";
-    if (v11)
+    if (username)
     {
-      v12 = v11;
+      v12 = username;
     }
 
-    *a4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ has no web restrictions", v12];
+    *reason = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ has no web restrictions", v12];
   }
 
   if (self->whitelistEnabled)
@@ -529,7 +529,7 @@ LABEL_15:
       _os_log_impl(&dword_272D73000, v13, OS_LOG_TYPE_INFO, "Checking whitelist", buf, 2u);
     }
 
-    v14 = [(WFWhitelistUserPreferences *)self isURL:a3 onList:self->webWhitelist];
+    v14 = [(WFWhitelistUserPreferences *)self isURL:allowed onList:self->webWhitelist];
     v15 = __WFDefaultLog();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
     if (!v14)
@@ -541,10 +541,10 @@ LABEL_15:
       }
 
       result = 0;
-      if (!a4)
+      if (!reason)
       {
         LOBYTE(v20) = 0;
-        if (!a5)
+        if (!filter)
         {
           goto LABEL_40;
         }
@@ -564,13 +564,13 @@ LABEL_15:
     }
 
     result = 1;
-    if (a4)
+    if (reason)
     {
       v18 = @"URL is on global white list";
 LABEL_19:
       LOBYTE(v20) = 1;
 LABEL_33:
-      *a4 = v18;
+      *reason = v18;
       goto LABEL_34;
     }
 
@@ -581,7 +581,7 @@ LABEL_33:
   {
     LOBYTE(v20) = 0;
     result = 1;
-    if (!a5)
+    if (!filter)
     {
       goto LABEL_40;
     }
@@ -596,10 +596,10 @@ LABEL_33:
     _os_log_impl(&dword_272D73000, v19, OS_LOG_TYPE_INFO, "Checking always allow list", v24, 2u);
   }
 
-  if ([(WFWhitelistUserPreferences *)self isURL:a3 onList:self->filterWhitelist])
+  if ([(WFWhitelistUserPreferences *)self isURL:allowed onList:self->filterWhitelist])
   {
     result = 1;
-    if (a4)
+    if (reason)
     {
       v18 = @"URL is on filter white list";
       goto LABEL_19;
@@ -607,7 +607,7 @@ LABEL_33:
 
 LABEL_26:
     LOBYTE(v20) = 1;
-    if (!a5)
+    if (!filter)
     {
       goto LABEL_40;
     }
@@ -622,9 +622,9 @@ LABEL_26:
     _os_log_impl(&dword_272D73000, v21, OS_LOG_TYPE_INFO, "Checking never allow list", v23, 2u);
   }
 
-  v20 = [(WFWhitelistUserPreferences *)self isURL:a3 onList:self->filterBlacklist];
+  v20 = [(WFWhitelistUserPreferences *)self isURL:allowed onList:self->filterBlacklist];
   result = !v20;
-  if (a4 && v20)
+  if (reason && v20)
   {
     result = 0;
     LOBYTE(v20) = 1;
@@ -633,28 +633,28 @@ LABEL_26:
   }
 
 LABEL_34:
-  if (!a5)
+  if (!filter)
   {
     goto LABEL_40;
   }
 
 LABEL_35:
   v22 = (!v20 || !self->filterEnabled) && self->filterEnabled && !self->whitelistEnabled;
-  *a5 = v22;
+  *filter = v22;
 LABEL_40:
-  if (a6)
+  if (list)
   {
-    *a6 = v20;
+    *list = v20;
   }
 
   return result;
 }
 
-- (id)pronounceOnPageURLString:(id)a3 shouldFilter:(BOOL *)a4
+- (id)pronounceOnPageURLString:(id)string shouldFilter:(BOOL *)filter
 {
   v7 = objc_opt_new();
-  [v7 setURL:a3];
-  v8 = [a3 WF_stringByProperlyFixingPercentEscapesUsingEncoding:4];
+  [v7 setURL:string];
+  v8 = [string WF_stringByProperlyFixingPercentEscapesUsingEncoding:4];
   if (!v8 || (v9 = [MEMORY[0x277CBEBC0] URLWithString:v8]) == 0)
   {
     v10 = __WFDefaultLog();
@@ -668,7 +668,7 @@ LABEL_40:
 
   v14 = 0;
   v13 = 0;
-  [v7 setRestricted:{-[WFWhitelistUserPreferences isURLAllowed:reason:shouldFilter:foundOnList:](self, "isURLAllowed:reason:shouldFilter:foundOnList:", v9, &v14, a4, &v13) ^ 1}];
+  [v7 setRestricted:{-[WFWhitelistUserPreferences isURLAllowed:reason:shouldFilter:foundOnList:](self, "isURLAllowed:reason:shouldFilter:foundOnList:", v9, &v14, filter, &v13) ^ 1}];
   if (v13)
   {
     v11 = 8;
@@ -684,20 +684,20 @@ LABEL_40:
   return v7;
 }
 
-- (BOOL)isURL:(id)a3 onList:(id)a4
+- (BOOL)isURL:(id)l onList:(id)list
 {
   v14 = *MEMORY[0x277D85DE8];
   v6 = __WFDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v12 = 138412290;
-    v13 = [a3 absoluteString];
+    absoluteString = [l absoluteString];
     _os_log_impl(&dword_272D73000, v6, OS_LOG_TYPE_INFO, "url: %@", &v12, 0xCu);
   }
 
-  if (a3)
+  if (l)
   {
-    v7 = [a4 containsURLString:{objc_msgSend(objc_msgSend(a3, "absoluteString"), "WF_stringByProperlyFixingPercentEscapesUsingEncoding:", 4)}];
+    v7 = [list containsURLString:{objc_msgSend(objc_msgSend(l, "absoluteString"), "WF_stringByProperlyFixingPercentEscapesUsingEncoding:", 4)}];
   }
 
   else
@@ -715,7 +715,7 @@ LABEL_40:
     }
 
     v12 = 138412290;
-    v13 = v9;
+    absoluteString = v9;
     _os_log_impl(&dword_272D73000, v8, OS_LOG_TYPE_INFO, "result = %@", &v12, 0xCu);
   }
 

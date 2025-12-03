@@ -1,30 +1,30 @@
 @interface LARatchetStateValue
-- (BOOL)isEqual:(id)a3;
-- (LARatchetStateValue)initWithDuration:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (LARatchetStateValue)initWithDuration:(double)duration;
 @end
 
 @implementation LARatchetStateValue
 
-- (LARatchetStateValue)initWithDuration:(double)a3
+- (LARatchetStateValue)initWithDuration:(double)duration
 {
   v5.receiver = self;
   v5.super_class = LARatchetStateValue;
   result = [(LARatchetStateValue *)&v5 init];
   if (result)
   {
-    result->_duration = a3;
+    result->_duration = duration;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 duration];
+    [equalCopy duration];
     v6 = v5;
     [(LARatchetStateValue *)self duration];
     v8 = v6 == v7;

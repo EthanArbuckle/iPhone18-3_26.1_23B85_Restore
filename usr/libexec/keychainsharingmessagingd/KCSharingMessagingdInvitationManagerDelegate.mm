@@ -1,42 +1,42 @@
 @interface KCSharingMessagingdInvitationManagerDelegate
-- (void)manager:(id)a3 incomingInvitation:(id)a4;
-- (void)manager:(id)a3 receiverDidAcceptInvitation:(id)a4;
-- (void)manager:(id)a3 receiverDidDeclineInvitation:(id)a4;
-- (void)manager:(id)a3 senderDidCancelInvitation:(id)a4;
+- (void)manager:(id)manager incomingInvitation:(id)invitation;
+- (void)manager:(id)manager receiverDidAcceptInvitation:(id)invitation;
+- (void)manager:(id)manager receiverDidDeclineInvitation:(id)invitation;
+- (void)manager:(id)manager senderDidCancelInvitation:(id)invitation;
 @end
 
 @implementation KCSharingMessagingdInvitationManagerDelegate
 
-- (void)manager:(id)a3 incomingInvitation:(id)a4
+- (void)manager:(id)manager incomingInvitation:(id)invitation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1000128A8(v7);
+  managerCopy = manager;
+  invitationCopy = invitation;
+  selfCopy = self;
+  sub_1000128A8(invitationCopy);
 }
 
-- (void)manager:(id)a3 senderDidCancelInvitation:(id)a4
+- (void)manager:(id)manager senderDidCancelInvitation:(id)invitation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100012BBC(v7);
+  managerCopy = manager;
+  invitationCopy = invitation;
+  selfCopy = self;
+  sub_100012BBC(invitationCopy);
 }
 
-- (void)manager:(id)a3 receiverDidAcceptInvitation:(id)a4
+- (void)manager:(id)manager receiverDidAcceptInvitation:(id)invitation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100012D24(v7, "receiver did accept invite %@");
+  managerCopy = manager;
+  invitationCopy = invitation;
+  selfCopy = self;
+  sub_100012D24(invitationCopy, "receiver did accept invite %@");
 }
 
-- (void)manager:(id)a3 receiverDidDeclineInvitation:(id)a4
+- (void)manager:(id)manager receiverDidDeclineInvitation:(id)invitation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100012D24(v7, "receiver did decline invite %@");
+  managerCopy = manager;
+  invitationCopy = invitation;
+  selfCopy = self;
+  sub_100012D24(invitationCopy, "receiver did decline invite %@");
 }
 
 @end

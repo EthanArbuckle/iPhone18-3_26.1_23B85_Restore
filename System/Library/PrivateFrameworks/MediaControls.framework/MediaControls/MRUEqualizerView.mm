@@ -1,11 +1,11 @@
 @interface MRUEqualizerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUEqualizerView)initWithNumberOfBars:(unint64_t)a3 width:(double)a4 spacing:(double)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUEqualizerView)initWithNumberOfBars:(unint64_t)bars width:(double)width spacing:(double)spacing;
 - (void)layoutSubviews;
-- (void)setAnimating:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setVisualStyle:(int64_t)a3;
+- (void)setAnimating:(BOOL)animating;
+- (void)setFrame:(CGRect)frame;
+- (void)setStylingProvider:(id)provider;
+- (void)setVisualStyle:(int64_t)style;
 - (void)startAnimating;
 - (void)stopAnimating;
 - (void)updateBarHeights;
@@ -14,7 +14,7 @@
 
 @implementation MRUEqualizerView
 
-- (MRUEqualizerView)initWithNumberOfBars:(unint64_t)a3 width:(double)a4 spacing:(double)a5
+- (MRUEqualizerView)initWithNumberOfBars:(unint64_t)bars width:(double)width spacing:(double)spacing
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -23,17 +23,17 @@
   v9 = v8;
   if (v8)
   {
-    v8->_width = a4;
-    v8->_spacing = a5;
+    v8->_width = width;
+    v8->_spacing = spacing;
     v8->_visualStyle = 0;
-    for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
+    for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:bars];
     {
       v11 = objc_alloc_init(MEMORY[0x1E69DD250]);
-      v12 = [v11 layer];
-      [v12 setAnchorPoint:{0.5, 1.0}];
+      layer = [v11 layer];
+      [layer setAnchorPoint:{0.5, 1.0}];
 
-      v13 = [v11 layer];
-      [v13 setCornerRadius:1.0];
+      layer2 = [v11 layer];
+      [layer2 setCornerRadius:1.0];
 
       [(MRUEqualizerView *)v9 addSubview:v11];
       [i addObject:v11];
@@ -62,12 +62,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MRUEqualizerView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -84,9 +84,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   v5 = [(NSArray *)self->_barViews count];
   v6 = self->_spacing * (v5 - 1);
   if (v6 < 0.0)
@@ -101,12 +101,12 @@
   return result;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
-    if (a3)
+    self->_animating = animating;
+    if (animating)
     {
       [(MRUEqualizerView *)self startAnimating];
     }
@@ -118,23 +118,23 @@
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUEqualizerView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setVisualStyle:(int64_t)a3
+- (void)setVisualStyle:(int64_t)style
 {
-  if (self->_visualStyle != a3)
+  if (self->_visualStyle != style)
   {
-    self->_visualStyle = a3;
+    self->_visualStyle = style;
     [(MRUEqualizerView *)self updateVisualStyling];
   }
 }
@@ -165,8 +165,8 @@
         v7 = *(*(&v12 + 1) + 8 * v6);
         stylingProvider = self->_stylingProvider;
         visualStyle = self->_visualStyle;
-        v10 = [(MRUEqualizerView *)self traitCollection];
-        [(MRUVisualStylingProvider *)stylingProvider applyStyle:visualStyle toView:v7 traitCollection:v10];
+        traitCollection = [(MRUEqualizerView *)self traitCollection];
+        [(MRUVisualStylingProvider *)stylingProvider applyStyle:visualStyle toView:v7 traitCollection:traitCollection];
 
         ++v6;
       }

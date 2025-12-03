@@ -1,21 +1,21 @@
 @interface VTUISiriDataSharingOptInViewController
-- (VTUISiriDataSharingOptInViewController)initWithViewStyle:(int64_t)a3;
+- (VTUISiriDataSharingOptInViewController)initWithViewStyle:(int64_t)style;
 - (VTUISiriDataSharingOptInViewControllerDelegate)delegate;
 @end
 
 @implementation VTUISiriDataSharingOptInViewController
 
-- (VTUISiriDataSharingOptInViewController)initWithViewStyle:(int64_t)a3
+- (VTUISiriDataSharingOptInViewController)initWithViewStyle:(int64_t)style
 {
-  if (!a3)
+  if (!style)
   {
     v4 = @"DATA_SHARING_TITLE_SIRI";
     goto LABEL_9;
   }
 
-  if (a3 != 1)
+  if (style != 1)
   {
-    if (a3 != 2)
+    if (style != 2)
     {
       v8 = 0;
       goto LABEL_11;
@@ -33,7 +33,7 @@ LABEL_11:
     v10 = [(VTUISiriDataSharingOptInViewController *)&v12 initWithTitle:v8 detailText:0 icon:v9];
 
     self = v10;
-    v6 = self;
+    selfCopy = self;
     goto LABEL_12;
   }
 
@@ -43,10 +43,10 @@ LABEL_11:
     [VTUISiriDataSharingOptInViewController initWithViewStyle:v5];
   }
 
-  v6 = 0;
+  selfCopy = 0;
 LABEL_12:
 
-  return v6;
+  return selfCopy;
 }
 
 - (VTUISiriDataSharingOptInViewControllerDelegate)delegate

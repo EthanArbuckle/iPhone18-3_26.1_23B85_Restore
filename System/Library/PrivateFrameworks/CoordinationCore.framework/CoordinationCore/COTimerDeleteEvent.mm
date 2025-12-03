@@ -1,42 +1,42 @@
 @interface COTimerDeleteEvent
-- (COTimerDeleteEvent)initWithCoder:(id)a3;
-- (COTimerDeleteEvent)initWithIdentifier:(id)a3 date:(id)a4;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (COTimerDeleteEvent)initWithCoder:(id)coder;
+- (COTimerDeleteEvent)initWithIdentifier:(id)identifier date:(id)date;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COTimerDeleteEvent
 
-- (COTimerDeleteEvent)initWithIdentifier:(id)a3 date:(id)a4
+- (COTimerDeleteEvent)initWithIdentifier:(id)identifier date:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = COTimerDeleteEvent;
   v9 = [(COTimerDeleteEvent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_date, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_date, date);
   }
 
   return v10;
 }
 
-- (COTimerDeleteEvent)initWithCoder:(id)a3
+- (COTimerDeleteEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = COTimerDeleteEvent;
   v5 = [(COTimerDeleteEvent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v8;
   }
@@ -44,23 +44,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(COTimerDeleteEvent *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(COTimerDeleteEvent *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(COTimerDeleteEvent *)self date];
-  [v4 encodeObject:v6 forKey:@"date"];
+  date = [(COTimerDeleteEvent *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(COTimerDeleteEvent *)self date];
-  v6 = [v4 date];
+  compareCopy = compare;
+  date = [(COTimerDeleteEvent *)self date];
+  date2 = [compareCopy date];
 
-  v7 = [v5 compare:v6];
+  v7 = [date compare:date2];
   return v7;
 }
 

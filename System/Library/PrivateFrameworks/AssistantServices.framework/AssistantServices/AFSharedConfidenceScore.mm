@@ -1,15 +1,15 @@
 @interface AFSharedConfidenceScore
-+ (id)newWithBuilder:(id)a3;
-- (AFSharedConfidenceScore)initWithBuilder:(id)a3;
-- (AFSharedConfidenceScore)initWithCoder:(id)a3;
-- (AFSharedConfidenceScore)initWithDictionaryRepresentation:(id)a3;
-- (AFSharedConfidenceScore)initWithSharedUserId:(id)a3 confidenceScore:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSharedConfidenceScore)initWithBuilder:(id)builder;
+- (AFSharedConfidenceScore)initWithCoder:(id)coder;
+- (AFSharedConfidenceScore)initWithDictionaryRepresentation:(id)representation;
+- (AFSharedConfidenceScore)initWithSharedUserId:(id)id confidenceScore:(unint64_t)score;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSharedConfidenceScore
@@ -32,12 +32,12 @@
   return v7;
 }
 
-- (AFSharedConfidenceScore)initWithDictionaryRepresentation:(id)a3
+- (AFSharedConfidenceScore)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [v4 objectForKey:@"sharedUserId"];
+    representationCopy = representation;
+    v5 = [representationCopy objectForKey:@"sharedUserId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,7 +49,7 @@
       v6 = 0;
     }
 
-    v8 = [v4 objectForKey:@"confidenceScore"];
+    v8 = [representationCopy objectForKey:@"confidenceScore"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -62,45 +62,45 @@
       v9 = 0;
     }
 
-    v10 = [v9 unsignedIntegerValue];
-    self = [(AFSharedConfidenceScore *)self initWithSharedUserId:v6 confidenceScore:v10];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
+    self = [(AFSharedConfidenceScore *)self initWithSharedUserId:v6 confidenceScore:unsignedIntegerValue];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sharedUserId = self->_sharedUserId;
-  v5 = a3;
-  [v5 encodeObject:sharedUserId forKey:@"AFSharedConfidenceScore::sharedUserId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sharedUserId forKey:@"AFSharedConfidenceScore::sharedUserId"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_confidenceScore];
-  [v5 encodeObject:v6 forKey:@"AFSharedConfidenceScore::confidenceScore"];
+  [coderCopy encodeObject:v6 forKey:@"AFSharedConfidenceScore::confidenceScore"];
 }
 
-- (AFSharedConfidenceScore)initWithCoder:(id)a3
+- (AFSharedConfidenceScore)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedConfidenceScore::sharedUserId"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedConfidenceScore::confidenceScore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedConfidenceScore::sharedUserId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSharedConfidenceScore::confidenceScore"];
 
-  v7 = [v6 unsignedIntegerValue];
-  v8 = [(AFSharedConfidenceScore *)self initWithSharedUserId:v5 confidenceScore:v7];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  v8 = [(AFSharedConfidenceScore *)self initWithSharedUserId:v5 confidenceScore:unsignedIntegerValue];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -110,13 +110,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       confidenceScore = self->_confidenceScore;
       if (confidenceScore == [(AFSharedConfidenceScore *)v5 confidenceScore])
       {
-        v7 = [(AFSharedConfidenceScore *)v5 sharedUserId];
+        sharedUserId = [(AFSharedConfidenceScore *)v5 sharedUserId];
         sharedUserId = self->_sharedUserId;
-        v9 = sharedUserId == v7 || [(NSString *)sharedUserId isEqual:v7];
+        v9 = sharedUserId == sharedUserId || [(NSString *)sharedUserId isEqual:sharedUserId];
       }
 
       else
@@ -143,7 +143,7 @@
   return v5 ^ v3;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -154,16 +154,16 @@
   return v6;
 }
 
-- (AFSharedConfidenceScore)initWithSharedUserId:(id)a3 confidenceScore:(unint64_t)a4
+- (AFSharedConfidenceScore)initWithSharedUserId:(id)id confidenceScore:(unint64_t)score
 {
-  v6 = a3;
+  idCopy = id;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__AFSharedConfidenceScore_initWithSharedUserId_confidenceScore___block_invoke;
   v10[3] = &unk_1E7348198;
-  v11 = v6;
-  v12 = a4;
-  v7 = v6;
+  v11 = idCopy;
+  scoreCopy = score;
+  v7 = idCopy;
   v8 = [(AFSharedConfidenceScore *)self initWithBuilder:v10];
 
   return v8;
@@ -177,21 +177,21 @@ void __64__AFSharedConfidenceScore_initWithSharedUserId_confidenceScore___block_
   [v4 setConfidenceScore:*(a1 + 40)];
 }
 
-- (AFSharedConfidenceScore)initWithBuilder:(id)a3
+- (AFSharedConfidenceScore)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = AFSharedConfidenceScore;
   v5 = [(AFSharedConfidenceScore *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSharedConfidenceScoreMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSharedConfidenceScoreMutation *)v7 isDirty])
     {
-      v8 = [(_AFSharedConfidenceScoreMutation *)v7 getSharedUserId];
-      v9 = [v8 copy];
+      getSharedUserId = [(_AFSharedConfidenceScoreMutation *)v7 getSharedUserId];
+      v9 = [getSharedUserId copy];
       sharedUserId = v6->_sharedUserId;
       v6->_sharedUserId = v9;
 
@@ -202,26 +202,26 @@ void __64__AFSharedConfidenceScore_initWithSharedUserId_confidenceScore___block_
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSharedConfidenceScoreMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSharedConfidenceScoreMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSharedConfidenceScore);
-      v7 = [(_AFSharedConfidenceScoreMutation *)v5 getSharedUserId];
-      v8 = [v7 copy];
+      getSharedUserId = [(_AFSharedConfidenceScoreMutation *)v5 getSharedUserId];
+      v8 = [getSharedUserId copy];
       sharedUserId = v6->_sharedUserId;
       v6->_sharedUserId = v8;
 

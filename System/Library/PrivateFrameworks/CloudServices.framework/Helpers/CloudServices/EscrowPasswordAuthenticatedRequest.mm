@@ -9,18 +9,18 @@
 {
   v13.receiver = self;
   v13.super_class = EscrowPasswordAuthenticatedRequest;
-  v3 = [(EscrowGenericRequest *)&v13 validateInput];
-  if (!v3)
+  validateInput = [(EscrowGenericRequest *)&v13 validateInput];
+  if (!validateInput)
   {
-    v4 = [(EscrowGenericRequest *)self appleID];
-    if ([v4 length])
+    appleID = [(EscrowGenericRequest *)self appleID];
+    if ([appleID length])
     {
-      v5 = [(EscrowGenericRequest *)self iCloudPassword];
-      v6 = [v5 length];
+      iCloudPassword = [(EscrowGenericRequest *)self iCloudPassword];
+      v6 = [iCloudPassword length];
 
       if (v6)
       {
-        v3 = 0;
+        validateInput = 0;
         goto LABEL_15;
       }
     }
@@ -32,8 +32,8 @@
     v7 = CloudServicesLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(EscrowGenericRequest *)self appleID];
-      if ([v8 length])
+      appleID2 = [(EscrowGenericRequest *)self appleID];
+      if ([appleID2 length])
       {
         v9 = @"Yes";
       }
@@ -43,8 +43,8 @@
         v9 = @"No";
       }
 
-      v10 = [(EscrowGenericRequest *)self iCloudPassword];
-      if ([v10 length])
+      iCloudPassword2 = [(EscrowGenericRequest *)self iCloudPassword];
+      if ([iCloudPassword2 length])
       {
         v11 = @"Yes";
       }
@@ -61,19 +61,19 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Missing required parameters AppleID: %@\n%@iCloud password:", buf, 0x16u);
     }
 
-    v3 = [CloudServicesError errorWithCode:22 error:0 format:@"Missing required parameters"];
+    validateInput = [CloudServicesError errorWithCode:22 error:0 format:@"Missing required parameters"];
   }
 
 LABEL_15:
 
-  return v3;
+  return validateInput;
 }
 
 - (id)authorizationHeader
 {
-  v3 = [(EscrowGenericRequest *)self appleID];
-  v4 = [(EscrowGenericRequest *)self iCloudPassword];
-  v5 = [(EscrowGenericRequest *)self authorizationHeaderWithUser:v3 password:v4 authType:@"Basic"];
+  appleID = [(EscrowGenericRequest *)self appleID];
+  iCloudPassword = [(EscrowGenericRequest *)self iCloudPassword];
+  v5 = [(EscrowGenericRequest *)self authorizationHeaderWithUser:appleID password:iCloudPassword authType:@"Basic"];
 
   return v5;
 }

@@ -1,15 +1,15 @@
 @interface MathExpression
 - (_TtC8PaperKit14MathExpression)init;
-- (void)setStrokeGroupIdentifier:(id)a3;
+- (void)setStrokeGroupIdentifier:(id)identifier;
 @end
 
 @implementation MathExpression
 
-- (void)setStrokeGroupIdentifier:(id)a3
+- (void)setStrokeGroupIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR____TtC8PaperKit14MathExpression_strokeGroupIdentifier);
-  *(self + OBJC_IVAR____TtC8PaperKit14MathExpression_strokeGroupIdentifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8PaperKit14MathExpression_strokeGroupIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
 - (_TtC8PaperKit14MathExpression)init

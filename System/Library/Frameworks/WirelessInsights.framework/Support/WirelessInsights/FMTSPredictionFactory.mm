@@ -1,18 +1,18 @@
 @interface FMTSPredictionFactory
-+ (id)predictionWithType:(signed __int16)a3 predictionTime:(id)a4 predictionSources:(id)a5 numPrevTimesUntilAnomaly:(unint64_t)a6 numPrevPredictions:(unint64_t)a7 numPrevPredictionsCorrect:(unint64_t)a8 predictedTimeUntilAnomaly:(int)a9 predictedDuration:(int)a10 confidenceAnomaly:(double)a11 confidenceDuration:(double)a12 confidenceTimeUntilAnomaly:(double)a13 predictionTimestamp:(unint64_t)a14;
++ (id)predictionWithType:(signed __int16)type predictionTime:(id)time predictionSources:(id)sources numPrevTimesUntilAnomaly:(unint64_t)anomaly numPrevPredictions:(unint64_t)predictions numPrevPredictionsCorrect:(unint64_t)correct predictedTimeUntilAnomaly:(int)untilAnomaly predictedDuration:(int)self0 confidenceAnomaly:(double)self1 confidenceDuration:(double)self2 confidenceTimeUntilAnomaly:(double)self3 predictionTimestamp:(unint64_t)self4;
 @end
 
 @implementation FMTSPredictionFactory
 
-+ (id)predictionWithType:(signed __int16)a3 predictionTime:(id)a4 predictionSources:(id)a5 numPrevTimesUntilAnomaly:(unint64_t)a6 numPrevPredictions:(unint64_t)a7 numPrevPredictionsCorrect:(unint64_t)a8 predictedTimeUntilAnomaly:(int)a9 predictedDuration:(int)a10 confidenceAnomaly:(double)a11 confidenceDuration:(double)a12 confidenceTimeUntilAnomaly:(double)a13 predictionTimestamp:(unint64_t)a14
++ (id)predictionWithType:(signed __int16)type predictionTime:(id)time predictionSources:(id)sources numPrevTimesUntilAnomaly:(unint64_t)anomaly numPrevPredictions:(unint64_t)predictions numPrevPredictionsCorrect:(unint64_t)correct predictedTimeUntilAnomaly:(int)untilAnomaly predictedDuration:(int)self0 confidenceAnomaly:(double)self1 confidenceDuration:(double)self2 confidenceTimeUntilAnomaly:(double)self3 predictionTimestamp:(unint64_t)self4
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  if ((v21 - 1) < 3 && (v24 = *(&off_1002AC478)[(v21 - 1)], (v25 = objc_opt_class()) != 0))
+  typeCopy = type;
+  timeCopy = time;
+  sourcesCopy = sources;
+  if ((typeCopy - 1) < 3 && (v24 = *(&off_1002AC478)[(typeCopy - 1)], (v25 = objc_opt_class()) != 0))
   {
-    LODWORD(v28) = a10;
-    v26 = [[v25 alloc] init:v22 predictionSources:v23 numPrevTimesUntilAnomaly:a6 numPrevPredictions:a7 numPrevPredictionsCorrect:a8 predictedTimeUntilAnomaly:a9 predictedDuration:a11 confidenceAnomaly:a12 confidenceDuration:a13 confidenceTimeUntilAnomaly:v28 predictionTimestamp:a14];
+    LODWORD(v28) = duration;
+    v26 = [[v25 alloc] init:timeCopy predictionSources:sourcesCopy numPrevTimesUntilAnomaly:anomaly numPrevPredictions:predictions numPrevPredictionsCorrect:correct predictedTimeUntilAnomaly:untilAnomaly predictedDuration:confidenceAnomaly confidenceAnomaly:confidenceDuration confidenceDuration:timeUntilAnomaly confidenceTimeUntilAnomaly:v28 predictionTimestamp:timestamp];
   }
 
   else

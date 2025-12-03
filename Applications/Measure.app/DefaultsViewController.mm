@@ -1,17 +1,17 @@
 @interface DefaultsViewController
-- (_TtC7Measure22DefaultsViewController)initWithCoder:(id)a3;
-- (_TtC7Measure22DefaultsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7Measure22DefaultsViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC7Measure22DefaultsViewController)initWithCoder:(id)coder;
+- (_TtC7Measure22DefaultsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7Measure22DefaultsViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
 @implementation DefaultsViewController
 
-- (_TtC7Measure22DefaultsViewController)initWithCoder:(id)a3
+- (_TtC7Measure22DefaultsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Measure22DefaultsViewController_cancellables) = _swiftEmptyArrayStorage;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -21,27 +21,27 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000EA924();
 }
 
-- (_TtC7Measure22DefaultsViewController)initWithStyle:(int64_t)a3
+- (_TtC7Measure22DefaultsViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7Measure22DefaultsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Measure22DefaultsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
   }
@@ -49,9 +49,9 @@
   else
   {
     v4 = *(self + OBJC_IVAR____TtC7Measure22DefaultsViewController_groups);
-    if (*(v4 + 16) > a4)
+    if (*(v4 + 16) > section)
     {
-      return *(*(v4 + 24 * a4 + 48) + 16);
+      return *(*(v4 + 24 * section + 48) + 16);
     }
   }
 
@@ -59,39 +59,39 @@
   return self;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1000EAD4C(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1000EAD4C(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
     goto LABEL_10;
   }
 
   v5 = *(self + OBJC_IVAR____TtC7Measure22DefaultsViewController_groups);
-  if (*(v5 + 16) <= a4)
+  if (*(v5 + 16) <= section)
   {
 LABEL_10:
     __break(1u);
     return self;
   }
 
-  if (*(v5 + 24 * a4 + 40))
+  if (*(v5 + 24 * section + 40))
   {
 
     v6 = String._bridgeToObjectiveC()();
@@ -105,7 +105,7 @@ LABEL_10:
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -113,7 +113,7 @@ LABEL_10:
   v8 = &v18 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Measure22DefaultsViewController_groups);
-  v10 = self;
+  selfCopy = self;
   v11 = IndexPath.section.getter();
   if ((v11 & 0x8000000000000000) != 0)
   {

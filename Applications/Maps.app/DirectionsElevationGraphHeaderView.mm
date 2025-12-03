@@ -1,5 +1,5 @@
 @interface DirectionsElevationGraphHeaderView
-- (DirectionsElevationGraphHeaderView)initWithFrame:(CGRect)a3;
+- (DirectionsElevationGraphHeaderView)initWithFrame:(CGRect)frame;
 - (DirectionsElevationGraphHeaderViewDelegate)delegate;
 - (float)_calculateTransitionProgress;
 - (void)_scheduleUpdateMinimumMaximumHeights;
@@ -7,9 +7,9 @@
 - (void)_updateMinimumMaximumHeights;
 - (void)_updateTransition;
 - (void)layoutSubviews;
-- (void)setRoute:(id)a3;
-- (void)setStyleForNavigation:(BOOL)a3;
-- (void)setTransitionProgress:(float)a3;
+- (void)setRoute:(id)route;
+- (void)setStyleForNavigation:(BOOL)navigation;
+- (void)setTransitionProgress:(float)progress;
 @end
 
 @implementation DirectionsElevationGraphHeaderView
@@ -50,16 +50,16 @@
   self->_recalculatingHeights = 1;
   [(DirectionsElevationGraphHeaderView *)self bounds];
   self->_widthForLastMinMaxCalculation = CGRectGetWidth(v11);
-  v3 = [(DirectionsElevationGraphHeaderView *)self delegate];
-  [v3 directionsElevationGraphHeaderViewWillRecalculateHeights:self];
+  delegate = [(DirectionsElevationGraphHeaderView *)self delegate];
+  [delegate directionsElevationGraphHeaderViewWillRecalculateHeights:self];
 
   top = self->_contentInsets.top;
   [(NSLayoutConstraint *)self->_graphMinimumHeightConstraint constant];
   self->_minimumHeight = top + 16.0 + v5 + self->_contentInsets.bottom;
   [(DirectionsElevationGraphHeaderView *)self setTransitionProgress:0.0];
-  v6 = [(DirectionsElevationGraphView *)self->_chartView heightAnchor];
+  heightAnchor = [(DirectionsElevationGraphView *)self->_chartView heightAnchor];
   [(NSLayoutConstraint *)self->_graphMaximumHeightConstraint constant];
-  v9 = [v6 constraintEqualToConstant:?];
+  v9 = [heightAnchor constraintEqualToConstant:?];
 
   [v9 setActive:1];
   [(DirectionsElevationGraphHeaderView *)self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height];
@@ -68,8 +68,8 @@
   [(DirectionsElevationGraphHeaderView *)self setNeedsLayout];
   [(DirectionsElevationGraphHeaderView *)self layoutIfNeeded];
   self->_recalculatingHeights = 0;
-  v8 = [(DirectionsElevationGraphHeaderView *)self delegate];
-  [v8 directionsElevationGraphHeaderViewDidRecalculateHeights:self];
+  delegate2 = [(DirectionsElevationGraphHeaderView *)self delegate];
+  [delegate2 directionsElevationGraphHeaderViewDidRecalculateHeights:self];
 }
 
 - (void)_scheduleUpdateMinimumMaximumHeights
@@ -82,9 +82,9 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setTransitionProgress:(float)a3
+- (void)setTransitionProgress:(float)progress
 {
-  v3 = fminf(fmaxf(a3, 0.0), 1.0);
+  v3 = fminf(fmaxf(progress, 0.0), 1.0);
   if (self->_transitionProgress != v3)
   {
     self->_transitionProgress = v3;
@@ -134,15 +134,15 @@
 
 - (void)_updateLabels
 {
-  v3 = [(GEOComposedRoute *)self->_route elevationProfile];
+  elevationProfile = [(GEOComposedRoute *)self->_route elevationProfile];
 
-  if (v3)
+  if (elevationProfile)
   {
-    v4 = [(GEOComposedRoute *)self->_route elevationProfile];
-    v5 = [v4 sumElevationGainCm] * 0.01;
+    elevationProfile2 = [(GEOComposedRoute *)self->_route elevationProfile];
+    v5 = [elevationProfile2 sumElevationGainCm] * 0.01;
 
-    v6 = [(GEOComposedRoute *)self->_route elevationProfile];
-    v7 = [v6 sumElevationLossCm] * 0.01;
+    elevationProfile3 = [(GEOComposedRoute *)self->_route elevationProfile];
+    v7 = [elevationProfile3 sumElevationLossCm] * 0.01;
   }
 
   else
@@ -154,26 +154,26 @@
   v8 = sub_1007993AC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = self;
+    selfCopy = self;
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(DirectionsElevationGraphHeaderView *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(DirectionsElevationGraphHeaderView *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ![v12 isEqualToString:v11])
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_10;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_10:
 
     *buf = 138412290;
-    v23 = v14;
+    v23 = selfCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@ | Will update labels for gain/loss", buf, 0xCu);
   }
 
@@ -187,37 +187,37 @@ LABEL_10:
   [(DirectionsElevationLabelSummaryView *)labelSummaryView setAscent:v18 descent:v21];
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
-  if (self->_route != v5)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_route, a3);
+    v8 = routeCopy;
+    objc_storeStrong(&self->_route, route);
     [(DirectionsElevationGraphHeaderView *)self _updateLabels];
     chartView = self->_chartView;
-    v7 = [(GEOComposedRoute *)v8 elevationProfile];
+    elevationProfile = [(GEOComposedRoute *)v8 elevationProfile];
     [(GEOComposedRoute *)v8 distance];
-    [(DirectionsElevationGraphView *)chartView setElevationProfile:v7 routeLength:?];
+    [(DirectionsElevationGraphView *)chartView setElevationProfile:elevationProfile routeLength:?];
 
-    v5 = v8;
+    routeCopy = v8;
   }
 }
 
-- (void)setStyleForNavigation:(BOOL)a3
+- (void)setStyleForNavigation:(BOOL)navigation
 {
-  if (self->_styleForNavigation != a3)
+  if (self->_styleForNavigation != navigation)
   {
-    v3 = a3;
-    self->_styleForNavigation = a3;
+    navigationCopy = navigation;
+    self->_styleForNavigation = navigation;
     graphMinimumHeightConstraint = self->_graphMinimumHeightConstraint;
     v5 = [NSArray arrayWithObjects:&graphMinimumHeightConstraint count:1];
     [NSLayoutConstraint deactivateConstraints:v5];
 
-    v6 = [(DirectionsElevationGraphView *)self->_chartView heightAnchor];
-    v7 = [v6 constraintGreaterThanOrEqualToConstant:0.0];
+    heightAnchor = [(DirectionsElevationGraphView *)self->_chartView heightAnchor];
+    v7 = [heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
     v8 = 50.0;
-    if (v3)
+    if (navigationCopy)
     {
       v8 = 80.0;
       v9 = 2;
@@ -238,19 +238,19 @@ LABEL_10:
 
     chartView = self->_chartView;
     v14 = [DirectionsElevationGraphConfiguration alloc];
-    v15 = [(DirectionsElevationGraphHeaderView *)self traitCollection];
-    v16 = -[DirectionsElevationGraphConfiguration initWithUseType:userInterfaceIdiom:](v14, "initWithUseType:userInterfaceIdiom:", v9, [v15 userInterfaceIdiom]);
+    traitCollection = [(DirectionsElevationGraphHeaderView *)self traitCollection];
+    v16 = -[DirectionsElevationGraphConfiguration initWithUseType:userInterfaceIdiom:](v14, "initWithUseType:userInterfaceIdiom:", v9, [traitCollection userInterfaceIdiom]);
     [(DirectionsElevationGraphView *)chartView setConfiguration:v16];
 
     [(DirectionsElevationGraphHeaderView *)self _updateMinimumMaximumHeights];
   }
 }
 
-- (DirectionsElevationGraphHeaderView)initWithFrame:(CGRect)a3
+- (DirectionsElevationGraphHeaderView)initWithFrame:(CGRect)frame
 {
   v122.receiver = self;
   v122.super_class = DirectionsElevationGraphHeaderView;
-  v3 = [(DirectionsElevationGraphHeaderView *)&v122 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DirectionsElevationGraphHeaderView *)&v122 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -269,41 +269,41 @@ LABEL_10:
     v12 = [UIColor colorNamed:@"RoutePlanningPlatterBackground"];
     [v11 setBackgroundColor:v12];
 
-    v13 = [(DirectionsElevationGraphHeaderView *)v3 traitCollection];
+    traitCollection = [(DirectionsElevationGraphHeaderView *)v3 traitCollection];
     _UITableViewDefaultSectionCornerRadiusForTraitCollection();
     [v11 _setContinuousCornerRadius:?];
 
     v14 = +[UIColor lightGrayColor];
-    v15 = [v14 CGColor];
-    v16 = [v11 layer];
-    [v16 setShadowColor:v15];
+    cGColor = [v14 CGColor];
+    layer = [v11 layer];
+    [layer setShadowColor:cGColor];
 
-    v17 = [v11 layer];
+    layer2 = [v11 layer];
     LODWORD(v18) = 1045220557;
-    [v17 setShadowOpacity:v18];
+    [layer2 setShadowOpacity:v18];
 
-    v19 = [v11 layer];
-    [v19 setShadowRadius:3.0];
+    layer3 = [v11 layer];
+    [layer3 setShadowRadius:3.0];
 
-    v20 = [v11 layer];
-    [v20 setShadowOffset:{0.0, 0.0}];
+    layer4 = [v11 layer];
+    [layer4 setShadowOffset:{0.0, 0.0}];
 
     [v11 setAccessibilityIdentifier:@"InnerContentView"];
     [(DirectionsElevationGraphHeaderView *)v3 addSubview:v11];
     LODWORD(v21) = 1148846080;
     v22 = [v11 _maps_constraintsEqualToEdgesOfView:v3 insets:0.0 priority:{16.0, 16.0, 16.0, v21}];
-    v23 = [v22 bottomConstraint];
+    bottomConstraint = [v22 bottomConstraint];
     innerContentBottomConstraint = v3->_innerContentBottomConstraint;
-    v3->_innerContentBottomConstraint = v23;
+    v3->_innerContentBottomConstraint = bottomConstraint;
 
     v117 = v22;
-    v25 = [v22 allConstraints];
+    allConstraints = [v22 allConstraints];
     v121 = v6;
-    [v6 addObjectsFromArray:v25];
+    [v6 addObjectsFromArray:allConstraints];
 
     v26 = [DirectionsElevationGraphConfiguration alloc];
-    v27 = [(DirectionsElevationGraphHeaderView *)v3 traitCollection];
-    v28 = -[DirectionsElevationGraphConfiguration initWithUseType:userInterfaceIdiom:](v26, "initWithUseType:userInterfaceIdiom:", 0, [v27 userInterfaceIdiom]);
+    traitCollection2 = [(DirectionsElevationGraphHeaderView *)v3 traitCollection];
+    v28 = -[DirectionsElevationGraphConfiguration initWithUseType:userInterfaceIdiom:](v26, "initWithUseType:userInterfaceIdiom:", 0, [traitCollection2 userInterfaceIdiom]);
 
     v116 = v28;
     v29 = [[DirectionsElevationGraphView alloc] initWithConfiguration:v28];
@@ -323,9 +323,9 @@ LABEL_10:
     [(UIView *)v3->_textContainerView setContentHuggingPriority:1 forAxis:v33];
     [(UIView *)v3->_textContainerView setAccessibilityIdentifier:@"TextContainer"];
     [v11 addSubview:v3->_textContainerView];
-    v34 = [[DirectionsElevationLabelSummaryView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[DirectionsElevationLabelSummaryView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     labelSummaryView = v3->_labelSummaryView;
-    v3->_labelSummaryView = v34;
+    v3->_labelSummaryView = height;
 
     [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v36) = 1148846080;
@@ -409,14 +409,14 @@ LABEL_10:
     v3->_contentInsets.bottom = v56;
     v3->_contentInsets.right = v55;
     v3->_textContainerMaxTopMargin = v54;
-    v57 = [(UIView *)v3->_textContainerView topAnchor];
-    v58 = [v11 topAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58 constant:v3->_textContainerMaxTopMargin];
+    topAnchor = [(UIView *)v3->_textContainerView topAnchor];
+    topAnchor2 = [v11 topAnchor];
+    v59 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v3->_textContainerMaxTopMargin];
     textContainerTopConstraint = v3->_textContainerTopConstraint;
     v3->_textContainerTopConstraint = v59;
 
-    v61 = [*p_chartView heightAnchor];
-    v62 = [v61 constraintGreaterThanOrEqualToConstant:0.0];
+    heightAnchor = [*p_chartView heightAnchor];
+    v62 = [heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
     v63 = 50.0;
     if (v3->_styleForNavigation)
     {
@@ -428,68 +428,68 @@ LABEL_10:
     graphMinimumHeightConstraint = v3->_graphMinimumHeightConstraint;
     v3->_graphMinimumHeightConstraint = v64;
 
-    v66 = [*p_chartView heightAnchor];
-    v67 = [v66 constraintLessThanOrEqualToConstant:0.0];
+    heightAnchor2 = [*p_chartView heightAnchor];
+    v67 = [heightAnchor2 constraintLessThanOrEqualToConstant:0.0];
     v68 = [DynamicTypeWizard autoscaledConstraint:v67 constant:&stru_10162EF58 withFontProvider:80.0];
     graphMaximumHeightConstraint = v3->_graphMaximumHeightConstraint;
     v3->_graphMaximumHeightConstraint = v68;
 
-    v114 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView topAnchor];
-    v113 = [(UIView *)v3->_textContainerView topAnchor];
-    v112 = [v114 constraintEqualToAnchor:v113];
+    topAnchor3 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView topAnchor];
+    topAnchor4 = [(UIView *)v3->_textContainerView topAnchor];
+    v112 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v124[0] = v112;
-    v111 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView leadingAnchor];
-    v110 = [(UIView *)v3->_textContainerView leadingAnchor];
-    v109 = [v111 constraintEqualToAnchor:v110];
+    leadingAnchor = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView leadingAnchor];
+    leadingAnchor2 = [(UIView *)v3->_textContainerView leadingAnchor];
+    v109 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v124[1] = v109;
-    v108 = [(UIView *)v3->_textContainerView trailingAnchor];
-    v107 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView trailingAnchor];
-    v106 = [v108 constraintGreaterThanOrEqualToAnchor:v107];
+    trailingAnchor = [(UIView *)v3->_textContainerView trailingAnchor];
+    trailingAnchor2 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView trailingAnchor];
+    v106 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
     v124[2] = v106;
-    v105 = [v39 firstBaselineAnchor];
-    v104 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView lastBaselineAnchor];
-    v103 = [v105 constraintEqualToAnchor:v104];
+    firstBaselineAnchor = [v39 firstBaselineAnchor];
+    lastBaselineAnchor = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView lastBaselineAnchor];
+    v103 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor];
     v102 = [DynamicTypeWizard autoscaledConstraint:v103 constant:v101 withFontProvider:17.0];
     v124[3] = v102;
-    v100 = [v39 leadingAnchor];
-    v99 = [(UIView *)v3->_textContainerView leadingAnchor];
-    v98 = [v100 constraintEqualToAnchor:v99];
+    leadingAnchor3 = [v39 leadingAnchor];
+    leadingAnchor4 = [(UIView *)v3->_textContainerView leadingAnchor];
+    v98 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v124[4] = v98;
-    v97 = [(UIView *)v3->_textContainerView trailingAnchor];
-    v96 = [v39 trailingAnchor];
-    v95 = [v97 constraintEqualToAnchor:v96];
+    trailingAnchor3 = [(UIView *)v3->_textContainerView trailingAnchor];
+    trailingAnchor4 = [v39 trailingAnchor];
+    v95 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v124[5] = v95;
-    v94 = [(UIView *)v3->_textContainerView bottomAnchor];
-    v93 = [v39 bottomAnchor];
-    v91 = [v94 constraintEqualToAnchor:v93];
+    bottomAnchor = [(UIView *)v3->_textContainerView bottomAnchor];
+    bottomAnchor2 = [v39 bottomAnchor];
+    v91 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v124[6] = v91;
     v124[7] = v3->_textContainerTopConstraint;
-    v92 = [(UIView *)v3->_textContainerView leadingAnchor];
-    v90 = [v11 leadingAnchor];
-    v89 = [v92 constraintEqualToAnchor:v90 constant:v55];
+    leadingAnchor5 = [(UIView *)v3->_textContainerView leadingAnchor];
+    leadingAnchor6 = [v11 leadingAnchor];
+    v89 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:v55];
     v124[8] = v89;
-    v88 = [v11 trailingAnchor];
-    v87 = [(UIView *)v3->_textContainerView trailingAnchor];
-    v86 = [v88 constraintEqualToAnchor:v87 constant:v55];
+    trailingAnchor5 = [v11 trailingAnchor];
+    trailingAnchor6 = [(UIView *)v3->_textContainerView trailingAnchor];
+    v86 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:v55];
     v124[9] = v86;
     v124[10] = v3->_graphMinimumHeightConstraint;
     v124[11] = v3->_graphMaximumHeightConstraint;
-    v85 = [*p_chartView topAnchor];
-    v84 = [(UIView *)v3->_textContainerView lastBaselineAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84];
+    topAnchor5 = [*p_chartView topAnchor];
+    lastBaselineAnchor2 = [(UIView *)v3->_textContainerView lastBaselineAnchor];
+    v83 = [topAnchor5 constraintEqualToAnchor:lastBaselineAnchor2];
     v82 = [DynamicTypeWizard autoscaledConstraint:v83 constant:v101 withFontProvider:15.0];
     v124[12] = v82;
-    v81 = [*p_chartView leadingAnchor];
-    v70 = [v11 leadingAnchor];
-    v71 = [v81 constraintEqualToAnchor:v70 constant:v55];
+    leadingAnchor7 = [*p_chartView leadingAnchor];
+    leadingAnchor8 = [v11 leadingAnchor];
+    v71 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:v55];
     v124[13] = v71;
-    v72 = [v11 trailingAnchor];
-    v73 = [*p_chartView trailingAnchor];
-    v74 = [v72 constraintEqualToAnchor:v73 constant:v55];
+    trailingAnchor7 = [v11 trailingAnchor];
+    trailingAnchor8 = [*p_chartView trailingAnchor];
+    v74 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:v55];
     v124[14] = v74;
-    v75 = [v11 bottomAnchor];
-    v76 = [*p_chartView bottomAnchor];
-    v77 = [v75 constraintEqualToAnchor:v76 constant:v56];
+    bottomAnchor3 = [v11 bottomAnchor];
+    bottomAnchor4 = [*p_chartView bottomAnchor];
+    v77 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:v56];
     v124[15] = v77;
     v78 = [NSArray arrayWithObjects:v124 count:16];
     [v121 addObjectsFromArray:v78];

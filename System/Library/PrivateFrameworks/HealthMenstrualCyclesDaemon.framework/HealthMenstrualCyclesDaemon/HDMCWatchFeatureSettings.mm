@@ -1,7 +1,7 @@
 @interface HDMCWatchFeatureSettings
 + (id)algorithmicProjectionsSettings;
 + (id)hiddenLoggingRowsSettings;
-- (void)initWithFeatureIdentifier:(void *)a3 changeComputer:;
+- (void)initWithFeatureIdentifier:(void *)identifier changeComputer:;
 @end
 
 @implementation HDMCWatchFeatureSettings
@@ -99,33 +99,33 @@ id __53__HDMCWatchFeatureSettings_hiddenLoggingRowsSettings__block_invoke(uint64
   return v17;
 }
 
-- (void)initWithFeatureIdentifier:(void *)a3 changeComputer:
+- (void)initWithFeatureIdentifier:(void *)identifier changeComputer:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = HDMCWatchFeatureSettings;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v7 = [v5 copy];
-      v8 = a1[2];
-      a1[2] = v7;
+      v8 = self[2];
+      self[2] = v7;
 
-      v9 = _Block_copy(v6);
-      v10 = a1[1];
-      a1[1] = v9;
+      v9 = _Block_copy(identifierCopy);
+      v10 = self[1];
+      self[1] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (id)algorithmicProjectionsSettings
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [(HDMCWatchFeatureSettings *)v2 initWithFeatureIdentifier:&__block_literal_global_7 changeComputer:?];
 
   return v3;
@@ -133,7 +133,7 @@ id __53__HDMCWatchFeatureSettings_hiddenLoggingRowsSettings__block_invoke(uint64
 
 + (id)hiddenLoggingRowsSettings
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [(HDMCWatchFeatureSettings *)v2 initWithFeatureIdentifier:&__block_literal_global_397 changeComputer:?];
 
   return v3;

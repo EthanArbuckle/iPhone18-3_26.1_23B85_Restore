@@ -1,19 +1,19 @@
 @interface ADTimerRequestHandler
-- (void)handleSiriRequest:(id)a3 deliveryHandler:(id)a4 completionHandler:(id)a5;
+- (void)handleSiriRequest:(id)request deliveryHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation ADTimerRequestHandler
 
-- (void)handleSiriRequest:(id)a3 deliveryHandler:(id)a4 completionHandler:(id)a5
+- (void)handleSiriRequest:(id)request deliveryHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v7 = a5;
-  if (a4)
+  requestCopy = request;
+  completionHandlerCopy = completionHandler;
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 
-  [v8 _ad_handleTimerRequestWithCompletionHandler:v7];
+  [requestCopy _ad_handleTimerRequestWithCompletionHandler:completionHandlerCopy];
 }
 
 @end

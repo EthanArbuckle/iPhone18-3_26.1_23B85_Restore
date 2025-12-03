@@ -1,27 +1,27 @@
 @interface WFActionRateLimiter
 + (id)sharedInstance;
-+ (void)performAction:(id)a3 onQueue:(id)a4 withBlock:(id)a5;
++ (void)performAction:(id)action onQueue:(id)queue withBlock:(id)block;
 - (NSDictionary)attempts;
 - (WFActionRateLimiter)init;
-- (WFActionRateLimiter)initWithUserDefaults:(id)a3;
-- (void)modify:(id)a3;
-- (void)setAttempts:(id)a3;
+- (WFActionRateLimiter)initWithUserDefaults:(id)defaults;
+- (void)modify:(id)modify;
+- (void)setAttempts:(id)attempts;
 @end
 
 @implementation WFActionRateLimiter
 
-- (void)modify:(id)a3
+- (void)modify:(id)modify
 {
-  v4 = a3;
-  v5 = [(WFActionRateLimiter *)self queue];
+  modifyCopy = modify;
+  queue = [(WFActionRateLimiter *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__WFActionRateLimiter_modify___block_invoke;
   v7[3] = &unk_1E837E1F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = modifyCopy;
+  v6 = modifyCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __30__WFActionRateLimiter_modify___block_invoke(uint64_t a1)
@@ -34,17 +34,17 @@ void __30__WFActionRateLimiter_modify___block_invoke(uint64_t a1)
   [*(a1 + 32) setAttempts:DeepCopy];
 }
 
-- (void)setAttempts:(id)a3
+- (void)setAttempts:(id)attempts
 {
-  v4 = a3;
-  v5 = [(WFActionRateLimiter *)self userDefaults];
-  [v5 setObject:v4 forKey:@"WFActionRateLimiter"];
+  attemptsCopy = attempts;
+  userDefaults = [(WFActionRateLimiter *)self userDefaults];
+  [userDefaults setObject:attemptsCopy forKey:@"WFActionRateLimiter"];
 }
 
 - (NSDictionary)attempts
 {
-  v2 = [(WFActionRateLimiter *)self userDefaults];
-  v3 = [v2 dictionaryForKey:@"WFActionRateLimiter"];
+  userDefaults = [(WFActionRateLimiter *)self userDefaults];
+  v3 = [userDefaults dictionaryForKey:@"WFActionRateLimiter"];
   v4 = v3;
   if (v3)
   {
@@ -61,13 +61,13 @@ void __30__WFActionRateLimiter_modify___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (WFActionRateLimiter)initWithUserDefaults:(id)a3
+- (WFActionRateLimiter)initWithUserDefaults:(id)defaults
 {
-  v6 = a3;
-  if (!v6)
+  defaultsCopy = defaults;
+  if (!defaultsCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFActionRateLimiter.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"userDefaults"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionRateLimiter.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"userDefaults"}];
   }
 
   v13.receiver = self;
@@ -79,7 +79,7 @@ void __30__WFActionRateLimiter_modify___block_invoke(uint64_t a1)
     queue = v7->_queue;
     v7->_queue = v8;
 
-    objc_storeStrong(&v7->_userDefaults, a3);
+    objc_storeStrong(&v7->_userDefaults, defaults);
     v10 = v7;
   }
 
@@ -88,31 +88,31 @@ void __30__WFActionRateLimiter_modify___block_invoke(uint64_t a1)
 
 - (WFActionRateLimiter)init
 {
-  v3 = [MEMORY[0x1E695E000] workflowUserDefaults];
-  v4 = [(WFActionRateLimiter *)self initWithUserDefaults:v3];
+  workflowUserDefaults = [MEMORY[0x1E695E000] workflowUserDefaults];
+  v4 = [(WFActionRateLimiter *)self initWithUserDefaults:workflowUserDefaults];
 
   return v4;
 }
 
-+ (void)performAction:(id)a3 onQueue:(id)a4 withBlock:(id)a5
++ (void)performAction:(id)action onQueue:(id)queue withBlock:(id)block
 {
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  actionCopy = action;
+  queueCopy = queue;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (actionCopy)
   {
-    if (v11)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"WFActionRateLimiter.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionRateLimiter.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_4;
     }
@@ -120,8 +120,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:a1 file:@"WFActionRateLimiter.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFActionRateLimiter.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
   if (!v12)
   {
@@ -129,36 +129,36 @@ LABEL_14:
   }
 
 LABEL_3:
-  if (v10)
+  if (queueCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_15:
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:a1 file:@"WFActionRateLimiter.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFActionRateLimiter.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
 LABEL_4:
-  v13 = [v9 rateLimitThreshold];
-  if (v13)
+  rateLimitThreshold = [actionCopy rateLimitThreshold];
+  if (rateLimitThreshold)
   {
-    v14 = v13;
+    v14 = rateLimitThreshold;
     v33 = 0;
     v34 = &v33;
     v35 = 0x2020000000;
     v36 = 0;
-    v15 = [v9 identifier];
-    v16 = [a1 sharedInstance];
+    identifier = [actionCopy identifier];
+    sharedInstance = [self sharedInstance];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __55__WFActionRateLimiter_performAction_onQueue_withBlock___block_invoke;
     v29[3] = &unk_1E83753E8;
-    v17 = v15;
+    v17 = identifier;
     v30 = v17;
     v32 = &v33;
-    v18 = v9;
+    v18 = actionCopy;
     v31 = v18;
-    [v16 modify:v29];
+    [sharedInstance modify:v29];
 
     if (v34[3] <= v14)
     {
@@ -170,16 +170,16 @@ LABEL_4:
       v19 = getWFWorkflowExecutionLogObject();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v18 identifier];
-        v21 = [v18 rateLimitDelay];
+        identifier2 = [v18 identifier];
+        rateLimitDelay = [v18 rateLimitDelay];
         *buf = 136315906;
         v38 = "+[WFActionRateLimiter performAction:onQueue:withBlock:]";
         v39 = 2112;
-        v40 = v20;
+        v40 = identifier2;
         v41 = 2048;
         v42 = v14;
         v43 = 2048;
-        v44 = v21;
+        v44 = rateLimitDelay;
         _os_log_impl(&dword_1CA256000, v19, OS_LOG_TYPE_DEFAULT, "%s Action %@ is being rate limited because it passed the threshold of %li runs. Delaying execution for %li seconds.", buf, 0x2Au);
       }
 
@@ -189,7 +189,7 @@ LABEL_4:
       block[2] = __55__WFActionRateLimiter_performAction_onQueue_withBlock___block_invoke_195;
       block[3] = &unk_1E837F4E8;
       v28 = v12;
-      dispatch_after(v22, v10, block);
+      dispatch_after(v22, queueCopy, block);
     }
 
     _Block_object_dispose(&v33, 8);

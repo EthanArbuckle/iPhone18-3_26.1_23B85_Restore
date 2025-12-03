@@ -2,8 +2,8 @@
 - (CGSize)intrinsicContentSize;
 - (void)_updateRealBackgroundColor;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation WGColorHighlightButton
@@ -15,8 +15,8 @@
   [(WGColorHighlightButton *)&v14 intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(WGColorHighlightButton *)self titleLabel];
-  [v7 intrinsicContentSize];
+  titleLabel = [(WGColorHighlightButton *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v9 = v8;
   v11 = v10;
 
@@ -50,21 +50,21 @@
   v6.receiver = self;
   v6.super_class = WGColorHighlightButton;
   [(WGColorHighlightButton *)&v6 layoutSubviews];
-  v3 = [(WGColorHighlightButton *)self titleLabel];
-  v4 = [(WGColorHighlightButton *)self titleLabel];
-  [v4 frame];
-  [v3 setPreferredMaxLayoutWidth:v5];
+  titleLabel = [(WGColorHighlightButton *)self titleLabel];
+  titleLabel2 = [(WGColorHighlightButton *)self titleLabel];
+  [titleLabel2 frame];
+  [titleLabel setPreferredMaxLayoutWidth:v5];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(WGColorHighlightButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(WGColorHighlightButton *)self isHighlighted]!= highlighted)
   {
     v5.receiver = self;
     v5.super_class = WGColorHighlightButton;
-    [(WGColorHighlightButton *)&v5 setHighlighted:v3];
-    if (v3)
+    [(WGColorHighlightButton *)&v5 setHighlighted:highlightedCopy];
+    if (highlightedCopy)
     {
       [(WGColorHighlightButton *)self _updateRealBackgroundColor];
     }
@@ -76,11 +76,11 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  [(WGColorHighlightButton *)self setSavedBackgroundColor:v4];
-  v5 = v4;
+  colorCopy = color;
+  [(WGColorHighlightButton *)self setSavedBackgroundColor:colorCopy];
+  v5 = colorCopy;
   v9 = 0.0;
   v10 = 0.0;
   v7 = 0.0;
@@ -99,10 +99,10 @@
 {
   if ([(WGColorHighlightButton *)self isHighlighted])
   {
-    v3 = [(WGColorHighlightButton *)self highlightedBackgroundColor];
+    highlightedBackgroundColor = [(WGColorHighlightButton *)self highlightedBackgroundColor];
     v5.receiver = self;
     v5.super_class = WGColorHighlightButton;
-    [(WGColorHighlightButton *)&v5 setBackgroundColor:v3];
+    [(WGColorHighlightButton *)&v5 setBackgroundColor:highlightedBackgroundColor];
   }
 
   else

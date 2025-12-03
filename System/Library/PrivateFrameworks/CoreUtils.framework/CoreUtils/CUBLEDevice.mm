@@ -1,45 +1,45 @@
 @interface CUBLEDevice
-- (id)descriptionWithLevel:(int)a3;
-- (unsigned)updateWithAdvertisementData:(id)a3 rssi:(int)a4 oldDevice:(id)a5;
-- (void)_parseAppleManufacturerPtr:(const char *)a3 end:(const char *)a4 data:(id)a5;
-- (void)_parseAppleNearbyActionPtr:(const char *)a3 end:(const char *)a4;
-- (void)_parseAppleNearbyInfoPtr:(const char *)a3 end:(const char *)a4;
-- (void)_parseAppleObjectDiscoveryPtr:(const char *)a3 end:(const char *)a4;
-- (void)_parseAppleProximityPairingObjectSetupPtr:(const char *)a3 end:(const char *)a4;
-- (void)_parseAppleProximityPairingPtr:(const char *)a3 end:(const char *)a4;
-- (void)_parseAppleProximityPairingStatusPtr:(const char *)a3 end:(const char *)a4;
-- (void)_parseLGManufacturerPtr:(const char *)a3 end:(const char *)a4 fields:(id)a5;
-- (void)_parseManufacturerData:(id)a3 advertisementFields:(id)a4;
+- (id)descriptionWithLevel:(int)level;
+- (unsigned)updateWithAdvertisementData:(id)data rssi:(int)rssi oldDevice:(id)device;
+- (void)_parseAppleManufacturerPtr:(const char *)ptr end:(const char *)end data:(id)data;
+- (void)_parseAppleNearbyActionPtr:(const char *)ptr end:(const char *)end;
+- (void)_parseAppleNearbyInfoPtr:(const char *)ptr end:(const char *)end;
+- (void)_parseAppleObjectDiscoveryPtr:(const char *)ptr end:(const char *)end;
+- (void)_parseAppleProximityPairingObjectSetupPtr:(const char *)ptr end:(const char *)end;
+- (void)_parseAppleProximityPairingPtr:(const char *)ptr end:(const char *)end;
+- (void)_parseAppleProximityPairingStatusPtr:(const char *)ptr end:(const char *)end;
+- (void)_parseLGManufacturerPtr:(const char *)ptr end:(const char *)end fields:(id)fields;
+- (void)_parseManufacturerData:(id)data advertisementFields:(id)fields;
 @end
 
 @implementation CUBLEDevice
 
-- (void)_parseLGManufacturerPtr:(const char *)a3 end:(const char *)a4 fields:(id)a5
+- (void)_parseLGManufacturerPtr:(const char *)ptr end:(const char *)end fields:(id)fields
 {
   self->_scanFlags |= 0x40u;
   self->_lgFlags = 0;
-  if (a4 - a3 >= 4 && (a3[3] & 1) != 0)
+  if (end - ptr >= 4 && (ptr[3] & 1) != 0)
   {
     self->_lgFlags = 3;
   }
 
-  v6 = a5;
+  fieldsCopy = fields;
   TypeID = CFDataGetTypeID();
-  v11 = CFDictionaryGetTypedValue(v6, @"kCBAdvDataLeBluetoothDeviceAddress", TypeID, 0);
+  v11 = CFDictionaryGetTypedValue(fieldsCopy, @"kCBAdvDataLeBluetoothDeviceAddress", TypeID, 0);
 
   if ([v11 length] >= 7)
   {
-    v8 = [v11 bytes];
-    v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v8 + 1 length:6];
+    bytes = [v11 bytes];
+    v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:bytes + 1 length:6];
     lgBTAddress = self->_lgBTAddress;
     self->_lgBTAddress = v9;
   }
 }
 
-- (void)_parseAppleProximityPairingObjectSetupPtr:(const char *)a3 end:(const char *)a4
+- (void)_parseAppleProximityPairingObjectSetupPtr:(const char *)ptr end:(const char *)end
 {
   self->_scanFlags |= 0x80u;
-  if (a4 - a3 <= 0)
+  if (end - ptr <= 0)
   {
     self->_objectSetupFlags = 0;
 LABEL_8:
@@ -51,31 +51,31 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = *a3;
+  v7 = *ptr;
   self->_objectSetupFlags = v7;
-  if (&a4[~a3] < 1)
+  if (&end[~ptr] < 1)
   {
     goto LABEL_8;
   }
 
-  v8 = *(a3 + 1);
+  v8 = *(ptr + 1);
   self->_objectSetupBatteryState = v8 & 7;
   self->_objectSetupBatteryPerformance = (v8 >> 3) & 3;
-  if (a4 - a3 - 2 <= 0)
+  if (end - ptr - 2 <= 0)
   {
     goto LABEL_8;
   }
 
-  v9 = a3 + 3;
-  self->_objectSetupColorCode = a3[2];
-  v10 = a4 - (a3 + 3);
+  v9 = ptr + 3;
+  self->_objectSetupColorCode = ptr[2];
+  v10 = end - (ptr + 3);
   if ((v7 & 0x10) != 0 && v10 >= 7)
   {
-    v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:a3 + 3 length:7 encoding:4];
-    v9 = a3 + 10;
+    v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:ptr + 3 length:7 encoding:4];
+    v9 = ptr + 10;
     objc_storeStrong(&self->_objectSetupFontCode, v18);
     v11 = v18;
-    v10 = a4 - (a3 + 10);
+    v10 = end - (ptr + 10);
   }
 
   else
@@ -125,20 +125,20 @@ LABEL_9:
   self->_objectSetupMessage = v13;
 }
 
-- (void)_parseAppleProximityPairingStatusPtr:(const char *)a3 end:(const char *)a4
+- (void)_parseAppleProximityPairingStatusPtr:(const char *)ptr end:(const char *)end
 {
-  if (a4 - a3 <= 6)
+  if (end - ptr <= 6)
   {
     self->_proximityPairingAudioSourceCount = 0;
   }
 
   else
   {
-    self->_proximityPairingAudioSourceCount = (a3[6] >> 2) & 3;
-    if ((a4 - a3) >= 0xD)
+    self->_proximityPairingAudioSourceCount = (ptr[6] >> 2) & 3;
+    if ((end - ptr) >= 0xD)
     {
-      v4 = *(a3 + 5);
-      self->_proximityPairingLastConnectedHost.bytes[2] = a3[12];
+      v4 = *(ptr + 5);
+      self->_proximityPairingLastConnectedHost.bytes[2] = ptr[12];
       *self->_proximityPairingLastConnectedHost.bytes = v4;
       return;
     }
@@ -148,9 +148,9 @@ LABEL_9:
   *self->_proximityPairingLastConnectedHost.bytes = 0;
 }
 
-- (void)_parseAppleProximityPairingPtr:(const char *)a3 end:(const char *)a4
+- (void)_parseAppleProximityPairingPtr:(const char *)ptr end:(const char *)end
 {
-  if (a4 - a3 < 1)
+  if (end - ptr < 1)
   {
     self->_proximityPairingProductID = 0;
     self->_proximityPairingSubType = 255;
@@ -159,18 +159,18 @@ LABEL_9:
 
   else
   {
-    v7 = *a3;
-    v5 = a3 + 1;
+    v7 = *ptr;
+    v5 = ptr + 1;
     v6 = v7;
-    if (a4 - v5 <= 1)
+    if (end - v5 <= 1)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = *(a3 + 1);
-      v5 = a3 + 3;
+      v8 = *(ptr + 1);
+      v5 = ptr + 3;
     }
 
     self->_proximityPairingProductID = v8;
@@ -188,13 +188,13 @@ LABEL_9:
   }
 }
 
-- (void)_parseAppleObjectDiscoveryPtr:(const char *)a3 end:(const char *)a4
+- (void)_parseAppleObjectDiscoveryPtr:(const char *)ptr end:(const char *)end
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a4 - a3 >= 1)
+  if (end - ptr >= 1)
   {
-    v8 = a3 + 1;
-    v7 = *a3;
+    v8 = ptr + 1;
+    v7 = *ptr;
     if ((v7 & 0x10) != 0)
     {
       v9 = 21760;
@@ -211,13 +211,13 @@ LABEL_9:
       goto LABEL_17;
     }
 
-    if (a4 - v8 < 22)
+    if (end - v8 < 22)
     {
-      v15 = [(NSData *)v10 bytes];
-      v16 = *(v15 + 4);
-      v19 = *v15;
+      bytes = [(NSData *)v10 bytes];
+      v16 = *(bytes + 4);
+      v19 = *bytes;
       v20 = v16;
-      if (a4 - v8 >= 1)
+      if (end - v8 >= 1)
       {
         LOBYTE(v19) = v19 & 0x3F | (*v8 << 6);
       }
@@ -236,15 +236,15 @@ LABEL_9:
 
     else
     {
-      v11 = [(NSData *)v10 bytes];
-      v12 = *(v11 + 4);
-      v19 = *v11;
+      bytes2 = [(NSData *)v10 bytes];
+      v12 = *(bytes2 + 4);
+      v19 = *bytes2;
       v20 = v12;
       *v21 = *v8;
       *&v21[14] = *(v8 + 14);
-      if (a4 - (a3 + 23) >= 1)
+      if (end - (ptr + 23) >= 1)
       {
-        LOBYTE(v19) = v19 & 0x3F | (a3[23] << 6);
+        LOBYTE(v19) = v19 & 0x3F | (ptr[23] << 6);
       }
 
       v13 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&v19 length:28];
@@ -269,30 +269,30 @@ LABEL_17:
   }
 }
 
-- (void)_parseAppleNearbyInfoPtr:(const char *)a3 end:(const char *)a4
+- (void)_parseAppleNearbyInfoPtr:(const char *)ptr end:(const char *)end
 {
-  if (a4 - a3 < 1)
+  if (end - ptr < 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = *a3;
+    v5 = *ptr;
     self->_nearbyActivityLevel = v5 & 0xF;
     v6 = (4 * v5) & 0xC0;
-    if (&a4[~a3] >= 1)
+    if (&end[~ptr] >= 1)
     {
-      v7 = *(a3 + 1);
+      v7 = *(ptr + 1);
       v8 = vdupq_n_s32(v7);
       v9.i64[0] = vshlq_u32(v8, xmmword_191FF94C0).u64[0];
       v9.i64[1] = vshlq_u32(v8, xmmword_191FF94D0).i64[1];
       v10 = vandq_s8(v9, xmmword_191FF94E0);
       *v10.i8 = vorr_s8(*v10.i8, *&vextq_s8(v10, v10, 8uLL));
       v6 |= v10.i32[0] | v10.i32[1] | (v7 >> 7) | (v7 >> 1) & 8;
-      if (((v7 >> 1) & 8) != 0 && a4 - (a3 + 2) >= 3)
+      if (((v7 >> 1) & 8) != 0 && end - (ptr + 2) >= 3)
       {
-        v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a3 + 2 length:3];
+        v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:ptr + 2 length:3];
         nearbyAuthTag = self->_nearbyAuthTag;
         self->_nearbyAuthTag = v11;
       }
@@ -303,21 +303,21 @@ LABEL_17:
   self->_scanFlags |= 4u;
 }
 
-- (void)_parseAppleNearbyActionPtr:(const char *)a3 end:(const char *)a4
+- (void)_parseAppleNearbyActionPtr:(const char *)ptr end:(const char *)end
 {
-  if (a4 - a3 >= 1)
+  if (end - ptr >= 1)
   {
-    v5 = *a3;
+    v5 = *ptr;
     v6 = (v5 >> 4) & 8;
     self->_nearbyFlags |= (4 * v5) & 0x100 | v6 | (16 * v5) & 0x200;
-    if (&a4[~a3] >= 1)
+    if (&end[~ptr] >= 1)
     {
-      self->_nearbyActionType = *(a3 + 1);
+      self->_nearbyActionType = *(ptr + 1);
       if (v6)
       {
-        if (a4 - (a3 + 2) >= 3)
+        if (end - (ptr + 2) >= 3)
         {
-          v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a3 + 2 length:3];
+          v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:ptr + 2 length:3];
           nearbyAuthTag = self->_nearbyAuthTag;
           self->_nearbyAuthTag = v7;
         }
@@ -328,27 +328,27 @@ LABEL_17:
   self->_scanFlags |= 2u;
 }
 
-- (void)_parseAppleManufacturerPtr:(const char *)a3 end:(const char *)a4 data:(id)a5
+- (void)_parseAppleManufacturerPtr:(const char *)ptr end:(const char *)end data:(id)data
 {
-  v11 = a5;
-  if (a4 - a3 < 2)
+  dataCopy = data;
+  if (end - ptr < 2)
   {
 LABEL_13:
-    objc_storeStrong(&self->_appleManufacturerData, a5);
+    objc_storeStrong(&self->_appleManufacturerData, data);
   }
 
   else
   {
     while (1)
     {
-      v9 = a3[1] & 0x1F;
-      if (a4 - (a3 + 2) < v9)
+      v9 = ptr[1] & 0x1F;
+      if (end - (ptr + 2) < v9)
       {
         break;
       }
 
-      v10 = *a3;
-      a3 += v9 + 2;
+      v10 = *ptr;
+      ptr += v9 + 2;
       if (v10 > 15)
       {
         if (v10 == 16)
@@ -372,7 +372,7 @@ LABEL_13:
         [CUBLEDevice _parseAppleNearbyActionPtr:"_parseAppleNearbyActionPtr:end:" end:?];
       }
 
-      if (a4 - a3 <= 1)
+      if (end - ptr <= 1)
       {
         goto LABEL_13;
       }
@@ -380,40 +380,40 @@ LABEL_13:
   }
 }
 
-- (void)_parseManufacturerData:(id)a3 advertisementFields:(id)a4
+- (void)_parseManufacturerData:(id)data advertisementFields:(id)fields
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  v8 = [v12 bytes];
-  v9 = [v12 length];
+  dataCopy = data;
+  fieldsCopy = fields;
+  v7 = dataCopy;
+  bytes = [dataCopy bytes];
+  v9 = [dataCopy length];
   if (v9 >= 2)
   {
-    v10 = v8 + 1;
-    v11 = *v8;
+    v10 = bytes + 1;
+    v11 = *bytes;
     if (v11 == 196)
     {
-      [(CUBLEDevice *)self _parseLGManufacturerPtr:v10 end:v8 + v9 fields:v6];
+      [(CUBLEDevice *)self _parseLGManufacturerPtr:v10 end:bytes + v9 fields:fieldsCopy];
     }
 
     else if (v11 == 76)
     {
-      [(CUBLEDevice *)self _parseAppleManufacturerPtr:v10 end:v8 + v9 data:v12];
+      [(CUBLEDevice *)self _parseAppleManufacturerPtr:v10 end:bytes + v9 data:dataCopy];
     }
   }
 }
 
-- (unsigned)updateWithAdvertisementData:(id)a3 rssi:(int)a4 oldDevice:(id)a5
+- (unsigned)updateWithAdvertisementData:(id)data rssi:(int)rssi oldDevice:(id)device
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  deviceCopy = device;
   CBAdvertisementDataDeviceAddress = getCBAdvertisementDataDeviceAddress();
-  v11 = CFDictionaryGetCFDataOfLength(v8, CBAdvertisementDataDeviceAddress, 6, 0);
+  v11 = CFDictionaryGetCFDataOfLength(dataCopy, CBAdvertisementDataDeviceAddress, 6, 0);
   if (v11)
   {
-    v12 = [v9 addressData];
+    addressData = [deviceCopy addressData];
     v13 = v11;
-    v14 = v12;
+    v14 = addressData;
     v15 = v14;
     if (v13 == v14)
     {
@@ -447,12 +447,12 @@ LABEL_13:
 
   CBAdvertisementDataManufacturerDataKey = getCBAdvertisementDataManufacturerDataKey();
   TypeID = CFDataGetTypeID();
-  v19 = CFDictionaryGetTypedValue(v8, CBAdvertisementDataManufacturerDataKey, TypeID, 0);
+  v19 = CFDictionaryGetTypedValue(dataCopy, CBAdvertisementDataManufacturerDataKey, TypeID, 0);
   if (v19)
   {
-    v20 = [v9 manufacturerData];
+    manufacturerData = [deviceCopy manufacturerData];
     v21 = v19;
-    v22 = v20;
+    v22 = manufacturerData;
     v23 = v22;
     if (v21 == v22)
     {
@@ -470,37 +470,37 @@ LABEL_13:
 
     v16 |= v24;
     objc_storeStrong(&self->_manufacturerData, v19);
-    [(CUBLEDevice *)self _parseManufacturerData:v21 advertisementFields:v8];
+    [(CUBLEDevice *)self _parseManufacturerData:v21 advertisementFields:dataCopy];
   }
 
-  if ((a4 - 20) >= 0x6B)
+  if ((rssi - 20) >= 0x6B)
   {
-    v25 = a4;
+    rssiCopy = rssi;
   }
 
   else
   {
-    v25 = a4 - 126;
+    rssiCopy = rssi - 126;
   }
 
-  if ((v25 - 1) < 0xFFFFFFA5)
+  if ((rssiCopy - 1) < 0xFFFFFFA5)
   {
-    v25 = 0;
+    rssiCopy = 0;
   }
 
-  if (v25 != self->_rawRSSI)
+  if (rssiCopy != self->_rawRSSI)
   {
     v16 |= 8u;
-    self->_rawRSSI = v25;
+    self->_rawRSSI = rssiCopy;
   }
 
   return v16;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v142 = 0;
-  NSAppendPrintF(&v142, "CUBLEDevice %@", *&a3, v3, v4, v5, v6, v7, self->_identifier);
+  NSAppendPrintF(&v142, "CUBLEDevice %@", *&level, v3, v4, v5, v6, v7, self->_identifier);
   v10 = v142;
   v11 = self->_addressData;
   v12 = v11;
@@ -509,15 +509,15 @@ LABEL_13:
     v141 = v10;
     if ([(NSData *)v11 length]== 6)
     {
-      v19 = [(NSData *)v12 bytes];
+      bytes = [(NSData *)v12 bytes];
     }
 
     else
     {
-      v19 = 0;
+      bytes = 0;
     }
 
-    NSAppendPrintF(&v141, ", Addr %.6a", v13, v14, v15, v16, v17, v18, v19);
+    NSAppendPrintF(&v141, ", Addr %.6a", v13, v14, v15, v16, v17, v18, bytes);
     v20 = v141;
 
     v10 = v20;
@@ -527,16 +527,16 @@ LABEL_13:
   NSAppendPrintF(&v140, ", RSSI %3d", v21, v22, v23, v24, v25, v26, self->_rawRSSI);
   v27 = v140;
 
-  if (a3 < 50)
+  if (level < 50)
   {
     v34 = self->_appleManufacturerData;
     v35 = v34;
     if (v34)
     {
       v139 = v27;
-      v36 = [(NSData *)v34 bytes];
+      bytes2 = [(NSData *)v34 bytes];
       [(NSData *)v35 length];
-      NSAppendPrintF(&v139, ", AMD <%H>", v37, v38, v39, v40, v41, v42, v36);
+      NSAppendPrintF(&v139, ", AMD <%H>", v37, v38, v39, v40, v41, v42, bytes2);
       v43 = v139;
     }
 
@@ -552,9 +552,9 @@ LABEL_12:
 
       v138 = v27;
       v45 = manufacturerData;
-      v46 = [(NSData *)v45 bytes];
+      bytes3 = [(NSData *)v45 bytes];
       [(NSData *)v45 length];
-      NSAppendPrintF(&v138, ", MfD <%H>", v47, v48, v49, v50, v51, v52, v46);
+      NSAppendPrintF(&v138, ", MfD <%H>", v47, v48, v49, v50, v51, v52, bytes3);
       v43 = v138;
 
       v27 = v45;
@@ -580,9 +580,9 @@ LABEL_13:
   {
     v136 = v27;
     v56 = lgDeviceID;
-    v57 = [(NSData *)v56 bytes];
+    bytes4 = [(NSData *)v56 bytes];
     [(NSData *)v56 length];
-    NSAppendPrintF(&v136, ", LGID <%H>", v58, v59, v60, v61, v62, v63, v57);
+    NSAppendPrintF(&v136, ", LGID <%H>", v58, v59, v60, v61, v62, v63, bytes4);
     v64 = v136;
 
     v27 = v64;
@@ -720,7 +720,7 @@ LABEL_13:
     v27 = v119;
   }
 
-  if (a3 < 21)
+  if (level < 21)
   {
     v123 = v27;
     NSAppendPrintF(&v123, "\n", v28, v29, v30, v31, v32, v33, v122);

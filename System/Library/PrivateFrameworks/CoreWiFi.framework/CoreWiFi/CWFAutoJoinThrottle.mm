@@ -1,17 +1,17 @@
 @interface CWFAutoJoinThrottle
-+ (id)autoJoinThrottleWithTrigger:(int64_t)a3 intervals:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)autoJoinThrottleWithTrigger:(int64_t)trigger intervals:(id)intervals;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation CWFAutoJoinThrottle
 
-+ (id)autoJoinThrottleWithTrigger:(int64_t)a3 intervals:(id)a4
++ (id)autoJoinThrottleWithTrigger:(int64_t)trigger intervals:(id)intervals
 {
-  v5 = a4;
+  intervalsCopy = intervals;
   v6 = objc_alloc_init(CWFAutoJoinThrottle);
-  [(CWFAutoJoinThrottle *)v6 setTrigger:a3];
-  [(CWFAutoJoinThrottle *)v6 setIntervals:v5];
+  [(CWFAutoJoinThrottle *)v6 setTrigger:trigger];
+  [(CWFAutoJoinThrottle *)v6 setIntervals:intervalsCopy];
 
   return v6;
 }
@@ -25,7 +25,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFAutoJoinThrottle allocWithZone:?]];
   [(CWFAutoJoinThrottle *)v4 setTrigger:self->_trigger];

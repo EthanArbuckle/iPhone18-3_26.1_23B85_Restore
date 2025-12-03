@@ -1,30 +1,30 @@
 @interface SUScriptURLRequest
-+ (id)webScriptNameForKeyName:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
 + (void)initialize;
 - (NSNumber)timeoutInterval;
 - (NSString)URLBagKey;
-- (SUScriptURLRequest)initWithNativeRequestProperties:(id)a3;
+- (SUScriptURLRequest)initWithNativeRequestProperties:(id)properties;
 - (id)URLs;
 - (id)copyNativeRequestProperties;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)setTimeoutInterval:(id)a3;
-- (void)setURLBagKey:(id)a3;
-- (void)setURLs:(id)a3;
+- (void)setTimeoutInterval:(id)interval;
+- (void)setURLBagKey:(id)key;
+- (void)setURLs:(id)ls;
 @end
 
 @implementation SUScriptURLRequest
 
-- (SUScriptURLRequest)initWithNativeRequestProperties:(id)a3
+- (SUScriptURLRequest)initWithNativeRequestProperties:(id)properties
 {
   v7.receiver = self;
   v7.super_class = SUScriptURLRequest;
   v4 = [(SUScriptObject *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (properties)
     {
-      v5 = [a3 mutableCopy];
+      v5 = [properties mutableCopy];
     }
 
     else
@@ -53,13 +53,13 @@
   return v3;
 }
 
-- (void)setTimeoutInterval:(id)a3
+- (void)setTimeoutInterval:(id)interval
 {
   if (objc_opt_respondsToSelector())
   {
     [(SUScriptObject *)self lock];
     requestProperties = self->_requestProperties;
-    [a3 doubleValue];
+    [interval doubleValue];
     [(SSMutableURLRequestProperties *)requestProperties setTimeoutInterval:?];
 
     [(SUScriptObject *)self unlock];
@@ -73,7 +73,7 @@
   }
 }
 
-- (void)setURLBagKey:(id)a3
+- (void)setURLBagKey:(id)key
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -85,7 +85,7 @@
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!key || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = key, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
@@ -100,7 +100,7 @@ LABEL_3:
   [v7 throwException:@"Invalid argument"];
 }
 
-- (void)setURLs:(id)a3
+- (void)setURLs:(id)ls
 {
   v19 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -114,12 +114,12 @@ LABEL_3:
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v5 = 0;
-    if (a3 && (isKindOfClass & 1) == 0)
+    if (ls && (isKindOfClass & 1) == 0)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{a3, 0}];
+        v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{ls, 0}];
       }
 
       else
@@ -132,7 +132,7 @@ LABEL_3:
           goto LABEL_13;
         }
 
-        v5 = [a3 copyArrayValueWithValidator:SUURLValidator context:0];
+        v5 = [ls copyArrayValueWithValidator:SUURLValidator context:0];
         if (!v5)
         {
           [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
@@ -195,27 +195,27 @@ LABEL_13:
 - (NSString)URLBagKey
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SSMutableURLRequestProperties *)self->_requestProperties URLBagKey];
+  uRLBagKey = [(SSMutableURLRequestProperties *)self->_requestProperties URLBagKey];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return uRLBagKey;
 }
 
 - (id)URLs
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SSMutableURLRequestProperties *)self->_requestProperties URLs];
+  uRLs = [(SSMutableURLRequestProperties *)self->_requestProperties URLs];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return uRLs;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_48 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptURLRequest;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
@@ -225,14 +225,14 @@ LABEL_13:
 {
   v4.receiver = self;
   v4.super_class = SUScriptURLRequest;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_48 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_48 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_48 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"timeoutInterval", @"URLBagKey", @"URLBagKey", @"urls", @"URLs", 0}];
   }

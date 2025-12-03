@@ -1,23 +1,23 @@
 @interface CSUImageCaptioner
-- (BOOL)loadResources:(id *)a3;
-- (CSUImageCaptioner)initWithConfiguration:(id)a3;
-- (id)computeCaptionForCSUBufferEmbedding:(id)a3 withDecodingMethod:(int64_t)a4 error:(id *)a5;
-- (id)computeCaptionForEmbedding:(id)a3 withDecodingMethod:(int64_t)a4 error:(id *)a5;
-- (id)computeCaptionForImage:(__CVBuffer *)a3 withDecodingMethod:(int64_t)a4 error:(id *)a5;
+- (BOOL)loadResources:(id *)resources;
+- (CSUImageCaptioner)initWithConfiguration:(id)configuration;
+- (id)computeCaptionForCSUBufferEmbedding:(id)embedding withDecodingMethod:(int64_t)method error:(id *)error;
+- (id)computeCaptionForEmbedding:(id)embedding withDecodingMethod:(int64_t)method error:(id *)error;
+- (id)computeCaptionForImage:(__CVBuffer *)image withDecodingMethod:(int64_t)method error:(id *)error;
 @end
 
 @implementation CSUImageCaptioner
 
-- (CSUImageCaptioner)initWithConfiguration:(id)a3
+- (CSUImageCaptioner)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v38.receiver = self;
   v38.super_class = CSUImageCaptioner;
   v6 = [(CSUImageCaptioner *)&v38 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     encoder = v7->_encoder;
     v7->_encoder = 0;
 
@@ -26,14 +26,14 @@
     if (v13)
     {
       v14 = [CSUImageCaptioningEncoder alloc];
-      v19 = objc_msgSend_captioningEncoderConfiguration(v5, v15, v16, v17, v18);
+      v19 = objc_msgSend_captioningEncoderConfiguration(configurationCopy, v15, v16, v17, v18);
       v23 = objc_msgSend_initWithConfiguration_(v14, v20, v19, v21, v22);
       v24 = v7->_encoder;
       v7->_encoder = v23;
     }
 
     v25 = [CSUImageCaptioningDecoder alloc];
-    v30 = objc_msgSend_captioningDecoderConfiguration(v5, v26, v27, v28, v29);
+    v30 = objc_msgSend_captioningDecoderConfiguration(configurationCopy, v26, v27, v28, v29);
     v34 = objc_msgSend_initWithConfiguration_(v25, v31, v30, v32, v33);
     decoder = v7->_decoder;
     v7->_decoder = v34;
@@ -44,21 +44,21 @@
   return v7;
 }
 
-- (BOOL)loadResources:(id *)a3
+- (BOOL)loadResources:(id *)resources
 {
-  v7 = objc_msgSend_captioningEncoderConfiguration(self->_configuration, a2, a3, v3, v4);
+  v7 = objc_msgSend_captioningEncoderConfiguration(self->_configuration, a2, resources, v3, v4);
 
-  if (!v7 || (Resources = objc_msgSend_loadResources_(self->_encoder, v8, a3, v9, v10)) != 0)
+  if (!v7 || (Resources = objc_msgSend_loadResources_(self->_encoder, v8, resources, v9, v10)) != 0)
   {
     decoder = self->_decoder;
 
-    LOBYTE(Resources) = objc_msgSend_loadResources_(decoder, v8, a3, v9, v10);
+    LOBYTE(Resources) = objc_msgSend_loadResources_(decoder, v8, resources, v9, v10);
   }
 
   return Resources;
 }
 
-- (id)computeCaptionForImage:(__CVBuffer *)a3 withDecodingMethod:(int64_t)a4 error:(id *)a5
+- (id)computeCaptionForImage:(__CVBuffer *)image withDecodingMethod:(int64_t)method error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v9 = sub_1AC090E50();
@@ -79,16 +79,16 @@
   encoder = self->_encoder;
   if (encoder)
   {
-    v19 = objc_msgSend_computeEncodedCaptioningFeaturesForImage_error_(encoder, v13, a3, a5, v15);
-    if (*a5)
+    v19 = objc_msgSend_computeEncodedCaptioningFeaturesForImage_error_(encoder, v13, image, error, v15);
+    if (*error)
     {
       v20 = 0;
     }
 
     else
     {
-      v21 = objc_msgSend_computeDecodedCaptionsForFeaturesWithCSUBuffer_withDecodingMethod_error_(self->_decoder, v18, v19, a4, a5);
-      if (*a5)
+      v21 = objc_msgSend_computeDecodedCaptionsForFeaturesWithCSUBuffer_withDecodingMethod_error_(self->_decoder, v18, v19, method, error);
+      if (*error)
       {
         v20 = 0;
       }
@@ -105,7 +105,7 @@
   else
   {
     objc_msgSend_errorForInternalErrorWithLocalizedDescription_(CSUError, v13, @"Encoder not configured!", v14, v15);
-    *a5 = v20 = 0;
+    *error = v20 = 0;
   }
 
   objc_autoreleasePoolPop(v16);
@@ -130,10 +130,10 @@
   return v20;
 }
 
-- (id)computeCaptionForEmbedding:(id)a3 withDecodingMethod:(int64_t)a4 error:(id *)a5
+- (id)computeCaptionForEmbedding:(id)embedding withDecodingMethod:(int64_t)method error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  embeddingCopy = embedding;
   v9 = sub_1AC090E50();
   v10 = os_signpost_id_generate(v9);
 
@@ -149,11 +149,11 @@
   v50 = v10;
   v51 = buf;
   v14 = objc_autoreleasePoolPush();
-  if (v8)
+  if (embeddingCopy)
   {
     decoder = self->_decoder;
     v47 = 0;
-    v16 = objc_msgSend_computeDecodedCaptionsForFeatures_withDecodingMethod_error_(decoder, v13, v8, a4, &v47);
+    v16 = objc_msgSend_computeDecodedCaptionsForFeatures_withDecodingMethod_error_(decoder, v13, embeddingCopy, method, &v47);
     v17 = v47;
     if (!v16)
     {
@@ -188,11 +188,11 @@
 LABEL_11:
 
   objc_autoreleasePoolPop(v14);
-  if (v8)
+  if (embeddingCopy)
   {
-    if (a5 && v27)
+    if (error && v27)
     {
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(CSUError, v43, v27, v32, v42);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(CSUError, v43, v27, v32, v42);
     }
 
     v44 = v16;
@@ -224,10 +224,10 @@ LABEL_11:
   return v44;
 }
 
-- (id)computeCaptionForCSUBufferEmbedding:(id)a3 withDecodingMethod:(int64_t)a4 error:(id *)a5
+- (id)computeCaptionForCSUBufferEmbedding:(id)embedding withDecodingMethod:(int64_t)method error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  embeddingCopy = embedding;
   v9 = sub_1AC090E50();
   v10 = os_signpost_id_generate(v9);
 
@@ -243,7 +243,7 @@ LABEL_11:
   v18[1] = v10;
   v19 = v18;
   v13 = objc_autoreleasePoolPush();
-  v15 = objc_msgSend_computeDecodedCaptionsForFeaturesWithCSUBuffer_withDecodingMethod_error_(self->_decoder, v14, v8, a4, a5);
+  v15 = objc_msgSend_computeDecodedCaptionsForFeaturesWithCSUBuffer_withDecodingMethod_error_(self->_decoder, v14, embeddingCopy, method, error);
   objc_autoreleasePoolPop(v13);
   if (!v19)
   {

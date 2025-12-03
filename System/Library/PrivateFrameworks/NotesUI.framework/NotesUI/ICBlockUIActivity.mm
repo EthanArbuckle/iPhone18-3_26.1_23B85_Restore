@@ -1,63 +1,63 @@
 @interface ICBlockUIActivity
-- (ICBlockUIActivity)initWithTitle:(id)a3 image:(id)a4 activityType:(id)a5 block:(id)a6;
-- (ICBlockUIActivity)initWithTitle:(id)a3 systemImageName:(id)a4 activityType:(id)a5 block:(id)a6;
+- (ICBlockUIActivity)initWithTitle:(id)title image:(id)image activityType:(id)type block:(id)block;
+- (ICBlockUIActivity)initWithTitle:(id)title systemImageName:(id)name activityType:(id)type block:(id)block;
 - (id)activityType;
 - (void)performActivity;
 @end
 
 @implementation ICBlockUIActivity
 
-- (ICBlockUIActivity)initWithTitle:(id)a3 image:(id)a4 activityType:(id)a5 block:(id)a6
+- (ICBlockUIActivity)initWithTitle:(id)title image:(id)image activityType:(id)type block:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  imageCopy = image;
+  typeCopy = type;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = ICBlockUIActivity;
   v15 = [(UIActivity *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_title, a3);
-    v17 = _Block_copy(v14);
+    objc_storeStrong(&v15->_title, title);
+    v17 = _Block_copy(blockCopy);
     block = v16->_block;
     v16->_block = v17;
 
-    objc_storeStrong(&v16->_type, a5);
-    objc_storeStrong(&v16->_image, a4);
+    objc_storeStrong(&v16->_type, type);
+    objc_storeStrong(&v16->_image, image);
   }
 
   return v16;
 }
 
-- (ICBlockUIActivity)initWithTitle:(id)a3 systemImageName:(id)a4 activityType:(id)a5 block:(id)a6
+- (ICBlockUIActivity)initWithTitle:(id)title systemImageName:(id)name activityType:(id)type block:(id)block
 {
   v10 = MEMORY[0x1E69DCAB8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v10 systemImageNamed:a4];
-  v15 = [(ICBlockUIActivity *)self initWithTitle:v13 image:v14 activityType:v12 block:v11];
+  blockCopy = block;
+  typeCopy = type;
+  titleCopy = title;
+  v14 = [v10 systemImageNamed:name];
+  v15 = [(ICBlockUIActivity *)self initWithTitle:titleCopy image:v14 activityType:typeCopy block:blockCopy];
 
   return v15;
 }
 
 - (id)activityType
 {
-  v3 = [(ICBlockUIActivity *)self type];
-  v4 = v3;
-  if (v3)
+  type = [(ICBlockUIActivity *)self type];
+  v4 = type;
+  if (type)
   {
-    v5 = v3;
+    v5 = type;
   }
 
   else
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v8 = [(ICBlockUIActivity *)self title];
-    v5 = [v6 stringWithFormat:@"%@.%@", v7, v8];
+    title = [(ICBlockUIActivity *)self title];
+    v5 = [v6 stringWithFormat:@"%@.%@", v7, title];
   }
 
   return v5;
@@ -65,12 +65,12 @@
 
 - (void)performActivity
 {
-  v3 = [(ICBlockUIActivity *)self block];
+  block = [(ICBlockUIActivity *)self block];
 
-  if (v3)
+  if (block)
   {
-    v4 = [(ICBlockUIActivity *)self block];
-    v4[2]();
+    block2 = [(ICBlockUIActivity *)self block];
+    block2[2]();
   }
 
   [(UIActivity *)self activityDidFinish:1];

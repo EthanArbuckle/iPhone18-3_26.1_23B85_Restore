@@ -1,23 +1,23 @@
 @interface FAHeartbeatOperation
-- (FAHeartbeatOperation)initWithNetworkService:(id)a3 grandSlamSigner:(id)a4 familyGrandSlamSigner:(id)a5;
+- (FAHeartbeatOperation)initWithNetworkService:(id)service grandSlamSigner:(id)signer familyGrandSlamSigner:(id)slamSigner;
 - (id)_followupIdentifiers;
 - (id)fetchHeartbeatData;
 @end
 
 @implementation FAHeartbeatOperation
 
-- (FAHeartbeatOperation)initWithNetworkService:(id)a3 grandSlamSigner:(id)a4 familyGrandSlamSigner:(id)a5
+- (FAHeartbeatOperation)initWithNetworkService:(id)service grandSlamSigner:(id)signer familyGrandSlamSigner:(id)slamSigner
 {
-  v9 = a4;
-  v10 = a5;
+  signerCopy = signer;
+  slamSignerCopy = slamSigner;
   v14.receiver = self;
   v14.super_class = FAHeartbeatOperation;
-  v11 = [(FANetworkClient *)&v14 initWithNetworkService:a3];
+  v11 = [(FANetworkClient *)&v14 initWithNetworkService:service];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_grandSlamSigner, a4);
-    objc_storeStrong(&v12->_familyGrandSlamSigner, a5);
+    objc_storeStrong(&v11->_grandSlamSigner, signer);
+    objc_storeStrong(&v12->_familyGrandSlamSigner, slamSigner);
   }
 
   return v12;
@@ -26,44 +26,44 @@
 - (id)fetchHeartbeatData
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(FAHeartbeatOperation *)self _followupIdentifiers];
-  [v3 setObject:v4 forKeyedSubscript:@"notificationIDs"];
+  _followupIdentifiers = [(FAHeartbeatOperation *)self _followupIdentifiers];
+  [v3 setObject:_followupIdentifiers forKeyedSubscript:@"notificationIDs"];
 
-  v19 = [(FANetworkClient *)self networkService];
-  v18 = [v19 ensureDeviceUnlockedSinceBoot];
-  v5 = [v18 then];
+  networkService = [(FANetworkClient *)self networkService];
+  ensureDeviceUnlockedSinceBoot = [networkService ensureDeviceUnlockedSinceBoot];
+  then = [ensureDeviceUnlockedSinceBoot then];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100014B1C;
   v24[3] = &unk_1000A5F78;
   v24[4] = self;
-  v6 = (v5)[2](v5, v24);
-  v7 = [v6 then];
+  v6 = (then)[2](then, v24);
+  then2 = [v6 then];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100014B6C;
   v22[3] = &unk_1000A6B38;
   v22[4] = self;
   v23 = v3;
-  v8 = v7[2];
+  v8 = then2[2];
   v17 = v3;
-  v9 = v8(v7, v22);
-  v10 = [v9 then];
+  v9 = v8(then2, v22);
+  then3 = [v9 then];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100014C2C;
   v21[3] = &unk_1000A6798;
   v21[4] = self;
-  v11 = (v10)[2](v10, v21);
-  v12 = [v11 then];
+  v11 = (then3)[2](then3, v21);
+  then4 = [v11 then];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100014CAC;
   v20[3] = &unk_1000A67C0;
   v20[4] = self;
-  v13 = (v12)[2](v12, v20);
-  v14 = [v13 then];
-  v15 = (v14)[2](v14, &stru_1000A6B78);
+  v13 = (then4)[2](then4, v20);
+  then5 = [v13 then];
+  v15 = (then5)[2](then5, &stru_1000A6B78);
 
   return v15;
 }

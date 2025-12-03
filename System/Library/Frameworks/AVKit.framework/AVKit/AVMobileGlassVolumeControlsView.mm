@@ -1,17 +1,17 @@
 @interface AVMobileGlassVolumeControlsView
-- (AVMobileGlassVolumeControlsView)initWithStyleSheet:(id)a3;
+- (AVMobileGlassVolumeControlsView)initWithStyleSheet:(id)sheet;
 - (AVMobileGlassVolumeControlsViewDelegate)delegate;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isTracking;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
 - (double)_sliderBarWidth;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_handleVolumeControlButtonTap;
 - (void)_hapticsButtonTapped;
 - (void)_layoutHapticsControlView;
-- (void)_setSliderValue:(double)a3 forUpdateReason:(unint64_t)a4;
-- (void)_setVolume:(double)a3 forUpdateReason:(unint64_t)a4;
+- (void)_setSliderValue:(double)value forUpdateReason:(unint64_t)reason;
+- (void)_setVolume:(double)volume forUpdateReason:(unint64_t)reason;
 - (void)_updateHapticsButtonHiddenForDetection;
 - (void)_updateHapticsButtonHiddenForVolume;
 - (void)_updateHapticsButtonImage;
@@ -21,19 +21,19 @@
 - (void)_volumeSliderValueDidChange;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAllowsVolumeAdjustment:(BOOL)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setDrawsShadow:(BOOL)a3;
-- (void)setEmphasized:(BOOL)a3;
-- (void)setFullscreen:(BOOL)a3;
-- (void)setHapticsIsOn:(BOOL)a3;
-- (void)setMute:(BOOL)a3;
-- (void)setPrefersVolumeSliderEnabled:(BOOL)a3;
-- (void)setPrefersVolumeSliderIncluded:(BOOL)a3;
-- (void)setStyleSheet:(id)a3;
+- (void)setAllowsVolumeAdjustment:(BOOL)adjustment;
+- (void)setBackgroundView:(id)view;
+- (void)setDrawsShadow:(BOOL)shadow;
+- (void)setEmphasized:(BOOL)emphasized;
+- (void)setFullscreen:(BOOL)fullscreen;
+- (void)setHapticsIsOn:(BOOL)on;
+- (void)setMute:(BOOL)mute;
+- (void)setPrefersVolumeSliderEnabled:(BOOL)enabled;
+- (void)setPrefersVolumeSliderIncluded:(BOOL)included;
+- (void)setStyleSheet:(id)sheet;
 - (void)updateBackgroundMaterial;
-- (void)volumeControlButtonDidBeginPanning:(id)a3;
-- (void)volumeControlButtonDidEndPanning:(id)a3;
+- (void)volumeControlButtonDidBeginPanning:(id)panning;
+- (void)volumeControlButtonDidEndPanning:(id)panning;
 @end
 
 @implementation AVMobileGlassVolumeControlsView
@@ -47,11 +47,11 @@
 
 - (void)_updateHapticsButtonHiddenForDetection
 {
-  if (a1)
+  if (self)
   {
-    if (a1[604])
+    if (self[604])
     {
-      v1 = a1[600] ^ 1;
+      v1 = self[600] ^ 1;
     }
 
     else
@@ -59,33 +59,33 @@
       v1 = 1;
     }
 
-    v2 = [a1 hapticsButton];
-    [v2 setHidden:v1 & 1];
+    hapticsButton = [self hapticsButton];
+    [hapticsButton setHidden:v1 & 1];
   }
 }
 
-- (void)setHapticsIsOn:(BOOL)a3
+- (void)setHapticsIsOn:(BOOL)on
 {
-  if (self->_hapticsIsOn != a3)
+  if (self->_hapticsIsOn != on)
   {
-    self->_hapticsIsOn = a3;
+    self->_hapticsIsOn = on;
     [(AVMobileGlassVolumeControlsView *)self _updateHapticsButtonImage];
   }
 }
 
 - (void)_updateHapticsButtonImage
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E69DCAD8] configurationPreferringMonochrome];
+    configurationPreferringMonochrome = [MEMORY[0x1E69DCAD8] configurationPreferringMonochrome];
     v3 = [MEMORY[0x1E69DCAD8] configurationWithScale:2];
-    v9 = [v2 configurationByApplyingConfiguration:v3];
+    v9 = [configurationPreferringMonochrome configurationByApplyingConfiguration:v3];
 
     v4 = MEMORY[0x1E6982288];
-    v5 = [MEMORY[0x1E6982288] replaceOffUpTransition];
-    v6 = [v4 magicTransitionWithFallback:v5];
+    replaceOffUpTransition = [MEMORY[0x1E6982288] replaceOffUpTransition];
+    v6 = [v4 magicTransitionWithFallback:replaceOffUpTransition];
 
-    if (*(a1 + 603))
+    if (*(self + 603))
     {
       v7 = @"apple.haptics";
     }
@@ -96,7 +96,7 @@
     }
 
     v8 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v7 withConfiguration:v9];
-    [*(a1 + 592) setSymbolImage:v8 withContentTransition:v6];
+    [*(self + 592) setSymbolImage:v8 withContentTransition:v6];
   }
 }
 
@@ -104,13 +104,13 @@
 {
   self->_hapticsIsOn ^= 1u;
   [(AVMobileGlassVolumeControlsView *)self _updateHapticsButtonImage];
-  v3 = [(AVMobileGlassVolumeControlsView *)self delegate];
+  delegate = [(AVMobileGlassVolumeControlsView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AVMobileGlassVolumeControlsView *)self delegate];
-    [v5 volumeControlsView:self didSelectHapticsOn:self->_hapticsIsOn];
+    delegate2 = [(AVMobileGlassVolumeControlsView *)self delegate];
+    [delegate2 volumeControlsView:self didSelectHapticsOn:self->_hapticsIsOn];
   }
 }
 
@@ -125,10 +125,10 @@
       [(AVMobileChromelessFluidSlider *)self->_volumeSlider value];
       v6 = v5;
       [(AVMobileGlassVolumeControlsView *)self _setVolume:0 forUpdateReason:v5];
-      v7 = [(AVMobileGlassVolumeControlsView *)self delegate];
+      delegate = [(AVMobileGlassVolumeControlsView *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v7 volumeControlsView:self volumeDidChangeTo:-[AVMobileChromelessFluidSlider _fluidUpdateSource](self->_volumeSlider withUpdateSource:{"_fluidUpdateSource"), v6}];
+        [delegate volumeControlsView:self volumeDidChangeTo:-[AVMobileChromelessFluidSlider _fluidUpdateSource](self->_volumeSlider withUpdateSource:{"_fluidUpdateSource"), v6}];
       }
     }
   }
@@ -186,20 +186,20 @@ LABEL_8:
   [(AVMobileGlassVolumeButtonControl *)self->_volumeButton setVolumeIconState:v8];
 }
 
-- (void)_setVolume:(double)a3 forUpdateReason:(unint64_t)a4
+- (void)_setVolume:(double)volume forUpdateReason:(unint64_t)reason
 {
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    self->_volume = fmin(fmax(a3, 0.0), 1.0);
-    [(AVMobileGlassVolumeControlsView *)self _setSliderValue:a4 forUpdateReason:?];
+    self->_volume = fmin(fmax(volume, 0.0), 1.0);
+    [(AVMobileGlassVolumeControlsView *)self _setSliderValue:reason forUpdateReason:?];
   }
 }
 
-- (void)_setSliderValue:(double)a3 forUpdateReason:(unint64_t)a4
+- (void)_setSliderValue:(double)value forUpdateReason:(unint64_t)reason
 {
   v8 = self->_volumeSlider;
-  v6 = [(AVMobileChromelessFluidSlider *)v8 _fluidUpdateSource];
-  if (a4 == 1 || v6 != 10)
+  _fluidUpdateSource = [(AVMobileChromelessFluidSlider *)v8 _fluidUpdateSource];
+  if (reason == 1 || _fluidUpdateSource != 10)
   {
     volume = self->_volume;
     *&volume = volume;
@@ -212,9 +212,9 @@ LABEL_8:
 - (void)_layoutHapticsControlView
 {
   v3 = +[AVKitGlobalSettings shared];
-  v4 = [v3 hapticsEnabled];
+  hapticsEnabled = [v3 hapticsEnabled];
 
-  if (v4)
+  if (hapticsEnabled)
   {
     v5 = [AVButton buttonWithType:1];
     hapticsButton = self->_hapticsButton;
@@ -230,8 +230,8 @@ LABEL_8:
     [(UIImageView *)self->_hapticsImageView setUserInteractionEnabled:0];
     [(AVButton *)self->_hapticsButton addSubview:self->_hapticsImageView];
     v9 = self->_hapticsButton;
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
-    [(AVButton *)v9 setTintColor:v10];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(AVButton *)v9 setTintColor:whiteColor];
 
     [(AVButton *)self->_hapticsButton setAutoresizingMask:0];
     [(AVButton *)self->_hapticsButton addTarget:self action:sel__hapticsButtonTapped forControlEvents:64];
@@ -245,40 +245,40 @@ LABEL_8:
 
 - (void)_handleVolumeControlButtonTap
 {
-  v3 = [(AVMobileGlassVolumeControlsView *)self delegate];
+  delegate = [(AVMobileGlassVolumeControlsView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 volumeControlsViewButtonWasTapped:self];
+    [delegate volumeControlsViewButtonWasTapped:self];
   }
 }
 
-- (void)volumeControlButtonDidEndPanning:(id)a3
+- (void)volumeControlButtonDidEndPanning:(id)panning
 {
-  v4 = [(AVMobileGlassVolumeControlsView *)self delegate];
+  delegate = [(AVMobileGlassVolumeControlsView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVMobileGlassVolumeControlsView *)self delegate];
-    [v6 volumeControlsViewInteractionDidEnd:self];
+    delegate2 = [(AVMobileGlassVolumeControlsView *)self delegate];
+    [delegate2 volumeControlsViewInteractionDidEnd:self];
   }
 }
 
-- (void)volumeControlButtonDidBeginPanning:(id)a3
+- (void)volumeControlButtonDidBeginPanning:(id)panning
 {
-  v4 = [(AVMobileGlassVolumeControlsView *)self delegate];
+  delegate = [(AVMobileGlassVolumeControlsView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVMobileGlassVolumeControlsView *)self delegate];
-    [v6 volumeControlsViewInteractionDidBegin:self];
+    delegate2 = [(AVMobileGlassVolumeControlsView *)self delegate];
+    [delegate2 volumeControlsViewInteractionDidBegin:self];
   }
 
   v7 = +[AVKitGlobalSettings shared];
-  v8 = [v7 hapticsEnabled];
+  hapticsEnabled = [v7 hapticsEnabled];
 
-  if (v8)
+  if (hapticsEnabled)
   {
 
     [(AVMobileGlassVolumeControlsView *)self _updateHapticsButtonHiddenForVolume];
@@ -287,21 +287,21 @@ LABEL_8:
 
 - (void)_updateHapticsButtonHiddenForVolume
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[605];
+    v2 = self[605];
     if (v2 != 1)
     {
       goto LABEL_9;
     }
 
-    v7 = [a1 hapticsButton];
-    [v7 alpha];
+    hapticsButton = [self hapticsButton];
+    [hapticsButton alpha];
     if (v3 == 1.0)
     {
 
 LABEL_12:
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__block_invoke;
@@ -313,15 +313,15 @@ LABEL_12:
       return;
     }
 
-    if (a1[605])
+    if (self[605])
     {
     }
 
     else
     {
 LABEL_9:
-      v4 = [a1 hapticsButton];
-      [v4 alpha];
+      hapticsButton2 = [self hapticsButton];
+      [hapticsButton2 alpha];
       v6 = v5;
 
       if (v2)
@@ -381,108 +381,108 @@ void __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__
   [v6 layoutIfNeeded];
 }
 
-- (void)setDrawsShadow:(BOOL)a3
+- (void)setDrawsShadow:(BOOL)shadow
 {
-  if (self->_drawsShadow != a3)
+  if (self->_drawsShadow != shadow)
   {
-    self->_drawsShadow = a3;
+    self->_drawsShadow = shadow;
     [(AVMobileGlassVolumeControlsView *)&self->super.super.super.super.super.isa _updateShadowAppearanceState];
   }
 }
 
 - (void)_updateShadowAppearanceState
 {
-  if (a1)
+  if (self)
   {
-    v9 = [a1[79] layer];
-    v2 = [a1[82] layer];
-    if ([a1 drawsShadow])
+    layer = [self[79] layer];
+    layer2 = [self[82] layer];
+    if ([self drawsShadow])
     {
-      v3 = [MEMORY[0x1E69DC888] blackColor];
-      v4 = [MEMORY[0x1E69DC888] blackColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      blackColor2 = [MEMORY[0x1E69DC888] blackColor];
       v5 = 1.0;
       v6 = 1053609165;
     }
 
     else
     {
-      v3 = 0;
-      v4 = 0;
+      blackColor = 0;
+      blackColor2 = 0;
       v5 = 0.0;
       v6 = 0;
     }
 
-    [v9 setShadowColor:{objc_msgSend(v3, "CGColor")}];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
     *&v7 = v5;
-    [v9 setShadowOpacity:v7];
-    [v2 setShadowColor:{objc_msgSend(v4, "CGColor")}];
+    [layer setShadowOpacity:v7];
+    [layer2 setShadowColor:{objc_msgSend(blackColor2, "CGColor")}];
     LODWORD(v8) = v6;
-    [v2 setShadowOpacity:v8];
-    [(AVMobileGlassVolumeControlsView *)a1 _updateShadowPathIfNeeded];
+    [layer2 setShadowOpacity:v8];
+    [(AVMobileGlassVolumeControlsView *)self _updateShadowPathIfNeeded];
   }
 }
 
 - (void)_updateShadowPathIfNeeded
 {
-  if (a1 && [a1 drawsShadow])
+  if (self && [self drawsShadow])
   {
-    v21 = [*(a1 + 632) layer];
-    [v21 bounds];
+    layer = [*(self + 632) layer];
+    [layer bounds];
     v3 = v2;
     v5 = v4;
     v7 = v6;
     v9 = v8;
-    if (CGRectIsNull(*(a1 + 520)) || (v23.origin.x = v3, v23.origin.y = v5, v23.size.width = v7, v23.size.height = v9, !CGRectEqualToRect(*(a1 + 520), v23)))
+    if (CGRectIsNull(*(self + 520)) || (v23.origin.x = v3, v23.origin.y = v5, v23.size.width = v7, v23.size.height = v9, !CGRectEqualToRect(*(self + 520), v23)))
     {
-      *(a1 + 520) = v3;
-      *(a1 + 528) = v5;
-      *(a1 + 536) = v7;
-      *(a1 + 544) = v9;
+      *(self + 520) = v3;
+      *(self + 528) = v5;
+      *(self + 536) = v7;
+      *(self + 544) = v9;
       v10 = [MEMORY[0x1E69DC728] bezierPathWithRect:{v3, v5, v7, v9}];
-      [v21 setShadowPath:{objc_msgSend(v10, "CGPath")}];
+      [layer setShadowPath:{objc_msgSend(v10, "CGPath")}];
     }
 
-    v11 = [*(a1 + 656) layer];
-    [v11 bounds];
+    layer2 = [*(self + 656) layer];
+    [layer2 bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16 + 5.0;
     v19 = v18 + -5.0;
-    if (CGRectIsNull(*(a1 + 552)) || (v24.origin.x = v19, v24.origin.y = v13, v24.size.width = v17, v24.size.height = v15, !CGRectEqualToRect(*(a1 + 552), v24)))
+    if (CGRectIsNull(*(self + 552)) || (v24.origin.x = v19, v24.origin.y = v13, v24.size.width = v17, v24.size.height = v15, !CGRectEqualToRect(*(self + 552), v24)))
     {
-      *(a1 + 552) = v19;
-      *(a1 + 560) = v13;
-      *(a1 + 568) = v17;
-      *(a1 + 576) = v15;
+      *(self + 552) = v19;
+      *(self + 560) = v13;
+      *(self + 568) = v17;
+      *(self + 576) = v15;
       v20 = [MEMORY[0x1E69DC728] bezierPathWithRect:{v19, v13, v17, v15}];
-      [v11 setShadowPath:{objc_msgSend(v20, "CGPath")}];
+      [layer2 setShadowPath:{objc_msgSend(v20, "CGPath")}];
     }
   }
 }
 
 - (void)updateBackgroundMaterial
 {
-  v3 = [(AVGlassBackedView *)self backgroundMaterialized];
+  backgroundMaterialized = [(AVGlassBackedView *)self backgroundMaterialized];
   [(AVGlassBackedView *)self->_volumeControls setBackgroundMaterialStyle:[(AVGlassBackedView *)self backgroundMaterialStyle]];
-  [(AVGlassBackedView *)self->_volumeControls setBackgroundMaterialized:v3];
+  [(AVGlassBackedView *)self->_volumeControls setBackgroundMaterialized:backgroundMaterialized];
 
   [(AVMobileGlassVolumeControlsView *)self setNeedsLayout];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   v11.receiver = self;
   v11.super_class = AVMobileGlassVolumeControlsView;
-  v7 = a4;
-  v8 = [(AVMobileGlassVolumeControlsView *)&v11 pointInside:v7 withEvent:x, y];
-  volumeButton = v6->_volumeButton;
-  [(AVMobileGlassVolumeButtonControl *)volumeButton convertPoint:v6 fromView:x, y, v11.receiver, v11.super_class];
-  LOBYTE(v6) = [(AVMobileGlassVolumeButtonControl *)volumeButton pointInside:v7 withEvent:?];
+  eventCopy = event;
+  v8 = [(AVMobileGlassVolumeControlsView *)&v11 pointInside:eventCopy withEvent:x, y];
+  volumeButton = selfCopy->_volumeButton;
+  [(AVMobileGlassVolumeButtonControl *)volumeButton convertPoint:selfCopy fromView:x, y, v11.receiver, v11.super_class];
+  LOBYTE(selfCopy) = [(AVMobileGlassVolumeButtonControl *)volumeButton pointInside:eventCopy withEvent:?];
 
-  return (v8 | v6) & 1;
+  return (v8 | selfCopy) & 1;
 }
 
 - (void)layoutSubviews
@@ -507,7 +507,7 @@ void __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(AVMobileGlassVolumeControlsView *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(AVMobileGlassVolumeControlsView *)self effectiveUserInterfaceLayoutDirection];
     if (v14 >= v14 / 1.28)
     {
       v18 = v14;
@@ -535,20 +535,20 @@ void __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__
       v21 = 0.0;
     }
 
-    [(UIView *)self->_volumeControls avkit_setFrame:v17 inLayoutDirection:v21];
+    [(UIView *)self->_volumeControls avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:v21];
     v22 = +[AVKitGlobalSettings shared];
-    v23 = [v22 hapticsEnabled];
+    hapticsEnabled = [v22 hapticsEnabled];
 
-    if (v23)
+    if (hapticsEnabled)
     {
-      [(UIView *)self->_hapticsButton avkit_setFrame:v17 inLayoutDirection:v21 + -54.0, 0.0, 26.0, v16];
+      [(UIView *)self->_hapticsButton avkit_setFrame:effectiveUserInterfaceLayoutDirection inLayoutDirection:v21 + -54.0, 0.0, 26.0, v16];
     }
 
     [(AVGlassBackedView *)self->_volumeControls bounds];
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    v30 = [(AVMobileGlassVolumeControlsView *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection2 = [(AVMobileGlassVolumeControlsView *)self effectiveUserInterfaceLayoutDirection];
     [(AVMobileGlassVolumeButtonControl *)self->_volumeButton intrinsicContentSize];
     v32 = v31;
     [(AVMobileChromelessFluidSlider *)self->_volumeSlider intrinsicContentSize];
@@ -581,9 +581,9 @@ void __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__
 
     [(AVMobileGlassVolumeButtonControl *)self->_volumeButton frame];
     [(AVMobileGlassVolumeButtonControl *)self->_volumeButton setFrame:?];
-    v38 = [(AVMobileGlassVolumeControlsView *)self _sliderBarWidth];
+    _sliderBarWidth = [(AVMobileGlassVolumeControlsView *)self _sliderBarWidth];
     [(AVMobileChromelessFluidSlider *)self->_volumeSlider setBarWidth:?];
-    [(UIView *)self->_volumeSlider avkit_setFrame:v30 inLayoutDirection:v37, (v25 + v29 - v34) * 0.5, v36, v34];
+    [(UIView *)self->_volumeSlider avkit_setFrame:effectiveUserInterfaceLayoutDirection2 inLayoutDirection:v37, (v25 + v29 - v34) * 0.5, v36, v34];
     [(AVMobileGlassControlsStyleSheet *)self->_styleSheet volumeControlsInlineInternalSpacing];
     if (self->_fullscreen)
     {
@@ -591,9 +591,9 @@ void __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__
     }
 
     v40 = v39;
-    v41 = [(AVMobileGlassVolumeControlsView *)self superview];
-    [v41 frame];
-    self->_canIncludeHapticsButton = v42 > v32 + v38 * 1.28 + v40;
+    superview = [(AVMobileGlassVolumeControlsView *)self superview];
+    [superview frame];
+    self->_canIncludeHapticsButton = v42 > v32 + _sliderBarWidth * 1.28 + v40;
   }
 
   [(AVMobileGlassVolumeControlsView *)self _updateShadowPathIfNeeded];
@@ -601,32 +601,32 @@ void __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__
 
 - (double)_sliderBarWidth
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [a1 traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v4 = 140.0;
-  if (!v3)
+  if (!userInterfaceIdiom)
   {
-    v5 = [a1 window];
-    [v5 bounds];
+    window = [self window];
+    [window bounds];
     v7 = v6;
     v9 = v8;
 
     if (v7 < v9)
     {
-      v10 = [a1 window];
-      v11 = [v10 windowScene];
+      window2 = [self window];
+      windowScene = [window2 windowScene];
 
-      v12 = [v11 screen];
-      [v12 scale];
+      screen = [windowScene screen];
+      [screen scale];
       v14 = v13;
       v15 = v13;
-      [v12 nativeScale];
+      [screen nativeScale];
       if ((*&v15 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (v16 >= 0.0 ? (v17 = ((*&v16 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 > 0x3FE) : (v17 = 1), v17 ? (v18 = (*&v16 - 1) > 0xFFFFFFFFFFFFELL) : (v18 = 0), v18))
       {
         v4 = 120.0;
@@ -678,9 +678,9 @@ void __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__
 
   v13 = v12;
   v14 = +[AVKitGlobalSettings shared];
-  v15 = [v14 hapticsEnabled];
+  hapticsEnabled = [v14 hapticsEnabled];
 
-  if (v15)
+  if (hapticsEnabled)
   {
     [(AVButton *)self->_hapticsButton intrinsicContentSize];
     v4 = v4 + v16;
@@ -711,20 +711,20 @@ void __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = AVMobileGlassVolumeControlsView;
-  v8 = [(AVView *)&v16 hitTest:v7 withEvent:x, y];
+  v8 = [(AVView *)&v16 hitTest:eventCopy withEvent:x, y];
   if ([(AVMobileGlassVolumeControlsView *)self isUserInteractionEnabled])
   {
     p_volumeButton = &self->_volumeButton;
     volumeButton = self->_volumeButton;
     [(AVMobileGlassVolumeButtonControl *)volumeButton convertPoint:self fromView:x, y];
-    if ([(AVMobileGlassVolumeButtonControl *)volumeButton pointInside:v7 withEvent:?])
+    if ([(AVMobileGlassVolumeButtonControl *)volumeButton pointInside:eventCopy withEvent:?])
     {
       goto LABEL_4;
     }
@@ -732,7 +732,7 @@ void __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__
     p_volumeButton = &self->_volumeSlider;
     volumeSlider = self->_volumeSlider;
     [(AVMobileChromelessFluidSlider *)volumeSlider convertPoint:self fromView:x, y];
-    if ([(AVMobileChromelessFluidSlider *)volumeSlider pointInside:v7 withEvent:?])
+    if ([(AVMobileChromelessFluidSlider *)volumeSlider pointInside:eventCopy withEvent:?])
     {
       goto LABEL_4;
     }
@@ -746,7 +746,7 @@ void __70__AVMobileGlassVolumeControlsView__updateHapticsButtonHiddenForVolume__
     p_volumeButton = &self->_hapticsButton;
     hapticsButton = self->_hapticsButton;
     [(AVButton *)hapticsButton convertPoint:self fromView:x, y];
-    v15 = [(AVButton *)hapticsButton pointInside:v7 withEvent:?];
+    v15 = [(AVButton *)hapticsButton pointInside:eventCopy withEvent:?];
 
     if (v15)
     {
@@ -760,10 +760,10 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [a3 view];
-  LOBYTE(self) = [v4 isDescendantOfView:self];
+  view = [begin view];
+  LOBYTE(self) = [view isDescendantOfView:self];
 
   return self;
 }
@@ -783,12 +783,12 @@ LABEL_5:
   volume = self->_volume;
   *&volume = volume;
   [(AVMobileChromelessFluidSlider *)self->_volumeSlider setValue:volume];
-  v5 = [(AVMobileChromelessFluidSlider *)self->_volumeSlider layer];
-  v6 = [(AVMobileGlassVolumeButtonControl *)self->_volumeButton layer];
-  [v5 setShadowOffset:{0.0, 6.0}];
-  [v5 setShadowRadius:10.0];
-  [v6 setShadowOffset:{0.0, 6.0}];
-  [v6 setShadowRadius:10.0];
+  layer = [(AVMobileChromelessFluidSlider *)self->_volumeSlider layer];
+  layer2 = [(AVMobileGlassVolumeButtonControl *)self->_volumeButton layer];
+  [layer setShadowOffset:{0.0, 6.0}];
+  [layer setShadowRadius:10.0];
+  [layer2 setShadowOffset:{0.0, 6.0}];
+  [layer2 setShadowRadius:10.0];
   [(AVMobileGlassVolumeControlsView *)&self->super.super.super.super.super.isa _updateShadowAppearanceState];
 
   [(AVMobileGlassVolumeControlsView *)self _updateVolumeButtonIconState];
@@ -796,12 +796,12 @@ LABEL_5:
   [(AVMobileGlassVolumeControlsView *)self updateBackgroundMaterial];
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
-  v6 = [(AVMobileGlassBackgroundView *)v5 superview];
+  viewCopy = view;
+  superview = [(AVMobileGlassBackgroundView *)viewCopy superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -828,32 +828,32 @@ LABEL_5:
     backgroundView = 0;
   }
 
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
     [(AVMobileGlassBackgroundView *)backgroundView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     [(AVMobileGlassVolumeControlsView *)self insertSubview:self->_backgroundView atIndex:0];
     [(AVMobileGlassVolumeControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v5 = a3;
-  if (self->_styleSheet != v5)
+  sheetCopy = sheet;
+  if (self->_styleSheet != sheetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_styleSheet, a3);
+    v6 = sheetCopy;
+    objc_storeStrong(&self->_styleSheet, sheet);
     [(UIView *)self avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
-    v5 = v6;
+    sheetCopy = v6;
   }
 }
 
-- (void)setFullscreen:(BOOL)a3
+- (void)setFullscreen:(BOOL)fullscreen
 {
-  if (self->_fullscreen != a3)
+  if (self->_fullscreen != fullscreen)
   {
-    self->_fullscreen = a3;
+    self->_fullscreen = fullscreen;
     [(AVMobileGlassVolumeButtonControl *)self->_volumeButton setFullscreen:?];
     [(AVMobileGlassVolumeButtonControl *)self->_volumeButton setNeedsLayout];
 
@@ -861,38 +861,38 @@ LABEL_5:
   }
 }
 
-- (void)setPrefersVolumeSliderEnabled:(BOOL)a3
+- (void)setPrefersVolumeSliderEnabled:(BOOL)enabled
 {
-  if (self->_prefersVolumeSliderEnabled != a3)
+  if (self->_prefersVolumeSliderEnabled != enabled)
   {
-    self->_prefersVolumeSliderEnabled = a3;
+    self->_prefersVolumeSliderEnabled = enabled;
     [(AVMobileChromelessFluidSlider *)self->_volumeSlider setEnabled:?];
   }
 }
 
-- (void)setAllowsVolumeAdjustment:(BOOL)a3
+- (void)setAllowsVolumeAdjustment:(BOOL)adjustment
 {
-  if (self->_allowsVolumeAdjustment != a3)
+  if (self->_allowsVolumeAdjustment != adjustment)
   {
-    self->_allowsVolumeAdjustment = a3;
+    self->_allowsVolumeAdjustment = adjustment;
   }
 }
 
-- (void)setPrefersVolumeSliderIncluded:(BOOL)a3
+- (void)setPrefersVolumeSliderIncluded:(BOOL)included
 {
-  if (self->_prefersVolumeSliderIncluded != a3)
+  if (self->_prefersVolumeSliderIncluded != included)
   {
-    self->_prefersVolumeSliderIncluded = a3;
-    [(AVMobileChromelessFluidSlider *)self->_volumeSlider setPrefersSliderTrackHidden:!a3];
+    self->_prefersVolumeSliderIncluded = included;
+    [(AVMobileChromelessFluidSlider *)self->_volumeSlider setPrefersSliderTrackHidden:!included];
     [(AVMobileGlassVolumeControlsView *)self invalidateIntrinsicContentSize];
-    v4 = [(AVMobileGlassVolumeControlsView *)self superview];
-    [v4 avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
+    superview = [(AVMobileGlassVolumeControlsView *)self superview];
+    [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:self];
 
     [(AVMobileGlassVolumeControlsView *)self setNeedsLayout];
     v5 = +[AVKitGlobalSettings shared];
-    v6 = [v5 hapticsEnabled];
+    hapticsEnabled = [v5 hapticsEnabled];
 
-    if (v6)
+    if (hapticsEnabled)
     {
 
       [(AVMobileGlassVolumeControlsView *)self _updateHapticsButtonHiddenForVolume];
@@ -900,11 +900,11 @@ LABEL_5:
   }
 }
 
-- (void)setMute:(BOOL)a3
+- (void)setMute:(BOOL)mute
 {
-  if (self->_mute != a3)
+  if (self->_mute != mute)
   {
-    self->_mute = a3;
+    self->_mute = mute;
     [(AVMobileGlassVolumeControlsView *)self _updateVolumeButtonIconState];
   }
 }
@@ -921,11 +921,11 @@ LABEL_5:
   return [(AVMobileGlassVolumeButtonControl *)volumeButton isTracking];
 }
 
-- (void)setEmphasized:(BOOL)a3
+- (void)setEmphasized:(BOOL)emphasized
 {
-  if (self->_emphasized != a3)
+  if (self->_emphasized != emphasized)
   {
-    self->_emphasized = a3;
+    self->_emphasized = emphasized;
     emphasizedAnimator = self->_emphasizedAnimator;
     v5 = 1.0;
     if (emphasizedAnimator && [(UIViewPropertyAnimator *)emphasizedAnimator isRunning]&& [(UIViewPropertyAnimator *)self->_emphasizedAnimator isInterruptible])
@@ -989,16 +989,16 @@ void __74__AVMobileGlassVolumeControlsView__updateVolumeFluidSliderEmphasizedSca
   }
 }
 
-- (AVMobileGlassVolumeControlsView)initWithStyleSheet:(id)a3
+- (AVMobileGlassVolumeControlsView)initWithStyleSheet:(id)sheet
 {
-  v5 = a3;
+  sheetCopy = sheet;
   v22.receiver = self;
   v22.super_class = AVMobileGlassVolumeControlsView;
   v6 = [(AVGlassBackedView *)&v22 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_styleSheet, a3);
+    objc_storeStrong(&v6->_styleSheet, sheet);
     v8 = objc_alloc_init(AVGlassBackedView);
     volumeControls = v7->_volumeControls;
     v7->_volumeControls = v8;

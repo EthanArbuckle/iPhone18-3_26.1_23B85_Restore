@@ -7,10 +7,10 @@
 - (NSNumber)appCellularDataModificationDisabled;
 - (NSNumber)systemAllowCellularEnabled;
 - (NSString)cellularDataStateDescription;
-- (id)systemAllowMusicCellularDataEnabledForSpecifier:(id)a3;
+- (id)systemAllowMusicCellularDataEnabledForSpecifier:(id)specifier;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)setSystemAllowMusicCellularDataEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)setSystemAllowMusicCellularDataEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation MusicSettingsCellularDataController
@@ -35,9 +35,9 @@
     v2->_appPolicy = v7;
 
     v9 = [(PSSystemPolicyForApp *)v2->_appPolicy specifiersForPolicyOptions:0x8000 force:0];
-    v10 = [v9 lastObject];
+    lastObject = [v9 lastObject];
     musicCellularDataSpecifier = v2->_musicCellularDataSpecifier;
-    v2->_musicCellularDataSpecifier = v10;
+    v2->_musicCellularDataSpecifier = lastObject;
 
     v12 = v2->_musicCellularDataSpecifier;
     if (v12)
@@ -50,10 +50,10 @@
       objc_storeWeak((v2->_musicCellularDataSpecifier + OBJC_IVAR___PSSpecifier_target), v2);
       *(v2->_musicCellularDataSpecifier + OBJC_IVAR___PSSpecifier_getter) = "systemAllowMusicCellularDataEnabledForSpecifier:";
       *(v2->_musicCellularDataSpecifier + OBJC_IVAR___PSSpecifier_setter) = "setSystemAllowMusicCellularDataEnabled:forSpecifier:";
-      v14 = [(MusicSettingsCellularDataController *)v2 appCellularDataModificationDisabled];
-      v15 = [v14 BOOLValue];
+      appCellularDataModificationDisabled = [(MusicSettingsCellularDataController *)v2 appCellularDataModificationDisabled];
+      bOOLValue = [appCellularDataModificationDisabled BOOLValue];
 
-      if (v15)
+      if (bOOLValue)
       {
         [(PSSpecifier *)v2->_musicCellularDataSpecifier setObject:&__kCFBooleanFalse forKeyedSubscript:PSEnabledKey];
       }
@@ -85,41 +85,41 @@
 - (BOOL)cellularSettingsAvailable
 {
   v2 = [(PSSystemPolicyForApp *)self->_appPolicy specifiersForPolicyOptions:0x8000 force:0];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  return v3 != 0;
+  return lastObject != 0;
 }
 
 - (BOOL)cellularDataEnabled
 {
   v2 = [(PSSystemPolicyForApp *)self->_appPolicy specifiersForPolicyOptions:0x8000 force:0];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [v3 music_getValue];
-  v5 = sub_3F54(v4);
-  v6 = [v5 BOOLValue];
+  music_getValue = [lastObject music_getValue];
+  v5 = sub_3F54(music_getValue);
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)wifiDataEnabled
 {
   v2 = [(PSSystemPolicyForApp *)self->_appPolicy specifiersForPolicyOptions:0x8000 force:0];
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [v3 music_getValue];
+  music_getValue = [lastObject music_getValue];
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 sf_isChinaRegionCellularDevice];
+  sf_isChinaRegionCellularDevice = [v5 sf_isChinaRegionCellularDevice];
 
   v7 = &__kCFBooleanTrue;
-  if (v6 && ([v4 intValue] & 1) == 0)
+  if (sf_isChinaRegionCellularDevice && ([music_getValue intValue] & 1) == 0)
   {
     v7 = &__kCFBooleanFalse;
   }
 
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)cellularHighDataModeEnabled
@@ -131,10 +131,10 @@
 
 - (NSString)cellularDataStateDescription
 {
-  v2 = [(MusicSettingsCellularDataController *)self cellularDataEnabled];
+  cellularDataEnabled = [(MusicSettingsCellularDataController *)self cellularDataEnabled];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (cellularDataEnabled)
   {
     v5 = @"ON";
   }
@@ -149,10 +149,10 @@
   return v6;
 }
 
-- (void)setSystemAllowMusicCellularDataEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setSystemAllowMusicCellularDataEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v11 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   if (self->_musicCellularDataSpecifierSetter)
   {
     musicCellularDataSpecifierSetter = self->_musicCellularDataSpecifierSetter;
@@ -167,14 +167,14 @@
   [(MusicSettingsCellularDataController *)self updateVisibleSpecifiers];
 }
 
-- (id)systemAllowMusicCellularDataEnabledForSpecifier:(id)a3
+- (id)systemAllowMusicCellularDataEnabledForSpecifier:(id)specifier
 {
   if (self->_musicCellularDataSpecifierGetter)
   {
     musicCellularDataSpecifierGetter = self->_musicCellularDataSpecifierGetter;
   }
 
-  v5 = a3;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained(&self->_musicCellularDataSpecifierTarget);
   v7 = MusicSettingsPerformSelector();
 
@@ -183,8 +183,8 @@
 
 - (NSNumber)systemAllowCellularEnabled
 {
-  v2 = [(PSSpecifier *)self->_musicCellularDataSpecifier music_getValue];
-  v3 = sub_3F54(v2);
+  music_getValue = [(PSSpecifier *)self->_musicCellularDataSpecifier music_getValue];
+  v3 = sub_3F54(music_getValue);
 
   return v3;
 }
@@ -196,7 +196,7 @@
   return [NSNumber numberWithBool:v2];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

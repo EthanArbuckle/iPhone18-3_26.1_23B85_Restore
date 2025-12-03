@@ -1,24 +1,24 @@
 @interface CSUDetectionPrintNetworkOutput
-- (CSUDetectionPrintNetworkOutput)initWithDetectionPrintPerTapPoint:(id)a3;
-- (id)detectionPrintFeatureForTapPointName:(id)a3 error:(id *)a4;
+- (CSUDetectionPrintNetworkOutput)initWithDetectionPrintPerTapPoint:(id)point;
+- (id)detectionPrintFeatureForTapPointName:(id)name error:(id *)error;
 @end
 
 @implementation CSUDetectionPrintNetworkOutput
 
-- (id)detectionPrintFeatureForTapPointName:(id)a3 error:(id *)a4
+- (id)detectionPrintFeatureForTapPointName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v10 = objc_msgSend_objectForKeyedSubscript_(self->_detectionPrintPerTapPoint, v7, v6, v8, v9);
+  nameCopy = name;
+  v10 = objc_msgSend_objectForKeyedSubscript_(self->_detectionPrintPerTapPoint, v7, nameCopy, v8, v9);
 
   if (v10)
   {
-    v14 = objc_msgSend_objectForKeyedSubscript_(self->_detectionPrintPerTapPoint, v11, v6, v12, v13);
+    v14 = objc_msgSend_objectForKeyedSubscript_(self->_detectionPrintPerTapPoint, v11, nameCopy, v12, v13);
   }
 
-  else if (a4)
+  else if (error)
   {
-    objc_msgSend_errorForInvalidArgument_named_(CSUError, v11, v6, @"DetectionPrintTapPointName", v13);
-    *a4 = v14 = 0;
+    objc_msgSend_errorForInvalidArgument_named_(CSUError, v11, nameCopy, @"DetectionPrintTapPointName", v13);
+    *error = v14 = 0;
   }
 
   else
@@ -29,16 +29,16 @@
   return v14;
 }
 
-- (CSUDetectionPrintNetworkOutput)initWithDetectionPrintPerTapPoint:(id)a3
+- (CSUDetectionPrintNetworkOutput)initWithDetectionPrintPerTapPoint:(id)point
 {
-  v5 = a3;
+  pointCopy = point;
   v10.receiver = self;
   v10.super_class = CSUDetectionPrintNetworkOutput;
   v6 = [(CSUDetectionPrintNetworkOutput *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_detectionPrintPerTapPoint, a3);
+    objc_storeStrong(&v6->_detectionPrintPerTapPoint, point);
     v8 = v7;
   }
 

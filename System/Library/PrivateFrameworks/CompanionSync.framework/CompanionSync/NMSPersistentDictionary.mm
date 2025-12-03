@@ -1,24 +1,24 @@
 @interface NMSPersistentDictionary
 - (NMSPersistentDictionary)init;
-- (NMSPersistentDictionary)initWithPath:(id)a3 objectClass:(Class)a4 loggingFacility:(__CFString *)a5;
-- (NMSPersistentDictionary)initWithSharedDBForService:(id)a3 objectClass:(Class)a4;
-- (id)_dataFromObject:(id)a3;
-- (id)_objectFromData:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)objectWithOldestExpirationDate:(id *)a3;
+- (NMSPersistentDictionary)initWithPath:(id)path objectClass:(Class)class loggingFacility:(__CFString *)facility;
+- (NMSPersistentDictionary)initWithSharedDBForService:(id)service objectClass:(Class)class;
+- (id)_dataFromObject:(id)object;
+- (id)_objectFromData:(id)data;
+- (id)objectForKey:(id)key;
+- (id)objectWithOldestExpirationDate:(id *)date;
 - (unint64_t)_checkSchemaVersion;
 - (void)_ensureDBSchema;
-- (void)_openDBForceRecreate:(BOOL)a3;
+- (void)_openDBForceRecreate:(BOOL)recreate;
 - (void)_prepareStatements;
-- (void)_withDB:(id)a3;
+- (void)_withDB:(id)b;
 - (void)dealloc;
-- (void)enumerateObjectsSortedByEnqueueDate:(id)a3;
-- (void)enumerateObjectsSortedByExpirationDate:(id)a3;
+- (void)enumerateObjectsSortedByEnqueueDate:(id)date;
+- (void)enumerateObjectsSortedByExpirationDate:(id)date;
 - (void)lock;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)resetObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4 expires:(id)a5;
+- (void)removeObjectForKey:(id)key;
+- (void)resetObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key expires:(id)expires;
 - (void)unlock;
 @end
 
@@ -31,9 +31,9 @@
   return 0;
 }
 
-- (NMSPersistentDictionary)initWithPath:(id)a3 objectClass:(Class)a4 loggingFacility:(__CFString *)a5
+- (NMSPersistentDictionary)initWithPath:(id)path objectClass:(Class)class loggingFacility:(__CFString *)facility
 {
-  v8 = a3;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = NMSPersistentDictionary;
   v9 = [(NMSPersistentDictionary *)&v16 init];
@@ -43,14 +43,14 @@
     lock = v9->_lock;
     v9->_lock = v10;
 
-    v12 = [v8 copy];
+    v12 = [pathCopy copy];
     path = v9->_path;
     v9->_path = v12;
 
-    v9->_objectClass = a4;
-    if (a5)
+    v9->_objectClass = class;
+    if (facility)
     {
-      v9->_loggingFacility = CFStringCreateCopy(*MEMORY[0x1E695E480], a5);
+      v9->_loggingFacility = CFStringCreateCopy(*MEMORY[0x1E695E480], facility);
     }
 
     [(NMSPersistentDictionary *)v9 _openDBForceRecreate:0];
@@ -60,15 +60,15 @@
   return v9;
 }
 
-- (NMSPersistentDictionary)initWithSharedDBForService:(id)a3 objectClass:(Class)a4
+- (NMSPersistentDictionary)initWithSharedDBForService:(id)service objectClass:(Class)class
 {
-  v6 = a3;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = NMSPersistentDictionary;
   v7 = [(NMSPersistentDictionary *)&v14 init];
   if (v7)
   {
-    v8 = [_SYSharedServiceDB sharedInstanceForServiceName:v6];
+    v8 = [_SYSharedServiceDB sharedInstanceForServiceName:serviceCopy];
     sharedDB = v7->_sharedDB;
     v7->_sharedDB = v8;
 
@@ -85,7 +85,7 @@
       }
     }
 
-    v7->_objectClass = a4;
+    v7->_objectClass = class;
     v10 = dispatch_semaphore_create(1);
     lock = v7->_lock;
     v7->_lock = v10;
@@ -155,17 +155,17 @@ uint64_t __34__NMSPersistentDictionary_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_withDB:(id)a3
+- (void)_withDB:(id)b
 {
   sharedDB = self->_sharedDB;
   if (sharedDB)
   {
-    [(_SYSharedServiceDB *)sharedDB withDBRef:a3];
+    [(_SYSharedServiceDB *)sharedDB withDBRef:b];
   }
 
   else
   {
-    (*(a3 + 2))(a3, self->_db);
+    (*(b + 2))(b, self->_db);
   }
 }
 
@@ -214,18 +214,18 @@ LABEL_15:
   return 0;
 }
 
-- (void)_openDBForceRecreate:(BOOL)a3
+- (void)_openDBForceRecreate:(BOOL)recreate
 {
-  v3 = a3;
+  recreateCopy = recreate;
   v29[3] = *MEMORY[0x1E69E9840];
   p_path = &self->_path;
   v6 = self->_path;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:v6];
 
   if ((v8 & 1) == 0)
   {
-    v12 = [(NSString *)v6 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [(NSString *)v6 stringByDeletingLastPathComponent];
     v14 = *MEMORY[0x1E696A328];
     v28[0] = *MEMORY[0x1E696A360];
     v28[1] = v14;
@@ -234,9 +234,9 @@ LABEL_15:
     v28[2] = *MEMORY[0x1E696A370];
     v29[2] = &unk_1F5AE26C8;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:3];
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v27 = 0;
-    v17 = [v16 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:v15 error:&v27];
+    v17 = [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v15 error:&v27];
     v18 = v27;
 
     if ((v17 & 1) == 0)
@@ -256,7 +256,7 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  if (v3)
+  if (recreateCopy)
   {
     if (_sync_log_facilities_pred != -1)
     {
@@ -269,10 +269,10 @@ LABEL_15:
       [NMSPersistentDictionary _openDBForceRecreate:v9];
     }
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
     v26 = 0;
-    v11 = [v10 removeItemAtPath:v6 error:&v26];
-    v12 = v26;
+    v11 = [defaultManager3 removeItemAtPath:v6 error:&v26];
+    stringByDeletingLastPathComponent = v26;
 
     if ((v11 & 1) == 0)
     {
@@ -284,7 +284,7 @@ LABEL_15:
       v13 = qword_1EDE73430;
       if (os_log_type_enabled(qword_1EDE73430, OS_LOG_TYPE_ERROR))
       {
-        [(NMSPersistentDictionary *)v13 _openDBForceRecreate:v12];
+        [(NMSPersistentDictionary *)v13 _openDBForceRecreate:stringByDeletingLastPathComponent];
       }
     }
 
@@ -301,10 +301,10 @@ LABEL_18:
       sqlite3_busy_timeout(self->_db, 60000);
       sqlite3_extended_result_codes(self->_db, 1);
       ExecuteSQL_1(self->_db, "CREATE TABLE IF NOT EXISTS meta (v INTEGER PRIMARY KEY AUTOINCREMENT, t TEXT)");
-      v24 = [(NMSPersistentDictionary *)self _checkSchemaVersion];
-      if (v24 != 1)
+      _checkSchemaVersion = [(NMSPersistentDictionary *)self _checkSchemaVersion];
+      if (_checkSchemaVersion != 1)
       {
-        if (v24)
+        if (_checkSchemaVersion)
         {
 LABEL_38:
           [(NMSPersistentDictionary *)self _prepareStatements];
@@ -342,7 +342,7 @@ LABEL_38:
     self->_db = 0;
   }
 
-  if (v3)
+  if (recreateCopy)
   {
     if (_sync_log_facilities_pred != -1)
     {
@@ -499,13 +499,13 @@ void __45__NMSPersistentDictionary__prepareStatements__block_invoke(uint64_t a1,
   }
 }
 
-- (id)_objectFromData:(id)a3
+- (id)_objectFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = MEMORY[0x1E696ACD0];
-    v5 = a3;
-    v6 = [[v4 alloc] initForReadingFromData:v5 error:0];
+    dataCopy = data;
+    v6 = [[v4 alloc] initForReadingFromData:dataCopy error:0];
 
     v7 = [objc_alloc(self->_objectClass) initWithCoder:v6];
   }
@@ -518,37 +518,37 @@ void __45__NMSPersistentDictionary__prepareStatements__block_invoke(uint64_t a1,
   return v7;
 }
 
-- (id)_dataFromObject:(id)a3
+- (id)_dataFromObject:(id)object
 {
   v3 = MEMORY[0x1E696ACC8];
-  v4 = a3;
+  objectCopy = object;
   v5 = [[v3 alloc] initRequiringSecureCoding:1];
-  [v4 encodeWithCoder:v5];
+  [objectCopy encodeWithCoder:v5];
 
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 expires:(id)a5
+- (void)setObject:(id)object forKey:(id)key expires:(id)expires
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  keyCopy = key;
+  expiresCopy = expires;
   v11 = objc_opt_new();
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52__NMSPersistentDictionary_setObject_forKey_expires___block_invoke;
   v16[3] = &unk_1E86CB298;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v8;
+  v17 = keyCopy;
+  v18 = expiresCopy;
+  v19 = objectCopy;
   v20 = v11;
   v12 = v11;
-  v13 = v8;
-  v14 = v10;
-  v15 = v9;
+  v13 = objectCopy;
+  v14 = expiresCopy;
+  v15 = keyCopy;
   [(NMSPersistentDictionary *)self _withDB:v16];
 }
 
@@ -581,9 +581,9 @@ void __52__NMSPersistentDictionary_setObject_forKey_expires___block_invoke(uint6
   sqlite3_clear_bindings(*(*(a1 + 32) + 64));
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -595,7 +595,7 @@ void __52__NMSPersistentDictionary_setObject_forKey_expires___block_invoke(uint6
   v8[2] = __40__NMSPersistentDictionary_objectForKey___block_invoke;
   v8[3] = &unk_1E86CAE58;
   v8[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = v5;
   v10 = &v11;
   [(NMSPersistentDictionary *)self _withDB:v8];
@@ -638,16 +638,16 @@ uint64_t __40__NMSPersistentDictionary_objectForKey___block_invoke(uint64_t a1)
   return sqlite3_clear_bindings(*(*(a1 + 32) + 56));
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__NMSPersistentDictionary_removeObjectForKey___block_invoke;
   v6[3] = &unk_1E86CABC0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(NMSPersistentDictionary *)self _withDB:v6];
 }
 
@@ -671,18 +671,18 @@ uint64_t __46__NMSPersistentDictionary_removeObjectForKey___block_invoke(uint64_
   return sqlite3_clear_bindings(*(*(a1 + 32) + 80));
 }
 
-- (void)resetObject:(id)a3 forKey:(id)a4
+- (void)resetObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(NMSPersistentDictionary *)self _dataFromObject:a3];
+  keyCopy = key;
+  v7 = [(NMSPersistentDictionary *)self _dataFromObject:object];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__NMSPersistentDictionary_resetObject_forKey___block_invoke;
   v10[3] = &unk_1E86CACB0;
   v10[4] = self;
   v11 = v7;
-  v12 = v6;
-  v8 = v6;
+  v12 = keyCopy;
+  v8 = keyCopy;
   v9 = v7;
   [(NMSPersistentDictionary *)self _withDB:v10];
 }
@@ -736,16 +736,16 @@ uint64_t __43__NMSPersistentDictionary_removeAllObjects__block_invoke(uint64_t a
   return sqlite3_reset(*(*(a1 + 32) + 88));
 }
 
-- (void)enumerateObjectsSortedByExpirationDate:(id)a3
+- (void)enumerateObjectsSortedByExpirationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__NMSPersistentDictionary_enumerateObjectsSortedByExpirationDate___block_invoke;
   v6[3] = &unk_1E86CB2C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dateCopy;
+  v5 = dateCopy;
   [(NMSPersistentDictionary *)self _withDB:v6];
 }
 
@@ -782,7 +782,7 @@ uint64_t __66__NMSPersistentDictionary_enumerateObjectsSortedByExpirationDate___
   return sqlite3_reset(*(*(a1 + 32) + 96));
 }
 
-- (id)objectWithOldestExpirationDate:(id *)a3
+- (id)objectWithOldestExpirationDate:(id *)date
 {
   v13 = 0;
   v14 = &v13;
@@ -803,9 +803,9 @@ uint64_t __66__NMSPersistentDictionary_enumerateObjectsSortedByExpirationDate___
   v6[4] = &v13;
   v6[5] = &v7;
   [(NMSPersistentDictionary *)self enumerateObjectsSortedByExpirationDate:v6];
-  if (a3)
+  if (date)
   {
-    *a3 = v8[5];
+    *date = v8[5];
   }
 
   v4 = v14[5];
@@ -832,16 +832,16 @@ void __58__NMSPersistentDictionary_objectWithOldestExpirationDate___block_invoke
   *a5 = 1;
 }
 
-- (void)enumerateObjectsSortedByEnqueueDate:(id)a3
+- (void)enumerateObjectsSortedByEnqueueDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__NMSPersistentDictionary_enumerateObjectsSortedByEnqueueDate___block_invoke;
   v6[3] = &unk_1E86CB2C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dateCopy;
+  v5 = dateCopy;
   [(NMSPersistentDictionary *)self _withDB:v6];
 }
 

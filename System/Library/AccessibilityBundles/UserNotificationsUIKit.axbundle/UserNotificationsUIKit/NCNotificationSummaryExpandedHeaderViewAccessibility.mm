@@ -1,17 +1,17 @@
 @interface NCNotificationSummaryExpandedHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_configureControlsViewIfNecessary;
 @end
 
 @implementation NCNotificationSummaryExpandedHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCNotificationSummaryExpandedHeaderView" hasInstanceVariable:@"_collapseControl" withType:"PLGlyphControl"];
-  [v3 validateClass:@"NCNotificationSummaryExpandedHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"NCNotificationSummaryExpandedHeaderView" hasInstanceMethod:@"_configureControlsViewIfNecessary" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCNotificationSummaryExpandedHeaderView" hasInstanceVariable:@"_collapseControl" withType:"PLGlyphControl"];
+  [validationsCopy validateClass:@"NCNotificationSummaryExpandedHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"NCNotificationSummaryExpandedHeaderView" hasInstanceMethod:@"_configureControlsViewIfNecessary" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

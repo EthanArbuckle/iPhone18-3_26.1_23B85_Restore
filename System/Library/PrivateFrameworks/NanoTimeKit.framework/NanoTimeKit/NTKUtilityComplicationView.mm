@@ -1,72 +1,72 @@
 @interface NTKUtilityComplicationView
-+ (id)_alarmImageProviderActive:(BOOL)a3;
++ (id)_alarmImageProviderActive:(BOOL)active;
 + (id)_stopwatchImageProvider;
 + (id)_timerImageProvider;
-+ (id)largeComplicationViewForType:(unint64_t)a3 narrow:(BOOL)a4;
-+ (id)smallComplicationViewForType:(unint64_t)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
++ (id)largeComplicationViewForType:(unint64_t)type narrow:(BOOL)narrow;
++ (id)smallComplicationViewForType:(unint64_t)type;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)shouldUsePlatterInset;
 - (CDComplicationDisplayObserver)displayObserver;
 - (CGSize)maxSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKUtilityComplicationView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKUtilityComplicationView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)touchEdgeInsets;
 - (double)foregroundAlpha;
 - (id)_backgroundPlatterImage;
-- (id)_newDigitalTimeLabelSubviewWithOptions:(unint64_t)a3;
-- (id)_newHighlightViewVariant:(unint64_t)a3;
+- (id)_newDigitalTimeLabelSubviewWithOptions:(unint64_t)options;
+- (id)_newHighlightViewVariant:(unint64_t)variant;
 - (id)_newImageViewSubview;
-- (id)_newImageViewSubviewWithAlpha:(double)a3;
-- (id)_newLabelSubviewWithFont:(id)a3 variant:(unint64_t)a4;
-- (id)_newStandardLabelSubviewVariant:(unint64_t)a3;
+- (id)_newImageViewSubviewWithAlpha:(double)alpha;
+- (id)_newLabelSubviewWithFont:(id)font variant:(unint64_t)variant;
+- (id)_newStandardLabelSubviewVariant:(unint64_t)variant;
 - (id)_smallCapsFont;
 - (id)_standardFont;
-- (void)_applyColorScheme:(id)a3;
+- (void)_applyColorScheme:(id)scheme;
 - (void)_updateForTemplateChange;
 - (void)_updateForegroundAlpha;
 - (void)_updateForegroundColor;
 - (void)_updateForegroundImageAlpha;
-- (void)_updateImageViewAlpha:(id)a3;
-- (void)_updateImageViewColor:(id)a3;
+- (void)_updateImageViewAlpha:(id)alpha;
+- (void)_updateImageViewColor:(id)color;
 - (void)_updateLabelsForFontChange;
-- (void)applyFaceColorPalette:(id)a3 units:(unint64_t)a4;
-- (void)applyTransitionFraction:(double)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5 units:(unint64_t)a6 brightenedUnits:(unint64_t)a7;
-- (void)layoutLabelVertically:(id)a3;
+- (void)applyFaceColorPalette:(id)palette units:(unint64_t)units;
+- (void)applyTransitionFraction:(double)fraction fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette units:(unint64_t)units brightenedUnits:(unint64_t)brightenedUnits;
+- (void)layoutLabelVertically:(id)vertically;
 - (void)layoutSubviews;
-- (void)setAlwaysEnforcePlatterInset:(BOOL)a3;
-- (void)setComplicationTemplate:(id)a3 reason:(int64_t)a4;
-- (void)setEditing:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setFontSize:(double)a3;
-- (void)setFontWeight:(double)a3;
-- (void)setForegroundAlpha:(double)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setForegroundImageAlpha:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMaxSize:(CGSize)a3;
-- (void)setPlacement:(unint64_t)a3;
-- (void)setPlatterColor:(id)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setShouldUseBackgroundPlatter:(BOOL)a3;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
-- (void)setUseRoundedFontDesign:(BOOL)a3;
-- (void)setUsesLegibility:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAlwaysEnforcePlatterInset:(BOOL)inset;
+- (void)setComplicationTemplate:(id)template reason:(int64_t)reason;
+- (void)setEditing:(BOOL)editing;
+- (void)setFont:(id)font;
+- (void)setFontSize:(double)size;
+- (void)setFontWeight:(double)weight;
+- (void)setForegroundAlpha:(double)alpha;
+- (void)setForegroundColor:(id)color;
+- (void)setForegroundImageAlpha:(double)alpha;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMaxSize:(CGSize)size;
+- (void)setPlacement:(unint64_t)placement;
+- (void)setPlatterColor:(id)color;
+- (void)setShadowColor:(id)color;
+- (void)setShouldUseBackgroundPlatter:(BOOL)platter;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
+- (void)setUseRoundedFontDesign:(BOOL)design;
+- (void)setUsesLegibility:(BOOL)legibility;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NTKUtilityComplicationView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = NTKUtilityComplicationView;
-  [(NTKUtilityComplicationView *)&v4 traitCollectionDidChange:a3];
+  [(NTKUtilityComplicationView *)&v4 traitCollectionDidChange:change];
   [(NTKUtilityComplicationView *)self setNeedsLayout];
 }
 
-+ (id)smallComplicationViewForType:(unint64_t)a3
++ (id)smallComplicationViewForType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = objc_alloc_init(0);
   }
@@ -74,8 +74,8 @@
   else
   {
     v3 = objc_alloc_init(NTKUtilityComplicationView);
-    v4 = [(NTKUtilityComplicationView *)v3 device];
-    ___LayoutConstants_block_invoke_70(v4, v6);
+    device = [(NTKUtilityComplicationView *)v3 device];
+    ___LayoutConstants_block_invoke_70(device, v6);
     [(NTKUtilityComplicationView *)v3 setMinimumWidth:v7];
 
     [(NTKUtilityComplicationView *)v3 setHidden:1];
@@ -84,11 +84,11 @@
   return v3;
 }
 
-+ (id)largeComplicationViewForType:(unint64_t)a3 narrow:(BOOL)a4
++ (id)largeComplicationViewForType:(unint64_t)type narrow:(BOOL)narrow
 {
-  if (a3)
+  if (type)
   {
-    if (!a4 || (v4 = objc_alloc_init(0)) == 0)
+    if (!narrow || (v4 = objc_alloc_init(0)) == 0)
     {
       v4 = objc_alloc_init(0);
     }
@@ -97,8 +97,8 @@
   else
   {
     v4 = objc_alloc_init(NTKUtilityComplicationView);
-    v5 = [(NTKUtilityComplicationView *)v4 device];
-    ___LayoutConstants_block_invoke_70(v5, v7);
+    device = [(NTKUtilityComplicationView *)v4 device];
+    ___LayoutConstants_block_invoke_70(device, v7);
     [(NTKUtilityComplicationView *)v4 setMinimumWidth:v8];
 
     [(NTKUtilityComplicationView *)v4 setHidden:1];
@@ -107,52 +107,52 @@
   return v4;
 }
 
-- (NTKUtilityComplicationView)initWithFrame:(CGRect)a3
+- (NTKUtilityComplicationView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = NTKUtilityComplicationView;
-  v3 = [(NTKUtilityComplicationView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUtilityComplicationView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-    v5 = [v4 device];
-    [(NTKUtilityComplicationView *)v3 setDevice:v5];
+    device = [v4 device];
+    [(NTKUtilityComplicationView *)v3 setDevice:device];
 
-    v6 = [(NTKUtilityComplicationView *)v3 device];
+    device2 = [(NTKUtilityComplicationView *)v3 device];
     v3->_foregroundAlpha = 0.7;
 
-    v7 = [(NTKUtilityComplicationView *)v3 device];
+    device3 = [(NTKUtilityComplicationView *)v3 device];
     v3->_foregroundImageAlpha = 0.7;
 
-    v8 = [(NTKUtilityComplicationView *)v3 device];
-    ___LayoutConstants_block_invoke_70(v8, v22);
+    device4 = [(NTKUtilityComplicationView *)v3 device];
+    ___LayoutConstants_block_invoke_70(device4, v22);
     v3->_minimumWidth = v23;
 
     v3->_maxSize = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
-    v9 = [(NTKUtilityComplicationView *)v3 _standardFont];
+    _standardFont = [(NTKUtilityComplicationView *)v3 _standardFont];
     font = v3->_font;
-    v3->_font = v9;
+    v3->_font = _standardFont;
 
     v11 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:*off_27877BE58];
     shadowColor = v3->_shadowColor;
     v3->_shadowColor = v11;
 
-    v13 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     foregroundColor = v3->_foregroundColor;
-    v3->_foregroundColor = v13;
+    v3->_foregroundColor = whiteColor;
 
     v15 = NTKUtilityComplicationPlatterColor();
     platterColor = v3->_platterColor;
     v3->_platterColor = v15;
 
     v3->_fontWeight = *MEMORY[0x277D74418];
-    v17 = [(NTKUtilityComplicationView *)v3 device];
-    ___LayoutConstants_block_invoke_70(v17, v21);
+    device5 = [(NTKUtilityComplicationView *)v3 device];
+    ___LayoutConstants_block_invoke_70(device5, v21);
     v3->_fontSize = v21[0];
 
-    v18 = [(NTKUtilityComplicationView *)v3 _newHighlightView];
+    _newHighlightView = [(NTKUtilityComplicationView *)v3 _newHighlightView];
     highlightView = v3->_highlightView;
-    v3->_highlightView = v18;
+    v3->_highlightView = _newHighlightView;
 
     v3->_useAlternativePunctuation = 1;
     [(NTKUtilityComplicationView *)v3 _computeForegroundColor];
@@ -173,8 +173,8 @@
   v7[4] = self;
   [(NTKUtilityComplicationView *)self _enumerateColoringViewsWithBlock:v7];
   computedForegroundColor = self->_computedForegroundColor;
-  v4 = [(NTKUtilityComplicationView *)self device];
-  ___LayoutConstants_block_invoke_70(v4, v6);
+  device = [(NTKUtilityComplicationView *)self device];
+  ___LayoutConstants_block_invoke_70(device, v6);
   v5 = [(UIColor *)computedForegroundColor colorWithAlphaComponent:v6[17]];
 
   if ([(NTKUtilityComplicationView *)self textLayoutStyle]== 1 || [(NTKUtilityComplicationView *)self textLayoutStyle]== 2)
@@ -200,11 +200,11 @@
   return 1.0;
 }
 
-- (void)setForegroundAlpha:(double)a3
+- (void)setForegroundAlpha:(double)alpha
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_foregroundAlpha = a3;
+    self->_foregroundAlpha = alpha;
     [(NTKUtilityComplicationView *)self _computeForegroundAlpha];
 
     [(NTKUtilityComplicationView *)self _updateForegroundAlpha];
@@ -231,22 +231,22 @@ void __52__NTKUtilityComplicationView__updateForegroundAlpha__block_invoke(uint6
   }
 }
 
-- (void)setPlatterColor:(id)a3
+- (void)setPlatterColor:(id)color
 {
-  v5 = a3;
-  if ((NTKEqualObjects(v5, self->_platterColor) & 1) == 0)
+  colorCopy = color;
+  if ((NTKEqualObjects(colorCopy, self->_platterColor) & 1) == 0)
   {
-    objc_storeStrong(&self->_platterColor, a3);
+    objc_storeStrong(&self->_platterColor, color);
     [(NTKUtilityComplicationView *)self _computePlatterColor];
     [(NTKUtilityComplicationView *)self _updatePlatterColor];
   }
 }
 
-- (void)setForegroundImageAlpha:(double)a3
+- (void)setForegroundImageAlpha:(double)alpha
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_foregroundImageAlpha = a3;
+    self->_foregroundImageAlpha = alpha;
 
     [(NTKUtilityComplicationView *)self _computeForegroundImageAlpha];
   }
@@ -262,28 +262,28 @@ void __52__NTKUtilityComplicationView__updateForegroundAlpha__block_invoke(uint6
   [(NTKUtilityComplicationView *)self _enumerateColoringStackedImagesViewsWithBlock:v2];
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_foregroundColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_foregroundColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_foregroundColor, a3);
+    objc_storeStrong(&self->_foregroundColor, color);
     [(NTKUtilityComplicationView *)self _computeForegroundColor];
     [(NTKUtilityComplicationView *)self _updateForegroundColor];
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_shadowColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_shadowColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_shadowColor, a3);
+    objc_storeStrong(&self->_shadowColor, color);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__NTKUtilityComplicationView_setShadowColor___block_invoke;
     v6[3] = &unk_278782C88;
-    v7 = v5;
+    v7 = colorCopy;
     [(NTKUtilityComplicationView *)self _enumerateColoringViewsWithBlock:v6];
   }
 }
@@ -297,20 +297,20 @@ void __45__NTKUtilityComplicationView_setShadowColor___block_invoke(uint64_t a1,
   }
 }
 
-- (void)applyFaceColorPalette:(id)a3 units:(unint64_t)a4
+- (void)applyFaceColorPalette:(id)palette units:(unint64_t)units
 {
-  v6 = a3;
-  v7 = [(NTKUtilityComplicationView *)self device];
-  v8 = [NTKFaceColorScheme colorSchemeForDevice:v7 withFaceColorPalette:v6 units:a4];
+  paletteCopy = palette;
+  device = [(NTKUtilityComplicationView *)self device];
+  v8 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:paletteCopy units:units];
 
   [(NTKUtilityComplicationView *)self _applyColorScheme:v8];
-  v9 = [v6 isMulticolor];
+  isMulticolor = [paletteCopy isMulticolor];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__NTKUtilityComplicationView_applyFaceColorPalette_units___block_invoke;
   v10[3] = &__block_descriptor_33_e35_v16__0__UIView_CLKUIColoringView__8l;
-  v11 = v9;
+  v11 = isMulticolor;
   [(NTKUtilityComplicationView *)self _enumerateColoringViewsWithBlock:v10];
 }
 
@@ -329,17 +329,17 @@ void __58__NTKUtilityComplicationView_applyFaceColorPalette_units___block_invoke
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5 units:(unint64_t)a6 brightenedUnits:(unint64_t)a7
+- (void)applyTransitionFraction:(double)fraction fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette units:(unint64_t)units brightenedUnits:(unint64_t)brightenedUnits
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = [(NTKUtilityComplicationView *)self device];
+  colorPaletteCopy = colorPalette;
+  paletteCopy = palette;
+  device = [(NTKUtilityComplicationView *)self device];
   LOBYTE(v17) = 0;
-  v15 = [NTKFaceColorScheme interpolationForDevice:v14 fromFaceColorPalette:v13 toFaceColorPalette:v12 fraction:a6 units:a7 brightenUnits:0 overrideColor:a3 alternateHighlight:v17];
+  v15 = [NTKFaceColorScheme interpolationForDevice:device fromFaceColorPalette:paletteCopy toFaceColorPalette:colorPaletteCopy fraction:units units:brightenedUnits brightenUnits:0 overrideColor:fraction alternateHighlight:v17];
   [(NTKUtilityComplicationView *)self _applyColorScheme:v15];
 
-  [v13 isMulticolor];
-  [v12 isMulticolor];
+  [paletteCopy isMulticolor];
+  [colorPaletteCopy isMulticolor];
 
   CLKInterpolateBetweenFloatsClipped();
   v18[0] = MEMORY[0x277D85DD0];
@@ -359,12 +359,12 @@ void __116__NTKUtilityComplicationView_applyTransitionFraction_fromFaceColorPale
   }
 }
 
-- (void)_applyColorScheme:(id)a3
+- (void)_applyColorScheme:(id)scheme
 {
-  objc_storeStrong(&self->_colorScheme, a3);
-  v5 = a3;
-  v6 = [v5 foregroundColor];
-  [(NTKUtilityComplicationView *)self setForegroundColor:v6];
+  objc_storeStrong(&self->_colorScheme, scheme);
+  schemeCopy = scheme;
+  foregroundColor = [schemeCopy foregroundColor];
+  [(NTKUtilityComplicationView *)self setForegroundColor:foregroundColor];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -374,32 +374,32 @@ void __116__NTKUtilityComplicationView_applyTransitionFraction_fromFaceColorPale
   [(NTKUtilityComplicationView *)self _enumerateColoringStackedImagesViewsWithBlock:v7];
 }
 
-- (void)setUsesLegibility:(BOOL)a3
+- (void)setUsesLegibility:(BOOL)legibility
 {
-  if (self->_usesLegibility != a3)
+  if (self->_usesLegibility != legibility)
   {
     v7 = v3;
     v8 = v4;
-    self->_usesLegibility = a3;
+    self->_usesLegibility = legibility;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __48__NTKUtilityComplicationView_setUsesLegibility___block_invoke;
     v5[3] = &__block_descriptor_33_e35_v16__0__UIView_CLKUIColoringView__8l;
-    v6 = a3;
+    legibilityCopy = legibility;
     [(NTKUtilityComplicationView *)self _enumerateColoringViewsWithBlock:v5];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  if ((NTKEqualObjects(v5, self->_font) & 1) == 0)
+  fontCopy = font;
+  if ((NTKEqualObjects(fontCopy, self->_font) & 1) == 0)
   {
-    objc_storeStrong(&self->_font, a3);
-    v6 = [objc_opt_class() _preferredAdditionalFontSettings];
-    if (v6)
+    objc_storeStrong(&self->_font, font);
+    _preferredAdditionalFontSettings = [objc_opt_class() _preferredAdditionalFontSettings];
+    if (_preferredAdditionalFontSettings)
     {
-      v7 = [(CLKFont *)self->_font CLKFontByApplyingFeatureSettings:v6];
+      v7 = [(CLKFont *)self->_font CLKFontByApplyingFeatureSettings:_preferredAdditionalFontSettings];
       font = self->_font;
       self->_font = v7;
     }
@@ -423,13 +423,13 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)setPlacement:(unint64_t)a3
+- (void)setPlacement:(unint64_t)placement
 {
-  v3 = a3;
-  self->_placement = a3;
+  placementCopy = placement;
+  self->_placement = placement;
   p_touchEdgeInsets = &self->_touchEdgeInsets;
-  v6 = [(NTKUtilityComplicationView *)self device];
-  p_touchEdgeInsets->top = NTKUtilityTouchEdgeInsetsForPlacementAndDevice(v3, v6);
+  device = [(NTKUtilityComplicationView *)self device];
+  p_touchEdgeInsets->top = NTKUtilityTouchEdgeInsetsForPlacementAndDevice(placementCopy, device);
   p_touchEdgeInsets->left = v7;
   p_touchEdgeInsets->bottom = v8;
   p_touchEdgeInsets->right = v9;
@@ -437,38 +437,38 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
   [(NTKUtilityComplicationView *)self setNeedsLayout];
 }
 
-- (void)setShouldUseBackgroundPlatter:(BOOL)a3
+- (void)setShouldUseBackgroundPlatter:(BOOL)platter
 {
-  if (self->_shouldUseBackgroundPlatter != a3)
+  if (self->_shouldUseBackgroundPlatter != platter)
   {
-    self->_shouldUseBackgroundPlatter = a3;
-    v4 = [(UIView *)self->_highlightView layer];
+    self->_shouldUseBackgroundPlatter = platter;
+    layer = [(UIView *)self->_highlightView layer];
     shouldUseBackgroundPlatter = self->_shouldUseBackgroundPlatter;
-    v6 = [(NTKUtilityComplicationView *)self device];
-    v7 = v6;
+    device = [(NTKUtilityComplicationView *)self device];
+    v7 = device;
     if (shouldUseBackgroundPlatter)
     {
-      ___LayoutConstants_block_invoke_70(v6, v11);
+      ___LayoutConstants_block_invoke_70(device, v11);
       v8 = &v12;
     }
 
     else
     {
-      ___LayoutConstants_block_invoke_70(v6, &v9);
+      ___LayoutConstants_block_invoke_70(device, &v9);
       v8 = &v10;
     }
 
-    [v4 setCornerRadius:*v8];
+    [layer setCornerRadius:*v8];
 
     [(NTKUtilityComplicationView *)self setNeedsLayout];
   }
 }
 
-- (void)setAlwaysEnforcePlatterInset:(BOOL)a3
+- (void)setAlwaysEnforcePlatterInset:(BOOL)inset
 {
-  if (self->_alwaysEnforcePlatterInset != a3)
+  if (self->_alwaysEnforcePlatterInset != inset)
   {
-    self->_alwaysEnforcePlatterInset = a3;
+    self->_alwaysEnforcePlatterInset = inset;
     [(NTKUtilityComplicationView *)self setNeedsLayout];
   }
 }
@@ -483,18 +483,18 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
   return [(NTKUtilityComplicationView *)self alwaysEnforcePlatterInset];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(NTKUtilityComplicationView *)self _widthThatFits:a3.width];
+  [(NTKUtilityComplicationView *)self _widthThatFits:fits.width];
   v5 = v4;
-  v6 = [(NTKUtilityComplicationView *)self device];
-  ___LayoutConstants_block_invoke_70(v6, v12);
+  device = [(NTKUtilityComplicationView *)self device];
+  ___LayoutConstants_block_invoke_70(device, v12);
   v7 = v13;
 
   if ([(NTKUtilityComplicationView *)self shouldUsePlatterInset])
   {
-    v8 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v8, v11);
+    device2 = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device2, v11);
     v5 = v5 + v11[22] * 2.0;
   }
 
@@ -525,27 +525,27 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
   {
     if (!backgroundPlatter)
     {
-      v12 = [(NTKUtilityComplicationView *)self _backgroundPlatterImage];
-      v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v12];
+      _backgroundPlatterImage = [(NTKUtilityComplicationView *)self _backgroundPlatterImage];
+      v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:_backgroundPlatterImage];
       v14 = self->_backgroundPlatter;
       self->_backgroundPlatter = v13;
 
       v15 = self->_backgroundPlatter;
-      v16 = [(NTKUtilityComplicationView *)self _computedPlatterColor];
-      [(UIImageView *)v15 setTintColor:v16];
+      _computedPlatterColor = [(NTKUtilityComplicationView *)self _computedPlatterColor];
+      [(UIImageView *)v15 setTintColor:_computedPlatterColor];
 
       backgroundPlatter = self->_backgroundPlatter;
     }
 
-    v17 = [(UIImageView *)backgroundPlatter superview];
+    superview = [(UIImageView *)backgroundPlatter superview];
 
-    if (!v17)
+    if (!superview)
     {
       [(NTKUtilityComplicationView *)self insertSubview:self->_backgroundPlatter atIndex:0];
     }
 
-    v18 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v18, v39);
+    device = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device, v39);
     v44.origin.x = v4;
     v44.origin.y = v6;
     v44.size.width = v8;
@@ -555,11 +555,11 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
     y = v45.origin.y;
     width = v45.size.width;
 
-    v22 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v22, v42);
+    device2 = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device2, v42);
     v23 = v43;
-    v24 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v24, v37);
+    device3 = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device3, v37);
     v25 = v23 + v38 * 2.0;
 
     [(UIImageView *)self->_backgroundPlatter setFrame:x, y, width, v25];
@@ -570,11 +570,11 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
     [(UIImageView *)backgroundPlatter removeFromSuperview];
   }
 
-  v26 = [(NTKUtilityComplicationView *)self device];
-  ___LayoutConstants_block_invoke_70(v26, v35);
+  device4 = [(NTKUtilityComplicationView *)self device];
+  ___LayoutConstants_block_invoke_70(device4, v35);
   v27 = -v36;
-  v28 = [(NTKUtilityComplicationView *)self device];
-  ___LayoutConstants_block_invoke_70(v28, v33);
+  device5 = [(NTKUtilityComplicationView *)self device];
+  ___LayoutConstants_block_invoke_70(device5, v33);
   v46.origin.x = v4;
   v46.origin.y = v6;
   v46.size.width = v8;
@@ -590,22 +590,22 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
 
 - (id)_backgroundPlatterImage
 {
-  v2 = [(NTKUtilityComplicationView *)self device];
-  v3 = ___UtilityPlatterBackgroundTemplateImage_block_invoke(v2, v2);
+  device = [(NTKUtilityComplicationView *)self device];
+  v3 = ___UtilityPlatterBackgroundTemplateImage_block_invoke(device, device);
 
   return v3;
 }
 
-- (void)layoutLabelVertically:(id)a3
+- (void)layoutLabelVertically:(id)vertically
 {
-  v21 = a3;
+  verticallyCopy = vertically;
   [(NTKUtilityComplicationView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v21 sizeToFit];
-  [v21 frame];
+  [verticallyCopy sizeToFit];
+  [verticallyCopy frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -619,13 +619,13 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
   v24.origin.y = v15;
   v24.size.width = v17;
   v24.size.height = v19;
-  [v21 setFrame:{v13, v7 + (Height - CGRectGetHeight(v24)) * 0.5, v17, v19}];
+  [verticallyCopy setFrame:{v13, v7 + (Height - CGRectGetHeight(v24)) * 0.5, v17, v19}];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(NTKUtilityComplicationView *)self bounds];
   top = self->_touchEdgeInsets.top;
   left = self->_touchEdgeInsets.left;
@@ -639,28 +639,28 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
   return CGRectContainsPoint(*&v10, *&v17);
 }
 
-- (void)_updateImageViewAlpha:(id)a3
+- (void)_updateImageViewAlpha:(id)alpha
 {
   usesLegibility = self->_usesLegibility;
-  v5 = a3;
-  [v5 setUsesLegibility:usesLegibility];
-  [v5 setAlpha:self->_foregroundImageAlpha];
+  alphaCopy = alpha;
+  [alphaCopy setUsesLegibility:usesLegibility];
+  [alphaCopy setAlpha:self->_foregroundImageAlpha];
 }
 
-- (void)_updateImageViewColor:(id)a3
+- (void)_updateImageViewColor:(id)color
 {
-  v10 = a3;
+  colorCopy = color;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(NTKFaceColorScheme *)self->_colorScheme multicolorAlpha];
-    [v10 setMulticolorAlpha:?];
+    [colorCopy setMulticolorAlpha:?];
   }
 
-  v4 = [(NTKFaceColorScheme *)self->_colorScheme containsOverrideFaceColor];
-  v5 = [v10 overrideColor];
-  overrideColor = v5;
-  if (!v5)
+  containsOverrideFaceColor = [(NTKFaceColorScheme *)self->_colorScheme containsOverrideFaceColor];
+  overrideColor = [colorCopy overrideColor];
+  overrideColor = overrideColor;
+  if (!overrideColor)
   {
     overrideColor = self->_overrideColor;
   }
@@ -669,7 +669,7 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
 
   if (v7)
   {
-    v8 = v4;
+    v8 = containsOverrideFaceColor;
   }
 
   else
@@ -679,53 +679,53 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
 
   if (v8)
   {
-    [v10 setColor:v7];
+    [colorCopy setColor:v7];
   }
 
   else
   {
-    v9 = [(NTKUtilityComplicationView *)self _computedForegroundColor];
-    [v10 setColor:v9];
+    _computedForegroundColor = [(NTKUtilityComplicationView *)self _computedForegroundColor];
+    [colorCopy setColor:_computedForegroundColor];
   }
 }
 
-- (void)setUseRoundedFontDesign:(BOOL)a3
+- (void)setUseRoundedFontDesign:(BOOL)design
 {
-  if (self->_useRoundedFontDesign != a3)
+  if (self->_useRoundedFontDesign != design)
   {
-    self->_useRoundedFontDesign = a3;
+    self->_useRoundedFontDesign = design;
     [(NTKUtilityComplicationView *)self _updateLabelsForFontChange];
   }
 }
 
-- (void)setFontWeight:(double)a3
+- (void)setFontWeight:(double)weight
 {
-  if (self->_fontWeight != a3)
+  if (self->_fontWeight != weight)
   {
-    self->_fontWeight = a3;
+    self->_fontWeight = weight;
     [(NTKUtilityComplicationView *)self _updateLabelsForFontChange];
   }
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
-  if (self->_fontSize != a3)
+  if (self->_fontSize != size)
   {
-    self->_fontSize = a3;
+    self->_fontSize = size;
     [(NTKUtilityComplicationView *)self _updateLabelsForFontChange];
   }
 }
 
 - (void)_updateLabelsForFontChange
 {
-  v3 = [(NTKUtilityComplicationView *)self _standardFont];
-  [(NTKUtilityComplicationView *)self setFont:v3];
+  _standardFont = [(NTKUtilityComplicationView *)self _standardFont];
+  [(NTKUtilityComplicationView *)self setFont:_standardFont];
 }
 
-- (void)setMaxSize:(CGSize)a3
+- (void)setMaxSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   p_maxSize = &self->_maxSize;
   if ((CLKSizeEqualsSize() & 1) == 0)
   {
@@ -736,30 +736,30 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(NTKUtilityComplicationView *)self _updateContentForEditingChange];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
     v16[7] = v6;
     v16[8] = v5;
     v16[11] = v3;
     v16[12] = v4;
-    v7 = a3;
-    self->_highlighted = a3;
+    highlightedCopy = highlighted;
+    self->_highlighted = highlighted;
     if ([(NTKUtilityComplicationView *)self shouldScaleAndFadeWhenHighlighting])
     {
       v9 = 0.95;
       v10 = 1.0;
-      if (v7)
+      if (highlightedCopy)
       {
         v10 = 0.6;
       }
@@ -774,7 +774,7 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
       v16[0] = MEMORY[0x277D85DD0];
       v16[2] = __45__NTKUtilityComplicationView_setHighlighted___block_invoke;
       v16[3] = &unk_278787220;
-      if (v7)
+      if (highlightedCopy)
       {
         v12 = 0.1;
       }
@@ -792,7 +792,7 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
     else
     {
       v13 = 1.0;
-      if (!v7)
+      if (!highlightedCopy)
       {
         v13 = 0.0;
       }
@@ -802,7 +802,7 @@ void __38__NTKUtilityComplicationView_setFont___block_invoke(uint64_t a1, void *
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[2] = __45__NTKUtilityComplicationView_setHighlighted___block_invoke_2;
       aBlock[3] = &unk_2787805D8;
-      if (v7)
+      if (highlightedCopy)
       {
         v12 = 0.0;
       }
@@ -838,26 +838,26 @@ uint64_t __45__NTKUtilityComplicationView_setHighlighted___block_invoke_2(uint64
   return [v2 _applyForegroundAlpha];
 }
 
-- (void)setComplicationTemplate:(id)a3 reason:(int64_t)a4
+- (void)setComplicationTemplate:(id)template reason:(int64_t)reason
 {
-  v6 = a3;
-  if (self->_complicationTemplate != v6)
+  templateCopy = template;
+  if (self->_complicationTemplate != templateCopy)
   {
-    v7 = v6;
-    objc_storeStrong(&self->_complicationTemplate, a3);
+    v7 = templateCopy;
+    objc_storeStrong(&self->_complicationTemplate, template);
     [(NTKUtilityComplicationView *)self _updateForTemplateChange];
-    v6 = v7;
+    templateCopy = v7;
   }
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = v6;
+  dateCopy = date;
+  v7 = dateCopy;
   timeTravelDate = self->_timeTravelDate;
-  if (v6)
+  if (dateCopy)
   {
-    if ([v6 isEqual:timeTravelDate])
+    if ([dateCopy isEqual:timeTravelDate])
     {
       goto LABEL_16;
     }
@@ -876,7 +876,7 @@ uint64_t __45__NTKUtilityComplicationView_setHighlighted___block_invoke_2(uint64
     v11 = 1;
   }
 
-  objc_storeStrong(&self->_timeTravelDate, a3);
+  objc_storeStrong(&self->_timeTravelDate, date);
   if (self->_timeTravelDate)
   {
     v11 |= [(CLKComplicationTemplate *)self->_complicationTemplate timeTravelUpdateFrequency]== 2;
@@ -905,20 +905,20 @@ void __57__NTKUtilityComplicationView_setTimeTravelDate_animated___block_invoke(
   }
 }
 
-- (id)_newDigitalTimeLabelSubviewWithOptions:(unint64_t)a3
+- (id)_newDigitalTimeLabelSubviewWithOptions:(unint64_t)options
 {
-  v4 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:a3 forDevice:self->_device];
-  v5 = [v4 timeFormatter];
-  [v5 setSuppressesDesignatorWhitespace:1];
+  v4 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:options forDevice:self->_device];
+  timeFormatter = [v4 timeFormatter];
+  [timeFormatter setSuppressesDesignatorWhitespace:1];
 
-  v6 = [(NTKUtilityComplicationView *)self _computedForegroundColor];
-  [v4 setColor:v6];
+  _computedForegroundColor = [(NTKUtilityComplicationView *)self _computedForegroundColor];
+  [v4 setColor:_computedForegroundColor];
 
   [(NTKUtilityComplicationView *)self foregroundAlpha];
   [v4 setAlpha:?];
-  v7 = [(NTKUtilityComplicationView *)self _standardFont];
-  v8 = [(NTKUtilityComplicationView *)self _smallCapsFont];
-  [v4 setTimeFont:v7 designatorFont:v8];
+  _standardFont = [(NTKUtilityComplicationView *)self _standardFont];
+  _smallCapsFont = [(NTKUtilityComplicationView *)self _smallCapsFont];
+  [v4 setTimeFont:_standardFont designatorFont:_smallCapsFont];
 
   [v4 setUserInteractionEnabled:0];
   objc_initWeak(&location, self);
@@ -942,19 +942,19 @@ void __69__NTKUtilityComplicationView__newDigitalTimeLabelSubviewWithOptions___b
   [v1 complicationDisplayNeedsResize:WeakRetained];
 }
 
-- (id)_newLabelSubviewWithFont:(id)a3 variant:(unint64_t)a4
+- (id)_newLabelSubviewWithFont:(id)font variant:(unint64_t)variant
 {
-  v6 = a3;
-  if (a4 <= 2)
+  fontCopy = font;
+  if (variant <= 2)
   {
     objc_opt_class();
   }
 
   v7 = objc_opt_new();
-  [v7 setFont:v6];
+  [v7 setFont:fontCopy];
   [v7 setUsesLegibility:self->_usesLegibility];
-  v8 = [(NTKUtilityComplicationView *)self _computedForegroundColor];
-  [v7 setColor:v8];
+  _computedForegroundColor = [(NTKUtilityComplicationView *)self _computedForegroundColor];
+  [v7 setColor:_computedForegroundColor];
 
   [v7 setShadowColor:self->_shadowColor];
   [(NTKUtilityComplicationView *)self foregroundAlpha];
@@ -1009,23 +1009,23 @@ void __63__NTKUtilityComplicationView__newLabelSubviewWithFont_variant___block_i
   [v1 complicationDisplayNeedsResize:WeakRetained];
 }
 
-- (id)_newStandardLabelSubviewVariant:(unint64_t)a3
+- (id)_newStandardLabelSubviewVariant:(unint64_t)variant
 {
-  v5 = [(NTKUtilityComplicationView *)self _standardFont];
-  v6 = [(NTKUtilityComplicationView *)self _newLabelSubviewWithFont:v5 variant:a3];
+  _standardFont = [(NTKUtilityComplicationView *)self _standardFont];
+  v6 = [(NTKUtilityComplicationView *)self _newLabelSubviewWithFont:_standardFont variant:variant];
 
   [v6 setInTimeTravel:self->_timeTravelDate != 0];
   return v6;
 }
 
-- (id)_newHighlightViewVariant:(unint64_t)a3
+- (id)_newHighlightViewVariant:(unint64_t)variant
 {
   v5 = MEMORY[0x277D75348];
-  v6 = [(NTKUtilityComplicationView *)self device];
-  ___LayoutConstants_block_invoke_70(v6, v14);
+  device = [(NTKUtilityComplicationView *)self device];
+  ___LayoutConstants_block_invoke_70(device, v14);
   v7 = [v5 colorWithWhite:1.0 alpha:v15];
 
-  if (a3)
+  if (variant)
   {
     v8 = objc_opt_new();
     [v8 setTintColor:v7];
@@ -1035,10 +1035,10 @@ void __63__NTKUtilityComplicationView__newLabelSubviewWithFont_variant___block_i
   {
     v9 = objc_alloc(MEMORY[0x277D75D18]);
     v8 = [v9 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    v10 = [v8 layer];
-    v11 = [(NTKUtilityComplicationView *)self device];
-    ___LayoutConstants_block_invoke_70(v11, v13);
-    [v10 setCornerRadius:v13[19]];
+    layer = [v8 layer];
+    device2 = [(NTKUtilityComplicationView *)self device];
+    ___LayoutConstants_block_invoke_70(device2, v13);
+    [layer setCornerRadius:v13[19]];
 
     [v8 setBackgroundColor:v7];
   }
@@ -1049,13 +1049,13 @@ void __63__NTKUtilityComplicationView__newLabelSubviewWithFont_variant___block_i
   return v8;
 }
 
-- (id)_newImageViewSubviewWithAlpha:(double)a3
+- (id)_newImageViewSubviewWithAlpha:(double)alpha
 {
   v5 = objc_alloc_init(off_27877BEF0);
-  v6 = [(NTKUtilityComplicationView *)self _computedForegroundColor];
-  [v5 setColor:v6];
+  _computedForegroundColor = [(NTKUtilityComplicationView *)self _computedForegroundColor];
+  [v5 setColor:_computedForegroundColor];
 
-  [v5 setAlpha:a3];
+  [v5 setAlpha:alpha];
   [(NTKUtilityComplicationView *)self addSubview:v5];
   return v5;
 }
@@ -1084,9 +1084,9 @@ void __63__NTKUtilityComplicationView__newLabelSubviewWithFont_variant___block_i
   v6 = v5;
   if (self->_useAlternativePunctuation)
   {
-    v7 = [v5 CLKFontWithAlternativePunctuation];
+    cLKFontWithAlternativePunctuation = [v5 CLKFontWithAlternativePunctuation];
 
-    v6 = v7;
+    v6 = cLKFontWithAlternativePunctuation;
   }
 
   return v6;
@@ -1094,24 +1094,24 @@ void __63__NTKUtilityComplicationView__newLabelSubviewWithFont_variant___block_i
 
 - (id)_smallCapsFont
 {
-  v2 = [(NTKUtilityComplicationView *)self _standardFont];
-  v3 = [v2 CLKFontWithLocalizedSmallCaps];
+  _standardFont = [(NTKUtilityComplicationView *)self _standardFont];
+  cLKFontWithLocalizedSmallCaps = [_standardFont CLKFontWithLocalizedSmallCaps];
 
-  return v3;
+  return cLKFontWithLocalizedSmallCaps;
 }
 
 - (void)_updateForTemplateChange
 {
-  v4 = [(NTKUtilityComplicationView *)self complicationTemplate];
-  v3 = [v4 tintColor];
-  [(NTKUtilityComplicationView *)self setOverrideColor:v3];
+  complicationTemplate = [(NTKUtilityComplicationView *)self complicationTemplate];
+  tintColor = [complicationTemplate tintColor];
+  [(NTKUtilityComplicationView *)self setOverrideColor:tintColor];
 }
 
 + (id)_timerImageProvider
 {
-  v2 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v3 = [v2 device];
-  __49__NTKUtilityComplicationView__timerImageProvider__block_invoke(v3, v3);
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
+  __49__NTKUtilityComplicationView__timerImageProvider__block_invoke(device, device);
 
   v4 = _timerImageProvider_imageProvider;
 
@@ -1145,11 +1145,11 @@ uint64_t __49__NTKUtilityComplicationView__timerImageProvider__block_invoke(uint
   return v5;
 }
 
-+ (id)_alarmImageProviderActive:(BOOL)a3
++ (id)_alarmImageProviderActive:(BOOL)active
 {
-  v3 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v4 = [v3 device];
-  __56__NTKUtilityComplicationView__alarmImageProviderActive___block_invoke(v4, v4);
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
+  __56__NTKUtilityComplicationView__alarmImageProviderActive___block_invoke(device, device);
 
   v5 = _alarmImageProviderActive___imageProvider;
 
@@ -1202,9 +1202,9 @@ void __56__NTKUtilityComplicationView__alarmImageProviderActive___block_invoke_3
 
 + (id)_stopwatchImageProvider
 {
-  v2 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-  v3 = [v2 device];
-  __53__NTKUtilityComplicationView__stopwatchImageProvider__block_invoke(v3, v3);
+  mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+  device = [mEMORY[0x277CBBB68] device];
+  __53__NTKUtilityComplicationView__stopwatchImageProvider__block_invoke(device, device);
 
   v4 = _stopwatchImageProvider_imageProvider;
 

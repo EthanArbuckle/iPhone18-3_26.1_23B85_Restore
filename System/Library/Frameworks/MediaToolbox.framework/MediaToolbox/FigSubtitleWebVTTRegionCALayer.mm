@@ -4,11 +4,11 @@
 - (void)dealloc;
 - (void)handleNeedsLayoutNotification;
 - (void)layoutSublayers;
-- (void)setContent:(__CFDictionary *)a3;
+- (void)setContent:(__CFDictionary *)content;
 - (void)setNeedsDisplay;
 - (void)setReLayout;
-- (void)setRenderer:(OpaqueFigSubtitleRenderer *)a3;
-- (void)setViewport:(CGRect)a3;
+- (void)setRenderer:(OpaqueFigSubtitleRenderer *)renderer;
+- (void)setViewport:(CGRect)viewport;
 @end
 
 @implementation FigSubtitleWebVTTRegionCALayer
@@ -89,11 +89,11 @@
   return result;
 }
 
-- (void)setContent:(__CFDictionary *)a3
+- (void)setContent:(__CFDictionary *)content
 {
   layerInternal = self->layerInternal;
   v5[0] = layerInternal;
-  v5[1] = a3;
+  v5[1] = content;
   if (layerInternal->var1)
   {
     dispatch_sync_f(layerInternal->var1, v5, setContentDo_0);
@@ -103,10 +103,10 @@
   updateRegionDisplay(&layerInternal->var0);
 }
 
-- (void)setRenderer:(OpaqueFigSubtitleRenderer *)a3
+- (void)setRenderer:(OpaqueFigSubtitleRenderer *)renderer
 {
   v4[0] = self->layerInternal;
-  v4[1] = a3;
+  v4[1] = renderer;
   v3 = *(v4[0] + 8);
   if (v3)
   {
@@ -114,11 +114,11 @@
   }
 }
 
-- (void)setViewport:(CGRect)a3
+- (void)setViewport:(CGRect)viewport
 {
   layerInternal = self->layerInternal;
   context = layerInternal;
-  v6 = a3;
+  viewportCopy = viewport;
   if (layerInternal->var1)
   {
     dispatch_sync_f(layerInternal->var1, &context, setViewportDo);
@@ -191,7 +191,7 @@ CFIndex __49__FigSubtitleWebVTTRegionCALayer_setNeedsDisplay__block_invoke(uint6
       layerInternal->var6 = 2;
     }
 
-    v5 = [(FigSubtitleWebVTTRegionCALayer *)self contentsAreFlipped];
+    contentsAreFlipped = [(FigSubtitleWebVTTRegionCALayer *)self contentsAreFlipped];
     v18 = 0;
     v19 = &v18;
     v20 = 0x4010000000;
@@ -206,7 +206,7 @@ CFIndex __49__FigSubtitleWebVTTRegionCALayer_setNeedsDisplay__block_invoke(uint6
     block[3] = &unk_1E7483BB8;
     block[4] = self;
     block[5] = &v18;
-    v17 = v5;
+    v17 = contentsAreFlipped;
     dispatch_sync(var1, block);
     __asm { FMOV            V2.2D, #0.5 }
 

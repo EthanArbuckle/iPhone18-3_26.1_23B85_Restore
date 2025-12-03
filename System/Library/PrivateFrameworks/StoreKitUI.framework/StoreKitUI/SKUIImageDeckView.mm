@@ -1,18 +1,18 @@
 @interface SKUIImageDeckView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SKUIImageDeckView)init;
 - (UIEdgeInsets)contentInset;
-- (id)viewForElementIdentifier:(id)a3;
+- (id)viewForElementIdentifier:(id)identifier;
 - (void)_layoutImages;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setImageViews:(id)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setImageViews:(id)views;
 @end
 
 @implementation SKUIImageDeckView
@@ -48,10 +48,10 @@
   return v11;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -72,11 +72,11 @@
   v20[1] = 3221225472;
   v20[2] = __68__SKUIImageDeckView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v20[3] = &unk_2781F95A0;
-  v17 = v8;
+  v17 = contextCopy;
   v22 = &v24;
-  v23 = a4;
+  reasonCopy = reason;
   v21 = v17;
-  [v7 enumerateChildrenUsingBlock:v20];
+  [elementCopy enumerateChildrenUsingBlock:v20];
   v18 = *(v25 + 24);
 
   _Block_object_dispose(&v24, 8);
@@ -100,10 +100,10 @@ void __68__SKUIImageDeckView_prefetchResourcesForViewElement_reason_context___bl
   *(*(*(a1 + 40) + 8) + 24) = (*(*(*(a1 + 40) + 8) + 24) | [*(a1 + 32) prefetchResourcesForViewElement:v6 reason:*(a1 + 48)]) & 1;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -125,10 +125,10 @@ void __68__SKUIImageDeckView_prefetchResourcesForViewElement_reason_context___bl
   v20[1] = 3221225472;
   v20[2] = __57__SKUIImageDeckView_preferredSizeForViewElement_context___block_invoke;
   v20[3] = &unk_2781F95F0;
-  v15 = v6;
+  v15 = contextCopy;
   v21 = v15;
   v22 = &v23;
-  [v5 enumerateChildrenUsingBlock:v20];
+  [elementCopy enumerateChildrenUsingBlock:v20];
   v16 = v24[4];
   v17 = v24[5];
 
@@ -168,10 +168,10 @@ uint64_t __57__SKUIImageDeckView_preferredSizeForViewElement_context___block_inv
   return MEMORY[0x2821F9730](v3);
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     +[SKUIImageDeckView requestLayoutForViewElement:width:context:];
@@ -181,10 +181,10 @@ uint64_t __57__SKUIImageDeckView_preferredSizeForViewElement_context___block_inv
   v10[1] = 3221225472;
   v10[2] = __63__SKUIImageDeckView_requestLayoutForViewElement_width_context___block_invoke;
   v10[3] = &unk_2781FC058;
-  v12 = a4;
-  v11 = v8;
-  v9 = v8;
-  [v7 enumerateChildrenUsingBlock:v10];
+  widthCopy = width;
+  v11 = contextCopy;
+  v9 = contextCopy;
+  [elementCopy enumerateChildrenUsingBlock:v10];
 }
 
 void __63__SKUIImageDeckView_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -196,10 +196,10 @@ void __63__SKUIImageDeckView_requestLayoutForViewElement_width_context___block_i
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -217,15 +217,15 @@ void __63__SKUIImageDeckView_requestLayoutForViewElement_width_context___block_i
   v27 = 0x3010000000;
   v28 = &unk_215F8ACD7;
   v30 = *(MEMORY[0x277CBF3A8] + 8);
-  v29 = a3;
+  widthCopy = width;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __59__SKUIImageDeckView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v22[3] = &unk_2781F95F0;
-  v17 = v8;
+  v17 = contextCopy;
   v23 = v17;
   v24 = &v25;
-  [v7 enumerateChildrenUsingBlock:v22];
+  [elementCopy enumerateChildrenUsingBlock:v22];
   v18 = v26[4];
   v19 = v26[5];
 
@@ -254,12 +254,12 @@ void __59__SKUIImageDeckView_sizeThatFitsWidth_viewElement_context___block_invok
   }
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  objc_storeStrong(&self->_imageDeckViewElement, a3);
-  self->_fitWidth = a4;
+  elementCopy = element;
+  contextCopy = context;
+  objc_storeStrong(&self->_imageDeckViewElement, element);
+  self->_fitWidth = width;
   [(NSMapTable *)self->_viewElementViews removeAllObjects];
   [(NSMapTable *)self->_imageViewToImageResourceCacheKey removeAllObjects];
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -267,13 +267,13 @@ void __59__SKUIImageDeckView_sizeThatFitsWidth_viewElement_context___block_invok
   v16 = 3221225472;
   v17 = __57__SKUIImageDeckView_reloadWithViewElement_width_context___block_invoke;
   v18 = &unk_2781FC080;
-  v19 = v9;
-  v20 = v10;
-  v21 = self;
+  v19 = elementCopy;
+  v20 = contextCopy;
+  selfCopy = self;
   v22 = v11;
   v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v13 = contextCopy;
+  v14 = elementCopy;
   [(SKUIViewReuseView *)self modifyUsingBlock:&v15];
   [(SKUIImageDeckView *)self setImageViews:v12, v15, v16, v17, v18];
 }
@@ -338,38 +338,38 @@ uint64_t __57__SKUIImageDeckView_reloadWithViewElement_width_context___block_inv
   return MEMORY[0x2821F9730](isKindOfClass);
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIImageDeckView *)self _layoutImages];
 
     [(SKUIImageDeckView *)self setNeedsLayout];
   }
 }
 
-- (void)setImageViews:(id)a3
+- (void)setImageViews:(id)views
 {
-  v5 = a3;
+  viewsCopy = views;
   if (![(NSArray *)self->_imageViews isEqualToArray:?])
   {
-    objc_storeStrong(&self->_imageViews, a3);
+    objc_storeStrong(&self->_imageViews, views);
     [(SKUIImageDeckView *)self _layoutImages];
     [(SKUIImageDeckView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v8 = a5;
-  v9 = [a4 requestIdentifier];
+  imageCopy = image;
+  contextCopy = context;
+  requestIdentifier = [request requestIdentifier];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -392,15 +392,15 @@ uint64_t __57__SKUIImageDeckView_reloadWithViewElement_width_context___block_inv
 
         v14 = *(*(&v23 + 1) + 8 * i);
         v15 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v14];
-        v16 = [v8 requestIdentifierForResourceCacheKey:v15];
+        v16 = [contextCopy requestIdentifierForResourceCacheKey:v15];
         v17 = v16;
-        if (v16 && [v16 unsignedIntegerValue] == v9)
+        if (v16 && [v16 unsignedIntegerValue] == requestIdentifier)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v14 imageView];
-            [v18 setImage:v21];
+            imageView = [v14 imageView];
+            [imageView setImage:imageCopy];
           }
 
           else
@@ -408,12 +408,12 @@ uint64_t __57__SKUIImageDeckView_reloadWithViewElement_width_context___block_inv
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v14 setImage:v21 cacheKey:v15 context:v8];
+              [v14 setImage:imageCopy cacheKey:v15 context:contextCopy];
             }
 
             else
             {
-              [v14 setImage:v21];
+              [v14 setImage:imageCopy];
             }
           }
 
@@ -435,27 +435,27 @@ uint64_t __57__SKUIImageDeckView_reloadWithViewElement_width_context___block_inv
   return v20 & 1;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__80;
   v19 = __Block_byref_object_dispose__80;
   v20 = 0;
-  v5 = [(SKUIViewReuseView *)self allExistingViews];
-  v6 = [(SKUIViewElement *)self->_imageDeckViewElement flattenedChildren];
+  allExistingViews = [(SKUIViewReuseView *)self allExistingViews];
+  flattenedChildren = [(SKUIViewElement *)self->_imageDeckViewElement flattenedChildren];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke;
   v11[3] = &unk_2781FB2C0;
-  v7 = v4;
+  v7 = identifierCopy;
   v12 = v7;
-  v8 = v5;
+  v8 = allExistingViews;
   v13 = v8;
   v14 = &v15;
-  [v6 enumerateObjectsUsingBlock:v11];
+  [flattenedChildren enumerateObjectsUsingBlock:v11];
 
   v9 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -482,7 +482,7 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBF3A8];
@@ -492,8 +492,8 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(SKUIImageDeckView *)self imageViews];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  imageViews = [(SKUIImageDeckView *)self imageViews];
+  v7 = [imageViews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -506,7 +506,7 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(imageViews);
         }
 
         [*(*(&v16 + 1) + 8 * i) sizeThatFits:{v10, v5}];
@@ -516,7 +516,7 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [imageViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -544,8 +544,8 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(SKUIImageDeckView *)self imageViews];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  imageViews = [(SKUIImageDeckView *)self imageViews];
+  v4 = [imageViews countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -557,14 +557,14 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(imageViews);
         }
 
         [(SKUIImageDeckView *)self sendSubviewToBack:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [imageViews countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
@@ -578,8 +578,8 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v3 = [(SKUIImageDeckView *)self imageViews];
-  v4 = [v3 countByEnumeratingWithState:&v61 objects:v67 count:16];
+  imageViews = [(SKUIImageDeckView *)self imageViews];
+  v4 = [imageViews countByEnumeratingWithState:&v61 objects:v67 count:16];
   v52 = 0.0;
   v5 = MEMORY[0x277CBF3A8];
   v6 = 0.0;
@@ -595,14 +595,14 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
       {
         if (*v62 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(imageViews);
         }
 
         [*(*(&v61 + 1) + 8 * i) sizeThatFits:{v9, v10}];
         v6 = v6 + v12;
       }
 
-      v7 = [v3 countByEnumeratingWithState:&v61 objects:v67 count:16];
+      v7 = [imageViews countByEnumeratingWithState:&v61 objects:v67 count:16];
     }
 
     while (v7);
@@ -613,13 +613,13 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v15 = v14;
   [(SKUIImageDeckView *)self contentInset];
   v17 = v16;
-  v18 = [(SKUIImageDeckView *)self imageViews];
-  v19 = [v18 count];
+  imageViews2 = [(SKUIImageDeckView *)self imageViews];
+  v19 = [imageViews2 count];
 
   if (v19 >= 2)
   {
-    v20 = [(SKUIImageDeckView *)self imageViews];
-    v52 = (v6 - (fitWidth - (v15 + v17))) / ([v20 count] - 1);
+    imageViews3 = [(SKUIImageDeckView *)self imageViews];
+    v52 = (v6 - (fitWidth - (v15 + v17))) / ([imageViews3 count] - 1);
   }
 
   [(SKUIImageDeckView *)self contentInset];
@@ -628,8 +628,8 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v23 = [(SKUIImageDeckView *)self imageViews];
-  v24 = [v23 countByEnumeratingWithState:&v57 objects:v66 count:16];
+  imageViews4 = [(SKUIImageDeckView *)self imageViews];
+  v24 = [imageViews4 countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (v24)
   {
     v25 = v24;
@@ -643,7 +643,7 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
       {
         if (*v58 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(imageViews4);
         }
 
         [*(*(&v57 + 1) + 8 * j) sizeThatFits:{v28, v27}];
@@ -653,7 +653,7 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v57 objects:v66 count:16];
+      v25 = [imageViews4 countByEnumeratingWithState:&v57 objects:v66 count:16];
     }
 
     while (v25);
@@ -668,8 +668,8 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v32 = [(SKUIImageDeckView *)self imageViews];
-  v33 = [v32 countByEnumeratingWithState:&v53 objects:v65 count:16];
+  imageViews5 = [(SKUIImageDeckView *)self imageViews];
+  v33 = [imageViews5 countByEnumeratingWithState:&v53 objects:v65 count:16];
   if (v33)
   {
     v34 = v33;
@@ -682,7 +682,7 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
       {
         if (*v54 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(imageViews5);
         }
 
         v38 = *(*(&v53 + 1) + 8 * k);
@@ -709,7 +709,7 @@ void __46__SKUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
         v22 = floorf(v50);
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v53 objects:v65 count:16];
+      v34 = [imageViews5 countByEnumeratingWithState:&v53 objects:v65 count:16];
     }
 
     while (v34);

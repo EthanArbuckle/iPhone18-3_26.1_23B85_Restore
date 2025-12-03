@@ -1,18 +1,18 @@
 @interface RepairStartViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (void)handleDeviceSetupNotification:(id)a3;
-- (void)handleDismissButton:(id)a3;
-- (void)handleStartButton:(id)a3;
-- (void)handleTapOutsideView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (void)handleDeviceSetupNotification:(id)notification;
+- (void)handleDismissButton:(id)button;
+- (void)handleStartButton:(id)button;
+- (void)handleTapOutsideView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation RepairStartViewController
 
-- (void)handleTapOutsideView:(id)a3
+- (void)handleTapOutsideView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -21,24 +21,24 @@
   [self->super._mainController dismiss:1];
 }
 
-- (void)handleStartButton:(id)a3
+- (void)handleStartButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if ((BYTE1(self->_startButton) & 1) == 0)
   {
-    v11 = v4;
+    v11 = buttonCopy;
     BYTE1(self->_startButton) = 1;
     if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
 
-    v5 = [(SVSBaseViewController *)self containerView];
-    [v5 setSwipeDismissible:0];
+    containerView = [(SVSBaseViewController *)self containerView];
+    [containerView setSwipeDismissible:0];
 
-    v6 = [self->super._mainController testMode];
+    testMode = [self->super._mainController testMode];
     mainController = self->super._mainController;
-    if (v6 == 3)
+    if (testMode == 3)
     {
       v8 = 301000;
     }
@@ -48,8 +48,8 @@
       if ([mainController testMode] != 4)
       {
         v9 = objc_alloc_init(SFDevice);
-        v10 = [self->super._mainController deviceIdentifier];
-        [v9 setIdentifier:v10];
+        deviceIdentifier = [self->super._mainController deviceIdentifier];
+        [v9 setIdentifier:deviceIdentifier];
 
         [self->super._mainController _sessionStart:v9];
         goto LABEL_12;
@@ -61,13 +61,13 @@
 
     [mainController showDoneUI:v8];
 LABEL_12:
-    v4 = v11;
+    buttonCopy = v11;
   }
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -76,33 +76,33 @@ LABEL_12:
   [self->super._mainController dismiss:5];
 }
 
-- (void)handleDeviceSetupNotification:(id)a3
+- (void)handleDeviceSetupNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if ((BYTE1(self->_startButton) & 1) == 0)
   {
-    v15 = v4;
-    v5 = [v4 name];
-    v6 = [v15 userInfo];
+    v15 = notificationCopy;
+    name = [notificationCopy name];
+    userInfo = [v15 userInfo];
     if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
     {
       v7 = &stru_100195CA8;
-      if (v6)
+      if (userInfo)
       {
-        v7 = v6;
+        v7 = userInfo;
       }
 
-      v13 = v5;
+      v13 = name;
       v14 = v7;
       LogPrintF();
     }
 
-    v8 = [v15 name];
-    v9 = [v8 isEqual:@"com.apple.sharing.DeviceSetup"];
+    name2 = [v15 name];
+    v9 = [name2 isEqual:@"com.apple.sharing.DeviceSetup"];
 
     if (v9 && !CFDictionaryGetInt64())
     {
-      v10 = [self->super._mainController userInfo];
+      userInfo2 = [self->super._mainController userInfo];
       CFStringGetTypeID();
       v11 = CFDictionaryGetTypedValue();
 
@@ -119,28 +119,28 @@ LABEL_12:
       }
     }
 
-    v4 = v15;
+    notificationCopy = v15;
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   if (BYTE1(self->_startButton))
   {
     return 0;
   }
 
-  v6 = a3;
-  v7 = [a4 view];
-  v8 = [v6 view];
+  recognizerCopy = recognizer;
+  view = [touch view];
+  view2 = [recognizerCopy view];
 
-  v4 = v7 == v8;
+  v4 = view == view2;
   return v4;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -148,14 +148,14 @@ LABEL_12:
 
   v6.receiver = self;
   v6.super_class = RepairStartViewController;
-  [(RepairStartViewController *)&v6 viewDidDisappear:v3];
+  [(RepairStartViewController *)&v6 viewDidDisappear:disappearCopy];
   v5 = +[NSDistributedNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"com.apple.sharing.DeviceSetup" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BED68 <= 30 && (dword_1001BED68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -163,25 +163,25 @@ LABEL_12:
 
   v12.receiver = self;
   v12.super_class = RepairStartViewController;
-  [(SVSBaseViewController *)&v12 viewWillAppear:v3];
-  v5 = [self->super._mainController _remoteViewControllerProxy];
-  [v5 setStatusBarHidden:1 withDuration:0.0];
+  [(SVSBaseViewController *)&v12 viewWillAppear:appearCopy];
+  _remoteViewControllerProxy = [self->super._mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
 
   v6 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleTapOutsideView:"];
   [v6 setDelegate:self];
   [v6 setNumberOfTapsRequired:1];
   [v6 setCancelsTouchesInView:0];
-  v7 = [(RepairStartViewController *)self view];
-  [v7 addGestureRecognizer:v6];
+  view = [(RepairStartViewController *)self view];
+  [view addGestureRecognizer:v6];
 
-  v8 = [self->super._mainController productImage];
-  [*(&self->_infoLabel + 1) setImage:v8];
+  productImage = [self->super._mainController productImage];
+  [*(&self->_infoLabel + 1) setImage:productImage];
 
   v9 = sub_10012794C(@"Localizable", @"REPAIR_INFO_HOMEPOD");
   [*(&self->_dismissButton + 1) setText:v9];
 
-  v10 = [(SVSBaseViewController *)self containerView];
-  [v10 setSwipeDismissible:1];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 
   v11 = +[NSDistributedNotificationCenter defaultCenter];
   [v11 addObserver:self selector:"handleDeviceSetupNotification:" name:@"com.apple.sharing.DeviceSetup" object:0 suspensionBehavior:4];

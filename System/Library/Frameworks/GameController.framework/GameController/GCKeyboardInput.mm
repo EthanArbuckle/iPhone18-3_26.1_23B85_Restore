@@ -1,19 +1,19 @@
 @interface GCKeyboardInput
-- (BOOL)hasButton:(int64_t)a3;
+- (BOOL)hasButton:(int64_t)button;
 - (GCControllerButtonInput)buttonForKeyCode:(GCKeyCode)code;
-- (GCKeyboardInput)initWithIdentifier:(id)a3;
-- (void)_handleKeyboardEvent:(_DWORD *)a1;
-- (void)setKeyboardEventSource:(id)a3;
+- (GCKeyboardInput)initWithIdentifier:(id)identifier;
+- (void)_handleKeyboardEvent:(_DWORD *)event;
+- (void)setKeyboardEventSource:(id)source;
 @end
 
 @implementation GCKeyboardInput
 
-- (GCKeyboardInput)initWithIdentifier:(id)a3
+- (GCKeyboardInput)initWithIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = GCKeyboardInput;
-  v3 = [(GCPhysicalInputProfile *)&v26 initWithIdentifier:a3];
+  v3 = [(GCPhysicalInputProfile *)&v26 initWithIdentifier:identifier];
   if (v3)
   {
     v4 = ::allCodes();
@@ -25,8 +25,8 @@
     v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:231];
     do
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [(NSArray *)v8 addObject:v9];
+      null = [MEMORY[0x1E695DFB0] null];
+      [(NSArray *)v8 addObject:null];
 
       --v7;
     }
@@ -52,14 +52,14 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v22 + 1) + 8 * v14) longValue];
+          longValue = [*(*(&v22 + 1) + 8 * v14) longValue];
           memset(v20, 0, sizeof(v20));
           v21 = 0;
-          *&v20[0] = nameForKeyCode(v15);
+          *&v20[0] = nameForKeyCode(longValue);
           WORD4(v20[0]) = 257;
           v16 = [(GCPhysicalInputProfile *)v3 _keyboardButtonWithInfo:v20];
-          [v16 setKeyCode:v15];
-          [(NSArray *)v8 setObject:v16 atIndexedSubscript:v15];
+          [v16 setKeyCode:longValue];
+          [(NSArray *)v8 setObject:v16 atIndexedSubscript:longValue];
 
           ++v14;
         }
@@ -81,10 +81,10 @@
   return v3;
 }
 
-- (BOOL)hasButton:(int64_t)a3
+- (BOOL)hasButton:(int64_t)button
 {
   allCodes = self->_allCodes;
-  v4 = [MEMORY[0x1E696AD98] numberWithLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLong:button];
   LOBYTE(allCodes) = [(NSSet *)allCodes containsObject:v4];
 
   return allCodes;
@@ -142,9 +142,9 @@ void __48__GCKeyboardInput_PubSub___handleKeyboardEvent___block_invoke(uint64_t 
   }
 }
 
-- (void)setKeyboardEventSource:(id)a3
+- (void)setKeyboardEventSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   keyboardEventObservation = self->_keyboardEventObservation;
   self->_keyboardEventObservation = 0;
@@ -154,7 +154,7 @@ void __48__GCKeyboardInput_PubSub___handleKeyboardEvent___block_invoke(uint64_t 
   v8[2] = __50__GCKeyboardInput_PubSub__setKeyboardEventSource___block_invoke;
   v8[3] = &unk_1E841B298;
   objc_copyWeak(&v9, &location);
-  v6 = [v4 observeKeyboardEvents:v8];
+  v6 = [sourceCopy observeKeyboardEvents:v8];
   v7 = self->_keyboardEventObservation;
   self->_keyboardEventObservation = v6;
 
@@ -162,19 +162,19 @@ void __48__GCKeyboardInput_PubSub___handleKeyboardEvent___block_invoke(uint64_t 
   objc_destroyWeak(&location);
 }
 
-- (void)_handleKeyboardEvent:(_DWORD *)a1
+- (void)_handleKeyboardEvent:(_DWORD *)event
 {
   v47 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (event)
   {
-    v5 = [v3 usage];
-    v6 = [v4 down];
-    if ([v4 usagePage] == 7 && (v5 & 0x8000000000000000) == 0 && objc_msgSend(a1, "hasButton:", v5))
+    usage = [v3 usage];
+    down = [v4 down];
+    if ([v4 usagePage] == 7 && (usage & 0x8000000000000000) == 0 && objc_msgSend(event, "hasButton:", usage))
     {
-      [a1 _receivedEvent];
-      v7 = [a1 device];
+      [event _receivedEvent];
+      device = [event device];
       v8 = _gc_log_signpost();
       v9 = os_signpost_id_generate(v8);
       v10 = _gc_log_signpost();
@@ -186,30 +186,30 @@ void __48__GCKeyboardInput_PubSub___handleKeyboardEvent___block_invoke(uint64_t 
         v24 = v23;
         if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
         {
-          v25 = [v4 timestamp];
-          [a1 lastEventTimestamp];
+          timestamp = [v4 timestamp];
+          [event lastEventTimestamp];
           *buf = 134218496;
-          v42 = v7;
+          v42 = device;
           v43 = 2048;
-          v44 = v25;
+          v44 = timestamp;
           v45 = 2048;
           v46 = v26;
           _os_signpost_emit_with_name_impl(&dword_1D2CD5000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v9, "GCKeyboardInput.handle.KeyboardEvent", "{device: %p, eventTimestamp: %llu, lastEventTimestamp: %f}", buf, 0x20u);
         }
       }
 
-      v12 = [a1 buttonForKeyCode:v5];
+      v12 = [event buttonForKeyCode:usage];
       v34 = v9;
       if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
-        v33 = v7;
-        v14 = [a1 handlerQueue];
-        *&v15 = v6;
-        v13 = [v12 _setValue:v14 queue:v15];
+        v33 = device;
+        handlerQueue = [event handlerQueue];
+        *&v15 = down;
+        v13 = [v12 _setValue:handlerQueue queue:v15];
         if (v13)
         {
-          v16 = a1[166];
-          if (v6)
+          v16 = event[166];
+          if (down)
           {
             v17 = v16 + 1;
           }
@@ -219,7 +219,7 @@ void __48__GCKeyboardInput_PubSub___handleKeyboardEvent___block_invoke(uint64_t 
             v17 = v16 - 1;
           }
 
-          a1[166] = v17 & ~(v17 >> 31);
+          event[166] = v17 & ~(v17 >> 31);
           v32 = os_signpost_id_generate(v8);
           v18 = _gc_log_signpost();
           v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG);
@@ -229,12 +229,12 @@ void __48__GCKeyboardInput_PubSub___handleKeyboardEvent___block_invoke(uint64_t 
             log = v8;
             if (v32 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(log))
             {
-              v29 = [v4 timestamp];
-              [a1 lastEventTimestamp];
+              timestamp2 = [v4 timestamp];
+              [event lastEventTimestamp];
               *buf = 134218496;
               v42 = v33;
               v43 = 2048;
-              v44 = v29;
+              v44 = timestamp2;
               v45 = 2048;
               v46 = v30;
               _os_signpost_emit_with_name_impl(&dword_1D2CD5000, log, OS_SIGNPOST_INTERVAL_BEGIN, v32, "GCKeyboardInput.callback", "{device: %p, eventTimestamp: %llu, lastEventTimestamp: %f}", buf, 0x20u);
@@ -245,16 +245,16 @@ void __48__GCKeyboardInput_PubSub___handleKeyboardEvent___block_invoke(uint64_t 
           block[1] = 3221225472;
           block[2] = __48__GCKeyboardInput_PubSub___handleKeyboardEvent___block_invoke;
           block[3] = &unk_1E841B270;
-          block[4] = a1;
+          block[4] = event;
           v36 = v12;
-          v38 = v5;
-          v39 = v6;
+          v38 = usage;
+          v39 = down;
           v37 = v8;
           v40 = v32;
-          dispatch_async(v14, block);
+          dispatch_async(handlerQueue, block);
         }
 
-        v7 = v33;
+        device = v33;
       }
 
       else

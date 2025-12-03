@@ -1,35 +1,35 @@
 @interface AutocorrectionTest
-+ (id)testWithInput:(id)a3;
-+ (id)testWithInput:(id)a3 expectedOutput:(id)a4 sourceMetadata:(id)a5 withTouches:(id)a6 andCorpusId:(id)a7;
-+ (id)testWithTouches:(id)a3 expectedOutput:(id)a4;
-- (AutocorrectionTest)initWithCoder:(id)a3;
++ (id)testWithInput:(id)input;
++ (id)testWithInput:(id)input expectedOutput:(id)output sourceMetadata:(id)metadata withTouches:(id)touches andCorpusId:(id)id;
++ (id)testWithTouches:(id)touches expectedOutput:(id)output;
+- (AutocorrectionTest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AutocorrectionTest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   input = self->_input;
-  v5 = a3;
-  [v5 encodeObject:input forKey:@"ATInput"];
-  [v5 encodeObject:self->_expectedOutput forKey:@"ATExpectedOutput"];
+  coderCopy = coder;
+  [coderCopy encodeObject:input forKey:@"ATInput"];
+  [coderCopy encodeObject:self->_expectedOutput forKey:@"ATExpectedOutput"];
 }
 
-- (AutocorrectionTest)initWithCoder:(id)a3
+- (AutocorrectionTest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AutocorrectionTest;
   v5 = [(AutocorrectionTest *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ATInput"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ATInput"];
     input = v5->_input;
     v5->_input = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ATExpectedOutput"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ATExpectedOutput"];
     expectedOutput = v5->_expectedOutput;
     v5->_expectedOutput = v8;
   }
@@ -39,11 +39,11 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendFormat:@"input: %@\n", self->_input];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"input: %@\n", self->_input];
   if (self->_touches)
   {
-    [v3 appendFormat:@"touch: %@", self->_touches];
+    [string appendFormat:@"touch: %@", self->_touches];
   }
 
   v4 = [(NSArray *)self->_expectedOutput componentsJoinedByString:@" "];
@@ -51,50 +51,50 @@
 
   if ((v5 & 1) == 0)
   {
-    [v3 appendFormat:@"; expected: %@", self->_expectedOutput];
+    [string appendFormat:@"; expected: %@", self->_expectedOutput];
   }
 
-  return v3;
+  return string;
 }
 
-+ (id)testWithInput:(id)a3
++ (id)testWithInput:(id)input
 {
-  v4 = a3;
-  v5 = TITestTyperTokensForString(v4, 0);
-  v6 = [a1 testWithInput:v4 expectedOutput:v5];
+  inputCopy = input;
+  v5 = TITestTyperTokensForString(inputCopy, 0);
+  v6 = [self testWithInput:inputCopy expectedOutput:v5];
 
   return v6;
 }
 
-+ (id)testWithTouches:(id)a3 expectedOutput:(id)a4
++ (id)testWithTouches:(id)touches expectedOutput:(id)output
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 componentsJoinedByString:@" "];
-  v9 = [a1 testWithInput:v8 expectedOutput:v6 sourceMetadata:0 withTouches:v7 andCorpusId:0];
+  outputCopy = output;
+  touchesCopy = touches;
+  v8 = [outputCopy componentsJoinedByString:@" "];
+  v9 = [self testWithInput:v8 expectedOutput:outputCopy sourceMetadata:0 withTouches:touchesCopy andCorpusId:0];
 
   return v9;
 }
 
-+ (id)testWithInput:(id)a3 expectedOutput:(id)a4 sourceMetadata:(id)a5 withTouches:(id)a6 andCorpusId:(id)a7
++ (id)testWithInput:(id)input expectedOutput:(id)output sourceMetadata:(id)metadata withTouches:(id)touches andCorpusId:(id)id
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  inputCopy = input;
+  outputCopy = output;
+  metadataCopy = metadata;
+  touchesCopy = touches;
+  idCopy = id;
   v17 = objc_alloc_init(AutocorrectionTest);
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_input, a3);
-    v19 = [v13 copy];
+    objc_storeStrong(&v17->_input, input);
+    v19 = [outputCopy copy];
     expectedOutput = v18->_expectedOutput;
     v18->_expectedOutput = v19;
 
-    objc_storeStrong(&v18->_sourceMetadata, a5);
-    objc_storeStrong(&v18->_touches, a6);
-    objc_storeStrong(&v18->_corpusId, a7);
+    objc_storeStrong(&v18->_sourceMetadata, metadata);
+    objc_storeStrong(&v18->_touches, touches);
+    objc_storeStrong(&v18->_corpusId, id);
   }
 
   return v18;

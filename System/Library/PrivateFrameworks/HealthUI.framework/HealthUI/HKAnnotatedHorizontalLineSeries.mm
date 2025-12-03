@@ -1,22 +1,22 @@
 @interface HKAnnotatedHorizontalLineSeries
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4;
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4;
-- (CGRect)_boundsForString:(id)a3 coordinate:(id)a4 valueAttributes:(id)a5 rectsToAvoid:(id)a6;
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than;
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than;
+- (CGRect)_boundsForString:(id)string coordinate:(id)coordinate valueAttributes:(id)attributes rectsToAvoid:(id)avoid;
 - (HKAnnotatedHorizontalLineSeries)init;
 - (NSDictionary)horizontalLineStyles;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
 - (double)valueOutlineWidth;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisSelectedCoordinate:(double)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisSelectedCoordinate:(double)coordinate blockCoordinate:(id)blockCoordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
 - (id)_defaultLabelStyle;
 - (id)_defaultLineStyle;
-- (id)_horizontalLineSeriesStyleForBlockCoordinate:(id)a3;
-- (id)_stringValueForCoordinate:(id)a3 valueStyle:(id)a4;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
-- (void)setHorizontalLineStyles:(id)a3;
-- (void)setValueOutlineWidth:(double)a3;
+- (id)_horizontalLineSeriesStyleForBlockCoordinate:(id)coordinate;
+- (id)_stringValueForCoordinate:(id)coordinate valueStyle:(id)style;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
+- (void)setHorizontalLineStyles:(id)styles;
+- (void)setValueOutlineWidth:(double)width;
 @end
 
 @implementation HKAnnotatedHorizontalLineSeries
@@ -44,57 +44,57 @@
 
 - (NSDictionary)horizontalLineStyles
 {
-  v3 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   v4 = self->_horizontalLineStylesStorage;
-  v5 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return v4;
 }
 
-- (void)setHorizontalLineStyles:(id)a3
+- (void)setHorizontalLineStyles:(id)styles
 {
-  v4 = a3;
-  v5 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  stylesCopy = styles;
+  seriesMutableStateLock = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  v6 = [v4 copy];
+  v6 = [stylesCopy copy];
   horizontalLineStylesStorage = self->_horizontalLineStylesStorage;
   self->_horizontalLineStylesStorage = v6;
 
-  v8 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
-  [v8 unlock];
+  seriesMutableStateLock2 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
 - (double)valueOutlineWidth
 {
-  v3 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
-  [v3 lock];
+  seriesMutableStateLock = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
   valueOutlineWidthStorage = self->_valueOutlineWidthStorage;
-  v5 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
-  [v5 unlock];
+  seriesMutableStateLock2 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 
   return valueOutlineWidthStorage;
 }
 
-- (void)setValueOutlineWidth:(double)a3
+- (void)setValueOutlineWidth:(double)width
 {
-  v5 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
-  [v5 lock];
+  seriesMutableStateLock = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock lock];
 
-  self->_valueOutlineWidthStorage = a3;
-  v6 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
-  [v6 unlock];
+  self->_valueOutlineWidthStorage = width;
+  seriesMutableStateLock2 = [(HKAnnotatedHorizontalLineSeries *)self seriesMutableStateLock];
+  [seriesMutableStateLock2 unlock];
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
   v87 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v64 = a9;
+  coordinatesCopy = coordinates;
+  delegateCopy = delegate;
   v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v71 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v70 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -105,12 +105,12 @@
   v82[3] = &unk_1E81BA4D0;
   v16 = v15;
   v83 = v16;
-  v17 = *&a6->c;
-  v81[0] = *&a6->a;
+  v17 = *&transform->c;
+  v81[0] = *&transform->a;
   v81[1] = v17;
-  v81[2] = *&a6->tx;
-  v65 = v13;
-  [v13 enumerateCoordinatesWithTransform:v81 roundToViewScale:1 block:v82];
+  v81[2] = *&transform->tx;
+  v65 = coordinatesCopy;
+  [coordinatesCopy enumerateCoordinatesWithTransform:v81 roundToViewScale:1 block:v82];
   [v16 sortUsingComparator:&__block_literal_global_73];
   v79 = 0u;
   v80 = 0u;
@@ -138,35 +138,35 @@
         }
 
         v22 = *(*(&v77 + 1) + 8 * v21);
-        v23 = [v22 coordinate];
-        v24 = [v22 originalCoordinate];
-        if (([v14 containsObject:v23] & 1) == 0)
+        coordinate = [v22 coordinate];
+        originalCoordinate = [v22 originalCoordinate];
+        if (([v14 containsObject:coordinate] & 1) == 0)
         {
-          [v14 addObject:v23];
-          CGContextSaveGState(a7);
-          v25 = [(HKAnnotatedHorizontalLineSeries *)self _horizontalLineSeriesStyleForBlockCoordinate:v23];
+          [v14 addObject:coordinate];
+          CGContextSaveGState(context);
+          v25 = [(HKAnnotatedHorizontalLineSeries *)self _horizontalLineSeriesStyleForBlockCoordinate:coordinate];
           v76 = v25;
           if (v25)
           {
             v26 = v25;
-            v27 = [v25 lineStrokeStyle];
+            lineStrokeStyle = [v25 lineStrokeStyle];
             [v26 valueStyle];
           }
 
           else
           {
-            v27 = [(HKAnnotatedHorizontalLineSeries *)self _defaultLineStyle];
+            lineStrokeStyle = [(HKAnnotatedHorizontalLineSeries *)self _defaultLineStyle];
             [(HKAnnotatedHorizontalLineSeries *)self _defaultLabelStyle];
           }
           v28 = ;
           v74 = v28;
-          v75 = v27;
-          [v27 applyToContext:a7];
-          [v27 lineWidth];
+          v75 = lineStrokeStyle;
+          [lineStrokeStyle applyToContext:context];
+          [lineStrokeStyle lineWidth];
           v30 = v29 * 0.5;
-          [v23 startPoint];
+          [coordinate startPoint];
           v32 = v31;
-          [v23 endPoint];
+          [coordinate endPoint];
           v34 = v32 + (v33 - v32) * 0.5;
           if (v34 >= v30 + v32)
           {
@@ -189,15 +189,15 @@
             v37 = v36;
           }
 
-          [v23 startPoint];
-          CGContextMoveToPoint(a7, v35, v38);
-          [v23 endPoint];
-          CGContextAddLineToPoint(a7, v37, v39);
-          CGContextStrokePath(a7);
-          CGContextRestoreGState(a7);
-          [v23 startPoint];
+          [coordinate startPoint];
+          CGContextMoveToPoint(context, v35, v38);
+          [coordinate endPoint];
+          CGContextAddLineToPoint(context, v37, v39);
+          CGContextStrokePath(context);
+          CGContextRestoreGState(context);
+          [coordinate startPoint];
           v41 = v40;
-          [v23 endPoint];
+          [coordinate endPoint];
           if (v41 >= v42)
           {
             v41 = v42;
@@ -224,9 +224,9 @@
           }
 
           v45 = v44 - v43;
-          [v23 startPoint];
+          [coordinate startPoint];
           v47 = v46;
-          [v23 endPoint];
+          [coordinate endPoint];
           if (v47 >= v48)
           {
             v49 = v47;
@@ -237,9 +237,9 @@
             v49 = v48;
           }
 
-          [v23 startPoint];
+          [coordinate startPoint];
           v51 = v50;
-          [v23 endPoint];
+          [coordinate endPoint];
           if (v51 >= v52)
           {
             v53 = v52;
@@ -253,23 +253,23 @@
           v54 = [MEMORY[0x1E696B098] valueWithCGRect:{v43, v41, v45, v49 - v53}];
           [v70 addObject:v54];
 
-          v55 = [(HKAnnotatedHorizontalLineSeries *)self _stringValueForCoordinate:v24 valueStyle:v28];
+          v55 = [(HKAnnotatedHorizontalLineSeries *)self _stringValueForCoordinate:originalCoordinate valueStyle:v28];
           v84[0] = v67;
-          v56 = [v28 font];
+          font = [v28 font];
           v84[1] = v66;
-          v85[0] = v56;
+          v85[0] = font;
           [v28 textColor];
           v58 = v57 = self;
           v85[1] = v58;
           [MEMORY[0x1E695DF20] dictionaryWithObjects:v85 forKeys:v84 count:2];
-          v60 = v59 = a7;
+          v60 = v59 = context;
 
           self = v57;
-          [(HKAnnotatedHorizontalLineSeries *)v57 _boundsForString:v55 coordinate:v23 valueAttributes:v60 rectsToAvoid:v70];
+          [(HKAnnotatedHorizontalLineSeries *)v57 _boundsForString:v55 coordinate:coordinate valueAttributes:v60 rectsToAvoid:v70];
           v61 = [HKStringDrawing stringDrawingWithText:v55 inRect:v60 withAttributes:?];
           [v71 addObject:v61];
 
-          a7 = v59;
+          context = v59;
           v20 = v68;
           v14 = v69;
           v19 = v72;
@@ -285,19 +285,19 @@
     while (v19);
   }
 
-  if (([v64 seriesDrawingDuringTiling] & 1) != 0 || objc_msgSend(v64, "seriesDrawingDuringScrolling"))
+  if (([delegateCopy seriesDrawingDuringTiling] & 1) != 0 || objc_msgSend(delegateCopy, "seriesDrawingDuringScrolling"))
   {
-    v62 = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
+    hk_chartBackgroundColor = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
   }
 
   else
   {
-    v62 = [MEMORY[0x1E69DC888] clearColor];
+    hk_chartBackgroundColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
-  v63 = v62;
+  v63 = hk_chartBackgroundColor;
   [(HKAnnotatedHorizontalLineSeries *)self valueOutlineWidth];
-  [HKStringDrawing drawStrings:v71 outlineWidth:v63 outlineColor:a7 context:?];
+  [HKStringDrawing drawStrings:v71 outlineWidth:v63 outlineColor:context context:?];
 }
 
 void __174__HKAnnotatedHorizontalLineSeries_drawSeriesWithBlockCoordinates_axisRect_zoomLevelConfiguration_pointTransform_renderContext_secondaryRenderContext_seriesRenderingDelegate___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -344,44 +344,44 @@ uint64_t __174__HKAnnotatedHorizontalLineSeries_drawSeriesWithBlockCoordinates_a
   return v10;
 }
 
-- (id)_horizontalLineSeriesStyleForBlockCoordinate:(id)a3
+- (id)_horizontalLineSeriesStyleForBlockCoordinate:(id)coordinate
 {
-  v4 = a3;
-  v5 = [(HKAnnotatedHorizontalLineSeries *)self horizontalLineStyles];
+  coordinateCopy = coordinate;
+  horizontalLineStyles = [(HKAnnotatedHorizontalLineSeries *)self horizontalLineStyles];
   v6 = MEMORY[0x1E696AD98];
-  v7 = [v4 styleIdentifier];
+  styleIdentifier = [coordinateCopy styleIdentifier];
 
-  v8 = [v6 numberWithInteger:v7];
-  v9 = [v5 objectForKeyedSubscript:v8];
+  v8 = [v6 numberWithInteger:styleIdentifier];
+  v9 = [horizontalLineStyles objectForKeyedSubscript:v8];
 
   return v9;
 }
 
 - (id)_defaultLineStyle
 {
-  v2 = [MEMORY[0x1E69DC888] blackColor];
-  v3 = [HKStrokeStyle strokeStyleWithColor:v2 lineWidth:2.0];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v3 = [HKStrokeStyle strokeStyleWithColor:blackColor lineWidth:2.0];
 
   return v3;
 }
 
 - (id)_defaultLabelStyle
 {
-  v2 = [MEMORY[0x1E69DC888] blackColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
   v3 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
-  v4 = [HKAxisLabelStyle labelStyleWithColor:v2 font:v3 horizontalAlignment:2 verticalAlignment:2];
+  v4 = [HKAxisLabelStyle labelStyleWithColor:blackColor font:v3 horizontalAlignment:2 verticalAlignment:2];
 
   return v4;
 }
 
-- (id)_stringValueForCoordinate:(id)a3 valueStyle:(id)a4
+- (id)_stringValueForCoordinate:(id)coordinate valueStyle:(id)style
 {
-  v5 = a3;
-  v6 = [a4 numberFormatter];
-  v7 = v6;
-  if (v6)
+  coordinateCopy = coordinate;
+  numberFormatter = [style numberFormatter];
+  v7 = numberFormatter;
+  if (numberFormatter)
   {
-    v8 = v6;
+    v8 = numberFormatter;
   }
 
   else
@@ -392,7 +392,7 @@ uint64_t __174__HKAnnotatedHorizontalLineSeries_drawSeriesWithBlockCoordinates_a
   v9 = v8;
 
   v10 = MEMORY[0x1E696AD98];
-  [v5 startPoint];
+  [coordinateCopy startPoint];
   v12 = v11;
 
   v13 = [v10 numberWithDouble:v12];
@@ -401,31 +401,31 @@ uint64_t __174__HKAnnotatedHorizontalLineSeries_drawSeriesWithBlockCoordinates_a
   return v14;
 }
 
-- (CGRect)_boundsForString:(id)a3 coordinate:(id)a4 valueAttributes:(id)a5 rectsToAvoid:(id)a6
+- (CGRect)_boundsForString:(id)string coordinate:(id)coordinate valueAttributes:(id)attributes rectsToAvoid:(id)avoid
 {
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
-  [a3 sizeWithAttributes:a5];
+  coordinateCopy = coordinate;
+  avoidCopy = avoid;
+  [string sizeWithAttributes:attributes];
   v12 = v11;
   v14 = v13;
-  [v9 endPoint];
+  [coordinateCopy endPoint];
   v16 = v15 + -4.0 - v14;
   if (v16 < 0.0)
   {
-    [v9 endPoint];
+    [coordinateCopy endPoint];
     v16 = v17 + 4.0;
   }
 
-  if ([v9 styleIdentifier] == 2)
+  if ([coordinateCopy styleIdentifier] == 2)
   {
-    [v9 startPoint];
+    [coordinateCopy startPoint];
     v19 = v18;
   }
 
   else
   {
-    [v9 endPoint];
+    [coordinateCopy endPoint];
     v19 = v20 - v12;
   }
 
@@ -433,7 +433,7 @@ uint64_t __174__HKAnnotatedHorizontalLineSeries_drawSeriesWithBlockCoordinates_a
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v21 = v10;
+  v21 = avoidCopy;
   v22 = [v21 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v22)
   {
@@ -459,7 +459,7 @@ uint64_t __174__HKAnnotatedHorizontalLineSeries_drawSeriesWithBlockCoordinates_a
         v41.size.height = v14;
         if (CGRectIntersectsRect(v41, v43))
         {
-          [v9 endPoint];
+          [coordinateCopy endPoint];
           v16 = v30 + 4.0;
           goto LABEL_16;
         }
@@ -488,33 +488,33 @@ LABEL_16:
   return result;
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a3 chartPoints];
-  if (!v11)
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  chartPoints = [block chartPoints];
+  if (!chartPoints)
   {
     [HKAnnotatedHorizontalLineSeries coordinatesForBlock:blockPath:xAxis:yAxis:];
   }
 
-  v12 = [v9 transform];
-  v13 = [v10 transform];
+  transform = [axisCopy transform];
+  transform2 = [yAxisCopy transform];
 
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __77__HKAnnotatedHorizontalLineSeries_coordinatesForBlock_blockPath_xAxis_yAxis___block_invoke;
   v22[3] = &unk_1E81BA518;
-  v23 = v12;
-  v24 = v13;
+  v23 = transform;
+  v24 = transform2;
   v25 = v14;
   v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  [v11 enumerateObjectsUsingBlock:v22];
-  v20 = *&a4->index;
-  resolution = a4->resolution;
+  v16 = transform2;
+  v17 = transform;
+  [chartPoints enumerateObjectsUsingBlock:v22];
+  v20 = *&path->index;
+  resolution = path->resolution;
   v18 = [HKGraphSeriesBlockCoordinateList coordinateListWithCoordinates:v15 blockPath:&v20];
 
   return v18;
@@ -549,75 +549,75 @@ void __77__HKAnnotatedHorizontalLineSeries_coordinatesForBlock_blockPath_xAxis_y
   }
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a3.y;
-  v10 = a3.x;
-  v12 = a4;
-  [(HKAnnotatedHorizontalLineSeries *)self xAxisDistanceFromPoint:v12 blockCoordinate:v10 chartRect:v9, x, y, width, height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = point.y;
+  v10 = point.x;
+  coordinateCopy = coordinate;
+  [(HKAnnotatedHorizontalLineSeries *)self xAxisDistanceFromPoint:coordinateCopy blockCoordinate:v10 chartRect:v9, x, y, width, height];
   v14 = v13;
-  [(HKAnnotatedHorizontalLineSeries *)self yAxisDifferenceToPoint:v12 blockCoordinate:v10 chartRect:v9, x, y, width, height];
+  [(HKAnnotatedHorizontalLineSeries *)self yAxisDifferenceToPoint:coordinateCopy blockCoordinate:v10 chartRect:v9, x, y, width, height];
   v16 = v15;
 
   return sqrt(v16 * v16 + v14 * v14);
 }
 
-- (double)xAxisSelectedCoordinate:(double)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisSelectedCoordinate:(double)coordinate blockCoordinate:(id)blockCoordinate chartRect:(CGRect)rect
 {
-  v7 = a4;
+  blockCoordinateCopy = blockCoordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKAnnotatedHorizontalLineSeries xAxisSelectedCoordinate:blockCoordinate:chartRect:];
   }
 
-  v8 = v7;
-  v9 = [(HKGraphSeries *)self delegate];
+  v8 = blockCoordinateCopy;
+  delegate = [(HKGraphSeries *)self delegate];
 
-  if (v9)
+  if (delegate)
   {
-    v10 = [(HKGraphSeries *)self delegate];
-    [v10 snapScreenCoordinateToXAxisResolution:a3];
-    a3 = v11;
+    delegate2 = [(HKGraphSeries *)self delegate];
+    [delegate2 snapScreenCoordinateToXAxisResolution:coordinate];
+    coordinate = v11;
   }
 
   [v8 startXValue];
-  if (a3 >= v12)
+  if (coordinate >= v12)
   {
-    v13 = a3;
+    coordinateCopy = coordinate;
   }
 
   else
   {
-    v13 = v12;
+    coordinateCopy = v12;
   }
 
   [v8 endXValue];
   v15 = v14;
 
-  if (v13 < v15)
+  if (coordinateCopy < v15)
   {
-    v15 = v13;
+    v15 = coordinateCopy;
   }
 
   return v15;
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  x = a3.x;
-  v6 = a4;
+  x = point.x;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKAnnotatedHorizontalLineSeries xAxisDistanceFromPoint:blockCoordinate:chartRect:];
   }
 
-  v7 = v6;
+  v7 = coordinateCopy;
   [v7 startXValue];
   v9 = v8 - x;
   [v7 endXValue];
@@ -637,40 +637,40 @@ void __77__HKAnnotatedHorizontalLineSeries_coordinatesForBlock_blockPath_xAxis_y
   return v13;
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
-  v6 = a4;
+  y = point.y;
+  coordinateCopy = coordinate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKAnnotatedHorizontalLineSeries yAxisDifferenceToPoint:blockCoordinate:chartRect:];
   }
 
-  [v6 startPoint];
+  [coordinateCopy startPoint];
   v8 = v7 - y;
 
   return v8;
 }
 
-- (BOOL)blockCoordinate:(id)a3 lessThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate lessThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
+  coordinateCopy = coordinate;
+  thanCopy = than;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKAnnotatedHorizontalLineSeries blockCoordinate:lessThan:];
   }
 
-  v7 = v5;
+  v7 = coordinateCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKAnnotatedHorizontalLineSeries blockCoordinate:lessThan:];
   }
 
-  v8 = v6;
+  v8 = thanCopy;
   [v7 startPoint];
   v10 = v9;
   [v8 startPoint];
@@ -679,24 +679,24 @@ void __77__HKAnnotatedHorizontalLineSeries_coordinatesForBlock_blockPath_xAxis_y
   return v10 < v12;
 }
 
-- (BOOL)blockCoordinate:(id)a3 greaterThan:(id)a4
+- (BOOL)blockCoordinate:(id)coordinate greaterThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
+  coordinateCopy = coordinate;
+  thanCopy = than;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKAnnotatedHorizontalLineSeries blockCoordinate:greaterThan:];
   }
 
-  v7 = v5;
+  v7 = coordinateCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKAnnotatedHorizontalLineSeries blockCoordinate:greaterThan:];
   }
 
-  v8 = v6;
+  v8 = thanCopy;
   [v7 startPoint];
   v10 = v9;
   [v8 startPoint];

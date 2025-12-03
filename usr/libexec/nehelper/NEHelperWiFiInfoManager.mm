@@ -1,16 +1,16 @@
 @interface NEHelperWiFiInfoManager
-- (NEHelperWiFiInfoManager)initWithFirstMessage:(id)a3;
+- (NEHelperWiFiInfoManager)initWithFirstMessage:(id)message;
 - (OS_dispatch_queue)handlerQueue;
 - (void)dealloc;
-- (void)handleMessage:(id)a3;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperWiFiInfoManager
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
-  string = xpc_dictionary_get_string(v4, "interface-name");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "interface-name");
   v6 = ne_log_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -29,7 +29,7 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ processing Wi-Fi information request for %s", buf, 0x16u);
   }
 
-  v10 = v4;
+  v10 = messageCopy;
   v11 = v10;
   if (self)
   {
@@ -43,7 +43,7 @@
     v13 = v93;
     if (v12)
     {
-      v14 = [v12 SDKVersion];
+      sDKVersion = [v12 SDKVersion];
     }
 
     else
@@ -58,7 +58,7 @@
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@ failed to get bundle record, error: %@", v98, 0x16u);
       }
 
-      v14 = 0;
+      sDKVersion = 0;
     }
 
     v16 = self->_connection;
@@ -110,10 +110,10 @@ LABEL_84:
 
     if (self->_isLegacyAPICaller)
     {
-      if (v14)
+      if (sDKVersion)
       {
         v24 = +[LSApplicationWorkspace defaultWorkspace];
-        v25 = [v24 isVersion:v14 greaterThanOrEqualToVersion:@"26.0"];
+        v25 = [v24 isVersion:sDKVersion greaterThanOrEqualToVersion:@"26.0"];
 
         if (v25)
         {
@@ -142,12 +142,12 @@ LABEL_84:
       *&buf[12] = 2112;
       *&buf[14] = v81;
       *&buf[22] = 2112;
-      *&buf[24] = v14;
+      *&buf[24] = sDKVersion;
       v82 = v80;
       _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "%@ [%@] is built with SDK version [%@]", buf, 0x20u);
     }
 
-    if (!v14)
+    if (!sDKVersion)
     {
 LABEL_40:
       v38 = ne_log_obj();
@@ -167,7 +167,7 @@ LABEL_40:
       goto LABEL_84;
     }
 
-    v28 = v14;
+    v28 = sDKVersion;
     v29 = +[LSApplicationWorkspace defaultWorkspace];
     v30 = [v29 isVersion:v28 greaterThanOrEqualToVersion:@"12.0"];
 
@@ -326,8 +326,8 @@ LABEL_81:
           v77 = v76;
           if (v76)
           {
-            v78 = [v76 protocol];
-            v79 = ([v78 isEqualToString:@"com.apple.networkextension.app-proxy"] & 1) != 0 || objc_msgSend(v78, "isEqualToString:", @"com.apple.networkextension.packet-tunnel");
+            protocol = [v76 protocol];
+            v79 = ([protocol isEqualToString:@"com.apple.networkextension.app-proxy"] & 1) != 0 || objc_msgSend(protocol, "isEqualToString:", @"com.apple.networkextension.packet-tunnel");
           }
 
           else
@@ -361,7 +361,7 @@ LABEL_81:
           *&buf[8] = 3221225472;
           *&buf[16] = sub_100009BB4;
           *&buf[24] = &unk_10003D360;
-          v95 = self;
+          selfCopy = self;
           v96 = v11;
           v97 = v28;
           v89 = buf;
@@ -371,7 +371,7 @@ LABEL_81:
           *&v98[8] = 3221225472;
           *&v98[16] = sub_10000A1C0;
           *&v98[24] = &unk_10003CE10;
-          v99 = self;
+          selfCopy2 = self;
           v92 = v89;
           v100 = v92;
           [v90 loadConfigurations:0 withFilter:0 completionQueue:queue completionHandler:v98];
@@ -445,9 +445,9 @@ LABEL_85:
   return self;
 }
 
-- (NEHelperWiFiInfoManager)initWithFirstMessage:(id)a3
+- (NEHelperWiFiInfoManager)initWithFirstMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v19.receiver = self;
   v19.super_class = NEHelperWiFiInfoManager;
   v5 = [(NEHelperWiFiInfoManager *)&v19 init];
@@ -462,7 +462,7 @@ LABEL_85:
     queue = v5->_queue;
     v5->_queue = v9;
 
-    v11 = xpc_dictionary_get_remote_connection(v4);
+    v11 = xpc_dictionary_get_remote_connection(messageCopy);
     connection = v5->_connection;
     v5->_connection = v11;
 

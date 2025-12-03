@@ -1,15 +1,15 @@
 @interface CKShareAccessRequestOperation
 - (BOOL)hasCKOperationCallbacksSet;
 - (CKShareAccessRequestOperation)init;
-- (CKShareAccessRequestOperation)initWithShareURLs:(id)a3;
+- (CKShareAccessRequestOperation)initWithShareURLs:(id)ls;
 - (NSArray)shareURLs;
 - (id)perShareAccessRequestCompletionBlock;
 - (id)shareAccessRequestCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)setPerShareAccessRequestCompletionBlock:(id)a3;
-- (void)setShareAccessRequestCompletionBlock:(id)a3;
-- (void)setShareAccessRequestCompletionBlockIVar:(id)a3;
-- (void)setShareURLs:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)setPerShareAccessRequestCompletionBlock:(id)block;
+- (void)setShareAccessRequestCompletionBlock:(id)block;
+- (void)setShareAccessRequestCompletionBlockIVar:(id)var;
+- (void)setShareURLs:(id)ls;
 @end
 
 @implementation CKShareAccessRequestOperation
@@ -21,22 +21,22 @@
   return [(CKShareRequestAccessOperation *)&v3 init];
 }
 
-- (CKShareAccessRequestOperation)initWithShareURLs:(id)a3
+- (CKShareAccessRequestOperation)initWithShareURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v9 = objc_msgSend_init(self, v5, v6);
   if (v9)
   {
-    v10 = objc_msgSend_copy(v4, v7, v8);
+    v10 = objc_msgSend_copy(lsCopy, v7, v8);
     objc_msgSend_setShareURLs_(v9, v11, v10);
   }
 
   return v9;
 }
 
-- (void)setPerShareAccessRequestCompletionBlock:(id)a3
+- (void)setPerShareAccessRequestCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -50,16 +50,16 @@
     v12[2] = sub_1885F4B54;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     perShareAccessRequestCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_perShareAccessRequestCompletionBlock != v6)
+  if (self->_perShareAccessRequestCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     perShareAccessRequestCompletionBlock = self->_perShareAccessRequestCompletionBlock;
     self->_perShareAccessRequestCompletionBlock = v9;
 LABEL_9:
@@ -102,9 +102,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setShareAccessRequestCompletionBlockIVar:(id)a3
+- (void)setShareAccessRequestCompletionBlockIVar:(id)var
 {
-  v6 = a3;
+  varCopy = var;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -118,16 +118,16 @@ LABEL_9:
     v12[2] = sub_1885F4EE0;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = varCopy;
     dispatch_sync(v11, v12);
 
     shareAccessRequestCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_shareAccessRequestCompletionBlock != v6)
+  if (self->_shareAccessRequestCompletionBlock != varCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(varCopy, v7, v8);
     shareAccessRequestCompletionBlock = self->_shareAccessRequestCompletionBlock;
     self->_shareAccessRequestCompletionBlock = v9;
 LABEL_9:
@@ -170,28 +170,28 @@ LABEL_9:
   return v6;
 }
 
-- (void)setShareAccessRequestCompletionBlock:(id)a3
+- (void)setShareAccessRequestCompletionBlock:(id)block
 {
-  v4 = a3 == 0;
-  v7 = a3;
+  v4 = block == 0;
+  blockCopy = block;
   objc_msgSend_setCanDropItemResultsEarly_(self, v5, v4);
-  objc_msgSend_setShareAccessRequestCompletionBlockIVar_(self, v6, v7);
+  objc_msgSend_setShareAccessRequestCompletionBlockIVar_(self, v6, blockCopy);
 }
 
-- (void)setShareURLs:(id)a3
+- (void)setShareURLs:(id)ls
 {
   v3.receiver = self;
   v3.super_class = CKShareAccessRequestOperation;
-  [(CKShareRequestAccessOperation *)&v3 setShareURLs:a3];
+  [(CKShareRequestAccessOperation *)&v3 setShareURLs:ls];
 }
 
 - (NSArray)shareURLs
 {
   v4.receiver = self;
   v4.super_class = CKShareAccessRequestOperation;
-  v2 = [(CKShareRequestAccessOperation *)&v4 shareURLs];
+  shareURLs = [(CKShareRequestAccessOperation *)&v4 shareURLs];
 
-  return v2;
+  return shareURLs;
 }
 
 - (BOOL)hasCKOperationCallbacksSet
@@ -218,9 +218,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super.super._signpost;
@@ -268,7 +268,7 @@ LABEL_9:
     }
   }
 
-  if (!v4)
+  if (!errorCopy)
   {
     v19 = objc_msgSend_errorsByShareURL(self, v7, v8);
     v22 = objc_msgSend_count(v19, v20, v21);
@@ -279,12 +279,12 @@ LABEL_9:
       v26 = objc_msgSend_errorsByShareURL(self, v24, v25);
       objc_msgSend_setObject_forKeyedSubscript_(v23, v27, v26, @"CKPartialErrors");
 
-      v4 = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to request access to some shares");
+      errorCopy = objc_msgSend_errorWithDomain_code_userInfo_format_(CKPrettyError, v28, @"CKInternalErrorDomain", 1011, v23, @"Failed to request access to some shares");
     }
 
     else
     {
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 
@@ -293,7 +293,7 @@ LABEL_9:
   if (v29)
   {
     v32 = objc_msgSend_shareAccessRequestCompletionBlock(self, v30, v31);
-    v35 = objc_msgSend_CKClientSuitableError(v4, v33, v34);
+    v35 = objc_msgSend_CKClientSuitableError(errorCopy, v33, v34);
     (v32)[2](v32, v35);
 
     objc_msgSend_setShareAccessRequestCompletionBlock_(self, v36, 0);
@@ -302,7 +302,7 @@ LABEL_9:
   objc_msgSend_setPerShareAccessRequestCompletionBlock_(self, v30, 0);
   v37.receiver = self;
   v37.super_class = CKShareAccessRequestOperation;
-  [(CKShareRequestAccessOperation *)&v37 _finishOnCallbackQueueWithError:v4];
+  [(CKShareRequestAccessOperation *)&v37 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

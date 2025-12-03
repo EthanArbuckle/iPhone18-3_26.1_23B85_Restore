@@ -1,21 +1,21 @@
 @interface PXPhotoKitAssetCollectionConfirmAdditionalPeopleActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionConfirmAdditionalPeopleActionPerformer
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 - 1 >= 2)
+  referenceCopy = reference;
+  inputsCopy = inputs;
+  if (case - 1 >= 2)
   {
-    if (!a3)
+    if (!case)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionConfirmAdditionalPeopleActionPerformer.m" lineNumber:54 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionConfirmAdditionalPeopleActionPerformer.m" lineNumber:54 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -31,32 +31,32 @@
   return v11;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v4 = a4;
+  inputsCopy = inputs;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 people];
+    people = [inputsCopy people];
   }
 
   else
   {
-    v5 = 0;
+    people = 0;
   }
 
-  v6 = [v5 count] == 1;
+  v6 = [people count] == 1;
 
   return v6;
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
-  v6 = [v3 firstObject];
+  people = [(PXPhotoKitAssetCollectionActionPerformer *)self people];
+  firstObject = [people firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v4 = [[PXPeopleSplitConfirmationViewController alloc] initWithPerson:v6];
+    v4 = [[PXPeopleSplitConfirmationViewController alloc] initWithPerson:firstObject];
     v5 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v4];
     [(PXActionPerformer *)self presentViewController:v5];
     [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];

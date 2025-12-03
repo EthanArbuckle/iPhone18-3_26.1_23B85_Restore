@@ -1,23 +1,23 @@
 @interface VideosUI_InlinePlaybackViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation VideosUI_InlinePlaybackViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.InlinePlaybackView" hasSwiftField:@"playbackView" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"VideosUI.InlinePlaybackView" hasSwiftField:@"imageView" withSwiftType:"Optional<UIView>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.InlinePlaybackView" hasSwiftField:@"playbackView" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"VideosUI.InlinePlaybackView" hasSwiftField:@"imageView" withSwiftType:"Optional<UIView>"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(VideosUI_InlinePlaybackViewAccessibility *)self safeSwiftValueForKey:@"playbackView"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(VideosUI_InlinePlaybackViewAccessibility *)self safeSwiftValueForKey:@"imageView"];
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;

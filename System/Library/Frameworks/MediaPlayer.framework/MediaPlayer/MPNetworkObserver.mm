@@ -8,9 +8,9 @@
 - (void)beginUsingNetwork;
 - (void)dealloc;
 - (void)endUsingNetwork;
-- (void)setMusicCellularDownloadingAllowed:(BOOL)a3;
-- (void)setMusicCellularStreamingAllowed:(BOOL)a3;
-- (void)setVideoCellularStreamingAllowed:(BOOL)a3;
+- (void)setMusicCellularDownloadingAllowed:(BOOL)allowed;
+- (void)setMusicCellularStreamingAllowed:(BOOL)allowed;
+- (void)setVideoCellularStreamingAllowed:(BOOL)allowed;
 @end
 
 @implementation MPNetworkObserver
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (void)setMusicCellularDownloadingAllowed:(BOOL)a3
+- (void)setMusicCellularDownloadingAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v14 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplayer", "Playback");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -46,12 +46,12 @@
     v10 = 2114;
     v11 = @"AllowsCellularDataDownloads";
     v12 = 1024;
-    v13 = v3;
+    v13 = allowedCopy;
     _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: Changing %{public}@ preference to %{BOOL}u.", &v8, 0x1Cu);
   }
 
   v5 = MEMORY[0x1E695E4D0];
-  if (!v3)
+  if (!allowedCopy)
   {
     v5 = MEMORY[0x1E695E4C0];
   }
@@ -63,7 +63,7 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v6, 0, 0, 1u);
 }
 
-- (void)setVideoCellularStreamingAllowed:(BOOL)a3
+- (void)setVideoCellularStreamingAllowed:(BOOL)allowed
 {
   v8 = 0;
   v9 = &v8;
@@ -74,14 +74,14 @@
   block[1] = 3221225472;
   block[2] = __54__MPNetworkObserver_setVideoCellularStreamingAllowed___block_invoke;
   block[3] = &unk_1E7676008;
-  v7 = a3;
+  allowedCopy = allowed;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(accessQueue, block);
   if (*(v9 + 24) == 1)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"MPNetworkObserverIsVideoCellularStreamingAllowedDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPNetworkObserverIsVideoCellularStreamingAllowedDidChangeNotification" object:self];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -120,12 +120,12 @@ uint64_t __54__MPNetworkObserver_setVideoCellularStreamingAllowed___block_invoke
   return v3;
 }
 
-- (void)setMusicCellularStreamingAllowed:(BOOL)a3
+- (void)setMusicCellularStreamingAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v4 = +[MPPlaybackUserDefaults standardUserDefaults];
   v6 = v4;
-  if (v3)
+  if (allowedCopy)
   {
     v5 = 64;
   }

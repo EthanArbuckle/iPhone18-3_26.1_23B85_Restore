@@ -1,7 +1,7 @@
 @interface HMDSiriCommandEvent
-+ (id)commandEventWithDuration:(unint64_t)a3 actionType:(id)a4 outcome:(id)a5 numberOfEntities:(unint64_t)a6 numberOfFailures:(unint64_t)a7 numberOfIncompletions:(unint64_t)a8 serverConfigurationVersion:(unint64_t)a9 configurationVersion:(unint64_t)a10 lastSyncedConfigurationVersion:(unint64_t)a11;
-+ (unint64_t)generateErrorCodeWithNumberOfFailures:(unint64_t)a3 numberOfIncompletions:(unint64_t)a4 commandOutcome:(id)a5;
-- (HMDSiriCommandEvent)initWithDuration:(unint64_t)a3 actionType:(id)a4 outcome:(id)a5 numberOfEntities:(unint64_t)a6 numberOfFailures:(unint64_t)a7 numberOfIncompletions:(unint64_t)a8 serverConfigurationVersion:(unint64_t)a9 configurationVersion:(unint64_t)a10 lastSyncedConfigurationVersion:(unint64_t)a11;
++ (id)commandEventWithDuration:(unint64_t)duration actionType:(id)type outcome:(id)outcome numberOfEntities:(unint64_t)entities numberOfFailures:(unint64_t)failures numberOfIncompletions:(unint64_t)incompletions serverConfigurationVersion:(unint64_t)version configurationVersion:(unint64_t)self0 lastSyncedConfigurationVersion:(unint64_t)self1;
++ (unint64_t)generateErrorCodeWithNumberOfFailures:(unint64_t)failures numberOfIncompletions:(unint64_t)incompletions commandOutcome:(id)outcome;
+- (HMDSiriCommandEvent)initWithDuration:(unint64_t)duration actionType:(id)type outcome:(id)outcome numberOfEntities:(unint64_t)entities numberOfFailures:(unint64_t)failures numberOfIncompletions:(unint64_t)incompletions serverConfigurationVersion:(unint64_t)version configurationVersion:(unint64_t)self0 lastSyncedConfigurationVersion:(unint64_t)self1;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -10,14 +10,14 @@
 - (NSDictionary)coreAnalyticsEventDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(HMDSiriCommandEvent *)self actionType];
-  [v3 setObject:v4 forKeyedSubscript:@"actionType"];
+  actionType = [(HMDSiriCommandEvent *)self actionType];
+  [v3 setObject:actionType forKeyedSubscript:@"actionType"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDSiriCommandEvent durationMilliseconds](self, "durationMilliseconds")}];
   [v3 setObject:v5 forKeyedSubscript:@"duration"];
 
-  v6 = [(HMDSiriCommandEvent *)self outcome];
-  [v3 setObject:v6 forKeyedSubscript:@"outcome"];
+  outcome = [(HMDSiriCommandEvent *)self outcome];
+  [v3 setObject:outcome forKeyedSubscript:@"outcome"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDSiriCommandEvent numberOfEntities](self, "numberOfEntities")}];
   [v3 setObject:v7 forKeyedSubscript:@"numTargetedEntities"];
@@ -30,8 +30,8 @@
 
   if ([(HMDSiriCommandEvent *)self numberOfEntities])
   {
-    v10 = [(HMDSiriCommandEvent *)self numberOfFailures];
-    v11 = ([(HMDSiriCommandEvent *)self numberOfIncompletions]+ v10) * 100.0;
+    numberOfFailures = [(HMDSiriCommandEvent *)self numberOfFailures];
+    v11 = ([(HMDSiriCommandEvent *)self numberOfIncompletions]+ numberOfFailures) * 100.0;
     v12 = (v11 / [(HMDSiriCommandEvent *)self numberOfEntities]+ 0.5);
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
     [v3 setObject:v13 forKeyedSubscript:@"failurePercentage"];
@@ -40,11 +40,11 @@
     [v3 setObject:v14 forKeyedSubscript:@"successPercentage"];
   }
 
-  v15 = [(HMDSiriCommandEvent *)self configurationVersion];
-  v16 = [(HMDSiriCommandEvent *)self lastSyncedConfigurationVersion];
+  configurationVersion = [(HMDSiriCommandEvent *)self configurationVersion];
+  lastSyncedConfigurationVersion = [(HMDSiriCommandEvent *)self lastSyncedConfigurationVersion];
   v17 = MEMORY[0x277CBEC28];
   v18 = MEMORY[0x277CBEC38];
-  if (v15 == v16)
+  if (configurationVersion == lastSyncedConfigurationVersion)
   {
     v19 = MEMORY[0x277CBEC38];
   }
@@ -55,8 +55,8 @@
   }
 
   [v3 setObject:v19 forKeyedSubscript:@"currentConfigMatchesLastSynced"];
-  v20 = [(HMDSiriCommandEvent *)self configurationVersion];
-  if (v20 == [(HMDSiriCommandEvent *)self serverConfigurationVersion])
+  configurationVersion2 = [(HMDSiriCommandEvent *)self configurationVersion];
+  if (configurationVersion2 == [(HMDSiriCommandEvent *)self serverConfigurationVersion])
   {
     v21 = v18;
   }
@@ -67,8 +67,8 @@
   }
 
   [v3 setObject:v21 forKeyedSubscript:@"currentConfigMatchesServer"];
-  v22 = [(HMDSiriCommandEvent *)self lastSyncedConfigurationVersion];
-  if (v22 == [(HMDSiriCommandEvent *)self serverConfigurationVersion])
+  lastSyncedConfigurationVersion2 = [(HMDSiriCommandEvent *)self lastSyncedConfigurationVersion];
+  if (lastSyncedConfigurationVersion2 == [(HMDSiriCommandEvent *)self serverConfigurationVersion])
   {
     v23 = v18;
   }
@@ -79,11 +79,11 @@
   }
 
   [v3 setObject:v23 forKeyedSubscript:@"lastSyncedConfigMatchesServer"];
-  v24 = [(HMDSiriCommandEvent *)self configurationVersion];
-  if (v24 == [(HMDSiriCommandEvent *)self lastSyncedConfigurationVersion])
+  configurationVersion3 = [(HMDSiriCommandEvent *)self configurationVersion];
+  if (configurationVersion3 == [(HMDSiriCommandEvent *)self lastSyncedConfigurationVersion])
   {
-    v25 = [(HMDSiriCommandEvent *)self lastSyncedConfigurationVersion];
-    if (v25 == [(HMDSiriCommandEvent *)self serverConfigurationVersion])
+    lastSyncedConfigurationVersion3 = [(HMDSiriCommandEvent *)self lastSyncedConfigurationVersion];
+    if (lastSyncedConfigurationVersion3 == [(HMDSiriCommandEvent *)self serverConfigurationVersion])
     {
       v17 = v18;
     }
@@ -92,8 +92,8 @@
   [v3 setObject:v17 forKeyedSubscript:@"allConfigsMatch"];
   if (isInternalBuild())
   {
-    v26 = [(HMDSiriCommandEvent *)self clientMetricIdentifier];
-    [v3 setObject:v26 forKeyedSubscript:@"clientMetricIdentifier"];
+    clientMetricIdentifier = [(HMDSiriCommandEvent *)self clientMetricIdentifier];
+    [v3 setObject:clientMetricIdentifier forKeyedSubscript:@"clientMetricIdentifier"];
   }
 
   v27 = [v3 copy];
@@ -101,16 +101,16 @@
   return v27;
 }
 
-- (HMDSiriCommandEvent)initWithDuration:(unint64_t)a3 actionType:(id)a4 outcome:(id)a5 numberOfEntities:(unint64_t)a6 numberOfFailures:(unint64_t)a7 numberOfIncompletions:(unint64_t)a8 serverConfigurationVersion:(unint64_t)a9 configurationVersion:(unint64_t)a10 lastSyncedConfigurationVersion:(unint64_t)a11
+- (HMDSiriCommandEvent)initWithDuration:(unint64_t)duration actionType:(id)type outcome:(id)outcome numberOfEntities:(unint64_t)entities numberOfFailures:(unint64_t)failures numberOfIncompletions:(unint64_t)incompletions serverConfigurationVersion:(unint64_t)version configurationVersion:(unint64_t)self0 lastSyncedConfigurationVersion:(unint64_t)self1
 {
   v38 = *MEMORY[0x277D85DE8];
-  v18 = a4;
-  v19 = a5;
-  v20 = v19;
-  if (!v18)
+  typeCopy = type;
+  outcomeCopy = outcome;
+  v20 = outcomeCopy;
+  if (!typeCopy)
   {
     v28 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
@@ -129,10 +129,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v19)
+  if (!outcomeCopy)
   {
     v28 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
@@ -151,21 +151,21 @@ LABEL_13:
   v21 = [(HMMLogEvent *)&v35 init];
   if (v21)
   {
-    v34 = [MEMORY[0x277D0F770] currentActivity];
-    v22 = [v34 clientMetricIdentifier];
+    currentActivity = [MEMORY[0x277D0F770] currentActivity];
+    clientMetricIdentifier = [currentActivity clientMetricIdentifier];
     clientMetricIdentifier = v21->_clientMetricIdentifier;
-    v21->_clientMetricIdentifier = v22;
+    v21->_clientMetricIdentifier = clientMetricIdentifier;
 
-    v21->_durationMilliseconds = a3;
-    objc_storeStrong(&v21->_actionType, a4);
-    objc_storeStrong(&v21->_outcome, a5);
-    v21->_configurationVersion = a10;
-    v21->_lastSyncedConfigurationVersion = a11;
-    v21->_serverConfigurationVersion = a9;
-    v21->_numberOfEntities = a6;
-    v21->_numberOfFailures = a7;
-    v21->_numberOfIncompletions = a8;
-    v24 = [objc_opt_class() generateErrorCodeWithNumberOfFailures:a7 numberOfIncompletions:a8 commandOutcome:v20];
+    v21->_durationMilliseconds = duration;
+    objc_storeStrong(&v21->_actionType, type);
+    objc_storeStrong(&v21->_outcome, outcome);
+    v21->_configurationVersion = configurationVersion;
+    v21->_lastSyncedConfigurationVersion = syncedConfigurationVersion;
+    v21->_serverConfigurationVersion = version;
+    v21->_numberOfEntities = entities;
+    v21->_numberOfFailures = failures;
+    v21->_numberOfIncompletions = incompletions;
+    v24 = [objc_opt_class() generateErrorCodeWithNumberOfFailures:failures numberOfIncompletions:incompletions commandOutcome:v20];
     if (v24)
     {
       v25 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HMDSiriCommandEventErrorDomain" code:v24 userInfo:0];
@@ -173,33 +173,33 @@ LABEL_13:
     }
   }
 
-  v26 = v21;
-  v27 = v26;
+  selfCopy2 = v21;
+  v27 = selfCopy2;
 LABEL_14:
 
   v32 = *MEMORY[0x277D85DE8];
   return v27;
 }
 
-+ (id)commandEventWithDuration:(unint64_t)a3 actionType:(id)a4 outcome:(id)a5 numberOfEntities:(unint64_t)a6 numberOfFailures:(unint64_t)a7 numberOfIncompletions:(unint64_t)a8 serverConfigurationVersion:(unint64_t)a9 configurationVersion:(unint64_t)a10 lastSyncedConfigurationVersion:(unint64_t)a11
++ (id)commandEventWithDuration:(unint64_t)duration actionType:(id)type outcome:(id)outcome numberOfEntities:(unint64_t)entities numberOfFailures:(unint64_t)failures numberOfIncompletions:(unint64_t)incompletions serverConfigurationVersion:(unint64_t)version configurationVersion:(unint64_t)self0 lastSyncedConfigurationVersion:(unint64_t)self1
 {
-  v16 = a5;
-  v17 = a4;
-  v18 = [[HMDSiriCommandEvent alloc] initWithDuration:a3 actionType:v17 outcome:v16 numberOfEntities:a6 numberOfFailures:a7 numberOfIncompletions:a8 serverConfigurationVersion:a9 configurationVersion:a10 lastSyncedConfigurationVersion:a11];
+  outcomeCopy = outcome;
+  typeCopy = type;
+  v18 = [[HMDSiriCommandEvent alloc] initWithDuration:duration actionType:typeCopy outcome:outcomeCopy numberOfEntities:entities numberOfFailures:failures numberOfIncompletions:incompletions serverConfigurationVersion:version configurationVersion:configurationVersion lastSyncedConfigurationVersion:syncedConfigurationVersion];
 
   return v18;
 }
 
-+ (unint64_t)generateErrorCodeWithNumberOfFailures:(unint64_t)a3 numberOfIncompletions:(unint64_t)a4 commandOutcome:(id)a5
++ (unint64_t)generateErrorCodeWithNumberOfFailures:(unint64_t)failures numberOfIncompletions:(unint64_t)incompletions commandOutcome:(id)outcome
 {
-  v7 = a5;
-  v8 = v7;
-  if (a4 || ([v7 isEqualToString:*MEMORY[0x277D48100]] & 1) != 0)
+  outcomeCopy = outcome;
+  v8 = outcomeCopy;
+  if (incompletions || ([outcomeCopy isEqualToString:*MEMORY[0x277D48100]] & 1) != 0)
   {
     v9 = 2;
   }
 
-  else if (a3)
+  else if (failures)
   {
     v9 = 1;
   }

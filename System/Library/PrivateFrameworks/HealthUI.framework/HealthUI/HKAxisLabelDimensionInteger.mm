@@ -1,20 +1,20 @@
 @interface HKAxisLabelDimensionInteger
-- (double)niceStepSizeLargerThan:(double)a3;
-- (id)formatterForLabelStepSize:(double)a3;
+- (double)niceStepSizeLargerThan:(double)than;
+- (id)formatterForLabelStepSize:(double)size;
 @end
 
 @implementation HKAxisLabelDimensionInteger
 
-- (double)niceStepSizeLargerThan:(double)a3
+- (double)niceStepSizeLargerThan:(double)than
 {
-  if (a3 == 0.0)
+  if (than == 0.0)
   {
     v5 = 0.0;
   }
 
   else
   {
-    v4 = floor(log10(fabs(a3)));
+    v4 = floor(log10(fabs(than)));
     if (v4 >= 0.0)
     {
       v5 = v4;
@@ -27,7 +27,7 @@
   }
 
   v6 = __exp10(v5);
-  v7 = a3 / v6;
+  v7 = than / v6;
   v8 = 5.0;
   if (v7 >= 5.0)
   {
@@ -51,11 +51,11 @@
   return v8 * v6;
 }
 
-- (id)formatterForLabelStepSize:(double)a3
+- (id)formatterForLabelStepSize:(double)size
 {
   v5.receiver = self;
   v5.super_class = HKAxisLabelDimensionInteger;
-  v3 = [(HKAxisLabelDimensionScalar *)&v5 formatterForLabelStepSize:a3];
+  v3 = [(HKAxisLabelDimensionScalar *)&v5 formatterForLabelStepSize:size];
   [v3 setMinimumFractionDigits:0];
   [v3 setMaximumFractionDigits:0];
 

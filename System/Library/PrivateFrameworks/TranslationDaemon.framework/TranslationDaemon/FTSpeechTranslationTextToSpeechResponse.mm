@@ -1,19 +1,19 @@
 @interface FTSpeechTranslationTextToSpeechResponse
-- (FTSpeechTranslationTextToSpeechResponse)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationTextToSpeechResponse *)a4 verify:(BOOL)a5;
+- (FTSpeechTranslationTextToSpeechResponse)initWithFlatbuffData:(id)data root:(const SpeechTranslationTextToSpeechResponse *)root verify:(BOOL)verify;
 - (FTTextToSpeechResponse)text_to_speech_response;
 - (NSString)conversation_id;
 - (NSString)request_id;
 - (NSString)target_locale;
-- (Offset<siri::speech::schema_fb::SpeechTranslationTextToSpeechResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::SpeechTranslationTextToSpeechResponse>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
 @implementation FTSpeechTranslationTextToSpeechResponse
 
-- (FTSpeechTranslationTextToSpeechResponse)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationTextToSpeechResponse *)a4 verify:(BOOL)a5
+- (FTSpeechTranslationTextToSpeechResponse)initWithFlatbuffData:(id)data root:(const SpeechTranslationTextToSpeechResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTSpeechTranslationTextToSpeechResponse;
   v10 = [(FTSpeechTranslationTextToSpeechResponse *)&v25 init];
@@ -22,35 +22,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -170,53 +170,53 @@ LABEL_13:
   return v3;
 }
 
-- (Offset<siri::speech::schema_fb::SpeechTranslationTextToSpeechResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::SpeechTranslationTextToSpeechResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTSpeechTranslationTextToSpeechResponse *)self conversation_id];
-  v6 = v5;
-  if (!v5)
+  conversation_id = [(FTSpeechTranslationTextToSpeechResponse *)self conversation_id];
+  v6 = conversation_id;
+  if (!conversation_id)
   {
-    v5 = &stru_284834138;
+    conversation_id = &stru_284834138;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)conversation_id UTF8String];
+  v8 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(FTSpeechTranslationTextToSpeechResponse *)self request_id];
-  v11 = v10;
-  if (!v10)
+  request_id = [(FTSpeechTranslationTextToSpeechResponse *)self request_id];
+  v11 = request_id;
+  if (!request_id)
   {
-    v10 = &stru_284834138;
+    request_id = &stru_284834138;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)request_id UTF8String];
+  v13 = strlen(uTF8String2);
+  v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  v15 = [(FTSpeechTranslationTextToSpeechResponse *)self target_locale];
-  v16 = v15;
-  if (!v15)
+  target_locale = [(FTSpeechTranslationTextToSpeechResponse *)self target_locale];
+  v16 = target_locale;
+  if (!target_locale)
   {
-    v15 = &stru_284834138;
+    target_locale = &stru_284834138;
   }
 
-  v17 = [(__CFString *)v15 UTF8String];
-  v18 = strlen(v17);
-  LODWORD(v17) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v17, v18);
+  uTF8String3 = [(__CFString *)target_locale UTF8String];
+  v18 = strlen(uTF8String3);
+  LODWORD(uTF8String3) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String3, v18);
 
-  v19 = [(FTSpeechTranslationTextToSpeechResponse *)self text_to_speech_response];
-  v20 = [v19 addObjectToBuffer:a3];
+  text_to_speech_response = [(FTSpeechTranslationTextToSpeechResponse *)self text_to_speech_response];
+  v20 = [text_to_speech_response addObjectToBuffer:buffer];
 
-  *(a3 + 70) = 1;
-  v21 = *(a3 + 10);
-  v22 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v14);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v17);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v20);
+  *(buffer + 70) = 1;
+  v21 = *(buffer + 10);
+  v22 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v14);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, uTF8String3);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v20);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v22 + v21);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v22 + v21);
 }
 
 - (id)flatbuffData

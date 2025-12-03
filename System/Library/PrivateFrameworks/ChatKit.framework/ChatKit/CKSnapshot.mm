@@ -1,13 +1,13 @@
 @interface CKSnapshot
-+ (IMColorComponents)_colorComponentsFromImageData:(id)a3;
-+ (IMColorComponents)_colorComponentsFromString:(id)a3;
-+ (id)_encodeCGImageSource:(CGImageSource *)a3 withColorComponents:(IMColorComponents)a4;
-+ (id)_encodeData:(id)a3 withColorComponents:(IMColorComponents)a4;
-+ (id)_snapshotKeyWithGUID:(id)a3 interfaceStyle:(int64_t)a4 additionalIdentifier:(id)a5;
-+ (id)preLuckSnapshotWithGUID:(id)a3 interfaceStyle:(int64_t)a4 dataURL:(id)a5;
-+ (id)snapshotWithGUID:(id)a3 interfaceStyle:(int64_t)a4 dataURL:(id)a5;
-+ (id)snapshotWithGUID:(id)a3 interfaceStyle:(int64_t)a4 image:(id)a5 messageTintColor:(IMColorComponents)a6;
-- (CKSnapshot)initWithGUID:(id)a3 interfaceStyle:(int64_t)a4 image:(id)a5 messageTintColor:(IMColorComponents)a6;
++ (IMColorComponents)_colorComponentsFromImageData:(id)data;
++ (IMColorComponents)_colorComponentsFromString:(id)string;
++ (id)_encodeCGImageSource:(CGImageSource *)source withColorComponents:(IMColorComponents)components;
++ (id)_encodeData:(id)data withColorComponents:(IMColorComponents)components;
++ (id)_snapshotKeyWithGUID:(id)d interfaceStyle:(int64_t)style additionalIdentifier:(id)identifier;
++ (id)preLuckSnapshotWithGUID:(id)d interfaceStyle:(int64_t)style dataURL:(id)l;
++ (id)snapshotWithGUID:(id)d interfaceStyle:(int64_t)style dataURL:(id)l;
++ (id)snapshotWithGUID:(id)d interfaceStyle:(int64_t)style image:(id)image messageTintColor:(IMColorComponents)color;
+- (CKSnapshot)initWithGUID:(id)d interfaceStyle:(int64_t)style image:(id)image messageTintColor:(IMColorComponents)color;
 - (IMColorComponents)messageTintColor;
 - (id)createEncodedData;
 - (id)key;
@@ -15,44 +15,44 @@
 
 @implementation CKSnapshot
 
-- (CKSnapshot)initWithGUID:(id)a3 interfaceStyle:(int64_t)a4 image:(id)a5 messageTintColor:(IMColorComponents)a6
+- (CKSnapshot)initWithGUID:(id)d interfaceStyle:(int64_t)style image:(id)image messageTintColor:(IMColorComponents)color
 {
-  alpha = a6.alpha;
-  blue = a6.blue;
-  green = a6.green;
-  red = a6.red;
-  v14 = a3;
-  v15 = a5;
+  alpha = color.alpha;
+  blue = color.blue;
+  green = color.green;
+  red = color.red;
+  dCopy = d;
+  imageCopy = image;
   v19.receiver = self;
   v19.super_class = CKSnapshot;
   v16 = [(CKSnapshot *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_guid, a3);
-    objc_storeStrong(&v17->_image, a5);
+    objc_storeStrong(&v16->_guid, d);
+    objc_storeStrong(&v17->_image, image);
     v17->_messageTintColor.red = red;
     v17->_messageTintColor.green = green;
     v17->_messageTintColor.blue = blue;
     v17->_messageTintColor.alpha = alpha;
-    v17->_userInterfaceStyle = a4;
+    v17->_userInterfaceStyle = style;
   }
 
   return v17;
 }
 
-+ (id)snapshotWithGUID:(id)a3 interfaceStyle:(int64_t)a4 dataURL:(id)a5
++ (id)snapshotWithGUID:(id)d interfaceStyle:(int64_t)style dataURL:(id)l
 {
-  v8 = a3;
+  dCopy = d;
   v9 = MEMORY[0x1E695DEF0];
-  v10 = a5;
-  v11 = [[v9 alloc] initWithContentsOfURL:v10 options:1 error:0];
+  lCopy = l;
+  v11 = [[v9 alloc] initWithContentsOfURL:lCopy options:1 error:0];
 
   if (v11)
   {
     v12 = [MEMORY[0x1E69DCAB8] ckImageWithData:v11];
-    [a1 _colorComponentsFromImageData:v11];
-    v13 = [a1 snapshotWithGUID:v8 interfaceStyle:a4 image:v12 messageTintColor:?];
+    [self _colorComponentsFromImageData:v11];
+    v13 = [self snapshotWithGUID:dCopy interfaceStyle:style image:v12 messageTintColor:?];
   }
 
   else
@@ -63,31 +63,31 @@
   return v13;
 }
 
-+ (id)preLuckSnapshotWithGUID:(id)a3 interfaceStyle:(int64_t)a4 dataURL:(id)a5
++ (id)preLuckSnapshotWithGUID:(id)d interfaceStyle:(int64_t)style dataURL:(id)l
 {
-  v5 = [a1 snapshotWithGUID:a3 interfaceStyle:a4 dataURL:a5];
+  v5 = [self snapshotWithGUID:d interfaceStyle:style dataURL:l];
   [v5 setPreLuckSnapshot:1];
 
   return v5;
 }
 
-+ (id)snapshotWithGUID:(id)a3 interfaceStyle:(int64_t)a4 image:(id)a5 messageTintColor:(IMColorComponents)a6
++ (id)snapshotWithGUID:(id)d interfaceStyle:(int64_t)style image:(id)image messageTintColor:(IMColorComponents)color
 {
-  alpha = a6.alpha;
-  blue = a6.blue;
-  green = a6.green;
-  red = a6.red;
-  v12 = a5;
-  v13 = a3;
-  v14 = [[CKSnapshot alloc] initWithGUID:v13 interfaceStyle:a4 image:v12 messageTintColor:red, green, blue, alpha];
+  alpha = color.alpha;
+  blue = color.blue;
+  green = color.green;
+  red = color.red;
+  imageCopy = image;
+  dCopy = d;
+  alpha = [[CKSnapshot alloc] initWithGUID:dCopy interfaceStyle:style image:imageCopy messageTintColor:red, green, blue, alpha];
 
-  return v14;
+  return alpha;
 }
 
 - (id)createEncodedData
 {
-  v3 = [(CKSnapshot *)self image];
-  v4 = UIImagePNGRepresentation(v3);
+  image = [(CKSnapshot *)self image];
+  v4 = UIImagePNGRepresentation(image);
 
   [(CKSnapshot *)self messageTintColor];
   v5 = [CKSnapshot _encodeData:v4 withColorComponents:?];
@@ -97,8 +97,8 @@
 
 - (id)key
 {
-  v3 = [(CKSnapshot *)self guid];
-  v4 = [(CKSnapshot *)self userInterfaceStyle];
+  guid = [(CKSnapshot *)self guid];
+  userInterfaceStyle = [(CKSnapshot *)self userInterfaceStyle];
   if ([(CKSnapshot *)self isPreLuckSnapshot])
   {
     v5 = @"PL";
@@ -109,38 +109,38 @@
     v5 = 0;
   }
 
-  v6 = [CKSnapshot _snapshotKeyWithGUID:v3 interfaceStyle:v4 additionalIdentifier:v5];
+  v6 = [CKSnapshot _snapshotKeyWithGUID:guid interfaceStyle:userInterfaceStyle additionalIdentifier:v5];
 
   return v6;
 }
 
-+ (id)_snapshotKeyWithGUID:(id)a3 interfaceStyle:(int64_t)a4 additionalIdentifier:(id)a5
++ (id)_snapshotKeyWithGUID:(id)d interfaceStyle:(int64_t)style additionalIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a3;
-  if ([v7 length])
+  identifierCopy = identifier;
+  dCopy = d;
+  if ([identifierCopy length])
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%d-%@", v8, a4, v7];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%d-%@", dCopy, style, identifierCopy];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%d", v8, a4, v11];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%d", dCopy, style, v11];
   }
   v9 = ;
 
   return v9;
 }
 
-+ (id)_encodeData:(id)a3 withColorComponents:(IMColorComponents)a4
++ (id)_encodeData:(id)data withColorComponents:(IMColorComponents)components
 {
-  alpha = a4.alpha;
-  blue = a4.blue;
-  green = a4.green;
-  red = a4.red;
+  alpha = components.alpha;
+  blue = components.blue;
+  green = components.green;
+  red = components.red;
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = CGImageSourceCreateWithData(v9, 0);
+  dataCopy = data;
+  v10 = CGImageSourceCreateWithData(dataCopy, 0);
   Status = CGImageSourceGetStatus(v10);
   Count = CGImageSourceGetCount(v10);
   v13 = Count;
@@ -168,7 +168,7 @@
     }
   }
 
-  v15 = [a1 _encodeCGImageSource:v10 withColorComponents:{red, green, blue, alpha, v17, v18}];
+  v15 = [self _encodeCGImageSource:v10 withColorComponents:{red, green, blue, alpha, v17, v18}];
   if (v10)
   {
     CFRelease(v10);
@@ -177,13 +177,13 @@
   return v15;
 }
 
-+ (id)_encodeCGImageSource:(CGImageSource *)a3 withColorComponents:(IMColorComponents)a4
++ (id)_encodeCGImageSource:(CGImageSource *)source withColorComponents:(IMColorComponents)components
 {
-  alpha = a4.alpha;
-  blue = a4.blue;
-  green = a4.green;
-  red = a4.red;
-  v10 = CGImageSourceCopyMetadataAtIndex(a3, 0, 0);
+  alpha = components.alpha;
+  blue = components.blue;
+  green = components.green;
+  red = components.red;
+  v10 = CGImageSourceCopyMetadataAtIndex(source, 0, 0);
   if (v10)
   {
     v11 = v10;
@@ -197,7 +197,7 @@
   }
 
   err = 0;
-  v13 = [a1 _stringFromColorComponents:{red, green, blue, alpha}];
+  v13 = [self _stringFromColorComponents:{red, green, blue, alpha}];
   if (CGImageMetadataRegisterNamespaceForPrefix(MutableCopy, @"http://ns.apple.com/Messages/1.0/", @"messages", &err))
   {
     v14 = CGImageMetadataTagCreate(@"http://ns.apple.com/Messages/1.0/", @"messages", @"msgTintColor", kCGImageMetadataTypeString, v13);
@@ -205,10 +205,10 @@
     if (CGImageMetadataSetTagWithPath(MutableCopy, 0, @"messages:msgTintColor", v14))
     {
       Mutable = CFDataCreateMutable(0, 0);
-      v16 = [*MEMORY[0x1E6982F28] identifier];
-      v17 = CGImageDestinationCreateWithData(Mutable, v16, 1uLL, 0);
+      identifier = [*MEMORY[0x1E6982F28] identifier];
+      v17 = CGImageDestinationCreateWithData(Mutable, identifier, 1uLL, 0);
 
-      ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, 0);
+      ImageAtIndex = CGImageSourceCreateImageAtIndex(source, 0, 0);
       CGImageDestinationAddImageAndMetadata(v17, ImageAtIndex, MutableCopy, 0);
       CGImageDestinationFinalize(v17);
       if (ImageAtIndex)
@@ -273,13 +273,13 @@
   return Mutable;
 }
 
-+ (IMColorComponents)_colorComponentsFromImageData:(id)a3
++ (IMColorComponents)_colorComponentsFromImageData:(id)data
 {
   v4 = *MEMORY[0x1E69A6E08];
   v5 = *(MEMORY[0x1E69A6E08] + 8);
   v6 = *(MEMORY[0x1E69A6E08] + 16);
   v7 = *(MEMORY[0x1E69A6E08] + 24);
-  v8 = CGImageSourceCreateWithData(a3, 0);
+  v8 = CGImageSourceCreateWithData(data, 0);
   v9 = CGImageSourceCopyMetadataAtIndex(v8, 0, 0);
   if (v9)
   {
@@ -292,7 +292,7 @@
       CFRelease(v12);
       if (v13)
       {
-        [a1 _colorComponentsFromString:v13];
+        [self _colorComponentsFromString:v13];
         v4 = v14;
         v5 = v15;
         v6 = v16;
@@ -354,11 +354,11 @@ LABEL_13:
   return result;
 }
 
-+ (IMColorComponents)_colorComponentsFromString:(id)a3
++ (IMColorComponents)_colorComponentsFromString:(id)string
 {
-  v3 = [a3 lowercaseString];
-  v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  lowercaseString = [string lowercaseString];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v5 = [lowercaseString stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v6 = [v5 componentsSeparatedByString:{@", "}];
   if ([v6 count] == 4)

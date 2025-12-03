@@ -1,14 +1,14 @@
 @interface DASListenerDelegate
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation DASListenerDelegate
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v5 = a4;
-  v6 = [v5 remoteProcess];
-  if ([v6 hasEntitlement:@"com.apple.backboard.display.archive"])
+  connectionCopy = connection;
+  remoteProcess = [connectionCopy remoteProcess];
+  if ([remoteProcess hasEntitlement:@"com.apple.backboard.display.archive"])
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DASClientToServiceProtocol];
     v8 = objc_opt_class();
@@ -21,7 +21,7 @@
     v13 = [NSSet setWithObjects:v11, v12, objc_opt_class(), 0];
     [v7 setClasses:v13 forSelector:"dumpAllWithCompletion:" argumentIndex:0 ofReply:1];
 
-    v14 = [v5 extractNSXPCConnectionWithConfigurator:&stru_100010358];
+    v14 = [connectionCopy extractNSXPCConnectionWithConfigurator:&stru_100010358];
 
     [v14 setExportedInterface:v7];
     v15 = objc_opt_new();
@@ -39,11 +39,11 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = remoteProcess;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "rejecting unauthorized access from %@", buf, 0xCu);
     }
 
-    [v5 invalidate];
+    [connectionCopy invalidate];
   }
 }
 

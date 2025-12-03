@@ -1,17 +1,17 @@
 @interface VCPProgressReporter
-+ (id)reporterWithIntervalSeconds:(unint64_t)a3 andTotalJobCount:(int64_t)a4 andBlock:(id)a5;
-- (VCPProgressReporter)initWithIntervalSeconds:(unint64_t)a3 andTotalJobCount:(int64_t)a4 andBlock:(id)a5;
-- (void)_reportProgressWithBlock:(id)a3;
++ (id)reporterWithIntervalSeconds:(unint64_t)seconds andTotalJobCount:(int64_t)count andBlock:(id)block;
+- (VCPProgressReporter)initWithIntervalSeconds:(unint64_t)seconds andTotalJobCount:(int64_t)count andBlock:(id)block;
+- (void)_reportProgressWithBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation VCPProgressReporter
 
-- (VCPProgressReporter)initWithIntervalSeconds:(unint64_t)a3 andTotalJobCount:(int64_t)a4 andBlock:(id)a5
+- (VCPProgressReporter)initWithIntervalSeconds:(unint64_t)seconds andTotalJobCount:(int64_t)count andBlock:(id)block
 {
-  v8 = a5;
-  v9 = v8;
-  if (!a4)
+  blockCopy = block;
+  v9 = blockCopy;
+  if (!count)
   {
     if (MediaAnalysisLogLevel() < 3)
     {
@@ -29,7 +29,7 @@
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!blockCopy)
   {
     if (MediaAnalysisLogLevel() < 3)
     {
@@ -47,7 +47,7 @@
 LABEL_15:
     _os_log_impl(&_mh_execute_header, &_os_log_default, v19, v20, buf, 2u);
 LABEL_16:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
@@ -57,7 +57,7 @@ LABEL_16:
   v11 = v10;
   if (v10)
   {
-    v10->_totalJobCount = a4;
+    v10->_totalJobCount = count;
     atomic_store(0, &v10->_processedJobCount);
     v10->_processedJobCountOnLastUpdate = -1;
     v12 = dispatch_queue_create("com.apple.mediaanalysisd.progressreport", 0);
@@ -71,7 +71,7 @@ LABEL_16:
     v22[3] = &unk_1002831A0;
     objc_copyWeak(&v24, &location);
     v23 = v9;
-    v14 = [VCPTimer timerWithIntervalSeconds:a3 isOneShot:0 andBlock:v22];
+    v14 = [VCPTimer timerWithIntervalSeconds:seconds isOneShot:0 andBlock:v22];
     timer = v11->_timer;
     v11->_timer = v14;
 
@@ -92,16 +92,16 @@ LABEL_16:
   }
 
   self = v11;
-  v18 = self;
+  selfCopy = self;
 LABEL_17:
 
-  return v18;
+  return selfCopy;
 }
 
-+ (id)reporterWithIntervalSeconds:(unint64_t)a3 andTotalJobCount:(int64_t)a4 andBlock:(id)a5
++ (id)reporterWithIntervalSeconds:(unint64_t)seconds andTotalJobCount:(int64_t)count andBlock:(id)block
 {
-  v7 = a5;
-  v8 = [objc_alloc(objc_opt_class()) initWithIntervalSeconds:a3 andTotalJobCount:a4 andBlock:v7];
+  blockCopy = block;
+  v8 = [objc_alloc(objc_opt_class()) initWithIntervalSeconds:seconds andTotalJobCount:count andBlock:blockCopy];
 
   return v8;
 }
@@ -114,9 +114,9 @@ LABEL_17:
   [(VCPProgressReporter *)&v3 dealloc];
 }
 
-- (void)_reportProgressWithBlock:(id)a3
+- (void)_reportProgressWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = atomic_load(&self->_processedJobCount);
   if (self->_processedJobCountOnLastUpdate != v5)
   {
@@ -144,8 +144,8 @@ LABEL_17:
   v11[2] = sub_10001F86C;
   v11[3] = &unk_1002831C8;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = blockCopy;
+  v10 = blockCopy;
   dispatch_async(queue, v11);
 }
 

@@ -1,8 +1,8 @@
 @interface ATXModeScreenRecordingFeaturizer
 - (ATXModeFeaturizerDelegate)delegate;
-- (id)_provideFeaturesWithScreenRecordingEvent:(id)a3;
+- (id)_provideFeaturesWithScreenRecordingEvent:(id)event;
 - (id)provideFeatures;
-- (void)_processNewScreenRecordingEvent:(id)a3;
+- (void)_processNewScreenRecordingEvent:(id)event;
 - (void)beginListening;
 - (void)stopListening;
 @end
@@ -18,9 +18,9 @@
   v15 = __Block_byref_object_dispose__8;
   v16 = 0;
   v3 = BiomeLibrary();
-  v4 = [v3 Screen];
-  v5 = [v4 Recording];
-  v6 = [v5 atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_28733C7F0 lastN:&unk_28733C7F0 reversed:0];
+  screen = [v3 Screen];
+  recording = [screen Recording];
+  v6 = [recording atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_28733C7F0 lastN:&unk_28733C7F0 reversed:0];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -66,17 +66,17 @@ uint64_t __51__ATXModeScreenRecordingFeaturizer_provideFeatures__block_invoke_12
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_provideFeaturesWithScreenRecordingEvent:(id)a3
+- (id)_provideFeaturesWithScreenRecordingEvent:(id)event
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [a3 starting];
+  starting = [event starting];
   v4 = objc_alloc_init(ATXModeFeatureSet);
-  [(ATXModeFeatureSet *)v4 setValue:v3 forBinaryFeatureOfType:18];
+  [(ATXModeFeatureSet *)v4 setValue:starting forBinaryFeatureOfType:18];
   v5 = __atxlog_handle_modes();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v3;
+    v8[1] = starting;
     _os_log_impl(&dword_260C9F000, v5, OS_LOG_TYPE_DEFAULT, "ATXModeScreenRecordingFeaturizer: updating screen recording feature: %d", v8, 8u);
   }
 
@@ -85,11 +85,11 @@ uint64_t __51__ATXModeScreenRecordingFeaturizer_provideFeatures__block_invoke_12
   return v4;
 }
 
-- (void)_processNewScreenRecordingEvent:(id)a3
+- (void)_processNewScreenRecordingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(ATXModeScreenRecordingFeaturizer *)self _provideFeaturesWithScreenRecordingEvent:v4];
+  v5 = [(ATXModeScreenRecordingFeaturizer *)self _provideFeaturesWithScreenRecordingEvent:eventCopy];
 
   [WeakRetained featurizer:self didUpdateFeatures:v5];
 }
@@ -117,10 +117,10 @@ uint64_t __51__ATXModeScreenRecordingFeaturizer_provideFeatures__block_invoke_12
   self->_scheduler = v7;
 
   v9 = BiomeLibrary();
-  v10 = [v9 Screen];
-  v11 = [v10 Recording];
-  v12 = [v11 atx_DSLPublisher];
-  v13 = [v12 subscribeOn:self->_scheduler];
+  screen = [v9 Screen];
+  recording = [screen Recording];
+  atx_DSLPublisher = [recording atx_DSLPublisher];
+  v13 = [atx_DSLPublisher subscribeOn:self->_scheduler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __50__ATXModeScreenRecordingFeaturizer_beginListening__block_invoke_21;

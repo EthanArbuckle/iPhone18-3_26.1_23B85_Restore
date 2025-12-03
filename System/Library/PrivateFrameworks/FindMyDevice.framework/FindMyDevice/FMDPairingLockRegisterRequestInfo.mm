@@ -1,38 +1,38 @@
 @interface FMDPairingLockRegisterRequestInfo
-- (FMDPairingLockRegisterRequestInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FMDPairingLockRegisterRequestInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDPairingLockRegisterRequestInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDPairingLockRegisterRequestInfo *)self accessoryType];
-  [v4 encodeObject:v5 forKey:@"accessoryType"];
+  coderCopy = coder;
+  accessoryType = [(FMDPairingLockRegisterRequestInfo *)self accessoryType];
+  [coderCopy encodeObject:accessoryType forKey:@"accessoryType"];
 
-  v6 = [(FMDPairingLockRegisterRequestInfo *)self serialNumber];
-  [v4 encodeObject:v6 forKey:@"serialNumber"];
+  serialNumber = [(FMDPairingLockRegisterRequestInfo *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"serialNumber"];
 
-  v7 = [(FMDPairingLockRegisterRequestInfo *)self lostModePublicKey];
-  [v4 encodeObject:v7 forKey:@"lostModePublicKey"];
+  lostModePublicKey = [(FMDPairingLockRegisterRequestInfo *)self lostModePublicKey];
+  [coderCopy encodeObject:lostModePublicKey forKey:@"lostModePublicKey"];
 }
 
-- (FMDPairingLockRegisterRequestInfo)initWithCoder:(id)a3
+- (FMDPairingLockRegisterRequestInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = FMDPairingLockRegisterRequestInfo;
   v5 = [(FMDPairingLockRegisterRequestInfo *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryType"];
     [(FMDPairingLockRegisterRequestInfo *)v5 setAccessoryType:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     [(FMDPairingLockRegisterRequestInfo *)v5 setSerialNumber:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lostModePublicKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lostModePublicKey"];
     [(FMDPairingLockRegisterRequestInfo *)v5 setLostModePublicKey:v8];
   }
 

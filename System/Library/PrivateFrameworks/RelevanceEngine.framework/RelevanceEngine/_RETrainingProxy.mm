@@ -1,28 +1,28 @@
 @interface _RETrainingProxy
-- (_RETrainingProxy)initWithServiceName:(id)a3;
-- (void)availableRelevanceEngines:(id)a3;
-- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)a3 completion:(id)a4;
-- (void)fetchAllElementsInRelevanceEngine:(id)a3 completion:(id)a4;
-- (void)gatherDiagnosticLogsForRelevanceEngine:(id)a3 completion:(id)a4;
-- (void)relevanceEngine:(id)a3 createElementFromDescription:(id)a4 completion:(id)a5;
-- (void)relevanceEngine:(id)a3 encodedObjectAtPath:(id)a4 completion:(id)a5;
-- (void)relevanceEngine:(id)a3 performCommand:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)relevanceEngine:(id)a3 runActionOfElementWithDescription1:(id)a4 completion:(id)a5;
+- (_RETrainingProxy)initWithServiceName:(id)name;
+- (void)availableRelevanceEngines:(id)engines;
+- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)engine completion:(id)completion;
+- (void)fetchAllElementsInRelevanceEngine:(id)engine completion:(id)completion;
+- (void)gatherDiagnosticLogsForRelevanceEngine:(id)engine completion:(id)completion;
+- (void)relevanceEngine:(id)engine createElementFromDescription:(id)description completion:(id)completion;
+- (void)relevanceEngine:(id)engine encodedObjectAtPath:(id)path completion:(id)completion;
+- (void)relevanceEngine:(id)engine performCommand:(id)command withOptions:(id)options completion:(id)completion;
+- (void)relevanceEngine:(id)engine runActionOfElementWithDescription1:(id)description1 completion:(id)completion;
 @end
 
 @implementation _RETrainingProxy
 
-- (_RETrainingProxy)initWithServiceName:(id)a3
+- (_RETrainingProxy)initWithServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = _RETrainingProxy;
   v6 = [(_RETrainingProxy *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceName, a3);
-    v8 = [[RETrainingSimulationClient alloc] initWithServiceName:v5 delegate:v7];
+    objc_storeStrong(&v6->_serviceName, name);
+    v8 = [[RETrainingSimulationClient alloc] initWithServiceName:nameCopy delegate:v7];
     client = v7->_client;
     v7->_client = v8;
 
@@ -36,70 +36,70 @@
   return v7;
 }
 
-- (void)availableRelevanceEngines:(id)a3
+- (void)availableRelevanceEngines:(id)engines
 {
   client = self->_client;
-  v4 = a3;
-  v5 = [(RETrainingSimulationClient *)client availableRelevanceEngines];
-  v4[2](v4, v5, 0);
+  enginesCopy = engines;
+  availableRelevanceEngines = [(RETrainingSimulationClient *)client availableRelevanceEngines];
+  enginesCopy[2](enginesCopy, availableRelevanceEngines, 0);
 }
 
-- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)a3 completion:(id)a4
+- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)engine completion:(id)completion
 {
   client = self->_client;
-  v6 = a4;
-  v7 = [(RETrainingSimulationClient *)client fetchAllElementIdentifiersInRelevanceEngine:a3];
-  v6[2](v6, v7, 0);
+  completionCopy = completion;
+  v7 = [(RETrainingSimulationClient *)client fetchAllElementIdentifiersInRelevanceEngine:engine];
+  completionCopy[2](completionCopy, v7, 0);
 }
 
-- (void)fetchAllElementsInRelevanceEngine:(id)a3 completion:(id)a4
+- (void)fetchAllElementsInRelevanceEngine:(id)engine completion:(id)completion
 {
   client = self->_client;
-  v6 = a4;
-  v7 = [(RETrainingSimulationClient *)client fetchAllElementsInRelevanceEngine:a3];
-  v6[2](v6, v7, 0);
+  completionCopy = completion;
+  v7 = [(RETrainingSimulationClient *)client fetchAllElementsInRelevanceEngine:engine];
+  completionCopy[2](completionCopy, v7, 0);
 }
 
-- (void)gatherDiagnosticLogsForRelevanceEngine:(id)a3 completion:(id)a4
+- (void)gatherDiagnosticLogsForRelevanceEngine:(id)engine completion:(id)completion
 {
   client = self->_client;
-  v6 = a4;
-  v7 = [(RETrainingSimulationClient *)client diagnosticLogFileForRelevanceEngine:a3];
+  completionCopy = completion;
+  v7 = [(RETrainingSimulationClient *)client diagnosticLogFileForRelevanceEngine:engine];
   v10 = 0;
   v8 = [v7 bookmarkDataWithOptions:0 includingResourceValuesForKeys:0 relativeToURL:0 error:&v10];
   v9 = v10;
-  v6[2](v6, v8, v9);
+  completionCopy[2](completionCopy, v8, v9);
 }
 
-- (void)relevanceEngine:(id)a3 createElementFromDescription:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine createElementFromDescription:(id)description completion:(id)completion
 {
   client = self->_client;
-  v8 = a5;
-  [(RETrainingSimulationClient *)client relevanceEngine:a3 createElementFromDescription:a4];
-  v8[2](v8, 0);
+  completionCopy = completion;
+  [(RETrainingSimulationClient *)client relevanceEngine:engine createElementFromDescription:description];
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)relevanceEngine:(id)a3 encodedObjectAtPath:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine encodedObjectAtPath:(id)path completion:(id)completion
 {
   client = self->_client;
-  v8 = a5;
-  v9 = [(RETrainingSimulationClient *)client relevanceEngine:a3 encodedObjectAtPath:a4];
-  v8[2](v8, v9);
+  completionCopy = completion;
+  v9 = [(RETrainingSimulationClient *)client relevanceEngine:engine encodedObjectAtPath:path];
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)relevanceEngine:(id)a3 performCommand:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)relevanceEngine:(id)engine performCommand:(id)command withOptions:(id)options completion:(id)completion
 {
   client = self->_client;
-  v10 = a6;
-  [(RETrainingSimulationClient *)client relevanceEngine:a3 performCommand:a4 withOptions:a5];
-  v10[2](v10, 0);
+  completionCopy = completion;
+  [(RETrainingSimulationClient *)client relevanceEngine:engine performCommand:command withOptions:options];
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)relevanceEngine:(id)a3 runActionOfElementWithDescription1:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine runActionOfElementWithDescription1:(id)description1 completion:(id)completion
 {
   client = self->_client;
-  v8 = a5;
-  v8[2](v8, [(RETrainingSimulationClient *)client relevanceEngine:a3 runActionOfElementWithDescription1:a4], 0);
+  completionCopy = completion;
+  completionCopy[2](completionCopy, [(RETrainingSimulationClient *)client relevanceEngine:engine runActionOfElementWithDescription1:description1], 0);
 }
 
 @end

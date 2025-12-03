@@ -1,13 +1,13 @@
 @interface SANPGetVolumeLevel
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4;
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler;
 @end
 
 @implementation SANPGetVolumeLevel
 
-- (void)_ad_performWithMediaRemoteService:(id)a3 replyHandler:(id)a4
+- (void)_ad_performWithMediaRemoteService:(id)service replyHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  handlerCopy = handler;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -16,7 +16,7 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s ", &v9, 0xCu);
   }
 
-  v8 = [v5 targetQueue];
+  targetQueue = [serviceCopy targetQueue];
   AFPerformDeviceVolumeAction();
 
   [AFAggregator logSiriMediaVolumeAction:1];

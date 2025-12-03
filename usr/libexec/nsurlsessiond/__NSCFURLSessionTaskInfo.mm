@@ -1,20 +1,20 @@
 @interface __NSCFURLSessionTaskInfo
-- (id)_AVAssetDownloadSessionOptions:(id)a3 config:(id)a4 asset:(id)a5;
+- (id)_AVAssetDownloadSessionOptions:(id)options config:(id)config asset:(id)asset;
 - (id)_URLToUse;
 - (id)_destinationURLToUse;
 @end
 
 @implementation __NSCFURLSessionTaskInfo
 
-- (id)_AVAssetDownloadSessionOptions:(id)a3 config:(id)a4 asset:(id)a5
+- (id)_AVAssetDownloadSessionOptions:(id)options config:(id)config asset:(id)asset
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(__NSCFURLSessionTaskInfo *)self options];
-  if (v9)
+  optionsCopy = options;
+  configCopy = config;
+  options = [(__NSCFURLSessionTaskInfo *)self options];
+  if (options)
   {
-    v10 = [(__NSCFURLSessionTaskInfo *)self options];
-    v11 = [v10 mutableCopy];
+    options2 = [(__NSCFURLSessionTaskInfo *)self options];
+    v11 = [options2 mutableCopy];
   }
 
   else
@@ -22,34 +22,34 @@
     v11 = +[NSMutableDictionary dictionary];
   }
 
-  v12 = [(__NSCFURLSessionTaskInfo *)self assetTitle];
-  [v11 setObject:v12 forKeyedSubscript:AVAssetDownloadSessionAssetNameKey];
+  assetTitle = [(__NSCFURLSessionTaskInfo *)self assetTitle];
+  [v11 setObject:assetTitle forKeyedSubscript:AVAssetDownloadSessionAssetNameKey];
 
-  v13 = [(__NSCFURLSessionTaskInfo *)self assetArtworkData];
-  [v11 setObject:v13 forKeyedSubscript:AVAssetDownloadSessionAssetImageDataKey];
+  assetArtworkData = [(__NSCFURLSessionTaskInfo *)self assetArtworkData];
+  [v11 setObject:assetArtworkData forKeyedSubscript:AVAssetDownloadSessionAssetImageDataKey];
 
-  v14 = v7;
-  if (!v7)
+  bundleID = optionsCopy;
+  if (!optionsCopy)
   {
-    v14 = [(__NSCFURLSessionTaskInfo *)self bundleID];
+    bundleID = [(__NSCFURLSessionTaskInfo *)self bundleID];
   }
 
-  [v11 setObject:v14 forKeyedSubscript:AVAssetDownloadSessionClientBundleIdentifierKey];
-  if (!v7)
+  [v11 setObject:bundleID forKeyedSubscript:AVAssetDownloadSessionClientBundleIdentifierKey];
+  if (!optionsCopy)
   {
   }
 
-  if (([v8 allowsCellularAccess] & 1) == 0)
+  if (([configCopy allowsCellularAccess] & 1) == 0)
   {
     [v11 setObject:&__kCFBooleanFalse forKeyedSubscript:AVAssetDownloadSessionAllowsCellularAccessKey];
   }
 
-  if (([v8 allowsExpensiveNetworkAccess] & 1) == 0)
+  if (([configCopy allowsExpensiveNetworkAccess] & 1) == 0)
   {
     [v11 setObject:&__kCFBooleanFalse forKeyedSubscript:AVAssetDownloadSessionAllowsExpensiveNetworkAccessKey];
   }
 
-  if (([v8 allowsConstrainedNetworkAccess] & 1) == 0)
+  if (([configCopy allowsConstrainedNetworkAccess] & 1) == 0)
   {
     [v11 setObject:&__kCFBooleanFalse forKeyedSubscript:AVAssetDownloadSessionAllowsConstrainedNetworkAccessKey];
   }
@@ -65,64 +65,64 @@
     [v11 setObject:v18 forKeyedSubscript:@"AVAssetDownloadTaskMinimumRequiredPresentationSizeKey"];
   }
 
-  v19 = [(__NSCFURLSessionTaskInfo *)self uniqueIdentifier];
-  v20 = [v19 UUIDString];
-  [v11 setObject:v20 forKeyedSubscript:@"AVAssetDownloadSessionDebugIdentifierKey"];
+  uniqueIdentifier = [(__NSCFURLSessionTaskInfo *)self uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  [v11 setObject:uUIDString forKeyedSubscript:@"AVAssetDownloadSessionDebugIdentifierKey"];
 
-  v21 = [(__NSCFURLSessionTaskInfo *)self retryError];
+  retryError = [(__NSCFURLSessionTaskInfo *)self retryError];
 
-  if (v21)
+  if (retryError)
   {
-    v22 = [(__NSCFURLSessionTaskInfo *)self retryError];
-    [v11 setObject:v22 forKeyedSubscript:@"AVAssetDownloadSessionRetryErrorKey"];
+    retryError2 = [(__NSCFURLSessionTaskInfo *)self retryError];
+    [v11 setObject:retryError2 forKeyedSubscript:@"AVAssetDownloadSessionRetryErrorKey"];
   }
 
-  v23 = [(__NSCFURLSessionTaskInfo *)self downloadConfig];
-  [v11 setObject:v23 forKeyedSubscript:@"AVAssetDownloadTaskDownloadConfigurationKey"];
+  downloadConfig = [(__NSCFURLSessionTaskInfo *)self downloadConfig];
+  [v11 setObject:downloadConfig forKeyedSubscript:@"AVAssetDownloadTaskDownloadConfigurationKey"];
 
   return v11;
 }
 
 - (id)_destinationURLToUse
 {
-  v3 = [(__NSCFURLSessionTaskInfo *)self temporaryDestinationURL];
-  v4 = v3;
-  if (v3)
+  temporaryDestinationURL = [(__NSCFURLSessionTaskInfo *)self temporaryDestinationURL];
+  v4 = temporaryDestinationURL;
+  if (temporaryDestinationURL)
   {
-    v5 = v3;
+    destinationURL = temporaryDestinationURL;
   }
 
   else
   {
-    v5 = [(__NSCFURLSessionTaskInfo *)self destinationURL];
+    destinationURL = [(__NSCFURLSessionTaskInfo *)self destinationURL];
   }
 
-  v6 = v5;
+  v6 = destinationURL;
 
   return v6;
 }
 
 - (id)_URLToUse
 {
-  v3 = [(__NSCFURLSessionTaskInfo *)self AVURLAsset];
+  aVURLAsset = [(__NSCFURLSessionTaskInfo *)self AVURLAsset];
 
-  if (v3)
+  if (aVURLAsset)
   {
-    v4 = [(__NSCFURLSessionTaskInfo *)self AVURLAsset];
-    if (v4)
+    aVURLAsset2 = [(__NSCFURLSessionTaskInfo *)self AVURLAsset];
+    if (aVURLAsset2)
     {
 LABEL_3:
-      v5 = [v4 URL];
-      v6 = [v5 isFileURL];
+      v5 = [aVURLAsset2 URL];
+      isFileURL = [v5 isFileURL];
 
-      if (v6)
+      if (isFileURL)
       {
-        [v4 originalNetworkContentURL];
+        [aVURLAsset2 originalNetworkContentURL];
       }
 
       else
       {
-        [v4 URL];
+        [aVURLAsset2 URL];
       }
       v7 = ;
       goto LABEL_9;
@@ -131,11 +131,11 @@ LABEL_3:
 
   else
   {
-    v8 = [(__NSCFURLSessionTaskInfo *)self downloadConfig];
-    v9 = [v8 _asset];
+    downloadConfig = [(__NSCFURLSessionTaskInfo *)self downloadConfig];
+    _asset = [downloadConfig _asset];
 
-    v4 = v9;
-    if (v9)
+    aVURLAsset2 = _asset;
+    if (_asset)
     {
       goto LABEL_3;
     }

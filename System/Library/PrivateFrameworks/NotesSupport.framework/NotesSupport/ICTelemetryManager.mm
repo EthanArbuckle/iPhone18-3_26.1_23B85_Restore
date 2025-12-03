@@ -2,14 +2,14 @@
 + (id)sharedManager;
 + (id)telemetryQueue;
 + (id)telemetryTuples;
-+ (void)postBasicEvent:(unint64_t)a3;
-+ (void)postFetchDatabaseChangesTelemetryWithReason:(id)a3;
-+ (void)postFetchZoneChangesTelemetryWithReason:(id)a3;
-+ (void)postFullSyncTelemetryWithReason:(id)a3;
-+ (void)postOneTimeBasicEvent:(unint64_t)a3;
++ (void)postBasicEvent:(unint64_t)event;
++ (void)postFetchDatabaseChangesTelemetryWithReason:(id)reason;
++ (void)postFetchZoneChangesTelemetryWithReason:(id)reason;
++ (void)postFullSyncTelemetryWithReason:(id)reason;
++ (void)postOneTimeBasicEvent:(unint64_t)event;
 + (void)waitUntilAllPendingTelemetryHasBeenSent;
-- (void)postOneTimeTelemetryEvent:(unint64_t)a3 serviceName:(id)a4 payload:(id)a5 token:(id)a6;
-- (void)postTelemetryEvent:(unint64_t)a3 serviceName:(id)a4 payload:(id)a5;
+- (void)postOneTimeTelemetryEvent:(unint64_t)event serviceName:(id)name payload:(id)payload token:(id)token;
+- (void)postTelemetryEvent:(unint64_t)event serviceName:(id)name payload:(id)payload;
 @end
 
 @implementation ICTelemetryManager
@@ -61,20 +61,20 @@ void __37__ICTelemetryManager_telemetryTuples__block_invoke()
   telemetryTuples_tuples = v0;
 }
 
-- (void)postOneTimeTelemetryEvent:(unint64_t)a3 serviceName:(id)a4 payload:(id)a5 token:(id)a6
+- (void)postOneTimeTelemetryEvent:(unint64_t)event serviceName:(id)name payload:(id)payload token:(id)token
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v14 = [v13 stringArrayForKey:@"ICRTCTelemetryServiceOneTimeEventTokens"];
+  nameCopy = name;
+  payloadCopy = payload;
+  tokenCopy = token;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v14 = [standardUserDefaults stringArrayForKey:@"ICRTCTelemetryServiceOneTimeEventTokens"];
 
-  if ([v14 containsObject:v12])
+  if ([v14 containsObject:tokenCopy])
   {
-    v15 = [objc_opt_class() telemetryTuples];
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v17 = [v15 objectForKeyedSubscript:v16];
+    telemetryTuples = [objc_opt_class() telemetryTuples];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:event];
+    v17 = [telemetryTuples objectForKeyedSubscript:v16];
 
     v18 = os_log_create("com.apple.notes", "Telemetry");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -82,40 +82,40 @@ void __37__ICTelemetryManager_telemetryTuples__block_invoke()
       v21 = [v17 objectAtIndexedSubscript:0];
       v22 = [v17 objectAtIndexedSubscript:1];
       v23 = 138413314;
-      v24 = v10;
+      v24 = nameCopy;
       v25 = 2048;
-      v26 = a3;
+      eventCopy = event;
       v27 = 2112;
       v28 = v21;
       v29 = 2112;
       v30 = v22;
       v31 = 2112;
-      v32 = v11;
+      v32 = payloadCopy;
       _os_log_debug_impl(&dword_1D4576000, v18, OS_LOG_TYPE_DEBUG, "Not posting repeat telemetry for event (S: %@, E:%lu, C:%@, T:%@) with payload: %@", &v23, 0x34u);
     }
   }
 
   else
   {
-    [(ICTelemetryManager *)self postTelemetryEvent:a3 serviceName:v10 payload:v11];
-    v19 = [v14 arrayByAddingObject:v12];
+    [(ICTelemetryManager *)self postTelemetryEvent:event serviceName:nameCopy payload:payloadCopy];
+    v19 = [v14 arrayByAddingObject:tokenCopy];
 
-    v20 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v20 setObject:v19 forKey:@"ICRTCTelemetryServiceOneTimeEventTokens"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults2 setObject:v19 forKey:@"ICRTCTelemetryServiceOneTimeEventTokens"];
 
     v14 = v19;
   }
 }
 
-- (void)postTelemetryEvent:(unint64_t)a3 serviceName:(id)a4 payload:(id)a5
+- (void)postTelemetryEvent:(unint64_t)event serviceName:(id)name payload:(id)payload
 {
   v45[6] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AAE8] mainBundle];
-  v10 = [v9 bundleIdentifier];
+  nameCopy = name;
+  payloadCopy = payload;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v10 length])
+  if ([bundleIdentifier length])
   {
     v11 = *MEMORY[0x1E69C6AB8];
     v44[0] = *MEMORY[0x1E69C6AB0];
@@ -132,18 +132,18 @@ void __37__ICTelemetryManager_telemetryTuples__block_invoke()
     v44[4] = v14;
     v44[5] = *MEMORY[0x1E69C6AA8];
     v45[4] = MEMORY[0x1E695E110];
-    v45[5] = v10;
+    v45[5] = bundleIdentifier;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:6];
 
     v16 = *MEMORY[0x1E69C6AE8];
     v42[0] = *MEMORY[0x1E69C6AE0];
     v42[1] = v16;
     v43[0] = @"notes";
-    v43[1] = v7;
+    v43[1] = nameCopy;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
-    v18 = [objc_opt_class() telemetryTuples];
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    v20 = [v18 objectForKeyedSubscript:v19];
+    telemetryTuples = [objc_opt_class() telemetryTuples];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:event];
+    v20 = [telemetryTuples objectForKeyedSubscript:v19];
 
     if (v20)
     {
@@ -155,24 +155,24 @@ void __37__ICTelemetryManager_telemetryTuples__block_invoke()
           v28 = [v20 objectAtIndexedSubscript:0];
           v29 = [v20 objectAtIndexedSubscript:1];
           *buf = 138413314;
-          v33 = v7;
+          v33 = nameCopy;
           v34 = 2048;
-          v35 = a3;
+          eventCopy = event;
           v36 = 2112;
           v37 = v28;
           v38 = 2112;
           v39 = v29;
           v40 = 2112;
-          v41 = v8;
+          v41 = payloadCopy;
           _os_log_debug_impl(&dword_1D4576000, v21, OS_LOG_TYPE_DEBUG, "Posting telemetry for event (S: %@, E:%lu, C:%@, T:%@) with payload: %@", buf, 0x34u);
         }
 
         v22 = MEMORY[0x1E69C6A80];
         v23 = [v20 objectAtIndexedSubscript:0];
-        v24 = [v23 unsignedIntValue];
+        unsignedIntValue = [v23 unsignedIntValue];
         v25 = [v20 objectAtIndexedSubscript:1];
         v31 = 0;
-        [v22 sendOneMessageWithSessionInfo:v15 userInfo:v17 category:v24 type:objc_msgSend(v25 payload:"unsignedIntValue") error:{v8, &v31}];
+        [v22 sendOneMessageWithSessionInfo:v15 userInfo:v17 category:unsignedIntValue type:objc_msgSend(v25 payload:"unsignedIntValue") error:{payloadCopy, &v31}];
         v26 = v31;
 
         if (v26)
@@ -187,13 +187,13 @@ void __37__ICTelemetryManager_telemetryTuples__block_invoke()
 
       else
       {
-        +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "__objc_no", "-[ICTelemetryManager postTelemetryEvent:serviceName:payload:]", 1, 0, @"Invalid tuple argument count (%lu) for event: %lu", [v20 count], a3);
+        +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "__objc_no", "-[ICTelemetryManager postTelemetryEvent:serviceName:payload:]", 1, 0, @"Invalid tuple argument count (%lu) for event: %lu", [v20 count], event);
       }
     }
 
     else
     {
-      [ICAssert handleFailedAssertWithCondition:"__objc_no" functionName:"[ICTelemetryManager postTelemetryEvent:serviceName:payload:]" simulateCrash:1 showAlert:0 format:@"No event tuple defined for event: %lu", a3, v30];
+      [ICAssert handleFailedAssertWithCondition:"__objc_no" functionName:"[ICTelemetryManager postTelemetryEvent:serviceName:payload:]" simulateCrash:1 showAlert:0 format:@"No event tuple defined for event: %lu", event, v30];
     }
   }
 
@@ -203,18 +203,18 @@ void __37__ICTelemetryManager_telemetryTuples__block_invoke()
   }
 }
 
-+ (void)postFullSyncTelemetryWithReason:(id)a3
++ (void)postFullSyncTelemetryWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [a1 telemetryQueue];
+  reasonCopy = reason;
+  telemetryQueue = [self telemetryQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__ICTelemetryManager_postFullSyncTelemetryWithReason___block_invoke;
   v7[3] = &unk_1E8485338;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = reasonCopy;
+  selfCopy = self;
+  v6 = reasonCopy;
+  dispatch_async(telemetryQueue, v7);
 }
 
 void __54__ICTelemetryManager_postFullSyncTelemetryWithReason___block_invoke(uint64_t a1)
@@ -228,18 +228,18 @@ void __54__ICTelemetryManager_postFullSyncTelemetryWithReason___block_invoke(uin
   [v2 postTelemetryEvent:0 serviceName:@"general" payload:v4];
 }
 
-+ (void)postFetchDatabaseChangesTelemetryWithReason:(id)a3
++ (void)postFetchDatabaseChangesTelemetryWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [a1 telemetryQueue];
+  reasonCopy = reason;
+  telemetryQueue = [self telemetryQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__ICTelemetryManager_postFetchDatabaseChangesTelemetryWithReason___block_invoke;
   v7[3] = &unk_1E8485338;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = reasonCopy;
+  selfCopy = self;
+  v6 = reasonCopy;
+  dispatch_async(telemetryQueue, v7);
 }
 
 void __66__ICTelemetryManager_postFetchDatabaseChangesTelemetryWithReason___block_invoke(uint64_t a1)
@@ -253,18 +253,18 @@ void __66__ICTelemetryManager_postFetchDatabaseChangesTelemetryWithReason___bloc
   [v2 postTelemetryEvent:1 serviceName:@"general" payload:v4];
 }
 
-+ (void)postFetchZoneChangesTelemetryWithReason:(id)a3
++ (void)postFetchZoneChangesTelemetryWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [a1 telemetryQueue];
+  reasonCopy = reason;
+  telemetryQueue = [self telemetryQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__ICTelemetryManager_postFetchZoneChangesTelemetryWithReason___block_invoke;
   v7[3] = &unk_1E8485338;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = reasonCopy;
+  selfCopy = self;
+  v6 = reasonCopy;
+  dispatch_async(telemetryQueue, v7);
 }
 
 void __62__ICTelemetryManager_postFetchZoneChangesTelemetryWithReason___block_invoke(uint64_t a1)
@@ -278,16 +278,16 @@ void __62__ICTelemetryManager_postFetchZoneChangesTelemetryWithReason___block_in
   [v2 postTelemetryEvent:2 serviceName:@"general" payload:v4];
 }
 
-+ (void)postBasicEvent:(unint64_t)a3
++ (void)postBasicEvent:(unint64_t)event
 {
-  v5 = [a1 telemetryQueue];
+  telemetryQueue = [self telemetryQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__ICTelemetryManager_postBasicEvent___block_invoke;
   v6[3] = &__block_descriptor_48_e5_v8__0l;
-  v6[4] = a1;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[4] = self;
+  v6[5] = event;
+  dispatch_async(telemetryQueue, v6);
 }
 
 void __37__ICTelemetryManager_postBasicEvent___block_invoke(uint64_t a1)
@@ -302,16 +302,16 @@ void __37__ICTelemetryManager_postBasicEvent___block_invoke(uint64_t a1)
   [v2 postTelemetryEvent:3 serviceName:@"basic" payload:v4];
 }
 
-+ (void)postOneTimeBasicEvent:(unint64_t)a3
++ (void)postOneTimeBasicEvent:(unint64_t)event
 {
-  v5 = [a1 telemetryQueue];
+  telemetryQueue = [self telemetryQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__ICTelemetryManager_postOneTimeBasicEvent___block_invoke;
   v6[3] = &__block_descriptor_48_e5_v8__0l;
-  v6[4] = a1;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[4] = self;
+  v6[5] = event;
+  dispatch_async(telemetryQueue, v6);
 }
 
 void __44__ICTelemetryManager_postOneTimeBasicEvent___block_invoke(uint64_t a1)
@@ -358,8 +358,8 @@ void __36__ICTelemetryManager_telemetryQueue__block_invoke()
     +[(ICTelemetryManager *)v3];
   }
 
-  v4 = [a1 telemetryQueue];
-  dispatch_sync(v4, &__block_literal_global_70);
+  telemetryQueue = [self telemetryQueue];
+  dispatch_sync(telemetryQueue, &__block_literal_global_70);
 }
 
 void __61__ICTelemetryManager_waitUntilAllPendingTelemetryHasBeenSent__block_invoke()

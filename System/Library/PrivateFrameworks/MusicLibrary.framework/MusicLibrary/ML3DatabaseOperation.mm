@@ -1,8 +1,8 @@
 @interface ML3DatabaseOperation
-+ (id)databaseOperationForType:(unint64_t)a3 withLibrary:(id)a4 writer:(id)a5;
-- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)a3;
++ (id)databaseOperationForType:(unint64_t)type withLibrary:(id)library writer:(id)writer;
+- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)properties;
 - (ML3ActiveTransaction)transaction;
-- (ML3DatabaseOperation)initWithLibrary:(id)a3 writer:(id)a4;
+- (ML3DatabaseOperation)initWithLibrary:(id)library writer:(id)writer;
 - (id)_operationTypeDescription;
 - (id)description;
 - (void)main;
@@ -12,31 +12,31 @@
 
 - (id)_operationTypeDescription
 {
-  v2 = [(ML3DatabaseOperation *)self type];
-  if (v2 - 1 > 8)
+  type = [(ML3DatabaseOperation *)self type];
+  if (type - 1 > 8)
   {
     return @"<Unknown Write Operation Type>";
   }
 
   else
   {
-    return off_278764FF8[v2 - 1];
+    return off_278764FF8[type - 1];
   }
 }
 
-- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)a3
+- (BOOL)_verifyLibraryConnectionAndAttributesProperties:(id *)properties
 {
-  v5 = [(ML3DatabaseOperation *)self attributes];
+  attributes = [(ML3DatabaseOperation *)self attributes];
 
-  if (v5)
+  if (attributes)
   {
-    v6 = [(ML3DatabaseOperation *)self library];
+    library = [(ML3DatabaseOperation *)self library];
 
-    if (v6)
+    if (library)
     {
-      v7 = [(ML3DatabaseOperation *)self transaction];
+      transaction = [(ML3DatabaseOperation *)self transaction];
 
-      if (v7)
+      if (transaction)
       {
         v8 = 0;
         goto LABEL_12;
@@ -51,7 +51,7 @@
     }
 
     v8 = [ML3MediaLibraryWriter writerErrorWithCode:600 description:v12];
-    if (!a3)
+    if (!properties)
     {
       goto LABEL_12;
     }
@@ -60,12 +60,12 @@
   else
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(ML3DatabaseOperation *)self _operationTypeDescription];
-    v11 = [v9 stringWithFormat:@"Missing attributes for operation type: %@", v10];
+    _operationTypeDescription = [(ML3DatabaseOperation *)self _operationTypeDescription];
+    v11 = [v9 stringWithFormat:@"Missing attributes for operation type: %@", _operationTypeDescription];
 
     v8 = [ML3MediaLibraryWriter writerErrorWithCode:500 description:v11];
 
-    if (!a3)
+    if (!properties)
     {
       goto LABEL_12;
     }
@@ -74,7 +74,7 @@
   if (v8)
   {
     v13 = v8;
-    *a3 = v8;
+    *properties = v8;
   }
 
 LABEL_12:
@@ -88,8 +88,8 @@ LABEL_12:
   transaction = self->_transaction;
   if (!transaction)
   {
-    v4 = [(ML3DatabaseOperation *)self options];
-    v5 = [v4 objectForKey:@"MLDatabaseOperationOptionTransactionIdentifierKey"];
+    options = [(ML3DatabaseOperation *)self options];
+    v5 = [options objectForKey:@"MLDatabaseOperationOptionTransactionIdentifierKey"];
 
     WeakRetained = objc_loadWeakRetained(&self->_writer);
     v7 = WeakRetained;
@@ -102,11 +102,11 @@ LABEL_12:
 
     if (!self->_transaction)
     {
-      v10 = [(ML3DatabaseOperation *)self options];
-      v11 = [v10 objectForKey:@"MLDatabaseOperationOptionReadOnlyKey"];
-      v12 = [v11 BOOLValue];
+      options2 = [(ML3DatabaseOperation *)self options];
+      v11 = [options2 objectForKey:@"MLDatabaseOperationOptionReadOnlyKey"];
+      bOOLValue = [v11 BOOLValue];
 
-      if (v12)
+      if (bOOLValue)
       {
         v13 = 2;
       }
@@ -136,7 +136,7 @@ LABEL_12:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v24 = self;
+          selfCopy = self;
           v25 = 2114;
           v26 = v17;
           _os_log_impl(&dword_22D2FA000, v19, OS_LOG_TYPE_ERROR, "Error creating new transaction for operation %{public}@. %{public}@", buf, 0x16u);
@@ -159,8 +159,8 @@ LABEL_12:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ML3DatabaseOperation *)self _operationTypeDescription];
-  v6 = [v3 stringWithFormat:@"<%@ %p operationType = %@, attributes = %@, _transaction = %@, options = %@>", v4, self, v5, self->_attributes, self->_transaction, self->_options];
+  _operationTypeDescription = [(ML3DatabaseOperation *)self _operationTypeDescription];
+  v6 = [v3 stringWithFormat:@"<%@ %p operationType = %@, attributes = %@, _transaction = %@, options = %@>", v4, self, _operationTypeDescription, self->_attributes, self->_transaction, self->_options];
 
   return v6;
 }
@@ -194,7 +194,7 @@ LABEL_3:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v17 = self;
+          selfCopy2 = self;
           v18 = 2114;
           v19 = v4;
           _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_ERROR, "Not running operation %{public}@ - error=%{public}@", buf, 0x16u);
@@ -213,9 +213,9 @@ LABEL_11:
   if (self->_beganNewTransaction)
   {
     WeakRetained = objc_loadWeakRetained(&self->_writer);
-    v8 = [(ML3ActiveTransaction *)self->_transaction identifier];
+    identifier = [(ML3ActiveTransaction *)self->_transaction identifier];
     v13 = 0;
-    v3 = [WeakRetained endTransaction:v8 shouldCommit:v3 error:&v13];
+    v3 = [WeakRetained endTransaction:identifier shouldCommit:v3 error:&v13];
     v9 = v13;
 
     if ((v3 & 1) == 0)
@@ -224,7 +224,7 @@ LABEL_11:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 2114;
         v19 = v9;
         _os_log_impl(&dword_22D2FA000, v10, OS_LOG_TYPE_ERROR, "Failed to end transaction for operation %{public}@. %{public}@", buf, 0x16u);
@@ -254,31 +254,31 @@ LABEL_11:
   [(ML3DatabaseOperation *)self setError:v12];
 }
 
-- (ML3DatabaseOperation)initWithLibrary:(id)a3 writer:(id)a4
+- (ML3DatabaseOperation)initWithLibrary:(id)library writer:(id)writer
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  writerCopy = writer;
   v12.receiver = self;
   v12.super_class = ML3DatabaseOperation;
   v9 = [(ML3DatabaseOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_library, a3);
+    objc_storeStrong(&v9->_library, library);
     v10->_type = 0;
-    objc_storeWeak(&v10->_writer, v8);
+    objc_storeWeak(&v10->_writer, writerCopy);
   }
 
   return v10;
 }
 
-+ (id)databaseOperationForType:(unint64_t)a3 withLibrary:(id)a4 writer:(id)a5
++ (id)databaseOperationForType:(unint64_t)type withLibrary:(id)library writer:(id)writer
 {
-  v7 = a4;
-  v8 = a5;
-  if (a3 - 1 <= 8 && (v9 = objc_opt_class()) != 0)
+  libraryCopy = library;
+  writerCopy = writer;
+  if (type - 1 <= 8 && (v9 = objc_opt_class()) != 0)
   {
-    v10 = [[v9 alloc] initWithLibrary:v7 writer:v8];
+    v10 = [[v9 alloc] initWithLibrary:libraryCopy writer:writerCopy];
   }
 
   else

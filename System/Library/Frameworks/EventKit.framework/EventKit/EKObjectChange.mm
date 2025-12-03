@@ -1,57 +1,57 @@
 @interface EKObjectChange
-+ (id)CADObjectChangeIDsFromEKObjectChanges:(id)a3;
-+ (id)objectChangeWithProperties:(id)a3;
-+ (id)processFetchResults:(id)a3;
++ (id)CADObjectChangeIDsFromEKObjectChanges:(id)changes;
++ (id)objectChangeWithProperties:(id)properties;
++ (id)processFetchResults:(id)results;
 + (int)entityType;
-+ (void)fetchChangesToObjectsOfTypes:(id)a3 inCalendar:(id)a4 resultHandler:(id)a5;
-+ (void)fetchChangesToObjectsOfTypes:(id)a3 inSource:(id)a4 resultHandler:(id)a5;
-+ (void)fetchChangesToObjectsOfTypes:(id)a3 inStore:(id)a4 resultHandler:(id)a5;
-+ (void)objectChangesOfType:(id)a3 inCalendar:(id)a4 resultHandler:(id)a5;
-+ (void)objectChangesOfType:(id)a3 inSource:(id)a4 resultHandler:(id)a5;
-+ (void)objectChangesOfType:(id)a3 inStore:(id)a4 resultHandler:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (EKObjectChange)initWithChangeProperties:(id)a3;
++ (void)fetchChangesToObjectsOfTypes:(id)types inCalendar:(id)calendar resultHandler:(id)handler;
++ (void)fetchChangesToObjectsOfTypes:(id)types inSource:(id)source resultHandler:(id)handler;
++ (void)fetchChangesToObjectsOfTypes:(id)types inStore:(id)store resultHandler:(id)handler;
++ (void)objectChangesOfType:(id)type inCalendar:(id)calendar resultHandler:(id)handler;
++ (void)objectChangesOfType:(id)type inSource:(id)source resultHandler:(id)handler;
++ (void)objectChangesOfType:(id)type inStore:(id)store resultHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (EKObjectChange)initWithChangeProperties:(id)properties;
 - (id)description;
 - (id)serializedPropertiesForConsumingChange;
 @end
 
 @implementation EKObjectChange
 
-- (EKObjectChange)initWithChangeProperties:(id)a3
+- (EKObjectChange)initWithChangeProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v12.receiver = self;
   v12.super_class = EKObjectChange;
   v5 = [(EKObjectChange *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"record"];
+    v6 = [propertiesCopy objectForKeyedSubscript:@"record"];
     changedObjectID = v5->_changedObjectID;
     v5->_changedObjectID = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"type"];
+    v8 = [propertiesCopy objectForKeyedSubscript:@"type"];
     v5->_changeType = [v8 integerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"ROWID"];
+    v9 = [propertiesCopy objectForKeyedSubscript:@"ROWID"];
     v5->_changeID = [v9 integerValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"sequence_number"];
+    v10 = [propertiesCopy objectForKeyedSubscript:@"sequence_number"];
     v5->_sequenceNumber = [v10 integerValue];
   }
 
   return v5;
 }
 
-+ (id)CADObjectChangeIDsFromEKObjectChanges:(id)a3
++ (id)CADObjectChangeIDsFromEKObjectChanges:(id)changes
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  changesCopy = changes;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = changesCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -67,15 +67,15 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 changedObjectID];
-        v12 = [v11 databaseID];
-        v13 = [MEMORY[0x1E696AD98] numberWithInt:v12];
+        changedObjectID = [v10 changedObjectID];
+        databaseID = [changedObjectID databaseID];
+        v13 = [MEMORY[0x1E696AD98] numberWithInt:databaseID];
         v14 = [v4 objectForKeyedSubscript:v13];
 
         if (!v14)
         {
           v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-          v15 = [MEMORY[0x1E696AD98] numberWithInt:v12];
+          v15 = [MEMORY[0x1E696AD98] numberWithInt:databaseID];
           [v4 setObject:v14 forKeyedSubscript:v15];
         }
 
@@ -94,56 +94,56 @@
   return v4;
 }
 
-+ (void)objectChangesOfType:(id)a3 inStore:(id)a4 resultHandler:(id)a5
++ (void)objectChangesOfType:(id)type inStore:(id)store resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a3;
-  v12 = [a1 processFetchResults:a5];
-  v10 = [v8 connection];
+  storeCopy = store;
+  typeCopy = type;
+  v12 = [self processFetchResults:handler];
+  connection = [storeCopy connection];
 
-  v11 = [v10 CADOperationProxySync];
-  [v11 CADDatabaseFetchObjectChangesForEntityTypes:v9 insideObject:0 reply:v12];
+  cADOperationProxySync = [connection CADOperationProxySync];
+  [cADOperationProxySync CADDatabaseFetchObjectChangesForEntityTypes:typeCopy insideObject:0 reply:v12];
 }
 
-+ (void)objectChangesOfType:(id)a3 inSource:(id)a4 resultHandler:(id)a5
++ (void)objectChangesOfType:(id)type inSource:(id)source resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a3;
-  v14 = [a1 processFetchResults:a5];
-  v10 = [v8 eventStore];
-  v11 = [v10 connection];
-  v12 = [v11 CADOperationProxySync];
-  v13 = [v8 CADObjectID];
+  sourceCopy = source;
+  typeCopy = type;
+  v14 = [self processFetchResults:handler];
+  eventStore = [sourceCopy eventStore];
+  connection = [eventStore connection];
+  cADOperationProxySync = [connection CADOperationProxySync];
+  cADObjectID = [sourceCopy CADObjectID];
 
-  [v12 CADDatabaseFetchObjectChangesForEntityTypes:v9 insideObject:v13 reply:v14];
+  [cADOperationProxySync CADDatabaseFetchObjectChangesForEntityTypes:typeCopy insideObject:cADObjectID reply:v14];
 }
 
-+ (void)objectChangesOfType:(id)a3 inCalendar:(id)a4 resultHandler:(id)a5
++ (void)objectChangesOfType:(id)type inCalendar:(id)calendar resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a3;
-  v14 = [a1 processFetchResults:a5];
-  v10 = [v8 eventStore];
-  v11 = [v10 connection];
-  v12 = [v11 CADOperationProxySync];
-  v13 = [v8 CADObjectID];
+  calendarCopy = calendar;
+  typeCopy = type;
+  v14 = [self processFetchResults:handler];
+  eventStore = [calendarCopy eventStore];
+  connection = [eventStore connection];
+  cADOperationProxySync = [connection CADOperationProxySync];
+  cADObjectID = [calendarCopy CADObjectID];
 
-  [v12 CADDatabaseFetchObjectChangesForEntityTypes:v9 insideObject:v13 reply:v14];
+  [cADOperationProxySync CADDatabaseFetchObjectChangesForEntityTypes:typeCopy insideObject:cADObjectID reply:v14];
 }
 
-+ (void)fetchChangesToObjectsOfTypes:(id)a3 inStore:(id)a4 resultHandler:(id)a5
++ (void)fetchChangesToObjectsOfTypes:(id)types inStore:(id)store resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  storeCopy = store;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__EKObjectChange_fetchChangesToObjectsOfTypes_inStore_resultHandler___block_invoke;
   v12[3] = &unk_1E77FE488;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [a1 objectChangesOfType:a3 inStore:v11 resultHandler:v12];
+  v13 = storeCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = storeCopy;
+  [self objectChangesOfType:types inStore:v11 resultHandler:v12];
 }
 
 void __69__EKObjectChange_fetchChangesToObjectsOfTypes_inStore_resultHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -165,19 +165,19 @@ void __69__EKObjectChange_fetchChangesToObjectsOfTypes_inStore_resultHandler___b
   (*(v8 + 16))(v8, a2, v9, v7);
 }
 
-+ (void)fetchChangesToObjectsOfTypes:(id)a3 inSource:(id)a4 resultHandler:(id)a5
++ (void)fetchChangesToObjectsOfTypes:(id)types inSource:(id)source resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  sourceCopy = source;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__EKObjectChange_fetchChangesToObjectsOfTypes_inSource_resultHandler___block_invoke;
   v12[3] = &unk_1E77FE488;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [a1 objectChangesOfType:a3 inSource:v11 resultHandler:v12];
+  v13 = sourceCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = sourceCopy;
+  [self objectChangesOfType:types inSource:v11 resultHandler:v12];
 }
 
 void __70__EKObjectChange_fetchChangesToObjectsOfTypes_inSource_resultHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -195,19 +195,19 @@ void __70__EKObjectChange_fetchChangesToObjectsOfTypes_inSource_resultHandler___
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)fetchChangesToObjectsOfTypes:(id)a3 inCalendar:(id)a4 resultHandler:(id)a5
++ (void)fetchChangesToObjectsOfTypes:(id)types inCalendar:(id)calendar resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  calendarCopy = calendar;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__EKObjectChange_fetchChangesToObjectsOfTypes_inCalendar_resultHandler___block_invoke;
   v12[3] = &unk_1E77FE488;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [a1 objectChangesOfType:a3 inCalendar:v11 resultHandler:v12];
+  v13 = calendarCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = calendarCopy;
+  [self objectChangesOfType:types inCalendar:v11 resultHandler:v12];
 }
 
 void __72__EKObjectChange_fetchChangesToObjectsOfTypes_inCalendar_resultHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -231,15 +231,15 @@ void __72__EKObjectChange_fetchChangesToObjectsOfTypes_inCalendar_resultHandler_
   (*(v9 + 16))(v9, a2, v10, v7);
 }
 
-+ (id)processFetchResults:(id)a3
++ (id)processFetchResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __38__EKObjectChange_processFetchResults___block_invoke;
   aBlock[3] = &unk_1E77FE4B0;
-  v8 = v3;
-  v4 = v3;
+  v8 = resultsCopy;
+  v4 = resultsCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -309,10 +309,10 @@ void __38__EKObjectChange_processFetchResults___block_invoke(uint64_t a1, uint64
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -320,7 +320,7 @@ void __38__EKObjectChange_processFetchResults___block_invoke(uint64_t a1, uint64
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && self->_changeID == v4->_changeID;
+    v6 = v5 == objc_opt_class() && self->_changeID == equalCopy->_changeID;
   }
 
   return v6;
@@ -350,20 +350,20 @@ void __38__EKObjectChange_processFetchResults___block_invoke(uint64_t a1, uint64
   return -1;
 }
 
-+ (id)objectChangeWithProperties:(id)a3
++ (id)objectChangeWithProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"record"];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKeyedSubscript:@"record"];
   if (v4)
   {
     v5 = [EKObjectID objectIDWithCADObjectID:v4];
-    v6 = [v3 mutableCopy];
+    v6 = [propertiesCopy mutableCopy];
     [v6 setObject:v5 forKeyedSubscript:@"record"];
     v7 = v6;
 
-    v8 = [v5 entityType];
-    v9 = v8;
-    switch(v8)
+    entityType = [v5 entityType];
+    v9 = entityType;
+    switch(entityType)
     {
       case -1:
       case 3:
@@ -431,7 +431,7 @@ LABEL_25:
         v11 = [[v13 alloc] initWithChangeProperties:v7];
         break;
       default:
-        if ((v8 - 100) < 3)
+        if ((entityType - 100) < 3)
         {
 LABEL_3:
           v10 = EKLogHandle;
@@ -459,7 +459,7 @@ LABEL_8:
   else
   {
     v11 = 0;
-    v7 = v3;
+    v7 = propertiesCopy;
   }
 
   return v11;

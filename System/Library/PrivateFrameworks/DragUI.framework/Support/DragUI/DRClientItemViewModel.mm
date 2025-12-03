@@ -2,26 +2,26 @@
 - (BOOL)createImageRequest;
 - (BOOL)invalidateImage;
 - (CGPoint)anchorPoint;
-- (DRClientItemViewModel)initWithClient:(id)a3;
+- (DRClientItemViewModel)initWithClient:(id)client;
 - (void)fulfillImageRequest;
 @end
 
 @implementation DRClientItemViewModel
 
-- (DRClientItemViewModel)initWithClient:(id)a3
+- (DRClientItemViewModel)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v14.receiver = self;
   v14.super_class = DRClientItemViewModel;
   v6 = [(DRClientItemViewModel *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_client, a3);
+    objc_storeStrong(&v6->_client, client);
     __asm { FMOV            V0.2D, #0.5 }
 
     v7->_anchorPoint = _Q0;
-    v7->_imageDirty = [v5 isSource];
+    v7->_imageDirty = [clientCopy isSource];
   }
 
   return v7;

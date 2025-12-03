@@ -1,23 +1,23 @@
 @interface MOManageServer
-- (BOOL)clientConnection:(id)a3 hasInternalEntitlement:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MOManageServer)initWithUniverse:(id)a3;
-- (id)getInternalEntitlementsForConnection:(id)a3;
+- (BOOL)clientConnection:(id)connection hasInternalEntitlement:(id)entitlement;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MOManageServer)initWithUniverse:(id)universe;
+- (id)getInternalEntitlementsForConnection:(id)connection;
 - (id)getNotifier;
 - (void)getNotifier;
 @end
 
 @implementation MOManageServer
 
-- (MOManageServer)initWithUniverse:(id)a3
+- (MOManageServer)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v85.receiver = self;
   v85.super_class = MOManageServer;
   v6 = [(MOManageServer *)&v85 init];
   if (v6)
   {
-    v7 = [[MODaemonClient alloc] initWithUniverse:v5];
+    v7 = [[MODaemonClient alloc] initWithUniverse:universeCopy];
     client = v6->_client;
     v6->_client = v7;
 
@@ -28,7 +28,7 @@
 
     if (v6->interface)
     {
-      v83 = v5;
+      v83 = universeCopy;
       if (!MomentsLibraryCore() || !NSClassFromString(@"MONotificationScheduleItem"))
       {
         v11 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
@@ -157,7 +157,7 @@
 
       v81 = v39;
 
-      v5 = v83;
+      universeCopy = v83;
     }
 
     else
@@ -180,9 +180,9 @@
   return v80;
 }
 
-- (id)getInternalEntitlementsForConnection:(id)a3
+- (id)getInternalEntitlementsForConnection:(id)connection
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.momentsd.internal"];
+  v3 = [connection valueForEntitlement:@"com.apple.momentsd.internal"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -199,10 +199,10 @@
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(MOManageServer *)self getInternalEntitlementsForConnection:v5];
+  connectionCopy = connection;
+  v6 = [(MOManageServer *)self getInternalEntitlementsForConnection:connectionCopy];
   v7 = [v6 count];
 
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
@@ -212,27 +212,27 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11[0] = 67109378;
-      v11[1] = [v5 processIdentifier];
+      v11[1] = [connectionCopy processIdentifier];
       v12 = 2112;
-      v13 = v5;
+      v13 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "New XPC connection from process %d (%@)", v11, 0x12u);
     }
 
-    [v5 setExportedInterface:self->interface];
-    [v5 setExportedObject:self->_client];
-    [v5 setInterruptionHandler:&__block_literal_global_0];
-    [v5 setInvalidationHandler:&__block_literal_global_237];
-    [v5 resume];
+    [connectionCopy setExportedInterface:self->interface];
+    [connectionCopy setExportedObject:self->_client];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_0];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_237];
+    [connectionCopy resume];
   }
 
   else
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [MOManageServer listener:v5 shouldAcceptNewConnection:v9];
+      [MOManageServer listener:connectionCopy shouldAcceptNewConnection:v9];
     }
 
-    [v5 invalidate];
+    [connectionCopy invalidate];
   }
 
   return v7 != 0;
@@ -262,8 +262,8 @@ void __53__MOManageServer_listener_shouldAcceptNewConnection___block_invoke_235(
   client = self->_client;
   if (client)
   {
-    v5 = [(MODaemonClient *)client notifier];
-    if (v5)
+    notifier = [(MODaemonClient *)client notifier];
+    if (notifier)
     {
       goto LABEL_10;
     }
@@ -288,19 +288,19 @@ void __53__MOManageServer_listener_shouldAcceptNewConnection___block_invoke_235(
 
     v7 = +[NSAssertionHandler currentHandler];
     [v7 handleFailureInMethod:a2 object:self file:@"MOManageServer.m" lineNumber:168 description:@"Invalid parameter not satisfying: _client"];
-    v5 = 0;
+    notifier = 0;
   }
 
 LABEL_10:
 
-  return v5;
+  return notifier;
 }
 
-- (BOOL)clientConnection:(id)a3 hasInternalEntitlement:(id)a4
+- (BOOL)clientConnection:(id)connection hasInternalEntitlement:(id)entitlement
 {
-  v6 = a4;
-  v7 = [(MOManageServer *)self getInternalEntitlementsForConnection:a3];
-  LOBYTE(self) = [v7 containsObject:v6];
+  entitlementCopy = entitlement;
+  v7 = [(MOManageServer *)self getInternalEntitlementsForConnection:connection];
+  LOBYTE(self) = [v7 containsObject:entitlementCopy];
 
   return self;
 }

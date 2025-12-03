@@ -1,20 +1,20 @@
 @interface TUISmartGridBox
-+ (double)columnWidthWithConfiguration:(id)a3 columns:(unint64_t)a4 spacing:(double)a5;
-+ (unint64_t)columnsWithConfiguration:(id)a3;
-+ (unint64_t)layoutModeFromString:(id)a3;
-+ (unint64_t)verticalPlacementFromString:(id)a3;
++ (double)columnWidthWithConfiguration:(id)configuration columns:(unint64_t)columns spacing:(double)spacing;
++ (unint64_t)columnsWithConfiguration:(id)configuration;
++ (unint64_t)layoutModeFromString:(id)string;
++ (unint64_t)verticalPlacementFromString:(id)string;
 - (UIEdgeInsets)gradientFraction;
 - (UIEdgeInsets)gradientInsets;
 - (UIEdgeInsets)insets;
-- (void)updateWithContents:(id)a3;
+- (void)updateWithContents:(id)contents;
 @end
 
 @implementation TUISmartGridBox
 
-+ (unint64_t)layoutModeFromString:(id)a3
++ (unint64_t)layoutModeFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6588 != -1)
   {
     sub_19BC2C();
@@ -24,26 +24,26 @@
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6580 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (void)updateWithContents:(id)a3
+- (void)updateWithContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   if ((self->_layoutMode & 0xFFFFFFFFFFFFFFFBLL) != 0)
   {
     v5 = off_25CD18;
@@ -61,12 +61,12 @@ LABEL_6:
   [(TUIScrollingBox *)self->_scrollBox setAcceptsDrop:self->_acceptsDrop];
   [(TUIScrollingBox *)self->_scrollBox setDropHandler:self->_dropHandler];
   [(TUIScrollingBox *)self->_scrollBox setDecelerationRate:self->_decelerationRate];
-  v8 = [(TUIBox *)self identifier];
-  v9 = [v8 tui_identifierByAppendingString:@"scrollable"];
+  identifier = [(TUIBox *)self identifier];
+  v9 = [identifier tui_identifierByAppendingString:@"scrollable"];
   [(TUIScrollingBox *)self->_scrollBox setIdentifier:v9];
 
-  v10 = [(TUISmartGridBox *)self modelIdentifierForScrollable];
-  [(TUIScrollingBox *)self->_scrollBox setModelIdentifierForScrollable:v10];
+  modelIdentifierForScrollable = [(TUISmartGridBox *)self modelIdentifierForScrollable];
+  [(TUIScrollingBox *)self->_scrollBox setModelIdentifierForScrollable:modelIdentifierForScrollable];
 
   content = self->_content;
   if (!content)
@@ -75,14 +75,14 @@ LABEL_6:
     v13 = self->_content;
     self->_content = v12;
 
-    v14 = [(TUIBox *)self identifier];
-    v15 = [v14 tui_identifierByAppendingString:@"content"];
+    identifier2 = [(TUIBox *)self identifier];
+    v15 = [identifier2 tui_identifierByAppendingString:@"content"];
     [(TUIBox *)self->_content setIdentifier:v15];
 
     content = self->_content;
   }
 
-  [(TUIContainerBox *)content updateModelChildren:v4];
+  [(TUIContainerBox *)content updateModelChildren:contentsCopy];
   v16 = self->_scrollBox;
   v20 = self->_content;
   v17 = [NSArray arrayWithObjects:&v20 count:1];
@@ -93,10 +93,10 @@ LABEL_6:
   [(TUIContainerBox *)self updateModelChildren:v18];
 }
 
-+ (unint64_t)verticalPlacementFromString:(id)a3
++ (unint64_t)verticalPlacementFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6598 != -1)
   {
     sub_19BC40();
@@ -106,95 +106,95 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6590 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)columnsWithConfiguration:(id)a3
++ (unint64_t)columnsWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 columns];
-  [v3 width];
+  configurationCopy = configuration;
+  columns = [configurationCopy columns];
+  [configurationCopy width];
   v6 = v5;
-  [v3 contentInsets];
+  [configurationCopy contentInsets];
   v8 = v7;
   v10 = v9;
-  v11 = [v3 columnSpacing];
-  v13 = TUILengthValueWithDefault(v11, v12, 0.0);
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL || !v4)
+  columnSpacing = [configurationCopy columnSpacing];
+  v13 = TUILengthValueWithDefault(columnSpacing, v12, 0.0);
+  if (columns == 0x7FFFFFFFFFFFFFFFLL || !columns)
   {
-    v14 = [v3 columnWidth];
-    v16 = TUILengthValueWithDefault(v14, v15, 100.0);
-    v17 = [v3 widthSnap];
+    columnWidth = [configurationCopy columnWidth];
+    v16 = TUILengthValueWithDefault(columnWidth, v15, 100.0);
+    widthSnap = [configurationCopy widthSnap];
 
-    if (v17)
+    if (widthSnap)
     {
-      v18 = [v3 widthSnap];
-      [v18 valueForValue:v6];
+      widthSnap2 = [configurationCopy widthSnap];
+      [widthSnap2 valueForValue:v6];
       v6 = v19;
     }
 
-    v4 = vcvtmd_u64_f64((v13 + v6 - v8 - v10) / (v13 + v16));
+    columns = vcvtmd_u64_f64((v13 + v6 - v8 - v10) / (v13 + v16));
   }
 
-  v20 = [v3 columnMultiple];
-  if (v20 <= 1)
+  columnMultiple = [configurationCopy columnMultiple];
+  if (columnMultiple <= 1)
   {
     v21 = 1;
   }
 
   else
   {
-    v21 = v20;
+    v21 = columnMultiple;
   }
 
-  if (v4 <= v21)
+  if (columns <= v21)
   {
     v22 = v21;
   }
 
   else
   {
-    v22 = v4;
+    v22 = columns;
   }
 
   v23 = v22 / v21 * v21;
-  if ([v3 maxColumns] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([configurationCopy maxColumns] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v24 = [v3 maxColumns];
-    if (v24 < v23)
+    maxColumns = [configurationCopy maxColumns];
+    if (maxColumns < v23)
     {
-      v23 = v24;
+      v23 = maxColumns;
     }
   }
 
   return v23;
 }
 
-+ (double)columnWidthWithConfiguration:(id)a3 columns:(unint64_t)a4 spacing:(double)a5
++ (double)columnWidthWithConfiguration:(id)configuration columns:(unint64_t)columns spacing:(double)spacing
 {
-  v7 = a3;
-  [v7 width];
+  configurationCopy = configuration;
+  [configurationCopy width];
   v9 = v8;
-  [v7 contentInsets];
-  v12 = (v9 - v10 - v11 + a5) / a4 - a5;
-  [v7 columnWidth];
-  LODWORD(a4) = v13;
+  [configurationCopy contentInsets];
+  v12 = (v9 - v10 - v11 + spacing) / columns - spacing;
+  [configurationCopy columnWidth];
+  LODWORD(columns) = v13;
 
-  return fmin(v12, *&a4);
+  return fmin(v12, *&columns);
 }
 
 - (UIEdgeInsets)insets

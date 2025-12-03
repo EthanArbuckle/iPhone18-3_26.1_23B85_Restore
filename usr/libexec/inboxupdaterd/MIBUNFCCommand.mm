@@ -1,5 +1,5 @@
 @interface MIBUNFCCommand
-+ (unsigned)expectedAPDULength:(id)a3;
++ (unsigned)expectedAPDULength:(id)length;
 - (BOOL)_deserializeAuthenticate;
 - (BOOL)_deserializeChallenge;
 - (BOOL)_deserializeConfigureNFC;
@@ -9,11 +9,11 @@
 - (BOOL)_deserializeStartDiag;
 - (BOOL)_deserializeStartUpdate;
 - (BOOL)_deserializeTatsuPayload;
-- (BOOL)_initWithAPDU:(id)a3;
-- (BOOL)_initWithCommandCode:(int64_t)a3;
+- (BOOL)_initWithAPDU:(id)u;
+- (BOOL)_initWithCommandCode:(int64_t)code;
 - (Class)getResponseClass;
-- (MIBUNFCCommand)initWithAPDU:(id)a3;
-- (MIBUNFCCommand)initWithCommandCode:(int64_t)a3 andPayload:(id)a4;
+- (MIBUNFCCommand)initWithAPDU:(id)u;
+- (MIBUNFCCommand)initWithCommandCode:(int64_t)code andPayload:(id)payload;
 - (id)_serializeAuthenticate;
 - (id)_serializeChallenge;
 - (id)_serializeConfigureNFC;
@@ -22,40 +22,40 @@
 - (id)_serializeSSUpdate;
 - (id)_serializeStartDiag;
 - (id)_serializeStartUpdate;
-- (id)_serializeTatsuPayload:(id)a3;
+- (id)_serializeTatsuPayload:(id)payload;
 @end
 
 @implementation MIBUNFCCommand
 
-+ (unsigned)expectedAPDULength:(id)a3
++ (unsigned)expectedAPDULength:(id)length
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  if ([v3 length] == 4 || objc_msgSend(v3, "length") == 5)
+  lengthCopy = length;
+  bytes = [lengthCopy bytes];
+  if ([lengthCopy length] == 4 || objc_msgSend(lengthCopy, "length") == 5)
   {
     LOWORD(v5) = 4;
   }
 
   else
   {
-    LOWORD(v5) = v4[4];
-    if (!v4[4])
+    LOWORD(v5) = bytes[4];
+    if (!bytes[4])
     {
-      v5 = (bswap32(*(v4 + 5)) >> 16) + 7;
+      v5 = (bswap32(*(bytes + 5)) >> 16) + 7;
     }
   }
 
   return v5;
 }
 
-- (MIBUNFCCommand)initWithCommandCode:(int64_t)a3 andPayload:(id)a4
+- (MIBUNFCCommand)initWithCommandCode:(int64_t)code andPayload:(id)payload
 {
-  v6 = a4;
+  payloadCopy = payload;
   v12.receiver = self;
   v12.super_class = MIBUNFCCommand;
   v7 = [(MIBUNFCCommand *)&v12 init];
   v8 = v7;
-  if (v7 && (v7->_code = a3, v9 = [v6 mutableCopy], -[MIBUNFCCommand setMutablePayload:](v8, "setMutablePayload:", v9), v9, !-[MIBUNFCCommand _initWithCommandCode:](v8, "_initWithCommandCode:", a3)))
+  if (v7 && (v7->_code = code, v9 = [payloadCopy mutableCopy], -[MIBUNFCCommand setMutablePayload:](v8, "setMutablePayload:", v9), v9, !-[MIBUNFCCommand _initWithCommandCode:](v8, "_initWithCommandCode:", code)))
   {
     v10 = 0;
   }
@@ -68,14 +68,14 @@
   return v10;
 }
 
-- (MIBUNFCCommand)initWithAPDU:(id)a3
+- (MIBUNFCCommand)initWithAPDU:(id)u
 {
-  v5 = a3;
+  uCopy = u;
   v11.receiver = self;
   v11.super_class = MIBUNFCCommand;
   v6 = [(MIBUNFCCommand *)&v11 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_apdu, a3), v8 = objc_opt_new(), [(MIBUNFCCommand *)v7 setMutablePayload:v8], v8, ![(MIBUNFCCommand *)v7 _initWithAPDU:v5]))
+  if (v6 && (objc_storeStrong(&v6->_apdu, u), v8 = objc_opt_new(), [(MIBUNFCCommand *)v7 setMutablePayload:v8], v8, ![(MIBUNFCCommand *)v7 _initWithAPDU:uCopy]))
   {
     v9 = 0;
   }
@@ -104,7 +104,7 @@
   return v6;
 }
 
-- (BOOL)_initWithCommandCode:(int64_t)a3
+- (BOOL)_initWithCommandCode:(int64_t)code
 {
   v5 = objc_opt_new();
   self->_cla = 0;
@@ -120,7 +120,7 @@
     case 2:
       *&self->_ins = 474;
       self->_p2 = 1;
-      v7 = [(MIBUNFCCommand *)self _serializeStartUpdate];
+      _serializeStartUpdate = [(MIBUNFCCommand *)self _serializeStartUpdate];
       goto LABEL_20;
     case 3:
       *&self->_ins = 458;
@@ -129,8 +129,8 @@
     case 4:
       *&self->_ins = 1188;
       self->_p2 = 0;
-      v8 = [(MIBUNFCCommand *)self mutablePayload];
-      v9 = [v8 objectForKey:@"ApplicationID"];
+      mutablePayload = [(MIBUNFCCommand *)self mutablePayload];
+      v9 = [mutablePayload objectForKey:@"ApplicationID"];
       v10 = self->_serializedPayload;
       self->_serializedPayload = v9;
 
@@ -138,12 +138,12 @@
     case 6:
       *&self->_ins = 474;
       self->_p2 = 2;
-      v7 = [(MIBUNFCCommand *)self _serializeRetryAfter];
+      _serializeStartUpdate = [(MIBUNFCCommand *)self _serializeRetryAfter];
       goto LABEL_20;
     case 7:
       *&self->_ins = 474;
       self->_p2 = 3;
-      v7 = [(MIBUNFCCommand *)self _serializeHeartbeat];
+      _serializeStartUpdate = [(MIBUNFCCommand *)self _serializeHeartbeat];
       goto LABEL_20;
     case 8:
       *&self->_ins = 474;
@@ -155,35 +155,35 @@
 LABEL_18:
       self->_p2 = v13;
 LABEL_19:
-      v7 = objc_opt_new();
+      _serializeStartUpdate = objc_opt_new();
       goto LABEL_20;
     case 0xALL:
       *&self->_ins = 474;
       self->_p2 = 5;
-      v7 = [(MIBUNFCCommand *)self _serializeConfigureNFC];
+      _serializeStartUpdate = [(MIBUNFCCommand *)self _serializeConfigureNFC];
       goto LABEL_20;
     case 0xBLL:
       *&self->_ins = 474;
       self->_p2 = 6;
-      v7 = [(MIBUNFCCommand *)self _serializeStartDiag];
+      _serializeStartUpdate = [(MIBUNFCCommand *)self _serializeStartDiag];
       goto LABEL_20;
     case 0xCLL:
       *&self->_ins = 474;
       self->_p2 = 7;
-      v7 = [(MIBUNFCCommand *)self _serializeChallenge];
+      _serializeStartUpdate = [(MIBUNFCCommand *)self _serializeChallenge];
       goto LABEL_20;
     case 0xDLL:
       *&self->_ins = 474;
       self->_p2 = 8;
-      v7 = [(MIBUNFCCommand *)self _serializeAuthenticate];
+      _serializeStartUpdate = [(MIBUNFCCommand *)self _serializeAuthenticate];
       goto LABEL_20;
     case 0xELL:
       *&self->_ins = 474;
       self->_p2 = 9;
-      v7 = [(MIBUNFCCommand *)self _serializeSSUpdate];
+      _serializeStartUpdate = [(MIBUNFCCommand *)self _serializeSSUpdate];
 LABEL_20:
-      v8 = self->_serializedPayload;
-      self->_serializedPayload = v7;
+      mutablePayload = self->_serializedPayload;
+      self->_serializedPayload = _serializeStartUpdate;
 LABEL_21:
 
       v14 = self->_serializedPayload;
@@ -239,7 +239,7 @@ LABEL_21:
       v11 = qword_1000B84A0;
       if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
       {
-        sub_100060E44(a3, v11);
+        sub_100060E44(code, v11);
       }
 
       v12 = 0;
@@ -249,41 +249,41 @@ LABEL_21:
   return v12;
 }
 
-- (BOOL)_initWithAPDU:(id)a3
+- (BOOL)_initWithAPDU:(id)u
 {
-  v4 = a3;
+  uCopy = u;
   self->_code = 0;
   serializedPayload = self->_serializedPayload;
   self->_serializedPayload = 0;
 
-  if ([v4 length] <= 3)
+  if ([uCopy length] <= 3)
   {
     sub_100061680();
     v16 = v32[1];
     goto LABEL_50;
   }
 
-  v6 = [v4 bytes];
-  if (*v6)
+  bytes = [uCopy bytes];
+  if (*bytes)
   {
-    sub_100060EBC(*v6, v23);
+    sub_100060EBC(*bytes, v23);
     v16 = v23[0];
     goto LABEL_50;
   }
 
-  v7 = v6[1];
-  v8 = v6[2];
-  v9 = v6[3];
-  if ([v4 length] == 4)
+  v7 = bytes[1];
+  v8 = bytes[2];
+  v9 = bytes[3];
+  if ([uCopy length] == 4)
   {
     goto LABEL_6;
   }
 
-  v10 = [v4 length];
-  v11 = v6[4];
+  v10 = [uCopy length];
+  v11 = bytes[4];
   if (v10 == 5)
   {
-    if (v6[4])
+    if (bytes[4])
     {
       sub_100061170(&v24);
       v16 = v24;
@@ -295,33 +295,33 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  if (v6[4])
+  if (bytes[4])
   {
     v13 = 5;
   }
 
   else
   {
-    if ([v4 length] <= 6)
+    if ([uCopy length] <= 6)
     {
       sub_100061094();
       v16 = v23[2];
       goto LABEL_50;
     }
 
-    v11 = bswap32(*(v6 + 5)) >> 16;
+    v11 = bswap32(*(bytes + 5)) >> 16;
     v13 = 7;
   }
 
   v14 = v11;
-  if (v13 + v11 > [v4 length])
+  if (v13 + v11 > [uCopy length])
   {
     sub_100060F90(v14);
     v16 = v23[1];
     goto LABEL_50;
   }
 
-  v12 = +[NSData dataWithBytesNoCopy:length:freeWhenDone:](NSData, "dataWithBytesNoCopy:length:freeWhenDone:", [v4 bytes] + v13, v14, 0);
+  v12 = +[NSData dataWithBytesNoCopy:length:freeWhenDone:](NSData, "dataWithBytesNoCopy:length:freeWhenDone:", [uCopy bytes] + v13, v14, 0);
 LABEL_13:
   v15 = self->_serializedPayload;
   self->_serializedPayload = v12;
@@ -485,8 +485,8 @@ LABEL_13:
     if (v8 == 4 && !v9)
     {
       self->_code = 4;
-      v17 = [(MIBUNFCCommand *)self mutablePayload];
-      v18 = v17;
+      mutablePayload = [(MIBUNFCCommand *)self mutablePayload];
+      v18 = mutablePayload;
       v19 = self->_serializedPayload;
       v20 = @"ApplicationID";
       goto LABEL_27;
@@ -498,12 +498,12 @@ LABEL_13:
     if (!(v8 | v9))
     {
       self->_code = 5;
-      v17 = [(MIBUNFCCommand *)self mutablePayload];
-      v18 = v17;
+      mutablePayload = [(MIBUNFCCommand *)self mutablePayload];
+      v18 = mutablePayload;
       v19 = self->_serializedPayload;
       v20 = @"EvelopedAPDU";
 LABEL_27:
-      [v17 setObject:v19 forKey:v20];
+      [mutablePayload setObject:v19 forKey:v20];
     }
 
 LABEL_49:
@@ -529,8 +529,8 @@ LABEL_50:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Serializing startUpdate command", v7, 2u);
   }
 
-  v4 = [(MIBUNFCCommand *)self payload];
-  v5 = [(MIBUNFCCommand *)self _serializeTatsuPayload:v4];
+  payload = [(MIBUNFCCommand *)self payload];
+  v5 = [(MIBUNFCCommand *)self _serializeTatsuPayload:payload];
 
   return v5;
 }
@@ -538,8 +538,8 @@ LABEL_50:
 - (id)_serializeRetryAfter
 {
   v3 = objc_opt_new();
-  v4 = [(MIBUNFCCommand *)self payload];
-  v5 = [v4 objectForKey:@"RetryAfter"];
+  payload = [(MIBUNFCCommand *)self payload];
+  v5 = [payload objectForKey:@"RetryAfter"];
 
   if (v5)
   {
@@ -549,7 +549,7 @@ LABEL_50:
 
     if (v7)
     {
-      v8 = [v3 serializedData];
+      serializedData = [v3 serializedData];
       goto LABEL_4;
     }
 
@@ -561,22 +561,22 @@ LABEL_50:
     sub_100061844();
   }
 
-  v8 = v10;
+  serializedData = v10;
 LABEL_4:
 
-  return v8;
+  return serializedData;
 }
 
 - (id)_serializeHeartbeat
 {
   v3 = objc_opt_new();
-  v4 = [(MIBUNFCCommand *)self payload];
-  v5 = [v4 objectForKey:@"HeartbeatPeriod"];
+  payload = [(MIBUNFCCommand *)self payload];
+  v5 = [payload objectForKey:@"HeartbeatPeriod"];
 
   if (v5)
   {
-    v6 = [(MIBUNFCCommand *)self payload];
-    v7 = [v6 objectForKey:@"HeartbeatTimeout"];
+    payload2 = [(MIBUNFCCommand *)self payload];
+    v7 = [payload2 objectForKey:@"HeartbeatTimeout"];
 
     v16 = v5;
     v8 = [NSArray arrayWithObjects:&v16 count:1];
@@ -590,7 +590,7 @@ LABEL_4:
 
       if (v11)
       {
-        v12 = [v3 serializedData];
+        serializedData = [v3 serializedData];
 
         goto LABEL_5;
       }
@@ -603,25 +603,25 @@ LABEL_4:
       sub_100061910();
     }
 
-    v12 = 0;
+    serializedData = 0;
   }
 
   else
   {
     sub_100061AC4();
-    v12 = v14;
+    serializedData = v14;
   }
 
 LABEL_5:
 
-  return v12;
+  return serializedData;
 }
 
 - (id)_serializeConfigureNFC
 {
   v3 = objc_opt_new();
-  v4 = [(MIBUNFCCommand *)self payload];
-  v5 = [v4 objectForKey:@"NFCInactivityTimeout"];
+  payload = [(MIBUNFCCommand *)self payload];
+  v5 = [payload objectForKey:@"NFCInactivityTimeout"];
 
   if (v5)
   {
@@ -631,7 +631,7 @@ LABEL_5:
 
     if (v7)
     {
-      v8 = [v3 serializedData];
+      serializedData = [v3 serializedData];
       goto LABEL_4;
     }
 
@@ -643,10 +643,10 @@ LABEL_5:
     sub_100061C64();
   }
 
-  v8 = v10;
+  serializedData = v10;
 LABEL_4:
 
-  return v8;
+  return serializedData;
 }
 
 - (id)_serializeStartDiag
@@ -663,18 +663,18 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Serializing startDiag command", v7, 2u);
   }
 
-  v4 = [(MIBUNFCCommand *)self payload];
-  v5 = [(MIBUNFCCommand *)self _serializeTatsuPayload:v4];
+  payload = [(MIBUNFCCommand *)self payload];
+  v5 = [(MIBUNFCCommand *)self _serializeTatsuPayload:payload];
 
   return v5;
 }
 
-- (id)_serializeTatsuPayload:(id)a3
+- (id)_serializeTatsuPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKey:@"TatsuTicket"];
-  v6 = [v3 objectForKey:@"TimeStamp"];
+  v5 = [payloadCopy objectForKey:@"TatsuTicket"];
+  v6 = [payloadCopy objectForKey:@"TimeStamp"];
 
   if (v6)
   {
@@ -692,7 +692,7 @@ LABEL_4:
 
         if (v10)
         {
-          v11 = [v4 serializedData];
+          serializedData = [v4 serializedData];
           goto LABEL_6;
         }
 
@@ -716,17 +716,17 @@ LABEL_4:
     sub_100061FB8();
   }
 
-  v11 = v13;
+  serializedData = v13;
 LABEL_6:
 
-  return v11;
+  return serializedData;
 }
 
 - (id)_serializeChallenge
 {
   v3 = objc_opt_new();
-  v4 = [(MIBUNFCCommand *)self payload];
-  v5 = [v4 objectForKey:@"ChallengeBlob"];
+  payload = [(MIBUNFCCommand *)self payload];
+  v5 = [payload objectForKey:@"ChallengeBlob"];
 
   if (v5)
   {
@@ -736,7 +736,7 @@ LABEL_6:
 
     if (v7)
     {
-      v8 = [v3 serializedData];
+      serializedData = [v3 serializedData];
       goto LABEL_4;
     }
 
@@ -748,10 +748,10 @@ LABEL_6:
     sub_100062158();
   }
 
-  v8 = v10;
+  serializedData = v10;
 LABEL_4:
 
-  return v8;
+  return serializedData;
 }
 
 - (id)_serializeAuthenticate
@@ -768,8 +768,8 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Serializing authenticate command", v7, 2u);
   }
 
-  v4 = [(MIBUNFCCommand *)self payload];
-  v5 = [(MIBUNFCCommand *)self _serializeTatsuPayload:v4];
+  payload = [(MIBUNFCCommand *)self payload];
+  v5 = [(MIBUNFCCommand *)self _serializeTatsuPayload:payload];
 
   return v5;
 }
@@ -789,67 +789,67 @@ LABEL_4:
   }
 
   v4 = objc_opt_new();
-  v5 = [(MIBUNFCCommand *)self payload];
-  v6 = [v5 objectForKey:@"HostPort"];
+  payload = [(MIBUNFCCommand *)self payload];
+  v6 = [payload objectForKey:@"HostPort"];
 
-  v7 = [(MIBUNFCCommand *)self payload];
-  v8 = [v7 objectForKey:@"GroupAddress"];
+  payload2 = [(MIBUNFCCommand *)self payload];
+  v8 = [payload2 objectForKey:@"GroupAddress"];
 
-  v9 = [(MIBUNFCCommand *)self payload];
-  v10 = [v9 objectForKey:@"GroupPort"];
+  payload3 = [(MIBUNFCCommand *)self payload];
+  v10 = [payload3 objectForKey:@"GroupPort"];
 
-  v11 = [(MIBUNFCCommand *)self payload];
-  v12 = [v11 objectForKey:@"InterfaceName"];
+  payload4 = [(MIBUNFCCommand *)self payload];
+  v12 = [payload4 objectForKey:@"InterfaceName"];
 
-  v13 = [(MIBUNFCCommand *)self payload];
-  v14 = [v13 objectForKey:@"ServiceName"];
+  payload5 = [(MIBUNFCCommand *)self payload];
+  v14 = [payload5 objectForKey:@"ServiceName"];
 
-  v15 = [(MIBUNFCCommand *)self payload];
-  v84 = [v15 objectForKey:@"RQBasicParameters"];
+  payload6 = [(MIBUNFCCommand *)self payload];
+  v84 = [payload6 objectForKey:@"RQBasicParameters"];
 
-  v16 = [(MIBUNFCCommand *)self payload];
-  v83 = [v16 objectForKey:@"RQExtendedParameters"];
+  payload7 = [(MIBUNFCCommand *)self payload];
+  v83 = [payload7 objectForKey:@"RQExtendedParameters"];
 
-  v17 = [(MIBUNFCCommand *)self payload];
-  v82 = [v17 objectForKey:@"RQThreshold"];
+  payload8 = [(MIBUNFCCommand *)self payload];
+  v82 = [payload8 objectForKey:@"RQThreshold"];
 
-  v18 = [(MIBUNFCCommand *)self payload];
-  v80 = [v18 objectForKey:@"TCPAddress"];
+  payload9 = [(MIBUNFCCommand *)self payload];
+  v80 = [payload9 objectForKey:@"TCPAddress"];
 
-  v19 = [(MIBUNFCCommand *)self payload];
-  v79 = [v19 objectForKey:@"TCPPort"];
+  payload10 = [(MIBUNFCCommand *)self payload];
+  v79 = [payload10 objectForKey:@"TCPPort"];
 
-  v20 = [(MIBUNFCCommand *)self payload];
-  v81 = [v20 objectForKey:@"TCPPingInterval"];
+  payload11 = [(MIBUNFCCommand *)self payload];
+  v81 = [payload11 objectForKey:@"TCPPingInterval"];
 
-  v21 = [(MIBUNFCCommand *)self payload];
-  v78 = [v21 objectForKey:@"CountryCode"];
+  payload12 = [(MIBUNFCCommand *)self payload];
+  v78 = [payload12 objectForKey:@"CountryCode"];
 
-  v22 = [(MIBUNFCCommand *)self payload];
-  v77 = [v22 objectForKey:@"ChannelName"];
+  payload13 = [(MIBUNFCCommand *)self payload];
+  v77 = [payload13 objectForKey:@"ChannelName"];
 
-  v23 = [(MIBUNFCCommand *)self payload];
-  v76 = [v23 objectForKey:@"Band"];
+  payload14 = [(MIBUNFCCommand *)self payload];
+  v76 = [payload14 objectForKey:@"Band"];
 
-  v24 = [(MIBUNFCCommand *)self payload];
-  v75 = [v24 objectForKey:@"Bandwidth"];
+  payload15 = [(MIBUNFCCommand *)self payload];
+  v75 = [payload15 objectForKey:@"Bandwidth"];
 
-  v25 = [(MIBUNFCCommand *)self payload];
-  v74 = [v25 objectForKey:@"WiFiSSID"];
+  payload16 = [(MIBUNFCCommand *)self payload];
+  v74 = [payload16 objectForKey:@"WiFiSSID"];
 
-  v26 = [(MIBUNFCCommand *)self payload];
-  v73 = [v26 objectForKey:@"WiFiChannel"];
+  payload17 = [(MIBUNFCCommand *)self payload];
+  v73 = [payload17 objectForKey:@"WiFiChannel"];
 
-  v27 = [(MIBUNFCCommand *)self payload];
-  v28 = [v27 objectForKey:@"EnableRateAdapter"];
+  payload18 = [(MIBUNFCCommand *)self payload];
+  v28 = [payload18 objectForKey:@"EnableRateAdapter"];
 
-  v29 = [(MIBUNFCCommand *)self payload];
-  v30 = [v29 objectForKey:@"OperationTimeout"];
+  payload19 = [(MIBUNFCCommand *)self payload];
+  v30 = [payload19 objectForKey:@"OperationTimeout"];
 
   if (!v6)
   {
     sub_1000637A4();
-    v70 = *buf;
+    serializedData = *buf;
     goto LABEL_45;
   }
 
@@ -858,7 +858,7 @@ LABEL_4:
   {
     sub_1000636D8();
 LABEL_57:
-    v70 = *buf;
+    serializedData = *buf;
     goto LABEL_46;
   }
 
@@ -907,7 +907,7 @@ LABEL_57:
   {
     v6 = v72;
     sub_10006224C();
-    v70 = *buf;
+    serializedData = *buf;
     goto LABEL_45;
   }
 
@@ -918,7 +918,7 @@ LABEL_57:
   if ((v35 & 1) == 0)
   {
     sub_100062320();
-    v70 = *buf;
+    serializedData = *buf;
     v6 = v72;
     goto LABEL_45;
   }
@@ -940,7 +940,7 @@ LABEL_57:
   if ((v39 & 1) == 0)
   {
     sub_1000624C8();
-    v70 = *buf;
+    serializedData = *buf;
     v6 = v72;
     goto LABEL_45;
   }
@@ -1050,7 +1050,7 @@ LABEL_57:
     {
       if (!v30 || (v86 = v30, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v86, 1), v68 = objc_claimAutoreleasedReturnValue(), v69 = [v4 serialize:&off_1000A9E90 withValue:v68], v68, (v69 & 1) != 0))
       {
-        v70 = [v4 serializedData];
+        serializedData = [v4 serializedData];
 LABEL_44:
         v6 = v72;
 LABEL_45:
@@ -1062,16 +1062,16 @@ LABEL_45:
     }
 
 LABEL_77:
-    v70 = *buf;
+    serializedData = *buf;
     goto LABEL_44;
   }
 
   sub_100062A94();
-  v70 = *buf;
+  serializedData = *buf;
   v6 = v72;
 LABEL_46:
 
-  return v70;
+  return serializedData;
 }
 
 - (BOOL)_deserializeStartUpdate
@@ -1094,11 +1094,11 @@ LABEL_46:
 - (BOOL)_deserializeRetryAfter
 {
   v3 = [[MIBUDeserializer alloc] initWithData:self->_serializedPayload];
-  v4 = [(MIBUDeserializer *)v3 deserialize];
+  deserialize = [(MIBUDeserializer *)v3 deserialize];
 
-  if (v4)
+  if (deserialize)
   {
-    v5 = [v4 objectForKey:&off_1000A8610];
+    v5 = [deserialize objectForKey:&off_1000A8610];
     if (v5)
     {
       v6 = v5;
@@ -1111,8 +1111,8 @@ LABEL_46:
 
       else
       {
-        v9 = [(MIBUNFCCommand *)self mutablePayload];
-        [v9 setObject:v6 forKey:@"RetryAfter"];
+        mutablePayload = [(MIBUNFCCommand *)self mutablePayload];
+        [mutablePayload setObject:v6 forKey:@"RetryAfter"];
 
         v10 = 1;
       }
@@ -1137,16 +1137,16 @@ LABEL_46:
 - (BOOL)_deserializeHeartbeat
 {
   v3 = [[MIBUDeserializer alloc] initWithData:self->_serializedPayload];
-  v4 = [(MIBUDeserializer *)v3 deserialize];
+  deserialize = [(MIBUDeserializer *)v3 deserialize];
 
-  if (!v4)
+  if (!deserialize)
   {
     sub_100063D54(&v18);
     v15 = v18;
     goto LABEL_9;
   }
 
-  v5 = [v4 objectForKey:&off_1000A8628];
+  v5 = [deserialize objectForKey:&off_1000A8628];
   if (!v5)
   {
     sub_100063CC4(&v17);
@@ -1164,7 +1164,7 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v9 = [v4 objectForKey:&off_1000A8640];
+  v9 = [deserialize objectForKey:&off_1000A8640];
   if (!v9)
   {
     sub_100063B5C(v6);
@@ -1179,11 +1179,11 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v13 = [(MIBUNFCCommand *)self mutablePayload];
-  [v13 setObject:v6 forKey:@"HeartbeatPeriod"];
+  mutablePayload = [(MIBUNFCCommand *)self mutablePayload];
+  [mutablePayload setObject:v6 forKey:@"HeartbeatPeriod"];
 
-  v14 = [(MIBUNFCCommand *)self mutablePayload];
-  [v14 setObject:v10 forKey:@"HeartbeatTimeout"];
+  mutablePayload2 = [(MIBUNFCCommand *)self mutablePayload];
+  [mutablePayload2 setObject:v10 forKey:@"HeartbeatTimeout"];
 
   v15 = 1;
 LABEL_9:
@@ -1194,11 +1194,11 @@ LABEL_9:
 - (BOOL)_deserializeConfigureNFC
 {
   v3 = [[MIBUDeserializer alloc] initWithData:self->_serializedPayload];
-  v4 = [(MIBUDeserializer *)v3 deserialize];
+  deserialize = [(MIBUDeserializer *)v3 deserialize];
 
-  if (v4)
+  if (deserialize)
   {
-    v5 = [v4 objectForKey:&off_1000A8658];
+    v5 = [deserialize objectForKey:&off_1000A8658];
     if (v5)
     {
       v6 = v5;
@@ -1211,8 +1211,8 @@ LABEL_9:
 
       else
       {
-        v8 = [(MIBUNFCCommand *)self mutablePayload];
-        [v8 setObject:v6 forKey:@"NFCInactivityTimeout"];
+        mutablePayload = [(MIBUNFCCommand *)self mutablePayload];
+        [mutablePayload setObject:v6 forKey:@"NFCInactivityTimeout"];
 
         v9 = 1;
       }
@@ -1254,23 +1254,23 @@ LABEL_9:
 - (BOOL)_deserializeTatsuPayload
 {
   v3 = [[MIBUDeserializer alloc] initWithData:self->_serializedPayload];
-  v4 = [(MIBUDeserializer *)v3 deserialize];
+  deserialize = [(MIBUDeserializer *)v3 deserialize];
 
-  if (v4)
+  if (deserialize)
   {
-    v5 = [v4 objectForKey:&off_1000A8670];
+    v5 = [deserialize objectForKey:&off_1000A8670];
     if (v5)
     {
       v6 = v5;
-      v7 = [v4 objectForKey:&off_1000A8688];
+      v7 = [deserialize objectForKey:&off_1000A8688];
       if (v7)
       {
         v8 = v7;
-        v9 = [(MIBUNFCCommand *)self mutablePayload];
-        [v9 setObject:v6 forKey:@"TatsuTicket"];
+        mutablePayload = [(MIBUNFCCommand *)self mutablePayload];
+        [mutablePayload setObject:v6 forKey:@"TatsuTicket"];
 
-        v10 = [(MIBUNFCCommand *)self mutablePayload];
-        [v10 setObject:v8 forKey:@"TimeStamp"];
+        mutablePayload2 = [(MIBUNFCCommand *)self mutablePayload];
+        [mutablePayload2 setObject:v8 forKey:@"TimeStamp"];
 
         v11 = 1;
       }
@@ -1301,16 +1301,16 @@ LABEL_9:
 - (BOOL)_deserializeChallenge
 {
   v3 = [[MIBUDeserializer alloc] initWithData:self->_serializedPayload];
-  v4 = [(MIBUDeserializer *)v3 deserialize];
+  deserialize = [(MIBUDeserializer *)v3 deserialize];
 
-  if (v4)
+  if (deserialize)
   {
-    v5 = [v4 objectForKey:&off_1000A86A0];
+    v5 = [deserialize objectForKey:&off_1000A86A0];
     if (v5)
     {
       v6 = v5;
-      v7 = [(MIBUNFCCommand *)self mutablePayload];
-      [v7 setObject:v6 forKey:@"ChallengeBlob"];
+      mutablePayload = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload setObject:v6 forKey:@"ChallengeBlob"];
 
       v8 = 1;
     }
@@ -1351,9 +1351,9 @@ LABEL_9:
 - (BOOL)_deserializeSSUpdate
 {
   v3 = [[MIBUDeserializer alloc] initWithData:self->_serializedPayload];
-  v4 = [(MIBUDeserializer *)v3 deserialize];
+  deserialize = [(MIBUDeserializer *)v3 deserialize];
 
-  if (!v4)
+  if (!deserialize)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -1368,7 +1368,7 @@ LABEL_9:
     goto LABEL_41;
   }
 
-  v51 = [v4 objectForKey:&off_1000A86B8];
+  v51 = [deserialize objectForKey:&off_1000A86B8];
   if (!v51)
   {
     if (qword_1000B84A8[0] != -1)
@@ -1406,7 +1406,7 @@ LABEL_63:
     goto LABEL_32;
   }
 
-  v50 = [v4 objectForKey:&off_1000A86D0];
+  v50 = [deserialize objectForKey:&off_1000A86D0];
   if (!v50)
   {
     if (qword_1000B84A8[0] != -1)
@@ -1439,7 +1439,7 @@ LABEL_63:
     goto LABEL_62;
   }
 
-  v49 = [v4 objectForKey:&off_1000A86E8];
+  v49 = [deserialize objectForKey:&off_1000A86E8];
   if (!v49)
   {
     if (qword_1000B84A8[0] != -1)
@@ -1471,7 +1471,7 @@ LABEL_63:
     goto LABEL_62;
   }
 
-  v48 = [v4 objectForKey:&off_1000A8700];
+  v48 = [deserialize objectForKey:&off_1000A8700];
   if (!v48)
   {
     if (qword_1000B84A8[0] != -1)
@@ -1502,7 +1502,7 @@ LABEL_63:
     goto LABEL_62;
   }
 
-  v47 = [v4 objectForKey:&off_1000A8718];
+  v47 = [deserialize objectForKey:&off_1000A8718];
   if (!v47)
   {
     if (qword_1000B84A8[0] != -1)
@@ -1534,7 +1534,7 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  v46 = [v4 objectForKey:&off_1000A8730];
+  v46 = [deserialize objectForKey:&off_1000A8730];
   if (!v46)
   {
     if (qword_1000B84A8[0] != -1)
@@ -1564,7 +1564,7 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  v43 = [v4 objectForKey:&off_1000A8748];
+  v43 = [deserialize objectForKey:&off_1000A8748];
   if (!v43)
   {
     if (qword_1000B84A8[0] != -1)
@@ -1593,106 +1593,106 @@ LABEL_62:
     goto LABEL_63;
   }
 
-  v5 = [v4 objectForKey:&off_1000A8760];
+  v5 = [deserialize objectForKey:&off_1000A8760];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 objectForKey:&off_1000A8778];
-    v8 = [v4 objectForKey:&off_1000A8790];
-    v9 = [v4 objectForKey:&off_1000A87A8];
-    v10 = [v4 objectForKey:&off_1000A87C0];
-    v11 = [v4 objectForKey:&off_1000A87D8];
-    v12 = [v4 objectForKey:&off_1000A87F0];
-    v44 = [v4 objectForKey:&off_1000A8808];
-    v42 = [v4 objectForKey:&off_1000A8820];
-    v52 = [v4 objectForKey:&off_1000A8838];
-    v45 = [v4 objectForKey:&off_1000A8850];
-    v38 = [v4 objectForKey:&off_1000A8868];
-    v13 = [(MIBUNFCCommand *)self mutablePayload];
-    [v13 setObject:v51 forKey:@"HostPort"];
+    v7 = [deserialize objectForKey:&off_1000A8778];
+    v8 = [deserialize objectForKey:&off_1000A8790];
+    v9 = [deserialize objectForKey:&off_1000A87A8];
+    v10 = [deserialize objectForKey:&off_1000A87C0];
+    v11 = [deserialize objectForKey:&off_1000A87D8];
+    v12 = [deserialize objectForKey:&off_1000A87F0];
+    v44 = [deserialize objectForKey:&off_1000A8808];
+    v42 = [deserialize objectForKey:&off_1000A8820];
+    v52 = [deserialize objectForKey:&off_1000A8838];
+    v45 = [deserialize objectForKey:&off_1000A8850];
+    v38 = [deserialize objectForKey:&off_1000A8868];
+    mutablePayload = [(MIBUNFCCommand *)self mutablePayload];
+    [mutablePayload setObject:v51 forKey:@"HostPort"];
 
-    v14 = [(MIBUNFCCommand *)self mutablePayload];
-    [v14 setObject:v50 forKey:@"GroupAddress"];
+    mutablePayload2 = [(MIBUNFCCommand *)self mutablePayload];
+    [mutablePayload2 setObject:v50 forKey:@"GroupAddress"];
 
-    v15 = [(MIBUNFCCommand *)self mutablePayload];
-    [v15 setObject:v49 forKey:@"GroupPort"];
+    mutablePayload3 = [(MIBUNFCCommand *)self mutablePayload];
+    [mutablePayload3 setObject:v49 forKey:@"GroupPort"];
 
-    v16 = [(MIBUNFCCommand *)self mutablePayload];
-    [v16 setObject:v48 forKey:@"InterfaceName"];
+    mutablePayload4 = [(MIBUNFCCommand *)self mutablePayload];
+    [mutablePayload4 setObject:v48 forKey:@"InterfaceName"];
 
-    v17 = [(MIBUNFCCommand *)self mutablePayload];
-    [v17 setObject:v47 forKey:@"ServiceName"];
+    mutablePayload5 = [(MIBUNFCCommand *)self mutablePayload];
+    [mutablePayload5 setObject:v47 forKey:@"ServiceName"];
 
-    v18 = [(MIBUNFCCommand *)self mutablePayload];
-    [v18 setObject:v46 forKey:@"RQBasicParameters"];
+    mutablePayload6 = [(MIBUNFCCommand *)self mutablePayload];
+    [mutablePayload6 setObject:v46 forKey:@"RQBasicParameters"];
 
-    v19 = [(MIBUNFCCommand *)self mutablePayload];
-    [v19 setObject:v43 forKey:@"RQExtendedParameters"];
+    mutablePayload7 = [(MIBUNFCCommand *)self mutablePayload];
+    [mutablePayload7 setObject:v43 forKey:@"RQExtendedParameters"];
 
-    v20 = [(MIBUNFCCommand *)self mutablePayload];
+    mutablePayload8 = [(MIBUNFCCommand *)self mutablePayload];
     v39 = v6;
-    [v20 setObject:v6 forKey:@"RQThreshold"];
+    [mutablePayload8 setObject:v6 forKey:@"RQThreshold"];
 
     v41 = v7;
     if (v7 && v8)
     {
-      v21 = [(MIBUNFCCommand *)self mutablePayload];
-      [v21 setObject:v7 forKey:@"TCPAddress"];
+      mutablePayload9 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload9 setObject:v7 forKey:@"TCPAddress"];
 
-      v22 = [(MIBUNFCCommand *)self mutablePayload];
-      [v22 setObject:v8 forKey:@"TCPPort"];
+      mutablePayload10 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload10 setObject:v8 forKey:@"TCPPort"];
     }
 
     v40 = v8;
     if (v9)
     {
-      v23 = [(MIBUNFCCommand *)self mutablePayload];
-      [v23 setObject:v9 forKey:@"TCPPingInterval"];
+      mutablePayload11 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload11 setObject:v9 forKey:@"TCPPingInterval"];
     }
 
     if (v10)
     {
-      v24 = [(MIBUNFCCommand *)self mutablePayload];
-      [v24 setObject:v10 forKey:@"CountryCode"];
+      mutablePayload12 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload12 setObject:v10 forKey:@"CountryCode"];
     }
 
     if (v11)
     {
-      v25 = [(MIBUNFCCommand *)self mutablePayload];
-      [v25 setObject:v11 forKey:@"ChannelName"];
+      mutablePayload13 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload13 setObject:v11 forKey:@"ChannelName"];
     }
 
     if (v12)
     {
-      v26 = [(MIBUNFCCommand *)self mutablePayload];
-      [v26 setObject:v12 forKey:@"Band"];
+      mutablePayload14 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload14 setObject:v12 forKey:@"Band"];
     }
 
     if (v44)
     {
-      v27 = [(MIBUNFCCommand *)self mutablePayload];
-      [v27 setObject:v44 forKey:@"Bandwidth"];
+      mutablePayload15 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload15 setObject:v44 forKey:@"Bandwidth"];
     }
 
     if (v42)
     {
-      v28 = [(MIBUNFCCommand *)self mutablePayload];
-      [v28 setObject:v42 forKey:@"WiFiSSID"];
+      mutablePayload16 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload16 setObject:v42 forKey:@"WiFiSSID"];
     }
 
     v29 = v52;
     if (v52)
     {
-      v30 = [(MIBUNFCCommand *)self mutablePayload];
-      [v30 setObject:v52 forKey:@"WiFiChannel"];
+      mutablePayload17 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload17 setObject:v52 forKey:@"WiFiChannel"];
 
       v29 = v52;
     }
 
     if (v45)
     {
-      v31 = [(MIBUNFCCommand *)self mutablePayload];
-      [v31 setObject:v45 forKey:@"EnableRateAdapter"];
+      mutablePayload18 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload18 setObject:v45 forKey:@"EnableRateAdapter"];
 
       v29 = v52;
     }
@@ -1700,8 +1700,8 @@ LABEL_62:
     v32 = v38;
     if (v38)
     {
-      v33 = [(MIBUNFCCommand *)self mutablePayload];
-      [v33 setObject:v38 forKey:@"OperationTimeout"];
+      mutablePayload19 = [(MIBUNFCCommand *)self mutablePayload];
+      [mutablePayload19 setObject:v38 forKey:@"OperationTimeout"];
     }
 
     v34 = 1;

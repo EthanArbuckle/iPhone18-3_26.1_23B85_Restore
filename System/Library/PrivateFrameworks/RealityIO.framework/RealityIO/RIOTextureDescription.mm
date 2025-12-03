@@ -1,26 +1,26 @@
 @interface RIOTextureDescription
-+ (int64_t)pixelEncodingForBitsPerComponent:(unint64_t)a3;
-+ (unint64_t)bytesPerComponentForColorModel:(int64_t)a3;
-+ (unint64_t)bytesPerComponentForPixelEncoding:(int64_t)a3;
-+ (unint64_t)bytesPerPixelForPixelFormat:(id)a3;
++ (int64_t)pixelEncodingForBitsPerComponent:(unint64_t)component;
++ (unint64_t)bytesPerComponentForColorModel:(int64_t)model;
++ (unint64_t)bytesPerComponentForPixelEncoding:(int64_t)encoding;
++ (unint64_t)bytesPerPixelForPixelFormat:(id)format;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)destinationPixelFormat;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)originalPixelFormat;
-- (RIOTextureDescription)initWithName:(id)a3 destinationPixelFormat:(id)a4 imageProperties:(__CFDictionary *)a5 fileType:(__CFString *)a6 generateMipmaps:(BOOL)a7;
-- (RIOTextureDescription)initWithName:(id)a3 originalSize:(id)a4 originalPixelFormat:(id)a5 destinationPixelFormat:(int64_t)a6 downsamplingFactor:(int64_t)a7 fileType:(BOOL)a8 generateMipmaps:;
+- (RIOTextureDescription)initWithName:(id)name destinationPixelFormat:(id)format imageProperties:(__CFDictionary *)properties fileType:(__CFString *)type generateMipmaps:(BOOL)mipmaps;
+- (RIOTextureDescription)initWithName:(id)name originalSize:(id)size originalPixelFormat:(id)format destinationPixelFormat:(int64_t)pixelFormat downsamplingFactor:(int64_t)factor fileType:(BOOL)type generateMipmaps:;
 - (__n64)destinationSize;
 - (id)debugDescription;
 @end
 
 @implementation RIOTextureDescription
 
-- (RIOTextureDescription)initWithName:(id)a3 originalSize:(id)a4 originalPixelFormat:(id)a5 destinationPixelFormat:(int64_t)a6 downsamplingFactor:(int64_t)a7 fileType:(BOOL)a8 generateMipmaps:
+- (RIOTextureDescription)initWithName:(id)name originalSize:(id)size originalPixelFormat:(id)format destinationPixelFormat:(int64_t)pixelFormat downsamplingFactor:(int64_t)factor fileType:(BOOL)type generateMipmaps:
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v12 = a4.var1;
-  v13 = a4.var0;
+  var1 = format.var1;
+  var0 = format.var0;
+  v12 = size.var1;
+  v13 = size.var0;
   v14 = v8;
-  v17 = a3;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = RIOTextureDescription;
   v18 = [(RIOTextureDescription *)&v21 init];
@@ -32,20 +32,20 @@
     v18->_originalPixelFormat.pixelEncoding = v12;
     v18->_destinationPixelFormat.colorModel = var0;
     v18->_destinationPixelFormat.pixelEncoding = var1;
-    v18->_downsamplingFactor = a6;
-    v18->_fileType = a7;
-    objc_storeStrong(&v18->_name, a3);
-    v19->_generateMipmaps = a8;
+    v18->_downsamplingFactor = pixelFormat;
+    v18->_fileType = factor;
+    objc_storeStrong(&v18->_name, name);
+    v19->_generateMipmaps = type;
   }
 
   return v19;
 }
 
-- (RIOTextureDescription)initWithName:(id)a3 destinationPixelFormat:(id)a4 imageProperties:(__CFDictionary *)a5 fileType:(__CFString *)a6 generateMipmaps:(BOOL)a7
+- (RIOTextureDescription)initWithName:(id)name destinationPixelFormat:(id)format imageProperties:(__CFDictionary *)properties fileType:(__CFString *)type generateMipmaps:(BOOL)mipmaps
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v14 = a3;
+  var1 = format.var1;
+  var0 = format.var0;
+  nameCopy = name;
   v41.receiver = self;
   v41.super_class = RIOTextureDescription;
   v15 = [(RIOTextureDescription *)&v41 init];
@@ -55,33 +55,33 @@
     goto LABEL_39;
   }
 
-  objc_storeStrong(&v15->_name, a3);
-  v16->_generateMipmaps = a7;
+  objc_storeStrong(&v15->_name, name);
+  v16->_generateMipmaps = mipmaps;
   v17 = 1;
   v16->_downsamplingFactor = 1;
-  if (!CFEqual(a6, *MEMORY[0x277CC20C8]))
+  if (!CFEqual(type, *MEMORY[0x277CC20C8]))
   {
-    if (CFEqual(a6, *MEMORY[0x277CC2120]))
+    if (CFEqual(type, *MEMORY[0x277CC2120]))
     {
       v17 = 2;
     }
 
-    else if (CFEqual(a6, *MEMORY[0x277CC2180]))
+    else if (CFEqual(type, *MEMORY[0x277CC2180]))
     {
       v17 = 3;
     }
 
-    else if (CFEqual(a6, @"public.heic") || CFEqual(a6, @"public.heif"))
+    else if (CFEqual(type, @"public.heic") || CFEqual(type, @"public.heif"))
     {
       v17 = 4;
     }
 
-    else if (CFEqual(a6, *MEMORY[0x277CC2088]))
+    else if (CFEqual(type, *MEMORY[0x277CC2088]))
     {
       v17 = 5;
     }
 
-    else if (CFEqual(a6, @"public.avif"))
+    else if (CFEqual(type, @"public.avif"))
     {
       v17 = 7;
     }
@@ -93,9 +93,9 @@
   }
 
   v16->_fileType = v17;
-  Value = CFDictionaryGetValue(a5, *MEMORY[0x277CD3450]);
-  v19 = CFDictionaryGetValue(a5, *MEMORY[0x277CD3448]);
-  v20 = CFDictionaryGetValue(a5, *MEMORY[0x277CD2F38]);
+  Value = CFDictionaryGetValue(properties, *MEMORY[0x277CD3450]);
+  v19 = CFDictionaryGetValue(properties, *MEMORY[0x277CD3448]);
+  v20 = CFDictionaryGetValue(properties, *MEMORY[0x277CD2F38]);
   if (Value)
   {
     v21 = v19 == 0;
@@ -116,12 +116,12 @@
     *&v16->_originalSize[7] = __PAIR64__(v39, valuePtr);
     v38 = 0;
     CFNumberGetValue(v24, kCFNumberNSIntegerType, &v38);
-    v25 = CFDictionaryGetValue(a5, *MEMORY[0x277CD2E40]);
-    v26 = CFDictionaryGetValue(a5, *MEMORY[0x277CD33A0]);
+    v25 = CFDictionaryGetValue(properties, *MEMORY[0x277CD2E40]);
+    v26 = CFDictionaryGetValue(properties, *MEMORY[0x277CD33A0]);
     v27 = *MEMORY[0x277CD3368];
-    if (CFDictionaryContainsKey(a5, *MEMORY[0x277CD3368]))
+    if (CFDictionaryContainsKey(properties, *MEMORY[0x277CD3368]))
     {
-      v29 = CFDictionaryGetValue(a5, v27);
+      v29 = CFDictionaryGetValue(properties, v27);
       v30 = CFBooleanGetValue(v29) == 0;
       if (v25)
       {
@@ -216,20 +216,20 @@ LABEL_40:
 
 - (__n64)destinationSize
 {
-  [a1 originalSize];
-  v3 = v2 / [a1 downsamplingFactor];
-  [a1 originalSize];
+  [self originalSize];
+  v3 = v2 / [self downsamplingFactor];
+  [self originalSize];
   v5 = v4;
-  v6 = [a1 downsamplingFactor];
+  downsamplingFactor = [self downsamplingFactor];
   result.n64_u32[0] = v3;
-  result.n64_u32[1] = v5 / v6;
+  result.n64_u32[1] = v5 / downsamplingFactor;
   return result;
 }
 
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RIOTextureDescription *)self name];
+  name = [(RIOTextureDescription *)self name];
   [(RIOTextureDescription *)self originalSize];
   v6 = v5;
   [(RIOTextureDescription *)self originalSize];
@@ -237,52 +237,52 @@ LABEL_40:
   [(RIOTextureDescription *)self destinationSize];
   v10 = v9;
   [(RIOTextureDescription *)self destinationSize];
-  v12 = [v3 stringWithFormat:@"%@: original (%d, %d), destination (%d, %d)", v4, v6, v8, v10, v11];
+  v12 = [v3 stringWithFormat:@"%@: original (%d, %d), destination (%d, %d)", name, v6, v8, v10, v11];
 
   return v12;
 }
 
-+ (unint64_t)bytesPerComponentForColorModel:(int64_t)a3
++ (unint64_t)bytesPerComponentForColorModel:(int64_t)model
 {
-  if ((a3 - 1) > 5)
+  if ((model - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_261994108[a3 - 1];
+    return qword_261994108[model - 1];
   }
 }
 
-+ (unint64_t)bytesPerComponentForPixelEncoding:(int64_t)a3
++ (unint64_t)bytesPerComponentForPixelEncoding:(int64_t)encoding
 {
-  if ((a3 - 1) > 2)
+  if ((encoding - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_261994138[a3 - 1];
+    return qword_261994138[encoding - 1];
   }
 }
 
-+ (int64_t)pixelEncodingForBitsPerComponent:(unint64_t)a3
++ (int64_t)pixelEncodingForBitsPerComponent:(unint64_t)component
 {
   v3 = 2;
   v4 = 3;
-  if (a3 != 32)
+  if (component != 32)
   {
     v4 = 0;
   }
 
-  if (a3 >= 0x11)
+  if (component >= 0x11)
   {
     v3 = v4;
   }
 
-  if (a3 >= 9)
+  if (component >= 9)
   {
     return v3;
   }
@@ -293,10 +293,10 @@ LABEL_40:
   }
 }
 
-+ (unint64_t)bytesPerPixelForPixelFormat:(id)a3
++ (unint64_t)bytesPerPixelForPixelFormat:(id)format
 {
-  var1 = a3.var1;
-  v4 = [RIOTextureDescription bytesPerComponentForColorModel:a3.var0];
+  var1 = format.var1;
+  v4 = [RIOTextureDescription bytesPerComponentForColorModel:format.var0];
   return [RIOTextureDescription bytesPerComponentForPixelEncoding:var1]* v4;
 }
 

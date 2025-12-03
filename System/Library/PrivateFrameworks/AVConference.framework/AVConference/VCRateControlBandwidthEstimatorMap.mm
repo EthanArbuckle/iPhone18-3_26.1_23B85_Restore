@@ -2,9 +2,9 @@
 - (VCRateControlBandwidthEstimatorMap)init;
 - (int)bandwidthEstimationState;
 - (void)dealloc;
-- (void)setEstimatedBandwidth:(double)a3;
-- (void)setMode:(unsigned int)a3;
-- (void)setServerBag:(id)a3;
+- (void)setEstimatedBandwidth:(double)bandwidth;
+- (void)setMode:(unsigned int)mode;
+- (void)setServerBag:(id)bag;
 @end
 
 @implementation VCRateControlBandwidthEstimatorMap
@@ -69,10 +69,10 @@ uint64_t __VCRateControlBandwidthEstimatorMap_EstimatedBandwidthUncappedWithArri
   return result;
 }
 
-- (void)setEstimatedBandwidth:(double)a3
+- (void)setEstimatedBandwidth:(double)bandwidth
 {
   v7[5] = *MEMORY[0x1E69E9840];
-  self->_estimatedBandwidth = a3;
+  self->_estimatedBandwidth = bandwidth;
   defaultEstimator = self->_defaultEstimator;
   if (defaultEstimator)
   {
@@ -91,7 +91,7 @@ uint64_t __VCRateControlBandwidthEstimatorMap_EstimatedBandwidthUncappedWithArri
     v7[1] = 3221225472;
     v7[2] = __60__VCRateControlBandwidthEstimatorMap_setEstimatedBandwidth___block_invoke;
     v7[3] = &__block_descriptor_40_e58_v32__0__NSNumber_8__VCRateControlBandwidthEstimator_16_B24l;
-    *&v7[4] = a3;
+    *&v7[4] = bandwidth;
     [(NSMutableDictionary *)estimatorMap enumerateKeysAndObjectsUsingBlock:v7];
   }
 
@@ -102,19 +102,19 @@ uint64_t __VCRateControlBandwidthEstimatorMap_EstimatedBandwidthUncappedWithArri
   }
 }
 
-- (void)setMode:(unsigned int)a3
+- (void)setMode:(unsigned int)mode
 {
   v9 = *MEMORY[0x1E69E9840];
-  self->_mode = a3;
+  self->_mode = mode;
   defaultEstimator = self->_defaultEstimator;
-  if (a3 - 6 > 0xFFFFFFFD || defaultEstimator == 0)
+  if (mode - 6 > 0xFFFFFFFD || defaultEstimator == 0)
   {
     estimatorMap = self->_estimatorMap;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __46__VCRateControlBandwidthEstimatorMap_setMode___block_invoke;
     v7[3] = &__block_descriptor_36_e58_v32__0__NSNumber_8__VCRateControlBandwidthEstimator_16_B24l;
-    v8 = a3;
+    modeCopy = mode;
     [(NSMutableDictionary *)estimatorMap enumerateKeysAndObjectsUsingBlock:v7];
   }
 
@@ -150,14 +150,14 @@ uint64_t __VCRateControlBandwidthEstimatorMap_EstimatedBandwidthUncappedWithArri
   }
 }
 
-- (void)setServerBag:(id)a3
+- (void)setServerBag:(id)bag
 {
   v9[5] = *MEMORY[0x1E69E9840];
   serverBag = self->_serverBag;
-  if (serverBag != a3)
+  if (serverBag != bag)
   {
 
-    self->_serverBag = a3;
+    self->_serverBag = bag;
   }
 
   defaultEstimator = self->_defaultEstimator;
@@ -178,14 +178,14 @@ uint64_t __VCRateControlBandwidthEstimatorMap_EstimatedBandwidthUncappedWithArri
     v9[1] = 3221225472;
     v9[2] = __51__VCRateControlBandwidthEstimatorMap_setServerBag___block_invoke;
     v9[3] = &unk_1E85F93C8;
-    v9[4] = a3;
+    v9[4] = bag;
     [(NSMutableDictionary *)estimatorMap enumerateKeysAndObjectsUsingBlock:v9];
   }
 
   else
   {
 
-    [(VCRateControlBandwidthEstimator *)defaultEstimator setServerBag:a3];
+    [(VCRateControlBandwidthEstimator *)defaultEstimator setServerBag:bag];
   }
 }
 

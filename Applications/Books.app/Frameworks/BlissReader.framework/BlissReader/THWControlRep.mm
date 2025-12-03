@@ -11,17 +11,17 @@
 - (void)willBeRemoved
 {
   self->_repIsBeingRemoved = 1;
-  v3 = [(THWControlRep *)self controlHostRep];
-  v4 = [(THWControlRep *)self layout];
+  controlHostRep = [(THWControlRep *)self controlHostRep];
+  layout = [(THWControlRep *)self layout];
 
-  [v3 control:v4 repWillBeRemoved:self];
+  [controlHostRep control:layout repWillBeRemoved:self];
 }
 
 - (id)controlHostRep
 {
-  v3 = [(THWControlRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWControlRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWControlHosting];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWControlHosting];
 }
 
 - (void)willBeRemovedFromParent
@@ -45,9 +45,9 @@
 
 - (void)invalidateLayers
 {
-  v2 = [(THWControlRep *)self canvas];
+  canvas = [(THWControlRep *)self canvas];
 
-  [v2 invalidateLayers];
+  [canvas invalidateLayers];
 }
 
 @end

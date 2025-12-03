@@ -1,23 +1,23 @@
 @interface PKAccountWebServiceCustomizePhysicalCardResponse
-- (PKAccountWebServiceCustomizePhysicalCardResponse)initWithData:(id)a3;
+- (PKAccountWebServiceCustomizePhysicalCardResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceCustomizePhysicalCardResponse
 
-- (PKAccountWebServiceCustomizePhysicalCardResponse)initWithData:(id)a3
+- (PKAccountWebServiceCustomizePhysicalCardResponse)initWithData:(id)data
 {
   v25 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = PKAccountWebServiceCustomizePhysicalCardResponse;
-  v3 = [(PKWebServiceResponse *)&v20 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v20 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [v6 PKArrayContaining:objc_opt_class() forKey:@"nameOptions"];
       nameOptions = v4->_nameOptions;
       v4->_nameOptions = v7;

@@ -1,69 +1,69 @@
 @interface GKViceroyTransport
-- (BOOL)connectToGuestPlayer:(id)a3 withHostPlayer:(id)a4;
-- (BOOL)sendScopedData:(id)a3 toPlayers:(id)a4 dataMode:(int64_t)a5 dataScope:(int64_t)a6 transportContext:(id)a7 error:(id *)a8;
-- (BOOL)sendScopedDataToAll:(id)a3 dataMode:(int64_t)a4 dataScope:(int64_t)a5 transportContext:(id)a6 error:(id *)a7;
+- (BOOL)connectToGuestPlayer:(id)player withHostPlayer:(id)hostPlayer;
+- (BOOL)sendScopedData:(id)data toPlayers:(id)players dataMode:(int64_t)mode dataScope:(int64_t)scope transportContext:(id)context error:(id *)error;
+- (BOOL)sendScopedDataToAll:(id)all dataMode:(int64_t)mode dataScope:(int64_t)scope transportContext:(id)context error:(id *)error;
 - (GKTransportClientDelegate)clientDelegate;
-- (GKViceroyTransport)initWithClientDelegate:(id)a3 matchDataDelegate:(id)a4 daemonProxy:(id)a5;
+- (GKViceroyTransport)initWithClientDelegate:(id)delegate matchDataDelegate:(id)dataDelegate daemonProxy:(id)proxy;
 - (NSData)nearbyConnectionData;
-- (id)enrichPeerDictionariesForPlayersConnection:(id)a3;
-- (id)peerIdFromPlayer:(id)a3;
-- (id)playerIDFromPeerID:(id)a3;
-- (id)playerIDFromSession:(id)a3;
-- (id)voiceChatWithName:(id)a3 players:(id)a4 transportContext:(id)a5;
-- (void)acceptRelayResponse:(id)a3 playerID:(id)a4;
-- (void)chooseBestHostingPlayerWithTransportContext:(id)a3 completionHandler:(id)a4;
-- (void)connectToNearbyPlayer:(id)a3 withConnectionData:(id)a4;
-- (void)connectToPlayersWithTransportContext:(id)a3 completionHandler:(id)a4;
+- (id)enrichPeerDictionariesForPlayersConnection:(id)connection;
+- (id)peerIdFromPlayer:(id)player;
+- (id)playerIDFromPeerID:(id)d;
+- (id)playerIDFromSession:(id)session;
+- (id)voiceChatWithName:(id)name players:(id)players transportContext:(id)context;
+- (void)acceptRelayResponse:(id)response playerID:(id)d;
+- (void)chooseBestHostingPlayerWithTransportContext:(id)context completionHandler:(id)handler;
+- (void)connectToNearbyPlayer:(id)player withConnectionData:(id)data;
+- (void)connectToPlayersWithTransportContext:(id)context completionHandler:(id)handler;
 - (void)dealloc;
-- (void)disconnectAllWithTransportContext:(id)a3 completionHandler:(id)a4;
+- (void)disconnectAllWithTransportContext:(id)context completionHandler:(id)handler;
 - (void)initSessionIfNeeded;
-- (void)localConnectionDataWithCompletionHandler:(id)a3;
-- (void)preemptRelay:(id)a3;
-- (void)receiveData:(id)a3 fromPeer:(id)a4 inSession:(id)a5 context:(void *)a6;
-- (void)session:(id)a3 connectionWithPeerFailed:(id)a4 withError:(id)a5;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 initiateRelay:(id)a4 forPeer:(id)a5;
-- (void)session:(id)a3 networkStatisticsChanged:(id)a4;
-- (void)session:(id)a3 updateRelay:(id)a4 forPeer:(id)a5;
+- (void)localConnectionDataWithCompletionHandler:(id)handler;
+- (void)preemptRelay:(id)relay;
+- (void)receiveData:(id)data fromPeer:(id)peer inSession:(id)session context:(void *)context;
+- (void)session:(id)session connectionWithPeerFailed:(id)failed withError:(id)error;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session initiateRelay:(id)relay forPeer:(id)peer;
+- (void)session:(id)session networkStatisticsChanged:(id)changed;
+- (void)session:(id)session updateRelay:(id)relay forPeer:(id)peer;
 @end
 
 @implementation GKViceroyTransport
 
-- (GKViceroyTransport)initWithClientDelegate:(id)a3 matchDataDelegate:(id)a4 daemonProxy:(id)a5
+- (GKViceroyTransport)initWithClientDelegate:(id)delegate matchDataDelegate:(id)dataDelegate daemonProxy:(id)proxy
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  dataDelegateCopy = dataDelegate;
+  proxyCopy = proxy;
   v30.receiver = self;
   v30.super_class = GKViceroyTransport;
   v11 = [(GKViceroyTransport *)&v30 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_weakClientDelegate, v8);
+    objc_storeWeak(&v11->_weakClientDelegate, delegateCopy);
     v13 = objc_alloc(MEMORY[0x277D0C928]);
     v14 = +[GKLocalPlayer local];
-    v15 = [v14 internal];
-    v16 = [v15 playerID];
-    v17 = [v13 initWithParticipantID:v16];
+    internal = [v14 internal];
+    playerID = [internal playerID];
+    v17 = [v13 initWithParticipantID:playerID];
     connection = v12->_connection;
     v12->_connection = v17;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     guestConnections = v12->_guestConnections;
-    v12->_guestConnections = v19;
+    v12->_guestConnections = dictionary;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     guestSessions = v12->_guestSessions;
-    v12->_guestSessions = v21;
+    v12->_guestSessions = dictionary2;
 
-    v23 = [[GKViceroyLeaderElector alloc] initWithMatchDataDelegate:v9];
+    v23 = [[GKViceroyLeaderElector alloc] initWithMatchDataDelegate:dataDelegateCopy];
     leaderElector = v12->_leaderElector;
     v12->_leaderElector = v23;
 
     v25 = [GKViceroyRelay alloc];
-    v26 = [(GKViceroyTransport *)v12 connection];
-    v27 = [(GKViceroyRelay *)v25 initWithClientDelegate:v8 connection:v26 matchDataDelegate:v9 daemonProxy:v10];
+    connection = [(GKViceroyTransport *)v12 connection];
+    v27 = [(GKViceroyRelay *)v25 initWithClientDelegate:delegateCopy connection:connection matchDataDelegate:dataDelegateCopy daemonProxy:proxyCopy];
     relay = v12->_relay;
     v12->_relay = v27;
   }
@@ -74,8 +74,8 @@
 - (void)initSessionIfNeeded
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 session];
+  selfCopy = self;
+  session = [a2 session];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1_6(&dword_227904000, v5, v6, "[GKViceroyTransport] A new session (%p) has been created", v7, v8, v9, v10, v12);
 
@@ -92,35 +92,35 @@
   [(GKViceroyTransport *)&v3 dealloc];
 }
 
-- (void)connectToNearbyPlayer:(id)a3 withConnectionData:(id)a4
+- (void)connectToNearbyPlayer:(id)player withConnectionData:(id)data
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 referenceKey];
-  v11 = v7;
-  v12[0] = v6;
+  dataCopy = data;
+  referenceKey = [player referenceKey];
+  v11 = referenceKey;
+  v12[0] = dataCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  v9 = [(GKViceroyTransport *)self connection];
-  [v9 connectParticipantsWithConnectionData:v8 withSessionInfo:0];
+  connection = [(GKViceroyTransport *)self connection];
+  [connection connectParticipantsWithConnectionData:v8 withSessionInfo:0];
 
   [(GKViceroyTransport *)self initSessionIfNeeded];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectToPlayersWithTransportContext:(id)a3 completionHandler:(id)a4
+- (void)connectToPlayersWithTransportContext:(id)context completionHandler:(id)handler
 {
-  v24 = self;
+  selfCopy = self;
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v26 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  contextCopy = context;
+  handlerCopy = handler;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [v5 peerDictionaries];
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v33 count:16];
+  peerDictionaries = [contextCopy peerDictionaries];
+  v8 = [peerDictionaries countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v8)
   {
     v9 = v8;
@@ -131,16 +131,16 @@
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(peerDictionaries);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
-        v13 = [v12 objectForKey:{@"peer-id", v24}];
+        v13 = [v12 objectForKey:{@"peer-id", selfCopy}];
         v14 = [v12 objectForKey:@"peer-blob"];
-        [v6 setObject:v14 forKey:v13];
+        [dictionary setObject:v14 forKey:v13];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v27 objects:v33 count:16];
+      v9 = [peerDictionaries countByEnumeratingWithState:&v27 objects:v33 count:16];
     }
 
     while (v9);
@@ -155,84 +155,84 @@
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v32 = v6;
+    v32 = dictionary;
     _os_log_impl(&dword_227904000, v16, OS_LOG_TYPE_INFO, "[GKViceroyTransport] Connecting to participants with connectionData %@", buf, 0xCu);
   }
 
-  v17 = [MEMORY[0x277CBEB38] dictionary];
-  v18 = [v5 sessionToken];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  sessionToken = [contextCopy sessionToken];
 
-  if (v18)
+  if (sessionToken)
   {
-    v19 = [v5 sessionToken];
-    [v17 setObject:v19 forKey:*MEMORY[0x277D0C918]];
+    sessionToken2 = [contextCopy sessionToken];
+    [dictionary2 setObject:sessionToken2 forKey:*MEMORY[0x277D0C918]];
   }
 
-  v20 = [v5 cdxTicket];
+  cdxTicket = [contextCopy cdxTicket];
 
-  if (v20)
+  if (cdxTicket)
   {
-    v21 = [v5 cdxTicket];
-    [v17 setObject:v21 forKey:*MEMORY[0x277D0C910]];
+    cdxTicket2 = [contextCopy cdxTicket];
+    [dictionary2 setObject:cdxTicket2 forKey:*MEMORY[0x277D0C910]];
   }
 
-  v22 = [v25 connection];
-  [v22 connectParticipantsWithConnectionData:v6 withSessionInfo:v17];
+  connection = [v25 connection];
+  [connection connectParticipantsWithConnectionData:dictionary withSessionInfo:dictionary2];
 
   [v25 initSessionIfNeeded];
-  v26[2](v26, 0);
+  handlerCopy[2](handlerCopy, 0);
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)connectToGuestPlayer:(id)a3 withHostPlayer:(id)a4
+- (BOOL)connectToGuestPlayer:(id)player withHostPlayer:(id)hostPlayer
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 internal];
-  v8 = [v7 playerID];
+  hostPlayerCopy = hostPlayer;
+  internal = [player internal];
+  playerID = [internal playerID];
 
-  v9 = [(GKViceroyTransport *)self guestConnections];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  guestConnections = [(GKViceroyTransport *)self guestConnections];
+  v10 = [guestConnections objectForKeyedSubscript:playerID];
 
   if (!v10)
   {
-    v11 = [objc_alloc(MEMORY[0x277D0C928]) initWithParticipantID:v8];
-    v12 = [(GKViceroyTransport *)self connection];
-    v13 = [v12 getLocalConnectionDataForLocalGaming];
+    v11 = [objc_alloc(MEMORY[0x277D0C928]) initWithParticipantID:playerID];
+    connection = [(GKViceroyTransport *)self connection];
+    getLocalConnectionDataForLocalGaming = [connection getLocalConnectionDataForLocalGaming];
 
-    v14 = [v11 getLocalConnectionDataForLocalGaming];
-    v15 = [(GKViceroyTransport *)self connection];
-    v27 = v8;
-    v28[0] = v14;
+    getLocalConnectionDataForLocalGaming2 = [v11 getLocalConnectionDataForLocalGaming];
+    connection2 = [(GKViceroyTransport *)self connection];
+    v27 = playerID;
+    v28[0] = getLocalConnectionDataForLocalGaming2;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-    [v15 connectParticipantsWithConnectionData:v16 withSessionInfo:0];
+    [connection2 connectParticipantsWithConnectionData:v16 withSessionInfo:0];
 
-    v17 = [v6 internal];
-    v18 = [v17 playerID];
-    v25 = v18;
-    v26 = v13;
+    internal2 = [hostPlayerCopy internal];
+    playerID2 = [internal2 playerID];
+    v25 = playerID2;
+    v26 = getLocalConnectionDataForLocalGaming;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     [v11 connectParticipantsWithConnectionData:v19 withSessionInfo:0];
 
-    v20 = [(GKViceroyTransport *)self guestConnections];
-    [v20 setObject:v11 forKeyedSubscript:v8];
+    guestConnections2 = [(GKViceroyTransport *)self guestConnections];
+    [guestConnections2 setObject:v11 forKeyedSubscript:playerID];
 
     [(GKViceroyTransport *)self initSessionIfNeeded];
     v21 = [[GKViceroySession alloc] initWithConnection:v11 delegate:self];
-    v22 = [(GKViceroyTransport *)self guestSessions];
-    [v22 setObject:v21 forKeyedSubscript:v8];
+    guestSessions = [(GKViceroyTransport *)self guestSessions];
+    [guestSessions setObject:v21 forKeyedSubscript:playerID];
   }
 
   v23 = *MEMORY[0x277D85DE8];
   return v10 == 0;
 }
 
-- (void)disconnectAllWithTransportContext:(id)a3 completionHandler:(id)a4
+- (void)disconnectAllWithTransportContext:(id)context completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -245,20 +245,20 @@
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "[GKViceroyTransport] disconnectAll", buf, 2u);
   }
 
-  v10 = [(GKViceroyTransport *)self relay];
-  [v10 disconnect];
+  relay = [(GKViceroyTransport *)self relay];
+  [relay disconnect];
 
-  v11 = [(GKViceroyTransport *)self session];
-  [v11 disconnectFromAllPeers];
+  session = [(GKViceroyTransport *)self session];
+  [session disconnectFromAllPeers];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [(GKViceroyTransport *)self guestSessions];
-  v13 = [v12 allValues];
+  guestSessions = [(GKViceroyTransport *)self guestSessions];
+  allValues = [guestSessions allValues];
 
-  v14 = [v13 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v14 = [allValues countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v14)
   {
     v15 = v14;
@@ -269,7 +269,7 @@
       {
         if (*v23 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allValues);
         }
 
         v18 = *(*(&v22 + 1) + 8 * i);
@@ -280,31 +280,31 @@
         [v18 setPrivateDelegate:0];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v15 = [allValues countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v15);
   }
 
-  v19 = [(GKViceroyTransport *)self guestSessions];
-  [v19 removeAllObjects];
+  guestSessions2 = [(GKViceroyTransport *)self guestSessions];
+  [guestSessions2 removeAllObjects];
 
-  v20 = [(GKViceroyTransport *)self guestConnections];
-  [v20 removeAllObjects];
+  guestConnections = [(GKViceroyTransport *)self guestConnections];
+  [guestConnections removeAllObjects];
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)enrichPeerDictionariesForPlayersConnection:(id)a3
+- (id)enrichPeerDictionariesForPlayersConnection:(id)connection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKViceroyTransport *)self selfBlob];
-  *(&v18 + 1) = v5;
-  if (v5)
+  connectionCopy = connection;
+  selfBlob = [(GKViceroyTransport *)self selfBlob];
+  *(&v18 + 1) = selfBlob;
+  if (selfBlob)
   {
-    *&v18 = [MEMORY[0x277D0C928] externalAddressForSelfConnectionData:v5];
+    *&v18 = [MEMORY[0x277D0C928] externalAddressForSelfConnectionData:selfBlob];
   }
 
   else
@@ -312,12 +312,12 @@
     *&v18 = 0;
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = connectionCopy;
   v7 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -351,12 +351,12 @@
           [v15 setValue:*(&v18 + 1) forKey:@"self-blob"];
           [v15 setValue:v18 forKey:@"self-nat-ip"];
           [v15 setValue:v13 forKey:@"player-id"];
-          [v6 addObject:v15];
+          [array addObject:v15];
         }
 
         else
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -368,21 +368,21 @@
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-- (void)localConnectionDataWithCompletionHandler:(id)a3
+- (void)localConnectionDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(GKViceroyTransport *)self connection];
+  handlerCopy = handler;
+  connection = [(GKViceroyTransport *)self connection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__GKViceroyTransport_localConnectionDataWithCompletionHandler___block_invoke;
   v7[3] = &unk_2785DD870;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 getLocalConnectionDataWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [connection getLocalConnectionDataWithCompletionHandler:v7];
 }
 
 void __63__GKViceroyTransport_localConnectionDataWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -412,20 +412,20 @@ void __63__GKViceroyTransport_localConnectionDataWithCompletionHandler___block_i
 
 - (NSData)nearbyConnectionData
 {
-  v2 = [(GKViceroyTransport *)self connection];
-  v3 = [v2 getLocalConnectionDataForLocalGaming];
+  connection = [(GKViceroyTransport *)self connection];
+  getLocalConnectionDataForLocalGaming = [connection getLocalConnectionDataForLocalGaming];
 
-  return v3;
+  return getLocalConnectionDataForLocalGaming;
 }
 
-- (id)peerIdFromPlayer:(id)a3
+- (id)peerIdFromPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(GKViceroyTransport *)self connection];
-  v6 = [v4 internal];
-  v7 = [v6 playerID];
+  playerCopy = player;
+  connection = [(GKViceroyTransport *)self connection];
+  internal = [playerCopy internal];
+  playerID = [internal playerID];
   v16 = 0;
-  v8 = [v5 convertParticipantID:v7 toPeerID:&v16];
+  v8 = [connection convertParticipantID:playerID toPeerID:&v16];
   v9 = v16;
 
   v10 = os_log_GKGeneral;
@@ -439,10 +439,10 @@ void __63__GKViceroyTransport_localConnectionDataWithCompletionHandler___block_i
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(GKViceroyTransport *)v9 peerIdFromPlayer:v10, v4];
+      [(GKViceroyTransport *)v9 peerIdFromPlayer:v10, playerCopy];
     }
 
-    v12 = v9;
+    playerID2 = v9;
   }
 
   else
@@ -455,22 +455,22 @@ void __63__GKViceroyTransport_localConnectionDataWithCompletionHandler___block_i
 
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(GKViceroyTransport *)v10 peerIdFromPlayer:v4];
+      [(GKViceroyTransport *)v10 peerIdFromPlayer:playerCopy];
     }
 
-    v14 = [v4 internal];
-    v12 = [v14 playerID];
+    internal2 = [playerCopy internal];
+    playerID2 = [internal2 playerID];
   }
 
-  return v12;
+  return playerID2;
 }
 
-- (id)playerIDFromPeerID:(id)a3
+- (id)playerIDFromPeerID:(id)d
 {
-  v4 = a3;
-  v5 = [(GKViceroyTransport *)self connection];
+  dCopy = d;
+  connection = [(GKViceroyTransport *)self connection];
   v14 = 0;
-  v6 = [v5 convertPeerID:v4 toParticipantID:&v14];
+  v6 = [connection convertPeerID:dCopy toParticipantID:&v14];
   v7 = v14;
 
   v8 = os_log_GKGeneral;
@@ -498,11 +498,11 @@ void __63__GKViceroyTransport_localConnectionDataWithCompletionHandler___block_i
       v8 = os_log_GKGeneral;
     }
 
-    v10 = v4;
+    v10 = dCopy;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       [GKViceroyTransport playerIDFromPeerID:];
-      v10 = v4;
+      v10 = dCopy;
     }
   }
 
@@ -511,18 +511,18 @@ void __63__GKViceroyTransport_localConnectionDataWithCompletionHandler___block_i
   return v10;
 }
 
-- (id)playerIDFromSession:(id)a3
+- (id)playerIDFromSession:(id)session
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(GKViceroyTransport *)self guestSessions];
-  v6 = [v5 allKeys];
+  guestSessions = [(GKViceroyTransport *)self guestSessions];
+  allKeys = [guestSessions allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -533,14 +533,14 @@ void __63__GKViceroyTransport_localConnectionDataWithCompletionHandler___block_i
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(GKViceroyTransport *)self guestSessions];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        guestSessions2 = [(GKViceroyTransport *)self guestSessions];
+        v13 = [guestSessions2 objectForKeyedSubscript:v11];
 
-        if ([v13 isWrappingGKSession:v4])
+        if ([v13 isWrappingGKSession:sessionCopy])
         {
           v14 = v11;
 
@@ -548,7 +548,7 @@ void __63__GKViceroyTransport_localConnectionDataWithCompletionHandler___block_i
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -566,17 +566,17 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)sendScopedData:(id)a3 toPlayers:(id)a4 dataMode:(int64_t)a5 dataScope:(int64_t)a6 transportContext:(id)a7 error:(id *)a8
+- (BOOL)sendScopedData:(id)data toPlayers:(id)players dataMode:(int64_t)mode dataScope:(int64_t)scope transportContext:(id)context error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count")}];
+  dataCopy = data;
+  playersCopy = players;
+  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(playersCopy, "count")}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = v13;
+  v15 = playersCopy;
   v16 = [v15 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v16)
   {
@@ -606,8 +606,8 @@ LABEL_11:
 
   if ([v14 count])
   {
-    v21 = [(GKViceroyTransport *)self session];
-    v22 = [v21 sendData:v12 toPeers:v14 withDataMode:a5 error:a8];
+    session = [(GKViceroyTransport *)self session];
+    v22 = [session sendData:dataCopy toPeers:v14 withDataMode:mode error:error];
   }
 
   else
@@ -632,70 +632,70 @@ LABEL_11:
   return v22;
 }
 
-- (BOOL)sendScopedDataToAll:(id)a3 dataMode:(int64_t)a4 dataScope:(int64_t)a5 transportContext:(id)a6 error:(id *)a7
+- (BOOL)sendScopedDataToAll:(id)all dataMode:(int64_t)mode dataScope:(int64_t)scope transportContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = [(GKViceroyTransport *)self session];
-  LOBYTE(a7) = [v11 sendDataToAllPeers:v10 withDataMode:a4 error:a7];
+  allCopy = all;
+  session = [(GKViceroyTransport *)self session];
+  LOBYTE(error) = [session sendDataToAllPeers:allCopy withDataMode:mode error:error];
 
-  return a7;
+  return error;
 }
 
-- (void)receiveData:(id)a3 fromPeer:(id)a4 inSession:(id)a5 context:(void *)a6
+- (void)receiveData:(id)data fromPeer:(id)peer inSession:(id)session context:(void *)context
 {
-  v16 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[GKMatchPacket alloc] initWithMessage:v10];
+  sessionCopy = session;
+  peerCopy = peer;
+  dataCopy = data;
+  v11 = [[GKMatchPacket alloc] initWithMessage:dataCopy];
 
-  v12 = [(GKViceroyTransport *)self playerIDFromPeerID:v9];
+  v12 = [(GKViceroyTransport *)self playerIDFromPeerID:peerCopy];
 
   if ([(GKMatchPacket *)v11 valid]&& [(GKMatchPacket *)v11 packetType]== 4)
   {
-    v13 = [(GKViceroyTransport *)self leaderElector];
-    v14 = [(GKMatchPacket *)v11 data];
-    [v13 receivedChooseHostData:v14 fromPlayerID:v12];
+    leaderElector = [(GKViceroyTransport *)self leaderElector];
+    data = [(GKMatchPacket *)v11 data];
+    [leaderElector receivedChooseHostData:data fromPlayerID:v12];
   }
 
   else
   {
-    v15 = [(GKViceroyTransport *)self session];
-    if ([v15 isWrappingGKSession:v16])
+    session = [(GKViceroyTransport *)self session];
+    if ([session isWrappingGKSession:sessionCopy])
     {
-      v13 = 0;
+      leaderElector = 0;
     }
 
     else
     {
-      v13 = [(GKViceroyTransport *)self playerIDFromSession:v16];
+      leaderElector = [(GKViceroyTransport *)self playerIDFromSession:sessionCopy];
     }
 
-    v14 = [(GKViceroyTransport *)self clientDelegate];
-    [v14 transportDidReceivePacket:v11 fromPlayerID:v12 remoteRecipientID:v13];
+    data = [(GKViceroyTransport *)self clientDelegate];
+    [data transportDidReceivePacket:v11 fromPlayerID:v12 remoteRecipientID:leaderElector];
   }
 }
 
-- (void)acceptRelayResponse:(id)a3 playerID:(id)a4
+- (void)acceptRelayResponse:(id)response playerID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKViceroyTransport *)self relay];
-  [v8 acceptRelayResponse:v7 playerID:v6];
+  dCopy = d;
+  responseCopy = response;
+  relay = [(GKViceroyTransport *)self relay];
+  [relay acceptRelayResponse:responseCopy playerID:dCopy];
 }
 
-- (void)preemptRelay:(id)a3
+- (void)preemptRelay:(id)relay
 {
-  v4 = a3;
-  v5 = [(GKViceroyTransport *)self relay];
-  [v5 preemptRelay:v4];
+  relayCopy = relay;
+  relay = [(GKViceroyTransport *)self relay];
+  [relay preemptRelay:relayCopy];
 }
 
-- (void)session:(id)a3 connectionWithPeerFailed:(id)a4 withError:(id)a5
+- (void)session:(id)session connectionWithPeerFailed:(id)failed withError:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  failedCopy = failed;
+  errorCopy = error;
   if (!os_log_GKGeneral)
   {
     v11 = GKOSLoggers();
@@ -705,31 +705,31 @@ LABEL_11:
   if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
   {
     v15 = v12;
-    v16 = [v8 sessionID];
-    v17 = [(GKViceroyTransport *)self playerIDFromPeerID:v9];
+    sessionID = [sessionCopy sessionID];
+    v17 = [(GKViceroyTransport *)self playerIDFromPeerID:failedCopy];
     v18 = 138413058;
-    v19 = v16;
+    v19 = sessionID;
     v20 = 2112;
-    v21 = v9;
+    v21 = failedCopy;
     v22 = 2112;
     v23 = v17;
     v24 = 2112;
-    v25 = v10;
+    v25 = errorCopy;
     _os_log_error_impl(&dword_227904000, v15, OS_LOG_TYPE_ERROR, "[GKViceroyTransport] session (%@) connection with peerID: %@ playerID: %@ failed %@", &v18, 0x2Au);
   }
 
-  v13 = [(GKViceroyTransport *)self clientDelegate];
-  [v13 connectionDidFailWithError:v10];
+  clientDelegate = [(GKViceroyTransport *)self clientDelegate];
+  [clientDelegate connectionDidFailWithError:errorCopy];
 
-  [(GKViceroyTransport *)self session:v8 peer:v9 didChangeState:3];
+  [(GKViceroyTransport *)self session:sessionCopy peer:failedCopy didChangeState:3];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -739,28 +739,28 @@ LABEL_11:
   if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
   {
     v12 = v9;
-    v13 = [v6 sessionID];
-    v14 = [(GKViceroyTransport *)self playerIDFromSession:v6];
+    sessionID = [sessionCopy sessionID];
+    v14 = [(GKViceroyTransport *)self playerIDFromSession:sessionCopy];
     v15 = 138412802;
-    v16 = v13;
+    v16 = sessionID;
     v17 = 2112;
     v18 = v14;
     v19 = 2112;
-    v20 = v7;
+    v20 = errorCopy;
     _os_log_error_impl(&dword_227904000, v12, OS_LOG_TYPE_ERROR, "[GKViceroyTransport] session (%@) did fail for playerID: %@ with error %@", &v15, 0x20u);
   }
 
-  v10 = [(GKViceroyTransport *)self clientDelegate];
-  [v10 transportDidFailWithError:v7];
+  clientDelegate = [(GKViceroyTransport *)self clientDelegate];
+  [clientDelegate transportDidFailWithError:errorCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 initiateRelay:(id)a4 forPeer:(id)a5
+- (void)session:(id)session initiateRelay:(id)relay forPeer:(id)peer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(GKViceroyTransport *)self playerIDFromPeerID:a5];
+  relayCopy = relay;
+  v8 = [(GKViceroyTransport *)self playerIDFromPeerID:peer];
   v9 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -773,22 +773,22 @@ LABEL_11:
     v13 = 138412546;
     v14 = v8;
     v15 = 2112;
-    v16 = v7;
+    v16 = relayCopy;
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_DEFAULT, "[GKViceroyTransport] session initiateRelay for playerID: %@ - sessionInfo: %@", &v13, 0x16u);
   }
 
-  v11 = [(GKViceroyTransport *)self relay];
-  [v11 sessionDidInitiateOrUpdateRelay:v7 playerID:v8];
+  relay = [(GKViceroyTransport *)self relay];
+  [relay sessionDidInitiateOrUpdateRelay:relayCopy playerID:v8];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 updateRelay:(id)a4 forPeer:(id)a5
+- (void)session:(id)session updateRelay:(id)relay forPeer:(id)peer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  relayCopy = relay;
+  peerCopy = peer;
   v10 = os_log_GKGeneral;
   if (!os_log_GKGeneral)
   {
@@ -799,39 +799,39 @@ LABEL_11:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412802;
-    v14 = v7;
+    v14 = sessionCopy;
     v15 = 2112;
-    v16 = v8;
+    v16 = relayCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = peerCopy;
     _os_log_impl(&dword_227904000, v10, OS_LOG_TYPE_DEFAULT, "[GKViceroyTransport] session: %@ updateRelay: %@ forPeer: %@", &v13, 0x20u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 networkStatisticsChanged:(id)a4
+- (void)session:(id)session networkStatisticsChanged:(id)changed
 {
-  v5 = a4;
-  v8 = [(GKViceroyTransport *)self leaderElector];
+  changedCopy = changed;
+  leaderElector = [(GKViceroyTransport *)self leaderElector];
   v6 = +[GKLocalPlayer local];
   v7 = [(GKViceroyTransport *)self peerIdFromPlayer:v6];
-  [v8 networkStatisticsDidChange:v5 localPlayerPeerID:v7];
+  [leaderElector networkStatisticsDidChange:changedCopy localPlayerPeerID:v7];
 }
 
-- (void)chooseBestHostingPlayerWithTransportContext:(id)a3 completionHandler:(id)a4
+- (void)chooseBestHostingPlayerWithTransportContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(GKViceroyTransport *)self leaderElector];
-  [v6 chooseBestHostingPlayerWithCompletionHandler:v5];
+  handlerCopy = handler;
+  leaderElector = [(GKViceroyTransport *)self leaderElector];
+  [leaderElector chooseBestHostingPlayerWithCompletionHandler:handlerCopy];
 }
 
-- (id)voiceChatWithName:(id)a3 players:(id)a4 transportContext:(id)a5
+- (id)voiceChatWithName:(id)name players:(id)players transportContext:(id)context
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(GKViceroyTransport *)self session];
-  v10 = [v9 voiceChatWithName:v8 players:v7];
+  playersCopy = players;
+  nameCopy = name;
+  session = [(GKViceroyTransport *)self session];
+  v10 = [session voiceChatWithName:nameCopy players:playersCopy];
 
   return v10;
 }

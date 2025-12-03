@@ -1,15 +1,15 @@
 @interface _OSLogChunkStore
-- (_OSLogChunkStore)initWithBytes:(const void *)a3 size:(unint64_t)a4;
-- (void)enumerateChunksInRange:(_NSRange)a3 usingBlock:(id)a4;
+- (_OSLogChunkStore)initWithBytes:(const void *)bytes size:(unint64_t)size;
+- (void)enumerateChunksInRange:(_NSRange)range usingBlock:(id)block;
 @end
 
 @implementation _OSLogChunkStore
 
-- (void)enumerateChunksInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateChunksInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   if (location + length > self->_sz)
   {
     qword_27DA52778 = "BUG IN LIBTRACE: enumerateChunksInRange:options:usingBlock: called with range larger than mapped file";
@@ -24,8 +24,8 @@
     v13[1] = 3221225472;
     v14 = __54___OSLogChunkStore_enumerateChunksInRange_usingBlock___block_invoke;
     v15 = &unk_2787ADCD8;
-    v16 = self;
-    v9 = v7;
+    selfCopy = self;
+    v9 = blockCopy;
     v17 = v9;
     v10 = v13;
     v11 = 0;
@@ -54,7 +54,7 @@
   }
 }
 
-- (_OSLogChunkStore)initWithBytes:(const void *)a3 size:(unint64_t)a4
+- (_OSLogChunkStore)initWithBytes:(const void *)bytes size:(unint64_t)size
 {
   v10.receiver = self;
   v10.super_class = _OSLogChunkStore;
@@ -62,8 +62,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_ptr = a3;
-    v6->_sz = a4;
+    v6->_ptr = bytes;
+    v6->_sz = size;
     fileName = v6->fileName;
     v6->fileName = 0;
   }

@@ -1,61 +1,61 @@
 @interface TUILayoutController
-- (BOOL)applyHostingGeometryMapUpdate:(id)a3;
-- (BOOL)invalidateInstantiation:(id)a3;
-- (TUILayoutController)initWithPackage:(id)a3 feedId:(id)a4 manager:(id)a5 transactionCoordinator:(id)a6 state:(id)a7 identifierMap:(id)a8 entry:(id)a9 environment:(id)a10 instantiateDelegate:(id)a11 actionDelegate:(id)a12 queue:(id)a13 renderMode:(unint64_t)a14;
+- (BOOL)applyHostingGeometryMapUpdate:(id)update;
+- (BOOL)invalidateInstantiation:(id)instantiation;
+- (TUILayoutController)initWithPackage:(id)package feedId:(id)id manager:(id)manager transactionCoordinator:(id)coordinator state:(id)state identifierMap:(id)map entry:(id)entry environment:(id)self0 instantiateDelegate:(id)self1 actionDelegate:(id)self2 queue:(id)self3 renderMode:(unint64_t)self4;
 - (double)contentsScale;
-- (id)_createLayoutForModel:(id)a3 withParent:(id)a4;
+- (id)_createLayoutForModel:(id)model withParent:(id)parent;
 - (id)axModelTree;
 - (id)debugDumpEnvironmentContainerStructure;
-- (id)hostingGeometryForIdentifier:(id)a3 requestedSize:(CGSize)a4;
-- (id)imageResourceForKind:(id)a3 naturalSize:(CGSize)a4 contentsScale:(double)a5 instance:(id)a6 options:(id)a7;
-- (id)intrinsicImageResourceForKind:(id)a3 instance:(id)a4 options:(id)a5;
-- (id)layoutForModel:(id)a3;
-- (id)loadResourceWithURL:(id)a3 error:(id *)a4;
-- (id)renderModelAuxiliary:(id)a3;
-- (id)renderModelLayer:(id)a3;
-- (id)renderModelOfKind:(unint64_t)a3 context:(id)a4;
-- (id)renderModelOfKind:(unint64_t)a3 transactionGroup:(id)a4;
-- (id)renderModelSection:(unint64_t)a3 offset:(CGPoint)a4 uuid:(id)a5 transactionGroup:(id)a6;
-- (void)_invalidateChildrenForModel:(id)a3;
-- (void)_invalidateLayout:(id)a3 callOnInvalidate:(BOOL)a4;
-- (void)_orphanLayout:(id)a3;
-- (void)_unorphanLayout:(id)a3;
+- (id)hostingGeometryForIdentifier:(id)identifier requestedSize:(CGSize)size;
+- (id)imageResourceForKind:(id)kind naturalSize:(CGSize)size contentsScale:(double)scale instance:(id)instance options:(id)options;
+- (id)intrinsicImageResourceForKind:(id)kind instance:(id)instance options:(id)options;
+- (id)layoutForModel:(id)model;
+- (id)loadResourceWithURL:(id)l error:(id *)error;
+- (id)renderModelAuxiliary:(id)auxiliary;
+- (id)renderModelLayer:(id)layer;
+- (id)renderModelOfKind:(unint64_t)kind context:(id)context;
+- (id)renderModelOfKind:(unint64_t)kind transactionGroup:(id)group;
+- (id)renderModelSection:(unint64_t)section offset:(CGPoint)offset uuid:(id)uuid transactionGroup:(id)group;
+- (void)_invalidateChildrenForModel:(id)model;
+- (void)_invalidateLayout:(id)layout callOnInvalidate:(BOOL)invalidate;
+- (void)_orphanLayout:(id)layout;
+- (void)_unorphanLayout:(id)layout;
 - (void)_updateEmbedded;
 - (void)_updateRootLayout;
 - (void)_validateChildren;
-- (void)_validateChildrenForLayout:(id)a3;
-- (void)cachedRenderModelValidatedForLayout:(id)a3;
+- (void)_validateChildrenForLayout:(id)layout;
+- (void)cachedRenderModelValidatedForLayout:(id)layout;
 - (void)dealloc;
 - (void)invalidateAuxiliaryRenderModel;
-- (void)invalidateCachedRenderModelForLayout:(id)a3;
-- (void)invalidateChildren:(id)a3;
-- (void)setRootBox:(id)a3;
-- (void)updateEnvironment:(id)a3;
-- (void)validateGroupedContainingLayout:(id)a3 withSize:(CGSize)a4;
-- (void)validateInstantiationWithTransactionGroup:(id)a3;
-- (void)validateLayout:(id)a3;
+- (void)invalidateCachedRenderModelForLayout:(id)layout;
+- (void)invalidateChildren:(id)children;
+- (void)setRootBox:(id)box;
+- (void)updateEnvironment:(id)environment;
+- (void)validateGroupedContainingLayout:(id)layout withSize:(CGSize)size;
+- (void)validateInstantiationWithTransactionGroup:(id)group;
+- (void)validateLayout:(id)layout;
 - (void)validateLayouts;
-- (void)validateRenderModelsWithTransactionGroup:(id)a3;
+- (void)validateRenderModelsWithTransactionGroup:(id)group;
 @end
 
 @implementation TUILayoutController
 
-- (TUILayoutController)initWithPackage:(id)a3 feedId:(id)a4 manager:(id)a5 transactionCoordinator:(id)a6 state:(id)a7 identifierMap:(id)a8 entry:(id)a9 environment:(id)a10 instantiateDelegate:(id)a11 actionDelegate:(id)a12 queue:(id)a13 renderMode:(unint64_t)a14
+- (TUILayoutController)initWithPackage:(id)package feedId:(id)id manager:(id)manager transactionCoordinator:(id)coordinator state:(id)state identifierMap:(id)map entry:(id)entry environment:(id)self0 instantiateDelegate:(id)self1 actionDelegate:(id)self2 queue:(id)self3 renderMode:(unint64_t)self4
 {
-  v18 = a3;
-  v50 = a5;
-  v19 = a5;
-  v20 = a8;
-  v59 = v19;
-  v51 = a6;
-  v21 = a6;
-  v58 = a7;
-  v57 = a8;
-  v54 = a9;
-  v55 = a10;
-  v56 = a11;
-  v22 = a12;
-  v53 = a13;
+  packageCopy = package;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  mapCopy = map;
+  v59 = managerCopy2;
+  coordinatorCopy = coordinator;
+  coordinatorCopy2 = coordinator;
+  stateCopy = state;
+  mapCopy2 = map;
+  entryCopy = entry;
+  environmentCopy = environment;
+  delegateCopy = delegate;
+  actionDelegateCopy = actionDelegate;
+  queueCopy = queue;
   v60.receiver = self;
   v60.super_class = TUILayoutController;
   v23 = [(TUILayoutController *)&v60 init];
@@ -63,15 +63,15 @@
   v25 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_package, a3);
-    v25->_feedId.uniqueIdentifier = a4.var0;
-    objc_storeStrong(p_isa + 15, v20);
-    objc_storeStrong(p_isa + 21, a9);
-    objc_storeStrong(p_isa + 19, v50);
-    objc_storeStrong(p_isa + 20, v51);
-    if (v18)
+    objc_storeStrong(&v23->_package, package);
+    v25->_feedId.uniqueIdentifier = id.var0;
+    objc_storeStrong(p_isa + 15, mapCopy);
+    objc_storeStrong(p_isa + 21, entry);
+    objc_storeStrong(p_isa + 19, managerCopy);
+    objc_storeStrong(p_isa + 20, coordinatorCopy);
+    if (packageCopy)
     {
-      v26 = [[TUIInstantiateContext alloc] initWithDelegate:v56 package:v18 manager:v59 identifierMap:v57 environment:v55 state:v58 feedId:v25->_feedId.uniqueIdentifier];
+      v26 = [[TUIInstantiateContext alloc] initWithDelegate:delegateCopy package:packageCopy manager:v59 identifierMap:mapCopy2 environment:environmentCopy state:stateCopy feedId:v25->_feedId.uniqueIdentifier];
     }
 
     else
@@ -82,8 +82,8 @@
     instantiateContext = v25->_instantiateContext;
     v25->_instantiateContext = v26;
 
-    [(TUIInstantiateContext *)v25->_instantiateContext setActionDelegate:v22];
-    [(TUIInstantiateContext *)v25->_instantiateContext setTransactionCoordinator:v21];
+    [(TUIInstantiateContext *)v25->_instantiateContext setActionDelegate:actionDelegateCopy];
+    [(TUIInstantiateContext *)v25->_instantiateContext setTransactionCoordinator:coordinatorCopy2];
     [(TUIInstantiateContext *)v25->_instantiateContext setDynamicController:v25];
     v28 = [NSMapTable mapTableWithKeyOptions:512 valueOptions:512];
     layouts = v25->_layouts;
@@ -109,8 +109,8 @@
     invalidInstantiators = v25->_invalidInstantiators;
     v25->_invalidInstantiators = v38;
 
-    objc_storeStrong(p_isa + 8, a13);
-    v25->_renderMode = a14;
+    objc_storeStrong(p_isa + 8, queue);
+    v25->_renderMode = mode;
     v40 = +[NSUserDefaults standardUserDefaults];
     v25->_reportErrors = [v40 BOOLForKey:@"TUIReportErrors"];
 
@@ -145,8 +145,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMapTable *)self->_layouts objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  objectEnumerator = [(NSMapTable *)self->_layouts objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -157,7 +157,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v8 + 1) + 8 * v6) teardown];
@@ -165,7 +165,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -178,21 +178,21 @@
 
 - (double)contentsScale
 {
-  v2 = [(TUIInstantiateContext *)self->_instantiateContext environment];
-  [v2 contentsScale];
+  environment = [(TUIInstantiateContext *)self->_instantiateContext environment];
+  [environment contentsScale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)updateEnvironment:(id)a3
+- (void)updateEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(TUIInstantiateContext *)self->_instantiateContext environment];
-  v6 = v5;
-  if (v5)
+  environmentCopy = environment;
+  environment = [(TUIInstantiateContext *)self->_instantiateContext environment];
+  v6 = environment;
+  if (environment)
   {
-    v7 = [v5 differenceMaskWithEnvironment:v4];
+    v7 = [environment differenceMaskWithEnvironment:environmentCopy];
     if ((v7 & 0x10) == 0)
     {
       goto LABEL_13;
@@ -208,8 +208,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(NSMapTable *)self->_layouts objectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  objectEnumerator = [(NSMapTable *)self->_layouts objectEnumerator];
+  v9 = [objectEnumerator countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v9)
   {
     v10 = *v24;
@@ -219,27 +219,27 @@
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v12 = [*(*(&v23 + 1) + 8 * i) layout];
-        [v12 invalidateColors];
+        layout = [*(*(&v23 + 1) + 8 * i) layout];
+        [layout invalidateColors];
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v9);
   }
 
 LABEL_13:
-  [(TUIInstantiateContext *)self->_instantiateContext setEnvironment:v4];
+  [(TUIInstantiateContext *)self->_instantiateContext setEnvironment:environmentCopy];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = [(TUIInstantiateContext *)self->_instantiateContext environmentContainersUsingGlobals];
-  v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  environmentContainersUsingGlobals = [(TUIInstantiateContext *)self->_instantiateContext environmentContainersUsingGlobals];
+  v14 = [environmentContainersUsingGlobals countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v14)
   {
     v15 = *v20;
@@ -249,7 +249,7 @@ LABEL_13:
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(environmentContainersUsingGlobals);
         }
 
         v17 = *(*(&v19 + 1) + 8 * j);
@@ -259,7 +259,7 @@ LABEL_13:
         }
       }
 
-      v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v14 = [environmentContainersUsingGlobals countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v14);
@@ -272,75 +272,75 @@ LABEL_13:
   }
 }
 
-- (BOOL)invalidateInstantiation:(id)a3
+- (BOOL)invalidateInstantiation:(id)instantiation
 {
-  v4 = a3;
+  instantiationCopy = instantiation;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v4)
+  if (!instantiationCopy)
   {
 LABEL_7:
     v5 = 0;
     goto LABEL_8;
   }
 
-  if (!sub_E002C(v4, self->_rootBox))
+  if (!sub_E002C(instantiationCopy, self->_rootBox))
   {
     v6 = TUIInstantiationLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_19B54C(self, v4, v6);
+      sub_19B54C(self, instantiationCopy, v6);
     }
 
     goto LABEL_7;
   }
 
-  [(NSHashTable *)self->_invalidInstantiators addObject:v4];
+  [(NSHashTable *)self->_invalidInstantiators addObject:instantiationCopy];
   v5 = 1;
 LABEL_8:
 
   return v5;
 }
 
-- (void)_invalidateChildrenForModel:(id)a3
+- (void)_invalidateChildrenForModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
-    v5 = v4;
+    v5 = modelCopy;
     while (1)
     {
       v7 = v5;
-      v6 = [(NSMapTable *)self->_layouts objectForKey:v5];
-      if (v6)
+      parentModel = [(NSMapTable *)self->_layouts objectForKey:v5];
+      if (parentModel)
       {
         break;
       }
 
-      v6 = [v7 parentModel];
+      parentModel = [v7 parentModel];
 
-      v5 = v6;
-      if (!v6)
+      v5 = parentModel;
+      if (!parentModel)
       {
         v7 = 0;
         goto LABEL_8;
       }
     }
 
-    [(TUILayoutController *)self invalidateChildren:v6];
+    [(TUILayoutController *)self invalidateChildren:parentModel];
   }
 
   else
   {
     v7 = 0;
-    v6 = 0;
+    parentModel = 0;
   }
 
 LABEL_8:
 }
 
-- (void)validateInstantiationWithTransactionGroup:(id)a3
+- (void)validateInstantiationWithTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   instantiateContext = self->_instantiateContext;
   if (instantiateContext)
   {
@@ -422,7 +422,7 @@ LABEL_6:
   v17 = [v51 count];
   if (v17)
   {
-    v48 = [v51 allObjects];
+    allObjects = [v51 allObjects];
     memset(v75, 0, sizeof(v75));
     v76 = 1065353216;
     sub_3AE0(v75, v17);
@@ -431,7 +431,7 @@ LABEL_6:
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v18 = v48;
+    v18 = allObjects;
     v19 = [v18 countByEnumeratingWithState:&v71 objects:v81 count:16];
     if (v19)
     {
@@ -567,10 +567,10 @@ LABEL_38:
           v39 = [(NSHashTable *)self->_invalidEnvironmentContainers containsObject:v38];
           v40 = v38;
           v41 = v40;
-          if (v39 || [v40 needsValidationForTransactionGroup:v4])
+          if (v39 || [v40 needsValidationForTransactionGroup:groupCopy])
           {
             v42 = [(NSMapTable *)self->_layouts objectForKey:v41];
-            v43 = [v41 validateInstantiationWithContext:self->_instantiateContext transactionGroup:v4 layout:v42];
+            v43 = [v41 validateInstantiationWithContext:self->_instantiateContext transactionGroup:groupCopy layout:v42];
             [(TUILayoutController *)self _invalidateChildrenForModel:v43];
           }
         }
@@ -615,12 +615,12 @@ LABEL_38:
   return v3;
 }
 
-- (id)layoutForModel:(id)a3
+- (id)layoutForModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
-    v5 = [(NSMapTable *)self->_layouts objectForKey:v4];
+    v5 = [(NSMapTable *)self->_layouts objectForKey:modelCopy];
     if ([v5 isLayout])
     {
       v6 = v5;
@@ -642,11 +642,11 @@ LABEL_38:
   return v7;
 }
 
-- (void)setRootBox:(id)a3
+- (void)setRootBox:(id)box
 {
-  v5 = a3;
+  boxCopy = box;
   p_rootBox = &self->_rootBox;
-  if (self->_rootBox != v5)
+  if (self->_rootBox != boxCopy)
   {
     rootLayout = self->_rootLayout;
     self->_rootLayout = 0;
@@ -661,8 +661,8 @@ LABEL_38:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [(NSMapTable *)self->_layouts objectEnumerator];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    objectEnumerator = [(NSMapTable *)self->_layouts objectEnumerator];
+    v11 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
       v12 = *v18;
@@ -672,13 +672,13 @@ LABEL_38:
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v17 + 1) + 8 * i) teardown];
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
@@ -689,7 +689,7 @@ LABEL_38:
     [(NSHashTable *)self->_orphanLayouts removeAllObjects];
     [(NSHashTable *)self->_invalidRenderModels removeAllObjects];
     [(NSHashTable *)self->_invalidInstantiators removeAllObjects];
-    objc_storeStrong(&self->_rootBox, a3);
+    objc_storeStrong(&self->_rootBox, box);
     if (*p_rootBox)
     {
       v14 = [(TUILayoutController *)self _createLayoutForModel:*p_rootBox withParent:0];
@@ -702,22 +702,22 @@ LABEL_38:
   }
 }
 
-- (void)_invalidateLayout:(id)a3 callOnInvalidate:(BOOL)a4
+- (void)_invalidateLayout:(id)layout callOnInvalidate:(BOOL)invalidate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6 && ([v6 layoutIsInvalid] & 1) == 0)
+  invalidateCopy = invalidate;
+  layoutCopy = layout;
+  v7 = layoutCopy;
+  if (layoutCopy && ([layoutCopy layoutIsInvalid] & 1) == 0)
   {
     [v7 setLayoutIsInvalid:1];
-    if (v4)
+    if (invalidateCopy)
     {
       [v7 onInvalidate];
     }
 
-    v8 = [v7 layoutAncestor];
-    v9 = v8;
-    if (!v8 || ([v8 layoutIsInvalid] & 1) == 0)
+    layoutAncestor = [v7 layoutAncestor];
+    v9 = layoutAncestor;
+    if (!layoutAncestor || ([layoutAncestor layoutIsInvalid] & 1) == 0)
     {
       [(NSHashTable *)self->_invalidLayouts addObject:v7];
     }
@@ -726,8 +726,8 @@ LABEL_38:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v10 = [v7 children];
-    v11 = [v10 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    children = [v7 children];
+    v11 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v11)
     {
       v12 = *v15;
@@ -738,7 +738,7 @@ LABEL_38:
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(children);
           }
 
           [(NSHashTable *)self->_invalidLayouts removeObject:*(*(&v14 + 1) + 8 * v13)];
@@ -746,7 +746,7 @@ LABEL_38:
         }
 
         while (v11 != v13);
-        v11 = [v10 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v11 = [children countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v11);
@@ -760,22 +760,22 @@ LABEL_38:
   self->_cachedAuxRenderModel = 0;
 }
 
-- (void)invalidateChildren:(id)a3
+- (void)invalidateChildren:(id)children
 {
-  v5 = a3;
-  if (([v5 invalidChildren] & 1) == 0)
+  childrenCopy = children;
+  if (([childrenCopy invalidChildren] & 1) == 0)
   {
-    [v5 setInvalidChildren:1];
-    [(NSHashTable *)self->_invalidChildren addObject:v5];
-    v4 = [v5 layout];
-    [(TUILayoutController *)self invalidateLayout:v4];
+    [childrenCopy setInvalidChildren:1];
+    [(NSHashTable *)self->_invalidChildren addObject:childrenCopy];
+    layout = [childrenCopy layout];
+    [(TUILayoutController *)self invalidateLayout:layout];
   }
 }
 
-- (void)validateLayout:(id)a3
+- (void)validateLayout:(id)layout
 {
-  v9 = a3;
-  if (![v9 layoutIsInvalid])
+  layoutCopy = layout;
+  if (![layoutCopy layoutIsInvalid])
   {
     goto LABEL_9;
   }
@@ -802,10 +802,10 @@ LABEL_38:
 LABEL_7:
   [(TUIStatsEventCollector *)self->_statsCollector recordEvent:11];
   v8 = objc_autoreleasePoolPush();
-  [v9 _validateLayout];
+  [layoutCopy _validateLayout];
   objc_autoreleasePoolPop(v8);
-  [v9 setLayoutIsInvalid:0];
-  [(NSHashTable *)self->_invalidLayouts removeObject:v9];
+  [layoutCopy setLayoutIsInvalid:0];
+  [(NSHashTable *)self->_invalidLayouts removeObject:layoutCopy];
   if ((v7 & 1) == 0)
   {
     sub_E11F0(v5);
@@ -814,18 +814,18 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)validateGroupedContainingLayout:(id)a3 withSize:(CGSize)a4
+- (void)validateGroupedContainingLayout:(id)layout withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  [v7 computedNaturalSize];
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
+  [layoutCopy computedNaturalSize];
   if (v9 != width || v8 != height)
   {
-    [v7 invalidateLayout];
+    [layoutCopy invalidateLayout];
   }
 
-  if ([v7 layoutIsInvalid])
+  if ([layoutCopy layoutIsInvalid])
   {
     [(TUIStatsEventCollector *)self->_statsCollector recordEvent:11];
     v11 = objc_autoreleasePoolPush();
@@ -833,7 +833,7 @@ LABEL_9:
     v13[1] = 3221225472;
     v13[2] = sub_E143C;
     v13[3] = &unk_261868;
-    v12 = v7;
+    v12 = layoutCopy;
     v14 = v12;
     v15 = width;
     v16 = height;
@@ -871,29 +871,29 @@ LABEL_6:
   [(TUILayoutController *)self _updateRootLayout];
   while ([(NSHashTable *)self->_invalidLayouts count])
   {
-    v7 = [(NSHashTable *)self->_invalidLayouts anyObject];
-    v8 = [v7 model];
-    if (v8)
+    anyObject = [(NSHashTable *)self->_invalidLayouts anyObject];
+    model = [anyObject model];
+    if (model)
     {
-      while (v8 != self->_rootBox)
+      while (model != self->_rootBox)
       {
-        v9 = [(TUIBox *)v8 parentModel];
+        parentModel = [(TUIBox *)model parentModel];
 
-        v8 = v9;
-        if (!v9)
+        model = parentModel;
+        if (!parentModel)
         {
           goto LABEL_11;
         }
       }
 
-      [(TUILayoutController *)self validateLayout:v7];
+      [(TUILayoutController *)self validateLayout:anyObject];
     }
 
     else
     {
 LABEL_11:
-      v8 = 0;
-      [(NSHashTable *)self->_invalidLayouts removeObject:v7];
+      model = 0;
+      [(NSHashTable *)self->_invalidLayouts removeObject:anyObject];
     }
   }
 
@@ -917,20 +917,20 @@ LABEL_11:
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v21 = [(TUILayoutController *)self instantiateContext];
-  v7 = [v21 environment];
+  instantiateContext = [(TUILayoutController *)self instantiateContext];
+  environment = [instantiateContext environment];
 
-  if (v7)
+  if (environment)
   {
-    v22 = [(TUILayoutController *)self instantiateContext];
-    v8 = [v22 environment];
-    [v8 viewSize];
+    instantiateContext2 = [(TUILayoutController *)self instantiateContext];
+    environment2 = [instantiateContext2 environment];
+    [environment2 viewSize];
     v10 = v9;
     v12 = v11;
 
-    v23 = [(TUILayoutController *)self instantiateContext];
-    v13 = [v23 environment];
-    [v13 viewSafeAreaInsets];
+    instantiateContext3 = [(TUILayoutController *)self instantiateContext];
+    environment3 = [instantiateContext3 environment];
+    [environment3 viewSafeAreaInsets];
     top = v14;
     left = v15;
     bottom = v16;
@@ -944,13 +944,13 @@ LABEL_11:
   }
 
   v24 = [(TUILayout *)self->_rootLayout box];
-  v18 = [v24 layoutDirection];
+  layoutDirection = [v24 layoutDirection];
 
-  if (!v18)
+  if (!layoutDirection)
   {
-    v25 = [(TUILayoutController *)self instantiateContext];
-    v19 = [v25 environment];
-    -[TUILayout setSpecifiedLayoutDirection:](self->_rootLayout, "setSpecifiedLayoutDirection:", [v19 layoutDirection]);
+    instantiateContext4 = [(TUILayoutController *)self instantiateContext];
+    environment4 = [instantiateContext4 environment];
+    -[TUILayout setSpecifiedLayoutDirection:](self->_rootLayout, "setSpecifiedLayoutDirection:", [environment4 layoutDirection]);
   }
 
   [(TUILayout *)self->_rootLayout setContainingWidth:v10];
@@ -960,15 +960,15 @@ LABEL_11:
   [v26 setSafeAreaInsets:{top, left, bottom, right}];
 }
 
-- (id)_createLayoutForModel:(id)a3 withParent:(id)a4
+- (id)_createLayoutForModel:(id)model withParent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 layoutClass];
-  if (v8)
+  modelCopy = model;
+  parentCopy = parent;
+  layoutClass = [modelCopy layoutClass];
+  if (layoutClass)
   {
-    v9 = [[v8 alloc] initWithModel:v6 parent:v7 controller:self];
-    [(NSMapTable *)self->_layouts setObject:v9 forKey:v6];
+    v9 = [[layoutClass alloc] initWithModel:modelCopy parent:parentCopy controller:self];
+    [(NSMapTable *)self->_layouts setObject:v9 forKey:modelCopy];
     if ([v9 isLayout])
     {
       [(TUILayoutController *)self _invalidateLayout:v9 callOnInvalidate:0];
@@ -995,8 +995,8 @@ LABEL_11:
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v3 = [(NSHashTable *)self->_invalidChildren setRepresentation];
-      v4 = [v3 countByEnumeratingWithState:&v38 objects:v45 count:16];
+      setRepresentation = [(NSHashTable *)self->_invalidChildren setRepresentation];
+      v4 = [setRepresentation countByEnumeratingWithState:&v38 objects:v45 count:16];
       if (!v4)
       {
 
@@ -1011,19 +1011,19 @@ LABEL_11:
         {
           if (*v39 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(setRepresentation);
           }
 
           v8 = *(*(&v38 + 1) + 8 * i);
-          v9 = [v8 model];
-          if (v9)
+          model = [v8 model];
+          if (model)
           {
-            while (v9 != self->_rootBox)
+            while (model != self->_rootBox)
             {
-              v10 = [(TUIBox *)v9 parentModel];
+              parentModel = [(TUIBox *)model parentModel];
 
-              v9 = v10;
-              if (!v10)
+              model = parentModel;
+              if (!parentModel)
               {
                 goto LABEL_11;
               }
@@ -1039,14 +1039,14 @@ LABEL_11:
 LABEL_11:
             [(NSHashTable *)self->_invalidChildren removeObject:v8];
             layouts = self->_layouts;
-            v12 = [v8 model];
-            [(NSMapTable *)layouts removeObjectForKey:v12];
+            model2 = [v8 model];
+            [(NSMapTable *)layouts removeObjectForKey:model2];
 
-            v9 = 0;
+            model = 0;
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v38 objects:v45 count:16];
+        v4 = [setRepresentation countByEnumeratingWithState:&v38 objects:v45 count:16];
       }
 
       while (v4);
@@ -1063,8 +1063,8 @@ LABEL_11:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v13 = [(NSHashTable *)self->_orphanLayouts objectEnumerator];
-      v14 = [v13 countByEnumeratingWithState:&v34 objects:v44 count:16];
+      objectEnumerator = [(NSHashTable *)self->_orphanLayouts objectEnumerator];
+      v14 = [objectEnumerator countByEnumeratingWithState:&v34 objects:v44 count:16];
       if (v14)
       {
         v15 = *v35;
@@ -1074,20 +1074,20 @@ LABEL_11:
           {
             if (*v35 != v15)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v17 = *(*(&v34 + 1) + 8 * j);
             [v17 teardown];
             v18 = self->_layouts;
-            v19 = [v17 model];
-            [(NSMapTable *)v18 removeObjectForKey:v19];
+            model3 = [v17 model];
+            [(NSMapTable *)v18 removeObjectForKey:model3];
 
             [(NSHashTable *)self->_invalidRenderModels removeObject:v17];
             [(NSHashTable *)self->_invalidLayouts removeObject:v17];
           }
 
-          v14 = [v13 countByEnumeratingWithState:&v34 objects:v44 count:16];
+          v14 = [objectEnumerator countByEnumeratingWithState:&v34 objects:v44 count:16];
         }
 
         while (v14);
@@ -1106,10 +1106,10 @@ LABEL_11:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v20 = [(NSMapTable *)self->_layouts keyEnumerator];
-    v21 = [v20 allObjects];
+    keyEnumerator = [(NSMapTable *)self->_layouts keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
 
-    v22 = [v21 countByEnumeratingWithState:&v30 objects:v43 count:16];
+    v22 = [allObjects countByEnumeratingWithState:&v30 objects:v43 count:16];
     if (v22)
     {
       v23 = *v31;
@@ -1119,7 +1119,7 @@ LABEL_11:
         {
           if (*v31 != v23)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(allObjects);
           }
 
           v25 = *(*(&v30 + 1) + 8 * k);
@@ -1129,10 +1129,10 @@ LABEL_11:
             v27 = v25;
             while (v27 != self->_rootBox)
             {
-              v28 = [(TUIBox *)v27 parentModel];
+              parentModel2 = [(TUIBox *)v27 parentModel];
 
-              v27 = v28;
-              if (!v28)
+              v27 = parentModel2;
+              if (!parentModel2)
               {
                 goto LABEL_37;
               }
@@ -1150,7 +1150,7 @@ LABEL_37:
           }
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v30 objects:v43 count:16];
+        v22 = [allObjects countByEnumeratingWithState:&v30 objects:v43 count:16];
       }
 
       while (v22);
@@ -1170,12 +1170,12 @@ LABEL_37:
   }
 }
 
-- (void)_validateChildrenForLayout:(id)a3
+- (void)_validateChildrenForLayout:(id)layout
 {
-  v4 = a3;
-  v20 = [v4 model];
+  layoutCopy = layout;
+  model = [layoutCopy model];
   v18 = objc_opt_new();
-  [v20 appendLayoutChildrenToArray:v18];
+  [model appendLayoutChildrenToArray:v18];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -1200,7 +1200,7 @@ LABEL_37:
         v12 = v11;
         if (v11)
         {
-          [v11 updateParent:v4];
+          [v11 updateParent:layoutCopy];
           if ([(NSHashTable *)self->_orphanLayouts containsObject:v12])
           {
             [(TUILayoutController *)self _unorphanLayout:v12];
@@ -1209,7 +1209,7 @@ LABEL_37:
 
         else
         {
-          v12 = [(TUILayoutController *)self _createLayoutForModel:v10 withParent:v4];
+          v12 = [(TUILayoutController *)self _createLayoutForModel:v10 withParent:layoutCopy];
           if (!v12)
           {
             goto LABEL_13;
@@ -1231,14 +1231,14 @@ LABEL_13:
     while (v7);
   }
 
-  v19 = [v4 containers];
-  [v4 setContainers:v6];
-  [v4 setInvalidChildren:0];
+  containers = [layoutCopy containers];
+  [layoutCopy setContainers:v6];
+  [layoutCopy setInvalidChildren:0];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = v19;
+  v13 = containers;
   v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v14)
   {
@@ -1265,19 +1265,19 @@ LABEL_13:
     while (v14);
   }
 
-  [v4 onContainersUpdated];
+  [layoutCopy onContainersUpdated];
 }
 
-- (void)_unorphanLayout:(id)a3
+- (void)_unorphanLayout:(id)layout
 {
-  v4 = a3;
-  [(NSHashTable *)self->_orphanLayouts removeObject:v4];
+  layoutCopy = layout;
+  [(NSHashTable *)self->_orphanLayouts removeObject:layoutCopy];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = [v4 containers];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  containers = [layoutCopy containers];
+  v6 = [containers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -1288,7 +1288,7 @@ LABEL_13:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(containers);
         }
 
         [(TUILayoutController *)self _unorphanLayout:*(*(&v9 + 1) + 8 * v8)];
@@ -1296,23 +1296,23 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [containers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_orphanLayout:(id)a3
+- (void)_orphanLayout:(id)layout
 {
-  v4 = a3;
-  [(NSHashTable *)self->_orphanLayouts addObject:v4];
+  layoutCopy = layout;
+  [(NSHashTable *)self->_orphanLayouts addObject:layoutCopy];
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = [v4 containers];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  containers = [layoutCopy containers];
+  v6 = [containers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -1323,7 +1323,7 @@ LABEL_13:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(containers);
         }
 
         [(TUILayoutController *)self _orphanLayout:*(*(&v9 + 1) + 8 * v8)];
@@ -1331,19 +1331,19 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [containers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)renderModelSection:(unint64_t)a3 offset:(CGPoint)a4 uuid:(id)a5 transactionGroup:(id)a6
+- (id)renderModelSection:(unint64_t)section offset:(CGPoint)offset uuid:(id)uuid transactionGroup:(id)group
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a5;
-  v12 = a6;
+  y = offset.y;
+  x = offset.x;
+  uuidCopy = uuid;
+  groupCopy = group;
   instantiateContext = self->_instantiateContext;
   if (instantiateContext)
   {
@@ -1366,18 +1366,18 @@ LABEL_6:
   cachedRenderModel = self->_cachedRenderModel;
   if (!cachedRenderModel)
   {
-    v39 = v12;
-    v40 = v11;
+    v39 = groupCopy;
+    v40 = uuidCopy;
     v17 = [TUIRenderContext alloc];
-    v18 = [(TUIIdentifierMap *)self->_identifierMap renderModelIdentifierMap];
+    renderModelIdentifierMap = [(TUIIdentifierMap *)self->_identifierMap renderModelIdentifierMap];
     embeddedIdentifierMaps = self->_embeddedIdentifierMaps;
     embeddedUpdateControllers = self->_embeddedUpdateControllers;
     embeddedUUIDs = self->_embeddedUUIDs;
-    v22 = [(TUIInstantiateContext *)self->_instantiateContext environment];
-    v23 = [(TUIRenderContext *)v17 initWithIdentifierMap:v18 embeddedIdentifierMaps:embeddedIdentifierMaps embeddedUpdateControllerMap:embeddedUpdateControllers embeddedUUIDMap:embeddedUUIDs environment:v22 uid:self->_uid UUID:self->_UUID entry:self->_entry layoutQueue:self->_queue renderMode:self->_renderMode];
+    environment = [(TUIInstantiateContext *)self->_instantiateContext environment];
+    v23 = [(TUIRenderContext *)v17 initWithIdentifierMap:renderModelIdentifierMap embeddedIdentifierMaps:embeddedIdentifierMaps embeddedUpdateControllerMap:embeddedUpdateControllers embeddedUUIDMap:embeddedUUIDs environment:environment uid:self->_uid UUID:self->_UUID entry:self->_entry layoutQueue:self->_queue renderMode:self->_renderMode];
 
-    v12 = v39;
-    v11 = v40;
+    groupCopy = v39;
+    uuidCopy = v40;
     [(TUIRenderContext *)v23 setManager:self->_manager];
     [(TUIRenderContext *)v23 setTransactionGroup:v39];
     v24 = [(TUILayoutController *)self renderModelOfKind:7 context:v23];
@@ -1396,15 +1396,15 @@ LABEL_6:
     cachedRenderModel = self->_cachedRenderModel;
   }
 
-  v28 = [(TUIRenderModelSection *)cachedRenderModel copyWithSection:a3 offset:v11 uuid:x, y];
+  v28 = [(TUIRenderModelSection *)cachedRenderModel copyWithSection:section offset:uuidCopy uuid:x, y];
   v29 = self->_cachedRenderModel;
   self->_cachedRenderModel = v28;
 
-  v30 = [(TUIBox *)self->_rootBox animationGroups];
-  v31 = v30;
-  if (v30)
+  animationGroups = [(TUIBox *)self->_rootBox animationGroups];
+  v31 = animationGroups;
+  if (animationGroups)
   {
-    v32 = [v30 generateAllGroupRenderModelsFromSource:self->_cachedRenderModel];
+    v32 = [animationGroups generateAllGroupRenderModelsFromSource:self->_cachedRenderModel];
     [(TUIRenderModelSection *)self->_cachedRenderModel setAnimationRenderModels:v32];
   }
 
@@ -1432,9 +1432,9 @@ LABEL_6:
   v14 = objc_opt_new();
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(TUILayoutController *)self rootBox];
-  v6 = [v5 contentModel];
-  v7 = [(TUILayoutController *)self layoutForModel:v6];
+  rootBox = [(TUILayoutController *)self rootBox];
+  contentModel = [rootBox contentModel];
+  v7 = [(TUILayoutController *)self layoutForModel:contentModel];
 
   [v7 appendEmbeddedIdentifierMaps:v14 updateControllers:v3 UUIDs:v4];
   v8 = [v14 copy];
@@ -1450,28 +1450,28 @@ LABEL_6:
   self->_embeddedUUIDs = v12;
 }
 
-- (id)renderModelAuxiliary:(id)a3
+- (id)renderModelAuxiliary:(id)auxiliary
 {
-  v4 = a3;
+  auxiliaryCopy = auxiliary;
   cachedAuxRenderModel = self->_cachedAuxRenderModel;
   if (!cachedAuxRenderModel)
   {
     v6 = [TUIRenderContext alloc];
-    v7 = [(TUIIdentifierMap *)self->_identifierMap renderModelIdentifierMap];
-    v8 = [(TUIInstantiateContext *)self->_instantiateContext environment];
-    v9 = [(TUIRenderContext *)v6 initWithIdentifierMap:v7 embeddedIdentifierMaps:0 embeddedUpdateControllerMap:0 embeddedUUIDMap:0 environment:v8 uid:self->_uid UUID:self->_UUID entry:self->_entry layoutQueue:self->_queue renderMode:self->_renderMode];
+    renderModelIdentifierMap = [(TUIIdentifierMap *)self->_identifierMap renderModelIdentifierMap];
+    environment = [(TUIInstantiateContext *)self->_instantiateContext environment];
+    v9 = [(TUIRenderContext *)v6 initWithIdentifierMap:renderModelIdentifierMap embeddedIdentifierMaps:0 embeddedUpdateControllerMap:0 embeddedUUIDMap:0 environment:environment uid:self->_uid UUID:self->_UUID entry:self->_entry layoutQueue:self->_queue renderMode:self->_renderMode];
 
     [(TUIRenderContext *)v9 setManager:self->_manager];
-    [(TUIRenderContext *)v9 setTransactionGroup:v4];
+    [(TUIRenderContext *)v9 setTransactionGroup:auxiliaryCopy];
     v10 = objc_opt_new();
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = [(TUILayoutController *)self rootBox];
-    v12 = [v11 navBarModels];
+    rootBox = [(TUILayoutController *)self rootBox];
+    navBarModels = [rootBox navBarModels];
 
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v13 = [navBarModels countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
       v14 = *v24;
@@ -1482,7 +1482,7 @@ LABEL_6:
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(navBarModels);
           }
 
           v16 = [(TUILayoutController *)self layoutForModel:*(*(&v23 + 1) + 8 * v15)];
@@ -1496,7 +1496,7 @@ LABEL_6:
         }
 
         while (v13 != v15);
-        v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v13 = [navBarModels countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v13);
@@ -1515,19 +1515,19 @@ LABEL_6:
   return cachedAuxRenderModel;
 }
 
-- (id)renderModelLayer:(id)a3
+- (id)renderModelLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   cachedLayerRenderModel = self->_cachedLayerRenderModel;
   if (!cachedLayerRenderModel)
   {
     v6 = [TUIRenderContext alloc];
-    v7 = [(TUIIdentifierMap *)self->_identifierMap renderModelIdentifierMap];
-    v8 = [(TUIInstantiateContext *)self->_instantiateContext environment];
-    v9 = [(TUIRenderContext *)v6 initWithIdentifierMap:v7 embeddedIdentifierMaps:0 embeddedUpdateControllerMap:0 embeddedUUIDMap:0 environment:v8 uid:self->_uid UUID:self->_UUID entry:self->_entry layoutQueue:self->_queue renderMode:self->_renderMode];
+    renderModelIdentifierMap = [(TUIIdentifierMap *)self->_identifierMap renderModelIdentifierMap];
+    environment = [(TUIInstantiateContext *)self->_instantiateContext environment];
+    v9 = [(TUIRenderContext *)v6 initWithIdentifierMap:renderModelIdentifierMap embeddedIdentifierMaps:0 embeddedUpdateControllerMap:0 embeddedUUIDMap:0 environment:environment uid:self->_uid UUID:self->_UUID entry:self->_entry layoutQueue:self->_queue renderMode:self->_renderMode];
 
     [(TUIRenderContext *)v9 setManager:self->_manager];
-    [(TUIRenderContext *)v9 setTransactionGroup:v4];
+    [(TUIRenderContext *)v9 setTransactionGroup:layerCopy];
     v10 = [(TUILayoutController *)self renderModelOfKind:3 context:v9];
     v11 = self->_cachedLayerRenderModel;
     self->_cachedLayerRenderModel = v10;
@@ -1540,36 +1540,36 @@ LABEL_6:
   return cachedLayerRenderModel;
 }
 
-- (id)renderModelOfKind:(unint64_t)a3 context:(id)a4
+- (id)renderModelOfKind:(unint64_t)kind context:(id)context
 {
-  v6 = a4;
-  v7 = [(TUILayoutController *)self rootBox];
-  v8 = [v7 contentModel];
-  v9 = [(TUILayoutController *)self layoutForModel:v8];
+  contextCopy = context;
+  rootBox = [(TUILayoutController *)self rootBox];
+  contentModel = [rootBox contentModel];
+  v9 = [(TUILayoutController *)self layoutForModel:contentModel];
 
-  v10 = [v6 renderModelForLayout:v9 kind:a3];
+  v10 = [contextCopy renderModelForLayout:v9 kind:kind];
 
   return v10;
 }
 
-- (id)renderModelOfKind:(unint64_t)a3 transactionGroup:(id)a4
+- (id)renderModelOfKind:(unint64_t)kind transactionGroup:(id)group
 {
-  v6 = a4;
+  groupCopy = group;
   v7 = [TUIRenderContext alloc];
-  v8 = [(TUIIdentifierMap *)self->_identifierMap renderModelIdentifierMap];
-  v9 = [(TUIInstantiateContext *)self->_instantiateContext environment];
-  v10 = [(TUIRenderContext *)v7 initWithIdentifierMap:v8 embeddedIdentifierMaps:0 embeddedUpdateControllerMap:0 embeddedUUIDMap:0 environment:v9 uid:self->_uid UUID:self->_UUID entry:self->_entry layoutQueue:self->_queue renderMode:self->_renderMode];
+  renderModelIdentifierMap = [(TUIIdentifierMap *)self->_identifierMap renderModelIdentifierMap];
+  environment = [(TUIInstantiateContext *)self->_instantiateContext environment];
+  v10 = [(TUIRenderContext *)v7 initWithIdentifierMap:renderModelIdentifierMap embeddedIdentifierMaps:0 embeddedUpdateControllerMap:0 embeddedUUIDMap:0 environment:environment uid:self->_uid UUID:self->_UUID entry:self->_entry layoutQueue:self->_queue renderMode:self->_renderMode];
 
   [(TUIRenderContext *)v10 setManager:self->_manager];
-  [(TUIRenderContext *)v10 setTransactionGroup:v6];
-  v11 = [(TUILayoutController *)self renderModelOfKind:a3 context:v10];
+  [(TUIRenderContext *)v10 setTransactionGroup:groupCopy];
+  v11 = [(TUILayoutController *)self renderModelOfKind:kind context:v10];
 
   return v11;
 }
 
-- (id)loadResourceWithURL:(id)a3 error:(id *)a4
+- (id)loadResourceWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1582,14 +1582,14 @@ LABEL_6:
   v22 = sub_E2F40;
   v23 = sub_E2F50;
   v24 = 0;
-  v7 = [(TUILayoutController *)self manager];
-  v8 = [v7 resourceLoader];
+  manager = [(TUILayoutController *)self manager];
+  resourceLoader = [manager resourceLoader];
 
-  if (v8)
+  if (resourceLoader)
   {
     v9 = dispatch_semaphore_create(0);
-    v10 = [(TUILayoutController *)self manager];
-    v11 = [v10 resourceLoader];
+    manager2 = [(TUILayoutController *)self manager];
+    resourceLoader2 = [manager2 resourceLoader];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_E2F58;
@@ -1598,14 +1598,14 @@ LABEL_6:
     v18 = &v19;
     v12 = v9;
     v16 = v12;
-    [v11 loadResourceWithURL:v6 completion:v15];
+    [resourceLoader2 loadResourceWithURL:lCopy completion:v15];
 
     dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v13 = v26[5];
@@ -1616,13 +1616,13 @@ LABEL_6:
   return v13;
 }
 
-- (void)invalidateCachedRenderModelForLayout:(id)a3
+- (void)invalidateCachedRenderModelForLayout:(id)layout
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  layoutCopy = layout;
+  v8 = layoutCopy;
+  if (layoutCopy)
   {
-    [(NSHashTable *)self->_invalidRenderModels addObject:v4];
+    [(NSHashTable *)self->_invalidRenderModels addObject:layoutCopy];
   }
 
   else
@@ -1638,35 +1638,35 @@ LABEL_6:
   }
 }
 
-- (void)cachedRenderModelValidatedForLayout:(id)a3
+- (void)cachedRenderModelValidatedForLayout:(id)layout
 {
-  v4 = a3;
-  if (v4)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
-    [(NSHashTable *)self->_invalidRenderModels removeObject:v4];
+    [(NSHashTable *)self->_invalidRenderModels removeObject:layoutCopy];
   }
 }
 
-- (void)validateRenderModelsWithTransactionGroup:(id)a3
+- (void)validateRenderModelsWithTransactionGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = [TUIRenderContext alloc];
-  v6 = [(TUIIdentifierMap *)self->_identifierMap renderModelIdentifierMap];
+  renderModelIdentifierMap = [(TUIIdentifierMap *)self->_identifierMap renderModelIdentifierMap];
   embeddedIdentifierMaps = self->_embeddedIdentifierMaps;
   embeddedUpdateControllers = self->_embeddedUpdateControllers;
   embeddedUUIDs = self->_embeddedUUIDs;
-  v10 = [(TUIInstantiateContext *)self->_instantiateContext environment];
-  v11 = [(TUIRenderContext *)v5 initWithIdentifierMap:v6 embeddedIdentifierMaps:embeddedIdentifierMaps embeddedUpdateControllerMap:embeddedUpdateControllers embeddedUUIDMap:embeddedUUIDs environment:v10 uid:self->_uid UUID:self->_UUID entry:self->_entry layoutQueue:self->_queue renderMode:self->_renderMode];
+  environment = [(TUIInstantiateContext *)self->_instantiateContext environment];
+  v11 = [(TUIRenderContext *)v5 initWithIdentifierMap:renderModelIdentifierMap embeddedIdentifierMaps:embeddedIdentifierMaps embeddedUpdateControllerMap:embeddedUpdateControllers embeddedUUIDMap:embeddedUUIDs environment:environment uid:self->_uid UUID:self->_UUID entry:self->_entry layoutQueue:self->_queue renderMode:self->_renderMode];
 
   [(TUIRenderContext *)v11 setManager:self->_manager];
-  [(TUIRenderContext *)v11 setTransactionGroup:v4];
-  v12 = [(NSHashTable *)self->_invalidRenderModels allObjects];
+  [(TUIRenderContext *)v11 setTransactionGroup:groupCopy];
+  allObjects = [(NSHashTable *)self->_invalidRenderModels allObjects];
   [(NSHashTable *)self->_invalidRenderModels removeAllObjects];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v13 = v12;
+  v13 = allObjects;
   v14 = [v13 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v14)
   {
@@ -1681,7 +1681,7 @@ LABEL_6:
           objc_enumerationMutation(v13);
         }
 
-        [*(*(&v17 + 1) + 8 * v16) validateRenderModelWithContext:v11 transactionGroup:v4];
+        [*(*(&v17 + 1) + 8 * v16) validateRenderModelWithContext:v11 transactionGroup:groupCopy];
         v16 = v16 + 1;
       }
 
@@ -1695,67 +1695,67 @@ LABEL_6:
 
 - (id)axModelTree
 {
-  v3 = [(TUILayoutController *)self rootBox];
-  v4 = [v3 contentModel];
-  v5 = [(TUILayoutController *)self layoutForModel:v4];
+  rootBox = [(TUILayoutController *)self rootBox];
+  contentModel = [rootBox contentModel];
+  v5 = [(TUILayoutController *)self layoutForModel:contentModel];
 
   v6 = [v5 axModelTreeWithCustomActionsCollector:0 scrollAncestorLayout:0 scrollAncestorTranslation:0 liveTransformAncestorLayout:{CGPointZero.x, CGPointZero.y}];
 
   return v6;
 }
 
-- (id)imageResourceForKind:(id)a3 naturalSize:(CGSize)a4 contentsScale:(double)a5 instance:(id)a6 options:(id)a7
+- (id)imageResourceForKind:(id)kind naturalSize:(CGSize)size contentsScale:(double)scale instance:(id)instance options:(id)options
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(TUIManager *)self->_manager resourceRegistry];
-  v17 = [v16 imageProviderForKind:v13];
+  height = size.height;
+  width = size.width;
+  kindCopy = kind;
+  instanceCopy = instance;
+  optionsCopy = options;
+  resourceRegistry = [(TUIManager *)self->_manager resourceRegistry];
+  v17 = [resourceRegistry imageProviderForKind:kindCopy];
 
-  v18 = [v17 imageResourceForNaturalSize:v14 contentsScale:v15 instance:width options:{height, a5}];
-  v19 = [(TUIInstantiateContext *)self->_instantiateContext capture];
+  v18 = [v17 imageResourceForNaturalSize:instanceCopy contentsScale:optionsCopy instance:width options:{height, scale}];
+  capture = [(TUIInstantiateContext *)self->_instantiateContext capture];
 
-  if (v19 && v18)
+  if (capture && v18)
   {
-    v20 = [(TUIInstantiateContext *)self->_instantiateContext capture];
-    [v20 captureImageResource:v18 forKind:v13 naturalSize:v14 contentsScale:v15 instance:width options:{height, a5}];
+    capture2 = [(TUIInstantiateContext *)self->_instantiateContext capture];
+    [capture2 captureImageResource:v18 forKind:kindCopy naturalSize:instanceCopy contentsScale:optionsCopy instance:width options:{height, scale}];
   }
 
   return v18;
 }
 
-- (id)intrinsicImageResourceForKind:(id)a3 instance:(id)a4 options:(id)a5
+- (id)intrinsicImageResourceForKind:(id)kind instance:(id)instance options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUIManager *)self->_manager resourceRegistry];
-  v12 = [v11 imageProviderForKind:v8];
+  kindCopy = kind;
+  instanceCopy = instance;
+  optionsCopy = options;
+  resourceRegistry = [(TUIManager *)self->_manager resourceRegistry];
+  v12 = [resourceRegistry imageProviderForKind:kindCopy];
 
-  v13 = [v12 intrinsicImageResourceForInstance:v9 options:v10];
-  v14 = [(TUIInstantiateContext *)self->_instantiateContext capture];
+  v13 = [v12 intrinsicImageResourceForInstance:instanceCopy options:optionsCopy];
+  capture = [(TUIInstantiateContext *)self->_instantiateContext capture];
 
-  if (v14 && v13)
+  if (capture && v13)
   {
-    v15 = [(TUIInstantiateContext *)self->_instantiateContext capture];
-    [v15 captureIntrinsicImageResource:v13 forKind:v8 instance:v9 options:v10];
+    capture2 = [(TUIInstantiateContext *)self->_instantiateContext capture];
+    [capture2 captureIntrinsicImageResource:v13 forKind:kindCopy instance:instanceCopy options:optionsCopy];
   }
 
   return v13;
 }
 
-- (BOOL)applyHostingGeometryMapUpdate:(id)a3
+- (BOOL)applyHostingGeometryMapUpdate:(id)update
 {
-  v30 = a3;
-  v4 = [v30 to];
+  updateCopy = update;
+  v4 = [updateCopy to];
   hostingGeometryMap = self->_hostingGeometryMap;
   self->_hostingGeometryMap = v4;
 
-  v6 = [v30 toReuseMap];
+  toReuseMap = [updateCopy toReuseMap];
   hostingGeometryReuseMap = self->_hostingGeometryReuseMap;
-  self->_hostingGeometryReuseMap = v6;
+  self->_hostingGeometryReuseMap = toReuseMap;
 
   if ([(NSMapTable *)self->_hostingLayouts count])
   {
@@ -1763,8 +1763,8 @@ LABEL_6:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v8 = [v30 differences];
-    v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    differences = [updateCopy differences];
+    v9 = [differences countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v9)
     {
       v31 = 0;
@@ -1775,7 +1775,7 @@ LABEL_6:
         {
           if (*v37 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(differences);
           }
 
           v12 = *(*(&v36 + 1) + 8 * i);
@@ -1783,7 +1783,7 @@ LABEL_6:
           v14 = v13;
           if (v13)
           {
-            v15 = [v13 hostingGeometry];
+            hostingGeometry = [v13 hostingGeometry];
             v16 = [(TUIHostingGeometryMap *)self->_hostingGeometryMap geometryForIdentifier:v12];
             if (!v16)
             {
@@ -1792,7 +1792,7 @@ LABEL_6:
               v16 = [(_TUIHostingGeometryReuseMap *)v17 geometryForIdentifier:v12 requestedSize:?];
             }
 
-            if (v15 != v16 && ([v15 isEqualToGeometry:v16] & 1) == 0)
+            if (hostingGeometry != v16 && ([hostingGeometry isEqualToGeometry:v16] & 1) == 0)
             {
               [v14 invalidateLayout];
               v31 = 1;
@@ -1800,7 +1800,7 @@ LABEL_6:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
+        v9 = [differences countByEnumeratingWithState:&v36 objects:v41 count:16];
       }
 
       while (v9);
@@ -1826,8 +1826,8 @@ LABEL_6:
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v19 = [(_TUIHostingGeometryReuseMap *)v18 reuseIdentifiers];
-      v20 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      reuseIdentifiers = [(_TUIHostingGeometryReuseMap *)v18 reuseIdentifiers];
+      v20 = [reuseIdentifiers countByEnumeratingWithState:&v32 objects:v40 count:16];
       if (v20)
       {
         v21 = *v33;
@@ -1837,7 +1837,7 @@ LABEL_6:
           {
             if (*v33 != v21)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(reuseIdentifiers);
             }
 
             v23 = *(*(&v32 + 1) + 8 * j);
@@ -1845,11 +1845,11 @@ LABEL_6:
             v25 = v24;
             if (v24)
             {
-              v26 = [v24 hostingGeometry];
+              hostingGeometry2 = [v24 hostingGeometry];
               v27 = self->_hostingGeometryReuseMap;
               [v25 hostingRequestedSize];
               v28 = [(_TUIHostingGeometryReuseMap *)v27 geometryForIdentifier:v23 requestedSize:?];
-              if (v26 != v28 && ([v26 isEqualToGeometry:v28] & 1) == 0)
+              if (hostingGeometry2 != v28 && ([hostingGeometry2 isEqualToGeometry:v28] & 1) == 0)
               {
                 [v25 invalidateLayout];
                 v31 = 1;
@@ -1857,7 +1857,7 @@ LABEL_6:
             }
           }
 
-          v20 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
+          v20 = [reuseIdentifiers countByEnumeratingWithState:&v32 objects:v40 count:16];
         }
 
         while (v20);
@@ -1868,18 +1868,18 @@ LABEL_6:
   return v31 & 1;
 }
 
-- (id)hostingGeometryForIdentifier:(id)a3 requestedSize:(CGSize)a4
+- (id)hostingGeometryForIdentifier:(id)identifier requestedSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  if (v7 && (hostingGeometryMap = self->_hostingGeometryMap) != 0)
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  if (identifierCopy && (hostingGeometryMap = self->_hostingGeometryMap) != 0)
   {
-    v9 = [(TUIHostingGeometryMap *)hostingGeometryMap geometryForIdentifier:v7];
-    if (v9)
+    height = [(TUIHostingGeometryMap *)hostingGeometryMap geometryForIdentifier:identifierCopy];
+    if (height)
     {
-      v10 = TUIHostingLog();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+      hostedViewFactoryTypesWithGeometryReuse = TUIHostingLog();
+      if (os_log_type_enabled(hostedViewFactoryTypesWithGeometryReuse, OS_LOG_TYPE_DEBUG))
       {
         uniqueIdentifier = self->_feedId.uniqueIdentifier;
         v29.width = width;
@@ -1888,27 +1888,27 @@ LABEL_6:
         v20 = 134218754;
         v21 = uniqueIdentifier;
         v22 = 2112;
-        v23 = v7;
+        v23 = identifierCopy;
         v24 = 2112;
         v25 = v12;
         v26 = 2112;
-        v27 = v9;
-        _os_log_debug_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "[fid:%lu] hostingGeometryForIdentifer:%@ requestedSize:%@ => %@", &v20, 0x2Au);
+        v27 = height;
+        _os_log_debug_impl(&dword_0, hostedViewFactoryTypesWithGeometryReuse, OS_LOG_TYPE_DEBUG, "[fid:%lu] hostingGeometryForIdentifer:%@ requestedSize:%@ => %@", &v20, 0x2Au);
       }
     }
 
     else
     {
-      v13 = [(TUIManager *)self->_manager viewRegistry];
-      v10 = [v13 hostedViewFactoryTypesWithGeometryReuse];
+      viewRegistry = [(TUIManager *)self->_manager viewRegistry];
+      hostedViewFactoryTypesWithGeometryReuse = [viewRegistry hostedViewFactoryTypesWithGeometryReuse];
 
-      v14 = [v7 type];
-      v15 = [v10 containsObject:v14];
+      type = [identifierCopy type];
+      v15 = [hostedViewFactoryTypesWithGeometryReuse containsObject:type];
 
       if (v15)
       {
-        v9 = [(_TUIHostingGeometryReuseMap *)self->_hostingGeometryReuseMap geometryForIdentifier:v7 requestedSize:width, height];
-        if (v9)
+        height = [(_TUIHostingGeometryReuseMap *)self->_hostingGeometryReuseMap geometryForIdentifier:identifierCopy requestedSize:width, height];
+        if (height)
         {
           v16 = TUIHostingLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1920,11 +1920,11 @@ LABEL_6:
             v20 = 134218754;
             v21 = v18;
             v22 = 2112;
-            v23 = v7;
+            v23 = identifierCopy;
             v24 = 2112;
             v25 = v19;
             v26 = 2112;
-            v27 = v9;
+            v27 = height;
             _os_log_debug_impl(&dword_0, v16, OS_LOG_TYPE_DEBUG, "[fid:%lu] hostingGeometryForIdentifer:%@ requestedSize:%@ => %@ (reused)", &v20, 0x2Au);
           }
         }
@@ -1932,17 +1932,17 @@ LABEL_6:
 
       else
       {
-        v9 = 0;
+        height = 0;
       }
     }
   }
 
   else
   {
-    v9 = 0;
+    height = 0;
   }
 
-  return v9;
+  return height;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface CLGyroCalibrationDatabaseAdapter
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)syncgetBiasFit:(id *)a3;
-- (BOOL)syncgetDoSync:(id)a3;
-- (BOOL)syncgetInsertWithBias:(id *)a3 variance:(id *)a4 temperature:(float)a5 timestamp:(double)a6;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)syncgetBiasFit:(id *)fit;
+- (BOOL)syncgetDoSync:(id)sync;
+- (BOOL)syncgetInsertWithBias:(id *)bias variance:(id *)variance temperature:(float)temperature timestamp:(double)timestamp;
 - (BOOL)syncgetSupportsMiniCalibration;
 - (BOOL)syncgetWipeDatabase;
 - (CLGyroCalibrationDatabaseAdapter)init;
@@ -14,23 +14,23 @@
 - (int)syncgetNumTemperatures;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
-- (void)dumpDatabase:(id)a3 onCompletion:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
+- (void)dumpDatabase:(id)database onCompletion:(id)completion;
 - (void)endService;
-- (void)getBiasFitWithReply:(id)a3;
+- (void)getBiasFitWithReply:(id)reply;
 - (void)startFactoryGYTT;
 @end
 
 @implementation CLGyroCalibrationDatabaseAdapter
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < objc_msgSend_count(a3, a2, a3))
+  v5 = index + 1;
+  if (index + 1 < objc_msgSend_count(blocked, a2, blocked))
   {
-    v7 = objc_msgSend_objectAtIndexedSubscript_(a3, v6, v5);
-    objc_msgSend_becameFatallyBlocked_index_(v7, v8, a3, v5);
+    v7 = objc_msgSend_objectAtIndexedSubscript_(blocked, v6, v5);
+    objc_msgSend_becameFatallyBlocked_index_(v7, v8, blocked, v5);
   }
 }
 
@@ -140,27 +140,27 @@
   return result;
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = objc_msgSend_adaptee(self, a2, a3);
-  v5 = *(a3 + 2);
+  v4 = objc_msgSend_adaptee(self, a2, async);
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, v4);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  v6 = objc_msgSend_adaptee(self, a2, a3);
-  (*(a3 + 2))(a3, v6);
-  v7 = *(a4 + 2);
+  v6 = objc_msgSend_adaptee(self, a2, async);
+  (*(async + 2))(async, v6);
+  v7 = *(reply + 2);
 
-  v7(a4);
+  v7(reply);
 }
 
-- (BOOL)syncgetDoSync:(id)a3
+- (BOOL)syncgetDoSync:(id)sync
 {
-  v4 = objc_msgSend_adaptee(self, a2, a3);
-  (*(a3 + 2))(a3, v4);
+  v4 = objc_msgSend_adaptee(self, a2, sync);
+  (*(sync + 2))(sync, v4);
   return 0;
 }
 
@@ -188,21 +188,21 @@
   v3();
 }
 
-- (BOOL)syncgetBiasFit:(id *)a3
+- (BOOL)syncgetBiasFit:(id *)fit
 {
-  v3 = *(*objc_msgSend_adaptee(self, a2, a3) + 216);
+  v3 = *(*objc_msgSend_adaptee(self, a2, fit) + 216);
 
   return v3();
 }
 
-- (void)getBiasFitWithReply:(id)a3
+- (void)getBiasFitWithReply:(id)reply
 {
   v9 = *MEMORY[0x1E69E9840];
   memset(__src, 0, sizeof(__src));
-  v4 = objc_msgSend_adaptee(self, a2, a3);
+  v4 = objc_msgSend_adaptee(self, a2, reply);
   v5 = (*(*v4 + 216))(v4, __src);
   memcpy(v7, __src, sizeof(v7));
-  (*(a3 + 2))(a3, v5, v7);
+  (*(reply + 2))(reply, v5, v7);
   v6 = *MEMORY[0x1E69E9840];
 }
 
@@ -228,22 +228,22 @@
   return v5;
 }
 
-- (BOOL)syncgetInsertWithBias:(id *)a3 variance:(id *)a4 temperature:(float)a5 timestamp:(double)a6
+- (BOOL)syncgetInsertWithBias:(id *)bias variance:(id *)variance temperature:(float)temperature timestamp:(double)timestamp
 {
-  v8 = *(*objc_msgSend_adaptee(self, a2, a3) + 208);
-  v9.n128_f32[0] = a5;
-  v10.n128_f64[0] = a6;
+  v8 = *(*objc_msgSend_adaptee(self, a2, bias) + 208);
+  v9.n128_f32[0] = temperature;
+  v10.n128_f64[0] = timestamp;
 
   return v8(v9, v10);
 }
 
-- (void)dumpDatabase:(id)a3 onCompletion:(id)a4
+- (void)dumpDatabase:(id)database onCompletion:(id)completion
 {
-  v6 = objc_msgSend_adaptee(self, a2, a3);
-  v7 = (*(*v6 + 224))(v6, a3);
-  v8 = *(a4 + 2);
+  v6 = objc_msgSend_adaptee(self, a2, database);
+  v7 = (*(*v6 + 224))(v6, database);
+  v8 = *(completion + 2);
 
-  v8(a4, v7);
+  v8(completion, v7);
 }
 
 - (BOOL)syncgetWipeDatabase

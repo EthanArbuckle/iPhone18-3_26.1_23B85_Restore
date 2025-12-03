@@ -8,7 +8,7 @@
 
 - (BOOL)isAvailable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_91F0();
 
   return v3 & 1;

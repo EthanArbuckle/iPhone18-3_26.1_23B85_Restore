@@ -1,22 +1,22 @@
 @interface SoftwareLibraryUpdateOperation
 - (NSDictionary)changeset;
 - (NSString)bundleIdentifier;
-- (SoftwareLibraryUpdateOperation)initWithBundleIdentifier:(id)a3 changeset:(id)a4;
+- (SoftwareLibraryUpdateOperation)initWithBundleIdentifier:(id)identifier changeset:(id)changeset;
 - (void)dealloc;
 - (void)run;
 @end
 
 @implementation SoftwareLibraryUpdateOperation
 
-- (SoftwareLibraryUpdateOperation)initWithBundleIdentifier:(id)a3 changeset:(id)a4
+- (SoftwareLibraryUpdateOperation)initWithBundleIdentifier:(id)identifier changeset:(id)changeset
 {
   v8.receiver = self;
   v8.super_class = SoftwareLibraryUpdateOperation;
   v6 = [(SoftwareLibraryUpdateOperation *)&v8 init];
   if (v6)
   {
-    v6->_bundleID = [a3 copy];
-    v6->_changeset = [a4 copy];
+    v6->_bundleID = [identifier copy];
+    v6->_changeset = [changeset copy];
   }
 
   return v6;
@@ -67,15 +67,15 @@
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v7 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v8 = v7 | 2;
+      v8 = shouldLog | 2;
     }
 
     else
     {
-      v8 = v7;
+      v8 = shouldLog;
     }
 
     if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -131,15 +131,15 @@
         v17 = +[SSLogConfig sharedConfig];
       }
 
-      v18 = [v17 shouldLog];
+      shouldLog2 = [v17 shouldLog];
       if ([v17 shouldLogToDisk])
       {
-        v19 = v18 | 2;
+        v19 = shouldLog2 | 2;
       }
 
       else
       {
-        v19 = v18;
+        v19 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -161,15 +161,15 @@
         v20 = +[SSLogConfig sharedConfig];
       }
 
-      v21 = [v20 shouldLog];
+      shouldLog3 = [v20 shouldLog];
       if ([v20 shouldLogToDisk])
       {
-        v22 = v21 | 2;
+        v22 = shouldLog3 | 2;
       }
 
       else
       {
-        v22 = v21;
+        v22 = shouldLog3;
       }
 
       if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_DEFAULT))

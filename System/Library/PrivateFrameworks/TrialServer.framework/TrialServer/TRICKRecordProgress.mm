@@ -1,57 +1,57 @@
 @interface TRICKRecordProgress
-+ (id)progressWithSize:(unint64_t)a3 transferred:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToProgress:(id)a3;
-- (TRICKRecordProgress)initWithSize:(unint64_t)a3 transferred:(unint64_t)a4;
-- (id)copyWithReplacementSize:(unint64_t)a3;
-- (id)copyWithReplacementTransferred:(unint64_t)a3;
++ (id)progressWithSize:(unint64_t)size transferred:(unint64_t)transferred;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToProgress:(id)progress;
+- (TRICKRecordProgress)initWithSize:(unint64_t)size transferred:(unint64_t)transferred;
+- (id)copyWithReplacementSize:(unint64_t)size;
+- (id)copyWithReplacementTransferred:(unint64_t)transferred;
 - (id)description;
 @end
 
 @implementation TRICKRecordProgress
 
-- (TRICKRecordProgress)initWithSize:(unint64_t)a3 transferred:(unint64_t)a4
+- (TRICKRecordProgress)initWithSize:(unint64_t)size transferred:(unint64_t)transferred
 {
   v7.receiver = self;
   v7.super_class = TRICKRecordProgress;
   result = [(TRICKRecordProgress *)&v7 init];
   if (result)
   {
-    result->_size = a3;
-    result->_transferred = a4;
+    result->_size = size;
+    result->_transferred = transferred;
   }
 
   return result;
 }
 
-+ (id)progressWithSize:(unint64_t)a3 transferred:(unint64_t)a4
++ (id)progressWithSize:(unint64_t)size transferred:(unint64_t)transferred
 {
-  v4 = [[a1 alloc] initWithSize:a3 transferred:a4];
+  v4 = [[self alloc] initWithSize:size transferred:transferred];
 
   return v4;
 }
 
-- (id)copyWithReplacementSize:(unint64_t)a3
+- (id)copyWithReplacementSize:(unint64_t)size
 {
   v5 = objc_alloc(objc_opt_class());
   transferred = self->_transferred;
 
-  return [v5 initWithSize:a3 transferred:transferred];
+  return [v5 initWithSize:size transferred:transferred];
 }
 
-- (id)copyWithReplacementTransferred:(unint64_t)a3
+- (id)copyWithReplacementTransferred:(unint64_t)transferred
 {
   v5 = objc_alloc(objc_opt_class());
   size = self->_size;
 
-  return [v5 initWithSize:size transferred:a3];
+  return [v5 initWithSize:size transferred:transferred];
 }
 
-- (BOOL)isEqualToProgress:(id)a3
+- (BOOL)isEqualToProgress:(id)progress
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (size = self->_size, size == [v4 size]))
+  progressCopy = progress;
+  v5 = progressCopy;
+  if (progressCopy && (size = self->_size, size == [progressCopy size]))
   {
     transferred = self->_transferred;
     v8 = transferred == [v5 transferred];
@@ -65,18 +65,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRICKRecordProgress *)self isEqualToProgress:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRICKRecordProgress *)self isEqualToProgress:v5];
   }
 
   return v6;

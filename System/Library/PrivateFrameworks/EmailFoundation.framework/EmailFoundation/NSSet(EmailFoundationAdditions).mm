@@ -17,17 +17,17 @@
 
 - (id)ef_notEmpty
 {
-  if ([a1 count])
+  if ([self count])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)ef_flatten
@@ -38,8 +38,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -49,7 +49,7 @@
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
@@ -57,8 +57,8 @@
         if (objc_opt_isKindOfClass())
         {
           v8 = v7;
-          v9 = [v8 ef_flatten];
-          [v2 unionSet:v9];
+          ef_flatten = [v8 ef_flatten];
+          [v2 unionSet:ef_flatten];
         }
 
         else
@@ -67,7 +67,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -81,7 +81,7 @@
 - (id)ef_subsets
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2 == 1)
   {
     v4 = [MEMORY[0x1E695DFD8] set];
@@ -95,12 +95,12 @@
     v5 = [MEMORY[0x1E695DFD8] set];
     [v3 addObject:v5];
 
-    v6 = [a1 mutableCopy];
+    v6 = [self mutableCopy];
     v7 = 1;
     while ([v6 count])
     {
-      v8 = [v6 anyObject];
-      [v6 removeObject:v8];
+      anyObject = [v6 anyObject];
+      [v6 removeObject:anyObject];
       if (v7)
       {
         v9 = 0;
@@ -109,7 +109,7 @@
         {
           v11 = [v3 objectAtIndexedSubscript:v9];
           v12 = [v11 mutableCopy];
-          [v12 addObject:v8];
+          [v12 addObject:anyObject];
           [v3 addObject:v12];
 
           ++v9;
@@ -119,7 +119,7 @@
           }
         }
 
-        [v3 addObject:a1];
+        [v3 addObject:self];
       }
 
 LABEL_14:
@@ -130,7 +130,7 @@ LABEL_14:
 
   else
   {
-    v16[0] = a1;
+    v16[0] = self;
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   }
 
@@ -145,8 +145,8 @@ LABEL_14:
   v5 = a3;
   if (!v5)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"EFNSSetAdditions.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFNSSetAdditions.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
   }
 
   v6 = [MEMORY[0x1E695DFA8] set];
@@ -154,8 +154,8 @@ LABEL_14:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = *v16;
@@ -165,7 +165,7 @@ LABEL_14:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v5[2](v5, *(*(&v15 + 1) + 8 * i));
@@ -175,7 +175,7 @@ LABEL_14:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -192,8 +192,8 @@ LABEL_14:
   v5 = a3;
   if (!v5)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"EFNSSetAdditions.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFNSSetAdditions.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
   }
 
   v6 = [MEMORY[0x1E695DFA8] set];
@@ -201,8 +201,8 @@ LABEL_14:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = *v16;
@@ -212,7 +212,7 @@ LABEL_14:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v5[2](v5, *(*(&v15 + 1) + 8 * i));
@@ -226,7 +226,7 @@ LABEL_14:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -243,8 +243,8 @@ LABEL_14:
   v5 = a3;
   if (!v5)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"EFNSSetAdditions.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"test"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFNSSetAdditions.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"test"}];
   }
 
   v6 = [MEMORY[0x1E695DFA8] set];
@@ -252,8 +252,8 @@ LABEL_14:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = *v16;
@@ -263,7 +263,7 @@ LABEL_14:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -273,7 +273,7 @@ LABEL_14:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -292,8 +292,8 @@ LABEL_14:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -303,7 +303,7 @@ LABEL_14:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -314,7 +314,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -333,7 +333,7 @@ LABEL_11:
 
 - (BOOL)ef_any:()EmailFoundationAdditions
 {
-  v1 = [a1 ef_anyPassingTest:?];
+  v1 = [self ef_anyPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -348,7 +348,7 @@ LABEL_11:
   v9[3] = &unk_1E8248E98;
   v10 = v4;
   v5 = v4;
-  v6 = [a1 ef_anyPassingTest:v9];
+  v6 = [self ef_anyPassingTest:v9];
   v7 = v6 == 0;
 
   return v7;
@@ -362,9 +362,9 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a1;
+  selfCopy = self;
   v6 = 0;
-  v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -375,14 +375,14 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v6 += v4[2](v4, *(*(&v12 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -402,8 +402,8 @@ LABEL_11:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = *v17;
@@ -413,7 +413,7 @@ LABEL_11:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -430,7 +430,7 @@ LABEL_11:
         [v12 addObject:{v11, v16}];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -452,7 +452,7 @@ LABEL_11:
   v8[3] = &unk_1E82487D0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 ef_filter:v8];
+  v6 = [self ef_filter:v8];
 
   return v6;
 }

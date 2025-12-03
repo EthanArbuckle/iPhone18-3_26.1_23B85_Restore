@@ -1,11 +1,11 @@
 @interface MUCGPDFTextWidgetAnnotationAdaptor
-+ (id)_concreteAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)a3 ofPage:(CGPDFPage *)a4;
-+ (id)_concreteDictionaryRepresentationOfAKAnnotation:(id)a3 forPage:(CGPDFPage *)a4;
++ (id)_concreteAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)annotation ofPage:(CGPDFPage *)page;
++ (id)_concreteDictionaryRepresentationOfAKAnnotation:(id)annotation forPage:(CGPDFPage *)page;
 @end
 
 @implementation MUCGPDFTextWidgetAnnotationAdaptor
 
-+ (id)_concreteAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)a3 ofPage:(CGPDFPage *)a4
++ (id)_concreteAKAnnotationWithCGPDFAnnotation:(CGPDFAnnotation *)annotation ofPage:(CGPDFPage *)page
 {
   v5 = [MUPDFAnnotationAdaptorHelper newAKAnnotationFromCGPDFAnnotation:?];
   if (v5)
@@ -20,9 +20,9 @@
   v5 = objc_opt_new();
   [v5 setTextIsFixedWidth:1];
   [v5 setTextIsFixedHeight:0];
-  [MUPDFAnnotationAdaptorHelper migrateAKStrokedAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:a4];
-  [MUPDFAnnotationAdaptorHelper migrateAKFilledAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:a4];
-  [MUPDFAnnotationAdaptorHelper migrateAKRectangularShapeAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:a4];
+  [MUPDFAnnotationAdaptorHelper migrateAKStrokedAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:page];
+  [MUPDFAnnotationAdaptorHelper migrateAKFilledAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:page];
+  [MUPDFAnnotationAdaptorHelper migrateAKRectangularShapeAnnotationPropertiesTo:v5 fromAnnotationDictionary:CGPDFDictionary ofPDFPage:page];
   if (!CGPDFDictionaryGetDictionary(CGPDFDictionary, "Parent", &value))
   {
     value = 0;
@@ -60,12 +60,12 @@
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (CGPDFDictionaryGetString(CGPDFDictionary, "DA", &string))
   {
     v11 = CGPDFDictionary;
 LABEL_23:
-    [MUPDFAnnotationAdaptorHelper readDefaultAppearanceStringFromPDFDictionary:v11 ofPage:a4 toDictionary:v10];
+    [MUPDFAnnotationAdaptorHelper readDefaultAppearanceStringFromPDFDictionary:v11 ofPage:page toDictionary:dictionary];
     goto LABEL_24;
   }
 
@@ -91,11 +91,11 @@ LABEL_24:
     v12 = value;
   }
 
-  [MUPDFAnnotationAdaptorHelper readQuaddingFromPDFDictionary:v12 toDictionary:v10];
+  [MUPDFAnnotationAdaptorHelper readQuaddingFromPDFDictionary:v12 toDictionary:dictionary];
 LABEL_30:
   if ([(__CFString *)v8 length])
   {
-    v13 = [MEMORY[0x277CEA718] newTextStorageOriginalFontSavvyWithString:v8 attributes:v10];
+    v13 = [MEMORY[0x277CEA718] newTextStorageOriginalFontSavvyWithString:v8 attributes:dictionary];
     [v5 setAnnotationText:v13];
   }
 
@@ -104,8 +104,8 @@ LABEL_30:
     [v5 setShouldUsePlaceholderText:0];
   }
 
-  [v5 setTypingAttributes:v10];
-  [v5 setOriginalExifOrientation:{+[MUPDFUtilities exifOrientationOfPage:](MUPDFUtilities, "exifOrientationOfPage:", a4)}];
+  [v5 setTypingAttributes:dictionary];
+  [v5 setOriginalExifOrientation:{+[MUPDFUtilities exifOrientationOfPage:](MUPDFUtilities, "exifOrientationOfPage:", page)}];
   [v5 setOriginalModelBaseScaleFactor:1.0];
   [MEMORY[0x277CEA698] adjustAnnotationBoundsToFitText:v5];
   [v5 setOriginalExifOrientation:0];
@@ -116,45 +116,45 @@ LABEL_35:
   return v5;
 }
 
-+ (id)_concreteDictionaryRepresentationOfAKAnnotation:(id)a3 forPage:(CGPDFPage *)a4
++ (id)_concreteDictionaryRepresentationOfAKAnnotation:(id)annotation forPage:(CGPDFPage *)page
 {
-  v5 = a3;
+  annotationCopy = annotation;
   v6 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v8 = MEMORY[0x277CBEB38];
-    v9 = v5;
-    v10 = [v8 dictionary];
-    [v10 setValue:@"/Annot" forKey:@"/Type"];
-    [v10 setValue:@"/Widget" forKey:@"/Subtype"];
-    [MUPDFAnnotationAdaptorHelper addBoundsOfAnnotation:v9 forPage:a4 toDictionary:v10];
-    [MUPDFAnnotationAdaptorHelper addModificationDateOfAnnotation:v9 toDictionary:v10];
-    [MUPDFAnnotationAdaptorHelper addFlagsOfAnnotation:v9 toDictionary:v10];
-    [MUPDFAnnotationAdaptorHelper addDefaultAppearanceStreamOfAnnotation:v9 toDictionary:v10];
-    [MUPDFAnnotationAdaptorHelper addBorderStyleOfAnnotation:v9 toDictionary:v10];
-    [MUPDFAnnotationAdaptorHelper addQuaddingOfAnnotation:v9 toDictionary:v10];
-    [MUPDFAnnotationAdaptorHelper addTextLabelOfAnnotation:v9 toDictionary:v10];
-    [v10 setObject:@"/Tx" forKey:@"/FT"];
-    [MUPDFAnnotationAdaptorHelper addTextOfAnnotation:v9 toDictionary:v10 forKey:@"/V" canUsePlaceholder:0];
-    v11 = [v9 customPlaceholderText];
-    [MUPDFAnnotationAdaptorHelper addString:v11 toDictionary:v10 forKey:@"/DV"];
+    v9 = annotationCopy;
+    dictionary = [v8 dictionary];
+    [dictionary setValue:@"/Annot" forKey:@"/Type"];
+    [dictionary setValue:@"/Widget" forKey:@"/Subtype"];
+    [MUPDFAnnotationAdaptorHelper addBoundsOfAnnotation:v9 forPage:page toDictionary:dictionary];
+    [MUPDFAnnotationAdaptorHelper addModificationDateOfAnnotation:v9 toDictionary:dictionary];
+    [MUPDFAnnotationAdaptorHelper addFlagsOfAnnotation:v9 toDictionary:dictionary];
+    [MUPDFAnnotationAdaptorHelper addDefaultAppearanceStreamOfAnnotation:v9 toDictionary:dictionary];
+    [MUPDFAnnotationAdaptorHelper addBorderStyleOfAnnotation:v9 toDictionary:dictionary];
+    [MUPDFAnnotationAdaptorHelper addQuaddingOfAnnotation:v9 toDictionary:dictionary];
+    [MUPDFAnnotationAdaptorHelper addTextLabelOfAnnotation:v9 toDictionary:dictionary];
+    [dictionary setObject:@"/Tx" forKey:@"/FT"];
+    [MUPDFAnnotationAdaptorHelper addTextOfAnnotation:v9 toDictionary:dictionary forKey:@"/V" canUsePlaceholder:0];
+    customPlaceholderText = [v9 customPlaceholderText];
+    [MUPDFAnnotationAdaptorHelper addString:customPlaceholderText toDictionary:dictionary forKey:@"/DV"];
 
-    v12 = [v9 fieldName];
-    [MUPDFAnnotationAdaptorHelper addString:v12 toDictionary:v10 forKey:@"/T"];
+    fieldName = [v9 fieldName];
+    [MUPDFAnnotationAdaptorHelper addString:fieldName toDictionary:dictionary forKey:@"/T"];
 
-    [MUPDFAnnotationAdaptorHelper addAppearanceStreamOfAnnotation:v9 forPage:a4 toDictionary:v10];
-    [MUPDFAnnotationAdaptorHelper addAKAnnotation:v9 toAnnotationDictionary:v10];
+    [MUPDFAnnotationAdaptorHelper addAppearanceStreamOfAnnotation:v9 forPage:page toDictionary:dictionary];
+    [MUPDFAnnotationAdaptorHelper addAKAnnotation:v9 toAnnotationDictionary:dictionary];
   }
 
   else
   {
-    NSLog(&cfstr_SUnexpectedPar.isa, "+[MUCGPDFTextWidgetAnnotationAdaptor _concreteDictionaryRepresentationOfAKAnnotation:forPage:]", v5);
-    v10 = 0;
+    NSLog(&cfstr_SUnexpectedPar.isa, "+[MUCGPDFTextWidgetAnnotationAdaptor _concreteDictionaryRepresentationOfAKAnnotation:forPage:]", annotationCopy);
+    dictionary = 0;
   }
 
-  return v10;
+  return dictionary;
 }
 
 @end

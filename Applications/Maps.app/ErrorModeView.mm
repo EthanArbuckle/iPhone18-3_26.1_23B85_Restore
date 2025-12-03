@@ -1,13 +1,13 @@
 @interface ErrorModeView
 - (ErrorModeView)init;
 - (double)fittingHeight;
-- (void)_buttonTapped:(id)a3;
-- (void)insertErrorIcon:(id)a3 atIndex:(unint64_t)a4;
+- (void)_buttonTapped:(id)tapped;
+- (void)insertErrorIcon:(id)icon atIndex:(unint64_t)index;
 - (void)removeErrorIconImageView;
-- (void)setButtonTitle:(id)a3 glyphName:(id)a4 backgroundColor:(id)a5 handler:(id)a6;
-- (void)setButtonTitle:(id)a3 handler:(id)a4;
-- (void)setTitle:(id)a3 andMessage:(id)a4;
-- (void)setTopPadding:(double)a3;
+- (void)setButtonTitle:(id)title glyphName:(id)name backgroundColor:(id)color handler:(id)handler;
+- (void)setButtonTitle:(id)title handler:(id)handler;
+- (void)setTitle:(id)title andMessage:(id)message;
+- (void)setTopPadding:(double)padding;
 - (void)setupConstraints;
 @end
 
@@ -24,15 +24,15 @@
   }
 }
 
-- (void)insertErrorIcon:(id)a3 atIndex:(unint64_t)a4
+- (void)insertErrorIcon:(id)icon atIndex:(unint64_t)index
 {
   if (!self->_errorIconImageView)
   {
-    v6 = a3;
+    iconCopy = icon;
     v7 = +[UIFont system28Medium];
     v12 = [UIImageSymbolConfiguration configurationWithFont:v7 scale:3];
 
-    v8 = [UIImage systemImageNamed:v6 withConfiguration:v12];
+    v8 = [UIImage systemImageNamed:iconCopy withConfiguration:v12];
 
     v9 = [[UIImageView alloc] initWithImage:v8];
     errorIconImageView = self->_errorIconImageView;
@@ -42,7 +42,7 @@
     [(UIImageView *)self->_errorIconImageView setTintColor:v11];
 
     [(UIImageView *)self->_errorIconImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIStackView *)self->_stackView insertArrangedSubview:self->_errorIconImageView atIndex:a4];
+    [(UIStackView *)self->_stackView insertArrangedSubview:self->_errorIconImageView atIndex:index];
     [(UIStackView *)self->_stackView setCustomSpacing:self->_errorIconImageView afterView:8.0];
     [(UIStackView *)self->_stackView setAlignment:3];
   }
@@ -56,50 +56,50 @@
   return v4 + fabs(v5);
 }
 
-- (void)setTopPadding:(double)a3
+- (void)setTopPadding:(double)padding
 {
   [(NSLayoutConstraint *)self->_verticalAdjustmentConstraint setActive:0];
-  v5 = [(UIStackView *)self->_stackView topAnchor];
-  v6 = [(ErrorModeView *)self topAnchor];
-  v7 = [v5 constraintGreaterThanOrEqualToAnchor:v6 constant:a3];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [(ErrorModeView *)self topAnchor];
+  v7 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:padding];
   v12[0] = v7;
-  v8 = [(UIStackView *)self->_stackView bottomAnchor];
-  v9 = [(ErrorModeView *)self bottomAnchor];
-  v10 = [v8 constraintGreaterThanOrEqualToAnchor:v9 constant:0.0];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(ErrorModeView *)self bottomAnchor];
+  v10 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:0.0];
   v12[1] = v10;
   v11 = [NSArray arrayWithObjects:v12 count:2];
   [NSLayoutConstraint activateConstraints:v11];
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
   handler = self->_handler;
   if (handler)
   {
-    handler[2](handler, a3);
+    handler[2](handler, tapped);
   }
 }
 
 - (void)setupConstraints
 {
-  v3 = [(UIStackView *)self->_stackView centerYAnchor];
-  v4 = [(ErrorModeView *)self centerYAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  centerYAnchor = [(UIStackView *)self->_stackView centerYAnchor];
+  centerYAnchor2 = [(ErrorModeView *)self centerYAnchor];
+  v5 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   verticalAdjustmentConstraint = self->_verticalAdjustmentConstraint;
   self->_verticalAdjustmentConstraint = v5;
 
   v17[0] = self->_verticalAdjustmentConstraint;
-  v7 = [(UIStackView *)self->_stackView centerXAnchor];
-  v8 = [(ErrorModeView *)self centerXAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  centerXAnchor = [(UIStackView *)self->_stackView centerXAnchor];
+  centerXAnchor2 = [(ErrorModeView *)self centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v17[1] = v9;
-  v10 = [(UIStackView *)self->_stackView leadingAnchor];
-  v11 = [(ErrorModeView *)self leadingAnchor];
-  v12 = [v10 constraintGreaterThanOrEqualToAnchor:v11 constant:30.0];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  leadingAnchor2 = [(ErrorModeView *)self leadingAnchor];
+  v12 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:30.0];
   v17[2] = v12;
-  v13 = [(ErrorModeView *)self trailingAnchor];
-  v14 = [(UIStackView *)self->_stackView trailingAnchor];
-  v15 = [v13 constraintGreaterThanOrEqualToAnchor:v14 constant:30.0];
+  trailingAnchor = [(ErrorModeView *)self trailingAnchor];
+  trailingAnchor2 = [(UIStackView *)self->_stackView trailingAnchor];
+  v15 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:30.0];
   v17[3] = v15;
   v16 = [NSArray arrayWithObjects:v17 count:4];
 
@@ -169,15 +169,15 @@
     [(UILabel *)v3->_messageLabel setContentCompressionResistancePriority:1 forAxis:v20];
     [(UILabel *)v3->_messageLabel setAccessibilityIdentifier:@"ErrorModeMessage"];
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_messageLabel];
-    v21 = [[MapsThemeButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[MapsThemeButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     button = v3->_button;
-    v3->_button = v21;
+    v3->_button = height;
 
     [(MapsThemeButton *)v3->_button setHidden:1];
     [(MapsThemeButton *)v3->_button setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MapsThemeButton *)v3->_button setTitleColorProvider:&stru_1016309D0];
-    v23 = [(MapsThemeButton *)v3->_button titleLabel];
-    [DynamicTypeWizard autorefreshLabel:v23 withFontProvider:&stru_10165D908];
+    titleLabel = [(MapsThemeButton *)v3->_button titleLabel];
+    [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_10165D908];
 
     [(MapsThemeButton *)v3->_button addTarget:v3 action:"_buttonTapped:" forControlEvents:64];
     LODWORD(v24) = 1148829696;
@@ -185,11 +185,11 @@
     [(MapsThemeButton *)v3->_button setContentEdgeInsets:5.0, 10.0, 5.0, 10.0];
     [(MapsThemeButton *)v3->_button _setContinuousCornerRadius:5.0];
     [(MapsThemeButton *)v3->_button setAccessibilityIdentifier:@"ErrorModeButton"];
-    v25 = [(MapsThemeButton *)v3->_button titleLabel];
-    [v25 setNumberOfLines:0];
+    titleLabel2 = [(MapsThemeButton *)v3->_button titleLabel];
+    [titleLabel2 setNumberOfLines:0];
 
-    v26 = [(MapsThemeButton *)v3->_button titleLabel];
-    [v26 setTextAlignment:1];
+    titleLabel3 = [(MapsThemeButton *)v3->_button titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_button];
     [(ErrorModeView *)v3 setupConstraints];
@@ -198,38 +198,38 @@
   return v3;
 }
 
-- (void)setButtonTitle:(id)a3 glyphName:(id)a4 backgroundColor:(id)a5 handler:(id)a6
+- (void)setButtonTitle:(id)title glyphName:(id)name backgroundColor:(id)color handler:(id)handler
 {
-  v13 = a5;
-  v10 = a4;
-  [(ErrorModeView *)self setButtonTitle:a3 handler:a6];
+  colorCopy = color;
+  nameCopy = name;
+  [(ErrorModeView *)self setButtonTitle:title handler:handler];
   button = self->_button;
-  v12 = [UIImage _systemImageNamed:v10];
+  v12 = [UIImage _systemImageNamed:nameCopy];
 
   [(MapsThemeButton *)button setImage:v12 forState:0];
-  [(MapsThemeButton *)self->_button setBackgroundColor:v13];
+  [(MapsThemeButton *)self->_button setBackgroundColor:colorCopy];
 }
 
-- (void)setButtonTitle:(id)a3 handler:(id)a4
+- (void)setButtonTitle:(id)title handler:(id)handler
 {
   button = self->_button;
-  v7 = a4;
-  v8 = a3;
-  [(MapsThemeButton *)button setTitle:v8 forState:0];
-  [(ErrorModeView *)self setHandler:v7];
+  handlerCopy = handler;
+  titleCopy = title;
+  [(MapsThemeButton *)button setTitle:titleCopy forState:0];
+  [(ErrorModeView *)self setHandler:handlerCopy];
 
-  v9 = [v8 length];
+  v9 = [titleCopy length];
   v10 = self->_button;
 
   [(MapsThemeButton *)v10 setHidden:v9 == 0];
 }
 
-- (void)setTitle:(id)a3 andMessage:(id)a4
+- (void)setTitle:(id)title andMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = v6;
-  v8 = v7;
+  titleCopy = title;
+  messageCopy = message;
+  v11 = titleCopy;
+  v8 = messageCopy;
   v9 = v11;
   v10 = v8;
   if (![v8 length])

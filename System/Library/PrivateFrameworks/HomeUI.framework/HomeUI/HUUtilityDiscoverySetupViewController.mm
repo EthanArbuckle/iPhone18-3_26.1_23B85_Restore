@@ -1,37 +1,37 @@
 @interface HUUtilityDiscoverySetupViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUUtilityDiscoverySetupViewController)initWithHome:(id)a3 allUtilities:(id)a4;
-- (HUUtilityDiscoverySetupViewController)initWithHome:(id)a3 onboardingContext:(id)a4;
+- (HUUtilityDiscoverySetupViewController)initWithHome:(id)home allUtilities:(id)utilities;
+- (HUUtilityDiscoverySetupViewController)initWithHome:(id)home onboardingContext:(id)context;
 - (UIEdgeInsets)contentInsets;
 - (_TtC6HomeUI24UtilityOnboardingContext)onboardingContext;
-- (id)_checkTAF:(id)a3;
+- (id)_checkTAF:(id)f;
 - (id)_fetchUtilityConfig;
 - (id)_fetchUtilityConfigAndCheckTAF;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_buttonAction;
-- (void)_cancelUtilityOnboarding:(id)a3;
-- (void)_continueOnboarding:(id)a3;
+- (void)_cancelUtilityOnboarding:(id)onboarding;
+- (void)_continueOnboarding:(id)onboarding;
 - (void)_hideSpinner;
-- (void)_loginWithAccount:(id)a3;
+- (void)_loginWithAccount:(id)account;
 - (void)_showSpinner;
-- (void)_startOAuthLogin:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_startOAuthLogin:(id)login;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HUUtilityDiscoverySetupViewController
 
-- (HUUtilityDiscoverySetupViewController)initWithHome:(id)a3 allUtilities:(id)a4
+- (HUUtilityDiscoverySetupViewController)initWithHome:(id)home allUtilities:(id)utilities
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 count];
+  homeCopy = home;
+  utilitiesCopy = utilities;
+  v9 = [utilitiesCopy count];
   v10 = _HULocalizedStringWithDefaultValue(@"HUUtilityDiscoverySetup_Title", @"HUUtilityDiscoverySetup_Title", 1);
   if (v9 == 1)
   {
@@ -61,32 +61,32 @@
 
   if (v15)
   {
-    if (!v8 || ![v8 count])
+    if (!utilitiesCopy || ![utilitiesCopy count])
     {
       [(HUUtilityDiscoverySetupViewController *)v15 setErrorFetchingUtilities:1];
     }
 
-    objc_storeStrong(&v15->_home, a3);
+    objc_storeStrong(&v15->_home, home);
     *&v15->_contentInsets.top = 0u;
     *&v15->_contentInsets.bottom = 0u;
-    objc_storeStrong(&v15->_foundUtilities, a4);
+    objc_storeStrong(&v15->_foundUtilities, utilities);
   }
 
   return v15;
 }
 
-- (HUUtilityDiscoverySetupViewController)initWithHome:(id)a3 onboardingContext:(id)a4
+- (HUUtilityDiscoverySetupViewController)initWithHome:(id)home onboardingContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  homeCopy = home;
   v8 = [HUUtilityDiscoverySetupViewController alloc];
-  v9 = [v6 allUtilities];
-  v10 = [(HUUtilityDiscoverySetupViewController *)v8 initWithHome:v7 allUtilities:v9];
+  allUtilities = [contextCopy allUtilities];
+  v10 = [(HUUtilityDiscoverySetupViewController *)v8 initWithHome:homeCopy allUtilities:allUtilities];
 
-  objc_storeWeak(&v10->_onboardingContext, v6);
-  v11 = [v6 allUtilities];
-  v12 = [v11 count];
+  objc_storeWeak(&v10->_onboardingContext, contextCopy);
+  allUtilities2 = [contextCopy allUtilities];
+  v12 = [allUtilities2 count];
 
   if (v12 == 1)
   {
@@ -105,11 +105,11 @@
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v6 allUtilities];
+      allUtilities3 = [contextCopy allUtilities];
       v17 = 136315394;
       v18 = "[HUUtilityDiscoverySetupViewController initWithHome:onboardingContext:]";
       v19 = 2048;
-      v20 = [v15 count];
+      v20 = [allUtilities3 count];
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%s NOT single utility mode. Count = %lu", &v17, 0x16u);
     }
 
@@ -119,26 +119,26 @@
   return v10;
 }
 
-- (void)_continueOnboarding:(id)a3
+- (void)_continueOnboarding:(id)onboarding
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(HUUtilityDiscoverySetupViewController *)self config];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  config = [(HUUtilityDiscoverySetupViewController *)self config];
 
-  if (!v5)
+  if (!config)
   {
     v19 = HFLogForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412546;
-      v23 = self;
+      selfCopy4 = self;
       v24 = 2080;
       v25 = "[HUUtilityDiscoverySetupViewController _continueOnboarding:]";
       _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "%@: Configuration is nil  %s", &v22, 0x16u);
     }
 
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:13];
-    [v4 setObject:v20 forKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
+    [dictionary setObject:v20 forKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
 
     v18 = HFLogForCategory();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -148,32 +148,32 @@
 
 LABEL_13:
     v22 = 138412802;
-    v23 = self;
+    selfCopy4 = self;
     v24 = 2080;
     v25 = "[HUUtilityDiscoverySetupViewController _continueOnboarding:]";
     v26 = 2112;
-    v27 = v4;
+    v27 = dictionary;
     _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "%@ Finished %s with results  %@", &v22, 0x20u);
 LABEL_14:
 
-    v21 = [(HUUtilityDiscoverySetupViewController *)self delegate];
-    [v21 viewController:self didFinishWithConfigurationResults:v4];
+    delegate = [(HUUtilityDiscoverySetupViewController *)self delegate];
+    [delegate viewController:self didFinishWithConfigurationResults:dictionary];
 
     goto LABEL_18;
   }
 
-  v6 = [(HUUtilityDiscoverySetupViewController *)self config];
-  v7 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-  [v7 setConfig:v6];
+  config2 = [(HUUtilityDiscoverySetupViewController *)self config];
+  onboardingContext = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+  [onboardingContext setConfig:config2];
 
-  v8 = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityInfo];
-  v9 = [v8 objectForKeyedSubscript:@"utilityID"];
-  v10 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-  [v10 setUtilityID:v9];
+  selectedUtilityInfo = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityInfo];
+  v9 = [selectedUtilityInfo objectForKeyedSubscript:@"utilityID"];
+  onboardingContext2 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+  [onboardingContext2 setUtilityID:v9];
 
   objc_opt_class();
-  v11 = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityInfo];
-  v12 = [v11 objectForKeyedSubscript:@"logo"];
+  selectedUtilityInfo2 = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityInfo];
+  v12 = [selectedUtilityInfo2 objectForKeyedSubscript:@"logo"];
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -186,24 +186,24 @@ LABEL_14:
 
   v14 = v13;
 
-  v15 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-  [v15 setUtilityLogo:v14];
+  onboardingContext3 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+  [onboardingContext3 setUtilityLogo:v14];
 
-  LODWORD(v15) = [(HUUtilityDiscoverySetupViewController *)self tafEnabledForSelectedUtility];
+  LODWORD(onboardingContext3) = [(HUUtilityDiscoverySetupViewController *)self tafEnabledForSelectedUtility];
   v16 = HFLogForCategory();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-  if (v15)
+  if (onboardingContext3)
   {
     if (v17)
     {
       v22 = 138412546;
-      v23 = self;
+      selfCopy4 = self;
       v24 = 2080;
       v25 = "[HUUtilityDiscoverySetupViewController _continueOnboarding:]";
       _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@: Continue onboarding with TAF  %s", &v22, 0x16u);
     }
 
-    [v4 setObject:&unk_2824918C8 forKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
+    [dictionary setObject:&unk_2824918C8 forKeyedSubscript:@"HUUtilityDiscoveryOnboardingKey_UserInput"];
     v18 = HFLogForCategory();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -216,41 +216,41 @@ LABEL_14:
   if (v17)
   {
     v22 = 138412546;
-    v23 = self;
+    selfCopy4 = self;
     v24 = 2080;
     v25 = "[HUUtilityDiscoverySetupViewController _continueOnboarding:]";
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@: Continue onboarding with OAuth  %s", &v22, 0x16u);
   }
 
-  [(HUUtilityDiscoverySetupViewController *)self _startOAuthLogin:v4];
+  [(HUUtilityDiscoverySetupViewController *)self _startOAuthLogin:dictionary];
 LABEL_18:
 }
 
-- (void)_loginWithAccount:(id)a3
+- (void)_loginWithAccount:(id)account
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = self;
+    selfCopy = self;
     v18 = 2080;
     v19 = "[HUUtilityDiscoverySetupViewController _loginWithAccount:]";
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped button", &v16, 0x16u);
   }
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(HUUtilityDiscoverySetupViewController *)self config];
-  v7 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-  [v7 setConfig:v6];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  config = [(HUUtilityDiscoverySetupViewController *)self config];
+  onboardingContext = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+  [onboardingContext setConfig:config];
 
-  v8 = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityID];
-  v9 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-  [v9 setUtilityID:v8];
+  selectedUtilityID = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityID];
+  onboardingContext2 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+  [onboardingContext2 setUtilityID:selectedUtilityID];
 
   objc_opt_class();
-  v10 = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityInfo];
-  v11 = [v10 objectForKeyedSubscript:@"logo"];
+  selectedUtilityInfo = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityInfo];
+  v11 = [selectedUtilityInfo objectForKeyedSubscript:@"logo"];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -263,52 +263,52 @@ LABEL_18:
 
   v13 = v12;
 
-  v14 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-  [v14 setUtilityLogo:v13];
+  onboardingContext3 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+  [onboardingContext3 setUtilityLogo:v13];
 
-  v15 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-  [v15 setOnboardingMethod:2];
+  onboardingContext4 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+  [onboardingContext4 setOnboardingMethod:2];
 
-  [(HUUtilityDiscoverySetupViewController *)self _startOAuthLogin:v5];
+  [(HUUtilityDiscoverySetupViewController *)self _startOAuthLogin:dictionary];
 }
 
-- (void)_cancelUtilityOnboarding:(id)a3
+- (void)_cancelUtilityOnboarding:(id)onboarding
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[HUUtilityDiscoverySetupViewController _cancelUtilityOnboarding:]";
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped button", buf, 0x16u);
   }
 
-  v5 = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityID];
-  [HUHomeEnergyAnalyticsHelper sendUtilityOnboardingCancelledEventWithUtilityID:v5 sourceViewController:0];
+  selectedUtilityID = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityID];
+  [HUHomeEnergyAnalyticsHelper sendUtilityOnboardingCancelledEventWithUtilityID:selectedUtilityID sourceViewController:0];
 
-  v6 = [(HUUtilityDiscoverySetupViewController *)self delegate];
+  delegate = [(HUUtilityDiscoverySetupViewController *)self delegate];
   v8 = @"HUUtilityDiscoveryOnboardingKey_UserInput";
   v9 = &unk_2824918E0;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  [v6 viewController:self didFinishWithConfigurationResults:v7];
+  [delegate viewController:self didFinishWithConfigurationResults:v7];
 }
 
 - (id)_fetchUtilityConfig
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityID];
-  if (v3 && (v4 = v3, -[HUUtilityDiscoverySetupViewController selectedUtilityID](self, "selectedUtilityID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
+  selectedUtilityID = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityID];
+  if (selectedUtilityID && (v4 = selectedUtilityID, -[HUUtilityDiscoverySetupViewController selectedUtilityID](self, "selectedUtilityID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __60__HUUtilityDiscoverySetupViewController__fetchUtilityConfig__block_invoke;
     v13[3] = &unk_277DB7580;
     v13[4] = self;
-    v7 = [MEMORY[0x277D2C900] futureWithBlock:v13];
-    v8 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v9 = [v7 reschedule:v8];
+    na_genericError = [MEMORY[0x277D2C900] futureWithBlock:v13];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    v9 = [na_genericError reschedule:mainThreadScheduler];
   }
 
   else
@@ -317,13 +317,13 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v15 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_ERROR, "%@: Selected utility ID is empty", buf, 0xCu);
     }
 
     v11 = MEMORY[0x277D2C900];
-    v7 = [MEMORY[0x277CCA9B8] na_genericError];
-    v9 = [v11 futureWithError:v7];
+    na_genericError = [MEMORY[0x277CCA9B8] na_genericError];
+    v9 = [v11 futureWithError:na_genericError];
   }
 
   return v9;
@@ -396,18 +396,18 @@ void __60__HUUtilityDiscoverySetupViewController__fetchUtilityConfig__block_invo
 - (id)_fetchUtilityConfigAndCheckTAF
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityID];
-  if (v3 && (v4 = v3, -[HUUtilityDiscoverySetupViewController selectedUtilityID](self, "selectedUtilityID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
+  selectedUtilityID = [(HUUtilityDiscoverySetupViewController *)self selectedUtilityID];
+  if (selectedUtilityID && (v4 = selectedUtilityID, -[HUUtilityDiscoverySetupViewController selectedUtilityID](self, "selectedUtilityID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
   {
-    v7 = [(HUUtilityDiscoverySetupViewController *)self _fetchUtilityConfig];
+    _fetchUtilityConfig = [(HUUtilityDiscoverySetupViewController *)self _fetchUtilityConfig];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __71__HUUtilityDiscoverySetupViewController__fetchUtilityConfigAndCheckTAF__block_invoke;
     v14[3] = &unk_277DBE7B8;
     v14[4] = self;
-    v8 = [v7 flatMap:v14];
-    v9 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v10 = [v8 reschedule:v9];
+    v8 = [_fetchUtilityConfig flatMap:v14];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    v10 = [v8 reschedule:mainThreadScheduler];
   }
 
   else
@@ -416,13 +416,13 @@ void __60__HUUtilityDiscoverySetupViewController__fetchUtilityConfig__block_invo
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_ERROR, "%@: Selected utility ID is empty", buf, 0xCu);
     }
 
     v12 = MEMORY[0x277D2C900];
-    v7 = [MEMORY[0x277CCA9B8] na_genericError];
-    v10 = [v12 futureWithError:v7];
+    _fetchUtilityConfig = [MEMORY[0x277CCA9B8] na_genericError];
+    v10 = [v12 futureWithError:_fetchUtilityConfig];
   }
 
   return v10;
@@ -489,17 +489,17 @@ void __71__HUUtilityDiscoverySetupViewController__fetchUtilityConfigAndCheckTAF_
   [v6 finishWithResult:v7];
 }
 
-- (id)_checkTAF:(id)a3
+- (id)_checkTAF:(id)f
 {
-  v4 = a3;
+  fCopy = f;
   v5 = MEMORY[0x277D2C900];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__HUUtilityDiscoverySetupViewController__checkTAF___block_invoke;
   v9[3] = &unk_277DB8200;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = fCopy;
+  v6 = fCopy;
   v7 = [v5 futureWithBlock:v9];
 
   return v7;
@@ -556,35 +556,35 @@ void __51__HUUtilityDiscoverySetupViewController__checkTAF___block_invoke_116(ui
   v76.receiver = self;
   v76.super_class = HUUtilityDiscoverySetupViewController;
   [(OBBaseWelcomeController *)&v76 viewDidLoad];
-  v3 = [(HUUtilityDiscoverySetupViewController *)self headerView];
-  v4 = [v3 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v4 withIDDictionary:&unk_282492F68];
+  headerView = [(HUUtilityDiscoverySetupViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282492F68];
 
   if ([(HUUtilityDiscoverySetupViewController *)self errorFetchingUtilities])
   {
-    v5 = [(HUUtilityDiscoverySetupViewController *)self headerView];
+    headerView2 = [(HUUtilityDiscoverySetupViewController *)self headerView];
     v6 = _HULocalizedStringWithDefaultValue(@"HUUtilityOnboarding_CannotOnboard_Title", @"HUUtilityOnboarding_CannotOnboard_Title", 1);
-    [v5 setTitle:v6];
+    [headerView2 setTitle:v6];
 
-    v7 = [(HUUtilityDiscoverySetupViewController *)self headerView];
+    headerView3 = [(HUUtilityDiscoverySetupViewController *)self headerView];
     v8 = _HULocalizedStringWithDefaultValue(@"HUUtilityOnboarding_CannotOnboard_Detail", @"HUUtilityOnboarding_CannotOnboard_Detail", 1);
-    [v7 setDetailText:v8];
+    [headerView3 setDetailText:v8];
 
-    v9 = [MEMORY[0x277D37618] boldButton];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    boldButton = [MEMORY[0x277D37618] boldButton];
+    [boldButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v10 = _HULocalizedStringWithDefaultValue(@"HUDoneTitle", @"HUDoneTitle", 1);
-    [v9 setTitle:v10 forState:0];
+    [boldButton setTitle:v10 forState:0];
 
-    [v9 setAccessibilityIdentifier:@"Home.OnboardingView.Utility.SetUp.DoneButton"];
-    [v9 addTarget:self action:sel__cancelUtilityOnboarding_ forControlEvents:64];
-    v11 = [(HUUtilityDiscoverySetupViewController *)self buttonTray];
-    [v11 addButton:v9];
+    [boldButton setAccessibilityIdentifier:@"Home.OnboardingView.Utility.SetUp.DoneButton"];
+    [boldButton addTarget:self action:sel__cancelUtilityOnboarding_ forControlEvents:64];
+    buttonTray = [(HUUtilityDiscoverySetupViewController *)self buttonTray];
+    [buttonTray addButton:boldButton];
 
     v12 = HFLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v79 = self;
+      selfCopy3 = self;
       v80 = 2080;
       v81 = "[HUUtilityDiscoverySetupViewController viewDidLoad]";
       _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@:%s: ERROR fetching utilities HUUtilityDiscoverySetupViewController. Presenting error view.", buf, 0x16u);
@@ -593,51 +593,51 @@ void __51__HUUtilityDiscoverySetupViewController__checkTAF___block_invoke_116(ui
 
   else
   {
-    v13 = [MEMORY[0x277D37618] boldButton];
-    [(HUUtilityDiscoverySetupViewController *)self setContinueOnboardingButton:v13];
+    boldButton2 = [MEMORY[0x277D37618] boldButton];
+    [(HUUtilityDiscoverySetupViewController *)self setContinueOnboardingButton:boldButton2];
 
-    v14 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    continueOnboardingButton = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
+    [continueOnboardingButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v15 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
+    continueOnboardingButton2 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
     v16 = _HULocalizedStringWithDefaultValue(@"HUContinueTitle", @"HUContinueTitle", 1);
-    [v15 setTitle:v16 forState:0];
+    [continueOnboardingButton2 setTitle:v16 forState:0];
 
-    v17 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
-    [v17 setAccessibilityIdentifier:@"Home.OnboardingView.Utility.SetUp.ContinueButton"];
+    continueOnboardingButton3 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
+    [continueOnboardingButton3 setAccessibilityIdentifier:@"Home.OnboardingView.Utility.SetUp.ContinueButton"];
 
-    v18 = [MEMORY[0x277D37650] linkButton];
-    [(HUUtilityDiscoverySetupViewController *)self setAccountLoginButton:v18];
+    linkButton = [MEMORY[0x277D37650] linkButton];
+    [(HUUtilityDiscoverySetupViewController *)self setAccountLoginButton:linkButton];
 
-    v19 = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
-    [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+    accountLoginButton = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
+    [accountLoginButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v20 = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
+    accountLoginButton2 = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
     v21 = _HULocalizedStringWithDefaultValue(@"HUUtilityOnboarding_AccountLogin_Button", @"HUUtilityOnboarding_AccountLogin_Button", 1);
-    [v20 setTitle:v21 forState:0];
+    [accountLoginButton2 setTitle:v21 forState:0];
 
-    v22 = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
-    [v22 setAccessibilityIdentifier:@"Home.OnboardingView.Utility.SetUp.UseUtilityAccountButton"];
+    accountLoginButton3 = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
+    [accountLoginButton3 setAccessibilityIdentifier:@"Home.OnboardingView.Utility.SetUp.UseUtilityAccountButton"];
 
-    v23 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
-    [v23 addTarget:self action:sel__continueOnboarding_ forControlEvents:64];
+    continueOnboardingButton4 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
+    [continueOnboardingButton4 addTarget:self action:sel__continueOnboarding_ forControlEvents:64];
 
-    v24 = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
-    [v24 addTarget:self action:sel__loginWithAccount_ forControlEvents:64];
+    accountLoginButton4 = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
+    [accountLoginButton4 addTarget:self action:sel__loginWithAccount_ forControlEvents:64];
 
-    v25 = [(HUUtilityDiscoverySetupViewController *)self buttonTray];
-    v26 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
-    [v25 addButton:v26];
+    buttonTray2 = [(HUUtilityDiscoverySetupViewController *)self buttonTray];
+    continueOnboardingButton5 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
+    [buttonTray2 addButton:continueOnboardingButton5];
 
-    v27 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-    v28 = [v27 allUtilities];
-    v29 = [v28 objectAtIndexedSubscript:0];
+    onboardingContext = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+    allUtilities = [onboardingContext allUtilities];
+    v29 = [allUtilities objectAtIndexedSubscript:0];
     v30 = [v29 objectForKeyedSubscript:@"utilityID"];
     [(HUUtilityDiscoverySetupViewController *)self setSelectedUtilityID:v30];
 
-    v31 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-    v32 = [v31 allUtilities];
-    v33 = [v32 objectAtIndexedSubscript:0];
+    onboardingContext2 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+    allUtilities2 = [onboardingContext2 allUtilities];
+    v33 = [allUtilities2 objectAtIndexedSubscript:0];
     [(HUUtilityDiscoverySetupViewController *)self setSelectedUtilityInfo:v33];
 
     [(HUUtilityDiscoverySetupViewController *)self _buttonAction];
@@ -649,19 +649,19 @@ void __51__HUUtilityDiscoverySetupViewController__checkTAF___block_invoke_116(ui
     v37 = HFLogForCategory();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [(HUUtilityDiscoverySetupViewController *)self view];
-      v39 = [(HUUtilityDiscoverySetupViewController *)self contentView];
-      v40 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
+      view = [(HUUtilityDiscoverySetupViewController *)self view];
+      contentView = [(HUUtilityDiscoverySetupViewController *)self contentView];
+      providerSelectionTableView = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
       *buf = 138413314;
-      v79 = self;
+      selfCopy3 = self;
       v80 = 2080;
       v81 = "[HUUtilityDiscoverySetupViewController viewDidLoad]";
       v82 = 2112;
-      v83 = v38;
+      v83 = view;
       v84 = 2112;
-      v85 = v39;
+      v85 = contentView;
       v86 = 2112;
-      v87 = v40;
+      v87 = providerSelectionTableView;
       _os_log_impl(&dword_20CEB6000, v37, OS_LOG_TYPE_DEFAULT, "%@:%s: HUUtilityDiscoverySetupViewController\n self.view: %@\n self.contentView: %@\n self.tableView: %@", buf, 0x34u);
     }
 
@@ -670,70 +670,70 @@ void __51__HUUtilityDiscoverySetupViewController__checkTAF___block_invoke_116(ui
     [(UITableView *)self->_providerSelectionTableView setScrollEnabled:0];
     [(UITableView *)self->_providerSelectionTableView setDelegate:self];
     [(UITableView *)self->_providerSelectionTableView setDataSource:self];
-    v41 = [MEMORY[0x277D75348] clearColor];
-    [(UITableView *)self->_providerSelectionTableView setBackgroundColor:v41];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UITableView *)self->_providerSelectionTableView setBackgroundColor:clearColor];
 
     [(UITableView *)self->_providerSelectionTableView registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
-    v42 = [(HUUtilityDiscoverySetupViewController *)self contentView];
-    [v42 addSubview:self->_providerSelectionTableView];
+    contentView2 = [(HUUtilityDiscoverySetupViewController *)self contentView];
+    [contentView2 addSubview:self->_providerSelectionTableView];
 
-    v43 = [(UITableView *)self->_providerSelectionTableView heightAnchor];
-    v44 = [v43 constraintEqualToConstant:1.0];
+    heightAnchor = [(UITableView *)self->_providerSelectionTableView heightAnchor];
+    v44 = [heightAnchor constraintEqualToConstant:1.0];
     providerTableViewHeightConstraint = self->_providerTableViewHeightConstraint;
     self->_providerTableViewHeightConstraint = v44;
 
     v64 = MEMORY[0x277CCAAD0];
-    v75 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
-    v73 = [v75 leadingAnchor];
-    v74 = [(HUUtilityDiscoverySetupViewController *)self contentView];
-    v72 = [v74 leadingAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72];
+    providerSelectionTableView2 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
+    leadingAnchor = [providerSelectionTableView2 leadingAnchor];
+    contentView3 = [(HUUtilityDiscoverySetupViewController *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v71 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v77[0] = v71;
-    v70 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
-    v68 = [v70 trailingAnchor];
-    v69 = [(HUUtilityDiscoverySetupViewController *)self contentView];
-    v67 = [v69 trailingAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    providerSelectionTableView3 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
+    trailingAnchor = [providerSelectionTableView3 trailingAnchor];
+    contentView4 = [(HUUtilityDiscoverySetupViewController *)self contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v66 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v77[1] = v66;
-    v65 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
-    v62 = [v65 topAnchor];
-    v63 = [(HUUtilityDiscoverySetupViewController *)self contentView];
-    v61 = [v63 topAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    providerSelectionTableView4 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
+    topAnchor = [providerSelectionTableView4 topAnchor];
+    contentView5 = [(HUUtilityDiscoverySetupViewController *)self contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    v60 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v77[2] = v60;
-    v59 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
-    v57 = [v59 bottomAnchor];
-    v58 = [(HUUtilityDiscoverySetupViewController *)self contentView];
-    v46 = [v58 bottomAnchor];
-    v47 = [v57 constraintEqualToAnchor:v46];
+    providerSelectionTableView5 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
+    bottomAnchor = [providerSelectionTableView5 bottomAnchor];
+    contentView6 = [(HUUtilityDiscoverySetupViewController *)self contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v47 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v77[3] = v47;
-    v48 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
-    v49 = [v48 centerXAnchor];
-    v50 = [(HUUtilityDiscoverySetupViewController *)self contentView];
-    v51 = [v50 centerXAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51];
+    providerSelectionTableView6 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
+    centerXAnchor = [providerSelectionTableView6 centerXAnchor];
+    contentView7 = [(HUUtilityDiscoverySetupViewController *)self contentView];
+    centerXAnchor2 = [contentView7 centerXAnchor];
+    v52 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v77[4] = v52;
-    v53 = [(HUUtilityDiscoverySetupViewController *)self providerTableViewHeightConstraint];
-    v77[5] = v53;
+    providerTableViewHeightConstraint = [(HUUtilityDiscoverySetupViewController *)self providerTableViewHeightConstraint];
+    v77[5] = providerTableViewHeightConstraint;
     v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:6];
     [v64 activateConstraints:v54];
 
-    v9 = [(HUUtilityDiscoverySetupViewController *)self contentView];
-    [v9 setClipsToBounds:1];
+    boldButton = [(HUUtilityDiscoverySetupViewController *)self contentView];
+    [boldButton setClipsToBounds:1];
   }
 
   v55 = HFLogForCategory();
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v79 = self;
+    selfCopy3 = self;
     v80 = 2080;
     v81 = "[HUUtilityDiscoverySetupViewController viewDidLoad]";
     _os_log_impl(&dword_20CEB6000, v55, OS_LOG_TYPE_DEFAULT, "%@:%s: presented: HUUtilityDiscoverySetupViewController", buf, 0x16u);
   }
 
-  v56 = [(HUUtilityDiscoverySetupViewController *)self foundUtilities];
-  +[HUHomeEnergyAnalyticsHelper sendUtilityIntroAndSelectionSheetViewEventWithNumOfUtilities:](HUHomeEnergyAnalyticsHelper, "sendUtilityIntroAndSelectionSheetViewEventWithNumOfUtilities:", [v56 count]);
+  foundUtilities = [(HUUtilityDiscoverySetupViewController *)self foundUtilities];
+  +[HUHomeEnergyAnalyticsHelper sendUtilityIntroAndSelectionSheetViewEventWithNumOfUtilities:](HUHomeEnergyAnalyticsHelper, "sendUtilityIntroAndSelectionSheetViewEventWithNumOfUtilities:", [foundUtilities count]);
 }
 
 - (void)viewWillLayoutSubviews
@@ -741,66 +741,66 @@ void __51__HUUtilityDiscoverySetupViewController__checkTAF___block_invoke_116(ui
   v4.receiver = self;
   v4.super_class = HUUtilityDiscoverySetupViewController;
   [(HUUtilityDiscoverySetupViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(HUUtilityDiscoverySetupViewController *)self view];
-  [v3 setNeedsUpdateConstraints];
+  view = [(HUUtilityDiscoverySetupViewController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
 - (void)updateViewConstraints
 {
-  v3 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
-  [v3 contentSize];
+  providerSelectionTableView = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
+  [providerSelectionTableView contentSize];
   v5 = v4;
-  v6 = [(HUUtilityDiscoverySetupViewController *)self providerTableViewHeightConstraint];
-  [v6 setConstant:v5];
+  providerTableViewHeightConstraint = [(HUUtilityDiscoverySetupViewController *)self providerTableViewHeightConstraint];
+  [providerTableViewHeightConstraint setConstant:v5];
 
   v7.receiver = self;
   v7.super_class = HUUtilityDiscoverySetupViewController;
   [(HUUtilityDiscoverySetupViewController *)&v7 updateViewConstraints];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(HUUtilityDiscoverySetupViewController *)self view];
-    v6 = [(HUUtilityDiscoverySetupViewController *)self contentView];
-    v7 = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
+    view = [(HUUtilityDiscoverySetupViewController *)self view];
+    contentView = [(HUUtilityDiscoverySetupViewController *)self contentView];
+    providerSelectionTableView = [(HUUtilityDiscoverySetupViewController *)self providerSelectionTableView];
     v8 = 138413314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = "[HUUtilityDiscoverySetupViewController viewDidAppear:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = view;
     v14 = 2112;
-    v15 = v6;
+    v15 = contentView;
     v16 = 2112;
-    v17 = v7;
+    v17 = providerSelectionTableView;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%s: HUUtilityDiscoverySetupViewController\nself.view:%@\nself.contentView: %@\nself.tableView: %@", &v8, 0x34u);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v11 = *MEMORY[0x277D85DE8];
   v6.receiver = self;
   v6.super_class = HUUtilityDiscoverySetupViewController;
-  [(OBBaseWelcomeController *)&v6 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v6 viewWillDisappear:disappear];
   if ([(HUUtilityDiscoverySetupViewController *)self isMovingFromParentViewController])
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2080;
       v10 = "[HUUtilityDiscoverySetupViewController viewWillDisappear:]";
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped BACK button", buf, 0x16u);
     }
 
-    v5 = [(HUUtilityDiscoverySetupViewController *)self delegate];
-    [v5 viewControllerDidGoBack:self];
+    delegate = [(HUUtilityDiscoverySetupViewController *)self delegate];
+    [delegate viewControllerDidGoBack:self];
   }
 }
 
@@ -811,19 +811,19 @@ void __51__HUUtilityDiscoverySetupViewController__checkTAF___block_invoke_116(ui
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[HUUtilityDiscoverySetupViewController _buttonAction]";
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%@:%s IN Menu action", buf, 0x16u);
   }
 
-  v4 = [(HUUtilityDiscoverySetupViewController *)self _fetchUtilityConfigAndCheckTAF];
+  _fetchUtilityConfigAndCheckTAF = [(HUUtilityDiscoverySetupViewController *)self _fetchUtilityConfigAndCheckTAF];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__HUUtilityDiscoverySetupViewController__buttonAction__block_invoke;
   v6[3] = &unk_277DBE7E0;
   v6[4] = self;
-  v5 = [v4 addCompletionBlock:v6];
+  v5 = [_fetchUtilityConfigAndCheckTAF addCompletionBlock:v6];
 }
 
 void __54__HUUtilityDiscoverySetupViewController__buttonAction__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -894,18 +894,18 @@ void __54__HUUtilityDiscoverySetupViewController__buttonAction__block_invoke(uin
   }
 }
 
-- (void)_startOAuthLogin:(id)a3
+- (void)_startOAuthLogin:(id)login
 {
-  v4 = a3;
+  loginCopy = login;
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
   v27[3] = 13;
   [(HUUtilityDiscoverySetupViewController *)self _showSpinner];
   v5 = [_TtC6HomeUI17OAuthLoginManager alloc];
-  v6 = [(HUUtilityDiscoverySetupViewController *)self config];
-  v7 = [v6 OAuthURL];
-  v8 = [(OAuthLoginManager *)v5 initWithAuthURL:v7 presentingContext:self];
+  config = [(HUUtilityDiscoverySetupViewController *)self config];
+  oAuthURL = [config OAuthURL];
+  v8 = [(OAuthLoginManager *)v5 initWithAuthURL:oAuthURL presentingContext:self];
 
   v9 = MEMORY[0x277D2C900];
   v24[0] = MEMORY[0x277D85DD0];
@@ -914,10 +914,10 @@ void __54__HUUtilityDiscoverySetupViewController__buttonAction__block_invoke(uin
   v24[3] = &unk_277DB8200;
   v10 = v8;
   v25 = v10;
-  v26 = self;
+  selfCopy = self;
   v11 = [v9 futureWithBlock:v24];
-  v12 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v13 = [v11 reschedule:v12];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v13 = [v11 reschedule:mainThreadScheduler];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -925,7 +925,7 @@ void __54__HUUtilityDiscoverySetupViewController__buttonAction__block_invoke(uin
   v21[3] = &unk_277DBE858;
   v21[4] = self;
   v23 = v27;
-  v14 = v4;
+  v14 = loginCopy;
   v22 = v14;
   v15 = [v13 flatMap:v21];
   v18[0] = MEMORY[0x277D85DD0];
@@ -1197,17 +1197,17 @@ LABEL_14:
 {
   v8 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v8];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
-  v5 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
-  [v5 setEnabled:0];
+  continueOnboardingButton = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
+  [continueOnboardingButton setEnabled:0];
 
-  v6 = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
-  [v6 setEnabled:0];
+  accountLoginButton = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
+  [accountLoginButton setEnabled:0];
 
-  v7 = [(OBBaseWelcomeController *)self navigationItem];
-  [v7 setHidesBackButton:1];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 
   [v8 startAnimating];
 }
@@ -1215,12 +1215,12 @@ LABEL_14:
 - (void)_hideSpinner
 {
   objc_opt_class();
-  v3 = [(OBBaseWelcomeController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
-  v5 = [v4 customView];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  customView = [rightBarButtonItem customView];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = customView;
   }
 
   else
@@ -1230,40 +1230,40 @@ LABEL_14:
 
   v11 = v6;
 
-  v7 = [(OBBaseWelcomeController *)self navigationItem];
-  [v7 setRightBarButtonItem:0];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:0];
 
-  v8 = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
-  [v8 setEnabled:1];
+  continueOnboardingButton = [(HUUtilityDiscoverySetupViewController *)self continueOnboardingButton];
+  [continueOnboardingButton setEnabled:1];
 
-  v9 = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
-  [v9 setEnabled:1];
+  accountLoginButton = [(HUUtilityDiscoverySetupViewController *)self accountLoginButton];
+  [accountLoginButton setEnabled:1];
 
-  v10 = [(OBBaseWelcomeController *)self navigationItem];
-  [v10 setHidesBackButton:0];
+  navigationItem3 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem3 setHidesBackButton:0];
 
   [v11 stopAnimating];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell"];
-  v8 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-  v9 = [v8 allUtilities];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Cell"];
+  onboardingContext = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+  allUtilities = [onboardingContext allUtilities];
+  v10 = [allUtilities objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   v11 = [v10 objectForKeyedSubscript:@"longName"];
   v12 = [v10 objectForKeyedSubscript:@"name"];
-  v13 = [v7 defaultContentConfiguration];
-  [v13 setText:v12];
+  defaultContentConfiguration = [v7 defaultContentConfiguration];
+  [defaultContentConfiguration setText:v12];
   if (([v12 isEqualToString:v11] & 1) == 0)
   {
-    [v13 setSecondaryText:v11];
-    v14 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v15 = [v13 secondaryTextProperties];
-    [v15 setColor:v14];
+    [defaultContentConfiguration setSecondaryText:v11];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+    [secondaryTextProperties setColor:secondaryLabelColor];
   }
 
   objc_opt_class();
@@ -1282,34 +1282,34 @@ LABEL_14:
 
   if (v18)
   {
-    [v13 setImage:v18];
-    v19 = [v13 image];
-    [v19 setAccessibilityIdentifier:@"Home.OnboardingView.Utility.Logo"];
+    [defaultContentConfiguration setImage:v18];
+    image = [defaultContentConfiguration image];
+    [image setAccessibilityIdentifier:@"Home.OnboardingView.Utility.Logo"];
 
-    v20 = [v13 imageProperties];
-    [v20 setMaximumSize:{37.0, 37.0}];
+    imageProperties = [defaultContentConfiguration imageProperties];
+    [imageProperties setMaximumSize:{37.0, 37.0}];
 
-    v21 = [v13 imageProperties];
-    [v21 setCornerRadius:8.325];
+    imageProperties2 = [defaultContentConfiguration imageProperties];
+    [imageProperties2 setCornerRadius:8.325];
 
     v22 = *MEMORY[0x277D76C88];
-    v23 = [v13 imageProperties];
-    [v23 setReservedLayoutSize:{37.0, v22}];
+    imageProperties3 = [defaultContentConfiguration imageProperties];
+    [imageProperties3 setReservedLayoutSize:{37.0, v22}];
   }
 
-  [v7 setContentConfiguration:v13];
+  [v7 setContentConfiguration:defaultContentConfiguration];
   v24 = HFLogForCategory();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 138412290;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v24, OS_LOG_TYPE_DEFAULT, "%@ Finished set up of cell", &v27, 0xCu);
   }
 
-  v25 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-  [v7 setBackgroundColor:v25];
+  tertiarySystemFillColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  [v7 setBackgroundColor:tertiarySystemFillColor];
 
-  if (!self->_singleUtilityMode && ![v6 row])
+  if (!self->_singleUtilityMode && ![pathCopy row])
   {
     [v7 setAccessoryType:3];
   }
@@ -1319,37 +1319,37 @@ LABEL_14:
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext:a3];
-  v5 = [v4 allUtilities];
-  v6 = [v5 count];
+  v4 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext:view];
+  allUtilities = [v4 allUtilities];
+  v6 = [allUtilities count];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v32 = self;
+    selfCopy = self;
     v33 = 2080;
     v34 = "[HUUtilityDiscoverySetupViewController tableView:didSelectRowAtIndexPath:]";
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@:%s SELECTED ROW", buf, 0x16u);
   }
 
-  v25 = [v6 cellForRowAtIndexPath:v7];
+  v25 = [viewCopy cellForRowAtIndexPath:pathCopy];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = [v6 indexPathsForVisibleRows];
-  v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  indexPathsForVisibleRows = [viewCopy indexPathsForVisibleRows];
+  v10 = [indexPathsForVisibleRows countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1361,12 +1361,12 @@ LABEL_14:
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(indexPathsForVisibleRows);
         }
 
         v14 = *(*(&v26 + 1) + 8 * v13);
         objc_opt_class();
-        v15 = [v6 cellForRowAtIndexPath:v14];
+        v15 = [viewCopy cellForRowAtIndexPath:v14];
         if (objc_opt_isKindOfClass())
         {
           v16 = v15;
@@ -1384,33 +1384,33 @@ LABEL_14:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v11 = [indexPathsForVisibleRows countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v11);
   }
 
   [v25 setAccessoryType:3];
-  v18 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-  v19 = [v18 allUtilities];
-  v20 = [v19 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  onboardingContext = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+  allUtilities = [onboardingContext allUtilities];
+  v20 = [allUtilities objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   v21 = [v20 objectForKeyedSubscript:@"utilityID"];
   [(HUUtilityDiscoverySetupViewController *)self setSelectedUtilityID:v21];
 
-  v22 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
-  v23 = [v22 allUtilities];
-  v24 = [v23 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  onboardingContext2 = [(HUUtilityDiscoverySetupViewController *)self onboardingContext];
+  allUtilities2 = [onboardingContext2 allUtilities];
+  v24 = [allUtilities2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   [(HUUtilityDiscoverySetupViewController *)self setSelectedUtilityInfo:v24];
 
   [(HUUtilityDiscoverySetupViewController *)self _buttonAction];
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
-  v3 = [(HUUtilityDiscoverySetupViewController *)self view];
-  v4 = [v3 window];
+  view = [(HUUtilityDiscoverySetupViewController *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
 - (HUConfigurationViewControllerDelegate)delegate

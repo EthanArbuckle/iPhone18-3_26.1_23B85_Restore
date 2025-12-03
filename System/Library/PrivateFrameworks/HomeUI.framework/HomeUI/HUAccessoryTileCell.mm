@@ -1,14 +1,14 @@
 @interface HUAccessoryTileCell
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)showsSizeChangeButton;
 - (HUAccessoryTileCellDelegate)delegate;
 - (NSString)description;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)prepareForReuse;
-- (void)setShowsSizeChangeButton:(BOOL)a3;
-- (void)setShowsSizeChangeButton:(BOOL)a3 animated:(BOOL)a4;
-- (void)tileSizeButtonTappedWithSender:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setShowsSizeChangeButton:(BOOL)button;
+- (void)setShowsSizeChangeButton:(BOOL)button animated:(BOOL)animated;
+- (void)tileSizeButtonTappedWithSender:(id)sender;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 - (void)updateSizeChangeButton;
 @end
@@ -30,11 +30,11 @@
   return *(self + v3);
 }
 
-- (void)setShowsSizeChangeButton:(BOOL)a3
+- (void)setShowsSizeChangeButton:(BOOL)button
 {
   v5 = OBJC_IVAR___HUAccessoryTileCell_showsSizeChangeButton;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = button;
 }
 
 - (void)updateConstraints
@@ -48,36 +48,36 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFF7B58();
 }
 
-- (void)setShowsSizeChangeButton:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsSizeChangeButton:(BOOL)button animated:(BOOL)animated
 {
-  v6 = self;
-  sub_20CFF8674(a3, a4);
+  selfCopy = self;
+  sub_20CFF8674(button, animated);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_20CFF883C(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_20CFF883C(event, x, y);
 
   return v10;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v14.receiver = self;
   v14.super_class = type metadata accessor for AccessoryTileCell();
-  v7 = a4;
+  eventCopy = event;
   v8 = v14.receiver;
-  if ([(HUAccessoryTileCell *)&v14 pointInside:v7 withEvent:x, y])
+  if ([(HUAccessoryTileCell *)&v14 pointInside:eventCopy withEvent:x, y])
   {
     v9 = 1;
   }
@@ -91,9 +91,9 @@
     {
       v12 = v11;
       [v8 convertPoint:v12 toCoordinateSpace:{x, y}];
-      v9 = [v12 pointInside:v7 withEvent:?];
+      v9 = [v12 pointInside:eventCopy withEvent:?];
 
-      v7 = v8;
+      eventCopy = v8;
       v8 = v12;
     }
 
@@ -108,21 +108,21 @@
 
 - (void)updateSizeChangeButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFF8AC8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20CFF9120(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20CFF9120(change);
 }
 
-- (void)tileSizeButtonTappedWithSender:(id)a3
+- (void)tileSizeButtonTappedWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20D568628();
   swift_unknownObjectRelease();
   sub_20CFF9310();
@@ -132,7 +132,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFF94DC();
 
   v3 = sub_20D5677F8();

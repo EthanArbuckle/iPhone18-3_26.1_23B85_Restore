@@ -1,13 +1,13 @@
 @interface UISegmentedControlTVStyleProvider
-- (double)defaultHeightForControlSize:(int)a3 traitCollection:(id)a4;
-- (id)fontColorForSegment:(id)a3 enabled:(BOOL)a4 selected:(BOOL)a5 state:(unint64_t)a6;
+- (double)defaultHeightForControlSize:(int)size traitCollection:(id)collection;
+- (id)fontColorForSegment:(id)segment enabled:(BOOL)enabled selected:(BOOL)selected state:(unint64_t)state;
 @end
 
 @implementation UISegmentedControlTVStyleProvider
 
-- (double)defaultHeightForControlSize:(int)a3 traitCollection:(id)a4
+- (double)defaultHeightForControlSize:(int)size traitCollection:(id)collection
 {
-  if (a3 != 1)
+  if (size != 1)
   {
     return 70.0;
   }
@@ -16,57 +16,57 @@
   v9 = v5;
   v7.receiver = self;
   v7.super_class = UISegmentedControlTVStyleProvider;
-  [(UISegmentedControlDefaultStyleProvider *)&v7 defaultHeightForControlSize:*&a3 traitCollection:a4];
+  [(UISegmentedControlDefaultStyleProvider *)&v7 defaultHeightForControlSize:*&size traitCollection:collection];
   return result;
 }
 
-- (id)fontColorForSegment:(id)a3 enabled:(BOOL)a4 selected:(BOOL)a5 state:(unint64_t)a6
+- (id)fontColorForSegment:(id)segment enabled:(BOOL)enabled selected:(BOOL)selected state:(unint64_t)state
 {
-  v7 = a3;
-  v8 = [v7 traitCollection];
-  v9 = [v8 userInterfaceStyle];
+  segmentCopy = segment;
+  traitCollection = [segmentCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (a6 > 3)
+  if (state > 3)
   {
-    if (a6 == 4)
+    if (state == 4)
     {
-      v13 = [v7 tintColor];
-      v14 = v13;
-      if (v13)
+      tintColor = [segmentCopy tintColor];
+      v14 = tintColor;
+      if (tintColor)
       {
-        v15 = v13;
+        _tvDefaultTextColorSelected = tintColor;
       }
 
       else
       {
-        v15 = [objc_opt_class() _tvDefaultTextColorSelected];
+        _tvDefaultTextColorSelected = [objc_opt_class() _tvDefaultTextColorSelected];
       }
 
-      v16 = v15;
+      v16 = _tvDefaultTextColorSelected;
 
       goto LABEL_21;
     }
 
-    if (a6 == 6)
+    if (state == 6)
     {
-      v11 = [objc_opt_class() _tvDefaultTextColorDisabledSelected];
+      _tvDefaultTextColorDisabledSelected = [objc_opt_class() _tvDefaultTextColorDisabledSelected];
       goto LABEL_20;
     }
 
-    if (a6 != 8)
+    if (state != 8)
     {
       goto LABEL_16;
     }
 
 LABEL_11:
-    v11 = [objc_opt_class() _tvDefaultTextColorFocused];
+    _tvDefaultTextColorDisabledSelected = [objc_opt_class() _tvDefaultTextColorFocused];
     goto LABEL_20;
   }
 
-  if (!a6)
+  if (!state)
   {
     v12 = objc_opt_class();
-    if (v9 == 2)
+    if (userInterfaceStyle == 2)
     {
       [v12 _tvDefaultTextColorNormalUserInterfaceStyleDark];
     }
@@ -79,20 +79,20 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  if (a6 == 1)
+  if (state == 1)
   {
     goto LABEL_11;
   }
 
-  if (a6 != 2)
+  if (state != 2)
   {
 LABEL_16:
-    v11 = [v7 _disabledColor];
+    _tvDefaultTextColorDisabledSelected = [segmentCopy _disabledColor];
     goto LABEL_20;
   }
 
   v10 = objc_opt_class();
-  if (v9 == 2)
+  if (userInterfaceStyle == 2)
   {
     [v10 _tvDefaultTextColorDisabledUserInterfaceStyleDark];
   }
@@ -102,9 +102,9 @@ LABEL_16:
     [v10 _tvDefaultTextColorDisabledUserInterfaceStyleLight];
   }
 
-  v11 = LABEL_7:;
+  _tvDefaultTextColorDisabledSelected = LABEL_7:;
 LABEL_20:
-  v16 = v11;
+  v16 = _tvDefaultTextColorDisabledSelected;
 LABEL_21:
 
   return v16;

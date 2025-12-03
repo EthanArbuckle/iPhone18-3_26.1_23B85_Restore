@@ -1,15 +1,15 @@
 @interface SKUIChartsTemplateViewElement
 - (NSArray)columns;
-- (SKUIChartsTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIChartsTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SKUIChartsTemplateViewElement
 
-- (SKUIChartsTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIChartsTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIChartsTemplateViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,10 +17,10 @@
 
   v15.receiver = self;
   v15.super_class = SKUIChartsTemplateViewElement;
-  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"type"];
+    v12 = [elementCopy getAttribute:@"type"];
     type = v11->_type;
     v11->_type = v12;
   }
@@ -30,12 +30,12 @@
 
 - (NSArray)columns
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__SKUIChartsTemplateViewElement_columns__block_invoke;
   v6[3] = &unk_2781F9640;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v6];
 

@@ -1,99 +1,99 @@
 @interface HMMTRAccessoryServerBuilder
-- (HMMTRAccessoryServerBuilder)initWithKeystore:(id)a3 browser:(id)a4;
-- (id)addService:(id)a3;
-- (id)identifier:(id)a3;
-- (id)manufacturer:(id)a3;
-- (id)model:(id)a3;
-- (id)name:(id)a3;
-- (id)serialNumber:(id)a3;
+- (HMMTRAccessoryServerBuilder)initWithKeystore:(id)keystore browser:(id)browser;
+- (id)addService:(id)service;
+- (id)identifier:(id)identifier;
+- (id)manufacturer:(id)manufacturer;
+- (id)model:(id)model;
+- (id)name:(id)name;
+- (id)serialNumber:(id)number;
 @end
 
 @implementation HMMTRAccessoryServerBuilder
 
-- (id)addService:(id)a3
+- (id)addService:(id)service
 {
   accessoryServer = self->_accessoryServer;
-  v5 = a3;
-  v6 = [(HMMTRAccessoryServer *)accessoryServer primaryAccessory];
-  [v5 setAccessory:v6];
+  serviceCopy = service;
+  primaryAccessory = [(HMMTRAccessoryServer *)accessoryServer primaryAccessory];
+  [serviceCopy setAccessory:primaryAccessory];
 
-  v7 = [(HMMTRAccessoryServer *)self->_accessoryServer primaryAccessory];
-  v8 = [v7 services];
+  primaryAccessory2 = [(HMMTRAccessoryServer *)self->_accessoryServer primaryAccessory];
+  services = [primaryAccessory2 services];
 
-  v9 = [MEMORY[0x277CBEB18] arrayWithObject:v5];
+  v9 = [MEMORY[0x277CBEB18] arrayWithObject:serviceCopy];
 
-  [v9 addObjectsFromArray:v8];
-  v10 = [(HMMTRAccessoryServer *)self->_accessoryServer primaryAccessory];
-  [v10 setServices:v9];
+  [v9 addObjectsFromArray:services];
+  primaryAccessory3 = [(HMMTRAccessoryServer *)self->_accessoryServer primaryAccessory];
+  [primaryAccessory3 setServices:v9];
 
   return self;
 }
 
-- (id)serialNumber:(id)a3
+- (id)serialNumber:(id)number
 {
   accessoryServer = self->_accessoryServer;
-  v5 = a3;
-  v6 = [(HMMTRAccessoryServer *)accessoryServer primaryAccessory];
-  [v6 setSerialNumber:v5];
+  numberCopy = number;
+  primaryAccessory = [(HMMTRAccessoryServer *)accessoryServer primaryAccessory];
+  [primaryAccessory setSerialNumber:numberCopy];
 
   return self;
 }
 
-- (id)model:(id)a3
+- (id)model:(id)model
 {
   accessoryServer = self->_accessoryServer;
-  v5 = a3;
-  v6 = [(HMMTRAccessoryServer *)accessoryServer primaryAccessory];
-  [v6 setModel:v5];
+  modelCopy = model;
+  primaryAccessory = [(HMMTRAccessoryServer *)accessoryServer primaryAccessory];
+  [primaryAccessory setModel:modelCopy];
 
   return self;
 }
 
-- (id)manufacturer:(id)a3
+- (id)manufacturer:(id)manufacturer
 {
   accessoryServer = self->_accessoryServer;
-  v5 = a3;
-  v6 = [(HMMTRAccessoryServer *)accessoryServer primaryAccessory];
-  [v6 setManufacturer:v5];
+  manufacturerCopy = manufacturer;
+  primaryAccessory = [(HMMTRAccessoryServer *)accessoryServer primaryAccessory];
+  [primaryAccessory setManufacturer:manufacturerCopy];
 
   return self;
 }
 
-- (id)identifier:(id)a3
+- (id)identifier:(id)identifier
 {
   accessoryServer = self->_accessoryServer;
-  v5 = a3;
-  [(HAPAccessoryServer *)accessoryServer setIdentifier:v5];
-  v6 = [(HMMTRAccessoryServer *)self->_accessoryServer primaryAccessory];
-  [v6 setIdentifier:v5];
+  identifierCopy = identifier;
+  [(HAPAccessoryServer *)accessoryServer setIdentifier:identifierCopy];
+  primaryAccessory = [(HMMTRAccessoryServer *)self->_accessoryServer primaryAccessory];
+  [primaryAccessory setIdentifier:identifierCopy];
 
-  v7 = [(HMMTRAccessoryServer *)self->_accessoryServer primaryAccessory];
-  [v7 setServerIdentifier:v5];
+  primaryAccessory2 = [(HMMTRAccessoryServer *)self->_accessoryServer primaryAccessory];
+  [primaryAccessory2 setServerIdentifier:identifierCopy];
 
   return self;
 }
 
-- (id)name:(id)a3
+- (id)name:(id)name
 {
   accessoryServer = self->_accessoryServer;
-  v5 = a3;
-  [(HAPAccessoryServer *)accessoryServer setName:v5];
-  v6 = [(HMMTRAccessoryServer *)self->_accessoryServer primaryAccessory];
-  [v6 setName:v5];
+  nameCopy = name;
+  [(HAPAccessoryServer *)accessoryServer setName:nameCopy];
+  primaryAccessory = [(HMMTRAccessoryServer *)self->_accessoryServer primaryAccessory];
+  [primaryAccessory setName:nameCopy];
 
   return self;
 }
 
-- (HMMTRAccessoryServerBuilder)initWithKeystore:(id)a3 browser:(id)a4
+- (HMMTRAccessoryServerBuilder)initWithKeystore:(id)keystore browser:(id)browser
 {
-  v6 = a3;
-  v7 = a4;
+  keystoreCopy = keystore;
+  browserCopy = browser;
   v16.receiver = self;
   v16.super_class = HMMTRAccessoryServerBuilder;
   v8 = [(HMMTRAccessoryServerBuilder *)&v16 init];
   if (v8)
   {
-    v9 = [[HMMTRAccessoryServer alloc] initWithKeystore:v6 browser:v7];
+    v9 = [[HMMTRAccessoryServer alloc] initWithKeystore:keystoreCopy browser:browserCopy];
     accessoryServer = v8->_accessoryServer;
     v8->_accessoryServer = v9;
 

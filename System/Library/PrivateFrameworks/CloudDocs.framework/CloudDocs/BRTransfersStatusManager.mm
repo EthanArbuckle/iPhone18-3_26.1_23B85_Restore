@@ -1,26 +1,26 @@
 @interface BRTransfersStatusManager
 + (id)defaultManager;
 + (void)initialize;
-- (BRTransfersStatusManager)initWithPersonaIdentifier:(id)a3;
+- (BRTransfersStatusManager)initWithPersonaIdentifier:(id)identifier;
 - (NSArray)transfers;
-- (id)startObservingItemDownloadProgressAtURL:(id)a3;
+- (id)startObservingItemDownloadProgressAtURL:(id)l;
 - (void)_progressSubscription;
-- (void)_setGlobalProgress:(id)a3 forIvar:(id *)a4;
+- (void)_setGlobalProgress:(id)progress forIvar:(id *)ivar;
 - (void)_setupTimerToDisplayGlobalProgress;
-- (void)addTransfer:(id)a3;
+- (void)addTransfer:(id)transfer;
 - (void)dealloc;
-- (void)downloadAndObserveItemAtURL:(id)a3 handler:(id)a4;
-- (void)insertTransfer:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeTransfer:(id)a3;
+- (void)downloadAndObserveItemAtURL:(id)l handler:(id)handler;
+- (void)insertTransfer:(id)transfer atIndex:(unint64_t)index;
+- (void)removeTransfer:(id)transfer;
 - (void)showGlobalProgressIfNeeded;
-- (void)stopObservingItemDownloadProgress:(id)a3;
+- (void)stopObservingItemDownloadProgress:(id)progress;
 @end
 
 @implementation BRTransfersStatusManager
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     g_transferManagerForPersona = [objc_opt_new() initWithKeyOptions:0 valueOptions:5 capacity:2];
 
@@ -28,9 +28,9 @@
   }
 }
 
-- (BRTransfersStatusManager)initWithPersonaIdentifier:(id)a3
+- (BRTransfersStatusManager)initWithPersonaIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = BRTransfersStatusManager;
   v6 = [(BRTransfersStatusManager *)&v16 init];
@@ -52,7 +52,7 @@
     queue = v6->_queue;
     v6->_queue = v13;
 
-    objc_storeStrong(&v6->_personaIdentifier, a3);
+    objc_storeStrong(&v6->_personaIdentifier, identifier);
     [(BRTransfersStatusManager *)v6 _progressSubscription];
   }
 
@@ -66,18 +66,18 @@
   [g_transferManagerForPersona removeObjectForKey:self->_personaIdentifier];
   objc_sync_exit(v3);
 
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_globalProgressSubscriber)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_globalProgressSubscriber)
   {
     [MEMORY[0x1E696AE38] _removeSubscriber:?];
-    globalProgressSubscriber = v4->_globalProgressSubscriber;
-    v4->_globalProgressSubscriber = 0;
+    globalProgressSubscriber = selfCopy->_globalProgressSubscriber;
+    selfCopy->_globalProgressSubscriber = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = BRTransfersStatusManager;
   [(BRTransfersStatusManager *)&v6 dealloc];
 }
@@ -101,41 +101,41 @@
 
 - (NSArray)transfers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_transfers copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_transfers copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)downloadAndObserveItemAtURL:(id)a3 handler:(id)a4
+- (void)downloadAndObserveItemAtURL:(id)l handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BRFileProvidingOperation alloc] initWithURL:v7 readingOptions:131073];
-  v9 = [(BRTransfersStatusManager *)self startObservingItemDownloadProgressAtURL:v7];
+  handlerCopy = handler;
+  lCopy = l;
+  v8 = [[BRFileProvidingOperation alloc] initWithURL:lCopy readingOptions:131073];
+  v9 = [(BRTransfersStatusManager *)self startObservingItemDownloadProgressAtURL:lCopy];
 
   [v9 setCancellable:1];
-  v10 = [v9 cancellationHandler];
+  cancellationHandler = [v9 cancellationHandler];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __64__BRTransfersStatusManager_downloadAndObserveItemAtURL_handler___block_invoke;
   v18[3] = &unk_1E7A15078;
   v19 = v8;
-  v20 = v10;
+  v20 = cancellationHandler;
   v11 = v8;
-  v12 = v10;
+  v12 = cancellationHandler;
   [v9 setCancellationHandler:v18];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__BRTransfersStatusManager_downloadAndObserveItemAtURL_handler___block_invoke_2;
   v15[3] = &unk_1E7A15C00;
   v16 = v9;
-  v17 = v6;
+  v17 = handlerCopy;
   v15[4] = self;
   v13 = v9;
-  v14 = v6;
+  v14 = handlerCopy;
   [(BRFileProvidingOperation *)v11 setFileProvidingCompletion:v15];
   [(NSOperationQueue *)self->_operationQueue addOperation:v11];
 }
@@ -162,20 +162,20 @@ uint64_t __64__BRTransfersStatusManager_downloadAndObserveItemAtURL_handler___bl
   return [v2 stopObservingItemDownloadProgress:v3];
 }
 
-- (id)startObservingItemDownloadProgressAtURL:(id)a3
+- (id)startObservingItemDownloadProgressAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [[BRDownloadProgressProxy alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[BRDownloadProgressProxy alloc] initWithURL:lCopy];
   [(BRDownloadProgressProxy *)v5 start];
-  v6 = self;
-  objc_sync_enter(v6);
-  shouldHideGlobalDownloadProgressCount = v6->_shouldHideGlobalDownloadProgressCount;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shouldHideGlobalDownloadProgressCount = selfCopy->_shouldHideGlobalDownloadProgressCount;
   if (!shouldHideGlobalDownloadProgressCount)
   {
-    if (v6->_globalDownloadProgress)
+    if (selfCopy->_globalDownloadProgress)
     {
-      [(BRTransfersStatusManager *)v6 removeTransfer:?];
-      shouldHideGlobalDownloadProgressCount = v6->_shouldHideGlobalDownloadProgressCount;
+      [(BRTransfersStatusManager *)selfCopy removeTransfer:?];
+      shouldHideGlobalDownloadProgressCount = selfCopy->_shouldHideGlobalDownloadProgressCount;
     }
 
     else
@@ -184,30 +184,30 @@ uint64_t __64__BRTransfersStatusManager_downloadAndObserveItemAtURL_handler___bl
     }
   }
 
-  v6->_shouldHideGlobalDownloadProgressCount = shouldHideGlobalDownloadProgressCount + 1;
-  [(BRTransfersStatusManager *)v6 addTransfer:v5];
-  objc_sync_exit(v6);
+  selfCopy->_shouldHideGlobalDownloadProgressCount = shouldHideGlobalDownloadProgressCount + 1;
+  [(BRTransfersStatusManager *)selfCopy addTransfer:v5];
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)stopObservingItemDownloadProgress:(id)a3
+- (void)stopObservingItemDownloadProgress:(id)progress
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  --v5->_shouldHideGlobalDownloadProgressCount;
-  [(BRTransfersStatusManager *)v5 removeTransfer:v4];
-  queue = v5->_queue;
+  progressCopy = progress;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  --selfCopy->_shouldHideGlobalDownloadProgressCount;
+  [(BRTransfersStatusManager *)selfCopy removeTransfer:progressCopy];
+  queue = selfCopy->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__BRTransfersStatusManager_stopObservingItemDownloadProgress___block_invoke;
   block[3] = &unk_1E7A14798;
-  block[4] = v5;
+  block[4] = selfCopy;
   dispatch_async(queue, block);
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  [v4 stop];
+  [progressCopy stop];
 }
 
 - (void)showGlobalProgressIfNeeded
@@ -268,67 +268,67 @@ void __62__BRTransfersStatusManager__setupTimerToDisplayGlobalProgress__block_in
   [WeakRetained showGlobalProgressIfNeeded];
 }
 
-- (void)removeTransfer:(id)a3
+- (void)removeTransfer:(id)transfer
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableArray *)v4->_transfers indexOfObject:v7];
+  transferCopy = transfer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableArray *)selfCopy->_transfers indexOfObject:transferCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = [MEMORY[0x1E696AC90] indexSetWithIndex:v5];
-    [(BRTransfersStatusManager *)v4 willChange:3 valuesAtIndexes:v6 forKey:@"transfers"];
-    [(NSMutableArray *)v4->_transfers removeObject:v7];
-    [(BRTransfersStatusManager *)v4 didChange:3 valuesAtIndexes:v6 forKey:@"transfers"];
+    [(BRTransfersStatusManager *)selfCopy willChange:3 valuesAtIndexes:v6 forKey:@"transfers"];
+    [(NSMutableArray *)selfCopy->_transfers removeObject:transferCopy];
+    [(BRTransfersStatusManager *)selfCopy didChange:3 valuesAtIndexes:v6 forKey:@"transfers"];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addTransfer:(id)a3
+- (void)addTransfer:(id)transfer
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableArray *)v4->_transfers count];
+  transferCopy = transfer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableArray *)selfCopy->_transfers count];
   v6 = [MEMORY[0x1E696AC90] indexSetWithIndex:v5];
-  [(BRTransfersStatusManager *)v4 willChange:2 valuesAtIndexes:v6 forKey:@"transfers"];
-  [(NSMutableArray *)v4->_transfers addObject:v7];
-  [(BRTransfersStatusManager *)v4 didChange:2 valuesAtIndexes:v6 forKey:@"transfers"];
+  [(BRTransfersStatusManager *)selfCopy willChange:2 valuesAtIndexes:v6 forKey:@"transfers"];
+  [(NSMutableArray *)selfCopy->_transfers addObject:transferCopy];
+  [(BRTransfersStatusManager *)selfCopy didChange:2 valuesAtIndexes:v6 forKey:@"transfers"];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)insertTransfer:(id)a3 atIndex:(unint64_t)a4
+- (void)insertTransfer:(id)transfer atIndex:(unint64_t)index
 {
-  v8 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [MEMORY[0x1E696AC90] indexSetWithIndex:a4];
-  [(BRTransfersStatusManager *)v6 willChange:2 valuesAtIndexes:v7 forKey:@"transfers"];
-  [(NSMutableArray *)v6->_transfers insertObject:v8 atIndex:0];
-  [(BRTransfersStatusManager *)v6 didChange:2 valuesAtIndexes:v7 forKey:@"transfers"];
+  transferCopy = transfer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [MEMORY[0x1E696AC90] indexSetWithIndex:index];
+  [(BRTransfersStatusManager *)selfCopy willChange:2 valuesAtIndexes:v7 forKey:@"transfers"];
+  [(NSMutableArray *)selfCopy->_transfers insertObject:transferCopy atIndex:0];
+  [(BRTransfersStatusManager *)selfCopy didChange:2 valuesAtIndexes:v7 forKey:@"transfers"];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_setGlobalProgress:(id)a3 forIvar:(id *)a4
+- (void)_setGlobalProgress:(id)progress forIvar:(id *)ivar
 {
-  v8 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (*a4)
+  progressCopy = progress;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (*ivar)
   {
-    [(BRTransfersStatusManager *)v7 removeTransfer:?];
+    [(BRTransfersStatusManager *)selfCopy removeTransfer:?];
   }
 
-  objc_storeStrong(a4, a3);
-  if (v8 && (!v7->_shouldHideGlobalDownloadProgressCount || &v7->_globalDownloadProgress != a4))
+  objc_storeStrong(ivar, progress);
+  if (progressCopy && (!selfCopy->_shouldHideGlobalDownloadProgressCount || &selfCopy->_globalDownloadProgress != ivar))
   {
-    [(BRTransfersStatusManager *)v7 insertTransfer:v8 atIndex:0];
+    [(BRTransfersStatusManager *)selfCopy insertTransfer:progressCopy atIndex:0];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_progressSubscription
@@ -339,15 +339,15 @@ void __62__BRTransfersStatusManager__setupTimerToDisplayGlobalProgress__block_in
   v9[3] = &unk_1E7A15C28;
   v9[4] = self;
   v3 = MEMORY[0x1B26FEA90](v9, a2);
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = MEMORY[0x1E696AE38];
   v6 = +[BRDaemonConnection mobileDocumentsURL];
   v7 = [v5 _addSubscriberForFileURL:v6 withPublishingHandler:v3];
-  globalProgressSubscriber = v4->_globalProgressSubscriber;
-  v4->_globalProgressSubscriber = v7;
+  globalProgressSubscriber = selfCopy->_globalProgressSubscriber;
+  selfCopy->_globalProgressSubscriber = v7;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 id __49__BRTransfersStatusManager__progressSubscription__block_invoke(uint64_t a1, void *a2)

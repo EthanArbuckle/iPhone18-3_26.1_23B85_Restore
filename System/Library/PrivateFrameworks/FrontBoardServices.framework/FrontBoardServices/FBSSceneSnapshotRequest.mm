@@ -1,39 +1,39 @@
 @interface FBSSceneSnapshotRequest
-- (BOOL)performSnapshotWithContext:(id)a3;
-- (FBSSceneSnapshotRequest)initWithSettings:(id)a3 allowsProtectedContent:(BOOL)a4;
-- (FBSSceneSnapshotRequest)initWithXPCDictionary:(id)a3;
+- (BOOL)performSnapshotWithContext:(id)context;
+- (FBSSceneSnapshotRequest)initWithSettings:(id)settings allowsProtectedContent:(BOOL)content;
+- (FBSSceneSnapshotRequest)initWithXPCDictionary:(id)dictionary;
 - (FBSSceneSnapshotRequestDelegate)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation FBSSceneSnapshotRequest
 
-- (FBSSceneSnapshotRequest)initWithSettings:(id)a3 allowsProtectedContent:(BOOL)a4
+- (FBSSceneSnapshotRequest)initWithSettings:(id)settings allowsProtectedContent:(BOOL)content
 {
-  v6 = a3;
+  settingsCopy = settings;
   v11.receiver = self;
   v11.super_class = FBSSceneSnapshotRequest;
   v7 = [(FBSSceneSnapshotRequest *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [settingsCopy copy];
     settings = v7->_settings;
     v7->_settings = v8;
 
-    v7->_allowsProtectedContent = a4;
+    v7->_allowsProtectedContent = content;
   }
 
   return v7;
 }
 
-- (BOOL)performSnapshotWithContext:(id)a3
+- (BOOL)performSnapshotWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   if (self->_handled)
   {
     v6 = 0;
@@ -42,10 +42,10 @@
   else
   {
     self->_handled = 1;
-    v7 = [v4 clientExtendedData];
-    if (self->_allowsProtectedContent != [v7 BOOLForSetting:281330800])
+    clientExtendedData = [contextCopy clientExtendedData];
+    if (self->_allowsProtectedContent != [clientExtendedData BOOLForSetting:281330800])
     {
-      if (![v7 mutableCopy])
+      if (![clientExtendedData mutableCopy])
       {
         v8 = objc_alloc_init(off_1E76BCA00);
       }
@@ -71,10 +71,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSSceneSnapshotRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSSceneSnapshotRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -86,34 +86,34 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSSceneSnapshotRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSSceneSnapshotRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSSceneSnapshotRequest *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSSceneSnapshotRequest *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__FBSSceneSnapshotRequest_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
 }
 
-- (FBSSceneSnapshotRequest)initWithXPCDictionary:(id)a3
+- (FBSSceneSnapshotRequest)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if ([(FBSSceneSnapshotRequest *)self init])
   {
     BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
@@ -122,9 +122,9 @@
   return 0;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  a3;
+  dictionary;
   [FBSSceneSettingsDiff diffFromSettings:0 toSettings:self->_settings];
   objc_claimAutoreleasedReturnValue();
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();

@@ -1,18 +1,18 @@
 @interface CRFormFieldAutoFillGuardingStep
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6;
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options;
 @end
 
 @implementation CRFormFieldAutoFillGuardingStep
 
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  processCopy = process;
   v7 = CROSLogForCategory(6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v6 count];
+    *(&buf + 4) = [processCopy count];
     _os_log_impl(&dword_1B40D2000, v7, OS_LOG_TYPE_DEBUG, "CRFormPostProcessor: CRFormFieldAutoFillGuardingStep is running (#input:%lu).", &buf, 0xCu);
   }
 
@@ -42,7 +42,7 @@
   v11[5] = &buf;
   v11[6] = &v16;
   v11[7] = &v20;
-  [CRFormPostProcessingManager enumerateDetectedFields:v6 block:v11];
+  [CRFormPostProcessingManager enumerateDetectedFields:processCopy block:v11];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -51,7 +51,7 @@
     [*(*(&buf + 1) + 40) setAutofillNewContextStart:v8];
   }
 
-  v9 = v6;
+  v9 = processCopy;
   _Block_object_dispose(&buf, 8);
 
   _Block_object_dispose(&v12, 8);

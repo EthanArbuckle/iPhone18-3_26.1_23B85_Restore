@@ -1,15 +1,15 @@
 @interface GAXPassthroughNavigationBar
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation GAXPassthroughNavigationBar
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   objc_opt_class();
   [(GAXPassthroughNavigationBar *)self subviews];
   v18 = 0u;
@@ -32,7 +32,7 @@
 
         v13 = *(*(&v18 + 1) + 8 * i);
         [v13 convertPoint:self fromView:{x, y, v18}];
-        v14 = [v13 hitTest:v7 withEvent:?];
+        v14 = [v13 hitTest:eventCopy withEvent:?];
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
@@ -58,11 +58,11 @@ LABEL_11:
   return v16;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(GAXPassthroughNavigationBar *)self subviews];
   v17 = 0u;
   v18 = 0u;
@@ -84,7 +84,7 @@ LABEL_11:
 
         v13 = *(*(&v17 + 1) + 8 * i);
         [v13 convertPoint:self fromView:{x, y, v17}];
-        v14 = [v13 _accessibilityHitTest:v7 withEvent:?];
+        v14 = [v13 _accessibilityHitTest:eventCopy withEvent:?];
         if (v14)
         {
           v15 = v14;

@@ -1,10 +1,10 @@
 @interface CAStateControllerTransition
 - (CAStateControllerTransition)init;
-- (void)addAnimation:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)addAnimation:(id)animation;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeAnimationFromLayer:(id)a3 forKey:(id)a4;
+- (void)removeAnimationFromLayer:(id)layer forKey:(id)key;
 @end
 
 @implementation CAStateControllerTransition
@@ -90,13 +90,13 @@
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = [(CAStateController *)self->_controller delegate];
+  finishedCopy = finished;
+  delegate = [(CAStateController *)self->_controller delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(CAStateControllerDelegate *)v6 stateController:self->_controller transitionDidStop:self->_transition completed:v4];
+    [(CAStateControllerDelegate *)delegate stateController:self->_controller transitionDidStop:self->_transition completed:finishedCopy];
   }
 
   self->_masterKey = 0;
@@ -104,16 +104,16 @@
   [(CAStateControllerTransition *)self invalidate];
 }
 
-- (void)removeAnimationFromLayer:(id)a3 forKey:(id)a4
+- (void)removeAnimationFromLayer:(id)layer forKey:(id)key
 {
-  if ([objc_msgSend(a3 animationForKey:{a4), "CAStateControllerTransition"}] == self)
+  if ([objc_msgSend(layer animationForKey:{key), "CAStateControllerTransition"}] == self)
   {
 
-    [a3 removeAnimationForKey:a4];
+    [layer removeAnimationForKey:key];
   }
 }
 
-- (void)addAnimation:(id)a3
+- (void)addAnimation:(id)animation
 {
   animations = self->_animations;
   if (!animations)
@@ -122,7 +122,7 @@
     self->_animations = animations;
   }
 
-  [(NSMutableArray *)animations addObject:a3];
+  [(NSMutableArray *)animations addObject:animation];
 }
 
 @end

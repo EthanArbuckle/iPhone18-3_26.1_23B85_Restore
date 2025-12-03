@@ -1,25 +1,25 @@
 @interface CALayer
-- (CGPath)tracedShadowPathWithScale:(double)a3;
+- (CGPath)tracedShadowPathWithScale:(double)scale;
 - (id)_th_undoInvertColorsFilter;
-- (id)p_recoilAnimationFromPoint:(CGPoint)a3 scale:(double)a4 duration:(double)a5 hardRebound:(BOOL)a6;
+- (id)p_recoilAnimationFromPoint:(CGPoint)point scale:(double)scale duration:(double)duration hardRebound:(BOOL)rebound;
 - (void)addButtonShadow;
-- (void)addCABasicOpacityAnimationToValue:(double)a3 duration:(double)a4 removedOnCompletion:(BOOL)a5;
-- (void)addMomentumTiltWithVelocity:(CGPoint)a3;
-- (void)addPressAnimationFromPoint:(CGPoint)a3 scale:(double)a4;
-- (void)addRecoilAnimationFromPoint:(CGPoint)a3 hardRebound:(BOOL)a4;
-- (void)addRelaxAnimationFromPoint:(CGPoint)a3;
-- (void)copyAnimationsFromLayer:(id)a3;
+- (void)addCABasicOpacityAnimationToValue:(double)value duration:(double)duration removedOnCompletion:(BOOL)completion;
+- (void)addMomentumTiltWithVelocity:(CGPoint)velocity;
+- (void)addPressAnimationFromPoint:(CGPoint)point scale:(double)scale;
+- (void)addRecoilAnimationFromPoint:(CGPoint)point hardRebound:(BOOL)rebound;
+- (void)addRelaxAnimationFromPoint:(CGPoint)point;
+- (void)copyAnimationsFromLayer:(id)layer;
 - (void)removeButtonShadow;
-- (void)setFadeMaskWithTopHeight:(double)a3 bottomHeight:(double)a4;
-- (void)spi_setPreloadsCache:(BOOL)a3;
+- (void)setFadeMaskWithTopHeight:(double)height bottomHeight:(double)bottomHeight;
+- (void)spi_setPreloadsCache:(BOOL)cache;
 - (void)th_accessibilityUndoInvertColorsIfNecessary;
-- (void)translateToSuperlayer:(id)a3;
-- (void)translateToSuperlayer:(id)a3 below:(id)a4;
+- (void)translateToSuperlayer:(id)superlayer;
+- (void)translateToSuperlayer:(id)superlayer below:(id)below;
 @end
 
 @implementation CALayer
 
-- (void)addMomentumTiltWithVelocity:(CGPoint)a3
+- (void)addMomentumTiltWithVelocity:(CGPoint)velocity
 {
   [(CALayer *)self removeMomentumTiltAnimation];
   [(CALayer *)self addPerspectiveProjection];
@@ -47,14 +47,14 @@
   [(CALayer *)self addAnimation:v14 forKey:@"kTHWFreeTransformControllerMomentumTiltAnimationKey"];
 }
 
-- (void)copyAnimationsFromLayer:(id)a3
+- (void)copyAnimationsFromLayer:(id)layer
 {
-  v5 = [a3 animationKeys];
+  animationKeys = [layer animationKeys];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [animationKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -66,25 +66,25 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(animationKeys);
         }
 
-        -[CALayer addAnimation:forKey:](self, "addAnimation:forKey:", [objc_msgSend(a3 animationForKey:{*(*(&v10 + 1) + 8 * v9)), "copy"}], *(*(&v10 + 1) + 8 * v9));
+        -[CALayer addAnimation:forKey:](self, "addAnimation:forKey:", [objc_msgSend(layer animationForKey:{*(*(&v10 + 1) + 8 * v9)), "copy"}], *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [animationKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)addPressAnimationFromPoint:(CGPoint)a3 scale:(double)a4
+- (void)addPressAnimationFromPoint:(CGPoint)point scale:(double)scale
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CALayer *)self removeRecoilAnimation];
   [(CALayer *)self removeRelaxAnimation];
   [(CALayer *)self removePressAnimation];
@@ -116,7 +116,7 @@
   [(CABasicAnimation *)v20 setAdditive:1];
   v22 = [CABasicAnimation animationWithKeyPath:@"transform.scale.xy"];
   [-[CALayer valueForKeyPath:](self valueForKeyPath:{@"transform.scale.xy", "floatValue"}];
-  v24 = v23 * a4;
+  v24 = v23 * scale;
   *&v24 = v24;
   [(CABasicAnimation *)v22 setToValue:[NSNumber numberWithFloat:v24]];
   [(CABasicAnimation *)v22 setDuration:0.1];
@@ -150,14 +150,14 @@
   [(CALayer *)self setOpacity:v3];
 }
 
-- (id)p_recoilAnimationFromPoint:(CGPoint)a3 scale:(double)a4 duration:(double)a5 hardRebound:(BOOL)a6
+- (id)p_recoilAnimationFromPoint:(CGPoint)point scale:(double)scale duration:(double)duration hardRebound:(BOOL)rebound
 {
-  v6 = a6;
-  y = a3.y;
-  x = a3.x;
+  reboundCopy = rebound;
+  y = point.y;
+  x = point.x;
   [-[CALayer valueForKeyPath:](self valueForKeyPath:{@"transform.scale.xy", "floatValue"}];
   v13 = v12;
-  v14 = v12 - a4;
+  v14 = v12 - scale;
   v40 = v13 + v14 * 0.5;
   v41 = v13 + v14 * -0.4;
   v39 = v13 + v14 * -0.3;
@@ -185,11 +185,11 @@
   v28 = [NSValue valueWithCGPoint:v24, v26];
   [(CABasicAnimation *)v27 setToValue:v28];
   [(CABasicAnimation *)v27 setFromValue:v28];
-  [(CABasicAnimation *)v27 setDuration:a5];
+  [(CABasicAnimation *)v27 setDuration:duration];
   [(CABasicAnimation *)v27 setAdditive:1];
   v29 = [CABasicAnimation animationWithKeyPath:@"transform.scale.xy"];
-  [(CABasicAnimation *)v29 setFromValue:[NSNumber numberWithDouble:a4]];
-  if (v6)
+  [(CABasicAnimation *)v29 setFromValue:[NSNumber numberWithDouble:scale]];
+  if (reboundCopy)
   {
     v30 = v41;
   }
@@ -199,7 +199,7 @@
     v30 = v39;
   }
 
-  if (v6)
+  if (reboundCopy)
   {
     v31 = v13;
   }
@@ -209,7 +209,7 @@
     v31 = v40;
   }
 
-  if (v6)
+  if (reboundCopy)
   {
     v32 = kCAMediaTimingFunctionLinear;
   }
@@ -219,7 +219,7 @@
     v32 = kCAMediaTimingFunctionEaseOut;
   }
 
-  if (v6)
+  if (reboundCopy)
   {
     v33 = kCAMediaTimingFunctionEaseOut;
   }
@@ -231,32 +231,32 @@
 
   [(CABasicAnimation *)v29 setToValue:[NSNumber numberWithDouble:v31]];
   [(CABasicAnimation *)v29 setTimingFunction:[CAMediaTimingFunction functionWithName:v32]];
-  [(CABasicAnimation *)v29 setDuration:a5 * 0.5];
+  [(CABasicAnimation *)v29 setDuration:duration * 0.5];
   v34 = [CABasicAnimation animationWithKeyPath:@"transform.scale.xy"];
   [(CABasicAnimation *)v34 setFromValue:[NSNumber numberWithDouble:v31]];
   [(CABasicAnimation *)v34 setToValue:[NSNumber numberWithDouble:v30]];
   [(CABasicAnimation *)v34 setTimingFunction:[CAMediaTimingFunction functionWithName:v33]];
-  [(CABasicAnimation *)v34 setBeginTime:a5 * 0.5];
-  [(CABasicAnimation *)v34 setDuration:a5 * 0.3];
+  [(CABasicAnimation *)v34 setBeginTime:duration * 0.5];
+  [(CABasicAnimation *)v34 setDuration:duration * 0.3];
   v35 = [CABasicAnimation animationWithKeyPath:@"transform.scale.xy"];
   [(CABasicAnimation *)v35 setFromValue:[NSNumber numberWithDouble:v30]];
   [(CABasicAnimation *)v35 setToValue:[NSNumber numberWithDouble:v13]];
   [(CABasicAnimation *)v35 setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-  [(CABasicAnimation *)v35 setBeginTime:a5 * 0.8];
-  [(CABasicAnimation *)v35 setDuration:a5 * 0.2];
+  [(CABasicAnimation *)v35 setBeginTime:duration * 0.8];
+  [(CABasicAnimation *)v35 setDuration:duration * 0.2];
   v36 = objc_alloc_init(CAAnimationGroup);
   [v36 setAnimations:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v21, v27, v29, v34, v35, 0)}];
-  [v36 setDuration:a5];
+  [v36 setDuration:duration];
   [v36 setTimingFunction:{+[CAMediaTimingFunction functionWithName:](CAMediaTimingFunction, "functionWithName:", kCAMediaTimingFunctionLinear)}];
   [v36 setFillMode:kCAFillModeForwards];
   return v36;
 }
 
-- (void)addRecoilAnimationFromPoint:(CGPoint)a3 hardRebound:(BOOL)a4
+- (void)addRecoilAnimationFromPoint:(CGPoint)point hardRebound:(BOOL)rebound
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  reboundCopy = rebound;
+  y = point.y;
+  x = point.x;
   [(CALayer *)self removeRecoilAnimation];
   [-[CALayer valueForKeyPath:](self valueForKeyPath:{@"transform.scale.xy", "floatValue"}];
   v9 = v8;
@@ -267,15 +267,15 @@
     [(CALayer *)self removePressAnimation];
   }
 
-  v11 = [(CALayer *)self p_recoilAnimationFromPoint:v4 scale:x duration:y hardRebound:v9, 0.2];
+  v11 = [(CALayer *)self p_recoilAnimationFromPoint:reboundCopy scale:x duration:y hardRebound:v9, 0.2];
 
   [(CALayer *)self addAnimation:v11 forKey:@"kTHRecoilAnimationKey"];
 }
 
-- (void)addRelaxAnimationFromPoint:(CGPoint)a3
+- (void)addRelaxAnimationFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CALayer *)self removeRelaxAnimation];
   [-[CALayer valueForKeyPath:](self valueForKeyPath:{@"transform.scale.xy", "floatValue"}];
   v7 = v6;
@@ -328,16 +328,16 @@
   [(CALayer *)self addAnimation:v26 forKey:@"kTHRelaxAnimationKey"];
 }
 
-- (void)setFadeMaskWithTopHeight:(double)a3 bottomHeight:(double)a4
+- (void)setFadeMaskWithTopHeight:(double)height bottomHeight:(double)bottomHeight
 {
   v17 = objc_alloc_init(CAGradientLayer);
   [(CALayer *)self frame];
   [v17 setFrame:?];
   [v17 setColors:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", objc_msgSend(+[TSUColor clearColor](TSUColor, "clearColor"), "CGColor"), objc_msgSend(+[TSUColor blackColor](TSUColor, "blackColor"), "CGColor"), objc_msgSend(+[TSUColor blackColor](TSUColor, "blackColor"), "CGColor"), objc_msgSend(+[TSUColor clearColor](TSUColor, "clearColor"), "CGColor"), 0)}];
   [(CALayer *)self bounds];
-  v8 = a3 / v7;
+  v8 = height / v7;
   [(CALayer *)self bounds];
-  v10 = a4 / v9;
+  v10 = bottomHeight / v9;
   v11 = [NSNumber numberWithFloat:0.0];
   *&v12 = v8;
   v13 = [NSNumber numberWithFloat:v12];
@@ -349,27 +349,27 @@
   [(CALayer *)self setMask:v17];
 }
 
-- (void)translateToSuperlayer:(id)a3
+- (void)translateToSuperlayer:(id)superlayer
 {
-  v5 = [(CALayer *)self superlayer];
+  superlayer = [(CALayer *)self superlayer];
   [(CALayer *)self position];
-  [(CALayer *)v5 convertPoint:a3 toLayer:?];
+  [(CALayer *)superlayer convertPoint:superlayer toLayer:?];
   [(CALayer *)self setPosition:?];
 
-  [a3 addSublayer:self];
+  [superlayer addSublayer:self];
 }
 
-- (void)translateToSuperlayer:(id)a3 below:(id)a4
+- (void)translateToSuperlayer:(id)superlayer below:(id)below
 {
-  v7 = [(CALayer *)self superlayer];
+  superlayer = [(CALayer *)self superlayer];
   [(CALayer *)self position];
-  [(CALayer *)v7 convertPoint:a3 toLayer:?];
+  [(CALayer *)superlayer convertPoint:superlayer toLayer:?];
   [(CALayer *)self setPosition:?];
 
-  [a3 insertSublayer:self below:a4];
+  [superlayer insertSublayer:self below:below];
 }
 
-- (CGPath)tracedShadowPathWithScale:(double)a3
+- (CGPath)tracedShadowPathWithScale:(double)scale
 {
   [(CALayer *)self bounds];
   TSDMultiplySizeScalar();
@@ -377,7 +377,7 @@
   if (v5)
   {
     v6 = v5;
-    CGContextScaleCTM(v5, a3, a3);
+    CGContextScaleCTM(v5, scale, scale);
     objc_opt_class();
     [(CALayer *)self delegate];
     v7 = TSUDynamicCast();
@@ -417,28 +417,28 @@ LABEL_9:
   return [(TSDBezierPath *)v14 CGPath];
 }
 
-- (void)spi_setPreloadsCache:(BOOL)a3
+- (void)spi_setPreloadsCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   if (objc_opt_respondsToSelector())
   {
 
-    [(CALayer *)self setPreloadsCache:v3];
+    [(CALayer *)self setPreloadsCache:cacheCopy];
   }
 }
 
-- (void)addCABasicOpacityAnimationToValue:(double)a3 duration:(double)a4 removedOnCompletion:(BOOL)a5
+- (void)addCABasicOpacityAnimationToValue:(double)value duration:(double)duration removedOnCompletion:(BOOL)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v9 = [CABasicAnimation animationWithKeyPath:@"opacity"];
-  *&v10 = a3;
+  *&v10 = value;
   [(CABasicAnimation *)v9 setToValue:[NSNumber numberWithFloat:v10]];
-  if (a4 > 0.0)
+  if (duration > 0.0)
   {
-    [(CABasicAnimation *)v9 setDuration:a4];
+    [(CABasicAnimation *)v9 setDuration:duration];
   }
 
-  [(CABasicAnimation *)v9 setRemovedOnCompletion:v5];
+  [(CABasicAnimation *)v9 setRemovedOnCompletion:completionCopy];
   [(CABasicAnimation *)v9 setFillMode:kCAFillModeForwards];
 
   [(CALayer *)self addAnimation:v9 forKey:@"opacity"];
@@ -447,11 +447,11 @@ LABEL_9:
 - (void)th_accessibilityUndoInvertColorsIfNecessary
 {
   IsInvertColorsEnabled = UIAccessibilityIsInvertColorsEnabled();
-  v4 = [(CALayer *)self _th_undoInvertColorsFilter];
-  v5 = v4;
+  _th_undoInvertColorsFilter = [(CALayer *)self _th_undoInvertColorsFilter];
+  v5 = _th_undoInvertColorsFilter;
   if (IsInvertColorsEnabled)
   {
-    if (v4)
+    if (_th_undoInvertColorsFilter)
     {
       return;
     }
@@ -470,7 +470,7 @@ LABEL_9:
 
   else
   {
-    if (!v4)
+    if (!_th_undoInvertColorsFilter)
     {
       return;
     }
@@ -484,9 +484,9 @@ LABEL_9:
 
 - (id)_th_undoInvertColorsFilter
 {
-  v2 = [(CALayer *)self filters];
+  filters = [(CALayer *)self filters];
 
-  return [(NSArray *)v2 tsu_firstObjectPassingTest:&stru_45D080];
+  return [(NSArray *)filters tsu_firstObjectPassingTest:&stru_45D080];
 }
 
 @end

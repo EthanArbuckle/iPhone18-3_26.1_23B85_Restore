@@ -1,7 +1,7 @@
 @interface VoiceOptionsView
 - (SUICVoiceSelectionEventHandling)voiceSelectionEventHandler;
 - (SUICVoiceSelectionViewModelProviding)voiceSelectionViewModelProvider;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)voiceSelectionViewModelDidChange;
 @end
 
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_269057744();
   v7 = *(v6 - 8);
@@ -31,8 +31,8 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_269057724();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_269014E88();
 
   (*(v7 + 8))(v10, v6);
@@ -40,7 +40,7 @@
 
 - (void)voiceSelectionViewModelDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_2690147C4();
 }
 

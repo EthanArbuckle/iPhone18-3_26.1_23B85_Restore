@@ -1,17 +1,17 @@
 @interface MRDWatchRSECandidatePicker
-+ (id)proactiveRecommendedWithLocal:(id)a3 companion:(id)a4 userSelected:(id)a5 rse:(id)a6 selectionReason:(id *)a7;
++ (id)proactiveRecommendedWithLocal:(id)local companion:(id)companion userSelected:(id)selected rse:(id)rse selectionReason:(id *)reason;
 - (MRDWatchRSECandidatePicker)init;
 @end
 
 @implementation MRDWatchRSECandidatePicker
 
-+ (id)proactiveRecommendedWithLocal:(id)a3 companion:(id)a4 userSelected:(id)a5 rse:(id)a6 selectionReason:(id *)a7
++ (id)proactiveRecommendedWithLocal:(id)local companion:(id)companion userSelected:(id)selected rse:(id)rse selectionReason:(id *)reason
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  sub_10039FEB8(v11, a4, a5, a6, a7);
+  localCopy = local;
+  companionCopy = companion;
+  selectedCopy = selected;
+  rseCopy = rse;
+  sub_10039FEB8(localCopy, companion, selected, rse, reason);
   v16 = v15;
 
   if (v16)

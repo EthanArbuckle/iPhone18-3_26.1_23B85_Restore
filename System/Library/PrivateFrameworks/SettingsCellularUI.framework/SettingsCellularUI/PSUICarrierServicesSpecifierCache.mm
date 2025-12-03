@@ -2,16 +2,16 @@
 + (id)sharedInstance;
 - (PSUICarrierServicesSpecifierCache)init;
 - (id)initPrivate;
-- (id)mmsInfoSpecifierWithTarget:(id)a3 context:(id)a4;
-- (id)newMMSInfoSpecifierWithTarget:(id)a3 context:(id)a4;
-- (id)specifiers:(id)a3;
-- (void)carrierBundleChange:(id)a3;
+- (id)mmsInfoSpecifierWithTarget:(id)target context:(id)context;
+- (id)newMMSInfoSpecifierWithTarget:(id)target context:(id)context;
+- (id)specifiers:(id)specifiers;
+- (void)carrierBundleChange:(id)change;
 - (void)clearCache;
 - (void)dealloc;
-- (void)dialCarrierServiceNumber:(id)a3;
+- (void)dialCarrierServiceNumber:(id)number;
 - (void)fetchSpecifiers;
-- (void)openURLWithSpecifier:(id)a3;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (void)openURLWithSpecifier:(id)specifier;
+- (void)simStatusDidChange:(id)change status:(id)status;
 @end
 
 @implementation PSUICarrierServicesSpecifierCache
@@ -50,14 +50,14 @@ uint64_t __51__PSUICarrierServicesSpecifierCache_sharedInstance__block_invoke()
 
     [(CoreTelephonyClient *)v2->_client setDelegate:v2];
     [(PSUICarrierServicesSpecifierCache *)v2 clearCache];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel_clearCache name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_clearCache name:*MEMORY[0x277D76758] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel_clearCache name:0x287737B98 object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_clearCache name:0x287737B98 object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel_clearCache name:@"PSNewCarrierNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_clearCache name:@"PSNewCarrierNotification" object:0];
   }
 
   return v2;
@@ -66,12 +66,12 @@ uint64_t __51__PSUICarrierServicesSpecifierCache_sharedInstance__block_invoke()
 - (PSUICarrierServicesSpecifierCache)init
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = [(PSUICarrierServicesSpecifierCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSUICarrierServicesSpecifierCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     v3 = 136315138;
     v4 = "[PSUICarrierServicesSpecifierCache init]";
-    _os_log_error_impl(&dword_2658DE000, v2, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called: %s", &v3, 0xCu);
+    _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called: %s", &v3, 0xCu);
   }
 
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
@@ -79,8 +79,8 @@ uint64_t __51__PSUICarrierServicesSpecifierCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self];
   v4.receiver = self;
@@ -90,11 +90,11 @@ uint64_t __51__PSUICarrierServicesSpecifierCache_sharedInstance__block_invoke()
 
 - (void)clearCache
 {
-  v3 = [(PSUICarrierServicesSpecifierCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierServicesSpecifierCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Clearing carrier services cache", v6, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing carrier services cache", v6, 2u);
   }
 
   specifiersDict = self->_specifiersDict;
@@ -104,11 +104,11 @@ uint64_t __51__PSUICarrierServicesSpecifierCache_sharedInstance__block_invoke()
   self->_mmsInfoSpecifiersDict = 0;
 }
 
-- (id)mmsInfoSpecifierWithTarget:(id)a3 context:(id)a4
+- (id)mmsInfoSpecifierWithTarget:(id)target context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  targetCopy = target;
+  contextCopy = context;
+  v8 = contextCopy;
   mmsInfoSpecifiersDict = self->_mmsInfoSpecifiersDict;
   if (!mmsInfoSpecifiersDict)
   {
@@ -118,7 +118,7 @@ uint64_t __51__PSUICarrierServicesSpecifierCache_sharedInstance__block_invoke()
 
     v11 = 0;
 LABEL_6:
-    v13 = [(PSUICarrierServicesSpecifierCache *)self newMMSInfoSpecifierWithTarget:v6 context:v8];
+    v13 = [(PSUICarrierServicesSpecifierCache *)self newMMSInfoSpecifierWithTarget:targetCopy context:v8];
 
     v16 = self->_mmsInfoSpecifiersDict;
     v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "slotID")}];
@@ -127,7 +127,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "slotID")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "slotID")}];
   v11 = [(NSMutableDictionary *)mmsInfoSpecifiersDict objectForKeyedSubscript:v10];
 
   if (!v11)
@@ -135,10 +135,10 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v12 = [v11 target];
+  target = [v11 target];
 
   v13 = v11;
-  if (v12 != v6)
+  if (target != targetCopy)
   {
     goto LABEL_6;
   }
@@ -148,22 +148,22 @@ LABEL_7:
   return v13;
 }
 
-- (id)newMMSInfoSpecifierWithTarget:(id)a3 context:(id)a4
+- (id)newMMSInfoSpecifierWithTarget:(id)target context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  targetCopy = target;
+  contextCopy = context;
   v7 = +[PSUICoreTelephonyCarrierBundleCache sharedInstance];
-  v8 = [v7 mmsInfoUrl:v6];
+  v8 = [v7 mmsInfoUrl:contextCopy];
 
   if ([v8 length])
   {
     v9 = objc_alloc_init(MEMORY[0x277D3FAD8]);
     [v9 setButtonAction:sel_openURLWithSpecifier_];
     *&v9[*MEMORY[0x277D3FC90]] = 13;
-    objc_storeWeak(&v9[*MEMORY[0x277D3FCB8]], v5);
+    objc_storeWeak(&v9[*MEMORY[0x277D3FCB8]], targetCopy);
     [v9 setIdentifier:@"MMS_INFO"];
     v10 = +[PSUICoreTelephonyCarrierBundleCache sharedInstance];
-    v11 = [v10 mmsInfoTitle:v6];
+    v11 = [v10 mmsInfoTitle:contextCopy];
     [v9 setName:v11];
   }
 
@@ -178,23 +178,23 @@ LABEL_7:
 - (void)fetchSpecifiers
 {
   v65 = *MEMORY[0x277D85DE8];
-  v2 = [(PSUICarrierServicesSpecifierCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierServicesSpecifierCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v58 = "[PSUICarrierServicesSpecifierCache fetchSpecifiers]";
-    _os_log_impl(&dword_2658DE000, v2, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s executing fetch", buf, 0xCu);
   }
 
-  v3 = [MEMORY[0x277D4D868] sharedInstance];
-  v4 = [v3 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
   v40 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v4;
+  obj = subscriptionContexts;
   v41 = [obj countByEnumeratingWithState:&v53 objects:v64 count:16];
   if (v41)
   {
@@ -214,8 +214,8 @@ LABEL_7:
         v42 = v5;
         v6 = *(*(&v53 + 1) + 8 * v5);
         v7 = objc_alloc(MEMORY[0x277CBEB18]);
-        v8 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-        v9 = [v7 initWithObjects:{v8, 0}];
+        emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+        v9 = [v7 initWithObjects:{emptyGroupSpecifier, 0}];
 
         v10 = +[PSUICoreTelephonyCarrierBundleCache sharedInstance];
         v11 = [v10 carrierServices:v6];
@@ -288,8 +288,8 @@ LABEL_7:
 
         if ([v43 count])
         {
-          v26 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-          [v9 addObject:v26];
+          emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+          [v9 addObject:emptyGroupSpecifier2];
         }
 
         v27 = [PSUIMyAccountSpecifier alloc];
@@ -306,15 +306,15 @@ LABEL_7:
         {
           if (v29)
           {
-            v31 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-            [v9 addObject:v31];
+            emptyGroupSpecifier3 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+            [v9 addObject:emptyGroupSpecifier3];
           }
 
           [v9 addObject:v30];
         }
 
-        v32 = [(PSUICarrierServicesSpecifierCache *)self getLogger];
-        if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+        getLogger2 = [(PSUICarrierServicesSpecifierCache *)self getLogger];
+        if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
         {
           v33 = [v9 count];
           *buf = 136315650;
@@ -323,7 +323,7 @@ LABEL_7:
           v60 = v48;
           v61 = 2048;
           v62 = v33;
-          _os_log_impl(&dword_2658DE000, v32, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %lu", buf, 0x20u);
+          _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s fetch succeeded: %@, %lu", buf, 0x20u);
         }
 
         v34 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v48, "slotID")}];
@@ -339,62 +339,62 @@ LABEL_7:
     while (v41);
   }
 
-  v35 = self;
-  objc_sync_enter(v35);
-  specifiersDict = v35->_specifiersDict;
-  v35->_specifiersDict = v40;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  specifiersDict = selfCopy->_specifiersDict;
+  selfCopy->_specifiersDict = v40;
 
-  objc_sync_exit(v35);
+  objc_sync_exit(selfCopy);
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)specifiers:(id)a3
+- (id)specifiers:(id)specifiers
 {
-  v4 = a3;
-  v5 = [(PSUICarrierServicesSpecifierCache *)self specifiersDict];
+  specifiersCopy = specifiers;
+  specifiersDict = [(PSUICarrierServicesSpecifierCache *)self specifiersDict];
 
-  if (!v5)
+  if (!specifiersDict)
   {
     [(PSUICarrierServicesSpecifierCache *)self fetchSpecifiers];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICarrierServicesSpecifierCache *)v6 specifiersDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  specifiersDict2 = [(PSUICarrierServicesSpecifierCache *)selfCopy specifiersDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(specifiersCopy, "slotID")}];
+  v9 = [specifiersDict2 objectForKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (void)dialCarrierServiceNumber:(id)a3
+- (void)dialCarrierServiceNumber:(id)number
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D40128];
-  v5 = a3;
-  v6 = [v5 propertyForKey:v4];
-  v7 = [v5 propertyForKey:*MEMORY[0x277D401A8]];
+  numberCopy = number;
+  v6 = [numberCopy propertyForKey:v4];
+  v7 = [numberCopy propertyForKey:*MEMORY[0x277D401A8]];
 
-  v8 = [(PSUICarrierServicesSpecifierCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierServicesSpecifierCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v20 = v7;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Dialing carrier service number %@", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Dialing carrier service number %@", buf, 0xCu);
   }
 
   v9 = objc_alloc_init(MEMORY[0x277D6EE28]);
   v10 = objc_alloc(MEMORY[0x277D6EED0]);
-  v11 = [v9 telephonyProvider];
-  v12 = [v10 initWithProvider:v11];
+  telephonyProvider = [v9 telephonyProvider];
+  v12 = [v10 initWithProvider:telephonyProvider];
 
   v13 = [objc_alloc(MEMORY[0x277D6EEE8]) initWithType:2 value:v7];
   [v12 setHandle:v13];
 
-  v14 = [v6 uuid];
-  [v12 setLocalSenderIdentityUUID:v14];
+  uuid = [v6 uuid];
+  [v12 setLocalSenderIdentityUUID:uuid];
 
   [v12 setPerformDialAssist:0];
   [v12 setPerformLocalDialAssist:0];
@@ -432,10 +432,10 @@ void __62__PSUICarrierServicesSpecifierCache_dialCarrierServiceNumber___block_in
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openURLWithSpecifier:(id)a3
+- (void)openURLWithSpecifier:(id)specifier
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [a3 propertyForKey:@"url"];
+  v4 = [specifier propertyForKey:@"url"];
   v7 = [v3 URLWithString:v4];
 
   v5 = *MEMORY[0x277D76620];
@@ -443,23 +443,23 @@ void __62__PSUICarrierServicesSpecifierCache_dialCarrierServiceNumber___block_in
   [v5 openURL:v7 options:v6 completionHandler:0];
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(PSUICarrierServicesSpecifierCache *)v4 clearCache];
-  objc_sync_exit(v4);
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICarrierServicesSpecifierCache *)selfCopy clearCache];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(PSUICarrierServicesSpecifierCache *)v7 clearCache];
-  objc_sync_exit(v7);
+  changeCopy = change;
+  statusCopy = status;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICarrierServicesSpecifierCache *)selfCopy clearCache];
+  objc_sync_exit(selfCopy);
 }
 
 @end

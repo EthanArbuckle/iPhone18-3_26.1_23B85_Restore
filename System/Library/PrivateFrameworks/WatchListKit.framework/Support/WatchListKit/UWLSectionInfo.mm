@@ -1,21 +1,21 @@
 @interface UWLSectionInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsDone:(BOOL)a3;
-- (void)setHasPlayheadInMilliseconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsDone:(BOOL)done;
+- (void)setHasPlayheadInMilliseconds:(BOOL)milliseconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UWLSectionInfo
 
-- (void)setHasIsDone:(BOOL)a3
+- (void)setHasIsDone:(BOOL)done
 {
-  if (a3)
+  if (done)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPlayheadInMilliseconds:(BOOL)a3
+- (void)setHasPlayheadInMilliseconds:(BOOL)milliseconds
 {
-  if (a3)
+  if (milliseconds)
   {
     v3 = 2;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = UWLSectionInfo;
   v3 = [(UWLSectionInfo *)&v7 description];
-  v4 = [(UWLSectionInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(UWLSectionInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -101,16 +101,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     isDone = self->_isDone;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -131,31 +131,31 @@ LABEL_3:
 
   playheadInMilliseconds = self->_playheadInMilliseconds;
   PBDataWriterWriteInt64Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     lengthInMilliseconds = self->_lengthInMilliseconds;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_passThrough)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[32] = self->_isDone;
-    v4[36] |= 4u;
+    toCopy[32] = self->_isDone;
+    toCopy[36] |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -174,27 +174,27 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 2) = self->_playheadInMilliseconds;
-  v4[36] |= 2u;
+  *(toCopy + 2) = self->_playheadInMilliseconds;
+  toCopy[36] |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(v4 + 1) = self->_lengthInMilliseconds;
-    v4[36] |= 1u;
+    *(toCopy + 1) = self->_lengthInMilliseconds;
+    toCopy[36] |= 1u;
   }
 
 LABEL_5:
   if (self->_passThrough)
   {
-    v6 = v4;
-    [v4 setPassThrough:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setPassThrough:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) == 0)
@@ -232,25 +232,25 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_passThrough copyWithZone:a3];
+  v8 = [(NSString *)self->_passThrough copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(equalCopy + 36) & 4) == 0)
     {
       goto LABEL_4;
     }
@@ -260,21 +260,21 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ((*(v4 + 36) & 4) == 0)
+  if ((*(equalCopy + 36) & 4) == 0)
   {
     goto LABEL_22;
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (self->_isDone)
   {
-    if ((*(v4 + 32) & 1) == 0)
+    if ((*(equalCopy + 32) & 1) == 0)
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_22;
   }
@@ -282,32 +282,32 @@ LABEL_22:
 LABEL_4:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_playheadInMilliseconds != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_playheadInMilliseconds != *(equalCopy + 2))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_22;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_lengthInMilliseconds != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_lengthInMilliseconds != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_22;
   }
 
   passThrough = self->_passThrough;
-  if (passThrough | *(v4 + 3))
+  if (passThrough | *(equalCopy + 3))
   {
     v8 = [(NSString *)passThrough isEqual:?];
   }
@@ -362,15 +362,15 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSString *)self->_passThrough hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) != 0)
   {
-    self->_isDone = *(v4 + 32);
+    self->_isDone = *(fromCopy + 32);
     *&self->_has |= 4u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -383,26 +383,26 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 2) == 0)
+  else if ((*(fromCopy + 36) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_playheadInMilliseconds = *(v4 + 2);
+  self->_playheadInMilliseconds = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
 LABEL_4:
-    self->_lengthInMilliseconds = *(v4 + 1);
+    self->_lengthInMilliseconds = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(UWLSectionInfo *)self setPassThrough:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

@@ -1,9 +1,9 @@
 @interface HLPRemoteDataController
-- (HLPRemoteDataController)initWithURL:(id)a3;
+- (HLPRemoteDataController)initWithURL:(id)l;
 - (void)cancel;
 - (void)dealloc;
-- (void)fetchDataWithDataType:(int64_t)a3 identifier:(id)a4 completionHandler:(id)a5;
-- (void)processFileURLWithCompletionHandler:(id)a3;
+- (void)fetchDataWithDataType:(int64_t)type identifier:(id)identifier completionHandler:(id)handler;
+- (void)processFileURLWithCompletionHandler:(id)handler;
 @end
 
 @implementation HLPRemoteDataController
@@ -18,33 +18,33 @@
   [(HLPRemoteDataController *)&v4 dealloc];
 }
 
-- (HLPRemoteDataController)initWithURL:(id)a3
+- (HLPRemoteDataController)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = HLPRemoteDataController;
   v5 = [(HLPRemoteDataController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HLPRemoteDataController *)v5 setURL:v4];
+    [(HLPRemoteDataController *)v5 setURL:lCopy];
   }
 
   return v6;
 }
 
-- (void)fetchDataWithDataType:(int64_t)a3 identifier:(id)a4 completionHandler:(id)a5
+- (void)fetchDataWithDataType:(int64_t)type identifier:(id)identifier completionHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (![(HLPRemoteDataController *)self loading])
   {
     [(HLPRemoteDataController *)self setLoading:1];
     v10 = [(HLPRemoteDataController *)self URL];
-    v11 = [v10 isFileURL];
+    isFileURL = [v10 isFileURL];
 
-    if (v11)
+    if (isFileURL)
     {
       v12 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
@@ -52,7 +52,7 @@
       block[2] = __78__HLPRemoteDataController_fetchDataWithDataType_identifier_completionHandler___block_invoke;
       block[3] = &unk_279706BE8;
       block[4] = self;
-      v34 = v9;
+      v34 = handlerCopy;
       dispatch_async(v12, block);
 
       goto LABEL_17;
@@ -78,14 +78,14 @@
     }
 
     v17 = +[HLPURLSessionManager defaultManager];
-    if (a3 == 1)
+    if (type == 1)
     {
       v18 = off_2797065D0;
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
 LABEL_16:
 
@@ -96,8 +96,8 @@ LABEL_16:
       v18 = off_279706550;
     }
 
-    v19 = [(__objc2_class *)*v18 sharedInstance];
-    if (v19)
+    sharedInstance = [(__objc2_class *)*v18 sharedInstance];
+    if (sharedInstance)
     {
       v20 = HLPLogForCategory(0);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -112,9 +112,9 @@ LABEL_16:
       v27 = __78__HLPRemoteDataController_fetchDataWithDataType_identifier_completionHandler___block_invoke_7;
       v28 = &unk_279706C60;
       objc_copyWeak(&v31, &location);
-      v29 = self;
-      v30 = v9;
-      v21 = [v19 formattedDataForRequest:v16 identifier:v8 completionHandler:&v25];
+      selfCopy = self;
+      v30 = handlerCopy;
+      v21 = [sharedInstance formattedDataForRequest:v16 identifier:identifierCopy completionHandler:&v25];
       URLSessionItem = self->_URLSessionItem;
       p_URLSessionItem = &self->_URLSessionItem;
       *p_URLSessionItem = v21;
@@ -214,15 +214,15 @@ uint64_t __78__HLPRemoteDataController_fetchDataWithDataType_identifier_completi
   return [v3 setURLSessionItem:0];
 }
 
-- (void)processFileURLWithCompletionHandler:(id)a3
+- (void)processFileURLWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HLPRemoteDataController_processFileURLWithCompletionHandler___block_invoke;
   block[3] = &unk_279706C88;
-  v6 = v3;
-  v4 = v3;
+  v6 = handlerCopy;
+  v4 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

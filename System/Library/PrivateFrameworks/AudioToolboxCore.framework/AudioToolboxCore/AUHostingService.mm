@@ -1,13 +1,13 @@
 @interface AUHostingService
-+ (BOOL)conformsToProtocol:(id)a3;
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-- (AUHostingService)initWithConnection:(id)a3;
++ (BOOL)conformsToProtocol:(id)protocol;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
+- (AUHostingService)initWithConnection:(id)connection;
 - (id).cxx_construct;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)closeHost:(id)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)closeHost:(id)host;
 - (void)dealloc;
-- (void)loadAudioUnitInRemoteHost:(AudioComponentDescription *)a3 config:(id)a4 reply:(id)a5;
-- (void)retrieveAudioUnitInstanceID:(id)a3;
+- (void)loadAudioUnitInRemoteHost:(AudioComponentDescription *)host config:(id)config reply:(id)reply;
+- (void)retrieveAudioUnitInstanceID:(id)d;
 @end
 
 @implementation AUHostingService
@@ -24,8 +24,8 @@
   if (self->_host)
   {
     v3 = +[AUHostingServiceInstanceMap sharedInstance];
-    v4 = [(AURemoteHost *)self->_host audioUnitUUID];
-    [v3 unregisterInstance:v4];
+    audioUnitUUID = [(AURemoteHost *)self->_host audioUnitUUID];
+    [v3 unregisterInstance:audioUnitUUID];
 
     host = self->_host;
     self->_host = 0;
@@ -36,9 +36,9 @@
   [(AUHostingService *)&v6 dealloc];
 }
 
-- (void)closeHost:(id)a3
+- (void)closeHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -83,7 +83,7 @@
     aBlock[3] = &unk_1E72C1FD8;
     aBlock[4] = self;
     v17 = v9;
-    v10 = v4;
+    v10 = hostCopy;
     v16 = v10;
     v11 = _Block_copy(aBlock);
     v12 = v11;
@@ -211,16 +211,16 @@ void __30__AUHostingService_closeHost___block_invoke_2(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadAudioUnitInRemoteHost:(AudioComponentDescription *)a3 config:(id)a4 reply:(id)a5
+- (void)loadAudioUnitInRemoteHost:(AudioComponentDescription *)host config:(id)config reply:(id)reply
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  componentFlagsMask = a3->componentFlagsMask;
-  *&self->_componentDescription.componentType = *&a3->componentType;
+  configCopy = config;
+  replyCopy = reply;
+  componentFlagsMask = host->componentFlagsMask;
+  *&self->_componentDescription.componentType = *&host->componentType;
   self->_componentDescription.componentFlagsMask = componentFlagsMask;
   v11 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v12 = [v8 objectForKeyedSubscript:@"audioUnitInstanceUUID"];
+  v12 = [configCopy objectForKeyedSubscript:@"audioUnitInstanceUUID"];
   v13 = [v11 initWithUUIDString:v12];
 
   if (v13)
@@ -253,15 +253,15 @@ void __30__AUHostingService_closeHost___block_invoke_2(uint64_t a1)
     v18 = auhs_log_category(void)::category;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [(AURemoteHost *)self->_host audioUnitUUID];
-      v20 = [v19 UUIDString];
+      audioUnitUUID = [(AURemoteHost *)self->_host audioUnitUUID];
+      uUIDString = [audioUnitUUID UUIDString];
       v21 = self->_host;
       *buf = 136315906;
       v41 = "AUHostingService.mm";
       v42 = 1024;
       v43 = 150;
       v44 = 2112;
-      v45 = v20;
+      v45 = uUIDString;
       v46 = 2112;
       v47 = v21;
       _os_log_impl(&dword_18F5DF000, v18, OS_LOG_TYPE_INFO, "%25s:%-5d Connected to Audio Unit with UUID: %@ host instance: %@", buf, 0x26u);
@@ -272,7 +272,7 @@ void __30__AUHostingService_closeHost___block_invoke_2(uint64_t a1)
   {
     v22 = [AURemoteHost alloc];
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v24 = [(AURemoteHost *)v22 initWithConnection:WeakRetained config:v8];
+    v24 = [(AURemoteHost *)v22 initWithConnection:WeakRetained config:configCopy];
     v25 = self->_host;
     self->_host = v24;
 
@@ -283,23 +283,23 @@ void __30__AUHostingService_closeHost___block_invoke_2(uint64_t a1)
     v26 = auhs_log_category(void)::category;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [(AURemoteHost *)self->_host audioUnitUUID];
-      v28 = [v27 UUIDString];
+      audioUnitUUID2 = [(AURemoteHost *)self->_host audioUnitUUID];
+      uUIDString2 = [audioUnitUUID2 UUIDString];
       v29 = self->_host;
       *buf = 136315906;
       v41 = "AUHostingService.mm";
       v42 = 1024;
       v43 = 153;
       v44 = 2112;
-      v45 = v28;
+      v45 = uUIDString2;
       v46 = 2112;
       v47 = v29;
       _os_log_impl(&dword_18F5DF000, v26, OS_LOG_TYPE_INFO, "%25s:%-5d Hosting Audio Unit with UUID: %@ host instance: %@", buf, 0x26u);
     }
 
     v18 = +[AUHostingServiceInstanceMap sharedInstance];
-    v30 = [(AURemoteHost *)self->_host audioUnitUUID];
-    [v18 registerInstance:v30 instance:self->_host];
+    audioUnitUUID3 = [(AURemoteHost *)self->_host audioUnitUUID];
+    [v18 registerInstance:audioUnitUUID3 instance:self->_host];
   }
 
   if (self->_host)
@@ -326,7 +326,7 @@ void __30__AUHostingService_closeHost___block_invoke_2(uint64_t a1)
       data = self->_instanceUUID.__rep_.__l.__data_;
     }
 
-    v9[2](v9, 0);
+    replyCopy[2](replyCopy, 0);
     if (v39)
     {
       free(v39);
@@ -336,30 +336,30 @@ void __30__AUHostingService_closeHost___block_invoke_2(uint64_t a1)
   else
   {
     v33 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10875 userInfo:0];
-    (v9)[2](v9, v33);
+    (replyCopy)[2](replyCopy, v33);
   }
 
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)retrieveAudioUnitInstanceID:(id)a3
+- (void)retrieveAudioUnitInstanceID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   host = self->_host;
   if (host)
   {
-    v5 = [(AURemoteHost *)host audioUnitUUID];
-    v6[2](v6, 0, v5);
+    audioUnitUUID = [(AURemoteHost *)host audioUnitUUID];
+    dCopy[2](dCopy, 0, audioUnitUUID);
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10867 userInfo:0];
-    (v6)[2](v6, v5, 0);
+    audioUnitUUID = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-10867 userInfo:0];
+    (dCopy)[2](dCopy, audioUnitUUID, 0);
   }
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   host = self->_host;
   if (host)
@@ -378,25 +378,25 @@ void __30__AUHostingService_closeHost___block_invoke_2(uint64_t a1)
   return host;
 }
 
-- (AUHostingService)initWithConnection:(id)a3
+- (AUHostingService)initWithConnection:(id)connection
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v23.receiver = self;
   v23.super_class = AUHostingService;
   v5 = [(AUHostingService *)&v23 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_connection, v4);
+    objc_storeWeak(&v5->_connection, connectionCopy);
     add = atomic_fetch_add(g_number_of_connections, 1u);
-    v8 = [MEMORY[0x1E696B0D8] _UUID];
-    v9 = v8;
-    if (v8)
+    _UUID = [MEMORY[0x1E696B0D8] _UUID];
+    v9 = _UUID;
+    if (_UUID)
     {
-      v10 = [v8 UUIDString];
-      v11 = v10;
-      std::string::__assign_external(&v6->_instanceUUID, [v10 UTF8String]);
+      uUIDString = [_UUID UUIDString];
+      v11 = uUIDString;
+      std::string::__assign_external(&v6->_instanceUUID, [uUIDString UTF8String]);
     }
 
     if (!add)
@@ -463,29 +463,29 @@ void __30__AUHostingService_closeHost___block_invoke_2(uint64_t a1)
   return v6;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
   if (([AURemoteHost instancesRespondToSelector:?]& 1) != 0)
   {
     return 1;
   }
 
-  v6 = [a1 superclass];
+  v6 = [self superclass];
 
-  return [v6 instancesRespondToSelector:a3];
+  return [v6 instancesRespondToSelector:selector];
 }
 
-+ (BOOL)conformsToProtocol:(id)a3
++ (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  if (([AURemoteHost conformsToProtocol:v4]& 1) != 0)
+  protocolCopy = protocol;
+  if (([AURemoteHost conformsToProtocol:protocolCopy]& 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [objc_msgSend(a1 "superclass")];
+    v5 = [objc_msgSend(self "superclass")];
   }
 
   return v5;

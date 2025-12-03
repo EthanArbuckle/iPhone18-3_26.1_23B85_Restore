@@ -1,21 +1,21 @@
 @interface TSUMemoryWatcher
-- (TSUMemoryWatcher)initWithFlushingManager:(id)a3;
-- (void)_periodicallySimulateMemoryWarning:(id)a3;
-- (void)_simulateMemoryWarning:(id)a3;
+- (TSUMemoryWatcher)initWithFlushingManager:(id)manager;
+- (void)_periodicallySimulateMemoryWarning:(id)warning;
+- (void)_simulateMemoryWarning:(id)warning;
 - (void)beginObserving;
 - (void)dealloc;
 @end
 
 @implementation TSUMemoryWatcher
 
-- (TSUMemoryWatcher)initWithFlushingManager:(id)a3
+- (TSUMemoryWatcher)initWithFlushingManager:(id)manager
 {
   v5.receiver = self;
   v5.super_class = TSUMemoryWatcher;
   result = [(TSUMemoryWatcher *)&v5 init];
   if (result)
   {
-    result->_flushingManager = a3;
+    result->_flushingManager = manager;
   }
 
   return result;
@@ -45,29 +45,29 @@
   }
 }
 
-- (void)_periodicallySimulateMemoryWarning:(id)a3
+- (void)_periodicallySimulateMemoryWarning:(id)warning
 {
   v5 = objc_opt_new();
-  v6 = [a3 integerValue];
-  NSLog(@"%@ enabled, simulating UIKit memory warning every %ld seconds", @"TSUSimulateMemoryWarningsEvery", v6);
+  integerValue = [warning integerValue];
+  NSLog(@"%@ enabled, simulating UIKit memory warning every %ld seconds", @"TSUSimulateMemoryWarningsEvery", integerValue);
   while (!self->_stop)
   {
     [v5 drain];
     v5 = objc_opt_new();
-    [MEMORY[0x277CCACC8] sleepForTimeInterval:v6];
+    [MEMORY[0x277CCACC8] sleepForTimeInterval:integerValue];
     [(TSUMemoryWatcher *)self performSelectorOnMainThread:sel__simulateMemoryWarning_ withObject:0 waitUntilDone:1];
   }
 
   [v5 drain];
 }
 
-- (void)_simulateMemoryWarning:(id)a3
+- (void)_simulateMemoryWarning:(id)warning
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D76670];
-  v5 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
 
-  [v3 postNotificationName:v4 object:v5];
+  [defaultCenter postNotificationName:v4 object:mEMORY[0x277D75128]];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface REMXPCDaemonControllerPerformerResolver
 - (NSString)name;
-- (void)resolveWithDaemon:(id)a3 reason:(id)a4 completion:(id)a5;
+- (void)resolveWithDaemon:(id)daemon reason:(id)reason completion:(id)completion;
 @end
 
 @implementation REMXPCDaemonControllerPerformerResolver
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (void)resolveWithDaemon:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)resolveWithDaemon:(id)daemon reason:(id)reason completion:(id)completion
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D930];
-  v10 = a5;
+  completionCopy = completion;
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(a2);
   [v6 raise:v7 format:{@"Abstract method called -[%@ %@]", v8, v9}];
 
-  (*(v10 + 2))(v10, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
 @end

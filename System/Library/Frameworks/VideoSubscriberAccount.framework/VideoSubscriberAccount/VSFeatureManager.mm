@@ -1,10 +1,10 @@
 @interface VSFeatureManager
 + (id)sharedFeatureManager;
-- (BOOL)featureIsEnabled:(id)a3;
+- (BOOL)featureIsEnabled:(id)enabled;
 - (VSFeatureManager)init;
-- (void)disableFeature:(id)a3;
-- (void)enableFeature:(id)a3;
-- (void)resetFeature:(id)a3;
+- (void)disableFeature:(id)feature;
+- (void)enableFeature:(id)feature;
+- (void)resetFeature:(id)feature;
 @end
 
 @implementation VSFeatureManager
@@ -43,41 +43,41 @@ uint64_t __40__VSFeatureManager_sharedFeatureManager__block_invoke()
   return v2;
 }
 
-- (BOOL)featureIsEnabled:(id)a3
+- (BOOL)featureIsEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v8 = 0;
-  v5 = [(VSFeatureManager *)self preferences];
-  v6 = [v5 featureIsEnabled:v4 present:&v8];
+  preferences = [(VSFeatureManager *)self preferences];
+  v6 = [preferences featureIsEnabled:enabledCopy present:&v8];
 
   if ((v8 & 1) == 0)
   {
-    [v4 UTF8String];
+    [enabledCopy UTF8String];
     v6 = _os_feature_enabled_impl();
   }
 
   return v6;
 }
 
-- (void)enableFeature:(id)a3
+- (void)enableFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(VSFeatureManager *)self preferences];
-  [v5 enableFeature:v4];
+  featureCopy = feature;
+  preferences = [(VSFeatureManager *)self preferences];
+  [preferences enableFeature:featureCopy];
 }
 
-- (void)disableFeature:(id)a3
+- (void)disableFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(VSFeatureManager *)self preferences];
-  [v5 disableFeature:v4];
+  featureCopy = feature;
+  preferences = [(VSFeatureManager *)self preferences];
+  [preferences disableFeature:featureCopy];
 }
 
-- (void)resetFeature:(id)a3
+- (void)resetFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(VSFeatureManager *)self preferences];
-  [v5 clearFeature:v4];
+  featureCopy = feature;
+  preferences = [(VSFeatureManager *)self preferences];
+  [preferences clearFeature:featureCopy];
 }
 
 @end

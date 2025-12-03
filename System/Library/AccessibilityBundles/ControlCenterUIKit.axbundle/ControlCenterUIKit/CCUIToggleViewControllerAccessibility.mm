@@ -1,5 +1,5 @@
 @interface CCUIToggleViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityControlCenterButtonIsToggle;
 - (id)_accessibilityControlCenterButtonHint;
 - (id)_accessibilityControlCenterButtonIdentifier;
@@ -8,14 +8,14 @@
 
 @implementation CCUIToggleViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIToggleViewController" hasInstanceMethod:@"module" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIToggleViewController" isKindOfClass:@"CCUIButtonModuleViewController"];
-  [v3 validateClass:@"CCUIButtonModuleViewControllerAccessibility" hasInstanceMethod:@"_accessibilityControlCenterButtonLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIButtonModuleViewControllerAccessibility" hasInstanceMethod:@"_accessibilityControlCenterButtonIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIButtonModuleViewControllerAccessibility" hasInstanceMethod:@"_accessibilityControlCenterButtonHint" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIToggleViewController" hasInstanceMethod:@"module" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIToggleViewController" isKindOfClass:@"CCUIButtonModuleViewController"];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewControllerAccessibility" hasInstanceMethod:@"_accessibilityControlCenterButtonLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewControllerAccessibility" hasInstanceMethod:@"_accessibilityControlCenterButtonIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIButtonModuleViewControllerAccessibility" hasInstanceMethod:@"_accessibilityControlCenterButtonHint" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityControlCenterButtonLabel
@@ -23,9 +23,9 @@
   v3 = [(CCUIToggleViewControllerAccessibility *)self safeValueForKey:@"module"];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _accessibilityControlCenterButtonLabel];
+    _accessibilityControlCenterButtonLabel = [v3 _accessibilityControlCenterButtonLabel];
 LABEL_7:
-    v5 = v4;
+    v5 = _accessibilityControlCenterButtonLabel;
     goto LABEL_9;
   }
 
@@ -43,7 +43,7 @@ LABEL_7:
   {
     v7.receiver = self;
     v7.super_class = CCUIToggleViewControllerAccessibility;
-    v4 = [(CCUIToggleViewControllerAccessibility *)&v7 _accessibilityControlCenterButtonLabel];
+    _accessibilityControlCenterButtonLabel = [(CCUIToggleViewControllerAccessibility *)&v7 _accessibilityControlCenterButtonLabel];
     goto LABEL_7;
   }
 
@@ -74,9 +74,9 @@ Method __79__CCUIToggleViewControllerAccessibility__accessibilityControlCenterBu
   v3 = [(CCUIToggleViewControllerAccessibility *)self safeValueForKey:@"module"];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _accessibilityControlCenterButtonIdentifier];
+    _accessibilityControlCenterButtonIdentifier = [v3 _accessibilityControlCenterButtonIdentifier];
 LABEL_7:
-    v5 = v4;
+    v5 = _accessibilityControlCenterButtonIdentifier;
     goto LABEL_9;
   }
 
@@ -94,7 +94,7 @@ LABEL_7:
   {
     v7.receiver = self;
     v7.super_class = CCUIToggleViewControllerAccessibility;
-    v4 = [(CCUIToggleViewControllerAccessibility *)&v7 _accessibilityControlCenterButtonIdentifier];
+    _accessibilityControlCenterButtonIdentifier = [(CCUIToggleViewControllerAccessibility *)&v7 _accessibilityControlCenterButtonIdentifier];
     goto LABEL_7;
   }
 
@@ -125,9 +125,9 @@ Method __84__CCUIToggleViewControllerAccessibility__accessibilityControlCenterBu
   v3 = [(CCUIToggleViewControllerAccessibility *)self safeValueForKey:@"module"];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _accessibilityControlCenterButtonHint];
+    _accessibilityControlCenterButtonHint = [v3 _accessibilityControlCenterButtonHint];
 LABEL_7:
-    v5 = v4;
+    v5 = _accessibilityControlCenterButtonHint;
     goto LABEL_9;
   }
 
@@ -145,7 +145,7 @@ LABEL_7:
   {
     v7.receiver = self;
     v7.super_class = CCUIToggleViewControllerAccessibility;
-    v4 = [(CCUIToggleViewControllerAccessibility *)&v7 _accessibilityControlCenterButtonHint];
+    _accessibilityControlCenterButtonHint = [(CCUIToggleViewControllerAccessibility *)&v7 _accessibilityControlCenterButtonHint];
     goto LABEL_7;
   }
 
@@ -176,15 +176,15 @@ Method __78__CCUIToggleViewControllerAccessibility__accessibilityControlCenterBu
   v2 = [(CCUIToggleViewControllerAccessibility *)self safeValueForKey:@"module"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 _accessibilityControlCenterButtonIsToggle];
+    _accessibilityControlCenterButtonIsToggle = [v2 _accessibilityControlCenterButtonIsToggle];
   }
 
   else
   {
-    v3 = 1;
+    _accessibilityControlCenterButtonIsToggle = 1;
   }
 
-  return v3;
+  return _accessibilityControlCenterButtonIsToggle;
 }
 
 @end

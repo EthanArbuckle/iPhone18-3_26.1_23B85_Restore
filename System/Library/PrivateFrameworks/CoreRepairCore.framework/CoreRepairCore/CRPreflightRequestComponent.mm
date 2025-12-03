@@ -1,23 +1,23 @@
 @interface CRPreflightRequestComponent
-- (CRPreflightRequestComponent)initWithComponentType:(id)a3 identifier:(id)a4 asid:(id)a5;
+- (CRPreflightRequestComponent)initWithComponentType:(id)type identifier:(id)identifier asid:(id)asid;
 @end
 
 @implementation CRPreflightRequestComponent
 
-- (CRPreflightRequestComponent)initWithComponentType:(id)a3 identifier:(id)a4 asid:(id)a5
+- (CRPreflightRequestComponent)initWithComponentType:(id)type identifier:(id)identifier asid:(id)asid
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  identifierCopy = identifier;
+  asidCopy = asid;
   v15.receiver = self;
   v15.super_class = CRPreflightRequestComponent;
   v12 = [(CRPreflightRequestComponent *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_type, a3);
-    objc_storeStrong(&v13->_identifier, a4);
-    objc_storeStrong(&v13->_asid, a5);
+    objc_storeStrong(&v12->_type, type);
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v13->_asid, asid);
     v13->_state = 0;
   }
 

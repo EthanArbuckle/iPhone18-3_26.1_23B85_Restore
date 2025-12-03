@@ -1,14 +1,14 @@
 @interface PUTransparentViewAccessibility
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PUTransparentViewAccessibility
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     v8 = [(PUTransparentViewAccessibility *)self _accessibilityDescendantOfType:NSClassFromString(&cfstr_Plhighfidelity.isa)];
@@ -18,7 +18,7 @@
   {
     v11.receiver = self;
     v11.super_class = PUTransparentViewAccessibility;
-    v8 = [(PUTransparentViewAccessibility *)&v11 hitTest:v7 withEvent:x, y];
+    v8 = [(PUTransparentViewAccessibility *)&v11 hitTest:eventCopy withEvent:x, y];
   }
 
   v9 = v8;

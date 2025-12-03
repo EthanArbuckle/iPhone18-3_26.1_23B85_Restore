@@ -1,28 +1,28 @@
 @interface FCOperation
 - (BOOL)hasOperationStarted;
-- (BOOL)validateOperationError:(id *)a3;
-- (BOOL)waitUntilFinishedWithTimeout:(double)a3;
+- (BOOL)validateOperationError:(id *)error;
+- (BOOL)waitUntilFinishedWithTimeout:(double)timeout;
 - (FCOperation)init;
 - (NSDictionary)errorUserInfo;
 - (NSString)longOperationDescription;
-- (void)_associateChildOperation:(uint64_t)a1;
-- (void)_finishOperationWithError:(uint64_t)a1;
-- (void)_finishedPerformingOperationWithError:(void *)a1;
-- (void)_handleRetryFromError:(void *)a3 signal:;
+- (void)_associateChildOperation:(uint64_t)operation;
+- (void)_finishOperationWithError:(uint64_t)error;
+- (void)_finishedPerformingOperationWithError:(void *)error;
+- (void)_handleRetryFromError:(void *)error signal:;
 - (void)_startIfNeeded;
-- (void)addCompletionHandler:(id)a3;
-- (void)associateChildOperation:(id)a3;
-- (void)associateChildOperations:(id)a3;
+- (void)addCompletionHandler:(id)handler;
+- (void)associateChildOperation:(id)operation;
+- (void)associateChildOperations:(id)operations;
 - (void)cancel;
 - (void)cancelChildOperations;
 - (void)dealloc;
 - (void)finishFromEarlyCancellation;
-- (void)finishedPerformingOperationWithError:(id)a3;
+- (void)finishedPerformingOperationWithError:(id)error;
 - (void)performOperation;
-- (void)setFlags:(int64_t)a3;
-- (void)setPurpose:(id)a3;
-- (void)setQualityOfService:(int64_t)a3;
-- (void)setRelativePriority:(int64_t)a3;
+- (void)setFlags:(int64_t)flags;
+- (void)setPurpose:(id)purpose;
+- (void)setQualityOfService:(int64_t)service;
+- (void)setRelativePriority:(int64_t)priority;
 @end
 
 @implementation FCOperation
@@ -92,9 +92,9 @@
     if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [v2 shortOperationDescription];
+      shortOperationDescription = [v2 shortOperationDescription];
       *buf = 138543362;
-      v27 = v20;
+      v27 = shortOperationDescription;
       _os_log_impl(&dword_1B63EF000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ created", buf, 0xCu);
     }
   }
@@ -106,25 +106,25 @@
 - (void)_startIfNeeded
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1 && [a1[43] trigger])
+  if (self && [self[43] trigger])
   {
-    objc_storeStrong(a1 + 45, a1);
+    objc_storeStrong(self + 45, self);
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-    [a1 setOperationStartTime:?];
-    v2 = a1;
+    [self setOperationStartTime:?];
+    selfCopy = self;
     v24 = 0.0;
-    v3 = [v2 throttleGroup];
-    if (v3 && (v4 = v3, +[FCThrottleRegistry shared](FCThrottleRegistry, "shared"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 shouldThrottleGroup:v4 outRetryAfter:&v24], v5, v4, v6))
+    throttleGroup = [selfCopy throttleGroup];
+    if (throttleGroup && (v4 = throttleGroup, +[FCThrottleRegistry shared](FCThrottleRegistry, "shared"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 shouldThrottleGroup:v4 outRetryAfter:&v24], v5, v4, v6))
     {
-      v7 = [MEMORY[0x1E695DF90] dictionary];
-      v8 = [v2 errorUserInfo];
-      [v7 addEntriesFromDictionary:v8];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      errorUserInfo = [selfCopy errorUserInfo];
+      [dictionary addEntriesFromDictionary:errorUserInfo];
 
       v9 = [MEMORY[0x1E696AD98] numberWithDouble:v24];
-      [v7 setObject:v9 forKey:@"FCErrorRetryAfter"];
+      [dictionary setObject:v9 forKey:@"FCErrorRetryAfter"];
 
-      v10 = [MEMORY[0x1E696ABC0] fc_errorWithCode:12 description:@"The operation was throttled." additionalUserInfo:v7];
-      [(FCOperation *)v2 _finishOperationWithError:v10];
+      v10 = [MEMORY[0x1E696ABC0] fc_errorWithCode:12 description:@"The operation was throttled." additionalUserInfo:dictionary];
+      [(FCOperation *)selfCopy _finishOperationWithError:v10];
 
       v11 = 0;
     }
@@ -132,31 +132,31 @@
     else
     {
       v23 = 0;
-      v12 = [v2 validateOperationError:&v23];
+      v12 = [selfCopy validateOperationError:&v23];
       v11 = v23;
       if (v12)
       {
-        if ([v2 isCancelled])
+        if ([selfCopy isCancelled])
         {
-          [v2 finishFromEarlyCancellation];
+          [selfCopy finishFromEarlyCancellation];
         }
 
         else
         {
-          [v2 willChangeValueForKey:@"isExecuting"];
-          atomic_store(1u, v2 + 248);
-          [v2 didChangeValueForKey:@"isExecuting"];
+          [selfCopy willChangeValueForKey:@"isExecuting"];
+          atomic_store(1u, selfCopy + 248);
+          [selfCopy didChangeValueForKey:@"isExecuting"];
           v13 = FCOperationLog;
           if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
           {
             v14 = v13;
-            v15 = [v2 longOperationDescription];
+            longOperationDescription = [selfCopy longOperationDescription];
             *buf = 138543362;
-            v26 = v15;
+            v26 = longOperationDescription;
             _os_log_impl(&dword_1B63EF000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ started", buf, 0xCu);
           }
 
-          [v2 timeoutDuration];
+          [selfCopy timeoutDuration];
           if (v16 == 1.79769313e308)
           {
             v17 = -1;
@@ -167,23 +167,23 @@
             v17 = dispatch_time(0, (v16 * 1000000000.0));
           }
 
-          v18 = FCDispatchQueueForQualityOfService([v2 qualityOfService]);
+          v18 = FCDispatchQueueForQualityOfService([selfCopy qualityOfService]);
           v22[0] = MEMORY[0x1E69E9820];
           v22[1] = 3221225472;
           v22[2] = __29__FCOperation__startIfNeeded__block_invoke_85;
           v22[3] = &unk_1E7C36EA0;
-          v22[4] = v2;
+          v22[4] = selfCopy;
           v19 = FCHandleOperationTimeout(v17, v18, v22);
-          objc_setProperty_nonatomic_copy(v2, v20, v19, 320);
+          objc_setProperty_nonatomic_copy(selfCopy, v20, v19, 320);
 
-          [v2 prepareOperation];
-          [v2 performOperation];
+          [selfCopy prepareOperation];
+          [selfCopy performOperation];
         }
       }
 
       else
       {
-        [(FCOperation *)v2 _finishOperationWithError:v11];
+        [(FCOperation *)selfCopy _finishOperationWithError:v11];
       }
     }
   }
@@ -195,21 +195,21 @@
 {
   v3 = FCStringFromQualityOfService([(FCOperation *)self qualityOfService]);
   v4 = FCStringFromQueuePriority([(FCOperation *)self queuePriority]);
-  v5 = [(FCOperation *)self purpose];
+  purpose = [(FCOperation *)self purpose];
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
-  v8 = [(FCOperation *)self operationID];
-  v9 = v8;
-  if (v5 == @"unknown")
+  operationID = [(FCOperation *)self operationID];
+  v9 = operationID;
+  if (purpose == @"unknown")
   {
-    v11 = [v6 stringWithFormat:@"<%@ %@, qos=%@, priority=%@>", v7, v8, v3, v4];
+    v11 = [v6 stringWithFormat:@"<%@ %@, qos=%@, priority=%@>", v7, operationID, v3, v4];
   }
 
   else
   {
-    v10 = [(FCOperation *)self purpose];
-    v11 = [v6 stringWithFormat:@"<%@ %@, qos=%@, priority=%@, purpose=%@>", v7, v9, v3, v4, v10];
+    purpose2 = [(FCOperation *)self purpose];
+    v11 = [v6 stringWithFormat:@"<%@ %@, qos=%@, priority=%@, purpose=%@>", v7, v9, v3, v4, purpose2];
   }
 
   return v11;
@@ -262,21 +262,21 @@ LABEL_6:
   [(FCOperation *)self cancelChildOperations];
 }
 
-- (void)setRelativePriority:(int64_t)a3
+- (void)setRelativePriority:(int64_t)priority
 {
-  if (self->_relativePriority != a3)
+  if (self->_relativePriority != priority)
   {
     v9[8] = v3;
     v9[9] = v4;
-    self->_relativePriority = a3;
-    if ((a3 + 1) >= 4)
+    self->_relativePriority = priority;
+    if ((priority + 1) >= 4)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = 4 * (a3 + 1) - 4;
+      v7 = 4 * (priority + 1) - 4;
     }
 
     [(FCOperation *)self setQueuePriority:v7];
@@ -288,7 +288,7 @@ LABEL_6:
       v9[2] = __35__FCOperation_setRelativePriority___block_invoke;
       v9[3] = &unk_1E7C3C970;
       v9[4] = self;
-      v9[5] = a3;
+      v9[5] = priority;
       [(NFUnfairLock *)childOperationsLock performWithLockSync:v9];
     }
   }
@@ -358,15 +358,15 @@ void __35__FCOperation_setRelativePriority___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setQualityOfService:(int64_t)a3
+- (void)setQualityOfService:(int64_t)service
 {
   v8.receiver = self;
   v8.super_class = FCOperation;
-  if ([(FCOperation *)&v8 qualityOfService]!= a3)
+  if ([(FCOperation *)&v8 qualityOfService]!= service)
   {
     v7.receiver = self;
     v7.super_class = FCOperation;
-    [(FCOperation *)&v7 setQualityOfService:a3];
+    [(FCOperation *)&v7 setQualityOfService:service];
     if (([(FCOperation *)self propertiesInheritedByChildOperations]& 1) != 0)
     {
       if (self)
@@ -384,7 +384,7 @@ void __35__FCOperation_setRelativePriority___block_invoke(uint64_t a1)
       v6[2] = __35__FCOperation_setQualityOfService___block_invoke;
       v6[3] = &unk_1E7C3C970;
       v6[4] = self;
-      v6[5] = a3;
+      v6[5] = service;
       [(NFUnfairLock *)childOperationsLock performWithLockSync:v6];
     }
   }
@@ -455,13 +455,13 @@ void __35__FCOperation_setQualityOfService___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setFlags:(int64_t)a3
+- (void)setFlags:(int64_t)flags
 {
-  if (self->_flags != a3)
+  if (self->_flags != flags)
   {
     v8[8] = v3;
     v8[9] = v4;
-    self->_flags = a3;
+    self->_flags = flags;
     if (([(FCOperation *)self propertiesInheritedByChildOperations]& 8) != 0)
     {
       childOperationsLock = self->_childOperationsLock;
@@ -470,7 +470,7 @@ void __35__FCOperation_setQualityOfService___block_invoke(uint64_t a1)
       v8[2] = __24__FCOperation_setFlags___block_invoke;
       v8[3] = &unk_1E7C3C970;
       v8[4] = self;
-      v8[5] = a3;
+      v8[5] = flags;
       [(NFUnfairLock *)childOperationsLock performWithLockSync:v8];
     }
   }
@@ -541,18 +541,18 @@ void __24__FCOperation_setFlags___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPurpose:(id)a3
+- (void)setPurpose:(id)purpose
 {
-  v4 = a3;
-  if (v4)
+  purposeCopy = purpose;
+  if (purposeCopy)
   {
     v5 = MEMORY[0x1E69E58C0];
-    v6 = [(FCOperation *)self purpose];
-    LOBYTE(v5) = [v5 nf_object:v4 isEqualToObject:v6];
+    purpose = [(FCOperation *)self purpose];
+    LOBYTE(v5) = [v5 nf_object:purposeCopy isEqualToObject:purpose];
 
     if ((v5 & 1) == 0)
     {
-      v7 = [v4 copy];
+      v7 = [purposeCopy copy];
       purpose = self->_purpose;
       self->_purpose = v7;
 
@@ -564,7 +564,7 @@ void __24__FCOperation_setFlags___block_invoke(uint64_t a1)
         v10[2] = __26__FCOperation_setPurpose___block_invoke_2;
         v10[3] = &unk_1E7C36C58;
         v10[4] = self;
-        v11 = v4;
+        v11 = purposeCopy;
         [(NFUnfairLock *)childOperationsLock performWithLockSync:v10];
       }
     }
@@ -576,7 +576,7 @@ void __24__FCOperation_setFlags___block_invoke(uint64_t a1)
     v13 = 3221225472;
     v14 = __26__FCOperation_setPurpose___block_invoke;
     v15 = &unk_1E7C36EA0;
-    v16 = self;
+    selfCopy = self;
     [(FCOperation *)self setPurpose:@"unknown"];
   }
 }
@@ -646,35 +646,35 @@ void __26__FCOperation_setPurpose___block_invoke_2(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)validateOperationError:(id *)a3
+- (BOOL)validateOperationError:(id *)error
 {
-  v5 = [(FCOperation *)self validateOperation];
-  if (v5)
+  validateOperation = [(FCOperation *)self validateOperation];
+  if (validateOperation)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   else
   {
     v6 = MEMORY[0x1E696ABC0];
-    v7 = [(FCOperation *)self errorUserInfo];
-    *a3 = [v6 fc_errorWithCode:9 description:@"The operation failed validation." additionalUserInfo:v7];
+    errorUserInfo = [(FCOperation *)self errorUserInfo];
+    *error = [v6 fc_errorWithCode:9 description:@"The operation failed validation." additionalUserInfo:errorUserInfo];
   }
 
-  return v5;
+  return validateOperation;
 }
 
-- (void)_finishOperationWithError:(uint64_t)a1
+- (void)_finishOperationWithError:(uint64_t)error
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    if ([a1 isFinished] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if ([error isFinished] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v17 = [a1 shortOperationDescription];
-      v18 = [v16 initWithFormat:@"operation %@ must only be finished once", v17];
+      shortOperationDescription = [error shortOperationDescription];
+      v18 = [v16 initWithFormat:@"operation %@ must only be finished once", shortOperationDescription];
       *buf = 136315906;
       v23 = "[FCOperation _finishOperationWithError:]";
       v24 = 2080;
@@ -688,15 +688,15 @@ void __26__FCOperation_setPurpose___block_invoke_2(uint64_t a1)
 
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v5 = v4;
-    if ([a1 isCancelled])
+    if ([error isCancelled])
     {
       v6 = FCOperationLog;
       if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
       {
         v7 = v6;
-        v8 = [a1 shortOperationDescription];
+        shortOperationDescription2 = [error shortOperationDescription];
         *buf = 138543362;
-        v23 = v8;
+        v23 = shortOperationDescription2;
         v9 = "%{public}@ cancelled";
         v10 = v7;
         v11 = 12;
@@ -705,23 +705,23 @@ LABEL_16:
       }
 
 LABEL_17:
-      [a1 operationWillFinishWithError:v3];
-      [a1 willChangeValueForKey:@"isExecuting"];
-      atomic_store(0, (a1 + 248));
-      [a1 didChangeValueForKey:@"isExecuting"];
-      [a1 willChangeValueForKey:@"isFinished"];
-      atomic_store(1u, (a1 + 249));
-      [a1 didChangeValueForKey:@"isFinished"];
-      dispatch_group_leave(*(a1 + 352));
-      v14 = *(a1 + 336);
+      [error operationWillFinishWithError:v3];
+      [error willChangeValueForKey:@"isExecuting"];
+      atomic_store(0, (error + 248));
+      [error didChangeValueForKey:@"isExecuting"];
+      [error willChangeValueForKey:@"isFinished"];
+      atomic_store(1u, (error + 249));
+      [error didChangeValueForKey:@"isFinished"];
+      dispatch_group_leave(*(error + 352));
+      v14 = *(error + 336);
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __41__FCOperation__finishOperationWithError___block_invoke;
       v21[3] = &unk_1E7C36EA0;
-      v21[4] = a1;
+      v21[4] = error;
       [v14 performWithLockSync:v21];
-      [a1 operationDidFinishWithError:v3];
-      objc_storeStrong((a1 + 360), 0);
+      [error operationDidFinishWithError:v3];
+      objc_storeStrong((error + 360), 0);
       goto LABEL_18;
     }
 
@@ -731,9 +731,9 @@ LABEL_17:
       if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_ERROR))
       {
         v19 = v12;
-        v20 = [a1 shortOperationDescription];
+        shortOperationDescription3 = [error shortOperationDescription];
         *buf = 138543618;
-        v23 = v20;
+        v23 = shortOperationDescription3;
         v24 = 2114;
         v25 = v3;
         _os_log_error_impl(&dword_1B63EF000, v19, OS_LOG_TYPE_ERROR, "%{public}@ failed with error: %{public}@. This log is being duplicated as an default-level log", buf, 0x16u);
@@ -747,9 +747,9 @@ LABEL_17:
       }
 
       v7 = v12;
-      v8 = [a1 shortOperationDescription];
+      shortOperationDescription2 = [error shortOperationDescription];
       *buf = 138543618;
-      v23 = v8;
+      v23 = shortOperationDescription2;
       v24 = 2114;
       v25 = v3;
       v9 = "%{public}@ failed with error: %{public}@. This log is being duplicated as an error-level log";
@@ -763,10 +763,10 @@ LABEL_17:
       }
 
       v7 = v12;
-      v8 = [a1 shortOperationDescription];
-      [a1 operationStartTime];
+      shortOperationDescription2 = [error shortOperationDescription];
+      [error operationStartTime];
       *buf = 138543618;
-      v23 = v8;
+      v23 = shortOperationDescription2;
       v24 = 2048;
       v25 = (fmax(v5 - v13, 0.0) * 1000.0);
       v9 = "%{public}@ finished with total time: %llums";
@@ -790,12 +790,12 @@ void __29__FCOperation__startIfNeeded__block_invoke_85(uint64_t a1)
   [(FCOperation *)v2 _finishedPerformingOperationWithError:v3];
 }
 
-- (void)_finishedPerformingOperationWithError:(void *)a1
+- (void)_finishedPerformingOperationWithError:(void *)error
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (error)
   {
     if (!v3 || ([v3 fc_isOperationThrottledError] & 1) != 0)
     {
@@ -803,23 +803,23 @@ void __29__FCOperation__startIfNeeded__block_invoke_85(uint64_t a1)
     }
 
     v17 = 0.0;
-    if ([a1 shouldStartThrottlingWithError:v4 retryAfter:&v17])
+    if ([error shouldStartThrottlingWithError:v4 retryAfter:&v17])
     {
       v5 = v17;
       v6 = v4;
-      v7 = [a1 throttleGroup];
-      if (v7)
+      throttleGroup = [error throttleGroup];
+      if (throttleGroup)
       {
         v8 = FCOperationLog;
         if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
         {
           v9 = v8;
-          v10 = [a1 shortOperationDescription];
-          v11 = [a1 throttleGroup];
+          shortOperationDescription = [error shortOperationDescription];
+          throttleGroup2 = [error throttleGroup];
           *buf = 138544130;
-          v19 = v10;
+          v19 = shortOperationDescription;
           v20 = 2112;
-          v21 = v11;
+          v21 = throttleGroup2;
           v22 = 2048;
           *v23 = v5;
           *&v23[8] = 2114;
@@ -828,7 +828,7 @@ void __29__FCOperation__startIfNeeded__block_invoke_85(uint64_t a1)
         }
 
         v12 = +[FCThrottleRegistry shared];
-        [v12 throttleGroup:v7 retryAfter:v5];
+        [v12 throttleGroup:throttleGroup retryAfter:v5];
       }
 
       else
@@ -854,30 +854,30 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if ([a1 isCancelled])
+    if ([error isCancelled])
     {
       goto LABEL_17;
     }
 
-    v13 = [a1 maxRetries];
-    if ([a1 retryCount] >= v13)
+    maxRetries = [error maxRetries];
+    if ([error retryCount] >= maxRetries)
     {
       goto LABEL_17;
     }
 
     v16 = 0;
-    v14 = [a1 canRetryWithError:v4 retryAfter:&v16];
+    v14 = [error canRetryWithError:v4 retryAfter:&v16];
     v6 = v16;
     if (!v14)
     {
 LABEL_16:
 
 LABEL_17:
-      [(FCOperation *)a1 _finishOperationWithError:v4];
+      [(FCOperation *)error _finishOperationWithError:v4];
       goto LABEL_18;
     }
 
-    [(FCOperation *)a1 _handleRetryFromError:v4 signal:v6];
+    [(FCOperation *)error _handleRetryFromError:v4 signal:v6];
   }
 
 LABEL_18:
@@ -919,14 +919,14 @@ LABEL_18:
   [(FCOperation *)self finishedPerformingOperationWithError:0];
 }
 
-- (void)finishedPerformingOperationWithError:(id)a3
+- (void)finishedPerformingOperationWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (!self)
   {
     v5 = 0;
 LABEL_4:
-    [(FCOperation *)self _finishedPerformingOperationWithError:v6];
+    [(FCOperation *)self _finishedPerformingOperationWithError:errorCopy];
     goto LABEL_5;
   }
 
@@ -940,39 +940,39 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)_handleRetryFromError:(void *)a3 signal:
+- (void)_handleRetryFromError:(void *)error signal:
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  [a1 setRetryCount:{objc_msgSend(a1, "retryCount") + 1}];
+  errorCopy = error;
+  [self setRetryCount:{objc_msgSend(self, "retryCount") + 1}];
   v7 = FCOperationLog;
   if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [a1 shortOperationDescription];
+    shortOperationDescription = [self shortOperationDescription];
     *buf = 138544386;
-    v18 = v9;
+    v18 = shortOperationDescription;
     v19 = 2048;
-    v20 = [a1 retryCount];
+    retryCount = [self retryCount];
     v21 = 2048;
-    v22 = [a1 maxRetries];
+    maxRetries = [self maxRetries];
     v23 = 2114;
-    v24 = v6;
+    v24 = errorCopy;
     v25 = 2114;
     v26 = v5;
     _os_log_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ will perform retry %lu of %lu after %{public}@ due to error: %{public}@", buf, 0x34u);
   }
 
-  v10 = FCDispatchQueueForQualityOfService([a1 qualityOfService]);
+  v10 = FCDispatchQueueForQualityOfService([self qualityOfService]);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __44__FCOperation__handleRetryFromError_signal___block_invoke;
   v14[3] = &unk_1E7C44538;
-  v14[4] = a1;
+  v14[4] = self;
   v11 = v5;
   v15 = v11;
-  v12 = v6;
+  v12 = errorCopy;
   v16 = v12;
   [v12 onQueue:v10 signal:v14];
 
@@ -1001,16 +1001,16 @@ void __44__FCOperation__handleRetryFromError_signal___block_invoke(uint64_t a1, 
 - (void)finishFromEarlyCancellation
 {
   v3 = MEMORY[0x1E696ABC0];
-  v5 = [(FCOperation *)self errorUserInfo];
-  v4 = [v3 fc_operationCancelledErrorWithAdditionalUserInfo:v5];
+  errorUserInfo = [(FCOperation *)self errorUserInfo];
+  v4 = [v3 fc_operationCancelledErrorWithAdditionalUserInfo:errorUserInfo];
   [(FCOperation *)self _finishOperationWithError:v4];
 }
 
-- (void)associateChildOperation:(id)a3
+- (void)associateChildOperation:(id)operation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  operationCopy = operation;
+  v5 = operationCopy;
+  if (operationCopy)
   {
     if (self)
     {
@@ -1027,17 +1027,17 @@ void __44__FCOperation__handleRetryFromError_signal___block_invoke(uint64_t a1, 
     v7[2] = __39__FCOperation_associateChildOperation___block_invoke;
     v7[3] = &unk_1E7C36C58;
     v7[4] = self;
-    v8 = v4;
+    v8 = operationCopy;
     [(NFUnfairLock *)childOperationsLock performWithLockSync:v7];
   }
 }
 
-- (void)_associateChildOperation:(uint64_t)a1
+- (void)_associateChildOperation:(uint64_t)operation
 {
   v30 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1 || !v3)
+  if (!operation || !v3)
   {
     goto LABEL_36;
   }
@@ -1063,12 +1063,12 @@ void __44__FCOperation__handleRetryFromError_signal___block_invoke(uint64_t a1, 
     }
 
     v9 = v7;
-    v10 = [v6 shortOperationDescription];
-    v11 = [a1 shortOperationDescription];
+    shortOperationDescription = [v6 shortOperationDescription];
+    shortOperationDescription2 = [operation shortOperationDescription];
     v26 = 138543618;
-    v27 = v10;
+    v27 = shortOperationDescription;
     v28 = 2114;
-    v29 = v11;
+    v29 = shortOperationDescription2;
     _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "associated child operation %{public}@ with parent %{public}@", &v26, 0x16u);
   }
 
@@ -1082,16 +1082,16 @@ void __44__FCOperation__handleRetryFromError_signal___block_invoke(uint64_t a1, 
     v9 = v7;
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [a1 shortOperationDescription];
+    shortOperationDescription3 = [operation shortOperationDescription];
     v26 = 138543618;
     v27 = v12;
     v28 = 2114;
-    v29 = v14;
+    v29 = shortOperationDescription3;
     _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "associated child operation %{public}@ with parent %{public}@", &v26, 0x16u);
   }
 
 LABEL_12:
-  if ((*(a1 + 250) & 1) != 0 || (v15 = *(a1 + 328)) == 0)
+  if ((*(operation + 250) & 1) != 0 || (v15 = *(operation + 328)) == 0)
   {
     [v4 cancel];
   }
@@ -1099,7 +1099,7 @@ LABEL_12:
   else
   {
     [v15 addObject:v4];
-    if (([a1 propertiesInheritedByChildOperations] & 2) != 0)
+    if (([operation propertiesInheritedByChildOperations] & 2) != 0)
     {
       if ([v4 conformsToProtocol:&unk_1F2E74638])
       {
@@ -1112,10 +1112,10 @@ LABEL_12:
       }
 
       v17 = v16;
-      [v17 setRelativePriority:{objc_msgSend(a1, "relativePriority")}];
+      [v17 setRelativePriority:{objc_msgSend(operation, "relativePriority")}];
     }
 
-    if ([a1 propertiesInheritedByChildOperations])
+    if ([operation propertiesInheritedByChildOperations])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1129,10 +1129,10 @@ LABEL_12:
       }
 
       v19 = v18;
-      [v19 setQualityOfService:{objc_msgSend(a1, "qualityOfService")}];
+      [v19 setQualityOfService:{objc_msgSend(operation, "qualityOfService")}];
     }
 
-    if (([a1 propertiesInheritedByChildOperations] & 4) != 0)
+    if (([operation propertiesInheritedByChildOperations] & 4) != 0)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1146,11 +1146,11 @@ LABEL_12:
       }
 
       v21 = v20;
-      v22 = [a1 purpose];
-      [v21 setPurpose:v22];
+      purpose = [operation purpose];
+      [v21 setPurpose:purpose];
     }
 
-    if (([a1 propertiesInheritedByChildOperations] & 8) != 0)
+    if (([operation propertiesInheritedByChildOperations] & 8) != 0)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1164,7 +1164,7 @@ LABEL_12:
       }
 
       v24 = v23;
-      [v24 setFlags:{objc_msgSend(a1, "flags")}];
+      [v24 setFlags:{objc_msgSend(operation, "flags")}];
     }
   }
 
@@ -1172,10 +1172,10 @@ LABEL_36:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)associateChildOperations:(id)a3
+- (void)associateChildOperations:(id)operations
 {
-  v4 = a3;
-  if ([v4 count])
+  operationsCopy = operations;
+  if ([operationsCopy count])
   {
     if (self)
     {
@@ -1191,8 +1191,8 @@ LABEL_36:
     v6[1] = 3221225472;
     v6[2] = __40__FCOperation_associateChildOperations___block_invoke;
     v6[3] = &unk_1E7C36C58;
-    v7 = v4;
-    v8 = self;
+    v7 = operationsCopy;
+    selfCopy = self;
     [(NFUnfairLock *)childOperationsLock performWithLockSync:v6];
   }
 }
@@ -1292,7 +1292,7 @@ uint64_t __36__FCOperation_cancelChildOperations__block_invoke(uint64_t a1)
   return [v9 removeAllObjects];
 }
 
-- (BOOL)waitUntilFinishedWithTimeout:(double)a3
+- (BOOL)waitUntilFinishedWithTimeout:(double)timeout
 {
   if (self)
   {
@@ -1304,7 +1304,7 @@ uint64_t __36__FCOperation_cancelChildOperations__block_invoke(uint64_t a1)
     finishedGroup = 0;
   }
 
-  v4 = (a3 * 1000000000.0);
+  v4 = (timeout * 1000000000.0);
   v5 = finishedGroup;
   v6 = dispatch_time(0, v4);
   v7 = dispatch_group_wait(v5, v6);
@@ -1312,9 +1312,9 @@ uint64_t __36__FCOperation_cancelChildOperations__block_invoke(uint64_t a1)
   return v7 == 0;
 }
 
-- (void)addCompletionHandler:(id)a3
+- (void)addCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     if (self)
     {
@@ -1327,9 +1327,9 @@ uint64_t __36__FCOperation_cancelChildOperations__block_invoke(uint64_t a1)
     }
 
     v6 = finishedGroup;
-    v7 = a3;
+    handlerCopy = handler;
     v8 = FCDispatchQueueForQualityOfService([(FCOperation *)self qualityOfService]);
-    dispatch_group_notify(v6, v8, v7);
+    dispatch_group_notify(v6, v8, handlerCopy);
   }
 }
 
@@ -1360,8 +1360,8 @@ void __41__FCOperation__finishOperationWithError___block_invoke(uint64_t a1)
   v4 = NSStringFromClass(v3);
   v10[0] = v4;
   v9[1] = @"FCErrorOperationIDKey";
-  v5 = [(FCOperation *)self operationID];
-  v10[1] = v5;
+  operationID = [(FCOperation *)self operationID];
+  v10[1] = operationID;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v7 = *MEMORY[0x1E69E9840];

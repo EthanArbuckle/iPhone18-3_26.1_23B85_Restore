@@ -1,14 +1,14 @@
 @interface HREMatterCommandActionMap
 + (id)emptyMap;
 - (HREMatterCommandActionMap)init;
-- (HREMatterCommandActionMap)initWithCommands:(id)a3;
-- (HREMatterCommandActionMap)initWithCondition:(id)a3 childMaps:(id)a4;
-- (id)commandsForAccessory:(id)a3 withSnapshotContainer:(id)a4;
+- (HREMatterCommandActionMap)initWithCommands:(id)commands;
+- (HREMatterCommandActionMap)initWithCondition:(id)condition childMaps:(id)maps;
+- (id)commandsForAccessory:(id)accessory withSnapshotContainer:(id)container;
 @end
 
 @implementation HREMatterCommandActionMap
 
-- (HREMatterCommandActionMap)initWithCommands:(id)a3
+- (HREMatterCommandActionMap)initWithCommands:(id)commands
 {
   type metadata accessor for MatterCommandMap();
   v3 = sub_254406B80();
@@ -28,12 +28,12 @@
   return v4;
 }
 
-- (id)commandsForAccessory:(id)a3 withSnapshotContainer:(id)a4
+- (id)commandsForAccessory:(id)accessory withSnapshotContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_2543E3EA4(v6);
+  accessoryCopy = accessory;
+  containerCopy = container;
+  selfCopy = self;
+  v9 = sub_2543E3EA4(accessoryCopy);
 
   if (v9)
   {
@@ -49,7 +49,7 @@
   return v10;
 }
 
-- (HREMatterCommandActionMap)initWithCondition:(id)a3 childMaps:(id)a4
+- (HREMatterCommandActionMap)initWithCondition:(id)condition childMaps:(id)maps
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

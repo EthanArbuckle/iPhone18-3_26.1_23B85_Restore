@@ -1,12 +1,12 @@
 @interface MFAssistantEmailSearch
-- (BOOL)search:(id)a3 didFindResults:(id)a4;
+- (BOOL)search:(id)search didFindResults:(id)results;
 - (id)_generateAceResults;
 - (id)_generateMSCriterion;
 - (id)_perform;
 - (id)_validate;
-- (void)_populateResults:(id)a3;
-- (void)_searchFinished:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_populateResults:(id)results;
+- (void)_searchFinished:(id)finished;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MFAssistantEmailSearch
@@ -15,14 +15,14 @@
 {
   if (MSCanSendMail())
   {
-    v3 = [(MFAssistantEmailSearch *)self startDate];
-    if (v3)
+    startDate = [(MFAssistantEmailSearch *)self startDate];
+    if (startDate)
     {
       goto LABEL_7;
     }
 
-    v3 = [(MFAssistantEmailSearch *)self endDate];
-    if (v3 || ([(MFAssistantEmailSearch *)self fromEmail], (v3 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MFAssistantEmailSearch *)self subject], (v3 = objc_claimAutoreleasedReturnValue()) != 0) || ([(MFAssistantEmailSearch *)self toEmail], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    startDate = [(MFAssistantEmailSearch *)self endDate];
+    if (startDate || ([(MFAssistantEmailSearch *)self fromEmail], (startDate = objc_claimAutoreleasedReturnValue()) != 0) || ([(MFAssistantEmailSearch *)self subject], (startDate = objc_claimAutoreleasedReturnValue()) != 0) || ([(MFAssistantEmailSearch *)self toEmail], (startDate = objc_claimAutoreleasedReturnValue()) != 0))
     {
 LABEL_7:
     }
@@ -34,26 +34,26 @@ LABEL_7:
       goto LABEL_12;
     }
 
-    v4 = [(MFAssistantEmailSearch *)self startDate];
-    if (!v4)
+    startDate2 = [(MFAssistantEmailSearch *)self startDate];
+    if (!startDate2)
     {
       goto LABEL_16;
     }
 
-    v5 = v4;
-    v6 = [(MFAssistantEmailSearch *)self endDate];
-    if (v6)
+    v5 = startDate2;
+    endDate = [(MFAssistantEmailSearch *)self endDate];
+    if (endDate)
     {
-      v7 = [(MFAssistantEmailSearch *)self startDate];
-      v8 = [(MFAssistantEmailSearch *)self endDate];
-      v9 = [v7 compare:v8];
+      startDate3 = [(MFAssistantEmailSearch *)self startDate];
+      endDate2 = [(MFAssistantEmailSearch *)self endDate];
+      v9 = [startDate3 compare:endDate2];
 
       if (v9 == &dword_0 + 1)
       {
         v10 = [SACommandFailed alloc];
         v11 = @"End date is before start date.";
 LABEL_12:
-        v4 = [v10 initWithReason:v11];
+        startDate2 = [v10 initWithReason:v11];
         goto LABEL_16;
       }
     }
@@ -62,77 +62,77 @@ LABEL_12:
     {
     }
 
-    v4 = 0;
+    startDate2 = 0;
   }
 
   else
   {
     v12 = [SACommandFailed alloc];
-    v4 = [v12 initWithErrorCode:SAEmailNoAccountErrorCode];
+    startDate2 = [v12 initWithErrorCode:SAEmailNoAccountErrorCode];
   }
 
 LABEL_16:
 
-  return v4;
+  return startDate2;
 }
 
 - (id)_generateMSCriterion
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(MFAssistantEmailSearch *)self fromEmail];
-  v5 = [v4 length];
+  fromEmail = [(MFAssistantEmailSearch *)self fromEmail];
+  v5 = [fromEmail length];
 
   if (v5)
   {
     v6 = [MSCriterion alloc];
-    v7 = [(MFAssistantEmailSearch *)self fromEmail];
-    v8 = [v6 initWithType:MSCriterionTypeSender qualifier:MSCriterionQualifierContains expression:v7];
+    fromEmail2 = [(MFAssistantEmailSearch *)self fromEmail];
+    v8 = [v6 initWithType:MSCriterionTypeSender qualifier:MSCriterionQualifierContains expression:fromEmail2];
 
     [v3 addObject:v8];
   }
 
-  v9 = [(MFAssistantEmailSearch *)self subject];
-  v10 = [v9 length];
+  subject = [(MFAssistantEmailSearch *)self subject];
+  v10 = [subject length];
 
   if (v10)
   {
     v11 = [MSCriterion alloc];
-    v12 = [(MFAssistantEmailSearch *)self subject];
-    v13 = [v11 initWithType:MSCriterionTypeSubject qualifier:MSCriterionQualifierContains expression:v12];
+    subject2 = [(MFAssistantEmailSearch *)self subject];
+    v13 = [v11 initWithType:MSCriterionTypeSubject qualifier:MSCriterionQualifierContains expression:subject2];
 
     [v3 addObject:v13];
   }
 
-  v14 = [(MFAssistantEmailSearch *)self toEmail];
-  v15 = [v14 length];
+  toEmail = [(MFAssistantEmailSearch *)self toEmail];
+  v15 = [toEmail length];
 
   if (v15)
   {
     v16 = [MSCriterion alloc];
-    v17 = [(MFAssistantEmailSearch *)self toEmail];
-    v18 = [v16 initWithType:MSCriterionTypeAnyRecipient qualifier:MSCriterionQualifierContains expression:v17];
+    toEmail2 = [(MFAssistantEmailSearch *)self toEmail];
+    v18 = [v16 initWithType:MSCriterionTypeAnyRecipient qualifier:MSCriterionQualifierContains expression:toEmail2];
 
     [v3 addObject:v18];
   }
 
-  v19 = [(MFAssistantEmailSearch *)self startDate];
+  startDate = [(MFAssistantEmailSearch *)self startDate];
 
-  if (v19)
+  if (startDate)
   {
     v20 = [MSCriterion alloc];
-    v21 = [(MFAssistantEmailSearch *)self startDate];
-    v22 = [v20 initWithType:MSCriterionTypeReceivedDate qualifier:MSCriterionQualifierGreaterThan expression:v21];
+    startDate2 = [(MFAssistantEmailSearch *)self startDate];
+    v22 = [v20 initWithType:MSCriterionTypeReceivedDate qualifier:MSCriterionQualifierGreaterThan expression:startDate2];
 
     [v3 addObject:v22];
   }
 
-  v23 = [(MFAssistantEmailSearch *)self endDate];
+  endDate = [(MFAssistantEmailSearch *)self endDate];
 
-  if (v23)
+  if (endDate)
   {
     v24 = [MSCriterion alloc];
-    v25 = [(MFAssistantEmailSearch *)self endDate];
-    v26 = [v24 initWithType:MSCriterionTypeReceivedDate qualifier:MSCriterionQualifierLessThan expression:v25];
+    endDate2 = [(MFAssistantEmailSearch *)self endDate];
+    v26 = [v24 initWithType:MSCriterionTypeReceivedDate qualifier:MSCriterionQualifierLessThan expression:endDate2];
 
     [v3 addObject:v26];
   }
@@ -140,9 +140,9 @@ LABEL_16:
   if ([(MFAssistantEmailSearch *)self status])
   {
     v27 = [MSCriterion alloc];
-    v28 = [(MFAssistantEmailSearch *)self status];
+    status = [(MFAssistantEmailSearch *)self status];
     v29 = &MSCriterionExpressionRead;
-    if (v28 != 1)
+    if (status != 1)
     {
       v29 = &MSCriterionExpressionUnread;
     }
@@ -236,14 +236,14 @@ LABEL_21:
 
 - (id)_perform
 {
-  v3 = [(MFAssistantEmailSearch *)self _generateMSCriterion];
+  _generateMSCriterion = [(MFAssistantEmailSearch *)self _generateMSCriterion];
   self->_currentResultCount = 0;
   v4 = dispatch_semaphore_create(0);
   searchCompleted = self->_searchCompleted;
   self->_searchCompleted = v4;
 
   v6 = [NSArray arrayWithObjects:MSResultsKeyMessageReference, MSResultsKeyDateSent, MSResultsKeySender, MSResultsKeyRecipientTo, MSResultsKeyRecipientCc, MSResultsKeySubject, 0];
-  v7 = [MSSearch findMessageData:v6 matchingCriterion:v3 options:4 delegate:self];
+  v7 = [MSSearch findMessageData:v6 matchingCriterion:_generateMSCriterion options:4 delegate:self];
 
   if (v7)
   {
@@ -263,8 +263,8 @@ LABEL_21:
     self->_searchCompleted = 0;
 
     v12 = [SAEmailSearchCompleted alloc];
-    v13 = [(MFAssistantEmailSearch *)self _generateAceResults];
-    v14 = [v12 initWithEmailResults:v13];
+    _generateAceResults = [(MFAssistantEmailSearch *)self _generateAceResults];
+    v14 = [v12 initWithEmailResults:_generateAceResults];
   }
 
   else
@@ -275,22 +275,22 @@ LABEL_21:
   return v14;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(MFAssistantEmailSearch *)self _validate];
-  if (!v4)
+  completionCopy = completion;
+  _validate = [(MFAssistantEmailSearch *)self _validate];
+  if (!_validate)
   {
-    v4 = [(MFAssistantEmailSearch *)self _perform];
+    _validate = [(MFAssistantEmailSearch *)self _perform];
   }
 
-  v5 = [v4 dictionary];
-  v6[2](v6, v5);
+  dictionary = [_validate dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
-- (void)_populateResults:(id)a3
+- (void)_populateResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   if (!self->_results)
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -302,7 +302,7 @@ LABEL_21:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v7 = v4;
+  v7 = resultsCopy;
   v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v8)
   {
@@ -329,10 +329,10 @@ LABEL_21:
   }
 }
 
-- (void)_searchFinished:(id)a3
+- (void)_searchFinished:(id)finished
 {
   v3 = *(self + 32) & 0xFE;
-  if (a3)
+  if (finished)
   {
     ++v3;
   }
@@ -341,12 +341,12 @@ LABEL_21:
   dispatch_semaphore_signal(self->_searchCompleted);
 }
 
-- (BOOL)search:(id)a3 didFindResults:(id)a4
+- (BOOL)search:(id)search didFindResults:(id)results
 {
-  v5 = a4;
-  v6 = self->_currentResultCount + [v5 count];
+  resultsCopy = results;
+  v6 = self->_currentResultCount + [resultsCopy count];
   self->_currentResultCount = v6;
-  [(MFAssistantEmailSearch *)self _populateResults:v5];
+  [(MFAssistantEmailSearch *)self _populateResults:resultsCopy];
 
   return v6 < 0x1A;
 }

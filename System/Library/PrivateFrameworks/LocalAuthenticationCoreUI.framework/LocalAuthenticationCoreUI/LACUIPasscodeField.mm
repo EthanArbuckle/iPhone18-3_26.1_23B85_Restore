@@ -2,35 +2,35 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (LACUIPasscodeField)initWithStyle:(int64_t)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (LACUIPasscodeField)initWithStyle:(int64_t)style;
 - (LACUIPasscodeFieldDelegate)delegate;
 - (LAUITextField)passcodeField;
 - (id)_alphanumericFieldPlaceholder;
 - (id)_passcodeFieldColor;
-- (id)textField:(id)a3 editMenuForCharactersInRange:(_NSRange)a4 suggestedActions:(id)a5;
-- (unint64_t)_passcodeLengthForStyle:(int64_t)a3;
+- (id)textField:(id)field editMenuForCharactersInRange:(_NSRange)range suggestedActions:(id)actions;
+- (unint64_t)_passcodeLengthForStyle:(int64_t)style;
 - (void)_activateFieldLayoutForSelectedPasscodeStyle;
 - (void)_applyStyleToFieldLayout;
 - (void)_notifyPasscodeFieldLengthChange;
-- (void)_selectPasscodeField:(id)a3;
+- (void)_selectPasscodeField:(id)field;
 - (void)_setup;
 - (void)_updateDotPattern;
-- (void)_verifyTextField:(id)a3;
+- (void)_verifyTextField:(id)field;
 - (void)clear;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setAcceptInputs:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)shakeWithCompletion:(id)a3;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setAcceptInputs:(BOOL)inputs;
+- (void)setStyle:(int64_t)style;
+- (void)shakeWithCompletion:(id)completion;
 - (void)submit;
-- (void)textFieldDidChange:(id)a3;
+- (void)textFieldDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation LACUIPasscodeField
 
-- (LACUIPasscodeField)initWithStyle:(int64_t)a3
+- (LACUIPasscodeField)initWithStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = LACUIPasscodeField;
@@ -38,7 +38,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
+    v4->_style = style;
     v6 = objc_alloc_init(LACUIPasscodeFieldConfigurator);
     configurator = v5->_configurator;
     v5->_configurator = v6;
@@ -52,9 +52,9 @@
   v5.receiver = self;
   v5.super_class = LACUIPasscodeField;
   [(LACUIPasscodeField *)&v5 viewDidLoad];
-  v3 = [(LACUIPasscodeField *)self view];
+  view = [(LACUIPasscodeField *)self view];
   v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__selectPasscodeField_];
-  [v3 addGestureRecognizer:v4];
+  [view addGestureRecognizer:v4];
 
   [(LACUIPasscodeField *)self _setup];
 }
@@ -62,105 +62,105 @@
 - (BOOL)canBecomeFirstResponder
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [(LACUIPasscodeField *)self passcodeField];
-  v3 = [v2 canBecomeFirstResponder];
+  passcodeField = [(LACUIPasscodeField *)self passcodeField];
+  canBecomeFirstResponder = [passcodeField canBecomeFirstResponder];
 
   v4 = LACLogPasscodeService();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:canBecomeFirstResponder];
     v8 = 138412290;
     v9 = v5;
     _os_log_impl(&dword_256063000, v4, OS_LOG_TYPE_DEFAULT, "PasscodeField canBecomeFirstResponder:%@", &v8, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
   v11 = *MEMORY[0x277D85DE8];
   [(LACUIPasscodeFieldConfiguring *)self->_configurator setUpKeyboardForPasscodeFieldStyle:self->_style];
-  v3 = [(LACUIPasscodeField *)self passcodeField];
-  v4 = [v3 becomeFirstResponder];
+  passcodeField = [(LACUIPasscodeField *)self passcodeField];
+  becomeFirstResponder = [passcodeField becomeFirstResponder];
 
   v5 = LACLogPasscodeService();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:becomeFirstResponder];
     v9 = 138412290;
     v10 = v6;
     _os_log_impl(&dword_256063000, v5, OS_LOG_TYPE_DEFAULT, "PasscodeField becomeFirstResponder:%@", &v9, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v4;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
   v11 = *MEMORY[0x277D85DE8];
   [(LACUIPasscodeFieldConfiguring *)self->_configurator tearDownKeyboard];
-  v3 = [(LACUIPasscodeField *)self passcodeField];
-  v4 = [v3 resignFirstResponder];
+  passcodeField = [(LACUIPasscodeField *)self passcodeField];
+  resignFirstResponder = [passcodeField resignFirstResponder];
 
   v5 = LACLogPasscodeService();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:resignFirstResponder];
     v9 = 138412290;
     v10 = v6;
     _os_log_impl(&dword_256063000, v5, OS_LOG_TYPE_DEFAULT, "PasscodeField resignFirstResponder:%@", &v9, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v4;
+  return resignFirstResponder;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(LACUIPasscodeField *)self _activateFieldLayoutForSelectedPasscodeStyle];
 
     [(LACUIPasscodeField *)self _notifyPasscodeFieldLengthChange];
   }
 }
 
-- (void)setAcceptInputs:(BOOL)a3
+- (void)setAcceptInputs:(BOOL)inputs
 {
-  [(LACUIPasscodeField *)self setIgnoreInputs:!a3];
+  [(LACUIPasscodeField *)self setIgnoreInputs:!inputs];
   if (![(LACUIPasscodeField *)self _shouldUseDotPattern])
   {
-    v4 = [(LACUIPasscodeField *)self ignoreInputs];
-    if (v4)
+    ignoreInputs = [(LACUIPasscodeField *)self ignoreInputs];
+    if (ignoreInputs)
     {
-      v6 = [MEMORY[0x277D75348] clearColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
     }
 
     else
     {
-      v6 = 0;
+      clearColor = 0;
     }
 
-    v5 = [(LACUIPasscodeField *)self passcodeField];
-    [v5 setTintColor:v6];
+    passcodeField = [(LACUIPasscodeField *)self passcodeField];
+    [passcodeField setTintColor:clearColor];
 
-    if (v4)
+    if (ignoreInputs)
     {
     }
   }
 }
 
-- (void)shakeWithCompletion:(id)a3
+- (void)shakeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (UIAccessibilityIsReduceMotionEnabled())
   {
     [(UIImpactFeedbackGenerator *)self->_hapticGenerator impactOccurred];
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -183,7 +183,7 @@
     v8[1] = 3221225472;
     v8[2] = __42__LACUIPasscodeField_shakeWithCompletion___block_invoke_2;
     v8[3] = &unk_27981E958;
-    v9 = v4;
+    v9 = completionCopy;
     [v7 animateWithDuration:0 delay:v10 usingSpringWithDamping:v8 initialSpringVelocity:0.4 options:0.0 animations:0.03 completion:1.2];
 
     objc_destroyWeak(&v11);
@@ -208,30 +208,30 @@ void __42__LACUIPasscodeField_shakeWithCompletion___block_invoke(uint64_t a1)
 
 - (void)submit
 {
-  v3 = [(LACUIPasscodeField *)self passcodeField];
-  [(LACUIPasscodeField *)self _verifyTextField:v3];
+  passcodeField = [(LACUIPasscodeField *)self passcodeField];
+  [(LACUIPasscodeField *)self _verifyTextField:passcodeField];
 }
 
 - (void)clear
 {
-  v3 = [(LACUIPasscodeField *)self passcodeField];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  passcodeField = [(LACUIPasscodeField *)self passcodeField];
+  text = [passcodeField text];
+  v5 = [text length];
 
   if (v5)
   {
-    v6 = [(LACUIPasscodeField *)self passcodeField];
-    [v6 setText:&stru_28681D590];
+    passcodeField2 = [(LACUIPasscodeField *)self passcodeField];
+    [passcodeField2 setText:&stru_28681D590];
 
     [(LACUIPasscodeField *)self _notifyPasscodeFieldLengthChange];
   }
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v5 = a3;
-  v4 = [(LACUIPasscodeField *)self passcodeField];
-  if (v4 != v5)
+  changeCopy = change;
+  passcodeField = [(LACUIPasscodeField *)self passcodeField];
+  if (passcodeField != changeCopy)
   {
     [LACUIPasscodeField textFieldDidChange:];
   }
@@ -239,46 +239,46 @@ void __42__LACUIPasscodeField_shakeWithCompletion___block_invoke(uint64_t a1)
   [(LACUIPasscodeField *)self _notifyPasscodeFieldLengthChange];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(LACUIPasscodeField *)self passcodeField];
-  if (v5 != v4)
+  returnCopy = return;
+  passcodeField = [(LACUIPasscodeField *)self passcodeField];
+  if (passcodeField != returnCopy)
   {
     [LACUIPasscodeField textFieldShouldReturn:];
   }
 
   if (![(LACUIPasscodeField *)self ignoreInputs])
   {
-    [(LACUIPasscodeField *)self _verifyTextField:v4];
+    [(LACUIPasscodeField *)self _verifyTextField:returnCopy];
   }
 
   return 0;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(LACUIPasscodeField *)self passcodeField];
-  if (v11 != v9)
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  passcodeField = [(LACUIPasscodeField *)self passcodeField];
+  if (passcodeField != fieldCopy)
   {
     [LACUIPasscodeField textField:shouldChangeCharactersInRange:replacementString:];
   }
 
   if (![(LACUIPasscodeField *)self ignoreInputs])
   {
-    if (-[LACUIPasscodeField _shouldUseAlphanumericKeyboard](self, "_shouldUseAlphanumericKeyboard") || ([MEMORY[0x277CCA900] decimalDigitCharacterSet], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "stringByTrimmingCharactersInSet:", v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v12, !v14))
+    if (-[LACUIPasscodeField _shouldUseAlphanumericKeyboard](self, "_shouldUseAlphanumericKeyboard") || ([MEMORY[0x277CCA900] decimalDigitCharacterSet], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(stringCopy, "stringByTrimmingCharactersInSet:", v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v12, !v14))
     {
-      v15 = [v9 text];
-      v16 = [v15 length];
+      text = [fieldCopy text];
+      v16 = [text length];
       if (v16 >= [(LACUIPasscodeField *)self _passcodeLength])
       {
-        v17 = [(LACUIPasscodeField *)self _passcodeLength];
+        _passcodeLength = [(LACUIPasscodeField *)self _passcodeLength];
 
-        if (v17)
+        if (_passcodeLength)
         {
           goto LABEL_9;
         }
@@ -288,19 +288,19 @@ void __42__LACUIPasscodeField_shakeWithCompletion___block_invoke(uint64_t a1)
       {
       }
 
-      v18 = [v9 text];
-      v19 = [v18 stringByReplacingCharactersInRange:location withString:{length, v10}];
-      [v9 setText:v19];
+      text2 = [fieldCopy text];
+      v19 = [text2 stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
+      [fieldCopy setText:v19];
 
       [(LACUIPasscodeField *)self _notifyPasscodeFieldLengthChange];
 LABEL_9:
-      v20 = [v9 text];
-      v21 = [v20 length];
-      v22 = [(LACUIPasscodeField *)self _passcodeLength];
+      text3 = [fieldCopy text];
+      v21 = [text3 length];
+      _passcodeLength2 = [(LACUIPasscodeField *)self _passcodeLength];
 
-      if (v21 >= v22)
+      if (v21 >= _passcodeLength2)
       {
-        [(LACUIPasscodeField *)self _verifyTextField:v9];
+        [(LACUIPasscodeField *)self _verifyTextField:fieldCopy];
       }
     }
   }
@@ -308,25 +308,25 @@ LABEL_9:
   return 0;
 }
 
-- (id)textField:(id)a3 editMenuForCharactersInRange:(_NSRange)a4 suggestedActions:(id)a5
+- (id)textField:(id)field editMenuForCharactersInRange:(_NSRange)range suggestedActions:(id)actions
 {
   v5 = MEMORY[0x277D75710];
-  v6 = [MEMORY[0x277CBEA60] array];
-  v7 = [v5 menuWithChildren:v6];
+  array = [MEMORY[0x277CBEA60] array];
+  v7 = [v5 menuWithChildren:array];
 
   return v7;
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 allObjects];
-  v9 = [v8 firstObject];
-  v10 = [v9 key];
-  v11 = [v10 keyCode];
+  endedCopy = ended;
+  eventCopy = event;
+  allObjects = [endedCopy allObjects];
+  firstObject = [allObjects firstObject];
+  v10 = [firstObject key];
+  keyCode = [v10 keyCode];
 
-  if (v11 == 40 && ![(LACUIPasscodeField *)self ignoreInputs])
+  if (keyCode == 40 && ![(LACUIPasscodeField *)self ignoreInputs])
   {
     [(LACUIPasscodeField *)self submit];
   }
@@ -335,21 +335,21 @@ LABEL_9:
   {
     v12.receiver = self;
     v12.super_class = LACUIPasscodeField;
-    [(LACUIPasscodeField *)&v12 pressesEnded:v6 withEvent:v7];
+    [(LACUIPasscodeField *)&v12 pressesEnded:endedCopy withEvent:eventCopy];
   }
 }
 
 - (LAUITextField)passcodeField
 {
   WeakRetained = objc_loadWeakRetained(&self->_currentFieldLayout);
-  v3 = [WeakRetained field];
+  field = [WeakRetained field];
 
-  return v3;
+  return field;
 }
 
-- (void)_selectPasscodeField:(id)a3
+- (void)_selectPasscodeField:(id)field
 {
-  if ([a3 numberOfTouches] == 1 && !-[LACUIPasscodeField ignoreInputs](self, "ignoreInputs"))
+  if ([field numberOfTouches] == 1 && !-[LACUIPasscodeField ignoreInputs](self, "ignoreInputs"))
   {
 
     [(LACUIPasscodeField *)self becomeFirstResponder];
@@ -362,35 +362,35 @@ LABEL_9:
   v112 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v112 setTranslatesAutoresizingMaskIntoConstraints:0];
   val = self;
-  v3 = [(LACUIPasscodeField *)self view];
-  [v3 addSubview:v112];
+  view = [(LACUIPasscodeField *)self view];
+  [view addSubview:v112];
 
-  v4 = [v112 heightAnchor];
-  v5 = [v4 constraintEqualToConstant:65.0];
+  heightAnchor = [v112 heightAnchor];
+  v5 = [heightAnchor constraintEqualToConstant:65.0];
   [v5 setActive:1];
 
-  v6 = [v112 topAnchor];
-  v7 = [(LACUIPasscodeField *)val view];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  topAnchor = [v112 topAnchor];
+  view2 = [(LACUIPasscodeField *)val view];
+  topAnchor2 = [view2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [v112 bottomAnchor];
-  v11 = [(LACUIPasscodeField *)val view];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintLessThanOrEqualToAnchor:v12 constant:0.0];
+  bottomAnchor = [v112 bottomAnchor];
+  view3 = [(LACUIPasscodeField *)val view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v13 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:0.0];
   [v13 setActive:1];
 
-  v14 = [v112 leadingAnchor];
-  v15 = [(LACUIPasscodeField *)val view];
-  v16 = [v15 leadingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  leadingAnchor = [v112 leadingAnchor];
+  view4 = [(LACUIPasscodeField *)val view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v17 setActive:1];
 
-  v18 = [v112 trailingAnchor];
-  v19 = [(LACUIPasscodeField *)val view];
-  v20 = [v19 trailingAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  trailingAnchor = [v112 trailingAnchor];
+  view5 = [(LACUIPasscodeField *)val view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v21 setActive:1];
 
   WeakRetained = objc_loadWeakRetained(&val->_mainContainer);
@@ -402,32 +402,32 @@ LABEL_9:
   [v23 setAlignment:3];
   v113 = v23;
   [v23 setSpacing:16.0];
-  v24 = [(LACUIPasscodeField *)val view];
-  [v24 addSubview:v113];
+  view6 = [(LACUIPasscodeField *)val view];
+  [view6 addSubview:v113];
 
   [v113 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v25 = [v113 topAnchor];
-  v26 = [(LACUIPasscodeField *)val view];
-  v27 = [v26 topAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  topAnchor3 = [v113 topAnchor];
+  view7 = [(LACUIPasscodeField *)val view];
+  topAnchor4 = [view7 topAnchor];
+  v28 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v28 setActive:1];
 
-  v29 = [v113 bottomAnchor];
-  v30 = [(LACUIPasscodeField *)val view];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  bottomAnchor3 = [v113 bottomAnchor];
+  view8 = [(LACUIPasscodeField *)val view];
+  bottomAnchor4 = [view8 bottomAnchor];
+  v32 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v32 setActive:1];
 
-  v33 = [v113 leadingAnchor];
-  v34 = [(LACUIPasscodeField *)val view];
-  v35 = [v34 leadingAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  leadingAnchor3 = [v113 leadingAnchor];
+  view9 = [(LACUIPasscodeField *)val view];
+  leadingAnchor4 = [view9 leadingAnchor];
+  v36 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v36 setActive:1];
 
-  v37 = [v113 trailingAnchor];
-  v38 = [(LACUIPasscodeField *)val view];
-  v39 = [v38 trailingAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39];
+  trailingAnchor3 = [v113 trailingAnchor];
+  view10 = [(LACUIPasscodeField *)val view];
+  trailingAnchor4 = [view10 trailingAnchor];
+  v40 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v40 setActive:1];
 
   v41 = [objc_alloc(MEMORY[0x277D755F0]) initWithStyle:2];
@@ -441,9 +441,9 @@ LABEL_9:
   [v113 addArrangedSubview:v43];
   [v43 setTranslatesAutoresizingMaskIntoConstraints:0];
   v116 = v43;
-  v44 = [v43 heightAnchor];
+  heightAnchor2 = [v43 heightAnchor];
   [(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldMinHeight];
-  v45 = [v44 constraintGreaterThanOrEqualToConstant:?];
+  v45 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:?];
   [v45 setActive:1];
 
   obj = [MEMORY[0x277D75220] buttonWithType:1];
@@ -455,12 +455,12 @@ LABEL_9:
   [v113 addArrangedSubview:obj];
   [obj setTranslatesAutoresizingMaskIntoConstraints:0];
   v47 = MEMORY[0x277CCAAD0];
-  v48 = [obj widthAnchor];
-  v49 = [v48 constraintEqualToConstant:44.0];
+  widthAnchor = [obj widthAnchor];
+  v49 = [widthAnchor constraintEqualToConstant:44.0];
   v142[0] = v49;
-  v50 = [obj heightAnchor];
-  v51 = [obj widthAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  heightAnchor3 = [obj heightAnchor];
+  widthAnchor2 = [obj widthAnchor];
+  v52 = [heightAnchor3 constraintEqualToAnchor:widthAnchor2];
   v142[1] = v52;
   v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v142 count:2];
   [v47 activateConstraints:v53];
@@ -487,49 +487,49 @@ LABEL_9:
           objc_enumerationMutation(&unk_286827240);
         }
 
-        v125 = [*(*(&v135 + 1) + 8 * i) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v135 + 1) + 8 * i) unsignedIntegerValue];
         v124 = objc_alloc_init(MEMORY[0x277D75D18]);
         [v116 addArrangedSubview:v124];
         [v124 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v56 = [v124 heightAnchor];
+        heightAnchor4 = [v124 heightAnchor];
         [(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldMinHeight];
-        v57 = [v56 constraintGreaterThanOrEqualToConstant:?];
+        v57 = [heightAnchor4 constraintGreaterThanOrEqualToConstant:?];
         [v57 setActive:1];
 
         [v124 setHidden:1];
         v58 = objc_alloc_init(LAUITextField);
-        [(LAUITextField *)v58 setShouldHideEditMenu:[(LACUIPasscodeField *)val _shouldUseAlphanumericKeyboardForStyle:v125]^ 1];
+        [(LAUITextField *)v58 setShouldHideEditMenu:[(LACUIPasscodeField *)val _shouldUseAlphanumericKeyboardForStyle:unsignedIntegerValue]^ 1];
         [(LAUITextField *)v58 disablePrediction];
         [(LAUITextField *)v58 setDelegate:val];
         [(LAUITextField *)v58 setDevicePasscodeEntry:1];
-        [(LAUITextField *)v58 setBorderStyle:[(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldBorderStyleForPasscodeFieldStyle:v125]];
+        [(LAUITextField *)v58 setBorderStyle:[(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldBorderStyleForPasscodeFieldStyle:unsignedIntegerValue]];
         [(LAUITextField *)v58 setSecureTextEntry:1];
         [(LAUITextField *)v58 setDisplaySecureTextUsingPlainText:[(LACUIPasscodeFieldConfiguring *)val->_configurator shouldConcealInputs]^ 1];
         [(LAUITextField *)v58 setTextContentType:v114];
         [(LAUITextField *)v58 setAutocapitalizationType:0];
         [(LAUITextField *)v58 setAutocorrectionType:1];
-        v59 = [(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldFont];
-        [(LAUITextField *)v58 setFont:v59];
+        passcodeFieldFont = [(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldFont];
+        [(LAUITextField *)v58 setFont:passcodeFieldFont];
 
-        v60 = [(LACUIPasscodeField *)val _alphanumericFieldPlaceholder];
-        [(LAUITextField *)v58 setAttributedPlaceholder:v60];
+        _alphanumericFieldPlaceholder = [(LACUIPasscodeField *)val _alphanumericFieldPlaceholder];
+        [(LAUITextField *)v58 setAttributedPlaceholder:_alphanumericFieldPlaceholder];
 
         [(LAUITextField *)v58 setTextAlignment:[(LACUIPasscodeField *)val _textAlignment]];
-        v61 = [MEMORY[0x277D75348] labelColor];
-        [(LAUITextField *)v58 setTextColor:v61];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [(LAUITextField *)v58 setTextColor:labelColor];
 
         [(LAUITextField *)v58 setReturnKeyType:9];
-        if ([(LACUIPasscodeField *)val _shouldUseAlphanumericKeyboardForStyle:v125])
+        if ([(LACUIPasscodeField *)val _shouldUseAlphanumericKeyboardForStyle:unsignedIntegerValue])
         {
           v62 = 0;
         }
 
         else
         {
-          v63 = [MEMORY[0x277D75418] currentDevice];
-          v64 = [v63 userInterfaceIdiom];
+          currentDevice = [MEMORY[0x277D75418] currentDevice];
+          userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-          if ((v64 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+          if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
           {
             v62 = 4;
           }
@@ -542,58 +542,58 @@ LABEL_9:
 
         [(LAUITextField *)v58 setKeyboardType:v62];
         [(LAUITextField *)v58 setEnablesReturnKeyAutomatically:1];
-        v65 = [(LACUIPasscodeField *)val _passcodeFieldColor];
-        v66 = v65;
-        v67 = [v65 CGColor];
-        v68 = [v124 layer];
-        [v68 setBackgroundColor:v67];
+        _passcodeFieldColor = [(LACUIPasscodeField *)val _passcodeFieldColor];
+        v66 = _passcodeFieldColor;
+        cGColor = [_passcodeFieldColor CGColor];
+        layer = [v124 layer];
+        [layer setBackgroundColor:cGColor];
 
         [(LAUITextField *)v58 addTarget:val action:sel_textFieldDidChange_ forControlEvents:0x20000];
         [v124 addSubview:v58];
         [(LAUITextField *)v58 setTranslatesAutoresizingMaskIntoConstraints:0];
         v118 = MEMORY[0x277CCAAD0];
-        v122 = [(LAUITextField *)v58 topAnchor];
-        v121 = [v124 topAnchor];
+        topAnchor5 = [(LAUITextField *)v58 topAnchor];
+        topAnchor6 = [v124 topAnchor];
         [(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldPadding];
-        v120 = [v122 constraintEqualToAnchor:v121 constant:?];
+        v120 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:?];
         v140[0] = v120;
-        v119 = [(LAUITextField *)v58 bottomAnchor];
-        v69 = [v124 bottomAnchor];
+        bottomAnchor5 = [(LAUITextField *)v58 bottomAnchor];
+        bottomAnchor6 = [v124 bottomAnchor];
         [(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldPadding];
-        v71 = [v119 constraintEqualToAnchor:v69 constant:-v70];
+        v71 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-v70];
         v140[1] = v71;
-        v72 = [(LAUITextField *)v58 leadingAnchor];
-        v73 = [v124 leadingAnchor];
+        leadingAnchor5 = [(LAUITextField *)v58 leadingAnchor];
+        leadingAnchor6 = [v124 leadingAnchor];
         [(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldPadding];
-        v74 = [v72 constraintEqualToAnchor:v73 constant:?];
+        v74 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:?];
         v140[2] = v74;
-        v75 = [(LAUITextField *)v58 trailingAnchor];
-        v76 = [v124 trailingAnchor];
+        trailingAnchor5 = [(LAUITextField *)v58 trailingAnchor];
+        trailingAnchor6 = [v124 trailingAnchor];
         [(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldPadding];
-        v78 = [v75 constraintEqualToAnchor:v76 constant:-v77];
+        v78 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-v77];
         v140[3] = v78;
         v79 = [MEMORY[0x277CBEA60] arrayWithObjects:v140 count:4];
         [v118 activateConstraints:v79];
 
-        [(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldCornerRadius:v58 forPasscodeStyle:v125];
+        [(LACUIPasscodeFieldConfiguring *)val->_configurator passcodeFieldCornerRadius:v58 forPasscodeStyle:unsignedIntegerValue];
         v81 = v80;
         [(LAUITextField *)v58 _setRoundedRectBackgroundCornerRadius:?];
-        v82 = [v124 layer];
-        [v82 setCornerRadius:v81];
+        layer2 = [v124 layer];
+        [layer2 setCornerRadius:v81];
 
-        if ([(LACUIPasscodeField *)val _shouldUseDotPatternForStyle:v125])
+        if ([(LACUIPasscodeField *)val _shouldUseDotPatternForStyle:unsignedIntegerValue])
         {
-          v83 = [v124 layer];
-          v84 = [MEMORY[0x277D75348] clearColor];
-          v85 = v84;
-          [v83 setBackgroundColor:{objc_msgSend(v84, "CGColor")}];
+          layer3 = [v124 layer];
+          clearColor = [MEMORY[0x277D75348] clearColor];
+          v85 = clearColor;
+          [layer3 setBackgroundColor:{objc_msgSend(clearColor, "CGColor")}];
 
           v86 = objc_alloc_init(MEMORY[0x277D75A68]);
           [v86 setAxis:0];
           [(LACUIPasscodeFieldConfiguring *)val->_configurator dotSpacing];
           [v86 setSpacing:?];
           [v86 setSemanticContentAttribute:3];
-          if ([(LACUIPasscodeField *)val _passcodeLengthForStyle:v125])
+          if ([(LACUIPasscodeField *)val _passcodeLengthForStyle:unsignedIntegerValue])
           {
             v87 = 0;
             do
@@ -601,50 +601,50 @@ LABEL_9:
               v88 = objc_alloc_init(LACUIPasscodeDotView);
               [v86 addArrangedSubview:v88];
               [(LACUIPasscodeDotView *)v88 setTranslatesAutoresizingMaskIntoConstraints:0];
-              v89 = [(LACUIPasscodeDotView *)v88 widthAnchor];
+              widthAnchor3 = [(LACUIPasscodeDotView *)v88 widthAnchor];
               [(LACUIPasscodeFieldConfiguring *)val->_configurator dotSize];
-              v90 = [v89 constraintEqualToConstant:?];
+              v90 = [widthAnchor3 constraintEqualToConstant:?];
               [v90 setActive:1];
 
-              v91 = [(LACUIPasscodeDotView *)v88 heightAnchor];
+              heightAnchor5 = [(LACUIPasscodeDotView *)v88 heightAnchor];
               [(LACUIPasscodeFieldConfiguring *)val->_configurator dotSize];
-              v92 = [v91 constraintEqualToConstant:?];
+              v92 = [heightAnchor5 constraintEqualToConstant:?];
               [v92 setActive:1];
 
               ++v87;
             }
 
-            while (v87 < [(LACUIPasscodeField *)val _passcodeLengthForStyle:v125]);
+            while (v87 < [(LACUIPasscodeField *)val _passcodeLengthForStyle:unsignedIntegerValue]);
           }
 
           [v124 addSubview:v86];
           [v86 setTranslatesAutoresizingMaskIntoConstraints:0];
           if (_UISolariumEnabled())
           {
-            v93 = [v86 leadingAnchor];
+            leadingAnchor7 = [v86 leadingAnchor];
             [v124 leadingAnchor];
           }
 
           else
           {
-            v93 = [v86 centerXAnchor];
+            leadingAnchor7 = [v86 centerXAnchor];
             [v124 centerXAnchor];
           }
           v94 = ;
-          v95 = [v93 constraintEqualToAnchor:v94];
+          v95 = [leadingAnchor7 constraintEqualToAnchor:v94];
           [v95 setActive:1];
 
-          v96 = [v86 centerYAnchor];
-          v97 = [v124 centerYAnchor];
-          v98 = [v96 constraintEqualToAnchor:v97];
+          centerYAnchor = [v86 centerYAnchor];
+          centerYAnchor2 = [v124 centerYAnchor];
+          v98 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
           [v98 setActive:1];
 
           [(LAUITextField *)v58 setShouldHideSelectionRects:1];
-          v99 = [MEMORY[0x277D75348] clearColor];
-          [(LAUITextField *)v58 setTintColor:v99];
+          clearColor2 = [MEMORY[0x277D75348] clearColor];
+          [(LAUITextField *)v58 setTintColor:clearColor2];
 
-          v100 = [MEMORY[0x277D75348] clearColor];
-          [(LAUITextField *)v58 setTextColor:v100];
+          clearColor3 = [MEMORY[0x277D75348] clearColor];
+          [(LAUITextField *)v58 setTextColor:clearColor3];
 
           [(LAUITextField *)v58 setIsAccessibilityElement:0];
         }
@@ -662,7 +662,7 @@ LABEL_9:
         v131 = v58;
         v132 = v86;
         v133 = v124;
-        v134 = v125;
+        v134 = unsignedIntegerValue;
         v102 = v124;
         v103 = v86;
         v104 = v58;
@@ -813,33 +813,33 @@ void __66__LACUIPasscodeField__activateFieldLayoutForSelectedPasscodeStyle__bloc
   {
     [(LACUIPasscodeField *)self _updateDotPattern];
     WeakRetained = objc_loadWeakRetained(&self->_currentFieldLayout);
-    v3 = [WeakRetained container];
-    v4 = [v3 layer];
+    container = [WeakRetained container];
+    layer = [container layer];
     [MEMORY[0x277D75348] clearColor];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_currentFieldLayout);
-    v3 = [WeakRetained container];
-    v4 = [v3 layer];
+    container = [WeakRetained container];
+    layer = [container layer];
     [(LACUIPasscodeField *)self _passcodeFieldColor];
   }
   v5 = ;
-  [v4 setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
+  [layer setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
 }
 
 - (void)_updateDotPattern
 {
   if ([(LACUIPasscodeField *)self _shouldUseDotPattern])
   {
-    v3 = [(LACUIPasscodeField *)self traitCollection];
+    traitCollection = [(LACUIPasscodeField *)self traitCollection];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __39__LACUIPasscodeField__updateDotPattern__block_invoke;
     v4[3] = &unk_27981E8E8;
     v4[4] = self;
-    [v3 performAsCurrentTraitCollection:v4];
+    [traitCollection performAsCurrentTraitCollection:v4];
   }
 }
 
@@ -871,15 +871,15 @@ unint64_t __39__LACUIPasscodeField__updateDotPattern__block_invoke(uint64_t a1)
   return result;
 }
 
-- (unint64_t)_passcodeLengthForStyle:(int64_t)a3
+- (unint64_t)_passcodeLengthForStyle:(int64_t)style
 {
   v3 = 4;
-  if (a3 != 1)
+  if (style != 1)
   {
     v3 = -1;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     return 6;
   }
@@ -894,11 +894,11 @@ unint64_t __39__LACUIPasscodeField__updateDotPattern__block_invoke(uint64_t a1)
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CCA898]);
-  v4 = [(LACUIPasscodeField *)self placeholderText];
-  v5 = v4;
-  if (v4)
+  placeholderText = [(LACUIPasscodeField *)self placeholderText];
+  v5 = placeholderText;
+  if (placeholderText)
   {
-    v6 = v4;
+    v6 = placeholderText;
   }
 
   else
@@ -934,30 +934,30 @@ id __51__LACUIPasscodeField__alphanumericFieldPlaceholder__block_invoke(uint64_t
   return v2;
 }
 
-- (void)_verifyTextField:(id)a3
+- (void)_verifyTextField:(id)field
 {
-  v4 = a3;
-  v6 = [(LACUIPasscodeField *)self delegate];
-  v5 = [v4 text];
+  fieldCopy = field;
+  delegate = [(LACUIPasscodeField *)self delegate];
+  text = [fieldCopy text];
 
-  [v6 passcodeField:self didSubmitPasscode:v5];
+  [delegate passcodeField:self didSubmitPasscode:text];
 }
 
 - (void)_notifyPasscodeFieldLengthChange
 {
   [(LACUIPasscodeField *)self _updateDotPattern];
-  v5 = [(LACUIPasscodeField *)self delegate];
-  v3 = [(LACUIPasscodeField *)self passcodeField];
-  v4 = [v3 text];
-  [v5 passcodeField:self didChangePasscodeLength:{objc_msgSend(v4, "length")}];
+  delegate = [(LACUIPasscodeField *)self delegate];
+  passcodeField = [(LACUIPasscodeField *)self passcodeField];
+  text = [passcodeField text];
+  [delegate passcodeField:self didChangePasscodeLength:{objc_msgSend(text, "length")}];
 }
 
 - (id)_passcodeFieldColor
 {
-  v2 = [(LACUIPasscodeField *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(LACUIPasscodeField *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x277D75348] quaternaryLabelColor];
   }

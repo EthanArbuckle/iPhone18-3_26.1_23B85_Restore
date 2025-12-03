@@ -1,21 +1,21 @@
 @interface _UIImageViewSymbolAnimationPresetManager
-+ (id)managerForClient:(id)a3;
-- (BOOL)_removeSymbolEffectsOfType:(id)a3 options:(id)a4 animated:(BOOL)a5 completion:(id)a6 forAddingNewEffect:(BOOL)a7;
-- (BOOL)_symbolEffect:(id)a3 collidesWithSymbolEffect:(id)a4 forAddingEffect:(BOOL)a5;
-- (BOOL)hasPendingAnimationsForImage:(id)a3;
++ (id)managerForClient:(id)client;
+- (BOOL)_removeSymbolEffectsOfType:(id)type options:(id)options animated:(BOOL)animated completion:(id)completion forAddingNewEffect:(BOOL)effect;
+- (BOOL)_symbolEffect:(id)effect collidesWithSymbolEffect:(id)symbolEffect forAddingEffect:(BOOL)addingEffect;
+- (BOOL)hasPendingAnimationsForImage:(id)image;
 - (_UIImageViewSymbolAnimationPresetClient)client;
 - (_UIImageViewSymbolAnimationPresetManager)init;
-- (id)pendingSymbolContentTransitionForSettingSymbolImage:(id)a3;
-- (void)_activateActiveSymbolEffectEntry:(id)a3;
-- (void)activatePendingSymbolContentTransition:(id)a3;
+- (id)pendingSymbolContentTransitionForSettingSymbolImage:(id)image;
+- (void)_activateActiveSymbolEffectEntry:(id)entry;
+- (void)activatePendingSymbolContentTransition:(id)transition;
 - (void)activatePendingSymbolEffects;
-- (void)activeSymbolContentTransitionDidComplete:(id)a3;
-- (void)activeSymbolEffectDidComplete:(id)a3;
-- (void)addActiveSymbolEffect:(id)a3 options:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)addPendingSymbolContentTransition:(id)a3 fromSymbolImage:(id)a4 toSymbolImage:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)addPendingSymbolEffect:(id)a3 options:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)activeSymbolContentTransitionDidComplete:(id)complete;
+- (void)activeSymbolEffectDidComplete:(id)complete;
+- (void)addActiveSymbolEffect:(id)effect options:(id)options animated:(BOOL)animated completion:(id)completion;
+- (void)addPendingSymbolContentTransition:(id)transition fromSymbolImage:(id)image toSymbolImage:(id)symbolImage options:(id)options completion:(id)completion;
+- (void)addPendingSymbolEffect:(id)effect options:(id)options animated:(BOOL)animated completion:(id)completion;
 - (void)discardPendingSymbolContentTransitions;
-- (void)removeAllSymbolEffectsWithOptions:(id)a3 animated:(BOOL)a4;
+- (void)removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated;
 @end
 
 @implementation _UIImageViewSymbolAnimationPresetManager
@@ -27,13 +27,13 @@
   v2 = [(_UIImageViewSymbolAnimationPresetManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     activeSymbolEffects = v2->_activeSymbolEffects;
-    v2->_activeSymbolEffects = v3;
+    v2->_activeSymbolEffects = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     pendingSymbolEffects = v2->_pendingSymbolEffects;
-    v2->_pendingSymbolEffects = v5;
+    v2->_pendingSymbolEffects = array2;
   }
 
   return v2;
@@ -47,23 +47,23 @@
 
   if (v5)
   {
-    v4 = [(_UIImageViewSymbolAnimationPresetManager *)self client];
-    [v4 animationPresetManager:self didDiscardPendingContentTransition:v5];
+    client = [(_UIImageViewSymbolAnimationPresetManager *)self client];
+    [client animationPresetManager:self didDiscardPendingContentTransition:v5];
   }
 }
 
-+ (id)managerForClient:(id)a3
++ (id)managerForClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v4 = objc_opt_new();
-  [v4 setClient:v3];
+  [v4 setClient:clientCopy];
 
   return v4;
 }
 
-- (BOOL)hasPendingAnimationsForImage:(id)a3
+- (BOOL)hasPendingAnimationsForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if ([(NSMutableArray *)self->_pendingSymbolEffects count])
   {
     v5 = 1;
@@ -74,10 +74,10 @@
     pendingSymbolContentTransition = self->_pendingSymbolContentTransition;
     if (pendingSymbolContentTransition)
     {
-      v7 = [(_UIImageViewPendingSymbolContentTransition *)pendingSymbolContentTransition targetSymbolImage];
-      v8 = v4;
+      targetSymbolImage = [(_UIImageViewPendingSymbolContentTransition *)pendingSymbolContentTransition targetSymbolImage];
+      v8 = imageCopy;
       v9 = v8;
-      if (v7 == v8)
+      if (targetSymbolImage == v8)
       {
         v5 = 1;
       }
@@ -85,9 +85,9 @@
       else
       {
         v5 = 0;
-        if (v8 && v7)
+        if (v8 && targetSymbolImage)
         {
-          v5 = [v7 isEqual:v8];
+          v5 = [targetSymbolImage isEqual:v8];
         }
       }
     }
@@ -101,37 +101,37 @@
   return v5;
 }
 
-- (void)addActiveSymbolEffect:(id)a3 options:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)addActiveSymbolEffect:(id)effect options:(id)options animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  [(_UIImageViewSymbolAnimationPresetManager *)self _removeSymbolEffectsOfType:v12 options:v11 animated:v6 completion:0 forAddingNewEffect:1];
+  animatedCopy = animated;
+  completionCopy = completion;
+  optionsCopy = options;
+  effectCopy = effect;
+  [(_UIImageViewSymbolAnimationPresetManager *)self _removeSymbolEffectsOfType:effectCopy options:optionsCopy animated:animatedCopy completion:0 forAddingNewEffect:1];
   v13 = objc_opt_new();
-  [v13 setSymbolEffect:v12];
+  [v13 setSymbolEffect:effectCopy];
 
-  [v13 setOptions:v11];
-  [v13 setAnimated:v6];
-  [v13 setCompletionHandler:v10];
+  [v13 setOptions:optionsCopy];
+  [v13 setAnimated:animatedCopy];
+  [v13 setCompletionHandler:completionCopy];
 
   [(NSMutableArray *)self->_activeSymbolEffects addObject:v13];
   [(_UIImageViewSymbolAnimationPresetManager *)self _activateActiveSymbolEffectEntry:v13];
 }
 
-- (void)addPendingSymbolEffect:(id)a3 options:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)addPendingSymbolEffect:(id)effect options:(id)options animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  [(_UIImageViewSymbolAnimationPresetManager *)self _removeSymbolEffectsOfType:v12 options:v11 animated:v6 completion:0 forAddingNewEffect:1];
+  animatedCopy = animated;
+  completionCopy = completion;
+  optionsCopy = options;
+  effectCopy = effect;
+  [(_UIImageViewSymbolAnimationPresetManager *)self _removeSymbolEffectsOfType:effectCopy options:optionsCopy animated:animatedCopy completion:0 forAddingNewEffect:1];
   v13 = objc_opt_new();
-  [v13 setSymbolEffect:v12];
+  [v13 setSymbolEffect:effectCopy];
 
-  [v13 setOptions:v11];
-  [v13 setAnimated:v6];
-  [v13 setCompletionHandler:v10];
+  [v13 setOptions:optionsCopy];
+  [v13 setAnimated:animatedCopy];
+  [v13 setCompletionHandler:completionCopy];
 
   [(NSMutableArray *)self->_pendingSymbolEffects addObject:v13];
 }
@@ -175,80 +175,80 @@
   }
 }
 
-- (void)_activateActiveSymbolEffectEntry:(id)a3
+- (void)_activateActiveSymbolEffectEntry:(id)entry
 {
-  v13 = a3;
-  v4 = [v13 symbolEffect];
-  if ([v4 ui_affectsSymbolScale])
+  entryCopy = entry;
+  symbolEffect = [entryCopy symbolEffect];
+  if ([symbolEffect ui_affectsSymbolScale])
   {
-    v5 = [(_UIImageViewSymbolAnimationPresetManager *)self client];
-    v6 = [v4 ui_rbSymbolScaleLevelForAddingEffect];
-    v7 = [v13 options];
-    v8 = [v13 animated];
-    v9 = [v13 completionHandler];
-    [v5 animationPresetManager:self didSetScale:v6 usingEffect:v4 options:v7 animated:v8 completion:v9];
+    client = [(_UIImageViewSymbolAnimationPresetManager *)self client];
+    ui_rbSymbolScaleLevelForAddingEffect = [symbolEffect ui_rbSymbolScaleLevelForAddingEffect];
+    options = [entryCopy options];
+    animated = [entryCopy animated];
+    completionHandler = [entryCopy completionHandler];
+    [client animationPresetManager:self didSetScale:ui_rbSymbolScaleLevelForAddingEffect usingEffect:symbolEffect options:options animated:animated completion:completionHandler];
   }
 
   else
   {
-    v10 = [v4 ui_affectsSymbolHiddenness];
-    v5 = [(_UIImageViewSymbolAnimationPresetManager *)self client];
-    if (v10)
+    ui_affectsSymbolHiddenness = [symbolEffect ui_affectsSymbolHiddenness];
+    client = [(_UIImageViewSymbolAnimationPresetManager *)self client];
+    if (ui_affectsSymbolHiddenness)
     {
-      v11 = [v4 ui_rbSymbolHiddennessForAddingEffect];
-      v7 = [v13 options];
-      v12 = [v13 animated];
-      v9 = [v13 completionHandler];
-      [v5 animationPresetManager:self didSetHiddenness:v11 usingEffect:v4 options:v7 animated:v12 completion:v9];
+      ui_rbSymbolHiddennessForAddingEffect = [symbolEffect ui_rbSymbolHiddennessForAddingEffect];
+      options = [entryCopy options];
+      animated2 = [entryCopy animated];
+      completionHandler = [entryCopy completionHandler];
+      [client animationPresetManager:self didSetHiddenness:ui_rbSymbolHiddennessForAddingEffect usingEffect:symbolEffect options:options animated:animated2 completion:completionHandler];
     }
 
     else
     {
-      v7 = [v13 options];
-      v9 = [v13 completionHandler];
-      [v5 animationPresetManager:self addEffect:v4 options:v7 completion:v9];
+      options = [entryCopy options];
+      completionHandler = [entryCopy completionHandler];
+      [client animationPresetManager:self addEffect:symbolEffect options:options completion:completionHandler];
     }
   }
 }
 
-- (void)activeSymbolEffectDidComplete:(id)a3
+- (void)activeSymbolEffectDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   activeSymbolEffects = self->_activeSymbolEffects;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74___UIImageViewSymbolAnimationPresetManager_activeSymbolEffectDidComplete___block_invoke;
   v11[3] = &unk_1E7122C90;
-  v6 = v4;
+  v6 = completeCopy;
   v12 = v6;
   v7 = [(NSMutableArray *)activeSymbolEffects indexOfObjectPassingTest:v11];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v7;
     v9 = [(NSMutableArray *)self->_activeSymbolEffects objectAtIndexedSubscript:v7];
-    v10 = [v9 symbolEffect];
+    symbolEffect = [v9 symbolEffect];
 
-    if (([v10 ui_affectsSymbolScale] & 1) == 0 && (objc_msgSend(v10, "ui_affectsSymbolHiddenness") & 1) == 0)
+    if (([symbolEffect ui_affectsSymbolScale] & 1) == 0 && (objc_msgSend(symbolEffect, "ui_affectsSymbolHiddenness") & 1) == 0)
     {
       [(NSMutableArray *)self->_activeSymbolEffects removeObjectAtIndex:v8];
     }
   }
 }
 
-- (BOOL)_removeSymbolEffectsOfType:(id)a3 options:(id)a4 animated:(BOOL)a5 completion:(id)a6 forAddingNewEffect:(BOOL)a7
+- (BOOL)_removeSymbolEffectsOfType:(id)type options:(id)options animated:(BOOL)animated completion:(id)completion forAddingNewEffect:(BOOL)effect
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  animatedCopy = animated;
+  typeCopy = type;
+  optionsCopy = options;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __118___UIImageViewSymbolAnimationPresetManager__removeSymbolEffectsOfType_options_animated_completion_forAddingNewEffect___block_invoke;
   aBlock[3] = &unk_1E7122CB8;
   aBlock[4] = self;
-  v15 = v12;
+  v15 = typeCopy;
   v29 = v15;
-  v30 = a7;
+  effectCopy = effect;
   v16 = _Block_copy(aBlock);
   v17 = [(NSMutableArray *)self->_pendingSymbolEffects indexOfObjectPassingTest:v16];
   if (v17 != 0x7FFFFFFFFFFFFFFFLL)
@@ -260,14 +260,14 @@
     {
       v20 = 0;
 LABEL_7:
-      v23 = [v19 symbolEffect];
-      v24 = v23;
-      if (v20 && !a7 && (([v23 ui_affectsSymbolScale] & 1) != 0 || objc_msgSend(v24, "ui_affectsSymbolHiddenness")))
+      symbolEffect = [v19 symbolEffect];
+      v24 = symbolEffect;
+      if (v20 && !effect && (([symbolEffect ui_affectsSymbolScale] & 1) != 0 || objc_msgSend(v24, "ui_affectsSymbolHiddenness")))
       {
         if ([v24 ui_affectsSymbolScale])
         {
-          v25 = [(_UIImageViewSymbolAnimationPresetManager *)self client];
-          [v25 animationPresetManager:self didSetScale:0 usingEffect:v24 options:v13 animated:v9 completion:v14];
+          client = [(_UIImageViewSymbolAnimationPresetManager *)self client];
+          [client animationPresetManager:self didSetScale:0 usingEffect:v24 options:optionsCopy animated:animatedCopy completion:completionCopy];
         }
 
         else
@@ -277,15 +277,15 @@ LABEL_7:
             goto LABEL_16;
           }
 
-          v25 = [(_UIImageViewSymbolAnimationPresetManager *)self client];
-          [v25 animationPresetManager:self didSetHiddenness:0 usingEffect:v24 options:v13 animated:v9 completion:v14];
+          client = [(_UIImageViewSymbolAnimationPresetManager *)self client];
+          [client animationPresetManager:self didSetHiddenness:0 usingEffect:v24 options:optionsCopy animated:animatedCopy completion:completionCopy];
         }
       }
 
       else
       {
-        v25 = [(_UIImageViewSymbolAnimationPresetManager *)self client];
-        [v25 animationPresetManager:self removeEffect:v24 wasActive:v20 options:v13 animated:v9 completion:v14];
+        client = [(_UIImageViewSymbolAnimationPresetManager *)self client];
+        [client animationPresetManager:self removeEffect:v24 wasActive:v20 options:optionsCopy animated:animatedCopy completion:completionCopy];
       }
 
 LABEL_16:
@@ -313,11 +313,11 @@ LABEL_17:
   return v26;
 }
 
-- (void)removeAllSymbolEffectsWithOptions:(id)a3 animated:(BOOL)a4
+- (void)removeAllSymbolEffectsWithOptions:(id)options animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v7 = [(NSMutableArray *)self->_pendingSymbolEffects arrayByAddingObjectsFromArray:self->_activeSymbolEffects];
   v13 = 0u;
   v14 = 0u;
@@ -338,8 +338,8 @@ LABEL_17:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v13 + 1) + 8 * v11) symbolEffect];
-        [(_UIImageViewSymbolAnimationPresetManager *)self removeSymbolEffectsOfType:v12 options:v6 animated:v4 completion:0];
+        symbolEffect = [*(*(&v13 + 1) + 8 * v11) symbolEffect];
+        [(_UIImageViewSymbolAnimationPresetManager *)self removeSymbolEffectsOfType:symbolEffect options:optionsCopy animated:animatedCopy completion:0];
 
         ++v11;
       }
@@ -352,38 +352,38 @@ LABEL_17:
   }
 }
 
-- (BOOL)_symbolEffect:(id)a3 collidesWithSymbolEffect:(id)a4 forAddingEffect:(BOOL)a5
+- (BOOL)_symbolEffect:(id)effect collidesWithSymbolEffect:(id)symbolEffect forAddingEffect:(BOOL)addingEffect
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if ([v7 ui_affectsSymbolHiddenness] && v5)
+  addingEffectCopy = addingEffect;
+  effectCopy = effect;
+  symbolEffectCopy = symbolEffect;
+  if ([effectCopy ui_affectsSymbolHiddenness] && addingEffectCopy)
   {
-    v9 = [v8 ui_affectsSymbolHiddenness];
+    ui_affectsSymbolHiddenness = [symbolEffectCopy ui_affectsSymbolHiddenness];
   }
 
   else
   {
-    v10 = [v7 _effectType];
-    v9 = v10 == [v8 _effectType];
+    _effectType = [effectCopy _effectType];
+    ui_affectsSymbolHiddenness = _effectType == [symbolEffectCopy _effectType];
   }
 
-  return v9;
+  return ui_affectsSymbolHiddenness;
 }
 
-- (void)addPendingSymbolContentTransition:(id)a3 fromSymbolImage:(id)a4 toSymbolImage:(id)a5 options:(id)a6 completion:(id)a7
+- (void)addPendingSymbolContentTransition:(id)transition fromSymbolImage:(id)image toSymbolImage:(id)symbolImage options:(id)options completion:(id)completion
 {
-  v8 = [_UIImageViewPendingSymbolContentTransition transitionWithTransition:a3 sourceSymbolImage:a4 targetSymbolImage:a5 options:a6 completion:a7];
+  v8 = [_UIImageViewPendingSymbolContentTransition transitionWithTransition:transition sourceSymbolImage:image targetSymbolImage:symbolImage options:options completion:completion];
   pendingSymbolContentTransition = self->_pendingSymbolContentTransition;
   self->_pendingSymbolContentTransition = v8;
 }
 
-- (id)pendingSymbolContentTransitionForSettingSymbolImage:(id)a3
+- (id)pendingSymbolContentTransitionForSettingSymbolImage:(id)image
 {
-  v4 = a3;
-  v5 = [(_UIImageViewPendingSymbolContentTransition *)self->_pendingSymbolContentTransition targetSymbolImage];
-  v6 = v4;
-  v7 = v5;
+  imageCopy = image;
+  targetSymbolImage = [(_UIImageViewPendingSymbolContentTransition *)self->_pendingSymbolContentTransition targetSymbolImage];
+  v6 = imageCopy;
+  v7 = targetSymbolImage;
   v8 = v7;
   if (v7 == v6)
   {
@@ -412,26 +412,26 @@ LABEL_10:
   return v10;
 }
 
-- (void)activatePendingSymbolContentTransition:(id)a3
+- (void)activatePendingSymbolContentTransition:(id)transition
 {
   pendingSymbolContentTransition = self->_pendingSymbolContentTransition;
-  if (pendingSymbolContentTransition == a3)
+  if (pendingSymbolContentTransition == transition)
   {
     self->_pendingSymbolContentTransition = 0;
-    v5 = a3;
+    transitionCopy = transition;
 
-    v6 = [v5 symbolContentTransition];
+    symbolContentTransition = [transitionCopy symbolContentTransition];
 
     activeSymbolContentTransition = self->_activeSymbolContentTransition;
-    self->_activeSymbolContentTransition = v6;
+    self->_activeSymbolContentTransition = symbolContentTransition;
   }
 }
 
-- (void)activeSymbolContentTransitionDidComplete:(id)a3
+- (void)activeSymbolContentTransitionDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   activeSymbolContentTransition = self->_activeSymbolContentTransition;
-  v6 = v4;
+  v6 = completeCopy;
   v8 = v6;
   if (activeSymbolContentTransition == v6)
   {

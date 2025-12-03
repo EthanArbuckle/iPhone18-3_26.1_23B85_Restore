@@ -35,10 +35,10 @@ uint64_t __49__AXRImageDescriptorAppearance_homeScreenService__block_invoke()
   v4 = configuration_cachedConfiguration;
   if (!configuration_cachedConfiguration || v2 - *&configuration_lastFetchTime > 30.0)
   {
-    v5 = [objc_opt_class() homeScreenService];
-    v6 = [v5 homeScreenIconStyleConfiguration];
+    homeScreenService = [objc_opt_class() homeScreenService];
+    homeScreenIconStyleConfiguration = [homeScreenService homeScreenIconStyleConfiguration];
     v7 = configuration_cachedConfiguration;
-    configuration_cachedConfiguration = v6;
+    configuration_cachedConfiguration = homeScreenIconStyleConfiguration;
 
     configuration_lastFetchTime = v3;
     v4 = configuration_cachedConfiguration;
@@ -49,44 +49,44 @@ uint64_t __49__AXRImageDescriptorAppearance_homeScreenService__block_invoke()
 
 + (int64_t)appearance
 {
-  v3 = [a1 configuration];
-  if ([v3 updatedConfigurationType] == 2)
+  configuration = [self configuration];
+  if ([configuration updatedConfigurationType] == 2)
   {
-    v4 = 2;
+    imageAppearanceForColor = 2;
   }
 
   else
   {
-    v4 = [a1 imageAppearanceForColor];
+    imageAppearanceForColor = [self imageAppearanceForColor];
   }
 
-  return v4;
+  return imageAppearanceForColor;
 }
 
 + (int64_t)imageAppearanceForColor
 {
-  v3 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v4 = [a1 configuration];
-  v5 = [v4 variant];
-  if (v5 >= 2)
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  configuration = [self configuration];
+  variant = [configuration variant];
+  if (variant >= 2)
   {
-    v5 = [v3 userInterfaceStyle] == 2;
+    variant = [currentTraitCollection userInterfaceStyle] == 2;
   }
 
-  return v5;
+  return variant;
 }
 
 + (int64_t)appearanceVariant
 {
-  v2 = [a1 configuration];
-  v3 = [v2 updatedConfigurationType];
+  configuration = [self configuration];
+  updatedConfigurationType = [configuration updatedConfigurationType];
   v4 = 3;
-  if (v3 != 1)
+  if (updatedConfigurationType != 1)
   {
     v4 = 0;
   }
 
-  if (v3 == 2)
+  if (updatedConfigurationType == 2)
   {
     v5 = 2;
   }
@@ -101,19 +101,19 @@ uint64_t __49__AXRImageDescriptorAppearance_homeScreenService__block_invoke()
 
 + (id)tintColor
 {
-  v2 = [a1 configuration];
-  if ([v2 updatedConfigurationType] == 2)
+  configuration = [self configuration];
+  if ([configuration updatedConfigurationType] == 2)
   {
-    v3 = [v2 tintColor];
-    v4 = [v3 UIColor];
+    tintColor = [configuration tintColor];
+    uIColor = [tintColor UIColor];
   }
 
   else
   {
-    v4 = 0;
+    uIColor = 0;
   }
 
-  return v4;
+  return uIColor;
 }
 
 @end

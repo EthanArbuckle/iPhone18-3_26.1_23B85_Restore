@@ -1,19 +1,19 @@
 @interface GTXPCDispatcher
-- (GTXPCDispatcher)initWithProtocolMethods:(id)a3;
-- (void)dispatchMessage:(id)a3 replyConnection:(id)a4;
+- (GTXPCDispatcher)initWithProtocolMethods:(id)methods;
+- (void)dispatchMessage:(id)message replyConnection:(id)connection;
 @end
 
 @implementation GTXPCDispatcher
 
-- (GTXPCDispatcher)initWithProtocolMethods:(id)a3
+- (GTXPCDispatcher)initWithProtocolMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   v9.receiver = self;
   v9.super_class = GTXPCDispatcher;
   v5 = [(GTXPCDispatcher *)&v9 init];
   if (v5)
   {
-    v6 = [[NSSet alloc] initWithArray:v4];
+    v6 = [[NSSet alloc] initWithArray:methodsCopy];
     protocolMethods = v5->_protocolMethods;
     v5->_protocolMethods = v6;
   }
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (void)dispatchMessage:(id)a3 replyConnection:(id)a4
+- (void)dispatchMessage:(id)message replyConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  string = xpc_dictionary_get_string(v6, "_cmd");
+  messageCopy = message;
+  connectionCopy = connection;
+  string = xpc_dictionary_get_string(messageCopy, "_cmd");
   if (string)
   {
     v9 = [NSString stringWithUTF8String:string];
@@ -34,7 +34,7 @@
       v10 = [v9 stringByReplacingOccurrencesOfString:@":" withString:@"_"];
       v11 = [v10 stringByAppendingString:@":replyConnection:"];
 
-      [(GTXPCDispatcher *)self performSelector:NSSelectorFromString(v11) withObject:v6 withObject:v7];
+      [(GTXPCDispatcher *)self performSelector:NSSelectorFromString(v11) withObject:messageCopy withObject:connectionCopy];
     }
 
     goto LABEL_9;

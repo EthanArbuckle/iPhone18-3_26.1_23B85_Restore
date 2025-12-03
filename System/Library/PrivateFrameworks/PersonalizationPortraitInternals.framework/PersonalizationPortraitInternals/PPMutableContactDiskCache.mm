@@ -1,18 +1,18 @@
 @interface PPMutableContactDiskCache
-- (BOOL)_writeCache:(id)a3 path:(id)a4 error:(id *)a5;
-- (BOOL)addNameRecords:(id)a3 error:(id *)a4;
+- (BOOL)_writeCache:(id)cache path:(id)path error:(id *)error;
+- (BOOL)addNameRecords:(id)records error:(id *)error;
 - (BOOL)deleteCacheIfTooOld;
 - (BOOL)deleteNameRecordCache;
-- (BOOL)updateNameRecordCacheWithHistoryRecords:(id)a3 error:(id *)a4;
-- (id)_createNewCacheObjectWithCreatedAt:(int64_t)a3;
-- (id)_recordSetBucketsForNameRecords:(id)a3;
+- (BOOL)updateNameRecordCacheWithHistoryRecords:(id)records error:(id *)error;
+- (id)_createNewCacheObjectWithCreatedAt:(int64_t)at;
+- (id)_recordSetBucketsForNameRecords:(id)records;
 @end
 
 @implementation PPMutableContactDiskCache
 
-- (id)_recordSetBucketsForNameRecords:(id)a3
+- (id)_recordSetBucketsForNameRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -20,7 +20,7 @@
   v7[3] = &unk_278973300;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [recordsCopy enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -151,23 +151,23 @@ LABEL_6:
   return v7;
 }
 
-- (id)_createNewCacheObjectWithCreatedAt:(int64_t)a3
+- (id)_createNewCacheObjectWithCreatedAt:(int64_t)at
 {
   v4 = objc_opt_new();
-  [v4 setCreatedAt:a3];
+  [v4 setCreatedAt:at];
   v5 = objc_opt_new();
   [v4 setRecords:v5];
 
   return v4;
 }
 
-- (BOOL)_writeCache:(id)a3 path:(id)a4 error:(id *)a5
+- (BOOL)_writeCache:(id)cache path:(id)path error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [a3 data];
+  pathCopy = path;
+  data = [cache data];
   v15 = 0;
-  v9 = [v8 writeToFile:v7 options:1073741825 error:&v15];
+  v9 = [data writeToFile:pathCopy options:1073741825 error:&v15];
   v10 = v15;
 
   if ((v9 & 1) == 0)
@@ -176,16 +176,16 @@ LABEL_6:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = v7;
+      v17 = pathCopy;
       v18 = 2112;
       v19 = v10;
       _os_log_error_impl(&dword_23224A000, v11, OS_LOG_TYPE_ERROR, "failed to write name record cache at: %@ error: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v12 = v10;
-      *a5 = v10;
+      *error = v10;
     }
   }
 
@@ -197,13 +197,13 @@ LABEL_6:
 {
   v41 = *MEMORY[0x277D85DE8];
   v3 = 0x277CCA000uLL;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:self->super._path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:self->super._path];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v6 enumeratorAtPath:self->super._path];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v7 = [defaultManager2 enumeratorAtPath:self->super._path];
 
     if (v7)
     {
@@ -228,19 +228,19 @@ LABEL_6:
             }
 
             v13 = *(*(&v32 + 1) + 8 * i);
-            v14 = [v13 pathExtension];
-            v15 = [v14 isEqualToString:@"pb"];
+            pathExtension = [v13 pathExtension];
+            v15 = [pathExtension isEqualToString:@"pb"];
 
             if (v15)
             {
               v16 = objc_autoreleasePoolPush();
-              v17 = self;
+              selfCopy = self;
               v18 = [(NSString *)self->super._path stringByAppendingPathComponent:v13];
               objc_autoreleasePoolPop(v16);
               v19 = v3;
-              v20 = [*(v3 + 2560) defaultManager];
+              defaultManager3 = [*(v3 + 2560) defaultManager];
               v31 = 0;
-              v21 = [v20 removeItemAtPath:v18 error:&v31];
+              v21 = [defaultManager3 removeItemAtPath:v18 error:&v31];
               v22 = v31;
 
               if ((v21 & 1) == 0)
@@ -260,7 +260,7 @@ LABEL_6:
               }
 
               v3 = v19;
-              self = v17;
+              self = selfCopy;
               v8 = v30;
             }
           }
@@ -317,10 +317,10 @@ LABEL_24:
   return v24;
 }
 
-- (BOOL)addNameRecords:(id)a3 error:(id *)a4
+- (BOOL)addNameRecords:(id)records error:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
-  v44 = a3;
+  recordsCopy = records;
   [(PPMutableContactDiskCache *)self _recordSetBucketsForNameRecords:?];
   v62 = 0u;
   v63 = 0u;
@@ -329,10 +329,10 @@ LABEL_24:
   v49 = [obj countByEnumeratingWithState:&v62 objects:v75 count:16];
   if (v49)
   {
-    v45 = a4;
+    errorCopy = error;
     v48 = *v63;
     v46 = 1;
-    v47 = self;
+    selfCopy = self;
     while (2)
     {
       v6 = 0;
@@ -349,15 +349,15 @@ LABEL_24:
         objc_autoreleasePoolPop(v8);
         if ([v9 length] != 4)
         {
-          v38 = [MEMORY[0x277CCA890] currentHandler];
-          [v38 handleFailureInMethod:a2 object:self file:@"PPContactDiskCache.m" lineNumber:266 description:{@"Unexpected filename: %@", v9}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PPContactDiskCache.m" lineNumber:266 description:{@"Unexpected filename: %@", v9}];
         }
 
         v10 = objc_autoreleasePoolPush();
         v11 = [(NSString *)self->super._path stringByAppendingPathComponent:v9];
         objc_autoreleasePoolPop(v10);
-        v12 = [MEMORY[0x277CCAA00] defaultManager];
-        v13 = [v12 fileExistsAtPath:v11];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v13 = [defaultManager fileExistsAtPath:v11];
 
         if (v13)
         {
@@ -377,10 +377,10 @@ LABEL_24:
               _os_log_error_impl(&dword_23224A000, v39, OS_LOG_TYPE_ERROR, "failed to load cache object at %@: %@", buf, 0x16u);
             }
 
-            if (v45)
+            if (errorCopy)
             {
               v40 = v16;
-              *v45 = v16;
+              *errorCopy = v16;
             }
 
             v46 = 0;
@@ -400,24 +400,24 @@ LABEL_24:
         }
 
         lastCreatedAt = self->super._lastCreatedAt;
-        v20 = [v14 createdAt];
+        createdAt = [v14 createdAt];
         v52 = v6;
         v53 = v9;
         v55 = v11;
-        if (lastCreatedAt && v20 >= self->super._lastCreatedAt)
+        if (lastCreatedAt && createdAt >= self->super._lastCreatedAt)
         {
-          v20 = self->super._lastCreatedAt;
+          createdAt = self->super._lastCreatedAt;
         }
 
-        self->super._lastCreatedAt = v20;
+        self->super._lastCreatedAt = createdAt;
         v21 = [obj objectForKeyedSubscript:v7];
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
         v51 = v21;
-        v22 = [v21 adds];
-        v23 = [v22 countByEnumeratingWithState:&v57 objects:v74 count:16];
+        adds = [v21 adds];
+        v23 = [adds countByEnumeratingWithState:&v57 objects:v74 count:16];
         if (v23)
         {
           v24 = v23;
@@ -428,52 +428,52 @@ LABEL_24:
             {
               if (*v58 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(adds);
               }
 
               v27 = *(*(&v57 + 1) + 8 * i);
               v28 = pp_contacts_log_handle();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
               {
-                v31 = [v27 sourceIdentifier];
-                v32 = [v27 firstName];
-                v33 = [v27 lastName];
+                sourceIdentifier = [v27 sourceIdentifier];
+                firstName = [v27 firstName];
+                lastName = [v27 lastName];
                 *buf = 138740739;
-                v67 = v31;
+                v67 = sourceIdentifier;
                 v68 = 2117;
-                v69 = v32;
+                v69 = firstName;
                 v70 = 2117;
-                v71 = v33;
+                v71 = lastName;
                 v72 = 2112;
                 v73 = v55;
                 _os_log_debug_impl(&dword_23224A000, v28, OS_LOG_TYPE_DEBUG, "addNameRecord: %{sensitive}@ %{sensitive}@ %{sensitive}@ path: %@", buf, 0x2Au);
               }
 
-              v29 = [v14 records];
-              v30 = [v27 pbRecord];
-              [v29 addObject:v30];
+              records = [v14 records];
+              pbRecord = [v27 pbRecord];
+              [records addObject:pbRecord];
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v57 objects:v74 count:16];
+            v24 = [adds countByEnumeratingWithState:&v57 objects:v74 count:16];
           }
 
           while (v24);
         }
 
         v56 = 0;
-        self = v47;
-        v34 = [(PPMutableContactDiskCache *)v47 _writeCache:v14 path:v55 error:&v56];
+        self = selfCopy;
+        v34 = [(PPMutableContactDiskCache *)selfCopy _writeCache:v14 path:v55 error:&v56];
         v35 = v56;
         v36 = v35;
         if (!v34)
         {
-          if (v45)
+          if (errorCopy)
           {
             v37 = v35;
-            *v45 = v36;
+            *errorCopy = v36;
           }
 
-          [(PPMutableContactDiskCache *)v47 deleteNameRecordCache];
+          [(PPMutableContactDiskCache *)selfCopy deleteNameRecordCache];
           v46 = 0;
         }
 
@@ -502,9 +502,9 @@ LABEL_37:
   return v46 & 1;
 }
 
-- (BOOL)updateNameRecordCacheWithHistoryRecords:(id)a3 error:(id *)a4
+- (BOOL)updateNameRecordCacheWithHistoryRecords:(id)records error:(id *)error
 {
-  v7 = a3;
+  recordsCopy = records;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -515,7 +515,7 @@ LABEL_37:
   v15 = __Block_byref_object_copy__5745;
   v16 = __Block_byref_object_dispose__5746;
   v17 = 0;
-  v8 = [(PPMutableContactDiskCache *)self _recordSetBucketsForNameRecords:v7];
+  v8 = [(PPMutableContactDiskCache *)self _recordSetBucketsForNameRecords:recordsCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__PPMutableContactDiskCache_updateNameRecordCacheWithHistoryRecords_error___block_invoke;
@@ -532,9 +532,9 @@ LABEL_37:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = v13[5];
+      *error = v13[5];
     }
 
     [(PPMutableContactDiskCache *)self deleteNameRecordCache];

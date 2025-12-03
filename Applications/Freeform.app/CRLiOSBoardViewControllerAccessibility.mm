@@ -11,11 +11,11 @@
 - (CRLInteractiveCanvasControllerAccessibility)crlaxInteractiveCanvasController
 {
   v8 = 0;
-  v2 = [(CRLiOSBoardViewControllerAccessibility *)self crlaxTarget];
-  v3 = [v2 interactiveCanvasController];
+  crlaxTarget = [(CRLiOSBoardViewControllerAccessibility *)self crlaxTarget];
+  interactiveCanvasController = [crlaxTarget interactiveCanvasController];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, interactiveCanvasController, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -52,8 +52,8 @@
   v4.receiver = self;
   v4.super_class = CRLiOSBoardViewControllerAccessibility;
   [(CRLiOSBoardViewControllerAccessibility *)&v4 crlaxLoadAccessibilityInformation];
-  v3 = [(CRLiOSBoardViewControllerAccessibility *)self crlaxInteractiveCanvasController];
-  [v3 crlaxLoadAccessibilityInformation];
+  crlaxInteractiveCanvasController = [(CRLiOSBoardViewControllerAccessibility *)self crlaxInteractiveCanvasController];
+  [crlaxInteractiveCanvasController crlaxLoadAccessibilityInformation];
 }
 
 @end

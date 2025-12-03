@@ -7,29 +7,29 @@
 - (id)bearerUniformCallerIdentifierData;
 - (id)bearerUriSchemesSupportedListData;
 - (id)callControlPointOptionalOpcodesData;
-- (id)callProviderIdentifierFromTBSURIScheme:(id)a3;
+- (id)callProviderIdentifierFromTBSURIScheme:(id)scheme;
 - (id)callStateData;
 - (id)contentControlIdData;
-- (id)getCallInfoWithSharedCallIndex:(unsigned __int8)a3;
+- (id)getCallInfoWithSharedCallIndex:(unsigned __int8)index;
 - (id)incomingCallData;
 - (id)statusFlagsData;
-- (void)callControlPointNotification:(unsigned __int8)a3 callIndex:(unsigned __int8)a4 result:(unsigned __int8)a5;
-- (void)handleCallControlPointWrite:(id)a3;
-- (void)handleOriginateCallRequest:(id)a3;
-- (void)handleSubscribersForCharacteristic:(id)a3 withNotificationHandler:(id)a4;
+- (void)callControlPointNotification:(unsigned __int8)notification callIndex:(unsigned __int8)index result:(unsigned __int8)result;
+- (void)handleCallControlPointWrite:(id)write;
+- (void)handleOriginateCallRequest:(id)request;
+- (void)handleSubscribersForCharacteristic:(id)characteristic withNotificationHandler:(id)handler;
 - (void)notifyBearerListCurrentCalls;
 - (void)notifyBearerProviderName;
 - (void)notifyBearerTechnology;
 - (void)notifyCallStateChange;
-- (void)notifyCallTerminationReason:(unsigned __int8)a3 reason:(unsigned __int8)a4;
+- (void)notifyCallTerminationReason:(unsigned __int8)reason reason:(unsigned __int8)a4;
 - (void)notifyCentralsOfCharacteristicsSubscribed;
 - (void)notifyIncomingCall;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4;
-- (void)providerNameChanged:(id)a3;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests;
+- (void)providerNameChanged:(id)changed;
 @end
 
 @implementation TBSService
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = sub_100050708;
   block[3] = &unk_1000953F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000AA0A8 != -1)
   {
     dispatch_once(&qword_1000AA0A8, block);
@@ -157,144 +157,144 @@
     v62[10] = v2->_terminationReasonCharacteristic;
     v62[11] = v2->_incomingCallCharacteristic;
     v58 = [NSArray arrayWithObjects:v62 count:12];
-    v59 = [(Service *)v2 service];
-    [v59 setCharacteristics:v58];
+    service = [(Service *)v2 service];
+    [service setCharacteristics:v58];
   }
 
   return v2;
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  requestCopy = request;
   v8 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 characteristic];
-    v11 = [v10 UUID];
+    characteristic = [requestCopy characteristic];
+    uUID = [characteristic UUID];
     v36 = 136315394;
     v37 = "[TBSService peripheralManager:didReceiveReadRequest:]";
     v38 = 2112;
-    v39 = v11;
+    v39 = uUID;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s : called for %@", &v36, 0x16u);
   }
 
-  v12 = [v7 characteristic];
-  v13 = [(TBSService *)self bearerProviderNameCharacteristic];
+  characteristic2 = [requestCopy characteristic];
+  bearerProviderNameCharacteristic = [(TBSService *)self bearerProviderNameCharacteristic];
 
-  if (v12 == v13)
+  if (characteristic2 == bearerProviderNameCharacteristic)
   {
-    v34 = [(TBSService *)self bearerProviderNameData];
+    bearerProviderNameData = [(TBSService *)self bearerProviderNameData];
 LABEL_26:
-    v35 = v34;
-    [v7 setValue:v34];
+    v35 = bearerProviderNameData;
+    [requestCopy setValue:bearerProviderNameData];
 
     v33 = 0;
     goto LABEL_27;
   }
 
-  v14 = [v7 characteristic];
-  v15 = [(TBSService *)self bearerUniformCallerIdentifierCharacteristic];
+  characteristic3 = [requestCopy characteristic];
+  bearerUniformCallerIdentifierCharacteristic = [(TBSService *)self bearerUniformCallerIdentifierCharacteristic];
 
-  if (v14 == v15)
+  if (characteristic3 == bearerUniformCallerIdentifierCharacteristic)
   {
-    v34 = [(TBSService *)self bearerUniformCallerIdentifierData];
+    bearerProviderNameData = [(TBSService *)self bearerUniformCallerIdentifierData];
     goto LABEL_26;
   }
 
-  v16 = [v7 characteristic];
-  v17 = [(TBSService *)self bearerTechnologyCharacteristic];
+  characteristic4 = [requestCopy characteristic];
+  bearerTechnologyCharacteristic = [(TBSService *)self bearerTechnologyCharacteristic];
 
-  if (v16 == v17)
+  if (characteristic4 == bearerTechnologyCharacteristic)
   {
-    v34 = [(TBSService *)self bearerTechnologyData];
+    bearerProviderNameData = [(TBSService *)self bearerTechnologyData];
     goto LABEL_26;
   }
 
-  v18 = [v7 characteristic];
-  v19 = [(TBSService *)self bearerUriSchemesSupportedListCharacteristic];
+  characteristic5 = [requestCopy characteristic];
+  bearerUriSchemesSupportedListCharacteristic = [(TBSService *)self bearerUriSchemesSupportedListCharacteristic];
 
-  if (v18 == v19)
+  if (characteristic5 == bearerUriSchemesSupportedListCharacteristic)
   {
-    v34 = [(TBSService *)self bearerUriSchemesSupportedListData];
+    bearerProviderNameData = [(TBSService *)self bearerUriSchemesSupportedListData];
     goto LABEL_26;
   }
 
-  v20 = [v7 characteristic];
-  v21 = [(TBSService *)self bearerListCurrentCallsCharacteristic];
+  characteristic6 = [requestCopy characteristic];
+  bearerListCurrentCallsCharacteristic = [(TBSService *)self bearerListCurrentCallsCharacteristic];
 
-  if (v20 == v21)
+  if (characteristic6 == bearerListCurrentCallsCharacteristic)
   {
-    v34 = [(TBSService *)self bearerListCurrentCallsData];
+    bearerProviderNameData = [(TBSService *)self bearerListCurrentCallsData];
     goto LABEL_26;
   }
 
-  v22 = [v7 characteristic];
-  v23 = [(TBSService *)self contentControlIdCharacteristic];
+  characteristic7 = [requestCopy characteristic];
+  contentControlIdCharacteristic = [(TBSService *)self contentControlIdCharacteristic];
 
-  if (v22 == v23)
+  if (characteristic7 == contentControlIdCharacteristic)
   {
-    v34 = [(TBSService *)self contentControlIdData];
+    bearerProviderNameData = [(TBSService *)self contentControlIdData];
     goto LABEL_26;
   }
 
-  v24 = [v7 characteristic];
-  v25 = [(TBSService *)self statusFlagsCharacteristic];
+  characteristic8 = [requestCopy characteristic];
+  statusFlagsCharacteristic = [(TBSService *)self statusFlagsCharacteristic];
 
-  if (v24 == v25)
+  if (characteristic8 == statusFlagsCharacteristic)
   {
-    v34 = [(TBSService *)self statusFlagsData];
+    bearerProviderNameData = [(TBSService *)self statusFlagsData];
     goto LABEL_26;
   }
 
-  v26 = [v7 characteristic];
-  v27 = [(TBSService *)self callStateCharacteristic];
+  characteristic9 = [requestCopy characteristic];
+  callStateCharacteristic = [(TBSService *)self callStateCharacteristic];
 
-  if (v26 == v27)
+  if (characteristic9 == callStateCharacteristic)
   {
-    v34 = [(TBSService *)self callStateData];
+    bearerProviderNameData = [(TBSService *)self callStateData];
     goto LABEL_26;
   }
 
-  v28 = [v7 characteristic];
-  v29 = [(TBSService *)self callControlPointOptionalOpcodesCharacteristic];
+  characteristic10 = [requestCopy characteristic];
+  callControlPointOptionalOpcodesCharacteristic = [(TBSService *)self callControlPointOptionalOpcodesCharacteristic];
 
-  if (v28 == v29)
+  if (characteristic10 == callControlPointOptionalOpcodesCharacteristic)
   {
-    v34 = [(TBSService *)self callControlPointOptionalOpcodesData];
+    bearerProviderNameData = [(TBSService *)self callControlPointOptionalOpcodesData];
     goto LABEL_26;
   }
 
-  v30 = [v7 characteristic];
-  v31 = [(TBSService *)self incomingCallCharacteristic];
+  characteristic11 = [requestCopy characteristic];
+  incomingCallCharacteristic = [(TBSService *)self incomingCallCharacteristic];
 
-  if (v30 == v31)
+  if (characteristic11 == incomingCallCharacteristic)
   {
-    v34 = [(TBSService *)self incomingCallData];
+    bearerProviderNameData = [(TBSService *)self incomingCallData];
     goto LABEL_26;
   }
 
   v32 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
   {
-    sub_10005F048(v32, v7);
+    sub_10005F048(v32, requestCopy);
   }
 
   v33 = 14;
 LABEL_27:
-  [(Service *)self respondToRequest:v7 withResult:v33];
+  [(Service *)self respondToRequest:requestCopy withResult:v33];
 }
 
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests
 {
-  v5 = a4;
+  requestsCopy = requests;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  v6 = [requestsCopy countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v6)
   {
     v8 = v6;
@@ -307,14 +307,14 @@ LABEL_27:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 characteristic];
-        v13 = [(TBSService *)self callControlPointCharacteristic];
+        characteristic = [v11 characteristic];
+        callControlPointCharacteristic = [(TBSService *)self callControlPointCharacteristic];
 
-        if (v12 == v13)
+        if (characteristic == callControlPointCharacteristic)
         {
           [(TBSService *)self handleCallControlPointWrite:v11];
         }
@@ -325,12 +325,12 @@ LABEL_27:
           if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
           {
             v15 = v14;
-            v16 = [v11 characteristic];
-            v17 = [v16 UUID];
+            characteristic2 = [v11 characteristic];
+            uUID = [characteristic2 UUID];
             *buf = v18;
             v24 = "[TBSService peripheralManager:didReceiveWriteRequests:]";
             v25 = 2112;
-            v26 = v17;
+            v26 = uUID;
             _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s : Write attempt on unsupported characteristic %@. Rejecting request.", buf, 0x16u);
           }
 
@@ -338,107 +338,107 @@ LABEL_27:
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v8 = [requestsCopy countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
-  v32 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TBSService *)self telephoneBearer];
-  v11 = [v10 syncObject];
+  managerCopy = manager;
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  telephoneBearer = [(TBSService *)self telephoneBearer];
+  syncObject = [telephoneBearer syncObject];
 
-  objc_sync_enter(v11);
-  v12 = [(TBSService *)self subscribedCentrals];
-  v13 = [v9 UUID];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  objc_sync_enter(syncObject);
+  subscribedCentrals = [(TBSService *)self subscribedCentrals];
+  uUID = [characteristicCopy UUID];
+  v14 = [subscribedCentrals objectForKeyedSubscript:uUID];
 
   if (!v14)
   {
     v15 = +[NSMutableArray array];
-    v16 = [(TBSService *)self subscribedCentrals];
-    v17 = [v9 UUID];
-    [v16 setObject:v15 forKeyedSubscript:v17];
+    subscribedCentrals2 = [(TBSService *)self subscribedCentrals];
+    uUID2 = [characteristicCopy UUID];
+    [subscribedCentrals2 setObject:v15 forKeyedSubscript:uUID2];
   }
 
-  v18 = [(TBSService *)self subscribedCentrals];
-  v19 = [v9 UUID];
-  v20 = [v18 objectForKeyedSubscript:v19];
-  v21 = [v20 containsObject:v8];
+  subscribedCentrals3 = [(TBSService *)self subscribedCentrals];
+  uUID3 = [characteristicCopy UUID];
+  v20 = [subscribedCentrals3 objectForKeyedSubscript:uUID3];
+  v21 = [v20 containsObject:centralCopy];
 
   if ((v21 & 1) == 0)
   {
-    v22 = [(TBSService *)self subscribedCentrals];
-    v23 = [v9 UUID];
-    v24 = [v22 objectForKeyedSubscript:v23];
-    [v24 addObject:v8];
+    subscribedCentrals4 = [(TBSService *)self subscribedCentrals];
+    uUID4 = [characteristicCopy UUID];
+    v24 = [subscribedCentrals4 objectForKeyedSubscript:uUID4];
+    [v24 addObject:centralCopy];
 
     v25 = qword_1000A9FE0;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v8 identifier];
-      v27 = [v26 UUIDString];
-      v28 = [v9 UUID];
-      v29 = [(TBSService *)self subscribedCentrals];
-      v30 = [v9 UUID];
-      v31 = [v29 objectForKeyedSubscript:v30];
+      identifier = [centralCopy identifier];
+      uUIDString = [identifier UUIDString];
+      uUID5 = [characteristicCopy UUID];
+      subscribedCentrals5 = [(TBSService *)self subscribedCentrals];
+      uUID6 = [characteristicCopy UUID];
+      v31 = [subscribedCentrals5 objectForKeyedSubscript:uUID6];
       *buf = 136315906;
       v34 = "[TBSService peripheralManager:central:didSubscribeToCharacteristic:]";
       v35 = 2112;
-      v36 = v27;
+      v36 = uUIDString;
       v37 = 2112;
-      v38 = v28;
+      v38 = uUID5;
       v39 = 2048;
       v40 = [v31 count];
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, " %s: central %@ is now subscribed to characteristic %@, number of subscribers is now %lu", buf, 0x2Au);
     }
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(syncObject);
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
-  v7 = a4;
-  v8 = a5;
+  centralCopy = central;
+  characteristicCopy = characteristic;
   v9 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v7 identifier];
-    v12 = [v11 UUIDString];
-    v13 = [v8 UUID];
+    identifier = [centralCopy identifier];
+    uUIDString = [identifier UUIDString];
+    uUID = [characteristicCopy UUID];
     v17 = 136315650;
     v18 = "[TBSService peripheralManager:central:didUnsubscribeFromCharacteristic:]";
     v19 = 2112;
-    v20 = v12;
+    v20 = uUIDString;
     v21 = 2112;
-    v22 = v13;
+    v22 = uUID;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, " %s: central %@ is now unsubscribed to characteristic %@", &v17, 0x20u);
   }
 
-  v14 = [(TBSService *)self subscribedCentrals];
-  v15 = [v8 UUID];
-  v16 = [v14 objectForKeyedSubscript:v15];
-  [v16 removeObject:v7];
+  subscribedCentrals = [(TBSService *)self subscribedCentrals];
+  uUID2 = [characteristicCopy UUID];
+  v16 = [subscribedCentrals objectForKeyedSubscript:uUID2];
+  [v16 removeObject:centralCopy];
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v11 = [v8 isNotifying];
+    isNotifying = [characteristicCopy isNotifying];
     v12 = qword_1000A9FE0;
     v13 = os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT);
-    if (v11)
+    if (isNotifying)
     {
       if (!v13)
       {
@@ -446,11 +446,11 @@ LABEL_27:
       }
 
       v14 = v12;
-      v15 = [v8 UUID];
+      uUID = [characteristicCopy UUID];
       v17 = 136315394;
       v18 = "[TBSService peripheral:didUpdateNotificationStateForCharacteristic:error:]";
       v19 = 2112;
-      v20 = v15;
+      v20 = uUID;
       v16 = "%s : Started notifying for characteristic %@";
     }
 
@@ -462,11 +462,11 @@ LABEL_27:
       }
 
       v14 = v12;
-      v15 = [v8 UUID];
+      uUID = [characteristicCopy UUID];
       v17 = 136315394;
       v18 = "[TBSService peripheral:didUpdateNotificationStateForCharacteristic:error:]";
       v19 = 2112;
-      v20 = v15;
+      v20 = uUID;
       v16 = "%s : Stopped notifying for characteristic %@";
     }
 
@@ -478,32 +478,32 @@ LABEL_27:
   v10 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
   {
-    sub_10005F11C(v10, v8, v9);
+    sub_10005F11C(v10, characteristicCopy, errorCopy);
   }
 
 LABEL_10:
 }
 
-- (void)providerNameChanged:(id)a3
+- (void)providerNameChanged:(id)changed
 {
   v4 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = a3;
+    changedCopy = changed;
     v6 = v4;
     v7 = 136315394;
     v8 = "[TBSService providerNameChanged:]";
     v9 = 2080;
-    v10 = [a3 UTF8String];
+    uTF8String = [changed UTF8String];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s : Provider name changed passed to TBS: %s", &v7, 0x16u);
   }
 }
 
-- (void)handleCallControlPointWrite:(id)a3
+- (void)handleCallControlPointWrite:(id)write
 {
-  v4 = a3;
-  v5 = [v4 value];
-  v6 = [DataInputStream inputStreamWithData:v5 byteOrder:1];
+  writeCopy = write;
+  value = [writeCopy value];
+  v6 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v35 = 0;
   [v6 readUint8:&v35 + 1];
@@ -538,7 +538,7 @@ LABEL_10:
     v10 = v8;
     v11 = [(TBSService *)self opcodesToString:v9];
     v12 = v35;
-    v13 = [v7 callDescription];
+    callDescription = [v7 callDescription];
     *buf = 136315906;
     v37 = "[TBSService handleCallControlPointWrite:]";
     v38 = 2112;
@@ -546,7 +546,7 @@ LABEL_10:
     *&v39[8] = 1024;
     *&v39[10] = v12;
     v40 = 2112;
-    v41 = v13;
+    v41 = callDescription;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s : Received call control point write request opcode %@, peripheralCallIndex %u, for call %@", buf, 0x26u);
   }
 
@@ -556,17 +556,17 @@ LABEL_10:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v7 callDescription];
+      callDescription2 = [v7 callDescription];
       *buf = 136315394;
       v37 = "[TBSService handleCallControlPointWrite:]";
       v38 = 2112;
-      *v39 = v19;
+      *v39 = callDescription2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s : Terminating call %@", buf, 0x16u);
     }
 
-    v20 = [(TBSService *)self telephoneBearer];
-    v21 = [v7 identifier];
-    v22 = [v20 terminateCallWithIdentifier:v21];
+    telephoneBearer = [(TBSService *)self telephoneBearer];
+    identifier = [v7 identifier];
+    v22 = [telephoneBearer terminateCallWithIdentifier:identifier];
 
     if (!v22)
     {
@@ -576,15 +576,15 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v23 = [(TBSService *)self telephoneBearer];
-    v24 = [v23 syncObject];
+    telephoneBearer2 = [(TBSService *)self telephoneBearer];
+    syncObject = [telephoneBearer2 syncObject];
 
-    objc_sync_enter(v24);
-    v25 = [(TBSService *)self telephoneBearer];
-    [v25 deleteCallWithSharedCallIndex:{objc_msgSend(v7, "sharedCallIdx")}];
+    objc_sync_enter(syncObject);
+    telephoneBearer3 = [(TBSService *)self telephoneBearer];
+    [telephoneBearer3 deleteCallWithSharedCallIndex:{objc_msgSend(v7, "sharedCallIdx")}];
 
-    objc_sync_exit(v24);
-    [(Service *)self respondToRequest:v4 withResult:0];
+    objc_sync_exit(syncObject);
+    [(Service *)self respondToRequest:writeCopy withResult:0];
     v15 = 0;
   }
 
@@ -595,7 +595,7 @@ LABEL_19:
       v15 = 1;
       v16 = 6;
 LABEL_20:
-      [(Service *)self respondToRequest:v4 withResult:v16];
+      [(Service *)self respondToRequest:writeCopy withResult:v16];
 LABEL_21:
       v26 = 0;
       LOBYTE(v35) = 0;
@@ -614,9 +614,9 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v27 = [(TBSService *)self telephoneBearer];
-    v28 = [v7 identifier];
-    v29 = [v27 acceptCallWithIdentifier:v28];
+    telephoneBearer4 = [(TBSService *)self telephoneBearer];
+    identifier2 = [v7 identifier];
+    v29 = [telephoneBearer4 acceptCallWithIdentifier:identifier2];
 
     if (v29)
     {
@@ -638,7 +638,7 @@ LABEL_21:
       v15 = 2;
     }
 
-    [(Service *)self respondToRequest:v4 withResult:v30];
+    [(Service *)self respondToRequest:writeCopy withResult:v30];
     if (!v29)
     {
       goto LABEL_21;
@@ -654,22 +654,22 @@ LABEL_22:
   }
 }
 
-- (void)handleOriginateCallRequest:(id)a3
+- (void)handleOriginateCallRequest:(id)request
 {
-  v11 = [a3 componentsSeparatedByString:@":"];
+  v11 = [request componentsSeparatedByString:@":"];
   v4 = [v11 count] == 2;
   v5 = v11;
   if (v4)
   {
-    v6 = [v11 firstObject];
-    v7 = [(TBSService *)self callProviderIdentifierFromTBSURIScheme:v6];
+    firstObject = [v11 firstObject];
+    v7 = [(TBSService *)self callProviderIdentifierFromTBSURIScheme:firstObject];
 
-    v8 = [v11 lastObject];
-    v9 = v8;
-    if (v7 && v8)
+    lastObject = [v11 lastObject];
+    v9 = lastObject;
+    if (v7 && lastObject)
     {
-      v10 = [(TBSService *)self telephoneBearer];
-      [v10 dialCall:v9 withProvider:v7];
+      telephoneBearer = [(TBSService *)self telephoneBearer];
+      [telephoneBearer dialCall:v9 withProvider:v7];
     }
 
     v5 = v11;
@@ -678,19 +678,19 @@ LABEL_22:
 
 - (void)notifyCentralsOfCharacteristicsSubscribed
 {
-  v3 = [(TBSService *)self telephoneBearer];
-  v4 = [v3 syncObject];
+  telephoneBearer = [(TBSService *)self telephoneBearer];
+  syncObject = [telephoneBearer syncObject];
 
-  objc_sync_enter(v4);
+  objc_sync_enter(syncObject);
   [(TBSService *)self notifyCallStateChange];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(TBSService *)self telephoneBearer];
-  v6 = [v5 callList];
+  telephoneBearer2 = [(TBSService *)self telephoneBearer];
+  callList = [telephoneBearer2 callList];
 
-  v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v7 = [callList countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
     v8 = *v11;
@@ -700,7 +700,7 @@ LABEL_22:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(callList);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) callState])
@@ -710,7 +710,7 @@ LABEL_22:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [callList countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v7)
       {
         continue;
@@ -723,89 +723,89 @@ LABEL_22:
 LABEL_11:
 
   [(TBSService *)self notifyBearerListCurrentCalls];
-  objc_sync_exit(v4);
+  objc_sync_exit(syncObject);
 }
 
 - (void)notifyCallStateChange
 {
-  v3 = [(TBSService *)self callStateCharacteristic];
+  callStateCharacteristic = [(TBSService *)self callStateCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000521E0;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(TBSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(TBSService *)self handleSubscribersForCharacteristic:callStateCharacteristic withNotificationHandler:v4];
 }
 
 - (void)notifyBearerListCurrentCalls
 {
-  v3 = [(TBSService *)self bearerListCurrentCallsCharacteristic];
+  bearerListCurrentCallsCharacteristic = [(TBSService *)self bearerListCurrentCallsCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000522FC;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(TBSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(TBSService *)self handleSubscribersForCharacteristic:bearerListCurrentCallsCharacteristic withNotificationHandler:v4];
 }
 
 - (void)notifyBearerProviderName
 {
-  v3 = [(TBSService *)self bearerProviderNameCharacteristic];
+  bearerProviderNameCharacteristic = [(TBSService *)self bearerProviderNameCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100052418;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(TBSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(TBSService *)self handleSubscribersForCharacteristic:bearerProviderNameCharacteristic withNotificationHandler:v4];
 }
 
 - (void)notifyBearerTechnology
 {
-  v3 = [(TBSService *)self bearerTechnologyCharacteristic];
+  bearerTechnologyCharacteristic = [(TBSService *)self bearerTechnologyCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100052534;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(TBSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(TBSService *)self handleSubscribersForCharacteristic:bearerTechnologyCharacteristic withNotificationHandler:v4];
 }
 
 - (void)notifyIncomingCall
 {
-  v3 = [(TBSService *)self incomingCallCharacteristic];
+  incomingCallCharacteristic = [(TBSService *)self incomingCallCharacteristic];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100052650;
   v4[3] = &unk_100095518;
   v4[4] = self;
-  [(TBSService *)self handleSubscribersForCharacteristic:v3 withNotificationHandler:v4];
+  [(TBSService *)self handleSubscribersForCharacteristic:incomingCallCharacteristic withNotificationHandler:v4];
 }
 
-- (void)notifyCallTerminationReason:(unsigned __int8)a3 reason:(unsigned __int8)a4
+- (void)notifyCallTerminationReason:(unsigned __int8)reason reason:(unsigned __int8)a4
 {
-  v7 = [(TBSService *)self terminationReasonCharacteristic];
+  terminationReasonCharacteristic = [(TBSService *)self terminationReasonCharacteristic];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100052784;
   v8[3] = &unk_100095540;
-  v9 = a3;
+  reasonCopy = reason;
   v10 = a4;
   v8[4] = self;
-  [(TBSService *)self handleSubscribersForCharacteristic:v7 withNotificationHandler:v8];
+  [(TBSService *)self handleSubscribersForCharacteristic:terminationReasonCharacteristic withNotificationHandler:v8];
 }
 
-- (void)callControlPointNotification:(unsigned __int8)a3 callIndex:(unsigned __int8)a4 result:(unsigned __int8)a5
+- (void)callControlPointNotification:(unsigned __int8)notification callIndex:(unsigned __int8)index result:(unsigned __int8)result
 {
-  v9 = [(TBSService *)self callControlPointCharacteristic];
+  callControlPointCharacteristic = [(TBSService *)self callControlPointCharacteristic];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000529C8;
   v10[3] = &unk_100095BC8;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  notificationCopy = notification;
+  indexCopy = index;
+  resultCopy = result;
   v10[4] = self;
-  [(TBSService *)self handleSubscribersForCharacteristic:v9 withNotificationHandler:v10];
+  [(TBSService *)self handleSubscribersForCharacteristic:callControlPointCharacteristic withNotificationHandler:v10];
 }
 
 - (id)bearerProviderNameData
@@ -813,7 +813,7 @@ LABEL_11:
   v2 = [DataOutputStream outputStreamWithByteOrder:1];
   v3 = [@"Verizon" dataUsingEncoding:4];
   [v2 writeData:v3];
-  v4 = [v2 data];
+  data = [v2 data];
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
@@ -821,35 +821,35 @@ LABEL_11:
     v8 = 136315394;
     v9 = "[TBSService bearerProviderNameData]";
     v10 = 2048;
-    v11 = [v4 length];
+    v11 = [data length];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s : Bearer Provider Name NSData length = %lu", &v8, 0x16u);
   }
 
-  return v4;
+  return data;
 }
 
 - (id)bearerUniformCallerIdentifierData
 {
   v3 = [DataOutputStream outputStreamWithByteOrder:1];
-  v4 = [(TBSService *)self telephoneBearer];
-  v5 = [v4 activeSharedCallIdx];
+  telephoneBearer = [(TBSService *)self telephoneBearer];
+  activeSharedCallIdx = [telephoneBearer activeSharedCallIdx];
 
-  if (v5)
+  if (activeSharedCallIdx)
   {
-    v6 = [(TBSService *)self telephoneBearer];
-    v7 = -[TBSService getCallInfoWithSharedCallIndex:](self, "getCallInfoWithSharedCallIndex:", [v6 activeSharedCallIdx]);
+    telephoneBearer2 = [(TBSService *)self telephoneBearer];
+    v7 = -[TBSService getCallInfoWithSharedCallIndex:](self, "getCallInfoWithSharedCallIndex:", [telephoneBearer2 activeSharedCallIdx]);
 
     v8 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v7 callURI];
+      callURI = [v7 callURI];
       v18 = 136315650;
       v19 = "[TBSService bearerUniformCallerIdentifierData]";
       v20 = 2112;
       v21 = @"un000";
       v22 = 2112;
-      v23 = v10;
+      v23 = callURI;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s : bearerUCI Scheme %@, phone number = %@", &v18, 0x20u);
     }
   }
@@ -869,12 +869,12 @@ LABEL_11:
 
   v12 = [@"un000" dataUsingEncoding:4];
   [v3 writeData:v12];
-  v13 = [v3 data];
+  data = [v3 data];
   v14 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v13 length];
+    v16 = [data length];
     v18 = 136315394;
     v19 = "[TBSService bearerUniformCallerIdentifierData]";
     v20 = 2048;
@@ -882,16 +882,16 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s : URI Schemes NSData length = %lu", &v18, 0x16u);
   }
 
-  return v13;
+  return data;
 }
 
 - (id)bearerTechnologyData
 {
   v2 = [DataOutputStream outputStreamWithByteOrder:1];
   [v2 writeUint8:5];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
 - (id)bearerUriSchemesSupportedListData
@@ -909,12 +909,12 @@ LABEL_11:
 
   v4 = [@"tel" dataUsingEncoding:4];
   [v2 writeData:v4];
-  v5 = [v2 data];
+  data = [v2 data];
   v6 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 length];
+    v8 = [data length];
     v10 = 136315394;
     v11 = "[TBSService bearerUriSchemesSupportedListData]";
     v12 = 2048;
@@ -922,19 +922,19 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s : URI Schemes NSData length = %lu", &v10, 0x16u);
   }
 
-  return v5;
+  return data;
 }
 
 - (id)bearerListCurrentCallsData
 {
-  v3 = [(TBSService *)self telephoneBearer];
-  v4 = [v3 callList];
-  v5 = [v4 count];
+  telephoneBearer = [(TBSService *)self telephoneBearer];
+  callList = [telephoneBearer callList];
+  v5 = [callList count];
 
   if (v5)
   {
-    v6 = [(TBSService *)self telephoneBearer];
-    obj = [v6 syncObject];
+    telephoneBearer2 = [(TBSService *)self telephoneBearer];
+    obj = [telephoneBearer2 syncObject];
 
     objc_sync_enter(obj);
     v7 = [DataOutputStream outputStreamWithByteOrder:1];
@@ -942,14 +942,14 @@ LABEL_11:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v8 = [(TBSService *)self telephoneBearer];
-    v9 = [v8 callList];
+    telephoneBearer3 = [(TBSService *)self telephoneBearer];
+    callList2 = [telephoneBearer3 callList];
 
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v44 count:16];
+    v10 = [callList2 countByEnumeratingWithState:&v28 objects:v44 count:16];
     if (v10)
     {
       v27 = *v29;
-      v26 = v9;
+      v26 = callList2;
       do
       {
         for (i = 0; i != v10; i = i + 1)
@@ -960,94 +960,94 @@ LABEL_11:
           }
 
           v12 = *(*(&v28 + 1) + 8 * i);
-          v13 = [v12 callURI];
-          v14 = [v13 lengthOfBytesUsingEncoding:4];
+          callURI = [v12 callURI];
+          v14 = [callURI lengthOfBytesUsingEncoding:4];
 
           v15 = v14 + 4;
           [v7 writeUint8:(v14 + 4)];
           [v7 writeUint8:{objc_msgSend(v12, "sharedCallIdx")}];
           [v7 writeUint8:{objc_msgSend(v12, "callState")}];
           [v7 writeUint8:{objc_msgSend(v12, "callFlags")}];
-          v16 = [v12 callURI];
-          v17 = [v16 dataUsingEncoding:4];
+          callURI2 = [v12 callURI];
+          v17 = [callURI2 dataUsingEncoding:4];
 
           [v7 writeData:v17];
           v18 = qword_1000A9FE0;
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v12 sharedCallIdx];
-            v20 = [v12 callState];
-            v21 = [v12 callFlags];
-            v22 = [v12 callURI];
+            sharedCallIdx = [v12 sharedCallIdx];
+            callState = [v12 callState];
+            callFlags = [v12 callFlags];
+            callURI3 = [v12 callURI];
             *buf = 136316418;
             v33 = "[TBSService bearerListCurrentCallsData]";
             v34 = 1024;
             v35 = v15;
             v36 = 1024;
-            v37 = v19;
+            v37 = sharedCallIdx;
             v38 = 1024;
-            v39 = v20;
+            v39 = callState;
             v40 = 1024;
-            v41 = v21;
+            v41 = callFlags;
             v42 = 2112;
-            v43 = v22;
+            v43 = callURI3;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s : ListItemLength %u, shared call index %u, call state %u, call flags %u, call URI %@", buf, 0x2Eu);
           }
         }
 
-        v9 = v26;
+        callList2 = v26;
         v10 = [v26 countByEnumeratingWithState:&v28 objects:v44 count:16];
       }
 
       while (v10);
     }
 
-    v23 = [v7 data];
+    data = [v7 data];
 
     objc_sync_exit(obj);
   }
 
   else
   {
-    v23 = +[NSData data];
+    data = +[NSData data];
   }
 
-  return v23;
+  return data;
 }
 
 - (id)contentControlIdData
 {
   v2 = [DataOutputStream outputStreamWithByteOrder:1];
   [v2 writeUint8:128];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
 - (id)statusFlagsData
 {
   v2 = [DataOutputStream outputStreamWithByteOrder:1];
   [v2 writeUint16:1];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
 - (id)callStateData
 {
   v3 = [DataOutputStream outputStreamWithByteOrder:1];
-  v4 = [(TBSService *)self telephoneBearer];
-  obj = [v4 syncObject];
+  telephoneBearer = [(TBSService *)self telephoneBearer];
+  obj = [telephoneBearer syncObject];
 
   objc_sync_enter(obj);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(TBSService *)self telephoneBearer];
-  v6 = [v5 callList];
+  telephoneBearer2 = [(TBSService *)self telephoneBearer];
+  callList = [telephoneBearer2 callList];
 
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v36 count:16];
+  v7 = [callList countByEnumeratingWithState:&v22 objects:v36 count:16];
   if (v7)
   {
     v21 = *v23;
@@ -1057,7 +1057,7 @@ LABEL_11:
       {
         if (*v23 != v21)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(callList);
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
@@ -1067,17 +1067,17 @@ LABEL_11:
         v10 = qword_1000A9FE0;
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v9 identifier];
-          v12 = [v11 UUIDString];
-          v13 = [v9 sharedCallIdx];
+          identifier = [v9 identifier];
+          uUIDString = [identifier UUIDString];
+          sharedCallIdx = [v9 sharedCallIdx];
           v14 = [v9 tbsCallStateToString:{objc_msgSend(v9, "callState")}];
           v15 = [v9 callFlagsDescriptionForFlags:{objc_msgSend(v9, "callFlags")}];
           *buf = 136316162;
           v27 = "[TBSService callStateData]";
           v28 = 2112;
-          v29 = v12;
+          v29 = uUIDString;
           v30 = 1024;
-          v31 = v13;
+          v31 = sharedCallIdx;
           v32 = 2112;
           v33 = v14;
           v34 = 2112;
@@ -1086,15 +1086,15 @@ LABEL_11:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v36 count:16];
+      v7 = [callList countByEnumeratingWithState:&v22 objects:v36 count:16];
     }
 
     while (v7);
   }
 
   objc_sync_exit(obj);
-  v16 = [v3 data];
-  if ([v16 length])
+  data = [v3 data];
+  if ([data length])
   {
     v17 = v3;
   }
@@ -1104,34 +1104,34 @@ LABEL_11:
     v17 = NSData;
   }
 
-  v18 = [v17 data];
+  data2 = [v17 data];
 
-  return v18;
+  return data2;
 }
 
 - (id)callControlPointOptionalOpcodesData
 {
   v2 = [DataOutputStream outputStreamWithByteOrder:1];
   [v2 writeUint16:0];
-  v3 = [v2 data];
+  data = [v2 data];
 
-  return v3;
+  return data;
 }
 
 - (id)incomingCallData
 {
-  v3 = [(TBSService *)self telephoneBearer];
-  v4 = [v3 syncObject];
+  telephoneBearer = [(TBSService *)self telephoneBearer];
+  syncObject = [telephoneBearer syncObject];
 
-  objc_sync_enter(v4);
+  objc_sync_enter(syncObject);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(TBSService *)self telephoneBearer];
-  v6 = [v5 callList];
+  telephoneBearer2 = [(TBSService *)self telephoneBearer];
+  callList = [telephoneBearer2 callList];
 
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v36 count:16];
+  v7 = [callList countByEnumeratingWithState:&v22 objects:v36 count:16];
   if (v7)
   {
     v8 = *v23;
@@ -1141,19 +1141,19 @@ LABEL_11:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(callList);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
         if (![v10 callState])
         {
-          v11 = [v10 sharedCallIdx];
+          sharedCallIdx = [v10 sharedCallIdx];
           v7 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v36 count:16];
+      v7 = [callList countByEnumeratingWithState:&v22 objects:v36 count:16];
       if (v7)
       {
         continue;
@@ -1163,38 +1163,38 @@ LABEL_11:
     }
   }
 
-  v11 = 0;
+  sharedCallIdx = 0;
 LABEL_11:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(syncObject);
   v12 = [DataOutputStream outputStreamWithByteOrder:1];
-  if (v11)
+  if (sharedCallIdx)
   {
-    v13 = [v7 callURI];
-    v14 = [v13 dataUsingEncoding:4];
+    callURI = [v7 callURI];
+    v14 = [callURI dataUsingEncoding:4];
 
-    [v12 writeUint8:v11];
+    [v12 writeUint8:sharedCallIdx];
     [v12 writeData:v14];
     v15 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v7 callURI];
-      v18 = [v12 data];
+      callURI2 = [v7 callURI];
+      data = [v12 data];
       *buf = 136316162;
       v27 = "[TBSService incomingCallData]";
       v28 = 1024;
-      v29 = v11;
+      v29 = sharedCallIdx;
       v30 = 2112;
-      v31 = v17;
+      v31 = callURI2;
       v32 = 2112;
       v33 = v14;
       v34 = 2112;
-      v35 = v18;
+      v35 = data;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s : Incoming Call Index: %u, call uri %@, uriData %@, incomingCallData %@", buf, 0x30u);
     }
 
-    v19 = [v12 data];
+    data2 = [v12 data];
   }
 
   else
@@ -1208,23 +1208,23 @@ LABEL_11:
     }
 
     [v12 writeUint8:0];
-    v19 = [v12 data];
+    data2 = [v12 data];
   }
 
-  return v19;
+  return data2;
 }
 
-- (void)handleSubscribersForCharacteristic:(id)a3 withNotificationHandler:(id)a4
+- (void)handleSubscribersForCharacteristic:(id)characteristic withNotificationHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TBSService *)self subscribedCentrals];
-  v9 = [v6 UUID];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  characteristicCopy = characteristic;
+  handlerCopy = handler;
+  subscribedCentrals = [(TBSService *)self subscribedCentrals];
+  uUID = [characteristicCopy UUID];
+  v10 = [subscribedCentrals objectForKeyedSubscript:uUID];
 
   if ([v10 count])
   {
-    v7[2](v7, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 
   else
@@ -1233,25 +1233,25 @@ LABEL_11:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v6 UUID];
+      uUID2 = [characteristicCopy UUID];
       v14 = 136315394;
       v15 = "[TBSService handleSubscribersForCharacteristic:withNotificationHandler:]";
       v16 = 2112;
-      v17 = v13;
+      v17 = uUID2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s : No subscribers for update to characteristic %@", &v14, 0x16u);
     }
   }
 }
 
-- (id)callProviderIdentifierFromTBSURIScheme:(id)a3
+- (id)callProviderIdentifierFromTBSURIScheme:(id)scheme
 {
-  v3 = a3;
-  if ([v3 isEqual:@"ftime"])
+  schemeCopy = scheme;
+  if ([schemeCopy isEqual:@"ftime"])
   {
     v4 = @"com.apple.telephonyutilities.callservicesd.FaceTimeProvider";
   }
 
-  else if ([v3 isEqual:@"E.164"])
+  else if ([schemeCopy isEqual:@"E.164"])
   {
     v4 = @"com.apple.coretelephony";
   }
@@ -1264,21 +1264,21 @@ LABEL_11:
   return v4;
 }
 
-- (id)getCallInfoWithSharedCallIndex:(unsigned __int8)a3
+- (id)getCallInfoWithSharedCallIndex:(unsigned __int8)index
 {
-  v3 = a3;
-  v5 = [(TBSService *)self telephoneBearer];
-  v6 = [v5 syncObject];
+  indexCopy = index;
+  telephoneBearer = [(TBSService *)self telephoneBearer];
+  syncObject = [telephoneBearer syncObject];
 
-  objc_sync_enter(v6);
+  objc_sync_enter(syncObject);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(TBSService *)self telephoneBearer];
-  v8 = [v7 callList];
+  telephoneBearer2 = [(TBSService *)self telephoneBearer];
+  callList = [telephoneBearer2 callList];
 
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [callList countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = *v16;
@@ -1288,18 +1288,18 @@ LABEL_11:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(callList);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([v12 sharedCallIdx] == v3)
+        if ([v12 sharedCallIdx] == indexCopy)
         {
           v13 = v12;
           goto LABEL_11;
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [callList countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;
@@ -1312,7 +1312,7 @@ LABEL_11:
   v13 = 0;
 LABEL_11:
 
-  objc_sync_exit(v6);
+  objc_sync_exit(syncObject);
 
   return v13;
 }

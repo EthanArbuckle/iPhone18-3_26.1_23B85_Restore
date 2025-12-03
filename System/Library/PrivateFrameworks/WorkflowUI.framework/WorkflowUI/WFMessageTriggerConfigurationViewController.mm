@@ -1,19 +1,19 @@
 @interface WFMessageTriggerConfigurationViewController
-- (WFMessageTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFMessageTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
-- (id)displayForSelectedContacts:(id)a3;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)displayForSelectedContacts:(id)contacts;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)presentNavControllerWithRootViewController:(id)a3;
-- (void)recipientViewControllerDidFinish:(id)a3 cancelled:(BOOL)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)presentNavControllerWithRootViewController:(id)controller;
+- (void)recipientViewControllerDidFinish:(id)finish cancelled:(BOOL)cancelled;
 - (void)showMessageContainsAlert;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateUI;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFMessageTriggerConfigurationViewController
@@ -32,7 +32,7 @@
   v16[2] = __71__WFMessageTriggerConfigurationViewController_showMessageContainsAlert__block_invoke;
   v16[3] = &unk_279EE81B0;
   v17 = v6;
-  v18 = self;
+  selfCopy = self;
   v9 = v6;
   v10 = [v7 actionWithTitle:v8 style:0 handler:v16];
 
@@ -126,25 +126,25 @@ void __71__WFMessageTriggerConfigurationViewController_showMessageContainsAlert_
   [v3 setPlaceholder:v6];
 }
 
-- (void)presentNavControllerWithRootViewController:(id)a3
+- (void)presentNavControllerWithRootViewController:(id)controller
 {
   v4 = MEMORY[0x277D757A0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithRootViewController:v5];
+  controllerCopy = controller;
+  v6 = [[v4 alloc] initWithRootViewController:controllerCopy];
 
   [(WFMessageTriggerConfigurationViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (id)displayForSelectedContacts:(id)a3
+- (id)displayForSelectedContacts:(id)contacts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contactsCopy = contacts;
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = contactsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -161,9 +161,9 @@ void __71__WFMessageTriggerConfigurationViewController_showMessageContainsAlert_
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = MEMORY[0x277CCACA8];
-        v12 = [v10 givenName];
-        v13 = [v10 familyName];
-        v14 = [v11 stringWithFormat:@"%@ %@, ", v12, v13, v16];
+        givenName = [v10 givenName];
+        familyName = [v10 familyName];
+        v14 = [v11 stringWithFormat:@"%@ %@, ", givenName, familyName, v16];
         [v4 appendString:v14];
       }
 
@@ -176,24 +176,24 @@ void __71__WFMessageTriggerConfigurationViewController_showMessageContainsAlert_
   return v4;
 }
 
-- (void)recipientViewControllerDidFinish:(id)a3 cancelled:(BOOL)a4
+- (void)recipientViewControllerDidFinish:(id)finish cancelled:(BOOL)cancelled
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  finishCopy = finish;
+  v7 = finishCopy;
+  if (!cancelled)
   {
-    v42 = self;
-    [v6 commitRemainingText];
+    selfCopy = self;
+    [finishCopy commitRemainingText];
     v41 = v7;
-    v8 = [v7 entries];
+    entries = [v7 entries];
     v9 = [MEMORY[0x277CBEB58] set];
     v10 = [MEMORY[0x277CBEB58] set];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v11 = v8;
+    v11 = entries;
     v44 = [v11 countByEnumeratingWithState:&v45 objects:v49 count:16];
     if (!v44)
     {
@@ -212,29 +212,29 @@ void __71__WFMessageTriggerConfigurationViewController_showMessageContainsAlert_
         }
 
         v14 = *(*(&v45 + 1) + 8 * i);
-        v15 = [v14 contact];
-        v16 = v15;
-        if (v15)
+        contact = [v14 contact];
+        v16 = contact;
+        if (contact)
         {
-          v17 = [v15 contact];
-          [v9 addObject:v17];
+          v15Contact = [contact contact];
+          [v9 addObject:v15Contact];
 
-          v18 = WFMessageTriggerConfigurationSenderStringsFromContact(v16);
-          [v10 addObjectsFromArray:v18];
+          phoneNumber2 = WFMessageTriggerConfigurationSenderStringsFromContact(v16);
+          [v10 addObjectsFromArray:phoneNumber2];
         }
 
         else
         {
-          v19 = [v14 phoneNumber];
+          phoneNumber = [v14 phoneNumber];
 
-          if (v19)
+          if (phoneNumber)
           {
             v20 = v11;
             v21 = v10;
             v22 = v9;
-            v18 = [v14 phoneNumber];
-            v23 = [v18 formattedPhoneNumber];
-            if (!v23)
+            phoneNumber2 = [v14 phoneNumber];
+            formattedPhoneNumber = [phoneNumber2 formattedPhoneNumber];
+            if (!formattedPhoneNumber)
             {
               v10 = v21;
               v11 = v20;
@@ -242,50 +242,50 @@ void __71__WFMessageTriggerConfigurationViewController_showMessageContainsAlert_
               goto LABEL_17;
             }
 
-            v24 = v23;
-            v25 = [v14 phoneNumber];
-            v26 = [v25 normalizedPhoneNumber];
+            v24 = formattedPhoneNumber;
+            phoneNumber3 = [v14 phoneNumber];
+            normalizedPhoneNumber = [phoneNumber3 normalizedPhoneNumber];
 
             v9 = v22;
             v10 = v21;
             v11 = v20;
             v12 = v43;
-            if (!v26)
+            if (!normalizedPhoneNumber)
             {
               goto LABEL_18;
             }
 
-            v18 = objc_alloc_init(MEMORY[0x277CBDB38]);
-            v27 = [v14 phoneNumber];
-            v28 = [v27 formattedPhoneNumber];
-            [v18 setGivenName:v28];
+            phoneNumber2 = objc_alloc_init(MEMORY[0x277CBDB38]);
+            phoneNumber4 = [v14 phoneNumber];
+            formattedPhoneNumber2 = [phoneNumber4 formattedPhoneNumber];
+            [phoneNumber2 setGivenName:formattedPhoneNumber2];
 
-            [v9 addObject:v18];
-            v29 = [v14 phoneNumber];
-            v30 = [v29 normalizedPhoneNumber];
+            [v9 addObject:phoneNumber2];
+            phoneNumber5 = [v14 phoneNumber];
+            normalizedPhoneNumber2 = [phoneNumber5 normalizedPhoneNumber];
           }
 
           else
           {
-            v31 = [v14 emailAddress];
+            emailAddress = [v14 emailAddress];
 
-            if (!v31)
+            if (!emailAddress)
             {
               goto LABEL_18;
             }
 
-            v18 = objc_alloc_init(MEMORY[0x277CBDB38]);
-            v32 = [v14 emailAddress];
-            v33 = [v32 address];
-            [v18 setGivenName:v33];
+            phoneNumber2 = objc_alloc_init(MEMORY[0x277CBDB38]);
+            emailAddress2 = [v14 emailAddress];
+            address = [emailAddress2 address];
+            [phoneNumber2 setGivenName:address];
 
-            [v9 addObject:v18];
-            v29 = [v14 emailAddress];
-            v30 = [v29 address];
+            [v9 addObject:phoneNumber2];
+            phoneNumber5 = [v14 emailAddress];
+            normalizedPhoneNumber2 = [phoneNumber5 address];
           }
 
-          v34 = v30;
-          [v10 addObject:v30];
+          v34 = normalizedPhoneNumber2;
+          [v10 addObject:normalizedPhoneNumber2];
         }
 
 LABEL_17:
@@ -298,15 +298,15 @@ LABEL_18:
       {
 LABEL_20:
 
-        v35 = [v9 allObjects];
+        allObjects = [v9 allObjects];
         v36 = v11;
-        self = v42;
-        v37 = [(WFTriggerConfigurationViewController *)v42 trigger];
-        [v37 setSelectedSenders:v35];
+        self = selfCopy;
+        trigger = [(WFTriggerConfigurationViewController *)selfCopy trigger];
+        [trigger setSelectedSenders:allObjects];
 
-        v38 = [v10 allObjects];
-        v39 = [(WFTriggerConfigurationViewController *)v42 trigger];
-        [v39 setSelectedSendersStrings:v38];
+        allObjects2 = [v10 allObjects];
+        trigger2 = [(WFTriggerConfigurationViewController *)selfCopy trigger];
+        [trigger2 setSelectedSendersStrings:allObjects2];
 
         v7 = v41;
         break;
@@ -315,18 +315,18 @@ LABEL_20:
   }
 
   [v7 dismissViewControllerAnimated:1 completion:0];
-  v40 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v40 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFMessageTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFMessageTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = getWFTriggersLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -353,10 +353,10 @@ LABEL_20:
     [v11 setSupportedPersonProperties:v14];
 
     [v11 setDelegate:self];
-    v15 = [(WFTriggerConfigurationViewController *)self trigger];
-    v16 = [v15 selectedSenders];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedSenders = [trigger selectedSenders];
 
-    v17 = [v16 if_map:&__block_literal_global_239];
+    v17 = [selectedSenders if_map:&__block_literal_global_239];
     [v11 setEntries:v17];
 
     [(WFMessageTriggerConfigurationViewController *)self presentNavControllerWithRootViewController:v11];
@@ -373,9 +373,9 @@ LABEL_20:
     }
   }
 
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v6 withSectionInfo:v7];
-  v20 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v20 reloadData];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v7];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
@@ -392,21 +392,21 @@ id __81__WFMessageTriggerConfigurationViewController_tableView_didSelectRowAtInd
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFMessageTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFMessageTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFMessageTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFMessageTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessoryType:0];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
@@ -434,54 +434,54 @@ id __81__WFMessageTriggerConfigurationViewController_tableView_didSelectRowAtInd
 
     v15 = v10;
     v29 = WFLocalizedString(@"Message Contains");
-    v30 = [v15 textLabel];
-    [v30 setText:v29];
+    textLabel = [v15 textLabel];
+    [textLabel setText:v29];
 
-    v31 = [(WFTriggerConfigurationViewController *)self trigger];
-    v32 = [v31 selectedContents];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedContents = [trigger selectedContents];
 
-    if (v32)
+    if (selectedContents)
     {
       v33 = MEMORY[0x277CCACA8];
-      v24 = [(WFTriggerConfigurationViewController *)self trigger];
-      v25 = [v24 selectedContents];
-      v26 = [v33 stringWithFormat:@"%@", v25];
+      trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+      selectedContents2 = [trigger2 selectedContents];
+      triggerDisplayName = [v33 stringWithFormat:@"%@", selectedContents2];
       goto LABEL_9;
     }
 
     v40 = @"Choose";
 LABEL_14:
-    v24 = WFLocalizedString(v40);
-    v25 = [v15 detailTextLabel];
-    [v25 setText:v24];
+    trigger2 = WFLocalizedString(v40);
+    selectedContents2 = [v15 detailTextLabel];
+    [selectedContents2 setText:trigger2];
     goto LABEL_15;
   }
 
   v15 = v10;
   v16 = WFLocalizedString(@"Sender");
-  v17 = [v15 textLabel];
-  [v17 setText:v16];
+  textLabel2 = [v15 textLabel];
+  [textLabel2 setText:v16];
 
-  v18 = [(WFTriggerConfigurationViewController *)self trigger];
-  v19 = [v18 selectedSenders];
-  v20 = [v19 count];
+  trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+  selectedSenders = [trigger3 selectedSenders];
+  v20 = [selectedSenders count];
 
-  v21 = [(WFTriggerConfigurationViewController *)self trigger];
-  v22 = [v21 selectedSenders];
-  v23 = v22;
+  trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+  selectedSenders2 = [trigger4 selectedSenders];
+  v23 = selectedSenders2;
   if (v20 != 1)
   {
-    v36 = [v22 count];
+    v36 = [selectedSenders2 count];
 
     if (v36 >= 2)
     {
       v37 = MEMORY[0x277CCACA8];
-      v24 = WFLocalizedString(@"Any of %lu Senders");
-      v25 = [(WFTriggerConfigurationViewController *)self trigger];
-      v43 = [v25 selectedSenders];
-      v38 = [v37 localizedStringWithFormat:v24, objc_msgSend(v43, "count")];
-      v39 = [v15 detailTextLabel];
-      [v39 setText:v38];
+      trigger2 = WFLocalizedString(@"Any of %lu Senders");
+      selectedContents2 = [(WFTriggerConfigurationViewController *)self trigger];
+      selectedSenders3 = [selectedContents2 selectedSenders];
+      v38 = [v37 localizedStringWithFormat:trigger2, objc_msgSend(selectedSenders3, "count")];
+      detailTextLabel = [v15 detailTextLabel];
+      [detailTextLabel setText:v38];
 
       goto LABEL_15;
     }
@@ -490,59 +490,59 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v24 = [v22 objectAtIndex:0];
+  trigger2 = [selectedSenders2 objectAtIndex:0];
 
-  v25 = [MEMORY[0x277CFC278] contactWithCNContact:v24];
-  v26 = [v25 triggerDisplayName];
+  selectedContents2 = [MEMORY[0x277CFC278] contactWithCNContact:trigger2];
+  triggerDisplayName = [selectedContents2 triggerDisplayName];
 LABEL_9:
-  v34 = v26;
-  v35 = [v15 detailTextLabel];
-  [v35 setText:v34];
+  v34 = triggerDisplayName;
+  detailTextLabel2 = [v15 detailTextLabel];
+  [detailTextLabel2 setText:v34];
 
 LABEL_15:
 LABEL_16:
-  v41 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:v6 sectionInfo:v8];
+  v41 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:pathCopy sectionInfo:v8];
 
   return v41;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFMessageTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFMessageTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [(WFTriggerConfigurationViewController *)self numberOfRowsInSectionWithInfo:v5];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = WFMessageTriggerConfigurationViewController;
-  [(WFMessageTriggerConfigurationViewController *)&v5 viewWillAppear:a3];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 reloadData];
+  [(WFMessageTriggerConfigurationViewController *)&v5 viewWillAppear:appear];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)updateUI
 {
-  v2 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)customSections
@@ -582,19 +582,19 @@ LABEL_16:
   return v4;
 }
 
-- (WFMessageTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFMessageTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFMessageTriggerConfigurationViewController.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFMessageTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFMessageTriggerConfigurationViewController.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFMessageTrigger class]]"}];
   }
 
   v13.receiver = self;
   v13.super_class = WFMessageTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:triggerCopy mode:mode];
   v9 = v8;
   if (v8)
   {

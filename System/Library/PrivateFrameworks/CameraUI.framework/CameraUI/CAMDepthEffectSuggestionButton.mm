@@ -1,16 +1,16 @@
 @interface CAMDepthEffectSuggestionButton
-- (CAMDepthEffectSuggestionButton)initWithFrame:(CGRect)a3;
+- (CAMDepthEffectSuggestionButton)initWithFrame:(CGRect)frame;
 - (double)activeTintAlphaForCurrentState;
-- (void)setMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)setMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CAMDepthEffectSuggestionButton
 
-- (CAMDepthEffectSuggestionButton)initWithFrame:(CGRect)a3
+- (CAMDepthEffectSuggestionButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CAMDepthEffectSuggestionButton;
-  v3 = [(CAMCircleButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMCircleButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,9 +23,9 @@
 
 - (double)activeTintAlphaForCurrentState
 {
-  v2 = [(CAMDepthEffectSuggestionButton *)self mode];
+  mode = [(CAMDepthEffectSuggestionButton *)self mode];
   result = 1.0;
-  if ((v2 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((mode & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     return 0.5;
   }
@@ -33,16 +33,16 @@
   return result;
 }
 
-- (void)setMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    v5 = a4;
-    self->_mode = a3;
+    animatedCopy = animated;
+    self->_mode = mode;
     [(CAMCircleButton *)self updateImage];
     [(CAMCircleButton *)self updateTintColors];
 
-    [(CAMCircleButton *)self updateSlashAnimated:v5];
+    [(CAMCircleButton *)self updateSlashAnimated:animatedCopy];
   }
 }
 

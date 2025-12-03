@@ -1,16 +1,16 @@
 @interface FCReadingListFeedDescriptor
-- (FCReadingListFeedDescriptor)initWithPrivateDataController:(id)a3 identifier:(id)a4 feedType:(int64_t)a5;
-- (FCReadingListFeedDescriptor)initWithReadingList:(id)a3;
+- (FCReadingListFeedDescriptor)initWithPrivateDataController:(id)controller identifier:(id)identifier feedType:(int64_t)type;
+- (FCReadingListFeedDescriptor)initWithReadingList:(id)list;
 - (id)backingHeadlineIDs;
 @end
 
 @implementation FCReadingListFeedDescriptor
 
-- (FCReadingListFeedDescriptor)initWithPrivateDataController:(id)a3 identifier:(id)a4 feedType:(int64_t)a5
+- (FCReadingListFeedDescriptor)initWithPrivateDataController:(id)controller identifier:(id)identifier feedType:(int64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Do not call method"];
@@ -34,19 +34,19 @@
   objc_exception_throw(v12);
 }
 
-- (FCReadingListFeedDescriptor)initWithReadingList:(id)a3
+- (FCReadingListFeedDescriptor)initWithReadingList:(id)list
 {
   v4.receiver = self;
   v4.super_class = FCReadingListFeedDescriptor;
-  return [(FCPrivateZoneFeedDescriptor *)&v4 initWithPrivateDataController:a3 identifier:@"FCReading-List" feedType:4];
+  return [(FCPrivateZoneFeedDescriptor *)&v4 initWithPrivateDataController:list identifier:@"FCReading-List" feedType:4];
 }
 
 - (id)backingHeadlineIDs
 {
-  v2 = [(FCReadingListFeedDescriptor *)self readingList];
-  v3 = [v2 allSortedArticleIDsInReadingList];
+  readingList = [(FCReadingListFeedDescriptor *)self readingList];
+  allSortedArticleIDsInReadingList = [readingList allSortedArticleIDsInReadingList];
 
-  return v3;
+  return allSortedArticleIDsInReadingList;
 }
 
 @end

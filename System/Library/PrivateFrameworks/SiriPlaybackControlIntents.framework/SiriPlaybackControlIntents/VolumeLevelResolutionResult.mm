@@ -1,22 +1,22 @@
 @interface VolumeLevelResolutionResult
-+ (id)confirmationRequiredWithVolumeLevelToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithVolumeLevelsToDisambiguate:(id)a3;
-+ (id)successWithResolvedVolumeLevel:(id)a3;
++ (id)confirmationRequiredWithVolumeLevelToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithVolumeLevelsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedVolumeLevel:(id)level;
 @end
 
 @implementation VolumeLevelResolutionResult
 
-+ (id)successWithResolvedVolumeLevel:(id)a3
++ (id)successWithResolvedVolumeLevel:(id)level
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_268B30DF8(v4);
+  levelCopy = level;
+  v5 = sub_268B30DF8(levelCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithVolumeLevelsToDisambiguate:(id)a3
++ (id)disambiguationWithVolumeLevelsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for VolumeLevel();
   v3 = sub_268B37CF4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithVolumeLevelToConfirm:(id)a3
++ (id)confirmationRequiredWithVolumeLevelToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_268B30F54(a3);
+  confirmCopy = confirm;
+  v5 = sub_268B30F54(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_268B2CDF4();
   sub_268B37CF4();

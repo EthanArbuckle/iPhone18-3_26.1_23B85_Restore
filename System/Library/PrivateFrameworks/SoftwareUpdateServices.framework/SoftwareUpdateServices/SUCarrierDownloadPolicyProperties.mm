@@ -1,16 +1,16 @@
 @interface SUCarrierDownloadPolicyProperties
-- (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value;
 - (SUCarrierDownloadPolicyProperties)init;
 - (id)_getOverriddenProperties;
 - (id)_keys;
-- (id)_numberForKey:(id)a3;
+- (id)_numberForKey:(id)key;
 - (id)description;
-- (int64_t)_integerForKey:(id)a3 defaultValue:(int64_t)a4;
-- (int64_t)_longLongForKey:(id)a3 defaultValue:(int64_t)a4;
+- (int64_t)_integerForKey:(id)key defaultValue:(int64_t)value;
+- (int64_t)_longLongForKey:(id)key defaultValue:(int64_t)value;
 - (int64_t)maximumDownloadSizeInBytes;
 - (int64_t)peakEndHour;
 - (int64_t)peakStartHour;
-- (unint64_t)_unsignedIntegerForKey:(id)a3 defaultValue:(int64_t)a4;
+- (unint64_t)_unsignedIntegerForKey:(id)key defaultValue:(int64_t)value;
 - (unint64_t)numberOfDaysToWaitForCellularDownload;
 @end
 
@@ -28,11 +28,11 @@
     keyMap = v2->_keyMap;
     v2->_keyMap = v3;
 
-    v5 = [(SUCarrierDownloadPolicyProperties *)v2 _keys];
+    _keys = [(SUCarrierDownloadPolicyProperties *)v2 _keys];
     v6 = +[CTDataDelegate sharedInstance];
-    v7 = [v6 getPreferredDataSubscriptionContext];
+    getPreferredDataSubscriptionContext = [v6 getPreferredDataSubscriptionContext];
 
-    if (v7)
+    if (getPreferredDataSubscriptionContext)
     {
       v32 = v2;
       v15 = [objc_alloc(MEMORY[0x277CC3620]) initWithBundleType:2];
@@ -40,8 +40,8 @@
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v30 = v5;
-      obj = v5;
+      v30 = _keys;
+      obj = _keys;
       v16 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
       if (v16)
       {
@@ -60,8 +60,8 @@
             v20 = *(*(&v33 + 1) + 8 * v19);
             v21 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{@"OTASoftwareUpdate", v20, 0}];
             v22 = +[CTDataDelegate sharedInstance];
-            v23 = [v22 getCTClient];
-            v24 = [v23 copyCarrierBundleValueWithDefault:v7 keyHierarchy:v21 bundleType:v15 error:0];
+            getCTClient = [v22 getCTClient];
+            v24 = [getCTClient copyCarrierBundleValueWithDefault:getPreferredDataSubscriptionContext keyHierarchy:v21 bundleType:v15 error:0];
 
             if (v24)
             {
@@ -79,7 +79,7 @@
       }
 
       v2 = v32;
-      v5 = v30;
+      _keys = v30;
     }
 
     else
@@ -88,8 +88,8 @@
     }
 
     v25 = v2->_keyMap;
-    v26 = [(SUCarrierDownloadPolicyProperties *)v2 _getOverriddenProperties];
-    [(NSMutableDictionary *)v25 addEntriesFromDictionary:v26];
+    _getOverriddenProperties = [(SUCarrierDownloadPolicyProperties *)v2 _getOverriddenProperties];
+    [(NSMutableDictionary *)v25 addEntriesFromDictionary:_getOverriddenProperties];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -191,10 +191,10 @@
     v6 = @"NO";
   }
 
-  v7 = [(SUCarrierDownloadPolicyProperties *)self maximumDownloadSizeInBytes];
-  v8 = [(SUCarrierDownloadPolicyProperties *)self numberOfDaysToWaitForCellularDownload];
-  v9 = [(SUCarrierDownloadPolicyProperties *)self peakStartHour];
-  v10 = [(SUCarrierDownloadPolicyProperties *)self peakEndHour];
+  maximumDownloadSizeInBytes = [(SUCarrierDownloadPolicyProperties *)self maximumDownloadSizeInBytes];
+  numberOfDaysToWaitForCellularDownload = [(SUCarrierDownloadPolicyProperties *)self numberOfDaysToWaitForCellularDownload];
+  peakStartHour = [(SUCarrierDownloadPolicyProperties *)self peakStartHour];
+  peakEndHour = [(SUCarrierDownloadPolicyProperties *)self peakEndHour];
   if ([(SUCarrierDownloadPolicyProperties *)self allowInexpensiveHDMUnlimited])
   {
     v11 = @"YES";
@@ -205,60 +205,60 @@
     v11 = @"NO";
   }
 
-  return [v14 stringWithFormat:@"SUDownloadPolicy <%p>:\n            \tisDownloadFree: %@\n            \tisDownloadAllowable: %@\n            \tisDownloadAllowableOver2G: %@\n            \tisAutoDownloadAllowable: %@\n            \tmaximumDownloadSizeInBytes: %llu\n            \tnumberOfDaysToWaitForCellularDownload: %lu\n            \tpeakStartHour: %ld\n            \tpeakEndHour: %ld\n            \tAllowEnhancedDownloadOnNRHDM: %@\n", self, v13, v4, v5, v6, v7, v8, v9, v10, v11];
+  return [v14 stringWithFormat:@"SUDownloadPolicy <%p>:\n            \tisDownloadFree: %@\n            \tisDownloadAllowable: %@\n            \tisDownloadAllowableOver2G: %@\n            \tisAutoDownloadAllowable: %@\n            \tmaximumDownloadSizeInBytes: %llu\n            \tnumberOfDaysToWaitForCellularDownload: %lu\n            \tpeakStartHour: %ld\n            \tpeakEndHour: %ld\n            \tAllowEnhancedDownloadOnNRHDM: %@\n", self, v13, v4, v5, v6, maximumDownloadSizeInBytes, numberOfDaysToWaitForCellularDownload, peakStartHour, peakEndHour, v11];
 }
 
-- (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value
 {
-  v5 = [(SUCarrierDownloadPolicyProperties *)self _numberForKey:a3];
+  v5 = [(SUCarrierDownloadPolicyProperties *)self _numberForKey:key];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 BOOLValue];
+    value = [v5 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (int64_t)_longLongForKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)_longLongForKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [(SUCarrierDownloadPolicyProperties *)self _numberForKey:a3];
+  v5 = [(SUCarrierDownloadPolicyProperties *)self _numberForKey:key];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 longLongValue];
+    value = [v5 longLongValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (unint64_t)_unsignedIntegerForKey:(id)a3 defaultValue:(int64_t)a4
+- (unint64_t)_unsignedIntegerForKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [(SUCarrierDownloadPolicyProperties *)self _numberForKey:a3];
+  v5 = [(SUCarrierDownloadPolicyProperties *)self _numberForKey:key];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 unsignedIntegerValue];
+    value = [v5 unsignedIntegerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (int64_t)_integerForKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)_integerForKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [(SUCarrierDownloadPolicyProperties *)self _numberForKey:a3];
+  v5 = [(SUCarrierDownloadPolicyProperties *)self _numberForKey:key];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 integerValue];
+    value = [v5 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (id)_numberForKey:(id)a3
+- (id)_numberForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_keyMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_keyMap objectForKey:key];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = v3;
@@ -275,18 +275,18 @@
 - (id)_getOverriddenProperties
 {
   v30 = *MEMORY[0x277D85DE8];
-  v2 = [(SUCarrierDownloadPolicyProperties *)self _keys];
+  _keys = [(SUCarrierDownloadPolicyProperties *)self _keys];
   v24 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v24 setNumberStyle:1];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = +[SUPreferences sharedInstance];
-  v5 = [v4 overrideCarrierDownloadPolicyProperties];
+  overrideCarrierDownloadPolicyProperties = [v4 overrideCarrierDownloadPolicyProperties];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = v2;
+  v6 = _keys;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -302,7 +302,7 @@
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v5 objectForKey:v11];
+        v12 = [overrideCarrierDownloadPolicyProperties objectForKey:v11];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -323,7 +323,7 @@
         v14 = v13;
         if (v13)
         {
-          [v3 setSafeObject:v13 forKey:v11];
+          [dictionary setSafeObject:v13 forKey:v11];
         }
 
 LABEL_12:
@@ -335,14 +335,14 @@ LABEL_12:
     while (v8);
   }
 
-  if ([v3 count])
+  if ([dictionary count])
   {
-    SULogInfo(@"[PREFERENCES] Override properties with %@", v15, v16, v17, v18, v19, v20, v21, v3);
+    SULogInfo(@"[PREFERENCES] Override properties with %@", v15, v16, v17, v18, v19, v20, v21, dictionary);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)_keys

@@ -1,12 +1,12 @@
 @interface STRPPropertyListTypeEncoder
 - (STRPPropertyListTypeEncoder)init;
-- (id)_encodeRawObject:(id)a3;
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5;
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeFloat:(float)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
+- (id)_encodeRawObject:(id)object;
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key;
+- (void)encodeConditionalObject:(id)object forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeFloat:(float)float forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
 @end
 
 @implementation STRPPropertyListTypeEncoder
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy)
   {
-    if ([v6 conformsToProtocol:&unk_1F5A28760])
+    if ([objectCopy conformsToProtocol:&unk_1F5A28760])
     {
-      v8 = [(STRPPropertyListTypeEncoder *)self _encodeRawObject:v6];
-      [(NSMutableDictionary *)self->_storage setObject:v8 forKey:v7];
+      v8 = [(STRPPropertyListTypeEncoder *)self _encodeRawObject:objectCopy];
+      [(NSMutableDictionary *)self->_storage setObject:v8 forKey:keyCopy];
     }
 
     else
@@ -43,74 +43,74 @@
       v9 = STRPLogCoding();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
-        [STRPPropertyListTypeEncoder encodeObject:v7 forKey:v9];
+        [STRPPropertyListTypeEncoder encodeObject:keyCopy forKey:v9];
       }
     }
   }
 }
 
-- (void)encodeConditionalObject:(id)a3 forKey:(id)a4
+- (void)encodeConditionalObject:(id)object forKey:(id)key
 {
-  v4 = a4;
+  keyCopy = key;
   v5 = STRPLogCoding();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
-    [STRPPropertyListTypeEncoder encodeConditionalObject:v4 forKey:v5];
+    [STRPPropertyListTypeEncoder encodeConditionalObject:keyCopy forKey:v5];
   }
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
   storage = self->_storage;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithLongLong:a3];
-  [(NSMutableDictionary *)storage setObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithLongLong:int64];
+  [(NSMutableDictionary *)storage setObject:v8 forKey:keyCopy];
 }
 
-- (void)encodeFloat:(float)a3 forKey:(id)a4
+- (void)encodeFloat:(float)float forKey:(id)key
 {
   storage = self->_storage;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  *&v8 = a3;
+  keyCopy = key;
+  *&v8 = float;
   v9 = [v6 numberWithFloat:v8];
-  [(NSMutableDictionary *)storage setObject:v9 forKey:v7];
+  [(NSMutableDictionary *)storage setObject:v9 forKey:keyCopy];
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
   storage = self->_storage;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithDouble:a3];
-  [(NSMutableDictionary *)storage setObject:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithDouble:double];
+  [(NSMutableDictionary *)storage setObject:v8 forKey:keyCopy];
 }
 
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key
 {
   v8 = MEMORY[0x1E695DEF0];
-  v9 = a5;
-  v10 = [v8 dataWithBytes:a3 length:a4];
-  [(NSMutableDictionary *)self->_storage setObject:v10 forKey:v9];
+  keyCopy = key;
+  v10 = [v8 dataWithBytes:bytes length:length];
+  [(NSMutableDictionary *)self->_storage setObject:v10 forKey:keyCopy];
 }
 
-- (id)_encodeRawObject:(id)a3
+- (id)_encodeRawObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = v4;
+    uUIDString = objectCopy;
 LABEL_6:
-    v6 = v5;
+    v6 = uUIDString;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 UUIDString];
+    uUIDString = [objectCopy UUIDString];
     goto LABEL_6;
   }
 
@@ -118,15 +118,15 @@ LABEL_6:
   if (objc_opt_isKindOfClass())
   {
     v8 = MEMORY[0x1E696AD98];
-    [v4 timeIntervalSinceReferenceDate];
-    v5 = [v8 numberWithDouble:?];
+    [objectCopy timeIntervalSinceReferenceDate];
+    uUIDString = [v8 numberWithDouble:?];
     goto LABEL_6;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
+    v9 = objectCopy;
     v10 = [v9 count];
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10];
     if (v10)
@@ -145,7 +145,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v4;
+      v14 = objectCopy;
       v15 = [v14 count];
       v16 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v15];
       v19[0] = MEMORY[0x1E69E9820];
@@ -154,7 +154,7 @@ LABEL_6:
       v19[3] = &unk_1E86A2A20;
       v17 = v16;
       v20 = v17;
-      v21 = self;
+      selfCopy = self;
       [v14 enumerateKeysAndObjectsUsingBlock:v19];
 
       v6 = v17;
@@ -163,7 +163,7 @@ LABEL_6:
     else
     {
       v18 = objc_alloc_init(objc_opt_class());
-      [v4 encodeWithCoder:v18];
+      [objectCopy encodeWithCoder:v18];
       v6 = [v18[1] copy];
     }
   }

@@ -1,26 +1,26 @@
 @interface SSChromePlaceholderView
-- (SSChromePlaceholderView)initWithFrame:(CGRect)a3;
-- (int64_t)positionForBar:(id)a3;
+- (SSChromePlaceholderView)initWithFrame:(CGRect)frame;
+- (int64_t)positionForBar:(id)bar;
 - (void)_initializeBarButtonItems;
 - (void)_layoutTopBar;
-- (void)_updateBarButtonItemPositionsAnimated:(BOOL)a3;
+- (void)_updateBarButtonItemPositionsAnimated:(BOOL)animated;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
 @end
 
 @implementation SSChromePlaceholderView
 
-- (SSChromePlaceholderView)initWithFrame:(CGRect)a3
+- (SSChromePlaceholderView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SSChromePlaceholderView;
-  v3 = [(SSChromePlaceholderView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSChromePlaceholderView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SSChromePlaceholderView *)v3 _initializeBarButtonItems];
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    [(SSChromePlaceholderView *)v4 setTintColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(SSChromePlaceholderView *)v4 setTintColor:whiteColor];
   }
 
   return v4;
@@ -148,12 +148,12 @@
   }
 }
 
-- (void)_updateBarButtonItemPositionsAnimated:(BOOL)a3
+- (void)_updateBarButtonItemPositionsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v46[4] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   +[SSChromeHelper defaultBarButtonSpacing];
   v7 = [SSChromeHelper createFixedSpaceBarButtonItemWithWidth:?];
   v8 = 0.0;
@@ -163,10 +163,10 @@
     v8 = v9;
   }
 
-  v10 = [(SSChromePlaceholderView *)self traitCollection];
-  v11 = [v10 userInterfaceIdiom];
+  traitCollection = [(SSChromePlaceholderView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v11 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [(UIBarButtonItem *)self->_opacityItem _setFlexible:0];
     [SSChromeHelper widthForOpacityControlInView:self withContentSwitcher:0];
@@ -181,11 +181,11 @@
       v17 = &OBJC_IVAR___SSChromePlaceholderView__closeItem;
     }
 
-    [v5 addObject:*(&self->super.super.super.isa + *v17)];
+    [array addObject:*(&self->super.super.super.isa + *v17)];
     v18 = [MEMORY[0x1E69DC708] fixedSpaceItemOfWidth:v8];
-    [v5 addObject:v18];
+    [array addObject:v18];
 
-    [v5 addObject:self->_opacityItem];
+    [array addObject:self->_opacityItem];
     if (_SSScreenshotsRedesign2025Enabled())
     {
       v46[0] = self->_doneItem;
@@ -195,7 +195,7 @@
       v46[2] = shareItem;
       v46[3] = self->_annotationEnabledButton;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:4];
-      [v6 addObjectsFromArray:v21];
+      [array2 addObjectsFromArray:v21];
 
       if (([getVKCImageAnalyzerClass() supportedAnalysisTypes] & 1) == 0)
       {
@@ -207,7 +207,7 @@
       v45[0] = v22;
       v45[1] = aaBarButtonItem;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:2];
-      [v6 addObjectsFromArray:v24];
+      [array2 addObjectsFromArray:v24];
     }
 
     else
@@ -240,19 +240,19 @@
       }
 
       v22 = [v26 arrayWithObjects:v27 count:{v28, v36, v37, v38, v39, v40, v41, v42, v43, v44}];
-      [v6 addObjectsFromArray:v22];
+      [array2 addObjectsFromArray:v22];
     }
   }
 
 LABEL_14:
   v32 = self->_topBar;
-  [(UINavigationItem *)self->_managedNavigationItem setLeftBarButtonItems:v5 animated:v3];
-  [(UINavigationItem *)self->_managedNavigationItem setRightBarButtonItems:v6 animated:v3];
+  [(UINavigationItem *)self->_managedNavigationItem setLeftBarButtonItems:array animated:animatedCopy];
+  [(UINavigationItem *)self->_managedNavigationItem setRightBarButtonItems:array2 animated:animatedCopy];
   [(UINavigationItem *)self->_managedNavigationItem setTitleView:0];
-  v33 = [(UINavigationBar *)v32 topItem];
+  topItem = [(UINavigationBar *)v32 topItem];
   managedNavigationItem = self->_managedNavigationItem;
 
-  if (v33 != managedNavigationItem)
+  if (topItem != managedNavigationItem)
   {
     v35 = [(UINavigationBar *)v32 popNavigationItemAnimated:0];
     [(UINavigationBar *)v32 pushNavigationItem:self->_managedNavigationItem animated:0];
@@ -278,14 +278,14 @@ LABEL_14:
     topBar = self->_topBar;
     self->_topBar = v5;
 
-    v7 = [(UINavigationBar *)self->_topBar layer];
-    [v7 setAllowsGroupOpacity:1];
+    layer = [(UINavigationBar *)self->_topBar layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(UINavigationBar *)self->_topBar setAlpha:self->_contentAlpha];
     [(UINavigationBar *)self->_topBar setDelegate:self];
-    v8 = [MEMORY[0x1E69DCA80] defaultFormat];
-    [v8 setOpaque:0];
-    v9 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v8 format:{1.0, 1.0}];
+    defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
+    [defaultFormat setOpaque:0];
+    v9 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:defaultFormat format:{1.0, 1.0}];
     v10 = [v9 imageWithActions:&__block_literal_global];
     [(UINavigationBar *)self->_topBar setBackgroundImage:v10 forBarMetrics:1];
     [(UINavigationBar *)self->_topBar setBackgroundImage:v10 forBarMetrics:0];
@@ -354,14 +354,14 @@ uint64_t __40__SSChromePlaceholderView__layoutTopBar__block_invoke_2(uint64_t a1
   return [v2 layoutIfNeeded];
 }
 
-- (int64_t)positionForBar:(id)a3
+- (int64_t)positionForBar:(id)bar
 {
-  if (self->_topBar == a3)
+  if (self->_topBar == bar)
   {
     return 3;
   }
 
-  if (self->_topBarBackground == a3)
+  if (self->_topBarBackground == bar)
   {
     return 3;
   }

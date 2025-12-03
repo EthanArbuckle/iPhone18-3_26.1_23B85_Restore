@@ -1,5 +1,5 @@
 @interface RUIImageLoad
-- (BOOL)receivedValidResponse:(id)a3;
+- (BOOL)receivedValidResponse:(id)response;
 - (void)dealloc;
 - (void)start;
 @end
@@ -14,11 +14,11 @@
   [(RUIImageLoad *)&v3 dealloc];
 }
 
-- (BOOL)receivedValidResponse:(id)a3
+- (BOOL)receivedValidResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
-  v4 = (objc_opt_isKindOfClass() & 1) == 0 || ([v3 statusCode] - 600) < 0xFFFFFFFFFFFFFF38;
+  v4 = (objc_opt_isKindOfClass() & 1) == 0 || ([responseCopy statusCode] - 600) < 0xFFFFFFFFFFFFFF38;
 
   return v4;
 }
@@ -30,8 +30,8 @@
   if (!urlSession)
   {
     v5 = MEMORY[0x277CCAD30];
-    v6 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    v7 = [v5 sessionWithConfiguration:v6];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    v7 = [v5 sessionWithConfiguration:defaultSessionConfiguration];
     v8 = self->_urlSession;
     self->_urlSession = v7;
 

@@ -1,25 +1,25 @@
 @interface HDWorkoutEventsManager
-- (HDWorkoutEventsManager)initWithProfile:(id)a3;
-- (id)takeSessionAssertionWithOwnerIdentifier:(id)a3 activityType:(unint64_t)a4 sessionIdentifier:(id)a5 eventsDelegate:(id)a6 swimTracker:(id)a7;
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4;
-- (void)fakeActivityDetection:(id)a3 workoutActivity:(id)a4;
-- (void)requestPendingEventsThroughDate:(id)a3 sessionIdentifier:(id)a4 completion:(id)a5;
-- (void)unitTest_setCMWorkoutManager:(id)a3;
-- (void)updateEventCollectorsForActivityType:(unint64_t)a3 activityIdentifier:(id)a4;
+- (HDWorkoutEventsManager)initWithProfile:(id)profile;
+- (id)takeSessionAssertionWithOwnerIdentifier:(id)identifier activityType:(unint64_t)type sessionIdentifier:(id)sessionIdentifier eventsDelegate:(id)delegate swimTracker:(id)tracker;
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated;
+- (void)fakeActivityDetection:(id)detection workoutActivity:(id)activity;
+- (void)requestPendingEventsThroughDate:(id)date sessionIdentifier:(id)identifier completion:(id)completion;
+- (void)unitTest_setCMWorkoutManager:(id)manager;
+- (void)updateEventCollectorsForActivityType:(unint64_t)type activityIdentifier:(id)identifier;
 @end
 
 @implementation HDWorkoutEventsManager
 
-- (HDWorkoutEventsManager)initWithProfile:(id)a3
+- (HDWorkoutEventsManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDWorkoutEventsManager;
   v5 = [(HDWorkoutEventsManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -34,18 +34,18 @@
   return v6;
 }
 
-- (id)takeSessionAssertionWithOwnerIdentifier:(id)a3 activityType:(unint64_t)a4 sessionIdentifier:(id)a5 eventsDelegate:(id)a6 swimTracker:(id)a7
+- (id)takeSessionAssertionWithOwnerIdentifier:(id)identifier activityType:(unint64_t)type sessionIdentifier:(id)sessionIdentifier eventsDelegate:(id)delegate swimTracker:(id)tracker
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  delegateCopy = delegate;
+  trackerCopy = tracker;
   v16 = [_HDEventsCollectionAssertion alloc];
   if (v16)
   {
     v32.receiver = v16;
     v32.super_class = _HDEventsCollectionAssertion;
-    v17 = [(HDWorkoutEventsManager *)&v32 initWithAssertionIdentifier:@"HDWorkoutSessionAssertionIdentifierEventCollection" ownerIdentifier:v12];
+    v17 = [(HDWorkoutEventsManager *)&v32 initWithAssertionIdentifier:@"HDWorkoutSessionAssertionIdentifierEventCollection" ownerIdentifier:identifierCopy];
   }
 
   else
@@ -53,10 +53,10 @@
     v17 = 0;
   }
 
-  objc_storeWeak(&self->_eventsDelegate, v14);
+  objc_storeWeak(&self->_eventsDelegate, delegateCopy);
   swimTracker = self->_swimTracker;
-  self->_swimTracker = v15;
-  v19 = v15;
+  self->_swimTracker = trackerCopy;
+  v19 = trackerCopy;
 
   assertionManager = self->_assertionManager;
   v27[0] = MEMORY[0x277D85DD0];
@@ -65,11 +65,11 @@
   v27[3] = &unk_278613608;
   v27[4] = self;
   v28 = v17;
-  v30 = v13;
-  v31 = a4;
-  v29 = v14;
-  v21 = v13;
-  v22 = v14;
+  v30 = sessionIdentifierCopy;
+  typeCopy = type;
+  v29 = delegateCopy;
+  v21 = sessionIdentifierCopy;
+  v22 = delegateCopy;
   v23 = v17;
   if ([(HDAssertionManager *)assertionManager takeAssertion:v23 preNotificationBlock:v27])
   {
@@ -206,23 +206,23 @@ void __124__HDWorkoutEventsManager_takeSessionAssertionWithOwnerIdentifier_activ
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestPendingEventsThroughDate:(id)a3 sessionIdentifier:(id)a4 completion:(id)a5
+- (void)requestPendingEventsThroughDate:(id)date sessionIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __87__HDWorkoutEventsManager_requestPendingEventsThroughDate_sessionIdentifier_completion___block_invoke;
   v15[3] = &unk_278613680;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifierCopy;
+  v17 = dateCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dateCopy;
+  v14 = identifierCopy;
   dispatch_async(queue, v15);
 }
 
@@ -401,21 +401,21 @@ uint64_t __87__HDWorkoutEventsManager_requestPendingEventsThroughDate_sessionIde
   return result;
 }
 
-- (void)updateEventCollectorsForActivityType:(unint64_t)a3 activityIdentifier:(id)a4
+- (void)updateEventCollectorsForActivityType:(unint64_t)type activityIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   _HKInitializeLogging();
   v7 = MEMORY[0x277CCC330];
   v8 = *MEMORY[0x277CCC330];
   if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating event collectors", buf, 0xCu);
   }
 
-  if (a3 != 83)
+  if (type != 83)
   {
     v9 = [(HDAssertionManager *)self->_assertionManager activeAssertionsForIdentifier:@"HDWorkoutSessionAssertionIdentifierEventCollection"];
     v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -427,10 +427,10 @@ uint64_t __87__HDWorkoutEventsManager_requestPendingEventsThroughDate_sessionIde
       block[2] = __82__HDWorkoutEventsManager_updateEventCollectorsForActivityType_activityIdentifier___block_invoke;
       block[3] = &unk_278613608;
       v15 = v9;
-      v19 = a3;
+      typeCopy = type;
       v16 = v10;
-      v17 = self;
-      v18 = v6;
+      selfCopy2 = self;
+      v18 = identifierCopy;
       dispatch_sync(queue, block);
     }
 
@@ -441,7 +441,7 @@ uint64_t __87__HDWorkoutEventsManager_requestPendingEventsThroughDate_sessionIde
       if (os_log_type_enabled(*v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v21 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: No active event collector assertions to update", buf, 0xCu);
       }
     }
@@ -599,11 +599,11 @@ void __82__HDWorkoutEventsManager_updateEventCollectorsForActivityType_activityI
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fakeActivityDetection:(id)a3 workoutActivity:(id)a4
+- (void)fakeActivityDetection:(id)detection workoutActivity:(id)activity
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  detectionCopy = detection;
+  activityCopy = activity;
   [(HDAssertionManager *)self->_assertionManager activeAssertionsForIdentifier:@"HDWorkoutSessionAssertionIdentifierEventCollection"];
   v24 = 0u;
   v25 = 0u;
@@ -650,7 +650,7 @@ void __82__HDWorkoutEventsManager_updateEventCollectorsForActivityType_activityI
                 objc_enumerationMutation(v13);
               }
 
-              [*(*(&v20 + 1) + 8 * v17++) fakeActivityDetection:v6 workoutActivity:v7];
+              [*(*(&v20 + 1) + 8 * v17++) fakeActivityDetection:detectionCopy workoutActivity:activityCopy];
             }
 
             while (v15 != v17);
@@ -673,18 +673,18 @@ void __82__HDWorkoutEventsManager_updateEventCollectorsForActivityType_activityI
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(self->_queue);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  if (v5)
+  if (invalidatedCopy)
   {
-    v6 = v5[11];
+    v6 = invalidatedCopy[11];
   }
 
   else
@@ -721,10 +721,10 @@ void __82__HDWorkoutEventsManager_updateEventCollectorsForActivityType_activityI
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unitTest_setCMWorkoutManager:(id)a3
+- (void)unitTest_setCMWorkoutManager:(id)manager
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -745,7 +745,7 @@ void __82__HDWorkoutEventsManager_updateEventCollectorsForActivityType_activityI
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) unitTest_setCMWorkoutManager:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) unitTest_setCMWorkoutManager:{managerCopy, v11}];
       }
 
       while (v7 != v9);

@@ -1,11 +1,11 @@
 @interface BPSLast
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
-- (BPSLast)initWithUpstream:(id)a3;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
+- (BPSLast)initWithUpstream:(id)upstream;
 - (id)bookmarkableUpstreams;
 - (id)nextEvent;
 - (id)upstreamPublishers;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSLast
@@ -13,8 +13,8 @@
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSLast *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSLast *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -24,32 +24,32 @@
 
 - (id)nextEvent
 {
-  v3 = [(BPSLast *)self upstream];
-  v4 = [v3 nextEvent];
+  upstream = [(BPSLast *)self upstream];
+  nextEvent = [upstream nextEvent];
 
-  if (v4)
+  if (nextEvent)
   {
     do
     {
-      [(BPSLast *)self setLastEvent:v4];
-      v5 = [(BPSLast *)self upstream];
-      v6 = [v5 nextEvent];
+      [(BPSLast *)self setLastEvent:nextEvent];
+      upstream2 = [(BPSLast *)self upstream];
+      nextEvent2 = [upstream2 nextEvent];
 
-      v4 = v6;
+      nextEvent = nextEvent2;
     }
 
-    while (v6);
+    while (nextEvent2);
   }
 
-  v7 = [(BPSLast *)self upstream];
-  if ([v7 completed])
+  upstream3 = [(BPSLast *)self upstream];
+  if ([upstream3 completed])
   {
-    v8 = [(BPSLast *)self returned];
+    returned = [(BPSLast *)self returned];
 
-    if (!v8)
+    if (!returned)
     {
       [(BPSLast *)self setReturned:1];
-      v9 = [(BPSLast *)self lastEvent];
+      lastEvent = [(BPSLast *)self lastEvent];
       goto LABEL_8;
     }
   }
@@ -58,10 +58,10 @@
   {
   }
 
-  v9 = 0;
+  lastEvent = 0;
 LABEL_8:
 
-  return v9;
+  return lastEvent;
 }
 
 - (void)reset
@@ -73,16 +73,16 @@ LABEL_8:
   [(BPSPublisher *)&v3 reset];
 }
 
-- (BPSLast)initWithUpstream:(id)a3
+- (BPSLast)initWithUpstream:(id)upstream
 {
-  v5 = a3;
+  upstreamCopy = upstream;
   v10.receiver = self;
   v10.super_class = BPSLast;
   v6 = [(BPSLast *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_upstream, a3);
+    objc_storeStrong(&v6->_upstream, upstream);
     lastEvent = v7->_lastEvent;
     v7->_lastEvent = 0;
 
@@ -92,20 +92,20 @@ LABEL_8:
   return v7;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v6 = [[_BPSLastInnser alloc] initWithDownstream:v4];
+  subscribeCopy = subscribe;
+  v6 = [[_BPSLastInnser alloc] initWithDownstream:subscribeCopy];
 
-  v5 = [(BPSLast *)self upstream];
-  [v5 subscribe:v6];
+  upstream = [(BPSLast *)self upstream];
+  [upstream subscribe:v6];
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v5 = a4;
+  upstreamsCopy = upstreams;
   v6 = [BPSLast alloc];
-  v7 = [v5 objectAtIndexedSubscript:0];
+  v7 = [upstreamsCopy objectAtIndexedSubscript:0];
 
   v8 = [(BPSLast *)v6 initWithUpstream:v7];
 
@@ -115,8 +115,8 @@ LABEL_8:
 - (id)bookmarkableUpstreams
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSLast *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSLast *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];

@@ -7,7 +7,7 @@
 - (double)topBackMargin;
 - (double)topMargin;
 - (double)topTitleMargin;
-- (int64_t)navigationBar:(id)a3 metricsForOrientation:(int64_t)a4 hasPrompt:(BOOL)a5;
+- (int64_t)navigationBar:(id)bar metricsForOrientation:(int64_t)orientation hasPrompt:(BOOL)prompt;
 @end
 
 @implementation _UINavigationBarPhonePadVisualStyle
@@ -144,24 +144,24 @@
   return result;
 }
 
-- (int64_t)navigationBar:(id)a3 metricsForOrientation:(int64_t)a4 hasPrompt:(BOOL)a5
+- (int64_t)navigationBar:(id)bar metricsForOrientation:(int64_t)orientation hasPrompt:(BOOL)prompt
 {
-  v5 = a5;
-  v8 = (a4 - 3) < 2;
-  v9 = a3;
+  promptCopy = prompt;
+  v8 = (orientation - 3) < 2;
+  barCopy = bar;
   if (_UIUseMiniHeightInLandscape(v8))
   {
-    v10 = a4;
+    orientationCopy = orientation;
   }
 
   else
   {
-    v10 = 1;
+    orientationCopy = 1;
   }
 
   v13.receiver = self;
   v13.super_class = _UINavigationBarPhonePadVisualStyle;
-  v11 = [(_UINavigationBarVisualStyle *)&v13 navigationBar:v9 metricsForOrientation:v10 hasPrompt:v5];
+  v11 = [(_UINavigationBarVisualStyle *)&v13 navigationBar:barCopy metricsForOrientation:orientationCopy hasPrompt:promptCopy];
 
   return v11;
 }

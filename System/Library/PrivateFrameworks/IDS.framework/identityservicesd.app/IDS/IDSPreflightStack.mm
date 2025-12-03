@@ -1,8 +1,8 @@
 @interface IDSPreflightStack
 - (BOOL)containsMechanisms;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesIMSI:(id)a3 PLMN:(id)a4;
-- (IDSPreflightStack)initWithIMSI:(id)a3 PLMN:(id)a4 validationMechanisms:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesIMSI:(id)i PLMN:(id)n;
+- (IDSPreflightStack)initWithIMSI:(id)i PLMN:(id)n validationMechanisms:(id)mechanisms;
 - (id)description;
 - (id)preflightStackByPoppingMechanism;
 - (id)topMechanism;
@@ -11,25 +11,25 @@
 
 @implementation IDSPreflightStack
 
-- (IDSPreflightStack)initWithIMSI:(id)a3 PLMN:(id)a4 validationMechanisms:(id)a5
+- (IDSPreflightStack)initWithIMSI:(id)i PLMN:(id)n validationMechanisms:(id)mechanisms
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iCopy = i;
+  nCopy = n;
+  mechanismsCopy = mechanisms;
   v19.receiver = self;
   v19.super_class = IDSPreflightStack;
   v11 = [(IDSPreflightStack *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [iCopy copy];
     IMSI = v11->_IMSI;
     v11->_IMSI = v12;
 
-    v14 = [v9 copy];
+    v14 = [nCopy copy];
     PLMN = v11->_PLMN;
     v11->_PLMN = v14;
 
-    v16 = [v10 copy];
+    v16 = [mechanismsCopy copy];
     validationMechanisms = v11->_validationMechanisms;
     v11->_validationMechanisms = v16;
   }
@@ -37,17 +37,17 @@
   return v11;
 }
 
-- (BOOL)matchesIMSI:(id)a3 PLMN:(id)a4
+- (BOOL)matchesIMSI:(id)i PLMN:(id)n
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IDSPreflightStack *)self IMSI];
-  v9 = [v8 isEqualToString:v7];
+  nCopy = n;
+  iCopy = i;
+  iMSI = [(IDSPreflightStack *)self IMSI];
+  v9 = [iMSI isEqualToString:iCopy];
 
   if (v9)
   {
-    v10 = [(IDSPreflightStack *)self PLMN];
-    v11 = [v10 isEqualToString:v6];
+    pLMN = [(IDSPreflightStack *)self PLMN];
+    v11 = [pLMN isEqualToString:nCopy];
   }
 
   else
@@ -60,24 +60,24 @@
 
 - (BOOL)containsMechanisms
 {
-  v2 = [(IDSPreflightStack *)self validationMechanisms];
-  v3 = [v2 count] != 0;
+  validationMechanisms = [(IDSPreflightStack *)self validationMechanisms];
+  v3 = [validationMechanisms count] != 0;
 
   return v3;
 }
 
 - (id)topMechanism
 {
-  v2 = [(IDSPreflightStack *)self validationMechanisms];
-  v3 = [v2 firstObject];
+  validationMechanisms = [(IDSPreflightStack *)self validationMechanisms];
+  firstObject = [validationMechanisms firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)preflightStackByPoppingMechanism
 {
-  v3 = [(IDSPreflightStack *)self validationMechanisms];
-  v4 = [v3 mutableCopy];
+  validationMechanisms = [(IDSPreflightStack *)self validationMechanisms];
+  v4 = [validationMechanisms mutableCopy];
 
   if ([v4 count])
   {
@@ -85,60 +85,60 @@
   }
 
   v5 = [IDSPreflightStack alloc];
-  v6 = [(IDSPreflightStack *)self IMSI];
-  v7 = [(IDSPreflightStack *)self PLMN];
-  v8 = [(IDSPreflightStack *)v5 initWithIMSI:v6 PLMN:v7 validationMechanisms:v4];
+  iMSI = [(IDSPreflightStack *)self IMSI];
+  pLMN = [(IDSPreflightStack *)self PLMN];
+  v8 = [(IDSPreflightStack *)v5 initWithIMSI:iMSI PLMN:pLMN validationMechanisms:v4];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IDSPreflightStack *)self IMSI];
-    v7 = [v5 IMSI];
-    if (v6 == v7)
+    v5 = equalCopy;
+    iMSI = [(IDSPreflightStack *)self IMSI];
+    iMSI2 = [v5 IMSI];
+    if (iMSI == iMSI2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(IDSPreflightStack *)self IMSI];
-      v9 = [v5 IMSI];
-      v10 = [v8 isEqual:v9];
+      iMSI3 = [(IDSPreflightStack *)self IMSI];
+      iMSI4 = [v5 IMSI];
+      v10 = [iMSI3 isEqual:iMSI4];
     }
 
-    v12 = [(IDSPreflightStack *)self PLMN];
-    v13 = [v5 PLMN];
-    if (v12 == v13)
+    pLMN = [(IDSPreflightStack *)self PLMN];
+    pLMN2 = [v5 PLMN];
+    if (pLMN == pLMN2)
     {
       v16 = 1;
     }
 
     else
     {
-      v14 = [(IDSPreflightStack *)self PLMN];
-      v15 = [v5 PLMN];
-      v16 = [v14 isEqual:v15];
+      pLMN3 = [(IDSPreflightStack *)self PLMN];
+      pLMN4 = [v5 PLMN];
+      v16 = [pLMN3 isEqual:pLMN4];
     }
 
-    v17 = [(IDSPreflightStack *)self validationMechanisms];
-    v18 = [v5 validationMechanisms];
-    if (v17 == v18)
+    validationMechanisms = [(IDSPreflightStack *)self validationMechanisms];
+    validationMechanisms2 = [v5 validationMechanisms];
+    if (validationMechanisms == validationMechanisms2)
     {
       v21 = 1;
     }
 
     else
     {
-      v19 = [(IDSPreflightStack *)self validationMechanisms];
-      v20 = [v5 validationMechanisms];
-      v21 = [v19 isEqual:v20];
+      validationMechanisms3 = [(IDSPreflightStack *)self validationMechanisms];
+      validationMechanisms4 = [v5 validationMechanisms];
+      v21 = [validationMechanisms3 isEqual:validationMechanisms4];
     }
 
     v11 = v10 & v16 & v21;
@@ -154,22 +154,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(IDSPreflightStack *)self IMSI];
-  v4 = [v3 hash];
-  v5 = [(IDSPreflightStack *)self PLMN];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(IDSPreflightStack *)self validationMechanisms];
-  v8 = [v7 hash];
+  iMSI = [(IDSPreflightStack *)self IMSI];
+  v4 = [iMSI hash];
+  pLMN = [(IDSPreflightStack *)self PLMN];
+  v6 = [pLMN hash] ^ v4;
+  validationMechanisms = [(IDSPreflightStack *)self validationMechanisms];
+  v8 = [validationMechanisms hash];
 
   return v6 ^ v8;
 }
 
 - (id)description
 {
-  v3 = [(IDSPreflightStack *)self IMSI];
-  v4 = [(IDSPreflightStack *)self PLMN];
-  v5 = [(IDSPreflightStack *)self validationMechanisms];
-  v6 = [NSString stringWithFormat:@"IDSPreflightStack { IMSI: %@, PLMN: %@, mechanisms: %@ }", v3, v4, v5];
+  iMSI = [(IDSPreflightStack *)self IMSI];
+  pLMN = [(IDSPreflightStack *)self PLMN];
+  validationMechanisms = [(IDSPreflightStack *)self validationMechanisms];
+  v6 = [NSString stringWithFormat:@"IDSPreflightStack { IMSI: %@, PLMN: %@, mechanisms: %@ }", iMSI, pLMN, validationMechanisms];
 
   return v6;
 }

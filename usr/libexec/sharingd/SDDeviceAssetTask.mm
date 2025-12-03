@@ -1,5 +1,5 @@
 @interface SDDeviceAssetTask
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SDDeviceAssetTask)init;
 - (id)description;
 - (unint64_t)hash;
@@ -24,29 +24,29 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(SDDeviceAssetTask *)self state];
-  if (v5 > 2)
+  state = [(SDDeviceAssetTask *)self state];
+  if (state > 2)
   {
     v6 = "?";
   }
 
   else
   {
-    v6 = (&off_1008CE4F8)[v5];
+    v6 = (&off_1008CE4F8)[state];
   }
 
-  v7 = [(SDDeviceAssetTask *)self date];
-  v8 = [(SDDeviceAssetTask *)self query];
-  v9 = [v8 stringIdentifier];
-  v10 = [NSString stringWithFormat:@"<%@: %p, state: %s, date: %@, query: %@>", v4, self, v6, v7, v9];
+  date = [(SDDeviceAssetTask *)self date];
+  query = [(SDDeviceAssetTask *)self query];
+  stringIdentifier = [query stringIdentifier];
+  v10 = [NSString stringWithFormat:@"<%@: %p, state: %s, date: %@, query: %@>", v4, self, v6, date, stringIdentifier];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -56,17 +56,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SDDeviceAssetTask *)self state];
-      if (v6 == [(SDDeviceAssetTask *)v5 state])
+      v5 = equalCopy;
+      state = [(SDDeviceAssetTask *)self state];
+      if (state == [(SDDeviceAssetTask *)v5 state])
       {
-        v7 = [(SDDeviceAssetTask *)self date];
-        v8 = [(SDDeviceAssetTask *)v5 date];
-        if ([v7 isEqual:v8])
+        date = [(SDDeviceAssetTask *)self date];
+        date2 = [(SDDeviceAssetTask *)v5 date];
+        if ([date isEqual:date2])
         {
-          v9 = [(SDDeviceAssetTask *)self query];
-          v10 = [(SDDeviceAssetTask *)v5 query];
-          v11 = [v9 isEqual:v10];
+          query = [(SDDeviceAssetTask *)self query];
+          query2 = [(SDDeviceAssetTask *)v5 query];
+          v11 = [query isEqual:query2];
         }
 
         else
@@ -92,10 +92,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SDDeviceAssetTask *)self date];
-  v4 = [v3 hash];
-  v5 = [(SDDeviceAssetTask *)self query];
-  v6 = [v5 hash];
+  date = [(SDDeviceAssetTask *)self date];
+  v4 = [date hash];
+  query = [(SDDeviceAssetTask *)self query];
+  v6 = [query hash];
 
   return v6 ^ v4;
 }

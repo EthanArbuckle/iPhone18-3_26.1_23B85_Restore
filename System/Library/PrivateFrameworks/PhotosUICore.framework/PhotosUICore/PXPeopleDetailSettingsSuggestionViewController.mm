@@ -1,52 +1,52 @@
 @interface PXPeopleDetailSettingsSuggestionViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (PXPeopleDetailSettingsSuggestionViewController)initWithPerson:(id)a3;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)_defaultOptionsForPhotoLibrary:(id)a3 sortKey:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (PXPeopleDetailSettingsSuggestionViewController)initWithPerson:(id)person;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)_defaultOptionsForPhotoLibrary:(id)library sortKey:(id)key;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadDataSource;
 - (void)viewDidLoad;
 @end
 
 @implementation PXPeopleDetailSettingsSuggestionViewController
 
-- (id)_defaultOptionsForPhotoLibrary:(id)a3 sortKey:(id)a4
+- (id)_defaultOptionsForPhotoLibrary:(id)library sortKey:(id)key
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 librarySpecificFetchOptions];
-  if (v5)
+  keyCopy = key;
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  if (keyCopy)
   {
-    v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:v5 ascending:0];
+    v7 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:keyCopy ascending:0];
     v11[0] = v7;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v6 setInternalSortDescriptors:v8];
+    [librarySpecificFetchOptions setInternalSortDescriptors:v8];
   }
 
-  v9 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-  [v6 setIncludedDetectionTypes:v9];
+  px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-  return v6;
+  return librarySpecificFetchOptions;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(PXPeopleDetailSettingsSuggestionViewController *)self detailSettingsDataSources];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  detailSettingsDataSources = [(PXPeopleDetailSettingsSuggestionViewController *)self detailSettingsDataSources];
+  v7 = [detailSettingsDataSources objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   if ([v7 action] == 1)
   {
-    v8 = [v7 modelObjectForIndex:{objc_msgSend(v5, "item")}];
+    v8 = [v7 modelObjectForIndex:{objc_msgSend(pathCopy, "item")}];
     v9 = [[PXPeopleDetailSettingsSuggestionViewController alloc] initWithPerson:v8];
-    v10 = [(PXPeopleDetailSettingsSuggestionViewController *)self navigationController];
-    [v10 pushViewController:v9 animated:1];
+    navigationController = [(PXPeopleDetailSettingsSuggestionViewController *)self navigationController];
+    [navigationController pushViewController:v9 animated:1];
 
 LABEL_15:
     goto LABEL_16;
@@ -54,13 +54,13 @@ LABEL_15:
 
   if ([v7 action] == 2)
   {
-    v8 = [v7 modelObjectForIndex:{objc_msgSend(v5, "item")}];
-    v11 = [v8 person];
-    if (v11)
+    v8 = [v7 modelObjectForIndex:{objc_msgSend(pathCopy, "item")}];
+    person = [v8 person];
+    if (person)
     {
       v12 = MEMORY[0x1E6978630];
-      v13 = [v8 person];
-      v30[0] = v13;
+      person2 = [v8 person];
+      v30[0] = person2;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
       v15 = [v12 fetchAssetsForPersons:v14 options:0];
     }
@@ -101,8 +101,8 @@ LABEL_15:
 
     v22 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v16];
     v23 = [[PXPeopleDetailSettingsAssetsViewController alloc] initWithAssets:v22];
-    v24 = [(PXPeopleDetailSettingsSuggestionViewController *)self navigationController];
-    [v24 pushViewController:v23 animated:1];
+    navigationController2 = [(PXPeopleDetailSettingsSuggestionViewController *)self navigationController];
+    [navigationController2 pushViewController:v23 animated:1];
 
     goto LABEL_15;
   }
@@ -110,7 +110,7 @@ LABEL_15:
 LABEL_16:
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = 10.0;
   v6 = 0.0;
@@ -123,7 +123,7 @@ LABEL_16:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v5 = 110.0;
   v6 = 110.0;
@@ -132,20 +132,20 @@ LABEL_16:
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dequeueReusableCellWithReuseIdentifier:@"faceCellIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"faceCellIdentifier" forIndexPath:pathCopy];
   v9 = [v8 tag] + 1;
   [v8 setTag:v9];
-  v10 = [(PXPeopleDetailSettingsSuggestionViewController *)self detailSettingsDataSources];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  detailSettingsDataSources = [(PXPeopleDetailSettingsSuggestionViewController *)self detailSettingsDataSources];
+  v11 = [detailSettingsDataSources objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v12 = [v6 item];
-  v13 = [v7 traitCollection];
+  item = [pathCopy item];
+  traitCollection = [viewCopy traitCollection];
 
-  [v13 displayScale];
+  [traitCollection displayScale];
   v15 = v14;
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
@@ -154,13 +154,13 @@ LABEL_16:
   v16 = v8;
   v28 = v16;
   v29 = v9;
-  [v11 imageAtIndex:v12 targetSize:&v24 displayScale:110.0 resultHandler:{110.0, v15}];
+  [v11 imageAtIndex:item targetSize:&v24 displayScale:110.0 resultHandler:{110.0, v15}];
 
   if ([v11 hasMoreDetails])
   {
-    v17 = [v11 personNameAtIndex:v12];
-    v18 = [v11 faceCount:v12];
-    v19 = [v11 verifyTypeAtIndex:v12];
+    quantityLabel2 = [v11 personNameAtIndex:item];
+    v18 = [v11 faceCount:item];
+    v19 = [v11 verifyTypeAtIndex:item];
     if ((v19 + 2) > 4)
     {
       v20 = @"Unknown";
@@ -172,17 +172,17 @@ LABEL_16:
     }
 
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld (%@)", v18, v20, v24, v25, v26, v27];
-    [v16 setName:v17];
-    v22 = [v16 quantityLabel];
-    [v22 setText:v21];
+    [v16 setName:quantityLabel2];
+    quantityLabel = [v16 quantityLabel];
+    [quantityLabel setText:v21];
 
     [v16 setTextAlpha:1.0];
   }
 
   else
   {
-    v17 = [v16 quantityLabel];
-    [v17 setHidden:1];
+    quantityLabel2 = [v16 quantityLabel];
+    [quantityLabel2 setHidden:1];
   }
 
   return v16;
@@ -214,32 +214,32 @@ uint64_t __88__PXPeopleDetailSettingsSuggestionViewController_collectionView_cel
   return result;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (*MEMORY[0x1E69DDC08] != v10)
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if (*MEMORY[0x1E69DDC08] != kindCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXPeopleDetailSettingsViewController.m" lineNumber:651 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleDetailSettingsViewController.m" lineNumber:651 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v12 = v11;
-  v13 = [v9 dequeueReusableSupplementaryViewOfKind:? withReuseIdentifier:? forIndexPath:?];
-  v14 = [(PXPeopleDetailSettingsSuggestionViewController *)self detailSettingsDataSources];
-  v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v12, "section")}];
-  v16 = [v15 title];
-  [v13 setTitle:v16];
+  v12 = pathCopy;
+  v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:? withReuseIdentifier:? forIndexPath:?];
+  detailSettingsDataSources = [(PXPeopleDetailSettingsSuggestionViewController *)self detailSettingsDataSources];
+  v15 = [detailSettingsDataSources objectAtIndexedSubscript:{objc_msgSend(v12, "section")}];
+  title = [v15 title];
+  [v13 setTitle:title];
 
   return v13;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v5 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView:a3];
+  v5 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView:view];
   [v5 contentSize];
   v7 = v6;
 
@@ -250,21 +250,21 @@ uint64_t __88__PXPeopleDetailSettingsSuggestionViewController_collectionView_cel
   return result;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(PXPeopleDetailSettingsSuggestionViewController *)self detailSettingsDataSources];
-  v4 = [v3 count];
+  detailSettingsDataSources = [(PXPeopleDetailSettingsSuggestionViewController *)self detailSettingsDataSources];
+  v4 = [detailSettingsDataSources count];
 
   return v4;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(PXPeopleDetailSettingsSuggestionViewController *)self detailSettingsDataSources];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 numberOfItems];
+  detailSettingsDataSources = [(PXPeopleDetailSettingsSuggestionViewController *)self detailSettingsDataSources];
+  v6 = [detailSettingsDataSources objectAtIndexedSubscript:section];
+  numberOfItems = [v6 numberOfItems];
 
-  return v7;
+  return numberOfItems;
 }
 
 - (void)viewDidLoad
@@ -275,51 +275,51 @@ uint64_t __88__PXPeopleDetailSettingsSuggestionViewController_collectionView_cel
   v3 = objc_alloc_init(MEMORY[0x1E69DC840]);
   [v3 setMinimumLineSpacing:15.0];
   v4 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v5 = [(PXPeopleDetailSettingsSuggestionViewController *)self view];
-  [v5 frame];
+  view = [(PXPeopleDetailSettingsSuggestionViewController *)self view];
+  [view frame];
   v6 = [v4 initWithFrame:v3 collectionViewLayout:?];
   [(PXPeopleDetailSettingsSuggestionViewController *)self setCollectionView:v6];
 
-  v7 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
-  [v7 setAutoresizingMask:18];
+  collectionView = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
+  [collectionView setAutoresizingMask:18];
 
-  v8 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
-  [v8 setDataSource:self];
+  collectionView2 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
+  [collectionView2 setDataSource:self];
 
-  v9 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
-  [v9 setDelegate:self];
+  collectionView3 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
+  [collectionView3 setDelegate:self];
 
-  v10 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
-  [v10 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"faceCellIdentifier"];
+  collectionView4 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
+  [collectionView4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"faceCellIdentifier"];
 
-  v11 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
-  [v11 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"headerTitle"];
+  collectionView5 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
+  [collectionView5 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x1E69DDC08] withReuseIdentifier:@"headerTitle"];
 
-  v12 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
-  v13 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v12 setBackgroundColor:v13];
+  collectionView6 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [collectionView6 setBackgroundColor:systemBackgroundColor];
 
-  v14 = [(PXPeopleDetailSettingsSuggestionViewController *)self view];
-  v15 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
-  [v14 addSubview:v15];
+  view2 = [(PXPeopleDetailSettingsSuggestionViewController *)self view];
+  collectionView7 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
+  [view2 addSubview:collectionView7];
 
   [(PXPeopleDetailSettingsSuggestionViewController *)self loadDataSource];
 }
 
 - (void)loadDataSource
 {
-  v3 = [(PXPeopleDetailSettingsSuggestionViewController *)self person];
-  v4 = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
+  person = [(PXPeopleDetailSettingsSuggestionViewController *)self person];
+  collectionView = [(PXPeopleDetailSettingsSuggestionViewController *)self collectionView];
   v5 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PXPeopleDetailSettingsSuggestionViewController_loadDataSource__block_invoke;
   block[3] = &unk_1E774A1B8;
-  v9 = v3;
-  v10 = self;
-  v11 = v4;
-  v6 = v4;
-  v7 = v3;
+  v9 = person;
+  selfCopy = self;
+  v11 = collectionView;
+  v6 = collectionView;
+  v7 = person;
   dispatch_async(v5, block);
 }
 
@@ -467,16 +467,16 @@ id __64__PXPeopleDetailSettingsSuggestionViewController_loadDataSource__block_in
   return v8;
 }
 
-- (PXPeopleDetailSettingsSuggestionViewController)initWithPerson:(id)a3
+- (PXPeopleDetailSettingsSuggestionViewController)initWithPerson:(id)person
 {
-  v5 = a3;
+  personCopy = person;
   v9.receiver = self;
   v9.super_class = PXPeopleDetailSettingsSuggestionViewController;
   v6 = [(PXPeopleDetailSettingsSuggestionViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_person, a3);
+    objc_storeStrong(&v6->_person, person);
   }
 
   return v7;

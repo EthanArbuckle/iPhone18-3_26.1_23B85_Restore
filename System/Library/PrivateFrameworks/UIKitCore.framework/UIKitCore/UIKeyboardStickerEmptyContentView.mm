@@ -1,17 +1,17 @@
 @interface UIKeyboardStickerEmptyContentView
-- (UIKeyboardStickerEmptyContentView)initWithFrame:(CGRect)a3;
+- (UIKeyboardStickerEmptyContentView)initWithFrame:(CGRect)frame;
 - (void)handleTap;
 - (void)layoutSubviews;
 @end
 
 @implementation UIKeyboardStickerEmptyContentView
 
-- (UIKeyboardStickerEmptyContentView)initWithFrame:(CGRect)a3
+- (UIKeyboardStickerEmptyContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v24.receiver = self;
   v24.super_class = UIKeyboardStickerEmptyContentView;
   v7 = [(UICollectionReusableView *)&v24 initWithFrame:?];
@@ -24,8 +24,8 @@
     [v8 setSecondaryText:v10];
 
     v11 = _UINSLocalizedStringWithDefaultValue(@"Open Stickers", @"Open Stickers");
-    v12 = [v8 button];
-    [v12 setTitle:v11];
+    button = [v8 button];
+    [button setTitle:v11];
 
     objc_initWeak(&location, v7);
     v18 = MEMORY[0x1E69E9820];
@@ -34,8 +34,8 @@
     v21 = &unk_1E70F7450;
     objc_copyWeak(&v22, &location);
     v13 = [UIAction actionWithHandler:&v18];
-    v14 = [v8 buttonProperties];
-    [v14 setPrimaryAction:v13];
+    buttonProperties = [v8 buttonProperties];
+    [buttonProperties setPrimaryAction:v13];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -71,16 +71,16 @@ void __51__UIKeyboardStickerEmptyContentView_initWithFrame___block_invoke(uint64
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = @"window";
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
   v8[1] = @"windowScene";
-  v9[0] = v3;
-  v4 = [(UIView *)self window];
-  v5 = [v4 windowScene];
-  v9[1] = v5;
+  v9[0] = window;
+  window2 = [(UIView *)self window];
+  windowScene = [window2 windowScene];
+  v9[1] = windowScene;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"UIEmojiAndStickerShouldPresentPickerNotification" object:0 userInfo:v6];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UIEmojiAndStickerShouldPresentPickerNotification" object:0 userInfo:v6];
 }
 
 @end

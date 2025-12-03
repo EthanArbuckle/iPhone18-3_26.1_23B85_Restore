@@ -1,31 +1,31 @@
 @interface HistogramView
-- (_TtC4Maps13HistogramView)initWithCoder:(id)a3;
-- (_TtC4Maps13HistogramView)initWithFrame:(CGRect)a3;
+- (_TtC4Maps13HistogramView)initWithCoder:(id)coder;
+- (_TtC4Maps13HistogramView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HistogramView
 
-- (_TtC4Maps13HistogramView)initWithFrame:(CGRect)a3
+- (_TtC4Maps13HistogramView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC4Maps13HistogramView_totalEventCount) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for HistogramView();
-  v7 = [(HistogramView *)&v9 initWithFrame:x, y, width, height];
-  [(HistogramView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  return v7;
+  height = [(HistogramView *)&v9 initWithFrame:x, y, width, height];
+  [(HistogramView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+  return height;
 }
 
-- (_TtC4Maps13HistogramView)initWithCoder:(id)a3
+- (_TtC4Maps13HistogramView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC4Maps13HistogramView_totalEventCount) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for HistogramView();
-  v4 = a3;
-  v5 = [(HistogramView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HistogramView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,13 +1,13 @@
 @interface MBSBackupAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MBSBackupAttributes
@@ -82,7 +82,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_deviceClass)
   {
@@ -121,87 +121,87 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_deviceClass)
   {
-    [a3 setDeviceClass:?];
+    [to setDeviceClass:?];
   }
 
   if (self->_productType)
   {
-    [a3 setProductType:?];
+    [to setProductType:?];
   }
 
   if (self->_serialNumber)
   {
-    [a3 setSerialNumber:?];
+    [to setSerialNumber:?];
   }
 
   if (self->_deviceColor)
   {
-    [a3 setDeviceColor:?];
+    [to setDeviceColor:?];
   }
 
   if (self->_hardwareModel)
   {
-    [a3 setHardwareModel:?];
+    [to setHardwareModel:?];
   }
 
   if (self->_marketingName)
   {
-    [a3 setMarketingName:?];
+    [to setMarketingName:?];
   }
 
   if (self->_deviceEnclosureColor)
   {
 
-    [a3 setDeviceEnclosureColor:?];
+    [to setDeviceEnclosureColor:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[1] = [(NSString *)self->_deviceClass copyWithZone:a3];
-  v5[6] = [(NSString *)self->_productType copyWithZone:a3];
+  v5[1] = [(NSString *)self->_deviceClass copyWithZone:zone];
+  v5[6] = [(NSString *)self->_productType copyWithZone:zone];
 
-  v5[7] = [(NSString *)self->_serialNumber copyWithZone:a3];
-  v5[2] = [(NSString *)self->_deviceColor copyWithZone:a3];
+  v5[7] = [(NSString *)self->_serialNumber copyWithZone:zone];
+  v5[2] = [(NSString *)self->_deviceColor copyWithZone:zone];
 
-  v5[4] = [(NSString *)self->_hardwareModel copyWithZone:a3];
-  v5[5] = [(NSString *)self->_marketingName copyWithZone:a3];
+  v5[4] = [(NSString *)self->_hardwareModel copyWithZone:zone];
+  v5[5] = [(NSString *)self->_marketingName copyWithZone:zone];
 
-  v5[3] = [(NSString *)self->_deviceEnclosureColor copyWithZone:a3];
+  v5[3] = [(NSString *)self->_deviceEnclosureColor copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     deviceClass = self->_deviceClass;
-    if (!(deviceClass | *(a3 + 1)) || (v5 = [(NSString *)deviceClass isEqual:?]) != 0)
+    if (!(deviceClass | *(equal + 1)) || (v5 = [(NSString *)deviceClass isEqual:?]) != 0)
     {
       productType = self->_productType;
-      if (!(productType | *(a3 + 6)) || (v5 = [(NSString *)productType isEqual:?]) != 0)
+      if (!(productType | *(equal + 6)) || (v5 = [(NSString *)productType isEqual:?]) != 0)
       {
         serialNumber = self->_serialNumber;
-        if (!(serialNumber | *(a3 + 7)) || (v5 = [(NSString *)serialNumber isEqual:?]) != 0)
+        if (!(serialNumber | *(equal + 7)) || (v5 = [(NSString *)serialNumber isEqual:?]) != 0)
         {
           deviceColor = self->_deviceColor;
-          if (!(deviceColor | *(a3 + 2)) || (v5 = [(NSString *)deviceColor isEqual:?]) != 0)
+          if (!(deviceColor | *(equal + 2)) || (v5 = [(NSString *)deviceColor isEqual:?]) != 0)
           {
             hardwareModel = self->_hardwareModel;
-            if (!(hardwareModel | *(a3 + 4)) || (v5 = [(NSString *)hardwareModel isEqual:?]) != 0)
+            if (!(hardwareModel | *(equal + 4)) || (v5 = [(NSString *)hardwareModel isEqual:?]) != 0)
             {
               marketingName = self->_marketingName;
-              if (!(marketingName | *(a3 + 5)) || (v5 = [(NSString *)marketingName isEqual:?]) != 0)
+              if (!(marketingName | *(equal + 5)) || (v5 = [(NSString *)marketingName isEqual:?]) != 0)
               {
                 deviceEnclosureColor = self->_deviceEnclosureColor;
-                if (deviceEnclosureColor | *(a3 + 3))
+                if (deviceEnclosureColor | *(equal + 3))
                 {
 
                   LOBYTE(v5) = [(NSString *)deviceEnclosureColor isEqual:?];
@@ -233,39 +233,39 @@
   return v6 ^ v8 ^ [(NSString *)self->_deviceEnclosureColor hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(MBSBackupAttributes *)self setDeviceClass:?];
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
     [(MBSBackupAttributes *)self setProductType:?];
   }
 
-  if (*(a3 + 7))
+  if (*(from + 7))
   {
     [(MBSBackupAttributes *)self setSerialNumber:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(MBSBackupAttributes *)self setDeviceColor:?];
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(MBSBackupAttributes *)self setHardwareModel:?];
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(MBSBackupAttributes *)self setMarketingName:?];
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
 
     [(MBSBackupAttributes *)self setDeviceEnclosureColor:?];

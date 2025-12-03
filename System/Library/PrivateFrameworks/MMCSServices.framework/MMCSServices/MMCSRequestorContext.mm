@@ -1,18 +1,18 @@
 @interface MMCSRequestorContext
-- (MMCSRequestorContext)initWithController:(id)a3 transferID:(id)a4;
+- (MMCSRequestorContext)initWithController:(id)controller transferID:(id)d;
 - (void)_removeFromController;
 - (void)dealloc;
 @end
 
 @implementation MMCSRequestorContext
 
-- (MMCSRequestorContext)initWithController:(id)a3 transferID:(id)a4
+- (MMCSRequestorContext)initWithController:(id)controller transferID:(id)d
 {
   v8.receiver = self;
   v8.super_class = MMCSRequestorContext;
   v6 = [(MMCSRequestorContext *)&v8 init];
-  v6->_controller = a3;
-  v6->_transferID = a4;
+  v6->_controller = controller;
+  v6->_transferID = d;
   return v6;
 }
 

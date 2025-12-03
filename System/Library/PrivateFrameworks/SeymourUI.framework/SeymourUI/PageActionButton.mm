@@ -1,15 +1,15 @@
 @interface PageActionButton
-- (_TtC9SeymourUI16PageActionButton)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI16PageActionButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PageActionButton
 
-- (_TtC9SeymourUI16PageActionButton)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI16PageActionButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC9SeymourUI16PageActionButton_buttonState;
   *v7 = 0u;
   *(v7 + 1) = 0u;

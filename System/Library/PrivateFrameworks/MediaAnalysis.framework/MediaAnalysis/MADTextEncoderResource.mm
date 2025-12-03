@@ -1,6 +1,6 @@
 @interface MADTextEncoderResource
 + (id)sharedResource;
-+ (id)sharedResource:(int64_t)a3;
++ (id)sharedResource:(int64_t)resource;
 - (CSUTextEncoder)textEncoder;
 - (MADTextEncoderResource)init;
 - (int64_t)activeCost;
@@ -22,7 +22,7 @@
   v8[1] = 3221225472;
   v8[2] = __40__MADTextEncoderResource_sharedResource__block_invoke;
   v8[3] = &__block_descriptor_40_e5__8__0l;
-  v8[4] = a1;
+  v8[4] = self;
   v6 = [v3 sharedInstanceWithIdentifier:v5 andCreationBlock:v8];
 
   return v6;
@@ -35,29 +35,29 @@ id __40__MADTextEncoderResource_sharedResource__block_invoke()
   return v0;
 }
 
-+ (id)sharedResource:(int64_t)a3
++ (id)sharedResource:(int64_t)resource
 {
-  v3 = a3;
+  resourceCopy = resource;
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 > 4)
+  if (resource > 4)
   {
-    if (a3 <= 6)
+    if (resource <= 6)
     {
-      if (a3 != 5)
+      if (resource != 5)
       {
         goto LABEL_14;
       }
     }
 
-    else if (a3 != 7)
+    else if (resource != 7)
     {
-      if (a3 != 8)
+      if (resource != 8)
       {
-        if (a3 == 9)
+        if (resource == 9)
         {
           v4 = MADSystemSearchMD5TextEncoderResource;
 LABEL_17:
-          v5 = [(__objc2_class *)v4 sharedResource];
+          sharedResource = [(__objc2_class *)v4 sharedResource];
           goto LABEL_18;
         }
 
@@ -74,9 +74,9 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  if (a3 > 2)
+  if (resource > 2)
   {
-    if (a3 != 3)
+    if (resource != 3)
     {
       v4 = MADSystemSearchMD4TextEncoderResource;
       goto LABEL_17;
@@ -85,13 +85,13 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (resource == 1)
   {
     v4 = MADSystemSearchMD2TextEncoderResource;
     goto LABEL_17;
   }
 
-  if (a3 == 2)
+  if (resource == 2)
   {
     v4 = MADSystemSearchMD3TextEncoderResource;
     goto LABEL_17;
@@ -101,14 +101,14 @@ LABEL_21:
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = resourceCopy;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "MADTextEncoderResource requested for unsupported revision (%d)", v7, 8u);
   }
 
-  v5 = 0;
+  sharedResource = 0;
 LABEL_18:
 
-  return v5;
+  return sharedResource;
 }
 
 - (MADTextEncoderResource)init

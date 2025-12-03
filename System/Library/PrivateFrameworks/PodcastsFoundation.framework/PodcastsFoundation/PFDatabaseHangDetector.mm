@@ -8,13 +8,13 @@
 
 - (void)beginMonitoring
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8CFA418();
 }
 
 - (void)endMonitoring
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D915AC78();
 }
 

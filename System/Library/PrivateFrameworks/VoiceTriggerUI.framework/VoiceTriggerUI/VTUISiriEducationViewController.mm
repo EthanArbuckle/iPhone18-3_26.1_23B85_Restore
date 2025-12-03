@@ -1,28 +1,28 @@
 @interface VTUISiriEducationViewController
-- (VTUISiriEducationViewController)initWithTitle:(id)a3 detailText:(id)a4 style:(id)a5 delegate:(id)a6;
+- (VTUISiriEducationViewController)initWithTitle:(id)title detailText:(id)text style:(id)style delegate:(id)delegate;
 - (void)_continueButtonPressed;
 - (void)_fadeInSubViews;
 - (void)_setupContinueButton;
-- (void)_setupImageContainerViewForTraitCollection:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)_setupImageContainerViewForTraitCollection:(id)collection;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation VTUISiriEducationViewController
 
-- (VTUISiriEducationViewController)initWithTitle:(id)a3 detailText:(id)a4 style:(id)a5 delegate:(id)a6
+- (VTUISiriEducationViewController)initWithTitle:(id)title detailText:(id)text style:(id)style delegate:(id)delegate
 {
-  v11 = a5;
-  v12 = a6;
+  styleCopy = style;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = VTUISiriEducationViewController;
-  v13 = [(VTUISiriEducationViewController *)&v17 initWithTitle:a3 detailText:a4 icon:0 contentLayout:2];
+  v13 = [(VTUISiriEducationViewController *)&v17 initWithTitle:title detailText:text icon:0 contentLayout:2];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_style, a5);
-    objc_storeWeak(&v14->_delegate, v12);
-    v15 = [(VTUISiriEducationViewController *)v14 traitCollection];
-    [(VTUISiriEducationViewController *)v14 _setupImageContainerViewForTraitCollection:v15];
+    objc_storeStrong(&v13->_style, style);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    traitCollection = [(VTUISiriEducationViewController *)v14 traitCollection];
+    [(VTUISiriEducationViewController *)v14 _setupImageContainerViewForTraitCollection:traitCollection];
 
     [(VTUISiriEducationViewController *)v14 _setupContinueButton];
   }
@@ -32,20 +32,20 @@
 
 - (void)_setupContinueButton
 {
-  v6 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v3 = +[VTUIStringsHelper sharedStringsHelper];
   v4 = [v3 uiLocalizedStringForKey:@"BUTTON_CONTINUE_SETUP"];
-  [v6 setTitle:v4 forState:0];
+  [boldButton setTitle:v4 forState:0];
 
-  [v6 addTarget:self action:sel__continueButtonPressed forControlEvents:64];
-  v5 = [(VTUISiriEducationViewController *)self buttonTray];
-  [v5 addButton:v6];
+  [boldButton addTarget:self action:sel__continueButtonPressed forControlEvents:64];
+  buttonTray = [(VTUISiriEducationViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 }
 
-- (void)_setupImageContainerViewForTraitCollection:(id)a3
+- (void)_setupImageContainerViewForTraitCollection:(id)collection
 {
   v54[4] = *MEMORY[0x277D85DE8];
-  v4 = [(VTUIStyle *)self->_style educationAssetNameForTraitCollection:a3];
+  v4 = [(VTUIStyle *)self->_style educationAssetNameForTraitCollection:collection];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = MEMORY[0x277CBEBC0];
   v7 = [v5 pathForResource:v4 ofType:@"mov"];
@@ -74,18 +74,18 @@
     v17 = v49 = v9;
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v18 = [(AVPlayerViewController *)v16 view];
+    view = [(AVPlayerViewController *)v16 view];
     [MEMORY[0x277D75348] systemBackgroundColor];
     v19 = v52 = v4;
-    [v18 setBackgroundColor:v19];
+    [view setBackgroundColor:v19];
 
     v20 = self->_playerViewController;
     self->_playerViewController = v16;
     v45 = v16;
 
-    v21 = [(VTUISiriEducationViewController *)self contentView];
-    v22 = [(AVPlayerViewController *)v45 view];
-    [v21 addSubview:v22];
+    contentView = [(VTUISiriEducationViewController *)self contentView];
+    view2 = [(AVPlayerViewController *)v45 view];
+    [contentView addSubview:view2];
 
     [(VTUIStyle *)self->_style educationAssetSize];
     v24 = v23;
@@ -93,26 +93,26 @@
     [(VTUIStyle *)self->_style educationAssetTopPadding];
     v28 = v27;
     v41 = MEMORY[0x277CCAAD0];
-    v48 = [(AVPlayerViewController *)self->_playerViewController view];
-    v46 = [v48 topAnchor];
-    v47 = [(VTUISiriEducationViewController *)self contentView];
-    v44 = [v47 topAnchor];
-    v43 = [v46 constraintEqualToAnchor:v44 constant:v28];
+    view3 = [(AVPlayerViewController *)self->_playerViewController view];
+    topAnchor = [view3 topAnchor];
+    contentView2 = [(VTUISiriEducationViewController *)self contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v43 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v28];
     v54[0] = v43;
-    v42 = [(AVPlayerViewController *)self->_playerViewController view];
-    v39 = [v42 centerXAnchor];
-    v40 = [(VTUISiriEducationViewController *)self contentView];
-    v38 = [v40 centerXAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38 constant:0.0];
+    view4 = [(AVPlayerViewController *)self->_playerViewController view];
+    centerXAnchor = [view4 centerXAnchor];
+    contentView3 = [(VTUISiriEducationViewController *)self contentView];
+    centerXAnchor2 = [contentView3 centerXAnchor];
+    v37 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
     v54[1] = v37;
     [(AVPlayerViewController *)self->_playerViewController view];
     v29 = v51 = v5;
-    v30 = [v29 heightAnchor];
-    v31 = [v30 constraintEqualToConstant:v26];
+    heightAnchor = [v29 heightAnchor];
+    v31 = [heightAnchor constraintEqualToConstant:v26];
     v54[2] = v31;
-    v32 = [(AVPlayerViewController *)self->_playerViewController view];
-    v33 = [v32 widthAnchor];
-    v34 = [v33 constraintEqualToConstant:v24];
+    view5 = [(AVPlayerViewController *)self->_playerViewController view];
+    widthAnchor = [view5 widthAnchor];
+    v34 = [widthAnchor constraintEqualToConstant:v24];
     v54[3] = v34;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:4];
     [v41 activateConstraints:v35];
@@ -131,13 +131,13 @@
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = VTUISiriEducationViewController;
-  [(VTUISiriEducationViewController *)&v5 traitCollectionDidChange:a3];
-  v4 = [(VTUISiriEducationViewController *)self traitCollection];
-  [(VTUISiriEducationViewController *)self _setupImageContainerViewForTraitCollection:v4];
+  [(VTUISiriEducationViewController *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(VTUISiriEducationViewController *)self traitCollection];
+  [(VTUISiriEducationViewController *)self _setupImageContainerViewForTraitCollection:traitCollection];
 }
 
 - (void)_continueButtonPressed
@@ -148,11 +148,11 @@
 
 - (void)_fadeInSubViews
 {
-  v3 = [(VTUISiriEducationViewController *)self headerView];
-  [v3 setAlpha:0.0];
+  headerView = [(VTUISiriEducationViewController *)self headerView];
+  [headerView setAlpha:0.0];
 
-  v4 = [(VTUISiriEducationViewController *)self contentView];
-  [v4 setAlpha:0.0];
+  contentView = [(VTUISiriEducationViewController *)self contentView];
+  [contentView setAlpha:0.0];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;

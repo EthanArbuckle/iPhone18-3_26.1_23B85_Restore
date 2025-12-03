@@ -7,28 +7,28 @@
 - (id)fp_copy
 {
   v2 = MEMORY[0x1E695DF50];
-  v3 = [a1 methodSignature];
-  v4 = [v2 invocationWithMethodSignature:v3];
+  methodSignature = [self methodSignature];
+  v4 = [v2 invocationWithMethodSignature:methodSignature];
 
-  v5 = [a1 methodSignature];
-  v6 = [v5 numberOfArguments];
+  methodSignature2 = [self methodSignature];
+  numberOfArguments = [methodSignature2 numberOfArguments];
 
-  v7 = [a1 methodSignature];
-  v8 = malloc_type_calloc(1uLL, [v7 frameLength], 0xA4F5B9BAuLL);
+  methodSignature3 = [self methodSignature];
+  v8 = malloc_type_calloc(1uLL, [methodSignature3 frameLength], 0xA4F5B9BAuLL);
 
   if (v8)
   {
-    if (v6 >= 1)
+    if (numberOfArguments >= 1)
     {
-      for (i = 0; i != v6; ++i)
+      for (i = 0; i != numberOfArguments; ++i)
       {
-        [a1 getArgument:v8 atIndex:i];
+        [self getArgument:v8 atIndex:i];
         [v4 setArgument:v8 atIndex:i];
       }
     }
 
     free(v8);
-    if ([a1 argumentsRetained])
+    if ([self argumentsRetained])
     {
       [v4 retainArguments];
     }

@@ -16,23 +16,23 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 SDKVersion];
+  sDKVersion = [self SDKVersion];
 
-  if (!v5)
+  if (!sDKVersion)
   {
     v7 = getLNLogCategoryPolicy();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [a1 bundleIdentifier];
+      bundleIdentifier = [self bundleIdentifier];
       *v17 = 138543362;
-      *&v17[4] = v12;
+      *&v17[4] = bundleIdentifier;
       _os_log_impl(&dword_18EF7E000, v7, OS_LOG_TYPE_DEFAULT, "No SDKVersion for %{public}@", v17, 0xCu);
     }
 
     goto LABEL_8;
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a1, "platform")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(self, "platform")}];
   v7 = [v4 objectForKeyedSubscript:v6];
 
   if (!v7)
@@ -44,7 +44,7 @@ LABEL_8:
 
   *v17 = 0u;
   v18 = 0u;
-  v8 = [a1 SDKVersion];
+  sDKVersion2 = [self SDKVersion];
   MEMORY[0x193AD91A0](v17);
 
   memset(v16, 0, sizeof(v16));
@@ -52,9 +52,9 @@ LABEL_8:
   v9 = getLNLogCategoryPolicy();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [a1 SDKVersion];
+    sDKVersion3 = [self SDKVersion];
     *buf = 138543618;
-    *&buf[4] = v10;
+    *&buf[4] = sDKVersion3;
     *&buf[12] = 2114;
     *&buf[14] = v7;
     _os_log_impl(&dword_18EF7E000, v9, OS_LOG_TYPE_INFO, "Comparing %{public}@ to %{public}@", buf, 0x16u);
@@ -71,24 +71,24 @@ LABEL_9:
 
 - (uint64_t)linkedOnOrAfter2025
 {
-  v2 = [objc_opt_class() platformToSDKMapping2025];
-  v3 = [a1 linkedOnOrAfter:v2];
+  platformToSDKMapping2025 = [objc_opt_class() platformToSDKMapping2025];
+  v3 = [self linkedOnOrAfter:platformToSDKMapping2025];
 
   return v3;
 }
 
 - (uint64_t)linkedOnOrAfter2024
 {
-  v2 = [objc_opt_class() platformToSDKMapping2024];
-  v3 = [a1 linkedOnOrAfter:v2];
+  platformToSDKMapping2024 = [objc_opt_class() platformToSDKMapping2024];
+  v3 = [self linkedOnOrAfter:platformToSDKMapping2024];
 
   return v3;
 }
 
 - (id)ln_linkedFrameworksWithError:()LNAdditions
 {
-  v4 = [a1 executableURL];
-  v5 = [v4 ln_linkedFrameworksWithError:a3];
+  executableURL = [self executableURL];
+  v5 = [executableURL ln_linkedFrameworksWithError:a3];
 
   return v5;
 }
@@ -186,8 +186,8 @@ LABEL_9:
 + (uint64_t)bundleLinkedOnOrAfter2025:()LNAdditions
 {
   v4 = a3;
-  v5 = [a1 platformToSDKMapping2025];
-  v6 = [a1 bundle:v4 linkedOnOrAfter:v5];
+  platformToSDKMapping2025 = [self platformToSDKMapping2025];
+  v6 = [self bundle:v4 linkedOnOrAfter:platformToSDKMapping2025];
 
   return v6;
 }
@@ -195,8 +195,8 @@ LABEL_9:
 + (uint64_t)bundleLinkedOnOrAfter2024:()LNAdditions
 {
   v4 = a3;
-  v5 = [a1 platformToSDKMapping2024];
-  v6 = [a1 bundle:v4 linkedOnOrAfter:v5];
+  platformToSDKMapping2024 = [self platformToSDKMapping2024];
+  v6 = [self bundle:v4 linkedOnOrAfter:platformToSDKMapping2024];
 
   return v6;
 }

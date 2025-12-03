@@ -8,32 +8,32 @@
 - (ASAuthorizationAppleIDCredential)authenticationServicesCredential
 {
   v2 = [ASAuthorizationAppleIDCredential alloc];
-  v3 = [a1 userIdentifier];
-  v4 = [a1 _credentialScopes];
-  v5 = [(ASAuthorizationAppleIDCredential *)v2 initWithUser:v3 authorizedScopes:v4];
+  userIdentifier = [self userIdentifier];
+  _credentialScopes = [self _credentialScopes];
+  v5 = [(ASAuthorizationAppleIDCredential *)v2 initWithUser:userIdentifier authorizedScopes:_credentialScopes];
 
-  v6 = [a1 identityToken];
-  [(ASAuthorizationAppleIDCredential *)v5 setIdentityToken:v6];
+  identityToken = [self identityToken];
+  [(ASAuthorizationAppleIDCredential *)v5 setIdentityToken:identityToken];
 
-  v7 = [a1 authorizationCode];
-  [(ASAuthorizationAppleIDCredential *)v5 setAuthorizationCode:v7];
+  authorizationCode = [self authorizationCode];
+  [(ASAuthorizationAppleIDCredential *)v5 setAuthorizationCode:authorizationCode];
 
-  v8 = [a1 state];
-  [(ASAuthorizationAppleIDCredential *)v5 setState:v8];
+  state = [self state];
+  [(ASAuthorizationAppleIDCredential *)v5 setState:state];
 
-  v9 = [a1 userInformation];
-  v10 = v9;
-  if (v9)
+  userInformation = [self userInformation];
+  v10 = userInformation;
+  if (userInformation)
   {
-    v11 = [v9 selectedEmail];
-    [(ASAuthorizationAppleIDCredential *)v5 setEmail:v11];
+    selectedEmail = [userInformation selectedEmail];
+    [(ASAuthorizationAppleIDCredential *)v5 setEmail:selectedEmail];
 
     v12 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    v13 = [v10 familyName];
-    [v12 setFamilyName:v13];
+    familyName = [v10 familyName];
+    [v12 setFamilyName:familyName];
 
-    v14 = [v10 givenName];
-    [v12 setGivenName:v14];
+    givenName = [v10 givenName];
+    [v12 setGivenName:givenName];
 
     [(ASAuthorizationAppleIDCredential *)v5 setFullName:v12];
     if (objc_opt_respondsToSelector())
@@ -44,7 +44,7 @@
 
   if (objc_opt_respondsToSelector())
   {
-    if ([a1 isLikelyRealUser])
+    if ([self isLikelyRealUser])
     {
       v15 = 2;
     }
@@ -64,15 +64,15 @@
 {
   v24 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc(MEMORY[0x1E695DF70]);
-  v3 = [a1 authorizedScopes];
-  v4 = [v2 initWithCapacity:{objc_msgSend(v3, "count")}];
+  authorizedScopes = [self authorizedScopes];
+  v4 = [v2 initWithCapacity:{objc_msgSend(authorizedScopes, "count")}];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a1 authorizedScopes];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  authorizedScopes2 = [self authorizedScopes];
+  v6 = [authorizedScopes2 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -85,7 +85,7 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(authorizedScopes2);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
@@ -104,7 +104,7 @@
         [v4 addObject:v14];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [authorizedScopes2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);

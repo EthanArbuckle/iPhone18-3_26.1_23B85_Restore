@@ -2,8 +2,8 @@
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (ICAsyncOperation)init;
-- (void)enqueueChildOperation:(id)a3;
-- (void)finishWithError:(id)a3;
+- (void)enqueueChildOperation:(id)operation;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
@@ -19,13 +19,13 @@
 
 - (void)start
 {
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 qualityOfService];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  qualityOfService = [currentThread qualityOfService];
 
   [(ICAsyncOperation *)self willChangeValueForKey:@"isExecuting"];
   os_unfair_lock_lock(&self->_asyncOperationLock);
   self->_isExecuting = 1;
-  self->_qualityOfServiceForChildOperationQueue = v4;
+  self->_qualityOfServiceForChildOperationQueue = qualityOfService;
   os_unfair_lock_unlock(&self->_asyncOperationLock);
   [(ICAsyncOperation *)self didChangeValueForKey:@"isExecuting"];
 
@@ -54,10 +54,10 @@
   return isFinished;
 }
 
-- (void)enqueueChildOperation:(id)a3
+- (void)enqueueChildOperation:(id)operation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  operationCopy = operation;
   os_unfair_lock_assert_not_owner(&self->_asyncOperationLock);
   os_unfair_lock_lock(&self->_asyncOperationLock);
   childOperationQueue = self->_childOperationQueue;
@@ -81,22 +81,22 @@
     v17 = NSStringFromClass(v16);
     v18 = [v15 initWithFormat:@"<%@: %p", v17, v14];
 
-    v19 = [(NSOperationQueue *)v14 name];
-    [v18 appendFormat:@"; name = %@", v19];
+    name = [(NSOperationQueue *)v14 name];
+    [v18 appendFormat:@"; name = %@", name];
 
     [v18 appendFormat:@"; maxConcurrentOperationCount = %ld", -[NSOperationQueue maxConcurrentOperationCount](v14, "maxConcurrentOperationCount")];
     if (v6)
     {
-      v20 = [(NSOperationQueue *)v14 qualityOfService];
+      qualityOfService = [(NSOperationQueue *)v14 qualityOfService];
       v21 = @"????";
-      if (v20 <= 16)
+      if (qualityOfService <= 16)
       {
-        if (v20 == -1)
+        if (qualityOfService == -1)
         {
           v21 = @"default";
         }
 
-        else if (v20 == 9)
+        else if (qualityOfService == 9)
         {
           v21 = @"background";
         }
@@ -104,7 +104,7 @@
 
       else
       {
-        switch(v20)
+        switch(qualityOfService)
         {
           case 17:
             v21 = @"utility";
@@ -126,25 +126,25 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
       v26 = v18;
       _os_log_impl(&dword_1B4491000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Created child operation queue: %{public}@.", buf, 0x16u);
     }
   }
 
-  [(NSOperationQueue *)v14 addOperation:v4];
+  [(NSOperationQueue *)v14 addOperation:operationCopy];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(ICAsyncOperation *)self willChangeValueForKey:@"error"];
   [(ICAsyncOperation *)self willChangeValueForKey:@"isFinished"];
   [(ICAsyncOperation *)self willChangeValueForKey:@"isExecuting"];
   os_unfair_lock_lock(&self->_asyncOperationLock);
   error = self->_error;
-  self->_error = v4;
+  self->_error = errorCopy;
 
   self->_isExecuting = 0;
   self->_isFinished = 1;

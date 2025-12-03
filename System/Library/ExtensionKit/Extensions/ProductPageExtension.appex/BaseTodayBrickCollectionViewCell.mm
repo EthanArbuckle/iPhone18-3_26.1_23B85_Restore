@@ -2,36 +2,36 @@
 - (NSString)accessibilityLabel;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setIsAccessibilityElement:(BOOL)element;
 @end
 
 @implementation BaseTodayBrickCollectionViewCell
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004CBC10();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004CBF44();
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = type metadata accessor for BaseTodayBrickCollectionViewCell();
-  [(BaseTodayBrickCollectionViewCell *)&v4 setIsAccessibilityElement:v3];
+  [(BaseTodayBrickCollectionViewCell *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004CC108();
   v4 = v3;
 
@@ -48,18 +48,18 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_10076FF9C();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_10076FF6C();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -68,11 +68,11 @@
   [(BaseTodayBrickCollectionViewCell *)&v7 setAccessibilityLabel:v5];
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for BaseTodayBrickCollectionViewCell();
-  [(BaseTodayBrickCollectionViewCell *)&v4 setAccessibilityTraits:a3];
+  [(BaseTodayBrickCollectionViewCell *)&v4 setAccessibilityTraits:traits];
 }
 
 @end

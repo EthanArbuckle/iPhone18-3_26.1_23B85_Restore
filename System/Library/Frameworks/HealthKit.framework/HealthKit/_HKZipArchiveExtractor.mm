@@ -1,13 +1,13 @@
 @interface _HKZipArchiveExtractor
-- (BOOL)enumerateEntriesWithError:(id *)a3 block:(id)a4;
+- (BOOL)enumerateEntriesWithError:(id *)error block:(id)block;
 - (_HKZipArchiveExtractor)init;
-- (_HKZipArchiveExtractor)initWithData:(id)a3;
-- (_HKZipArchiveExtractor)initWithFileHandle:(id)a3;
-- (_HKZipArchiveExtractor)initWithPathname:(id)a3;
-- (_HKZipArchiveExtractor)initWithURL:(id)a3;
-- (id)_initWithData:(id)a3 fileHandle:(id)a4 path:(id)a5;
+- (_HKZipArchiveExtractor)initWithData:(id)data;
+- (_HKZipArchiveExtractor)initWithFileHandle:(id)handle;
+- (_HKZipArchiveExtractor)initWithPathname:(id)pathname;
+- (_HKZipArchiveExtractor)initWithURL:(id)l;
+- (id)_initWithData:(id)data fileHandle:(id)handle path:(id)path;
 - (id)description;
-- (id)numberOfEntriesWithError:(id *)a3;
+- (id)numberOfEntriesWithError:(id *)error;
 @end
 
 @implementation _HKZipArchiveExtractor
@@ -22,13 +22,13 @@
   return 0;
 }
 
-- (id)_initWithData:(id)a3 fileHandle:(id)a4 path:(id)a5
+- (id)_initWithData:(id)data fileHandle:(id)handle path:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if ((!v9 || v10 || v11) && (v9 || (v10 == 0) == (v11 == 0)))
+  dataCopy = data;
+  handleCopy = handle;
+  pathCopy = path;
+  v12 = pathCopy;
+  if ((!dataCopy || handleCopy || pathCopy) && (dataCopy || (handleCopy == 0) == (pathCopy == 0)))
   {
     [_HKZipArchiveExtractor _initWithData:fileHandle:path:];
   }
@@ -40,8 +40,8 @@
   if (v13)
   {
     v13->_archive = 0;
-    objc_storeStrong(&v13->_archiveData, a3);
-    objc_storeStrong(&v14->_fileHandle, a4);
+    objc_storeStrong(&v13->_archiveData, data);
+    objc_storeStrong(&v14->_fileHandle, handle);
     v15 = [v12 copy];
     pathname = v14->_pathname;
     v14->_pathname = v15;
@@ -52,35 +52,35 @@
   return v14;
 }
 
-- (_HKZipArchiveExtractor)initWithPathname:(id)a3
+- (_HKZipArchiveExtractor)initWithPathname:(id)pathname
 {
-  v4 = a3;
-  if (!v4)
+  pathnameCopy = pathname;
+  if (!pathnameCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s may not be nil", "pathname"}];
   }
 
-  if (![v4 length])
+  if (![pathnameCopy length])
   {
     [_HKZipArchiveExtractor initWithPathname:];
   }
 
-  v5 = [(_HKZipArchiveExtractor *)self _initWithData:0 fileHandle:0 path:v4];
+  v5 = [(_HKZipArchiveExtractor *)self _initWithData:0 fileHandle:0 path:pathnameCopy];
 
   return v5;
 }
 
-- (_HKZipArchiveExtractor)initWithURL:(id)a3
+- (_HKZipArchiveExtractor)initWithURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s may not be nil", "url"}];
   }
 
-  v5 = [v4 path];
-  v6 = v5;
-  if (!v5 || ![v5 length])
+  path = [lCopy path];
+  v6 = path;
+  if (!path || ![path length])
   {
     [_HKZipArchiveExtractor initWithURL:];
   }
@@ -90,33 +90,33 @@
   return v7;
 }
 
-- (_HKZipArchiveExtractor)initWithFileHandle:(id)a3
+- (_HKZipArchiveExtractor)initWithFileHandle:(id)handle
 {
-  v4 = a3;
-  if (!v4)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s may not be nil", "fileHandle"}];
   }
 
-  v5 = [(_HKZipArchiveExtractor *)self _initWithData:0 fileHandle:v4 path:0];
+  v5 = [(_HKZipArchiveExtractor *)self _initWithData:0 fileHandle:handleCopy path:0];
 
   return v5;
 }
 
-- (_HKZipArchiveExtractor)initWithData:(id)a3
+- (_HKZipArchiveExtractor)initWithData:(id)data
 {
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s may not be nil", "archiveData"}];
   }
 
-  if (![v4 length])
+  if (![dataCopy length])
   {
     [_HKZipArchiveExtractor initWithData:];
   }
 
-  v5 = [(_HKZipArchiveExtractor *)self _initWithData:v4 fileHandle:0 path:0];
+  v5 = [(_HKZipArchiveExtractor *)self _initWithData:dataCopy fileHandle:0 path:0];
 
   return v5;
 }
@@ -152,20 +152,20 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)enumerateEntriesWithError:(id *)a3 block:(id)a4
+- (BOOL)enumerateEntriesWithError:(id *)error block:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  blockCopy = block;
   if (self->_isEnumeratingEntries)
   {
     v8 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"self" class:objc_opt_class() selector:a2 format:@"Already enumerating this archive"];
     v9 = v8;
     if (v8)
     {
-      if (a3)
+      if (error)
       {
         v10 = v8;
-        *a3 = v9;
+        *error = v9;
       }
 
       else
@@ -212,8 +212,8 @@ LABEL_15:
               v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:archive_entry_pathname()];
               v23 = [_HKZipArchiveEntry alloc];
               v24 = [(_HKZipArchiveEntry *)v23 initWithExtractor:self currentEntry:v32 pathname:v22];
-              v7[2](v7, v24, &v31);
-              v25 = [(_HKZipArchiveEntry *)v24 didReadEntryData];
+              blockCopy[2](blockCopy, v24, &v31);
+              didReadEntryData = [(_HKZipArchiveEntry *)v24 didReadEntryData];
 
               objc_autoreleasePoolPop(v21);
               if (v31)
@@ -222,7 +222,7 @@ LABEL_15:
                 break;
               }
 
-              if (!v25)
+              if (!didReadEntryData)
               {
                 v26 = self->_archive;
                 next_header = archive_read_data_skip();
@@ -266,7 +266,7 @@ LABEL_15:
 
 LABEL_26:
   v28 = self->_archive;
-  [MEMORY[0x1E696ABC0] hk_assignError:a3 code:920 format:{@"Unable to open/read data: %s", archive_error_string()}];
+  [MEMORY[0x1E696ABC0] hk_assignError:error code:920 format:{@"Unable to open/read data: %s", archive_error_string()}];
 LABEL_27:
   v27 = 0;
 LABEL_28:
@@ -285,7 +285,7 @@ LABEL_28:
   return v27;
 }
 
-- (id)numberOfEntriesWithError:(id *)a3
+- (id)numberOfEntriesWithError:(id *)error
 {
   numberOfEntries = self->_numberOfEntries;
   if (numberOfEntries)
@@ -304,7 +304,7 @@ LABEL_28:
     v9[2] = __51___HKZipArchiveExtractor_numberOfEntriesWithError___block_invoke;
     v9[3] = &unk_1E7379F48;
     v9[4] = &v10;
-    if ([(_HKZipArchiveExtractor *)self enumerateEntriesWithError:a3 block:v9])
+    if ([(_HKZipArchiveExtractor *)self enumerateEntriesWithError:error block:v9])
     {
       v6 = [MEMORY[0x1E696AD98] numberWithInteger:v11[3]];
       v7 = self->_numberOfEntries;

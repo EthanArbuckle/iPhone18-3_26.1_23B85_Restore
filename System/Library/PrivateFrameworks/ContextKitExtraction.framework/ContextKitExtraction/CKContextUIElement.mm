@@ -1,39 +1,39 @@
 @interface CKContextUIElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)absoluteOriginOnScreen;
 - (CGRect)frameInWindow;
-- (CKContextUIElement)initWithCoder:(id)a3;
-- (CKContextUIElement)initWithText:(id)a3 className:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKContextUIElement)initWithCoder:(id)coder;
+- (CKContextUIElement)initWithText:(id)text className:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)toJSONSerializableDictionary;
-- (int64_t)compareByPosition:(id)a3;
+- (int64_t)compareByPosition:(id)position;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKContextUIElement
 
-- (CKContextUIElement)initWithText:(id)a3 className:(id)a4
+- (CKContextUIElement)initWithText:(id)text className:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  textCopy = text;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = CKContextUIElement;
   v9 = [(CKContextUIElement *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_text, a3);
-    objc_storeStrong(&v10->_className, a4);
+    objc_storeStrong(&v9->_text, text);
+    objc_storeStrong(&v10->_className, name);
   }
 
   return v10;
 }
 
-- (CKContextUIElement)initWithCoder:(id)a3
+- (CKContextUIElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CKContextUIElement;
   v5 = [(CKContextUIElement *)&v21 init];
@@ -44,28 +44,28 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
   if (v6)
   {
     objc_storeStrong(v5 + 3, v6);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"className"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"className"];
     v8 = *(v5 + 4);
     *(v5 + 4) = v7;
 
-    v9 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"superviewClassNames"];
+    v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"superviewClassNames"];
     v10 = *(v5 + 5);
     *(v5 + 5) = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sceneIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sceneIdentifier"];
     v12 = *(v5 + 6);
     *(v5 + 6) = v11;
 
-    [v4 decodeFloatForKey:@"fontSize"];
+    [coderCopy decodeFloatForKey:@"fontSize"];
     *(v5 + 3) = v13;
-    [v4 decodeFloatForKey:@"density"];
+    [coderCopy decodeFloatForKey:@"density"];
     *(v5 + 4) = v14;
-    v5[8] = [v4 decodeBoolForKey:@"onScreen"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"frameInWindow"];
+    v5[8] = [coderCopy decodeBoolForKey:@"onScreen"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"frameInWindow"];
     if ([(NSString *)v15 length])
     {
       *(v5 + 72) = CGRectFromString(v15);
@@ -78,7 +78,7 @@ LABEL_7:
       *(v5 + 88) = v16;
     }
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"absoluteOriginOnScreen"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"absoluteOriginOnScreen"];
     [v17 CGPointValue];
     *(v5 + 7) = v18;
     *(v5 + 8) = v19;
@@ -91,29 +91,29 @@ LABEL_8:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"text"];
-  [v5 encodeObject:self->_className forKey:@"className"];
-  [v5 encodeObject:self->_superviewClassNames forKey:@"superviewClassNames"];
-  [v5 encodeObject:self->_sceneIdentifier forKey:@"sceneIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"text"];
+  [coderCopy encodeObject:self->_className forKey:@"className"];
+  [coderCopy encodeObject:self->_superviewClassNames forKey:@"superviewClassNames"];
+  [coderCopy encodeObject:self->_sceneIdentifier forKey:@"sceneIdentifier"];
   *&v6 = self->_fontSize;
-  [v5 encodeFloat:@"fontSize" forKey:v6];
+  [coderCopy encodeFloat:@"fontSize" forKey:v6];
   *&v7 = self->_density;
-  [v5 encodeFloat:@"density" forKey:v7];
-  [v5 encodeBool:self->_onScreen forKey:@"onScreen"];
+  [coderCopy encodeFloat:@"density" forKey:v7];
+  [coderCopy encodeBool:self->_onScreen forKey:@"onScreen"];
   v8 = NSStringFromCGRect(self->_frameInWindow);
-  [v5 encodeObject:v8 forKey:@"frameInWindow"];
+  [coderCopy encodeObject:v8 forKey:@"frameInWindow"];
 
   v9 = [MEMORY[0x1E696B098] valueWithCGPoint:{self->_absoluteOriginOnScreen.x, self->_absoluteOriginOnScreen.y}];
-  [v5 encodeObject:v9 forKey:@"absoluteOriginOnScreen"];
+  [coderCopy encodeObject:v9 forKey:@"absoluteOriginOnScreen"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_text copy];
   [v4 setText:v5];
 
@@ -136,10 +136,10 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -150,7 +150,7 @@ LABEL_8:
     if (objc_opt_isKindOfClass())
     {
       v5 = [(CKContextUIElement *)self hash];
-      v6 = v5 == [(CKContextUIElement *)v4 hash];
+      v6 = v5 == [(CKContextUIElement *)equalCopy hash];
     }
 
     else
@@ -171,9 +171,9 @@ LABEL_8:
   return self->_onScreen - v6 + 32 * v6;
 }
 
-- (int64_t)compareByPosition:(id)a3
+- (int64_t)compareByPosition:(id)position
 {
-  [a3 frameInWindow];
+  [position frameInWindow];
   y = self->_frameInWindow.origin.y;
   if (y < v5)
   {

@@ -1,9 +1,9 @@
 @interface HLPURLSessionItem
-- (HLPURLSessionItem)initWithSessionTask:(id)a3 completionHandler:(id)a4;
+- (HLPURLSessionItem)initWithSessionTask:(id)task completionHandler:(id)handler;
 - (int64_t)state;
 - (void)cancel;
 - (void)dealloc;
-- (void)notifyWithSessionTask:(id)a3 error:(id)a4;
+- (void)notifyWithSessionTask:(id)task error:(id)error;
 @end
 
 @implementation HLPURLSessionItem
@@ -16,18 +16,18 @@
   [(HLPURLSessionItem *)&v3 dealloc];
 }
 
-- (HLPURLSessionItem)initWithSessionTask:(id)a3 completionHandler:(id)a4
+- (HLPURLSessionItem)initWithSessionTask:(id)task completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = HLPURLSessionItem;
   v9 = [(HLPURLSessionItem *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sessionTask, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_sessionTask, task);
+    v11 = [handlerCopy copy];
     completionHanlder = v10->_completionHanlder;
     v10->_completionHanlder = v11;
 
@@ -39,10 +39,10 @@
 
 - (int64_t)state
 {
-  v2 = [(HLPURLSessionTask *)self->_sessionTask task];
-  v3 = [v2 state];
+  task = [(HLPURLSessionTask *)self->_sessionTask task];
+  state = [task state];
 
-  return v3;
+  return state;
 }
 
 - (void)cancel
@@ -59,19 +59,19 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyWithSessionTask:(id)a3 error:(id)a4
+- (void)notifyWithSessionTask:(id)task error:(id)error
 {
   if (self->_completionHanlder)
   {
-    v6 = a4;
-    v7 = a3;
-    v13 = [v7 formattedData];
-    v8 = [v7 dataTaskData];
-    v9 = [v7 lastModified];
+    errorCopy = error;
+    taskCopy = task;
+    formattedData = [taskCopy formattedData];
+    dataTaskData = [taskCopy dataTaskData];
+    lastModified = [taskCopy lastModified];
     completionHanlder = self->_completionHanlder;
-    v11 = [v7 isCacheData];
+    isCacheData = [taskCopy isCacheData];
 
-    completionHanlder[2](completionHanlder, v13, v8, v11, v9, v6);
+    completionHanlder[2](completionHanlder, formattedData, dataTaskData, isCacheData, lastModified, errorCopy);
     v12 = self->_completionHanlder;
     self->_completionHanlder = 0;
   }

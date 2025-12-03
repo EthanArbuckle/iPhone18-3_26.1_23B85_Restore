@@ -1,15 +1,15 @@
 @interface SGQuickResponsesClassificationParameters
-- (SGQuickResponsesClassificationParameters)initWithDictionary:(id)a3 language:(id)a4;
+- (SGQuickResponsesClassificationParameters)initWithDictionary:(id)dictionary language:(id)language;
 @end
 
 @implementation SGQuickResponsesClassificationParameters
 
-- (SGQuickResponsesClassificationParameters)initWithDictionary:(id)a3 language:(id)a4
+- (SGQuickResponsesClassificationParameters)initWithDictionary:(id)dictionary language:(id)language
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  dictionaryCopy = dictionary;
+  languageCopy = language;
+  v8 = dictionaryCopy;
   v9 = v8;
   if (!v8)
   {
@@ -153,7 +153,7 @@ LABEL_52:
   }
 
   v30 = [v9 dictAssertedForKey:@"MAX_PROMPT_LENGTH"];
-  v31 = [v30 numberAssertedForKey:v7];
+  v31 = [v30 numberAssertedForKey:languageCopy];
 
   if (!v31)
   {
@@ -171,7 +171,7 @@ LABEL_52:
   self->_maxPromptLength = [v31 integerValue];
 
   v32 = [v9 dictAssertedForKey:@"MAX_REPLY_LENGTH"];
-  v33 = [v32 numberAssertedForKey:v7];
+  v33 = [v32 numberAssertedForKey:languageCopy];
 
   if (!v33)
   {
@@ -217,7 +217,7 @@ LABEL_52:
     }
 
 LABEL_53:
-    v39 = 0;
+    selfCopy = 0;
     goto LABEL_54;
   }
 
@@ -240,11 +240,11 @@ LABEL_53:
 
 LABEL_49:
   self = self;
-  v39 = self;
+  selfCopy = self;
 LABEL_54:
 
   v40 = *MEMORY[0x277D85DE8];
-  return v39;
+  return selfCopy;
 }
 
 @end

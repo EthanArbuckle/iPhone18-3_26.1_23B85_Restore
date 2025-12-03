@@ -1,16 +1,16 @@
 @interface CAMVideoRecordFaceMetadataCommand
-- (CAMVideoRecordFaceMetadataCommand)initWithCoder:(id)a3;
-- (CAMVideoRecordFaceMetadataCommand)initWithEnabled:(BOOL)a3;
-- (id)_connectionForMovieFileOutput:(id)a3 metadataPortType:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_addMetadataConnectionForPortType:(id)a3 videoDeviceInput:(id)a4 movieFileOutput:(id)a5 captureSession:(id)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMVideoRecordFaceMetadataCommand)initWithCoder:(id)coder;
+- (CAMVideoRecordFaceMetadataCommand)initWithEnabled:(BOOL)enabled;
+- (id)_connectionForMovieFileOutput:(id)output metadataPortType:(id)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_addMetadataConnectionForPortType:(id)type videoDeviceInput:(id)input movieFileOutput:(id)output captureSession:(id)session;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMVideoRecordFaceMetadataCommand
 
-- (CAMVideoRecordFaceMetadataCommand)initWithEnabled:(BOOL)a3
+- (CAMVideoRecordFaceMetadataCommand)initWithEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = CAMVideoRecordFaceMetadataCommand;
@@ -18,80 +18,80 @@
   v5 = v4;
   if (v4)
   {
-    v4->__enabled = a3;
+    v4->__enabled = enabled;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMVideoRecordFaceMetadataCommand)initWithCoder:(id)a3
+- (CAMVideoRecordFaceMetadataCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMVideoRecordFaceMetadataCommand;
   v5 = [(CAMCaptureCommand *)&v8 init];
   if (v5)
   {
-    v5->__enabled = [v4 decodeBoolForKey:@"CAMVideoRecordFaceMetadataCommandEnabled"];
+    v5->__enabled = [coderCopy decodeBoolForKey:@"CAMVideoRecordFaceMetadataCommandEnabled"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMVideoRecordFaceMetadataCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMVideoRecordFaceMetadataCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMVideoRecordFaceMetadataCommandEnabled"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMVideoRecordFaceMetadataCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMVideoRecordFaceMetadataCommandEnabled"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMVideoRecordFaceMetadataCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMVideoRecordFaceMetadataCommand *)self _isEnabled];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v11 = [v4 currentMovieFileOutput];
-  v5 = [v4 currentVideoDeviceInput];
-  v6 = [v4 currentCaptureSession];
+  contextCopy = context;
+  currentMovieFileOutput = [contextCopy currentMovieFileOutput];
+  currentVideoDeviceInput = [contextCopy currentVideoDeviceInput];
+  currentCaptureSession = [contextCopy currentCaptureSession];
 
-  if (v11 && v5 && v6)
+  if (currentMovieFileOutput && currentVideoDeviceInput && currentCaptureSession)
   {
     v7 = *MEMORY[0x1E69877B0];
-    v8 = [(CAMVideoRecordFaceMetadataCommand *)self _connectionForMovieFileOutput:v11 metadataPortType:*MEMORY[0x1E69877B0]];
-    v9 = [(CAMVideoRecordFaceMetadataCommand *)self _isEnabled];
-    v10 = [v8 isEnabled];
-    if (v9 || !v8)
+    v8 = [(CAMVideoRecordFaceMetadataCommand *)self _connectionForMovieFileOutput:currentMovieFileOutput metadataPortType:*MEMORY[0x1E69877B0]];
+    _isEnabled = [(CAMVideoRecordFaceMetadataCommand *)self _isEnabled];
+    isEnabled = [v8 isEnabled];
+    if (_isEnabled || !v8)
     {
-      if (!(v10 & 1 | !v9))
+      if (!(isEnabled & 1 | !_isEnabled))
       {
-        [(CAMVideoRecordFaceMetadataCommand *)self _addMetadataConnectionForPortType:v7 videoDeviceInput:v5 movieFileOutput:v11 captureSession:v6];
+        [(CAMVideoRecordFaceMetadataCommand *)self _addMetadataConnectionForPortType:v7 videoDeviceInput:currentVideoDeviceInput movieFileOutput:currentMovieFileOutput captureSession:currentCaptureSession];
       }
     }
 
     else
     {
-      [v6 removeConnection:v8];
+      [currentCaptureSession removeConnection:v8];
     }
   }
 }
 
-- (id)_connectionForMovieFileOutput:(id)a3 metadataPortType:(id)a4
+- (id)_connectionForMovieFileOutput:(id)output metadataPortType:(id)type
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  [v5 connections];
+  outputCopy = output;
+  typeCopy = type;
+  [outputCopy connections];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -115,8 +115,8 @@
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v10 = [v9 inputPorts];
-        v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        inputPorts = [v9 inputPorts];
+        v11 = [inputPorts countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v11)
         {
           v12 = v11;
@@ -127,16 +127,16 @@
             {
               if (*v23 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(inputPorts);
               }
 
-              v15 = [*(*(&v22 + 1) + 8 * j) formatDescription];
-              if (v15)
+              formatDescription = [*(*(&v22 + 1) + 8 * j) formatDescription];
+              if (formatDescription)
               {
-                v16 = v15;
-                if (CMFormatDescriptionGetMediaType(v15) == 1835365473)
+                v16 = formatDescription;
+                if (CMFormatDescriptionGetMediaType(formatDescription) == 1835365473)
                 {
-                  if ([(__CFArray *)CMMetadataFormatDescriptionGetIdentifiers(v16) containsObject:v6])
+                  if ([(__CFArray *)CMMetadataFormatDescriptionGetIdentifiers(v16) containsObject:typeCopy])
                   {
                     v17 = v9;
 
@@ -146,7 +146,7 @@
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v12 = [inputPorts countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v12);
@@ -162,18 +162,18 @@
   return v7;
 }
 
-- (void)_addMetadataConnectionForPortType:(id)a3 videoDeviceInput:(id)a4 movieFileOutput:(id)a5 captureSession:(id)a6
+- (void)_addMetadataConnectionForPortType:(id)type videoDeviceInput:(id)input movieFileOutput:(id)output captureSession:(id)session
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v23 = a6;
-  v11 = [a4 ports];
+  typeCopy = type;
+  outputCopy = output;
+  sessionCopy = session;
+  ports = [input ports];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v12 = [ports countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v12)
   {
     v13 = v12;
@@ -184,26 +184,26 @@
       {
         if (*v26 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(ports);
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [v16 formatDescription];
-        if (v17)
+        formatDescription = [v16 formatDescription];
+        if (formatDescription)
         {
-          v18 = v17;
-          if (CMFormatDescriptionGetMediaType(v17) == 1835365473)
+          v18 = formatDescription;
+          if (CMFormatDescriptionGetMediaType(formatDescription) == 1835365473)
           {
-            if ([(__CFArray *)CMMetadataFormatDescriptionGetIdentifiers(v18) containsObject:v9])
+            if ([(__CFArray *)CMMetadataFormatDescriptionGetIdentifiers(v18) containsObject:typeCopy])
             {
               v19 = MEMORY[0x1E6987070];
               v29 = v16;
               v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
-              v21 = [v19 connectionWithInputPorts:v20 output:v10];
+              v21 = [v19 connectionWithInputPorts:v20 output:outputCopy];
 
               if (v21)
               {
-                [v23 addConnection:v21];
+                [sessionCopy addConnection:v21];
               }
 
               else
@@ -220,7 +220,7 @@
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v13 = [ports countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v13);

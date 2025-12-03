@@ -1,25 +1,25 @@
 @interface WBFieldChangeRecord
-- (WBFieldChangeRecord)initWithField:(id)a3 changeType:(int)a4 attributes:(id)a5 record:(id)a6 identifier:(int64_t)a7;
+- (WBFieldChangeRecord)initWithField:(id)field changeType:(int)type attributes:(id)attributes record:(id)record identifier:(int64_t)identifier;
 @end
 
 @implementation WBFieldChangeRecord
 
-- (WBFieldChangeRecord)initWithField:(id)a3 changeType:(int)a4 attributes:(id)a5 record:(id)a6 identifier:(int64_t)a7
+- (WBFieldChangeRecord)initWithField:(id)field changeType:(int)type attributes:(id)attributes record:(id)record identifier:(int64_t)identifier
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  fieldCopy = field;
+  attributesCopy = attributes;
+  recordCopy = record;
   v20.receiver = self;
   v20.super_class = WBFieldChangeRecord;
   v16 = [(WBFieldChangeRecord *)&v20 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_field, a3);
-    v17->_changeType = a4;
-    objc_storeStrong(&v17->_attributes, a5);
-    objc_storeStrong(&v17->_record, a6);
-    v17->_identifier = a7;
+    objc_storeStrong(&v16->_field, field);
+    v17->_changeType = type;
+    objc_storeStrong(&v17->_attributes, attributes);
+    objc_storeStrong(&v17->_record, record);
+    v17->_identifier = identifier;
     v18 = v17;
   }
 

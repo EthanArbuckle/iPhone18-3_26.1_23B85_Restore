@@ -1,24 +1,24 @@
 @interface LanguageSupportHostModel
-- (BOOL)shouldAcceptWithConnection:(id)a3;
+- (BOOL)shouldAcceptWithConnection:(id)connection;
 - (_TtC21TranslationAPISupport24LanguageSupportHostModel)init;
-- (void)didFinishWithFinalConfiguration:(id)a3 error:(id)a4;
+- (void)didFinishWithFinalConfiguration:(id)configuration error:(id)error;
 @end
 
 @implementation LanguageSupportHostModel
 
-- (void)didFinishWithFinalConfiguration:(id)a3 error:(id)a4
+- (void)didFinishWithFinalConfiguration:(id)configuration error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_26F371EC8(a3, a4);
+  configurationCopy = configuration;
+  errorCopy = error;
+  selfCopy = self;
+  sub_26F371EC8(configuration, error);
 }
 
-- (BOOL)shouldAcceptWithConnection:(id)a3
+- (BOOL)shouldAcceptWithConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  sub_26F372B10(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_26F372B10(connectionCopy);
 
   return 1;
 }

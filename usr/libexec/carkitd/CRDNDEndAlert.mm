@@ -1,18 +1,18 @@
 @interface CRDNDEndAlert
 + (id)actions;
-- (CRDNDEndAlert)initWithText:(id)a3;
+- (CRDNDEndAlert)initWithText:(id)text;
 @end
 
 @implementation CRDNDEndAlert
 
-- (CRDNDEndAlert)initWithText:(id)a3
+- (CRDNDEndAlert)initWithText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = [(CRBulletin *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalText, a3);
+    objc_storeStrong(&v6->_internalText, text);
   }
 
   return v7;

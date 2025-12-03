@@ -1,19 +1,19 @@
 @interface NTKCircularSmallRingTextComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (NTKCircularSmallRingTextComplicationView)initWithFrame:(CGRect)a3;
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (NTKCircularSmallRingTextComplicationView)initWithFrame:(CGRect)frame;
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block;
 - (void)_updateForTemplateChange;
-- (void)_updateLabelWithTextProvider:(id)a3;
+- (void)_updateLabelWithTextProvider:(id)provider;
 - (void)_updateLabelsForFontChange;
 - (void)layoutSubviews;
-- (void)updateLabelWithString:(id)a3;
+- (void)updateLabelWithString:(id)string;
 @end
 
 @implementation NTKCircularSmallRingTextComplicationView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -29,11 +29,11 @@
   return isKindOfClass & 1;
 }
 
-- (NTKCircularSmallRingTextComplicationView)initWithFrame:(CGRect)a3
+- (NTKCircularSmallRingTextComplicationView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = NTKCircularSmallRingTextComplicationView;
-  v3 = [(NTKCircularSmallRingComplicationView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKCircularSmallRingComplicationView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -67,7 +67,7 @@
   [(CLKUIColoringLabel *)self->_label sizeToFit];
   [(CLKUIColoringLabel *)self->_label frame];
   [(NTKCircularComplicationView *)self _layoutConstants];
-  v3 = [(NTKCircularComplicationView *)self device];
+  device = [(NTKCircularComplicationView *)self device];
   CLKRectCenteredIntegralRectForDevice();
   v5 = v4;
   v7 = v6;
@@ -77,45 +77,45 @@
   [(CLKUIColoringLabel *)self->_label setFrame:v5, v7, v9, v11];
 }
 
-- (void)updateLabelWithString:(id)a3
+- (void)updateLabelWithString:(id)string
 {
-  v4 = [MEMORY[0x277CBBB88] textProviderWithText:a3 shortText:0];
+  v4 = [MEMORY[0x277CBBB88] textProviderWithText:string shortText:0];
   [(NTKCircularSmallRingTextComplicationView *)self _updateLabelWithTextProvider:v4];
 }
 
-- (void)_updateLabelWithTextProvider:(id)a3
+- (void)_updateLabelWithTextProvider:(id)provider
 {
-  [(CLKUIColoringLabel *)self->_label setTextProvider:a3];
+  [(CLKUIColoringLabel *)self->_label setTextProvider:provider];
 
   [(NTKCircularSmallRingTextComplicationView *)self setNeedsLayout];
 }
 
 - (void)_updateForTemplateChange
 {
-  v9 = [(NTKCircularComplicationView *)self complicationTemplate];
+  complicationTemplate = [(NTKCircularComplicationView *)self complicationTemplate];
   v3 = [NTKRing alloc];
-  [v9 fillFraction];
-  v5 = -[NTKRing initWithFillFraction:style:](v3, "initWithFillFraction:style:", [v9 ringStyle], v4);
+  [complicationTemplate fillFraction];
+  v5 = -[NTKRing initWithFillFraction:style:](v3, "initWithFillFraction:style:", [complicationTemplate ringStyle], v4);
   [(NTKCircularSmallRingComplicationView *)self updateRingWithRingDescription:v5];
-  v6 = [v9 tintColor];
+  tintColor = [complicationTemplate tintColor];
 
-  if (v6)
+  if (tintColor)
   {
-    v7 = [v9 tintColor];
-    [(NTKCircularSmallRingComplicationView *)self updateRingWithOverrideColor:v7];
+    tintColor2 = [complicationTemplate tintColor];
+    [(NTKCircularSmallRingComplicationView *)self updateRingWithOverrideColor:tintColor2];
   }
 
-  v8 = [v9 textProvider];
-  [(NTKCircularSmallRingTextComplicationView *)self _updateLabelWithTextProvider:v8];
+  textProvider = [complicationTemplate textProvider];
+  [(NTKCircularSmallRingTextComplicationView *)self _updateLabelWithTextProvider:textProvider];
 }
 
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = NTKCircularSmallRingTextComplicationView;
-  v4 = a3;
-  [(NTKCircularSmallRingComplicationView *)&v5 _enumerateForegroundColoringViewsWithBlock:v4];
-  v4[2](v4, self->_label);
+  blockCopy = block;
+  [(NTKCircularSmallRingComplicationView *)&v5 _enumerateForegroundColoringViewsWithBlock:blockCopy];
+  blockCopy[2](blockCopy, self->_label);
 }
 
 @end

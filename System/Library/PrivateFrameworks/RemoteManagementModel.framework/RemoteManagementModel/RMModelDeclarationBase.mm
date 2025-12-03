@@ -1,16 +1,16 @@
 @interface RMModelDeclarationBase
-+ (BOOL)isDeclarationTypeKnown:(id)a3;
-+ (BOOL)isSupportedDeclaration:(id)a3 platform:(int64_t)a4 scope:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)isDeclarationTypeKnown:(id)known;
++ (BOOL)isSupportedDeclaration:(id)declaration platform:(int64_t)platform scope:(int64_t)scope;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)updateServerToken;
 @end
 
 @implementation RMModelDeclarationBase
 
-+ (BOOL)isDeclarationTypeKnown:(id)a3
++ (BOOL)isDeclarationTypeKnown:(id)known
 {
-  v3 = a3;
-  if ([RMModelClasses classForDeclarationType:v3])
+  knownCopy = known;
+  if ([RMModelClasses classForDeclarationType:knownCopy])
   {
     v4 = 1;
   }
@@ -18,20 +18,20 @@
   else
   {
     v5 = +[RMModelConfigurationSchema schemas];
-    v6 = [v5 objectForKeyedSubscript:v3];
+    v6 = [v5 objectForKeyedSubscript:knownCopy];
     v4 = v6 != 0;
   }
 
   return v4;
 }
 
-+ (BOOL)isSupportedDeclaration:(id)a3 platform:(int64_t)a4 scope:(int64_t)a5
++ (BOOL)isSupportedDeclaration:(id)declaration platform:(int64_t)platform scope:(int64_t)scope
 {
-  v7 = a3;
-  v8 = [RMModelClasses classForDeclarationType:v7];
+  declarationCopy = declaration;
+  v8 = [RMModelClasses classForDeclarationType:declarationCopy];
   if (v8)
   {
-    if (([(objc_class *)v8 isSupportedForPlatform:a4 scope:a5]& 1) == 0)
+    if (([(objc_class *)v8 isSupportedForPlatform:platform scope:scope]& 1) == 0)
     {
       goto LABEL_9;
     }
@@ -40,9 +40,9 @@
   else
   {
     v9 = +[RMModelConfigurationSchema schemas];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    v10 = [v9 objectForKeyedSubscript:declarationCopy];
 
-    if (!v10 || ([v10 isSupportedForPlatform:a4 scope:a5] & 1) == 0)
+    if (!v10 || ([v10 isSupportedForPlatform:platform scope:scope] & 1) == 0)
     {
 
 LABEL_9:
@@ -65,15 +65,15 @@ LABEL_10:
 
   if (v7)
   {
-    v5 = [v7 RMModelSHA1HexString];
+    rMModelSHA1HexString = [v7 RMModelSHA1HexString];
   }
 
   else
   {
-    v5 = &stru_287451740;
+    rMModelSHA1HexString = &stru_287451740;
   }
 
-  objc_storeStrong(&self->_declarationServerToken, v5);
+  objc_storeStrong(&self->_declarationServerToken, rMModelSHA1HexString);
   v6 = v7;
   if (v7)
   {
@@ -82,11 +82,11 @@ LABEL_10:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelDeclarationBase;
-  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:zone];
   v5 = [(NSString *)self->_declarationType copy];
   v6 = v4[2];
   v4[2] = v5;

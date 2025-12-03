@@ -3,67 +3,67 @@
 - (NSArray)_keyCommands;
 - (UIMenuSystem)system;
 - (_UIMenuBuilder)init;
-- (_UIMenuBuilder)initWithSystem:(id)a3 rootMenu:(id)a4;
-- (id)_commandFor:(id)a3;
-- (id)_firstValidMenuWithinIdentifiers:(id)a3;
-- (id)_internalDiffForDiffv1:(id)a3;
-- (id)_parentOfMenuForIdentifier:(id)a3 commandForIdentifier:(id)a4;
-- (id)actionForIdentifier:(id)a3;
-- (id)commandForAction:(SEL)a3 propertyList:(id)a4;
-- (id)copyWithZone:(void *)a3;
-- (id)menuForIdentifier:(id)a3;
-- (void)_patch:(id)a3;
-- (void)_patchInternalDiff:(id)a3;
-- (void)removeActionForIdentifier:(id)a3;
-- (void)removeCommandForAction:(SEL)a3 propertyList:(id)a4;
-- (void)removeMenuForIdentifier:(id)a3;
-- (void)replaceChildrenOfMenuForIdentifier:(id)a3 fromChildrenBlock:(id)a4;
-- (void)replaceCommandForAction:(SEL)a3 propertyList:(id)a4 withElements:(id)a5;
-- (void)replaceMenuForIdentifier:(id)a3 withMenu:(id)a4;
-- (void)set_system:(id)a3;
+- (_UIMenuBuilder)initWithSystem:(id)system rootMenu:(id)menu;
+- (id)_commandFor:(id)for;
+- (id)_firstValidMenuWithinIdentifiers:(id)identifiers;
+- (id)_internalDiffForDiffv1:(id)diffv1;
+- (id)_parentOfMenuForIdentifier:(id)identifier commandForIdentifier:(id)forIdentifier;
+- (id)actionForIdentifier:(id)identifier;
+- (id)commandForAction:(SEL)action propertyList:(id)list;
+- (id)copyWithZone:(void *)zone;
+- (id)menuForIdentifier:(id)identifier;
+- (void)_patch:(id)_patch;
+- (void)_patchInternalDiff:(id)diff;
+- (void)removeActionForIdentifier:(id)identifier;
+- (void)removeCommandForAction:(SEL)action propertyList:(id)list;
+- (void)removeMenuForIdentifier:(id)identifier;
+- (void)replaceChildrenOfMenuForIdentifier:(id)identifier fromChildrenBlock:(id)block;
+- (void)replaceCommandForAction:(SEL)action propertyList:(id)list withElements:(id)elements;
+- (void)replaceMenuForIdentifier:(id)identifier withMenu:(id)menu;
+- (void)set_system:(id)set_system;
 @end
 
 @implementation _UIMenuBuilder
 
 - (UIMenuSystem)system
 {
-  v2 = self;
-  v3 = [(_UIMenuBuilder *)v2 _system];
-  if (!v3)
+  selfCopy = self;
+  _system = [(_UIMenuBuilder *)selfCopy _system];
+  if (!_system)
   {
     sub_188FC2D3C(0xD000000000000048, 0x800000018A69AE00);
   }
 
-  v4 = v3;
+  v4 = _system;
 
   return v4;
 }
 
-- (void)set_system:(id)a3
+- (void)set_system:(id)set_system
 {
   v4 = *(&self->super.isa + OBJC_IVAR____UIMenuBuilder__system);
-  *(&self->super.isa + OBJC_IVAR____UIMenuBuilder__system) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____UIMenuBuilder__system) = set_system;
+  set_systemCopy = set_system;
 }
 
-- (_UIMenuBuilder)initWithSystem:(id)a3 rootMenu:(id)a4
+- (_UIMenuBuilder)initWithSystem:(id)system rootMenu:(id)menu
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = sub_188FCA6E4(a3, v7);
+  systemCopy = system;
+  menuCopy = menu;
+  v8 = sub_188FCA6E4(system, menuCopy);
 
   return v8;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  result = [(_UIMenuBuilder *)v3 menuForIdentifier:@"com.apple.menu.root"];
+  selfCopy = self;
+  result = [(_UIMenuBuilder *)selfCopy menuForIdentifier:@"com.apple.menu.root"];
   if (result)
   {
     v5 = result;
-    v6 = [(_UIMenuBuilder *)v3 _system];
-    v7 = [objc_allocWithZone(_UIMenuBuilder) initWithSystem:v6 rootMenu:v5];
+    _system = [(_UIMenuBuilder *)selfCopy _system];
+    v7 = [objc_allocWithZone(_UIMenuBuilder) initWithSystem:_system rootMenu:v5];
 
     return v7;
   }
@@ -78,7 +78,7 @@
 
 - (BOOL)_isInternallyConsistent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188FC53E8();
 
   return v3 & 1;
@@ -86,7 +86,7 @@
 
 - (NSArray)_keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   sub_188FC56E0();
 
   sub_188A34624(0, &qword_1EA931248);
@@ -95,63 +95,63 @@
   return v3;
 }
 
-- (id)_commandFor:(id)a3
+- (id)_commandFor:(id)for
 {
   v5 = *(&self->super.isa + OBJC_IVAR____UIMenuBuilder__currentBookkeeping);
   swift_beginAccess();
   v6 = *(v5 + 40);
-  v7 = a3;
-  v8 = self;
+  forCopy = for;
+  selfCopy = self;
 
-  v9 = sub_18903AC24(v7, v6);
+  v9 = sub_18903AC24(forCopy, v6);
   swift_endAccess();
 
   return v9;
 }
 
-- (id)_parentOfMenuForIdentifier:(id)a3 commandForIdentifier:(id)a4
+- (id)_parentOfMenuForIdentifier:(id)identifier commandForIdentifier:(id)forIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_188FC5B40(a3, a4);
+  identifierCopy = identifier;
+  forIdentifierCopy = forIdentifier;
+  selfCopy = self;
+  v10 = sub_188FC5B40(identifier, forIdentifier);
 
   return v10;
 }
 
-- (id)_firstValidMenuWithinIdentifiers:(id)a3
+- (id)_firstValidMenuWithinIdentifiers:(id)identifiers
 {
   _s3__C10IdentifierVMa_1(0);
   v4 = sub_18A4A7548();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_188FC5D3C(v4);
 
   return v6;
 }
 
-- (id)menuForIdentifier:(id)a3
+- (id)menuForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_188FC5E38(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  v6 = sub_188FC5E38(identifierCopy);
 
   return v6;
 }
 
-- (id)actionForIdentifier:(id)a3
+- (id)actionForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_188FC61F4(v4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  v6 = sub_188FC61F4(identifierCopy);
 
   return v6;
 }
 
-- (id)commandForAction:(SEL)a3 propertyList:(id)a4
+- (id)commandForAction:(SEL)action propertyList:(id)list
 {
-  if (a4)
+  if (list)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -160,48 +160,48 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_188FC62EC(a3, v10);
+  v8 = sub_188FC62EC(action, v10);
 
   sub_188A3F5FC(v10, &qword_1EA934050);
 
   return v8;
 }
 
-- (void)replaceMenuForIdentifier:(id)a3 withMenu:(id)a4
+- (void)replaceMenuForIdentifier:(id)identifier withMenu:(id)menu
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA933EB0);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_18A64B710;
-  *(inited + 32) = a4;
-  v8 = a4;
-  v9 = a3;
-  v10 = self;
-  sub_188FC6520(a3, 0, inited);
+  *(inited + 32) = menu;
+  menuCopy = menu;
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_188FC6520(identifier, 0, inited);
 
   swift_setDeallocating();
   swift_arrayDestroy();
 }
 
-- (void)replaceChildrenOfMenuForIdentifier:(id)a3 fromChildrenBlock:(id)a4
+- (void)replaceChildrenOfMenuForIdentifier:(id)identifier fromChildrenBlock:(id)block
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(block);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_188FCD81C(v7, v8, v6);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_188FCD81C(identifierCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)replaceCommandForAction:(SEL)a3 propertyList:(id)a4 withElements:(id)a5
+- (void)replaceCommandForAction:(SEL)action propertyList:(id)list withElements:(id)elements
 {
-  if (a4)
+  if (list)
   {
-    v8 = a5;
-    v9 = self;
+    elementsCopy = elements;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -210,37 +210,37 @@
   else
   {
     memset(v13, 0, sizeof(v13));
-    v10 = a5;
-    v11 = self;
+    elementsCopy2 = elements;
+    selfCopy2 = self;
   }
 
   sub_188A34624(0, &qword_1ED48FC30);
   v12 = sub_18A4A7548();
 
-  sub_188FC751C(a3, v13, v12);
+  sub_188FC751C(action, v13, v12);
 
   sub_188A3F5FC(v13, &qword_1EA934050);
 }
 
-- (void)removeMenuForIdentifier:(id)a3
+- (void)removeMenuForIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_188FC87DC(a3, 0);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_188FC87DC(identifier, 0);
 }
 
-- (void)removeActionForIdentifier:(id)a3
+- (void)removeActionForIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_188FC87DC(a3, 1u);
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_188FC87DC(identifier, 1u);
 }
 
-- (void)removeCommandForAction:(SEL)a3 propertyList:(id)a4
+- (void)removeCommandForAction:(SEL)action propertyList:(id)list
 {
-  if (a4)
+  if (list)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -249,10 +249,10 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  sub_188FC8FFC(a3, v8);
+  sub_188FC8FFC(action, v8);
 
   sub_188A3F5FC(v8, &qword_1EA934050);
 }
@@ -264,10 +264,10 @@
   return result;
 }
 
-- (id)_internalDiffForDiffv1:(id)a3
+- (id)_internalDiffForDiffv1:(id)diffv1
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diffv1Copy = diffv1;
   v5 = objc_alloc_init(_UICommandInternalDiff);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -305,7 +305,7 @@
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = [v4 changes];
+  obj = [diffv1Copy changes];
   v10 = [obj countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v10)
   {
@@ -356,16 +356,16 @@
   return v18;
 }
 
-- (void)_patchInternalDiff:(id)a3
+- (void)_patchInternalDiff:(id)diff
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diffCopy = diff;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v5 = [v4 menuDeletes];
-  v6 = [v5 countByEnumeratingWithState:&v55 objects:v62 count:16];
+  menuDeletes = [diffCopy menuDeletes];
+  v6 = [menuDeletes countByEnumeratingWithState:&v55 objects:v62 count:16];
   if (v6)
   {
     v7 = v6;
@@ -377,14 +377,14 @@
       {
         if (*v56 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(menuDeletes);
         }
 
         [(_UIMenuBuilder *)self removeMenuForIdentifier:*(*(&v55 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v55 objects:v62 count:16];
+      v7 = [menuDeletes countByEnumeratingWithState:&v55 objects:v62 count:16];
     }
 
     while (v7);
@@ -394,7 +394,7 @@
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = [v4 itemDeletes];
+  obj = [diffCopy itemDeletes];
   v10 = [obj countByEnumeratingWithState:&v51 objects:v61 count:16];
   if (v10)
   {
@@ -411,8 +411,8 @@
         }
 
         v14 = *(*(&v51 + 1) + 8 * v13);
-        v15 = [v4 itemDeletes];
-        v16 = [v15 objectForKeyedSubscript:v14];
+        itemDeletes = [diffCopy itemDeletes];
+        v16 = [itemDeletes objectForKeyedSubscript:v14];
 
         v49[0] = MEMORY[0x1E69E9820];
         v49[1] = 3221225472;
@@ -436,7 +436,7 @@
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obja = [v4 inserts];
+  obja = [diffCopy inserts];
   v18 = [obja countByEnumeratingWithState:&v45 objects:v60 count:16];
   if (v18)
   {
@@ -453,8 +453,8 @@
         }
 
         v22 = *(*(&v45 + 1) + 8 * v21);
-        v23 = [v4 inserts];
-        v24 = [v23 objectForKeyedSubscript:v22];
+        inserts = [diffCopy inserts];
+        v24 = [inserts objectForKeyedSubscript:v22];
 
         v43[0] = MEMORY[0x1E69E9820];
         v43[1] = 3221225472;
@@ -478,7 +478,7 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  objb = [v4 replacements];
+  objb = [diffCopy replacements];
   v26 = [objb countByEnumeratingWithState:&v39 objects:v59 count:16];
   if (v26)
   {
@@ -495,8 +495,8 @@
         }
 
         v30 = *(*(&v39 + 1) + 8 * v29);
-        v31 = [v4 replacements];
-        v32 = [v31 objectForKeyedSubscript:v30];
+        replacements = [diffCopy replacements];
+        v32 = [replacements objectForKeyedSubscript:v30];
 
         v37[0] = MEMORY[0x1E69E9820];
         v37[1] = 3221225472;
@@ -517,9 +517,9 @@
   }
 }
 
-- (void)_patch:(id)a3
+- (void)_patch:(id)_patch
 {
-  v4 = [(_UIMenuBuilder *)self _internalDiffForDiffv1:a3];
+  v4 = [(_UIMenuBuilder *)self _internalDiffForDiffv1:_patch];
   [(_UIMenuBuilder *)self _patchInternalDiff:v4];
 }
 

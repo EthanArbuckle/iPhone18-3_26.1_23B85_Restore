@@ -1,22 +1,22 @@
 @interface HKElectrocardiogramMetadataView
-- (HKElectrocardiogramMetadataView)initWithSample:(id)a3 activeAlgorithmVersion:(int64_t)a4 displayGraph:(BOOL)a5 allowExportToPDF:(BOOL)a6 isSharedData:(BOOL)a7 delegate:(id)a8;
+- (HKElectrocardiogramMetadataView)initWithSample:(id)sample activeAlgorithmVersion:(int64_t)version displayGraph:(BOOL)graph allowExportToPDF:(BOOL)f isSharedData:(BOOL)data delegate:(id)delegate;
 - (HKElectrocardiogramMetadataViewDelegate)delegate;
 - (id)_bulletedTextView;
 - (id)_ecgChart;
 - (id)_footerLabel;
 - (id)_separatorLine;
 - (id)_sharePDFControl;
-- (void)_setupUIWithActiveAlgorithmVersion:(int64_t)a3;
-- (void)detailButtonTapped:(id)a3;
-- (void)sharedPDFControlTapped:(id)a3;
+- (void)_setupUIWithActiveAlgorithmVersion:(int64_t)version;
+- (void)detailButtonTapped:(id)tapped;
+- (void)sharedPDFControlTapped:(id)tapped;
 @end
 
 @implementation HKElectrocardiogramMetadataView
 
-- (HKElectrocardiogramMetadataView)initWithSample:(id)a3 activeAlgorithmVersion:(int64_t)a4 displayGraph:(BOOL)a5 allowExportToPDF:(BOOL)a6 isSharedData:(BOOL)a7 delegate:(id)a8
+- (HKElectrocardiogramMetadataView)initWithSample:(id)sample activeAlgorithmVersion:(int64_t)version displayGraph:(BOOL)graph allowExportToPDF:(BOOL)f isSharedData:(BOOL)data delegate:(id)delegate
 {
-  v15 = a3;
-  v16 = a8;
+  sampleCopy = sample;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = HKElectrocardiogramMetadataView;
   v17 = [(HKElectrocardiogramMetadataView *)&v20 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -29,12 +29,12 @@
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v17->_sample, a3);
-    v17->_displayGraph = a5;
-    v17->_allowExportToPDF = a6;
-    v17->_isSharedData = a7;
-    objc_storeWeak(&v17->_delegate, v16);
-    [(HKElectrocardiogramMetadataView *)v17 _setupUIWithActiveAlgorithmVersion:a4];
+    objc_storeStrong(&v17->_sample, sample);
+    v17->_displayGraph = graph;
+    v17->_allowExportToPDF = f;
+    v17->_isSharedData = data;
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    [(HKElectrocardiogramMetadataView *)v17 _setupUIWithActiveAlgorithmVersion:version];
   }
 
   v18 = v17;
@@ -43,198 +43,198 @@ LABEL_6:
   return v18;
 }
 
-- (void)_setupUIWithActiveAlgorithmVersion:(int64_t)a3
+- (void)_setupUIWithActiveAlgorithmVersion:(int64_t)version
 {
   v90 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v90 setBackgroundColor:v5];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v90 setBackgroundColor:systemBackgroundColor];
 
   [(HKElectrocardiogramMetadataView *)self addSubview:v90];
   [v90 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v90 hk_alignHorizontalConstraintsWithView:self margin:0.0];
-  v6 = [v90 topAnchor];
-  v7 = [(HKElectrocardiogramMetadataView *)self topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  topAnchor = [v90 topAnchor];
+  topAnchor2 = [(HKElectrocardiogramMetadataView *)self topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v8 setActive:1];
 
-  v9 = [(HKElectrocardiogramMetadataView *)self sample];
-  v10 = [v9 _localizedClassificationWithActiveAlgorithmVersion:a3];
+  sample = [(HKElectrocardiogramMetadataView *)self sample];
+  v10 = [sample _localizedClassificationWithActiveAlgorithmVersion:version];
 
   v11 = [HKElectrocardiogramMetadataHeaderView alloc];
-  v12 = [(HKElectrocardiogramMetadataView *)self sample];
-  v13 = [v12 startDate];
-  v14 = [(HKElectrocardiogramMetadataHeaderView *)v11 initWithText:v10 date:v13];
+  sample2 = [(HKElectrocardiogramMetadataView *)self sample];
+  startDate = [sample2 startDate];
+  v14 = [(HKElectrocardiogramMetadataHeaderView *)v11 initWithText:v10 date:startDate];
 
   [v90 addSubview:v14];
   [(HKElectrocardiogramMetadataHeaderView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [(HKElectrocardiogramMetadataHeaderView *)v14 leadingAnchor];
-  v16 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
-  v17 = [v16 leadingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:10.0];
+  leadingAnchor = [(HKElectrocardiogramMetadataHeaderView *)v14 leadingAnchor];
+  layoutMarginsGuide = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   [v18 setActive:1];
 
-  v19 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
-  v20 = [v19 trailingAnchor];
-  v21 = [(HKElectrocardiogramMetadataHeaderView *)v14 trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:10.0];
+  layoutMarginsGuide2 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
+  trailingAnchor = [layoutMarginsGuide2 trailingAnchor];
+  trailingAnchor2 = [(HKElectrocardiogramMetadataHeaderView *)v14 trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:10.0];
   [v22 setActive:1];
 
-  v23 = [(HKElectrocardiogramMetadataHeaderView *)v14 topAnchor];
-  v24 = [v90 topAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24 constant:16.0];
+  topAnchor3 = [(HKElectrocardiogramMetadataHeaderView *)v14 topAnchor];
+  topAnchor4 = [v90 topAnchor];
+  v25 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:16.0];
   [v25 setActive:1];
 
-  v26 = [(HKElectrocardiogramMetadataHeaderView *)v14 detailButton];
-  [v26 addTarget:self action:sel_detailButtonTapped_ forControlEvents:64];
+  detailButton = [(HKElectrocardiogramMetadataHeaderView *)v14 detailButton];
+  [detailButton addTarget:self action:sel_detailButtonTapped_ forControlEvents:64];
 
-  v27 = [(HKElectrocardiogramMetadataView *)self sample];
-  LODWORD(v24) = [v27 hk_isClassificationSupported];
-  v28 = [(HKElectrocardiogramMetadataHeaderView *)v14 detailButton];
-  [v28 setHidden:v24 ^ 1];
+  sample3 = [(HKElectrocardiogramMetadataView *)self sample];
+  LODWORD(topAnchor4) = [sample3 hk_isClassificationSupported];
+  detailButton2 = [(HKElectrocardiogramMetadataHeaderView *)v14 detailButton];
+  [detailButton2 setHidden:topAnchor4 ^ 1];
 
-  v29 = [(HKElectrocardiogramMetadataHeaderView *)v14 bottomAnchor];
-  LODWORD(v27) = [(HKElectrocardiogramMetadataView *)self displayGraph];
-  v30 = [(HKElectrocardiogramMetadataView *)self _ecgChart];
-  v31 = v30;
-  if (v27)
+  bottomAnchor = [(HKElectrocardiogramMetadataHeaderView *)v14 bottomAnchor];
+  LODWORD(sample3) = [(HKElectrocardiogramMetadataView *)self displayGraph];
+  _ecgChart = [(HKElectrocardiogramMetadataView *)self _ecgChart];
+  v31 = _ecgChart;
+  if (sample3)
   {
-    [v90 addSubview:v30];
+    [v90 addSubview:_ecgChart];
     [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v31 hk_alignHorizontalConstraintsWithView:v90 margin:10.0];
-    v32 = [v31 topAnchor];
-    v33 = [v32 constraintEqualToAnchor:v29 constant:8.0];
+    topAnchor5 = [v31 topAnchor];
+    v33 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:8.0];
   }
 
   else
   {
-    v34 = [v30 infoView];
+    infoView = [_ecgChart infoView];
 
-    [v90 addSubview:v34];
-    [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v35 = [v34 leadingAnchor];
-    v36 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
-    v37 = [v36 leadingAnchor];
-    v38 = [v35 constraintEqualToAnchor:v37 constant:10.0];
+    [v90 addSubview:infoView];
+    [infoView setTranslatesAutoresizingMaskIntoConstraints:0];
+    leadingAnchor3 = [infoView leadingAnchor];
+    layoutMarginsGuide3 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+    v38 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:10.0];
     [v38 setActive:1];
 
-    v39 = [v34 trailingAnchor];
-    v40 = [(HKElectrocardiogramMetadataView *)self trailingAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40 constant:-10.0];
+    trailingAnchor3 = [infoView trailingAnchor];
+    trailingAnchor4 = [(HKElectrocardiogramMetadataView *)self trailingAnchor];
+    v41 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-10.0];
     [v41 setActive:1];
 
-    v32 = [v34 topAnchor];
-    v33 = [v32 constraintEqualToAnchor:v29];
-    v31 = v34;
+    topAnchor5 = [infoView topAnchor];
+    v33 = [topAnchor5 constraintEqualToAnchor:bottomAnchor];
+    v31 = infoView;
   }
 
   [v33 setActive:1];
 
-  v42 = [v31 bottomAnchor];
+  bottomAnchor2 = [v31 bottomAnchor];
 
-  v43 = [(HKElectrocardiogramMetadataView *)self sample];
-  v44 = [v43 hk_isSymptomsNotSet];
+  sample4 = [(HKElectrocardiogramMetadataView *)self sample];
+  hk_isSymptomsNotSet = [sample4 hk_isSymptomsNotSet];
 
-  if ((v44 & 1) == 0)
+  if ((hk_isSymptomsNotSet & 1) == 0)
   {
-    v45 = [(HKElectrocardiogramMetadataView *)self _separatorLine];
-    [v90 addSubview:v45];
-    v46 = [v45 leadingAnchor];
-    v47 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
-    v48 = [v47 leadingAnchor];
-    v49 = [v46 constraintEqualToAnchor:v48 constant:10.0];
+    _separatorLine = [(HKElectrocardiogramMetadataView *)self _separatorLine];
+    [v90 addSubview:_separatorLine];
+    leadingAnchor5 = [_separatorLine leadingAnchor];
+    layoutMarginsGuide4 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
+    leadingAnchor6 = [layoutMarginsGuide4 leadingAnchor];
+    v49 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:10.0];
     [v49 setActive:1];
 
-    v50 = [v45 trailingAnchor];
-    v51 = [(HKElectrocardiogramMetadataView *)self trailingAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    trailingAnchor5 = [_separatorLine trailingAnchor];
+    trailingAnchor6 = [(HKElectrocardiogramMetadataView *)self trailingAnchor];
+    v52 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v52 setActive:1];
 
-    v53 = [v45 topAnchor];
-    v54 = [v53 constraintEqualToAnchor:v42];
+    topAnchor6 = [_separatorLine topAnchor];
+    v54 = [topAnchor6 constraintEqualToAnchor:bottomAnchor2];
     [v54 setActive:1];
 
-    v55 = [v45 bottomAnchor];
+    bottomAnchor3 = [_separatorLine bottomAnchor];
 
-    v56 = [(HKElectrocardiogramMetadataView *)self _bulletedTextView];
-    [v90 addSubview:v56];
-    [v56 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v56 hk_alignHorizontalConstraintsWithView:v90 margin:10.0];
-    v57 = [v56 topAnchor];
-    v58 = [v57 constraintEqualToAnchor:v55];
+    _bulletedTextView = [(HKElectrocardiogramMetadataView *)self _bulletedTextView];
+    [v90 addSubview:_bulletedTextView];
+    [_bulletedTextView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [_bulletedTextView hk_alignHorizontalConstraintsWithView:v90 margin:10.0];
+    topAnchor7 = [_bulletedTextView topAnchor];
+    v58 = [topAnchor7 constraintEqualToAnchor:bottomAnchor3];
     [v58 setActive:1];
 
-    v42 = [v56 bottomAnchor];
+    bottomAnchor2 = [_bulletedTextView bottomAnchor];
   }
 
   if ([(HKElectrocardiogramMetadataView *)self allowExportToPDF])
   {
-    v59 = [(HKElectrocardiogramMetadataView *)self _sharePDFControl];
-    [v90 addSubview:v59];
-    [v59 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v59 hk_alignHorizontalConstraintsWithView:v90 margin:0.0];
-    v60 = [v59 topAnchor];
-    v61 = [v60 constraintEqualToAnchor:v42];
+    _sharePDFControl = [(HKElectrocardiogramMetadataView *)self _sharePDFControl];
+    [v90 addSubview:_sharePDFControl];
+    [_sharePDFControl setTranslatesAutoresizingMaskIntoConstraints:0];
+    [_sharePDFControl hk_alignHorizontalConstraintsWithView:v90 margin:0.0];
+    topAnchor8 = [_sharePDFControl topAnchor];
+    v61 = [topAnchor8 constraintEqualToAnchor:bottomAnchor2];
     [v61 setActive:1];
 
-    v62 = [v59 bottomAnchor];
+    bottomAnchor4 = [_sharePDFControl bottomAnchor];
 
-    v42 = v62;
+    bottomAnchor2 = bottomAnchor4;
   }
 
-  v63 = [(HKElectrocardiogramMetadataView *)self _separatorLine];
-  [v90 addSubview:v63];
-  v64 = [v63 leadingAnchor];
-  v65 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
-  v66 = [v65 leadingAnchor];
-  v67 = [v64 constraintEqualToAnchor:v66 constant:10.0];
+  _separatorLine2 = [(HKElectrocardiogramMetadataView *)self _separatorLine];
+  [v90 addSubview:_separatorLine2];
+  leadingAnchor7 = [_separatorLine2 leadingAnchor];
+  layoutMarginsGuide5 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
+  leadingAnchor8 = [layoutMarginsGuide5 leadingAnchor];
+  v67 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:10.0];
   [v67 setActive:1];
 
-  v68 = [v63 trailingAnchor];
-  v69 = [(HKElectrocardiogramMetadataView *)self trailingAnchor];
-  v70 = [v68 constraintEqualToAnchor:v69];
+  trailingAnchor7 = [_separatorLine2 trailingAnchor];
+  trailingAnchor8 = [(HKElectrocardiogramMetadataView *)self trailingAnchor];
+  v70 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   [v70 setActive:1];
 
-  v71 = [v63 topAnchor];
-  v72 = [v71 constraintEqualToAnchor:v42];
+  topAnchor9 = [_separatorLine2 topAnchor];
+  v72 = [topAnchor9 constraintEqualToAnchor:bottomAnchor2];
   [v72 setActive:1];
 
-  v73 = [v63 bottomAnchor];
+  bottomAnchor5 = [_separatorLine2 bottomAnchor];
 
-  v74 = [(HKElectrocardiogramMetadataView *)self _footerLabel];
-  [v90 addSubview:v74];
-  v75 = [v74 leadingAnchor];
-  v76 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
-  v77 = [v76 leadingAnchor];
-  v78 = [v75 constraintEqualToAnchor:v77 constant:10.0];
+  _footerLabel = [(HKElectrocardiogramMetadataView *)self _footerLabel];
+  [v90 addSubview:_footerLabel];
+  leadingAnchor9 = [_footerLabel leadingAnchor];
+  layoutMarginsGuide6 = [(HKElectrocardiogramMetadataView *)self layoutMarginsGuide];
+  leadingAnchor10 = [layoutMarginsGuide6 leadingAnchor];
+  v78 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:10.0];
   [v78 setActive:1];
 
-  v79 = [v74 trailingAnchor];
-  v80 = [(HKElectrocardiogramMetadataView *)self trailingAnchor];
-  v81 = [v79 constraintEqualToAnchor:v80 constant:-10.0];
+  trailingAnchor9 = [_footerLabel trailingAnchor];
+  trailingAnchor10 = [(HKElectrocardiogramMetadataView *)self trailingAnchor];
+  v81 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-10.0];
   [v81 setActive:1];
 
-  v82 = [v74 topAnchor];
-  v83 = [v82 constraintEqualToAnchor:v73 constant:10.0];
+  topAnchor10 = [_footerLabel topAnchor];
+  v83 = [topAnchor10 constraintEqualToAnchor:bottomAnchor5 constant:10.0];
   [v83 setActive:1];
 
-  v84 = [v90 bottomAnchor];
-  v85 = [v74 bottomAnchor];
-  v86 = [v84 constraintEqualToAnchor:v85 constant:16.0];
+  bottomAnchor6 = [v90 bottomAnchor];
+  bottomAnchor7 = [_footerLabel bottomAnchor];
+  v86 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:16.0];
   [v86 setActive:1];
 
-  v87 = [(HKElectrocardiogramMetadataView *)self bottomAnchor];
-  v88 = [v90 bottomAnchor];
-  v89 = [v87 constraintEqualToAnchor:v88];
+  bottomAnchor8 = [(HKElectrocardiogramMetadataView *)self bottomAnchor];
+  bottomAnchor9 = [v90 bottomAnchor];
+  v89 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
   [v89 setActive:1];
 }
 
-- (void)detailButtonTapped:(id)a3
+- (void)detailButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained electrocardiogramMetadataViewDidTapDetailButton:self];
 }
 
-- (void)sharedPDFControlTapped:(id)a3
+- (void)sharedPDFControlTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained electrocardiogramMetadataViewDidSelectShareRow:self];
@@ -243,23 +243,23 @@ LABEL_6:
 - (id)_ecgChart
 {
   v3 = [[HKElectrocardiogramChartMetadataView alloc] initWithGridSize:6.0, 6.0];
-  v4 = [(HKElectrocardiogramChartMetadataView *)v3 chartView];
-  v5 = [(HKElectrocardiogramMetadataView *)self sample];
-  [v4 displayElectrocardiogram:v5 allowsScrolling:1];
+  chartView = [(HKElectrocardiogramChartMetadataView *)v3 chartView];
+  sample = [(HKElectrocardiogramMetadataView *)self sample];
+  [chartView displayElectrocardiogram:sample allowsScrolling:1];
 
-  v6 = [(HKElectrocardiogramChartMetadataView *)v3 chartView];
-  [v6 setEdgeMaskEnabled:1];
+  chartView2 = [(HKElectrocardiogramChartMetadataView *)v3 chartView];
+  [chartView2 setEdgeMaskEnabled:1];
 
-  v7 = [(HKElectrocardiogramMetadataView *)self sample];
-  v8 = [v7 hk_localizedAverageBPM];
-  v9 = [(HKElectrocardiogramChartMetadataView *)v3 infoView];
-  [v9 setHeartRateText:v8];
+  sample2 = [(HKElectrocardiogramMetadataView *)self sample];
+  hk_localizedAverageBPM = [sample2 hk_localizedAverageBPM];
+  infoView = [(HKElectrocardiogramChartMetadataView *)v3 infoView];
+  [infoView setHeartRateText:hk_localizedAverageBPM];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11 = [(HKElectrocardiogramMetadataView *)self sample];
-  v12 = [WeakRetained electrocardiogramMetadataView:self regulatedBodyTextForSample:v11];
-  v13 = [(HKElectrocardiogramChartMetadataView *)v3 infoView];
-  [v13 setBodyText:v12];
+  sample3 = [(HKElectrocardiogramMetadataView *)self sample];
+  v12 = [WeakRetained electrocardiogramMetadataView:self regulatedBodyTextForSample:sample3];
+  infoView2 = [(HKElectrocardiogramChartMetadataView *)v3 infoView];
+  [infoView2 setBodyText:v12];
 
   v14 = [@"SessionDetails" stringByAppendingString:@".Waveform"];
   v15 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:1 suffix:v14];
@@ -276,9 +276,9 @@ LABEL_6:
   v6 = HKConditionallyRedactedHeartRhythmString();
   [(HKElectrocardiogramBulletedTextView *)v3 setTitleText:v6];
 
-  v7 = [(HKElectrocardiogramMetadataView *)self sample];
-  v8 = [v7 _localizedSymptoms];
-  [(HKElectrocardiogramBulletedTextView *)v3 setDetailTextWithBullets:v8];
+  sample = [(HKElectrocardiogramMetadataView *)self sample];
+  _localizedSymptoms = [sample _localizedSymptoms];
+  [(HKElectrocardiogramBulletedTextView *)v3 setDetailTextWithBullets:_localizedSymptoms];
 
   v9 = [@"SessionDetails" stringByAppendingString:@".Symptoms"];
   v10 = [MEMORY[0x1E696AEC0] healthAccessibilityIdentifier:1 suffix:v9];
@@ -304,8 +304,8 @@ LABEL_6:
 - (id)_footerLabel
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(self) = [(HKElectrocardiogramMetadataView *)self isSharedData];
@@ -327,8 +327,8 @@ LABEL_6:
 
   [v3 setAdjustsFontForContentSizeCategory:1];
   [v3 setTextAlignment:4];
-  v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v3 setTextColor:v10];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v3 setTextColor:secondaryLabelColor];
 
   [v3 setNumberOfLines:0];
   v11 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD28] addingSymbolicTraits:0x8000 options:0];
@@ -346,8 +346,8 @@ LABEL_6:
 {
   v2 = objc_alloc_init(HKSeparatorLineView);
   [(HKSeparatorLineView *)v2 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
-  [(HKSeparatorLineView *)v2 setColor:v3];
+  opaqueSeparatorColor = [MEMORY[0x1E69DC888] opaqueSeparatorColor];
+  [(HKSeparatorLineView *)v2 setColor:opaqueSeparatorColor];
 
   [(HKSeparatorLineView *)v2 setSeparatorThickness:HKUIFloorToScreenScale(0.5)];
 

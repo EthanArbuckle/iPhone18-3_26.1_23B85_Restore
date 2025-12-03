@@ -1,19 +1,19 @@
 @interface IMDServiceReachabilityBaseDelegate
-- (BOOL)hasValidDowngradeRequestForHandleID:(id)a3;
+- (BOOL)hasValidDowngradeRequestForHandleID:(id)d;
 - (BOOL)isInternationalSpamFilteringEnabled;
-- (BOOL)isMMSEnabledForContext:(id)a3;
+- (BOOL)isMMSEnabledForContext:(id)context;
 - (BOOL)isMessagesTheDefaultTextApp;
-- (BOOL)isSMSEnabledForContext:(id)a3;
+- (BOOL)isSMSEnabledForContext:(id)context;
 - (BOOL)isUsableForSending;
 - (BOOL)networkDataAvailable;
-- (BOOL)shouldDowngradeToRecipient:(id)a3 fromSender:(id)a4 withContext:(id)a5;
+- (BOOL)shouldDowngradeToRecipient:(id)recipient fromSender:(id)sender withContext:(id)context;
 - (IMDServiceReachabilityBaseDelegate)init;
-- (IMDServiceReachabilityBaseDelegate)initWithServiceSession:(id)a3;
+- (IMDServiceReachabilityBaseDelegate)initWithServiceSession:(id)session;
 - (IMDServiceSession)serviceSession;
 - (NSArray)idsRegisteredSIMIDs;
 - (NSArray)phoneNumbersOfActiveSubscriptions;
 - (NSString)internalServiceName;
-- (id)phoneNumberOnSubscriptionWithSIMID:(id)a3;
+- (id)phoneNumberOnSubscriptionWithSIMID:(id)d;
 @end
 
 @implementation IMDServiceReachabilityBaseDelegate
@@ -25,7 +25,7 @@
   return Strong;
 }
 
-- (IMDServiceReachabilityBaseDelegate)initWithServiceSession:(id)a3
+- (IMDServiceReachabilityBaseDelegate)initWithServiceSession:(id)session
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakAssign();
@@ -36,13 +36,13 @@
 
 - (BOOL)networkDataAvailable
 {
-  v2 = [objc_opt_self() sharedAccountController];
-  if (v2)
+  sharedAccountController = [objc_opt_self() sharedAccountController];
+  if (sharedAccountController)
   {
-    v3 = v2;
-    v4 = [v2 networkDataAvailable];
+    v3 = sharedAccountController;
+    networkDataAvailable = [sharedAccountController networkDataAvailable];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(sharedAccountController) = networkDataAvailable;
   }
 
   else
@@ -50,60 +50,60 @@
     __break(1u);
   }
 
-  return v2;
+  return sharedAccountController;
 }
 
 - (BOOL)isUsableForSending
 {
-  v2 = self;
-  v3 = [(IMDServiceReachabilityBaseDelegate *)v2 serviceSession];
-  if (v3)
+  selfCopy = self;
+  serviceSession = [(IMDServiceReachabilityBaseDelegate *)selfCopy serviceSession];
+  if (serviceSession)
   {
-    v4 = v3;
-    v5 = [(IMDServiceSession *)v3 isActive];
+    v4 = serviceSession;
+    isActive = [(IMDServiceSession *)serviceSession isActive];
   }
 
   else
   {
-    v5 = 0;
+    isActive = 0;
   }
 
-  return v5;
+  return isActive;
 }
 
 - (NSArray)idsRegisteredSIMIDs
 {
-  v2 = [objc_opt_self() sharedInstance];
-  v3 = [v2 registeredSIMIDs];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  registeredSIMIDs = [sharedInstance registeredSIMIDs];
 
-  if (!v3)
+  if (!registeredSIMIDs)
   {
     sub_22B7DB918();
     v4 = sub_22B7DB8F8();
 
-    v3 = v4;
+    registeredSIMIDs = v4;
   }
 
-  return v3;
+  return registeredSIMIDs;
 }
 
 - (NSString)internalServiceName
 {
-  v2 = self;
-  result = [(IMDServiceReachabilityBaseDelegate *)v2 serviceSession];
+  selfCopy = self;
+  result = [(IMDServiceReachabilityBaseDelegate *)selfCopy serviceSession];
   if (result)
   {
     v4 = result;
-    v5 = [(NSString *)result service];
+    service = [(NSString *)result service];
 
-    v6 = [v5 internalName];
-    if (!v6)
+    internalName = [service internalName];
+    if (!internalName)
     {
       sub_22B7DB6A8();
-      v6 = sub_22B7DB678();
+      internalName = sub_22B7DB678();
     }
 
-    return v6;
+    return internalName;
   }
 
   else
@@ -114,10 +114,10 @@
   return result;
 }
 
-- (id)phoneNumberOnSubscriptionWithSIMID:(id)a3
+- (id)phoneNumberOnSubscriptionWithSIMID:(id)d
 {
   sub_22B7DB6A8();
-  v4 = self;
+  selfCopy = self;
   sub_22B7C7E44();
   v6 = v5;
 
@@ -137,16 +137,16 @@
 - (NSArray)phoneNumbersOfActiveSubscriptions
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 ctSubscriptionInfo];
+  selfCopy = self;
+  sharedInstance = [v3 sharedInstance];
+  ctSubscriptionInfo = [sharedInstance ctSubscriptionInfo];
 
-  if (v6)
+  if (ctSubscriptionInfo)
   {
-    v7 = [v6 phoneNumbersOfActiveSubscriptions];
+    phoneNumbersOfActiveSubscriptions = [ctSubscriptionInfo phoneNumbersOfActiveSubscriptions];
 
     sub_22B7DB918();
-    v4 = v7;
+    selfCopy = phoneNumbersOfActiveSubscriptions;
   }
 
   v8 = sub_22B7DB8F8();
@@ -154,15 +154,15 @@
   return v8;
 }
 
-- (BOOL)hasValidDowngradeRequestForHandleID:(id)a3
+- (BOOL)hasValidDowngradeRequestForHandleID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(IMDServiceReachabilityBaseDelegate *)v5 serviceSession];
-  if (v6)
+  dCopy = d;
+  selfCopy = self;
+  serviceSession = [(IMDServiceReachabilityBaseDelegate *)selfCopy serviceSession];
+  if (serviceSession)
   {
-    v7 = v6;
-    v8 = [(IMDServiceSession *)v6 hasValidDowngradeRequestForHandleID:v4];
+    v7 = serviceSession;
+    v8 = [(IMDServiceSession *)serviceSession hasValidDowngradeRequestForHandleID:dCopy];
   }
 
   else
@@ -187,17 +187,17 @@
   return [v2 isMessagesTheDefaultTextApp];
 }
 
-- (BOOL)isSMSEnabledForContext:(id)a3
+- (BOOL)isSMSEnabledForContext:(id)context
 {
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 sharedInstance];
-  if (v6)
+  selfCopy = self;
+  sharedInstance = [v4 sharedInstance];
+  if (sharedInstance)
   {
-    v7 = v6;
-    v8 = [v6 supportsSMS];
+    v7 = sharedInstance;
+    supportsSMS = [sharedInstance supportsSMS];
 
-    if (v8)
+    if (supportsSMS)
     {
       v9 = 1;
     }
@@ -208,7 +208,7 @@
       v9 = v10;
     }
 
-    LOBYTE(v6) = v9 & 1;
+    LOBYTE(sharedInstance) = v9 & 1;
   }
 
   else
@@ -216,29 +216,29 @@
     __break(1u);
   }
 
-  return v6;
+  return sharedInstance;
 }
 
-- (BOOL)isMMSEnabledForContext:(id)a3
+- (BOOL)isMMSEnabledForContext:(id)context
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  v6 = [v5 senderLastAddressedHandle];
-  v7 = [v5 senderLastAddressedSIMID];
-  LOBYTE(v4) = [v4 IMMMSEnabledForPhoneNumber:v6 simID:v7];
+  contextCopy = context;
+  senderLastAddressedHandle = [contextCopy senderLastAddressedHandle];
+  senderLastAddressedSIMID = [contextCopy senderLastAddressedSIMID];
+  LOBYTE(v4) = [v4 IMMMSEnabledForPhoneNumber:senderLastAddressedHandle simID:senderLastAddressedSIMID];
 
   return v4;
 }
 
-- (BOOL)shouldDowngradeToRecipient:(id)a3 fromSender:(id)a4 withContext:(id)a5
+- (BOOL)shouldDowngradeToRecipient:(id)recipient fromSender:(id)sender withContext:(id)context
 {
   v7 = sub_22B7DB6A8();
   v9 = v8;
   v10 = sub_22B7DB6A8();
   v12 = v11;
-  v13 = a5;
-  v14 = self;
-  LOBYTE(v10) = sub_22B7C7C04(v7, v9, v10, v12, v13);
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(v10) = sub_22B7C7C04(v7, v9, v10, v12, contextCopy);
 
   return v10 & 1;
 }

@@ -1,30 +1,30 @@
 @interface CRLHyperlinkRegion
-+ (id)hyperlinkRegionWithURL:(id)a3 bezierPath:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CRLHyperlinkRegion)initWithURL:(id)a3 bezierPath:(id)a4;
++ (id)hyperlinkRegionWithURL:(id)l bezierPath:(id)path;
+- (BOOL)isEqual:(id)equal;
+- (CRLHyperlinkRegion)initWithURL:(id)l bezierPath:(id)path;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CRLHyperlinkRegion
 
-+ (id)hyperlinkRegionWithURL:(id)a3 bezierPath:(id)a4
++ (id)hyperlinkRegionWithURL:(id)l bezierPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithURL:v7 bezierPath:v6];
+  pathCopy = path;
+  lCopy = l;
+  v8 = [[self alloc] initWithURL:lCopy bezierPath:pathCopy];
 
   return v8;
 }
 
-- (CRLHyperlinkRegion)initWithURL:(id)a3 bezierPath:(id)a4
+- (CRLHyperlinkRegion)initWithURL:(id)l bezierPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  lCopy = l;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (lCopy)
   {
-    if (v7)
+    if (pathCopy)
     {
       goto LABEL_22;
     }
@@ -94,7 +94,7 @@ LABEL_22:
   v15 = [(CRLHyperlinkRegion *)&v21 init];
   if (v15)
   {
-    v16 = [v6 copy];
+    v16 = [lCopy copy];
     URL = v15->_URL;
     v15->_URL = v16;
 
@@ -106,17 +106,17 @@ LABEL_22:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6 && ((-[CRLHyperlinkRegion URL](self, "URL"), v7 = objc_claimAutoreleasedReturnValue(), [v6 URL], v8 = objc_claimAutoreleasedReturnValue(), !(v7 | v8)) || (v9 = v8, v10 = objc_msgSend(v7, "isEqual:", v8), v9, v7, v10)))
   {
-    v11 = [(CRLHyperlinkRegion *)self bezierPath];
-    v12 = [v6 bezierPath];
-    v13 = [v11 isEqual:v12];
+    bezierPath = [(CRLHyperlinkRegion *)self bezierPath];
+    bezierPath2 = [v6 bezierPath];
+    v13 = [bezierPath isEqual:bezierPath2];
   }
 
   else

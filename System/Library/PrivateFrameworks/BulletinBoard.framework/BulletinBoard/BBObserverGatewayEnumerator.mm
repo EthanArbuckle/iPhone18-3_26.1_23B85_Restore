@@ -2,7 +2,7 @@
 - (BBObserverGatewayEnumerator)init;
 - (id)defaultGateway;
 - (void)cancel;
-- (void)enumerateWithCompletion:(id)a3;
+- (void)enumerateWithCompletion:(id)completion;
 @end
 
 @implementation BBObserverGatewayEnumerator
@@ -29,14 +29,14 @@
   if (os_log_type_enabled(BBLogGateway, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(BBObserverGatewayEnumerator *)self bulletin];
-    v6 = [v5 bulletinID];
-    v7 = [(BBObserverGatewayEnumerator *)self bulletin];
-    v8 = [v7 sectionID];
+    bulletin = [(BBObserverGatewayEnumerator *)self bulletin];
+    bulletinID = [bulletin bulletinID];
+    bulletin2 = [(BBObserverGatewayEnumerator *)self bulletin];
+    sectionID = [bulletin2 sectionID];
     v10 = 138543618;
-    v11 = v6;
+    v11 = bulletinID;
     v12 = 2114;
-    v13 = v8;
+    v13 = sectionID;
     _os_log_impl(&dword_241EFF000, v4, OS_LOG_TYPE_DEFAULT, "Gateway enumerator for bulletin %{public}@ in section %{public}@ cancelled", &v10, 0x16u);
   }
 
@@ -44,12 +44,12 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateWithCompletion:(id)a3
+- (void)enumerateWithCompletion:(id)completion
 {
   gateways = self->_gateways;
-  v5 = a3;
-  v6 = [(NSArray *)gateways objectEnumerator];
-  [(BBObserverGatewayEnumerator *)self attemptNextGatewayInEnumerator:v6 playLightsAndSirens:1 completion:v5];
+  completionCopy = completion;
+  objectEnumerator = [(NSArray *)gateways objectEnumerator];
+  [(BBObserverGatewayEnumerator *)self attemptNextGatewayInEnumerator:objectEnumerator playLightsAndSirens:1 completion:completionCopy];
 }
 
 void __93__BBObserverGatewayEnumerator_attemptNextGatewayInEnumerator_playLightsAndSirens_completion___block_invoke(uint64_t a1, int a2, void *a3)

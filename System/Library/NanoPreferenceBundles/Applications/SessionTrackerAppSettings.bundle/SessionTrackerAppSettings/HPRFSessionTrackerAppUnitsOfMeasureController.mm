@@ -1,26 +1,26 @@
 @interface HPRFSessionTrackerAppUnitsOfMeasureController
 - (HPRFSessionTrackerAppUnitsOfMeasureController)init;
-- (id)_specifierBaseIdForDistanceType:(unint64_t)a3;
+- (id)_specifierBaseIdForDistanceType:(unint64_t)type;
 - (id)applicationBundleIdentifier;
 - (id)bundle;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_distanceTypeForSection:(int64_t)a3;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_distanceTypeForSection:(int64_t)section;
 - (void)_caloriesSelected;
 - (void)_handleFitnessUnitPreferencesDidChange;
 - (void)_kilocaloriesSelected;
 - (void)_kilojoulesSelected;
-- (void)_loadEnergyUnit:(id)a3;
-- (void)_loadPoolLengthUnit:(id)a3;
-- (void)_loadTrackWorkoutsUnit:(id)a3;
-- (void)_loadUnitForDistanceType:(unint64_t)a3 specifiers:(id)a4;
-- (void)_setDistanceUnit:(unint64_t)a3 withDistanceType:(unint64_t)a4;
-- (void)_setEnergyBurnedUnit:(id)a3;
-- (void)_trackUnitSelected:(int64_t)a3;
+- (void)_loadEnergyUnit:(id)unit;
+- (void)_loadPoolLengthUnit:(id)unit;
+- (void)_loadTrackWorkoutsUnit:(id)unit;
+- (void)_loadUnitForDistanceType:(unint64_t)type specifiers:(id)specifiers;
+- (void)_setDistanceUnit:(unint64_t)unit withDistanceType:(unint64_t)type;
+- (void)_setEnergyBurnedUnit:(id)unit;
+- (void)_trackUnitSelected:(int64_t)selected;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation HPRFSessionTrackerAppUnitsOfMeasureController
@@ -35,7 +35,7 @@
     v3 = +[NRPairedDeviceRegistry sharedInstance];
     v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v5 = [v3 getAllDevicesWithArchivedDevicesMatching:v4];
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
 
     v7 = FIUIHealthStoreForDevice();
     v8 = [[FIUIUnitManager alloc] initWithHealthStore:v7];
@@ -95,46 +95,46 @@
   return v3;
 }
 
-- (void)_loadEnergyUnit:(id)a3
+- (void)_loadEnergyUnit:(id)unit
 {
-  v3 = a3;
-  v27 = [v3 specifierForID:@"ENERGY_UNITS_GROUP_ID"];
-  v4 = [v3 specifierForID:@"ENERGY_UNITS_CALORIES_ID"];
+  unitCopy = unit;
+  v27 = [unitCopy specifierForID:@"ENERGY_UNITS_GROUP_ID"];
+  v4 = [unitCopy specifierForID:@"ENERGY_UNITS_CALORIES_ID"];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"ENERGY_UNITS_CALORIES_LABEL" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v7 = [NSString stringWithFormat:v6];
 
   [v4 setName:v7];
-  v8 = [v3 specifierForID:@"ENERGY_UNITS_KILOCALORIES_ID"];
+  v8 = [unitCopy specifierForID:@"ENERGY_UNITS_KILOCALORIES_ID"];
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"ENERGY_UNITS_KILOCALORIES_LABEL" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v11 = [NSString stringWithFormat:v10];
 
   [v8 setName:v11];
-  v12 = [v3 specifierForID:@"ENERGY_UNITS_KILOJOULES_ID"];
+  v12 = [unitCopy specifierForID:@"ENERGY_UNITS_KILOJOULES_ID"];
 
   v13 = [NSBundle bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"ENERGY_UNITS_KILOJOULES_LABEL" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v15 = [NSString stringWithFormat:v14];
 
   [v12 setName:v15];
-  v16 = [(FIUIFormattingManager *)self->_formattingManager unitManager];
-  v17 = [v16 userActiveEnergyBurnedUnit];
+  unitManager = [(FIUIFormattingManager *)self->_formattingManager unitManager];
+  userActiveEnergyBurnedUnit = [unitManager userActiveEnergyBurnedUnit];
 
   v18 = +[HKUnit largeCalorieUnit];
-  LOBYTE(v14) = [v17 isEqual:v18];
+  LOBYTE(v14) = [userActiveEnergyBurnedUnit isEqual:v18];
 
   v19 = v4;
   if ((v14 & 1) == 0)
   {
     v20 = +[HKUnit kilocalorieUnit];
-    v21 = [v17 isEqual:v20];
+    v21 = [userActiveEnergyBurnedUnit isEqual:v20];
 
     v19 = v8;
     if ((v21 & 1) == 0)
     {
       v22 = [HKUnit jouleUnitWithMetricPrefix:9];
-      v23 = [v17 isEqual:v22];
+      v23 = [userActiveEnergyBurnedUnit isEqual:v22];
 
       v19 = v12;
       if ((v23 & 1) == 0)
@@ -155,25 +155,25 @@
   [v27 setProperty:v25 forKey:PSRadioGroupCheckedSpecifierKey];
 }
 
-- (void)_loadPoolLengthUnit:(id)a3
+- (void)_loadPoolLengthUnit:(id)unit
 {
-  v3 = a3;
-  v18 = [v3 specifierForID:@"POOL_LENGTH_GROUP_ID"];
-  v4 = [v3 specifierForID:@"POOL_LENGTH_YARDS_ID"];
+  unitCopy = unit;
+  v18 = [unitCopy specifierForID:@"POOL_LENGTH_GROUP_ID"];
+  v4 = [unitCopy specifierForID:@"POOL_LENGTH_YARDS_ID"];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"POOL_LENGTH_YARDS_LABEL" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v7 = [NSString stringWithFormat:v6];
 
   [v4 setName:v7];
-  v8 = [v3 specifierForID:@"POOL_LENGTH_METERS_ID"];
+  v8 = [unitCopy specifierForID:@"POOL_LENGTH_METERS_ID"];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"POOL_LENGTH_METERS_LABEL" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v11 = [NSString stringWithFormat:v10];
 
   [v8 setName:v11];
-  v12 = [(FIUIFormattingManager *)self->_formattingManager unitManager];
-  v13 = [v12 userDistanceUnitForDistanceType:3];
+  unitManager = [(FIUIFormattingManager *)self->_formattingManager unitManager];
+  v13 = [unitManager userDistanceUnitForDistanceType:3];
 
   v14 = 0;
   if (v13 <= 2)
@@ -234,17 +234,17 @@ LABEL_15:
   [v18 setProperty:v14 forKey:{PSRadioGroupCheckedSpecifierKey, self}];
 }
 
-- (void)_loadTrackWorkoutsUnit:(id)a3
+- (void)_loadTrackWorkoutsUnit:(id)unit
 {
-  v3 = a3;
-  v17 = [v3 specifierForID:@"TRACK_WORKOUTS_GROUP_ID"];
-  v4 = [v3 specifierForID:@"TRACK_WORKOUTS_MILES_ID"];
+  unitCopy = unit;
+  v17 = [unitCopy specifierForID:@"TRACK_WORKOUTS_GROUP_ID"];
+  v4 = [unitCopy specifierForID:@"TRACK_WORKOUTS_MILES_ID"];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"TRACK_WORKOUTS_MILES_LABEL" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v7 = [NSString stringWithFormat:v6];
 
   [v4 setName:v7];
-  v8 = [v3 specifierForID:@"TRACK_WORKOUTS_METERS_ID"];
+  v8 = [unitCopy specifierForID:@"TRACK_WORKOUTS_METERS_ID"];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"TRACK_WORKOUTS_METERS_LABEL" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
@@ -276,29 +276,29 @@ LABEL_15:
   [v17 setProperty:v15 forKey:PSRadioGroupCheckedSpecifierKey];
 }
 
-- (void)_loadUnitForDistanceType:(unint64_t)a3 specifiers:(id)a4
+- (void)_loadUnitForDistanceType:(unint64_t)type specifiers:(id)specifiers
 {
-  v6 = a4;
-  v7 = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self _specifierBaseIdForDistanceType:a3];
+  specifiersCopy = specifiers;
+  v7 = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self _specifierBaseIdForDistanceType:type];
   v28 = [NSString stringWithFormat:@"%@%@", v7, @"_GROUP_ID"];
-  v27 = [v6 specifierForID:?];
+  v27 = [specifiersCopy specifierForID:?];
   v26 = [NSString stringWithFormat:@"%@%@", v7, @"_MILES_ID"];
-  v8 = [v6 specifierForID:?];
+  v8 = [specifiersCopy specifierForID:?];
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"STANDARD_WORKOUTS_MILES_LABEL" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v11 = [NSString stringWithFormat:v10];
   [v8 setName:v11];
 
   v12 = [NSString stringWithFormat:@"%@%@", v7, @"_KILOMETERS_ID"];
-  v13 = [v6 specifierForID:v12];
+  v13 = [specifiersCopy specifierForID:v12];
 
   v14 = [NSBundle bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"STANDARD_WORKOUTS_KILOMETERS_LABEL" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
   v16 = [NSString stringWithFormat:v15];
   [v13 setName:v16];
 
-  v17 = [(FIUIFormattingManager *)self->_formattingManager unitManager];
-  v18 = [v17 userDistanceUnitForDistanceType:a3];
+  unitManager = [(FIUIFormattingManager *)self->_formattingManager unitManager];
+  v18 = [unitManager userDistanceUnitForDistanceType:type];
 
   v19 = 0;
   if (v18 <= 2)
@@ -408,8 +408,8 @@ LABEL_16:
     [(HPRFSessionTrackerAppUnitsOfMeasureController *)self _loadUnitForDistanceType:8 specifiers:v6];
     [(HPRFSessionTrackerAppUnitsOfMeasureController *)self _loadUnitForDistanceType:9 specifiers:v6];
     [(HPRFSessionTrackerAppUnitsOfMeasureController *)self _loadUnitForDistanceType:10 specifiers:v6];
-    v10 = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self localizedPaneTitle];
-    [(HPRFSessionTrackerAppUnitsOfMeasureController *)self setTitle:v10];
+    localizedPaneTitle = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self localizedPaneTitle];
+    [(HPRFSessionTrackerAppUnitsOfMeasureController *)self setTitle:localizedPaneTitle];
 
     v11 = *&self->BPSNotificationAppController_opaque[v3];
     *&self->BPSNotificationAppController_opaque[v3] = v6;
@@ -420,35 +420,35 @@ LABEL_16:
   return v4;
 }
 
-- (id)_specifierBaseIdForDistanceType:(unint64_t)a3
+- (id)_specifierBaseIdForDistanceType:(unint64_t)type
 {
-  if (a3 > 0xA)
+  if (type > 0xA)
   {
     return @"WALKING_AND_RUNNING_WORKOUTS";
   }
 
   else
   {
-    return *(&off_350A0 + a3);
+    return *(&off_350A0 + type);
   }
 }
 
-- (unint64_t)_distanceTypeForSection:(int64_t)a3
+- (unint64_t)_distanceTypeForSection:(int64_t)section
 {
-  if (a3 > 9)
+  if (section > 9)
   {
     return 3;
   }
 
   else
   {
-    return qword_30AE8[a3];
+    return qword_30AE8[section];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 2;
   }
@@ -461,16 +461,16 @@ LABEL_16:
   return 3;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(_HKWheelchairUseCharacteristicCache *)self->_wheelchairUseCharacteristicCache isWheelchairUser];
+  isWheelchairUser = [(_HKWheelchairUseCharacteristicCache *)self->_wheelchairUseCharacteristicCache isWheelchairUser];
   v7 = 0;
-  if (a4 > 4)
+  if (section > 4)
   {
-    if (a4 <= 6)
+    if (section <= 6)
     {
       v8 = [NSBundle bundleForClass:objc_opt_class()];
-      if (a4 == 5)
+      if (section == 5)
       {
         v9 = v8;
         v10 = @"CROSS_COUNTRY_SKIING_WORKOUTS_TITLE";
@@ -485,7 +485,7 @@ LABEL_16:
 
     else
     {
-      switch(a4)
+      switch(section)
       {
         case 7:
           v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -508,11 +508,11 @@ LABEL_16:
     }
   }
 
-  else if (a4 <= 1)
+  else if (section <= 1)
   {
-    if (a4)
+    if (section)
     {
-      if (a4 != 1)
+      if (section != 1)
       {
         goto LABEL_26;
       }
@@ -536,16 +536,16 @@ LABEL_16:
     }
   }
 
-  else if (a4 == 2)
+  else if (section == 2)
   {
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = v8;
     v10 = @"CYCLING_WORKOUTS_TITLE";
   }
 
-  else if (a4 == 3)
+  else if (section == 3)
   {
-    v11 = v6;
+    v11 = isWheelchairUser;
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = v8;
     if (v11)
@@ -573,20 +573,20 @@ LABEL_26:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v7 section];
-  if (v10 > 9)
+  section = [pathCopy section];
+  if (section > 9)
   {
 LABEL_13:
-    if (!v10)
+    if (!section)
     {
-      v23 = [v9 identifier];
-      v24 = [v23 isEqualToString:@"ENERGY_UNITS_CALORIES_ID"];
+      identifier = [v9 identifier];
+      v24 = [identifier isEqualToString:@"ENERGY_UNITS_CALORIES_ID"];
 
       if (v24)
       {
@@ -595,8 +595,8 @@ LABEL_13:
 
       else
       {
-        v31 = [v9 identifier];
-        v32 = [v31 isEqualToString:@"ENERGY_UNITS_KILOCALORIES_ID"];
+        identifier2 = [v9 identifier];
+        v32 = [identifier2 isEqualToString:@"ENERGY_UNITS_KILOCALORIES_ID"];
 
         if (v32)
         {
@@ -605,8 +605,8 @@ LABEL_13:
 
         else
         {
-          v33 = [v9 identifier];
-          v34 = [v33 isEqualToString:@"ENERGY_UNITS_KILOJOULES_ID"];
+          identifier3 = [v9 identifier];
+          v34 = [identifier3 isEqualToString:@"ENERGY_UNITS_KILOJOULES_ID"];
 
           if (v34)
           {
@@ -619,14 +619,14 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (((1 << v10) & 0x3EC) != 0)
+  if (((1 << section) & 0x3EC) != 0)
   {
-    v11 = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self _distanceTypeForSection:v10];
+    v11 = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self _distanceTypeForSection:section];
     v12 = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self _specifierBaseIdForDistanceType:v11];
     v13 = [NSString stringWithFormat:@"%@%@", v12, @"_MILES_ID"];
     v14 = [NSString stringWithFormat:@"%@%@", v12, @"_KILOMETERS_ID"];
-    v15 = [v9 identifier];
-    v16 = [v15 isEqualToString:v13];
+    identifier4 = [v9 identifier];
+    v16 = [identifier4 isEqualToString:v13];
 
     if (v16)
     {
@@ -635,8 +635,8 @@ LABEL_13:
 
     else
     {
-      v17 = [v9 identifier];
-      v18 = [v17 isEqualToString:v14];
+      identifier5 = [v9 identifier];
+      v18 = [identifier5 isEqualToString:v14];
 
       if (v18)
       {
@@ -647,42 +647,42 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (v10 != 1)
+  if (section != 1)
   {
-    if (v10 == 4)
+    if (section == 4)
     {
-      v19 = [v9 identifier];
-      v20 = [v19 isEqualToString:@"TRACK_WORKOUTS_MILES_ID"];
+      identifier6 = [v9 identifier];
+      v20 = [identifier6 isEqualToString:@"TRACK_WORKOUTS_MILES_ID"];
 
       if (v20)
       {
-        v21 = self;
+        selfCopy2 = self;
         v22 = 0;
       }
 
       else
       {
-        v27 = [v9 identifier];
-        v28 = [v27 isEqualToString:@"TRACK_WORKOUTS_METERS_ID"];
+        identifier7 = [v9 identifier];
+        v28 = [identifier7 isEqualToString:@"TRACK_WORKOUTS_METERS_ID"];
 
         if (!v28)
         {
           goto LABEL_8;
         }
 
-        v21 = self;
+        selfCopy2 = self;
         v22 = 1;
       }
 
-      [(HPRFSessionTrackerAppUnitsOfMeasureController *)v21 _trackUnitSelected:v22];
+      [(HPRFSessionTrackerAppUnitsOfMeasureController *)selfCopy2 _trackUnitSelected:v22];
       goto LABEL_8;
     }
 
     goto LABEL_13;
   }
 
-  v25 = [v9 identifier];
-  v26 = [v25 isEqualToString:@"POOL_LENGTH_YARDS_ID"];
+  identifier8 = [v9 identifier];
+  v26 = [identifier8 isEqualToString:@"POOL_LENGTH_YARDS_ID"];
 
   if (v26)
   {
@@ -691,8 +691,8 @@ LABEL_13:
 
   else
   {
-    v29 = [v9 identifier];
-    v30 = [v29 isEqualToString:@"POOL_LENGTH_METERS_ID"];
+    identifier9 = [v9 identifier];
+    v30 = [identifier9 isEqualToString:@"POOL_LENGTH_METERS_ID"];
 
     if (v30)
     {
@@ -703,7 +703,7 @@ LABEL_13:
 LABEL_8:
   v35.receiver = self;
   v35.super_class = HPRFSessionTrackerAppUnitsOfMeasureController;
-  [(HPRFSessionTrackerAppUnitsOfMeasureController *)&v35 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(HPRFSessionTrackerAppUnitsOfMeasureController *)&v35 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (id)bundle
@@ -715,18 +715,18 @@ LABEL_8:
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFSessionTrackerAppUnitsOfMeasureController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)_setEnergyBurnedUnit:(id)a3
+- (void)_setEnergyBurnedUnit:(id)unit
 {
   formattingManager = self->_formattingManager;
-  v4 = a3;
-  v5 = [(FIUIFormattingManager *)formattingManager unitManager];
-  [v5 setUserActiveEnergyBurnedUnit:v4];
+  unitCopy = unit;
+  unitManager = [(FIUIFormattingManager *)formattingManager unitManager];
+  [unitManager setUserActiveEnergyBurnedUnit:unitCopy];
 }
 
 - (void)_caloriesSelected
@@ -747,13 +747,13 @@ LABEL_8:
   [(HPRFSessionTrackerAppUnitsOfMeasureController *)self _setEnergyBurnedUnit:v3];
 }
 
-- (void)_setDistanceUnit:(unint64_t)a3 withDistanceType:(unint64_t)a4
+- (void)_setDistanceUnit:(unint64_t)unit withDistanceType:(unint64_t)type
 {
-  v6 = [(FIUIFormattingManager *)self->_formattingManager unitManager];
-  [v6 setUserDistanceUnit:a3 forDistanceType:a4];
+  unitManager = [(FIUIFormattingManager *)self->_formattingManager unitManager];
+  [unitManager setUserDistanceUnit:unit forDistanceType:type];
 }
 
-- (void)_trackUnitSelected:(int64_t)a3
+- (void)_trackUnitSelected:(int64_t)selected
 {
   trackValueDomain = self->_trackValueDomain;
   v6 = [NSNumber numberWithInteger:?];
@@ -767,7 +767,7 @@ LABEL_8:
     v8 = HKLogWorkouts;
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_ERROR))
     {
-      sub_21E88(v8, v7, a3);
+      sub_21E88(v8, v7, selected);
     }
   }
 

@@ -1,17 +1,17 @@
 @interface BundleDataClassifier
 - (_TtC26MomentsIntelligenceService20BundleDataClassifier)init;
-- (void)classifyBundleDataWithSystemPrompt:(id)a3 input:(id)a4 completion:(id)a5;
+- (void)classifyBundleDataWithSystemPrompt:(id)prompt input:(id)input completion:(id)completion;
 @end
 
 @implementation BundleDataClassifier
 
-- (void)classifyBundleDataWithSystemPrompt:(id)a3 input:(id)a4 completion:(id)a5
+- (void)classifyBundleDataWithSystemPrompt:(id)prompt input:(id)input completion:(id)completion
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v7 = *(*(v6 - 8) + 64);
   __chkstk_darwin(v6 - 8);
   v9 = &v20 - v8;
-  v10 = _Block_copy(a5);
+  v10 = _Block_copy(completion);
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();

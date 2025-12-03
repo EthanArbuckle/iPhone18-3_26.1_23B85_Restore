@@ -1,27 +1,27 @@
 @interface MapsSuggestionsCurrentLocationSource
 + (BOOL)isEnabled;
 - (_TtC17GeneralMapsWidget36MapsSuggestionsCurrentLocationSource)init;
-- (_TtC17GeneralMapsWidget36MapsSuggestionsCurrentLocationSource)initWithDelegate:(id)a3 name:(id)a4;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
+- (_TtC17GeneralMapsWidget36MapsSuggestionsCurrentLocationSource)initWithDelegate:(id)delegate name:(id)name;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MapsSuggestionsCurrentLocationSource
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
   v6 = sub_10007E158();
   v8 = v7;
-  v9 = [swift_unknownObjectRetain() oneSourceDelegate];
-  result = [a3 oneNetworkRequester];
+  oneSourceDelegate = [swift_unknownObjectRetain() oneSourceDelegate];
+  result = [depot oneNetworkRequester];
   if (result)
   {
     v11 = result;
     v12 = objc_allocWithZone(type metadata accessor for MapsSuggestionsCurrentLocationSource());
-    v13 = sub_10004B5C4(v9, v11, v6, v8);
+    v13 = sub_10004B5C4(oneSourceDelegate, v11, v6, v8);
     swift_unknownObjectRelease();
     swift_getObjectType();
     v14 = *((swift_isaMask & *self->MapsSuggestionsBaseSource_opaque) + 0x30);
@@ -38,11 +38,11 @@
   return result;
 }
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   swift_unknownObjectRetain();
   v5 = sub_10007E138();
-  v6 = [(MapsSuggestionsCurrentLocationSource *)self initFromResourceDepot:a3 name:v5];
+  v6 = [(MapsSuggestionsCurrentLocationSource *)self initFromResourceDepot:depot name:v5];
 
   swift_unknownObjectRelease();
   return v6;
@@ -50,19 +50,19 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   MapsSuggestionsCurrentLocationSource.start()();
 }
 
 - (void)stop
 {
-  v2 = self;
+  selfCopy = self;
   MapsSuggestionsCurrentLocationSource.stop()();
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -77,7 +77,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   MapsSuggestionsCurrentLocationSource.updateSuggestionEntries(handler:)(v7, v6);
   sub_100052650(v7);
 
@@ -104,7 +104,7 @@
   return result;
 }
 
-- (_TtC17GeneralMapsWidget36MapsSuggestionsCurrentLocationSource)initWithDelegate:(id)a3 name:(id)a4
+- (_TtC17GeneralMapsWidget36MapsSuggestionsCurrentLocationSource)initWithDelegate:(id)delegate name:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

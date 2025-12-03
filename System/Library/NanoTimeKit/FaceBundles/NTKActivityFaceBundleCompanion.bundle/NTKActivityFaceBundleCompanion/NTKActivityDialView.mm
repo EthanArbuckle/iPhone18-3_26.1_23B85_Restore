@@ -1,27 +1,27 @@
 @interface NTKActivityDialView
-- (NTKActivityDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
-- (double)_handAlphaForEditMode:(int64_t)a3;
-- (double)_segmentAlphaForEditMode:(int64_t)a3;
-- (void)applyTransitionFromScheme:(id)a3 toScheme:(id)a4 fraction:(double)a5;
-- (void)setColorScheme:(id)a3;
+- (NTKActivityDialView)initWithFrame:(CGRect)frame forDevice:(id)device;
+- (double)_handAlphaForEditMode:(int64_t)mode;
+- (double)_segmentAlphaForEditMode:(int64_t)mode;
+- (void)applyTransitionFromScheme:(id)scheme toScheme:(id)toScheme fraction:(double)fraction;
+- (void)setColorScheme:(id)scheme;
 @end
 
 @implementation NTKActivityDialView
 
-- (NTKActivityDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKActivityDialView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v31.receiver = self;
   v31.super_class = NTKActivityDialView;
-  v11 = [(NTKActivityDialView *)&v31 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NTKActivityDialView *)&v31 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_device, a4);
+    objc_storeStrong(&height->_device, device);
     v30 = 0;
     v28 = 0u;
     v29 = 0u;
@@ -30,19 +30,19 @@
     v14 = v13;
     v15 = v29;
     v16 = [NSMutableArray arrayWithCapacity:v29];
-    v17 = [(NTKActivityDialView *)v12 layer];
+    layer = [(NTKActivityDialView *)v12 layer];
     if (v15 >= 1)
     {
       v18 = 0;
       v19 = v14 * 0.5;
       do
       {
-        v20 = [[NTKActivityDialSegment alloc] initWithHourIndex:v18 LayoutConstants:&v28 dialRadius:v10 device:v19];
-        v21 = [(NTKActivityDialSegment *)v20 tickLayer];
-        [v17 addSublayer:v21];
+        v20 = [[NTKActivityDialSegment alloc] initWithHourIndex:v18 LayoutConstants:&v28 dialRadius:deviceCopy device:v19];
+        tickLayer = [(NTKActivityDialSegment *)v20 tickLayer];
+        [layer addSublayer:tickLayer];
 
-        v22 = [(NTKActivityDialSegment *)v20 arcLayer];
-        [v17 addSublayer:v22];
+        arcLayer = [(NTKActivityDialSegment *)v20 arcLayer];
+        [layer addSublayer:arcLayer];
 
         [v16 addObject:v20];
         ++v18;
@@ -52,10 +52,10 @@
     }
 
     v23 = [v16 objectAtIndexedSubscript:0];
-    v24 = [v23 tickLayer];
+    tickLayer2 = [v23 tickLayer];
 
-    [v24 removeFromSuperlayer];
-    [v17 addSublayer:v24];
+    [tickLayer2 removeFromSuperlayer];
+    [layer addSublayer:tickLayer2];
     v25 = [v16 copy];
     segments = v12->_segments;
     v12->_segments = v25;
@@ -64,10 +64,10 @@
   return v12;
 }
 
-- (void)applyTransitionFromScheme:(id)a3 toScheme:(id)a4 fraction:(double)a5
+- (void)applyTransitionFromScheme:(id)scheme toScheme:(id)toScheme fraction:(double)fraction
 {
-  v7 = a3;
-  v8 = a4;
+  schemeCopy = scheme;
+  toSchemeCopy = toScheme;
   v26 = 0;
   v24 = 0u;
   v25 = 0u;
@@ -86,33 +86,33 @@
   v21 = v24;
   v22 = v25;
   v23 = v26;
-  v16 = v7;
-  v17 = v8;
-  v13 = v8;
-  v14 = v7;
+  v16 = schemeCopy;
+  v17 = toSchemeCopy;
+  v13 = toSchemeCopy;
+  v14 = schemeCopy;
   [(NSArray *)segments enumerateObjectsUsingBlock:v15];
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    objc_storeStrong(&self->_colorScheme, a3);
+    objc_storeStrong(&self->_colorScheme, scheme);
     segments = self->_segments;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_119D8;
     v7[3] = &unk_20D38;
-    v8 = v5;
+    v8 = schemeCopy;
     [(NSArray *)segments enumerateObjectsUsingBlock:v7];
   }
 }
 
-- (double)_handAlphaForEditMode:(int64_t)a3
+- (double)_handAlphaForEditMode:(int64_t)mode
 {
   result = 0.0;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -120,9 +120,9 @@
   return result;
 }
 
-- (double)_segmentAlphaForEditMode:(int64_t)a3
+- (double)_segmentAlphaForEditMode:(int64_t)mode
 {
-  v3 = a3 == 10 || a3 == 0;
+  v3 = mode == 10 || mode == 0;
   result = NTKEditModeDimmedAlpha;
   if (v3)
   {

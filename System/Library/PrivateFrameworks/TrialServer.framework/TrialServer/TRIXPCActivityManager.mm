@@ -1,6 +1,6 @@
 @interface TRIXPCActivityManager
-- (TRIXPCActivityManager)initWithDispatchQueue:(id)a3;
-- (void)_registerCellularActivityWithDelay:(double)a3;
+- (TRIXPCActivityManager)initWithDispatchQueue:(id)queue;
+- (void)_registerCellularActivityWithDelay:(double)delay;
 - (void)_registerClientTriggeredActivities;
 - (void)_registerDeactivationBGST;
 - (void)_registerFetchExperimentsActivity;
@@ -10,26 +10,26 @@
 - (void)_registerPostUpgradeActivity;
 - (void)_registerPostUpgradeActivityRequireInexpensiveNetworking;
 - (void)_registerRetryFailuresActivity;
-- (void)_scheduleFetchTaskWithActivityDescriptor:(id)a3 label:(id)a4;
-- (void)_scheduleMaintenanceTaskWithActivityDescriptor:(id)a3 label:(id)a4;
-- (void)_setDelaySeconds:(int64_t)a3 forXPCActivity:(id)a4 withLabel:(id)a5 replacementCriteria:(id)a6;
-- (void)_setJitterForXPCActivity:(id)a3 withLabel:(id)a4 replacementCriteria:(id)a5;
+- (void)_scheduleFetchTaskWithActivityDescriptor:(id)descriptor label:(id)label;
+- (void)_scheduleMaintenanceTaskWithActivityDescriptor:(id)descriptor label:(id)label;
+- (void)_setDelaySeconds:(int64_t)seconds forXPCActivity:(id)activity withLabel:(id)label replacementCriteria:(id)criteria;
+- (void)_setJitterForXPCActivity:(id)activity withLabel:(id)label replacementCriteria:(id)criteria;
 - (void)registerActivities;
 - (void)registerSetupAssistantFetchActivity;
 @end
 
 @implementation TRIXPCActivityManager
 
-- (TRIXPCActivityManager)initWithDispatchQueue:(id)a3
+- (TRIXPCActivityManager)initWithDispatchQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = TRIXPCActivityManager;
   v6 = [(TRIXPCActivityManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
   }
 
   return v7;
@@ -52,8 +52,8 @@
   if (v3 && (v4 = v3, [v3 objectForKey:@"LaunchEvents"], v5 = objc_claimAutoreleasedReturnValue(), v4, v5) && (objc_msgSend(v5, "objectForKey:", @"com.apple.xpc.activity"), v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
   {
     v7 = MEMORY[0x277CBEB98];
-    v8 = [v6 allKeys];
-    v9 = [v7 setWithArray:v8];
+    allKeys = [v6 allKeys];
+    v9 = [v7 setWithArray:allKeys];
 
     [TRIXPCActivitySupport assertRegistrationOfLaunchdPlistActivities:v9];
   }
@@ -131,23 +131,23 @@ void __55__TRIXPCActivityManager__registerRetryFailuresActivity__block_invoke_2(
   }
 }
 
-- (void)_setDelaySeconds:(int64_t)a3 forXPCActivity:(id)a4 withLabel:(id)a5 replacementCriteria:(id)a6
+- (void)_setDelaySeconds:(int64_t)seconds forXPCActivity:(id)activity withLabel:(id)label replacementCriteria:(id)criteria
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  activityCopy = activity;
+  labelCopy = label;
+  criteriaCopy = criteria;
   dispatchQueue = self->_dispatchQueue;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __87__TRIXPCActivityManager__setDelaySeconds_forXPCActivity_withLabel_replacementCriteria___block_invoke;
   v17[3] = &unk_279DE0058;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a3;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = activityCopy;
+  v19 = labelCopy;
+  v20 = criteriaCopy;
+  secondsCopy = seconds;
+  v14 = criteriaCopy;
+  v15 = labelCopy;
+  v16 = activityCopy;
   dispatch_sync(dispatchQueue, v17);
 }
 
@@ -224,22 +224,22 @@ LABEL_16:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setJitterForXPCActivity:(id)a3 withLabel:(id)a4 replacementCriteria:(id)a5
+- (void)_setJitterForXPCActivity:(id)activity withLabel:(id)label replacementCriteria:(id)criteria
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activityCopy = activity;
+  labelCopy = label;
+  criteriaCopy = criteria;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__TRIXPCActivityManager__setJitterForXPCActivity_withLabel_replacementCriteria___block_invoke;
   block[3] = &unk_279DE0080;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = activityCopy;
+  v17 = criteriaCopy;
+  v18 = labelCopy;
+  v12 = labelCopy;
+  v13 = criteriaCopy;
+  v14 = activityCopy;
   dispatch_sync(dispatchQueue, block);
 }
 
@@ -299,10 +299,10 @@ LABEL_13:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleFetchTaskWithActivityDescriptor:(id)a3 label:(id)a4
+- (void)_scheduleFetchTaskWithActivityDescriptor:(id)descriptor label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  labelCopy = label;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -312,17 +312,17 @@ LABEL_13:
   v13 = 3221225472;
   v14 = __72__TRIXPCActivityManager__scheduleFetchTaskWithActivityDescriptor_label___block_invoke;
   v15 = &unk_279DE00A8;
-  v16 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = labelCopy;
   v17 = v9;
   v19 = &v20;
-  v10 = v6;
+  v10 = descriptorCopy;
   v18 = v10;
   dispatch_sync(dispatchQueue, &v12);
   if ((v21[3] & 1) == 0)
   {
-    v11 = [v10 completion];
-    v11[2](v11, 1);
+    completion = [v10 completion];
+    completion[2](completion, 1);
   }
 
   _Block_object_dispose(&v20, 8);
@@ -380,10 +380,10 @@ void __72__TRIXPCActivityManager__scheduleFetchTaskWithActivityDescriptor_label_
   [v8 addTask:v9 options:v10];
 }
 
-- (void)_scheduleMaintenanceTaskWithActivityDescriptor:(id)a3 label:(id)a4
+- (void)_scheduleMaintenanceTaskWithActivityDescriptor:(id)descriptor label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  labelCopy = label;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -393,17 +393,17 @@ void __72__TRIXPCActivityManager__scheduleFetchTaskWithActivityDescriptor_label_
   v13 = 3221225472;
   v14 = __78__TRIXPCActivityManager__scheduleMaintenanceTaskWithActivityDescriptor_label___block_invoke;
   v15 = &unk_279DE00A8;
-  v16 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = labelCopy;
   v17 = v9;
   v19 = &v20;
-  v10 = v6;
+  v10 = descriptorCopy;
   v18 = v10;
   dispatch_sync(dispatchQueue, &v12);
   if ((v21[3] & 1) == 0)
   {
-    v11 = [v10 completion];
-    v11[2](v11, 1);
+    completion = [v10 completion];
+    completion[2](completion, 1);
   }
 
   _Block_object_dispose(&v20, 8);
@@ -453,7 +453,7 @@ void __78__TRIXPCActivityManager__scheduleMaintenanceTaskWithActivityDescriptor_
   [v4 addTask:v5 options:v6];
 }
 
-- (void)_registerCellularActivityWithDelay:(double)a3
+- (void)_registerCellularActivityWithDelay:(double)delay
 {
   v5 = +[TRILaunchDaemonActivityDescriptor cellularDescriptor];
   v6[4] = self;
@@ -462,7 +462,7 @@ void __78__TRIXPCActivityManager__scheduleMaintenanceTaskWithActivityDescriptor_
   v7[2] = __60__TRIXPCActivityManager__registerCellularActivityWithDelay___block_invoke;
   v7[3] = &unk_279DE00D0;
   v7[4] = self;
-  *&v7[5] = a3;
+  *&v7[5] = delay;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__TRIXPCActivityManager__registerCellularActivityWithDelay___block_invoke_2;
@@ -1513,13 +1513,13 @@ void __59__TRIXPCActivityManager__registerClientTriggeredActivities__block_invok
 - (void)_registerDeactivationBGST
 {
   Helper_x8__OBJC_CLASS___BGSystemTaskScheduler = gotLoadHelper_x8__OBJC_CLASS___BGSystemTaskScheduler(v2);
-  v6 = [*(v5 + 2064) sharedScheduler];
+  sharedScheduler = [*(v5 + 2064) sharedScheduler];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__TRIXPCActivityManager__registerDeactivationBGST__block_invoke;
   v7[3] = &unk_279DE01B8;
   v7[4] = self;
-  [v6 registerForTaskWithIdentifier:@"com.apple.triald.deactivation" usingQueue:0 launchHandler:v7];
+  [sharedScheduler registerForTaskWithIdentifier:@"com.apple.triald.deactivation" usingQueue:0 launchHandler:v7];
 }
 
 void __50__TRIXPCActivityManager__registerDeactivationBGST__block_invoke(uint64_t a1, void *a2)

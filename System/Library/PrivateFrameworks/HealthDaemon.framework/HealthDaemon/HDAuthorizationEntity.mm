@@ -1,31 +1,31 @@
 @interface HDAuthorizationEntity
-+ (BOOL)_shouldSkipAuthorizationInsertionForBloodPressureMismatch:(id)a3 sourceEntity:(id)a4;
-+ (BOOL)resetAuthorizationStatusesForBundleIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)setAuthorizationStatuses:(id)a3 authorizationRequests:(id)a4 authorizationModes:(id)a5 sourceEntity:(id)a6 options:(unint64_t)a7 profile:(id)a8 error:(id *)a9;
-+ (id)_maxObjectPersistentIDForProfile:(void *)a3 error:;
-+ (id)_predicateForBundleIdentifier:(void *)a3 profile:(uint64_t)a4 error:;
-+ (id)_predicateForSourceEntities:(uint64_t)a1;
-+ (id)_predicateForTypes:(uint64_t)a1;
-+ (id)allSourcesRequestingTypes:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)authorizationRecordsBySourceForType:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)authorizationRecordsByTypeForBundleIdentifier:(id)a3 types:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)authorizationRequestsForBundleIdentifier:(id)a3 types:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)authorizationStatusesForBundleIdentifier:(id)a3 types:(id)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)_shouldSkipAuthorizationInsertionForBloodPressureMismatch:(id)mismatch sourceEntity:(id)entity;
++ (BOOL)resetAuthorizationStatusesForBundleIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (BOOL)setAuthorizationStatuses:(id)statuses authorizationRequests:(id)requests authorizationModes:(id)modes sourceEntity:(id)entity options:(unint64_t)options profile:(id)profile error:(id *)error;
++ (id)_maxObjectPersistentIDForProfile:(void *)profile error:;
++ (id)_predicateForBundleIdentifier:(void *)identifier profile:(uint64_t)profile error:;
++ (id)_predicateForSourceEntities:(uint64_t)entities;
++ (id)_predicateForTypes:(uint64_t)types;
++ (id)allSourcesRequestingTypes:(id)types profile:(id)profile error:(id *)error;
++ (id)authorizationRecordsBySourceForType:(id)type profile:(id)profile error:(id *)error;
++ (id)authorizationRecordsByTypeForBundleIdentifier:(id)identifier types:(id)types profile:(id)profile error:(id *)error;
++ (id)authorizationRequestsForBundleIdentifier:(id)identifier types:(id)types profile:(id)profile error:(id *)error;
++ (id)authorizationStatusesForBundleIdentifier:(id)identifier types:(id)types profile:(id)profile error:(id *)error;
 + (id)foreignKeys;
-+ (id)modificationDateForSourceEntity:(id)a3 type:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)readAuthorizationStatusesByTypeForBundleIdentifier:(id)a3 types:(id)a4 profile:(id)a5 error:(id *)a6;
++ (id)modificationDateForSourceEntity:(id)entity type:(id)type profile:(id)profile error:(id *)error;
++ (id)readAuthorizationStatusesByTypeForBundleIdentifier:(id)identifier types:(id)types profile:(id)profile error:(id *)error;
 + (id)uniquedColumns;
-+ (uint64_t)_insertAuthorizationWithSourceIdentifier:(uint64_t)a3 dataTypeCode:(uint64_t)a4 authorizationStatus:(uint64_t)a5 authorizationRequest:(uint64_t)a6 authorizationMode:(void *)a7 modificationDate:(void *)a8 currentDate:(uint64_t)a9 syncProvenance:(uint64_t)a10 syncIdentity:(uint64_t)a11 objectAnchor:(void *)a12 modificationEpoch:(char)a13 options:(void *)a14 profile:(void *)a15 database:(uint64_t)a16 error:;
-+ (uint64_t)_insertCodableSourceAuthorizations:(char)a3 overwriteExisting:(void *)a4 syncStore:(void *)a5 profile:(uint64_t)a6 error:;
-+ (uint64_t)_resetAuthorizationStatusesWithPredicate:(void *)a3 profile:(uint64_t)a4 error:;
++ (uint64_t)_insertAuthorizationWithSourceIdentifier:(uint64_t)identifier dataTypeCode:(uint64_t)code authorizationStatus:(uint64_t)status authorizationRequest:(uint64_t)request authorizationMode:(void *)mode modificationDate:(void *)date currentDate:(uint64_t)currentDate syncProvenance:(uint64_t)self0 syncIdentity:(uint64_t)self1 objectAnchor:(void *)self2 modificationEpoch:(char)self3 options:(void *)self4 profile:(void *)self5 database:(uint64_t)self6 error:;
++ (uint64_t)_insertCodableSourceAuthorizations:(char)authorizations overwriteExisting:(void *)existing syncStore:(void *)store profile:(uint64_t)profile error:;
++ (uint64_t)_resetAuthorizationStatusesWithPredicate:(void *)predicate profile:(uint64_t)profile error:;
 @end
 
 @implementation HDAuthorizationEntity
 
-+ (id)authorizationStatusesForBundleIdentifier:(id)a3 types:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)authorizationStatusesForBundleIdentifier:(id)identifier types:(id)types profile:(id)profile error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = [a1 authorizationRecordsByTypeForBundleIdentifier:a3 types:a4 profile:a5 error:a6];
+  v6 = [self authorizationRecordsByTypeForBundleIdentifier:identifier types:types profile:profile error:error];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -71,10 +71,10 @@
   return v7;
 }
 
-+ (id)authorizationRequestsForBundleIdentifier:(id)a3 types:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)authorizationRequestsForBundleIdentifier:(id)identifier types:(id)types profile:(id)profile error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = [a1 authorizationRecordsByTypeForBundleIdentifier:a3 types:a4 profile:a5 error:a6];
+  v6 = [self authorizationRecordsByTypeForBundleIdentifier:identifier types:types profile:profile error:error];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -120,9 +120,9 @@
   return v7;
 }
 
-+ (id)authorizationRecordsByTypeForBundleIdentifier:(id)a3 types:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)authorizationRecordsByTypeForBundleIdentifier:(id)identifier types:(id)types profile:(id)profile error:(id *)error
 {
-  v6 = [a1 readAuthorizationStatusesByTypeForBundleIdentifier:a3 types:a4 profile:a5 error:a6];
+  v6 = [self readAuthorizationStatusesByTypeForBundleIdentifier:identifier types:types profile:profile error:error];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -151,39 +151,39 @@ void __91__HDAuthorizationEntity_authorizationRecordsByTypeForBundleIdentifier_t
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-+ (id)readAuthorizationStatusesByTypeForBundleIdentifier:(id)a3 types:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)readAuthorizationStatusesByTypeForBundleIdentifier:(id)identifier types:(id)types profile:(id)profile error:(id *)error
 {
   v71 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  identifierCopy = identifier;
+  typesCopy = types;
+  profileCopy = profile;
+  if (!identifierCopy)
   {
-    v50 = [MEMORY[0x277CCA890] currentHandler];
-    [v50 handleFailureInMethod:a2 object:a1 file:@"HDAuthorizationEntity.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationEntity.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
   }
 
-  v14 = [v13 sourceManager];
-  v15 = [v14 allSourcesForBundleIdentifier:v11 error:a6];
+  sourceManager = [profileCopy sourceManager];
+  v15 = [sourceManager allSourcesForBundleIdentifier:identifierCopy error:error];
 
   if (v15)
   {
     if ([v15 count])
     {
-      v57 = v13;
-      v58 = v11;
-      v56 = v12;
-      v16 = [MEMORY[0x277CCD720] _typesIncludingParentTypes:v12];
-      v17 = [v15 allObjects];
-      v18 = [v17 hk_map:&__block_literal_global_245];
+      v57 = profileCopy;
+      v58 = identifierCopy;
+      v56 = typesCopy;
+      v16 = [MEMORY[0x277CCD720] _typesIncludingParentTypes:typesCopy];
+      allObjects = [v15 allObjects];
+      v18 = [allObjects hk_map:&__block_literal_global_245];
       v19 = [v18 componentsJoinedByString:{@", "}];
 
       v55 = v19;
       v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ in (%@)", @"source_id", v19];
       if ([v16 count])
       {
-        v21 = [v16 allObjects];
-        v22 = [v21 hk_map:&__block_literal_global_354_0];
+        allObjects2 = [v16 allObjects];
+        v22 = [allObjects2 hk_map:&__block_literal_global_354_0];
         v23 = [v22 componentsJoinedByString:{@", "}];
 
         v24 = [v20 stringByAppendingFormat:@" AND %@ in (%@)", @"object_type", v23];
@@ -192,17 +192,17 @@ void __91__HDAuthorizationEntity_authorizationRecordsByTypeForBundleIdentifier_t
       }
 
       v25 = MEMORY[0x277CCACA8];
-      v26 = [a1 disambiguatedDatabaseTable];
+      disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
       v54 = v20;
-      v27 = [v25 stringWithFormat:@"SELECT %@, %@, %@, %@, %@, %@, %@ FROM %@ WHERE %@ ORDER BY %@ ASC, %@ DESC, %@ DESC, %@ DESC", @"object_type", @"status", @"request", @"mode", @"deleted_object_anchor", @"object_limit_anchor", @"object_limit_modified", v26, v20, @"object_type", @"modification_epoch", @"date_modified", @"status"];
+      v27 = [v25 stringWithFormat:@"SELECT %@, %@, %@, %@, %@, %@, %@ FROM %@ WHERE %@ ORDER BY %@ ASC, %@ DESC, %@ DESC, %@ DESC", @"object_type", @"status", @"request", @"mode", @"deleted_object_anchor", @"object_limit_anchor", @"object_limit_modified", disambiguatedDatabaseTable, v20, @"object_type", @"modification_epoch", @"date_modified", @"status"];
 
       v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v29 = [v13 database];
+      database = [profileCopy database];
       v63[0] = MEMORY[0x277D85DD0];
       v63[1] = 3221225472;
       v63[2] = __96__HDAuthorizationEntity_readAuthorizationStatusesByTypeForBundleIdentifier_types_profile_error___block_invoke_3;
       v63[3] = &unk_278625F78;
-      v69 = a1;
+      selfCopy = self;
       v53 = v27;
       v64 = v53;
       v65 = v15;
@@ -211,14 +211,14 @@ void __91__HDAuthorizationEntity_authorizationRecordsByTypeForBundleIdentifier_t
       v30 = v28;
       v67 = v30;
       v68 = v58;
-      v51 = [a1 performReadTransactionWithHealthDatabase:v29 error:a6 block:v63];
+      v51 = [self performReadTransactionWithHealthDatabase:database error:error block:v63];
 
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
-      v31 = [v30 allKeys];
-      v32 = [v31 countByEnumeratingWithState:&v59 objects:v70 count:16];
+      allKeys = [v30 allKeys];
+      v32 = [allKeys countByEnumeratingWithState:&v59 objects:v70 count:16];
       if (v32)
       {
         v33 = v32;
@@ -229,32 +229,32 @@ void __91__HDAuthorizationEntity_authorizationRecordsByTypeForBundleIdentifier_t
           {
             if (*v60 != v34)
             {
-              objc_enumerationMutation(v31);
+              objc_enumerationMutation(allKeys);
             }
 
             v36 = *(*(&v59 + 1) + 8 * i);
-            v37 = [v36 parentType];
+            parentType = [v36 parentType];
 
-            if (v37)
+            if (parentType)
             {
               v38 = [v30 objectForKeyedSubscript:v36];
-              v39 = [v36 parentType];
-              v40 = [v30 objectForKeyedSubscript:v39];
+              parentType2 = [v36 parentType];
+              v40 = [v30 objectForKeyedSubscript:parentType2];
 
               if (v40 && ([v40 authorizationRequest] == 203 || (v41 = objc_msgSend(v38, "authorizationRequest"), v41 == objc_msgSend(v40, "authorizationRequest"))))
               {
-                v42 = [v40 authorizationRecord];
-                v43 = [v42 readingEnabled];
+                authorizationRecord = [v40 authorizationRecord];
+                readingEnabled = [authorizationRecord readingEnabled];
 
-                if ((v43 & 1) == 0)
+                if ((readingEnabled & 1) == 0)
                 {
                   [v38 disableReading];
                 }
 
-                v44 = [v40 authorizationRecord];
-                v45 = [v44 sharingEnabled];
+                authorizationRecord2 = [v40 authorizationRecord];
+                sharingEnabled = [authorizationRecord2 sharingEnabled];
 
-                if ((v45 & 1) == 0)
+                if ((sharingEnabled & 1) == 0)
                 {
                   [v38 disableSharing];
                 }
@@ -267,7 +267,7 @@ void __91__HDAuthorizationEntity_authorizationRecordsByTypeForBundleIdentifier_t
             }
           }
 
-          v33 = [v31 countByEnumeratingWithState:&v59 objects:v70 count:16];
+          v33 = [allKeys countByEnumeratingWithState:&v59 objects:v70 count:16];
         }
 
         while (v33);
@@ -285,9 +285,9 @@ void __91__HDAuthorizationEntity_authorizationRecordsByTypeForBundleIdentifier_t
 
       v47 = v46;
 
-      v13 = v57;
-      v11 = v58;
-      v12 = v56;
+      profileCopy = v57;
+      identifierCopy = v58;
+      typesCopy = v56;
     }
 
     else
@@ -457,14 +457,14 @@ BOOL __96__HDAuthorizationEntity_readAuthorizationStatusesByTypeForBundleIdentif
   return v7 != 0;
 }
 
-+ (id)modificationDateForSourceEntity:(id)a3 type:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)modificationDateForSourceEntity:(id)entity type:(id)type profile:(id)profile error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v12)
+  entityCopy = entity;
+  typeCopy = type;
+  profileCopy = profile;
+  if (typeCopy)
   {
-    if (v11)
+    if (entityCopy)
     {
       goto LABEL_3;
     }
@@ -472,17 +472,17 @@ BOOL __96__HDAuthorizationEntity_readAuthorizationStatusesByTypeForBundleIdentif
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"HDAuthorizationEntity.m" lineNumber:263 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationEntity.m" lineNumber:263 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
 
-    if (v11)
+    if (entityCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:a1 file:@"HDAuthorizationEntity.m" lineNumber:264 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDAuthorizationEntity.m" lineNumber:264 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
 
 LABEL_3:
   v26 = 0;
@@ -491,18 +491,18 @@ LABEL_3:
   v29 = __Block_byref_object_copy__208;
   v30 = __Block_byref_object_dispose__208;
   v31 = 0;
-  v14 = [v13 database];
+  database = [profileCopy database];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __76__HDAuthorizationEntity_modificationDateForSourceEntity_type_profile_error___block_invoke;
   v21[3] = &unk_278626C38;
-  v25 = a1;
-  v15 = v11;
+  selfCopy = self;
+  v15 = entityCopy;
   v22 = v15;
-  v16 = v12;
+  v16 = typeCopy;
   v23 = v16;
   v24 = &v26;
-  [a1 performReadTransactionWithHealthDatabase:v14 error:a6 block:v21];
+  [self performReadTransactionWithHealthDatabase:database error:error block:v21];
 
   v17 = v27[5];
   _Block_object_dispose(&v26, 8);
@@ -537,7 +537,7 @@ uint64_t __76__HDAuthorizationEntity_modificationDateForSourceEntity_type_profil
   return 1;
 }
 
-+ (id)_maxObjectPersistentIDForProfile:(void *)a3 error:
++ (id)_maxObjectPersistentIDForProfile:(void *)profile error:
 {
   v4 = a2;
   objc_opt_self();
@@ -553,11 +553,11 @@ uint64_t __76__HDAuthorizationEntity_modificationDateForSourceEntity_type_profil
 
   else if (v6)
   {
-    if (a3)
+    if (profile)
     {
       v10 = v6;
       v8 = 0;
-      *a3 = v7;
+      *profile = v7;
     }
 
     else
@@ -575,63 +575,63 @@ uint64_t __76__HDAuthorizationEntity_modificationDateForSourceEntity_type_profil
   return v8;
 }
 
-+ (BOOL)setAuthorizationStatuses:(id)a3 authorizationRequests:(id)a4 authorizationModes:(id)a5 sourceEntity:(id)a6 options:(unint64_t)a7 profile:(id)a8 error:(id *)a9
++ (BOOL)setAuthorizationStatuses:(id)statuses authorizationRequests:(id)requests authorizationModes:(id)modes sourceEntity:(id)entity options:(unint64_t)options profile:(id)profile error:(id *)error
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  if (!v16)
+  statusesCopy = statuses;
+  requestsCopy = requests;
+  modesCopy = modes;
+  entityCopy = entity;
+  profileCopy = profile;
+  if (!statusesCopy)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:a1 file:@"HDAuthorizationEntity.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"authorizationStatuses != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationEntity.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"authorizationStatuses != nil"}];
   }
 
-  if (!v19)
+  if (!entityCopy)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"HDAuthorizationEntity.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDAuthorizationEntity.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"sourceEntity != nil"}];
 
-    if (v20)
+    if (profileCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_7:
-    v33 = [MEMORY[0x277CCA890] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"HDAuthorizationEntity.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"profile !=nil"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDAuthorizationEntity.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"profile !=nil"}];
 
     goto LABEL_5;
   }
 
-  if (!v20)
+  if (!profileCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v21 = [MEMORY[0x277CBEAA8] date];
-  v22 = [v20 database];
+  date = [MEMORY[0x277CBEAA8] date];
+  database = [profileCopy database];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __126__HDAuthorizationEntity_setAuthorizationStatuses_authorizationRequests_authorizationModes_sourceEntity_options_profile_error___block_invoke;
   v34[3] = &unk_278614530;
-  v35 = v19;
-  v36 = v20;
-  v37 = v16;
-  v38 = v17;
-  v39 = v18;
-  v40 = v21;
-  v41 = a1;
-  v42 = a7;
-  v23 = v21;
-  v24 = v18;
-  v25 = v17;
-  v26 = v16;
-  v27 = v20;
-  v28 = v19;
-  v29 = [a1 performWriteTransactionWithHealthDatabase:v22 error:a9 block:v34];
+  v35 = entityCopy;
+  v36 = profileCopy;
+  v37 = statusesCopy;
+  v38 = requestsCopy;
+  v39 = modesCopy;
+  v40 = date;
+  selfCopy = self;
+  optionsCopy = options;
+  v23 = date;
+  v24 = modesCopy;
+  v25 = requestsCopy;
+  v26 = statusesCopy;
+  v27 = profileCopy;
+  v28 = entityCopy;
+  v29 = [self performWriteTransactionWithHealthDatabase:database error:error block:v34];
 
   return v29;
 }
@@ -1053,19 +1053,19 @@ LABEL_85:
   return v62;
 }
 
-+ (id)authorizationRecordsBySourceForType:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)authorizationRecordsBySourceForType:(id)type profile:(id)profile error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  typeCopy = type;
+  profileCopy = profile;
+  if (!typeCopy)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"HDAuthorizationEntity.m" lineNumber:361 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationEntity.m" lineNumber:361 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
   }
 
-  v10 = [v9 sourceManager];
-  v11 = [v10 allSourcesWithError:a5];
+  sourceManager = [profileCopy sourceManager];
+  v11 = [sourceManager allSourcesWithError:error];
 
   if (v11)
   {
@@ -1091,9 +1091,9 @@ LABEL_85:
           }
 
           v16 = *(*(&v30 + 1) + 8 * i);
-          v17 = [v16 bundleIdentifier];
-          v18 = [MEMORY[0x277CBEB98] setWithObject:v8];
-          v19 = [a1 authorizationRecordsByTypeForBundleIdentifier:v17 types:v18 profile:v9 error:a5];
+          bundleIdentifier = [v16 bundleIdentifier];
+          v18 = [MEMORY[0x277CBEB98] setWithObject:typeCopy];
+          v19 = [self authorizationRecordsByTypeForBundleIdentifier:bundleIdentifier types:v18 profile:profileCopy error:error];
 
           if (!v19)
           {
@@ -1103,7 +1103,7 @@ LABEL_85:
             goto LABEL_16;
           }
 
-          v20 = [v19 objectForKeyedSubscript:v8];
+          v20 = [v19 objectForKeyedSubscript:typeCopy];
           if (v20)
           {
             [v28 setObject:v20 forKeyedSubscript:v16];
@@ -1137,10 +1137,10 @@ LABEL_16:
   return v22;
 }
 
-+ (id)allSourcesRequestingTypes:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)allSourcesRequestingTypes:(id)types profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  typesCopy = types;
+  profileCopy = profile;
   v9 = objc_opt_self();
   v22 = 0;
   v23 = &v22;
@@ -1148,21 +1148,21 @@ LABEL_16:
   v25 = __Block_byref_object_copy__208;
   v26 = __Block_byref_object_dispose__208;
   v27 = 0;
-  v10 = [v8 database];
+  database = [profileCopy database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __86__HDAuthorizationEntity__allSourcesRequestingTypes_additionalPredicate_profile_error___block_invoke;
   v16[3] = &unk_27861DAA8;
   v21 = v9;
-  v11 = v7;
+  v11 = typesCopy;
   v17 = v11;
   v18 = 0;
-  v12 = v8;
+  v12 = profileCopy;
   v19 = v12;
   v20 = &v22;
-  LODWORD(a5) = [v9 performReadTransactionWithHealthDatabase:v10 error:a5 block:v16];
+  LODWORD(error) = [v9 performReadTransactionWithHealthDatabase:database error:error block:v16];
 
-  if (a5)
+  if (error)
   {
     v13 = v23[5];
   }
@@ -1218,7 +1218,7 @@ BOOL __86__HDAuthorizationEntity__allSourcesRequestingTypes_additionalPredicate_
   return v17;
 }
 
-+ (id)_predicateForTypes:(uint64_t)a1
++ (id)_predicateForTypes:(uint64_t)types
 {
   v18 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -1276,20 +1276,20 @@ uint64_t __86__HDAuthorizationEntity__allSourcesRequestingTypes_additionalPredic
   return 1;
 }
 
-+ (BOOL)resetAuthorizationStatusesForBundleIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)resetAuthorizationStatusesForBundleIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  identifierCopy = identifier;
+  profileCopy = profile;
+  if (!identifierCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"HDAuthorizationEntity.m" lineNumber:436 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationEntity.m" lineNumber:436 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier != nil"}];
   }
 
-  v11 = [(HDAuthorizationEntity *)a1 _predicateForBundleIdentifier:v9 profile:v10 error:a5];
+  v11 = [(HDAuthorizationEntity *)self _predicateForBundleIdentifier:identifierCopy profile:profileCopy error:error];
   if (v11)
   {
-    v12 = [(HDAuthorizationEntity *)a1 _resetAuthorizationStatusesWithPredicate:v11 profile:v10 error:a5];
+    v12 = [(HDAuthorizationEntity *)self _resetAuthorizationStatusesWithPredicate:v11 profile:profileCopy error:error];
   }
 
   else
@@ -1300,14 +1300,14 @@ uint64_t __86__HDAuthorizationEntity__allSourcesRequestingTypes_additionalPredic
   return v12;
 }
 
-+ (id)_predicateForBundleIdentifier:(void *)a3 profile:(uint64_t)a4 error:
++ (id)_predicateForBundleIdentifier:(void *)identifier profile:(uint64_t)profile error:
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = a2;
   v8 = objc_opt_self();
-  v9 = [v6 sourceManager];
+  sourceManager = [identifierCopy sourceManager];
 
-  v10 = [v9 allSourcesForBundleIdentifier:v7 error:a4];
+  v10 = [sourceManager allSourcesForBundleIdentifier:v7 error:profile];
 
   if (v10)
   {
@@ -1322,46 +1322,46 @@ uint64_t __86__HDAuthorizationEntity__allSourcesRequestingTypes_additionalPredic
   return v11;
 }
 
-+ (uint64_t)_resetAuthorizationStatusesWithPredicate:(void *)a3 profile:(uint64_t)a4 error:
++ (uint64_t)_resetAuthorizationStatusesWithPredicate:(void *)predicate profile:(uint64_t)profile error:
 {
   v6 = a2;
-  v7 = a3;
+  predicateCopy = predicate;
   v8 = objc_opt_self();
-  v9 = [v7 database];
+  database = [predicateCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __80__HDAuthorizationEntity__resetAuthorizationStatusesWithPredicate_profile_error___block_invoke;
   v14[3] = &unk_278614698;
-  v16 = v7;
+  v16 = predicateCopy;
   v17 = v8;
   v15 = v6;
-  v10 = v7;
+  v10 = predicateCopy;
   v11 = v6;
-  v12 = [v8 performWriteTransactionWithHealthDatabase:v9 error:a4 block:v14];
+  v12 = [v8 performWriteTransactionWithHealthDatabase:database error:profile block:v14];
 
   return v12;
 }
 
-+ (uint64_t)_insertCodableSourceAuthorizations:(char)a3 overwriteExisting:(void *)a4 syncStore:(void *)a5 profile:(uint64_t)a6 error:
++ (uint64_t)_insertCodableSourceAuthorizations:(char)authorizations overwriteExisting:(void *)existing syncStore:(void *)store profile:(uint64_t)profile error:
 {
   v10 = a2;
-  v11 = a4;
-  v12 = a5;
+  existingCopy = existing;
+  storeCopy = store;
   v13 = objc_opt_self();
-  v14 = [v12 database];
+  database = [storeCopy database];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __102__HDAuthorizationEntity__insertCodableSourceAuthorizations_overwriteExisting_syncStore_profile_error___block_invoke;
   v20[3] = &unk_27862FE08;
-  v21 = v12;
+  v21 = storeCopy;
   v22 = v10;
-  v23 = v11;
+  v23 = existingCopy;
   v24 = v13;
-  v25 = a3;
-  v15 = v11;
+  authorizationsCopy = authorizations;
+  v15 = existingCopy;
   v16 = v10;
-  v17 = v12;
-  v18 = [v13 performWriteTransactionWithHealthDatabase:v14 error:a6 block:v20];
+  v17 = storeCopy;
+  v18 = [v13 performWriteTransactionWithHealthDatabase:database error:profile block:v20];
 
   return v18;
 }
@@ -1861,16 +1861,16 @@ LABEL_79:
   return v66;
 }
 
-+ (BOOL)_shouldSkipAuthorizationInsertionForBloodPressureMismatch:(id)a3 sourceEntity:(id)a4
++ (BOOL)_shouldSkipAuthorizationInsertionForBloodPressureMismatch:(id)mismatch sourceEntity:(id)entity
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  mismatchCopy = mismatch;
+  entityCopy = entity;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v7 = [mismatchCopy countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1883,12 +1883,12 @@ LABEL_79:
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(mismatchCopy);
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 _dataTypeCode];
-        if (v14 == 16)
+        _dataTypeCode = [v13 _dataTypeCode];
+        if (_dataTypeCode == 16)
         {
           v15 = v10;
           v10 = v13;
@@ -1896,7 +1896,7 @@ LABEL_79:
 
         else
         {
-          if (v14 != 17)
+          if (_dataTypeCode != 17)
           {
             continue;
           }
@@ -1908,7 +1908,7 @@ LABEL_79:
         v16 = v13;
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
+      v8 = [mismatchCopy countByEnumeratingWithState:&v24 objects:v34 count:16];
       if (!v8)
       {
         goto LABEL_15;
@@ -1931,7 +1931,7 @@ LABEL_15:
       v30 = 2048;
       v31 = v20;
       v32 = 2112;
-      v33 = v6;
+      v33 = entityCopy;
       _os_log_impl(&dword_228986000, v21, OS_LOG_TYPE_DEFAULT, "Skipping authorization insertion: systolic (%ld) and diastolic (%ld) authorization statuses don't match for source %@", buf, 0x20u);
     }
 
@@ -1947,14 +1947,14 @@ LABEL_15:
   return v19;
 }
 
-+ (uint64_t)_insertAuthorizationWithSourceIdentifier:(uint64_t)a3 dataTypeCode:(uint64_t)a4 authorizationStatus:(uint64_t)a5 authorizationRequest:(uint64_t)a6 authorizationMode:(void *)a7 modificationDate:(void *)a8 currentDate:(uint64_t)a9 syncProvenance:(uint64_t)a10 syncIdentity:(uint64_t)a11 objectAnchor:(void *)a12 modificationEpoch:(char)a13 options:(void *)a14 profile:(void *)a15 database:(uint64_t)a16 error:
++ (uint64_t)_insertAuthorizationWithSourceIdentifier:(uint64_t)identifier dataTypeCode:(uint64_t)code authorizationStatus:(uint64_t)status authorizationRequest:(uint64_t)request authorizationMode:(void *)mode modificationDate:(void *)date currentDate:(uint64_t)currentDate syncProvenance:(uint64_t)self0 syncIdentity:(uint64_t)self1 objectAnchor:(void *)self2 modificationEpoch:(char)self3 options:(void *)self4 profile:(void *)self5 database:(uint64_t)self6 error:
 {
-  v18 = a7;
-  obj = a8;
-  v19 = a8;
-  v20 = a12;
-  v21 = a14;
-  v22 = a15;
+  modeCopy = mode;
+  obj = date;
+  dateCopy = date;
+  anchorCopy = anchor;
+  optionsCopy = options;
+  profileCopy = profile;
   v23 = objc_opt_self();
   v24 = v23;
   v74 = 0;
@@ -1967,8 +1967,8 @@ LABEL_15:
   v71 = __Block_byref_object_copy__208;
   v72 = __Block_byref_object_dispose__208;
   v73 = 0;
-  v48 = a6;
-  if (a6 == 1)
+  requestCopy = request;
+  if (request == 1)
   {
     v67[0] = MEMORY[0x277D85DD0];
     v67[1] = 3221225472;
@@ -1980,42 +1980,42 @@ LABEL_15:
     v66[2] = __257__HDAuthorizationEntity__insertAuthorizationWithSourceIdentifier_dataTypeCode_authorizationStatus_authorizationRequest_authorizationMode_modificationDate_currentDate_syncProvenance_syncIdentity_objectAnchor_modificationEpoch_options_profile_database_error___block_invoke_2;
     v66[3] = &__block_descriptor_48_e23_v16__0__sqlite3_stmt__8l;
     v66[4] = a2;
-    v66[5] = a3;
+    v66[5] = identifier;
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = __257__HDAuthorizationEntity__insertAuthorizationWithSourceIdentifier_dataTypeCode_authorizationStatus_authorizationRequest_authorizationMode_modificationDate_currentDate_syncProvenance_syncIdentity_objectAnchor_modificationEpoch_options_profile_database_error___block_invoke_3;
     v65[3] = &unk_278615C30;
     v65[4] = &v74;
     v65[5] = &v68;
-    if (![v22 executeCachedStatementForKey:&_insertAuthorizationWithSourceIdentifier_dataTypeCode_authorizationStatus_authorizationRequest_authorizationMode_modificationDate_currentDate_syncProvenance_syncIdentity_objectAnchor_modificationEpoch_options_profile_database_error__lookupKey error:a16 SQLGenerator:v67 bindingHandler:v66 enumerationHandler:v65])
+    if (![profileCopy executeCachedStatementForKey:&_insertAuthorizationWithSourceIdentifier_dataTypeCode_authorizationStatus_authorizationRequest_authorizationMode_modificationDate_currentDate_syncProvenance_syncIdentity_objectAnchor_modificationEpoch_options_profile_database_error__lookupKey error:database SQLGenerator:v67 bindingHandler:v66 enumerationHandler:v65])
     {
       goto LABEL_19;
     }
   }
 
-  v25 = v20;
+  v25 = anchorCopy;
   if (!v25)
   {
-    v41 = v21;
-    v43 = v22;
+    v41 = optionsCopy;
+    v43 = profileCopy;
     v26 = objc_opt_self();
     v42 = [(HDSQLiteEntity *)[HDSourceEntity alloc] initWithPersistentID:a2];
-    v44 = [(HDSourceEntity *)v42 sourceBundleIdentifierInDatabase:v43 error:a16];
+    v44 = [(HDSourceEntity *)v42 sourceBundleIdentifierInDatabase:v43 error:database];
     if (v44)
     {
-      v27 = [v41 sourceManager];
-      v40 = [v27 allSourcesForBundleIdentifier:v44 error:a16];
+      sourceManager = [v41 sourceManager];
+      v40 = [sourceManager allSourcesForBundleIdentifier:v44 error:database];
 
       v28 = v40;
       if (v40)
       {
-        v29 = [v40 allObjects];
-        v30 = [v29 hk_map:&__block_literal_global_417_2];
+        allObjects = [v40 allObjects];
+        v30 = [allObjects hk_map:&__block_literal_global_417_2];
         v39 = [v30 componentsJoinedByString:{@", "}];
 
         v31 = MEMORY[0x277CCACA8];
-        v32 = [v26 disambiguatedDatabaseTable];
-        v33 = [v31 stringWithFormat:@"SELECT COALESCE(MAX(%@ + 1), 0) FROM %@ WHERE %@ in (%@) AND %@ = ?", @"modification_epoch", v32, @"source_id", v39, @"object_type"];
+        disambiguatedDatabaseTable = [v26 disambiguatedDatabaseTable];
+        v33 = [v31 stringWithFormat:@"SELECT COALESCE(MAX(%@ + 1), 0) FROM %@ WHERE %@ in (%@) AND %@ = ?", @"modification_epoch", disambiguatedDatabaseTable, @"source_id", v39, @"object_type"];
 
         v82 = 0;
         v83 = &v82;
@@ -2028,13 +2028,13 @@ LABEL_15:
         v79[2] = __95__HDAuthorizationEntity__nextModificationEpochForSourceIdentifier_type_profile_database_error___block_invoke_2;
         v79[3] = &unk_278613B58;
         v80 = v40;
-        v81 = a3;
+        identifierCopy = identifier;
         v78[0] = MEMORY[0x277D85DD0];
         v78[1] = 3221225472;
         v78[2] = __95__HDAuthorizationEntity__nextModificationEpochForSourceIdentifier_type_profile_database_error___block_invoke_3;
         v78[3] = &unk_278614620;
         v78[4] = &v82;
-        v34 = [v43 executeSQL:v33 error:a16 bindingHandler:v79 enumerationHandler:v78] ? v83[5] : 0;
+        v34 = [v43 executeSQL:v33 error:database bindingHandler:v79 enumerationHandler:v78] ? v83[5] : 0;
         v28 = v40;
         v25 = v34;
 
@@ -2054,17 +2054,17 @@ LABEL_15:
 
     if (!v25)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a16 code:3 format:@"finalModificationEpoch cannot be nil"];
+      [MEMORY[0x277CCA9B8] hk_assignError:database code:3 format:@"finalModificationEpoch cannot be nil"];
 LABEL_19:
       v37 = 0;
       goto LABEL_20;
     }
   }
 
-  v35 = v48;
-  if (v48 == 1 && (a13 & 1) != 0)
+  v35 = requestCopy;
+  if (requestCopy == 1 && (epoch & 1) != 0)
   {
-    v75[3] = a11;
+    v75[3] = identity;
     objc_storeStrong(v69 + 5, obj);
     v35 = 1;
   }
@@ -2079,19 +2079,19 @@ LABEL_19:
   v51[2] = __257__HDAuthorizationEntity__insertAuthorizationWithSourceIdentifier_dataTypeCode_authorizationStatus_authorizationRequest_authorizationMode_modificationDate_currentDate_syncProvenance_syncIdentity_objectAnchor_modificationEpoch_options_profile_database_error___block_invoke_5;
   v51[3] = &unk_27862FE30;
   v56 = a2;
-  v57 = a3;
-  v58 = a4;
-  v59 = a5;
+  identifierCopy2 = identifier;
+  codeCopy = code;
+  statusCopy = status;
   v60 = v35;
-  v62 = a10;
-  v63 = a11;
-  v52 = v18;
+  provenanceCopy = provenance;
+  identityCopy = identity;
+  v52 = modeCopy;
   v54 = &v74;
-  v61 = a9;
+  currentDateCopy = currentDate;
   v55 = &v68;
   v36 = v25;
   v53 = v36;
-  v37 = [v22 executeCachedStatementForKey:&_insertAuthorizationWithSourceIdentifier_dataTypeCode_authorizationStatus_authorizationRequest_authorizationMode_modificationDate_currentDate_syncProvenance_syncIdentity_objectAnchor_modificationEpoch_options_profile_database_error__insertKey error:a16 SQLGenerator:v64 bindingHandler:v51 enumerationHandler:0];
+  v37 = [profileCopy executeCachedStatementForKey:&_insertAuthorizationWithSourceIdentifier_dataTypeCode_authorizationStatus_authorizationRequest_authorizationMode_modificationDate_currentDate_syncProvenance_syncIdentity_objectAnchor_modificationEpoch_options_profile_database_error__insertKey error:database SQLGenerator:v64 bindingHandler:v51 enumerationHandler:0];
 
 LABEL_20:
   _Block_object_dispose(&v68, 8);
@@ -2293,7 +2293,7 @@ uint64_t __80__HDAuthorizationEntity__resetAuthorizationStatusesWithPredicate_pr
   return +[HDAuthorizationEntity _insertAuthorizationWithSourceIdentifier:dataTypeCode:authorizationStatus:authorizationRequest:authorizationMode:modificationDate:currentDate:syncProvenance:syncIdentity:objectAnchor:modificationEpoch:options:profile:database:error:](*(a1 + 56), v7, v8, 100, v9, 0, *(a1 + 32), *(a1 + 32), 0, [*(a1 + 40) currentSyncIdentityPersistentID], 0, 0, 0, *(a1 + 40), *(a1 + 48), a5);
 }
 
-+ (id)_predicateForSourceEntities:(uint64_t)a1
++ (id)_predicateForSourceEntities:(uint64_t)entities
 {
   v2 = a2;
   objc_opt_self();

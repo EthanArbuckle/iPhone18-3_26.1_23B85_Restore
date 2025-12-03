@@ -1,64 +1,64 @@
 @interface PUParallaxLayerStackDebugTableViewController
-- (id)layerForIndexPath:(id)a3;
+- (id)layerForIndexPath:(id)path;
 - (id)layersSortedByViewDepth;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)requestNewZPositionForCellAtIndexPath:(id)a3;
-- (void)setLayerStackView:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)requestNewZPositionForCellAtIndexPath:(id)path;
+- (void)setLayerStackView:(id)view;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
 @end
 
 @implementation PUParallaxLayerStackDebugTableViewController
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v9 isEqual:v10] & 1) == 0)
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (([pathCopy isEqual:indexPathCopy] & 1) == 0)
   {
-    v47 = v8;
-    v11 = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView];
-    v12 = [v11 viewModel];
+    v47 = viewCopy;
+    layerStackView = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView];
+    viewModel = [layerStackView viewModel];
 
-    v46 = v12;
-    v13 = [v12 viewManager];
-    v45 = [(PUParallaxLayerStackDebugTableViewController *)self layerForIndexPath:v9];
-    v14 = [v13 viewForLayer:?];
-    v15 = [(PUParallaxLayerStackDebugTableViewController *)self layerForIndexPath:v10];
-    v16 = [v13 viewForLayer:v15];
-    v17 = [(PUParallaxLayerStackDebugTableViewController *)self layersSortedByViewDepth];
-    v18 = [v17 indexOfObject:v15];
+    v46 = viewModel;
+    viewManager = [viewModel viewManager];
+    v45 = [(PUParallaxLayerStackDebugTableViewController *)self layerForIndexPath:pathCopy];
+    v14 = [viewManager viewForLayer:?];
+    v15 = [(PUParallaxLayerStackDebugTableViewController *)self layerForIndexPath:indexPathCopy];
+    v16 = [viewManager viewForLayer:v15];
+    layersSortedByViewDepth = [(PUParallaxLayerStackDebugTableViewController *)self layersSortedByViewDepth];
+    v18 = [layersSortedByViewDepth indexOfObject:v15];
     v44 = v14;
-    v19 = [v14 layer];
-    [v19 zPosition];
+    layer = [v14 layer];
+    [layer zPosition];
     v21 = v20;
-    v22 = [v16 layer];
-    [v22 zPosition];
+    layer2 = [v16 layer];
+    [layer2 zPosition];
     v24 = v23;
 
     if (v21 >= v24)
     {
       v33 = v18 + 1;
-      if (v33 < [v17 count])
+      if (v33 < [layersSortedByViewDepth count])
       {
-        v25 = [v17 objectAtIndexedSubscript:v33];
-        v34 = [v13 viewForLayer:v25];
-        v35 = [v16 layer];
-        [v35 zPosition];
+        layer5 = [layersSortedByViewDepth objectAtIndexedSubscript:v33];
+        v34 = [viewManager viewForLayer:layer5];
+        layer3 = [v16 layer];
+        [layer3 zPosition];
         v37 = v36;
-        v38 = [v34 layer];
-        [v38 zPosition];
+        layer4 = [v34 layer];
+        [layer4 zPosition];
         v32 = (v37 + v39) * 0.5;
 
         goto LABEL_10;
       }
 
-      v25 = [v16 layer];
-      [v25 zPosition];
+      layer5 = [v16 layer];
+      [layer5 zPosition];
       v41 = -5.0;
     }
 
@@ -66,20 +66,20 @@
     {
       if (v18)
       {
-        v25 = [v17 objectAtIndexedSubscript:v18 - 1];
-        v26 = [v13 viewForLayer:v25];
-        v27 = [v16 layer];
-        [v27 zPosition];
+        layer5 = [layersSortedByViewDepth objectAtIndexedSubscript:v18 - 1];
+        v26 = [viewManager viewForLayer:layer5];
+        layer6 = [v16 layer];
+        [layer6 zPosition];
         v29 = v28;
-        v30 = [v26 layer];
-        [v30 zPosition];
+        layer7 = [v26 layer];
+        [layer7 zPosition];
         v32 = (v29 + v31) * 0.5;
 
 LABEL_10:
-        v8 = v47;
+        viewCopy = v47;
 
-        v42 = [v44 layer];
-        [v42 setZPosition:v32];
+        layer8 = [v44 layer];
+        [layer8 setZPosition:v32];
 
         v43 = dispatch_time(0, 250000000);
         block[0] = MEMORY[0x1E69E9820];
@@ -87,14 +87,14 @@ LABEL_10:
         block[2] = __89__PUParallaxLayerStackDebugTableViewController_tableView_moveRowAtIndexPath_toIndexPath___block_invoke;
         block[3] = &unk_1E7B80C38;
         v49 = v47;
-        v50 = v10;
+        v50 = indexPathCopy;
         dispatch_after(v43, MEMORY[0x1E69E96A0], block);
 
         goto LABEL_11;
       }
 
-      v25 = [v16 layer];
-      [v25 zPosition];
+      layer5 = [v16 layer];
+      [layer5 zPosition];
       v41 = 5.0;
     }
 
@@ -114,15 +114,15 @@ void __89__PUParallaxLayerStackDebugTableViewController_tableView_moveRowAtIndex
   [v1 reconfigureRowsAtIndexPaths:v2];
 }
 
-- (void)requestNewZPositionForCellAtIndexPath:(id)a3
+- (void)requestNewZPositionForCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView];
-  v6 = [v5 viewModel];
+  pathCopy = path;
+  layerStackView = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView];
+  viewModel = [layerStackView viewModel];
 
-  v7 = [v6 viewManager];
-  v8 = [(PUParallaxLayerStackDebugTableViewController *)self layerForIndexPath:v4];
-  v9 = [v7 viewForLayer:v8];
+  viewManager = [viewModel viewManager];
+  v8 = [(PUParallaxLayerStackDebugTableViewController *)self layerForIndexPath:pathCopy];
+  v9 = [viewManager viewForLayer:v8];
   v10 = MEMORY[0x1E69DC650];
   v11 = [(PUParallaxLayerStackDebugTableViewController *)self labelForLayer:v8];
   v12 = [v10 alertControllerWithTitle:v11 message:@"Z position:" preferredStyle:1];
@@ -143,7 +143,7 @@ void __89__PUParallaxLayerStackDebugTableViewController_tableView_moveRowAtIndex
   objc_copyWeak(&v20, &location);
   v15 = v13;
   v18 = v15;
-  v19 = self;
+  selfCopy = self;
   v16 = [v14 actionWithTitle:@"OK" style:0 handler:v17];
   [v12 addAction:v16];
 
@@ -183,10 +183,10 @@ void __86__PUParallaxLayerStackDebugTableViewController_requestNewZPositionForCe
   [v9 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v9 = MEMORY[0x1E69DC8D8];
   v13[0] = MEMORY[0x1E69E9820];
@@ -194,7 +194,7 @@ void __86__PUParallaxLayerStackDebugTableViewController_requestNewZPositionForCe
   v13[2] = __106__PUParallaxLayerStackDebugTableViewController_tableView_contextMenuConfigurationForRowAtIndexPath_point___block_invoke;
   v13[3] = &unk_1E7B7E608;
   objc_copyWeak(&v15, &location);
-  v10 = v8;
+  v10 = pathCopy;
   v14 = v10;
   v11 = [v9 configurationWithIdentifier:0 previewProvider:0 actionProvider:v13];
 
@@ -234,36 +234,36 @@ void __106__PUParallaxLayerStackDebugTableViewController_tableView_contextMenuCo
   [WeakRetained requestNewZPositionForCellAtIndexPath:*(a1 + 32)];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView];
-  v9 = [v8 viewModel];
+  pathCopy = path;
+  viewCopy = view;
+  layerStackView = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView];
+  viewModel = [layerStackView viewModel];
 
-  v10 = [v9 viewManager];
-  v11 = [(PUParallaxLayerStackDebugTableViewController *)self layerForIndexPath:v6];
-  v12 = [v10 viewForLayer:v11];
+  viewManager = [viewModel viewManager];
+  v11 = [(PUParallaxLayerStackDebugTableViewController *)self layerForIndexPath:pathCopy];
+  v12 = [viewManager viewForLayer:v11];
   [v12 setHidden:{objc_msgSend(v12, "isHidden") ^ 1}];
-  v14[0] = v6;
+  v14[0] = pathCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v7 reconfigureRowsAtIndexPaths:v13];
+  [viewCopy reconfigureRowsAtIndexPaths:v13];
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v41 = [a3 dequeueReusableCellWithIdentifier:@"layerCell" forIndexPath:v6];
-  v7 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  v8 = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView];
-  v9 = [v8 viewModel];
+  pathCopy = path;
+  v41 = [view dequeueReusableCellWithIdentifier:@"layerCell" forIndexPath:pathCopy];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  layerStackView = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView];
+  viewModel = [layerStackView viewModel];
 
-  v42 = v9;
-  v10 = [v9 viewManager];
-  v11 = [(PUParallaxLayerStackDebugTableViewController *)self layerForIndexPath:v6];
+  v42 = viewModel;
+  viewManager = [viewModel viewManager];
+  v11 = [(PUParallaxLayerStackDebugTableViewController *)self layerForIndexPath:pathCopy];
 
   v12 = v11;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
@@ -298,7 +298,7 @@ void __106__PUParallaxLayerStackDebugTableViewController_tableView_contextMenuCo
     v17 = 0;
   }
 
-  v18 = [v10 viewForLayer:v16];
+  v18 = [viewManager viewForLayer:v16];
   if (v13)
   {
     v19 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithIOSurface:{CVPixelBufferGetIOSurface(objc_msgSend(v13, "image"))}];
@@ -327,18 +327,18 @@ void __106__PUParallaxLayerStackDebugTableViewController_tableView_contextMenuCo
   }
 
   v22 = v19;
-  [v7 setImage:v19];
+  [valueCellConfiguration setImage:v19];
 
 LABEL_21:
   v40 = v13;
   v23 = v17;
   v24 = v15;
-  v25 = [v7 imageProperties];
-  [v25 setMaximumSize:{90.0, 120.0}];
+  imageProperties = [valueCellConfiguration imageProperties];
+  [imageProperties setMaximumSize:{90.0, 120.0}];
 
-  v26 = [v18 isHidden];
+  isHidden = [v18 isHidden];
   v27 = &stru_1F2AC6818;
-  if (v26)
+  if (isHidden)
   {
     v27 = @"🚫 ";
   }
@@ -347,72 +347,72 @@ LABEL_21:
   v29 = [(PUParallaxLayerStackDebugTableViewController *)self labelForLayer:v16];
   v30 = [(__CFString *)v28 stringByAppendingString:v29];
 
-  [v7 setText:v30];
+  [valueCellConfiguration setText:v30];
   v31 = MEMORY[0x1E696AEC0];
-  v32 = [v18 layer];
-  [v32 zPosition];
+  layer = [v18 layer];
+  [layer zPosition];
   v34 = [v31 stringWithFormat:@"Z: %g", v33];
-  [v7 setSecondaryText:v34];
+  [valueCellConfiguration setSecondaryText:v34];
 
-  if (v26)
+  if (isHidden)
   {
-    v35 = [MEMORY[0x1E69DC888] grayColor];
-    v36 = [v7 textProperties];
-    [v36 setColor:v35];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    textProperties = [valueCellConfiguration textProperties];
+    [textProperties setColor:grayColor];
 
-    v37 = [MEMORY[0x1E69DC6E8] listPlainCellConfiguration];
-    v38 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v37 setBackgroundColor:v38];
+    listPlainCellConfiguration = [MEMORY[0x1E69DC6E8] listPlainCellConfiguration];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [listPlainCellConfiguration setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   else
   {
-    v37 = 0;
+    listPlainCellConfiguration = 0;
   }
 
-  [v41 setContentConfiguration:v7];
-  [v41 setBackgroundConfiguration:v37];
+  [v41 setContentConfiguration:valueCellConfiguration];
+  [v41 setBackgroundConfiguration:listPlainCellConfiguration];
 
   return v41;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView:a3];
-  v5 = [v4 viewModel];
-  v6 = [v5 currentLayerStack];
-  v7 = [v6 layers];
-  v8 = [v7 count];
+  v4 = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView:view];
+  viewModel = [v4 viewModel];
+  currentLayerStack = [viewModel currentLayerStack];
+  layers = [currentLayerStack layers];
+  v8 = [layers count];
 
   return v8;
 }
 
-- (id)layerForIndexPath:(id)a3
+- (id)layerForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUParallaxLayerStackDebugTableViewController *)self layersSortedByViewDepth];
-  v6 = [v4 row];
+  pathCopy = path;
+  layersSortedByViewDepth = [(PUParallaxLayerStackDebugTableViewController *)self layersSortedByViewDepth];
+  v6 = [pathCopy row];
 
-  v7 = [v5 objectAtIndexedSubscript:v6];
+  v7 = [layersSortedByViewDepth objectAtIndexedSubscript:v6];
 
   return v7;
 }
 
 - (id)layersSortedByViewDepth
 {
-  v2 = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView];
-  v3 = [v2 viewModel];
+  layerStackView = [(PUParallaxLayerStackDebugTableViewController *)self layerStackView];
+  viewModel = [layerStackView viewModel];
 
-  v4 = [v3 viewManager];
-  v5 = [v3 currentLayerStack];
-  v6 = [v5 layers];
+  viewManager = [viewModel viewManager];
+  currentLayerStack = [viewModel currentLayerStack];
+  layers = [currentLayerStack layers];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__PUParallaxLayerStackDebugTableViewController_layersSortedByViewDepth__block_invoke;
   v10[3] = &unk_1E7B7E5E0;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 sortedArrayUsingComparator:v10];
+  v11 = viewManager;
+  v7 = viewManager;
+  v8 = [layers sortedArrayUsingComparator:v10];
 
   return v8;
 }
@@ -445,17 +445,17 @@ uint64_t __71__PUParallaxLayerStackDebugTableViewController_layersSortedByViewDe
   return v15;
 }
 
-- (void)setLayerStackView:(id)a3
+- (void)setLayerStackView:(id)view
 {
-  v5 = a3;
-  if (self->_layerStackView != v5)
+  viewCopy = view;
+  if (self->_layerStackView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_layerStackView, a3);
-    v6 = [(PUParallaxLayerStackDebugTableViewController *)self tableView];
-    [v6 reloadData];
+    v7 = viewCopy;
+    objc_storeStrong(&self->_layerStackView, view);
+    tableView = [(PUParallaxLayerStackDebugTableViewController *)self tableView];
+    [tableView reloadData];
 
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -464,11 +464,11 @@ uint64_t __71__PUParallaxLayerStackDebugTableViewController_layersSortedByViewDe
   v5.receiver = self;
   v5.super_class = PUParallaxLayerStackDebugTableViewController;
   [(PUParallaxLayerStackDebugTableViewController *)&v5 viewDidLoad];
-  v3 = [(PUParallaxLayerStackDebugTableViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"layerCell"];
+  tableView = [(PUParallaxLayerStackDebugTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"layerCell"];
 
-  v4 = [(PUParallaxLayerStackDebugTableViewController *)self tableView];
-  [v4 _setAllowsReorderingWhenNotEditing:1];
+  tableView2 = [(PUParallaxLayerStackDebugTableViewController *)self tableView];
+  [tableView2 _setAllowsReorderingWhenNotEditing:1];
 }
 
 @end

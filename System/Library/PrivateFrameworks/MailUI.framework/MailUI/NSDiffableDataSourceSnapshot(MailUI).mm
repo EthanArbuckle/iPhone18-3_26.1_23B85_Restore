@@ -12,13 +12,13 @@
 
 - (id)mui_validSectionIdentifiers
 {
-  v2 = [a1 sectionIdentifiers];
+  sectionIdentifiers = [self sectionIdentifiers];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __67__NSDiffableDataSourceSnapshot_MailUI__mui_validSectionIdentifiers__block_invoke;
   v5[3] = &unk_27818B300;
-  v5[4] = a1;
-  v3 = [v2 ef_filter:v5];
+  v5[4] = self;
+  v3 = [sectionIdentifiers ef_filter:v5];
 
   return v3;
 }
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __43__NSDiffableDataSourceSnapshot_MailUI__log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_21 != -1)
   {
     dispatch_once(&log_onceToken_21, block);
@@ -45,7 +45,7 @@
   v15 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  if (v6 && [a1 indexOfItemIdentifier:v6] == 0x7FFFFFFFFFFFFFFFLL)
+  if (v6 && [self indexOfItemIdentifier:v6] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = [MEMORY[0x277CFB890] log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -75,7 +75,7 @@
   v10[1] = 3221225472;
   v10[2] = __89__NSDiffableDataSourceSnapshot_MailUI__mui_validItemIDsFromExistingItemIDs_updateReason___block_invoke;
   v10[3] = &unk_27818B288;
-  v10[4] = a1;
+  v10[4] = self;
   v11 = v6;
   v7 = v6;
   v8 = [a3 ef_compactMap:v10];
@@ -88,7 +88,7 @@
   v8 = a5;
   v9 = MEMORY[0x277CBEB98];
   v10 = a3;
-  v11 = [a1 itemIdentifiersInSectionWithIdentifier:a4];
+  v11 = [self itemIdentifiersInSectionWithIdentifier:a4];
   v12 = [v9 setWithArray:v11];
 
   v17[0] = MEMORY[0x277D85DD0];
@@ -107,14 +107,14 @@
 - (id)mui_validItemIDsFromIndexPaths:()MailUI
 {
   v4 = a3;
-  v5 = [a1 sectionIdentifiers];
+  sectionIdentifiers = [self sectionIdentifiers];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__NSDiffableDataSourceSnapshot_MailUI__mui_validItemIDsFromIndexPaths___block_invoke;
   v9[3] = &unk_27818B2D8;
-  v10 = v5;
-  v11 = a1;
-  v6 = v5;
+  v10 = sectionIdentifiers;
+  selfCopy = self;
+  v6 = sectionIdentifiers;
   v7 = [v4 ef_compactMap:v9];
 
   return v7;
@@ -125,8 +125,8 @@
   v26[1] = *MEMORY[0x277D85DE8];
   v7 = a3;
   v8 = a4;
-  v9 = [a1 sectionIdentifiers];
-  if ([v9 containsObject:v7])
+  sectionIdentifiers = [self sectionIdentifiers];
+  if ([sectionIdentifiers containsObject:v7])
   {
     v10 = v8;
   }
@@ -135,40 +135,40 @@
   {
     v26[0] = v7;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-    [a1 appendSectionsWithIdentifiers:v11];
+    [self appendSectionsWithIdentifiers:v11];
 
-    v12 = [v9 arrayByAddingObject:v7];
+    v12 = [sectionIdentifiers arrayByAddingObject:v7];
 
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __82__NSDiffableDataSourceSnapshot_MailUI__mui_insertSection_usingOrderedIdentifiers___block_invoke;
     v24 = &unk_27818B300;
-    v9 = v12;
-    v25 = v9;
+    sectionIdentifiers = v12;
+    v25 = sectionIdentifiers;
     v10 = [v8 ef_filter:&v21];
 
-    v13 = [v9 differenceFromArray:v10 withOptions:4];
-    v14 = [v13 insertions];
-    v15 = [v14 firstObject];
+    v13 = [sectionIdentifiers differenceFromArray:v10 withOptions:4];
+    insertions = [v13 insertions];
+    firstObject = [insertions firstObject];
 
-    if (v15)
+    if (firstObject)
     {
-      v16 = [v15 associatedIndex];
-      if (v16 != 0x7FFFFFFFFFFFFFFFLL)
+      associatedIndex = [firstObject associatedIndex];
+      if (associatedIndex != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v17 = v16;
-        v18 = [v15 index];
-        if (v18 <= v17)
+        v17 = associatedIndex;
+        index = [firstObject index];
+        if (index <= v17)
         {
-          v19 = [MEMORY[0x277CCA890] currentHandler];
-          [v19 handleFailureInMethod:a2 object:a1 file:@"NSDiffableDataSourceSnapshot+MailUI.m" lineNumber:112 description:{@"Unexpected insertion difference identifiers: %@ ordered: %@ insertion %@", v9, v10, v15, v21, v22, v23, v24}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceSnapshot+MailUI.m" lineNumber:112 description:{@"Unexpected insertion difference identifiers: %@ ordered: %@ insertion %@", sectionIdentifiers, v10, firstObject, v21, v22, v23, v24}];
         }
 
         else
         {
-          v19 = [v9 objectAtIndexedSubscript:v18];
-          v20 = [v9 objectAtIndexedSubscript:v17];
-          [a1 moveSectionWithIdentifier:v19 beforeSectionWithIdentifier:v20];
+          currentHandler = [sectionIdentifiers objectAtIndexedSubscript:index];
+          v20 = [sectionIdentifiers objectAtIndexedSubscript:v17];
+          [self moveSectionWithIdentifier:currentHandler beforeSectionWithIdentifier:v20];
         }
       }
     }

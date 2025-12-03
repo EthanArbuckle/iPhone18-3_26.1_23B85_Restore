@@ -1,44 +1,44 @@
 @interface GCSElementMapping
 + (id)archivalClasses;
-- (GCSElementMapping)initWithCoder:(id)a3;
-- (GCSElementMapping)initWithElementKey:(id)a3 mappingKey:(id)a4 remappingOrder:(int)a5;
-- (GCSElementMapping)initWithJSONObject:(id)a3;
+- (GCSElementMapping)initWithCoder:(id)coder;
+- (GCSElementMapping)initWithElementKey:(id)key mappingKey:(id)mappingKey remappingOrder:(int)order;
+- (GCSElementMapping)initWithJSONObject:(id)object;
 - (GCSJSONObject)jsonObject;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCSElementMapping
 
-- (GCSElementMapping)initWithElementKey:(id)a3 mappingKey:(id)a4 remappingOrder:(int)a5
+- (GCSElementMapping)initWithElementKey:(id)key mappingKey:(id)mappingKey remappingOrder:(int)order
 {
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  mappingKeyCopy = mappingKey;
   v16.receiver = self;
   v16.super_class = GCSElementMapping;
   v10 = [(GCSElementMapping *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [keyCopy copy];
     elementKey = v10->_elementKey;
     v10->_elementKey = v11;
 
-    v13 = [v9 copy];
+    v13 = [mappingKeyCopy copy];
     mappingKey = v10->_mappingKey;
     v10->_mappingKey = v13;
 
-    v10->_remappingOrder = a5;
+    v10->_remappingOrder = order;
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(GCSElementMapping *)self elementKey];
-  v6 = [(GCSElementMapping *)self mappingKey];
-  v7 = [v4 initWithElementKey:v5 mappingKey:v6 remappingOrder:{-[GCSElementMapping remappingOrder](self, "remappingOrder")}];
+  elementKey = [(GCSElementMapping *)self elementKey];
+  mappingKey = [(GCSElementMapping *)self mappingKey];
+  v7 = [v4 initWithElementKey:elementKey mappingKey:mappingKey remappingOrder:{-[GCSElementMapping remappingOrder](self, "remappingOrder")}];
 
   return v7;
 }
@@ -51,44 +51,44 @@
   return [v2 setWithObjects:{v3, v4, objc_opt_class(), 0}];
 }
 
-- (GCSElementMapping)initWithCoder:(id)a3
+- (GCSElementMapping)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = GCSElementMapping;
   v5 = [(GCSElementMapping *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_elementKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_elementKey"];
     elementKey = v5->_elementKey;
     v5->_elementKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_mappingKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_mappingKey"];
     mappingKey = v5->_mappingKey;
     v5->_mappingKey = v8;
 
-    v5->_remappingOrder = [v4 decodeIntForKey:@"_remappingOrder"];
+    v5->_remappingOrder = [coderCopy decodeIntForKey:@"_remappingOrder"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   elementKey = self->_elementKey;
-  v5 = a3;
-  [v5 encodeObject:elementKey forKey:@"_elementKey"];
-  [v5 encodeObject:self->_mappingKey forKey:@"_mappingKey"];
-  [v5 encodeInt:self->_remappingOrder forKey:@"_remappingOrder"];
+  coderCopy = coder;
+  [coderCopy encodeObject:elementKey forKey:@"_elementKey"];
+  [coderCopy encodeObject:self->_mappingKey forKey:@"_mappingKey"];
+  [coderCopy encodeInt:self->_remappingOrder forKey:@"_remappingOrder"];
 }
 
-- (GCSElementMapping)initWithJSONObject:(id)a3
+- (GCSElementMapping)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v14.receiver = self;
     v14.super_class = GCSElementMapping;
     v6 = [(GCSElementMapping *)&v14 init];
@@ -108,15 +108,15 @@
 
     self = v6;
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (GCSJSONObject)jsonObject

@@ -1,30 +1,30 @@
 @interface WeakProxy
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (_TtC18HealthExperienceUIP33_6AFCBB489F4B745EBBFAE39AEAF00FBF9WeakProxy)init;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
 @end
 
 @implementation WeakProxy
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v6 = [Strong respondsToSelector_];
+    respondsToSelector_ = [Strong respondsToSelector_];
     swift_unknownObjectRelease();
-    return v6;
+    return respondsToSelector_;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = type metadata accessor for WeakProxy();
-    return [(WeakProxy *)&v8 respondsToSelector:a3];
+    return [(WeakProxy *)&v8 respondsToSelector:selector];
   }
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

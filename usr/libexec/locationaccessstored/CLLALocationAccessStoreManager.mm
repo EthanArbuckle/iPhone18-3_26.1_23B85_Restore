@@ -1,24 +1,24 @@
 @interface CLLALocationAccessStoreManager
 + (id)sharedInstance;
 - (BOOL)clearAllLocationAccessStore;
-- (BOOL)generateJsonDataWith:(id)a3 outputFile:(id)a4;
+- (BOOL)generateJsonDataWith:(id)with outputFile:(id)file;
 - (BOOL)generateLocationAccessRecordBasedOnLastRecordingTime;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)saveLocationAccessStoreClients:(id)a3 toFile:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)saveLocationAccessStoreClients:(id)clients toFile:(id)file;
 - (BOOL)startOrStopRecording;
 - (CLLALocationAccessStoreManager)init;
 - (id)dateOfLastRecording;
 - (id)generateFilenameSinceLastRecording;
-- (id)getLocalizedNameForBundleID:(id)a3 bundlePath:(id)a4;
-- (id)getLocationAccessRecordSinceDate:(id)a3;
+- (id)getLocalizedNameForBundleID:(id)d bundlePath:(id)path;
+- (id)getLocationAccessRecordSinceDate:(id)date;
 - (id)getLocationAccessStoredDirectoryPath;
 - (id)getOrDefaultLastRecordingTimestampString;
 - (id)todaysDateString;
-- (void)exportLocationAccessActivity:(id)a3;
-- (void)getLocationAccessRecordStateWithReplyBlock:(id)a3;
+- (void)exportLocationAccessActivity:(id)activity;
+- (void)getLocationAccessRecordStateWithReplyBlock:(id)block;
 - (void)pruneLocationAccessRecordOlderThanAllowedAge;
 - (void)saveClientsReceivingLocationsToDisk;
-- (void)setLocationAccessRecordAsActiveForDays:(int64_t)a3 completionHandler:(id)a4;
+- (void)setLocationAccessRecordAsActiveForDays:(int64_t)days completionHandler:(id)handler;
 @end
 
 @implementation CLLALocationAccessStoreManager
@@ -114,7 +114,7 @@
 
     if (v14)
     {
-      v15 = [(CLLALocationAccessStoreManager *)v2 todaysDateString];
+      todaysDateString = [(CLLALocationAccessStoreManager *)v2 todaysDateString];
       if (qword_1000106B0 != -1)
       {
         sub_10000495C();
@@ -124,18 +124,18 @@
       if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v33 = v15;
+        v33 = todaysDateString;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#CLLA(init) setting LastRecordingTime to Now : %@", buf, 0xCu);
       }
 
       v17 = +[NSUserDefaults standardUserDefaults];
-      [v17 setObject:v15 forKey:@"LastRecordingTime"];
+      [v17 setObject:todaysDateString forKey:@"LastRecordingTime"];
     }
 
     v18 = +[NSFileManager defaultManager];
-    v19 = [(CLLALocationAccessStoreManager *)v2 getLocationAccessStoredDirectoryPath];
+    getLocationAccessStoredDirectoryPath = [(CLLALocationAccessStoreManager *)v2 getLocationAccessStoredDirectoryPath];
     v30 = 0;
-    [v18 createDirectoryAtPath:v19 withIntermediateDirectories:1 attributes:0 error:&v30];
+    [v18 createDirectoryAtPath:getLocationAccessStoredDirectoryPath withIntermediateDirectories:1 attributes:0 error:&v30];
     v20 = v30;
 
     if (v20)
@@ -148,9 +148,9 @@
       v21 = qword_1000106B8;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [(CLLALocationAccessStoreManager *)v2 getLocationAccessStoredDirectoryPath];
+        getLocationAccessStoredDirectoryPath2 = [(CLLALocationAccessStoreManager *)v2 getLocationAccessStoredDirectoryPath];
         *buf = 138412546;
-        v33 = v22;
+        v33 = getLocationAccessStoredDirectoryPath2;
         v34 = 2112;
         v35 = v20;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "#warning #CLLA(init) failed to create the directory %@ error: %@", buf, 0x16u);
@@ -170,19 +170,19 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CLLALocationAcessStoreServerProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  v7 = [v5 valueForEntitlement:@"com.apple.private.locationaccessstore.administer"];
-  v8 = [v7 BOOLValue];
+  [connectionCopy setExportedObject:self];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.private.locationaccessstore.administer"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   else
@@ -199,10 +199,10 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "#warning #CLLA entitlement missing", v11, 2u);
     }
 
-    [v5 invalidate];
+    [connectionCopy invalidate];
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)startOrStopRecording
@@ -236,26 +236,26 @@
   return v4 > 0;
 }
 
-- (void)setLocationAccessRecordAsActiveForDays:(int64_t)a3 completionHandler:(id)a4
+- (void)setLocationAccessRecordAsActiveForDays:(int64_t)days completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[NSUserDefaults standardUserDefaults];
   v8 = [v7 integerForKey:@"LocationAccessRecordsAge"];
 
-  if (a3 >= 1)
+  if (days >= 1)
   {
-    v9 = a3;
+    daysCopy = days;
   }
 
   else
   {
-    v9 = 0;
+    daysCopy = 0;
   }
 
   v10 = +[NSUserDefaults standardUserDefaults];
-  [v10 setInteger:v9 forKey:@"LocationAccessRecordsAge"];
+  [v10 setInteger:daysCopy forKey:@"LocationAccessRecordsAge"];
 
-  v11 = [(CLLALocationAccessStoreManager *)self startOrStopRecording];
+  startOrStopRecording = [(CLLALocationAccessStoreManager *)self startOrStopRecording];
   if (qword_1000106B0 != -1)
   {
     sub_100004984();
@@ -266,8 +266,8 @@
   {
     v13 = "N";
     v14[0] = 67109634;
-    v14[1] = v9;
-    if (v11)
+    v14[1] = daysCopy;
+    if (startOrStopRecording)
     {
       v13 = "Y";
     }
@@ -279,8 +279,8 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#CLLA set location access record age(in days) newAge:%d currentAge:%d isActive? %s", v14, 0x18u);
   }
 
-  v6[2](v6, v11);
-  if (a3 <= 0)
+  handlerCopy[2](handlerCopy, startOrStopRecording);
+  if (days <= 0)
   {
     [(CLLALocationAccessStoreManager *)self clearAllLocationAccessStore];
   }
@@ -291,9 +291,9 @@
   }
 }
 
-- (void)getLocationAccessRecordStateWithReplyBlock:(id)a3
+- (void)getLocationAccessRecordStateWithReplyBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 integerForKey:@"LocationAccessRecordsAge"];
 
@@ -311,13 +311,13 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#CLLA is Location Access Recording? %@", &v8, 0xCu);
   }
 
-  v3[2](v3, v5);
+  blockCopy[2](blockCopy, v5);
 }
 
-- (BOOL)saveLocationAccessStoreClients:(id)a3 toFile:(id)a4
+- (BOOL)saveLocationAccessStoreClients:(id)clients toFile:(id)file
 {
-  v6 = a3;
-  v7 = a4;
+  clientsCopy = clients;
+  fileCopy = file;
   if (qword_1000106B0 != -1)
   {
     sub_100004984();
@@ -327,12 +327,12 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *v19 = 136315138;
-    *&v19[4] = [v7 UTF8String];
+    *&v19[4] = [fileCopy UTF8String];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#CLLA (%s)", v19, 0xCu);
   }
 
   v9 = +[NSFileManager defaultManager];
-  v10 = [v9 fileExistsAtPath:v7];
+  v10 = [v9 fileExistsAtPath:fileCopy];
 
   if (v10)
   {
@@ -345,7 +345,7 @@
     if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_DEFAULT))
     {
       *v19 = 138412290;
-      *&v19[4] = v7;
+      *&v19[4] = fileCopy;
       v12 = "#CLLA file already exists. Updating Existing file %@";
 LABEL_14:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, v19, 0xCu);
@@ -363,14 +363,14 @@ LABEL_14:
     if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_DEFAULT))
     {
       *v19 = 138412290;
-      *&v19[4] = v7;
+      *&v19[4] = fileCopy;
       v12 = "#CLLA file doesn't exist yet, attempting to create the file %@";
       goto LABEL_14;
     }
   }
 
   v13 = +[NSFileManager defaultManager];
-  v14 = [v13 createFileAtPath:v7 contents:0 attributes:0];
+  v14 = [v13 createFileAtPath:fileCopy contents:0 attributes:0];
 
   if (v14)
   {
@@ -383,11 +383,11 @@ LABEL_14:
     if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_DEFAULT))
     {
       *v19 = 138412290;
-      *&v19[4] = v7;
+      *&v19[4] = fileCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#CLLA writing to file %@", v19, 0xCu);
     }
 
-    v16 = [(CLLALocationAccessStoreManager *)self generateJsonDataWith:v6 outputFile:v7];
+    v16 = [(CLLALocationAccessStoreManager *)self generateJsonDataWith:clientsCopy outputFile:fileCopy];
   }
 
   else
@@ -401,7 +401,7 @@ LABEL_14:
     if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_ERROR))
     {
       *v19 = 138412290;
-      *&v19[4] = v7;
+      *&v19[4] = fileCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "#warning #CLLA failed to create file: %@", v19, 0xCu);
     }
 
@@ -411,15 +411,15 @@ LABEL_14:
   return v16;
 }
 
-- (BOOL)generateJsonDataWith:(id)a3 outputFile:(id)a4
+- (BOOL)generateJsonDataWith:(id)with outputFile:(id)file
 {
-  v5 = a4;
+  fileCopy = file;
   v11 = 0;
-  v6 = [NSJSONSerialization dataWithJSONObject:a3 options:3 error:&v11];
+  v6 = [NSJSONSerialization dataWithJSONObject:with options:3 error:&v11];
   v7 = v11;
   if (v6)
   {
-    v8 = [v6 writeToFile:v5 atomically:1];
+    v8 = [v6 writeToFile:fileCopy atomically:1];
   }
 
   else
@@ -433,7 +433,7 @@ LABEL_14:
     if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v13 = v5;
+      v13 = fileCopy;
       v14 = 2112;
       v15 = v7;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "#warning #CLLA file is created but there is no data filepath:%@ error:%@", buf, 0x16u);
@@ -447,13 +447,13 @@ LABEL_14:
 
 - (BOOL)generateLocationAccessRecordBasedOnLastRecordingTime
 {
-  v3 = [(CLLALocationAccessStoreManager *)self dateOfLastRecording];
-  v4 = [(CLLALocationAccessStoreManager *)self getLocationAccessRecordSinceDate:v3];
+  dateOfLastRecording = [(CLLALocationAccessStoreManager *)self dateOfLastRecording];
+  v4 = [(CLLALocationAccessStoreManager *)self getLocationAccessRecordSinceDate:dateOfLastRecording];
 
-  v5 = [(CLLALocationAccessStoreManager *)self generateFilenameSinceLastRecording];
-  v6 = [(CLLALocationAccessStoreManager *)self getLocationAccessStoredDirectoryPath];
-  v7 = [v5 stringByAppendingString:@".json"];
-  v8 = [v6 stringByAppendingPathComponent:v7];
+  generateFilenameSinceLastRecording = [(CLLALocationAccessStoreManager *)self generateFilenameSinceLastRecording];
+  getLocationAccessStoredDirectoryPath = [(CLLALocationAccessStoreManager *)self getLocationAccessStoredDirectoryPath];
+  v7 = [generateFilenameSinceLastRecording stringByAppendingString:@".json"];
+  v8 = [getLocationAccessStoredDirectoryPath stringByAppendingPathComponent:v7];
 
   if ([v8 length])
   {
@@ -468,18 +468,18 @@ LABEL_14:
   return v9;
 }
 
-- (id)getLocationAccessRecordSinceDate:(id)a3
+- (id)getLocationAccessRecordSinceDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSMutableArray array];
   +[CLLocationManager userLocationClientsWithInfo];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100002454;
   v13 = v12[3] = &unk_10000C388;
-  v6 = v4;
+  v6 = dateCopy;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v7 = v5;
   v16 = v7;
   v8 = v13;
@@ -493,23 +493,23 @@ LABEL_14:
 - (BOOL)clearAllLocationAccessStore
 {
   v3 = objc_alloc_init(NSFileManager);
-  v4 = [(CLLALocationAccessStoreManager *)self getLocationAccessStoredDirectoryPath];
-  v5 = [v3 enumeratorAtPath:v4];
+  getLocationAccessStoredDirectoryPath = [(CLLALocationAccessStoreManager *)self getLocationAccessStoredDirectoryPath];
+  v5 = [v3 enumeratorAtPath:getLocationAccessStoredDirectoryPath];
   v6 = 0;
   v7 = 1;
   *&v8 = 138412546;
   v18 = v8;
   while (1)
   {
-    v9 = [v5 nextObject];
+    nextObject = [v5 nextObject];
 
-    if (!v9)
+    if (!nextObject)
     {
       break;
     }
 
     v10 = objc_autoreleasePoolPush();
-    v11 = [v4 stringByAppendingPathComponent:v9];
+    v11 = [getLocationAccessStoredDirectoryPath stringByAppendingPathComponent:nextObject];
     v19 = 0;
     v12 = [v3 removeItemAtPath:v11 error:&v19];
     v13 = v19;
@@ -535,7 +535,7 @@ LABEL_14:
       if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_ERROR))
       {
         *buf = v18;
-        v21 = v9;
+        v21 = nextObject;
         v22 = 2112;
         v23 = v13;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "#warning #CLLA error when removing file during clearAll file:%@ error:%@", buf, 0x16u);
@@ -544,7 +544,7 @@ LABEL_14:
       v7 = 0;
     }
 
-    v6 = v9;
+    v6 = nextObject;
     objc_autoreleasePoolPop(v10);
   }
 
@@ -592,8 +592,8 @@ LABEL_14:
 
   else
   {
-    v9 = [v3 path];
-    v10 = [v9 stringByAppendingPathComponent:@"locationaccessstored/"];
+    path = [v3 path];
+    v10 = [path stringByAppendingPathComponent:@"locationaccessstored/"];
 
     if (qword_1000106B0 != -1)
     {
@@ -604,9 +604,9 @@ LABEL_14:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v12 = v10;
-      v13 = [v10 UTF8String];
+      uTF8String = [v10 UTF8String];
       *buf = 136315138;
-      v17 = v13;
+      v17 = uTF8String;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "#CLLA userpath %s", buf, 0xCu);
     }
 
@@ -623,12 +623,12 @@ LABEL_14:
 
   if ([v4 length])
   {
-    v5 = v4;
+    todaysDateString = v4;
   }
 
   else
   {
-    v5 = [(CLLALocationAccessStoreManager *)self todaysDateString];
+    todaysDateString = [(CLLALocationAccessStoreManager *)self todaysDateString];
     if (qword_1000106B0 != -1)
     {
       sub_100004984();
@@ -642,7 +642,7 @@ LABEL_14:
       v12 = 2082;
       v13 = "";
       v14 = 2114;
-      v15 = v5;
+      v15 = todaysDateString;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#CLLA(getLastRecordingTimestampString) setting LastRecordingTime to Now because it was unexpectedly missing, today:%{public, location:escape_only}@}", &v10, 0x1Cu);
     }
 
@@ -659,15 +659,15 @@ LABEL_14:
       v12 = 2082;
       v13 = "";
       v14 = 2114;
-      v15 = v5;
+      v15 = todaysDateString;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#CLLA(getLastRecordingTimestampString) setting LastRecordingTime to Now because it was unexpectedly missing", "{msg%{public}.0s:#CLLA(getLastRecordingTimestampString) setting LastRecordingTime to Now because it was unexpectedly missing, today:%{public, location:escape_only}@}", &v10, 0x1Cu);
     }
 
     v8 = +[NSUserDefaults standardUserDefaults];
-    [v8 setObject:v5 forKey:@"LastRecordingTime"];
+    [v8 setObject:todaysDateString forKey:@"LastRecordingTime"];
   }
 
-  return v5;
+  return todaysDateString;
 }
 
 - (id)todaysDateString
@@ -685,7 +685,7 @@ LABEL_14:
 
 - (void)saveClientsReceivingLocationsToDisk
 {
-  v3 = [(CLLALocationAccessStoreManager *)self todaysDateString];
+  todaysDateString = [(CLLALocationAccessStoreManager *)self todaysDateString];
   if (qword_1000106B0 != -1)
   {
     sub_100004984();
@@ -697,16 +697,16 @@ LABEL_14:
     v5 = +[NSUserDefaults standardUserDefaults];
     v6 = [v5 stringForKey:@"LastRecordingTime"];
     v14 = 138412546;
-    v15 = v3;
+    v15 = todaysDateString;
     v16 = 2112;
     v17 = v6;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#CLLA-BGTask trigger now : %@ , LastRecordingTime: %@", &v14, 0x16u);
   }
 
   v7 = +[NSCalendar currentCalendar];
-  v8 = [(CLLALocationAccessStoreManager *)self dateOfLastRecording];
+  dateOfLastRecording = [(CLLALocationAccessStoreManager *)self dateOfLastRecording];
   v9 = +[NSDate date];
-  v10 = [v7 isDate:v8 inSameDayAsDate:v9];
+  v10 = [v7 isDate:dateOfLastRecording inSameDayAsDate:v9];
 
   if (v10)
   {
@@ -728,7 +728,7 @@ LABEL_14:
   if ([(CLLALocationAccessStoreManager *)self generateLocationAccessRecordBasedOnLastRecordingTime])
   {
     v12 = +[NSUserDefaults standardUserDefaults];
-    [v12 setObject:v3 forKey:@"LastRecordingTime"];
+    [v12 setObject:todaysDateString forKey:@"LastRecordingTime"];
 
 LABEL_12:
     [(CLLALocationAccessStoreManager *)self pruneLocationAccessRecordOlderThanAllowedAge];
@@ -750,25 +750,25 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)getLocalizedNameForBundleID:(id)a3 bundlePath:(id)a4
+- (id)getLocalizedNameForBundleID:(id)d bundlePath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dCopy = d;
+  pathCopy = path;
+  v7 = pathCopy;
+  if (dCopy)
   {
-    v8 = [NSBundle bundleWithIdentifier:v5];
+    v8 = [NSBundle bundleWithIdentifier:dCopy];
   }
 
   else
   {
-    if (!v6)
+    if (!pathCopy)
     {
       v9 = 0;
 LABEL_22:
-      if (v5)
+      if (dCopy)
       {
-        v17 = v5;
+        v17 = dCopy;
       }
 
       else
@@ -776,18 +776,18 @@ LABEL_22:
         v17 = v7;
       }
 
-      v12 = v17;
+      localizedName = v17;
       goto LABEL_26;
     }
 
-    v8 = [NSBundle bundleWithPath:v6];
+    v8 = [NSBundle bundleWithPath:pathCopy];
   }
 
   v9 = v8;
   if (!v8)
   {
-    v12 = 0;
-    if (!v5)
+    localizedName = 0;
+    if (!dCopy)
     {
       goto LABEL_19;
     }
@@ -795,25 +795,25 @@ LABEL_22:
     goto LABEL_10;
   }
 
-  v10 = [v8 localizedInfoDictionary];
+  localizedInfoDictionary = [v8 localizedInfoDictionary];
   v11 = _kCFBundleDisplayNameKey;
-  v12 = [v10 objectForKeyedSubscript:_kCFBundleDisplayNameKey];
+  localizedName = [localizedInfoDictionary objectForKeyedSubscript:_kCFBundleDisplayNameKey];
 
-  if (v12)
+  if (localizedName)
   {
     goto LABEL_26;
   }
 
-  v13 = [v9 infoDictionary];
-  v12 = [v13 objectForKeyedSubscript:v11];
+  infoDictionary = [v9 infoDictionary];
+  localizedName = [infoDictionary objectForKeyedSubscript:v11];
 
-  if (v5)
+  if (dCopy)
   {
 LABEL_10:
-    if (!v12)
+    if (!localizedName)
     {
       v19 = 0;
-      v14 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v5 allowPlaceholder:0 error:&v19];
+      v14 = [[LSApplicationRecord alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v19];
       v15 = v19;
       if (v15)
       {
@@ -826,35 +826,35 @@ LABEL_10:
         if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v21 = v5;
+          v21 = dCopy;
           v22 = 2112;
           v23 = 0;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "#warning #CLLA application record could not find bundleID:%@ Returning localized name as %@", buf, 0x16u);
         }
       }
 
-      v12 = [v14 localizedName];
-      if (!v12)
+      localizedName = [v14 localizedName];
+      if (!localizedName)
       {
-        v12 = [v14 localizedShortName];
+        localizedName = [v14 localizedShortName];
       }
     }
   }
 
 LABEL_19:
-  if (!v12)
+  if (!localizedName)
   {
     goto LABEL_22;
   }
 
 LABEL_26:
 
-  return v12;
+  return localizedName;
 }
 
-- (void)exportLocationAccessActivity:(id)a3
+- (void)exportLocationAccessActivity:(id)activity
 {
-  v48 = a3;
+  activityCopy = activity;
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 integerForKey:@"LocationAccessRecordsAge"];
 
@@ -862,8 +862,8 @@ LABEL_26:
   {
     [(CLLALocationAccessStoreManager *)self pruneLocationAccessRecordOlderThanAllowedAge];
     v46 = +[NSFileManager defaultManager];
-    v5 = [(CLLALocationAccessStoreManager *)self getLocationAccessStoredDirectoryPath];
-    v6 = [NSURL fileURLWithPath:v5 isDirectory:0];
+    getLocationAccessStoredDirectoryPath = [(CLLALocationAccessStoreManager *)self getLocationAccessStoredDirectoryPath];
+    v6 = [NSURL fileURLWithPath:getLocationAccessStoredDirectoryPath isDirectory:0];
 
     v44 = v6;
     if (!v6)
@@ -880,7 +880,7 @@ LABEL_26:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "#warning #CLLA LocationAccessReport - Failed to retrieve a valid URL path.", buf, 2u);
       }
 
-      v48[2](v48, &stru_10000C5A8);
+      activityCopy[2](activityCopy, &stru_10000C5A8);
       v45 = 0;
       goto LABEL_75;
     }
@@ -903,7 +903,7 @@ LABEL_26:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "#warning #CLLA LocationAccessReport - Failed to retrieve LocationAccessRecords. Error : %@", buf, 0xCu);
       }
 
-      v48[2](v48, &stru_10000C5A8);
+      activityCopy[2](activityCopy, &stru_10000C5A8);
 LABEL_74:
 
 LABEL_75:
@@ -924,12 +924,12 @@ LABEL_75:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#CLLA Creating LocationAccessReport - allJsonFilesInDirectoryCount : %d", buf, 8u);
     }
 
-    v12 = [(CLLALocationAccessStoreManager *)self dateOfLastRecording];
-    v41 = [(CLLALocationAccessStoreManager *)self getLocationAccessRecordSinceDate:v12];
+    dateOfLastRecording = [(CLLALocationAccessStoreManager *)self dateOfLastRecording];
+    v41 = [(CLLALocationAccessStoreManager *)self getLocationAccessRecordSinceDate:dateOfLastRecording];
 
-    v42 = [(CLLALocationAccessStoreManager *)self generateFilenameSinceLastRecording];
+    generateFilenameSinceLastRecording = [(CLLALocationAccessStoreManager *)self generateFilenameSinceLastRecording];
     v50 = +[NSMutableDictionary dictionary];
-    [v50 setObject:v41 forKey:v42];
+    [v50 setObject:v41 forKey:generateFilenameSinceLastRecording];
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
@@ -940,12 +940,12 @@ LABEL_75:
     {
 LABEL_69:
 
-      v35 = [(CLLALocationAccessStoreManager *)self todaysDateString];
-      v36 = [@"AllLocationAccessRecord_" stringByAppendingString:v35];
+      todaysDateString = [(CLLALocationAccessStoreManager *)self todaysDateString];
+      v36 = [@"AllLocationAccessRecord_" stringByAppendingString:todaysDateString];
       v37 = [v36 stringByAppendingString:@".json"];
 
-      v38 = [(CLLALocationAccessStoreManager *)self getLocationAccessStoredDirectoryPath];
-      v39 = [v38 stringByAppendingPathComponent:v37];
+      getLocationAccessStoredDirectoryPath2 = [(CLLALocationAccessStoreManager *)self getLocationAccessStoredDirectoryPath];
+      v39 = [getLocationAccessStoredDirectoryPath2 stringByAppendingPathComponent:v37];
 
       [(CLLALocationAccessStoreManager *)self generateJsonDataWith:v50 outputFile:v39];
       if (qword_1000106B0 != -1)
@@ -961,7 +961,7 @@ LABEL_69:
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "#CLLA LocationAccessReport created - outputFilePath : %@", buf, 0xCu);
       }
 
-      v48[2](v48, v39);
+      activityCopy[2](activityCopy, v39);
 
       goto LABEL_74;
     }
@@ -978,8 +978,8 @@ LABEL_25:
 
       v16 = *(*(&v54 + 1) + 8 * v15);
       v17 = objc_autoreleasePoolPush();
-      v18 = [v16 path];
-      if (([v18 containsString:@"AllLocationAccessRecord_"] & 1) == 0)
+      path = [v16 path];
+      if (([path containsString:@"AllLocationAccessRecord_"] & 1) == 0)
       {
         break;
       }
@@ -1000,7 +1000,7 @@ LABEL_67:
       }
     }
 
-    v20 = [NSData dataWithContentsOfFile:v18];
+    v20 = [NSData dataWithContentsOfFile:path];
     if (!v20)
     {
       if (qword_1000106B0 != -1)
@@ -1012,7 +1012,7 @@ LABEL_67:
       if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        *v60 = v18;
+        *v60 = path;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "#warning #CLLA Failed to read file at path: %@", buf, 0xCu);
       }
 
@@ -1033,11 +1033,11 @@ LABEL_67:
       v22 = qword_1000106B8;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v19 localizedDescription];
+        localizedDescription = [v19 localizedDescription];
         *buf = 138412546;
-        *v60 = v18;
+        *v60 = path;
         *&v60[8] = 2112;
-        *&v60[10] = v23;
+        *&v60[10] = localizedDescription;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "#warning #CLLA Failed to parse JSON at path: %@ jsonDataError:%@", buf, 0x16u);
       }
     }
@@ -1060,7 +1060,7 @@ LABEL_67:
           *&v60[4] = 2082;
           *&v60[6] = "";
           *&v60[14] = 2114;
-          *&v60[16] = v18;
+          *&v60[16] = path;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#CLLA JSON data is not an array, path:%{public, location:escape_only}@}", buf, 0x1Cu);
         }
 
@@ -1077,17 +1077,17 @@ LABEL_67:
           *&v60[4] = 2082;
           *&v60[6] = "";
           *&v60[14] = 2114;
-          *&v60[16] = v18;
+          *&v60[16] = path;
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v33, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#CLLA JSON data is not an array", "{msg%{public}.0s:#CLLA JSON data is not an array, path:%{public, location:escape_only}@}", buf, 0x1Cu);
         }
 
         goto LABEL_65;
       }
 
-      v25 = [v16 lastPathComponent];
-      if (([v25 hasSuffix:@".json"]& 1) != 0)
+      lastPathComponent = [v16 lastPathComponent];
+      if (([lastPathComponent hasSuffix:@".json"]& 1) != 0)
       {
-        v51 = [v25 stringByReplacingOccurrencesOfString:@".json" withString:&stru_10000C5A8];
+        v51 = [lastPathComponent stringByReplacingOccurrencesOfString:@".json" withString:&stru_10000C5A8];
 
         v26 = [v50 objectForKey:?];
         v27 = v26 == 0;
@@ -1108,17 +1108,17 @@ LABEL_67:
           v28 = qword_1000106B8;
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [v16 lastPathComponent];
+            lastPathComponent2 = [v16 lastPathComponent];
             *buf = 138412290;
-            *v60 = v29;
+            *v60 = lastPathComponent2;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "#warning #CLLA clients already exists in results dictionary for file : %@", buf, 0xCu);
           }
 
           v49 = [v50 objectForKey:v51];
           v30 = [[NSMutableSet alloc] initWithArray:v49];
           [v30 addObjectsFromArray:v21];
-          v31 = [v30 allObjects];
-          [v50 setObject:v31 forKey:v51];
+          allObjects = [v30 allObjects];
+          [v50 setObject:allObjects forKey:v51];
 
           v22 = v51;
         }
@@ -1135,11 +1135,11 @@ LABEL_67:
         if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          *v60 = v25;
+          *v60 = lastPathComponent;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "#warning #CLLA filename does not ends with .json - filename : %@", buf, 0xCu);
         }
 
-        v22 = v25;
+        v22 = lastPathComponent;
       }
     }
 
@@ -1161,7 +1161,7 @@ LABEL_66:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#CLLA Creating LocationAccessReport bailing out - Age is 0", buf, 2u);
   }
 
-  v48[2](v48, &stru_10000C5A8);
+  activityCopy[2](activityCopy, &stru_10000C5A8);
 LABEL_76:
 }
 
@@ -1183,20 +1183,20 @@ LABEL_76:
   v28 = [v27 dateFromComponents:v8];
   v26 = v8;
   v29 = objc_alloc_init(NSFileManager);
-  v32 = [(CLLALocationAccessStoreManager *)self getLocationAccessStoredDirectoryPath];
+  getLocationAccessStoredDirectoryPath = [(CLLALocationAccessStoreManager *)self getLocationAccessStoredDirectoryPath];
   v31 = [v29 enumeratorAtPath:?];
   v9 = 0;
   while (1)
   {
-    v10 = [v31 nextObject];
+    nextObject = [v31 nextObject];
 
-    if (!v10)
+    if (!nextObject)
     {
       break;
     }
 
     v11 = objc_autoreleasePoolPush();
-    v12 = [v32 stringByAppendingPathComponent:v10];
+    v12 = [getLocationAccessStoredDirectoryPath stringByAppendingPathComponent:nextObject];
     v13 = [NSURL fileURLWithPath:v12];
     v34 = 0;
     v35 = 0;
@@ -1206,7 +1206,7 @@ LABEL_76:
     if (!v15)
     {
       v16 = v30;
-      if ([v10 hasPrefix:@"AllLocationAccessRecord_"])
+      if ([nextObject hasPrefix:@"AllLocationAccessRecord_"])
       {
         v17 = v28;
 
@@ -1223,7 +1223,7 @@ LABEL_76:
 
       else
       {
-        v21 = [v32 stringByAppendingPathComponent:v10];
+        v21 = [getLocationAccessStoredDirectoryPath stringByAppendingPathComponent:nextObject];
         v33 = 0;
         v22 = [v29 removeItemAtPath:v21 error:&v33];
         v15 = v33;
@@ -1249,7 +1249,7 @@ LABEL_76:
           if (os_log_type_enabled(qword_1000106B8, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v37 = v10;
+            v37 = nextObject;
             v38 = 2112;
             v39 = v15;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "#warning #CLLA error when removing file during pruning file:%@ error:%@", buf, 0x16u);
@@ -1258,7 +1258,7 @@ LABEL_76:
       }
     }
 
-    v9 = v10;
+    v9 = nextObject;
     objc_autoreleasePoolPop(v11);
   }
 
@@ -1277,22 +1277,22 @@ LABEL_76:
 
 - (id)dateOfLastRecording
 {
-  v2 = [(CLLALocationAccessStoreManager *)self getOrDefaultLastRecordingTimestampString];
+  getOrDefaultLastRecordingTimestampString = [(CLLALocationAccessStoreManager *)self getOrDefaultLastRecordingTimestampString];
   v3 = objc_alloc_init(NSDateFormatter);
   [v3 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
-  v4 = [v3 dateFromString:v2];
+  v4 = [v3 dateFromString:getOrDefaultLastRecordingTimestampString];
 
   return v4;
 }
 
 - (id)generateFilenameSinceLastRecording
 {
-  v3 = [(CLLALocationAccessStoreManager *)self getOrDefaultLastRecordingTimestampString];
-  v4 = [v3 componentsSeparatedByString:@"T"];
+  getOrDefaultLastRecordingTimestampString = [(CLLALocationAccessStoreManager *)self getOrDefaultLastRecordingTimestampString];
+  v4 = [getOrDefaultLastRecordingTimestampString componentsSeparatedByString:@"T"];
   v5 = [v4 objectAtIndex:0];
 
-  v6 = [(CLLALocationAccessStoreManager *)self todaysDateString];
-  v7 = [v6 componentsSeparatedByString:@"T"];
+  todaysDateString = [(CLLALocationAccessStoreManager *)self todaysDateString];
+  v7 = [todaysDateString componentsSeparatedByString:@"T"];
   v8 = [v7 objectAtIndex:0];
   v9 = [@" - " stringByAppendingString:v8];
 

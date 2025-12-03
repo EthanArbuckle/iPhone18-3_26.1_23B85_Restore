@@ -1,32 +1,32 @@
 @interface HSPCChimeViewController
-+ (BOOL)_shouldShowHomePodChimeFeatureForHome:(id)a3;
-+ (BOOL)_shouldShowTraditionalChimeFeatureForAccessory:(id)a3;
-+ (BOOL)shouldSkipForAccessory:(id)a3 inHome:(id)a4;
-+ (id)_muteCharacteristicForAccessory:(id)a3;
++ (BOOL)_shouldShowHomePodChimeFeatureForHome:(id)home;
++ (BOOL)_shouldShowTraditionalChimeFeatureForAccessory:(id)accessory;
++ (BOOL)shouldSkipForAccessory:(id)accessory inHome:(id)home;
++ (id)_muteCharacteristicForAccessory:(id)accessory;
 - (BOOL)isHomePodChimeEnabled;
 - (BOOL)isTraditionalChimeEnabled;
-- (HSPCChimeViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCChimeViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)commitConfiguration;
-- (id)setHomePodChime:(BOOL)a3;
+- (id)setHomePodChime:(BOOL)chime;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCChimeViewController
 
-- (HSPCChimeViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCChimeViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v35.receiver = self;
   v35.super_class = HSPCChimeViewController;
   v9 = [(HSPCChimeViewController *)&v35 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_config, a4);
-    objc_storeStrong(&v10->_coordinator, a3);
-    v11 = [v8 home];
-    v12 = [HSPCChimeViewController _shouldShowHomePodChimeFeatureForHome:v11];
+    objc_storeStrong(&v9->_config, config);
+    objc_storeStrong(&v10->_coordinator, coordinator);
+    home = [configCopy home];
+    v12 = [HSPCChimeViewController _shouldShowHomePodChimeFeatureForHome:home];
 
     if (v12)
     {
@@ -43,8 +43,8 @@
       v19 = [(HSPCChimeViewController *)v10 addFeature:v10->_homePodChimeFeature];
     }
 
-    v20 = [v8 addedAccessory];
-    v21 = [HSPCChimeViewController _shouldShowTraditionalChimeFeatureForAccessory:v20];
+    addedAccessory = [configCopy addedAccessory];
+    v21 = [HSPCChimeViewController _shouldShowTraditionalChimeFeatureForAccessory:addedAccessory];
 
     if (v21)
     {
@@ -63,8 +63,8 @@
     v29 = HULocalizedString();
     [(HSPCChimeViewController *)v10 setTitle:v29];
 
-    v30 = [(HSPCChimeViewController *)v10 features];
-    v31 = [v30 count];
+    features = [(HSPCChimeViewController *)v10 features];
+    v31 = [features count];
 
     if (v31 >= 2)
     {
@@ -80,24 +80,24 @@
 
 - (id)commitConfiguration
 {
-  v3 = [(HSPCChimeViewController *)self traditionalChimeFeature];
+  traditionalChimeFeature = [(HSPCChimeViewController *)self traditionalChimeFeature];
 
-  if (v3)
+  if (traditionalChimeFeature)
   {
-    v4 = [(HSPCChimeViewController *)self traditionalChimeFeature];
-    -[HSPCChimeViewController setTraditionalDoorbellChime:](self, "setTraditionalDoorbellChime:", [v4 isOn]);
+    traditionalChimeFeature2 = [(HSPCChimeViewController *)self traditionalChimeFeature];
+    -[HSPCChimeViewController setTraditionalDoorbellChime:](self, "setTraditionalDoorbellChime:", [traditionalChimeFeature2 isOn]);
   }
 
-  v5 = [(HSPCChimeViewController *)self homePodChimeFeature];
-  if (!v5 || (v6 = v5, -[HSPCChimeViewController homePodChimeFeature](self, "homePodChimeFeature"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isOn], v9 = -[HSPCChimeViewController initialHomePodChimeState](self, "initialHomePodChimeState"), v7, v6, v8 == v9))
+  homePodChimeFeature = [(HSPCChimeViewController *)self homePodChimeFeature];
+  if (!homePodChimeFeature || (v6 = homePodChimeFeature, -[HSPCChimeViewController homePodChimeFeature](self, "homePodChimeFeature"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isOn], v9 = -[HSPCChimeViewController initialHomePodChimeState](self, "initialHomePodChimeState"), v7, v6, v8 == v9))
   {
     v12 = [NAFuture futureWithResult:&off_1000CD6D8];
   }
 
   else
   {
-    v10 = [(HSPCChimeViewController *)self homePodChimeFeature];
-    v11 = -[HSPCChimeViewController setHomePodChime:](self, "setHomePodChime:", [v10 isOn]);
+    homePodChimeFeature2 = [(HSPCChimeViewController *)self homePodChimeFeature];
+    v11 = -[HSPCChimeViewController setHomePodChime:](self, "setHomePodChime:", [homePodChimeFeature2 isOn]);
     v12 = [v11 hs_commitConfigurationFutureWithContextMessage:@"HomePod Chime"];
   }
 
@@ -109,38 +109,38 @@
   v7.receiver = self;
   v7.super_class = HSPCChimeViewController;
   [(HSPCChimeViewController *)&v7 viewDidLoad];
-  v3 = [(HSPCChimeViewController *)self features];
-  v4 = [v3 count];
+  features = [(HSPCChimeViewController *)self features];
+  v4 = [features count];
 
   if (v4 == 1)
   {
-    v5 = [(HSPCChimeViewController *)self tableView];
-    [v5 setSeparatorStyle:0];
+    tableView = [(HSPCChimeViewController *)self tableView];
+    [tableView setSeparatorStyle:0];
   }
 
   else
   {
-    v5 = [[UIView alloc] initWithFrame:{0.0, 0.0, 0.0, 1.0}];
-    v6 = [(HSPCChimeViewController *)self tableView];
-    [v6 setTableFooterView:v5];
+    tableView = [[UIView alloc] initWithFrame:{0.0, 0.0, 0.0, 1.0}];
+    tableView2 = [(HSPCChimeViewController *)self tableView];
+    [tableView2 setTableFooterView:tableView];
   }
 }
 
-- (id)setHomePodChime:(BOOL)a3
+- (id)setHomePodChime:(BOOL)chime
 {
-  v4 = [(HSPCChimeViewController *)self config];
-  v5 = [v4 home];
+  config = [(HSPCChimeViewController *)self config];
+  home = [config home];
 
-  v6 = [v5 hf_characteristicValueManager];
-  v7 = [v5 hf_allHomePodsOrStereoPairs];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
+  hf_allHomePodsOrStereoPairs = [home hf_allHomePodsOrStereoPairs];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_100032A54;
   v16 = &unk_1000C6E30;
-  v17 = v6;
-  v18 = a3;
-  v8 = v6;
-  v9 = [v7 na_map:&v13];
+  v17 = hf_characteristicValueManager;
+  chimeCopy = chime;
+  v8 = hf_characteristicValueManager;
+  v9 = [hf_allHomePodsOrStereoPairs na_map:&v13];
   v10 = [NAScheduler mainThreadScheduler:v13];
   v11 = [NAFuture combineAllFutures:v9 ignoringErrors:1 scheduler:v10];
 
@@ -149,15 +149,15 @@
 
 - (BOOL)isTraditionalChimeEnabled
 {
-  v2 = [(HSPCChimeViewController *)self config];
-  v3 = [v2 addedAccessory];
-  v4 = [HSPCChimeViewController _muteCharacteristicForAccessory:v3];
+  config = [(HSPCChimeViewController *)self config];
+  addedAccessory = [config addedAccessory];
+  v4 = [HSPCChimeViewController _muteCharacteristicForAccessory:addedAccessory];
 
   objc_opt_class();
-  v5 = [v4 value];
+  value = [v4 value];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = value;
   }
 
   else
@@ -182,52 +182,52 @@
 
 - (BOOL)isHomePodChimeEnabled
 {
-  v2 = [(HSPCChimeViewController *)self config];
-  v3 = [v2 home];
-  v4 = [v3 hf_allHomePodsOrStereoPairsThatWillChime];
-  v5 = [v4 count] != 0;
+  config = [(HSPCChimeViewController *)self config];
+  home = [config home];
+  hf_allHomePodsOrStereoPairsThatWillChime = [home hf_allHomePodsOrStereoPairsThatWillChime];
+  v5 = [hf_allHomePodsOrStereoPairsThatWillChime count] != 0;
 
   return v5;
 }
 
-+ (BOOL)_shouldShowHomePodChimeFeatureForHome:(id)a3
++ (BOOL)_shouldShowHomePodChimeFeatureForHome:(id)home
 {
-  v3 = [a3 hf_allHomePodProfileContainers];
-  v4 = [v3 na_filter:&stru_1000C6E70];
+  hf_allHomePodProfileContainers = [home hf_allHomePodProfileContainers];
+  v4 = [hf_allHomePodProfileContainers na_filter:&stru_1000C6E70];
   v5 = [v4 count];
 
   return v5 != 0;
 }
 
-+ (id)_muteCharacteristicForAccessory:(id)a3
++ (id)_muteCharacteristicForAccessory:(id)accessory
 {
-  v3 = [a3 cameraProfiles];
-  v4 = [v3 firstObject];
+  cameraProfiles = [accessory cameraProfiles];
+  firstObject = [cameraProfiles firstObject];
 
-  v5 = [v4 hf_doorbellChimeMuteCharacteristic];
+  hf_doorbellChimeMuteCharacteristic = [firstObject hf_doorbellChimeMuteCharacteristic];
 
-  return v5;
+  return hf_doorbellChimeMuteCharacteristic;
 }
 
-+ (BOOL)_shouldShowTraditionalChimeFeatureForAccessory:(id)a3
++ (BOOL)_shouldShowTraditionalChimeFeatureForAccessory:(id)accessory
 {
-  v3 = [HSPCChimeViewController _muteCharacteristicForAccessory:a3];
-  v4 = [v3 hf_isWritable];
+  v3 = [HSPCChimeViewController _muteCharacteristicForAccessory:accessory];
+  hf_isWritable = [v3 hf_isWritable];
 
-  return v4;
+  return hf_isWritable;
 }
 
-+ (BOOL)shouldSkipForAccessory:(id)a3 inHome:(id)a4
++ (BOOL)shouldSkipForAccessory:(id)accessory inHome:(id)home
 {
-  v5 = a3;
-  if ([HSPCChimeViewController _shouldShowHomePodChimeFeatureForHome:a4])
+  accessoryCopy = accessory;
+  if ([HSPCChimeViewController _shouldShowHomePodChimeFeatureForHome:home])
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v6 = ![HSPCChimeViewController _shouldShowTraditionalChimeFeatureForAccessory:v5];
+    v6 = ![HSPCChimeViewController _shouldShowTraditionalChimeFeatureForAccessory:accessoryCopy];
   }
 
   return v6;

@@ -1,18 +1,18 @@
 @interface _UIImageSymbolReplaceTransition
 + (id)transition;
-- (BOOL)isEqual:(id)a3;
-- (_UIImageSymbolReplaceTransition)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIImageSymbolReplaceTransition)initWithCoder:(id)coder;
 - (id)_nsSymbolContentTransitionRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIImageSymbolReplaceTransition
 
 + (id)transition
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS____UIImageSymbolReplaceTransition;
   v2 = objc_msgSendSuper2(&v4, sel_transition);
   *(v2 + 24) = 0;
@@ -26,7 +26,7 @@
   style = self->_style;
   if (style == 3)
   {
-    v4 = [MEMORY[0x1E6982288] replaceOffUpTransition];
+    replaceOffUpTransition = [MEMORY[0x1E6982288] replaceOffUpTransition];
   }
 
   else
@@ -40,10 +40,10 @@
     {
       [MEMORY[0x1E6982288] replaceDownUpTransition];
     }
-    v4 = ;
+    replaceOffUpTransition = ;
   }
 
-  v5 = v4;
+  v5 = replaceOffUpTransition;
   if ([(_UIImageSymbolReplaceTransition *)self byLayer])
   {
     [v5 transitionWithByLayer];
@@ -58,12 +58,12 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIImageSymbolReplaceTransition;
-  v5 = [(_UIImageSymbolTransition *)&v7 isEqual:v4]&& self->_style == v4[3] && self->_byLayer == *(v4 + 16);
+  v5 = [(_UIImageSymbolTransition *)&v7 isEqual:equalCopy]&& self->_style == equalCopy[3] && self->_byLayer == *(equalCopy + 16);
 
   return v5;
 }
@@ -75,36 +75,36 @@
   return self->_style ^ [(_UIImageSymbolTransition *)&v3 hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UIImageSymbolReplaceTransition;
-  result = [(_UIImageSymbolTransition *)&v5 copyWithZone:a3];
+  result = [(_UIImageSymbolTransition *)&v5 copyWithZone:zone];
   *(result + 3) = self->_style;
   *(result + 16) = self->_byLayer;
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   style = self->_style;
-  v5 = a3;
-  [v5 encodeInteger:style forKey:@"style"];
-  [v5 encodeBool:self->_byLayer forKey:@"byLayer"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:style forKey:@"style"];
+  [coderCopy encodeBool:self->_byLayer forKey:@"byLayer"];
 }
 
-- (_UIImageSymbolReplaceTransition)initWithCoder:(id)a3
+- (_UIImageSymbolReplaceTransition)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [objc_opt_class() effect];
+  coderCopy = coder;
+  effect = [objc_opt_class() effect];
 
-  if (v5)
+  if (effect)
   {
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v5->_byLayer = [v4 decodeBoolForKey:@"byLayer"];
+    effect->_style = [coderCopy decodeIntegerForKey:@"style"];
+    effect->_byLayer = [coderCopy decodeBoolForKey:@"byLayer"];
   }
 
-  return v5;
+  return effect;
 }
 
 @end

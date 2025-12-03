@@ -1,28 +1,28 @@
 @interface NCNotificationAlertOptions
-- (BOOL)isEqual:(id)a3;
-- (NCNotificationAlertOptions)initWithNotificationAlertOptions:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NCNotificationAlertOptions)initWithNotificationAlertOptions:(id)options;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
 
 @implementation NCNotificationAlertOptions
 
-- (NCNotificationAlertOptions)initWithNotificationAlertOptions:(id)a3
+- (NCNotificationAlertOptions)initWithNotificationAlertOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = NCNotificationAlertOptions;
   v5 = [(NCNotificationAlertOptions *)&v10 init];
   if (v5)
   {
-    v5->_suppression = [v4 suppression];
-    v5->_intelligentBehavior = [v4 intelligentBehavior];
-    v5->_reason = [v4 reason];
-    v6 = [v4 activeModeUUID];
-    v7 = [v6 copy];
+    v5->_suppression = [optionsCopy suppression];
+    v5->_intelligentBehavior = [optionsCopy intelligentBehavior];
+    v5->_reason = [optionsCopy reason];
+    activeModeUUID = [optionsCopy activeModeUUID];
+    v7 = [activeModeUUID copy];
     activeModeUUID = v5->_activeModeUUID;
     v5->_activeModeUUID = v7;
   }
@@ -30,9 +30,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -46,33 +46,33 @@ LABEL_9:
     }
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (!v5)
   {
     goto LABEL_9;
   }
 
-  v6 = [(NCNotificationAlertOptions *)self suppression];
-  if (v6 != [v5 suppression])
+  suppression = [(NCNotificationAlertOptions *)self suppression];
+  if (suppression != [v5 suppression])
   {
     goto LABEL_9;
   }
 
-  v7 = [(NCNotificationAlertOptions *)self intelligentBehavior];
-  if (v7 != [v5 intelligentBehavior])
+  intelligentBehavior = [(NCNotificationAlertOptions *)self intelligentBehavior];
+  if (intelligentBehavior != [v5 intelligentBehavior])
   {
     goto LABEL_9;
   }
 
-  v8 = [(NCNotificationAlertOptions *)self reason];
-  if (v8 != [v5 reason])
+  reason = [(NCNotificationAlertOptions *)self reason];
+  if (reason != [v5 reason])
   {
     goto LABEL_9;
   }
 
-  v9 = [(NCNotificationAlertOptions *)self activeModeUUID];
-  v10 = [v5 activeModeUUID];
-  v11 = NCIsEqual(v9, v10);
+  activeModeUUID = [(NCNotificationAlertOptions *)self activeModeUUID];
+  activeModeUUID2 = [v5 activeModeUUID];
+  v11 = NCIsEqual(activeModeUUID, activeModeUUID2);
 
 LABEL_10:
   return v11;
@@ -80,34 +80,34 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(NCNotificationAlertOptions *)self suppression];
-  v4 = [(NCNotificationAlertOptions *)self intelligentBehavior]^ v3;
+  suppression = [(NCNotificationAlertOptions *)self suppression];
+  v4 = [(NCNotificationAlertOptions *)self intelligentBehavior]^ suppression;
   v5 = v4 ^ [(NCNotificationAlertOptions *)self reason];
-  v6 = [(NCNotificationAlertOptions *)self activeModeUUID];
-  v7 = [v6 hash];
+  activeModeUUID = [(NCNotificationAlertOptions *)self activeModeUUID];
+  v7 = [activeModeUUID hash];
 
   return v5 ^ v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [NCMutableNotificationAlertOptions alloc];
 
   return [(NCNotificationAlertOptions *)v4 initWithNotificationAlertOptions:self];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(NCNotificationAlertOptions *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(NCNotificationAlertOptions *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -115,8 +115,8 @@ LABEL_10:
   v10[3] = &unk_279E0D9F0;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -170,10 +170,10 @@ void __68__NCNotificationAlertOptions_descriptionBuilderWithMultilinePrefix___bl
 
 - (id)succinctDescription
 {
-  v2 = [(NCNotificationAlertOptions *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(NCNotificationAlertOptions *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface HMDIDSMessageContext
 - (HMDIDSMessageContext)init;
-- (HMDIDSMessageContext)initWithIdentifier:(id)a3 destination:(id)a4 userInfo:(id)a5;
+- (HMDIDSMessageContext)initWithIdentifier:(id)identifier destination:(id)destination userInfo:(id)info;
 @end
 
 @implementation HMDIDSMessageContext
 
-- (HMDIDSMessageContext)initWithIdentifier:(id)a3 destination:(id)a4 userInfo:(id)a5
+- (HMDIDSMessageContext)initWithIdentifier:(id)identifier destination:(id)destination userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = 0;
-  if (v8 && v9)
+  identifierCopy = identifier;
+  destinationCopy = destination;
+  infoCopy = info;
+  selfCopy = 0;
+  if (identifierCopy && destinationCopy)
   {
     v18.receiver = self;
     v18.super_class = HMDIDSMessageContext;
     v12 = [(HMDIDSMessageContext *)&v18 init];
     if (v12)
     {
-      v13 = [v8 copy];
+      v13 = [identifierCopy copy];
       identifier = v12->_identifier;
       v12->_identifier = v13;
 
-      objc_storeStrong(&v12->_destination, a4);
-      v15 = [v10 copy];
+      objc_storeStrong(&v12->_destination, destination);
+      v15 = [infoCopy copy];
       userInfo = v12->_userInfo;
       v12->_userInfo = v15;
     }
 
     self = v12;
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (HMDIDSMessageContext)init

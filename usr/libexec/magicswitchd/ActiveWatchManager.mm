@@ -1,28 +1,28 @@
 @interface ActiveWatchManager
-- (ActiveWatchManager)initWithDelegate:(id)a3 activeDevice:(id)a4;
+- (ActiveWatchManager)initWithDelegate:(id)delegate activeDevice:(id)device;
 - (ActiveWatchManagerDelegate)delegate;
 - (BOOL)isConnected;
 - (BOOL)isConnecting;
 - (unsigned)wristState;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
 - (void)invalidate;
-- (void)pipe:(id)a3 didConnectToPeer:(id)a4;
-- (void)pipe:(id)a3 didDisconnectFromPeer:(id)a4;
-- (void)watchDidChangeWristState:(unsigned __int8)a3;
+- (void)pipe:(id)pipe didConnectToPeer:(id)peer;
+- (void)pipe:(id)pipe didDisconnectFromPeer:(id)peer;
+- (void)watchDidChangeWristState:(unsigned __int8)state;
 @end
 
 @implementation ActiveWatchManager
 
-- (ActiveWatchManager)initWithDelegate:(id)a3 activeDevice:(id)a4
+- (ActiveWatchManager)initWithDelegate:(id)delegate activeDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  deviceCopy = device;
   v20.receiver = self;
   v20.super_class = ActiveWatchManager;
   v8 = [(ActiveWatchManager *)&v20 init];
@@ -32,20 +32,20 @@
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v7 UUIDString];
+      uUIDString = [deviceCopy UUIDString];
       *buf = 134218242;
       v22 = v8;
       v23 = 2112;
-      v24 = v11;
+      v24 = uUIDString;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Initializing (%p); Active device: (%@)", buf, 0x16u);
     }
 
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v8->_deviceID, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v8->_deviceID, device);
     v12 = [CBCentralManager alloc];
     v13 = +[MagicSwitchEnabler sharedInstance];
-    v14 = [v13 workQueue];
-    v15 = [v12 initWithDelegate:v8 queue:v14];
+    workQueue = [v13 workQueue];
+    v15 = [v12 initWithDelegate:v8 queue:workQueue];
     centralManager = v8->_centralManager;
     v8->_centralManager = v15;
 
@@ -77,7 +77,7 @@
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Invalidating (%p)", &v7, 0xCu);
     }
 
@@ -115,13 +115,13 @@
 
 - (unsigned)wristState
 {
-  v3 = [(ActiveWatchManager *)self isConnected];
-  if (v3)
+  isConnected = [(ActiveWatchManager *)self isConnected];
+  if (isConnected)
   {
-    LOBYTE(v3) = self->_wristState;
+    LOBYTE(isConnected) = self->_wristState;
   }
 
-  return v3;
+  return isConnected;
 }
 
 - (BOOL)isConnecting
@@ -169,9 +169,9 @@
     v6 = [NSArray arrayWithObjects:&deviceID count:1];
     v7 = [(CBCentralManager *)centralManager retrievePeripheralsWithIdentifiers:v6];
 
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     peripheral = self->_peripheral;
-    self->_peripheral = v8;
+    self->_peripheral = firstObject;
 
     if (self->_peripheral)
     {
@@ -180,9 +180,9 @@
       {
         v11 = self->_deviceID;
         v12 = v10;
-        v13 = [(NSUUID *)v11 UUIDString];
+        uUIDString = [(NSUUID *)v11 UUIDString];
         v19 = 138412290;
-        v20 = v13;
+        v20 = uUIDString;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Successfully resolved active peripheral with identifier: (%@)", &v19, 0xCu);
       }
     }
@@ -195,9 +195,9 @@ LABEL_13:
       {
         v15 = self->_deviceID;
         v16 = v14;
-        v17 = [(NSUUID *)v15 UUIDString];
+        uUIDString2 = [(NSUUID *)v15 UUIDString];
         v19 = 138412290;
-        v20 = v17;
+        v20 = uUIDString2;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Telling CoreBluetooth to connect to peripheral: (%@)", &v19, 0xCu);
       }
 
@@ -243,13 +243,13 @@ LABEL_13:
   {
     deviceID = self->_deviceID;
     v7 = v5;
-    v8 = [(NSUUID *)deviceID UUIDString];
+    uUIDString = [(NSUUID *)deviceID UUIDString];
     v16 = 138412290;
-    v17 = v8;
+    v17 = uUIDString;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Disconnecting from %@", &v16, 0xCu);
   }
 
-  v9 = [(ActiveWatchManager *)self isConnected];
+  isConnected = [(ActiveWatchManager *)self isConnected];
   if (self->_peripheral)
   {
     v10 = qword_100021420;
@@ -257,27 +257,27 @@ LABEL_13:
     {
       peripheral = self->_peripheral;
       v12 = v10;
-      v13 = [(CBPeripheral *)peripheral identifier];
-      v14 = [v13 UUIDString];
+      identifier = [(CBPeripheral *)peripheral identifier];
+      uUIDString2 = [identifier UUIDString];
       v16 = 138412290;
-      v17 = v14;
+      v17 = uUIDString2;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Telling CoreBluetooth to cancel connection to peripheral %@", &v16, 0xCu);
     }
 
     [(CBCentralManager *)self->_centralManager cancelPeripheralConnection:self->_peripheral];
   }
 
-  if (v9)
+  if (isConnected)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained activeWatchDidChangeConnectionState];
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  if (self->_centralManager != v4)
+  stateCopy = state;
+  if (self->_centralManager != stateCopy)
   {
     v5 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -287,18 +287,18 @@ LABEL_13:
     }
   }
 
-  v6 = [(CBCentralManager *)v4 state];
+  state = [(CBCentralManager *)stateCopy state];
   v7 = qword_100021420;
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = sub_100000EE8(v6);
+    v9 = sub_100000EE8(state);
     v12 = 138412290;
     v13 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Central state changed (%@)", &v12, 0xCu);
   }
 
-  if (v6 == 5)
+  if (state == 5)
   {
     if (![(ActiveWatchManager *)self isConnecting]&& ![(ActiveWatchManager *)self isConnected])
     {
@@ -308,7 +308,7 @@ LABEL_13:
 
   else
   {
-    if (v6 <= 3)
+    if (state <= 3)
     {
       peripheral = self->_peripheral;
       self->_peripheral = 0;
@@ -319,11 +319,11 @@ LABEL_13:
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_centralManager != v6)
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  if (self->_centralManager != managerCopy)
   {
     v8 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -333,7 +333,7 @@ LABEL_13:
     }
   }
 
-  if (self->_peripheral != v7)
+  if (self->_peripheral != peripheralCopy)
   {
     v9 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -347,10 +347,10 @@ LABEL_13:
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [(CBPeripheral *)v7 identifier];
-    v13 = [v12 UUIDString];
+    identifier = [(CBPeripheral *)peripheralCopy identifier];
+    uUIDString = [identifier UUIDString];
     v15 = 138412290;
-    v16 = v13;
+    v16 = uUIDString;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Central did connect peripheral (%@)", &v15, 0xCu);
   }
 
@@ -358,12 +358,12 @@ LABEL_13:
   [WeakRetained activeWatchDidChangeConnectionState];
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_centralManager != v8)
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  if (self->_centralManager != managerCopy)
   {
     v11 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -373,7 +373,7 @@ LABEL_13:
     }
   }
 
-  if (self->_peripheral != v9)
+  if (self->_peripheral != peripheralCopy)
   {
     v12 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -387,13 +387,13 @@ LABEL_13:
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [(CBPeripheral *)v9 identifier];
-    v16 = [v15 UUIDString];
-    v17 = [v10 localizedDescription];
+    identifier = [(CBPeripheral *)peripheralCopy identifier];
+    uUIDString = [identifier UUIDString];
+    localizedDescription = [errorCopy localizedDescription];
     v18 = 138412546;
-    v19 = v16;
+    v19 = uUIDString;
     v20 = 2112;
-    v21 = v17;
+    v21 = localizedDescription;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Central did fail to connect peripheral (%@) with error (%@)", &v18, 0x16u);
   }
 
@@ -403,12 +403,12 @@ LABEL_13:
   }
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_centralManager != v8)
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  if (self->_centralManager != managerCopy)
   {
     v11 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -418,7 +418,7 @@ LABEL_13:
     }
   }
 
-  if (self->_peripheral != v9)
+  if (self->_peripheral != peripheralCopy)
   {
     v12 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -432,13 +432,13 @@ LABEL_13:
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [(CBPeripheral *)v9 identifier];
-    v16 = [v15 UUIDString];
-    v17 = [v10 localizedDescription];
+    identifier = [(CBPeripheral *)peripheralCopy identifier];
+    uUIDString = [identifier UUIDString];
+    localizedDescription = [errorCopy localizedDescription];
     v19 = 138412546;
-    v20 = v16;
+    v20 = uUIDString;
     v21 = 2112;
-    v22 = v17;
+    v22 = localizedDescription;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Central manager did disconnect peripheral (%@) error (%@)", &v19, 0x16u);
   }
 
@@ -451,11 +451,11 @@ LABEL_13:
   [WeakRetained activeWatchDidChangeConnectionState];
 }
 
-- (void)pipe:(id)a3 didConnectToPeer:(id)a4
+- (void)pipe:(id)pipe didConnectToPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqual:self->_deviceID])
+  pipeCopy = pipe;
+  peerCopy = peer;
+  if ([peerCopy isEqual:self->_deviceID])
   {
     if (self->_messageManager)
     {
@@ -471,30 +471,30 @@ LABEL_13:
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v7 UUIDString];
+      uUIDString = [peerCopy UUIDString];
       v14 = 138412290;
-      v15 = v11;
+      v15 = uUIDString;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Pipe did connect active Watch: (%@)", &v14, 0xCu);
     }
 
-    v12 = [[MessageManager alloc] initWithDelegate:self pipe:v6];
+    v12 = [[MessageManager alloc] initWithDelegate:self pipe:pipeCopy];
     messageManager = self->_messageManager;
     self->_messageManager = v12;
   }
 }
 
-- (void)pipe:(id)a3 didDisconnectFromPeer:(id)a4
+- (void)pipe:(id)pipe didDisconnectFromPeer:(id)peer
 {
-  v5 = a4;
-  if ([v5 isEqual:self->_deviceID])
+  peerCopy = peer;
+  if ([peerCopy isEqual:self->_deviceID])
   {
     v6 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [v5 UUIDString];
+      uUIDString = [peerCopy UUIDString];
       v10 = 138412290;
-      v11 = v8;
+      v11 = uUIDString;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Pipe did disconnect peer: (%@)", &v10, 0xCu);
     }
 
@@ -504,21 +504,21 @@ LABEL_13:
   }
 }
 
-- (void)watchDidChangeWristState:(unsigned __int8)a3
+- (void)watchDidChangeWristState:(unsigned __int8)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = qword_100021420;
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = v3;
+    v9[1] = stateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ActiveWatchManager --- Active device has new wrist state: (%d)", v9, 8u);
   }
 
   wristState = self->_wristState;
-  if (!self->_hasReceivedWristState || wristState != v3)
+  if (!self->_hasReceivedWristState || wristState != stateCopy)
   {
-    self->_wristState = v3;
+    self->_wristState = stateCopy;
     self->_hasReceivedWristState = 1;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained activeWatchDidChangeWristStateWithPreviousWristState:wristState];

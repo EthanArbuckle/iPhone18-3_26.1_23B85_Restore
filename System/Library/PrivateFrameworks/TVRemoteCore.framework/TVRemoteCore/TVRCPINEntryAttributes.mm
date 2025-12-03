@@ -1,18 +1,18 @@
 @interface TVRCPINEntryAttributes
-- (TVRCPINEntryAttributes)initWithCoder:(id)a3;
-- (TVRCPINEntryAttributes)initWithDigitCount:(unint64_t)a3;
-- (TVRCPINEntryAttributes)initWithGroupLengths:(id)a3;
+- (TVRCPINEntryAttributes)initWithCoder:(id)coder;
+- (TVRCPINEntryAttributes)initWithDigitCount:(unint64_t)count;
+- (TVRCPINEntryAttributes)initWithGroupLengths:(id)lengths;
 - (id)description;
-- (unint64_t)numberOfDigitsInGroup:(unint64_t)a3;
+- (unint64_t)numberOfDigitsInGroup:(unint64_t)group;
 - (unint64_t)totalDigitCount;
 @end
 
 @implementation TVRCPINEntryAttributes
 
-- (TVRCPINEntryAttributes)initWithDigitCount:(unint64_t)a3
+- (TVRCPINEntryAttributes)initWithDigitCount:(unint64_t)count
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   v9[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v6 = [(TVRCPINEntryAttributes *)self initWithGroupLengths:v5];
@@ -21,15 +21,15 @@
   return v6;
 }
 
-- (TVRCPINEntryAttributes)initWithGroupLengths:(id)a3
+- (TVRCPINEntryAttributes)initWithGroupLengths:(id)lengths
 {
-  v4 = a3;
+  lengthsCopy = lengths;
   v9.receiver = self;
   v9.super_class = TVRCPINEntryAttributes;
   v5 = [(TVRCPINEntryAttributes *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lengthsCopy copy];
     groupLengths = v5->_groupLengths;
     v5->_groupLengths = v6;
   }
@@ -37,13 +37,13 @@
   return v5;
 }
 
-- (TVRCPINEntryAttributes)initWithCoder:(id)a3
+- (TVRCPINEntryAttributes)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"groupLengths"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"groupLengths"];
 
   v9 = [(TVRCPINEntryAttributes *)self initWithGroupLengths:v8];
   return v9;
@@ -90,17 +90,17 @@
   return v5;
 }
 
-- (unint64_t)numberOfDigitsInGroup:(unint64_t)a3
+- (unint64_t)numberOfDigitsInGroup:(unint64_t)group
 {
-  if ([(NSArray *)self->_groupLengths count]<= a3)
+  if ([(NSArray *)self->_groupLengths count]<= group)
   {
     return 0;
   }
 
-  v5 = [(NSArray *)self->_groupLengths objectAtIndex:a3];
-  v6 = [v5 unsignedIntegerValue];
+  v5 = [(NSArray *)self->_groupLengths objectAtIndex:group];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 - (id)description

@@ -1,23 +1,23 @@
 @interface PXPeopleSuggestionsDataSource
-- (id)personSuggestionAtIndexPath:(id)a3;
-- (id)personSuggestionAtItemIndexPath:(PXSimpleIndexPath *)a3;
+- (id)personSuggestionAtIndexPath:(id)path;
+- (id)personSuggestionAtItemIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation PXPeopleSuggestionsDataSource
 
-- (id)personSuggestionAtIndexPath:(id)a3
+- (id)personSuggestionAtIndexPath:(id)path
 {
   v6 = 0u;
   v7 = 0u;
-  v4 = a3;
+  pathCopy = path;
   [(PXPeopleSuggestionsDataSource *)self identifier];
   PXSimpleIndexPathFromIndexPath();
 }
 
-- (id)personSuggestionAtItemIndexPath:(PXSimpleIndexPath *)a3
+- (id)personSuggestionAtItemIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v6[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v6[0] = *&path->dataSourceIdentifier;
   v6[1] = v3;
   v4 = [(PXPeopleSuggestionsDataSource *)self objectAtIndexPath:v6];
 

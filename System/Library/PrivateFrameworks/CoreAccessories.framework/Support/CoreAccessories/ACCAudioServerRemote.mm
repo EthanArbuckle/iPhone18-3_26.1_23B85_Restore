@@ -1,25 +1,25 @@
 @interface ACCAudioServerRemote
-- (ACCAudioServerRemote)initWithXPCConnection:(id)a3;
-- (void)allowBackgroundAudioForClient:(id)a3 withReply:(id)a4;
-- (void)deviceAudioStatesWithReply:(id)a3;
-- (void)initConnectionToServer:(id)a3;
-- (void)supportedDigitalAudioSampleRatesWithReply:(id)a3;
+- (ACCAudioServerRemote)initWithXPCConnection:(id)connection;
+- (void)allowBackgroundAudioForClient:(id)client withReply:(id)reply;
+- (void)deviceAudioStatesWithReply:(id)reply;
+- (void)initConnectionToServer:(id)server;
+- (void)supportedDigitalAudioSampleRatesWithReply:(id)reply;
 @end
 
 @implementation ACCAudioServerRemote
 
-- (ACCAudioServerRemote)initWithXPCConnection:(id)a3
+- (ACCAudioServerRemote)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = ACCAudioServerRemote;
   v6 = [(ACCAudioServerRemote *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v6->_XPCConnection, a3);
+      objc_storeStrong(&v6->_XPCConnection, connection);
     }
 
     else
@@ -32,14 +32,14 @@
   return v7;
 }
 
-- (void)initConnectionToServer:(id)a3
+- (void)initConnectionToServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v5 = +[ACCAudioServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCAudioServerRemote *)self XPCConnection];
-    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v6] != 0;
+    xPCConnection = [(ACCAudioServerRemote *)self XPCConnection];
+    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:xPCConnection] != 0;
   }
 
   else
@@ -102,12 +102,12 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[#Audio] shouldStayConnected: %d", v13, 8u);
   }
 
-  v4[2](v4, v7);
+  serverCopy[2](serverCopy, v7);
 }
 
-- (void)supportedDigitalAudioSampleRatesWithReply:(id)a3
+- (void)supportedDigitalAudioSampleRatesWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = platform_digitalAudio_copySupportedSampleRates();
   if (gLogObjects)
   {
@@ -142,12 +142,12 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[#Audio] sampleRatesArray: %@", &v8, 0xCu);
   }
 
-  v3[2](v3, v4);
+  replyCopy[2](replyCopy, v4);
 }
 
-- (void)deviceAudioStatesWithReply:(id)a3
+- (void)deviceAudioStatesWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = platform_digitalAudio_copyDeviceAudioStates();
   if (gLogObjects)
   {
@@ -182,13 +182,13 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[#Audio] audioStates: %@", &v8, 0xCu);
   }
 
-  v3[2](v3, v4);
+  replyCopy[2](replyCopy, v4);
 }
 
-- (void)allowBackgroundAudioForClient:(id)a3 withReply:(id)a4
+- (void)allowBackgroundAudioForClient:(id)client withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 5;
@@ -221,7 +221,7 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[#Audio] allowBackgroundAudioForClient?", &v13, 2u);
   }
 
-  v10 = platform_externalAccessory_clientHasOpenEASession(v5);
+  v10 = platform_externalAccessory_clientHasOpenEASession(clientCopy);
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v11 = *(gLogObjects + 32);
@@ -241,13 +241,13 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v13 = 138412546;
-    v14 = v5;
+    v14 = clientCopy;
     v15 = 1024;
     v16 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[#Audio] clientBundleID: %@ shouldAllowBackgroundAudio: %d", &v13, 0x12u);
   }
 
-  v6[2](v6, v10);
+  replyCopy[2](replyCopy, v10);
 }
 
 @end

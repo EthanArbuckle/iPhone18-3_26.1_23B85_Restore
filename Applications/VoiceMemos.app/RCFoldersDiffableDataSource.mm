@@ -1,25 +1,25 @@
 @interface RCFoldersDiffableDataSource
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path;
 - (RCFolderSelectionDelegate)selectionDelegate;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
 @end
 
 @implementation RCFoldersDiffableDataSource
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 isEqualToString:UICollectionElementKindSectionHeader];
-  v11 = [v8 isEqualToString:@"kFolderCollectionElementKindSectionSpacer"];
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  v10 = [kindCopy isEqualToString:UICollectionElementKindSectionHeader];
+  v11 = [kindCopy isEqualToString:@"kFolderCollectionElementKindSectionSpacer"];
   if ((v10 & 1) == 0 && (v11 & 1) == 0)
   {
     v12 = OSLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_1001BA4F0(v8, v12);
+      sub_1001BA4F0(kindCopy, v12);
     }
   }
 
@@ -33,17 +33,17 @@
     v13 = @"kFolderSpacerCellReuseIdentifier";
   }
 
-  v14 = [v7 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:v13 forIndexPath:v9];
+  v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v13 forIndexPath:pathCopy];
 
   return v14;
 }
 
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if ([(RCFoldersDiffableDataSource *)self supportsMove])
   {
-    v6 = [v5 section] == 1;
+    v6 = [pathCopy section] == 1;
   }
 
   else
@@ -54,16 +54,16 @@
   return v6;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(RCFoldersDiffableDataSource *)self foldersController];
-  v11 = [v9 folderAtIndexPath:v8];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  foldersController = [(RCFoldersDiffableDataSource *)self foldersController];
+  v11 = [foldersController folderAtIndexPath:pathCopy];
 
   [(RCFoldersDiffableDataSource *)self setIsDuringMove:1];
-  v10 = [(RCFoldersDiffableDataSource *)self selectionDelegate];
-  [v10 moveFolder:v11 toDestinationIndexPath:v7];
+  selectionDelegate = [(RCFoldersDiffableDataSource *)self selectionDelegate];
+  [selectionDelegate moveFolder:v11 toDestinationIndexPath:indexPathCopy];
 
   [(RCFoldersDiffableDataSource *)self setIsDuringMove:0];
 }

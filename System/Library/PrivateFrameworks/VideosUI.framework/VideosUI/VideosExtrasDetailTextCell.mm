@@ -1,22 +1,22 @@
 @interface VideosExtrasDetailTextCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VideosExtrasDetailTextCell)initWithFrame:(CGRect)a3;
-- (void)configureForTextElement:(id)a3 style:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VideosExtrasDetailTextCell)initWithFrame:(CGRect)frame;
+- (void)configureForTextElement:(id)element style:(id)style;
 - (void)dealloc;
 @end
 
 @implementation VideosExtrasDetailTextCell
 
-- (VideosExtrasDetailTextCell)initWithFrame:(CGRect)a3
+- (VideosExtrasDetailTextCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = VideosExtrasDetailTextCell;
-  v3 = [(VideosExtrasDetailTextCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VideosExtrasDetailTextCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    initForAutolayout = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
     label = v3->_label;
-    v3->_label = v4;
+    v3->_label = initForAutolayout;
 
     [(UILabel *)v3->_label MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
     [(UILabel *)v3->_label setNumberOfLines:0];
@@ -24,8 +24,8 @@
     v6 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v3->_label toView:v3 alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
     [(VideosExtrasDetailTextCell *)v3 addConstraints:v6];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v3 selector:sel__dynamicTypeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__dynamicTypeDidChange name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;
@@ -33,35 +33,35 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VideosExtrasDetailTextCell;
   [(VideosExtrasDetailTextCell *)&v4 dealloc];
 }
 
-- (void)configureForTextElement:(id)a3 style:(id)a4
+- (void)configureForTextElement:(id)element style:(id)style
 {
   v6 = MEMORY[0x1E69DC888];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 clearColor];
-  [(VideosExtrasDetailTextCell *)self setBackgroundColor:v9];
+  styleCopy = style;
+  elementCopy = element;
+  clearColor = [v6 clearColor];
+  [(VideosExtrasDetailTextCell *)self setBackgroundColor:clearColor];
 
-  v10 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)self->_label setBackgroundColor:v10];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)self->_label setBackgroundColor:clearColor2];
 
   v11 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.7];
   [(UILabel *)self->_label setTextColor:v11];
 
-  v12 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v7];
-  [(UILabel *)self->_label configureForIKTextElement:v8 fontDescriptor:v12 textStyle:v7];
+  v12 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:styleCopy];
+  [(UILabel *)self->_label configureForIKTextElement:elementCopy fontDescriptor:v12 textStyle:styleCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_label sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_label sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

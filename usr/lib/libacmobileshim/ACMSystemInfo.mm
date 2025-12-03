@@ -73,25 +73,25 @@
 {
   v10 = 0;
   v2 = getifaddrs(&v10);
-  v3 = 0;
+  string = 0;
   v4 = v10;
   if (!v2 && v10)
   {
-    v3 = 0;
+    string = 0;
     do
     {
       ifa_addr = v4->ifa_addr;
       if (ifa_addr->sa_family == 18 && ifa_addr->sa_data[2] == 6)
       {
         v6 = ifa_addr->sa_data[3];
-        v3 = [MEMORY[0x29EDBA050] string];
+        string = [MEMORY[0x29EDBA050] string];
         if (ifa_addr->sa_data[4])
         {
           v7 = 0;
           v8 = &ifa_addr->sa_data[v6 + 6];
           do
           {
-            [v3 appendFormat:@"%02x", *(v8 + v7++)];
+            [string appendFormat:@"%02x", *(v8 + v7++)];
           }
 
           while (v7 < ifa_addr->sa_data[4]);
@@ -106,7 +106,7 @@
   }
 
   MEMORY[0x29C288CE0](v4);
-  return v3;
+  return string;
 }
 
 - (id)previousVersionUUID
@@ -193,22 +193,22 @@ LABEL_10:
 
 - (NSString)deviceModel
 {
-  v2 = [MEMORY[0x29EDC7A58] currentDevice];
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
 
-  return [v2 model];
+  return [currentDevice model];
 }
 
 - (NSString)systemVersion
 {
-  v2 = [MEMORY[0x29EDC7A58] currentDevice];
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
 
-  return [v2 systemVersion];
+  return [currentDevice systemVersion];
 }
 
 - (BOOL)isPreRelease
 {
-  v2 = [(ACMSystemInfo *)self version];
-  -[NSString rangeOfCharacterFromSet:](v2, "rangeOfCharacterFromSet:", [MEMORY[0x29EDB9F50] letterCharacterSet]);
+  version = [(ACMSystemInfo *)self version];
+  -[NSString rangeOfCharacterFromSet:](version, "rangeOfCharacterFromSet:", [MEMORY[0x29EDB9F50] letterCharacterSet]);
   return v3 != 0;
 }
 

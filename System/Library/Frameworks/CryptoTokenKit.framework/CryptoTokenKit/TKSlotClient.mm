@@ -1,38 +1,38 @@
 @interface TKSlotClient
-+ (BOOL)handleConnection:(id)a3 server:(id)a4;
++ (BOOL)handleConnection:(id)connection server:(id)server;
 - (TKProtocolSlotClientNotification)notification;
 - (void)dealloc;
-- (void)endNFCSlotWithName:(id)a3 reply:(id)a4;
-- (void)reportChangesForSlotType:(id)a3 reply:(id)a4;
-- (void)startNFCSlotWithName:(id)a3 uiSheetMessage:(id)a4 supportedAppIdentifiers:(id)a5 reply:(id)a6;
-- (void)updateNFCSlotUIMessageWithMessage:(id)a3 slotName:(id)a4 reply:(id)a5;
+- (void)endNFCSlotWithName:(id)name reply:(id)reply;
+- (void)reportChangesForSlotType:(id)type reply:(id)reply;
+- (void)startNFCSlotWithName:(id)name uiSheetMessage:(id)message supportedAppIdentifiers:(id)identifiers reply:(id)reply;
+- (void)updateNFCSlotUIMessageWithMessage:(id)message slotName:(id)name reply:(id)reply;
 @end
 
 @implementation TKSlotClient
 
-+ (BOOL)handleConnection:(id)a3 server:(id)a4
++ (BOOL)handleConnection:(id)connection server:(id)server
 {
-  v5 = a4;
-  v6 = a3;
+  serverCopy = server;
+  connectionCopy = connection;
   v7 = objc_alloc_init(TKSlotClient);
   server = v7->_server;
-  v7->_server = v5;
-  v9 = v5;
+  v7->_server = serverCopy;
+  v9 = serverCopy;
 
-  objc_storeWeak(&v7->_connection, v6);
+  objc_storeWeak(&v7->_connection, connectionCopy);
   v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TKProtocolSlotClient];
 
-  [v6 setExportedInterface:v10];
-  [v6 setExportedObject:v7];
+  [connectionCopy setExportedInterface:v10];
+  [connectionCopy setExportedObject:v7];
 
   return 1;
 }
 
-- (void)reportChangesForSlotType:(id)a3 reply:(id)a4
+- (void)reportChangesForSlotType:(id)type reply:(id)reply
 {
-  objc_storeStrong(&self->_slotType, a3);
-  v7 = a3;
-  v8 = a4;
+  objc_storeStrong(&self->_slotType, type);
+  typeCopy = type;
+  replyCopy = reply;
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TKProtocolSlotClientNotification];
   WeakRetained = objc_loadWeakRetained(&self->_connection);
   [WeakRetained setRemoteObjectInterface:v9];
@@ -45,45 +45,45 @@
   v11 = objc_loadWeakRetained(&self->_connection);
   [v11 setInvalidationHandler:v12];
 
-  [(TKSlotServer *)self->_server addClient:self reply:v8];
+  [(TKSlotServer *)self->_server addClient:self reply:replyCopy];
 }
 
-- (void)startNFCSlotWithName:(id)a3 uiSheetMessage:(id)a4 supportedAppIdentifiers:(id)a5 reply:(id)a6
+- (void)startNFCSlotWithName:(id)name uiSheetMessage:(id)message supportedAppIdentifiers:(id)identifiers reply:(id)reply
 {
   server = self->_server;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  replyCopy = reply;
+  identifiersCopy = identifiers;
+  messageCopy = message;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  -[TKSlotServer startNFCSlotWithName:uiMessage:supportedAppIdentifiers:connectionPID:reply:](server, "startNFCSlotWithName:uiMessage:supportedAppIdentifiers:connectionPID:reply:", v14, v13, v12, [WeakRetained processIdentifier], v11);
+  -[TKSlotServer startNFCSlotWithName:uiMessage:supportedAppIdentifiers:connectionPID:reply:](server, "startNFCSlotWithName:uiMessage:supportedAppIdentifiers:connectionPID:reply:", nameCopy, messageCopy, identifiersCopy, [WeakRetained processIdentifier], replyCopy);
 }
 
-- (void)endNFCSlotWithName:(id)a3 reply:(id)a4
+- (void)endNFCSlotWithName:(id)name reply:(id)reply
 {
   server = self->_server;
-  v7 = a4;
-  v8 = a3;
+  replyCopy = reply;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  -[TKSlotServer endAndRemoveNFCSlotWithSlotName:connectionPID:reply:](server, "endAndRemoveNFCSlotWithSlotName:connectionPID:reply:", v8, [WeakRetained processIdentifier], v7);
+  -[TKSlotServer endAndRemoveNFCSlotWithSlotName:connectionPID:reply:](server, "endAndRemoveNFCSlotWithSlotName:connectionPID:reply:", nameCopy, [WeakRetained processIdentifier], replyCopy);
 }
 
-- (void)updateNFCSlotUIMessageWithMessage:(id)a3 slotName:(id)a4 reply:(id)a5
+- (void)updateNFCSlotUIMessageWithMessage:(id)message slotName:(id)name reply:(id)reply
 {
   server = self->_server;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  replyCopy = reply;
+  nameCopy = name;
+  messageCopy = message;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  -[TKSlotServer updateNFCSlotUIMessageWithMessage:slotName:connectionPID:reply:](server, "updateNFCSlotUIMessageWithMessage:slotName:connectionPID:reply:", v11, v10, [WeakRetained processIdentifier], v9);
+  -[TKSlotServer updateNFCSlotUIMessageWithMessage:slotName:connectionPID:reply:](server, "updateNFCSlotUIMessageWithMessage:slotName:connectionPID:reply:", messageCopy, nameCopy, [WeakRetained processIdentifier], replyCopy);
 }
 
 - (TKProtocolSlotClientNotification)notification
 {
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v3 = [WeakRetained remoteObjectProxy];
+  remoteObjectProxy = [WeakRetained remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (void)dealloc

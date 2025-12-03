@@ -8,67 +8,67 @@
 - (BOOL)_shouldCancelCoalescedJob;
 - (BOOL)_shouldWaitForDependentJobs;
 - (BOOL)cancelCoalescedJob;
-- (BOOL)complete:(id *)a3;
+- (BOOL)complete:(id *)complete;
 - (BOOL)failed;
 - (BOOL)isCanceled;
 - (BOOL)isFinished;
-- (BOOL)prepare:(id *)a3;
-- (BOOL)render:(id *)a3;
-- (BOOL)renderVideoFrames:(id)a3 videoMetadataSamples:(id)a4 videoSampleSlices:(id)a5 intoPixelBuffer:(__CVBuffer *)a6 time:(id *)a7 colorSpace:(id)a8 playbackDirection:(int64_t)a9 error:(id *)a10;
+- (BOOL)prepare:(id *)prepare;
+- (BOOL)render:(id *)render;
+- (BOOL)renderVideoFrames:(id)frames videoMetadataSamples:(id)samples videoSampleSlices:(id)slices intoPixelBuffer:(__CVBuffer *)buffer time:(id *)time colorSpace:(id)space playbackDirection:(int64_t)direction error:(id *)self0;
 - (BOOL)requiresVideoComposition;
-- (BOOL)runStage:(int64_t)a3 error:(id *)a4;
+- (BOOL)runStage:(int64_t)stage error:(id *)error;
 - (BOOL)shouldWriteCanceledJob;
 - (BOOL)shouldWriteTombstone;
 - (BOOL)succeeded;
 - (NSError)error;
 - (NSMutableString)additionalDebugInfo;
 - (NURenderJob)init;
-- (NURenderJob)initWithRequest:(id)a3;
+- (NURenderJob)initWithRequest:(id)request;
 - (NUScalePolicy)scalePolicy;
-- (id)_prepareNodeFromMedia:(id)a3;
+- (id)_prepareNodeFromMedia:(id)media;
 - (id)debugFilePath;
 - (id)description;
-- (id)evaluateComposition:(id)a3 pipeline:(id)a4 pipelineState:(id)a5 error:(id *)a6;
-- (id)evaluateOutputGeometry:(id *)a3;
-- (id)evaluateRenderDependencies:(id *)a3;
-- (id)generateVideoComposition:(id *)a3;
+- (id)evaluateComposition:(id)composition pipeline:(id)pipeline pipelineState:(id)state error:(id *)error;
+- (id)evaluateOutputGeometry:(id *)geometry;
+- (id)evaluateRenderDependencies:(id *)dependencies;
+- (id)generateVideoComposition:(id *)composition;
 - (id)memoizationCacheKey;
-- (id)newRenderPipelineStateForEvaluationMode:(int64_t)a3;
-- (id)pipelineForComposition:(id)a3 error:(id *)a4;
-- (id)prepareNodeWithPipelineState:(id)a3 error:(id *)a4;
-- (id)renderImage:(id)a3 into:(id)a4 colorSpace:(id)a5 roi:(id)a6 imageSize:(id)a7 alpha:(const unint64_t *)a8 error:(id *)a9;
-- (id)renderNodeWithPipelineState:(id)a3 error:(id *)a4;
-- (id)renderer:(id *)a3;
+- (id)newRenderPipelineStateForEvaluationMode:(int64_t)mode;
+- (id)pipelineForComposition:(id)composition error:(id *)error;
+- (id)prepareNodeWithPipelineState:(id)state error:(id *)error;
+- (id)renderImage:(id)image into:(id)into colorSpace:(id)space roi:(id)roi imageSize:(id)size alpha:(const unint64_t *)alpha error:(id *)error;
+- (id)renderNodeWithPipelineState:(id)state error:(id *)error;
+- (id)renderer:(id *)renderer;
 - (id)result;
-- (id)validateComposition:(id *)a3;
-- (int64_t)_nextStageForStage:(int64_t)a3;
+- (id)validateComposition:(id *)composition;
+- (int64_t)_nextStageForStage:(int64_t)stage;
 - (int64_t)currentStage;
-- (int64_t)resolvedSampleMode:(int64_t)a3;
+- (int64_t)resolvedSampleMode:(int64_t)mode;
 - (int64_t)willRun;
 - (void)_cancel;
 - (void)_didPrepare;
-- (void)_emitSignpostEventType:(unsigned __int8)a3 forStage:(int64_t)a4 duration:(double)a5;
+- (void)_emitSignpostEventType:(unsigned __int8)type forStage:(int64_t)stage duration:(double)duration;
 - (void)_finish;
-- (void)_memoizeResult:(id)a3;
-- (void)_notifyCanceled:(int64_t)a3;
-- (void)_notifyStageTransition:(int64_t)a3;
-- (void)_reply:(id)a3;
-- (void)_run:(int64_t)a3;
-- (void)_setCurrentStage:(int64_t)a3;
-- (void)abortStage:(int64_t)a3;
+- (void)_memoizeResult:(id)result;
+- (void)_notifyCanceled:(int64_t)canceled;
+- (void)_notifyStageTransition:(int64_t)transition;
+- (void)_reply:(id)_reply;
+- (void)_run:(int64_t)_run;
+- (void)_setCurrentStage:(int64_t)stage;
+- (void)abortStage:(int64_t)stage;
 - (void)cancel;
 - (void)didRun;
-- (void)fail:(id)a3;
-- (void)finalize:(BOOL)a3;
+- (void)fail:(id)fail;
+- (void)finalize:(BOOL)finalize;
 - (void)finish;
 - (void)pause;
 - (void)renderJobDebugCanceled;
 - (void)renderJobDebugInit;
 - (void)renderJobDebugResponded;
-- (void)reply:(id)a3;
+- (void)reply:(id)reply;
 - (void)respond;
 - (void)resume;
-- (void)run:(int64_t)a3;
+- (void)run:(int64_t)run;
 - (void)runSynchronous;
 - (void)runToPrepareSynchronous;
 - (void)writeRenderDebugFileToDisk;
@@ -86,7 +86,7 @@
   return result;
 }
 
-- (void)_notifyCanceled:(int64_t)a3
+- (void)_notifyCanceled:(int64_t)canceled
 {
   observatory = self->_observatory;
   v4[0] = MEMORY[0x1E69E9820];
@@ -94,11 +94,11 @@
   v4[2] = __31__NURenderJob__notifyCanceled___block_invoke;
   v4[3] = &unk_1E810B0D0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = canceled;
   [(NUObservatory *)observatory notifyAllObserversForKey:-2 withBlock:v4];
 }
 
-- (void)_notifyStageTransition:(int64_t)a3
+- (void)_notifyStageTransition:(int64_t)transition
 {
   observatory = self->_observatory;
   v4[0] = MEMORY[0x1E69E9820];
@@ -106,7 +106,7 @@
   v4[2] = __38__NURenderJob__notifyStageTransition___block_invoke;
   v4[3] = &unk_1E810B0D0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = transition;
   [(NUObservatory *)observatory notifyAllObserversForKey:-1 withBlock:v4];
 }
 
@@ -151,23 +151,23 @@
   return v3;
 }
 
-- (void)fail:(id)a3
+- (void)fail:(id)fail
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  failCopy = fail;
+  if (!failCopy)
   {
-    v5 = [(NURenderJob *)self request];
-    v6 = [v5 copy];
-    v4 = [NUError unknownError:@"unknown error" object:v6];
+    request = [(NURenderJob *)self request];
+    v6 = [request copy];
+    failCopy = [NUError unknownError:@"unknown error" object:v6];
   }
 
-  v7 = [v4 domain];
-  if ([v7 isEqualToString:@"NUError"])
+  domain = [failCopy domain];
+  if ([domain isEqualToString:@"NUError"])
   {
-    v8 = [v4 code];
+    code = [failCopy code];
 
-    if (v8 == 10)
+    if (code == 10)
     {
       if (_NULogOnceToken != -1)
       {
@@ -178,7 +178,7 @@
       if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v16 = v4;
+        v16 = failCopy;
         _os_log_debug_impl(&dword_1C0184000, v9, OS_LOG_TYPE_DEBUG, "Rendering was canceled: %@", buf, 0xCu);
       }
 
@@ -199,7 +199,7 @@
   if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = failCopy;
     _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Rendering failure: %@", buf, 0xCu);
   }
 
@@ -210,12 +210,12 @@ LABEL_14:
   v13[2] = __20__NURenderJob_fail___block_invoke;
   v13[3] = &unk_1E810B958;
   v13[4] = self;
-  v14 = v4;
-  v12 = v4;
+  v14 = failCopy;
+  v12 = failCopy;
   dispatch_sync(stateQueue, v13);
 }
 
-- (BOOL)complete:(id *)a3
+- (BOOL)complete:(id *)complete
 {
   v32 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -260,8 +260,8 @@ LABEL_8:
     {
       v11 = MEMORY[0x1E696AF00];
       v12 = v10;
-      v13 = [v11 callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v11 callStackSymbols];
+      v14 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v14;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -277,8 +277,8 @@ LABEL_8:
     v17 = MEMORY[0x1E696AF00];
     v18 = specific;
     v19 = v15;
-    v20 = [v17 callStackSymbols];
-    v21 = [v20 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v17 callStackSymbols];
+    v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v29 = specific;
     v30 = 2114;
@@ -292,7 +292,7 @@ LABEL_14:
   _NUAssertFailHandler("[NURenderJob complete:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1369, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v24, v25, v26, v27, v23);
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v32 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -337,8 +337,8 @@ LABEL_8:
     {
       v11 = MEMORY[0x1E696AF00];
       v12 = v10;
-      v13 = [v11 callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v11 callStackSymbols];
+      v14 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v14;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -354,8 +354,8 @@ LABEL_8:
     v17 = MEMORY[0x1E696AF00];
     v18 = specific;
     v19 = v15;
-    v20 = [v17 callStackSymbols];
-    v21 = [v20 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v17 callStackSymbols];
+    v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v29 = specific;
     v30 = 2114;
@@ -369,12 +369,12 @@ LABEL_14:
   _NUAssertFailHandler("[NURenderJob render:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1364, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v24, v25, v26, v27, v23);
 }
 
-- (id)generateVideoComposition:(id *)a3
+- (id)generateVideoComposition:(id *)composition
 {
   v78 = *MEMORY[0x1E69E9840];
-  v5 = [(NURenderJob *)self renderNode];
+  renderNode = [(NURenderJob *)self renderNode];
 
-  if (!v5)
+  if (!renderNode)
   {
     v40 = NUAssertLogger_24345();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -395,8 +395,8 @@ LABEL_14:
         v54 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v55 = MEMORY[0x1E696AF00];
         v56 = v54;
-        v57 = [v55 callStackSymbols];
-        v58 = [v57 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v55 callStackSymbols];
+        v58 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v75 = v54;
         v76 = 2114;
@@ -407,8 +407,8 @@ LABEL_14:
 
     else if (v44)
     {
-      v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v46 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v75 = v46;
       _os_log_error_impl(&dword_1C0184000, v43, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -417,12 +417,12 @@ LABEL_14:
     _NUAssertFailHandler("[NURenderJob generateVideoComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1340, @"Missing render node", v59, v60, v61, v62, v72);
   }
 
-  v6 = [(NURenderJob *)self renderNode];
-  v7 = [v6 outputVideoComposition:a3];
+  renderNode2 = [(NURenderJob *)self renderNode];
+  v7 = [renderNode2 outputVideoComposition:composition];
 
-  v8 = [(NURenderJob *)self outputGeometry];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
 
-  if (!v8)
+  if (!outputGeometry)
   {
     v47 = NUAssertLogger_24345();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -443,8 +443,8 @@ LABEL_14:
         v63 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v64 = MEMORY[0x1E696AF00];
         v65 = v63;
-        v66 = [v64 callStackSymbols];
-        v67 = [v66 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v64 callStackSymbols];
+        v67 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v75 = v63;
         v76 = 2114;
@@ -455,8 +455,8 @@ LABEL_14:
 
     else if (v51)
     {
-      v52 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v53 = [v52 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v53 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v75 = v53;
       _os_log_error_impl(&dword_1C0184000, v50, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -466,11 +466,11 @@ LABEL_14:
   }
 
   v9 = [v7 mutableCopy];
-  v10 = [(NURenderJob *)self outputGeometry];
-  v11 = [v10 scaledSize];
+  outputGeometry2 = [(NURenderJob *)self outputGeometry];
+  scaledSize = [outputGeometry2 scaledSize];
   v13 = v12;
 
-  if ((v11 | v13))
+  if ((scaledSize | v13))
   {
     if (_NULogOnceToken != -1)
     {
@@ -482,9 +482,9 @@ LABEL_14:
     {
       v15 = MEMORY[0x1E696AEC0];
       v16 = v14;
-      v17 = [(NURenderJob *)self outputGeometry];
-      v18 = [(NURenderJob *)self prepareNode];
-      v19 = [v15 stringWithFormat:@"Expected even dimensions for the video composition. Geometry: %@ PrepareNode: %@", v17, v18];
+      outputGeometry3 = [(NURenderJob *)self outputGeometry];
+      prepareNode = [(NURenderJob *)self prepareNode];
+      v19 = [v15 stringWithFormat:@"Expected even dimensions for the video composition. Geometry: %@ PrepareNode: %@", outputGeometry3, prepareNode];
       *buf = 138543362;
       v75 = v19;
       _os_log_impl(&dword_1C0184000, v16, OS_LOG_TYPE_DEFAULT, "Continue: %{public}@", buf, 0xCu);
@@ -516,8 +516,8 @@ LABEL_11:
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
         v25 = v21;
-        v26 = [v23 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v23 callStackSymbols];
+        v27 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v75 = v22;
         v76 = 2114;
@@ -526,11 +526,11 @@ LABEL_11:
       }
 
 LABEL_17:
-      v29 = [(NURenderJob *)self outputGeometry];
-      v73 = [(NURenderJob *)self prepareNode];
-      _NUAssertContinueHandler("[NURenderJob generateVideoComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1353, @"Expected even dimensions for the video composition. Geometry: %@ PrepareNode: %@", v30, v31, v32, v33, v29);
+      outputGeometry4 = [(NURenderJob *)self outputGeometry];
+      prepareNode2 = [(NURenderJob *)self prepareNode];
+      _NUAssertContinueHandler("[NURenderJob generateVideoComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1353, @"Expected even dimensions for the video composition. Geometry: %@ PrepareNode: %@", v30, v31, v32, v33, outputGeometry4);
 
-      v11 = NUEvenPixelSize(v11, v13);
+      scaledSize = NUEvenPixelSize(scaledSize, v13);
       v13 = v34;
       goto LABEL_18;
     }
@@ -540,8 +540,8 @@ LABEL_17:
     {
       v36 = MEMORY[0x1E696AF00];
       v37 = v28;
-      v38 = [v36 callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [v36 callStackSymbols];
+      v39 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v75 = v39;
       _os_log_error_impl(&dword_1C0184000, v37, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -551,7 +551,7 @@ LABEL_17:
   }
 
 LABEL_18:
-  [v9 setRenderSize:{v11, v13}];
+  [v9 setRenderSize:{scaledSize, v13}];
 
   return v9;
 }
@@ -559,9 +559,9 @@ LABEL_18:
 - (BOOL)requiresVideoComposition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(NURenderJob *)self prepareNode];
+  prepareNode = [(NURenderJob *)self prepareNode];
 
-  if (!v3)
+  if (!prepareNode)
   {
     v7 = NUAssertLogger_24345();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -582,8 +582,8 @@ LABEL_18:
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v23 = 138543618;
         *&v23[4] = v14;
         v24 = 2114;
@@ -594,8 +594,8 @@ LABEL_18:
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v23 = 138543362;
       *&v23[4] = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v23, 0xCu);
@@ -604,17 +604,17 @@ LABEL_18:
     _NUAssertFailHandler("[NURenderJob requiresVideoComposition]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1329, @"Missing prepare node", v19, v20, v21, v22, *v23);
   }
 
-  v4 = [(NURenderJob *)self prepareNode];
-  v5 = [v4 requiresVideoComposition];
+  prepareNode2 = [(NURenderJob *)self prepareNode];
+  requiresVideoComposition = [prepareNode2 requiresVideoComposition];
 
-  return v5;
+  return requiresVideoComposition;
 }
 
-- (id)renderNodeWithPipelineState:(id)a3 error:(id *)a4
+- (id)renderNodeWithPipelineState:(id)state error:(id *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  stateCopy = state;
+  if (!stateCopy)
   {
     v12 = NUAssertLogger_24345();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -635,8 +635,8 @@ LABEL_18:
         v33 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v34 = MEMORY[0x1E696AF00];
         v35 = v33;
-        v36 = [v34 callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v34 callStackSymbols];
+        v37 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v62 = v33;
         v63 = 2114;
@@ -647,8 +647,8 @@ LABEL_18:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v62 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -657,7 +657,7 @@ LABEL_18:
     _NUAssertFailHandler("[NURenderJob renderNodeWithPipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1316, @"Invalid parameter not satisfying: %s", v38, v39, v40, v41, "pipelineState != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v19 = NUAssertLogger_24345();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -678,8 +678,8 @@ LABEL_18:
         v42 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v43 = MEMORY[0x1E696AF00];
         v44 = v42;
-        v45 = [v43 callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v43 callStackSymbols];
+        v46 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v62 = v42;
         v63 = 2114;
@@ -690,8 +690,8 @@ LABEL_18:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v62 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -700,10 +700,10 @@ LABEL_18:
     _NUAssertFailHandler("[NURenderJob renderNodeWithPipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1317, @"Invalid parameter not satisfying: %s", v47, v48, v49, v50, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [(NURenderJob *)self prepareNode];
+  v7 = stateCopy;
+  prepareNode = [(NURenderJob *)self prepareNode];
 
-  if (!v8)
+  if (!prepareNode)
   {
     v26 = NUAssertLogger_24345();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -724,8 +724,8 @@ LABEL_18:
         v51 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v52 = MEMORY[0x1E696AF00];
         v53 = v51;
-        v54 = [v52 callStackSymbols];
-        v55 = [v54 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v52 callStackSymbols];
+        v55 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v62 = v51;
         v63 = 2114;
@@ -736,8 +736,8 @@ LABEL_18:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v62 = v32;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -746,18 +746,18 @@ LABEL_18:
     _NUAssertFailHandler("[NURenderJob renderNodeWithPipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1320, @"Missing prepare node", v56, v57, v58, v59, v60);
   }
 
-  v9 = [(NURenderJob *)self prepareNode];
-  v10 = [v9 nodeByReplayingAgainstCache:v7 error:a4];
+  prepareNode2 = [(NURenderJob *)self prepareNode];
+  v10 = [prepareNode2 nodeByReplayingAgainstCache:v7 error:error];
 
   return v10;
 }
 
-- (id)evaluateOutputGeometry:(id *)a3
+- (id)evaluateOutputGeometry:(id *)geometry
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(NURenderJob *)self prepareNode];
+  prepareNode = [(NURenderJob *)self prepareNode];
 
-  if (!v5)
+  if (!prepareNode)
   {
     v9 = NUAssertLogger_24345();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -778,8 +778,8 @@ LABEL_18:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v25 = 138543618;
         *&v25[4] = v16;
         v26 = 2114;
@@ -790,8 +790,8 @@ LABEL_18:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v25 = 138543362;
       *&v25[4] = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v25, 0xCu);
@@ -800,28 +800,28 @@ LABEL_18:
     _NUAssertFailHandler("[NURenderJob evaluateOutputGeometry:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1307, @"Missing prepare node", v21, v22, v23, v24, *v25);
   }
 
-  v6 = [(NURenderJob *)self prepareNode];
-  v7 = [v6 outputImageGeometry:a3];
+  prepareNode2 = [(NURenderJob *)self prepareNode];
+  v7 = [prepareNode2 outputImageGeometry:geometry];
 
   return v7;
 }
 
-- (id)evaluateComposition:(id)a3 pipeline:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)evaluateComposition:(id)composition pipeline:(id)pipeline pipelineState:(id)state error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(NURenderJob *)self extentPolicy];
-  v14 = [v11 processedRenderNodeForComposition:v12 pipelineState:v10 extentPolicy:v13 error:a6];
+  stateCopy = state;
+  pipelineCopy = pipeline;
+  compositionCopy = composition;
+  extentPolicy = [(NURenderJob *)self extentPolicy];
+  v14 = [pipelineCopy processedRenderNodeForComposition:compositionCopy pipelineState:stateCopy extentPolicy:extentPolicy error:error];
 
   return v14;
 }
 
-- (id)prepareNodeWithPipelineState:(id)a3 error:(id *)a4
+- (id)prepareNodeWithPipelineState:(id)state error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  stateCopy = state;
+  if (!stateCopy)
   {
     v14 = NUAssertLogger_24345();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -842,8 +842,8 @@ LABEL_18:
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v21;
         v32 = 2114;
@@ -854,8 +854,8 @@ LABEL_18:
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -864,35 +864,35 @@ LABEL_18:
     _NUAssertFailHandler("[NURenderJob prepareNodeWithPipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1270, @"Invalid parameter not satisfying: %s", v26, v27, v28, v29, "pipelineState != nil");
   }
 
-  v7 = v6;
-  v8 = [(NURenderJob *)self composition];
-  if (v8)
+  v7 = stateCopy;
+  composition = [(NURenderJob *)self composition];
+  if (composition)
   {
 LABEL_5:
-    v10 = [(NURenderJob *)self renderPipeline];
-    if (!v10)
+    renderPipeline = [(NURenderJob *)self renderPipeline];
+    if (!renderPipeline)
     {
-      v11 = [(NURenderJob *)self pipelineForComposition:v8 error:a4];
+      v11 = [(NURenderJob *)self pipelineForComposition:composition error:error];
       if (!v11)
       {
         v12 = 0;
         goto LABEL_9;
       }
 
-      v10 = v11;
+      renderPipeline = v11;
       [(NURenderJob *)self setRenderPipeline:v11];
     }
 
-    v12 = [(NURenderJob *)self evaluateComposition:v8 pipeline:v10 pipelineState:v7 error:a4];
+    v12 = [(NURenderJob *)self evaluateComposition:composition pipeline:renderPipeline pipelineState:v7 error:error];
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [(NURenderJob *)self validateComposition:a4];
+  v9 = [(NURenderJob *)self validateComposition:error];
   if (v9)
   {
-    v8 = v9;
+    composition = v9;
     [(NURenderJob *)self setComposition:v9];
     goto LABEL_5;
   }
@@ -903,11 +903,11 @@ LABEL_10:
   return v12;
 }
 
-- (id)pipelineForComposition:(id)a3 error:(id *)a4
+- (id)pipelineForComposition:(id)composition error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a4)
+  compositionCopy = composition;
+  if (!error)
   {
     v11 = NUAssertLogger_24345();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -928,8 +928,8 @@ LABEL_10:
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v18;
         v29 = 2114;
@@ -940,8 +940,8 @@ LABEL_10:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -950,23 +950,23 @@ LABEL_10:
     _NUAssertFailHandler("[NURenderJob pipelineForComposition:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1256, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "error != nil");
   }
 
-  v6 = v5;
-  v7 = [v5 identifier];
+  v6 = compositionCopy;
+  identifier = [compositionCopy identifier];
   v8 = +[NURenderPipelineRegistry sharedRegistry];
-  v9 = [v8 renderPipelineForIdentifier:v7];
+  v9 = [v8 renderPipelineForIdentifier:identifier];
 
   if (!v9)
   {
-    *a4 = [NUError missingError:@"No NURenderPipeline registered" object:v7];
+    *error = [NUError missingError:@"No NURenderPipeline registered" object:identifier];
   }
 
   return v9;
 }
 
-- (id)validateComposition:(id *)a3
+- (id)validateComposition:(id *)composition
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!composition)
   {
     v9 = NUAssertLogger_24345();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -987,8 +987,8 @@ LABEL_10:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v16;
         v27 = 2114;
@@ -999,8 +999,8 @@ LABEL_10:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1009,16 +1009,16 @@ LABEL_10:
     _NUAssertFailHandler("[NURenderJob validateComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1240, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "error != nil");
   }
 
-  v3 = a3;
-  v4 = [(NURenderJob *)self request];
-  v5 = [v4 internalComposition];
+  compositionCopy = composition;
+  request = [(NURenderJob *)self request];
+  internalComposition = [request internalComposition];
 
-  v6 = [v5 schema];
-  LODWORD(v3) = [v6 validateComposition:v5 error:v3];
+  schema = [internalComposition schema];
+  LODWORD(compositionCopy) = [schema validateComposition:internalComposition error:compositionCopy];
 
-  if (v3)
+  if (compositionCopy)
   {
-    v7 = v5;
+    v7 = internalComposition;
   }
 
   else
@@ -1029,21 +1029,21 @@ LABEL_10:
   return v7;
 }
 
-- (id)evaluateRenderDependencies:(id *)a3
+- (id)evaluateRenderDependencies:(id *)dependencies
 {
-  v5 = [(NURenderJob *)self renderNode];
-  v6 = [(NURenderJob *)self request];
-  v7 = [v5 evaluateRenderDependenciesWithRequest:v6 error:a3];
+  renderNode = [(NURenderJob *)self renderNode];
+  request = [(NURenderJob *)self request];
+  v7 = [renderNode evaluateRenderDependenciesWithRequest:request error:dependencies];
 
-  v8 = [v7 allValues];
+  allValues = [v7 allValues];
 
-  return v8;
+  return allValues;
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v154 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!prepare)
   {
     v115 = NUAssertLogger_24345();
     if (os_log_type_enabled(v115, OS_LOG_TYPE_ERROR))
@@ -1064,8 +1064,8 @@ LABEL_10:
         v122 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v123 = MEMORY[0x1E696AF00];
         v124 = v122;
-        v125 = [v123 callStackSymbols];
-        v126 = [v125 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v123 callStackSymbols];
+        v126 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v151 = v122;
         v152 = 2114;
@@ -1076,8 +1076,8 @@ LABEL_10:
 
     else if (v119)
     {
-      v120 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v121 = [v120 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v121 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v151 = v121;
       _os_log_error_impl(&dword_1C0184000, v118, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1086,11 +1086,11 @@ LABEL_10:
     _NUAssertFailHandler("[NURenderJob prepare:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1052, @"Invalid parameter not satisfying: %s", v127, v128, v129, v130, "error != nil");
   }
 
-  v3 = a3;
+  prepareCopy = prepare;
   if ([(NURenderJob *)self wantsOutputImage]|| [(NURenderJob *)self wantsOutputVideoFrame])
   {
-    v5 = [(NURenderJob *)self outputImage];
-    v6 = v5 == 0;
+    outputImage = [(NURenderJob *)self outputImage];
+    v6 = outputImage == 0;
   }
 
   else
@@ -1100,8 +1100,8 @@ LABEL_10:
 
   if ([(NURenderJob *)self wantsOutputVideo])
   {
-    v7 = [(NURenderJob *)self outputVideo];
-    v8 = v7 == 0;
+    outputVideo = [(NURenderJob *)self outputVideo];
+    v8 = outputVideo == 0;
   }
 
   else
@@ -1111,8 +1111,8 @@ LABEL_10:
 
   if ([(NURenderJob *)self wantsOutputGeometry]|| v8)
   {
-    v10 = [(NURenderJob *)self outputGeometry];
-    v9 = v10 == 0;
+    outputGeometry = [(NURenderJob *)self outputGeometry];
+    v9 = outputGeometry == 0;
   }
 
   else
@@ -1122,8 +1122,8 @@ LABEL_10:
 
   if (v6 || v8)
   {
-    v11 = [(NURenderJob *)self renderNode];
-    v12 = v11 == 0;
+    renderNode = [(NURenderJob *)self renderNode];
+    v12 = renderNode == 0;
   }
 
   else
@@ -1142,9 +1142,9 @@ LABEL_10:
     v15 = 0;
   }
 
-  v16 = [(NURenderJob *)self prepareNode];
+  prepareNode = [(NURenderJob *)self prepareNode];
 
-  if (v16)
+  if (prepareNode)
   {
     if (!v15)
     {
@@ -1155,12 +1155,12 @@ LABEL_10:
   else
   {
     v37 = [(NURenderJob *)self newRenderPipelineStateForEvaluationMode:0];
-    v38 = [(NURenderJob *)self prepareNodeWithPipelineState:v37 error:v3];
+    v38 = [(NURenderJob *)self prepareNodeWithPipelineState:v37 error:prepareCopy];
     [(NURenderJob *)self setPrepareNode:v38];
 
-    v39 = [(NURenderJob *)self prepareNode];
+    prepareNode2 = [(NURenderJob *)self prepareNode];
 
-    if (!v39)
+    if (!prepareNode2)
     {
       goto LABEL_44;
     }
@@ -1174,14 +1174,14 @@ LABEL_10:
     if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
     {
       v96 = v40;
-      v97 = [(NURenderJob *)self prepareNode];
+      prepareNode3 = [(NURenderJob *)self prepareNode];
       *buf = 138412290;
-      v151 = v97;
+      v151 = prepareNode3;
       _os_log_debug_impl(&dword_1C0184000, v96, OS_LOG_TYPE_DEBUG, "Prepare node:\n%@", buf, 0xCu);
     }
 
-    v41 = [(NURenderJob *)self prepareNode];
-    v42 = [v41 outputGeometrySpaceMap:v3];
+    prepareNode4 = [(NURenderJob *)self prepareNode];
+    v42 = [prepareNode4 outputGeometrySpaceMap:prepareCopy];
 
     if (!v42)
     {
@@ -1190,18 +1190,18 @@ LABEL_44:
       return 0;
     }
 
-    v43 = [v37 rootGroup];
-    [v43 finalizeMap:v42];
+    rootGroup = [v37 rootGroup];
+    [rootGroup finalizeMap:v42];
     v148 = v37;
     v44 = v9;
     v45 = v8;
     v46 = v6;
-    v47 = v3;
+    v47 = prepareCopy;
     v49 = v48 = v12;
     [(NURenderJob *)self setResolvedSpaceMap:v49];
 
     v12 = v48;
-    v3 = v47;
+    prepareCopy = v47;
     v6 = v46;
     v8 = v45;
     v9 = v44;
@@ -1212,66 +1212,66 @@ LABEL_44:
     }
   }
 
-  v17 = [(NURenderJob *)self evaluateOutputGeometry:v3];
+  v17 = [(NURenderJob *)self evaluateOutputGeometry:prepareCopy];
   [(NURenderJob *)self setFullSizeGeometry:v17];
 
-  v18 = [(NURenderJob *)self fullSizeGeometry];
+  fullSizeGeometry = [(NURenderJob *)self fullSizeGeometry];
 
-  if (!v18)
+  if (!fullSizeGeometry)
   {
-    v50 = [(NURenderJob *)self request];
-    v51 = [v50 copy];
-    *v3 = [NUError failureError:@"Failure evaluating output geometry" object:v51];
+    request = [(NURenderJob *)self request];
+    v51 = [request copy];
+    *prepareCopy = [NUError failureError:@"Failure evaluating output geometry" object:v51];
 
 LABEL_49:
     return 0;
   }
 
-  v19 = [(NURenderJob *)self fullSizeGeometry];
-  v20 = [v19 size];
+  fullSizeGeometry2 = [(NURenderJob *)self fullSizeGeometry];
+  v20 = [fullSizeGeometry2 size];
   v22 = v21;
 
   if (!v20 || !v22)
   {
-    v50 = [(NURenderJob *)self fullSizeGeometry];
+    request = [(NURenderJob *)self fullSizeGeometry];
     v52 = @"Output geometry contains an empty size";
 LABEL_48:
-    *v3 = [NUError invalidError:v52 object:v50];
+    *prepareCopy = [NUError invalidError:v52 object:request];
     goto LABEL_49;
   }
 
   v23 = v12;
-  v24 = [(NURenderJob *)self scalePolicy];
-  v25 = [(NURenderJob *)self fullSizeGeometry];
-  v26 = [v25 size];
-  v28 = [v24 scaleForImageSize:{v26, v27}];
+  scalePolicy = [(NURenderJob *)self scalePolicy];
+  fullSizeGeometry3 = [(NURenderJob *)self fullSizeGeometry];
+  v26 = [fullSizeGeometry3 size];
+  renderScale2 = [scalePolicy scaleForImageSize:{v26, v27}];
   v30 = v29;
 
-  if (v28 < 1 || v30 < 1)
+  if (renderScale2 < 1 || v30 < 1)
   {
-    v50 = [(NURenderJob *)self scalePolicy];
+    request = [(NURenderJob *)self scalePolicy];
     v52 = @"Scale policy produced invalid scale";
     goto LABEL_48;
   }
 
-  if (NUScaleCompare(v28, v30, NUScaleOne, *(&NUScaleOne + 1)) > 0)
+  if (NUScaleCompare(renderScale2, v30, NUScaleOne, *(&NUScaleOne + 1)) > 0)
   {
     v30 = *(&NUScaleOne + 1);
-    v28 = NUScaleOne;
+    renderScale2 = NUScaleOne;
   }
 
   if ([(NURenderJob *)self wantsRenderScaleClampedToNativeScale])
   {
-    v31 = [(NURenderJob *)self fullSizeGeometry];
-    v32 = [v31 renderScale];
-    v34 = NUScaleCompare(v28, v30, v32, v33);
+    fullSizeGeometry4 = [(NURenderJob *)self fullSizeGeometry];
+    renderScale = [fullSizeGeometry4 renderScale];
+    v34 = NUScaleCompare(renderScale2, v30, renderScale, v33);
 
     v14 = v34 < 1;
     v12 = v23;
     if (!v14)
     {
-      v35 = [(NURenderJob *)self fullSizeGeometry];
-      v28 = [v35 renderScale];
+      fullSizeGeometry5 = [(NURenderJob *)self fullSizeGeometry];
+      renderScale2 = [fullSizeGeometry5 renderScale];
       v30 = v36;
     }
   }
@@ -1281,7 +1281,7 @@ LABEL_48:
     v12 = v23;
   }
 
-  [(NURenderJob *)self setRenderScale:v28, v30];
+  [(NURenderJob *)self setRenderScale:renderScale2, v30];
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_984);
@@ -1291,10 +1291,10 @@ LABEL_48:
   if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
   {
     v104 = v53;
-    v105 = [(NURenderJob *)self renderScale];
+    renderScale3 = [(NURenderJob *)self renderScale];
     [(NURenderJob *)self renderScale];
     *buf = 134218240;
-    v151 = v105;
+    v151 = renderScale3;
     v152 = 2048;
     v153 = v106;
     _os_log_debug_impl(&dword_1C0184000, v104, OS_LOG_TYPE_DEBUG, "Render scale: %ld:%ld", buf, 0x16u);
@@ -1314,7 +1314,7 @@ LABEL_54:
   }
 
 LABEL_55:
-  v54 = [(NURenderJob *)self evaluateOutputGeometry:v3];
+  v54 = [(NURenderJob *)self evaluateOutputGeometry:prepareCopy];
   if (!v54)
   {
     return 0;
@@ -1322,13 +1322,13 @@ LABEL_55:
 
   v55 = v54;
   v149 = v12;
-  v56 = [(NURenderJob *)self renderScale];
+  renderScale4 = [(NURenderJob *)self renderScale];
   v58 = v57;
   v59 = [NUImageGeometry alloc];
   [v55 extent];
-  v60 = [v55 orientation];
-  v61 = [(NURenderJob *)self resolvedSpaceMap];
-  v62 = -[NUImageGeometry initWithExtent:renderScale:orientation:spaceMap:roundingPolicy:](v59, "initWithExtent:renderScale:orientation:spaceMap:roundingPolicy:", buf, v56, v58, v60, v61, [v55 roundingPolicy]);
+  orientation = [v55 orientation];
+  resolvedSpaceMap = [(NURenderJob *)self resolvedSpaceMap];
+  v62 = -[NUImageGeometry initWithExtent:renderScale:orientation:spaceMap:roundingPolicy:](v59, "initWithExtent:renderScale:orientation:spaceMap:roundingPolicy:", buf, renderScale4, v58, orientation, resolvedSpaceMap, [v55 roundingPolicy]);
   [(NURenderJob *)self setOutputGeometry:v62];
 
   if (_NULogOnceToken != -1)
@@ -1341,9 +1341,9 @@ LABEL_55:
   if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
   {
     v98 = v63;
-    v99 = [(NURenderJob *)self outputGeometry];
+    outputGeometry2 = [(NURenderJob *)self outputGeometry];
     *buf = 138412290;
-    v151 = v99;
+    v151 = outputGeometry2;
     _os_log_debug_impl(&dword_1C0184000, v98, OS_LOG_TYPE_DEBUG, "Output geometry: %@", buf, 0xCu);
   }
 
@@ -1351,9 +1351,9 @@ LABEL_61:
   if (!v12)
   {
 LABEL_84:
-    v74 = [(NURenderJob *)self dependentJobs];
+    dependentJobs = [(NURenderJob *)self dependentJobs];
 
-    if (v74)
+    if (dependentJobs)
     {
       [(NURenderJob *)self setDependentJobs:0];
     }
@@ -1363,13 +1363,13 @@ LABEL_84:
       goto LABEL_91;
     }
 
-    v75 = [(NURenderJob *)self renderNode];
-    v76 = [v75 outputImage:v3];
+    renderNode2 = [(NURenderJob *)self renderNode];
+    v76 = [renderNode2 outputImage:prepareCopy];
     [(NURenderJob *)self setOutputImage:v76];
 
-    v77 = [(NURenderJob *)self outputImage];
+    outputImage2 = [(NURenderJob *)self outputImage];
 
-    if (!v77)
+    if (!outputImage2)
     {
       return 0;
     }
@@ -1383,9 +1383,9 @@ LABEL_84:
     if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
     {
       v102 = v78;
-      v103 = [(NURenderJob *)self outputImage];
+      outputImage3 = [(NURenderJob *)self outputImage];
       *buf = 138412290;
-      v151 = v103;
+      v151 = outputImage3;
       _os_log_debug_impl(&dword_1C0184000, v102, OS_LOG_TYPE_DEBUG, "Output image: %@", buf, 0xCu);
 
       if (v8)
@@ -1400,13 +1400,13 @@ LABEL_91:
       if (v8)
       {
 LABEL_92:
-        v79 = [(NURenderJob *)self renderNode];
-        v80 = [v79 outputVideo:v3];
+        renderNode3 = [(NURenderJob *)self renderNode];
+        v80 = [renderNode3 outputVideo:prepareCopy];
         [(NURenderJob *)self setOutputVideo:v80];
 
-        v81 = [(NURenderJob *)self outputVideo];
+        outputVideo2 = [(NURenderJob *)self outputVideo];
 
-        if (v81)
+        if (outputVideo2)
         {
           if (_NULogOnceToken != -1)
           {
@@ -1417,13 +1417,13 @@ LABEL_92:
           if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
           {
             v107 = v82;
-            v108 = [(NURenderJob *)self outputVideo];
+            outputVideo3 = [(NURenderJob *)self outputVideo];
             *buf = 138412290;
-            v151 = v108;
+            v151 = outputVideo3;
             _os_log_debug_impl(&dword_1C0184000, v107, OS_LOG_TYPE_DEBUG, "Output video: %@", buf, 0xCu);
           }
 
-          if (![(NURenderJob *)self requiresVideoComposition]|| ([(NURenderJob *)self generateVideoComposition:v3], v83 = objc_claimAutoreleasedReturnValue(), [(NURenderJob *)self setOutputVideoComposition:v83], v83, [(NURenderJob *)self outputVideoComposition], v84 = objc_claimAutoreleasedReturnValue(), v84, v84))
+          if (![(NURenderJob *)self requiresVideoComposition]|| ([(NURenderJob *)self generateVideoComposition:prepareCopy], v83 = objc_claimAutoreleasedReturnValue(), [(NURenderJob *)self setOutputVideoComposition:v83], v83, [(NURenderJob *)self outputVideoComposition], v84 = objc_claimAutoreleasedReturnValue(), v84, v84))
           {
             if (_NULogOnceToken != -1)
             {
@@ -1434,36 +1434,36 @@ LABEL_92:
             if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
             {
               v111 = v85;
-              v112 = [(NURenderJob *)self outputVideoComposition];
+              outputVideoComposition = [(NURenderJob *)self outputVideoComposition];
               *buf = 138412290;
-              v151 = v112;
+              v151 = outputVideoComposition;
               _os_log_debug_impl(&dword_1C0184000, v111, OS_LOG_TYPE_DEBUG, "Output video composition: %@", buf, 0xCu);
             }
 
-            v86 = [(NURenderJob *)self prepareNode];
-            v87 = [v86 requiresAudioMix];
+            prepareNode5 = [(NURenderJob *)self prepareNode];
+            requiresAudioMix = [prepareNode5 requiresAudioMix];
 
-            if (!v87)
+            if (!requiresAudioMix)
             {
               goto LABEL_107;
             }
 
-            v88 = [(NURenderJob *)self renderNode];
-            v89 = [v88 shouldInvalidateCachedAudioMix];
+            renderNode4 = [(NURenderJob *)self renderNode];
+            shouldInvalidateCachedAudioMix = [renderNode4 shouldInvalidateCachedAudioMix];
 
-            if (v89)
+            if (shouldInvalidateCachedAudioMix)
             {
-              v90 = [(NURenderJob *)self renderNode];
-              [v90 invalidateCachedAudioMix];
+              renderNode5 = [(NURenderJob *)self renderNode];
+              [renderNode5 invalidateCachedAudioMix];
             }
 
-            v91 = [(NURenderJob *)self renderNode];
-            v92 = [v91 outputAudioMix:v3];
+            renderNode6 = [(NURenderJob *)self renderNode];
+            v92 = [renderNode6 outputAudioMix:prepareCopy];
             [(NURenderJob *)self setOutputAudioMix:v92];
 
-            v93 = [(NURenderJob *)self outputAudioMix];
+            outputAudioMix = [(NURenderJob *)self outputAudioMix];
 
-            if (v93)
+            if (outputAudioMix)
             {
 LABEL_107:
               if (_NULogOnceToken != -1)
@@ -1475,9 +1475,9 @@ LABEL_107:
               if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
               {
                 v113 = v94;
-                v114 = [(NURenderJob *)self outputAudioMix];
+                outputAudioMix2 = [(NURenderJob *)self outputAudioMix];
                 *buf = 138412290;
-                v151 = v114;
+                v151 = outputAudioMix2;
                 _os_log_debug_impl(&dword_1C0184000, v113, OS_LOG_TYPE_DEBUG, "Output audio mix: %@", buf, 0xCu);
               }
 
@@ -1528,8 +1528,8 @@ LABEL_111:
           v138 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v139 = MEMORY[0x1E696AF00];
           v140 = v138;
-          v141 = [v139 callStackSymbols];
-          v142 = [v141 componentsJoinedByString:@"\n"];
+          callStackSymbols3 = [v139 callStackSymbols];
+          v142 = [callStackSymbols3 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v151 = v138;
           v152 = 2114;
@@ -1540,8 +1540,8 @@ LABEL_111:
 
       else if (v135)
       {
-        v136 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v137 = [v136 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v137 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v151 = v137;
         _os_log_error_impl(&dword_1C0184000, v134, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1554,12 +1554,12 @@ LABEL_111:
   }
 
   v65 = [(NURenderJob *)self newRenderPipelineStateForEvaluationMode:v64];
-  v66 = [(NURenderJob *)self renderNodeWithPipelineState:v65 error:v3];
+  v66 = [(NURenderJob *)self renderNodeWithPipelineState:v65 error:prepareCopy];
   [(NURenderJob *)self setRenderNode:v66];
 
-  v67 = [(NURenderJob *)self renderNode];
+  renderNode7 = [(NURenderJob *)self renderNode];
 
-  if (v67)
+  if (renderNode7)
   {
     if (_NULogOnceToken != -1)
     {
@@ -1570,15 +1570,15 @@ LABEL_111:
     if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
     {
       v100 = v68;
-      v101 = [(NURenderJob *)self renderNode];
+      renderNode8 = [(NURenderJob *)self renderNode];
       *buf = 138412290;
-      v151 = v101;
+      v151 = renderNode8;
       _os_log_debug_impl(&dword_1C0184000, v100, OS_LOG_TYPE_DEBUG, "Render node:\n%@", buf, 0xCu);
     }
 
-    v69 = [(NURenderJob *)self dependentJobs];
+    dependentJobs2 = [(NURenderJob *)self dependentJobs];
 
-    if (v69 || ([(NURenderJob *)self evaluateRenderDependencies:v3], v70 = objc_claimAutoreleasedReturnValue(), [(NURenderJob *)self setDependentJobs:v70], v70, [(NURenderJob *)self dependentJobs], v71 = objc_claimAutoreleasedReturnValue(), v71, v71))
+    if (dependentJobs2 || ([(NURenderJob *)self evaluateRenderDependencies:prepareCopy], v70 = objc_claimAutoreleasedReturnValue(), [(NURenderJob *)self setDependentJobs:v70], v70, [(NURenderJob *)self dependentJobs], v71 = objc_claimAutoreleasedReturnValue(), v71, v71))
     {
       if ([(NURenderJob *)self _shouldWaitForDependentJobs])
       {
@@ -1591,9 +1591,9 @@ LABEL_111:
         if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
         {
           v109 = v72;
-          v110 = [(NURenderJob *)self dependentJobs];
+          dependentJobs3 = [(NURenderJob *)self dependentJobs];
           *buf = 138412290;
-          v151 = v110;
+          v151 = dependentJobs3;
           _os_log_debug_impl(&dword_1C0184000, v109, OS_LOG_TYPE_DEBUG, "Render dependent jobs: %@", buf, 0xCu);
         }
 
@@ -1611,13 +1611,13 @@ LABEL_82:
   return v73;
 }
 
-- (void)_memoizeResult:(id)a3
+- (void)_memoizeResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   if (!+[NUGlobalSettings renderJobDisableResultCache])
   {
     v4 = +[NURenderResultCache shared];
-    [v4 setResult:v5 forJob:self];
+    [v4 setResult:resultCopy forJob:self];
   }
 }
 
@@ -1645,20 +1645,20 @@ LABEL_82:
 - (id)memoizationCacheKey
 {
   p_memoizationCacheKey = &self->_memoizationCacheKey;
-  v4 = self->_memoizationCacheKey;
-  if (!v4)
+  cacheKey = self->_memoizationCacheKey;
+  if (!cacheKey)
   {
-    v4 = [(NURenderJob *)self cacheKey];
-    objc_storeStrong(p_memoizationCacheKey, v4);
+    cacheKey = [(NURenderJob *)self cacheKey];
+    objc_storeStrong(p_memoizationCacheKey, cacheKey);
   }
 
-  return v4;
+  return cacheKey;
 }
 
-- (void)_reply:(id)a3
+- (void)_reply:(id)_reply
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  _replyCopy = _reply;
   [(NURenderJobStatistics *)self->_stats setResponseTime:NUAbsoluteTime()];
   if (_NULogOnceToken != -1)
   {
@@ -1670,24 +1670,24 @@ LABEL_82:
   {
     request = self->_request;
     v8 = v5;
-    v9 = [(NURenderRequest *)request name];
+    name = [(NURenderRequest *)request name];
     [(NURenderJobStatistics *)self->_stats totalDuration];
     v11 = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v9;
+    v14 = name;
     v15 = 2048;
     v16 = v10;
     _os_log_debug_impl(&dword_1C0184000, v8, OS_LOG_TYPE_DEBUG, "job %p %{public}@ totalDuration %0.4f s", &v11, 0x20u);
   }
 
-  v6 = [(NURenderRequest *)self->_request completionBlock];
-  (v6)[2](v6, v4);
+  completionBlock = [(NURenderRequest *)self->_request completionBlock];
+  (completionBlock)[2](completionBlock, _replyCopy);
 }
 
-- (void)reply:(id)a3
+- (void)reply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1698,21 +1698,21 @@ LABEL_82:
   if (self->_replySynchronous)
   {
     v6 = objc_autoreleasePoolPush();
-    [(NURenderJob *)self _reply:v4];
+    [(NURenderJob *)self _reply:replyCopy];
     objc_autoreleasePoolPop(v6);
   }
 
   else
   {
     replyGroup = self->_replyGroup;
-    v8 = [(NURenderRequest *)self->_request responseQueue];
+    responseQueue = [(NURenderRequest *)self->_request responseQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __21__NURenderJob_reply___block_invoke_2;
     v9[3] = &unk_1E810B958;
     v9[4] = self;
-    v10 = v4;
-    dispatch_group_async(replyGroup, v8, v9);
+    v10 = replyCopy;
+    dispatch_group_async(replyGroup, responseQueue, v9);
   }
 }
 
@@ -1760,10 +1760,10 @@ uint64_t __24__NURenderJob_succeeded__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_setCurrentStage:(int64_t)a3
+- (void)_setCurrentStage:(int64_t)stage
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!stage)
   {
     v3 = NUAssertLogger_24345();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1784,8 +1784,8 @@ uint64_t __24__NURenderJob_succeeded__block_invoke(uint64_t result)
         v10 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v11 = MEMORY[0x1E696AF00];
         v12 = v10;
-        v13 = [v11 callStackSymbols];
-        v14 = [v13 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v11 callStackSymbols];
+        v14 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v20 = v10;
         v21 = 2114;
@@ -1796,8 +1796,8 @@ uint64_t __24__NURenderJob_succeeded__block_invoke(uint64_t result)
 
     else if (v7)
     {
-      v8 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v9 = [v8 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v9 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v20 = v9;
       _os_log_error_impl(&dword_1C0184000, v6, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1806,8 +1806,8 @@ uint64_t __24__NURenderJob_succeeded__block_invoke(uint64_t result)
     _NUAssertFailHandler("[NURenderJob _setCurrentStage:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 949, @"Invalid parameter not satisfying: %s", v15, v16, v17, v18, "stage != NURenderJobStageNone");
   }
 
-  self->_currentStage = a3;
-  if (a3 != 6)
+  self->_currentStage = stage;
+  if (stage != 6)
   {
 
     [(NURenderJob *)self _notifyStageTransition:?];
@@ -1835,14 +1835,14 @@ uint64_t __24__NURenderJob_succeeded__block_invoke(uint64_t result)
   dispatch_sync(stateQueue, block);
 }
 
-- (void)finalize:(BOOL)a3
+- (void)finalize:(BOOL)finalize
 {
-  if (a3)
+  if (finalize)
   {
     if ([(NURenderJob *)self isCanceled])
     {
-      v4 = [(NURenderJob *)self request];
-      v5 = [v4 copy];
+      request = [(NURenderJob *)self request];
+      v5 = [request copy];
       v6 = [NUError canceledError:@"Request was canceled" object:v5];
 
       [(NURenderJob *)self fail:v6];
@@ -1901,8 +1901,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1918,8 +1918,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -1952,12 +1952,12 @@ LABEL_14:
       }
 
       v4 = v3;
-      v5 = [(NURenderJob *)self request];
-      v6 = [v5 name];
+      request = [(NURenderJob *)self request];
+      name = [request name];
       v17 = 134218242;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2114;
-      v20 = v6;
+      v20 = name;
       _os_log_debug_impl(&dword_1C0184000, v4, OS_LOG_TYPE_DEBUG, "respond job %p %{public}@: canceled", &v17, 0x16u);
     }
 
@@ -1975,22 +1975,22 @@ LABEL_14:
       }
 
       v4 = v10;
-      v5 = [(NURenderJob *)self request];
-      v6 = [v5 name];
-      v16 = [(NURenderJob *)self error];
+      request = [(NURenderJob *)self request];
+      name = [request name];
+      error = [(NURenderJob *)self error];
       v17 = 134218498;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2114;
-      v20 = v6;
+      v20 = name;
       v21 = 2114;
-      v22 = v16;
+      v22 = error;
       _os_log_error_impl(&dword_1C0184000, v4, OS_LOG_TYPE_ERROR, "respond job %p %{public}@: error %{public}@", &v17, 0x20u);
     }
 
 LABEL_15:
     v11 = [NUResponse alloc];
-    v8 = [(NURenderJob *)self error];
-    v9 = [(NUResponse *)v11 initWithError:v8];
+    error2 = [(NURenderJob *)self error];
+    v9 = [(NUResponse *)v11 initWithError:error2];
     goto LABEL_16;
   }
 
@@ -2003,19 +2003,19 @@ LABEL_15:
   if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
   {
     v13 = v7;
-    v14 = [(NURenderJob *)self request];
-    v15 = [v14 name];
+    request2 = [(NURenderJob *)self request];
+    name2 = [request2 name];
     v17 = 134218242;
-    v18 = self;
+    selfCopy3 = self;
     v19 = 2114;
-    v20 = v15;
+    v20 = name2;
     _os_log_debug_impl(&dword_1C0184000, v13, OS_LOG_TYPE_DEBUG, "respond job %p %{public}@: success", &v17, 0x16u);
   }
 
-  v8 = [(NURenderJob *)self result];
-  [v8 setStatistics:self->_stats];
-  [(NURenderJob *)self _memoizeResult:v8];
-  v9 = [[NUResponse alloc] initWithResult:v8];
+  error2 = [(NURenderJob *)self result];
+  [error2 setStatistics:self->_stats];
+  [(NURenderJob *)self _memoizeResult:error2];
+  v9 = [[NUResponse alloc] initWithResult:error2];
 LABEL_16:
   v12 = v9;
 
@@ -2027,10 +2027,10 @@ LABEL_16:
   }
 }
 
-- (void)abortStage:(int64_t)a3
+- (void)abortStage:(int64_t)stage
 {
   v20 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(stage)
   {
     case 5:
       if (_NULogOnceToken != -1)
@@ -2042,12 +2042,12 @@ LABEL_16:
       if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
       {
         v10 = v6;
-        v11 = [(NURenderJob *)self request];
-        v12 = [v11 name];
+        request = [(NURenderJob *)self request];
+        name = [request name];
         v16 = 134218242;
-        v17 = self;
+        selfCopy3 = self;
         v18 = 2114;
-        v19 = v12;
+        v19 = name;
         _os_log_debug_impl(&dword_1C0184000, v10, OS_LOG_TYPE_DEBUG, "job %p %{public}@ abort complete", &v16, 0x16u);
       }
 
@@ -2063,12 +2063,12 @@ LABEL_16:
       if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
       {
         v7 = v5;
-        v8 = [(NURenderJob *)self request];
-        v9 = [v8 name];
+        request2 = [(NURenderJob *)self request];
+        name2 = [request2 name];
         v16 = 134218242;
-        v17 = self;
+        selfCopy3 = self;
         v18 = 2114;
-        v19 = v9;
+        v19 = name2;
         _os_log_debug_impl(&dword_1C0184000, v7, OS_LOG_TYPE_DEBUG, "job %p %{public}@ abort render", &v16, 0x16u);
       }
 
@@ -2084,12 +2084,12 @@ LABEL_16:
       if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
       {
         v13 = v4;
-        v14 = [(NURenderJob *)self request];
-        v15 = [v14 name];
+        request3 = [(NURenderJob *)self request];
+        name3 = [request3 name];
         v16 = 134218242;
-        v17 = self;
+        selfCopy3 = self;
         v18 = 2114;
-        v19 = v15;
+        v19 = name3;
         _os_log_debug_impl(&dword_1C0184000, v13, OS_LOG_TYPE_DEBUG, "job %p %{public}@ abort prepare", &v16, 0x16u);
       }
 
@@ -2149,14 +2149,14 @@ LABEL_16:
 
 - (void)resume
 {
-  v3 = [(NURenderJob *)self request];
-  v4 = [v3 voucher];
+  request = [(NURenderJob *)self request];
+  voucher = [request voucher];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __21__NURenderJob_resume__block_invoke;
   v5[3] = &unk_1E810B9A8;
   v5[4] = self;
-  NULogAdoptVoucher(v4, v5);
+  NULogAdoptVoucher(voucher, v5);
 }
 
 void __21__NURenderJob_resume__block_invoke(uint64_t a1)
@@ -2173,14 +2173,14 @@ void __21__NURenderJob_resume__block_invoke(uint64_t a1)
 
 - (void)pause
 {
-  v3 = [(NURenderJob *)self request];
-  v4 = [v3 voucher];
+  request = [(NURenderJob *)self request];
+  voucher = [request voucher];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __20__NURenderJob_pause__block_invoke;
   v5[3] = &unk_1E810B9A8;
   v5[4] = self;
-  NULogAdoptVoucher(v4, v5);
+  NULogAdoptVoucher(voucher, v5);
 }
 
 void __20__NURenderJob_pause__block_invoke(uint64_t a1)
@@ -2277,19 +2277,19 @@ uint64_t __34__NURenderJob__cancelCoalescedJob__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(NURenderJob *)self request];
-  v4 = [v3 voucher];
+  request = [(NURenderJob *)self request];
+  voucher = [request voucher];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __33__NURenderJob_cancelCoalescedJob__block_invoke;
   v6[3] = &unk_1E810B980;
   v6[4] = self;
   v6[5] = &v7;
-  NULogAdoptVoucher(v4, v6);
+  NULogAdoptVoucher(voucher, v6);
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(request) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return request;
 }
 
 uint64_t __33__NURenderJob_cancelCoalescedJob__block_invoke(uint64_t a1)
@@ -2387,14 +2387,14 @@ uint64_t __22__NURenderJob__cancel__block_invoke(uint64_t a1)
 
 - (void)cancel
 {
-  v3 = [(NURenderJob *)self request];
-  v4 = [v3 voucher];
+  request = [(NURenderJob *)self request];
+  voucher = [request voucher];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __21__NURenderJob_cancel__block_invoke;
   v5[3] = &unk_1E810B9A8;
   v5[4] = self;
-  NULogAdoptVoucher(v4, v5);
+  NULogAdoptVoucher(voucher, v5);
 }
 
 - (BOOL)isFinished
@@ -2456,22 +2456,22 @@ uint64_t __22__NURenderJob__cancel__block_invoke(uint64_t a1)
 
 - (BOOL)_shouldWaitForDependentJobs
 {
-  v2 = [(NURenderJob *)self dependentJobs];
-  v3 = [v2 count] != 0;
+  dependentJobs = [(NURenderJob *)self dependentJobs];
+  v3 = [dependentJobs count] != 0;
 
   return v3;
 }
 
-- (int64_t)_nextStageForStage:(int64_t)a3
+- (int64_t)_nextStageForStage:(int64_t)stage
 {
-  if (a3 <= 3)
+  if (stage <= 3)
   {
-    if ((a3 - 2) < 2 || !a3)
+    if ((stage - 2) < 2 || !stage)
     {
       return 1;
     }
 
-    if (a3 != 1)
+    if (stage != 1)
     {
       return 0;
     }
@@ -2495,7 +2495,7 @@ LABEL_16:
     return 6;
   }
 
-  switch(a3)
+  switch(stage)
   {
     case 4:
       goto LABEL_16;
@@ -2508,15 +2508,15 @@ LABEL_16:
   }
 }
 
-- (BOOL)runStage:(int64_t)a3 error:(id *)a4
+- (BOOL)runStage:(int64_t)stage error:(id *)error
 {
-  v5 = self;
+  selfCopy = self;
   v45 = *MEMORY[0x1E69E9840];
-  if (a3 <= 3)
+  if (stage <= 3)
   {
-    if (a3 != 1)
+    if (stage != 1)
     {
-      if ((a3 - 2) >= 2 && a3)
+      if ((stage - 2) >= 2 && stage)
       {
         return self & 1;
       }
@@ -2533,23 +2533,23 @@ LABEL_16:
     if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
     {
       v16 = v7;
-      v17 = [(NURenderJob *)v5 request];
-      v18 = [v17 name];
+      request = [(NURenderJob *)selfCopy request];
+      name = [request name];
       *buf = 134218242;
-      v42 = v5;
+      v42 = selfCopy;
       v43 = 2114;
-      v44 = v18;
+      v44 = name;
       _os_log_debug_impl(&dword_1C0184000, v16, OS_LOG_TYPE_DEBUG, "job %p %{public}@ prepare", buf, 0x16u);
     }
 
-    LOBYTE(self) = [(NURenderJob *)v5 prepare:a4];
+    LOBYTE(self) = [(NURenderJob *)selfCopy prepare:error];
   }
 
   else
   {
-    if (a3 != 4)
+    if (stage != 4)
     {
-      if (a3 == 5)
+      if (stage == 5)
       {
         if (_NULogOnceToken != -1)
         {
@@ -2560,20 +2560,20 @@ LABEL_16:
         if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
         {
           v19 = v6;
-          v20 = [(NURenderJob *)v5 request];
-          v21 = [v20 name];
+          request2 = [(NURenderJob *)selfCopy request];
+          name2 = [request2 name];
           *buf = 134218242;
-          v42 = v5;
+          v42 = selfCopy;
           v43 = 2114;
-          v44 = v21;
+          v44 = name2;
           _os_log_debug_impl(&dword_1C0184000, v19, OS_LOG_TYPE_DEBUG, "job %p %{public}@ complete", buf, 0x16u);
         }
 
-        LOBYTE(self) = [(NURenderJob *)v5 complete:a4];
+        LOBYTE(self) = [(NURenderJob *)selfCopy complete:error];
         return self & 1;
       }
 
-      if (a3 != 6)
+      if (stage != 6)
       {
         return self & 1;
       }
@@ -2583,14 +2583,14 @@ LABEL_25:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v10 = MEMORY[0x1E696AEC0];
-        if ((a3 - 1) > 5)
+        if ((stage - 1) > 5)
         {
           v11 = @"None";
         }
 
         else
         {
-          v11 = off_1E810B140[a3 - 1];
+          v11 = off_1E810B140[stage - 1];
         }
 
         v22 = v11;
@@ -2610,8 +2610,8 @@ LABEL_25:
           v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v30 = MEMORY[0x1E696AF00];
           v31 = v29;
-          v32 = [v30 callStackSymbols];
-          v33 = [v32 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v30 callStackSymbols];
+          v33 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v42 = v29;
           v43 = 2114;
@@ -2622,21 +2622,21 @@ LABEL_25:
 
       else if (v26)
       {
-        v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v42 = v28;
         _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
-      if ((a3 - 1) > 5)
+      if ((stage - 1) > 5)
       {
         v34 = @"None";
       }
 
       else
       {
-        v34 = off_1E810B140[a3 - 1];
+        v34 = off_1E810B140[stage - 1];
       }
 
       v35 = v34;
@@ -2652,16 +2652,16 @@ LABEL_25:
     if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
     {
       v13 = v8;
-      v14 = [(NURenderJob *)v5 request];
-      v15 = [v14 name];
+      request3 = [(NURenderJob *)selfCopy request];
+      name3 = [request3 name];
       *buf = 134218242;
-      v42 = v5;
+      v42 = selfCopy;
       v43 = 2114;
-      v44 = v15;
+      v44 = name3;
       _os_log_debug_impl(&dword_1C0184000, v13, OS_LOG_TYPE_DEBUG, "job %p %{public}@ render", buf, 0x16u);
     }
 
-    LOBYTE(self) = [(NURenderJob *)v5 _checkForMemoizedResult]|| [(NURenderJob *)v5 render:a4];
+    LOBYTE(self) = [(NURenderJob *)selfCopy _checkForMemoizedResult]|| [(NURenderJob *)selfCopy render:error];
   }
 
   return self & 1;
@@ -2747,21 +2747,21 @@ LABEL_11:
 
 - (void)_didPrepare
 {
-  v3 = [(NURenderJob *)self prepareNode];
-  if (v3 && [(NURenderJob *)self wantsPrepareNodeCached])
+  prepareNode = [(NURenderJob *)self prepareNode];
+  if (prepareNode && [(NURenderJob *)self wantsPrepareNodeCached])
   {
-    v4 = [(NURenderJob *)self request];
-    v5 = [v4 renderContext];
-    [v5 setLastPrepareNode:v3];
+    request = [(NURenderJob *)self request];
+    renderContext = [request renderContext];
+    [renderContext setLastPrepareNode:prepareNode];
   }
 
-  v8 = [(NURenderJob *)self renderNode];
+  renderNode = [(NURenderJob *)self renderNode];
 
-  if (v8 && [(NURenderJob *)self wantsRenderNodeCached])
+  if (renderNode && [(NURenderJob *)self wantsRenderNodeCached])
   {
-    v6 = [(NURenderJob *)self request];
-    v7 = [v6 renderContext];
-    [v7 setLastRenderNode:v8];
+    request2 = [(NURenderJob *)self request];
+    renderContext2 = [request2 renderContext];
+    [renderContext2 setLastRenderNode:renderNode];
   }
 
   MEMORY[0x1EEE66BB8]();
@@ -2852,25 +2852,25 @@ void __22__NURenderJob_willRun__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (id)renderer:(id *)a3
+- (id)renderer:(id *)renderer
 {
-  v5 = [(NURenderJob *)self renderer];
-  if (!v5)
+  renderer = [(NURenderJob *)self renderer];
+  if (!renderer)
   {
-    v6 = [(NURenderJob *)self priority];
-    v7 = [v6 isLow];
+    priority = [(NURenderJob *)self priority];
+    isLow = [priority isLow];
 
-    if (v7)
+    if (isLow)
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [(NURenderJob *)self priority];
-      v10 = [v9 isHigh];
+      priority2 = [(NURenderJob *)self priority];
+      isHigh = [priority2 isHigh];
 
-      if (v10)
+      if (isHigh)
       {
         v8 = 2;
       }
@@ -2881,29 +2881,29 @@ void __22__NURenderJob_willRun__block_invoke(uint64_t a1)
       }
     }
 
-    v11 = [(NURenderJob *)self request];
-    v12 = [v11 shouldUseLowMemoryMode];
+    request = [(NURenderJob *)self request];
+    shouldUseLowMemoryMode = [request shouldUseLowMemoryMode];
 
-    if (v12)
+    if (shouldUseLowMemoryMode)
     {
       v8 |= 8uLL;
     }
 
     else
     {
-      v13 = [(NURenderJob *)self request];
-      v14 = [v13 isOneShot];
+      request2 = [(NURenderJob *)self request];
+      isOneShot = [request2 isOneShot];
 
-      if (!v14)
+      if (!isOneShot)
       {
         v8 |= 4uLL;
       }
     }
 
-    v15 = [(NURenderJob *)self request];
-    v16 = [v15 isOneShot];
+    request3 = [(NURenderJob *)self request];
+    isOneShot2 = [request3 isOneShot];
 
-    if (v16)
+    if (isOneShot2)
     {
       v17 = v8 | 0x10;
     }
@@ -2913,16 +2913,16 @@ void __22__NURenderJob_willRun__block_invoke(uint64_t a1)
       v17 = v8;
     }
 
-    v18 = [(NURenderJob *)self device];
-    v5 = [v18 rendererWithOptions:v17 error:a3];
+    device = [(NURenderJob *)self device];
+    renderer = [device rendererWithOptions:v17 error:renderer];
 
-    if (v5)
+    if (renderer)
     {
-      [(NURenderJob *)self setRenderer:v5];
+      [(NURenderJob *)self setRenderer:renderer];
     }
   }
 
-  v19 = v5;
+  v19 = renderer;
 
   return v19;
 }
@@ -2972,8 +2972,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2989,8 +2989,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -3004,9 +3004,9 @@ LABEL_14:
   _NUAssertFailHandler("[NURenderJob scalePolicy]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 325, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v23, v24, v25, v26, v22);
 }
 
-- (void)_emitSignpostEventType:(unsigned __int8)a3 forStage:(int64_t)a4 duration:(double)a5
+- (void)_emitSignpostEventType:(unsigned __int8)type forStage:(int64_t)stage duration:(double)duration
 {
-  v7 = a3;
+  typeCopy = type;
   v41 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
   {
@@ -3014,7 +3014,7 @@ LABEL_14:
   }
 
   v9 = _NUScheduleLogger;
-  if (v7 == 2)
+  if (typeCopy == 2)
   {
     if (NUIsAppleInternal_onceToken != -1)
     {
@@ -3024,33 +3024,33 @@ LABEL_14:
     if (NUIsAppleInternal_isAppleInternal == 1)
     {
       v10 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:0x2000];
-      [v10 appendFormat:@"Duration = %.3f\n", *&a5];
-      if ((a4 - 1) > 5)
+      [v10 appendFormat:@"Duration = %.3f\n", *&duration];
+      if ((stage - 1) > 5)
       {
         v11 = @"None";
       }
 
       else
       {
-        v11 = off_1E810B140[a4 - 1];
+        v11 = off_1E810B140[stage - 1];
       }
 
       v12 = v11;
       [v10 appendFormat:@"Stage = %@\n", v12];
 
-      v13 = [(NURenderJob *)self request];
-      v14 = [v13 name];
-      [v10 appendFormat:@"Name=%@, Job=%llu\n\n", v14, -[NURenderJob jobNumber](self, "jobNumber")];
+      request = [(NURenderJob *)self request];
+      name = [request name];
+      [v10 appendFormat:@"Name=%@, Job=%llu\n\n", name, -[NURenderJob jobNumber](self, "jobNumber")];
 
       [v10 appendString:@"----\n"];
-      v15 = [(NURenderJob *)self additionalDebugInfo];
-      [v10 appendFormat:@"jobDebugInfo = \n%@\n", v15];
+      additionalDebugInfo = [(NURenderJob *)self additionalDebugInfo];
+      [v10 appendFormat:@"jobDebugInfo = \n%@\n", additionalDebugInfo];
 
       [v10 appendString:@"----\n"];
-      v16 = [(NURenderJob *)self request];
-      v17 = [v16 additionalDebugInfo];
+      request2 = [(NURenderJob *)self request];
+      additionalDebugInfo2 = [request2 additionalDebugInfo];
 
-      [v10 appendFormat:@"\nrequestDebugInfo = \n%@\n", v17];
+      [v10 appendFormat:@"\nrequestDebugInfo = \n%@\n", additionalDebugInfo2];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
@@ -3061,9 +3061,9 @@ LABEL_14:
   }
 
   v18 = os_signpost_id_make_with_pointer(v9, self);
-  if (a4 <= 2)
+  if (stage <= 2)
   {
-    switch(a4)
+    switch(stage)
     {
       case 0:
         v29 = v9;
@@ -3078,13 +3078,13 @@ LABEL_14:
           goto LABEL_43;
         }
 
-        v21 = [(NURenderJob *)self request];
-        v22 = [v21 name];
-        v30 = [(NURenderJob *)self jobNumber];
+        request3 = [(NURenderJob *)self request];
+        name2 = [request3 name];
+        jobNumber = [(NURenderJob *)self jobNumber];
         *buf = 138412546;
-        v38 = v22;
+        v38 = name2;
         v39 = 2048;
-        v40 = v30;
+        v40 = jobNumber;
         v24 = "None";
         goto LABEL_42;
       case 1:
@@ -3100,13 +3100,13 @@ LABEL_14:
           goto LABEL_43;
         }
 
-        v21 = [(NURenderJob *)self request];
-        v22 = [v21 name];
-        v36 = [(NURenderJob *)self jobNumber];
+        request3 = [(NURenderJob *)self request];
+        name2 = [request3 name];
+        jobNumber2 = [(NURenderJob *)self jobNumber];
         *buf = 138412546;
-        v38 = v22;
+        v38 = name2;
         v39 = 2048;
-        v40 = v36;
+        v40 = jobNumber2;
         v24 = "Prepare";
         goto LABEL_42;
       case 2:
@@ -3122,13 +3122,13 @@ LABEL_14:
           goto LABEL_43;
         }
 
-        v21 = [(NURenderJob *)self request];
-        v22 = [v21 name];
-        v26 = [(NURenderJob *)self jobNumber];
+        request3 = [(NURenderJob *)self request];
+        name2 = [request3 name];
+        jobNumber3 = [(NURenderJob *)self jobNumber];
         *buf = 138412546;
-        v38 = v22;
+        v38 = name2;
         v39 = 2048;
-        v40 = v26;
+        v40 = jobNumber3;
         v24 = "WaitPause";
         goto LABEL_42;
     }
@@ -3136,9 +3136,9 @@ LABEL_14:
 
   else
   {
-    if (a4 <= 4)
+    if (stage <= 4)
     {
-      if (a4 == 3)
+      if (stage == 3)
       {
         v31 = v9;
         if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL)
@@ -3152,13 +3152,13 @@ LABEL_14:
           goto LABEL_43;
         }
 
-        v21 = [(NURenderJob *)self request];
-        v22 = [v21 name];
-        v32 = [(NURenderJob *)self jobNumber];
+        request3 = [(NURenderJob *)self request];
+        name2 = [request3 name];
+        jobNumber4 = [(NURenderJob *)self jobNumber];
         *buf = 138412546;
-        v38 = v22;
+        v38 = name2;
         v39 = 2048;
-        v40 = v32;
+        v40 = jobNumber4;
         v24 = "WaitDependencies";
       }
 
@@ -3176,24 +3176,24 @@ LABEL_14:
           goto LABEL_43;
         }
 
-        v21 = [(NURenderJob *)self request];
-        v22 = [v21 name];
-        v23 = [(NURenderJob *)self jobNumber];
+        request3 = [(NURenderJob *)self request];
+        name2 = [request3 name];
+        jobNumber5 = [(NURenderJob *)self jobNumber];
         *buf = 138412546;
-        v38 = v22;
+        v38 = name2;
         v39 = 2048;
-        v40 = v23;
+        v40 = jobNumber5;
         v24 = "Render";
       }
 
 LABEL_42:
-      _os_signpost_emit_with_name_impl(&dword_1C0184000, v20, v7, v18, v24, "Name=%@, Job=%llu", buf, 0x16u);
+      _os_signpost_emit_with_name_impl(&dword_1C0184000, v20, typeCopy, v18, v24, "Name=%@, Job=%llu", buf, 0x16u);
 
 LABEL_43:
       goto LABEL_44;
     }
 
-    if (a4 == 5)
+    if (stage == 5)
     {
       v33 = v9;
       if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL)
@@ -3207,18 +3207,18 @@ LABEL_43:
         goto LABEL_43;
       }
 
-      v21 = [(NURenderJob *)self request];
-      v22 = [v21 name];
-      v34 = [(NURenderJob *)self jobNumber];
+      request3 = [(NURenderJob *)self request];
+      name2 = [request3 name];
+      jobNumber6 = [(NURenderJob *)self jobNumber];
       *buf = 138412546;
-      v38 = v22;
+      v38 = name2;
       v39 = 2048;
-      v40 = v34;
+      v40 = jobNumber6;
       v24 = "Complete";
       goto LABEL_42;
     }
 
-    if (a4 == 6)
+    if (stage == 6)
     {
       v27 = v9;
       if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL)
@@ -3232,13 +3232,13 @@ LABEL_43:
         goto LABEL_43;
       }
 
-      v21 = [(NURenderJob *)self request];
-      v22 = [v21 name];
-      v28 = [(NURenderJob *)self jobNumber];
+      request3 = [(NURenderJob *)self request];
+      name2 = [request3 name];
+      jobNumber7 = [(NURenderJob *)self jobNumber];
       *buf = 138412546;
-      v38 = v22;
+      v38 = name2;
       v39 = 2048;
-      v40 = v28;
+      v40 = jobNumber7;
       v24 = "Done";
       goto LABEL_42;
     }
@@ -3247,13 +3247,13 @@ LABEL_43:
 LABEL_44:
 }
 
-- (void)_run:(int64_t)a3
+- (void)_run:(int64_t)_run
 {
-  v4 = [(NURenderJob *)self willRun];
-  if (v4)
+  willRun = [(NURenderJob *)self willRun];
+  if (willRun)
   {
-    v5 = v4;
-    [(NURenderJob *)self _emitSignpostEventType:1 forStage:v4 duration:0.0];
+    v5 = willRun;
+    [(NURenderJob *)self _emitSignpostEventType:1 forStage:willRun duration:0.0];
     Current = CFAbsoluteTimeGetCurrent();
     v7 = 0;
     if (![(NURenderJob *)self runStage:v5 error:&v7])
@@ -3266,37 +3266,37 @@ LABEL_44:
   }
 }
 
-- (void)run:(int64_t)a3
+- (void)run:(int64_t)run
 {
-  v5 = [(NURenderJob *)self request];
-  v6 = [v5 voucher];
+  request = [(NURenderJob *)self request];
+  voucher = [request voucher];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __19__NURenderJob_run___block_invoke;
   v7[3] = &unk_1E810B078;
   v7[4] = self;
-  v7[5] = a3;
-  NULogAdoptVoucher(v6, v7);
+  v7[5] = run;
+  NULogAdoptVoucher(voucher, v7);
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NURenderJob *)self currentStage];
-  if ((v5 - 1) > 5)
+  currentStage = [(NURenderJob *)self currentStage];
+  if ((currentStage - 1) > 5)
   {
     v6 = @"None";
   }
 
   else
   {
-    v6 = off_1E810B140[v5 - 1];
+    v6 = off_1E810B140[currentStage - 1];
   }
 
   v7 = v6;
-  v8 = [(NURenderJob *)self request];
-  v9 = [v3 stringWithFormat:@"<%@:%p - state: %@ request: %@>", v4, self, v7, v8];
+  request = [(NURenderJob *)self request];
+  v9 = [v3 stringWithFormat:@"<%@:%p - state: %@ request: %@>", v4, self, v7, request];
 
   return v9;
 }
@@ -3304,9 +3304,9 @@ LABEL_44:
 - ($0AC6E346AE4835514AAA8AC86D8F4844)imageSize
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(NURenderJob *)self outputGeometry];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
 
-  if (!v3)
+  if (!outputGeometry)
   {
     v10 = NUAssertLogger_24345();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -3327,8 +3327,8 @@ LABEL_44:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v26 = 138543618;
         *&v26[4] = v17;
         v27 = 2114;
@@ -3339,8 +3339,8 @@ LABEL_44:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v26 = 138543362;
       *&v26[4] = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v26, 0xCu);
@@ -3349,41 +3349,41 @@ LABEL_44:
     _NUAssertFailHandler("[NURenderJob imageSize]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 244, @"Output geometry is missing. Either the job's prepare stage has not been performed, or the job did not request output geometry.", v22, v23, v24, v25, *v26);
   }
 
-  v4 = [(NURenderJob *)self outputGeometry];
-  v5 = [v4 scaledSize];
+  outputGeometry2 = [(NURenderJob *)self outputGeometry];
+  scaledSize = [outputGeometry2 scaledSize];
   v7 = v6;
 
-  v8 = v5;
+  v8 = scaledSize;
   v9 = v7;
   result.var1 = v9;
   result.var0 = v8;
   return result;
 }
 
-- (int64_t)resolvedSampleMode:(int64_t)a3
+- (int64_t)resolvedSampleMode:(int64_t)mode
 {
-  if (a3)
+  if (mode)
   {
-    return a3;
+    return mode;
   }
 
-  v4 = [(NURenderJob *)self device];
-  v5 = [v4 defaultSampleMode];
+  device = [(NURenderJob *)self device];
+  defaultSampleMode = [device defaultSampleMode];
 
-  return v5;
+  return defaultSampleMode;
 }
 
-- (id)newRenderPipelineStateForEvaluationMode:(int64_t)a3
+- (id)newRenderPipelineStateForEvaluationMode:(int64_t)mode
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [(NURenderJob *)self request];
+  request = [(NURenderJob *)self request];
   v6 = objc_alloc_init(NURenderPipelineState);
-  [(NURenderPipelineState *)v6 setEvaluationMode:a3];
-  v7 = [v5 pipelineFilters];
-  [(NURenderPipelineState *)v6 setPipelineFilters:v7];
+  [(NURenderPipelineState *)v6 setEvaluationMode:mode];
+  pipelineFilters = [request pipelineFilters];
+  [(NURenderPipelineState *)v6 setPipelineFilters:pipelineFilters];
 
-  -[NURenderPipelineState setSampleMode:](v6, "setSampleMode:", -[NURenderJob resolvedSampleMode:](self, "resolvedSampleMode:", [v5 sampleMode]));
-  if ((a3 - 1) < 3)
+  -[NURenderPipelineState setSampleMode:](v6, "setSampleMode:", -[NURenderJob resolvedSampleMode:](self, "resolvedSampleMode:", [request sampleMode]));
+  if ((mode - 1) < 3)
   {
     if ([(NURenderJob *)self renderScale]< 1 || v8 <= 0)
     {
@@ -3406,8 +3406,8 @@ LABEL_44:
           v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v29 = MEMORY[0x1E696AF00];
           v30 = v28;
-          v31 = [v29 callStackSymbols];
-          v32 = [v31 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v29 callStackSymbols];
+          v32 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           *&buf[4] = v28;
           *&buf[12] = 2114;
@@ -3418,8 +3418,8 @@ LABEL_44:
 
       else if (v25)
       {
-        v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         *&buf[4] = v27;
         _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3428,46 +3428,46 @@ LABEL_44:
       _NUAssertFailHandler("[NURenderJob newRenderPipelineStateForEvaluationMode:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 204, @"Invalid render scale", v33, v34, v35, v36, v37);
     }
 
-    v9 = [(NURenderJob *)self renderScale];
+    renderScale = [(NURenderJob *)self renderScale];
     v11 = v10;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!mode)
   {
     v11 = *(&NUScaleUnknown + 1);
-    v9 = NUScaleUnknown;
+    renderScale = NUScaleUnknown;
 LABEL_7:
-    [(NURenderPipelineState *)v6 setScale:v9, v11];
+    [(NURenderPipelineState *)v6 setScale:renderScale, v11];
   }
 
-  -[NURenderPipelineState setMediaComponentType:](v6, "setMediaComponentType:", [v5 mediaComponentType]);
-  v12 = [(NURenderJob *)self device];
-  [(NURenderPipelineState *)v6 setDevice:v12];
+  -[NURenderPipelineState setMediaComponentType:](v6, "setMediaComponentType:", [request mediaComponentType]);
+  device = [(NURenderJob *)self device];
+  [(NURenderPipelineState *)v6 setDevice:device];
 
-  if (v5)
+  if (request)
   {
-    [v5 time];
+    [request time];
     if (v39)
     {
-      [v5 time];
+      [request time];
       *buf = v37;
       *&buf[16] = v38;
       [(NURenderPipelineState *)v6 setTime:buf];
     }
   }
 
-  v13 = [(NURenderJob *)self request];
-  v14 = [v13 composition];
-  if ([v14 mediaType] == 2)
+  request2 = [(NURenderJob *)self request];
+  composition = [request2 composition];
+  if ([composition mediaType] == 2)
   {
   }
 
   else
   {
-    v15 = [v5 mediaComponentType];
+    mediaComponentType = [request mediaComponentType];
 
-    if (v15 != 2)
+    if (mediaComponentType != 2)
     {
       goto LABEL_15;
     }
@@ -3475,18 +3475,18 @@ LABEL_7:
 
   [(NURenderPipelineState *)v6 setEnforceEvenDimensions:1];
 LABEL_15:
-  v16 = [(NURenderJob *)self request];
-  v17 = [v16 isOneShot];
+  request3 = [(NURenderJob *)self request];
+  isOneShot = [request3 isOneShot];
 
-  if (v17)
+  if (isOneShot)
   {
     [(NURenderPipelineState *)v6 setDisableIntermediateCaching:1];
   }
 
-  v18 = [(NURenderJob *)self request];
-  v19 = [v18 shouldUseLowMemoryMode];
+  request4 = [(NURenderJob *)self request];
+  shouldUseLowMemoryMode = [request4 shouldUseLowMemoryMode];
 
-  if (v19)
+  if (shouldUseLowMemoryMode)
   {
     [(NURenderPipelineState *)v6 setLowMemoryMode:1];
   }
@@ -3497,18 +3497,18 @@ LABEL_15:
 - (void)runToPrepareSynchronous
 {
   self->_replySynchronous = 1;
-  v3 = [(NURenderJob *)self currentStage];
+  currentStage = [(NURenderJob *)self currentStage];
   if (![(NURenderJob *)self isFinished])
   {
     do
     {
-      [(NURenderJob *)self run:v3];
-      if (v3 == 1)
+      [(NURenderJob *)self run:currentStage];
+      if (currentStage == 1)
       {
         break;
       }
 
-      v3 = [(NURenderJob *)self currentStage];
+      currentStage = [(NURenderJob *)self currentStage];
     }
 
     while (![(NURenderJob *)self isFinished]);
@@ -3521,21 +3521,21 @@ LABEL_15:
 {
   v14 = *MEMORY[0x1E69E9840];
   self->_replySynchronous = 1;
-  v3 = [(NURenderJob *)self currentStage];
+  currentStage = [(NURenderJob *)self currentStage];
   if (![(NURenderJob *)self isFinished])
   {
     do
     {
-      [(NURenderJob *)self run:v3];
-      v3 = [(NURenderJob *)self currentStage];
-      if (v3 == 3)
+      [(NURenderJob *)self run:currentStage];
+      currentStage = [(NURenderJob *)self currentStage];
+      if (currentStage == 3)
       {
         v11 = 0u;
         v12 = 0u;
         v9 = 0u;
         v10 = 0u;
-        v4 = [(NURenderJob *)self dependentJobs];
-        v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        dependentJobs = [(NURenderJob *)self dependentJobs];
+        v5 = [dependentJobs countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v5)
         {
           v6 = v5;
@@ -3547,20 +3547,20 @@ LABEL_15:
             {
               if (*v10 != v7)
               {
-                objc_enumerationMutation(v4);
+                objc_enumerationMutation(dependentJobs);
               }
 
               [*(*(&v9 + 1) + 8 * v8++) runSynchronous];
             }
 
             while (v6 != v8);
-            v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+            v6 = [dependentJobs countByEnumeratingWithState:&v9 objects:v13 count:16];
           }
 
           while (v6);
         }
 
-        v3 = 1;
+        currentStage = 1;
       }
     }
 
@@ -3570,28 +3570,28 @@ LABEL_15:
   self->_replySynchronous = 0;
 }
 
-- (id)_prepareNodeFromMedia:(id)a3
+- (id)_prepareNodeFromMedia:(id)media
 {
-  v4 = a3;
-  v5 = [v4 renderNode];
+  mediaCopy = media;
+  renderNode = [mediaCopy renderNode];
   v6 = objc_opt_new();
-  v7 = [v4 format];
+  format = [mediaCopy format];
 
-  if ([v7 temporality] == 2 || (-[NURenderJob request](self, "request"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "mediaComponentType"), v8, v9 == 2))
+  if ([format temporality] == 2 || (-[NURenderJob request](self, "request"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "mediaComponentType"), v8, v9 == 2))
   {
     [v6 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"enforceEvenDimensions"];
   }
 
-  v10 = [[NUPipelineOutputNode alloc] initWithInput:v5 settings:v6];
+  v10 = [[NUPipelineOutputNode alloc] initWithInput:renderNode settings:v6];
 
   return v10;
 }
 
-- (NURenderJob)initWithRequest:(id)a3
+- (NURenderJob)initWithRequest:(id)request
 {
   v53 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
     v32 = NUAssertLogger_24345();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -3612,8 +3612,8 @@ LABEL_15:
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v40 callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v39;
         v51 = 2114;
@@ -3624,8 +3624,8 @@ LABEL_15:
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3634,7 +3634,7 @@ LABEL_15:
     _NUAssertFailHandler("[NURenderJob initWithRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 84, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "request != nil");
   }
 
-  v6 = v5;
+  v6 = requestCopy;
   v48.receiver = self;
   v48.super_class = NURenderJob;
   v7 = [(NURenderJob *)&v48 init];
@@ -3649,7 +3649,7 @@ LABEL_15:
   stateQueue = v7->_stateQueue;
   v7->_stateQueue = v11;
 
-  objc_storeStrong(&v7->_request, a3);
+  objc_storeStrong(&v7->_request, request);
   v13 = objc_alloc_init(NUObservatory);
   observatory = v7->_observatory;
   v7->_observatory = v13;
@@ -3663,8 +3663,8 @@ LABEL_15:
   if (+[NUGlobalSettings renderJobDebug])
   {
     [(NURenderJob *)v7 renderJobDebugInit];
-    v17 = [v6 name];
-    [NURenderJobStatistics recordJobCreatedToHistory:v17];
+    name = [v6 name];
+    [NURenderJobStatistics recordJobCreatedToHistory:name];
   }
 
   if (+[NUGlobalSettings imageRenderJobUseSurfaceRenderer])
@@ -3683,11 +3683,11 @@ LABEL_8:
 
   v7->_rendererType = 0;
 LABEL_10:
-  v19 = [v6 device];
-  v20 = v19;
-  if (v19)
+  device = [v6 device];
+  v20 = device;
+  if (device)
   {
-    v21 = v19;
+    v21 = device;
     device = v7->_device;
     v7->_device = v21;
   }
@@ -3695,21 +3695,21 @@ LABEL_10:
   else
   {
     device = +[NUPlatform currentPlatform];
-    v23 = [device mainDevice];
+    mainDevice = [device mainDevice];
     v24 = v7->_device;
-    v7->_device = v23;
+    v7->_device = mainDevice;
   }
 
   v25 = dispatch_group_create();
   replyGroup = v7->_replyGroup;
   v7->_replyGroup = v25;
 
-  v27 = [v6 media];
+  media = [v6 media];
 
-  if (v27)
+  if (media)
   {
-    v28 = [v6 media];
-    v29 = [(NURenderJob *)v7 _prepareNodeFromMedia:v28];
+    media2 = [v6 media];
+    v29 = [(NURenderJob *)v7 _prepareNodeFromMedia:media2];
     prepareNode = v7->_prepareNode;
     v7->_prepareNode = v29;
   }
@@ -3763,8 +3763,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3780,8 +3780,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -3803,14 +3803,14 @@ LABEL_14:
   [v2 flush];
 }
 
-- (BOOL)renderVideoFrames:(id)a3 videoMetadataSamples:(id)a4 videoSampleSlices:(id)a5 intoPixelBuffer:(__CVBuffer *)a6 time:(id *)a7 colorSpace:(id)a8 playbackDirection:(int64_t)a9 error:(id *)a10
+- (BOOL)renderVideoFrames:(id)frames videoMetadataSamples:(id)samples videoSampleSlices:(id)slices intoPixelBuffer:(__CVBuffer *)buffer time:(id *)time colorSpace:(id)space playbackDirection:(int64_t)direction error:(id *)self0
 {
   v190 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  if (!a6)
+  framesCopy = frames;
+  samplesCopy = samples;
+  slicesCopy = slices;
+  spaceCopy = space;
+  if (!buffer)
   {
     v100 = NUAssertLogger_24345();
     if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -3831,8 +3831,8 @@ LABEL_14:
         v128 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v129 = MEMORY[0x1E696AF00];
         v130 = v128;
-        v131 = [v129 callStackSymbols];
-        v132 = [v131 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v129 callStackSymbols];
+        v132 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v128;
         *&buf[12] = 2114;
@@ -3843,8 +3843,8 @@ LABEL_14:
 
     else if (v104)
     {
-      v105 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v106 = [v105 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v106 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v106;
       _os_log_error_impl(&dword_1C0184000, v103, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3853,7 +3853,7 @@ LABEL_14:
     _NUAssertFailHandler("[NURenderJob(VideoSupport) renderVideoFrames:videoMetadataSamples:videoSampleSlices:intoPixelBuffer:time:colorSpace:playbackDirection:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1528, @"Invalid parameter not satisfying: %s", v133, v134, v135, v136, "destination != NULL");
   }
 
-  if (!a10)
+  if (!error)
   {
     v107 = NUAssertLogger_24345();
     if (os_log_type_enabled(v107, OS_LOG_TYPE_ERROR))
@@ -3874,8 +3874,8 @@ LABEL_14:
         v137 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v138 = MEMORY[0x1E696AF00];
         v139 = v137;
-        v140 = [v138 callStackSymbols];
-        v141 = [v140 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v138 callStackSymbols];
+        v141 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v137;
         *&buf[12] = 2114;
@@ -3886,8 +3886,8 @@ LABEL_14:
 
     else if (v111)
     {
-      v112 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v113 = [v112 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v113 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v113;
       _os_log_error_impl(&dword_1C0184000, v110, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3896,7 +3896,7 @@ LABEL_14:
     _NUAssertFailHandler("[NURenderJob(VideoSupport) renderVideoFrames:videoMetadataSamples:videoSampleSlices:intoPixelBuffer:time:colorSpace:playbackDirection:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1529, @"Invalid parameter not satisfying: %s", v142, v143, v144, v145, "error != NULL");
   }
 
-  if (!v16)
+  if (!framesCopy)
   {
     v114 = NUAssertLogger_24345();
     if (os_log_type_enabled(v114, OS_LOG_TYPE_ERROR))
@@ -3917,8 +3917,8 @@ LABEL_14:
         v146 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v147 = MEMORY[0x1E696AF00];
         v148 = v146;
-        v149 = [v147 callStackSymbols];
-        v150 = [v149 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v147 callStackSymbols];
+        v150 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v146;
         *&buf[12] = 2114;
@@ -3929,8 +3929,8 @@ LABEL_14:
 
     else if (v118)
     {
-      v119 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v120 = [v119 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v120 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v120;
       _os_log_error_impl(&dword_1C0184000, v117, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3939,7 +3939,7 @@ LABEL_14:
     _NUAssertFailHandler("[NURenderJob(VideoSupport) renderVideoFrames:videoMetadataSamples:videoSampleSlices:intoPixelBuffer:time:colorSpace:playbackDirection:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1530, @"Invalid parameter not satisfying: %s", v151, v152, v153, v154, "videoFrames != nil");
   }
 
-  if ((a7->var2 & 1) == 0)
+  if ((time->var2 & 1) == 0)
   {
     v121 = NUAssertLogger_24345();
     if (os_log_type_enabled(v121, OS_LOG_TYPE_ERROR))
@@ -3960,8 +3960,8 @@ LABEL_14:
         v155 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v156 = MEMORY[0x1E696AF00];
         v157 = v155;
-        v158 = [v156 callStackSymbols];
-        v159 = [v158 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v156 callStackSymbols];
+        v159 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v155;
         *&buf[12] = 2114;
@@ -3972,8 +3972,8 @@ LABEL_14:
 
     else if (v125)
     {
-      v126 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v127 = [v126 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v127 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v127;
       _os_log_error_impl(&dword_1C0184000, v124, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3982,12 +3982,12 @@ LABEL_14:
     _NUAssertFailHandler("[NURenderJob(VideoSupport) renderVideoFrames:videoMetadataSamples:videoSampleSlices:intoPixelBuffer:time:colorSpace:playbackDirection:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1531, @"Invalid parameter not satisfying: %s", v160, v161, v162, v163, "CMTIME_IS_VALID(time)");
   }
 
-  v20 = v19;
-  v176 = a7;
-  v21 = [(NURenderJob *)self renderer:a10];
+  v20 = spaceCopy;
+  timeCopy = time;
+  v21 = [(NURenderJob *)self renderer:error];
   if (v21)
   {
-    allocator = a6;
+    allocator = buffer;
     if (_NULogOnceToken != -1)
     {
       dispatch_once(&_NULogOnceToken, &__block_literal_global_984);
@@ -4006,20 +4006,20 @@ LABEL_14:
     }
 
     v26 = [(NURenderJob *)self newRenderPipelineStateForEvaluationMode:3];
-    v27 = [(NURenderJob *)self renderScale];
-    [v26 setScale:{v27, v28}];
-    [v26 setVideoFrames:v16];
-    [v26 setVideoMetadataSamples:v17];
-    if (v18)
+    renderScale = [(NURenderJob *)self renderScale];
+    [v26 setScale:{renderScale, v28}];
+    [v26 setVideoFrames:framesCopy];
+    [v26 setVideoMetadataSamples:samplesCopy];
+    if (slicesCopy)
     {
-      [v26 setVideoSampleSlices:v18];
+      [v26 setVideoSampleSlices:slicesCopy];
     }
 
-    *buf = *&v176->var0;
-    *&buf[16] = v176->var3;
+    *buf = *&timeCopy->var0;
+    *&buf[16] = timeCopy->var3;
     [v26 setTime:buf];
-    [v26 setPlaybackDirection:a9];
-    v29 = [(NURenderJob *)self renderNodeWithPipelineState:v26 error:a10];
+    [v26 setPlaybackDirection:direction];
+    v29 = [(NURenderJob *)self renderNodeWithPipelineState:v26 error:error];
     v30 = v29;
     if (!v29)
     {
@@ -4029,7 +4029,7 @@ LABEL_62:
       goto LABEL_63;
     }
 
-    v31 = [v29 outputImage:a10];
+    v31 = [v29 outputImage:error];
     if (!v31)
     {
       v53 = 0;
@@ -4054,10 +4054,10 @@ LABEL_61:
     v171 = Width;
     v38.i64[0] = Width;
     v38.i64[1] = Height;
-    v169 = v17;
-    v170 = v16;
-    v168 = v18;
-    v173 = self;
+    v169 = samplesCopy;
+    v170 = framesCopy;
+    v168 = slicesCopy;
+    selfCopy = self;
     v178 = v25;
     if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqzq_s64(v180), vceqq_s64(v38, v179)))))
     {
@@ -4070,9 +4070,9 @@ LABEL_33:
       }
 
       v74 = MEMORY[0x1E696AEC0];
-      v75 = [(NURenderJob *)v173 request];
-      v76 = [v75 name];
-      v77 = [v74 stringWithFormat:@"%@-j%lld", v76, -[NURenderJob jobNumber](v173, "jobNumber")];
+      request = [(NURenderJob *)selfCopy request];
+      name = [request name];
+      v77 = [v74 stringWithFormat:@"%@-j%lld", name, -[NURenderJob jobNumber](selfCopy, "jobNumber")];
       [v72 setLabel:v77];
 
       if (v20)
@@ -4111,8 +4111,8 @@ LABEL_40:
           v82 = _NUScheduleLogger;
           if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_ERROR))
           {
-            *buf = *&v176->var0;
-            *&buf[16] = v176->var3;
+            *buf = *&timeCopy->var0;
+            *&buf[16] = timeCopy->var3;
             v89 = v82;
             v90 = CMTimeCopyDescription(allocatora, buf);
             *buf = 138413058;
@@ -4126,8 +4126,8 @@ LABEL_40:
             _os_log_error_impl(&dword_1C0184000, v89, OS_LOG_TYPE_ERROR, "Retrying video frame render at time %@: attempt %d of %d; previous error %@", buf, 0x22u);
           }
 
-          v83 = [v21 context];
-          [v83 clearCaches];
+          context = [v21 context];
+          [context clearCaches];
         }
 
         v84 = v79;
@@ -4179,15 +4179,15 @@ LABEL_40:
 
       if (!v53)
       {
-        v93 = [(NURenderJob *)v173 request];
-        v94 = [v93 copy];
-        *a10 = [NUError errorWithCode:1 reason:@"Failed to render frame. Task creation or completion failed" object:v94 underlyingError:v80];
+        request2 = [(NURenderJob *)selfCopy request];
+        v94 = [request2 copy];
+        *error = [NUError errorWithCode:1 reason:@"Failed to render frame. Task creation or completion failed" object:v94 underlyingError:v80];
       }
 
-      v17 = v169;
-      v16 = v170;
+      samplesCopy = v169;
+      framesCopy = v170;
       v20 = v167;
-      v18 = v168;
+      slicesCopy = v168;
       v25 = v178;
       v26 = v165;
       v30 = v172;
@@ -4203,7 +4203,7 @@ LABEL_40:
     v40 = _NUAssertLogger;
     if (os_log_type_enabled(_NUAssertLogger, OS_LOG_TYPE_DEFAULT))
     {
-      v41 = self;
+      selfCopy2 = self;
       v42 = MEMORY[0x1E696AEC0];
       v43 = MEMORY[0x1E696B098];
       v44 = v40;
@@ -4213,8 +4213,8 @@ LABEL_40:
       v185[2] = v47;
       v185[3] = v48;
       v49 = [v43 valueWithBytes:v185 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-      v50 = [(NURenderJob *)v41 outputGeometry];
-      v51 = [v42 stringWithFormat:@"Frame size != buffer size, b=%@, s=%ldx%ld, g=%@, r=%@, i=%@", v49, v171, v39, v50, v172, v31];
+      outputGeometry = [(NURenderJob *)selfCopy2 outputGeometry];
+      v51 = [v42 stringWithFormat:@"Frame size != buffer size, b=%@, s=%ldx%ld, g=%@, r=%@, i=%@", v49, v171, v39, outputGeometry, v172, v31];
       *buf = 138543362;
       *&buf[4] = v51;
       _os_log_impl(&dword_1C0184000, v44, OS_LOG_TYPE_DEFAULT, "Continue: %{public}@", buf, 0xCu);
@@ -4246,8 +4246,8 @@ LABEL_26:
         v56 = MEMORY[0x1E696AF00];
         v166 = v55;
         v57 = v54;
-        v58 = [v56 callStackSymbols];
-        v59 = [v58 componentsJoinedByString:@"\n"];
+        callStackSymbols9 = [v56 callStackSymbols];
+        v59 = [callStackSymbols9 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v55;
         *&buf[12] = 2114;
@@ -4263,7 +4263,7 @@ LABEL_32:
       v184[2] = v64;
       v184[3] = v65;
       v66 = [v61 valueWithBytes:v184 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-      v164 = [(NURenderJob *)v173 outputGeometry];
+      outputGeometry2 = [(NURenderJob *)selfCopy outputGeometry];
       _NUAssertContinueHandler("[NURenderJob(VideoSupport) renderVideoFrames:videoMetadataSamples:videoSampleSlices:intoPixelBuffer:time:colorSpace:playbackDirection:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1573, @"Frame size != buffer size, b=%@, s=%ldx%ld, g=%@, r=%@, i=%@", v67, v68, v69, v70, v66);
 
       v71.i64[0] = v171;
@@ -4283,8 +4283,8 @@ LABEL_32:
     {
       v96 = MEMORY[0x1E696AF00];
       v97 = v60;
-      v98 = [v96 callStackSymbols];
-      v99 = [v98 componentsJoinedByString:@"\n"];
+      callStackSymbols10 = [v96 callStackSymbols];
+      v99 = [callStackSymbols10 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v99;
       _os_log_error_impl(&dword_1C0184000, v97, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -4299,15 +4299,15 @@ LABEL_63:
   return v53;
 }
 
-- (id)renderImage:(id)a3 into:(id)a4 colorSpace:(id)a5 roi:(id)a6 imageSize:(id)a7 alpha:(const unint64_t *)a8 error:(id *)a9
+- (id)renderImage:(id)image into:(id)into colorSpace:(id)space roi:(id)roi imageSize:(id)size alpha:(const unint64_t *)alpha error:(id *)error
 {
-  var1 = a7.var1;
+  var1 = size.var1;
   v90 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if (!a9)
+  imageCopy = image;
+  intoCopy = into;
+  spaceCopy = space;
+  roiCopy = roi;
+  if (!error)
   {
     v37 = NUAssertLogger_24345();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -4328,8 +4328,8 @@ LABEL_63:
         v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v45 = MEMORY[0x1E696AF00];
         v46 = v44;
-        v47 = [v45 callStackSymbols];
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v45 callStackSymbols];
+        v48 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v86 = 138543618;
         *&v86[4] = v44;
         *&v86[12] = 2114;
@@ -4340,8 +4340,8 @@ LABEL_63:
 
     else if (v41)
     {
-      v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v43 = [v42 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v43 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v86 = 138543362;
       *&v86[4] = v43;
       _os_log_error_impl(&dword_1C0184000, v40, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v86, 0xCu);
@@ -4350,8 +4350,8 @@ LABEL_63:
     _NUAssertFailHandler("[NURenderJob(RendererSupport) renderImage:into:colorSpace:roi:imageSize:alpha:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1457, @"Invalid parameter not satisfying: %s", v49, v50, v51, v52, "error != NULL");
   }
 
-  v18 = v17;
-  v55 = self;
+  v18 = roiCopy;
+  selfCopy = self;
   v56 = [(NURenderJob *)self renderer:?];
   if (v56)
   {
@@ -4374,9 +4374,9 @@ LABEL_63:
       v20 = 0;
     }
 
-    [v15 size];
+    [intoCopy size];
     v53 = v18;
-    v24 = v14;
+    v24 = imageCopy;
     v25 = var1 - (v19 + v21);
     v27 = v26 - v21;
     *v86 = 0;
@@ -4395,16 +4395,16 @@ LABEL_63:
     v57[1] = 3221225472;
     v57[2] = __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSize_alpha_error___block_invoke;
     v57[3] = &unk_1E810B0F8;
-    v28 = v16;
+    v28 = spaceCopy;
     v58 = v28;
-    v59 = v55;
-    v54 = v15;
-    v29 = v15;
-    v65 = a8;
+    v59 = selfCopy;
+    v54 = intoCopy;
+    v29 = intoCopy;
+    alphaCopy = alpha;
     v66 = v20;
     v67 = v25;
     v68 = v22;
-    v14 = v24;
+    imageCopy = v24;
     v69 = v21;
     v60 = v29;
     v63 = v86;
@@ -4420,19 +4420,19 @@ LABEL_63:
     {
       [v29 setColorSpace:v28];
       v23 = *(*&v86[8] + 40);
-      v15 = v54;
+      intoCopy = v54;
       v18 = v53;
     }
 
     else
     {
-      v30 = [(NURenderJob *)v55 isAborted];
+      isAborted = [(NURenderJob *)selfCopy isAborted];
       v31 = v75[5];
-      if (v30)
+      if (isAborted)
       {
-        [NUError errorWithCode:10 reason:@"render was aborted" object:v55 underlyingError:v31];
-        v15 = v54;
-        *a9 = v18 = v53;
+        [NUError errorWithCode:10 reason:@"render was aborted" object:selfCopy underlyingError:v31];
+        intoCopy = v54;
+        *error = v18 = v53;
         if (_NULogOnceToken != -1)
         {
           dispatch_once(&_NULogOnceToken, &__block_literal_global_984);
@@ -4441,9 +4441,9 @@ LABEL_63:
         v32 = _NUScheduleLogger;
         if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_DEBUG))
         {
-          v33 = *a9;
+          v33 = *error;
           *buf = 134218242;
-          v83 = v55;
+          v83 = selfCopy;
           v84 = 2114;
           v85 = v33;
           _os_log_debug_impl(&dword_1C0184000, v32, OS_LOG_TYPE_DEBUG, "job %p aborted: %{public}@", buf, 0x16u);
@@ -4452,9 +4452,9 @@ LABEL_63:
 
       else
       {
-        [NUError errorWithCode:1 reason:@"failed to prepare render" object:v55 underlyingError:v31];
-        v15 = v54;
-        *a9 = v18 = v53;
+        [NUError errorWithCode:1 reason:@"failed to prepare render" object:selfCopy underlyingError:v31];
+        intoCopy = v54;
+        *error = v18 = v53;
         if (_NULogOnceToken != -1)
         {
           dispatch_once(&_NULogOnceToken, &__block_literal_global_984);
@@ -4463,9 +4463,9 @@ LABEL_63:
         v34 = _NUScheduleLogger;
         if (os_log_type_enabled(_NUScheduleLogger, OS_LOG_TYPE_ERROR))
         {
-          v36 = *a9;
+          v36 = *error;
           *buf = 134218242;
-          v83 = v55;
+          v83 = selfCopy;
           v84 = 2114;
           v85 = v36;
           _os_log_error_impl(&dword_1C0184000, v34, OS_LOG_TYPE_ERROR, "job %p render failed: %{public}@", buf, 0x16u);
@@ -4659,38 +4659,38 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
 - (void)writeRenderDebugFileToDisk
 {
   v96 = *MEMORY[0x1E69E9840];
-  v3 = [(NURenderJob *)self debugFilePath];
+  debugFilePath = [(NURenderJob *)self debugFilePath];
   v4 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:512000];
-  v86 = v3;
-  [v4 appendString:v3];
-  v5 = [(NURenderJob *)self request];
-  v6 = [v5 name];
+  v86 = debugFilePath;
+  [v4 appendString:debugFilePath];
+  request = [(NURenderJob *)self request];
+  name = [request name];
   v87 = v4;
-  [v4 appendFormat:@"%@name: %@\n", @"\n\n", v6];
+  [v4 appendFormat:@"%@name: %@\n", @"\n\n", name];
 
   if (+[NUGlobalSettings renderJobDebugCaptureOnlyPerfStats])
   {
     v7 = objc_opt_class();
-    v8 = NSStringFromClass(v7);
-    [v4 appendFormat:@"%@\n", v8];
+    additionalDebugInfo2 = NSStringFromClass(v7);
+    [v4 appendFormat:@"%@\n", additionalDebugInfo2];
   }
 
   else
   {
-    v9 = [(NURenderJob *)self request];
-    v10 = [v9 additionalDebugInfo];
-    [v4 appendFormat:@"%@%@", v10, @"\n\n"];
+    request2 = [(NURenderJob *)self request];
+    additionalDebugInfo = [request2 additionalDebugInfo];
+    [v4 appendFormat:@"%@%@", additionalDebugInfo, @"\n\n"];
 
-    v8 = [(NURenderJob *)self additionalDebugInfo];
-    [v4 appendString:v8];
+    additionalDebugInfo2 = [(NURenderJob *)self additionalDebugInfo];
+    [v4 appendString:additionalDebugInfo2];
   }
 
-  v11 = [(NURenderJob *)self error];
+  error = [(NURenderJob *)self error];
 
-  if (v11)
+  if (error)
   {
-    v12 = [(NURenderJob *)self error];
-    v13 = [v12 description];
+    error2 = [(NURenderJob *)self error];
+    v13 = [error2 description];
     [v4 appendFormat:@"\n\nError:\n%@", v13];
   }
 
@@ -4704,8 +4704,8 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
     [v4 appendString:@"\nTHIS JOB WAS ABORTED IN THE MIDDLE OF EXECUTION"];
   }
 
-  v14 = [(NURenderJob *)self statistics];
-  if (v14)
+  statistics = [(NURenderJob *)self statistics];
+  if (statistics)
   {
     v15 = @"\n\n";
   }
@@ -4715,16 +4715,16 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
     v15 = &stru_1F3F4BA98;
   }
 
-  v16 = [(NURenderJob *)self statistics];
-  v17 = [v16 description];
+  statistics2 = [(NURenderJob *)self statistics];
+  v17 = [statistics2 description];
   [v4 appendFormat:@"%@Stats: %@%@", @"\n\n", v15, v17];
 
   if (+[NUGlobalSettings renderJobDebugCapturePerfStatHistory])
   {
     v84 = +[NURenderJobStatistics history];
-    v85 = [(NURenderJob *)self request];
-    v18 = [v85 name];
-    v19 = [v84 objectForKeyedSubscript:v18];
+    request3 = [(NURenderJob *)self request];
+    name2 = [request3 name];
+    v19 = [v84 objectForKeyedSubscript:name2];
     if (v19)
     {
       v20 = @"\n\n";
@@ -4736,22 +4736,22 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
     }
 
     v21 = +[NURenderJobStatistics history];
-    v22 = [(NURenderJob *)self request];
-    v23 = [v22 name];
-    v24 = [v21 objectForKeyedSubscript:v23];
+    request4 = [(NURenderJob *)self request];
+    name3 = [request4 name];
+    v24 = [v21 objectForKeyedSubscript:name3];
     v25 = [v24 description];
     [v87 appendFormat:@"%@Historical Stats: %@%@", @"\n\n", v20, v25];
   }
 
   if (!+[NUGlobalSettings renderJobDebugCaptureOnlyPerfStats])
   {
-    v26 = [(NURenderJob *)self nodeCacheAtStartOfJob];
-    [v87 appendFormat:@"%@Render Node Cache (at job start): %@", @"\n\n", v26];
+    nodeCacheAtStartOfJob = [(NURenderJob *)self nodeCacheAtStartOfJob];
+    [v87 appendFormat:@"%@Render Node Cache (at job start): %@", @"\n\n", nodeCacheAtStartOfJob];
 
-    LOBYTE(v26) = +[NUGlobalSettings renderJobDebugCaptureNodeCache];
+    LOBYTE(nodeCacheAtStartOfJob) = +[NUGlobalSettings renderJobDebugCaptureNodeCache];
     v27 = +[NURenderNodeCache sharedInstance];
     v28 = v27;
-    if (v26)
+    if (nodeCacheAtStartOfJob)
     {
       v29 = [v27 debugDescription];
       [v87 appendFormat:@"\n%@Render Node Cache (at job end): %@", @"\n\n", v29];
@@ -4762,9 +4762,9 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       [v87 appendFormat:@"\n%@Render Node Cache (at job end): %@", @"\n\n", v27];
     }
 
-    v30 = [(NURenderJob *)self request];
-    v31 = [v30 composition];
-    if (v31)
+    request5 = [(NURenderJob *)self request];
+    composition = [request5 composition];
+    if (composition)
     {
       v32 = @"\n\n";
     }
@@ -4774,12 +4774,12 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       v32 = &stru_1F3F4BA98;
     }
 
-    v33 = [(NURenderJob *)self request];
-    if (v33)
+    request6 = [(NURenderJob *)self request];
+    if (request6)
     {
-      v34 = [(NURenderJob *)self request];
-      v35 = [v34 composition];
-      v36 = [v35 debugDescription];
+      request7 = [(NURenderJob *)self request];
+      composition2 = [request7 composition];
+      v36 = [composition2 debugDescription];
       [v87 appendFormat:@"%@Composition: %@%@", @"\n\n", v32, v36];
     }
 
@@ -4788,8 +4788,8 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       [v87 appendFormat:@"%@Composition: %@%@", @"\n\n", v32, &stru_1F3F4BA98];
     }
 
-    v37 = [(NURenderJob *)self outputVideo];
-    if (v37)
+    outputVideo = [(NURenderJob *)self outputVideo];
+    if (outputVideo)
     {
       v38 = @"\n\n";
     }
@@ -4799,11 +4799,11 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       v38 = &stru_1F3F4BA98;
     }
 
-    v39 = [(NURenderJob *)self outputVideo];
-    if (v39)
+    outputVideo2 = [(NURenderJob *)self outputVideo];
+    if (outputVideo2)
     {
-      v40 = [(NURenderJob *)self outputVideo];
-      v41 = [v40 debugDescription];
+      outputVideo3 = [(NURenderJob *)self outputVideo];
+      v41 = [outputVideo3 debugDescription];
       [v87 appendFormat:@"%@OutputVideo: %@%@", @"\n\n", v38, v41];
     }
 
@@ -4812,8 +4812,8 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       [v87 appendFormat:@"%@OutputVideo: %@%@", @"\n\n", v38, &stru_1F3F4BA98];
     }
 
-    v42 = [(NURenderJob *)self outputVideoComposition];
-    if (v42)
+    outputVideoComposition = [(NURenderJob *)self outputVideoComposition];
+    if (outputVideoComposition)
     {
       v43 = @"\n\n";
     }
@@ -4823,11 +4823,11 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       v43 = &stru_1F3F4BA98;
     }
 
-    v44 = [(NURenderJob *)self outputVideoComposition];
-    if (v44)
+    outputVideoComposition2 = [(NURenderJob *)self outputVideoComposition];
+    if (outputVideoComposition2)
     {
-      v45 = [(NURenderJob *)self outputVideoComposition];
-      v46 = [v45 debugDescription];
+      outputVideoComposition3 = [(NURenderJob *)self outputVideoComposition];
+      v46 = [outputVideoComposition3 debugDescription];
       [v87 appendFormat:@"%@OutputVideoComposition: %@%@", @"\n\n", v43, v46];
     }
 
@@ -4836,8 +4836,8 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       [v87 appendFormat:@"%@OutputVideoComposition: %@%@", @"\n\n", v43, &stru_1F3F4BA98];
     }
 
-    v47 = [(NURenderJob *)self outputVideo];
-    if (v47)
+    outputVideo4 = [(NURenderJob *)self outputVideo];
+    if (outputVideo4)
     {
       v48 = @"\n\n";
     }
@@ -4847,11 +4847,11 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       v48 = &stru_1F3F4BA98;
     }
 
-    v49 = [(NURenderJob *)self outputVideo];
-    if (v49)
+    outputVideo5 = [(NURenderJob *)self outputVideo];
+    if (outputVideo5)
     {
-      v50 = [(NURenderJob *)self outputVideo];
-      v51 = [v50 debugDescription];
+      outputVideo6 = [(NURenderJob *)self outputVideo];
+      v51 = [outputVideo6 debugDescription];
       [v87 appendFormat:@"%@OutputVideo: %@%@", @"\n\n", v48, v51];
     }
 
@@ -4860,8 +4860,8 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       [v87 appendFormat:@"%@OutputVideo: %@%@", @"\n\n", v48, &stru_1F3F4BA98];
     }
 
-    v52 = [(NURenderJob *)self outputAudioMix];
-    if (v52)
+    outputAudioMix = [(NURenderJob *)self outputAudioMix];
+    if (outputAudioMix)
     {
       v53 = @"\n\n";
     }
@@ -4871,15 +4871,15 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       v53 = &stru_1F3F4BA98;
     }
 
-    v54 = [(NURenderJob *)self outputAudioMix];
-    v55 = [v54 debugDescription];
+    outputAudioMix2 = [(NURenderJob *)self outputAudioMix];
+    v55 = [outputAudioMix2 debugDescription];
     [v87 appendFormat:@"%@OutputAudioMix: %@%@", @"\n\n", v53, v55];
   }
 
   if (+[NUGlobalSettings renderJobDebugCaptureNodeGraphs])
   {
-    v56 = [(NURenderJob *)self prepareNode];
-    if (v56)
+    prepareNode = [(NURenderJob *)self prepareNode];
+    if (prepareNode)
     {
       v57 = @"\n\n";
     }
@@ -4889,12 +4889,12 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       v57 = &stru_1F3F4BA98;
     }
 
-    v58 = [(NURenderJob *)self prepareNode];
-    v59 = [v58 debugDescription];
+    prepareNode2 = [(NURenderJob *)self prepareNode];
+    v59 = [prepareNode2 debugDescription];
     [v87 appendFormat:@"%@PreparedNode: %@%@", @"\n\n", v57, v59];
 
-    v60 = [(NURenderJob *)self renderNode];
-    if (v60)
+    renderNode = [(NURenderJob *)self renderNode];
+    if (renderNode)
     {
       v61 = @"\n\n";
     }
@@ -4904,12 +4904,12 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       v61 = &stru_1F3F4BA98;
     }
 
-    v62 = [(NURenderJob *)self renderNode];
-    v63 = [v62 debugDescription];
+    renderNode2 = [(NURenderJob *)self renderNode];
+    v63 = [renderNode2 debugDescription];
     [v87 appendFormat:@"%@RenderNode: %@%@", @"\n\n", v61, v63];
 
-    v64 = [(NURenderJob *)self outputImage];
-    if (v64)
+    outputImage = [(NURenderJob *)self outputImage];
+    if (outputImage)
     {
       v65 = @"\n\n";
     }
@@ -4919,19 +4919,19 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       v65 = &stru_1F3F4BA98;
     }
 
-    v66 = [(NURenderJob *)self outputImage];
-    v67 = [v66 debugDescription];
+    outputImage2 = [(NURenderJob *)self outputImage];
+    v67 = [outputImage2 debugDescription];
     [v87 appendFormat:@"%@OutputImage: %@%@", @"\n\n", v65, v67];
     goto LABEL_70;
   }
 
   if (!+[NUGlobalSettings renderJobDebugCaptureOnlyPerfStats])
   {
-    v68 = [(NURenderJob *)self prepareNode];
-    if (v68)
+    prepareNode3 = [(NURenderJob *)self prepareNode];
+    if (prepareNode3)
     {
-      v69 = [(NURenderJob *)self prepareNode];
-      v70 = [v69 description];
+      prepareNode4 = [(NURenderJob *)self prepareNode];
+      v70 = [prepareNode4 description];
       [v87 appendFormat:@"%@PreparedNode: %@", @"\n\n", v70];
     }
 
@@ -4940,11 +4940,11 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       [v87 appendFormat:@"%@PreparedNode: %@", @"\n\n", &stru_1F3F4BA98];
     }
 
-    v71 = [(NURenderJob *)self renderNode];
-    if (v71)
+    renderNode3 = [(NURenderJob *)self renderNode];
+    if (renderNode3)
     {
-      v72 = [(NURenderJob *)self renderNode];
-      v73 = [v72 description];
+      renderNode4 = [(NURenderJob *)self renderNode];
+      v73 = [renderNode4 description];
       [v87 appendFormat:@"%@RenderNode: %@", @"\n\n", v73];
     }
 
@@ -4953,15 +4953,15 @@ BOOL __86__NURenderJob_RendererSupport__renderImage_into_colorSpace_roi_imageSiz
       [v87 appendFormat:@"%@RenderNode: %@", @"\n\n", &stru_1F3F4BA98];
     }
 
-    v64 = [(NURenderJob *)self outputImage];
-    if (!v64)
+    outputImage = [(NURenderJob *)self outputImage];
+    if (!outputImage)
     {
       [v87 appendFormat:@"%@OutputImage: %@", @"\n\n", &stru_1F3F4BA98];
       goto LABEL_71;
     }
 
-    v66 = [(NURenderJob *)self outputImage];
-    v67 = [v66 description];
+    outputImage2 = [(NURenderJob *)self outputImage];
+    v67 = [outputImage2 description];
     [v87 appendFormat:@"%@OutputImage: %@", @"\n\n", v67, v83];
 LABEL_70:
 
@@ -5006,13 +5006,13 @@ LABEL_71:
     }
   }
 
-  v78 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v90 = *MEMORY[0x1E696A350];
-  v79 = [(NURenderJob *)self jobCreationDate];
-  v91 = v79;
+  jobCreationDate = [(NURenderJob *)self jobCreationDate];
+  v91 = jobCreationDate;
   v80 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
   v88 = 0;
-  [v78 setAttributes:v80 ofItemAtPath:v86 error:&v88];
+  [defaultManager setAttributes:v80 ofItemAtPath:v86 error:&v88];
   v81 = v88;
 
   if (v81)
@@ -5037,14 +5037,14 @@ LABEL_71:
 - (void)writeRenderJobDebugTombstone
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(NURenderJob *)self debugFilePath];
+  debugFilePath = [(NURenderJob *)self debugFilePath];
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 stringWithFormat:@"%@\n\n%@\n\nTombstone\n\n%@", v2, v5, @"We write a simple debug file to disk when a job is created - a 'tombstone'.Then fill in that file with more execution details when it completes. If thejob never completes forwhatever reason then the tombstone is all that is left around."];
+  v6 = [v3 stringWithFormat:@"%@\n\n%@\n\nTombstone\n\n%@", debugFilePath, v5, @"We write a simple debug file to disk when a job is created - a 'tombstone'.Then fill in that file with more execution details when it completes. If thejob never completes forwhatever reason then the tombstone is all that is left around."];
 
   v9 = 0;
-  LOBYTE(v5) = [v6 writeToFile:v2 atomically:0 encoding:4 error:&v9];
+  LOBYTE(v5) = [v6 writeToFile:debugFilePath atomically:0 encoding:4 error:&v9];
   v7 = v9;
   if ((v5 & 1) == 0)
   {
@@ -5057,7 +5057,7 @@ LABEL_71:
     if (os_log_type_enabled(_NULogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v11 = v2;
+      v11 = debugFilePath;
       v12 = 2112;
       v13 = v7;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "NU_RENDER_JOB_DEBUG failed to write to disk. path: %@ error: %@", buf, 0x16u);
@@ -5085,10 +5085,10 @@ LABEL_71:
 
   else if ([(NURenderJob *)self shouldWriteTombstone])
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [(NURenderJob *)self debugFilePath];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    debugFilePath = [(NURenderJob *)self debugFilePath];
     v8 = 0;
-    v5 = [v3 removeItemAtPath:v4 error:&v8];
+    v5 = [defaultManager removeItemAtPath:debugFilePath error:&v8];
     v6 = v8;
 
     if ((v5 & 1) == 0)
@@ -5118,13 +5118,13 @@ LABEL_71:
 
   v3 = objc_opt_class();
   objc_sync_enter(v3);
-  v4 = [(NURenderJob *)self request];
-  v5 = [v4 name];
+  request = [(NURenderJob *)self request];
+  name = [request name];
 
-  v6 = [jobCounts objectForKeyedSubscript:v5];
+  v6 = [jobCounts objectForKeyedSubscript:name];
   if (v6)
   {
-    v7 = [jobCounts objectForKeyedSubscript:v5];
+    v7 = [jobCounts objectForKeyedSubscript:name];
     v8 = [v7 unsignedLongValue] + 1;
   }
 
@@ -5135,9 +5135,9 @@ LABEL_71:
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v8];
   v10 = jobCounts;
-  v11 = [(NURenderJob *)self request];
-  v12 = [v11 name];
-  [v10 setObject:v9 forKeyedSubscript:v12];
+  request2 = [(NURenderJob *)self request];
+  name2 = [request2 name];
+  [v10 setObject:v9 forKeyedSubscript:name2];
 
   objc_sync_exit(v3);
   if (+[NUGlobalSettings renderJobDebugCapture5PercentOfJobs])
@@ -5184,25 +5184,25 @@ uint64_t __49__NURenderJob_DebugAdditions__renderJobDebugInit__block_invoke()
 
 - (BOOL)shouldWriteCanceledJob
 {
-  v2 = [(NURenderJob *)self shouldWriteJobDebugFile];
-  if (v2)
+  shouldWriteJobDebugFile = [(NURenderJob *)self shouldWriteJobDebugFile];
+  if (shouldWriteJobDebugFile)
   {
 
-    LOBYTE(v2) = +[NUGlobalSettings renderJobDebugCaptureCanceledJobs];
+    LOBYTE(shouldWriteJobDebugFile) = +[NUGlobalSettings renderJobDebugCaptureCanceledJobs];
   }
 
-  return v2;
+  return shouldWriteJobDebugFile;
 }
 
 - (BOOL)shouldWriteTombstone
 {
-  v2 = [(NURenderJob *)self shouldWriteJobDebugFile];
-  if (v2)
+  shouldWriteJobDebugFile = [(NURenderJob *)self shouldWriteJobDebugFile];
+  if (shouldWriteJobDebugFile)
   {
-    LOBYTE(v2) = !+[NUGlobalSettings renderJobDebugCaptureOnlyPerfStats];
+    LOBYTE(shouldWriteJobDebugFile) = !+[NUGlobalSettings renderJobDebugCaptureOnlyPerfStats];
   }
 
-  return v2;
+  return shouldWriteJobDebugFile;
 }
 
 - (id)debugFilePath
@@ -5224,9 +5224,9 @@ uint64_t __49__NURenderJob_DebugAdditions__renderJobDebugInit__block_invoke()
   v7 = MEMORY[0x1E696AEC0];
   v8 = +[NUGlobalSettings tempDir];
   v9 = getpid();
-  v10 = [(NURenderJob *)self request];
-  v11 = [v10 name];
-  v12 = [v7 stringWithFormat:@"%@%@%i_%@-j%lld.txt", v8, v6, v9, v11, -[NURenderJob jobNumber](self, "jobNumber")];
+  request = [(NURenderJob *)self request];
+  name = [request name];
+  v12 = [v7 stringWithFormat:@"%@%@%i_%@-j%lld.txt", v8, v6, v9, name, -[NURenderJob jobNumber](self, "jobNumber")];
 
   return v12;
 }
@@ -5238,24 +5238,24 @@ uint64_t __49__NURenderJob_DebugAdditions__renderJobDebugInit__block_invoke()
   v5 = NSStringFromClass(v4);
   [v3 appendFormat:@"Render Job Class = %@\n", v5];
 
-  v6 = [(NURenderJob *)self outputGeometry];
-  v7 = v6;
-  if (v6)
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  v7 = outputGeometry;
+  if (outputGeometry)
   {
-    [v3 appendFormat:@"outputGeometry = %@\n", v6];
+    [v3 appendFormat:@"outputGeometry = %@\n", outputGeometry];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = self;
+    selfCopy = self;
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(NURenderJob *)v8 renderedRegion];
-      v10 = v9;
-      if (v9)
+      renderedRegion = [(NURenderJob *)selfCopy renderedRegion];
+      v10 = renderedRegion;
+      if (renderedRegion)
       {
-        [v3 appendFormat:@"renderedRegion = %@\n", v9];
+        [v3 appendFormat:@"renderedRegion = %@\n", renderedRegion];
       }
     }
   }

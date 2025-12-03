@@ -1,38 +1,38 @@
 @interface HKSleepPeriodCoordinate
-- (HKSleepPeriodCoordinate)initWithXValue:(double)a3 asleepYValues:(id)a4 inBedYValues:(id)a5 yValues:(id)a6 upperGoalYValue:(id)a7 lowerGoalYValue:(id)a8 highlighted:(BOOL)a9 userInfo:(id)a10;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (HKSleepPeriodCoordinate)initWithXValue:(double)value asleepYValues:(id)values inBedYValues:(id)yValues yValues:(id)a6 upperGoalYValue:(id)yValue lowerGoalYValue:(id)goalYValue highlighted:(BOOL)highlighted userInfo:(id)self0;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 @end
 
 @implementation HKSleepPeriodCoordinate
 
-- (HKSleepPeriodCoordinate)initWithXValue:(double)a3 asleepYValues:(id)a4 inBedYValues:(id)a5 yValues:(id)a6 upperGoalYValue:(id)a7 lowerGoalYValue:(id)a8 highlighted:(BOOL)a9 userInfo:(id)a10
+- (HKSleepPeriodCoordinate)initWithXValue:(double)value asleepYValues:(id)values inBedYValues:(id)yValues yValues:(id)a6 upperGoalYValue:(id)yValue lowerGoalYValue:(id)goalYValue highlighted:(BOOL)highlighted userInfo:(id)self0
 {
-  v26 = a4;
-  v25 = a5;
+  valuesCopy = values;
+  yValuesCopy = yValues;
   v24 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a10;
+  yValueCopy = yValue;
+  goalYValueCopy = goalYValue;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = HKSleepPeriodCoordinate;
   v20 = [(HKSleepPeriodCoordinate *)&v27 init];
   v21 = v20;
   if (v20)
   {
-    v20->_xValue = a3;
-    objc_storeStrong(&v20->_asleepYValues, a4);
-    objc_storeStrong(&v21->_inBedYValues, a5);
+    v20->_xValue = value;
+    objc_storeStrong(&v20->_asleepYValues, values);
+    objc_storeStrong(&v21->_inBedYValues, yValues);
     objc_storeStrong(&v21->_yValues, a6);
-    objc_storeStrong(&v21->_upperGoalYValue, a7);
-    objc_storeStrong(&v21->_lowerGoalYValue, a8);
-    v21->_highlighted = a9;
-    objc_storeStrong(&v21->_userInfo, a10);
+    objc_storeStrong(&v21->_upperGoalYValue, yValue);
+    objc_storeStrong(&v21->_lowerGoalYValue, goalYValue);
+    v21->_highlighted = highlighted;
+    objc_storeStrong(&v21->_userInfo, info);
   }
 
   return v21;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
   v46 = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -42,26 +42,26 @@
   v41[2] = __62__HKSleepPeriodCoordinate_copyWithTransform_roundToViewScale___block_invoke;
   v41[3] = &unk_1E81BA910;
   v41[4] = self;
-  v8 = *&a3->c;
-  v42 = *&a3->a;
+  v8 = *&transform->c;
+  v42 = *&transform->a;
   v43 = v8;
-  v44 = *&a3->tx;
+  v44 = *&transform->tx;
   v32 = [(NSArray *)asleepYValues hk_map:v41];
   inBedYValues = self->_inBedYValues;
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
-  v10 = *&a3->c;
-  v38 = *&a3->a;
+  v10 = *&transform->c;
+  v38 = *&transform->a;
   v37[2] = __62__HKSleepPeriodCoordinate_copyWithTransform_roundToViewScale___block_invoke_2;
   v37[3] = &unk_1E81BA910;
   v37[4] = self;
   v39 = v10;
-  v40 = *&a3->tx;
+  v40 = *&transform->tx;
   v11 = [(NSArray *)inBedYValues hk_map:v37];
   xValue = self->_xValue;
-  a = a3->a;
-  c = a3->c;
-  tx = a3->tx;
+  a = transform->a;
+  c = transform->c;
+  tx = transform->tx;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -84,7 +84,7 @@
 
         v21 = self->_xValue;
         [*(*(&v33 + 1) + 8 * v20) doubleValue];
-        v23 = [MEMORY[0x1E696AD98] numberWithDouble:a3->ty + v22 * a3->d + a3->b * v21];
+        v23 = [MEMORY[0x1E696AD98] numberWithDouble:transform->ty + v22 * transform->d + transform->b * v21];
         [v6 addObject:v23];
 
         ++v20;
@@ -101,7 +101,7 @@
   if (upperGoalYValue)
   {
     [(NSNumber *)upperGoalYValue doubleValue];
-    v26 = [MEMORY[0x1E696AD98] numberWithDouble:a3->ty + v25 * a3->d + a3->b * 0.0];
+    v26 = [MEMORY[0x1E696AD98] numberWithDouble:transform->ty + v25 * transform->d + transform->b * 0.0];
   }
 
   else
@@ -113,7 +113,7 @@
   if (lowerGoalYValue)
   {
     [(NSNumber *)lowerGoalYValue doubleValue];
-    v29 = [MEMORY[0x1E696AD98] numberWithDouble:a3->ty + v28 * a3->d + a3->b * 0.0];
+    v29 = [MEMORY[0x1E696AD98] numberWithDouble:transform->ty + v28 * transform->d + transform->b * 0.0];
   }
 
   else

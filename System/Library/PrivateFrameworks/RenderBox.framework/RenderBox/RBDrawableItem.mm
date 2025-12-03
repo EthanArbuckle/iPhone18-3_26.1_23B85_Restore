@@ -2,9 +2,9 @@
 - ($3CC19D079FD0B010EE84973AA846B91B)sourceRect;
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)clearColor;
 - (RBDrawableItem)init;
-- (void)setDestinationOffset:(id *)a3;
-- (void)setDisplayList:(id)a3;
-- (void)setSourceRect:(id *)a3;
+- (void)setDestinationOffset:(id *)offset;
+- (void)setDisplayList:(id)list;
+- (void)setSourceRect:(id *)rect;
 @end
 
 @implementation RBDrawableItem
@@ -22,13 +22,13 @@
   return result;
 }
 
-- (void)setDisplayList:(id)a3
+- (void)setDisplayList:(id)list
 {
   p = self->_list._p;
-  if (p != a3)
+  if (p != list)
   {
 
-    self->_list._p = a3;
+    self->_list._p = list;
   }
 }
 
@@ -40,17 +40,17 @@
   return self;
 }
 
-- (void)setSourceRect:(id *)a3
+- (void)setSourceRect:(id *)rect
 {
-  v3 = *&a3->var2;
-  *&self->_sourceRect.x = *&a3->var0;
+  v3 = *&rect->var2;
+  *&self->_sourceRect.x = *&rect->var0;
   *&self->_sourceRect.width = v3;
 }
 
-- (void)setDestinationOffset:(id *)a3
+- (void)setDestinationOffset:(id *)offset
 {
-  v3 = *&a3->var0;
-  self->_destinationOffset.z = a3->var2;
+  v3 = *&offset->var0;
+  self->_destinationOffset.z = offset->var2;
   *&self->_destinationOffset.x = v3;
 }
 

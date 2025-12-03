@@ -1,16 +1,16 @@
 @interface FMFSessionDataManager
 + (id)sharedInstance;
 - (id)favoritesOrdered;
-- (id)followerForHandle:(id)a3;
-- (id)followingForHandle:(id)a3;
-- (id)locationForHandle:(id)a3;
-- (id)offerExpirationForHandle:(id)a3 groupId:(id)a4;
+- (id)followerForHandle:(id)handle;
+- (id)followingForHandle:(id)handle;
+- (id)locationForHandle:(id)handle;
+- (id)offerExpirationForHandle:(id)handle groupId:(id)id;
 - (void)abDidChange;
 - (void)abPreferencesDidChange;
-- (void)setFences:(id)a3;
-- (void)setFollowers:(id)a3;
-- (void)setFollowing:(id)a3;
-- (void)setLocations:(id)a3;
+- (void)setFences:(id)fences;
+- (void)setFollowers:(id)followers;
+- (void)setFollowing:(id)following;
+- (void)setLocations:(id)locations;
 @end
 
 @implementation FMFSessionDataManager
@@ -41,17 +41,17 @@ void __39__FMFSessionDataManager_sharedInstance__block_invoke()
   sharedInstance__instance_0 = v1;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  locationsCopy = locations;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = [MEMORY[0x277CBEB58] set];
-  v22 = v4;
-  v7 = [v4 mutableCopy];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  [(FMFSessionDataManager *)v5 setLocationsCache:v8];
+  v22 = locationsCopy;
+  v7 = [locationsCopy mutableCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(FMFSessionDataManager *)selfCopy setLocationsCache:dictionary];
 
   v25 = 0u;
   v26 = 0u;
@@ -72,17 +72,17 @@ void __39__FMFSessionDataManager_sharedInstance__block_invoke()
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [(NSSet *)v5->_locations member:v13];
-        v15 = [v13 handle];
-        v16 = [v15 serverId];
+        v14 = [(NSSet *)selfCopy->_locations member:v13];
+        handle = [v13 handle];
+        serverId = [handle serverId];
 
-        if (!v16)
+        if (!serverId)
         {
           v18 = LogCategory_Daemon();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v19 = [v14 handle];
-            [(FMFSessionDataManager *)v19 setLocations:buf, v18];
+            handle2 = [v14 handle];
+            [(FMFSessionDataManager *)handle2 setLocations:buf, v18];
           }
 
           goto LABEL_16;
@@ -92,15 +92,15 @@ void __39__FMFSessionDataManager_sharedInstance__block_invoke()
         {
           [v14 updateLocationForCache:v13];
           [(NSSet *)v6 addObject:v14];
-          v17 = [(FMFSessionDataManager *)v5 locationsCache];
-          [v17 setObject:v14 forKey:v16];
+          locationsCache = [(FMFSessionDataManager *)selfCopy locationsCache];
+          [locationsCache setObject:v14 forKey:serverId];
         }
 
         else
         {
           [(NSSet *)v6 addObject:v13];
-          v17 = [(FMFSessionDataManager *)v5 locationsCache];
-          [v17 setObject:v13 forKey:v16];
+          locationsCache = [(FMFSessionDataManager *)selfCopy locationsCache];
+          [locationsCache setObject:v13 forKey:serverId];
         }
       }
 
@@ -116,102 +116,102 @@ void __39__FMFSessionDataManager_sharedInstance__block_invoke()
 
 LABEL_16:
 
-  locations = v5->_locations;
-  v5->_locations = v6;
+  locations = selfCopy->_locations;
+  selfCopy->_locations = v6;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFollowers:(id)a3
+- (void)setFollowers:(id)followers
 {
-  v4 = a3;
+  followersCopy = followers;
   obj = self;
   objc_sync_enter(obj);
   followers = obj->_followers;
-  obj->_followers = v4;
+  obj->_followers = followersCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setFollowing:(id)a3
+- (void)setFollowing:(id)following
 {
-  v4 = a3;
+  followingCopy = following;
   obj = self;
   objc_sync_enter(obj);
   following = obj->_following;
-  obj->_following = v4;
+  obj->_following = followingCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setFences:(id)a3
+- (void)setFences:(id)fences
 {
-  v4 = a3;
+  fencesCopy = fences;
   obj = self;
   objc_sync_enter(obj);
   fences = obj->_fences;
-  obj->_fences = v4;
+  obj->_fences = fencesCopy;
 
   objc_sync_exit(obj);
 }
 
-- (id)followerForHandle:(id)a3
+- (id)followerForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(FMFSessionDataManager *)self followers];
-  v6 = [v5 member:v4];
+  handleCopy = handle;
+  followers = [(FMFSessionDataManager *)self followers];
+  v6 = [followers member:handleCopy];
 
   return v6;
 }
 
-- (id)followingForHandle:(id)a3
+- (id)followingForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(FMFSessionDataManager *)self following];
-  v6 = [v5 member:v4];
+  handleCopy = handle;
+  following = [(FMFSessionDataManager *)self following];
+  v6 = [following member:handleCopy];
 
   return v6;
 }
 
-- (id)locationForHandle:(id)a3
+- (id)locationForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 serverId];
-  if (v5)
+  handleCopy = handle;
+  serverId = [handleCopy serverId];
+  if (serverId)
   {
-    v6 = v4;
+    v6 = handleCopy;
   }
 
   else
   {
-    v6 = [(FMFSessionDataManager *)self followingForHandle:v4];
+    v6 = [(FMFSessionDataManager *)self followingForHandle:handleCopy];
   }
 
   v7 = v6;
 
-  v8 = [v7 serverId];
-  if (v8)
+  serverId2 = [v7 serverId];
+  if (serverId2)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [(FMFSessionDataManager *)v9 locationsCache];
-    v11 = [v10 objectForKeyedSubscript:v8];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    locationsCache = [(FMFSessionDataManager *)selfCopy locationsCache];
+    v11 = [locationsCache objectForKeyedSubscript:serverId2];
 
     if (v11 && ([v11 isValid] & 1) == 0)
     {
-      v12 = [(FMFSessionDataManager *)v9 locations];
-      v13 = [v12 mutableCopy];
+      locations = [(FMFSessionDataManager *)selfCopy locations];
+      v13 = [locations mutableCopy];
 
       [v13 removeObject:v11];
-      objc_storeStrong(&v9->_locations, v13);
-      v14 = [(FMFSessionDataManager *)v9 locationsCache];
-      [v14 removeObjectForKey:v8];
+      objc_storeStrong(&selfCopy->_locations, v13);
+      locationsCache2 = [(FMFSessionDataManager *)selfCopy locationsCache];
+      [locationsCache2 removeObjectForKey:serverId2];
 
       v11 = 0;
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -219,7 +219,7 @@ LABEL_16:
     v15 = LogCategory_Daemon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [(FMFSessionDataManager *)v4 locationForHandle:v15];
+      [(FMFSessionDataManager *)handleCopy locationForHandle:v15];
     }
 
     v11 = 0;
@@ -228,22 +228,22 @@ LABEL_16:
   return v11;
 }
 
-- (id)offerExpirationForHandle:(id)a3 groupId:(id)a4
+- (id)offerExpirationForHandle:(id)handle groupId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FMFSessionDataManager *)self followers];
-  v9 = [v8 member:v7];
+  idCopy = id;
+  handleCopy = handle;
+  followers = [(FMFSessionDataManager *)self followers];
+  v9 = [followers member:handleCopy];
 
-  v10 = v6;
-  if (!v6)
+  v10 = idCopy;
+  if (!idCopy)
   {
     v10 = @"kFMFGroupIdOneToOne";
   }
 
-  v11 = v6;
-  v12 = [v9 expiresByGroupId];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  v11 = idCopy;
+  expiresByGroupId = [v9 expiresByGroupId];
+  v13 = [expiresByGroupId objectForKeyedSubscript:v10];
 
   v14 = MEMORY[0x277CBEAA8];
   [v13 doubleValue];
@@ -256,11 +256,11 @@ LABEL_16:
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(FMFSessionDataManager *)obj followers];
-  [v2 makeObjectsPerformSelector:sel_addressBookDidChange];
+  followers = [(FMFSessionDataManager *)obj followers];
+  [followers makeObjectsPerformSelector:sel_addressBookDidChange];
 
-  v3 = [(FMFSessionDataManager *)obj following];
-  [v3 makeObjectsPerformSelector:sel_addressBookDidChange];
+  following = [(FMFSessionDataManager *)obj following];
+  [following makeObjectsPerformSelector:sel_addressBookDidChange];
 
   objc_sync_exit(obj);
 }
@@ -269,20 +269,20 @@ LABEL_16:
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(FMFSessionDataManager *)obj followers];
-  [v2 makeObjectsPerformSelector:sel_abPreferencesDidChange];
+  followers = [(FMFSessionDataManager *)obj followers];
+  [followers makeObjectsPerformSelector:sel_abPreferencesDidChange];
 
-  v3 = [(FMFSessionDataManager *)obj following];
-  [v3 makeObjectsPerformSelector:sel_abPreferencesDidChange];
+  following = [(FMFSessionDataManager *)obj following];
+  [following makeObjectsPerformSelector:sel_abPreferencesDidChange];
 
   objc_sync_exit(obj);
 }
 
 - (id)favoritesOrdered
 {
-  v2 = [(FMFSessionDataManager *)self following];
+  following = [(FMFSessionDataManager *)self following];
   v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"favoriteOrder != nil"];
-  v4 = [v2 filteredSetUsingPredicate:v3];
+  v4 = [following filteredSetUsingPredicate:v3];
 
   if (!favoritesOrdered_sortDesc)
   {

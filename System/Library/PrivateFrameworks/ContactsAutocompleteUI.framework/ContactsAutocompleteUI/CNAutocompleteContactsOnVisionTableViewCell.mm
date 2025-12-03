@@ -1,16 +1,16 @@
 @interface CNAutocompleteContactsOnVisionTableViewCell
 - (BOOL)shouldUseAXSizing;
-- (CNAutocompleteContactsOnVisionTableViewCell)initWithSuggestion:(id)a3;
+- (CNAutocompleteContactsOnVisionTableViewCell)initWithSuggestion:(id)suggestion;
 - (double)avatarDimension;
 - (double)avatarNamePadding;
 @end
 
 @implementation CNAutocompleteContactsOnVisionTableViewCell
 
-- (CNAutocompleteContactsOnVisionTableViewCell)initWithSuggestion:(id)a3
+- (CNAutocompleteContactsOnVisionTableViewCell)initWithSuggestion:(id)suggestion
 {
   v50[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  suggestionCopy = suggestion;
   v48.receiver = self;
   v48.super_class = CNAutocompleteContactsOnVisionTableViewCell;
   v6 = [(CNAutocompleteContactsOnVisionTableViewCell *)&v48 initWithStyle:0 reuseIdentifier:@"VisionCell"];
@@ -18,36 +18,36 @@
   if (v6)
   {
     [(CNAutocompleteContactsOnVisionTableViewCell *)v6 setSelectionStyle:0];
-    objc_storeStrong(&v7->_suggestion, a3);
+    objc_storeStrong(&v7->_suggestion, suggestion);
     v8 = MEMORY[0x1E695CD80];
-    [v5 contact];
-    v9 = v46 = v5;
+    [suggestionCopy contact];
+    v9 = v46 = suggestionCopy;
     v47 = [v8 stringFromContact:v9 style:0];
 
     v10 = objc_alloc(MEMORY[0x1E695D0C0]);
-    v11 = [(CNComposeRecipient *)v7->_suggestion contact];
-    v12 = [v10 initWithContact:v11];
+    contact = [(CNComposeRecipient *)v7->_suggestion contact];
+    v12 = [v10 initWithContact:contact];
     avatarView = v7->_avatarView;
     v7->_avatarView = v12;
 
     [(CNAutocompleteContactsOnVisionTableViewCell *)v7 addSubview:v7->_avatarView];
     [(CNAvatarView *)v7->_avatarView setTranslatesAutoresizingMaskIntoConstraints:0];
     v40 = MEMORY[0x1E696ACD8];
-    v44 = [(CNAvatarView *)v7->_avatarView widthAnchor];
+    widthAnchor = [(CNAvatarView *)v7->_avatarView widthAnchor];
     [(CNAutocompleteContactsOnVisionTableViewCell *)v7 avatarDimension];
-    v42 = [v44 constraintEqualToConstant:?];
+    v42 = [widthAnchor constraintEqualToConstant:?];
     v50[0] = v42;
-    v14 = [(CNAvatarView *)v7->_avatarView heightAnchor];
+    heightAnchor = [(CNAvatarView *)v7->_avatarView heightAnchor];
     [(CNAutocompleteContactsOnVisionTableViewCell *)v7 avatarDimension];
-    v15 = [v14 constraintEqualToConstant:?];
+    v15 = [heightAnchor constraintEqualToConstant:?];
     v50[1] = v15;
-    v16 = [(CNAvatarView *)v7->_avatarView centerYAnchor];
-    v17 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 centerYAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    centerYAnchor = [(CNAvatarView *)v7->_avatarView centerYAnchor];
+    centerYAnchor2 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 centerYAnchor];
+    v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v50[2] = v18;
-    v19 = [(CNAvatarView *)v7->_avatarView leadingAnchor];
-    v20 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 leadingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:12.0];
+    leadingAnchor = [(CNAvatarView *)v7->_avatarView leadingAnchor];
+    leadingAnchor2 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
     v50[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:4];
     [v40 activateConstraints:v22];
@@ -58,8 +58,8 @@
     v7->_nameLabel = v24;
 
     [(UILabel *)v7->_nameLabel setText:v47];
-    v26 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v7->_nameLabel setTextColor:v26];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v7->_nameLabel setTextColor:labelColor];
 
     v27 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [(UILabel *)v7->_nameLabel setFont:v27];
@@ -67,27 +67,27 @@
     [(CNAutocompleteContactsOnVisionTableViewCell *)v7 addSubview:v7->_nameLabel];
     [(UILabel *)v7->_nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v38 = MEMORY[0x1E696ACD8];
-    v45 = [(UILabel *)v7->_nameLabel leadingAnchor];
-    v43 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 leadingAnchor];
+    leadingAnchor3 = [(UILabel *)v7->_nameLabel leadingAnchor];
+    leadingAnchor4 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 leadingAnchor];
     [(CNAutocompleteContactsOnVisionTableViewCell *)v7 avatarNamePadding];
-    v41 = [v45 constraintEqualToAnchor:v43 constant:?];
+    v41 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
     v49[0] = v41;
-    v39 = [(UILabel *)v7->_nameLabel topAnchor];
-    v28 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 topAnchor];
-    v29 = [v39 constraintEqualToAnchor:v28];
+    topAnchor = [(UILabel *)v7->_nameLabel topAnchor];
+    topAnchor2 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v49[1] = v29;
-    v30 = [(UILabel *)v7->_nameLabel bottomAnchor];
-    v31 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    bottomAnchor = [(UILabel *)v7->_nameLabel bottomAnchor];
+    bottomAnchor2 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 bottomAnchor];
+    v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v49[2] = v32;
-    v33 = [(UILabel *)v7->_nameLabel trailingAnchor];
-    v34 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 trailingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    trailingAnchor = [(UILabel *)v7->_nameLabel trailingAnchor];
+    trailingAnchor2 = [(CNAutocompleteContactsOnVisionTableViewCell *)v7 trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v49[3] = v35;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:4];
     [v38 activateConstraints:v36];
 
-    v5 = v46;
+    suggestionCopy = v46;
   }
 
   return v7;
@@ -95,9 +95,9 @@
 
 - (double)avatarDimension
 {
-  v2 = [(CNAutocompleteContactsOnVisionTableViewCell *)self shouldUseAXSizing];
+  shouldUseAXSizing = [(CNAutocompleteContactsOnVisionTableViewCell *)self shouldUseAXSizing];
   result = 44.0;
-  if (v2)
+  if (shouldUseAXSizing)
   {
     return 68.0;
   }
@@ -107,9 +107,9 @@
 
 - (double)avatarNamePadding
 {
-  v2 = [(CNAutocompleteContactsOnVisionTableViewCell *)self shouldUseAXSizing];
+  shouldUseAXSizing = [(CNAutocompleteContactsOnVisionTableViewCell *)self shouldUseAXSizing];
   result = 72.0;
-  if (v2)
+  if (shouldUseAXSizing)
   {
     return 96.0;
   }
@@ -119,12 +119,12 @@
 
 - (BOOL)shouldUseAXSizing
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if (v3)
+  if (preferredContentSizeCategory)
   {
-    v4 = UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC50]) == NSOrderedDescending;
+    v4 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]) == NSOrderedDescending;
   }
 
   else

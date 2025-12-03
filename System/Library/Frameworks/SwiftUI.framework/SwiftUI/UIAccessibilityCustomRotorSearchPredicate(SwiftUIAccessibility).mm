@@ -12,7 +12,7 @@
     return 0;
   }
 
-  return [a1 honorsGroups];
+  return [self honorsGroups];
 }
 
 - (uint64_t)setSwiftUI_honorsGroups:()SwiftUIAccessibility
@@ -21,7 +21,7 @@
   if (result)
   {
 
-    return [a1 setHonorsGroups:a3];
+    return [self setHonorsGroups:a3];
   }
 
   return result;

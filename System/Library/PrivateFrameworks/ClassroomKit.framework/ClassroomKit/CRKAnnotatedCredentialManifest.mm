@@ -1,26 +1,26 @@
 @interface CRKAnnotatedCredentialManifest
-+ (CRKAnnotatedCredentialManifest)manifestWithData:(id)a3;
++ (CRKAnnotatedCredentialManifest)manifestWithData:(id)data;
 - (BOOL)isEmpty;
 - (CRKAnnotatedCredentialManifest)init;
-- (CRKAnnotatedCredentialManifest)initWithCoder:(id)a3;
+- (CRKAnnotatedCredentialManifest)initWithCoder:(id)coder;
 - (NSSet)persistentIDs;
-- (id)annotationForPersistentID:(id)a3;
+- (id)annotationForPersistentID:(id)d;
 - (id)dataRepresentation;
-- (void)addPersistentID:(id)a3 withAnnotation:(id)a4;
+- (void)addPersistentID:(id)d withAnnotation:(id)annotation;
 - (void)dataRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)removePersistentID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removePersistentID:(id)d;
 @end
 
 @implementation CRKAnnotatedCredentialManifest
 
-+ (CRKAnnotatedCredentialManifest)manifestWithData:(id)a3
++ (CRKAnnotatedCredentialManifest)manifestWithData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v8 = 0;
-    v4 = [MEMORY[0x277CCAAC8] cat_unarchiveObjectOfClass:objc_opt_class() withData:v3 error:&v8];
+    v4 = [MEMORY[0x277CCAAC8] cat_unarchiveObjectOfClass:objc_opt_class() withData:dataCopy error:&v8];
     v5 = v8;
     if (!v4)
     {
@@ -88,18 +88,18 @@
 - (NSSet)persistentIDs
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
-  v4 = [v3 allKeys];
-  v5 = [v2 setWithArray:v4];
+  annotationsByPersistentID = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
+  allKeys = [annotationsByPersistentID allKeys];
+  v5 = [v2 setWithArray:allKeys];
 
   return v5;
 }
 
-- (id)annotationForPersistentID:(id)a3
+- (id)annotationForPersistentID:(id)d
 {
-  v4 = a3;
-  v5 = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  annotationsByPersistentID = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
+  v6 = [annotationsByPersistentID objectForKeyedSubscript:dCopy];
 
   v7 = v6;
   objc_opt_class();
@@ -118,32 +118,32 @@
   return v8;
 }
 
-- (void)addPersistentID:(id)a3 withAnnotation:(id)a4
+- (void)addPersistentID:(id)d withAnnotation:(id)annotation
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
-  v8 = [v7 objectForKeyedSubscript:v11];
+  dCopy = d;
+  annotationCopy = annotation;
+  annotationsByPersistentID = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
+  v8 = [annotationsByPersistentID objectForKeyedSubscript:dCopy];
 
-  if (v6)
+  if (annotationCopy)
   {
-    v9 = v6;
+    null = annotationCopy;
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB68] null];
-    if (!(v8 | v9))
+    null = [MEMORY[0x277CBEB68] null];
+    if (!(v8 | null))
     {
-      v9 = 0;
+      null = 0;
       goto LABEL_7;
     }
   }
 
-  if (([v8 isEqual:v9] & 1) == 0)
+  if (([v8 isEqual:null] & 1) == 0)
   {
-    v10 = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
-    [v10 setObject:v9 forKeyedSubscript:v11];
+    annotationsByPersistentID2 = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
+    [annotationsByPersistentID2 setObject:null forKeyedSubscript:dCopy];
 
     [(CRKAnnotatedCredentialManifest *)self setModified:1];
   }
@@ -151,16 +151,16 @@
 LABEL_7:
 }
 
-- (void)removePersistentID:(id)a3
+- (void)removePersistentID:(id)d
 {
-  v7 = a3;
-  v4 = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
-  v5 = [v4 objectForKeyedSubscript:v7];
+  dCopy = d;
+  annotationsByPersistentID = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
+  v5 = [annotationsByPersistentID objectForKeyedSubscript:dCopy];
 
   if (v5)
   {
-    v6 = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
-    [v6 setObject:0 forKeyedSubscript:v7];
+    annotationsByPersistentID2 = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
+    [annotationsByPersistentID2 setObject:0 forKeyedSubscript:dCopy];
 
     [(CRKAnnotatedCredentialManifest *)self setModified:1];
   }
@@ -168,22 +168,22 @@ LABEL_7:
 
 - (BOOL)isEmpty
 {
-  v2 = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
-  v3 = [v2 count] == 0;
+  annotationsByPersistentID = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
+  v3 = [annotationsByPersistentID count] == 0;
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
-  [v4 encodeObject:v5 forKey:@"annotationsByPersistentID"];
+  coderCopy = coder;
+  annotationsByPersistentID = [(CRKAnnotatedCredentialManifest *)self annotationsByPersistentID];
+  [coderCopy encodeObject:annotationsByPersistentID forKey:@"annotationsByPersistentID"];
 }
 
-- (CRKAnnotatedCredentialManifest)initWithCoder:(id)a3
+- (CRKAnnotatedCredentialManifest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CRKAnnotatedCredentialManifest;
   v5 = [(CRKAnnotatedCredentialManifest *)&v21 init];
@@ -201,7 +201,7 @@ LABEL_7:
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v20 setWithObjects:{v19, v18, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"annotationsByPersistentID"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"annotationsByPersistentID"];
     annotationsByPersistentID = v5->_annotationsByPersistentID;
     v5->_annotationsByPersistentID = v15;
   }
@@ -217,7 +217,7 @@ LABEL_7:
 
 - (void)dataRepresentation
 {
-  v1 = [a1 verboseDescription];
+  verboseDescription = [self verboseDescription];
   OUTLINED_FUNCTION_0_3(&dword_243550000, v2, v3, "Failed to serialize credential store manifest: %{public}@", v4, v5, v6, v7, 2u);
 }
 

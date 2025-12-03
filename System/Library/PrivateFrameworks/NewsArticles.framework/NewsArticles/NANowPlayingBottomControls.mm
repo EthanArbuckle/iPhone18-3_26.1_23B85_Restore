@@ -1,8 +1,8 @@
 @interface NANowPlayingBottomControls
-+ (id)_accessibilityValueForRate:(double)a3;
-+ (id)_labelForRate:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NANowPlayingBottomControls)initWithFrame:(CGRect)a3;
++ (id)_accessibilityValueForRate:(double)rate;
++ (id)_labelForRate:(double)rate;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NANowPlayingBottomControls)initWithFrame:(CGRect)frame;
 - (NANowPlayingBottomControlsDelegate)delegate;
 - (double)widestPlaybackSpeedLabelWidth;
 - (id)buttonTitleFont;
@@ -11,23 +11,23 @@
 - (void)layoutPlaybackSpeedButton;
 - (void)layoutRouteButton;
 - (void)layoutSubviews;
-- (void)playbackSpeedButtonTapped:(id)a3;
-- (void)routeButtonTapped:(id)a3;
-- (void)routeButtonTouchDown:(id)a3;
-- (void)routeButtonTouchUpOutside:(id)a3;
-- (void)routeDidChange:(id)a3;
-- (void)setRate:(double)a3;
+- (void)playbackSpeedButtonTapped:(id)tapped;
+- (void)routeButtonTapped:(id)tapped;
+- (void)routeButtonTouchDown:(id)down;
+- (void)routeButtonTouchUpOutside:(id)outside;
+- (void)routeDidChange:(id)change;
+- (void)setRate:(double)rate;
 - (void)startAirplayStatusUpdates;
-- (void)updateRouteButtonWithRoute:(id)a3;
+- (void)updateRouteButtonWithRoute:(id)route;
 @end
 
 @implementation NANowPlayingBottomControls
 
-- (NANowPlayingBottomControls)initWithFrame:(CGRect)a3
+- (NANowPlayingBottomControls)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = NANowPlayingBottomControls;
-  v3 = [(NANowPlayingBottomControls *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NANowPlayingBottomControls *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -152,10 +152,10 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(NANowPlayingBottomControls *)self routeButton:a3.width];
+  width = fits.width;
+  v5 = [(NANowPlayingBottomControls *)self routeButton:fits.width];
   [v5 intrinsicContentSize];
   v7 = v6;
 
@@ -164,15 +164,15 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
     [NANowPlayingBottomControls sizeThatFits:];
   }
 
-  v8 = [(NANowPlayingBottomControls *)self routeButton];
-  v9 = [v8 accessoryImage];
-  [v9 size];
+  routeButton = [(NANowPlayingBottomControls *)self routeButton];
+  accessoryImage = [routeButton accessoryImage];
+  [accessoryImage size];
   v11 = v10 * -0.5;
 
   [(NANowPlayingBottomControls *)self iconCenterY];
   v13 = v12 + v11;
-  v14 = [(NANowPlayingBottomControls *)self routeButton];
-  [v14 accessoryImageSpacing];
+  routeButton2 = [(NANowPlayingBottomControls *)self routeButton];
+  [routeButton2 accessoryImageSpacing];
   v16 = v15;
 
   v17 = v13 + 48.0 + v16;
@@ -184,21 +184,21 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
 
 - (void)layoutPlaybackSpeedButton
 {
-  v3 = [(NANowPlayingBottomControls *)self buttonTitleFont];
-  v4 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  v5 = [v4 titleLabel];
-  [v5 setFont:v3];
+  buttonTitleFont = [(NANowPlayingBottomControls *)self buttonTitleFont];
+  playbackSpeedButton = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  titleLabel = [playbackSpeedButton titleLabel];
+  [titleLabel setFont:buttonTitleFont];
 
-  v6 = [(NANowPlayingBottomControls *)self buttonTitleFont];
-  v7 = [(NANowPlayingBottomControls *)self sizingPlaybackSpeedButton];
-  v8 = [v7 titleLabel];
-  [v8 setFont:v6];
+  buttonTitleFont2 = [(NANowPlayingBottomControls *)self buttonTitleFont];
+  sizingPlaybackSpeedButton = [(NANowPlayingBottomControls *)self sizingPlaybackSpeedButton];
+  titleLabel2 = [sizingPlaybackSpeedButton titleLabel];
+  [titleLabel2 setFont:buttonTitleFont2];
 
-  v9 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  [v9 sizeToFit];
+  playbackSpeedButton2 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  [playbackSpeedButton2 sizeToFit];
 
-  v10 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  [v10 bounds];
+  playbackSpeedButton3 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  [playbackSpeedButton3 bounds];
   Height = CGRectGetHeight(v37);
 
   [(NANowPlayingBottomControls *)self bounds];
@@ -210,20 +210,20 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
   v17 = v14 - v15 * 0.5;
   [(NANowPlayingBottomControls *)self iconCenterY];
   v19 = v18 - Height * 0.5;
-  v20 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  [v20 bounds];
+  playbackSpeedButton4 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  [playbackSpeedButton4 bounds];
   v21 = CGRectGetHeight(v39);
-  v22 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  [v22 setFrame:{v17, v19, v16, v21}];
+  playbackSpeedButton5 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  [playbackSpeedButton5 setFrame:{v17, v19, v16, v21}];
 
-  v35 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  [v35 bounds];
+  playbackSpeedButton6 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  [playbackSpeedButton6 bounds];
   v27 = NAInsetsToMinimumTapTargetForFrame(v23, v24, v25, v26);
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  [v34 setTouchInsets:{v27, v29, v31, v33}];
+  playbackSpeedButton7 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  [playbackSpeedButton7 setTouchInsets:{v27, v29, v31, v33}];
 }
 
 - (void)layoutRouteButton
@@ -232,8 +232,8 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
   MidX = CGRectGetMidX(v38);
   [(NANowPlayingBottomControls *)self spacingBetweenButtonCenters];
   v5 = MidX + v4 * 0.5;
-  v6 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  [v6 frame];
+  playbackSpeedButton = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  [playbackSpeedButton frame];
   v7 = CGRectGetMidX(v39);
   [(NANowPlayingBottomControls *)self widestPlaybackSpeedLabelWidth];
   v9 = v7 + v8 * 0.5;
@@ -246,9 +246,9 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
   }
 
   v11 = v10 + v10;
-  v12 = [(NANowPlayingBottomControls *)self routeButton];
+  routeButton = [(NANowPlayingBottomControls *)self routeButton];
   [(NANowPlayingBottomControls *)self bounds];
-  [v12 sizeThatFits:{v11, CGRectGetHeight(v41)}];
+  [routeButton sizeThatFits:{v11, CGRectGetHeight(v41)}];
   v14 = v13;
   v16 = v15;
 
@@ -257,24 +257,24 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
     v11 = v14;
   }
 
-  v17 = [(NANowPlayingBottomControls *)self routeButton];
-  v18 = [v17 accessoryImage];
-  [v18 size];
+  routeButton2 = [(NANowPlayingBottomControls *)self routeButton];
+  accessoryImage = [routeButton2 accessoryImage];
+  [accessoryImage size];
   v20 = v19 * 0.5;
 
   [(NANowPlayingBottomControls *)self iconCenterY];
   v22 = v21 - v20;
-  v23 = [(NANowPlayingBottomControls *)self routeButton];
-  [v23 setFrame:{v5 - v11 * 0.5, v22, v11, v16}];
+  routeButton3 = [(NANowPlayingBottomControls *)self routeButton];
+  [routeButton3 setFrame:{v5 - v11 * 0.5, v22, v11, v16}];
 
-  v36 = [(NANowPlayingBottomControls *)self routeButton];
-  [v36 bounds];
+  routeButton4 = [(NANowPlayingBottomControls *)self routeButton];
+  [routeButton4 bounds];
   v28 = NAInsetsToMinimumTapTargetForFrame(v24, v25, v26, v27);
   v30 = v29;
   v32 = v31;
   v34 = v33;
-  v35 = [(NANowPlayingBottomControls *)self routeButton];
-  [v35 setHitRectInsets:{v28, v30, v32, v34}];
+  routeButton5 = [(NANowPlayingBottomControls *)self routeButton];
+  [routeButton5 setHitRectInsets:{v28, v30, v32, v34}];
 }
 
 - (double)widestPlaybackSpeedLabelWidth
@@ -306,11 +306,11 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
       v9 = objc_opt_class();
       [v8 doubleValue];
       v10 = [v9 _labelForRate:?];
-      v11 = [(NANowPlayingBottomControls *)self sizingPlaybackSpeedButton];
-      [v11 setTitle:v10 forState:0];
+      sizingPlaybackSpeedButton = [(NANowPlayingBottomControls *)self sizingPlaybackSpeedButton];
+      [sizingPlaybackSpeedButton setTitle:v10 forState:0];
 
-      v12 = [(NANowPlayingBottomControls *)self sizingPlaybackSpeedButton];
-      [v12 intrinsicContentSize];
+      sizingPlaybackSpeedButton2 = [(NANowPlayingBottomControls *)self sizingPlaybackSpeedButton];
+      [sizingPlaybackSpeedButton2 intrinsicContentSize];
       v14 = v13;
 
       if (v14 >= v6)
@@ -326,32 +326,32 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
   return v6;
 }
 
-- (void)setRate:(double)a3
+- (void)setRate:(double)rate
 {
-  v5 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  v6 = [objc_opt_class() _labelForRate:a3];
-  [v5 setTitle:v6 forState:0];
+  playbackSpeedButton = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  v6 = [objc_opt_class() _labelForRate:rate];
+  [playbackSpeedButton setTitle:v6 forState:0];
 
-  v7 = [objc_opt_class() _accessibilityValueForRate:a3];
-  v8 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  [v8 setAccessibilityValue:v7];
+  v7 = [objc_opt_class() _accessibilityValueForRate:rate];
+  playbackSpeedButton2 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  [playbackSpeedButton2 setAccessibilityValue:v7];
 
   [(NANowPlayingBottomControls *)self setNeedsLayout];
 }
 
-+ (id)_accessibilityValueForRate:(double)a3
++ (id)_accessibilityValueForRate:(double)rate
 {
-  if (a3 >= 1.0)
+  if (rate >= 1.0)
   {
-    if (a3 >= 1.25)
+    if (rate >= 1.25)
     {
-      if (a3 >= 1.5)
+      if (rate >= 1.5)
       {
-        if (a3 >= 1.75)
+        if (rate >= 1.75)
         {
           v4 = NABundle();
           v5 = v4;
-          if (a3 >= 2.0)
+          if (rate >= 2.0)
           {
             v6 = @"double speed";
           }
@@ -398,19 +398,19 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
   return v7;
 }
 
-+ (id)_labelForRate:(double)a3
++ (id)_labelForRate:(double)rate
 {
-  if (a3 >= 1.0)
+  if (rate >= 1.0)
   {
-    if (a3 >= 1.25)
+    if (rate >= 1.25)
     {
-      if (a3 >= 1.5)
+      if (rate >= 1.5)
       {
-        if (a3 >= 1.75)
+        if (rate >= 1.75)
         {
           v4 = NABundle();
           v5 = v4;
-          if (a3 >= 2.0)
+          if (rate >= 2.0)
           {
             v6 = @"2";
           }
@@ -461,7 +461,7 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
   return v10;
 }
 
-- (void)playbackSpeedButtonTapped:(id)a3
+- (void)playbackSpeedButtonTapped:(id)tapped
 {
   v4 = NANowPlayingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -470,13 +470,13 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
     _os_log_impl(&dword_1D7987000, v4, OS_LOG_TYPE_DEFAULT, "playbackSpeedButtonMenuAction:", v8, 2u);
   }
 
-  v5 = [(NANowPlayingBottomControls *)self delegate];
-  v6 = [v5 nowPlayingBottomControlsProvidePlaybackRateMenu:self];
-  v7 = [(NANowPlayingBottomControls *)self playbackSpeedButton];
-  [v7 setMenu:v6];
+  delegate = [(NANowPlayingBottomControls *)self delegate];
+  v6 = [delegate nowPlayingBottomControlsProvidePlaybackRateMenu:self];
+  playbackSpeedButton = [(NANowPlayingBottomControls *)self playbackSpeedButton];
+  [playbackSpeedButton setMenu:v6];
 }
 
-- (void)routeButtonTouchDown:(id)a3
+- (void)routeButtonTouchDown:(id)down
 {
   v4 = NANowPlayingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -485,11 +485,11 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
     _os_log_impl(&dword_1D7987000, v4, OS_LOG_TYPE_DEFAULT, "routeButtonTouchDown:", v6, 2u);
   }
 
-  v5 = [(NANowPlayingBottomControls *)self mediaControls];
-  [v5 startPrewarming];
+  mediaControls = [(NANowPlayingBottomControls *)self mediaControls];
+  [mediaControls startPrewarming];
 }
 
-- (void)routeButtonTapped:(id)a3
+- (void)routeButtonTapped:(id)tapped
 {
   v4 = NANowPlayingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -498,11 +498,11 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
     _os_log_impl(&dword_1D7987000, v4, OS_LOG_TYPE_DEFAULT, "routeButtonTapped:", v6, 2u);
   }
 
-  v5 = [(NANowPlayingBottomControls *)self mediaControls];
-  [v5 present];
+  mediaControls = [(NANowPlayingBottomControls *)self mediaControls];
+  [mediaControls present];
 }
 
-- (void)routeButtonTouchUpOutside:(id)a3
+- (void)routeButtonTouchUpOutside:(id)outside
 {
   v4 = NANowPlayingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -511,14 +511,14 @@ id __44__NANowPlayingBottomControls_initWithFrame___block_invoke_3(uint64_t a1)
     _os_log_impl(&dword_1D7987000, v4, OS_LOG_TYPE_DEFAULT, "routeButtonTouchUpOutside:", v6, 2u);
   }
 
-  v5 = [(NANowPlayingBottomControls *)self mediaControls];
-  [v5 stopPrewarming];
+  mediaControls = [(NANowPlayingBottomControls *)self mediaControls];
+  [mediaControls stopPrewarming];
 }
 
 - (void)startAirplayStatusUpdates
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_routeDidChange_ name:*MEMORY[0x1E696F860] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_routeDidChange_ name:*MEMORY[0x1E696F860] object:0];
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -547,48 +547,48 @@ void __55__NANowPlayingBottomControls_startAirplayStatusUpdates__block_invoke(ui
 
 - (void)dismissAirplayPicker
 {
-  v2 = [(NANowPlayingBottomControls *)self mediaControls];
-  [v2 dismiss];
+  mediaControls = [(NANowPlayingBottomControls *)self mediaControls];
+  [mediaControls dismiss];
 }
 
-- (void)routeDidChange:(id)a3
+- (void)routeDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 object];
+  changeCopy = change;
+  object = [changeCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
+    object2 = [changeCopy object];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __45__NANowPlayingBottomControls_routeDidChange___block_invoke;
     v9[3] = &unk_1E84EA210;
     v9[4] = self;
-    v10 = v7;
-    v8 = v7;
+    v10 = object2;
+    v8 = object2;
     dispatch_async(MEMORY[0x1E69E96A0], v9);
   }
 }
 
-- (void)updateRouteButtonWithRoute:(id)a3
+- (void)updateRouteButtonWithRoute:(id)route
 {
-  v4 = a3;
-  v5 = [(NANowPlayingBottomControls *)self routeButton];
-  [v5 setRoute:v4];
+  routeCopy = route;
+  routeButton = [(NANowPlayingBottomControls *)self routeButton];
+  [routeButton setRoute:routeCopy];
 
-  LODWORD(v5) = [v4 isRoutingToWirelessDevice];
-  v6 = [(NANowPlayingBottomControls *)self routeButton];
-  [v6 setRouteLabelHidden:v5 ^ 1];
+  LODWORD(routeButton) = [routeCopy isRoutingToWirelessDevice];
+  routeButton2 = [(NANowPlayingBottomControls *)self routeButton];
+  [routeButton2 setRouteLabelHidden:routeButton ^ 1];
 
   [(NANowPlayingBottomControls *)self setNeedsLayout];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NANowPlayingBottomControls;

@@ -1,29 +1,29 @@
 @interface SPUISContactStore
-+ (id)_contactWithEmail:(id)a3 keysToFetch:(id)a4;
-+ (id)_contactsWithEmails:(id)a3 keysToFetch:(id)a4;
-+ (id)_contactsWithIds:(id)a3;
++ (id)_contactWithEmail:(id)email keysToFetch:(id)fetch;
++ (id)_contactsWithEmails:(id)emails keysToFetch:(id)fetch;
++ (id)_contactsWithIds:(id)ids;
 + (id)_defaultKeysForContactByIdentifier;
-+ (id)contactForContactIdentifier:(id)a3;
++ (id)contactForContactIdentifier:(id)identifier;
 + (id)contactStore;
-+ (id)contactWithEmail:(id)a3;
-+ (id)contactWithEmailForMailResults:(id)a3;
++ (id)contactWithEmail:(id)email;
++ (id)contactWithEmailForMailResults:(id)results;
 + (void)_clearCachedContacts;
 + (void)initialize;
-+ (void)precacheContactsForResults:(id)a3;
++ (void)precacheContactsForResults:(id)results;
 @end
 
 @implementation SPUISContactStore
 
 + (void)initialize
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___SPUISContactStore;
   objc_msgSendSuper2(&v4, sel_initialize);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__SPUISContactStore_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken != -1)
   {
     dispatch_once(&initialize_onceToken, block);
@@ -75,33 +75,33 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
   return v3;
 }
 
-+ (id)contactForContactIdentifier:(id)a3
++ (id)contactForContactIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [_SPUISIdToContactCache objectForKey:v4];
+  identifierCopy = identifier;
+  v5 = [_SPUISIdToContactCache objectForKey:identifierCopy];
   if (!v5)
   {
-    v6 = [a1 _defaultKeysForContactByIdentifier];
-    v7 = [a1 contactStore];
+    _defaultKeysForContactByIdentifier = [self _defaultKeysForContactByIdentifier];
+    contactStore = [self contactStore];
     v14 = 0;
-    v5 = [v7 unifiedContactWithIdentifier:v4 keysToFetch:v6 error:&v14];
+    v5 = [contactStore unifiedContactWithIdentifier:identifierCopy keysToFetch:_defaultKeysForContactByIdentifier error:&v14];
     v8 = v14;
 
     v9 = _SPUISIdToContactCache;
     if (v5)
     {
-      [_SPUISIdToContactCache setObject:v5 forKey:v4];
+      [_SPUISIdToContactCache setObject:v5 forKey:identifierCopy];
     }
 
     else
     {
-      v10 = [MEMORY[0x277CBEB68] null];
-      [v9 setObject:v10 forKey:v4];
+      null = [MEMORY[0x277CBEB68] null];
+      [v9 setObject:null forKey:identifierCopy];
     }
   }
 
-  v11 = [MEMORY[0x277CBEB68] null];
-  v12 = [v5 isEqual:v11];
+  null2 = [MEMORY[0x277CBEB68] null];
+  v12 = [v5 isEqual:null2];
 
   if (v12)
   {
@@ -112,17 +112,17 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
   return v5;
 }
 
-+ (id)contactWithEmail:(id)a3
++ (id)contactWithEmail:(id)email
 {
-  v4 = a3;
-  v5 = [_SPUISEmailToContactCache objectForKey:v4];
+  emailCopy = email;
+  v5 = [_SPUISEmailToContactCache objectForKey:emailCopy];
   if (!v5)
   {
-    v5 = [a1 _contactWithEmail:v4 keysToFetch:MEMORY[0x277CBEBF8]];
+    v5 = [self _contactWithEmail:emailCopy keysToFetch:MEMORY[0x277CBEBF8]];
   }
 
-  v6 = [MEMORY[0x277CBEB68] null];
-  v7 = [v5 isEqual:v6];
+  null = [MEMORY[0x277CBEB68] null];
+  v7 = [v5 isEqual:null];
 
   if (v7)
   {
@@ -133,32 +133,32 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
   return v5;
 }
 
-+ (id)contactWithEmailForMailResults:(id)a3
++ (id)contactWithEmailForMailResults:(id)results
 {
-  v4 = a3;
-  v5 = [_SPUISEmailToContactCache objectForKey:v4];
+  resultsCopy = results;
+  v5 = [_SPUISEmailToContactCache objectForKey:resultsCopy];
   if (!v5)
   {
     v6 = +[SPUISMailResultBuilder contactKeysToFetch];
-    v5 = [a1 _contactWithEmail:v4 keysToFetch:v6];
+    v5 = [self _contactWithEmail:resultsCopy keysToFetch:v6];
 
     v7 = _SPUISEmailToContactCache;
     if (v5)
     {
-      [_SPUISEmailToContactCache setObject:v5 forKey:v4];
+      [_SPUISEmailToContactCache setObject:v5 forKey:resultsCopy];
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEB68] null];
-      [v7 setObject:v8 forKey:v4];
+      null = [MEMORY[0x277CBEB68] null];
+      [v7 setObject:null forKey:resultsCopy];
 
       v5 = 0;
     }
   }
 
-  v9 = [MEMORY[0x277CBEB68] null];
-  v10 = [v5 isEqual:v9];
+  null2 = [MEMORY[0x277CBEB68] null];
+  v10 = [v5 isEqual:null2];
 
   if (v10)
   {
@@ -169,17 +169,17 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
   return v5;
 }
 
-+ (id)_contactWithEmail:(id)a3 keysToFetch:(id)a4
++ (id)_contactWithEmail:(id)email keysToFetch:(id)fetch
 {
   v5 = MEMORY[0x277CBDA58];
-  v6 = a4;
-  v7 = [v5 predicateForContactsMatchingEmailAddress:a3];
-  v8 = [objc_opt_class() contactStore];
-  v9 = [v8 unifiedContactsMatchingPredicate:v7 keysToFetch:v6 error:0];
+  fetchCopy = fetch;
+  v7 = [v5 predicateForContactsMatchingEmailAddress:email];
+  contactStore = [objc_opt_class() contactStore];
+  v9 = [contactStore unifiedContactsMatchingPredicate:v7 keysToFetch:fetchCopy error:0];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 + (void)_clearCachedContacts
@@ -190,23 +190,23 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
   [v2 removeAllObjects];
 }
 
-+ (id)_contactsWithEmails:(id)a3 keysToFetch:(id)a4
++ (id)_contactsWithEmails:(id)emails keysToFetch:(id)fetch
 {
   v6 = *MEMORY[0x277CBCFC0];
-  v7 = a3;
-  v8 = [a4 arrayByAddingObject:v6];
-  v9 = [MEMORY[0x277CBDA58] predicateForContactsMatchingHandleStrings:v7];
+  emailsCopy = emails;
+  v8 = [fetch arrayByAddingObject:v6];
+  v9 = [MEMORY[0x277CBDA58] predicateForContactsMatchingHandleStrings:emailsCopy];
 
   v10 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:v8];
   [v10 setPredicate:v9];
-  v11 = [a1 contactStore];
+  contactStore = [self contactStore];
   v17 = 0;
-  v12 = [v11 executeFetchRequest:v10 error:&v17];
+  v12 = [contactStore executeFetchRequest:v10 error:&v17];
   v13 = v17;
 
   if (v12)
   {
-    v14 = [v12 value];
+    value = [v12 value];
   }
 
   else
@@ -217,28 +217,28 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
       +[SPUISContactStore _contactsWithEmails:keysToFetch:];
     }
 
-    v14 = 0;
+    value = 0;
   }
 
-  return v14;
+  return value;
 }
 
-+ (id)_contactsWithIds:(id)a3
++ (id)_contactsWithIds:(id)ids
 {
-  v4 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:a3];
+  v4 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:ids];
   v5 = objc_alloc(MEMORY[0x277CBDA70]);
-  v6 = [a1 _defaultKeysForContactByIdentifier];
-  v7 = [v5 initWithKeysToFetch:v6];
+  _defaultKeysForContactByIdentifier = [self _defaultKeysForContactByIdentifier];
+  v7 = [v5 initWithKeysToFetch:_defaultKeysForContactByIdentifier];
 
   [v7 setPredicate:v4];
-  v8 = [a1 contactStore];
+  contactStore = [self contactStore];
   v14 = 0;
-  v9 = [v8 executeFetchRequest:v7 error:&v14];
+  v9 = [contactStore executeFetchRequest:v7 error:&v14];
   v10 = v14;
 
   if (v9)
   {
-    v11 = [v9 value];
+    value = [v9 value];
   }
 
   else
@@ -249,21 +249,21 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
       +[SPUISContactStore _contactsWithEmails:keysToFetch:];
     }
 
-    v11 = 0;
+    value = 0;
   }
 
-  return v11;
+  return value;
 }
 
-+ (void)precacheContactsForResults:(id)a3
++ (void)precacheContactsForResults:(id)results
 {
   v87 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [SPUISMailResultBuilder authorEmailsFromResults:v3];
+  resultsCopy = results;
+  v4 = [SPUISMailResultBuilder authorEmailsFromResults:resultsCopy];
   v5 = objc_opt_new();
-  v53 = [_SPUISEmailToContactCache mapTableRepresentation];
-  v6 = [v53 keyEnumerator];
-  v7 = [v6 allObjects];
+  mapTableRepresentation = [_SPUISEmailToContactCache mapTableRepresentation];
+  keyEnumerator = [mapTableRepresentation keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
   v80 = 0u;
   v81 = 0u;
@@ -285,7 +285,7 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
         }
 
         v13 = *(*(&v78 + 1) + 8 * i);
-        if (([v7 containsObject:v13] & 1) == 0)
+        if (([allObjects containsObject:v13] & 1) == 0)
         {
           [v5 addObject:v13];
         }
@@ -297,14 +297,14 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
     while (v10);
   }
 
-  v52 = v7;
+  v52 = allObjects;
 
-  v54 = v3;
-  v14 = [SPUISContactResultBuilder contactIdentifiersFromResults:v3];
+  v54 = resultsCopy;
+  v14 = [SPUISContactResultBuilder contactIdentifiersFromResults:resultsCopy];
   v15 = objc_opt_new();
-  v51 = [_SPUISIdToContactCache mapTableRepresentation];
-  v16 = [v51 keyEnumerator];
-  v17 = [v16 allObjects];
+  mapTableRepresentation2 = [_SPUISIdToContactCache mapTableRepresentation];
+  keyEnumerator2 = [mapTableRepresentation2 keyEnumerator];
+  allObjects2 = [keyEnumerator2 allObjects];
 
   v76 = 0u;
   v77 = 0u;
@@ -326,7 +326,7 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
         }
 
         v23 = *(*(&v74 + 1) + 8 * j);
-        if (([v17 containsObject:v23] & 1) == 0)
+        if (([allObjects2 containsObject:v23] & 1) == 0)
         {
           [v15 addObject:v23];
         }
@@ -344,7 +344,7 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
   if ([v5 count])
   {
     v24 = +[SPUISMailResultBuilder contactKeysToFetch];
-    v25 = [a1 _contactsWithEmails:v5 keysToFetch:v24];
+    v25 = [self _contactsWithEmails:v5 keysToFetch:v24];
 
     v72[0] = MEMORY[0x277D85DD0];
     v72[1] = 3221225472;
@@ -375,8 +375,8 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
 
           v32 = *(*(&v68 + 1) + 8 * k);
           v33 = _SPUISEmailToContactCache;
-          v34 = [MEMORY[0x277CBEB68] null];
-          [v33 setObject:v34 forKey:v32];
+          null = [MEMORY[0x277CBEB68] null];
+          [v33 setObject:null forKey:v32];
         }
 
         v29 = [v27 countByEnumeratingWithState:&v68 objects:v84 count:16];
@@ -391,7 +391,7 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
 
   if ([v15 count])
   {
-    [a1 _contactsWithIds:v15];
+    [self _contactsWithIds:v15];
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
@@ -411,9 +411,9 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
           }
 
           v39 = *(*(&v64 + 1) + 8 * m);
-          v40 = [v39 identifier];
-          [_SPUISIdToContactCache setObject:v39 forKey:v40];
-          [v15 removeObject:v40];
+          identifier = [v39 identifier];
+          [_SPUISIdToContactCache setObject:v39 forKey:identifier];
+          [v15 removeObject:identifier];
         }
 
         v36 = [obja countByEnumeratingWithState:&v64 objects:v83 count:16];
@@ -443,8 +443,8 @@ uint64_t __33__SPUISContactStore_contactStore__block_invoke()
 
           v46 = *(*(&v60 + 1) + 8 * n);
           v47 = _SPUISIdToContactCache;
-          v48 = [MEMORY[0x277CBEB68] null];
-          [v47 setObject:v48 forKey:v46];
+          null2 = [MEMORY[0x277CBEB68] null];
+          [v47 setObject:null2 forKey:v46];
         }
 
         v43 = [v41 countByEnumeratingWithState:&v60 objects:v82 count:16];

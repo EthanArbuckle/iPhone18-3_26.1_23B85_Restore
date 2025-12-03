@@ -1,21 +1,21 @@
 @interface HMMTRSoftwareUpdateProviderApplyUpdateResponseParams
-- (HMMTRSoftwareUpdateProviderApplyUpdateResponseParams)initWithAction:(id)a3 delayedActionTime:(id)a4;
+- (HMMTRSoftwareUpdateProviderApplyUpdateResponseParams)initWithAction:(id)action delayedActionTime:(id)time;
 @end
 
 @implementation HMMTRSoftwareUpdateProviderApplyUpdateResponseParams
 
-- (HMMTRSoftwareUpdateProviderApplyUpdateResponseParams)initWithAction:(id)a3 delayedActionTime:(id)a4
+- (HMMTRSoftwareUpdateProviderApplyUpdateResponseParams)initWithAction:(id)action delayedActionTime:(id)time
 {
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  timeCopy = time;
   v12.receiver = self;
   v12.super_class = HMMTRSoftwareUpdateProviderApplyUpdateResponseParams;
   v9 = [(HMMTRSoftwareUpdateProviderApplyUpdateResponseParams *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_action, a3);
-    objc_storeStrong(&v10->_delayedActionTime, a4);
+    objc_storeStrong(&v9->_action, action);
+    objc_storeStrong(&v10->_delayedActionTime, time);
   }
 
   return v10;

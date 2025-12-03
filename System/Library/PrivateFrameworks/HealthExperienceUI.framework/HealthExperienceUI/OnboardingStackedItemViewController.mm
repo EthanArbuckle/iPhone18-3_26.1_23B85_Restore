@@ -1,21 +1,21 @@
 @interface OnboardingStackedItemViewController
-- (void)nextButtonTapped:(id)a3;
+- (void)nextButtonTapped:(id)tapped;
 - (void)viewDidLoad;
-- (void)widthDesignationDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4;
+- (void)widthDesignationDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection;
 @end
 
 @implementation OnboardingStackedItemViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA111214();
 }
 
-- (void)nextButtonTapped:(id)a3
+- (void)nextButtonTapped:(id)tapped
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
   sub_1BA111DEC();
@@ -23,11 +23,11 @@
   __swift_destroy_boxed_opaque_existential_1(&v5);
 }
 
-- (void)widthDesignationDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)widthDesignationDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_1BA1128A4();
   swift_unknownObjectRelease();
 }

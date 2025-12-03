@@ -1,18 +1,18 @@
 @interface RegisterAction
-+ (id)_deviceRestartRegisterIntervalConfigPrefKeyForAccount:(id)a3;
-+ (id)_lastDeviceRestartRegisterTimePrefKeyForAccount:(id)a3;
-+ (id)_lastForcedRegisterTimePrefKeyForAccount:(id)a3;
-+ (id)_registerDigestPrefKeyForAccount:(id)a3;
++ (id)_deviceRestartRegisterIntervalConfigPrefKeyForAccount:(id)account;
++ (id)_lastDeviceRestartRegisterTimePrefKeyForAccount:(id)account;
++ (id)_lastForcedRegisterTimePrefKeyForAccount:(id)account;
++ (id)_registerDigestPrefKeyForAccount:(id)account;
 + (id)sharedregisterDigestSerialQueue;
-+ (void)deleteRegisterDigestForAccount:(id)a3;
-- (BOOL)_registerDeviceWithCause:(id)a3 completion:(id)a4;
++ (void)deleteRegisterDigestForAccount:(id)account;
+- (BOOL)_registerDeviceWithCause:(id)cause completion:(id)completion;
 - (BOOL)_shouldThrottleDeviceRestartRegister;
-- (BOOL)shouldCancelAction:(id)a3;
-- (BOOL)shouldWaitForAction:(id)a3;
+- (BOOL)shouldCancelAction:(id)action;
+- (BOOL)shouldWaitForAction:(id)action;
 - (FMDServiceProvider)provider;
 - (id)_extraRegistrationInformation;
 - (id)_reasonForStartupRegister;
-- (void)runWithCompletion:(id)a3;
+- (void)runWithCompletion:(id)completion;
 - (void)willCancelAction;
 @end
 
@@ -30,13 +30,13 @@
   return v3;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RegisterAction *)self reason];
-  if (!v5)
+  completionCopy = completion;
+  reason = [(RegisterAction *)self reason];
+  if (!reason)
   {
-    v5 = [(RegisterAction *)self _reasonForStartupRegister];
+    reason = [(RegisterAction *)self _reasonForStartupRegister];
   }
 
   if ([(RegisterAction *)self force])
@@ -45,34 +45,34 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v5;
+      v14 = reason;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Register %@ is being forced", buf, 0xCu);
     }
 
-    if (v5)
+    if (reason)
     {
-      v7 = [NSString stringWithFormat:@"Forced-%@", v5];
+      v7 = [NSString stringWithFormat:@"Forced-%@", reason];
 
-      v5 = v7;
+      reason = v7;
     }
 
     else
     {
-      v5 = @"Forced";
+      reason = @"Forced";
     }
 
-    v8 = [(RegisterAction *)self provider];
-    v9 = [v8 account];
-    v10 = [RegisterAction _lastForcedRegisterTimePrefKeyForAccount:v9];
+    provider = [(RegisterAction *)self provider];
+    account = [provider account];
+    v10 = [RegisterAction _lastForcedRegisterTimePrefKeyForAccount:account];
 
     v11 = +[NSDate date];
     [FMPreferencesUtil setDate:v11 forKey:v10 inDomain:kFMDNotBackedUpPrefDomain];
   }
 
-  v12 = [(RegisterAction *)self _registerDeviceWithCause:v5 completion:v4];
-  if (v4 && (v12 & 1) == 0)
+  v12 = [(RegisterAction *)self _registerDeviceWithCause:reason completion:completionCopy];
+  if (completionCopy && (v12 & 1) == 0)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -91,11 +91,11 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)shouldCancelAction:(id)a3
+- (BOOL)shouldCancelAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 actionType];
-  v6 = [v5 isEqual:@"RegisterAction"];
+  actionCopy = action;
+  actionType = [actionCopy actionType];
+  v6 = [actionType isEqual:@"RegisterAction"];
   if (qword_100314A68)
   {
     v7 = 0;
@@ -114,11 +114,11 @@
       v10 = 138413058;
       v11 = objc_opt_class();
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = v4;
+      v17 = actionCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@(0x%lX) shouldCancelAction: %@(0x%lX)", &v10, 0x2Au);
     }
   }
@@ -126,24 +126,24 @@
   return v7;
 }
 
-- (BOOL)shouldWaitForAction:(id)a3
+- (BOOL)shouldWaitForAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 actionType];
-  v6 = [v5 isEqual:@"RegisterAction"];
+  actionCopy = action;
+  actionType = [actionCopy actionType];
+  v6 = [actionType isEqual:@"RegisterAction"];
 
   if (v6)
   {
     v7 = sub_100002880();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(RegisterAction *)self reason];
+      reason = [(RegisterAction *)self reason];
       v10 = 138412802;
-      v11 = v8;
+      v11 = reason;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v4;
+      v15 = actionCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@(0x%lX) RegisterAction shouldWaitForAction: %@", &v10, 0x20u);
     }
   }
@@ -153,21 +153,21 @@
 
 - (id)_reasonForStartupRegister
 {
-  v2 = [(RegisterAction *)self provider];
-  v3 = [v2 account];
+  provider = [(RegisterAction *)self provider];
+  account = [provider account];
 
-  v4 = v3;
-  v5 = [v4 lastUnregisterFailedTime];
-  if (!v5)
+  v4 = account;
+  lastUnregisterFailedTime = [v4 lastUnregisterFailedTime];
+  if (!lastUnregisterFailedTime)
   {
     goto LABEL_4;
   }
 
-  v6 = v5;
-  v7 = [v4 lastUnregisterFailedTime];
+  v6 = lastUnregisterFailedTime;
+  lastUnregisterFailedTime2 = [v4 lastUnregisterFailedTime];
   v8 = +[FMDDaemon sharedInstance];
-  v9 = [v8 startTime];
-  v10 = [v7 compare:v9];
+  startTime = [v8 startTime];
+  v10 = [lastUnregisterFailedTime2 compare:startTime];
 
   if (v10 == 1)
   {
@@ -177,25 +177,25 @@
   else
   {
 LABEL_4:
-    v12 = [v4 accountAddTime];
-    if (!v12)
+    accountAddTime = [v4 accountAddTime];
+    if (!accountAddTime)
     {
       goto LABEL_7;
     }
 
-    v13 = v12;
-    v14 = [v4 accountAddTime];
+    v13 = accountAddTime;
+    accountAddTime2 = [v4 accountAddTime];
     v15 = +[FMDDaemon sharedInstance];
-    v16 = [v15 startTime];
-    v17 = [v14 compare:v16];
+    startTime2 = [v15 startTime];
+    v17 = [accountAddTime2 compare:startTime2];
 
     if (v17 == -1)
     {
 LABEL_7:
       v18 = +[FMDDaemon sharedInstance];
-      v19 = [v18 isFirstRunAfterBoot];
+      isFirstRunAfterBoot = [v18 isFirstRunAfterBoot];
       v20 = @"FMDRestart";
-      if (v19)
+      if (isFirstRunAfterBoot)
       {
         v20 = @"DeviceRestart";
       }
@@ -214,11 +214,11 @@ LABEL_7:
 
 - (id)_extraRegistrationInformation
 {
-  v2 = [(RegisterAction *)self provider];
-  v3 = [v2 account];
+  provider = [(RegisterAction *)self provider];
+  account = [provider account];
 
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [RegisterAction _lastForcedRegisterTimePrefKeyForAccount:v3];
+  v5 = [RegisterAction _lastForcedRegisterTimePrefKeyForAccount:account];
   v6 = [FMPreferencesUtil dateForKey:v5 inDomain:kFMDNotBackedUpPrefDomain];
   if (v6)
   {
@@ -231,11 +231,11 @@ LABEL_7:
   }
 
   [v4 setObject:v7 forKeyedSubscript:@"lastForcedTime"];
-  v8 = [v3 authToken];
-  v9 = v8;
-  if (v8)
+  authToken = [account authToken];
+  v9 = authToken;
+  if (authToken)
   {
-    v10 = v8;
+    v10 = authToken;
   }
 
   else
@@ -248,10 +248,10 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)_registerDeviceWithCause:(id)a3 completion:(id)a4
+- (BOOL)_registerDeviceWithCause:(id)cause completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  causeCopy = cause;
+  completionCopy = completion;
   v8 = sub_100002880();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -260,33 +260,33 @@ LABEL_7:
     *&buf[12] = 2048;
     *&buf[14] = self;
     *&buf[22] = 2112;
-    v61 = v6;
+    v61 = causeCopy;
     v9 = *&buf[4];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ (0x%lX) Request to send register %@", buf, 0x20u);
   }
 
-  v10 = [(RegisterAction *)self provider];
-  v11 = [v10 essentialServerInfoMissingError];
-  if (v11 != 1196379972)
+  provider = [(RegisterAction *)self provider];
+  essentialServerInfoMissingError = [provider essentialServerInfoMissingError];
+  if (essentialServerInfoMissingError != 1196379972)
   {
     v25 = sub_100002880();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [NSString stringWithFourCC:v11];
+      v26 = [NSString stringWithFourCC:essentialServerInfoMissingError];
       *buf = 138412546;
-      *&buf[4] = v6;
+      *&buf[4] = causeCopy;
       *&buf[12] = 2112;
       *&buf[14] = v26;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Ignoring register %@. Server info '%@' missing", buf, 0x16u);
     }
 
-    v27 = v11 == 1480675411;
+    v27 = essentialServerInfoMissingError == 1480675411;
     v28 = +[FMSystemInfo sharedInstance];
-    LODWORD(v11) = [v28 isInternalBuild];
+    LODWORD(essentialServerInfoMissingError) = [v28 isInternalBuild];
 
     if (v27)
     {
-      if (!v11)
+      if (!essentialServerInfoMissingError)
       {
         goto LABEL_22;
       }
@@ -301,7 +301,7 @@ LABEL_7:
 
     else
     {
-      if (v11)
+      if (essentialServerInfoMissingError)
       {
         v30 = sub_100002880();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -311,10 +311,10 @@ LABEL_7:
         }
       }
 
-      [v10 tryToFetchAuthToken];
+      [provider tryToFetchAuthToken];
     }
 
-    LOBYTE(v11) = 0;
+    LOBYTE(essentialServerInfoMissingError) = 0;
     goto LABEL_22;
   }
 
@@ -328,20 +328,20 @@ LABEL_7:
   v61 = sub_10000AB84;
   v62 = sub_100002B8C;
   v63 = 0;
-  v11 = +[RegisterAction sharedregisterDigestSerialQueue];
+  essentialServerInfoMissingError = +[RegisterAction sharedregisterDigestSerialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001E4E58;
   block[3] = &unk_1002D1488;
   block[4] = self;
   v48 = buf;
-  v12 = v6;
+  v12 = causeCopy;
   v47 = v12;
   v49 = &v50;
-  dispatch_sync(v11, block);
+  dispatch_sync(essentialServerInfoMissingError, block);
 
-  LOBYTE(v11) = *(v51 + 24);
-  if (v11)
+  LOBYTE(essentialServerInfoMissingError) = *(v51 + 24);
+  if (essentialServerInfoMissingError)
   {
     v13 = sub_100002880();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -350,7 +350,7 @@ LABEL_7:
       *v54 = 138412802;
       v55 = v14;
       v56 = 2048;
-      v57 = self;
+      selfCopy = self;
       v58 = 2112;
       v59 = v12;
       v15 = v14;
@@ -362,7 +362,7 @@ LABEL_7:
     v43[1] = 3221225472;
     v43[2] = sub_1001E5264;
     v43[3] = &unk_1002CDF18;
-    v44 = v10;
+    v44 = provider;
     v17 = v12;
     v45 = v17;
     v41[0] = _NSConcreteStackBlock;
@@ -373,12 +373,12 @@ LABEL_7:
     v42 = v18;
     v32 = [(FMDActingRequestDecorator *)v16 initWithDeviceContextGenerator:v43 deviceInfoGenerator:v41 serverContextGenerator:0 requestHeaderGenerator:0];
     v19 = [FMDRequestRegister alloc];
-    v20 = [v18 account];
-    v21 = [(FMDRequest *)v19 initWithAccount:v20];
+    account = [v18 account];
+    v21 = [(FMDRequest *)v19 initWithAccount:account];
 
     [(FMDRequest *)v21 setDecorator:v32];
-    v22 = [v18 account];
-    v23 = [RegisterAction _registerDigestPrefKeyForAccount:v22];
+    account2 = [v18 account];
+    v23 = [RegisterAction _registerDigestPrefKeyForAccount:account2];
     [(FMDRequestRegister *)v21 setDigestKey:v23];
 
     [(FMDRequestRegister *)v21 setDigestData:*(*&buf[8] + 40)];
@@ -398,11 +398,11 @@ LABEL_7:
     objc_copyWeak(&v37, v54);
     v33[4] = self;
     v34 = v17;
-    v35 = v7;
+    v35 = completionCopy;
     [(FMDRequest *)v21 setCompletionHandler:v33];
     [(RegisterAction *)self setRequest:v21];
-    v24 = [v18 serverInteractionController];
-    [v24 enqueueRequest:v21];
+    serverInteractionController = [v18 serverInteractionController];
+    [serverInteractionController enqueueRequest:v21];
 
     objc_destroyWeak(&v37);
     objc_destroyWeak(&v36);
@@ -415,7 +415,7 @@ LABEL_7:
   _Block_object_dispose(&v50, 8);
 LABEL_22:
 
-  return v11;
+  return essentialServerInfoMissingError;
 }
 
 - (BOOL)_shouldThrottleDeviceRestartRegister
@@ -425,14 +425,14 @@ LABEL_22:
   {
     v4 = v3;
 LABEL_4:
-    v8 = [v4 longLongValue];
+    longLongValue = [v4 longLongValue];
 
     goto LABEL_5;
   }
 
-  v5 = [(RegisterAction *)self provider];
-  v6 = [v5 account];
-  v7 = [RegisterAction _deviceRestartRegisterIntervalConfigPrefKeyForAccount:v6];
+  provider = [(RegisterAction *)self provider];
+  account = [provider account];
+  v7 = [RegisterAction _deviceRestartRegisterIntervalConfigPrefKeyForAccount:account];
 
   v4 = [FMPreferencesUtil stringForKey:v7 inDomain:kFMDNotBackedUpPrefDomain];
 
@@ -441,21 +441,21 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v8 = 86400.0;
+  longLongValue = 86400.0;
 LABEL_5:
-  v9 = [(RegisterAction *)self provider];
-  v10 = [v9 account];
-  v11 = [RegisterAction _lastDeviceRestartRegisterTimePrefKeyForAccount:v10];
+  provider2 = [(RegisterAction *)self provider];
+  account2 = [provider2 account];
+  v11 = [RegisterAction _lastDeviceRestartRegisterTimePrefKeyForAccount:account2];
 
   v12 = [FMPreferencesUtil dateForKey:v11 inDomain:kFMDNotBackedUpPrefDomain];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 fm_epoch];
+    fm_epoch = [v12 fm_epoch];
     v15 = +[NSDate date];
-    v16 = [v15 fm_epoch];
+    fm_epoch2 = [v15 fm_epoch];
 
-    v17 = (v16 - v14) / 1000.0 < v8;
+    v17 = (fm_epoch2 - fm_epoch) / 1000.0 < longLongValue;
   }
 
   else
@@ -474,60 +474,60 @@ LABEL_5:
   return v17;
 }
 
-+ (id)_registerDigestPrefKeyForAccount:(id)a3
++ (id)_registerDigestPrefKeyForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_opt_class();
-  v5 = [v3 authId];
+  authId = [accountCopy authId];
 
-  v6 = [NSString stringWithFormat:@"RegisterDigest-%@-%@", v4, v5];
+  v6 = [NSString stringWithFormat:@"RegisterDigest-%@-%@", v4, authId];
 
   return v6;
 }
 
-+ (id)_lastForcedRegisterTimePrefKeyForAccount:(id)a3
++ (id)_lastForcedRegisterTimePrefKeyForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_opt_class();
-  v5 = [v3 authId];
+  authId = [accountCopy authId];
 
-  v6 = [NSString stringWithFormat:@"LastForcedRegisterTime-%@-%@", v4, v5];
+  v6 = [NSString stringWithFormat:@"LastForcedRegisterTime-%@-%@", v4, authId];
 
   return v6;
 }
 
-+ (id)_lastDeviceRestartRegisterTimePrefKeyForAccount:(id)a3
++ (id)_lastDeviceRestartRegisterTimePrefKeyForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_opt_class();
-  v5 = [v3 authId];
+  authId = [accountCopy authId];
 
-  v6 = [NSString stringWithFormat:@"LastDeviceRestartRegisterTime-%@-%@", v4, v5];
+  v6 = [NSString stringWithFormat:@"LastDeviceRestartRegisterTime-%@-%@", v4, authId];
 
   return v6;
 }
 
-+ (id)_deviceRestartRegisterIntervalConfigPrefKeyForAccount:(id)a3
++ (id)_deviceRestartRegisterIntervalConfigPrefKeyForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_opt_class();
-  v5 = [v3 authId];
+  authId = [accountCopy authId];
 
-  v6 = [NSString stringWithFormat:@"DeviceRestartRegisterIntervalConfig-%@-%@", v4, v5];
+  v6 = [NSString stringWithFormat:@"DeviceRestartRegisterIntervalConfig-%@-%@", v4, authId];
 
   return v6;
 }
 
-+ (void)deleteRegisterDigestForAccount:(id)a3
++ (void)deleteRegisterDigestForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[RegisterAction sharedregisterDigestSerialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001E6500;
   block[3] = &unk_1002CD4C8;
-  v7 = v3;
-  v5 = v3;
+  v7 = accountCopy;
+  v5 = accountCopy;
   dispatch_async(v4, block);
 }
 

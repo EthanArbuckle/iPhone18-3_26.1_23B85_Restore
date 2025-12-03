@@ -1,14 +1,14 @@
 @interface SUUIUpdateOperationResults
-- (SUUIUpdateOperationResults)initWithResult:(BOOL)a3;
+- (SUUIUpdateOperationResults)initWithResult:(BOOL)result;
 - (id)descriptionDictionary;
 @end
 
 @implementation SUUIUpdateOperationResults
 
-- (SUUIUpdateOperationResults)initWithResult:(BOOL)a3
+- (SUUIUpdateOperationResults)initWithResult:(BOOL)result
 {
   v8 = a2;
-  v7 = a3;
+  resultCopy = result;
   v9 = 0;
   v6.receiver = self;
   v6.super_class = SUUIUpdateOperationResults;
@@ -17,7 +17,7 @@
   objc_storeStrong(&v9, v5);
   if (v5)
   {
-    v9->_success = v7;
+    v9->_success = resultCopy;
   }
 
   v4 = MEMORY[0x277D82BE0](v9);

@@ -1,13 +1,13 @@
 @interface SKAuthenticationResponseEvent
-- (SKAuthenticationResponseEvent)initWithPassword:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (SKAuthenticationResponseEvent)initWithPassword:(id)password;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation SKAuthenticationResponseEvent
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -34,13 +34,13 @@
   return v7;
 }
 
-- (SKAuthenticationResponseEvent)initWithPassword:(id)a3
+- (SKAuthenticationResponseEvent)initWithPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   v5 = [(SKEvent *)self initWithEventType:130];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [passwordCopy copy];
     password = v5->_password;
     v5->_password = v6;
 

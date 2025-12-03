@@ -1,22 +1,22 @@
 @interface CKDetailsExpanseActivityHeaderView
 - (void)layoutSubviews;
-- (void)setExpanseActivityTextView:(id)a3;
+- (void)setExpanseActivityTextView:(id)view;
 @end
 
 @implementation CKDetailsExpanseActivityHeaderView
 
-- (void)setExpanseActivityTextView:(id)a3
+- (void)setExpanseActivityTextView:(id)view
 {
-  v5 = a3;
-  if (self->_expanseActivityTextView != v5)
+  viewCopy = view;
+  if (self->_expanseActivityTextView != viewCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_expanseActivityTextView, a3);
-    v6 = [(CKDetailsExpanseActivityHeaderView *)self contentView];
-    [v6 addSubview:self->_expanseActivityTextView];
+    v7 = viewCopy;
+    objc_storeStrong(&self->_expanseActivityTextView, view);
+    contentView = [(CKDetailsExpanseActivityHeaderView *)self contentView];
+    [contentView addSubview:self->_expanseActivityTextView];
 
     [(CKDetailsExpanseActivityHeaderView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -25,29 +25,29 @@
   v36.receiver = self;
   v36.super_class = CKDetailsExpanseActivityHeaderView;
   [(CKDetailsExpanseActivityHeaderView *)&v36 layoutSubviews];
-  v3 = [(CKDetailsExpanseActivityHeaderView *)self contentView];
+  contentView = [(CKDetailsExpanseActivityHeaderView *)self contentView];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 theme];
-  v6 = [v5 detailsHeaderFooterContentViewBackgroundColor];
-  [v3 setBackgroundColor:v6];
+  theme = [v4 theme];
+  detailsHeaderFooterContentViewBackgroundColor = [theme detailsHeaderFooterContentViewBackgroundColor];
+  [contentView setBackgroundColor:detailsHeaderFooterContentViewBackgroundColor];
 
-  v7 = [(CKDetailsExpanseActivityHeaderView *)self backgroundView];
+  backgroundView = [(CKDetailsExpanseActivityHeaderView *)self backgroundView];
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 theme];
-  v10 = [v9 detailsHeaderFooterContentViewBackgroundColor];
-  [v7 setBackgroundColor:v10];
+  theme2 = [v8 theme];
+  detailsHeaderFooterContentViewBackgroundColor2 = [theme2 detailsHeaderFooterContentViewBackgroundColor];
+  [backgroundView setBackgroundColor:detailsHeaderFooterContentViewBackgroundColor2];
 
-  v11 = [(CKDetailsExpanseActivityHeaderView *)self contentView];
-  [v11 bounds];
+  contentView2 = [(CKDetailsExpanseActivityHeaderView *)self contentView];
+  [contentView2 bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v20 = [(CKDetailsExpanseActivityHeaderView *)self expanseActivityTextView];
+  expanseActivityTextView = [(CKDetailsExpanseActivityHeaderView *)self expanseActivityTextView];
   v35 = *(MEMORY[0x1E695F058] + 8);
-  v21 = [(CKDetailsExpanseActivityHeaderView *)self contentView];
-  [v21 layoutMargins];
+  contentView3 = [(CKDetailsExpanseActivityHeaderView *)self contentView];
+  [contentView3 layoutMargins];
   v23 = v22;
   v25 = v24;
 
@@ -57,7 +57,7 @@
   v37.origin.y = v15;
   v37.size.width = v17;
   v37.size.height = v19;
-  [v20 sizeThatFits:{CGRectGetWidth(v37) - (v23 + v25), 1.79769313e308}];
+  [expanseActivityTextView sizeThatFits:{CGRectGetWidth(v37) - (v23 + v25), 1.79769313e308}];
   v27 = v26;
   v29 = v28;
   v30 = +[CKUIBehavior sharedBehaviors];
@@ -74,7 +74,7 @@
     v23 = v25;
   }
 
-  [v20 setFrame:{v23, v35, v27, v29 + v32}];
+  [expanseActivityTextView setFrame:{v23, v35, v27, v29 + v32}];
 }
 
 @end

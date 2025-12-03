@@ -1,27 +1,27 @@
 @interface CNSharedProfileUpdateMenuElement
-+ (id)elementWithTitle:(id)a3 subtitle:(id)a4 avatarImage:(id)a5 selected:(BOOL)a6;
++ (id)elementWithTitle:(id)title subtitle:(id)subtitle avatarImage:(id)image selected:(BOOL)selected;
 @end
 
 @implementation CNSharedProfileUpdateMenuElement
 
-+ (id)elementWithTitle:(id)a3 subtitle:(id)a4 avatarImage:(id)a5 selected:(BOOL)a6
++ (id)elementWithTitle:(id)title subtitle:(id)subtitle avatarImage:(id)image selected:(BOOL)selected
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __83__CNSharedProfileUpdateMenuElement_elementWithTitle_subtitle_avatarImage_selected___block_invoke;
   v19[3] = &unk_1E74E26F8;
-  v20 = v12;
-  v21 = v10;
-  v22 = v11;
-  v23 = a6;
-  v18.receiver = a1;
+  v20 = imageCopy;
+  v21 = titleCopy;
+  v22 = subtitleCopy;
+  selectedCopy = selected;
+  v18.receiver = self;
   v18.super_class = &OBJC_METACLASS___CNSharedProfileUpdateMenuElement;
-  v13 = v11;
-  v14 = v10;
-  v15 = v12;
+  v13 = subtitleCopy;
+  v14 = titleCopy;
+  v15 = imageCopy;
   v16 = objc_msgSendSuper2(&v18, sel_elementWithViewProvider_, v19);
 
   return v16;

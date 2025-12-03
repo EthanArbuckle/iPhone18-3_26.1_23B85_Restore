@@ -1,17 +1,17 @@
 @interface AVTImageValidator
-+ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)a3 withSize:(CGImage *)a4;
-+ (BOOL)isImageValid:(id)a3 error:(id *)a4;
++ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)statistics withSize:(CGImage *)size;
++ (BOOL)isImageValid:(id)valid error:(id *)error;
 + (id)sharedValidator;
 - (AVTImageValidator)init;
-- (AVTImageValidator)initWithConfiguration:(id)a3 environment:(id)a4;
-- (BOOL)validateImageDataIsNotDuplicate:(id)a3 forFileName:(id)a4 avatarDataHash:(id)a5;
-- (BOOL)validateImageIsNotTransparent:(id)a3 error:(id *)a4;
-- (void)nts_addHash:(id)a3 forKey:(id)a4 avatarDataHash:(id)a5;
+- (AVTImageValidator)initWithConfiguration:(id)configuration environment:(id)environment;
+- (BOOL)validateImageDataIsNotDuplicate:(id)duplicate forFileName:(id)name avatarDataHash:(id)hash;
+- (BOOL)validateImageIsNotTransparent:(id)transparent error:(id *)error;
+- (void)nts_addHash:(id)hash forKey:(id)key avatarDataHash:(id)dataHash;
 @end
 
 @implementation AVTImageValidator
 
-+ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)a3 withSize:(CGImage *)a4
++ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)statistics withSize:(CGImage *)size
 {
   height = a5.height;
   width = a5.width;
@@ -30,7 +30,7 @@
   v56.size.height = height;
   v56.origin.x = 0.0;
   v56.origin.y = 0.0;
-  CGContextDrawImage(v14, v56, a4);
+  CGContextDrawImage(v14, v56, size);
   CGContextRelease(v14);
   CGColorSpaceRelease(DeviceRGB);
   v15 = 0;
@@ -102,7 +102,7 @@
   v46 = v37 * 0.00392156863;
   __AVT_RGBtoHSV(&v55, &v54, &v53, v44, v45, v46);
   result = __AVT_RGBtoHSV(&v52, &v51, &v50, v39 * 0.00392156863, v41 * 0.00392156863, v43 * 0.00392156863);
-  if (a4)
+  if (size)
   {
     free(v12);
   }
@@ -121,12 +121,12 @@
   return result;
 }
 
-+ (BOOL)isImageValid:(id)a3 error:(id *)a4
++ (BOOL)isImageValid:(id)valid error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  validCopy = valid;
+  if (!validCopy)
   {
-    if (!a4)
+    if (!error)
     {
       LOBYTE(v6) = 0;
       goto LABEL_12;
@@ -138,19 +138,19 @@
   }
 
   v6 = objc_opt_class();
-  v7 = [v5 CGImage];
-  [v5 size];
+  cGImage = [validCopy CGImage];
+  [validCopy size];
   if (v6)
   {
-    [v6 _calculateStatistics:v7 withSize:?];
+    [v6 _calculateStatistics:cGImage withSize:?];
     LOBYTE(v6) = 0.0 > 2.22044605e-16;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
   }
 
-  else if (!a4)
+  else if (!error)
   {
     goto LABEL_12;
   }
@@ -159,7 +159,7 @@
   {
     v8 = [MEMORY[0x1E698E338] errorWithCode:605 userInfo:{0, 0.0}];
 LABEL_10:
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_12:
@@ -199,31 +199,31 @@ uint64_t __36__AVTImageValidator_sharedValidator__block_invoke()
   return v5;
 }
 
-- (AVTImageValidator)initWithConfiguration:(id)a3 environment:(id)a4
+- (AVTImageValidator)initWithConfiguration:(id)configuration environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  environmentCopy = environment;
   v21.receiver = self;
   v21.super_class = AVTImageValidator;
   v9 = [(AVTImageValidator *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v9->_configuration, configuration);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     fileNameToImageHashesMap = v10->_fileNameToImageHashesMap;
-    v10->_fileNameToImageHashesMap = v11;
+    v10->_fileNameToImageHashesMap = dictionary;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     imageHashesToFileNameMap = v10->_imageHashesToFileNameMap;
-    v10->_imageHashesToFileNameMap = v13;
+    v10->_imageHashesToFileNameMap = dictionary2;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     imageHashesToAvatarDataHashesMap = v10->_imageHashesToAvatarDataHashesMap;
-    v10->_imageHashesToAvatarDataHashesMap = v15;
+    v10->_imageHashesToAvatarDataHashesMap = dictionary3;
 
-    v17 = [v8 serialQueueProvider];
-    v18 = (v17)[2](v17, "com.apple.AvatarUI.AVTImageValidator");
+    serialQueueProvider = [environmentCopy serialQueueProvider];
+    v18 = (serialQueueProvider)[2](serialQueueProvider, "com.apple.AvatarUI.AVTImageValidator");
     duplicateValidationQueue = v10->_duplicateValidationQueue;
     v10->_duplicateValidationQueue = v18;
   }
@@ -231,15 +231,15 @@ uint64_t __36__AVTImageValidator_sharedValidator__block_invoke()
   return v10;
 }
 
-- (BOOL)validateImageIsNotTransparent:(id)a3 error:(id *)a4
+- (BOOL)validateImageIsNotTransparent:(id)transparent error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AVTImageValidator *)self configuration];
-  v8 = [v7 shouldCheckForTransparentImages];
+  transparentCopy = transparent;
+  configuration = [(AVTImageValidator *)self configuration];
+  shouldCheckForTransparentImages = [configuration shouldCheckForTransparentImages];
 
-  if (v8)
+  if (shouldCheckForTransparentImages)
   {
-    v9 = [objc_opt_class() isImageValid:v6 error:a4];
+    v9 = [objc_opt_class() isImageValid:transparentCopy error:error];
   }
 
   else
@@ -250,34 +250,34 @@ uint64_t __36__AVTImageValidator_sharedValidator__block_invoke()
   return v9;
 }
 
-- (BOOL)validateImageDataIsNotDuplicate:(id)a3 forFileName:(id)a4 avatarDataHash:(id)a5
+- (BOOL)validateImageDataIsNotDuplicate:(id)duplicate forFileName:(id)name avatarDataHash:(id)hash
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AVTImageValidator *)self configuration];
-  v12 = [v11 shouldCheckForDuplicateImages];
+  duplicateCopy = duplicate;
+  nameCopy = name;
+  hashCopy = hash;
+  configuration = [(AVTImageValidator *)self configuration];
+  shouldCheckForDuplicateImages = [configuration shouldCheckForDuplicateImages];
 
-  if (v12)
+  if (shouldCheckForDuplicateImages)
   {
-    if (!v8)
+    if (!duplicateCopy)
     {
       v16 = 0;
       goto LABEL_5;
     }
 
-    v13 = [v8 avt_SHA256];
-    v14 = [(AVTImageValidator *)self duplicateValidationQueue];
+    avt_SHA256 = [duplicateCopy avt_SHA256];
+    duplicateValidationQueue = [(AVTImageValidator *)self duplicateValidationQueue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __80__AVTImageValidator_validateImageDataIsNotDuplicate_forFileName_avatarDataHash___block_invoke;
     v18[3] = &unk_1E7F3C078;
     v18[4] = self;
-    v19 = v13;
-    v20 = v9;
-    v21 = v10;
-    v15 = v13;
-    dispatch_sync(v14, v18);
+    v19 = avt_SHA256;
+    v20 = nameCopy;
+    v21 = hashCopy;
+    v15 = avt_SHA256;
+    dispatch_sync(duplicateValidationQueue, v18);
   }
 
   v16 = 1;
@@ -298,28 +298,28 @@ void __80__AVTImageValidator_validateImageDataIsNotDuplicate_forFileName_avatarD
   }
 }
 
-- (void)nts_addHash:(id)a3 forKey:(id)a4 avatarDataHash:(id)a5
+- (void)nts_addHash:(id)hash forKey:(id)key avatarDataHash:(id)dataHash
 {
-  v16 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(AVTImageValidator *)self fileNameToImageHashesMap];
-  v11 = [v10 objectForKeyedSubscript:v16];
+  keyCopy = key;
+  dataHashCopy = dataHash;
+  hashCopy = hash;
+  fileNameToImageHashesMap = [(AVTImageValidator *)self fileNameToImageHashesMap];
+  v11 = [fileNameToImageHashesMap objectForKeyedSubscript:keyCopy];
 
   if (v11)
   {
-    v12 = [(AVTImageValidator *)self imageHashesToFileNameMap];
-    [v12 setObject:0 forKeyedSubscript:v11];
+    imageHashesToFileNameMap = [(AVTImageValidator *)self imageHashesToFileNameMap];
+    [imageHashesToFileNameMap setObject:0 forKeyedSubscript:v11];
 
-    v13 = [(AVTImageValidator *)self imageHashesToAvatarDataHashesMap];
-    [v13 setObject:0 forKeyedSubscript:v11];
+    imageHashesToAvatarDataHashesMap = [(AVTImageValidator *)self imageHashesToAvatarDataHashesMap];
+    [imageHashesToAvatarDataHashesMap setObject:0 forKeyedSubscript:v11];
   }
 
-  v14 = [(AVTImageValidator *)self imageHashesToFileNameMap];
-  [v14 setObject:v16 forKeyedSubscript:v9];
+  imageHashesToFileNameMap2 = [(AVTImageValidator *)self imageHashesToFileNameMap];
+  [imageHashesToFileNameMap2 setObject:keyCopy forKeyedSubscript:hashCopy];
 
-  v15 = [(AVTImageValidator *)self imageHashesToAvatarDataHashesMap];
-  [v15 setObject:v8 forKeyedSubscript:v9];
+  imageHashesToAvatarDataHashesMap2 = [(AVTImageValidator *)self imageHashesToAvatarDataHashesMap];
+  [imageHashesToAvatarDataHashesMap2 setObject:dataHashCopy forKeyedSubscript:hashCopy];
 }
 
 @end

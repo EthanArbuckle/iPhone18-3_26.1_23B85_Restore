@@ -1,36 +1,36 @@
 @interface QLCustomURLSharingProxyDelegate
-- (QLCustomURLSharingProxyDelegate)initWithDelegate:(id)a3;
+- (QLCustomURLSharingProxyDelegate)initWithDelegate:(id)delegate;
 - (UIDocumentInteractionControllerDelegate)delegate;
-- (void)documentInteractionControllerDidDismissOptionsMenu:(id)a3;
+- (void)documentInteractionControllerDidDismissOptionsMenu:(id)menu;
 @end
 
 @implementation QLCustomURLSharingProxyDelegate
 
-- (QLCustomURLSharingProxyDelegate)initWithDelegate:(id)a3
+- (QLCustomURLSharingProxyDelegate)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = QLCustomURLSharingProxyDelegate;
   v5 = [(QLCustomURLSharingProxyDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)documentInteractionControllerDidDismissOptionsMenu:(id)a3
+- (void)documentInteractionControllerDidDismissOptionsMenu:(id)menu
 {
-  v7 = a3;
-  v4 = [(QLCustomURLSharingProxyDelegate *)self delegate];
+  menuCopy = menu;
+  delegate = [(QLCustomURLSharingProxyDelegate *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(QLCustomURLSharingProxyDelegate *)self delegate];
-    [v6 documentInteractionControllerDidDismissOptionsMenu:v7];
+    delegate2 = [(QLCustomURLSharingProxyDelegate *)self delegate];
+    [delegate2 documentInteractionControllerDidDismissOptionsMenu:menuCopy];
   }
 }
 

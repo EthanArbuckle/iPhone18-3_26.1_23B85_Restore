@@ -1,25 +1,25 @@
 @interface CKFunctionExpressionValidator
-- (BOOL)validate:(id)a3 error:(id *)a4;
+- (BOOL)validate:(id)validate error:(id *)error;
 - (id)CKPropertiesDescription;
 @end
 
 @implementation CKFunctionExpressionValidator
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
   v101[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  validateCopy = validate;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
 
     v46 = MEMORY[0x1E696ABC0];
     v100[0] = *MEMORY[0x1E696A578];
-    v27 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"<%@> is not an expression", v6);
+    v27 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v7, @"<%@> is not an expression", validateCopy);
     v100[1] = @"ck_isComparisonError";
     v101[0] = v27;
     v101[1] = MEMORY[0x1E695E118];
@@ -30,20 +30,20 @@ LABEL_28:
 
     v50 = v33;
     v51 = 0;
-    *a4 = v33;
+    *error = v33;
     goto LABEL_39;
   }
 
-  if (objc_msgSend_expressionType(v6, v7, v8) != 4)
+  if (objc_msgSend_expressionType(validateCopy, v7, v8) != 4)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
 
     v46 = MEMORY[0x1E696ABC0];
     v98[0] = *MEMORY[0x1E696A578];
-    v27 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v9, @"<%@> is not a function expression", v6);
+    v27 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v9, @"<%@> is not a function expression", validateCopy);
     v98[1] = @"ck_isComparisonError";
     v99[0] = v27;
     v99[1] = MEMORY[0x1E695E118];
@@ -51,7 +51,7 @@ LABEL_28:
     goto LABEL_27;
   }
 
-  v11 = objc_msgSend_function(v6, v9, v10);
+  v11 = objc_msgSend_function(validateCopy, v9, v10);
   v13 = v11;
   if (self)
   {
@@ -67,7 +67,7 @@ LABEL_28:
 
   if ((v15 & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v52 = MEMORY[0x1E696ABC0];
       v96[0] = *MEMORY[0x1E696A578];
@@ -83,7 +83,7 @@ LABEL_28:
       }
 
       v27 = functionName;
-      v40 = objc_msgSend_stringWithFormat_(v53, v55, @"%@ does not match function '%@'", v6, v27);
+      v40 = objc_msgSend_stringWithFormat_(v53, v55, @"%@ does not match function '%@'", validateCopy, v27);
       v96[1] = @"ck_isComparisonError";
       v97[0] = v40;
       v97[1] = MEMORY[0x1E695E118];
@@ -98,7 +98,7 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v18 = objc_msgSend_arguments(v6, v16, v17);
+  v18 = objc_msgSend_arguments(validateCopy, v16, v17);
   v23 = objc_msgSend_count(v18, v19, v20);
   if (self)
   {
@@ -114,7 +114,7 @@ LABEL_38:
 
   if (v23 != v25)
   {
-    if (a4)
+    if (error)
     {
       v59 = MEMORY[0x1E696ABC0];
       v94[0] = *MEMORY[0x1E696A578];
@@ -131,9 +131,9 @@ LABEL_38:
 
       v40 = argumentValidators;
       v64 = objc_msgSend_count(v40, v62, v63);
-      v27 = objc_msgSend_arguments(v6, v65, v66);
+      v27 = objc_msgSend_arguments(validateCopy, v65, v66);
       v69 = objc_msgSend_count(v27, v67, v68);
-      v57 = objc_msgSend_stringWithFormat_(v60, v70, @"Invalid number of arguments to <%@>. Expected %lu, but found %lu", v6, v64, v69);
+      v57 = objc_msgSend_stringWithFormat_(v60, v70, @"Invalid number of arguments to <%@>. Expected %lu, but found %lu", validateCopy, v64, v69);
       v94[1] = @"ck_isComparisonError";
       v95[0] = v57;
       v95[1] = MEMORY[0x1E695E118];
@@ -166,7 +166,7 @@ LABEL_37:
   if (v29)
   {
     v32 = v29;
-    v85 = a4;
+    errorCopy = error;
     v33 = 0;
     v34 = 0;
     v35 = *v88;
@@ -180,10 +180,10 @@ LABEL_37:
         }
 
         v37 = *(*(&v87 + 1) + 8 * i);
-        v38 = objc_msgSend_arguments(v6, v30, v31);
+        v38 = objc_msgSend_arguments(validateCopy, v30, v31);
         v40 = objc_msgSend_objectAtIndexedSubscript_(v38, v39, v34);
 
-        if (v85)
+        if (errorCopy)
         {
           v86 = v33;
           v42 = objc_msgSend_validate_error_(v37, v41, v40, &v86);
@@ -195,7 +195,7 @@ LABEL_37:
             v91[0] = *MEMORY[0x1E696A578];
             v77 = MEMORY[0x1E696AEC0];
             v78 = objc_msgSend_localizedDescription(v43, v44, v45);
-            v80 = objc_msgSend_stringWithFormat_(v77, v79, @"Argument %lu of <%@> is invalid: %@", v34, v6, v78);
+            v80 = objc_msgSend_stringWithFormat_(v77, v79, @"Argument %lu of <%@> is invalid: %@", v34, validateCopy, v78);
             v81 = *MEMORY[0x1E696AA08];
             v92[0] = v80;
             v92[1] = v43;
@@ -205,7 +205,7 @@ LABEL_37:
             v83 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v82, v92, v91, 3);
             v33 = objc_msgSend_errorWithDomain_code_userInfo_(v76, v84, @"CKErrorDomain", 12, v83);
 
-            a4 = v85;
+            error = errorCopy;
             goto LABEL_28;
           }
 

@@ -1,6 +1,6 @@
 @interface ConversionHistoryDatabaseSession
 - (_TtC20AttributionKitDaemon32ConversionHistoryDatabaseSession)init;
-- (_TtC20AttributionKitDaemon32ConversionHistoryDatabaseSession)initWithConnection:(id)a3;
+- (_TtC20AttributionKitDaemon32ConversionHistoryDatabaseSession)initWithConnection:(id)connection;
 @end
 
 @implementation ConversionHistoryDatabaseSession
@@ -12,11 +12,11 @@
   return [(ConversionHistoryDatabaseSession *)&v3 init];
 }
 
-- (_TtC20AttributionKitDaemon32ConversionHistoryDatabaseSession)initWithConnection:(id)a3
+- (_TtC20AttributionKitDaemon32ConversionHistoryDatabaseSession)initWithConnection:(id)connection
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for ConversionHistoryDatabaseSession();
-  return [(SQLiteDatabaseSession *)&v5 initWithConnection:a3];
+  return [(SQLiteDatabaseSession *)&v5 initWithConnection:connection];
 }
 
 @end

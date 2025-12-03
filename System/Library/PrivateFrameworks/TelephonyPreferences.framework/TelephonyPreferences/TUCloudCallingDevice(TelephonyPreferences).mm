@@ -6,23 +6,23 @@
 
 - (__CFString)tps_modelName
 {
-  v1 = [a1 modelIdentifier];
-  if ([v1 rangeOfString:@"iPod"] == 0x7FFFFFFFFFFFFFFFLL)
+  modelIdentifier = [self modelIdentifier];
+  if ([modelIdentifier rangeOfString:@"iPod"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v2 = @"iPad";
-    if ([v1 rangeOfString:@"iPad"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([modelIdentifier rangeOfString:@"iPad"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v2 = @"iPhone";
-      if ([v1 rangeOfString:@"iPhone"] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([modelIdentifier rangeOfString:@"iPhone"] == 0x7FFFFFFFFFFFFFFFLL)
       {
         v2 = @"Mac";
-        if ([v1 rangeOfString:@"Mac"] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([modelIdentifier rangeOfString:@"Mac"] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          if ([v1 rangeOfString:@"AppleTV"] == 0x7FFFFFFFFFFFFFFFLL)
+          if ([modelIdentifier rangeOfString:@"AppleTV"] == 0x7FFFFFFFFFFFFFFFLL)
           {
-            if ([v1 rangeOfString:@"Watch"] == 0x7FFFFFFFFFFFFFFFLL)
+            if ([modelIdentifier rangeOfString:@"Watch"] == 0x7FFFFFFFFFFFFFFFLL)
             {
-              if ([v1 rangeOfString:@"AudioAccessory"] != 0x7FFFFFFFFFFFFFFFLL)
+              if ([modelIdentifier rangeOfString:@"AudioAccessory"] != 0x7FFFFFFFFFFFFFFFLL)
               {
                 v2 = @"HomePod";
               }

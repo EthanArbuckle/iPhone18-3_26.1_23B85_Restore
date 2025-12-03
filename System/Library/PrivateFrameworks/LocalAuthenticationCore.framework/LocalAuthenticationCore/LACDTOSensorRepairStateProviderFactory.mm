@@ -1,22 +1,22 @@
 @interface LACDTOSensorRepairStateProviderFactory
-+ (id)repairStateProviderWithReplyQueue:(id)a3 flags:(id)a4;
++ (id)repairStateProviderWithReplyQueue:(id)queue flags:(id)flags;
 @end
 
 @implementation LACDTOSensorRepairStateProviderFactory
 
-+ (id)repairStateProviderWithReplyQueue:(id)a3 flags:(id)a4
++ (id)repairStateProviderWithReplyQueue:(id)queue flags:(id)flags
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  flagsCopy = flags;
   v7 = [LACDTOSensorRepairStateProviderTaskDecorator alloc];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __82__LACDTOSensorRepairStateProviderFactory_repairStateProviderWithReplyQueue_flags___block_invoke;
   v16 = &unk_1E7A96958;
-  v17 = v5;
-  v18 = v6;
-  v8 = v6;
-  v9 = v5;
+  v17 = queueCopy;
+  v18 = flagsCopy;
+  v8 = flagsCopy;
+  v9 = queueCopy;
   v10 = __82__LACDTOSensorRepairStateProviderFactory_repairStateProviderWithReplyQueue_flags___block_invoke(&v13);
   v11 = [(LACDTOSensorRepairStateProviderTaskDecorator *)v7 initWithProvider:v10 replyQueue:v9, v13, v14, v15, v16];
 

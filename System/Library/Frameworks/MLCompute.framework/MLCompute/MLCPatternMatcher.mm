@@ -1,31 +1,31 @@
 @interface MLCPatternMatcher
-+ (BOOL)canTransformToGELUFromLayer:(id)a3 stopGradientTensorList:(id)a4 fusedLayers:(id)a5 inputTensor:(id *)a6;
-+ (BOOL)canTransformToGELUType1FromLayer:(id)a3 fusedLayers:(id)a4 inputTensor:(id)a5 withAccuracy:(float)a6;
-+ (BOOL)canTransformToGELUType2FromLayer:(id)a3 fusedLayers:(id)a4 inputTensor:(id)a5 withAccuracy:(float)a6;
-+ (BOOL)canTransformToHardSwishFromLayer:(id)a3 stopGradientTensorList:(id)a4 fusedLayers:(id)a5 inputTensor:(id *)a6;
-+ (BOOL)canTransformToReLUNFromLayer:(id)a3 stopGradientTensorList:(id)a4 fusedLayers:(id)a5 alpha:(float *)a6 beta:(float *)a7;
-+ (BOOL)checkIntermediateTensorsOfFusedLayers:(id)a3 stopGradientTensorList:(id)a4 forPattern:(id)a5;
-+ (BOOL)isActivationLayer:(id)a3 withActivationType:(int)a4;
-+ (BOOL)isArithmeticLayer:(id)a3 withOperation:(int)a4;
-+ (BOOL)isConstTensor:(id)a3 withValue:(float)a4 withAccuracy:(float)a5;
-+ (float)getAccuracyForLayer:(id)a3;
++ (BOOL)canTransformToGELUFromLayer:(id)layer stopGradientTensorList:(id)list fusedLayers:(id)layers inputTensor:(id *)tensor;
++ (BOOL)canTransformToGELUType1FromLayer:(id)layer fusedLayers:(id)layers inputTensor:(id)tensor withAccuracy:(float)accuracy;
++ (BOOL)canTransformToGELUType2FromLayer:(id)layer fusedLayers:(id)layers inputTensor:(id)tensor withAccuracy:(float)accuracy;
++ (BOOL)canTransformToHardSwishFromLayer:(id)layer stopGradientTensorList:(id)list fusedLayers:(id)layers inputTensor:(id *)tensor;
++ (BOOL)canTransformToReLUNFromLayer:(id)layer stopGradientTensorList:(id)list fusedLayers:(id)layers alpha:(float *)alpha beta:(float *)beta;
++ (BOOL)checkIntermediateTensorsOfFusedLayers:(id)layers stopGradientTensorList:(id)list forPattern:(id)pattern;
++ (BOOL)isActivationLayer:(id)layer withActivationType:(int)type;
++ (BOOL)isArithmeticLayer:(id)layer withOperation:(int)operation;
++ (BOOL)isConstTensor:(id)tensor withValue:(float)value withAccuracy:(float)accuracy;
++ (float)getAccuracyForLayer:(id)layer;
 @end
 
 @implementation MLCPatternMatcher
 
-+ (BOOL)canTransformToReLUNFromLayer:(id)a3 stopGradientTensorList:(id)a4 fusedLayers:(id)a5 alpha:(float *)a6 beta:(float *)a7
++ (BOOL)canTransformToReLUNFromLayer:(id)layer stopGradientTensorList:(id)list fusedLayers:(id)layers alpha:(float *)alpha beta:(float *)beta
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [v14 count];
-  v16 = [a1 isActivationLayer:v12 withActivationType:1];
-  v17 = v12;
-  if (v15 && [v14 count] != 3)
+  layerCopy = layer;
+  listCopy = list;
+  layersCopy = layers;
+  v15 = [layersCopy count];
+  v16 = [self isActivationLayer:layerCopy withActivationType:1];
+  v17 = layerCopy;
+  if (v15 && [layersCopy count] != 3)
   {
-    if (v16 && [v14 count] == 4)
+    if (v16 && [layersCopy count] == 4)
     {
-      v18 = [v14 objectAtIndexedSubscript:1];
+      sourceTensors = [layersCopy objectAtIndexedSubscript:1];
       v111 = 2;
       goto LABEL_15;
     }
@@ -38,7 +38,7 @@ LABEL_19:
 
   if (!v16)
   {
-    if ([a1 isActivationLayer:v17 withActivationType:2])
+    if ([self isActivationLayer:v17 withActivationType:2])
     {
       v111 = 1;
       v28 = v17;
@@ -48,8 +48,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v18 = [v17 sourceTensors];
-  if ([v18 count] != 1)
+  sourceTensors = [v17 sourceTensors];
+  if ([sourceTensors count] != 1)
   {
 LABEL_32:
     v35 = 0;
@@ -60,129 +60,129 @@ LABEL_75:
   }
 
   v112 = v16;
-  v107 = a7;
-  v19 = [v17 sourceTensors];
-  v20 = [v19 objectAtIndexedSubscript:0];
-  v21 = [v20 parentLayers];
-  if ([v21 count] != 1)
+  betaCopy = beta;
+  sourceTensors2 = [v17 sourceTensors];
+  v20 = [sourceTensors2 objectAtIndexedSubscript:0];
+  parentLayers = [v20 parentLayers];
+  if ([parentLayers count] != 1)
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v103 = a1;
-  v22 = [v17 resultTensors];
-  if ([v22 count] != 1)
+  selfCopy = self;
+  resultTensors = [v17 resultTensors];
+  if ([resultTensors count] != 1)
   {
 
     goto LABEL_31;
   }
 
   v98 = v15;
-  v101 = v13;
-  v100 = [v17 resultTensors];
-  v23 = [v100 objectAtIndexedSubscript:0];
-  v24 = [v23 childLayers];
-  v110 = [v24 count];
+  v101 = listCopy;
+  resultTensors2 = [v17 resultTensors];
+  v23 = [resultTensors2 objectAtIndexedSubscript:0];
+  childLayers = [v23 childLayers];
+  v110 = [childLayers count];
 
   if (v110 != 1)
   {
     v35 = 0;
     v28 = v17;
-    v13 = v101;
+    listCopy = v101;
     goto LABEL_76;
   }
 
-  v25 = [v17 resultTensors];
-  v26 = [v25 objectAtIndexedSubscript:0];
-  v27 = [v26 childLayers];
-  v18 = [v27 objectAtIndexedSubscript:0];
+  resultTensors3 = [v17 resultTensors];
+  v26 = [resultTensors3 objectAtIndexedSubscript:0];
+  childLayers2 = [v26 childLayers];
+  sourceTensors = [childLayers2 objectAtIndexedSubscript:0];
 
-  a1 = v103;
-  if (([v103 isActivationLayer:v18 withActivationType:2] & 1) == 0)
+  self = selfCopy;
+  if (([selfCopy isActivationLayer:sourceTensors withActivationType:2] & 1) == 0)
   {
     v35 = 0;
     v28 = v17;
-    v13 = v101;
+    listCopy = v101;
     goto LABEL_75;
   }
 
   v111 = 1;
-  v13 = v101;
+  listCopy = v101;
   v15 = v98;
-  a7 = v107;
+  beta = betaCopy;
   v16 = v112;
 LABEL_15:
 
-  v28 = v18;
+  v28 = sourceTensors;
 LABEL_16:
-  *a6 = 0.0;
-  [a1 getAccuracyForLayer:v17];
+  *alpha = 0.0;
+  [self getAccuracyForLayer:v17];
   v30 = v29;
-  v18 = [v28 descriptor];
-  [v18 a];
+  sourceTensors = [v28 descriptor];
+  [sourceTensors a];
   if (fabsf(v31 + 1.0) > v30)
   {
     goto LABEL_74;
   }
 
   v113 = v16;
-  v32 = [v28 descriptor];
-  [v32 b];
+  descriptor = [v28 descriptor];
+  [descriptor b];
   v34 = fabsf(v33);
 
   if (v34 <= v30)
   {
     if (v113)
     {
-      v18 = v17;
+      sourceTensors = v17;
     }
 
     else
     {
-      v18 = [v28 sourceTensors];
-      if ([v18 count] != 1)
+      sourceTensors = [v28 sourceTensors];
+      if ([sourceTensors count] != 1)
       {
         goto LABEL_74;
       }
 
-      v40 = a7;
+      betaCopy2 = beta;
       v99 = v15;
-      v104 = a1;
-      v41 = [v28 sourceTensors];
-      v42 = [v41 objectAtIndexedSubscript:0];
-      v43 = [v42 parentLayers];
-      v44 = [v43 count];
+      selfCopy2 = self;
+      sourceTensors3 = [v28 sourceTensors];
+      v42 = [sourceTensors3 objectAtIndexedSubscript:0];
+      parentLayers2 = [v42 parentLayers];
+      v44 = [parentLayers2 count];
 
       if (v44 != 1)
       {
         goto LABEL_18;
       }
 
-      v45 = [v28 sourceTensors];
-      v46 = [v45 objectAtIndexedSubscript:0];
-      v47 = [v46 parentLayers];
-      v18 = [v47 objectAtIndexedSubscript:0];
+      sourceTensors4 = [v28 sourceTensors];
+      v46 = [sourceTensors4 objectAtIndexedSubscript:0];
+      parentLayers3 = [v46 parentLayers];
+      sourceTensors = [parentLayers3 objectAtIndexedSubscript:0];
 
-      v48 = [v18 fusedLayers];
-      v49 = [v48 count];
+      fusedLayers = [sourceTensors fusedLayers];
+      v49 = [fusedLayers count];
 
-      a7 = v40;
+      beta = betaCopy2;
       if (v49)
       {
-        v50 = [v18 fusedLayers];
-        v51 = [v50 lastObject];
+        fusedLayers2 = [sourceTensors fusedLayers];
+        lastObject = [fusedLayers2 lastObject];
 
-        v18 = v51;
+        sourceTensors = lastObject;
       }
 
-      a1 = v104;
+      self = selfCopy2;
       v15 = v99;
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ![v18 operation])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ![sourceTensors operation])
     {
       goto LABEL_54;
     }
@@ -196,9 +196,9 @@ LABEL_16:
         goto LABEL_74;
       }
 
-      v52 = [v18 operation];
+      operation = [sourceTensors operation];
       v35 = 0;
-      if (v52 > 0x17 || ((1 << v52) & 0xC10180) == 0)
+      if (operation > 0x17 || ((1 << operation) & 0xC10180) == 0)
       {
         goto LABEL_75;
       }
@@ -206,32 +206,32 @@ LABEL_16:
       goto LABEL_54;
     }
 
-    v108 = a7;
+    betaCopy3 = beta;
     v36 = v15;
-    v37 = v18;
-    v18 = v18;
-    v38 = [v18 descriptor];
-    v39 = [v38 activationType];
+    v37 = sourceTensors;
+    sourceTensors = sourceTensors;
+    descriptor2 = [sourceTensors descriptor];
+    activationType = [descriptor2 activationType];
 
-    if (v39 <= 8)
+    if (activationType <= 8)
     {
       v15 = v36;
-      if ((v39 - 3) < 2)
+      if ((activationType - 3) < 2)
       {
 LABEL_53:
 
-        a7 = v108;
-        v18 = v37;
+        beta = betaCopy3;
+        sourceTensors = v37;
 LABEL_54:
         v62 = v15;
-        v63 = [v28 resultTensors];
-        v64 = [v63 count];
+        resultTensors4 = [v28 resultTensors];
+        v64 = [resultTensors4 count];
 
         if (v64 == 1)
         {
           if (v62)
           {
-            v65 = [v14 objectAtIndexedSubscript:?];
+            v65 = [layersCopy objectAtIndexedSubscript:?];
 
             ++v111;
             v28 = v65;
@@ -239,20 +239,20 @@ LABEL_54:
 
           else
           {
-            v102 = v18;
-            v78 = [v28 resultTensors];
-            v79 = [v78 objectAtIndexedSubscript:0];
+            v102 = sourceTensors;
+            resultTensors5 = [v28 resultTensors];
+            v79 = [resultTensors5 objectAtIndexedSubscript:0];
 
-            v80 = [v79 childLayers];
-            if ([v80 count] != 1)
+            childLayers3 = [v79 childLayers];
+            if ([childLayers3 count] != 1)
             {
               goto LABEL_81;
             }
 
-            v106 = a1;
-            v109 = a7;
-            v81 = [v79 childLayers];
-            v82 = [v81 objectAtIndexedSubscript:0];
+            selfCopy3 = self;
+            betaCopy4 = beta;
+            childLayers4 = [v79 childLayers];
+            v82 = [childLayers4 objectAtIndexedSubscript:0];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -261,101 +261,101 @@ LABEL_54:
               goto LABEL_82;
             }
 
-            a7 = v109;
+            beta = betaCopy4;
             if (v113)
             {
-              [v14 addObject:v28];
+              [layersCopy addObject:v28];
             }
 
-            v84 = [v79 childLayers];
-            v85 = [v84 objectAtIndexedSubscript:0];
+            childLayers5 = [v79 childLayers];
+            v85 = [childLayers5 objectAtIndexedSubscript:0];
 
-            [v14 addObject:v85];
-            LOBYTE(v84) = [v85 skipLayer];
+            [layersCopy addObject:v85];
+            LOBYTE(childLayers5) = [v85 skipLayer];
 
-            a1 = v106;
-            if (v84)
+            self = selfCopy3;
+            if (childLayers5)
             {
 LABEL_70:
               v35 = 0;
-              v18 = v102;
+              sourceTensors = v102;
               v28 = v85;
               goto LABEL_75;
             }
 
             v28 = v85;
-            v18 = v102;
+            sourceTensors = v102;
           }
 
-          v66 = [v28 descriptor];
-          if ([v66 activationType] != 17)
+          descriptor3 = [v28 descriptor];
+          if ([descriptor3 activationType] != 17)
           {
 LABEL_64:
 
             goto LABEL_74;
           }
 
-          v105 = a1;
-          v67 = [v28 descriptor];
-          [v67 a];
+          selfCopy4 = self;
+          descriptor4 = [v28 descriptor];
+          [descriptor4 a];
           v69 = v68;
-          v70 = [v28 descriptor];
-          [v70 b];
+          descriptor5 = [v28 descriptor];
+          [descriptor5 b];
           v72 = vabds_f32(v69, v71);
 
           if (v72 < v30)
           {
-            v73 = [v28 descriptor];
-            [v73 b];
-            *a7 = -v74;
+            descriptor6 = [v28 descriptor];
+            [descriptor6 b];
+            *beta = -v74;
 
             if (v62)
             {
-              v75 = [v14 objectAtIndexedSubscript:v111];
+              v75 = [layersCopy objectAtIndexedSubscript:v111];
 
               v28 = v75;
               goto LABEL_61;
             }
 
-            v102 = v18;
-            v88 = [v28 resultTensors];
-            v79 = [v88 objectAtIndexedSubscript:0];
+            v102 = sourceTensors;
+            resultTensors6 = [v28 resultTensors];
+            v79 = [resultTensors6 objectAtIndexedSubscript:0];
 
-            v80 = [v79 childLayers];
-            if ([v80 count] == 1)
+            childLayers3 = [v79 childLayers];
+            if ([childLayers3 count] == 1)
             {
-              v89 = [v79 childLayers];
-              v90 = [v89 objectAtIndexedSubscript:0];
+              childLayers6 = [v79 childLayers];
+              v90 = [childLayers6 objectAtIndexedSubscript:0];
               objc_opt_class();
               v91 = objc_opt_isKindOfClass();
 
               if (v91)
               {
-                v92 = [v79 childLayers];
-                v85 = [v92 objectAtIndexedSubscript:0];
+                childLayers7 = [v79 childLayers];
+                v85 = [childLayers7 objectAtIndexedSubscript:0];
 
-                [v14 addObject:v85];
-                LOBYTE(v92) = [v85 skipLayer];
+                [layersCopy addObject:v85];
+                LOBYTE(childLayers7) = [v85 skipLayer];
 
-                if ((v92 & 1) == 0)
+                if ((childLayers7 & 1) == 0)
                 {
                   v28 = v85;
-                  v18 = v102;
+                  sourceTensors = v102;
 LABEL_61:
-                  v66 = [v28 descriptor];
-                  if ([v66 activationType] == 2)
+                  descriptor3 = [v28 descriptor];
+                  if ([descriptor3 activationType] == 2)
                   {
-                    v76 = [v28 descriptor];
-                    [v76 a];
+                    descriptor7 = [v28 descriptor];
+                    [descriptor7 a];
                     if (fabsf(v77 + 1.0) <= v30)
                     {
-                      v93 = [v28 descriptor];
-                      [v93 b];
+                      descriptor8 = [v28 descriptor];
+                      [descriptor8 b];
                       v95 = fabsf(v94);
 
                       if (v95 <= v30)
                       {
-                        if (v62 || (v96 = [v14 mutableCopy], objc_msgSend(v96, "insertObject:atIndex:", v17, 0), v97 = objc_msgSend(v105, "checkIntermediateTensorsOfFusedLayers:stopGradientTensorList:forPattern:", v96, v13, @"ReLUN"), v96, v97))
+                        if (v62 || (v96 = [layersCopy mutableCopy], objc_msgSend(v96, "insertObject:atIndex:", v17, 0), v97 = objc_msgSend(selfCopy4, "checkIntermediateTensorsOfFusedLayers:stopGradientTensorList:forPattern:", v96, listCopy, @"ReLUN"), v96, v97))
                         {
                           v35 = 1;
                           goto LABEL_75;
@@ -375,7 +375,7 @@ LABEL_61:
 LABEL_82:
 
               v35 = 0;
-              v18 = v102;
+              sourceTensors = v102;
               goto LABEL_75;
             }
 
@@ -390,9 +390,9 @@ LABEL_74:
         goto LABEL_75;
       }
 
-      if (v39 != 1)
+      if (activationType != 1)
       {
-        if (v39 != 6)
+        if (activationType != 6)
         {
           goto LABEL_73;
         }
@@ -400,17 +400,17 @@ LABEL_74:
         goto LABEL_53;
       }
 
-      v53 = [v18 descriptor];
-      [v53 a];
+      descriptor9 = [sourceTensors descriptor];
+      [descriptor9 a];
       v57 = v61;
       goto LABEL_52;
     }
 
-    switch(v39)
+    switch(activationType)
     {
       case 9:
-        v58 = [v18 descriptor];
-        [v58 a];
+        descriptor10 = [sourceTensors descriptor];
+        [descriptor10 a];
         v60 = v59;
 
         v15 = v36;
@@ -421,13 +421,13 @@ LABEL_74:
 
         goto LABEL_53;
       case 10:
-        v53 = [v18 descriptor];
-        [v53 a];
+        descriptor9 = [sourceTensors descriptor];
+        [descriptor9 a];
         if (v86 <= 0.0)
         {
 LABEL_48:
-          v55 = [v18 descriptor];
-          [v55 b];
+          descriptor11 = [sourceTensors descriptor];
+          [descriptor11 b];
           v57 = v56;
 
           v15 = v36;
@@ -445,8 +445,8 @@ LABEL_73:
 
         break;
       case 17:
-        v53 = [v18 descriptor];
-        [v53 a];
+        descriptor9 = [sourceTensors descriptor];
+        [descriptor9 a];
         if (v54 >= 0.0)
         {
           goto LABEL_48;
@@ -467,25 +467,25 @@ LABEL_76:
   return v35;
 }
 
-+ (BOOL)canTransformToHardSwishFromLayer:(id)a3 stopGradientTensorList:(id)a4 fusedLayers:(id)a5 inputTensor:(id *)a6
++ (BOOL)canTransformToHardSwishFromLayer:(id)layer stopGradientTensorList:(id)list fusedLayers:(id)layers inputTensor:(id *)tensor
 {
   v127 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 count];
+  layerCopy = layer;
+  listCopy = list;
+  layersCopy = layers;
+  v13 = [layersCopy count];
   v14 = v13 == 0;
   if (v13)
   {
-    if ([v12 count] != 4 && objc_msgSend(v12, "count") != 6)
+    if ([layersCopy count] != 4 && objc_msgSend(layersCopy, "count") != 6)
     {
       goto LABEL_12;
     }
 
-    v15 = [v12 objectAtIndexedSubscript:0];
+    v15 = [layersCopy objectAtIndexedSubscript:0];
 
     v16 = 1;
-    v10 = v15;
+    layerCopy = v15;
   }
 
   else
@@ -493,12 +493,12 @@ LABEL_76:
     v16 = 0;
   }
 
-  [a1 getAccuracyForLayer:v10];
+  [self getAccuracyForLayer:layerCopy];
   v18 = v17;
-  if ([a1 isArithmeticLayer:v10 withOperation:0])
+  if ([self isArithmeticLayer:layerCopy withOperation:0])
   {
-    v19 = [v10 sourceTensors];
-    v20 = [v19 count];
+    sourceTensors = [layerCopy sourceTensors];
+    v20 = [sourceTensors count];
 
     if (v20 == 2)
     {
@@ -506,28 +506,28 @@ LABEL_76:
       v110 = v16;
       if (v13)
       {
-        v21 = [v12 objectAtIndexedSubscript:v16];
+        v21 = [layersCopy objectAtIndexedSubscript:v16];
 
-        v10 = v21;
-        v22 = [v21 sourceTensors];
-        v23 = [v22 objectAtIndexedSubscript:0];
+        layerCopy = v21;
+        sourceTensors2 = [v21 sourceTensors];
+        v23 = [sourceTensors2 objectAtIndexedSubscript:0];
 
         goto LABEL_10;
       }
 
-      v101 = v12;
-      v23 = *a6;
+      v101 = layersCopy;
+      v23 = *tensor;
       v120 = 0u;
       v121 = 0u;
       v122 = 0u;
       v123 = 0u;
-      v35 = [v10 sourceTensors];
-      v36 = [v35 countByEnumeratingWithState:&v120 objects:v126 count:16];
+      sourceTensors3 = [layerCopy sourceTensors];
+      v36 = [sourceTensors3 countByEnumeratingWithState:&v120 objects:v126 count:16];
       if (v36)
       {
         v39 = v36;
         v108 = v13 == 0;
-        v98 = v11;
+        v98 = listCopy;
         v40 = 0;
         v41 = *v121;
         do
@@ -536,13 +536,13 @@ LABEL_76:
           {
             if (*v121 != v41)
             {
-              objc_enumerationMutation(v35);
+              objc_enumerationMutation(sourceTensors3);
             }
 
             v43 = *(*(&v120 + 1) + 8 * i);
             LODWORD(v37) = 3.0;
             *&v38 = v18;
-            if ([a1 isConstTensor:v43 withValue:v37 withAccuracy:v38])
+            if ([self isConstTensor:v43 withValue:v37 withAccuracy:v38])
             {
               v40 = 1;
             }
@@ -555,54 +555,54 @@ LABEL_76:
             }
           }
 
-          v39 = [v35 countByEnumeratingWithState:&v120 objects:v126 count:16];
+          v39 = [sourceTensors3 countByEnumeratingWithState:&v120 objects:v126 count:16];
         }
 
         while (v39);
 
         v45 = v23;
-        *a6 = v23;
+        *tensor = v23;
         if (v40)
         {
-          v46 = [v10 resultTensors];
-          v11 = v98;
-          if ([v46 count] == 1)
+          resultTensors = [layerCopy resultTensors];
+          listCopy = v98;
+          if ([resultTensors count] == 1)
           {
-            v47 = [v10 resultTensors];
-            v48 = [v47 objectAtIndexedSubscript:0];
-            v49 = [v48 childLayers];
-            v50 = [v49 count];
+            resultTensors2 = [layerCopy resultTensors];
+            v48 = [resultTensors2 objectAtIndexedSubscript:0];
+            childLayers = [v48 childLayers];
+            v50 = [childLayers count];
 
             if (v50 == 1)
             {
-              [v101 addObject:v10];
-              v51 = [v10 resultTensors];
-              v52 = [v51 objectAtIndexedSubscript:0];
-              v53 = [v52 childLayers];
-              v54 = [v53 objectAtIndexedSubscript:0];
+              [v101 addObject:layerCopy];
+              resultTensors3 = [layerCopy resultTensors];
+              v52 = [resultTensors3 objectAtIndexedSubscript:0];
+              childLayers2 = [v52 childLayers];
+              v54 = [childLayers2 objectAtIndexedSubscript:0];
 
-              v10 = v54;
+              layerCopy = v54;
               if (([v54 skipLayer] & 1) == 0)
               {
-                v12 = v101;
+                layersCopy = v101;
                 v13 = 0;
                 v14 = v108;
 LABEL_10:
                 v24 = [MEMORY[0x277CBEBF8] mutableCopy];
                 v107 = v14;
-                if ([a1 isActivationLayer:v10 withActivationType:10])
+                if ([self isActivationLayer:layerCopy withActivationType:10])
                 {
-                  v25 = v10;
+                  v25 = layerCopy;
                   [v25 descriptor];
-                  v27 = v26 = v10;
+                  v27 = v26 = layerCopy;
                   [v27 a];
                   v29 = v28;
 
-                  v30 = [v25 descriptor];
-                  [v30 b];
+                  descriptor = [v25 descriptor];
+                  [descriptor b];
                   v32 = v31;
 
-                  v10 = v26;
+                  layerCopy = v26;
                   [v24 addObject:v25];
 
                   v33 = v32 + -6.0;
@@ -623,58 +623,58 @@ LABEL_10:
                 if (v13)
                 {
                   v97 = v24;
-                  v99 = v11;
-                  v55 = [v12 objectAtIndexedSubscript:{objc_msgSend(v24, "count") + v110}];
-                  v56 = v10;
-                  v10 = v55;
+                  v99 = listCopy;
+                  v55 = [layersCopy objectAtIndexedSubscript:{objc_msgSend(v24, "count") + v110}];
+                  v56 = layerCopy;
+                  layerCopy = v55;
 
                   goto LABEL_33;
                 }
 
-                [v12 addObjectsFromArray:v24];
-                [v10 resultTensors];
-                v87 = v61 = v10;
+                [layersCopy addObjectsFromArray:v24];
+                [layerCopy resultTensors];
+                v87 = v61 = layerCopy;
                 if ([v87 count] == 1)
                 {
-                  v103 = v12;
-                  v99 = v11;
-                  v88 = [v61 resultTensors];
-                  v89 = [v88 objectAtIndexedSubscript:0];
-                  v90 = [v89 childLayers];
-                  v91 = [v90 count];
+                  v103 = layersCopy;
+                  v99 = listCopy;
+                  resultTensors4 = [v61 resultTensors];
+                  v89 = [resultTensors4 objectAtIndexedSubscript:0];
+                  childLayers3 = [v89 childLayers];
+                  v91 = [childLayers3 count];
 
                   if (v91 == 1)
                   {
-                    v92 = [v61 resultTensors];
-                    v93 = [v92 objectAtIndexedSubscript:0];
-                    v94 = [v93 childLayers];
-                    v10 = [v94 objectAtIndexedSubscript:0];
+                    resultTensors5 = [v61 resultTensors];
+                    v93 = [resultTensors5 objectAtIndexedSubscript:0];
+                    childLayers4 = [v93 childLayers];
+                    layerCopy = [childLayers4 objectAtIndexedSubscript:0];
 
-                    if (([v10 skipLayer] & 1) == 0)
+                    if (([layerCopy skipLayer] & 1) == 0)
                     {
                       v97 = v24;
-                      v12 = v103;
+                      layersCopy = v103;
 LABEL_33:
                       v57 = 0;
                       v58 = 1;
                       v59 = 1;
                       v60 = 1;
-                      v102 = v12;
+                      v102 = layersCopy;
                       while (1)
                       {
                         while (1)
                         {
                           v111 = v58;
                           v104 = v57;
-                          if ((v60 & 1) != 0 && [a1 isArithmeticLayer:v10 withOperation:3])
+                          if ((v60 & 1) != 0 && [self isArithmeticLayer:layerCopy withOperation:3])
                           {
                             v118 = 0u;
                             v119 = 0u;
                             v116 = 0u;
                             v117 = 0u;
-                            v61 = v10;
-                            v62 = [v10 sourceTensors];
-                            v63 = [v62 countByEnumeratingWithState:&v116 objects:v125 count:16];
+                            v61 = layerCopy;
+                            sourceTensors4 = [layerCopy sourceTensors];
+                            v63 = [sourceTensors4 countByEnumeratingWithState:&v116 objects:v125 count:16];
                             if (v63)
                             {
                               v66 = v63;
@@ -685,20 +685,20 @@ LABEL_33:
                                 {
                                   if (*v117 != v67)
                                   {
-                                    objc_enumerationMutation(v62);
+                                    objc_enumerationMutation(sourceTensors4);
                                   }
 
                                   LODWORD(v64) = 6.0;
                                   *&v65 = v18;
-                                  if ([a1 isConstTensor:*(*(&v116 + 1) + 8 * j) withValue:v64 withAccuracy:{v65, v97}])
+                                  if ([self isConstTensor:*(*(&v116 + 1) + 8 * j) withValue:v64 withAccuracy:{v65, v97}])
                                   {
                                     v60 = 0;
-                                    v10 = v61;
+                                    layerCopy = v61;
                                     goto LABEL_61;
                                   }
                                 }
 
-                                v66 = [v62 countByEnumeratingWithState:&v116 objects:v125 count:16];
+                                v66 = [sourceTensors4 countByEnumeratingWithState:&v116 objects:v125 count:16];
                                 if (v66)
                                 {
                                   continue;
@@ -709,11 +709,11 @@ LABEL_33:
                             }
 
                             v34 = 0;
-                            v11 = v99;
+                            listCopy = v99;
                             goto LABEL_90;
                           }
 
-                          if (![a1 isArithmeticLayer:v10 withOperation:{2, v97}])
+                          if (![self isArithmeticLayer:layerCopy withOperation:{2, v97}])
                           {
                             goto LABEL_87;
                           }
@@ -722,8 +722,8 @@ LABEL_33:
                           v115 = 0u;
                           v112 = 0u;
                           v113 = 0u;
-                          v62 = [v10 sourceTensors];
-                          v69 = [v62 countByEnumeratingWithState:&v112 objects:v124 count:16];
+                          sourceTensors4 = [layerCopy sourceTensors];
+                          v69 = [sourceTensors4 countByEnumeratingWithState:&v112 objects:v124 count:16];
                           if (v69)
                           {
                             v72 = v69;
@@ -734,7 +734,7 @@ LABEL_33:
                               {
                                 if (*v113 != v73)
                                 {
-                                  objc_enumerationMutation(v62);
+                                  objc_enumerationMutation(sourceTensors4);
                                 }
 
                                 if ((v59 & (*(*(&v112 + 1) + 8 * k) == v23)) != 0)
@@ -749,7 +749,7 @@ LABEL_61:
                                 {
                                   LODWORD(v70) = 1042983595;
                                   *&v71 = v18;
-                                  if ([a1 isConstTensor:v70 withValue:v71 withAccuracy:?])
+                                  if ([self isConstTensor:v70 withValue:v71 withAccuracy:?])
                                   {
                                     v60 = 0;
                                     goto LABEL_61;
@@ -757,7 +757,7 @@ LABEL_61:
                                 }
                               }
 
-                              v72 = [v62 countByEnumeratingWithState:&v112 objects:v124 count:16];
+                              v72 = [sourceTensors4 countByEnumeratingWithState:&v112 objects:v124 count:16];
                               if (v72)
                               {
                                 continue;
@@ -778,11 +778,11 @@ LABEL_62:
                             break;
                           }
 
-                          v75 = [v12 lastObject];
+                          lastObject = [layersCopy lastObject];
 
                           v58 = 0;
                           v57 = 1;
-                          v10 = v75;
+                          layerCopy = lastObject;
                           v107 = 1;
                           if ((v111 & 1) == 0)
                           {
@@ -790,38 +790,38 @@ LABEL_62:
                           }
                         }
 
-                        v76 = [v10 resultTensors];
-                        if ([v76 count] != 1)
+                        resultTensors6 = [layerCopy resultTensors];
+                        if ([resultTensors6 count] != 1)
                         {
 
 LABEL_87:
                           v34 = 0;
 LABEL_88:
                           v24 = v97;
-                          v11 = v99;
+                          listCopy = v99;
                           goto LABEL_92;
                         }
 
-                        v77 = [v10 resultTensors];
-                        v78 = [v77 objectAtIndexedSubscript:0];
+                        resultTensors7 = [layerCopy resultTensors];
+                        v78 = [resultTensors7 objectAtIndexedSubscript:0];
                         [v78 childLayers];
-                        v79 = v61 = v10;
+                        v79 = v61 = layerCopy;
                         if ((v111 & ([v79 count] != 1)) != 0)
                         {
 
                           v34 = 0;
-                          v11 = v99;
-                          v12 = v102;
+                          listCopy = v99;
+                          layersCopy = v102;
 LABEL_90:
                           v24 = v97;
                           goto LABEL_91;
                         }
 
                         v109 = v61;
-                        v80 = [v61 resultTensors];
-                        v81 = [v80 objectAtIndexedSubscript:0];
+                        resultTensors8 = [v61 resultTensors];
+                        v81 = [resultTensors8 objectAtIndexedSubscript:0];
                         [v81 childLayers];
-                        v82 = v100 = v76;
+                        v82 = v100 = resultTensors6;
                         v105 = v104 & ([v82 count] > 1);
 
                         if (v105)
@@ -829,25 +829,25 @@ LABEL_90:
                           break;
                         }
 
-                        v12 = v102;
+                        layersCopy = v102;
                         [v102 addObject:v109];
-                        v83 = [v109 resultTensors];
-                        v84 = [v83 objectAtIndexedSubscript:0];
-                        v85 = [v84 childLayers];
-                        v75 = [v85 lastObject];
+                        resultTensors9 = [v109 resultTensors];
+                        v84 = [resultTensors9 objectAtIndexedSubscript:0];
+                        childLayers5 = [v84 childLayers];
+                        lastObject = [childLayers5 lastObject];
 
-                        if ([v75 skipLayer])
+                        if ([lastObject skipLayer])
                         {
                           goto LABEL_83;
                         }
 
                         v58 = 0;
                         v57 = 1;
-                        v10 = v75;
+                        layerCopy = lastObject;
                         v107 = 1;
                         if ((v111 & 1) == 0)
                         {
-                          if ([a1 checkIntermediateTensorsOfFusedLayers:v102 stopGradientTensorList:v99 forPattern:@"Hardswish"])
+                          if ([self checkIntermediateTensorsOfFusedLayers:v102 stopGradientTensorList:v99 forPattern:@"Hardswish"])
                           {
 LABEL_71:
                             v34 = 1;
@@ -859,28 +859,28 @@ LABEL_83:
                             v34 = 0;
                           }
 
-                          v10 = v75;
+                          layerCopy = lastObject;
                           goto LABEL_88;
                         }
                       }
 
                       v34 = 0;
                       v24 = v97;
-                      v11 = v99;
-                      v12 = v102;
-                      v10 = v109;
+                      listCopy = v99;
+                      layersCopy = v102;
+                      layerCopy = v109;
                       goto LABEL_92;
                     }
 
                     v34 = 0;
-                    v12 = v103;
+                    layersCopy = v103;
 LABEL_92:
 
                     goto LABEL_93;
                   }
 
                   v34 = 0;
-                  v12 = v103;
+                  layersCopy = v103;
                 }
 
                 else
@@ -890,7 +890,7 @@ LABEL_92:
                 }
 
 LABEL_91:
-                v10 = v61;
+                layerCopy = v61;
                 goto LABEL_92;
               }
             }
@@ -906,7 +906,7 @@ LABEL_91:
         else
         {
           v34 = 0;
-          v11 = v98;
+          listCopy = v98;
         }
       }
 
@@ -915,10 +915,10 @@ LABEL_91:
 
         v86 = v23;
         v34 = 0;
-        *a6 = v23;
+        *tensor = v23;
       }
 
-      v12 = v101;
+      layersCopy = v101;
 LABEL_93:
 
       goto LABEL_94;
@@ -933,20 +933,20 @@ LABEL_94:
   return v34;
 }
 
-+ (BOOL)canTransformToGELUFromLayer:(id)a3 stopGradientTensorList:(id)a4 fusedLayers:(id)a5 inputTensor:(id *)a6
++ (BOOL)canTransformToGELUFromLayer:(id)layer stopGradientTensorList:(id)list fusedLayers:(id)layers inputTensor:(id *)tensor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 count];
-  [a1 getAccuracyForLayer:v10];
+  layerCopy = layer;
+  listCopy = list;
+  layersCopy = layers;
+  v13 = [layersCopy count];
+  [self getAccuracyForLayer:layerCopy];
   v15 = v14;
   if (v13)
   {
-    v16 = [v12 objectAtIndexedSubscript:0];
+    v16 = [layersCopy objectAtIndexedSubscript:0];
 
     v17 = 1;
-    v10 = v16;
+    layerCopy = v16;
   }
 
   else
@@ -954,48 +954,48 @@ LABEL_94:
     v17 = 0;
   }
 
-  if ([a1 isArithmeticLayer:v10 withOperation:2])
+  if ([self isArithmeticLayer:layerCopy withOperation:2])
   {
-    v18 = [v10 sourceTensors];
-    v19 = [v18 objectAtIndexedSubscript:1];
+    sourceTensors = [layerCopy sourceTensors];
+    v19 = [sourceTensors objectAtIndexedSubscript:1];
 
     if (v13)
     {
-      v20 = [v12 objectAtIndexedSubscript:v17];
+      lastObject = [layersCopy objectAtIndexedSubscript:v17];
       ++v17;
     }
 
     else
     {
-      v58 = v11;
-      if (a6)
+      v58 = listCopy;
+      if (tensor)
       {
         v22 = v19;
-        *a6 = v19;
+        *tensor = v19;
       }
 
-      [v12 addObject:v10];
-      v23 = [v10 sourceTensors];
-      [v23 objectAtIndexedSubscript:0];
+      [layersCopy addObject:layerCopy];
+      sourceTensors2 = [layerCopy sourceTensors];
+      [sourceTensors2 objectAtIndexedSubscript:0];
       v25 = v24 = v19;
-      v26 = [v25 parentLayers];
-      v20 = [v26 lastObject];
+      parentLayers = [v25 parentLayers];
+      lastObject = [parentLayers lastObject];
 
       v19 = v24;
-      v10 = v23;
-      v11 = v58;
+      layerCopy = sourceTensors2;
+      listCopy = v58;
     }
 
-    if (![a1 isArithmeticLayer:v20 withOperation:2])
+    if (![self isArithmeticLayer:lastObject withOperation:2])
     {
       goto LABEL_27;
     }
 
-    v27 = [v20 sourceTensors];
-    v28 = [v27 objectAtIndexedSubscript:1];
+    sourceTensors3 = [lastObject sourceTensors];
+    v28 = [sourceTensors3 objectAtIndexedSubscript:1];
     LODWORD(v29) = 0.5;
     LODWORD(v30) = v15;
-    v31 = [a1 isConstTensor:v28 withValue:v29 withAccuracy:v30];
+    v31 = [self isConstTensor:v28 withValue:v29 withAccuracy:v30];
 
     if (!v31)
     {
@@ -1004,65 +1004,65 @@ LABEL_94:
 
     if (v13)
     {
-      v32 = [v12 objectAtIndexedSubscript:v17];
+      lastObject2 = [layersCopy objectAtIndexedSubscript:v17];
       ++v17;
     }
 
     else
     {
-      [v12 addObject:v20];
-      v33 = [v20 sourceTensors];
-      v34 = [v33 objectAtIndexedSubscript:0];
+      [layersCopy addObject:lastObject];
+      sourceTensors4 = [lastObject sourceTensors];
+      v34 = [sourceTensors4 objectAtIndexedSubscript:0];
       [v34 parentLayers];
-      v59 = v11;
+      v59 = listCopy;
       v36 = v35 = v19;
-      v32 = [v36 lastObject];
+      lastObject2 = [v36 lastObject];
 
       v19 = v35;
-      v11 = v59;
+      listCopy = v59;
 
-      v20 = v33;
+      lastObject = sourceTensors4;
     }
 
-    if (![a1 isArithmeticLayer:v32 withOperation:0])
+    if (![self isArithmeticLayer:lastObject2 withOperation:0])
     {
       goto LABEL_23;
     }
 
-    v37 = [v32 sourceTensors];
-    v38 = [v37 objectAtIndexedSubscript:1];
+    sourceTensors5 = [lastObject2 sourceTensors];
+    v38 = [sourceTensors5 objectAtIndexedSubscript:1];
     LODWORD(v39) = 1.0;
     LODWORD(v40) = v15;
-    v41 = [a1 isConstTensor:v38 withValue:v39 withAccuracy:v40];
+    v41 = [self isConstTensor:v38 withValue:v39 withAccuracy:v40];
 
     if (!v41)
     {
 LABEL_23:
       v21 = 0;
-      v20 = v32;
+      lastObject = lastObject2;
 LABEL_28:
 
-      v10 = v20;
+      layerCopy = lastObject;
       goto LABEL_29;
     }
 
     if (v13)
     {
-      v20 = [v12 objectAtIndexedSubscript:v17];
+      lastObject = [layersCopy objectAtIndexedSubscript:v17];
 
-      if ([a1 isActivationLayer:v20 withActivationType:5])
+      if ([self isActivationLayer:lastObject withActivationType:5])
       {
-        v42 = [v12 objectAtIndexedSubscript:v17 + 1];
+        lastObject3 = [layersCopy objectAtIndexedSubscript:v17 + 1];
 
         v43 = [MEMORY[0x277CBEBF8] mutableCopy];
-        v44 = [v12 subarrayWithRange:{v17 + 2, objc_msgSend(v12, "count") - (v17 + 2)}];
+        v44 = [layersCopy subarrayWithRange:{v17 + 2, objc_msgSend(layersCopy, "count") - (v17 + 2)}];
         v45 = [v44 mutableCopy];
 
         LODWORD(v46) = v15;
-        if (([a1 canTransformToGELUType1FromLayer:v42 fusedLayers:v45 inputTensor:v19 withAccuracy:v46] & 1) == 0)
+        if (([self canTransformToGELUType1FromLayer:lastObject3 fusedLayers:v45 inputTensor:v19 withAccuracy:v46] & 1) == 0)
         {
           LODWORD(v47) = v15;
-          if (([a1 canTransformToGELUType2FromLayer:v42 fusedLayers:v45 inputTensor:v19 withAccuracy:v47] & 1) == 0)
+          if (([self canTransformToGELUType2FromLayer:lastObject3 fusedLayers:v45 inputTensor:v19 withAccuracy:v47] & 1) == 0)
           {
             goto LABEL_33;
           }
@@ -1072,35 +1072,35 @@ LABEL_32:
         v21 = 1;
 LABEL_34:
 
-        v20 = v42;
+        lastObject = lastObject3;
         goto LABEL_28;
       }
 
       goto LABEL_27;
     }
 
-    [v12 addObject:v32];
-    v48 = [v32 sourceTensors];
-    v49 = [v48 objectAtIndexedSubscript:0];
-    v50 = [v49 parentLayers];
-    v20 = [v50 lastObject];
+    [layersCopy addObject:lastObject2];
+    sourceTensors6 = [lastObject2 sourceTensors];
+    v49 = [sourceTensors6 objectAtIndexedSubscript:0];
+    parentLayers2 = [v49 parentLayers];
+    lastObject = [parentLayers2 lastObject];
 
-    if (([a1 isActivationLayer:v20 withActivationType:5] & 1) == 0)
+    if (([self isActivationLayer:lastObject withActivationType:5] & 1) == 0)
     {
 LABEL_27:
       v21 = 0;
       goto LABEL_28;
     }
 
-    [v12 addObject:v20];
-    v51 = [v20 sourceTensors];
-    v52 = [v51 objectAtIndexedSubscript:0];
-    v53 = [v52 parentLayers];
-    v42 = [v53 lastObject];
+    [layersCopy addObject:lastObject];
+    sourceTensors7 = [lastObject sourceTensors];
+    v52 = [sourceTensors7 objectAtIndexedSubscript:0];
+    parentLayers3 = [v52 parentLayers];
+    lastObject3 = [parentLayers3 lastObject];
 
     v54 = [MEMORY[0x277CBEBF8] mutableCopy];
     LODWORD(v55) = v15;
-    if ([a1 canTransformToGELUType1FromLayer:v42 fusedLayers:v54 inputTensor:v19 withAccuracy:v55])
+    if ([self canTransformToGELUType1FromLayer:lastObject3 fusedLayers:v54 inputTensor:v19 withAccuracy:v55])
     {
       v45 = v54;
     }
@@ -1110,14 +1110,14 @@ LABEL_27:
       v45 = [MEMORY[0x277CBEBF8] mutableCopy];
 
       LODWORD(v57) = v15;
-      if (([a1 canTransformToGELUType2FromLayer:v42 fusedLayers:v45 inputTensor:v19 withAccuracy:v57] & 1) == 0)
+      if (([self canTransformToGELUType2FromLayer:lastObject3 fusedLayers:v45 inputTensor:v19 withAccuracy:v57] & 1) == 0)
       {
         goto LABEL_33;
       }
     }
 
-    [v12 addObjectsFromArray:v45];
-    if ([a1 checkIntermediateTensorsOfFusedLayers:v12 stopGradientTensorList:v11 forPattern:@"GELU"])
+    [layersCopy addObjectsFromArray:v45];
+    if ([self checkIntermediateTensorsOfFusedLayers:layersCopy stopGradientTensorList:listCopy forPattern:@"GELU"])
     {
       goto LABEL_32;
     }
@@ -1133,15 +1133,15 @@ LABEL_29:
   return v21;
 }
 
-+ (float)getAccuracyForLayer:(id)a3
++ (float)getAccuracyForLayer:(id)layer
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 sourceTensors];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  sourceTensors = [layer sourceTensors];
+  v4 = [sourceTensors countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1154,13 +1154,13 @@ LABEL_29:
         v9 = v7;
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sourceTensors);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) descriptor];
-        v11 = [v10 dataType];
+        descriptor = [*(*(&v14 + 1) + 8 * i) descriptor];
+        dataType = [descriptor dataType];
 
-        if (v11 == 3)
+        if (dataType == 3)
         {
           v7 = fminf(v7, 0.0001);
         }
@@ -1168,14 +1168,14 @@ LABEL_29:
         else
         {
           v7 = 0.0;
-          if (v11 == 1)
+          if (dataType == 1)
           {
             v7 = fminf(v9, 0.00000001);
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [sourceTensors countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -1190,21 +1190,21 @@ LABEL_29:
   return v7;
 }
 
-+ (BOOL)isArithmeticLayer:(id)a3 withOperation:(int)a4
++ (BOOL)isArithmeticLayer:(id)layer withOperation:(int)operation
 {
-  v5 = a3;
-  v6 = v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v5 operation] == a4;
+  layerCopy = layer;
+  v6 = layerCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [layerCopy operation] == operation;
 
   return v6;
 }
 
-+ (BOOL)isActivationLayer:(id)a3 withActivationType:(int)a4
++ (BOOL)isActivationLayer:(id)layer withActivationType:(int)type
 {
-  v5 = a3;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  layerCopy = layer;
+  if (layerCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 descriptor];
-    v7 = [v6 activationType] == a4;
+    descriptor = [layerCopy descriptor];
+    v7 = [descriptor activationType] == type;
   }
 
   else
@@ -1215,48 +1215,48 @@ LABEL_29:
   return v7;
 }
 
-+ (BOOL)isConstTensor:(id)a3 withValue:(float)a4 withAccuracy:(float)a5
++ (BOOL)isConstTensor:(id)tensor withValue:(float)value withAccuracy:(float)accuracy
 {
-  v8 = a3;
-  if (([v8 computeFlags] & 2) == 0)
+  tensorCopy = tensor;
+  if (([tensorCopy computeFlags] & 2) == 0)
   {
     goto LABEL_24;
   }
 
-  v9 = [v8 descriptor];
-  v10 = [v9 elementCount];
+  descriptor = [tensorCopy descriptor];
+  elementCount = [descriptor elementCount];
 
-  if (v10 != 1)
+  if (elementCount != 1)
   {
     goto LABEL_24;
   }
 
-  v11 = [v8 descriptor];
-  v12 = [v11 dataType];
+  descriptor2 = [tensorCopy descriptor];
+  dataType = [descriptor2 dataType];
 
-  if (v12 != 3)
+  if (dataType != 3)
   {
-    if (v12 == 1)
+    if (dataType == 1)
     {
-      v13 = [v8 data];
-      v14 = [v13 bytes];
+      data = [tensorCopy data];
+      bytes = [data bytes];
 
-      v15 = [v8 descriptor];
-      v16 = [v15 elementCount];
+      descriptor3 = [tensorCopy descriptor];
+      elementCount2 = [descriptor3 elementCount];
 
-      if (v16)
+      if (elementCount2)
       {
-        v17 = v16 - 1;
+        v17 = elementCount2 - 1;
         do
         {
-          v18 = *v14++;
-          v19 = vabds_f32(v18, a4);
+          v18 = *bytes++;
+          v19 = vabds_f32(v18, value);
           _CF = v17-- != 0;
           v21 = _CF;
-          v22 = v19 < a5;
+          v22 = v19 < accuracy;
         }
 
-        while (v19 < a5 && (v21 & 1) != 0);
+        while (v19 < accuracy && (v21 & 1) != 0);
         goto LABEL_25;
       }
 
@@ -1268,7 +1268,7 @@ LABEL_26:
     v36 = +[MLCLog framework];
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
-      [MLCPatternMatcher isConstTensor:a2 withValue:v8 withAccuracy:v36];
+      [MLCPatternMatcher isConstTensor:a2 withValue:tensorCopy withAccuracy:v36];
     }
 
 LABEL_24:
@@ -1276,52 +1276,52 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v23 = [v8 data];
-  v24 = [v23 bytes];
+  data2 = [tensorCopy data];
+  bytes2 = [data2 bytes];
 
-  v25 = [v8 descriptor];
-  v26 = [v25 elementCount];
+  descriptor4 = [tensorCopy descriptor];
+  elementCount3 = [descriptor4 elementCount];
 
-  if (!v26)
+  if (!elementCount3)
   {
     goto LABEL_26;
   }
 
-  v27 = v26 - 1;
+  v27 = elementCount3 - 1;
   do
   {
-    v28 = *v24++;
+    v28 = *bytes2++;
     _H0 = v28;
     __asm { FCVT            S0, H0 }
 
-    v34 = vabds_f32(_S0, a4);
+    v34 = vabds_f32(_S0, value);
     _CF = v27-- != 0;
     v35 = _CF;
-    v22 = v34 < a5;
+    v22 = v34 < accuracy;
   }
 
-  while (v34 < a5 && (v35 & 1) != 0);
+  while (v34 < accuracy && (v35 & 1) != 0);
 LABEL_25:
 
   return v22;
 }
 
-+ (BOOL)canTransformToGELUType1FromLayer:(id)a3 fusedLayers:(id)a4 inputTensor:(id)a5 withAccuracy:(float)a6
++ (BOOL)canTransformToGELUType1FromLayer:(id)layer fusedLayers:(id)layers inputTensor:(id)tensor withAccuracy:(float)accuracy
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 count];
-  if (![a1 isArithmeticLayer:v10 withOperation:2])
+  layerCopy = layer;
+  layersCopy = layers;
+  tensorCopy = tensor;
+  v13 = [layersCopy count];
+  if (![self isArithmeticLayer:layerCopy withOperation:2])
   {
     goto LABEL_14;
   }
 
-  v14 = [v10 sourceTensors];
-  v15 = [v14 objectAtIndexedSubscript:1];
+  sourceTensors = [layerCopy sourceTensors];
+  v15 = [sourceTensors objectAtIndexedSubscript:1];
   LODWORD(v16) = 1061962281;
-  *&v17 = a6;
-  v18 = [a1 isConstTensor:v15 withValue:v16 withAccuracy:v17];
+  *&v17 = accuracy;
+  v18 = [self isConstTensor:v15 withValue:v16 withAccuracy:v17];
 
   if (!v18)
   {
@@ -1330,140 +1330,140 @@ LABEL_25:
 
   if (v13)
   {
-    v19 = [v11 objectAtIndexedSubscript:0];
+    lastObject = [layersCopy objectAtIndexedSubscript:0];
     v20 = 1;
   }
 
   else
   {
-    [v11 addObject:v10];
-    v21 = [v10 sourceTensors];
-    v22 = [v21 objectAtIndexedSubscript:0];
-    v23 = [v22 parentLayers];
-    v19 = [v23 lastObject];
+    [layersCopy addObject:layerCopy];
+    sourceTensors2 = [layerCopy sourceTensors];
+    v22 = [sourceTensors2 objectAtIndexedSubscript:0];
+    parentLayers = [v22 parentLayers];
+    lastObject = [parentLayers lastObject];
 
     v20 = 0;
-    v10 = v21;
+    layerCopy = sourceTensors2;
   }
 
-  if (![a1 isArithmeticLayer:v19 withOperation:0])
+  if (![self isArithmeticLayer:lastObject withOperation:0])
   {
     goto LABEL_8;
   }
 
-  v24 = [v19 sourceTensors];
-  v25 = [v24 objectAtIndexedSubscript:1];
+  sourceTensors3 = [lastObject sourceTensors];
+  v25 = [sourceTensors3 objectAtIndexedSubscript:1];
 
-  if (v25 != v12)
+  if (v25 != tensorCopy)
   {
     goto LABEL_8;
   }
 
   if (v13)
   {
-    v10 = [v11 objectAtIndexedSubscript:v20];
+    layerCopy = [layersCopy objectAtIndexedSubscript:v20];
     ++v20;
   }
 
   else
   {
-    [v11 addObject:v19];
-    v27 = [v19 sourceTensors];
-    v28 = [v27 objectAtIndexedSubscript:0];
-    v29 = [v28 parentLayers];
-    v10 = [v29 lastObject];
+    [layersCopy addObject:lastObject];
+    sourceTensors4 = [lastObject sourceTensors];
+    v28 = [sourceTensors4 objectAtIndexedSubscript:0];
+    parentLayers2 = [v28 parentLayers];
+    layerCopy = [parentLayers2 lastObject];
 
-    v19 = v27;
+    lastObject = sourceTensors4;
   }
 
-  if (![a1 isArithmeticLayer:v10 withOperation:2])
+  if (![self isArithmeticLayer:layerCopy withOperation:2])
   {
     goto LABEL_14;
   }
 
-  v30 = [v10 sourceTensors];
-  v31 = [v30 objectAtIndexedSubscript:1];
+  sourceTensors5 = [layerCopy sourceTensors];
+  v31 = [sourceTensors5 objectAtIndexedSubscript:1];
 
-  if (v31 != v12)
+  if (v31 != tensorCopy)
   {
     goto LABEL_14;
   }
 
   if (v13)
   {
-    v19 = [v11 objectAtIndexedSubscript:v20];
+    lastObject = [layersCopy objectAtIndexedSubscript:v20];
     ++v20;
   }
 
   else
   {
-    [v11 addObject:v10];
-    v33 = [v10 sourceTensors];
-    v34 = [v33 objectAtIndexedSubscript:0];
-    v35 = [v34 parentLayers];
-    v19 = [v35 lastObject];
+    [layersCopy addObject:layerCopy];
+    sourceTensors6 = [layerCopy sourceTensors];
+    v34 = [sourceTensors6 objectAtIndexedSubscript:0];
+    parentLayers3 = [v34 parentLayers];
+    lastObject = [parentLayers3 lastObject];
 
-    v10 = v33;
+    layerCopy = sourceTensors6;
   }
 
-  if (![a1 isArithmeticLayer:v19 withOperation:2])
+  if (![self isArithmeticLayer:lastObject withOperation:2])
   {
     goto LABEL_8;
   }
 
-  v36 = [v19 sourceTensors];
-  v37 = [v36 objectAtIndexedSubscript:0];
+  sourceTensors7 = [lastObject sourceTensors];
+  v37 = [sourceTensors7 objectAtIndexedSubscript:0];
   LODWORD(v38) = 1027024659;
-  *&v39 = a6;
-  v40 = [a1 isConstTensor:v37 withValue:v38 withAccuracy:v39];
+  *&v39 = accuracy;
+  v40 = [self isConstTensor:v37 withValue:v38 withAccuracy:v39];
 
   if (!v40)
   {
 LABEL_8:
     v26 = 0;
-    v10 = v19;
+    layerCopy = lastObject;
     goto LABEL_15;
   }
 
   if (v13)
   {
-    v10 = [v11 objectAtIndexedSubscript:v20];
+    layerCopy = [layersCopy objectAtIndexedSubscript:v20];
   }
 
   else
   {
-    [v11 addObject:v19];
-    v41 = [v19 sourceTensors];
-    v42 = [v41 objectAtIndexedSubscript:1];
-    v43 = [v42 parentLayers];
-    v10 = [v43 lastObject];
+    [layersCopy addObject:lastObject];
+    sourceTensors8 = [lastObject sourceTensors];
+    v42 = [sourceTensors8 objectAtIndexedSubscript:1];
+    parentLayers4 = [v42 parentLayers];
+    layerCopy = [parentLayers4 lastObject];
 
-    v19 = v41;
+    lastObject = sourceTensors8;
   }
 
-  if (![a1 isArithmeticLayer:v10 withOperation:2])
+  if (![self isArithmeticLayer:layerCopy withOperation:2])
   {
 LABEL_14:
     v26 = 0;
     goto LABEL_15;
   }
 
-  v44 = [v10 sourceTensors];
-  v45 = [v44 objectAtIndexedSubscript:0];
+  sourceTensors9 = [layerCopy sourceTensors];
+  v45 = [sourceTensors9 objectAtIndexedSubscript:0];
   v46 = v45;
-  if (v45 != v12)
+  if (v45 != tensorCopy)
   {
 
     goto LABEL_14;
   }
 
-  v47 = [v10 sourceTensors];
-  v48 = [v47 objectAtIndexedSubscript:1];
+  sourceTensors10 = [layerCopy sourceTensors];
+  v48 = [sourceTensors10 objectAtIndexedSubscript:1];
 
-  v26 = v48 == v12;
-  if (v48 == v12 && !v13)
+  v26 = v48 == tensorCopy;
+  if (v48 == tensorCopy && !v13)
   {
-    [v11 addObject:v10];
+    [layersCopy addObject:layerCopy];
     v26 = 1;
   }
 
@@ -1472,53 +1472,53 @@ LABEL_15:
   return v26;
 }
 
-+ (BOOL)canTransformToGELUType2FromLayer:(id)a3 fusedLayers:(id)a4 inputTensor:(id)a5 withAccuracy:(float)a6
++ (BOOL)canTransformToGELUType2FromLayer:(id)layer fusedLayers:(id)layers inputTensor:(id)tensor withAccuracy:(float)accuracy
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 count];
-  if (![a1 isArithmeticLayer:v10 withOperation:2])
+  layerCopy = layer;
+  layersCopy = layers;
+  tensorCopy = tensor;
+  v13 = [layersCopy count];
+  if (![self isArithmeticLayer:layerCopy withOperation:2])
   {
     goto LABEL_3;
   }
 
-  v14 = [v10 sourceTensors];
-  v15 = [v14 objectAtIndexedSubscript:1];
+  sourceTensors = [layerCopy sourceTensors];
+  v15 = [sourceTensors objectAtIndexedSubscript:1];
 
-  if (v15 != v12)
+  if (v15 != tensorCopy)
   {
     goto LABEL_3;
   }
 
   if (v13)
   {
-    v18 = [v11 objectAtIndexedSubscript:0];
+    lastObject = [layersCopy objectAtIndexedSubscript:0];
     v19 = 1;
   }
 
   else
   {
-    [v11 addObject:v10];
-    v20 = [v10 sourceTensors];
-    v21 = [v20 objectAtIndexedSubscript:0];
-    v22 = [v21 parentLayers];
-    v18 = [v22 lastObject];
+    [layersCopy addObject:layerCopy];
+    sourceTensors2 = [layerCopy sourceTensors];
+    v21 = [sourceTensors2 objectAtIndexedSubscript:0];
+    parentLayers = [v21 parentLayers];
+    lastObject = [parentLayers lastObject];
 
     v19 = 0;
-    v10 = v20;
+    layerCopy = sourceTensors2;
   }
 
-  if (![a1 isArithmeticLayer:v18 withOperation:2])
+  if (![self isArithmeticLayer:lastObject withOperation:2])
   {
     goto LABEL_20;
   }
 
-  v23 = [v18 sourceTensors];
-  v24 = [v23 objectAtIndexedSubscript:1];
+  sourceTensors3 = [lastObject sourceTensors];
+  v24 = [sourceTensors3 objectAtIndexedSubscript:1];
   LODWORD(v25) = 1027024659;
-  *&v26 = a6;
-  v27 = [a1 isConstTensor:v24 withValue:v25 withAccuracy:v26];
+  *&v26 = accuracy;
+  v27 = [self isConstTensor:v24 withValue:v25 withAccuracy:v26];
 
   if (!v27)
   {
@@ -1527,31 +1527,31 @@ LABEL_15:
 
   if (v13)
   {
-    v10 = [v11 objectAtIndexedSubscript:v19];
+    layerCopy = [layersCopy objectAtIndexedSubscript:v19];
     ++v19;
   }
 
   else
   {
-    [v11 addObject:v18];
-    v28 = [v18 sourceTensors];
-    v29 = [v28 objectAtIndexedSubscript:0];
-    v30 = [v29 parentLayers];
-    v10 = [v30 lastObject];
+    [layersCopy addObject:lastObject];
+    sourceTensors4 = [lastObject sourceTensors];
+    v29 = [sourceTensors4 objectAtIndexedSubscript:0];
+    parentLayers2 = [v29 parentLayers];
+    layerCopy = [parentLayers2 lastObject];
 
-    v18 = v28;
+    lastObject = sourceTensors4;
   }
 
-  if (![a1 isArithmeticLayer:v10 withOperation:0])
+  if (![self isArithmeticLayer:layerCopy withOperation:0])
   {
     goto LABEL_3;
   }
 
-  v31 = [v10 sourceTensors];
-  v32 = [v31 objectAtIndexedSubscript:1];
+  sourceTensors5 = [layerCopy sourceTensors];
+  v32 = [sourceTensors5 objectAtIndexedSubscript:1];
   LODWORD(v33) = 1.0;
-  *&v34 = a6;
-  v35 = [a1 isConstTensor:v32 withValue:v33 withAccuracy:v34];
+  *&v34 = accuracy;
+  v35 = [self isConstTensor:v32 withValue:v33 withAccuracy:v34];
 
   if (!v35)
   {
@@ -1560,61 +1560,61 @@ LABEL_15:
 
   if (v13)
   {
-    v18 = [v11 objectAtIndexedSubscript:v19];
+    lastObject = [layersCopy objectAtIndexedSubscript:v19];
     ++v19;
   }
 
   else
   {
-    [v11 addObject:v10];
-    v36 = [v10 sourceTensors];
-    v37 = [v36 objectAtIndexedSubscript:0];
-    v38 = [v37 parentLayers];
-    v18 = [v38 lastObject];
+    [layersCopy addObject:layerCopy];
+    sourceTensors6 = [layerCopy sourceTensors];
+    v37 = [sourceTensors6 objectAtIndexedSubscript:0];
+    parentLayers3 = [v37 parentLayers];
+    lastObject = [parentLayers3 lastObject];
 
-    v10 = v36;
+    layerCopy = sourceTensors6;
   }
 
-  if (![a1 isArithmeticLayer:v18 withOperation:2] || (objc_msgSend(v18, "sourceTensors"), v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v39, "objectAtIndexedSubscript:", 1), v40 = objc_claimAutoreleasedReturnValue(), v40, v39, v40 != v12))
+  if (![self isArithmeticLayer:lastObject withOperation:2] || (objc_msgSend(lastObject, "sourceTensors"), v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v39, "objectAtIndexedSubscript:", 1), v40 = objc_claimAutoreleasedReturnValue(), v40, v39, v40 != tensorCopy))
   {
 LABEL_20:
     v16 = 0;
-    v10 = v18;
+    layerCopy = lastObject;
     goto LABEL_4;
   }
 
   if (v13)
   {
-    v10 = [v11 objectAtIndexedSubscript:v19];
+    layerCopy = [layersCopy objectAtIndexedSubscript:v19];
   }
 
   else
   {
-    [v11 addObject:v18];
-    v41 = [v18 sourceTensors];
-    v42 = [v41 objectAtIndexedSubscript:0];
-    v43 = [v42 parentLayers];
-    v10 = [v43 lastObject];
+    [layersCopy addObject:lastObject];
+    sourceTensors7 = [lastObject sourceTensors];
+    v42 = [sourceTensors7 objectAtIndexedSubscript:0];
+    parentLayers4 = [v42 parentLayers];
+    layerCopy = [parentLayers4 lastObject];
 
-    v18 = v41;
+    lastObject = sourceTensors7;
   }
 
-  if (![a1 isArithmeticLayer:v10 withOperation:2])
+  if (![self isArithmeticLayer:layerCopy withOperation:2])
   {
 LABEL_3:
     v16 = 0;
     goto LABEL_4;
   }
 
-  v44 = [v10 sourceTensors];
-  v45 = [v44 objectAtIndexedSubscript:1];
+  sourceTensors8 = [layerCopy sourceTensors];
+  v45 = [sourceTensors8 objectAtIndexedSubscript:1];
   LODWORD(v46) = 1340983747;
-  *&v47 = a6;
-  v16 = [a1 isConstTensor:v45 withValue:v46 withAccuracy:v47];
+  *&v47 = accuracy;
+  v16 = [self isConstTensor:v45 withValue:v46 withAccuracy:v47];
 
   if ((v16 & 1) != 0 && !v13)
   {
-    [v11 addObject:v10];
+    [layersCopy addObject:layerCopy];
     v16 = 1;
   }
 
@@ -1623,15 +1623,15 @@ LABEL_4:
   return v16 & 1;
 }
 
-+ (BOOL)checkIntermediateTensorsOfFusedLayers:(id)a3 stopGradientTensorList:(id)a4 forPattern:(id)a5
++ (BOOL)checkIntermediateTensorsOfFusedLayers:(id)layers stopGradientTensorList:(id)list forPattern:(id)pattern
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  layersCopy = layers;
+  listCopy = list;
+  patternCopy = pattern;
+  if (listCopy)
   {
-    [MEMORY[0x277CBEB98] setWithArray:v9];
+    [MEMORY[0x277CBEB98] setWithArray:listCopy];
   }
 
   else
@@ -1639,7 +1639,7 @@ LABEL_4:
     [MEMORY[0x277CBEB98] set];
   }
   v11 = ;
-  v12 = [v8 count];
+  v12 = [layersCopy count];
   v13 = v12 - 1;
   if (v12 == 1)
   {
@@ -1650,23 +1650,23 @@ LABEL_4:
   {
     v14 = v12;
     aSelector = a2;
-    v33 = v9;
-    v34 = v10;
+    v33 = listCopy;
+    v34 = patternCopy;
     v15 = 0;
     v16 = 1;
     while (1)
     {
-      v17 = [v8 objectAtIndexedSubscript:v16 - 1];
+      v17 = [layersCopy objectAtIndexedSubscript:v16 - 1];
       if ([v17 skipLayer])
       {
         break;
       }
 
-      v18 = [v17 resultTensors];
-      v19 = [v18 objectAtIndexedSubscript:0];
-      v20 = [v19 computeFlags];
+      resultTensors = [v17 resultTensors];
+      v19 = [resultTensors objectAtIndexedSubscript:0];
+      computeFlags = [v19 computeFlags];
 
-      if (v20)
+      if (computeFlags)
       {
         v24 = +[MLCLog framework];
         if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -1675,12 +1675,12 @@ LABEL_4:
         }
 
         v26 = NSStringFromSelector(aSelector);
-        v27 = [v17 resultTensors];
-        v28 = [v27 objectAtIndexedSubscript:0];
+        resultTensors2 = [v17 resultTensors];
+        v28 = [resultTensors2 objectAtIndexedSubscript:0];
         *buf = 138413058;
         v36 = v26;
         v37 = 2112;
-        v38 = v8;
+        v38 = layersCopy;
         v39 = 2112;
         v40 = v34;
         v41 = 2112;
@@ -1692,8 +1692,8 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v21 = [v17 resultTensors];
-      v22 = [v21 objectAtIndexedSubscript:0];
+      resultTensors3 = [v17 resultTensors];
+      v22 = [resultTensors3 objectAtIndexedSubscript:0];
       v23 = [v11 containsObject:v22];
 
       if (v23)
@@ -1705,12 +1705,12 @@ LABEL_18:
         }
 
         v26 = NSStringFromSelector(aSelector);
-        v27 = [v17 resultTensors];
-        v28 = [v27 objectAtIndexedSubscript:0];
+        resultTensors2 = [v17 resultTensors];
+        v28 = [resultTensors2 objectAtIndexedSubscript:0];
         *buf = 138413058;
         v36 = v26;
         v37 = 2112;
-        v38 = v8;
+        v38 = layersCopy;
         v39 = 2112;
         v40 = v34;
         v41 = 2112;
@@ -1723,7 +1723,7 @@ LABEL_18:
       if (v14 == v16)
       {
         v15 = 1;
-        v9 = v33;
+        listCopy = v33;
         goto LABEL_20;
       }
     }
@@ -1742,10 +1742,10 @@ LABEL_18:
     }
 
 LABEL_19:
-    v9 = v33;
+    listCopy = v33;
 
 LABEL_20:
-    v10 = v34;
+    patternCopy = v34;
   }
 
   v30 = *MEMORY[0x277D85DE8];

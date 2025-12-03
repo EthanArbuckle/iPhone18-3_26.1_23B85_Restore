@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __51__VUIDebugMetricsGladiatorsRulesets_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once != -1)
   {
     dispatch_once(&sharedInstance_once, block);
@@ -46,8 +46,8 @@ void __51__VUIDebugMetricsGladiatorsRulesets_sharedInstance__block_invoke(uint64
     [v7 addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [v7 setURL:v6];
     v8 = MEMORY[0x1E696AF78];
-    v9 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-    v10 = [v8 sessionWithConfiguration:v9];
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    v10 = [v8 sessionWithConfiguration:defaultSessionConfiguration];
 
     objc_initWeak(&location, v2);
     v13 = MEMORY[0x1E69E9820];

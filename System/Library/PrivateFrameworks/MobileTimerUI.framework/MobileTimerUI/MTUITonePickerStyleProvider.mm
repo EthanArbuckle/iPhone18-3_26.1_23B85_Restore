@@ -3,22 +3,22 @@
 - (UIEdgeInsets)vibrationPickerHeaderTextPaddingInsets;
 - (UIOffset)tonePickerHeaderTextShadowOffset;
 - (UIOffset)vibrationPickerHeaderTextShadowOffset;
-- (id)newBackgroundViewForSelectedTonePickerCell:(BOOL)a3;
-- (id)newBackgroundViewForSelectedVibrationPickerCell:(BOOL)a3;
+- (id)newBackgroundViewForSelectedTonePickerCell:(BOOL)cell;
+- (id)newBackgroundViewForSelectedVibrationPickerCell:(BOOL)cell;
 @end
 
 @implementation MTUITonePickerStyleProvider
 
-- (id)newBackgroundViewForSelectedTonePickerCell:(BOOL)a3
+- (id)newBackgroundViewForSelectedTonePickerCell:(BOOL)cell
 {
-  if (!a3)
+  if (!cell)
   {
     return 0;
   }
 
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277D75348] mtui_cellHighlightColor];
-  [v3 setBackgroundColor:v4];
+  mtui_cellHighlightColor = [MEMORY[0x277D75348] mtui_cellHighlightColor];
+  [v3 setBackgroundColor:mtui_cellHighlightColor];
 
   return v3;
 }
@@ -45,16 +45,16 @@
   return result;
 }
 
-- (id)newBackgroundViewForSelectedVibrationPickerCell:(BOOL)a3
+- (id)newBackgroundViewForSelectedVibrationPickerCell:(BOOL)cell
 {
-  if (!a3)
+  if (!cell)
   {
     return 0;
   }
 
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277D75348] mtui_cellHighlightColor];
-  [v3 setBackgroundColor:v4];
+  mtui_cellHighlightColor = [MEMORY[0x277D75348] mtui_cellHighlightColor];
+  [v3 setBackgroundColor:mtui_cellHighlightColor];
 
   return v3;
 }

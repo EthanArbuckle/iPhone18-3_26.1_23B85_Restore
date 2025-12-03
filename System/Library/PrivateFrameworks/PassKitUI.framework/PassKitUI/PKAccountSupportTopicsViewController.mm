@@ -1,36 +1,36 @@
 @interface PKAccountSupportTopicsViewController
-- (PKAccountSupportTopicsViewController)initWithAccount:(id)a3;
+- (PKAccountSupportTopicsViewController)initWithAccount:(id)account;
 - (void)_fetchCommonSupportTopics;
-- (void)_reloadSectionControllerWithTopics:(id)a3;
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)_reloadSectionControllerWithTopics:(id)topics;
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)deselectCells;
-- (void)openBusinessChatForTopic:(id)a3;
-- (void)reloadItem:(id)a3 animated:(BOOL)a4;
-- (void)showExplanationForTopic:(id)a3;
+- (void)openBusinessChatForTopic:(id)topic;
+- (void)reloadItem:(id)item animated:(BOOL)animated;
+- (void)showExplanationForTopic:(id)topic;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAccountSupportTopicsViewController
 
-- (PKAccountSupportTopicsViewController)initWithAccount:(id)a3
+- (PKAccountSupportTopicsViewController)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v12.receiver = self;
   v12.super_class = PKAccountSupportTopicsViewController;
   v6 = [(PKPaymentSetupOptionsViewController *)&v12 initWithContext:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v7->_loadingTopics = 0;
-    v8 = [(PKAccountSupportTopicsViewController *)v7 navigationItem];
+    navigationItem = [(PKAccountSupportTopicsViewController *)v7 navigationItem];
     v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v7 action:sel__cancelTapped];
-    [v8 setLeftBarButtonItem:v9];
+    [navigationItem setLeftBarButtonItem:v9];
 
-    [v8 setBackButtonDisplayMode:2];
+    [navigationItem setBackButtonDisplayMode:2];
     v10 = PKLocalizedFeatureString();
-    [v8 setTitle:v10];
+    [navigationItem setTitle:v10];
   }
 
   return v7;
@@ -41,20 +41,20 @@
   self->_loadingTopics = 1;
   [(PKAccountSupportTopicsViewController *)self _setNeedsUpdateContentUnavailableConfiguration];
   v3 = objc_alloc_init(MEMORY[0x1E69B84D0]);
-  v4 = [(PKAccount *)self->_account accountBaseURL];
-  [v3 setBaseURL:v4];
+  accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+  [v3 setBaseURL:accountBaseURL];
 
-  v5 = [(PKAccount *)self->_account accountIdentifier];
-  [v3 setAccountIdentifier:v5];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [v3 setAccountIdentifier:accountIdentifier];
 
   objc_initWeak(&location, self);
-  v6 = [MEMORY[0x1E69B8EF8] sharedService];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__PKAccountSupportTopicsViewController__fetchCommonSupportTopics__block_invoke;
   v7[3] = &unk_1E8014AD0;
   objc_copyWeak(&v8, &location);
-  [v6 supportTopicsWithRequest:v3 completion:v7];
+  [mEMORY[0x1E69B8EF8] supportTopicsWithRequest:v3 completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -130,18 +130,18 @@ uint64_t __65__PKAccountSupportTopicsViewController__fetchCommonSupportTopics__b
   return v8;
 }
 
-- (void)_reloadSectionControllerWithTopics:(id)a3
+- (void)_reloadSectionControllerWithTopics:(id)topics
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  topicsCopy = topics;
+  if ([topicsCopy count])
   {
     v5 = [PKAccountSupportTopicsSectionController alloc];
     account = self->_account;
     [(PKAccount *)account feature];
     v7 = PKLocalizedFeatureString();
-    v8 = [v7 uppercaseString];
-    v9 = [(PKAccountSupportTopicsSectionController *)v5 initWithAccount:account topics:v4 sectionTitle:v8 delegate:self];
+    uppercaseString = [v7 uppercaseString];
+    v9 = [(PKAccountSupportTopicsSectionController *)v5 initWithAccount:account topics:topicsCopy sectionTitle:uppercaseString delegate:self];
     sectionTopicController = self->_sectionTopicController;
     self->_sectionTopicController = v9;
 
@@ -167,15 +167,15 @@ uint64_t __65__PKAccountSupportTopicsViewController__fetchCommonSupportTopics__b
   v7.receiver = self;
   v7.super_class = PKAccountSupportTopicsViewController;
   [(PKPaymentSetupOptionsViewController *)&v7 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [(PKPaymentSetupOptionsViewController *)self setBackgroundColor:v3];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [(PKPaymentSetupOptionsViewController *)self setBackgroundColor:systemGroupedBackgroundColor];
 
-  v4 = [(PKPaymentSetupOptionsViewController *)self dockView];
-  v5 = [v4 primaryButton];
+  dockView = [(PKPaymentSetupOptionsViewController *)self dockView];
+  primaryButton = [dockView primaryButton];
   v6 = PKLocalizedFeatureString();
-  [v5 setTitle:v6 forState:0];
+  [primaryButton setTitle:v6 forState:0];
 
-  [v5 addTarget:self action:sel__continueToChat forControlEvents:0x2000];
+  [primaryButton addTarget:self action:sel__continueToChat forControlEvents:0x2000];
   [(PKAccountSupportTopicsViewController *)self _fetchCommonSupportTopics];
 }
 
@@ -186,20 +186,20 @@ uint64_t __65__PKAccountSupportTopicsViewController__fetchCommonSupportTopics__b
   [(PKPaymentSetupOptionsViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKDynamicCollectionViewController *)self collectionView];
-    v4 = [(PKAccountSupportTopicsViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+    navigationItem = [(PKAccountSupportTopicsViewController *)self navigationItem];
+    [collectionView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)_updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_updateContentUnavailableConfigurationUsingState:(id)state
 {
   if (self->_loadingTopics)
   {
     v4 = MEMORY[0x1E69DC8C8];
-    v5 = a3;
-    v6 = [v4 loadingConfiguration];
-    v7 = [v6 updatedConfigurationForState:v5];
+    stateCopy = state;
+    loadingConfiguration = [v4 loadingConfiguration];
+    v7 = [loadingConfiguration updatedConfigurationForState:stateCopy];
   }
 
   else
@@ -210,9 +210,9 @@ uint64_t __65__PKAccountSupportTopicsViewController__fetchCommonSupportTopics__b
   [(PKAccountSupportTopicsViewController *)self _setContentUnavailableConfiguration:v7];
 }
 
-- (void)openBusinessChatForTopic:(id)a3
+- (void)openBusinessChatForTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   businessChatController = self->_businessChatController;
   if (businessChatController)
   {
@@ -228,7 +228,7 @@ uint64_t __65__PKAccountSupportTopicsViewController__fetchCommonSupportTopics__b
   self->_businessChatController = v6;
 
   objc_initWeak(&location, self);
-  if (!v4)
+  if (!topicCopy)
   {
     suggestedTopic = self->_suggestedTopic;
     if (suggestedTopic)
@@ -241,10 +241,10 @@ uint64_t __65__PKAccountSupportTopicsViewController__fetchCommonSupportTopics__b
       v9 = [objc_alloc(MEMORY[0x1E69B8418]) initWithOtherTopicForAccount:self->_account];
     }
 
-    v4 = v9;
+    topicCopy = v9;
   }
 
-  v10 = [[PKBusinessChatAccountContext alloc] initWithAccount:self->_account topic:v4];
+  v10 = [[PKBusinessChatAccountContext alloc] initWithAccount:self->_account topic:topicCopy];
   v11 = self->_businessChatController;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -292,13 +292,13 @@ void __65__PKAccountSupportTopicsViewController_openBusinessChatForTopic___block
   }
 }
 
-- (void)showExplanationForTopic:(id)a3
+- (void)showExplanationForTopic:(id)topic
 {
-  v4 = a3;
-  v6 = [[PKAccountSupportTopicExplanationViewController alloc] initWithAccount:self->_account topic:v4 delegate:self];
+  topicCopy = topic;
+  v6 = [[PKAccountSupportTopicExplanationViewController alloc] initWithAccount:self->_account topic:topicCopy delegate:self];
 
-  v5 = [(PKAccountSupportTopicsViewController *)self navigationController];
-  [v5 pushViewController:v6 animated:1];
+  navigationController = [(PKAccountSupportTopicsViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
 - (void)deselectCells
@@ -308,11 +308,11 @@ void __65__PKAccountSupportTopicsViewController_openBusinessChatForTopic___block
   [(PKDynamicCollectionViewController *)&v2 deselectCells];
 }
 
-- (void)reloadItem:(id)a3 animated:(BOOL)a4
+- (void)reloadItem:(id)item animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = PKAccountSupportTopicsViewController;
-  [(PKDynamicCollectionViewController *)&v4 reloadItem:a3 animated:a4];
+  [(PKDynamicCollectionViewController *)&v4 reloadItem:item animated:animated];
 }
 
 @end

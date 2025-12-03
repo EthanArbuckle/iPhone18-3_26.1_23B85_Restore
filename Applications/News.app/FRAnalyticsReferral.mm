@@ -1,68 +1,68 @@
 @interface FRAnalyticsReferral
-- (FRAnalyticsReferral)initWithAppSessionStartFromNotificationType:(int64_t)a3;
-- (FRAnalyticsReferral)initWithAppSessionStartMethod:(int64_t)a3;
-- (FRAnalyticsReferral)initWithUserActivityType:(id)a3 creativeID:(id)a4 campaignID:(id)a5 campaignType:(id)a6 referringApplication:(id)a7 referringURL:(id)a8 appOpenedByUserActivity:(BOOL)a9 widgetModeGroupID:(id)a10 widgetEngagement:(id)a11 appSessionStartMethod:(int64_t)a12 appSessionStartNotificationType:(int64_t)a13;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FRAnalyticsReferral)initWithAppSessionStartFromNotificationType:(int64_t)type;
+- (FRAnalyticsReferral)initWithAppSessionStartMethod:(int64_t)method;
+- (FRAnalyticsReferral)initWithUserActivityType:(id)type creativeID:(id)d campaignID:(id)iD campaignType:(id)campaignType referringApplication:(id)application referringURL:(id)l appOpenedByUserActivity:(BOOL)activity widgetModeGroupID:(id)self0 widgetEngagement:(id)self1 appSessionStartMethod:(int64_t)self2 appSessionStartNotificationType:(int64_t)self3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FRAnalyticsReferral
 
-- (FRAnalyticsReferral)initWithUserActivityType:(id)a3 creativeID:(id)a4 campaignID:(id)a5 campaignType:(id)a6 referringApplication:(id)a7 referringURL:(id)a8 appOpenedByUserActivity:(BOOL)a9 widgetModeGroupID:(id)a10 widgetEngagement:(id)a11 appSessionStartMethod:(int64_t)a12 appSessionStartNotificationType:(int64_t)a13
+- (FRAnalyticsReferral)initWithUserActivityType:(id)type creativeID:(id)d campaignID:(id)iD campaignType:(id)campaignType referringApplication:(id)application referringURL:(id)l appOpenedByUserActivity:(BOOL)activity widgetModeGroupID:(id)self0 widgetEngagement:(id)self1 appSessionStartMethod:(int64_t)self2 appSessionStartNotificationType:(int64_t)self3
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a10;
-  v26 = a11;
+  typeCopy = type;
+  dCopy = d;
+  iDCopy = iD;
+  campaignTypeCopy = campaignType;
+  applicationCopy = application;
+  lCopy = l;
+  groupIDCopy = groupID;
+  engagementCopy = engagement;
   v45.receiver = self;
   v45.super_class = FRAnalyticsReferral;
   v27 = [(FRAnalyticsReferral *)&v45 init];
   if (v27)
   {
-    v28 = [v19 copy];
+    v28 = [typeCopy copy];
     userActivityType = v27->_userActivityType;
     v27->_userActivityType = v28;
 
-    v30 = [v20 copy];
+    v30 = [dCopy copy];
     creativeID = v27->_creativeID;
     v27->_creativeID = v30;
 
-    v32 = [v21 copy];
+    v32 = [iDCopy copy];
     campaignID = v27->_campaignID;
     v27->_campaignID = v32;
 
-    v34 = [v22 copy];
+    v34 = [campaignTypeCopy copy];
     campaignType = v27->_campaignType;
     v27->_campaignType = v34;
 
-    v36 = [v23 copy];
+    v36 = [applicationCopy copy];
     referringApplication = v27->_referringApplication;
     v27->_referringApplication = v36;
 
-    v38 = [v24 copy];
+    v38 = [lCopy copy];
     referringURL = v27->_referringURL;
     v27->_referringURL = v38;
 
-    v27->_appOpenedByUserActivity = a9;
-    v40 = [v25 copy];
+    v27->_appOpenedByUserActivity = activity;
+    v40 = [groupIDCopy copy];
     widgetModeGroupID = v27->_widgetModeGroupID;
     v27->_widgetModeGroupID = v40;
 
-    v42 = [v26 copy];
+    v42 = [engagementCopy copy];
     widgetEngagement = v27->_widgetEngagement;
     v27->_widgetEngagement = v42;
 
-    v27->_appSessionStartMethod = a12;
-    v27->_appSessionNotificationType = a13;
+    v27->_appSessionStartMethod = method;
+    v27->_appSessionNotificationType = notificationType;
   }
 
   return v27;
 }
 
-- (FRAnalyticsReferral)initWithAppSessionStartFromNotificationType:(int64_t)a3
+- (FRAnalyticsReferral)initWithAppSessionStartFromNotificationType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = FRAnalyticsReferral;
@@ -70,13 +70,13 @@
   if (result)
   {
     result->_appSessionStartMethod = 3;
-    result->_appSessionNotificationType = a3;
+    result->_appSessionNotificationType = type;
   }
 
   return result;
 }
 
-- (FRAnalyticsReferral)initWithAppSessionStartMethod:(int64_t)a3
+- (FRAnalyticsReferral)initWithAppSessionStartMethod:(int64_t)method
 {
   v7.receiver = self;
   v7.super_class = FRAnalyticsReferral;
@@ -84,39 +84,39 @@
   v5 = v4;
   if (v4)
   {
-    [(FRAnalyticsReferral *)v4 setAppSessionStartMethod:a3];
+    [(FRAnalyticsReferral *)v4 setAppSessionStartMethod:method];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[FRAnalyticsReferral allocWithZone:?]];
-  v5 = [(FRAnalyticsReferral *)self userActivityType];
-  [(FRAnalyticsReferral *)v4 setUserActivityType:v5];
+  userActivityType = [(FRAnalyticsReferral *)self userActivityType];
+  [(FRAnalyticsReferral *)v4 setUserActivityType:userActivityType];
 
-  v6 = [(FRAnalyticsReferral *)self creativeID];
-  [(FRAnalyticsReferral *)v4 setCreativeID:v6];
+  creativeID = [(FRAnalyticsReferral *)self creativeID];
+  [(FRAnalyticsReferral *)v4 setCreativeID:creativeID];
 
-  v7 = [(FRAnalyticsReferral *)self campaignID];
-  [(FRAnalyticsReferral *)v4 setCampaignID:v7];
+  campaignID = [(FRAnalyticsReferral *)self campaignID];
+  [(FRAnalyticsReferral *)v4 setCampaignID:campaignID];
 
-  v8 = [(FRAnalyticsReferral *)self campaignType];
-  [(FRAnalyticsReferral *)v4 setCampaignType:v8];
+  campaignType = [(FRAnalyticsReferral *)self campaignType];
+  [(FRAnalyticsReferral *)v4 setCampaignType:campaignType];
 
-  v9 = [(FRAnalyticsReferral *)self referringApplication];
-  [(FRAnalyticsReferral *)v4 setReferringApplication:v9];
+  referringApplication = [(FRAnalyticsReferral *)self referringApplication];
+  [(FRAnalyticsReferral *)v4 setReferringApplication:referringApplication];
 
-  v10 = [(FRAnalyticsReferral *)self referringURL];
-  [(FRAnalyticsReferral *)v4 setReferringURL:v10];
+  referringURL = [(FRAnalyticsReferral *)self referringURL];
+  [(FRAnalyticsReferral *)v4 setReferringURL:referringURL];
 
   [(FRAnalyticsReferral *)v4 setAppOpenedByUserActivity:[(FRAnalyticsReferral *)self appOpenedByUserActivity]];
-  v11 = [(FRAnalyticsReferral *)self widgetModeGroupID];
-  [(FRAnalyticsReferral *)v4 setWidgetModeGroupID:v11];
+  widgetModeGroupID = [(FRAnalyticsReferral *)self widgetModeGroupID];
+  [(FRAnalyticsReferral *)v4 setWidgetModeGroupID:widgetModeGroupID];
 
-  v12 = [(FRAnalyticsReferral *)self widgetEngagement];
-  [(FRAnalyticsReferral *)v4 setWidgetEngagement:v12];
+  widgetEngagement = [(FRAnalyticsReferral *)self widgetEngagement];
+  [(FRAnalyticsReferral *)v4 setWidgetEngagement:widgetEngagement];
 
   [(FRAnalyticsReferral *)v4 setAppSessionStartMethod:[(FRAnalyticsReferral *)self appSessionStartMethod]];
   return v4;

@@ -7,30 +7,30 @@
 
 + (BOOL)_shouldActuallyInstallBundle
 {
-  v2 = [MEMORY[0x29EDB9F48] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 hasPrefix:*MEMORY[0x29EDBD678]];
+  mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier hasPrefix:*MEMORY[0x29EDBD678]];
 
   return v4 ^ 1;
 }
 
 + (void)accessibilityInitializeBundle
 {
-  if ([a1 _shouldActuallyInstallBundle])
+  if ([self _shouldActuallyInstallBundle])
   {
-    v3 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v3 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_595 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_604];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_595 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_604];
 
-    v7 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v7 addHandler:&__block_literal_global_791 forFramework:@"PhotosEditUI"];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_791 forFramework:@"PhotosEditUI"];
   }
 
   else
   {
-    v7 = [MEMORY[0x29EDB9F48] bundleForClass:a1];
-    v4 = [v7 bundleIdentifier];
-    v5 = [MEMORY[0x29EDB9F48] mainBundle];
-    v6 = [v5 bundleIdentifier];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDB9F48] bundleForClass:self];
+    bundleIdentifier = [mEMORY[0x29EDBD690] bundleIdentifier];
+    mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+    bundleIdentifier2 = [mainBundle bundleIdentifier];
     _AXLogWithFacility();
   }
 }

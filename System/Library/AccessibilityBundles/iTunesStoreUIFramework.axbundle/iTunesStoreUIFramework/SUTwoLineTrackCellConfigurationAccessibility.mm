@@ -8,10 +8,10 @@
 {
   [self _accessibilityReloadMediaStrings];
   v3 = [(SUTwoLineTrackCellConfigurationAccessibility *)self safeValueForKey:@"_accessibilityStringsArrayPointer"];
-  v4 = [v3 bytes];
-  v5 = v4[2];
-  v6 = v4[1];
-  v7 = *v4;
+  bytes = [v3 bytes];
+  v5 = bytes[2];
+  v6 = bytes[1];
+  v7 = *bytes;
   v8 = [(SUTwoLineTrackCellConfigurationAccessibility *)self safeValueForKey:@"_accessibilityVideoIconString"];
   if ([v7 length])
   {

@@ -1,9 +1,9 @@
 @interface MFRemoteSearchResults
 - (MFRemoteSearchResults)init;
 - (unint64_t)count;
-- (void)addRemoteID:(id)a3 mailbox:(id)a4;
-- (void)addRemoteIDs:(id)a3 mailbox:(id)a4;
-- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)a3;
+- (void)addRemoteID:(id)d mailbox:(id)mailbox;
+- (void)addRemoteIDs:(id)ds mailbox:(id)mailbox;
+- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)block;
 @end
 
 @implementation MFRemoteSearchResults
@@ -23,35 +23,35 @@
   return v2;
 }
 
-- (void)addRemoteID:(id)a3 mailbox:(id)a4
+- (void)addRemoteID:(id)d mailbox:(id)mailbox
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MFRemoteSearchResults *)self mailboxToRemoteIdDictionary];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  mailboxCopy = mailbox;
+  mailboxToRemoteIdDictionary = [(MFRemoteSearchResults *)self mailboxToRemoteIdDictionary];
+  v8 = [mailboxToRemoteIdDictionary objectForKeyedSubscript:mailboxCopy];
 
   if (!v8)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v10 = [(MFRemoteSearchResults *)self mailboxToRemoteIdDictionary];
-    [v10 setObject:v9 forKeyedSubscript:v6];
+    mailboxToRemoteIdDictionary2 = [(MFRemoteSearchResults *)self mailboxToRemoteIdDictionary];
+    [mailboxToRemoteIdDictionary2 setObject:v9 forKeyedSubscript:mailboxCopy];
 
     v8 = v9;
   }
 
-  [v8 addObject:v11];
+  [v8 addObject:dCopy];
 }
 
-- (void)addRemoteIDs:(id)a3 mailbox:(id)a4
+- (void)addRemoteIDs:(id)ds mailbox:(id)mailbox
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  mailboxCopy = mailbox;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v6;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -66,8 +66,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) stringValue];
-        [(MFRemoteSearchResults *)self addRemoteID:v12 mailbox:v7];
+        stringValue = [*(*(&v14 + 1) + 8 * v11) stringValue];
+        [(MFRemoteSearchResults *)self addRemoteID:stringValue mailbox:mailboxCopy];
 
         ++v11;
       }
@@ -88,13 +88,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(MFRemoteSearchResults *)self mailboxToRemoteIdDictionary];
+  mailboxToRemoteIdDictionary = [(MFRemoteSearchResults *)self mailboxToRemoteIdDictionary];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __30__MFRemoteSearchResults_count__block_invoke;
   v5[3] = &unk_1E7AA7750;
   v5[4] = &v6;
-  [v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [mailboxToRemoteIdDictionary enumerateKeysAndObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -107,11 +107,11 @@ void __30__MFRemoteSearchResults_count__block_invoke(uint64_t a1, uint64_t a2, v
   *(*(*(a1 + 32) + 8) + 24) += [v4 count];
 }
 
-- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)a3
+- (void)enumerateMailboxesAndRemoteIDsUsingBlock:(id)block
 {
-  v5 = a3;
-  v4 = [(MFRemoteSearchResults *)self mailboxToRemoteIdDictionary];
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  blockCopy = block;
+  mailboxToRemoteIdDictionary = [(MFRemoteSearchResults *)self mailboxToRemoteIdDictionary];
+  [mailboxToRemoteIdDictionary enumerateKeysAndObjectsUsingBlock:blockCopy];
 }
 
 @end

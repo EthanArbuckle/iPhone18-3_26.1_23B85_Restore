@@ -1,40 +1,40 @@
 @interface TUIHoverIdentifier
-- (BOOL)isEqual:(id)a3;
-- (TUIHoverIdentifier)initWithName:(id)a3;
-- (TUIHoverIdentifier)initWithName:(id)a3 identifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TUIHoverIdentifier)initWithName:(id)name;
+- (TUIHoverIdentifier)initWithName:(id)name identifier:(id)identifier;
 - (id)anonymousIdentifier;
 - (id)description;
 @end
 
 @implementation TUIHoverIdentifier
 
-- (TUIHoverIdentifier)initWithName:(id)a3 identifier:(id)a4
+- (TUIHoverIdentifier)initWithName:(id)name identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = TUIHoverIdentifier;
   v9 = [(TUIHoverIdentifier *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_identifier, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_identifier, identifier);
   }
 
   return v10;
 }
 
-- (TUIHoverIdentifier)initWithName:(id)a3
+- (TUIHoverIdentifier)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = TUIHoverIdentifier;
   v6 = [(TUIHoverIdentifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
@@ -45,8 +45,8 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   name = self->_name;
-  v6 = [(TUIIdentifier *)self->_identifier tui_identifierToString];
-  v7 = [NSString stringWithFormat:@"<%@ name=%@ identifier=%@>", v4, name, v6];
+  tui_identifierToString = [(TUIIdentifier *)self->_identifier tui_identifierToString];
+  v7 = [NSString stringWithFormat:@"<%@ name=%@ identifier=%@>", v4, name, tui_identifierToString];
 
   return v7;
 }
@@ -55,24 +55,24 @@
 {
   if (self->_identifier)
   {
-    v2 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [[TUIHoverIdentifier alloc] initWithName:self->_name];
+    selfCopy = [[TUIHoverIdentifier alloc] initWithName:self->_name];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = v4;
+    v6 = equalCopy;
   }
 
   else

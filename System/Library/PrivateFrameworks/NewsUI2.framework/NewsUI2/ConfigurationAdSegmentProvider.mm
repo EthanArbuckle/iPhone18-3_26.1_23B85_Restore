@@ -1,6 +1,6 @@
 @interface ConfigurationAdSegmentProvider
 - (_TtC7NewsUI230ConfigurationAdSegmentProvider)init;
-- (void)configurationManagerSignificantAppConfigChange:(id)a3;
+- (void)configurationManagerSignificantAppConfigChange:(id)change;
 @end
 
 @implementation ConfigurationAdSegmentProvider
@@ -12,9 +12,9 @@
   return result;
 }
 
-- (void)configurationManagerSignificantAppConfigChange:(id)a3
+- (void)configurationManagerSignificantAppConfigChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
 
   sub_219BE21B4();
 }

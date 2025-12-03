@@ -19,16 +19,16 @@
 
 - (uint64_t)_hmbHasCKUnderlyingErrorWithCode:()HMB
 {
-  if ([a1 _hmbIsCKUnderlyingErrorWithCode:?])
+  if ([self _hmbIsCKUnderlyingErrorWithCode:?])
   {
     return 1;
   }
 
-  v6 = [a1 hmbCKUnderlyingError];
-  v7 = v6;
-  if (v6)
+  hmbCKUnderlyingError = [self hmbCKUnderlyingError];
+  v7 = hmbCKUnderlyingError;
+  if (hmbCKUnderlyingError)
   {
-    v5 = [v6 _hmbHasCKUnderlyingErrorWithCode:a3];
+    v5 = [hmbCKUnderlyingError _hmbHasCKUnderlyingErrorWithCode:a3];
   }
 
   else
@@ -42,23 +42,23 @@
 - (uint64_t)_hmbIsCKErrorOrHasPartialFailurePassingFilter:()HMB
 {
   v4 = a3;
-  if ([a1 hmbIsCKPartialFailureError])
+  if ([self hmbIsCKPartialFailureError])
   {
-    v5 = [a1 userInfo];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+    userInfo = [self userInfo];
+    v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
 
-    v7 = [v6 allValues];
+    allValues = [v6 allValues];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __62__NSError_HMB___hmbIsCKErrorOrHasPartialFailurePassingFilter___block_invoke;
     v10[3] = &unk_2786E2240;
     v11 = v4;
-    v8 = [v7 na_any:v10];
+    v8 = [allValues na_any:v10];
   }
 
   else
   {
-    v8 = (*(v4 + 2))(v4, a1);
+    v8 = (*(v4 + 2))(v4, self);
   }
 
   return v8;
@@ -71,15 +71,15 @@
   v4[2] = __57__NSError_HMB___hmbIsCKErrorOrHasPartialFailureWithCode___block_invoke;
   v4[3] = &__block_descriptor_40_e17_B16__0__NSError_8l;
   v4[4] = a3;
-  return [a1 _hmbIsCKErrorOrHasPartialFailurePassingFilter:v4];
+  return [self _hmbIsCKErrorOrHasPartialFailurePassingFilter:v4];
 }
 
 - (uint64_t)_hmbIsCKUnderlyingErrorWithCode:()HMB
 {
-  result = [a1 hmbIsCloudKitUnderlyingError];
+  result = [self hmbIsCloudKitUnderlyingError];
   if (result)
   {
-    return [a1 code] == a3;
+    return [self code] == a3;
   }
 
   return result;
@@ -87,10 +87,10 @@
 
 - (uint64_t)_hmbIsCKErrorWithCode:()HMB
 {
-  result = [a1 hmbIsCloudKitError];
+  result = [self hmbIsCloudKitError];
   if (result)
   {
-    return [a1 code] == a3;
+    return [self code] == a3;
   }
 
   return result;
@@ -98,13 +98,13 @@
 
 - (uint64_t)hmbIsCKZoneDisabledError
 {
-  if (![a1 _hmbIsCKErrorWithCode:15] || !objc_msgSend(a1, "_hmbHasCKUnderlyingErrorWithCode:", 2000))
+  if (![self _hmbIsCKErrorWithCode:15] || !objc_msgSend(self, "_hmbHasCKUnderlyingErrorWithCode:", 2000))
   {
     return 0;
   }
 
-  v2 = [a1 userInfo];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CBBF70]];
+  userInfo = [self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBF70]];
   v4 = [v3 isEqualToString:@"User modifications not allowed in disabled zone"];
 
   return v4;
@@ -112,8 +112,8 @@
 
 - (double)hmbDefaultCloudKitRetryDelay
 {
-  v0 = [MEMORY[0x277CCAC38] processInfo];
-  if ([v0 isLowPowerModeEnabled])
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  if ([processInfo isLowPowerModeEnabled])
   {
     v1 = 600.0;
   }
@@ -129,10 +129,10 @@
 - (double)hmbCloudKitRetryDelay
 {
   v28 = *MEMORY[0x277D85DE8];
-  if ([a1 hmbIsCloudKitError])
+  if ([self hmbIsCloudKitError])
   {
-    v2 = [a1 userInfo];
-    v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CBBF68]];
+    userInfo = [self userInfo];
+    v3 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBF68]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -149,10 +149,10 @@
 
     if (!v5 || ([v5 doubleValue], v7 = v6, v6 < 0.0))
     {
-      if ([a1 hmbIsCKPartialFailureError])
+      if ([self hmbIsCKPartialFailureError])
       {
-        v8 = [a1 userInfo];
-        v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+        userInfo2 = [self userInfo];
+        v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
 
         v25 = 0u;
         v26 = 0u;
@@ -205,13 +205,13 @@ LABEL_10:
         goto LABEL_26;
       }
 
-      v20 = [a1 code];
+      code = [self code];
       v7 = -1.0;
-      if (v20 <= 0x17)
+      if (code <= 0x17)
       {
-        if (((1 << v20) & 0x9000D8) == 0)
+        if (((1 << code) & 0x9000D8) == 0)
         {
-          if (v20 != 14 || ![a1 _hmbHasCKUnderlyingErrorWithCode:2037])
+          if (code != 14 || ![self _hmbHasCKUnderlyingErrorWithCode:2037])
           {
             goto LABEL_26;
           }
@@ -219,10 +219,10 @@ LABEL_10:
           goto LABEL_23;
         }
 
-        if (([a1 _hmbHasCKUnderlyingErrorWithCode:3006] & 1) == 0)
+        if (([self _hmbHasCKUnderlyingErrorWithCode:3006] & 1) == 0)
         {
 LABEL_23:
-          [a1 hmbDefaultCloudKitRetryDelay];
+          [self hmbDefaultCloudKitRetryDelay];
           v7 = v21;
         }
       }
@@ -236,14 +236,14 @@ LABEL_26:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  [a1 hmbDefaultCloudKitRetryDelay];
+  [self hmbDefaultCloudKitRetryDelay];
   return result;
 }
 
 - (void)hmbCKUnderlyingError
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
   if ([v2 hmbIsCloudKitUnderlyingError])
   {
@@ -262,24 +262,24 @@ LABEL_26:
 
 - (uint64_t)hmbIsCloudKitUnderlyingError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:*MEMORY[0x277CBC120]];
+  domain = [self domain];
+  v2 = [domain isEqualToString:*MEMORY[0x277CBC120]];
 
   return v2;
 }
 
 - (uint64_t)hmbIsCloudKitError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:*MEMORY[0x277CBBF50]];
+  domain = [self domain];
+  v2 = [domain isEqualToString:*MEMORY[0x277CBBF50]];
 
   return v2;
 }
 
 - (BOOL)hmbIsSQLiteDiskFullError
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 hmf_numberForKey:@"extcode"];
+  userInfo = [self userInfo];
+  v2 = [userInfo hmf_numberForKey:@"extcode"];
   v3 = [v2 integerValue] == 13;
 
   return v3;
@@ -287,8 +287,8 @@ LABEL_26:
 
 - (BOOL)hmbIsSQLiteDatabaseCorruptedError
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 hmf_numberForKey:@"extcode"];
+  userInfo = [self userInfo];
+  v3 = [userInfo hmf_numberForKey:@"extcode"];
   if ([v3 integerValue] == 26)
   {
     v4 = 1;
@@ -296,8 +296,8 @@ LABEL_26:
 
   else
   {
-    v5 = [a1 userInfo];
-    v6 = [v5 hmf_numberForKey:@"extcode"];
+    userInfo2 = [self userInfo];
+    v6 = [userInfo2 hmf_numberForKey:@"extcode"];
     v4 = [v6 integerValue] == 11;
   }
 
@@ -306,8 +306,8 @@ LABEL_26:
 
 - (BOOL)hmbIsSQLiteConstraintError
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 hmf_numberForKey:@"extcode"];
+  userInfo = [self userInfo];
+  v2 = [userInfo hmf_numberForKey:@"extcode"];
   v3 = [v2 integerValue] == 19;
 
   return v3;

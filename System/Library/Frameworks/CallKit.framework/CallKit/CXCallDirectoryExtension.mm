@@ -1,7 +1,7 @@
 @interface CXCallDirectoryExtension
-- (CXCallDirectoryExtension)initWithCoder:(id)a3;
+- (CXCallDirectoryExtension)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CXCallDirectoryExtension
@@ -10,18 +10,18 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CXCallDirectoryExtension *)self identifier];
-  v6 = [(CXCallDirectoryExtension *)self state];
-  v7 = [(CXCallDirectoryExtension *)self priority];
-  v8 = [(CXCallDirectoryExtension *)self localizedName];
-  v9 = [v3 stringWithFormat:@"<%@ %p: identifier=%@ state=%ld priority=%lld localizedName=%@>", v4, self, v5, v6, v7, v8];
+  identifier = [(CXCallDirectoryExtension *)self identifier];
+  state = [(CXCallDirectoryExtension *)self state];
+  priority = [(CXCallDirectoryExtension *)self priority];
+  localizedName = [(CXCallDirectoryExtension *)self localizedName];
+  v9 = [v3 stringWithFormat:@"<%@ %p: identifier=%@ state=%ld priority=%lld localizedName=%@>", v4, self, identifier, state, priority, localizedName];
 
   return v9;
 }
 
-- (CXCallDirectoryExtension)initWithCoder:(id)a3
+- (CXCallDirectoryExtension)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = CXCallDirectoryExtension;
   v5 = [(CXCallDirectoryExtension *)&v26 init];
@@ -29,71 +29,71 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_identifier);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
     v10 = NSStringFromSelector(sel_state);
-    v5->_state = [v4 decodeIntegerForKey:v10];
+    v5->_state = [coderCopy decodeIntegerForKey:v10];
 
     v11 = NSStringFromSelector(sel_priority);
-    v5->_priority = [v4 decodeInt64ForKey:v11];
+    v5->_priority = [coderCopy decodeInt64ForKey:v11];
 
     v12 = objc_opt_class();
     v13 = NSStringFromSelector(sel_localizedName);
-    v14 = [v4 decodeObjectOfClass:v12 forKey:v13];
+    v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
     localizedName = v5->_localizedName;
     v5->_localizedName = v14;
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_localizedContainingAppName);
-    v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
     localizedContainingAppName = v5->_localizedContainingAppName;
     v5->_localizedContainingAppName = v18;
 
     v20 = objc_opt_class();
     v21 = NSStringFromSelector(sel_plugInKitProxy);
-    v22 = [v4 decodeObjectOfClass:v20 forKey:v21];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
     plugInKitProxy = v5->_plugInKitProxy;
     v5->_plugInKitProxy = v22;
 
     v24 = NSStringFromSelector(sel_isOnlyExtensionInContainingApp);
-    v5->_onlyExtensionInContainingApp = [v4 decodeBoolForKey:v24];
+    v5->_onlyExtensionInContainingApp = [coderCopy decodeBoolForKey:v24];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CXCallDirectoryExtension *)self identifier];
+  coderCopy = coder;
+  identifier = [(CXCallDirectoryExtension *)self identifier];
   v6 = NSStringFromSelector(sel_identifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:identifier forKey:v6];
 
-  v7 = [(CXCallDirectoryExtension *)self state];
+  state = [(CXCallDirectoryExtension *)self state];
   v8 = NSStringFromSelector(sel_state);
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:state forKey:v8];
 
-  v9 = [(CXCallDirectoryExtension *)self priority];
+  priority = [(CXCallDirectoryExtension *)self priority];
   v10 = NSStringFromSelector(sel_priority);
-  [v4 encodeInt64:v9 forKey:v10];
+  [coderCopy encodeInt64:priority forKey:v10];
 
-  v11 = [(CXCallDirectoryExtension *)self localizedName];
+  localizedName = [(CXCallDirectoryExtension *)self localizedName];
   v12 = NSStringFromSelector(sel_localizedName);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:localizedName forKey:v12];
 
-  v13 = [(CXCallDirectoryExtension *)self localizedContainingAppName];
+  localizedContainingAppName = [(CXCallDirectoryExtension *)self localizedContainingAppName];
   v14 = NSStringFromSelector(sel_localizedContainingAppName);
-  [v4 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:localizedContainingAppName forKey:v14];
 
-  v15 = [(CXCallDirectoryExtension *)self plugInKitProxy];
+  plugInKitProxy = [(CXCallDirectoryExtension *)self plugInKitProxy];
   v16 = NSStringFromSelector(sel_plugInKitProxy);
-  [v4 encodeObject:v15 forKey:v16];
+  [coderCopy encodeObject:plugInKitProxy forKey:v16];
 
-  v17 = [(CXCallDirectoryExtension *)self isOnlyExtensionInContainingApp];
+  isOnlyExtensionInContainingApp = [(CXCallDirectoryExtension *)self isOnlyExtensionInContainingApp];
   v18 = NSStringFromSelector(sel_isOnlyExtensionInContainingApp);
-  [v4 encodeBool:v17 forKey:v18];
+  [coderCopy encodeBool:isOnlyExtensionInContainingApp forKey:v18];
 }
 
 @end

@@ -2,22 +2,22 @@
 - (BOOL)_addExtractionHintToStaleResources;
 - (BOOL)_ensureHasIngestStartDate;
 - (BOOL)_ensureProtectedDataAvailable;
-- (HDClinicalIngestionHandleStaleResourcesOperation)initWithTask:(id)a3 account:(id)a4 ingestStartDate:(id)a5 nextOperation:(id)a6;
-- (void)_cancelWithError:(id)a3;
+- (HDClinicalIngestionHandleStaleResourcesOperation)initWithTask:(id)task account:(id)account ingestStartDate:(id)date nextOperation:(id)operation;
+- (void)_cancelWithError:(id)error;
 - (void)main;
 @end
 
 @implementation HDClinicalIngestionHandleStaleResourcesOperation
 
-- (HDClinicalIngestionHandleStaleResourcesOperation)initWithTask:(id)a3 account:(id)a4 ingestStartDate:(id)a5 nextOperation:(id)a6
+- (HDClinicalIngestionHandleStaleResourcesOperation)initWithTask:(id)task account:(id)account ingestStartDate:(id)date nextOperation:(id)operation
 {
-  v10 = a5;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = HDClinicalIngestionHandleStaleResourcesOperation;
-  v11 = [(HDClinicalIngestionPerAccountOperation *)&v15 initWithTask:a3 account:a4 nextOperation:a6];
+  v11 = [(HDClinicalIngestionPerAccountOperation *)&v15 initWithTask:task account:account nextOperation:operation];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [dateCopy copy];
     ingestStartDate = v11->_ingestStartDate;
     v11->_ingestStartDate = v12;
   }
@@ -55,9 +55,9 @@
   }
 }
 
-- (void)_cancelWithError:(id)a3
+- (void)_cancelWithError:(id)error
 {
-  [(HDClinicalIngestionOperation *)self setOperationError:a3];
+  [(HDClinicalIngestionOperation *)self setOperationError:error];
 
   [(HDClinicalIngestionHandleStaleResourcesOperation *)self cancel];
 }
@@ -77,27 +77,27 @@
 
 - (BOOL)_ensureProtectedDataAvailable
 {
-  v3 = [(HDClinicalIngestionOperation *)self profile];
-  v4 = [v3 database];
-  v5 = [v4 isProtectedDataAvailable];
+  profile = [(HDClinicalIngestionOperation *)self profile];
+  database = [profile database];
+  isProtectedDataAvailable = [database isProtectedDataAvailable];
 
-  if ((v5 & 1) == 0)
+  if ((isProtectedDataAvailable & 1) == 0)
   {
     v6 = +[NSError hk_protectedDataInaccessibilityError];
     [(HDClinicalIngestionHandleStaleResourcesOperation *)self _cancelWithError:v6];
   }
 
-  return v5;
+  return isProtectedDataAvailable;
 }
 
 - (BOOL)_addExtractionHintToStaleResources
 {
   ingestStartDate = self->_ingestStartDate;
-  v4 = [(HDClinicalIngestionPerAccountOperation *)self account];
-  v5 = [v4 identifier];
-  v6 = [(HDClinicalIngestionOperation *)self profile];
+  account = [(HDClinicalIngestionPerAccountOperation *)self account];
+  identifier = [account identifier];
+  profile = [(HDClinicalIngestionOperation *)self profile];
   v18 = 0;
-  v7 = [HDOriginalFHIRResourceLastSeenEntity resourceEntitiesNotSeenSince:ingestStartDate accountIdentifier:v5 profile:v6 error:&v18];
+  v7 = [HDOriginalFHIRResourceLastSeenEntity resourceEntitiesNotSeenSince:ingestStartDate accountIdentifier:identifier profile:profile error:&v18];
   v8 = v18;
 
   if (!v7)
@@ -122,9 +122,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = [(HDClinicalIngestionOperation *)self profile];
+  profile2 = [(HDClinicalIngestionOperation *)self profile];
   v17 = v8;
-  v11 = [HDOriginalFHIRResourceEntity addExtractionHints:4 toResourceEntities:v7 profile:v10 error:&v17];
+  v11 = [HDOriginalFHIRResourceEntity addExtractionHints:4 toResourceEntities:v7 profile:profile2 error:&v17];
   v12 = v17;
 
   v13 = v11 != 0;

@@ -1,18 +1,18 @@
 @interface BKUIFingerprintEnrollViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_finishEnrollmentPhaseTwo;
 @end
 
 @implementation BKUIFingerprintEnrollViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BKUIFingerprintEnrollViewController" hasInstanceMethod:@"_startTutorial:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"BKUIFingerprintEnrollViewController" hasInstanceMethod:@"transitionToEnrollView:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"BKUIFingerprintEnrollViewController" hasInstanceMethod:@"_finishEnrollmentPhaseTwo" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BKUIFingerprintEnrollViewController" hasInstanceVariable:@"_mesaFirstEnrollView" withType:"BKUICurvesView"];
-  [v3 validateClass:@"BKUIFingerprintEnrollViewController" hasInstanceVariable:@"_enrollmentPhaseTwo" withType:"BOOL"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BKUIFingerprintEnrollViewController" hasInstanceMethod:@"_startTutorial:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"BKUIFingerprintEnrollViewController" hasInstanceMethod:@"transitionToEnrollView:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"BKUIFingerprintEnrollViewController" hasInstanceMethod:@"_finishEnrollmentPhaseTwo" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BKUIFingerprintEnrollViewController" hasInstanceVariable:@"_mesaFirstEnrollView" withType:"BKUICurvesView"];
+  [validationsCopy validateClass:@"BKUIFingerprintEnrollViewController" hasInstanceVariable:@"_enrollmentPhaseTwo" withType:"BOOL"];
 }
 
 - (void)_finishEnrollmentPhaseTwo

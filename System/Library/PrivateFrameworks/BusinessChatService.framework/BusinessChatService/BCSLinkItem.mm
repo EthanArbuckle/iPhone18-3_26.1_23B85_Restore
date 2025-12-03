@@ -1,10 +1,10 @@
 @interface BCSLinkItem
-+ (id)linkItemsFromLinkItemModels:(id)a3;
++ (id)linkItemsFromLinkItemModels:(id)models;
 - (BCSBusinessLinkContentItem)businessLinkContentItem;
-- (BCSLinkItem)initWithLinkItemModel:(id)a3 expirationDate:(id)a4 localeHelper:(id)a5;
-- (BCSLinkItem)initWithLinkItemModel:(id)a3 localeHelper:(id)a4;
+- (BCSLinkItem)initWithLinkItemModel:(id)model expirationDate:(id)date localeHelper:(id)helper;
+- (BCSLinkItem)initWithLinkItemModel:(id)model localeHelper:(id)helper;
 - (BOOL)isPoweredBy;
-- (BOOL)matchesItemIdentifying:(id)a3;
+- (BOOL)matchesItemIdentifying:(id)identifying;
 - (NSDictionary)debugInfo;
 - (NSDictionary)mapIconStyleAttributes;
 - (NSNumber)mapItemMUID;
@@ -19,32 +19,32 @@
 - (NSURL)iconImageURL;
 - (NSURL)linkURL;
 - (NSURL)redirectURL;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)heroImageURLForSpecifier:(id *)a3;
-- (id)iconImageURLForSpecifier:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)heroImageURLForSpecifier:(id *)specifier;
+- (id)iconImageURLForSpecifier:(id *)specifier;
 - (id)itemIdentifier;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)action;
 - (int64_t)truncatedHash;
 - (int64_t)type;
-- (void)setDebugInfo:(id)a3;
+- (void)setDebugInfo:(id)info;
 @end
 
 @implementation BCSLinkItem
 
-+ (id)linkItemsFromLinkItemModels:(id)a3
++ (id)linkItemsFromLinkItemModels:(id)models
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  modelsCopy = models;
   v4 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = modelsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -78,31 +78,31 @@
   return v14;
 }
 
-- (BCSLinkItem)initWithLinkItemModel:(id)a3 localeHelper:(id)a4
+- (BCSLinkItem)initWithLinkItemModel:(id)model localeHelper:(id)helper
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 distantPast];
-  v10 = [(BCSLinkItem *)self initWithLinkItemModel:v8 expirationDate:v9 localeHelper:v7];
+  helperCopy = helper;
+  modelCopy = model;
+  distantPast = [v6 distantPast];
+  v10 = [(BCSLinkItem *)self initWithLinkItemModel:modelCopy expirationDate:distantPast localeHelper:helperCopy];
 
   return v10;
 }
 
-- (BCSLinkItem)initWithLinkItemModel:(id)a3 expirationDate:(id)a4 localeHelper:(id)a5
+- (BCSLinkItem)initWithLinkItemModel:(id)model expirationDate:(id)date localeHelper:(id)helper
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modelCopy = model;
+  dateCopy = date;
+  helperCopy = helper;
   v15.receiver = self;
   v15.super_class = BCSLinkItem;
   v12 = [(BCSItem *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_model, a3);
-    objc_storeStrong(&v13->_localeHelper, a5);
-    [(BCSItem *)v13 setExpirationDate:v10];
+    objc_storeStrong(&v12->_model, model);
+    objc_storeStrong(&v13->_localeHelper, helper);
+    [(BCSItem *)v13 setExpirationDate:dateCopy];
   }
 
   return v13;
@@ -110,11 +110,11 @@
 
 - (NSDictionary)debugInfo
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = v2;
-  if (v2)
+  model = [(BCSLinkItem *)self model];
+  v3 = model;
+  if (model)
   {
-    v4 = *(v2 + 96);
+    v4 = *(model + 96);
   }
 
   else
@@ -127,83 +127,83 @@
   return v4;
 }
 
-- (void)setDebugInfo:(id)a3
+- (void)setDebugInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   selfa = [(BCSLinkItem *)self model];
   if (selfa)
   {
-    objc_setProperty_nonatomic_copy(selfa, v5, v4, 96);
+    objc_setProperty_nonatomic_copy(selfa, v5, infoCopy, 96);
   }
 }
 
-- (id)heroImageURLForSpecifier:(id *)a3
+- (id)heroImageURLForSpecifier:(id *)specifier
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [(BCSLinkItem *)self heroImageURLString];
-  v6 = *&a3->var2;
-  v9[0] = *&a3->var0;
+  heroImageURLString = [(BCSLinkItem *)self heroImageURLString];
+  v6 = *&specifier->var2;
+  v9[0] = *&specifier->var0;
   v9[1] = v6;
-  v7 = [(NSURL *)v4 bcs_templatedImageURLWithString:v5 imageSpecifier:v9];
+  v7 = [(NSURL *)v4 bcs_templatedImageURLWithString:heroImageURLString imageSpecifier:v9];
 
   return v7;
 }
 
-- (id)iconImageURLForSpecifier:(id *)a3
+- (id)iconImageURLForSpecifier:(id *)specifier
 {
   v4 = MEMORY[0x277CBEBC0];
-  v5 = [(BCSLinkItem *)self iconImageURLString];
-  v6 = *&a3->var2;
-  v9[0] = *&a3->var0;
+  iconImageURLString = [(BCSLinkItem *)self iconImageURLString];
+  v6 = *&specifier->var2;
+  v9[0] = *&specifier->var0;
   v9[1] = v6;
-  v7 = [(NSURL *)v4 bcs_templatedImageURLWithString:v5 imageSpecifier:v9];
+  v7 = [(NSURL *)v4 bcs_templatedImageURLWithString:iconImageURLString imageSpecifier:v9];
 
   return v7;
 }
 
 - (id)itemIdentifier
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 itemIdentifier];
+  model = [(BCSLinkItem *)self model];
+  itemIdentifier = [model itemIdentifier];
 
-  return v3;
+  return itemIdentifier;
 }
 
 - (int64_t)truncatedHash
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 truncatedHash];
+  model = [(BCSLinkItem *)self model];
+  truncatedHash = [model truncatedHash];
 
-  return v3;
+  return truncatedHash;
 }
 
 - (int64_t)type
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 type];
+  model = [(BCSLinkItem *)self model];
+  type = [model type];
 
-  return v3;
+  return type;
 }
 
-- (BOOL)matchesItemIdentifying:(id)a3
+- (BOOL)matchesItemIdentifying:(id)identifying
 {
-  v4 = a3;
-  v5 = [(BCSLinkItem *)self model];
-  v6 = [v5 matchesItemIdentifying:v4];
+  identifyingCopy = identifying;
+  model = [(BCSLinkItem *)self model];
+  v6 = [model matchesItemIdentifying:identifyingCopy];
 
   return v6;
 }
 
 - (BCSBusinessLinkContentItem)businessLinkContentItem
 {
-  v2 = self;
+  selfCopy = self;
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [(BCSLinkItem *)self localeHelper];
-  v4 = [v3 currentLocale];
-  v5 = [(NSLocale *)v4 language];
-  if (v2)
+  localeHelper = [(BCSLinkItem *)self localeHelper];
+  currentLocale = [localeHelper currentLocale];
+  language = [(NSLocale *)currentLocale language];
+  if (selfCopy)
   {
-    cachedContentItemLanguage = v2->_cachedContentItemLanguage;
+    cachedContentItemLanguage = selfCopy->_cachedContentItemLanguage;
   }
 
   else
@@ -212,11 +212,11 @@
   }
 
   v7 = cachedContentItemLanguage;
-  if ([v5 isEqualToString:v7])
+  if ([language isEqualToString:v7])
   {
-    if (v2)
+    if (selfCopy)
     {
-      cachedContentItem = v2->_cachedContentItem;
+      cachedContentItem = selfCopy->_cachedContentItem;
     }
 
     else
@@ -226,9 +226,9 @@
 
     if (cachedContentItem)
     {
-      if (v2)
+      if (selfCopy)
       {
-        v9 = v2->_cachedContentItem;
+        v9 = selfCopy->_cachedContentItem;
       }
 
       else
@@ -249,18 +249,18 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  if (v2)
+  if (selfCopy)
   {
     v11 = objc_opt_new();
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v12 = [(BCSLinkItem *)v2 model];
-    v13 = v12;
-    if (v12)
+    model = [(BCSLinkItem *)selfCopy model];
+    v13 = model;
+    if (model)
     {
-      v14 = *(v12 + 88);
+      v14 = *(model + 88);
     }
 
     else
@@ -319,12 +319,12 @@ LABEL_24:
       }
 
       v26 = *(*(&v44 + 1) + 8 * v25);
-      v27 = [v26 language];
-      v28 = v2;
-      v29 = [(BCSLinkItem *)v2 localeHelper];
-      v30 = [v29 currentLocale];
-      v31 = [(NSLocale *)v30 language];
-      v32 = [v27 isEqualToString:v31];
+      language2 = [v26 language];
+      v28 = selfCopy;
+      localeHelper2 = [(BCSLinkItem *)selfCopy localeHelper];
+      currentLocale2 = [localeHelper2 currentLocale];
+      language3 = [(NSLocale *)currentLocale2 language];
+      v32 = [language2 isEqualToString:language3];
 
       if (v32)
       {
@@ -338,7 +338,7 @@ LABEL_24:
         v43 = v33;
       }
 
-      v2 = v28;
+      selfCopy = v28;
       if (v23 == ++v25)
       {
         v21 = obj;
@@ -354,7 +354,7 @@ LABEL_24:
 
     v34 = v26;
 
-    v2 = v28;
+    selfCopy = v28;
     if (v34)
     {
       goto LABEL_39;
@@ -373,17 +373,17 @@ LABEL_36:
   {
     v43 = v35;
 LABEL_39:
-    if (v2)
+    if (selfCopy)
     {
-      objc_storeStrong(&v2->_cachedContentItem, v34);
+      objc_storeStrong(&selfCopy->_cachedContentItem, v34);
     }
 
-    v36 = [(BCSLinkItem *)v2 localeHelper];
-    v37 = [v36 currentLocale];
-    v38 = [(NSLocale *)v37 language];
-    if (v2)
+    localeHelper3 = [(BCSLinkItem *)selfCopy localeHelper];
+    currentLocale3 = [localeHelper3 currentLocale];
+    language4 = [(NSLocale *)currentLocale3 language];
+    if (selfCopy)
     {
-      objc_storeStrong(&v2->_cachedContentItemLanguage, v38);
+      objc_storeStrong(&selfCopy->_cachedContentItemLanguage, language4);
     }
 
     v39 = v43;
@@ -404,124 +404,124 @@ LABEL_46:
 
 - (NSURL)linkURL
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 linkURL];
+  model = [(BCSLinkItem *)self model];
+  linkURL = [model linkURL];
 
-  return v3;
+  return linkURL;
 }
 
 - (NSString)fullHash
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 fullHash];
+  model = [(BCSLinkItem *)self model];
+  fullHash = [model fullHash];
 
-  return v3;
+  return fullHash;
 }
 
 - (NSString)bundleID
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 bundleID];
+  model = [(BCSLinkItem *)self model];
+  bundleID = [model bundleID];
 
-  return v3;
+  return bundleID;
 }
 
 - (NSString)heroImageURLString
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 heroImageURLString];
+  model = [(BCSLinkItem *)self model];
+  heroImageURLString = [model heroImageURLString];
 
-  return v3;
+  return heroImageURLString;
 }
 
 - (NSString)iconImageURLString
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 iconImageURLString];
+  model = [(BCSLinkItem *)self model];
+  iconImageURLString = [model iconImageURLString];
 
-  return v3;
+  return iconImageURLString;
 }
 
 - (NSURL)redirectURL
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 redirectURL];
+  model = [(BCSLinkItem *)self model];
+  redirectURL = [model redirectURL];
 
-  return v3;
+  return redirectURL;
 }
 
 - (int64_t)action
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 action];
+  model = [(BCSLinkItem *)self model];
+  action = [model action];
 
-  return v3;
+  return action;
 }
 
 - (BOOL)isPoweredBy
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 isPoweredBy];
+  model = [(BCSLinkItem *)self model];
+  isPoweredBy = [model isPoweredBy];
 
-  return v3;
+  return isPoweredBy;
 }
 
 - (NSDictionary)mapIconStyleAttributes
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 mapIconStyleAttributes];
+  model = [(BCSLinkItem *)self model];
+  mapIconStyleAttributes = [model mapIconStyleAttributes];
 
-  return v3;
+  return mapIconStyleAttributes;
 }
 
 - (NSNumber)mapItemMUID
 {
-  v2 = [(BCSLinkItem *)self model];
-  v3 = [v2 mapItemMUID];
+  model = [(BCSLinkItem *)self model];
+  mapItemMUID = [model mapItemMUID];
 
-  return v3;
+  return mapItemMUID;
 }
 
 - (NSString)title
 {
-  v2 = [(BCSLinkItem *)self businessLinkContentItem];
-  v3 = [v2 title];
+  businessLinkContentItem = [(BCSLinkItem *)self businessLinkContentItem];
+  title = [businessLinkContentItem title];
 
-  return v3;
+  return title;
 }
 
 - (NSString)subtitle
 {
-  v2 = [(BCSLinkItem *)self businessLinkContentItem];
-  v3 = [v2 subtitle];
+  businessLinkContentItem = [(BCSLinkItem *)self businessLinkContentItem];
+  subtitle = [businessLinkContentItem subtitle];
 
-  return v3;
+  return subtitle;
 }
 
 - (NSString)language
 {
-  v2 = [(BCSLinkItem *)self businessLinkContentItem];
-  v3 = [v2 language];
+  businessLinkContentItem = [(BCSLinkItem *)self businessLinkContentItem];
+  language = [businessLinkContentItem language];
 
-  return v3;
+  return language;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(BCSLinkItemModel *)self->_model copyWithZone:a3];
+    v6 = [(BCSLinkItemModel *)self->_model copyWithZone:zone];
     v7 = v5[2];
     v5[2] = v6;
 
-    v8 = [(BCSItem *)self expirationDate];
-    v9 = [v8 copyWithZone:a3];
+    expirationDate = [(BCSItem *)self expirationDate];
+    v9 = [expirationDate copyWithZone:zone];
     [v5 setExpirationDate:v9];
 
-    v10 = [(BCSLinkItem *)self localeHelper];
+    localeHelper = [(BCSLinkItem *)self localeHelper];
     v11 = v5[3];
-    v5[3] = v10;
+    v5[3] = localeHelper;
   }
 
   return v5;
@@ -529,54 +529,54 @@ LABEL_46:
 
 - (id)succinctDescription
 {
-  v2 = [(BCSLinkItem *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BCSLinkItem *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(BCSLinkItem *)self model];
-  v5 = [v3 appendObject:v4 withName:0];
+  model = [(BCSLinkItem *)self model];
+  v5 = [v3 appendObject:model withName:0];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BCSLinkItem *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BCSLinkItem *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(BCSLinkItem *)self succinctDescriptionBuilder];
-  v5 = [(BCSLinkItem *)self debugInfo];
-  v6 = [v4 appendObject:v5 withName:@"Debug Info"];
+  succinctDescriptionBuilder = [(BCSLinkItem *)self succinctDescriptionBuilder];
+  debugInfo = [(BCSLinkItem *)self debugInfo];
+  v6 = [succinctDescriptionBuilder appendObject:debugInfo withName:@"Debug Info"];
 
-  v7 = [(BCSItem *)self expirationDate];
-  v8 = [v4 appendObject:v7 withName:@"expirationDate"];
+  expirationDate = [(BCSItem *)self expirationDate];
+  v8 = [succinctDescriptionBuilder appendObject:expirationDate withName:@"expirationDate"];
 
-  v9 = [(BCSLinkItem *)self localeHelper];
-  v10 = [v4 appendObject:v9 withName:@"localeHelper"];
+  localeHelper = [(BCSLinkItem *)self localeHelper];
+  v10 = [succinctDescriptionBuilder appendObject:localeHelper withName:@"localeHelper"];
 
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(BCSLinkItem *)self debugInfo];
+    debugInfo2 = [(BCSLinkItem *)self debugInfo];
     v15 = 138412290;
-    v16 = v12;
+    v16 = debugInfo2;
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "Debug Info: %@", &v15, 0xCu);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (NSURL)heroImageURL

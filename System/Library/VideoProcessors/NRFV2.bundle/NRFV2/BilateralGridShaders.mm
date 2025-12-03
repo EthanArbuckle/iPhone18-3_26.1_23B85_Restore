@@ -1,14 +1,14 @@
 @interface BilateralGridShaders
-- (BilateralGridShaders)initWithMetal:(id)a3 normalizeGridConfidence:(BOOL)a4;
-- (id)createBasicComputeShader:(const char *)a3 metal:(id)a4;
+- (BilateralGridShaders)initWithMetal:(id)metal normalizeGridConfidence:(BOOL)confidence;
+- (id)createBasicComputeShader:(const char *)shader metal:(id)metal;
 @end
 
 @implementation BilateralGridShaders
 
-- (BilateralGridShaders)initWithMetal:(id)a3 normalizeGridConfidence:(BOOL)a4
+- (BilateralGridShaders)initWithMetal:(id)metal normalizeGridConfidence:(BOOL)confidence
 {
-  v6 = a3;
-  v94 = a4;
+  metalCopy = metal;
+  confidenceCopy = confidence;
   v92 = 0;
   v93 = 0;
   v91.receiver = self;
@@ -37,7 +37,7 @@
     }
 
     objc_msgSend_setConstantValue_type_atIndex_(v13, v12, &v90, 53, 3);
-    v15 = objc_msgSend_computePipelineStateFor_constants_(v6, v14, @"bg_splat", *(&v92 + v90));
+    v15 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v14, @"bg_splat", *(&v92 + v90));
     v16 = bgSplat[v90];
     bgSplat[v90] = v15;
 
@@ -67,8 +67,8 @@ LABEL_32:
     }
 
     objc_msgSend_setConstantValue_type_atIndex_(v19, v20, &v90, 29, 2);
-    objc_msgSend_setConstantValue_type_atIndex_(v21, v22, &v94, 53, 1);
-    v24 = objc_msgSend_computePipelineStateFor_constants_(v6, v23, @"bg_blur", v21);
+    objc_msgSend_setConstantValue_type_atIndex_(v21, v22, &confidenceCopy, 53, 1);
+    v24 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v23, @"bg_blur", v21);
     v25 = bgBlur[v90];
     bgBlur[v90] = v24;
 
@@ -92,8 +92,8 @@ LABEL_40:
     goto LABEL_33;
   }
 
-  objc_msgSend_setConstantValue_type_atIndex_(v27, v28, &v94, 53, 1);
-  v31 = objc_msgSend_computePipelineStateFor_constants_(v6, v30, @"bg_norm", v29);
+  objc_msgSend_setConstantValue_type_atIndex_(v27, v28, &confidenceCopy, 53, 1);
+  v31 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v30, @"bg_norm", v29);
   bgNormalize = v8->_bgNormalize;
   v8->_bgNormalize = v31;
 
@@ -108,7 +108,7 @@ LABEL_40:
   v35 = v92;
   v89 = v29;
   v37 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v36, &v89, 1);
-  v39 = objc_msgSend_renderPipelineStateForVertexFunction_vertexDescriptor_fragmentFunction_constants_colorAttachmentDescriptorArrray_(v6, v38, @"BilateralUpsample_vert", 0, @"BilateralUpsample_frag", v35, v37);
+  v39 = objc_msgSend_renderPipelineStateForVertexFunction_vertexDescriptor_fragmentFunction_constants_colorAttachmentDescriptorArrray_(metalCopy, v38, @"BilateralUpsample_vert", 0, @"BilateralUpsample_frag", v35, v37);
   bgUpsample8 = v8->_bgUpsample8;
   v8->_bgUpsample8 = v39;
 
@@ -123,7 +123,7 @@ LABEL_40:
   objc_msgSend_setPixelFormat_(v41, v42, 25, v43);
   v88 = v41;
   v45 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v44, &v88, 1);
-  v47 = objc_msgSend_renderPipelineStateForVertexFunction_vertexDescriptor_fragmentFunction_constants_colorAttachmentDescriptorArrray_(v6, v46, @"BilateralUpsample_vert", 0, @"BilateralUpsample_frag", v35, v45);
+  v47 = objc_msgSend_renderPipelineStateForVertexFunction_vertexDescriptor_fragmentFunction_constants_colorAttachmentDescriptorArrray_(metalCopy, v46, @"BilateralUpsample_vert", 0, @"BilateralUpsample_frag", v35, v45);
   bgUpsample16 = v8->_bgUpsample16;
   v8->_bgUpsample16 = v47;
 
@@ -140,7 +140,7 @@ LABEL_40:
   v51 = v93;
   v87 = v29;
   v53 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x29EDB8D80], v52, &v87, 1);
-  v55 = objc_msgSend_renderPipelineStateForVertexFunction_vertexDescriptor_fragmentFunction_constants_colorAttachmentDescriptorArrray_(v6, v54, @"BilateralUpsample_vert", 0, @"BilateralUpsample_frag", v51, v53);
+  v55 = objc_msgSend_renderPipelineStateForVertexFunction_vertexDescriptor_fragmentFunction_constants_colorAttachmentDescriptorArrray_(metalCopy, v54, @"BilateralUpsample_vert", 0, @"BilateralUpsample_frag", v51, v53);
   bgUpsample16ToneMapped = v8->_bgUpsample16ToneMapped;
   v8->_bgUpsample16ToneMapped = v55;
 
@@ -150,55 +150,55 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  v58 = objc_msgSend_createBasicComputeShader_metal_(v8, v57, "bg_bistochastize_init", v6);
+  v58 = objc_msgSend_createBasicComputeShader_metal_(v8, v57, "bg_bistochastize_init", metalCopy);
   bgBistochastizeInit = v8->_bgBistochastizeInit;
   v8->_bgBistochastizeInit = v58;
 
   if (v8->_bgBistochastizeInit)
   {
-    v61 = objc_msgSend_createBasicComputeShader_metal_(v8, v60, "bg_bistochastize_iter", v6);
+    v61 = objc_msgSend_createBasicComputeShader_metal_(v8, v60, "bg_bistochastize_iter", metalCopy);
     bgBistochastizeIter = v8->_bgBistochastizeIter;
     v8->_bgBistochastizeIter = v61;
 
     if (v8->_bgBistochastizeIter)
     {
-      v64 = objc_msgSend_createBasicComputeShader_metal_(v8, v63, "bg_bistochastize_final", v6);
+      v64 = objc_msgSend_createBasicComputeShader_metal_(v8, v63, "bg_bistochastize_final", metalCopy);
       bgBistochastizeFinal = v8->_bgBistochastizeFinal;
       v8->_bgBistochastizeFinal = v64;
 
       if (v8->_bgBistochastizeFinal)
       {
-        v67 = objc_msgSend_createBasicComputeShader_metal_(v8, v66, "bg_solver_init1", v6);
+        v67 = objc_msgSend_createBasicComputeShader_metal_(v8, v66, "bg_solver_init1", metalCopy);
         bgSolverInit1 = v8->_bgSolverInit1;
         v8->_bgSolverInit1 = v67;
 
         if (v8->_bgSolverInit1)
         {
-          v70 = objc_msgSend_createBasicComputeShader_metal_(v8, v69, "bg_solver_init2", v6);
+          v70 = objc_msgSend_createBasicComputeShader_metal_(v8, v69, "bg_solver_init2", metalCopy);
           bgSolverInit2 = v8->_bgSolverInit2;
           v8->_bgSolverInit2 = v70;
 
           if (v8->_bgSolverInit2)
           {
-            v73 = objc_msgSend_createBasicComputeShader_metal_(v8, v72, "bg_solver_pcg_iter0", v6);
+            v73 = objc_msgSend_createBasicComputeShader_metal_(v8, v72, "bg_solver_pcg_iter0", metalCopy);
             bgSolverPcgIter0 = v8->_bgSolverPcgIter0;
             v8->_bgSolverPcgIter0 = v73;
 
             if (v8->_bgSolverPcgIter0)
             {
-              v76 = objc_msgSend_createBasicComputeShader_metal_(v8, v75, "bg_solver_pcg_iter1", v6);
+              v76 = objc_msgSend_createBasicComputeShader_metal_(v8, v75, "bg_solver_pcg_iter1", metalCopy);
               bgSolverPcgIter1 = v8->_bgSolverPcgIter1;
               v8->_bgSolverPcgIter1 = v76;
 
               if (v8->_bgSolverPcgIter1)
               {
-                v79 = objc_msgSend_createBasicComputeShader_metal_(v8, v78, "bg_solver_pcg_iter2", v6);
+                v79 = objc_msgSend_createBasicComputeShader_metal_(v8, v78, "bg_solver_pcg_iter2", metalCopy);
                 bgSolverPcgIter2 = v8->_bgSolverPcgIter2;
                 v8->_bgSolverPcgIter2 = v79;
 
                 if (v8->_bgSolverPcgIter2)
                 {
-                  v82 = objc_msgSend_createBasicComputeShader_metal_(v8, v81, "bg_solver_pcg_iter3", v6);
+                  v82 = objc_msgSend_createBasicComputeShader_metal_(v8, v81, "bg_solver_pcg_iter3", metalCopy);
                   bgSolverPcgIter3 = v8->_bgSolverPcgIter3;
                   v8->_bgSolverPcgIter3 = v82;
 
@@ -268,12 +268,12 @@ LABEL_25:
   return v84;
 }
 
-- (id)createBasicComputeShader:(const char *)a3 metal:(id)a4
+- (id)createBasicComputeShader:(const char *)shader metal:(id)metal
 {
   v5 = MEMORY[0x29EDBA0F8];
-  v6 = a4;
-  v9 = objc_msgSend_stringWithUTF8String_(v5, v7, a3, v8);
-  v11 = objc_msgSend_computePipelineStateFor_constants_(v6, v10, v9, 0);
+  metalCopy = metal;
+  v9 = objc_msgSend_stringWithUTF8String_(v5, v7, shader, v8);
+  v11 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v10, v9, 0);
 
   return v11;
 }

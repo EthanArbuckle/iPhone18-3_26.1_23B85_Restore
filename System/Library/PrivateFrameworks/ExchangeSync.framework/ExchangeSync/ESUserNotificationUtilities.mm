@@ -1,18 +1,18 @@
 @interface ESUserNotificationUtilities
-+ (void)showUserNotification:(__CFUserNotification *)a3 groupIdentifier:(id)a4 withCompletionBlock:(id)a5;
++ (void)showUserNotification:(__CFUserNotification *)notification groupIdentifier:(id)identifier withCompletionBlock:(id)block;
 @end
 
 @implementation ESUserNotificationUtilities
 
-+ (void)showUserNotification:(__CFUserNotification *)a3 groupIdentifier:(id)a4 withCompletionBlock:(id)a5
++ (void)showUserNotification:(__CFUserNotification *)notification groupIdentifier:(id)identifier withCompletionBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (a3)
+  identifierCopy = identifier;
+  blockCopy = block;
+  v11 = blockCopy;
+  if (notification)
   {
-    if (v10)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -20,23 +20,23 @@
 
   else
   {
-    [ESUserNotificationUtilities showUserNotification:a2 groupIdentifier:a1 withCompletionBlock:?];
+    [ESUserNotificationUtilities showUserNotification:a2 groupIdentifier:self withCompletionBlock:?];
     if (v11)
     {
       goto LABEL_3;
     }
   }
 
-  [ESUserNotificationUtilities showUserNotification:a2 groupIdentifier:a1 withCompletionBlock:?];
+  [ESUserNotificationUtilities showUserNotification:a2 groupIdentifier:self withCompletionBlock:?];
 LABEL_3:
-  v12 = _InfoForNotification(a3);
+  v12 = _InfoForNotification(notification);
 
   if (v12)
   {
-    [ESUserNotificationUtilities showUserNotification:a2 groupIdentifier:a1 withCompletionBlock:a3];
+    [ESUserNotificationUtilities showUserNotification:a2 groupIdentifier:self withCompletionBlock:notification];
   }
 
-  RunLoopSource = CFUserNotificationCreateRunLoopSource(*MEMORY[0x277CBECE8], a3, _ReceiveNotificationResponseCallback, 0);
+  RunLoopSource = CFUserNotificationCreateRunLoopSource(*MEMORY[0x277CBECE8], notification, _ReceiveNotificationResponseCallback, 0);
   if (RunLoopSource)
   {
     v14 = RunLoopSource;
@@ -48,16 +48,16 @@ LABEL_3:
     }
 
     v17 = objc_opt_new();
-    [v17 setGroupIdentifier:v9];
+    [v17 setGroupIdentifier:identifierCopy];
     [v17 setHandler:v11];
     v18 = v17;
     v19 = _NotificationHandlerMap();
-    [v19 setObject:v18 forKey:a3];
+    [v19 setObject:v18 forKey:notification];
 
-    if (v9)
+    if (identifierCopy)
     {
-      v20 = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
-      [v20 dropPowerAssertionsForGroupIdentifier:v9];
+      mEMORY[0x277D037B0] = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
+      [mEMORY[0x277D037B0] dropPowerAssertionsForGroupIdentifier:identifierCopy];
     }
 
     CFRunLoopAddSource(Current, v14, v16);
@@ -72,12 +72,12 @@ LABEL_3:
     if (os_log_type_enabled(v21, v22))
     {
       v24 = 138412290;
-      v25 = a3;
+      notificationCopy = notification;
       _os_log_impl(&dword_24A097000, v21, v22, "Couldn't schedule response for notification %@", &v24, 0xCu);
     }
 
-    CFUserNotificationCancel(a3);
-    (v11)[2](v11, a3, 3);
+    CFUserNotificationCancel(notification);
+    (v11)[2](v11, notification, 3);
   }
 
   v23 = *MEMORY[0x277D85DE8];

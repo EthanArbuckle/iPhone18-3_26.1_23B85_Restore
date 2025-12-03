@@ -1,22 +1,22 @@
 @interface MBService
-+ (id)backupUDIDForPath:(id)a3;
-- (MBService)initWithAccount:(id)a3;
-- (id)_sendRequestWithMethod:(id)a3 path:(id)a4 message:(id)a5 responseClass:(Class)a6 lastModified:(int64_t *)a7 error:(id *)a8;
-- (id)_sendRequestWithMethod:(id)a3 path:(id)a4 requestBody:(id)a5 lastModified:(int64_t *)a6 error:(id *)a7;
-- (id)backupForUDID:(id)a3 lastModified:(int64_t *)a4 error:(id *)a5;
++ (id)backupUDIDForPath:(id)path;
+- (MBService)initWithAccount:(id)account;
+- (id)_sendRequestWithMethod:(id)method path:(id)path message:(id)message responseClass:(Class)class lastModified:(int64_t *)modified error:(id *)error;
+- (id)_sendRequestWithMethod:(id)method path:(id)path requestBody:(id)body lastModified:(int64_t *)modified error:(id *)error;
+- (id)backupForUDID:(id)d lastModified:(int64_t *)modified error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MBService
 
-- (MBService)initWithAccount:(id)a3
+- (MBService)initWithAccount:(id)account
 {
   v6.receiver = self;
   v6.super_class = MBService;
   v4 = [(MBService *)&v6 init];
   if (v4)
   {
-    v4->_account = a3;
+    v4->_account = account;
     v4->_locksByBackupUDID = objc_alloc_init(NSMutableDictionary);
   }
 
@@ -30,9 +30,9 @@
   [(MBService *)&v3 dealloc];
 }
 
-+ (id)backupUDIDForPath:(id)a3
++ (id)backupUDIDForPath:(id)path
 {
-  v3 = [a3 componentsSeparatedByString:@"/"];
+  v3 = [path componentsSeparatedByString:@"/"];
   if ([v3 count] < 4)
   {
     return 0;
@@ -41,17 +41,17 @@
   return [v3 objectAtIndexedSubscript:3];
 }
 
-- (id)_sendRequestWithMethod:(id)a3 path:(id)a4 requestBody:(id)a5 lastModified:(int64_t *)a6 error:(id *)a7
+- (id)_sendRequestWithMethod:(id)method path:(id)path requestBody:(id)body lastModified:(int64_t *)modified error:(id *)error
 {
-  v8 = a4;
+  pathCopy = path;
   v49 = 0;
   v50 = 0;
-  v11 = [MBService backupUDIDForPath:a4];
+  v11 = [MBService backupUDIDForPath:path];
   v12 = [(MBService *)self lockForBackupUDID:v11];
   if (MBShouldInjectError())
   {
 LABEL_2:
-    if (!a7)
+    if (!error)
     {
       return 0;
     }
@@ -64,17 +64,17 @@ LABEL_2:
   {
     v16 = 3;
     v17 = MBError_ptr;
-    v47 = a3;
+    methodCopy = method;
     v44 = v11;
-    v45 = self;
+    selfCopy = self;
     while (1)
     {
-      v18 = [MBURLRequest requestWithMethod:a3 URL:[NSURL URLWithString:[(NSString *)[(NSURL *)[(MBServiceAccount *)self->_account serviceURL] absoluteString] stringByAppendingString:v8]]];
+      v18 = [MBURLRequest requestWithMethod:method URL:[NSURL URLWithString:[(NSString *)[(NSURL *)[(MBServiceAccount *)self->_account serviceURL] absoluteString] stringByAppendingString:pathCopy]]];
       [(MBURLRequest *)v18 setValue:[(MBServiceAccount *)self->_account clientInfoHeader] forHeader:@"X-MMe-Client-Info"];
       [(MBURLRequest *)v18 setValue:MBRandomUUID() forHeader:@"X-Apple-Request-UUID"];
       [(MBURLRequest *)v18 setValue:@"2.2" forHeader:@"X-Apple-MBS-Protocol-Version"];
       [(MBURLRequest *)v18 setValue:@"application/vnd.com.apple.mbs+protobuf" forHeader:@"Accept"];
-      if (a5)
+      if (body)
       {
         [(MBURLRequest *)v18 setValue:@"application/vnd.com.apple.mbs+protobuf" forHeader:@"Content-Type"];
       }
@@ -102,7 +102,7 @@ LABEL_2:
         else
         {
           v20 = v17;
-          v21 = v8;
+          v21 = pathCopy;
           if ([v12 type])
           {
             v22 = @"Restore";
@@ -114,18 +114,18 @@ LABEL_2:
           }
 
           v39 = v22;
-          v8 = v21;
+          pathCopy = v21;
           v17 = v20;
           v11 = v44;
-          self = v45;
+          self = selfCopy;
           v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Acquire %@ %@; timeout=%d", v39, [v12 owner], (objc_msgSend(v12, "timeout") / 60));
         }
 
         [(MBURLRequest *)v18 setValue:v19 forHeader:@"X-Apple-MBS-Lock"];
-        a3 = v47;
+        method = methodCopy;
       }
 
-      [(MBURLRequest *)v18 setData:a5];
+      [(MBURLRequest *)v18 setData:body];
       [(MBURLRequest *)v18 setMMePreAuth:1];
       if (self->_cancelled)
       {
@@ -167,10 +167,10 @@ LABEL_2:
           _MBLog();
         }
 
-        v26 = [(MBServiceAccount *)self->_account updateAppleAccountSync];
-        if (v26)
+        updateAppleAccountSync = [(MBServiceAccount *)self->_account updateAppleAccountSync];
+        if (updateAppleAccountSync)
         {
-          v50 = [*v17 errorWithCode:300 error:v26 format:@"Error updating account after Account-Moved response"];
+          v50 = [*v17 errorWithCode:300 error:updateAppleAccountSync format:@"Error updating account after Account-Moved response"];
           goto LABEL_56;
         }
       }
@@ -189,19 +189,19 @@ LABEL_2:
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v52 = v8;
+            v52 = pathCopy;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Locked response for a path without a backup: %@", buf, 0xCu);
             goto LABEL_55;
           }
 
 LABEL_56:
-          if (!a7)
+          if (!error)
           {
             return 0;
           }
 
           v15 = 0;
-          *a7 = v50;
+          *error = v50;
           return v15;
         }
 
@@ -250,8 +250,8 @@ LABEL_55:
     {
       if (v12)
       {
-        v30 = [v12 state];
-        switch(v30)
+        state = [v12 state];
+        switch(state)
         {
           case 2u:
             [(MBService *)self removeLockForBackupUDID:v11];
@@ -265,7 +265,7 @@ LABEL_55:
         }
       }
 
-      if (a6)
+      if (modified)
       {
         v34 = [objc_msgSend(v49 "allHeaderFields")];
         if (v34)
@@ -279,7 +279,7 @@ LABEL_55:
           v36 = 0;
         }
 
-        *a6 = v36;
+        *modified = v36;
       }
 
       v37 = [objc_msgSend(v49 "allHeaderFields")];
@@ -295,7 +295,7 @@ LABEL_55:
       return v15;
     }
 
-    if (!a7)
+    if (!error)
     {
       return 0;
     }
@@ -305,40 +305,40 @@ LABEL_55:
   }
 
   v15 = 0;
-  *a7 = [v13 errorWithCode:1 format:v14];
+  *error = [v13 errorWithCode:1 format:v14];
   return v15;
 }
 
-- (id)_sendRequestWithMethod:(id)a3 path:(id)a4 message:(id)a5 responseClass:(Class)a6 lastModified:(int64_t *)a7 error:(id *)a8
+- (id)_sendRequestWithMethod:(id)method path:(id)path message:(id)message responseClass:(Class)class lastModified:(int64_t *)modified error:(id *)error
 {
-  if (a8)
+  if (error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
   v15 = objc_alloc_init(NSAutoreleasePool);
-  if (a5)
+  if (message)
   {
     v16 = MBGetDefaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v30 = self;
+      selfCopy3 = self;
       v31 = 2112;
-      v32 = a5;
+      messageCopy = message;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
-      v25 = self;
-      v27 = a5;
+      selfCopy2 = self;
+      messageCopy2 = message;
       _MBLog();
     }
   }
 
-  v17 = -[MBService _sendRequestWithMethod:path:requestBody:lastModified:error:](self, "_sendRequestWithMethod:path:requestBody:lastModified:error:", a3, a4, [a5 data], a7, a8);
+  v17 = -[MBService _sendRequestWithMethod:path:requestBody:lastModified:error:](self, "_sendRequestWithMethod:path:requestBody:lastModified:error:", method, path, [message data], modified, error);
   if (!v17)
   {
     v19 = 0;
 LABEL_13:
-    if (!a8)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -346,9 +346,9 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (a6)
+  if (class)
   {
-    v18 = [[a6 alloc] initWithData:v17];
+    v18 = [[class alloc] initWithData:v17];
     if (v18)
     {
       v19 = v18;
@@ -356,14 +356,14 @@ LABEL_13:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v30 = self;
+        selfCopy3 = self;
         v31 = 2112;
-        v32 = v19;
+        messageCopy = v19;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%@: %@", buf, 0x16u);
-        v26 = self;
+        selfCopy4 = self;
         v28 = v19;
         _MBLog();
-        if (!a8)
+        if (!error)
         {
           goto LABEL_21;
         }
@@ -374,11 +374,11 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    if (a8)
+    if (error)
     {
       v21 = [MBError errorWithCode:309 format:@"Invalid response message"];
       v19 = 0;
-      *a8 = v21;
+      *error = v21;
       goto LABEL_17;
     }
 
@@ -389,43 +389,43 @@ LABEL_21:
   }
 
   v19 = objc_alloc_init(NSObject);
-  if (!a8)
+  if (!error)
   {
     goto LABEL_21;
   }
 
 LABEL_16:
-  v21 = *a8;
+  v21 = *error;
 LABEL_17:
   v22 = v21;
   [v15 drain];
-  v23 = *a8;
+  v23 = *error;
   return v19;
 }
 
-- (id)backupForUDID:(id)a3 lastModified:(int64_t *)a4 error:(id *)a5
+- (id)backupForUDID:(id)d lastModified:(int64_t *)modified error:(id *)error
 {
-  if (a4)
+  if (modified)
   {
-    *a4 = 0;
+    *modified = 0;
   }
 
-  v8 = [(MBService *)self _sendRequestWithMethod:@"GET" path:[NSString stringWithFormat:?], 0, objc_opt_class(), a4, a5];
-  v9 = v8;
-  if (v8)
+  error = [(MBService *)self _sendRequestWithMethod:@"GET" path:[NSString stringWithFormat:?], 0, objc_opt_class(), modified, error];
+  v9 = error;
+  if (error)
   {
-    if (a4 && !*a4)
+    if (modified && !*modified)
     {
-      if (!a5)
+      if (!error)
       {
         return 0;
       }
 
-      v12 = [MBError errorWithCode:304 format:@"Missing Last-Modified header for backup %@", a3, v16];
+      dCopy = [MBError errorWithCode:304 format:@"Missing Last-Modified header for backup %@", d, dCopy];
       goto LABEL_20;
     }
 
-    [objc_msgSend(v8 "snapshots")];
+    [objc_msgSend(error "snapshots")];
     if ([v9 snapshotsCount])
     {
       v10 = 0;
@@ -434,7 +434,7 @@ LABEL_17:
         v11 = [objc_msgSend(v9 "snapshots")];
         if (![v11 snapshotID])
         {
-          if (!a5)
+          if (!error)
           {
             return 0;
           }
@@ -454,19 +454,19 @@ LABEL_17:
         }
       }
 
-      if (!a5)
+      if (!error)
       {
         return 0;
       }
 
-      v15 = [v11 snapshotID];
-      v16 = a3;
+      snapshotID = [v11 snapshotID];
+      dCopy = d;
       v13 = @"Snapshot %lu is uncommitted but isn't the last snapshot (%@)";
 LABEL_19:
-      v12 = [MBError errorWithCode:205 format:v13, v15, v16];
+      dCopy = [MBError errorWithCode:205 format:v13, snapshotID, dCopy];
 LABEL_20:
       v9 = 0;
-      *a5 = v12;
+      *error = dCopy;
     }
   }
 

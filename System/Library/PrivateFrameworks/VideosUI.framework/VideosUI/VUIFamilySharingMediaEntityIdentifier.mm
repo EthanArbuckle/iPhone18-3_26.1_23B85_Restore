@@ -1,17 +1,17 @@
 @interface VUIFamilySharingMediaEntityIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VUIFamilySharingMediaEntityIdentifier)init;
-- (VUIFamilySharingMediaEntityIdentifier)initWithEntityIdentifier:(id)a3 mediaEntityType:(id)a4;
+- (VUIFamilySharingMediaEntityIdentifier)initWithEntityIdentifier:(id)identifier mediaEntityType:(id)type;
 - (unint64_t)hash;
 @end
 
 @implementation VUIFamilySharingMediaEntityIdentifier
 
-- (VUIFamilySharingMediaEntityIdentifier)initWithEntityIdentifier:(id)a3 mediaEntityType:(id)a4
+- (VUIFamilySharingMediaEntityIdentifier)initWithEntityIdentifier:(id)identifier mediaEntityType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  typeCopy = type;
+  if (!identifierCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"objectIdentifier"}];
   }
@@ -22,8 +22,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_objectIdentifier, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_objectIdentifier, identifier);
+    v11 = [typeCopy copy];
     mediaEntityType = v10->_mediaEntityType;
     v10->_mediaEntityType = v11;
   }
@@ -43,27 +43,27 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VUIFamilySharingMediaEntityIdentifier *)self objectIdentifier];
-  v3 = [v2 hash];
+  objectIdentifier = [(VUIFamilySharingMediaEntityIdentifier *)self objectIdentifier];
+  v3 = [objectIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(VUIFamilySharingMediaEntityIdentifier *)self objectIdentifier];
-    v7 = [(VUIFamilySharingMediaEntityIdentifier *)v5 objectIdentifier];
-    v8 = v6;
-    v9 = v7;
+    objectIdentifier = [(VUIFamilySharingMediaEntityIdentifier *)self objectIdentifier];
+    objectIdentifier2 = [(VUIFamilySharingMediaEntityIdentifier *)v5 objectIdentifier];
+    v8 = objectIdentifier;
+    v9 = objectIdentifier2;
     v10 = v9;
     if (v8 == v9)
     {

@@ -1,27 +1,27 @@
 @interface CBSParsePDFMetadataOperation
-- (CBSParsePDFMetadataOperation)initWithPDFBook:(id)a3 filePath:(id)a4 parseImage:(BOOL)a5;
+- (CBSParsePDFMetadataOperation)initWithPDFBook:(id)book filePath:(id)path parseImage:(BOOL)image;
 - (id)fileName;
-- (id)titleFromDictionaryRef:(CGPDFDictionary *)a3;
+- (id)titleFromDictionaryRef:(CGPDFDictionary *)ref;
 - (void)main;
-- (void)updateAuthor:(id)a3;
-- (void)updateTitleWithDictionaryRef:(CGPDFDictionary *)a3;
+- (void)updateAuthor:(id)author;
+- (void)updateTitleWithDictionaryRef:(CGPDFDictionary *)ref;
 @end
 
 @implementation CBSParsePDFMetadataOperation
 
-- (CBSParsePDFMetadataOperation)initWithPDFBook:(id)a3 filePath:(id)a4 parseImage:(BOOL)a5
+- (CBSParsePDFMetadataOperation)initWithPDFBook:(id)book filePath:(id)path parseImage:(BOOL)image
 {
-  v9 = a3;
-  v10 = a4;
+  bookCopy = book;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = CBSParsePDFMetadataOperation;
   v11 = [(CBSParsePDFMetadataOperation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_book, a3);
-    objc_storeStrong(&v12->_filePath, a4);
-    v12->_parseImage = a5;
+    objc_storeStrong(&v11->_book, book);
+    objc_storeStrong(&v12->_filePath, path);
+    v12->_parseImage = image;
   }
 
   return v12;
@@ -29,8 +29,8 @@
 
 - (void)main
 {
-  v3 = [(CBSParsePDFMetadataOperation *)self filePath];
-  v4 = [NSURL fileURLWithPath:v3];
+  filePath = [(CBSParsePDFMetadataOperation *)self filePath];
+  v4 = [NSURL fileURLWithPath:filePath];
   v5 = CGPDFDocumentCreateWithURL(v4);
 
   if (v5)
@@ -88,8 +88,8 @@
         CFRelease(v5);
         CGImageRelease(v17);
         CGContextRelease(v15);
-        v19 = [(CBSParsePDFMetadataOperation *)self book];
-        [v19 setImage:v18];
+        book = [(CBSParsePDFMetadataOperation *)self book];
+        [book setImage:v18];
 
         return;
       }
@@ -115,9 +115,9 @@ LABEL_7:
   }
 }
 
-- (void)updateTitleWithDictionaryRef:(CGPDFDictionary *)a3
+- (void)updateTitleWithDictionaryRef:(CGPDFDictionary *)ref
 {
-  v4 = [(CBSParsePDFMetadataOperation *)self titleFromDictionaryRef:a3];
+  v4 = [(CBSParsePDFMetadataOperation *)self titleFromDictionaryRef:ref];
   v5 = v4;
   if (v4)
   {
@@ -126,21 +126,21 @@ LABEL_7:
 
   else
   {
-    v6 = [(CBSParsePDFMetadataOperation *)self book];
-    v7 = [v6 title];
-    v8 = v7;
-    if (v7)
+    book = [(CBSParsePDFMetadataOperation *)self book];
+    title = [book title];
+    v8 = title;
+    if (title)
     {
-      v13 = v7;
+      v13 = title;
     }
 
     else
     {
-      v9 = [(CBSParsePDFMetadataOperation *)self fileName];
-      v10 = v9;
-      if (v9)
+      fileName = [(CBSParsePDFMetadataOperation *)self fileName];
+      v10 = fileName;
+      if (fileName)
       {
-        v13 = v9;
+        v13 = fileName;
       }
 
       else
@@ -151,17 +151,17 @@ LABEL_7:
     }
   }
 
-  v12 = [(CBSParsePDFMetadataOperation *)self book];
-  [v12 setTitle:v13];
+  book2 = [(CBSParsePDFMetadataOperation *)self book];
+  [book2 setTitle:v13];
 }
 
-- (id)titleFromDictionaryRef:(CGPDFDictionary *)a3
+- (id)titleFromDictionaryRef:(CGPDFDictionary *)ref
 {
-  if (a3)
+  if (ref)
   {
     value = 0;
     v3 = 0;
-    if (CGPDFDictionaryGetString(a3, "Title", &value))
+    if (CGPDFDictionaryGetString(ref, "Title", &value))
     {
       v4 = CGPDFStringCopyTextString(value);
       if ([(__CFString *)v4 length])
@@ -188,13 +188,13 @@ LABEL_7:
 
 - (id)fileName
 {
-  v2 = [(CBSParsePDFMetadataOperation *)self filePath];
-  v3 = [v2 lastPathComponent];
-  v4 = [v3 stringByDeletingPathExtension];
+  filePath = [(CBSParsePDFMetadataOperation *)self filePath];
+  lastPathComponent = [filePath lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  if ([v4 length])
+  if ([stringByDeletingPathExtension length])
   {
-    v5 = v4;
+    v5 = stringByDeletingPathExtension;
   }
 
   else
@@ -207,13 +207,13 @@ LABEL_7:
   return v5;
 }
 
-- (void)updateAuthor:(id)a3
+- (void)updateAuthor:(id)author
 {
-  if (a3)
+  if (author)
   {
-    v4 = a3;
-    v5 = [(CBSParsePDFMetadataOperation *)self book];
-    [v5 setAuthor:v4];
+    authorCopy = author;
+    book = [(CBSParsePDFMetadataOperation *)self book];
+    [book setAuthor:authorCopy];
   }
 }
 

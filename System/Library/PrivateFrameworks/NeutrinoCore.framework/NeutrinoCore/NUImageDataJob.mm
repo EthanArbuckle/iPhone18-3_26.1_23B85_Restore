@@ -1,9 +1,9 @@
 @interface NUImageDataJob
-- (BOOL)complete:(id *)a3;
-- (BOOL)render:(id *)a3;
+- (BOOL)complete:(id *)complete;
+- (BOOL)render:(id *)render;
 - (id)cacheKey;
-- (id)extractDataToDictionary:(id)a3 bounds:(id *)a4 dataExtractor:(id)a5 options:(id)a6 colorSpace:(CGColorSpace *)a7 error:(id *)a8;
-- (id)newRenderPipelineStateForEvaluationMode:(int64_t)a3;
+- (id)extractDataToDictionary:(id)dictionary bounds:(id *)bounds dataExtractor:(id)extractor options:(id)options colorSpace:(CGColorSpace *)space error:(id *)error;
+- (id)newRenderPipelineStateForEvaluationMode:(int64_t)mode;
 - (id)requestOptions;
 - (id)result;
 - (id)scalePolicy;
@@ -28,25 +28,25 @@
 {
   v3 = objc_alloc_init(_NUImageDataResult);
   [(_NUImageDataResult *)v3 setData:self->_data];
-  v4 = [(NURenderJob *)self outputGeometry];
-  [(_NUImageDataResult *)v3 setGeometry:v4];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  [(_NUImageDataResult *)v3 setGeometry:outputGeometry];
 
   return v3;
 }
 
-- (id)extractDataToDictionary:(id)a3 bounds:(id *)a4 dataExtractor:(id)a5 options:(id)a6 colorSpace:(CGColorSpace *)a7 error:(id *)a8
+- (id)extractDataToDictionary:(id)dictionary bounds:(id *)bounds dataExtractor:(id)extractor options:(id)options colorSpace:(CGColorSpace *)space error:(id *)error
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = [(NURenderJob *)self renderer:a8];
+  dictionaryCopy = dictionary;
+  extractorCopy = extractor;
+  optionsCopy = options;
+  v17 = [(NURenderJob *)self renderer:error];
   if (v17)
   {
-    var0 = a4->var0.var0;
-    var1 = a4->var0.var1;
-    v20 = a4->var1.var0;
-    v21 = a4->var1.var1;
-    [v14 extent];
+    var0 = bounds->var0.var0;
+    var1 = bounds->var0.var1;
+    v20 = bounds->var1.var0;
+    v21 = bounds->var1.var1;
+    [dictionaryCopy extent];
     v35.origin.x = v22;
     v35.origin.y = v23;
     v35.size.width = v24;
@@ -59,16 +59,16 @@
     {
       memset(&v32, 0, sizeof(v32));
       CGAffineTransformMakeTranslation(&v32, -var0, -var1);
-      v26 = [v14 imageByClampingToExtent];
+      imageByClampingToExtent = [dictionaryCopy imageByClampingToExtent];
 
-      v27 = [v26 imageByCroppingToRect:{var0, var1, v20, v21}];
+      v27 = [imageByClampingToExtent imageByCroppingToRect:{var0, var1, v20, v21}];
 
       v31 = v32;
-      v14 = [v27 imageByApplyingTransform:&v31];
+      dictionaryCopy = [v27 imageByApplyingTransform:&v31];
     }
 
-    v28 = [v17 context];
-    v29 = [MEMORY[0x1E695F648] extractDataToDictionary:v14 dataExtractor:v15 options:v16 context:v28 colorSpace:a7 error:a8];
+    context = [v17 context];
+    v29 = [MEMORY[0x1E695F648] extractDataToDictionary:dictionaryCopy dataExtractor:extractorCopy options:optionsCopy context:context colorSpace:space error:error];
   }
 
   else
@@ -79,10 +79,10 @@
   return v29;
 }
 
-- (BOOL)complete:(id *)a3
+- (BOOL)complete:(id *)complete
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!complete)
   {
     v20 = NUAssertLogger_11892();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -103,8 +103,8 @@
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v27;
         *&buf[12] = 2114;
@@ -115,8 +115,8 @@
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -147,7 +147,7 @@
       _os_log_debug_impl(&dword_1C0184000, v17, OS_LOG_TYPE_DEBUG, "CIRenderInfo: exec=%0.3fms pass=%d pixels=%0.3fMpix", buf, 0x1Cu);
     }
 
-    v7 = [(NURenderJob *)self renderer:a3];
+    v7 = [(NURenderJob *)self renderer:complete];
     if (!v7)
     {
       v13 = 0;
@@ -168,18 +168,18 @@ LABEL_20:
     v43 = __Block_byref_object_copy__11904;
     v44 = __Block_byref_object_dispose__11905;
     v45 = 0;
-    v8 = [(NUImageDataJob *)self imageDataRequest];
-    v9 = [(NUStorageImageBuffer *)self->_renderBuffer storage];
+    imageDataRequest = [(NUImageDataJob *)self imageDataRequest];
+    storage = [(NUStorageImageBuffer *)self->_renderBuffer storage];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __27__NUImageDataJob_complete___block_invoke;
     v36[3] = &unk_1E810A0F8;
     v38 = buf;
     v36[4] = self;
-    v10 = v8;
+    v10 = imageDataRequest;
     v37 = v10;
     v39 = &v40;
-    v11 = [v9 useAsCIImageWithOptions:0 renderer:v7 block:v36];
+    v11 = [storage useAsCIImageWithOptions:0 renderer:v7 block:v36];
 
     if (v11 == 1)
     {
@@ -214,13 +214,13 @@ LABEL_19:
     }
 
     v13 = 0;
-    *a3 = v16;
+    *complete = v16;
     goto LABEL_19;
   }
 
-  v14 = [(NURenderJob *)self request];
-  v15 = [v14 copy];
-  *a3 = [NUError errorWithCode:1 reason:@"failed to render" object:v15 underlyingError:*a3];
+  request = [(NURenderJob *)self request];
+  v15 = [request copy];
+  *complete = [NUError errorWithCode:1 reason:@"failed to render" object:v15 underlyingError:*complete];
 
   v13 = 0;
 LABEL_21:
@@ -258,13 +258,13 @@ void __27__NUImageDataJob_complete___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = [(NUImageDataJob *)self imageDataRequest];
-  v6 = [v5 regionPolicy];
-  v7 = [(NURenderJob *)self outputGeometry];
-  v8 = [v6 regionForGeometry:v7];
+  imageDataRequest = [(NUImageDataJob *)self imageDataRequest];
+  regionPolicy = [imageDataRequest regionPolicy];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  v8 = [regionPolicy regionForGeometry:outputGeometry];
 
   if (v8)
   {
@@ -272,10 +272,10 @@ void __27__NUImageDataJob_complete___block_invoke(uint64_t a1, void *a2)
   }
 
   v9 = +[NUFactory sharedFactory];
-  v10 = [v9 surfaceStoragePool];
+  surfaceStoragePool = [v9 surfaceStoragePool];
 
   v11 = +[NUPixelFormat RGBAh];
-  v12 = [v10 newStorageWithSize:0 format:v11];
+  v12 = [surfaceStoragePool newStorageWithSize:0 format:v11];
 
   if (!v12)
   {
@@ -298,8 +298,8 @@ void __27__NUImageDataJob_complete___block_invoke(uint64_t a1, void *a2)
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v31;
         v43 = 2114;
@@ -310,8 +310,8 @@ void __27__NUImageDataJob_complete___block_invoke(uint64_t a1, void *a2)
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -320,60 +320,60 @@ void __27__NUImageDataJob_complete___block_invoke(uint64_t a1, void *a2)
     _NUAssertFailHandler("[NUImageDataJob render:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImageDataRequest.m", 195, @"No storage allocated", v36, v37, v38, v39, v40);
   }
 
-  v13 = [[NUStorageImageBuffer alloc] initWithStorage:v12 fromPool:v10];
+  v13 = [[NUStorageImageBuffer alloc] initWithStorage:v12 fromPool:surfaceStoragePool];
   renderBuffer = self->_renderBuffer;
   self->_renderBuffer = v13;
 
-  v15 = [(NURenderJob *)self outputImage];
-  v16 = [(NUStorageImageBuffer *)self->_renderBuffer storage];
+  outputImage = [(NURenderJob *)self outputImage];
+  storage = [(NUStorageImageBuffer *)self->_renderBuffer storage];
   v17 = +[NUColorSpace workingColorSpace];
-  v18 = [(NURenderJob *)self imageSize];
-  v20 = [(NURenderJob *)self renderImage:v15 into:v16 colorSpace:v17 roi:v8 imageSize:v18 error:v19, a3];
+  imageSize = [(NURenderJob *)self imageSize];
+  render = [(NURenderJob *)self renderImage:outputImage into:storage colorSpace:v17 roi:v8 imageSize:imageSize error:v19, render];
   renderTask = self->_renderTask;
-  self->_renderTask = v20;
+  self->_renderTask = render;
 
   v22 = self->_renderTask != 0;
   return v22;
 }
 
-- (id)newRenderPipelineStateForEvaluationMode:(int64_t)a3
+- (id)newRenderPipelineStateForEvaluationMode:(int64_t)mode
 {
   v7.receiver = self;
   v7.super_class = NUImageDataJob;
-  v4 = [(NURenderJob *)&v7 newRenderPipelineStateForEvaluationMode:a3];
-  v5 = [(NURenderJob *)self request];
-  [v4 setEnableTransparency:{objc_msgSend(v5, "wantsAlpha")}];
+  v4 = [(NURenderJob *)&v7 newRenderPipelineStateForEvaluationMode:mode];
+  request = [(NURenderJob *)self request];
+  [v4 setEnableTransparency:{objc_msgSend(request, "wantsAlpha")}];
 
   return v4;
 }
 
 - (id)requestOptions
 {
-  v2 = [(NUImageDataJob *)self imageDataRequest];
-  v3 = [v2 options];
+  imageDataRequest = [(NUImageDataJob *)self imageDataRequest];
+  options = [imageDataRequest options];
 
-  return v3;
+  return options;
 }
 
 - (id)cacheKey
 {
   v3 = objc_alloc_init(NUDigest);
-  v4 = [(NURenderJob *)self renderNode];
-  [v4 nu_updateDigest:v3];
+  renderNode = [(NURenderJob *)self renderNode];
+  [renderNode nu_updateDigest:v3];
 
-  v5 = [(NUImageDataJob *)self imageDataRequest];
-  v6 = [v5 dataExtractor];
-  [v6 nu_updateDigest:v3];
+  imageDataRequest = [(NUImageDataJob *)self imageDataRequest];
+  dataExtractor = [imageDataRequest dataExtractor];
+  [dataExtractor nu_updateDigest:v3];
 
-  v7 = [v5 options];
-  [v7 nu_updateDigest:v3];
+  options = [imageDataRequest options];
+  [options nu_updateDigest:v3];
 
-  v8 = [v5 colorSpace];
-  [v8 nu_updateDigest:v3];
+  colorSpace = [imageDataRequest colorSpace];
+  [colorSpace nu_updateDigest:v3];
 
-  v9 = [v5 regionPolicy];
-  v10 = [(NURenderJob *)self outputGeometry];
-  v11 = [v9 regionForGeometry:v10];
+  regionPolicy = [imageDataRequest regionPolicy];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  v11 = [regionPolicy regionForGeometry:outputGeometry];
 
   v14 = 0u;
   v15 = 0u;
@@ -384,17 +384,17 @@ void __27__NUImageDataJob_complete___block_invoke(uint64_t a1, void *a2)
 
   [(NUDigest *)v3 addBytes:&v14 length:32];
   [(NUDigest *)v3 finalize];
-  v12 = [(NUDigest *)v3 stringValue];
+  stringValue = [(NUDigest *)v3 stringValue];
 
-  return v12;
+  return stringValue;
 }
 
 - (id)scalePolicy
 {
-  v2 = [(NUImageDataJob *)self imageDataRequest];
-  v3 = [v2 scalePolicy];
+  imageDataRequest = [(NUImageDataJob *)self imageDataRequest];
+  scalePolicy = [imageDataRequest scalePolicy];
 
-  return v3;
+  return scalePolicy;
 }
 
 @end

@@ -1,88 +1,88 @@
 @interface CSLPRFCompositeApplicationLibrary
-- (BOOL)_application:(void *)a3 isUniqueAndNotCounterpartInApplications:(void *)a4 orApplicationsByCounterpart:;
-- (CSLPRFCompositeApplicationLibrary)initWithPrimaryLibrary:(id)a3 secondaryLibrary:(id)a4;
+- (BOOL)_application:(void *)_application isUniqueAndNotCounterpartInApplications:(void *)applications orApplicationsByCounterpart:;
+- (CSLPRFCompositeApplicationLibrary)initWithPrimaryLibrary:(id)library secondaryLibrary:(id)secondaryLibrary;
 - (NSArray)allApplications;
 - (NSDictionary)allApplicationsDictionary;
-- (id)_applicationOrCounterpartsForApplication:(void *)a3 inApplications:(void *)a4 orApplicationsByCounterpart:;
-- (id)_applicationsByCounterpartFromApplications:(uint64_t)a1;
+- (id)_applicationOrCounterpartsForApplication:(void *)application inApplications:(void *)applications orApplicationsByCounterpart:;
+- (id)_applicationsByCounterpartFromApplications:(uint64_t)applications;
 - (id)_cachedApplications;
 - (id)_loadApplications;
-- (id)applicationWithBundleIdentifier:(id)a3;
-- (void)_applicationLibrary:(void *)a3 didAddOrUpdateApplications:;
+- (id)applicationWithBundleIdentifier:(id)identifier;
+- (void)_applicationLibrary:(void *)library didAddOrUpdateApplications:;
 - (void)_stopObserving;
-- (void)addObserver:(id)a3;
-- (void)allApplicationsWithCompletion:(id)a3;
-- (void)applicationLibrary:(id)a3 didRemoveApplications:(id)a4;
-- (void)applicationWithBundleIdentifier:(id)a3 completion:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)allApplicationsWithCompletion:(id)completion;
+- (void)applicationLibrary:(id)library didRemoveApplications:(id)applications;
+- (void)applicationWithBundleIdentifier:(id)identifier completion:(id)completion;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CSLPRFCompositeApplicationLibrary
 
-- (void)applicationLibrary:(id)a3 didRemoveApplications:(id)a4
+- (void)applicationLibrary:(id)library didRemoveApplications:(id)applications
 {
   v104 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  applicationsCopy = applications;
   primaryLibrary = self->_primaryLibrary;
-  if (primaryLibrary != v7 && self->_secondaryLibrary != v7)
+  if (primaryLibrary != libraryCopy && self->_secondaryLibrary != libraryCopy)
   {
-    v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"unknownLibrary:%p primary:%p, secondary:%p, %@", v7, primaryLibrary, self->_secondaryLibrary, v7];
+    libraryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"unknownLibrary:%p primary:%p, secondary:%p, %@", libraryCopy, primaryLibrary, self->_secondaryLibrary, libraryCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v51 = NSStringFromSelector(a2);
       v52 = objc_opt_class();
       v53 = NSStringFromClass(v52);
       *buf = 138544642;
-      v95 = v51;
+      selfCopy2 = v51;
       v96 = 2114;
       v97 = v53;
       v98 = 2048;
-      v99 = self;
+      selfCopy = self;
       v100 = 2114;
       v101 = @"CSLPRFCompositeApplicationLibrary.m";
       v102 = 1024;
       *v103 = 240;
       *&v103[4] = 2114;
-      *&v103[6] = v50;
+      *&v103[6] = libraryCopy;
       _os_log_error_impl(&dword_22CE92000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
     }
 
-    [v50 UTF8String];
+    [libraryCopy UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x22CE9CB38);
   }
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  v55 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
-  if (primaryLibrary == v7)
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  if (primaryLibrary == libraryCopy)
   {
-    v11 = [(CSLPRFApplicationLibrary *)self->_secondaryLibrary allApplicationsDictionary];
+    allApplicationsDictionary = [(CSLPRFApplicationLibrary *)self->_secondaryLibrary allApplicationsDictionary];
   }
 
   else
   {
-    v11 = 0;
+    allApplicationsDictionary = 0;
   }
 
-  v59 = v11;
-  v58 = [(CSLPRFCompositeApplicationLibrary *)self _applicationsByCounterpartFromApplications:v11];
+  v59 = allApplicationsDictionary;
+  v58 = [(CSLPRFCompositeApplicationLibrary *)self _applicationsByCounterpartFromApplications:allApplicationsDictionary];
   os_unfair_lock_lock(&self->_lock);
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = v8;
-  v67 = v9;
+  obj = applicationsCopy;
+  v67 = array;
   v64 = [obj countByEnumeratingWithState:&v86 objects:v93 count:16];
   if (v64)
   {
     v62 = *v87;
-    v54 = v7;
-    v57 = v10;
+    v54 = libraryCopy;
+    v57 = array3;
     do
     {
       for (i = 0; i != v64; ++i)
@@ -94,8 +94,8 @@
 
         v13 = *(*(&v86 + 1) + 8 * i);
         v14 = [(NSMutableDictionary *)self->_lock_applications objectForKey:v13];
-        v15 = [(__CFString *)v14 counterpartIdentifiers];
-        if (primaryLibrary != v7)
+        counterpartIdentifiers = [(__CFString *)v14 counterpartIdentifiers];
+        if (primaryLibrary != libraryCopy)
         {
           v16 = [(NSMutableDictionary *)self->_lock_primaryApplications objectForKey:v13];
 
@@ -111,7 +111,7 @@
 
           if (v17)
           {
-            [v10 addObject:v13];
+            [array3 addObject:v13];
             [(NSMutableDictionary *)self->_lock_applications removeObjectForKey:v13];
           }
 
@@ -120,12 +120,12 @@
           v77 = 0u;
           v74 = 0u;
           v75 = 0u;
-          v18 = v15;
+          v18 = counterpartIdentifiers;
           v19 = [v18 countByEnumeratingWithState:&v74 objects:v90 count:16];
           if (v19)
           {
             v20 = v19;
-            v21 = v15;
+            v21 = counterpartIdentifiers;
             v22 = v14;
             v23 = i;
             v24 = *v75;
@@ -147,7 +147,7 @@
             while (v20);
             i = v23;
             v14 = v22;
-            v15 = v21;
+            counterpartIdentifiers = v21;
           }
 
           goto LABEL_55;
@@ -156,7 +156,7 @@
         v26 = [(CSLPRFCompositeApplicationLibrary *)self _applicationOrCounterpartsForApplication:v14 inApplications:v59 orApplicationsByCounterpart:v58];
         v18 = v26;
         v61 = i;
-        v65 = v15;
+        v65 = counterpartIdentifiers;
         if (v26)
         {
           v27 = [v26 count];
@@ -187,17 +187,17 @@
                     }
 
                     v34 = *(*(&v82 + 1) + 8 * k);
-                    v35 = [v34 bundleIdentifier];
-                    v36 = [v13 isEqual:v35];
+                    bundleIdentifier = [v34 bundleIdentifier];
+                    v36 = [v13 isEqual:bundleIdentifier];
                     v37 = v67;
                     if (v36)
                     {
-                      v37 = v55;
+                      v37 = array2;
                     }
 
                     v31 |= v36;
                     [v37 addObject:v34];
-                    [(NSMutableDictionary *)self->_lock_applications setObject:v34 forKey:v35];
+                    [(NSMutableDictionary *)self->_lock_applications setObject:v34 forKey:bundleIdentifier];
                   }
 
                   v30 = [v66 countByEnumeratingWithState:&v82 objects:v92 count:16];
@@ -206,7 +206,7 @@
                 while (v30);
                 v28 = v66;
 
-                v7 = v54;
+                libraryCopy = v54;
                 v14 = v56;
                 if (v31)
                 {
@@ -226,11 +226,11 @@ LABEL_44:
               {
                 v45 = [v28 bs_mapNoNulls:&__block_literal_global_646];
                 *buf = 134219010;
-                v95 = self;
+                selfCopy2 = self;
                 v96 = 2114;
                 v97 = v13;
                 v98 = 2114;
-                v99 = v45;
+                selfCopy = v45;
                 v100 = 2114;
                 v101 = v14;
                 v102 = 2114;
@@ -238,12 +238,12 @@ LABEL_44:
                 _os_log_debug_impl(&dword_22CE92000, v38, OS_LOG_TYPE_DEBUG, "%p did remove application:%{public}@ will replace with applications:%{public}@ \nremoved application:%{public}@ \nreplacement applications:%{public}@", buf, 0x34u);
               }
 
-              v10 = v57;
+              array3 = v57;
               goto LABEL_47;
             }
 
 LABEL_41:
-            [v10 addObject:v13];
+            [array3 addObject:v13];
             [(NSMutableDictionary *)self->_lock_applications removeObjectForKey:v13];
           }
         }
@@ -286,7 +286,7 @@ LABEL_47:
 
         i = v61;
         v14 = v39;
-        v15 = v65;
+        counterpartIdentifiers = v65;
 LABEL_55:
       }
 
@@ -309,7 +309,7 @@ LABEL_55:
     [(CSLPRFObservationHelper *)observationHelper notifyObserversWithBlock:v72];
   }
 
-  if ([v55 count])
+  if ([array2 count])
   {
     v47 = self->_observationHelper;
     v70[0] = MEMORY[0x277D85DD0];
@@ -317,11 +317,11 @@ LABEL_55:
     v70[2] = __78__CSLPRFCompositeApplicationLibrary_applicationLibrary_didRemoveApplications___block_invoke_2;
     v70[3] = &unk_278744788;
     v70[4] = self;
-    v71 = v55;
+    v71 = array2;
     [(CSLPRFObservationHelper *)v47 notifyObserversWithBlock:v70];
   }
 
-  if ([v10 count])
+  if ([array3 count])
   {
     v48 = self->_observationHelper;
     v68[0] = MEMORY[0x277D85DD0];
@@ -329,25 +329,25 @@ LABEL_55:
     v68[2] = __78__CSLPRFCompositeApplicationLibrary_applicationLibrary_didRemoveApplications___block_invoke_3;
     v68[3] = &unk_278744788;
     v68[4] = self;
-    v69 = v10;
+    v69 = array3;
     [(CSLPRFObservationHelper *)v48 notifyObserversWithBlock:v68];
   }
 
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_applicationsByCounterpartFromApplications:(uint64_t)a1
+- (id)_applicationsByCounterpartFromApplications:(uint64_t)applications
 {
-  if (a1)
+  if (applications)
   {
     v2 = MEMORY[0x277CBEB38];
     v3 = a2;
-    v4 = [v2 dictionary];
+    dictionary = [v2 dictionary];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __80__CSLPRFCompositeApplicationLibrary__applicationsByCounterpartFromApplications___block_invoke;
     v7[3] = &unk_2787447B0;
-    v5 = v4;
+    v5 = dictionary;
     v8 = v5;
     [v3 enumerateKeysAndObjectsUsingBlock:v7];
   }
@@ -360,16 +360,16 @@ LABEL_55:
   return v5;
 }
 
-- (id)_applicationOrCounterpartsForApplication:(void *)a3 inApplications:(void *)a4 orApplicationsByCounterpart:
+- (id)_applicationOrCounterpartsForApplication:(void *)application inApplications:(void *)applications orApplicationsByCounterpart:
 {
   v34[1] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  applicationCopy = application;
+  applicationsCopy = applications;
+  if (self)
   {
-    v10 = [v7 bundleIdentifier];
-    v11 = [v8 objectForKey:v10];
+    bundleIdentifier = [v7 bundleIdentifier];
+    v11 = [applicationCopy objectForKey:bundleIdentifier];
     if (v11)
     {
       v12 = v11;
@@ -380,17 +380,17 @@ LABEL_55:
 
     else
     {
-      v15 = [v9 objectForKey:v10];
+      v15 = [applicationsCopy objectForKey:bundleIdentifier];
       if (!v15)
       {
-        v27 = v9;
-        v19 = [v7 counterpartIdentifiers];
-        v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v19, "count")}];
+        v27 = applicationsCopy;
+        counterpartIdentifiers = [v7 counterpartIdentifiers];
+        v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(counterpartIdentifiers, "count")}];
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v21 = v19;
+        v21 = counterpartIdentifiers;
         v22 = [v21 countByEnumeratingWithState:&v28 objects:v32 count:16];
         if (v22)
         {
@@ -408,7 +408,7 @@ LABEL_55:
                 objc_enumerationMutation(v21);
               }
 
-              v12 = [v8 objectForKey:*(*(&v28 + 1) + 8 * v25)];
+              v12 = [applicationCopy objectForKey:*(*(&v28 + 1) + 8 * v25)];
 
               if (v12)
               {
@@ -441,7 +441,7 @@ LABEL_55:
           v16 = 0;
         }
 
-        v9 = v27;
+        applicationsCopy = v27;
 
         goto LABEL_7;
       }
@@ -503,17 +503,17 @@ void __80__CSLPRFCompositeApplicationLibrary__applicationsByCounterpartFromAppli
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_applicationLibrary:(void *)a3 didAddOrUpdateApplications:
+- (void)_applicationLibrary:(void *)library didAddOrUpdateApplications:
 {
   v95 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  libraryCopy = library;
+  if (self)
   {
-    v49 = *(a1 + 8);
-    if (v49 != v5 && *(a1 + 16) != v5)
+    v49 = *(self + 8);
+    if (v49 != v5 && *(self + 16) != v5)
     {
-      v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"unknownLibrary:%p primary:%p, secondary:%p, %@", v5, v49, *(a1 + 16), v5];
+      v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"unknownLibrary:%p primary:%p, secondary:%p, %@", v5, v49, *(self + 16), v5];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v38 = NSStringFromSelector(sel__applicationLibrary_didAddOrUpdateApplications_);
@@ -524,7 +524,7 @@ void __80__CSLPRFCompositeApplicationLibrary__applicationsByCounterpartFromAppli
         v85 = 2114;
         v86 = v40;
         v87 = 2048;
-        v88 = a1;
+        selfCopy = self;
         v89 = 2114;
         v90 = @"CSLPRFCompositeApplicationLibrary.m";
         v91 = 1024;
@@ -540,17 +540,17 @@ void __80__CSLPRFCompositeApplicationLibrary__applicationsByCounterpartFromAppli
       JUMPOUT(0x22CE9D704);
     }
 
-    v7 = [MEMORY[0x277CBEB18] array];
-    v47 = [MEMORY[0x277CBEB18] array];
-    v43 = [MEMORY[0x277CBEB18] array];
-    os_unfair_lock_lock((a1 + 72));
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
+    os_unfair_lock_lock((self + 72));
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v41 = v6;
-    obj = v6;
-    v44 = v7;
+    v41 = libraryCopy;
+    obj = libraryCopy;
+    v44 = array;
     v50 = [obj countByEnumeratingWithState:&v75 objects:v82 count:16];
     if (v50)
     {
@@ -566,36 +566,36 @@ void __80__CSLPRFCompositeApplicationLibrary__applicationsByCounterpartFromAppli
           }
 
           v9 = *(*(&v75 + 1) + 8 * i);
-          v10 = [v9 bundleIdentifier];
-          v11 = [v9 counterpartIdentifiers];
-          v12 = [*(a1 + 32) objectForKey:v10];
+          bundleIdentifier = [v9 bundleIdentifier];
+          counterpartIdentifiers = [v9 counterpartIdentifiers];
+          v12 = [*(self + 32) objectForKey:bundleIdentifier];
 
-          v51 = v11;
+          v51 = counterpartIdentifiers;
           if (v49 == v5)
           {
             if (v12)
             {
-              [v47 addObject:v9];
+              [array2 addObject:v9];
             }
 
             else
             {
-              [v7 addObject:v9];
+              [array addObject:v9];
               v70[0] = MEMORY[0x277D85DD0];
               v70[1] = 3221225472;
               v70[2] = __84__CSLPRFCompositeApplicationLibrary__applicationLibrary_didAddOrUpdateApplications___block_invoke;
               v70[3] = &unk_278744760;
-              v45 = v10;
+              v45 = bundleIdentifier;
               v71 = v45;
-              v72 = a1;
+              selfCopy2 = self;
               v73 = v9;
-              v74 = v43;
+              v74 = array3;
               v19 = MEMORY[0x2318C26B0](v70);
               v66 = 0u;
               v67 = 0u;
               v68 = 0u;
               v69 = 0u;
-              v20 = v11;
+              v20 = counterpartIdentifiers;
               v21 = [v20 countByEnumeratingWithState:&v66 objects:v81 count:16];
               if (v21)
               {
@@ -619,22 +619,22 @@ void __80__CSLPRFCompositeApplicationLibrary__applicationsByCounterpartFromAppli
                 while (v22);
               }
 
-              v25 = [*(a1 + 64) objectForKey:v45];
-              v26 = [v25 bundleIdentifier];
-              (v19)[2](v19, v26);
+              v25 = [*(self + 64) objectForKey:v45];
+              bundleIdentifier2 = [v25 bundleIdentifier];
+              (v19)[2](v19, bundleIdentifier2);
 
               v5 = v42;
-              v7 = v44;
-              v11 = v51;
+              array = v44;
+              counterpartIdentifiers = v51;
             }
 
-            [*(a1 + 32) setObject:v9 forKey:v10];
-            [*(a1 + 40) setObject:v9 forKey:v10];
+            [*(self + 32) setObject:v9 forKey:bundleIdentifier];
+            [*(self + 40) setObject:v9 forKey:bundleIdentifier];
             v64 = 0u;
             v65 = 0u;
             v62 = 0u;
             v63 = 0u;
-            v27 = v11;
+            v27 = counterpartIdentifiers;
             v28 = [v27 countByEnumeratingWithState:&v62 objects:v80 count:16];
             if (v28)
             {
@@ -649,7 +649,7 @@ void __80__CSLPRFCompositeApplicationLibrary__applicationsByCounterpartFromAppli
                     objc_enumerationMutation(v27);
                   }
 
-                  [*(a1 + 48) setObject:v9 forKey:*(*(&v62 + 1) + 8 * k)];
+                  [*(self + 48) setObject:v9 forKey:*(*(&v62 + 1) + 8 * k)];
                 }
 
                 v29 = [v27 countByEnumeratingWithState:&v62 objects:v80 count:16];
@@ -661,28 +661,28 @@ void __80__CSLPRFCompositeApplicationLibrary__applicationsByCounterpartFromAppli
 
           else
           {
-            if ([(CSLPRFCompositeApplicationLibrary *)a1 _application:v9 isUniqueAndNotCounterpartInApplications:*(a1 + 40) orApplicationsByCounterpart:*(a1 + 48)])
+            if ([(CSLPRFCompositeApplicationLibrary *)self _application:v9 isUniqueAndNotCounterpartInApplications:*(self + 40) orApplicationsByCounterpart:*(self + 48)])
             {
               if (v12)
               {
-                v13 = v47;
+                v13 = array2;
               }
 
               else
               {
-                v13 = v7;
+                v13 = array;
               }
 
               [v13 addObject:v9];
-              [*(a1 + 32) setObject:v9 forKey:v10];
+              [*(self + 32) setObject:v9 forKey:bundleIdentifier];
             }
 
-            [*(a1 + 56) setObject:v9 forKey:v10];
+            [*(self + 56) setObject:v9 forKey:bundleIdentifier];
             v60 = 0u;
             v61 = 0u;
             v58 = 0u;
             v59 = 0u;
-            v14 = v11;
+            v14 = counterpartIdentifiers;
             v15 = [v14 countByEnumeratingWithState:&v58 objects:v79 count:16];
             if (v15)
             {
@@ -697,7 +697,7 @@ void __80__CSLPRFCompositeApplicationLibrary__applicationsByCounterpartFromAppli
                     objc_enumerationMutation(v14);
                   }
 
-                  [*(a1 + 64) bs_setSafeObject:v9 forKey:*(*(&v58 + 1) + 8 * m)];
+                  [*(self + 64) bs_setSafeObject:v9 forKey:*(*(&v58 + 1) + 8 * m)];
                 }
 
                 v16 = [v14 countByEnumeratingWithState:&v58 objects:v79 count:16];
@@ -714,42 +714,42 @@ void __80__CSLPRFCompositeApplicationLibrary__applicationsByCounterpartFromAppli
       while (v50);
     }
 
-    os_unfair_lock_unlock((a1 + 72));
-    if ([v7 count])
+    os_unfair_lock_unlock((self + 72));
+    if ([array count])
     {
-      v32 = v7;
-      v33 = *(a1 + 24);
+      v32 = array;
+      v33 = *(self + 24);
       v56[0] = MEMORY[0x277D85DD0];
       v56[1] = 3221225472;
       v56[2] = __84__CSLPRFCompositeApplicationLibrary__applicationLibrary_didAddOrUpdateApplications___block_invoke_14;
       v56[3] = &unk_278744788;
-      v56[4] = a1;
+      v56[4] = self;
       v57 = v32;
       [v33 notifyObserversWithBlock:v56];
     }
 
-    v6 = v41;
-    if ([v47 count])
+    libraryCopy = v41;
+    if ([array2 count])
     {
-      v34 = *(a1 + 24);
+      v34 = *(self + 24);
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
       v54[2] = __84__CSLPRFCompositeApplicationLibrary__applicationLibrary_didAddOrUpdateApplications___block_invoke_2;
       v54[3] = &unk_278744788;
-      v54[4] = a1;
-      v55 = v47;
+      v54[4] = self;
+      v55 = array2;
       [v34 notifyObserversWithBlock:v54];
     }
 
-    if ([v43 count])
+    if ([array3 count])
     {
-      v35 = *(a1 + 24);
+      v35 = *(self + 24);
       v52[0] = MEMORY[0x277D85DD0];
       v52[1] = 3221225472;
       v52[2] = __84__CSLPRFCompositeApplicationLibrary__applicationLibrary_didAddOrUpdateApplications___block_invoke_3;
       v52[3] = &unk_278744788;
-      v52[4] = a1;
-      v53 = v43;
+      v52[4] = self;
+      v53 = array3;
       [v35 notifyObserversWithBlock:v52];
     }
   }
@@ -793,14 +793,14 @@ void __84__CSLPRFCompositeApplicationLibrary__applicationLibrary_didAddOrUpdateA
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_application:(void *)a3 isUniqueAndNotCounterpartInApplications:(void *)a4 orApplicationsByCounterpart:
+- (BOOL)_application:(void *)_application isUniqueAndNotCounterpartInApplications:(void *)applications orApplicationsByCounterpart:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v4 = [(CSLPRFCompositeApplicationLibrary *)a1 _applicationOrCounterpartsForApplication:a2 inApplications:a3 orApplicationsByCounterpart:a4];
+  v4 = [(CSLPRFCompositeApplicationLibrary *)self _applicationOrCounterpartsForApplication:a2 inApplications:_application orApplicationsByCounterpart:applications];
   v5 = v4;
   if (v4)
   {
@@ -815,9 +815,9 @@ void __84__CSLPRFCompositeApplicationLibrary__applicationLibrary_didAddOrUpdateA
   return v6;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(CSLPRFObservationHelper *)self->_observationHelper removeObserver:a3];
+  [(CSLPRFObservationHelper *)self->_observationHelper removeObserver:observer];
   if (![(CSLPRFObservationHelper *)self->_observationHelper observerCount])
   {
 
@@ -827,32 +827,32 @@ void __84__CSLPRFCompositeApplicationLibrary__applicationLibrary_didAddOrUpdateA
 
 - (void)_stopObserving
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 72));
-    v2 = *(a1 + 76);
-    *(a1 + 76) = 0;
-    os_unfair_lock_unlock((a1 + 72));
+    os_unfair_lock_lock((self + 72));
+    v2 = *(self + 76);
+    *(self + 76) = 0;
+    os_unfair_lock_unlock((self + 72));
     if (v2 == 1)
     {
-      [*(a1 + 8) removeObserver:a1];
-      v3 = *(a1 + 16);
+      [*(self + 8) removeObserver:self];
+      v3 = *(self + 16);
 
-      [v3 removeObserver:a1];
+      [v3 removeObserver:self];
     }
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v8 = a3;
-  v4 = [(CSLPRFObservationHelper *)self->_observationHelper observerCount];
-  [(CSLPRFObservationHelper *)self->_observationHelper addObserver:v8];
-  if (v4)
+  observerCopy = observer;
+  observerCount = [(CSLPRFObservationHelper *)self->_observationHelper observerCount];
+  [(CSLPRFObservationHelper *)self->_observationHelper addObserver:observerCopy];
+  if (observerCount)
   {
-    v5 = [(CSLPRFCompositeApplicationLibrary *)self _cachedApplications];
-    v6 = [v5 allValues];
-    [v8 applicationLibrary:self didAddApplications:v6];
+    _cachedApplications = [(CSLPRFCompositeApplicationLibrary *)self _cachedApplications];
+    allValues = [_cachedApplications allValues];
+    [observerCopy applicationLibrary:self didAddApplications:allValues];
   }
 
   else
@@ -871,81 +871,81 @@ void __84__CSLPRFCompositeApplicationLibrary__applicationLibrary_didAddOrUpdateA
 
 - (id)_cachedApplications
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 72));
-    v2 = *(a1 + 32);
-    os_unfair_lock_unlock((a1 + 72));
-    if (!v2)
+    os_unfair_lock_lock((self + 72));
+    _loadApplications = *(self + 32);
+    os_unfair_lock_unlock((self + 72));
+    if (!_loadApplications)
     {
-      v2 = [(CSLPRFCompositeApplicationLibrary *)a1 _loadApplications];
+      _loadApplications = [(CSLPRFCompositeApplicationLibrary *)self _loadApplications];
     }
   }
 
   else
   {
-    v2 = 0;
+    _loadApplications = 0;
   }
 
-  return v2;
+  return _loadApplications;
 }
 
 - (id)_loadApplications
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[1] allApplicationsDictionary];
-    v3 = [(CSLPRFCompositeApplicationLibrary *)v1 _applicationsByCounterpartFromApplications:v2];
-    v4 = [v1[2] allApplicationsDictionary];
-    v5 = [v2 mutableCopy];
+    allApplicationsDictionary = [self[1] allApplicationsDictionary];
+    v3 = [(CSLPRFCompositeApplicationLibrary *)selfCopy _applicationsByCounterpartFromApplications:allApplicationsDictionary];
+    allApplicationsDictionary2 = [selfCopy[2] allApplicationsDictionary];
+    v5 = [allApplicationsDictionary mutableCopy];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __54__CSLPRFCompositeApplicationLibrary__loadApplications__block_invoke;
     v25[3] = &unk_278744738;
-    v25[4] = v1;
-    v26 = v2;
+    v25[4] = selfCopy;
+    v26 = allApplicationsDictionary;
     v6 = v3;
     v27 = v6;
     v7 = v5;
     v28 = v7;
-    v8 = v2;
-    [v4 enumerateKeysAndObjectsUsingBlock:v25];
-    os_unfair_lock_lock(v1 + 18);
-    v9 = v1[4];
-    objc_storeStrong(v1 + 4, v5);
+    v8 = allApplicationsDictionary;
+    [allApplicationsDictionary2 enumerateKeysAndObjectsUsingBlock:v25];
+    os_unfair_lock_lock(selfCopy + 18);
+    v9 = selfCopy[4];
+    objc_storeStrong(selfCopy + 4, v5);
     v10 = [v8 mutableCopy];
-    v11 = v1[5];
-    v1[5] = v10;
+    v11 = selfCopy[5];
+    selfCopy[5] = v10;
 
-    v12 = v1[6];
-    v1[6] = v6;
+    v12 = selfCopy[6];
+    selfCopy[6] = v6;
     v13 = v6;
 
-    v14 = [v4 mutableCopy];
-    v15 = v1[7];
-    v1[7] = v14;
+    v14 = [allApplicationsDictionary2 mutableCopy];
+    v15 = selfCopy[7];
+    selfCopy[7] = v14;
 
-    v16 = [(CSLPRFCompositeApplicationLibrary *)v1 _applicationsByCounterpartFromApplications:v4];
-    v17 = v1[8];
-    v1[8] = v16;
+    v16 = [(CSLPRFCompositeApplicationLibrary *)selfCopy _applicationsByCounterpartFromApplications:allApplicationsDictionary2];
+    v17 = selfCopy[8];
+    selfCopy[8] = v16;
 
-    os_unfair_lock_unlock(v1 + 18);
+    os_unfair_lock_unlock(selfCopy + 18);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__CSLPRFCompositeApplicationLibrary__loadApplications__block_invoke_2;
     block[3] = &unk_2787453E0;
-    block[4] = v1;
+    block[4] = selfCopy;
     v18 = v7;
     v23 = v18;
     v24 = v9;
     v19 = v9;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v20 = v24;
-    v1 = v18;
+    selfCopy = v18;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __54__CSLPRFCompositeApplicationLibrary__loadApplications__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1084,41 +1084,41 @@ void __95__CSLPRFCompositeApplicationLibrary__notifyObserversOfChangesWithApplic
 LABEL_6:
 }
 
-- (void)allApplicationsWithCompletion:(id)a3
+- (void)allApplicationsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(CSLPRFCompositeApplicationLibrary *)self allApplications];
-  (*(a3 + 2))(v5, v6);
+  completionCopy = completion;
+  allApplications = [(CSLPRFCompositeApplicationLibrary *)self allApplications];
+  (*(completion + 2))(completionCopy, allApplications);
 }
 
 - (NSDictionary)allApplicationsDictionary
 {
-  v2 = [(CSLPRFCompositeApplicationLibrary *)&self->super.isa _loadApplications];
-  v3 = [v2 copy];
+  _loadApplications = [(CSLPRFCompositeApplicationLibrary *)&self->super.isa _loadApplications];
+  v3 = [_loadApplications copy];
 
   return v3;
 }
 
 - (NSArray)allApplications
 {
-  v2 = [(CSLPRFCompositeApplicationLibrary *)&self->super.isa _loadApplications];
-  v3 = [v2 allValues];
+  _loadApplications = [(CSLPRFCompositeApplicationLibrary *)&self->super.isa _loadApplications];
+  allValues = [_loadApplications allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (void)applicationWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)applicationWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = [(CSLPRFCompositeApplicationLibrary *)self applicationWithBundleIdentifier:a3];
-  (*(a4 + 2))(v7, v8);
+  completionCopy = completion;
+  v8 = [(CSLPRFCompositeApplicationLibrary *)self applicationWithBundleIdentifier:identifier];
+  (*(completion + 2))(completionCopy, v8);
 }
 
-- (id)applicationWithBundleIdentifier:(id)a3
+- (id)applicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSLPRFCompositeApplicationLibrary *)self _cachedApplications];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  _cachedApplications = [(CSLPRFCompositeApplicationLibrary *)self _cachedApplications];
+  v6 = [_cachedApplications objectForKey:identifierCopy];
 
   return v6;
 }
@@ -1131,10 +1131,10 @@ LABEL_6:
   [(CSLPRFCompositeApplicationLibrary *)&v3 dealloc];
 }
 
-- (CSLPRFCompositeApplicationLibrary)initWithPrimaryLibrary:(id)a3 secondaryLibrary:(id)a4
+- (CSLPRFCompositeApplicationLibrary)initWithPrimaryLibrary:(id)library secondaryLibrary:(id)secondaryLibrary
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  secondaryLibraryCopy = secondaryLibrary;
   v20.receiver = self;
   v20.super_class = CSLPRFCompositeApplicationLibrary;
   v9 = [(CSLPRFCompositeApplicationLibrary *)&v20 init];
@@ -1142,23 +1142,23 @@ LABEL_6:
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_primaryLibrary, a3);
-    objc_storeStrong(&v10->_secondaryLibrary, a4);
+    objc_storeStrong(&v9->_primaryLibrary, library);
+    objc_storeStrong(&v10->_secondaryLibrary, secondaryLibrary);
     v11 = objc_alloc_init(CSLPRFObservationHelper);
     observationHelper = v10->_observationHelper;
     v10->_observationHelper = v11;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     lock_applications = v10->_lock_applications;
-    v10->_lock_applications = v13;
+    v10->_lock_applications = dictionary;
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     lock_primaryApplications = v10->_lock_primaryApplications;
-    v10->_lock_primaryApplications = v15;
+    v10->_lock_primaryApplications = dictionary2;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     lock_secondaryApplications = v10->_lock_secondaryApplications;
-    v10->_lock_secondaryApplications = v17;
+    v10->_lock_secondaryApplications = dictionary3;
   }
 
   return v10;

@@ -1,42 +1,42 @@
 @interface REDuetContextQuery
 - (NSSet)keyPaths;
-- (REDuetContextQuery)initWithPredicate:(id)a3 remotePredicate:(id)a4 name:(id)a5 evaluationBlock:(id)a6;
-- (id)_keyPathsForDevice:(id)a3;
+- (REDuetContextQuery)initWithPredicate:(id)predicate remotePredicate:(id)remotePredicate name:(id)name evaluationBlock:(id)block;
+- (id)_keyPathsForDevice:(id)device;
 - (id)_localKeyPaths;
-- (id)_localRegistrationWithCallback:(id)a3;
-- (id)_remoteRegistrationForDevice:(id)a3 callback:(id)a4;
-- (id)createRegistrationsWithCallback:(id)a3;
-- (id)valueFromUserContext:(id)a3;
-- (void)setDevices:(id)a3;
+- (id)_localRegistrationWithCallback:(id)callback;
+- (id)_remoteRegistrationForDevice:(id)device callback:(id)callback;
+- (id)createRegistrationsWithCallback:(id)callback;
+- (id)valueFromUserContext:(id)context;
+- (void)setDevices:(id)devices;
 @end
 
 @implementation REDuetContextQuery
 
-- (REDuetContextQuery)initWithPredicate:(id)a3 remotePredicate:(id)a4 name:(id)a5 evaluationBlock:(id)a6
+- (REDuetContextQuery)initWithPredicate:(id)predicate remotePredicate:(id)remotePredicate name:(id)name evaluationBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  predicateCopy = predicate;
+  remotePredicateCopy = remotePredicate;
+  nameCopy = name;
+  blockCopy = block;
   v25.receiver = self;
   v25.super_class = REDuetContextQuery;
   v15 = [(REDuetContextQuery *)&v25 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_predicate, a3);
-    objc_storeStrong(&v16->_remotePredicate, a4);
-    v17 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeStrong(&v15->_predicate, predicate);
+    objc_storeStrong(&v16->_remotePredicate, remotePredicate);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v16->_uuid;
-    v16->_uuid = v17;
+    v16->_uuid = uUID;
 
-    objc_storeStrong(&v16->_name, a5);
+    objc_storeStrong(&v16->_name, name);
     v19 = MEMORY[0x277CBEB98];
     v20 = +[REDuetContextDevice localDevice];
     v21 = [v19 setWithObject:v20];
     [(REDuetContextQuery *)v16 setDevices:v21];
 
-    v22 = MEMORY[0x22AABC5E0](v14);
+    v22 = MEMORY[0x22AABC5E0](blockCopy);
     evalBlock = v16->_evalBlock;
     v16->_evalBlock = v22;
   }
@@ -46,11 +46,11 @@
 
 - (NSSet)keyPaths
 {
-  v2 = [(_CDContextualPredicate *)self->_predicate keyPaths];
-  v3 = v2;
-  if (v2)
+  keyPaths = [(_CDContextualPredicate *)self->_predicate keyPaths];
+  v3 = keyPaths;
+  if (keyPaths)
   {
-    v4 = v2;
+    v4 = keyPaths;
   }
 
   else
@@ -63,20 +63,20 @@
   return v5;
 }
 
-- (id)_localRegistrationWithCallback:(id)a3
+- (id)_localRegistrationWithCallback:(id)callback
 {
-  v4 = a3;
-  if (v4 && self->_predicate)
+  callbackCopy = callback;
+  if (callbackCopy && self->_predicate)
   {
     v5 = get_CDContextualChangeRegistrationClass();
-    v6 = [(REDuetContextQuery *)self registrationID];
+    registrationID = [(REDuetContextQuery *)self registrationID];
     predicate = self->_predicate;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __53__REDuetContextQuery__localRegistrationWithCallback___block_invoke;
     v10[3] = &unk_2785FAD30;
-    v11 = v4;
-    v8 = [v5 localNonWakingRegistrationWithIdentifier:v6 contextualPredicate:predicate callback:v10];
+    v11 = callbackCopy;
+    v8 = [v5 localNonWakingRegistrationWithIdentifier:registrationID contextualPredicate:predicate callback:v10];
   }
 
   else
@@ -87,24 +87,24 @@
   return v8;
 }
 
-- (id)_remoteRegistrationForDevice:(id)a3 callback:(id)a4
+- (id)_remoteRegistrationForDevice:(id)device callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && self->_remotePredicate)
+  deviceCopy = device;
+  callbackCopy = callback;
+  if (callbackCopy && self->_remotePredicate)
   {
     v8 = get_CDContextualChangeRegistrationClass();
-    v9 = [(REDuetContextQuery *)self registrationID];
-    v10 = [v6 identifier];
-    v11 = [v9 stringByAppendingFormat:@".%@", v10];
+    registrationID = [(REDuetContextQuery *)self registrationID];
+    identifier = [deviceCopy identifier];
+    v11 = [registrationID stringByAppendingFormat:@".%@", identifier];
     remotePredicate = self->_remotePredicate;
-    v13 = [v6 deviceType];
+    deviceType = [deviceCopy deviceType];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __60__REDuetContextQuery__remoteRegistrationForDevice_callback___block_invoke;
     v16[3] = &unk_2785FAD58;
-    v17 = v7;
-    v14 = [v8 registrationWithIdentifier:v11 contextualPredicate:remotePredicate deviceTypes:v13 clientIdentifier:@"com.apple.RelevanceEngine" mustWake:0 callback:v16];
+    v17 = callbackCopy;
+    v14 = [v8 registrationWithIdentifier:v11 contextualPredicate:remotePredicate deviceTypes:deviceType clientIdentifier:@"com.apple.RelevanceEngine" mustWake:0 callback:v16];
   }
 
   else
@@ -115,21 +115,21 @@
   return v14;
 }
 
-- (id)createRegistrationsWithCallback:(id)a3
+- (id)createRegistrationsWithCallback:(id)callback
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   v5 = CoreDuetContextLibraryCore();
-  v6 = MEMORY[0x277CBEBF8];
-  if (v4 && v5)
+  array = MEMORY[0x277CBEBF8];
+  if (callbackCopy && v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [(REDuetContextQuery *)self devices];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    devices = [(REDuetContextQuery *)self devices];
+    v8 = [devices countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -140,29 +140,29 @@
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(devices);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 identifier];
+          identifier = [v12 identifier];
 
-          if (v13)
+          if (identifier)
           {
-            [(REDuetContextQuery *)self _remoteRegistrationForDevice:v12 callback:v4];
+            [(REDuetContextQuery *)self _remoteRegistrationForDevice:v12 callback:callbackCopy];
           }
 
           else
           {
-            [(REDuetContextQuery *)self _localRegistrationWithCallback:v4];
+            [(REDuetContextQuery *)self _localRegistrationWithCallback:callbackCopy];
           }
           v14 = ;
           if (v14)
           {
-            [v6 addObject:v14];
+            [array addObject:v14];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [devices countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
@@ -171,20 +171,20 @@
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-- (id)_keyPathsForDevice:(id)a3
+- (id)_keyPathsForDevice:(id)device
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(REDuetContextQuery *)self keyPaths];
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  deviceCopy = device;
+  keyPaths = [(REDuetContextQuery *)self keyPaths];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(keyPaths, "count")}];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v5;
+  obj = keyPaths;
   v7 = [obj countByEnumeratingWithState:&v20 objects:v29 count:16];
   if (v7)
   {
@@ -217,9 +217,9 @@
 
         v12 = v11;
         _Block_object_dispose(&v25, 8);
-        v13 = [v4 identifier];
-        v14 = [v13 UUIDString];
-        v15 = [v11 remoteKeyPathForKeyPath:v10 forDeviceID:v14];
+        identifier = [deviceCopy identifier];
+        uUIDString = [identifier UUIDString];
+        v15 = [v11 remoteKeyPathForKeyPath:v10 forDeviceID:uUIDString];
         [v6 addObject:v15];
       }
 
@@ -238,9 +238,9 @@
 
 - (id)_localKeyPaths
 {
-  v3 = [(REDuetContextQuery *)self keyPaths];
-  v4 = [v3 allObjects];
-  v5 = [(REDuetContextQuery *)self _sortedKeyPaths:v4];
+  keyPaths = [(REDuetContextQuery *)self keyPaths];
+  allObjects = [keyPaths allObjects];
+  v5 = [(REDuetContextQuery *)self _sortedKeyPaths:allObjects];
 
   return v5;
 }
@@ -255,18 +255,18 @@ uint64_t __38__REDuetContextQuery__sortedKeyPaths___block_invoke(uint64_t a1, vo
   return v7;
 }
 
-- (void)setDevices:(id)a3
+- (void)setDevices:(id)devices
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   devices = self->_devices;
-  if (devices != v4 && ([(NSSet *)devices isEqual:v4]& 1) == 0)
+  if (devices != devicesCopy && ([(NSSet *)devices isEqual:devicesCopy]& 1) == 0)
   {
-    v6 = [(NSSet *)v4 copy];
+    v6 = [(NSSet *)devicesCopy copy];
     v7 = self->_devices;
     self->_devices = v6;
 
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -287,18 +287,18 @@ uint64_t __38__REDuetContextQuery__sortedKeyPaths___block_invoke(uint64_t a1, vo
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 identifier];
+          identifier = [v14 identifier];
 
-          if (v15)
+          if (identifier)
           {
-            v16 = [(REDuetContextQuery *)self _keyPathsForDevice:v14];
-            [v8 addObject:v16];
+            _localKeyPaths = [(REDuetContextQuery *)self _keyPathsForDevice:v14];
+            [array addObject:_localKeyPaths];
           }
 
           else
           {
-            v16 = [(REDuetContextQuery *)self _localKeyPaths];
-            [v8 insertObject:v16 atIndex:0];
+            _localKeyPaths = [(REDuetContextQuery *)self _localKeyPaths];
+            [array insertObject:_localKeyPaths atIndex:0];
           }
         }
 
@@ -308,7 +308,7 @@ uint64_t __38__REDuetContextQuery__sortedKeyPaths___block_invoke(uint64_t a1, vo
       while (v11);
     }
 
-    v17 = [v8 copy];
+    v17 = [array copy];
     searchKeyPaths = self->_searchKeyPaths;
     self->_searchKeyPaths = v17;
   }
@@ -316,19 +316,19 @@ uint64_t __38__REDuetContextQuery__sortedKeyPaths___block_invoke(uint64_t a1, vo
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)valueFromUserContext:(id)a3
+- (id)valueFromUserContext:(id)context
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (self->_evalBlock)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v6 = [(REDuetContextQuery *)self keyPaths];
-    v7 = [v6 countByEnumeratingWithState:&v42 objects:v48 count:16];
+    keyPaths = [(REDuetContextQuery *)self keyPaths];
+    v7 = [keyPaths countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v7)
     {
       v8 = v7;
@@ -339,15 +339,15 @@ uint64_t __38__REDuetContextQuery__sortedKeyPaths___block_invoke(uint64_t a1, vo
         {
           if (*v43 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(keyPaths);
           }
 
           v11 = *(*(&v42 + 1) + 8 * i);
           v12 = [v11 key];
-          [v5 setObject:v11 forKeyedSubscript:v12];
+          [dictionary setObject:v11 forKeyedSubscript:v12];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v42 objects:v48 count:16];
+        v8 = [keyPaths countByEnumeratingWithState:&v42 objects:v48 count:16];
       }
 
       while (v8);
@@ -361,7 +361,7 @@ uint64_t __38__REDuetContextQuery__sortedKeyPaths___block_invoke(uint64_t a1, vo
     v32 = [(NSArray *)obj countByEnumeratingWithState:&v38 objects:v47 count:16];
     if (v32)
     {
-      v29 = self;
+      selfCopy = self;
       v31 = *v39;
       while (1)
       {
@@ -398,7 +398,7 @@ LABEL_16:
           }
 
           v21 = *(*(&v34 + 1) + 8 * v20);
-          v22 = [v4 objectForContextualKeyPath:v21];
+          v22 = [contextCopy objectForContextualKeyPath:v21];
           if (!v22)
           {
             break;
@@ -406,7 +406,7 @@ LABEL_16:
 
           v23 = v22;
           v24 = [v21 key];
-          v25 = [v5 objectForKeyedSubscript:v24];
+          v25 = [dictionary objectForKeyedSubscript:v24];
 
           if (v25)
           {
@@ -441,7 +441,7 @@ LABEL_16:
 
 LABEL_28:
 
-      v26 = (*(v29->_evalBlock + 2))();
+      v26 = (*(selfCopy->_evalBlock + 2))();
     }
 
     else

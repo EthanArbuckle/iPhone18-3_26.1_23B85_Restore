@@ -1,38 +1,38 @@
 @interface BLTActionInfo
-- (BLTActionInfo)initWithActionType:(int64_t)a3 publisherBulletinID:(id)a4 recordID:(id)a5 sectionID:(id)a6 context:(id)a7;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BLTActionInfo)initWithActionType:(int64_t)type publisherBulletinID:(id)d recordID:(id)iD sectionID:(id)sectionID context:(id)context;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation BLTActionInfo
 
-- (BLTActionInfo)initWithActionType:(int64_t)a3 publisherBulletinID:(id)a4 recordID:(id)a5 sectionID:(id)a6 context:(id)a7
+- (BLTActionInfo)initWithActionType:(int64_t)type publisherBulletinID:(id)d recordID:(id)iD sectionID:(id)sectionID context:(id)context
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  sectionIDCopy = sectionID;
+  contextCopy = context;
   v25.receiver = self;
   v25.super_class = BLTActionInfo;
   v16 = [(BLTActionInfo *)&v25 init];
   v17 = v16;
   if (v16)
   {
-    v16->_actionType = a3;
-    v18 = [v12 copy];
+    v16->_actionType = type;
+    v18 = [dCopy copy];
     publisherBulletinID = v17->_publisherBulletinID;
     v17->_publisherBulletinID = v18;
 
-    v20 = [v13 copy];
+    v20 = [iDCopy copy];
     recordID = v17->_recordID;
     v17->_recordID = v20;
 
-    v22 = [v14 copy];
+    v22 = [sectionIDCopy copy];
     sectionID = v17->_sectionID;
     v17->_sectionID = v22;
 
-    objc_storeStrong(&v17->_context, a7);
+    objc_storeStrong(&v17->_context, context);
   }
 
   return v17;
@@ -40,30 +40,30 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BLTActionInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BLTActionInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BLTActionInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BLTActionInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BLTActionInfo *)self succinctDescriptionBuilder];
-  v5 = [v4 appendInteger:self->_actionType withName:@"actionType"];
-  v6 = [v4 appendObject:self->_publisherBulletinID withName:@"publisherBulletinID"];
-  v7 = [v4 appendObject:self->_recordID withName:@"recordID"];
-  v8 = [v4 appendObject:self->_sectionID withName:@"sectionID"];
-  v9 = [v4 appendObject:self->_context withName:@"context"];
+  succinctDescriptionBuilder = [(BLTActionInfo *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendInteger:self->_actionType withName:@"actionType"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_publisherBulletinID withName:@"publisherBulletinID"];
+  v7 = [succinctDescriptionBuilder appendObject:self->_recordID withName:@"recordID"];
+  v8 = [succinctDescriptionBuilder appendObject:self->_sectionID withName:@"sectionID"];
+  v9 = [succinctDescriptionBuilder appendObject:self->_context withName:@"context"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

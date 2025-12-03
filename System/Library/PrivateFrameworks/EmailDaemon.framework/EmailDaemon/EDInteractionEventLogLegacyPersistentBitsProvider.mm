@@ -1,9 +1,9 @@
 @interface EDInteractionEventLogLegacyPersistentBitsProvider
 + (OS_os_log)log;
-- (id)_findExistingSaltError:(id *)a3;
+- (id)_findExistingSaltError:(id *)error;
 - (id)_oldSalt;
 - (id)_persistentBits;
-- (id)_queryKeychainError:(id *)a3;
+- (id)_queryKeychainError:(id *)error;
 @end
 
 @implementation EDInteractionEventLogLegacyPersistentBitsProvider
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __56__EDInteractionEventLogLegacyPersistentBitsProvider_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_45 != -1)
   {
     dispatch_once(&log_onceToken_45, block);
@@ -35,11 +35,11 @@ void __56__EDInteractionEventLogLegacyPersistentBitsProvider_log__block_invoke(u
 
 - (id)_persistentBits
 {
-  v2 = [(EDInteractionEventLogLegacyPersistentBitsProvider *)self _oldSalt];
-  v3 = v2;
-  if (v2)
+  _oldSalt = [(EDInteractionEventLogLegacyPersistentBitsProvider *)self _oldSalt];
+  v3 = _oldSalt;
+  if (_oldSalt)
   {
-    v4 = [v2 length];
+    v4 = [_oldSalt length];
     v8 = -86;
     v7 = -86;
     [v3 getBytes:&v8 range:{0, 1}];
@@ -72,7 +72,7 @@ void __56__EDInteractionEventLogLegacyPersistentBitsProvider_log__block_invoke(u
 
   if (v4 || ([v2 second], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "objectForKeyedSubscript:", *MEMORY[0x1E697ABD8]), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", *MEMORY[0x1E697ABE0]), v6, v5, !v7))
   {
-    v9 = 0;
+    first = 0;
   }
 
   else
@@ -84,13 +84,13 @@ void __56__EDInteractionEventLogLegacyPersistentBitsProvider_log__block_invoke(u
       _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "Found existing old salt", v11, 2u);
     }
 
-    v9 = [v2 first];
+    first = [v2 first];
   }
 
-  return v9;
+  return first;
 }
 
-- (id)_findExistingSaltError:(id *)a3
+- (id)_findExistingSaltError:(id *)error
 {
   v4 = [(EDInteractionEventLogLegacyPersistentBitsProvider *)self _queryKeychainError:?];
   if (v4)
@@ -98,8 +98,8 @@ void __56__EDInteractionEventLogLegacyPersistentBitsProvider_log__block_invoke(u
     v5 = v4;
     v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_33];
 
-    v7 = [v6 firstObject];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
+    firstObject = [v6 firstObject];
+    v8 = [firstObject objectForKeyedSubscript:*MEMORY[0x1E697B3C0]];
 
     v9 = objc_alloc_init(MEMORY[0x1E695DF88]);
     if (v8)
@@ -134,16 +134,16 @@ void __56__EDInteractionEventLogLegacyPersistentBitsProvider_log__block_invoke(u
       }
 
       v14 = MEMORY[0x1E699B848];
-      v15 = [v6 firstObject];
-      v16 = [v14 pairWithFirst:v9 second:v15];
+      firstObject2 = [v6 firstObject];
+      v16 = [v14 pairWithFirst:v9 second:firstObject2];
     }
 
     else
     {
       v16 = 0;
-      if (a3)
+      if (error)
       {
-        *a3 = 0;
+        *error = 0;
       }
     }
   }
@@ -194,7 +194,7 @@ uint64_t __76__EDInteractionEventLogLegacyPersistentBitsProvider__findExistingSa
   return v10;
 }
 
-- (id)_queryKeychainError:(id *)a3
+- (id)_queryKeychainError:(id *)error
 {
   v19[6] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E697B008];
@@ -237,10 +237,10 @@ uint64_t __76__EDInteractionEventLogLegacyPersistentBitsProvider__findExistingSa
         [(EDInteractionEventLogLegacyPersistentBitsProvider *)v10 _queryKeychainError:v13];
       }
 
-      if (a3)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v10 userInfo:0];
-        *a3 = v12 = 0;
+        *error = v12 = 0;
         goto LABEL_13;
       }
     }

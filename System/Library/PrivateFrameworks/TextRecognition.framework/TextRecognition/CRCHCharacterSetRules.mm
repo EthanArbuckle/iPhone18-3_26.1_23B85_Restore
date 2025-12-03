@@ -1,10 +1,10 @@
 @interface CRCHCharacterSetRules
 + (id)sharedCharacterSetRules;
-+ (unint64_t)characterType:(unsigned int)a3;
++ (unint64_t)characterType:(unsigned int)type;
 - (CRCHCharacterSetRules)init;
 - (id).cxx_construct;
 - (map<unsigned)signatureUniChar;
-- (unint64_t)_characterType:(unsigned int)a3;
+- (unint64_t)_characterType:(unsigned int)type;
 - (void)dealloc;
 - (void)setSignatureUniChar:(map<unsigned)int;
 @end
@@ -28,22 +28,22 @@ CRCHCharacterSetRules *__48__CRCHCharacterSetRules_sharedCharacterSetRules__bloc
   return result;
 }
 
-+ (unint64_t)characterType:(unsigned int)a3
++ (unint64_t)characterType:(unsigned int)type
 {
   v4 = +[CRCHCharacterSetRules sharedCharacterSetRules];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [v4 _charSetRulesQueue];
+  _charSetRulesQueue = [v4 _charSetRulesQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__CRCHCharacterSetRules_characterType___block_invoke;
   block[3] = &unk_1E7BC2878;
   block[4] = v4;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  typeCopy = type;
+  dispatch_sync(_charSetRulesQueue, block);
   v6 = v11[3];
   _Block_object_dispose(&v10, 8);
   return v6;
@@ -81,10 +81,10 @@ uint64_t __39__CRCHCharacterSetRules_characterType___block_invoke(uint64_t a1)
   [(CRCHCharacterSetRules *)&v3 dealloc];
 }
 
-- (unint64_t)_characterType:(unsigned int)a3
+- (unint64_t)_characterType:(unsigned int)type
 {
-  v3 = a3;
-  v16 = a3;
+  typeCopy = type;
+  typeCopy2 = type;
   left = self->_signatureUniChar.__tree_.__end_node_.__left_;
   p_signatureUniChar = &self->_signatureUniChar;
   if (!left)
@@ -96,8 +96,8 @@ uint64_t __39__CRCHCharacterSetRules_characterType___block_invoke(uint64_t a1)
   do
   {
     left_high = HIDWORD(left[3].__left_);
-    v9 = left_high >= a3;
-    v10 = left_high < a3;
+    v9 = left_high >= type;
+    v10 = left_high < type;
     if (v9)
     {
       p_end_node = left;
@@ -107,16 +107,16 @@ uint64_t __39__CRCHCharacterSetRules_characterType___block_invoke(uint64_t a1)
   }
 
   while (left);
-  if (p_end_node == &self->_signatureUniChar.__tree_.__end_node_ || HIDWORD(p_end_node[3].__left_) > a3)
+  if (p_end_node == &self->_signatureUniChar.__tree_.__end_node_ || HIDWORD(p_end_node[3].__left_) > type)
   {
 LABEL_9:
-    v11 = [(NSCharacterSet *)self->_lowercaseCharSet characterIsMember:a3];
-    if ([(NSCharacterSet *)self->_uppercaseCharSet characterIsMember:v3])
+    v11 = [(NSCharacterSet *)self->_lowercaseCharSet characterIsMember:type];
+    if ([(NSCharacterSet *)self->_uppercaseCharSet characterIsMember:typeCopy])
     {
       v11 |= 2u;
     }
 
-    if ([(NSCharacterSet *)self->_middlePunctuationCharSet characterIsMember:v3])
+    if ([(NSCharacterSet *)self->_middlePunctuationCharSet characterIsMember:typeCopy])
     {
       v12 = v11 | 4;
     }
@@ -126,8 +126,8 @@ LABEL_9:
       v12 = v11;
     }
 
-    v13 = [(NSCharacterSet *)self->_endPunctuationCharSet characterIsMember:v3];
-    if ([(NSCharacterSet *)self->_lexiconSkipCharSet characterIsMember:v3]|| v13)
+    v13 = [(NSCharacterSet *)self->_endPunctuationCharSet characterIsMember:typeCopy];
+    if ([(NSCharacterSet *)self->_lexiconSkipCharSet characterIsMember:typeCopy]|| v13)
     {
       v14 = v12 | 8;
     }
@@ -137,13 +137,13 @@ LABEL_9:
       v14 = v12;
     }
 
-    v17 = &v16;
-    *(std::__tree<std::__value_type<unsigned int,int>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,int>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,int>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(p_signatureUniChar, v3) + 8) = v14;
-    v3 = v16;
+    v17 = &typeCopy2;
+    *(std::__tree<std::__value_type<unsigned int,int>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,int>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,int>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(p_signatureUniChar, typeCopy) + 8) = v14;
+    typeCopy = typeCopy2;
   }
 
-  v17 = &v16;
-  return *(std::__tree<std::__value_type<unsigned int,int>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,int>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,int>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(p_signatureUniChar, v3) + 8);
+  v17 = &typeCopy2;
+  return *(std::__tree<std::__value_type<unsigned int,int>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,int>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,int>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(p_signatureUniChar, typeCopy) + 8);
 }
 
 - (map<unsigned)signatureUniChar

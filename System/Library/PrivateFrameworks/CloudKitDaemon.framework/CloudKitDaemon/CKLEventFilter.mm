@@ -1,6 +1,6 @@
 @interface CKLEventFilter
-- (BOOL)matchesEvent:(id)a3;
-- (CKLEventFilter)initWithLogTypes:(unint64_t)a3;
+- (BOOL)matchesEvent:(id)event;
+- (CKLEventFilter)initWithLogTypes:(unint64_t)types;
 - (void)_initFilterDict;
 @end
 
@@ -168,46 +168,46 @@ LABEL_42:
   self->_categoriesBySubsystem = v4;
 }
 
-- (CKLEventFilter)initWithLogTypes:(unint64_t)a3
+- (CKLEventFilter)initWithLogTypes:(unint64_t)types
 {
   v5.receiver = self;
   v5.super_class = CKLEventFilter;
   result = [(CKLEventFilter *)&v5 init];
   if (result)
   {
-    result->_logTypes = a3;
+    result->_logTypes = types;
   }
 
   return result;
 }
 
-- (BOOL)matchesEvent:(id)a3
+- (BOOL)matchesEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_categoriesBySubsystem)
+  eventCopy = event;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_categoriesBySubsystem)
   {
-    objc_msgSend__initFilterDict(v5, v6, v7);
+    objc_msgSend__initFilterDict(selfCopy, v6, v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  if (!v5->_categoriesBySubsystem)
+  if (!selfCopy->_categoriesBySubsystem)
   {
     __assert_rtn("[CKLEventFilter matchesEvent:]", "CKLEventFilter.m", 99, "_categoriesBySubsystem && _categoriesBySubsystem");
   }
 
-  if (objc_msgSend_type(v4, v8, v9) == 1024)
+  if (objc_msgSend_type(eventCopy, v8, v9) == 1024)
   {
-    categoriesBySubsystem = v5->_categoriesBySubsystem;
-    v13 = objc_msgSend_subsystem(v4, v10, v11);
+    categoriesBySubsystem = selfCopy->_categoriesBySubsystem;
+    v13 = objc_msgSend_subsystem(eventCopy, v10, v11);
     v15 = objc_msgSend_objectForKeyedSubscript_(categoriesBySubsystem, v14, v13);
 
-    if (v15 && objc_msgSend_count(v15, v16, v17) && (objc_msgSend_category(v4, v18, v19), v20 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend_containsObject_(v15, v21, v20), v20, v22))
+    if (v15 && objc_msgSend_count(v15, v16, v17) && (objc_msgSend_category(eventCopy, v18, v19), v20 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend_containsObject_(v15, v21, v20), v20, v22))
     {
 
-      v25 = objc_msgSend_processName(v5, v23, v24);
+      v25 = objc_msgSend_processName(selfCopy, v23, v24);
 
       if (!v25)
       {
@@ -215,8 +215,8 @@ LABEL_42:
         goto LABEL_13;
       }
 
-      v15 = objc_msgSend_process(v4, v26, v27);
-      v30 = objc_msgSend_processName(v5, v28, v29);
+      v15 = objc_msgSend_process(eventCopy, v26, v27);
+      v30 = objc_msgSend_processName(selfCopy, v28, v29);
       isEqualToString = objc_msgSend_isEqualToString_(v15, v31, v30);
     }
 

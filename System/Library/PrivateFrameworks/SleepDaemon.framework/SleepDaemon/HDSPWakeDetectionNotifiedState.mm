@@ -10,18 +10,18 @@
 - (id)expirationDate
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  v5 = [v4 currentDate];
-  v6 = [v4 sleepScheduleModel];
-  v7 = [v4 currentDate];
-  v8 = [v6 nextEventDueAfterDate:v7];
+  currentDate = [infoProvider currentDate];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
+  currentDate2 = [infoProvider currentDate];
+  v8 = [sleepScheduleModel nextEventDueAfterDate:currentDate2];
 
-  v9 = [(HKSPPersistentStateMachineState *)self lifetimeInterval];
-  v10 = [v9 endDate];
+  lifetimeInterval = [(HKSPPersistentStateMachineState *)self lifetimeInterval];
+  endDate = [lifetimeInterval endDate];
 
-  if (v10 && ([v8 dueDate], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hksp_isAfterDate:", v10), v11, v12))
+  if (endDate && ([v8 dueDate], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "hksp_isAfterDate:", endDate), v11, v12))
   {
     v13 = HKSPLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -32,15 +32,15 @@
       _os_log_impl(&dword_269B11000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] wakeup has changed to be later, treating state as expired", &v19, 0xCu);
     }
 
-    v15 = v5;
+    dueDate = currentDate;
   }
 
   else
   {
-    v15 = [v8 dueDate];
+    dueDate = [v8 dueDate];
   }
 
-  v16 = v15;
+  v16 = dueDate;
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -50,17 +50,17 @@
 - (void)didEnter
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 currentContext];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
 
-  if ([v4 hasStateTransitionOrInitializing])
+  if ([currentContext hasStateTransitionOrInitializing])
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [v4 type]) != 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [currentContext type]) != 0)
     {
       v6 = v5;
-      v7 = [(HKSPStateMachineState *)self stateMachine];
-      [v7 postWakeDetectionNotification:v6];
+      stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+      [stateMachine2 postWakeDetectionNotification:v6];
     }
 
     else
@@ -93,10 +93,10 @@
       _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] wake detection disabled after notifying", &v9, 0xCu);
     }
 
-    v5 = [(HKSPStateMachineState *)self stateMachine];
-    v6 = [(HKSPStateMachineState *)self stateMachine];
-    v7 = [v6 disabledState];
-    [v5 enterState:v7];
+    stateMachine = [(HKSPStateMachineState *)self stateMachine];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    disabledState = [stateMachine2 disabledState];
+    [stateMachine enterState:disabledState];
   }
 
   v8 = *MEMORY[0x277D85DE8];

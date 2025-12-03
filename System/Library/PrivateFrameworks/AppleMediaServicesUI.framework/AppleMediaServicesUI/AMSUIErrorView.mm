@@ -1,42 +1,42 @@
 @interface AMSUIErrorView
-+ (id)_sanitizeTitle:(id)a3;
-- (AMSUIErrorView)initWithFrame:(CGRect)a3 title:(id)a4;
++ (id)_sanitizeTitle:(id)title;
+- (AMSUIErrorView)initWithFrame:(CGRect)frame title:(id)title;
 - (NSString)buttonTitle;
 - (NSString)message;
 - (NSString)title;
 - (void)_handleButtonTap;
 - (void)layoutSubviews;
-- (void)setButtonAction:(id)a3;
-- (void)setButtonTitle:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setButtonAction:(id)action;
+- (void)setButtonTitle:(id)title;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
 @end
 
 @implementation AMSUIErrorView
 
-- (AMSUIErrorView)initWithFrame:(CGRect)a3 title:(id)a4
+- (AMSUIErrorView)initWithFrame:(CGRect)frame title:(id)title
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  titleCopy = title;
   v16.receiver = self;
   v16.super_class = AMSUIErrorView;
-  v10 = [(AMSUICommonView *)&v16 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(AMSUICommonView *)&v16 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [AMSUIErrorView _sanitizeTitle:v9];
-    v12 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
-    [v12 setText:v11];
-    v13 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:v12];
-    backingView = v10->_backingView;
-    v10->_backingView = v13;
+    v11 = [AMSUIErrorView _sanitizeTitle:titleCopy];
+    emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+    [emptyConfiguration setText:v11];
+    v13 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:emptyConfiguration];
+    backingView = height->_backingView;
+    height->_backingView = v13;
 
-    [(AMSUIErrorView *)v10 addSubview:v10->_backingView];
+    [(AMSUIErrorView *)height addSubview:height->_backingView];
   }
 
-  return v10;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -49,117 +49,117 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AMSUIErrorView *)self backingView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backingView = [(AMSUIErrorView *)self backingView];
+  [backingView setFrame:{v4, v6, v8, v10}];
 }
 
 - (NSString)buttonTitle
 {
-  v2 = [(AMSUIErrorView *)self backingView];
-  v3 = [v2 configuration];
-  v4 = [v3 button];
-  v5 = [v4 title];
+  backingView = [(AMSUIErrorView *)self backingView];
+  configuration = [backingView configuration];
+  button = [configuration button];
+  title = [button title];
 
-  return v5;
+  return title;
 }
 
 - (NSString)message
 {
-  v2 = [(AMSUIErrorView *)self backingView];
-  v3 = [v2 configuration];
-  v4 = [v3 secondaryText];
+  backingView = [(AMSUIErrorView *)self backingView];
+  configuration = [backingView configuration];
+  secondaryText = [configuration secondaryText];
 
-  return v4;
+  return secondaryText;
 }
 
 - (NSString)title
 {
-  v2 = [(AMSUIErrorView *)self backingView];
-  v3 = [v2 configuration];
-  v4 = [v3 button];
-  v5 = [v4 title];
+  backingView = [(AMSUIErrorView *)self backingView];
+  configuration = [backingView configuration];
+  button = [configuration button];
+  title = [button title];
 
-  return v5;
+  return title;
 }
 
-- (void)setButtonAction:(id)a3
+- (void)setButtonAction:(id)action
 {
-  v4 = a3;
-  v5 = [(AMSUIErrorView *)self backingView];
-  v6 = [v5 configuration];
-  v7 = [v6 copy];
+  actionCopy = action;
+  backingView = [(AMSUIErrorView *)self backingView];
+  configuration = [backingView configuration];
+  v7 = [configuration copy];
 
   v8 = MEMORY[0x1E69DC628];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __34__AMSUIErrorView_setButtonAction___block_invoke;
   v13[3] = &unk_1E7F24D78;
-  v14 = v4;
-  v9 = v4;
+  v14 = actionCopy;
+  v9 = actionCopy;
   v10 = [v8 actionWithHandler:v13];
-  v11 = [v7 buttonProperties];
-  [v11 setPrimaryAction:v10];
+  buttonProperties = [v7 buttonProperties];
+  [buttonProperties setPrimaryAction:v10];
 
-  v12 = [(AMSUIErrorView *)self backingView];
-  [v12 setConfiguration:v7];
+  backingView2 = [(AMSUIErrorView *)self backingView];
+  [backingView2 setConfiguration:v7];
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(AMSUIErrorView *)self backingView];
-  v6 = [v5 configuration];
-  v9 = [v6 copy];
+  titleCopy = title;
+  backingView = [(AMSUIErrorView *)self backingView];
+  configuration = [backingView configuration];
+  v9 = [configuration copy];
 
-  v7 = [v9 button];
-  [v7 setTitle:v4];
+  button = [v9 button];
+  [button setTitle:titleCopy];
 
-  v8 = [(AMSUIErrorView *)self backingView];
-  [v8 setConfiguration:v9];
+  backingView2 = [(AMSUIErrorView *)self backingView];
+  [backingView2 setConfiguration:v9];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(AMSUIErrorView *)self backingView];
-  v6 = [v5 configuration];
-  v8 = [v6 copy];
+  messageCopy = message;
+  backingView = [(AMSUIErrorView *)self backingView];
+  configuration = [backingView configuration];
+  v8 = [configuration copy];
 
-  [v8 setSecondaryText:v4];
-  v7 = [(AMSUIErrorView *)self backingView];
-  [v7 setConfiguration:v8];
+  [v8 setSecondaryText:messageCopy];
+  backingView2 = [(AMSUIErrorView *)self backingView];
+  [backingView2 setConfiguration:v8];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v9 = [objc_opt_class() _sanitizeTitle:v4];
+  titleCopy = title;
+  v9 = [objc_opt_class() _sanitizeTitle:titleCopy];
 
-  v5 = [(AMSUIErrorView *)self backingView];
-  v6 = [v5 configuration];
-  v7 = [v6 copy];
+  backingView = [(AMSUIErrorView *)self backingView];
+  configuration = [backingView configuration];
+  v7 = [configuration copy];
 
   [v7 setText:v9];
-  v8 = [(AMSUIErrorView *)self backingView];
-  [v8 setConfiguration:v7];
+  backingView2 = [(AMSUIErrorView *)self backingView];
+  [backingView2 setConfiguration:v7];
 }
 
 - (void)_handleButtonTap
 {
-  v3 = [(AMSUIErrorView *)self buttonAction];
+  buttonAction = [(AMSUIErrorView *)self buttonAction];
 
-  if (v3)
+  if (buttonAction)
   {
-    v4 = [(AMSUIErrorView *)self buttonAction];
-    v4[2]();
+    buttonAction2 = [(AMSUIErrorView *)self buttonAction];
+    buttonAction2[2]();
   }
 }
 
-+ (id)_sanitizeTitle:(id)a3
++ (id)_sanitizeTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
-    return a3;
+    return title;
   }
 
   else

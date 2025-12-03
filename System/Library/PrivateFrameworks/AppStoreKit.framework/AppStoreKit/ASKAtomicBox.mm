@@ -1,22 +1,22 @@
 @interface ASKAtomicBox
-- (ASKAtomicBox)initWithValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASKAtomicBox)initWithValue:(id)value;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation ASKAtomicBox
 
-- (ASKAtomicBox)initWithValue:(id)a3
+- (ASKAtomicBox)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v8.receiver = self;
   v8.super_class = ASKAtomicBox;
   v5 = [(ASKAtomicBox *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ASKAtomicBox *)v5 setValue:v4];
+    [(ASKAtomicBox *)v5 setValue:valueCopy];
   }
 
   return v6;
@@ -25,38 +25,38 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(ASKAtomicBox *)self value];
-  v4 = [v2 stringWithFormat:@"AtomicBox(%@)", v3];
+  value = [(ASKAtomicBox *)self value];
+  v4 = [v2 stringWithFormat:@"AtomicBox(%@)", value];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(ASKAtomicBox *)self value];
-  v3 = [v2 hash];
+  value = [(ASKAtomicBox *)self value];
+  v3 = [value hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v8 = 1;
     }
 
     else
     {
-      v5 = v4;
-      v6 = [(ASKAtomicBox *)self value];
-      v7 = [(ASKAtomicBox *)v5 value];
+      v5 = equalCopy;
+      value = [(ASKAtomicBox *)self value];
+      value2 = [(ASKAtomicBox *)v5 value];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [value isEqual:value2];
     }
   }
 

@@ -2,22 +2,22 @@
 + (MagnifierAssetsManager)sharedInstance;
 - (MagnifierAssetsManager)init;
 - (MagnifierAssetsManagerDelegate)delegate;
-- (double)totalDownloadedWithName:(id)a3;
-- (id)_modelURLForType:(unint64_t)a3 baseURL:(id)a4;
-- (id)assetPropertiesForModelType:(unint64_t)a3;
-- (id)baseURLForType:(unint64_t)a3;
-- (id)downloadAssetsWithName:(id)a3;
-- (id)modelURLForType:(unint64_t)a3 timeout:(double)a4;
-- (int64_t)totalSizeExpectedWithName:(id)a3;
-- (int64_t)totalSizeOccupiedWithName:(id)a3;
-- (void)_performWithLock:(id)a3;
-- (void)_updateAsset:(id)a3;
-- (void)_updateDownloadedValuesForAsset:(id)a3;
-- (void)assetController:(id)a3 asset:(id)a4 downloadProgressTotalWritten:(int64_t)a5 totalExpected:(int64_t)a6 isStalled:(BOOL)a7 expectedTimeRemaining:(double)a8;
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7;
-- (void)assetController:(id)a3 didFinishPurgingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
-- (void)manageImageCaptionModelAssets:(id)a3;
+- (double)totalDownloadedWithName:(id)name;
+- (id)_modelURLForType:(unint64_t)type baseURL:(id)l;
+- (id)assetPropertiesForModelType:(unint64_t)type;
+- (id)baseURLForType:(unint64_t)type;
+- (id)downloadAssetsWithName:(id)name;
+- (id)modelURLForType:(unint64_t)type timeout:(double)timeout;
+- (int64_t)totalSizeExpectedWithName:(id)name;
+- (int64_t)totalSizeOccupiedWithName:(id)name;
+- (void)_performWithLock:(id)lock;
+- (void)_updateAsset:(id)asset;
+- (void)_updateDownloadedValuesForAsset:(id)asset;
+- (void)assetController:(id)controller asset:(id)asset downloadProgressTotalWritten:(int64_t)written totalExpected:(int64_t)expected isStalled:(BOOL)stalled expectedTimeRemaining:(double)remaining;
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads;
+- (void)assetController:(id)controller didFinishPurgingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error;
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error;
+- (void)manageImageCaptionModelAssets:(id)assets;
 @end
 
 @implementation MagnifierAssetsManager
@@ -48,9 +48,9 @@ void __40__MagnifierAssetsManager_sharedInstance__block_invoke()
   v2 = [(MagnifierAssetsManager *)&v24 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CE66A0] policy];
+    policy = [MEMORY[0x277CE66A0] policy];
     assetPolicy = v2->_assetPolicy;
-    v2->_assetPolicy = v3;
+    v2->_assetPolicy = policy;
 
     v5 = [MEMORY[0x277CE6668] assetControllerWithPolicy:v2->_assetPolicy qosClass:25];
     assetController = v2->_assetController;
@@ -83,8 +83,8 @@ void __40__MagnifierAssetsManager_sharedInstance__block_invoke()
     v2->_assetDownloadPercent = v17;
 
     v19 = MEMORY[0x277CE6668];
-    v20 = [MEMORY[0x277CE6698] policy];
-    v21 = [v19 assetControllerWithPolicy:v20 qosClass:25];
+    policy2 = [MEMORY[0x277CE6698] policy];
+    v21 = [v19 assetControllerWithPolicy:policy2 qosClass:25];
     imageCaptionAssetController = v2->_imageCaptionAssetController;
     v2->_imageCaptionAssetController = v21;
 
@@ -95,9 +95,9 @@ void __40__MagnifierAssetsManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)baseURLForType:(unint64_t)a3
+- (id)baseURLForType:(unint64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v5 = 104;
 LABEL_5:
@@ -106,7 +106,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = 120;
     goto LABEL_5;
@@ -117,13 +117,13 @@ LABEL_5:
   return v6;
 }
 
-- (id)modelURLForType:(unint64_t)a3 timeout:(double)a4
+- (id)modelURLForType:(unint64_t)type timeout:(double)timeout
 {
-  v6 = [(MagnifierAssetsManager *)self baseURLForType:a4];
+  v6 = [(MagnifierAssetsManager *)self baseURLForType:timeout];
   if (v6)
   {
     self->_assetDownloadFailed = 0;
-    v7 = [(MagnifierAssetsManager *)self _modelURLForType:a3 baseURL:v6];
+    v7 = [(MagnifierAssetsManager *)self _modelURLForType:type baseURL:v6];
   }
 
   else
@@ -135,16 +135,16 @@ LABEL_5:
   return v7;
 }
 
-- (id)downloadAssetsWithName:(id)a3
+- (id)downloadAssetsWithName:(id)name
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [(AXMagnifierAssetPolicy *)self->_assetPolicy assetsToDownloadFromRefreshedAssets:self->_cachedDownloadableAssets];
   assetsNeedingDownload = self->_assetsNeedingDownload;
   self->_assetsNeedingDownload = v5;
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v25 = v4;
+  v25 = nameCopy;
   if ([(NSArray *)self->_assetsNeedingDownload count])
   {
     v31 = 0u;
@@ -167,16 +167,16 @@ LABEL_5:
           }
 
           v11 = *(*(&v29 + 1) + 8 * i);
-          v12 = [v11 properties];
-          v13 = [v12 objectForKeyedSubscript:@"AssetName"];
-          v14 = [v13 isEqualToString:v4];
+          properties = [v11 properties];
+          v13 = [properties objectForKeyedSubscript:@"AssetName"];
+          v14 = [v13 isEqualToString:nameCopy];
 
           if (v14)
           {
             assetDownloadPercent = self->_assetDownloadPercent;
             v16 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
-            v17 = [v11 properties];
-            v18 = [v17 objectForKeyedSubscript:@"AssetName"];
+            properties2 = [v11 properties];
+            v18 = [properties2 objectForKeyedSubscript:@"AssetName"];
             [(NSDictionary *)assetDownloadPercent setValue:v16 forKey:v18];
 
             assetController = self->_assetController;
@@ -192,7 +192,7 @@ LABEL_5:
             v21 = [v7 arrayByAddingObject:v11];
 
             v7 = v21;
-            v4 = v25;
+            nameCopy = v25;
           }
         }
 
@@ -209,7 +209,7 @@ LABEL_5:
     v23 = [MEMORY[0x277CCABB0] numberWithDouble:100.0];
     [(NSDictionary *)v22 setValue:v23 forKey:v25];
 
-    v4 = v25;
+    nameCopy = v25;
   }
 
   return v7;
@@ -224,43 +224,43 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
   }
 }
 
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error
 {
-  v7 = a5;
+  successfulCopy = successful;
   v109 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  controllerCopy = controller;
+  assetsCopy = assets;
+  errorCopy = error;
   v13 = AXLogAssetLoader();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v104 = self;
+    selfCopy2 = self;
     v105 = 2112;
-    v106 = v11;
+    v106 = assetsCopy;
     v107 = 2112;
-    v108 = v12;
+    v108 = errorCopy;
     _os_log_impl(&dword_257BAC000, v13, OS_LOG_TYPE_INFO, "[%@]: didFinishRefreshingAssets: (%@). error: %@", buf, 0x20u);
   }
 
-  if (v7)
+  if (successfulCopy)
   {
-    if ([v11 count] && (objc_msgSend(v11, "objectAtIndexedSubscript:", 0), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "assetType"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", @"com.apple.MobileAsset.ImageCaptionModel"), v15, v14, v16))
+    if ([assetsCopy count] && (objc_msgSend(assetsCopy, "objectAtIndexedSubscript:", 0), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "assetType"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToString:", @"com.apple.MobileAsset.ImageCaptionModel"), v15, v14, v16))
     {
-      [(MagnifierAssetsManager *)self manageImageCaptionModelAssets:v11];
+      [(MagnifierAssetsManager *)self manageImageCaptionModelAssets:assetsCopy];
     }
 
     else
     {
-      v66 = v12;
-      v68 = v10;
+      v66 = errorCopy;
+      v68 = controllerCopy;
       v74 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v94 = 0u;
       v95 = 0u;
       v96 = 0u;
       v97 = 0u;
-      v67 = v11;
-      v18 = v11;
+      v67 = assetsCopy;
+      v18 = assetsCopy;
       v19 = [v18 countByEnumeratingWithState:&v94 objects:v102 count:16];
       if (v19)
       {
@@ -287,18 +287,18 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
             if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v104 = self;
+              selfCopy2 = self;
               v105 = 2112;
               v106 = v24;
               _os_log_impl(&dword_257BAC000, v26, OS_LOG_TYPE_INFO, "[%@]: Refreshed Assets:\n%@", buf, 0x16u);
             }
 
             expectedDownloadSizes = self->_expectedDownloadSizes;
-            v28 = [v25 downloadSize];
+            downloadSize = [v25 downloadSize];
             [v25 properties];
             v29 = v77 = v25;
             v30 = [v29 objectForKeyedSubscript:@"AssetName"];
-            [(NSDictionary *)expectedDownloadSizes setValue:v28 forKey:v30];
+            [(NSDictionary *)expectedDownloadSizes setValue:downloadSize forKey:v30];
 
             v31 = v25;
             v32 = [(NSArray *)self->_cachedDownloadableAssets arrayByAddingObject:v25];
@@ -316,8 +316,8 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
 
             else
             {
-              v35 = [v25 properties];
-              v36 = [v35 objectForKeyedSubscript:@"AssetName"];
+              properties = [v25 properties];
+              v36 = [properties objectForKeyedSubscript:@"AssetName"];
               v37 = [(MagnifierAssetsManager *)self downloadAssetsWithName:v36];
 
               v92 = 0u;
@@ -348,10 +348,10 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
                     v89[5] = v42;
                     [(MagnifierAssetsManager *)self _performWithLock:v89];
                     totalInstalledSizes = self->_totalInstalledSizes;
-                    v44 = [v42 downloadSize];
-                    v45 = [v42 properties];
-                    v46 = [v45 objectForKeyedSubscript:@"AssetName"];
-                    [(NSDictionary *)totalInstalledSizes setValue:v44 forKey:v46];
+                    downloadSize2 = [v42 downloadSize];
+                    properties2 = [v42 properties];
+                    v46 = [properties2 objectForKeyedSubscript:@"AssetName"];
+                    [(NSDictionary *)totalInstalledSizes setValue:downloadSize2 forKey:v46];
                   }
 
                   v39 = [v34 countByEnumeratingWithState:&v90 objects:v101 count:16];
@@ -366,8 +366,8 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
               v31 = v77;
             }
 
-            v47 = [MEMORY[0x277CE6670] store];
-            [v47 recordLastAssetAccess:v31];
+            store = [MEMORY[0x277CE6670] store];
+            [store recordLastAssetAccess:v31];
 
             v88[0] = MEMORY[0x277D85DD0];
             v88[1] = 3221225472;
@@ -415,8 +415,8 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
               v52 = [MEMORY[0x277CBEA60] arrayWithObjects:&v99 count:1];
               [(AXAssetController *)assetController purgeAssets:v52 completion:0];
 
-              v53 = [v50 properties];
-              v54 = [v53 objectForKeyedSubscript:@"AssetName"];
+              properties3 = [v50 properties];
+              v54 = [properties3 objectForKeyedSubscript:@"AssetName"];
               v55 = [(MagnifierAssetsManager *)self downloadAssetsWithName:v54];
 
               v82 = 0u;
@@ -447,10 +447,10 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
                     v79[5] = v61;
                     [(MagnifierAssetsManager *)self _performWithLock:v79];
                     v62 = self->_totalInstalledSizes;
-                    v63 = [v61 downloadSize];
-                    v64 = [v61 properties];
-                    v65 = [v64 objectForKeyedSubscript:@"AssetName"];
-                    [(NSDictionary *)v62 setValue:v63 forKey:v65];
+                    downloadSize3 = [v61 downloadSize];
+                    properties4 = [v61 properties];
+                    v65 = [properties4 objectForKeyedSubscript:@"AssetName"];
+                    [(NSDictionary *)v62 setValue:downloadSize3 forKey:v65];
                   }
 
                   v58 = [v56 countByEnumeratingWithState:&v80 objects:v98 count:16];
@@ -474,9 +474,9 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
 
       self->_assetDownloadFailed = 0;
 
-      v11 = v67;
-      v10 = v68;
-      v12 = v66;
+      assetsCopy = v67;
+      controllerCopy = v68;
+      errorCopy = v66;
     }
   }
 
@@ -491,35 +491,35 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
   }
 }
 
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads
 {
-  v8 = a5;
+  successfulCopy = successful;
   v22 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  if (v8)
+  assetCopy = asset;
+  errorCopy = error;
+  if (successfulCopy)
   {
     v12 = AXLogAssetLoader();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v18 = 138412546;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v10;
+      v21 = assetCopy;
       _os_log_impl(&dword_257BAC000, v12, OS_LOG_TYPE_INFO, "[%@]:  Downloaded Asset:\n%@", &v18, 0x16u);
     }
 
-    v13 = [v10 assetType];
-    v14 = [v13 isEqualToString:@"com.apple.MobileAsset.ImageCaptionModel"];
+    assetType = [assetCopy assetType];
+    v14 = [assetType isEqualToString:@"com.apple.MobileAsset.ImageCaptionModel"];
 
     if ((v14 & 1) == 0)
     {
-      [(MagnifierAssetsManager *)self _updateAsset:v10];
-      v15 = [(NSArray *)self->_cachedAssets arrayByAddingObject:v10];
+      [(MagnifierAssetsManager *)self _updateAsset:assetCopy];
+      v15 = [(NSArray *)self->_cachedAssets arrayByAddingObject:assetCopy];
       cachedAssets = self->_cachedAssets;
       self->_cachedAssets = v15;
 
-      [(MagnifierAssetsManager *)self _updateDownloadedValuesForAsset:v10];
+      [(MagnifierAssetsManager *)self _updateDownloadedValuesForAsset:assetCopy];
       self->_assetDownloadFailed = 0;
     }
   }
@@ -535,46 +535,46 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
   }
 }
 
-- (void)assetController:(id)a3 asset:(id)a4 downloadProgressTotalWritten:(int64_t)a5 totalExpected:(int64_t)a6 isStalled:(BOOL)a7 expectedTimeRemaining:(double)a8
+- (void)assetController:(id)controller asset:(id)asset downloadProgressTotalWritten:(int64_t)written totalExpected:(int64_t)expected isStalled:(BOOL)stalled expectedTimeRemaining:(double)remaining
 {
   v27 = *MEMORY[0x277D85DE8];
-  v11 = a4;
+  assetCopy = asset;
   v12 = AXLogAssetLoader();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v19 = 138413058;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v11;
+    v22 = assetCopy;
     v23 = 2048;
-    v24 = a5;
+    writtenCopy = written;
     v25 = 2048;
-    v26 = a6;
+    expectedCopy = expected;
     _os_log_impl(&dword_257BAC000, v12, OS_LOG_TYPE_INFO, "[%@]: Downloading Asset:\n%@ %lld written, %lld expected.", &v19, 0x2Au);
   }
 
-  v13 = [v11 assetType];
-  v14 = [v13 isEqualToString:@"com.apple.MobileAsset.ImageCaptionModel"];
+  assetType = [assetCopy assetType];
+  v14 = [assetType isEqualToString:@"com.apple.MobileAsset.ImageCaptionModel"];
 
   if ((v14 & 1) == 0)
   {
     assetDownloadPercent = self->_assetDownloadPercent;
-    v16 = [MEMORY[0x277CCABB0] numberWithDouble:a5 / a6];
-    v17 = [v11 properties];
-    v18 = [v17 objectForKeyedSubscript:@"AssetName"];
-    [(NSDictionary *)assetDownloadPercent setValue:v16 forKey:v18];
+    expected = [MEMORY[0x277CCABB0] numberWithDouble:written / expected];
+    properties = [assetCopy properties];
+    v18 = [properties objectForKeyedSubscript:@"AssetName"];
+    [(NSDictionary *)assetDownloadPercent setValue:expected forKey:v18];
   }
 }
 
-- (void)assetController:(id)a3 didFinishPurgingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)assetController:(id)controller didFinishPurgingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error
 {
-  v7 = a5;
+  successfulCopy = successful;
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
+  assetsCopy = assets;
+  errorCopy = error;
   v11 = AXLogAssetLoader();
   v12 = v11;
-  if (v10)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -585,30 +585,30 @@ void __49__MagnifierAssetsManager_downloadAssetsWithName___block_invoke(uint64_t
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412802;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
-    v16 = [v9 count];
+    v16 = [assetsCopy count];
     v17 = 1024;
-    v18 = v7;
+    v18 = successfulCopy;
     _os_log_debug_impl(&dword_257BAC000, v12, OS_LOG_TYPE_DEBUG, "[%@]: %lu number of assets purged. Success status: %d", &v13, 0x1Cu);
   }
 }
 
-- (id)_modelURLForType:(unint64_t)a3 baseURL:(id)a4
+- (id)_modelURLForType:(unint64_t)type baseURL:(id)l
 {
-  v5 = a4;
-  v6 = v5;
-  if (!a3)
+  lCopy = l;
+  v6 = lCopy;
+  if (!type)
   {
     v7 = @"DoorAttributesClassifier.mlmodel";
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v7 = @"SignDetector.mlmodel";
 LABEL_5:
-    v8 = [v5 URLByAppendingPathComponent:v7];
+    v8 = [lCopy URLByAppendingPathComponent:v7];
     goto LABEL_7;
   }
 
@@ -618,16 +618,16 @@ LABEL_7:
   return v8;
 }
 
-- (id)assetPropertiesForModelType:(unint64_t)a3
+- (id)assetPropertiesForModelType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v3 = [(MagnifierAssetsManager *)self signDetectorAssetProperties];
+    signDetectorAssetProperties = [(MagnifierAssetsManager *)self signDetectorAssetProperties];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       [MEMORY[0x277CBEAC0] dictionary];
     }
@@ -636,26 +636,26 @@ LABEL_7:
     {
       [(MagnifierAssetsManager *)self doorAttributesAssetProperties];
     }
-    v3 = ;
+    signDetectorAssetProperties = ;
   }
 
-  return v3;
+  return signDetectorAssetProperties;
 }
 
-- (void)_updateAsset:(id)a3
+- (void)_updateAsset:(id)asset
 {
-  v13 = a3;
-  v4 = [v13 properties];
-  v5 = [v4 objectForKeyedSubscript:@"AssetName"];
+  assetCopy = asset;
+  properties = [assetCopy properties];
+  v5 = [properties objectForKeyedSubscript:@"AssetName"];
 
   if ([v5 isEqualToString:@"DoorAttributesClassifier"])
   {
-    v6 = [v13 localURL];
-    v7 = [v6 copy];
+    localURL = [assetCopy localURL];
+    v7 = [localURL copy];
     [(MagnifierAssetsManager *)self setDoorAttributesBaseURL:v7];
 
-    v8 = [v13 properties];
-    v9 = [v8 copy];
+    properties2 = [assetCopy properties];
+    v9 = [properties2 copy];
     [(MagnifierAssetsManager *)self setDoorAttributesAssetProperties:v9];
   }
 
@@ -666,68 +666,68 @@ LABEL_7:
       goto LABEL_6;
     }
 
-    v10 = [v13 localURL];
-    v11 = [v10 copy];
+    localURL2 = [assetCopy localURL];
+    v11 = [localURL2 copy];
     [(MagnifierAssetsManager *)self setSignDetectorBaseURL:v11];
 
-    v8 = [v13 properties];
-    v9 = [v8 copy];
+    properties2 = [assetCopy properties];
+    v9 = [properties2 copy];
     [(MagnifierAssetsManager *)self setSignDetectorAssetProperties:v9];
   }
 
 LABEL_6:
-  v12 = [(MagnifierAssetsManager *)self delegate];
-  [v12 updateAssetURLs];
+  delegate = [(MagnifierAssetsManager *)self delegate];
+  [delegate updateAssetURLs];
 }
 
-- (void)_performWithLock:(id)a3
+- (void)_performWithLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (int64_t)totalSizeOccupiedWithName:(id)a3
+- (int64_t)totalSizeOccupiedWithName:(id)name
 {
-  v3 = [(NSDictionary *)self->_totalInstalledSizes objectForKeyedSubscript:a3];
-  v4 = [v3 longLongValue];
+  v3 = [(NSDictionary *)self->_totalInstalledSizes objectForKeyedSubscript:name];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (int64_t)totalSizeExpectedWithName:(id)a3
+- (int64_t)totalSizeExpectedWithName:(id)name
 {
-  v3 = [(NSDictionary *)self->_expectedDownloadSizes objectForKeyedSubscript:a3];
-  v4 = [v3 longLongValue];
+  v3 = [(NSDictionary *)self->_expectedDownloadSizes objectForKeyedSubscript:name];
+  longLongValue = [v3 longLongValue];
 
-  return v4;
+  return longLongValue;
 }
 
-- (double)totalDownloadedWithName:(id)a3
+- (double)totalDownloadedWithName:(id)name
 {
-  v3 = [(NSDictionary *)self->_assetDownloadPercent objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_assetDownloadPercent objectForKeyedSubscript:name];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)_updateDownloadedValuesForAsset:(id)a3
+- (void)_updateDownloadedValuesForAsset:(id)asset
 {
   totalInstalledSizes = self->_totalInstalledSizes;
-  v5 = a3;
-  v6 = [v5 downloadSize];
-  v7 = [v5 properties];
-  v8 = [v7 objectForKeyedSubscript:@"AssetName"];
-  [(NSDictionary *)totalInstalledSizes setValue:v6 forKey:v8];
+  assetCopy = asset;
+  downloadSize = [assetCopy downloadSize];
+  properties = [assetCopy properties];
+  v8 = [properties objectForKeyedSubscript:@"AssetName"];
+  [(NSDictionary *)totalInstalledSizes setValue:downloadSize forKey:v8];
 
   assetDownloadPercent = self->_assetDownloadPercent;
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:100.0];
-  v10 = [v5 properties];
+  properties2 = [assetCopy properties];
 
-  v11 = [v10 objectForKeyedSubscript:@"AssetName"];
+  v11 = [properties2 objectForKeyedSubscript:@"AssetName"];
   [(NSDictionary *)assetDownloadPercent setValue:v12 forKey:v11];
 }
 
@@ -744,18 +744,18 @@ void __52__MagnifierAssetsManager_downloadImageCaptionAssets__block_invoke(uint6
   }
 }
 
-- (void)manageImageCaptionModelAssets:(id)a3
+- (void)manageImageCaptionModelAssets:(id)assets
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CB84A8] currentLanguageCode];
-  v7 = [v6 componentsSeparatedByString:@"-"];
+  currentLanguageCode = [MEMORY[0x277CB84A8] currentLanguageCode];
+  v7 = [currentLanguageCode componentsSeparatedByString:@"-"];
   if ([v7 count])
   {
     v8 = [v7 objectAtIndex:0];
-    v9 = [MEMORY[0x277CE6660] newsestCompatibleImageCaptionModelAssetFromAssets:v4 withStage:@"Stable" language:v8 isInstalled:1 isDownloadable:0];
-    if (v9 || ([MEMORY[0x277CE6660] newsestCompatibleImageCaptionModelAssetFromAssets:v4 withStage:@"Stable" language:v8 isInstalled:0 isDownloadable:1], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    v9 = [MEMORY[0x277CE6660] newsestCompatibleImageCaptionModelAssetFromAssets:assetsCopy withStage:@"Stable" language:v8 isInstalled:1 isDownloadable:0];
+    if (v9 || ([MEMORY[0x277CE6660] newsestCompatibleImageCaptionModelAssetFromAssets:assetsCopy withStage:@"Stable" language:v8 isInstalled:0 isDownloadable:1], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v10 = v9;
       imageCaptionAssetController = self->_imageCaptionAssetController;

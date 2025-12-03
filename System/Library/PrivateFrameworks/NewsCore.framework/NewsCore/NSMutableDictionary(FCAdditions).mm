@@ -20,7 +20,7 @@
   {
     if (v6)
     {
-      [a1 setObject:v6 forKey:v7];
+      [self setObject:v6 forKey:v7];
       goto LABEL_10;
     }
 
@@ -49,7 +49,7 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    [a1 removeObjectForKey:v7];
+    [self removeObjectForKey:v7];
     goto LABEL_10;
   }
 
@@ -85,8 +85,8 @@ LABEL_10:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [a1 allKeys];
-  v6 = [v5 copy];
+  allKeys = [self allKeys];
+  v6 = [allKeys copy];
 
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
@@ -103,16 +103,16 @@ LABEL_10:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [a1 objectForKeyedSubscript:v11];
+        v12 = [self objectForKeyedSubscript:v11];
         v13 = v4[2](v4, v11, v12);
         if (v13)
         {
-          [a1 setObject:v13 forKeyedSubscript:v11];
+          [self setObject:v13 forKeyedSubscript:v11];
         }
 
         else
         {
-          [a1 removeObjectForKey:0];
+          [self removeObjectForKey:0];
         }
       }
 
@@ -133,12 +133,12 @@ LABEL_10:
   {
     if (v7)
     {
-      [a1 setObject:v7 forKey:v6];
+      [self setObject:v7 forKey:v6];
     }
 
     else
     {
-      [a1 removeObjectForKey:v6];
+      [self removeObjectForKey:v6];
     }
   }
 }
@@ -152,12 +152,12 @@ LABEL_10:
   {
     if (v6)
     {
-      [a1 setObject:v6 forKey:v7];
+      [self setObject:v6 forKey:v7];
     }
 
     else
     {
-      [a1 removeObjectForKey:v7];
+      [self removeObjectForKey:v7];
     }
   }
 
@@ -186,8 +186,8 @@ LABEL_10:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a1 allKeys];
-  v6 = [v5 copy];
+  allKeys = [self allKeys];
+  v6 = [allKeys copy];
 
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
@@ -206,7 +206,7 @@ LABEL_10:
         v11 = *(*(&v13 + 1) + 8 * i);
         if (([v4 containsObject:v11] & 1) == 0)
         {
-          [a1 removeObjectForKey:v11];
+          [self removeObjectForKey:v11];
         }
       }
 
@@ -227,8 +227,8 @@ LABEL_10:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a1 allKeys];
-  v6 = [v5 copy];
+  allKeys = [self allKeys];
+  v6 = [allKeys copy];
 
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
@@ -247,7 +247,7 @@ LABEL_10:
         v11 = *(*(&v13 + 1) + 8 * i);
         if (([v4 containsObject:v11] & 1) == 0)
         {
-          [a1 removeObjectForKey:v11];
+          [self removeObjectForKey:v11];
         }
       }
 
@@ -268,8 +268,8 @@ LABEL_10:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 allKeys];
-  v6 = [v5 copy];
+  allKeys = [self allKeys];
+  v6 = [allKeys copy];
 
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
@@ -286,10 +286,10 @@ LABEL_10:
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [a1 objectForKey:v11];
+        v12 = [self objectForKey:v11];
         if (v4[2](v4, v11, v12))
         {
-          [a1 removeObjectForKey:v11];
+          [self removeObjectForKey:v11];
         }
       }
 
@@ -309,7 +309,7 @@ LABEL_10:
   v8[1] = 3221225472;
   v8[2] = __77__NSMutableDictionary_FCAdditions__fc_mergeWithDictionary_withValueCombiner___block_invoke;
   v8[3] = &unk_1E7C44740;
-  v8[4] = a1;
+  v8[4] = self;
   v9 = v6;
   v7 = v6;
   [a3 enumerateKeysAndObjectsUsingBlock:v8];

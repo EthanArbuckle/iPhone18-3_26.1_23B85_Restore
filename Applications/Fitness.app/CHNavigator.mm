@@ -1,19 +1,19 @@
 @interface CHNavigator
 + (CHNavigator)sharedNavigator;
 + (NSString)scheme;
-- (BOOL)navigateToURL:(id)a3 context:(id)a4;
-- (BOOL)registerURLHandlerWithSlug:(id)a3 behavior:(id)a4 completion:(id)a5;
-- (BOOL)registerURLHandlerWithSlug:(id)a3 completion:(id)a4;
+- (BOOL)navigateToURL:(id)l context:(id)context;
+- (BOOL)registerURLHandlerWithSlug:(id)slug behavior:(id)behavior completion:(id)completion;
+- (BOOL)registerURLHandlerWithSlug:(id)slug completion:(id)completion;
 - (CHNavigator)init;
-- (id)regexFormattedURL:(id)a3;
-- (void)unregister:(id)a3;
+- (id)regexFormattedURL:(id)l;
+- (void)unregister:(id)unregister;
 @end
 
 @implementation CHNavigator
 
-- (BOOL)registerURLHandlerWithSlug:(id)a3 completion:(id)a4
+- (BOOL)registerURLHandlerWithSlug:(id)slug completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = swift_allocObject();
@@ -23,23 +23,23 @@
   v11[OBJC_IVAR___CHNavigatorBehavior_allowedDuringWorkout] = 0;
   v15.receiver = v11;
   v15.super_class = v10;
-  v12 = self;
+  selfCopy = self;
   v13 = [(CHNavigator *)&v15 init];
   LOBYTE(v6) = sub_10003B518(v6, v8, v13, sub_1004DB46C, v9);
 
   return v6 & 1;
 }
 
-- (BOOL)registerURLHandlerWithSlug:(id)a3 behavior:(id)a4 completion:(id)a5
+- (BOOL)registerURLHandlerWithSlug:(id)slug behavior:(id)behavior completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v7;
-  v12 = a4;
-  v13 = self;
-  LOBYTE(v8) = sub_10003B518(v8, v10, v12, sub_1004DB460, v11);
+  behaviorCopy = behavior;
+  selfCopy = self;
+  LOBYTE(v8) = sub_10003B518(v8, v10, behaviorCopy, sub_1004DB460, v11);
 
   return v8 & 1;
 }
@@ -63,33 +63,33 @@
   return v2;
 }
 
-- (void)unregister:(id)a3
+- (void)unregister:(id)unregister
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1004D9E8C(v4, v6);
 }
 
-- (BOOL)navigateToURL:(id)a3 context:(id)a4
+- (BOOL)navigateToURL:(id)l context:(id)context
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a4;
-  v11 = self;
-  LOBYTE(self) = sub_1004DA120(v9, v10);
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(self) = sub_1004DA120(v9, contextCopy);
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (id)regexFormattedURL:(id)a3
+- (id)regexFormattedURL:(id)l
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_100041BB0();
 
   v5 = String._bridgeToObjectiveC()();

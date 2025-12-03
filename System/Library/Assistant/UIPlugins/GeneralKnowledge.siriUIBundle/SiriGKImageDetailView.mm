@@ -1,7 +1,7 @@
 @interface SiriGKImageDetailView
-- (CGSize)_displayedImageSizeForImageSize:(CGSize)result inWidth:(double)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriGKImageDetailView)initWithAceImageView:(id)a3 expectedWidth:(double)a4;
+- (CGSize)_displayedImageSizeForImageSize:(CGSize)result inWidth:(double)width;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriGKImageDetailView)initWithAceImageView:(id)view expectedWidth:(double)width;
 - (SiriGKImageDetailViewDelegate)delegate;
 - (id)_titleLabelAttributes;
 - (id)_urlLabelAttributes;
@@ -11,17 +11,17 @@
 
 @implementation SiriGKImageDetailView
 
-- (SiriGKImageDetailView)initWithAceImageView:(id)a3 expectedWidth:(double)a4
+- (SiriGKImageDetailView)initWithAceImageView:(id)view expectedWidth:(double)width
 {
-  v6 = a3;
+  viewCopy = view;
   v55.receiver = self;
   v55.super_class = SiriGKImageDetailView;
   v7 = [(SiriGKImageDetailView *)&v55 init];
   if (v7)
   {
-    v8 = [v6 image];
+    image = [viewCopy image];
     imageResource = v7->_imageResource;
-    v7->_imageResource = v8;
+    v7->_imageResource = image;
 
     v10 = objc_alloc_init(UIStackView);
     stackView = v7->_stackView;
@@ -46,20 +46,20 @@
 
     [(UIImageView *)v7->_imageView setContentMode:1];
     [(UIStackView *)v7->_stackView addArrangedSubview:v7->_imageView];
-    v49 = v6;
-    v17 = [v6 commands];
-    v18 = [v17 firstObject];
+    v49 = viewCopy;
+    commands = [viewCopy commands];
+    firstObject = [commands firstObject];
 
-    v19 = [v18 subtitle];
-    if ([v19 length])
+    subtitle = [firstObject subtitle];
+    if ([subtitle length])
     {
       v20 = objc_alloc_init(UILabel);
       v21 = +[UIColor clearColor];
       [v20 setBackgroundColor:v21];
 
       v22 = [NSAttributedString alloc];
-      v23 = [(SiriGKImageDetailView *)v7 _titleLabelAttributes];
-      v24 = [v22 initWithString:v19 attributes:v23];
+      _titleLabelAttributes = [(SiriGKImageDetailView *)v7 _titleLabelAttributes];
+      v24 = [v22 initWithString:subtitle attributes:_titleLabelAttributes];
       [v20 setAttributedText:v24];
 
       [v20 setLineBreakMode:4];
@@ -67,18 +67,18 @@
       [(UIStackView *)v7->_stackView addArrangedSubview:v20];
     }
 
-    v25 = [v18 punchOutUri];
-    v26 = [v25 host];
+    punchOutUri = [firstObject punchOutUri];
+    host = [punchOutUri host];
 
-    if ([v26 length])
+    if ([host length])
     {
       v27 = objc_alloc_init(UILabel);
       v28 = +[UIColor clearColor];
       [v27 setBackgroundColor:v28];
 
       v29 = [NSAttributedString alloc];
-      v30 = [(SiriGKImageDetailView *)v7 _urlLabelAttributes];
-      v31 = [v29 initWithString:v26 attributes:v30];
+      _urlLabelAttributes = [(SiriGKImageDetailView *)v7 _urlLabelAttributes];
+      v31 = [v29 initWithString:host attributes:_urlLabelAttributes];
       [v27 setAttributedText:v31];
 
       [v27 setLineBreakMode:4];
@@ -88,8 +88,8 @@
 
     v32 = objc_alloc_init(UIView);
     [(UIStackView *)v7->_stackView addArrangedSubview:v32];
-    v33 = [(SAUIImageResource *)v7->_imageResource resourceUrl];
-    if (v33)
+    resourceUrl = [(SAUIImageResource *)v7->_imageResource resourceUrl];
+    if (resourceUrl)
     {
       v53[0] = 0;
       v53[1] = v53;
@@ -100,7 +100,7 @@
       [(SAUIImageResource *)v7->_imageResource pixelWidth];
       v36 = v35;
       [(SAUIImageResource *)v7->_imageResource pixelHeight];
-      [(SiriGKImageDetailView *)v7 _displayedImageSizeForImageSize:v36 inWidth:v37, a4];
+      [(SiriGKImageDetailView *)v7 _displayedImageSizeForImageSize:v36 inWidth:v37, width];
       v39 = v38;
       v41 = v40;
       v50[0] = _NSConcreteStackBlock;
@@ -109,8 +109,8 @@
       v50[3] = &unk_18568;
       objc_copyWeak(&v51, &location);
       v50[4] = v53;
-      v42 = [(SAUIImageResource *)v7->_imageResource userAgent];
-      v43 = [v34 imageTaskWithHTTPGetRequest:v33 client:v7 fitToSize:1 incremental:v50 progressHandler:0 fillColor:v42 userAgent:{v39, v41}];
+      userAgent = [(SAUIImageResource *)v7->_imageResource userAgent];
+      v43 = [v34 imageTaskWithHTTPGetRequest:resourceUrl client:v7 fitToSize:1 incremental:v50 progressHandler:0 fillColor:userAgent userAgent:{v39, v41}];
 
       objc_destroyWeak(&v51);
       objc_destroyWeak(&location);
@@ -125,7 +125,7 @@
     [(SiriGKImageDetailView *)v7 addSubview:v7->_stackView];
     [(SiriGKImageDetailView *)v7 addSubview:v7->_activityIndicator];
 
-    v6 = v49;
+    viewCopy = v49;
   }
 
   return v7;
@@ -144,10 +144,10 @@
   [(UIActivityIndicatorView *)activityIndicator setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SAUIImageResource *)self->_imageResource pixelHeight:a3.width];
+  width = fits.width;
+  [(SAUIImageResource *)self->_imageResource pixelHeight:fits.width];
   v5 = v4;
   v6 = +[UIScreen mainScreen];
   [v6 scale];
@@ -175,8 +175,8 @@
 
 - (void)_imageButtonTapped
 {
-  v3 = [(SiriGKImageDetailView *)self delegate];
-  [v3 siriGeneralKnowledgeImageDetailViewImageTapped:self];
+  delegate = [(SiriGKImageDetailView *)self delegate];
+  [delegate siriGeneralKnowledgeImageDetailViewImageTapped:self];
 }
 
 - (id)_titleLabelAttributes
@@ -205,14 +205,14 @@
   return v4;
 }
 
-- (CGSize)_displayedImageSizeForImageSize:(CGSize)result inWidth:(double)a4
+- (CGSize)_displayedImageSizeForImageSize:(CGSize)result inWidth:(double)width
 {
-  v4 = result.height * (a4 / result.width);
+  v4 = result.height * (width / result.width);
   v5 = fmax(result.height, 160.0);
-  if (a4 / result.width < 1.0)
+  if (width / result.width < 1.0)
   {
     v5 = v4;
-    result.width = a4;
+    result.width = width;
   }
 
   result.height = v5;

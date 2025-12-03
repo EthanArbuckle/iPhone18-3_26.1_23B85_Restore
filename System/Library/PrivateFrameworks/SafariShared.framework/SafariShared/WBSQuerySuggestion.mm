@@ -1,29 +1,29 @@
 @interface WBSQuerySuggestion
-- (WBSQuerySuggestion)initWithTitle:(id)a3 identifier:(id)a4 type:(int64_t)a5 tag:(id)a6;
+- (WBSQuerySuggestion)initWithTitle:(id)title identifier:(id)identifier type:(int64_t)type tag:(id)tag;
 @end
 
 @implementation WBSQuerySuggestion
 
-- (WBSQuerySuggestion)initWithTitle:(id)a3 identifier:(id)a4 type:(int64_t)a5 tag:(id)a6
+- (WBSQuerySuggestion)initWithTitle:(id)title identifier:(id)identifier type:(int64_t)type tag:(id)tag
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  titleCopy = title;
+  identifierCopy = identifier;
+  tagCopy = tag;
   v20.receiver = self;
   v20.super_class = WBSQuerySuggestion;
   v13 = [(WBSQuerySuggestion *)&v20 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [titleCopy copy];
     title = v13->_title;
     v13->_title = v14;
 
-    v16 = [v11 copy];
+    v16 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v16;
 
-    v13->_type = a5;
-    objc_storeStrong(&v13->_tag, a6);
+    v13->_type = type;
+    objc_storeStrong(&v13->_tag, tag);
     v18 = v13;
   }
 

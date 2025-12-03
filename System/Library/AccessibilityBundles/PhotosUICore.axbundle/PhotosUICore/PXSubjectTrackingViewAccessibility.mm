@@ -1,19 +1,19 @@
 @interface PXSubjectTrackingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation PXSubjectTrackingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXSubjectTrackingView" hasInstanceMethod:@"_axDescriptionForCacheKey:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"PXSubjectTrackingView" hasInstanceMethod:@"setCinematographyFrame:animate:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"PXSubjectTrackingView" hasInstanceMethod:@"detectionViewCache" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXSubjectTrackingView" hasInstanceMethod:@"focusStateBadge" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXSubjectTrackingView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXSubjectTrackingView" hasInstanceMethod:@"_axDescriptionForCacheKey:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"PXSubjectTrackingView" hasInstanceMethod:@"setCinematographyFrame:animate:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"PXSubjectTrackingView" hasInstanceMethod:@"detectionViewCache" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXSubjectTrackingView" hasInstanceMethod:@"focusStateBadge" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXSubjectTrackingView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

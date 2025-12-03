@@ -1,22 +1,22 @@
 @interface AVMutableTimedMetadataGroup
-- (AVMutableTimedMetadataGroup)initWithItems:(id)a3 timeRange:(id *)a4;
+- (AVMutableTimedMetadataGroup)initWithItems:(id)items timeRange:(id *)range;
 - (CMTimeRange)timeRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)setItems:(NSArray *)items;
 - (void)setTimeRange:(CMTimeRange *)timeRange;
 @end
 
 @implementation AVMutableTimedMetadataGroup
 
-- (AVMutableTimedMetadataGroup)initWithItems:(id)a3 timeRange:(id *)a4
+- (AVMutableTimedMetadataGroup)initWithItems:(id)items timeRange:(id *)range
 {
   v9.receiver = self;
   v9.super_class = AVMutableTimedMetadataGroup;
-  v4 = *&a4->var0.var3;
-  v8[0] = *&a4->var0.var0;
+  v4 = *&range->var0.var3;
+  v8[0] = *&range->var0.var0;
   v8[1] = v4;
-  v8[2] = *&a4->var1.var1;
-  v5 = [(AVTimedMetadataGroup *)&v9 initWithItems:a3 timeRange:v8];
+  v8[2] = *&range->var1.var1;
+  v5 = [(AVTimedMetadataGroup *)&v9 initWithItems:items timeRange:v8];
   v6 = v5;
   if (v5)
   {
@@ -66,10 +66,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVTimedMetadataGroup alloc];
-  v5 = [(AVMutableTimedMetadataGroup *)self items];
+  items = [(AVMutableTimedMetadataGroup *)self items];
   if (self)
   {
     [(AVMutableTimedMetadataGroup *)self timeRange];
@@ -80,7 +80,7 @@
     memset(v7, 0, sizeof(v7));
   }
 
-  return [(AVTimedMetadataGroup *)v4 initWithItems:v5 timeRange:v7];
+  return [(AVTimedMetadataGroup *)v4 initWithItems:items timeRange:v7];
 }
 
 @end

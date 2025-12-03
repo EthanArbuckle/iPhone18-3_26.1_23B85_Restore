@@ -1,11 +1,11 @@
 @interface HMDResidentStatus
-- (BOOL)hasChangedFrom:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasChangedFrom:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPrimary;
-- (HMDResidentStatus)initWithChannelRecord:(id)a3;
-- (HMDResidentStatus)initWithIDSIdentifier:(id)a3 idsDestination:(id)a4 version:(id)a5 generationID:(id)a6 assertionTime:(id)a7 preferredResidentsList:(id)a8 selectionInfo:(id)a9 connectionType:(unint64_t)a10 locationRawValue:(id)a11 hasReachableAccessories:(BOOL)a12;
+- (HMDResidentStatus)initWithChannelRecord:(id)record;
+- (HMDResidentStatus)initWithIDSIdentifier:(id)identifier idsDestination:(id)destination version:(id)version generationID:(id)d assertionTime:(id)time preferredResidentsList:(id)list selectionInfo:(id)info connectionType:(unint64_t)self0 locationRawValue:(id)self1 hasReachableAccessories:(BOOL)self2;
 - (id)description;
-- (id)matchingDeviceFromResidentDevices:(id)a3;
+- (id)matchingDeviceFromResidentDevices:(id)devices;
 - (unint64_t)hash;
 @end
 
@@ -14,45 +14,45 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDResidentStatus *)self idsIdentifier];
-  v5 = [(HMDResidentStatus *)self idsDestination];
-  v6 = [(HMDResidentStatus *)self assertionTime];
-  v7 = [(HMDResidentStatus *)self swVersion];
-  v8 = [(HMDResidentStatus *)self generationID];
+  idsIdentifier = [(HMDResidentStatus *)self idsIdentifier];
+  idsDestination = [(HMDResidentStatus *)self idsDestination];
+  assertionTime = [(HMDResidentStatus *)self assertionTime];
+  swVersion = [(HMDResidentStatus *)self swVersion];
+  generationID = [(HMDResidentStatus *)self generationID];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDResidentStatus networkConnectionType](self, "networkConnectionType")}];
   v10 = StringFromHMDResidentLocation([(HMDResidentStatus *)self location]);
-  v11 = [(HMDResidentStatus *)self preferredResidentsList];
-  v12 = [v3 stringWithFormat:@"%@ %@ assertionTime: %@ swVer %@ generationID %@ connectionType %@ location %@ preferredResidentsList %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  preferredResidentsList = [(HMDResidentStatus *)self preferredResidentsList];
+  v12 = [v3 stringWithFormat:@"%@ %@ assertionTime: %@ swVer %@ generationID %@ connectionType %@ location %@ preferredResidentsList %@", idsIdentifier, idsDestination, assertionTime, swVersion, generationID, v9, v10, preferredResidentsList];
 
   return v12;
 }
 
 - (BOOL)isPrimary
 {
-  v2 = [(HMDResidentStatus *)self generationID];
-  v3 = v2 != 0;
+  generationID = [(HMDResidentStatus *)self generationID];
+  v3 = generationID != 0;
 
   return v3;
 }
 
-- (BOOL)hasChangedFrom:(id)a3
+- (BOOL)hasChangedFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(HMDResidentStatus *)self idsIdentifier];
-  v6 = [v4 idsIdentifier];
-  if ([v5 isEqual:v6])
+  fromCopy = from;
+  idsIdentifier = [(HMDResidentStatus *)self idsIdentifier];
+  idsIdentifier2 = [fromCopy idsIdentifier];
+  if ([idsIdentifier isEqual:idsIdentifier2])
   {
-    v7 = [(HMDResidentStatus *)self idsDestination];
-    v8 = [v4 idsDestination];
-    if ([v7 isEqual:v8])
+    idsDestination = [(HMDResidentStatus *)self idsDestination];
+    idsDestination2 = [fromCopy idsDestination];
+    if ([idsDestination isEqual:idsDestination2])
     {
-      v9 = [(HMDResidentStatus *)self swVersion];
-      v10 = [v4 swVersion];
-      if ([v9 isEqual:v10])
+      swVersion = [(HMDResidentStatus *)self swVersion];
+      swVersion2 = [fromCopy swVersion];
+      if ([swVersion isEqual:swVersion2])
       {
-        v26 = v9;
-        v11 = [(HMDResidentStatus *)self generationID];
-        v12 = [v4 generationID];
+        v26 = swVersion;
+        generationID = [(HMDResidentStatus *)self generationID];
+        generationID2 = [fromCopy generationID];
         v13 = HMFEqualObjects();
 
         if (!v13)
@@ -60,8 +60,8 @@
           goto LABEL_13;
         }
 
-        v14 = [(HMDResidentStatus *)self assertionTime];
-        v15 = [v4 assertionTime];
+        assertionTime = [(HMDResidentStatus *)self assertionTime];
+        assertionTime2 = [fromCopy assertionTime];
         v16 = HMFEqualObjects();
 
         if (!v16)
@@ -69,8 +69,8 @@
           goto LABEL_13;
         }
 
-        v17 = [(HMDResidentStatus *)self preferredResidentsList];
-        v18 = [v4 preferredResidentsList];
+        preferredResidentsList = [(HMDResidentStatus *)self preferredResidentsList];
+        preferredResidentsList2 = [fromCopy preferredResidentsList];
         v19 = HMFEqualObjects();
 
         if (!v19)
@@ -78,15 +78,15 @@
           goto LABEL_13;
         }
 
-        v20 = [(HMDResidentStatus *)self networkConnectionType];
-        if (v20 == [v4 networkConnectionType])
+        networkConnectionType = [(HMDResidentStatus *)self networkConnectionType];
+        if (networkConnectionType == [fromCopy networkConnectionType])
         {
-          v21 = [(HMDResidentStatus *)self locationRawValue];
-          v22 = [v4 locationRawValue];
-          if ([v21 isEqualToNumber:v22])
+          locationRawValue = [(HMDResidentStatus *)self locationRawValue];
+          locationRawValue2 = [fromCopy locationRawValue];
+          if ([locationRawValue isEqualToNumber:locationRawValue2])
           {
-            v23 = [(HMDResidentStatus *)self hasReachableAccessories];
-            v24 = v23 ^ [v4 hasReachableAccessories];
+            hasReachableAccessories = [(HMDResidentStatus *)self hasReachableAccessories];
+            v24 = hasReachableAccessories ^ [fromCopy hasReachableAccessories];
           }
 
           else
@@ -94,14 +94,14 @@
             LOBYTE(v24) = 1;
           }
 
-          v9 = v26;
+          swVersion = v26;
         }
 
         else
         {
 LABEL_13:
           LOBYTE(v24) = 1;
-          v9 = v26;
+          swVersion = v26;
         }
       }
 
@@ -127,19 +127,19 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(HMDResidentStatus *)self idsIdentifier];
-  v3 = [v2 hash];
+  idsIdentifier = [(HMDResidentStatus *)self idsIdentifier];
+  v3 = [idsIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -150,13 +150,13 @@ LABEL_13:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDResidentStatus *)self idsIdentifier];
-    v8 = [v6 idsIdentifier];
-    if ([v7 isEqual:v8])
+    idsIdentifier = [(HMDResidentStatus *)self idsIdentifier];
+    idsIdentifier2 = [v6 idsIdentifier];
+    if ([idsIdentifier isEqual:idsIdentifier2])
     {
-      v9 = [(HMDResidentStatus *)self idsDestination];
-      v10 = [v6 idsDestination];
-      v11 = [v9 isEqual:v10];
+      idsDestination = [(HMDResidentStatus *)self idsDestination];
+      idsDestination2 = [v6 idsDestination];
+      v11 = [idsDestination isEqual:idsDestination2];
     }
 
     else
@@ -173,12 +173,12 @@ LABEL_13:
   return v11;
 }
 
-- (id)matchingDeviceFromResidentDevices:(id)a3
+- (id)matchingDeviceFromResidentDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(HMDResidentStatus *)self idsIdentifier];
-  v6 = [(HMDResidentStatus *)self idsDestination];
-  v7 = [HMDDeviceAddress addressWithIDSIdentifier:v5 idsDestination:v6];
+  devicesCopy = devices;
+  idsIdentifier = [(HMDResidentStatus *)self idsIdentifier];
+  idsDestination = [(HMDResidentStatus *)self idsDestination];
+  v7 = [HMDDeviceAddress addressWithIDSIdentifier:idsIdentifier idsDestination:idsDestination];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -186,28 +186,28 @@ LABEL_13:
   v11[3] = &unk_2786850E0;
   v12 = v7;
   v8 = v7;
-  v9 = [v4 na_firstObjectPassingTest:v11];
+  v9 = [devicesCopy na_firstObjectPassingTest:v11];
 
   return v9;
 }
 
-- (HMDResidentStatus)initWithChannelRecord:(id)a3
+- (HMDResidentStatus)initWithChannelRecord:(id)record
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = [v5 hmf_stringForKey:@"residentStatusSwVersionKey"];
+  recordCopy = record;
+  payload = [recordCopy payload];
+  v6 = [payload hmf_stringForKey:@"residentStatusSwVersionKey"];
 
-  v7 = [v4 payload];
-  v8 = [v7 hmf_UUIDForKey:@"residentStatusGenerationIDKey"];
+  payload2 = [recordCopy payload];
+  v8 = [payload2 hmf_UUIDForKey:@"residentStatusGenerationIDKey"];
 
   v9 = [[HMDHomeKitVersion alloc] initWithString:v6];
   if (v9)
   {
-    v10 = [v4 payload];
-    v11 = [v10 hmf_dictionaryForKey:@"RS.ck.prl"];
+    payload3 = [recordCopy payload];
+    v11 = [payload3 hmf_dictionaryForKey:@"RS.ck.prl"];
 
-    v54 = self;
+    selfCopy = self;
     v55 = v8;
     if (v11)
     {
@@ -228,17 +228,17 @@ LABEL_13:
       else
       {
         v25 = objc_autoreleasePoolPush();
-        v26 = self;
+        selfCopy2 = self;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
           HMFGetLogIdentifier();
           v28 = v52 = v25;
-          v29 = [v4 payload];
+          payload4 = [recordCopy payload];
           *buf = 138543618;
           v59 = v28;
           v60 = 2112;
-          v61 = v29;
+          v61 = payload4;
           _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_ERROR, "%{public}@Unable to create preferred residents list from invalid record %@", buf, 0x16u);
 
           v25 = v52;
@@ -254,16 +254,16 @@ LABEL_13:
       v51 = 0;
     }
 
-    v30 = [v4 payload];
-    v31 = [v30 hmf_dateForKey:@"RSI.ck.st"];
+    payload5 = [recordCopy payload];
+    v31 = [payload5 hmf_dateForKey:@"RSI.ck.st"];
 
     v56 = v6;
     v53 = v11;
     v50 = v31;
     if (v31)
     {
-      v32 = [v4 payload];
-      v33 = [v32 hmf_dataForKey:@"RSI.ck.prii"];
+      payload6 = [recordCopy payload];
+      v33 = [payload6 hmf_dataForKey:@"RSI.ck.prii"];
 
       if (v33)
       {
@@ -283,8 +283,8 @@ LABEL_13:
       v35 = 0;
     }
 
-    v36 = [v4 payload];
-    v37 = [v36 hmf_numberForKey:@"RS.ck.rl"];
+    payload7 = [recordCopy payload];
+    v37 = [payload7 hmf_numberForKey:@"RS.ck.rl"];
 
     if (v37)
     {
@@ -296,38 +296,38 @@ LABEL_13:
       v38 = &unk_283E72A40;
     }
 
-    v39 = [v4 payload];
-    v40 = [v39 hmf_numberForKey:@"RS.ck.nw"];
-    v41 = [v40 unsignedIntegerValue];
+    payload8 = [recordCopy payload];
+    v40 = [payload8 hmf_numberForKey:@"RS.ck.nw"];
+    unsignedIntegerValue = [v40 unsignedIntegerValue];
 
-    v42 = [v4 payload];
-    LOBYTE(v40) = [v42 hmf_BOOLForKey:@"RS.ck.acc"];
+    payload9 = [recordCopy payload];
+    LOBYTE(v40) = [payload9 hmf_BOOLForKey:@"RS.ck.acc"];
 
-    v43 = [v4 idsIdentifier];
-    v44 = [v4 idsDestination];
-    v45 = [v4 assertionTime];
+    idsIdentifier = [recordCopy idsIdentifier];
+    idsDestination = [recordCopy idsDestination];
+    assertionTime = [recordCopy assertionTime];
     LOBYTE(v49) = v40;
-    v48 = v41;
+    v48 = unsignedIntegerValue;
     v8 = v55;
-    v20 = [(HMDResidentStatus *)v54 initWithIDSIdentifier:v43 idsDestination:v44 version:v9 generationID:v55 assertionTime:v45 preferredResidentsList:v51 selectionInfo:v35 connectionType:v48 locationRawValue:v38 hasReachableAccessories:v49];
+    selfCopy3 = [(HMDResidentStatus *)selfCopy initWithIDSIdentifier:idsIdentifier idsDestination:idsDestination version:v9 generationID:v55 assertionTime:assertionTime preferredResidentsList:v51 selectionInfo:v35 connectionType:v48 locationRawValue:v38 hasReachableAccessories:v49];
 
-    v24 = v20;
+    v24 = selfCopy3;
     v6 = v56;
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy3 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v4 payload];
+      payload10 = [recordCopy payload];
       *buf = 138543618;
       v59 = v22;
       v60 = 2112;
-      v61 = v23;
+      v61 = payload10;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@Unable to create resident status from invalid record %@", buf, 0x16u);
     }
 
@@ -351,33 +351,33 @@ id __43__HMDResidentStatus_initWithChannelRecord___block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (HMDResidentStatus)initWithIDSIdentifier:(id)a3 idsDestination:(id)a4 version:(id)a5 generationID:(id)a6 assertionTime:(id)a7 preferredResidentsList:(id)a8 selectionInfo:(id)a9 connectionType:(unint64_t)a10 locationRawValue:(id)a11 hasReachableAccessories:(BOOL)a12
+- (HMDResidentStatus)initWithIDSIdentifier:(id)identifier idsDestination:(id)destination version:(id)version generationID:(id)d assertionTime:(id)time preferredResidentsList:(id)list selectionInfo:(id)info connectionType:(unint64_t)self0 locationRawValue:(id)self1 hasReachableAccessories:(BOOL)self2
 {
-  v19 = a3;
-  v29 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a7;
-  v25 = a8;
-  v24 = a9;
-  v20 = a11;
+  identifierCopy = identifier;
+  destinationCopy = destination;
+  versionCopy = version;
+  dCopy = d;
+  timeCopy = time;
+  listCopy = list;
+  infoCopy = info;
+  valueCopy = value;
   v30.receiver = self;
   v30.super_class = HMDResidentStatus;
   v21 = [(HMDResidentStatus *)&v30 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_idsIdentifier, a3);
-    objc_storeStrong(&v22->_idsDestination, a4);
-    objc_storeStrong(&v22->_swVersion, a5);
-    objc_storeStrong(&v22->_generationID, a6);
-    objc_storeStrong(&v22->_assertionTime, a7);
-    objc_storeStrong(&v22->_preferredResidentsList, a8);
-    objc_storeStrong(&v22->_selectionInfo, a9);
-    v22->_networkConnectionType = a10;
-    objc_storeStrong(&v22->_locationRawValue, a11);
-    v22->_location = [v20 unsignedIntegerValue];
-    v22->_hasReachableAccessories = a12;
+    objc_storeStrong(&v21->_idsIdentifier, identifier);
+    objc_storeStrong(&v22->_idsDestination, destination);
+    objc_storeStrong(&v22->_swVersion, version);
+    objc_storeStrong(&v22->_generationID, d);
+    objc_storeStrong(&v22->_assertionTime, time);
+    objc_storeStrong(&v22->_preferredResidentsList, list);
+    objc_storeStrong(&v22->_selectionInfo, info);
+    v22->_networkConnectionType = type;
+    objc_storeStrong(&v22->_locationRawValue, value);
+    v22->_location = [valueCopy unsignedIntegerValue];
+    v22->_hasReachableAccessories = accessories;
   }
 
   return v22;

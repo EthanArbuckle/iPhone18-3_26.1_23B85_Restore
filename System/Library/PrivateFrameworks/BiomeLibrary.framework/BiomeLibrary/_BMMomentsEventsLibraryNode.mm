@@ -8,7 +8,7 @@
 + (id)storeConfigurationForEngagement;
 + (id)storeConfigurationForEngagementLight;
 + (id)storeConfigurationForNotifications;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)syncPolicyForEngagement;
 + (id)syncPolicyForNotifications;
 + (id)validKeyPaths;
@@ -16,26 +16,26 @@
 
 @implementation _BMMomentsEventsLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Engagement"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Engagement"])
   {
-    v5 = [a1 Engagement];
+    engagement = [self Engagement];
 LABEL_7:
-    v6 = v5;
+    v6 = engagement;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"EngagementLight"])
+  if ([nameCopy isEqualToString:@"EngagementLight"])
   {
-    v5 = [a1 EngagementLight];
+    engagement = [self EngagementLight];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Notifications"])
+  if ([nameCopy isEqualToString:@"Notifications"])
   {
-    v5 = [a1 Notifications];
+    engagement = [self Notifications];
     goto LABEL_7;
   }
 
@@ -64,13 +64,13 @@ LABEL_8:
 
 + (id)configurationForNotifications
 {
-  v3 = [a1 storeConfigurationForNotifications];
-  v4 = [a1 syncPolicyForNotifications];
+  storeConfigurationForNotifications = [self storeConfigurationForNotifications];
+  syncPolicyForNotifications = [self syncPolicyForNotifications];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"7AA39C8F-2B9F-417D-83AE-849D68345CB8"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Moments.Events.Notifications" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Moments.Events.Notifications" eventClass:objc_opt_class() storeConfig:storeConfigurationForNotifications syncPolicy:syncPolicyForNotifications legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -119,13 +119,13 @@ LABEL_8:
 
 + (id)configurationForEngagementLight
 {
-  v3 = [a1 storeConfigurationForEngagementLight];
-  v4 = [a1 syncPolicyForEngagementLight];
+  storeConfigurationForEngagementLight = [self storeConfigurationForEngagementLight];
+  syncPolicyForEngagementLight = [self syncPolicyForEngagementLight];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"1F153660-9EFE-4858-950F-57A83D74185E"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Moments.Events.EngagementLight" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Moments.Events.EngagementLight" eventClass:objc_opt_class() storeConfig:storeConfigurationForEngagementLight syncPolicy:syncPolicyForEngagementLight legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -141,13 +141,13 @@ LABEL_8:
 
 + (id)configurationForEngagement
 {
-  v3 = [a1 storeConfigurationForEngagement];
-  v4 = [a1 syncPolicyForEngagement];
+  storeConfigurationForEngagement = [self storeConfigurationForEngagement];
+  syncPolicyForEngagement = [self syncPolicyForEngagement];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"4C66F537-A426-4AC0-B65C-6F2CF2D92E8D"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Moments.Events.Engagement" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Moments.Events.Engagement" eventClass:objc_opt_class() storeConfig:storeConfigurationForEngagement syncPolicy:syncPolicyForEngagement legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -187,7 +187,7 @@ LABEL_8:
 + (id)Notifications
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForNotifications];
+  configurationForNotifications = [self configurationForNotifications];
   v3 = +[BMMomentsNotifications columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -199,7 +199,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Moments.Events.Notifications" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Moments.Events.Notifications" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Moments.Events.Notifications" schema:v9 configuration:configurationForNotifications];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -209,7 +209,7 @@ LABEL_8:
 + (id)EngagementLight
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForEngagementLight];
+  configurationForEngagementLight = [self configurationForEngagementLight];
   v3 = +[BMMomentsEngagementLight columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -221,7 +221,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Moments.Events.EngagementLight" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Moments.Events.EngagementLight" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Moments.Events.EngagementLight" schema:v9 configuration:configurationForEngagementLight];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -231,7 +231,7 @@ LABEL_8:
 + (id)Engagement
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForEngagement];
+  configurationForEngagement = [self configurationForEngagement];
   v3 = +[BMMomentsEngagement columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -243,7 +243,7 @@ LABEL_8:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Moments.Events.Engagement" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Moments.Events.Engagement" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Moments.Events.Engagement" schema:v9 configuration:configurationForEngagement];
 
   v11 = *MEMORY[0x1E69E9840];
 

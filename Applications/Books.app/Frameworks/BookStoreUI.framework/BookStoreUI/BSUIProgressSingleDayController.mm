@@ -1,46 +1,46 @@
 @interface BSUIProgressSingleDayController
-+ (void)_updateArcLayer:(id)a3 withPercent:(double)a4 frame:(CGRect)a5 color:(id)a6 fill:(BOOL)a7 rtl:(BOOL)a8;
-- (BSUIProgressSingleDayController)initWithProgressView:(id)a3 frame:(CGRect)a4 progress:(double)a5 label:(id)a6;
++ (void)_updateArcLayer:(id)layer withPercent:(double)percent frame:(CGRect)frame color:(id)color fill:(BOOL)fill rtl:(BOOL)rtl;
+- (BSUIProgressSingleDayController)initWithProgressView:(id)view frame:(CGRect)frame progress:(double)progress label:(id)label;
 - (CGRect)bounds;
 - (CGRect)frame;
 - (id)description;
 - (void)_animatePop;
 - (void)_setupBackgroundLayer;
-- (void)_setupDayWithProgress:(double)a3 dayType:(int64_t)a4;
-- (void)_setupNumberText:(id)a3;
-- (void)configureWithType:(int64_t)a3;
+- (void)_setupDayWithProgress:(double)progress dayType:(int64_t)type;
+- (void)_setupNumberText:(id)text;
+- (void)configureWithType:(int64_t)type;
 - (void)dealloc;
-- (void)updateProgress:(double)a3 animate:(BOOL)a4;
+- (void)updateProgress:(double)progress animate:(BOOL)animate;
 @end
 
 @implementation BSUIProgressSingleDayController
 
-- (BSUIProgressSingleDayController)initWithProgressView:(id)a3 frame:(CGRect)a4 progress:(double)a5 label:(id)a6
+- (BSUIProgressSingleDayController)initWithProgressView:(id)view frame:(CGRect)frame progress:(double)progress label:(id)label
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  labelCopy = label;
   v21.receiver = self;
   v21.super_class = BSUIProgressSingleDayController;
   v16 = [(BSUIProgressSingleDayController *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_progressView, a3);
-    v18 = [v14 metrics];
+    objc_storeStrong(&v16->_progressView, view);
+    metrics = [viewCopy metrics];
     metrics = v17->_metrics;
-    v17->_metrics = v18;
+    v17->_metrics = metrics;
 
     v17->_frame.origin.x = x;
     v17->_frame.origin.y = y;
     v17->_frame.size.width = width;
     v17->_frame.size.height = height;
-    v17->_progress = a5;
+    v17->_progress = progress;
     v17->_lastSeenProgress = 0.0;
-    objc_storeStrong(&v17->_label, a6);
+    objc_storeStrong(&v17->_label, label);
   }
 
   return v17;
@@ -61,22 +61,22 @@
   [(BSUIProgressSingleDayController *)&v5 dealloc];
 }
 
-- (void)updateProgress:(double)a3 animate:(BOOL)a4
+- (void)updateProgress:(double)progress animate:(BOOL)animate
 {
-  v4 = a4;
-  self->_progress = a3;
+  animateCopy = animate;
+  self->_progress = progress;
   lastSeenProgress = self->_lastSeenProgress;
   [(BSUIProgressSingleDayController *)self _setupDayWithProgress:self->_layoutType dayType:?];
-  self->_lastSeenProgress = a3;
-  if (v4 && self->_layoutType == 1)
+  self->_lastSeenProgress = progress;
+  if (animateCopy && self->_layoutType == 1)
   {
-    if (a3 >= 1.0 && lastSeenProgress < 1.0)
+    if (progress >= 1.0 && lastSeenProgress < 1.0)
     {
 
       [(BSUIProgressSingleDayController *)self _animatePop];
     }
 
-    else if (a3 < 1.0 && lastSeenProgress < 1.0)
+    else if (progress < 1.0 && lastSeenProgress < 1.0)
     {
       v13 = [CASpringAnimation animationWithKeyPath:@"strokeEnd"];
       [v13 setMass:1.0];
@@ -86,18 +86,18 @@
       v10 = [NSNumber numberWithDouble:lastSeenProgress];
       [v13 setFromValue:v10];
 
-      v11 = [NSNumber numberWithDouble:a3];
+      v11 = [NSNumber numberWithDouble:progress];
       [v13 setToValue:v11];
 
       [v13 settlingDuration];
       [v13 setDuration:?];
-      v12 = [(BSUIProgressSingleDayController *)self progressRingLayer];
-      [v12 addAnimation:v13 forKey:@"progress"];
+      progressRingLayer = [(BSUIProgressSingleDayController *)self progressRingLayer];
+      [progressRingLayer addAnimation:v13 forKey:@"progress"];
     }
   }
 }
 
-- (void)configureWithType:(int64_t)a3
+- (void)configureWithType:(int64_t)type
 {
   [(BSUIProgressSingleDayController *)self frame];
   Width = CGRectGetWidth(v8);
@@ -107,18 +107,18 @@
   self->_bounds.origin.y = 0.0;
   self->_bounds.size.width = Width;
   self->_bounds.size.height = Height;
-  self->_layoutType = a3;
+  self->_layoutType = type;
   [(BSUIProgressSingleDayController *)self _setupBackgroundLayer];
   [(BSUIProgressSingleDayController *)self progress];
 
-  [(BSUIProgressSingleDayController *)self _setupDayWithProgress:a3 dayType:?];
+  [(BSUIProgressSingleDayController *)self _setupDayWithProgress:type dayType:?];
 }
 
 - (void)_setupBackgroundLayer
 {
-  v3 = [(BSUIProgressSingleDayController *)self backgroundLayer];
+  backgroundLayer = [(BSUIProgressSingleDayController *)self backgroundLayer];
 
-  if (!v3)
+  if (!backgroundLayer)
   {
     v4 = +[CALayer layer];
     backgroundLayer = self->_backgroundLayer;
@@ -135,9 +135,9 @@
     }
 
     [(CALayer *)self->_backgroundLayer setMasksToBounds:1];
-    v9 = [(BSUIProgressSingleDayController *)self progressView];
-    v10 = [v9 presentationLayer];
-    [v10 addSublayer:self->_backgroundLayer];
+    progressView = [(BSUIProgressSingleDayController *)self progressView];
+    presentationLayer = [progressView presentationLayer];
+    [presentationLayer addSublayer:self->_backgroundLayer];
   }
 
   [(BSUIProgressSingleDayController *)self frame];
@@ -146,209 +146,209 @@
   [(CALayer *)v11 setFrame:?];
 }
 
-- (void)_setupDayWithProgress:(double)a3 dayType:(int64_t)a4
+- (void)_setupDayWithProgress:(double)progress dayType:(int64_t)type
 {
-  v7 = [(BSUIProgressSingleDayController *)self controlRingLayer];
+  controlRingLayer = [(BSUIProgressSingleDayController *)self controlRingLayer];
 
-  if (!v7)
+  if (!controlRingLayer)
   {
     v8 = +[CAShapeLayer layer];
     [(BSUIProgressSingleDayController *)self setControlRingLayer:v8];
   }
 
-  v9 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
+  controlBackgroundLayer = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
 
-  if (!v9)
+  if (!controlBackgroundLayer)
   {
     v10 = +[CAShapeLayer layer];
     [(BSUIProgressSingleDayController *)self setControlBackgroundLayer:v10];
   }
 
-  v11 = [(BSUIProgressSingleDayController *)self progressRingLayer];
+  progressRingLayer = [(BSUIProgressSingleDayController *)self progressRingLayer];
 
-  if (!v11)
+  if (!progressRingLayer)
   {
     v12 = +[CAShapeLayer layer];
     [(BSUIProgressSingleDayController *)self setProgressRingLayer:v12];
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v13 = [(BSUIProgressSingleDayController *)self metrics];
-    v14 = [v13 futureDayTextColor];
-    v15 = [(BSUIProgressSingleDayController *)self progressView];
-    v16 = [v15 traitCollection];
-    v132 = [v14 resolvedColorWithTraitCollection:v16];
+    metrics = [(BSUIProgressSingleDayController *)self metrics];
+    futureDayTextColor = [metrics futureDayTextColor];
+    progressView = [(BSUIProgressSingleDayController *)self progressView];
+    traitCollection = [progressView traitCollection];
+    v132 = [futureDayTextColor resolvedColorWithTraitCollection:traitCollection];
 
-    v17 = [(BSUIProgressSingleDayController *)self metrics];
-    v18 = [v17 controlColor];
-    v19 = [(BSUIProgressSingleDayController *)self progressView];
-    v20 = [v19 traitCollection];
-    v21 = [v18 resolvedColorWithTraitCollection:v20];
+    metrics2 = [(BSUIProgressSingleDayController *)self metrics];
+    controlColor = [metrics2 controlColor];
+    progressView2 = [(BSUIProgressSingleDayController *)self progressView];
+    traitCollection2 = [progressView2 traitCollection];
+    v21 = [controlColor resolvedColorWithTraitCollection:traitCollection2];
 
-    v22 = [(BSUIProgressSingleDayController *)self controlRingLayer];
+    controlRingLayer2 = [(BSUIProgressSingleDayController *)self controlRingLayer];
     [(BSUIProgressSingleDayController *)self bounds];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    v31 = [(BSUIProgressSingleDayController *)self metrics];
-    v32 = [v31 rightToLeft];
-    +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", v22, v21, 0, [v32 BOOLValue], 1.0, v24, v26, v28, v30);
+    metrics3 = [(BSUIProgressSingleDayController *)self metrics];
+    rightToLeft = [metrics3 rightToLeft];
+    +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", controlRingLayer2, v21, 0, [rightToLeft BOOLValue], 1.0, v24, v26, v28, v30);
 
-    v33 = [(BSUIProgressSingleDayController *)self backgroundLayer];
-    v34 = [(BSUIProgressSingleDayController *)self controlRingLayer];
-    [v33 addSublayer:v34];
+    backgroundLayer = [(BSUIProgressSingleDayController *)self backgroundLayer];
+    controlRingLayer3 = [(BSUIProgressSingleDayController *)self controlRingLayer];
+    [backgroundLayer addSublayer:controlRingLayer3];
 
 LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3 >= 1.0)
+  if (progress >= 1.0)
   {
-    v76 = [(BSUIProgressSingleDayController *)self metrics];
-    v77 = [v76 completedTextColor];
-    v78 = [(BSUIProgressSingleDayController *)self progressView];
-    v79 = [v78 traitCollection];
-    v132 = [v77 resolvedColorWithTraitCollection:v79];
+    metrics4 = [(BSUIProgressSingleDayController *)self metrics];
+    completedTextColor = [metrics4 completedTextColor];
+    progressView3 = [(BSUIProgressSingleDayController *)self progressView];
+    traitCollection3 = [progressView3 traitCollection];
+    v132 = [completedTextColor resolvedColorWithTraitCollection:traitCollection3];
 
-    v80 = [(BSUIProgressSingleDayController *)self metrics];
-    v81 = [v80 progressColor];
-    v82 = [(BSUIProgressSingleDayController *)self progressView];
-    v83 = [v82 traitCollection];
-    v33 = [v81 resolvedColorWithTraitCollection:v83];
+    metrics5 = [(BSUIProgressSingleDayController *)self metrics];
+    progressColor = [metrics5 progressColor];
+    progressView4 = [(BSUIProgressSingleDayController *)self progressView];
+    traitCollection4 = [progressView4 traitCollection];
+    backgroundLayer = [progressColor resolvedColorWithTraitCollection:traitCollection4];
 
-    v84 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
+    controlBackgroundLayer2 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
     [(BSUIProgressSingleDayController *)self bounds];
     v86 = v85;
     v88 = v87;
     v90 = v89;
     v92 = v91;
-    v93 = [(BSUIProgressSingleDayController *)self metrics];
-    v94 = [v93 rightToLeft];
-    +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", v84, v33, 1, [v94 BOOLValue], 0.0, v86, v88, v90, v92);
+    metrics6 = [(BSUIProgressSingleDayController *)self metrics];
+    rightToLeft2 = [metrics6 rightToLeft];
+    +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", controlBackgroundLayer2, backgroundLayer, 1, [rightToLeft2 BOOLValue], 0.0, v86, v88, v90, v92);
 
-    v95 = [(BSUIProgressSingleDayController *)self backgroundLayer];
-    v96 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
-    [v95 addSublayer:v96];
+    backgroundLayer2 = [(BSUIProgressSingleDayController *)self backgroundLayer];
+    controlBackgroundLayer3 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
+    [backgroundLayer2 addSublayer:controlBackgroundLayer3];
 
-    v97 = [(BSUIProgressSingleDayController *)self controlRingLayer];
+    controlRingLayer4 = [(BSUIProgressSingleDayController *)self controlRingLayer];
     [(BSUIProgressSingleDayController *)self bounds];
     v99 = v98;
     v101 = v100;
     v103 = v102;
     v105 = v104;
-    v106 = [(BSUIProgressSingleDayController *)self metrics];
-    v107 = [v106 rightToLeft];
-    +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", v97, v33, 0, [v107 BOOLValue], a3, v99, v101, v103, v105);
+    metrics7 = [(BSUIProgressSingleDayController *)self metrics];
+    rightToLeft3 = [metrics7 rightToLeft];
+    +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", controlRingLayer4, backgroundLayer, 0, [rightToLeft3 BOOLValue], progress, v99, v101, v103, v105);
 
-    v108 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
-    v109 = [(BSUIProgressSingleDayController *)self controlRingLayer];
+    controlBackgroundLayer4 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
+    controlRingLayer5 = [(BSUIProgressSingleDayController *)self controlRingLayer];
 LABEL_17:
-    v129 = v109;
-    [v108 addSublayer:v109];
+    v129 = controlRingLayer5;
+    [controlBackgroundLayer4 addSublayer:controlRingLayer5];
 
     v21 = 0;
     goto LABEL_18;
   }
 
-  if (!a4)
+  if (!type)
   {
-    v110 = [(BSUIProgressSingleDayController *)self metrics];
-    v111 = [v110 previousDayTextColor];
-    v112 = [(BSUIProgressSingleDayController *)self progressView];
-    v113 = [v112 traitCollection];
-    v132 = [v111 resolvedColorWithTraitCollection:v113];
+    metrics8 = [(BSUIProgressSingleDayController *)self metrics];
+    previousDayTextColor = [metrics8 previousDayTextColor];
+    progressView5 = [(BSUIProgressSingleDayController *)self progressView];
+    traitCollection5 = [progressView5 traitCollection];
+    v132 = [previousDayTextColor resolvedColorWithTraitCollection:traitCollection5];
 
-    v114 = [(BSUIProgressSingleDayController *)self metrics];
-    v115 = [v114 previousDayBackgroundColor];
-    v116 = [(BSUIProgressSingleDayController *)self progressView];
-    v117 = [v116 traitCollection];
-    v33 = [v115 resolvedColorWithTraitCollection:v117];
+    metrics9 = [(BSUIProgressSingleDayController *)self metrics];
+    previousDayBackgroundColor = [metrics9 previousDayBackgroundColor];
+    progressView6 = [(BSUIProgressSingleDayController *)self progressView];
+    traitCollection6 = [progressView6 traitCollection];
+    backgroundLayer = [previousDayBackgroundColor resolvedColorWithTraitCollection:traitCollection6];
 
-    v118 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
+    controlBackgroundLayer5 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
     [(BSUIProgressSingleDayController *)self bounds];
     v120 = v119;
     v122 = v121;
     v124 = v123;
     v126 = v125;
-    v127 = [(BSUIProgressSingleDayController *)self metrics];
-    v128 = [v127 rightToLeft];
-    +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", v118, v33, 1, [v128 BOOLValue], 0.0, v120, v122, v124, v126);
+    metrics10 = [(BSUIProgressSingleDayController *)self metrics];
+    rightToLeft4 = [metrics10 rightToLeft];
+    +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", controlBackgroundLayer5, backgroundLayer, 1, [rightToLeft4 BOOLValue], 0.0, v120, v122, v124, v126);
 
-    v108 = [(BSUIProgressSingleDayController *)self backgroundLayer];
-    v109 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
+    controlBackgroundLayer4 = [(BSUIProgressSingleDayController *)self backgroundLayer];
+    controlRingLayer5 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
     goto LABEL_17;
   }
 
-  v35 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
-  v36 = [v35 superlayer];
+  controlBackgroundLayer6 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
+  superlayer = [controlBackgroundLayer6 superlayer];
 
-  if (v36)
+  if (superlayer)
   {
-    v37 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
-    [v37 removeFromSuperlayer];
+    controlBackgroundLayer7 = [(BSUIProgressSingleDayController *)self controlBackgroundLayer];
+    [controlBackgroundLayer7 removeFromSuperlayer];
   }
 
-  v38 = [(BSUIProgressSingleDayController *)self metrics];
-  v39 = [v38 textColor];
-  v40 = [(BSUIProgressSingleDayController *)self progressView];
-  v41 = [v40 traitCollection];
-  v132 = [v39 resolvedColorWithTraitCollection:v41];
+  metrics11 = [(BSUIProgressSingleDayController *)self metrics];
+  textColor = [metrics11 textColor];
+  progressView7 = [(BSUIProgressSingleDayController *)self progressView];
+  traitCollection7 = [progressView7 traitCollection];
+  v132 = [textColor resolvedColorWithTraitCollection:traitCollection7];
 
-  v42 = [(BSUIProgressSingleDayController *)self metrics];
-  v43 = [v42 controlColor];
-  v44 = [(BSUIProgressSingleDayController *)self progressView];
-  v45 = [v44 traitCollection];
-  v21 = [v43 resolvedColorWithTraitCollection:v45];
+  metrics12 = [(BSUIProgressSingleDayController *)self metrics];
+  controlColor2 = [metrics12 controlColor];
+  progressView8 = [(BSUIProgressSingleDayController *)self progressView];
+  traitCollection8 = [progressView8 traitCollection];
+  v21 = [controlColor2 resolvedColorWithTraitCollection:traitCollection8];
 
-  v46 = [(BSUIProgressSingleDayController *)self controlRingLayer];
+  controlRingLayer6 = [(BSUIProgressSingleDayController *)self controlRingLayer];
   [(BSUIProgressSingleDayController *)self bounds];
   v48 = v47;
   v50 = v49;
   v52 = v51;
   v54 = v53;
-  v55 = [(BSUIProgressSingleDayController *)self metrics];
-  v56 = [v55 rightToLeft];
-  +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", v46, v21, 0, [v56 BOOLValue], 1.0, v48, v50, v52, v54);
+  metrics13 = [(BSUIProgressSingleDayController *)self metrics];
+  rightToLeft5 = [metrics13 rightToLeft];
+  +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", controlRingLayer6, v21, 0, [rightToLeft5 BOOLValue], 1.0, v48, v50, v52, v54);
 
-  v57 = [(BSUIProgressSingleDayController *)self backgroundLayer];
-  v58 = [(BSUIProgressSingleDayController *)self controlRingLayer];
-  [v57 addSublayer:v58];
+  backgroundLayer3 = [(BSUIProgressSingleDayController *)self backgroundLayer];
+  controlRingLayer7 = [(BSUIProgressSingleDayController *)self controlRingLayer];
+  [backgroundLayer3 addSublayer:controlRingLayer7];
 
-  if (a3 > 0.0)
+  if (progress > 0.0)
   {
-    v59 = [(BSUIProgressSingleDayController *)self metrics];
-    v60 = [v59 progressColor];
-    v61 = [(BSUIProgressSingleDayController *)self progressView];
-    v62 = [v61 traitCollection];
-    v63 = [v60 resolvedColorWithTraitCollection:v62];
+    metrics14 = [(BSUIProgressSingleDayController *)self metrics];
+    progressColor2 = [metrics14 progressColor];
+    progressView9 = [(BSUIProgressSingleDayController *)self progressView];
+    traitCollection9 = [progressView9 traitCollection];
+    v63 = [progressColor2 resolvedColorWithTraitCollection:traitCollection9];
 
-    v64 = [(BSUIProgressSingleDayController *)self progressRingLayer];
+    progressRingLayer2 = [(BSUIProgressSingleDayController *)self progressRingLayer];
     [(BSUIProgressSingleDayController *)self bounds];
     v66 = v65;
     v68 = v67;
     v70 = v69;
     v72 = v71;
-    v73 = [(BSUIProgressSingleDayController *)self metrics];
-    v74 = [v73 rightToLeft];
-    +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", v64, v63, 0, [v74 BOOLValue], a3, v66, v68, v70, v72);
+    metrics15 = [(BSUIProgressSingleDayController *)self metrics];
+    rightToLeft6 = [metrics15 rightToLeft];
+    +[BSUIProgressSingleDayController _updateArcLayer:withPercent:frame:color:fill:rtl:](BSUIProgressSingleDayController, "_updateArcLayer:withPercent:frame:color:fill:rtl:", progressRingLayer2, v63, 0, [rightToLeft6 BOOLValue], progress, v66, v68, v70, v72);
 
-    v33 = [(BSUIProgressSingleDayController *)self controlRingLayer];
-    v75 = [(BSUIProgressSingleDayController *)self progressRingLayer];
-    [v33 addSublayer:v75];
+    backgroundLayer = [(BSUIProgressSingleDayController *)self controlRingLayer];
+    progressRingLayer3 = [(BSUIProgressSingleDayController *)self progressRingLayer];
+    [backgroundLayer addSublayer:progressRingLayer3];
 
     v21 = v63;
     goto LABEL_18;
   }
 
-  v130 = [(BSUIProgressSingleDayController *)self progressRingLayer];
-  v131 = [v130 superlayer];
+  progressRingLayer4 = [(BSUIProgressSingleDayController *)self progressRingLayer];
+  superlayer2 = [progressRingLayer4 superlayer];
 
-  if (v131)
+  if (superlayer2)
   {
-    v33 = [(BSUIProgressSingleDayController *)self progressRingLayer];
-    [v33 removeFromSuperlayer];
+    backgroundLayer = [(BSUIProgressSingleDayController *)self progressRingLayer];
+    [backgroundLayer removeFromSuperlayer];
     goto LABEL_18;
   }
 
@@ -356,19 +356,19 @@ LABEL_19:
   [(BSUIProgressSingleDayController *)self _setupNumberText:v132];
 }
 
-+ (void)_updateArcLayer:(id)a3 withPercent:(double)a4 frame:(CGRect)a5 color:(id)a6 fill:(BOOL)a7 rtl:(BOOL)a8
++ (void)_updateArcLayer:(id)layer withPercent:(double)percent frame:(CGRect)frame color:(id)color fill:(BOOL)fill rtl:(BOOL)rtl
 {
-  v8 = a8;
-  v9 = a7;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v28 = a3;
-  v16 = a6;
+  rtlCopy = rtl;
+  fillCopy = fill;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layerCopy = layer;
+  colorCopy = color;
   +[BSUIProgressSingleDayController _ringWidthThickness];
   v18 = v17;
-  if (v9)
+  if (fillCopy)
   {
     v19 = height;
     v20 = width;
@@ -387,46 +387,46 @@ LABEL_19:
 
   v23 = [UIBezierPath bezierPathWithRoundedRect:v22 cornerRadius:v21, v20, v19, width * 0.5 + v18 * -2.0];
   v24 = v23;
-  if (v8)
+  if (rtlCopy)
   {
-    v25 = [v23 bezierPathByReversingPath];
+    bezierPathByReversingPath = [v23 bezierPathByReversingPath];
 
-    v24 = v25;
+    v24 = bezierPathByReversingPath;
   }
 
-  [v28 setStrokeColor:{objc_msgSend(v16, "CGColor")}];
-  if (v9)
+  [layerCopy setStrokeColor:{objc_msgSend(colorCopy, "CGColor")}];
+  if (fillCopy)
   {
-    [v28 setFillColor:{objc_msgSend(v16, "CGColor")}];
+    [layerCopy setFillColor:{objc_msgSend(colorCopy, "CGColor")}];
   }
 
   else
   {
     v26 = +[UIColor clearColor];
-    [v28 setFillColor:{objc_msgSend(v26, "CGColor")}];
+    [layerCopy setFillColor:{objc_msgSend(v26, "CGColor")}];
   }
 
-  [v28 setFrame:{x, y, width, height}];
+  [layerCopy setFrame:{x, y, width, height}];
   v27 = 0.0;
-  if (a4 != 0.0)
+  if (percent != 0.0)
   {
     v27 = v18;
   }
 
-  [v28 setLineWidth:v27];
-  [v28 setLineCap:kCALineCapRound];
-  [v28 setStrokeStart:0.0];
-  [v28 setStrokeEnd:a4];
-  [v28 setZPosition:1.0];
-  [v28 setPath:{objc_msgSend(v24, "CGPath")}];
+  [layerCopy setLineWidth:v27];
+  [layerCopy setLineCap:kCALineCapRound];
+  [layerCopy setStrokeStart:0.0];
+  [layerCopy setStrokeEnd:percent];
+  [layerCopy setZPosition:1.0];
+  [layerCopy setPath:{objc_msgSend(v24, "CGPath")}];
 }
 
-- (void)_setupNumberText:(id)a3
+- (void)_setupNumberText:(id)text
 {
-  v4 = a3;
-  v5 = [(BSUIProgressSingleDayController *)self titleLabel];
+  textCopy = text;
+  titleLabel = [(BSUIProgressSingleDayController *)self titleLabel];
 
-  if (!v5)
+  if (!titleLabel)
   {
     v6 = [UILabel alloc];
     [(BSUIProgressSingleDayController *)self frame];
@@ -435,20 +435,20 @@ LABEL_19:
   }
 
   [(BSUIProgressSingleDayController *)self frame];
-  v8 = [(BSUIProgressSingleDayController *)self label];
-  [(UILabel *)self->_titleLabel setText:v8];
+  label = [(BSUIProgressSingleDayController *)self label];
+  [(UILabel *)self->_titleLabel setText:label];
 
-  v9 = [(BSUIProgressSingleDayController *)self metrics];
-  v10 = [v9 fontSpec];
-  v11 = [v10 font];
-  [(UILabel *)self->_titleLabel setFont:v11];
+  metrics = [(BSUIProgressSingleDayController *)self metrics];
+  fontSpec = [metrics fontSpec];
+  font = [fontSpec font];
+  [(UILabel *)self->_titleLabel setFont:font];
 
   [(UILabel *)self->_titleLabel setNumberOfLines:1];
   [(UILabel *)self->_titleLabel setClipsToBounds:1];
   v12 = +[UIColor clearColor];
   [(UILabel *)self->_titleLabel setBackgroundColor:v12];
 
-  [(UILabel *)self->_titleLabel setTextColor:v4];
+  [(UILabel *)self->_titleLabel setTextColor:textCopy];
   [(UILabel *)self->_titleLabel setTextAlignment:1];
   [(UILabel *)self->_titleLabel sizeThatFits:CGSizeZero.width, CGSizeZero.height];
   v14 = v13;
@@ -473,8 +473,8 @@ LABEL_19:
   v28.size.width = width;
   v28.size.height = height;
   [(UILabel *)self->_titleLabel setFrame:v20, v21, CGRectGetWidth(v28), v14];
-  v22 = [(BSUIProgressSingleDayController *)self progressView];
-  [v22 addSubview:self->_titleLabel];
+  progressView = [(BSUIProgressSingleDayController *)self progressView];
+  [progressView addSubview:self->_titleLabel];
 }
 
 - (void)_animatePop
@@ -507,8 +507,8 @@ LABEL_19:
 
   [v8 settlingDuration];
   [v9 setDuration:v11 + 0.15];
-  v12 = [(BSUIProgressSingleDayController *)self backgroundLayer];
-  [v12 addAnimation:v9 forKey:@"bounce"];
+  backgroundLayer = [(BSUIProgressSingleDayController *)self backgroundLayer];
+  [backgroundLayer addAnimation:v9 forKey:@"bounce"];
 }
 
 - (id)description
@@ -520,8 +520,8 @@ LABEL_19:
   v6 = v5;
   [(BSUIProgressSingleDayController *)self lastSeenProgress];
   v8 = v7;
-  v9 = [(BSUIProgressSingleDayController *)self label];
-  v10 = [NSString stringWithFormat:@"%@: %p frame=%@, progress=%.2f, lastProgress=%.2f, label=%@", v3, self, v4, v6, v8, v9];
+  label = [(BSUIProgressSingleDayController *)self label];
+  v10 = [NSString stringWithFormat:@"%@: %p frame=%@, progress=%.2f, lastProgress=%.2f, label=%@", v3, self, v4, v6, v8, label];
 
   return v10;
 }

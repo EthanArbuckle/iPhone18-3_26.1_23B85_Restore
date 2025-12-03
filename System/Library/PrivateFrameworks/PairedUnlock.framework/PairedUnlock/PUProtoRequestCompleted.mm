@@ -1,12 +1,12 @@
 @interface PUProtoRequestCompleted
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PUProtoRequestCompleted
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PUProtoRequestCompleted;
   v3 = [(PUProtoRequestCompleted *)&v7 description];
-  v4 = [(PUProtoRequestCompleted *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PUProtoRequestCompleted *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -40,16 +40,16 @@
   passcodeState = self->_passcodeState;
   if (passcodeState)
   {
-    v8 = [(PUProtoPasscodeState *)passcodeState dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"passcodeState"];
+    dictionaryRepresentation = [(PUProtoPasscodeState *)passcodeState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"passcodeState"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   messageID = self->_messageID;
   PBDataWriterWriteUint32Field();
   success = self->_success;
@@ -65,59 +65,59 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[4] = self->_messageID;
-  *(v4 + 32) = self->_success;
-  v5 = v4;
+  toCopy = to;
+  toCopy[4] = self->_messageID;
+  *(toCopy + 32) = self->_success;
+  v5 = toCopy;
   if (self->_errorData)
   {
-    [v4 setErrorData:?];
-    v4 = v5;
+    [toCopy setErrorData:?];
+    toCopy = v5;
   }
 
   if (self->_passcodeState)
   {
     [v5 setPasscodeState:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[4] = self->_messageID;
   *(v5 + 32) = self->_success;
-  v6 = [(NSData *)self->_errorData copyWithZone:a3];
+  v6 = [(NSData *)self->_errorData copyWithZone:zone];
   v7 = *(v5 + 1);
   *(v5 + 1) = v6;
 
-  v8 = [(PUProtoPasscodeState *)self->_passcodeState copyWithZone:a3];
+  v8 = [(PUProtoPasscodeState *)self->_passcodeState copyWithZone:zone];
   v9 = *(v5 + 3);
   *(v5 + 3) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_messageID != *(v4 + 4))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_messageID != *(equalCopy + 4))
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (self->_success)
   {
-    if ((*(v4 + 32) & 1) == 0)
+    if ((*(equalCopy + 32) & 1) == 0)
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -125,13 +125,13 @@ LABEL_11:
   }
 
   errorData = self->_errorData;
-  if (errorData | *(v4 + 1) && ![(NSData *)errorData isEqual:?])
+  if (errorData | *(equalCopy + 1) && ![(NSData *)errorData isEqual:?])
   {
     goto LABEL_11;
   }
 
   passcodeState = self->_passcodeState;
-  if (passcodeState | *(v4 + 3))
+  if (passcodeState | *(equalCopy + 3))
   {
     v8 = [(PUProtoPasscodeState *)passcodeState isEqual:?];
   }
@@ -153,20 +153,20 @@ LABEL_12:
   return v3 ^ v4 ^ [(PUProtoPasscodeState *)self->_passcodeState hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_messageID = *(v4 + 4);
-  self->_success = *(v4 + 32);
-  v7 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  self->_messageID = *(fromCopy + 4);
+  self->_success = *(fromCopy + 32);
+  v7 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(PUProtoRequestCompleted *)self setErrorData:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   passcodeState = self->_passcodeState;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (passcodeState)
   {
     if (v6)

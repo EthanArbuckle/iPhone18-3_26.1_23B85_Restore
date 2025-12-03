@@ -1,6 +1,6 @@
 @interface MTRContentControlClusterRatingNameStruct
 - (MTRContentControlClusterRatingNameStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentControlClusterRatingNameStruct);
-  v5 = [(MTRContentControlClusterRatingNameStruct *)self ratingName];
-  [(MTRContentControlClusterRatingNameStruct *)v4 setRatingName:v5];
+  ratingName = [(MTRContentControlClusterRatingNameStruct *)self ratingName];
+  [(MTRContentControlClusterRatingNameStruct *)v4 setRatingName:ratingName];
 
-  v6 = [(MTRContentControlClusterRatingNameStruct *)self ratingNameDesc];
-  [(MTRContentControlClusterRatingNameStruct *)v4 setRatingNameDesc:v6];
+  ratingNameDesc = [(MTRContentControlClusterRatingNameStruct *)self ratingNameDesc];
+  [(MTRContentControlClusterRatingNameStruct *)v4 setRatingNameDesc:ratingNameDesc];
 
   return v4;
 }

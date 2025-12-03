@@ -1,27 +1,27 @@
 @interface TCCDService
 + (id)allServices;
 + (id)serviceAll;
-+ (id)serviceDescriptionsForPlatformName:(id)a3;
-+ (id)tccdPlatformNameForDYLDPlatformName:(id)a3;
-+ (id)versionStringFromDYLDVersionNumber:(id)a3;
++ (id)serviceDescriptionsForPlatformName:(id)name;
++ (id)tccdPlatformNameForDYLDPlatformName:(id)name;
++ (id)versionStringFromDYLDVersionNumber:(id)number;
 - (NSBundle)defaultLocalizedResourcesBundle;
 - (NSBundle)localizedResourcesBundle;
-- (TCCDService)initWithName:(id)a3 availability:(id)a4;
+- (TCCDService)initWithName:(id)name availability:(id)availability;
 - (TCCDService)macos_compositionChildService;
 - (TCCDService)macos_compositionParentService;
 - (TCCDService)subsequentRequestStringsRelatedService;
-- (id)authorizationRightStateForValue:(unint64_t)a3 reason:(unint64_t)a4;
-- (id)buttonTitleLocalizationKeyForAuthorization:(unint64_t)a3 desiredAuth:(unint64_t)a4;
+- (id)authorizationRightStateForValue:(unint64_t)value reason:(unint64_t)reason;
+- (id)buttonTitleLocalizationKeyForAuthorization:(unint64_t)authorization desiredAuth:(unint64_t)auth;
 - (id)descriptionDictionary;
-- (id)descriptionForAuthorizationValue:(unint64_t)a3 reason:(unint64_t)a4;
-- (id)localizedTextWithKey:(id)a3;
-- (id)requestTitleTextLocalizationKeyForAuthorization:(unint64_t)a3;
-- (id)usageDescriptionKeyForAuthorization:(unint64_t)a3;
-- (int64_t)compare:(id)a3;
+- (id)descriptionForAuthorizationValue:(unint64_t)value reason:(unint64_t)reason;
+- (id)localizedTextWithKey:(id)key;
+- (id)requestTitleTextLocalizationKeyForAuthorization:(unint64_t)authorization;
+- (id)usageDescriptionKeyForAuthorization:(unint64_t)authorization;
+- (int64_t)compare:(id)compare;
 - (int64_t)developmentAuthorizationValue;
-- (unint64_t)accessActionStatusForAuthorizationValue:(unint64_t)a3;
-- (unint64_t)convertAccessUpdateStatustToMainSet:(unint64_t)a3;
-- (void)setLocalizedResourcesBundlePath:(id)a3;
+- (unint64_t)accessActionStatusForAuthorizationValue:(unint64_t)value;
+- (unint64_t)convertAccessUpdateStatustToMainSet:(unint64_t)set;
+- (void)setLocalizedResourcesBundlePath:(id)path;
 @end
 
 @implementation TCCDService
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004A874;
   block[3] = &unk_1000A6468;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000C11F8 != -1)
   {
     dispatch_once(&qword_1000C11F8, block);
@@ -52,53 +52,53 @@
 
 - (NSBundle)localizedResourcesBundle
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_localizedResourcesBundle)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_localizedResourcesBundle)
   {
-    v3 = [NSBundle bundleWithPath:v2->_localizedResourcesBundlePath];
-    localizedResourcesBundle = v2->_localizedResourcesBundle;
-    v2->_localizedResourcesBundle = v3;
+    v3 = [NSBundle bundleWithPath:selfCopy->_localizedResourcesBundlePath];
+    localizedResourcesBundle = selfCopy->_localizedResourcesBundle;
+    selfCopy->_localizedResourcesBundle = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_localizedResourcesBundle;
+  v5 = selfCopy->_localizedResourcesBundle;
   if (!v5)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004BCF8;
     block[3] = &unk_1000A4F58;
-    block[4] = v2;
+    block[4] = selfCopy;
     if (qword_1000C1200 != -1)
     {
       dispatch_once(&qword_1000C1200, block);
     }
 
-    v5 = v2->_localizedResourcesBundle;
+    v5 = selfCopy->_localizedResourcesBundle;
   }
 
   return v5;
 }
 
-- (unint64_t)accessActionStatusForAuthorizationValue:(unint64_t)a3
+- (unint64_t)accessActionStatusForAuthorizationValue:(unint64_t)value
 {
-  v4 = [(TCCDService *)self authorizationValueType];
+  authorizationValueType = [(TCCDService *)self authorizationValueType];
   result = 0;
-  if (v4 == 1 && a3 <= 5)
+  if (authorizationValueType == 1 && value <= 5)
   {
-    return qword_100080818[a3];
+    return qword_100080818[value];
   }
 
   return result;
 }
 
-- (unint64_t)convertAccessUpdateStatustToMainSet:(unint64_t)a3
+- (unint64_t)convertAccessUpdateStatustToMainSet:(unint64_t)set
 {
-  result = a3;
-  v4 = a3 - 2;
-  if (a3 - 2 <= 0xA && ((0x553u >> v4) & 1) != 0)
+  result = set;
+  v4 = set - 2;
+  if (set - 2 <= 0xA && ((0x553u >> v4) & 1) != 0)
   {
     return qword_100080848[v4];
   }
@@ -112,7 +112,7 @@
   block[1] = 3221225472;
   block[2] = sub_100046D50;
   block[3] = &unk_1000A6468;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000C11E8 != -1)
   {
     dispatch_once(&qword_1000C11E8, block);
@@ -123,12 +123,12 @@
   return v2;
 }
 
-+ (id)serviceDescriptionsForPlatformName:(id)a3
++ (id)serviceDescriptionsForPlatformName:(id)name
 {
-  v4 = a3;
-  v19 = [a1 allServices];
-  v5 = [v19 allObjects];
-  v6 = [v5 sortedArrayUsingSelector:"compare:"];
+  nameCopy = name;
+  allServices = [self allServices];
+  allObjects = [allServices allObjects];
+  v6 = [allObjects sortedArrayUsingSelector:"compare:"];
 
   v20 = objc_opt_new();
   v21 = 0u;
@@ -151,23 +151,23 @@
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 validOnPlatformNames];
-        v14 = [v13 containsObject:v4];
+        validOnPlatformNames = [v12 validOnPlatformNames];
+        v14 = [validOnPlatformNames containsObject:nameCopy];
 
-        if ((v14 & 1) != 0 || [v4 isEqualToString:@"all"])
+        if ((v14 & 1) != 0 || [nameCopy isEqualToString:@"all"])
         {
-          v15 = [a1 serviceAll];
-          if (v12 != v15)
+          serviceAll = [self serviceAll];
+          if (v12 != serviceAll)
           {
-            v16 = [v12 shouldTreatAsDeprecated];
+            shouldTreatAsDeprecated = [v12 shouldTreatAsDeprecated];
 
-            if (v16)
+            if (shouldTreatAsDeprecated)
             {
               continue;
             }
 
-            v15 = [v12 descriptionDictionary];
-            [v20 addObject:v15];
+            serviceAll = [v12 descriptionDictionary];
+            [v20 addObject:serviceAll];
           }
         }
       }
@@ -183,10 +183,10 @@
   return v17;
 }
 
-+ (id)tccdPlatformNameForDYLDPlatformName:(id)a3
++ (id)tccdPlatformNameForDYLDPlatformName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"macos"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"macos"])
   {
     v4 = &TCCDPlatformNameMacOS;
 LABEL_9:
@@ -194,19 +194,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"ios"])
+  if ([nameCopy isEqualToString:@"ios"])
   {
     v4 = &TCCDPlatformNameIOS;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"watchos"])
+  if ([nameCopy isEqualToString:@"watchos"])
   {
     v4 = &TCCDPlatformNameWatchOS;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"tvos"])
+  if ([nameCopy isEqualToString:@"tvos"])
   {
     v4 = &TCCDPlatformNameTVOS;
     goto LABEL_9;
@@ -218,37 +218,37 @@ LABEL_10:
   return v5;
 }
 
-+ (id)versionStringFromDYLDVersionNumber:(id)a3
++ (id)versionStringFromDYLDVersionNumber:(id)number
 {
-  v3 = [a3 unsignedIntValue];
-  if (v3)
+  unsignedIntValue = [number unsignedIntValue];
+  if (unsignedIntValue)
   {
-    [NSString stringWithFormat:@"%u.%u.%u", BYTE2(v3), BYTE1(v3), v3];
+    [NSString stringWithFormat:@"%u.%u.%u", BYTE2(unsignedIntValue), BYTE1(unsignedIntValue), unsignedIntValue];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%u.%u", BYTE2(v3), BYTE1(v3), v6];
+    [NSString stringWithFormat:@"%u.%u", BYTE2(unsignedIntValue), BYTE1(unsignedIntValue), v6];
   }
   v4 = ;
 
   return v4;
 }
 
-- (TCCDService)initWithName:(id)a3 availability:(id)a4
+- (TCCDService)initWithName:(id)name availability:(id)availability
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  availabilityCopy = availability;
   v32.receiver = self;
   v32.super_class = TCCDService;
   v8 = [(TCCDService *)&v32 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     [(TCCDService *)v8 setName:v9];
 
-    v10 = [(TCCDService *)v8 name];
-    v11 = [v10 substringFromIndex:{objc_msgSend(@"kTCCService", "length")}];
+    name = [(TCCDService *)v8 name];
+    v11 = [name substringFromIndex:{objc_msgSend(@"kTCCService", "length")}];
     [(TCCDService *)v8 setExternalName:v11];
 
     [(TCCDService *)v8 setMdm_macos_allowedInPayloadDefition:1];
@@ -261,10 +261,10 @@ LABEL_10:
     v30 = v13;
     v14 = v12;
     v31 = v14;
-    [v7 enumerateKeysAndObjectsUsingBlock:&v26];
+    [availabilityCopy enumerateKeysAndObjectsUsingBlock:&v26];
     [(TCCDService *)v13 setValidOnPlatformNames:v14, v26, v27, v28, v29];
     [(TCCDService *)v13 setUsesTwoStagePrompting:0];
-    [(TCCDService *)v13 setPlatformAvailability:v7];
+    [(TCCDService *)v13 setPlatformAvailability:availabilityCopy];
     [(TCCDService *)v13 setAuthorizationValueType:1];
     [(TCCDService *)v13 setAuthorizationRightsMask:7];
     [(TCCDService *)v13 setAuthorizationVersionNumber:1];
@@ -274,35 +274,35 @@ LABEL_10:
 
     [(TCCDService *)v13 setAllowAuthorizationButtonTitleLocalizationKey:@"REQUEST_ACCESS_ALLOW"];
     [(TCCDService *)v13 setDenyAuthorizationButtonTitleLocalizationKey:@"REQUEST_ACCESS_DENY"];
-    v16 = [(TCCDService *)v13 name];
-    v17 = [TCCDService requestTitleTextLocalizationKeyNameForServiceName:v16];
+    name2 = [(TCCDService *)v13 name];
+    v17 = [TCCDService requestTitleTextLocalizationKeyNameForServiceName:name2];
     [(TCCDService *)v13 setRequestTitleTextLocalizationKey:v17];
 
-    v18 = [(TCCDService *)v13 requestTitleTextLocalizationKey];
+    requestTitleTextLocalizationKey = [(TCCDService *)v13 requestTitleTextLocalizationKey];
 
-    if (!v18)
+    if (!requestTitleTextLocalizationKey)
     {
       sub_10004CDB8();
     }
 
-    v19 = [(TCCDService *)v13 name];
-    v20 = [TCCDService requestDenyNotificationTitleTextLocalizationKeyNameForServiceName:v19];
+    name3 = [(TCCDService *)v13 name];
+    v20 = [TCCDService requestDenyNotificationTitleTextLocalizationKeyNameForServiceName:name3];
     [(TCCDService *)v13 setNotificationTitleTextLocalizationKey:v20];
 
-    v21 = [(TCCDService *)v13 notificationTitleTextLocalizationKey];
+    notificationTitleTextLocalizationKey = [(TCCDService *)v13 notificationTitleTextLocalizationKey];
 
-    if (!v21)
+    if (!notificationTitleTextLocalizationKey)
     {
       sub_10004CDB8();
     }
 
-    v22 = [(TCCDService *)v13 name];
-    v23 = [TCCDService requestDenyNotificationButtonTitleTextLocalizationKeyNameForServiceName:v22];
+    name4 = [(TCCDService *)v13 name];
+    v23 = [TCCDService requestDenyNotificationButtonTitleTextLocalizationKeyNameForServiceName:name4];
     [(TCCDService *)v13 setNotificationButtonTitleLocalizationKey:v23];
 
-    v24 = [(TCCDService *)v13 notificationButtonTitleLocalizationKey];
+    notificationButtonTitleLocalizationKey = [(TCCDService *)v13 notificationButtonTitleLocalizationKey];
 
-    if (!v24)
+    if (!notificationButtonTitleLocalizationKey)
     {
       sub_10004CDB8();
     }
@@ -334,36 +334,36 @@ LABEL_10:
 - (id)descriptionDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(TCCDService *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"name"];
+  name = [(TCCDService *)self name];
+  [v3 setObject:name forKeyedSubscript:@"name"];
 
-  v5 = [(TCCDService *)self externalName];
-  [v3 setObject:v5 forKeyedSubscript:@"externalName"];
+  externalName = [(TCCDService *)self externalName];
+  [v3 setObject:externalName forKeyedSubscript:@"externalName"];
 
-  v6 = [(TCCDService *)self usageDescriptionKeyName];
-  [v3 setObject:v6 forKeyedSubscript:@"usageDescriptionKeyName"];
+  usageDescriptionKeyName = [(TCCDService *)self usageDescriptionKeyName];
+  [v3 setObject:usageDescriptionKeyName forKeyedSubscript:@"usageDescriptionKeyName"];
 
-  v7 = [(TCCDService *)self validOnPlatformNames];
-  v8 = [v7 allObjects];
-  [v3 setObject:v8 forKeyedSubscript:@"platforms"];
+  validOnPlatformNames = [(TCCDService *)self validOnPlatformNames];
+  allObjects = [validOnPlatformNames allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"platforms"];
 
-  v9 = [(TCCDService *)self platformAvailability];
-  [v3 setObject:v9 forKeyedSubscript:@"platformAvailibilityVersionNumbers"];
+  platformAvailability = [(TCCDService *)self platformAvailability];
+  [v3 setObject:platformAvailability forKeyedSubscript:@"platformAvailibilityVersionNumbers"];
 
-  v10 = [(TCCDService *)self fullAccessUsageDescriptionKeyName];
+  fullAccessUsageDescriptionKeyName = [(TCCDService *)self fullAccessUsageDescriptionKeyName];
 
-  if (v10)
+  if (fullAccessUsageDescriptionKeyName)
   {
-    v11 = [(TCCDService *)self fullAccessUsageDescriptionKeyName];
-    [v3 setObject:v11 forKeyedSubscript:@"fullAccessUsageDescriptionKeyName"];
+    fullAccessUsageDescriptionKeyName2 = [(TCCDService *)self fullAccessUsageDescriptionKeyName];
+    [v3 setObject:fullAccessUsageDescriptionKeyName2 forKeyedSubscript:@"fullAccessUsageDescriptionKeyName"];
   }
 
-  v12 = [(TCCDService *)self addAccessUsageDescriptionKeyName];
+  addAccessUsageDescriptionKeyName = [(TCCDService *)self addAccessUsageDescriptionKeyName];
 
-  if (v12)
+  if (addAccessUsageDescriptionKeyName)
   {
-    v13 = [(TCCDService *)self addAccessUsageDescriptionKeyName];
-    [v3 setObject:v13 forKeyedSubscript:@"addAccessUsageDescriptionKeyName"];
+    addAccessUsageDescriptionKeyName2 = [(TCCDService *)self addAccessUsageDescriptionKeyName];
+    [v3 setObject:addAccessUsageDescriptionKeyName2 forKeyedSubscript:@"addAccessUsageDescriptionKeyName"];
   }
 
   if ([(TCCDService *)self supportsStagedPrompting])
@@ -373,15 +373,15 @@ LABEL_10:
   }
 
   v15 = objc_opt_new();
-  v16 = [(TCCDService *)self platformAvailability];
+  platformAvailability2 = [(TCCDService *)self platformAvailability];
   v48 = _NSConcreteStackBlock;
   v49 = 3221225472;
   v50 = sub_10004B92C;
   v51 = &unk_1000A67A0;
   v17 = v15;
   v52 = v17;
-  v53 = self;
-  [v16 enumerateKeysAndObjectsUsingBlock:&v48];
+  selfCopy = self;
+  [platformAvailability2 enumerateKeysAndObjectsUsingBlock:&v48];
 
   [v3 setObject:v17 forKeyedSubscript:{@"platformAvailibilityVersionStrings", v48, v49, v50, v51}];
   if ([(TCCDService *)self mdm_isAuthorizationDenyOnly])
@@ -411,94 +411,94 @@ LABEL_10:
     [v3 setObject:v22 forKeyedSubscript:@"macos_isPerSystem"];
   }
 
-  v23 = [(TCCDService *)self macos_hardenedRuntimeEntitlementName];
+  macos_hardenedRuntimeEntitlementName = [(TCCDService *)self macos_hardenedRuntimeEntitlementName];
 
-  if (v23)
+  if (macos_hardenedRuntimeEntitlementName)
   {
-    v24 = [(TCCDService *)self macos_hardenedRuntimeEntitlementName];
-    [v3 setObject:v24 forKeyedSubscript:@"macos_hardenedRuntimeEntitlementName"];
+    macos_hardenedRuntimeEntitlementName2 = [(TCCDService *)self macos_hardenedRuntimeEntitlementName];
+    [v3 setObject:macos_hardenedRuntimeEntitlementName2 forKeyedSubscript:@"macos_hardenedRuntimeEntitlementName"];
   }
 
-  v25 = [(TCCDService *)self macos_minimumSDKVersionNumber];
+  macos_minimumSDKVersionNumber = [(TCCDService *)self macos_minimumSDKVersionNumber];
 
-  if (v25)
+  if (macos_minimumSDKVersionNumber)
   {
-    v26 = [(TCCDService *)self macos_minimumSDKVersionNumber];
-    [v3 setObject:v26 forKeyedSubscript:@"macos_minimumSDKVersionNumber"];
+    macos_minimumSDKVersionNumber2 = [(TCCDService *)self macos_minimumSDKVersionNumber];
+    [v3 setObject:macos_minimumSDKVersionNumber2 forKeyedSubscript:@"macos_minimumSDKVersionNumber"];
 
     v27 = objc_opt_class();
-    v28 = [(TCCDService *)self macos_minimumSDKVersionNumber];
-    v29 = [v27 versionStringFromDYLDVersionNumber:v28];
+    macos_minimumSDKVersionNumber3 = [(TCCDService *)self macos_minimumSDKVersionNumber];
+    v29 = [v27 versionStringFromDYLDVersionNumber:macos_minimumSDKVersionNumber3];
     [v3 setObject:v29 forKeyedSubscript:@"macos_minimumSDKVersionString"];
   }
 
-  v30 = [(TCCDService *)self macos_helpAnchor];
+  macos_helpAnchor = [(TCCDService *)self macos_helpAnchor];
 
-  if (v30)
+  if (macos_helpAnchor)
   {
-    v31 = [(TCCDService *)self macos_helpAnchor];
-    [v3 setObject:v31 forKeyedSubscript:@"macos_helpAnchor"];
+    macos_helpAnchor2 = [(TCCDService *)self macos_helpAnchor];
+    [v3 setObject:macos_helpAnchor2 forKeyedSubscript:@"macos_helpAnchor"];
   }
 
-  v32 = [(TCCDService *)self tvOS_minimumSDKVersionNumber];
+  tvOS_minimumSDKVersionNumber = [(TCCDService *)self tvOS_minimumSDKVersionNumber];
 
-  if (v32)
+  if (tvOS_minimumSDKVersionNumber)
   {
-    v33 = [(TCCDService *)self tvOS_minimumSDKVersionNumber];
-    [v3 setObject:v33 forKeyedSubscript:@"tvOS_minimumSDKVersionNumber"];
+    tvOS_minimumSDKVersionNumber2 = [(TCCDService *)self tvOS_minimumSDKVersionNumber];
+    [v3 setObject:tvOS_minimumSDKVersionNumber2 forKeyedSubscript:@"tvOS_minimumSDKVersionNumber"];
 
     v34 = objc_opt_class();
-    v35 = [(TCCDService *)self tvOS_minimumSDKVersionNumber];
-    v36 = [v34 versionStringFromDYLDVersionNumber:v35];
+    tvOS_minimumSDKVersionNumber3 = [(TCCDService *)self tvOS_minimumSDKVersionNumber];
+    v36 = [v34 versionStringFromDYLDVersionNumber:tvOS_minimumSDKVersionNumber3];
     [v3 setObject:v36 forKeyedSubscript:@"tvOS_minimumSDKVersionString"];
   }
 
-  v37 = [(TCCDService *)self watchOS_minimumSDKVersionNumber];
+  watchOS_minimumSDKVersionNumber = [(TCCDService *)self watchOS_minimumSDKVersionNumber];
 
-  if (v37)
+  if (watchOS_minimumSDKVersionNumber)
   {
-    v38 = [(TCCDService *)self watchOS_minimumSDKVersionNumber];
-    [v3 setObject:v38 forKeyedSubscript:@"watchOS_minimumSDKVersionNumber"];
+    watchOS_minimumSDKVersionNumber2 = [(TCCDService *)self watchOS_minimumSDKVersionNumber];
+    [v3 setObject:watchOS_minimumSDKVersionNumber2 forKeyedSubscript:@"watchOS_minimumSDKVersionNumber"];
 
     v39 = objc_opt_class();
-    v40 = [(TCCDService *)self watchOS_minimumSDKVersionNumber];
-    v41 = [v39 versionStringFromDYLDVersionNumber:v40];
+    watchOS_minimumSDKVersionNumber3 = [(TCCDService *)self watchOS_minimumSDKVersionNumber];
+    v41 = [v39 versionStringFromDYLDVersionNumber:watchOS_minimumSDKVersionNumber3];
     [v3 setObject:v41 forKeyedSubscript:@"watchOS_minimumSDKVersionString"];
   }
 
-  v42 = [(TCCDService *)self iOS_minimumSDKVersionNumber];
+  iOS_minimumSDKVersionNumber = [(TCCDService *)self iOS_minimumSDKVersionNumber];
 
-  if (v42)
+  if (iOS_minimumSDKVersionNumber)
   {
-    v43 = [(TCCDService *)self iOS_minimumSDKVersionNumber];
-    [v3 setObject:v43 forKeyedSubscript:@"iOS_minimumSDKVersionNumber"];
+    iOS_minimumSDKVersionNumber2 = [(TCCDService *)self iOS_minimumSDKVersionNumber];
+    [v3 setObject:iOS_minimumSDKVersionNumber2 forKeyedSubscript:@"iOS_minimumSDKVersionNumber"];
 
     v44 = objc_opt_class();
-    v45 = [(TCCDService *)self iOS_minimumSDKVersionNumber];
-    v46 = [v44 versionStringFromDYLDVersionNumber:v45];
+    iOS_minimumSDKVersionNumber3 = [(TCCDService *)self iOS_minimumSDKVersionNumber];
+    v46 = [v44 versionStringFromDYLDVersionNumber:iOS_minimumSDKVersionNumber3];
     [v3 setObject:v46 forKeyedSubscript:@"iOS_minimumSDKVersionString"];
   }
 
   return v3;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(TCCDService *)self name];
-  v6 = [v4 name];
+  compareCopy = compare;
+  name = [(TCCDService *)self name];
+  name2 = [compareCopy name];
 
-  v7 = [v5 compare:v6];
+  v7 = [name compare:name2];
   return v7;
 }
 
-- (id)authorizationRightStateForValue:(unint64_t)a3 reason:(unint64_t)a4
+- (id)authorizationRightStateForValue:(unint64_t)value reason:(unint64_t)reason
 {
   if ([(TCCDService *)self authorizationValueType]== 1)
   {
     v6 = objc_alloc_init(TCCDAuthorizationRightState);
-    [(TCCDAuthorizationRightState *)v6 setRight:a3];
-    [(TCCDAuthorizationRightState *)v6 setReason:a4];
+    [(TCCDAuthorizationRightState *)v6 setRight:value];
+    [(TCCDAuthorizationRightState *)v6 setReason:reason];
   }
 
   else
@@ -509,20 +509,20 @@ LABEL_10:
   return v6;
 }
 
-- (id)descriptionForAuthorizationValue:(unint64_t)a3 reason:(unint64_t)a4
+- (id)descriptionForAuthorizationValue:(unint64_t)value reason:(unint64_t)reason
 {
   if ([(TCCDService *)self authorizationValueType]== 1)
   {
-    v7 = [(TCCDService *)self authorizationRightStateForValue:a3 reason:a4];
-    v8 = [v7 description];
+    v7 = [(TCCDService *)self authorizationRightStateForValue:value reason:reason];
+    value = [v7 description];
   }
 
   else
   {
-    v8 = [NSString stringWithFormat:@"0x%llx", a3];
+    value = [NSString stringWithFormat:@"0x%llx", value];
   }
 
-  return v8;
+  return value;
 }
 
 - (int64_t)developmentAuthorizationValue
@@ -532,8 +532,8 @@ LABEL_10:
     return 0;
   }
 
-  v3 = [(TCCDService *)self name];
-  v4 = [NSString stringWithFormat:@"DevelopmentAuthorizationPolicy.%@", v3];
+  name = [(TCCDService *)self name];
+  v4 = [NSString stringWithFormat:@"DevelopmentAuthorizationPolicy.%@", name];
 
   v5 = CFPreferencesCopyValue(v4, @"com.apple.tccd", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   if (v5 && (v6 = v5, v7 = CFGetTypeID(v5), v7 == CFStringGetTypeID()))
@@ -543,86 +543,86 @@ LABEL_10:
       if ([v6 caseInsensitiveCompare:@"deny"])
       {
         [v6 caseInsensitiveCompare:@"none"];
-        v8 = 0;
+        defaultDevelopmentAuthorizationValue = 0;
       }
 
       else
       {
-        v8 = 2;
+        defaultDevelopmentAuthorizationValue = 2;
       }
     }
 
     else
     {
-      v8 = 1;
+      defaultDevelopmentAuthorizationValue = 1;
     }
   }
 
   else
   {
-    v8 = [(TCCDService *)self defaultDevelopmentAuthorizationValue];
+    defaultDevelopmentAuthorizationValue = [(TCCDService *)self defaultDevelopmentAuthorizationValue];
   }
 
-  return v8;
+  return defaultDevelopmentAuthorizationValue;
 }
 
-- (void)setLocalizedResourcesBundlePath:(id)a3
+- (void)setLocalizedResourcesBundlePath:(id)path
 {
-  self->_localizedResourcesBundlePath = [a3 copy];
+  self->_localizedResourcesBundlePath = [path copy];
 
   _objc_release_x1();
 }
 
 - (NSBundle)defaultLocalizedResourcesBundle
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_defaultLocalizedResourcesBundle)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_defaultLocalizedResourcesBundle)
   {
     v3 = +[TCCDService defaultLocalizedResourcesBundlePath];
     v4 = [NSBundle bundleWithPath:v3];
-    defaultLocalizedResourcesBundle = v2->_defaultLocalizedResourcesBundle;
-    v2->_defaultLocalizedResourcesBundle = v4;
+    defaultLocalizedResourcesBundle = selfCopy->_defaultLocalizedResourcesBundle;
+    selfCopy->_defaultLocalizedResourcesBundle = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v6 = v2->_defaultLocalizedResourcesBundle;
+  v6 = selfCopy->_defaultLocalizedResourcesBundle;
   if (!v6)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004BEA8;
     block[3] = &unk_1000A4F58;
-    block[4] = v2;
+    block[4] = selfCopy;
     if (qword_1000C1208 != -1)
     {
       dispatch_once(&qword_1000C1208, block);
     }
 
-    v6 = v2->_defaultLocalizedResourcesBundle;
+    v6 = selfCopy->_defaultLocalizedResourcesBundle;
   }
 
   return v6;
 }
 
-- (id)localizedTextWithKey:(id)a3
+- (id)localizedTextWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(TCCDService *)self localizedResourcesBundle];
-  v6 = v5;
-  if (v5)
+  keyCopy = key;
+  localizedResourcesBundle = [(TCCDService *)self localizedResourcesBundle];
+  v6 = localizedResourcesBundle;
+  if (localizedResourcesBundle)
   {
-    v7 = [v5 localizedStringForKey:v4 value:&stru_1000A7240 table:0];
+    v7 = [localizedResourcesBundle localizedStringForKey:keyCopy value:&stru_1000A7240 table:0];
     if (!v7)
     {
       v8 = +[TCCDPlatform currentPlatform];
-      v9 = [v8 server];
-      v10 = [v9 logHandle];
+      server = [v8 server];
+      logHandle = [server logHandle];
 
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        sub_10004CF20(self, v4, v10);
+        sub_10004CF20(self, keyCopy, logHandle);
       }
     }
   }
@@ -635,88 +635,88 @@ LABEL_10:
   return v7;
 }
 
-- (id)requestTitleTextLocalizationKeyForAuthorization:(unint64_t)a3
+- (id)requestTitleTextLocalizationKeyForAuthorization:(unint64_t)authorization
 {
-  switch(a3)
+  switch(authorization)
   {
     case 4uLL:
-      v3 = [(TCCDService *)self requestAddTitleTextLocalizationKey];
+      requestAddTitleTextLocalizationKey = [(TCCDService *)self requestAddTitleTextLocalizationKey];
       break;
     case 3uLL:
-      v3 = [(TCCDService *)self requestLimitedTitleTextLocalizationKey];
+      requestAddTitleTextLocalizationKey = [(TCCDService *)self requestLimitedTitleTextLocalizationKey];
       break;
     case 2uLL:
-      v3 = [(TCCDService *)self requestFullTitleTextLocalizationKey];
+      requestAddTitleTextLocalizationKey = [(TCCDService *)self requestFullTitleTextLocalizationKey];
       break;
     default:
-      v3 = 0;
+      requestAddTitleTextLocalizationKey = 0;
       break;
   }
 
-  return v3;
+  return requestAddTitleTextLocalizationKey;
 }
 
-- (id)buttonTitleLocalizationKeyForAuthorization:(unint64_t)a3 desiredAuth:(unint64_t)a4
+- (id)buttonTitleLocalizationKeyForAuthorization:(unint64_t)authorization desiredAuth:(unint64_t)auth
 {
-  v6 = [(TCCDService *)self localizationKeyForButtonAuth:a3 desiredAuth:a4];
-  if (!v6)
+  addModifyAddedAuthorizationButtonTitleLocalizationKey = [(TCCDService *)self localizationKeyForButtonAuth:authorization desiredAuth:auth];
+  if (!addModifyAddedAuthorizationButtonTitleLocalizationKey)
   {
-    if (a3 > 3)
+    if (authorization > 3)
     {
-      switch(a3)
+      switch(authorization)
       {
         case 4uLL:
-          v6 = [(TCCDService *)self addModifyAddedAuthorizationButtonTitleLocalizationKey];
+          addModifyAddedAuthorizationButtonTitleLocalizationKey = [(TCCDService *)self addModifyAddedAuthorizationButtonTitleLocalizationKey];
           break;
         case 5uLL:
-          v6 = [(TCCDService *)self sessionPidAuthorizationButtonTitleLocalizationKey];
+          addModifyAddedAuthorizationButtonTitleLocalizationKey = [(TCCDService *)self sessionPidAuthorizationButtonTitleLocalizationKey];
           break;
         case 6uLL:
-          v6 = [(TCCDService *)self moreAuthorizationOptionsButtonTitleLocalizationKey];
+          addModifyAddedAuthorizationButtonTitleLocalizationKey = [(TCCDService *)self moreAuthorizationOptionsButtonTitleLocalizationKey];
           break;
       }
     }
 
-    else if (a3)
+    else if (authorization)
     {
-      if (a3 == 2)
+      if (authorization == 2)
       {
-        v6 = [(TCCDService *)self allowAuthorizationButtonTitleLocalizationKey];
+        addModifyAddedAuthorizationButtonTitleLocalizationKey = [(TCCDService *)self allowAuthorizationButtonTitleLocalizationKey];
       }
 
-      else if (a3 == 3)
+      else if (authorization == 3)
       {
-        v6 = [(TCCDService *)self limitedAuthorizationButtonTitleLocalizationKey];
+        addModifyAddedAuthorizationButtonTitleLocalizationKey = [(TCCDService *)self limitedAuthorizationButtonTitleLocalizationKey];
       }
     }
 
     else
     {
-      v6 = [(TCCDService *)self denyAuthorizationButtonTitleLocalizationKey];
+      addModifyAddedAuthorizationButtonTitleLocalizationKey = [(TCCDService *)self denyAuthorizationButtonTitleLocalizationKey];
     }
   }
 
-  return v6;
+  return addModifyAddedAuthorizationButtonTitleLocalizationKey;
 }
 
-- (id)usageDescriptionKeyForAuthorization:(unint64_t)a3
+- (id)usageDescriptionKeyForAuthorization:(unint64_t)authorization
 {
-  if (a3 == 4)
+  if (authorization == 4)
   {
-    v3 = [(TCCDService *)self addAccessUsageDescriptionKeyName];
+    addAccessUsageDescriptionKeyName = [(TCCDService *)self addAccessUsageDescriptionKeyName];
   }
 
-  else if (a3 == 2)
+  else if (authorization == 2)
   {
-    v3 = [(TCCDService *)self fullAccessUsageDescriptionKeyName];
+    addAccessUsageDescriptionKeyName = [(TCCDService *)self fullAccessUsageDescriptionKeyName];
   }
 
   else
   {
-    v3 = 0;
+    addAccessUsageDescriptionKeyName = 0;
   }
 
-  return v3;
+  return addAccessUsageDescriptionKeyName;
 }
 
 - (TCCDService)subsequentRequestStringsRelatedService

@@ -1,99 +1,99 @@
 @interface CRCameraReader
-+ (CGRect)aspectRatioPaddedRect:(CGRect)a3 expectedWidth:(double)a4 height:(double)a5 orientation:(unsigned int)a6;
-+ (CGRect)uniformPadRect:(CGRect)a3 widthPadding:(float)a4 heightPadding:(float)a5 width:(double)a6 height:(double)a7;
-+ (id)extractCardImage:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 withCardBuffer:(__CVBuffer *)a5 cameraIntrinsicData:(id)a6;
-+ (id)extractCardImage:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 withCardBuffer:(__CVBuffer *)a5 withPoints:(id)a6 cameraIntrinsicData:(id)a7;
-+ (id)extractCardImage:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 withCardBuffer:(__CVBuffer *)a5 withPoints:(id)a6 cameraIntrinsicData:(id)a7 padding:(float)a8 inputOrientation:(int)a9;
-+ (id)extractCardImage:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 withCardBuffer:(__CVBuffer *)a5 withPoints:(id)a6 cameraIntrinsicData:(id)a7 padding:(float)a8 inputOrientation:(int)a9 unpaddedCardImage:(id *)a10;
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4;
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4 outputObjectTypes:(id)a5;
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4 roi:(CGRect)a5;
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4 roi:(CGRect)a5 outputObjectTypes:(id)a6;
-+ (id)perspectiveCorrectedImage:(id)a3 p1:(CGPoint)a4 p2:(CGPoint)a5 p3:(CGPoint)a6 p4:(CGPoint)a7;
-+ (id)platformImageFromCIImage:(id)a3;
-+ (id)scaledImage:(id)a3 width:(double)a4 height:(double)a5;
-+ (id)targetRectsForImage:(id)a3;
-+ (id)textFeatureWithVNTextObservation:(id)a3;
++ (CGRect)aspectRatioPaddedRect:(CGRect)rect expectedWidth:(double)width height:(double)height orientation:(unsigned int)orientation;
++ (CGRect)uniformPadRect:(CGRect)rect widthPadding:(float)padding heightPadding:(float)heightPadding width:(double)width height:(double)height;
++ (id)extractCardImage:(id)image fromPixelBuffer:(__CVBuffer *)buffer withCardBuffer:(__CVBuffer *)cardBuffer cameraIntrinsicData:(id)data;
++ (id)extractCardImage:(id)image fromPixelBuffer:(__CVBuffer *)buffer withCardBuffer:(__CVBuffer *)cardBuffer withPoints:(id)points cameraIntrinsicData:(id)data;
++ (id)extractCardImage:(id)image fromPixelBuffer:(__CVBuffer *)buffer withCardBuffer:(__CVBuffer *)cardBuffer withPoints:(id)points cameraIntrinsicData:(id)data padding:(float)padding inputOrientation:(int)orientation;
++ (id)extractCardImage:(id)image fromPixelBuffer:(__CVBuffer *)buffer withCardBuffer:(__CVBuffer *)cardBuffer withPoints:(id)points cameraIntrinsicData:(id)data padding:(float)padding inputOrientation:(int)orientation unpaddedCardImage:(id *)self0;
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage;
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage outputObjectTypes:(id)types;
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage roi:(CGRect)roi;
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage roi:(CGRect)roi outputObjectTypes:(id)types;
++ (id)perspectiveCorrectedImage:(id)image p1:(CGPoint)p1 p2:(CGPoint)p2 p3:(CGPoint)p3 p4:(CGPoint)p4;
++ (id)platformImageFromCIImage:(id)image;
++ (id)scaledImage:(id)image width:(double)width height:(double)height;
++ (id)targetRectsForImage:(id)image;
++ (id)textFeatureWithVNTextObservation:(id)observation;
 + (unint64_t)supportedCameraCount;
 + (void)loadFonts;
 - (CGRect)boxLayerPresentationFrame;
-- (CRCameraReader)initWithNibName:(id)a3 bundle:(id)a4 options:(id)a5;
+- (CRCameraReader)initWithNibName:(id)name bundle:(id)bundle options:(id)options;
 - (CRCameraReaderDelegate)callbackDelegate;
 - (NSArray)outputObjectTypes;
-- (__CVBuffer)createFastAccessPixelBufferWithSize:(CGSize)a3 videoFormat:(int)a4;
-- (id)attributedStringWithFrame:(CGSize)a3 withFont:(id)a4 withString:(id)a5 color:(CGColor *)a6;
-- (id)cameraIntrinsicDataForSampleBuffer:(opaqueCMSampleBuffer *)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (id)createTextLayerForRecognizedObject:(id)a3;
+- (__CVBuffer)createFastAccessPixelBufferWithSize:(CGSize)size videoFormat:(int)format;
+- (id)attributedStringWithFrame:(CGSize)frame withFont:(id)font withString:(id)string color:(CGColor *)color;
+- (id)cameraIntrinsicDataForSampleBuffer:(opaqueCMSampleBuffer *)buffer width:(unint64_t)width height:(unint64_t)height;
+- (id)createTextLayerForRecognizedObject:(id)object;
 - (id)currentDeviceID;
-- (id)extractFinalDigitStringFromNumbers:(id)a3;
-- (id)findCCExpDateInImageEmbossed:(id)a3;
-- (id)findCCNameInImageEmbossed:(id)a3;
-- (id)findCCNumberInImageEmbossed:(id)a3;
-- (id)findCCNumberInImageEmbossed:(id)a3 withFinalDigit:(id)a4;
-- (id)findCCObjectEmbossed:(id)a3 inImage:(id)a4 forRect:(id)a5;
-- (id)findCCObjectsEmbossed:(id)a3 inImage:(id)a4 numberRects:(id)a5 nameRects:(id)a6 dateRects:(id)a7;
-- (id)findCCResultsInImageFlat:(id)a3 usingTextFeatures:(id)a4 invert:(BOOL)a5;
-- (id)findObjectsEmbossed:(id)a3 inImage:(id)a4;
-- (id)findObjectsFlat:(id)a3 inImage:(id)a4 numberRects:(id)a5 invert:(BOOL)a6;
-- (id)generateStringFromDate:(id)a3;
-- (id)getCorrectedIDImageFromAuxiliaryPoints:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 unpaddedCardImage:(id *)a6;
+- (id)extractFinalDigitStringFromNumbers:(id)numbers;
+- (id)findCCExpDateInImageEmbossed:(id)embossed;
+- (id)findCCNameInImageEmbossed:(id)embossed;
+- (id)findCCNumberInImageEmbossed:(id)embossed;
+- (id)findCCNumberInImageEmbossed:(id)embossed withFinalDigit:(id)digit;
+- (id)findCCObjectEmbossed:(id)embossed inImage:(id)image forRect:(id)rect;
+- (id)findCCObjectsEmbossed:(id)embossed inImage:(id)image numberRects:(id)rects nameRects:(id)nameRects dateRects:(id)dateRects;
+- (id)findCCResultsInImageFlat:(id)flat usingTextFeatures:(id)features invert:(BOOL)invert;
+- (id)findObjectsEmbossed:(id)embossed inImage:(id)image;
+- (id)findObjectsFlat:(id)flat inImage:(id)image numberRects:(id)rects invert:(BOOL)invert;
+- (id)generateStringFromDate:(id)date;
+- (id)getCorrectedIDImageFromAuxiliaryPoints:(id)points fromPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation unpaddedCardImage:(id *)image;
 - (int64_t)currentCameraIdentifier;
-- (unint64_t)getFirstTimeFrameIndexForPinnedField:(id)a3;
-- (void)aetPlacementTextColor:(id)a3;
-- (void)animatePresentCodeAtFrameTime:(id *)a3;
+- (unint64_t)getFirstTimeFrameIndexForPinnedField:(id)field;
+- (void)aetPlacementTextColor:(id)color;
+- (void)animatePresentCodeAtFrameTime:(id *)time;
 - (void)cancel;
 - (void)captureImage;
-- (void)captureImageFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)captureImageFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 - (void)createCorrectedCardBuffer;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)findCodeInSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)findIDObjects:(id)a3 inPixelBuffer:(__CVBuffer *)a4 cameraIntrinsicData:(id)a5 frameTime:(id *)a6;
-- (void)findOCRTextObjects:(id)a3 inPixelBuffer:(__CVBuffer *)a4 attachments:(id)a5 frameTime:(id *)a6;
-- (void)findObjects:(id)a3 inPixelBuffer:(__CVBuffer *)a4 cameraIntrinsicData:(id)a5 frameTime:(id *)a6;
+- (void)findCodeInSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)findIDObjects:(id)objects inPixelBuffer:(__CVBuffer *)buffer cameraIntrinsicData:(id)data frameTime:(id *)time;
+- (void)findOCRTextObjects:(id)objects inPixelBuffer:(__CVBuffer *)buffer attachments:(id)attachments frameTime:(id *)time;
+- (void)findObjects:(id)objects inPixelBuffer:(__CVBuffer *)buffer cameraIntrinsicData:(id)data frameTime:(id *)time;
 - (void)flashScreenAndPlayCaptureSound;
 - (void)hideBoxLayer;
 - (void)loadModels;
 - (void)loadView;
-- (void)mergeInfo:(id)a3 intoFindInfo:(id)a4;
-- (void)orientationDidChange:(id)a3;
+- (void)mergeInfo:(id)info intoFindInfo:(id)findInfo;
+- (void)orientationDidChange:(id)change;
 - (void)pauseBoxLayerHideTimer;
-- (void)primeBoxLayerHideTimerWithFrameTime:(id *)a3;
+- (void)primeBoxLayerHideTimerWithFrameTime:(id *)time;
 - (void)releaseCorrectedCardBuffer;
 - (void)removeLayerTree;
 - (void)sendDidCancel;
-- (void)sendDidDisplayMessageStyle:(int64_t)a3;
+- (void)sendDidDisplayMessageStyle:(int64_t)style;
 - (void)sendDidEndAnimation;
-- (void)sendDidEndWithError:(id)a3;
-- (void)sendDidEndWithErrorDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
-- (void)sendDidEndWithInfo:(id)a3;
-- (void)sendDidFindTarget:(id)a3 frameTime:(id *)a4;
-- (void)sendDidRecognizeNewObjects:(id)a3;
-- (void)sendProvideOverlayObjects:(id)a3;
-- (void)setCapturedTextColor:(id)a3;
-- (void)setFirstTimeFrameIndexForPinnedField:(id)a3;
-- (void)setHidePlacementText:(BOOL)a3;
-- (void)setMaskColor:(id)a3;
-- (void)setMaskOutlineColor:(id)a3;
-- (void)setOutputCapturedImageWidth:(unint64_t)a3;
-- (void)setOutputObjectTypes:(id)a3;
+- (void)sendDidEndWithError:(id)error;
+- (void)sendDidEndWithErrorDomain:(id)domain code:(int64_t)code userInfo:(id)info;
+- (void)sendDidEndWithInfo:(id)info;
+- (void)sendDidFindTarget:(id)target frameTime:(id *)time;
+- (void)sendDidRecognizeNewObjects:(id)objects;
+- (void)sendProvideOverlayObjects:(id)objects;
+- (void)setCapturedTextColor:(id)color;
+- (void)setFirstTimeFrameIndexForPinnedField:(id)field;
+- (void)setHidePlacementText:(BOOL)text;
+- (void)setMaskColor:(id)color;
+- (void)setMaskOutlineColor:(id)color;
+- (void)setOutputCapturedImageWidth:(unint64_t)width;
+- (void)setOutputObjectTypes:(id)types;
 - (void)setupInitialLayerConfiguration;
-- (void)showMessage:(id)a3 color:(id)a4 style:(int64_t)a5 duration:(double)a6;
-- (void)showTextDetectorObjects:(id)a3;
+- (void)showMessage:(id)message color:(id)color style:(int64_t)style duration:(double)duration;
+- (void)showTextDetectorObjects:(id)objects;
 - (void)start;
 - (void)startSession;
 - (void)stopSession;
-- (void)switchToCamera:(int64_t)a3;
-- (void)switchToCameraWithDeviceID:(id)a3;
+- (void)switchToCamera:(int64_t)camera;
+- (void)switchToCameraWithDeviceID:(id)d;
 - (void)toggleCamera;
-- (void)updateContactsCache:(id)a3;
+- (void)updateContactsCache:(id)cache;
 - (void)updatePinnedInfoFrameIndex;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CRCameraReader
@@ -108,8 +108,8 @@
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
   v5 = [v2 discoverySessionWithDeviceTypes:v4 mediaType:*MEMORY[0x277CE5EA8] position:0];
 
-  v6 = [v5 devices];
-  v7 = [v6 count];
+  devices = [v5 devices];
+  v7 = [devices count];
 
   return v7;
 }
@@ -137,25 +137,25 @@ void __27__CRCameraReader_loadFonts__block_invoke()
   CTFontManagerRegisterFontsForURL(v5, kCTFontManagerScopeProcess, &error);
 }
 
-- (CRCameraReader)initWithNibName:(id)a3 bundle:(id)a4 options:(id)a5
+- (CRCameraReader)initWithNibName:(id)name bundle:(id)bundle options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 mutableCopy];
+  nameCopy = name;
+  bundleCopy = bundle;
+  optionsCopy = options;
+  v11 = [optionsCopy mutableCopy];
   [(CRCameraReader *)self setOptionsDictionary:v11];
 
   [objc_opt_class() loadFonts];
   v36.receiver = self;
   v36.super_class = CRCameraReader;
-  v12 = [(CRCameraReader *)&v36 initWithNibName:v8 bundle:v9];
+  v12 = [(CRCameraReader *)&v36 initWithNibName:nameCopy bundle:bundleCopy];
   if (v12)
   {
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    -[CRCameraReader setConfigPresentCentered:](v12, "setConfigPresentCentered:", [v13 BOOLForKey:@"com.apple.CoreRecognition.RedeemerPresentCentered"]);
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    -[CRCameraReader setConfigPresentCentered:](v12, "setConfigPresentCentered:", [standardUserDefaults BOOLForKey:@"com.apple.CoreRecognition.RedeemerPresentCentered"]);
 
-    v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v15 = [v14 BOOLForKey:@"com.apple.CoreRecognition.RedeemerDemoMode"];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v15 = [standardUserDefaults2 BOOLForKey:@"com.apple.CoreRecognition.RedeemerDemoMode"];
     v16 = 1.0;
     if (v15)
     {
@@ -164,18 +164,18 @@ void __27__CRCameraReader_loadFonts__block_invoke()
 
     [(CRCameraReader *)v12 setConfigDemoSpeed:v16];
 
-    v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    -[CRCameraReader setConfigUseFastScanning:](v12, "setConfigUseFastScanning:", [v17 BOOLForKey:@"com.apple.CoreRecognition.UseFastScanning"]);
+    standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    -[CRCameraReader setConfigUseFastScanning:](v12, "setConfigUseFastScanning:", [standardUserDefaults3 BOOLForKey:@"com.apple.CoreRecognition.UseFastScanning"]);
 
-    v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    -[CRCameraReader setConfigUseJPEGForColor:](v12, "setConfigUseJPEGForColor:", [v18 BOOLForKey:@"com.apple.CoreRecognition.useJPEGForColor"]);
+    standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    -[CRCameraReader setConfigUseJPEGForColor:](v12, "setConfigUseJPEGForColor:", [standardUserDefaults4 BOOLForKey:@"com.apple.CoreRecognition.useJPEGForColor"]);
 
-    v19 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    -[CRCameraReader setShowDiagnosticHUD:](v12, "setShowDiagnosticHUD:", [v19 BOOLForKey:@"com.apple.CoreRecognition.showDiagnosticHUD"]);
+    standardUserDefaults5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    -[CRCameraReader setShowDiagnosticHUD:](v12, "setShowDiagnosticHUD:", [standardUserDefaults5 BOOLForKey:@"com.apple.CoreRecognition.showDiagnosticHUD"]);
 
     [(CRCameraReader *)v12 setCaptureCount:1];
-    v20 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
-    [(CRCameraReader *)v12 setCaptureBuffer:v20];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    [(CRCameraReader *)v12 setCaptureBuffer:weakObjectsPointerArray];
 
     [(CRCameraReader *)v12 setSessionTimeout:INFINITY];
     [(CRCameraReader *)v12 setWhiteBalanceMode:2];
@@ -186,8 +186,8 @@ void __27__CRCameraReader_loadFonts__block_invoke()
     [(CRCameraReader *)v12 setHidePlacementText:0];
     [(CRCameraReader *)v12 setEnableAltIDCardScan:0];
     [(CRCameraReader *)v12 setEnableManualIDCapture:0];
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    -[CRCameraReader setCameraPosition:](v12, "setCameraPosition:", [v21 userInterfaceIdiom] == 1);
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    -[CRCameraReader setCameraPosition:](v12, "setCameraPosition:", [currentDevice userInterfaceIdiom] == 1);
 
     v22 = dispatch_semaphore_create(1);
     [(CRCameraReader *)v12 setProcessingImage:v22];
@@ -205,20 +205,20 @@ void __27__CRCameraReader_loadFonts__block_invoke()
     maskColor = v12->_maskColor;
     v12->_maskColor = v26;
 
-    v28 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     maskOutlineColor = v12->_maskOutlineColor;
-    v12->_maskOutlineColor = v28;
+    v12->_maskOutlineColor = whiteColor;
 
-    v30 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
     placementTextColor = v12->_placementTextColor;
-    v12->_placementTextColor = v30;
+    v12->_placementTextColor = whiteColor2;
 
-    v32 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
     capturedTextColor = v12->_capturedTextColor;
-    v12->_capturedTextColor = v32;
+    v12->_capturedTextColor = whiteColor3;
 
-    v34 = [(CRCameraReader *)v12 alignmentLayer];
-    [v34 propogateMaskColor:v12->_maskColor outlineColor:v12->_maskOutlineColor placementTextColor:v12->_placementTextColor capturedTextColor:v12->_capturedTextColor];
+    alignmentLayer = [(CRCameraReader *)v12 alignmentLayer];
+    [alignmentLayer propogateMaskColor:v12->_maskColor outlineColor:v12->_maskOutlineColor placementTextColor:v12->_placementTextColor capturedTextColor:v12->_capturedTextColor];
 
     v12->_outputCapturedImageWidth = 1536;
     v12->_outputCapturedImageHeight = 960;
@@ -228,63 +228,63 @@ void __27__CRCameraReader_loadFonts__block_invoke()
   return v12;
 }
 
-- (void)setMaskColor:(id)a3
+- (void)setMaskColor:(id)color
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  colorCopy = color;
+  v4 = [colorCopy copy];
   maskColor = self->_maskColor;
   self->_maskColor = v4;
 
   if ([(CRCameraReader *)self isViewLoaded])
   {
-    v6 = [(CRCameraReader *)self alignmentLayer];
-    [v6 propogateMaskColor:self->_maskColor outlineColor:self->_maskOutlineColor placementTextColor:self->_placementTextColor capturedTextColor:self->_capturedTextColor];
+    alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+    [alignmentLayer propogateMaskColor:self->_maskColor outlineColor:self->_maskOutlineColor placementTextColor:self->_placementTextColor capturedTextColor:self->_capturedTextColor];
   }
 }
 
-- (void)setMaskOutlineColor:(id)a3
+- (void)setMaskOutlineColor:(id)color
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  colorCopy = color;
+  v4 = [colorCopy copy];
   maskOutlineColor = self->_maskOutlineColor;
   self->_maskOutlineColor = v4;
 
   if ([(CRCameraReader *)self isViewLoaded])
   {
-    v6 = [(CRCameraReader *)self alignmentLayer];
-    [v6 propogateMaskColor:self->_maskColor outlineColor:self->_maskOutlineColor placementTextColor:self->_placementTextColor capturedTextColor:self->_capturedTextColor];
+    alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+    [alignmentLayer propogateMaskColor:self->_maskColor outlineColor:self->_maskOutlineColor placementTextColor:self->_placementTextColor capturedTextColor:self->_capturedTextColor];
   }
 }
 
-- (void)aetPlacementTextColor:(id)a3
+- (void)aetPlacementTextColor:(id)color
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  colorCopy = color;
+  v4 = [colorCopy copy];
   placementTextColor = self->_placementTextColor;
   self->_placementTextColor = v4;
 
   if ([(CRCameraReader *)self isViewLoaded])
   {
-    v6 = [(CRCameraReader *)self alignmentLayer];
-    [v6 propogateMaskColor:self->_maskColor outlineColor:self->_maskOutlineColor placementTextColor:self->_placementTextColor capturedTextColor:self->_capturedTextColor];
+    alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+    [alignmentLayer propogateMaskColor:self->_maskColor outlineColor:self->_maskOutlineColor placementTextColor:self->_placementTextColor capturedTextColor:self->_capturedTextColor];
   }
 }
 
-- (void)setCapturedTextColor:(id)a3
+- (void)setCapturedTextColor:(id)color
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  colorCopy = color;
+  v4 = [colorCopy copy];
   capturedTextColor = self->_capturedTextColor;
   self->_capturedTextColor = v4;
 
   if ([(CRCameraReader *)self isViewLoaded])
   {
-    v6 = [(CRCameraReader *)self alignmentLayer];
-    [v6 propogateMaskColor:self->_maskColor outlineColor:self->_maskOutlineColor placementTextColor:self->_placementTextColor capturedTextColor:self->_capturedTextColor];
+    alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+    [alignmentLayer propogateMaskColor:self->_maskColor outlineColor:self->_maskOutlineColor placementTextColor:self->_placementTextColor capturedTextColor:self->_capturedTextColor];
   }
 }
 
-- (void)orientationDidChange:(id)a3
+- (void)orientationDidChange:(id)change
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -294,7 +294,7 @@ void __27__CRCameraReader_loadFonts__block_invoke()
   cr_dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-- (__CVBuffer)createFastAccessPixelBufferWithSize:(CGSize)a3 videoFormat:(int)a4
+- (__CVBuffer)createFastAccessPixelBufferWithSize:(CGSize)size videoFormat:(int)format
 {
   FigCreatePixelBufferAttributesWithIOSurfaceSupport();
   FigCreateIOSurfaceBackedCVPixelBufferWithAttributes();
@@ -308,14 +308,14 @@ void __27__CRCameraReader_loadFonts__block_invoke()
   [v3 attachNewContextToCurrentThreadWithCameraReader:self];
 
   v4 = objc_alloc(MEMORY[0x277D75D18]);
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v6 = [v4 initWithFrame:?];
   [(CRCameraReader *)self setView:v6];
 
   v7 = +[CRColor blackColor];
-  v8 = [(CRCameraReader *)self view];
-  [v8 setBackgroundColor:v7];
+  view = [(CRCameraReader *)self view];
+  [view setBackgroundColor:v7];
 
   v9 = +[CRInsights sharedInsights];
   if (v9)
@@ -336,121 +336,121 @@ void __27__CRCameraReader_loadFonts__block_invoke()
   {
   }
 
-  v13 = [(CRCameraReader *)self sessionManager];
-  [v13 setCaptureSessionDelegate:self];
+  sessionManager = [(CRCameraReader *)self sessionManager];
+  [sessionManager setCaptureSessionDelegate:self];
 
-  v14 = [(CRCameraReader *)self sessionManager];
-  [v14 setCaptureSessionMetadataDelegate:self];
+  sessionManager2 = [(CRCameraReader *)self sessionManager];
+  [sessionManager2 setCaptureSessionMetadataDelegate:self];
 
-  v15 = [(CRCameraReader *)self cameraPosition];
-  v16 = [(CRCameraReader *)self sessionManager];
-  [v16 setCameraPosition:v15];
+  cameraPosition = [(CRCameraReader *)self cameraPosition];
+  sessionManager3 = [(CRCameraReader *)self sessionManager];
+  [sessionManager3 setCameraPosition:cameraPosition];
 
-  v17 = [(CRCameraReader *)self whiteBalanceMode];
-  v18 = [(CRCameraReader *)self sessionManager];
-  [v18 setWhiteBalanceMode:v17];
+  whiteBalanceMode = [(CRCameraReader *)self whiteBalanceMode];
+  sessionManager4 = [(CRCameraReader *)self sessionManager];
+  [sessionManager4 setWhiteBalanceMode:whiteBalanceMode];
 
-  v19 = [(CRCameraReader *)self focusMode];
-  v20 = [(CRCameraReader *)self sessionManager];
-  [v20 setFocusMode:v19];
+  focusMode = [(CRCameraReader *)self focusMode];
+  sessionManager5 = [(CRCameraReader *)self sessionManager];
+  [sessionManager5 setFocusMode:focusMode];
 
-  v21 = [(CRCameraReader *)self exposureMode];
-  v22 = [(CRCameraReader *)self sessionManager];
-  [v22 setExposureMode:v21];
+  exposureMode = [(CRCameraReader *)self exposureMode];
+  sessionManager6 = [(CRCameraReader *)self sessionManager];
+  [sessionManager6 setExposureMode:exposureMode];
 
-  v23 = [(CRCameraReader *)self torchMode];
-  v24 = [(CRCameraReader *)self sessionManager];
-  [v24 setTorchMode:v23];
+  torchMode = [(CRCameraReader *)self torchMode];
+  sessionManager7 = [(CRCameraReader *)self sessionManager];
+  [sessionManager7 setTorchMode:torchMode];
 
   v25 = MEMORY[0x277CBEB98];
-  v26 = [(CRCameraReader *)self outputObjectTypes];
-  v27 = [v25 setWithArray:v26];
+  outputObjectTypes = [(CRCameraReader *)self outputObjectTypes];
+  v27 = [v25 setWithArray:outputObjectTypes];
 
   v28 = [v27 containsObject:@"CROutputTypeQRCode"];
-  v29 = [(CRCameraReader *)self sessionManager];
-  [v29 setEnableMetadataOutput:v28];
+  sessionManager8 = [(CRCameraReader *)self sessionManager];
+  [sessionManager8 setEnableMetadataOutput:v28];
 
   if (([v27 containsObject:@"CROutputTypeQRCode"] & 1) != 0 || objc_msgSend(v27, "containsObject:", @"CROutputTypeHomeKitCode"))
   {
-    v30 = [(CRCameraReader *)self sessionManager];
-    [v30 setTargetFocusDistance:140];
+    sessionManager9 = [(CRCameraReader *)self sessionManager];
+    [sessionManager9 setTargetFocusDistance:140];
   }
 
   else
   {
-    v30 = [(CRCameraReader *)self sessionManager];
-    [v30 setTargetFocusDistance:160];
+    sessionManager9 = [(CRCameraReader *)self sessionManager];
+    [sessionManager9 setTargetFocusDistance:160];
   }
 
-  v31 = [(CRCameraReader *)self cameraMode];
-  v32 = [(CRCameraReader *)self sessionManager];
-  [v32 setCameraMode:v31];
+  cameraMode = [(CRCameraReader *)self cameraMode];
+  sessionManager10 = [(CRCameraReader *)self sessionManager];
+  [sessionManager10 setCameraMode:cameraMode];
 
   v33 = [v27 containsObject:@"CROutputTypeiTunesCode"];
   v34 = MEMORY[0x277CE59A8];
   if ((v33 & 1) == 0 && ([v27 containsObject:@"CROutputTypeHomeKitCode"] & 1) == 0)
   {
-    v35 = [(CRCameraReader *)self sessionManager];
-    [v35 setCameraMode:*v34];
+    sessionManager11 = [(CRCameraReader *)self sessionManager];
+    [sessionManager11 setCameraMode:*v34];
 
-    v36 = [(CRCameraReader *)self sessionManager];
-    [v36 setCameraPosition:0];
+    sessionManager12 = [(CRCameraReader *)self sessionManager];
+    [sessionManager12 setCameraPosition:0];
   }
 
-  v37 = [(CRCameraReader *)self sessionManager];
-  v38 = [v37 enableMetadataOutput];
+  sessionManager13 = [(CRCameraReader *)self sessionManager];
+  enableMetadataOutput = [sessionManager13 enableMetadataOutput];
 
-  if (v38)
+  if (enableMetadataOutput)
   {
     [(CRCameraReader *)self setCameraMode:*MEMORY[0x277CE5960]];
-    v39 = [(CRCameraReader *)self cameraMode];
-    v40 = [(CRCameraReader *)self sessionManager];
-    [v40 setCameraMode:v39];
+    cameraMode2 = [(CRCameraReader *)self cameraMode];
+    sessionManager14 = [(CRCameraReader *)self sessionManager];
+    [sessionManager14 setCameraMode:cameraMode2];
   }
 
-  v41 = [(CRCameraReader *)self sessionManager];
-  [v41 setupCameraSession];
+  sessionManager15 = [(CRCameraReader *)self sessionManager];
+  [sessionManager15 setupCameraSession];
 
-  v42 = [(CRCameraReader *)self sessionManager];
-  v43 = [v42 cameraMode];
+  sessionManager16 = [(CRCameraReader *)self sessionManager];
+  cameraMode3 = [sessionManager16 cameraMode];
   v44 = *v34;
 
-  if (v43 == v44)
+  if (cameraMode3 == v44)
   {
     [(CRCameraReader *)self releaseCorrectedCardBuffer];
     [(CRCameraReader *)self createCorrectedCardBuffer];
   }
 
-  v45 = [(CRCameraReader *)self view];
-  v46 = [v45 layer];
-  v47 = [(CRCameraReader *)self sessionManager];
-  v48 = [v47 previewLayer];
-  [v46 addSublayer:v48];
+  view2 = [(CRCameraReader *)self view];
+  layer = [view2 layer];
+  sessionManager17 = [(CRCameraReader *)self sessionManager];
+  previewLayer = [sessionManager17 previewLayer];
+  [layer addSublayer:previewLayer];
 
   v49 = +[CRAlignmentLayer layer];
   [(CRCameraReader *)self setAlignmentLayer:v49];
 
-  v50 = [(CRCameraReader *)self alignmentLayer];
-  v51 = [v50 instructionLayer];
-  [v51 setHidden:{-[CRCameraReader hidePlacementText](self, "hidePlacementText")}];
+  alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+  instructionLayer = [alignmentLayer instructionLayer];
+  [instructionLayer setHidden:{-[CRCameraReader hidePlacementText](self, "hidePlacementText")}];
 
-  v52 = [(CRCameraReader *)self view];
-  v53 = [v52 layer];
-  v54 = [(CRCameraReader *)self alignmentLayer];
-  [v53 addSublayer:v54];
+  view3 = [(CRCameraReader *)self view];
+  layer2 = [view3 layer];
+  alignmentLayer2 = [(CRCameraReader *)self alignmentLayer];
+  [layer2 addSublayer:alignmentLayer2];
 
-  v55 = [(CRCameraReader *)self alignmentLayer];
-  [v55 setDelegate:self];
+  alignmentLayer3 = [(CRCameraReader *)self alignmentLayer];
+  [alignmentLayer3 setDelegate:self];
 
   if ([(CRCameraReader *)self showDiagnosticHUD])
   {
     v56 = +[DiagnosticHUDLayer layer];
     [(CRCameraReader *)self setDiagnosticHUDLayer:v56];
 
-    v57 = [(CRCameraReader *)self view];
-    v58 = [v57 layer];
-    v59 = [(CRCameraReader *)self diagnosticHUDLayer];
-    [v58 addSublayer:v59];
+    view4 = [(CRCameraReader *)self view];
+    layer3 = [view4 layer];
+    diagnosticHUDLayer = [(CRCameraReader *)self diagnosticHUDLayer];
+    [layer3 addSublayer:diagnosticHUDLayer];
   }
 
   v60 = *(MEMORY[0x277CD9DE8] + 48);
@@ -464,8 +464,8 @@ void __27__CRCameraReader_loadFonts__block_invoke()
   v62 = *(MEMORY[0x277CD9DE8] + 112);
   v73 = *(MEMORY[0x277CD9DE8] + 96);
   v74 = v62;
-  v63 = [(CRCameraReader *)self view];
-  v64 = [v63 layer];
+  view5 = [(CRCameraReader *)self view];
+  layer4 = [view5 layer];
   v68[2] = v77;
   v68[3] = v78;
   v68[4] = v79;
@@ -475,18 +475,18 @@ void __27__CRCameraReader_loadFonts__block_invoke()
   v70 = 0xBF45D867C3ECE2A5;
   v71 = v73;
   v72 = v74;
-  [v64 setSublayerTransform:v68];
+  [layer4 setSublayerTransform:v68];
 
   v65 = objc_opt_new();
   [(CRCameraReader *)self setPreviousContactMatches:v65];
 
-  v66 = [(CRCameraReader *)self processingQueue];
+  processingQueue = [(CRCameraReader *)self processingQueue];
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
   v67[2] = __26__CRCameraReader_loadView__block_invoke_2;
   v67[3] = &unk_278EAA5E8;
   v67[4] = self;
-  cr_dispatch_async(v66, v67);
+  cr_dispatch_async(processingQueue, v67);
 }
 
 CRDefaultCaptureSessionManager *__26__CRCameraReader_loadView__block_invoke()
@@ -513,60 +513,60 @@ CRDefaultCaptureSessionManager *__26__CRCameraReader_loadView__block_invoke()
 
 - (void)viewDidLayoutSubviews
 {
-  v38 = [(CRCameraReader *)self sessionManager];
-  v3 = [v38 previewLayer];
-  v4 = [v3 superlayer];
-  [v4 bounds];
+  sessionManager = [(CRCameraReader *)self sessionManager];
+  previewLayer = [sessionManager previewLayer];
+  superlayer = [previewLayer superlayer];
+  [superlayer bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CRCameraReader *)self sessionManager];
-  v14 = [v13 previewLayer];
-  [v14 setFrame:{v6, v8, v10, v12}];
+  sessionManager2 = [(CRCameraReader *)self sessionManager];
+  previewLayer2 = [sessionManager2 previewLayer];
+  [previewLayer2 setFrame:{v6, v8, v10, v12}];
 
-  v39 = [(CRCameraReader *)self alignmentLayer];
-  v15 = [v39 superlayer];
-  [v15 bounds];
+  alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+  superlayer2 = [alignmentLayer superlayer];
+  [superlayer2 bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(CRCameraReader *)self alignmentLayer];
-  [v24 setFrame:{v17, v19, v21, v23}];
+  alignmentLayer2 = [(CRCameraReader *)self alignmentLayer];
+  [alignmentLayer2 setFrame:{v17, v19, v21, v23}];
 
-  v40 = [(CRCameraReader *)self diagnosticHUDLayer];
-  v25 = [v40 superlayer];
-  [v25 bounds];
+  diagnosticHUDLayer = [(CRCameraReader *)self diagnosticHUDLayer];
+  superlayer3 = [diagnosticHUDLayer superlayer];
+  [superlayer3 bounds];
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [(CRCameraReader *)self diagnosticHUDLayer];
-  [v34 setFrame:{v27, v29, v31, v33}];
+  diagnosticHUDLayer2 = [(CRCameraReader *)self diagnosticHUDLayer];
+  [diagnosticHUDLayer2 setFrame:{v27, v29, v31, v33}];
 
-  v41 = [(CRCameraReader *)self sessionManager];
-  v35 = [(CRCameraReader *)self view];
-  v36 = [v35 window];
-  v37 = [v36 windowScene];
-  [v41 setPreviewOrientation:{objc_msgSend(v37, "interfaceOrientation")}];
+  sessionManager3 = [(CRCameraReader *)self sessionManager];
+  view = [(CRCameraReader *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [sessionManager3 setPreviewOrientation:{objc_msgSend(windowScene, "interfaceOrientation")}];
 
-  v42 = [(CRCameraReader *)self alignmentLayer];
-  [v42 setNeedsLayout];
+  alignmentLayer3 = [(CRCameraReader *)self alignmentLayer];
+  [alignmentLayer3 setNeedsLayout];
 
-  v43 = [(CRCameraReader *)self diagnosticHUDLayer];
-  [v43 setNeedsLayout];
+  diagnosticHUDLayer3 = [(CRCameraReader *)self diagnosticHUDLayer];
+  [diagnosticHUDLayer3 setNeedsLayout];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v21.receiver = self;
   v21.super_class = CRCameraReader;
-  [(CRCameraReader *)&v21 viewWillAppear:a3];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  [v4 beginGeneratingDeviceOrientationNotifications];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_orientationDidChange_ name:*MEMORY[0x277D76878] object:v4];
+  [(CRCameraReader *)&v21 viewWillAppear:appear];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice beginGeneratingDeviceOrientationNotifications];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_orientationDidChange_ name:*MEMORY[0x277D76878] object:currentDevice];
 
   v6 = [[CRPollingTimer alloc] initWithTarget:self selector:sel_hideBoxLayer];
   [(CRCameraReader *)self setBoxLayerHideTimer:v6];
@@ -576,25 +576,25 @@ CRDefaultCaptureSessionManager *__26__CRCameraReader_loadView__block_invoke()
     v7 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_handleTapFrom_];
     [(CRCameraReader *)self setTapGestureRecognizer:v7];
 
-    v8 = [(CRCameraReader *)self tapGestureRecognizer];
-    [v8 setNumberOfTapsRequired:1];
+    tapGestureRecognizer = [(CRCameraReader *)self tapGestureRecognizer];
+    [tapGestureRecognizer setNumberOfTapsRequired:1];
 
-    v9 = [(CRCameraReader *)self tapGestureRecognizer];
-    [v9 setNumberOfTouchesRequired:1];
+    tapGestureRecognizer2 = [(CRCameraReader *)self tapGestureRecognizer];
+    [tapGestureRecognizer2 setNumberOfTouchesRequired:1];
 
-    v10 = [(CRCameraReader *)self view];
-    v11 = [(CRCameraReader *)self tapGestureRecognizer];
-    [v10 addGestureRecognizer:v11];
+    view = [(CRCameraReader *)self view];
+    tapGestureRecognizer3 = [(CRCameraReader *)self tapGestureRecognizer];
+    [view addGestureRecognizer:tapGestureRecognizer3];
   }
 
-  v12 = [(CRCameraReader *)self view];
-  v13 = [v12 layer];
-  [v13 setMasksToBounds:1];
+  view2 = [(CRCameraReader *)self view];
+  layer = [view2 layer];
+  [layer setMasksToBounds:1];
 
   [(CRCameraReader *)self startSession];
   v14 = MEMORY[0x277CBEB98];
-  v15 = [(CRCameraReader *)self outputObjectTypes];
-  v16 = [v14 setWithArray:v15];
+  outputObjectTypes = [(CRCameraReader *)self outputObjectTypes];
+  v16 = [v14 setWithArray:outputObjectTypes];
 
   if ([v16 containsObject:@"CROutputTypeCreditCardName"])
   {
@@ -623,8 +623,8 @@ LABEL_8:
     }
   }
 
-  v18 = [(CRCameraReader *)self alignmentLayer];
-  [v18 fadePlacementImage];
+  alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+  [alignmentLayer fadePlacementImage];
 }
 
 void __33__CRCameraReader_viewWillAppear___block_invoke(uint64_t a1, int a2)
@@ -665,47 +665,47 @@ void __33__CRCameraReader_viewWillAppear___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v10.receiver = self;
   v10.super_class = CRCameraReader;
-  [(CRCameraReader *)&v10 viewDidDisappear:a3];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  [v4 removeObserver:self name:*MEMORY[0x277D76878] object:v5];
+  [(CRCameraReader *)&v10 viewDidDisappear:disappear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76878] object:currentDevice];
 
-  v6 = [(CRCameraReader *)self tapGestureRecognizer];
+  tapGestureRecognizer = [(CRCameraReader *)self tapGestureRecognizer];
 
-  if (v6)
+  if (tapGestureRecognizer)
   {
-    v7 = [(CRCameraReader *)self view];
-    v8 = [(CRCameraReader *)self tapGestureRecognizer];
-    [v7 removeGestureRecognizer:v8];
+    view = [(CRCameraReader *)self view];
+    tapGestureRecognizer2 = [(CRCameraReader *)self tapGestureRecognizer];
+    [view removeGestureRecognizer:tapGestureRecognizer2];
 
     [(CRCameraReader *)self setTapGestureRecognizer:0];
   }
 
-  v9 = [(CRCameraReader *)self boxLayerHideTimer];
-  [v9 invalidate];
+  boxLayerHideTimer = [(CRCameraReader *)self boxLayerHideTimer];
+  [boxLayerHideTimer invalidate];
 
   [(CRCameraReader *)self setBoxLayerHideTimer:0];
   [(CRCameraReader *)self stopSession];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = CRCameraReader;
-  [(CRCameraReader *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(CRCameraReader *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__CRCameraReader_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_278EAA658;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 void __69__CRCameraReader_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -767,21 +767,21 @@ LABEL_7:
 - (void)createCorrectedCardBuffer
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(CRCameraReader *)self outputObjectTypes];
-  v9 = [v3 setWithArray:v4];
+  outputObjectTypes = [(CRCameraReader *)self outputObjectTypes];
+  v9 = [v3 setWithArray:outputObjectTypes];
 
   if (([v9 containsObject:@"CROutputTypeIDCardFront"] & 1) != 0 || objc_msgSend(v9, "containsObject:", @"CROutputTypeIDCardBack"))
   {
-    v5 = [(CRCameraReader *)self outputCapturedImageWidth];
-    v6 = [(CRCameraReader *)self outputCapturedImageHeight];
-    v7 = [(CRCameraReader *)self sessionManager];
-    v8 = -[CRCameraReader createFastAccessPixelBufferWithSize:videoFormat:](self, "createFastAccessPixelBufferWithSize:videoFormat:", [v7 targetVideoFormat], v5, v6);
+    outputCapturedImageWidth = [(CRCameraReader *)self outputCapturedImageWidth];
+    outputCapturedImageHeight = [(CRCameraReader *)self outputCapturedImageHeight];
+    sessionManager = [(CRCameraReader *)self sessionManager];
+    v8 = -[CRCameraReader createFastAccessPixelBufferWithSize:videoFormat:](self, "createFastAccessPixelBufferWithSize:videoFormat:", [sessionManager targetVideoFormat], outputCapturedImageWidth, outputCapturedImageHeight);
   }
 
   else
   {
-    v7 = [(CRCameraReader *)self sessionManager];
-    v8 = -[CRCameraReader createFastAccessPixelBufferWithSize:videoFormat:](self, "createFastAccessPixelBufferWithSize:videoFormat:", [v7 targetVideoFormat], 768.0, 480.0);
+    sessionManager = [(CRCameraReader *)self sessionManager];
+    v8 = -[CRCameraReader createFastAccessPixelBufferWithSize:videoFormat:](self, "createFastAccessPixelBufferWithSize:videoFormat:", [sessionManager targetVideoFormat], 768.0, 480.0);
   }
 
   self->_correctedCardBuffer = v8;
@@ -792,11 +792,11 @@ LABEL_7:
   delegateQueue = self->_delegateQueue;
   self->_delegateQueue = 0;
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CBD140] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBD140] object:0];
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  [v5 endGeneratingDeviceOrientationNotifications];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice endGeneratingDeviceOrientationNotifications];
 
   [(CRCameraReader *)self removeLayerTree];
   [(CRCaptureSessionManager *)self->_sessionManager teardownCameraSession];
@@ -838,52 +838,52 @@ LABEL_7:
 
 - (void)setupInitialLayerConfiguration
 {
-  v13 = [(CRCameraReader *)self boxLayer];
-  [v13 setHidden:1];
+  boxLayer = [(CRCameraReader *)self boxLayer];
+  [boxLayer setHidden:1];
 
-  v14 = [(CRCameraReader *)self alignmentLayer];
-  [v14 resetLayer];
+  alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+  [alignmentLayer resetLayer];
 
-  v3 = [(CRCameraReader *)self hidePlacementText];
-  v15 = [(CRCameraReader *)self alignmentLayer];
-  v4 = [v15 instructionLayer];
-  [v4 setHidden:v3];
+  hidePlacementText = [(CRCameraReader *)self hidePlacementText];
+  alignmentLayer2 = [(CRCameraReader *)self alignmentLayer];
+  instructionLayer = [alignmentLayer2 instructionLayer];
+  [instructionLayer setHidden:hidePlacementText];
 
-  v5 = [(CRCameraReader *)self boxLayer];
+  boxLayer2 = [(CRCameraReader *)self boxLayer];
 
-  if (v5)
+  if (boxLayer2)
   {
-    v16 = [(CRCameraReader *)self boxLayer];
-    [v16 removeFromSuperlayer];
+    boxLayer3 = [(CRCameraReader *)self boxLayer];
+    [boxLayer3 removeFromSuperlayer];
   }
 
   v17 = +[CRBoxLayer layer];
   [(CRCameraReader *)self setBoxLayer:?];
 
-  v18 = [(CRCameraReader *)self view];
-  v6 = [v18 layer];
-  v7 = [(CRCameraReader *)self boxLayer];
-  [v6 addSublayer:v7];
+  view = [(CRCameraReader *)self view];
+  layer = [view layer];
+  boxLayer4 = [(CRCameraReader *)self boxLayer];
+  [layer addSublayer:boxLayer4];
 
-  v19 = [(CRCameraReader *)self sessionManager];
-  v8 = [v19 previewLayer];
+  sessionManager = [(CRCameraReader *)self sessionManager];
+  previewLayer = [sessionManager previewLayer];
   LODWORD(v9) = 1.0;
-  [v8 setOpacity:v9];
+  [previewLayer setOpacity:v9];
 
   v10 = MEMORY[0x277CBEB98];
-  v11 = [(CRCameraReader *)self outputObjectTypes];
-  v20 = [v10 setWithArray:v11];
+  outputObjectTypes = [(CRCameraReader *)self outputObjectTypes];
+  v20 = [v10 setWithArray:outputObjectTypes];
 
   if (([v20 containsObject:@"CROutputTypeCreditCardNumber"] & 1) != 0 || (objc_msgSend(v20, "containsObject:", @"CROutputTypeCreditCardName") & 1) != 0 || (objc_msgSend(v20, "containsObject:", @"CRCameraReaderCreditCardExpirationDate") & 1) != 0 || (objc_msgSend(v20, "containsObject:", @"CROutputTypeIDCardFront") & 1) != 0 || objc_msgSend(v20, "containsObject:", @"CROutputTypeIDCardBack"))
   {
-    v12 = [(CRCameraReader *)self alignmentLayer];
-    [v12 setHidden:0];
+    alignmentLayer3 = [(CRCameraReader *)self alignmentLayer];
+    [alignmentLayer3 setHidden:0];
   }
 
   else
   {
-    v12 = [(CRCameraReader *)self alignmentLayer];
-    [v12 setHidden:1];
+    alignmentLayer3 = [(CRCameraReader *)self alignmentLayer];
+    [alignmentLayer3 setHidden:1];
   }
 }
 
@@ -894,10 +894,10 @@ LABEL_7:
   [(CRCameraReader *)&v6 didReceiveMemoryWarning];
   if ([(CRCameraReader *)self isViewLoaded])
   {
-    v3 = [(CRCameraReader *)self view];
-    v4 = [v3 window];
+    view = [(CRCameraReader *)self view];
+    window = [view window];
 
-    if (!v4)
+    if (!window)
     {
       [(CRCameraReader *)self setView:0];
       [(CRCameraReader *)self stopSession];
@@ -924,12 +924,12 @@ uint64_t __41__CRCameraReader_didReceiveMemoryWarning__block_invoke(uint64_t a1)
 
 - (void)toggleCamera
 {
-  v3 = [(CRCameraReader *)self sessionManager];
+  sessionManager = [(CRCameraReader *)self sessionManager];
 
-  if (v3)
+  if (sessionManager)
   {
-    v4 = [(CRCameraReader *)self sessionManager];
-    [v4 toggleCamera];
+    sessionManager2 = [(CRCameraReader *)self sessionManager];
+    [sessionManager2 toggleCamera];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -940,44 +940,44 @@ uint64_t __41__CRCameraReader_didReceiveMemoryWarning__block_invoke(uint64_t a1)
   }
 }
 
-- (void)switchToCameraWithDeviceID:(id)a3
+- (void)switchToCameraWithDeviceID:(id)d
 {
-  v5 = a3;
-  v4 = [(CRCameraReader *)self sessionManager];
-  [v4 switchToCameraWithDeviceID:v5];
+  dCopy = d;
+  sessionManager = [(CRCameraReader *)self sessionManager];
+  [sessionManager switchToCameraWithDeviceID:dCopy];
 }
 
 - (int64_t)currentCameraIdentifier
 {
-  v2 = [(CRCameraReader *)self sessionManager];
-  v3 = [v2 cameraPosition];
+  sessionManager = [(CRCameraReader *)self sessionManager];
+  cameraPosition = [sessionManager cameraPosition];
 
-  return v3;
+  return cameraPosition;
 }
 
 - (id)currentDeviceID
 {
-  v2 = [(CRCameraReader *)self sessionManager];
-  v3 = [v2 currentDeviceID];
+  sessionManager = [(CRCameraReader *)self sessionManager];
+  currentDeviceID = [sessionManager currentDeviceID];
 
-  return v3;
+  return currentDeviceID;
 }
 
-- (void)switchToCamera:(int64_t)a3
+- (void)switchToCamera:(int64_t)camera
 {
-  v5 = [(CRCameraReader *)self sessionManager];
+  sessionManager = [(CRCameraReader *)self sessionManager];
 
-  if (v5)
+  if (sessionManager)
   {
-    v6 = [(CRCameraReader *)self sessionManager];
-    [v6 switchToCamera:a3];
+    sessionManager2 = [(CRCameraReader *)self sessionManager];
+    [sessionManager2 switchToCamera:camera];
   }
 }
 
 - (void)captureImage
 {
-  v3 = [(CRCameraReader *)self captureCount];
-  v4 = [(CRCameraReader *)self imagesToCapture]+ v3;
+  captureCount = [(CRCameraReader *)self captureCount];
+  v4 = [(CRCameraReader *)self imagesToCapture]+ captureCount;
 
   [(CRCameraReader *)self setImagesToCapture:v4];
 }
@@ -1029,8 +1029,8 @@ uint64_t __24__CRCameraReader_cancel__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277CC08A0];
   v14 = *(MEMORY[0x277CC08A0] + 16);
   [(CRCameraReader *)self setPointsFound:&v13];
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
-  [(CRCameraReader *)self setCodePresented:v4];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [(CRCameraReader *)self setCodePresented:distantPast];
 
   [(CRCameraReader *)self setCodeInverted:0];
   [(CRCameraReader *)self setDidSendEndOrCancel:0];
@@ -1039,29 +1039,29 @@ uint64_t __24__CRCameraReader_cancel__block_invoke(uint64_t a1)
   v14 = *(v3 + 2);
   [(CRCameraReader *)self setLastSendFindBox:&v13];
   [(CRCameraReader *)self setImagesToCapture:0];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  [(CRCameraReader *)self setCardNumberCounts:v5];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(CRCameraReader *)self setCardNumberCounts:dictionary];
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  [(CRCameraReader *)self setCardholderCounts:v6];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [(CRCameraReader *)self setCardholderCounts:dictionary2];
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  [(CRCameraReader *)self setExpirationDateCounts:v7];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  [(CRCameraReader *)self setExpirationDateCounts:dictionary3];
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  [(CRCameraReader *)self setPinnedFoundInfo:v8];
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+  [(CRCameraReader *)self setPinnedFoundInfo:dictionary4];
 
   v13 = *MEMORY[0x277CC08B0];
   v14 = *(MEMORY[0x277CC08B0] + 16);
   [(CRCameraReader *)self setLastFieldFoundTime:&v13];
-  v9 = [MEMORY[0x277CBEB18] array];
-  [(CRCameraReader *)self setNameCutRects:v9];
+  array = [MEMORY[0x277CBEB18] array];
+  [(CRCameraReader *)self setNameCutRects:array];
 
-  v10 = [MEMORY[0x277CBEB18] array];
-  [(CRCameraReader *)self setDateCutRects:v10];
+  array2 = [MEMORY[0x277CBEB18] array];
+  [(CRCameraReader *)self setDateCutRects:array2];
 
-  v11 = [MEMORY[0x277CBEB18] array];
-  [(CRCameraReader *)self setCardBlurValues:v11];
+  array3 = [MEMORY[0x277CBEB18] array];
+  [(CRCameraReader *)self setCardBlurValues:array3];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1153,10 +1153,10 @@ void __29__CRCameraReader_stopSession__block_invoke(uint64_t a1)
   cr_dispatch_async(v10, v11);
 }
 
-- (id)cameraIntrinsicDataForSampleBuffer:(opaqueCMSampleBuffer *)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (id)cameraIntrinsicDataForSampleBuffer:(opaqueCMSampleBuffer *)buffer width:(unint64_t)width height:(unint64_t)height
 {
-  v8 = CMGetAttachment(a3, *MEMORY[0x277CC06B0], 0);
-  v9 = CMGetAttachment(a3, *MEMORY[0x277CF3F30], 0);
+  v8 = CMGetAttachment(buffer, *MEMORY[0x277CC06B0], 0);
+  v9 = CMGetAttachment(buffer, *MEMORY[0x277CF3F30], 0);
   v10 = v9;
   if (v9)
   {
@@ -1180,8 +1180,8 @@ void __29__CRCameraReader_stopSession__block_invoke(uint64_t a1)
       HIDWORD(v15) = v16;
       __asm { FMOV            V0.4S, #1.0 }
 
-      *&_Q0 = (a4 + -1.0) * 0.5;
-      *(&_Q0 + 1) = (a5 + -1.0) * 0.5;
+      *&_Q0 = (width + -1.0) * 0.5;
+      *(&_Q0 + 1) = (height + -1.0) * 0.5;
       v22[1] = v15;
       v22[2] = _Q0;
       [0 getBytes:v22 length:48];
@@ -1196,13 +1196,13 @@ void __29__CRCameraReader_stopSession__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v7 = [CRInsights sharedInsights:a3];
+  v7 = [CRInsights sharedInsights:output];
   [v7 attachNewContextToCurrentThreadWithCameraReader:self];
 
   memset(&v22, 0, sizeof(v22));
-  CMSampleBufferGetPresentationTimeStamp(&v22, a4);
+  CMSampleBufferGetPresentationTimeStamp(&v22, buffer);
   [(CRCameraReader *)self sessionStarted];
   if ((time.flags & 1) == 0)
   {
@@ -1210,12 +1210,12 @@ void __29__CRCameraReader_stopSession__block_invoke(uint64_t a1)
     [(CRCameraReader *)self setSessionStarted:&time];
   }
 
-  v8 = [(CRCameraReader *)self boxLayerHideTimer];
+  boxLayerHideTimer = [(CRCameraReader *)self boxLayerHideTimer];
   time = v22;
-  [v8 evalAtTime:&time];
+  [boxLayerHideTimer evalAtTime:&time];
 
-  v9 = [(CRCameraReader *)self sessionManager];
-  if ([v9 isAdjustingFocus])
+  sessionManager = [(CRCameraReader *)self sessionManager];
+  if ([sessionManager isAdjustingFocus])
   {
     v21 = v22;
     [(CRCameraReader *)self lastFieldFoundTime];
@@ -1228,16 +1228,16 @@ void __29__CRCameraReader_stopSession__block_invoke(uint64_t a1)
     }
   }
 
-  v10 = [(CRCameraReader *)self sessionIsStopping];
+  sessionIsStopping = [(CRCameraReader *)self sessionIsStopping];
 
-  if (v10)
+  if (sessionIsStopping)
   {
     return;
   }
 
   if ([(CRCameraReader *)self isCaptureMode])
   {
-    [(CRCameraReader *)self captureImageFromSampleBuffer:a4];
+    [(CRCameraReader *)self captureImageFromSampleBuffer:buffer];
     return;
   }
 
@@ -1265,16 +1265,16 @@ void __29__CRCameraReader_stopSession__block_invoke(uint64_t a1)
     [(CRCameraReader *)self setLastBuffer:0];
   }
 
-  [(CRCameraReader *)self setLastBuffer:CFRetain(a4)];
-  v13 = [(CRCameraReader *)self processingImage];
-  v14 = dispatch_semaphore_wait(v13, 0);
+  [(CRCameraReader *)self setLastBuffer:CFRetain(buffer)];
+  processingImage = [(CRCameraReader *)self processingImage];
+  v14 = dispatch_semaphore_wait(processingImage, 0);
 
   if (!v14)
   {
-    CFRetain(a4);
-    v15 = [(CRCameraReader *)self diagnosticHUDLayer];
+    CFRetain(buffer);
+    diagnosticHUDLayer = [(CRCameraReader *)self diagnosticHUDLayer];
 
-    if (v15)
+    if (diagnosticHUDLayer)
     {
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
@@ -1284,15 +1284,15 @@ void __29__CRCameraReader_stopSession__block_invoke(uint64_t a1)
       cr_dispatch_async(MEMORY[0x277D85CD0], v18);
     }
 
-    v9 = [(CRCameraReader *)self processingQueue];
+    sessionManager = [(CRCameraReader *)self processingQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __69__CRCameraReader_captureOutput_didOutputSampleBuffer_fromConnection___block_invoke_3;
     v16[3] = &unk_278EAA680;
     v16[4] = self;
-    v16[5] = a4;
+    v16[5] = buffer;
     v17 = v22;
-    cr_dispatch_async(v9, v16);
+    cr_dispatch_async(sessionManager, v16);
 LABEL_16:
   }
 }
@@ -1391,16 +1391,16 @@ LABEL_11:
   CFRelease(*(a1 + 40));
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  objectsCopy = objects;
   v51[0] = *MEMORY[0x277CE5A80];
-  v33 = v6;
+  v33 = objectsCopy;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
-  if (v6 && [v6 count])
+  if (objectsCopy && [objectsCopy count])
   {
-    v37 = [v6 objectAtIndex:0];
+    v37 = [objectsCopy objectAtIndex:0];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -1423,30 +1423,30 @@ LABEL_11:
         }
 
         v7 = *(*(&v45 + 1) + 8 * i);
-        v8 = [v37 type];
-        LODWORD(v7) = [v8 isEqualToString:v7];
+        type = [v37 type];
+        LODWORD(v7) = [type isEqualToString:v7];
 
         if (v7)
         {
-          v9 = [v37 stringValue];
-          if (([v9 isEqualToString:&stru_2859636D0] & 1) == 0)
+          stringValue = [v37 stringValue];
+          if (([stringValue isEqualToString:&stru_2859636D0] & 1) == 0)
           {
-            v10 = [(CRCameraReader *)self callbackDelegate];
-            v11 = [v37 stringValue];
-            v12 = [v10 cameraReader:self shouldReturnQRCode:v11];
+            callbackDelegate = [(CRCameraReader *)self callbackDelegate];
+            stringValue2 = [v37 stringValue];
+            v12 = [callbackDelegate cameraReader:self shouldReturnQRCode:stringValue2];
 
             if (!v12)
             {
               continue;
             }
 
-            v9 = [MEMORY[0x277CBEB18] array];
+            stringValue = [MEMORY[0x277CBEB18] array];
             v43 = 0u;
             v44 = 0u;
             v41 = 0u;
             v42 = 0u;
-            v13 = [v37 corners];
-            v14 = [v13 countByEnumeratingWithState:&v41 objects:v49 count:16];
+            corners = [v37 corners];
+            v14 = [corners countByEnumeratingWithState:&v41 objects:v49 count:16];
             if (v14)
             {
               v15 = *v42;
@@ -1456,37 +1456,37 @@ LABEL_11:
                 {
                   if (*v42 != v15)
                   {
-                    objc_enumerationMutation(v13);
+                    objc_enumerationMutation(corners);
                   }
 
                   v17 = *(*(&v41 + 1) + 8 * j);
                   v18 = [v17 objectForKey:@"X"];
                   [v18 floatValue];
                   v20 = v19;
-                  v21 = [(CRCameraReader *)self sessionManager];
-                  [v21 cameraResolution];
+                  sessionManager = [(CRCameraReader *)self sessionManager];
+                  [sessionManager cameraResolution];
                   v23 = v22;
                   v24 = [v17 objectForKey:@"Y"];
                   [v24 floatValue];
                   v26 = v25;
-                  v27 = [(CRCameraReader *)self sessionManager];
-                  [v27 cameraResolution];
+                  sessionManager2 = [(CRCameraReader *)self sessionManager];
+                  [sessionManager2 cameraResolution];
                   v29 = v28;
 
                   v30 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v23 * v20, v29 * v26}];
-                  [v9 addObject:v30];
+                  [stringValue addObject:v30];
                 }
 
-                v14 = [v13 countByEnumeratingWithState:&v41 objects:v49 count:16];
+                v14 = [corners countByEnumeratingWithState:&v41 objects:v49 count:16];
               }
 
               while (v14);
             }
 
-            v31 = [v37 stringValue];
-            [(CRCameraReader *)self setFoundCode:v31];
+            stringValue3 = [v37 stringValue];
+            [(CRCameraReader *)self setFoundCode:stringValue3];
 
-            [(CRCameraReader *)self setFoundPoints:v9];
+            [(CRCameraReader *)self setFoundPoints:stringValue];
             CMSampleBufferGetPresentationTimeStamp(&v40, [(CRCameraReader *)self lastBuffer]);
             v39 = v40;
             [(CRCameraReader *)self setPointsFound:&v39];
@@ -1509,17 +1509,17 @@ LABEL_22:
 - (void)flashScreenAndPlayCaptureSound
 {
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [(CRCameraReader *)self view];
-  v5 = [v4 window];
-  [v5 frame];
+  view = [(CRCameraReader *)self view];
+  window = [view window];
+  [window frame];
   v6 = [v3 initWithFrame:?];
 
   v7 = +[CRColor whiteColor];
   [v6 setBackgroundColor:v7];
 
-  v8 = [(CRCameraReader *)self view];
-  v9 = [v8 window];
-  [v9 addSubview:v6];
+  view2 = [(CRCameraReader *)self view];
+  window2 = [view2 window];
+  [window2 addSubview:v6];
 
   v10 = MEMORY[0x277D75D18];
   v14[0] = MEMORY[0x277D85DD0];
@@ -1537,31 +1537,31 @@ LABEL_22:
   AudioServicesPlaySystemSound(0x454u);
 }
 
-- (void)captureImageFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)captureImageFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  CFRetain(a3);
-  v5 = [(CRCameraReader *)self captureBuffer];
-  [v5 addPointer:a3];
+  CFRetain(buffer);
+  captureBuffer = [(CRCameraReader *)self captureBuffer];
+  [captureBuffer addPointer:buffer];
 
-  v6 = [(CRCameraReader *)self captureBuffer];
-  v7 = [v6 count];
-  v8 = [(CRCameraReader *)self captureCount];
+  captureBuffer2 = [(CRCameraReader *)self captureBuffer];
+  v7 = [captureBuffer2 count];
+  captureCount = [(CRCameraReader *)self captureCount];
 
-  if (v7 > v8)
+  if (v7 > captureCount)
   {
-    v9 = [(CRCameraReader *)self captureBuffer];
-    v10 = [v9 pointerAtIndex:0];
+    captureBuffer3 = [(CRCameraReader *)self captureBuffer];
+    v10 = [captureBuffer3 pointerAtIndex:0];
 
-    v11 = [(CRCameraReader *)self captureBuffer];
-    [v11 removePointerAtIndex:0];
+    captureBuffer4 = [(CRCameraReader *)self captureBuffer];
+    [captureBuffer4 removePointerAtIndex:0];
 
     CFRelease(v10);
   }
 
   if ([(CRCameraReader *)self imagesToCapture])
   {
-    v12 = [(CRCameraReader *)self captureBuffer];
-    v13 = [v12 copy];
+    captureBuffer5 = [(CRCameraReader *)self captureBuffer];
+    v13 = [captureBuffer5 copy];
 
     v14 = 0;
     v15 = MEMORY[0x277D85CD0];
@@ -1653,12 +1653,12 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
   [v2 cameraReader:*(a1 + 32) didWriteToFile:*(a1 + 40)];
 }
 
-- (void)findCodeInSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)findCodeInSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v90 = *MEMORY[0x277D85DE8];
   memset(&v86, 0, sizeof(v86));
-  CMSampleBufferGetPresentationTimeStamp(&v86, a3);
-  pixelBuffer = CMSampleBufferGetImageBuffer(a3);
+  CMSampleBufferGetPresentationTimeStamp(&v86, buffer);
+  pixelBuffer = CMSampleBufferGetImageBuffer(buffer);
   WidthOfPlane = CVPixelBufferGetWidthOfPlane(pixelBuffer, 0);
   HeightOfPlane = CVPixelBufferGetHeightOfPlane(pixelBuffer, 0);
   BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
@@ -1669,31 +1669,31 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
       v7 = BytesPerRowOfPlane;
       if (!CVPixelBufferLockBaseAddress(pixelBuffer, 0))
       {
-        CFRetain(a3);
+        CFRetain(buffer);
         BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-        v9 = [(CRCameraReader *)self foundCode];
-        v59 = v9 != 0;
+        foundCode = [(CRCameraReader *)self foundCode];
+        v59 = foundCode != 0;
 
         v10 = objc_opt_class();
         time.value = BaseAddressOfPlane;
         *&time.timescale = HeightOfPlane;
         time.epoch = WidthOfPlane;
         v85 = v7;
-        v11 = [(CRCameraReader *)self outputObjectTypes];
-        v60 = [v10 findCodeInImage:&time maxStage:v59 outputObjectTypes:v11];
+        outputObjectTypes = [(CRCameraReader *)self outputObjectTypes];
+        v60 = [v10 findCodeInImage:&time maxStage:v59 outputObjectTypes:outputObjectTypes];
 
         v12 = [v60 objectForKey:@"boxPoints"];
         v61 = [v60 objectForKey:@"code"];
         v13 = [v60 objectForKey:@"inverted"];
-        v57 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
 
         v14 = [v60 objectForKey:@"accepted"];
-        v58 = [v14 BOOLValue];
+        bOOLValue2 = [v14 BOOLValue];
 
-        v15 = [MEMORY[0x277CBEB18] array];
-        v16 = [(CRCameraReader *)self sessionManager];
-        v17 = [v16 previewLayer];
-        [v17 bounds];
+        array = [MEMORY[0x277CBEB18] array];
+        sessionManager = [(CRCameraReader *)self sessionManager];
+        previewLayer = [sessionManager previewLayer];
+        [previewLayer bounds];
         v19 = v18;
         v21 = v20;
         v23 = v22;
@@ -1701,17 +1701,17 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
 
         if (![(CRCameraReader *)self isQRCode]|| ([(CRCameraReader *)self foundCode], v26 = objc_claimAutoreleasedReturnValue(), v27 = v26 == 0, v26, v27))
         {
-          v30 = v12;
+          foundPoints = v12;
         }
 
         else
         {
-          v28 = [(CRCameraReader *)self foundCode];
+          foundCode2 = [(CRCameraReader *)self foundCode];
 
-          v29 = [(CRCameraReader *)self foundCode];
-          [(CRCameraReader *)self setPreviousCode:v29];
+          foundCode3 = [(CRCameraReader *)self foundCode];
+          [(CRCameraReader *)self setPreviousCode:foundCode3];
 
-          v30 = [(CRCameraReader *)self foundPoints];
+          foundPoints = [(CRCameraReader *)self foundPoints];
 
           v83[0] = MEMORY[0x277D85DD0];
           v83[1] = 3221225472;
@@ -1719,8 +1719,8 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
           v83[3] = &unk_278EAA5E8;
           v83[4] = self;
           cr_dispatch_async(MEMORY[0x277D85CD0], v83);
-          v58 = 1;
-          v61 = v28;
+          bOOLValue2 = 1;
+          v61 = foundCode2;
           LODWORD(v59) = 1;
         }
 
@@ -1728,7 +1728,7 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
         v82 = 0u;
         v79 = 0u;
         v80 = 0u;
-        obj = v30;
+        obj = foundPoints;
         v31 = [obj countByEnumeratingWithState:&v79 objects:v89 count:16];
         if (v31)
         {
@@ -1744,18 +1744,18 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
               }
 
               v35 = *(*(&v79 + 1) + 8 * i);
-              v36 = [(CRCameraReader *)self sessionManager];
+              sessionManager2 = [(CRCameraReader *)self sessionManager];
               [v35 CGPointValue];
               v38 = v37;
               v40 = v39;
-              v41 = [(CRCameraReader *)self sessionManager];
-              v42 = [v41 previewLayer];
-              [v36 convertCameraPoint:v42 toLayer:{v38, v40}];
+              sessionManager3 = [(CRCameraReader *)self sessionManager];
+              previewLayer2 = [sessionManager3 previewLayer];
+              [sessionManager2 convertCameraPoint:previewLayer2 toLayer:{v38, v40}];
               v44 = v43;
               v46 = v45;
 
               v47 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v44, v46}];
-              [v15 addObject:v47];
+              [array addObject:v47];
 
               if (v33)
               {
@@ -1785,11 +1785,11 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
           v33 = 1;
         }
 
-        v48 = v58 & v33;
-        if ((v58 & v33) == 1 && v61)
+        v48 = bOOLValue2 & v33;
+        if ((bOOLValue2 & v33) == 1 && v61)
         {
-          v49 = [(CRCameraReader *)self previousCode];
-          if (v49 && (-[CRCameraReader previousCode](self, "previousCode"), v50 = objc_claimAutoreleasedReturnValue(), v51 = [v50 isEqualToString:v61], v50, v49, (v51 & 1) != 0))
+          previousCode = [(CRCameraReader *)self previousCode];
+          if (previousCode && (-[CRCameraReader previousCode](self, "previousCode"), v50 = objc_claimAutoreleasedReturnValue(), v51 = [v50 isEqualToString:v61], v50, previousCode, (v51 & 1) != 0))
           {
             v48 = 1;
           }
@@ -1802,7 +1802,7 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
         }
 
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-        CFRelease(a3);
+        CFRelease(buffer);
         if (v61)
         {
           v52 = v48;
@@ -1828,12 +1828,12 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
           v53 = obj;
           v75 = v86;
           v71 = v53;
-          v72 = v15;
+          v72 = array;
           v76 = v48;
-          v77 = v57;
+          v77 = bOOLValue;
           v78 = v52;
           v73 = v61;
-          v74 = a3;
+          bufferCopy = buffer;
           cr_dispatch_async(MEMORY[0x277D85CD0], v70);
         }
 
@@ -1846,8 +1846,8 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
           CMTimeSubtract(&time, &lhs, &rhs);
           if (CMTimeGetSeconds(&time) > 0.3)
           {
-            v54 = [(CRCameraReader *)self sessionManager];
-            [v54 resetFocus];
+            sessionManager4 = [(CRCameraReader *)self sessionManager];
+            [sessionManager4 resetFocus];
           }
 
           [(CRCameraReader *)self setFoundPoints:0];
@@ -1864,8 +1864,8 @@ void __47__CRCameraReader_captureImageFromSampleBuffer___block_invoke_2(uint64_t
           cr_dispatch_async(MEMORY[0x277D85CD0], v66);
         }
 
-        v55 = [(CRCameraReader *)self diagnosticHUDLayer];
-        v56 = v55 == 0;
+        diagnosticHUDLayer = [(CRCameraReader *)self diagnosticHUDLayer];
+        v56 = diagnosticHUDLayer == 0;
 
         if (!v56)
         {
@@ -2291,39 +2291,39 @@ void __41__CRCameraReader_findCodeInSampleBuffer___block_invoke_4(uint64_t a1)
   [v25 setAdjustingFocus:v19 pointOfInterestSupported:objc_msgSend(v20 focusPoint:{"isFocusPointOfInterestSupported"), v3, v4}];
 }
 
-+ (id)extractCardImage:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 withCardBuffer:(__CVBuffer *)a5 cameraIntrinsicData:(id)a6
++ (id)extractCardImage:(id)image fromPixelBuffer:(__CVBuffer *)buffer withCardBuffer:(__CVBuffer *)cardBuffer cameraIntrinsicData:(id)data
 {
-  v6 = [a1 extractCardImage:a3 fromPixelBuffer:a4 withCardBuffer:a5 withPoints:0 cameraIntrinsicData:a6];
+  v6 = [self extractCardImage:image fromPixelBuffer:buffer withCardBuffer:cardBuffer withPoints:0 cameraIntrinsicData:data];
 
   return v6;
 }
 
-+ (id)extractCardImage:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 withCardBuffer:(__CVBuffer *)a5 withPoints:(id)a6 cameraIntrinsicData:(id)a7
++ (id)extractCardImage:(id)image fromPixelBuffer:(__CVBuffer *)buffer withCardBuffer:(__CVBuffer *)cardBuffer withPoints:(id)points cameraIntrinsicData:(id)data
 {
-  v7 = [a1 extractCardImage:a3 fromPixelBuffer:a4 withCardBuffer:a5 withPoints:a6 cameraIntrinsicData:a7 padding:1 inputOrientation:0.0];
+  v7 = [self extractCardImage:image fromPixelBuffer:buffer withCardBuffer:cardBuffer withPoints:points cameraIntrinsicData:data padding:1 inputOrientation:0.0];
 
   return v7;
 }
 
-+ (id)extractCardImage:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 withCardBuffer:(__CVBuffer *)a5 withPoints:(id)a6 cameraIntrinsicData:(id)a7 padding:(float)a8 inputOrientation:(int)a9
++ (id)extractCardImage:(id)image fromPixelBuffer:(__CVBuffer *)buffer withCardBuffer:(__CVBuffer *)cardBuffer withPoints:(id)points cameraIntrinsicData:(id)data padding:(float)padding inputOrientation:(int)orientation
 {
-  v9 = [a1 extractCardImage:a3 fromPixelBuffer:a4 withCardBuffer:a5 withPoints:a6 cameraIntrinsicData:a7 padding:*&a9 inputOrientation:0 unpaddedCardImage:?];
+  v9 = [self extractCardImage:image fromPixelBuffer:buffer withCardBuffer:cardBuffer withPoints:points cameraIntrinsicData:data padding:*&orientation inputOrientation:0 unpaddedCardImage:?];
 
   return v9;
 }
 
-+ (id)extractCardImage:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 withCardBuffer:(__CVBuffer *)a5 withPoints:(id)a6 cameraIntrinsicData:(id)a7 padding:(float)a8 inputOrientation:(int)a9 unpaddedCardImage:(id *)a10
++ (id)extractCardImage:(id)image fromPixelBuffer:(__CVBuffer *)buffer withCardBuffer:(__CVBuffer *)cardBuffer withPoints:(id)points cameraIntrinsicData:(id)data padding:(float)padding inputOrientation:(int)orientation unpaddedCardImage:(id *)self0
 {
-  v18 = *&a9;
+  v18 = *&orientation;
   v165 = *MEMORY[0x277D85DE8];
-  v145 = a3;
-  v138 = a6;
-  v137 = a7;
-  v22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v23 = [v22 BOOLForKey:@"com.apple.CoreRecognition.enable_vn_2_rect_detector"];
+  imageCopy = image;
+  pointsCopy = points;
+  dataCopy = data;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v23 = [standardUserDefaults BOOLForKey:@"com.apple.CoreRecognition.enable_vn_2_rect_detector"];
 
-  v24 = CMCopyDictionaryOfAttachments(*MEMORY[0x277CBECE8], a4, 1u);
-  v25 = [objc_alloc(MEMORY[0x277CBF758]) initWithCVPixelBuffer:a4 options:v24];
+  v24 = CMCopyDictionaryOfAttachments(*MEMORY[0x277CBECE8], buffer, 1u);
+  v25 = [objc_alloc(MEMORY[0x277CBF758]) initWithCVPixelBuffer:buffer options:v24];
   v148 = [v25 imageByApplyingOrientation:v18];
 
   if (v24)
@@ -2331,30 +2331,30 @@ void __41__CRCameraReader_findCodeInSampleBuffer___block_invoke_4(uint64_t a1)
     CFRelease(v24);
   }
 
-  if (v138)
+  if (pointsCopy)
   {
-    v26 = [v138 objectAtIndex:0];
+    v26 = [pointsCopy objectAtIndex:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v28 = [v138 objectAtIndex:0];
+    v28 = [pointsCopy objectAtIndex:0];
     if (isKindOfClass)
     {
       v29 = NSPointFromString(v28);
       y = v29.y;
       v160 = v29;
 
-      v30 = [v138 objectAtIndex:1];
+      v30 = [pointsCopy objectAtIndex:1];
       v31 = NSPointFromString(v30);
       v32 = v31.y;
       v161.x = v31.x;
 
-      v33 = [v138 objectAtIndex:2];
+      v33 = [pointsCopy objectAtIndex:2];
       v34 = NSPointFromString(v33);
       v35 = v34.y;
       v162.x = v34.x;
 
-      v36 = [v138 objectAtIndex:3];
+      v36 = [pointsCopy objectAtIndex:3];
       v39 = NSPointFromString(v36);
       v38 = v39.y;
       x = v39.x;
@@ -2367,19 +2367,19 @@ void __41__CRCameraReader_findCodeInSampleBuffer___block_invoke_4(uint64_t a1)
       v160.x = v47;
       v160.y = v46;
 
-      v48 = [v138 objectAtIndex:1];
+      v48 = [pointsCopy objectAtIndex:1];
       [v48 CGPointValue];
       v32 = v49;
       v161.x = v50;
       v161.y = v49;
 
-      v51 = [v138 objectAtIndex:2];
+      v51 = [pointsCopy objectAtIndex:2];
       [v51 CGPointValue];
       v35 = v52;
       v162.x = v53;
       v162.y = v52;
 
-      v36 = [v138 objectAtIndex:3];
+      v36 = [pointsCopy objectAtIndex:3];
       [(NSString *)v36 CGPointValue];
     }
 
@@ -2433,9 +2433,9 @@ LABEL_39:
   [v40 setMinimumSize:v42];
   [v40 setMinimumConfidence:0.0];
   [v40 setMaximumObservations:1];
-  if (v137)
+  if (dataCopy)
   {
-    [v136 setObject:v137 forKey:*MEMORY[0x277CE3038]];
+    [v136 setObject:dataCopy forKey:*MEMORY[0x277CE3038]];
     LODWORD(v44) = 1058724538;
     [v40 setMinimumAspectRatio:v44];
     LODWORD(v45) = 1059570110;
@@ -2460,14 +2460,14 @@ LABEL_39:
   [v134 performRequests:v68 error:&v154];
   v132 = v154;
 
-  v133 = [v40 results];
-  if ([v133 count])
+  results = [v40 results];
+  if ([results count])
   {
     v152 = 0u;
     v153 = 0u;
     v150 = 0u;
     v151 = 0u;
-    obj = v133;
+    obj = results;
     v69 = [obj countByEnumeratingWithState:&v150 objects:v164 count:16];
     if (v69)
     {
@@ -2524,9 +2524,9 @@ LABEL_39:
           v144 = v155.x;
           v141 = v156.y;
           v142 = v156.x;
-          if (a8 > 0.0)
+          if (padding > 0.0)
           {
-            calculatePointsWithPaddingInCorrectedSpace(&v158.x, &v157.x, &v155.x, &v156.x, v11, v12, v13, v14, a8, [v145 width], objc_msgSend(v145, "height"));
+            calculatePointsWithPaddingInCorrectedSpace(&v158.x, &v157.x, &v155.x, &v156.x, v11, v12, v13, v14, padding, [imageCopy width], objc_msgSend(imageCopy, "height"));
             v159[0] = v158;
             v159[1] = v157;
             v159[2] = v155;
@@ -2589,9 +2589,9 @@ LABEL_34:
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v98 = [v148 imageByCroppingToRect:{v11, v12, v13, v14}];
   v99 = [CRCameraReader perspectiveCorrectedImage:v98 p1:v158 p2:v157 p3:v155 p4:v156];
-  if (a10)
+  if (cardImage)
   {
-    *a10 = [CRCameraReader perspectiveCorrectedImage:v98 p1:v17 p2:y p3:v15 p4:v16, v144, v143, v142, v141];
+    *cardImage = [CRCameraReader perspectiveCorrectedImage:v98 p1:v17 p2:y p3:v15 p4:v16, v144, v143, v142, v141];
   }
 
   [v99 extent];
@@ -2614,15 +2614,15 @@ LABEL_34:
         v99 = v110;
       }
 
-      if (!a10)
+      if (!cardImage)
       {
         goto LABEL_49;
       }
 
-      v111 = *a10;
+      v111 = *cardImage;
       v112 = v111;
-      *&v113 = a8;
-      if (a8 == 0.0)
+      *&v113 = padding;
+      if (padding == 0.0)
       {
         v114 = v99;
         v115 = v99;
@@ -2638,12 +2638,12 @@ LABEL_34:
 LABEL_48:
 
 LABEL_49:
-          v119 = +[CRCameraReader scaledImage:width:height:](CRCameraReader, "scaledImage:width:height:", v99, [v145 width], objc_msgSend(v145, "height"));
+          v119 = +[CRCameraReader scaledImage:width:height:](CRCameraReader, "scaledImage:width:height:", v99, [imageCopy width], objc_msgSend(imageCopy, "height"));
           v121 = v119;
-          if (a10)
+          if (cardImage)
           {
-            *&v120 = a8;
-            if (a8 == 0.0)
+            *&v120 = padding;
+            if (padding == 0.0)
             {
               v122 = v119;
               v123 = v121;
@@ -2651,27 +2651,27 @@ LABEL_49:
 
             else
             {
-              v123 = +[CRCameraReader scaledImage:width:height:](CRCameraReader, "scaledImage:width:height:", *a10, [v145 width], objc_msgSend(v145, "height"));
+              v123 = +[CRCameraReader scaledImage:width:height:](CRCameraReader, "scaledImage:width:height:", *cardImage, [imageCopy width], objc_msgSend(imageCopy, "height"));
             }
 
-            *a10 = v123;
+            *cardImage = v123;
           }
 
           v124 = [MEMORY[0x277CBF740] contextWithOptions:0];
-          [v124 render:v121 toCVPixelBuffer:a5 bounds:DeviceRGB colorSpace:{0.0, 0.0, objc_msgSend(v145, "width"), objc_msgSend(v145, "height")}];
+          [v124 render:v121 toCVPixelBuffer:cardBuffer bounds:DeviceRGB colorSpace:{0.0, 0.0, objc_msgSend(imageCopy, "width"), objc_msgSend(imageCopy, "height")}];
           CGColorSpaceRelease(DeviceRGB);
-          WidthOfPlane = CVPixelBufferGetWidthOfPlane(a5, 0);
-          HeightOfPlane = CVPixelBufferGetHeightOfPlane(a5, 0);
-          if (WidthOfPlane && HeightOfPlane && !CVPixelBufferLockBaseAddress(a5, 0))
+          WidthOfPlane = CVPixelBufferGetWidthOfPlane(cardBuffer, 0);
+          HeightOfPlane = CVPixelBufferGetHeightOfPlane(cardBuffer, 0);
+          if (WidthOfPlane && HeightOfPlane && !CVPixelBufferLockBaseAddress(cardBuffer, 0))
           {
-            BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a5, 0);
-            if (v145)
+            BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(cardBuffer, 0);
+            if (imageCopy)
             {
-              [v145 vImage];
+              [imageCopy vImage];
               v128 = v160.x;
-              [v145 vImage];
+              [imageCopy vImage];
               v129 = *(&v159[0] + 1);
-              [v145 vImage];
+              [imageCopy vImage];
               v130 = v149 * v129;
             }
 
@@ -2682,7 +2682,7 @@ LABEL_49:
             }
 
             memcpy(*&v128, BaseAddressOfPlane, v130);
-            CVPixelBufferUnlockBaseAddress(a5, 0);
+            CVPixelBufferUnlockBaseAddress(cardBuffer, 0);
           }
 
           v106 = v147;
@@ -2693,7 +2693,7 @@ LABEL_49:
         v115 = [v112 imageByApplyingOrientation:6];
       }
 
-      *a10 = v115;
+      *cardImage = v115;
       goto LABEL_48;
     }
   }
@@ -2707,18 +2707,18 @@ LABEL_63:
   return v106;
 }
 
-- (void)sendProvideOverlayObjects:(id)a3
+- (void)sendProvideOverlayObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [(CRCameraReader *)self delegateQueue];
+  objectsCopy = objects;
+  delegateQueue = [(CRCameraReader *)self delegateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__CRCameraReader_sendProvideOverlayObjects___block_invoke;
   v7[3] = &unk_278EAA6D0;
   v7[4] = self;
-  v6 = v4;
+  v6 = objectsCopy;
   v8 = v6;
-  cr_dispatch_async(v5, v7);
+  cr_dispatch_async(delegateQueue, v7);
 }
 
 uint64_t __44__CRCameraReader_sendProvideOverlayObjects___block_invoke(uint64_t a1)
@@ -2767,17 +2767,17 @@ uint64_t __44__CRCameraReader_sendProvideOverlayObjects___block_invoke(uint64_t 
   return [*(a1 + 32) showTextDetectorObjects:{*(a1 + 40), v12}];
 }
 
-- (void)findOCRTextObjects:(id)a3 inPixelBuffer:(__CVBuffer *)a4 attachments:(id)a5 frameTime:(id *)a6
+- (void)findOCRTextObjects:(id)objects inPixelBuffer:(__CVBuffer *)buffer attachments:(id)attachments frameTime:(id *)time
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  CVPixelBufferRetain(a4);
-  v8 = [(CRCameraReader *)self ocrImageReader];
+  CVPixelBufferRetain(buffer);
+  ocrImageReader = [(CRCameraReader *)self ocrImageReader];
   v24 = *MEMORY[0x277D70038];
   v25[0] = MEMORY[0x277CBEC38];
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-  v10 = [v8 resultsForPixelBuffer:a4 options:v9 error:0];
+  v10 = [ocrImageReader resultsForPixelBuffer:buffer options:v9 error:0];
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -2800,7 +2800,7 @@ uint64_t __44__CRCameraReader_sendProvideOverlayObjects___block_invoke(uint64_t 
         v16 = *(*(&v19 + 1) + 8 * v15);
         v17 = [CRCameraReaderOutputCameraText alloc];
         v18 = [(CRCameraReaderOutput *)v17 initWithImageReaderOutput:v16, v19];
-        [v11 addObject:v18];
+        [array addObject:v18];
 
         ++v15;
       }
@@ -2812,14 +2812,14 @@ uint64_t __44__CRCameraReader_sendProvideOverlayObjects___block_invoke(uint64_t 
     while (v13);
   }
 
-  [(CRCameraReader *)self sendProvideOverlayObjects:v11];
-  CVPixelBufferRelease(a4);
+  [(CRCameraReader *)self sendProvideOverlayObjects:array];
+  CVPixelBufferRelease(buffer);
 }
 
 - (void)updatePinnedInfoFrameIndex
 {
-  v3 = [(CRCameraReader *)self pinnedFoundInfo];
-  v7 = [v3 objectForKey:@"currentFrameIndex"];
+  pinnedFoundInfo = [(CRCameraReader *)self pinnedFoundInfo];
+  v7 = [pinnedFoundInfo objectForKey:@"currentFrameIndex"];
 
   if (v7)
   {
@@ -2831,63 +2831,63 @@ uint64_t __44__CRCameraReader_sendProvideOverlayObjects___block_invoke(uint64_t 
     v4 = 0;
   }
 
-  v5 = [(CRCameraReader *)self pinnedFoundInfo];
+  pinnedFoundInfo2 = [(CRCameraReader *)self pinnedFoundInfo];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
-  [v5 setObject:v6 forKey:@"currentFrameIndex"];
+  [pinnedFoundInfo2 setObject:v6 forKey:@"currentFrameIndex"];
 }
 
-- (void)setFirstTimeFrameIndexForPinnedField:(id)a3
+- (void)setFirstTimeFrameIndexForPinnedField:(id)field
 {
-  v9 = [a3 stringByAppendingString:@"FirstPinningFrameIndex"];
-  v4 = [(CRCameraReader *)self pinnedFoundInfo];
-  v5 = [v4 objectForKey:v9];
+  v9 = [field stringByAppendingString:@"FirstPinningFrameIndex"];
+  pinnedFoundInfo = [(CRCameraReader *)self pinnedFoundInfo];
+  v5 = [pinnedFoundInfo objectForKey:v9];
 
   if (!v5)
   {
-    v6 = [(CRCameraReader *)self pinnedFoundInfo];
-    v7 = [v6 objectForKey:@"currentFrameIndex"];
+    pinnedFoundInfo2 = [(CRCameraReader *)self pinnedFoundInfo];
+    v7 = [pinnedFoundInfo2 objectForKey:@"currentFrameIndex"];
 
     if (v7)
     {
-      v8 = [(CRCameraReader *)self pinnedFoundInfo];
-      [v8 setObject:v7 forKey:v9];
+      pinnedFoundInfo3 = [(CRCameraReader *)self pinnedFoundInfo];
+      [pinnedFoundInfo3 setObject:v7 forKey:v9];
     }
   }
 }
 
-- (unint64_t)getFirstTimeFrameIndexForPinnedField:(id)a3
+- (unint64_t)getFirstTimeFrameIndexForPinnedField:(id)field
 {
-  v4 = [a3 stringByAppendingString:@"FirstPinningFrameIndex"];
-  v5 = [(CRCameraReader *)self pinnedFoundInfo];
-  v6 = [v5 objectForKey:v4];
+  v4 = [field stringByAppendingString:@"FirstPinningFrameIndex"];
+  pinnedFoundInfo = [(CRCameraReader *)self pinnedFoundInfo];
+  v6 = [pinnedFoundInfo objectForKey:v4];
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (id)getCorrectedIDImageFromAuxiliaryPoints:(id)a3 fromPixelBuffer:(__CVBuffer *)a4 orientation:(unsigned int)a5 unpaddedCardImage:(id *)a6
+- (id)getCorrectedIDImageFromAuxiliaryPoints:(id)points fromPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation unpaddedCardImage:(id *)image
 {
-  v7 = *&a5;
+  v7 = *&orientation;
   v92 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = v10;
-  if (!v10 || [v10 count] != 4)
+  pointsCopy = points;
+  v11 = pointsCopy;
+  if (!pointsCopy || [pointsCopy count] != 4)
   {
     v59 = 0;
     goto LABEL_34;
   }
 
-  v12 = CMCopyDictionaryOfAttachments(*MEMORY[0x277CBECE8], a4, 1u);
-  v13 = [objc_alloc(MEMORY[0x277CBF758]) initWithCVPixelBuffer:a4 options:v12];
+  v12 = CMCopyDictionaryOfAttachments(*MEMORY[0x277CBECE8], buffer, 1u);
+  v13 = [objc_alloc(MEMORY[0x277CBF758]) initWithCVPixelBuffer:buffer options:v12];
   v14 = [v13 imageByApplyingOrientation:v7];
 
   if (v12)
@@ -2939,13 +2939,13 @@ uint64_t __44__CRCameraReader_sendProvideOverlayObjects___block_invoke(uint64_t 
   {
     v83 = [v14 imageByCroppingToRect:{v27, v29, v31, v33}];
     v39 = [CRCameraReader perspectiveCorrectedImage:v84 p1:v85 p2:v86 p3:v87 p4:v88, v89, v90, v91];
-    if (a6)
+    if (image)
     {
       [(CRCameraReader *)self borderPaddingIDCard];
       if (v40 == 0.0)
       {
         v60 = v39;
-        *a6 = v39;
+        *image = v39;
       }
 
       else
@@ -2964,7 +2964,7 @@ uint64_t __44__CRCameraReader_sendProvideOverlayObjects___block_invoke(uint64_t 
         v55 = v54;
         v56 = [v11 objectAtIndexedSubscript:3];
         [v56 CGPointValue];
-        *a6 = [CRCameraReader perspectiveCorrectedImage:v83 p1:v43 p2:v45 p3:v48 p4:v50, v53, v55, v57, v58];
+        *image = [CRCameraReader perspectiveCorrectedImage:v83 p1:v43 p2:v45 p3:v48 p4:v50, v53, v55, v57, v58];
       }
     }
 
@@ -2989,12 +2989,12 @@ LABEL_32:
       v39 = v70;
     }
 
-    if (!a6)
+    if (!image)
     {
 LABEL_26:
       v78 = [CRCameraReader scaledImage:v39 width:[(CRCameraReader *)self outputCapturedImageWidth] height:[(CRCameraReader *)self outputCapturedImageHeight]];
 
-      if (a6)
+      if (image)
       {
         [(CRCameraReader *)self borderPaddingIDCard];
         if (v79 == 0.0)
@@ -3005,10 +3005,10 @@ LABEL_26:
 
         else
         {
-          v81 = [CRCameraReader scaledImage:*a6 width:[(CRCameraReader *)self outputCapturedImageWidth] height:[(CRCameraReader *)self outputCapturedImageHeight]];
+          v81 = [CRCameraReader scaledImage:*image width:[(CRCameraReader *)self outputCapturedImageWidth] height:[(CRCameraReader *)self outputCapturedImageHeight]];
         }
 
-        *a6 = v81;
+        *image = v81;
       }
 
       v39 = v78;
@@ -3016,7 +3016,7 @@ LABEL_26:
       goto LABEL_32;
     }
 
-    v71 = *a6;
+    v71 = *image;
     [(CRCameraReader *)self borderPaddingIDCard];
     if (v72 == 0.0)
     {
@@ -3039,7 +3039,7 @@ LABEL_25:
       v74 = [v71 imageByApplyingOrientation:6];
     }
 
-    *a6 = v74;
+    *image = v74;
     goto LABEL_25;
   }
 
@@ -3051,23 +3051,23 @@ LABEL_34:
   return v59;
 }
 
-- (void)findIDObjects:(id)a3 inPixelBuffer:(__CVBuffer *)a4 cameraIntrinsicData:(id)a5 frameTime:(id *)a6
+- (void)findIDObjects:(id)objects inPixelBuffer:(__CVBuffer *)buffer cameraIntrinsicData:(id)data frameTime:(id *)time
 {
   v262 = *MEMORY[0x277D85DE8];
-  v247 = a5;
-  v249 = [MEMORY[0x277CBEB98] setWithArray:a3];
+  dataCopy = data;
+  v249 = [MEMORY[0x277CBEB98] setWithArray:objects];
   v251 = @"CRCameraReaderIDCardCapturePathAutomatic";
-  CVPixelBufferGetWidth(a4);
-  CVPixelBufferGetHeight(a4);
+  CVPixelBufferGetWidth(buffer);
+  CVPixelBufferGetHeight(buffer);
   rect_16 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v248 = [objc_alloc(MEMORY[0x277D70088]) initWithWidth:-[CRCameraReader outputCapturedImageWidth](self height:"outputCapturedImageWidth") colorSpace:{-[CRCameraReader outputCapturedImageHeight](self, "outputCapturedImageHeight"), 0}];
-  v10 = [(CRCameraReader *)self sessionManager];
-  v11 = [v10 previewLayer];
-  v12 = [v11 connection];
-  v13 = [v12 videoOrientation];
+  sessionManager = [(CRCameraReader *)self sessionManager];
+  previewLayer = [sessionManager previewLayer];
+  connection = [previewLayer connection];
+  videoOrientation = [connection videoOrientation];
 
-  switch(v13)
+  switch(videoOrientation)
   {
     case 2:
       v245 = 0;
@@ -3106,17 +3106,17 @@ LABEL_9:
     v18 = 0;
   }
 
-  v19 = [(CRCameraReader *)self callbackDelegate];
+  callbackDelegate = [(CRCameraReader *)self callbackDelegate];
   v20 = objc_opt_respondsToSelector();
 
   if (v20)
   {
-    v21 = [(CRCameraReader *)self callbackDelegate];
-    v22 = [v21 cameraReader:self auxiliaryIDCornerDetection:a4];
+    callbackDelegate2 = [(CRCameraReader *)self callbackDelegate];
+    v22 = [callbackDelegate2 cameraReader:self auxiliaryIDCornerDetection:buffer];
 
-    v23 = [(CRCameraReader *)self enableUnpaddedIDCapture];
-    v24 = v23;
-    if (v23)
+    enableUnpaddedIDCapture = [(CRCameraReader *)self enableUnpaddedIDCapture];
+    v24 = enableUnpaddedIDCapture;
+    if (enableUnpaddedIDCapture)
     {
       v25 = &v260;
     }
@@ -3126,12 +3126,12 @@ LABEL_9:
       v25 = 0;
     }
 
-    if (v23)
+    if (enableUnpaddedIDCapture)
     {
       v260 = 0;
     }
 
-    v26 = [(CRCameraReader *)self getCorrectedIDImageFromAuxiliaryPoints:v22 fromPixelBuffer:a4 orientation:v250 unpaddedCardImage:v25];
+    v26 = [(CRCameraReader *)self getCorrectedIDImageFromAuxiliaryPoints:v22 fromPixelBuffer:buffer orientation:v250 unpaddedCardImage:v25];
     v27 = v26;
     if (v24)
     {
@@ -3176,18 +3176,18 @@ LABEL_41:
 
       normalizedPointForSize();
       v40 = NSStringFromPoint(v263);
-      [v9 addObject:v40];
+      [array addObject:v40];
     }
 
-    v41 = [(CRCameraReader *)self sessionManager];
-    v42 = [(CRCameraReader *)self alignmentLayer];
-    [v42 alignmentRect];
+    sessionManager2 = [(CRCameraReader *)self sessionManager];
+    alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+    [alignmentLayer alignmentRect];
     v44 = v43;
     v46 = v45;
     v48 = v47;
     v50 = v49;
-    v51 = [(CRCameraReader *)self alignmentLayer];
-    [v41 convertCameraRect:v51 fromLayer:{v44, v46, v48, v50}];
+    alignmentLayer2 = [(CRCameraReader *)self alignmentLayer];
+    [sessionManager2 convertCameraRect:alignmentLayer2 fromLayer:{v44, v46, v48, v50}];
     v53 = v52;
     v55 = v54;
     v57 = v56;
@@ -3224,38 +3224,38 @@ LABEL_41:
     [rect_16 addObject:v71];
 
     v72 = objc_alloc_init(CRCameraReaderOutputIDCard);
-    v73 = [(CRCameraReaderOutput *)v72 objectInternal];
-    [v73 setImageValue:v37];
+    objectInternal = [(CRCameraReaderOutput *)v72 objectInternal];
+    [objectInternal setImageValue:v37];
 
-    v74 = [(CRCameraReaderOutput *)v72 objectInternal];
-    [v74 setUnpaddedImageValue:rect];
+    objectInternal2 = [(CRCameraReaderOutput *)v72 objectInternal];
+    [objectInternal2 setUnpaddedImageValue:rect];
 
-    v75 = [(CRCameraReaderOutput *)v72 objectInternal];
-    [v75 setVertices:v9];
+    objectInternal3 = [(CRCameraReaderOutput *)v72 objectInternal];
+    [objectInternal3 setVertices:array];
 
-    v76 = [(CRCameraReaderOutput *)v72 objectInternal];
-    [v76 setTargetVertices:rect_16];
+    objectInternal4 = [(CRCameraReaderOutput *)v72 objectInternal];
+    [objectInternal4 setTargetVertices:rect_16];
 
-    v77 = [(CRCameraReaderOutput *)v72 objectInternal];
-    [v77 setCapturePath:v251];
+    objectInternal5 = [(CRCameraReaderOutput *)v72 objectInternal];
+    [objectInternal5 setCapturePath:v251];
 
     if ([v249 containsObject:@"CROutputTypeIDCardFront"])
     {
-      v78 = [(CRCameraReaderOutput *)v72 objectInternal];
-      [v78 setType:@"CROutputTypeIDCardFront"];
+      objectInternal6 = [(CRCameraReaderOutput *)v72 objectInternal];
+      [objectInternal6 setType:@"CROutputTypeIDCardFront"];
     }
 
     else
     {
-      v78 = [(CRCameraReaderOutput *)v72 objectInternal];
-      [v78 setType:@"CROutputTypeIDCardBack"];
+      objectInternal6 = [(CRCameraReaderOutput *)v72 objectInternal];
+      [objectInternal6 setType:@"CROutputTypeIDCardBack"];
     }
 
-    v79 = [(CRCameraReader *)self callbackDelegate];
+    callbackDelegate3 = [(CRCameraReader *)self callbackDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v80 = [(CRCameraReader *)self callbackDelegate];
-      v81 = [v80 cameraReader:self shouldReturnIDImage:v72];
+      callbackDelegate4 = [(CRCameraReader *)self callbackDelegate];
+      v81 = [callbackDelegate4 cameraReader:self shouldReturnIDImage:v72];
 
       if (!v81)
       {
@@ -3275,18 +3275,18 @@ LABEL_41:
     [(CRCameraReader *)self sendDidEndWithInfo:v232];
 
     [(CRCameraReader *)self sendDidEndAnimation];
-    v222 = [(CRCameraReader *)self cardBlurValues];
-    [v222 removeAllObjects];
+    cardBlurValues = [(CRCameraReader *)self cardBlurValues];
+    [cardBlurValues removeAllObjects];
     goto LABEL_71;
   }
 
   v29 = objc_opt_class();
-  v30 = [(CRCameraReader *)self correctedCardBuffer];
+  correctedCardBuffer = [(CRCameraReader *)self correctedCardBuffer];
   [(CRCameraReader *)self borderPaddingIDCard];
   v32 = v31;
-  v33 = [(CRCameraReader *)self enableUnpaddedIDCapture];
+  enableUnpaddedIDCapture2 = [(CRCameraReader *)self enableUnpaddedIDCapture];
   v35 = &v259;
-  if (v33)
+  if (enableUnpaddedIDCapture2)
   {
     v259 = 0;
   }
@@ -3297,8 +3297,8 @@ LABEL_41:
   }
 
   LODWORD(v34) = v32;
-  v36 = [v29 extractCardImage:v248 fromPixelBuffer:a4 withCardBuffer:v30 withPoints:v18 cameraIntrinsicData:v247 padding:v250 inputOrientation:v34 unpaddedCardImage:v35];
-  if (v33)
+  v36 = [v29 extractCardImage:v248 fromPixelBuffer:buffer withCardBuffer:correctedCardBuffer withPoints:v18 cameraIntrinsicData:dataCopy padding:v250 inputOrientation:v34 unpaddedCardImage:v35];
+  if (enableUnpaddedIDCapture2)
   {
     v246 = v259;
   }
@@ -3314,15 +3314,15 @@ LABEL_42:
 
   if (v18)
   {
-    v82 = [(CRCameraReader *)self sessionManager];
-    v83 = [(CRCameraReader *)self alignmentLayer];
-    [v83 alignmentRect];
+    sessionManager3 = [(CRCameraReader *)self sessionManager];
+    alignmentLayer3 = [(CRCameraReader *)self alignmentLayer];
+    [alignmentLayer3 alignmentRect];
     v85 = v84;
     v87 = v86;
     v89 = v88;
     v91 = v90;
-    v92 = [(CRCameraReader *)self alignmentLayer];
-    [v82 convertCameraRect:v92 fromLayer:{v85, v87, v89, v91}];
+    alignmentLayer4 = [(CRCameraReader *)self alignmentLayer];
+    [sessionManager3 convertCameraRect:alignmentLayer4 fromLayer:{v85, v87, v89, v91}];
     v94 = v93;
     v96 = v95;
     v98 = v97;
@@ -3401,8 +3401,8 @@ LABEL_42:
 
     if (v244)
     {
-      v124 = CVPixelBufferGetHeight(a4);
-      v125 = CVPixelBufferGetHeight(a4);
+      v124 = CVPixelBufferGetHeight(buffer);
+      v125 = CVPixelBufferGetHeight(buffer);
       v126 = v124 - (v121 + v123);
       v127 = v119 + v120;
       v123 = recta;
@@ -3432,7 +3432,7 @@ LABEL_42:
 
       normalizedPointForSize();
       v135 = NSStringFromPoint(v272);
-      [v9 addObject:v135];
+      [array addObject:v135];
 
       v287.origin.x = rect_8a;
       v287.origin.y = v120;
@@ -3473,15 +3473,15 @@ LABEL_42:
     v138 = @"CRCameraReaderIDCardCapturePathFallback";
 
     v251 = v138;
-    v139 = [(CRCameraReader *)self sessionManager];
-    v140 = [(CRCameraReader *)self alignmentLayer];
-    [v140 alignmentRect];
+    sessionManager4 = [(CRCameraReader *)self sessionManager];
+    alignmentLayer5 = [(CRCameraReader *)self alignmentLayer];
+    [alignmentLayer5 alignmentRect];
     v142 = v141;
     v144 = v143;
     v146 = v145;
     v148 = v147;
-    v149 = [(CRCameraReader *)self alignmentLayer];
-    [v139 convertCameraRect:v149 fromLayer:{v142, v144, v146, v148}];
+    alignmentLayer6 = [(CRCameraReader *)self alignmentLayer];
+    [sessionManager4 convertCameraRect:alignmentLayer6 fromLayer:{v142, v144, v146, v148}];
     v151 = v150;
     v153 = v152;
     v155 = v154;
@@ -3496,15 +3496,15 @@ LABEL_42:
     v159 = v290.origin.y;
     v160 = v290.size.width;
     v161 = v290.size.height;
-    v162 = CVPixelBufferGetHeight(a4);
+    v162 = CVPixelBufferGetHeight(buffer);
     CVPixelBufferGetWidth([(CRCameraReader *)self correctedCardBuffer]);
     CVPixelBufferGetHeight([(CRCameraReader *)self correctedCardBuffer]);
     [(CRCameraReader *)self borderPaddingIDCard];
     rect_8b = v163;
     [(CRCameraReader *)self borderPaddingIDCard];
     rectb = v164;
-    v165 = CVPixelBufferGetWidth(a4);
-    v166 = CVPixelBufferGetHeight(a4);
+    v165 = CVPixelBufferGetWidth(buffer);
+    v166 = CVPixelBufferGetHeight(buffer);
     normalizedRectForSize();
     v167 = v273.x;
     v168 = v273.y;
@@ -3544,26 +3544,26 @@ LABEL_42:
     v192 = v191;
     v194 = v193;
     v195 = NSStringFromPoint(v277);
-    [v9 addObject:v195];
+    [array addObject:v195];
 
     v196 = v189 + v192;
     v278.x = v196;
     v278.y = v190;
     v197 = NSStringFromPoint(v278);
-    [v9 addObject:v197];
+    [array addObject:v197];
 
     v198 = v190 + v194;
     v279.x = v196;
     v279.y = v198;
     v199 = NSStringFromPoint(v279);
-    [v9 addObject:v199];
+    [array addObject:v199];
 
     v280.x = v189;
     v280.y = v198;
     v200 = NSStringFromPoint(v280);
-    [v9 addObject:v200];
+    [array addObject:v200];
 
-    v201 = [MEMORY[0x277CBF758] imageWithCVPixelBuffer:a4];
+    v201 = [MEMORY[0x277CBF758] imageWithCVPixelBuffer:buffer];
     v202 = [v201 imageByCroppingToRect:{v182, v184, v186, v188}];
 
     CGAffineTransformMakeTranslation(&v261, -v182, -v184);
@@ -3587,35 +3587,35 @@ LABEL_42:
     if ([(CRCameraReader *)self enableManualIDCapture])
     {
       DeviceRGB = CGColorSpaceCreateDeviceRGB();
-      v214 = [(CRCameraReader *)self correctedCardBuffer];
+      correctedCardBuffer2 = [(CRCameraReader *)self correctedCardBuffer];
       v215 = CVPixelBufferGetWidth([(CRCameraReader *)self correctedCardBuffer]);
-      [(CRCameraReaderOutputIDCard *)v212 render:v22 toCVPixelBuffer:v214 bounds:DeviceRGB colorSpace:0.0, 0.0, v215, CVPixelBufferGetHeight([(CRCameraReader *)self correctedCardBuffer])];
+      [(CRCameraReaderOutputIDCard *)v212 render:v22 toCVPixelBuffer:correctedCardBuffer2 bounds:DeviceRGB colorSpace:0.0, 0.0, v215, CVPixelBufferGetHeight([(CRCameraReader *)self correctedCardBuffer])];
       CGColorSpaceRelease(DeviceRGB);
       v37 = objc_alloc_init(CRCameraReaderOutputIDCard);
       rect = [MEMORY[0x277CBF758] imageWithCVPixelBuffer:{-[CRCameraReader correctedCardBuffer](self, "correctedCardBuffer")}];
       v72 = [CRCameraReader platformImageFromCIImage:?];
-      v216 = [(CRCameraReaderOutput *)v37 objectInternal];
-      [v216 setImageValue:v72];
+      objectInternal7 = [(CRCameraReaderOutput *)v37 objectInternal];
+      [objectInternal7 setImageValue:v72];
 
-      v217 = [(CRCameraReaderOutput *)v37 objectInternal];
-      [v217 setVertices:v9];
+      objectInternal8 = [(CRCameraReaderOutput *)v37 objectInternal];
+      [objectInternal8 setVertices:array];
 
-      v218 = [(CRCameraReaderOutput *)v37 objectInternal];
-      [v218 setTargetVertices:rect_16];
+      objectInternal9 = [(CRCameraReaderOutput *)v37 objectInternal];
+      [objectInternal9 setTargetVertices:rect_16];
 
-      v219 = [(CRCameraReaderOutput *)v37 objectInternal];
-      [v219 setCapturePath:v251];
+      objectInternal10 = [(CRCameraReaderOutput *)v37 objectInternal];
+      [objectInternal10 setCapturePath:v251];
 
       if ([v249 containsObject:@"CROutputTypeIDCardFront"])
       {
-        v220 = [(CRCameraReaderOutput *)v37 objectInternal];
-        [v220 setType:@"CROutputTypeIDCardFront"];
+        objectInternal11 = [(CRCameraReaderOutput *)v37 objectInternal];
+        [objectInternal11 setType:@"CROutputTypeIDCardFront"];
       }
 
       else
       {
-        v220 = [(CRCameraReaderOutput *)v37 objectInternal];
-        [v220 setType:@"CROutputTypeIDCardBack"];
+        objectInternal11 = [(CRCameraReaderOutput *)v37 objectInternal];
+        [objectInternal11 setType:@"CROutputTypeIDCardBack"];
       }
 
       [(CRCameraReader *)self stopSession];
@@ -3623,8 +3623,8 @@ LABEL_42:
       [(CRCameraReader *)self sendDidEndWithInfo:v233];
 
       [(CRCameraReader *)self sendDidEndAnimation];
-      v222 = [(CRCameraReader *)self cardBlurValues];
-      [v222 removeAllObjects];
+      cardBlurValues = [(CRCameraReader *)self cardBlurValues];
+      [cardBlurValues removeAllObjects];
       goto LABEL_71;
     }
 
@@ -3632,20 +3632,20 @@ LABEL_42:
     rect = [MEMORY[0x277CBF748] detectorOfType:*MEMORY[0x277CBF720] context:v212 options:v37];
     v72 = [rect featuresInImage:v22 options:v37];
     v221 = [v22 imageByApplyingOrientation:5];
-    v222 = [rect featuresInImage:v221 options:v37];
+    cardBlurValues = [rect featuresInImage:v221 options:v37];
 
-    if (-[CRCameraReaderOutputIDCard count](v72, "count") > 2 || [v222 count] >= 3)
+    if (-[CRCameraReaderOutputIDCard count](v72, "count") > 2 || [cardBlurValues count] >= 3)
     {
       v223 = CGColorSpaceCreateDeviceRGB();
-      v224 = [(CRCameraReader *)self correctedCardBuffer];
+      correctedCardBuffer3 = [(CRCameraReader *)self correctedCardBuffer];
       v225 = CVPixelBufferGetWidth([(CRCameraReader *)self correctedCardBuffer]);
-      [(CRCameraReaderOutputIDCard *)rect_8 render:v22 toCVPixelBuffer:v224 bounds:v223 colorSpace:0.0, 0.0, v225, CVPixelBufferGetHeight([(CRCameraReader *)self correctedCardBuffer])];
+      [(CRCameraReaderOutputIDCard *)rect_8 render:v22 toCVPixelBuffer:correctedCardBuffer3 bounds:v223 colorSpace:0.0, 0.0, v225, CVPixelBufferGetHeight([(CRCameraReader *)self correctedCardBuffer])];
       CGColorSpaceRelease(v223);
 
 LABEL_62:
       v22 = [MEMORY[0x277CBF758] imageWithCVPixelBuffer:{-[CRCameraReader correctedCardBuffer](self, "correctedCardBuffer")}];
-      v226 = [(CRCameraReader *)self cardBlurValues];
-      v227 = isLeastBlurryFrame(v22, v226, 10);
+      cardBlurValues2 = [(CRCameraReader *)self cardBlurValues];
+      v227 = isLeastBlurryFrame(v22, cardBlurValues2, 10);
 
       if (!v227)
       {
@@ -3658,40 +3658,40 @@ LABEL_74:
       if (v246)
       {
         v228 = [CRCameraReader platformImageFromCIImage:v246];
-        v229 = [(CRCameraReaderOutput *)rect_8 objectInternal];
-        [v229 setUnpaddedImageValue:v228];
+        objectInternal12 = [(CRCameraReaderOutput *)rect_8 objectInternal];
+        [objectInternal12 setUnpaddedImageValue:v228];
       }
 
       v37 = [CRCameraReader platformImageFromCIImage:v22];
-      v230 = [(CRCameraReaderOutput *)rect_8 objectInternal];
-      [v230 setImageValue:v37];
+      objectInternal13 = [(CRCameraReaderOutput *)rect_8 objectInternal];
+      [objectInternal13 setImageValue:v37];
 
       if ([v249 containsObject:@"CROutputTypeIDCardFront"])
       {
-        v231 = [(CRCameraReaderOutput *)rect_8 objectInternal];
-        [v231 setType:@"CROutputTypeIDCardFront"];
+        objectInternal14 = [(CRCameraReaderOutput *)rect_8 objectInternal];
+        [objectInternal14 setType:@"CROutputTypeIDCardFront"];
       }
 
       else
       {
-        v231 = [(CRCameraReaderOutput *)rect_8 objectInternal];
-        [v231 setType:@"CROutputTypeIDCardBack"];
+        objectInternal14 = [(CRCameraReaderOutput *)rect_8 objectInternal];
+        [objectInternal14 setType:@"CROutputTypeIDCardBack"];
       }
 
-      v235 = [(CRCameraReaderOutput *)rect_8 objectInternal];
-      [v235 setVertices:v9];
+      objectInternal15 = [(CRCameraReaderOutput *)rect_8 objectInternal];
+      [objectInternal15 setVertices:array];
 
-      v236 = [(CRCameraReaderOutput *)rect_8 objectInternal];
-      [v236 setTargetVertices:rect_16];
+      objectInternal16 = [(CRCameraReaderOutput *)rect_8 objectInternal];
+      [objectInternal16 setTargetVertices:rect_16];
 
-      v237 = [(CRCameraReaderOutput *)rect_8 objectInternal];
-      [v237 setCapturePath:v251];
+      objectInternal17 = [(CRCameraReaderOutput *)rect_8 objectInternal];
+      [objectInternal17 setCapturePath:v251];
 
-      v238 = [(CRCameraReader *)self callbackDelegate];
+      callbackDelegate5 = [(CRCameraReader *)self callbackDelegate];
       if (objc_opt_respondsToSelector())
       {
-        v239 = [(CRCameraReader *)self callbackDelegate];
-        v240 = [v239 cameraReader:self shouldReturnIDImage:rect_8];
+        callbackDelegate6 = [(CRCameraReader *)self callbackDelegate];
+        v240 = [callbackDelegate6 cameraReader:self shouldReturnIDImage:rect_8];
 
         if (!v240)
         {
@@ -3709,8 +3709,8 @@ LABEL_74:
       [(CRCameraReader *)self sendDidEndWithInfo:v241];
 
       [(CRCameraReader *)self sendDidEndAnimation];
-      v234 = [(CRCameraReader *)self cardBlurValues];
-      [v234 removeAllObjects];
+      cardBlurValues3 = [(CRCameraReader *)self cardBlurValues];
+      [cardBlurValues3 removeAllObjects];
 LABEL_72:
 
 LABEL_73:
@@ -3719,40 +3719,40 @@ LABEL_73:
 
 LABEL_71:
 
-    v234 = rect;
+    cardBlurValues3 = rect;
     goto LABEL_72;
   }
 
 LABEL_75:
 }
 
-- (void)findObjects:(id)a3 inPixelBuffer:(__CVBuffer *)a4 cameraIntrinsicData:(id)a5 frameTime:(id *)a6
+- (void)findObjects:(id)objects inPixelBuffer:(__CVBuffer *)buffer cameraIntrinsicData:(id)data frameTime:(id *)time
 {
   v425 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v332 = v10;
-  v333 = a5;
-  pixelBuffer = a4;
-  CVPixelBufferRetain(a4);
-  v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v12 = [v11 BOOLForKey:@"com.apple.CoreRecognition.disable_fixedbox"];
+  objectsCopy = objects;
+  v332 = objectsCopy;
+  dataCopy = data;
+  pixelBuffer = buffer;
+  CVPixelBufferRetain(buffer);
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v12 = [standardUserDefaults BOOLForKey:@"com.apple.CoreRecognition.disable_fixedbox"];
 
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  LODWORD(v363) = [v13 BOOLForKey:@"com.apple.CoreRecognition.disable_freeformbox"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  LODWORD(v363) = [standardUserDefaults2 BOOLForKey:@"com.apple.CoreRecognition.disable_freeformbox"];
 
-  v340 = [MEMORY[0x277CBEB38] dictionary];
-  v335 = [MEMORY[0x277CBEB98] setWithArray:v10];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v335 = [MEMORY[0x277CBEB98] setWithArray:objectsCopy];
   [(CRCameraReader *)self updatePinnedInfoFrameIndex];
   v334 = [MEMORY[0x277CBEB18] arrayWithObject:@"CROutputTypeCreditCardNumber"];
-  v14 = [(CRCameraReader *)self pinnedFoundInfo];
-  v15 = [v14 objectForKey:?];
+  pinnedFoundInfo = [(CRCameraReader *)self pinnedFoundInfo];
+  v15 = [pinnedFoundInfo objectForKey:?];
 
-  v16 = [(CRCameraReader *)self nameCutRects];
+  nameCutRects = [(CRCameraReader *)self nameCutRects];
   v357 = v12;
-  if ([v16 count])
+  if ([nameCutRects count])
   {
-    v17 = [(CRCameraReader *)self nameCutRects];
-    v18 = [v17 count] == 8;
+    nameCutRects2 = [(CRCameraReader *)self nameCutRects];
+    v18 = [nameCutRects2 count] == 8;
   }
 
   else
@@ -3760,11 +3760,11 @@ LABEL_75:
     v18 = 1;
   }
 
-  v19 = [(CRCameraReader *)self dateCutRects];
-  if ([v19 count])
+  dateCutRects = [(CRCameraReader *)self dateCutRects];
+  if ([dateCutRects count])
   {
-    v20 = [(CRCameraReader *)self dateCutRects];
-    v21 = [v20 count] == 8;
+    dateCutRects2 = [(CRCameraReader *)self dateCutRects];
+    v21 = [dateCutRects2 count] == 8;
   }
 
   else
@@ -3772,16 +3772,16 @@ LABEL_75:
     v21 = 1;
   }
 
-  v22 = [(CRCameraReader *)self pinnedFoundInfo];
-  v23 = [v22 objectForKey:?];
+  pinnedFoundInfo2 = [(CRCameraReader *)self pinnedFoundInfo];
+  v23 = [pinnedFoundInfo2 objectForKey:?];
 
-  v24 = [(CRCameraReader *)self cardNumberCounts];
-  v25 = [v24 count];
+  cardNumberCounts = [(CRCameraReader *)self cardNumberCounts];
+  v25 = [cardNumberCounts count];
 
   if (v25)
   {
-    v26 = [(CRCameraReader *)self pinnedFoundInfo];
-    v27 = [v26 objectForKey:@"code"];
+    pinnedFoundInfo3 = [(CRCameraReader *)self pinnedFoundInfo];
+    v27 = [pinnedFoundInfo3 objectForKey:@"code"];
 
     if (v27)
     {
@@ -3810,7 +3810,7 @@ LABEL_16:
 
   else
   {
-    [v334 addObjectsFromArray:v10];
+    [v334 addObjectsFromArray:objectsCopy];
   }
 
 LABEL_22:
@@ -3827,7 +3827,7 @@ LABEL_22:
     v31 = 0;
   }
 
-  v32 = [objc_opt_class() extractCardImage:v28 fromPixelBuffer:pixelBuffer withCardBuffer:-[CRCameraReader correctedCardBuffer](self withPoints:"correctedCardBuffer") cameraIntrinsicData:{v31, v333}];
+  v32 = [objc_opt_class() extractCardImage:v28 fromPixelBuffer:pixelBuffer withCardBuffer:-[CRCameraReader correctedCardBuffer](self withPoints:"correctedCardBuffer") cameraIntrinsicData:{v31, dataCopy}];
 
   v33 = +[CRInsights sharedInsights];
   v339 = v32;
@@ -3874,7 +3874,7 @@ LABEL_22:
   {
   }
 
-  v366 = self;
+  selfCopy = self;
 
   v40 = +[CRInsights sharedInsights];
   if (v40)
@@ -3897,12 +3897,12 @@ LABEL_22:
   }
 
   v43 = v42;
-  v44 = [(__CFString *)v42 BOOLValue];
+  bOOLValue = [(__CFString *)v42 BOOLValue];
   if (v40)
   {
   }
 
-  if (v44)
+  if (bOOLValue)
   {
     v45 = +[CRInsights sharedInsights];
     obj = @"CRInsightsContextImagePath";
@@ -3911,16 +3911,16 @@ LABEL_22:
     v46 = +[CRInsights sharedInsights];
     [v46 setContextValue:@"CRInsightsContextImageOrientationLandscape" forKey:@"CRInsightsContextImageOrientation"];
 
-    time = *a6;
+    time = *time;
     [(CRCameraReader *)self setPointsFound:&time];
-    [v340 setValue:v339 forKey:@"boxPoints"];
+    [dictionary setValue:v339 forKey:@"boxPoints"];
     v47 = +[CRInsights sharedInsights];
     [v47 provideInsightValue:v339 forKey:@"boxPoints"];
 
     v48 = +[CRInsights sharedInsights];
     [v48 provideInsightValue:v36 forKey:@"CRInsightsCardImageFreeformLandscape"];
 
-    time = *a6;
+    time = *time;
     [(CRCameraReader *)self sendDidFindTarget:v339 frameTime:&time];
     v49 = +[CRInsights sharedInsights];
     if (v49)
@@ -3935,18 +3935,18 @@ LABEL_22:
       v50 = v51;
     }
 
-    v52 = [v51 BOOLValue];
+    bOOLValue2 = [v51 BOOLValue];
     if (v49)
     {
     }
 
-    if (v52)
+    if (bOOLValue2)
     {
       v53 = [(CRCameraReader *)self findObjectsEmbossed:v334 inImage:v336];
       v54 = +[CRInsights sharedInsights];
       [v54 provideInsightValue:v53 forKey:@"CRInsightsEmbossedResultsFreeformLandscape"];
 
-      [(CRCameraReader *)self mergeInfo:v53 intoFindInfo:v340];
+      [(CRCameraReader *)self mergeInfo:v53 intoFindInfo:dictionary];
     }
 
     v354 = +[CRInsights sharedInsights];
@@ -3979,7 +3979,7 @@ LABEL_22:
       v58 = +[CRInsights sharedInsights];
       [v58 provideInsightValue:v57 forKey:@"CRInsightsTextDetectorResultsFreeformLandscape"];
 
-      [(CRCameraReader *)self mergeInfo:v57 intoFindInfo:v340];
+      [(CRCameraReader *)self mergeInfo:v57 intoFindInfo:dictionary];
     }
 
     v59 = +[CRInsights sharedInsights];
@@ -3991,20 +3991,20 @@ LABEL_22:
       v411[2] = __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTime___block_invoke_5;
       v411[3] = &unk_278EAA7E0;
       v343 = &v412;
-      v412 = v340;
+      v412 = dictionary;
       v61 = [v60 allowOverrideWithKey:@"kCROverrideShouldRunPortraitFlatPrintedPath" forResultFromBlock:v411];
     }
 
     else
     {
       v62 = MEMORY[0x277CCABB0];
-      v60 = [v340 objectForKey:@"code"];
+      v60 = [dictionary objectForKey:@"code"];
       v61 = [v62 numberWithBool:v60 == 0];
     }
 
-    v63 = [v61 BOOLValue];
+    bOOLValue3 = [v61 BOOLValue];
 
-    if (v63)
+    if (bOOLValue3)
     {
       v64 = +[CRInsights sharedInsights];
       [v64 setContextValue:@"CRInsightsContextImageOrientationPortrait" forKey:@"CRInsightsContextImageOrientation"];
@@ -4012,40 +4012,40 @@ LABEL_22:
       v65 = +[CRInsights sharedInsights];
       if (v65)
       {
-        v66 = +[CRInsights sharedInsights];
-        v67 = [v336 imageByRotating90CW];
-        v68 = [v66 allowOverrideWithKey:@"CRInsightsCardImageFreeformPortrait" forValue:v67];
+        imageByRotating90CW2 = +[CRInsights sharedInsights];
+        imageByRotating90CW = [v336 imageByRotating90CW];
+        v68 = [imageByRotating90CW2 allowOverrideWithKey:@"CRInsightsCardImageFreeformPortrait" forValue:imageByRotating90CW];
       }
 
       else
       {
-        v66 = [v336 imageByRotating90CW];
-        v68 = v66;
+        imageByRotating90CW2 = [v336 imageByRotating90CW];
+        v68 = imageByRotating90CW2;
       }
 
       v69 = +[CRInsights sharedInsights];
       [v69 provideInsightValue:v68 forKey:@"CRInsightsCardImageFreeformPortrait"];
 
       v70 = +[CRInsights sharedInsights];
-      v6 = self;
+      selfCopy2 = self;
       if (v70)
       {
-        v71 = +[CRInsights sharedInsights];
+        ciImage = +[CRInsights sharedInsights];
         v409[0] = MEMORY[0x277D85DD0];
         v409[1] = 3221225472;
         v409[2] = __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTime___block_invoke_6;
         v409[3] = &unk_278EAA7B8;
-        v409[4] = v366;
+        v409[4] = selfCopy;
         v410 = v68;
-        v72 = [v71 allowOverrideWithKey:@"kCROverrideRegionsFreeformPortrait" forResultFromBlock:v409];
+        v72 = [ciImage allowOverrideWithKey:@"kCROverrideRegionsFreeformPortrait" forResultFromBlock:v409];
         v341 = &v410;
       }
 
       else
       {
         v73 = objc_opt_class();
-        v71 = [v68 ciImage];
-        v72 = [v73 targetRectsForImage:v71];
+        ciImage = [v68 ciImage];
+        v72 = [v73 targetRectsForImage:ciImage];
       }
 
       v74 = v72;
@@ -4055,12 +4055,12 @@ LABEL_22:
 
       if ([v74 count])
       {
-        v76 = [(CRCameraReader *)v366 findObjectsFlat:v332 inImage:v68 numberRects:v74 invert:0];
-        [(CRCameraReader *)v366 mergeInfo:v76 intoFindInfo:v340];
+        v76 = [(CRCameraReader *)selfCopy findObjectsFlat:v332 inImage:v68 numberRects:v74 invert:0];
+        [(CRCameraReader *)selfCopy mergeInfo:v76 intoFindInfo:dictionary];
         v77 = +[CRInsights sharedInsights];
         [v77 provideInsightValue:v76 forKey:@"CRInsightsTextDetectorResultsFreeformPortrait"];
 
-        v78 = [v340 objectForKey:@"code"];
+        v78 = [dictionary objectForKey:@"code"];
         LODWORD(v77) = v78 == 0;
 
         if (v77)
@@ -4068,9 +4068,9 @@ LABEL_22:
           v79 = +[CRInsights sharedInsights];
           [v79 setContextValue:@"CRInsightsContextImageOrientationPortraitInverted" forKey:@"CRInsightsContextImageOrientation"];
 
-          v6 = v366;
-          v80 = [(CRCameraReader *)v366 findObjectsFlat:v332 inImage:v68 numberRects:v74 invert:1];
-          [(CRCameraReader *)v366 mergeInfo:v80 intoFindInfo:v340];
+          selfCopy2 = selfCopy;
+          v80 = [(CRCameraReader *)selfCopy findObjectsFlat:v332 inImage:v68 numberRects:v74 invert:1];
+          [(CRCameraReader *)selfCopy mergeInfo:v80 intoFindInfo:dictionary];
         }
       }
 
@@ -4108,7 +4108,7 @@ LABEL_22:
     v406[2] = __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTime___block_invoke_7;
     v406[3] = &unk_278EAA790;
     v408 = v357;
-    v407 = v340;
+    v407 = dictionary;
     v84 = [v83 allowOverrideWithKey:@"kOverrideShouldRunFixedCutPath" forResultFromBlock:v406];
     v85 = 0;
     v360 = &v407;
@@ -4124,7 +4124,7 @@ LABEL_22:
 
     else
     {
-      v41 = [v340 objectForKey:@"code"];
+      v41 = [dictionary objectForKey:@"code"];
       v87 = v41 == 0;
     }
 
@@ -4133,7 +4133,7 @@ LABEL_22:
     v83 = v84;
   }
 
-  v88 = [v84 BOOLValue];
+  bOOLValue4 = [v84 BOOLValue];
   if (v82)
   {
   }
@@ -4142,7 +4142,7 @@ LABEL_22:
   {
   }
 
-  if (v88)
+  if (bOOLValue4)
   {
     v89 = +[CRInsights sharedInsights];
     [v89 setContextValue:@"CRInsightsContextImagePathFixedCut" forKey:@"CRInsightsContextImagePath"];
@@ -4150,15 +4150,15 @@ LABEL_22:
     v90 = +[CRInsights sharedInsights];
     [v90 setContextValue:@"CRInsightsContextImageOrientationLandscape" forKey:@"CRInsightsContextImageOrientation"];
 
-    v91 = [(CRCameraReader *)v366 sessionManager];
-    v92 = [(CRCameraReader *)v366 alignmentLayer];
-    [v92 alignmentRect];
+    sessionManager = [(CRCameraReader *)selfCopy sessionManager];
+    alignmentLayer = [(CRCameraReader *)selfCopy alignmentLayer];
+    [alignmentLayer alignmentRect];
     v94 = v93;
     v96 = v95;
     v98 = v97;
     v100 = v99;
-    v101 = [(CRCameraReader *)v366 alignmentLayer];
-    [v91 convertCameraRect:v101 fromLayer:{v94, v96, v98, v100}];
+    alignmentLayer2 = [(CRCameraReader *)selfCopy alignmentLayer];
+    [sessionManager convertCameraRect:alignmentLayer2 fromLayer:{v94, v96, v98, v100}];
     v103 = v102;
     v105 = v104;
     v107 = v106;
@@ -4181,9 +4181,9 @@ LABEL_22:
       v358 = [v352 imageByCroppingRectangle:{x, y, width, height}];
       if (height > width)
       {
-        v116 = [v358 imageByRotating90CW];
+        imageByRotating90CW3 = [v358 imageByRotating90CW];
 
-        v358 = v116;
+        v358 = imageByRotating90CW3;
       }
 
       v117 = +[CRInsights sharedInsights];
@@ -4192,22 +4192,22 @@ LABEL_22:
       v355 = +[CRInsights sharedInsights];
       if (v355)
       {
-        v118 = +[CRInsights sharedInsights];
+        ciImage2 = +[CRInsights sharedInsights];
         v404[0] = MEMORY[0x277D85DD0];
         v404[1] = 3221225472;
         v404[2] = __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTime___block_invoke_8;
         v404[3] = &unk_278EAA7B8;
-        v404[4] = v366;
+        v404[4] = selfCopy;
         v405 = v358;
-        v119 = [v118 allowOverrideWithKey:@"kCROverrideRegionsFixedCutLandscape" forResultFromBlock:v404];
+        v119 = [ciImage2 allowOverrideWithKey:@"kCROverrideRegionsFixedCutLandscape" forResultFromBlock:v404];
         obj = &v405;
       }
 
       else
       {
         v120 = objc_opt_class();
-        v118 = [v358 ciImage];
-        v119 = [v120 targetRectsForImage:v118];
+        ciImage2 = [v358 ciImage];
+        v119 = [v120 targetRectsForImage:ciImage2];
       }
 
       v121 = v119;
@@ -4217,11 +4217,11 @@ LABEL_22:
 
       if ([v121 count])
       {
-        v123 = [(CRCameraReader *)v366 findObjectsFlat:v332 inImage:v358 numberRects:v121 invert:0];
+        v123 = [(CRCameraReader *)selfCopy findObjectsFlat:v332 inImage:v358 numberRects:v121 invert:0];
         v124 = +[CRInsights sharedInsights];
         [v124 provideInsightValue:v123 forKey:@"CRInsightsTextDetectorResultsFixedCutLandscape"];
 
-        [(CRCameraReader *)v366 mergeInfo:v123 intoFindInfo:v340];
+        [(CRCameraReader *)selfCopy mergeInfo:v123 intoFindInfo:dictionary];
       }
 
       v125 = +[CRInsights sharedInsights];
@@ -4232,27 +4232,27 @@ LABEL_22:
         v402[1] = 3221225472;
         v402[2] = __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTime___block_invoke_9;
         v402[3] = &unk_278EAA7E0;
-        v6 = &v403;
-        v403 = v340;
+        selfCopy2 = &v403;
+        v403 = dictionary;
         v127 = [v126 allowOverrideWithKey:@"kCROverrideShouldRunEmbossedPath" forResultFromBlock:v402];
       }
 
       else
       {
         v128 = MEMORY[0x277CCABB0];
-        v126 = [v340 objectForKey:@"code"];
+        v126 = [dictionary objectForKey:@"code"];
         v127 = [v128 numberWithBool:v126 == 0];
       }
 
-      v129 = [v127 BOOLValue];
+      bOOLValue5 = [v127 BOOLValue];
 
-      if (v129)
+      if (bOOLValue5)
       {
-        v130 = [(CRCameraReader *)v366 findObjectsEmbossed:v334 inImage:v358];
+        v130 = [(CRCameraReader *)selfCopy findObjectsEmbossed:v334 inImage:v358];
         v131 = +[CRInsights sharedInsights];
         [v131 provideInsightValue:v130 forKey:@"CRInsightsEmbossedResultsFixedCutLandscape"];
 
-        [(CRCameraReader *)v366 mergeInfo:v130 intoFindInfo:v340];
+        [(CRCameraReader *)selfCopy mergeInfo:v130 intoFindInfo:dictionary];
       }
 
       if (v125)
@@ -4286,7 +4286,7 @@ LABEL_22:
     v398[2] = __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTime___block_invoke_10;
     v398[3] = &unk_278EAA808;
     v360 = &v399;
-    v399 = v340;
+    v399 = dictionary;
     v401 = v363;
     v363 = &v400;
     v400 = v339;
@@ -4296,7 +4296,7 @@ LABEL_22:
   else
   {
     v137 = MEMORY[0x277CCABB0];
-    v135 = [v340 objectForKey:@"accepted"];
+    v135 = [dictionary objectForKey:@"accepted"];
     if ([v135 BOOLValue])
     {
       v138 = 0;
@@ -4310,9 +4310,9 @@ LABEL_22:
     v136 = [v137 numberWithBool:v138];
   }
 
-  v139 = [v136 BOOLValue];
+  bOOLValue6 = [v136 BOOLValue];
 
-  if (v139)
+  if (bOOLValue6)
   {
     v140 = +[CRInsights sharedInsights];
     [v140 setContextValue:@"CRInsightsContextImagePathFreeform" forKey:@"CRInsightsContextImagePath"];
@@ -4320,7 +4320,7 @@ LABEL_22:
     v141 = +[CRInsights sharedInsights];
     [v141 setContextValue:@"CRInsightsContextImageOrientationLandscapeInverted" forKey:@"CRInsightsContextImageOrientation"];
 
-    v142 = [v336 imageByRotating180];
+    imageByRotating180 = [v336 imageByRotating180];
     v143 = +[CRInsights sharedInsights];
     if (v143)
     {
@@ -4334,17 +4334,17 @@ LABEL_22:
       v144 = v145;
     }
 
-    v146 = [v145 BOOLValue];
+    bOOLValue7 = [v145 BOOLValue];
     if (v143)
     {
     }
 
-    if (v146)
+    if (bOOLValue7)
     {
       v147 = +[CRInsights sharedInsights];
-      [v147 provideInsightValue:v142 forKey:@"CRInsightsCardImageFreeformLandscapeInverted"];
+      [v147 provideInsightValue:imageByRotating180 forKey:@"CRInsightsCardImageFreeformLandscapeInverted"];
 
-      v148 = [(CRCameraReader *)v366 findObjectsEmbossed:v334 inImage:v142];
+      v148 = [(CRCameraReader *)selfCopy findObjectsEmbossed:v334 inImage:imageByRotating180];
       v149 = +[CRInsights sharedInsights];
       [v149 provideInsightValue:v148 forKey:@"CRInsightsEmbossedResultsFreeformLandscapeInverted"];
 
@@ -4353,36 +4353,36 @@ LABEL_22:
 
       if ((v149 & 1) == 0)
       {
-        [(CRCameraReader *)v366 mergeInfo:v148 intoFindInfo:v340];
-        [v340 setValue:MEMORY[0x277CBEC38] forKey:@"inverted"];
+        [(CRCameraReader *)selfCopy mergeInfo:v148 intoFindInfo:dictionary];
+        [dictionary setValue:MEMORY[0x277CBEC38] forKey:@"inverted"];
       }
     }
 
-    v151 = [v340 objectForKey:@"code"];
+    v151 = [dictionary objectForKey:@"code"];
     v152 = v151 == 0;
 
     if (v152)
     {
       v153 = +[CRInsights sharedInsights];
-      p_isa = &v366->super.super.super.isa;
+      p_isa = &selfCopy->super.super.super.isa;
       if (v153)
       {
-        v155 = +[CRInsights sharedInsights];
+        ciImage3 = +[CRInsights sharedInsights];
         v396[0] = MEMORY[0x277D85DD0];
         v396[1] = 3221225472;
         v396[2] = __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTime___block_invoke_12;
         v396[3] = &unk_278EAA7B8;
-        v396[4] = v366;
-        v397 = v142;
-        v156 = [v155 allowOverrideWithKey:@"kCROverrideRegionsFreeformLandscapeInverted" forResultFromBlock:v396];
+        v396[4] = selfCopy;
+        v397 = imageByRotating180;
+        v156 = [ciImage3 allowOverrideWithKey:@"kCROverrideRegionsFreeformLandscapeInverted" forResultFromBlock:v396];
         p_isa = &v397;
       }
 
       else
       {
         v157 = objc_opt_class();
-        v155 = [v142 ciImage];
-        v156 = [v157 targetRectsForImage:v155];
+        ciImage3 = [imageByRotating180 ciImage];
+        v156 = [v157 targetRectsForImage:ciImage3];
       }
 
       v158 = v156;
@@ -4392,7 +4392,7 @@ LABEL_22:
 
       if ([v158 count])
       {
-        v160 = [(CRCameraReader *)v366 findObjectsFlat:v332 inImage:v142 numberRects:v158 invert:0];
+        v160 = [(CRCameraReader *)selfCopy findObjectsFlat:v332 inImage:imageByRotating180 numberRects:v158 invert:0];
         v161 = +[CRInsights sharedInsights];
         [v161 provideInsightValue:v160 forKey:@"CRInsightsTextDetectorResultsFreeformLandscapeInverted"];
 
@@ -4401,8 +4401,8 @@ LABEL_22:
 
         if ((v161 & 1) == 0)
         {
-          [(CRCameraReader *)v366 mergeInfo:v160 intoFindInfo:v340];
-          [v340 setValue:MEMORY[0x277CBEC38] forKey:@"inverted"];
+          [(CRCameraReader *)selfCopy mergeInfo:v160 intoFindInfo:dictionary];
+          [dictionary setValue:MEMORY[0x277CBEC38] forKey:@"inverted"];
         }
       }
 
@@ -4422,15 +4422,15 @@ LABEL_22:
   {
   }
 
-  v338 = [v340 objectForKey:@"boxPoints"];
-  v347 = [v340 objectForKey:@"code"];
-  v329 = [v340 objectForKey:@"codeOrigin"];
-  v330 = [v340 objectForKey:@"codeFragmentOrigins"];
-  v342 = [v340 objectForKey:@"expirationDate"];
-  v165 = [v340 objectForKey:@"accepted"];
-  v328 = [v165 BOOLValue];
+  v338 = [dictionary objectForKey:@"boxPoints"];
+  v347 = [dictionary objectForKey:@"code"];
+  v329 = [dictionary objectForKey:@"codeOrigin"];
+  v330 = [dictionary objectForKey:@"codeFragmentOrigins"];
+  v342 = [dictionary objectForKey:@"expirationDate"];
+  v165 = [dictionary objectForKey:@"accepted"];
+  bOOLValue8 = [v165 BOOLValue];
 
-  [v340 objectForKey:@"nameResults"];
+  [dictionary objectForKey:@"nameResults"];
   v394 = 0u;
   v395 = 0u;
   v392 = 0u;
@@ -4456,13 +4456,13 @@ LABEL_22:
 
       v361 = *(*(&v392 + 1) + 8 * v359);
       v166 = [v361 objectForKey:@"isValidNameString"];
-      v167 = [v166 BOOLValue];
+      bOOLValue9 = [v166 BOOLValue];
 
-      if (v167)
+      if (bOOLValue9)
       {
         v364 = [v361 objectForKey:@"nameResult"];
         v168 = [v361 objectForKey:@"minMatchDistance"];
-        v169 = [v168 intValue];
+        intValue = [v168 intValue];
 
         v170 = [v361 objectForKey:@"nameAccepted"];
         if ([v170 BOOLValue])
@@ -4475,7 +4475,7 @@ LABEL_22:
         if (v171)
         {
           v172 = [v361 objectForKey:@"closestNameDistance"];
-          v173 = [v172 integerValue] > v169;
+          v173 = [v172 integerValue] > intValue;
 
           if (!v173)
           {
@@ -4491,23 +4491,23 @@ LABEL_150:
 LABEL_151:
         }
 
-        v174 = [(CRCameraReader *)v366 cardholderCounts];
-        v175 = [v174 objectForKey:v364];
+        cardholderCounts = [(CRCameraReader *)selfCopy cardholderCounts];
+        v175 = [cardholderCounts objectForKey:v364];
         v176 = v175 == 0;
 
         if (!v176)
         {
-          v177 = [(CRCameraReader *)v366 cardholderCounts];
-          v178 = [v177 objectForKey:v364];
-          v179 = [v178 intValue];
+          cardholderCounts2 = [(CRCameraReader *)selfCopy cardholderCounts];
+          v178 = [cardholderCounts2 objectForKey:v364];
+          intValue2 = [v178 intValue];
 
           v390 = 0u;
           v391 = 0u;
           v388 = 0u;
           v389 = 0u;
-          v180 = [(CRCameraReader *)v366 cardholderCounts];
-          v181 = [v180 countByEnumeratingWithState:&v388 objects:v423 count:16];
-          v182 = (v179 + 1);
+          cardholderCounts3 = [(CRCameraReader *)selfCopy cardholderCounts];
+          v181 = [cardholderCounts3 countByEnumeratingWithState:&v388 objects:v423 count:16];
+          v182 = (intValue2 + 1);
           if (v181)
           {
             v183 = *v389;
@@ -4517,18 +4517,18 @@ LABEL_151:
               {
                 if (*v389 != v183)
                 {
-                  objc_enumerationMutation(v180);
+                  objc_enumerationMutation(cardholderCounts3);
                 }
 
                 v185 = *(*(&v388 + 1) + 8 * i);
-                v186 = [(CRCameraReader *)v366 cardholderCounts];
-                v187 = [v186 objectForKey:v185];
-                v188 = [v187 intValue];
+                cardholderCounts4 = [(CRCameraReader *)selfCopy cardholderCounts];
+                v187 = [cardholderCounts4 objectForKey:v185];
+                intValue3 = [v187 intValue];
 
-                v189 = v188 == 2 || v182 == 2;
+                v189 = intValue3 == 2 || v182 == 2;
                 if (v189 && [v364 editDistanceFromString:v185] == 1)
                 {
-                  if (v188 == 2)
+                  if (intValue3 == 2)
                   {
                     v193 = v185;
 
@@ -4545,7 +4545,7 @@ LABEL_151:
                 }
               }
 
-              v181 = [v180 countByEnumeratingWithState:&v388 objects:v423 count:16];
+              v181 = [cardholderCounts3 countByEnumeratingWithState:&v388 objects:v423 count:16];
               if (v181)
               {
                 continue;
@@ -4557,23 +4557,23 @@ LABEL_151:
 
 LABEL_178:
 
-          v200 = [(CRCameraReader *)v366 cardholderCounts];
+          cardholderCounts5 = [(CRCameraReader *)selfCopy cardholderCounts];
           v201 = [MEMORY[0x277CCABB0] numberWithInt:v182];
-          [v200 setObject:v201 forKey:v364];
+          [cardholderCounts5 setObject:v201 forKey:v364];
           goto LABEL_179;
         }
 
         v190 = [v361 objectForKey:@"nameAccepted"];
-        v191 = [v190 BOOLValue];
+        bOOLValue10 = [v190 BOOLValue];
 
-        if (v191)
+        if (bOOLValue10)
         {
           v192 = 4;
           goto LABEL_175;
         }
 
         v194 = [v361 objectForKey:@"closestNameDistance"];
-        if (v194 && ([v361 objectForKey:@"closestNameDistance"], v195 = objc_claimAutoreleasedReturnValue(), v196 = objc_msgSend(v195, "integerValue") > v169, v195, v194, v197 = v366, !v196))
+        if (v194 && ([v361 objectForKey:@"closestNameDistance"], v195 = objc_claimAutoreleasedReturnValue(), v196 = objc_msgSend(v195, "integerValue") > intValue, v195, v194, v197 = selfCopy, !v196))
         {
           v192 = 3;
         }
@@ -4581,9 +4581,9 @@ LABEL_178:
         else
         {
           v198 = [v361 objectForKey:@"isNonNameString"];
-          v199 = [v198 BOOLValue];
+          bOOLValue11 = [v198 BOOLValue];
 
-          if (v199)
+          if (bOOLValue11)
           {
             v192 = 4294967294;
           }
@@ -4594,63 +4594,63 @@ LABEL_178:
           }
 
 LABEL_175:
-          v197 = v366;
+          v197 = selfCopy;
         }
 
-        v200 = [(CRCameraReader *)v197 cardholderCounts];
+        cardholderCounts5 = [(CRCameraReader *)v197 cardholderCounts];
         v201 = [MEMORY[0x277CCABB0] numberWithInt:v192];
-        [v200 setObject:v201 forKey:v364];
+        [cardholderCounts5 setObject:v201 forKey:v364];
 LABEL_179:
 
-        v202 = [(CRCameraReader *)v366 cardholderCounts];
-        v203 = [v202 objectForKey:v364];
-        v204 = [v203 intValue];
+        cardholderCounts6 = [(CRCameraReader *)selfCopy cardholderCounts];
+        v203 = [cardholderCounts6 objectForKey:v364];
+        intValue4 = [v203 intValue];
 
-        v205 = [(CRCameraReader *)v366 cardholderCounts];
-        v206 = [MEMORY[0x277CCABB0] numberWithInt:v204];
-        [v205 setObject:v206 forKey:v364];
+        cardholderCounts7 = [(CRCameraReader *)selfCopy cardholderCounts];
+        v206 = [MEMORY[0x277CCABB0] numberWithInt:intValue4];
+        [cardholderCounts7 setObject:v206 forKey:v364];
 
-        v207 = [(CRCameraReader *)v366 pinnedFoundInfo];
-        v208 = [v207 objectForKey:@"cardholderName"];
+        pinnedFoundInfo4 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+        v208 = [pinnedFoundInfo4 objectForKey:@"cardholderName"];
 
         if (v208)
         {
-          v209 = [(CRCameraReader *)v366 cardholderCounts];
-          v210 = [v209 objectForKey:v208];
-          v211 = [v210 intValue];
+          cardholderCounts8 = [(CRCameraReader *)selfCopy cardholderCounts];
+          v210 = [cardholderCounts8 objectForKey:v208];
+          intValue5 = [v210 intValue];
         }
 
         else
         {
-          v211 = 0;
+          intValue5 = 0;
         }
 
-        if (v347 && v204 >= 3 && v204 > v211)
+        if (v347 && intValue4 >= 3 && intValue4 > intValue5)
         {
-          v212 = [(CRCameraReader *)v366 pinnedFoundInfo];
-          v213 = [v212 objectForKey:@"cardholderName"];
+          pinnedFoundInfo5 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+          v213 = [pinnedFoundInfo5 objectForKey:@"cardholderName"];
           v214 = [v213 isEqualToString:v364];
 
           if ((v214 & 1) == 0)
           {
-            time = *a6;
-            [(CRCameraReader *)v366 setLastFieldFoundTime:&time];
+            time = *time;
+            [(CRCameraReader *)selfCopy setLastFieldFoundTime:&time];
             v344 = 1;
           }
 
-          v215 = [(CRCameraReader *)v366 pinnedFoundInfo];
-          [v215 setObject:v364 forKey:@"cardholderName"];
+          pinnedFoundInfo6 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+          [pinnedFoundInfo6 setObject:v364 forKey:@"cardholderName"];
 
-          [(CRCameraReader *)v366 setFirstTimeFrameIndexForPinnedField:@"cardholderName"];
-          v216 = [(CRCameraReader *)v366 pinnedFoundInfo];
-          v217 = [v216 objectForKey:@"nameOrigin"];
+          [(CRCameraReader *)selfCopy setFirstTimeFrameIndexForPinnedField:@"cardholderName"];
+          pinnedFoundInfo7 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+          v217 = [pinnedFoundInfo7 objectForKey:@"nameOrigin"];
           v218 = v217 == 0;
 
           if (v218)
           {
-            v219 = [(CRCameraReader *)v366 pinnedFoundInfo];
+            pinnedFoundInfo8 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
             v220 = [v361 objectForKey:@"nameOrigin"];
-            [v219 setObject:v220 forKey:@"nameOrigin"];
+            [pinnedFoundInfo8 setObject:v220 forKey:@"nameOrigin"];
           }
         }
       }
@@ -4668,17 +4668,17 @@ LABEL_196:
 
   if (v347)
   {
-    v222 = [(CRCameraReader *)v366 cardNumberCounts];
-    v223 = [v222 objectForKey:v347];
-    v224 = [v223 intValue];
+    cardNumberCounts2 = [(CRCameraReader *)selfCopy cardNumberCounts];
+    v223 = [cardNumberCounts2 objectForKey:v347];
+    intValue6 = [v223 intValue];
 
     v225 = [v347 stringByReplacingOccurrencesOfString:@" " withString:&stru_2859636D0];
     v365 = [v225 length];
 
-    v226 = [(CRCameraReader *)v366 cardNumberCounts];
-    v362 = v224 + 1;
+    cardNumberCounts3 = [(CRCameraReader *)selfCopy cardNumberCounts];
+    v362 = intValue6 + 1;
     v227 = [MEMORY[0x277CCABB0] numberWithInt:?];
-    [v226 setObject:v227 forKey:v347];
+    [cardNumberCounts3 setObject:v227 forKey:v347];
 
     if ((v365 & 0xFFFFFFFFFFFFFFFDLL) == 0x11)
     {
@@ -4686,10 +4686,10 @@ LABEL_196:
       v387 = 0u;
       v384 = 0u;
       v385 = 0u;
-      v228 = [(CRCameraReader *)v366 cardNumberCounts];
-      v229 = [v228 allKeys];
+      cardNumberCounts4 = [(CRCameraReader *)selfCopy cardNumberCounts];
+      allKeys = [cardNumberCounts4 allKeys];
 
-      v230 = [v229 countByEnumeratingWithState:&v384 objects:v422 count:16];
+      v230 = [allKeys countByEnumeratingWithState:&v384 objects:v422 count:16];
       if (v230)
       {
         v231 = *v385;
@@ -4699,7 +4699,7 @@ LABEL_196:
           {
             if (*v385 != v231)
             {
-              objc_enumerationMutation(v229);
+              objc_enumerationMutation(allKeys);
             }
 
             v233 = *(*(&v384 + 1) + 8 * j);
@@ -4708,13 +4708,13 @@ LABEL_196:
 
             if (v235 <= 12)
             {
-              v236 = [(CRCameraReader *)v366 cardNumberCounts];
+              cardNumberCounts5 = [(CRCameraReader *)selfCopy cardNumberCounts];
               v237 = [MEMORY[0x277CCABB0] numberWithInt:0];
-              [v236 setObject:v237 forKey:v233];
+              [cardNumberCounts5 setObject:v237 forKey:v233];
             }
           }
 
-          v230 = [v229 countByEnumeratingWithState:&v384 objects:v422 count:16];
+          v230 = [allKeys countByEnumeratingWithState:&v384 objects:v422 count:16];
         }
 
         while (v230);
@@ -4728,20 +4728,20 @@ LABEL_196:
     v365 = 0;
   }
 
-  v238 = v366;
+  v238 = selfCopy;
   if (v342)
   {
-    v239 = [(CRCameraReader *)v366 expirationDateCounts];
-    v240 = [v239 objectForKey:v342];
-    v241 = [v240 intValue];
+    expirationDateCounts = [(CRCameraReader *)selfCopy expirationDateCounts];
+    v240 = [expirationDateCounts objectForKey:v342];
+    intValue7 = [v240 intValue];
 
     v382 = 0u;
     v383 = 0u;
     v380 = 0u;
     v381 = 0u;
-    v242 = [(CRCameraReader *)v366 expirationDateCounts];
-    v243 = [v242 countByEnumeratingWithState:&v380 objects:v421 count:16];
-    v244 = (v241 + 1);
+    expirationDateCounts2 = [(CRCameraReader *)selfCopy expirationDateCounts];
+    v243 = [expirationDateCounts2 countByEnumeratingWithState:&v380 objects:v421 count:16];
+    v244 = (intValue7 + 1);
     if (v243)
     {
       v245 = *v381;
@@ -4751,18 +4751,18 @@ LABEL_196:
         {
           if (*v381 != v245)
           {
-            objc_enumerationMutation(v242);
+            objc_enumerationMutation(expirationDateCounts2);
           }
 
           v247 = *(*(&v380 + 1) + 8 * k);
-          v248 = [(CRCameraReader *)v366 expirationDateCounts];
-          v249 = [v248 objectForKey:v247];
-          v250 = [v249 intValue];
+          expirationDateCounts3 = [(CRCameraReader *)selfCopy expirationDateCounts];
+          v249 = [expirationDateCounts3 objectForKey:v247];
+          intValue8 = [v249 intValue];
 
-          v251 = v250 == 2 || v244 == 2;
+          v251 = intValue8 == 2 || v244 == 2;
           if (v251 && [v342 editDistanceFromString:v247] == 1)
           {
-            if (v250 == 2)
+            if (intValue8 == 2)
             {
               v253 = v247;
 
@@ -4779,7 +4779,7 @@ LABEL_196:
           }
         }
 
-        v243 = [v242 countByEnumeratingWithState:&v380 objects:v421 count:16];
+        v243 = [expirationDateCounts2 countByEnumeratingWithState:&v380 objects:v421 count:16];
         if (v243)
         {
           continue;
@@ -4791,12 +4791,12 @@ LABEL_196:
 
 LABEL_227:
 
-    v254 = [(CRCameraReader *)v366 expirationDateCounts];
+    expirationDateCounts4 = [(CRCameraReader *)selfCopy expirationDateCounts];
     v255 = [MEMORY[0x277CCABB0] numberWithInt:v244];
-    [v254 setObject:v255 forKey:v342];
+    [expirationDateCounts4 setObject:v255 forKey:v342];
 
     v252 = v244 < 2;
-    v238 = v366;
+    v238 = selfCopy;
   }
 
   else
@@ -4813,17 +4813,17 @@ LABEL_227:
     goto LABEL_245;
   }
 
-  v257 = [(CRCameraReader *)v238 pinnedFoundInfo];
-  v258 = [v257 objectForKey:@"code"];
+  pinnedFoundInfo9 = [(CRCameraReader *)v238 pinnedFoundInfo];
+  v258 = [pinnedFoundInfo9 objectForKey:@"code"];
 
   if (v258)
   {
-    v259 = [(CRCameraReader *)v366 cardNumberCounts];
-    v260 = [v259 objectForKey:v258];
-    v261 = [v260 intValue];
+    cardNumberCounts6 = [(CRCameraReader *)selfCopy cardNumberCounts];
+    v260 = [cardNumberCounts6 objectForKey:v258];
+    intValue9 = [v260 intValue];
 
     v262 = [v258 isEqualToString:v347];
-    if (v362 <= v261)
+    if (v362 <= intValue9)
     {
       v263 = 1;
     }
@@ -4835,37 +4835,37 @@ LABEL_227:
 
     if ((v263 & 1) == 0)
     {
-      time = *a6;
-      [(CRCameraReader *)v366 setLastFieldFoundTime:&time];
-      v264 = [(CRCameraReader *)v366 pinnedFoundInfo];
-      [v264 setObject:v347 forKey:@"code"];
+      time = *time;
+      [(CRCameraReader *)selfCopy setLastFieldFoundTime:&time];
+      pinnedFoundInfo10 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+      [pinnedFoundInfo10 setObject:v347 forKey:@"code"];
       goto LABEL_243;
     }
   }
 
   else
   {
-    time = *a6;
-    [(CRCameraReader *)v366 setLastFieldFoundTime:&time];
-    v265 = [(CRCameraReader *)v366 pinnedFoundInfo];
-    [v265 setObject:v347 forKey:@"code"];
+    time = *time;
+    [(CRCameraReader *)selfCopy setLastFieldFoundTime:&time];
+    pinnedFoundInfo11 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+    [pinnedFoundInfo11 setObject:v347 forKey:@"code"];
 
-    [(CRCameraReader *)v366 setFirstTimeFrameIndexForPinnedField:@"code"];
-    v266 = [(CRCameraReader *)v366 pinnedFoundInfo];
-    [v266 setObject:v329 forKey:@"codeOrigin"];
+    [(CRCameraReader *)selfCopy setFirstTimeFrameIndexForPinnedField:@"code"];
+    pinnedFoundInfo12 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+    [pinnedFoundInfo12 setObject:v329 forKey:@"codeOrigin"];
 
     if (v330)
     {
-      v267 = [(CRCameraReader *)v366 pinnedFoundInfo];
-      [v267 setObject:v330 forKey:@"codeFragmentOrigins"];
+      pinnedFoundInfo13 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+      [pinnedFoundInfo13 setObject:v330 forKey:@"codeFragmentOrigins"];
     }
 
-    v268 = [v340 objectForKey:@"isPortrait"];
-    v269 = [v268 BOOLValue];
+    v268 = [dictionary objectForKey:@"isPortrait"];
+    bOOLValue12 = [v268 BOOLValue];
 
-    v264 = [(CRCameraReader *)v366 pinnedFoundInfo];
-    v270 = [MEMORY[0x277CCABB0] numberWithBool:v269];
-    [v264 setObject:v270 forKey:@"isPortrait"];
+    pinnedFoundInfo10 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+    v270 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue12];
+    [pinnedFoundInfo10 setObject:v270 forKey:@"isPortrait"];
 
 LABEL_243:
     v344 = 1;
@@ -4875,94 +4875,94 @@ LABEL_243:
   {
 LABEL_245:
 
-    v271 = v366;
+    v271 = selfCopy;
     goto LABEL_246;
   }
 
-  v295 = [(CRCameraReader *)v366 pinnedFoundInfo];
-  v296 = [v295 objectForKey:@"expirationDate"];
+  pinnedFoundInfo14 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+  v296 = [pinnedFoundInfo14 objectForKey:@"expirationDate"];
   v297 = [v296 isEqualToString:v342];
 
   if ((v297 & 1) == 0)
   {
-    time = *a6;
-    [(CRCameraReader *)v366 setLastFieldFoundTime:&time];
+    time = *time;
+    [(CRCameraReader *)selfCopy setLastFieldFoundTime:&time];
     v344 = 1;
   }
 
-  v298 = [(CRCameraReader *)v366 pinnedFoundInfo];
-  [v298 setObject:v342 forKey:@"expirationDate"];
+  pinnedFoundInfo15 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+  [pinnedFoundInfo15 setObject:v342 forKey:@"expirationDate"];
 
-  [(CRCameraReader *)v366 setFirstTimeFrameIndexForPinnedField:@"expirationDate"];
-  v299 = [(CRCameraReader *)v366 pinnedFoundInfo];
-  v300 = [v299 objectForKey:@"dateOrigin"];
+  [(CRCameraReader *)selfCopy setFirstTimeFrameIndexForPinnedField:@"expirationDate"];
+  pinnedFoundInfo16 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+  v300 = [pinnedFoundInfo16 objectForKey:@"dateOrigin"];
   v301 = v300 == 0;
 
   if (v301)
   {
-    v302 = [(CRCameraReader *)v366 pinnedFoundInfo];
-    v303 = [v340 objectForKey:@"dateOrigin"];
-    [v302 setObject:v303 forKey:@"dateOrigin"];
+    pinnedFoundInfo17 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+    v303 = [dictionary objectForKey:@"dateOrigin"];
+    [pinnedFoundInfo17 setObject:v303 forKey:@"dateOrigin"];
   }
 
-  v304 = [v340 objectForKey:@"expirationYear"];
+  v304 = [dictionary objectForKey:@"expirationYear"];
   v305 = v304 == 0;
 
   if (!v305)
   {
-    v306 = [(CRCameraReader *)v366 pinnedFoundInfo];
-    v307 = [v340 objectForKey:@"expirationYear"];
-    [v306 setObject:v307 forKey:@"expirationYear"];
+    pinnedFoundInfo18 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+    v307 = [dictionary objectForKey:@"expirationYear"];
+    [pinnedFoundInfo18 setObject:v307 forKey:@"expirationYear"];
   }
 
-  v308 = [v340 objectForKey:@"expirationMonth"];
+  v308 = [dictionary objectForKey:@"expirationMonth"];
   v309 = v308 == 0;
 
   if (!v309)
   {
-    v310 = [(CRCameraReader *)v366 pinnedFoundInfo];
-    v311 = [v340 objectForKey:@"expirationMonth"];
-    [v310 setObject:v311 forKey:@"expirationMonth"];
+    pinnedFoundInfo19 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+    v311 = [dictionary objectForKey:@"expirationMonth"];
+    [pinnedFoundInfo19 setObject:v311 forKey:@"expirationMonth"];
   }
 
-  v312 = [v340 objectForKey:@"expirationDay"];
+  v312 = [dictionary objectForKey:@"expirationDay"];
   v313 = v312 == 0;
 
   if (!v313)
   {
-    v314 = [(CRCameraReader *)v366 pinnedFoundInfo];
-    v315 = [v340 objectForKey:@"expirationDay"];
-    [v314 setObject:v315 forKey:@"expirationDay"];
+    pinnedFoundInfo20 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+    v315 = [dictionary objectForKey:@"expirationDay"];
+    [pinnedFoundInfo20 setObject:v315 forKey:@"expirationDay"];
   }
 
-  v271 = v366;
+  v271 = selfCopy;
   if (!v342)
   {
 LABEL_246:
-    v272 = [(CRCameraReader *)v271 pinnedFoundInfo];
-    v342 = [v272 objectForKey:@"expirationDate"];
+    pinnedFoundInfo21 = [(CRCameraReader *)v271 pinnedFoundInfo];
+    v342 = [pinnedFoundInfo21 objectForKey:@"expirationDate"];
 
-    v271 = v366;
+    v271 = selfCopy;
   }
 
-  v273 = [(CRCameraReader *)v271 pinnedFoundInfo];
-  v274 = [v273 objectForKey:@"cardholderName"];
+  pinnedFoundInfo22 = [(CRCameraReader *)v271 pinnedFoundInfo];
+  v274 = [pinnedFoundInfo22 objectForKey:@"cardholderName"];
 
   if (v274)
   {
-    v275 = [(CRCameraReader *)v366 pinnedFoundInfo];
-    v276 = [v275 objectForKey:@"nameOrigin"];
+    pinnedFoundInfo23 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+    v276 = [pinnedFoundInfo23 objectForKey:@"nameOrigin"];
     v277 = NSPointFromString(v276);
     valid = isValidNameLocationForCode(v347, v277.x, v277.y);
 
     if ((valid & 1) == 0)
     {
 
-      v279 = [(CRCameraReader *)v366 pinnedFoundInfo];
-      [v279 removeObjectForKey:@"cardholderName"];
+      pinnedFoundInfo24 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+      [pinnedFoundInfo24 removeObjectForKey:@"cardholderName"];
 
-      v280 = [(CRCameraReader *)v366 pinnedFoundInfo];
-      [v280 removeObjectForKey:@"nameOrigin"];
+      pinnedFoundInfo25 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+      [pinnedFoundInfo25 removeObjectForKey:@"nameOrigin"];
 
       v274 = 0;
     }
@@ -4970,7 +4970,7 @@ LABEL_246:
 
   v281 = [v335 containsObject:@"CRCameraReaderCreditCardExpirationDate"];
   v282 = [v335 containsObject:@"CROutputTypeCreditCardName"];
-  v283 = v366;
+  v283 = selfCopy;
   if (v342)
   {
     v284 = 0;
@@ -4991,7 +4991,7 @@ LABEL_246:
     v285 = v282;
   }
 
-  if (((v284 & 1) != 0 || v285) && (v379 = *a6, [(CRCameraReader *)v366 lastFieldFoundTime], lhs = v379, rhs = v378, CMTimeSubtract(&time, &lhs, &rhs), CMTimeGetSeconds(&time) <= 1.0))
+  if (((v284 & 1) != 0 || v285) && (v379 = *time, [(CRCameraReader *)selfCopy lastFieldFoundTime], lhs = v379, rhs = v378, CMTimeSubtract(&time, &lhs, &rhs), CMTimeGetSeconds(&time) <= 1.0))
   {
     v293 = 0;
     v294 = v347;
@@ -5000,30 +5000,30 @@ LABEL_246:
 
   else
   {
-    v286 = [(CRCameraReader *)v366 pinnedFoundInfo];
-    v287 = [v286 objectForKey:@"code"];
+    pinnedFoundInfo26 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+    v287 = [pinnedFoundInfo26 objectForKey:@"code"];
     v288 = v287 == 0;
 
     if (v288)
     {
-      v283 = v366;
+      v283 = selfCopy;
       v291 = v347;
     }
 
     else
     {
-      v289 = [(CRCameraReader *)v366 pinnedFoundInfo];
-      v290 = [v289 objectForKey:@"code"];
+      pinnedFoundInfo27 = [(CRCameraReader *)selfCopy pinnedFoundInfo];
+      v290 = [pinnedFoundInfo27 objectForKey:@"code"];
 
-      v328 = 1;
+      bOOLValue8 = 1;
       v291 = v290;
-      v283 = v366;
+      v283 = selfCopy;
     }
 
     v292 = v291 == 0;
     v293 = 1;
     v348 = v291;
-    if (v291 && v328)
+    if (v291 && bOOLValue8)
     {
       AudioServicesPlaySystemSound(0xFFFu);
       [(CRCameraReader *)v283 stopSession];
@@ -5043,36 +5043,36 @@ LABEL_246:
     v374[3] = &unk_278EAA830;
     v374[4] = v283;
     v318 = v338;
-    v376 = *&a6->var0;
-    var3 = a6->var3;
+    v376 = *&time->var0;
+    var3 = time->var3;
     v375 = v318;
     v377 = var3;
     cr_dispatch_async(v316, v374);
 
-    v283 = v366;
+    v283 = selfCopy;
   }
 
   if (v344)
   {
-    v320 = [(CRCameraReader *)v283 pinnedFoundInfo];
-    [(CRCameraReader *)v283 sendDidRecognizeNewObjects:v320];
+    pinnedFoundInfo28 = [(CRCameraReader *)v283 pinnedFoundInfo];
+    [(CRCameraReader *)v283 sendDidRecognizeNewObjects:pinnedFoundInfo28];
 
-    v283 = v366;
+    v283 = selfCopy;
   }
 
   if (v292)
   {
-    v379 = *a6;
+    v379 = *time;
     [(CRCameraReader *)v283 pointsFound];
     lhs = v379;
     rhs = v378;
     CMTimeSubtract(&time, &lhs, &rhs);
     if (CMTimeGetSeconds(&time) > 0.3)
     {
-      v321 = [(CRCameraReader *)v283 sessionManager];
-      [v321 resetFocus];
+      sessionManager2 = [(CRCameraReader *)v283 sessionManager];
+      [sessionManager2 resetFocus];
 
-      v283 = v366;
+      v283 = selfCopy;
     }
 
     [(CRCameraReader *)v283 setFoundPoints:0];
@@ -5094,11 +5094,11 @@ LABEL_246:
     v372 = v338;
     cr_dispatch_async(v322, v368);
 
-    v283 = v366;
+    v283 = selfCopy;
   }
 
-  v324 = [(CRCameraReader *)v283 diagnosticHUDLayer];
-  v325 = v324 == 0;
+  diagnosticHUDLayer = [(CRCameraReader *)v283 diagnosticHUDLayer];
+  v325 = diagnosticHUDLayer == 0;
 
   if (!v325)
   {
@@ -5108,7 +5108,7 @@ LABEL_246:
     v367[1] = 3221225472;
     v367[2] = __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTime___block_invoke_17;
     v367[3] = &unk_278EAA5E8;
-    v367[4] = v366;
+    v367[4] = selfCopy;
     cr_dispatch_async(v326, v367);
   }
 
@@ -5615,28 +5615,28 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
   [v25 setAdjustingFocus:v19 pointOfInterestSupported:objc_msgSend(v20 focusPoint:{"isFocusPointOfInterestSupported"), v3, v4}];
 }
 
-- (id)findObjectsEmbossed:(id)a3 inImage:(id)a4
+- (id)findObjectsEmbossed:(id)embossed inImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRCameraReader *)self nameCutRects];
+  embossedCopy = embossed;
+  imageCopy = image;
+  nameCutRects = [(CRCameraReader *)self nameCutRects];
 
-  if (!v8)
+  if (!nameCutRects)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
-    [(CRCameraReader *)self setNameCutRects:v9];
+    array = [MEMORY[0x277CBEB18] array];
+    [(CRCameraReader *)self setNameCutRects:array];
   }
 
-  v10 = [(CRCameraReader *)self dateCutRects];
+  dateCutRects = [(CRCameraReader *)self dateCutRects];
 
-  if (!v10)
+  if (!dateCutRects)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
-    [(CRCameraReader *)self setDateCutRects:v11];
+    array2 = [MEMORY[0x277CBEB18] array];
+    [(CRCameraReader *)self setDateCutRects:array2];
   }
 
-  v12 = [(CRCameraReader *)self dateCutRects];
-  v13 = [v12 count];
+  dateCutRects2 = [(CRCameraReader *)self dateCutRects];
+  v13 = [dateCutRects2 count];
 
   if (!v13)
   {
@@ -5647,13 +5647,13 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
     width = 0.849705277;
     do
     {
-      v19 = [(CRCameraReader *)self dateCutRects];
+      dateCutRects3 = [(CRCameraReader *)self dateCutRects];
       v43.origin.x = x;
       v43.origin.y = y;
       v43.size.width = width;
       v43.size.height = height;
       v20 = NSStringFromRect(v43);
-      [v19 addObject:v20];
+      [dateCutRects3 addObject:v20];
 
       v44.origin.x = x;
       v44.origin.y = y;
@@ -5670,8 +5670,8 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
     while (v14);
   }
 
-  v21 = [(CRCameraReader *)self nameCutRects];
-  v22 = [v21 count];
+  nameCutRects2 = [(CRCameraReader *)self nameCutRects];
+  v22 = [nameCutRects2 count];
 
   if (!v22)
   {
@@ -5682,13 +5682,13 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
     v27 = 0.849705277;
     do
     {
-      v28 = [(CRCameraReader *)self nameCutRects];
+      nameCutRects3 = [(CRCameraReader *)self nameCutRects];
       v46.origin.x = v25;
       v46.origin.y = v24;
       v46.size.width = v27;
       v46.size.height = v26;
       v29 = NSStringFromRect(v46);
-      [v28 addObject:v29];
+      [nameCutRects3 addObject:v29];
 
       v47.origin.x = v25;
       v47.origin.y = v24;
@@ -5717,97 +5717,97 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
   [v33 provideInsightValue:v32 forKey:@"CRInsightsEmbossedRegionsNumber"];
 
   v34 = +[CRInsights sharedInsights];
-  v35 = [(CRCameraReader *)self nameCutRects];
-  [v34 provideInsightValue:v35 forKey:@"CRInsightsEmbossedRegionsName"];
+  nameCutRects4 = [(CRCameraReader *)self nameCutRects];
+  [v34 provideInsightValue:nameCutRects4 forKey:@"CRInsightsEmbossedRegionsName"];
 
   v36 = +[CRInsights sharedInsights];
-  v37 = [(CRCameraReader *)self dateCutRects];
-  [v36 provideInsightValue:v37 forKey:@"CRInsightsEmbossedRegionsExpirationDate"];
+  dateCutRects4 = [(CRCameraReader *)self dateCutRects];
+  [v36 provideInsightValue:dateCutRects4 forKey:@"CRInsightsEmbossedRegionsExpirationDate"];
 
-  v38 = [(CRCameraReader *)self nameCutRects];
-  v39 = [(CRCameraReader *)self dateCutRects];
-  v40 = [(CRCameraReader *)self findCCObjectsEmbossed:v6 inImage:v7 numberRects:v32 nameRects:v38 dateRects:v39];
+  nameCutRects5 = [(CRCameraReader *)self nameCutRects];
+  dateCutRects5 = [(CRCameraReader *)self dateCutRects];
+  v40 = [(CRCameraReader *)self findCCObjectsEmbossed:embossedCopy inImage:imageCopy numberRects:v32 nameRects:nameCutRects5 dateRects:dateCutRects5];
 
   return v40;
 }
 
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4 outputObjectTypes:(id)a5
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage outputObjectTypes:(id)types
 {
-  width = a3->width;
-  height = a3->height;
-  v7 = *&a3->width;
-  v10[0] = *&a3->data;
+  width = image->width;
+  height = image->height;
+  v7 = *&image->width;
+  v10[0] = *&image->data;
   v10[1] = v7;
-  v8 = [CRCameraReader findCodeInImage:v10 maxStage:a4 roi:a5 outputObjectTypes:0.0, 0.0, width, height];
+  height = [CRCameraReader findCodeInImage:v10 maxStage:stage roi:types outputObjectTypes:0.0, 0.0, width, height];
 
-  return v8;
+  return height;
 }
 
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage
 {
-  width = a3->width;
-  height = a3->height;
+  width = image->width;
+  height = image->height;
   v8 = [MEMORY[0x277CBEA60] arrayWithObject:@"CROutputTypeiTunesCode"];
-  v9 = *&a3->width;
-  v12[0] = *&a3->data;
+  v9 = *&image->width;
+  v12[0] = *&image->data;
   v12[1] = v9;
-  v10 = [CRCameraReader findCodeInImage:v12 maxStage:a4 roi:v8 outputObjectTypes:0.0, 0.0, width, height];
+  height = [CRCameraReader findCodeInImage:v12 maxStage:stage roi:v8 outputObjectTypes:0.0, 0.0, width, height];
 
-  return v10;
+  return height;
 }
 
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4 roi:(CGRect)a5
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage roi:(CGRect)roi
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = roi.size.height;
+  width = roi.size.width;
+  y = roi.origin.y;
+  x = roi.origin.x;
   v11 = [MEMORY[0x277CBEA60] arrayWithObject:@"CROutputTypeiTunesCode"];
-  v12 = *&a3->width;
-  v15[0] = *&a3->data;
+  v12 = *&image->width;
+  v15[0] = *&image->data;
   v15[1] = v12;
-  v13 = [CRCameraReader findCodeInImage:v15 maxStage:a4 roi:v11 outputObjectTypes:x, y, width, height];
+  height = [CRCameraReader findCodeInImage:v15 maxStage:stage roi:v11 outputObjectTypes:x, y, width, height];
 
-  return v13;
+  return height;
 }
 
-+ (id)findCodeInImage:(vImage_Buffer *)a3 maxStage:(unint64_t)a4 roi:(CGRect)a5 outputObjectTypes:(id)a6
++ (id)findCodeInImage:(vImage_Buffer *)image maxStage:(unint64_t)stage roi:(CGRect)roi outputObjectTypes:(id)types
 {
-  v9 = a6;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  typesCopy = types;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   [MEMORY[0x277CBEB18] array];
-  [v8 setObject:objc_claimAutoreleasedReturnValue() forKey:@"stageInfo"];
+  [dictionary setObject:objc_claimAutoreleasedReturnValue() forKey:@"stageInfo"];
   CFAbsoluteTimeGetCurrent();
-  v6 = [MEMORY[0x277CBEB98] setWithArray:v9];
+  v6 = [MEMORY[0x277CBEB98] setWithArray:typesCopy];
   [v6 containsObject:@"CROutputTypeHomeKitCode"];
 
   _findCodeRectInImageWithModel();
 }
 
-+ (id)textFeatureWithVNTextObservation:(id)a3
++ (id)textFeatureWithVNTextObservation:(id)observation
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 boundingBox];
+  observationCopy = observation;
+  [observationCopy boundingBox];
   v5 = v4;
-  [v3 boundingBox];
+  [observationCopy boundingBox];
   v7 = v6;
-  [v3 boundingBox];
+  [observationCopy boundingBox];
   v9 = v8;
-  [v3 boundingBox];
+  [observationCopy boundingBox];
   v11 = v10;
-  [v3 boundingBox];
+  [observationCopy boundingBox];
   v37.origin.y = 1.0 - v7 - v9;
   v37.origin.x = v5;
   v37.size.width = v11;
   v12 = NSStringFromRect(v37);
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = [v3 characterBoxes];
-  v15 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  characterBoxes = [observationCopy characterBoxes];
+  v15 = [characterBoxes countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v15)
   {
     v16 = *v31;
@@ -5817,7 +5817,7 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
       {
         if (*v31 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(characterBoxes);
         }
 
         v18 = *(*(&v30 + 1) + 8 * i);
@@ -5834,30 +5834,30 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
         v38.origin.x = v20;
         v38.size.width = v26;
         v27 = NSStringFromRect(v38);
-        [v13 addObject:v27];
+        [array addObject:v27];
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v15 = [characterBoxes countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v15);
   }
 
-  v28 = [objc_alloc(MEMORY[0x277D700A8]) initWithFeatureRect:v12 subFeatureRects:v13];
+  v28 = [objc_alloc(MEMORY[0x277D700A8]) initWithFeatureRect:v12 subFeatureRects:array];
 
   return v28;
 }
 
-+ (id)targetRectsForImage:(id)a3
++ (id)targetRectsForImage:(id)image
 {
   v202[1] = *MEMORY[0x277D85DE8];
-  v156 = a3;
-  v189 = [MEMORY[0x277CBEB18] array];
-  v158 = v156;
+  imageCopy = image;
+  array = [MEMORY[0x277CBEB18] array];
+  v158 = imageCopy;
   v3 = objc_alloc(MEMORY[0x277CE2D50]);
   v159 = [v3 initWithCIImage:v158 options:MEMORY[0x277CBEC10]];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"com.apple.CoreRecognition.enable_vn_detector"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"com.apple.CoreRecognition.enable_vn_detector"];
 
   v6 = objc_alloc_init(MEMORY[0x277CE2CB8]);
   v7 = v6;
@@ -5881,15 +5881,15 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
   [v159 performRequests:v9 error:&v199];
   v157 = v199;
 
-  v161 = [v160 results];
-  if (v161 && [v161 count])
+  results = [v160 results];
+  if (results && [results count])
   {
-    v190 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v197 = 0u;
     v198 = 0u;
     v195 = 0u;
     v196 = 0u;
-    v10 = v161;
+    v10 = results;
     v11 = [v10 countByEnumeratingWithState:&v195 objects:v201 count:16];
     if (v11)
     {
@@ -5904,12 +5904,12 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
           }
 
           v14 = [objc_opt_class() textFeatureWithVNTextObservation:*(*(&v195 + 1) + 8 * i)];
-          v15 = [v14 subFeatures];
-          v9 = [v15 count];
+          subFeatures = [v14 subFeatures];
+          v9 = [subFeatures count];
 
           if ((v9 - 4) <= 0x18)
           {
-            if ([v189 count] <= 0x13)
+            if ([array count] <= 0x13)
             {
               [v14 bounds];
               v17 = v16;
@@ -5937,12 +5937,12 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
               v206.size.height = height;
               v33 = NSStringFromRect(v206);
               v34 = [v32 dictionaryWithObjectsAndKeys:{v33, @"paddedRect", v14, @"textFeatures", 0}];
-              [v189 addObject:v34];
+              [array addObject:v34];
             }
 
             if (v9 == 4)
             {
-              [v190 addObject:v14];
+              [array2 addObject:v14];
             }
           }
         }
@@ -5953,39 +5953,39 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
       while (v11);
     }
 
-    if ([v190 count] >= 4)
+    if ([array2 count] >= 4)
     {
-      [v190 sortUsingComparator:&__block_literal_global_399];
-      v155 = [v190 subarrayWithRange:{0, 4}];
+      [array2 sortUsingComparator:&__block_literal_global_399];
+      v155 = [array2 subarrayWithRange:{0, 4}];
       v35 = 0;
       v36 = 3.4028e38;
-      while ([v190 count] - 3 > v35)
+      while ([array2 count] - 3 > v35)
       {
-        v177 = [v190 objectAtIndexedSubscript:v35];
+        v177 = [array2 objectAtIndexedSubscript:v35];
         [v177 bounds];
         v37 = CGRectGetWidth(v207);
-        v176 = [v190 objectAtIndexedSubscript:v35];
+        v176 = [array2 objectAtIndexedSubscript:v35];
         [v176 bounds];
         v38 = CGRectGetHeight(v208);
         v39 = v35 + 1;
-        v175 = [v190 objectAtIndexedSubscript:?];
+        v175 = [array2 objectAtIndexedSubscript:?];
         [v175 bounds];
         v40 = CGRectGetWidth(v209);
-        v174 = [v190 objectAtIndexedSubscript:v35 + 1];
+        v174 = [array2 objectAtIndexedSubscript:v35 + 1];
         [v174 bounds];
         v41 = v37 * v38 - v40 * CGRectGetHeight(v210);
-        [v190 objectAtIndexedSubscript:v35];
+        [array2 objectAtIndexedSubscript:v35];
         if (v41 < 0.0)
           v168 = {;
           [v168 bounds];
           v46 = CGRectGetWidth(v215);
-          v164 = [v190 objectAtIndexedSubscript:v35];
+          v164 = [array2 objectAtIndexedSubscript:v35];
           [v164 bounds];
           v47 = CGRectGetHeight(v216);
-          v163 = [v190 objectAtIndexedSubscript:v35 + 1];
+          v163 = [array2 objectAtIndexedSubscript:v35 + 1];
           [v163 bounds];
           v48 = CGRectGetWidth(v217);
-          v162 = [v190 objectAtIndexedSubscript:v35 + 1];
+          v162 = [array2 objectAtIndexedSubscript:v35 + 1];
           [v162 bounds];
           v45 = -(v46 * v47 - v48 * CGRectGetHeight(v218));
         }
@@ -5994,85 +5994,85 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
           v167 = {;
           [v167 bounds];
           v42 = CGRectGetWidth(v211);
-          v166 = [v190 objectAtIndexedSubscript:v35];
+          v166 = [array2 objectAtIndexedSubscript:v35];
           [v166 bounds];
           v43 = CGRectGetHeight(v212);
-          v165 = [v190 objectAtIndexedSubscript:v35 + 1];
+          v165 = [array2 objectAtIndexedSubscript:v35 + 1];
           [v165 bounds];
           v44 = CGRectGetWidth(v213);
-          v9 = [v190 objectAtIndexedSubscript:v35 + 1];
+          v9 = [array2 objectAtIndexedSubscript:v35 + 1];
           [v9 bounds];
           v45 = v42 * v43 - v44 * CGRectGetHeight(v214);
         }
 
         v186 = v9;
-        v49 = [v190 objectAtIndexedSubscript:v35 + 1];
+        v49 = [array2 objectAtIndexedSubscript:v35 + 1];
         [v49 bounds];
         v50 = CGRectGetWidth(v219);
-        v173 = [v190 objectAtIndexedSubscript:v35 + 1];
+        v173 = [array2 objectAtIndexedSubscript:v35 + 1];
         [v173 bounds];
         v51 = CGRectGetHeight(v220);
-        v172 = [v190 objectAtIndexedSubscript:v35 + 2];
+        v172 = [array2 objectAtIndexedSubscript:v35 + 2];
         [v172 bounds];
         v52 = CGRectGetWidth(v221);
-        v171 = [v190 objectAtIndexedSubscript:v35 + 2];
+        v171 = [array2 objectAtIndexedSubscript:v35 + 2];
         [v171 bounds];
         if (v50 * v51 - v52 * CGRectGetHeight(v222) < 0.0)
         {
-          v183 = [v190 objectAtIndexedSubscript:v35 + 1];
+          v183 = [array2 objectAtIndexedSubscript:v35 + 1];
           [v183 bounds];
           v58 = CGRectGetWidth(v227);
-          aRect = [v190 objectAtIndexedSubscript:v35 + 1];
+          aRect = [array2 objectAtIndexedSubscript:v35 + 1];
           [aRect bounds];
           v59 = CGRectGetHeight(v228);
-          v178 = [v190 objectAtIndexedSubscript:v35 + 2];
+          v178 = [array2 objectAtIndexedSubscript:v35 + 2];
           [v178 bounds];
           v60 = CGRectGetWidth(v229);
-          v56 = [v190 objectAtIndexedSubscript:v35 + 2];
+          v56 = [array2 objectAtIndexedSubscript:v35 + 2];
           [v56 bounds];
           v57 = -(v58 * v59 - v60 * CGRectGetHeight(v230));
         }
 
         else
         {
-          v183 = [v190 objectAtIndexedSubscript:v35 + 1];
+          v183 = [array2 objectAtIndexedSubscript:v35 + 1];
           [v183 bounds];
           v53 = CGRectGetWidth(v223);
-          aRect = [v190 objectAtIndexedSubscript:v35 + 1];
+          aRect = [array2 objectAtIndexedSubscript:v35 + 1];
           [aRect bounds];
           v54 = CGRectGetHeight(v224);
-          v178 = [v190 objectAtIndexedSubscript:v35 + 2];
+          v178 = [array2 objectAtIndexedSubscript:v35 + 2];
           [v178 bounds];
           v55 = CGRectGetWidth(v225);
-          v56 = [v190 objectAtIndexedSubscript:v35 + 2];
+          v56 = [array2 objectAtIndexedSubscript:v35 + 2];
           [v56 bounds];
           v57 = v53 * v54 - v55 * CGRectGetHeight(v226);
         }
 
-        v170 = [v190 objectAtIndexedSubscript:v35 + 2];
+        v170 = [array2 objectAtIndexedSubscript:v35 + 2];
         [v170 bounds];
         v61 = CGRectGetWidth(v231);
-        v169 = [v190 objectAtIndexedSubscript:v35 + 2];
+        v169 = [array2 objectAtIndexedSubscript:v35 + 2];
         [v169 bounds];
         v62 = CGRectGetHeight(v232);
-        v63 = [v190 objectAtIndexedSubscript:v35 + 3];
+        v63 = [array2 objectAtIndexedSubscript:v35 + 3];
         [v63 bounds];
         v64 = CGRectGetWidth(v233);
-        v65 = [v190 objectAtIndexedSubscript:v35 + 3];
+        v65 = [array2 objectAtIndexedSubscript:v35 + 3];
         [v65 bounds];
         v66 = v45 + v57;
         if (v61 * v62 - v64 * CGRectGetHeight(v234) >= 0.0)
         {
-          v67 = [v190 objectAtIndexedSubscript:v35 + 2];
+          v67 = [array2 objectAtIndexedSubscript:v35 + 2];
           [v67 bounds];
           v76 = CGRectGetWidth(v239);
-          v69 = [v190 objectAtIndexedSubscript:v35 + 2];
+          v69 = [array2 objectAtIndexedSubscript:v35 + 2];
           [v69 bounds];
           v77 = CGRectGetHeight(v240);
-          v71 = [v190 objectAtIndexedSubscript:v35 + 3];
+          v71 = [array2 objectAtIndexedSubscript:v35 + 3];
           [v71 bounds];
           v78 = CGRectGetWidth(v241);
-          v73 = [v190 objectAtIndexedSubscript:v35 + 3];
+          v73 = [array2 objectAtIndexedSubscript:v35 + 3];
           [v73 bounds];
           v74 = v49;
           v75 = v66 + v76 * v77 - v78 * CGRectGetHeight(v242);
@@ -6080,16 +6080,16 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
 
         else
         {
-          v67 = [v190 objectAtIndexedSubscript:v35 + 2];
+          v67 = [array2 objectAtIndexedSubscript:v35 + 2];
           [v67 bounds];
           v68 = CGRectGetWidth(v235);
-          v69 = [v190 objectAtIndexedSubscript:v35 + 2];
+          v69 = [array2 objectAtIndexedSubscript:v35 + 2];
           [v69 bounds];
           v70 = CGRectGetHeight(v236);
-          v71 = [v190 objectAtIndexedSubscript:v35 + 3];
+          v71 = [array2 objectAtIndexedSubscript:v35 + 3];
           [v71 bounds];
           v72 = CGRectGetWidth(v237);
-          v73 = [v190 objectAtIndexedSubscript:v35 + 3];
+          v73 = [array2 objectAtIndexedSubscript:v35 + 3];
           [v73 bounds];
           v74 = v49;
           v75 = v66 - (v68 * v70 - v72 * CGRectGetHeight(v238));
@@ -6112,7 +6112,7 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
         v9 = v186;
         if (v36 > v83)
         {
-          v84 = [v190 subarrayWithRange:{v35 - 1, 4}];
+          v84 = [array2 subarrayWithRange:{v35 - 1, 4}];
 
           v155 = v84;
           v36 = v83;
@@ -6229,13 +6229,13 @@ void __74__CRCameraReader_findObjects_inPixelBuffer_cameraIntrinsicData_frameTim
           v247.size.height = v132;
           v152 = NSStringFromRect(v247);
           v153 = [v151 dictionaryWithObjectsAndKeys:{v152, @"paddedRect", v133, @"paddedRects", v119, @"textFeatures", 0}];
-          [v189 addObject:v153];
+          [array addObject:v153];
         }
       }
     }
   }
 
-  return v189;
+  return array;
 }
 
 uint64_t __38__CRCameraReader_targetRectsForImage___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -6281,38 +6281,38 @@ uint64_t __38__CRCameraReader_targetRectsForImage___block_invoke_2(uint64_t a1, 
   return v8;
 }
 
-- (id)findCCObjectEmbossed:(id)a3 inImage:(id)a4 forRect:(id)a5
+- (id)findCCObjectEmbossed:(id)embossed inImage:(id)image forRect:(id)rect
 {
-  v8 = a3;
-  v9 = a4;
-  v29 = NSRectFromString(a5);
+  embossedCopy = embossed;
+  imageCopy = image;
+  v29 = NSRectFromString(rect);
   x = v29.origin.x;
   y = v29.origin.y;
   width = v29.size.width;
   height = v29.size.height;
-  v14 = [v9 height];
-  v15 = [v9 width];
-  v16 = [v9 height];
-  v17 = 28.0 / (height * v14);
+  height = [imageCopy height];
+  width = [imageCopy width];
+  height2 = [imageCopy height];
+  v17 = 28.0 / (height * height);
   v18 = v17;
-  v30.size.width = v18 * v15;
-  v30.size.height = v18 * v16;
+  v30.size.width = v18 * width;
+  v30.size.height = v18 * height2;
   v30.origin.x = 0.0;
   v30.origin.y = 0.0;
   v31 = CGRectIntegral(v30);
-  v19 = [v9 imageByScalingToWidth:v31.size.width height:{v31.size.height, v31.origin.x, v31.origin.y}];
-  v20 = [v19 width];
-  v21 = [v19 width];
-  v22 = [v19 height];
-  v23 = [v19 height];
-  v32.origin.x = x * v20;
-  v32.size.width = width * v21;
-  v32.origin.y = y * v22;
-  v32.size.height = height * v23;
+  v19 = [imageCopy imageByScalingToWidth:v31.size.width height:{v31.size.height, v31.origin.x, v31.origin.y}];
+  width2 = [v19 width];
+  width3 = [v19 width];
+  height3 = [v19 height];
+  height4 = [v19 height];
+  v32.origin.x = x * width2;
+  v32.size.width = width * width3;
+  v32.origin.y = y * height3;
+  v32.size.height = height * height4;
   v33 = CGRectIntegral(v32);
   *&v33.size.width = v33.size.width * 0.125;
   v24 = [v19 imageByCroppingRectangle:{v33.origin.x, v33.origin.y, ((ceilf(*&v33.size.width) * 8.0) + -5.0), 28.0}];
-  if ([v8 isEqualToString:@"CROutputTypeCreditCardName"])
+  if ([embossedCopy isEqualToString:@"CROutputTypeCreditCardName"])
   {
     v25 = [(CRCameraReader *)self findCCNameInImageEmbossed:v24];
 LABEL_5:
@@ -6320,7 +6320,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v8 isEqualToString:@"CRCameraReaderCreditCardExpirationDate"])
+  if ([embossedCopy isEqualToString:@"CRCameraReaderCreditCardExpirationDate"])
   {
     v25 = [(CRCameraReader *)self findCCExpDateInImageEmbossed:v24];
     goto LABEL_5;
@@ -6332,51 +6332,51 @@ LABEL_7:
   return v26;
 }
 
-- (id)findObjectsFlat:(id)a3 inImage:(id)a4 numberRects:(id)a5 invert:(BOOL)a6
+- (id)findObjectsFlat:(id)flat inImage:(id)image numberRects:(id)rects invert:(BOOL)invert
 {
-  v6 = a6;
+  invertCopy = invert;
   v149 = *MEMORY[0x277D85DE8];
-  v110 = a3;
-  v10 = a4;
-  v108 = a5;
-  v111 = [MEMORY[0x277CBEAA8] date];
-  v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v12 = [v11 objectForKey:@"com.apple.CoreRecognition.show_engine_name"];
-  v114 = [v12 BOOLValue];
+  flatCopy = flat;
+  imageCopy = image;
+  rectsCopy = rects;
+  date = [MEMORY[0x277CBEAA8] date];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v12 = [standardUserDefaults objectForKey:@"com.apple.CoreRecognition.show_engine_name"];
+  bOOLValue = [v12 BOOLValue];
 
-  v13 = [v10 height];
-  v14 = v13 > [v10 width];
-  v109 = [MEMORY[0x277CBEB98] setWithArray:v110];
-  v127 = [MEMORY[0x277CBEB38] dictionary];
-  [v127 setObject:MEMORY[0x277CBEC38] forKey:@"isDetectedRect"];
+  height = [imageCopy height];
+  v14 = height > [imageCopy width];
+  v109 = [MEMORY[0x277CBEB98] setWithArray:flatCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"isDetectedRect"];
   v15 = [MEMORY[0x277CCABB0] numberWithBool:v14];
-  [v127 setObject:v15 forKey:@"isPortrait"];
+  [dictionary setObject:v15 forKey:@"isPortrait"];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:v6];
-  [v127 setObject:v16 forKey:@"inverted"];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:invertCopy];
+  [dictionary setObject:v16 forKey:@"inverted"];
 
   v119 = [v109 containsObject:@"CROutputTypeCreditCardName"];
   v115 = [v109 containsObject:@"CRCameraReaderCreditCardExpirationDate"];
-  v107 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = +[CRInsights sharedInsights];
-  v18 = [v17 takeContextSnapshot];
+  takeContextSnapshot = [v17 takeContextSnapshot];
 
   v140[0] = MEMORY[0x277D85DD0];
   v140[1] = 3221225472;
   v140[2] = __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invoke;
   v140[3] = &unk_278EAA8C8;
   v145 = v14;
-  v106 = v18;
+  v106 = takeContextSnapshot;
   v141 = v106;
-  v142 = self;
-  v105 = v10;
+  selfCopy = self;
+  v105 = imageCopy;
   v143 = v105;
-  v146 = v6;
-  v19 = v107;
+  v146 = invertCopy;
+  v19 = array;
   v144 = v19;
-  [v108 enumerateObjectsWithOptions:1 usingBlock:v140];
-  v113 = [MEMORY[0x277CBEB18] array];
-  v112 = [MEMORY[0x277CBEB18] array];
+  [rectsCopy enumerateObjectsWithOptions:1 usingBlock:v140];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v20 = +[CRInsights sharedInsights];
   if (v20)
   {
@@ -6392,7 +6392,7 @@ LABEL_7:
 
   if ([v22 BOOLValue])
   {
-    v129 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
     if (!v20)
     {
       goto LABEL_9;
@@ -6401,7 +6401,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v129 = 0;
+  array4 = 0;
   if (v20)
   {
 LABEL_8:
@@ -6451,7 +6451,7 @@ LABEL_9:
         v124 = v27;
       }
 
-      v28 = [v27 BOOLValue];
+      bOOLValue2 = [v27 BOOLValue];
       v29 = v124;
       if (v26)
       {
@@ -6459,7 +6459,7 @@ LABEL_9:
         v29 = v123;
       }
 
-      if (v28)
+      if (bOOLValue2)
       {
         v30 = [v23 objectForKey:@"cardnumberFragmented"];
         if (v30)
@@ -6509,7 +6509,7 @@ LABEL_9:
                   [v36 setObject:v41 forKey:@"codeFragmentOrigins"];
                 }
 
-                [v129 addObject:v36];
+                [array4 addObject:v36];
               }
             }
 
@@ -6526,18 +6526,18 @@ LABEL_9:
       if (!v43)
       {
         v44 = [v23 objectForKey:@"code"];
-        [v127 setObject:v44 forKey:@"code"];
+        [dictionary setObject:v44 forKey:@"code"];
 
         v45 = [v23 objectForKey:@"accepted"];
-        [v127 setObject:v45 forKey:@"accepted"];
+        [dictionary setObject:v45 forKey:@"accepted"];
 
         v46 = [v23 objectForKey:@"codeOrigin"];
-        [v127 setObject:v46 forKey:@"codeOrigin"];
+        [dictionary setObject:v46 forKey:@"codeOrigin"];
 
         v47 = [v23 objectForKey:@"codeFragmentOrigins"];
         if (v47)
         {
-          [v127 setObject:v47 forKey:@"codeFragmentOrigins"];
+          [dictionary setObject:v47 forKey:@"codeFragmentOrigins"];
         }
 
         goto LABEL_38;
@@ -6561,14 +6561,14 @@ LABEL_9:
         v50 = [v23 objectForKey:@"dateOrigin"];
         [v126 setObject:v50 forKey:@"dateOrigin"];
 
-        [v112 addObject:v126];
+        [array3 addObject:v126];
         v51 = [v126 objectForKey:@"expDateAccepted"];
         v52 = v51 == 0;
 
         if (!v52)
         {
           v53 = [v126 objectForKey:@"expirationDate"];
-          [v127 setObject:v53 forKey:@"expirationDate"];
+          [dictionary setObject:v53 forKey:@"expirationDate"];
 
           v54 = +[CRInsights sharedInsights];
           [v54 provideInsightValue:v126 forKey:@"expirationDate"];
@@ -6579,7 +6579,7 @@ LABEL_9:
           if (!v56)
           {
             v57 = [v126 objectForKey:@"expirationYear"];
-            [v127 setObject:v57 forKey:@"expirationYear"];
+            [dictionary setObject:v57 forKey:@"expirationYear"];
           }
 
           v58 = [v126 objectForKey:@"expirationMonth"];
@@ -6588,7 +6588,7 @@ LABEL_9:
           if (!v59)
           {
             v60 = [v126 objectForKey:@"expirationMonth"];
-            [v127 setObject:v60 forKey:@"expirationMonth"];
+            [dictionary setObject:v60 forKey:@"expirationMonth"];
           }
 
           v61 = [v126 objectForKey:@"expirationDay"];
@@ -6597,7 +6597,7 @@ LABEL_9:
           if (!v62)
           {
             v63 = [v126 objectForKey:@"expirationDay"];
-            [v127 setObject:v63 forKey:@"expirationDay"];
+            [dictionary setObject:v63 forKey:@"expirationDay"];
           }
 
           v64 = [v126 objectForKey:@"dateOrigin"];
@@ -6606,7 +6606,7 @@ LABEL_9:
           if (!v65)
           {
             v47 = [v126 objectForKey:@"dateOrigin"];
-            [v127 setObject:v47 forKey:@"dateOrigin"];
+            [dictionary setObject:v47 forKey:@"dateOrigin"];
 LABEL_38:
           }
         }
@@ -6658,16 +6658,16 @@ LABEL_38:
           v117 = v74;
         }
 
-        v76 = [v74 BOOLValue];
+        bOOLValue3 = [v74 BOOLValue];
         v77 = v117;
         if (v72)
         {
           v77 = v118;
         }
 
-        if (v76)
+        if (bOOLValue3)
         {
-          [v113 addObject:v128];
+          [array2 addObject:v128];
         }
 
         if (v72)
@@ -6679,7 +6679,7 @@ LABEL_38:
 
         if (!v79)
         {
-          if (v114)
+          if (bOOLValue)
           {
             [v128 objectForKey:@"nameResult"];
           }
@@ -6692,28 +6692,28 @@ LABEL_38:
           [v128 setObject:v80 forKey:@"cardholderName"];
 
           v81 = [v128 objectForKey:@"cardholderName"];
-          [v127 setObject:v81 forKey:@"cardholderName"];
+          [dictionary setObject:v81 forKey:@"cardholderName"];
 
           v82 = [v23 objectForKey:@"fieldCutRect"];
-          [v127 setObject:v82 forKey:@"nameCutRect"];
+          [dictionary setObject:v82 forKey:@"nameCutRect"];
 
           v83 = [v23 objectForKey:@"nameOrigin"];
-          [v127 setObject:v83 forKey:@"nameOrigin"];
+          [dictionary setObject:v83 forKey:@"nameOrigin"];
         }
       }
 
-      v84 = [v127 objectForKey:@"cardholderName"];
+      v84 = [dictionary objectForKey:@"cardholderName"];
       v85 = v84 == 0;
 
       if (v85)
       {
         v86 = [v128 objectForKey:@"nameResult"];
         v87 = [v128 objectForKey:@"isValidNameString"];
-        v88 = [v87 BOOLValue];
+        bOOLValue4 = [v87 BOOLValue];
 
-        if (v88)
+        if (bOOLValue4)
         {
-          [v127 setObject:v86 forKey:@"cardholderName"];
+          [dictionary setObject:v86 forKey:@"cardholderName"];
           v89 = +[CRInsights sharedInsights];
           [v89 provideInsightValue:v86 forKey:@"nameResults"];
         }
@@ -6727,18 +6727,18 @@ LABEL_38:
 LABEL_77:
 
   v90 = MEMORY[0x277CCABB0];
-  [v111 timeIntervalSinceNow];
+  [date timeIntervalSinceNow];
   v92 = [v90 numberWithDouble:-v91];
-  [v127 setObject:v92 forKey:@"recognitionTime"];
+  [dictionary setObject:v92 forKey:@"recognitionTime"];
 
   v93 = +[CRInsights sharedInsights];
   v94 = MEMORY[0x277CCABB0];
-  [v111 timeIntervalSinceNow];
+  [date timeIntervalSinceNow];
   v96 = [v94 numberWithDouble:-v95];
   [v93 provideInsightValue:v96 forKey:@"recognitionTime"];
 
-  [v127 setObject:v112 forKey:@"expDateResults"];
-  [v127 setObject:v113 forKey:@"nameResults"];
+  [dictionary setObject:array3 forKey:@"expDateResults"];
+  [dictionary setObject:array2 forKey:@"nameResults"];
   v97 = +[CRInsights sharedInsights];
   if (v97)
   {
@@ -6752,26 +6752,26 @@ LABEL_77:
     v98 = v99;
   }
 
-  v100 = [v99 BOOLValue];
+  bOOLValue5 = [v99 BOOLValue];
   if (v97)
   {
   }
 
-  if (v100)
+  if (bOOLValue5)
   {
-    [v127 setObject:v129 forKey:@"numberResults"];
+    [dictionary setObject:array4 forKey:@"numberResults"];
   }
 
   v101 = +[CRInsights sharedInsights];
-  [v101 provideInsightValue:v129 forKey:@"numberResults"];
+  [v101 provideInsightValue:array4 forKey:@"numberResults"];
 
   v102 = +[CRInsights sharedInsights];
-  [v102 provideInsightValue:v112 forKey:@"expDateResults"];
+  [v102 provideInsightValue:array3 forKey:@"expDateResults"];
 
   v103 = +[CRInsights sharedInsights];
-  [v103 provideInsightValue:v113 forKey:@"nameResults"];
+  [v103 provideInsightValue:array2 forKey:@"nameResults"];
 
-  return v127;
+  return dictionary;
 }
 
 void __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invoke(uint64_t a1, void *a2)
@@ -6914,27 +6914,27 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
   return v3;
 }
 
-- (id)findCCObjectsEmbossed:(id)a3 inImage:(id)a4 numberRects:(id)a5 nameRects:(id)a6 dateRects:(id)a7
+- (id)findCCObjectsEmbossed:(id)embossed inImage:(id)image numberRects:(id)rects nameRects:(id)nameRects dateRects:(id)dateRects
 {
   v208 = *MEMORY[0x277D85DE8];
-  v132 = a3;
-  v142 = a4;
-  v129 = a5;
-  v130 = a6;
-  v131 = a7;
+  embossedCopy = embossed;
+  imageCopy = image;
+  rectsCopy = rects;
+  nameRectsCopy = nameRects;
+  dateRectsCopy = dateRects;
   v126 = clock();
-  v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v13 = [v12 objectForKey:@"com.apple.CoreRecognition.exaustive_search"];
-  v134 = [v13 BOOLValue];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v13 = [standardUserDefaults objectForKey:@"com.apple.CoreRecognition.exaustive_search"];
+  bOOLValue = [v13 BOOLValue];
 
-  v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v15 = [v14 objectForKey:@"com.apple.CoreRecognition.show_engine_name"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v15 = [standardUserDefaults2 objectForKey:@"com.apple.CoreRecognition.show_engine_name"];
   LODWORD(v123) = [v15 BOOLValue];
 
-  v146 = [v142 height];
-  v145 = [v142 width];
-  v133 = [MEMORY[0x277CBEB98] setWithArray:v132];
-  v136 = [MEMORY[0x277CBEB38] dictionary];
+  height = [imageCopy height];
+  width = [imageCopy width];
+  v133 = [MEMORY[0x277CBEB98] setWithArray:embossedCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v127 = [v133 containsObject:@"CROutputTypeCreditCardName"];
   HIDWORD(v123) = [v133 containsObject:@"CRCameraReaderCreditCardExpirationDate"];
   v210.origin.x = *MEMORY[0x277CBF348];
@@ -6944,7 +6944,7 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
   v211 = CGRectIntegral(v210);
   height = v211.size.height;
   y = v211.origin.y;
-  if (v146 <= v145)
+  if (height <= width)
   {
     width = v211.size.height;
     height = v211.size.width;
@@ -6959,19 +6959,19 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
   }
 
   v128 = clock();
-  v141 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v204 = 0u;
   v205 = 0u;
   v202 = 0u;
   v203 = 0u;
-  obj = v129;
+  obj = rectsCopy;
   v18 = [obj countByEnumeratingWithState:&v202 objects:v207 count:16];
   if (v18)
   {
     v177 = 0;
     v139 = *v203;
     v19 = 54.05;
-    if (v146 <= v145)
+    if (height <= width)
     {
       v20 = 54.05;
     }
@@ -6981,7 +6981,7 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
       v20 = 85.685;
     }
 
-    if (v146 <= v145)
+    if (height <= width)
     {
       v19 = 85.685;
     }
@@ -7027,7 +7027,7 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
         v169.y = v138 * (1.0 - v21 - v23);
         v147 = v137 * v22;
         v148 = v138 * v23;
-        if (v146 > v145)
+        if (height > width)
         {
           v28 = v26;
         }
@@ -7037,7 +7037,7 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
           v28 = v27;
         }
 
-        if (v146 > v145)
+        if (height > width)
         {
           v29 = v27;
         }
@@ -7047,7 +7047,7 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
           v29 = v26;
         }
 
-        if (v146 > v145)
+        if (height > width)
         {
           v30 = v24;
         }
@@ -7058,7 +7058,7 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
         }
 
         v152 = v30;
-        if (v146 <= v145)
+        if (height <= width)
         {
           v25 = v24;
         }
@@ -7066,32 +7066,32 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
         v163 = v7;
         width = v28;
         height = v29;
-        v31 = [v142 imageByScalingToWidth:v29 height:{v28, v123}];
-        v157 = [v31 width];
+        v31 = [imageCopy imageByScalingToWidth:v29 height:{v28, v123}];
+        width2 = [v31 width];
         v32 = v23 * 0.65;
-        v153 = [v31 width];
-        v33 = [v31 height];
-        v34 = [v31 height];
-        v151 = [v31 width];
-        v35 = [v31 width];
-        v36 = [v31 height];
-        v37 = [v31 height];
-        v38 = [v31 width];
-        v39 = [v31 width];
-        v40 = [v31 height];
-        v41 = [v31 height];
-        v214.origin.x = v172 * v157;
-        v214.size.width = v22 * v153;
-        v214.origin.y = v21 * v33;
-        v214.size.height = v23 * v34;
+        width3 = [v31 width];
+        height2 = [v31 height];
+        height3 = [v31 height];
+        width4 = [v31 width];
+        width5 = [v31 width];
+        height4 = [v31 height];
+        height5 = [v31 height];
+        width6 = [v31 width];
+        width7 = [v31 width];
+        height6 = [v31 height];
+        height7 = [v31 height];
+        v214.origin.x = v172 * width2;
+        v214.size.width = v22 * width3;
+        v214.origin.y = v21 * height2;
+        v214.size.height = v23 * height3;
         v215 = CGRectIntegral(v214);
         v42 = v215.origin.x;
         v43 = v215.origin.y;
         v44 = v215.size.width;
-        v215.origin.x = v151 * 0.85;
-        v215.size.width = v35 * 0.06;
-        v215.origin.y = v160 * v36;
-        v215.size.height = v32 * v37;
+        v215.origin.x = width4 * 0.85;
+        v215.size.width = width5 * 0.06;
+        v215.origin.y = v160 * height4;
+        v215.size.height = v32 * height5;
         v216 = CGRectIntegral(v215);
         v173 = v216.origin.x;
         v161 = v216.origin.y;
@@ -7099,10 +7099,10 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
         v45 = v216.size.width;
         v46 = v32;
         v47 = v216.size.height;
-        v216.origin.x = v38 * 0.85;
-        v216.size.width = v39 * 0.06;
-        v216.origin.y = v155 * v40;
-        v216.size.height = v46 * v41;
+        v216.origin.x = width6 * 0.85;
+        v216.size.width = width7 * 0.06;
+        v216.origin.y = v155 * height6;
+        v216.size.height = v46 * height7;
         v217 = CGRectIntegral(v216);
         v156 = v217.origin.y;
         v158 = v217.origin.x;
@@ -7116,9 +7116,9 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
         v51 = x = v152;
 
         v52 = [v51 objectForKey:@"code"];
-        LODWORD(v39) = v52 == 0;
+        LODWORD(width7) = v52 == 0;
 
-        if (v39)
+        if (width7)
         {
           v218.size.height = 28.0;
           v218.origin.x = v42;
@@ -7165,7 +7165,7 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
           v144 = v62;
         }
 
-        v63 = [v62 BOOLValue];
+        bOOLValue2 = [v62 BOOLValue];
         v64 = v144;
         if (v61)
         {
@@ -7173,7 +7173,7 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
           v64 = v7;
         }
 
-        if (v63)
+        if (bOOLValue2)
         {
           v65 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v177];
           v220.origin = v169;
@@ -7190,14 +7190,14 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
 
           if ((v67 & 1) == 0)
           {
-            [v141 addEntriesFromDictionary:v65];
+            [dictionary2 addEntriesFromDictionary:v65];
             v69 = NSStringFromPoint(v169);
-            [v141 setObject:v69 forKey:@"codeOrigin"];
+            [dictionary2 setObject:v69 forKey:@"codeOrigin"];
 
-            v70 = [MEMORY[0x277CCABB0] numberWithBool:v146 > v145];
-            [v141 setObject:v70 forKey:@"isPortrait"];
+            v145 = [MEMORY[0x277CCABB0] numberWithBool:height > width];
+            [dictionary2 setObject:v145 forKey:@"isPortrait"];
 
-            if ((v134 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               goto LABEL_45;
             }
@@ -7206,17 +7206,17 @@ id __61__CRCameraReader_findObjectsFlat_inImage_numberRects_invert___block_invok
 
         else
         {
-          [v136 addEntriesFromDictionary:v177];
+          [dictionary addEntriesFromDictionary:v177];
           v71 = [v177 objectForKey:@"accepted"];
           v72 = v71 == 0;
 
           if (!v72)
           {
             v73 = NSStringFromPoint(v169);
-            [v136 setObject:v73 forKey:@"codeOrigin"];
+            [dictionary setObject:v73 forKey:@"codeOrigin"];
 
-            v74 = [MEMORY[0x277CCABB0] numberWithBool:v146 > v145];
-            [v136 setObject:v74 forKey:@"isPortrait"];
+            v1452 = [MEMORY[0x277CCABB0] numberWithBool:height > width];
+            [dictionary setObject:v1452 forKey:@"isPortrait"];
 
             v65 = +[CRInsights sharedInsights];
             [v65 provideInsightValue:v177 forKey:@"CRInsightsRecognitionResultForNumberEmbossed"];
@@ -7249,7 +7249,7 @@ LABEL_46:
 
   *&v75 = (clock() - v128) / 1000000.0;
   v76 = [MEMORY[0x277CCABB0] numberWithFloat:v75];
-  [v136 setObject:v76 forKey:@"codeRecognitionTime"];
+  [dictionary setObject:v76 forKey:@"codeRecognitionTime"];
 
   v77 = +[CRInsights sharedInsights];
   if (v77)
@@ -7266,55 +7266,55 @@ LABEL_46:
 
   if ([v79 BOOLValue])
   {
-    v80 = 1;
+    bOOLValue3 = 1;
   }
 
   else
   {
     v81 = [v177 objectForKey:@"accepted"];
-    v80 = [v81 BOOLValue];
+    bOOLValue3 = [v81 BOOLValue];
   }
 
   if (v77)
   {
   }
 
-  if (v80)
+  if (bOOLValue3)
   {
     group = dispatch_group_create();
-    v176 = [MEMORY[0x277CBEB38] dictionary];
-    v174 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     if (v127)
     {
       v82 = clock();
-      v166 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v162 = v82;
       v164 = [MEMORY[0x277CBEB58] set];
       v83 = +[CRInsights sharedInsights];
-      v84 = [v83 takeContextSnapshot];
+      takeContextSnapshot = [v83 takeContextSnapshot];
 
       v192[0] = MEMORY[0x277D85DD0];
       v192[1] = 3221225472;
       v192[2] = __80__CRCameraReader_findCCObjectsEmbossed_inImage_numberRects_nameRects_dateRects___block_invoke_3;
       v192[3] = &unk_278EAA8F0;
-      v159 = v84;
+      v159 = takeContextSnapshot;
       v193 = v159;
-      v194 = self;
-      v195 = v142;
-      v199 = v146 > v145;
+      selfCopy = self;
+      v195 = imageCopy;
+      v199 = height > width;
       v200 = 0;
-      v170 = v166;
+      v170 = array;
       v196 = v170;
       v201 = v124;
-      v85 = v176;
+      v85 = dictionary3;
       v197 = v85;
       v168 = v164;
       v198 = v168;
-      [v130 enumerateObjectsWithOptions:1 usingBlock:v192];
+      [nameRectsCopy enumerateObjectsWithOptions:1 usingBlock:v192];
       v86 = [v85 objectForKey:?];
-      LODWORD(v84) = v86 == 0;
+      LODWORD(takeContextSnapshot) = v86 == 0;
 
-      if (v84)
+      if (takeContextSnapshot)
       {
         v191 = 0u;
         v189 = 0u;
@@ -7337,9 +7337,9 @@ LABEL_46:
               v91 = *(*(&v188 + 1) + 8 * i);
               v92 = [v91 objectForKey:@"nameResult"];
               v93 = [v91 objectForKey:@"isValidNameString"];
-              v94 = [v93 BOOLValue];
+              bOOLValue4 = [v93 BOOLValue];
 
-              if (v94)
+              if (bOOLValue4)
               {
                 [v85 setObject:v92 forKey:@"cardholderName"];
 
@@ -7361,9 +7361,9 @@ LABEL_67:
       }
 
       [v85 setObject:v170 forKey:@"nameResults"];
-      [v130 removeAllObjects];
-      v95 = [v168 allObjects];
-      [v130 addObjectsFromArray:v95];
+      [nameRectsCopy removeAllObjects];
+      allObjects = [v168 allObjects];
+      [nameRectsCopy addObjectsFromArray:allObjects];
 
       *&v96 = (clock() - v162) / 1000000.0;
       v97 = [MEMORY[0x277CCABB0] numberWithFloat:v96];
@@ -7374,45 +7374,45 @@ LABEL_67:
     {
       v98 = clock();
       v99 = [MEMORY[0x277CBEB58] set];
-      v100 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       v101 = +[CRInsights sharedInsights];
-      v102 = [v101 takeContextSnapshot];
+      takeContextSnapshot2 = [v101 takeContextSnapshot];
 
       v178[0] = MEMORY[0x277D85DD0];
       v178[1] = 3221225472;
       v178[2] = __80__CRCameraReader_findCCObjectsEmbossed_inImage_numberRects_nameRects_dateRects___block_invoke_4;
       v178[3] = &unk_278EAA8F0;
-      v103 = v102;
+      v103 = takeContextSnapshot2;
       v179 = v103;
-      v180 = self;
-      v181 = v142;
-      v185 = v146 > v145;
+      selfCopy2 = self;
+      v181 = imageCopy;
+      v185 = height > width;
       v186 = 0;
-      v104 = v100;
+      v104 = array2;
       v182 = v104;
       v105 = v99;
       v183 = v105;
-      v106 = v174;
+      v106 = dictionary4;
       v184 = v106;
-      v187 = v134;
-      [v131 enumerateObjectsWithOptions:1 usingBlock:v178];
+      v187 = bOOLValue;
+      [dateRectsCopy enumerateObjectsWithOptions:1 usingBlock:v178];
       [v106 setObject:v104 forKey:@"expDateResults"];
       *&v107 = (clock() - v98) / 1000000.0;
       v108 = [MEMORY[0x277CCABB0] numberWithFloat:v107];
       [v106 setObject:v108 forKey:@"expDateRecognitionTime"];
 
-      [v131 removeAllObjects];
-      v109 = [v105 allObjects];
-      [v131 addObjectsFromArray:v109];
+      [dateRectsCopy removeAllObjects];
+      allObjects2 = [v105 allObjects];
+      [dateRectsCopy addObjectsFromArray:allObjects2];
     }
 
     dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
     *&v110 = (clock() - v126) / 1000000.0;
     v111 = [MEMORY[0x277CCABB0] numberWithFloat:v110];
-    [v136 setObject:v111 forKey:@"totalRecognitionTime"];
+    [dictionary setObject:v111 forKey:@"totalRecognitionTime"];
 
-    [v136 addEntriesFromDictionary:v176];
-    [v136 addEntriesFromDictionary:v174];
+    [dictionary addEntriesFromDictionary:dictionary3];
+    [dictionary addEntriesFromDictionary:dictionary4];
     v112 = +[CRInsights sharedInsights];
     if (v112)
     {
@@ -7426,36 +7426,36 @@ LABEL_67:
       v113 = v114;
     }
 
-    v115 = [v114 BOOLValue];
+    bOOLValue5 = [v114 BOOLValue];
     if (v112)
     {
     }
 
-    if (v115)
+    if (bOOLValue5)
     {
-      [v136 addEntriesFromDictionary:v141];
+      [dictionary addEntriesFromDictionary:dictionary2];
     }
 
     v116 = +[CRInsights sharedInsights];
-    [v116 provideInsightValue:v176 forKey:@"CRInsightsRecognitionResultForNameEmbossed"];
+    [v116 provideInsightValue:dictionary3 forKey:@"CRInsightsRecognitionResultForNameEmbossed"];
 
     v117 = +[CRInsights sharedInsights];
-    [v117 provideInsightValue:v174 forKey:@"CRInsightsRecognitionResultForExpDateEmbossed"];
+    [v117 provideInsightValue:dictionary4 forKey:@"CRInsightsRecognitionResultForExpDateEmbossed"];
 
     v118 = +[CRInsights sharedInsights];
-    [v118 provideInsightValue:v141 forKey:@"CRInsightsRecognitionResultForNumberEmbossed"];
+    [v118 provideInsightValue:dictionary2 forKey:@"CRInsightsRecognitionResultForNumberEmbossed"];
 
     v119 = +[CRInsights sharedInsights];
-    [v119 provideInsightValue:v141 forKey:@"numberResults"];
+    [v119 provideInsightValue:dictionary2 forKey:@"numberResults"];
 
     v120 = +[CRInsights sharedInsights];
-    [v120 provideInsightValue:v176 forKey:@"nameResults"];
+    [v120 provideInsightValue:dictionary3 forKey:@"nameResults"];
 
     v121 = +[CRInsights sharedInsights];
-    [v121 provideInsightValue:v174 forKey:@"expDateResults"];
+    [v121 provideInsightValue:dictionary4 forKey:@"expDateResults"];
   }
 
-  return v136;
+  return dictionary;
 }
 
 void __80__CRCameraReader_findCCObjectsEmbossed_inImage_numberRects_nameRects_dateRects___block_invoke_3(uint64_t a1, void *a2)
@@ -7780,36 +7780,36 @@ void __80__CRCameraReader_findCCObjectsEmbossed_inImage_numberRects_nameRects_da
   objc_sync_exit(v24);
 }
 
-- (id)findCCResultsInImageFlat:(id)a3 usingTextFeatures:(id)a4 invert:(BOOL)a5
+- (id)findCCResultsInImageFlat:(id)flat usingTextFeatures:(id)features invert:(BOOL)invert
 {
-  v5 = a5;
+  invertCopy = invert;
   v118 = *MEMORY[0x277D85DE8];
-  v96 = a3;
-  v7 = a4;
-  v94 = v7;
+  flatCopy = flat;
+  featuresCopy = features;
+  v94 = featuresCopy;
   v8 = +[CRInsights sharedInsights];
-  [v8 setContextValue:v7 forKey:?];
+  [v8 setContextValue:featuresCopy forKey:?];
 
-  v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v10 = [v9 objectForKey:@"com.apple.CoreRecognition.disable_prefix_check"];
-  v11 = [v10 BOOLValue];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v10 = [standardUserDefaults objectForKey:@"com.apple.CoreRecognition.disable_prefix_check"];
+  bOOLValue = [v10 BOOLValue];
 
-  v97 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v90 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v12 = MEMORY[0x277CBEB18];
-    v13 = [v7 subFeatures];
-    v99 = [v12 arrayWithCapacity:{objc_msgSend(v13, "count")}];
+    subFeatures = [featuresCopy subFeatures];
+    v99 = [v12 arrayWithCapacity:{objc_msgSend(subFeatures, "count")}];
 
     v114 = 0u;
     v115 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v14 = [v7 subFeatures];
+    subFeatures2 = [featuresCopy subFeatures];
     v15 = 0;
-    v16 = [v14 countByEnumeratingWithState:&v112 objects:v117 count:16];
+    v16 = [subFeatures2 countByEnumeratingWithState:&v112 objects:v117 count:16];
     if (v16)
     {
       v17 = *v113;
@@ -7819,23 +7819,23 @@ void __80__CRCameraReader_findCCObjectsEmbossed_inImage_numberRects_nameRects_da
         {
           if (*v113 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(subFeatures2);
           }
 
-          v19 = [*(*(&v112 + 1) + 8 * i) subFeatures];
-          v20 = [v19 count];
+          subFeatures3 = [*(*(&v112 + 1) + 8 * i) subFeatures];
+          v20 = [subFeatures3 count];
 
           v15 += v20;
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v112 objects:v117 count:16];
+        v16 = [subFeatures2 countByEnumeratingWithState:&v112 objects:v117 count:16];
       }
 
       while (v16);
     }
 
-    v21 = [v94 subFeatures];
-    if (v5)
+    subFeatures4 = [v94 subFeatures];
+    if (invertCopy)
     {
       v22 = 2;
     }
@@ -7850,15 +7850,15 @@ void __80__CRCameraReader_findCCObjectsEmbossed_inImage_numberRects_nameRects_da
     v105[2] = __68__CRCameraReader_findCCResultsInImageFlat_usingTextFeatures_invert___block_invoke;
     v105[3] = &unk_278EAA918;
     v105[4] = self;
-    v106 = v96;
-    v110 = v5;
-    v93 = v90;
+    v106 = flatCopy;
+    v110 = invertCopy;
+    v93 = string;
     v107 = v93;
-    v111 = v11;
+    v111 = bOOLValue;
     v95 = v99;
     v108 = v95;
     v109 = v15;
-    [v21 enumerateObjectsWithOptions:v22 usingBlock:v105];
+    [subFeatures4 enumerateObjectsWithOptions:v22 usingBlock:v105];
 
     v98 = extractCardCode(v93);
     if (v98)
@@ -7866,8 +7866,8 @@ void __80__CRCameraReader_findCCObjectsEmbossed_inImage_numberRects_nameRects_da
       [v94 bounds];
       if (isValidCodeLocation(v98, 0, v23, v24, v25, v26))
       {
-        [v97 setObject:v98 forKey:@"code"];
-        [v97 setObject:MEMORY[0x277CBEC38] forKey:@"accepted"];
+        [dictionary setObject:v98 forKey:@"code"];
+        [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"accepted"];
       }
     }
 
@@ -7884,45 +7884,45 @@ void __80__CRCameraReader_findCCObjectsEmbossed_inImage_numberRects_nameRects_da
       v28 = v29;
     }
 
-    v40 = [v29 BOOLValue];
+    bOOLValue2 = [v29 BOOLValue];
     if (v27)
     {
     }
 
-    if (v40)
+    if (bOOLValue2)
     {
-      v41 = [MEMORY[0x277CBEB38] dictionary];
-      v42 = v41;
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      v42 = dictionary2;
       if (v98)
       {
-        [v41 setObject:v98 forKey:@"code"];
+        [dictionary2 setObject:v98 forKey:@"code"];
         [v42 setObject:MEMORY[0x277CBEC38] forKey:@"accepted"];
       }
 
       else
       {
-        [v41 setObject:v93 forKey:@"code"];
+        [dictionary2 setObject:v93 forKey:@"code"];
       }
 
       v43 = [MEMORY[0x277CBEA60] arrayWithObjects:{v42, 0}];
-      [v97 setObject:v43 forKey:@"cardnumberFragmented"];
+      [dictionary setObject:v43 forKey:@"cardnumberFragmented"];
     }
 
-    [v97 setObject:v95 forKey:@"CardNumber"];
-    v44 = [MEMORY[0x277CBEAC0] dictionary];
-    [v97 setObject:v44 forKey:@"Cardholder"];
+    [dictionary setObject:v95 forKey:@"CardNumber"];
+    dictionary3 = [MEMORY[0x277CBEAC0] dictionary];
+    [dictionary setObject:dictionary3 forKey:@"Cardholder"];
 
-    v45 = [MEMORY[0x277CBEAC0] dictionary];
-    [v97 setObject:v45 forKey:@"Expiration"];
+    dictionary4 = [MEMORY[0x277CBEAC0] dictionary];
+    [dictionary setObject:dictionary4 forKey:@"Expiration"];
 
     goto LABEL_65;
   }
 
   v30 = +[CRInsights sharedInsights];
-  [v30 setContextValue:v7 forKey:@"CRInsightsContextRecognitionTextFeature"];
+  [v30 setContextValue:featuresCopy forKey:@"CRInsightsContextRecognitionTextFeature"];
 
-  v31 = [(CRCameraReader *)self flatPrintedModel];
-  v32 = [v31 creditcardResultsFromImage:v96 textFeatures:v7 invert:v5 tryPatternMatch:1];
+  flatPrintedModel = [(CRCameraReader *)self flatPrintedModel];
+  v32 = [flatPrintedModel creditcardResultsFromImage:flatCopy textFeatures:featuresCopy invert:invertCopy tryPatternMatch:1];
 
   v93 = v32;
   v33 = +[CRInsights sharedInsights];
@@ -7971,11 +7971,11 @@ void __80__CRCameraReader_findCCObjectsEmbossed_inImage_numberRects_nameRects_da
     }
   }
 
-  [v7 bounds];
+  [featuresCopy bounds];
   if (isValidCodeLocation(v98, 0, v49, v50, v51, v52))
   {
-    [v97 setObject:v98 forKey:@"code"];
-    [v97 setObject:MEMORY[0x277CBEC38] forKey:@"accepted"];
+    [dictionary setObject:v98 forKey:@"code"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"accepted"];
   }
 
 LABEL_33:
@@ -7992,14 +7992,14 @@ LABEL_33:
     v54 = v55;
   }
 
-  v56 = [v55 BOOLValue];
+  bOOLValue3 = [v55 BOOLValue];
   if (v53)
   {
   }
 
-  if (v56)
+  if (bOOLValue3)
   {
-    v100 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v103 = 0u;
     v104 = 0u;
     v101 = 0u;
@@ -8027,7 +8027,7 @@ LABEL_33:
 
           if (!v65)
           {
-            [v100 addObject:v63];
+            [array addObject:v63];
           }
         }
 
@@ -8037,15 +8037,15 @@ LABEL_33:
       while (v58);
     }
 
-    [v97 setObject:v100 forKey:@"CardNumber"];
+    [dictionary setObject:array forKey:@"CardNumber"];
   }
 
   v66 = [v91 objectForKey:@"Cardholder"];
-  v67 = [(CRCameraReader *)self contactsCache];
-  v68 = [(CRCameraReader *)self previousContactMatches];
-  v69 = extractCardholderNameResults(v66, v67, v68);
+  contactsCache = [(CRCameraReader *)self contactsCache];
+  previousContactMatches = [(CRCameraReader *)self previousContactMatches];
+  v69 = extractCardholderNameResults(v66, contactsCache, previousContactMatches);
 
-  [v97 setObject:v69 forKey:@"Cardholder"];
+  [dictionary setObject:v69 forKey:@"Cardholder"];
   v70 = +[CRInsights sharedInsights];
   if (v70)
   {
@@ -8115,13 +8115,13 @@ LABEL_62:
     v75 = v85;
   }
 
-  [v97 setObject:v75 forKey:@"Expiration"];
+  [dictionary setObject:v75 forKey:@"Expiration"];
 
 LABEL_65:
   v86 = +[CRInsights sharedInsights];
   [v86 setContextValue:0 forKey:@"CRInsightsContextRecognitionTextFeatureGroup"];
 
-  return v97;
+  return dictionary;
 }
 
 void __68__CRCameraReader_findCCResultsInImageFlat_usingTextFeatures_invert___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -8183,16 +8183,16 @@ void __68__CRCameraReader_findCCResultsInImageFlat_usingTextFeatures_invert___bl
   }
 }
 
-- (id)findCCNumberInImageEmbossed:(id)a3
+- (id)findCCNumberInImageEmbossed:(id)embossed
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [v4 imageByApplyingHistogramCorrection];
+  embossedCopy = embossed;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  imageByApplyingHistogramCorrection = [embossedCopy imageByApplyingHistogramCorrection];
   v7 = +[CRInsights sharedInsights];
-  [v7 provideInsightValue:v6 forKey:@"CRInsightsCardImageCutEmbossedBufferKey"];
+  [v7 provideInsightValue:imageByApplyingHistogramCorrection forKey:@"CRInsightsCardImageCutEmbossedBufferKey"];
 
-  v8 = [(CRCameraReader *)self embossedNumberModel];
-  v9 = [v8 creditcardResultsFromImage:v6];
+  embossedNumberModel = [(CRCameraReader *)self embossedNumberModel];
+  v9 = [embossedNumberModel creditcardResultsFromImage:imageByApplyingHistogramCorrection];
   v10 = [v9 objectForKey:@"arrayResult"];
 
   v11 = 0;
@@ -8205,8 +8205,8 @@ void __68__CRCameraReader_findCCResultsInImageFlat_usingTextFeatures_invert___bl
 
     if (v15 && isValidCodeLocation(v15, 1, *v13, v13[1], v13[2], v13[3]))
     {
-      [v5 setObject:v15 forKey:@"code"];
-      [v5 setObject:MEMORY[0x277CBEC38] forKey:@"accepted"];
+      [dictionary setObject:v15 forKey:@"code"];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"accepted"];
       v11 = v15;
       break;
     }
@@ -8215,46 +8215,46 @@ void __68__CRCameraReader_findCCResultsInImageFlat_usingTextFeatures_invert___bl
     v11 = v15;
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)findCCNumberInImageEmbossed:(id)a3 withFinalDigit:(id)a4
+- (id)findCCNumberInImageEmbossed:(id)embossed withFinalDigit:(id)digit
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [v7 height];
-  v42 = [v7 imageByScalingToWidth:(28.0 / v9 * objc_msgSend(v7 height:{"width")), (28.0 / v9 * objc_msgSend(v7, "height"))}];
-  v10 = [v42 imageByApplyingHistogramCorrection];
-  v11 = [(CRCameraReader *)self embossedExpirationModel];
-  v12 = [v11 creditcardResultsFromImage:v10];
+  embossedCopy = embossed;
+  digitCopy = digit;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  height = [digitCopy height];
+  v42 = [digitCopy imageByScalingToWidth:(28.0 / height * objc_msgSend(digitCopy height:{"width")), (28.0 / height * objc_msgSend(digitCopy, "height"))}];
+  imageByApplyingHistogramCorrection = [v42 imageByApplyingHistogramCorrection];
+  embossedExpirationModel = [(CRCameraReader *)self embossedExpirationModel];
+  v12 = [embossedExpirationModel creditcardResultsFromImage:imageByApplyingHistogramCorrection];
   v13 = [v12 objectForKey:@"FastScanningCTCSegmentKey"];
 
   v43 = v13;
   v14 = [(CRCameraReader *)self extractFinalDigitStringFromNumbers:v13];
   if ([v14 length] != 1)
   {
-    v15 = [v10 imageByAdjustingBrightnessAlpha:1.3 beta:128.0];
-    v16 = [v15 imageByApplyingHistogramCorrection];
+    v15 = [imageByApplyingHistogramCorrection imageByAdjustingBrightnessAlpha:1.3 beta:128.0];
+    imageByApplyingHistogramCorrection2 = [v15 imageByApplyingHistogramCorrection];
 
-    v17 = [(CRCameraReader *)self embossedExpirationModel];
-    v18 = [v17 creditcardResultsFromImage:v16];
+    embossedExpirationModel2 = [(CRCameraReader *)self embossedExpirationModel];
+    v18 = [embossedExpirationModel2 creditcardResultsFromImage:imageByApplyingHistogramCorrection2];
     v19 = [v18 objectForKey:@"FastScanningCTCSegmentKey"];
 
     v20 = [(CRCameraReader *)self extractFinalDigitStringFromNumbers:v19];
 
-    v10 = v16;
+    imageByApplyingHistogramCorrection = imageByApplyingHistogramCorrection2;
     v43 = v19;
     v14 = v20;
   }
 
   if ([v14 length] == 1)
   {
-    v39 = v6;
-    v40 = v8;
-    v41 = [v6 imageByApplyingHistogramCorrection];
-    v21 = [(CRCameraReader *)self embossedNumberModel];
-    v22 = [v21 creditcardResultsFromImage:v41];
+    v39 = embossedCopy;
+    v40 = dictionary;
+    imageByApplyingHistogramCorrection3 = [embossedCopy imageByApplyingHistogramCorrection];
+    embossedNumberModel = [(CRCameraReader *)self embossedNumberModel];
+    v22 = [embossedNumberModel creditcardResultsFromImage:imageByApplyingHistogramCorrection3];
     v23 = [v22 objectForKey:@"arrayResult"];
 
     v24 = enrichedNumbersListHK(v23);
@@ -8275,11 +8275,11 @@ void __68__CRCameraReader_findCCResultsInImageFlat_usingTextFeatures_invert___bl
       }
     }
 
-    v29 = [v41 imageByAdjustingBrightnessAlpha:2.0 beta:100.0];
-    v30 = [v29 imageByApplyingHistogramCorrection];
+    v29 = [imageByApplyingHistogramCorrection3 imageByAdjustingBrightnessAlpha:2.0 beta:100.0];
+    imageByApplyingHistogramCorrection4 = [v29 imageByApplyingHistogramCorrection];
 
-    v31 = [(CRCameraReader *)self embossedNumberModel];
-    v32 = [v31 creditcardResultsFromImage:v30];
+    embossedNumberModel2 = [(CRCameraReader *)self embossedNumberModel];
+    v32 = [embossedNumberModel2 creditcardResultsFromImage:imageByApplyingHistogramCorrection4];
     v33 = [v32 objectForKey:@"arrayResult"];
 
     v24 = enrichedNumbersListHK(v33);
@@ -8306,32 +8306,32 @@ LABEL_13:
     v28 = 0;
 LABEL_14:
 
-    v6 = v39;
-    v8 = v40;
+    embossedCopy = v39;
+    dictionary = v40;
   }
 
-  return v8;
+  return dictionary;
 }
 
-- (id)findCCNameInImageEmbossed:(id)a3
+- (id)findCCNameInImageEmbossed:(id)embossed
 {
-  v4 = [a3 imageByApplyingHistogramCorrection];
-  v5 = [(CRCameraReader *)self embossedCardholderModel];
-  v6 = [v5 creditcardResultsFromImage:v4];
+  imageByApplyingHistogramCorrection = [embossed imageByApplyingHistogramCorrection];
+  embossedCardholderModel = [(CRCameraReader *)self embossedCardholderModel];
+  v6 = [embossedCardholderModel creditcardResultsFromImage:imageByApplyingHistogramCorrection];
   v7 = [v6 objectForKey:@"arrayResult"];
 
-  v8 = [(CRCameraReader *)self contactsCache];
-  v9 = [(CRCameraReader *)self previousContactMatches];
-  v10 = extractCardholderNameResults(v7, v8, v9);
+  contactsCache = [(CRCameraReader *)self contactsCache];
+  previousContactMatches = [(CRCameraReader *)self previousContactMatches];
+  v10 = extractCardholderNameResults(v7, contactsCache, previousContactMatches);
 
   return v10;
 }
 
-- (id)findCCExpDateInImageEmbossed:(id)a3
+- (id)findCCExpDateInImageEmbossed:(id)embossed
 {
-  v4 = [a3 imageByApplyingHistogramCorrection];
-  v5 = [(CRCameraReader *)self embossedExpirationModel];
-  v6 = [v5 creditcardResultsFromImage:v4];
+  imageByApplyingHistogramCorrection = [embossed imageByApplyingHistogramCorrection];
+  embossedExpirationModel = [(CRCameraReader *)self embossedExpirationModel];
+  v6 = [embossedExpirationModel creditcardResultsFromImage:imageByApplyingHistogramCorrection];
 
   v7 = [v6 objectForKey:@"FastScanningCTCSegmentKey"];
   v8 = +[CRInsights sharedInsights];
@@ -8379,36 +8379,36 @@ LABEL_14:
 
 - (void)removeLayerTree
 {
-  v4 = [(CRCameraReader *)self diagnosticHUDLayer];
-  [v4 removeFromSuperlayer];
+  diagnosticHUDLayer = [(CRCameraReader *)self diagnosticHUDLayer];
+  [diagnosticHUDLayer removeFromSuperlayer];
 
-  v5 = [(CRCameraReader *)self alignmentLayer];
-  [v5 removeFromSuperlayer];
+  alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+  [alignmentLayer removeFromSuperlayer];
 
-  v6 = [(CRCameraReader *)self boxLayer];
-  [v6 removeFromSuperlayer];
+  boxLayer = [(CRCameraReader *)self boxLayer];
+  [boxLayer removeFromSuperlayer];
 
-  v7 = [(CRCameraReader *)self sessionManager];
-  v3 = [v7 previewLayer];
-  [v3 removeFromSuperlayer];
+  sessionManager = [(CRCameraReader *)self sessionManager];
+  previewLayer = [sessionManager previewLayer];
+  [previewLayer removeFromSuperlayer];
 }
 
-- (void)primeBoxLayerHideTimerWithFrameTime:(id *)a3
+- (void)primeBoxLayerHideTimerWithFrameTime:(id *)time
 {
-  v5 = [(CRCameraReader *)self boxLayerHideTimer];
-  v8 = *a3;
+  boxLayerHideTimer = [(CRCameraReader *)self boxLayerHideTimer];
+  v8 = *time;
   Seconds = CMTimeGetSeconds(&v8);
   [(CRCameraReader *)self configDemoSpeed];
-  CMTimeMakeWithSeconds(&v8, Seconds + 0.5 / v7, a3->var1);
-  [v5 setFireTime:&v8];
+  CMTimeMakeWithSeconds(&v8, Seconds + 0.5 / v7, time->var1);
+  [boxLayerHideTimer setFireTime:&v8];
 }
 
 - (void)pauseBoxLayerHideTimer
 {
-  v2 = [(CRCameraReader *)self boxLayerHideTimer];
+  boxLayerHideTimer = [(CRCameraReader *)self boxLayerHideTimer];
   v3 = *MEMORY[0x277CC08B0];
   v4 = *(MEMORY[0x277CC08B0] + 16);
-  [v2 setFireTime:&v3];
+  [boxLayerHideTimer setFireTime:&v3];
 }
 
 - (void)hideBoxLayer
@@ -8429,47 +8429,47 @@ void __30__CRCameraReader_hideBoxLayer__block_invoke(uint64_t a1)
 
 - (CGRect)boxLayerPresentationFrame
 {
-  v3 = [(CRCameraReader *)self view];
-  v4 = [v3 layer];
-  [v4 bounds];
+  view = [(CRCameraReader *)self view];
+  layer = [view layer];
+  [layer bounds];
   Width = CGRectGetWidth(v28);
-  v6 = [(CRCameraReader *)self view];
-  v7 = [v6 layer];
-  [v7 bounds];
+  view2 = [(CRCameraReader *)self view];
+  layer2 = [view2 layer];
+  [layer2 bounds];
   if (Width <= CGRectGetHeight(v29))
   {
-    v8 = [(CRCameraReader *)self view];
-    v9 = [v8 layer];
-    [v9 bounds];
+    view3 = [(CRCameraReader *)self view];
+    layer3 = [view3 layer];
+    [layer3 bounds];
     v10 = CGRectGetWidth(v31);
     v11 = 0.8;
   }
 
   else
   {
-    v8 = [(CRCameraReader *)self view];
-    v9 = [v8 layer];
-    [v9 bounds];
+    view3 = [(CRCameraReader *)self view];
+    layer3 = [view3 layer];
+    [layer3 bounds];
     v10 = CGRectGetWidth(v30);
     v11 = 0.65;
   }
 
   v12 = v10 * v11;
 
-  v13 = [(CRCameraReader *)self boxLayer];
-  [v13 bounds];
+  boxLayer = [(CRCameraReader *)self boxLayer];
+  [boxLayer bounds];
   Height = CGRectGetHeight(v32);
-  v15 = [(CRCameraReader *)self boxLayer];
-  [v15 bounds];
+  boxLayer2 = [(CRCameraReader *)self boxLayer];
+  [boxLayer2 bounds];
   v16 = CGRectGetWidth(v33);
 
-  v17 = [(CRCameraReader *)self view];
-  v18 = [v17 layer];
-  [v18 bounds];
+  view4 = [(CRCameraReader *)self view];
+  layer4 = [view4 layer];
+  [layer4 bounds];
   MidX = CGRectGetMidX(v34);
-  v20 = [(CRCameraReader *)self view];
-  v21 = [v20 layer];
-  [v21 bounds];
+  view5 = [(CRCameraReader *)self view];
+  layer5 = [view5 layer];
+  [layer5 bounds];
   v22 = v12 * Height / v16;
   v23 = CGRectGetMidY(v35) - v22 * 0.5;
 
@@ -8484,32 +8484,32 @@ void __30__CRCameraReader_hideBoxLayer__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)animatePresentCodeAtFrameTime:(id *)a3
+- (void)animatePresentCodeAtFrameTime:(id *)time
 {
   v73[3] = *MEMORY[0x277D85DE8];
-  v4 = [(CRCameraReader *)self boxLayer];
-  v5 = [v4 animationKeys];
-  v6 = [v5 containsObject:@"CRBoxLayerAnimationReveal"];
+  boxLayer = [(CRCameraReader *)self boxLayer];
+  animationKeys = [boxLayer animationKeys];
+  v6 = [animationKeys containsObject:@"CRBoxLayerAnimationReveal"];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CRCameraReader *)self boxLayer];
-    [v7 removeAllAnimations];
+    boxLayer2 = [(CRCameraReader *)self boxLayer];
+    [boxLayer2 removeAllAnimations];
   }
 
-  v62 = [MEMORY[0x277CD9E00] animation];
-  v63 = [MEMORY[0x277CD9E00] animation];
-  v8 = [(CRCameraReader *)self boxLayer];
-  [v8 position];
+  animation = [MEMORY[0x277CD9E00] animation];
+  animation2 = [MEMORY[0x277CD9E00] animation];
+  boxLayer3 = [(CRCameraReader *)self boxLayer];
+  [boxLayer3 position];
   MidX = v9;
   MidY = v11;
 
   memset(&v72, 0, sizeof(v72));
-  v13 = [(CRCameraReader *)self boxLayer];
-  v14 = v13;
-  if (v13)
+  boxLayer4 = [(CRCameraReader *)self boxLayer];
+  v14 = boxLayer4;
+  if (boxLayer4)
   {
-    [v13 transform];
+    [boxLayer4 transform];
   }
 
   else
@@ -8535,8 +8535,8 @@ void __30__CRCameraReader_hideBoxLayer__block_invoke(uint64_t a1)
     v76.size.width = width;
     v76.size.height = height;
     v19 = CGRectGetWidth(v76);
-    v20 = [(CRCameraReader *)self boxLayer];
-    [v20 bounds];
+    boxLayer5 = [(CRCameraReader *)self boxLayer];
+    [boxLayer5 bounds];
     v21 = CGRectGetWidth(v77);
 
     CATransform3DMakeScale(&v71, v19 / v21, v19 / v21, 1.0);
@@ -8548,10 +8548,10 @@ void __30__CRCameraReader_hideBoxLayer__block_invoke(uint64_t a1)
       v72 = v71;
     }
 
-    v22 = [(CRCameraReader *)self sessionManager];
-    v23 = [v22 isPreviewVideoMirrored];
+    sessionManager = [(CRCameraReader *)self sessionManager];
+    isPreviewVideoMirrored = [sessionManager isPreviewVideoMirrored];
 
-    if (v23)
+    if (isPreviewVideoMirrored)
     {
       v70 = v72;
       CATransform3DRotate(&v71, &v70, 3.14159265, 0.0, 1.0, 0.0);
@@ -8559,17 +8559,17 @@ void __30__CRCameraReader_hideBoxLayer__block_invoke(uint64_t a1)
     }
 
     v24 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"position"];
-    v25 = [(CRCameraReader *)self boxLayer];
-    [v25 position];
+    boxLayer6 = [(CRCameraReader *)self boxLayer];
+    [boxLayer6 position];
     v27 = v26;
-    v28 = [(CRCameraReader *)self boxLayer];
-    [v28 position];
+    boxLayer7 = [(CRCameraReader *)self boxLayer];
+    [boxLayer7 position];
     v30 = v29;
 
     v31 = MEMORY[0x277CBEA60];
     v32 = MEMORY[0x277CCAE60];
-    v33 = [(CRCameraReader *)self boxLayer];
-    [v33 position];
+    boxLayer8 = [(CRCameraReader *)self boxLayer];
+    [boxLayer8 position];
     v34 = [v32 valueWithCGPoint:?];
     v35 = [MEMORY[0x277CCABB0] valueWithCGPoint:{(MidX + v27) * 0.5, (MidY + v30) * 0.5}];
     v36 = [MEMORY[0x277CCAE60] valueWithCGPoint:{MidX, MidY}];
@@ -8594,11 +8594,11 @@ void __30__CRCameraReader_hideBoxLayer__block_invoke(uint64_t a1)
     [v38 setCalculationMode:@"cubic"];
     v41 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform"];
     v42 = MEMORY[0x277CCAE60];
-    v43 = [(CRCameraReader *)self boxLayer];
-    v44 = v43;
-    if (v43)
+    boxLayer9 = [(CRCameraReader *)self boxLayer];
+    v44 = boxLayer9;
+    if (boxLayer9)
     {
-      [v43 transform];
+      [boxLayer9 transform];
     }
 
     else
@@ -8621,14 +8621,14 @@ void __30__CRCameraReader_hideBoxLayer__block_invoke(uint64_t a1)
     [v51 setToValue:v53];
 
     [(CRCameraReader *)self configDemoSpeed];
-    [v62 setDuration:0.5 / v54];
+    [animation setDuration:0.5 / v54];
     v55 = [MEMORY[0x277CBEA60] arrayWithObjects:{v24, v38, v41, 0}];
-    [v62 setAnimations:v55];
+    [animation setAnimations:v55];
 
     [(CRCameraReader *)self configDemoSpeed];
-    [v63 setDuration:0.5 / v56];
+    [animation2 setDuration:0.5 / v56];
     v57 = [MEMORY[0x277CBEA60] arrayWithObject:v51];
-    [v63 setAnimations:v57];
+    [animation2 setAnimations:v57];
   }
 
   else
@@ -8641,30 +8641,30 @@ void __30__CRCameraReader_hideBoxLayer__block_invoke(uint64_t a1)
     [v24 setToValue:v46];
 
     [(CRCameraReader *)self configDemoSpeed];
-    [v62 setDuration:0.25 / v47];
+    [animation setDuration:0.25 / v47];
     [(CRCameraReader *)self configDemoSpeed];
-    [v63 setDuration:0.25 / v48];
+    [animation2 setDuration:0.25 / v48];
     v38 = [MEMORY[0x277CBEA60] arrayWithObject:v24];
-    [v63 setAnimations:v38];
+    [animation2 setAnimations:v38];
   }
 
   objc_initWeak(&v71, self);
-  v58 = [(CRCameraReader *)self boxLayer];
+  boxLayer10 = [(CRCameraReader *)self boxLayer];
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
   v64[2] = __48__CRCameraReader_animatePresentCodeAtFrameTime___block_invoke;
   v64[3] = &unk_278EAA940;
   objc_copyWeak(v67, &v71);
-  v59 = v62;
+  v59 = animation;
   v65 = v59;
   v67[1] = a2;
-  v60 = v63;
+  v60 = animation2;
   v66 = v60;
   v67[2] = *&MidX;
   v67[3] = *&MidY;
   v68 = v72;
   v69 = 0x3FD999999999999ALL;
-  [v58 addCompletionBlock:v64];
+  [boxLayer10 addCompletionBlock:v64];
 
   objc_destroyWeak(v67);
   objc_destroyWeak(&v71);
@@ -8739,24 +8739,24 @@ void __48__CRCameraReader_animatePresentCodeAtFrameTime___block_invoke(uint64_t 
   [v32 setCodePresented:v31];
 }
 
-- (void)showMessage:(id)a3 color:(id)a4 style:(int64_t)a5 duration:(double)a6
+- (void)showMessage:(id)message color:(id)color style:(int64_t)style duration:(double)duration
 {
-  v10 = a3;
-  v78 = a4;
+  messageCopy = message;
+  colorCopy = color;
   v11 = 0;
-  if (a5 > 1)
+  if (style > 1)
   {
-    if (a5 == 2)
+    if (style == 2)
     {
       v15 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreRecognition"];
       v11 = [v15 localizedStringForKey:@"Success" value:&stru_2859636D0 table:0];
 
       v13 = 0;
-      v12 = v10;
+      v12 = messageCopy;
       goto LABEL_11;
     }
 
-    if (a5 != 3)
+    if (style != 3)
     {
       goto LABEL_12;
     }
@@ -8766,32 +8766,32 @@ void __48__CRCameraReader_animatePresentCodeAtFrameTime___block_invoke(uint64_t 
     goto LABEL_9;
   }
 
-  if (!a5)
+  if (!style)
   {
     v12 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreRecognition"];
     v14 = [v12 localizedStringForKey:@"Note" value:&stru_2859636D0 table:0];
 LABEL_9:
     v11 = v14;
-    v13 = v10;
+    v13 = messageCopy;
     goto LABEL_11;
   }
 
-  v12 = v10;
+  v12 = messageCopy;
   v13 = 0;
-  if (a5 == 1)
+  if (style == 1)
   {
 LABEL_11:
 
-    v10 = v13;
+    messageCopy = v13;
   }
 
 LABEL_12:
   v16 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.CoreRecognition"];
   v17 = [v16 localizedStringForKey:@"OK" value:&stru_2859636D0 table:0];
 
-  v18 = [(CRCameraReader *)self activityIndicator];
+  activityIndicator = [(CRCameraReader *)self activityIndicator];
 
-  if (v18)
+  if (activityIndicator)
   {
     goto LABEL_23;
   }
@@ -8799,40 +8799,40 @@ LABEL_12:
   v19 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:0];
   [(CRCameraReader *)self setActivityIndicator:v19];
 
-  v20 = [(CRCameraReader *)self activityIndicator];
-  [v20 setHidesWhenStopped:1];
+  activityIndicator2 = [(CRCameraReader *)self activityIndicator];
+  [activityIndicator2 setHidesWhenStopped:1];
 
-  v21 = [(CRCameraReader *)self view];
-  v22 = [(CRCameraReader *)self activityIndicator];
-  [v21 addSubview:v22];
+  view = [(CRCameraReader *)self view];
+  activityIndicator3 = [(CRCameraReader *)self activityIndicator];
+  [view addSubview:activityIndicator3];
 
   if (![(CRCameraReader *)self configPresentCentered])
   {
-    v77 = [(CRCameraReader *)self activityIndicator];
-    v76 = [(CRCameraReader *)self view];
-    [v76 bounds];
+    activityIndicator4 = [(CRCameraReader *)self activityIndicator];
+    view2 = [(CRCameraReader *)self view];
+    [view2 bounds];
     MidX = CGRectGetMidX(v93);
-    v43 = [(CRCameraReader *)self activityIndicator];
-    [v43 bounds];
+    activityIndicator5 = [(CRCameraReader *)self activityIndicator];
+    [activityIndicator5 bounds];
     Width = CGRectGetWidth(v94);
-    v45 = [(CRCameraReader *)self view];
-    [v45 bounds];
+    view3 = [(CRCameraReader *)self view];
+    [view3 bounds];
     MaxY = CGRectGetMaxY(v95);
-    v47 = [(CRCameraReader *)self activityIndicator];
-    [v47 bounds];
+    activityIndicator6 = [(CRCameraReader *)self activityIndicator];
+    [activityIndicator6 bounds];
     Height = CGRectGetHeight(v96);
-    v49 = [(CRCameraReader *)self activityIndicator];
-    [v49 bounds];
+    activityIndicator7 = [(CRCameraReader *)self activityIndicator];
+    [activityIndicator7 bounds];
     v50 = CGRectGetWidth(v97);
-    v51 = [(CRCameraReader *)self activityIndicator];
-    [v51 bounds];
-    [v77 setFrame:{MidX + Width * -0.5, MaxY + Height * -1.5 + -44.0, v50, CGRectGetHeight(v98)}];
+    activityIndicator8 = [(CRCameraReader *)self activityIndicator];
+    [activityIndicator8 bounds];
+    [activityIndicator4 setFrame:{MidX + Width * -0.5, MaxY + Height * -1.5 + -44.0, v50, CGRectGetHeight(v98)}];
 
-    v52 = [MEMORY[0x277D75418] currentDevice];
-    if ([v52 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
-      v53 = [(CRCameraReader *)self view];
-      [v53 bounds];
+      view4 = [(CRCameraReader *)self view];
+      [view4 bounds];
       v105.size.width = 1024.0;
       v105.size.height = 748.0;
       v105.origin.x = 0.0;
@@ -8843,8 +8843,8 @@ LABEL_12:
 
       else
       {
-        v54 = [(CRCameraReader *)self view];
-        [v54 bounds];
+        view5 = [(CRCameraReader *)self view];
+        [view5 bounds];
         v106.size.width = 768.0;
         v106.size.height = 1004.0;
         v106.origin.x = 0.0;
@@ -8854,25 +8854,25 @@ LABEL_12:
         if (!v55)
         {
 LABEL_21:
-          v41 = [(CRCameraReader *)self activityIndicator];
-          [v41 setAutoresizingMask:13];
+          activityIndicator9 = [(CRCameraReader *)self activityIndicator];
+          [activityIndicator9 setAutoresizingMask:13];
           goto LABEL_22;
         }
       }
 
-      v52 = [(CRCameraReader *)self activityIndicator];
-      v56 = [(CRCameraReader *)self activityIndicator];
-      [v56 frame];
+      currentDevice = [(CRCameraReader *)self activityIndicator];
+      activityIndicator10 = [(CRCameraReader *)self activityIndicator];
+      [activityIndicator10 frame];
       MinX = CGRectGetMinX(v101);
-      v58 = [(CRCameraReader *)self activityIndicator];
-      [v58 frame];
+      activityIndicator11 = [(CRCameraReader *)self activityIndicator];
+      [activityIndicator11 frame];
       MinY = CGRectGetMinY(v102);
-      v60 = [(CRCameraReader *)self activityIndicator];
-      [v60 frame];
+      activityIndicator12 = [(CRCameraReader *)self activityIndicator];
+      [activityIndicator12 frame];
       v61 = CGRectGetWidth(v103);
-      v62 = [(CRCameraReader *)self activityIndicator];
-      [v62 frame];
-      [v52 setFrame:{MinX, MinY + -44.0, v61, CGRectGetHeight(v104)}];
+      activityIndicator13 = [(CRCameraReader *)self activityIndicator];
+      [activityIndicator13 frame];
+      [currentDevice setFrame:{MinX, MinY + -44.0, v61, CGRectGetHeight(v104)}];
     }
 
     goto LABEL_21;
@@ -8883,54 +8883,54 @@ LABEL_21:
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(CRCameraReader *)self activityIndicator];
+  activityIndicator14 = [(CRCameraReader *)self activityIndicator];
   v87.origin.x = v24;
   v87.origin.y = v26;
   v87.size.width = v28;
   v87.size.height = v30;
   v32 = CGRectGetMidX(v87);
-  v33 = [(CRCameraReader *)self activityIndicator];
-  [v33 bounds];
+  activityIndicator15 = [(CRCameraReader *)self activityIndicator];
+  [activityIndicator15 bounds];
   v34 = CGRectGetWidth(v88);
   v89.origin.x = v24;
   v89.origin.y = v26;
   v89.size.width = v28;
   v89.size.height = v30;
   v35 = CGRectGetMaxY(v89);
-  v36 = [(CRCameraReader *)self activityIndicator];
-  [v36 bounds];
+  activityIndicator16 = [(CRCameraReader *)self activityIndicator];
+  [activityIndicator16 bounds];
   v37 = CGRectGetHeight(v90);
-  v38 = [(CRCameraReader *)self activityIndicator];
-  [v38 bounds];
+  activityIndicator17 = [(CRCameraReader *)self activityIndicator];
+  [activityIndicator17 bounds];
   v39 = CGRectGetWidth(v91);
-  v40 = [(CRCameraReader *)self activityIndicator];
-  [v40 bounds];
-  [v31 setFrame:{v32 + v34 * -0.5, v35 + v37 * 0.5, v39, CGRectGetHeight(v92)}];
+  activityIndicator18 = [(CRCameraReader *)self activityIndicator];
+  [activityIndicator18 bounds];
+  [activityIndicator14 setFrame:{v32 + v34 * -0.5, v35 + v37 * 0.5, v39, CGRectGetHeight(v92)}];
 
-  v41 = [(CRCameraReader *)self activityIndicator];
-  [v41 setAutoresizingMask:45];
+  activityIndicator9 = [(CRCameraReader *)self activityIndicator];
+  [activityIndicator9 setAutoresizingMask:45];
 LABEL_22:
 
 LABEL_23:
-  v63 = [(CRCameraReader *)self activityIndicator];
-  if (a5 == 1)
+  activityIndicator19 = [(CRCameraReader *)self activityIndicator];
+  if (style == 1)
   {
-    [v63 startAnimating];
+    [activityIndicator19 startAnimating];
   }
 
   else
   {
-    [v63 stopAnimating];
+    [activityIndicator19 stopAnimating];
   }
 
   objc_initWeak(location, self);
-  v64 = [(CRCameraReader *)self configPresentCentered];
+  configPresentCentered = [(CRCameraReader *)self configPresentCentered];
   [(CRCameraReader *)self configDemoSpeed];
   v66 = v65;
-  v67 = [(CRCameraReader *)self codePresented];
-  [v67 timeIntervalSinceNow];
+  codePresented = [(CRCameraReader *)self codePresented];
+  [codePresented timeIntervalSinceNow];
   v69 = 0.25;
-  if (v64)
+  if (configPresentCentered)
   {
     v69 = 0.5;
   }
@@ -8942,14 +8942,14 @@ LABEL_23:
   block[1] = 3221225472;
   block[2] = __51__CRCameraReader_showMessage_color_style_duration___block_invoke;
   block[3] = &unk_278EAA9E0;
-  v80 = v78;
-  v81 = self;
-  v82 = v10;
-  v85[1] = *&a6;
-  v72 = v10;
-  v73 = v78;
+  v80 = colorCopy;
+  selfCopy = self;
+  v82 = messageCopy;
+  v85[1] = *&duration;
+  v72 = messageCopy;
+  v73 = colorCopy;
   objc_copyWeak(v85, location);
-  v85[2] = a5;
+  v85[2] = style;
   v83 = v11;
   v84 = v17;
   v74 = v17;
@@ -9069,13 +9069,13 @@ void __51__CRCameraReader_showMessage_color_style_duration___block_invoke_5(uint
 
 - (void)sendDidCancel
 {
-  v3 = [(CRCameraReader *)self delegateQueue];
+  delegateQueue = [(CRCameraReader *)self delegateQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __31__CRCameraReader_sendDidCancel__block_invoke;
   v4[3] = &unk_278EAA5E8;
   v4[4] = self;
-  cr_dispatch_async(v3, v4);
+  cr_dispatch_async(delegateQueue, v4);
 }
 
 void __31__CRCameraReader_sendDidCancel__block_invoke(uint64_t a1)
@@ -9088,18 +9088,18 @@ void __31__CRCameraReader_sendDidCancel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendDidEndWithInfo:(id)a3
+- (void)sendDidEndWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CRCameraReader *)self delegateQueue];
+  infoCopy = info;
+  delegateQueue = [(CRCameraReader *)self delegateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__CRCameraReader_sendDidEndWithInfo___block_invoke;
   v7[3] = &unk_278EAA6D0;
   v7[4] = self;
-  v6 = v4;
+  v6 = infoCopy;
   v8 = v6;
-  cr_dispatch_async(v5, v7);
+  cr_dispatch_async(delegateQueue, v7);
 }
 
 uint64_t __37__CRCameraReader_sendDidEndWithInfo___block_invoke(uint64_t a1)
@@ -9129,18 +9129,18 @@ uint64_t __37__CRCameraReader_sendDidEndWithInfo___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)sendDidRecognizeNewObjects:(id)a3
+- (void)sendDidRecognizeNewObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [(CRCameraReader *)self delegateQueue];
+  objectsCopy = objects;
+  delegateQueue = [(CRCameraReader *)self delegateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__CRCameraReader_sendDidRecognizeNewObjects___block_invoke;
   v7[3] = &unk_278EAA6D0;
   v7[4] = self;
-  v6 = v4;
+  v6 = objectsCopy;
   v8 = v6;
-  cr_dispatch_async(v5, v7);
+  cr_dispatch_async(delegateQueue, v7);
 }
 
 void __45__CRCameraReader_sendDidRecognizeNewObjects___block_invoke(uint64_t a1)
@@ -9234,13 +9234,13 @@ void __45__CRCameraReader_sendDidRecognizeNewObjects___block_invoke(uint64_t a1)
 - (void)sendDidEndAnimation
 {
   v3 = dispatch_time(0, 500000000);
-  v4 = [(CRCameraReader *)self delegateQueue];
+  delegateQueue = [(CRCameraReader *)self delegateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__CRCameraReader_sendDidEndAnimation__block_invoke;
   block[3] = &unk_278EAA5E8;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, delegateQueue, block);
 }
 
 void __37__CRCameraReader_sendDidEndAnimation__block_invoke(uint64_t a1)
@@ -9249,18 +9249,18 @@ void __37__CRCameraReader_sendDidEndAnimation__block_invoke(uint64_t a1)
   [v2 cameraReaderDidEnd:*(a1 + 32)];
 }
 
-- (void)sendDidEndWithError:(id)a3
+- (void)sendDidEndWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(CRCameraReader *)self delegateQueue];
+  errorCopy = error;
+  delegateQueue = [(CRCameraReader *)self delegateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__CRCameraReader_sendDidEndWithError___block_invoke;
   v7[3] = &unk_278EAA6D0;
   v7[4] = self;
-  v6 = v4;
+  v6 = errorCopy;
   v8 = v6;
-  cr_dispatch_async(v5, v7);
+  cr_dispatch_async(delegateQueue, v7);
 }
 
 uint64_t __38__CRCameraReader_sendDidEndWithError___block_invoke(uint64_t a1)
@@ -9284,13 +9284,13 @@ uint64_t __38__CRCameraReader_sendDidEndWithError___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)attributedStringWithFrame:(CGSize)a3 withFont:(id)a4 withString:(id)a5 color:(CGColor *)a6
+- (id)attributedStringWithFrame:(CGSize)frame withFont:(id)font withString:(id)string color:(CGColor *)color
 {
-  height = a3.height;
-  width = a3.width;
+  height = frame.height;
+  width = frame.width;
   v35[3] = *MEMORY[0x277D85DE8];
-  name = a4;
-  v31 = a5;
+  name = font;
+  stringCopy = string;
   v33 = objc_opt_new();
   [v33 setAlignment:1];
   v38.origin.x = 0.0;
@@ -9311,11 +9311,11 @@ uint64_t __38__CRCameraReader_sendDidEndWithError___block_invoke(uint64_t a1)
     v34[0] = v10;
     v34[1] = v11;
     v35[0] = v15;
-    v35[1] = a6;
+    v35[1] = color;
     v34[2] = v13;
     v35[2] = v33;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:3];
-    v18 = [v16 initWithString:v31 attributes:v17];
+    v18 = [v16 initWithString:stringCopy attributes:v17];
 
     v19 = CTFramesetterCreateWithAttributedString(v18);
     v37.location = 0;
@@ -9379,43 +9379,43 @@ uint64_t __38__CRCameraReader_sendDidEndWithError___block_invoke(uint64_t a1)
   return v18;
 }
 
-- (id)createTextLayerForRecognizedObject:(id)a3
+- (id)createTextLayerForRecognizedObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 overlayString];
+  objectCopy = object;
+  overlayString = [objectCopy overlayString];
 
-  if (v5)
+  if (overlayString)
   {
-    [v4 boundingBox];
+    [objectCopy boundingBox];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(CRCameraReader *)self sessionManager];
-    v15 = [(CRCameraReader *)self sessionManager];
-    v16 = [v15 previewLayer];
+    sessionManager = [(CRCameraReader *)self sessionManager];
+    sessionManager2 = [(CRCameraReader *)self sessionManager];
+    previewLayer = [sessionManager2 previewLayer];
     v17 = 1.0 - v7;
-    [v14 convertCameraPointOCR:v16 toLayer:0 flipped:{v9, 1.0 - v7}];
+    [sessionManager convertCameraPointOCR:previewLayer toLayer:0 flipped:{v9, 1.0 - v7}];
     v19 = v18;
     v21 = v20;
 
-    v22 = [(CRCameraReader *)self sessionManager];
-    v23 = [(CRCameraReader *)self sessionManager];
-    v24 = [v23 previewLayer];
+    sessionManager3 = [(CRCameraReader *)self sessionManager];
+    sessionManager4 = [(CRCameraReader *)self sessionManager];
+    previewLayer2 = [sessionManager4 previewLayer];
     v25 = v9 + v13;
-    [v22 convertCameraPointOCR:v24 toLayer:0 flipped:{v9 + v13, v17}];
+    [sessionManager3 convertCameraPointOCR:previewLayer2 toLayer:0 flipped:{v9 + v13, v17}];
     v27 = v26;
 
-    v28 = [(CRCameraReader *)self sessionManager];
-    v29 = [(CRCameraReader *)self sessionManager];
-    v30 = [v29 previewLayer];
+    sessionManager5 = [(CRCameraReader *)self sessionManager];
+    sessionManager6 = [(CRCameraReader *)self sessionManager];
+    previewLayer3 = [sessionManager6 previewLayer];
     v31 = v11 + v17;
-    [v28 convertCameraPointOCR:v30 toLayer:0 flipped:{v25, v31}];
+    [sessionManager5 convertCameraPointOCR:previewLayer3 toLayer:0 flipped:{v25, v31}];
 
-    v32 = [(CRCameraReader *)self sessionManager];
-    v33 = [(CRCameraReader *)self sessionManager];
-    v34 = [v33 previewLayer];
-    [v32 convertCameraPointOCR:v34 toLayer:0 flipped:{v9, v31}];
+    sessionManager7 = [(CRCameraReader *)self sessionManager];
+    sessionManager8 = [(CRCameraReader *)self sessionManager];
+    previewLayer4 = [sessionManager8 previewLayer];
+    [sessionManager7 convertCameraPointOCR:previewLayer4 toLayer:0 flipped:{v9, v31}];
     v36 = v35;
 
     v52.size.width = v36 - v19;
@@ -9427,45 +9427,45 @@ uint64_t __38__CRCameraReader_sendDidEndWithError___block_invoke(uint64_t a1)
     y = v53.origin.y;
     width = v53.size.width;
     height = v53.size.height;
-    v5 = [MEMORY[0x277CD9FC8] layer];
+    overlayString = [MEMORY[0x277CD9FC8] layer];
     v41 = +[CRColor whiteColor];
-    [v5 setBackgroundColor:{objc_msgSend(v41, "CGColor")}];
+    [overlayString setBackgroundColor:{objc_msgSend(v41, "CGColor")}];
 
     [(CRCameraReader *)self ocrOverlayBackgroundOpacity];
-    [v5 setOpacity:?];
+    [overlayString setOpacity:?];
     v42 = +[CRColor blackColor];
-    [v5 setForegroundColor:{objc_msgSend(v42, "CGColor")}];
+    [overlayString setForegroundColor:{objc_msgSend(v42, "CGColor")}];
 
-    [v5 setFrame:{x, y, width, height}];
-    [v5 setAlignmentMode:*MEMORY[0x277CDA020]];
-    [v5 setFontSize:24.0];
-    [v4 rotation];
+    [overlayString setFrame:{x, y, width, height}];
+    [overlayString setAlignmentMode:*MEMORY[0x277CDA020]];
+    [overlayString setFontSize:24.0];
+    [objectCopy rotation];
     CATransform3DMakeRotation(&v50, -v43, 0.0, 0.0, 1.0);
     v49 = v50;
-    [v5 setTransform:&v49];
-    [v5 setAllowsFontSubpixelQuantization:1];
-    [v5 setMasksToBounds:1];
-    [v5 setCornerRadius:10.0];
-    v44 = [(CRCameraReader *)self ocrOverlayFontName];
-    v45 = [v4 overlayString];
-    v46 = [v45 string];
-    v47 = -[CRCameraReader attributedStringWithFrame:withFont:withString:color:](self, "attributedStringWithFrame:withFont:withString:color:", v44, v46, [v5 foregroundColor], width, height);
-    [v5 setString:v47];
+    [overlayString setTransform:&v49];
+    [overlayString setAllowsFontSubpixelQuantization:1];
+    [overlayString setMasksToBounds:1];
+    [overlayString setCornerRadius:10.0];
+    ocrOverlayFontName = [(CRCameraReader *)self ocrOverlayFontName];
+    overlayString2 = [objectCopy overlayString];
+    string = [overlayString2 string];
+    v47 = -[CRCameraReader attributedStringWithFrame:withFont:withString:color:](self, "attributedStringWithFrame:withFont:withString:color:", ocrOverlayFontName, string, [overlayString foregroundColor], width, height);
+    [overlayString setString:v47];
   }
 
-  return v5;
+  return overlayString;
 }
 
-- (void)showTextDetectorObjects:(id)a3
+- (void)showTextDetectorObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__CRCameraReader_showTextDetectorObjects___block_invoke;
   v6[3] = &unk_278EAA6D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = objectsCopy;
+  v5 = objectsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -9539,14 +9539,14 @@ void __42__CRCameraReader_showTextDetectorObjects___block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendDidDisplayMessageStyle:(int64_t)a3
+- (void)sendDidDisplayMessageStyle:(int64_t)style
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __45__CRCameraReader_sendDidDisplayMessageStyle___block_invoke;
   v3[3] = &unk_278EAA6F8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = style;
   cr_dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -9578,19 +9578,19 @@ void __45__CRCameraReader_sendDidDisplayMessageStyle___block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendDidFindTarget:(id)a3 frameTime:(id *)a4
+- (void)sendDidFindTarget:(id)target frameTime:(id *)time
 {
-  v6 = a3;
-  v7 = [(CRCameraReader *)self delegateQueue];
+  targetCopy = target;
+  delegateQueue = [(CRCameraReader *)self delegateQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke;
   v9[3] = &unk_278EAA830;
   v9[4] = self;
-  v11 = *a4;
-  v8 = v6;
+  v11 = *time;
+  v8 = targetCopy;
   v10 = v8;
-  cr_dispatch_async(v7, v9);
+  cr_dispatch_async(delegateQueue, v9);
 }
 
 void __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke(uint64_t a1)
@@ -9638,9 +9638,9 @@ void __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke(uint64_t a1
   }
 }
 
-- (void)sendDidEndWithErrorDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (void)sendDidEndWithErrorDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
-  v6 = [MEMORY[0x277CCA9B8] errorWithDomain:a3 code:a4 userInfo:a5];
+  v6 = [MEMORY[0x277CCA9B8] errorWithDomain:domain code:code userInfo:info];
   [(CRCameraReader *)self sendDidEndWithError:?];
 }
 
@@ -9651,13 +9651,13 @@ void __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke(uint64_t a1
   return v2;
 }
 
-- (void)setOutputObjectTypes:(id)a3
+- (void)setOutputObjectTypes:(id)types
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_outputObjectTypes != v5)
+  typesCopy = types;
+  if (self->_outputObjectTypes != typesCopy)
   {
-    objc_storeStrong(&self->_outputObjectTypes, a3);
+    objc_storeStrong(&self->_outputObjectTypes, types);
     [(CRCameraReader *)self releaseCorrectedCardBuffer];
     [(CRCameraReader *)self createCorrectedCardBuffer];
     if ([(NSArray *)self->_outputObjectTypes containsObject:@"CROutputTypeCameraText"])
@@ -9669,13 +9669,13 @@ void __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke(uint64_t a1
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
       v9 = [v6 dictionaryWithDictionary:v8];
 
-      v10 = [(CRCameraReader *)self optionsDictionary];
-      LOBYTE(v8) = v10 == 0;
+      optionsDictionary = [(CRCameraReader *)self optionsDictionary];
+      LOBYTE(v8) = optionsDictionary == 0;
 
       if ((v8 & 1) == 0)
       {
-        v11 = [(CRCameraReader *)self optionsDictionary];
-        [v9 addEntriesFromDictionary:v11];
+        optionsDictionary2 = [(CRCameraReader *)self optionsDictionary];
+        [v9 addEntriesFromDictionary:optionsDictionary2];
       }
 
       v12 = [v9 objectForKey:v7];
@@ -9689,10 +9689,10 @@ void __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke(uint64_t a1
       v14 = [objc_alloc(MEMORY[0x277D70090]) initWithOptions:v9];
       [(CRCameraReader *)self setOcrImageReader:v14];
 
-      v15 = [(CRCameraReader *)self ocrImageReader];
+      ocrImageReader = [(CRCameraReader *)self ocrImageReader];
       v19 = *MEMORY[0x277D70058];
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-      [v15 setOutputObjectTypes:v16];
+      [ocrImageReader setOutputObjectTypes:v16];
 
       v17 = objc_opt_new();
       [(CRCameraReader *)self setTextDetectorRTFeedback:v17];
@@ -9704,14 +9704,14 @@ void __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke(uint64_t a1
   }
 }
 
-- (void)setOutputCapturedImageWidth:(unint64_t)a3
+- (void)setOutputCapturedImageWidth:(unint64_t)width
 {
-  if (a3 > 0x5FF)
+  if (width > 0x5FF)
   {
-    if (self->_outputCapturedImageWidth != a3)
+    if (self->_outputCapturedImageWidth != width)
     {
-      self->_outputCapturedImageWidth = a3;
-      self->_outputCapturedImageHeight = [objc_opt_class() capturedCardHeightForTargetWidth:a3];
+      self->_outputCapturedImageWidth = width;
+      self->_outputCapturedImageHeight = [objc_opt_class() capturedCardHeightForTargetWidth:width];
       [(CRCameraReader *)self releaseCorrectedCardBuffer];
 
       [(CRCameraReader *)self createCorrectedCardBuffer];
@@ -9720,33 +9720,33 @@ void __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke(uint64_t a1
 
   else
   {
-    NSLog(&cfstr_IgnoringAttemp.isa, a2, a3, 1536);
+    NSLog(&cfstr_IgnoringAttemp.isa, a2, width, 1536);
   }
 }
 
-- (void)setHidePlacementText:(BOOL)a3
+- (void)setHidePlacementText:(BOOL)text
 {
-  v3 = a3;
-  self->_hidePlacementText = a3;
-  v5 = [(CRCameraReader *)self alignmentLayer];
-  v4 = [v5 instructionLayer];
-  [v4 setHidden:v3];
+  textCopy = text;
+  self->_hidePlacementText = text;
+  alignmentLayer = [(CRCameraReader *)self alignmentLayer];
+  instructionLayer = [alignmentLayer instructionLayer];
+  [instructionLayer setHidden:textCopy];
 }
 
-- (id)generateStringFromDate:(id)a3
+- (id)generateStringFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateFormat:@"yyyyMMddHHmmssSSS"];
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:dateCopy];
 
   return v5;
 }
 
-- (void)updateContactsCache:(id)a3
+- (void)updateContactsCache:(id)cache
 {
   v23[6] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([MEMORY[0x277CBDAB8] authorizationStatusForEntityType:0] == 3)
   {
     v5 = *MEMORY[0x277CBD000];
@@ -9761,13 +9761,13 @@ void __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke(uint64_t a1
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:6];
     v9 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:v8];
     v10 = objc_alloc_init(MEMORY[0x277CBDAB8]);
-    v11 = [(CRCameraReader *)self previousContactMatches];
-    [v11 removeAllObjects];
+    previousContactMatches = [(CRCameraReader *)self previousContactMatches];
+    [previousContactMatches removeAllObjects];
 
     v22 = 0;
     v12 = [v10 _crossPlatformUnifiedMeContactWithKeysToFetch:v8 error:&v22];
     v13 = v22;
-    v14 = [v4 objectForKey:@"meContact"];
+    v14 = [dictionary objectForKey:@"meContact"];
     if (v14)
     {
       v15 = 1;
@@ -9783,9 +9783,9 @@ void __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke(uint64_t a1
     if (v16)
     {
       v17 = createCachedContact(v12);
-      [v4 setObject:v17 forKey:@"meContact"];
+      [dictionary setObject:v17 forKey:@"meContact"];
 
-      v18 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v4];
+      v18 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
       [(CRCameraReader *)self setContactsCache:v18];
     }
 
@@ -9793,11 +9793,11 @@ void __46__CRCameraReader_sendDidFindTarget_frameTime___block_invoke(uint64_t a1
     v20[1] = 3221225472;
     v20[2] = __38__CRCameraReader_updateContactsCache___block_invoke;
     v20[3] = &unk_278EAAA08;
-    v21 = v4;
+    v21 = dictionary;
     [v10 enumerateContactsWithFetchRequest:v9 error:0 usingBlock:v20];
   }
 
-  v19 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v4];
+  v19 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
   [(CRCameraReader *)self setContactsCache:v19];
 }
 
@@ -9823,16 +9823,16 @@ void __38__CRCameraReader_updateContactsCache___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)mergeInfo:(id)a3 intoFindInfo:(id)a4
+- (void)mergeInfo:(id)info intoFindInfo:(id)findInfo
 {
-  v5 = a4;
+  findInfoCopy = findInfo;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__CRCameraReader_mergeInfo_intoFindInfo___block_invoke;
   v7[3] = &unk_278EAAA30;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = findInfoCopy;
+  v6 = findInfoCopy;
+  [info enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __41__CRCameraReader_mergeInfo_intoFindInfo___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -9853,16 +9853,16 @@ void __41__CRCameraReader_mergeInfo_intoFindInfo___block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)extractFinalDigitStringFromNumbers:(id)a3
+- (id)extractFinalDigitStringFromNumbers:(id)numbers
 {
-  v3 = a3;
-  if ([v3 count])
+  numbersCopy = numbers;
+  if ([numbersCopy count])
   {
-    v4 = [v3 objectAtIndex:0];
+    v4 = [numbersCopy objectAtIndex:0];
     v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"0123456789 "];
-    v6 = [v5 invertedSet];
+    invertedSet = [v5 invertedSet];
 
-    v7 = [v4 componentsSeparatedByCharactersInSet:v6];
+    v7 = [v4 componentsSeparatedByCharactersInSet:invertedSet];
     v8 = [v7 componentsJoinedByString:&stru_2859636D0];
   }
 
@@ -9874,18 +9874,18 @@ void __41__CRCameraReader_mergeInfo_intoFindInfo___block_invoke(uint64_t a1, voi
   return v8;
 }
 
-+ (CGRect)uniformPadRect:(CGRect)a3 widthPadding:(float)a4 heightPadding:(float)a5 width:(double)a6 height:(double)a7
++ (CGRect)uniformPadRect:(CGRect)rect widthPadding:(float)padding heightPadding:(float)heightPadding width:(double)width height:(double)height
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = fmin(a4, fmin(a3.origin.x, a6 - CGRectGetMaxX(a3)));
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v14 = fmin(padding, fmin(rect.origin.x, width - CGRectGetMaxX(rect)));
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
   v20.size.height = height;
-  v15 = fmin(a5, fmin(y, a7 - CGRectGetMaxY(v20)));
+  v15 = fmin(heightPadding, fmin(y, height - CGRectGetMaxY(v20)));
   if (v15 <= 0.0 || v14 <= 0.0)
   {
     NSLog(&cfstr_Corerecognitio.isa, *&v14, *&v15);
@@ -9913,32 +9913,32 @@ void __41__CRCameraReader_mergeInfo_intoFindInfo___block_invoke(uint64_t a1, voi
   v23.origin.y = y;
   v23.size.width = width;
   v23.size.height = height;
-  v26.size.width = a6;
-  v26.size.height = a7;
+  v26.size.width = width;
+  v26.size.height = height;
   v24 = CGRectIntersection(v23, v26);
 
   return CGRectIntegral(v24);
 }
 
-+ (CGRect)aspectRatioPaddedRect:(CGRect)a3 expectedWidth:(double)a4 height:(double)a5 orientation:(unsigned int)a6
++ (CGRect)aspectRatioPaddedRect:(CGRect)rect expectedWidth:(double)width height:(double)height orientation:(unsigned int)orientation
 {
-  width = a3.size.width;
-  height = a3.size.height;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  v11 = a4 / a5;
-  if (a6 != 6)
+  width = rect.size.width;
+  height = rect.size.height;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  v11 = width / height;
+  if (orientation != 6)
   {
-    width = a3.size.width;
-    height = a3.size.height;
-    x = a3.origin.x;
-    y = a3.origin.y;
-    if (a6 != 8)
+    width = rect.size.width;
+    height = rect.size.height;
+    x = rect.origin.x;
+    y = rect.origin.y;
+    if (orientation != 8)
     {
-      width = a3.size.height;
-      height = a3.size.width;
-      x = a3.origin.y;
-      y = a3.origin.x;
+      width = rect.size.height;
+      height = rect.size.width;
+      x = rect.origin.y;
+      y = rect.origin.x;
     }
   }
 
@@ -9949,7 +9949,7 @@ void __41__CRCameraReader_mergeInfo_intoFindInfo___block_invoke(uint64_t a1, voi
       goto LABEL_22;
     }
 
-    v14 = (height * a4 / a5 - width) * 0.5;
+    v14 = (height * width / height - width) * 0.5;
     v13 = 0.0;
     if (x >= v14)
     {
@@ -9958,10 +9958,10 @@ void __41__CRCameraReader_mergeInfo_intoFindInfo___block_invoke(uint64_t a1, voi
 
     else
     {
-      v13 = (v14 - x) * a5 / a4;
+      v13 = (v14 - x) * height / width;
     }
 
-    if (a6 != 8 && a6 != 6)
+    if (orientation != 8 && orientation != 6)
     {
       v15 = -x;
       goto LABEL_14;
@@ -9973,7 +9973,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v12 = (width * a5 / a4 - height) * 0.5;
+  v12 = (width * height / width - height) * 0.5;
   v13 = 0.0;
   if (y >= v12)
   {
@@ -9982,10 +9982,10 @@ LABEL_20:
 
   else
   {
-    v13 = (v12 - y) * a4 / a5;
+    v13 = (v12 - y) * width / height;
   }
 
-  if (a6 != 8 && a6 != 6)
+  if (orientation != 8 && orientation != 6)
   {
     v16 = -y;
     goto LABEL_20;
@@ -9995,23 +9995,23 @@ LABEL_20:
 LABEL_14:
   v16 = v13;
 LABEL_21:
-  a3 = CGRectInset(a3, v16, v15);
+  rect = CGRectInset(rect, v16, v15);
 LABEL_22:
 
-  return CGRectIntegral(a3);
+  return CGRectIntegral(rect);
 }
 
-+ (id)perspectiveCorrectedImage:(id)a3 p1:(CGPoint)a4 p2:(CGPoint)a5 p3:(CGPoint)a6 p4:(CGPoint)a7
++ (id)perspectiveCorrectedImage:(id)image p1:(CGPoint)p1 p2:(CGPoint)p2 p3:(CGPoint)p3 p4:(CGPoint)p4
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
-  v11 = a5.y;
-  v12 = a5.x;
-  v13 = a4.y;
-  v14 = a4.x;
-  v15 = a3;
+  y = p4.y;
+  x = p4.x;
+  v9 = p3.y;
+  v10 = p3.x;
+  v11 = p2.y;
+  v12 = p2.x;
+  v13 = p1.y;
+  v14 = p1.x;
+  imageCopy = image;
   v16 = [MEMORY[0x277CBF750] filterWithName:@"CIPerspectiveCorrection"];
   v17 = [MEMORY[0x277CBF788] vectorWithCGPoint:{v14, v13}];
   [v16 setValue:v17 forKey:@"inputTopLeft"];
@@ -10025,32 +10025,32 @@ LABEL_22:
   v20 = [MEMORY[0x277CBF788] vectorWithCGPoint:{x, y}];
   [v16 setValue:v20 forKey:@"inputBottomLeft"];
 
-  [v16 setValue:v15 forKey:*MEMORY[0x277CBFAF0]];
+  [v16 setValue:imageCopy forKey:*MEMORY[0x277CBFAF0]];
   v21 = [v16 valueForKey:*MEMORY[0x277CBFB50]];
 
   return v21;
 }
 
-+ (id)scaledImage:(id)a3 width:(double)a4 height:(double)a5
++ (id)scaledImage:(id)image width:(double)width height:(double)height
 {
-  v7 = a3;
-  [v7 extent];
+  imageCopy = image;
+  [imageCopy extent];
   v9 = v8;
-  [v7 extent];
+  [imageCopy extent];
   memset(&v14, 0, sizeof(v14));
-  CGAffineTransformMakeScale(&v14, a4 / v9, a5 / v10);
+  CGAffineTransformMakeScale(&v14, width / v9, height / v10);
   v13 = v14;
-  v11 = [v7 imageByApplyingTransform:&v13];
+  v11 = [imageCopy imageByApplyingTransform:&v13];
 
   return v11;
 }
 
-+ (id)platformImageFromCIImage:(id)a3
++ (id)platformImageFromCIImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = [MEMORY[0x277CBF740] contextWithOptions:0];
-  [v3 extent];
-  v5 = [v4 createCGImage:v3 fromRect:?];
+  [imageCopy extent];
+  v5 = [v4 createCGImage:imageCopy fromRect:?];
   v6 = [MEMORY[0x277D755B8] imageWithCGImage:v5];
   CGImageRelease(v5);
 

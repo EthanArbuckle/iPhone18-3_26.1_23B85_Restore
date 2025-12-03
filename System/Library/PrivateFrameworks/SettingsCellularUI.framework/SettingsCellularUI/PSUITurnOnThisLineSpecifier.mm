@@ -1,42 +1,42 @@
 @interface PSUITurnOnThisLineSpecifier
-- (BOOL)isPlanStatusActivatingPostinstall:(id)a3;
+- (BOOL)isPlanStatusActivatingPostinstall:(id)postinstall;
 - (PSListController)hostController;
-- (PSUITurnOnThisLineSpecifier)initWithPlanUniversalReference:(id)a3 cellularPlanManager:(id)a4 planManagerCache:(id)a5 callCache:(id)a6 hostController:(id)a7 isActivating:(BOOL)a8;
-- (id)_getAlertMessage:(id)a3 onPad:(BOOL)a4;
-- (id)isPlanEnabled:(id)a3;
-- (void)_showPromptFor:(id)a3;
+- (PSUITurnOnThisLineSpecifier)initWithPlanUniversalReference:(id)reference cellularPlanManager:(id)manager planManagerCache:(id)cache callCache:(id)callCache hostController:(id)controller isActivating:(BOOL)activating;
+- (id)_getAlertMessage:(id)message onPad:(BOOL)pad;
+- (id)isPlanEnabled:(id)enabled;
+- (void)_showPromptFor:(id)for;
 - (void)_turnItOff;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
-- (void)setPlanEnabled:(id)a3 specifier:(id)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
+- (void)setPlanEnabled:(id)enabled specifier:(id)specifier;
 - (void)setSwitchEnabled;
 @end
 
 @implementation PSUITurnOnThisLineSpecifier
 
-- (PSUITurnOnThisLineSpecifier)initWithPlanUniversalReference:(id)a3 cellularPlanManager:(id)a4 planManagerCache:(id)a5 callCache:(id)a6 hostController:(id)a7 isActivating:(BOOL)a8
+- (PSUITurnOnThisLineSpecifier)initWithPlanUniversalReference:(id)reference cellularPlanManager:(id)manager planManagerCache:(id)cache callCache:(id)callCache hostController:(id)controller isActivating:(BOOL)activating
 {
-  v8 = a8;
+  activatingCopy = activating;
   v40 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v35 = a6;
-  v34 = a7;
-  v18 = [(PSUITurnOnThisLineSpecifier *)self getLogger];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  referenceCopy = reference;
+  managerCopy = manager;
+  cacheCopy = cache;
+  callCacheCopy = callCache;
+  controllerCopy = controller;
+  getLogger = [(PSUITurnOnThisLineSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v19 = @"NO";
-    if (v8)
+    if (activatingCopy)
     {
       v19 = @"YES";
     }
 
     *buf = 138412290;
     v39 = v19;
-    _os_log_impl(&dword_2658DE000, v18, OS_LOG_TYPE_DEFAULT, "Activating: %@", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Activating: %@", buf, 0xCu);
   }
 
-  if (v8)
+  if (activatingCopy)
   {
     v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v21 = [v20 localizedStringForKey:@"TURN_ON_THIS_LINE" value:&stru_287733598 table:@"Gemini-Gemini"];
@@ -49,9 +49,9 @@
 
   else
   {
-    v32 = v17;
-    v33 = v16;
-    v23 = [v17 planFromReference:v15];
+    v32 = cacheCopy;
+    v33 = managerCopy;
+    v23 = [cacheCopy planFromReference:referenceCopy];
     v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v25 = [v24 localizedStringForKey:@"TURN_ON_THIS_LINE" value:&stru_287733598 table:@"Gemini-Gemini"];
 
@@ -67,23 +67,23 @@
     v36.super_class = PSUITurnOnThisLineSpecifier;
     v22 = [(PSUITurnOnThisLineSpecifier *)&v36 initWithName:v25 target:self set:sel_setPlanEnabled_specifier_ get:sel_isPlanEnabled_ detail:0 cell:6 edit:0];
 
-    v17 = v32;
-    v16 = v33;
+    cacheCopy = v32;
+    managerCopy = v33;
   }
 
   if (v22)
   {
-    objc_storeStrong(&v22->_planReference, a3);
-    objc_storeStrong(&v22->_cellularPlanManager, a4);
-    objc_storeStrong(&v22->_planManagerCache, a5);
-    objc_storeWeak(&v22->_hostController, v34);
-    objc_storeStrong(&v22->_callCache, a6);
+    objc_storeStrong(&v22->_planReference, reference);
+    objc_storeStrong(&v22->_cellularPlanManager, manager);
+    objc_storeStrong(&v22->_planManagerCache, cache);
+    objc_storeWeak(&v22->_hostController, controllerCopy);
+    objc_storeStrong(&v22->_callCache, callCache);
     v28 = objc_alloc_init(MEMORY[0x277CBAF70]);
     callObserver = v22->_callObserver;
     v22->_callObserver = v28;
 
     [(CXCallObserver *)v22->_callObserver setDelegate:v22 queue:0];
-    [(PSUITurnOnThisLineSpecifier *)v22 setProperty:v15 forKey:*MEMORY[0x277D3FE70]];
+    [(PSUITurnOnThisLineSpecifier *)v22 setProperty:referenceCopy forKey:*MEMORY[0x277D3FE70]];
     [(PSUITurnOnThisLineSpecifier *)v22 setSwitchEnabled];
   }
 
@@ -103,19 +103,19 @@ LABEL_7:
 
   if ([(PSUITurnOnThisLineSpecifier *)self isPlanStatusActivatingPostinstall:v3])
   {
-    v4 = [(PSUITurnOnThisLineSpecifier *)self getLogger];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUITurnOnThisLineSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 0;
-      _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "Plan status is ActivatingPostinstall", v8, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Plan status is ActivatingPostinstall", v8, 2u);
     }
 
     goto LABEL_7;
   }
 
-  v7 = [v3 transferredStatus];
+  transferredStatus = [v3 transferredStatus];
   v5 = *MEMORY[0x277D3FF38];
-  if (!v7)
+  if (!transferredStatus)
   {
     v6 = MEMORY[0x277CBEC38];
     goto LABEL_9;
@@ -127,7 +127,7 @@ LABEL_9:
   [(PSUITurnOnThisLineSpecifier *)self setProperty:v6 forKey:v5];
 }
 
-- (id)isPlanEnabled:(id)a3
+- (id)isPlanEnabled:(id)enabled
 {
   v3 = [(PSUICellularPlanManagerCache *)self->_planManagerCache planFromReference:self->_planReference];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "isSelected")}];
@@ -135,35 +135,35 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)isPlanStatusActivatingPostinstall:(id)a3
+- (BOOL)isPlanStatusActivatingPostinstall:(id)postinstall
 {
-  v3 = [a3 plan];
-  v4 = [v3 status] == 14;
+  plan = [postinstall plan];
+  v4 = [plan status] == 14;
 
   return v4;
 }
 
-- (void)setPlanEnabled:(id)a3 specifier:(id)a4
+- (void)setPlanEnabled:(id)enabled specifier:(id)specifier
 {
-  v14 = a4;
+  specifierCopy = specifier;
   planManagerCache = self->_planManagerCache;
   planReference = self->_planReference;
-  v8 = a3;
+  enabledCopy = enabled;
   v9 = [(PSUICellularPlanManagerCache *)planManagerCache planFromReference:planReference];
-  v10 = [v8 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  if (v10 == [v9 isSelected])
+  if (bOOLValue == [v9 isSelected])
   {
     WeakRetained = objc_loadWeakRetained(&self->_hostController);
-    [WeakRetained reloadSpecifier:v14];
+    [WeakRetained reloadSpecifier:specifierCopy];
   }
 
   else
   {
     if ([(PSUITurnOnThisLineSpecifier *)self isTransferredPlan:v9])
     {
-      v11 = self;
-      if (v10)
+      selfCopy2 = self;
+      if (bOOLValue)
       {
         [(PSUITurnOnThisLineSpecifier *)self _showPromptFor:v9];
         goto LABEL_9;
@@ -174,17 +174,17 @@ LABEL_9:
 
     else
     {
-      v11 = self;
-      v13 = v10;
+      selfCopy2 = self;
+      v13 = bOOLValue;
     }
 
-    [(PSUITurnOnThisLineSpecifier *)v11 _useLine:v13 forPlan:v9];
+    [(PSUITurnOnThisLineSpecifier *)selfCopy2 _useLine:v13 forPlan:v9];
   }
 
 LABEL_9:
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -200,12 +200,12 @@ void __56__PSUITurnOnThisLineSpecifier_callObserver_callChanged___block_invoke(u
   [v1 reloadSpecifiers];
 }
 
-- (id)_getAlertMessage:(id)a3 onPad:(BOOL)a4
+- (id)_getAlertMessage:(id)message onPad:(BOOL)pad
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  padCopy = pad;
+  messageCopy = message;
+  v6 = messageCopy;
+  if (padCopy)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"USE_THIS_LINE_DETAIL_IPAD" value:&stru_287733598 table:@"Gemini-Gemini"];
@@ -213,26 +213,26 @@ void __56__PSUITurnOnThisLineSpecifier_callObserver_callChanged___block_invoke(u
 
   else
   {
-    v9 = [v5 phoneNumber];
-    v10 = [v9 length];
+    phoneNumber = [messageCopy phoneNumber];
+    v10 = [phoneNumber length];
 
     if (v10)
     {
       v11 = MEMORY[0x277CCACA8];
       v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v12 = [v7 localizedStringForKey:@"USE_THIS_LINE_DETAIL_WITH_PHONE_NUMBER_%@" value:&stru_287733598 table:@"Gemini-Gemini"];
-      v13 = [v6 phoneNumber];
-      v14 = [SettingsCellularUtils formattedPhoneNumber:v13];
+      phoneNumber2 = [v6 phoneNumber];
+      v14 = [SettingsCellularUtils formattedPhoneNumber:phoneNumber2];
       v8 = [v11 stringWithFormat:v12, v14];
     }
 
     else
     {
-      v15 = [v6 type];
+      type = [v6 type];
       v16 = MEMORY[0x277CCACA8];
       v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v7 = v17;
-      if (v15 == 2)
+      if (type == 2)
       {
         v18 = @"USE_THIS_LINE_DETAIL_CARRIER_ESIM_%@";
       }
@@ -243,25 +243,25 @@ void __56__PSUITurnOnThisLineSpecifier_callObserver_callChanged___block_invoke(u
       }
 
       v12 = [v17 localizedStringForKey:v18 value:&stru_287733598 table:@"Gemini-Gemini"];
-      v19 = [v6 carrierName];
-      v8 = [v16 stringWithFormat:v12, v19];
+      carrierName = [v6 carrierName];
+      v8 = [v16 stringWithFormat:v12, carrierName];
     }
   }
 
   return v8;
 }
 
-- (void)_showPromptFor:(id)a3
+- (void)_showPromptFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D75110];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"USE_THIS_LINE_TITLE" value:&stru_287733598 table:@"Gemini-Gemini"];
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v10 = [(PSUITurnOnThisLineSpecifier *)self _getAlertMessage:v4 onPad:(v9 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v10 = [(PSUITurnOnThisLineSpecifier *)self _getAlertMessage:forCopy onPad:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
   v11 = [v5 alertControllerWithTitle:v7 message:v10 preferredStyle:1];
 
   v12 = MEMORY[0x277D750F8];
@@ -272,7 +272,7 @@ void __56__PSUITurnOnThisLineSpecifier_callObserver_callChanged___block_invoke(u
   v26[2] = __46__PSUITurnOnThisLineSpecifier__showPromptFor___block_invoke;
   v26[3] = &unk_279BAA600;
   objc_copyWeak(&v28, &location);
-  v15 = v4;
+  v15 = forCopy;
   v27 = v15;
   v16 = [v12 actionWithTitle:v14 style:0 handler:v26];
   [v11 addAction:v16];

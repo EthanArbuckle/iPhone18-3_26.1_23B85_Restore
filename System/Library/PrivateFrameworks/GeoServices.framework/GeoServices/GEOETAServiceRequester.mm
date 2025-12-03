@@ -1,11 +1,11 @@
 @interface GEOETAServiceRequester
 + (GEOETAServiceRequester)sharedRequester;
 - (GEOETAServiceRequester)init;
-- (id)_keyForRequest:(id)a3;
-- (id)_validateResponse:(id)a3;
-- (void)cancelRequest:(id)a3;
-- (void)startRequest:(id)a3 connectionProperties:(id)a4 traits:(id)a5 auditToken:(id)a6 willSendRequest:(id)a7 finished:(id)a8 networkActivity:(id)a9 error:(id)a10;
-- (void)startSimpleETARequest:(id)a3 traits:(id)a4 auditToken:(id)a5 finished:(id)a6 networkActivity:(id)a7 error:(id)a8;
+- (id)_keyForRequest:(id)request;
+- (id)_validateResponse:(id)response;
+- (void)cancelRequest:(id)request;
+- (void)startRequest:(id)request connectionProperties:(id)properties traits:(id)traits auditToken:(id)token willSendRequest:(id)sendRequest finished:(id)finished networkActivity:(id)activity error:(id)self0;
+- (void)startSimpleETARequest:(id)request traits:(id)traits auditToken:(id)token finished:(id)finished networkActivity:(id)activity error:(id)error;
 @end
 
 @implementation GEOETAServiceRequester
@@ -22,9 +22,9 @@
   return v3;
 }
 
-- (id)_validateResponse:(id)a3
+- (id)_validateResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -51,14 +51,14 @@
     goto LABEL_21;
   }
 
-  v5 = v3;
-  v6 = [v5 status];
+  v5 = responseCopy;
+  status = [v5 status];
   v4 = 0;
-  if (v6 > 19)
+  if (status > 19)
   {
-    if (v6 != 20)
+    if (status != 20)
     {
-      if (v6 == 60)
+      if (status == 60)
       {
         v7 = -28;
         goto LABEL_17;
@@ -70,15 +70,15 @@ LABEL_15:
     }
   }
 
-  else if (v6)
+  else if (status)
   {
-    if (v6 == 1)
+    if (status == 1)
     {
       v7 = -8;
       goto LABEL_17;
     }
 
-    if (v6 == 5)
+    if (status == 5)
     {
       v7 = -10;
 LABEL_17:
@@ -111,102 +111,102 @@ LABEL_22:
   return v4;
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
   v3.receiver = self;
   v3.super_class = GEOETAServiceRequester;
-  [(GEOETAServiceRequester *)&v3 _cancelRequest:a3];
+  [(GEOETAServiceRequester *)&v3 _cancelRequest:request];
 }
 
-- (id)_keyForRequest:(id)a3
+- (id)_keyForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 xpcUuid];
+    xpcUuid = [requestCopy xpcUuid];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = GEOETAServiceRequester;
-    v5 = [(GEOETAServiceRequester *)&v8 _keyForRequest:v4];
+    xpcUuid = [(GEOETAServiceRequester *)&v8 _keyForRequest:requestCopy];
   }
 
-  v6 = v5;
+  v6 = xpcUuid;
 
   return v6;
 }
 
-- (void)startRequest:(id)a3 connectionProperties:(id)a4 traits:(id)a5 auditToken:(id)a6 willSendRequest:(id)a7 finished:(id)a8 networkActivity:(id)a9 error:(id)a10
+- (void)startRequest:(id)request connectionProperties:(id)properties traits:(id)traits auditToken:(id)token willSendRequest:(id)sendRequest finished:(id)finished networkActivity:(id)activity error:(id)self0
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
-  v38 = a6;
+  requestCopy = request;
+  traitsCopy = traits;
+  sendRequestCopy = sendRequest;
+  finishedCopy = finished;
+  activityCopy = activity;
+  errorCopy = error;
+  tokenCopy = token;
   v20 = +[GEOExperimentConfiguration sharedConfiguration];
-  v21 = [v20 _mapsAbClientMetadata];
-  v22 = [v21 clientDatasetMetadata];
-  [v14 setAbClientMetadata:v22];
+  _mapsAbClientMetadata = [v20 _mapsAbClientMetadata];
+  clientDatasetMetadata = [_mapsAbClientMetadata clientDatasetMetadata];
+  [requestCopy setAbClientMetadata:clientDatasetMetadata];
 
   v23 = +[GEOAdditionalEnabledMarkets additionalEnabledMarkets];
-  [v14 setAdditionalEnabledMarkets:v23];
+  [requestCopy setAdditionalEnabledMarkets:v23];
 
-  if (![v14 serviceTagsCount])
+  if (![requestCopy serviceTagsCount])
   {
     v24 = +[GEOGeoServiceTag defaultTag];
-    [v14 addServiceTag:v24];
+    [requestCopy addServiceTag:v24];
   }
 
   v46[0] = _NSConcreteStackBlock;
   v46[1] = 3221225472;
   v46[2] = sub_100052EE4;
   v46[3] = &unk_100083E20;
-  v37 = v16;
+  v37 = sendRequestCopy;
   v47 = v37;
   v25 = objc_retainBlock(v46);
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_100052FD4;
   v44[3] = &unk_100083E48;
-  v26 = v17;
+  v26 = finishedCopy;
   v45 = v26;
   v27 = objc_retainBlock(v44);
   v28 = GeoServicesConfig_ValidateSensitiveFieldsAtSend_ETA[1];
   if (GEOConfigGetBOOL() && GEOETATrafficUpdateRequestHasSensitiveFields())
   {
-    [v14 clearSensitiveFields:0];
+    [requestCopy clearSensitiveFields:0];
   }
 
-  v29 = +[GEOPlatform sharedPlatform];
-  if ([v29 isInternalInstall])
+  privacyMetadata = +[GEOPlatform sharedPlatform];
+  if ([privacyMetadata isInternalInstall])
   {
-    v30 = v15;
-    v31 = [v15 hasPrivacyMetadata];
+    v30 = traitsCopy;
+    hasPrivacyMetadata = [traitsCopy hasPrivacyMetadata];
 
-    if (!v31)
+    if (!hasPrivacyMetadata)
     {
       goto LABEL_11;
     }
 
-    v29 = [v30 privacyMetadata];
-    v32 = [v29 copy];
-    [v14 setPrivacyMetadata:v32];
+    privacyMetadata = [v30 privacyMetadata];
+    v32 = [privacyMetadata copy];
+    [requestCopy setPrivacyMetadata:v32];
   }
 
   else
   {
-    v30 = v15;
+    v30 = traitsCopy;
   }
 
 LABEL_11:
-  if (v18)
+  if (activityCopy)
   {
-    v18[2](v18, 1);
+    activityCopy[2](activityCopy, 1);
   }
 
   v33 = objc_alloc_init(_GEOTrafficUpdateETARequestConfig);
@@ -214,43 +214,43 @@ LABEL_11:
   v40[1] = 3221225472;
   v40[2] = sub_10005317C;
   v40[3] = &unk_100083DD0;
-  v41 = v18;
-  v42 = v19;
+  v41 = activityCopy;
+  v42 = errorCopy;
   v43 = v27;
   v34 = v27;
-  v35 = v19;
-  v36 = v18;
-  [(GEOETAServiceRequester *)self _startWithRequest:v14 traits:v30 auditToken:v38 config:v33 throttleToken:0 options:0 willSendRequestHandler:v25 completionHandler:v40];
+  v35 = errorCopy;
+  v36 = activityCopy;
+  [(GEOETAServiceRequester *)self _startWithRequest:requestCopy traits:v30 auditToken:tokenCopy config:v33 throttleToken:0 options:0 willSendRequestHandler:v25 completionHandler:v40];
 }
 
-- (void)startSimpleETARequest:(id)a3 traits:(id)a4 auditToken:(id)a5 finished:(id)a6 networkActivity:(id)a7 error:(id)a8
+- (void)startSimpleETARequest:(id)request traits:(id)traits auditToken:(id)token finished:(id)finished networkActivity:(id)activity error:(id)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v18)
+  requestCopy = request;
+  traitsCopy = traits;
+  tokenCopy = token;
+  finishedCopy = finished;
+  activityCopy = activity;
+  errorCopy = error;
+  if (activityCopy)
   {
-    v18[2](v18, 1);
+    activityCopy[2](activityCopy, 1);
   }
 
   v20 = GEOGreenTeaGetLog();
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO) && [v14 hasGreenTeaWithValue:1])
+  if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO) && [requestCopy hasGreenTeaWithValue:1])
   {
     GEOGreenTeaLog();
   }
 
   v21 = +[GEOExperimentConfiguration sharedConfiguration];
-  v22 = [v21 _mapsAbClientMetadata];
-  v23 = [v22 clientDatasetMetadata];
-  [v14 setAbClientMetadata:v23];
+  _mapsAbClientMetadata = [v21 _mapsAbClientMetadata];
+  clientDatasetMetadata = [_mapsAbClientMetadata clientDatasetMetadata];
+  [requestCopy setAbClientMetadata:clientDatasetMetadata];
 
-  if (![v14 serviceTagsCount])
+  if (![requestCopy serviceTagsCount])
   {
     v24 = +[GEOGeoServiceTag defaultTag];
-    [v14 addServiceTag:v24];
+    [requestCopy addServiceTag:v24];
   }
 
   v25 = GeoServicesConfig_ValidateSensitiveFieldsAtSend_ETA[1];
@@ -259,19 +259,19 @@ LABEL_11:
     GEOETARequestRemoveFieldsForSendingRequest();
   }
 
-  v26 = +[GEOPlatform sharedPlatform];
-  if (![v26 isInternalInstall])
+  privacyMetadata = +[GEOPlatform sharedPlatform];
+  if (![privacyMetadata isInternalInstall])
   {
     goto LABEL_13;
   }
 
-  v27 = [v15 hasPrivacyMetadata];
+  hasPrivacyMetadata = [traitsCopy hasPrivacyMetadata];
 
-  if (v27)
+  if (hasPrivacyMetadata)
   {
-    v26 = [v15 privacyMetadata];
-    v28 = [v26 copy];
-    [v14 setPrivacyMetadata:v28];
+    privacyMetadata = [traitsCopy privacyMetadata];
+    v28 = [privacyMetadata copy];
+    [requestCopy setPrivacyMetadata:v28];
 
 LABEL_13:
   }
@@ -281,13 +281,13 @@ LABEL_13:
   v33[1] = 3221225472;
   v33[2] = sub_100053618;
   v33[3] = &unk_100083DD0;
-  v34 = v18;
-  v35 = v17;
-  v36 = v19;
-  v30 = v19;
-  v31 = v17;
-  v32 = v18;
-  [(GEOETAServiceRequester *)self _startWithRequest:v14 traits:v15 auditToken:v16 config:v29 throttleToken:0 options:0 completionHandler:v33];
+  v34 = activityCopy;
+  v35 = finishedCopy;
+  v36 = errorCopy;
+  v30 = errorCopy;
+  v31 = finishedCopy;
+  v32 = activityCopy;
+  [(GEOETAServiceRequester *)self _startWithRequest:requestCopy traits:traitsCopy auditToken:tokenCopy config:v29 throttleToken:0 options:0 completionHandler:v33];
 }
 
 - (GEOETAServiceRequester)init

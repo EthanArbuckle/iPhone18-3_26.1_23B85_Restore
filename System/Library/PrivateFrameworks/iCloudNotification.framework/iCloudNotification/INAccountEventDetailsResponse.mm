@@ -1,25 +1,25 @@
 @interface INAccountEventDetailsResponse
 - (BOOL)showAlert;
-- (INAccountEventDetailsResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
-- (id)_parseURLFromAlertParameterWithName:(id)a3;
+- (INAccountEventDetailsResponse)initWithHTTPResponse:(id)response data:(id)data;
+- (id)_parseURLFromAlertParameterWithName:(id)name;
 @end
 
 @implementation INAccountEventDetailsResponse
 
-- (INAccountEventDetailsResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (INAccountEventDetailsResponse)initWithHTTPResponse:(id)response data:(id)data
 {
-  v7 = a4;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = INAccountEventDetailsResponse;
-  v8 = [(INAccountEventDetailsResponse *)&v20 initWithHTTPResponse:a3 data:v7 bodyIsPlist:0];
+  v8 = [(INAccountEventDetailsResponse *)&v20 initWithHTTPResponse:response data:dataCopy bodyIsPlist:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_responseData, a4);
-    if (v7)
+    objc_storeStrong(&v8->_responseData, data);
+    if (dataCopy)
     {
       v19 = 0;
-      v10 = [NSJSONSerialization JSONObjectWithData:v7 options:0 error:&v19];
+      v10 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:&v19];
       v11 = v19;
       responseParameters = v9->_responseParameters;
       v9->_responseParameters = v10;
@@ -29,7 +29,7 @@
         v13 = _INLogSystem();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          sub_10003674C(v7, v11, v13);
+          sub_10003674C(dataCopy, v11, v13);
         }
       }
 
@@ -79,7 +79,7 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v2 isEqualToString:@"true"];
+    bOOLValue = [v2 isEqualToString:@"true"];
   }
 
   else
@@ -91,18 +91,18 @@ LABEL_14:
       goto LABEL_9;
     }
 
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 LABEL_9:
 
   return v5;
 }
 
-- (id)_parseURLFromAlertParameterWithName:(id)a3
+- (id)_parseURLFromAlertParameterWithName:(id)name
 {
-  v3 = [(NSDictionary *)self->_alertParameters objectForKey:a3];
+  v3 = [(NSDictionary *)self->_alertParameters objectForKey:name];
   if ([v3 length])
   {
     v4 = [NSURL URLWithString:v3];

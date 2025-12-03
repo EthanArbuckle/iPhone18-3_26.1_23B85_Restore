@@ -1,15 +1,15 @@
 @interface AVScrubbingGesturePlatformConfiguration
-+ (id)configurationWithMagnitude:(float)a3 nonLinearity:(float)a4;
++ (id)configurationWithMagnitude:(float)magnitude nonLinearity:(float)linearity;
 + (id)defaultConfiguration;
 @end
 
 @implementation AVScrubbingGesturePlatformConfiguration
 
-+ (id)configurationWithMagnitude:(float)a3 nonLinearity:(float)a4
++ (id)configurationWithMagnitude:(float)magnitude nonLinearity:(float)linearity
 {
   v6 = objc_alloc_init(AVScrubbingGesturePlatformConfiguration);
-  v6->_magnitude = a3;
-  v6->_nonLinearity = a4;
+  v6->_magnitude = magnitude;
+  v6->_nonLinearity = linearity;
 
   return v6;
 }

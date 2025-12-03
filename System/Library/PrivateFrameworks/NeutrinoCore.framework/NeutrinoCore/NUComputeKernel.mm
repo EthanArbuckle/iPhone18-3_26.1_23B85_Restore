@@ -1,18 +1,18 @@
 @interface NUComputeKernel
-+ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)gridSizeForThreadGroupSize:(SEL)a3 imageSize:(id *)a4;
-+ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)groupSizeForImageSize:(SEL)a3 pipelineState:(id *)a4;
-+ (id)pipelineStateForFunctionWithName:(id)a3 constants:(id)a4 key:(id)a5 device:(id)a6 error:(id *)a7;
-- (NUComputeKernel)initWithDevice:(id)a3;
-- (void)encodeToCommandBuffer:(id)a3 destinationTexture:(id)a4;
++ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)gridSizeForThreadGroupSize:(SEL)size imageSize:(id *)imageSize;
++ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)groupSizeForImageSize:(SEL)size pipelineState:(id *)state;
++ (id)pipelineStateForFunctionWithName:(id)name constants:(id)constants key:(id)key device:(id)device error:(id *)error;
+- (NUComputeKernel)initWithDevice:(id)device;
+- (void)encodeToCommandBuffer:(id)buffer destinationTexture:(id)texture;
 @end
 
 @implementation NUComputeKernel
 
-- (void)encodeToCommandBuffer:(id)a3 destinationTexture:(id)a4
+- (void)encodeToCommandBuffer:(id)buffer destinationTexture:(id)texture
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  bufferCopy = buffer;
+  textureCopy = texture;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_11236);
@@ -55,8 +55,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -72,8 +72,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;
@@ -87,11 +87,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUComputeKernel encodeToCommandBuffer:destinationTexture:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Metal/NUComputeKernel.m", 31, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v28, v29, v30, v31, v27);
 }
 
-- (NUComputeKernel)initWithDevice:(id)a3
+- (NUComputeKernel)initWithDevice:(id)device
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v9 = NUAssertLogger_11252();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -112,8 +112,8 @@ LABEL_14:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -124,8 +124,8 @@ LABEL_14:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -134,7 +134,7 @@ LABEL_14:
     _NUAssertFailHandler("[NUComputeKernel initWithDevice:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Metal/NUComputeKernel.m", 24, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "device != nil");
   }
 
-  v5 = v4;
+  v5 = deviceCopy;
   v25.receiver = self;
   v25.super_class = NUComputeKernel;
   v6 = [(NUComputeKernel *)&v25 init];
@@ -144,14 +144,14 @@ LABEL_14:
   return v6;
 }
 
-+ (id)pipelineStateForFunctionWithName:(id)a3 constants:(id)a4 key:(id)a5 device:(id)a6 error:(id *)a7
++ (id)pipelineStateForFunctionWithName:(id)name constants:(id)constants key:(id)key device:(id)device error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!a7)
+  nameCopy = name;
+  constantsCopy = constants;
+  keyCopy = key;
+  deviceCopy = device;
+  if (!error)
   {
     v28 = NUAssertLogger_11252();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -172,8 +172,8 @@ LABEL_14:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v35;
         v51 = 2114;
@@ -184,8 +184,8 @@ LABEL_14:
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v34;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -194,9 +194,9 @@ LABEL_14:
     _NUAssertFailHandler("+[NUComputeKernel pipelineStateForFunctionWithName:constants:key:device:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Metal/NUComputeKernel.m", 75, @"Invalid parameter not satisfying: %s", v40, v41, v42, v43, "error != NULL");
   }
 
-  v15 = v14;
-  v16 = a1;
-  objc_sync_enter(v16);
+  v15 = deviceCopy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = pipelineStateForFunctionWithName_constants_key_device_error__pipelineStateByFunctionKey;
   if (!pipelineStateForFunctionWithName_constants_key_device_error__pipelineStateByFunctionKey)
   {
@@ -207,10 +207,10 @@ LABEL_14:
     v17 = pipelineStateForFunctionWithName_constants_key_device_error__pipelineStateByFunctionKey;
   }
 
-  v20 = [v17 objectForKey:v13];
+  v20 = [v17 objectForKey:keyCopy];
   if (!v20)
   {
-    v21 = [MEMORY[0x1E696AAE8] bundleForClass:v16];
+    v21 = [MEMORY[0x1E696AAE8] bundleForClass:selfCopy];
     v48 = 0;
     v44 = [v15 newDefaultLibraryWithBundle:v21 error:&v48];
     v22 = v48;
@@ -218,14 +218,14 @@ LABEL_14:
     if (!v44)
     {
       [NUError errorWithCode:1 reason:@"Failed to load Metal library for device" object:v15 underlyingError:v22];
-      *a7 = v20 = 0;
+      *error = v20 = 0;
       goto LABEL_15;
     }
 
-    if (v12)
+    if (constantsCopy)
     {
       v47 = v22;
-      v23 = [v44 newFunctionWithName:v45 constantValues:v12 error:&v47];
+      v23 = [v44 newFunctionWithName:nameCopy constantValues:constantsCopy error:&v47];
       v24 = v47;
 
       v22 = v24;
@@ -238,7 +238,7 @@ LABEL_8:
 
         if (v20)
         {
-          [pipelineStateForFunctionWithName_constants_key_device_error__pipelineStateByFunctionKey setObject:v20 forKey:v13];
+          [pipelineStateForFunctionWithName_constants_key_device_error__pipelineStateByFunctionKey setObject:v20 forKey:keyCopy];
 
           v22 = v25;
 LABEL_15:
@@ -246,10 +246,10 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v26 = [NUError errorWithCode:1 reason:@"Failed to create pipeline state from function" object:v45 underlyingError:v25];
+        v26 = [NUError errorWithCode:1 reason:@"Failed to create pipeline state from function" object:nameCopy underlyingError:v25];
         v22 = v25;
 LABEL_14:
-        *a7 = v26;
+        *error = v26;
 
         v20 = 0;
         goto LABEL_15;
@@ -258,49 +258,49 @@ LABEL_14:
 
     else
     {
-      v23 = [v44 newFunctionWithName:v45];
+      v23 = [v44 newFunctionWithName:nameCopy];
       if (v23)
       {
         goto LABEL_8;
       }
     }
 
-    v26 = [NUError errorWithCode:1 reason:@"Failed to load Metal kernel function" object:v45 underlyingError:v22];
+    v26 = [NUError errorWithCode:1 reason:@"Failed to load Metal kernel function" object:nameCopy underlyingError:v22];
     goto LABEL_14;
   }
 
 LABEL_16:
-  objc_sync_exit(v16);
+  objc_sync_exit(selfCopy);
 
   return v20;
 }
 
-+ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)gridSizeForThreadGroupSize:(SEL)a3 imageSize:(id *)a4
++ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)gridSizeForThreadGroupSize:(SEL)size imageSize:(id *)imageSize
 {
-  v5 = (a5->var1 + a4->var1 - 1) / a4->var1;
-  retstr->var0 = (a5->var0 + a4->var0 - 1) / a4->var0;
+  v5 = (a5->var1 + imageSize->var1 - 1) / imageSize->var1;
+  retstr->var0 = (a5->var0 + imageSize->var0 - 1) / imageSize->var0;
   retstr->var1 = v5;
   retstr->var2 = 1;
   return result;
 }
 
-+ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)groupSizeForImageSize:(SEL)a3 pipelineState:(id *)a4
++ ($F99D9A4FB75BC57F3386B8DC8EE08D7A)groupSizeForImageSize:(SEL)size pipelineState:(id *)state
 {
   v21 = a5;
-  v7 = [v21 threadExecutionWidth];
-  v8 = [v21 maxTotalThreadsPerThreadgroup];
-  v9 = v8 / v7;
-  if (v7 <= v8)
+  threadExecutionWidth = [v21 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [v21 maxTotalThreadsPerThreadgroup];
+  v9 = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
+  if (threadExecutionWidth <= maxTotalThreadsPerThreadgroup)
   {
-    v13 = 2 * v7;
+    v13 = 2 * threadExecutionWidth;
     v14 = -1;
     v15 = -1;
-    v16 = v7;
-    v11 = v7;
-    v10 = v8 / v7;
+    v16 = threadExecutionWidth;
+    v11 = threadExecutionWidth;
+    v10 = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
     do
     {
-      var1 = a4->var1;
+      var1 = state->var1;
       if (v16 <= v9)
       {
         v17 = v9;
@@ -321,7 +321,7 @@ LABEL_16:
         v18 = v16;
       }
 
-      if ((var1 + v9 - 1) / v9 * v9 * (a4->var0 + v16 - 1) / v16 * v16 - var1 * a4->var0 <= v14)
+      if ((var1 + v9 - 1) / v9 * v9 * (state->var0 + v16 - 1) / v16 * v16 - var1 * state->var0 <= v14)
       {
         v19 = v17 / v18;
         if (v19 <= v15)
@@ -329,22 +329,22 @@ LABEL_16:
           v10 = v9;
           v11 = v16;
           v15 = v19;
-          v14 = (var1 + v9 - 1) / v9 * v9 * (a4->var0 + v16 - 1) / v16 * v16 - var1 * a4->var0;
+          v14 = (var1 + v9 - 1) / v9 * v9 * (state->var0 + v16 - 1) / v16 * v16 - var1 * state->var0;
         }
       }
 
-      v16 += v7;
-      v9 = v8 / v13;
-      v13 += v7;
+      v16 += threadExecutionWidth;
+      v9 = maxTotalThreadsPerThreadgroup / v13;
+      v13 += threadExecutionWidth;
     }
 
-    while (v16 <= v8);
+    while (v16 <= maxTotalThreadsPerThreadgroup);
   }
 
   else
   {
-    v10 = v8 / v7;
-    v11 = v7;
+    v10 = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
+    v11 = threadExecutionWidth;
   }
 
   retstr->var0 = v11;

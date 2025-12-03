@@ -1,39 +1,39 @@
 @interface HUHomeAssistantDeviceLanguageConfigurationViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUHomeAssistantDeviceLanguageConfigurationViewController)initWithSupportedVoiceRecognitionLanguages:(id)a3 languageMismatchedHomeAssistantDevices:(id)a4;
-- (id)_configureTitleDescriptionContentViewForCell:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (HUHomeAssistantDeviceLanguageConfigurationViewController)initWithSupportedVoiceRecognitionLanguages:(id)languages languageMismatchedHomeAssistantDevices:(id)devices;
+- (id)_configureTitleDescriptionContentViewForCell:(id)cell;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_cancelLanguageChange;
 - (void)_changeLanguage;
 - (void)_hideSpinner;
 - (void)_showSpinner;
 - (void)dealloc;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUHomeAssistantDeviceLanguageConfigurationViewController
 
-- (HUHomeAssistantDeviceLanguageConfigurationViewController)initWithSupportedVoiceRecognitionLanguages:(id)a3 languageMismatchedHomeAssistantDevices:(id)a4
+- (HUHomeAssistantDeviceLanguageConfigurationViewController)initWithSupportedVoiceRecognitionLanguages:(id)languages languageMismatchedHomeAssistantDevices:(id)devices
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v8 count])
+  languagesCopy = languages;
+  devicesCopy = devices;
+  if (![languagesCopy count])
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v15 = NSStringFromSelector(a2);
-    [v14 handleFailureInMethod:a2 object:self file:@"HUHomeAssistantDeviceLanguageConfigurationViewController.m" lineNumber:47 description:{@"%@:%@ Should NOT be called with no supported languages", self, v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUHomeAssistantDeviceLanguageConfigurationViewController.m" lineNumber:47 description:{@"%@:%@ Should NOT be called with no supported languages", self, v15}];
   }
 
-  if (![v9 count])
+  if (![devicesCopy count])
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v17 = NSStringFromSelector(a2);
-    [v16 handleFailureInMethod:a2 object:self file:@"HUHomeAssistantDeviceLanguageConfigurationViewController.m" lineNumber:48 description:{@"%@:%@ Should NOT be called with no HomePods in a mismatched state", self, v17}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUHomeAssistantDeviceLanguageConfigurationViewController.m" lineNumber:48 description:{@"%@:%@ Should NOT be called with no HomePods in a mismatched state", self, v17}];
   }
 
   v10 = _HULocalizedStringWithDefaultValue(@"HULanguageChooseSiriLanguage_Title", @"HULanguageChooseSiriLanguage_Title", 1);
@@ -44,8 +44,8 @@
 
   if (v12)
   {
-    objc_storeStrong(&v12->_supportedVoiceRecognitionLanguages, a3);
-    objc_storeStrong(&v12->_languageMismatchedHomeAssistantDevices, a4);
+    objc_storeStrong(&v12->_supportedVoiceRecognitionLanguages, languages);
+    objc_storeStrong(&v12->_languageMismatchedHomeAssistantDevices, devices);
     v12->_selectedLanguageIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -54,8 +54,8 @@
 
 - (void)dealloc
 {
-  v3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageTimer];
-  [v3 invalidate];
+  changeLanguageTimer = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageTimer];
+  [changeLanguageTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = HUHomeAssistantDeviceLanguageConfigurationViewController;
@@ -70,25 +70,25 @@
   {
     v3 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v70 = self;
+    selfCopy3 = self;
     v71 = 2112;
     *v72 = v3;
     _os_log_impl(&dword_20CEB6000, v2, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
   }
 
-  v4 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self languageMismatchedHomeAssistantDevices];
-  v5 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self supportedVoiceRecognitionLanguages];
-  v6 = [v5 objectAtIndexedSubscript:{-[HUHomeAssistantDeviceLanguageConfigurationViewController selectedLanguageIndex](self, "selectedLanguageIndex")}];
+  languageMismatchedHomeAssistantDevices = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self languageMismatchedHomeAssistantDevices];
+  supportedVoiceRecognitionLanguages = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self supportedVoiceRecognitionLanguages];
+  v6 = [supportedVoiceRecognitionLanguages objectAtIndexedSubscript:{-[HUHomeAssistantDeviceLanguageConfigurationViewController selectedLanguageIndex](self, "selectedLanguageIndex")}];
 
-  v50 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self _showSpinner];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [v4 count];
+    v9 = [languageMismatchedHomeAssistantDevices count];
     *buf = 138413058;
-    v70 = self;
+    selfCopy3 = self;
     v71 = 2112;
     *v72 = v8;
     *&v72[8] = 2112;
@@ -102,7 +102,7 @@
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v4;
+  obj = languageMismatchedHomeAssistantDevices;
   v55 = [obj countByEnumeratingWithState:&v64 objects:v68 count:16];
   if (v55)
   {
@@ -143,7 +143,7 @@
           {
             v19 = NSStringFromSelector(a2);
             *buf = 138413058;
-            v70 = self;
+            selfCopy3 = self;
             v71 = 2112;
             *v72 = v19;
             *&v72[8] = 2112;
@@ -156,25 +156,25 @@
           v18 = [objc_alloc(MEMORY[0x277D14B10]) initWithRecognitionLanguage:v6 outputVoice:v16 defaultVoiceForRecognitionLanguage:1];
           if (v18 && [v15 hf_isReachable])
           {
-            v20 = [MEMORY[0x277D146E8] sharedDispatcher];
-            v21 = [v20 homeManager];
-            v22 = [v21 hasOptedToHH2];
+            mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+            homeManager = [mEMORY[0x277D146E8] homeManager];
+            hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-            if (v22 || ([v15 accessory], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "hf_isSiriEndpoint"), v28, v29))
+            if (hasOptedToHH2 || ([v15 accessory], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "hf_isSiriEndpoint"), v28, v29))
             {
-              v30 = [v15 hf_siriLanguageOptionsManager];
-              v23 = [v30 updateSelectedLanguageOption:v18];
+              hf_siriLanguageOptionsManager = [v15 hf_siriLanguageOptionsManager];
+              v23 = [hf_siriLanguageOptionsManager updateSelectedLanguageOption:v18];
             }
 
             else
             {
-              v31 = [v15 hf_home];
-              v32 = [v15 hf_backingAccessory];
-              v30 = [v31 hf_mediaSystemForAccessory:v32];
+              hf_home = [v15 hf_home];
+              hf_backingAccessory = [v15 hf_backingAccessory];
+              hf_siriLanguageOptionsManager = [hf_home hf_mediaSystemForAccessory:hf_backingAccessory];
 
-              if (v30)
+              if (hf_siriLanguageOptionsManager)
               {
-                [v30 hf_settingsAdapterManager];
+                [hf_siriLanguageOptionsManager hf_settingsAdapterManager];
               }
 
               else
@@ -207,7 +207,7 @@
             v63 = a2;
             v62 = v15;
             v38 = [v23 addFailureBlock:v61];
-            [v50 na_safeAddObject:v23];
+            [array na_safeAddObject:v23];
           }
 
           else
@@ -216,14 +216,14 @@
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
               v24 = NSStringFromSelector(a2);
-              v25 = [v15 hf_isReachable];
-              v26 = [v15 hf_displayName];
+              hf_isReachable = [v15 hf_isReachable];
+              hf_displayName = [v15 hf_displayName];
               *buf = 138412802;
-              v70 = v24;
+              selfCopy3 = v24;
               v71 = 1024;
-              *v72 = v25;
+              *v72 = hf_isReachable;
               *&v72[4] = 2112;
-              *&v72[6] = v26;
+              *&v72[6] = hf_displayName;
               _os_log_error_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_ERROR, "%@ Controller is reachable? %{BOOL}d. Language change failed for [%@]", buf, 0x1Cu);
             }
           }
@@ -233,7 +233,7 @@
         {
           v27 = NSStringFromSelector(a2);
           *buf = v48;
-          v70 = v27;
+          selfCopy3 = v27;
           v71 = 2112;
           *v72 = v6;
           _os_log_error_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_ERROR, "%@ AFVoiceInfo voiceInfoForSessionLanguageCode could not find voice info for %@ - this should NOT happen.", buf, 0x16u);
@@ -246,14 +246,14 @@
     while (v55);
   }
 
-  v39 = [MEMORY[0x277D2C900] chainFutures:v50];
-  v40 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v41 = [v39 reschedule:v40];
+  v39 = [MEMORY[0x277D2C900] chainFutures:array];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v41 = [v39 reschedule:mainThreadScheduler];
   [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self setChangeLanguageFuture:v41];
 
-  v42 = [v50 count];
+  v42 = [array count];
   objc_initWeak(buf, self);
-  v43 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageFuture];
+  changeLanguageFuture = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageFuture];
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLanguage__block_invoke_24;
@@ -263,7 +263,7 @@
   v44 = v6;
   v59 = v44;
   v60[2] = v42;
-  v45 = [v43 addCompletionBlock:v58];
+  v45 = [changeLanguageFuture addCompletionBlock:v58];
 
   v46 = MEMORY[0x277CBEBB8];
   v56[0] = MEMORY[0x277D85DD0];
@@ -379,98 +379,98 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
   {
     v5 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v5;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
   }
 
-  v6 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self delegate];
+  delegate = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self delegate];
   v8 = @"HULanguageOnboardingKey_SetupLanguage_AssistantDevice_UserInput";
   v9 = &unk_282491478;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  [v6 viewController:self didFinishWithConfigurationResults:v7];
+  [delegate viewController:self didFinishWithConfigurationResults:v7];
 }
 
 - (void)_hideSpinner
 {
-  v3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
+  spinner = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
 
-  if (v3)
+  if (spinner)
   {
-    v4 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
-    [v4 removeFromSuperview];
+    spinner2 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
+    [spinner2 removeFromSuperview];
 
     [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self setSpinner:0];
-    v5 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self view];
+    [view setNeedsLayout];
   }
 
-  v6 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-  [v6 setHidden:0];
+  changeLanguageButton = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+  [changeLanguageButton setHidden:0];
 
-  v7 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
-  [v7 setHidden:0];
+  cancelButton = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
+  [cancelButton setHidden:0];
 }
 
 - (void)_showSpinner
 {
-  v3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
+  spinner = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
 
-  if (v3)
+  if (spinner)
   {
-    v4 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
-    [v4 removeFromSuperview];
+    spinner2 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
+    [spinner2 removeFromSuperview];
 
     [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self setSpinner:0];
   }
 
-  v5 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-  [v5 setHidden:1];
+  changeLanguageButton = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+  [changeLanguageButton setHidden:1];
 
-  v6 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
-  [v6 setHidden:1];
+  cancelButton = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
+  [cancelButton setHidden:1];
 
   v7 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self setSpinner:v7];
 
-  v8 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
-  [v8 sizeToFit];
+  spinner3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
+  [spinner3 sizeToFit];
 
-  v9 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
-  [v9 startAnimating];
+  spinner4 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
+  [spinner4 startAnimating];
 
-  v10 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
-  [v10 frame];
+  spinner5 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
+  [spinner5 frame];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self view];
-  [v15 bounds];
+  view = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self view];
+  [view bounds];
   v17 = v16 * 0.5;
-  v18 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
-  [v18 bounds];
+  spinner6 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
+  [spinner6 bounds];
   v20 = v17 - v19 * 0.5;
 
-  v21 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self buttonTray];
-  [v21 frame];
+  buttonTray = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self buttonTray];
+  [buttonTray frame];
   v23 = v22;
-  v24 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-  [v24 frame];
+  changeLanguageButton2 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+  [changeLanguageButton2 frame];
   v26 = v23 + v25;
-  v27 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-  [v27 frame];
+  changeLanguageButton3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+  [changeLanguageButton3 frame];
   v28 = v26 + CGRectGetHeight(v34) * 0.5;
 
-  v29 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
-  [v29 setFrame:{v20, v28, v12, v14}];
+  spinner7 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
+  [spinner7 setFrame:{v20, v28, v12, v14}];
 
-  v30 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self view];
-  v31 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
-  [v30 addSubview:v31];
+  view2 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self view];
+  spinner8 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self spinner];
+  [view2 addSubview:spinner8];
 
-  v32 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self view];
-  [v32 setNeedsLayout];
+  view3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self view];
+  [view3 setNeedsLayout];
 }
 
 - (void)loadView
@@ -482,78 +482,78 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
   v4 = [v3 initWithFrame:0 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setDelegate:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setDataSource:self];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setDataSource:self];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setAllowsSelectionDuringEditing:1];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setAllowsSelectionDuringEditing:1];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 setAllowsMultipleSelection:0];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setAllowsMultipleSelection:0];
 
   v10 = *MEMORY[0x277D76F30];
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 setRowHeight:v10];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setRowHeight:v10];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setAlwaysBounceVertical:0];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setAlwaysBounceVertical:0];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  v14 = [v13 heightAnchor];
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 contentSize];
-  v17 = [v14 constraintEqualToConstant:v16];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  heightAnchor = [tableView8 heightAnchor];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 contentSize];
+  v17 = [heightAnchor constraintEqualToConstant:v16];
   [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self setHeightAnchor:v17];
 
-  v18 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self heightAnchor];
-  [v18 setActive:1];
+  heightAnchor2 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self heightAnchor];
+  [heightAnchor2 setActive:1];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  [v19 separatorInset];
+  tableView10 = [(OBTableWelcomeController *)self tableView];
+  [tableView10 separatorInset];
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(OBTableWelcomeController *)self tableView];
-  [v26 setSeparatorInset:{v21, v23, v25, 28.0}];
+  tableView11 = [(OBTableWelcomeController *)self tableView];
+  [tableView11 setSeparatorInset:{v21, v23, v25, 28.0}];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self view];
+  [view layoutIfNeeded];
 
-  v4 = [(OBTableWelcomeController *)self tableView];
-  [v4 contentSize];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView contentSize];
   v6 = v5;
-  v7 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self heightAnchor];
-  [v7 setConstant:v6];
+  heightAnchor = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self heightAnchor];
+  [heightAnchor setConstant:v6];
 
-  v8 = [MEMORY[0x277D75348] clearColor];
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setBackgroundColor:clearColor];
 
   v10.receiver = self;
   v10.super_class = HUHomeAssistantDeviceLanguageConfigurationViewController;
   [(OBTableWelcomeController *)&v10 viewDidLayoutSubviews];
 }
 
-- (id)_configureTitleDescriptionContentViewForCell:(id)a3
+- (id)_configureTitleDescriptionContentViewForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 contentView];
-  v6 = [v5 subviews];
-  if ([v6 count])
+  cellCopy = cell;
+  contentView = [cellCopy contentView];
+  subviews = [contentView subviews];
+  if ([subviews count])
   {
-    v7 = [v4 contentView];
-    v8 = [v7 subviews];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    contentView2 = [cellCopy contentView];
+    subviews2 = [contentView2 subviews];
+    v9 = [subviews2 objectAtIndexedSubscript:0];
   }
 
   else
@@ -581,61 +581,61 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
     v14 = [HUTitleDescriptionContentView alloc];
     v13 = [(HUTitleDescriptionContentView *)v14 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(HUTitleDescriptionContentView *)v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [v4 contentView];
-    [v15 addSubview:v13];
+    contentView3 = [cellCopy contentView];
+    [contentView3 addSubview:v13];
 
-    v16 = [(HUTitleDescriptionContentView *)v13 leadingAnchor];
-    v17 = [v4 contentView];
-    v18 = [v17 leadingAnchor];
-    v19 = [(OBTableWelcomeController *)self tableView];
-    [v19 separatorInset];
-    v21 = [v16 constraintEqualToAnchor:v18 constant:v20];
+    leadingAnchor = [(HUTitleDescriptionContentView *)v13 leadingAnchor];
+    contentView4 = [cellCopy contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    [tableView separatorInset];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v20];
     [v21 setActive:1];
 
-    v22 = [(HUTitleDescriptionContentView *)v13 topAnchor];
-    v23 = [v4 contentView];
-    v24 = [v23 topAnchor];
-    v25 = [v22 constraintEqualToAnchor:v24 constant:5.0];
+    topAnchor = [(HUTitleDescriptionContentView *)v13 topAnchor];
+    contentView5 = [cellCopy contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
     [v25 setActive:1];
 
-    v26 = [(HUTitleDescriptionContentView *)v13 bottomAnchor];
-    v27 = [v4 contentView];
-    v28 = [v27 bottomAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28 constant:-5.0];
+    bottomAnchor = [(HUTitleDescriptionContentView *)v13 bottomAnchor];
+    contentView6 = [cellCopy contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
     [v29 setActive:1];
 
-    v30 = [(HUTitleDescriptionContentView *)v13 trailingAnchor];
-    v31 = [v4 contentView];
-    v32 = [v31 trailingAnchor];
-    v33 = [v30 constraintEqualToAnchor:v32];
+    trailingAnchor = [(HUTitleDescriptionContentView *)v13 trailingAnchor];
+    contentView7 = [cellCopy contentView];
+    trailingAnchor2 = [contentView7 trailingAnchor];
+    v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v33 setActive:1];
   }
 
   return v13;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self supportedVoiceRecognitionLanguages:a3];
+  v4 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self supportedVoiceRecognitionLanguages:view];
   v5 = [v4 count];
 
   return v5 + 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  pathCopy = path;
   v7 = MEMORY[0x277CCACA8];
   v8 = MEMORY[0x277CBEAF8];
-  v9 = a3;
-  v10 = [v8 currentLocale];
-  v11 = [v10 languageCode];
-  v12 = [MEMORY[0x277CBEAF8] currentLocale];
-  v13 = [v12 countryCode];
-  v14 = [v7 stringWithFormat:@"%@-%@", v11, v13];
+  viewCopy = view;
+  currentLocale = [v8 currentLocale];
+  languageCode = [currentLocale languageCode];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale2 countryCode];
+  v14 = [v7 stringWithFormat:@"%@-%@", languageCode, countryCode];
 
-  v15 = [v9 dequeueReusableCellWithIdentifier:@"language_code_cell_identifier"];
+  v15 = [viewCopy dequeueReusableCellWithIdentifier:@"language_code_cell_identifier"];
 
   if (!v15)
   {
@@ -643,13 +643,13 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
   }
 
   [v15 setSelectionStyle:0];
-  if ([v6 row])
+  if ([pathCopy row])
   {
-    v16 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self supportedVoiceRecognitionLanguages];
-    v17 = [v16 objectAtIndex:{objc_msgSend(v6, "row") - 1}];
+    supportedVoiceRecognitionLanguages = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self supportedVoiceRecognitionLanguages];
+    v17 = [supportedVoiceRecognitionLanguages objectAtIndex:{objc_msgSend(pathCopy, "row") - 1}];
 
-    v18 = [MEMORY[0x277CEF2D8] sharedInstance];
-    v19 = [v18 localizedNameForSiriLanguage:v17 inDisplayLanguage:0];
+    mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+    v19 = [mEMORY[0x277CEF2D8] localizedNameForSiriLanguage:v17 inDisplayLanguage:0];
 
     v20 = HFLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -665,10 +665,10 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
 
     if ([v17 isEqualToString:v14])
     {
-      -[HUHomeAssistantDeviceLanguageConfigurationViewController setSelectedLanguageIndex:](self, "setSelectedLanguageIndex:", [v6 row] - 1);
+      -[HUHomeAssistantDeviceLanguageConfigurationViewController setSelectedLanguageIndex:](self, "setSelectedLanguageIndex:", [pathCopy row] - 1);
       [v15 setAccessoryType:3];
-      v21 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-      [v21 setEnabled:1];
+      changeLanguageButton = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+      [changeLanguageButton setEnabled:1];
     }
 
     else
@@ -676,8 +676,8 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
       [v15 setAccessoryType:0];
     }
 
-    v26 = [v15 textLabel];
-    [v26 setText:v19];
+    textLabel = [v15 textLabel];
+    [textLabel setText:v19];
   }
 
   else
@@ -689,30 +689,30 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
     v24 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
     [v22 setTitleFont:v24];
 
-    v25 = [MEMORY[0x277D75348] systemGrayColor];
-    [v22 setTitleTextColor:v25];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [v22 setTitleTextColor:systemGrayColor];
   }
 
   return v15;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  if ([v6 row] >= 1)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row] >= 1)
   {
     v7 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self selectedLanguageIndex]+ 1;
-    v8 = [v12 cellForRowAtIndexPath:v6];
+    v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
     [v8 setAccessoryType:3];
-    -[HUHomeAssistantDeviceLanguageConfigurationViewController setSelectedLanguageIndex:](self, "setSelectedLanguageIndex:", [v6 row] - 1);
-    v9 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-    [v9 setEnabled:1];
+    -[HUHomeAssistantDeviceLanguageConfigurationViewController setSelectedLanguageIndex:](self, "setSelectedLanguageIndex:", [pathCopy row] - 1);
+    changeLanguageButton = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+    [changeLanguageButton setEnabled:1];
 
-    if (v7 != 0x7FFFFFFFFFFFFFFFLL && v7 != [v6 row])
+    if (v7 != 0x7FFFFFFFFFFFFFFFLL && v7 != [pathCopy row])
     {
       v10 = [MEMORY[0x277CCAA70] indexPathForRow:v7 inSection:0];
-      v11 = [v12 cellForRowAtIndexPath:v10];
+      v11 = [viewCopy cellForRowAtIndexPath:v10];
 
       [v11 setAccessoryType:0];
     }
@@ -726,28 +726,28 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
   v50.super_class = HUHomeAssistantDeviceLanguageConfigurationViewController;
   [(OBTableWelcomeController *)&v50 viewDidLoad];
   [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self setModalInPresentation:1];
-  v4 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self headerView];
-  v5 = [v4 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v5 withIDDictionary:&unk_282492F18];
+  headerView = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282492F18];
 
-  v6 = [MEMORY[0x277D37618] boldButton];
-  [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self setChangeLanguageButton:v6];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self setChangeLanguageButton:boldButton];
 
-  v7 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  changeLanguageButton = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+  [changeLanguageButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-  [v8 setEnabled:0];
+  changeLanguageButton2 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+  [changeLanguageButton2 setEnabled:0];
 
   v9 = _HULocalizedStringWithDefaultValue(@"HULanguageChangeLanguage_Button_Title", @"HULanguageChangeLanguage_Button_Title", 1);
   v10 = _HULocalizedStringWithDefaultValue(@"HULanguageKeepUsingCurrentHomePodLanguages_Button_Title", @"HULanguageKeepUsingCurrentHomePodLanguages_Button_Title", 1);
-  v11 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self languageMismatchedHomeAssistantDevices];
-  v12 = [v11 count];
+  languageMismatchedHomeAssistantDevices = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self languageMismatchedHomeAssistantDevices];
+  v12 = [languageMismatchedHomeAssistantDevices count];
 
   if (v12 < 2)
   {
-    v14 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self languageMismatchedHomeAssistantDevices];
-    v15 = [v14 count];
+    languageMismatchedHomeAssistantDevices2 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self languageMismatchedHomeAssistantDevices];
+    v15 = [languageMismatchedHomeAssistantDevices2 count];
 
     if (v15 != 1)
     {
@@ -755,11 +755,11 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
     }
 
     objc_opt_class();
-    v16 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self languageMismatchedHomeAssistantDevices];
-    v13 = [v16 firstObject];
+    languageMismatchedHomeAssistantDevices3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self languageMismatchedHomeAssistantDevices];
+    firstObject = [languageMismatchedHomeAssistantDevices3 firstObject];
     if (objc_opt_isKindOfClass())
     {
-      v17 = v13;
+      v17 = firstObject;
     }
 
     else
@@ -771,13 +771,13 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
 
     if (v18)
     {
-      v19 = [v18 hf_siriLanguageOptionsManager];
-      v20 = [v19 selectedLanguageOption];
+      hf_siriLanguageOptionsManager = [v18 hf_siriLanguageOptionsManager];
+      selectedLanguageOption = [hf_siriLanguageOptionsManager selectedLanguageOption];
 
-      if (!v20)
+      if (!selectedLanguageOption)
       {
-        v21 = [v18 hf_settingsAdapterManager];
-        v22 = [v21 adapterForIdentifier:*MEMORY[0x277D13338]];
+        hf_settingsAdapterManager = [v18 hf_settingsAdapterManager];
+        v22 = [hf_settingsAdapterManager adapterForIdentifier:*MEMORY[0x277D13338]];
         objc_opt_class();
         v23 = v22;
         if (objc_opt_isKindOfClass())
@@ -792,82 +792,82 @@ void __75__HUHomeAssistantDeviceLanguageConfigurationViewController__changeLangu
 
         v25 = v24;
 
-        v20 = [v25 selectedLanguageOption];
+        selectedLanguageOption = [v25 selectedLanguageOption];
       }
 
-      v26 = [v20 localizedRecognitionLanguage];
-      v33 = HULocalizedStringWithFormat(@"HULanguageKeepUsingHomePodLanguage_Button_Title", @"%@", v27, v28, v29, v30, v31, v32, v26);
+      localizedRecognitionLanguage = [selectedLanguageOption localizedRecognitionLanguage];
+      v33 = HULocalizedStringWithFormat(@"HULanguageKeepUsingHomePodLanguage_Button_Title", @"%@", v27, v28, v29, v30, v31, v32, localizedRecognitionLanguage);
 
       v10 = v33;
     }
 
     else
     {
-      v13 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
     _HULocalizedStringWithDefaultValue(@"HULanguageChangeAllSiriLanguages_Button_Title", @"HULanguageChangeAllSiriLanguages_Button_Title", 1);
-    v9 = v13 = v9;
+    v9 = firstObject = v9;
   }
 
 LABEL_16:
-  v34 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-  [v34 setTitle:v9 forState:0];
+  changeLanguageButton3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+  [changeLanguageButton3 setTitle:v9 forState:0];
 
-  v35 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-  [v35 setAccessibilityIdentifier:@"Home.Onboarding.LanguageSetUp.Configuration.ChangeLanguageButton"];
+  changeLanguageButton4 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+  [changeLanguageButton4 setAccessibilityIdentifier:@"Home.Onboarding.LanguageSetUp.Configuration.ChangeLanguageButton"];
 
-  v36 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-  [v36 addTarget:self action:sel__changeLanguage forControlEvents:64];
+  changeLanguageButton5 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+  [changeLanguageButton5 addTarget:self action:sel__changeLanguage forControlEvents:64];
 
-  v37 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self buttonTray];
-  v38 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
-  [v37 addButton:v38];
+  buttonTray = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self buttonTray];
+  changeLanguageButton6 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self changeLanguageButton];
+  [buttonTray addButton:changeLanguageButton6];
 
-  v39 = [MEMORY[0x277D37650] linkButton];
-  [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self setCancelButton:v39];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self setCancelButton:linkButton];
 
-  v40 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
-  [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cancelButton = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
+  [cancelButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v41 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
-  [v41 setTitle:v10 forState:0];
+  cancelButton2 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
+  [cancelButton2 setTitle:v10 forState:0];
 
-  v42 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
-  [v42 setAccessibilityIdentifier:@"Home.Onboarding.Configuration.LanguageSetUp.CancelButton"];
+  cancelButton3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
+  [cancelButton3 setAccessibilityIdentifier:@"Home.Onboarding.Configuration.LanguageSetUp.CancelButton"];
 
-  v43 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
-  [v43 addTarget:self action:sel__cancelLanguageChange forControlEvents:64];
+  cancelButton4 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
+  [cancelButton4 addTarget:self action:sel__cancelLanguageChange forControlEvents:64];
 
-  v44 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self buttonTray];
-  v45 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
-  [v44 addButton:v45];
+  buttonTray2 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self buttonTray];
+  cancelButton5 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self cancelButton];
+  [buttonTray2 addButton:cancelButton5];
 
-  v46 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self buttonTray];
+  buttonTray3 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self buttonTray];
   v47 = HULocalizedModelString(@"HULanguageCanRecognizeMultipleVoices_FinePrint");
-  [v46 setCaptionText:v47];
+  [buttonTray3 setCaptionText:v47];
 
   v48 = HFLogForCategory();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
     v49 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v52 = self;
+    selfCopy = self;
     v53 = 2112;
     v54 = v49;
     _os_log_impl(&dword_20CEB6000, v48, OS_LOG_TYPE_DEFAULT, "%@:%@: presented: HADLCVC", buf, 0x16u);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v13 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = HUHomeAssistantDeviceLanguageConfigurationViewController;
-  [(OBBaseWelcomeController *)&v8 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v8 viewWillDisappear:disappear];
   if ([(HUHomeAssistantDeviceLanguageConfigurationViewController *)self isMovingFromParentViewController])
   {
     v5 = HFLogForCategory();
@@ -875,14 +875,14 @@ LABEL_16:
     {
       v6 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped BACK button", buf, 0x16u);
     }
 
-    v7 = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self delegate];
-    [v7 viewControllerDidGoBack:self];
+    delegate = [(HUHomeAssistantDeviceLanguageConfigurationViewController *)self delegate];
+    [delegate viewControllerDidGoBack:self];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface SSRedeemCodesRequest
 - (NSArray)redeemCodes;
 - (SSAuthenticationContext)authenticationContext;
-- (SSRedeemCodesRequest)initWithRedeemCodes:(id)a3;
-- (SSRedeemCodesRequest)initWithXPCEncoding:(id)a3;
+- (SSRedeemCodesRequest)initWithRedeemCodes:(id)codes;
+- (SSRedeemCodesRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)setAuthenticationContext:(id)a3;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithRedeemResponseBlock:(id)a3;
+- (void)setAuthenticationContext:(id)context;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithRedeemResponseBlock:(id)block;
 @end
 
 @implementation SSRedeemCodesRequest
 
-- (SSRedeemCodesRequest)initWithRedeemCodes:(id)a3
+- (SSRedeemCodesRequest)initWithRedeemCodes:(id)codes
 {
   v6.receiver = self;
   v6.super_class = SSRedeemCodesRequest;
   v4 = [(SSRequest *)&v6 init];
   if (v4)
   {
-    v4->_redeemCodes = [a3 copy];
+    v4->_redeemCodes = [codes copy];
     v4->_headless = 1;
   }
 
@@ -68,7 +68,7 @@ id __45__SSRedeemCodesRequest_authenticationContext__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -76,7 +76,7 @@ id __45__SSRedeemCodesRequest_authenticationContext__block_invoke(uint64_t a1)
   v4[2] = __49__SSRedeemCodesRequest_setAuthenticationContext___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = context;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -94,7 +94,7 @@ uint64_t __49__SSRedeemCodesRequest_setAuthenticationContext___block_invoke(uint
   return result;
 }
 
-- (void)startWithRedeemResponseBlock:(id)a3
+- (void)startWithRedeemResponseBlock:(id)block
 {
   v43 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -105,15 +105,15 @@ uint64_t __49__SSRedeemCodesRequest_setAuthenticationContext___block_invoke(uint
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -154,15 +154,15 @@ uint64_t __49__SSRedeemCodesRequest_setAuthenticationContext___block_invoke(uint
     v18 = +[SSLogConfig sharedConfig];
   }
 
-  v19 = [v18 shouldLog];
+  shouldLog2 = [v18 shouldLog];
   if ([v18 shouldLogToDisk])
   {
-    v20 = v19 | 2;
+    v20 = shouldLog2 | 2;
   }
 
   else
   {
-    v20 = v19;
+    v20 = shouldLog2;
   }
 
   if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -173,14 +173,14 @@ uint64_t __49__SSRedeemCodesRequest_setAuthenticationContext___block_invoke(uint
   if (v20)
   {
     v21 = objc_opt_class();
-    v22 = [(SSRedeemCodesRequest *)self logCorrelationKey];
-    v23 = [(SSRedeemCodesRequest *)self redeemCodes];
+    logCorrelationKey = [(SSRedeemCodesRequest *)self logCorrelationKey];
+    redeemCodes = [(SSRedeemCodesRequest *)self redeemCodes];
     v37 = 138543874;
     v38 = v21;
     v39 = 2114;
-    v40 = v22;
+    v40 = logCorrelationKey;
     v41 = 2112;
-    v42 = v23;
+    v42 = redeemCodes;
     LODWORD(v35) = 32;
     v24 = _os_log_send_and_compose_impl();
     if (v24)
@@ -199,7 +199,7 @@ uint64_t __49__SSRedeemCodesRequest_setAuthenticationContext___block_invoke(uint
   v36[2] = __53__SSRedeemCodesRequest_startWithRedeemResponseBlock___block_invoke_2;
   v36[3] = &unk_1E84AF748;
   v36[5] = global_queue;
-  v36[6] = a3;
+  v36[6] = block;
   v36[4] = self;
   [(SSRequest *)self _startWithMessageID:91 messageBlock:v36];
 }
@@ -332,13 +332,13 @@ uint64_t __53__SSRedeemCodesRequest_startWithRedeemResponseBlock___block_invoke_
   return [v0 postNotificationName:@"SSVNetworkingDidStopNotification" object:0];
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __49__SSRedeemCodesRequest_startWithCompletionBlock___block_invoke;
   v3[3] = &unk_1E84B1818;
-  v3[4] = a3;
+  v3[4] = block;
   [(SSRedeemCodesRequest *)self startWithRedeemResponseBlock:v3];
 }
 
@@ -353,24 +353,24 @@ uint64_t __49__SSRedeemCodesRequest_startWithCompletionBlock___block_invoke(uint
   return result;
 }
 
-- (SSRedeemCodesRequest)initWithXPCEncoding:(id)a3
+- (SSRedeemCodesRequest)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v7.receiver = self;
     v7.super_class = SSRedeemCodesRequest;
     v5 = [(SSRequest *)&v7 init];
     if (v5)
     {
-      v5->_authenticationContext = [[SSAuthenticationContext alloc] initWithXPCEncoding:xpc_dictionary_get_value(a3, "0")];
+      v5->_authenticationContext = [[SSAuthenticationContext alloc] initWithXPCEncoding:xpc_dictionary_get_value(encoding, "0")];
       objc_opt_class();
-      v5->_redeemCodes = SSXPCDictionaryCopyCFObjectWithClass(a3, "1");
-      v5->_headless = xpc_dictionary_get_BOOL(a3, "2");
-      v5->_cameraRecognized = xpc_dictionary_get_BOOL(a3, "3");
+      v5->_redeemCodes = SSXPCDictionaryCopyCFObjectWithClass(encoding, "1");
+      v5->_headless = xpc_dictionary_get_BOOL(encoding, "2");
+      v5->_cameraRecognized = xpc_dictionary_get_BOOL(encoding, "3");
       objc_opt_class();
-      v5->_logCorrelationKey = SSXPCDictionaryCopyCFObjectWithClass(a3, "4");
+      v5->_logCorrelationKey = SSXPCDictionaryCopyCFObjectWithClass(encoding, "4");
       objc_opt_class();
-      v5->_params = SSXPCDictionaryCopyCFObjectWithClass(a3, "5");
+      v5->_params = SSXPCDictionaryCopyCFObjectWithClass(encoding, "5");
     }
   }
 

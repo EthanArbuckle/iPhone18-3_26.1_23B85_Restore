@@ -1,7 +1,7 @@
 @interface SUGradientView
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setGradient:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setGradient:(id)gradient;
 @end
 
 @implementation SUGradientView
@@ -19,53 +19,53 @@
   [(SUGradientView *)&v4 dealloc];
 }
 
-- (void)setGradient:(id)a3
+- (void)setGradient:(id)gradient
 {
-  if (self->_gradient == a3)
+  if (self->_gradient == gradient)
   {
     return;
   }
 
-  if (a3)
+  if (gradient)
   {
-    v5 = [a3 colorStopColors];
-    if ([v5 count] != 1)
+    colorStopColors = [gradient colorStopColors];
+    if ([colorStopColors count] != 1)
     {
-      v8 = [a3 copyCGGradient];
-      v7 = [MEMORY[0x1E69DC888] blackColor];
+      copyCGGradient = [gradient copyCGGradient];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
       goto LABEL_9;
     }
 
-    v6 = [MEMORY[0x1E69DC888] colorWithCGColor:{objc_msgSend(v5, "objectAtIndex:", 0)}];
+    blackColor2 = [MEMORY[0x1E69DC888] colorWithCGColor:{objc_msgSend(colorStopColors, "objectAtIndex:", 0)}];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  v7 = v6;
-  v8 = 0;
+  blackColor = blackColor2;
+  copyCGGradient = 0;
 LABEL_9:
-  [(SUGradientView *)self setBackgroundColor:v7];
+  [(SUGradientView *)self setBackgroundColor:blackColor];
   cgGradient = self->_cgGradient;
   if (cgGradient)
   {
     CGGradientRelease(cgGradient);
   }
 
-  self->_cgGradient = v8;
+  self->_cgGradient = copyCGGradient;
 
-  self->_gradient = [a3 copy];
+  self->_gradient = [gradient copy];
 
   [(SUGradientView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_cgGradient)
   {
-    [(SUGradientView *)self bounds:a3.origin.x];
+    [(SUGradientView *)self bounds:rect.origin.x];
     v5 = v4;
     v7 = v6;
     v9 = v8;

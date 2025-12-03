@@ -1,25 +1,25 @@
 @interface PKEnhancedMerchantCollectionViewListCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKEnhancedMerchantCollectionViewListCell)initWithFrame:(CGRect)a3;
-- (id)_buttonAttributedStringForString:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKEnhancedMerchantCollectionViewListCell)initWithFrame:(CGRect)frame;
+- (id)_buttonAttributedStringForString:(id)string;
 - (id)_visibleButtons;
-- (void)_dispatchActionToDelegate:(int64_t)a3;
+- (void)_dispatchActionToDelegate:(int64_t)delegate;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_initializeViewsIfNecessary;
 - (void)_updateAppStoreButtonBasedOnLinkedApplicationState;
 - (void)_updateImageViewDynamicColors;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)updateWithAccountEnhancedMerchant:(id)a3;
+- (void)updateWithAccountEnhancedMerchant:(id)merchant;
 @end
 
 @implementation PKEnhancedMerchantCollectionViewListCell
 
-- (PKEnhancedMerchantCollectionViewListCell)initWithFrame:(CGRect)a3
+- (PKEnhancedMerchantCollectionViewListCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKEnhancedMerchantCollectionViewListCell;
-  v3 = [(PKEnhancedMerchantCollectionViewListCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKEnhancedMerchantCollectionViewListCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,16 +29,16 @@
   return v4;
 }
 
-- (void)updateWithAccountEnhancedMerchant:(id)a3
+- (void)updateWithAccountEnhancedMerchant:(id)merchant
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_enhancedMerchant, a3);
-  v6 = [(PKAccountEnhancedMerchant *)self->_enhancedMerchant adamID];
-  if (v6)
+  merchantCopy = merchant;
+  objc_storeStrong(&self->_enhancedMerchant, merchant);
+  adamID = [(PKAccountEnhancedMerchant *)self->_enhancedMerchant adamID];
+  if (adamID)
   {
     v7 = [PKLinkedApplication alloc];
-    v11[0] = v6;
+    v11[0] = adamID;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     v9 = [(PKLinkedApplication *)v7 initWithStoreIDs:v8 defaultLaunchURL:0];
     linkedApplication = self->_linkedApplication;
@@ -61,29 +61,29 @@
 {
   if (!self->_listContentView)
   {
-    v3 = [(PKEnhancedMerchantCollectionViewListCell *)self contentView];
+    contentView = [(PKEnhancedMerchantCollectionViewListCell *)self contentView];
     v4 = objc_alloc(MEMORY[0x1E69DCC30]);
-    v5 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-    v6 = [v4 initWithConfiguration:v5];
+    subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+    v6 = [v4 initWithConfiguration:subtitleCellConfiguration];
     listContentView = self->_listContentView;
     self->_listContentView = v6;
 
-    [v3 addSubview:self->_listContentView];
+    [contentView addSubview:self->_listContentView];
     v8 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     imageView = self->_imageView;
     self->_imageView = v8;
 
     v10 = self->_imageView;
-    v11 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIImageView *)v10 setBackgroundColor:v11];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIImageView *)v10 setBackgroundColor:whiteColor];
 
-    v12 = [(UIImageView *)self->_imageView layer];
-    [v12 setCornerRadius:10.0];
-    [v12 setCornerCurve:*MEMORY[0x1E69796E8]];
-    [v12 setBorderWidth:PKUIPixelLength()];
-    [v12 setMasksToBounds:1];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setCornerRadius:10.0];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer setBorderWidth:PKUIPixelLength()];
+    [layer setMasksToBounds:1];
     [(PKEnhancedMerchantCollectionViewListCell *)self _updateImageViewDynamicColors];
-    [v3 addSubview:self->_imageView];
+    [contentView addSubview:self->_imageView];
     v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     detailedDescriptionLabel = self->_detailedDescriptionLabel;
     self->_detailedDescriptionLabel = v13;
@@ -93,28 +93,28 @@
     [(UILabel *)self->_detailedDescriptionLabel setLineBreakStrategy:1];
     [(UILabel *)self->_detailedDescriptionLabel setTextAlignment:0];
     v15 = self->_detailedDescriptionLabel;
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v15 setTextColor:v16];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v15 setTextColor:labelColor];
 
     v17 = self->_detailedDescriptionLabel;
     v18 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC90], 0, 0, *MEMORY[0x1E69DB978]);
     [(UILabel *)v17 setFont:v18];
 
     [(UILabel *)self->_detailedDescriptionLabel setAdjustsFontForContentSizeCategory:1];
-    v54 = v3;
-    [v3 addSubview:self->_detailedDescriptionLabel];
-    v19 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+    v54 = contentView;
+    [contentView addSubview:self->_detailedDescriptionLabel];
+    grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
     v20 = PKRewardsHubGrayButtonColor();
-    [v19 setBaseBackgroundColor:v20];
+    [grayButtonConfiguration setBaseBackgroundColor:v20];
 
-    v21 = [(PKEnhancedMerchantCollectionViewListCell *)self _buttonFont];
-    [v19 setCornerStyle:4];
-    v52 = v21;
-    v22 = [MEMORY[0x1E69DCAD8] configurationWithFont:v21];
-    [v19 setPreferredSymbolConfigurationForImage:v22];
+    _buttonFont = [(PKEnhancedMerchantCollectionViewListCell *)self _buttonFont];
+    [grayButtonConfiguration setCornerStyle:4];
+    v52 = _buttonFont;
+    v22 = [MEMORY[0x1E69DCAD8] configurationWithFont:_buttonFont];
+    [grayButtonConfiguration setPreferredSymbolConfigurationForImage:v22];
 
-    [v19 setContentInsets:{5.0, 8.0, 5.0, 12.0}];
-    [v19 setImagePadding:4.0];
+    [grayButtonConfiguration setContentInsets:{5.0, 8.0, 5.0, 12.0}];
+    [grayButtonConfiguration setImagePadding:4.0];
     v23 = PKLocalizedFeatureString();
     v24 = PKLocalizedFeatureString();
     v25 = PKLocalizedFeatureString();
@@ -124,19 +124,19 @@
     v27 = [(PKEnhancedMerchantCollectionViewListCell *)self _buttonAttributedStringForString:v24];
     v49 = v25;
     v28 = [(PKEnhancedMerchantCollectionViewListCell *)self _buttonAttributedStringForString:v25];
-    v29 = [v19 copy];
+    v29 = [grayButtonConfiguration copy];
     [v29 setAttributedTitle:v26];
     v30 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"appstore"];
     [v29 setImage:v30];
 
     [v29 setShowsActivityIndicator:1];
-    v31 = [v19 copy];
+    v31 = [grayButtonConfiguration copy];
     v48 = v27;
     [v31 setAttributedTitle:v27];
     v32 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"safari.fill"];
     [v31 setImage:v32];
 
-    v33 = [v19 copy];
+    v33 = [grayButtonConfiguration copy];
     v47 = v28;
     [v33 setAttributedTitle:v28];
     v34 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"magnifyingglass"];
@@ -164,25 +164,25 @@
     v55[3] = &unk_1E8010A60;
     objc_copyWeak(&v56, location);
     v39 = [v38 actionWithHandler:v55];
-    v40 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
     v41 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v29 primaryAction:v53];
     appStoreButton = self->_appStoreButton;
     self->_appStoreButton = v41;
 
-    [(UIButton *)self->_appStoreButton setTintColor:v40];
+    [(UIButton *)self->_appStoreButton setTintColor:systemBlueColor];
     [v54 addSubview:self->_appStoreButton];
     [(UIButton *)self->_appStoreButton setEnabled:0];
     v43 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v31 primaryAction:v37];
     websiteButton = self->_websiteButton;
     self->_websiteButton = v43;
 
-    [(UIButton *)self->_websiteButton setTintColor:v40];
+    [(UIButton *)self->_websiteButton setTintColor:systemBlueColor];
     [v54 addSubview:self->_websiteButton];
     v45 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v33 primaryAction:v39];
     mapsButton = self->_mapsButton;
     self->_mapsButton = v45;
 
-    [(UIButton *)self->_mapsButton setTintColor:v40];
+    [(UIButton *)self->_mapsButton setTintColor:systemBlueColor];
     [v54 addSubview:self->_mapsButton];
 
     objc_destroyWeak(&v56);
@@ -211,19 +211,19 @@ void __71__PKEnhancedMerchantCollectionViewListCell__initializeViewsIfNecessary_
   [WeakRetained _dispatchActionToDelegate:2];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a3.width + -32.0;
-  [(UIListContentView *)self->_listContentView sizeThatFits:a3.width + -32.0 + -48.0 + -10.0, a3.height];
+  height = fits.height;
+  width = fits.width;
+  v6 = fits.width + -32.0;
+  [(UIListContentView *)self->_listContentView sizeThatFits:fits.width + -32.0 + -48.0 + -10.0, fits.height];
   v8 = 16.0;
   v9 = fmax(v7, 48.0) + 16.0 + 16.0;
   v38 = height;
   [(UILabel *)self->_detailedDescriptionLabel sizeThatFits:v6, height];
   v11 = v9 + v10;
-  v12 = [(PKEnhancedMerchantCollectionViewListCell *)self _visibleButtons];
-  v13 = [v12 count];
+  _visibleButtons = [(PKEnhancedMerchantCollectionViewListCell *)self _visibleButtons];
+  v13 = [_visibleButtons count];
   if (v13)
   {
     v14 = v13;
@@ -248,7 +248,7 @@ void __71__PKEnhancedMerchantCollectionViewListCell__initializeViewsIfNecessary_
       do
       {
         v25 = v18;
-        v18 = [v12 objectAtIndexedSubscript:{v16, *&v37}];
+        v18 = [_visibleButtons objectAtIndexedSubscript:{v16, *&v37}];
 
         if (++v16 >= v14)
         {
@@ -257,7 +257,7 @@ void __71__PKEnhancedMerchantCollectionViewListCell__initializeViewsIfNecessary_
 
         else
         {
-          v26 = [v12 objectAtIndexedSubscript:v16];
+          v26 = [_visibleButtons objectAtIndexedSubscript:v16];
         }
 
         if (v23 == v20 && v22 == v19)
@@ -348,8 +348,8 @@ void __71__PKEnhancedMerchantCollectionViewListCell__initializeViewsIfNecessary_
   v46.receiver = self;
   v46.super_class = PKEnhancedMerchantCollectionViewListCell;
   [(PKEnhancedMerchantCollectionViewListCell *)&v46 layoutSubviews];
-  v3 = [(PKEnhancedMerchantCollectionViewListCell *)self contentView];
-  v4 = [v3 _shouldReverseLayoutDirection];
+  contentView = [(PKEnhancedMerchantCollectionViewListCell *)self contentView];
+  _shouldReverseLayoutDirection = [contentView _shouldReverseLayoutDirection];
 
   [(PKEnhancedMerchantCollectionViewListCell *)self bounds];
   v6 = v5 + 16.0;
@@ -361,7 +361,7 @@ void __71__PKEnhancedMerchantCollectionViewListCell__initializeViewsIfNecessary_
   remainder.origin.y = v11 + 16.0;
   remainder.size.width = v7 + -32.0;
   remainder.size.height = v9 + -32.0;
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v13 = CGRectMaxXEdge;
   }
@@ -398,8 +398,8 @@ void __71__PKEnhancedMerchantCollectionViewListCell__initializeViewsIfNecessary_
   detailedDescriptionLabel = self->_detailedDescriptionLabel;
   PKSizeAlignedInRect();
   [(UILabel *)detailedDescriptionLabel setFrame:?];
-  v19 = [(PKEnhancedMerchantCollectionViewListCell *)self _visibleButtons];
-  v20 = [v19 count];
+  _visibleButtons = [(PKEnhancedMerchantCollectionViewListCell *)self _visibleButtons];
+  v20 = [_visibleButtons count];
   if (v20)
   {
     v21 = v20;
@@ -422,7 +422,7 @@ void __71__PKEnhancedMerchantCollectionViewListCell__initializeViewsIfNecessary_
       {
         v31 = v26;
         v32 = v25;
-        v26 = [v19 objectAtIndexedSubscript:{v24, v39, v40}];
+        v26 = [_visibleButtons objectAtIndexedSubscript:{v24, v39, v40}];
 
         if (++v24 >= v21)
         {
@@ -431,7 +431,7 @@ void __71__PKEnhancedMerchantCollectionViewListCell__initializeViewsIfNecessary_
 
         else
         {
-          v25 = [v19 objectAtIndexedSubscript:v24];
+          v25 = [_visibleButtons objectAtIndexedSubscript:v24];
         }
 
         if (v30 == v27)
@@ -509,22 +509,22 @@ void __71__PKEnhancedMerchantCollectionViewListCell__initializeViewsIfNecessary_
   }
 }
 
-- (void)_dispatchActionToDelegate:(int64_t)a3
+- (void)_dispatchActionToDelegate:(int64_t)delegate
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(PKEnhancedMerchantCollectionViewListCell *)self enhancedMerchant];
-    [WeakRetained performAction:a3 forEnhancedMerchant:v5 sender:self];
+    enhancedMerchant = [(PKEnhancedMerchantCollectionViewListCell *)self enhancedMerchant];
+    [WeakRetained performAction:delegate forEnhancedMerchant:enhancedMerchant sender:self];
   }
 }
 
-- (id)_buttonAttributedStringForString:(id)a3
+- (id)_buttonAttributedStringForString:(id)string
 {
   v4 = MEMORY[0x1E696AAB0];
-  v5 = a3;
-  v6 = [(PKEnhancedMerchantCollectionViewListCell *)self _buttonFont];
-  v7 = [v4 pkui_attriutedStringWithString:v5 font:v6 paragraphStyle:0];
+  stringCopy = string;
+  _buttonFont = [(PKEnhancedMerchantCollectionViewListCell *)self _buttonFont];
+  v7 = [v4 pkui_attriutedStringWithString:stringCopy font:_buttonFont paragraphStyle:0];
 
   return v7;
 }
@@ -558,13 +558,13 @@ void __94__PKEnhancedMerchantCollectionViewListCell__updateAppStoreButtonBasedOn
 
 - (void)_updateImageViewDynamicColors
 {
-  v3 = [(PKEnhancedMerchantCollectionViewListCell *)self traitCollection];
+  traitCollection = [(PKEnhancedMerchantCollectionViewListCell *)self traitCollection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __73__PKEnhancedMerchantCollectionViewListCell__updateImageViewDynamicColors__block_invoke;
   v4[3] = &unk_1E8010970;
   v4[4] = self;
-  PKUIPerformWithEffectiveTraitCollection(v3, v4);
+  PKUIPerformWithEffectiveTraitCollection(traitCollection, v4);
 }
 
 void __73__PKEnhancedMerchantCollectionViewListCell__updateImageViewDynamicColors__block_invoke(uint64_t a1)

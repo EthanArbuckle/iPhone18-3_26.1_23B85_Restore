@@ -1,20 +1,20 @@
 @interface TSUHTMLTable
-+ (id)_attributesStringFromAttributes:(id)a3;
++ (id)_attributesStringFromAttributes:(id)attributes;
 + (id)htmlTable;
 - (TSUHTMLTable)init;
 - (id)markup;
-- (unint64_t)indexOfColumnWithTitle:(id)a3;
-- (void)addRowWithCellMarkup:(id)a3;
-- (void)addRowWithCellText:(id)a3;
+- (unint64_t)indexOfColumnWithTitle:(id)title;
+- (void)addRowWithCellMarkup:(id)markup;
+- (void)addRowWithCellText:(id)text;
 - (void)dealloc;
-- (void)deleteColumnWithTitle:(id)a3;
-- (void)enumerateRowsUsingBlock:(id)a3;
-- (void)setCellAttributes:(id)a3 rowIndex:(unint64_t)a4 columnIndex:(unint64_t)a5;
-- (void)setCellMarkup:(id)a3 atRowIndex:(unint64_t)a4 columnIndex:(unint64_t)a5;
-- (void)setClass:(id)a3 ofColumnIndex:(unint64_t)a4;
-- (void)setColumnClasses:(id)a3;
-- (void)setColumnHeaders:(id)a3;
-- (void)setRowClass:(id)a3 atRowIndex:(unint64_t)a4;
+- (void)deleteColumnWithTitle:(id)title;
+- (void)enumerateRowsUsingBlock:(id)block;
+- (void)setCellAttributes:(id)attributes rowIndex:(unint64_t)index columnIndex:(unint64_t)columnIndex;
+- (void)setCellMarkup:(id)markup atRowIndex:(unint64_t)index columnIndex:(unint64_t)columnIndex;
+- (void)setClass:(id)class ofColumnIndex:(unint64_t)index;
+- (void)setColumnClasses:(id)classes;
+- (void)setColumnHeaders:(id)headers;
+- (void)setRowClass:(id)class atRowIndex:(unint64_t)index;
 @end
 
 @implementation TSUHTMLTable
@@ -51,32 +51,32 @@
   [(TSUHTMLTable *)&v3 dealloc];
 }
 
-+ (id)_attributesStringFromAttributes:(id)a3
++ (id)_attributesStringFromAttributes:(id)attributes
 {
-  v4 = [MEMORY[0x277CCAB68] string];
-  if ([a3 count])
+  string = [MEMORY[0x277CCAB68] string];
+  if ([attributes count])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = sub_2770B8D7C;
     v6[3] = &unk_27A7027E8;
-    v6[4] = v4;
-    [a3 enumerateKeysAndObjectsUsingBlock:v6];
+    v6[4] = string;
+    [attributes enumerateKeysAndObjectsUsingBlock:v6];
   }
 
-  return v4;
+  return string;
 }
 
 - (id)markup
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   context = objc_autoreleasePoolPush();
-  [v3 appendFormat:@"<table>\n"];
+  [string appendFormat:@"<table>\n"];
   if ([(NSMutableArray *)self->_columnHeaders count])
   {
-    [v3 appendFormat:@"<thead>\n"];
-    [v3 appendFormat:@"<tr class='header'>\n"];
+    [string appendFormat:@"<thead>\n"];
+    [string appendFormat:@"<tr class='header'>\n"];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
@@ -96,7 +96,7 @@
             objc_enumerationMutation(columnHeaders);
           }
 
-          [v3 appendFormat:@"<td>%@</td>", *(*(&v38 + 1) + 8 * i)];
+          [string appendFormat:@"<td>%@</td>", *(*(&v38 + 1) + 8 * i)];
         }
 
         v6 = [(NSMutableArray *)columnHeaders countByEnumeratingWithState:&v38 objects:v44 count:16];
@@ -105,8 +105,8 @@
       while (v6);
     }
 
-    [v3 appendFormat:@"</tr>\n"];
-    [v3 appendFormat:@"</thead>\n"];
+    [string appendFormat:@"</tr>\n"];
+    [string appendFormat:@"</thead>\n"];
   }
 
   v36 = 0u;
@@ -154,7 +154,7 @@
         }
 
         v28 = v9;
-        [v3 appendFormat:@"<tr class='%@'>", v11];
+        [string appendFormat:@"<tr class='%@'>", v11];
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
@@ -178,22 +178,22 @@
               v19 = -[NSMutableDictionary objectForKey:](self->_columnAttributes, "objectForKey:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15]);
               if (v19)
               {
-                v20 = [v19 mutableCopy];
+                dictionary = [v19 mutableCopy];
               }
 
               else
               {
-                v20 = [MEMORY[0x277CBEB38] dictionary];
+                dictionary = [MEMORY[0x277CBEB38] dictionary];
               }
 
-              v21 = v20;
+              v21 = dictionary;
               v22 = -[NSMutableDictionary objectForKey:](self->_cellAttributes, "objectForKey:", [objc_opt_class() _keyForCell:v29 :v15]);
               if (v22)
               {
                 [v21 addEntriesFromDictionary:v22];
               }
 
-              [v3 appendFormat:@"<td%@>%@</td>", objc_msgSend(objc_opt_class(), "_attributesStringFromAttributes:", v21), v18];
+              [string appendFormat:@"<td%@>%@</td>", objc_msgSend(objc_opt_class(), "_attributesStringFromAttributes:", v21), v18];
               ++v15;
             }
 
@@ -203,7 +203,7 @@
           while (v14);
         }
 
-        [v3 appendFormat:@"</tr>\n"];
+        [string appendFormat:@"</tr>\n"];
         ++v29;
         v9 = v28 + 1;
       }
@@ -215,102 +215,102 @@
     while (v27);
   }
 
-  [v3 appendFormat:@"</table>\n"];
+  [string appendFormat:@"</table>\n"];
   objc_autoreleasePoolPop(context);
-  return v3;
+  return string;
 }
 
-- (void)addRowWithCellMarkup:(id)a3
+- (void)addRowWithCellMarkup:(id)markup
 {
   rows = self->_rows;
-  v4 = [a3 copy];
+  v4 = [markup copy];
 
   [(NSMutableArray *)rows addObject:v4];
 }
 
-- (void)addRowWithCellText:(id)a3
+- (void)addRowWithCellText:(id)text
 {
-  [a3 tsu_arrayByTransformingWithBlock:&unk_28862A508];
+  [text tsu_arrayByTransformingWithBlock:&unk_28862A508];
 
   MEMORY[0x2821F9670](self, sel_addRowWithCellMarkup_);
 }
 
-- (void)setColumnClasses:(id)a3
+- (void)setColumnClasses:(id)classes
 {
-  if ([a3 count])
+  if ([classes count])
   {
     v5 = 0;
     do
     {
-      -[TSUHTMLTable setClass:ofColumnIndex:](self, "setClass:ofColumnIndex:", [a3 objectAtIndexedSubscript:v5], v5);
+      -[TSUHTMLTable setClass:ofColumnIndex:](self, "setClass:ofColumnIndex:", [classes objectAtIndexedSubscript:v5], v5);
       ++v5;
     }
 
-    while (v5 < [a3 count]);
+    while (v5 < [classes count]);
   }
 }
 
-- (void)setRowClass:(id)a3 atRowIndex:(unint64_t)a4
+- (void)setRowClass:(id)class atRowIndex:(unint64_t)index
 {
   rowClasses = self->_rowClasses;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
 
-  [(NSMutableDictionary *)rowClasses setObject:a3 forKey:v6];
+  [(NSMutableDictionary *)rowClasses setObject:class forKey:v6];
 }
 
-- (void)setColumnHeaders:(id)a3
+- (void)setColumnHeaders:(id)headers
 {
-  if ([a3 count])
+  if ([headers count])
   {
     v5 = 0;
     do
     {
-      -[NSMutableArray setObject:atIndexedSubscript:](self->_columnHeaders, "setObject:atIndexedSubscript:", [a3 objectAtIndexedSubscript:v5], v5);
+      -[NSMutableArray setObject:atIndexedSubscript:](self->_columnHeaders, "setObject:atIndexedSubscript:", [headers objectAtIndexedSubscript:v5], v5);
       ++v5;
     }
 
-    while (v5 < [a3 count]);
+    while (v5 < [headers count]);
   }
 }
 
-- (void)setClass:(id)a3 ofColumnIndex:(unint64_t)a4
+- (void)setClass:(id)class ofColumnIndex:(unint64_t)index
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = -[NSMutableDictionary tsu_objectForKey:withDefaultOfClass:](self->_columnAttributes, "tsu_objectForKey:withDefaultOfClass:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4], objc_opt_class());
+  v5 = -[NSMutableDictionary tsu_objectForKey:withDefaultOfClass:](self->_columnAttributes, "tsu_objectForKey:withDefaultOfClass:", [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index], objc_opt_class());
   v6 = @"class";
-  v7[0] = a3;
+  v7[0] = class;
   [v5 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v7, &v6, 1)}];
 }
 
-- (void)setCellMarkup:(id)a3 atRowIndex:(unint64_t)a4 columnIndex:(unint64_t)a5
+- (void)setCellMarkup:(id)markup atRowIndex:(unint64_t)index columnIndex:(unint64_t)columnIndex
 {
-  v9 = [-[NSMutableArray objectAtIndexedSubscript:](self->_rows objectAtIndexedSubscript:{a4), "mutableCopy"}];
-  [v9 setObject:a3 atIndexedSubscript:a5];
+  v9 = [-[NSMutableArray objectAtIndexedSubscript:](self->_rows objectAtIndexedSubscript:{index), "mutableCopy"}];
+  [v9 setObject:markup atIndexedSubscript:columnIndex];
   rows = self->_rows;
 
-  [(NSMutableArray *)rows setObject:v9 atIndexedSubscript:a4];
+  [(NSMutableArray *)rows setObject:v9 atIndexedSubscript:index];
 }
 
-- (void)setCellAttributes:(id)a3 rowIndex:(unint64_t)a4 columnIndex:(unint64_t)a5
+- (void)setCellAttributes:(id)attributes rowIndex:(unint64_t)index columnIndex:(unint64_t)columnIndex
 {
   cellAttributes = self->_cellAttributes;
-  v7 = [objc_opt_class() _keyForCell:a4 :a5];
+  v7 = [objc_opt_class() _keyForCell:index :columnIndex];
 
-  [(NSMutableDictionary *)cellAttributes setObject:a3 forKey:v7];
+  [(NSMutableDictionary *)cellAttributes setObject:attributes forKey:v7];
 }
 
-- (void)enumerateRowsUsingBlock:(id)a3
+- (void)enumerateRowsUsingBlock:(id)block
 {
   rows = self->_rows;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2770B95C4;
   v4[3] = &unk_27A702830;
-  v4[4] = a3;
+  v4[4] = block;
   [(NSMutableArray *)rows enumerateObjectsUsingBlock:v4];
 }
 
-- (unint64_t)indexOfColumnWithTitle:(id)a3
+- (unint64_t)indexOfColumnWithTitle:(id)title
 {
   if (![(NSMutableArray *)self->_columnHeaders count])
   {
@@ -318,7 +318,7 @@
   }
 
   v5 = 0;
-  while (([-[NSMutableArray objectAtIndexedSubscript:](self->_columnHeaders objectAtIndexedSubscript:{v5), "isEqualToString:", a3}] & 1) == 0)
+  while (([-[NSMutableArray objectAtIndexedSubscript:](self->_columnHeaders objectAtIndexedSubscript:{v5), "isEqualToString:", title}] & 1) == 0)
   {
     if (++v5 >= [(NSMutableArray *)self->_columnHeaders count])
     {
@@ -329,9 +329,9 @@
   return v5;
 }
 
-- (void)deleteColumnWithTitle:(id)a3
+- (void)deleteColumnWithTitle:(id)title
 {
-  v4 = [(TSUHTMLTable *)self indexOfColumnWithTitle:a3];
+  v4 = [(TSUHTMLTable *)self indexOfColumnWithTitle:title];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;

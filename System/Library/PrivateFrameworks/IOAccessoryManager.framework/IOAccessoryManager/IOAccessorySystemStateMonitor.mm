@@ -1,10 +1,10 @@
 @interface IOAccessorySystemStateMonitor
 - (IOAccessorySystemStateMonitor)init;
 - (void)dealloc;
-- (void)notifyEndpointsBootComplete:(BOOL)a3;
+- (void)notifyEndpointsBootComplete:(BOOL)complete;
 - (void)processBootState;
 - (void)processDisplayState;
-- (void)removeEndpointForService:(unsigned int)a3;
+- (void)removeEndpointForService:(unsigned int)service;
 @end
 
 @implementation IOAccessorySystemStateMonitor
@@ -23,9 +23,9 @@
     v5 = IONotificationPortCreate(*MEMORY[0x277CD2898]);
     *(v2 + 6) = v5;
     IONotificationPortSetDispatchQueue(v5, *(v2 + 7));
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v7 = *(v2 + 4);
-    *(v2 + 4) = v6;
+    *(v2 + 4) = dictionary;
 
     v8 = *(v2 + 6);
     v9 = IOServiceMatching("IOAccessoryIDBusSystemStates");
@@ -149,12 +149,12 @@ uint64_t __37__IOAccessorySystemStateMonitor_init__block_invoke_5(uint64_t a1)
   [(IOAccessorySystemStateMonitor *)self notifyEndpointsBootComplete:state64 != 0];
 }
 
-- (void)removeEndpointForService:(unsigned int)a3
+- (void)removeEndpointForService:(unsigned int)service
 {
-  if (a3)
+  if (service)
   {
     entryID = 0;
-    if (!IORegistryEntryGetRegistryEntryID(a3, &entryID))
+    if (!IORegistryEntryGetRegistryEntryID(service, &entryID))
     {
       endpointMap = self->_endpointMap;
       v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:entryID];
@@ -163,10 +163,10 @@ uint64_t __37__IOAccessorySystemStateMonitor_init__block_invoke_5(uint64_t a1)
   }
 }
 
-- (void)notifyEndpointsBootComplete:(BOOL)a3
+- (void)notifyEndpointsBootComplete:(BOOL)complete
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (complete)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {

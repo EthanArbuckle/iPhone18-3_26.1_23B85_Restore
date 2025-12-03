@@ -17,7 +17,7 @@
 
 - (int64_t)offerUpsellScenario
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7AE624C();
 
   return v3;

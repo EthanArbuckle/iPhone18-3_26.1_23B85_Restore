@@ -15,7 +15,7 @@
     v9 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v7];
   }
 
-  v10 = [a1 valueForKey:v6];
+  v10 = [self valueForKey:v6];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __59__CNContact_CKAdditions__identifierForKey_withDestination___block_invoke;
@@ -30,17 +30,17 @@
 
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = 0;
+    identifier = 0;
   }
 
   else
   {
-    v16 = [a1 valueForKey:v11];
+    v16 = [self valueForKey:v11];
     v17 = [v16 objectAtIndex:v14];
-    v15 = [v17 identifier];
+    identifier = [v17 identifier];
   }
 
-  return v15;
+  return identifier;
 }
 
 @end

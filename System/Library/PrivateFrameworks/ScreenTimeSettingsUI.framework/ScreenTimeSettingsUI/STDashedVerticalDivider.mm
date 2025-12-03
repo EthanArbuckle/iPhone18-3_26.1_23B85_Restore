@@ -1,13 +1,13 @@
 @interface STDashedVerticalDivider
-- (STDashedVerticalDivider)initWithTintColor:(id)a3;
+- (STDashedVerticalDivider)initWithTintColor:(id)color;
 - (UIImage)dashedLineImage;
-- (void)setLabelText:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setLabelText:(id)text;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation STDashedVerticalDivider
 
-- (STDashedVerticalDivider)initWithTintColor:(id)a3
+- (STDashedVerticalDivider)initWithTintColor:(id)color
 {
   v60[8] = *MEMORY[0x277D85DE8];
   v59.receiver = self;
@@ -16,16 +16,16 @@
   v4 = *(MEMORY[0x277CBF3A0] + 8);
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v6 = *(MEMORY[0x277CBF3A0] + 24);
-  v7 = a3;
+  colorCopy = color;
   v8 = [(STDashedVerticalDivider *)&v59 initWithFrame:v3, v4, v5, v6];
   v9 = objc_alloc(MEMORY[0x277D755E8]);
-  v10 = [(STDashedVerticalDivider *)v8 dashedLineImage];
-  v11 = [v9 initWithImage:v10];
+  dashedLineImage = [(STDashedVerticalDivider *)v8 dashedLineImage];
+  v11 = [v9 initWithImage:dashedLineImage];
   dashedLine = v8->_dashedLine;
   v8->_dashedLine = v11;
 
   [(UIImageView *)v8->_dashedLine setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIImageView *)v8->_dashedLine setTintColor:v7];
+  [(UIImageView *)v8->_dashedLine setTintColor:colorCopy];
 
   [(STDashedVerticalDivider *)v8 addSubview:v8->_dashedLine];
   v13 = objc_opt_new();
@@ -36,8 +36,8 @@
   v15 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   [(UILabel *)v8->_label setFont:v15];
 
-  v16 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  [(UILabel *)v8->_label setTextColor:v16];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  [(UILabel *)v8->_label setTextColor:tertiaryLabelColor];
 
   LODWORD(v17) = 1144750080;
   [(UILabel *)v8->_label setContentCompressionResistancePriority:0 forAxis:v17];
@@ -46,60 +46,60 @@
   LODWORD(v19) = 1144766464;
   [(UILabel *)v8->_label setContentCompressionResistancePriority:1 forAxis:v19];
   [(STDashedVerticalDivider *)v8 addSubview:v8->_label];
-  v20 = [(UILabel *)v8->_label bottomAnchor];
-  v21 = [(UIImageView *)v8->_dashedLine bottomAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  bottomAnchor = [(UILabel *)v8->_label bottomAnchor];
+  bottomAnchor2 = [(UIImageView *)v8->_dashedLine bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v22 setActive:1];
 
-  v23 = [(UILabel *)v8->_label trailingAnchor];
-  v24 = [(STDashedVerticalDivider *)v8 trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  trailingAnchor = [(UILabel *)v8->_label trailingAnchor];
+  trailingAnchor2 = [(STDashedVerticalDivider *)v8 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v25 setActive:1];
 
-  v26 = [(UILabel *)v8->_label topAnchor];
+  topAnchor = [(UILabel *)v8->_label topAnchor];
   labelTopAnchor = v8->_labelTopAnchor;
-  v8->_labelTopAnchor = v26;
+  v8->_labelTopAnchor = topAnchor;
 
-  v28 = [(UIImageView *)v8->_dashedLine centerXAnchor];
+  centerXAnchor = [(UIImageView *)v8->_dashedLine centerXAnchor];
   dashedLineCenterXAnchor = v8->_dashedLineCenterXAnchor;
-  v8->_dashedLineCenterXAnchor = v28;
+  v8->_dashedLineCenterXAnchor = centerXAnchor;
 
-  v30 = [(UILabel *)v8->_label leadingAnchor];
-  v31 = [(UIImageView *)v8->_dashedLine trailingAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  leadingAnchor = [(UILabel *)v8->_label leadingAnchor];
+  trailingAnchor3 = [(UIImageView *)v8->_dashedLine trailingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:trailingAnchor3];
   labelLeadingConstraint = v8->_labelLeadingConstraint;
   v8->_labelLeadingConstraint = v32;
 
   v49 = MEMORY[0x277CCAAD0];
   v60[0] = v8->_labelLeadingConstraint;
-  v58 = [(UILabel *)v8->_label bottomAnchor];
-  v57 = [(UIImageView *)v8->_dashedLine bottomAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  bottomAnchor3 = [(UILabel *)v8->_label bottomAnchor];
+  bottomAnchor4 = [(UIImageView *)v8->_dashedLine bottomAnchor];
+  v56 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v60[1] = v56;
-  v55 = [(UILabel *)v8->_label trailingAnchor];
-  v54 = [(STDashedVerticalDivider *)v8 trailingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  trailingAnchor4 = [(UILabel *)v8->_label trailingAnchor];
+  trailingAnchor5 = [(STDashedVerticalDivider *)v8 trailingAnchor];
+  v53 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v60[2] = v53;
-  v52 = [(UIImageView *)v8->_dashedLine topAnchor];
-  v51 = [(STDashedVerticalDivider *)v8 topAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  topAnchor2 = [(UIImageView *)v8->_dashedLine topAnchor];
+  topAnchor3 = [(STDashedVerticalDivider *)v8 topAnchor];
+  v50 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v60[3] = v50;
-  v48 = [(UIImageView *)v8->_dashedLine leadingAnchor];
-  v47 = [(STDashedVerticalDivider *)v8 leadingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  leadingAnchor2 = [(UIImageView *)v8->_dashedLine leadingAnchor];
+  leadingAnchor3 = [(STDashedVerticalDivider *)v8 leadingAnchor];
+  v46 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
   v60[4] = v46;
-  v45 = [(UIImageView *)v8->_dashedLine bottomAnchor];
-  v44 = [(STDashedVerticalDivider *)v8 bottomAnchor];
-  v34 = [v45 constraintEqualToAnchor:v44];
+  bottomAnchor5 = [(UIImageView *)v8->_dashedLine bottomAnchor];
+  bottomAnchor6 = [(STDashedVerticalDivider *)v8 bottomAnchor];
+  v34 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v60[5] = v34;
-  v35 = [(UIImageView *)v8->_dashedLine widthAnchor];
-  v36 = [(STDashedVerticalDivider *)v8 traitCollection];
-  [v36 displayScale];
-  v38 = [v35 constraintEqualToConstant:1.0 / v37];
+  widthAnchor = [(UIImageView *)v8->_dashedLine widthAnchor];
+  traitCollection = [(STDashedVerticalDivider *)v8 traitCollection];
+  [traitCollection displayScale];
+  v38 = [widthAnchor constraintEqualToConstant:1.0 / v37];
   v60[6] = v38;
-  v39 = [(UILabel *)v8->_label trailingAnchor];
-  v40 = [(STDashedVerticalDivider *)v8 trailingAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  trailingAnchor6 = [(UILabel *)v8->_label trailingAnchor];
+  trailingAnchor7 = [(STDashedVerticalDivider *)v8 trailingAnchor];
+  v41 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v60[7] = v41;
   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:8];
   [v49 activateConstraints:v42];
@@ -107,17 +107,17 @@
   return v8;
 }
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  textCopy = text;
+  v5 = [textCopy copy];
   labelText = self->_labelText;
   self->_labelText = v5;
 
-  v7 = [(STDashedVerticalDivider *)self label];
-  [v7 setText:v4];
+  label = [(STDashedVerticalDivider *)self label];
+  [label setText:textCopy];
 
-  v8 = [v4 length];
+  v8 = [textCopy length];
   if (v8)
   {
     v9 = 4.0;
@@ -128,14 +128,14 @@
     v9 = 0.0;
   }
 
-  v10 = [(STDashedVerticalDivider *)self labelLeadingConstraint];
-  [v10 setConstant:v9];
+  labelLeadingConstraint = [(STDashedVerticalDivider *)self labelLeadingConstraint];
+  [labelLeadingConstraint setConstant:v9];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  self->_selected = a3;
-  if (a3)
+  self->_selected = selected;
+  if (selected)
   {
     [MEMORY[0x277D75348] systemDarkMidGrayColor];
   }
@@ -145,8 +145,8 @@
     [MEMORY[0x277D75348] tertiaryLabelColor];
   }
   v5 = ;
-  v4 = [(STDashedVerticalDivider *)self label];
-  [v4 setTextColor:v5];
+  label = [(STDashedVerticalDivider *)self label];
+  [label setTextColor:v5];
 }
 
 - (UIImage)dashedLineImage

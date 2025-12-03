@@ -1,15 +1,15 @@
 @interface HDSHProfileExtension
 - (HDProfile)profile;
-- (HDSHProfileExtension)initWithProfile:(id)a3;
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3;
+- (HDSHProfileExtension)initWithProfile:(id)profile;
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier;
 @end
 
 @implementation HDSHProfileExtension
 
-- (HDSHProfileExtension)initWithProfile:(id)a3
+- (HDSHProfileExtension)initWithProfile:(id)profile
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v36.receiver = self;
   v36.super_class = HDSHProfileExtension;
   v5 = [(HDSHProfileExtension *)&v36 init];
@@ -19,44 +19,44 @@
     goto LABEL_13;
   }
 
-  objc_storeWeak(&v5->_profile, v4);
-  v7 = [[HDSHAccessibilityAssertionManager alloc] initWithProfile:v4];
+  objc_storeWeak(&v5->_profile, profileCopy);
+  v7 = [[HDSHAccessibilityAssertionManager alloc] initWithProfile:profileCopy];
   accessibilityAssertionManager = v6->_accessibilityAssertionManager;
   v6->_accessibilityAssertionManager = v7;
 
   WeakRetained = objc_loadWeakRetained(&v6->_profile);
-  v10 = [WeakRetained daemon];
-  v11 = [v10 behavior];
-  v12 = [v11 hksp_supportsHealthData];
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  hksp_supportsHealthData = [behavior hksp_supportsHealthData];
 
-  if (v12)
+  if (hksp_supportsHealthData)
   {
-    v13 = [[HDSHWidgetSchedulingManager alloc] initWithProfile:v4];
+    v13 = [[HDSHWidgetSchedulingManager alloc] initWithProfile:profileCopy];
     widgetSchedulingManager = v6->_widgetSchedulingManager;
     v6->_widgetSchedulingManager = v13;
   }
 
-  v15 = [MEMORY[0x277D106D8] hdsh_sleepApneaNotificationsAvailabilityManagerWithProfile:v4];
+  v15 = [MEMORY[0x277D106D8] hdsh_sleepApneaNotificationsAvailabilityManagerWithProfile:profileCopy];
   sleepApneaNotificationsAvailabilityManager = v6->_sleepApneaNotificationsAvailabilityManager;
   v6->_sleepApneaNotificationsAvailabilityManager = v15;
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v18 = [v17 isAppleWatch];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-    if ((v18 & 1) == 0)
+    if ((isAppleWatch & 1) == 0)
     {
-      triggerObserver = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v6->_sleepApneaNotificationsAvailabilityManager healthDataSource:v4];
-      v23 = [[HDSHSleepApneaRescindedNotificationManager alloc] initWithProfile:v4 featureStatusProvider:triggerObserver];
+      triggerObserver = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v6->_sleepApneaNotificationsAvailabilityManager healthDataSource:profileCopy];
+      v23 = [[HDSHSleepApneaRescindedNotificationManager alloc] initWithProfile:profileCopy featureStatusProvider:triggerObserver];
       rescindedNotificationManager = v6->_rescindedNotificationManager;
       v6->_rescindedNotificationManager = v23;
 
       v25 = [HDSHBreathingDisturbanceAnalysisScheduler alloc];
       v26 = v6->_sleepApneaNotificationsAvailabilityManager;
       v27 = HKSPCurrentDateProvider();
-      v28 = [(HDSHBreathingDisturbanceAnalysisScheduler *)v25 initWithProfile:v4 featureStatusProvider:triggerObserver featureAvailabilityProviding:v26 currentDateProvider:v27];
+      v28 = [(HDSHBreathingDisturbanceAnalysisScheduler *)v25 initWithProfile:profileCopy featureStatusProvider:triggerObserver featureAvailabilityProviding:v26 currentDateProvider:v27];
       breathingDisturbanceAnalysisScheduler = v6->_breathingDisturbanceAnalysisScheduler;
       v6->_breathingDisturbanceAnalysisScheduler = v28;
 
@@ -67,12 +67,12 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v19 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v20 = [v19 isAppleWatch];
+    mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleWatch2 = [mEMORY[0x277CCDD30]2 isAppleWatch];
 
-    if (v20)
+    if (isAppleWatch2)
     {
-      v21 = [[HDSHSleepApneaNotificationUITriggerObserver alloc] initWithProfile:v4];
+      v21 = [[HDSHSleepApneaNotificationUITriggerObserver alloc] initWithProfile:profileCopy];
       triggerObserver = v6->_triggerObserver;
       v6->_triggerObserver = v21;
 LABEL_10:
@@ -97,9 +97,9 @@ LABEL_13:
   return v6;
 }
 
-- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)a3
+- (id)featureAvailabilityExtensionForFeatureIdentifier:(id)identifier
 {
-  if ([a3 isEqualToString:*MEMORY[0x277CCC0D8]])
+  if ([identifier isEqualToString:*MEMORY[0x277CCC0D8]])
   {
     v4 = self->_sleepApneaNotificationsAvailabilityManager;
   }

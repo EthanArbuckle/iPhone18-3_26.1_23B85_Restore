@@ -7,20 +7,20 @@
 
 - (BOOL)_accessibilityServesAsContainingParentForOrdering
 {
-  v3 = [(BKViewAccessibility *)self imaxIdentification];
-  if ([v3 isEqualToString:@"ContainerParent"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"TableSwitchSegment") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"SwitcherToolbar") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"SwitchContentView"))
+  imaxIdentification = [(BKViewAccessibility *)self imaxIdentification];
+  if ([imaxIdentification isEqualToString:@"ContainerParent"] & 1) != 0 || (objc_msgSend(imaxIdentification, "isEqualToString:", @"TableSwitchSegment") & 1) != 0 || (objc_msgSend(imaxIdentification, "isEqualToString:", @"SwitcherToolbar") & 1) != 0 || (objc_msgSend(imaxIdentification, "isEqualToString:", @"SwitchContentView"))
   {
-    v4 = 1;
+    _accessibilityServesAsContainingParentForOrdering = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = BKViewAccessibility;
-    v4 = [(BKViewAccessibility *)&v6 _accessibilityServesAsContainingParentForOrdering];
+    _accessibilityServesAsContainingParentForOrdering = [(BKViewAccessibility *)&v6 _accessibilityServesAsContainingParentForOrdering];
   }
 
-  return v4;
+  return _accessibilityServesAsContainingParentForOrdering;
 }
 
 - (CGRect)accessibilityFrame
@@ -32,8 +32,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKViewAccessibility *)self imaxIdentification];
-  if (([v11 isEqualToString:@"BookTopLabel"] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"TableSwitchSegment"))
+  imaxIdentification = [(BKViewAccessibility *)self imaxIdentification];
+  if (([imaxIdentification isEqualToString:@"BookTopLabel"] & 1) != 0 || objc_msgSend(imaxIdentification, "isEqualToString:", @"TableSwitchSegment"))
   {
     v12 = [(BKViewAccessibility *)self imaxValueForKey:@"bounds"];
     [v12 rectValue];
@@ -43,10 +43,10 @@
     v20 = v19;
 
     v21 = [(BKViewAccessibility *)self imaxValueForKey:@"window"];
-    v22 = [v21 windowScene];
-    v23 = [v22 interfaceOrientation];
+    windowScene = [v21 windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    if ((v23 - 1) > 1 || (v24 = -20.0, (isPad() & 1) == 0))
+    if ((interfaceOrientation - 1) > 1 || (v24 = -20.0, (isPad() & 1) == 0))
     {
       v24 = -10.0;
     }

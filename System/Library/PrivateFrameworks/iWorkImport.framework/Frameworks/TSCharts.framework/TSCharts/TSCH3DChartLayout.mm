@@ -4,10 +4,10 @@
 + (id)p_propertiesThatResetSceneProperties;
 + (id)p_propertiesThatResetSeriesStorage;
 + (id)propertiesThatInvalidateLayout;
-+ (void)upgradeSceneDepthSettingsForChartInfo:(id)a3 hasConstantDepth:(BOOL)a4 willModifyBlock:(id)a5;
++ (void)upgradeSceneDepthSettingsForChartInfo:(id)info hasConstantDepth:(BOOL)depth willModifyBlock:(id)block;
 - (BOOL)hasProjectedBounds;
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3;
-- (TSCH3DChartLayout)initWithChartInfo:(id)a3;
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection;
+- (TSCH3DChartLayout)initWithChartInfo:(id)info;
 - (TSCH3DChartSceneAreaLayoutItem)areaItem;
 - (TSCH3DScene)scene;
 - (const)projectedBounds;
@@ -18,28 +18,28 @@
 - (void)p_ensureValidForInwardLayout;
 - (void)p_resetSceneProperties;
 - (void)p_resetSeriesStorage;
-- (void)setLayoutSettings:(id *)a3;
-- (void)setSeriesIndexedPieWedgeExplosions:(id)a3;
+- (void)setLayoutSettings:(id *)settings;
+- (void)setSeriesIndexedPieWedgeExplosions:(id)explosions;
 @end
 
 @implementation TSCH3DChartLayout
 
-+ (void)upgradeSceneDepthSettingsForChartInfo:(id)a3 hasConstantDepth:(BOOL)a4 willModifyBlock:(id)a5
++ (void)upgradeSceneDepthSettingsForChartInfo:(id)info hasConstantDepth:(BOOL)depth willModifyBlock:(id)block
 {
-  v5 = a4;
-  v22 = a5;
-  v11 = objc_msgSend_upgraderWithChartInfo_(TSCH3DChartLayoutSceneSettingsUpgrader, v7, v8, v9, v10, a3);
-  objc_msgSend_setHasConstantDepth_(v11, v12, v13, v14, v15, v5);
-  objc_msgSend_setWillModifyBlock_(v11, v16, v17, v18, v19, v22);
+  depthCopy = depth;
+  blockCopy = block;
+  v11 = objc_msgSend_upgraderWithChartInfo_(TSCH3DChartLayoutSceneSettingsUpgrader, v7, v8, v9, v10, info);
+  objc_msgSend_setHasConstantDepth_(v11, v12, v13, v14, v15, depthCopy);
+  objc_msgSend_setWillModifyBlock_(v11, v16, v17, v18, v19, blockCopy);
   objc_msgSend_upgradeForSpice_naturalSize_(v11, v20, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8), v21, 0);
 }
 
-- (TSCH3DChartLayout)initWithChartInfo:(id)a3
+- (TSCH3DChartLayout)initWithChartInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v22.receiver = self;
   v22.super_class = TSCH3DChartLayout;
-  v5 = [(TSCH2DChartLayout *)&v22 initWithChartInfo:v4];
+  v5 = [(TSCH2DChartLayout *)&v22 initWithChartInfo:infoCopy];
   v10 = v5;
   if (v5)
   {
@@ -71,7 +71,7 @@
   [(TSCH3DChartLayout *)&v2 dealloc];
 }
 
-- (void)setLayoutSettings:(id *)a3
+- (void)setLayoutSettings:(id *)settings
 {
   v8 = objc_msgSend_sharedInstance(TSCH3DChartPlatformSettings, a2, v3, v4, v5);
   v13 = objc_msgSend_useLayoutInwardForInsertionIcons(v8, v9, v10, v11, v12);
@@ -96,7 +96,7 @@
         var9 = 0;
       }
 
-      var6 = a3->var6;
+      var6 = settings->var6;
     }
 
     else
@@ -117,7 +117,7 @@
         v86 = 0;
       }
 
-      var6 = a3->var7;
+      var6 = settings->var7;
     }
 
     if (v33 != var6)
@@ -139,8 +139,8 @@
       }
 
       v61 = sub_27635FC90(&v87, v56, v57, v58, v59);
-      v87 = *&a3->var0;
-      var9 = a3->var9;
+      v87 = *&settings->var0;
+      var9 = settings->var9;
       v65 = sub_27635FC90(&v87, v62, *&v87, v63, v64);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v44, v66, v67, v68, v69, v45, v50, 204, 0, "default layout settings out of sync layout inward %lu info %@ lyaout %@", v13, v61, v65);
 
@@ -152,16 +152,16 @@
   {
   }
 
-  v87 = *&a3->var0;
-  var9 = a3->var9;
+  v87 = *&settings->var0;
+  var9 = settings->var9;
   if (objc_msgSend_p_shouldClearSceneForLayoutSettings_(self, v34, *&v87, v35, v36, &v87) && self->super._layoutTreeRoot)
   {
     v78 = objc_msgSend_areaItem(self, v74, v75, v76, v77);
     objc_msgSend_clearScene(v78, v79, v80, v81, v82);
   }
 
-  v87 = *&a3->var0;
-  var9 = a3->var9;
+  v87 = *&settings->var0;
+  var9 = settings->var9;
   v83.receiver = self;
   v83.super_class = TSCH3DChartLayout;
   [(TSCH2DChartLayout *)&v83 setLayoutSettings:&v87];
@@ -172,16 +172,16 @@
   v3 = self->super._layoutTreeRoot;
   v17.receiver = self;
   v17.super_class = TSCH3DChartLayout;
-  v5 = [(TSCH2DChartLayout *)&v17 p_layoutTree];
-  if (v5 != v3)
+  p_layoutTree = [(TSCH2DChartLayout *)&v17 p_layoutTree];
+  if (p_layoutTree != v3)
   {
     objc_msgSend_layoutSettings(self, v4, v6, v7, v8);
     v13 = v15;
     v14 = v16;
-    objc_msgSend_setLayoutSettings_(v5, v9, *&v15, v10, v11, &v13);
+    objc_msgSend_setLayoutSettings_(p_layoutTree, v9, *&v15, v10, v11, &v13);
   }
 
-  return v5;
+  return p_layoutTree;
 }
 
 - (void)p_ensureValidForInwardLayout
@@ -373,7 +373,7 @@
   block[1] = 3221225472;
   block[2] = sub_27620FF80;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A46AA0 != -1)
   {
     dispatch_once(&qword_280A46AA0, block);
@@ -384,21 +384,21 @@
   return v2;
 }
 
-- (void)setSeriesIndexedPieWedgeExplosions:(id)a3
+- (void)setSeriesIndexedPieWedgeExplosions:(id)explosions
 {
-  v4 = a3;
+  explosionsCopy = explosions;
   v14.receiver = self;
   v14.super_class = TSCH3DChartLayout;
-  [(TSCH2DChartLayout *)&v14 setSeriesIndexedPieWedgeExplosions:v4];
+  [(TSCH2DChartLayout *)&v14 setSeriesIndexedPieWedgeExplosions:explosionsCopy];
   v9 = objc_msgSend_areaItem(self, v5, v6, v7, v8);
   objc_msgSend_invalidateBounds(v9, v10, v11, v12, v13);
 }
 
-- (CGPath)newDragAndDropHighlightPathForSelection:(id)a3
+- (CGPath)newDragAndDropHighlightPathForSelection:(id)selection
 {
   v55 = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  if (!objc_msgSend_count(v48, v4, v5, v6, v7))
+  selectionCopy = selection;
+  if (!objc_msgSend_count(selectionCopy, v4, v5, v6, v7))
   {
     goto LABEL_15;
   }
@@ -408,7 +408,7 @@
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v48;
+  obj = selectionCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, v10, v11, v12, &v50, v54, 16);
   if (v14)
   {

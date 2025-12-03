@@ -1,14 +1,14 @@
 @interface MRGroupSessionProvider
-+ (id)remoteControlGroupSessionWithIdentifier:(id)a3 delegate:(id)a4;
++ (id)remoteControlGroupSessionWithIdentifier:(id)identifier delegate:(id)delegate;
 @end
 
 @implementation MRGroupSessionProvider
 
-+ (id)remoteControlGroupSessionWithIdentifier:(id)a3 delegate:(id)a4
++ (id)remoteControlGroupSessionWithIdentifier:(id)identifier delegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MRRemoteControlGroupSession alloc] initWithIdentifier:v6 delegate:v5];
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  v7 = [[MRRemoteControlGroupSession alloc] initWithIdentifier:identifierCopy delegate:delegateCopy];
 
   return v7;
 }

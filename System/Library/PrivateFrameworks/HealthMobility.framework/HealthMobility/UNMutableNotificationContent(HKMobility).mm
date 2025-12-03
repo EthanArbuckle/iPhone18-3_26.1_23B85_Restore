@@ -9,7 +9,7 @@
 {
   v8 = a3;
   v9 = a5;
-  v10 = objc_alloc_init(a1);
+  v10 = objc_alloc_init(self);
   v11 = v8;
   if (([v11 isEqualToString:@"MobilityAppPlugin.WalkingSteadinessInitial.Low"] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"MobilityAppPlugin.WalkingSteadinessRepeat.Low"))
   {
@@ -51,7 +51,7 @@ LABEL_5:
   [v10 setExpirationDate:v9];
 
   [v10 setThreadIdentifier:@"com.apple.health.Mobility"];
-  v15 = [(objc_class *)a1 _makeUserInfoForCategory:v11 isShowingPregnancyContent:a4 ^ 1u];
+  v15 = [(objc_class *)self _makeUserInfoForCategory:v11 isShowingPregnancyContent:a4 ^ 1u];
   [v10 setUserInfo:v15];
 
   v16 = [MEMORY[0x277CE1FE0] soundWithAlertType:25];
@@ -72,8 +72,8 @@ LABEL_5:
   if (v10 && ([MEMORY[0x277CBEBC0] URLWithString:@"x-apple-health://summary"], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = v11;
-    v13 = [v11 absoluteString];
-    [v7 setObject:v13 forKeyedSubscript:*MEMORY[0x277CCE4E0]];
+    absoluteString = [v11 absoluteString];
+    [v7 setObject:absoluteString forKeyedSubscript:*MEMORY[0x277CCE4E0]];
   }
 
   else
@@ -82,7 +82,7 @@ LABEL_5:
     v14 = *MEMORY[0x277CCC2F8];
     if (os_log_type_enabled(*MEMORY[0x277CCC2F8], OS_LOG_TYPE_ERROR))
     {
-      [(UNMutableNotificationContent(HKMobility) *)v14 _makeUserInfoForCategory:a1 isShowingPregnancyContent:v8];
+      [(UNMutableNotificationContent(HKMobility) *)v14 _makeUserInfoForCategory:self isShowingPregnancyContent:v8];
     }
   }
 

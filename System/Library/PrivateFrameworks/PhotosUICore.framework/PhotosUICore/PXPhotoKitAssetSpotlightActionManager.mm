@@ -1,7 +1,7 @@
 @interface PXPhotoKitAssetSpotlightActionManager
-+ (id)notThisPersonLocalizedTitleForPerson:(id)a3;
-- (BOOL)canPerformActionType:(id)a3;
-- (BOOL)supportsActionType:(id)a3;
++ (id)notThisPersonLocalizedTitleForPerson:(id)person;
+- (BOOL)canPerformActionType:(id)type;
+- (BOOL)supportsActionType:(id)type;
 - (void)px_registerAdditionalPerformerClasses;
 @end
 
@@ -15,73 +15,73 @@
   [(PXPhotoKitAssetActionManager *)self registerPerformerClass:objc_opt_class() forType:*off_1E7721BB0];
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*off_1E7721B88] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *off_1E7721BB0))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*off_1E7721B88] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *off_1E7721BB0))
   {
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:*off_1E7721A58])
+  if ([typeCopy isEqualToString:*off_1E7721A58])
   {
-    v15 = self;
-    v6 = &v15;
+    selfCopy = self;
+    v6 = &selfCopy;
 LABEL_8:
     v6[1] = PXPhotoKitAssetSpotlightActionManager;
-    v5 = objc_msgSendSuper2(v6, sel_canPerformActionType_, v4, v8);
+    v5 = objc_msgSendSuper2(v6, sel_canPerformActionType_, typeCopy, selfCopy7);
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:*off_1E7721A18])
+  if ([typeCopy isEqualToString:*off_1E7721A18])
   {
     v14.receiver = self;
     v6 = &v14;
     goto LABEL_8;
   }
 
-  if (([v4 isEqualToString:*off_1E7721B90] & 1) == 0)
+  if (([typeCopy isEqualToString:*off_1E7721B90] & 1) == 0)
   {
-    if ([v4 isEqualToString:*off_1E7721A30])
+    if ([typeCopy isEqualToString:*off_1E7721A30])
     {
-      v13 = self;
-      v6 = &v13;
+      selfCopy2 = self;
+      v6 = &selfCopy2;
     }
 
-    else if ([v4 isEqualToString:*off_1E7721A38])
+    else if ([typeCopy isEqualToString:*off_1E7721A38])
     {
-      v12 = self;
-      v6 = &v12;
+      selfCopy3 = self;
+      v6 = &selfCopy3;
     }
 
-    else if ([v4 isEqualToString:*off_1E7721BC8])
+    else if ([typeCopy isEqualToString:*off_1E7721BC8])
     {
-      v11 = self;
-      v6 = &v11;
+      selfCopy4 = self;
+      v6 = &selfCopy4;
     }
 
-    else if ([v4 isEqualToString:*off_1E7721B20])
+    else if ([typeCopy isEqualToString:*off_1E7721B20])
     {
-      v10 = self;
-      v6 = &v10;
+      selfCopy5 = self;
+      v6 = &selfCopy5;
     }
 
-    else if ([v4 isEqualToString:*off_1E7721B18])
+    else if ([typeCopy isEqualToString:*off_1E7721B18])
     {
-      v9 = self;
-      v6 = &v9;
+      selfCopy6 = self;
+      v6 = &selfCopy6;
     }
 
     else
     {
-      if (![v4 isEqualToString:*off_1E7721B10])
+      if (![typeCopy isEqualToString:*off_1E7721B10])
       {
         v5 = 0;
         goto LABEL_9;
       }
 
-      v8 = self;
-      v6 = &v8;
+      selfCopy7 = self;
+      v6 = &selfCopy7;
     }
 
     goto LABEL_8;
@@ -94,35 +94,35 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)supportsActionType:(id)a3
+- (BOOL)supportsActionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*off_1E7721B88] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *off_1E7721BB0))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*off_1E7721B88] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *off_1E7721BB0))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*off_1E7721A58];
+    v4 = [typeCopy isEqualToString:*off_1E7721A58];
   }
 
   return v4;
 }
 
-+ (id)notThisPersonLocalizedTitleForPerson:(id)a3
++ (id)notThisPersonLocalizedTitleForPerson:(id)person
 {
-  v3 = a3;
-  v4 = [v3 px_localizedName];
-  if ([v4 length])
+  personCopy = person;
+  px_localizedName = [personCopy px_localizedName];
+  if ([px_localizedName length])
   {
-    PXLocalizedStringForPersonOrPetAndVisibility(v3, 0, @"PXPeopleAssetNotThisNamedPersonFormat");
+    PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleAssetNotThisNamedPersonFormat");
     objc_claimAutoreleasedReturnValue();
 
     PXStringWithValidatedFormat();
   }
 
-  v5 = PXLocalizedStringForPersonOrPetAndVisibility(v3, 0, @"PXPeopleAssetNotThisUnnamedPerson");
+  v5 = PXLocalizedStringForPersonOrPetAndVisibility(personCopy, 0, @"PXPeopleAssetNotThisUnnamedPerson");
 
   return v5;
 }

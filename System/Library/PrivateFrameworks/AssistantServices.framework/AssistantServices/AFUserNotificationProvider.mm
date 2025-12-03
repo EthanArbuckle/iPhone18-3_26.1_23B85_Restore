@@ -1,26 +1,26 @@
 @interface AFUserNotificationProvider
 - (AFUserNotificationProvider)init;
 - (id)_connection;
-- (void)postNotificationRequest:(id)a3 responseHandler:(id)a4;
-- (void)receivedNotificationResponse:(id)a3;
-- (void)withdrawNotificationRequestWithIdentifier:(id)a3;
+- (void)postNotificationRequest:(id)request responseHandler:(id)handler;
+- (void)receivedNotificationResponse:(id)response;
+- (void)withdrawNotificationRequestWithIdentifier:(id)identifier;
 @end
 
 @implementation AFUserNotificationProvider
 
-- (void)receivedNotificationResponse:(id)a3
+- (void)receivedNotificationResponse:(id)response
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 notification];
-  v6 = [v5 request];
-  v7 = [v6 identifier];
+  responseCopy = response;
+  notification = [responseCopy notification];
+  request = [notification request];
+  identifier = [request identifier];
 
-  v8 = [(NSMutableDictionary *)self->_responseHandlersByNotificationID objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_responseHandlersByNotificationID objectForKey:identifier];
   v9 = v8;
   if (v8)
   {
-    (*(v8 + 16))(v8, v4);
+    (*(v8 + 16))(v8, responseCopy);
   }
 
   else
@@ -31,7 +31,7 @@
       v12 = 136315394;
       v13 = "[AFUserNotificationProvider receivedNotificationResponse:]";
       v14 = 2112;
-      v15 = v4;
+      v15 = responseCopy;
       _os_log_error_impl(&dword_1912FE000, v10, OS_LOG_TYPE_ERROR, "%s No response handler for %@", &v12, 0x16u);
     }
   }
@@ -119,17 +119,17 @@ void __41__AFUserNotificationProvider__connection__block_invoke_15(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)withdrawNotificationRequestWithIdentifier:(id)a3
+- (void)withdrawNotificationRequestWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AFUserNotificationProvider *)self _connection];
+  identifierCopy = identifier;
+  _connection = [(AFUserNotificationProvider *)self _connection];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__AFUserNotificationProvider_withdrawNotificationRequestWithIdentifier___block_invoke;
   v7[3] = &unk_1E73493C0;
   v7[4] = self;
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v7];
-  [v6 withdrawNotificationRequestWithIdentifier:v4];
+  v6 = [_connection remoteObjectProxyWithErrorHandler:v7];
+  [v6 withdrawNotificationRequestWithIdentifier:identifierCopy];
 }
 
 void __72__AFUserNotificationProvider_withdrawNotificationRequestWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -153,23 +153,23 @@ void __72__AFUserNotificationProvider_withdrawNotificationRequestWithIdentifier_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postNotificationRequest:(id)a3 responseHandler:(id)a4
+- (void)postNotificationRequest:(id)request responseHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  if (v8)
+  requestCopy = request;
+  handlerCopy = handler;
+  identifier = [requestCopy identifier];
+  if (identifier)
   {
     queue = self->_queue;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __70__AFUserNotificationProvider_postNotificationRequest_responseHandler___block_invoke;
     v12[3] = &unk_1E73479F0;
-    v15 = v7;
+    v15 = handlerCopy;
     v12[4] = self;
-    v13 = v8;
-    v14 = v6;
+    v13 = identifier;
+    v14 = requestCopy;
     dispatch_async(queue, v12);
   }
 
@@ -181,11 +181,11 @@ void __72__AFUserNotificationProvider_withdrawNotificationRequestWithIdentifier_
       *buf = 136315394;
       v17 = "[AFUserNotificationProvider postNotificationRequest:responseHandler:]";
       v18 = 2112;
-      v19 = v6;
+      v19 = requestCopy;
       _os_log_error_impl(&dword_1912FE000, v10, OS_LOG_TYPE_ERROR, "%s No identifier specified for %@", buf, 0x16u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -263,28 +263,6 @@ void __70__AFUserNotificationProvider_postNotificationRequest_responseHandler___
   *(v5 + 8) = 0;
 
   v7 = *MEMORY[0x1E69E9840];
-}
-
-{
-  v13 = *MEMORY[0x1E69E9840];
-  v3 = a2;
-  if (v3)
-  {
-    v4 = AFSiriLogContextUtility;
-    if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
-    {
-      v6 = *(a1 + 32);
-      v7 = 136315650;
-      v8 = "[AFUserNotificationProvider postNotificationRequest:responseHandler:]_block_invoke";
-      v9 = 2112;
-      v10 = v6;
-      v11 = 2112;
-      v12 = v3;
-      _os_log_error_impl(&dword_1912FE000, v4, OS_LOG_TYPE_ERROR, "%s Error posting notification %@: %@", &v7, 0x20u);
-    }
-  }
-
-  v5 = *MEMORY[0x1E69E9840];
 }
 
 - (AFUserNotificationProvider)init

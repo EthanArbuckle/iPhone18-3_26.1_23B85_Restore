@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (id)initiateBackgroundDownload;
 - (void)_abortBackgroundDownload;
-- (void)_pauseBackgroundDownloadForReason:(id)a3;
+- (void)_pauseBackgroundDownloadForReason:(id)reason;
 - (void)_resumeBackgroundDownload;
 - (void)_sendDownloadStatusUpdateNotification;
 - (void)kickOffBackgroundDownload;
@@ -25,19 +25,19 @@
 
 - (void)kickOffBackgroundDownload
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(MSDBackgroundDownload *)v2 isBackgroundDownloadQueueEmpty])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MSDBackgroundDownload *)selfCopy isBackgroundDownloadQueueEmpty])
   {
-    [(MSDBackgroundDownload *)v2 setIsBackgroundDownloadQueueEmpty:0];
+    [(MSDBackgroundDownload *)selfCopy setIsBackgroundDownloadQueueEmpty:0];
     v3 = +[MSDWorkQueueSet sharedInstance];
-    v4 = [v3 backgroundDownloadQueue];
+    backgroundDownloadQueue = [v3 backgroundDownloadQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000794E8;
     block[3] = &unk_100169B70;
-    block[4] = v2;
-    dispatch_async(v4, block);
+    block[4] = selfCopy;
+    dispatch_async(backgroundDownloadQueue, block);
   }
 
   else
@@ -50,7 +50,7 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)quitBackgroundDownload
@@ -62,24 +62,24 @@
   }
 
   [(MSDBackgroundDownload *)self _abortBackgroundDownload];
-  v4 = [(MSDBackgroundDownload *)self bundleDownloadInProgress];
-  [v4 stopBundleUpdateTimer];
+  bundleDownloadInProgress = [(MSDBackgroundDownload *)self bundleDownloadInProgress];
+  [bundleDownloadInProgress stopBundleUpdateTimer];
 }
 
 - (void)_abortBackgroundDownload
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MSDBackgroundDownload *)v2 device];
-  v4 = [v3 backgroundDownloadState];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  device = [(MSDBackgroundDownload *)selfCopy device];
+  backgroundDownloadState = [device backgroundDownloadState];
 
-  if (v4 == 1)
+  if (backgroundDownloadState == 1)
   {
-    v5 = [(MSDBackgroundDownload *)v2 device];
-    [v5 setBackgroundDownloadState:2];
+    device2 = [(MSDBackgroundDownload *)selfCopy device];
+    [device2 setBackgroundDownloadState:2];
 
-    v6 = [(MSDBackgroundDownload *)v2 device];
-    [v6 setBackgroundDownloadActive:0];
+    device3 = [(MSDBackgroundDownload *)selfCopy device];
+    [device3 setBackgroundDownloadActive:0];
 
     v7 = sub_100063A54();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -88,69 +88,69 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Aborting background download...", v10, 2u);
     }
 
-    if ([(MSDBackgroundDownload *)v2 freezeBackgroundDownload])
+    if ([(MSDBackgroundDownload *)selfCopy freezeBackgroundDownload])
     {
-      v8 = [(MSDBackgroundDownload *)v2 componentManager];
-      [v8 resumeProcessing];
+      componentManager = [(MSDBackgroundDownload *)selfCopy componentManager];
+      [componentManager resumeProcessing];
     }
 
-    v9 = [(MSDBackgroundDownload *)v2 componentManager];
-    [v9 abortProcessing];
+    componentManager2 = [(MSDBackgroundDownload *)selfCopy componentManager];
+    [componentManager2 abortProcessing];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_pauseBackgroundDownloadForReason:(id)a3
+- (void)_pauseBackgroundDownloadForReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(MSDBackgroundDownload *)v5 freezeBackgroundDownload])
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(MSDBackgroundDownload *)selfCopy freezeBackgroundDownload])
   {
-    v6 = [(MSDBackgroundDownload *)v5 bundleDownloadInProgress];
-    v7 = [v6 bundleState];
+    bundleDownloadInProgress = [(MSDBackgroundDownload *)selfCopy bundleDownloadInProgress];
+    bundleState = [bundleDownloadInProgress bundleState];
 
-    if (v7 == 1)
+    if (bundleState == 1)
     {
-      [(MSDBackgroundDownload *)v5 setFreezeBackgroundDownload:1];
+      [(MSDBackgroundDownload *)selfCopy setFreezeBackgroundDownload:1];
       v8 = sub_100063A54();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138543362;
-        v14 = v4;
+        v14 = reasonCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Pausing background download for reason: %{public}@", &v13, 0xCu);
       }
 
-      [(MSDBackgroundDownload *)v5 setBgDownloadPauseReason:v4];
+      [(MSDBackgroundDownload *)selfCopy setBgDownloadPauseReason:reasonCopy];
       v9 = +[NSDate now];
       [v9 timeIntervalSince1970];
-      [(MSDBackgroundDownload *)v5 setBgDownloadPauseStartTime:v10];
+      [(MSDBackgroundDownload *)selfCopy setBgDownloadPauseStartTime:v10];
 
-      v11 = [(MSDBackgroundDownload *)v5 bundleDownloadInProgress];
-      [v11 stopBundleUpdateTimer];
+      bundleDownloadInProgress2 = [(MSDBackgroundDownload *)selfCopy bundleDownloadInProgress];
+      [bundleDownloadInProgress2 stopBundleUpdateTimer];
 
-      [(MSDBackgroundDownload *)v5 _sendDownloadStatusUpdateNotification];
-      v12 = [(MSDBackgroundDownload *)v5 componentManager];
-      [v12 pauseProcessing];
+      [(MSDBackgroundDownload *)selfCopy _sendDownloadStatusUpdateNotification];
+      componentManager = [(MSDBackgroundDownload *)selfCopy componentManager];
+      [componentManager pauseProcessing];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_resumeBackgroundDownload
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(MSDBackgroundDownload *)v2 freezeBackgroundDownload])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MSDBackgroundDownload *)selfCopy freezeBackgroundDownload])
   {
-    v3 = [(MSDBackgroundDownload *)v2 bundleDownloadInProgress];
-    v4 = [v3 bundleState];
+    bundleDownloadInProgress = [(MSDBackgroundDownload *)selfCopy bundleDownloadInProgress];
+    bundleState = [bundleDownloadInProgress bundleState];
 
-    if (v4 == 1)
+    if (bundleState == 1)
     {
-      [(MSDBackgroundDownload *)v2 setFreezeBackgroundDownload:0];
+      [(MSDBackgroundDownload *)selfCopy setFreezeBackgroundDownload:0];
       v5 = sub_100063A54();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
@@ -158,25 +158,25 @@
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Resuming background download...", v14, 2u);
       }
 
-      v6 = [NSDate dateWithTimeIntervalSince1970:[(MSDBackgroundDownload *)v2 bgDownloadPauseStartTime]];
+      v6 = [NSDate dateWithTimeIntervalSince1970:[(MSDBackgroundDownload *)selfCopy bgDownloadPauseStartTime]];
       v7 = +[NSDate now];
       [v7 timeIntervalSinceDate:v6];
       v9 = v8;
 
       v10 = +[MSDAnalyticsEventHandler sharedInstance];
-      v11 = [(MSDBackgroundDownload *)v2 bgDownloadPauseReason];
-      [v10 sendBgDownloadPausedEvent:v9 forReason:v11];
+      bgDownloadPauseReason = [(MSDBackgroundDownload *)selfCopy bgDownloadPauseReason];
+      [v10 sendBgDownloadPausedEvent:v9 forReason:bgDownloadPauseReason];
 
-      v12 = [(MSDBackgroundDownload *)v2 bundleDownloadInProgress];
-      [v12 startBundleUpdateTimer];
+      bundleDownloadInProgress2 = [(MSDBackgroundDownload *)selfCopy bundleDownloadInProgress];
+      [bundleDownloadInProgress2 startBundleUpdateTimer];
 
-      [(MSDBackgroundDownload *)v2 _sendDownloadStatusUpdateNotification];
-      v13 = [(MSDBackgroundDownload *)v2 componentManager];
-      [v13 resumeProcessing];
+      [(MSDBackgroundDownload *)selfCopy _sendDownloadStatusUpdateNotification];
+      componentManager = [(MSDBackgroundDownload *)selfCopy componentManager];
+      [componentManager resumeProcessing];
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_sendDownloadStatusUpdateNotification
@@ -190,40 +190,40 @@
 
 - (id)initiateBackgroundDownload
 {
-  v3 = [(MSDBackgroundDownload *)self device];
-  v4 = [v3 retrieveSignedManifest];
+  device = [(MSDBackgroundDownload *)self device];
+  retrieveSignedManifest = [device retrieveSignedManifest];
 
-  if (v4)
+  if (retrieveSignedManifest)
   {
-    v5 = [(MSDBackgroundDownload *)self bundleDownloadInProgress];
-    if (!v5 || (v6 = v5, [(MSDBackgroundDownload *)self bundleDownloadInProgress], v7 = objc_claimAutoreleasedReturnValue(), v8 = [MSDBundleProgressTracker isBundleInstance:v7 identicalWithNewBundle:v4], v7, v6, (v8 & 1) == 0))
+    bundleDownloadInProgress = [(MSDBackgroundDownload *)self bundleDownloadInProgress];
+    if (!bundleDownloadInProgress || (v6 = bundleDownloadInProgress, [(MSDBackgroundDownload *)self bundleDownloadInProgress], v7 = objc_claimAutoreleasedReturnValue(), v8 = [MSDBundleProgressTracker isBundleInstance:v7 identicalWithNewBundle:retrieveSignedManifest], v7, v6, (v8 & 1) == 0))
     {
-      v9 = [(MSDBackgroundDownload *)self device];
-      [v9 cleanUpBackgroundState:1];
+      device2 = [(MSDBackgroundDownload *)self device];
+      [device2 cleanUpBackgroundState:1];
 
       v10 = +[MSDProgressUpdater sharedInstance];
-      [v10 startBundleUpdateMonitor:v4 inMode:1];
+      [v10 startBundleUpdateMonitor:retrieveSignedManifest inMode:1];
 
       v11 = +[MSDProgressUpdater sharedInstance];
-      v12 = [v11 backgroundBundle];
-      [(MSDBackgroundDownload *)self setBundleDownloadInProgress:v12];
+      backgroundBundle = [v11 backgroundBundle];
+      [(MSDBackgroundDownload *)self setBundleDownloadInProgress:backgroundBundle];
 
-      v13 = [(MSDBackgroundDownload *)self device];
-      [v13 setBackgroundDownloadActive:1];
+      device3 = [(MSDBackgroundDownload *)self device];
+      [device3 setBackgroundDownloadActive:1];
     }
 
     v14 = sub_100063A54();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = v4;
+      v18 = retrieveSignedManifest;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "signedManifest in background download: %{public}@", &v17, 0xCu);
     }
 
-    v15 = v4;
+    v15 = retrieveSignedManifest;
   }
 
-  return v4;
+  return retrieveSignedManifest;
 }
 
 @end

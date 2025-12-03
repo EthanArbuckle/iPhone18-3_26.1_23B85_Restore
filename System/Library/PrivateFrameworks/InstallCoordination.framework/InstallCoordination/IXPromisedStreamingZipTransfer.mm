@@ -1,53 +1,53 @@
 @interface IXPromisedStreamingZipTransfer
 - (BOOL)useProgressFromSZExtractor;
-- (IXPromisedStreamingZipTransfer)initWithCoder:(id)a3;
-- (IXPromisedStreamingZipTransfer)initWithName:(id)a3 client:(unint64_t)a4 streamingZipOptions:(id)a5 archiveSize:(unint64_t)a6 diskSpaceNeeded:(unint64_t)a7;
-- (IXPromisedStreamingZipTransfer)initWithName:(id)a3 client:(unint64_t)a4 streamingZipOptions:(id)a5 archiveSize:(unint64_t)a6 diskSpaceNeeded:(unint64_t)a7 location:(id)a8;
-- (IXPromisedStreamingZipTransfer)initWithSeed:(id)a3;
+- (IXPromisedStreamingZipTransfer)initWithCoder:(id)coder;
+- (IXPromisedStreamingZipTransfer)initWithName:(id)name client:(unint64_t)client streamingZipOptions:(id)options archiveSize:(unint64_t)size diskSpaceNeeded:(unint64_t)needed;
+- (IXPromisedStreamingZipTransfer)initWithName:(id)name client:(unint64_t)client streamingZipOptions:(id)options archiveSize:(unint64_t)size diskSpaceNeeded:(unint64_t)needed location:(id)location;
+- (IXPromisedStreamingZipTransfer)initWithSeed:(id)seed;
 - (SZExtractorDelegate)extractorDelegate;
 - (unint64_t)archiveBytesConsumed;
-- (void)_prepareForExtractionToPath:(id)a3 completionBlock:(id)a4;
-- (void)addArchiveBytesConsumed:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)extractionCompleteAtArchivePath:(id)a3;
+- (void)_prepareForExtractionToPath:(id)path completionBlock:(id)block;
+- (void)addArchiveBytesConsumed:(unint64_t)consumed;
+- (void)encodeWithCoder:(id)coder;
+- (void)extractionCompleteAtArchivePath:(id)path;
 - (void)extractionEnteredPassThroughMode;
-- (void)finishStreamWithCompletionBlock:(id)a3;
-- (void)prepareForExtraction:(id)a3;
-- (void)prepareForExtractionToPath:(id)a3 completionBlock:(id)a4;
-- (void)resetWithCompletion:(id)a3;
-- (void)setArchiveBytesConsumed:(unint64_t)a3;
-- (void)setExtractionProgress:(double)a3;
-- (void)setExtractorDelegate:(id)a3;
-- (void)supplyBytes:(id)a3 withCompletionBlock:(id)a4;
-- (void)suspendStreamWithCompletionBlock:(id)a3;
-- (void)terminateStreamWithError:(id)a3 completionBlock:(id)a4;
+- (void)finishStreamWithCompletionBlock:(id)block;
+- (void)prepareForExtraction:(id)extraction;
+- (void)prepareForExtractionToPath:(id)path completionBlock:(id)block;
+- (void)resetWithCompletion:(id)completion;
+- (void)setArchiveBytesConsumed:(unint64_t)consumed;
+- (void)setExtractionProgress:(double)progress;
+- (void)setExtractorDelegate:(id)delegate;
+- (void)supplyBytes:(id)bytes withCompletionBlock:(id)block;
+- (void)suspendStreamWithCompletionBlock:(id)block;
+- (void)terminateStreamWithError:(id)error completionBlock:(id)block;
 @end
 
 @implementation IXPromisedStreamingZipTransfer
 
-- (IXPromisedStreamingZipTransfer)initWithCoder:(id)a3
+- (IXPromisedStreamingZipTransfer)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = IXPromisedStreamingZipTransfer;
-  v5 = [(IXOwnedDataPromise *)&v17 initWithCoder:v4];
+  v5 = [(IXOwnedDataPromise *)&v17 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
   v6 = objc_alloc(MEMORY[0x1E69D4DD8]);
-  v7 = [(IXDataPromise *)v5 seed];
-  v8 = [v7 szOptions];
-  v9 = [v6 initWithOptions:v8];
+  seed = [(IXDataPromise *)v5 seed];
+  szOptions = [seed szOptions];
+  v9 = [v6 initWithOptions:szOptions];
   [(IXPromisedStreamingZipTransfer *)v5 setExtractor:v9];
 
-  v10 = [(IXPromisedStreamingZipTransfer *)v5 extractor];
+  extractor = [(IXPromisedStreamingZipTransfer *)v5 extractor];
 
-  if (v10)
+  if (extractor)
   {
-    v5->_needsConsume = [v4 decodeBoolForKey:@"needsConsume"];
+    v5->_needsConsume = [coderCopy decodeBoolForKey:@"needsConsume"];
 LABEL_4:
     v11 = v5;
     goto LABEL_8;
@@ -56,12 +56,12 @@ LABEL_4:
   v12 = IXGetLoggingHandle(kIXLoggingSubsystem);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(IXDataPromise *)v5 seed];
-    v14 = [v13 szOptions];
+    seed2 = [(IXDataPromise *)v5 seed];
+    szOptions2 = [seed2 szOptions];
     *buf = 136315394;
     v19 = "[IXPromisedStreamingZipTransfer initWithCoder:]";
     v20 = 2112;
-    v21 = v14;
+    v21 = szOptions2;
     _os_log_impl(&dword_1DA47A000, v12, OS_LOG_TYPE_DEFAULT, "%s: [SZExtractor initWithOptions:] returned nil for options %@", buf, 0x16u);
   }
 
@@ -72,34 +72,34 @@ LABEL_8:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = IXPromisedStreamingZipTransfer;
-  v4 = a3;
-  [(IXDataPromise *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[IXPromisedStreamingZipTransfer needsConsume](self forKey:{"needsConsume", v5.receiver, v5.super_class), @"needsConsume"}];
+  coderCopy = coder;
+  [(IXDataPromise *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[IXPromisedStreamingZipTransfer needsConsume](self forKey:{"needsConsume", v5.receiver, v5.super_class), @"needsConsume"}];
 }
 
-- (IXPromisedStreamingZipTransfer)initWithName:(id)a3 client:(unint64_t)a4 streamingZipOptions:(id)a5 archiveSize:(unint64_t)a6 diskSpaceNeeded:(unint64_t)a7
+- (IXPromisedStreamingZipTransfer)initWithName:(id)name client:(unint64_t)client streamingZipOptions:(id)options archiveSize:(unint64_t)size diskSpaceNeeded:(unint64_t)needed
 {
-  v12 = a5;
-  v13 = a3;
+  optionsCopy = options;
+  nameCopy = name;
   v14 = objc_opt_new();
-  v15 = [(IXPromisedStreamingZipTransfer *)self initWithName:v13 client:a4 streamingZipOptions:v12 archiveSize:a6 diskSpaceNeeded:a7 location:v14];
+  v15 = [(IXPromisedStreamingZipTransfer *)self initWithName:nameCopy client:client streamingZipOptions:optionsCopy archiveSize:size diskSpaceNeeded:needed location:v14];
 
   return v15;
 }
 
-- (IXPromisedStreamingZipTransfer)initWithName:(id)a3 client:(unint64_t)a4 streamingZipOptions:(id)a5 archiveSize:(unint64_t)a6 diskSpaceNeeded:(unint64_t)a7 location:(id)a8
+- (IXPromisedStreamingZipTransfer)initWithName:(id)name client:(unint64_t)client streamingZipOptions:(id)options archiveSize:(unint64_t)size diskSpaceNeeded:(unint64_t)needed location:(id)location
 {
   v38 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a8;
+  nameCopy = name;
+  optionsCopy = options;
+  locationCopy = location;
   v35.receiver = self;
   v35.super_class = IXPromisedStreamingZipTransfer;
-  v17 = [(IXOwnedDataPromise *)&v35 initWithName:v14 client:a4 diskSpaceNeeded:a7 location:v16];
+  v17 = [(IXOwnedDataPromise *)&v35 initWithName:nameCopy client:client diskSpaceNeeded:needed location:locationCopy];
   v18 = v17;
   if (!v17)
   {
@@ -108,17 +108,17 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v19 = [(IXDataPromise *)v17 seed];
-  [v19 setArchiveSizeBytes:a6];
+  seed = [(IXDataPromise *)v17 seed];
+  [seed setArchiveSizeBytes:size];
 
-  v20 = [(IXDataPromise *)v18 seed];
-  [v20 setSzOptions:v15];
+  seed2 = [(IXDataPromise *)v18 seed];
+  [seed2 setSzOptions:optionsCopy];
 
-  v21 = [objc_alloc(MEMORY[0x1E69D4DD8]) initWithOptions:v15];
+  v21 = [objc_alloc(MEMORY[0x1E69D4DD8]) initWithOptions:optionsCopy];
   [(IXPromisedStreamingZipTransfer *)v18 setExtractor:v21];
 
-  v22 = [(IXPromisedStreamingZipTransfer *)v18 extractor];
-  LODWORD(v21) = v22 == 0;
+  extractor = [(IXPromisedStreamingZipTransfer *)v18 extractor];
+  LODWORD(v21) = extractor == 0;
 
   if (v21)
   {
@@ -128,7 +128,7 @@ LABEL_11:
       *buf = 136315394;
       *&buf[4] = "[IXPromisedStreamingZipTransfer initWithName:client:streamingZipOptions:archiveSize:diskSpaceNeeded:location:]";
       *&buf[12] = 2112;
-      *&buf[14] = v15;
+      *&buf[14] = optionsCopy;
       _os_log_impl(&dword_1DA47A000, v27, OS_LOG_TYPE_DEFAULT, "%s: [SZExtractor initWithOptions:] returned nil for options %@", buf, 0x16u);
     }
 
@@ -149,7 +149,7 @@ LABEL_11:
 
   if (v24)
   {
-    v25 = [(IXDataPromise *)v18 seed];
+    seed3 = [(IXDataPromise *)v18 seed];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __111__IXPromisedStreamingZipTransfer_initWithName_client_streamingZipOptions_archiveSize_diskSpaceNeeded_location___block_invoke_8;
@@ -157,7 +157,7 @@ LABEL_11:
     v33 = buf;
     v26 = v18;
     v32 = v26;
-    [(IXPromisedStreamingZipTransfer *)v24 _remote_createStreamingZipTransferDataPromiseWithSeed:v25 completion:v31];
+    [(IXPromisedStreamingZipTransfer *)v24 _remote_createStreamingZipTransferDataPromiseWithSeed:seed3 completion:v31];
 
     if (*(*&buf[8] + 24))
     {
@@ -233,22 +233,22 @@ void __111__IXPromisedStreamingZipTransfer_initWithName_client_streamingZipOptio
 
 - (BOOL)useProgressFromSZExtractor
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 archiveSizeBytes] == 0;
+  seed = [(IXDataPromise *)self seed];
+  v3 = [seed archiveSizeBytes] == 0;
 
   return v3;
 }
 
-- (void)prepareForExtraction:(id)a3
+- (void)prepareForExtraction:(id)extraction
 {
-  v4 = a3;
+  extractionCopy = extraction;
   [(IXPromisedStreamingZipTransfer *)self setNeedsConsume:0];
-  v5 = [(IXOwnedDataPromise *)self stagedPath];
-  v6 = [v5 path];
+  stagedPath = [(IXOwnedDataPromise *)self stagedPath];
+  path = [stagedPath path];
 
-  if (v6)
+  if (path)
   {
-    [(IXPromisedStreamingZipTransfer *)self _prepareForExtractionToPath:v6 completionBlock:v4];
+    [(IXPromisedStreamingZipTransfer *)self _prepareForExtractionToPath:path completionBlock:extractionCopy];
   }
 
   else
@@ -261,34 +261,34 @@ void __111__IXPromisedStreamingZipTransfer_initWithName_client_streamingZipOptio
 
     v9 = _CreateError("[IXPromisedStreamingZipTransfer prepareForExtraction:]", 134, @"IXErrorDomain", 1uLL, 0, 0, @"self.stagedPath.path was unexpectedly nil!", v8, v10);
     [(IXDataPromise *)self cancelForReason:v9 client:15 error:0];
-    v4[2](v4, 0, v9);
+    extractionCopy[2](extractionCopy, 0, v9);
   }
 }
 
-- (void)prepareForExtractionToPath:(id)a3 completionBlock:(id)a4
+- (void)prepareForExtractionToPath:(id)path completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  pathCopy = path;
   [(IXPromisedStreamingZipTransfer *)self setNeedsConsume:1];
-  [(IXPromisedStreamingZipTransfer *)self _prepareForExtractionToPath:v7 completionBlock:v6];
+  [(IXPromisedStreamingZipTransfer *)self _prepareForExtractionToPath:pathCopy completionBlock:blockCopy];
 }
 
-- (void)_prepareForExtractionToPath:(id)a3 completionBlock:(id)a4
+- (void)_prepareForExtractionToPath:(id)path completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IXPromisedStreamingZipTransfer *)self extractor];
+  pathCopy = path;
+  blockCopy = block;
+  extractor = [(IXPromisedStreamingZipTransfer *)self extractor];
 
-  if (v8)
+  if (extractor)
   {
-    v9 = [(IXPromisedStreamingZipTransfer *)self extractor];
+    extractor2 = [(IXPromisedStreamingZipTransfer *)self extractor];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __78__IXPromisedStreamingZipTransfer__prepareForExtractionToPath_completionBlock___block_invoke;
     v13[3] = &unk_1E85C5650;
     v13[4] = self;
-    v14 = v7;
-    [v9 prepareForExtractionToPath:v6 completionBlock:v13];
+    v14 = blockCopy;
+    [extractor2 prepareForExtractionToPath:pathCopy completionBlock:v13];
   }
 
   else
@@ -301,7 +301,7 @@ void __111__IXPromisedStreamingZipTransfer_initWithName_client_streamingZipOptio
 
     v12 = _CreateError("[IXPromisedStreamingZipTransfer _prepareForExtractionToPath:completionBlock:]", 152, @"IXErrorDomain", 1uLL, 0, 0, @"self.extractor was unexpectedly nil!", v11, v13[0]);
     [(IXDataPromise *)self cancelForReason:v12 client:15 error:0];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(blockCopy + 2))(blockCopy, 0, v12);
   }
 }
 
@@ -360,10 +360,10 @@ void __78__IXPromisedStreamingZipTransfer__prepareForExtractionToPath_completion
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)supplyBytes:(id)a3 withCompletionBlock:(id)a4
+- (void)supplyBytes:(id)bytes withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  bytesCopy = bytes;
+  blockCopy = block;
   if ([(IXDataPromise *)self localIsComplete])
   {
     v8 = IXGetLoggingHandle(kIXLoggingSubsystem);
@@ -372,31 +372,31 @@ void __78__IXPromisedStreamingZipTransfer__prepareForExtractionToPath_completion
       [IXPromisedStreamingZipTransfer supplyBytes:withCompletionBlock:];
     }
 
-    v10 = _CreateError("[IXPromisedStreamingZipTransfer supplyBytes:withCompletionBlock:]", 187, @"IXErrorDomain", 4uLL, 0, 0, @"-supplyBytes:withCompletionBlock: called after promise was complete", v9, v16);
+    localError = _CreateError("[IXPromisedStreamingZipTransfer supplyBytes:withCompletionBlock:]", 187, @"IXErrorDomain", 4uLL, 0, 0, @"-supplyBytes:withCompletionBlock: called after promise was complete", v9, v16);
     goto LABEL_6;
   }
 
-  v10 = [(IXDataPromise *)self localError];
-  if (v10)
+  localError = [(IXDataPromise *)self localError];
+  if (localError)
   {
 LABEL_6:
-    v7[2](v7, v10, 1);
+    blockCopy[2](blockCopy, localError, 1);
     goto LABEL_7;
   }
 
-  v11 = [(IXPromisedStreamingZipTransfer *)self extractor];
+  extractor = [(IXPromisedStreamingZipTransfer *)self extractor];
 
-  if (v11)
+  if (extractor)
   {
-    v12 = [(IXPromisedStreamingZipTransfer *)self extractor];
+    extractor2 = [(IXPromisedStreamingZipTransfer *)self extractor];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __66__IXPromisedStreamingZipTransfer_supplyBytes_withCompletionBlock___block_invoke;
     v17[3] = &unk_1E85C6610;
     v17[4] = self;
-    v19 = v7;
-    v18 = v6;
-    [v12 supplyBytes:v18 withCompletionBlock:v17];
+    v19 = blockCopy;
+    v18 = bytesCopy;
+    [extractor2 supplyBytes:v18 withCompletionBlock:v17];
   }
 
   else
@@ -409,7 +409,7 @@ LABEL_6:
 
     v15 = _CreateError("[IXPromisedStreamingZipTransfer supplyBytes:withCompletionBlock:]", 199, @"IXErrorDomain", 1uLL, 0, 0, @"self.extractor was unexpectedly nil!", v14, v16);
     [(IXDataPromise *)self cancelForReason:v15 client:15 error:0];
-    v7[2](v7, v15, 1);
+    blockCopy[2](blockCopy, v15, 1);
   }
 
 LABEL_7:
@@ -468,21 +468,21 @@ void __66__IXPromisedStreamingZipTransfer_supplyBytes_withCompletionBlock___bloc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)suspendStreamWithCompletionBlock:(id)a3
+- (void)suspendStreamWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(IXPromisedStreamingZipTransfer *)self extractor];
+  blockCopy = block;
+  extractor = [(IXPromisedStreamingZipTransfer *)self extractor];
 
-  if (v5)
+  if (extractor)
   {
-    v6 = [(IXPromisedStreamingZipTransfer *)self extractor];
+    extractor2 = [(IXPromisedStreamingZipTransfer *)self extractor];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __67__IXPromisedStreamingZipTransfer_suspendStreamWithCompletionBlock___block_invoke;
     v10[3] = &unk_1E85C5650;
     v10[4] = self;
-    v11 = v4;
-    [v6 suspendStreamWithCompletionBlock:v10];
+    v11 = blockCopy;
+    [extractor2 suspendStreamWithCompletionBlock:v10];
   }
 
   else
@@ -495,7 +495,7 @@ void __66__IXPromisedStreamingZipTransfer_supplyBytes_withCompletionBlock___bloc
 
     v9 = _CreateError("[IXPromisedStreamingZipTransfer suspendStreamWithCompletionBlock:]", 227, @"IXErrorDomain", 1uLL, 0, 0, @"self.extractor was unexpectedly nil!", v8, v10[0]);
     [(IXDataPromise *)self cancelForReason:v9 client:15 error:0];
-    (*(v4 + 2))(v4, 0, v9);
+    (*(blockCopy + 2))(blockCopy, 0, v9);
   }
 }
 
@@ -547,9 +547,9 @@ void __67__IXPromisedStreamingZipTransfer_suspendStreamWithCompletionBlock___blo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishStreamWithCompletionBlock:(id)a3
+- (void)finishStreamWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(IXDataPromise *)self localIsComplete])
   {
     v5 = IXGetLoggingHandle(kIXLoggingSubsystem);
@@ -559,23 +559,23 @@ void __67__IXPromisedStreamingZipTransfer_suspendStreamWithCompletionBlock___blo
     }
 
     v7 = _CreateError("[IXPromisedStreamingZipTransfer finishStreamWithCompletionBlock:]", 250, @"IXErrorDomain", 4uLL, 0, 0, @"-finishStreamWithCompletionBlock: called after promise was complete", v6, v13[0]);
-    v4[2](v4, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   else
   {
-    v8 = [(IXPromisedStreamingZipTransfer *)self extractor];
+    extractor = [(IXPromisedStreamingZipTransfer *)self extractor];
 
-    if (v8)
+    if (extractor)
     {
-      v9 = [(IXPromisedStreamingZipTransfer *)self extractor];
+      extractor2 = [(IXPromisedStreamingZipTransfer *)self extractor];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __66__IXPromisedStreamingZipTransfer_finishStreamWithCompletionBlock___block_invoke;
       v13[3] = &unk_1E85C6638;
       v13[4] = self;
-      v14 = v4;
-      [v9 finishStreamWithCompletionBlock:v13];
+      v14 = blockCopy;
+      [extractor2 finishStreamWithCompletionBlock:v13];
     }
 
     else
@@ -588,7 +588,7 @@ void __67__IXPromisedStreamingZipTransfer_suspendStreamWithCompletionBlock___blo
 
       v12 = _CreateError("[IXPromisedStreamingZipTransfer finishStreamWithCompletionBlock:]", 256, @"IXErrorDomain", 1uLL, 0, 0, @"self.extractor was unexpectedly nil!", v11, v13[0]);
       [(IXDataPromise *)self cancelForReason:v12 client:15 error:0];
-      v4[2](v4, v12);
+      blockCopy[2](blockCopy, v12);
     }
   }
 }
@@ -692,10 +692,10 @@ void __66__IXPromisedStreamingZipTransfer_finishStreamWithCompletionBlock___bloc
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)terminateStreamWithError:(id)a3 completionBlock:(id)a4
+- (void)terminateStreamWithError:(id)error completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  blockCopy = block;
   if ([(IXDataPromise *)self localIsComplete])
   {
     v8 = IXGetLoggingHandle(kIXLoggingSubsystem);
@@ -705,24 +705,24 @@ void __66__IXPromisedStreamingZipTransfer_finishStreamWithCompletionBlock___bloc
     }
 
     v10 = _CreateError("[IXPromisedStreamingZipTransfer terminateStreamWithError:completionBlock:]", 297, @"IXErrorDomain", 4uLL, 0, 0, @"-terminateStreamWithError:completionBlock: called after promise was complete", v9, v16);
-    v7[2](v7, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   else
   {
-    v11 = [(IXPromisedStreamingZipTransfer *)self extractor];
+    extractor = [(IXPromisedStreamingZipTransfer *)self extractor];
 
-    if (v11)
+    if (extractor)
     {
-      v12 = [(IXPromisedStreamingZipTransfer *)self extractor];
+      extractor2 = [(IXPromisedStreamingZipTransfer *)self extractor];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __75__IXPromisedStreamingZipTransfer_terminateStreamWithError_completionBlock___block_invoke;
       v17[3] = &unk_1E85C6660;
       v17[4] = self;
-      v18 = v6;
-      v19 = v7;
-      [v12 terminateStreamWithError:v18 completionBlock:v17];
+      v18 = errorCopy;
+      v19 = blockCopy;
+      [extractor2 terminateStreamWithError:v18 completionBlock:v17];
     }
 
     else
@@ -735,7 +735,7 @@ void __66__IXPromisedStreamingZipTransfer_finishStreamWithCompletionBlock___bloc
 
       v15 = _CreateError("[IXPromisedStreamingZipTransfer terminateStreamWithError:completionBlock:]", 303, @"IXErrorDomain", 1uLL, 0, 0, @"self.extractor was unexpectedly nil!", v14, v16);
       [(IXDataPromise *)self cancelForReason:v15 client:15 error:0];
-      v7[2](v7, v15);
+      blockCopy[2](blockCopy, v15);
     }
   }
 }
@@ -792,25 +792,25 @@ void __75__IXPromisedStreamingZipTransfer_terminateStreamWithError_completionBlo
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetWithCompletion:(id)a3
+- (void)resetWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IXDataPromise *)self seed];
-  [v5 setArchiveBytesConsumed:0];
+  completionCopy = completion;
+  seed = [(IXDataPromise *)self seed];
+  [seed setArchiveBytesConsumed:0];
 
   v6 = objc_alloc(MEMORY[0x1E69D4DD8]);
-  v7 = [(IXDataPromise *)self seed];
-  v8 = [v7 szOptions];
-  v9 = [v6 initWithOptions:v8];
+  seed2 = [(IXDataPromise *)self seed];
+  szOptions = [seed2 szOptions];
+  v9 = [v6 initWithOptions:szOptions];
   [(IXPromisedStreamingZipTransfer *)self setExtractor:v9];
 
-  v10 = [(IXPromisedStreamingZipTransfer *)self extractor];
+  extractor = [(IXPromisedStreamingZipTransfer *)self extractor];
 
-  if (v10)
+  if (extractor)
   {
     v16.receiver = self;
     v16.super_class = IXPromisedStreamingZipTransfer;
-    [(IXDataPromise *)&v16 resetWithCompletion:v4];
+    [(IXDataPromise *)&v16 resetWithCompletion:completionCopy];
   }
 
   else
@@ -821,32 +821,32 @@ void __75__IXPromisedStreamingZipTransfer_terminateStreamWithError_completionBlo
       [(IXPromisedStreamingZipTransfer *)self resetWithCompletion:v11];
     }
 
-    v12 = [(IXDataPromise *)self seed];
-    v13 = [v12 szOptions];
-    v15 = _CreateError("[IXPromisedStreamingZipTransfer resetWithCompletion:]", 333, @"IXErrorDomain", 1uLL, 0, 0, @"[SZExtractor initWithOptions:] returned nil for options %@", v14, v13);
+    seed3 = [(IXDataPromise *)self seed];
+    szOptions2 = [seed3 szOptions];
+    v15 = _CreateError("[IXPromisedStreamingZipTransfer resetWithCompletion:]", 333, @"IXErrorDomain", 1uLL, 0, 0, @"[SZExtractor initWithOptions:] returned nil for options %@", v14, szOptions2);
 
-    v4[2](v4, v15);
+    completionCopy[2](completionCopy, v15);
   }
 }
 
 - (unint64_t)archiveBytesConsumed
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 archiveBytesConsumed];
+  seed = [(IXDataPromise *)self seed];
+  archiveBytesConsumed = [seed archiveBytesConsumed];
 
-  return v3;
+  return archiveBytesConsumed;
 }
 
-- (void)setArchiveBytesConsumed:(unint64_t)a3
+- (void)setArchiveBytesConsumed:(unint64_t)consumed
 {
-  v5 = [(IXDataPromise *)self seed];
-  [v5 setArchiveBytesConsumed:a3];
+  seed = [(IXDataPromise *)self seed];
+  [seed setArchiveBytesConsumed:consumed];
 
   v9 = +[IXServerConnection sharedConnection];
   v6 = [v9 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_37];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
-  v8 = [(IXDataPromise *)self seed];
-  [v6 _remote_IXSPromisedStreamingZipTransfer:v7 setArchiveBytesConsumed:{objc_msgSend(v8, "archiveBytesConsumed")}];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+  seed2 = [(IXDataPromise *)self seed];
+  [v6 _remote_IXSPromisedStreamingZipTransfer:uniqueIdentifier setArchiveBytesConsumed:{objc_msgSend(seed2, "archiveBytesConsumed")}];
 }
 
 void __58__IXPromisedStreamingZipTransfer_setArchiveBytesConsumed___block_invoke(uint64_t a1, void *a2)
@@ -866,18 +866,18 @@ void __58__IXPromisedStreamingZipTransfer_setArchiveBytesConsumed___block_invoke
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addArchiveBytesConsumed:(unint64_t)a3
+- (void)addArchiveBytesConsumed:(unint64_t)consumed
 {
-  v5 = [(IXDataPromise *)self seed];
-  v6 = [v5 archiveBytesConsumed];
-  [v5 setArchiveBytesConsumed:v6 + a3];
+  seed = [(IXDataPromise *)self seed];
+  archiveBytesConsumed = [seed archiveBytesConsumed];
+  [seed setArchiveBytesConsumed:archiveBytesConsumed + consumed];
 
-  [(IXPromisedStreamingZipTransfer *)self setArchiveBytesConsumed:v6 + a3];
+  [(IXPromisedStreamingZipTransfer *)self setArchiveBytesConsumed:archiveBytesConsumed + consumed];
 }
 
-- (void)setExtractorDelegate:(id)a3
+- (void)setExtractorDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   if ([(IXPromisedStreamingZipTransfer *)self useProgressFromSZExtractor])
   {
     v4 = 1;
@@ -919,48 +919,48 @@ void __58__IXPromisedStreamingZipTransfer_setArchiveBytesConsumed___block_invoke
 
 LABEL_12:
   objc_storeWeak(&self->_extractorDelegate, v5);
-  v7 = [(IXPromisedStreamingZipTransfer *)self extractor];
-  [v7 setActiveExtractorDelegateMethods:v4];
+  extractor = [(IXPromisedStreamingZipTransfer *)self extractor];
+  [extractor setActiveExtractorDelegateMethods:v4];
 }
 
-- (void)setExtractionProgress:(double)a3
+- (void)setExtractionProgress:(double)progress
 {
-  v7 = [(IXPromisedStreamingZipTransfer *)self extractorDelegate];
+  extractorDelegate = [(IXPromisedStreamingZipTransfer *)self extractorDelegate];
   if ([(IXPromisedStreamingZipTransfer *)self useProgressFromSZExtractor])
   {
-    [(IXDataPromise *)self setPercentComplete:a3];
+    [(IXDataPromise *)self setPercentComplete:progress];
   }
 
-  v5 = v7;
-  if (v7)
+  v5 = extractorDelegate;
+  if (extractorDelegate)
   {
     v6 = objc_opt_respondsToSelector();
-    v5 = v7;
+    v5 = extractorDelegate;
     if (v6)
     {
-      [v7 setExtractionProgress:a3];
-      v5 = v7;
+      [extractorDelegate setExtractionProgress:progress];
+      v5 = extractorDelegate;
     }
   }
 }
 
-- (void)extractionCompleteAtArchivePath:(id)a3
+- (void)extractionCompleteAtArchivePath:(id)path
 {
-  v5 = a3;
-  v4 = [(IXPromisedStreamingZipTransfer *)self extractorDelegate];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  pathCopy = path;
+  extractorDelegate = [(IXPromisedStreamingZipTransfer *)self extractorDelegate];
+  if (extractorDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 extractionCompleteAtArchivePath:v5];
+    [extractorDelegate extractionCompleteAtArchivePath:pathCopy];
   }
 }
 
 - (void)extractionEnteredPassThroughMode
 {
-  v2 = [(IXPromisedStreamingZipTransfer *)self extractorDelegate];
-  v3 = v2;
-  if (v2)
+  extractorDelegate = [(IXPromisedStreamingZipTransfer *)self extractorDelegate];
+  v3 = extractorDelegate;
+  if (extractorDelegate)
   {
-    v5 = v2;
+    v5 = extractorDelegate;
     v4 = objc_opt_respondsToSelector();
     v3 = v5;
     if (v4)
@@ -971,36 +971,36 @@ LABEL_12:
   }
 }
 
-- (IXPromisedStreamingZipTransfer)initWithSeed:(id)a3
+- (IXPromisedStreamingZipTransfer)initWithSeed:(id)seed
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = IXPromisedStreamingZipTransfer;
-  v3 = [(IXOwnedDataPromise *)&v15 initWithSeed:a3];
+  v3 = [(IXOwnedDataPromise *)&v15 initWithSeed:seed];
   if (!v3)
   {
     goto LABEL_3;
   }
 
   v4 = objc_alloc(MEMORY[0x1E69D4DD8]);
-  v5 = [(IXDataPromise *)v3 seed];
-  v6 = [v5 szOptions];
-  v7 = [v4 initWithOptions:v6];
+  seed = [(IXDataPromise *)v3 seed];
+  szOptions = [seed szOptions];
+  v7 = [v4 initWithOptions:szOptions];
   [(IXPromisedStreamingZipTransfer *)v3 setExtractor:v7];
 
-  v8 = [(IXPromisedStreamingZipTransfer *)v3 extractor];
+  extractor = [(IXPromisedStreamingZipTransfer *)v3 extractor];
 
-  if (!v8)
+  if (!extractor)
   {
     v10 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(IXDataPromise *)v3 seed];
-      v12 = [v11 szOptions];
+      seed2 = [(IXDataPromise *)v3 seed];
+      szOptions2 = [seed2 szOptions];
       *buf = 136315394;
       v17 = "[IXPromisedStreamingZipTransfer initWithSeed:]";
       v18 = 2112;
-      v19 = v12;
+      v19 = szOptions2;
       _os_log_impl(&dword_1DA47A000, v10, OS_LOG_TYPE_DEFAULT, "%s: [SZExtractor initWithOptions:] returned nil for options %@", buf, 0x16u);
     }
 

@@ -1,12 +1,12 @@
 @interface AWDWiFiNWActivityMpduLost
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiNWActivityMpduLost
@@ -29,23 +29,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   bALost = self->_bALost;
   if (bALost)
   {
-    [v3 setObject:-[AWDWiFiNWActivityMpduWME dictionaryRepresentation](bALost forKey:{"dictionaryRepresentation"), @"BALost"}];
+    [dictionary setObject:-[AWDWiFiNWActivityMpduWME dictionaryRepresentation](bALost forKey:{"dictionaryRepresentation"), @"BALost"}];
   }
 
   nonBALost = self->_nonBALost;
   if (nonBALost)
   {
-    [v3 setObject:-[AWDWiFiNWActivityMpduWME dictionaryRepresentation](nonBALost forKey:{"dictionaryRepresentation"), @"nonBALost"}];
+    [dictionary setObject:-[AWDWiFiNWActivityMpduWME dictionaryRepresentation](nonBALost forKey:{"dictionaryRepresentation"), @"nonBALost"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_bALost)
   {
@@ -59,39 +59,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_bALost)
   {
-    [a3 setBALost:?];
+    [to setBALost:?];
   }
 
   if (self->_nonBALost)
   {
 
-    [a3 setNonBALost:?];
+    [to setNonBALost:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[1] = [(AWDWiFiNWActivityMpduWME *)self->_bALost copyWithZone:a3];
-  v5[2] = [(AWDWiFiNWActivityMpduWME *)self->_nonBALost copyWithZone:a3];
+  v5[1] = [(AWDWiFiNWActivityMpduWME *)self->_bALost copyWithZone:zone];
+  v5[2] = [(AWDWiFiNWActivityMpduWME *)self->_nonBALost copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     bALost = self->_bALost;
-    if (!(bALost | *(a3 + 1)) || (v5 = [(AWDWiFiNWActivityMpduWME *)bALost isEqual:?]) != 0)
+    if (!(bALost | *(equal + 1)) || (v5 = [(AWDWiFiNWActivityMpduWME *)bALost isEqual:?]) != 0)
     {
       nonBALost = self->_nonBALost;
-      if (nonBALost | *(a3 + 2))
+      if (nonBALost | *(equal + 2))
       {
 
         LOBYTE(v5) = [(AWDWiFiNWActivityMpduWME *)nonBALost isEqual:?];
@@ -107,10 +107,10 @@
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   bALost = self->_bALost;
-  v6 = *(a3 + 1);
+  v6 = *(from + 1);
   if (bALost)
   {
     if (v6)
@@ -125,7 +125,7 @@
   }
 
   nonBALost = self->_nonBALost;
-  v8 = *(a3 + 2);
+  v8 = *(from + 2);
   if (nonBALost)
   {
     if (v8)

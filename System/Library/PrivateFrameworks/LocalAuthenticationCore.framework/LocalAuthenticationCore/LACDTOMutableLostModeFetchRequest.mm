@@ -1,31 +1,31 @@
 @interface LACDTOMutableLostModeFetchRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 @end
 
 @implementation LACDTOMutableLostModeFetchRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F2696FE0])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F2696FE0])
   {
-    v5 = v4;
-    v6 = [(LACDTOMutableLostModeFetchRequest *)self policy];
-    if (v6 == [v5 policy])
+    v5 = equalCopy;
+    policy = [(LACDTOMutableLostModeFetchRequest *)self policy];
+    if (policy == [v5 policy])
     {
-      v7 = [(LACDTOMutableLostModeFetchRequest *)self options];
-      v8 = [v5 options];
-      v9 = v8;
-      if (v7 == v8)
+      options = [(LACDTOMutableLostModeFetchRequest *)self options];
+      options2 = [v5 options];
+      v9 = options2;
+      if (options == options2)
       {
       }
 
       else
       {
-        v10 = [(LACDTOMutableLostModeFetchRequest *)self options];
-        v11 = [v5 options];
-        v12 = [v10 isEqualToDictionary:v11];
+        options3 = [(LACDTOMutableLostModeFetchRequest *)self options];
+        options4 = [v5 options];
+        v12 = [options3 isEqualToDictionary:options4];
 
         if (!v12)
         {
@@ -33,21 +33,21 @@
         }
       }
 
-      v14 = [(LACDTOMutableLostModeFetchRequest *)self isDTOEnabled];
-      if (v14 == [v5 isDTOEnabled])
+      isDTOEnabled = [(LACDTOMutableLostModeFetchRequest *)self isDTOEnabled];
+      if (isDTOEnabled == [v5 isDTOEnabled])
       {
-        v15 = [(LACDTOMutableLostModeFetchRequest *)self ratchetState];
-        v16 = [v5 ratchetState];
-        v17 = v16;
-        if (v15 == v16)
+        ratchetState = [(LACDTOMutableLostModeFetchRequest *)self ratchetState];
+        ratchetState2 = [v5 ratchetState];
+        v17 = ratchetState2;
+        if (ratchetState == ratchetState2)
         {
         }
 
         else
         {
-          v18 = [(LACDTOMutableLostModeFetchRequest *)self ratchetState];
-          v19 = [v5 ratchetState];
-          v20 = [v18 isEqual:v19];
+          ratchetState3 = [(LACDTOMutableLostModeFetchRequest *)self ratchetState];
+          ratchetState4 = [v5 ratchetState];
+          v20 = [ratchetState3 isEqual:ratchetState4];
 
           if (!v20)
           {
@@ -55,18 +55,18 @@
           }
         }
 
-        v22 = [(LACDTOMutableLostModeFetchRequest *)self biometryWatchdogPack];
-        v23 = [v5 biometryWatchdogPack];
-        if (v22 == v23)
+        biometryWatchdogPack = [(LACDTOMutableLostModeFetchRequest *)self biometryWatchdogPack];
+        biometryWatchdogPack2 = [v5 biometryWatchdogPack];
+        if (biometryWatchdogPack == biometryWatchdogPack2)
         {
           v13 = 1;
         }
 
         else
         {
-          v24 = [(LACDTOMutableLostModeFetchRequest *)self biometryWatchdogPack];
-          v25 = [v5 biometryWatchdogPack];
-          v13 = [v24 isEqual:v25];
+          biometryWatchdogPack3 = [(LACDTOMutableLostModeFetchRequest *)self biometryWatchdogPack];
+          biometryWatchdogPack4 = [v5 biometryWatchdogPack];
+          v13 = [biometryWatchdogPack3 isEqual:biometryWatchdogPack4];
         }
 
         goto LABEL_12;
@@ -94,13 +94,13 @@ LABEL_13:
   v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"policy: %d", -[LACDTOMutableLostModeFetchRequest policy](self, "policy")];
   v24[0] = v23;
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LACDTOMutableLostModeFetchRequest *)self options];
-  v5 = [v3 stringWithFormat:@"options: %@", v4];
+  options = [(LACDTOMutableLostModeFetchRequest *)self options];
+  v5 = [v3 stringWithFormat:@"options: %@", options];
   v24[1] = v5;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(LACDTOMutableLostModeFetchRequest *)self isDTOEnabled];
+  isDTOEnabled = [(LACDTOMutableLostModeFetchRequest *)self isDTOEnabled];
   v8 = @"NO";
-  if (v7)
+  if (isDTOEnabled)
   {
     v8 = @"YES";
   }
@@ -108,12 +108,12 @@ LABEL_13:
   v9 = [v6 stringWithFormat:@"isDTOEnabled: %@", v8];
   v24[2] = v9;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(LACDTOMutableLostModeFetchRequest *)self ratchetState];
-  v12 = [v10 stringWithFormat:@"ratchetState: %@", v11];
+  ratchetState = [(LACDTOMutableLostModeFetchRequest *)self ratchetState];
+  v12 = [v10 stringWithFormat:@"ratchetState: %@", ratchetState];
   v24[3] = v12;
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [(LACDTOMutableLostModeFetchRequest *)self biometryWatchdogPack];
-  v15 = [v13 stringWithFormat:@"biometryWatchdogPack: %@", v14];
+  biometryWatchdogPack = [(LACDTOMutableLostModeFetchRequest *)self biometryWatchdogPack];
+  v15 = [v13 stringWithFormat:@"biometryWatchdogPack: %@", biometryWatchdogPack];
   v24[4] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:5];
   v17 = [v16 componentsJoinedByString:@" "];;

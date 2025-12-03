@@ -1,9 +1,9 @@
 @interface XDCProgress
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation XDCProgress
@@ -13,8 +13,8 @@
   v7.receiver = self;
   v7.super_class = XDCProgress;
   v3 = [(XDCProgress *)&v7 description];
-  v4 = [(XDCProgress *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(XDCProgress *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -38,18 +38,18 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteStringField();
   PBDataWriterWriteInt64Field();
   PBDataWriterWriteInt64Field();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleID copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -58,10 +58,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((bundleID = self->_bundleID, !(bundleID | v4[3])) || -[NSString isEqual:](bundleID, "isEqual:")) && self->_completedUnitCount == v4[1] && self->_totalUnitCount == v4[2];
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((bundleID = self->_bundleID, !(bundleID | equalCopy[3])) || -[NSString isEqual:](bundleID, "isEqual:")) && self->_completedUnitCount == equalCopy[1] && self->_totalUnitCount == equalCopy[2];
 
   return v6;
 }

@@ -1,6 +1,6 @@
 @interface CSKeyPhrasesUpdater
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4;
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block;
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d;
 - (id)description;
 - (id)excludeBundleIDs;
 - (void)didCompleteJournal;
@@ -10,34 +10,34 @@
 
 - (void)didCompleteJournal
 {
-  v2 = [MEMORY[0x277D65798] sharedProcessor];
-  [v2 flushKeyphraser];
+  mEMORY[0x277D65798] = [MEMORY[0x277D65798] sharedProcessor];
+  [mEMORY[0x277D65798] flushKeyphraser];
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
-  v5 = [(CSKeyPhrasesUpdater *)self taskName];
-  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, v5];
+  taskName = [(CSKeyPhrasesUpdater *)self taskName];
+  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, taskName];
 
   return v6;
 }
 
 - (id)excludeBundleIDs
 {
-  v2 = [MEMORY[0x277D657A0] sharedContext];
-  v3 = [v2 keyphraseExcludeBundles];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  keyphraseExcludeBundles = [mEMORY[0x277D657A0] keyphraseExcludeBundles];
 
-  return v3;
+  return keyphraseExcludeBundles;
 }
 
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d
 {
-  v4 = a3;
+  itemCopy = item;
   v12 = 0uLL;
   v13 = 0;
-  [(CSEventDonationJournalItem *)v4 attrDictObj];
+  [(CSEventDonationJournalItem *)itemCopy attrDictObj];
   if (_MDPlistDictionaryGetPlistObjectForKey() && ((v10 = v12, v11 = v13, PlistObjectType = _MDPlistGetPlistObjectType(), (PlistObjectType - 226) < 2) || PlistObjectType == 51 || PlistObjectType == 35))
   {
     v10 = v12;
@@ -50,7 +50,7 @@
     v6 = 0;
   }
 
-  [(CSEventDonationJournalItem *)v4 attrDictObj];
+  [(CSEventDonationJournalItem *)itemCopy attrDictObj];
   if (_MDPlistDictionaryGetPlistObjectForKey() && ((v10 = v12, v11 = v13, v7 = _MDPlistGetPlistObjectType(), (v7 - 226) < 2) || v7 == 51 || v7 == 35))
   {
     v10 = v12;
@@ -66,12 +66,12 @@
   return v6 && v8;
 }
 
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block
 {
   v112 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v71 = a5;
-  v66 = a6;
+  donationCopy = donation;
+  handlerCopy = handler;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
   v9 = SKGLogEventInit();
   spid = os_signpost_id_generate(v9);
@@ -85,13 +85,13 @@
   }
 
   v12 = objc_alloc_init(CSEventFeedback);
-  [(CSEventFeedback *)v12 setIndexType:[(CSEventListenerManager *)v8 folderFd]];
+  [(CSEventFeedback *)v12 setIndexType:[(CSEventListenerManager *)donationCopy folderFd]];
   [(CSEventFeedback *)v12 start];
-  v13 = [MEMORY[0x277D657A0] sharedContext];
-  v14 = [v13 keyphraseFetchAttributes];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  keyphraseFetchAttributes = [mEMORY[0x277D657A0] keyphraseFetchAttributes];
 
   v15 = objc_alloc(MEMORY[0x277CCACA8]);
-  v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](v8)];
+  v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](donationCopy)];
   v17 = [v15 initWithString:v16];
 
   if (v17)
@@ -106,14 +106,14 @@
 
   [(CSEventFeedback *)v12 setBundleID:v18];
   v19 = objc_alloc(MEMORY[0x277CCACA8]);
-  v20 = [(CSEventListenerDonation *)v8 protectionClass];
-  v21 = [v19 initWithString:v20];
+  protectionClass = [(CSEventListenerDonation *)donationCopy protectionClass];
+  v21 = [v19 initWithString:protectionClass];
 
   v22 = objc_alloc(MEMORY[0x277CCACA8]);
-  v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalQueue](v8)];
+  v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalQueue](donationCopy)];
   v24 = [v22 initWithString:v23];
 
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[CSEventListenerManager totalJournalSize](v8)];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:-[CSEventListenerManager totalJournalSize](donationCopy)];
   *buf = 0;
   v99 = buf;
   v100 = 0x3032000000;
@@ -130,17 +130,17 @@
     v26 = SKGLogKeyphraseInit();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(CSEventListenerDonation *)v8 indexTypeName];
-      v28 = [(CSEventListenerManager *)v8 totalJournalSize];
-      v29 = [v8 getItemCount];
+      indexTypeName = [(CSEventListenerDonation *)donationCopy indexTypeName];
+      totalJournalSize = [(CSEventListenerManager *)donationCopy totalJournalSize];
+      getItemCount = [donationCopy getItemCount];
       *v104 = 138413058;
-      v105 = self;
+      selfCopy2 = self;
       v106 = 2080;
-      v107 = v27;
+      v107 = indexTypeName;
       v108 = 2048;
-      v109 = v28;
+      v109 = totalJournalSize;
       v110 = 1024;
-      LODWORD(v111) = v29;
+      LODWORD(v111) = getItemCount;
       _os_log_impl(&dword_231B25000, v26, OS_LOG_TYPE_DEFAULT, "### donation %@ %s sn:%llu total incoming %u items", v104, 0x26u);
     }
   }
@@ -152,17 +152,17 @@
   v83[4] = self;
   v68 = v17;
   v84 = v68;
-  v30 = v66;
+  v30 = blockCopy;
   v91 = v30;
-  v31 = v8;
+  v31 = donationCopy;
   v85 = v31;
   v92 = v97;
   v67 = v24;
   v86 = v67;
   v32 = v12;
   v87 = v32;
-  v95 = a4;
-  v64 = v14;
+  enabledCopy = enabled;
+  v64 = keyphraseFetchAttributes;
   v88 = v64;
   v33 = v21;
   v89 = v33;
@@ -190,14 +190,14 @@
       v43 = SKGLogKeyphraseInit();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [(CSEventListenerDonation *)v31 indexTypeName];
-        v45 = [(CSEventListenerManager *)v31 totalJournalSize];
+        indexTypeName2 = [(CSEventListenerDonation *)v31 indexTypeName];
+        totalJournalSize2 = [(CSEventListenerManager *)v31 totalJournalSize];
         *v104 = 138413058;
-        v105 = self;
+        selfCopy2 = self;
         v106 = 2080;
-        v107 = v44;
+        v107 = indexTypeName2;
         v108 = 2048;
-        v109 = v45;
+        v109 = totalJournalSize2;
         v110 = 2048;
         v111 = v63;
         _os_log_impl(&dword_231B25000, v43, OS_LOG_TYPE_DEFAULT, "### donation %@ %s sn:%llu found %lu items", v104, 0x2Au);
@@ -237,7 +237,7 @@ LABEL_40:
         v78 = v63;
         v79 = v55;
         v80 = spid;
-        v77 = v71;
+        v77 = handlerCopy;
         v81 = v96;
         [v51 indexSearchableItems:v59 timeout:v58 timeoutError:v74 completion:3.0e11];
 
@@ -261,8 +261,8 @@ LABEL_45:
       goto LABEL_49;
     }
 
-    v46 = [(CSEventListenerDonation *)v31 homePathHash];
-    v47 = getCSBasePathForId(v46);
+    homePathHash = [(CSEventListenerDonation *)v31 homePathHash];
+    v47 = getCSBasePathForId(homePathHash);
     if (v47)
     {
       if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -271,9 +271,9 @@ LABEL_45:
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
           v49 = v47;
-          v50 = [v47 UTF8String];
+          uTF8String = [v47 UTF8String];
           *v104 = 136315138;
-          v105 = v50;
+          selfCopy2 = uTF8String;
           _os_log_impl(&dword_231B25000, v48, OS_LOG_TYPE_DEFAULT, "Creating CSManagedSearchableIndex for path = %s", v104, 0xCu);
         }
       }
@@ -292,8 +292,8 @@ LABEL_39:
       v52 = SKGLogKeyphraseInit();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
-        v53 = [(CSEventListenerDonation *)v31 homePathHash];
-        [CSDocumentUnderstandingUpdater handleDonation:v104 turboEnabled:v53 completionHandler:v52 cancelBlock:?];
+        homePathHash2 = [(CSEventListenerDonation *)v31 homePathHash];
+        [CSDocumentUnderstandingUpdater handleDonation:v104 turboEnabled:homePathHash2 completionHandler:v52 cancelBlock:?];
       }
     }
 
@@ -306,23 +306,23 @@ LABEL_39:
     v35 = SKGLogKeyphraseInit();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [(CSKeyPhrasesUpdater *)self taskName];
-      v37 = v36;
-      v38 = [v36 UTF8String];
-      v39 = [(CSEventListenerDonation *)v31 indexTypeName];
-      v40 = [(CSEventListenerManager *)v31 totalJournalSize];
+      taskName = [(CSKeyPhrasesUpdater *)self taskName];
+      v37 = taskName;
+      uTF8String2 = [taskName UTF8String];
+      indexTypeName3 = [(CSEventListenerDonation *)v31 indexTypeName];
+      totalJournalSize3 = [(CSEventListenerManager *)v31 totalJournalSize];
       *v104 = 136315650;
-      v105 = v38;
+      selfCopy2 = uTF8String2;
       v106 = 2080;
-      v107 = v39;
+      v107 = indexTypeName3;
       v108 = 2048;
-      v109 = v40;
+      v109 = totalJournalSize3;
       _os_log_impl(&dword_231B25000, v35, OS_LOG_TYPE_DEFAULT, "### cancelling %s due to expiration request while processing type='%s' sn:'%llu'", v104, 0x20u);
     }
   }
 
   [(CSEventFeedback *)v32 end];
-  (*(v71 + 2))(v71, 0, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   v41 = 0;
 LABEL_50:
 

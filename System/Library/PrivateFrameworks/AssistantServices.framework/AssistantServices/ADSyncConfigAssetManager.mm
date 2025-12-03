@@ -1,10 +1,10 @@
 @interface ADSyncConfigAssetManager
 + (id)sharedInstance;
 - (ADSyncConfigAssetManager)init;
-- (BOOL)_getBooleanValueForFactor:(id)a3;
+- (BOOL)_getBooleanValueForFactor:(id)factor;
 - (BOOL)isInactiveDeviceSyncDisabled;
-- (id)_initWithTriClient:(id)a3;
-- (int64_t)_getIntValueForFactor:(id)a3;
+- (id)_initWithTriClient:(id)client;
+- (int64_t)_getIntValueForFactor:(id)factor;
 - (int64_t)inactiveDeviceThreshold;
 - (void)_populateConfiguration;
 - (void)_registerUpdateHandler;
@@ -62,14 +62,14 @@
   return v3;
 }
 
-- (int64_t)_getIntValueForFactor:(id)a3
+- (int64_t)_getIntValueForFactor:(id)factor
 {
-  v4 = a3;
-  v5 = [(TRIClient *)self->_client levelForFactor:v4 withNamespaceName:@"SIRI_MEMORY_SYNC_CONFIG"];
+  factorCopy = factor;
+  v5 = [(TRIClient *)self->_client levelForFactor:factorCopy withNamespaceName:@"SIRI_MEMORY_SYNC_CONFIG"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 longValue];
+    longValue = [v5 longValue];
   }
 
   else
@@ -80,24 +80,24 @@
       v10 = 136315394;
       v11 = "[ADSyncConfigAssetManager _getIntValueForFactor:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = factorCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Level not found, clearing value for factor name %@", &v10, 0x16u);
     }
 
-    v7 = 0;
+    longValue = 0;
   }
 
-  return v7;
+  return longValue;
 }
 
-- (BOOL)_getBooleanValueForFactor:(id)a3
+- (BOOL)_getBooleanValueForFactor:(id)factor
 {
-  v4 = a3;
-  v5 = [(TRIClient *)self->_client levelForFactor:v4 withNamespaceName:@"SIRI_MEMORY_SYNC_CONFIG"];
+  factorCopy = factor;
+  v5 = [(TRIClient *)self->_client levelForFactor:factorCopy withNamespaceName:@"SIRI_MEMORY_SYNC_CONFIG"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLeanValue];
+    bOOLeanValue = [v5 BOOLeanValue];
   }
 
   else
@@ -108,14 +108,14 @@
       v10 = 136315394;
       v11 = "[ADSyncConfigAssetManager _getBooleanValueForFactor:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = factorCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Level not found, clearing value for factor name %@", &v10, 0x16u);
     }
 
-    v7 = 0;
+    bOOLeanValue = 0;
   }
 
-  return v7;
+  return bOOLeanValue;
 }
 
 - (void)_populateConfiguration
@@ -148,7 +148,7 @@
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 BOOLeanValue];
+    bOOLeanValue = [v7 BOOLeanValue];
     v10 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
     {
@@ -157,7 +157,7 @@
       v15 = 2112;
       v16 = @"siri_audio.media_entity_sync.disablement_status";
       v17 = 1024;
-      v18 = v9;
+      v18 = bOOLeanValue;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Updating sync config: %@ -> %d", &v13, 0x1Cu);
     }
   }
@@ -174,11 +174,11 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s Level not found, clearing config: %@", &v13, 0x16u);
     }
 
-    v9 = 0;
+    bOOLeanValue = 0;
   }
 
   v12 = +[ADPreferences sharedPreferences];
-  [v12 setIsMediaEntitySyncDisabledSyncConfig:v9];
+  [v12 setIsMediaEntitySyncDisabledSyncConfig:bOOLeanValue];
 }
 
 - (void)_registerUpdateHandler
@@ -213,16 +213,16 @@
   objc_destroyWeak(buf);
 }
 
-- (id)_initWithTriClient:(id)a3
+- (id)_initWithTriClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = ADSyncConfigAssetManager;
   v6 = [(ADSyncConfigAssetManager *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_client, a3);
+    objc_storeStrong(&v6->_client, client);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("ADSyncConfigAssetManager", v8);
 

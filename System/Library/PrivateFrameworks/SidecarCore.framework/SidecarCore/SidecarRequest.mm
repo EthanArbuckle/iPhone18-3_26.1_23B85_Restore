@@ -1,5 +1,5 @@
 @interface SidecarRequest
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 - (NSArray)devices;
 - (NSArray)items;
 - (NSData)data;
@@ -8,50 +8,50 @@
 - (NSString)description;
 - (NSString)uniformTypeIdentifier;
 - (SidecarDevice)device;
-- (SidecarRequest)initWithService:(id)a3 device:(id)a4;
-- (SidecarRequest)initWithSession:(id)a3 message:(id)a4;
+- (SidecarRequest)initWithService:(id)service device:(id)device;
+- (SidecarRequest)initWithSession:(id)session message:(id)message;
 - (SidecarRequestDelegate)delegate;
 - (SidecarSession)session;
-- (id)sessionForDevice:(id)a3;
+- (id)sessionForDevice:(id)device;
 - (void)_registerStreamListeners;
-- (void)_sendMessage:(id)a3;
+- (void)_sendMessage:(id)message;
 - (void)_willConnect;
 - (void)cancel;
 - (void)dealloc;
-- (void)listenForStreamType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5;
-- (void)listenForStreamType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5 processUniqueID:(unint64_t)a6 completion:(id)a7;
-- (void)listenForStreamType:(int64_t)a3 identifier:(id)a4 completion:(id)a5;
-- (void)openStreamForType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5;
-- (void)openStreamForType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5 processUniqueID:(unint64_t)a6 completion:(id)a7;
-- (void)openStreamForType:(int64_t)a3 identifier:(id)a4 completion:(id)a5;
-- (void)sendItems:(id)a3 complete:(BOOL)a4;
-- (void)setDevices:(id)a3;
-- (void)setError:(id)a3;
-- (void)setItems:(id)a3;
-- (void)sidecarSession:(id)a3 closedWithError:(id)a4;
-- (void)sidecarSession:(id)a3 receivedMessage:(id)a4;
-- (void)sidecarSessionStarted:(id)a3;
-- (void)sidecarTransfer:(id)a3 didComplete:(id)a4;
-- (void)sidecarTransfer:(id)a3 receivedItems:(id)a4 messageType:(int64_t)a5;
-- (void)startWithTransport:(int64_t)a3 reconnectToRequest:(id)a4;
+- (void)listenForStreamType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier;
+- (void)listenForStreamType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier processUniqueID:(unint64_t)d completion:(id)completion;
+- (void)listenForStreamType:(int64_t)type identifier:(id)identifier completion:(id)completion;
+- (void)openStreamForType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier;
+- (void)openStreamForType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier processUniqueID:(unint64_t)d completion:(id)completion;
+- (void)openStreamForType:(int64_t)type identifier:(id)identifier completion:(id)completion;
+- (void)sendItems:(id)items complete:(BOOL)complete;
+- (void)setDevices:(id)devices;
+- (void)setError:(id)error;
+- (void)setItems:(id)items;
+- (void)sidecarSession:(id)session closedWithError:(id)error;
+- (void)sidecarSession:(id)session receivedMessage:(id)message;
+- (void)sidecarSessionStarted:(id)started;
+- (void)sidecarTransfer:(id)transfer didComplete:(id)complete;
+- (void)sidecarTransfer:(id)transfer receivedItems:(id)items messageType:(int64_t)type;
+- (void)startWithTransport:(int64_t)transport reconnectToRequest:(id)request;
 @end
 
 @implementation SidecarRequest
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{@"cancelled", @"data", @"devices", @"error", @"finished", @"items", 0}];
-  if ([v5 containsObject:v4])
+  if ([v5 containsObject:keyCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___SidecarRequest;
-    v6 = objc_msgSendSuper2(&v8, sel_automaticallyNotifiesObserversForKey_, v4);
+    v6 = objc_msgSendSuper2(&v8, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v6;
@@ -64,15 +64,15 @@
   return WeakRetained;
 }
 
-- (id)sessionForDevice:(id)a3
+- (id)sessionForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(SidecarRequest *)self session];
-  v6 = [v5 device];
+  deviceCopy = device;
+  session = [(SidecarRequest *)self session];
+  device = [session device];
 
-  if (v6 == v4)
+  if (device == deviceCopy)
   {
-    v7 = v5;
+    v7 = session;
   }
 
   else
@@ -83,16 +83,16 @@
   return v7;
 }
 
-- (void)sidecarSession:(id)a3 closedWithError:(id)a4
+- (void)sidecarSession:(id)session closedWithError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SidecarRequest *)self session];
+  sessionCopy = session;
+  errorCopy = error;
+  session = [(SidecarRequest *)self session];
 
-  if (v8 == v6)
+  if (session == sessionCopy)
   {
-    SidecarRequestFinish(self, v7);
+    SidecarRequestFinish(self, errorCopy);
   }
 
   else
@@ -101,7 +101,7 @@
     v10 = v9;
     if (v9 && os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v12 = v6[7];
+      v12 = sessionCopy[7];
       v13 = 134217984;
       v14 = v12;
       _os_log_impl(&dword_26604C000, v10, OS_LOG_TYPE_ERROR, "unexpected session[%lX]", &v13, 0xCu);
@@ -111,12 +111,12 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sidecarSession:(id)a3 receivedMessage:(id)a4
+- (void)sidecarSession:(id)session receivedMessage:(id)message
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  Type = SidecarMessageGetType(v7);
+  sessionCopy = session;
+  messageCopy = message;
+  Type = SidecarMessageGetType(messageCopy);
   if ((Type - 1) >= 4)
   {
     v9 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"SidecarErrorDomain" code:-1010 userInfo:0];
@@ -126,15 +126,15 @@
       v20 = v19;
       if (v19 && os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v9 domain];
-        v22 = [v9 code];
-        v23 = [v9 localizedDescription];
+        domain = [v9 domain];
+        code = [v9 code];
+        localizedDescription = [v9 localizedDescription];
         *buf = 138543875;
-        *&buf[4] = v21;
+        *&buf[4] = domain;
         *&buf[12] = 2048;
-        *&buf[14] = v22;
+        *&buf[14] = code;
         *&buf[22] = 2113;
-        v31 = v23;
+        v31 = localizedDescription;
         _os_log_impl(&dword_26604C000, v20, OS_LOG_TYPE_ERROR, "%{public}@ (%ld) %{private}@", buf, 0x20u);
       }
     }
@@ -155,37 +155,37 @@
       goto LABEL_10;
     }
 
-    if (SidecarMessageGetTransferID(v7))
+    if (SidecarMessageGetTransferID(messageCopy))
     {
-      v10 = self;
+      selfCopy = self;
       v25 = &v24;
       v26 = 0x3032000000;
       v27 = __Block_byref_object_copy__131;
       v28 = __Block_byref_object_dispose__132;
       v29 = 0;
-      v11 = [(SidecarRequest *)v10 uuid];
+      uuid = [(SidecarRequest *)selfCopy uuid];
       *buf = 0;
       *&buf[8] = 0;
-      [v11 getUUIDBytes:buf];
+      [uuid getUUIDBytes:buf];
       v12 = buf[0];
       v13 = buf[1];
       v14 = buf[2];
       v15 = buf[3];
 
-      v16 = [(SidecarRequest *)v10 session];
+      session = [(SidecarRequest *)selfCopy session];
       *buf = MEMORY[0x277D85DD0];
       *&buf[8] = 3221225472;
       *&buf[16] = __SidecarRequestEnsureTransferReceiver_block_invoke;
       v31 = &unk_279BC30E8;
-      v32 = v10;
-      v33 = v16;
+      v32 = selfCopy;
+      v33 = session;
       v34 = &v24;
       v35 = (v12 << 24) | (v13 << 16) | (v14 << 8) | v15;
-      SidecarTransferLocked(v10, buf);
+      SidecarTransferLocked(selfCopy, buf);
       v17 = v25[5];
 
       _Block_object_dispose(&v24, 8);
-      [v17 handleMessage:v7];
+      [v17 handleMessage:messageCopy];
     }
   }
 
@@ -194,13 +194,13 @@ LABEL_10:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sidecarSessionStarted:(id)a3
+- (void)sidecarSessionStarted:(id)started
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SidecarRequest *)self session];
+  startedCopy = started;
+  session = [(SidecarRequest *)self session];
 
-  if (v5 == v4)
+  if (session == startedCopy)
   {
     [(SidecarRequest *)self _willConnect];
     v9[0] = MEMORY[0x277D85DD0];
@@ -218,7 +218,7 @@ LABEL_10:
     if (v7 && os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v11 = v4;
+      v11 = startedCopy;
       _os_log_impl(&dword_26604C000, v8, OS_LOG_TYPE_ERROR, "unexpected session %{public}@", buf, 0xCu);
     }
   }
@@ -338,46 +338,46 @@ LABEL_18:
 {
   v9[2] = *MEMORY[0x277D85DE8];
   [(SidecarRequest *)self _registerStreamListeners];
-  v3 = [(SidecarRequest *)self service];
-  v4 = [v3 mutableRequestMessage];
-  v5 = [(SidecarRequest *)self uuid];
+  service = [(SidecarRequest *)self service];
+  mutableRequestMessage = [service mutableRequestMessage];
+  uuid = [(SidecarRequest *)self uuid];
   v9[0] = 0;
   v9[1] = 0;
-  [v5 getUUIDBytes:v9];
+  [uuid getUUIDBytes:v9];
   v6 = bswap32(v9[0]);
 
-  SidecarMessageSetRequestID(v4, v6);
-  v7 = [(SidecarRequest *)self session];
-  SidecarRequestSendMessage(self, v7, v4);
+  SidecarMessageSetRequestID(mutableRequestMessage, v6);
+  session = [(SidecarRequest *)self session];
+  SidecarRequestSendMessage(self, session, mutableRequestMessage);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sidecarTransfer:(id)a3 receivedItems:(id)a4 messageType:(int64_t)a5
+- (void)sidecarTransfer:(id)transfer receivedItems:(id)items messageType:(int64_t)type
 {
-  v7 = a4;
-  v9 = v7;
-  if (a5 == 4)
+  itemsCopy = items;
+  v9 = itemsCopy;
+  if (type == 4)
   {
-    [(SidecarRequest *)self setItems:v7];
+    [(SidecarRequest *)self setItems:itemsCopy];
   }
 
   else
   {
-    v8 = [(SidecarRequest *)self delegate];
+    delegate = [(SidecarRequest *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 sidecarRequest:self receivedItems:v9];
+      [delegate sidecarRequest:self receivedItems:v9];
     }
   }
 }
 
-- (void)sidecarTransfer:(id)a3 didComplete:(id)a4
+- (void)sidecarTransfer:(id)transfer didComplete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = v6;
+  transferCopy = transfer;
+  completeCopy = complete;
+  selfCopy = self;
+  v9 = transferCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -388,49 +388,49 @@ LABEL_18:
   v12[1] = 3221225472;
   v12[2] = __SidecarRequestTransferCompleted_block_invoke;
   v12[3] = &unk_279BC30C0;
-  v12[4] = v8;
+  v12[4] = selfCopy;
   v12[5] = v9;
   v12[6] = &v13;
-  SidecarTransferLocked(v8, v12);
+  SidecarTransferLocked(selfCopy, v12);
   v10 = v14[5];
   _Block_object_dispose(&v13, 8);
 
-  if (!v10 || (v11 = [v10 type], v7) || v11 == 4)
+  if (!v10 || (v11 = [v10 type], completeCopy) || v11 == 4)
   {
-    SidecarRequestFinish(v8, v7);
+    SidecarRequestFinish(selfCopy, completeCopy);
   }
 }
 
-- (void)_sendMessage:(id)a3
+- (void)_sendMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SidecarRequest *)self session];
-  SidecarRequestSendMessage(self, v5, v4);
+  messageCopy = message;
+  session = [(SidecarRequest *)self session];
+  SidecarRequestSendMessage(self, session, messageCopy);
 }
 
-- (void)sendItems:(id)a3 complete:(BOOL)a4
+- (void)sendItems:(id)items complete:(BOOL)complete
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
+  completeCopy = complete;
+  itemsCopy = items;
+  selfCopy = self;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__131;
   v21 = __Block_byref_object_dispose__132;
   v22 = 0;
-  v8 = [(SidecarRequest *)v7 session];
-  v9 = [(SidecarRequest *)v7 uuid];
+  session = [(SidecarRequest *)selfCopy session];
+  uuid = [(SidecarRequest *)selfCopy uuid];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __SidecarRequestCreateSendTransfer_block_invoke;
   v16[3] = &unk_279BC3098;
-  v16[4] = v7;
-  v16[5] = v9;
-  v16[6] = v8;
+  v16[4] = selfCopy;
+  v16[5] = uuid;
+  v16[6] = session;
   v16[7] = &v17;
-  SidecarTransferLocked(v7, v16);
-  if (v4)
+  SidecarTransferLocked(selfCopy, v16);
+  if (completeCopy)
   {
     v10 = 4;
   }
@@ -447,12 +447,12 @@ LABEL_18:
   v13[1] = 3221225472;
   v13[2] = __37__SidecarRequest_sendItems_complete___block_invoke;
   v13[3] = &unk_279BC3048;
-  v13[4] = v7;
+  v13[4] = selfCopy;
   v13[5] = v11;
-  v14 = v6;
+  v14 = itemsCopy;
   v15 = v10;
-  v12 = v6;
-  SidecarTransferLocked(v7, v13);
+  v12 = itemsCopy;
+  SidecarTransferLocked(selfCopy, v13);
 }
 
 atomic_uint *__37__SidecarRequest_sendItems_complete___block_invoke(uint64_t a1)
@@ -477,10 +477,10 @@ atomic_uint *__37__SidecarRequest_sendItems_complete___block_invoke(uint64_t a1)
   return [v4 sendItems:v5 messageType:v6];
 }
 
-- (void)startWithTransport:(int64_t)a3 reconnectToRequest:(id)a4
+- (void)startWithTransport:(int64_t)transport reconnectToRequest:(id)request
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  requestCopy = request;
   v8 = &v23;
   v23 = 0;
   v24 = &v23;
@@ -507,14 +507,14 @@ atomic_uint *__37__SidecarRequest_sendItems_complete___block_invoke(uint64_t a1)
   v16[4] = self;
   v16[5] = &v23;
   SidecarTransferLocked(self, v16);
-  if (v7)
+  if (requestCopy)
   {
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __56__SidecarRequest_startWithTransport_reconnectToRequest___block_invoke_2;
     v13 = &unk_279BC3020;
     v15 = &v17;
-    v8 = v7;
+    v8 = requestCopy;
     v14 = v8;
     SidecarTransferLocked(v8, &v10);
     if (v18[5])
@@ -536,7 +536,7 @@ LABEL_9:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v30 = self;
+      selfCopy = self;
       v31 = 2114;
       v32 = v8;
       _os_log_impl(&dword_26604C000, v4, OS_LOG_TYPE_ERROR, "%{public}@ reconnecting to %{public}@ with nil session", buf, 0x16u);
@@ -546,7 +546,7 @@ LABEL_9:
   }
 
 LABEL_7:
-  [v24[5] connectWithTransport:a3 reconnectToSession:{v18[5], v10, v11, v12, v13}];
+  [v24[5] connectWithTransport:transport reconnectToSession:{v18[5], v10, v11, v12, v13}];
   _Block_object_dispose(&v17, 8);
 
   _Block_object_dispose(&v23, 8);
@@ -581,11 +581,11 @@ LABEL_7:
   [(SidecarRequest *)self setError:v4];
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    SidecarRequestFinish(self, a3);
+    SidecarRequestFinish(self, error);
   }
 }
 
@@ -612,35 +612,35 @@ LABEL_7:
 
 - (NSString)uniformTypeIdentifier
 {
-  v2 = [(SidecarRequest *)self items];
-  v3 = [v2 firstObject];
-  v4 = [v3 type];
+  items = [(SidecarRequest *)self items];
+  firstObject = [items firstObject];
+  type = [firstObject type];
 
-  return v4;
+  return type;
 }
 
 - (NSData)data
 {
-  v2 = [(SidecarRequest *)self items];
-  v3 = [v2 firstObject];
-  v4 = [v3 data];
+  items = [(SidecarRequest *)self items];
+  firstObject = [items firstObject];
+  data = [firstObject data];
 
-  return v4;
+  return data;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v7[0] = MEMORY[0x277D85DD0];
   v7[2] = __27__SidecarRequest_setItems___block_invoke;
   v7[3] = &unk_279BC3718;
   v7[4] = self;
-  v8 = v4;
-  v5 = self;
-  v6 = v4;
-  [(SidecarRequest *)v5 willChangeValueForKey:@"items", v7[0], 3221225472];
+  v8 = itemsCopy;
+  selfCopy = self;
+  v6 = itemsCopy;
+  [(SidecarRequest *)selfCopy willChangeValueForKey:@"items", v7[0], 3221225472];
   __27__SidecarRequest_setItems___block_invoke(v7);
-  [(SidecarRequest *)v5 didChangeValueForKey:@"items"];
+  [(SidecarRequest *)selfCopy didChangeValueForKey:@"items"];
 }
 
 void __27__SidecarRequest_setItems___block_invoke(uint64_t a1)
@@ -706,26 +706,26 @@ void __27__SidecarRequest_setItems___block_invoke_3(uint64_t a1)
   return v2;
 }
 
-- (void)setDevices:(id)a3
+- (void)setDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(SidecarRequest *)self devices];
-  v6 = [v4 isEqualToArray:v5];
+  devicesCopy = devices;
+  devices = [(SidecarRequest *)self devices];
+  v6 = [devicesCopy isEqualToArray:devices];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 copy];
+    v7 = [devicesCopy copy];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[2] = __29__SidecarRequest_setDevices___block_invoke;
     v9[3] = &unk_279BC3718;
     v9[4] = self;
-    v4 = v7;
-    v10 = v4;
-    v8 = self;
-    [(SidecarRequest *)v8 willChangeValueForKey:@"devices", v9[0], 3221225472];
+    devicesCopy = v7;
+    v10 = devicesCopy;
+    selfCopy = self;
+    [(SidecarRequest *)selfCopy willChangeValueForKey:@"devices", v9[0], 3221225472];
     __29__SidecarRequest_setDevices___block_invoke(v9);
-    [(SidecarRequest *)v8 didChangeValueForKey:@"devices"];
+    [(SidecarRequest *)selfCopy didChangeValueForKey:@"devices"];
   }
 }
 
@@ -863,10 +863,10 @@ void __25__SidecarRequest_devices__block_invoke(uint64_t a1)
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SidecarRequest *)self uuid];
+  uuid = [(SidecarRequest *)self uuid];
   v10[0] = 0;
   v10[1] = 0;
-  [v6 getUUIDBytes:v10];
+  [uuid getUUIDBytes:v10];
   v7 = [v3 stringWithFormat:@"%@<%lX>", v5, bswap32(v10[0])];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -882,10 +882,10 @@ void __25__SidecarRequest_devices__block_invoke(uint64_t a1)
   [(SidecarRequest *)&v3 dealloc];
 }
 
-- (SidecarRequest)initWithSession:(id)a3 message:(id)a4
+- (SidecarRequest)initWithSession:(id)session message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  messageCopy = message;
   v15.receiver = self;
   v15.super_class = SidecarRequest;
   v8 = [(SidecarRequest *)&v15 init];
@@ -898,8 +898,8 @@ void __25__SidecarRequest_devices__block_invoke(uint64_t a1)
     v11[2] = __42__SidecarRequest_initWithSession_message___block_invoke;
     v11[3] = &unk_279BC2FF8;
     v12 = v8;
-    v13 = v6;
-    v14 = v7;
+    v13 = sessionCopy;
+    v14 = messageCopy;
     SidecarTransferLocked(v12, v11);
   }
 
@@ -936,10 +936,10 @@ void __42__SidecarRequest_initWithSession_message___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (SidecarRequest)initWithService:(id)a3 device:(id)a4
+- (SidecarRequest)initWithService:(id)service device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = SidecarRequest;
   v8 = [(SidecarRequest *)&v15 init];
@@ -952,8 +952,8 @@ void __42__SidecarRequest_initWithSession_message___block_invoke(uint64_t a1)
     v11[2] = __41__SidecarRequest_initWithService_device___block_invoke;
     v11[3] = &unk_279BC2FF8;
     v12 = v8;
-    v13 = v7;
-    v14 = v6;
+    v13 = deviceCopy;
+    v14 = serviceCopy;
     SidecarTransferLocked(v12, v11);
   }
 
@@ -1005,8 +1005,8 @@ void __41__SidecarRequest_initWithService_device___block_invoke(uint64_t a1)
           }
 
           v9 = *(*(&v12 + 1) + 8 * v8);
-          v10 = [(SidecarRequest *)self session];
-          (*(v9 + 16))(v9, v10);
+          session = [(SidecarRequest *)self session];
+          (*(v9 + 16))(v9, session);
 
           ++v8;
         }
@@ -1024,120 +1024,120 @@ void __41__SidecarRequest_initWithService_device___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openStreamForType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5 processUniqueID:(unint64_t)a6 completion:(id)a7
+- (void)openStreamForType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier processUniqueID:(unint64_t)d completion:(id)completion
 {
-  v17 = a5;
-  v13 = a7;
-  v14 = [(SidecarRequest *)self session];
-  v15 = v14;
-  if (v14)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  session = [(SidecarRequest *)self session];
+  v15 = session;
+  if (session)
   {
-    [v14 openStreamForType:a3 flags:a4 identifier:v17 processUniqueID:a6 completion:v13];
+    [session openStreamForType:type flags:flags identifier:identifierCopy processUniqueID:d completion:completionCopy];
   }
 
   else
   {
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SidecarErrorDomain" code:-1020 userInfo:0];
     SidecarCoreLogObjCAPIError(self, a2, v16);
-    v13[2](v13, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
   }
 }
 
-- (void)openStreamForType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5
+- (void)openStreamForType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier
 {
-  v11 = a5;
-  v9 = [(SidecarRequest *)self session];
-  if (!v9)
+  identifierCopy = identifier;
+  session = [(SidecarRequest *)self session];
+  if (!session)
   {
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SidecarErrorDomain" code:-1020 userInfo:0];
     SidecarCoreLogObjCAPIError(self, a2, v10);
   }
 
-  [v9 openStreamForType:a3 flags:a4 identifier:v11];
+  [session openStreamForType:type flags:flags identifier:identifierCopy];
 }
 
-- (void)openStreamForType:(int64_t)a3 identifier:(id)a4 completion:(id)a5
+- (void)openStreamForType:(int64_t)type identifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  [(SidecarRequest *)self openStreamForType:a3 flags:0 identifier:v9 processUniqueID:SidecarGetProcessUniqueID() completion:v8];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  [(SidecarRequest *)self openStreamForType:type flags:0 identifier:identifierCopy processUniqueID:SidecarGetProcessUniqueID() completion:completionCopy];
 }
 
-- (void)listenForStreamType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5
+- (void)listenForStreamType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier
 {
-  v8 = a5;
+  identifierCopy = identifier;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__SidecarRequest_SidecarStreams__listenForStreamType_flags_identifier___block_invoke;
   v14[3] = &unk_279BC3798;
-  v16 = a3;
-  v17 = a4;
-  v9 = v8;
+  typeCopy = type;
+  flagsCopy = flags;
+  v9 = identifierCopy;
   v15 = v9;
   v10 = MEMORY[0x266777D20](v14);
   if ([(SidecarRequest *)self didStart])
   {
-    v11 = [(SidecarRequest *)self session];
-    (v10)[2](v10, v11);
+    session = [(SidecarRequest *)self session];
+    (v10)[2](v10, session);
   }
 
   else
   {
-    v11 = objc_getAssociatedObject(self, &_SidecarRequestStreamRegistrations);
-    if (!v11)
+    session = objc_getAssociatedObject(self, &_SidecarRequestStreamRegistrations);
+    if (!session)
     {
-      v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      objc_setAssociatedObject(self, &_SidecarRequestStreamRegistrations, v11, 0x301);
+      session = objc_alloc_init(MEMORY[0x277CBEB18]);
+      objc_setAssociatedObject(self, &_SidecarRequestStreamRegistrations, session, 0x301);
     }
 
     v12 = [v10 copy];
     v13 = MEMORY[0x266777D20]();
-    [v11 addObject:v13];
+    [session addObject:v13];
   }
 }
 
-- (void)listenForStreamType:(int64_t)a3 flags:(unint64_t)a4 identifier:(id)a5 processUniqueID:(unint64_t)a6 completion:(id)a7
+- (void)listenForStreamType:(int64_t)type flags:(unint64_t)flags identifier:(id)identifier processUniqueID:(unint64_t)d completion:(id)completion
 {
-  v12 = a5;
-  v13 = a7;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __98__SidecarRequest_SidecarStreams__listenForStreamType_flags_identifier_processUniqueID_completion___block_invoke;
   v20[3] = &unk_279BC3770;
-  v23 = a3;
-  v24 = a4;
-  v14 = v12;
+  typeCopy = type;
+  flagsCopy = flags;
+  v14 = identifierCopy;
   v21 = v14;
-  v25 = a6;
-  v15 = v13;
+  dCopy = d;
+  v15 = completionCopy;
   v22 = v15;
   v16 = MEMORY[0x266777D20](v20);
   if ([(SidecarRequest *)self didStart])
   {
-    v17 = [(SidecarRequest *)self session];
-    (v16)[2](v16, v17);
+    session = [(SidecarRequest *)self session];
+    (v16)[2](v16, session);
   }
 
   else
   {
-    v17 = objc_getAssociatedObject(self, &_SidecarRequestStreamRegistrations);
-    if (!v17)
+    session = objc_getAssociatedObject(self, &_SidecarRequestStreamRegistrations);
+    if (!session)
     {
-      v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      objc_setAssociatedObject(self, &_SidecarRequestStreamRegistrations, v17, 0x301);
+      session = objc_alloc_init(MEMORY[0x277CBEB18]);
+      objc_setAssociatedObject(self, &_SidecarRequestStreamRegistrations, session, 0x301);
     }
 
     v18 = [v16 copy];
     v19 = MEMORY[0x266777D20]();
-    [v17 addObject:v19];
+    [session addObject:v19];
   }
 }
 
-- (void)listenForStreamType:(int64_t)a3 identifier:(id)a4 completion:(id)a5
+- (void)listenForStreamType:(int64_t)type identifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  [(SidecarRequest *)self listenForStreamType:a3 flags:0 identifier:v9 processUniqueID:SidecarGetProcessUniqueID() completion:v8];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  [(SidecarRequest *)self listenForStreamType:type flags:0 identifier:identifierCopy processUniqueID:SidecarGetProcessUniqueID() completion:completionCopy];
 }
 
 @end

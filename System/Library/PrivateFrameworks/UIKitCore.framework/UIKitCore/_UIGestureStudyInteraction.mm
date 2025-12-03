@@ -1,31 +1,31 @@
 @interface _UIGestureStudyInteraction
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (CGPoint)locationInCoordinateSpace:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (CGPoint)locationInCoordinateSpace:(id)space;
 - (UIView)view;
-- (_UIGestureStudyInteraction)initWithDelegate:(id)a3;
+- (_UIGestureStudyInteraction)initWithDelegate:(id)delegate;
 - (_UIGestureStudyInteractionDelegate)delegate;
-- (id)_baseMetadataForTriggeredParticipant:(id)a3;
+- (id)_baseMetadataForTriggeredParticipant:(id)participant;
 - (id)_numberOfActiveTouches;
-- (id)_viewRegionForTriggeredParticipant:(id)a3;
-- (void)_handleMetricsEvent:(id)a3;
-- (void)_reportEventForTriggeredParticipant:(id)a3;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (id)_viewRegionForTriggeredParticipant:(id)participant;
+- (void)_handleMetricsEvent:(id)event;
+- (void)_reportEventForTriggeredParticipant:(id)participant;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIGestureStudyInteraction
 
-- (_UIGestureStudyInteraction)initWithDelegate:(id)a3
+- (_UIGestureStudyInteraction)initWithDelegate:(id)delegate
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.springboard"];
+  delegateCopy = delegate;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 
   if ((v8 & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIGestureStudyInteraction.m" lineNumber:89 description:@"This interaction is only intended for use in SpringBoard."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIGestureStudyInteraction.m" lineNumber:89 description:@"This interaction is only intended for use in SpringBoard."];
   }
 
   v13.receiver = self;
@@ -34,23 +34,23 @@
   v10 = v9;
   if (v9)
   {
-    [(_UIGestureStudyInteraction *)v9 setDelegate:v5];
+    [(_UIGestureStudyInteraction *)v9 setDelegate:delegateCopy];
   }
 
   return v10;
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
-  v6 = [(_UIGestureStudyInteraction *)self view];
-  [v5 locationInView:v6];
+  spaceCopy = space;
+  metricsGestureRecognizer = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
+  view = [(_UIGestureStudyInteraction *)self view];
+  [metricsGestureRecognizer locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(_UIGestureStudyInteraction *)self view];
-  [v11 convertPoint:v4 toCoordinateSpace:{v8, v10}];
+  view2 = [(_UIGestureStudyInteraction *)self view];
+  [view2 convertPoint:spaceCopy toCoordinateSpace:{v8, v10}];
   v13 = v12;
   v15 = v14;
 
@@ -61,84 +61,84 @@
   return result;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = [(_UIGestureStudyInteraction *)self forceClickInteraction];
-  v5 = [v4 view];
-  v6 = [(_UIGestureStudyInteraction *)self forceClickInteraction];
-  [v5 removeInteraction:v6];
+  forceClickInteraction = [(_UIGestureStudyInteraction *)self forceClickInteraction];
+  view = [forceClickInteraction view];
+  forceClickInteraction2 = [(_UIGestureStudyInteraction *)self forceClickInteraction];
+  [view removeInteraction:forceClickInteraction2];
 
-  v7 = [(_UIGestureStudyInteraction *)self longPressClickInteraction];
-  v8 = [v7 view];
-  v9 = [(_UIGestureStudyInteraction *)self longPressClickInteraction];
-  [v8 removeInteraction:v9];
+  longPressClickInteraction = [(_UIGestureStudyInteraction *)self longPressClickInteraction];
+  view2 = [longPressClickInteraction view];
+  longPressClickInteraction2 = [(_UIGestureStudyInteraction *)self longPressClickInteraction];
+  [view2 removeInteraction:longPressClickInteraction2];
 
-  v12 = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
-  v10 = [v12 view];
-  v11 = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
-  [v10 removeGestureRecognizer:v11];
+  metricsGestureRecognizer = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
+  view3 = [metricsGestureRecognizer view];
+  metricsGestureRecognizer2 = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
+  [view3 removeGestureRecognizer:metricsGestureRecognizer2];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = objc_storeWeak(&self->_view, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_view, view);
+  if (view)
   {
     v5 = +[UIDevice currentDevice];
-    v6 = [v5 _supportsForceTouch];
+    _supportsForceTouch = [v5 _supportsForceTouch];
 
-    if (v6)
+    if (_supportsForceTouch)
     {
-      v7 = [(_UIGestureStudyInteraction *)self forceClickInteraction];
+      forceClickInteraction = [(_UIGestureStudyInteraction *)self forceClickInteraction];
 
-      if (!v7)
+      if (!forceClickInteraction)
       {
         v8 = [[_UIGestureStudyClickInteraction alloc] initWithTarget:self action:sel__interactionDidTrigger_ useForce:1];
         [(_UIGestureStudyInteraction *)self setForceClickInteraction:v8];
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_view);
-      v10 = [(_UIGestureStudyInteraction *)self forceClickInteraction];
+      forceClickInteraction2 = [(_UIGestureStudyInteraction *)self forceClickInteraction];
     }
 
     else
     {
-      v11 = [(_UIGestureStudyInteraction *)self longPressClickInteraction];
+      longPressClickInteraction = [(_UIGestureStudyInteraction *)self longPressClickInteraction];
 
-      if (!v11)
+      if (!longPressClickInteraction)
       {
         v12 = [[_UIGestureStudyClickInteraction alloc] initWithTarget:self action:sel__interactionDidTrigger_ useForce:0];
         [(_UIGestureStudyInteraction *)self setLongPressClickInteraction:v12];
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_view);
-      v10 = [(_UIGestureStudyInteraction *)self longPressClickInteraction];
+      forceClickInteraction2 = [(_UIGestureStudyInteraction *)self longPressClickInteraction];
     }
 
-    v13 = v10;
-    [WeakRetained addInteraction:v10];
+    v13 = forceClickInteraction2;
+    [WeakRetained addInteraction:forceClickInteraction2];
 
-    v14 = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
+    metricsGestureRecognizer = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
 
-    if (!v14)
+    if (!metricsGestureRecognizer)
     {
       v15 = [[_UIGestureStudyMetricsGestureRecognizer alloc] initWithTarget:self action:sel__handleMetricsEvent_];
       [(_UIGestureStudyInteraction *)self setMetricsGestureRecognizer:v15];
 
-      v16 = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
-      [v16 setDelegate:self];
+      metricsGestureRecognizer2 = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
+      [metricsGestureRecognizer2 setDelegate:self];
     }
 
     v17 = objc_loadWeakRetained(&self->_view);
-    v18 = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
-    [v17 addGestureRecognizer:v18];
+    metricsGestureRecognizer3 = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
+    [v17 addGestureRecognizer:metricsGestureRecognizer3];
   }
 }
 
-- (void)_handleMetricsEvent:(id)a3
+- (void)_handleMetricsEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 state] != 3)
+  eventCopy = event;
+  if ([eventCopy state] != 3)
   {
     goto LABEL_9;
   }
@@ -148,11 +148,11 @@
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__218;
   v22 = __Block_byref_object_dispose__218;
-  v23 = [(_UIGestureStudyInteraction *)self eventMetadata];
+  eventMetadata = [(_UIGestureStudyInteraction *)self eventMetadata];
   [(_UIGestureStudyInteraction *)self setEventMetadata:0];
   if (!v19[5])
   {
-    [v4 movement];
+    [eventCopy movement];
     if (v5 >= 100.0)
     {
 LABEL_8:
@@ -168,7 +168,7 @@ LABEL_9:
   v14 = __50___UIGestureStudyInteraction__handleMetricsEvent___block_invoke;
   v15 = &unk_1E7127320;
   v17 = &v18;
-  v16 = v4;
+  v16 = eventCopy;
   v6 = _Block_copy(&aBlock);
   v29 = 0;
   v30 = &v29;
@@ -197,24 +197,24 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"_Bool __AnalyticsSendEventLazy(NSString *__strong, NSDictionary<NSString *, NSObject *> *(^__strong)(void))"}];
-  [v10 handleFailureInFunction:v11 file:@"_UIGestureStudyInteraction.m" lineNumber:22 description:{@"%s", dlerror(), aBlock, v13, v14, v15}];
+  [currentHandler handleFailureInFunction:v11 file:@"_UIGestureStudyInteraction.m" lineNumber:22 description:{@"%s", dlerror(), aBlock, v13, v14, v15}];
 
   __break(1u);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
+  recognizerCopy = recognizer;
+  metricsGestureRecognizer = [(_UIGestureStudyInteraction *)self metricsGestureRecognizer];
 
-  return v6 == v5;
+  return metricsGestureRecognizer == recognizerCopy;
 }
 
-- (void)_reportEventForTriggeredParticipant:(id)a3
+- (void)_reportEventForTriggeredParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -239,11 +239,11 @@ LABEL_9:
     if (v5(@"com.apple.UIKit.CoverSheetStudy.v1"))
     {
       v7 = objc_opt_new();
-      v8 = [(_UIGestureStudyInteraction *)self _baseMetadataForTriggeredParticipant:v4];
+      v8 = [(_UIGestureStudyInteraction *)self _baseMetadataForTriggeredParticipant:participantCopy];
       [v7 addEntriesFromDictionary:v8];
 
-      v9 = [(_UIGestureStudyInteraction *)self delegate];
-      v10 = [v9 metadataForTriggeredInteraction:self];
+      delegate = [(_UIGestureStudyInteraction *)self delegate];
+      v10 = [delegate metadataForTriggeredInteraction:self];
 
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -258,23 +258,23 @@ LABEL_9:
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_Bool __AnalyticsIsEventUsed(NSString *__strong)"];
-    [v12 handleFailureInFunction:v13 file:@"_UIGestureStudyInteraction.m" lineNumber:25 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v13 file:@"_UIGestureStudyInteraction.m" lineNumber:25 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (id)_baseMetadataForTriggeredParticipant:(id)a3
+- (id)_baseMetadataForTriggeredParticipant:(id)participant
 {
   v27[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  participantCopy = participant;
   v26[0] = @"gesture_type";
-  v5 = [v4 eventName];
-  v27[0] = v5;
+  eventName = [participantCopy eventName];
+  v27[0] = eventName;
   v26[1] = @"duration_on_event";
-  [v4 duration];
+  [participantCopy duration];
   v7 = MEMORY[0x1E696AD98];
   v8 = 0.0;
   v9 = 0.0;
@@ -290,7 +290,7 @@ LABEL_9:
   v14 = [v7 numberWithDouble:v9];
   v27[1] = v14;
   v26[2] = @"movement_on_event";
-  [v4 movement];
+  [participantCopy movement];
   v16 = MEMORY[0x1E696AD98];
   if (v15 != 0.0)
   {
@@ -304,32 +304,32 @@ LABEL_9:
   v21 = [v16 numberWithDouble:v8];
   v27[2] = v21;
   v26[3] = @"display_region";
-  v22 = [(_UIGestureStudyInteraction *)self _viewRegionForTriggeredParticipant:v4];
+  v22 = [(_UIGestureStudyInteraction *)self _viewRegionForTriggeredParticipant:participantCopy];
   v27[3] = v22;
   v26[4] = @"touch_count_on_event";
-  v23 = [(_UIGestureStudyInteraction *)self _numberOfActiveTouches];
-  v27[4] = v23;
+  _numberOfActiveTouches = [(_UIGestureStudyInteraction *)self _numberOfActiveTouches];
+  v27[4] = _numberOfActiveTouches;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:5];
 
   return v24;
 }
 
-- (id)_viewRegionForTriggeredParticipant:(id)a3
+- (id)_viewRegionForTriggeredParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(_UIGestureStudyInteraction *)self view];
-  [v4 locationInCoordinateSpace:v5];
+  participantCopy = participant;
+  view = [(_UIGestureStudyInteraction *)self view];
+  [participantCopy locationInCoordinateSpace:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_UIGestureStudyInteraction *)self view];
-  if (v10 && (v11 = v10, -[_UIGestureStudyInteraction view](self, "view"), v12 = objc_claimAutoreleasedReturnValue(), [v12 bounds], v21.x = v7, v21.y = v9, v13 = CGRectContainsPoint(v22, v21), v12, v11, v13))
+  view2 = [(_UIGestureStudyInteraction *)self view];
+  if (view2 && (v11 = view2, -[_UIGestureStudyInteraction view](self, "view"), v12 = objc_claimAutoreleasedReturnValue(), [v12 bounds], v21.x = v7, v21.y = v9, v13 = CGRectContainsPoint(v22, v21), v12, v11, v13))
   {
-    v14 = [(_UIGestureStudyInteraction *)self view];
-    [v14 bounds];
+    view3 = [(_UIGestureStudyInteraction *)self view];
+    [view3 bounds];
     v15 = v7 / CGRectGetWidth(v23);
-    v16 = [(_UIGestureStudyInteraction *)self view];
-    [v16 bounds];
+    view4 = [(_UIGestureStudyInteraction *)self view];
+    [view4 bounds];
     v17 = v9 / CGRectGetHeight(v24);
 
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu, %lu", llround(v15 / 0.333333333), llround(v17 / 0.333333333)];
@@ -346,13 +346,13 @@ LABEL_9:
 - (id)_numberOfActiveTouches
 {
   v2 = UIApp;
-  v3 = [(_UIGestureStudyInteraction *)self view];
-  v4 = [v3 _window];
-  v5 = [v2 _touchesEventForWindow:v4];
+  view = [(_UIGestureStudyInteraction *)self view];
+  _window = [view _window];
+  v5 = [v2 _touchesEventForWindow:_window];
 
   v6 = MEMORY[0x1E696AD98];
-  v7 = [v5 allTouches];
-  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+  allTouches = [v5 allTouches];
+  v8 = [v6 numberWithUnsignedInteger:{objc_msgSend(allTouches, "count")}];
 
   return v8;
 }

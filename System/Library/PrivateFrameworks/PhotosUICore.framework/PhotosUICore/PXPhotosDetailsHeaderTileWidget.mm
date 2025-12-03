@@ -1,41 +1,41 @@
 @interface PXPhotosDetailsHeaderTileWidget
-+ (double)preferredHeaderContentHeightForWidth:(double)a3 screen:(id)a4;
-- (BOOL)_isPointWithinCurrentLayoutBounds:(CGPoint)a3;
++ (double)preferredHeaderContentHeightForWidth:(double)width screen:(id)screen;
+- (BOOL)_isPointWithinCurrentLayoutBounds:(CGPoint)bounds;
 - (BOOL)_showPlaceholder;
 - (BOOL)_startMovie;
-- (BOOL)containsPoint:(CGPoint)a3 forCoordinateSpace:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)containsPoint:(CGPoint)point forCoordinateSpace:(id)space;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)hasContentForCurrentInput;
-- (CGRect)_contentRectInCoordinateSpace:(id)a3 withIdentifier:(PXTileIdentifier *)a4;
-- (CGRect)photosDetailsHeaderTileLayout:(id)a3 contentsRectForAspectRatio:(double)a4;
+- (CGRect)_contentRectInCoordinateSpace:(id)space withIdentifier:(PXTileIdentifier *)identifier;
+- (CGRect)photosDetailsHeaderTileLayout:(id)layout contentsRectForAspectRatio:(double)ratio;
 - (CGSize)_contentSize;
 - (CGSize)_playButtonSize;
 - (PXPhotosDetailsHeaderTileWidget)init;
 - (PXTilingController)contentTilingController;
 - (PXWidgetDelegate)widgetDelegate;
-- (double)preferredContentHeightForWidth:(double)a3;
-- (id)_contentRegionOfInterestForTileWithIdentifier:(PXTileIdentifier *)a3;
+- (double)preferredContentHeightForWidth:(double)width;
+- (id)_contentRegionOfInterestForTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (id)_scrollViewController;
 - (id)_subtitle;
 - (id)_title;
 - (id)_titleFontName;
 - (id)extendedTraitCollection;
 - (id)keyAsset;
-- (id)regionOfInterestForContext:(id)a3;
-- (id)tilingController:(id)a3 tileIdentifierConverterForChange:(id)a4;
-- (id)tilingController:(id)a3 transitionAnimationCoordinatorForChange:(id)a4;
+- (id)regionOfInterestForContext:(id)context;
+- (id)tilingController:(id)controller tileIdentifierConverterForChange:(id)change;
+- (id)tilingController:(id)controller transitionAnimationCoordinatorForChange:(id)change;
 - (id)viewToBeFocused;
 - (int64_t)contentLayoutStyle;
-- (void)_filterOutVideosFromAssetCollection:(id)a3 filteredAssetCollection:(id *)a4 assets:(id *)a5;
-- (void)_handleTapGesture:(id)a3;
+- (void)_filterOutVideosFromAssetCollection:(id)collection filteredAssetCollection:(id *)assetCollection assets:(id *)assets;
+- (void)_handleTapGesture:(id)gesture;
 - (void)_headerSpecDidChange;
 - (void)_loadBasicContent;
-- (void)_setHasLoadedContentData:(BOOL)a3;
-- (void)_setHeaderSpec:(id)a3;
-- (void)_setKeyAssetsFetchResult:(id)a3;
-- (void)_setLoadCoordinationToken:(id)a3;
-- (void)_setPhotosDataSource:(id)a3;
-- (void)_tileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4;
+- (void)_setHasLoadedContentData:(BOOL)data;
+- (void)_setHeaderSpec:(id)spec;
+- (void)_setKeyAssetsFetchResult:(id)result;
+- (void)_setLoadCoordinationToken:(id)token;
+- (void)_setPhotosDataSource:(id)source;
+- (void)_tileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout;
 - (void)_updateAssetCollectionIfNeeded;
 - (void)_updateBasicContent;
 - (void)_updateCuratedAssetCollectionIfNeeded;
@@ -44,15 +44,15 @@
 - (void)_updateLayoutStyle;
 - (void)_updatePreview;
 - (void)_updateTitleTile;
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4;
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4;
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier;
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout;
 - (void)loadContentData;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photosDataSource:(id)a3 didChange:(id)a4;
-- (void)playMovieWithCompletionHandler:(id)a3;
-- (void)setCanLoadContentData:(BOOL)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setContext:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photosDataSource:(id)source didChange:(id)change;
+- (void)playMovieWithCompletionHandler:(id)handler;
+- (void)setCanLoadContentData:(BOOL)data;
+- (void)setContentSize:(CGSize)size;
+- (void)setContext:(id)context;
 @end
 
 @implementation PXPhotosDetailsHeaderTileWidget
@@ -73,22 +73,22 @@
   return WeakRetained;
 }
 
-- (void)playMovieWithCompletionHandler:(id)a3
+- (void)playMovieWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v4[2](v4, [(PXPhotosDetailsHeaderTileWidget *)self _startMovie]);
+  handlerCopy = handler;
+  handlerCopy[2](handlerCopy, [(PXPhotosDetailsHeaderTileWidget *)self _startMovie]);
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 forCoordinateSpace:(id)a4
+- (BOOL)containsPoint:(CGPoint)point forCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXTilingController *)self->_tilingController currentLayout];
-  v9 = v8;
-  if (v8)
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
+  currentLayout = [(PXTilingController *)self->_tilingController currentLayout];
+  v9 = currentLayout;
+  if (currentLayout)
   {
-    [v8 contentTileIdentifier];
+    [currentLayout contentTileIdentifier];
   }
 
   else
@@ -97,7 +97,7 @@
     memset(v12, 0, sizeof(v12));
   }
 
-  [(PXPhotosDetailsHeaderTileWidget *)self _contentRectInCoordinateSpace:v7 withIdentifier:v12];
+  [(PXPhotosDetailsHeaderTileWidget *)self _contentRectInCoordinateSpace:spaceCopy withIdentifier:v12];
   v14.x = x;
   v14.y = y;
   v10 = CGRectContainsPoint(v15, v14);
@@ -105,32 +105,32 @@
   return v10;
 }
 
-- (void)_setHasLoadedContentData:(BOOL)a3
+- (void)_setHasLoadedContentData:(BOOL)data
 {
-  if (self->_hasLoadedContentData != a3)
+  if (self->_hasLoadedContentData != data)
   {
-    self->_hasLoadedContentData = a3;
-    v5 = [(PXPhotosDetailsHeaderTileWidget *)self widgetDelegate];
-    [v5 widgetHasLoadedContentDataDidChange:self];
+    self->_hasLoadedContentData = data;
+    widgetDelegate = [(PXPhotosDetailsHeaderTileWidget *)self widgetDelegate];
+    [widgetDelegate widgetHasLoadedContentDataDidChange:self];
   }
 }
 
-- (id)regionOfInterestForContext:(id)a3
+- (id)regionOfInterestForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PXPhotosDetailsHeaderTileWidget *)self context];
+  contextCopy = context;
+  context = [(PXPhotosDetailsHeaderTileWidget *)self context];
 
-  if (v5 == v4)
+  if (context == contextCopy)
   {
-    v7 = [(PXTilingController *)self->_tilingController currentLayout];
-    v8 = v7;
+    currentLayout = [(PXTilingController *)self->_tilingController currentLayout];
+    v8 = currentLayout;
     v17 = 0;
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
     v12 = 0u;
-    if (v7 && ([v7 contentTileIdentifier], v12))
+    if (currentLayout && ([currentLayout contentTileIdentifier], v12))
     {
       v10[2] = v14;
       v10[3] = v15;
@@ -155,7 +155,7 @@
   return v6;
 }
 
-- (CGRect)photosDetailsHeaderTileLayout:(id)a3 contentsRectForAspectRatio:(double)a4
+- (CGRect)photosDetailsHeaderTileLayout:(id)layout contentsRectForAspectRatio:(double)ratio
 {
   x = self->_keyAssetCropRect.origin.x;
   y = self->_keyAssetCropRect.origin.y;
@@ -168,18 +168,18 @@
   return result;
 }
 
-- (void)photosDataSource:(id)a3 didChange:(id)a4
+- (void)photosDataSource:(id)source didChange:(id)change
 {
-  v19 = a4;
-  v5 = [v19 sectionedDataSourceChangeDetails];
-  v6 = [v5 sectionChanges];
-  v7 = [v6 changedIndexes];
-  v8 = [v7 count];
+  changeCopy = change;
+  sectionedDataSourceChangeDetails = [changeCopy sectionedDataSourceChangeDetails];
+  sectionChanges = [sectionedDataSourceChangeDetails sectionChanges];
+  changedIndexes = [sectionChanges changedIndexes];
+  v8 = [changedIndexes count];
 
-  v9 = [v19 sectionsWithKeyAssetChanges];
-  v10 = [v9 containsIndex:0];
+  sectionsWithKeyAssetChanges = [changeCopy sectionsWithKeyAssetChanges];
+  v10 = [sectionsWithKeyAssetChanges containsIndex:0];
 
-  if ((v10 & 1) != 0 || ![v19 hasIncrementalChanges])
+  if ((v10 & 1) != 0 || ![changeCopy hasIncrementalChanges])
   {
     v12 = 1;
     if (v8)
@@ -196,24 +196,24 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [v19 contentChangedIndexPaths];
-  if ([v11 count])
+  contentChangedIndexPaths = [changeCopy contentChangedIndexPaths];
+  if ([contentChangedIndexPaths count])
   {
     v12 = 1;
   }
 
   else
   {
-    v13 = [v19 insertedIndexPaths];
-    if ([v13 count])
+    insertedIndexPaths = [changeCopy insertedIndexPaths];
+    if ([insertedIndexPaths count])
     {
       v12 = 1;
     }
 
     else
     {
-      v14 = [v19 deletedIndexPaths];
-      v12 = [v14 count] != 0;
+      deletedIndexPaths = [changeCopy deletedIndexPaths];
+      v12 = [deletedIndexPaths count] != 0;
     }
   }
 
@@ -223,11 +223,11 @@ LABEL_6:
   }
 
 LABEL_18:
-  v15 = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
-  v16 = [v15 firstAssetCollection];
-  v17 = [v16 titleFontName];
-  v18 = [(PXPhotosDetailsHeaderTileWidget *)self _titleFontName];
-  if (([v17 isEqualToString:v18] & 1) == 0)
+  _photosDataSource = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
+  firstAssetCollection = [_photosDataSource firstAssetCollection];
+  titleFontName = [firstAssetCollection titleFontName];
+  _titleFontName = [(PXPhotosDetailsHeaderTileWidget *)self _titleFontName];
+  if (([titleFontName isEqualToString:_titleFontName] & 1) == 0)
   {
     [(PXPhotosDetailsHeaderTileWidget *)self _invalidateAssetCollection];
   }
@@ -248,43 +248,43 @@ LABEL_8:
   [(PXPhotosDetailsHeaderTileWidget *)self _updateBasicContent];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXPhotosDetailsHeaderSpecManagerObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXPhotosDetailsHeaderSpecManagerObservationContext == context)
   {
-    if (v6)
+    if (changeCopy)
     {
-      v12 = [(PXFeatureSpecManager *)self->_specManager spec];
-      [(PXPhotosDetailsHeaderTileWidget *)self _setHeaderSpec:v12];
+      spec = [(PXFeatureSpecManager *)self->_specManager spec];
+      [(PXPhotosDetailsHeaderTileWidget *)self _setHeaderSpec:spec];
     }
   }
 
   else
   {
-    if (PXPhotosDetailsContextObservationContext != a5)
+    if (PXPhotosDetailsContextObservationContext != context)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsHeaderTileWidget.m" lineNumber:822 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsHeaderTileWidget.m" lineNumber:822 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if (v6)
+    if (changeCopy)
     {
       [(PXPhotosDetailsHeaderTileWidget *)self _invalidateKeyAssets];
       [(PXPhotosDetailsHeaderTileWidget *)self _invalidateAssetCollection];
       [(PXPhotosDetailsHeaderTileWidget *)self _invalidateCuratedAssetCollection];
     }
 
-    if ((v6 & 0x70) != 0)
+    if ((changeCopy & 0x70) != 0)
     {
-      v10 = [(PXTilingController *)self->_tilingController targetLayout];
+      targetLayout = [(PXTilingController *)self->_tilingController targetLayout];
       v11 = objc_alloc_init(PXTilingLayoutInvalidationContext);
-      if (v10)
+      if (targetLayout)
       {
-        [v10 tileIdentifierForTileKind:2];
+        [targetLayout tileIdentifierForTileKind:2];
       }
 
       else
@@ -294,19 +294,19 @@ LABEL_8:
       }
 
       [(PXTilingLayoutInvalidationContext *)v11 invalidateTileWithIdentifier:v16];
-      [v10 invalidateLayoutWithContext:v11];
-      v13 = [(PXPhotosDetailsHeaderTileWidget *)self _titleTile];
+      [targetLayout invalidateLayoutWithContext:v11];
+      _titleTile = [(PXPhotosDetailsHeaderTileWidget *)self _titleTile];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __64__PXPhotosDetailsHeaderTileWidget_observable_didChange_context___block_invoke;
       v15[3] = &unk_1E774C648;
       v15[4] = self;
-      [v13 performBatchUpdates:v15];
+      [_titleTile performBatchUpdates:v15];
 
       [(PXPhotosDetailsHeaderTileWidget *)self _invalidateAssetCollection];
     }
 
-    if ((v6 & 0xC) != 0)
+    if ((changeCopy & 0xC) != 0)
     {
       [(PXPhotosDetailsHeaderTileWidget *)self _invalidateKeyAssets];
     }
@@ -315,14 +315,14 @@ LABEL_8:
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if ([(PXPhotosDetailsHeaderTileWidget *)self isUserInteractionEnabled]&& (self->_tapGestureRecognizer == v4 || self->_pressGestureRecognizer == v4))
+  beginCopy = begin;
+  if ([(PXPhotosDetailsHeaderTileWidget *)self isUserInteractionEnabled]&& (self->_tapGestureRecognizer == beginCopy || self->_pressGestureRecognizer == beginCopy))
   {
-    v6 = [(PXPhotosDetailsHeaderTileWidget *)self _scrollViewController];
-    v7 = [v6 contentCoordinateSpace];
-    [(PXUITapGestureRecognizer *)v4 px_locationInCoordinateSpace:v7];
+    _scrollViewController = [(PXPhotosDetailsHeaderTileWidget *)self _scrollViewController];
+    contentCoordinateSpace = [_scrollViewController contentCoordinateSpace];
+    [(PXUITapGestureRecognizer *)beginCopy px_locationInCoordinateSpace:contentCoordinateSpace];
     v9 = v8;
     v11 = v10;
 
@@ -337,35 +337,35 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)_isPointWithinCurrentLayoutBounds:(CGPoint)a3
+- (BOOL)_isPointWithinCurrentLayoutBounds:(CGPoint)bounds
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PXPhotosDetailsHeaderTileWidget *)self contentTilingController];
-  v7 = [v6 currentLayout];
+  y = bounds.y;
+  x = bounds.x;
+  contentTilingController = [(PXPhotosDetailsHeaderTileWidget *)self contentTilingController];
+  currentLayout = [contentTilingController currentLayout];
 
-  if (v7)
+  if (currentLayout)
   {
     v8 = +[PXTilingCoordinateSpaceConverter defaultConverter];
-    v9 = [(PXPhotosDetailsHeaderTileWidget *)self contentTilingController];
-    [v8 convertPoint:objc_msgSend(v9 fromCoordinateSpaceIdentifier:"contentCoordinateSpaceIdentifier") toCoordinateSpaceIdentifier:{objc_msgSend(v7, "coordinateSpaceIdentifier"), x, y}];
+    contentTilingController2 = [(PXPhotosDetailsHeaderTileWidget *)self contentTilingController];
+    [v8 convertPoint:objc_msgSend(contentTilingController2 fromCoordinateSpaceIdentifier:"contentCoordinateSpaceIdentifier") toCoordinateSpaceIdentifier:{objc_msgSend(currentLayout, "coordinateSpaceIdentifier"), x, y}];
 
-    [v7 contentBounds];
-    [v7 contentInset];
+    [currentLayout contentBounds];
+    [currentLayout contentInset];
     PXEdgeInsetsInsetRect();
   }
 
   return 0;
 }
 
-- (id)tilingController:(id)a3 transitionAnimationCoordinatorForChange:(id)a4
+- (id)tilingController:(id)controller transitionAnimationCoordinatorForChange:(id)change
 {
   v4 = objc_alloc_init(PXPhotosDetailsHeaderTileTransitionAnimationCoordinator);
 
   return v4;
 }
 
-- (id)tilingController:(id)a3 tileIdentifierConverterForChange:(id)a4
+- (id)tilingController:(id)controller tileIdentifierConverterForChange:(id)change
 {
   v4 = objc_alloc_init(PXTileIdentifierIdentityConverter);
 
@@ -374,23 +374,23 @@ LABEL_8:
 
 - (CGSize)_playButtonSize
 {
-  v3 = [(PXPhotosDetailsHeaderTileWidget *)self extendedTraitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  extendedTraitCollection = [(PXPhotosDetailsHeaderTileWidget *)self extendedTraitCollection];
+  userInterfaceIdiom = [extendedTraitCollection userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v5 = objc_opt_new();
-    [v5 setStyle:5];
-    v6 = [(PXPhotosDetailsHeaderTileWidget *)self _playButtonLocalizedTitle];
-    [v5 setLocalizedTitle:v6];
+    spec = objc_opt_new();
+    [spec setStyle:5];
+    _playButtonLocalizedTitle = [(PXPhotosDetailsHeaderTileWidget *)self _playButtonLocalizedTitle];
+    [spec setLocalizedTitle:_playButtonLocalizedTitle];
 
-    [MEMORY[0x1E69DD250] px_videoOverlayButtonSizeWithConfiguration:v5];
+    [MEMORY[0x1E69DD250] px_videoOverlayButtonSizeWithConfiguration:spec];
   }
 
   else
   {
-    v5 = [(PXFeatureSpecManager *)self->_specManager spec];
-    [v5 playButtonSize];
+    spec = [(PXFeatureSpecManager *)self->_specManager spec];
+    [spec playButtonSize];
   }
 
   v9 = v7;
@@ -405,40 +405,40 @@ LABEL_8:
 
 - (id)_titleFontName
 {
-  v2 = [(PXPhotosDetailsHeaderTileWidget *)self context];
-  v3 = [v2 titleFontName];
+  context = [(PXPhotosDetailsHeaderTileWidget *)self context];
+  titleFontName = [context titleFontName];
 
-  return v3;
+  return titleFontName;
 }
 
 - (id)_subtitle
 {
-  v2 = [(PXPhotosDetailsHeaderTileWidget *)self context];
-  v3 = [v2 localizedSubtitle];
+  context = [(PXPhotosDetailsHeaderTileWidget *)self context];
+  localizedSubtitle = [context localizedSubtitle];
 
-  return v3;
+  return localizedSubtitle;
 }
 
 - (id)_title
 {
-  v2 = [(PXPhotosDetailsHeaderTileWidget *)self context];
-  v3 = [v2 localizedTitle];
+  context = [(PXPhotosDetailsHeaderTileWidget *)self context];
+  localizedTitle = [context localizedTitle];
 
-  return v3;
+  return localizedTitle;
 }
 
-- (void)_tileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4
+- (void)_tileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout
 {
-  v6 = a4;
-  v7 = *&a3->index[5];
-  v31 = *&a3->index[3];
+  layoutCopy = layout;
+  v7 = *&identifier->index[5];
+  v31 = *&identifier->index[3];
   v32 = v7;
-  v33 = *&a3->index[7];
-  *&v34 = a3->index[9];
-  v8 = *&a3->index[1];
-  v29 = *&a3->length;
+  v33 = *&identifier->index[7];
+  *&v34 = identifier->index[9];
+  v8 = *&identifier->index[1];
+  v29 = *&identifier->length;
   v30 = v8;
-  v9 = [v6 tileKindForTileIdentifier:&v29];
+  v9 = [layoutCopy tileKindForTileIdentifier:&v29];
   v10 = [(PXReusableObjectPool *)self->_tilePool checkOutReusableObjectWithReuseIdentifier:v9];
   [(NSMutableSet *)self->_tilesInUse addObject:v10];
   switch(v9)
@@ -460,16 +460,16 @@ LABEL_8:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v18 = *&a3->index[5];
-      v27[2] = *&a3->index[3];
+      v18 = *&identifier->index[5];
+      v27[2] = *&identifier->index[3];
       v27[3] = v18;
-      v27[4] = *&a3->index[7];
-      v28 = a3->index[9];
-      v19 = *&a3->index[1];
-      v27[0] = *&a3->length;
+      v27[4] = *&identifier->index[7];
+      v28 = identifier->index[9];
+      v19 = *&identifier->index[1];
+      v27[0] = *&identifier->length;
       v27[1] = v19;
-      [v6 getGeometry:&v29 group:0 userData:0 forTileWithIdentifier:v27];
-      [v6 previewRect];
+      [layoutCopy getGeometry:&v29 group:0 userData:0 forTileWithIdentifier:v27];
+      [layoutCopy previewRect];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __61__PXPhotosDetailsHeaderTileWidget__tileForIdentifier_layout___block_invoke;
@@ -481,8 +481,8 @@ LABEL_8:
       v26 = vsubq_f64(v31, v21);
       [v13 performChanges:v25];
       v22 = [(PXWidgetSpec *)self->_spec userInterfaceIdiom]== 5;
-      v23 = [v13 view];
-      [v23 setUserInteractionEnabled:v22];
+      view = [v13 view];
+      [view setUserInteractionEnabled:v22];
 
       [v13 setDelegate:self];
       break;
@@ -516,35 +516,35 @@ void __61__PXPhotosDetailsHeaderTileWidget__tileForIdentifier_layout___block_inv
   [v5 setAllowsBackdropStatisticsSuppression:0];
 }
 
-- (void)checkInTile:(void *)a3 withIdentifier:(PXTileIdentifier *)a4
+- (void)checkInTile:(void *)tile withIdentifier:(PXTileIdentifier *)identifier
 {
   tilePool = self->_tilePool;
-  v6 = a3;
-  [(PXReusableObjectPool *)tilePool checkInReusableObject:v6];
-  [(NSMutableSet *)self->_tilesInUse removeObject:v6];
+  tileCopy = tile;
+  [(PXReusableObjectPool *)tilePool checkInReusableObject:tileCopy];
+  [(NSMutableSet *)self->_tilesInUse removeObject:tileCopy];
 }
 
-- (void)checkOutTileForIdentifier:(PXTileIdentifier *)a3 layout:(id)a4
+- (void)checkOutTileForIdentifier:(PXTileIdentifier *)identifier layout:(id)layout
 {
-  v5 = *&a3->index[5];
-  v11[2] = *&a3->index[3];
+  v5 = *&identifier->index[5];
+  v11[2] = *&identifier->index[3];
   v11[3] = v5;
-  v11[4] = *&a3->index[7];
-  v12 = a3->index[9];
-  v6 = *&a3->index[1];
-  v11[0] = *&a3->length;
+  v11[4] = *&identifier->index[7];
+  v12 = identifier->index[9];
+  v6 = *&identifier->index[1];
+  v11[0] = *&identifier->length;
   v11[1] = v6;
-  v7 = [(PXPhotosDetailsHeaderTileWidget *)self _tileForIdentifier:v11 layout:a4];
-  v8 = [(PXTilingController *)self->_tilingController scrollController];
-  v9 = [v7 view];
-  [v8 addSubview:v9];
+  v7 = [(PXPhotosDetailsHeaderTileWidget *)self _tileForIdentifier:v11 layout:layout];
+  scrollController = [(PXTilingController *)self->_tilingController scrollController];
+  view = [v7 view];
+  [scrollController addSubview:view];
 
   return v7;
 }
 
-- (id)_contentRegionOfInterestForTileWithIdentifier:(PXTileIdentifier *)a3
+- (id)_contentRegionOfInterestForTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  v5 = [(PXTilingController *)self->_tilingController currentLayout];
+  currentLayout = [(PXTilingController *)self->_tilingController currentLayout];
   v6 = *(off_1E7722248 + 9);
   v56 = *(off_1E7722248 + 8);
   v57 = v6;
@@ -563,19 +563,19 @@ void __61__PXPhotosDetailsHeaderTileWidget__tileForIdentifier_layout___block_inv
   v11 = *(off_1E7722248 + 3);
   v50 = *(off_1E7722248 + 2);
   v51 = v11;
-  v12 = *&a3->index[5];
-  v38 = *&a3->index[3];
+  v12 = *&identifier->index[5];
+  v38 = *&identifier->index[3];
   v39 = v12;
-  v40 = *&a3->index[7];
-  *&v41 = a3->index[9];
-  v13 = *&a3->index[1];
-  v36 = *&a3->length;
+  v40 = *&identifier->index[7];
+  *&v41 = identifier->index[9];
+  v13 = *&identifier->index[1];
+  v36 = *&identifier->length;
   v37 = v13;
   v14 = 0;
-  if ([v5 getGeometry:&v48 group:0 userData:0 forTileWithIdentifier:&v36])
+  if ([currentLayout getGeometry:&v48 group:0 userData:0 forTileWithIdentifier:&v36])
   {
     v15 = +[PXTilingCoordinateSpaceConverter defaultConverter];
-    v16 = [(PXTilingController *)self->_tilingController contentCoordinateSpaceIdentifier];
+    contentCoordinateSpaceIdentifier = [(PXTilingController *)self->_tilingController contentCoordinateSpaceIdentifier];
     if (v15)
     {
       v35[8] = v56;
@@ -590,7 +590,7 @@ void __61__PXPhotosDetailsHeaderTileWidget__tileForIdentifier_layout___block_inv
       v35[1] = v49;
       v35[2] = v50;
       v35[3] = v51;
-      [v15 convertTileGeometry:v35 toCoordinateSpaceIdentifier:v16];
+      [v15 convertTileGeometry:v35 toCoordinateSpaceIdentifier:contentCoordinateSpaceIdentifier];
     }
 
     else
@@ -623,26 +623,26 @@ void __61__PXPhotosDetailsHeaderTileWidget__tileForIdentifier_layout___block_inv
     v51 = v39;
 
     v17 = [off_1E7721860 alloc];
-    v18 = [(PXPhotosDetailsHeaderTileWidget *)self _scrollViewController];
-    v19 = [v18 contentCoordinateSpace];
-    v14 = [v17 initWithRect:v19 inCoordinateSpace:{*&v48, *(&v48 + 1), *&v49, *(&v49 + 1)}];
+    _scrollViewController = [(PXPhotosDetailsHeaderTileWidget *)self _scrollViewController];
+    contentCoordinateSpace = [_scrollViewController contentCoordinateSpace];
+    v14 = [v17 initWithRect:contentCoordinateSpace inCoordinateSpace:{*&v48, *(&v48 + 1), *&v49, *(&v49 + 1)}];
 
     tilingController = self->_tilingController;
-    v21 = *&a3->index[5];
-    v38 = *&a3->index[3];
+    v21 = *&identifier->index[5];
+    v38 = *&identifier->index[3];
     v39 = v21;
-    v40 = *&a3->index[7];
-    *&v41 = a3->index[9];
-    v22 = *&a3->index[1];
-    v36 = *&a3->length;
+    v40 = *&identifier->index[7];
+    *&v41 = identifier->index[9];
+    v22 = *&identifier->index[1];
+    v36 = *&identifier->length;
     v37 = v22;
     v23 = [(PXTilingController *)tilingController imageTileWithIdentifier:&v36];
-    v24 = [v23 imageRequester];
+    imageRequester = [v23 imageRequester];
 
     v34 = 0;
-    if (v5)
+    if (currentLayout)
     {
-      [v5 tileIdentifierForTileKind:1];
+      [currentLayout tileIdentifierForTileKind:1];
     }
 
     else
@@ -655,16 +655,16 @@ void __61__PXPhotosDetailsHeaderTileWidget__tileForIdentifier_layout___block_inv
       v36 = 0u;
     }
 
-    [v5 getGeometry:0 group:0 userData:&v34 forTileWithIdentifier:&v36];
+    [currentLayout getGeometry:0 group:0 userData:&v34 forTileWithIdentifier:&v36];
     v25 = v34;
-    v26 = [v25 viewSpec];
-    [v14 setImageRequester:v24];
+    viewSpec = [v25 viewSpec];
+    [v14 setImageRequester:imageRequester];
     [v14 setImageContentsRect:{*(&v57 + 1), v58, *&v59}];
-    [v14 setImageViewSpec:v26];
+    [v14 setImageViewSpec:viewSpec];
     v27 = self->_tilingController;
-    if (v5)
+    if (currentLayout)
     {
-      [v5 tileIdentifierForTileKind:2];
+      [currentLayout tileIdentifierForTileKind:2];
     }
 
     else
@@ -681,14 +681,14 @@ void __61__PXPhotosDetailsHeaderTileWidget__tileForIdentifier_layout___block_inv
     v29 = v28;
     if (v28)
     {
-      v30 = [v28 title];
-      [v14 setTitle:v30];
+      title = [v28 title];
+      [v14 setTitle:title];
 
-      v31 = [v29 subtitle];
-      [v14 setSubtitle:v31];
+      subtitle = [v29 subtitle];
+      [v14 setSubtitle:subtitle];
 
-      v32 = [v29 labelSpec];
-      [v14 setTextViewSpec:v32];
+      labelSpec = [v29 labelSpec];
+      [v14 setTextViewSpec:labelSpec];
     }
 
     [v14 setPlaceholderViewFactory:&__block_literal_global_247];
@@ -705,22 +705,22 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
   return v3;
 }
 
-- (CGRect)_contentRectInCoordinateSpace:(id)a3 withIdentifier:(PXTileIdentifier *)a4
+- (CGRect)_contentRectInCoordinateSpace:(id)space withIdentifier:(PXTileIdentifier *)identifier
 {
-  v6 = a3;
-  v7 = *&a4->index[5];
-  v23[2] = *&a4->index[3];
+  spaceCopy = space;
+  v7 = *&identifier->index[5];
+  v23[2] = *&identifier->index[3];
   v23[3] = v7;
-  v23[4] = *&a4->index[7];
-  v24 = a4->index[9];
-  v8 = *&a4->index[1];
-  v23[0] = *&a4->length;
+  v23[4] = *&identifier->index[7];
+  v24 = identifier->index[9];
+  v8 = *&identifier->index[1];
+  v23[0] = *&identifier->length;
   v23[1] = v8;
   v9 = [(PXPhotosDetailsHeaderTileWidget *)self _contentRegionOfInterestForTileWithIdentifier:v23];
   v10 = v9;
   if (v9)
   {
-    [v9 rectInCoordinateSpace:v6];
+    [v9 rectInCoordinateSpace:spaceCopy];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -750,35 +750,35 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
 {
   v23[2] = *MEMORY[0x1E69E9840];
   [(PXPhotosDetailsHeaderTileWidget *)self loadContentData];
-  v3 = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
-  v4 = [v3 firstAssetCollection];
+  _photosDataSource = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
+  firstAssetCollection = [_photosDataSource firstAssetCollection];
 
-  if (v4)
+  if (firstAssetCollection)
   {
-    v5 = [(PXPhotosDetailsHeaderTileWidget *)self moviePresenter];
+    moviePresenter = [(PXPhotosDetailsHeaderTileWidget *)self moviePresenter];
 
-    if (!v5)
+    if (!moviePresenter)
     {
-      v6 = [(PXPhotosDetailsHeaderTileWidget *)self widgetDelegate];
-      v7 = [v6 widgetViewControllerHostingWidget:self];
+      widgetDelegate = [(PXPhotosDetailsHeaderTileWidget *)self widgetDelegate];
+      v7 = [widgetDelegate widgetViewControllerHostingWidget:self];
 
       v8 = [PXMoviePresenter moviePresenterWithPresentingViewController:v7];
       [(PXPhotosDetailsHeaderTileWidget *)self setMoviePresenter:v8];
     }
 
-    v9 = [(PXPhotosDetailsHeaderTileWidget *)self context];
-    v10 = [v9 people];
-    v11 = [v10 fetchedObjects];
+    context = [(PXPhotosDetailsHeaderTileWidget *)self context];
+    people = [context people];
+    fetchedObjects = [people fetchedObjects];
 
-    v12 = [(PXPhotosDetailsHeaderTileWidget *)self moviePresenter];
-    v13 = [(PXPhotosDetailsHeaderTileWidget *)self _keyAssetsFetchResult];
-    v14 = [v12 presentMovieViewControllerForAssetCollection:v4 keyAssetFetchResult:v13 referencePersons:v11 preferredTransitionType:1];
+    moviePresenter2 = [(PXPhotosDetailsHeaderTileWidget *)self moviePresenter];
+    _keyAssetsFetchResult = [(PXPhotosDetailsHeaderTileWidget *)self _keyAssetsFetchResult];
+    v14 = [moviePresenter2 presentMovieViewControllerForAssetCollection:firstAssetCollection keyAssetFetchResult:_keyAssetsFetchResult referencePersons:fetchedObjects preferredTransitionType:1];
 
     if (v14)
     {
       v15 = MEMORY[0x1E6991F28];
       v16 = *MEMORY[0x1E6991E08];
-      v23[0] = v4;
+      v23[0] = firstAssetCollection;
       v17 = *MEMORY[0x1E6991E20];
       v22[0] = v16;
       v22[1] = v17;
@@ -798,15 +798,15 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
   return v14;
 }
 
-- (void)_handleTapGesture:(id)a3
+- (void)_handleTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [(PXTilingController *)self->_tilingController currentLayout];
-  v7 = v6;
-  if (v6)
+  gestureCopy = gesture;
+  view = [gestureCopy view];
+  currentLayout = [(PXTilingController *)self->_tilingController currentLayout];
+  v7 = currentLayout;
+  if (currentLayout)
   {
-    [v6 contentTileIdentifier];
+    [currentLayout contentTileIdentifier];
   }
 
   else
@@ -815,12 +815,12 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
     memset(v20, 0, sizeof(v20));
   }
 
-  [(PXPhotosDetailsHeaderTileWidget *)self _contentRectInCoordinateSpace:v5 withIdentifier:v20];
+  [(PXPhotosDetailsHeaderTileWidget *)self _contentRectInCoordinateSpace:view withIdentifier:v20];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v4 locationInView:v5];
+  [gestureCopy locationInView:view];
   v17 = v16;
   v19 = v18;
 
@@ -846,18 +846,18 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
 
 - (id)extendedTraitCollection
 {
-  v3 = [(PXPhotosDetailsHeaderTileWidget *)self widgetDelegate];
-  v4 = [v3 widgetViewControllerHostingWidget:self];
+  widgetDelegate = [(PXPhotosDetailsHeaderTileWidget *)self widgetDelegate];
+  v4 = [widgetDelegate widgetViewControllerHostingWidget:self];
 
-  v5 = [v4 px_extendedTraitCollection];
+  px_extendedTraitCollection = [v4 px_extendedTraitCollection];
 
-  return v5;
+  return px_extendedTraitCollection;
 }
 
 - (int64_t)contentLayoutStyle
 {
-  v2 = [(PXPhotosDetailsHeaderTileWidget *)self _headerSpec];
-  v3 = [v2 shouldInsetAllPhotoDetailsContent] ^ 1;
+  _headerSpec = [(PXPhotosDetailsHeaderTileWidget *)self _headerSpec];
+  v3 = [_headerSpec shouldInsetAllPhotoDetailsContent] ^ 1;
 
   return v3;
 }
@@ -872,32 +872,32 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
 
 - (BOOL)hasContentForCurrentInput
 {
-  v2 = [(PXPhotosDetailsHeaderTileWidget *)self context];
-  v3 = [v2 photosDataSource];
+  context = [(PXPhotosDetailsHeaderTileWidget *)self context];
+  photosDataSource = [context photosDataSource];
 
-  if ([v3 containsMultipleAssets])
+  if ([photosDataSource containsMultipleAssets])
   {
-    v4 = 1;
+    showAlways = 1;
   }
 
   else
   {
     v5 = +[PXPhotosDetailsHeaderTileSettings sharedInstance];
-    v4 = [v5 showAlways];
+    showAlways = [v5 showAlways];
   }
 
-  return v4;
+  return showAlways;
 }
 
-- (double)preferredContentHeightForWidth:(double)a3
+- (double)preferredContentHeightForWidth:(double)width
 {
-  v5 = [(PXPhotosDetailsHeaderTileWidget *)self _scrollViewController];
-  v6 = [v5 scrollView];
+  _scrollViewController = [(PXPhotosDetailsHeaderTileWidget *)self _scrollViewController];
+  scrollView = [_scrollViewController scrollView];
 
   v7 = objc_opt_class();
-  v8 = [v6 window];
-  v9 = [v8 screen];
-  [v7 preferredHeaderContentHeightForWidth:v9 screen:a3];
+  window = [scrollView window];
+  screen = [window screen];
+  [v7 preferredHeaderContentHeightForWidth:screen screen:width];
 
   [(PXPhotosDetailsHeaderTileWidget *)self spec];
   [objc_claimAutoreleasedReturnValue() contentGuideInsets];
@@ -908,53 +908,53 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
 
 - (void)_headerSpecDidChange
 {
-  v4 = [(PXPhotosDetailsHeaderTileWidget *)self _headerSpec];
-  v3 = [(PXTilingController *)self->_tilingController targetLayout];
-  [v3 setSpec:v4];
+  _headerSpec = [(PXPhotosDetailsHeaderTileWidget *)self _headerSpec];
+  targetLayout = [(PXTilingController *)self->_tilingController targetLayout];
+  [targetLayout setSpec:_headerSpec];
 }
 
-- (void)_setHeaderSpec:(id)a3
+- (void)_setHeaderSpec:(id)spec
 {
-  v5 = a3;
-  if (self->__headerSpec != v5)
+  specCopy = spec;
+  if (self->__headerSpec != specCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->__headerSpec, a3);
+    v7 = specCopy;
+    objc_storeStrong(&self->__headerSpec, spec);
     [(PXPhotosDetailsHeaderTileWidget *)self _headerSpecDidChange];
-    v6 = [(PXPhotosDetailsHeaderTileWidget *)self widgetDelegate];
-    [v6 widgetInvalidateContentLayoutStyle:self];
+    widgetDelegate = [(PXPhotosDetailsHeaderTileWidget *)self widgetDelegate];
+    [widgetDelegate widgetInvalidateContentLayoutStyle:self];
 
-    v5 = v7;
+    specCopy = v7;
   }
 }
 
 - (id)viewToBeFocused
 {
-  v2 = [(PXPhotosDetailsHeaderTileWidget *)self previewTile];
-  v3 = [v2 view];
+  previewTile = [(PXPhotosDetailsHeaderTileWidget *)self previewTile];
+  view = [previewTile view];
 
-  return v3;
+  return view;
 }
 
 - (void)_updateTitleTile
 {
-  v3 = [(PXPhotosDetailsHeaderTileWidget *)self context];
-  v4 = [v3 shouldShowHeaderTitle];
+  context = [(PXPhotosDetailsHeaderTileWidget *)self context];
+  shouldShowHeaderTitle = [context shouldShowHeaderTitle];
 
-  if (v4)
+  if (shouldShowHeaderTitle)
   {
-    v7 = [(PXPhotosDetailsHeaderTileWidget *)self _titleTile];
-    v5 = [(PXPhotosDetailsHeaderTileWidget *)self _title];
-    v6 = [(PXPhotosDetailsHeaderTileWidget *)self _subtitle];
-    if (![v5 length])
+    _titleTile = [(PXPhotosDetailsHeaderTileWidget *)self _titleTile];
+    _title = [(PXPhotosDetailsHeaderTileWidget *)self _title];
+    _subtitle = [(PXPhotosDetailsHeaderTileWidget *)self _subtitle];
+    if (![_title length])
     {
 
-      v5 = v6;
-      v6 = 0;
+      _title = _subtitle;
+      _subtitle = 0;
     }
 
-    [v7 setTitle:v5];
-    [v7 setSubtitle:v6];
+    [_titleTile setTitle:_title];
+    [_titleTile setSubtitle:_subtitle];
   }
 }
 
@@ -963,60 +963,60 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
   if ([(PXPhotosDetailsHeaderTileWidget *)self canLoadContentData])
   {
     primaryAssetImageRequester = self->_primaryAssetImageRequester;
-    v4 = [(PXPhotosDetailsHeaderTileWidget *)self previewTile];
-    [v4 setImageRequester:primaryAssetImageRequester];
+    previewTile = [(PXPhotosDetailsHeaderTileWidget *)self previewTile];
+    [previewTile setImageRequester:primaryAssetImageRequester];
   }
 }
 
-- (void)_filterOutVideosFromAssetCollection:(id)a3 filteredAssetCollection:(id *)a4 assets:(id *)a5
+- (void)_filterOutVideosFromAssetCollection:(id)collection filteredAssetCollection:(id *)assetCollection assets:(id *)assets
 {
-  v7 = a3;
-  v8 = [v7 photoLibrary];
-  v15 = [v8 librarySpecificFetchOptions];
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"noindex:(kind) = %d", 0];
-  [v15 setInternalPredicate:v9];
-  v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v7 options:v15];
+  [librarySpecificFetchOptions setInternalPredicate:v9];
+  v10 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:collectionCopy options:librarySpecificFetchOptions];
 
   v11 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssetFetchResult:v10 title:&stru_1F1741150];
   v12 = v11;
-  if (a4)
+  if (assetCollection)
   {
     v13 = v11;
-    *a4 = v12;
+    *assetCollection = v12;
   }
 
-  if (a5)
+  if (assets)
   {
     v14 = v10;
-    *a5 = v10;
+    *assets = v10;
   }
 }
 
 - (id)keyAsset
 {
-  v2 = [(PXPhotosDetailsHeaderTileWidget *)self _keyAssetsFetchResult];
-  v3 = [v2 firstObject];
+  _keyAssetsFetchResult = [(PXPhotosDetailsHeaderTileWidget *)self _keyAssetsFetchResult];
+  firstObject = [_keyAssetsFetchResult firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setCanLoadContentData:(BOOL)a3
+- (void)setCanLoadContentData:(BOOL)data
 {
-  if (self->_canLoadContentData != a3)
+  if (self->_canLoadContentData != data)
   {
-    self->_canLoadContentData = a3;
+    self->_canLoadContentData = data;
     [(PXPhotosDetailsHeaderTileWidget *)self _updatePreview];
   }
 }
 
 - (void)loadContentData
 {
-  v6 = [(PXPhotosDetailsHeaderTileWidget *)self context];
-  if ([v6 viewSourceOrigin] != 6 || (objc_msgSend(v6, "people"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "count"), v3, v4 >= 2))
+  context = [(PXPhotosDetailsHeaderTileWidget *)self context];
+  if ([context viewSourceOrigin] != 6 || (objc_msgSend(context, "people"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "count"), v3, v4 >= 2))
   {
-    v5 = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
-    [v5 startBackgroundFetchIfNeeded];
+    _photosDataSource = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
+    [_photosDataSource startBackgroundFetchIfNeeded];
   }
 
   [(PXPhotosDetailsHeaderTileWidget *)self setCanLoadContentData:1];
@@ -1033,8 +1033,8 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
       [(PXPhotosDetailsHeaderTileWidget *)self _updateCuratedAssetCollectionIfNeeded];
       if ([(PXPhotosDetailsHeaderTileWidget *)self _needsUpdate])
       {
-        v4 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsHeaderTileWidget.m" lineNumber:404 description:@"update still needed after update pass"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosDetailsHeaderTileWidget.m" lineNumber:404 description:@"update still needed after update pass"];
       }
     }
   }
@@ -1042,8 +1042,8 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
 
 - (BOOL)_showPlaceholder
 {
-  v2 = [(PXPhotosDetailsHeaderTileWidget *)self keyAsset];
-  v3 = v2 == 0;
+  keyAsset = [(PXPhotosDetailsHeaderTileWidget *)self keyAsset];
+  v3 = keyAsset == 0;
 
   return v3;
 }
@@ -1053,16 +1053,16 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
   if (self->_needsUpdateFlags.curatedAssetCollection)
   {
     self->_needsUpdateFlags.curatedAssetCollection = 0;
-    v9 = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
-    if ([v9 numberOfSections] < 1)
+    _photosDataSource = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
+    if ([_photosDataSource numberOfSections] < 1)
     {
-      v8 = v9;
+      v8 = _photosDataSource;
     }
 
     else
     {
-      v3 = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
-      v4 = [v3 curatedAssetsInSection:0];
+      _photosDataSource2 = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
+      v4 = [_photosDataSource2 curatedAssetsInSection:0];
 
       if (!v4)
       {
@@ -1070,8 +1070,8 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
       }
 
       v5 = MEMORY[0x1E6978650];
-      v6 = [(PXPhotosDetailsHeaderTileWidget *)self _title];
-      v7 = [v5 transientAssetCollectionWithAssetFetchResult:v4 title:v6];
+      _title = [(PXPhotosDetailsHeaderTileWidget *)self _title];
+      v7 = [v5 transientAssetCollectionWithAssetFetchResult:v4 title:_title];
 
       [(PXPhotosDetailsHeaderTileWidget *)self _setCuratedAssetCollection:v7];
       [(PXPhotosDetailsHeaderTileWidget *)self _updatePreview];
@@ -1088,23 +1088,23 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
     v17 = v2;
     v18 = v3;
     self->_needsUpdateFlags.assetCollection = 0;
-    v5 = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
-    v6 = [v5 firstAssetCollection];
-    if (v6)
+    _photosDataSource = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
+    firstAssetCollection = [_photosDataSource firstAssetCollection];
+    if (firstAssetCollection)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v7 = [v5 uncuratedAssetsInSection:0];
+        v7 = [_photosDataSource uncuratedAssetsInSection:0];
         if ([v7 count])
         {
           v8 = MEMORY[0x1E6978650];
-          v9 = [(PXPhotosDetailsHeaderTileWidget *)self _title];
-          v10 = [(PXPhotosDetailsHeaderTileWidget *)self _subtitle];
-          v11 = [(PXPhotosDetailsHeaderTileWidget *)self _titleFontName];
-          v12 = [v8 transientAssetCollectionWithAssetFetchResult:v7 title:v9 subtitle:v10 titleFontName:v11];
+          _title = [(PXPhotosDetailsHeaderTileWidget *)self _title];
+          _subtitle = [(PXPhotosDetailsHeaderTileWidget *)self _subtitle];
+          _titleFontName = [(PXPhotosDetailsHeaderTileWidget *)self _titleFontName];
+          v12 = [v8 transientAssetCollectionWithAssetFetchResult:v7 title:_title subtitle:_subtitle titleFontName:_titleFontName];
 
-          v6 = v9;
+          firstAssetCollection = _title;
         }
 
         else
@@ -1112,18 +1112,18 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
           v12 = 0;
         }
 
-        v6 = v12;
+        firstAssetCollection = v12;
       }
     }
 
-    [(PXPhotosDetailsHeaderTileWidget *)self _setAssetCollection:v6];
-    v13 = [(PXTilingController *)self->_tilingController currentLayout];
+    [(PXPhotosDetailsHeaderTileWidget *)self _setAssetCollection:firstAssetCollection];
+    currentLayout = [(PXTilingController *)self->_tilingController currentLayout];
     v14 = objc_alloc_init(PXTilingLayoutInvalidationContext);
     v16 = 0;
     memset(&v15[1], 0, 64);
     v15[0] = xmmword_1A52F8E10;
     [(PXTilingLayoutInvalidationContext *)v14 invalidateTileWithIdentifier:v15];
-    [v13 invalidateLayoutWithContext:v14];
+    [currentLayout invalidateLayoutWithContext:v14];
   }
 }
 
@@ -1148,35 +1148,35 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
     v16 = v2;
     v17 = v3;
     self->_needsUpdateFlags.keyAssets = 0;
-    v5 = [(PXPhotosDetailsHeaderTileWidget *)self context];
-    v6 = [v5 keyAssetsFetchResult];
+    context = [(PXPhotosDetailsHeaderTileWidget *)self context];
+    keyAssetsFetchResult = [context keyAssetsFetchResult];
 
-    if (!v6 || ![v6 count])
+    if (!keyAssetsFetchResult || ![keyAssetsFetchResult count])
     {
-      v7 = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
-      if ([v7 numberOfSections] >= 1)
+      _photosDataSource = [(PXPhotosDetailsHeaderTileWidget *)self _photosDataSource];
+      if ([_photosDataSource numberOfSections] >= 1)
       {
-        v8 = [v7 keyAssetsInSection:0];
+        v8 = [_photosDataSource keyAssetsInSection:0];
 
         if ([v8 count])
         {
-          v6 = v8;
+          keyAssetsFetchResult = v8;
         }
 
         else
         {
-          v6 = [v7 assetsInSection:0];
+          keyAssetsFetchResult = [_photosDataSource assetsInSection:0];
         }
       }
     }
 
-    [(PXPhotosDetailsHeaderTileWidget *)self _setKeyAssetsFetchResult:v6];
-    v9 = [(PXPhotosDetailsHeaderTileWidget *)self keyAsset];
-    if (v9)
+    [(PXPhotosDetailsHeaderTileWidget *)self _setKeyAssetsFetchResult:keyAssetsFetchResult];
+    keyAsset = [(PXPhotosDetailsHeaderTileWidget *)self keyAsset];
+    if (keyAsset)
     {
-      v10 = [(PXImageRequester *)self->_primaryAssetImageRequester asset];
+      asset = [(PXImageRequester *)self->_primaryAssetImageRequester asset];
 
-      if (v10 != v9)
+      if (asset != keyAsset)
       {
         primaryAssetImageRequester = self->_primaryAssetImageRequester;
         if (primaryAssetImageRequester)
@@ -1185,14 +1185,14 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
           v14[1] = 3221225472;
           v14[2] = __59__PXPhotosDetailsHeaderTileWidget__updateKeyAssetsIfNeeded__block_invoke;
           v14[3] = &unk_1E7735000;
-          v15 = v9;
+          v15 = keyAsset;
           [(PXImageRequester *)primaryAssetImageRequester performChanges:v14];
           v12 = v15;
         }
 
         else
         {
-          v13 = [[PXImageRequester alloc] initWithMediaProvider:self->_mediaProvider asset:v9];
+          v13 = [[PXImageRequester alloc] initWithMediaProvider:self->_mediaProvider asset:keyAsset];
           v12 = self->_primaryAssetImageRequester;
           self->_primaryAssetImageRequester = v13;
         }
@@ -1206,35 +1206,35 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
 
 - (void)_updateLayoutStyle
 {
-  v3 = [(PXTilingController *)self->_tilingController targetLayout];
-  [v3 setStyle:{-[PXPhotosDetailsHeaderTileWidget _showPlaceholder](self, "_showPlaceholder") ^ 1}];
+  targetLayout = [(PXTilingController *)self->_tilingController targetLayout];
+  [targetLayout setStyle:{-[PXPhotosDetailsHeaderTileWidget _showPlaceholder](self, "_showPlaceholder") ^ 1}];
 }
 
-- (void)_setLoadCoordinationToken:(id)a3
+- (void)_setLoadCoordinationToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   loadCoordinationToken = self->__loadCoordinationToken;
   p_loadCoordinationToken = &self->__loadCoordinationToken;
   v6 = loadCoordinationToken;
-  if (loadCoordinationToken != v5)
+  if (loadCoordinationToken != tokenCopy)
   {
-    v9 = v5;
+    v9 = tokenCopy;
     [(PXPhotosDetailsLoadCoordinationToken *)v6 complete];
-    objc_storeStrong(p_loadCoordinationToken, a3);
-    v5 = v9;
+    objc_storeStrong(p_loadCoordinationToken, token);
+    tokenCopy = v9;
   }
 }
 
-- (void)_setPhotosDataSource:(id)a3
+- (void)_setPhotosDataSource:(id)source
 {
-  v10 = a3;
-  v4 = [(PXPhotosDataSource *)self->__photosDataSource isEqual:v10];
-  v5 = v10;
+  sourceCopy = source;
+  v4 = [(PXPhotosDataSource *)self->__photosDataSource isEqual:sourceCopy];
+  v5 = sourceCopy;
   if ((v4 & 1) == 0)
   {
-    if (v10)
+    if (sourceCopy)
     {
-      v6 = -[PXPhotosDataSource initWithPhotosDataSource:options:]([PXPhotosDataSource alloc], "initWithPhotosDataSource:options:", v10, [v10 options] | 0x30);
+      v6 = -[PXPhotosDataSource initWithPhotosDataSource:options:]([PXPhotosDataSource alloc], "initWithPhotosDataSource:options:", sourceCopy, [sourceCopy options] | 0x30);
     }
 
     else
@@ -1243,10 +1243,10 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
     }
 
     [(PXPhotosDataSource *)self->__photosDataSource unregisterChangeObserver:self];
-    v7 = [(PXPhotosDataSource *)v6 firstAssetCollection];
-    if (v7)
+    firstAssetCollection = [(PXPhotosDataSource *)v6 firstAssetCollection];
+    if (firstAssetCollection)
     {
-      [(PXPhotosDataSource *)v6 setWantsCuration:1 forAssetCollection:v7];
+      [(PXPhotosDataSource *)v6 setWantsCuration:1 forAssetCollection:firstAssetCollection];
     }
 
     photosDataSource = self->__photosDataSource;
@@ -1254,17 +1254,17 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
     v9 = v6;
 
     [(PXPhotosDataSource *)self->__photosDataSource registerChangeObserver:self];
-    v5 = v10;
+    v5 = sourceCopy;
   }
 }
 
-- (void)_setKeyAssetsFetchResult:(id)a3
+- (void)_setKeyAssetsFetchResult:(id)result
 {
-  v5 = a3;
-  if (self->__keyAssetsFetchResult != v5)
+  resultCopy = result;
+  if (self->__keyAssetsFetchResult != resultCopy)
   {
-    objc_storeStrong(&self->__keyAssetsFetchResult, a3);
-    if ([(PHFetchResult *)v5 count])
+    objc_storeStrong(&self->__keyAssetsFetchResult, result);
+    if ([(PHFetchResult *)resultCopy count])
     {
       [(PXPhotosDetailsHeaderTileWidget *)self _setLoadCoordinationToken:0];
       [(PXPhotosDetailsHeaderTileWidget *)self _setHasLoadedContentData:1];
@@ -1273,32 +1273,32 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
   }
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   context = self->_context;
-  if (context != v5)
+  if (context != contextCopy)
   {
-    v10 = v5;
+    v10 = contextCopy;
     [(PXPhotosDetailsContext *)context unregisterChangeObserver:self context:PXPhotosDetailsContextObservationContext];
-    objc_storeStrong(&self->_context, a3);
+    objc_storeStrong(&self->_context, context);
     [(PXPhotosDetailsContext *)self->_context registerChangeObserver:self context:PXPhotosDetailsContextObservationContext];
     v7 = [PXPhotosDetailsLoadCoordinator loadCoordinatorForContext:v10];
-    v8 = [v7 tokenForCuratedFetch];
+    tokenForCuratedFetch = [v7 tokenForCuratedFetch];
 
-    [(PXPhotosDetailsHeaderTileWidget *)self _setLoadCoordinationToken:v8];
+    [(PXPhotosDetailsHeaderTileWidget *)self _setLoadCoordinationToken:tokenForCuratedFetch];
     [(PXPhotosDetailsHeaderTileWidget *)self _invalidateKeyAssets];
-    v9 = [(PXPhotosDetailsContext *)v10 photosDataSource];
-    [(PXPhotosDetailsHeaderTileWidget *)self _setPhotosDataSource:v9];
+    photosDataSource = [(PXPhotosDetailsContext *)v10 photosDataSource];
+    [(PXPhotosDetailsHeaderTileWidget *)self _setPhotosDataSource:photosDataSource];
 
     [(PXPhotosDetailsHeaderTileWidget *)self _updateBasicContent];
-    v5 = v10;
+    contextCopy = v10;
   }
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  [(PXPhotosDetailsHeaderTileWidget *)self _setContentSize:a3.width, a3.height];
+  [(PXPhotosDetailsHeaderTileWidget *)self _setContentSize:size.width, size.height];
 
   [(PXPhotosDetailsHeaderTileWidget *)self _updateKeyAssetCropRect];
 }
@@ -1308,8 +1308,8 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
   if (![(PXPhotosDetailsHeaderTileWidget *)self _isBasicContentLoaded])
   {
     [(PXPhotosDetailsHeaderTileWidget *)self _setBasicContentLoaded:1];
-    v25 = [(PXPhotosDetailsHeaderTileWidget *)self extendedTraitCollection];
-    v3 = [(PXFeatureSpecManager *)[PXPhotosDetailsHeaderSpecManager alloc] initWithExtendedTraitCollection:v25];
+    extendedTraitCollection = [(PXPhotosDetailsHeaderTileWidget *)self extendedTraitCollection];
+    v3 = [(PXFeatureSpecManager *)[PXPhotosDetailsHeaderSpecManager alloc] initWithExtendedTraitCollection:extendedTraitCollection];
     specManager = self->_specManager;
     self->_specManager = v3;
 
@@ -1318,12 +1318,12 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
     mediaProvider = self->_mediaProvider;
     self->_mediaProvider = v5;
 
-    v7 = [(PXFeatureSpecManager *)self->_specManager spec];
-    [(PXPhotosDetailsHeaderTileWidget *)self _setHeaderSpec:v7];
+    spec = [(PXFeatureSpecManager *)self->_specManager spec];
+    [(PXPhotosDetailsHeaderTileWidget *)self _setHeaderSpec:spec];
 
     v8 = [PXPhotosDetailsHeaderTileLayout alloc];
-    v9 = [(PXFeatureSpecManager *)self->_specManager spec];
-    v10 = [(PXPhotosDetailsHeaderTileLayout *)v8 initWithSpec:v9];
+    spec2 = [(PXFeatureSpecManager *)self->_specManager spec];
+    v10 = [(PXPhotosDetailsHeaderTileLayout *)v8 initWithSpec:spec2];
 
     [(PXPhotosDetailsHeaderTileLayout *)v10 setDelegate:self];
     v11 = [[PXTilingController alloc] initWithLayout:v10];
@@ -1359,7 +1359,7 @@ PXPhotosDetailsHeaderPlaceholderView *__81__PXPhotosDetailsHeaderTileWidget__con
 
     [(PXUITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:self];
     [v20 addGestureRecognizer:self->_tapGestureRecognizer];
-    if ([v25 userInterfaceIdiom] == 3)
+    if ([extendedTraitCollection userInterfaceIdiom] == 3)
     {
       [(PXUITapGestureRecognizer *)self->_tapGestureRecognizer setAllowedPressTypes:&unk_1F1910078];
     }
@@ -1429,23 +1429,23 @@ PXPlaceholderView *__52__PXPhotosDetailsHeaderTileWidget__loadBasicContent__bloc
   return v2;
 }
 
-+ (double)preferredHeaderContentHeightForWidth:(double)a3 screen:(id)a4
++ (double)preferredHeaderContentHeightForWidth:(double)width screen:(id)screen
 {
-  v5 = a4;
+  screenCopy = screen;
   v6 = +[PXPhotosDetailsHeaderTileSettings sharedInstance];
   [v6 aspectRatio];
   v8 = v7;
-  if (v5)
+  if (screenCopy)
   {
-    [v5 bounds];
+    [screenCopy bounds];
     v10 = v9;
     v12 = v11;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-    [v13 bounds];
+    px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+    [px_mainScreen bounds];
     v10 = v14;
     v12 = v15;
   }
@@ -1455,7 +1455,7 @@ PXPlaceholderView *__52__PXPhotosDetailsHeaderTileWidget__loadBasicContent__bloc
     v10 = v12;
   }
 
-  v16 = a3 / v8;
+  v16 = width / v8;
   [v6 maximumHeightRelativeToScreenHeight];
   v18 = v17 * v10;
   [v6 maximumAbsoluteHeight];

@@ -1,40 +1,40 @@
 @interface SMSentinelZone
-- (SMSentinelZone)initWithQueue:(id)a3;
-- (void)saveZoneWithXPCActivity:(id)a3 completion:(id)a4;
+- (SMSentinelZone)initWithQueue:(id)queue;
+- (void)saveZoneWithXPCActivity:(id)activity completion:(id)completion;
 @end
 
 @implementation SMSentinelZone
 
-- (SMSentinelZone)initWithQueue:(id)a3
+- (SMSentinelZone)initWithQueue:(id)queue
 {
   v4 = MEMORY[0x277CBC5F8];
-  v5 = a3;
+  queueCopy = queue;
   v6 = [v4 alloc];
   v7 = [v6 initWithZoneName:@"SentinelZone" ownerName:*MEMORY[0x277CBBF28]];
   v8 = [objc_alloc(MEMORY[0x277CBC5E8]) initWithZoneID:v7];
   v11.receiver = self;
   v11.super_class = SMSentinelZone;
-  v9 = [(SMCloudKitZone *)&v11 initWithZone:v8 queue:v5];
+  v9 = [(SMCloudKitZone *)&v11 initWithZone:v8 queue:queueCopy];
 
   return v9;
 }
 
-- (void)saveZoneWithXPCActivity:(id)a3 completion:(id)a4
+- (void)saveZoneWithXPCActivity:(id)activity completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[SMCloudKitQosOptions alloc] initWithDefaultQos:0 masqueradeBundleID:0 xpcActivity:v8];
+  completionCopy = completion;
+  activityCopy = activity;
+  v9 = [[SMCloudKitQosOptions alloc] initWithDefaultQos:0 masqueradeBundleID:0 xpcActivity:activityCopy];
 
-  v10 = [(SMCloudKitZone *)self privateDatabase];
+  privateDatabase = [(SMCloudKitZone *)self privateDatabase];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__SMSentinelZone_saveZoneWithXPCActivity_completion___block_invoke;
   v12[3] = &unk_2788C4E00;
-  v13 = v7;
+  v13 = completionCopy;
   v14 = a2;
   v12[4] = self;
-  v11 = v7;
-  [(SMCloudKitZone *)self saveZoneToDatabase:v10 qos:v9 withCompletion:v12];
+  v11 = completionCopy;
+  [(SMCloudKitZone *)self saveZoneToDatabase:privateDatabase qos:v9 withCompletion:v12];
 }
 
 void __53__SMSentinelZone_saveZoneWithXPCActivity_completion___block_invoke(uint64_t a1, int a2, void *a3)

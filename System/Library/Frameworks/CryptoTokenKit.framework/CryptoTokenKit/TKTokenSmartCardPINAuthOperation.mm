@@ -1,9 +1,9 @@
 @interface TKTokenSmartCardPINAuthOperation
-- (BOOL)finishWithError:(id *)a3;
+- (BOOL)finishWithError:(id *)error;
 - (TKTokenSmartCardPINAuthOperation)init;
-- (TKTokenSmartCardPINAuthOperation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)importOperation:(id)a3;
+- (TKTokenSmartCardPINAuthOperation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)importOperation:(id)operation;
 @end
 
 @implementation TKTokenSmartCardPINAuthOperation
@@ -23,40 +23,40 @@
   return v2;
 }
 
-- (TKTokenSmartCardPINAuthOperation)initWithCoder:(id)a3
+- (TKTokenSmartCardPINAuthOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = TKTokenSmartCardPINAuthOperation;
-  v5 = [(TKTokenAuthOperation *)&v26 initWithCoder:v4];
+  v5 = [(TKTokenAuthOperation *)&v26 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_PINFormat);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     PINFormat = v5->_PINFormat;
     v5->_PINFormat = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_APDUTemplate);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     APDUTemplate = v5->_APDUTemplate;
     v5->_APDUTemplate = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_PINByteOffset);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     v5->_PINByteOffset = [v16 integerValue];
 
     v17 = objc_opt_class();
     v18 = NSStringFromSelector("PIN");
-    v19 = [v4 decodeObjectOfClass:v17 forKey:v18];
+    v19 = [coderCopy decodeObjectOfClass:v17 forKey:v18];
     PIN = v5->_PIN;
     v5->_PIN = v19;
 
     v21 = objc_opt_class();
     v22 = NSStringFromSelector(sel_localizedPINLabel);
-    v23 = [v4 decodeObjectOfClass:v21 forKey:v22];
+    v23 = [coderCopy decodeObjectOfClass:v21 forKey:v22];
     localizedPINLabel = v5->_localizedPINLabel;
     v5->_localizedPINLabel = v23;
   }
@@ -64,48 +64,48 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = TKTokenSmartCardPINAuthOperation;
-  v4 = a3;
-  [(TKTokenAuthOperation *)&v15 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TKTokenAuthOperation *)&v15 encodeWithCoder:coderCopy];
   PINFormat = self->_PINFormat;
   v6 = NSStringFromSelector(sel_PINFormat);
-  [v4 encodeObject:PINFormat forKey:{v6, v15.receiver, v15.super_class}];
+  [coderCopy encodeObject:PINFormat forKey:{v6, v15.receiver, v15.super_class}];
 
   APDUTemplate = self->_APDUTemplate;
   v8 = NSStringFromSelector(sel_APDUTemplate);
-  [v4 encodeObject:APDUTemplate forKey:v8];
+  [coderCopy encodeObject:APDUTemplate forKey:v8];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_PINByteOffset];
   v10 = NSStringFromSelector(sel_PINByteOffset);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:v9 forKey:v10];
 
   PIN = self->_PIN;
   v12 = NSStringFromSelector("PIN");
-  [v4 encodeObject:PIN forKey:v12];
+  [coderCopy encodeObject:PIN forKey:v12];
 
   localizedPINLabel = self->_localizedPINLabel;
   v14 = NSStringFromSelector(sel_localizedPINLabel);
-  [v4 encodeObject:localizedPINLabel forKey:v14];
+  [coderCopy encodeObject:localizedPINLabel forKey:v14];
 }
 
-- (BOOL)finishWithError:(id *)a3
+- (BOOL)finishWithError:(id *)error
 {
-  v5 = [(TKTokenSmartCardPINAuthOperation *)self APDUTemplate];
+  aPDUTemplate = [(TKTokenSmartCardPINAuthOperation *)self APDUTemplate];
 
-  if (!v5)
+  if (!aPDUTemplate)
   {
     return 1;
   }
 
-  v6 = [(TKTokenSmartCardPINAuthOperation *)self APDUTemplate];
-  v7 = [v6 mutableCopy];
+  aPDUTemplate2 = [(TKTokenSmartCardPINAuthOperation *)self APDUTemplate];
+  v7 = [aPDUTemplate2 mutableCopy];
 
-  v8 = [(TKTokenSmartCardPINAuthOperation *)self PINFormat];
+  pINFormat = [(TKTokenSmartCardPINAuthOperation *)self PINFormat];
   v9 = [(TKTokenSmartCardPINAuthOperation *)self PIN];
-  v10 = [v8 fillPIN:v9 intoAPDUTemplate:v7 PINByteOffset:-[TKTokenSmartCardPINAuthOperation PINByteOffset](self error:{"PINByteOffset"), a3}];
+  v10 = [pINFormat fillPIN:v9 intoAPDUTemplate:v7 PINByteOffset:-[TKTokenSmartCardPINAuthOperation PINByteOffset](self error:{"PINByteOffset"), error}];
 
   if (v10)
   {
@@ -122,32 +122,32 @@
     v24 = __Block_byref_object_copy__5;
     v25 = __Block_byref_object_dispose__5;
     v26 = 0;
-    v11 = [(TKTokenSmartCardPINAuthOperation *)self smartCard];
-    [v11 setSynchronous:1];
+    smartCard = [(TKTokenSmartCardPINAuthOperation *)self smartCard];
+    [smartCard setSynchronous:1];
 
-    v12 = [(TKTokenSmartCardPINAuthOperation *)self smartCard];
+    smartCard2 = [(TKTokenSmartCardPINAuthOperation *)self smartCard];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __52__TKTokenSmartCardPINAuthOperation_finishWithError___block_invoke;
     v20[3] = &unk_1E86B7D78;
     v20[4] = &v27;
     v20[5] = &v21;
-    [v12 transmitRequest:v7 reply:v20];
+    [smartCard2 transmitRequest:v7 reply:v20];
 
-    v13 = [(TKTokenSmartCardPINAuthOperation *)self smartCard];
-    [v13 setSynchronous:0];
+    smartCard3 = [(TKTokenSmartCardPINAuthOperation *)self smartCard];
+    [smartCard3 setSynchronous:0];
 
     v14 = v28[5];
-    if (a3 && !v14)
+    if (error && !v14)
     {
-      *a3 = v22[5];
+      *error = v22[5];
       v14 = v28[5];
     }
 
-    if (v14 && (-[TKTokenSmartCardPINAuthOperation smartCard](self, "smartCard"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 checkAPDUResponse:v28[5] error:a3], v15, v16))
+    if (v14 && (-[TKTokenSmartCardPINAuthOperation smartCard](self, "smartCard"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v15 checkAPDUResponse:v28[5] error:error], v15, v16))
     {
-      v17 = [(TKTokenSmartCardPINAuthOperation *)self smartCard];
-      [v17 setSensitive:1];
+      smartCard4 = [(TKTokenSmartCardPINAuthOperation *)self smartCard];
+      [smartCard4 setSensitive:1];
 
       v18 = 1;
     }
@@ -181,26 +181,26 @@ void __52__TKTokenSmartCardPINAuthOperation_finishWithError___block_invoke(uint6
   }
 }
 
-- (void)importOperation:(id)a3
+- (void)importOperation:(id)operation
 {
   v13.receiver = self;
   v13.super_class = TKTokenSmartCardPINAuthOperation;
-  v4 = a3;
-  [(TKTokenAuthOperation *)&v13 importOperation:v4];
-  v5 = [v4 PINFormat];
+  operationCopy = operation;
+  [(TKTokenAuthOperation *)&v13 importOperation:operationCopy];
+  pINFormat = [operationCopy PINFormat];
   PINFormat = self->_PINFormat;
-  self->_PINFormat = v5;
+  self->_PINFormat = pINFormat;
 
-  v7 = [v4 APDUTemplate];
+  aPDUTemplate = [operationCopy APDUTemplate];
   APDUTemplate = self->_APDUTemplate;
-  self->_APDUTemplate = v7;
+  self->_APDUTemplate = aPDUTemplate;
 
-  self->_PINByteOffset = [v4 PINByteOffset];
-  v9 = [v4 localizedPINLabel];
+  self->_PINByteOffset = [operationCopy PINByteOffset];
+  localizedPINLabel = [operationCopy localizedPINLabel];
   localizedPINLabel = self->_localizedPINLabel;
-  self->_localizedPINLabel = v9;
+  self->_localizedPINLabel = localizedPINLabel;
 
-  v11 = [v4 PIN];
+  v11 = [operationCopy PIN];
 
   PIN = self->_PIN;
   self->_PIN = v11;

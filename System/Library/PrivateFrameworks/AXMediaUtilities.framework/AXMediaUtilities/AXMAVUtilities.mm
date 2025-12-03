@@ -1,26 +1,26 @@
 @interface AXMAVUtilities
-+ ($2825F4736939C4A6D3AD43837233062D)videoDimensionsForDeviceFormat:(id)a3;
-+ (id)videoDeviceFromConnection:(id)a3;
++ ($2825F4736939C4A6D3AD43837233062D)videoDimensionsForDeviceFormat:(id)format;
++ (id)videoDeviceFromConnection:(id)connection;
 @end
 
 @implementation AXMAVUtilities
 
-+ (id)videoDeviceFromConnection:(id)a3
++ (id)videoDeviceFromConnection:(id)connection
 {
-  v3 = [a3 inputPorts];
-  v4 = [v3 firstObject];
-  v5 = [v4 input];
+  inputPorts = [connection inputPorts];
+  firstObject = [inputPorts firstObject];
+  input = [firstObject input];
 
-  v6 = [v5 device];
+  device = [input device];
 
-  return v6;
+  return device;
 }
 
-+ ($2825F4736939C4A6D3AD43837233062D)videoDimensionsForDeviceFormat:(id)a3
++ ($2825F4736939C4A6D3AD43837233062D)videoDimensionsForDeviceFormat:(id)format
 {
-  v3 = [a3 formatDescription];
+  formatDescription = [format formatDescription];
 
-  return *&CMVideoFormatDescriptionGetDimensions(v3);
+  return *&CMVideoFormatDescriptionGetDimensions(formatDescription);
 }
 
 @end

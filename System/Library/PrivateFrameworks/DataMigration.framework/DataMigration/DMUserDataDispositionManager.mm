@@ -1,17 +1,17 @@
 @interface DMUserDataDispositionManager
-+ (id)descriptionFromDispositionFlags:(unsigned int)a3;
-+ (unsigned)dispositionFlagsFromDispositionDict:(id)a3;
++ (id)descriptionFromDispositionFlags:(unsigned int)flags;
++ (unsigned)dispositionFlagsFromDispositionDict:(id)dict;
 @end
 
 @implementation DMUserDataDispositionManager
 
-+ (unsigned)dispositionFlagsFromDispositionDict:(id)a3
++ (unsigned)dispositionFlagsFromDispositionDict:(id)dict
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"SyntheticDidUpgrade"];
-  v5 = [v4 BOOLValue];
+  dictCopy = dict;
+  v4 = [dictCopy objectForKeyedSubscript:@"SyntheticDidUpgrade"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = 2;
   }
@@ -21,11 +21,11 @@
     v6 = 0;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"DidRestoreFromBackup"];
-  v8 = [v7 BOOLValue];
-  v9 = v8;
+  v7 = [dictCopy objectForKeyedSubscript:@"DidRestoreFromBackup"];
+  bOOLValue2 = [v7 BOOLValue];
+  v9 = bOOLValue2;
   v10 = v6 | 4;
-  if (v8)
+  if (bOOLValue2)
   {
     v11 = v6 | 4;
   }
@@ -35,12 +35,12 @@
     v11 = v6;
   }
 
-  if (!v8)
+  if (!bOOLValue2)
   {
     v10 = v6 + 1;
   }
 
-  if (v5)
+  if (bOOLValue)
   {
     v12 = v11;
   }
@@ -50,36 +50,36 @@
     v12 = v10;
   }
 
-  v13 = [v3 objectForKeyedSubscript:@"DidMigrateBackupFromDifferentDevice"];
-  v14 = [v13 BOOLValue];
+  v13 = [dictCopy objectForKeyedSubscript:@"DidMigrateBackupFromDifferentDevice"];
+  bOOLValue3 = [v13 BOOLValue];
 
-  if (v14)
+  if (bOOLValue3)
   {
     v12 |= 8u;
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"DidRestoreFromCloudBackup"];
-  v16 = [v15 BOOLValue];
+  v15 = [dictCopy objectForKeyedSubscript:@"DidRestoreFromCloudBackup"];
+  bOOLValue4 = [v15 BOOLValue];
 
-  if (v16)
+  if (bOOLValue4)
   {
     v17 = v12 | 0x10;
   }
 
   else
   {
-    v18 = [v3 objectForKeyedSubscript:@"RestoreFromBackupSourceiTunes"];
-    v19 = [v18 BOOLValue];
+    v18 = [dictCopy objectForKeyedSubscript:@"RestoreFromBackupSourceiTunes"];
+    bOOLValue5 = [v18 BOOLValue];
 
-    if (v19)
+    if (bOOLValue5)
     {
       v17 = v12 | 0x20;
     }
 
     else
     {
-      v20 = [v3 objectForKeyedSubscript:@"RestoreFromBackupSourceDeviceToDevice"];
-      v21 = [v20 BOOLValue];
+      v20 = [dictCopy objectForKeyedSubscript:@"RestoreFromBackupSourceDeviceToDevice"];
+      bOOLValue6 = [v20 BOOLValue];
 
       v22 = v12 | 0x20;
       if (!v9)
@@ -87,7 +87,7 @@
         v22 = v12;
       }
 
-      if (v21)
+      if (bOOLValue6)
       {
         v17 = v12 | 0x40;
       }
@@ -99,18 +99,18 @@
     }
   }
 
-  v23 = [v3 objectForKeyedSubscript:@"RestoredBackupIsMegaBackup"];
-  v24 = [v23 BOOLValue];
+  v23 = [dictCopy objectForKeyedSubscript:@"RestoredBackupIsMegaBackup"];
+  bOOLValue7 = [v23 BOOLValue];
 
-  if (v24)
+  if (bOOLValue7)
   {
     v17 |= 0x80u;
   }
 
-  v25 = [v3 objectForKeyedSubscript:@"EraseIsRapidReturnToService"];
-  v26 = [v25 BOOLValue];
+  v25 = [dictCopy objectForKeyedSubscript:@"EraseIsRapidReturnToService"];
+  bOOLValue8 = [v25 BOOLValue];
 
-  if (v26)
+  if (bOOLValue8)
   {
     v27 = v17 | 0x100;
   }
@@ -123,32 +123,32 @@
   return v27;
 }
 
-+ (id)descriptionFromDispositionFlags:(unsigned int)a3
++ (id)descriptionFromDispositionFlags:(unsigned int)flags
 {
   v3 = @"erase";
   v4 = @"iTunes restore";
   v5 = @"D2D restore";
-  if ((a3 & 1) == 0)
+  if ((flags & 1) == 0)
   {
     v3 = 0;
   }
 
-  if ((a3 & 0x40) == 0)
+  if ((flags & 0x40) == 0)
   {
     v5 = @"iCloud restore";
   }
 
-  if ((a3 & 0x20) == 0)
+  if ((flags & 0x20) == 0)
   {
     v4 = v5;
   }
 
-  if ((a3 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v3 = v4;
   }
 
-  if ((a3 & 2) != 0)
+  if ((flags & 2) != 0)
   {
     return @"upgrade";
   }

@@ -1,9 +1,9 @@
 @interface MomentsIntelligenceService
 - (MomentsIntelligenceService)init;
-- (void)classifyBundleForSystemPrompt:(id)a3 Input:(id)a4 WithReply:(id)a5;
+- (void)classifyBundleForSystemPrompt:(id)prompt Input:(id)input WithReply:(id)reply;
 - (void)clearMemoryAndExitCleanly;
-- (void)fetchGenerativeModelsAvailabilityWithReply:(id)a3;
-- (void)generatePersonalizedReflectionPromptsWithSystemPrompt:(id)a3 Input:(id)a4 WithReply:(id)a5;
+- (void)fetchGenerativeModelsAvailabilityWithReply:(id)reply;
+- (void)generatePersonalizedReflectionPromptsWithSystemPrompt:(id)prompt Input:(id)input WithReply:(id)reply;
 - (void)interruptionHandler;
 - (void)invalidationHandler;
 - (void)releaseOSTransaction;
@@ -106,9 +106,9 @@
   }
 }
 
-- (void)fetchGenerativeModelsAvailabilityWithReply:(id)a3
+- (void)fetchGenerativeModelsAvailabilityWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityIntelligence);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -126,15 +126,15 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "MIService,isGMSAvailable,%d", v8, 8u);
   }
 
-  v4[2](v4, v6);
+  replyCopy[2](replyCopy, v6);
   [(MomentsIntelligenceService *)self clearMemoryAndExitCleanly];
 }
 
-- (void)classifyBundleForSystemPrompt:(id)a3 Input:(id)a4 WithReply:(id)a5
+- (void)classifyBundleForSystemPrompt:(id)prompt Input:(id)input WithReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  inputCopy = input;
+  promptCopy = prompt;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityIntelligence);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -148,9 +148,9 @@
   v14[1] = 3221225472;
   v14[2] = __76__MomentsIntelligenceService_classifyBundleForSystemPrompt_Input_WithReply___block_invoke;
   v14[3] = &unk_100010678;
-  v15 = v8;
-  v13 = v8;
-  [v12 classifyBundleDataWithSystemPrompt:v10 input:v9 completion:v14];
+  v15 = replyCopy;
+  v13 = replyCopy;
+  [v12 classifyBundleDataWithSystemPrompt:promptCopy input:inputCopy completion:v14];
 
   [(MomentsIntelligenceService *)self clearMemoryAndExitCleanly];
 }
@@ -172,11 +172,11 @@ void __76__MomentsIntelligenceService_classifyBundleForSystemPrompt_Input_WithRe
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)generatePersonalizedReflectionPromptsWithSystemPrompt:(id)a3 Input:(id)a4 WithReply:(id)a5
+- (void)generatePersonalizedReflectionPromptsWithSystemPrompt:(id)prompt Input:(id)input WithReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  inputCopy = input;
+  promptCopy = prompt;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityIntelligence);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -190,9 +190,9 @@ void __76__MomentsIntelligenceService_classifyBundleForSystemPrompt_Input_WithRe
   v14[1] = 3221225472;
   v14[2] = __100__MomentsIntelligenceService_generatePersonalizedReflectionPromptsWithSystemPrompt_Input_WithReply___block_invoke;
   v14[3] = &unk_100010678;
-  v15 = v8;
-  v13 = v8;
-  [v12 generatePersonalizedReflectionPromptWithSystemPrompt:v10 input:v9 completion:v14];
+  v15 = replyCopy;
+  v13 = replyCopy;
+  [v12 generatePersonalizedReflectionPromptWithSystemPrompt:promptCopy input:inputCopy completion:v14];
 
   [(MomentsIntelligenceService *)self clearMemoryAndExitCleanly];
 }

@@ -1,44 +1,44 @@
 @interface CESRCorrectionPronunciation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTtsPronunciations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTtsPronunciations:(id)pronunciations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CESRCorrectionPronunciation
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(CESRCorrectionPronunciation *)self setOrthography:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(CESRCorrectionPronunciation *)self setLanguage:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(CESRCorrectionPronunciation *)self setApgId:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(CESRCorrectionPronunciation *)self setTtsVersion:?];
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_tokenOffset = *(v4 + 10);
+    self->_tokenOffset = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
@@ -46,7 +46,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 6);
+  v5 = *(fromCopy + 6);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -70,7 +70,7 @@
     while (v7);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(CESRCorrectionPronunciation *)self setAsrPronunciationData:?];
   }
@@ -99,16 +99,16 @@
   return v8 ^ v9 ^ [(NSData *)self->_asrPronunciationData hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   orthography = self->_orthography;
-  if (orthography | *(v4 + 4))
+  if (orthography | *(equalCopy + 4))
   {
     if (![(NSString *)orthography isEqual:?])
     {
@@ -117,7 +117,7 @@
   }
 
   language = self->_language;
-  if (language | *(v4 + 3))
+  if (language | *(equalCopy + 3))
   {
     if (![(NSString *)language isEqual:?])
     {
@@ -126,7 +126,7 @@
   }
 
   apgId = self->_apgId;
-  if (apgId | *(v4 + 1))
+  if (apgId | *(equalCopy + 1))
   {
     if (![(NSString *)apgId isEqual:?])
     {
@@ -135,7 +135,7 @@
   }
 
   ttsVersion = self->_ttsVersion;
-  if (ttsVersion | *(v4 + 7))
+  if (ttsVersion | *(equalCopy + 7))
   {
     if (![(NSString *)ttsVersion isEqual:?])
     {
@@ -143,16 +143,16 @@
     }
   }
 
-  v9 = *(v4 + 64);
+  v9 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_tokenOffset != *(v4 + 10))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_tokenOffset != *(equalCopy + 10))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -160,13 +160,13 @@ LABEL_19:
   }
 
   ttsPronunciations = self->_ttsPronunciations;
-  if (ttsPronunciations | *(v4 + 6) && ![(NSMutableArray *)ttsPronunciations isEqual:?])
+  if (ttsPronunciations | *(equalCopy + 6) && ![(NSMutableArray *)ttsPronunciations isEqual:?])
   {
     goto LABEL_19;
   }
 
   asrPronunciationData = self->_asrPronunciationData;
-  if (asrPronunciationData | *(v4 + 2))
+  if (asrPronunciationData | *(equalCopy + 2))
   {
     v12 = [(NSData *)asrPronunciationData isEqual:?];
   }
@@ -181,23 +181,23 @@ LABEL_20:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_orthography copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_orthography copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_language copyWithZone:a3];
+  v8 = [(NSString *)self->_language copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_apgId copyWithZone:a3];
+  v10 = [(NSString *)self->_apgId copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
-  v12 = [(NSString *)self->_ttsVersion copyWithZone:a3];
+  v12 = [(NSString *)self->_ttsVersion copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
@@ -227,7 +227,7 @@ LABEL_20:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * v18) copyWithZone:{a3, v24}];
+        v19 = [*(*(&v24 + 1) + 8 * v18) copyWithZone:{zone, v24}];
         [v5 addTtsPronunciations:v19];
 
         ++v18;
@@ -240,7 +240,7 @@ LABEL_20:
     while (v16);
   }
 
-  v20 = [(NSData *)self->_asrPronunciationData copyWithZone:a3];
+  v20 = [(NSData *)self->_asrPronunciationData copyWithZone:zone];
   v21 = *(v5 + 16);
   *(v5 + 16) = v20;
 
@@ -248,47 +248,47 @@ LABEL_20:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_orthography)
   {
-    [v4 setOrthography:?];
-    v4 = v9;
+    [toCopy setOrthography:?];
+    toCopy = v9;
   }
 
   if (self->_language)
   {
     [v9 setLanguage:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_apgId)
   {
     [v9 setApgId:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_ttsVersion)
   {
     [v9 setTtsVersion:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 10) = self->_tokenOffset;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 10) = self->_tokenOffset;
+    *(toCopy + 64) |= 1u;
   }
 
   if ([(CESRCorrectionPronunciation *)self ttsPronunciationsCount])
   {
     [v9 clearTtsPronunciations];
-    v5 = [(CESRCorrectionPronunciation *)self ttsPronunciationsCount];
-    if (v5)
+    ttsPronunciationsCount = [(CESRCorrectionPronunciation *)self ttsPronunciationsCount];
+    if (ttsPronunciationsCount)
     {
-      v6 = v5;
+      v6 = ttsPronunciationsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(CESRCorrectionPronunciation *)self ttsPronunciationsAtIndex:i];
@@ -303,10 +303,10 @@ LABEL_20:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_orthography)
   {
     PBDataWriterWriteStringField();
@@ -375,12 +375,12 @@ LABEL_20:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   orthography = self->_orthography;
   if (orthography)
   {
-    [v3 setObject:orthography forKey:@"orthography"];
+    [dictionary setObject:orthography forKey:@"orthography"];
   }
 
   language = self->_language;
@@ -428,28 +428,28 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = CESRCorrectionPronunciation;
   v4 = [(CESRCorrectionPronunciation *)&v8 description];
-  v5 = [(CESRCorrectionPronunciation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CESRCorrectionPronunciation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addTtsPronunciations:(id)a3
+- (void)addTtsPronunciations:(id)pronunciations
 {
-  v4 = a3;
+  pronunciationsCopy = pronunciations;
   ttsPronunciations = self->_ttsPronunciations;
-  v8 = v4;
+  v8 = pronunciationsCopy;
   if (!ttsPronunciations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_ttsPronunciations;
     self->_ttsPronunciations = v6;
 
-    v4 = v8;
+    pronunciationsCopy = v8;
     ttsPronunciations = self->_ttsPronunciations;
   }
 
-  [(NSMutableArray *)ttsPronunciations addObject:v4];
+  [(NSMutableArray *)ttsPronunciations addObject:pronunciationsCopy];
 }
 
 @end

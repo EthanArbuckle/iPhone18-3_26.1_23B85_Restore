@@ -1,18 +1,18 @@
 @interface IPPControlLogging
-- (IPPControlLogging)initWithIdentifier:(id)a3;
-- (void)_now:(id)a3 appendString:(id)a4;
-- (void)_withFile:(id)a3;
-- (void)onQueueAsyncIfPreserving:(id)a3;
-- (void)preserveRequest:(id)a3 forSequence:(int)a4;
-- (void)preserveResponse:(id)a3 forSequence:(int)a4;
-- (void)preserveResponseFailure:(id)a3 forSequence:(int)a4;
+- (IPPControlLogging)initWithIdentifier:(id)identifier;
+- (void)_now:(id)_now appendString:(id)string;
+- (void)_withFile:(id)file;
+- (void)onQueueAsyncIfPreserving:(id)preserving;
+- (void)preserveRequest:(id)request forSequence:(int)sequence;
+- (void)preserveResponse:(id)response forSequence:(int)sequence;
+- (void)preserveResponseFailure:(id)failure forSequence:(int)sequence;
 @end
 
 @implementation IPPControlLogging
 
-- (IPPControlLogging)initWithIdentifier:(id)a3
+- (IPPControlLogging)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = IPPControlLogging;
   v5 = [(IPPControlLogging *)&v14 init];
@@ -21,8 +21,8 @@
     v6 = NSTemporaryDirectory();
     v7 = [NSURL fileURLWithPath:v6 isDirectory:1];
 
-    v8 = [NSString stringWithFormat:@"control-%d-%@.txt", getpid(), v4];
-    v9 = [v7 URLByAppendingPathComponent:v8];
+    identifierCopy = [NSString stringWithFormat:@"control-%d-%@.txt", getpid(), identifierCopy];
+    v9 = [v7 URLByAppendingPathComponent:identifierCopy];
     controlFilePath = v5->_controlFilePath;
     v5->_controlFilePath = v9;
 
@@ -36,9 +36,9 @@
   return v5;
 }
 
-- (void)_withFile:(id)a3
+- (void)_withFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = open([(NSURL *)self->_controlFilePath fileSystemRepresentation], 521, 438);
   if (v5 == -1)
   {
@@ -65,7 +65,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = v4[2](v4, v5);
+  v6 = fileCopy[2](fileCopy, v5);
   close(v5);
   if ((v6 & 1) == 0)
   {
@@ -89,9 +89,9 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)_now:(id)a3 appendString:(id)a4
+- (void)_now:(id)_now appendString:(id)string
 {
-  v5 = a4;
+  stringCopy = string;
   dateFormatter = self->_dateFormatter;
   v7 = +[NSDate date];
   v8 = [(NSDateFormatter *)dateFormatter stringFromDate:v7];
@@ -102,19 +102,19 @@ LABEL_9:
   v12[2] = sub_100045828;
   v12[3] = &unk_1000A3380;
   v13 = v9;
-  v10 = v5;
+  v10 = stringCopy;
   v14 = v10;
   v11 = v9;
   [(IPPControlLogging *)self _withFile:v12];
 }
 
-- (void)onQueueAsyncIfPreserving:(id)a3
+- (void)onQueueAsyncIfPreserving:(id)preserving
 {
-  v4 = a3;
-  v5 = v4;
+  preservingCopy = preserving;
+  v5 = preservingCopy;
   if (qword_1000C7C68 != -1)
   {
-    v7 = v4;
+    v7 = preservingCopy;
     sub_1000604F8();
     v5 = v7;
   }
@@ -127,52 +127,52 @@ LABEL_9:
   }
 }
 
-- (void)preserveRequest:(id)a3 forSequence:(int)a4
+- (void)preserveRequest:(id)request forSequence:(int)sequence
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = +[NSDate date];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100045B40;
   v10[3] = &unk_1000A33C8;
-  v14 = a4;
-  v8 = v6;
+  sequenceCopy = sequence;
+  v8 = requestCopy;
   v11 = v8;
-  v12 = self;
+  selfCopy = self;
   v13 = v7;
   v9 = v7;
   [(IPPControlLogging *)self onQueueAsyncIfPreserving:v10];
 }
 
-- (void)preserveResponse:(id)a3 forSequence:(int)a4
+- (void)preserveResponse:(id)response forSequence:(int)sequence
 {
-  v6 = a3;
+  responseCopy = response;
   v7 = +[NSDate date];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100045CF0;
   v10[3] = &unk_1000A33C8;
-  v14 = a4;
-  v8 = v6;
+  sequenceCopy = sequence;
+  v8 = responseCopy;
   v11 = v8;
-  v12 = self;
+  selfCopy = self;
   v13 = v7;
   v9 = v7;
   [(IPPControlLogging *)self onQueueAsyncIfPreserving:v10];
 }
 
-- (void)preserveResponseFailure:(id)a3 forSequence:(int)a4
+- (void)preserveResponseFailure:(id)failure forSequence:(int)sequence
 {
-  v6 = a3;
+  failureCopy = failure;
   v7 = +[NSDate date];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100045EA0;
   v10[3] = &unk_1000A33C8;
-  v14 = a4;
-  v8 = v6;
+  sequenceCopy = sequence;
+  v8 = failureCopy;
   v11 = v8;
-  v12 = self;
+  selfCopy = self;
   v13 = v7;
   v9 = v7;
   [(IPPControlLogging *)self onQueueAsyncIfPreserving:v10];

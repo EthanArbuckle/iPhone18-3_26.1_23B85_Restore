@@ -7,39 +7,39 @@
 - (NSArray)recipientEmails;
 - (NSArray)recipientNames;
 - (NSDictionary)headers;
-- (void)setBccEmails:(id)a3;
-- (void)setBccNames:(id)a3;
-- (void)setCcEmails:(id)a3;
-- (void)setCcNames:(id)a3;
-- (void)setDateReceived:(id)a3;
-- (void)setHeaders:(id)a3;
-- (void)setRecipientEmails:(id)a3;
-- (void)setRecipientNames:(id)a3;
-- (void)setSenderDomain:(id)a3;
-- (void)setSenderEmail:(id)a3;
-- (void)setSenderName:(id)a3;
-- (void)setSubject:(id)a3;
-- (void)setText:(id)a3;
+- (void)setBccEmails:(id)emails;
+- (void)setBccNames:(id)names;
+- (void)setCcEmails:(id)emails;
+- (void)setCcNames:(id)names;
+- (void)setDateReceived:(id)received;
+- (void)setHeaders:(id)headers;
+- (void)setRecipientEmails:(id)emails;
+- (void)setRecipientNames:(id)names;
+- (void)setSenderDomain:(id)domain;
+- (void)setSenderEmail:(id)email;
+- (void)setSenderName:(id)name;
+- (void)setSubject:(id)subject;
+- (void)setText:(id)text;
 @end
 
 @implementation DUDocumentEmailDataObjC
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(text, a2, text, v3, v4);
   objc_msgSend_setText_(self->_underlyingElement, v6, v9, v7, v8);
 }
 
-- (void)setHeaders:(id)a3
+- (void)setHeaders:(id)headers
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  headersCopy = headers;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = v4;
+  v6 = headersCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v33, v37, 16);
   if (v8)
   {
@@ -129,22 +129,22 @@
   return v10;
 }
 
-- (void)setDateReceived:(id)a3
+- (void)setDateReceived:(id)received
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(received, a2, received, v3, v4);
   objc_msgSend_setDateReceived_(self->_underlyingElement, v6, v9, v7, v8);
 }
 
-- (void)setBccEmails:(id)a3
+- (void)setBccEmails:(id)emails
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  emailsCopy = emails;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = emailsCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v24, v28, 16);
   if (v8)
   {
@@ -230,16 +230,16 @@
   return v10;
 }
 
-- (void)setBccNames:(id)a3
+- (void)setBccNames:(id)names
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namesCopy = names;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v24, v28, 16);
   if (v8)
   {
@@ -325,16 +325,16 @@
   return v10;
 }
 
-- (void)setCcEmails:(id)a3
+- (void)setCcEmails:(id)emails
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  emailsCopy = emails;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = emailsCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v24, v28, 16);
   if (v8)
   {
@@ -420,16 +420,16 @@
   return v10;
 }
 
-- (void)setCcNames:(id)a3
+- (void)setCcNames:(id)names
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namesCopy = names;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v24, v28, 16);
   if (v8)
   {
@@ -515,16 +515,16 @@
   return v10;
 }
 
-- (void)setRecipientEmails:(id)a3
+- (void)setRecipientEmails:(id)emails
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  emailsCopy = emails;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = emailsCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v24, v28, 16);
   if (v8)
   {
@@ -610,16 +610,16 @@
   return v10;
 }
 
-- (void)setRecipientNames:(id)a3
+- (void)setRecipientNames:(id)names
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namesCopy = names;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v24, v28, 16);
   if (v8)
   {
@@ -705,27 +705,27 @@
   return v10;
 }
 
-- (void)setSenderDomain:(id)a3
+- (void)setSenderDomain:(id)domain
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(domain, a2, domain, v3, v4);
   objc_msgSend_setSenderDomain_(self->_underlyingElement, v6, v9, v7, v8);
 }
 
-- (void)setSenderEmail:(id)a3
+- (void)setSenderEmail:(id)email
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(email, a2, email, v3, v4);
   objc_msgSend_setSenderEmail_(self->_underlyingElement, v6, v9, v7, v8);
 }
 
-- (void)setSenderName:(id)a3
+- (void)setSenderName:(id)name
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(name, a2, name, v3, v4);
   objc_msgSend_setSenderName_(self->_underlyingElement, v6, v9, v7, v8);
 }
 
-- (void)setSubject:(id)a3
+- (void)setSubject:(id)subject
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(subject, a2, subject, v3, v4);
   objc_msgSend_setSubject_(self->_underlyingElement, v6, v9, v7, v8);
 }
 

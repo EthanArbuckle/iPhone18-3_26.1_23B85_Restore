@@ -1,35 +1,35 @@
 @interface PXTilingControllerCompositionEngine
-+ (id)compositionEngineForScrollController:(id)a3 createIfNeeded:(BOOL)a4;
++ (id)compositionEngineForScrollController:(id)controller createIfNeeded:(BOOL)needed;
 - (BOOL)_updateCompositionIfNeeded;
-- (CGPoint)convertPoint:(CGPoint)a3 fromTilingController:(id)a4;
-- (CGPoint)originForTilingController:(id)a3;
-- (CGPoint)preferredOriginForTilingController:(id)a3;
-- (CGRect)contentBoundsForTilingController:(id)a3;
-- (CGRect)convertRect:(CGRect)a3 fromTilingController:(id)a4;
-- (CGRect)scrollBoundsForTilingController:(id)a3;
+- (CGPoint)convertPoint:(CGPoint)point fromTilingController:(id)controller;
+- (CGPoint)originForTilingController:(id)controller;
+- (CGPoint)preferredOriginForTilingController:(id)controller;
+- (CGRect)contentBoundsForTilingController:(id)controller;
+- (CGRect)convertRect:(CGRect)rect fromTilingController:(id)controller;
+- (CGRect)scrollBoundsForTilingController:(id)controller;
 - (CGSize)_referenceSize;
 - (NSArray)invalidationContexts;
 - (NSArray)tilingControllersRequestingFocus;
 - (PXScrollController)_scrollController;
 - (UIEdgeInsets)_contentInset;
-- (id)_initWithScrollController:(id)a3;
+- (id)_initWithScrollController:(id)controller;
 - (void)_beginUpdate;
 - (void)_endUpdate;
 - (void)_invalidateScrollControllerMetrics;
-- (void)_performChanges:(id)a3;
-- (void)_setReferenceSize:(CGSize)a3;
+- (void)_performChanges:(id)changes;
+- (void)_setReferenceSize:(CGSize)size;
 - (void)_updateScrollControllerMetricsIfNeeded;
-- (void)px_scrollControllerDidUpdate:(id)a3;
-- (void)registerComposition:(id)a3;
-- (void)registerTilingController:(id)a3;
-- (void)setContentBounds:(CGRect)a3 scrollBounds:(CGRect)a4 scrollInfo:(id)a5;
-- (void)setOrigin:(CGPoint)a3 forTilingController:(id)a4;
-- (void)setReferenceSize:(CGSize)a3 contentInset:(UIEdgeInsets)a4 forTilingController:(id)a5;
-- (void)setTilingControllerCompositionNeedsUpdate:(id)a3 withContext:(id)a4;
-- (void)setTilingControllerNeedsUpdate:(id)a3;
-- (void)tilingController:(id)a3 invalidatedWithContext:(int64_t)a4;
-- (void)unregisterComposition:(id)a3;
-- (void)unregisterTilingController:(id)a3;
+- (void)px_scrollControllerDidUpdate:(id)update;
+- (void)registerComposition:(id)composition;
+- (void)registerTilingController:(id)controller;
+- (void)setContentBounds:(CGRect)bounds scrollBounds:(CGRect)scrollBounds scrollInfo:(id)info;
+- (void)setOrigin:(CGPoint)origin forTilingController:(id)controller;
+- (void)setReferenceSize:(CGSize)size contentInset:(UIEdgeInsets)inset forTilingController:(id)controller;
+- (void)setTilingControllerCompositionNeedsUpdate:(id)update withContext:(id)context;
+- (void)setTilingControllerNeedsUpdate:(id)update;
+- (void)tilingController:(id)controller invalidatedWithContext:(int64_t)context;
+- (void)unregisterComposition:(id)composition;
+- (void)unregisterTilingController:(id)controller;
 @end
 
 @implementation PXTilingControllerCompositionEngine
@@ -63,55 +63,55 @@
   return WeakRetained;
 }
 
-- (void)setOrigin:(CGPoint)a3 forTilingController:(id)a4
+- (void)setOrigin:(CGPoint)origin forTilingController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  [v6 setLayoutOrigin:{x, y}];
-  [v6 updateLayout];
+  y = origin.y;
+  x = origin.x;
+  controllerCopy = controller;
+  [controllerCopy setLayoutOrigin:{x, y}];
+  [controllerCopy updateLayout];
 }
 
-- (void)setContentBounds:(CGRect)a3 scrollBounds:(CGRect)a4 scrollInfo:(id)a5
+- (void)setContentBounds:(CGRect)bounds scrollBounds:(CGRect)scrollBounds scrollInfo:(id)info
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  v12 = a5;
-  v13 = [(PXTilingControllerCompositionEngine *)self _scrollController];
-  [v13 setPresentedContentSize:{v10, v9}];
-  [v13 setContentBounds:{x, y, width, height}];
-  [v13 setScrollInfo:v12];
+  height = scrollBounds.size.height;
+  width = scrollBounds.size.width;
+  y = scrollBounds.origin.y;
+  x = scrollBounds.origin.x;
+  v9 = bounds.size.height;
+  v10 = bounds.size.width;
+  infoCopy = info;
+  _scrollController = [(PXTilingControllerCompositionEngine *)self _scrollController];
+  [_scrollController setPresentedContentSize:{v10, v9}];
+  [_scrollController setContentBounds:{x, y, width, height}];
+  [_scrollController setScrollInfo:infoCopy];
 }
 
-- (void)setReferenceSize:(CGSize)a3 contentInset:(UIEdgeInsets)a4 forTilingController:(id)a5
+- (void)setReferenceSize:(CGSize)size contentInset:(UIEdgeInsets)inset forTilingController:(id)controller
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
-  v13 = a5;
-  v15 = v13;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
+  v15 = controllerCopy;
   if (!self->_isUpdatingComposition)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:344 description:@"unexpected composition output"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:344 description:@"unexpected composition output"];
 
-    v13 = v15;
+    controllerCopy = v15;
   }
 
-  [v13 setReferenceSize:width contentInset:{height, top, left, bottom, right}];
+  [controllerCopy setReferenceSize:width contentInset:{height, top, left, bottom, right}];
   [v15 updateMetrics];
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromTilingController:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromTilingController:(id)controller
 {
-  [a4 convertRectFromLayout:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  [controller convertRectFromLayout:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -119,33 +119,33 @@
   return result;
 }
 
-- (CGPoint)convertPoint:(CGPoint)a3 fromTilingController:(id)a4
+- (CGPoint)convertPoint:(CGPoint)point fromTilingController:(id)controller
 {
-  [a4 convertPointFromLayout:{a3.x, a3.y}];
+  [controller convertPointFromLayout:{point.x, point.y}];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)originForTilingController:(id)a3
+- (CGPoint)originForTilingController:(id)controller
 {
-  [a3 layoutOrigin];
+  [controller layoutOrigin];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)preferredOriginForTilingController:(id)a3
+- (CGPoint)preferredOriginForTilingController:(id)controller
 {
-  [a3 layoutPreferredOrigin];
+  [controller layoutPreferredOrigin];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGRect)scrollBoundsForTilingController:(id)a3
+- (CGRect)scrollBoundsForTilingController:(id)controller
 {
-  [a3 layoutScrollBounds];
+  [controller layoutScrollBounds];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -153,9 +153,9 @@
   return result;
 }
 
-- (CGRect)contentBoundsForTilingController:(id)a3
+- (CGRect)contentBoundsForTilingController:(id)controller
 {
-  [a3 layoutContentBounds];
+  [controller layoutContentBounds];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -165,63 +165,63 @@
 
 - (NSArray)invalidationContexts
 {
-  v2 = [(PXTilingControllerCompositionEngine *)self _invalidationContexts];
-  v3 = [v2 copy];
+  _invalidationContexts = [(PXTilingControllerCompositionEngine *)self _invalidationContexts];
+  v3 = [_invalidationContexts copy];
 
   return v3;
 }
 
 - (NSArray)tilingControllersRequestingFocus
 {
-  v2 = [(PXTilingControllerCompositionEngine *)self _tilingControllersRequestingFocus];
-  v3 = [v2 copy];
+  _tilingControllersRequestingFocus = [(PXTilingControllerCompositionEngine *)self _tilingControllersRequestingFocus];
+  v3 = [_tilingControllersRequestingFocus copy];
 
   return v3;
 }
 
-- (void)setTilingControllerCompositionNeedsUpdate:(id)a3 withContext:(id)a4
+- (void)setTilingControllerCompositionNeedsUpdate:(id)update withContext:(id)context
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
+  updateCopy = update;
+  contextCopy = context;
+  v7 = contextCopy;
   if (!self->_isUpdatingComposition)
   {
-    if (v6)
+    if (contextCopy)
     {
-      v8 = [(PXTilingControllerCompositionEngine *)self _invalidationContexts];
-      [v8 addObject:v7];
+      _invalidationContexts = [(PXTilingControllerCompositionEngine *)self _invalidationContexts];
+      [_invalidationContexts addObject:v7];
     }
 
     [(PXTilingControllerCompositionEngine *)self _invalidateComposition];
-    v9 = [(PXTilingControllerCompositionEngine *)self _scrollController];
-    [v9 setNeedsUpdate];
+    _scrollController = [(PXTilingControllerCompositionEngine *)self _scrollController];
+    [_scrollController setNeedsUpdate];
   }
 }
 
-- (void)tilingController:(id)a3 invalidatedWithContext:(int64_t)a4
+- (void)tilingController:(id)controller invalidatedWithContext:(int64_t)context
 {
-  v6 = a3;
+  controllerCopy = controller;
   if (!self->_isUpdatingComposition)
   {
-    v8 = v6;
-    if (a4 == 1)
+    v8 = controllerCopy;
+    if (context == 1)
     {
-      v7 = [(PXTilingControllerCompositionEngine *)self _tilingControllersRequestingFocus];
-      [v7 addObject:v8];
+      _tilingControllersRequestingFocus = [(PXTilingControllerCompositionEngine *)self _tilingControllersRequestingFocus];
+      [_tilingControllersRequestingFocus addObject:v8];
     }
 
     [(PXTilingControllerCompositionEngine *)self _invalidateComposition];
-    v6 = v8;
+    controllerCopy = v8;
   }
 }
 
-- (void)setTilingControllerNeedsUpdate:(id)a3
+- (void)setTilingControllerNeedsUpdate:(id)update
 {
-  v3 = [(PXTilingControllerCompositionEngine *)self _scrollController];
-  [v3 setNeedsUpdate];
+  _scrollController = [(PXTilingControllerCompositionEngine *)self _scrollController];
+  [_scrollController setNeedsUpdate];
 }
 
-- (void)px_scrollControllerDidUpdate:(id)a3
+- (void)px_scrollControllerDidUpdate:(id)update
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -241,15 +241,15 @@
   }
 
   self->_needsUpdateFlags.composition = 0;
-  v5 = [(PXTilingControllerCompositionEngine *)self _composition];
-  v6 = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
-  v7 = [v6 setRepresentation];
+  _composition = [(PXTilingControllerCompositionEngine *)self _composition];
+  _tilingControllers = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
+  setRepresentation = [_tilingControllers setRepresentation];
 
-  v8 = [(PXTilingControllerCompositionEngine *)self _compositions];
-  v9 = [v8 setRepresentation];
+  _compositions = [(PXTilingControllerCompositionEngine *)self _compositions];
+  setRepresentation2 = [_compositions setRepresentation];
 
-  v10 = [(PXTilingControllerCompositionEngine *)self _compositions];
-  v11 = [v10 containsObject:v5];
+  _compositions2 = [(PXTilingControllerCompositionEngine *)self _compositions];
+  v11 = [_compositions2 containsObject:_composition];
 
   if ((v11 & 1) == 0)
   {
@@ -257,48 +257,48 @@
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!_composition)
   {
 LABEL_6:
-    v5 = [v9 anyObject];
-    if (!v5)
+    _composition = [setRepresentation2 anyObject];
+    if (!_composition)
     {
-      v5 = [(PXTilingControllerCompositionEngine *)self _defaultComposition];
+      _composition = [(PXTilingControllerCompositionEngine *)self _defaultComposition];
     }
   }
 
-  v12 = [v5 tilingControllers];
-  v13 = [v12 isEqualToSet:v7];
+  tilingControllers = [_composition tilingControllers];
+  v13 = [tilingControllers isEqualToSet:setRepresentation];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [(PXTilingControllerCompositionEngine *)self _defaultComposition];
+    _defaultComposition = [(PXTilingControllerCompositionEngine *)self _defaultComposition];
 
-    if (v5 == v14)
+    if (_composition == _defaultComposition)
     {
-      v15 = [(PXTilingControllerCompositionEngine *)self _defaultComposition];
-      [v15 setTilingControllers:v7];
+      _defaultComposition2 = [(PXTilingControllerCompositionEngine *)self _defaultComposition];
+      [_defaultComposition2 setTilingControllers:setRepresentation];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:216 description:@"composition doesn't include all tiling controllers"];
+      _defaultComposition2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [_defaultComposition2 handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:216 description:@"composition doesn't include all tiling controllers"];
     }
   }
 
-  [v5 setInput:self];
-  [v5 setOutput:self];
+  [_composition setInput:self];
+  [_composition setOutput:self];
   isUpdatingComposition = self->_isUpdatingComposition;
   self->_isUpdatingComposition = 1;
-  v17 = [(PXTilingControllerCompositionEngine *)self _invalidationContexts];
-  v18 = [v17 copy];
+  _invalidationContexts = [(PXTilingControllerCompositionEngine *)self _invalidationContexts];
+  v18 = [_invalidationContexts copy];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v19 = v7;
+  v19 = setRepresentation;
   v20 = [v19 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v20)
   {
@@ -322,12 +322,12 @@ LABEL_6:
     while (v21);
   }
 
-  [v5 updateComposition];
-  v24 = [(PXTilingControllerCompositionEngine *)self _invalidationContexts];
-  [v24 removeAllObjects];
+  [_composition updateComposition];
+  _invalidationContexts2 = [(PXTilingControllerCompositionEngine *)self _invalidationContexts];
+  [_invalidationContexts2 removeAllObjects];
 
-  v25 = [(PXTilingControllerCompositionEngine *)self _tilingControllersRequestingFocus];
-  [v25 removeAllObjects];
+  _tilingControllersRequestingFocus = [(PXTilingControllerCompositionEngine *)self _tilingControllersRequestingFocus];
+  [_tilingControllersRequestingFocus removeAllObjects];
 
   v34 = 0u;
   v35 = 0u;
@@ -366,11 +366,11 @@ LABEL_6:
   if (self->_needsUpdateFlags.scrollControllerMetrics)
   {
     self->_needsUpdateFlags.scrollControllerMetrics = 0;
-    v16 = [(PXTilingControllerCompositionEngine *)self _scrollController];
-    [v16 referenceSize];
+    _scrollController = [(PXTilingControllerCompositionEngine *)self _scrollController];
+    [_scrollController referenceSize];
     v5 = v4;
     v7 = v6;
-    [v16 contentInset];
+    [_scrollController contentInset];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -389,8 +389,8 @@ LABEL_6:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _tilingControllers = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
+  v4 = [_tilingControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -402,14 +402,14 @@ LABEL_6:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_tilingControllers);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) invalidateScrollControllerMetrics];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_tilingControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -425,8 +425,8 @@ LABEL_6:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _tilingControllers = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
+  v5 = [_tilingControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -437,7 +437,7 @@ LABEL_6:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_tilingControllers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -446,7 +446,7 @@ LABEL_6:
         [v9 endUpdate];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_tilingControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -454,8 +454,8 @@ LABEL_6:
 
   if ([(PXTilingControllerCompositionEngine *)self _needsUpdate])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:149 description:@"updates still needed after an update cycle"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:149 description:@"updates still needed after an update cycle"];
   }
 }
 
@@ -466,8 +466,8 @@ LABEL_6:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _tilingControllers = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
+  v3 = [_tilingControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -479,28 +479,28 @@ LABEL_6:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_tilingControllers);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) beginUpdate];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [_tilingControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_performChanges:(id)a3
+- (void)_performChanges:(id)changes
 {
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
   if (isPerformingChanges)
   {
-    v5 = *(a3 + 2);
-    v6 = a3;
+    v5 = *(changes + 2);
+    changesCopy = changes;
     v5();
 
     self->_isPerformingChanges = isPerformingChanges;
@@ -508,9 +508,9 @@ LABEL_6:
 
   else
   {
-    v7 = a3;
+    changesCopy2 = changes;
     [(PXTilingControllerCompositionEngine *)self _beginUpdate];
-    v7[2](v7);
+    changesCopy2[2](changesCopy2);
 
     self->_isPerformingChanges = isPerformingChanges;
 
@@ -518,94 +518,94 @@ LABEL_6:
   }
 }
 
-- (void)_setReferenceSize:(CGSize)a3
+- (void)_setReferenceSize:(CGSize)size
 {
-  if (a3.width != self->__referenceSize.width || a3.height != self->__referenceSize.height)
+  if (size.width != self->__referenceSize.width || size.height != self->__referenceSize.height)
   {
-    self->__referenceSize = a3;
+    self->__referenceSize = size;
     [(PXTilingControllerCompositionEngine *)self _invalidateComposition];
   }
 }
 
-- (void)unregisterComposition:(id)a3
+- (void)unregisterComposition:(id)composition
 {
-  v5 = a3;
-  v6 = [v5 observer];
+  compositionCopy = composition;
+  observer = [compositionCopy observer];
 
-  if (v6 != self)
+  if (observer != self)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:95 description:@"unexpected composition observer"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:95 description:@"unexpected composition observer"];
   }
 
-  [v5 setObserver:0];
-  v7 = [(PXTilingControllerCompositionEngine *)self _compositions];
-  [v7 removeObject:v5];
+  [compositionCopy setObserver:0];
+  _compositions = [(PXTilingControllerCompositionEngine *)self _compositions];
+  [_compositions removeObject:compositionCopy];
 
   [(PXTilingControllerCompositionEngine *)self _invalidateComposition];
 }
 
-- (void)registerComposition:(id)a3
+- (void)registerComposition:(id)composition
 {
-  v5 = a3;
-  v6 = [v5 observer];
+  compositionCopy = composition;
+  observer = [compositionCopy observer];
 
-  if (v6)
+  if (observer)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:88 description:@"unexpected composition observer"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:88 description:@"unexpected composition observer"];
   }
 
-  [v5 setObserver:self];
-  v7 = [(PXTilingControllerCompositionEngine *)self _compositions];
-  [v7 addObject:v5];
+  [compositionCopy setObserver:self];
+  _compositions = [(PXTilingControllerCompositionEngine *)self _compositions];
+  [_compositions addObject:compositionCopy];
 
   [(PXTilingControllerCompositionEngine *)self _invalidateComposition];
 }
 
-- (void)unregisterTilingController:(id)a3
+- (void)unregisterTilingController:(id)controller
 {
-  v5 = a3;
-  v6 = [v5 observer];
+  controllerCopy = controller;
+  observer = [controllerCopy observer];
 
-  if (v6 != self)
+  if (observer != self)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:81 description:@"unexpected tiling controller observer"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:81 description:@"unexpected tiling controller observer"];
   }
 
-  [v5 setObserver:0];
-  v7 = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
-  [v7 removeObject:v5];
+  [controllerCopy setObserver:0];
+  _tilingControllers = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
+  [_tilingControllers removeObject:controllerCopy];
 
   [(PXTilingControllerCompositionEngine *)self _invalidateComposition];
 }
 
-- (void)registerTilingController:(id)a3
+- (void)registerTilingController:(id)controller
 {
-  v5 = a3;
-  v6 = [v5 observer];
+  controllerCopy = controller;
+  observer = [controllerCopy observer];
 
-  if (v6)
+  if (observer)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:74 description:@"unexpected tiling controller observer"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:74 description:@"unexpected tiling controller observer"];
   }
 
-  [v5 setObserver:self];
-  v7 = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
-  [v7 addObject:v5];
+  [controllerCopy setObserver:self];
+  _tilingControllers = [(PXTilingControllerCompositionEngine *)self _tilingControllers];
+  [_tilingControllers addObject:controllerCopy];
 
   [(PXTilingControllerCompositionEngine *)self _invalidateComposition];
 }
 
-- (id)_initWithScrollController:(id)a3
+- (id)_initWithScrollController:(id)controller
 {
-  v5 = a3;
-  if (!v5)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:58 description:@"missing scroll controller"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingControllerCompositionEngine.m" lineNumber:58 description:@"missing scroll controller"];
   }
 
   v22.receiver = self;
@@ -614,41 +614,41 @@ LABEL_6:
   v7 = v6;
   if (v6)
   {
-    v8 = objc_storeWeak(&v6->__scrollController, v5);
-    [v5 setUpdateDelegate:v7];
+    v8 = objc_storeWeak(&v6->__scrollController, controllerCopy);
+    [controllerCopy setUpdateDelegate:v7];
 
     WeakRetained = objc_loadWeakRetained(&v7->__scrollController);
     [WeakRetained setRespectsContentZOrder:1];
 
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     tilingControllers = v7->__tilingControllers;
-    v7->__tilingControllers = v10;
+    v7->__tilingControllers = weakObjectsHashTable;
 
-    v12 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     compositions = v7->__compositions;
-    v7->__compositions = v12;
+    v7->__compositions = weakObjectsHashTable2;
 
     v14 = objc_alloc_init(PXTilingControllerDefaultComposition);
     defaultComposition = v7->__defaultComposition;
     v7->__defaultComposition = v14;
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     invalidationContexts = v7->__invalidationContexts;
-    v7->__invalidationContexts = v16;
+    v7->__invalidationContexts = array;
 
-    v18 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     tilingControllersRequestingFocus = v7->__tilingControllersRequestingFocus;
-    v7->__tilingControllersRequestingFocus = v18;
+    v7->__tilingControllersRequestingFocus = array2;
   }
 
   return v7;
 }
 
-+ (id)compositionEngineForScrollController:(id)a3 createIfNeeded:(BOOL)a4
++ (id)compositionEngineForScrollController:(id)controller createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = objc_getAssociatedObject(v5, compositionEngineForScrollController_createIfNeeded__PXTilingControllerCompositionEngineAssociationKey);
+  neededCopy = needed;
+  controllerCopy = controller;
+  v6 = objc_getAssociatedObject(controllerCopy, compositionEngineForScrollController_createIfNeeded__PXTilingControllerCompositionEngineAssociationKey);
   if (v6)
   {
     v7 = 1;
@@ -656,13 +656,13 @@ LABEL_6:
 
   else
   {
-    v7 = !v4;
+    v7 = !neededCopy;
   }
 
   if (!v7)
   {
-    v6 = [[PXTilingControllerCompositionEngine alloc] _initWithScrollController:v5];
-    objc_setAssociatedObject(v5, compositionEngineForScrollController_createIfNeeded__PXTilingControllerCompositionEngineAssociationKey, v6, 1);
+    v6 = [[PXTilingControllerCompositionEngine alloc] _initWithScrollController:controllerCopy];
+    objc_setAssociatedObject(controllerCopy, compositionEngineForScrollController_createIfNeeded__PXTilingControllerCompositionEngineAssociationKey, v6, 1);
   }
 
   return v6;

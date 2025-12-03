@@ -1,17 +1,17 @@
 @interface CATTaskBlockServer
 - (CATTaskBlockServer)init;
 - (id)createClientTransport;
-- (id)server:(id)a3 clientSession:(id)a4 operationForRequest:(id)a5 error:(id *)a6;
-- (void)cancelLongRunningOperationsForRequestClass:(Class)a3;
+- (id)server:(id)server clientSession:(id)session operationForRequest:(id)request error:(id *)error;
+- (void)cancelLongRunningOperationsForRequestClass:(Class)class;
 - (void)dealloc;
-- (void)registerBlock:(id)a3 forRequestClass:(Class)a4;
-- (void)registerLongRunningOperationForRequestClass:(Class)a3;
-- (void)server:(id)a3 clientSession:(id)a4 didInterruptWithError:(id)a5;
-- (void)server:(id)a3 clientSession:(id)a4 didReceiveNotificationWithName:(id)a5 userInfo:(id)a6;
-- (void)server:(id)a3 clientSessionDidConnect:(id)a4;
-- (void)server:(id)a3 clientSessionDidDisconnect:(id)a4;
-- (void)server:(id)a3 clientSessionDidInvalidate:(id)a4;
-- (void)serverDidInvalidate:(id)a3;
+- (void)registerBlock:(id)block forRequestClass:(Class)class;
+- (void)registerLongRunningOperationForRequestClass:(Class)class;
+- (void)server:(id)server clientSession:(id)session didInterruptWithError:(id)error;
+- (void)server:(id)server clientSession:(id)session didReceiveNotificationWithName:(id)name userInfo:(id)info;
+- (void)server:(id)server clientSessionDidConnect:(id)connect;
+- (void)server:(id)server clientSessionDidDisconnect:(id)disconnect;
+- (void)server:(id)server clientSessionDidInvalidate:(id)invalidate;
+- (void)serverDidInvalidate:(id)invalidate;
 @end
 
 @implementation CATTaskBlockServer
@@ -36,9 +36,9 @@
     mLongRunningOperationRequestClassNames = v2->mLongRunningOperationRequestClassNames;
     v2->mLongRunningOperationRequestClassNames = v7;
 
-    v9 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     mLongRunningOperationsByUUID = v2->mLongRunningOperationsByUUID;
-    v2->mLongRunningOperationsByUUID = v9;
+    v2->mLongRunningOperationsByUUID = strongToWeakObjectsMapTable;
   }
 
   return v2;
@@ -64,30 +64,30 @@
   return v3;
 }
 
-- (void)registerBlock:(id)a3 forRequestClass:(Class)a4
+- (void)registerBlock:(id)block forRequestClass:(Class)class
 {
-  v8 = MEMORY[0x245D2F510](a3, a2);
+  v8 = MEMORY[0x245D2F510](block, a2);
   mOperationBlocksByRequestClassName = self->mOperationBlocksByRequestClassName;
-  v7 = NSStringFromClass(a4);
+  v7 = NSStringFromClass(class);
   [(NSMutableDictionary *)mOperationBlocksByRequestClassName setObject:v8 forKeyedSubscript:v7];
 }
 
-- (void)registerLongRunningOperationForRequestClass:(Class)a3
+- (void)registerLongRunningOperationForRequestClass:(Class)class
 {
   mLongRunningOperationRequestClassNames = self->mLongRunningOperationRequestClassNames;
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   [(NSMutableSet *)mLongRunningOperationRequestClassNames addObject:v4];
 }
 
-- (void)cancelLongRunningOperationsForRequestClass:(Class)a3
+- (void)cancelLongRunningOperationsForRequestClass:(Class)class
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(NSMapTable *)self->mLongRunningOperationsByUUID objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSMapTable *)self->mLongRunningOperationsByUUID objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -98,12 +98,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 request];
-        v11 = [v10 isMemberOfClass:a3];
+        request = [v9 request];
+        v11 = [request isMemberOfClass:class];
 
         if (v11)
         {
@@ -111,7 +111,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -120,25 +120,25 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)server:(id)a3 clientSession:(id)a4 operationForRequest:(id)a5 error:(id *)a6
+- (id)server:(id)server clientSession:(id)session operationForRequest:(id)request error:(id *)error
 {
-  v7 = a5;
+  requestCopy = request;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   if ([(NSMutableSet *)self->mLongRunningOperationRequestClassNames containsObject:v9])
   {
-    v10 = [(CATTaskOperation *)[_CATLongRunningTaskOperation alloc] initWithRequest:v7];
+    v10 = [(CATTaskOperation *)[_CATLongRunningTaskOperation alloc] initWithRequest:requestCopy];
     mLongRunningOperationsByUUID = self->mLongRunningOperationsByUUID;
-    v12 = [(CATOperation *)v10 UUID];
-    [(NSMapTable *)mLongRunningOperationsByUUID setObject:v10 forKey:v12];
+    uUID = [(CATOperation *)v10 UUID];
+    [(NSMapTable *)mLongRunningOperationsByUUID setObject:v10 forKey:uUID];
   }
 
   else
   {
-    v12 = [(NSMutableDictionary *)self->mOperationBlocksByRequestClassName objectForKeyedSubscript:v9];
-    if (v12)
+    uUID = [(NSMutableDictionary *)self->mOperationBlocksByRequestClassName objectForKeyedSubscript:v9];
+    if (uUID)
     {
-      v10 = [[_CATBlockTaskOperation alloc] initWithBlock:v12 request:v7];
+      v10 = [[_CATBlockTaskOperation alloc] initWithBlock:uUID request:requestCopy];
     }
 
     else
@@ -150,87 +150,87 @@
   return v10;
 }
 
-- (void)server:(id)a3 clientSession:(id)a4 didInterruptWithError:(id)a5
+- (void)server:(id)server clientSession:(id)session didInterruptWithError:(id)error
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(CATTaskBlockServer *)self sessionDidInterruptWithError];
+  sessionCopy = session;
+  errorCopy = error;
+  sessionDidInterruptWithError = [(CATTaskBlockServer *)self sessionDidInterruptWithError];
 
-  if (v8)
+  if (sessionDidInterruptWithError)
   {
-    v9 = [(CATTaskBlockServer *)self sessionDidInterruptWithError];
-    (v9)[2](v9, self, v10, v7);
+    sessionDidInterruptWithError2 = [(CATTaskBlockServer *)self sessionDidInterruptWithError];
+    (sessionDidInterruptWithError2)[2](sessionDidInterruptWithError2, self, sessionCopy, errorCopy);
   }
 
   else
   {
-    [v10 invalidate];
+    [sessionCopy invalidate];
   }
 }
 
-- (void)server:(id)a3 clientSession:(id)a4 didReceiveNotificationWithName:(id)a5 userInfo:(id)a6
+- (void)server:(id)server clientSession:(id)session didReceiveNotificationWithName:(id)name userInfo:(id)info
 {
-  v13 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [(CATTaskBlockServer *)self sessionDidReceiveNotification];
+  sessionCopy = session;
+  nameCopy = name;
+  infoCopy = info;
+  sessionDidReceiveNotification = [(CATTaskBlockServer *)self sessionDidReceiveNotification];
 
-  if (v11)
+  if (sessionDidReceiveNotification)
   {
-    v12 = [(CATTaskBlockServer *)self sessionDidReceiveNotification];
-    (v12)[2](v12, self, v13, v9, v10);
+    sessionDidReceiveNotification2 = [(CATTaskBlockServer *)self sessionDidReceiveNotification];
+    (sessionDidReceiveNotification2)[2](sessionDidReceiveNotification2, self, sessionCopy, nameCopy, infoCopy);
   }
 }
 
-- (void)server:(id)a3 clientSessionDidConnect:(id)a4
+- (void)server:(id)server clientSessionDidConnect:(id)connect
 {
-  v7 = a4;
-  v5 = [(CATTaskBlockServer *)self sessionDidConnect];
+  connectCopy = connect;
+  sessionDidConnect = [(CATTaskBlockServer *)self sessionDidConnect];
 
-  if (v5)
+  if (sessionDidConnect)
   {
-    v6 = [(CATTaskBlockServer *)self sessionDidConnect];
-    (v6)[2](v6, self, v7);
+    sessionDidConnect2 = [(CATTaskBlockServer *)self sessionDidConnect];
+    (sessionDidConnect2)[2](sessionDidConnect2, self, connectCopy);
   }
 }
 
-- (void)server:(id)a3 clientSessionDidDisconnect:(id)a4
+- (void)server:(id)server clientSessionDidDisconnect:(id)disconnect
 {
-  v7 = a4;
-  v5 = [(CATTaskBlockServer *)self sessionDidDisconnect];
+  disconnectCopy = disconnect;
+  sessionDidDisconnect = [(CATTaskBlockServer *)self sessionDidDisconnect];
 
-  if (v5)
+  if (sessionDidDisconnect)
   {
-    v6 = [(CATTaskBlockServer *)self sessionDidDisconnect];
-    (v6)[2](v6, self, v7);
+    sessionDidDisconnect2 = [(CATTaskBlockServer *)self sessionDidDisconnect];
+    (sessionDidDisconnect2)[2](sessionDidDisconnect2, self, disconnectCopy);
   }
 
   else
   {
-    [v7 invalidate];
+    [disconnectCopy invalidate];
   }
 }
 
-- (void)server:(id)a3 clientSessionDidInvalidate:(id)a4
+- (void)server:(id)server clientSessionDidInvalidate:(id)invalidate
 {
-  v7 = a4;
-  v5 = [(CATTaskBlockServer *)self sessionDidInvalidate];
+  invalidateCopy = invalidate;
+  sessionDidInvalidate = [(CATTaskBlockServer *)self sessionDidInvalidate];
 
-  if (v5)
+  if (sessionDidInvalidate)
   {
-    v6 = [(CATTaskBlockServer *)self sessionDidInvalidate];
-    (v6)[2](v6, self, v7);
+    sessionDidInvalidate2 = [(CATTaskBlockServer *)self sessionDidInvalidate];
+    (sessionDidInvalidate2)[2](sessionDidInvalidate2, self, invalidateCopy);
   }
 }
 
-- (void)serverDidInvalidate:(id)a3
+- (void)serverDidInvalidate:(id)invalidate
 {
-  v4 = [(CATTaskBlockServer *)self didInvalidate];
+  didInvalidate = [(CATTaskBlockServer *)self didInvalidate];
 
-  if (v4)
+  if (didInvalidate)
   {
-    v5 = [(CATTaskBlockServer *)self didInvalidate];
-    v5[2](v5, self);
+    didInvalidate2 = [(CATTaskBlockServer *)self didInvalidate];
+    didInvalidate2[2](didInvalidate2, self);
   }
 }
 

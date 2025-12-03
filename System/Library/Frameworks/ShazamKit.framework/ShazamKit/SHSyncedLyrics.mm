@@ -1,62 +1,62 @@
 @interface SHSyncedLyrics
-- (SHSyncedLyrics)initWithCoder:(id)a3;
-- (SHSyncedLyrics)initWithLyricsStartDate:(id)a3 lines:(id)a4 songwriters:(id)a5;
+- (SHSyncedLyrics)initWithCoder:(id)coder;
+- (SHSyncedLyrics)initWithLyricsStartDate:(id)date lines:(id)lines songwriters:(id)songwriters;
 - (SHSyncedLyricsDelegate)delegate;
-- (double)fireTimeForLine:(id)a3;
+- (double)fireTimeForLine:(id)line;
 - (double)offsetFromStartDate;
-- (id)currentLyricLineForOffset:(double)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPreCueDuration:(double)a3;
-- (void)setTimeWarp:(double)a3;
+- (id)currentLyricLineForOffset:(double)offset;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDelegate:(id)delegate;
+- (void)setPreCueDuration:(double)duration;
+- (void)setTimeWarp:(double)warp;
 - (void)startSyncing;
 - (void)stopSyncing;
 @end
 
 @implementation SHSyncedLyrics
 
-- (SHSyncedLyrics)initWithLyricsStartDate:(id)a3 lines:(id)a4 songwriters:(id)a5
+- (SHSyncedLyrics)initWithLyricsStartDate:(id)date lines:(id)lines songwriters:(id)songwriters
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dateCopy = date;
+  linesCopy = lines;
+  songwritersCopy = songwriters;
   v15.receiver = self;
   v15.super_class = SHSyncedLyrics;
   v12 = [(SHSyncedLyrics *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_lyricsStartDate, a3);
-    objc_storeStrong(&v13->_songwriters, a5);
-    objc_storeStrong(&v13->_lines, a4);
+    objc_storeStrong(&v12->_lyricsStartDate, date);
+    objc_storeStrong(&v13->_songwriters, songwriters);
+    objc_storeStrong(&v13->_lines, lines);
     v13->_timeWarp = 1.0;
   }
 
   return v13;
 }
 
-- (SHSyncedLyrics)initWithCoder:(id)a3
+- (SHSyncedLyrics)initWithCoder:(id)coder
 {
   v23[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v23[0] = objc_opt_class();
   v23[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
   v7 = [v4 setWithArray:v6];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"lines"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"lines"];
 
   v9 = MEMORY[0x277CBEB98];
   v22[0] = objc_opt_class();
   v22[1] = objc_opt_class();
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
   v11 = [v9 setWithArray:v10];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"songwriters"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"songwriters"];
 
-  v13 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  [v5 decodeDoubleForKey:@"preCueDuration"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  [coderCopy decodeDoubleForKey:@"preCueDuration"];
   v15 = v14;
-  [v5 decodeDoubleForKey:@"timeWarp"];
+  [coderCopy decodeDoubleForKey:@"timeWarp"];
   v17 = v16;
 
   v18 = [(SHSyncedLyrics *)self initWithLyricsStartDate:v13 lines:v8 songwriters:v12];
@@ -71,15 +71,15 @@
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lines = self->_lines;
-  v5 = a3;
-  [v5 encodeObject:lines forKey:@"lines"];
-  [v5 encodeObject:self->_songwriters forKey:@"songwriters"];
-  [v5 encodeObject:self->_lyricsStartDate forKey:@"startDate"];
-  [v5 encodeDouble:@"preCueDuration" forKey:self->_preCueDuration];
-  [v5 encodeDouble:@"timeWarp" forKey:self->_timeWarp];
+  coderCopy = coder;
+  [coderCopy encodeObject:lines forKey:@"lines"];
+  [coderCopy encodeObject:self->_songwriters forKey:@"songwriters"];
+  [coderCopy encodeObject:self->_lyricsStartDate forKey:@"startDate"];
+  [coderCopy encodeDouble:@"preCueDuration" forKey:self->_preCueDuration];
+  [coderCopy encodeDouble:@"timeWarp" forKey:self->_timeWarp];
 }
 
 - (SHSyncedLyricsDelegate)delegate
@@ -89,10 +89,10 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = objc_storeWeak(&self->_delegate, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_delegate, delegate);
+  if (delegate)
   {
     [(SHSyncedLyrics *)self startSyncing];
   }
@@ -106,28 +106,28 @@
 - (void)startSyncing
 {
   [(SHSyncedLyrics *)self stopSyncing];
-  v3 = [(SHSyncedLyrics *)self lines];
-  v4 = [v3 count];
+  lines = [(SHSyncedLyrics *)self lines];
+  v4 = [lines count];
 
   if (v4)
   {
     [(SHSyncedLyrics *)self offsetFromStartDate];
     v6 = v5;
     v23 = [(SHSyncedLyrics *)self currentLyricLineForOffset:?];
-    v7 = [(SHSyncedLyrics *)self lines];
-    v8 = [v7 indexOfObject:v23];
+    lines2 = [(SHSyncedLyrics *)self lines];
+    v8 = [lines2 indexOfObject:v23];
 
     v9 = v23;
     if (v23)
     {
-      v10 = [(SHSyncedLyrics *)self delegate];
+      delegate = [(SHSyncedLyrics *)self delegate];
       v11 = objc_opt_respondsToSelector();
 
       v9 = v23;
       if (v11)
       {
-        v12 = [(SHSyncedLyrics *)self delegate];
-        [v12 lyricsDidUpdateToLine:v23 atLineNumber:v8];
+        delegate2 = [(SHSyncedLyrics *)self delegate];
+        [delegate2 lyricsDidUpdateToLine:v23 atLineNumber:v8];
 
         v9 = v23;
       }
@@ -143,39 +143,39 @@
       v13 = 0;
     }
 
-    v14 = [(SHSyncedLyrics *)self lines];
-    v15 = [v14 count];
+    lines3 = [(SHSyncedLyrics *)self lines];
+    v15 = [lines3 count];
 
     if (v15 > v13)
     {
-      v16 = [(SHSyncedLyrics *)self lines];
-      v17 = [v16 objectAtIndexedSubscript:v13];
+      lines4 = [(SHSyncedLyrics *)self lines];
+      v17 = [lines4 objectAtIndexedSubscript:v13];
       [(SHSyncedLyrics *)self timeToLine:v17 afterDuration:v6];
       v19 = v18;
 
       v20 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:self target:sel_startSyncing selector:0 userInfo:0 repeats:v19];
       [(SHSyncedLyrics *)self setTimer:v20];
 
-      v21 = [MEMORY[0x277CBEB88] currentRunLoop];
-      v22 = [(SHSyncedLyrics *)self timer];
-      [v21 addTimer:v22 forMode:*MEMORY[0x277CBE738]];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      timer = [(SHSyncedLyrics *)self timer];
+      [currentRunLoop addTimer:timer forMode:*MEMORY[0x277CBE738]];
     }
   }
 }
 
 - (double)offsetFromStartDate
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(SHSyncedLyrics *)self lyricsStartDate];
-  [v3 timeIntervalSinceDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  lyricsStartDate = [(SHSyncedLyrics *)self lyricsStartDate];
+  [date timeIntervalSinceDate:lyricsStartDate];
   v6 = v5;
 
   return v6;
 }
 
-- (double)fireTimeForLine:(id)a3
+- (double)fireTimeForLine:(id)line
 {
-  [a3 offset];
+  [line offset];
   v5 = v4;
   [(SHSyncedLyrics *)self preCueDuration];
   v7 = v5 - v6;
@@ -183,41 +183,41 @@
   return v7 * (1.0 / v8);
 }
 
-- (void)setPreCueDuration:(double)a3
+- (void)setPreCueDuration:(double)duration
 {
-  if (a3 < 0.0)
+  if (duration < 0.0)
   {
-    a3 = 0.0;
+    duration = 0.0;
   }
 
-  self->_preCueDuration = a3;
+  self->_preCueDuration = duration;
 }
 
-- (void)setTimeWarp:(double)a3
+- (void)setTimeWarp:(double)warp
 {
-  if (a3 > 0.0)
+  if (warp > 0.0)
   {
-    self->_timeWarp = a3;
+    self->_timeWarp = warp;
   }
 }
 
 - (void)stopSyncing
 {
-  v3 = [(SHSyncedLyrics *)self timer];
-  [v3 invalidate];
+  timer = [(SHSyncedLyrics *)self timer];
+  [timer invalidate];
 
   [(SHSyncedLyrics *)self setTimer:0];
 }
 
-- (id)currentLyricLineForOffset:(double)a3
+- (id)currentLyricLineForOffset:(double)offset
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(SHSyncedLyrics *)self lines];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  lines = [(SHSyncedLyrics *)self lines];
+  v6 = [lines countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -231,12 +231,12 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(lines);
         }
 
         v12 = *(*(&v16 + 1) + 8 * v10);
         [(SHSyncedLyrics *)self fireTimeForLine:v12];
-        if (v13 > a3)
+        if (v13 > offset)
         {
           v8 = v11;
           goto LABEL_12;
@@ -249,7 +249,7 @@
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [lines countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;

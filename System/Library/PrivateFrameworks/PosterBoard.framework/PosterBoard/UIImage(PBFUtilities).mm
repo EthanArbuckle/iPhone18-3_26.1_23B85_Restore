@@ -27,15 +27,15 @@
     [UIImage(PBFUtilities) pbf_galleryHeroSnapshotForExtension:a2 descriptorIdentifier:? displayContext:?];
   }
 
-  v13 = [v8 posterExtensionBundleIdentifier];
+  posterExtensionBundleIdentifier = [v8 posterExtensionBundleIdentifier];
   if (PFIsPhotosPosterProviderBundleId())
   {
     v14 = [v12 componentsSeparatedByString:@"|"];
-    v15 = [v14 firstObject];
+    firstObject = [v14 firstObject];
 
-    if (v15)
+    if (firstObject)
     {
-      v16 = v15;
+      v16 = firstObject;
 
       v12 = v16;
     }
@@ -47,22 +47,22 @@
   }
 
   v17 = MEMORY[0x277CCACA8];
-  v18 = [v11 pbf_displayContextPersistenceIdentifier];
-  v19 = [v8 persistentIdentifier];
-  v20 = [v19 pbf_sha256Hash];
-  v21 = [v17 stringWithFormat:@"[%@]-[%@]-[%@]-[%@].png", v13, v12, v18, v20];
+  pbf_displayContextPersistenceIdentifier = [v11 pbf_displayContextPersistenceIdentifier];
+  persistentIdentifier = [v8 persistentIdentifier];
+  pbf_sha256Hash = [persistentIdentifier pbf_sha256Hash];
+  v21 = [v17 stringWithFormat:@"[%@]-[%@]-[%@]-[%@].png", posterExtensionBundleIdentifier, v12, pbf_displayContextPersistenceIdentifier, pbf_sha256Hash];
 
   v22 = pbf_galleryHeroSnapshotForExtension_descriptorIdentifier_displayContext__heroCache;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __97__UIImage_PBFUtilities__pbf_galleryHeroSnapshotForExtension_descriptorIdentifier_displayContext___block_invoke_2;
   v28[3] = &unk_2782C8CC0;
-  v29 = v13;
+  v29 = posterExtensionBundleIdentifier;
   v30 = v12;
   v31 = v11;
   v23 = v11;
   v24 = v12;
-  v25 = v13;
+  v25 = posterExtensionBundleIdentifier;
   v26 = [v22 imageForKey:v21 generatingIfNecessaryWithBlock:v28];
 
   return v26;

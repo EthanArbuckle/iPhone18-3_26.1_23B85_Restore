@@ -1,50 +1,50 @@
 @interface CHTextRecognitionResult
-- (CHTextRecognitionResult)initWithString:(id)a3 score:(double)a4 wordRanges:(id)a5 wordIDs:(id)a6 wordRecognitionScores:(id)a7 wordCombinedScores:(id)a8 wordStrokeSets:(id)a9 wordLexicalEntries:(id)a10 wordPatternEntries:(id)a11 rareWordIndexes:(id)a12 inappropriateWordIndexes:(id)a13 isTextReplacement:(BOOL)a14;
+- (CHTextRecognitionResult)initWithString:(id)string score:(double)score wordRanges:(id)ranges wordIDs:(id)ds wordRecognitionScores:(id)scores wordCombinedScores:(id)combinedScores wordStrokeSets:(id)sets wordLexicalEntries:(id)self0 wordPatternEntries:(id)self1 rareWordIndexes:(id)self2 inappropriateWordIndexes:(id)self3 isTextReplacement:(BOOL)self4;
 - (id)mecabraCandidate;
 @end
 
 @implementation CHTextRecognitionResult
 
-- (CHTextRecognitionResult)initWithString:(id)a3 score:(double)a4 wordRanges:(id)a5 wordIDs:(id)a6 wordRecognitionScores:(id)a7 wordCombinedScores:(id)a8 wordStrokeSets:(id)a9 wordLexicalEntries:(id)a10 wordPatternEntries:(id)a11 rareWordIndexes:(id)a12 inappropriateWordIndexes:(id)a13 isTextReplacement:(BOOL)a14
+- (CHTextRecognitionResult)initWithString:(id)string score:(double)score wordRanges:(id)ranges wordIDs:(id)ds wordRecognitionScores:(id)scores wordCombinedScores:(id)combinedScores wordStrokeSets:(id)sets wordLexicalEntries:(id)self0 wordPatternEntries:(id)self1 rareWordIndexes:(id)self2 inappropriateWordIndexes:(id)self3 isTextReplacement:(BOOL)self4
 {
-  v44 = a3;
-  v43 = a5;
-  v37 = a6;
-  v42 = a6;
-  v41 = a7;
-  v40 = a8;
-  v39 = a9;
-  v38 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
+  stringCopy = string;
+  rangesCopy = ranges;
+  dsCopy = ds;
+  dsCopy2 = ds;
+  scoresCopy = scores;
+  combinedScoresCopy = combinedScores;
+  setsCopy = sets;
+  entriesCopy = entries;
+  patternEntriesCopy = patternEntries;
+  indexesCopy = indexes;
+  wordIndexesCopy = wordIndexes;
   v45.receiver = self;
   v45.super_class = CHTextRecognitionResult;
-  v24 = [(CHRecognitionResult *)&v45 initWithScore:a4];
+  v24 = [(CHRecognitionResult *)&v45 initWithScore:score];
   p_isa = &v24->super.super.isa;
   v31 = v24;
   if (v24)
   {
     string = v24->_string;
-    if (string != v44)
+    if (string != stringCopy)
     {
       v24->_string = 0;
     }
 
-    v33 = objc_msgSend_copy(v44, v25, v26, v27, v28, v29, a5);
+    v33 = objc_msgSend_copy(stringCopy, v25, v26, v27, v28, v29, ranges);
     v34 = v31->_string;
     v31->_string = v33;
 
     objc_storeStrong(p_isa + 4, obj);
-    objc_storeStrong(p_isa + 5, v37);
-    objc_storeStrong(p_isa + 6, a7);
-    objc_storeStrong(p_isa + 7, a8);
-    objc_storeStrong(p_isa + 8, a9);
-    objc_storeStrong(p_isa + 9, a10);
-    objc_storeStrong(p_isa + 10, a11);
-    objc_storeStrong(p_isa + 11, a12);
-    objc_storeStrong(p_isa + 12, a13);
-    v31->_isTextReplacement = a14;
+    objc_storeStrong(p_isa + 5, dsCopy);
+    objc_storeStrong(p_isa + 6, scores);
+    objc_storeStrong(p_isa + 7, combinedScores);
+    objc_storeStrong(p_isa + 8, sets);
+    objc_storeStrong(p_isa + 9, entries);
+    objc_storeStrong(p_isa + 10, patternEntries);
+    objc_storeStrong(p_isa + 11, indexes);
+    objc_storeStrong(p_isa + 12, wordIndexes);
+    v31->_isTextReplacement = replacement;
   }
 
   return v31;

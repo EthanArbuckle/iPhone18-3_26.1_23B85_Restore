@@ -19,8 +19,8 @@
     goto LABEL_25;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager contentsOfDirectoryAtPath:v3 error:0];
 
   v31 = 0u;
   v32 = 0u;
@@ -51,7 +51,7 @@
       v14 = *(*(&v29 + 1) + 8 * i);
       v37 = 0;
       v38 = 0;
-      v15 = [v14 brc_stringByDeletingPathExtension];
+      brc_stringByDeletingPathExtension = [v14 brc_stringByDeletingPathExtension];
       v16 = _br_parseUUIDString();
 
       if (v16)
@@ -83,15 +83,15 @@
     goto LABEL_21;
   }
 
-  v20 = [MEMORY[0x277CCAA00] defaultManager];
-  v21 = [v20 fileExistsAtPath:v11];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  v21 = [defaultManager2 fileExistsAtPath:v11];
 
   if ((v21 & 1) == 0)
   {
     v9 = [v3 stringByAppendingPathComponent:@"UnknownHost.txt"];
 
-    v22 = [MEMORY[0x277CCAA00] defaultManager];
-    v23 = [v22 fileExistsAtPath:v9];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    v23 = [defaultManager3 fileExistsAtPath:v9];
 
     if (v23)
     {
@@ -141,7 +141,7 @@ LABEL_25:
   v5 = br_currentMobileDocumentsDirWithRefreshCache__pathByPersonaID;
   objc_sync_enter(v5);
   v33 = 0;
-  v6 = [a1 br_currentPersonaIDWithIsDataSeparated:&v33];
+  v6 = [self br_currentPersonaIDWithIsDataSeparated:&v33];
   if (a3)
   {
     [br_currentMobileDocumentsDirWithRefreshCache__pathByPersonaID removeObjectForKey:v6];
@@ -155,11 +155,11 @@ LABEL_25:
 
   else
   {
-    v9 = [MEMORY[0x277CFAE58] br_getProviderDomainIDForCurrentPersona];
-    if (v9)
+    br_getProviderDomainIDForCurrentPersona = [MEMORY[0x277CFAE58] br_getProviderDomainIDForCurrentPersona];
+    if (br_getProviderDomainIDForCurrentPersona)
     {
       v32 = 0;
-      v10 = [MEMORY[0x277CC6420] providerDomainWithID:v9 cachePolicy:0 error:&v32];
+      v10 = [MEMORY[0x277CC6420] providerDomainWithID:br_getProviderDomainIDForCurrentPersona cachePolicy:0 error:&v32];
       v11 = v32;
     }
 
@@ -174,7 +174,7 @@ LABEL_25:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      *&buf[4] = v9;
+      *&buf[4] = br_getProviderDomainIDForCurrentPersona;
       *&buf[12] = 2112;
       *&buf[14] = v10;
       *&buf[22] = 2112;
@@ -195,14 +195,14 @@ LABEL_25:
     v35 = __Block_byref_object_copy__22;
     *&v36 = __Block_byref_object_dispose__22;
     *(&v36 + 1) = 0;
-    v14 = [v10 storageURLs];
-    v15 = [v14 count] == 0;
+    storageURLs = [v10 storageURLs];
+    v15 = [storageURLs count] == 0;
 
     if (v15)
     {
       v21 = dispatch_group_create();
       dispatch_group_enter(v21);
-      v22 = [MEMORY[0x277CC6408] defaultManager];
+      defaultManager = [MEMORY[0x277CC6408] defaultManager];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __75__NSString_BRCPathAdditions__br_currentMobileDocumentsDirWithRefreshCache___block_invoke_15;
@@ -210,7 +210,7 @@ LABEL_25:
       v31 = buf;
       v19 = v21;
       v30 = v19;
-      [v22 fetchRootItemForProviderDomain:v10 completionHandler:v29];
+      [defaultManager fetchRootItemForProviderDomain:v10 completionHandler:v29];
 
       dispatch_group_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
       v20 = v30;
@@ -218,8 +218,8 @@ LABEL_25:
 
     else
     {
-      v16 = [v10 storageURLs];
-      v17 = [v16 objectAtIndexedSubscript:0];
+      storageURLs2 = [v10 storageURLs];
+      v17 = [storageURLs2 objectAtIndexedSubscript:0];
       v18 = *(*&buf[8] + 40);
       *(*&buf[8] + 40) = v17;
 
@@ -234,38 +234,38 @@ LABEL_25:
     v23 = *(*&buf[8] + 40);
     if (v23)
     {
-      v24 = [v23 path];
+      path = [v23 path];
     }
 
     else
     {
-      v24 = 0;
+      path = 0;
     }
 
     _Block_object_dispose(buf, 8);
 
-    if (v24)
+    if (path)
     {
-      v25 = [v24 br_realpath];
-      [br_currentMobileDocumentsDirWithRefreshCache__pathByPersonaID setObject:v25 forKeyedSubscript:v6];
+      br_realpath = [path br_realpath];
+      [br_currentMobileDocumentsDirWithRefreshCache__pathByPersonaID setObject:br_realpath forKeyedSubscript:v6];
     }
 
     else
     {
 LABEL_22:
-      v25 = brc_bread_crumbs();
+      br_realpath = brc_bread_crumbs();
       v26 = brc_default_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *&buf[4] = v25;
+        *&buf[4] = br_realpath;
         _os_log_impl(&dword_223E7A000, v26, OS_LOG_TYPE_DEFAULT, "[WARNING] No path for Mobile Documents directory%@", buf, 0xCu);
       }
 
-      v24 = 0;
+      path = 0;
     }
 
-    v8 = v24;
+    v8 = path;
   }
 
   objc_sync_exit(v5);
@@ -276,18 +276,18 @@ LABEL_22:
 
 + (id)_brc_fileProviderStoragePath
 {
-  v0 = [MEMORY[0x277CCAA00] defaultManager];
-  v1 = [v0 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.iCloudDrive"];
-  v2 = [v1 path];
-  v3 = [v2 stringByAppendingPathComponent:@"File Provider Storage"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v1 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.iCloudDrive"];
+  path = [v1 path];
+  v3 = [path stringByAppendingPathComponent:@"File Provider Storage"];
 
   return v3;
 }
 
 + (id)brc_groupDownloadStagePath
 {
-  v0 = [MEMORY[0x277CCACA8] _brc_fileProviderStoragePath];
-  v1 = [v0 stringByAppendingPathComponent:@"DownloadStage"];
+  _brc_fileProviderStoragePath = [MEMORY[0x277CCACA8] _brc_fileProviderStoragePath];
+  v1 = [_brc_fileProviderStoragePath stringByAppendingPathComponent:@"DownloadStage"];
 
   return v1;
 }
@@ -295,8 +295,8 @@ LABEL_22:
 + (__CFString)brc_applicationBundleIDForExtension:()BRCPathAdditions
 {
   v3 = a3;
-  v4 = [v3 lowercaseString];
-  v5 = [v4 isEqualToString:@"pages"];
+  lowercaseString = [v3 lowercaseString];
+  v5 = [lowercaseString isEqualToString:@"pages"];
 
   if (v5)
   {
@@ -304,8 +304,8 @@ LABEL_22:
     goto LABEL_7;
   }
 
-  v7 = [v3 lowercaseString];
-  if ([v7 isEqualToString:@"keynote"])
+  lowercaseString2 = [v3 lowercaseString];
+  if ([lowercaseString2 isEqualToString:@"keynote"])
   {
 
 LABEL_6:
@@ -313,16 +313,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v8 = [v3 lowercaseString];
-  v9 = [v8 isEqualToString:@"key"];
+  lowercaseString3 = [v3 lowercaseString];
+  v9 = [lowercaseString3 isEqualToString:@"key"];
 
   if (v9)
   {
     goto LABEL_6;
   }
 
-  v11 = [v3 lowercaseString];
-  v12 = [v11 isEqualToString:@"numbers"];
+  lowercaseString4 = [v3 lowercaseString];
+  v12 = [lowercaseString4 isEqualToString:@"numbers"];
 
   if (v12)
   {
@@ -342,8 +342,8 @@ LABEL_7:
 + (__CFString)brc_applicationContainerIDForExtension:()BRCPathAdditions
 {
   v3 = a3;
-  v4 = [v3 lowercaseString];
-  v5 = [v4 isEqualToString:@"pages"];
+  lowercaseString = [v3 lowercaseString];
+  v5 = [lowercaseString isEqualToString:@"pages"];
 
   if (v5)
   {
@@ -351,8 +351,8 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v7 = [v3 lowercaseString];
-  if ([v7 isEqualToString:@"keynote"])
+  lowercaseString2 = [v3 lowercaseString];
+  if ([lowercaseString2 isEqualToString:@"keynote"])
   {
 
 LABEL_6:
@@ -360,16 +360,16 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v8 = [v3 lowercaseString];
-  v9 = [v8 isEqualToString:@"key"];
+  lowercaseString3 = [v3 lowercaseString];
+  v9 = [lowercaseString3 isEqualToString:@"key"];
 
   if (v9)
   {
     goto LABEL_6;
   }
 
-  v10 = [v3 lowercaseString];
-  v11 = [v10 isEqualToString:@"numbers"];
+  lowercaseString4 = [v3 lowercaseString];
+  v11 = [lowercaseString4 isEqualToString:@"numbers"];
 
   if (v11)
   {

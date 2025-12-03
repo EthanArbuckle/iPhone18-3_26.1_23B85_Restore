@@ -1,26 +1,26 @@
 @interface TSTCellFormulaSpec
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalent:(id)a3;
-- (BOOL)p_mightBeEqual:(id)a3;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalent:(id)equivalent;
+- (BOOL)p_mightBeEqual:(id)equal;
 - (NSString)description;
-- (TSTCellFormulaSpec)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSTCellFormulaSpec)initWithFormulaObject:(id)a3 fromTableInfo:(id)a4 fromCellID:(TSUCellCoord)a5;
-- (TSTCellFormulaSpec)initWithFormulaObject:(id)a3 locale:(id)a4;
-- (id)cellSpecReplacingFormulaObject:(id)a3 locale:(id)a4;
-- (void)p_computeinteractionType:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (TSTCellFormulaSpec)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSTCellFormulaSpec)initWithFormulaObject:(id)object fromTableInfo:(id)info fromCellID:(TSUCellCoord)d;
+- (TSTCellFormulaSpec)initWithFormulaObject:(id)object locale:(id)locale;
+- (id)cellSpecReplacingFormulaObject:(id)object locale:(id)locale;
+- (void)p_computeinteractionType:(id)type;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSTCellFormulaSpec
 
-- (void)p_computeinteractionType:(id)a3
+- (void)p_computeinteractionType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   self->_interactionType = 1;
   TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v30);
   v9 = objc_msgSend_const_astNodeArray(self->_formulaObject, v5, v6, v7, v8);
-  sub_22113D1F8(v21, v9, &v30, v4);
+  sub_22113D1F8(v21, v9, &v30, typeCopy);
   TSCEASTStreamIterator::rewrite(v21, v10, v11, v12, v13);
   if (v23)
   {
@@ -55,16 +55,16 @@ LABEL_9:
   TSCEASTStreamIterator::~TSCEASTStreamIterator(v21, v20);
 }
 
-- (TSTCellFormulaSpec)initWithFormulaObject:(id)a3 locale:(id)a4
+- (TSTCellFormulaSpec)initWithFormulaObject:(id)object locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  localeCopy = locale;
   v31.receiver = self;
   v31.super_class = TSTCellFormulaSpec;
   v12 = [(TSTCellSpec *)&v31 init];
   if (v12)
   {
-    if (!v6)
+    if (!objectCopy)
     {
       v19 = MEMORY[0x277D81150];
       v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSTCellFormulaSpec initWithFormulaObject:locale:]", v10, v11);
@@ -76,11 +76,11 @@ LABEL_9:
       goto LABEL_6;
     }
 
-    v13 = objc_msgSend_copy(v6, v8, v9, v10, v11);
+    v13 = objc_msgSend_copy(objectCopy, v8, v9, v10, v11);
     formulaObject = v12->_formulaObject;
     v12->_formulaObject = v13;
 
-    objc_msgSend_p_computeinteractionType_(v12, v15, v7, v16, v17);
+    objc_msgSend_p_computeinteractionType_(v12, v15, localeCopy, v16, v17);
   }
 
   v18 = v12;
@@ -89,20 +89,20 @@ LABEL_6:
   return v18;
 }
 
-- (TSTCellFormulaSpec)initWithFormulaObject:(id)a3 fromTableInfo:(id)a4 fromCellID:(TSUCellCoord)a5
+- (TSTCellFormulaSpec)initWithFormulaObject:(id)object fromTableInfo:(id)info fromCellID:(TSUCellCoord)d
 {
-  v8 = a3;
-  v9 = a4;
-  v18 = objc_msgSend_calcEngine(v9, v10, v11, v12, v13);
-  if (v8)
+  objectCopy = object;
+  infoCopy = info;
+  v18 = objc_msgSend_calcEngine(infoCopy, v10, v11, v12, v13);
+  if (objectCopy)
   {
-    v39.coordinate = a5;
-    v39._tableUID._lower = objc_msgSend_tableUID(v9, v14, v15, v16, v17);
+    v39.coordinate = d;
+    v39._tableUID._lower = objc_msgSend_tableUID(infoCopy, v14, v15, v16, v17);
     v39._tableUID._upper = v19;
     TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v40, v18, &v39);
 
-    v18 = objc_msgSend_copyByRewritingReferencesToUidForm_(v8, v20, &v40, v21, v22);
-    v27 = objc_msgSend_calcEngine(v9, v23, v24, v25, v26);
+    v18 = objc_msgSend_copyByRewritingReferencesToUidForm_(objectCopy, v20, &v40, v21, v22);
+    v27 = objc_msgSend_calcEngine(infoCopy, v23, v24, v25, v26);
     v32 = objc_msgSend_documentLocale(v27, v28, v29, v30, v31);
     v35 = objc_msgSend_initWithFormulaObject_locale_(self, v33, v18, v32, v34);
   }
@@ -116,12 +116,12 @@ LABEL_6:
   return v35;
 }
 
-- (id)cellSpecReplacingFormulaObject:(id)a3 locale:(id)a4
+- (id)cellSpecReplacingFormulaObject:(id)object locale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  localeCopy = locale;
   v7 = [TSTCellFormulaSpec alloc];
-  v10 = objc_msgSend_initWithFormulaObject_locale_(v7, v8, v5, v6, v9);
+  v10 = objc_msgSend_initWithFormulaObject_locale_(v7, v8, objectCopy, localeCopy, v9);
 
   return v10;
 }
@@ -150,10 +150,10 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)p_mightBeEqual:(id)a3
+- (BOOL)p_mightBeEqual:(id)equal
 {
-  v4 = a3;
-  v9 = objc_msgSend_asFormulaSpec(v4, v5, v6, v7, v8);
+  equalCopy = equal;
+  v9 = objc_msgSend_asFormulaSpec(equalCopy, v5, v6, v7, v8);
   if (v9)
   {
     interactionType = self->_interactionType;
@@ -168,13 +168,13 @@ LABEL_6:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (self == v8 || objc_msgSend_p_mightBeEqual_(self, v4, v8, v6, v7))
+  equalCopy = equal;
+  if (self == equalCopy || objc_msgSend_p_mightBeEqual_(self, v4, equalCopy, v6, v7))
   {
     formulaObject = self->_formulaObject;
-    v10 = objc_msgSend_formulaObject(v8, v4, v5, v6, v7);
+    v10 = objc_msgSend_formulaObject(equalCopy, v4, v5, v6, v7);
     isEqualToFormula = objc_msgSend_isEqualToFormula_(formulaObject, v11, v10, v12, v13);
   }
 
@@ -186,13 +186,13 @@ LABEL_6:
   return isEqualToFormula;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v8 = a3;
-  if (self == v8 || objc_msgSend_p_mightBeEqual_(self, v4, v8, v6, v7))
+  equivalentCopy = equivalent;
+  if (self == equivalentCopy || objc_msgSend_p_mightBeEqual_(self, v4, equivalentCopy, v6, v7))
   {
     formulaObject = self->_formulaObject;
-    v10 = objc_msgSend_formulaObject(v8, v4, v5, v6, v7);
+    v10 = objc_msgSend_formulaObject(equivalentCopy, v4, v5, v6, v7);
     isEquivalentToFormula = objc_msgSend_isEquivalentToFormula_(formulaObject, v11, v10, v12, v13);
   }
 
@@ -204,24 +204,24 @@ LABEL_6:
   return isEquivalentToFormula;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSTCellFormulaSpec alloc];
-  v9 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, a3, v5, v8);
+  v9 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, archive, unarchiverCopy, v8);
 
   return v9;
 }
 
-- (TSTCellFormulaSpec)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSTCellFormulaSpec)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v10 = a4;
-  if (*(a3 + 16))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 16))
   {
     v12 = [TSCEFormulaObject alloc];
-    if (*(a3 + 3))
+    if (*(archive + 3))
     {
-      isPreUFF = objc_msgSend_initWithArchive_isPreUFF_(v12, v13, *(a3 + 3), 0, v14);
+      isPreUFF = objc_msgSend_initWithArchive_isPreUFF_(v12, v13, *(archive + 3), 0, v14);
     }
 
     else
@@ -237,7 +237,7 @@ LABEL_6:
     v11 = 0;
   }
 
-  v16 = objc_msgSend_context(v10, v6, v7, v8, v9);
+  v16 = objc_msgSend_context(unarchiverCopy, v6, v7, v8, v9);
   v21 = objc_msgSend_documentRoot(v16, v17, v18, v19, v20);
   v26 = objc_msgSend_documentLocale(v21, v22, v23, v24, v25);
   v29 = objc_msgSend_initWithFormulaObject_locale_(self, v27, v11, v26, v28);
@@ -245,30 +245,30 @@ LABEL_6:
   return v29;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v20 = a4;
+  archiverCopy = archiver;
   v10 = objc_msgSend_interactionType(self, v6, v7, v8, v9);
-  *(a3 + 4) |= 0x20u;
-  *(a3 + 16) = v10;
+  *(archive + 4) |= 0x20u;
+  *(archive + 16) = v10;
   v17 = objc_msgSend_formulaObject(self, v11, v12, v13, v14);
   if (v17)
   {
-    *(a3 + 4) |= 1u;
-    v18 = *(a3 + 3);
+    *(archive + 4) |= 1u;
+    v18 = *(archive + 3);
     if (!v18)
     {
-      v19 = *(a3 + 1);
+      v19 = *(archive + 1);
       if (v19)
       {
         v19 = *(v19 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v18 = google::protobuf::Arena::CreateMaybeMessage<TSCE::FormulaArchive>(v19);
-      *(a3 + 3) = v18;
+      *(archive + 3) = v18;
     }
 
-    objc_msgSend_encodeToArchive_archiver_(v17, v15, v18, v20, v16);
+    objc_msgSend_encodeToArchive_archiver_(v17, v15, v18, archiverCopy, v16);
   }
 }
 

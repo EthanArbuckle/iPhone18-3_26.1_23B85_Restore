@@ -1,14 +1,14 @@
 @interface TSDMagicMoveAnimationMatch
 - (BOOL)isMatched;
 - (TSDMagicMoveAnimationMatch)init;
-- (TSDMagicMoveAnimationMatch)initWithCoder:(id)a3;
-- (TSDMagicMoveAnimationMatch)initWithMatchType:(int64_t)a3 outgoingTexture:(id)a4 incomingTexture:(id)a5;
+- (TSDMagicMoveAnimationMatch)initWithCoder:(id)coder;
+- (TSDMagicMoveAnimationMatch)initWithMatchType:(int64_t)type outgoingTexture:(id)texture incomingTexture:(id)incomingTexture;
 - (id)description;
 - (id)lockCurrentMorphTexture;
-- (void)addMorphTexture:(id)a3;
+- (void)addMorphTexture:(id)texture;
 - (void)clearMorphTexture;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)teardown;
 - (void)unlockCurrentMorphTexture;
 @end
@@ -32,10 +32,10 @@
   objc_exception_throw(v14);
 }
 
-- (TSDMagicMoveAnimationMatch)initWithMatchType:(int64_t)a3 outgoingTexture:(id)a4 incomingTexture:(id)a5
+- (TSDMagicMoveAnimationMatch)initWithMatchType:(int64_t)type outgoingTexture:(id)texture incomingTexture:(id)incomingTexture
 {
-  v8 = a4;
-  v9 = a5;
+  textureCopy = texture;
+  incomingTextureCopy = incomingTexture;
   v17.receiver = self;
   v17.super_class = TSDMagicMoveAnimationMatch;
   v10 = [(TSDMagicMoveAnimationMatch *)&v17 init];
@@ -45,9 +45,9 @@
     morphTextureUpdateLock = v10->_morphTextureUpdateLock;
     v10->_morphTextureUpdateLock = v11;
 
-    objc_msgSend_setMatchType_(v10, v13, a3);
-    objc_msgSend_setOutgoingTexture_(v10, v14, v8);
-    objc_msgSend_setIncomingTexture_(v10, v15, v9);
+    objc_msgSend_setMatchType_(v10, v13, type);
+    objc_msgSend_setOutgoingTexture_(v10, v14, textureCopy);
+    objc_msgSend_setIncomingTexture_(v10, v15, incomingTextureCopy);
   }
 
   return v10;
@@ -157,17 +157,17 @@
   return v8;
 }
 
-- (void)addMorphTexture:(id)a3
+- (void)addMorphTexture:(id)texture
 {
-  v17 = a3;
+  textureCopy = texture;
   v4 = self->_morphTextureUpdateLock;
   objc_sync_enter(v4);
   morphQueuedTexture = self->_morphQueuedTexture;
   if (self->_isUsingMorphTexture || self->_didUseMorphTexture)
   {
     v6 = self->_morphQueuedTexture;
-    self->_morphQueuedTexture = v17;
-    v7 = v17;
+    self->_morphQueuedTexture = textureCopy;
+    v7 = textureCopy;
     v8 = morphQueuedTexture;
 
     v9 = 0;
@@ -177,8 +177,8 @@
   {
     v9 = self->_morphTexture;
     morphTexture = self->_morphTexture;
-    self->_morphTexture = v17;
-    v11 = v17;
+    self->_morphTexture = textureCopy;
+    v11 = textureCopy;
     v12 = morphQueuedTexture;
 
     self->_didUseMorphTexture = 0;
@@ -300,32 +300,32 @@
   objc_sync_exit(obj);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
+  coderCopy = coder;
   matched = objc_msgSend_matchType(self, v4, v5);
-  objc_msgSend_encodeInteger_forKey_(v17, v7, matched, @"matchType");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v7, matched, @"matchType");
   v10 = objc_msgSend_outgoingTexture(self, v8, v9);
-  objc_msgSend_encodeObject_forKey_(v17, v11, v10, @"outgoingTexture");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, v10, @"outgoingTexture");
 
   v14 = objc_msgSend_incomingTexture(self, v12, v13);
-  objc_msgSend_encodeObject_forKey_(v17, v15, v14, @"incomingTexture");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, v14, @"incomingTexture");
 
-  objc_msgSend_encodeObject_forKey_(v17, v16, self->_morphTexture, @"_morphTexture");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, self->_morphTexture, @"_morphTexture");
 }
 
-- (TSDMagicMoveAnimationMatch)initWithCoder:(id)a3
+- (TSDMagicMoveAnimationMatch)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = objc_msgSend_decodeIntegerForKey_(v4, v5, @"matchType");
+  coderCopy = coder;
+  v6 = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"matchType");
   v7 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"outgoingTexture");
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"outgoingTexture");
   v10 = objc_opt_class();
-  v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"incomingTexture");
+  v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"incomingTexture");
   matched = objc_msgSend_initWithMatchType_outgoingTexture_incomingTexture_(self, v13, v6, v9, v12);
 
   v15 = objc_opt_class();
-  v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"_morphTexture");
+  v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"_morphTexture");
 
   objc_msgSend_addMorphTexture_(matched, v18, v17);
   return matched;

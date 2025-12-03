@@ -6,36 +6,36 @@
 - (CGPoint)p_scaledCenterForRotation;
 - (CGPoint)scaledHUDPosition;
 - (CGPoint)unscaledCenterForRotation;
-- (CRLCanvasRepRotateTracker)initWithRep:(id)a3;
+- (CRLCanvasRepRotateTracker)initWithRep:(id)rep;
 - (NSArray)decoratorOverlayRenderables;
 - (NSSet)repsBeingRotated;
 - (id)repsToHide;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)changeDynamicLayoutsForReps:(id)a3;
-- (void)commitChangesForReps:(id)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)changeDynamicLayoutsForReps:(id)reps;
+- (void)commitChangesForReps:(id)reps;
 - (void)dealloc;
 - (void)p_begin;
 - (void)p_hideGuideRenderable;
 - (void)p_hideHUD;
 - (void)p_sproingHUD;
 - (void)p_updateCenterForRotationIfNecessary;
-- (void)p_updateGuideRenderableWithAngle:(double)a3 didSnap:(BOOL)a4;
-- (void)p_updateHUDWithAngle:(double)a3;
-- (void)setUnscaledCenterForRotation:(CGPoint)a3;
-- (void)willBeginDynamicOperationForReps:(id)a3;
+- (void)p_updateGuideRenderableWithAngle:(double)angle didSnap:(BOOL)snap;
+- (void)p_updateHUDWithAngle:(double)angle;
+- (void)setUnscaledCenterForRotation:(CGPoint)rotation;
+- (void)willBeginDynamicOperationForReps:(id)reps;
 @end
 
 @implementation CRLCanvasRepRotateTracker
 
-- (CRLCanvasRepRotateTracker)initWithRep:(id)a3
+- (CRLCanvasRepRotateTracker)initWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v27.receiver = self;
   v27.super_class = CRLCanvasRepRotateTracker;
   v5 = [(CRLCanvasRepRotateTracker *)&v27 init];
   if (v5)
   {
-    if (!v4)
+    if (!repCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -64,28 +64,28 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:87 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
     }
 
-    [v5 setRep:v4];
+    [v5 setRep:repCopy];
     v5[105] = 1;
     *(v5 + 24) = xmmword_1014629E0;
     [*(v5 + 1) angleForRotation];
     *(v5 + 10) = v9;
     *(v5 + 11) = v9;
     v10 = [v5 rep];
-    v11 = [v10 layout];
-    v12 = [v11 parent];
+    layout = [v10 layout];
+    parent = [layout parent];
 
     v13 = *(v5 + 10);
-    if (v12)
+    if (parent)
     {
       v14 = sub_100120F98(v13 * 0.0174532925);
       v16 = v15;
       v17 = [v5 rep];
-      v18 = [v17 layout];
-      v19 = [v18 parent];
-      v20 = v19;
-      if (v19)
+      layout2 = [v17 layout];
+      parent2 = [layout2 parent];
+      v20 = parent2;
+      if (parent2)
       {
-        [v19 transformInRoot];
+        [parent2 transformInRoot];
       }
 
       else
@@ -119,14 +119,14 @@
   [(CRLCanvasRepRotateTracker *)&v3 dealloc];
 }
 
-- (void)willBeginDynamicOperationForReps:(id)a3
+- (void)willBeginDynamicOperationForReps:(id)reps
 {
-  v5 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  if ([v5 shouldSupportedDynamicOperationsEnqueueCommandsInRealTime])
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  if ([interactiveCanvasController shouldSupportedDynamicOperationsEnqueueCommandsInRealTime])
   {
-    v4 = [(CRLCanvasRep *)self->mRep allowsSupportedDynamicOperationsToBeRealTime];
+    allowsSupportedDynamicOperationsToBeRealTime = [(CRLCanvasRep *)self->mRep allowsSupportedDynamicOperationsToBeRealTime];
 
-    if (v4)
+    if (allowsSupportedDynamicOperationsToBeRealTime)
     {
       self->mIsEnqueueingCommandsInRealTime = 1;
     }
@@ -137,10 +137,10 @@
   }
 }
 
-- (void)changeDynamicLayoutsForReps:(id)a3
+- (void)changeDynamicLayoutsForReps:(id)reps
 {
-  v4 = a3;
-  if ([v4 count] != 1 || (objc_msgSend(v4, "anyObject"), v5 = objc_claimAutoreleasedReturnValue(), mRep = self->mRep, v5, v5 != mRep))
+  repsCopy = reps;
+  if ([repsCopy count] != 1 || (objc_msgSend(repsCopy, "anyObject"), v5 = objc_claimAutoreleasedReturnValue(), mRep = self->mRep, v5, v5 != mRep))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -262,10 +262,10 @@ LABEL_25:
       [(CRLCanvasRepRotateTracker *)self p_updateGuideRenderableWithAngle:v19 didSnap:self->mCurrentLogicalAngleInDegrees];
     }
 
-    v20 = [(CRLCanvasRep *)self->mRep layout];
-    v21 = [v20 layoutController];
-    v22 = [(CRLCanvasRep *)self->mRep layout];
-    [v21 validateLayoutWithDependencies:v22];
+    layout = [(CRLCanvasRep *)self->mRep layout];
+    layoutController = [layout layoutController];
+    layout2 = [(CRLCanvasRep *)self->mRep layout];
+    [layoutController validateLayoutWithDependencies:layout2];
   }
 }
 
@@ -273,20 +273,20 @@ LABEL_25:
 {
   mCurrentLogicalAngleInDegrees = self->mCurrentLogicalAngleInDegrees;
   v6 = [(CRLCanvasRepRotateTracker *)self rep];
-  v7 = [v6 layout];
-  v8 = [v7 parent];
+  layout = [v6 layout];
+  parent = [layout parent];
 
-  if (v8)
+  if (parent)
   {
     v9 = sub_100120F98(self->mCurrentLogicalAngleInDegrees * 0.0174532925);
     v11 = v10;
     v12 = [(CRLCanvasRepRotateTracker *)self rep];
-    v13 = [v12 layout];
-    v14 = [v13 parent];
-    v15 = v14;
-    if (v14)
+    layout2 = [v12 layout];
+    parent2 = [layout2 parent];
+    v15 = parent2;
+    if (parent2)
     {
-      [v14 transformInRoot];
+      [parent2 transformInRoot];
     }
 
     else
@@ -310,21 +310,21 @@ LABEL_25:
   return CGAffineTransformConcat(retstr, &v25, &t1);
 }
 
-- (void)commitChangesForReps:(id)a3
+- (void)commitChangesForReps:(id)reps
 {
   if (self->mDidBeginRotation)
   {
-    v4 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-    v5 = [v4 commandController];
+    interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+    commandController = [interactiveCanvasController commandController];
     if ([(CRLCanvasRepRotateTracker *)self isInspectorDrivenTracking])
     {
-      v6 = [v4 infosForCurrentSelectionPath];
+      infosForCurrentSelectionPath = [interactiveCanvasController infosForCurrentSelectionPath];
       v7 = +[NSMutableSet set];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v8 = v6;
+      v8 = infosForCurrentSelectionPath;
       v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v9)
       {
@@ -340,7 +340,7 @@ LABEL_25:
             }
 
             v13 = *(*(&v24 + 1) + 8 * i);
-            v14 = [v4 layoutForInfo:{v13, v24}];
+            v14 = [interactiveCanvasController layoutForInfo:{v13, v24}];
             if ([v14 supportsRotation])
             {
               [v7 addObject:v13];
@@ -353,28 +353,28 @@ LABEL_25:
         while (v10);
       }
 
-      v15 = [v4 canvasEditor];
-      v16 = [v15 selectionPathWithInfos:v7];
+      canvasEditor = [interactiveCanvasController canvasEditor];
+      v16 = [canvasEditor selectionPathWithInfos:v7];
     }
 
     else
     {
-      v17 = [v4 canvasEditor];
-      v18 = [(CRLCanvasRep *)self->mRep info];
-      v19 = [NSSet setWithObject:v18];
-      v16 = [v17 selectionPathWithInfos:v19];
+      canvasEditor2 = [interactiveCanvasController canvasEditor];
+      info = [(CRLCanvasRep *)self->mRep info];
+      v19 = [NSSet setWithObject:info];
+      v16 = [canvasEditor2 selectionPathWithInfos:v19];
     }
 
     v20 = [[CRLCommandSelectionBehavior alloc] initWithCommitSelectionPath:0 forwardSelectionPath:v16 reverseSelectionPath:v16];
-    [v5 openGroupWithSelectionBehavior:v20];
-    v21 = [(CRLCanvasRep *)self->mRep actionStringForRotate];
-    [v5 setCurrentGroupActionString:v21];
+    [commandController openGroupWithSelectionBehavior:v20];
+    actionStringForRotate = [(CRLCanvasRep *)self->mRep actionStringForRotate];
+    [commandController setCurrentGroupActionString:actionStringForRotate];
 
     [(CRLCanvasRep *)self->mRep dynamicRotateDidEndWithTracker:self];
     if ([(CRLCanvasRep *)self->mRep shouldRasterizeRenderableDuringRotation])
     {
-      v22 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-      v23 = [v22 renderableForRep:self->mRep];
+      interactiveCanvasController2 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+      v23 = [interactiveCanvasController2 renderableForRep:self->mRep];
       [v23 setShouldRasterize:0];
     }
 
@@ -383,10 +383,10 @@ LABEL_25:
       [(CRLCanvasRep *)self->mRep setShowKnobsDuringManipulation:0];
     }
 
-    [v5 closeGroup];
+    [commandController closeGroup];
     if (self->mIsEnqueueingCommandsInRealTime)
     {
-      [v5 closeGroup];
+      [commandController closeGroup];
     }
   }
 
@@ -434,12 +434,12 @@ LABEL_25:
 {
   v3 = objc_opt_new();
   v4 = [(CRLCanvasRepRotateTracker *)self rep];
-  v5 = [v4 parentRep];
+  parentRep = [v4 parentRep];
 
-  v6 = [v5 layout];
+  layout = [parentRep layout];
   v7 = [(CRLCanvasRepRotateTracker *)self rep];
-  v8 = [v7 layout];
-  v9 = [v6 childLayoutIsCurrentlyHiddenWhileManipulating:v8];
+  layout2 = [v7 layout];
+  v9 = [layout childLayoutIsCurrentlyHiddenWhileManipulating:layout2];
 
   if (v9)
   {
@@ -468,27 +468,27 @@ LABEL_25:
   return v2;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [a3 valueForKey:{@"icc", a4}];
+  v5 = [stop valueForKey:{@"icc", finished}];
   [v5 removeDecorator:self];
 }
 
 - (void)p_begin
 {
-  v6 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  [v6 endEditing];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  [interactiveCanvasController endEditing];
   if (self->mIsEnqueueingCommandsInRealTime)
   {
-    v3 = [v6 commandController];
-    [v3 openGroup];
-    [v3 enableRealTimeSyncProgressiveEnqueuingInCurrentGroup];
+    commandController = [interactiveCanvasController commandController];
+    [commandController openGroup];
+    [commandController enableRealTimeSyncProgressiveEnqueuingInCurrentGroup];
   }
 
   v4 = [(CRLCanvasRepRotateTracker *)self rep];
   if ([v4 shouldRasterizeRenderableDuringRotation])
   {
-    v5 = [v6 renderableForRep:v4];
+    v5 = [interactiveCanvasController renderableForRep:v4];
     [v5 setShouldRasterize:1];
     [v5 contentsScale];
     [v5 setRasterizationScale:?];
@@ -504,15 +504,15 @@ LABEL_25:
   if (self->mCenterForRotation.x == INFINITY && self->mCenterForRotation.y == INFINITY)
   {
     v4 = [(CRLCanvasRepRotateTracker *)self rep];
-    v5 = [v4 layout];
+    layout = [v4 layout];
 
-    v6 = [v5 originalGeometry];
-    [v5 centerForRotation];
-    if (v6)
+    originalGeometry = [layout originalGeometry];
+    [layout centerForRotation];
+    if (originalGeometry)
     {
       v12 = v8;
       v13 = v7;
-      [v6 transform];
+      [originalGeometry transform];
       v8 = v12;
       v7 = v13;
       v10 = v14;
@@ -533,9 +533,9 @@ LABEL_25:
 
 - (CGPoint)p_scaledCenterForRotation
 {
-  v3 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
   [(CRLCanvasRepRotateTracker *)self unscaledCenterForRotation];
-  [v3 convertUnscaledToBoundsPoint:?];
+  [interactiveCanvasController convertUnscaledToBoundsPoint:?];
   v5 = v4;
   v7 = v6;
 
@@ -548,18 +548,18 @@ LABEL_25:
 
 - (CGPoint)unscaledCenterForRotation
 {
-  v3 = [(CRLCanvasRep *)self->mRep layout];
-  v4 = [v3 originalGeometry];
+  layout = [(CRLCanvasRep *)self->mRep layout];
+  originalGeometry = [layout originalGeometry];
 
-  if (!v4)
+  if (!originalGeometry)
   {
     memset(&v31, 0, sizeof(v31));
-    v8 = [(CRLCanvasRep *)self->mRep layout];
-    v9 = [v8 geometry];
-    v10 = v9;
-    if (v9)
+    layout2 = [(CRLCanvasRep *)self->mRep layout];
+    geometry = [layout2 geometry];
+    v10 = geometry;
+    if (geometry)
     {
-      [v9 transform];
+      [geometry transform];
     }
 
     else
@@ -573,11 +573,11 @@ LABEL_25:
     y = self->mCenterForRotation.y;
     v13 = v31.tx + y * v31.c + v31.a * x;
     v14 = v31.ty + y * v31.d + v31.b * x;
-    v19 = [(CRLCanvasRep *)self->mRep layout];
-    v16 = v19;
-    if (v19)
+    layout3 = [(CRLCanvasRep *)self->mRep layout];
+    v16 = layout3;
+    if (layout3)
     {
-      [v19 transformInRoot];
+      [layout3 transformInRoot];
       goto LABEL_12;
     }
 
@@ -592,12 +592,12 @@ LABEL_13:
   }
 
   memset(&v31, 0, sizeof(v31));
-  v5 = [(CRLCanvasRep *)self->mRep layout];
-  v6 = [v5 originalGeometry];
-  v7 = v6;
-  if (v6)
+  layout4 = [(CRLCanvasRep *)self->mRep layout];
+  originalGeometry2 = [layout4 originalGeometry];
+  v7 = originalGeometry2;
+  if (originalGeometry2)
   {
-    [v6 transform];
+    [originalGeometry2 transform];
   }
 
   else
@@ -611,14 +611,14 @@ LABEL_13:
   v12 = self->mCenterForRotation.y;
   v13 = v31.tx + v12 * v31.c + v31.a * v11;
   v14 = v31.ty + v12 * v31.d + v31.b * v11;
-  v15 = [(CRLCanvasRep *)self->mRep layout];
-  v16 = v15;
-  if (!v15)
+  layout5 = [(CRLCanvasRep *)self->mRep layout];
+  v16 = layout5;
+  if (!layout5)
   {
     goto LABEL_13;
   }
 
-  [v15 originalTransformInRoot];
+  [layout5 originalTransformInRoot];
 LABEL_12:
   b = v30.b;
   a = v30.a;
@@ -637,21 +637,21 @@ LABEL_14:
   return result;
 }
 
-- (void)setUnscaledCenterForRotation:(CGPoint)a3
+- (void)setUnscaledCenterForRotation:(CGPoint)rotation
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLCanvasRep *)self->mRep layout];
-  v7 = [v6 originalGeometry];
+  y = rotation.y;
+  x = rotation.x;
+  layout = [(CRLCanvasRep *)self->mRep layout];
+  originalGeometry = [layout originalGeometry];
 
-  if (v7)
+  if (originalGeometry)
   {
     memset(&v21, 0, sizeof(v21));
-    v8 = [(CRLCanvasRep *)self->mRep layout];
-    v9 = v8;
-    if (v8)
+    layout2 = [(CRLCanvasRep *)self->mRep layout];
+    v9 = layout2;
+    if (layout2)
     {
-      [v8 originalTransformInRoot];
+      [layout2 originalTransformInRoot];
     }
 
     else
@@ -663,18 +663,18 @@ LABEL_14:
 
     v19 = v21.tx + y * v21.c + v21.a * x;
     v18 = v21.ty + y * v21.d + v21.b * x;
-    v12 = [(CRLCanvasRep *)self->mRep layout];
-    v13 = [v12 originalGeometry];
+    layout3 = [(CRLCanvasRep *)self->mRep layout];
+    originalGeometry2 = [layout3 originalGeometry];
   }
 
   else
   {
     memset(&v21, 0, sizeof(v21));
-    v10 = [(CRLCanvasRep *)self->mRep layout];
-    v11 = v10;
-    if (v10)
+    layout4 = [(CRLCanvasRep *)self->mRep layout];
+    v11 = layout4;
+    if (layout4)
     {
-      [v10 transformInRoot];
+      [layout4 transformInRoot];
     }
 
     else
@@ -686,14 +686,14 @@ LABEL_14:
 
     v19 = v21.tx + y * v21.c + v21.a * x;
     v18 = v21.ty + y * v21.d + v21.b * x;
-    v12 = [(CRLCanvasRep *)self->mRep layout];
-    v13 = [v12 geometry];
+    layout3 = [(CRLCanvasRep *)self->mRep layout];
+    originalGeometry2 = [layout3 geometry];
   }
 
-  v14 = v13;
-  if (v13)
+  v14 = originalGeometry2;
+  if (originalGeometry2)
   {
-    [v13 transform];
+    [originalGeometry2 transform];
     v15 = *&v20.a;
     v16 = *&v20.c;
     v17 = *&v20.tx;
@@ -717,21 +717,21 @@ LABEL_14:
   return v3;
 }
 
-- (void)p_updateHUDWithAngle:(double)a3
+- (void)p_updateHUDWithAngle:(double)angle
 {
   if ([(CRLCanvasRepRotateTracker *)self shouldShowHUD])
   {
-    v5 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+    interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
     v6 = +[CRLCanvasHUDController sharedHUDController];
-    v7 = [v5 unitStringForAngle:a3];
+    v7 = [interactiveCanvasController unitStringForAngle:angle];
     [v6 setLabelText:v7];
     if ([(CRLCanvasRepRotateTracker *)self shouldRespectScaledHUDPosition])
     {
       [(CRLCanvasRepRotateTracker *)self scaledHUDPosition];
       v10 = sub_10011F334(v8, v9, 20.0);
       v12 = v11;
-      v13 = [v5 canvasView];
-      [v6 showHUDForKey:self forTouchPoint:v13 inCanvasView:0 withNudge:v10 size:v12 anchorPoint:{CGSizeZero.width, CGSizeZero.height, 0.0, 1.0}];
+      canvasView = [interactiveCanvasController canvasView];
+      [v6 showHUDForKey:self forTouchPoint:canvasView inCanvasView:0 withNudge:v10 size:v12 anchorPoint:{CGSizeZero.width, CGSizeZero.height, 0.0, 1.0}];
     }
 
     else
@@ -740,16 +740,16 @@ LABEL_14:
       v15 = v14;
       v17 = v16;
       [(CRLCanvasRep *)self->mRep unscaledGuidePosition];
-      [v5 convertUnscaledToBoundsPoint:?];
+      [interactiveCanvasController convertUnscaledToBoundsPoint:?];
       v26 = 0.0;
       v27 = 0.0;
       v20 = sub_100120090(v18, v19, v15, v17);
-      sub_100120F28(&v26, v20 + 25.0, (a3 + 90.0) * -0.0174532925);
+      sub_100120F28(&v26, v20 + 25.0, (angle + 90.0) * -0.0174532925);
       v21 = sub_10011F334(v26, v27, v15);
       v23 = sub_100122154(v21, v22);
       v25 = v24;
-      v13 = [v5 canvasView];
-      [v6 showHUDForKey:self forTouchPoint:v13 inCanvasView:v23 withUpwardsNudge:{v25, 0.0}];
+      canvasView = [interactiveCanvasController canvasView];
+      [v6 showHUDForKey:self forTouchPoint:canvasView inCanvasView:v23 withUpwardsNudge:{v25, 0.0}];
     }
   }
 }
@@ -761,20 +761,20 @@ LABEL_14:
     if ([(CRLCanvasRepRotateTracker *)self shouldShowHUD])
     {
       v3 = +[CRLCanvasHUDController sharedHUDController];
-      v4 = [v3 view];
-      [v4 center];
+      view = [v3 view];
+      [view center];
       v6 = v5;
       v8 = v7;
 
       [(CRLCanvasRepRotateTracker *)self p_scaledCenterForRotation];
       v10 = v9;
       v12 = v11;
-      v13 = [v3 view];
-      v14 = [v13 superview];
-      v15 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-      v16 = [v15 layerHost];
-      v17 = [v16 canvasView];
-      [v14 convertPoint:v17 fromView:{v10, v12}];
+      view2 = [v3 view];
+      superview = [view2 superview];
+      interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+      layerHost = [interactiveCanvasController layerHost];
+      canvasView = [layerHost canvasView];
+      [superview convertPoint:canvasView fromView:{v10, v12}];
       v19 = v18;
       v21 = v20;
 
@@ -805,9 +805,9 @@ LABEL_14:
         v32 = v21;
       }
 
-      v33 = [v3 view];
-      v34 = [v33 layer];
-      [v34 crl_addZoomAnimationFromPoint:{v31, v32}];
+      view3 = [v3 view];
+      layer = [view3 layer];
+      [layer crl_addZoomAnimationFromPoint:{v31, v32}];
     }
 
     self->mHaveSproingedHUD = 1;
@@ -823,15 +823,15 @@ LABEL_14:
   }
 }
 
-- (void)p_updateGuideRenderableWithAngle:(double)a3 didSnap:(BOOL)a4
+- (void)p_updateGuideRenderableWithAngle:(double)angle didSnap:(BOOL)snap
 {
-  v4 = a4;
+  snapCopy = snap;
   mGuideRenderable = self->mGuideRenderable;
   if (!mGuideRenderable)
   {
-    v8 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-    v9 = [v8 canvas];
-    [v9 contentsScale];
+    interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+    canvas = [interactiveCanvasController canvas];
+    [canvas contentsScale];
     v11 = v10;
 
     v12 = +[CRLCanvasShapeRenderable renderable];
@@ -852,7 +852,7 @@ LABEL_14:
     v17 = floor(v16);
     v19 = floor(v18);
     [(CRLCanvasRep *)self->mRep unscaledGuidePosition];
-    [v8 convertUnscaledToBoundsPoint:?];
+    [interactiveCanvasController convertUnscaledToBoundsPoint:?];
     v21 = v20;
     v23 = v22;
     CGPathMoveToPoint(Mutable, 0, 0.0, -10.0);
@@ -868,16 +868,16 @@ LABEL_14:
     [(CRLCanvasShapeRenderable *)self->mGuideRenderable setPath:Mutable];
     CGPathRelease(Mutable);
     [(CRLCanvasRenderable *)self->mGuideRenderable setPosition:v17, v19];
-    [v8 addDecorator:self];
+    [interactiveCanvasController addDecorator:self];
 
     mGuideRenderable = self->mGuideRenderable;
   }
 
-  CGAffineTransformMakeRotation(&v27, (a3 + 180.0) * -0.0174532925);
+  CGAffineTransformMakeRotation(&v27, (angle + 180.0) * -0.0174532925);
   v26 = v27;
   [(CRLCanvasRenderable *)mGuideRenderable setAffineTransform:&v26];
   LODWORD(v25) = 1050253722;
-  if (v4)
+  if (snapCopy)
   {
     *&v25 = 1.0;
   }
@@ -897,8 +897,8 @@ LABEL_14:
   [v6 setToValue:v4];
 
   [v6 setDelegate:self];
-  v5 = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
-  [v6 setValue:v5 forKey:@"icc"];
+  interactiveCanvasController = [(CRLCanvasRep *)self->mRep interactiveCanvasController];
+  [v6 setValue:interactiveCanvasController forKey:@"icc"];
 
   [(CRLCanvasRenderable *)self->mGuideRenderable addAnimation:v6 forKey:@"fade out"];
   [(CRLCanvasRenderable *)self->mGuideRenderable setOpacity:0.0];

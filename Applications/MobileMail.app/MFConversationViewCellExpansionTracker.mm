@@ -1,26 +1,26 @@
 @interface MFConversationViewCellExpansionTracker
-- (MFConversationViewCellExpansionTracker)initWithDelegate:(id)a3;
+- (MFConversationViewCellExpansionTracker)initWithDelegate:(id)delegate;
 - (MFConversationViewCellExpansionTrackerDelegate)delegate;
 - (NSDictionary)dictionaryRepresentation;
-- (int64_t)expansionStatusForCellWithItemID:(id)a3;
+- (int64_t)expansionStatusForCellWithItemID:(id)d;
 - (void)_updateCollapsingAllowed;
 - (void)resetRecord;
-- (void)restoreDictionaryRepresentation:(id)a3;
-- (void)setMessageWithItemID:(id)a3 expansionStatus:(int64_t)a4;
+- (void)restoreDictionaryRepresentation:(id)representation;
+- (void)setMessageWithItemID:(id)d expansionStatus:(int64_t)status;
 @end
 
 @implementation MFConversationViewCellExpansionTracker
 
-- (MFConversationViewCellExpansionTracker)initWithDelegate:(id)a3
+- (MFConversationViewCellExpansionTracker)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = MFConversationViewCellExpansionTracker;
   v5 = [(MFConversationViewCellExpansionTracker *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(MFConversationViewCellExpansionTracker *)v5 setDelegate:v4];
+    [(MFConversationViewCellExpansionTracker *)v5 setDelegate:delegateCopy];
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v6 selector:"_updateCollapsingAllowed" name:MailApplicationDidChangeConversationViewCollapseReadMessagesNotification object:0];
 
@@ -34,65 +34,65 @@
 
 - (void)_updateCollapsingAllowed
 {
-  v3 = [(MFConversationViewCellExpansionTracker *)self delegate];
-  [v3 expansionTracker:self didChangeCollapsingAllowed:{objc_msgSend(objc_opt_class(), "allowsCollapsing")}];
+  delegate = [(MFConversationViewCellExpansionTracker *)self delegate];
+  [delegate expansionTracker:self didChangeCollapsingAllowed:{objc_msgSend(objc_opt_class(), "allowsCollapsing")}];
 }
 
-- (int64_t)expansionStatusForCellWithItemID:(id)a3
+- (int64_t)expansionStatusForCellWithItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([objc_opt_class() allowsCollapsing])
   {
-    v5 = [(MFConversationViewCellExpansionTracker *)self expansionRecord];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    expansionRecord = [(MFConversationViewCellExpansionTracker *)self expansionRecord];
+    v6 = [expansionRecord objectForKeyedSubscript:dCopy];
 
     if (v6)
     {
-      v7 = [v6 integerValue];
+      integerValue = [v6 integerValue];
     }
 
     else
     {
-      v7 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
-    v7 = 3;
+    integerValue = 3;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (void)setMessageWithItemID:(id)a3 expansionStatus:(int64_t)a4
+- (void)setMessageWithItemID:(id)d expansionStatus:(int64_t)status
 {
-  v8 = a3;
-  v6 = [NSNumber numberWithInteger:a4];
-  v7 = [(MFConversationViewCellExpansionTracker *)self expansionRecord];
-  [v7 setObject:v6 forKeyedSubscript:v8];
+  dCopy = d;
+  v6 = [NSNumber numberWithInteger:status];
+  expansionRecord = [(MFConversationViewCellExpansionTracker *)self expansionRecord];
+  [expansionRecord setObject:v6 forKeyedSubscript:dCopy];
 }
 
 - (void)resetRecord
 {
-  v2 = [(MFConversationViewCellExpansionTracker *)self expansionRecord];
-  [v2 removeAllObjects];
+  expansionRecord = [(MFConversationViewCellExpansionTracker *)self expansionRecord];
+  [expansionRecord removeAllObjects];
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v2 = [(MFConversationViewCellExpansionTracker *)self expansionRecord];
-  v3 = [v2 copy];
+  expansionRecord = [(MFConversationViewCellExpansionTracker *)self expansionRecord];
+  v3 = [expansionRecord copy];
 
   return v3;
 }
 
-- (void)restoreDictionaryRepresentation:(id)a3
+- (void)restoreDictionaryRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   [(MFConversationViewCellExpansionTracker *)self resetRecord];
-  v4 = [(MFConversationViewCellExpansionTracker *)self expansionRecord];
-  [v4 addEntriesFromDictionary:v5];
+  expansionRecord = [(MFConversationViewCellExpansionTracker *)self expansionRecord];
+  [expansionRecord addEntriesFromDictionary:representationCopy];
 }
 
 - (MFConversationViewCellExpansionTrackerDelegate)delegate

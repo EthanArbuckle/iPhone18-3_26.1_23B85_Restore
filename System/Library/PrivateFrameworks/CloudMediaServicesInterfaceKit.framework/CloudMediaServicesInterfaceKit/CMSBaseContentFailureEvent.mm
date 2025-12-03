@@ -1,14 +1,14 @@
 @interface CMSBaseContentFailureEvent
-- (CMSBaseContentFailureEvent)initWithServiceID:(id)a3 sessionIdentifier:(id)a4;
+- (CMSBaseContentFailureEvent)initWithServiceID:(id)d sessionIdentifier:(id)identifier;
 - (id)encoded;
 @end
 
 @implementation CMSBaseContentFailureEvent
 
-- (CMSBaseContentFailureEvent)initWithServiceID:(id)a3 sessionIdentifier:(id)a4
+- (CMSBaseContentFailureEvent)initWithServiceID:(id)d sessionIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = CMSBaseContentFailureEvent;
   v9 = [(CMSBaseContentFailureEvent *)&v14 init];
@@ -19,13 +19,13 @@
   }
 
   v11 = 0;
-  if (v7 && v8)
+  if (dCopy && identifierCopy)
   {
     eventName = v9->_eventName;
     v9->_eventName = &stru_2856A7BB0;
 
-    objc_storeStrong(p_isa + 2, a3);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(p_isa + 2, d);
+    objc_storeStrong(p_isa + 3, identifier);
 LABEL_5:
     v11 = p_isa;
   }

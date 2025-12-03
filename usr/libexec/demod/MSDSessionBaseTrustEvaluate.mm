@@ -1,24 +1,24 @@
 @interface MSDSessionBaseTrustEvaluate
-- (BOOL)trustServer:(__SecTrust *)a3 isRedirect:(BOOL)a4;
-- (BOOL)trustServer:(__SecTrust *)a3 withRootCA:(__SecCertificate *)a4 withHostName:(id)a5;
-- (BOOL)trustServerWithApplePKI:(__SecTrust *)a3;
-- (BOOL)trustServerWithAxinoePKI:(__SecTrust *)a3;
-- (id)hashForCertificate:(__SecCertificate *)a3;
-- (id)identifierFor:(__SecCertificate *)a3 applePKI:(BOOL)a4;
+- (BOOL)trustServer:(__SecTrust *)server isRedirect:(BOOL)redirect;
+- (BOOL)trustServer:(__SecTrust *)server withRootCA:(__SecCertificate *)a withHostName:(id)name;
+- (BOOL)trustServerWithApplePKI:(__SecTrust *)i;
+- (BOOL)trustServerWithAxinoePKI:(__SecTrust *)i;
+- (id)hashForCertificate:(__SecCertificate *)certificate;
+- (id)identifierFor:(__SecCertificate *)for applePKI:(BOOL)i;
 @end
 
 @implementation MSDSessionBaseTrustEvaluate
 
-- (BOOL)trustServer:(__SecTrust *)a3 isRedirect:(BOOL)a4
+- (BOOL)trustServer:(__SecTrust *)server isRedirect:(BOOL)redirect
 {
-  v4 = a4;
+  redirectCopy = redirect;
   v7 = +[MSDTargetDevice sharedInstance];
   [(MSDSessionBaseTrustEvaluate *)self setApplePKI:1];
-  if (v4)
+  if (redirectCopy)
   {
     v20 = 0;
     v8 = 0;
-    if (!SecTrustEvaluate(a3, &v20))
+    if (!SecTrustEvaluate(server, &v20))
     {
       v8 = v20 == 4 || v20 == 1;
     }
@@ -27,17 +27,17 @@
     goto LABEL_20;
   }
 
-  if (![(MSDSessionBaseTrustEvaluate *)self trustServerWithApplePKI:a3])
+  if (![(MSDSessionBaseTrustEvaluate *)self trustServerWithApplePKI:server])
   {
     [(MSDSessionBaseTrustEvaluate *)self setApplePKI:0];
-    if (![(MSDSessionBaseTrustEvaluate *)self trustServerWithAxinoePKI:a3])
+    if (![(MSDSessionBaseTrustEvaluate *)self trustServerWithAxinoePKI:server])
     {
       sub_1000E3970();
       goto LABEL_25;
     }
   }
 
-  [(MSDSessionBaseTrustEvaluate *)self setLeafCertificate:SecTrustGetCertificateAtIndex(a3, 0)];
+  [(MSDSessionBaseTrustEvaluate *)self setLeafCertificate:SecTrustGetCertificateAtIndex(server, 0)];
   if (![(MSDSessionBaseTrustEvaluate *)self leafCertificate])
   {
     sub_1000E3A38();
@@ -48,9 +48,9 @@ LABEL_30:
     goto LABEL_20;
   }
 
-  v11 = [v7 certificateHash];
-  v10 = v11;
-  if (self->_applePKI || !v11)
+  certificateHash = [v7 certificateHash];
+  v10 = certificateHash;
+  if (self->_applePKI || !certificateHash)
   {
     [(MSDSessionBaseTrustEvaluate *)self setIsDone:0];
     v8 = 0;
@@ -66,13 +66,13 @@ LABEL_30:
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v10 hexStringRepresentation];
+      hexStringRepresentation = [v10 hexStringRepresentation];
       v18 = [(MSDSessionBaseTrustEvaluate *)self hashForCertificate:self->_leafCertificate];
-      v19 = [v18 hexStringRepresentation];
+      hexStringRepresentation2 = [v18 hexStringRepresentation];
       v20 = 138543618;
-      v21 = v17;
+      v21 = hexStringRepresentation;
       v22 = 2114;
-      v23 = v19;
+      v23 = hexStringRepresentation2;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Certificate hash does not match the saved one - Saved:  %{public}@ - Current:  %{public}@", &v20, 0x16u);
     }
 
@@ -99,7 +99,7 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)trustServerWithApplePKI:(__SecTrust *)a3
+- (BOOL)trustServerWithApplePKI:(__SecTrust *)i
 {
   commonName = 0;
   v5 = CFDataCreate(kCFAllocatorDefault, byte_1001A4CB8, dword_1001A5040);
@@ -118,7 +118,7 @@ LABEL_22:
   }
 
   v8 = v7;
-  if (![(MSDSessionBaseTrustEvaluate *)self trustServer:a3 withRootCA:v7 withHostName:0])
+  if (![(MSDSessionBaseTrustEvaluate *)self trustServer:i withRootCA:v7 withHostName:0])
   {
     v10 = 0;
 LABEL_22:
@@ -126,7 +126,7 @@ LABEL_22:
     goto LABEL_8;
   }
 
-  CertificateAtIndex = SecTrustGetCertificateAtIndex(a3, 0);
+  CertificateAtIndex = SecTrustGetCertificateAtIndex(i, 0);
   if (!CertificateAtIndex)
   {
     v13 = sub_100063A54();
@@ -173,7 +173,7 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)trustServerWithAxinoePKI:(__SecTrust *)a3
+- (BOOL)trustServerWithAxinoePKI:(__SecTrust *)i
 {
   v5 = CFDataCreate(kCFAllocatorDefault, byte_1001A48A8, dword_1001A4CB4);
   if (!v5)
@@ -191,14 +191,14 @@ LABEL_8:
   }
 
   v8 = v7;
-  if ([(MSDSessionBaseTrustEvaluate *)self trustServer:a3 withRootCA:v7 withHostName:@"hub.iosdm.local"])
+  if ([(MSDSessionBaseTrustEvaluate *)self trustServer:i withRootCA:v7 withHostName:@"hub.iosdm.local"])
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [(MSDSessionBaseTrustEvaluate *)self trustServer:a3 withRootCA:v8 withHostName:@"hub.iosdm.net"];
+    v9 = [(MSDSessionBaseTrustEvaluate *)self trustServer:i withRootCA:v8 withHostName:@"hub.iosdm.net"];
   }
 
   CFRelease(v6);
@@ -206,10 +206,10 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)trustServer:(__SecTrust *)a3 withRootCA:(__SecCertificate *)a4 withHostName:(id)a5
+- (BOOL)trustServer:(__SecTrust *)server withRootCA:(__SecCertificate *)a withHostName:(id)name
 {
   trust = 0;
-  SSL = SecPolicyCreateSSL(1u, a5);
+  SSL = SecPolicyCreateSSL(1u, name);
   if (!SSL)
   {
     sub_1000E3F68();
@@ -220,13 +220,13 @@ LABEL_8:
 
   v8 = SSL;
   Mutable = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
-  CertificateCount = SecTrustGetCertificateCount(a3);
+  CertificateCount = SecTrustGetCertificateCount(server);
   if (CertificateCount >= 1)
   {
     v11 = CertificateCount;
     for (i = 0; i != v11; ++i)
     {
-      CertificateAtIndex = SecTrustGetCertificateAtIndex(a3, i);
+      CertificateAtIndex = SecTrustGetCertificateAtIndex(server, i);
       CFArrayAppendValue(Mutable, CertificateAtIndex);
     }
   }
@@ -240,7 +240,7 @@ LABEL_8:
 
   else
   {
-    v14 = [NSArray arrayWithObjects:a4, 0];
+    v14 = [NSArray arrayWithObjects:a, 0];
     v15 = SecTrustSetAnchorCertificates(trust, v14);
     if (v15)
     {
@@ -281,9 +281,9 @@ LABEL_18:
   return v16;
 }
 
-- (id)hashForCertificate:(__SecCertificate *)a3
+- (id)hashForCertificate:(__SecCertificate *)certificate
 {
-  v3 = SecCertificateCopyData(a3);
+  v3 = SecCertificateCopyData(certificate);
   if (v3)
   {
     v4 = malloc_type_calloc(1uLL, 0x14uLL, 0x100004077774924uLL);
@@ -301,10 +301,10 @@ LABEL_18:
   return v5;
 }
 
-- (id)identifierFor:(__SecCertificate *)a3 applePKI:(BOOL)a4
+- (id)identifierFor:(__SecCertificate *)for applePKI:(BOOL)i
 {
   commonName = 0;
-  if (!a4)
+  if (!i)
   {
     v30 = 0u;
     v31 = 0u;
@@ -389,7 +389,7 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  if (SecCertificateCopyCommonName(a3, &commonName))
+  if (SecCertificateCopyCommonName(for, &commonName))
   {
 LABEL_23:
     v4 = 0;

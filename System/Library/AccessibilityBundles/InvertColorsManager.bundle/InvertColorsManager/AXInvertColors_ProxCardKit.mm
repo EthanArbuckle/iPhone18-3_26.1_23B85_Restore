@@ -1,14 +1,14 @@
 @interface AXInvertColors_ProxCardKit
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_ProxCardKit
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PRXCardBottomTray" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRXCardBottomTray" hasInstanceMethod:@"setImageView:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PRXCardBottomTray" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRXCardBottomTray" hasInstanceMethod:@"setImageView:" withFullSignature:{"v", "@", 0}];
 }
 
 @end

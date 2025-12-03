@@ -1,7 +1,7 @@
 @interface MTRecommendationModuleTitle
 - (MTRecommendationModuleTitle)init;
 - (NSString)stringForDisplay;
-- (void)setStringForDisplay:(id)a3;
+- (void)setStringForDisplay:(id)display;
 @end
 
 @implementation MTRecommendationModuleTitle
@@ -25,9 +25,9 @@
   return v4;
 }
 
-- (void)setStringForDisplay:(id)a3
+- (void)setStringForDisplay:(id)display
 {
-  if (a3)
+  if (display)
   {
     v4 = sub_1D917820C();
     v6 = v5;

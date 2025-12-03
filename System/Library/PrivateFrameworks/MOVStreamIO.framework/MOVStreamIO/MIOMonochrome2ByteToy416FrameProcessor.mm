@@ -1,12 +1,12 @@
 @interface MIOMonochrome2ByteToy416FrameProcessor
-- (MIOMonochrome2ByteToy416FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3;
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5;
+- (MIOMonochrome2ByteToy416FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description;
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MIOMonochrome2ByteToy416FrameProcessor
 
-- (MIOMonochrome2ByteToy416FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3
+- (MIOMonochrome2ByteToy416FrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v10.receiver = self;
@@ -14,7 +14,7 @@
   v4 = [(MIOFrameProcessor *)&v10 initWithInputFormatDescription:?];
   if (v4)
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a3);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(description);
     texture = 0;
     v11 = *MEMORY[0x277CC4DE8];
     v12[0] = MEMORY[0x277CBEC10];
@@ -43,37 +43,37 @@
   [(MIOFrameProcessor *)&v4 dealloc];
 }
 
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error
 {
-  v8 = a4;
+  attachmentsCopy = attachments;
   pool = self->_pool;
-  if (pool || (Width = CVPixelBufferGetWidth(a3), [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:Width height:CVPixelBufferGetHeight(a3) pixelFormat:2033463606 extendedPixelsPerRow:0 minBufferCount:2 bufferCacheMode:[(MIOMonochrome2ByteToy416FrameProcessor *)self bufferCacheMode]], v11 = objc_claimAutoreleasedReturnValue(), v12 = self->_pool, self->_pool = v11, v12, (pool = self->_pool) != 0))
+  if (pool || (Width = CVPixelBufferGetWidth(buffer), [MIOPixelBufferPool createMIOPixelBufferPoolWithWidth:Width height:CVPixelBufferGetHeight(buffer) pixelFormat:2033463606 extendedPixelsPerRow:0 minBufferCount:2 bufferCacheMode:[(MIOMonochrome2ByteToy416FrameProcessor *)self bufferCacheMode]], v11 = objc_claimAutoreleasedReturnValue(), v12 = self->_pool, self->_pool = v11, v12, (pool = self->_pool) != 0))
   {
     [(MIOPixelBufferPool *)pool flush];
-    v13 = [(MIOPixelBufferPool *)self->_pool getPixelBuffer];
-    if (!v13)
+    getPixelBuffer = [(MIOPixelBufferPool *)self->_pool getPixelBuffer];
+    if (!getPixelBuffer)
     {
       NSLog(&cfstr_RunningOutOfBu.isa);
       __assert_rtn("[MIOMonochrome2ByteToy416FrameProcessor processPixelBuffer:preserveAttachments:error:]", "MIOMonochrome2ByteToy416FrameProcessor.mm", 85, "0");
     }
 
-    [(MIOPixelBufferUtility *)PixelBufferUtility copyMonochromeBuffer:a3 toAlphaChannelOfBuffer:v13];
-    self->_formatDescForEncoding = [(MIOFrameProcessor *)self updatedFormatDescriptionIfNeededWithBuffer:v13 currentFormatDescription:self->_formatDescForEncoding];
+    [(MIOPixelBufferUtility *)PixelBufferUtility copyMonochromeBuffer:buffer toAlphaChannelOfBuffer:getPixelBuffer];
+    self->_formatDescForEncoding = [(MIOFrameProcessor *)self updatedFormatDescriptionIfNeededWithBuffer:getPixelBuffer currentFormatDescription:self->_formatDescForEncoding];
   }
 
   else
   {
     v15 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:@"Cannot create pixel buffer pool for RawBayer stream." code:19];
-    if (a5)
+    if (error)
     {
       v15 = v15;
-      *a5 = v15;
+      *error = v15;
     }
 
-    v13 = 0;
+    getPixelBuffer = 0;
   }
 
-  return v13;
+  return getPixelBuffer;
 }
 
 @end

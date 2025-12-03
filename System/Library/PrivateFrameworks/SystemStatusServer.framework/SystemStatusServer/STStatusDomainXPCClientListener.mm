@@ -1,21 +1,21 @@
 @interface STStatusDomainXPCClientListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (STStatusDomainXPCClientListener)initWithServerHandle:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (STStatusDomainXPCClientListener)initWithServerHandle:(id)handle;
 - (void)dealloc;
 @end
 
 @implementation STStatusDomainXPCClientListener
 
-- (STStatusDomainXPCClientListener)initWithServerHandle:(id)a3
+- (STStatusDomainXPCClientListener)initWithServerHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v11.receiver = self;
   v11.super_class = STStatusDomainXPCClientListener;
   v5 = [(STStatusDomainXPCClientListener *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_serverHandle, v4);
+    objc_storeWeak(&v5->_serverHandle, handleCopy);
     v7 = objc_alloc(MEMORY[0x277CCAE98]);
     v8 = [v7 initWithMachServiceName:*MEMORY[0x277D6BF38]];
     xpcListener = v6->_xpcListener;
@@ -30,28 +30,28 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_xpcListener;
   }
 
   [(STStatusDomainXPCClientListener *)self invalidate];
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = STStatusDomainXPCClientListener;
   [(STStatusDomainXPCClientListener *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [STStatusDomainXPCClientHandle alloc];
   if (self)
   {
     self = objc_loadWeakRetained(&self->_serverHandle);
   }
 
-  v7 = [(STStatusDomainXPCClientHandle *)v6 initWithXPCConnection:v5 serverHandle:self];
+  v7 = [(STStatusDomainXPCClientHandle *)v6 initWithXPCConnection:connectionCopy serverHandle:self];
 
   return v7 != 0;
 }

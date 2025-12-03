@@ -1,21 +1,21 @@
 @interface WFConcreteStatisticsSampleProvider
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation WFConcreteStatisticsSampleProvider
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(WFConcreteStatisticsSampleProvider *)self sampleProvider];
-  [v4 invokeWithTarget:v5];
+  invocationCopy = invocation;
+  sampleProvider = [(WFConcreteStatisticsSampleProvider *)self sampleProvider];
+  [invocationCopy invokeWithTarget:sampleProvider];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [(WFConcreteStatisticsSampleProvider *)self sampleProvider];
-  v5 = [v4 methodSignatureForSelector:a3];
+  sampleProvider = [(WFConcreteStatisticsSampleProvider *)self sampleProvider];
+  v5 = [sampleProvider methodSignatureForSelector:selector];
 
   return v5;
 }

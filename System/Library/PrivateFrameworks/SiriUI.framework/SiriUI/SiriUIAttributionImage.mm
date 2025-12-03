@@ -1,30 +1,30 @@
 @interface SiriUIAttributionImage
-+ (id)attributionImageFromAppPunchOut:(id)a3;
-+ (id)attributionImageFromImageResource:(id)a3;
-+ (id)attributionImageFromKey:(id)a3 pressedKey:(id)a4 punchOut:(id)a5;
-+ (id)attributionImageWithLocalResourceName:(id)a3 pressedResourceName:(id)a4 localPunchOut:(id)a5 bundle:(id)a6;
++ (id)attributionImageFromAppPunchOut:(id)out;
++ (id)attributionImageFromImageResource:(id)resource;
++ (id)attributionImageFromKey:(id)key pressedKey:(id)pressedKey punchOut:(id)out;
++ (id)attributionImageWithLocalResourceName:(id)name pressedResourceName:(id)resourceName localPunchOut:(id)out bundle:(id)bundle;
 - (CGSize)logoSize;
-- (id)_imageInLocalResourceBundleNamed:(id)a3;
-- (void)_fetchLocalResourcesWithCompletion:(id)a3;
-- (void)_fetchRemoteResourcesWithCompletion:(id)a3;
-- (void)getLogoWithCompletion:(id)a3;
+- (id)_imageInLocalResourceBundleNamed:(id)named;
+- (void)_fetchLocalResourcesWithCompletion:(id)completion;
+- (void)_fetchRemoteResourcesWithCompletion:(id)completion;
+- (void)getLogoWithCompletion:(id)completion;
 @end
 
 @implementation SiriUIAttributionImage
 
-+ (id)attributionImageFromAppPunchOut:(id)a3
++ (id)attributionImageFromAppPunchOut:(id)out
 {
-  v3 = a3;
-  v4 = [objc_opt_class() attributionImageFromKey:0 pressedKey:0 punchOut:v3];
+  outCopy = out;
+  v4 = [objc_opt_class() attributionImageFromKey:0 pressedKey:0 punchOut:outCopy];
 
   return v4;
 }
 
-+ (id)attributionImageFromImageResource:(id)a3
++ (id)attributionImageFromImageResource:(id)resource
 {
-  v3 = a3;
-  v4 = [v3 resourceUrl];
-  [v3 scaleFactor];
+  resourceCopy = resource;
+  resourceUrl = [resourceCopy resourceUrl];
+  [resourceCopy scaleFactor];
   if (v5 <= 0.0)
   {
     v6 = 1.0;
@@ -35,11 +35,11 @@
     v6 = v5;
   }
 
-  if (v3)
+  if (resourceCopy)
   {
-    [v3 pixelWidth];
+    [resourceCopy pixelWidth];
     v8 = v7 / v6;
-    [v3 pixelHeight];
+    [resourceCopy pixelHeight];
     v10 = v9 / v6;
   }
 
@@ -50,52 +50,52 @@
   }
 
   v11 = objc_alloc_init(SiriUIAttributionImage);
-  [(SiriUIAttributionImage *)v11 setRemoteURL:v4];
+  [(SiriUIAttributionImage *)v11 setRemoteURL:resourceUrl];
   [(SiriUIAttributionImage *)v11 setRemoteScale:v6];
   [(SiriUIAttributionImage *)v11 setLogoSize:v8, v10];
 
   return v11;
 }
 
-+ (id)attributionImageWithLocalResourceName:(id)a3 pressedResourceName:(id)a4 localPunchOut:(id)a5 bundle:(id)a6
++ (id)attributionImageWithLocalResourceName:(id)name pressedResourceName:(id)resourceName localPunchOut:(id)out bundle:(id)bundle
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  bundleCopy = bundle;
+  outCopy = out;
+  resourceNameCopy = resourceName;
+  nameCopy = name;
   v13 = objc_alloc_init(SiriUIAttributionImage);
-  [(SiriUIAttributionImage *)v13 setLocalResourceBundle:v9];
+  [(SiriUIAttributionImage *)v13 setLocalResourceBundle:bundleCopy];
 
-  [(SiriUIAttributionImage *)v13 setLocalResourceName:v12];
-  [(SiriUIAttributionImage *)v13 setLocalPressedResourceName:v11];
+  [(SiriUIAttributionImage *)v13 setLocalResourceName:nameCopy];
+  [(SiriUIAttributionImage *)v13 setLocalPressedResourceName:resourceNameCopy];
 
-  [(SiriUIAttributionImage *)v13 setLocalPunchOut:v10];
+  [(SiriUIAttributionImage *)v13 setLocalPunchOut:outCopy];
 
   return v13;
 }
 
-+ (id)attributionImageFromKey:(id)a3 pressedKey:(id)a4 punchOut:(id)a5
++ (id)attributionImageFromKey:(id)key pressedKey:(id)pressedKey punchOut:(id)out
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 appIconMap];
+  keyCopy = key;
+  pressedKeyCopy = pressedKey;
+  outCopy = out;
+  appIconMap = [outCopy appIconMap];
 
-  if (v7 && v10)
+  if (keyCopy && appIconMap)
   {
-    v11 = [v9 appIconMap];
-    v12 = [v11 objectForKey:v7];
-    v13 = [v11 objectForKey:v8];
+    appIconMap2 = [outCopy appIconMap];
+    appIcon = [appIconMap2 objectForKey:keyCopy];
+    v13 = [appIconMap2 objectForKey:pressedKeyCopy];
   }
 
   else
   {
-    v12 = [v9 appIcon];
+    appIcon = [outCopy appIcon];
     v13 = 0;
   }
 
-  v14 = [v12 resourceUrl];
-  [v12 scaleFactor];
+  resourceUrl = [appIcon resourceUrl];
+  [appIcon scaleFactor];
   if (v15 <= 0.0)
   {
     v16 = 1.0;
@@ -106,14 +106,14 @@
     v16 = v15;
   }
 
-  v17 = [v13 resourceUrl];
+  resourceUrl2 = [v13 resourceUrl];
   [v13 scaleFactor];
   v19 = v18;
-  if (v12)
+  if (appIcon)
   {
-    [v12 pixelWidth];
+    [appIcon pixelWidth];
     v21 = v20 / v16;
-    [v12 pixelHeight];
+    [appIcon pixelHeight];
     v23 = v22 / v16;
   }
 
@@ -129,46 +129,46 @@
   }
 
   v24 = objc_alloc_init(SiriUIAttributionImage);
-  [(SiriUIAttributionImage *)v24 setRemoteURL:v14];
+  [(SiriUIAttributionImage *)v24 setRemoteURL:resourceUrl];
   [(SiriUIAttributionImage *)v24 setRemoteScale:v16];
-  [(SiriUIAttributionImage *)v24 setRemotePressedURL:v17];
+  [(SiriUIAttributionImage *)v24 setRemotePressedURL:resourceUrl2];
   [(SiriUIAttributionImage *)v24 setRemotePressedScale:v19];
   [(SiriUIAttributionImage *)v24 setLogoSize:v21, v23];
-  [(SiriUIAttributionImage *)v24 setRemotePunchOut:v9];
+  [(SiriUIAttributionImage *)v24 setRemotePunchOut:outCopy];
 
   return v24;
 }
 
-- (void)getLogoWithCompletion:(id)a3
+- (void)getLogoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(SiriUIAttributionImage *)self localResourceName];
+    localResourceName = [(SiriUIAttributionImage *)self localResourceName];
 
-    if (v5)
+    if (localResourceName)
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __48__SiriUIAttributionImage_getLogoWithCompletion___block_invoke;
       v7[3] = &unk_279C5A248;
       v7[4] = self;
-      v8 = v4;
+      v8 = completionCopy;
       [(SiriUIAttributionImage *)self _fetchLocalResourcesWithCompletion:v7];
     }
 
     else
     {
-      v6 = [(SiriUIAttributionImage *)self remoteURL];
+      remoteURL = [(SiriUIAttributionImage *)self remoteURL];
 
-      if (v6)
+      if (remoteURL)
       {
-        [(SiriUIAttributionImage *)self _fetchRemoteResourcesWithCompletion:v4];
+        [(SiriUIAttributionImage *)self _fetchRemoteResourcesWithCompletion:completionCopy];
       }
 
       else
       {
-        (*(v4 + 2))(v4, 0, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0);
       }
     }
   }
@@ -191,10 +191,10 @@ uint64_t __48__SiriUIAttributionImage_getLogoWithCompletion___block_invoke(uint6
 {
   width = *MEMORY[0x277CBF3A8];
   height = *(MEMORY[0x277CBF3A8] + 8);
-  v5 = [(SiriUIAttributionImage *)self localResourceName];
-  if ([v5 length])
+  localResourceName = [(SiriUIAttributionImage *)self localResourceName];
+  if ([localResourceName length])
   {
-    v6 = [(SiriUIAttributionImage *)self _imageInLocalResourceBundleNamed:v5];
+    v6 = [(SiriUIAttributionImage *)self _imageInLocalResourceBundleNamed:localResourceName];
     v7 = v6;
     if (v6)
     {
@@ -217,19 +217,19 @@ uint64_t __48__SiriUIAttributionImage_getLogoWithCompletion___block_invoke(uint6
   return result;
 }
 
-- (void)_fetchLocalResourcesWithCompletion:(id)a3
+- (void)_fetchLocalResourcesWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(SiriUIAttributionImage *)self localResourceName];
-  v5 = [(SiriUIAttributionImage *)self localPressedResourceName];
-  v6 = [(SiriUIAttributionImage *)self localPunchOut];
-  if (v4)
+  completionCopy = completion;
+  localResourceName = [(SiriUIAttributionImage *)self localResourceName];
+  localPressedResourceName = [(SiriUIAttributionImage *)self localPressedResourceName];
+  localPunchOut = [(SiriUIAttributionImage *)self localPunchOut];
+  if (localResourceName)
   {
-    v7 = [(SiriUIAttributionImage *)self _imageInLocalResourceBundleNamed:v4];
-    if (v5)
+    v7 = [(SiriUIAttributionImage *)self _imageInLocalResourceBundleNamed:localResourceName];
+    if (localPressedResourceName)
     {
 LABEL_3:
-      v8 = [(SiriUIAttributionImage *)self _imageInLocalResourceBundleNamed:v5];
+      v8 = [(SiriUIAttributionImage *)self _imageInLocalResourceBundleNamed:localPressedResourceName];
       goto LABEL_6;
     }
   }
@@ -237,7 +237,7 @@ LABEL_3:
   else
   {
     v7 = 0;
-    if (v5)
+    if (localPressedResourceName)
     {
       goto LABEL_3;
     }
@@ -245,25 +245,25 @@ LABEL_3:
 
   v8 = 0;
 LABEL_6:
-  v9[2](v9, v7, v8, v6);
+  completionCopy[2](completionCopy, v7, v8, localPunchOut);
 }
 
-- (id)_imageInLocalResourceBundleNamed:(id)a3
+- (id)_imageInLocalResourceBundleNamed:(id)named
 {
   v4 = MEMORY[0x277D755B8];
-  v5 = a3;
-  v6 = [(SiriUIAttributionImage *)self localResourceBundle];
-  v7 = [v4 _deviceSpecificImageNamed:v5 inBundle:v6];
+  namedCopy = named;
+  localResourceBundle = [(SiriUIAttributionImage *)self localResourceBundle];
+  v7 = [v4 _deviceSpecificImageNamed:namedCopy inBundle:localResourceBundle];
 
   return v7;
 }
 
-- (void)_fetchRemoteResourcesWithCompletion:(id)a3
+- (void)_fetchRemoteResourcesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v17 = [(SiriUIAttributionImage *)self remoteURL];
-  v5 = [(SiriUIAttributionImage *)self remotePressedURL];
-  v6 = [(SiriUIAttributionImage *)self remotePunchOut];
+  completionCopy = completion;
+  remoteURL = [(SiriUIAttributionImage *)self remoteURL];
+  remotePressedURL = [(SiriUIAttributionImage *)self remotePressedURL];
+  remotePunchOut = [(SiriUIAttributionImage *)self remotePunchOut];
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
@@ -287,7 +287,7 @@ LABEL_6:
   v28 = v31;
   v10 = v7;
   v27 = v10;
-  v11 = [v9 imageTaskWithHTTPGetRequest:v17 client:self completionHandler:v26];
+  v11 = [v9 imageTaskWithHTTPGetRequest:remoteURL client:self completionHandler:v26];
 
   dispatch_group_enter(v10);
   v12 = +[SiriUIURLSession sharedURLSession];
@@ -298,7 +298,7 @@ LABEL_6:
   v25 = v29;
   v13 = v10;
   v24 = v13;
-  v14 = [v12 imageTaskWithHTTPGetRequest:v5 client:self completionHandler:v23];
+  v14 = [v12 imageTaskWithHTTPGetRequest:remotePressedURL client:self completionHandler:v23];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -306,10 +306,10 @@ LABEL_6:
   block[3] = &unk_279C5A298;
   v21 = v31;
   v22 = v29;
-  v19 = v6;
-  v20 = v4;
-  v15 = v6;
-  v16 = v4;
+  v19 = remotePunchOut;
+  v20 = completionCopy;
+  v15 = remotePunchOut;
+  v16 = completionCopy;
   dispatch_group_notify(v13, v8, block);
 
   _Block_object_dispose(v29, 8);

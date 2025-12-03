@@ -1,47 +1,47 @@
 @interface FRArticlePrefetchOperation
-- (BOOL)isEqual:(id)a3;
-- (FRArticlePrefetchOperation)initWithHeadline:(id)a3 component:(unint64_t)a4 priority:(unint64_t)a5;
-- (id)executeWithArticleContentPool:(id)a3 completionHandler:(id)a4;
-- (int64_t)compareExecutionOrder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FRArticlePrefetchOperation)initWithHeadline:(id)headline component:(unint64_t)component priority:(unint64_t)priority;
+- (id)executeWithArticleContentPool:(id)pool completionHandler:(id)handler;
+- (int64_t)compareExecutionOrder:(id)order;
 - (unint64_t)hash;
-- (void)_doWorkIfNotCancelled:(id)a3;
+- (void)_doWorkIfNotCancelled:(id)cancelled;
 - (void)cancel;
 @end
 
 @implementation FRArticlePrefetchOperation
 
-- (FRArticlePrefetchOperation)initWithHeadline:(id)a3 component:(unint64_t)a4 priority:(unint64_t)a5
+- (FRArticlePrefetchOperation)initWithHeadline:(id)headline component:(unint64_t)component priority:(unint64_t)priority
 {
-  v9 = a3;
+  headlineCopy = headline;
   v13.receiver = self;
   v13.super_class = FRArticlePrefetchOperation;
   v10 = [(FRArticlePrefetchOperation *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_headline, a3);
-    v11->_component = a4;
-    v11->_priority = a5;
+    objc_storeStrong(&v10->_headline, headline);
+    v11->_component = component;
+    v11->_priority = priority;
     v11->_cancellationLock._os_unfair_lock_opaque = 0;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = FCDynamicCast();
 
   if (v5)
   {
-    v6 = [(FRArticlePrefetchOperation *)self headline];
-    v7 = [v5 headline];
-    if ([v6 isEqual:v7])
+    headline = [(FRArticlePrefetchOperation *)self headline];
+    headline2 = [v5 headline];
+    if ([headline isEqual:headline2])
     {
-      v8 = [(FRArticlePrefetchOperation *)self component];
-      v9 = v8 == [v5 component];
+      component = [(FRArticlePrefetchOperation *)self component];
+      v9 = component == [v5 component];
     }
 
     else
@@ -60,34 +60,34 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FRArticlePrefetchOperation *)self headline];
-  v4 = [v3 hash];
-  v5 = [(FRArticlePrefetchOperation *)self component];
+  headline = [(FRArticlePrefetchOperation *)self headline];
+  v4 = [headline hash];
+  component = [(FRArticlePrefetchOperation *)self component];
 
-  return v5 ^ v4;
+  return component ^ v4;
 }
 
-- (int64_t)compareExecutionOrder:(id)a3
+- (int64_t)compareExecutionOrder:(id)order
 {
-  v4 = a3;
+  orderCopy = order;
   v5 = [NSNumber numberWithUnsignedInteger:[(FRArticlePrefetchOperation *)self component]];
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 component]);
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [orderCopy component]);
   v7 = [v5 compare:v6];
 
   if (!v7)
   {
     v8 = [NSNumber numberWithUnsignedInteger:[(FRArticlePrefetchOperation *)self priority]];
-    v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 priority]);
+    v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [orderCopy priority]);
     v7 = [v8 compare:v9];
   }
 
   return v7;
 }
 
-- (id)executeWithArticleContentPool:(id)a3 completionHandler:(id)a4
+- (id)executeWithArticleContentPool:(id)pool completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  poolCopy = pool;
+  handlerCopy = handler;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     v7 = [[NSString alloc] initWithFormat:@"Abstract method"];
@@ -109,16 +109,16 @@
   objc_exception_throw(v9);
 }
 
-- (void)_doWorkIfNotCancelled:(id)a3
+- (void)_doWorkIfNotCancelled:(id)cancelled
 {
-  v7 = a3;
+  cancelledCopy = cancelled;
   os_unfair_lock_lock_with_options();
   cancelled = self->_cancelled;
   os_unfair_lock_unlock(&self->_cancellationLock);
-  v5 = v7;
+  v5 = cancelledCopy;
   if (!cancelled)
   {
-    v6 = (*(v7 + 2))();
+    v6 = (*(cancelledCopy + 2))();
     os_unfair_lock_lock_with_options();
     if (self->_cancelled)
     {
@@ -132,7 +132,7 @@
       os_unfair_lock_unlock(&self->_cancellationLock);
     }
 
-    v5 = v7;
+    v5 = cancelledCopy;
   }
 }
 

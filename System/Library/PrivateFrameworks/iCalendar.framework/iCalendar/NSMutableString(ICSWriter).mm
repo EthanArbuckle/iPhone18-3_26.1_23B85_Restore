@@ -12,15 +12,15 @@
 - (void)_ICSRemoveCharactersFromSet:()ICSWriter
 {
   v6 = a3;
-  while ([a1 length])
+  while ([self length])
   {
-    v4 = [a1 rangeOfCharacterFromSet:v6];
+    v4 = [self rangeOfCharacterFromSet:v6];
     if (v4 == 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
     }
 
-    [a1 deleteCharactersInRange:{v4, v5}];
+    [self deleteCharactersInRange:{v4, v5}];
   }
 }
 
@@ -30,14 +30,14 @@
   objc_sync_enter(v2);
   if (!_ICSStripControlChracters_sCharSet)
   {
-    v3 = [a1 controlCharacterSet];
+    controlCharacterSet = [self controlCharacterSet];
     v4 = _ICSStripControlChracters_sCharSet;
-    _ICSStripControlChracters_sCharSet = v3;
+    _ICSStripControlChracters_sCharSet = controlCharacterSet;
 
     [_ICSStripControlChracters_sCharSet invert];
     v5 = _ICSStripControlChracters_sCharSet;
-    v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    [v5 formUnionWithCharacterSet:v6];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    [v5 formUnionWithCharacterSet:whitespaceAndNewlineCharacterSet];
 
     [_ICSStripControlChracters_sCharSet invert];
   }
@@ -46,7 +46,7 @@
 
   v7 = _ICSStripControlChracters_sCharSet;
 
-  return [a1 _ICSRemoveCharactersFromSet:v7];
+  return [self _ICSRemoveCharactersFromSet:v7];
 }
 
 - (id)controlCharacterSet
@@ -63,36 +63,36 @@
 
 - (uint64_t)_ICSEscapePropertyValue
 {
-  [a1 replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(a1, "length")}];
-  [a1 replaceOccurrencesOfString:@";" withString:@"\\;" options:0 range:{0, objc_msgSend(a1, "length")}];
-  [a1 replaceOccurrencesOfString:@" withString:" options:@"\\ range:{", 0, 0, objc_msgSend(a1, "length")}];
-  [a1 replaceOccurrencesOfString:@"\r\n" withString:@"\\n" options:0 range:{0, objc_msgSend(a1, "length")}];
-  [a1 replaceOccurrencesOfString:@"\n" withString:@"\\n" options:0 range:{0, objc_msgSend(a1, "length")}];
-  v2 = [a1 length];
+  [self replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(self, "length")}];
+  [self replaceOccurrencesOfString:@";" withString:@"\\;" options:0 range:{0, objc_msgSend(self, "length")}];
+  [self replaceOccurrencesOfString:@" withString:" options:@"\\ range:{", 0, 0, objc_msgSend(self, "length")}];
+  [self replaceOccurrencesOfString:@"\r\n" withString:@"\\n" options:0 range:{0, objc_msgSend(self, "length")}];
+  [self replaceOccurrencesOfString:@"\n" withString:@"\\n" options:0 range:{0, objc_msgSend(self, "length")}];
+  v2 = [self length];
 
-  return [a1 replaceOccurrencesOfString:@"\r" withString:@"\\n" options:0 range:{0, v2}];
+  return [self replaceOccurrencesOfString:@"\r" withString:@"\\n" options:0 range:{0, v2}];
 }
 
 - (uint64_t)_ICSEscapeParameterValue
 {
-  [a1 replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(a1, "length")}];
-  [a1 replaceOccurrencesOfString:@";" withString:@"\\;" options:0 range:{0, objc_msgSend(a1, "length")}];
-  [a1 replaceOccurrencesOfString:@":" withString:@"\\:" options:0 range:{0, objc_msgSend(a1, "length")}];
-  [a1 replaceOccurrencesOfString:@" withString:" options:@"\\ range:{", 0, 0, objc_msgSend(a1, "length")}];
-  [a1 replaceOccurrencesOfString:@"\r\n" withString:@"\\n" options:0 range:{0, objc_msgSend(a1, "length")}];
-  [a1 replaceOccurrencesOfString:@"\n" withString:@"\\n" options:0 range:{0, objc_msgSend(a1, "length")}];
-  [a1 replaceOccurrencesOfString:@"\r" withString:@"\\n" options:0 range:{0, objc_msgSend(a1, "length")}];
-  v2 = [a1 length];
+  [self replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(self, "length")}];
+  [self replaceOccurrencesOfString:@";" withString:@"\\;" options:0 range:{0, objc_msgSend(self, "length")}];
+  [self replaceOccurrencesOfString:@":" withString:@"\\:" options:0 range:{0, objc_msgSend(self, "length")}];
+  [self replaceOccurrencesOfString:@" withString:" options:@"\\ range:{", 0, 0, objc_msgSend(self, "length")}];
+  [self replaceOccurrencesOfString:@"\r\n" withString:@"\\n" options:0 range:{0, objc_msgSend(self, "length")}];
+  [self replaceOccurrencesOfString:@"\n" withString:@"\\n" options:0 range:{0, objc_msgSend(self, "length")}];
+  [self replaceOccurrencesOfString:@"\r" withString:@"\\n" options:0 range:{0, objc_msgSend(self, "length")}];
+  v2 = [self length];
 
-  return [a1 replaceOccurrencesOfString:@" withString:@"\ options:0 range:{0, v2}];
+  return [self replaceOccurrencesOfString:@" withString:@"\ options:0 range:{0, v2}];
 }
 
 - (uint64_t)_ICSEscapeParameterQuotedValue
 {
-  [a1 replaceOccurrencesOfString:@"\n" withString:@"\\n" options:0 range:{0, objc_msgSend(a1, "length")}];
-  v2 = [a1 length];
+  [self replaceOccurrencesOfString:@"\n" withString:@"\\n" options:0 range:{0, objc_msgSend(self, "length")}];
+  v2 = [self length];
 
-  return [a1 replaceOccurrencesOfString:@"" withString:&stru_28841D818 options:0 range:{0, v2}];
+  return [self replaceOccurrencesOfString:@"" withString:&stru_28841D818 options:0 range:{0, v2}];
 }
 
 @end

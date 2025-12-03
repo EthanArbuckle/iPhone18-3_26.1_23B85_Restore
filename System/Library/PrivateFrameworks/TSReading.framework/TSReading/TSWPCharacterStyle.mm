@@ -2,7 +2,7 @@
 + (id)emphasisProperties;
 + (id)nonEmphasisCharacterProperties;
 + (id)nullStyleName;
-+ (id)nullStyleWithContext:(id)a3;
++ (id)nullStyleWithContext:(id)context;
 + (id)properties;
 + (id)propertiesAllowingNSNull;
 - (int)writingDirection;
@@ -50,7 +50,7 @@ TSSPropertySet *__40__TSWPCharacterStyle_emphasisProperties__block_invoke()
   block[1] = 3221225472;
   block[2] = __52__TSWPCharacterStyle_nonEmphasisCharacterProperties__block_invoke;
   block[3] = &unk_279D46770;
-  block[4] = a1;
+  block[4] = self;
   if (+[TSWPCharacterStyle nonEmphasisCharacterProperties]::s_onceToken != -1)
   {
     dispatch_once(&+[TSWPCharacterStyle nonEmphasisCharacterProperties]::s_onceToken, block);
@@ -90,9 +90,9 @@ TSSPropertySet *__46__TSWPCharacterStyle_propertiesAllowingNSNull__block_invoke(
   return [v2 localizedStringForKey:@"None" value:&stru_287D36338 table:@"TSText"];
 }
 
-+ (id)nullStyleWithContext:(id)a3
++ (id)nullStyleWithContext:(id)context
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithContext:a3 name:objc_msgSend(a1 overridePropertyMap:"nullStyleName") isVariation:{0, 0}];
+  v3 = [objc_alloc(objc_opt_class()) initWithContext:context name:objc_msgSend(self overridePropertyMap:"nullStyleName") isVariation:{0, 0}];
 
   return v3;
 }

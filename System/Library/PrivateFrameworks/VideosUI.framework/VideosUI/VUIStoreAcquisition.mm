@@ -1,12 +1,12 @@
 @interface VUIStoreAcquisition
 + (id)sharedInstance;
 - (VUIStoreAcquisition)init;
-- (id)acquireWithProperties:(id)a3 completionBlock:(id)a4;
-- (void)_handleRequest:(id)a3;
-- (void)_handleResponse:(id)a3 responseDict:(id)a4 forRequest:(id)a5 error:(id)a6 cancelled:(BOOL)a7;
+- (id)acquireWithProperties:(id)properties completionBlock:(id)block;
+- (void)_handleRequest:(id)request;
+- (void)_handleResponse:(id)response responseDict:(id)dict forRequest:(id)request error:(id)error cancelled:(BOOL)cancelled;
 - (void)_processFirstRequest;
-- (void)_processRequest:(id)a3;
-- (void)postCrossProcessNotificationWithBuyParams:(id)a3 error:(id)a4;
+- (void)_processRequest:(id)request;
+- (void)postCrossProcessNotificationWithBuyParams:(id)params error:(id)error;
 @end
 
 @implementation VUIStoreAcquisition
@@ -47,22 +47,22 @@ void __37__VUIStoreAcquisition_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)acquireWithProperties:(id)a3 completionBlock:(id)a4
+- (id)acquireWithProperties:(id)properties completionBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 buyParams];
-  if (![v8 length])
+  propertiesCopy = properties;
+  blockCopy = block;
+  buyParams = [propertiesCopy buyParams];
+  if (![buyParams length])
   {
 
     goto LABEL_16;
   }
 
-  v9 = [v6 buyParams];
-  v10 = [(VUIAcquisitionRequest *)self->_activeRequest properties];
-  v11 = [v10 buyParams];
-  v12 = [v9 isEqualToString:v11];
+  buyParams2 = [propertiesCopy buyParams];
+  properties = [(VUIAcquisitionRequest *)self->_activeRequest properties];
+  buyParams3 = [properties buyParams];
+  v12 = [buyParams2 isEqualToString:buyParams3];
 
   if (v12)
   {
@@ -71,7 +71,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v25 = v7;
+  v25 = blockCopy;
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -92,18 +92,18 @@ LABEL_16:
         }
 
         v18 = *(*(&v26 + 1) + 8 * i);
-        v19 = [v6 buyParams];
-        v20 = [v18 properties];
-        v21 = [v20 buyParams];
-        if ([v19 isEqualToString:v21])
+        buyParams4 = [propertiesCopy buyParams];
+        properties2 = [v18 properties];
+        buyParams5 = [properties2 buyParams];
+        if ([buyParams4 isEqualToString:buyParams5])
         {
-          v22 = [v18 isCancelled];
+          isCancelled = [v18 isCancelled];
 
-          if ((v22 & 1) == 0)
+          if ((isCancelled & 1) == 0)
           {
 
             v23 = 0;
-            v7 = v25;
+            blockCopy = v25;
             goto LABEL_17;
           }
         }
@@ -120,9 +120,9 @@ LABEL_16:
   }
 
   v23 = objc_alloc_init(VUIAcquisitionRequest);
-  v7 = v25;
+  blockCopy = v25;
   [(VUIAcquisitionRequest *)v23 setCompletionBlock:v25];
-  [(VUIAcquisitionRequest *)v23 setProperties:v6];
+  [(VUIAcquisitionRequest *)v23 setProperties:propertiesCopy];
   [(NSMutableArray *)self->_pendingQueue addObject:v23];
   [(VUIStoreAcquisition *)self _processFirstRequest];
 LABEL_17:
@@ -151,52 +151,52 @@ LABEL_17:
   }
 }
 
-- (void)_processRequest:(id)a3
+- (void)_processRequest:(id)request
 {
-  v7 = a3;
-  v4 = [v7 properties];
-  v5 = [v4 userAgent];
-  if (v5 || ([v4 dsid], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  requestCopy = request;
+  properties = [requestCopy properties];
+  userAgent = [properties userAgent];
+  if (userAgent || ([properties dsid], (userAgent = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
-    [(VUIStoreAcquisition *)self _handleCustomRequest:v7];
+    [(VUIStoreAcquisition *)self _handleCustomRequest:requestCopy];
     goto LABEL_5;
   }
 
-  v6 = [v4 strongToken];
+  strongToken = [properties strongToken];
 
-  if (v6)
+  if (strongToken)
   {
     goto LABEL_4;
   }
 
-  [(VUIStoreAcquisition *)self _handleRequest:v7];
+  [(VUIStoreAcquisition *)self _handleRequest:requestCopy];
 LABEL_5:
 }
 
-- (void)_handleRequest:(id)a3
+- (void)_handleRequest:(id)request
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 properties];
-  v6 = [v5 urlBagKey];
-  v7 = [v5 buyParams];
-  if ([v7 length])
+  requestCopy = request;
+  properties = [requestCopy properties];
+  urlBagKey = [properties urlBagKey];
+  buyParams = [properties buyParams];
+  if ([buyParams length])
   {
-    v8 = [MEMORY[0x1E69D4998] purchaseWithBuyParameters:v7];
-    if ([v6 isEqualToString:@"redownloadProduct"])
+    v8 = [MEMORY[0x1E69D4998] purchaseWithBuyParameters:buyParams];
+    if ([urlBagKey isEqualToString:@"redownloadProduct"])
     {
       v9 = objc_opt_new();
-      [v9 setURLBagKey:v6];
+      [v9 setURLBagKey:urlBagKey];
       [v9 setShouldProcessProtocol:0];
       [v8 setRequestProperties:v9];
     }
 
-    if (!v6 || [v6 isEqualToString:@"buyProduct"])
+    if (!urlBagKey || [urlBagKey isEqualToString:@"buyProduct"])
     {
-      v10 = [v8 requestProperties];
-      v11 = [v10 mutableCopy];
+      requestProperties = [v8 requestProperties];
+      v11 = [requestProperties mutableCopy];
 
       if (!v11)
       {
@@ -206,7 +206,7 @@ LABEL_5:
       [v8 setRequestProperties:v11];
     }
 
-    [v8 setIgnoresForcedPasswordRestriction:{objc_msgSend(v5, "ignoresForcedPasswordRestriction")}];
+    [v8 setIgnoresForcedPasswordRestriction:{objc_msgSend(properties, "ignoresForcedPasswordRestriction")}];
     v12 = objc_alloc(MEMORY[0x1E69D49A0]);
     v29[0] = v8;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
@@ -219,8 +219,8 @@ LABEL_5:
     v21[3] = &unk_1E8732090;
     v15 = &v22;
     v21[4] = self;
-    v22 = v4;
-    v16 = v4;
+    v22 = requestCopy;
+    v16 = requestCopy;
     [v14 startWithPurchaseResponseBlock:v21 completionBlock:&__block_literal_global_64];
   }
 
@@ -233,11 +233,11 @@ LABEL_5:
     block[1] = 3221225472;
     v24 = __38__VUIStoreAcquisition__handleRequest___block_invoke;
     v25 = &unk_1E872E008;
-    v26 = self;
-    v27 = v4;
+    selfCopy = self;
+    v27 = requestCopy;
     v28 = v17;
     v18 = MEMORY[0x1E696AF00];
-    v19 = v4;
+    v19 = requestCopy;
     v14 = v17;
     if ([v18 isMainThread])
     {
@@ -381,22 +381,22 @@ uint64_t __38__VUIStoreAcquisition__handleRequest___block_invoke_60(uint64_t a1)
   return [v4 _handleResponse:v5 responseDict:v6 forRequest:v7 error:v8 cancelled:v9];
 }
 
-- (void)_handleResponse:(id)a3 responseDict:(id)a4 forRequest:(id)a5 error:(id)a6 cancelled:(BOOL)a7
+- (void)_handleResponse:(id)response responseDict:(id)dict forRequest:(id)request error:(id)error cancelled:(BOOL)cancelled
 {
-  v7 = a7;
+  cancelledCopy = cancelled;
   v30 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v14)
+  responseCopy = response;
+  dictCopy = dict;
+  requestCopy = request;
+  errorCopy = error;
+  if (errorCopy)
   {
     v15 = 1;
   }
 
   else
   {
-    v15 = v12 == 0;
+    v15 = dictCopy == 0;
   }
 
   v16 = 2;
@@ -405,7 +405,7 @@ uint64_t __38__VUIStoreAcquisition__handleRequest___block_invoke_60(uint64_t a1)
     v16 = 0;
   }
 
-  if (v7)
+  if (cancelledCopy)
   {
     v17 = 1;
   }
@@ -415,66 +415,66 @@ uint64_t __38__VUIStoreAcquisition__handleRequest___block_invoke_60(uint64_t a1)
     v17 = v16;
   }
 
-  v18 = [v13 properties];
-  v19 = [v18 urlBagKey];
+  properties = [requestCopy properties];
+  urlBagKey = [properties urlBagKey];
 
-  v20 = [v13 completionBlock];
+  completionBlock = [requestCopy completionBlock];
 
-  if (v20)
+  if (completionBlock)
   {
-    v21 = [v13 completionBlock];
-    (v21)[2](v21, v17, v12, v14);
+    completionBlock2 = [requestCopy completionBlock];
+    (completionBlock2)[2](completionBlock2, v17, dictCopy, errorCopy);
   }
 
-  v22 = [v11 URLResponse];
-  v23 = [v22 allHeaderFields];
-  v24 = [v23 vui_appleTimingAppHeaderValue];
+  uRLResponse = [responseCopy URLResponse];
+  allHeaderFields = [uRLResponse allHeaderFields];
+  vui_appleTimingAppHeaderValue = [allHeaderFields vui_appleTimingAppHeaderValue];
 
   v25 = VUIDefaultLogObject();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     v28 = 134217984;
-    v29 = v24;
+    v29 = vui_appleTimingAppHeaderValue;
     _os_log_impl(&dword_1E323F000, v25, OS_LOG_TYPE_INFO, "Time to process buy in ms [%ld]", &v28, 0xCu);
   }
 
-  if (v17 == 2 && (!v19 || [v19 isEqualToString:@"buyProduct"]))
+  if (v17 == 2 && (!urlBagKey || [urlBagKey isEqualToString:@"buyProduct"]))
   {
     v26 = +[VUIMediaLibraryManager defaultManager];
-    v27 = [v26 deviceMediaLibrary];
-    [v27 updateFromCloudWithReason:1];
+    deviceMediaLibrary = [v26 deviceMediaLibrary];
+    [deviceMediaLibrary updateFromCloudWithReason:1];
   }
 }
 
-- (void)postCrossProcessNotificationWithBuyParams:(id)a3 error:(id)a4
+- (void)postCrossProcessNotificationWithBuyParams:(id)params error:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  paramsCopy = params;
+  errorCopy = error;
   v7 = objc_opt_new();
   v8 = v7;
-  if (v6)
+  if (errorCopy)
   {
-    [v7 setObject:v6 forKeyedSubscript:@"VUIStoreAcquisitionCrossProcessNotificationKeyError"];
+    [v7 setObject:errorCopy forKeyedSubscript:@"VUIStoreAcquisitionCrossProcessNotificationKeyError"];
   }
 
-  if ([v5 length])
+  if ([paramsCopy length])
   {
-    [v8 setObject:v5 forKeyedSubscript:@"VUIStoreAcquisitionCrossProcessNotificationKeyBuyParams"];
+    [v8 setObject:paramsCopy forKeyedSubscript:@"VUIStoreAcquisitionCrossProcessNotificationKeyBuyParams"];
   }
 
   v9 = VUIDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = 138412546;
-    v12 = v5;
+    v12 = paramsCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = errorCopy;
     _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_INFO, "Posting VUIStoreAcquisitionCrossProcessNotification with buy params: %@, error: %@", &v11, 0x16u);
   }
 
-  v10 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v10 vui_postNotificationName:@"com.apple.VideosUI.StoreAcquisitionCrossProcessNotification" object:0 userInfo:v8];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter vui_postNotificationName:@"com.apple.VideosUI.StoreAcquisitionCrossProcessNotification" object:0 userInfo:v8];
 }
 
 @end

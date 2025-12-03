@@ -1,18 +1,18 @@
 @interface TSWPFloatingCommentRep
 - (BOOL)p_shouldDraw;
-- (TSWPFloatingCommentRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSWPFloatingCommentRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)documentRoot;
-- (void)drawInContext:(CGContext *)a3;
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
+- (void)drawInContext:(CGContext *)context;
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
 @end
 
 @implementation TSWPFloatingCommentRep
 
-- (TSWPFloatingCommentRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSWPFloatingCommentRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v5.receiver = self;
   v5.super_class = TSWPFloatingCommentRep;
-  return [(TSWPShapeRep *)&v5 initWithLayout:a3 canvas:a4];
+  return [(TSWPShapeRep *)&v5 initWithLayout:layout canvas:canvas];
 }
 
 - (id)documentRoot
@@ -26,24 +26,24 @@
   return v12;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  if (objc_msgSend_p_shouldDraw(self, a2, a3))
+  if (objc_msgSend_p_shouldDraw(self, a2, context))
   {
     v5.receiver = self;
     v5.super_class = TSWPFloatingCommentRep;
-    [(TSDStyledRep *)&v5 drawInContext:a3];
+    [(TSDStyledRep *)&v5 drawInContext:context];
   }
 }
 
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
-  v6 = a4;
+  testCopy = test;
   if (objc_msgSend_p_shouldDraw(self, v7, v8))
   {
     v9.receiver = self;
     v9.super_class = TSWPFloatingCommentRep;
-    [(TSDShapeRep *)&v9 recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:v6];
+    [(TSDShapeRep *)&v9 recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:testCopy];
   }
 }
 

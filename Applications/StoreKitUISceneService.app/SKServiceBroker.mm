@@ -1,19 +1,19 @@
 @interface SKServiceBroker
-+ (id)_serviceConnectionWithName:(id)a3;
++ (id)_serviceConnectionWithName:(id)name;
 + (id)defaultBroker;
 - (SKServiceBroker)init;
 - (id)_serviceConnection;
-- (id)externalGatewayServiceWithErrorHandler:(id)a3;
-- (id)inAppBindingServiceWithErrorHandler:(id)a3;
-- (id)inAppEngagementServiceWithErrorHandler:(id)a3;
-- (id)messageServiceWithErrorHandler:(id)a3;
-- (id)offerEligibilityServiceWithErrorHandler:(id)a3;
-- (id)policyServiceWithErrorHandler:(id)a3;
-- (id)productLookupServiceWithErrorHandler:(id)a3;
-- (id)productServiceWithErrorHandler:(id)a3;
-- (id)purchaseIntentServiceWithErrorHandler:(id)a3;
-- (id)storeKitServiceWithErrorHandler:(id)a3;
-- (id)storeKitSynchronousServiceWithErrorHandler:(id)a3;
+- (id)externalGatewayServiceWithErrorHandler:(id)handler;
+- (id)inAppBindingServiceWithErrorHandler:(id)handler;
+- (id)inAppEngagementServiceWithErrorHandler:(id)handler;
+- (id)messageServiceWithErrorHandler:(id)handler;
+- (id)offerEligibilityServiceWithErrorHandler:(id)handler;
+- (id)policyServiceWithErrorHandler:(id)handler;
+- (id)productLookupServiceWithErrorHandler:(id)handler;
+- (id)productServiceWithErrorHandler:(id)handler;
+- (id)purchaseIntentServiceWithErrorHandler:(id)handler;
+- (id)storeKitServiceWithErrorHandler:(id)handler;
+- (id)storeKitSynchronousServiceWithErrorHandler:(id)handler;
 - (void)_serviceConnectionInvalidated;
 @end
 
@@ -46,167 +46,167 @@
   return v3;
 }
 
-- (id)externalGatewayServiceWithErrorHandler:(id)a3
+- (id)externalGatewayServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100008B9C;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)inAppBindingServiceWithErrorHandler:(id)a3
+- (id)inAppBindingServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100008C84;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)inAppEngagementServiceWithErrorHandler:(id)a3
+- (id)inAppEngagementServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100008D6C;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)messageServiceWithErrorHandler:(id)a3
+- (id)messageServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100008E54;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)policyServiceWithErrorHandler:(id)a3
+- (id)policyServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100008F3C;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)productLookupServiceWithErrorHandler:(id)a3
+- (id)productLookupServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100009024;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)productServiceWithErrorHandler:(id)a3
+- (id)productServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000910C;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)purchaseIntentServiceWithErrorHandler:(id)a3
+- (id)purchaseIntentServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000091F4;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)offerEligibilityServiceWithErrorHandler:(id)a3
+- (id)offerEligibilityServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000092DC;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)storeKitServiceWithErrorHandler:(id)a3
+- (id)storeKitServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000093C4;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)storeKitSynchronousServiceWithErrorHandler:(id)a3
+- (id)storeKitSynchronousServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000094AC;
   v9[3] = &unk_1000BE4F0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -251,10 +251,10 @@
   return v9;
 }
 
-+ (id)_serviceConnectionWithName:(id)a3
++ (id)_serviceConnectionWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[NSXPCConnection alloc] initWithMachServiceName:v3 options:0];
+  nameCopy = name;
+  v4 = [[NSXPCConnection alloc] initWithMachServiceName:nameCopy options:0];
 
   v5 = +[XPCInterface service];
   [v4 setRemoteObjectInterface:v5];

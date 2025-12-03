@@ -1,8 +1,8 @@
 @interface UARPManager
 - (UARPManager)init;
-- (int64_t)addAccessory:(id)a3 assetID:(id)a4 sandboxExtensionToken:(id)a5;
-- (int64_t)changeAssetLocation:(id)a3 assetID:(id)a4 sandboxExtensionToken:(id)a5;
-- (void)consumeSandboxExtensionToken:(id)a3 url:(id)a4;
+- (int64_t)addAccessory:(id)accessory assetID:(id)d sandboxExtensionToken:(id)token;
+- (int64_t)changeAssetLocation:(id)location assetID:(id)d sandboxExtensionToken:(id)token;
+- (void)consumeSandboxExtensionToken:(id)token url:(id)url;
 - (void)dealloc;
 @end
 
@@ -29,36 +29,36 @@
   [(UARPManager *)&v3 dealloc];
 }
 
-- (void)consumeSandboxExtensionToken:(id)a3 url:(id)a4
+- (void)consumeSandboxExtensionToken:(id)token url:(id)url
 {
-  if (a3 && a4)
+  if (token && url)
   {
-    if ([(NSMutableDictionary *)self->_sandboxExtensions objectForKeyedSubscript:a4])
+    if ([(NSMutableDictionary *)self->_sandboxExtensions objectForKeyedSubscript:url])
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = a4;
+        urlCopy = url;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Duplicate Sandbox Extension Token for URL:%@", &v7, 0xCu);
       }
     }
 
-    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_sandboxExtensions, "setObject:forKeyedSubscript:", [[UARPSandboxExtension alloc] initWithTokenString:a3], a4);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](self->_sandboxExtensions, "setObject:forKeyedSubscript:", [[UARPSandboxExtension alloc] initWithTokenString:token], url);
   }
 }
 
-- (int64_t)addAccessory:(id)a3 assetID:(id)a4 sandboxExtensionToken:(id)a5
+- (int64_t)addAccessory:(id)accessory assetID:(id)d sandboxExtensionToken:(id)token
 {
-  -[UARPManager consumeSandboxExtensionToken:url:](self, "consumeSandboxExtensionToken:url:", a5, [a4 remoteURL]);
+  -[UARPManager consumeSandboxExtensionToken:url:](self, "consumeSandboxExtensionToken:url:", token, [d remoteURL]);
 
-  return [(UARPManager *)self addAccessory:a3 assetID:a4];
+  return [(UARPManager *)self addAccessory:accessory assetID:d];
 }
 
-- (int64_t)changeAssetLocation:(id)a3 assetID:(id)a4 sandboxExtensionToken:(id)a5
+- (int64_t)changeAssetLocation:(id)location assetID:(id)d sandboxExtensionToken:(id)token
 {
-  -[UARPManager consumeSandboxExtensionToken:url:](self, "consumeSandboxExtensionToken:url:", a5, [a4 remoteURL]);
+  -[UARPManager consumeSandboxExtensionToken:url:](self, "consumeSandboxExtensionToken:url:", token, [d remoteURL]);
 
-  return [(UARPManager *)self changeAssetLocation:a3 assetID:a4];
+  return [(UARPManager *)self changeAssetLocation:location assetID:d];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface PPTopicQuery
-+ (id)_algorithmsDescription:(id)a3;
-+ (id)queryForCSSearchableItem:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTopicQuery:(id)a3;
++ (id)_algorithmsDescription:(id)description;
++ (id)queryForCSSearchableItem:(id)item;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTopicQuery:(id)query;
 - (PPTopicQuery)init;
-- (PPTopicQuery)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PPTopicQuery)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)customizedDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPTopicQuery
@@ -306,10 +306,10 @@
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -317,44 +317,44 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPTopicQuery *)self isEqualToTopicQuery:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPTopicQuery *)self isEqualToTopicQuery:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToTopicQuery:(id)a3
+- (BOOL)isEqualToTopicQuery:(id)query
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  queryCopy = query;
+  v5 = queryCopy;
+  if (queryCopy == self)
   {
     v25 = 1;
     goto LABEL_63;
   }
 
-  if (!v4)
+  if (!queryCopy)
   {
     goto LABEL_62;
   }
 
   limit = self->_limit;
-  if (limit != [(PPTopicQuery *)v4 limit])
+  if (limit != [(PPTopicQuery *)queryCopy limit])
   {
     goto LABEL_62;
   }
 
   v7 = self->_fromDate;
-  v8 = [(PPTopicQuery *)v5 fromDate];
-  if (v7 | v8)
+  fromDate = [(PPTopicQuery *)v5 fromDate];
+  if (v7 | fromDate)
   {
-    v26 = v8;
-    if (!v7 || !v8)
+    v26 = fromDate;
+    if (!v7 || !fromDate)
     {
       goto LABEL_61;
     }
 
-    v27 = [(NSSet *)v7 isEqualToDate:v8];
+    v27 = [(NSSet *)v7 isEqualToDate:fromDate];
 
     if (!v27)
     {
@@ -363,16 +363,16 @@
   }
 
   v7 = self->_toDate;
-  v9 = [(PPTopicQuery *)v5 toDate];
-  if (v7 | v9)
+  toDate = [(PPTopicQuery *)v5 toDate];
+  if (v7 | toDate)
   {
-    v26 = v9;
-    if (!v7 || !v9)
+    v26 = toDate;
+    if (!v7 || !toDate)
     {
       goto LABEL_61;
     }
 
-    v28 = [(NSSet *)v7 isEqualToDate:v9];
+    v28 = [(NSSet *)v7 isEqualToDate:toDate];
 
     if (!v28)
     {
@@ -381,16 +381,16 @@
   }
 
   v7 = self->_scoringDate;
-  v10 = [(PPTopicQuery *)v5 scoringDate];
-  if (v7 | v10)
+  scoringDate = [(PPTopicQuery *)v5 scoringDate];
+  if (v7 | scoringDate)
   {
-    v26 = v10;
-    if (!v7 || !v10)
+    v26 = scoringDate;
+    if (!v7 || !scoringDate)
     {
       goto LABEL_61;
     }
 
-    v29 = [(NSSet *)v7 isEqualToDate:v10];
+    v29 = [(NSSet *)v7 isEqualToDate:scoringDate];
 
     if (!v29)
     {
@@ -399,16 +399,16 @@
   }
 
   v7 = self->_matchingSourceBundleIds;
-  v11 = [(PPTopicQuery *)v5 matchingSourceBundleIds];
-  if (v7 | v11)
+  matchingSourceBundleIds = [(PPTopicQuery *)v5 matchingSourceBundleIds];
+  if (v7 | matchingSourceBundleIds)
   {
-    v26 = v11;
-    if (!v7 || !v11)
+    v26 = matchingSourceBundleIds;
+    if (!v7 || !matchingSourceBundleIds)
     {
       goto LABEL_61;
     }
 
-    v30 = [(NSSet *)v7 isEqualToSet:v11];
+    v30 = [(NSSet *)v7 isEqualToSet:matchingSourceBundleIds];
 
     if (!v30)
     {
@@ -417,16 +417,16 @@
   }
 
   v7 = self->_excludingSourceBundleIds;
-  v12 = [(PPTopicQuery *)v5 excludingSourceBundleIds];
-  if (v7 | v12)
+  excludingSourceBundleIds = [(PPTopicQuery *)v5 excludingSourceBundleIds];
+  if (v7 | excludingSourceBundleIds)
   {
-    v26 = v12;
-    if (!v7 || !v12)
+    v26 = excludingSourceBundleIds;
+    if (!v7 || !excludingSourceBundleIds)
     {
       goto LABEL_61;
     }
 
-    v31 = [(NSSet *)v7 isEqualToSet:v12];
+    v31 = [(NSSet *)v7 isEqualToSet:excludingSourceBundleIds];
 
     if (!v31)
     {
@@ -435,16 +435,16 @@
   }
 
   v7 = self->_matchingGroupIds;
-  v13 = [(PPTopicQuery *)v5 matchingGroupIds];
-  if (v7 | v13)
+  matchingGroupIds = [(PPTopicQuery *)v5 matchingGroupIds];
+  if (v7 | matchingGroupIds)
   {
-    v26 = v13;
-    if (!v7 || !v13)
+    v26 = matchingGroupIds;
+    if (!v7 || !matchingGroupIds)
     {
       goto LABEL_61;
     }
 
-    v32 = [(NSSet *)v7 isEqualToSet:v13];
+    v32 = [(NSSet *)v7 isEqualToSet:matchingGroupIds];
 
     if (!v32)
     {
@@ -453,16 +453,16 @@
   }
 
   v7 = self->_matchingDocumentIds;
-  v14 = [(PPTopicQuery *)v5 matchingDocumentIds];
-  if (v7 | v14)
+  matchingDocumentIds = [(PPTopicQuery *)v5 matchingDocumentIds];
+  if (v7 | matchingDocumentIds)
   {
-    v26 = v14;
-    if (!v7 || !v14)
+    v26 = matchingDocumentIds;
+    if (!v7 || !matchingDocumentIds)
     {
       goto LABEL_61;
     }
 
-    v33 = [(NSSet *)v7 isEqualToSet:v14];
+    v33 = [(NSSet *)v7 isEqualToSet:matchingDocumentIds];
 
     if (!v33)
     {
@@ -490,16 +490,16 @@
   }
 
   v7 = self->_matchingTopicIds;
-  v19 = [(PPTopicQuery *)v5 matchingTopicIds];
-  if (v7 | v19)
+  matchingTopicIds = [(PPTopicQuery *)v5 matchingTopicIds];
+  if (v7 | matchingTopicIds)
   {
-    v26 = v19;
-    if (!v7 || !v19)
+    v26 = matchingTopicIds;
+    if (!v7 || !matchingTopicIds)
     {
       goto LABEL_61;
     }
 
-    v34 = [(NSSet *)v7 isEqualToSet:v19];
+    v34 = [(NSSet *)v7 isEqualToSet:matchingTopicIds];
 
     if (!v34)
     {
@@ -508,16 +508,16 @@
   }
 
   v7 = self->_matchingMappedTopicIds;
-  v20 = [(PPTopicQuery *)v5 matchingMappedTopicIds];
-  if (v7 | v20)
+  matchingMappedTopicIds = [(PPTopicQuery *)v5 matchingMappedTopicIds];
+  if (v7 | matchingMappedTopicIds)
   {
-    v26 = v20;
-    if (!v7 || !v20)
+    v26 = matchingMappedTopicIds;
+    if (!v7 || !matchingMappedTopicIds)
     {
       goto LABEL_61;
     }
 
-    v35 = [(NSSet *)v7 isEqualToSet:v20];
+    v35 = [(NSSet *)v7 isEqualToSet:matchingMappedTopicIds];
 
     if (!v35)
     {
@@ -526,13 +526,13 @@
   }
 
   v7 = self->_matchingContactHandle;
-  v21 = [(PPTopicQuery *)v5 matchingContactHandle];
-  if (v7 | v21)
+  matchingContactHandle = [(PPTopicQuery *)v5 matchingContactHandle];
+  if (v7 | matchingContactHandle)
   {
-    v26 = v21;
-    if (v7 && v21)
+    v26 = matchingContactHandle;
+    if (v7 && matchingContactHandle)
     {
-      v36 = [(NSSet *)v7 isEqualToString:v21];
+      v36 = [(NSSet *)v7 isEqualToString:matchingContactHandle];
 
       if (v36)
       {
@@ -569,9 +569,9 @@ LABEL_63:
   return v25;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -603,38 +603,38 @@ LABEL_63:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   limit = self->_limit;
-  v5 = a3;
-  [v5 encodeInteger:limit forKey:@"lmt"];
-  [v5 encodeObject:self->_fromDate forKey:@"fdt"];
-  [v5 encodeObject:self->_toDate forKey:@"tdt"];
-  [v5 encodeObject:self->_scoringDate forKey:@"sdt"];
-  [v5 encodeObject:self->_matchingSourceBundleIds forKey:@"mbdl"];
-  [v5 encodeObject:self->_excludingSourceBundleIds forKey:@"ebdl"];
-  [v5 encodeObject:self->_matchingGroupIds forKey:@"gid"];
-  [v5 encodeObject:self->_matchingDocumentIds forKey:@"mdid"];
-  [v5 encodeInt32:LODWORD(self->_deviceFilter) forKey:@"dflt"];
-  [v5 encodeDouble:@"dr" forKey:self->_decayRate];
-  [v5 encodeBool:self->_scoreWithBiases forKey:@"sbias"];
-  [v5 encodeObject:self->_matchingTopicIds forKey:@"mids"];
-  [v5 encodeObject:self->_matchingMappedTopicIds forKey:@"mmids"];
-  [v5 encodeObject:self->_matchingTopicTrie forKey:@"trie"];
-  [v5 encodeBool:self->_scoreWithCalibration forKey:@"scali"];
-  [v5 encodeInteger:self->_minimumComponentCount forKey:@"mcc"];
-  [v5 encodeObject:self->_matchingAlgorithms forKey:@"ma"];
-  [v5 encodeObject:self->_excludingAlgorithms forKey:@"ea"];
-  [v5 encodeBool:self->_scoreWithStrictFiltering forKey:@"ssf"];
-  [v5 encodeBool:self->_excludeWithoutSentiment forKey:@"exnonsnt"];
-  [v5 encodeBool:self->_orderByIdentifier forKey:@"obi"];
-  [v5 encodeObject:self->_matchingContactHandle forKey:@"mch"];
-  [v5 encodeBool:self->_filterByRelevanceDate forKey:@"fbrd"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:limit forKey:@"lmt"];
+  [coderCopy encodeObject:self->_fromDate forKey:@"fdt"];
+  [coderCopy encodeObject:self->_toDate forKey:@"tdt"];
+  [coderCopy encodeObject:self->_scoringDate forKey:@"sdt"];
+  [coderCopy encodeObject:self->_matchingSourceBundleIds forKey:@"mbdl"];
+  [coderCopy encodeObject:self->_excludingSourceBundleIds forKey:@"ebdl"];
+  [coderCopy encodeObject:self->_matchingGroupIds forKey:@"gid"];
+  [coderCopy encodeObject:self->_matchingDocumentIds forKey:@"mdid"];
+  [coderCopy encodeInt32:LODWORD(self->_deviceFilter) forKey:@"dflt"];
+  [coderCopy encodeDouble:@"dr" forKey:self->_decayRate];
+  [coderCopy encodeBool:self->_scoreWithBiases forKey:@"sbias"];
+  [coderCopy encodeObject:self->_matchingTopicIds forKey:@"mids"];
+  [coderCopy encodeObject:self->_matchingMappedTopicIds forKey:@"mmids"];
+  [coderCopy encodeObject:self->_matchingTopicTrie forKey:@"trie"];
+  [coderCopy encodeBool:self->_scoreWithCalibration forKey:@"scali"];
+  [coderCopy encodeInteger:self->_minimumComponentCount forKey:@"mcc"];
+  [coderCopy encodeObject:self->_matchingAlgorithms forKey:@"ma"];
+  [coderCopy encodeObject:self->_excludingAlgorithms forKey:@"ea"];
+  [coderCopy encodeBool:self->_scoreWithStrictFiltering forKey:@"ssf"];
+  [coderCopy encodeBool:self->_excludeWithoutSentiment forKey:@"exnonsnt"];
+  [coderCopy encodeBool:self->_orderByIdentifier forKey:@"obi"];
+  [coderCopy encodeObject:self->_matchingContactHandle forKey:@"mch"];
+  [coderCopy encodeBool:self->_filterByRelevanceDate forKey:@"fbrd"];
 }
 
-- (PPTopicQuery)initWithCoder:(id)a3
+- (PPTopicQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = PPTopicQuery;
   v5 = [(PPTopicQuery *)&v42 init];
@@ -650,69 +650,69 @@ LABEL_63:
     v12 = objc_opt_class();
     v13 = [v11 initWithObjects:{v12, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v10);
-    v5->_limit = [v4 decodeIntegerForKey:@"lmt"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fdt"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"lmt"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fdt"];
     fromDate = v5->_fromDate;
     v5->_fromDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tdt"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tdt"];
     toDate = v5->_toDate;
     v5->_toDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sdt"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sdt"];
     scoringDate = v5->_scoringDate;
     v5->_scoringDate = v18;
 
-    v20 = [v4 decodeObjectOfClasses:v9 forKey:@"mbdl"];
+    v20 = [coderCopy decodeObjectOfClasses:v9 forKey:@"mbdl"];
     matchingSourceBundleIds = v5->_matchingSourceBundleIds;
     v5->_matchingSourceBundleIds = v20;
 
-    v22 = [v4 decodeObjectOfClasses:v9 forKey:@"ebdl"];
+    v22 = [coderCopy decodeObjectOfClasses:v9 forKey:@"ebdl"];
     excludingSourceBundleIds = v5->_excludingSourceBundleIds;
     v5->_excludingSourceBundleIds = v22;
 
-    v24 = [v4 decodeObjectOfClasses:v9 forKey:@"gid"];
+    v24 = [coderCopy decodeObjectOfClasses:v9 forKey:@"gid"];
     matchingGroupIds = v5->_matchingGroupIds;
     v5->_matchingGroupIds = v24;
 
-    v26 = [v4 decodeObjectOfClasses:v9 forKey:@"mdid"];
+    v26 = [coderCopy decodeObjectOfClasses:v9 forKey:@"mdid"];
     matchingDocumentIds = v5->_matchingDocumentIds;
     v5->_matchingDocumentIds = v26;
 
-    v5->_deviceFilter = [v4 decodeInt32ForKey:@"dflt"];
-    [v4 decodeDoubleForKey:@"dr"];
+    v5->_deviceFilter = [coderCopy decodeInt32ForKey:@"dflt"];
+    [coderCopy decodeDoubleForKey:@"dr"];
     v5->_decayRate = v28;
-    v5->_scoreWithBiases = [v4 decodeBoolForKey:@"sbias"];
-    v29 = [v4 decodeObjectOfClasses:v9 forKey:@"mids"];
+    v5->_scoreWithBiases = [coderCopy decodeBoolForKey:@"sbias"];
+    v29 = [coderCopy decodeObjectOfClasses:v9 forKey:@"mids"];
     matchingTopicIds = v5->_matchingTopicIds;
     v5->_matchingTopicIds = v29;
 
-    v31 = [v4 decodeObjectOfClasses:v9 forKey:@"mmids"];
+    v31 = [coderCopy decodeObjectOfClasses:v9 forKey:@"mmids"];
     matchingMappedTopicIds = v5->_matchingMappedTopicIds;
     v5->_matchingMappedTopicIds = v31;
 
-    v33 = [v4 decodeObjectOfClasses:v9 forKey:@"trie"];
+    v33 = [coderCopy decodeObjectOfClasses:v9 forKey:@"trie"];
     matchingTopicTrie = v5->_matchingTopicTrie;
     v5->_matchingTopicTrie = v33;
 
-    v5->_scoreWithCalibration = [v4 decodeBoolForKey:@"scali"];
-    v5->_minimumComponentCount = [v4 decodeIntegerForKey:@"mcc"];
-    v35 = [v4 decodeObjectOfClasses:v13 forKey:@"ma"];
+    v5->_scoreWithCalibration = [coderCopy decodeBoolForKey:@"scali"];
+    v5->_minimumComponentCount = [coderCopy decodeIntegerForKey:@"mcc"];
+    v35 = [coderCopy decodeObjectOfClasses:v13 forKey:@"ma"];
     matchingAlgorithms = v5->_matchingAlgorithms;
     v5->_matchingAlgorithms = v35;
 
-    v37 = [v4 decodeObjectOfClasses:v13 forKey:@"ea"];
+    v37 = [coderCopy decodeObjectOfClasses:v13 forKey:@"ea"];
     excludingAlgorithms = v5->_excludingAlgorithms;
     v5->_excludingAlgorithms = v37;
 
-    v5->_scoreWithStrictFiltering = [v4 decodeBoolForKey:@"ssf"];
-    v5->_excludeWithoutSentiment = [v4 decodeBoolForKey:@"exnonsnt"];
-    v5->_orderByIdentifier = [v4 decodeBoolForKey:@"obi"];
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mch"];
+    v5->_scoreWithStrictFiltering = [coderCopy decodeBoolForKey:@"ssf"];
+    v5->_excludeWithoutSentiment = [coderCopy decodeBoolForKey:@"exnonsnt"];
+    v5->_orderByIdentifier = [coderCopy decodeBoolForKey:@"obi"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mch"];
     matchingContactHandle = v5->_matchingContactHandle;
     v5->_matchingContactHandle = v39;
 
-    v5->_filterByRelevanceDate = [v4 decodeBoolForKey:@"fbrd"];
+    v5->_filterByRelevanceDate = [coderCopy decodeBoolForKey:@"fbrd"];
   }
 
   return v5;
@@ -736,16 +736,16 @@ LABEL_63:
   return result;
 }
 
-+ (id)_algorithmsDescription:(id)a3
++ (id)_algorithmsDescription:(id)description
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptionCopy = description;
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"["];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = descriptionCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -789,26 +789,26 @@ LABEL_63:
   return v4;
 }
 
-+ (id)queryForCSSearchableItem:(id)a3
++ (id)queryForCSSearchableItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_opt_new();
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v7 = [v3 bundleID];
-  v8 = [v6 initWithObjects:{v7, 0}];
+  bundleID = [itemCopy bundleID];
+  v8 = [v6 initWithObjects:{bundleID, 0}];
 
   objc_autoreleasePoolPop(v5);
   [v4 setMatchingSourceBundleIds:v8];
 
-  v9 = [v3 domainIdentifier];
+  domainIdentifier = [itemCopy domainIdentifier];
 
-  if (v9)
+  if (domainIdentifier)
   {
     v10 = objc_autoreleasePoolPush();
     v11 = objc_alloc(MEMORY[0x1E695DFD8]);
-    v12 = [v3 domainIdentifier];
-    v13 = [v11 initWithObjects:{v12, 0}];
+    domainIdentifier2 = [itemCopy domainIdentifier];
+    v13 = [v11 initWithObjects:{domainIdentifier2, 0}];
 
     objc_autoreleasePoolPop(v10);
     [v4 setMatchingGroupIds:v13];
@@ -816,8 +816,8 @@ LABEL_63:
 
   v14 = objc_autoreleasePoolPush();
   v15 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v16 = [v3 uniqueIdentifier];
-  v17 = [v15 initWithObjects:{v16, 0}];
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  v17 = [v15 initWithObjects:{uniqueIdentifier, 0}];
 
   objc_autoreleasePoolPop(v14);
   [v4 setMatchingDocumentIds:v17];

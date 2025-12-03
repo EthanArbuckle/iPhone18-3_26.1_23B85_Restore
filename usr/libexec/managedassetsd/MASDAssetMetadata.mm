@@ -10,45 +10,45 @@
   v4 = [NSNumber numberWithUnsignedInteger:[(MASDAssetMetadata *)self type]];
   [v3 setObject:v4 forKey:@"_type"];
 
-  v5 = [(MASDAssetMetadata *)self lastUpdatedOSVersion];
-  [v3 setObject:v5 forKey:@"_lastUpdatedOSVersion"];
+  lastUpdatedOSVersion = [(MASDAssetMetadata *)self lastUpdatedOSVersion];
+  [v3 setObject:lastUpdatedOSVersion forKey:@"_lastUpdatedOSVersion"];
 
-  v6 = [(MASDAssetMetadata *)self lastUpdatedTime];
-  [v3 setObject:v6 forKey:@"_lastUpdatedTime"];
+  lastUpdatedTime = [(MASDAssetMetadata *)self lastUpdatedTime];
+  [v3 setObject:lastUpdatedTime forKey:@"_lastUpdatedTime"];
 
-  v7 = [(MASDAssetMetadata *)self creationTime];
-  [v3 setObject:v7 forKey:@"_creationTime"];
+  creationTime = [(MASDAssetMetadata *)self creationTime];
+  [v3 setObject:creationTime forKey:@"_creationTime"];
 
-  v8 = [(MASDAssetMetadata *)self label];
+  label = [(MASDAssetMetadata *)self label];
 
-  if (v8)
+  if (label)
   {
-    v9 = [(MASDAssetMetadata *)self label];
-    [v3 setObject:v9 forKey:@"_label"];
+    label2 = [(MASDAssetMetadata *)self label];
+    [v3 setObject:label2 forKey:@"_label"];
   }
 
-  v10 = [(MASDAssetMetadata *)self participantIdentifier];
+  participantIdentifier = [(MASDAssetMetadata *)self participantIdentifier];
 
-  if (v10)
+  if (participantIdentifier)
   {
-    v11 = [(MASDAssetMetadata *)self participantIdentifier];
-    [v3 setObject:v11 forKey:@"_participantIdentifier"];
+    participantIdentifier2 = [(MASDAssetMetadata *)self participantIdentifier];
+    [v3 setObject:participantIdentifier2 forKey:@"_participantIdentifier"];
   }
 
-  v12 = [(MASDAssetMetadata *)self sessionIdentifier];
+  sessionIdentifier = [(MASDAssetMetadata *)self sessionIdentifier];
 
-  if (v12)
+  if (sessionIdentifier)
   {
-    v13 = [(MASDAssetMetadata *)self sessionIdentifier];
-    [v3 setObject:v13 forKey:@"_sessionIdentifier"];
+    sessionIdentifier2 = [(MASDAssetMetadata *)self sessionIdentifier];
+    [v3 setObject:sessionIdentifier2 forKey:@"_sessionIdentifier"];
   }
 
-  v14 = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
+  lastUpdatedAlgorithmVersion = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
 
-  if (v14)
+  if (lastUpdatedAlgorithmVersion)
   {
-    v15 = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
-    [v3 setObject:v15 forKey:@"_lastUpdatedAlgorithmVersion"];
+    lastUpdatedAlgorithmVersion2 = [(MASDAssetMetadata *)self lastUpdatedAlgorithmVersion];
+    [v3 setObject:lastUpdatedAlgorithmVersion2 forKey:@"_lastUpdatedAlgorithmVersion"];
   }
 
   v16 = [v3 mutableCopy];

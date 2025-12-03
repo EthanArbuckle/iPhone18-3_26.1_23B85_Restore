@@ -1,17 +1,17 @@
 @interface CPLPlaceAnnotation
-+ (CPLPlaceAnnotation)placeAnnotationWithCPLPlaceAnnotationDictionary:(id)a3;
++ (CPLPlaceAnnotation)placeAnnotationWithCPLPlaceAnnotationDictionary:(id)dictionary;
 - (id)cplPlaceAnnotationDictionary;
 @end
 
 @implementation CPLPlaceAnnotation
 
-+ (CPLPlaceAnnotation)placeAnnotationWithCPLPlaceAnnotationDictionary:(id)a3
++ (CPLPlaceAnnotation)placeAnnotationWithCPLPlaceAnnotationDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v3 = a3;
-    v4 = [v3 cpl_validObjectForKey:@"level" class:objc_opt_class()];
-    v5 = [v3 cpl_validObjectForKey:@"name" class:objc_opt_class()];
+    dictionaryCopy = dictionary;
+    v4 = [dictionaryCopy cpl_validObjectForKey:@"level" class:objc_opt_class()];
+    v5 = [dictionaryCopy cpl_validObjectForKey:@"name" class:objc_opt_class()];
 
     if (v4 | v5)
     {
@@ -37,20 +37,20 @@
 - (id)cplPlaceAnnotationDictionary
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(CPLPlaceAnnotation *)self placeLevel];
+  placeLevel = [(CPLPlaceAnnotation *)self placeLevel];
 
-  if (v4)
+  if (placeLevel)
   {
-    v5 = [(CPLPlaceAnnotation *)self placeLevel];
-    [v3 setObject:v5 forKey:@"level"];
+    placeLevel2 = [(CPLPlaceAnnotation *)self placeLevel];
+    [v3 setObject:placeLevel2 forKey:@"level"];
   }
 
-  v6 = [(CPLPlaceAnnotation *)self placeName];
+  placeName = [(CPLPlaceAnnotation *)self placeName];
 
-  if (v6)
+  if (placeName)
   {
-    v7 = [(CPLPlaceAnnotation *)self placeName];
-    [v3 setObject:v7 forKey:@"name"];
+    placeName2 = [(CPLPlaceAnnotation *)self placeName];
+    [v3 setObject:placeName2 forKey:@"name"];
   }
 
   return v3;

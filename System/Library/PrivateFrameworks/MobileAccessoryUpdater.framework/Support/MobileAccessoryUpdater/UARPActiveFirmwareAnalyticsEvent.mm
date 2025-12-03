@@ -1,7 +1,7 @@
 @interface UARPActiveFirmwareAnalyticsEvent
 - (id)description;
 - (void)dealloc;
-- (void)updateWithAccessoryID:(id)a3;
+- (void)updateWithAccessoryID:(id)d;
 @end
 
 @implementation UARPActiveFirmwareAnalyticsEvent
@@ -13,16 +13,16 @@
   [(UARPActiveFirmwareAnalyticsEvent *)&v3 dealloc];
 }
 
-- (void)updateWithAccessoryID:(id)a3
+- (void)updateWithAccessoryID:(id)d
 {
-  -[UARPActiveFirmwareAnalyticsEvent setManufacturerName:](self, "setManufacturerName:", [a3 manufacturer]);
-  -[UARPActiveFirmwareAnalyticsEvent setModelName:](self, "setModelName:", [a3 modelAnalytics]);
-  -[UARPActiveFirmwareAnalyticsEvent setCountryCode:](self, "setCountryCode:", [a3 countryCode]);
-  -[UARPActiveFirmwareAnalyticsEvent setActiveFirmwareVersion:](self, "setActiveFirmwareVersion:", [a3 firmwareVersion]);
-  -[UARPActiveFirmwareAnalyticsEvent setTransport:](self, "setTransport:", [a3 transport]);
-  v5 = [a3 shareAnalyticsEventsWithThirdParty];
+  -[UARPActiveFirmwareAnalyticsEvent setManufacturerName:](self, "setManufacturerName:", [d manufacturer]);
+  -[UARPActiveFirmwareAnalyticsEvent setModelName:](self, "setModelName:", [d modelAnalytics]);
+  -[UARPActiveFirmwareAnalyticsEvent setCountryCode:](self, "setCountryCode:", [d countryCode]);
+  -[UARPActiveFirmwareAnalyticsEvent setActiveFirmwareVersion:](self, "setActiveFirmwareVersion:", [d firmwareVersion]);
+  -[UARPActiveFirmwareAnalyticsEvent setTransport:](self, "setTransport:", [d transport]);
+  shareAnalyticsEventsWithThirdParty = [d shareAnalyticsEventsWithThirdParty];
 
-  [(UARPActiveFirmwareAnalyticsEvent *)self setShare3rdParty:v5];
+  [(UARPActiveFirmwareAnalyticsEvent *)self setShare3rdParty:shareAnalyticsEventsWithThirdParty];
 }
 
 - (id)description

@@ -1,18 +1,18 @@
 @interface ATXScoreNormalizationDriver
 + (void)deleteArchiveFile;
 - (ATXScoreNormalizationDriver)init;
-- (BOOL)addScoreForModelWithClientModelId:(id)a3 clientModelVersion:(id)a4 score:(id)a5;
-- (BOOL)registerModelWithClientModelId:(id)a3 clientModelVersion:(id)a4 normalizationParameters:(id)a5;
-- (id)_normalizeScoreHelper:(id)a3 modelKey:(id)a4;
-- (id)getNormalizationModelWithClientModelId:(id)a3 clientModelVersion:(id)a4;
+- (BOOL)addScoreForModelWithClientModelId:(id)id clientModelVersion:(id)version score:(id)score;
+- (BOOL)registerModelWithClientModelId:(id)id clientModelVersion:(id)version normalizationParameters:(id)parameters;
+- (id)_normalizeScoreHelper:(id)helper modelKey:(id)key;
+- (id)getNormalizationModelWithClientModelId:(id)id clientModelVersion:(id)version;
 - (id)getOrMakeScoreNormalizationModelsDictionary;
-- (id)getPayloadFromArchiveAtPath:(id)a3;
-- (id)normalizeScore:(id)a3 clientModelId:(id)a4 clientModelVersion:(id)a5;
+- (id)getPayloadFromArchiveAtPath:(id)path;
+- (id)normalizeScore:(id)score clientModelId:(id)id clientModelVersion:(id)version;
 - (void)initStreamBookmark;
 - (void)modelScoreHarvesting;
 - (void)persistBookmark;
-- (void)writeArchive:(id)a3 toFilePath:(id)a4;
-- (void)writeArchiveFromDict:(id)a3;
+- (void)writeArchive:(id)archive toFilePath:(id)path;
+- (void)writeArchiveFromDict:(id)dict;
 @end
 
 @implementation ATXScoreNormalizationDriver
@@ -25,11 +25,11 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(ATXScoreNormalizationDriver *)v2 getOrMakeScoreNormalizationModelsDictionary];
-    v5 = v4;
-    if (v4)
+    getOrMakeScoreNormalizationModelsDictionary = [(ATXScoreNormalizationDriver *)v2 getOrMakeScoreNormalizationModelsDictionary];
+    v5 = getOrMakeScoreNormalizationModelsDictionary;
+    if (getOrMakeScoreNormalizationModelsDictionary)
     {
-      v6 = [v4 mutableCopy];
+      v6 = [getOrMakeScoreNormalizationModelsDictionary mutableCopy];
     }
 
     else
@@ -46,24 +46,24 @@
   return v3;
 }
 
-- (BOOL)registerModelWithClientModelId:(id)a3 clientModelVersion:(id)a4 normalizationParameters:(id)a5
+- (BOOL)registerModelWithClientModelId:(id)id clientModelVersion:(id)version normalizationParameters:(id)parameters
 {
-  v8 = a5;
-  v9 = [(ATXScoreNormalizationDriver *)self getUniqueModelKeyForClientModelId:a3 clientModelVersion:a4];
-  v10 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
-  v11 = [v10 objectForKey:v9];
+  parametersCopy = parameters;
+  v9 = [(ATXScoreNormalizationDriver *)self getUniqueModelKeyForClientModelId:id clientModelVersion:version];
+  scoreNormalizationModelsDict = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
+  v11 = [scoreNormalizationModelsDict objectForKey:v9];
 
-  v12 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
-  v13 = v12;
+  scoreNormalizationModelsDict2 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
+  v13 = scoreNormalizationModelsDict2;
   if (v11)
   {
-    v14 = [v12 objectForKeyedSubscript:v9];
-    [(ATXScoreNormalizationModel *)v14 setParameters:v8];
+    v14 = [scoreNormalizationModelsDict2 objectForKeyedSubscript:v9];
+    [(ATXScoreNormalizationModel *)v14 setParameters:parametersCopy];
   }
 
   else
   {
-    v14 = [[ATXScoreNormalizationModel alloc] initWithParameters:v8 circularBuffer:0 bufferHead:0 isBufferSorted:1];
+    v14 = [[ATXScoreNormalizationModel alloc] initWithParameters:parametersCopy circularBuffer:0 bufferHead:0 isBufferSorted:1];
 
     [v13 setValue:v14 forKey:v9];
   }
@@ -71,21 +71,21 @@
   return 1;
 }
 
-- (BOOL)addScoreForModelWithClientModelId:(id)a3 clientModelVersion:(id)a4 score:(id)a5
+- (BOOL)addScoreForModelWithClientModelId:(id)id clientModelVersion:(id)version score:(id)score
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ATXScoreNormalizationDriver *)self getUniqueModelKeyForClientModelId:v8 clientModelVersion:v9];
-  v12 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
-  v13 = [v12 objectForKey:v11];
+  idCopy = id;
+  versionCopy = version;
+  scoreCopy = score;
+  v11 = [(ATXScoreNormalizationDriver *)self getUniqueModelKeyForClientModelId:idCopy clientModelVersion:versionCopy];
+  scoreNormalizationModelsDict = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
+  v13 = [scoreNormalizationModelsDict objectForKey:v11];
 
   if (v13)
   {
-    v14 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
-    v15 = [v14 objectForKeyedSubscript:v11];
+    scoreNormalizationModelsDict2 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
+    v15 = [scoreNormalizationModelsDict2 objectForKeyedSubscript:v11];
 
-    [v15 addScore:v10];
+    [v15 addScore:scoreCopy];
   }
 
   else
@@ -93,32 +93,32 @@
     v16 = __atxlog_handle_blending();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      [ATXScoreNormalizationDriver addScoreForModelWithClientModelId:v8 clientModelVersion:v9 score:v16];
+      [ATXScoreNormalizationDriver addScoreForModelWithClientModelId:idCopy clientModelVersion:versionCopy score:v16];
     }
   }
 
   return v13 != 0;
 }
 
-- (id)normalizeScore:(id)a3 clientModelId:(id)a4 clientModelVersion:(id)a5
+- (id)normalizeScore:(id)score clientModelId:(id)id clientModelVersion:(id)version
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ATXScoreNormalizationDriver *)self getUniqueModelKeyForClientModelId:v9 clientModelVersion:v10];
-  v12 = [(ATXScoreNormalizationDriver *)self _normalizeScoreHelper:v8 modelKey:v11];
+  scoreCopy = score;
+  idCopy = id;
+  versionCopy = version;
+  v11 = [(ATXScoreNormalizationDriver *)self getUniqueModelKeyForClientModelId:idCopy clientModelVersion:versionCopy];
+  v12 = [(ATXScoreNormalizationDriver *)self _normalizeScoreHelper:scoreCopy modelKey:v11];
   v13 = __atxlog_handle_blending();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138413058;
-    v17 = v8;
+    v17 = scoreCopy;
     v18 = 2112;
     v19 = v12;
     v20 = 2112;
-    v21 = v9;
+    v21 = idCopy;
     v22 = 2112;
-    v23 = v10;
+    v23 = versionCopy;
     _os_log_impl(&dword_1DEFC4000, v13, OS_LOG_TYPE_DEFAULT, "ATXScoreNormalizationDriver: score normalized(score : %@, normalized: %@) with model %@ with version %@", &v16, 0x2Au);
   }
 
@@ -127,19 +127,19 @@
   return v12;
 }
 
-- (id)_normalizeScoreHelper:(id)a3 modelKey:(id)a4
+- (id)_normalizeScoreHelper:(id)helper modelKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
-  v9 = [v8 objectForKey:v7];
+  helperCopy = helper;
+  keyCopy = key;
+  scoreNormalizationModelsDict = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
+  v9 = [scoreNormalizationModelsDict objectForKey:keyCopy];
 
   if (v9)
   {
-    v10 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    scoreNormalizationModelsDict2 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
+    v11 = [scoreNormalizationModelsDict2 objectForKeyedSubscript:keyCopy];
 
-    v12 = [v11 normalizeScore:v6];
+    v12 = [v11 normalizeScore:helperCopy];
   }
 
   else
@@ -150,21 +150,21 @@
   return v12;
 }
 
-- (id)getNormalizationModelWithClientModelId:(id)a3 clientModelVersion:(id)a4
+- (id)getNormalizationModelWithClientModelId:(id)id clientModelVersion:(id)version
 {
-  v5 = [(ATXScoreNormalizationDriver *)self getUniqueModelKeyForClientModelId:a3 clientModelVersion:a4];
-  v6 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v5 = [(ATXScoreNormalizationDriver *)self getUniqueModelKeyForClientModelId:id clientModelVersion:version];
+  scoreNormalizationModelsDict = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
+  v7 = [scoreNormalizationModelsDict objectForKeyedSubscript:v5];
 
   return v7;
 }
 
-- (id)getPayloadFromArchiveAtPath:(id)a3
+- (id)getPayloadFromArchiveAtPath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   v15 = 0;
-  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3 options:2 error:&v15];
+  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:pathCopy options:2 error:&v15];
   v5 = v15;
   if (v4)
   {
@@ -188,7 +188,7 @@
     }
 
 LABEL_11:
-    v11 = 0;
+    scoreNormalizationModelsDict = 0;
     goto LABEL_12;
   }
 
@@ -209,19 +209,19 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v11 = [v8 scoreNormalizationModelsDict];
+  scoreNormalizationModelsDict = [v8 scoreNormalizationModelsDict];
 LABEL_12:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return scoreNormalizationModelsDict;
 }
 
 - (id)getOrMakeScoreNormalizationModelsDictionary
 {
   v3 = +[ATXScoreNormalizationDriver defaultArchivePath];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   if (v5)
   {
@@ -237,26 +237,26 @@ LABEL_12:
   return v6;
 }
 
-- (void)writeArchiveFromDict:(id)a3
+- (void)writeArchiveFromDict:(id)dict
 {
-  v4 = a3;
-  v6 = [[ATXScoreNormalizationArtifactsArchive alloc] initWithScoreNormalizationModelsDictionary:v4];
+  dictCopy = dict;
+  v6 = [[ATXScoreNormalizationArtifactsArchive alloc] initWithScoreNormalizationModelsDictionary:dictCopy];
 
   v5 = +[ATXScoreNormalizationDriver defaultArchivePath];
   [(ATXScoreNormalizationDriver *)self writeArchive:v6 toFilePath:v5];
 }
 
-- (void)writeArchive:(id)a3 toFilePath:(id)a4
+- (void)writeArchive:(id)archive toFilePath:(id)path
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  archiveCopy = archive;
+  pathCopy = path;
+  v7 = pathCopy;
+  if (archiveCopy && pathCopy)
   {
     v8 = objc_autoreleasePoolPush();
     v19 = 0;
-    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v19];
+    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:archiveCopy requiringSecureCoding:1 error:&v19];
     v10 = v19;
     objc_autoreleasePoolPop(v8);
     if (v10)
@@ -266,10 +266,10 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v11 = [v7 stringByDeletingLastPathComponent];
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
+    stringByDeletingLastPathComponent = [v7 stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v18 = 0;
-    [v12 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v18];
+    [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v18];
     v10 = v18;
 
     if (v10)
@@ -334,12 +334,12 @@ LABEL_18:
 + (void)deleteArchiveFile
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = +[ATXScoreNormalizationDriver defaultArchivePath];
-  if ([v2 fileExistsAtPath:v3])
+  if ([defaultManager fileExistsAtPath:v3])
   {
     v11 = 0;
-    [v2 removeItemAtPath:v3 error:&v11];
+    [defaultManager removeItemAtPath:v3 error:&v11];
     v4 = v11;
     v5 = __atxlog_handle_blending();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -380,9 +380,9 @@ LABEL_7:
   v4 = [MEMORY[0x1E698AFE0] bookmarkFromURLPath:v3 maxFileSize:1000000 versionNumber:&unk_1F5A41290];
   [(ATXScoreNormalizationDriver *)self setScoreHarvestingStreamBookmark:v4];
 
-  v5 = [(ATXScoreNormalizationDriver *)self scoreHarvestingStreamBookmark];
+  scoreHarvestingStreamBookmark = [(ATXScoreNormalizationDriver *)self scoreHarvestingStreamBookmark];
 
-  if (!v5)
+  if (!scoreHarvestingStreamBookmark)
   {
     v6 = [objc_alloc(MEMORY[0x1E698AFE0]) initWithURLPath:v3 versionNumber:&unk_1F5A41290 bookmark:0 metadata:0];
     [(ATXScoreNormalizationDriver *)self setScoreHarvestingStreamBookmark:v6];
@@ -403,10 +403,10 @@ LABEL_7:
   v4 = __atxlog_handle_blending();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(ATXScoreNormalizationDriver *)self scoreHarvestingStreamBookmark];
-    v6 = [v5 bookmark];
+    scoreHarvestingStreamBookmark = [(ATXScoreNormalizationDriver *)self scoreHarvestingStreamBookmark];
+    bookmark = [scoreHarvestingStreamBookmark bookmark];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = bookmark;
     _os_log_impl(&dword_1DEFC4000, v4, OS_LOG_TYPE_DEFAULT, "ATXScoreNormalizationDriver: scoreHarvestingStreamBookmark %@", &buf, 0xCu);
   }
 
@@ -420,8 +420,8 @@ LABEL_7:
   v49 = 0x2020000000;
   v50 = 0;
   objc_initWeak(&location, self);
-  v11 = [(ATXScoreNormalizationDriver *)self scoreHarvestingStreamBookmark];
-  v12 = [v11 bookmark];
+  scoreHarvestingStreamBookmark2 = [(ATXScoreNormalizationDriver *)self scoreHarvestingStreamBookmark];
+  bookmark2 = [scoreHarvestingStreamBookmark2 bookmark];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __51__ATXScoreNormalizationDriver_modelScoreHarvesting__block_invoke;
@@ -438,18 +438,18 @@ LABEL_7:
   v14 = v9;
   v36 = v14;
   v37 = &buf;
-  v15 = [v8 sinkWithBookmark:v12 completion:v38 receiveInput:v35];
+  v15 = [v8 sinkWithBookmark:bookmark2 completion:v38 receiveInput:v35];
 
   if ([MEMORY[0x1E69C5D10] waitForSemaphore:v13 timeoutSeconds:2.0] == 1)
   {
-    v16 = __atxlog_handle_blending();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    scoreNormalizationModelsDict3 = __atxlog_handle_blending();
+    if (os_log_type_enabled(scoreNormalizationModelsDict3, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       *v44 = 138412290;
       v45 = v18;
-      _os_log_impl(&dword_1DEFC4000, v16, OS_LOG_TYPE_DEFAULT, "ATXScoreNormalizationDriver: %@ - event processing timeout", v44, 0xCu);
+      _os_log_impl(&dword_1DEFC4000, scoreNormalizationModelsDict3, OS_LOG_TYPE_DEFAULT, "ATXScoreNormalizationDriver: %@ - event processing timeout", v44, 0xCu);
     }
   }
 
@@ -477,8 +477,8 @@ LABEL_7:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v23 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
-    v24 = [v23 countByEnumeratingWithState:&v31 objects:v43 count:16];
+    scoreNormalizationModelsDict = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
+    v24 = [scoreNormalizationModelsDict countByEnumeratingWithState:&v31 objects:v43 count:16];
     if (v24)
     {
       v25 = *v32;
@@ -489,26 +489,26 @@ LABEL_7:
         {
           if (*v32 != v25)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(scoreNormalizationModelsDict);
           }
 
           v27 = *(*(&v31 + 1) + 8 * v26);
-          v28 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
-          v29 = [v28 objectForKeyedSubscript:v27];
+          scoreNormalizationModelsDict2 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
+          v29 = [scoreNormalizationModelsDict2 objectForKeyedSubscript:v27];
 
           [v29 getStateReadyForNormalization];
           ++v26;
         }
 
         while (v24 != v26);
-        v24 = [v23 countByEnumeratingWithState:&v31 objects:v43 count:16];
+        v24 = [scoreNormalizationModelsDict countByEnumeratingWithState:&v31 objects:v43 count:16];
       }
 
       while (v24);
     }
 
-    v16 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
-    [(ATXScoreNormalizationDriver *)self writeArchiveFromDict:v16];
+    scoreNormalizationModelsDict3 = [(ATXScoreNormalizationDriver *)self scoreNormalizationModelsDict];
+    [(ATXScoreNormalizationDriver *)self writeArchiveFromDict:scoreNormalizationModelsDict3];
   }
 
   objc_destroyWeak(&v41);
@@ -628,9 +628,9 @@ void __51__ATXScoreNormalizationDriver_modelScoreHarvesting__block_invoke_68(voi
 - (void)persistBookmark
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(ATXScoreNormalizationDriver *)self scoreHarvestingStreamBookmark];
+  scoreHarvestingStreamBookmark = [(ATXScoreNormalizationDriver *)self scoreHarvestingStreamBookmark];
   v11 = 0;
-  [v3 saveBookmarkWithError:&v11];
+  [scoreHarvestingStreamBookmark saveBookmarkWithError:&v11];
   v4 = v11;
 
   v5 = __atxlog_handle_blending();
@@ -638,12 +638,12 @@ void __51__ATXScoreNormalizationDriver_modelScoreHarvesting__block_invoke_68(voi
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(ATXScoreNormalizationDriver *)self scoreHarvestingStreamBookmark];
-    v9 = [v8 urlPath];
+    scoreHarvestingStreamBookmark2 = [(ATXScoreNormalizationDriver *)self scoreHarvestingStreamBookmark];
+    urlPath = [scoreHarvestingStreamBookmark2 urlPath];
     *buf = 138412802;
     v13 = v7;
     v14 = 2112;
-    v15 = v9;
+    v15 = urlPath;
     v16 = 2112;
     v17 = v4;
     _os_log_impl(&dword_1DEFC4000, v5, OS_LOG_TYPE_DEFAULT, "%@ - persisted score normalization bookmark to path %@ with error: %@", buf, 0x20u);

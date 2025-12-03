@@ -1,15 +1,15 @@
 @interface UIDictationTipDeletionHandler
-- (UIDictationTipDeletionHandler)initWithDelegate:(id)a3;
+- (UIDictationTipDeletionHandler)initWithDelegate:(id)delegate;
 - (UIDictationTipHandlerDelegate)delegate;
 - (_NSRange)lastSelectedDeletionRange;
-- (void)addDeletionEventCount:(id)a3 deletedTextRange:(_NSRange)a4;
+- (void)addDeletionEventCount:(id)count deletedTextRange:(_NSRange)range;
 - (void)finalizeRecordedText;
-- (void)recordDictationTipText:(id)a3;
+- (void)recordDictationTipText:(id)text;
 - (void)resetDeletionEventCount;
 - (void)resetHandler;
 - (void)resetRecorder;
-- (void)setlastDeletionRange:(_NSRange)a3;
-- (void)startRecodingText:(id)a3;
+- (void)setlastDeletionRange:(_NSRange)range;
+- (void)startRecodingText:(id)text;
 @end
 
 @implementation UIDictationTipDeletionHandler
@@ -39,16 +39,16 @@
   [(UIDictationTipDeletionHandler *)self resetRecorder];
 }
 
-- (UIDictationTipDeletionHandler)initWithDelegate:(id)a3
+- (UIDictationTipDeletionHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = UIDictationTipDeletionHandler;
   v5 = [(UIDictationTipDeletionHandler *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(UIDictationTipDeletionHandler *)v5 setDelegate:v4];
+    [(UIDictationTipDeletionHandler *)v5 setDelegate:delegateCopy];
     [(UIDictationTipDeletionHandler *)v6 resetDeletionEventCount];
     v7 = [[UIDelayedAction alloc] initWithTarget:v6 action:sel_finalizeRecordedText userInfo:0 delay:1.0];
     finalizeAction = v6->_finalizeAction;
@@ -60,14 +60,14 @@
   return v6;
 }
 
-- (void)setlastDeletionRange:(_NSRange)a3
+- (void)setlastDeletionRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = LODWORD(a3.location) - LODWORD(self->_lastSelectedDeletionRange.location);
+  length = range.length;
+  location = range.location;
+  v6 = LODWORD(range.location) - LODWORD(self->_lastSelectedDeletionRange.location);
   if (v6 < 0)
   {
-    v6 = LODWORD(self->_lastSelectedDeletionRange.location) - LODWORD(a3.location);
+    v6 = LODWORD(self->_lastSelectedDeletionRange.location) - LODWORD(range.location);
   }
 
   if (v6 >= 2)
@@ -79,43 +79,43 @@
   self->_lastSelectedDeletionRange.length = length;
 }
 
-- (void)addDeletionEventCount:(id)a3 deletedTextRange:(_NSRange)a4
+- (void)addDeletionEventCount:(id)count deletedTextRange:(_NSRange)range
 {
-  if (a3)
+  if (count)
   {
-    length = a4.length;
-    location = a4.location;
-    v8 = a3;
+    length = range.length;
+    location = range.location;
+    countCopy = count;
     [(UIDictationTipDeletionHandler *)self setlastDeletionRange:location, length];
     cachedDeletedText = self->_cachedDeletedText;
     ++self->_deletionEventCount;
-    [(NSMutableString *)cachedDeletedText insertString:v8 atIndex:0];
+    [(NSMutableString *)cachedDeletedText insertString:countCopy atIndex:0];
   }
 }
 
-- (void)startRecodingText:(id)a3
+- (void)startRecodingText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained getDictationTipSignaled];
+  getDictationTipSignaled = [WeakRetained getDictationTipSignaled];
 
-  if (v5 == 1)
+  if (getDictationTipSignaled == 1)
   {
     [(UIDictationTipDeletionHandler *)self resetRecorder];
     v6 = [MEMORY[0x1E696AD60] stringWithString:self->_cachedDeletedText];
     deletionText = self->_deletionText;
     self->_deletionText = v6;
 
-    if ([v8 length] >= 2)
+    if ([textCopy length] >= 2)
     {
-      [(UIDictationTipDeletionHandler *)self recordDictationTipText:v8];
+      [(UIDictationTipDeletionHandler *)self recordDictationTipText:textCopy];
     }
   }
 }
 
-- (void)recordDictationTipText:(id)a3
+- (void)recordDictationTipText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained getDictationTipSignaled] == 1)
   {
@@ -124,7 +124,7 @@
     if (textRecorderStatus != 2)
     {
       [(UIDelayedAction *)self->_finalizeAction unschedule];
-      [(NSMutableString *)self->_deletionText insertString:v6 atIndex:0];
+      [(NSMutableString *)self->_deletionText insertString:textCopy atIndex:0];
       self->_textRecorderStatus = 1;
       [(UIDelayedAction *)self->_finalizeAction touch];
     }
@@ -146,9 +146,9 @@
 
   else
   {
-    v4 = [(NSMutableString *)self->_deletionText _containsEmojiOnly];
+    _containsEmojiOnly = [(NSMutableString *)self->_deletionText _containsEmojiOnly];
 
-    if ((v4 & 1) == 0)
+    if ((_containsEmojiOnly & 1) == 0)
     {
       goto LABEL_5;
     }
@@ -160,9 +160,9 @@
 
   v15 = v12;
 LABEL_5:
-  v13 = [(UIDictationTipDeletionHandler *)self delegate];
+  delegate = [(UIDictationTipDeletionHandler *)self delegate];
   v14 = _UILocalizedString(@"Dictation Deletion Tip Title", @"Title of the deletion tip", @"Delete Text");
-  [v13 finalizeTextWithTipType:1 title:v14 andTipDescription:v15];
+  [delegate finalizeTextWithTipType:1 title:v14 andTipDescription:v15];
 
   [(UIDictationTipDeletionHandler *)self resetDeletionEventCount];
 }

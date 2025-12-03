@@ -1,34 +1,34 @@
 @interface CSSiriAudioMessageRequestHandler
 - (CSSiriAudioMessageRequestHandler)init;
-- (id)_createAudioMessageFile:(id)a3;
+- (id)_createAudioMessageFile:(id)file;
 - (void)_releaseRetainIfNeeded;
-- (void)attSiriAudioSrcNodeDidStartRecording:(id)a3 successfully:(BOOL)a4 error:(id)a5;
-- (void)attSiriAudioSrcNodeDidStop:(id)a3;
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4;
-- (void)deleteAudioMessageFile:(id)a3 completion:(id)a4;
+- (void)attSiriAudioSrcNodeDidStartRecording:(id)recording successfully:(BOOL)successfully error:(id)error;
+- (void)attSiriAudioSrcNodeDidStop:(id)stop;
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk;
+- (void)deleteAudioMessageFile:(id)file completion:(id)completion;
 - (void)forceReleaseAllAudioMessageRetainLock;
-- (void)getAudioFileWithRequestId:(id)a3 completion:(id)a4;
-- (void)releaseAudioMessageRetainLockFromRequestId:(id)a3;
-- (void)startLoggingWithRequestId:(id)a3 recordContext:(id)a4;
+- (void)getAudioFileWithRequestId:(id)id completion:(id)completion;
+- (void)releaseAudioMessageRetainLockFromRequestId:(id)id;
+- (void)startLoggingWithRequestId:(id)id recordContext:(id)context;
 @end
 
 @implementation CSSiriAudioMessageRequestHandler
 
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk
 {
-  v5 = a4;
+  chunkCopy = chunk;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10014FDB4;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = chunkCopy;
+  v7 = chunkCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)attSiriAudioSrcNodeDidStop:(id)a3
+- (void)attSiriAudioSrcNodeDidStop:(id)stop
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -39,9 +39,9 @@
   dispatch_async(queue, block);
 }
 
-- (void)attSiriAudioSrcNodeDidStartRecording:(id)a3 successfully:(BOOL)a4 error:(id)a5
+- (void)attSiriAudioSrcNodeDidStartRecording:(id)recording successfully:(BOOL)successfully error:(id)error
 {
-  if (!a4)
+  if (!successfully)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -53,12 +53,12 @@
   }
 }
 
-- (void)deleteAudioMessageFile:(id)a3 completion:(id)a4
+- (void)deleteAudioMessageFile:(id)file completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  fileCopy = file;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (fileCopy)
   {
     queue = self->_queue;
     v10[0] = _NSConcreteStackBlock;
@@ -66,21 +66,21 @@
     v10[2] = sub_100150100;
     v10[3] = &unk_100253C48;
     v10[4] = self;
-    v11 = v6;
+    v11 = fileCopy;
     dispatch_async(queue, v10);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
-- (id)_createAudioMessageFile:(id)a3
+- (id)_createAudioMessageFile:(id)file
 {
-  v4 = a3;
-  v5 = [[CSSiriAudioMessageFile alloc] initWithRequestUUID:v4];
-  [(NSMutableDictionary *)self->_audioMessageAudioFiles setObject:v5 forKey:v4];
+  fileCopy = file;
+  v5 = [[CSSiriAudioMessageFile alloc] initWithRequestUUID:fileCopy];
+  [(NSMutableDictionary *)self->_audioMessageAudioFiles setObject:v5 forKey:fileCopy];
 
   return v5;
 }
@@ -91,8 +91,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(CSSiriAudioMessageRequestHandler *)self audioMessageAudioFiles];
-  obj = [v3 allKeys];
+  audioMessageAudioFiles = [(CSSiriAudioMessageRequestHandler *)self audioMessageAudioFiles];
+  obj = [audioMessageAudioFiles allKeys];
 
   v4 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
@@ -113,19 +113,19 @@
         v13 = &v12;
         v14 = 0x2020000000;
         v15 = 0;
-        v8 = [(CSSiriAudioMessageRequestHandler *)self audioMessageFileRetainLocks];
+        audioMessageFileRetainLocks = [(CSSiriAudioMessageRequestHandler *)self audioMessageFileRetainLocks];
         v11[0] = _NSConcreteStackBlock;
         v11[1] = 3221225472;
         v11[2] = sub_10015036C;
         v11[3] = &unk_100252E80;
         v11[4] = v7;
         v11[5] = &v12;
-        [v8 enumerateKeysAndObjectsUsingBlock:v11];
+        [audioMessageFileRetainLocks enumerateKeysAndObjectsUsingBlock:v11];
 
         if (!v13[3])
         {
-          v9 = [(CSSiriAudioMessageRequestHandler *)self audioMessageAudioFiles];
-          [v9 removeObjectForKey:v7];
+          audioMessageAudioFiles2 = [(CSSiriAudioMessageRequestHandler *)self audioMessageAudioFiles];
+          [audioMessageAudioFiles2 removeObjectForKey:v7];
         }
 
         _Block_object_dispose(&v12, 8);
@@ -151,38 +151,38 @@
   dispatch_async(queue, block);
 }
 
-- (void)releaseAudioMessageRetainLockFromRequestId:(id)a3
+- (void)releaseAudioMessageRetainLockFromRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100150518;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = idCopy;
+  selfCopy = self;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getAudioFileWithRequestId:(id)a3 completion:(id)a4
+- (void)getAudioFileWithRequestId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[CSSiriAudioMessageFileRetainLock alloc] initWithRequestId:v6];
+  idCopy = id;
+  completionCopy = completion;
+  v8 = [[CSSiriAudioMessageFileRetainLock alloc] initWithRequestId:idCopy];
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v16 = "[CSSiriAudioMessageRequestHandler getAudioFileWithRequestId:completion:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = idCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s Fetching Audio File with RequestID : %@", buf, 0x16u);
   }
 
-  if (v6)
+  if (idCopy)
   {
-    if (v7)
+    if (completionCopy)
     {
       queue = self->_queue;
       v11[0] = _NSConcreteStackBlock;
@@ -190,33 +190,33 @@
       v11[2] = sub_1001508B4;
       v11[3] = &unk_100252E58;
       v11[4] = self;
-      v12 = v6;
+      v12 = idCopy;
       v13 = v8;
-      v14 = v7;
+      v14 = completionCopy;
       dispatch_async(queue, v11);
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)startLoggingWithRequestId:(id)a3 recordContext:(id)a4
+- (void)startLoggingWithRequestId:(id)id recordContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  contextCopy = context;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100150CA4;
   block[3] = &unk_100253680;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = contextCopy;
+  v13 = idCopy;
+  selfCopy = self;
+  v9 = idCopy;
+  v10 = contextCopy;
   dispatch_async(queue, block);
 }
 

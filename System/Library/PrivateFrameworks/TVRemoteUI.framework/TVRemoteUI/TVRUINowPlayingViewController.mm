@@ -1,39 +1,39 @@
 @interface TVRUINowPlayingViewController
-- (BOOL)_canDisplayInsightsTabForNowPlayingInfo:(id)a3;
-- (BOOL)_viewControllerIdentifierIsAvailable:(id)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_canDisplayInsightsTabForNowPlayingInfo:(id)info;
+- (BOOL)_viewControllerIdentifierIsAvailable:(id)available;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (NSArray)allPossibleChildViewControllerIdentifiers;
 - (NSArray)childViewControllerIdentifiers;
 - (NSDictionary)childViewControllerDict;
 - (TVRUIActionProviding)actionProvider;
 - (TVRUIUpNextProviding)upNextProvider;
-- (id)_availableTabToDisplayForNowPlayingInfo:(id)a3;
+- (id)_availableTabToDisplayForNowPlayingInfo:(id)info;
 - (id)_upNextIdentifier;
 - (id)commandHandler;
 - (id)makeTimedMetadataPlaybackInfo;
-- (id)viewControllerForIdentifier:(id)a3;
-- (id)viewControllerForIndex:(unint64_t)a3;
-- (id)viewControllerIdentifierForIndex:(unint64_t)a3;
-- (unint64_t)indexForViewControllerIdentifier:(id)a3;
-- (void)_applyTransform:(CGAffineTransform *)a3 toChildViewControllerAtIndex:(unint64_t)a4;
-- (void)_callChildViewControllerAppearanceForIdentifier:(id)a3 appearing:(BOOL)a4;
-- (void)_callChildViewControllerDisappearingForAllExceptIdentifier:(id)a3;
-- (void)_performTabAnimationFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4 isInteractive:(BOOL)a5 interactivePercentage:(double)a6;
-- (void)_performTabAnimationFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4 isInteractive:(BOOL)a5 interactivePercentage:(double)a6 animator:(id)a7;
+- (id)viewControllerForIdentifier:(id)identifier;
+- (id)viewControllerForIndex:(unint64_t)index;
+- (id)viewControllerIdentifierForIndex:(unint64_t)index;
+- (unint64_t)indexForViewControllerIdentifier:(id)identifier;
+- (void)_applyTransform:(CGAffineTransform *)transform toChildViewControllerAtIndex:(unint64_t)index;
+- (void)_callChildViewControllerAppearanceForIdentifier:(id)identifier appearing:(BOOL)appearing;
+- (void)_callChildViewControllerDisappearingForAllExceptIdentifier:(id)identifier;
+- (void)_performTabAnimationFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex isInteractive:(BOOL)interactive interactivePercentage:(double)percentage;
+- (void)_performTabAnimationFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex isInteractive:(BOOL)interactive interactivePercentage:(double)percentage animator:(id)animator;
 - (void)_reconfigureTabsIfNeeded;
-- (void)_tabAnimationDidCompleteWithFinalPosition:(int64_t)a3 viewControllerIndex:(unint64_t)a4;
+- (void)_tabAnimationDidCompleteWithFinalPosition:(int64_t)position viewControllerIndex:(unint64_t)index;
 - (void)_updateSelectorControlHeight;
-- (void)_updateViewControllerVisibilityForSelectedIdentifier:(id)a3;
+- (void)_updateViewControllerVisibilityForSelectedIdentifier:(id)identifier;
 - (void)configureHierarchy;
 - (void)configureSegControlOrDividerViewVisibility;
 - (void)configureTimedMetadata;
 - (void)configureTimedMetadataView;
 - (void)forceTabSelectionToInfoTab;
-- (void)panRecognizerDidFire:(id)a3;
-- (void)setCommandHandler:(id)a3;
-- (void)setNowPlayingInfo:(id)a3;
+- (void)panRecognizerDidFire:(id)fire;
+- (void)setCommandHandler:(id)handler;
+- (void)setNowPlayingInfo:(id)info;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -50,45 +50,45 @@
 
   [(TVRUINowPlayingViewController *)self configureTimedMetadata];
   [(TVRUINowPlayingViewController *)self configureHierarchy];
-  v5 = [(TVRUINowPlayingViewController *)self view];
-  [v5 setNeedsLayout];
+  view = [(TVRUINowPlayingViewController *)self view];
+  [view setNeedsLayout];
 
-  v6 = [(TVRUINowPlayingViewController *)self view];
-  [v6 layoutIfNeeded];
+  view2 = [(TVRUINowPlayingViewController *)self view];
+  [view2 layoutIfNeeded];
 
   [(TVRUINowPlayingViewController *)self _updateSelectorControlHeight];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = TVRUINowPlayingViewController;
-  [(TVRUINowPlayingViewController *)&v12 viewWillAppear:a3];
-  v4 = [(TVRUINowPlayingViewController *)self overrideSelectedViewControllerIdentifier];
+  [(TVRUINowPlayingViewController *)&v12 viewWillAppear:appear];
+  overrideSelectedViewControllerIdentifier = [(TVRUINowPlayingViewController *)self overrideSelectedViewControllerIdentifier];
 
-  if (v4)
+  if (overrideSelectedViewControllerIdentifier)
   {
-    v5 = [(TVRUINowPlayingViewController *)self overrideSelectedViewControllerIdentifier];
-    [(TVRUINowPlayingViewController *)self _updateViewControllerVisibilityForSelectedIdentifier:v5];
+    overrideSelectedViewControllerIdentifier2 = [(TVRUINowPlayingViewController *)self overrideSelectedViewControllerIdentifier];
+    [(TVRUINowPlayingViewController *)self _updateViewControllerVisibilityForSelectedIdentifier:overrideSelectedViewControllerIdentifier2];
 
     [(TVRUINowPlayingViewController *)self setOverrideSelectedViewControllerIdentifier:0];
   }
 
   else
   {
-    v6 = [(TVRUINowPlayingViewController *)self lastExplicitUserSelectedViewControllerIdentifier];
+    lastExplicitUserSelectedViewControllerIdentifier = [(TVRUINowPlayingViewController *)self lastExplicitUserSelectedViewControllerIdentifier];
 
-    v7 = [(TVRUINowPlayingViewController *)self lastExplicitUserSelectedViewControllerIdentifier];
-    v8 = [(TVRUINowPlayingViewController *)self _viewControllerIdentifierIsAvailable:v7];
+    lastExplicitUserSelectedViewControllerIdentifier2 = [(TVRUINowPlayingViewController *)self lastExplicitUserSelectedViewControllerIdentifier];
+    v8 = [(TVRUINowPlayingViewController *)self _viewControllerIdentifierIsAvailable:lastExplicitUserSelectedViewControllerIdentifier2];
 
-    if (!v6 || (v8 & 1) == 0)
+    if (!lastExplicitUserSelectedViewControllerIdentifier || (v8 & 1) == 0)
     {
-      v9 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-      v10 = [(TVRUINowPlayingViewController *)self _availableTabToDisplayForNowPlayingInfo:v9];
+      nowPlayingInfo = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+      v10 = [(TVRUINowPlayingViewController *)self _availableTabToDisplayForNowPlayingInfo:nowPlayingInfo];
       [(TVRUINowPlayingViewController *)self setCurrentViewControllerIdentifier:v10];
 
-      v11 = [(TVRUINowPlayingViewController *)self currentViewControllerIdentifier];
-      [(TVRUINowPlayingViewController *)self _updateViewControllerVisibilityForSelectedIdentifier:v11];
+      currentViewControllerIdentifier = [(TVRUINowPlayingViewController *)self currentViewControllerIdentifier];
+      [(TVRUINowPlayingViewController *)self _updateViewControllerVisibilityForSelectedIdentifier:currentViewControllerIdentifier];
     }
   }
 }
@@ -100,38 +100,38 @@
   [(TVRUINowPlayingViewController *)self setOverrideSelectedViewControllerIdentifier:v3];
 }
 
-- (void)setNowPlayingInfo:(id)a3
+- (void)setNowPlayingInfo:(id)info
 {
-  v5 = a3;
-  objc_storeStrong(&self->_nowPlayingInfo, a3);
-  v6 = [v5 metadata];
-  v7 = [v5 tvrui_mediaIsStopped];
-  v8 = [v5 tvrui_mediaIsIsPlaying];
-  v9 = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
-  [v9 setIsPlaying:v8];
+  infoCopy = info;
+  objc_storeStrong(&self->_nowPlayingInfo, info);
+  metadata = [infoCopy metadata];
+  tvrui_mediaIsStopped = [infoCopy tvrui_mediaIsStopped];
+  tvrui_mediaIsIsPlaying = [infoCopy tvrui_mediaIsIsPlaying];
+  mediaControlsViewController = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
+  [mediaControlsViewController setIsPlaying:tvrui_mediaIsIsPlaying];
 
-  v10 = [(TVRUINowPlayingViewController *)self nowPlayingMiniPlayerViewController];
-  [v10 setNowPlayingInfo:v5];
+  nowPlayingMiniPlayerViewController = [(TVRUINowPlayingViewController *)self nowPlayingMiniPlayerViewController];
+  [nowPlayingMiniPlayerViewController setNowPlayingInfo:infoCopy];
 
-  v11 = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
-  [v11 setIsPlaying:v8];
+  mediaControlsViewController2 = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
+  [mediaControlsViewController2 setIsPlaying:tvrui_mediaIsIsPlaying];
 
-  v12 = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
-  [v12 setIsMediaActive:v7 ^ 1u];
+  mediaControlsViewController3 = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
+  [mediaControlsViewController3 setIsMediaActive:tvrui_mediaIsStopped ^ 1u];
 
-  v13 = [v5 playbackRate];
-  v14 = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
-  [v14 setPlaybackRate:v13];
+  playbackRate = [infoCopy playbackRate];
+  mediaControlsViewController4 = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
+  [mediaControlsViewController4 setPlaybackRate:playbackRate];
 
-  v15 = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
-  [v15 setNowPlayingInfo:v5];
+  nowPlayingInfoViewController = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
+  [nowPlayingInfoViewController setNowPlayingInfo:infoCopy];
 
-  v16 = [(TVRUINowPlayingViewController *)self castViewController];
-  [v16 setMetadata:v6];
+  castViewController = [(TVRUINowPlayingViewController *)self castViewController];
+  [castViewController setMetadata:metadata];
 
   v17 = _TVRUINowPlayingLog();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (metadata)
   {
     if (v18)
     {
@@ -139,9 +139,9 @@
       _os_log_impl(&dword_26CFEB000, v17, OS_LOG_TYPE_DEFAULT, "NowPlayingInfo update: metadata is not nil, try updating playback info", buf, 2u);
     }
 
-    v19 = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
-    v20 = [(TVRUINowPlayingViewController *)self makeTimedMetadataPlaybackInfo];
-    [v19 updatePlaybackInfo:v20];
+    timedMetadataViewController = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
+    makeTimedMetadataPlaybackInfo = [(TVRUINowPlayingViewController *)self makeTimedMetadataPlaybackInfo];
+    [timedMetadataViewController updatePlaybackInfo:makeTimedMetadataPlaybackInfo];
 
     [(TVRUINowPlayingViewController *)self configureSegControlOrDividerViewVisibility];
     [(TVRUINowPlayingViewController *)self _reconfigureTabsIfNeeded];
@@ -161,25 +161,25 @@
 
 - (id)commandHandler
 {
-  v2 = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
-  v3 = [v2 commandHandler];
+  mediaControlsViewController = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
+  commandHandler = [mediaControlsViewController commandHandler];
 
-  return v3;
+  return commandHandler;
 }
 
-- (void)setCommandHandler:(id)a3
+- (void)setCommandHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (([(TVRUINowPlayingViewController *)self isViewLoaded]& 1) == 0)
   {
-    v5 = [(TVRUINowPlayingViewController *)self view];
+    view = [(TVRUINowPlayingViewController *)self view];
   }
 
-  v6 = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
-  [v6 setCommandHandler:v4];
+  mediaControlsViewController = [(TVRUINowPlayingViewController *)self mediaControlsViewController];
+  [mediaControlsViewController setCommandHandler:handlerCopy];
 
-  v7 = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
-  [v7 setCommandHandler:v4];
+  nowPlayingInfoViewController = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
+  [nowPlayingInfoViewController setCommandHandler:handlerCopy];
 }
 
 - (void)viewWillLayoutSubviews
@@ -188,13 +188,13 @@
   v53.receiver = self;
   v53.super_class = TVRUINowPlayingViewController;
   [(TVRUINowPlayingViewController *)&v53 viewWillLayoutSubviews];
-  v3 = [(TVRUINowPlayingViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(TVRUINowPlayingViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v5 = [(TVRUINowPlayingViewController *)self view];
-    [v5 bounds];
+    view = [(TVRUINowPlayingViewController *)self view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -207,9 +207,9 @@
     Width = CGRectGetWidth(v56);
     if ([(TVRUINowPlayingViewController *)self lastLayoutWidth])
     {
-      v15 = [(TVRUINowPlayingViewController *)self lastLayoutWidth];
+      lastLayoutWidth = [(TVRUINowPlayingViewController *)self lastLayoutWidth];
       [(TVRUINowPlayingViewController *)self setLastLayoutWidth:Width];
-      if (v15 != Width)
+      if (lastLayoutWidth != Width)
       {
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
@@ -226,27 +226,27 @@
     }
   }
 
-  v16 = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
-  v55[0] = v16;
-  v17 = [(TVRUINowPlayingViewController *)self upNextViewController];
-  v55[1] = v17;
-  v18 = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
-  v55[2] = v18;
-  v19 = [(TVRUINowPlayingViewController *)self castViewController];
-  v55[3] = v19;
-  v20 = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
-  v55[4] = v20;
+  nowPlayingInfoViewController = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
+  v55[0] = nowPlayingInfoViewController;
+  upNextViewController = [(TVRUINowPlayingViewController *)self upNextViewController];
+  v55[1] = upNextViewController;
+  nowPlayingInfoViewController2 = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
+  v55[2] = nowPlayingInfoViewController2;
+  castViewController = [(TVRUINowPlayingViewController *)self castViewController];
+  v55[3] = castViewController;
+  timedMetadataViewController = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
+  v55[4] = timedMetadataViewController;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:5];
 
-  v22 = [(TVRUINowPlayingViewController *)self view];
-  v23 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-  [v23 bounds];
+  view2 = [(TVRUINowPlayingViewController *)self view];
+  tabSelectorControl = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+  [tabSelectorControl bounds];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  v32 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-  [v22 convertRect:v32 fromView:{v25, v27, v29, v31}];
+  tabSelectorControl2 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+  [view2 convertRect:tabSelectorControl2 fromView:{v25, v27, v29, v31}];
   v34 = v33;
   v36 = v35;
   v38 = v37;
@@ -340,14 +340,14 @@ void __55__TVRUINowPlayingViewController_viewWillLayoutSubviews__block_invoke(ui
   v3 = +[TVRUIFeatures isSolariumEnabled];
   [(TVRUINowPlayingViewController *)self setOverrideUserInterfaceStyle:2];
   v134 = objc_alloc_init(TVRUINowPlayingBackgroundEffectViewController);
-  v135 = [(TVRUINowPlayingBackgroundEffectViewController *)v134 view];
-  v4 = [(TVRUINowPlayingBackgroundEffectViewController *)v134 contentView];
+  view = [(TVRUINowPlayingBackgroundEffectViewController *)v134 view];
+  contentView = [(TVRUINowPlayingBackgroundEffectViewController *)v134 contentView];
   v137 = objc_alloc_init(TVRUINowPlayingMiniPlayerViewController);
   [(TVRUINowPlayingMiniPlayerViewController *)v137 setCompactSolariumMode:v3];
-  v5 = [(TVRUINowPlayingViewController *)self actionProvider];
-  [(TVRUINowPlayingMiniPlayerViewController *)v137 setActionProvider:v5];
+  actionProvider = [(TVRUINowPlayingViewController *)self actionProvider];
+  [(TVRUINowPlayingMiniPlayerViewController *)v137 setActionProvider:actionProvider];
 
-  v139 = [(TVRUINowPlayingMiniPlayerViewController *)v137 view];
+  view2 = [(TVRUINowPlayingMiniPlayerViewController *)v137 view];
   v155[0] = MEMORY[0x277D85DD0];
   v155[1] = 3221225472;
   v155[2] = __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke;
@@ -355,40 +355,40 @@ void __55__TVRUINowPlayingViewController_viewWillLayoutSubviews__block_invoke(ui
   v155[4] = self;
   [(TVRUINowPlayingMiniPlayerViewController *)v137 setUpdateTabsHandler:v155];
   v133 = objc_alloc_init(TVRUIMiniPlayerMediaControlsViewController);
-  v138 = [(TVRUIMiniPlayerMediaControlsViewController *)v133 view];
+  view3 = [(TVRUIMiniPlayerMediaControlsViewController *)v133 view];
   v140 = objc_alloc_init(TVRUINowPlayingInfoViewController);
-  v6 = [(TVRUINowPlayingViewController *)self actionProvider];
-  [(TVRUINowPlayingInfoViewController *)v140 setActionProvider:v6];
+  actionProvider2 = [(TVRUINowPlayingViewController *)self actionProvider];
+  [(TVRUINowPlayingInfoViewController *)v140 setActionProvider:actionProvider2];
 
-  v7 = [(TVRUINowPlayingViewController *)self styleProvider];
-  [(TVRUINowPlayingInfoViewController *)v140 setStyleProvider:v7];
+  styleProvider = [(TVRUINowPlayingViewController *)self styleProvider];
+  [(TVRUINowPlayingInfoViewController *)v140 setStyleProvider:styleProvider];
 
-  v143 = [(TVRUINowPlayingInfoViewController *)v140 view];
-  [v143 setHidden:1];
+  view4 = [(TVRUINowPlayingInfoViewController *)v140 view];
+  [view4 setHidden:1];
   v144 = objc_alloc_init(TVRUIUpNextViewController);
-  v8 = [(TVRUINowPlayingViewController *)self upNextProvider];
-  [(TVRUIUpNextViewController *)v144 setUpNextProvider:v8];
+  upNextProvider = [(TVRUINowPlayingViewController *)self upNextProvider];
+  [(TVRUIUpNextViewController *)v144 setUpNextProvider:upNextProvider];
 
-  v9 = [(TVRUINowPlayingViewController *)self actionProvider];
-  [(TVRUIUpNextViewController *)v144 setActionProvider:v9];
+  actionProvider3 = [(TVRUINowPlayingViewController *)self actionProvider];
+  [(TVRUIUpNextViewController *)v144 setActionProvider:actionProvider3];
 
   [(TVRUIUpNextViewController *)v144 setNowPlayingProvider:self];
-  v142 = [(TVRUIUpNextViewController *)v144 view];
-  [v142 setHidden:1];
+  view5 = [(TVRUIUpNextViewController *)v144 view];
+  [view5 setHidden:1];
   v136 = objc_alloc_init(TVRUICastViewController);
-  v10 = [(TVRUINowPlayingViewController *)self actionProvider];
-  [(TVRUICastViewController *)v136 setActionProvider:v10];
+  actionProvider4 = [(TVRUINowPlayingViewController *)self actionProvider];
+  [(TVRUICastViewController *)v136 setActionProvider:actionProvider4];
 
-  v141 = [(TVRUICastViewController *)v136 view];
-  [v141 setHidden:1];
-  v147 = [(TVRUINowPlayingViewController *)self view];
-  [v147 bounds];
+  view6 = [(TVRUICastViewController *)v136 view];
+  [view6 setHidden:1];
+  view7 = [(TVRUINowPlayingViewController *)self view];
+  [view7 bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v19 = [MEMORY[0x277D75348] colorWithWhite:0.1 alpha:1.0];
-  [v147 setBackgroundColor:v19];
+  [view7 setBackgroundColor:v19];
 
   [(TVRUINowPlayingViewController *)self bs_addChildViewController:v140];
   [(TVRUINowPlayingViewController *)self bs_addChildViewController:v144];
@@ -416,8 +416,8 @@ void __55__TVRUINowPlayingViewController_viewWillLayoutSubviews__block_invoke(ui
 
         v24 = *(*(&v151 + 1) + 8 * i);
         [(TVRUINowPlayingViewController *)self bs_addChildViewController:v24];
-        v25 = [v24 view];
-        [v4 addSubview:v25];
+        view8 = [v24 view];
+        [contentView addSubview:view8];
       }
 
       v21 = [v20 countByEnumeratingWithState:&v151 objects:v159 count:16];
@@ -426,16 +426,16 @@ void __55__TVRUINowPlayingViewController_viewWillLayoutSubviews__block_invoke(ui
     while (v21);
   }
 
-  v131 = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
+  childViewControllerIdentifiers = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
   v130 = objc_alloc_init(TVRUIDarkStyleProvider);
-  v146 = [[TVRUITabSelectorControl alloc] initWithItems:v131 styleProvider:v130];
+  v146 = [[TVRUITabSelectorControl alloc] initWithItems:childViewControllerIdentifiers styleProvider:v130];
   [(TVRUITabSelectorControl *)v146 setDelegate:self];
   [(TVRUITabSelectorControl *)v146 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v4 addSubview:v146];
+  [contentView addSubview:v146];
   +[TVRUITabSelectorControl defaultHeight];
   v27 = v26;
-  v28 = [(TVRUITabSelectorControl *)v146 heightAnchor];
-  v132 = [v28 constraintEqualToConstant:v27];
+  heightAnchor = [(TVRUITabSelectorControl *)v146 heightAnchor];
+  v132 = [heightAnchor constraintEqualToConstant:v27];
 
   v29 = objc_alloc(MEMORY[0x277D75D18]);
   v145 = [v29 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -443,7 +443,7 @@ void __55__TVRUINowPlayingViewController_viewWillLayoutSubviews__block_invoke(ui
   v30 = [MEMORY[0x277D75348] colorWithWhite:0.4 alpha:0.9];
   [v145 setBackgroundColor:v30];
 
-  [v4 addSubview:v145];
+  [contentView addSubview:v145];
   v129 = objc_alloc_init(MEMORY[0x277D75FC0]);
   [v129 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   if (v3)
@@ -477,96 +477,96 @@ void __55__TVRUINowPlayingViewController_viewWillLayoutSubviews__block_invoke(ui
     v34 = 37.0;
   }
 
-  [v135 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v139 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v138 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v143 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v142 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v141 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v36 = [(TVRUINowPlayingViewController *)self traitCollection];
-  v37 = [v36 userInterfaceIdiom] == 1;
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  traitCollection = [(TVRUINowPlayingViewController *)self traitCollection];
+  v37 = [traitCollection userInterfaceIdiom] == 1;
 
   LODWORD(v38) = 1144750080;
-  [v138 setContentHuggingPriority:1 forAxis:v38];
+  [view3 setContentHuggingPriority:1 forAxis:v38];
   v52 = MEMORY[0x277CCAAD0];
-  v128 = [v135 topAnchor];
-  v127 = [v147 topAnchor];
-  v126 = [v128 constraintEqualToAnchor:v127];
+  topAnchor = [view topAnchor];
+  topAnchor2 = [view7 topAnchor];
+  v126 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v157[0] = v126;
-  v125 = [v135 leadingAnchor];
-  v124 = [v147 leadingAnchor];
-  v123 = [v125 constraintEqualToAnchor:v124];
+  leadingAnchor = [view leadingAnchor];
+  leadingAnchor2 = [view7 leadingAnchor];
+  v123 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v157[1] = v123;
-  v122 = [v135 trailingAnchor];
-  v121 = [v147 trailingAnchor];
-  v120 = [v122 constraintEqualToAnchor:v121];
+  trailingAnchor = [view trailingAnchor];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v120 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v157[2] = v120;
-  v119 = [v139 topAnchor];
-  v118 = [v4 topAnchor];
-  v117 = [v119 constraintEqualToAnchor:v118 constant:v32];
+  topAnchor3 = [view2 topAnchor];
+  topAnchor4 = [contentView topAnchor];
+  v117 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v32];
   v157[3] = v117;
-  v116 = [v139 leadingAnchor];
-  v115 = [v4 leadingAnchor];
-  v114 = [v116 constraintEqualToAnchor:v115];
+  leadingAnchor3 = [view2 leadingAnchor];
+  leadingAnchor4 = [contentView leadingAnchor];
+  v114 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v157[4] = v114;
-  v113 = [v139 trailingAnchor];
-  v112 = [v4 trailingAnchor];
-  v111 = [v113 constraintEqualToAnchor:v112];
+  trailingAnchor3 = [view2 trailingAnchor];
+  trailingAnchor4 = [contentView trailingAnchor];
+  v111 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v157[5] = v111;
-  v110 = [v138 topAnchor];
-  v109 = [v139 bottomAnchor];
-  v108 = [v110 constraintEqualToAnchor:v109 constant:v34];
+  topAnchor5 = [view3 topAnchor];
+  bottomAnchor = [view2 bottomAnchor];
+  v108 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:v34];
   v157[6] = v108;
-  v107 = [v138 centerXAnchor];
-  v106 = [v4 centerXAnchor];
-  v105 = [v107 constraintEqualToAnchor:v106];
+  centerXAnchor = [view3 centerXAnchor];
+  centerXAnchor2 = [contentView centerXAnchor];
+  v105 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v157[7] = v105;
-  v104 = [(TVRUITabSelectorControl *)v146 topAnchor];
-  v103 = [v138 bottomAnchor];
-  v102 = [v104 constraintEqualToAnchor:v103 constant:v35];
+  topAnchor6 = [(TVRUITabSelectorControl *)v146 topAnchor];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v102 = [topAnchor6 constraintEqualToAnchor:bottomAnchor2 constant:v35];
   v157[8] = v102;
-  v101 = [(TVRUITabSelectorControl *)v146 leadingAnchor];
-  v100 = [v4 leadingAnchor];
-  v99 = [v101 constraintEqualToAnchor:v100];
+  leadingAnchor5 = [(TVRUITabSelectorControl *)v146 leadingAnchor];
+  leadingAnchor6 = [contentView leadingAnchor];
+  v99 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v157[9] = v99;
-  v98 = [(TVRUITabSelectorControl *)v146 trailingAnchor];
-  v97 = [v4 trailingAnchor];
-  v96 = [v98 constraintEqualToAnchor:v97];
+  trailingAnchor5 = [(TVRUITabSelectorControl *)v146 trailingAnchor];
+  trailingAnchor6 = [contentView trailingAnchor];
+  v96 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v157[10] = v96;
-  v95 = [(TVRUITabSelectorControl *)v146 bottomAnchor];
-  v94 = [v4 bottomAnchor];
-  v93 = [v95 constraintEqualToAnchor:v94 constant:-20.0];
+  bottomAnchor3 = [(TVRUITabSelectorControl *)v146 bottomAnchor];
+  bottomAnchor4 = [contentView bottomAnchor];
+  v93 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-20.0];
   v157[11] = v93;
   v157[12] = v132;
-  v92 = [v145 heightAnchor];
-  v91 = [v92 constraintEqualToConstant:1.0];
+  heightAnchor2 = [v145 heightAnchor];
+  v91 = [heightAnchor2 constraintEqualToConstant:1.0];
   v157[13] = v91;
-  v90 = [v145 widthAnchor];
-  v89 = [v4 widthAnchor];
-  v88 = [v90 constraintEqualToAnchor:v89 constant:-80.0];
+  widthAnchor = [v145 widthAnchor];
+  widthAnchor2 = [contentView widthAnchor];
+  v88 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:-80.0];
   v157[14] = v88;
-  v87 = [v145 centerXAnchor];
-  v86 = [(TVRUITabSelectorControl *)v146 centerXAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86];
+  centerXAnchor3 = [v145 centerXAnchor];
+  centerXAnchor4 = [(TVRUITabSelectorControl *)v146 centerXAnchor];
+  v85 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v157[15] = v85;
-  v84 = [v145 centerYAnchor];
-  v83 = [(TVRUITabSelectorControl *)v146 centerYAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  centerYAnchor = [v145 centerYAnchor];
+  centerYAnchor2 = [(TVRUITabSelectorControl *)v146 centerYAnchor];
+  v82 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v157[16] = v82;
-  v81 = [v143 topAnchor];
-  v80 = [v147 topAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  topAnchor7 = [view4 topAnchor];
+  topAnchor8 = [view7 topAnchor];
+  v79 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   v157[17] = v79;
-  v78 = [v143 leadingAnchor];
-  v77 = [v147 leadingAnchor];
-  v76 = [v78 constraintEqualToAnchor:v77];
+  leadingAnchor7 = [view4 leadingAnchor];
+  leadingAnchor8 = [view7 leadingAnchor];
+  v76 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v157[18] = v76;
-  v75 = [v143 trailingAnchor];
-  v74 = [v147 trailingAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74];
+  trailingAnchor7 = [view4 trailingAnchor];
+  trailingAnchor8 = [view7 trailingAnchor];
+  v73 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v157[19] = v73;
-  v72 = [v143 bottomAnchor];
-  v71 = [v147 bottomAnchor];
+  bottomAnchor5 = [view4 bottomAnchor];
+  bottomAnchor6 = [view7 bottomAnchor];
   if (v37)
   {
     v39 = -10.0;
@@ -577,39 +577,39 @@ void __55__TVRUINowPlayingViewController_viewWillLayoutSubviews__block_invoke(ui
     v39 = -0.0;
   }
 
-  v70 = [v72 constraintEqualToAnchor:v71 constant:v39];
+  v70 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:v39];
   v157[20] = v70;
-  v69 = [v142 topAnchor];
-  v68 = [v147 topAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  topAnchor9 = [view5 topAnchor];
+  topAnchor10 = [view7 topAnchor];
+  v67 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
   v157[21] = v67;
-  v66 = [v142 leadingAnchor];
-  v65 = [v147 leadingAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  leadingAnchor9 = [view5 leadingAnchor];
+  leadingAnchor10 = [view7 leadingAnchor];
+  v64 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v157[22] = v64;
-  v63 = [v142 trailingAnchor];
-  v62 = [v147 trailingAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  trailingAnchor9 = [view5 trailingAnchor];
+  trailingAnchor10 = [view7 trailingAnchor];
+  v61 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v157[23] = v61;
-  v60 = [v142 bottomAnchor];
-  v59 = [v147 bottomAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59 constant:v39];
+  bottomAnchor7 = [view5 bottomAnchor];
+  bottomAnchor8 = [view7 bottomAnchor];
+  v58 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:v39];
   v157[24] = v58;
-  v57 = [v141 topAnchor];
-  v56 = [v147 topAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  topAnchor11 = [view6 topAnchor];
+  topAnchor12 = [view7 topAnchor];
+  v55 = [topAnchor11 constraintEqualToAnchor:topAnchor12];
   v157[25] = v55;
-  v54 = [v141 leadingAnchor];
-  v53 = [v147 leadingAnchor];
-  v40 = [v54 constraintEqualToAnchor:v53 constant:20.0];
+  leadingAnchor11 = [view6 leadingAnchor];
+  leadingAnchor12 = [view7 leadingAnchor];
+  v40 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:20.0];
   v157[26] = v40;
-  v41 = [v141 trailingAnchor];
-  v42 = [v147 trailingAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42 constant:-20.0];
+  trailingAnchor11 = [view6 trailingAnchor];
+  trailingAnchor12 = [view7 trailingAnchor];
+  v43 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:-20.0];
   v157[27] = v43;
-  v44 = [v141 bottomAnchor];
-  v45 = [v147 bottomAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45 constant:v39];
+  bottomAnchor9 = [view6 bottomAnchor];
+  bottomAnchor10 = [view7 bottomAnchor];
+  v46 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10 constant:v39];
   v157[28] = v46;
   v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v157 count:29];
   [v52 activateConstraints:v47];
@@ -637,8 +637,8 @@ void __55__TVRUINowPlayingViewController_viewWillLayoutSubviews__block_invoke(ui
   [(TVRUINowPlayingViewController *)self setOverrideUserInterfaceStyle:2];
   v50 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel_panRecognizerDidFire_];
   [v50 setDelegate:self];
-  v51 = [(TVRUINowPlayingViewController *)self view];
-  [v51 addGestureRecognizer:v50];
+  view9 = [(TVRUINowPlayingViewController *)self view];
+  [view9 addGestureRecognizer:v50];
 
   objc_destroyWeak(&v149);
   objc_destroyWeak(&location);
@@ -663,27 +663,27 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
 
 - (void)configureSegControlOrDividerViewVisibility
 {
-  v3 = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
-  v4 = [v3 count];
+  childViewControllerIdentifiers = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
+  v4 = [childViewControllerIdentifiers count];
 
-  v5 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-  [v5 setHidden:v4 < 2];
+  tabSelectorControl = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+  [tabSelectorControl setHidden:v4 < 2];
 
-  v6 = [(TVRUINowPlayingViewController *)self dividerView];
-  [v6 setHidden:v4 > 1];
+  dividerView = [(TVRUINowPlayingViewController *)self dividerView];
+  [dividerView setHidden:v4 > 1];
 }
 
-- (void)panRecognizerDidFire:(id)a3
+- (void)panRecognizerDidFire:(id)fire
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 state];
-  v6 = [(TVRUINowPlayingViewController *)self view];
-  [v4 translationInView:v6];
+  fireCopy = fire;
+  state = [fireCopy state];
+  view = [(TVRUINowPlayingViewController *)self view];
+  [fireCopy translationInView:view];
   v8 = v7;
 
-  v9 = [(TVRUINowPlayingViewController *)self view];
-  [v9 bounds];
+  view2 = [(TVRUINowPlayingViewController *)self view];
+  [view2 bounds];
   Width = CGRectGetWidth(v82);
 
   v11 = fabs(v8) / Width;
@@ -697,23 +697,23 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
     v12 = 0.0;
   }
 
-  v13 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-  v14 = [v13 selectedIndex];
+  tabSelectorControl = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+  selectedIndex = [tabSelectorControl selectedIndex];
 
-  v15 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-  v16 = [v15 items];
-  v17 = [v16 count];
+  tabSelectorControl2 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+  items = [tabSelectorControl2 items];
+  v17 = [items count];
 
-  if (v8 > 0.0 && v14)
+  if (v8 > 0.0 && selectedIndex)
   {
-    v18 = v14 - 1;
+    v18 = selectedIndex - 1;
   }
 
   else
   {
-    if (v14 + 1 < v17)
+    if (selectedIndex + 1 < v17)
     {
-      v19 = v14 + 1;
+      v19 = selectedIndex + 1;
     }
 
     else
@@ -732,8 +732,8 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
     }
   }
 
-  v20 = v14 == 0;
-  v21 = v14 + 1 == v17;
+  v20 = selectedIndex == 0;
+  v21 = selectedIndex + 1 == v17;
   if (v18 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v21 = 0;
@@ -753,25 +753,25 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
   }
 
   v26 = v18 == 0x7FFFFFFFFFFFFFFFLL || v25;
-  if (v5 != 2)
+  if (state != 2)
   {
-    if (v5 == 1)
+    if (state == 1)
     {
       [(TVRUINowPlayingViewController *)self setInteractiveSwipeGestureIsApplyingRubberbandingTransform:0];
       goto LABEL_70;
     }
 
-    if ((v5 - 3) > 2)
+    if ((state - 3) > 2)
     {
       goto LABEL_70;
     }
 
-    v33 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
+    currentTabSelectionAnimator = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
 
-    v34 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
-    v35 = [v34 isRunning];
+    currentTabSelectionAnimator2 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
+    isRunning = [currentTabSelectionAnimator2 isRunning];
 
-    if (!v33)
+    if (!currentTabSelectionAnimator)
     {
       if ([(TVRUINowPlayingViewController *)self interactiveSwipeGestureIsApplyingRubberbandingTransform])
       {
@@ -779,7 +779,7 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
         v50 = [objc_alloc(MEMORY[0x277D753D0]) initWithAnimationCurve:2];
         v51 = [v49 initWithDuration:v50 timingParameters:0.3];
 
-        v52 = [(TVRUINowPlayingViewController *)self viewControllerForIndex:v14];
+        v52 = [(TVRUINowPlayingViewController *)self viewControllerForIndex:selectedIndex];
         v77[0] = MEMORY[0x277D85DD0];
         v77[1] = 3221225472;
         v77[2] = __54__TVRUINowPlayingViewController_panRecognizerDidFire___block_invoke;
@@ -792,9 +792,9 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
         v76[2] = __54__TVRUINowPlayingViewController_panRecognizerDidFire___block_invoke_2;
         v76[3] = &unk_279D88A20;
         v76[4] = self;
-        v76[5] = v14;
+        v76[5] = selectedIndex;
         [v51 addCompletion:v76];
-        v54 = [_TVRUIAnimationState animationStateWithIndex:v14 previousIndex:0x7FFFFFFFFFFFFFFFLL toViewController:v53 fromViewController:0 isInteractive:0];
+        v54 = [_TVRUIAnimationState animationStateWithIndex:selectedIndex previousIndex:0x7FFFFFFFFFFFFFFFLL toViewController:v53 fromViewController:0 isInteractive:0];
         [(TVRUINowPlayingViewController *)self setCurrentAnimationState:v54];
 
         [(TVRUINowPlayingViewController *)self setCurrentTabSelectionAnimator:v51];
@@ -804,9 +804,9 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
       goto LABEL_70;
     }
 
-    if (v35)
+    if (isRunning)
     {
-      if (v5 == 3)
+      if (state == 3)
       {
         v36 = v26;
       }
@@ -818,13 +818,13 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
 
       if ((v36 & 1) == 0)
       {
-        v37 = [(TVRUINowPlayingViewController *)self currentAnimationState];
-        if ([v37 index] == v18)
+        currentAnimationState = [(TVRUINowPlayingViewController *)self currentAnimationState];
+        if ([currentAnimationState index] == v18)
         {
-          v38 = [(TVRUINowPlayingViewController *)self currentAnimationState];
-          v39 = [v38 previousIndex];
+          currentAnimationState2 = [(TVRUINowPlayingViewController *)self currentAnimationState];
+          previousIndex = [currentAnimationState2 previousIndex];
 
-          if (v39 == v14)
+          if (previousIndex == selectedIndex)
           {
             goto LABEL_70;
           }
@@ -837,7 +837,7 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
         v72 = _TVRUINowPlayingLog();
         if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
         {
-          v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
+          v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:selectedIndex];
           v74 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v18];
           LODWORD(buf.a) = 138412546;
           *(&buf.a + 4) = v73;
@@ -846,12 +846,12 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
           _os_log_impl(&dword_26CFEB000, v72, OS_LOG_TYPE_INFO, "ANIM: pan gesture ended with animation in flight: performing interruption from: %@ -> %@", &buf, 0x16u);
         }
 
-        v75 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-        [v75 setSelectedIndex:v18];
+        tabSelectorControl3 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+        [tabSelectorControl3 setSelectedIndex:v18];
 
         v48 = 0.0;
-        v44 = self;
-        v45 = v14;
+        selfCopy2 = self;
+        v45 = selectedIndex;
         v46 = v18;
         v47 = 0;
         goto LABEL_69;
@@ -860,18 +860,18 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
       goto LABEL_70;
     }
 
-    v55 = [(TVRUINowPlayingViewController *)self view];
-    [v4 velocityInView:v55];
+    view3 = [(TVRUINowPlayingViewController *)self view];
+    [fireCopy velocityInView:view3];
     v57 = v56;
 
     if (v57 != 0.0)
     {
-      v58 = [(TVRUINowPlayingViewController *)self currentAnimationState];
-      v59 = [v58 index];
-      v60 = [(TVRUINowPlayingViewController *)self currentAnimationState];
-      LODWORD(v59) = v59 < [v60 previousIndex];
+      currentAnimationState3 = [(TVRUINowPlayingViewController *)self currentAnimationState];
+      index = [currentAnimationState3 index];
+      currentAnimationState4 = [(TVRUINowPlayingViewController *)self currentAnimationState];
+      LODWORD(index) = index < [currentAnimationState4 previousIndex];
 
-      if (v57 > 0.0 != v59)
+      if (v57 > 0.0 != index)
       {
         v61 = _TVRUINowPlayingLog();
         if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
@@ -880,20 +880,20 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
           _os_log_impl(&dword_26CFEB000, v61, OS_LOG_TYPE_INFO, "ANIM: pan gesture ended with interactive animator, but user changed directions midway through so reverting in-progress interactive tab selection.", &buf, 2u);
         }
 
-        v62 = [(TVRUINowPlayingViewController *)self currentAnimationState];
-        v63 = [v62 previousIndex];
+        currentAnimationState5 = [(TVRUINowPlayingViewController *)self currentAnimationState];
+        previousIndex2 = [currentAnimationState5 previousIndex];
 
-        v64 = [(TVRUINowPlayingViewController *)self currentAnimationState];
-        v65 = [v64 index];
+        currentAnimationState6 = [(TVRUINowPlayingViewController *)self currentAnimationState];
+        index2 = [currentAnimationState6 index];
 
-        v66 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-        [v66 setSelectedIndex:v63];
+        tabSelectorControl4 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+        [tabSelectorControl4 setSelectedIndex:previousIndex2];
 
         v67 = objc_alloc(MEMORY[0x277D75D40]);
         v68 = [objc_alloc(MEMORY[0x277D753D0]) initWithAnimationCurve:2];
         v69 = [v67 initWithDuration:v68 timingParameters:0.3];
 
-        [(TVRUINowPlayingViewController *)self _performTabAnimationFromIndex:v65 toIndex:v63 isInteractive:0 interactivePercentage:v69 animator:0.0];
+        [(TVRUINowPlayingViewController *)self _performTabAnimationFromIndex:index2 toIndex:previousIndex2 isInteractive:0 interactivePercentage:v69 animator:0.0];
         goto LABEL_70;
       }
     }
@@ -905,21 +905,21 @@ void __51__TVRUINowPlayingViewController_configureHierarchy__block_invoke_2(uint
       _os_log_impl(&dword_26CFEB000, v70, OS_LOG_TYPE_INFO, "ANIM: pan gesture ended with interactive animator: start animation...", &buf, 2u);
     }
 
-    v32 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
-    [v32 startAnimation];
+    currentTabSelectionAnimator3 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
+    [currentTabSelectionAnimator3 startAnimation];
 LABEL_60:
 
     goto LABEL_70;
   }
 
-  v27 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
+  currentTabSelectionAnimator4 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
 
-  if (v27)
+  if (currentTabSelectionAnimator4)
   {
-    v28 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
-    v29 = [v28 isRunning];
+    currentTabSelectionAnimator5 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
+    isRunning2 = [currentTabSelectionAnimator5 isRunning];
 
-    if (v29)
+    if (isRunning2)
     {
       goto LABEL_70;
     }
@@ -933,8 +933,8 @@ LABEL_60:
       _os_log_impl(&dword_26CFEB000, v30, OS_LOG_TYPE_INFO, "ANIM: updating interactive animator with fractionComplete: %@", &buf, 0xCu);
     }
 
-    v32 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
-    [v32 setFractionComplete:v12];
+    currentTabSelectionAnimator3 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
+    [currentTabSelectionAnimator3 setFractionComplete:v12];
     goto LABEL_60;
   }
 
@@ -943,7 +943,7 @@ LABEL_60:
     v41 = _TVRUINowPlayingLog();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
     {
-      v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
+      v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:selectedIndex];
       v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v18];
       LODWORD(buf.a) = 138412546;
       *(&buf.a + 4) = v42;
@@ -952,13 +952,13 @@ LABEL_60:
       _os_log_impl(&dword_26CFEB000, v41, OS_LOG_TYPE_INFO, "ANIM: pan fired and no animator present -- calling performTabAnimationFrom: %@ to: %@", &buf, 0x16u);
     }
 
-    v44 = self;
-    v45 = v14;
+    selfCopy2 = self;
+    v45 = selectedIndex;
     v46 = v18;
     v47 = 1;
     v48 = v12;
 LABEL_69:
-    [(TVRUINowPlayingViewController *)v44 _performTabAnimationFromIndex:v45 toIndex:v46 isInteractive:v47 interactivePercentage:v48];
+    [(TVRUINowPlayingViewController *)selfCopy2 _performTabAnimationFromIndex:v45 toIndex:v46 isInteractive:v47 interactivePercentage:v48];
     goto LABEL_70;
   }
 
@@ -989,7 +989,7 @@ LABEL_69:
       memset(&buf, 0, sizeof(buf));
       CGAffineTransformMakeTranslation(&buf, v71, 0.0);
       v79 = buf;
-      [(TVRUINowPlayingViewController *)self _applyTransform:&v79 toChildViewControllerAtIndex:v14];
+      [(TVRUINowPlayingViewController *)self _applyTransform:&v79 toChildViewControllerAtIndex:selectedIndex];
     }
   }
 
@@ -1006,13 +1006,13 @@ void __54__TVRUINowPlayingViewController_panRecognizerDidFire___block_invoke(uin
   [v1 setTransform:v3];
 }
 
-- (void)_tabAnimationDidCompleteWithFinalPosition:(int64_t)a3 viewControllerIndex:(unint64_t)a4
+- (void)_tabAnimationDidCompleteWithFinalPosition:(int64_t)position viewControllerIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!position)
   {
     [(TVRUINowPlayingViewController *)self setCurrentAnimationState:?];
     [(TVRUINowPlayingViewController *)self setCurrentTabSelectionAnimator:0];
-    v7 = [(TVRUINowPlayingViewController *)self viewControllerIdentifierForIndex:a4];
+    v7 = [(TVRUINowPlayingViewController *)self viewControllerIdentifierForIndex:index];
     v8 = v7;
     if (v7)
     {
@@ -1025,54 +1025,54 @@ void __54__TVRUINowPlayingViewController_panRecognizerDidFire___block_invoke(uin
   }
 }
 
-- (void)_applyTransform:(CGAffineTransform *)a3 toChildViewControllerAtIndex:(unint64_t)a4
+- (void)_applyTransform:(CGAffineTransform *)transform toChildViewControllerAtIndex:(unint64_t)index
 {
-  v5 = [(TVRUINowPlayingViewController *)self viewControllerForIndex:a4];
+  v5 = [(TVRUINowPlayingViewController *)self viewControllerForIndex:index];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 view];
-    [v7 setTransform:&v8];
+    view = [v5 view];
+    [view setTransform:&v8];
   }
 }
 
 - (void)_updateSelectorControlHeight
 {
-  v3 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-  [v3 layoutHeight];
+  tabSelectorControl = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+  [tabSelectorControl layoutHeight];
   v5 = v4;
 
   if (v5 > 0.0)
   {
-    v6 = [(TVRUINowPlayingViewController *)self tabSelectorControlHeightConstraint];
-    [v6 setConstant:v5];
+    tabSelectorControlHeightConstraint = [(TVRUINowPlayingViewController *)self tabSelectorControlHeightConstraint];
+    [tabSelectorControlHeightConstraint setConstant:v5];
   }
 }
 
-- (BOOL)_canDisplayInsightsTabForNowPlayingInfo:(id)a3
+- (BOOL)_canDisplayInsightsTabForNowPlayingInfo:(id)info
 {
-  v3 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v4 = [v3 rawTimedMetadata];
-  v5 = [v4 length] != 0;
+  nowPlayingInfo = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  rawTimedMetadata = [nowPlayingInfo rawTimedMetadata];
+  v5 = [rawTimedMetadata length] != 0;
 
   return v5;
 }
 
-- (id)_availableTabToDisplayForNowPlayingInfo:(id)a3
+- (id)_availableTabToDisplayForNowPlayingInfo:(id)info
 {
-  v4 = a3;
-  if ([(TVRUINowPlayingViewController *)self _canDisplayInsightsTabForNowPlayingInfo:v4])
+  infoCopy = info;
+  if ([(TVRUINowPlayingViewController *)self _canDisplayInsightsTabForNowPlayingInfo:infoCopy])
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = v5;
     v7 = @"TVRemoteUIInSightTabTitle";
 LABEL_5:
-    v8 = [v5 localizedStringForKey:v7 value:&stru_287E6AEF8 table:@"Localizable"];
+    _upNextIdentifier = [v5 localizedStringForKey:v7 value:&stru_287E6AEF8 table:@"Localizable"];
 
     goto LABEL_6;
   }
 
-  if ([(TVRUINowPlayingViewController *)self _canDisplayInfoForNowPlayingInfo:v4])
+  if ([(TVRUINowPlayingViewController *)self _canDisplayInfoForNowPlayingInfo:infoCopy])
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = v5;
@@ -1080,19 +1080,19 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if ([(TVRUINowPlayingViewController *)self _canDisplayUpNextTabForNowPlayingInfo:v4])
+  if ([(TVRUINowPlayingViewController *)self _canDisplayUpNextTabForNowPlayingInfo:infoCopy])
   {
-    v8 = [(TVRUINowPlayingViewController *)self _upNextIdentifier];
+    _upNextIdentifier = [(TVRUINowPlayingViewController *)self _upNextIdentifier];
   }
 
   else
   {
-    v8 = 0;
+    _upNextIdentifier = 0;
   }
 
 LABEL_6:
 
-  return v8;
+  return _upNextIdentifier;
 }
 
 - (void)configureTimedMetadata
@@ -1104,7 +1104,7 @@ LABEL_6:
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "Configure timed metadata", v9, 2u);
   }
 
-  v4 = [(TVRUINowPlayingViewController *)self makeTimedMetadataPlaybackInfo];
+  makeTimedMetadataPlaybackInfo = [(TVRUINowPlayingViewController *)self makeTimedMetadataPlaybackInfo];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -1123,8 +1123,8 @@ LABEL_6:
 
   v6 = v5;
   _Block_object_dispose(&v10, 8);
-  v7 = [v5 sharedInstance];
-  v8 = [v7 makeViewController:v4];
+  sharedInstance = [v5 sharedInstance];
+  v8 = [sharedInstance makeViewController:makeTimedMetadataPlaybackInfo];
 
   [(TVRUINowPlayingViewController *)self setTimedMetadataViewController:v8];
 }
@@ -1150,50 +1150,50 @@ LABEL_6:
   v4 = v3;
   _Block_object_dispose(&v34, 8);
   v5 = objc_alloc_init(v3);
-  v6 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v7 = [v6 metadata];
-  v8 = [v7 programID];
-  [v5 setProgramId:v8];
+  nowPlayingInfo = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  metadata = [nowPlayingInfo metadata];
+  programID = [metadata programID];
+  [v5 setProgramId:programID];
 
-  v9 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v10 = [v9 metadata];
-  v11 = [v10 audioLanguage];
-  [v5 setAudioLanguage:v11];
+  nowPlayingInfo2 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  metadata2 = [nowPlayingInfo2 metadata];
+  audioLanguage = [metadata2 audioLanguage];
+  [v5 setAudioLanguage:audioLanguage];
 
-  v12 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v13 = [v12 playbackRate];
-  [v13 doubleValue];
+  nowPlayingInfo3 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  playbackRate = [nowPlayingInfo3 playbackRate];
+  [playbackRate doubleValue];
   [v5 setPlaybackRate:?];
 
-  v14 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v15 = [v14 metadata];
-  v16 = [v15 timeOffset];
-  [v16 doubleValue];
+  nowPlayingInfo4 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  metadata3 = [nowPlayingInfo4 metadata];
+  timeOffset = [metadata3 timeOffset];
+  [timeOffset doubleValue];
   [v5 setCurrentTime:?];
 
-  v17 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v18 = [v17 metadata];
-  v19 = [v18 iTunesStoreIdentifier];
-  [v5 setAdamId:v19];
+  nowPlayingInfo5 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  metadata4 = [nowPlayingInfo5 metadata];
+  iTunesStoreIdentifier = [metadata4 iTunesStoreIdentifier];
+  [v5 setAdamId:iTunesStoreIdentifier];
 
-  v20 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v21 = [v20 metadata];
-  v22 = [v21 mainContentStartTime];
-  [v22 doubleValue];
+  nowPlayingInfo6 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  metadata5 = [nowPlayingInfo6 metadata];
+  mainContentStartTime = [metadata5 mainContentStartTime];
+  [mainContentStartTime doubleValue];
   [v5 setFeatureStartTime:?];
 
-  v23 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v24 = [v23 rawTimedMetadata];
-  [v5 setRawTimedMetadata:v24];
+  nowPlayingInfo7 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  rawTimedMetadata = [nowPlayingInfo7 rawTimedMetadata];
+  [v5 setRawTimedMetadata:rawTimedMetadata];
 
-  v25 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v26 = [v25 metadata];
-  v27 = [v26 timestamp];
+  nowPlayingInfo8 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  metadata6 = [nowPlayingInfo8 metadata];
+  timestamp = [metadata6 timestamp];
 
-  if (v27)
+  if (timestamp)
   {
     v28 = MEMORY[0x277CBEAA8];
-    [v27 doubleValue];
+    [timestamp doubleValue];
     v29 = [v28 dateWithTimeIntervalSinceReferenceDate:?];
   }
 
@@ -1215,43 +1215,43 @@ LABEL_6:
   return v5;
 }
 
-- (void)_updateViewControllerVisibilityForSelectedIdentifier:(id)a3
+- (void)_updateViewControllerVisibilityForSelectedIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   [(TVRUINowPlayingViewController *)self configureSegControlOrDividerViewVisibility];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"TVRemoteUIInSightTabTitle" value:&stru_287E6AEF8 table:@"Localizable"];
-  v7 = [v4 isEqualToString:v6];
+  v7 = [identifierCopy isEqualToString:v6];
 
-  v8 = [(TVRUINowPlayingViewController *)self _upNextIdentifier];
-  v9 = [v4 isEqualToString:v8];
+  _upNextIdentifier = [(TVRUINowPlayingViewController *)self _upNextIdentifier];
+  v9 = [identifierCopy isEqualToString:_upNextIdentifier];
 
   if (v7)
   {
     [(TVRUINowPlayingViewController *)self configureTimedMetadataView];
   }
 
-  v10 = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
-  v11 = [v10 view];
-  [v11 setHidden:v7 ^ 1u];
+  timedMetadataViewController = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
+  view = [timedMetadataViewController view];
+  [view setHidden:v7 ^ 1u];
 
-  [(TVRUINowPlayingViewController *)self _callChildViewControllerAppearanceForAppearingIdentifier:v4];
-  v12 = [(TVRUINowPlayingViewController *)self upNextViewController];
-  [v12 setIsVisibleInParentUI:v9];
+  [(TVRUINowPlayingViewController *)self _callChildViewControllerAppearanceForAppearingIdentifier:identifierCopy];
+  upNextViewController = [(TVRUINowPlayingViewController *)self upNextViewController];
+  [upNextViewController setIsVisibleInParentUI:v9];
 
   if (v9)
   {
-    v13 = [(TVRUINowPlayingViewController *)self upNextProvider];
-    [v13 refreshIfNeeded];
+    upNextProvider = [(TVRUINowPlayingViewController *)self upNextProvider];
+    [upNextProvider refreshIfNeeded];
   }
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v14 = [(TVRUINowPlayingViewController *)self allPossibleChildViewControllerIdentifiers];
-  v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  allPossibleChildViewControllerIdentifiers = [(TVRUINowPlayingViewController *)self allPossibleChildViewControllerIdentifiers];
+  v15 = [allPossibleChildViewControllerIdentifiers countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1262,54 +1262,54 @@ LABEL_6:
       {
         if (*v30 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allPossibleChildViewControllerIdentifiers);
         }
 
         v19 = *(*(&v29 + 1) + 8 * i);
-        v20 = [v19 isEqualToString:v4];
+        v20 = [v19 isEqualToString:identifierCopy];
         v21 = [(TVRUINowPlayingViewController *)self viewControllerForIdentifier:v19];
         v22 = v21;
         if (v21)
         {
-          v23 = [v21 view];
-          [v23 setHidden:v20 ^ 1u];
+          view2 = [v21 view];
+          [view2 setHidden:v20 ^ 1u];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v16 = [allPossibleChildViewControllerIdentifiers countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v16);
   }
 
-  if ([v4 length])
+  if ([identifierCopy length])
   {
-    v24 = [(TVRUINowPlayingViewController *)self indexForViewControllerIdentifier:v4];
+    v24 = [(TVRUINowPlayingViewController *)self indexForViewControllerIdentifier:identifierCopy];
     if (v24 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v25 = v24;
-      v26 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-      v27 = [v26 selectedIndex];
+      tabSelectorControl = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+      selectedIndex = [tabSelectorControl selectedIndex];
 
-      if (v25 != v27)
+      if (v25 != selectedIndex)
       {
-        v28 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-        [v28 setSelectedIndex:v25];
+        tabSelectorControl2 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+        [tabSelectorControl2 setSelectedIndex:v25];
       }
     }
   }
 }
 
-- (void)_callChildViewControllerDisappearingForAllExceptIdentifier:(id)a3
+- (void)_callChildViewControllerDisappearingForAllExceptIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(TVRUINowPlayingViewController *)self allPossibleChildViewControllerIdentifiers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allPossibleChildViewControllerIdentifiers = [(TVRUINowPlayingViewController *)self allPossibleChildViewControllerIdentifiers];
+  v6 = [allPossibleChildViewControllerIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1320,44 +1320,44 @@ LABEL_6:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allPossibleChildViewControllerIdentifiers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
-        if (([v4 isEqualToString:v10] & 1) == 0)
+        if (([identifierCopy isEqualToString:v10] & 1) == 0)
         {
           [(TVRUINowPlayingViewController *)self _callChildViewControllerAppearanceForIdentifier:v10 appearing:0];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allPossibleChildViewControllerIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_callChildViewControllerAppearanceForIdentifier:(id)a3 appearing:(BOOL)a4
+- (void)_callChildViewControllerAppearanceForIdentifier:(id)identifier appearing:(BOOL)appearing
 {
-  v4 = a4;
+  appearingCopy = appearing;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(TVRUINowPlayingViewController *)self viewControllerForIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(TVRUINowPlayingViewController *)self viewControllerForIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 _appearState];
-    if ((v9 - 1) > 1)
+    _appearState = [v7 _appearState];
+    if ((_appearState - 1) > 1)
     {
-      if (v9 != 3 && v9 || !v4)
+      if (_appearState != 3 && _appearState || !appearingCopy)
       {
 LABEL_10:
         v10 = _TVRUINowPlayingLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+          v11 = [MEMORY[0x277CCABB0] numberWithBool:appearingCopy];
           v13 = 138412546;
-          v14 = v6;
+          v14 = identifierCopy;
           v15 = 2112;
           v16 = v11;
           v12 = "ANIM: Not calling childViewController appearance transitions for %@, isAppearing=%@ as VC is already in this visibility state";
@@ -1368,19 +1368,19 @@ LABEL_10:
       }
     }
 
-    else if (v4)
+    else if (appearingCopy)
     {
       goto LABEL_10;
     }
 
-    [v8 beginAppearanceTransition:v4 animated:0];
+    [v8 beginAppearanceTransition:appearingCopy animated:0];
     [v8 endAppearanceTransition];
     v10 = _TVRUINowPlayingLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+      v11 = [MEMORY[0x277CCABB0] numberWithBool:appearingCopy];
       v13 = 138412546;
-      v14 = v6;
+      v14 = identifierCopy;
       v15 = 2112;
       v16 = v11;
       v12 = "ANIM: Calling childViewController appearance transitions for %@, isAppearing=%@";
@@ -1402,12 +1402,12 @@ LABEL_13:
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "Configure timed metadata view", buf, 2u);
   }
 
-  v4 = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
-  v5 = [v4 view];
-  v6 = [v5 superview];
-  v7 = [(TVRUINowPlayingViewController *)self view];
+  timedMetadataViewController = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
+  view = [timedMetadataViewController view];
+  superview = [view superview];
+  view2 = [(TVRUINowPlayingViewController *)self view];
 
-  if (v6 != v7)
+  if (superview != view2)
   {
     v8 = _TVRUINowPlayingLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1416,34 +1416,34 @@ LABEL_13:
       _os_log_impl(&dword_26CFEB000, v8, OS_LOG_TYPE_DEFAULT, "Add timed metadata view to view hierarchy", buf, 2u);
     }
 
-    v27 = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
-    v9 = [v27 view];
-    v10 = [(TVRUINowPlayingViewController *)self view];
-    [v9 setClipsToBounds:1];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v9 setHidden:1];
-    [(TVRUINowPlayingViewController *)self setTimedMetadataViewController:v27];
-    [(TVRUINowPlayingViewController *)self bs_addChildViewController:v27];
-    v11 = [(TVRUINowPlayingViewController *)self backgroundEffectViewController];
-    v12 = [v11 view];
-    [v10 bringSubviewToFront:v12];
+    timedMetadataViewController2 = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
+    view3 = [timedMetadataViewController2 view];
+    view4 = [(TVRUINowPlayingViewController *)self view];
+    [view3 setClipsToBounds:1];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view3 setHidden:1];
+    [(TVRUINowPlayingViewController *)self setTimedMetadataViewController:timedMetadataViewController2];
+    [(TVRUINowPlayingViewController *)self bs_addChildViewController:timedMetadataViewController2];
+    backgroundEffectViewController = [(TVRUINowPlayingViewController *)self backgroundEffectViewController];
+    view5 = [backgroundEffectViewController view];
+    [view4 bringSubviewToFront:view5];
 
     v21 = MEMORY[0x277CCAAD0];
-    v26 = [v9 topAnchor];
-    v25 = [v10 topAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    topAnchor = [view3 topAnchor];
+    topAnchor2 = [view4 topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v29[0] = v24;
-    v23 = [v9 leadingAnchor];
-    v22 = [v10 leadingAnchor];
-    v13 = [v23 constraintEqualToAnchor:v22 constant:0.0];
+    leadingAnchor = [view3 leadingAnchor];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     v29[1] = v13;
-    v14 = [v9 trailingAnchor];
-    v15 = [v10 trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:0.0];
+    trailingAnchor = [view3 trailingAnchor];
+    trailingAnchor2 = [view4 trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
     v29[2] = v16;
-    v17 = [v9 bottomAnchor];
-    v18 = [v10 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [view3 bottomAnchor];
+    bottomAnchor2 = [view4 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v29[3] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
     [v21 activateConstraints:v20];
@@ -1453,8 +1453,8 @@ LABEL_13:
 - (NSArray)childViewControllerIdentifiers
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v4 = [(TVRUINowPlayingViewController *)self _canDisplayInfoForNowPlayingInfo:v3];
+  nowPlayingInfo = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  v4 = [(TVRUINowPlayingViewController *)self _canDisplayInfoForNowPlayingInfo:nowPlayingInfo];
 
   if (v4)
   {
@@ -1469,8 +1469,8 @@ LABEL_13:
     v7 = MEMORY[0x277CBEBF8];
   }
 
-  v8 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v9 = [(TVRUINowPlayingViewController *)self _canDisplayInsightsTabForNowPlayingInfo:v8];
+  nowPlayingInfo2 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  v9 = [(TVRUINowPlayingViewController *)self _canDisplayInsightsTabForNowPlayingInfo:nowPlayingInfo2];
 
   if (v9)
   {
@@ -1481,8 +1481,8 @@ LABEL_13:
     v7 = v12;
   }
 
-  v13 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v14 = [(TVRUINowPlayingViewController *)self _canDisplayCastTabForNowPlayingInfo:v13];
+  nowPlayingInfo3 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  v14 = [(TVRUINowPlayingViewController *)self _canDisplayCastTabForNowPlayingInfo:nowPlayingInfo3];
 
   if (v14)
   {
@@ -1493,13 +1493,13 @@ LABEL_13:
     v7 = v17;
   }
 
-  v18 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-  v19 = [(TVRUINowPlayingViewController *)self _canDisplayUpNextTabForNowPlayingInfo:v18];
+  nowPlayingInfo4 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+  v19 = [(TVRUINowPlayingViewController *)self _canDisplayUpNextTabForNowPlayingInfo:nowPlayingInfo4];
 
   if (v19)
   {
-    v20 = [(TVRUINowPlayingViewController *)self _upNextIdentifier];
-    v21 = [v7 arrayByAddingObject:v20];
+    _upNextIdentifier = [(TVRUINowPlayingViewController *)self _upNextIdentifier];
+    v21 = [v7 arrayByAddingObject:_upNextIdentifier];
 
     v7 = v21;
   }
@@ -1507,16 +1507,16 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)_viewControllerIdentifierIsAvailable:(id)a3
+- (BOOL)_viewControllerIdentifierIsAvailable:(id)available
 {
-  if (!a3)
+  if (!available)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
-  v6 = [v5 indexOfObject:v4];
+  availableCopy = available;
+  childViewControllerIdentifiers = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
+  v6 = [childViewControllerIdentifiers indexOfObject:availableCopy];
 
   return v6 != 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -1530,8 +1530,8 @@ LABEL_13:
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"TVRemoteUIInSightTabTitle" value:&stru_287E6AEF8 table:@"Localizable"];
   v12[1] = v6;
-  v7 = [(TVRUINowPlayingViewController *)self _upNextIdentifier];
-  v12[2] = v7;
+  _upNextIdentifier = [(TVRUINowPlayingViewController *)self _upNextIdentifier];
+  v12[2] = _upNextIdentifier;
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"TVRemoteUICastTab" value:&stru_287E6AEF8 table:@"Localizable"];
   v12[3] = v9;
@@ -1543,68 +1543,68 @@ LABEL_13:
 - (NSDictionary)childViewControllerDict
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
+  nowPlayingInfoViewController = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"TVRemoteUIInfoTabTitle" value:&stru_287E6AEF8 table:@"Localizable"];
-  [v3 setObject:v4 forKeyedSubscript:v6];
+  [v3 setObject:nowPlayingInfoViewController forKeyedSubscript:v6];
 
-  v7 = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
+  timedMetadataViewController = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
 
-  if (v7)
+  if (timedMetadataViewController)
   {
-    v8 = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
+    timedMetadataViewController2 = [(TVRUINowPlayingViewController *)self timedMetadataViewController];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"TVRemoteUIInSightTabTitle" value:&stru_287E6AEF8 table:@"Localizable"];
-    [v3 setObject:v8 forKeyedSubscript:v10];
+    [v3 setObject:timedMetadataViewController2 forKeyedSubscript:v10];
   }
 
-  v11 = [(TVRUINowPlayingViewController *)self upNextViewController];
-  v12 = [(TVRUINowPlayingViewController *)self _upNextIdentifier];
-  [v3 setObject:v11 forKeyedSubscript:v12];
+  upNextViewController = [(TVRUINowPlayingViewController *)self upNextViewController];
+  _upNextIdentifier = [(TVRUINowPlayingViewController *)self _upNextIdentifier];
+  [v3 setObject:upNextViewController forKeyedSubscript:_upNextIdentifier];
 
-  v13 = [(TVRUINowPlayingViewController *)self castViewController];
+  castViewController = [(TVRUINowPlayingViewController *)self castViewController];
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"TVRemoteUICastTab" value:&stru_287E6AEF8 table:@"Localizable"];
-  [v3 setObject:v13 forKeyedSubscript:v15];
+  [v3 setObject:castViewController forKeyedSubscript:v15];
 
   return v3;
 }
 
-- (unint64_t)indexForViewControllerIdentifier:(id)a3
+- (unint64_t)indexForViewControllerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
-  v6 = [v5 indexOfObjectIdenticalTo:v4];
+  identifierCopy = identifier;
+  childViewControllerIdentifiers = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
+  v6 = [childViewControllerIdentifiers indexOfObjectIdenticalTo:identifierCopy];
 
   return v6;
 }
 
-- (id)viewControllerIdentifierForIndex:(unint64_t)a3
+- (id)viewControllerIdentifierForIndex:(unint64_t)index
 {
-  v5 = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
-  v6 = [v5 count];
+  childViewControllerIdentifiers = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
+  v6 = [childViewControllerIdentifiers count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    childViewControllerIdentifiers2 = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
+    v8 = [childViewControllerIdentifiers2 objectAtIndexedSubscript:index];
   }
 
   return v8;
 }
 
-- (id)viewControllerForIndex:(unint64_t)a3
+- (id)viewControllerForIndex:(unint64_t)index
 {
-  v4 = [(TVRUINowPlayingViewController *)self viewControllerIdentifierForIndex:a3];
+  v4 = [(TVRUINowPlayingViewController *)self viewControllerIdentifierForIndex:index];
   if (v4)
   {
-    v5 = [(TVRUINowPlayingViewController *)self childViewControllerDict];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    childViewControllerDict = [(TVRUINowPlayingViewController *)self childViewControllerDict];
+    v6 = [childViewControllerDict objectForKeyedSubscript:v4];
   }
 
   else
@@ -1615,51 +1615,51 @@ LABEL_13:
   return v6;
 }
 
-- (id)viewControllerForIdentifier:(id)a3
+- (id)viewControllerForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TVRUINowPlayingViewController *)self childViewControllerDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  childViewControllerDict = [(TVRUINowPlayingViewController *)self childViewControllerDict];
+  v6 = [childViewControllerDict objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
 - (void)_reconfigureTabsIfNeeded
 {
-  v3 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-  v4 = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
-  [v3 updateItems:v4 animated:1];
+  tabSelectorControl = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+  childViewControllerIdentifiers = [(TVRUINowPlayingViewController *)self childViewControllerIdentifiers];
+  [tabSelectorControl updateItems:childViewControllerIdentifiers animated:1];
 
-  v5 = [(TVRUINowPlayingViewController *)self currentViewControllerIdentifier];
-  v6 = [(TVRUINowPlayingViewController *)self indexForViewControllerIdentifier:v5];
+  currentViewControllerIdentifier = [(TVRUINowPlayingViewController *)self currentViewControllerIdentifier];
+  v6 = [(TVRUINowPlayingViewController *)self indexForViewControllerIdentifier:currentViewControllerIdentifier];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
-    v8 = [(TVRUINowPlayingViewController *)self _availableTabToDisplayForNowPlayingInfo:v7];
+    nowPlayingInfo = [(TVRUINowPlayingViewController *)self nowPlayingInfo];
+    v8 = [(TVRUINowPlayingViewController *)self _availableTabToDisplayForNowPlayingInfo:nowPlayingInfo];
     [(TVRUINowPlayingViewController *)self setCurrentViewControllerIdentifier:v8];
   }
 
-  v9 = [(TVRUINowPlayingViewController *)self currentViewControllerIdentifier];
-  [(TVRUINowPlayingViewController *)self _updateViewControllerVisibilityForSelectedIdentifier:v9];
+  currentViewControllerIdentifier2 = [(TVRUINowPlayingViewController *)self currentViewControllerIdentifier];
+  [(TVRUINowPlayingViewController *)self _updateViewControllerVisibilityForSelectedIdentifier:currentViewControllerIdentifier2];
 
   [(TVRUINowPlayingViewController *)self _updateSelectorControlHeight];
 }
 
-- (void)_performTabAnimationFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4 isInteractive:(BOOL)a5 interactivePercentage:(double)a6
+- (void)_performTabAnimationFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex isInteractive:(BOOL)interactive interactivePercentage:(double)percentage
 {
-  v7 = a5;
+  interactiveCopy = interactive;
   v11 = +[TVRUICubicSpringAnimator standardSpringAnimator];
-  [(TVRUINowPlayingViewController *)self _performTabAnimationFromIndex:a3 toIndex:a4 isInteractive:v7 interactivePercentage:v11 animator:a6];
+  [(TVRUINowPlayingViewController *)self _performTabAnimationFromIndex:index toIndex:toIndex isInteractive:interactiveCopy interactivePercentage:v11 animator:percentage];
 }
 
-- (void)_performTabAnimationFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4 isInteractive:(BOOL)a5 interactivePercentage:(double)a6 animator:(id)a7
+- (void)_performTabAnimationFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex isInteractive:(BOOL)interactive interactivePercentage:(double)percentage animator:(id)animator
 {
-  v8 = a5;
+  interactiveCopy = interactive;
   v82 = *MEMORY[0x277D85DE8];
-  v61 = a7;
-  v12 = [(TVRUINowPlayingViewController *)self viewControllerForIndex:a4];
-  v13 = [(TVRUINowPlayingViewController *)self viewControllerForIndex:a3];
+  animatorCopy = animator;
+  v12 = [(TVRUINowPlayingViewController *)self viewControllerForIndex:toIndex];
+  v13 = [(TVRUINowPlayingViewController *)self viewControllerForIndex:index];
   v14 = v13;
   if (v12)
   {
@@ -1671,11 +1671,11 @@ LABEL_13:
     v15 = 1;
   }
 
-  v17 = !v15 && a4 != a3;
-  v18 = [(TVRUINowPlayingViewController *)self viewControllerIdentifierForIndex:a4];
+  v17 = !v15 && toIndex != index;
+  v18 = [(TVRUINowPlayingViewController *)self viewControllerIdentifierForIndex:toIndex];
   [(TVRUINowPlayingViewController *)self setCurrentViewControllerIdentifier:v18];
-  v19 = [(TVRUINowPlayingViewController *)self currentViewControllerIdentifier];
-  [(TVRUINowPlayingViewController *)self setLastExplicitUserSelectedViewControllerIdentifier:v19];
+  currentViewControllerIdentifier = [(TVRUINowPlayingViewController *)self currentViewControllerIdentifier];
+  [(TVRUINowPlayingViewController *)self setLastExplicitUserSelectedViewControllerIdentifier:currentViewControllerIdentifier];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -1685,33 +1685,33 @@ LABEL_13:
   v20 = v18;
   v79 = v20;
   v21 = _Block_copy(aBlock);
-  v60 = v8;
-  if (v8)
+  v60 = interactiveCopy;
+  if (interactiveCopy)
   {
-    v22 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-    [v22 setSelectedIndex:a4];
+    tabSelectorControl = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+    [tabSelectorControl setSelectedIndex:toIndex];
   }
 
   if (v17)
   {
     v55 = v21;
-    v23 = [(TVRUINowPlayingViewController *)self currentAnimationState];
-    v59 = [_TVRUIAnimationState animationStateWithIndex:a4 previousIndex:a3 toViewController:v12 fromViewController:v14 isInteractive:v60];
+    currentAnimationState = [(TVRUINowPlayingViewController *)self currentAnimationState];
+    v59 = [_TVRUIAnimationState animationStateWithIndex:toIndex previousIndex:index toViewController:v12 fromViewController:v14 isInteractive:v60];
     [(TVRUINowPlayingViewController *)self _callChildViewControllerAppearanceForAppearingIdentifier:v20];
-    v24 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
+    currentTabSelectionAnimator = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
     v56 = v20;
-    if ([v24 isRunning])
+    if ([currentTabSelectionAnimator isRunning])
     {
-      v25 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
-      v26 = [v25 isInterruptible];
+      currentTabSelectionAnimator2 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
+      isInterruptible = [currentTabSelectionAnimator2 isInterruptible];
 
-      if (v26)
+      if (isInterruptible)
       {
-        v27 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
-        [v27 stopAnimation:0];
+        currentTabSelectionAnimator3 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
+        [currentTabSelectionAnimator3 stopAnimation:0];
 
-        v28 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
-        [v28 finishAnimationAtPosition:2];
+        currentTabSelectionAnimator4 = [(TVRUINowPlayingViewController *)self currentTabSelectionAnimator];
+        [currentTabSelectionAnimator4 finishAnimationAtPosition:2];
 
         [(TVRUINowPlayingViewController *)self setCurrentTabSelectionAnimator:0];
       }
@@ -1721,72 +1721,72 @@ LABEL_13:
     {
     }
 
-    v31 = [(TVRUINowPlayingViewController *)self view];
-    [v31 bounds];
+    view = [(TVRUINowPlayingViewController *)self view];
+    [view bounds];
     Width = CGRectGetWidth(v83);
 
-    LOBYTE(v31) = [v23 isParticpantViewController:v12];
-    v33 = [v23 isParticpantViewController:v14];
+    LOBYTE(view) = [currentAnimationState isParticpantViewController:v12];
+    v33 = [currentAnimationState isParticpantViewController:v14];
     v58 = v12;
-    v53 = a4 < a3;
-    if (v31)
+    v53 = toIndex < index;
+    if (view)
     {
-      v34 = _TVRUINowPlayingLog();
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
+      view3 = _TVRUINowPlayingLog();
+      if (os_log_type_enabled(view3, OS_LOG_TYPE_INFO))
       {
-        v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+        v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:toIndex];
         LODWORD(buf.a) = 138412290;
         *(&buf.a + 4) = v35;
-        _os_log_impl(&dword_26CFEB000, v34, OS_LOG_TYPE_INFO, "ANIM: viewController @ index=%@ is currently animating, not setting transform.", &buf, 0xCu);
+        _os_log_impl(&dword_26CFEB000, view3, OS_LOG_TYPE_INFO, "ANIM: viewController @ index=%@ is currently animating, not setting transform.", &buf, 0xCu);
       }
     }
 
     else
     {
-      v36 = [v12 view];
-      [v36 setHidden:0];
+      view2 = [v12 view];
+      [view2 setHidden:0];
 
       v37 = -Width;
-      if (a4 >= a3)
+      if (toIndex >= index)
       {
         v37 = Width;
       }
 
       CGAffineTransformMakeTranslation(&v77, v37, 0.0);
-      v34 = [v12 view];
+      view3 = [v12 view];
       buf = v77;
-      [v34 setTransform:&buf];
+      [view3 setTransform:&buf];
     }
 
     v38 = MEMORY[0x277CBF2C0];
     v57 = v14;
     if (v33)
     {
-      v39 = _TVRUINowPlayingLog();
-      if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
+      view5 = _TVRUINowPlayingLog();
+      if (os_log_type_enabled(view5, OS_LOG_TYPE_INFO))
       {
-        v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+        v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
         LODWORD(buf.a) = 138412290;
         *(&buf.a + 4) = v40;
-        _os_log_impl(&dword_26CFEB000, v39, OS_LOG_TYPE_INFO, "ANIM: previous VC @ index=%@ is currently animating, not resetting hidden state = NO", &buf, 0xCu);
+        _os_log_impl(&dword_26CFEB000, view5, OS_LOG_TYPE_INFO, "ANIM: previous VC @ index=%@ is currently animating, not resetting hidden state = NO", &buf, 0xCu);
       }
     }
 
     else
     {
-      v41 = [v14 view];
-      [v41 setHidden:0];
+      view4 = [v14 view];
+      [view4 setHidden:0];
 
-      v39 = [v14 view];
+      view5 = [v14 view];
       v42 = v38[1];
       *&buf.a = *v38;
       *&buf.c = v42;
       *&buf.tx = v38[2];
-      [v39 setTransform:&buf];
+      [view5 setTransform:&buf];
     }
 
-    v54 = v23;
-    v43 = [v23 viewControllersNoLongerAnimatingForDestinationAnimationState:v59];
+    v54 = currentAnimationState;
+    v43 = [currentAnimationState viewControllersNoLongerAnimatingForDestinationAnimationState:v59];
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
@@ -1809,14 +1809,14 @@ LABEL_13:
           }
 
           v48 = *(*(&v73 + 1) + 8 * i);
-          v49 = [v48 view];
-          [v49 setHidden:1];
+          view6 = [v48 view];
+          [view6 setHidden:1];
 
-          v50 = [v48 view];
+          view7 = [v48 view];
           *&buf.a = v64;
           *&buf.c = v63;
           *&buf.tx = v62;
-          [v50 setTransform:&buf];
+          [view7 setTransform:&buf];
 
           v51 = _TVRUINowPlayingLog();
           if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
@@ -1844,8 +1844,8 @@ LABEL_13:
     v70 = v52;
     v72 = v53;
     v71 = Width;
-    v30 = v61;
-    [v61 addAnimations:v68];
+    v30 = animatorCopy;
+    [animatorCopy addAnimations:v68];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = __116__TVRUINowPlayingViewController__performTabAnimationFromIndex_toIndex_isInteractive_interactivePercentage_animator___block_invoke_47;
@@ -1853,22 +1853,22 @@ LABEL_13:
     v66 = v52;
     v21 = v55;
     v67 = v55;
-    [v61 addCompletion:v65];
+    [animatorCopy addCompletion:v65];
     if (v60)
     {
-      [v61 setScrubsLinearly:1];
-      [v61 setFractionComplete:a6];
-      [v61 pauseAnimation];
+      [animatorCopy setScrubsLinearly:1];
+      [animatorCopy setFractionComplete:percentage];
+      [animatorCopy pauseAnimation];
     }
 
     else
     {
-      [v61 startAnimation];
+      [animatorCopy startAnimation];
     }
 
     v20 = v56;
     [(TVRUINowPlayingViewController *)self setCurrentAnimationState:v59];
-    [(TVRUINowPlayingViewController *)self setCurrentTabSelectionAnimator:v61];
+    [(TVRUINowPlayingViewController *)self setCurrentTabSelectionAnimator:animatorCopy];
 
     v29 = v54;
   }
@@ -1883,7 +1883,7 @@ LABEL_13:
       _os_log_impl(&dword_26CFEB000, v29, OS_LOG_TYPE_INFO, "ANIM: not possible to animate, commiting immediately to final state.", &buf, 2u);
     }
 
-    v30 = v61;
+    v30 = animatorCopy;
   }
 }
 
@@ -1969,25 +1969,25 @@ void __116__TVRUINowPlayingViewController__performTabAnimationFromIndex_toIndex_
   return v3;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
-  v6 = [v5 userInteractionInProgress];
+  beginCopy = begin;
+  nowPlayingInfoViewController = [(TVRUINowPlayingViewController *)self nowPlayingInfoViewController];
+  userInteractionInProgress = [nowPlayingInfoViewController userInteractionInProgress];
 
-  if (v6)
+  if (userInteractionInProgress)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(TVRUINowPlayingViewController *)self view];
-    [v4 locationInView:v8];
+    view = [(TVRUINowPlayingViewController *)self view];
+    [beginCopy locationInView:view];
     v10 = v9;
 
-    v11 = [(TVRUINowPlayingViewController *)self tabSelectorControl];
-    [v11 frame];
+    tabSelectorControl = [(TVRUINowPlayingViewController *)self tabSelectorControl];
+    [tabSelectorControl frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;

@@ -1,12 +1,12 @@
 @interface TelephonyExtension
 - (TelephonyExtension)init;
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
-- (void)addToAttachmentList:(id)a3 allowDelete:(id)a4;
+- (id)attachmentsForParameters:(id)parameters;
+- (void)addToAttachmentList:(id)list allowDelete:(id)delete;
 - (void)dealloc;
-- (void)setupWithParameters:(id)a3;
-- (void)teardownWithParameters:(id)a3;
-- (void)validateCommands:(id)a3;
+- (void)setupWithParameters:(id)parameters;
+- (void)teardownWithParameters:(id)parameters;
+- (void)validateCommands:(id)commands;
 @end
 
 @implementation TelephonyExtension
@@ -66,16 +66,16 @@
   [(TelephonyExtension *)&v4 dealloc];
 }
 
-- (void)setupWithParameters:(id)a3
+- (void)setupWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[TelephonyExtension setupWithParameters:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v8, 0x16u);
   }
 
@@ -99,16 +99,16 @@
   }
 }
 
-- (void)teardownWithParameters:(id)a3
+- (void)teardownWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[TelephonyExtension teardownWithParameters:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v6, 0x16u);
   }
 
@@ -118,9 +118,9 @@
   }
 }
 
-- (void)validateCommands:(id)a3
+- (void)validateCommands:(id)commands
 {
-  v3 = a3;
+  commandsCopy = commands;
   v4 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -129,9 +129,9 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", &v12, 0xCu);
   }
 
-  v5 = [v3 valueForKey:@"DEExtensionHostAppKey"];
-  v6 = [v3 valueForKey:@"CellularExtensionCommandKey"];
-  v7 = [v3 valueForKey:@"CellularExtensionFindLogsKey"];
+  v5 = [commandsCopy valueForKey:@"DEExtensionHostAppKey"];
+  v6 = [commandsCopy valueForKey:@"CellularExtensionCommandKey"];
+  v7 = [commandsCopy valueForKey:@"CellularExtensionFindLogsKey"];
   if (v6)
   {
     v8 = [(__CFString *)v6 isEqualToString:@"attach"];
@@ -181,8 +181,8 @@ LABEL_12:
   }
 
 LABEL_16:
-  [v3 setValue:v6 forKey:@"CellularExtensionCommandKey"];
-  [v3 setValue:v7 forKey:@"CellularExtensionFindLogsKey"];
+  [commandsCopy setValue:v6 forKey:@"CellularExtensionCommandKey"];
+  [commandsCopy setValue:v7 forKey:@"CellularExtensionFindLogsKey"];
 }
 
 - (id)attachmentList
@@ -203,15 +203,15 @@ LABEL_16:
   return v5;
 }
 
-- (void)addToAttachmentList:(id)a3 allowDelete:(id)a4
+- (void)addToAttachmentList:(id)list allowDelete:(id)delete
 {
-  v5 = a3;
-  v22 = a4;
+  listCopy = list;
+  deleteCopy = delete;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = listCopy;
   v6 = [obj countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v6)
   {
@@ -247,9 +247,9 @@ LABEL_8:
               objc_enumerationMutation(v10);
             }
 
-            v14 = [*(*(&v26 + 1) + 8 * v13) path];
-            v15 = [v14 lastPathComponent];
-            v16 = [v9 containsString:v15];
+            path = [*(*(&v26 + 1) + 8 * v13) path];
+            lastPathComponent = [path lastPathComponent];
+            v16 = [v9 containsString:lastPathComponent];
 
             if (v16)
             {
@@ -274,7 +274,7 @@ LABEL_8:
 LABEL_14:
 
           v10 = [DEAttachmentItem attachmentWithPath:v9];
-          [(NSMutableArray *)v10 setDeleteOnAttach:v22];
+          [(NSMutableArray *)v10 setDeleteOnAttach:deleteCopy];
           if ([v9 hasSuffix:@"tar.gz"])
           {
             v17 = &__kCFBooleanFalse;
@@ -290,11 +290,11 @@ LABEL_14:
           v18 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v22 intValue];
+            intValue = [deleteCopy intValue];
             *buf = v20;
             v35 = v9;
             v36 = 1024;
-            v37 = v19;
+            v37 = intValue;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Attaching file: %@, deleteOnAttach: %d", buf, 0x12u);
           }
         }
@@ -307,16 +307,16 @@ LABEL_14:
   }
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v41 = "[TelephonyExtension attachmentsForParameters:]";
     v42 = 2112;
-    v43 = v4;
+    v43 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -327,7 +327,7 @@ LABEL_14:
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
 LABEL_13:
-      v18 = &__NSArray0__struct;
+      attachmentList = &__NSArray0__struct;
       goto LABEL_46;
     }
 
@@ -356,22 +356,22 @@ LABEL_34:
   fAttachmentsList = self->fAttachmentsList;
   self->fAttachmentsList = v7;
 
-  [(TelephonyExtension *)self validateCommands:v4];
+  [(TelephonyExtension *)self validateCommands:parametersCopy];
   v9 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v41 = v4;
+    v41 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "After command validation: %@", buf, 0xCu);
   }
 
-  v10 = [v4 valueForKey:@"DEExtensionHostAppKey"];
-  v11 = [v4 valueForKey:@"CellularExtensionCommandKey"];
-  v39 = [v4 valueForKey:@"CellularExtensionFindLogsKey"];
-  v12 = [v4 valueForKey:@"CellularExtensionSnapshotOsLogKey"];
-  v13 = [v12 BOOLValue];
+  v10 = [parametersCopy valueForKey:@"DEExtensionHostAppKey"];
+  v11 = [parametersCopy valueForKey:@"CellularExtensionCommandKey"];
+  v39 = [parametersCopy valueForKey:@"CellularExtensionFindLogsKey"];
+  v12 = [parametersCopy valueForKey:@"CellularExtensionSnapshotOsLogKey"];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [v4 valueForKey:@"CellularExtensionDumpReasonKey"];
+  v14 = [parametersCopy valueForKey:@"CellularExtensionDumpReasonKey"];
   if (v10)
   {
     if ([v11 isEqualToString:@"dump"])
@@ -484,7 +484,7 @@ LABEL_34:
     }
 
     [self->fBasebandLogDEHelper stop];
-    v18 = [(TelephonyExtension *)self attachmentList];
+    attachmentList = [(TelephonyExtension *)self attachmentList];
   }
 
   else
@@ -496,12 +496,12 @@ LABEL_34:
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Host info is null", buf, 2u);
     }
 
-    v18 = &__NSArray0__struct;
+    attachmentList = &__NSArray0__struct;
   }
 
 LABEL_46:
 
-  return v18;
+  return attachmentList;
 }
 
 @end

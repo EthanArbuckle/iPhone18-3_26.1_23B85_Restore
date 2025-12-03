@@ -1,28 +1,28 @@
 @interface ICSPhotoStreamSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (BOOL)_isPhotoStreamEnabled:(id)a3;
-- (BOOL)handleURL:(id)a3;
-- (ICSPhotoStreamSpecifierProvider)initWithAccountManager:(id)a3;
+- (BOOL)_isPhotoStreamEnabled:(id)enabled;
+- (BOOL)handleURL:(id)l;
+- (ICSPhotoStreamSpecifierProvider)initWithAccountManager:(id)manager;
 - (NSArray)specifiers;
-- (id)_isPhotoStreamEnabledString:(id)a3;
+- (id)_isPhotoStreamEnabledString:(id)string;
 - (id)_specifierForPhotoStream;
 - (id)account;
-- (void)_photoStreamSpecifierWasTapped:(id)a3;
-- (void)_showPhotoStreamController:(id)a3;
+- (void)_photoStreamSpecifierWasTapped:(id)tapped;
+- (void)_showPhotoStreamController:(id)controller;
 @end
 
 @implementation ICSPhotoStreamSpecifierProvider
 
-- (ICSPhotoStreamSpecifierProvider)initWithAccountManager:(id)a3
+- (ICSPhotoStreamSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = ICSPhotoStreamSpecifierProvider;
   v6 = [(ICSPhotoStreamSpecifierProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
@@ -30,8 +30,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -42,11 +42,11 @@
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [(ICSPhotoStreamSpecifierProvider *)self _specifierForPhotoStream];
-    v5 = v4;
-    if (v4)
+    _specifierForPhotoStream = [(ICSPhotoStreamSpecifierProvider *)self _specifierForPhotoStream];
+    v5 = _specifierForPhotoStream;
+    if (_specifierForPhotoStream)
     {
-      v10[0] = v4;
+      v10[0] = _specifierForPhotoStream;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
       v7 = self->_specifiers;
       self->_specifiers = v6;
@@ -63,8 +63,8 @@
 - (id)_specifierForPhotoStream
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  if ([v3 effectiveBoolValueForSetting:*MEMORY[0x277D26008]] == 2 && objc_msgSend(v3, "effectiveBoolValueForSetting:", *MEMORY[0x277D26058]) == 2 && objc_msgSend(v3, "effectiveBoolValueForSetting:", *MEMORY[0x277D25E48]) == 2)
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  if ([mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D26008]] == 2 && objc_msgSend(mEMORY[0x277D262A0], "effectiveBoolValueForSetting:", *MEMORY[0x277D26058]) == 2 && objc_msgSend(mEMORY[0x277D262A0], "effectiveBoolValueForSetting:", *MEMORY[0x277D25E48]) == 2)
   {
     v4 = 0;
   }
@@ -73,12 +73,12 @@
   {
     v5 = MEMORY[0x277D3FAD8];
     v6 = *MEMORY[0x277CB89D0];
-    v7 = [(ICSPhotoStreamSpecifierProvider *)self account];
-    v4 = [v5 acui_linkListCellSpecifierForDataclass:v6 account:v7 target:self set:0 get:sel__isPhotoStreamEnabledString_ detail:0];
+    account = [(ICSPhotoStreamSpecifierProvider *)self account];
+    v4 = [v5 acui_linkListCellSpecifierForDataclass:v6 account:account target:self set:0 get:sel__isPhotoStreamEnabledString_ detail:0];
 
     v12 = *MEMORY[0x277CE8550];
-    v8 = [(ICSPhotoStreamSpecifierProvider *)self account];
-    v13[0] = v8;
+    account2 = [(ICSPhotoStreamSpecifierProvider *)self account];
+    v13[0] = account2;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     [v4 setUserInfo:v9];
 
@@ -90,9 +90,9 @@
   return v4;
 }
 
-- (id)_isPhotoStreamEnabledString:(id)a3
+- (id)_isPhotoStreamEnabledString:(id)string
 {
-  v3 = [(ICSPhotoStreamSpecifierProvider *)self _isPhotoStreamEnabled:a3];
+  v3 = [(ICSPhotoStreamSpecifierProvider *)self _isPhotoStreamEnabled:string];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
   if (v3)
@@ -110,9 +110,9 @@
   return v7;
 }
 
-- (BOOL)_isPhotoStreamEnabled:(id)a3
+- (BOOL)_isPhotoStreamEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -128,7 +128,7 @@
   }
 
   v7 = objc_loadWeakRetained(&self->_delegate);
-  v8 = [v7 specifierProvider:self isDataclassAvailableForSpecifier:v4];
+  v8 = [v7 specifierProvider:self isDataclassAvailableForSpecifier:enabledCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -137,24 +137,24 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  v9 = [(ICSPhotoStreamSpecifierProvider *)self account];
-  if ([v9 isEnabledForDataclass:*MEMORY[0x277CB89D0]])
+  account = [(ICSPhotoStreamSpecifierProvider *)self account];
+  if ([account isEnabledForDataclass:*MEMORY[0x277CB89D0]])
   {
     v10 = 1;
   }
 
   else
   {
-    v12 = [(ICSPhotoStreamSpecifierProvider *)self account];
-    if ([v12 isEnabledForDataclass:*MEMORY[0x277CB8A38]])
+    account2 = [(ICSPhotoStreamSpecifierProvider *)self account];
+    if ([account2 isEnabledForDataclass:*MEMORY[0x277CB8A38]])
     {
       v10 = 1;
     }
 
     else
     {
-      v13 = [(ICSPhotoStreamSpecifierProvider *)self account];
-      v10 = [v13 isEnabledForDataclass:*MEMORY[0x277CB8960]];
+      account3 = [(ICSPhotoStreamSpecifierProvider *)self account];
+      v10 = [account3 isEnabledForDataclass:*MEMORY[0x277CB8960]];
     }
   }
 
@@ -162,22 +162,22 @@ LABEL_14:
   return v10;
 }
 
-- (void)_photoStreamSpecifierWasTapped:(id)a3
+- (void)_photoStreamSpecifierWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  WeakRetained = objc_loadWeakRetained(&v5->_delegate);
+  tappedCopy = tapped;
+  selfCopy = self;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = objc_loadWeakRetained(&v5->_delegate);
+    v8 = objc_loadWeakRetained(&selfCopy->_delegate);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __66__ICSPhotoStreamSpecifierProvider__photoStreamSpecifierWasTapped___block_invoke;
     v9[3] = &unk_27A666958;
-    v10 = v5;
-    v11 = v4;
+    v10 = selfCopy;
+    v11 = tappedCopy;
     v12 = v10;
     [v8 validateDataclassAccessForProvider:v10 specifier:v11 completion:v9];
   }
@@ -195,14 +195,14 @@ void __66__ICSPhotoStreamSpecifierProvider__photoStreamSpecifierWasTapped___bloc
   }
 }
 
-- (void)_showPhotoStreamController:(id)a3
+- (void)_showPhotoStreamController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   photosSettingsController = self->_photosSettingsController;
   if (photosSettingsController)
   {
 LABEL_4:
-    [(PSListController *)photosSettingsController setSpecifier:v4];
+    [(PSListController *)photosSettingsController setSpecifier:controllerCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained specifierProvider:self showViewController:self->_photosSettingsController];
 
@@ -240,18 +240,18 @@ LABEL_4:
 LABEL_10:
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"path"];
+  lCopy = l;
+  v5 = [lCopy objectForKeyedSubscript:@"path"];
   if (([v5 hasPrefix:*MEMORY[0x277CB8A08]] & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", *MEMORY[0x277CB89D0]) & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", *MEMORY[0x277CB8A38]) & 1) != 0 || objc_msgSend(v5, "hasPrefix:", *MEMORY[0x277CB8960]))
   {
     v6 = LogSubsystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
       v15 = v5;
       _os_log_impl(&dword_275819000, v6, OS_LOG_TYPE_DEFAULT, "%@ handling deeplink url for path: %@", buf, 0x16u);
@@ -262,7 +262,7 @@ LABEL_10:
     v10[2] = __45__ICSPhotoStreamSpecifierProvider_handleURL___block_invoke;
     v10[3] = &unk_27A666410;
     v10[4] = self;
-    v11 = v4;
+    v11 = lCopy;
     dispatch_async(MEMORY[0x277D85CD0], v10);
 
     v7 = 1;

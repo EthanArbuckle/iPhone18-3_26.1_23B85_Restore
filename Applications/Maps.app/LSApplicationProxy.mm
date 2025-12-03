@@ -6,10 +6,10 @@
 
 - (id)coverageFilePath
 {
-  v2 = [(LSApplicationProxy *)self bundleContainerURL];
-  v3 = [v2 path];
+  bundleContainerURL = [(LSApplicationProxy *)self bundleContainerURL];
+  path = [bundleContainerURL path];
 
-  v4 = [v3 stringByAppendingPathComponent:@"GeoJSON"];
+  v4 = [path stringByAppendingPathComponent:@"GeoJSON"];
 
   return v4;
 }

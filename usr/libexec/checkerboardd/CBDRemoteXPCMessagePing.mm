@@ -1,17 +1,17 @@
 @interface CBDRemoteXPCMessagePing
-+ (id)handshakeWithHandler:(id)a3;
-- (CBDRemoteXPCMessagePing)initWithCoder:(id)a3;
-- (CBDRemoteXPCMessagePing)initWithHandler:(id)a3;
++ (id)handshakeWithHandler:(id)handler;
+- (CBDRemoteXPCMessagePing)initWithCoder:(id)coder;
+- (CBDRemoteXPCMessagePing)initWithHandler:(id)handler;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CBDRemoteXPCMessagePing
 
-- (CBDRemoteXPCMessagePing)initWithHandler:(id)a3
+- (CBDRemoteXPCMessagePing)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = CBDRemoteXPCMessagePing;
   v5 = [(CBDRemoteXPCMessagePing *)&v11 init];
@@ -21,7 +21,7 @@
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = objc_retainBlock(v4);
+    v8 = objc_retainBlock(handlerCopy);
     handler = v5->_handler;
     v5->_handler = v8;
   }
@@ -29,10 +29,10 @@
   return v5;
 }
 
-+ (id)handshakeWithHandler:(id)a3
++ (id)handshakeWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHandler:v4];
+  handlerCopy = handler;
+  v5 = [[self alloc] initWithHandler:handlerCopy];
 
   return v5;
 }
@@ -41,21 +41,21 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CBDRemoteXPCMessagePing *)self uuid];
-  v6 = [NSString stringWithFormat:@"<%@: %p uuid = %@;>", v4, self, v5];;
+  uuid = [(CBDRemoteXPCMessagePing *)self uuid];
+  v6 = [NSString stringWithFormat:@"<%@: %p uuid = %@;>", v4, self, uuid];;
 
   return v6;
 }
 
-- (CBDRemoteXPCMessagePing)initWithCoder:(id)a3
+- (CBDRemoteXPCMessagePing)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CBDRemoteXPCMessagePing;
   v5 = [(CBDRemoteXPCMessagePing *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
   }
@@ -63,18 +63,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CBDRemoteXPCMessagePing *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  uuid = [(CBDRemoteXPCMessagePing *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CBDRemoteXPCMessagePing);
-  v5 = [(CBDRemoteXPCMessagePing *)self uuid];
-  v6 = [v5 copy];
+  uuid = [(CBDRemoteXPCMessagePing *)self uuid];
+  v6 = [uuid copy];
   uuid = v4->_uuid;
   v4->_uuid = v6;
 

@@ -1,15 +1,15 @@
 @interface WFFileArbiter
-- (void)extendDocumentURL:(id)a3 workflowID:(id)a4 completion:(id)a5;
-- (void)extendDocumentURLs:(id)a3 workflowID:(id)a4 completion:(id)a5;
+- (void)extendDocumentURL:(id)l workflowID:(id)d completion:(id)completion;
+- (void)extendDocumentURLs:(id)ls workflowID:(id)d completion:(id)completion;
 @end
 
 @implementation WFFileArbiter
 
-- (void)extendDocumentURL:(id)a3 workflowID:(id)a4 completion:(id)a5
+- (void)extendDocumentURL:(id)l workflowID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  dCopy = d;
+  completionCopy = completion;
   v10 = objc_opt_new();
   v18 = 0;
   v19 = &v18;
@@ -23,12 +23,12 @@
   v16[1] = 3221225472;
   v16[2] = __57__WFFileArbiter_extendDocumentURL_workflowID_completion___block_invoke;
   v16[3] = &unk_1E8378BD0;
-  [v10 coordinateReadingItemAtURL:v7 options:0 error:&v17 byAccessor:v16];
+  [v10 coordinateReadingItemAtURL:lCopy options:0 error:&v17 byAccessor:v16];
   v11 = v17;
   v12 = v19[5];
   v13 = *MEMORY[0x1E69E0E60];
-  v15 = v9;
-  v14 = v8;
+  v15 = completionCopy;
+  v14 = dCopy;
   FPExtendBookmarkForDocumentURL();
 
   _Block_object_dispose(&v18, 8);
@@ -105,30 +105,30 @@ void __57__WFFileArbiter_extendDocumentURL_workflowID_completion___block_invoke_
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)extendDocumentURLs:(id)a3 workflowID:(id)a4 completion:(id)a5
+- (void)extendDocumentURLs:(id)ls workflowID:(id)d completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3)
+  dCopy = d;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (ls)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __58__WFFileArbiter_extendDocumentURLs_workflowID_completion___block_invoke;
     v13[3] = &unk_1E83766C0;
     v13[4] = self;
-    v14 = v8;
+    v14 = dCopy;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __58__WFFileArbiter_extendDocumentURLs_workflowID_completion___block_invoke_3;
     v11[3] = &unk_1E83766E8;
     v12 = v10;
-    [a3 if_enumerateAsynchronously:v13 completionHandler:v11];
+    [ls if_enumerateAsynchronously:v13 completionHandler:v11];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 

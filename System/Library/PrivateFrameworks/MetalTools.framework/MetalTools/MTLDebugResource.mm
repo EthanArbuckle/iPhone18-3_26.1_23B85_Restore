@@ -1,26 +1,26 @@
 @interface MTLDebugResource
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasResource:(id)a3;
-- (MTLDebugResource)initWithBaseObject:(id)a3;
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasResource:(id)resource;
+- (MTLDebugResource)initWithBaseObject:(id)object;
 @end
 
 @implementation MTLDebugResource
 
-- (MTLDebugResource)initWithBaseObject:(id)a3
+- (MTLDebugResource)initWithBaseObject:(id)object
 {
   v5.receiver = self;
   v5.super_class = MTLDebugResource;
   result = [(MTLDebugResource *)&v5 init];
   if (result)
   {
-    result->_baseObject = a3;
+    result->_baseObject = object;
   }
 
   return result;
 }
 
-- (BOOL)doesAliasResource:(id)a3
+- (BOOL)doesAliasResource:(id)resource
 {
   [-[MTLDebugResource baseObject](self baseObject];
   _MTLMessageContextBegin_();
@@ -29,7 +29,7 @@
     _MTLMessageContextPush_();
   }
 
-  if (![a3 heap])
+  if (![resource heap])
   {
     _MTLMessageContextPush_();
   }
@@ -38,13 +38,13 @@
   return [-[MTLDebugResource baseObject](self "baseObject")];
 }
 
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count
 {
   [-[MTLDebugResource baseObject](self baseObject];
   _MTLMessageContextBegin_();
-  if (a4)
+  if (count)
   {
-    if (a3)
+    if (resources)
     {
       v7 = 0;
     }
@@ -59,7 +59,7 @@
   else
   {
     _MTLMessageContextPush_();
-    v7 = a3 == 0;
+    v7 = resources == 0;
   }
 
   if (![-[MTLDebugResource baseObject](self "baseObject")])
@@ -67,7 +67,7 @@
     _MTLMessageContextPush_();
   }
 
-  if (a4)
+  if (count)
   {
     v8 = v7;
   }
@@ -80,7 +80,7 @@
   if (v8)
   {
     _MTLMessageContextEnd();
-    if (!a4)
+    if (!count)
     {
       result = 0;
       goto LABEL_20;
@@ -92,7 +92,7 @@
     v10 = 0;
     do
     {
-      if (![a3[v10] heap])
+      if (![resources[v10] heap])
       {
         _MTLMessageContextPush_();
       }
@@ -100,31 +100,31 @@
       ++v10;
     }
 
-    while (a4 != v10);
+    while (count != v10);
     _MTLMessageContextEnd();
   }
 
   v11 = 0;
   do
   {
-    *(&v13 + 8 * v11 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0)) = [a3[v11] baseObject];
+    *(&v13 + 8 * v11 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0)) = [resources[v11] baseObject];
     ++v11;
   }
 
-  while (a4 != v11);
+  while (count != v11);
   result = [-[MTLDebugResource baseObject](self "baseObject")];
 LABEL_20:
   v12 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count
 {
   [-[MTLDebugResource baseObject](self baseObject];
   _MTLMessageContextBegin_();
-  if (a4)
+  if (count)
   {
-    if (a3)
+    if (resources)
     {
       v7 = 0;
     }
@@ -139,7 +139,7 @@ LABEL_20:
   else
   {
     _MTLMessageContextPush_();
-    v7 = a3 == 0;
+    v7 = resources == 0;
   }
 
   if (![-[MTLDebugResource baseObject](self "baseObject")])
@@ -147,7 +147,7 @@ LABEL_20:
     _MTLMessageContextPush_();
   }
 
-  if (a4)
+  if (count)
   {
     v8 = v7;
   }
@@ -160,7 +160,7 @@ LABEL_20:
   if (v8)
   {
     _MTLMessageContextEnd();
-    if (!a4)
+    if (!count)
     {
       result = 0;
       goto LABEL_20;
@@ -172,7 +172,7 @@ LABEL_20:
     v10 = 0;
     do
     {
-      if (![a3[v10] heap])
+      if (![resources[v10] heap])
       {
         _MTLMessageContextPush_();
       }
@@ -180,18 +180,18 @@ LABEL_20:
       ++v10;
     }
 
-    while (a4 != v10);
+    while (count != v10);
     _MTLMessageContextEnd();
   }
 
   v11 = 0;
   do
   {
-    *(&v13 + 8 * v11 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0)) = [a3[v11] baseObject];
+    *(&v13 + 8 * v11 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0)) = [resources[v11] baseObject];
     ++v11;
   }
 
-  while (a4 != v11);
+  while (count != v11);
   result = [-[MTLDebugResource baseObject](self "baseObject")];
 LABEL_20:
   v12 = *MEMORY[0x277D85DE8];

@@ -1,9 +1,9 @@
 @interface FindMyLocateSession
 - (id)meDeviceUpdateCallback;
-- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)a3;
-- (void)setMeDeviceUpdateCallback:(id)a3;
-- (void)startMonitoringPreferencesChangesWithCompletionHandler:(id)a3;
-- (void)stopMonitoringPreferenceChangesWithCompletionHandler:(id)a3;
+- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)handler;
+- (void)setMeDeviceUpdateCallback:(id)callback;
+- (void)startMonitoringPreferencesChangesWithCompletionHandler:(id)handler;
+- (void)stopMonitoringPreferenceChangesWithCompletionHandler:(id)handler;
 @end
 
 @implementation FindMyLocateSession
@@ -32,9 +32,9 @@
   return v4;
 }
 
-- (void)setMeDeviceUpdateCallback:(id)a3
+- (void)setMeDeviceUpdateCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -53,16 +53,16 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_2491E5DA4(v7);
 }
 
-- (void)startMonitoringPreferencesChangesWithCompletionHandler:(id)a3
+- (void)startMonitoringPreferencesChangesWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EEDFC90, &qword_2491FFCB8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -78,16 +78,16 @@
   v12[3] = 0;
   v12[4] = &unk_2491FFE88;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_2491E9900(0, 0, v7, &unk_2491FFE90, v12);
 }
 
-- (void)stopMonitoringPreferenceChangesWithCompletionHandler:(id)a3
+- (void)stopMonitoringPreferenceChangesWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EEDFC90, &qword_2491FFCB8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -103,16 +103,16 @@
   v12[3] = 0;
   v12[4] = &unk_2491FFE68;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_2491E9900(0, 0, v7, &unk_2491FFE70, v12);
 }
 
-- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)a3
+- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EEDFC90, &qword_2491FFCB8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -128,7 +128,7 @@
   v12[3] = 0;
   v12[4] = &unk_2491FFE28;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_2491E9900(0, 0, v7, &unk_2491FFE38, v12);
 }
 

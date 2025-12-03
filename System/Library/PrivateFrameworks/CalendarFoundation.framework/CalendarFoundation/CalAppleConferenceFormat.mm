@@ -1,17 +1,17 @@
 @interface CalAppleConferenceFormat
-+ (BOOL)_line:(id)a3 matchesRegex:(id)a4 outFoundRange:(_NSRange *)a5;
-+ (id)_buildDeserializationResultFromState:(id)a3;
++ (BOOL)_line:(id)_line matchesRegex:(id)regex outFoundRange:(_NSRange *)range;
++ (id)_buildDeserializationResultFromState:(id)state;
 + (id)_conferenceTitleRegex;
 + (id)_detailsDelimiterRegex;
 + (id)_joinMethodTitleAndFeaturesRegex;
 + (id)_startDelimiterRegex;
 + (id)calConferenceSerializationHandle;
-+ (void)_parseBlockTitle:(id)a3 state:(id)a4;
-+ (void)_parseConferenceTitle:(id)a3 state:(id)a4;
-+ (void)_parseJoinMethodTitleAndFeatures:(id)a3 state:(id)a4;
-+ (void)_parseURL:(id)a3 state:(id)a4;
-- (id)deserializeConferences:(id)a3;
-- (id)serializeConference:(id)a3 serializationBlockTitle:(id)a4;
++ (void)_parseBlockTitle:(id)title state:(id)state;
++ (void)_parseConferenceTitle:(id)title state:(id)state;
++ (void)_parseJoinMethodTitleAndFeatures:(id)features state:(id)state;
++ (void)_parseURL:(id)l state:(id)state;
+- (id)deserializeConferences:(id)conferences;
+- (id)serializeConference:(id)conference serializationBlockTitle:(id)title;
 @end
 
 @implementation CalAppleConferenceFormat
@@ -35,39 +35,39 @@ uint64_t __60__CalAppleConferenceFormat_calConferenceSerializationHandle__block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)serializeConference:(id)a3 serializationBlockTitle:(id)a4
+- (id)serializeConference:(id)conference serializationBlockTitle:(id)title
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 joinMethods];
-  v8 = [v7 count];
+  conferenceCopy = conference;
+  titleCopy = title;
+  joinMethods = [conferenceCopy joinMethods];
+  v8 = [joinMethods count];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
-    v48 = v6;
-    v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"----( ", v6, @")----"];
-    [v9 addObject:?];
-    v10 = [v5 title];
-    v11 = [v10 length];
+    array = [MEMORY[0x1E695DF70] array];
+    v48 = titleCopy;
+    v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"----( ", titleCopy, @")----"];
+    [array addObject:?];
+    title = [conferenceCopy title];
+    v11 = [title length];
 
     if (v11)
     {
       v12 = MEMORY[0x1E696AEC0];
-      v13 = [v5 title];
-      v14 = [v12 stringWithFormat:@"%@%@%@", @"[", v13, @"]"];
-      [v9 addObject:v14];
+      title2 = [conferenceCopy title];
+      v14 = [v12 stringWithFormat:@"%@%@%@", @"[", title2, @"]"];
+      [array addObject:v14];
 
-      [v9 addObject:&stru_1F379FFA8];
+      [array addObject:&stru_1F379FFA8];
     }
 
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v15 = [v5 joinMethods];
-    v16 = [v15 countByEnumeratingWithState:&v49 objects:v54 count:16];
+    joinMethods2 = [conferenceCopy joinMethods];
+    v16 = [joinMethods2 countByEnumeratingWithState:&v49 objects:v54 count:16];
     if (v16)
     {
       v17 = v16;
@@ -79,17 +79,17 @@ uint64_t __60__CalAppleConferenceFormat_calConferenceSerializationHandle__block_
         {
           if (*v50 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(joinMethods2);
           }
 
           v20 = *(*(&v49 + 1) + 8 * v19);
-          v21 = [v20 title];
-          v22 = [v21 length];
+          title3 = [v20 title];
+          v22 = [title3 length];
 
-          v23 = [v20 isBroadcast];
+          isBroadcast = [v20 isBroadcast];
           if (v22)
           {
-            v24 = v23 == 0;
+            v24 = isBroadcast == 0;
           }
 
           else
@@ -100,84 +100,84 @@ uint64_t __60__CalAppleConferenceFormat_calConferenceSerializationHandle__block_
           if (!v24)
           {
             v26 = MEMORY[0x1E696AEC0];
-            v27 = [v20 title];
-            [v26 stringWithFormat:@"%@%@%@ %@%@%@", @"[", v27, @"]", @"(", @"Broadcast", @")"];
+            title4 = [v20 title];
+            [v26 stringWithFormat:@"%@%@%@ %@%@%@", @"[", title4, @"]", @"(", @"Broadcast", @")"];
             goto LABEL_16;
           }
 
           if (v22)
           {
             v25 = MEMORY[0x1E696AEC0];
-            v27 = [v20 title];
-            [v25 stringWithFormat:@"%@%@%@", @"[", v27, @"]", v44, v45, v46];
+            title4 = [v20 title];
+            [v25 stringWithFormat:@"%@%@%@", @"[", title4, @"]", v44, v45, v46];
             v28 = LABEL_16:;
-            [v9 addObject:v28];
+            [array addObject:v28];
 
 LABEL_17:
             goto LABEL_18;
           }
 
-          if (v23)
+          if (isBroadcast)
           {
-            v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"(", @"Broadcast", @")"];
-            [v9 addObject:v27];
+            title4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"(", @"Broadcast", @")"];
+            [array addObject:title4];
             goto LABEL_17;
           }
 
 LABEL_18:
           v29 = [v20 URL];
-          v30 = [v29 absoluteString];
-          [v9 addObject:v30];
+          absoluteString = [v29 absoluteString];
+          [array addObject:absoluteString];
 
-          v31 = [v5 joinMethods];
-          v32 = [v31 lastObject];
-          v33 = [v20 isEqual:v32];
+          joinMethods3 = [conferenceCopy joinMethods];
+          lastObject = [joinMethods3 lastObject];
+          v33 = [v20 isEqual:lastObject];
 
           if ((v33 & 1) == 0)
           {
-            [v9 addObject:&stru_1F379FFA8];
+            [array addObject:&stru_1F379FFA8];
           }
 
           ++v19;
         }
 
         while (v17 != v19);
-        v34 = [v15 countByEnumeratingWithState:&v49 objects:v54 count:16];
+        v34 = [joinMethods2 countByEnumeratingWithState:&v49 objects:v54 count:16];
         v17 = v34;
       }
 
       while (v34);
     }
 
-    v35 = [v5 conferenceDetails];
-    v36 = [v35 length];
+    conferenceDetails = [conferenceCopy conferenceDetails];
+    v36 = [conferenceDetails length];
 
     if (v36)
     {
-      [v9 addObject:&stru_1F379FFA8];
-      v37 = [objc_opt_class() calBundle];
-      v38 = [v37 localizedStringForKey:@"Details" value:&stru_1F379FFA8 table:0];
+      [array addObject:&stru_1F379FFA8];
+      calBundle = [objc_opt_class() calBundle];
+      v38 = [calBundle localizedStringForKey:@"Details" value:&stru_1F379FFA8 table:0];
 
       v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"---( ", v38, @")---"];
-      [v9 addObject:v39];
-      [v9 addObject:&stru_1F379FFA8];
-      v40 = [v5 conferenceDetails];
-      [v9 addObject:v40];
+      [array addObject:v39];
+      [array addObject:&stru_1F379FFA8];
+      conferenceDetails2 = [conferenceCopy conferenceDetails];
+      [array addObject:conferenceDetails2];
     }
 
-    [v9 addObject:@"---===---"];
-    v41 = [v9 componentsJoinedByString:@"\n"];
+    [array addObject:@"---===---"];
+    v41 = [array componentsJoinedByString:@"\n"];
 
-    v6 = v48;
+    titleCopy = v48;
   }
 
   else
   {
-    v9 = [objc_opt_class() calConferenceSerializationHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    array = [objc_opt_class() calConferenceSerializationHandle];
+    if (os_log_type_enabled(array, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1B990D000, v9, OS_LOG_TYPE_DEFAULT, "Conference has no joinMethods but at least 1 is required for serializing", buf, 2u);
+      _os_log_impl(&dword_1B990D000, array, OS_LOG_TYPE_DEFAULT, "Conference has no joinMethods but at least 1 is required for serializing", buf, 2u);
     }
 
     v41 = 0;
@@ -188,27 +188,27 @@ LABEL_18:
   return v41;
 }
 
-- (id)deserializeConferences:(id)a3
+- (id)deserializeConferences:(id)conferences
 {
-  v4 = a3;
+  conferencesCopy = conferences;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v4 length])
+  if ([conferencesCopy length])
   {
     v6 = objc_alloc_init(StateData);
     v20[0] = 0;
     v20[1] = v20;
     v20[2] = 0x2020000000;
     v20[3] = 0;
-    v7 = [v4 length];
+    v7 = [conferencesCopy length];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __51__CalAppleConferenceFormat_deserializeConferences___block_invoke;
     v14[3] = &unk_1E7EC6928;
     v8 = v6;
     v15 = v8;
-    v16 = self;
+    selfCopy = self;
     v19 = v20;
-    v17 = v4;
+    v17 = conferencesCopy;
     v9 = v5;
     v18 = v9;
     [v17 enumerateSubstringsInRange:0 options:v7 usingBlock:{0, v14}];
@@ -484,111 +484,111 @@ LABEL_56:
   ++*(*(*(a1 + 64) + 8) + 24);
 }
 
-+ (void)_parseURL:(id)a3 state:(id)a4
++ (void)_parseURL:(id)l state:(id)state
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DFF8] URLWithString:a3 encodingInvalidCharacters:0];
-  [v6 setJoinMethodURL:v7];
+  stateCopy = state;
+  v7 = [MEMORY[0x1E695DFF8] URLWithString:l encodingInvalidCharacters:0];
+  [stateCopy setJoinMethodURL:v7];
 
-  v8 = [v6 joinMethodURL];
+  joinMethodURL = [stateCopy joinMethodURL];
 
-  if (v8)
+  if (joinMethodURL)
   {
-    [v6 setState:4];
+    [stateCopy setState:4];
   }
 
   else
   {
-    v9 = [a1 calConferenceSerializationHandle];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    calConferenceSerializationHandle = [self calConferenceSerializationHandle];
+    if (os_log_type_enabled(calConferenceSerializationHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v10 = 0;
-      _os_log_impl(&dword_1B990D000, v9, OS_LOG_TYPE_DEFAULT, "Url was invalid when parsed from string", v10, 2u);
+      _os_log_impl(&dword_1B990D000, calConferenceSerializationHandle, OS_LOG_TYPE_DEFAULT, "Url was invalid when parsed from string", v10, 2u);
     }
 
-    [v6 resetToNewSection];
+    [stateCopy resetToNewSection];
   }
 }
 
-+ (void)_parseBlockTitle:(id)a3 state:(id)a4
++ (void)_parseBlockTitle:(id)title state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _startDelimiterRegex];
-  v9 = [v8 matchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  titleCopy = title;
+  stateCopy = state;
+  _startDelimiterRegex = [self _startDelimiterRegex];
+  v9 = [_startDelimiterRegex matchesInString:titleCopy options:0 range:{0, objc_msgSend(titleCopy, "length")}];
 
   if ([v9 count] == 1 && (objc_msgSend(v9, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "numberOfRanges"), v10, v11 == 2))
   {
-    v12 = [v9 firstObject];
-    v13 = [v12 rangeWithName:@"blockTitle"];
-    v15 = [v6 substringWithRange:{v13, v14}];
-    [v7 setBlockTitle:v15];
+    firstObject = [v9 firstObject];
+    v13 = [firstObject rangeWithName:@"blockTitle"];
+    v15 = [titleCopy substringWithRange:{v13, v14}];
+    [stateCopy setBlockTitle:v15];
   }
 
   else
   {
-    v16 = [a1 calConferenceSerializationHandle];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    calConferenceSerializationHandle = [self calConferenceSerializationHandle];
+    if (os_log_type_enabled(calConferenceSerializationHandle, OS_LOG_TYPE_ERROR))
     {
-      [CalAppleConferenceFormat _parseBlockTitle:v16 state:?];
+      [CalAppleConferenceFormat _parseBlockTitle:calConferenceSerializationHandle state:?];
     }
 
-    [v7 setBlockTitle:&stru_1F379FFA8];
+    [stateCopy setBlockTitle:&stru_1F379FFA8];
   }
 }
 
-+ (void)_parseConferenceTitle:(id)a3 state:(id)a4
++ (void)_parseConferenceTitle:(id)title state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _conferenceTitleRegex];
-  v9 = [v8 matchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  titleCopy = title;
+  stateCopy = state;
+  _conferenceTitleRegex = [self _conferenceTitleRegex];
+  v9 = [_conferenceTitleRegex matchesInString:titleCopy options:0 range:{0, objc_msgSend(titleCopy, "length")}];
 
   if ([v9 count] == 1 && (objc_msgSend(v9, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "numberOfRanges"), v10, v11 == 2))
   {
-    v12 = [v9 firstObject];
-    v13 = [v12 rangeWithName:@"title"];
-    v15 = [v6 substringWithRange:{v13, v14}];
-    [v7 setConferenceTitle:v15];
+    firstObject = [v9 firstObject];
+    v13 = [firstObject rangeWithName:@"title"];
+    v15 = [titleCopy substringWithRange:{v13, v14}];
+    [stateCopy setConferenceTitle:v15];
 
-    [v7 setState:2];
+    [stateCopy setState:2];
   }
 
   else
   {
-    v16 = [a1 calConferenceSerializationHandle];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    calConferenceSerializationHandle = [self calConferenceSerializationHandle];
+    if (os_log_type_enabled(calConferenceSerializationHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v17 = 0;
-      _os_log_impl(&dword_1B990D000, v16, OS_LOG_TYPE_DEFAULT, "Conference title didn't match title regex", v17, 2u);
+      _os_log_impl(&dword_1B990D000, calConferenceSerializationHandle, OS_LOG_TYPE_DEFAULT, "Conference title didn't match title regex", v17, 2u);
     }
 
-    [v7 resetToNewSection];
+    [stateCopy resetToNewSection];
   }
 }
 
-+ (void)_parseJoinMethodTitleAndFeatures:(id)a3 state:(id)a4
++ (void)_parseJoinMethodTitleAndFeatures:(id)features state:(id)state
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _joinMethodTitleAndFeaturesRegex];
-  v9 = [v8 matchesInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}];
+  featuresCopy = features;
+  stateCopy = state;
+  _joinMethodTitleAndFeaturesRegex = [self _joinMethodTitleAndFeaturesRegex];
+  v9 = [_joinMethodTitleAndFeaturesRegex matchesInString:featuresCopy options:0 range:{0, objc_msgSend(featuresCopy, "length")}];
 
   if ([v9 count] == 1 && (objc_msgSend(v9, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "numberOfRanges"), v10, v11 > 1))
   {
-    v13 = [v9 firstObject];
-    v14 = [v13 rangeWithName:@"title"];
+    firstObject = [v9 firstObject];
+    v14 = [firstObject rangeWithName:@"title"];
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = [v6 substringWithRange:{v14, v15}];
-      [v7 setJoinMethodTitle:v16];
+      v16 = [featuresCopy substringWithRange:{v14, v15}];
+      [stateCopy setJoinMethodTitle:v16];
     }
 
-    v17 = [v13 rangeWithName:@"features"];
+    v17 = [firstObject rangeWithName:@"features"];
     if (v17 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v19 = [v6 substringWithRange:{v17, v18}];
+      v19 = [featuresCopy substringWithRange:{v17, v18}];
       [v19 componentsSeparatedByString:{@", "}];
       v33 = 0u;
       v34 = 0u;
@@ -599,7 +599,7 @@ LABEL_56:
       {
         v22 = v21;
         v31 = v19;
-        v32 = v7;
+        v32 = stateCopy;
         v23 = *v34;
         while (2)
         {
@@ -611,8 +611,8 @@ LABEL_56:
             }
 
             v25 = *(*(&v33 + 1) + 8 * i);
-            v26 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-            v27 = [v25 stringByTrimmingCharactersInSet:v26];
+            whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+            v27 = [v25 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
             v28 = [v27 caseInsensitiveCompare:@"Broadcast"];
             if (!v28)
@@ -633,7 +633,7 @@ LABEL_56:
 
         v29 = 0;
 LABEL_19:
-        v7 = v32;
+        stateCopy = v32;
         v19 = v31;
       }
 
@@ -642,35 +642,35 @@ LABEL_19:
         v29 = 0;
       }
 
-      [v7 setJoinMethodIsBroadcast:v29];
+      [stateCopy setJoinMethodIsBroadcast:v29];
     }
 
-    [v7 setState:3];
+    [stateCopy setState:3];
   }
 
   else
   {
-    v12 = [a1 calConferenceSerializationHandle];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    calConferenceSerializationHandle = [self calConferenceSerializationHandle];
+    if (os_log_type_enabled(calConferenceSerializationHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1B990D000, v12, OS_LOG_TYPE_DEFAULT, "Join method title/features didn't match regex", buf, 2u);
+      _os_log_impl(&dword_1B990D000, calConferenceSerializationHandle, OS_LOG_TYPE_DEFAULT, "Join method title/features didn't match regex", buf, 2u);
     }
 
-    [v7 resetToNewSection];
+    [stateCopy resetToNewSection];
   }
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_buildDeserializationResultFromState:(id)a3
++ (id)_buildDeserializationResultFromState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 conferenceDetails];
-  v5 = [v4 componentsJoinedByString:@"\n"];
+  stateCopy = state;
+  conferenceDetails = [stateCopy conferenceDetails];
+  v5 = [conferenceDetails componentsJoinedByString:@"\n"];
 
-  v6 = [v3 conferenceDetails];
-  [v6 removeAllObjects];
+  conferenceDetails2 = [stateCopy conferenceDetails];
+  [conferenceDetails2 removeAllObjects];
 
   if ([v5 isEqualToString:&stru_1F379FFA8])
   {
@@ -679,42 +679,42 @@ LABEL_19:
   }
 
   v7 = [CalVirtualConference alloc];
-  v8 = [v3 conferenceTitle];
+  conferenceTitle = [stateCopy conferenceTitle];
   v9 = MEMORY[0x1E695DEC8];
-  v10 = [v3 joinMethods];
-  v11 = [v9 arrayWithArray:v10];
-  v12 = [(CalVirtualConference *)v7 initWithTitle:v8 joinMethods:v11 conferenceDetails:v5 source:0 isWritable:1];
+  joinMethods = [stateCopy joinMethods];
+  v11 = [v9 arrayWithArray:joinMethods];
+  v12 = [(CalVirtualConference *)v7 initWithTitle:conferenceTitle joinMethods:v11 conferenceDetails:v5 source:0 isWritable:1];
 
-  v13 = [v3 joinMethods];
-  [v13 removeAllObjects];
+  joinMethods2 = [stateCopy joinMethods];
+  [joinMethods2 removeAllObjects];
 
-  v14 = [v3 startRange];
+  startRange = [stateCopy startRange];
   v16 = v15;
-  v25.location = [v3 endRange];
+  v25.location = [stateCopy endRange];
   v25.length = v17;
-  v24.location = v14;
+  v24.location = startRange;
   v24.length = v16;
   v18 = NSUnionRange(v24, v25);
   v19 = [CalConferenceDeserializationResult alloc];
-  v20 = [v3 blockTitle];
-  v21 = [(CalConferenceDeserializationResult *)v19 initWithConference:v12 range:v18.location blockTitle:v18.length, v20];
+  blockTitle = [stateCopy blockTitle];
+  v21 = [(CalConferenceDeserializationResult *)v19 initWithConference:v12 range:v18.location blockTitle:v18.length, blockTitle];
 
-  [v3 setState:0];
+  [stateCopy setState:0];
 
   return v21;
 }
 
-+ (BOOL)_line:(id)a3 matchesRegex:(id)a4 outFoundRange:(_NSRange *)a5
++ (BOOL)_line:(id)_line matchesRegex:(id)regex outFoundRange:(_NSRange *)range
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 rangeOfFirstMatchInString:v8 options:0 range:{0, objc_msgSend(v8, "length")}];
+  regexCopy = regex;
+  _lineCopy = _line;
+  v9 = [regexCopy rangeOfFirstMatchInString:_lineCopy options:0 range:{0, objc_msgSend(_lineCopy, "length")}];
   v11 = v10;
 
-  if (a5)
+  if (range)
   {
-    a5->location = v9;
-    a5->length = v11;
+    range->location = v9;
+    range->length = v11;
   }
 
   return v9 != 0x7FFFFFFFFFFFFFFFLL || v11 != 0;

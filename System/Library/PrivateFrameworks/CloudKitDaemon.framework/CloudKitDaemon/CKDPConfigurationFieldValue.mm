@@ -1,20 +1,20 @@
 @interface CKDPConfigurationFieldValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)addFieldValues:(id)a3;
-- (void)addListValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBoolValue:(BOOL)a3;
-- (void)setHasLongValue:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFieldValues:(id)values;
+- (void)addListValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBoolValue:(BOOL)value;
+- (void)setHasLongValue:(BOOL)value;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPConfigurationFieldValue
@@ -32,9 +32,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -47,55 +47,55 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if ((a3 - 1) >= 7)
+  if ((string - 1) >= 7)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854C818[a3 - 1];
+    v4 = off_27854C818[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"bytesType"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"bytesType"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"BOOLType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"BOOLType"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"longType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"longType"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"doubleType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"doubleType"))
   {
     v6 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"stringType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v9, @"stringType"))
   {
     v6 = 5;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v10, @"fieldType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v10, @"fieldType"))
   {
     v6 = 6;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v11, @"listType"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v11, @"listType"))
   {
     v6 = 7;
   }
@@ -108,9 +108,9 @@
   return v6;
 }
 
-- (void)setHasBoolValue:(BOOL)a3
+- (void)setHasBoolValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 8;
   }
@@ -123,9 +123,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasLongValue:(BOOL)a3
+- (void)setHasLongValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -138,40 +138,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addFieldValues:(id)a3
+- (void)addFieldValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   fieldValues = self->_fieldValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!fieldValues)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fieldValues;
     self->_fieldValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     fieldValues = self->_fieldValues;
   }
 
-  objc_msgSend_addObject_(fieldValues, v4, v4);
+  objc_msgSend_addObject_(fieldValues, valuesCopy, valuesCopy);
 }
 
-- (void)addListValues:(id)a3
+- (void)addListValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   listValues = self->_listValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!listValues)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_listValues;
     self->_listValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     listValues = self->_listValues;
   }
 
-  objc_msgSend_addObject_(listValues, v4, v4);
+  objc_msgSend_addObject_(listValues, valuesCopy, valuesCopy);
 }
 
 - (id)description
@@ -332,10 +332,10 @@ LABEL_12:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     type = self->_type;
@@ -446,28 +446,28 @@ LABEL_9:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[14] = self->_type;
-    *(v4 + 64) |= 4u;
+    toCopy[14] = self->_type;
+    *(toCopy + 64) |= 4u;
   }
 
   bytesValue = self->_bytesValue;
-  v28 = v4;
+  v28 = toCopy;
   if (bytesValue)
   {
-    objc_msgSend_setBytesValue_(v4, v5, bytesValue);
-    v4 = v28;
+    objc_msgSend_setBytesValue_(toCopy, v5, bytesValue);
+    toCopy = v28;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 60) = self->_BOOLValue;
-    *(v4 + 64) |= 8u;
+    *(toCopy + 60) = self->_BOOLValue;
+    *(toCopy + 64) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -486,13 +486,13 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 2) = self->_longValue;
-  *(v4 + 64) |= 2u;
+  *(toCopy + 2) = self->_longValue;
+  *(toCopy + 64) |= 2u;
   if (*&self->_has)
   {
 LABEL_8:
-    *(v4 + 1) = *&self->_doubleValue;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = *&self->_doubleValue;
+    *(toCopy + 64) |= 1u;
   }
 
 LABEL_9:
@@ -533,11 +533,11 @@ LABEL_9:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v49 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if ((*&self->_has & 4) != 0)
@@ -546,7 +546,7 @@ LABEL_9:
     *(v10 + 64) |= 4u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_bytesValue, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_bytesValue, v11, zone);
   v14 = *(v12 + 24);
   *(v12 + 24) = v13;
 
@@ -583,7 +583,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v17 = objc_msgSend_copyWithZone_(self->_stringValue, v15, a3);
+  v17 = objc_msgSend_copyWithZone_(self->_stringValue, v15, zone);
   v18 = *(v12 + 48);
   *(v12 + 48) = v17;
 
@@ -606,7 +606,7 @@ LABEL_7:
           objc_enumerationMutation(v19);
         }
 
-        v26 = objc_msgSend_copyWithZone_(*(*(&v43 + 1) + 8 * i), v22, a3);
+        v26 = objc_msgSend_copyWithZone_(*(*(&v43 + 1) + 8 * i), v22, zone);
         objc_msgSend_addFieldValues_(v12, v27, v26);
       }
 
@@ -635,7 +635,7 @@ LABEL_7:
           objc_enumerationMutation(v28);
         }
 
-        v35 = objc_msgSend_copyWithZone_(*(*(&v39 + 1) + 8 * j), v31, a3, v39);
+        v35 = objc_msgSend_copyWithZone_(*(*(&v39 + 1) + 8 * j), v31, zone, v39);
         objc_msgSend_addListValues_(v12, v36, v35);
       }
 
@@ -649,32 +649,32 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_34;
   }
 
   has = self->_has;
-  v9 = *(v4 + 64);
+  v9 = *(equalCopy + 64);
   if ((has & 4) != 0)
   {
-    if ((v4[8] & 4) == 0 || self->_type != *(v4 + 14))
+    if ((equalCopy[8] & 4) == 0 || self->_type != *(equalCopy + 14))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((v4[8] & 4) != 0)
+  else if ((equalCopy[8] & 4) != 0)
   {
     goto LABEL_34;
   }
 
   bytesValue = self->_bytesValue;
-  v11 = v4[3];
+  v11 = equalCopy[3];
   if (bytesValue | v11)
   {
     if (!objc_msgSend_isEqual_(bytesValue, v7, v11))
@@ -683,7 +683,7 @@ LABEL_7:
     }
 
     has = self->_has;
-    v9 = *(v4 + 64);
+    v9 = *(equalCopy + 64);
   }
 
   if ((has & 8) == 0)
@@ -703,16 +703,16 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v12 = *(v4 + 60);
+  v12 = *(equalCopy + 60);
   if (self->_BOOLValue)
   {
-    if ((*(v4 + 60) & 1) == 0)
+    if ((*(equalCopy + 60) & 1) == 0)
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_34;
   }
@@ -720,7 +720,7 @@ LABEL_34:
 LABEL_12:
   if ((has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_longValue != v4[2])
+    if ((v9 & 2) == 0 || self->_longValue != equalCopy[2])
     {
       goto LABEL_34;
     }
@@ -733,7 +733,7 @@ LABEL_12:
 
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_doubleValue != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_doubleValue != *(equalCopy + 1))
     {
       goto LABEL_34;
     }
@@ -745,14 +745,14 @@ LABEL_12:
   }
 
   stringValue = self->_stringValue;
-  v14 = v4[6];
+  v14 = equalCopy[6];
   if (stringValue | v14 && !objc_msgSend_isEqual_(stringValue, v7, v14))
   {
     goto LABEL_34;
   }
 
   fieldValues = self->_fieldValues;
-  v16 = v4[4];
+  v16 = equalCopy[4];
   if (fieldValues | v16)
   {
     if (!objc_msgSend_isEqual_(fieldValues, v7, v16))
@@ -762,7 +762,7 @@ LABEL_12:
   }
 
   listValues = self->_listValues;
-  v18 = v4[5];
+  v18 = equalCopy[5];
   if (listValues | v18)
   {
     isEqual = objc_msgSend_isEqual_(listValues, v7, v18);
@@ -857,18 +857,18 @@ LABEL_14:
   return v20 ^ objc_msgSend_hash(self->_listValues, v21, v22);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = v4;
-  if ((*(v4 + 64) & 4) != 0)
+  fromCopy = from;
+  v6 = fromCopy;
+  if ((*(fromCopy + 64) & 4) != 0)
   {
-    self->_type = *(v4 + 14);
+    self->_type = *(fromCopy + 14);
     *&self->_has |= 4u;
   }
 
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   if (v7)
   {
     objc_msgSend_setBytesValue_(self, v5, v7);

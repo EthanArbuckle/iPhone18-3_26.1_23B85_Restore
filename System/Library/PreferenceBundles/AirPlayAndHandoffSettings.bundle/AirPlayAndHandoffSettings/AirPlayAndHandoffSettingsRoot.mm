@@ -1,6 +1,6 @@
 @interface AirPlayAndHandoffSettingsRoot
-- (_TtC25AirPlayAndHandoffSettings29AirPlayAndHandoffSettingsRoot)initWithCoder:(id)a3;
-- (_TtC25AirPlayAndHandoffSettings29AirPlayAndHandoffSettingsRoot)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC25AirPlayAndHandoffSettings29AirPlayAndHandoffSettingsRoot)initWithCoder:(id)coder;
+- (_TtC25AirPlayAndHandoffSettings29AirPlayAndHandoffSettingsRoot)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,38 +8,38 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_EBA4();
 }
 
-- (_TtC25AirPlayAndHandoffSettings29AirPlayAndHandoffSettingsRoot)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC25AirPlayAndHandoffSettings29AirPlayAndHandoffSettingsRoot)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_F7CC();
-    v8 = a4;
-    a3 = sub_F7BC();
+    bundleCopy = bundle;
+    name = sub_F7BC();
   }
 
   else
   {
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(AirPlayAndHandoffSettingsRoot *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(AirPlayAndHandoffSettingsRoot *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC25AirPlayAndHandoffSettings29AirPlayAndHandoffSettingsRoot)initWithCoder:(id)a3
+- (_TtC25AirPlayAndHandoffSettings29AirPlayAndHandoffSettingsRoot)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(AirPlayAndHandoffSettingsRoot *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AirPlayAndHandoffSettingsRoot *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

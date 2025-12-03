@@ -1,16 +1,16 @@
 @interface NSPPrivacyProxyLocationMonitor
 + (id)sharedMonitor;
-- (BOOL)checkSignificantLocationChange:(id)a3;
+- (BOOL)checkSignificantLocationChange:(id)change;
 - (NSPPrivacyProxyLocationMonitor)init;
 - (NSPPrivacyProxyLocationMonitorDelegate)delegate;
 - (NSString)currentCountryPlusTimezone;
-- (id)geohashFromLocation:(id)a3;
-- (void)handleLocationUpdate:(id)a3;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)refreshCountryPlusTimezone:(id)a3;
-- (void)setMonitorTimeInterval:(double)a3;
+- (id)geohashFromLocation:(id)location;
+- (void)handleLocationUpdate:(id)update;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)refreshCountryPlusTimezone:(id)timezone;
+- (void)setMonitorTimeInterval:(double)interval;
 - (void)setUserEventAgentTimer;
 - (void)start;
 - (void)startLocationMonitor;
@@ -56,9 +56,9 @@
     v10 = nplog_obj();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(NSPPrivacyProxyLocationMonitor *)v3 isAuthorized];
+      isAuthorized = [(NSPPrivacyProxyLocationMonitor *)v3 isAuthorized];
       v12 = "is not";
-      if (v11)
+      if (isAuthorized)
       {
         v12 = "is";
       }
@@ -76,13 +76,13 @@
   return v3;
 }
 
-- (id)geohashFromLocation:(id)a3
+- (id)geohashFromLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    v4 = a3;
-    [v4 coordinate];
-    [v4 coordinate];
+    locationCopy = location;
+    [locationCopy coordinate];
+    [locationCopy coordinate];
 
     v5 = latitudeLongitudeToGeohash();
   }
@@ -95,10 +95,10 @@
   return v5;
 }
 
-- (void)refreshCountryPlusTimezone:(id)a3
+- (void)refreshCountryPlusTimezone:(id)timezone
 {
-  v5 = a3;
-  if (!v5)
+  timezoneCopy = timezone;
+  if (!timezoneCopy)
   {
     v8 = nplog_obj();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -127,7 +127,7 @@
           v11[2] = sub_100003BDC;
           v11[3] = &unk_100109400;
           v11[4] = self;
-          v12 = v5;
+          v12 = timezoneCopy;
           [v9 reverseGeocodeLocation:v8 completionHandler:v11];
         }
 
@@ -140,7 +140,7 @@
             _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to initialize geocoder", buf, 2u);
           }
 
-          v5[2](v5);
+          timezoneCopy[2](timezoneCopy);
         }
 
 LABEL_12:
@@ -149,7 +149,7 @@ LABEL_12:
     }
   }
 
-  v5[2](v5);
+  timezoneCopy[2](timezoneCopy);
 LABEL_13:
 }
 
@@ -172,7 +172,7 @@ LABEL_13:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@: starting location monitoring", buf, 0xCu);
     }
 
@@ -195,14 +195,14 @@ LABEL_13:
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self->_isMonitoringEnabled = 1;
     self = self->_clLocationManager;
   }
 
-  [(NSPPrivacyProxyLocationMonitor *)self setDelegate:v2];
+  [(NSPPrivacyProxyLocationMonitor *)self setDelegate:selfCopy];
   objc_opt_self();
   v3 = CFPreferencesCopyAppValue(@"NSPLastGeohash", kCFPreferencesCurrentApplication);
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -215,9 +215,9 @@ LABEL_13:
     v4 = 0;
   }
 
-  [(NSPPrivacyProxyLocationMonitor *)v2 setLastGeohash:v4];
+  [(NSPPrivacyProxyLocationMonitor *)selfCopy setLastGeohash:v4];
 
-  [(NSPPrivacyProxyLocationMonitor *)v2 startLocationMonitor];
+  [(NSPPrivacyProxyLocationMonitor *)selfCopy startLocationMonitor];
 }
 
 - (void)stopLocationMonitor
@@ -228,7 +228,7 @@ LABEL_13:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v4 = 138412290;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@: stopping location monitoring", &v4, 0xCu);
     }
 
@@ -258,21 +258,21 @@ LABEL_13:
   }
 }
 
-- (void)setMonitorTimeInterval:(double)a3
+- (void)setMonitorTimeInterval:(double)interval
 {
-  if (a3 >= 60.0 && a3 <= 1800.0)
+  if (interval >= 60.0 && interval <= 1800.0)
   {
     v5 = nplog_obj();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2048;
-      v9 = a3;
+      intervalCopy = interval;
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@: location monitoring interval changed to %lf", &v6, 0x16u);
     }
 
-    self->_monitorTimeInterval = a3;
+    self->_monitorTimeInterval = interval;
     [(NSPPrivacyProxyLocationMonitor *)self stopLocationMonitor];
     [(NSPPrivacyProxyLocationMonitor *)self startLocationMonitor];
   }
@@ -298,9 +298,9 @@ LABEL_13:
   _Block_object_dispose(v5, 8);
 }
 
-- (BOOL)checkSignificantLocationChange:(id)a3
+- (BOOL)checkSignificantLocationChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9 = 0;
   if (self)
   {
@@ -308,7 +308,7 @@ LABEL_13:
     if (lastGeohash)
     {
       v6 = lastGeohash;
-      v7 = [v4 substringWithRange:{0, 2}];
+      v7 = [changeCopy substringWithRange:{0, 2}];
       v8 = [(NSString *)v6 hasPrefix:v7];
 
       if (!v8)
@@ -321,24 +321,24 @@ LABEL_13:
   return v9;
 }
 
-- (void)handleLocationUpdate:(id)a3
+- (void)handleLocationUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   if (self)
   {
-    objc_setProperty_atomic(self, v4, v5, 32);
+    objc_setProperty_atomic(self, v4, updateCopy, 32);
   }
 
-  v6 = [(NSPPrivacyProxyLocationMonitor *)self geohashFromLocation:v5];
+  v6 = [(NSPPrivacyProxyLocationMonitor *)self geohashFromLocation:updateCopy];
   v7 = v6;
   if (v6 && ([v6 isEqualToString:self->_lastGeohash] & 1) == 0)
   {
-    v8 = [(NSPPrivacyProxyLocationMonitor *)self delegate];
+    delegate = [(NSPPrivacyProxyLocationMonitor *)self delegate];
 
-    if (v8)
+    if (delegate)
     {
-      v9 = [(NSPPrivacyProxyLocationMonitor *)self delegate];
-      [v9 didUpdateGeohash:v7];
+      delegate2 = [(NSPPrivacyProxyLocationMonitor *)self delegate];
+      [delegate2 didUpdateGeohash:v7];
     }
 
     v10 = v7;
@@ -365,7 +365,7 @@ LABEL_13:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: location changed significantly", buf, 0xCu);
       }
 
@@ -382,20 +382,20 @@ LABEL_13:
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v4 = nplog_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(NSPPrivacyProxyLocationMonitor *)self isAuthorized];
+    isAuthorized = [(NSPPrivacyProxyLocationMonitor *)self isAuthorized];
     v6 = "unauthorized";
-    if (v5)
+    if (isAuthorized)
     {
       v6 = "authorized";
     }
 
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = v6;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%@: received location authorization status update: [%s]", &v7, 0x16u);
@@ -412,25 +412,25 @@ LABEL_13:
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = nplog_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    v7 = [v5 description];
+    v7 = [errorCopy description];
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v7;
     _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%@: failed with error: %@", &v8, 0x16u);
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v8 = nplog_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -439,7 +439,7 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@: received location update", &buf, 0xCu);
   }
 
-  if (v7 && [v7 count])
+  if (locationsCopy && [locationsCopy count])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -452,8 +452,8 @@ LABEL_13:
     block[1] = 3221225472;
     block[2] = sub_100004C84;
     block[3] = &unk_100109370;
-    v11 = v7;
-    v12 = self;
+    v11 = locationsCopy;
+    selfCopy = self;
     p_buf = &buf;
     dispatch_async(v9, block);
 

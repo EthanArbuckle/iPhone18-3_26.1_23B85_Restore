@@ -1,45 +1,45 @@
 @interface HFErrorResultComponent
-+ (BOOL)_shouldShowWifiPickerFixButtonWithSymptom:(id)a3;
-+ (BOOL)isDateInCurrentYear:(id)a3 asLastSeenDate:(id)a4;
-+ (id)_lastSeenDataForDate:(id)a3 batteryStatus:(unint64_t)a4;
-+ (id)_lastSeenDataOnHeaderForDate:(id)a3;
-+ (id)_lastSeenDataOnTileForDate:(id)a3;
-+ (id)_noResponseErrorMsgTitleStringWithDate:(id)a3 batteryStatus:(unint64_t)a4;
-+ (id)componentForAccessoryReprovisionState:(unint64_t)a3;
-+ (id)componentForDisplayError:(id)a3 symptomContextProvider:(id)a4;
-+ (id)componentForSymptom:(id)a3 contextProvider:(id)a4;
-+ (id)componentForUnreachableAccessoryWithContextProvider:(id)a3 symptomContextProvider:(id)a4;
-+ (id)componentForWriteErrorForCharacteristics:(id)a3 valueSource:(id)a4;
-+ (id)noResponseErrorDescriptionString:(id)a3;
-+ (id)noResponseErrorDetailedDescriptionString:(id)a3;
-+ (int64_t)_displayPriorityForSymptom:(id)a3;
++ (BOOL)_shouldShowWifiPickerFixButtonWithSymptom:(id)symptom;
++ (BOOL)isDateInCurrentYear:(id)year asLastSeenDate:(id)date;
++ (id)_lastSeenDataForDate:(id)date batteryStatus:(unint64_t)status;
++ (id)_lastSeenDataOnHeaderForDate:(id)date;
++ (id)_lastSeenDataOnTileForDate:(id)date;
++ (id)_noResponseErrorMsgTitleStringWithDate:(id)date batteryStatus:(unint64_t)status;
++ (id)componentForAccessoryReprovisionState:(unint64_t)state;
++ (id)componentForDisplayError:(id)error symptomContextProvider:(id)provider;
++ (id)componentForSymptom:(id)symptom contextProvider:(id)provider;
++ (id)componentForUnreachableAccessoryWithContextProvider:(id)provider symptomContextProvider:(id)contextProvider;
++ (id)componentForWriteErrorForCharacteristics:(id)characteristics valueSource:(id)source;
++ (id)noResponseErrorDescriptionString:(id)string;
++ (id)noResponseErrorDetailedDescriptionString:(id)string;
++ (int64_t)_displayPriorityForSymptom:(id)symptom;
 - (HFErrorResultComponent)init;
-- (HFErrorResultComponent)initWithCategory:(unint64_t)a3;
+- (HFErrorResultComponent)initWithCategory:(unint64_t)category;
 - (id)description;
 - (id)results;
 - (int64_t)componentPriority;
-- (void)_addAccountSymptomMessageForAccountName:(id)a3 symptom:(id)a4;
+- (void)_addAccountSymptomMessageForAccountName:(id)name symptom:(id)symptom;
 @end
 
 @implementation HFErrorResultComponent
 
 - (HFErrorResultComponent)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithCategory_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFErrorResultComponent.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HFErrorResultComponent init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFErrorResultComponent.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HFErrorResultComponent init]", v5}];
 
   return 0;
 }
 
-- (HFErrorResultComponent)initWithCategory:(unint64_t)a3
+- (HFErrorResultComponent)initWithCategory:(unint64_t)category
 {
   v5.receiver = self;
   v5.super_class = HFErrorResultComponent;
   result = [(HFErrorResultComponent *)&v5 init];
   if (result)
   {
-    result->_category = a3;
+    result->_category = category;
     result->_badgeType = 1;
     result->_descriptionBadgeType = 0;
   }
@@ -50,46 +50,46 @@
 - (int64_t)componentPriority
 {
   v3 = objc_opt_class();
-  v4 = [(HFErrorResultComponent *)self category];
+  category = [(HFErrorResultComponent *)self category];
 
-  return [v3 priorityForCategory:v4];
+  return [v3 priorityForCategory:category];
 }
 
 - (id)results
 {
   v3 = objc_opt_new();
-  v4 = [(HFErrorResultComponent *)self underlyingSymptom];
-  [v3 setObject:v4 forKeyedSubscript:@"symptom"];
+  underlyingSymptom = [(HFErrorResultComponent *)self underlyingSymptom];
+  [v3 setObject:underlyingSymptom forKeyedSubscript:@"symptom"];
 
   if (_os_feature_enabled_impl())
   {
-    v5 = [(HFErrorResultComponent *)self symptomName];
-    [v3 setObject:v5 forKeyedSubscript:@"symptomName"];
+    symptomName = [(HFErrorResultComponent *)self symptomName];
+    [v3 setObject:symptomName forKeyedSubscript:@"symptomName"];
 
-    v6 = [(HFErrorResultComponent *)self symptomDescription];
-    [v3 setObject:v6 forKeyedSubscript:@"symptomDescription"];
+    symptomDescription = [(HFErrorResultComponent *)self symptomDescription];
+    [v3 setObject:symptomDescription forKeyedSubscript:@"symptomDescription"];
 
-    v7 = [(HFErrorResultComponent *)self symptomURL];
-    [v3 setObject:v7 forKeyedSubscript:@"symptomURL"];
+    symptomURL = [(HFErrorResultComponent *)self symptomURL];
+    [v3 setObject:symptomURL forKeyedSubscript:@"symptomURL"];
   }
 
-  v8 = [(HFErrorResultComponent *)self errorDescription];
-  [v3 setObject:v8 forKeyedSubscript:@"errorDescription"];
+  errorDescription = [(HFErrorResultComponent *)self errorDescription];
+  [v3 setObject:errorDescription forKeyedSubscript:@"errorDescription"];
 
-  v9 = [(HFErrorResultComponent *)self detailedErrorDescription];
-  [v3 setObject:v9 forKeyedSubscript:@"longErrorDescription"];
+  detailedErrorDescription = [(HFErrorResultComponent *)self detailedErrorDescription];
+  [v3 setObject:detailedErrorDescription forKeyedSubscript:@"longErrorDescription"];
 
-  v10 = [(HFErrorResultComponent *)self errorMessageTitle];
-  [v3 setObject:v10 forKeyedSubscript:@"errorMessageTitle"];
+  errorMessageTitle = [(HFErrorResultComponent *)self errorMessageTitle];
+  [v3 setObject:errorMessageTitle forKeyedSubscript:@"errorMessageTitle"];
 
-  v11 = [(HFErrorResultComponent *)self errorMessageButtonTitle];
-  [v3 setObject:v11 forKeyedSubscript:@"errorMessageButtonTitle"];
+  errorMessageButtonTitle = [(HFErrorResultComponent *)self errorMessageButtonTitle];
+  [v3 setObject:errorMessageButtonTitle forKeyedSubscript:@"errorMessageButtonTitle"];
 
-  v12 = [(HFErrorResultComponent *)self errorHandlerURL];
-  [v3 setObject:v12 forKeyedSubscript:@"errorHandlerURL"];
+  errorHandlerURL = [(HFErrorResultComponent *)self errorHandlerURL];
+  [v3 setObject:errorHandlerURL forKeyedSubscript:@"errorHandlerURL"];
 
-  v13 = [(HFErrorResultComponent *)self errorHandlerURLText];
-  [v3 setObject:v13 forKeyedSubscript:@"errorHandlerURLText"];
+  errorHandlerURLText = [(HFErrorResultComponent *)self errorHandlerURLText];
+  [v3 setObject:errorHandlerURLText forKeyedSubscript:@"errorHandlerURLText"];
 
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
@@ -131,25 +131,25 @@
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HFErrorResultComponent category](self, "category")}];
   v5 = [v3 appendObject:v4 withName:@"category"];
 
-  v6 = [(HFErrorResultComponent *)self errorDescription];
-  [v3 appendString:v6 withName:@"description"];
+  errorDescription = [(HFErrorResultComponent *)self errorDescription];
+  [v3 appendString:errorDescription withName:@"description"];
 
-  v7 = [(HFErrorResultComponent *)self underlyingSymptom];
-  v8 = [v3 appendObject:v7 withName:@"symptom" skipIfNil:1];
+  underlyingSymptom = [(HFErrorResultComponent *)self underlyingSymptom];
+  v8 = [v3 appendObject:underlyingSymptom withName:@"symptom" skipIfNil:1];
 
-  v9 = [(HFErrorResultComponent *)self errorHandlerURL];
-  v10 = [v3 appendObject:v9 withName:@"handler" skipIfNil:1];
+  errorHandlerURL = [(HFErrorResultComponent *)self errorHandlerURL];
+  v10 = [v3 appendObject:errorHandlerURL withName:@"handler" skipIfNil:1];
 
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
-+ (id)componentForDisplayError:(id)a3 symptomContextProvider:(id)a4
++ (id)componentForDisplayError:(id)error symptomContextProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  errorCopy = error;
+  providerCopy = provider;
+  if (!errorCopy)
   {
     NSLog(&cfstr_SCalledWithout.isa, "+[HFErrorResultComponent(HFServiceLikeItem) componentForDisplayError:symptomContextProvider:]");
     goto LABEL_6;
@@ -162,16 +162,16 @@ LABEL_6:
     goto LABEL_24;
   }
 
-  switch([v6 category])
+  switch([errorCopy category])
   {
     case 0:
     case 1:
-      v8 = [v6 contextProvider];
-      v9 = [a1 componentForUnreachableAccessoryWithContextProvider:v8 symptomContextProvider:v7];
+      contextProvider = [errorCopy contextProvider];
+      v9 = [self componentForUnreachableAccessoryWithContextProvider:contextProvider symptomContextProvider:providerCopy];
       goto LABEL_22;
     case 2:
-      v17 = [v6 contextProvider];
-      v10 = [a1 componentForUnreachableAccessoryWithContextProvider:v17 symptomContextProvider:v7];
+      contextProvider2 = [errorCopy contextProvider];
+      v10 = [self componentForUnreachableAccessoryWithContextProvider:contextProvider2 symptomContextProvider:providerCopy];
 
       v11 = @"HFError_HMErrorCodeBridgedAccessoryNotReachable_description";
       goto LABEL_18;
@@ -208,11 +208,11 @@ LABEL_15:
       v23 = _HFLocalizedStringWithDefaultValue(v14, v14, 1);
       [(HFErrorResultComponent *)v10 setErrorMessageTitle:v23];
 
-      v24 = [MEMORY[0x277CBEBC0] hf_homeHubRequiredLearnMoreURL];
-      [(HFErrorResultComponent *)v10 setErrorHandlerURL:v24];
+      hf_homeHubRequiredLearnMoreURL = [MEMORY[0x277CBEBC0] hf_homeHubRequiredLearnMoreURL];
+      [(HFErrorResultComponent *)v10 setErrorHandlerURL:hf_homeHubRequiredLearnMoreURL];
 
-      v8 = _HFLocalizedStringWithDefaultValue(@"HFServiceErrorNoThreadNetworkLearnMoreTitle", @"HFServiceErrorNoThreadNetworkLearnMoreTitle", 1);
-      [(HFErrorResultComponent *)v10 setErrorHandlerURLText:v8];
+      contextProvider = _HFLocalizedStringWithDefaultValue(@"HFServiceErrorNoThreadNetworkLearnMoreTitle", @"HFServiceErrorNoThreadNetworkLearnMoreTitle", 1);
+      [(HFErrorResultComponent *)v10 setErrorHandlerURLText:contextProvider];
       goto LABEL_23;
     case 6:
       v10 = [[HFErrorResultComponent alloc] initWithCategory:2];
@@ -229,8 +229,8 @@ LABEL_15:
       v11 = @"HFServiceLongFormErrorActionRequiredInManufacturerApp";
       goto LABEL_18;
     case 8:
-      v8 = [v6 underlyingSymptom];
-      v9 = [a1 componentForSymptom:v8 contextProvider:v7];
+      contextProvider = [errorCopy underlyingSymptom];
+      v9 = [self componentForSymptom:contextProvider contextProvider:providerCopy];
 LABEL_22:
       v10 = v9;
       goto LABEL_23;
@@ -267,8 +267,8 @@ LABEL_22:
 LABEL_18:
       v26 = v11;
 LABEL_19:
-      v8 = _HFLocalizedStringWithDefaultValue(v11, v26, 1);
-      [(HFErrorResultComponent *)v10 setDetailedErrorDescription:v8];
+      contextProvider = _HFLocalizedStringWithDefaultValue(v11, v26, 1);
+      [(HFErrorResultComponent *)v10 setDetailedErrorDescription:contextProvider];
 LABEL_23:
 
       break;
@@ -281,15 +281,15 @@ LABEL_24:
   return v10;
 }
 
-+ (id)componentForUnreachableAccessoryWithContextProvider:(id)a3 symptomContextProvider:(id)a4
++ (id)componentForUnreachableAccessoryWithContextProvider:(id)provider symptomContextProvider:(id)contextProvider
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  contextProviderCopy = contextProvider;
   v8 = [[HFErrorResultComponent alloc] initWithCategory:1];
-  v9 = [v6 hf_remoteAccessState];
-  if (v9)
+  hf_remoteAccessState = [providerCopy hf_remoteAccessState];
+  if (hf_remoteAccessState)
   {
-    v10 = v9;
+    v10 = hf_remoteAccessState;
   }
 
   else
@@ -301,10 +301,10 @@ LABEL_24:
   v50 = 3221225472;
   v51 = __120__HFErrorResultComponent_HFServiceLikeItem__componentForUnreachableAccessoryWithContextProvider_symptomContextProvider___block_invoke;
   v52 = &unk_277E00298;
-  v11 = v6;
+  v11 = providerCopy;
   v53 = v11;
   v54 = v10;
-  v12 = [v11 hf_isUserAtHome];
+  hf_isUserAtHome = [v11 hf_isUserAtHome];
   if ((v10 - 3) < 0xFFFFFFFFFFFFFFFELL)
   {
     v13 = 1;
@@ -312,14 +312,14 @@ LABEL_24:
 
   else
   {
-    v13 = v12;
+    v13 = hf_isUserAtHome;
   }
 
   [(HFErrorResultComponent *)v8 setDisplayPriority:v13];
-  v14 = [v7 lastSeenDate];
-  v15 = [v7 lastSeenBatteryStatus];
+  lastSeenDate = [contextProviderCopy lastSeenDate];
+  lastSeenBatteryStatus = [contextProviderCopy lastSeenBatteryStatus];
 
-  if (_os_feature_enabled_impl() && v15 == 1)
+  if (_os_feature_enabled_impl() && lastSeenBatteryStatus == 1)
   {
     [(HFErrorResultComponent *)v8 setDescriptionBadgeType:8];
   }
@@ -330,8 +330,8 @@ LABEL_24:
   v44[3] = &unk_277E002C0;
   v16 = v11;
   v45 = v16;
-  v47 = a1;
-  v17 = v14;
+  selfCopy = self;
+  v17 = lastSeenDate;
   v46 = v17;
   v48 = v10;
   v18 = __120__HFErrorResultComponent_HFServiceLikeItem__componentForUnreachableAccessoryWithContextProvider_symptomContextProvider___block_invoke_2(v44);
@@ -343,7 +343,7 @@ LABEL_24:
   v39[3] = &unk_277E002C0;
   v19 = v16;
   v40 = v19;
-  v42 = a1;
+  selfCopy2 = self;
   v20 = v17;
   v41 = v20;
   v43 = v10;
@@ -358,8 +358,8 @@ LABEL_24:
   v22 = v8;
   v34 = v22;
   v35 = v20;
-  v36 = a1;
-  v37 = v15;
+  selfCopy3 = self;
+  v37 = lastSeenBatteryStatus;
   v38 = v10;
   v23 = v20;
   v24 = v19;
@@ -476,18 +476,18 @@ LABEL_14:
   return v2;
 }
 
-+ (id)componentForWriteErrorForCharacteristics:(id)a3 valueSource:(id)a4
++ (id)componentForWriteErrorForCharacteristics:(id)characteristics valueSource:(id)source
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  characteristicsCopy = characteristics;
+  sourceCopy = source;
   if ((objc_opt_respondsToSelector() & 1) != 0 && !+[HFUtilities shouldSuppressAllErrorsForDemo])
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v5;
+    v8 = characteristicsCopy;
     v7 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v7)
     {
@@ -502,7 +502,7 @@ LABEL_14:
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
-          v12 = [v6 cachedErrorForWriteToCharacteristic:{v11, v23}];
+          v12 = [sourceCopy cachedErrorForWriteToCharacteristic:{v11, v23}];
           if (v12)
           {
             v13 = v12;
@@ -572,9 +572,9 @@ LABEL_22:
   return v7;
 }
 
-+ (id)componentForAccessoryReprovisionState:(unint64_t)a3
++ (id)componentForAccessoryReprovisionState:(unint64_t)state
 {
-  if (a3)
+  if (state)
   {
     v4 = [[HFErrorResultComponent alloc] initWithCategory:0];
     [(HFErrorResultComponent *)v4 setDisplayPriority:1];
@@ -584,12 +584,12 @@ LABEL_22:
     v6 = HFLocalizedWiFiString(@"HFServiceLongFormPersistentWarngingHomeKitReWAC");
     [(HFErrorResultComponent *)v4 setErrorMessageTitle:v6];
 
-    if (a3 == 2)
+    if (state == 2)
     {
       [(HFErrorResultComponent *)v4 setUpdateInProgress:1];
     }
 
-    else if (a3 == 1)
+    else if (state == 1)
     {
       v7 = HFLocalizedWiFiString(@"HFServiceActionMessageReWAC");
       [(HFErrorResultComponent *)v4 setErrorMessageButtonTitle:v7];
@@ -604,12 +604,12 @@ LABEL_22:
   return v4;
 }
 
-+ (id)componentForSymptom:(id)a3 contextProvider:(id)a4
++ (id)componentForSymptom:(id)symptom contextProvider:(id)provider
 {
   v155 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  symptomCopy = symptom;
+  providerCopy = provider;
+  if (!symptomCopy)
   {
     NSLog(&cfstr_SWithoutASympt.isa, "+[HFErrorResultComponent(HFServiceLikeItem) componentForSymptom:contextProvider:]");
   }
@@ -617,64 +617,64 @@ LABEL_22:
   v9 = HFLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = NSStringFromHMSymptomType([v7 type]);
+    v10 = NSStringFromHMSymptomType([symptomCopy type]);
     *buf = 138412290;
-    v150 = v10;
+    selfCopy = v10;
     _os_log_impl(&dword_20D9BF000, v9, OS_LOG_TYPE_INFO, "HFErrorResultComponent processing HMSymptom: %@", buf, 0xCu);
   }
 
-  if ([a1 _requiresManualFixOptionToDisplaySymptom:v7] && !objc_msgSend(v8, "shouldDisplayManualFixOptionForSymptom:", v7))
+  if ([self _requiresManualFixOptionToDisplaySymptom:symptomCopy] && !objc_msgSend(providerCopy, "shouldDisplayManualFixOptionForSymptom:", symptomCopy))
   {
-    a1 = 0;
+    self = 0;
     goto LABEL_137;
   }
 
   v11 = [[HFErrorResultComponent alloc] initWithCategory:3];
-  [(HFErrorResultComponent *)v11 setUnderlyingSymptom:v7];
-  -[HFErrorResultComponent setDisplayPriority:](v11, "setDisplayPriority:", [a1 _displayPriorityForSymptom:v7]);
-  v12 = [v7 type];
-  if (v12 <= 99)
+  [(HFErrorResultComponent *)v11 setUnderlyingSymptom:symptomCopy];
+  -[HFErrorResultComponent setDisplayPriority:](v11, "setDisplayPriority:", [self _displayPriorityForSymptom:symptomCopy]);
+  type = [symptomCopy type];
+  if (type <= 99)
   {
-    a1 = 0;
-    switch(v12)
+    self = 0;
+    switch(type)
     {
       case 1:
       case 20:
-        v13 = [v8 detailedErrorDescriptionForiCloudSymptom];
-        [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v13];
+        detailedErrorDescriptionForiCloudSymptom = [providerCopy detailedErrorDescriptionForiCloudSymptom];
+        [(HFErrorResultComponent *)v11 setDetailedErrorDescription:detailedErrorDescriptionForiCloudSymptom];
 
         [(HFErrorResultComponent *)v11 setDescriptionBadgeType:5];
-        v14 = [v8 currentUserID];
+        currentUserID = [providerCopy currentUserID];
         goto LABEL_70;
       case 2:
         v57 = _HFLocalizedStringWithDefaultValue(@"HFSymptomLongDescriptionNeediTunesCredential", @"HFSymptomLongDescriptionNeediTunesCredential", 1);
         [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v57];
 
         [(HFErrorResultComponent *)v11 setDescriptionBadgeType:5];
-        v14 = [v8 currentAppleMusicAccountName];
+        currentUserID = [providerCopy currentAppleMusicAccountName];
 LABEL_70:
-        v38 = v14;
-        [(HFErrorResultComponent *)v11 _addAccountSymptomMessageForAccountName:v14 symptom:v7];
+        accessoryName = currentUserID;
+        [(HFErrorResultComponent *)v11 _addAccountSymptomMessageForAccountName:currentUserID symptom:symptomCopy];
         goto LABEL_120;
       case 3:
-        v38 = [v8 accessoryName];
-        HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionHomekitProblem", @"%@", v68, v69, v70, v71, v72, v73, v38);
+        accessoryName = [providerCopy accessoryName];
+        HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionHomekitProblem", @"%@", v68, v69, v70, v71, v72, v73, accessoryName);
         goto LABEL_89;
       case 4:
         if (+[HFUtilities isInternalInstall])
         {
-          v84 = [v8 currentDeviceNetworkSSID];
-          v85 = [v84 isEqualToString:@"AppleWiFi"];
+          currentDeviceNetworkSSID = [providerCopy currentDeviceNetworkSSID];
+          v85 = [currentDeviceNetworkSSID isEqualToString:@"AppleWiFi"];
 
           if (v85)
           {
             v86 = MEMORY[0x277CCACA8];
             v40 = HFLocalizedWiFiString(@"HFSymptomLongDescriptionWifiUnsupportedNetwork");
             v148 = 0;
-            v87 = [v8 homeKitObjectName];
-            v88 = [v8 currentDeviceNetworkSSID];
-            v89 = [v86 stringWithValidatedFormat:v40 validFormatSpecifiers:@"%@ %@" error:&v148, v87, v88];
-            v38 = v148;
+            homeKitObjectName = [providerCopy homeKitObjectName];
+            currentDeviceNetworkSSID2 = [providerCopy currentDeviceNetworkSSID];
+            v89 = [v86 stringWithValidatedFormat:v40 validFormatSpecifiers:@"%@ %@" error:&v148, homeKitObjectName, currentDeviceNetworkSSID2];
+            accessoryName = v148;
             [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v89];
             goto LABEL_116;
           }
@@ -683,12 +683,12 @@ LABEL_70:
         v112 = MEMORY[0x277CCACA8];
         v40 = HFLocalizedWiFiString(@"HFSymptomLongDescriptionWifiConnectionProblem");
         v147 = 0;
-        v87 = [v8 homeKitObjectName];
-        v88 = [v112 stringWithValidatedFormat:v40 validFormatSpecifiers:@"%@" error:&v147, v87];
+        homeKitObjectName = [providerCopy homeKitObjectName];
+        currentDeviceNetworkSSID2 = [v112 stringWithValidatedFormat:v40 validFormatSpecifiers:@"%@" error:&v147, homeKitObjectName];
         v98 = v147;
 LABEL_94:
-        v38 = v98;
-        [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v88];
+        accessoryName = v98;
+        [(HFErrorResultComponent *)v11 setDetailedErrorDescription:currentDeviceNetworkSSID2];
         goto LABEL_117;
       case 5:
         v90 = HFLocalizedWiFiString(@"HFSymptomStatusTextWiFiLostConnection");
@@ -697,8 +697,8 @@ LABEL_94:
       case 15:
         goto LABEL_136;
       case 7:
-        v46 = [v8 accessoryName];
-        v53 = HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionHardwareFailure", @"%@", v47, v48, v49, v50, v51, v52, v46);
+        accessoryName2 = [providerCopy accessoryName];
+        v53 = HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionHardwareFailure", @"%@", v47, v48, v49, v50, v51, v52, accessoryName2);
         [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v53];
 
         v54 = _HFLocalizedStringWithDefaultValue(@"HFSymptomLongDescriptionHardwareFailureContactSupport", @"HFSymptomLongDescriptionHardwareFailureContactSupport", 1);
@@ -707,8 +707,8 @@ LABEL_94:
         v55 = _HFLocalizedStringWithDefaultValue(@"HFSymptomLongDescriptionHardwareFailureContactSupport", @"HFSymptomLongDescriptionHardwareFailureContactSupport", 1);
         goto LABEL_67;
       case 8:
-        v38 = [v8 homeKitObjectName];
-        HFLocalizedStringWithFormat(@"HFSymptomDetailedDescriptionStereoVersionMismatch", @"%@", v91, v92, v93, v94, v95, v96, v38);
+        accessoryName = [providerCopy homeKitObjectName];
+        HFLocalizedStringWithFormat(@"HFSymptomDetailedDescriptionStereoVersionMismatch", @"%@", v91, v92, v93, v94, v95, v96, accessoryName);
         goto LABEL_89;
       case 9:
         v15 = @"HFSymptomDetailedDescriptionStereoNotFound";
@@ -717,24 +717,24 @@ LABEL_94:
         v97 = MEMORY[0x277CCACA8];
         v40 = HFLocalizedWiFiString(@"HFSymptomDetailedDescriptionStereoError");
         v144 = 0;
-        v87 = [v8 homeKitObjectName];
-        v88 = [v97 stringWithValidatedFormat:v40 validFormatSpecifiers:@"%@" error:&v144, v87];
+        homeKitObjectName = [providerCopy homeKitObjectName];
+        currentDeviceNetworkSSID2 = [v97 stringWithValidatedFormat:v40 validFormatSpecifiers:@"%@" error:&v144, homeKitObjectName];
         v98 = v144;
         goto LABEL_94;
       case 11:
-        v39 = [v8 currentDeviceNetworkSSID];
-        if (v39)
+        currentDeviceNetworkSSID3 = [providerCopy currentDeviceNetworkSSID];
+        if (currentDeviceNetworkSSID3)
         {
-          v38 = v39;
+          accessoryName = currentDeviceNetworkSSID3;
           v40 = HFLocalizedWiFiString(@"HFSymptomLongDescriptionProblemWifiMismatch");
-          v41 = [v8 accessoryNetworkSSID];
+          accessoryNetworkSSID = [providerCopy accessoryNetworkSSID];
 
-          if (v41)
+          if (accessoryNetworkSSID)
           {
             v42 = MEMORY[0x277CCACA8];
             v146 = 0;
-            v43 = [v8 accessoryNetworkSSID];
-            v44 = [v42 stringWithValidatedFormat:v40 validFormatSpecifiers:@"%@" error:&v146, v43];
+            accessoryNetworkSSID2 = [providerCopy accessoryNetworkSSID];
+            v44 = [v42 stringWithValidatedFormat:v40 validFormatSpecifiers:@"%@" error:&v146, accessoryNetworkSSID2];
             v45 = v146;
             [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v44];
           }
@@ -745,17 +745,17 @@ LABEL_94:
             [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v45];
           }
 
-          v116 = [v8 accessoryUUID];
+          accessoryUUID = [providerCopy accessoryUUID];
 
-          if (v116)
+          if (accessoryUUID)
           {
-            v123 = [v8 accessoryUUID];
-            v124 = [HFURLComponents fixSymptomURLForAccessoryWithUUID:v123 symptom:v7];
+            accessoryUUID2 = [providerCopy accessoryUUID];
+            v124 = [HFURLComponents fixSymptomURLForAccessoryWithUUID:accessoryUUID2 symptom:symptomCopy];
             [(HFErrorResultComponent *)v11 setErrorHandlerURL:v124];
           }
 
-          v87 = HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionProblemWifiMisMatchLinkString", @"%@", v117, v118, v119, v120, v121, v122, v38);
-          [(HFErrorResultComponent *)v11 setErrorHandlerURLText:v87];
+          homeKitObjectName = HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionProblemWifiMisMatchLinkString", @"%@", v117, v118, v119, v120, v121, v122, accessoryName);
+          [(HFErrorResultComponent *)v11 setErrorHandlerURLText:homeKitObjectName];
           goto LABEL_118;
         }
 
@@ -784,12 +784,12 @@ LABEL_94:
 
         v55 = HFLocalizedWiFiString(@"HFSymptomActionMessageWifiSettings");
 LABEL_67:
-        v38 = v55;
+        accessoryName = v55;
         [(HFErrorResultComponent *)v11 setErrorMessageButtonTitle:v55];
         goto LABEL_120;
       case 16:
-        v103 = [v8 accessoryNetworkSSID];
-        v104 = [v103 length];
+        accessoryNetworkSSID3 = [providerCopy accessoryNetworkSSID];
+        v104 = [accessoryNetworkSSID3 length];
 
         if (!v104)
         {
@@ -797,58 +797,58 @@ LABEL_67:
           goto LABEL_106;
         }
 
-        v38 = [v8 accessoryNetworkSSID];
-        HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionNetworkProfileFixProblemWithName", @"%@", v105, v106, v107, v108, v109, v110, v38);
+        accessoryName = [providerCopy accessoryNetworkSSID];
+        HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionNetworkProfileFixProblemWithName", @"%@", v105, v106, v107, v108, v109, v110, accessoryName);
         v40 = LABEL_89:;
         [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v40];
         goto LABEL_119;
       case 17:
-        v58 = [v8 accessoryNetworkSSID];
-        v59 = [v58 length];
+        accessoryNetworkSSID4 = [providerCopy accessoryNetworkSSID];
+        v59 = [accessoryNetworkSSID4 length];
 
         if (v59)
         {
-          v60 = [v8 accessoryNetworkSSID];
-          v67 = HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionNetworkProfileInstallProblemWithName", @"%@", v61, v62, v63, v64, v65, v66, v60);
+          accessoryNetworkSSID5 = [providerCopy accessoryNetworkSSID];
+          v67 = HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionNetworkProfileInstallProblemWithName", @"%@", v61, v62, v63, v64, v65, v66, accessoryNetworkSSID5);
           [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v67];
         }
 
         else
         {
-          v60 = _HFLocalizedStringWithDefaultValue(@"HFSymptomLongDescriptionNetworkProfileInstallProblem", @"HFSymptomLongDescriptionNetworkProfileInstallProblem", 1);
-          [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v60];
+          accessoryNetworkSSID5 = _HFLocalizedStringWithDefaultValue(@"HFSymptomLongDescriptionNetworkProfileInstallProblem", @"HFSymptomLongDescriptionNetworkProfileInstallProblem", 1);
+          [(HFErrorResultComponent *)v11 setDetailedErrorDescription:accessoryNetworkSSID5];
         }
 
-        v114 = [MEMORY[0x277CBEBC0] hf_learnAboutNetworksRequiringProfilesURL];
+        hf_learnAboutNetworksRequiringProfilesURL = [MEMORY[0x277CBEBC0] hf_learnAboutNetworksRequiringProfilesURL];
         goto LABEL_101;
       case 18:
-        v74 = [v8 accessoryNetworkSSID];
-        v75 = [v74 length];
+        accessoryNetworkSSID6 = [providerCopy accessoryNetworkSSID];
+        v75 = [accessoryNetworkSSID6 length];
 
         if (v75)
         {
-          v76 = [v8 accessoryNetworkSSID];
-          v83 = HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionNetworkNotShareableProblemWithName", @"%@", v77, v78, v79, v80, v81, v82, v76);
+          accessoryNetworkSSID7 = [providerCopy accessoryNetworkSSID];
+          v83 = HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionNetworkNotShareableProblemWithName", @"%@", v77, v78, v79, v80, v81, v82, accessoryNetworkSSID7);
           [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v83];
         }
 
         else
         {
-          v76 = _HFLocalizedStringWithDefaultValue(@"HFSymptomLongDescriptionNetworkNotShareableProblem", @"HFSymptomLongDescriptionNetworkNotShareableProblem", 1);
-          [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v76];
+          accessoryNetworkSSID7 = _HFLocalizedStringWithDefaultValue(@"HFSymptomLongDescriptionNetworkNotShareableProblem", @"HFSymptomLongDescriptionNetworkNotShareableProblem", 1);
+          [(HFErrorResultComponent *)v11 setDetailedErrorDescription:accessoryNetworkSSID7];
         }
 
-        v114 = [MEMORY[0x277CBEBC0] hf_learnAboutUnshareableNetworksURL];
+        hf_learnAboutNetworksRequiringProfilesURL = [MEMORY[0x277CBEBC0] hf_learnAboutUnshareableNetworksURL];
 LABEL_101:
-        v115 = v114;
-        [(HFErrorResultComponent *)v11 setErrorHandlerURL:v114];
+        v115 = hf_learnAboutNetworksRequiringProfilesURL;
+        [(HFErrorResultComponent *)v11 setErrorHandlerURL:hf_learnAboutNetworksRequiringProfilesURL];
 
-        v38 = _HFLocalizedStringWithDefaultValue(@"HFSymptomDescriptionLearnMore", @"HFSymptomDescriptionLearnMore", 1);
-        [(HFErrorResultComponent *)v11 setErrorHandlerURLText:v38];
+        accessoryName = _HFLocalizedStringWithDefaultValue(@"HFSymptomDescriptionLearnMore", @"HFSymptomDescriptionLearnMore", 1);
+        [(HFErrorResultComponent *)v11 setErrorHandlerURLText:accessoryName];
         goto LABEL_120;
       case 19:
-        v99 = [v8 currentDeviceNetworkSSID];
-        if (!v99)
+        currentDeviceNetworkSSID4 = [providerCopy currentDeviceNetworkSSID];
+        if (!currentDeviceNetworkSSID4)
         {
           v113 = HFLogForCategory(0);
           if (os_log_type_enabled(v113, OS_LOG_TYPE_ERROR))
@@ -863,37 +863,37 @@ LABEL_103:
           goto LABEL_104;
         }
 
-        v40 = v99;
-        v100 = [v8 accessoryNetworkSSID];
-        v101 = v100;
-        if (v100)
+        v40 = currentDeviceNetworkSSID4;
+        accessoryNetworkSSID8 = [providerCopy accessoryNetworkSSID];
+        v101 = accessoryNetworkSSID8;
+        if (accessoryNetworkSSID8)
         {
-          v102 = v100;
+          currentDeviceNetworkSSID5 = accessoryNetworkSSID8;
         }
 
         else
         {
-          v102 = [v8 currentDeviceNetworkSSID];
+          currentDeviceNetworkSSID5 = [providerCopy currentDeviceNetworkSSID];
         }
 
-        v87 = v102;
+        homeKitObjectName = currentDeviceNetworkSSID5;
 
-        v88 = HFLocalizedWiFiString(@"HFSymptomLongDescriptionProblemNeedCaptiveLeaseRenewal");
+        currentDeviceNetworkSSID2 = HFLocalizedWiFiString(@"HFSymptomLongDescriptionProblemNeedCaptiveLeaseRenewal");
         v145 = 0;
-        v125 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v88 validFormatSpecifiers:@"%@" error:&v145, v87];
-        v38 = v145;
+        v125 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:currentDeviceNetworkSSID2 validFormatSpecifiers:@"%@" error:&v145, homeKitObjectName];
+        accessoryName = v145;
         [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v125];
 
-        v126 = [v8 accessoryUUID];
+        accessoryUUID3 = [providerCopy accessoryUUID];
 
-        if (v126)
+        if (accessoryUUID3)
         {
-          v133 = [v8 accessoryUUID];
-          v134 = [HFURLComponents fixSymptomURLForAccessoryWithUUID:v133 symptom:v7];
+          accessoryUUID4 = [providerCopy accessoryUUID];
+          v134 = [HFURLComponents fixSymptomURLForAccessoryWithUUID:accessoryUUID4 symptom:symptomCopy];
           [(HFErrorResultComponent *)v11 setErrorHandlerURL:v134];
         }
 
-        v89 = HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionProblemNeedCaptiveLeaseRenewalLinkString", @"%@", v127, v128, v129, v130, v131, v132, v87);
+        v89 = HFLocalizedStringWithFormat(@"HFSymptomLongDescriptionProblemNeedCaptiveLeaseRenewalLinkString", @"%@", v127, v128, v129, v130, v131, v132, homeKitObjectName);
         [(HFErrorResultComponent *)v11 setErrorHandlerURLText:v89];
 LABEL_116:
 
@@ -909,17 +909,17 @@ LABEL_119:
     goto LABEL_120;
   }
 
-  if (v12 <= 111)
+  if (type <= 111)
   {
-    if (v12 <= 101)
+    if (type <= 101)
     {
-      if (v12 == 100)
+      if (type == 100)
       {
-        if ([v8 contextSupportsNetworkDiagnostics] && _os_feature_enabled_impl())
+        if ([providerCopy contextSupportsNetworkDiagnostics] && _os_feature_enabled_impl())
         {
           if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
           {
-            -[HFErrorResultComponent setShouldShowWifiPickerFixButton:](v11, "setShouldShowWifiPickerFixButton:", [a1 _shouldShowWifiPickerFixButtonWithSymptom:v7]);
+            -[HFErrorResultComponent setShouldShowWifiPickerFixButton:](v11, "setShouldShowWifiPickerFixButton:", [self _shouldShowWifiPickerFixButtonWithSymptom:symptomCopy]);
           }
 
           [(HFErrorResultComponent *)v11 setDescriptionBadgeType:7];
@@ -932,16 +932,16 @@ LABEL_119:
           v28 = _HFLocalizedStringWithDefaultValue(@"HFSymptomTitleNoHomeHubCommunication", @"HFSymptomTitleNoHomeHubCommunication", 1);
           [(HFErrorResultComponent *)v11 setSymptomName:v28];
 
-          v19 = [MEMORY[0x277CBEBC0] hf_homePodNetworkMisconfigurationUnknownLearnMoreURL];
+          hf_homePodNetworkMisconfigurationUnknownLearnMoreURL = [MEMORY[0x277CBEBC0] hf_homePodNetworkMisconfigurationUnknownLearnMoreURL];
           goto LABEL_60;
         }
       }
 
-      else if ([v8 contextSupportsNetworkDiagnostics] && _os_feature_enabled_impl())
+      else if ([providerCopy contextSupportsNetworkDiagnostics] && _os_feature_enabled_impl())
       {
         if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
         {
-          -[HFErrorResultComponent setShouldShowWifiPickerFixButton:](v11, "setShouldShowWifiPickerFixButton:", [a1 _shouldShowWifiPickerFixButtonWithSymptom:v7]);
+          -[HFErrorResultComponent setShouldShowWifiPickerFixButton:](v11, "setShouldShowWifiPickerFixButton:", [self _shouldShowWifiPickerFixButtonWithSymptom:symptomCopy]);
         }
 
         [(HFErrorResultComponent *)v11 setDescriptionBadgeType:7];
@@ -954,20 +954,20 @@ LABEL_119:
         v18 = _HFLocalizedStringWithDefaultValue(@"HFSymptomTitleNoHomeHubCommunication", @"HFSymptomTitleNoHomeHubCommunication", 1);
         [(HFErrorResultComponent *)v11 setSymptomName:v18];
 
-        v19 = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssuePeerToPeerLearnMoreURL];
+        hf_homePodNetworkMisconfigurationUnknownLearnMoreURL = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssuePeerToPeerLearnMoreURL];
         goto LABEL_60;
       }
 
       goto LABEL_121;
     }
 
-    if (v12 == 102)
+    if (type == 102)
     {
-      if ([v8 contextSupportsNetworkDiagnostics] && _os_feature_enabled_impl())
+      if ([providerCopy contextSupportsNetworkDiagnostics] && _os_feature_enabled_impl())
       {
         if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
         {
-          -[HFErrorResultComponent setShouldShowWifiPickerFixButton:](v11, "setShouldShowWifiPickerFixButton:", [a1 _shouldShowWifiPickerFixButtonWithSymptom:v7]);
+          -[HFErrorResultComponent setShouldShowWifiPickerFixButton:](v11, "setShouldShowWifiPickerFixButton:", [self _shouldShowWifiPickerFixButtonWithSymptom:symptomCopy]);
         }
 
         [(HFErrorResultComponent *)v11 setDescriptionBadgeType:7];
@@ -980,20 +980,20 @@ LABEL_119:
         v31 = _HFLocalizedStringWithDefaultValue(@"HFSymptomTitleNoHomeHubCommunication", @"HFSymptomTitleNoHomeHubCommunication", 1);
         [(HFErrorResultComponent *)v11 setSymptomName:v31];
 
-        v19 = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssueDoubleNATLearnMoreURL];
+        hf_homePodNetworkMisconfigurationUnknownLearnMoreURL = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssueDoubleNATLearnMoreURL];
         goto LABEL_60;
       }
 
       goto LABEL_121;
     }
 
-    if (v12 == 103)
+    if (type == 103)
     {
-      if ([v8 contextSupportsNetworkDiagnostics] && _os_feature_enabled_impl())
+      if ([providerCopy contextSupportsNetworkDiagnostics] && _os_feature_enabled_impl())
       {
         if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
         {
-          -[HFErrorResultComponent setShouldShowWifiPickerFixButton:](v11, "setShouldShowWifiPickerFixButton:", [a1 _shouldShowWifiPickerFixButtonWithSymptom:v7]);
+          -[HFErrorResultComponent setShouldShowWifiPickerFixButton:](v11, "setShouldShowWifiPickerFixButton:", [self _shouldShowWifiPickerFixButtonWithSymptom:symptomCopy]);
         }
 
         [(HFErrorResultComponent *)v11 setDescriptionBadgeType:7];
@@ -1006,7 +1006,7 @@ LABEL_119:
         v22 = _HFLocalizedStringWithDefaultValue(@"HFSymptomTitleNoHomeHubCommunication", @"HFSymptomTitleNoHomeHubCommunication", 1);
         [(HFErrorResultComponent *)v11 setSymptomName:v22];
 
-        v19 = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssueMultipleNetworksLearnMoreURL];
+        hf_homePodNetworkMisconfigurationUnknownLearnMoreURL = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssueMultipleNetworksLearnMoreURL];
         goto LABEL_60;
       }
 
@@ -1016,11 +1016,11 @@ LABEL_119:
     goto LABEL_90;
   }
 
-  if (v12 <= 114)
+  if (type <= 114)
   {
-    if (v12 == 112)
+    if (type == 112)
     {
-      if (![v8 contextSupportsNetworkDiagnostics] || !_os_feature_enabled_impl())
+      if (![providerCopy contextSupportsNetworkDiagnostics] || !_os_feature_enabled_impl())
       {
         goto LABEL_121;
       }
@@ -1035,18 +1035,18 @@ LABEL_119:
       v37 = _HFLocalizedStringWithDefaultValue(@"HFSymptomTitleNoNetworkCommunication", @"HFSymptomTitleNoNetworkCommunication", 1);
       [(HFErrorResultComponent *)v11 setSymptomName:v37];
 
-      v19 = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssueDNSServerOutageLearnMoreURL];
+      hf_homePodNetworkMisconfigurationUnknownLearnMoreURL = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssueDNSServerOutageLearnMoreURL];
 LABEL_60:
-      v38 = v19;
-      [(HFErrorResultComponent *)v11 setSymptomURL:v19];
+      accessoryName = hf_homePodNetworkMisconfigurationUnknownLearnMoreURL;
+      [(HFErrorResultComponent *)v11 setSymptomURL:hf_homePodNetworkMisconfigurationUnknownLearnMoreURL];
 LABEL_120:
 
       goto LABEL_121;
     }
 
-    if (v12 == 113)
+    if (type == 113)
     {
-      if (![v8 contextSupportsNetworkDiagnostics] || !_os_feature_enabled_impl())
+      if (![providerCopy contextSupportsNetworkDiagnostics] || !_os_feature_enabled_impl())
       {
         goto LABEL_121;
       }
@@ -1061,7 +1061,7 @@ LABEL_120:
       v25 = _HFLocalizedStringWithDefaultValue(@"HFSymptomTitleNoNetworkCommunication", @"HFSymptomTitleNoNetworkCommunication", 1);
       [(HFErrorResultComponent *)v11 setSymptomName:v25];
 
-      v19 = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssueDHCPAcquisitionFailureLearnMoreURL];
+      hf_homePodNetworkMisconfigurationUnknownLearnMoreURL = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssueDHCPAcquisitionFailureLearnMoreURL];
       goto LABEL_60;
     }
 
@@ -1070,22 +1070,22 @@ LABEL_90:
     if (os_log_type_enabled(v111, OS_LOG_TYPE_ERROR))
     {
       v142 = NSStringFromSelector(a2);
-      v143 = [v7 type];
+      type2 = [symptomCopy type];
       *buf = 138412802;
-      v150 = a1;
+      selfCopy = self;
       v151 = 2112;
       v152 = v142;
       v153 = 2048;
-      v154 = v143;
+      v154 = type2;
       _os_log_error_impl(&dword_20D9BF000, v111, OS_LOG_TYPE_ERROR, "%@:%@ Unhandled symptom type: %ld", buf, 0x20u);
     }
 
     goto LABEL_104;
   }
 
-  if (v12 == 115)
+  if (type == 115)
   {
-    if ([v8 contextSupportsNetworkDiagnostics] && _os_feature_enabled_impl())
+    if ([providerCopy contextSupportsNetworkDiagnostics] && _os_feature_enabled_impl())
     {
       if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
       {
@@ -1102,34 +1102,34 @@ LABEL_90:
       v34 = _HFLocalizedStringWithDefaultValue(@"HFSymptomTitleNoNetworkCommunication", @"HFSymptomTitleNoNetworkCommunication", 1);
       [(HFErrorResultComponent *)v11 setSymptomName:v34];
 
-      v19 = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssueWifiDisassociationLearnMoreURL];
+      hf_homePodNetworkMisconfigurationUnknownLearnMoreURL = [MEMORY[0x277CBEBC0] hf_homePodNetworkIssueWifiDisassociationLearnMoreURL];
       goto LABEL_60;
     }
 
 LABEL_121:
-    v135 = [(HFErrorResultComponent *)v11 detailedErrorDescription];
+    detailedErrorDescription = [(HFErrorResultComponent *)v11 detailedErrorDescription];
 
-    if (v135)
+    if (detailedErrorDescription)
     {
-      v136 = [v7 hf_shortDescription];
-      [(HFErrorResultComponent *)v11 setErrorDescription:v136];
+      hf_shortDescription = [symptomCopy hf_shortDescription];
+      [(HFErrorResultComponent *)v11 setErrorDescription:hf_shortDescription];
     }
 
-    if ([v8 fixStateForSymptom:v7] != 1)
+    if ([providerCopy fixStateForSymptom:symptomCopy] != 1)
     {
       goto LABEL_135;
     }
 
-    if ([v7 type] == 11)
+    if ([symptomCopy type] == 11)
     {
       v137 = @"HFServiceDescriptionUpdatingNetwork";
     }
 
     else
     {
-      if ([v7 type] != 19)
+      if ([symptomCopy type] != 19)
       {
-        if ([v7 type] == 1 || objc_msgSend(v7, "type") == 2 || objc_msgSend(v7, "type") == 20)
+        if ([symptomCopy type] == 1 || objc_msgSend(symptomCopy, "type") == 2 || objc_msgSend(symptomCopy, "type") == 20)
         {
           v139 = _HFLocalizedStringWithDefaultValue(@"HFServiceDescriptionAuthenticatingAccount", @"HFServiceDescriptionAuthenticatingAccount", 1);
           [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v139];
@@ -1153,19 +1153,19 @@ LABEL_121:
 LABEL_134:
     [(HFErrorResultComponent *)v11 setBadgeType:0];
 LABEL_135:
-    a1 = v11;
+    self = v11;
     goto LABEL_136;
   }
 
-  if (v12 != 1000)
+  if (type != 1000)
   {
-    if (v12 == 999)
+    if (type == 999)
     {
       v15 = @"HMSymptomLongDescriptionSharedUserErrorNotification";
 LABEL_106:
       v90 = _HFLocalizedStringWithDefaultValue(v15, v15, 1);
 LABEL_107:
-      v38 = v90;
+      accessoryName = v90;
       [(HFErrorResultComponent *)v11 setDetailedErrorDescription:v90];
       goto LABEL_120;
     }
@@ -1175,26 +1175,26 @@ LABEL_107:
 
   NSLog(&cfstr_SymptomTypeHms.isa);
 LABEL_104:
-  a1 = 0;
+  self = 0;
 LABEL_136:
 
 LABEL_137:
   v140 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)_shouldShowWifiPickerFixButtonWithSymptom:(id)a3
++ (BOOL)_shouldShowWifiPickerFixButtonWithSymptom:(id)symptom
 {
-  v3 = a3;
+  symptomCopy = symptom;
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    v4 = [v3 infoDictionary];
-    v5 = [v4 hmf_BOOLForKey:*MEMORY[0x277CD11C0]];
-    v6 = [v4 hmf_BOOLForKey:*MEMORY[0x277CD11B0]];
-    v7 = [v4 hmf_BOOLForKey:*MEMORY[0x277CD11B8]];
-    v8 = [v3 type];
-    if (v8 == 103)
+    infoDictionary = [symptomCopy infoDictionary];
+    v5 = [infoDictionary hmf_BOOLForKey:*MEMORY[0x277CD11C0]];
+    v6 = [infoDictionary hmf_BOOLForKey:*MEMORY[0x277CD11B0]];
+    v7 = [infoDictionary hmf_BOOLForKey:*MEMORY[0x277CD11B8]];
+    type = [symptomCopy type];
+    if (type == 103)
     {
       if (v6 & 1 | ((v5 & 1) == 0) | v7 & 1)
       {
@@ -1205,9 +1205,9 @@ LABEL_137:
 
     else
     {
-      if (v8 != 102)
+      if (type != 102)
       {
-        if (v8 == 101 && (v5 & v7 & 1) == 0)
+        if (type == 101 && (v5 & v7 & 1) == 0)
         {
           if (v5 & 1 | ((v6 & 1) == 0) || v7 != 1)
           {
@@ -1247,29 +1247,29 @@ LABEL_18:
   return v9 & 1;
 }
 
-+ (int64_t)_displayPriorityForSymptom:(id)a3
++ (int64_t)_displayPriorityForSymptom:(id)symptom
 {
-  v3 = [a3 type];
-  if ((v3 - 1) > 0x13)
+  type = [symptom type];
+  if ((type - 1) > 0x13)
   {
     return 0;
   }
 
   else
   {
-    return qword_20DD97738[v3 - 1];
+    return qword_20DD97738[type - 1];
   }
 }
 
-- (void)_addAccountSymptomMessageForAccountName:(id)a3 symptom:(id)a4
+- (void)_addAccountSymptomMessageForAccountName:(id)name symptom:(id)symptom
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [a3 length];
-  v9 = [v7 type];
-  if (v9 != 20)
+  symptomCopy = symptom;
+  v8 = [name length];
+  type = [symptomCopy type];
+  if (type != 20)
   {
-    if (v9 == 2)
+    if (type == 2)
     {
       if (v8)
       {
@@ -1281,18 +1281,18 @@ LABEL_18:
       goto LABEL_15;
     }
 
-    if (v9 != 1)
+    if (type != 1)
     {
       v12 = HFLogForCategory(0);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v18 = NSStringFromSelector(a2);
         v19 = 138412802;
-        v20 = self;
+        selfCopy = self;
         v21 = 2112;
         v22 = v18;
         v23 = 2048;
-        v24 = [v7 type];
+        type2 = [symptomCopy type];
         _os_log_error_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_ERROR, "%@:%@ Unhandled symptom type: %ld", &v19, 0x20u);
       }
 
@@ -1331,12 +1331,12 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)noResponseErrorDescriptionString:(id)a3
++ (id)noResponseErrorDescriptionString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (_os_feature_enabled_impl())
   {
-    [a1 _lastSeenDataOnTileForDate:v4];
+    [self _lastSeenDataOnTileForDate:stringCopy];
   }
 
   else
@@ -1348,12 +1348,12 @@ LABEL_17:
   return v5;
 }
 
-+ (id)noResponseErrorDetailedDescriptionString:(id)a3
++ (id)noResponseErrorDetailedDescriptionString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (_os_feature_enabled_impl())
   {
-    [a1 _lastSeenDataOnHeaderForDate:v4];
+    [self _lastSeenDataOnHeaderForDate:stringCopy];
   }
 
   else
@@ -1365,12 +1365,12 @@ LABEL_17:
   return v5;
 }
 
-+ (id)_noResponseErrorMsgTitleStringWithDate:(id)a3 batteryStatus:(unint64_t)a4
++ (id)_noResponseErrorMsgTitleStringWithDate:(id)date batteryStatus:(unint64_t)status
 {
-  v6 = a3;
+  dateCopy = date;
   if (_os_feature_enabled_impl())
   {
-    [a1 _lastSeenDataForDate:v6 batteryStatus:a4];
+    [self _lastSeenDataForDate:dateCopy batteryStatus:status];
   }
 
   else
@@ -1382,23 +1382,23 @@ LABEL_17:
   return v7;
 }
 
-+ (id)_lastSeenDataOnTileForDate:(id)a3
++ (id)_lastSeenDataOnTileForDate:(id)date
 {
-  v3 = a3;
-  if (!v3)
+  dateCopy = date;
+  if (!dateCopy)
   {
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
-  if (![v3 compare:v4])
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  if (![dateCopy compare:distantPast])
   {
 
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x277CBEAA8] distantFuture];
-  v6 = [v3 compare:v5];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v6 = [dateCopy compare:distantFuture];
 
   if (!v6)
   {
@@ -1407,10 +1407,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [v3 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if (v7 < -60.0)
   {
-    v8 = [MEMORY[0x277CD1940] hf_localizedAgeForCaptureDate:v3];
+    v8 = [MEMORY[0x277CD1940] hf_localizedAgeForCaptureDate:dateCopy];
     v15 = HFLocalizedStringWithFormat(@"HFTitleLastSeenTile", @"%@", v9, v10, v11, v12, v13, v14, v8);
 
     goto LABEL_9;
@@ -1424,34 +1424,34 @@ LABEL_9:
   return v15;
 }
 
-+ (BOOL)isDateInCurrentYear:(id)a3 asLastSeenDate:(id)a4
++ (BOOL)isDateInCurrentYear:(id)year asLastSeenDate:(id)date
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 currentCalendar];
-  v9 = [v8 compareDate:v7 toDate:v6 toUnitGranularity:4];
+  dateCopy = date;
+  yearCopy = year;
+  currentCalendar = [v5 currentCalendar];
+  v9 = [currentCalendar compareDate:yearCopy toDate:dateCopy toUnitGranularity:4];
 
   return v9 == 0;
 }
 
-+ (id)_lastSeenDataOnHeaderForDate:(id)a3
++ (id)_lastSeenDataOnHeaderForDate:(id)date
 {
-  v3 = a3;
-  if (!v3)
+  dateCopy = date;
+  if (!dateCopy)
   {
     goto LABEL_8;
   }
 
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
-  if (![v3 compare:v4])
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  if (![dateCopy compare:distantPast])
   {
 
     goto LABEL_8;
   }
 
-  v5 = [MEMORY[0x277CBEAA8] distantFuture];
-  v6 = [v3 compare:v5];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v6 = [dateCopy compare:distantFuture];
 
   if (!v6)
   {
@@ -1462,7 +1462,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [v3 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v8 = v7;
   if (v7 >= -60.0)
   {
@@ -1470,19 +1470,19 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-  v10 = [v9 isDateInToday:v3];
+  hf_sharedCalendar = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+  v10 = [hf_sharedCalendar isDateInToday:dateCopy];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277CD1940] hf_localizedAgeForCaptureDate:v3];
+    v11 = [MEMORY[0x277CD1940] hf_localizedAgeForCaptureDate:dateCopy];
     v18 = HFLocalizedStringWithFormat(@"HFTitleLastSeenDetailsHeader", @"%@", v12, v13, v14, v15, v16, v17, v11);
 
     goto LABEL_10;
   }
 
-  v21 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-  v22 = [v21 isDateInYesterday:v3];
+  hf_sharedCalendar2 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+  v22 = [hf_sharedCalendar2 isDateInYesterday:dateCopy];
 
   if (v22)
   {
@@ -1495,14 +1495,14 @@ LABEL_9:
     v27 = +[HFFormatterManager sharedInstance];
     v28 = [v27 weekdayNameFormatter:0];
 
-    v29 = [v28 stringFromDate:v3];
+    v29 = [v28 stringFromDate:dateCopy];
     HFLocalizedStringWithFormat(@"HFTitleLastSeenDetailsHeaderWeek", @"%@", v30, v31, v32, v33, v34, v35, v29);
   }
 
   else
   {
-    v23 = [MEMORY[0x277CBEAA8] date];
-    v24 = [HFErrorResultComponent isDateInCurrentYear:v23 asLastSeenDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    v24 = [HFErrorResultComponent isDateInCurrentYear:date asLastSeenDate:dateCopy];
 
     v25 = +[HFFormatterManager sharedInstance];
     v26 = v25;
@@ -1517,7 +1517,7 @@ LABEL_9:
     }
     v28 = ;
 
-    v29 = [v28 stringFromDate:v3];
+    v29 = [v28 stringFromDate:dateCopy];
     HFLocalizedStringWithFormat(@"HFTitleLastSeenDetailsHeaderPast", @"%@", v36, v37, v38, v39, v40, v41, v29);
   }
   v18 = ;
@@ -1527,23 +1527,23 @@ LABEL_10:
   return v18;
 }
 
-+ (id)_lastSeenDataForDate:(id)a3 batteryStatus:(unint64_t)a4
++ (id)_lastSeenDataForDate:(id)date batteryStatus:(unint64_t)status
 {
-  v5 = a3;
-  if (!v5)
+  dateCopy = date;
+  if (!dateCopy)
   {
     goto LABEL_7;
   }
 
-  v6 = [MEMORY[0x277CBEAA8] distantPast];
-  if (![v5 compare:v6])
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  if (![dateCopy compare:distantPast])
   {
 
     goto LABEL_7;
   }
 
-  v7 = [MEMORY[0x277CBEAA8] distantFuture];
-  v8 = [v5 compare:v7];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v8 = [dateCopy compare:distantFuture];
 
   if (!v8)
   {
@@ -1553,7 +1553,7 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  if (a4 == 1)
+  if (status == 1)
   {
     v9 = [@"HFServiceLongFormErrorLastSeen" stringByAppendingString:@"LowBattery"];
   }
@@ -1563,14 +1563,14 @@ LABEL_7:
     v9 = @"HFServiceLongFormErrorLastSeen";
   }
 
-  v12 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-  v13 = [v12 isDateInToday:v5];
+  hf_sharedCalendar = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+  v13 = [hf_sharedCalendar isDateInToday:dateCopy];
 
-  v14 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
-  v15 = [v14 isDateInYesterday:v5];
+  hf_sharedCalendar2 = [MEMORY[0x277CBEAA8] hf_sharedCalendar];
+  v15 = [hf_sharedCalendar2 isDateInYesterday:dateCopy];
 
-  v16 = [MEMORY[0x277CBEAA8] date];
-  v17 = [HFErrorResultComponent isDateInCurrentYear:v16 asLastSeenDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  v17 = [HFErrorResultComponent isDateInCurrentYear:date asLastSeenDate:dateCopy];
 
   if (v13)
   {
@@ -1596,7 +1596,7 @@ LABEL_7:
         v19 = +[HFFormatterManager sharedInstance];
         [v19 monthDayYearFormatter];
       }
-      v20 = ;
+      timeFormatter = ;
       goto LABEL_14;
     }
 
@@ -1606,11 +1606,11 @@ LABEL_7:
   v11 = [(__CFString *)v9 stringByAppendingString:v18];
 
   v19 = +[HFFormatterManager sharedInstance];
-  v20 = [v19 timeFormatter];
+  timeFormatter = [v19 timeFormatter];
 LABEL_14:
-  v21 = v20;
+  v21 = timeFormatter;
 
-  v22 = [v21 stringFromDate:v5];
+  v22 = [v21 stringFromDate:dateCopy];
   v29 = HFLocalizedStringWithFormat(v11, @"%@", v23, v24, v25, v26, v27, v28, v22);
 
   v10 = v29;

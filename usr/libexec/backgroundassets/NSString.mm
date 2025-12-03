@@ -25,9 +25,9 @@
 - (id)_baassets_validUTI
 {
   v3 = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-."];
-  v4 = [v3 invertedSet];
+  invertedSet = [v3 invertedSet];
 
-  v5 = [(NSString *)self stringByTrimmingCharactersInSet:v4];
+  v5 = [(NSString *)self stringByTrimmingCharactersInSet:invertedSet];
 
   return v5;
 }
@@ -35,9 +35,9 @@
 - (id)_baassets_validUTIWithWildcard
 {
   v3 = [NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.*"];
-  v4 = [v3 invertedSet];
+  invertedSet = [v3 invertedSet];
 
-  v5 = [(NSString *)self stringByTrimmingCharactersInSet:v4];
+  v5 = [(NSString *)self stringByTrimmingCharactersInSet:invertedSet];
 
   return v5;
 }

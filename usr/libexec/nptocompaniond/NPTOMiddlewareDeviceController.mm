@@ -1,15 +1,15 @@
 @interface NPTOMiddlewareDeviceController
 - (NPTOMiddlewareDeviceController)init;
-- (NPTOMiddlewareDeviceController)initWithDevice:(id)a3 service:(id)a4;
+- (NPTOMiddlewareDeviceController)initWithDevice:(id)device service:(id)service;
 @end
 
 @implementation NPTOMiddlewareDeviceController
 
-- (NPTOMiddlewareDeviceController)initWithDevice:(id)a3 service:(id)a4
+- (NPTOMiddlewareDeviceController)initWithDevice:(id)device service:(id)service
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_100023D78(v5, v6);
+  deviceCopy = device;
+  serviceCopy = service;
+  v7 = sub_100023D78(deviceCopy, serviceCopy);
 
   return v7;
 }

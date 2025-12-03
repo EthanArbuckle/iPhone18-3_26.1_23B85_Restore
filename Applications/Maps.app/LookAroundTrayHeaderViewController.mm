@@ -2,9 +2,9 @@
 - (TrayHeaderDelegate)delegate;
 - (void)_setupConstraints;
 - (void)_setupViews;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)trayHeaderDidReceiveTap:(id)a3;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)trayHeaderDidReceiveTap:(id)tap;
 - (void)viewDidLoad;
 @end
 
@@ -19,41 +19,41 @@
 
 - (void)_setupConstraints
 {
-  v31 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v32 = [(LookAroundTrayHeaderViewController *)self view];
-  v30 = [v32 leadingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:16.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  view = [(LookAroundTrayHeaderViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v33[0] = v29;
-  v27 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v28 = [(LookAroundTrayHeaderViewController *)self view];
-  v26 = [v28 trailingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26 constant:-16.0];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  view2 = [(LookAroundTrayHeaderViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v33[1] = v25;
-  v23 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v24 = [(LookAroundTrayHeaderViewController *)self view];
-  v22 = [v24 topAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  view3 = [(LookAroundTrayHeaderViewController *)self view];
+  topAnchor = [view3 topAnchor];
+  v21 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor];
   v20 = [DynamicTypeWizard autoscaledConstraint:v21 constant:&stru_101637AA8 withFontProvider:35.0];
   v33[2] = v20;
-  v18 = [(UILabel *)self->_subtitleLabel leadingAnchor];
-  v19 = [(LookAroundTrayHeaderViewController *)self view];
-  v17 = [v19 leadingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17 constant:16.0];
+  leadingAnchor3 = [(UILabel *)self->_subtitleLabel leadingAnchor];
+  view4 = [(LookAroundTrayHeaderViewController *)self view];
+  leadingAnchor4 = [view4 leadingAnchor];
+  v16 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   v33[3] = v16;
-  v14 = [(UILabel *)self->_subtitleLabel trailingAnchor];
-  v15 = [(LookAroundTrayHeaderViewController *)self view];
-  v13 = [v15 trailingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13 constant:-16.0];
+  trailingAnchor3 = [(UILabel *)self->_subtitleLabel trailingAnchor];
+  view5 = [(LookAroundTrayHeaderViewController *)self view];
+  trailingAnchor4 = [view5 trailingAnchor];
+  v3 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   v33[4] = v3;
-  v4 = [(UILabel *)self->_subtitleLabel firstBaselineAnchor];
-  v5 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  firstBaselineAnchor2 = [(UILabel *)self->_subtitleLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+  v6 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor];
   v7 = [DynamicTypeWizard autoscaledConstraint:v6 constant:&stru_101637A88 withFontProvider:21.0];
   v33[5] = v7;
-  v8 = [(LookAroundTrayHeaderViewController *)self view];
-  v9 = [v8 bottomAnchor];
-  v10 = [(UILabel *)self->_subtitleLabel lastBaselineAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:21.0];
+  view6 = [(LookAroundTrayHeaderViewController *)self view];
+  bottomAnchor = [view6 bottomAnchor];
+  lastBaselineAnchor2 = [(UILabel *)self->_subtitleLabel lastBaselineAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:21.0];
   v33[6] = v11;
   v12 = [NSArray arrayWithObjects:v33 count:7];
   [NSLayoutConstraint activateConstraints:v12];
@@ -84,8 +84,8 @@
   [(UILabel *)self->_titleLabel setTextColor:v12];
 
   [(UILabel *)self->_titleLabel setAccessibilityIdentifier:@"LookAroundTrayHeaderTitle"];
-  v13 = [(LookAroundTrayHeaderViewController *)self view];
-  [v13 addSubview:self->_titleLabel];
+  view = [(LookAroundTrayHeaderViewController *)self view];
+  [view addSubview:self->_titleLabel];
 
   v14 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   subtitleLabel = self->_subtitleLabel;
@@ -106,29 +106,29 @@
   [(UILabel *)self->_subtitleLabel setTextColor:v19];
 
   [(UILabel *)self->_subtitleLabel setAccessibilityIdentifier:@"LookAroundTrayHeaderSubtitle"];
-  v20 = [(LookAroundTrayHeaderViewController *)self view];
-  [v20 addSubview:self->_subtitleLabel];
+  view2 = [(LookAroundTrayHeaderViewController *)self view];
+  [view2 addSubview:self->_subtitleLabel];
 
   v22 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"trayHeaderDidReceiveTap:"];
-  v21 = [(LookAroundTrayHeaderViewController *)self view];
-  [v21 addGestureRecognizer:v22];
+  view3 = [(LookAroundTrayHeaderViewController *)self view];
+  [view3 addGestureRecognizer:v22];
 }
 
-- (void)trayHeaderDidReceiveTap:(id)a3
+- (void)trayHeaderDidReceiveTap:(id)tap
 {
-  v3 = [(LookAroundTrayHeaderViewController *)self delegate];
-  [v3 trayHeaderDidReceiveTap];
+  delegate = [(LookAroundTrayHeaderViewController *)self delegate];
+  [delegate trayHeaderDidReceiveTap];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = [a3 copy];
+  v4 = [subtitle copy];
   [(UILabel *)self->_subtitleLabel setText:v4];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   [(UILabel *)self->_titleLabel setText:v4];
 }
 

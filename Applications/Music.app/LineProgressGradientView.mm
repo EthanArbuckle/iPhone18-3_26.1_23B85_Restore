@@ -1,5 +1,5 @@
 @interface LineProgressGradientView
-- (_TtC7LyricsX24LineProgressGradientView)initWithFrame:(CGRect)a3;
+- (_TtC7LyricsX24LineProgressGradientView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -14,7 +14,7 @@
   sub_100CE1918();
 }
 
-- (_TtC7LyricsX24LineProgressGradientView)initWithFrame:(CGRect)a3
+- (_TtC7LyricsX24LineProgressGradientView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

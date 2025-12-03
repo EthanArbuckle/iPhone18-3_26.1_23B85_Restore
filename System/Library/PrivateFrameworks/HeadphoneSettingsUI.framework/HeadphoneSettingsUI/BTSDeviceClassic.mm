@@ -1,5 +1,5 @@
 @interface BTSDeviceClassic
-+ (id)deviceWithDevice:(id)a3;
++ (id)deviceWithDevice:(id)device;
 - (BOOL)cloudPaired;
 - (BOOL)connect;
 - (BOOL)connected;
@@ -11,8 +11,8 @@
 - (BOOL)isTemporaryPairedDevice;
 - (BOOL)magicPaired;
 - (BOOL)paired;
-- (BOOL)setUserName:(id)a3;
-- (BTSDeviceClassic)initWithDevice:(id)a3;
+- (BOOL)setUserName:(id)name;
+- (BTSDeviceClassic)initWithDevice:(id)device;
 - (BluetoothDevice)device;
 - (id)classicDevice;
 - (id)description;
@@ -25,25 +25,25 @@
 
 @implementation BTSDeviceClassic
 
-- (BTSDeviceClassic)initWithDevice:(id)a3
+- (BTSDeviceClassic)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v8.receiver = self;
   v8.super_class = BTSDeviceClassic;
   v5 = [(BTSDeviceClassic *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_device, v4);
+    objc_storeWeak(&v5->_device, deviceCopy);
   }
 
   return v6;
 }
 
-+ (id)deviceWithDevice:(id)a3
++ (id)deviceWithDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[BTSDeviceClassic alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[BTSDeviceClassic alloc] initWithDevice:deviceCopy];
 
   return v4;
 }
@@ -91,9 +91,9 @@
 - (id)identifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v3 = [WeakRetained address];
+  address = [WeakRetained address];
 
-  return v3;
+  return address;
 }
 
 - (id)name
@@ -101,64 +101,64 @@
   accessorySetupKitDisplayName = self->accessorySetupKitDisplayName;
   if (accessorySetupKitDisplayName)
   {
-    v3 = accessorySetupKitDisplayName;
+    name = accessorySetupKitDisplayName;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_device);
-    v3 = [WeakRetained name];
+    name = [WeakRetained name];
   }
 
-  return v3;
+  return name;
 }
 
 - (id)productName
 {
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v3 = [WeakRetained productName];
+  productName = [WeakRetained productName];
 
-  return v3;
+  return productName;
 }
 
 - (BOOL)connected
 {
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v3 = [WeakRetained connected];
+  connected = [WeakRetained connected];
 
-  return v3;
+  return connected;
 }
 
 - (BOOL)paired
 {
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v3 = [WeakRetained paired];
+  paired = [WeakRetained paired];
 
-  return v3;
+  return paired;
 }
 
 - (BOOL)cloudPaired
 {
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v3 = [WeakRetained cloudPaired];
+  cloudPaired = [WeakRetained cloudPaired];
 
-  return v3;
+  return cloudPaired;
 }
 
 - (BOOL)magicPaired
 {
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v3 = [WeakRetained magicPaired];
+  magicPaired = [WeakRetained magicPaired];
 
-  return v3;
+  return magicPaired;
 }
 
 - (BOOL)isTemporaryPairedDevice
 {
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v3 = [WeakRetained isTemporaryPaired];
+  isTemporaryPaired = [WeakRetained isTemporaryPaired];
 
-  return v3;
+  return isTemporaryPaired;
 }
 
 - (id)classicDevice
@@ -171,8 +171,8 @@
 - (BOOL)isPSVR2Controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v5 = [WeakRetained vendorIdSrc];
-  if (v5 == 2 && (v2 = objc_loadWeakRetained(&self->_device), [v2 vendorId] == 1356))
+  vendorIdSrc = [WeakRetained vendorIdSrc];
+  if (vendorIdSrc == 2 && (v2 = objc_loadWeakRetained(&self->_device), [v2 vendorId] == 1356))
   {
   }
 
@@ -184,7 +184,7 @@
 
       v10 = 0;
       v9 = 0;
-      if (v5 != 2)
+      if (vendorIdSrc != 2)
       {
         goto LABEL_14;
       }
@@ -193,13 +193,13 @@
     }
 
     v7 = objc_loadWeakRetained(&self->_device);
-    v8 = [v7 vendorId];
+    vendorId = [v7 vendorId];
 
-    if (v5 == 2)
+    if (vendorIdSrc == 2)
     {
     }
 
-    if (v8 != 301)
+    if (vendorId != 301)
     {
       return 0;
     }
@@ -224,20 +224,20 @@ LABEL_14:
 
 - (BOOL)isMyDevice
 {
-  v3 = [(BTSDeviceClassic *)self paired];
-  if (v3)
+  paired = [(BTSDeviceClassic *)self paired];
+  if (paired)
   {
-    LOBYTE(v3) = ![(BTSDeviceClassic *)self isTemporaryPairedDevice];
+    LOBYTE(paired) = ![(BTSDeviceClassic *)self isTemporaryPairedDevice];
   }
 
-  return v3;
+  return paired;
 }
 
-- (BOOL)setUserName:(id)a3
+- (BOOL)setUserName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  v6 = [WeakRetained setUserName:v4];
+  v6 = [WeakRetained setUserName:nameCopy];
 
   return v6;
 }

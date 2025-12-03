@@ -1,6 +1,6 @@
 @interface CEKApertureSlider
 - (BOOL)isSliderOn;
-- (CEKApertureSlider)initWithTickMarkStyle:(unint64_t)a3;
+- (CEKApertureSlider)initWithTickMarkStyle:(unint64_t)style;
 - (double)apertureValue;
 - (double)markedApertureValue;
 - (double)maximumApertureValue;
@@ -8,20 +8,20 @@
 - (id)valueText;
 - (void)_updateIndexCount;
 - (void)_updateMainTickMarkOffset;
-- (void)setApertureValueClosestTo:(double)a3 animated:(BOOL)a4;
-- (void)setIncludesOffState:(BOOL)a3;
-- (void)setMarkedApertureValueClosestTo:(double)a3;
-- (void)setMinimumApertureValueClosestTo:(double)a3 maximumApertureValueClosestTo:(double)a4;
-- (void)setSliderOn:(BOOL)a3;
+- (void)setApertureValueClosestTo:(double)to animated:(BOOL)animated;
+- (void)setIncludesOffState:(BOOL)state;
+- (void)setMarkedApertureValueClosestTo:(double)to;
+- (void)setMinimumApertureValueClosestTo:(double)to maximumApertureValueClosestTo:(double)closestTo;
+- (void)setSliderOn:(BOOL)on;
 @end
 
 @implementation CEKApertureSlider
 
-- (CEKApertureSlider)initWithTickMarkStyle:(unint64_t)a3
+- (CEKApertureSlider)initWithTickMarkStyle:(unint64_t)style
 {
   v16.receiver = self;
   v16.super_class = CEKApertureSlider;
-  v3 = [(CEKDiscreteSlider *)&v16 initWithTickMarkStyle:a3];
+  v3 = [(CEKDiscreteSlider *)&v16 initWithTickMarkStyle:style];
   if (v3)
   {
     v4 = +[CEKApertureStops validApertureValues];
@@ -79,8 +79,8 @@
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:v4];
   v7 = [v5 stringFromNumber:v6];
 
-  v8 = [(CEKApertureSlider *)self includesOffState];
-  if (v4 == 0.0 && v8)
+  includesOffState = [(CEKApertureSlider *)self includesOffState];
+  if (v4 == 0.0 && includesOffState)
   {
     v9 = CEKLocalizedFrameworkString(@"DEPTH_SLIDER_OFF", 0);
 
@@ -92,10 +92,10 @@
 
 - (void)_updateMainTickMarkOffset
 {
-  v3 = [(CEKApertureSlider *)self _minimumApertureIndex];
-  v4 = v3 - [CEKApertureStops firstFullStopIndexAfterOrIncludingIndex:v3];
-  v5 = [(CEKDiscreteSlider *)self tickMarksConfiguration];
-  [v5 setMainTickMarkOffset:v4];
+  _minimumApertureIndex = [(CEKApertureSlider *)self _minimumApertureIndex];
+  v4 = _minimumApertureIndex - [CEKApertureStops firstFullStopIndexAfterOrIncludingIndex:_minimumApertureIndex];
+  tickMarksConfiguration = [(CEKDiscreteSlider *)self tickMarksConfiguration];
+  [tickMarksConfiguration setMainTickMarkOffset:v4];
 }
 
 - (void)_updateIndexCount
@@ -104,9 +104,9 @@
   v3 = [CEKApertureStops indexOfClosestValidValueForAperture:?];
   [(CEKApertureSlider *)self maximumApertureValue];
   v4 = [CEKApertureStops indexOfClosestValidValueForAperture:?]- v3;
-  v5 = [(CEKApertureSlider *)self includesOffState];
+  includesOffState = [(CEKApertureSlider *)self includesOffState];
   v6 = 1;
-  if (v5)
+  if (includesOffState)
   {
     v6 = 2;
   }
@@ -114,10 +114,10 @@
   [(CEKDiscreteSlider *)self setIndexCount:v4 + v6];
 }
 
-- (void)setApertureValueClosestTo:(double)a3 animated:(BOOL)a4
+- (void)setApertureValueClosestTo:(double)to animated:(BOOL)animated
 {
-  v6 = [(CEKApertureSlider *)self _discreteIndexForValidApertureIndex:CEKClamp([CEKApertureStops indexOfClosestValidValueForAperture:a3], [(CEKApertureSlider *)self _minimumApertureIndex], [(CEKApertureSlider *)self _maximumApertureIndex])];
-  if (a4)
+  v6 = [(CEKApertureSlider *)self _discreteIndexForValidApertureIndex:CEKClamp([CEKApertureStops indexOfClosestValidValueForAperture:to], [(CEKApertureSlider *)self _minimumApertureIndex], [(CEKApertureSlider *)self _maximumApertureIndex])];
+  if (animated)
   {
     v7 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
     [(CEKDiscreteSlider *)self setSelectedIndex:v6 animatedDuration:v7 animatedCurve:0 completion:0.25];
@@ -130,19 +130,19 @@
   }
 }
 
-- (void)setMinimumApertureValueClosestTo:(double)a3 maximumApertureValueClosestTo:(double)a4
+- (void)setMinimumApertureValueClosestTo:(double)to maximumApertureValueClosestTo:(double)closestTo
 {
   [(CEKApertureSlider *)self minimumApertureValue];
   v8 = v7;
   [(CEKApertureSlider *)self maximumApertureValue];
-  if (v8 != a3 || v9 != a4)
+  if (v8 != to || v9 != closestTo)
   {
     [(CEKApertureSlider *)self apertureValue];
     v12 = v11;
     [(CEKApertureSlider *)self markedApertureValue];
     v14 = v13;
-    v15 = [CEKApertureStops indexOfClosestValidValueForAperture:a3];
-    v16 = [CEKApertureStops indexOfClosestValidValueForAperture:a4];
+    v15 = [CEKApertureStops indexOfClosestValidValueForAperture:to];
+    v16 = [CEKApertureStops indexOfClosestValidValueForAperture:closestTo];
     self->__minimumApertureIndex = v15;
     self->__maximumApertureIndex = v16;
     [(CEKApertureSlider *)self _updateIndexCount];
@@ -179,8 +179,8 @@
 {
   if ([(CEKApertureSlider *)self includesOffState])
   {
-    v3 = [(CEKDiscreteSlider *)self selectedIndex];
-    if (v3 >= [(CEKDiscreteSlider *)self indexCount]- 1)
+    selectedIndex = [(CEKDiscreteSlider *)self selectedIndex];
+    if (selectedIndex >= [(CEKDiscreteSlider *)self indexCount]- 1)
     {
       return 0.0;
     }
@@ -196,8 +196,8 @@
 
 - (double)markedApertureValue
 {
-  v3 = [(CEKDiscreteSlider *)self indexCount];
-  v4 = v3 - [(CEKApertureSlider *)self includesOffState];
+  indexCount = [(CEKDiscreteSlider *)self indexCount];
+  v4 = indexCount - [(CEKApertureSlider *)self includesOffState];
   if ([(CEKDiscreteSlider *)self markedIndex]>= v4)
   {
     return 0.0;
@@ -211,18 +211,18 @@
   return v8;
 }
 
-- (void)setMarkedApertureValueClosestTo:(double)a3
+- (void)setMarkedApertureValueClosestTo:(double)to
 {
-  v4 = [(CEKApertureSlider *)self _discreteIndexForValidApertureIndex:[CEKApertureStops indexOfClosestValidValueForAperture:a3]];
+  v4 = [(CEKApertureSlider *)self _discreteIndexForValidApertureIndex:[CEKApertureStops indexOfClosestValidValueForAperture:to]];
 
   [(CEKDiscreteSlider *)self setMarkedIndex:v4];
 }
 
-- (void)setIncludesOffState:(BOOL)a3
+- (void)setIncludesOffState:(BOOL)state
 {
-  if (self->_includesOffState != a3)
+  if (self->_includesOffState != state)
   {
-    self->_includesOffState = a3;
+    self->_includesOffState = state;
     [(CEKApertureSlider *)self _updateIndexCount];
   }
 }
@@ -234,16 +234,16 @@
     return 1;
   }
 
-  v3 = [(CEKDiscreteSlider *)self selectedIndex];
-  return v3 < [(CEKDiscreteSlider *)self indexCount]- 1;
+  selectedIndex = [(CEKDiscreteSlider *)self selectedIndex];
+  return selectedIndex < [(CEKDiscreteSlider *)self indexCount]- 1;
 }
 
-- (void)setSliderOn:(BOOL)a3
+- (void)setSliderOn:(BOOL)on
 {
-  v3 = a3;
-  if ([(CEKApertureSlider *)self includesOffState]&& [(CEKApertureSlider *)self isSliderOn]!= v3)
+  onCopy = on;
+  if ([(CEKApertureSlider *)self includesOffState]&& [(CEKApertureSlider *)self isSliderOn]!= onCopy)
   {
-    if (v3)
+    if (onCopy)
     {
       [(CEKApertureSlider *)self markedApertureValue];
       if (v5 == 0.0)

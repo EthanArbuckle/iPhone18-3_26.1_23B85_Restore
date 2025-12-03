@@ -1,43 +1,43 @@
 @interface STStorageUsageAppHeaderCell
-+ (id)specifierForStorageApp:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
++ (id)specifierForStorageApp:(id)app;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation STStorageUsageAppHeaderCell
 
-+ (id)specifierForStorageApp:(id)a3
++ (id)specifierForStorageApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = [PSSpecifier preferenceSpecifierNamed:&stru_AD3C8 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
   [v4 setProperty:objc_opt_class() forKey:PSCellClassKey];
   v5 = [NSNumber numberWithBool:1];
   [v4 setProperty:v5 forKey:PSEnabledKey];
 
-  [v4 setProperty:v3 forKey:STStorageAppKey];
+  [v4 setProperty:appCopy forKey:STStorageAppKey];
 
   return v4;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v11.receiver = self;
   v11.super_class = STStorageUsageAppHeaderCell;
-  v4 = a3;
-  [(STStorageUsageAppHeaderCell *)&v11 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{STStorageAppKey, v11.receiver, v11.super_class}];
+  specifierCopy = specifier;
+  [(STStorageUsageAppHeaderCell *)&v11 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{STStorageAppKey, v11.receiver, v11.super_class}];
 
-  v6 = [v5 usageBundle];
-  if (v6 || [v5 isPseudoApp])
+  usageBundle = [v5 usageBundle];
+  if (usageBundle || [v5 isPseudoApp])
   {
-    v7 = [v5 name];
-    [(STStorageUsageAppHeaderCell *)self setTitle:v7];
+    name = [v5 name];
+    [(STStorageUsageAppHeaderCell *)self setTitle:name];
 
     [(STStorageUsageAppHeaderCell *)self setInfo:0];
-    v8 = [v5 vendorName];
-    v9 = v8;
-    if (v8)
+    vendorName = [v5 vendorName];
+    v9 = vendorName;
+    if (vendorName)
     {
-      v10 = v8;
+      v10 = vendorName;
     }
 
     else

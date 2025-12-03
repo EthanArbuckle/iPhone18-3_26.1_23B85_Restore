@@ -1,15 +1,15 @@
 @interface BMDisplayAppearance
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDisplayAppearance)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMDisplayAppearance)initWithState:(int)a3 reason:(int)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDisplayAppearance)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMDisplayAppearance)initWithState:(int)state reason:(int)reason;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDisplayAppearance
@@ -28,18 +28,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDisplayAppearance *)self state];
-    if (v6 == [v5 state])
+    v5 = equalCopy;
+    state = [(BMDisplayAppearance *)self state];
+    if (state == [v5 state])
     {
-      v7 = [(BMDisplayAppearance *)self reason];
-      v8 = v7 == [v5 reason];
+      reason = [(BMDisplayAppearance *)self reason];
+      v8 = reason == [v5 reason];
     }
 
     else
@@ -62,21 +62,21 @@
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDisplayAppearance state](self, "state")}];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDisplayAppearance reason](self, "reason")}];
   v10[0] = @"state";
-  v5 = v3;
+  null = v3;
   if (!v3)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"reason";
-  v11[0] = v5;
-  v6 = v4;
+  v11[0] = null;
+  null2 = v4;
   if (!v4)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (v4)
   {
@@ -101,11 +101,11 @@ LABEL_7:
   return v7;
 }
 
-- (BMDisplayAppearance)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDisplayAppearance)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"state"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"state"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -119,10 +119,10 @@ LABEL_7:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
-          v13 = 0;
+          selfCopy = 0;
           goto LABEL_19;
         }
 
@@ -134,8 +134,8 @@ LABEL_7:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
         v18 = [v16 initWithDomain:v17 code:2 userInfo:v10];
         v8 = 0;
-        v13 = 0;
-        *a4 = v18;
+        selfCopy = 0;
+        *error = v18;
         goto LABEL_18;
       }
 
@@ -150,7 +150,7 @@ LABEL_7:
     v8 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"reason"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -164,7 +164,7 @@ LABEL_7:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v19 = objc_alloc(MEMORY[0x1E696ABC0]);
           v20 = *MEMORY[0x1E698F240];
@@ -172,11 +172,11 @@ LABEL_7:
           v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"reason"];
           v24 = v21;
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-          *a4 = [v19 initWithDomain:v20 code:2 userInfo:v22];
+          *error = [v19 initWithDomain:v20 code:2 userInfo:v22];
         }
 
         v11 = 0;
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_18;
       }
 
@@ -192,35 +192,35 @@ LABEL_7:
   }
 
   self = -[BMDisplayAppearance initWithState:reason:](self, "initWithState:reason:", [v8 intValue], objc_msgSend(v11, "intValue"));
-  v13 = self;
+  selfCopy = self;
 LABEL_18:
 
 LABEL_19:
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMDisplayAppearance *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   state = self->_state;
-  v6 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   reason = self->_reason;
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMDisplayAppearance;
   v5 = [(BMEventBase *)&v32 init];
@@ -229,12 +229,12 @@ LABEL_19:
     goto LABEL_52;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -245,18 +245,18 @@ LABEL_19:
       while (1)
       {
         v33 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v33 & 0x7F) << v7;
@@ -273,9 +273,9 @@ LABEL_19:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -288,18 +288,18 @@ LABEL_16:
         while (1)
         {
           v33 = 0;
-          v25 = [v4 position] + 1;
-          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+          v25 = [fromCopy position] + 1;
+          if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
           {
-            v27 = [v4 data];
-            [v27 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v24 |= (v33 & 0x7F) << v22;
@@ -316,7 +316,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v24 > 2)
+        if (([fromCopy hasError] & 1) != 0 || v24 > 2)
         {
 LABEL_46:
           LODWORD(v24) = 0;
@@ -343,18 +343,18 @@ LABEL_46:
         while (1)
         {
           v33 = 0;
-          v18 = [v4 position] + 1;
-          if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 1, v19 <= objc_msgSend(v4, "length")))
+          v18 = [fromCopy position] + 1;
+          if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 1, v19 <= objc_msgSend(fromCopy, "length")))
           {
-            v20 = [v4 data];
-            [v20 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v17 |= (v33 & 0x7F) << v15;
@@ -371,7 +371,7 @@ LABEL_46:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || (LODWORD(v24) = v17, v17 > 4))
+        if (([fromCopy hasError] & 1) != 0 || (LODWORD(v24) = v17, v17 > 4))
         {
 LABEL_42:
           LODWORD(v24) = 0;
@@ -382,13 +382,13 @@ LABEL_42:
 
       *(&v5->super.super.isa + *v28) = v24;
 LABEL_49:
-      v29 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v29 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_51:
     v30 = 0;
@@ -413,7 +413,7 @@ LABEL_52:
   return v6;
 }
 
-- (BMDisplayAppearance)initWithState:(int)a3 reason:(int)a4
+- (BMDisplayAppearance)initWithState:(int)state reason:(int)reason
 {
   v8.receiver = self;
   v8.super_class = BMDisplayAppearance;
@@ -421,8 +421,8 @@ LABEL_52:
   if (v6)
   {
     v6->_dataVersion = [objc_opt_class() latestDataVersion];
-    v6->_state = a3;
-    v6->_reason = a4;
+    v6->_state = state;
+    v6->_reason = reason;
   }
 
   return v6;
@@ -442,9 +442,9 @@ LABEL_52:
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -452,8 +452,8 @@ LABEL_52:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDisplayAppearance alloc] initByReadFrom:v7];
     v4 = v8;

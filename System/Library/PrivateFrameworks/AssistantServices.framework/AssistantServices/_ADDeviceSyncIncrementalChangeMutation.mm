@@ -1,5 +1,5 @@
 @interface _ADDeviceSyncIncrementalChangeMutation
-- (_ADDeviceSyncIncrementalChangeMutation)initWithBase:(id)a3;
+- (_ADDeviceSyncIncrementalChangeMutation)initWithBase:(id)base;
 - (id)getDate;
 - (id)getDeletedItemUUIDs;
 - (id)getInsertedOrUpdatedItems;
@@ -12,45 +12,45 @@
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_deletedItemUUIDs;
+    deletedItemUUIDs = self->_deletedItemUUIDs;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncIncrementalChange *)self->_base deletedItemUUIDs];
+    deletedItemUUIDs = [(ADDeviceSyncIncrementalChange *)self->_base deletedItemUUIDs];
   }
 
-  return v2;
+  return deletedItemUUIDs;
 }
 
 - (id)getInsertedOrUpdatedItems
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_insertedOrUpdatedItems;
+    insertedOrUpdatedItems = self->_insertedOrUpdatedItems;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncIncrementalChange *)self->_base insertedOrUpdatedItems];
+    insertedOrUpdatedItems = [(ADDeviceSyncIncrementalChange *)self->_base insertedOrUpdatedItems];
   }
 
-  return v2;
+  return insertedOrUpdatedItems;
 }
 
 - (id)getDate
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_date;
+    date = self->_date;
   }
 
   else
   {
-    v2 = [(ADDeviceSyncIncrementalChange *)self->_base date];
+    date = [(ADDeviceSyncIncrementalChange *)self->_base date];
   }
 
-  return v2;
+  return date;
 }
 
 - (unint64_t)getGeneration
@@ -66,16 +66,16 @@
   }
 }
 
-- (_ADDeviceSyncIncrementalChangeMutation)initWithBase:(id)a3
+- (_ADDeviceSyncIncrementalChangeMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADDeviceSyncIncrementalChangeMutation;
   v6 = [(_ADDeviceSyncIncrementalChangeMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

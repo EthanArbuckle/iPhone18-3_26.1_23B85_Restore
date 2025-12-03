@@ -1,12 +1,12 @@
 @interface _SBDashBoardHostedAppEntityViewController
-- (BOOL)appViewControllerShouldBackgroundApplicationOnDeactivate:(id)a3;
+- (BOOL)appViewControllerShouldBackgroundApplicationOnDeactivate:(id)deactivate;
 - (CSHostableEntityPresenterDelegate)entityPresenterDelegate;
 - (SBHomeGrabberView)homeGrabberViewForTraitsParticipant;
 - (int64_t)hostableEntityContentMode;
-- (void)invalidateForReplacementByEntity:(id)a3;
-- (void)setActionsToDeliverToHostableEntity:(id)a3;
-- (void)setHostableEntityContentMode:(int64_t)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)invalidateForReplacementByEntity:(id)entity;
+- (void)setActionsToDeliverToHostableEntity:(id)entity;
+- (void)setHostableEntityContentMode:(int64_t)mode;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 @end
 
 @implementation _SBDashBoardHostedAppEntityViewController
@@ -18,20 +18,20 @@
   return WeakRetained;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = _SBDashBoardHostedAppEntityViewController;
-  [(SBDashBoardHostedAppViewController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(SBDashBoardHostedAppViewController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     [(CSCoverSheetViewControllerBase *)self _setDisplayLayoutElementActive:[(CSCoverSheetViewControllerBase *)self isDisplayLayoutElementActive] immediately:1];
   }
 }
 
-- (BOOL)appViewControllerShouldBackgroundApplicationOnDeactivate:(id)a3
+- (BOOL)appViewControllerShouldBackgroundApplicationOnDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   if (self->_preventSceneBackgrounding || ![-[_SBDashBoardHostedAppEntityViewController superclass](self "superclass")])
   {
     v5 = 0;
@@ -41,7 +41,7 @@
   {
     v7.receiver = self;
     v7.super_class = _SBDashBoardHostedAppEntityViewController;
-    v5 = [(SBDashBoardHostedAppViewController *)&v7 appViewControllerShouldBackgroundApplicationOnDeactivate:v4];
+    v5 = [(SBDashBoardHostedAppViewController *)&v7 appViewControllerShouldBackgroundApplicationOnDeactivate:deactivateCopy];
   }
 
   return v5;
@@ -58,30 +58,30 @@
   return result;
 }
 
-- (void)setHostableEntityContentMode:(int64_t)a3
+- (void)setHostableEntityContentMode:(int64_t)mode
 {
-  if (a3 <= 3)
+  if (mode <= 3)
   {
-    [(SBDashBoardHostedAppViewController *)self setMode:qword_21F8A7A70[a3]];
+    [(SBDashBoardHostedAppViewController *)self setMode:qword_21F8A7A70[mode]];
   }
 }
 
-- (void)setActionsToDeliverToHostableEntity:(id)a3
+- (void)setActionsToDeliverToHostableEntity:(id)entity
 {
-  v4 = [a3 copy];
+  v4 = [entity copy];
   [(SBDashBoardHostedAppViewController *)self setActionsToDeliver:v4];
 }
 
 - (SBHomeGrabberView)homeGrabberViewForTraitsParticipant
 {
-  v3 = [(SBDashBoardHostedAppViewController *)self appView];
+  appView = [(SBDashBoardHostedAppViewController *)self appView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [(SBDashBoardHostedAppViewController *)self applicationSceneHandle];
+    v4 = appView;
+    applicationSceneHandle = [(SBDashBoardHostedAppViewController *)self applicationSceneHandle];
     v6 = objc_opt_class();
-    v7 = v5;
+    v7 = applicationSceneHandle;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -102,23 +102,23 @@
 
     v9 = v8;
 
-    v10 = [v4 homeGrabberView];
+    homeGrabberView = [v4 homeGrabberView];
   }
 
   else
   {
     v9 = 0;
-    v10 = 0;
+    homeGrabberView = 0;
   }
 
-  return v10;
+  return homeGrabberView;
 }
 
-- (void)invalidateForReplacementByEntity:(id)a3
+- (void)invalidateForReplacementByEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   v5 = objc_opt_class();
-  v12 = v4;
+  v12 = entityCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -139,11 +139,11 @@
 
   v7 = v6;
 
-  v8 = [v7 applicationSceneEntity];
+  applicationSceneEntity = [v7 applicationSceneEntity];
 
-  v9 = [v8 sceneHandle];
-  v10 = [(SBDashBoardHostedAppViewController *)self applicationSceneHandle];
-  v11 = [v9 isEqual:v10];
+  sceneHandle = [applicationSceneEntity sceneHandle];
+  applicationSceneHandle = [(SBDashBoardHostedAppViewController *)self applicationSceneHandle];
+  v11 = [sceneHandle isEqual:applicationSceneHandle];
 
   if (v11)
   {

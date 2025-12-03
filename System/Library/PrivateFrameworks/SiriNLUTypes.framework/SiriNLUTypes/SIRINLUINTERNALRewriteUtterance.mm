@@ -1,24 +1,24 @@
 @interface SIRINLUINTERNALRewriteUtterance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAsrUtteranceTokens:(id)a3;
-- (void)addNluInternalTokens:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAsrUtteranceTokens:(id)tokens;
+- (void)addNluInternalTokens:(id)tokens;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALRewriteUtterance
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   asrId = self->_asrId;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (asrId)
   {
     if (v6)
@@ -32,7 +32,7 @@
     [(SIRINLUINTERNALRewriteUtterance *)self setAsrId:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SIRINLUINTERNALRewriteUtterance *)self setUtterance:?];
   }
@@ -41,7 +41,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
@@ -65,9 +65,9 @@
     while (v9);
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_confidence = *(v4 + 1);
+    self->_confidence = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -75,7 +75,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 4);
+  v12 = *(fromCopy + 4);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -143,16 +143,16 @@
   return v4 ^ v3 ^ v5 ^ v8 ^ [(NSMutableArray *)self->_nluInternalTokens hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   asrId = self->_asrId;
-  if (asrId | *(v4 + 2))
+  if (asrId | *(equalCopy + 2))
   {
     if (![(SIRINLUEXTERNALUUID *)asrId isEqual:?])
     {
@@ -161,7 +161,7 @@
   }
 
   utterance = self->_utterance;
-  if (utterance | *(v4 + 5))
+  if (utterance | *(equalCopy + 5))
   {
     if (![(NSString *)utterance isEqual:?])
     {
@@ -170,7 +170,7 @@
   }
 
   asrUtteranceTokens = self->_asrUtteranceTokens;
-  if (asrUtteranceTokens | *(v4 + 3))
+  if (asrUtteranceTokens | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)asrUtteranceTokens isEqual:?])
     {
@@ -178,16 +178,16 @@
     }
   }
 
-  v8 = *(v4 + 48);
+  v8 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_confidence != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_confidence != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -195,7 +195,7 @@ LABEL_15:
   }
 
   nluInternalTokens = self->_nluInternalTokens;
-  if (nluInternalTokens | *(v4 + 4))
+  if (nluInternalTokens | *(equalCopy + 4))
   {
     v10 = [(NSMutableArray *)nluInternalTokens isEqual:?];
   }
@@ -210,15 +210,15 @@ LABEL_16:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUUID *)self->_asrId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUUID *)self->_asrId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_utterance copyWithZone:a3];
+  v8 = [(NSString *)self->_utterance copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -242,7 +242,7 @@ LABEL_16:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v28 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v28 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addAsrUtteranceTokens:v15];
 
         ++v14;
@@ -281,7 +281,7 @@ LABEL_16:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{a3, v24}];
+        v21 = [*(*(&v24 + 1) + 8 * v20) copyWithZone:{zone, v24}];
         [v5 addNluInternalTokens:v21];
 
         ++v20;
@@ -298,60 +298,60 @@ LABEL_16:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_asrId)
   {
-    [v12 setAsrId:?];
+    [toCopy setAsrId:?];
   }
 
   if (self->_utterance)
   {
-    [v12 setUtterance:?];
+    [toCopy setUtterance:?];
   }
 
   if ([(SIRINLUINTERNALRewriteUtterance *)self asrUtteranceTokensCount])
   {
-    [v12 clearAsrUtteranceTokens];
-    v4 = [(SIRINLUINTERNALRewriteUtterance *)self asrUtteranceTokensCount];
-    if (v4)
+    [toCopy clearAsrUtteranceTokens];
+    asrUtteranceTokensCount = [(SIRINLUINTERNALRewriteUtterance *)self asrUtteranceTokensCount];
+    if (asrUtteranceTokensCount)
     {
-      v5 = v4;
+      v5 = asrUtteranceTokensCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALRewriteUtterance *)self asrUtteranceTokensAtIndex:i];
-        [v12 addAsrUtteranceTokens:v7];
+        [toCopy addAsrUtteranceTokens:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v12 + 1) = *&self->_confidence;
-    *(v12 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_confidence;
+    *(toCopy + 48) |= 1u;
   }
 
   if ([(SIRINLUINTERNALRewriteUtterance *)self nluInternalTokensCount])
   {
-    [v12 clearNluInternalTokens];
-    v8 = [(SIRINLUINTERNALRewriteUtterance *)self nluInternalTokensCount];
-    if (v8)
+    [toCopy clearNluInternalTokens];
+    nluInternalTokensCount = [(SIRINLUINTERNALRewriteUtterance *)self nluInternalTokensCount];
+    if (nluInternalTokensCount)
     {
-      v9 = v8;
+      v9 = nluInternalTokensCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUINTERNALRewriteUtterance *)self nluInternalTokensAtIndex:j];
-        [v12 addNluInternalTokens:v11];
+        [toCopy addNluInternalTokens:v11];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_asrId)
   {
     PBDataWriterWriteSubmessage();
@@ -438,18 +438,18 @@ LABEL_16:
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   asrId = self->_asrId;
   if (asrId)
   {
-    v5 = [(SIRINLUEXTERNALUUID *)asrId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"asr_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)asrId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"asr_id"];
   }
 
   utterance = self->_utterance;
   if (utterance)
   {
-    [v3 setObject:utterance forKey:@"utterance"];
+    [dictionary setObject:utterance forKey:@"utterance"];
   }
 
   if ([(NSMutableArray *)self->_asrUtteranceTokens count])
@@ -474,8 +474,8 @@ LABEL_16:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -484,13 +484,13 @@ LABEL_16:
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"asr_utterance_tokens"];
+    [dictionary setObject:v7 forKey:@"asr_utterance_tokens"];
   }
 
   if (*&self->_has)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithDouble:self->_confidence];
-    [v3 setObject:v14 forKey:@"confidence"];
+    [dictionary setObject:v14 forKey:@"confidence"];
   }
 
   if ([(NSMutableArray *)self->_nluInternalTokens count])
@@ -515,8 +515,8 @@ LABEL_16:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation3 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation3];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -525,12 +525,12 @@ LABEL_16:
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"nlu_internal_tokens"];
+    [dictionary setObject:v15 forKey:@"nlu_internal_tokens"];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -539,46 +539,46 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALRewriteUtterance;
   v4 = [(SIRINLUINTERNALRewriteUtterance *)&v8 description];
-  v5 = [(SIRINLUINTERNALRewriteUtterance *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALRewriteUtterance *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addNluInternalTokens:(id)a3
+- (void)addNluInternalTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   nluInternalTokens = self->_nluInternalTokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!nluInternalTokens)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_nluInternalTokens;
     self->_nluInternalTokens = v6;
 
-    v4 = v8;
+    tokensCopy = v8;
     nluInternalTokens = self->_nluInternalTokens;
   }
 
-  [(NSMutableArray *)nluInternalTokens addObject:v4];
+  [(NSMutableArray *)nluInternalTokens addObject:tokensCopy];
 }
 
-- (void)addAsrUtteranceTokens:(id)a3
+- (void)addAsrUtteranceTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   asrUtteranceTokens = self->_asrUtteranceTokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!asrUtteranceTokens)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_asrUtteranceTokens;
     self->_asrUtteranceTokens = v6;
 
-    v4 = v8;
+    tokensCopy = v8;
     asrUtteranceTokens = self->_asrUtteranceTokens;
   }
 
-  [(NSMutableArray *)asrUtteranceTokens addObject:v4];
+  [(NSMutableArray *)asrUtteranceTokens addObject:tokensCopy];
 }
 
 @end

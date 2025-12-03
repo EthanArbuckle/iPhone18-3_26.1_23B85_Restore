@@ -1,31 +1,31 @@
 @interface HUScheduleRuleEditorItemModule
-- (BOOL)updateScheduleRuleEndDate:(id)a3;
-- (BOOL)updateScheduleRuleEndTime:(id)a3;
-- (BOOL)updateScheduleRuleRecurrences:(id)a3;
-- (BOOL)updateScheduleRuleStartDate:(id)a3;
-- (BOOL)updateScheduleRuleStartTime:(id)a3;
-- (HUScheduleRuleEditorItemModule)initWithItemUpdater:(id)a3;
-- (HUScheduleRuleEditorItemModule)initWithItemUpdater:(id)a3 scheduleType:(unint64_t)a4 scheduleRule:(id)a5 scheduleBuilder:(id)a6;
+- (BOOL)updateScheduleRuleEndDate:(id)date;
+- (BOOL)updateScheduleRuleEndTime:(id)time;
+- (BOOL)updateScheduleRuleRecurrences:(id)recurrences;
+- (BOOL)updateScheduleRuleStartDate:(id)date;
+- (BOOL)updateScheduleRuleStartTime:(id)time;
+- (HUScheduleRuleEditorItemModule)initWithItemUpdater:(id)updater;
+- (HUScheduleRuleEditorItemModule)initWithItemUpdater:(id)updater scheduleType:(unint64_t)type scheduleRule:(id)rule scheduleBuilder:(id)builder;
 - (id)_datePeriodFormatter;
 - (id)_localizedNaturalLanguageStringForRecurrence;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 - (void)_buildItemProviders;
-- (void)updateAllDayToggle:(BOOL)a3;
-- (void)updateScheduleBuilder:(id)a3;
+- (void)updateAllDayToggle:(BOOL)toggle;
+- (void)updateScheduleBuilder:(id)builder;
 @end
 
 @implementation HUScheduleRuleEditorItemModule
 
-- (HUScheduleRuleEditorItemModule)initWithItemUpdater:(id)a3 scheduleType:(unint64_t)a4 scheduleRule:(id)a5 scheduleBuilder:(id)a6
+- (HUScheduleRuleEditorItemModule)initWithItemUpdater:(id)updater scheduleType:(unint64_t)type scheduleRule:(id)rule scheduleBuilder:(id)builder
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11)
+  updaterCopy = updater;
+  ruleCopy = rule;
+  builderCopy = builder;
+  v14 = builderCopy;
+  if (updaterCopy)
   {
-    if (v13)
+    if (builderCopy)
     {
       goto LABEL_3;
     }
@@ -33,8 +33,8 @@
 
   else
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"HUScheduleRuleEditorItemModule.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"itemUpdater"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUScheduleRuleEditorItemModule.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"itemUpdater"}];
 
     if (v14)
     {
@@ -42,29 +42,29 @@
     }
   }
 
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"HUScheduleRuleEditorItemModule.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"scheduleBuilder"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUScheduleRuleEditorItemModule.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"scheduleBuilder"}];
 
 LABEL_3:
   v26.receiver = self;
   v26.super_class = HUScheduleRuleEditorItemModule;
-  v15 = [(HFItemModule *)&v26 initWithItemUpdater:v11];
+  v15 = [(HFItemModule *)&v26 initWithItemUpdater:updaterCopy];
   v16 = v15;
   if (v15)
   {
-    v15->_scheduleType = a4;
-    v17 = [v12 copy];
+    v15->_scheduleType = type;
+    v17 = [ruleCopy copy];
     existingScheduleRule = v16->_existingScheduleRule;
     v16->_existingScheduleRule = v17;
 
-    if (v12)
+    if (ruleCopy)
     {
-      v19 = [v12 copy];
+      v19 = [ruleCopy copy];
     }
 
     else
     {
-      v19 = [MEMORY[0x277D14A20] defaultRuleForType:a4];
+      v19 = [MEMORY[0x277D14A20] defaultRuleForType:type];
     }
 
     v20 = v19;
@@ -81,11 +81,11 @@ LABEL_3:
   return v16;
 }
 
-- (HUScheduleRuleEditorItemModule)initWithItemUpdater:(id)a3
+- (HUScheduleRuleEditorItemModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_scheduleType_scheduleRule_scheduleBuilder_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUScheduleRuleEditorItemModule.m" lineNumber:59 description:{@"%s is unavailable; use %@ instead", "-[HUScheduleRuleEditorItemModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUScheduleRuleEditorItemModule.m" lineNumber:59 description:{@"%s is unavailable; use %@ instead", "-[HUScheduleRuleEditorItemModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
@@ -93,31 +93,31 @@ LABEL_3:
 - (id)itemProviders
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUScheduleRuleEditorItemModule *)self staticItemProvider];
-  v4 = [v2 setWithObjects:{v3, 0}];
+  staticItemProvider = [(HUScheduleRuleEditorItemModule *)self staticItemProvider];
+  v4 = [v2 setWithObjects:{staticItemProvider, 0}];
 
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUScheduleRuleEditorSpecificDatesRuleSectionIdentifier"];
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(HUScheduleRuleEditorItemModule *)self editStartDatePeriodItem];
-  v8 = [(HUScheduleRuleEditorItemModule *)self editEndDatePeriodItem];
-  v9 = [v6 setWithObjects:{v7, v8, 0}];
-  v10 = [v4 intersectsSet:v9];
+  editStartDatePeriodItem = [(HUScheduleRuleEditorItemModule *)self editStartDatePeriodItem];
+  editEndDatePeriodItem = [(HUScheduleRuleEditorItemModule *)self editEndDatePeriodItem];
+  v9 = [v6 setWithObjects:{editStartDatePeriodItem, editEndDatePeriodItem, 0}];
+  v10 = [itemsCopy intersectsSet:v9];
 
   if (v10)
   {
     v11 = objc_opt_new();
-    v12 = [(HUScheduleRuleEditorItemModule *)self editStartDatePeriodItem];
-    [v11 na_safeAddObject:v12];
+    editStartDatePeriodItem2 = [(HUScheduleRuleEditorItemModule *)self editStartDatePeriodItem];
+    [v11 na_safeAddObject:editStartDatePeriodItem2];
 
-    v13 = [(HUScheduleRuleEditorItemModule *)self editEndDatePeriodItem];
-    [v11 na_safeAddObject:v13];
+    editEndDatePeriodItem2 = [(HUScheduleRuleEditorItemModule *)self editEndDatePeriodItem];
+    [v11 na_safeAddObject:editEndDatePeriodItem2];
 
     if ([(HUScheduleRuleEditorItemModule *)self showAsInlineModule])
     {
@@ -130,23 +130,23 @@ LABEL_3:
 
   v15 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUScheduleRuleEditorCustomScheduleRuleSectionIdentifier"];
   v16 = MEMORY[0x277CBEB98];
-  v17 = [(HUScheduleRuleEditorItemModule *)self allDayItem];
-  v18 = [(HUScheduleRuleEditorItemModule *)self editTimeOfDayItem];
-  v19 = [(HUScheduleRuleEditorItemModule *)self editRecurrenceItem];
-  v20 = [v16 setWithObjects:{v17, v18, v19, 0}];
-  v21 = [v4 intersectsSet:v20];
+  allDayItem = [(HUScheduleRuleEditorItemModule *)self allDayItem];
+  editTimeOfDayItem = [(HUScheduleRuleEditorItemModule *)self editTimeOfDayItem];
+  editRecurrenceItem = [(HUScheduleRuleEditorItemModule *)self editRecurrenceItem];
+  v20 = [v16 setWithObjects:{allDayItem, editTimeOfDayItem, editRecurrenceItem, 0}];
+  v21 = [itemsCopy intersectsSet:v20];
 
   if (v21)
   {
     v22 = objc_opt_new();
-    v23 = [(HUScheduleRuleEditorItemModule *)self allDayItem];
-    [v22 na_safeAddObject:v23];
+    allDayItem2 = [(HUScheduleRuleEditorItemModule *)self allDayItem];
+    [v22 na_safeAddObject:allDayItem2];
 
-    v24 = [(HUScheduleRuleEditorItemModule *)self editTimeOfDayItem];
-    [v22 na_safeAddObject:v24];
+    editTimeOfDayItem2 = [(HUScheduleRuleEditorItemModule *)self editTimeOfDayItem];
+    [v22 na_safeAddObject:editTimeOfDayItem2];
 
-    v25 = [(HUScheduleRuleEditorItemModule *)self editRecurrenceItem];
-    [v22 na_safeAddObject:v25];
+    editRecurrenceItem2 = [(HUScheduleRuleEditorItemModule *)self editRecurrenceItem];
+    [v22 na_safeAddObject:editRecurrenceItem2];
 
     if ([(HUScheduleRuleEditorItemModule *)self showAsInlineModule])
     {
@@ -158,13 +158,13 @@ LABEL_3:
   }
 
   v27 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUScheduleRuleEditorRemoveRuleSectionIdentifier"];
-  v28 = [(HUScheduleRuleEditorItemModule *)self removeRuleItem];
-  v29 = [v4 containsObject:v28];
+  removeRuleItem = [(HUScheduleRuleEditorItemModule *)self removeRuleItem];
+  v29 = [itemsCopy containsObject:removeRuleItem];
 
   if (v29)
   {
-    v30 = [(HUScheduleRuleEditorItemModule *)self removeRuleItem];
-    v37[0] = v30;
+    removeRuleItem2 = [(HUScheduleRuleEditorItemModule *)self removeRuleItem];
+    v37[0] = removeRuleItem2;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
     [v27 setItems:v31];
   }
@@ -174,7 +174,7 @@ LABEL_3:
   v36[1] = v15;
   v36[2] = v27;
   v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:3];
-  v34 = [v32 filterSections:v33 toDisplayedItems:v4];
+  v34 = [v32 filterSections:v33 toDisplayedItems:itemsCopy];
 
   return v34;
 }
@@ -192,8 +192,8 @@ LABEL_3:
   v5 = [v4 initWithResultsBlock:v38];
   [(HUScheduleRuleEditorItemModule *)self setEditStartDatePeriodItem:v5];
 
-  v6 = [(HUScheduleRuleEditorItemModule *)self editStartDatePeriodItem];
-  [v3 addObject:v6];
+  editStartDatePeriodItem = [(HUScheduleRuleEditorItemModule *)self editStartDatePeriodItem];
+  [v3 addObject:editStartDatePeriodItem];
 
   v7 = objc_alloc(MEMORY[0x277D14B38]);
   v36[0] = MEMORY[0x277D85DD0];
@@ -204,8 +204,8 @@ LABEL_3:
   v8 = [v7 initWithResultsBlock:v36];
   [(HUScheduleRuleEditorItemModule *)self setEditEndDatePeriodItem:v8];
 
-  v9 = [(HUScheduleRuleEditorItemModule *)self editEndDatePeriodItem];
-  [v3 addObject:v9];
+  editEndDatePeriodItem = [(HUScheduleRuleEditorItemModule *)self editEndDatePeriodItem];
+  [v3 addObject:editEndDatePeriodItem];
 
   v10 = objc_alloc(MEMORY[0x277D14B38]);
   v34[0] = MEMORY[0x277D85DD0];
@@ -216,8 +216,8 @@ LABEL_3:
   v11 = [v10 initWithResultsBlock:v34];
   [(HUScheduleRuleEditorItemModule *)self setAllDayItem:v11];
 
-  v12 = [(HUScheduleRuleEditorItemModule *)self allDayItem];
-  [v3 addObject:v12];
+  allDayItem = [(HUScheduleRuleEditorItemModule *)self allDayItem];
+  [v3 addObject:allDayItem];
 
   v13 = objc_alloc(MEMORY[0x277D14B38]);
   v32[0] = MEMORY[0x277D85DD0];
@@ -228,8 +228,8 @@ LABEL_3:
   v14 = [v13 initWithResultsBlock:v32];
   [(HUScheduleRuleEditorItemModule *)self setEditTimeOfDayItem:v14];
 
-  v15 = [(HUScheduleRuleEditorItemModule *)self editTimeOfDayItem];
-  [v3 addObject:v15];
+  editTimeOfDayItem = [(HUScheduleRuleEditorItemModule *)self editTimeOfDayItem];
+  [v3 addObject:editTimeOfDayItem];
 
   v16 = objc_alloc(MEMORY[0x277D14B38]);
   v30[0] = MEMORY[0x277D85DD0];
@@ -240,8 +240,8 @@ LABEL_3:
   v17 = [v16 initWithResultsBlock:v30];
   [(HUScheduleRuleEditorItemModule *)self setEditRecurrenceItem:v17];
 
-  v18 = [(HUScheduleRuleEditorItemModule *)self editRecurrenceItem];
-  [v3 addObject:v18];
+  editRecurrenceItem = [(HUScheduleRuleEditorItemModule *)self editRecurrenceItem];
+  [v3 addObject:editRecurrenceItem];
 
   v19 = objc_alloc(MEMORY[0x277D14B38]);
   v25 = MEMORY[0x277D85DD0];
@@ -252,8 +252,8 @@ LABEL_3:
   v20 = [v19 initWithResultsBlock:&v25];
   [(HUScheduleRuleEditorItemModule *)self setRemoveRuleItem:v20, v25, v26, v27, v28];
 
-  v21 = [(HUScheduleRuleEditorItemModule *)self removeRuleItem];
-  [v3 addObject:v21];
+  removeRuleItem = [(HUScheduleRuleEditorItemModule *)self removeRuleItem];
+  [v3 addObject:removeRuleItem];
 
   v22 = objc_alloc(MEMORY[0x277D14B40]);
   v23 = [MEMORY[0x277CBEB98] setWithArray:v3];
@@ -596,14 +596,14 @@ id __53__HUScheduleRuleEditorItemModule__buildItemProviders__block_invoke_6(uint
 - (id)_localizedNaturalLanguageStringForRecurrence
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-  v5 = [v4 isWeekDayRule];
+  editedScheduleRule = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+  isWeekDayRule = [editedScheduleRule isWeekDayRule];
 
-  if (v5)
+  if (isWeekDayRule)
   {
-    v6 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-    v7 = [v6 weekDayRule];
-    [v7 daysOfTheWeek];
+    editedScheduleRule2 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+    weekDayRule = [editedScheduleRule2 weekDayRule];
+    [weekDayRule daysOfTheWeek];
     v8 = HMDaysOfTheWeekToDateComponents();
 
     v9 = [MEMORY[0x277CD1EB0] hf_recurrenceNaturalLanguageStringWithRecurrences:v8];
@@ -624,7 +624,7 @@ id __53__HUScheduleRuleEditorItemModule__buildItemProviders__block_invoke_6(uint
     {
       v14 = NSStringFromSelector(a2);
       v16 = 138412546;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v14;
       _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%@:%@ Not a weekDayRule. Unabled to determine natural language string for recurrence.", &v16, 0x16u);
@@ -636,182 +636,182 @@ id __53__HUScheduleRuleEditorItemModule__buildItemProviders__block_invoke_6(uint
   return v12;
 }
 
-- (void)updateScheduleBuilder:(id)a3
+- (void)updateScheduleBuilder:(id)builder
 {
-  v5 = a3;
-  [(HUScheduleRuleEditorItemModule *)self setScheduleBuilder:v5];
-  -[HUScheduleRuleEditorItemModule setScheduleType:](self, "setScheduleType:", [v5 estimatedScheduleType]);
-  v6 = [v5 rules];
+  builderCopy = builder;
+  [(HUScheduleRuleEditorItemModule *)self setScheduleBuilder:builderCopy];
+  -[HUScheduleRuleEditorItemModule setScheduleType:](self, "setScheduleType:", [builderCopy estimatedScheduleType]);
+  rules = [builderCopy rules];
 
-  v7 = [v6 allObjects];
-  v8 = [v7 firstObject];
-  [(HUScheduleRuleEditorItemModule *)self setEditedScheduleRule:v8];
+  allObjects = [rules allObjects];
+  firstObject = [allObjects firstObject];
+  [(HUScheduleRuleEditorItemModule *)self setEditedScheduleRule:firstObject];
 
-  v9 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-  v10 = [v9 copy];
+  editedScheduleRule = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+  v10 = [editedScheduleRule copy];
   [(HUScheduleRuleEditorItemModule *)self setExistingScheduleRule:v10];
 
   [(HUScheduleRuleEditorItemModule *)self setEditedStartTime:0];
   [(HUScheduleRuleEditorItemModule *)self setEditedEndTime:0];
   v11 = MEMORY[0x277D14788];
-  v12 = [(HUScheduleRuleEditorItemModule *)self itemProviders];
-  v15 = [v11 requestToReloadItemProviders:v12 senderSelector:a2];
+  itemProviders = [(HUScheduleRuleEditorItemModule *)self itemProviders];
+  v15 = [v11 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v13 = [(HFItemModule *)self itemUpdater];
-  v14 = [v13 performItemUpdateRequest:v15];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v14 = [itemUpdater performItemUpdateRequest:v15];
 }
 
-- (BOOL)updateScheduleRuleStartDate:(id)a3
+- (BOOL)updateScheduleRuleStartDate:(id)date
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dateCopy = date;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-    v9 = [v8 yearDayRule];
-    v10 = [v9 validFrom];
+    editedScheduleRule = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+    yearDayRule = [editedScheduleRule yearDayRule];
+    validFrom = [yearDayRule validFrom];
     v23 = 138413058;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
     v26 = v7;
     v27 = 2112;
-    v28 = v10;
+    v28 = validFrom;
     v29 = 2112;
-    v30 = v5;
+    v30 = dateCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ Requesting to update start date from %@ to %@", &v23, 0x2Au);
   }
 
   v11 = objc_alloc(MEMORY[0x277CD1F48]);
-  v12 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-  v13 = [v12 yearDayRule];
-  v14 = [v13 validUntil];
-  v15 = [v11 initWithValidFrom:v5 validUntil:v14];
+  editedScheduleRule2 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+  yearDayRule2 = [editedScheduleRule2 yearDayRule];
+  validUntil = [yearDayRule2 validUntil];
+  v15 = [v11 initWithValidFrom:dateCopy validUntil:validUntil];
 
   v16 = [objc_alloc(MEMORY[0x277D14A20]) initWithYearDayRule:v15];
   [(HUScheduleRuleEditorItemModule *)self setEditedScheduleRule:v16];
   v17 = MEMORY[0x277D14788];
-  v18 = [(HUScheduleRuleEditorItemModule *)self itemProviders];
-  v19 = [v17 requestToReloadItemProviders:v18 senderSelector:a2];
+  itemProviders = [(HUScheduleRuleEditorItemModule *)self itemProviders];
+  v19 = [v17 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v20 = [(HFItemModule *)self itemUpdater];
-  v21 = [v20 performItemUpdateRequest:v19];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v21 = [itemUpdater performItemUpdateRequest:v19];
 
   return 1;
 }
 
-- (BOOL)updateScheduleRuleEndDate:(id)a3
+- (BOOL)updateScheduleRuleEndDate:(id)date
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dateCopy = date;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-    v9 = [v8 yearDayRule];
-    v10 = [v9 validUntil];
+    editedScheduleRule = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+    yearDayRule = [editedScheduleRule yearDayRule];
+    validUntil = [yearDayRule validUntil];
     v23 = 138413058;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
     v26 = v7;
     v27 = 2112;
-    v28 = v10;
+    v28 = validUntil;
     v29 = 2112;
-    v30 = v5;
+    v30 = dateCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ Requesting to update end date from %@ to %@", &v23, 0x2Au);
   }
 
   v11 = objc_alloc(MEMORY[0x277CD1F48]);
-  v12 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-  v13 = [v12 yearDayRule];
-  v14 = [v13 validFrom];
-  v15 = [v11 initWithValidFrom:v14 validUntil:v5];
+  editedScheduleRule2 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+  yearDayRule2 = [editedScheduleRule2 yearDayRule];
+  validFrom = [yearDayRule2 validFrom];
+  v15 = [v11 initWithValidFrom:validFrom validUntil:dateCopy];
 
   v16 = [objc_alloc(MEMORY[0x277D14A20]) initWithYearDayRule:v15];
   [(HUScheduleRuleEditorItemModule *)self setEditedScheduleRule:v16];
   v17 = MEMORY[0x277D14788];
-  v18 = [(HUScheduleRuleEditorItemModule *)self itemProviders];
-  v19 = [v17 requestToReloadItemProviders:v18 senderSelector:a2];
+  itemProviders = [(HUScheduleRuleEditorItemModule *)self itemProviders];
+  v19 = [v17 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v20 = [(HFItemModule *)self itemUpdater];
-  v21 = [v20 performItemUpdateRequest:v19];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v21 = [itemUpdater performItemUpdateRequest:v19];
 
   return 1;
 }
 
-- (BOOL)updateScheduleRuleStartTime:(id)a3
+- (BOOL)updateScheduleRuleStartTime:(id)time
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  timeCopy = time;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-    v9 = [v8 weekDayRule];
-    v10 = [v9 startTime];
+    editedScheduleRule = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+    weekDayRule = [editedScheduleRule weekDayRule];
+    startTime = [weekDayRule startTime];
     v12 = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v7;
     v16 = 2112;
-    v17 = v10;
+    v17 = startTime;
     v18 = 2112;
-    v19 = v5;
+    v19 = timeCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ Requesting to update start time from %@ to %@", &v12, 0x2Au);
   }
 
-  [(HUScheduleRuleEditorItemModule *)self setEditedStartTime:v5];
+  [(HUScheduleRuleEditorItemModule *)self setEditedStartTime:timeCopy];
   return 1;
 }
 
-- (BOOL)updateScheduleRuleEndTime:(id)a3
+- (BOOL)updateScheduleRuleEndTime:(id)time
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  timeCopy = time;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-    v9 = [v8 weekDayRule];
-    v10 = [v9 endTime];
+    editedScheduleRule = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+    weekDayRule = [editedScheduleRule weekDayRule];
+    endTime = [weekDayRule endTime];
     v12 = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v7;
     v16 = 2112;
-    v17 = v10;
+    v17 = endTime;
     v18 = 2112;
-    v19 = v5;
+    v19 = timeCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ Requesting to update end time from %@ to %@", &v12, 0x2Au);
   }
 
-  [(HUScheduleRuleEditorItemModule *)self setEditedEndTime:v5];
+  [(HUScheduleRuleEditorItemModule *)self setEditedEndTime:timeCopy];
   return 1;
 }
 
-- (BOOL)updateScheduleRuleRecurrences:(id)a3
+- (BOOL)updateScheduleRuleRecurrences:(id)recurrences
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && ([v5 hmf_isEmpty] & 1) == 0)
+  recurrencesCopy = recurrences;
+  v6 = recurrencesCopy;
+  if (recurrencesCopy && ([recurrencesCopy hmf_isEmpty] & 1) == 0)
   {
     v8 = HMDaysOfTheWeekFromDateComponents();
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = NSStringFromSelector(a2);
-      v11 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-      v12 = [v11 weekDayRule];
-      [v12 daysOfTheWeek];
+      editedScheduleRule = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+      weekDayRule = [editedScheduleRule weekDayRule];
+      [weekDayRule daysOfTheWeek];
       v13 = HMDaysOfTheWeekToString();
       v14 = HMDaysOfTheWeekToString();
       *buf = 138413314;
-      v32 = self;
+      selfCopy = self;
       v33 = 2112;
       v34 = v10;
       v35 = 2112;
@@ -824,23 +824,23 @@ id __53__HUScheduleRuleEditorItemModule__buildItemProviders__block_invoke_6(uint
     }
 
     v15 = objc_alloc(MEMORY[0x277CD1F20]);
-    v16 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-    v17 = [v16 weekDayRule];
-    v18 = [v17 startTime];
-    v19 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-    v20 = [v19 weekDayRule];
-    [v20 endTime];
+    editedScheduleRule2 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+    weekDayRule2 = [editedScheduleRule2 weekDayRule];
+    startTime = [weekDayRule2 startTime];
+    editedScheduleRule3 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+    weekDayRule3 = [editedScheduleRule3 weekDayRule];
+    [weekDayRule3 endTime];
     v21 = v30 = a2;
-    v22 = [v15 initWithStartTime:v18 endTime:v21 daysOfTheWeek:v8];
+    v22 = [v15 initWithStartTime:startTime endTime:v21 daysOfTheWeek:v8];
 
     v23 = [objc_alloc(MEMORY[0x277D14A20]) initWithWeekDayRule:v22];
     [(HUScheduleRuleEditorItemModule *)self setEditedScheduleRule:v23];
     v24 = MEMORY[0x277D14788];
-    v25 = [(HUScheduleRuleEditorItemModule *)self itemProviders];
-    v26 = [v24 requestToReloadItemProviders:v25 senderSelector:v30];
+    itemProviders = [(HUScheduleRuleEditorItemModule *)self itemProviders];
+    v26 = [v24 requestToReloadItemProviders:itemProviders senderSelector:v30];
 
-    v27 = [(HFItemModule *)self itemUpdater];
-    v28 = [v27 performItemUpdateRequest:v26];
+    itemUpdater = [(HFItemModule *)self itemUpdater];
+    v28 = [itemUpdater performItemUpdateRequest:v26];
 
     v7 = 1;
   }
@@ -853,10 +853,10 @@ id __53__HUScheduleRuleEditorItemModule__buildItemProviders__block_invoke_6(uint
   return v7;
 }
 
-- (void)updateAllDayToggle:(BOOL)a3
+- (void)updateAllDayToggle:(BOOL)toggle
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (toggle)
   {
     v5 = [MEMORY[0x277CBEAB8] hf_componentsWithHour:0 minute:0];
     v6 = MEMORY[0x277CBEAB8];
@@ -876,16 +876,16 @@ id __53__HUScheduleRuleEditorItemModule__buildItemProviders__block_invoke_6(uint
   [(HUScheduleRuleEditorItemModule *)self updateScheduleRuleStartTime:v5];
   [(HUScheduleRuleEditorItemModule *)self updateScheduleRuleEndTime:v9];
   v10 = objc_alloc(MEMORY[0x277CD1F20]);
-  v11 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
-  v12 = [v11 weekDayRule];
-  v13 = [v10 initWithStartTime:v5 endTime:v9 daysOfTheWeek:{objc_msgSend(v12, "daysOfTheWeek")}];
+  editedScheduleRule = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+  weekDayRule = [editedScheduleRule weekDayRule];
+  v13 = [v10 initWithStartTime:v5 endTime:v9 daysOfTheWeek:{objc_msgSend(weekDayRule, "daysOfTheWeek")}];
 
   v14 = HFLogForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = NSStringFromSelector(a2);
     v25 = 138412802;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2112;
     v28 = v15;
     v29 = 2112;
@@ -898,13 +898,13 @@ id __53__HUScheduleRuleEditorItemModule__buildItemProviders__block_invoke_6(uint
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = NSStringFromSelector(a2);
-    v19 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
+    editedScheduleRule2 = [(HUScheduleRuleEditorItemModule *)self editedScheduleRule];
     v25 = 138413058;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2112;
     v28 = v18;
     v29 = 2112;
-    v30 = v19;
+    v30 = editedScheduleRule2;
     v31 = 2112;
     v32 = v16;
     _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "%@:%@ Updating from schedule rule %@ to %@", &v25, 0x2Au);
@@ -912,11 +912,11 @@ id __53__HUScheduleRuleEditorItemModule__buildItemProviders__block_invoke_6(uint
 
   [(HUScheduleRuleEditorItemModule *)self setEditedScheduleRule:v16];
   v20 = MEMORY[0x277D14788];
-  v21 = [(HUScheduleRuleEditorItemModule *)self itemProviders];
-  v22 = [v20 requestToReloadItemProviders:v21 senderSelector:a2];
+  itemProviders = [(HUScheduleRuleEditorItemModule *)self itemProviders];
+  v22 = [v20 requestToReloadItemProviders:itemProviders senderSelector:a2];
 
-  v23 = [(HFItemModule *)self itemUpdater];
-  v24 = [v23 performItemUpdateRequest:v22];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v24 = [itemUpdater performItemUpdateRequest:v22];
 }
 
 - (id)_datePeriodFormatter

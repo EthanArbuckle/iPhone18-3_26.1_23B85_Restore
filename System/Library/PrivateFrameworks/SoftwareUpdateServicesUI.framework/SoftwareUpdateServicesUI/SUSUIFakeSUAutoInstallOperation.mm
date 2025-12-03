@@ -16,9 +16,9 @@
 {
   if (!self->_uuid)
   {
-    v2 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = self->_uuid;
-    self->_uuid = v2;
+    self->_uuid = uUID;
     MEMORY[0x277D82BD8](uuid);
   }
 

@@ -1,13 +1,13 @@
 @interface BackgroundTaskController
 - (NSDictionary)stateDictionary;
-- (void)resetWithReason:(id)a3;
+- (void)resetWithReason:(id)reason;
 @end
 
 @implementation BackgroundTaskController
 
-- (void)resetWithReason:(id)a3
+- (void)resetWithReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
 
   sub_1C5DB9530();
 }

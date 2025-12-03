@@ -6,7 +6,7 @@
 
 - (NSFetchRequest)persistentStoreRequest
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNAbstractMethodException();
   objc_exception_throw(v3);
 }

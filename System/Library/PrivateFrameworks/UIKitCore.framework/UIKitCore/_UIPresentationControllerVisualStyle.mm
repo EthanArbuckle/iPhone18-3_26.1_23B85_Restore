@@ -1,17 +1,17 @@
 @interface _UIPresentationControllerVisualStyle
-- (_UIPresentationControllerVisualStyle)initWithPresentationController:(id)a3;
+- (_UIPresentationControllerVisualStyle)initWithPresentationController:(id)controller;
 @end
 
 @implementation _UIPresentationControllerVisualStyle
 
-- (_UIPresentationControllerVisualStyle)initWithPresentationController:(id)a3
+- (_UIPresentationControllerVisualStyle)initWithPresentationController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = _UIPresentationControllerVisualStyle;
   result = [(_UIPresentationControllerVisualStyle *)&v5 init];
   if (result)
   {
-    result->_presentationController = a3;
+    result->_presentationController = controller;
   }
 
   return result;

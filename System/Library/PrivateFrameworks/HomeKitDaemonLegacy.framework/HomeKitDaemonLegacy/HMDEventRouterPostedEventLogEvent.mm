@@ -1,19 +1,19 @@
 @interface HMDEventRouterPostedEventLogEvent
-- (HMDEventRouterPostedEventLogEvent)initWithTopic:(id)a3;
+- (HMDEventRouterPostedEventLogEvent)initWithTopic:(id)topic;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
 @implementation HMDEventRouterPostedEventLogEvent
 
-- (HMDEventRouterPostedEventLogEvent)initWithTopic:(id)a3
+- (HMDEventRouterPostedEventLogEvent)initWithTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   v9.receiver = self;
   v9.super_class = HMDEventRouterPostedEventLogEvent;
   v5 = [(HMMLogEvent *)&v9 init];
   if (v5)
   {
-    v6 = [HMDEventRouterLogEventUtilities sanitizedTopicFromTopic:v4];
+    v6 = [HMDEventRouterLogEventUtilities sanitizedTopicFromTopic:topicCopy];
     topic = v5->_topic;
     v5->_topic = v6;
   }
@@ -25,8 +25,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"eventTopic";
-  v2 = [(HMDEventRouterPostedEventLogEvent *)self topic];
-  v7[0] = v2;
+  topic = [(HMDEventRouterPostedEventLogEvent *)self topic];
+  v7[0] = topic;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];

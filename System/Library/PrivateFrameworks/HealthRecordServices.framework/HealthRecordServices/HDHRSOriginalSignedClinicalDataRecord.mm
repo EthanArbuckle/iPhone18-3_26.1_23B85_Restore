@@ -1,73 +1,73 @@
 @interface HDHRSOriginalSignedClinicalDataRecord
-- (BOOL)isEqual:(id)a3;
-- (HDHRSOriginalSignedClinicalDataRecord)initWithCoder:(id)a3;
-- (HDHRSOriginalSignedClinicalDataRecord)initWithRawContent:(id)a3 sourceType:(int64_t)a4 sourceURL:(id)a5 issuerIdentifier:(id)a6 credentialTypes:(id)a7 syncIdentifier:(id)a8 metadata:(id)a9 receivedDate:(id)a10 receivedDateTimeZone:(id)a11 signatureStatus:(int64_t)a12;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDHRSOriginalSignedClinicalDataRecord)initWithCoder:(id)coder;
+- (HDHRSOriginalSignedClinicalDataRecord)initWithRawContent:(id)content sourceType:(int64_t)type sourceURL:(id)l issuerIdentifier:(id)identifier credentialTypes:(id)types syncIdentifier:(id)syncIdentifier metadata:(id)metadata receivedDate:(id)self0 receivedDateTimeZone:(id)self1 signatureStatus:(int64_t)self2;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDHRSOriginalSignedClinicalDataRecord
 
-- (HDHRSOriginalSignedClinicalDataRecord)initWithRawContent:(id)a3 sourceType:(int64_t)a4 sourceURL:(id)a5 issuerIdentifier:(id)a6 credentialTypes:(id)a7 syncIdentifier:(id)a8 metadata:(id)a9 receivedDate:(id)a10 receivedDateTimeZone:(id)a11 signatureStatus:(int64_t)a12
+- (HDHRSOriginalSignedClinicalDataRecord)initWithRawContent:(id)content sourceType:(int64_t)type sourceURL:(id)l issuerIdentifier:(id)identifier credentialTypes:(id)types syncIdentifier:(id)syncIdentifier metadata:(id)metadata receivedDate:(id)self0 receivedDateTimeZone:(id)self1 signatureStatus:(int64_t)self2
 {
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
+  contentCopy = content;
+  lCopy = l;
+  identifierCopy = identifier;
+  typesCopy = types;
+  syncIdentifierCopy = syncIdentifier;
+  metadataCopy = metadata;
+  dateCopy = date;
+  zoneCopy = zone;
   v44.receiver = self;
   v44.super_class = HDHRSOriginalSignedClinicalDataRecord;
   v26 = [(HDHRSOriginalSignedClinicalDataRecord *)&v44 init];
   if (v26)
   {
-    v27 = [v18 copy];
+    v27 = [contentCopy copy];
     rawContent = v26->_rawContent;
     v26->_rawContent = v27;
 
-    v26->_sourceType = a4;
-    v29 = [v19 copy];
+    v26->_sourceType = type;
+    v29 = [lCopy copy];
     sourceURL = v26->_sourceURL;
     v26->_sourceURL = v29;
 
-    v31 = [v20 copy];
+    v31 = [identifierCopy copy];
     issuerIdentifier = v26->_issuerIdentifier;
     v26->_issuerIdentifier = v31;
 
-    v33 = [v21 copy];
+    v33 = [typesCopy copy];
     credentialTypes = v26->_credentialTypes;
     v26->_credentialTypes = v33;
 
-    v35 = [v22 copy];
+    v35 = [syncIdentifierCopy copy];
     syncIdentifier = v26->_syncIdentifier;
     v26->_syncIdentifier = v35;
 
-    v37 = [v23 copy];
+    v37 = [metadataCopy copy];
     metadata = v26->_metadata;
     v26->_metadata = v37;
 
-    v39 = [v24 copy];
+    v39 = [dateCopy copy];
     receivedDate = v26->_receivedDate;
     v26->_receivedDate = v39;
 
-    v41 = [v25 copy];
+    v41 = [zoneCopy copy];
     receivedDateTimeZone = v26->_receivedDateTimeZone;
     v26->_receivedDateTimeZone = v41;
 
-    v26->_signatureStatus = a12;
+    v26->_signatureStatus = status;
   }
 
   return v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -78,8 +78,8 @@ LABEL_58:
     }
 
     rawContent = self->_rawContent;
-    v9 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 rawContent];
-    if (rawContent == v9)
+    rawContent = [(HDHRSOriginalSignedClinicalDataRecord *)v7 rawContent];
+    if (rawContent == rawContent)
     {
       sourceType = self->_sourceType;
       if (sourceType == [(HDHRSOriginalSignedClinicalDataRecord *)v7 sourceType])
@@ -90,13 +90,13 @@ LABEL_58:
 
     else
     {
-      v10 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 rawContent];
-      if (v10)
+      rawContent2 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 rawContent];
+      if (rawContent2)
       {
-        v11 = v10;
+        v11 = rawContent2;
         v12 = self->_rawContent;
-        v3 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 rawContent];
-        if (([(NSData *)v12 isEqual:v3]& 1) == 0 || (v13 = self->_sourceType, v13 != [(HDHRSOriginalSignedClinicalDataRecord *)v7 sourceType]))
+        rawContent3 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 rawContent];
+        if (([(NSData *)v12 isEqual:rawContent3]& 1) == 0 || (v13 = self->_sourceType, v13 != [(HDHRSOriginalSignedClinicalDataRecord *)v7 sourceType]))
         {
           v14 = 0;
 LABEL_56:
@@ -107,21 +107,21 @@ LABEL_56:
         v97 = v11;
 LABEL_11:
         sourceURL = self->_sourceURL;
-        v17 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 sourceURL];
-        if (sourceURL != v17)
+        sourceURL = [(HDHRSOriginalSignedClinicalDataRecord *)v7 sourceURL];
+        if (sourceURL != sourceURL)
         {
-          v18 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 sourceURL];
-          if (!v18)
+          sourceURL2 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 sourceURL];
+          if (!sourceURL2)
           {
             goto LABEL_54;
           }
 
-          v96 = v18;
+          v96 = sourceURL2;
           v19 = self->_sourceURL;
-          v20 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 sourceURL];
+          sourceURL3 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 sourceURL];
           v21 = v19;
-          v22 = v20;
-          if (([(NSURL *)v21 isEqual:v20]& 1) == 0)
+          v22 = sourceURL3;
+          if (([(NSURL *)v21 isEqual:sourceURL3]& 1) == 0)
           {
 
 LABEL_53:
@@ -132,29 +132,29 @@ LABEL_53:
         }
 
         issuerIdentifier = self->_issuerIdentifier;
-        v24 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 issuerIdentifier];
-        if (issuerIdentifier == v24)
+        issuerIdentifier = [(HDHRSOriginalSignedClinicalDataRecord *)v7 issuerIdentifier];
+        if (issuerIdentifier == issuerIdentifier)
         {
           v95 = issuerIdentifier;
         }
 
         else
         {
-          v25 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 issuerIdentifier];
-          if (!v25)
+          issuerIdentifier2 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 issuerIdentifier];
+          if (!issuerIdentifier2)
           {
             goto LABEL_51;
           }
 
           v95 = issuerIdentifier;
-          v88 = v3;
-          v87 = v25;
-          v26 = v17;
-          v27 = v24;
+          v88 = rawContent3;
+          v87 = issuerIdentifier2;
+          v26 = sourceURL;
+          v27 = issuerIdentifier;
           v28 = sourceURL;
           v29 = self->_issuerIdentifier;
-          v30 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 issuerIdentifier];
-          if (![(NSString *)v29 isEqualToString:v30])
+          issuerIdentifier3 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 issuerIdentifier];
+          if (![(NSString *)v29 isEqualToString:issuerIdentifier3])
           {
 
             if (v28 != v26)
@@ -163,8 +163,8 @@ LABEL_53:
 
             v14 = 0;
             v11 = v97;
-            v3 = v88;
-            if (rawContent == v9)
+            rawContent3 = v88;
+            if (rawContent == rawContent)
             {
               goto LABEL_57;
             }
@@ -173,22 +173,22 @@ LABEL_53:
           }
 
           sourceURL = v28;
-          v24 = v27;
-          v17 = v26;
-          v84 = v30;
-          v3 = v88;
+          issuerIdentifier = v27;
+          sourceURL = v26;
+          v84 = issuerIdentifier3;
+          rawContent3 = v88;
         }
 
         credentialTypes = self->_credentialTypes;
-        v94 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 credentialTypes];
+        credentialTypes = [(HDHRSOriginalSignedClinicalDataRecord *)v7 credentialTypes];
         v86 = credentialTypes;
-        if (credentialTypes != v94)
+        if (credentialTypes != credentialTypes)
         {
-          v32 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 credentialTypes];
-          if (!v32)
+          credentialTypes2 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 credentialTypes];
+          if (!credentialTypes2)
           {
 
-            if (v95 == v24)
+            if (v95 == issuerIdentifier)
             {
               goto LABEL_51;
             }
@@ -196,23 +196,23 @@ LABEL_53:
             goto LABEL_50;
           }
 
-          v83 = v32;
+          v83 = credentialTypes2;
           v89 = sourceURL;
-          v33 = v3;
+          v33 = rawContent3;
           v34 = self->_credentialTypes;
-          v35 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 credentialTypes];
+          credentialTypes3 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 credentialTypes];
           v36 = v34;
-          v37 = v35;
-          if (![(NSArray *)v36 isEqualToArray:v35])
+          v37 = credentialTypes3;
+          if (![(NSArray *)v36 isEqualToArray:credentialTypes3])
           {
 
-            v3 = v33;
-            if (v95 != v24)
+            rawContent3 = v33;
+            if (v95 != issuerIdentifier)
             {
             }
 
             v11 = v97;
-            if (v89 == v17)
+            if (v89 == sourceURL)
             {
               goto LABEL_45;
             }
@@ -221,7 +221,7 @@ LABEL_53:
           }
 
           v80 = v37;
-          v3 = v33;
+          rawContent3 = v33;
           sourceURL = v89;
         }
 
@@ -233,20 +233,20 @@ LABEL_53:
           goto LABEL_37;
         }
 
-        v39 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 syncIdentifier];
-        if (v39)
+        syncIdentifier = [(HDHRSOriginalSignedClinicalDataRecord *)v7 syncIdentifier];
+        if (syncIdentifier)
         {
-          v79 = v39;
+          v79 = syncIdentifier;
           v90 = sourceURL;
-          v40 = v3;
+          v40 = rawContent3;
           v41 = self->_syncIdentifier;
-          v42 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 syncIdentifier];
+          syncIdentifier2 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 syncIdentifier];
           v43 = v41;
-          v44 = v42;
-          if (([(NSUUID *)v43 isEqual:v42]& 1) != 0)
+          v44 = syncIdentifier2;
+          if (([(NSUUID *)v43 isEqual:syncIdentifier2]& 1) != 0)
           {
             v77 = v44;
-            v3 = v40;
+            rawContent3 = v40;
             sourceURL = v90;
 LABEL_37:
             metadata = self->_metadata;
@@ -254,54 +254,54 @@ LABEL_37:
             v81 = v78 = metadata;
             if (metadata != v81)
             {
-              v46 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 metadata];
-              if (!v46)
+              metadata = [(HDHRSOriginalSignedClinicalDataRecord *)v7 metadata];
+              if (!metadata)
               {
                 v14 = 0;
                 goto LABEL_82;
               }
 
-              v76 = v46;
+              v76 = metadata;
               v47 = v84;
-              v91 = v17;
-              v48 = v24;
+              v91 = sourceURL;
+              v48 = issuerIdentifier;
               v49 = sourceURL;
-              v50 = v3;
+              v50 = rawContent3;
               v51 = self->_metadata;
-              v75 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 metadata];
+              metadata2 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 metadata];
               if (![(NSDictionary *)v51 isEqual:?])
               {
                 v14 = 0;
-                v3 = v50;
+                rawContent3 = v50;
                 sourceURL = v49;
-                v24 = v48;
-                v17 = v91;
+                issuerIdentifier = v48;
+                sourceURL = v91;
 LABEL_78:
                 v84 = v47;
 
                 goto LABEL_82;
               }
 
-              v3 = v50;
+              rawContent3 = v50;
               sourceURL = v49;
-              v24 = v48;
-              v17 = v91;
+              issuerIdentifier = v48;
+              sourceURL = v91;
             }
 
             receivedDate = self->_receivedDate;
-            v54 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDate];
+            receivedDate = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDate];
             v74 = receivedDate;
-            v55 = receivedDate == v54;
-            v56 = v54;
+            v55 = receivedDate == receivedDate;
+            v56 = receivedDate;
             if (v55)
             {
-              v92 = v3;
+              v92 = rawContent3;
             }
 
             else
             {
-              v57 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDate];
-              if (!v57)
+              receivedDate2 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDate];
+              if (!receivedDate2)
               {
 LABEL_91:
 
@@ -315,37 +315,37 @@ LABEL_94:
                 {
                 }
 
-                if (v86 != v94)
+                if (v86 != credentialTypes)
                 {
                 }
 
                 goto LABEL_100;
               }
 
-              v73 = v57;
-              v92 = v3;
+              v73 = receivedDate2;
+              v92 = rawContent3;
               v58 = self->_receivedDate;
-              v72 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDate];
+              receivedDate3 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDate];
               if (![(NSDate *)v58 isEqualToDate:?])
               {
                 v14 = 0;
 LABEL_76:
-                v3 = v92;
+                rawContent3 = v92;
                 goto LABEL_80;
               }
             }
 
             receivedDateTimeZone = self->_receivedDateTimeZone;
-            v60 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDateTimeZone];
-            v55 = receivedDateTimeZone == v60;
-            v61 = v60;
+            receivedDateTimeZone = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDateTimeZone];
+            v55 = receivedDateTimeZone == receivedDateTimeZone;
+            v61 = receivedDateTimeZone;
             if (v55)
             {
-              v71 = v60;
+              v71 = receivedDateTimeZone;
               signatureStatus = self->_signatureStatus;
               v14 = signatureStatus == [(HDHRSOriginalSignedClinicalDataRecord *)v7 signatureStatus];
 
-              v3 = v92;
+              rawContent3 = v92;
               if (v74 != v56)
               {
 LABEL_80:
@@ -360,15 +360,15 @@ LABEL_80:
 
             else
             {
-              v62 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDateTimeZone];
-              if (v62)
+              receivedDateTimeZone2 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDateTimeZone];
+              if (receivedDateTimeZone2)
               {
-                v69 = v62;
+                v69 = receivedDateTimeZone2;
                 v70 = v61;
                 v63 = self->_receivedDateTimeZone;
-                v64 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDateTimeZone];
+                receivedDateTimeZone3 = [(HDHRSOriginalSignedClinicalDataRecord *)v7 receivedDateTimeZone];
                 v65 = v63;
-                v66 = v64;
+                v66 = receivedDateTimeZone3;
                 if ([(NSTimeZone *)v65 isEqual:?])
                 {
                   v67 = self->_signatureStatus;
@@ -379,7 +379,7 @@ LABEL_80:
                     goto LABEL_76;
                   }
 
-                  v3 = v92;
+                  rawContent3 = v92;
                   if (v78 != v81)
                   {
                     v47 = v84;
@@ -392,23 +392,23 @@ LABEL_82:
                   {
                   }
 
-                  if (v86 != v94)
+                  if (v86 != credentialTypes)
                   {
                   }
 
 LABEL_100:
 
-                  if (v95 != v24)
+                  if (v95 != issuerIdentifier)
                   {
                   }
 
-                  if (sourceURL != v17)
+                  if (sourceURL != sourceURL)
                   {
                   }
 
 LABEL_55:
                   v11 = v97;
-                  if (rawContent != v9)
+                  if (rawContent != rawContent)
                   {
                     goto LABEL_56;
                   }
@@ -426,33 +426,33 @@ LABEL_57:
               if (v74 != v56)
               {
 
-                v3 = v92;
+                rawContent3 = v92;
                 goto LABEL_91;
               }
 
               v14 = 0;
-              v3 = v92;
+              rawContent3 = v92;
             }
 
             goto LABEL_94;
           }
 
-          v3 = v40;
-          if (v86 != v94)
+          rawContent3 = v40;
+          if (v86 != credentialTypes)
           {
           }
 
           v11 = v97;
-          if (v95 != v24)
+          if (v95 != issuerIdentifier)
           {
           }
 
-          if (v90 == v17)
+          if (v90 == sourceURL)
           {
 LABEL_45:
 
             v14 = 0;
-            if (rawContent == v9)
+            if (rawContent == rawContent)
             {
               goto LABEL_57;
             }
@@ -465,15 +465,15 @@ LABEL_44:
           goto LABEL_45;
         }
 
-        if (v86 != v94)
+        if (v86 != credentialTypes)
         {
         }
 
-        if (v95 == v24)
+        if (v95 == issuerIdentifier)
         {
 LABEL_51:
 
-          if (sourceURL != v17)
+          if (sourceURL != sourceURL)
           {
 
             goto LABEL_53;
@@ -501,41 +501,41 @@ LABEL_59:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rawContent = self->_rawContent;
-  v5 = a3;
-  [v5 encodeObject:rawContent forKey:@"RawContent"];
-  [v5 encodeInteger:self->_sourceType forKey:@"SourceType"];
-  [v5 encodeObject:self->_sourceURL forKey:@"SourceURL"];
-  [v5 encodeObject:self->_issuerIdentifier forKey:@"IssuerIdentifier"];
-  [v5 encodeObject:self->_credentialTypes forKey:@"CredentialTypes"];
-  [v5 encodeObject:self->_syncIdentifier forKey:@"SyncIdentifier"];
-  [v5 encodeObject:self->_metadata forKey:@"Metadata"];
-  [v5 encodeObject:self->_receivedDate forKey:@"ReceivedDate"];
-  [v5 encodeObject:self->_receivedDateTimeZone forKey:@"ReceivedDateTimeZone"];
-  [v5 encodeInteger:self->_signatureStatus forKey:@"SignatureStatus"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rawContent forKey:@"RawContent"];
+  [coderCopy encodeInteger:self->_sourceType forKey:@"SourceType"];
+  [coderCopy encodeObject:self->_sourceURL forKey:@"SourceURL"];
+  [coderCopy encodeObject:self->_issuerIdentifier forKey:@"IssuerIdentifier"];
+  [coderCopy encodeObject:self->_credentialTypes forKey:@"CredentialTypes"];
+  [coderCopy encodeObject:self->_syncIdentifier forKey:@"SyncIdentifier"];
+  [coderCopy encodeObject:self->_metadata forKey:@"Metadata"];
+  [coderCopy encodeObject:self->_receivedDate forKey:@"ReceivedDate"];
+  [coderCopy encodeObject:self->_receivedDateTimeZone forKey:@"ReceivedDateTimeZone"];
+  [coderCopy encodeInteger:self->_signatureStatus forKey:@"SignatureStatus"];
 }
 
-- (HDHRSOriginalSignedClinicalDataRecord)initWithCoder:(id)a3
+- (HDHRSOriginalSignedClinicalDataRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"SourceURL"] && (objc_msgSend(v4, "containsValueForKey:", @"SignatureStatus") & 1) != 0)
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"SourceURL"] && (objc_msgSend(coderCopy, "containsValueForKey:", @"SignatureStatus") & 1) != 0)
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RawContent"];
-    v6 = [v4 decodeIntegerForKey:@"SourceType"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IssuerIdentifier"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RawContent"];
+    v6 = [coderCopy decodeIntegerForKey:@"SourceType"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IssuerIdentifier"];
     v8 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SyncIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SyncIdentifier"];
     v23 = v8;
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:@"CredentialTypes"];
-    v11 = [MEMORY[0x277CBEAC0] hk_secureCodingClasses];
-    v22 = [v4 decodeObjectOfClasses:v11 forKey:@"Metadata"];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:@"CredentialTypes"];
+    hk_secureCodingClasses = [MEMORY[0x277CBEAC0] hk_secureCodingClasses];
+    v22 = [coderCopy decodeObjectOfClasses:hk_secureCodingClasses forKey:@"Metadata"];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReceivedDate"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReceivedDateTimeZone"];
-    v14 = [v4 decodeIntegerForKey:@"SignatureStatus"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReceivedDate"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReceivedDateTimeZone"];
+    v14 = [coderCopy decodeIntegerForKey:@"SignatureStatus"];
     v21 = v5;
     if (v5 && v7 && v10 && v9 && v12 && v13)
     {
@@ -544,14 +544,14 @@ LABEL_59:
       v17 = v24;
       self = [(HDHRSOriginalSignedClinicalDataRecord *)self initWithRawContent:v5 sourceType:v16 sourceURL:v24 issuerIdentifier:v7 credentialTypes:v10 syncIdentifier:v9 metadata:v22 receivedDate:v12 receivedDateTimeZone:v13 signatureStatus:v14, v5];
       v18 = v12;
-      v19 = self;
+      selfCopy = self;
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
       v18 = v12;
-      v19 = 0;
+      selfCopy = 0;
       v17 = v24;
       v15 = v22;
     }
@@ -559,11 +559,11 @@ LABEL_59:
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v19 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 @end

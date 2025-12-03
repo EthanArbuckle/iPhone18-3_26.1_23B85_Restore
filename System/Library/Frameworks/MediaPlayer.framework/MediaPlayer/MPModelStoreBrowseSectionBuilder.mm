@@ -1,26 +1,26 @@
 @interface MPModelStoreBrowseSectionBuilder
 + (id)allSupportedInternalOnlyProperties;
-+ (id)allSupportedPropertiesIncludingInternalOnlyProperties:(BOOL)a3;
-- (MPModelStoreBrowseSectionBuilder)initWithRequestedPropertySet:(id)a3;
++ (id)allSupportedPropertiesIncludingInternalOnlyProperties:(BOOL)properties;
+- (MPModelStoreBrowseSectionBuilder)initWithRequestedPropertySet:(id)set;
 - (MPPropertySet)requestedPropertySetExcludingInternalOnlyProperties;
-- (id)modelObjectWithTitle:(id)a3 loadAdditionalContentURL:(id)a4 uniformContentItemType:(int64_t)a5 isMemberOfChartSet:(BOOL)a6 isBrick:(BOOL)a7 displaysAsGridCellInCarPlay:(BOOL)a8 displayStyle:(int64_t)a9 previouslyRetrievedNestedResponse:(id)a10 onlyContainsEditorialElements:(BOOL)a11 featuredContentKind:(int64_t)a12 modelObject:(id)a13;
+- (id)modelObjectWithTitle:(id)title loadAdditionalContentURL:(id)l uniformContentItemType:(int64_t)type isMemberOfChartSet:(BOOL)set isBrick:(BOOL)brick displaysAsGridCellInCarPlay:(BOOL)play displayStyle:(int64_t)style previouslyRetrievedNestedResponse:(id)self0 onlyContainsEditorialElements:(BOOL)self1 featuredContentKind:(int64_t)self2 modelObject:(id)self3;
 @end
 
 @implementation MPModelStoreBrowseSectionBuilder
 
-- (id)modelObjectWithTitle:(id)a3 loadAdditionalContentURL:(id)a4 uniformContentItemType:(int64_t)a5 isMemberOfChartSet:(BOOL)a6 isBrick:(BOOL)a7 displaysAsGridCellInCarPlay:(BOOL)a8 displayStyle:(int64_t)a9 previouslyRetrievedNestedResponse:(id)a10 onlyContainsEditorialElements:(BOOL)a11 featuredContentKind:(int64_t)a12 modelObject:(id)a13
+- (id)modelObjectWithTitle:(id)title loadAdditionalContentURL:(id)l uniformContentItemType:(int64_t)type isMemberOfChartSet:(BOOL)set isBrick:(BOOL)brick displaysAsGridCellInCarPlay:(BOOL)play displayStyle:(int64_t)style previouslyRetrievedNestedResponse:(id)self0 onlyContainsEditorialElements:(BOOL)self1 featuredContentKind:(int64_t)self2 modelObject:(id)self3
 {
-  v13 = a6;
-  v17 = a11;
-  v18 = a3;
-  v19 = a4;
-  v20 = a10;
-  v21 = a13;
+  setCopy = set;
+  elementsCopy2 = elements;
+  titleCopy = title;
+  lCopy = l;
+  responseCopy = response;
+  objectCopy = object;
   if ((*&self->_requestedBrowseSectionProperties & 1) == 0)
   {
-    v22 = [(MPModelStoreBrowseSectionBuilder *)self requestedPropertySet];
-    v23 = [v22 properties];
-    if ([v23 containsObject:@"MPModelStoreBrowseSectionPropertyTitle"])
+    requestedPropertySet = [(MPModelStoreBrowseSectionBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelStoreBrowseSectionPropertyTitle"])
     {
       v24 = 2;
     }
@@ -31,7 +31,7 @@
     }
 
     *&self->_requestedBrowseSectionProperties = *&self->_requestedBrowseSectionProperties & 0xFFFD | v24;
-    if ([v23 containsObject:@"MPModelStoreBrowseSectionPropertyType"])
+    if ([properties containsObject:@"MPModelStoreBrowseSectionPropertyType"])
     {
       v25 = 4;
     }
@@ -42,7 +42,7 @@
     }
 
     *&self->_requestedBrowseSectionProperties = *&self->_requestedBrowseSectionProperties & 0xFFFB | v25;
-    if ([v23 containsObject:@"MPModelStoreBrowseSectionPropertyLoadAdditionalContentURL"])
+    if ([properties containsObject:@"MPModelStoreBrowseSectionPropertyLoadAdditionalContentURL"])
     {
       v26 = 8;
     }
@@ -53,7 +53,7 @@
     }
 
     *&self->_requestedBrowseSectionProperties = *&self->_requestedBrowseSectionProperties & 0xFFF7 | v26;
-    if ([v23 containsObject:@"MPModelStoreBrowseSectionPropertyPreviouslyRetrievedNestedResponse"])
+    if ([properties containsObject:@"MPModelStoreBrowseSectionPropertyPreviouslyRetrievedNestedResponse"])
     {
       v27 = 16;
     }
@@ -64,7 +64,7 @@
     }
 
     *&self->_requestedBrowseSectionProperties = *&self->_requestedBrowseSectionProperties & 0xFFEF | v27;
-    if ([v23 containsObject:@"MPModelStoreBrowseSectionPropertyUniformContentItemType"])
+    if ([properties containsObject:@"MPModelStoreBrowseSectionPropertyUniformContentItemType"])
     {
       v28 = 32;
     }
@@ -75,7 +75,7 @@
     }
 
     *&self->_requestedBrowseSectionProperties = *&self->_requestedBrowseSectionProperties & 0xFFDF | v28;
-    if ([v23 containsObject:@"MPModelStoreBrowseSectionPropertyMemberOfChartSet"])
+    if ([properties containsObject:@"MPModelStoreBrowseSectionPropertyMemberOfChartSet"])
     {
       v29 = 64;
     }
@@ -86,7 +86,7 @@
     }
 
     *&self->_requestedBrowseSectionProperties = *&self->_requestedBrowseSectionProperties & 0xFFBF | v29;
-    if ([v23 containsObject:@"MPModelStoreBrowseSectionPropertyBrick"])
+    if ([properties containsObject:@"MPModelStoreBrowseSectionPropertyBrick"])
     {
       v30 = 512;
     }
@@ -97,7 +97,7 @@
     }
 
     *&self->_requestedBrowseSectionProperties = *&self->_requestedBrowseSectionProperties & 0xFDFF | v30;
-    if ([v23 containsObject:@"MPModelStoreBrowseSectionPropertyDisplaysAsGridCellInCarPlay"])
+    if ([properties containsObject:@"MPModelStoreBrowseSectionPropertyDisplaysAsGridCellInCarPlay"])
     {
       v31 = 128;
     }
@@ -108,7 +108,7 @@
     }
 
     *&self->_requestedBrowseSectionProperties = *&self->_requestedBrowseSectionProperties & 0xFF7F | v31;
-    if ([v23 containsObject:@"MPModelStoreBrowseSectionPropertyDisplayStyle"])
+    if ([properties containsObject:@"MPModelStoreBrowseSectionPropertyDisplayStyle"])
     {
       v32 = 257;
     }
@@ -120,12 +120,12 @@
 
     *&self->_requestedBrowseSectionProperties = v32 | *&self->_requestedBrowseSectionProperties & 0xFEFE;
 
-    v17 = a11;
+    elementsCopy2 = elements;
   }
 
-  if (a12 <= 387)
+  if (kind <= 387)
   {
-    switch(a12)
+    switch(kind)
     {
       case 326:
         v33 = 15;
@@ -139,15 +139,15 @@
     }
   }
 
-  else if (a12 > 487)
+  else if (kind > 487)
   {
-    if (a12 == 488)
+    if (kind == 488)
     {
       v33 = 13;
       goto LABEL_68;
     }
 
-    if (a12 == 489)
+    if (kind == 489)
     {
       v33 = 14;
       goto LABEL_68;
@@ -156,13 +156,13 @@
 
   else
   {
-    if (a12 == 388)
+    if (kind == 388)
     {
       v33 = 10;
       goto LABEL_68;
     }
 
-    if (a12 == 391)
+    if (kind == 391)
     {
       v33 = 11;
       goto LABEL_68;
@@ -170,16 +170,16 @@
   }
 
   v34 = 0;
-  if (v13)
+  if (setCopy)
   {
-    if (a5 <= 9)
+    if (type <= 9)
     {
-      if (a5 == 1)
+      if (type == 1)
       {
         v34 = 2;
       }
 
-      else if (a5 == 6)
+      else if (type == 6)
       {
         v34 = 3;
       }
@@ -187,10 +187,10 @@
       goto LABEL_65;
     }
 
-    if (a5 != 10)
+    if (type != 10)
     {
 LABEL_56:
-      if (a5 == 16)
+      if (type == 16)
       {
         v34 = 11;
       }
@@ -203,14 +203,14 @@ LABEL_56:
 
   else
   {
-    if (a5 <= 4)
+    if (type <= 4)
     {
-      if (a5 == 3)
+      if (type == 3)
       {
         v34 = 4;
       }
 
-      else if (a5 == 4)
+      else if (type == 4)
       {
         v34 = 5;
       }
@@ -218,14 +218,14 @@ LABEL_56:
       goto LABEL_65;
     }
 
-    if (a5 == 5)
+    if (type == 5)
     {
       v34 = 6;
     }
 
     else
     {
-      if (a5 != 7)
+      if (type != 7)
       {
         goto LABEL_56;
       }
@@ -235,7 +235,7 @@ LABEL_56:
   }
 
 LABEL_65:
-  if (v17)
+  if (elementsCopy2)
   {
     v33 = 8;
   }
@@ -253,20 +253,20 @@ LABEL_68:
   v45[2] = __269__MPModelStoreBrowseSectionBuilder_modelObjectWithTitle_loadAdditionalContentURL_uniformContentItemType_isMemberOfChartSet_isBrick_displaysAsGridCellInCarPlay_displayStyle_previouslyRetrievedNestedResponse_onlyContainsEditorialElements_featuredContentKind_modelObject___block_invoke;
   v45[3] = &unk_1E767CBF0;
   v45[4] = self;
-  v46 = v18;
-  v53 = a8;
-  v47 = v21;
-  v48 = v19;
+  v46 = titleCopy;
+  playCopy = play;
+  v47 = objectCopy;
+  v48 = lCopy;
   v51 = v33;
-  v52 = a5;
-  v54 = v13;
-  v55 = a7;
-  v49 = v20;
-  v50 = a9;
-  v37 = v20;
-  v38 = v19;
-  v39 = v21;
-  v40 = v18;
+  typeCopy = type;
+  v54 = setCopy;
+  brickCopy = brick;
+  v49 = responseCopy;
+  styleCopy = style;
+  v37 = responseCopy;
+  v38 = lCopy;
+  v39 = objectCopy;
+  v40 = titleCopy;
   v41 = [(MPModelObject *)v35 initWithIdentifiers:v36 block:v45];
 
   return v41;
@@ -388,18 +388,18 @@ LABEL_14:
 - (MPPropertySet)requestedPropertySetExcludingInternalOnlyProperties
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(MPModelStoreBrowseSectionBuilder *)self requestedPropertySet];
-  v3 = [v2 properties];
-  v4 = [v3 mutableCopy];
+  requestedPropertySet = [(MPModelStoreBrowseSectionBuilder *)self requestedPropertySet];
+  properties = [requestedPropertySet properties];
+  v4 = [properties mutableCopy];
 
-  v5 = [objc_opt_class() allSupportedInternalOnlyProperties];
-  v6 = [v5 properties];
+  allSupportedInternalOnlyProperties = [objc_opt_class() allSupportedInternalOnlyProperties];
+  properties2 = [allSupportedInternalOnlyProperties properties];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v6;
+  v7 = properties2;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -424,22 +424,22 @@ LABEL_14:
   }
 
   v12 = [MPPropertySet alloc];
-  v13 = [v4 allObjects];
-  v14 = [v2 relationships];
-  v15 = [(MPPropertySet *)v12 initWithProperties:v13 relationships:v14];
+  allObjects = [v4 allObjects];
+  relationships = [requestedPropertySet relationships];
+  v15 = [(MPPropertySet *)v12 initWithProperties:allObjects relationships:relationships];
 
   return v15;
 }
 
-- (MPModelStoreBrowseSectionBuilder)initWithRequestedPropertySet:(id)a3
+- (MPModelStoreBrowseSectionBuilder)initWithRequestedPropertySet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9.receiver = self;
   v9.super_class = MPModelStoreBrowseSectionBuilder;
   v5 = [(MPModelStoreBrowseSectionBuilder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [setCopy copy];
     requestedPropertySet = v5->_requestedPropertySet;
     v5->_requestedPropertySet = v6;
   }
@@ -463,19 +463,19 @@ LABEL_14:
   return v3;
 }
 
-+ (id)allSupportedPropertiesIncludingInternalOnlyProperties:(BOOL)a3
++ (id)allSupportedPropertiesIncludingInternalOnlyProperties:(BOOL)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   v10[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"MPModelStoreBrowseSectionPropertyTitle";
   v10[1] = @"MPModelStoreBrowseSectionPropertyType";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [MPPropertySet propertySetWithProperties:v5];
 
-  if (v3)
+  if (propertiesCopy)
   {
-    v7 = [a1 allSupportedInternalOnlyProperties];
-    v8 = [v6 propertySetByCombiningWithPropertySet:v7];
+    allSupportedInternalOnlyProperties = [self allSupportedInternalOnlyProperties];
+    v8 = [v6 propertySetByCombiningWithPropertySet:allSupportedInternalOnlyProperties];
 
     v6 = v8;
   }

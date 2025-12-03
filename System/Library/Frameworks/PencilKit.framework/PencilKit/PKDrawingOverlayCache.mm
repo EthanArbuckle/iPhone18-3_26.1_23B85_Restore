@@ -2,10 +2,10 @@
 + (id)sharedCache;
 - (PKDrawingOverlayCache)init;
 - (id)cacheDirectory;
-- (id)cachePathForDrawingUUID:(uint64_t)a1;
+- (id)cachePathForDrawingUUID:(uint64_t)d;
 - (void)clearMemoryCache;
-- (void)overlayDrawingForDrawingUUID:(id)a3 tintColor:(id)a4 completion:(id)a5;
-- (void)setOverlayDrawing:(void *)a3 forDrawingUUID:;
+- (void)overlayDrawingForDrawingUUID:(id)d tintColor:(id)color completion:(id)completion;
+- (void)setOverlayDrawing:(void *)drawing forDrawingUUID:;
 @end
 
 @implementation PKDrawingOverlayCache
@@ -49,10 +49,10 @@ void __36__PKDrawingOverlayCache_sharedCache__block_invoke()
     v2->_memoryCache = v7;
 
     [(NSCache *)v2->_memoryCache setCountLimit:4];
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [PKDrawingOverlayCache cacheDirectory];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    cacheDirectory = [PKDrawingOverlayCache cacheDirectory];
     v18 = 0;
-    v11 = [v9 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v18];
+    v11 = [defaultManager createDirectoryAtURL:cacheDirectory withIntermediateDirectories:1 attributes:0 error:&v18];
     v12 = v18;
 
     v13 = os_log_create("com.apple.pencilkit", "Math");
@@ -62,9 +62,9 @@ void __36__PKDrawingOverlayCache_sharedCache__block_invoke()
       v15 = v13;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [PKDrawingOverlayCache cacheDirectory];
+        cacheDirectory2 = [PKDrawingOverlayCache cacheDirectory];
         *buf = 138412290;
-        v21 = v16;
+        v21 = cacheDirectory2;
         _os_log_impl(&dword_1C7CCA000, v15, OS_LOG_TYPE_DEFAULT, "Create drawing overlay cache directory at: %@", buf, 0xCu);
       }
     }
@@ -83,10 +83,10 @@ void __36__PKDrawingOverlayCache_sharedCache__block_invoke()
 {
   v6[2] = *MEMORY[0x1E69E9840];
   v0 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v1 = [v0 firstObject];
+  firstObject = [v0 firstObject];
 
   v2 = MEMORY[0x1E695DFF8];
-  v6[0] = v1;
+  v6[0] = firstObject;
   v6[1] = @"com.apple.pencilkit.overlaydrawings";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
   v4 = [v2 fileURLWithPathComponents:v3];
@@ -94,21 +94,21 @@ void __36__PKDrawingOverlayCache_sharedCache__block_invoke()
   return v4;
 }
 
-- (id)cachePathForDrawingUUID:(uint64_t)a1
+- (id)cachePathForDrawingUUID:(uint64_t)d
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
-    v2 = [a2 uniqueCacheFilePath];
+    uniqueCacheFilePath = [a2 uniqueCacheFilePath];
     v3 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-    v4 = [v3 firstObject];
+    firstObject = [v3 firstObject];
 
     v5 = 0;
-    if (v4 && v2)
+    if (firstObject && uniqueCacheFilePath)
     {
-      v6 = [v2 stringByAppendingPathExtension:@".drawing"];
+      v6 = [uniqueCacheFilePath stringByAppendingPathExtension:@".drawing"];
       v7 = MEMORY[0x1E695DFF8];
-      v10[0] = v4;
+      v10[0] = firstObject;
       v10[1] = @"com.apple.pencilkit.overlaydrawings";
       v10[2] = v6;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:3];
@@ -124,15 +124,15 @@ void __36__PKDrawingOverlayCache_sharedCache__block_invoke()
   return v5;
 }
 
-- (void)overlayDrawingForDrawingUUID:(id)a3 tintColor:(id)a4 completion:(id)a5
+- (void)overlayDrawingForDrawingUUID:(id)d tintColor:(id)color completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 uniqueCacheFilePath];
-  v12 = [(PKDrawingOverlayCache *)self cachePathForDrawingUUID:v10];
-  v13 = [v12 path];
-  v14 = [v10 AES128Key];
+  colorCopy = color;
+  completionCopy = completion;
+  dCopy = d;
+  uniqueCacheFilePath = [dCopy uniqueCacheFilePath];
+  v12 = [(PKDrawingOverlayCache *)self cachePathForDrawingUUID:dCopy];
+  path = [v12 path];
+  aES128Key = [dCopy AES128Key];
 
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -140,18 +140,18 @@ void __36__PKDrawingOverlayCache_sharedCache__block_invoke()
   block[2] = __75__PKDrawingOverlayCache_overlayDrawingForDrawingUUID_tintColor_completion___block_invoke;
   block[3] = &unk_1E82DA358;
   block[4] = self;
-  v23 = v11;
-  v24 = v13;
+  v23 = uniqueCacheFilePath;
+  v24 = path;
   v25 = v12;
-  v26 = v14;
-  v27 = v8;
-  v28 = v9;
-  v16 = v9;
-  v17 = v8;
-  v18 = v14;
+  v26 = aES128Key;
+  v27 = colorCopy;
+  v28 = completionCopy;
+  v16 = completionCopy;
+  v17 = colorCopy;
+  v18 = aES128Key;
   v19 = v12;
-  v20 = v13;
-  v21 = v11;
+  v20 = path;
+  v21 = uniqueCacheFilePath;
   dispatch_async(accessQueue, block);
 }
 
@@ -285,30 +285,30 @@ LABEL_24:
   (*(v1[10] + 16))();
 }
 
-- (void)setOverlayDrawing:(void *)a3 forDrawingUUID:
+- (void)setOverlayDrawing:(void *)drawing forDrawingUUID:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  drawingCopy = drawing;
+  v7 = drawingCopy;
+  if (self)
   {
-    v8 = [v6 uniqueCacheFilePath];
-    v9 = [(PKDrawingOverlayCache *)a1 cachePathForDrawingUUID:v7];
+    uniqueCacheFilePath = [drawingCopy uniqueCacheFilePath];
+    v9 = [(PKDrawingOverlayCache *)self cachePathForDrawingUUID:v7];
     v10 = [v5 copy];
 
-    v11 = *(a1 + 16);
+    v11 = *(self + 16);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__PKDrawingOverlayCache_setOverlayDrawing_forDrawingUUID___block_invoke;
     block[3] = &unk_1E82DA380;
     v5 = v10;
     v15 = v5;
-    v16 = a1;
-    v17 = v8;
+    selfCopy = self;
+    v17 = uniqueCacheFilePath;
     v18 = v7;
     v19 = v9;
     v12 = v9;
-    v13 = v8;
+    v13 = uniqueCacheFilePath;
     dispatch_async(v11, block);
   }
 }

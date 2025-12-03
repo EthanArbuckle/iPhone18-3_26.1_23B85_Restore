@@ -1,28 +1,28 @@
 @interface SNNMILDataValue
 - (BOOL)isScalar;
-- (SNNMILDataValue)initWithScalar:(id)a3 dataType:(unint64_t)a4;
-- (SNNMILDataValue)initWithShape:(id)a3 bytes:(const void *)a4 dataType:(unint64_t)a5;
-- (SNNMILDataValue)initWithShape:(id)a3 bytesNoCopy:(void *)a4 dataType:(unint64_t)a5;
-- (SNNMILDataValue)initWithShape:(id)a3 scalars:(id)a4 dataType:(unint64_t)a5;
-- (SNNMILDataValue)initWithStringScalar:(id)a3;
+- (SNNMILDataValue)initWithScalar:(id)scalar dataType:(unint64_t)type;
+- (SNNMILDataValue)initWithShape:(id)shape bytes:(const void *)bytes dataType:(unint64_t)type;
+- (SNNMILDataValue)initWithShape:(id)shape bytesNoCopy:(void *)copy dataType:(unint64_t)type;
+- (SNNMILDataValue)initWithShape:(id)shape scalars:(id)scalars dataType:(unint64_t)type;
+- (SNNMILDataValue)initWithStringScalar:(id)scalar;
 - (int64_t)rank;
 - (int64_t)scalarCount;
 - (unint64_t)byteCount;
-- (unique_ptr<const)milValueWithContext:(id)a3;
+- (unique_ptr<const)milValueWithContext:(id)context;
 - (void)bytes;
 @end
 
 @implementation SNNMILDataValue
 
-- (SNNMILDataValue)initWithStringScalar:(id)a3
+- (SNNMILDataValue)initWithStringScalar:(id)scalar
 {
-  v4 = a3;
+  scalarCopy = scalar;
   v9.receiver = self;
   v9.super_class = SNNMILDataValue;
   v5 = [(SNNMILValue *)&v9 init];
   if (v5)
   {
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [scalarCopy dataUsingEncoding:4];
     data = v5->_data;
     v5->_data = v6;
 
@@ -32,61 +32,61 @@
   return v5;
 }
 
-- (SNNMILDataValue)initWithScalar:(id)a3 dataType:(unint64_t)a4
+- (SNNMILDataValue)initWithScalar:(id)scalar dataType:(unint64_t)type
 {
-  v6 = a3;
+  scalarCopy = scalar;
   v11.receiver = self;
   v11.super_class = SNNMILDataValue;
   v7 = [(SNNMILValue *)&v11 init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEA90] dataWithScalar:v6 dataType:a4];
+    v8 = [MEMORY[0x277CBEA90] dataWithScalar:scalarCopy dataType:type];
     data = v7->_data;
     v7->_data = v8;
 
-    v7->_dataType = a4;
+    v7->_dataType = type;
   }
 
   return v7;
 }
 
-- (SNNMILDataValue)initWithShape:(id)a3 scalars:(id)a4 dataType:(unint64_t)a5
+- (SNNMILDataValue)initWithShape:(id)shape scalars:(id)scalars dataType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  shapeCopy = shape;
+  scalarsCopy = scalars;
   v18.receiver = self;
   v18.super_class = SNNMILDataValue;
   v11 = [(SNNMILValue *)&v18 init];
   if (v11)
   {
-    if (a5 - 2 > 0xA)
+    if (type - 2 > 0xA)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = qword_25BCBAA40[a5 - 2];
+      v12 = qword_25BCBAA40[type - 2];
     }
 
-    v13 = [v10 count];
+    v13 = [scalarsCopy count];
     v14 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:v13 * v12];
-    [(NSData *)v14 appendScalars:v10 dataType:a5];
+    [(NSData *)v14 appendScalars:scalarsCopy dataType:type];
     data = v11->_data;
     v11->_data = v14;
     v16 = v14;
 
-    objc_storeStrong(&v11->_dimensions, a3);
-    v11->_dataType = a5;
+    objc_storeStrong(&v11->_dimensions, shape);
+    v11->_dataType = type;
   }
 
   return v11;
 }
 
-- (SNNMILDataValue)initWithShape:(id)a3 bytes:(const void *)a4 dataType:(unint64_t)a5
+- (SNNMILDataValue)initWithShape:(id)shape bytes:(const void *)bytes dataType:(unint64_t)type
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  shapeCopy = shape;
   v25.receiver = self;
   v25.super_class = SNNMILDataValue;
   v10 = [(SNNMILValue *)&v25 init];
@@ -96,7 +96,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = v9;
+    v11 = shapeCopy;
     v12 = [v11 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v12)
     {
@@ -125,32 +125,32 @@
       v14 = 1;
     }
 
-    if (a5 - 2 > 0xA)
+    if (type - 2 > 0xA)
     {
       v16 = 1;
     }
 
     else
     {
-      v16 = qword_25BCBAA40[a5 - 2];
+      v16 = qword_25BCBAA40[type - 2];
     }
 
-    v17 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:a4 length:v16 * v14];
+    v17 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:bytes length:v16 * v14];
     data = v10->_data;
     v10->_data = v17;
 
-    objc_storeStrong(&v10->_dimensions, a3);
-    v10->_dataType = a5;
+    objc_storeStrong(&v10->_dimensions, shape);
+    v10->_dataType = type;
   }
 
   v19 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (SNNMILDataValue)initWithShape:(id)a3 bytesNoCopy:(void *)a4 dataType:(unint64_t)a5
+- (SNNMILDataValue)initWithShape:(id)shape bytesNoCopy:(void *)copy dataType:(unint64_t)type
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  shapeCopy = shape;
   v25.receiver = self;
   v25.super_class = SNNMILDataValue;
   v10 = [(SNNMILValue *)&v25 init];
@@ -160,7 +160,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = v9;
+    v11 = shapeCopy;
     v12 = [v11 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v12)
     {
@@ -189,22 +189,22 @@
       v14 = 1;
     }
 
-    if (a5 - 2 > 0xA)
+    if (type - 2 > 0xA)
     {
       v16 = 1;
     }
 
     else
     {
-      v16 = qword_25BCBAA40[a5 - 2];
+      v16 = qword_25BCBAA40[type - 2];
     }
 
-    v17 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:a4 length:v16 * v14 freeWhenDone:0];
+    v17 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:copy length:v16 * v14 freeWhenDone:0];
     data = v10->_data;
     v10->_data = v17;
 
-    objc_storeStrong(&v10->_dimensions, a3);
-    v10->_dataType = a5;
+    objc_storeStrong(&v10->_dimensions, shape);
+    v10->_dataType = type;
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -213,27 +213,27 @@
 
 - (void)bytes
 {
-  v2 = [(SNNMILDataValue *)self data];
-  v3 = [v2 bytes];
+  data = [(SNNMILDataValue *)self data];
+  bytes = [data bytes];
 
-  return v3;
+  return bytes;
 }
 
 - (unint64_t)byteCount
 {
-  v2 = [(SNNMILDataValue *)self data];
-  v3 = [v2 length];
+  data = [(SNNMILDataValue *)self data];
+  v3 = [data length];
 
   return v3;
 }
 
 - (BOOL)isScalar
 {
-  v3 = [(SNNMILDataValue *)self dimensions];
-  if (v3)
+  dimensions = [(SNNMILDataValue *)self dimensions];
+  if (dimensions)
   {
-    v4 = [(SNNMILDataValue *)self dimensions];
-    v5 = [v4 count] == 0;
+    dimensions2 = [(SNNMILDataValue *)self dimensions];
+    v5 = [dimensions2 count] == 0;
   }
 
   else
@@ -246,30 +246,30 @@
 
 - (int64_t)rank
 {
-  v3 = [(SNNMILDataValue *)self dimensions];
+  dimensions = [(SNNMILDataValue *)self dimensions];
 
-  if (v3)
+  if (dimensions)
   {
-    v4 = [(SNNMILDataValue *)self dimensions];
-    v3 = [v4 count];
+    dimensions2 = [(SNNMILDataValue *)self dimensions];
+    dimensions = [dimensions2 count];
   }
 
-  return v3;
+  return dimensions;
 }
 
 - (int64_t)scalarCount
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SNNMILDataValue *)self dimensions];
+  dimensions = [(SNNMILDataValue *)self dimensions];
 
-  if (v3)
+  if (dimensions)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(SNNMILDataValue *)self dimensions];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    dimensions2 = [(SNNMILDataValue *)self dimensions];
+    v5 = [dimensions2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = *v12;
@@ -280,13 +280,13 @@
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(dimensions2);
           }
 
           v7 *= [*(*(&v11 + 1) + 8 * i) unsignedIntegerValue];
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [dimensions2 countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -307,20 +307,20 @@
   return v7;
 }
 
-- (unique_ptr<const)milValueWithContext:(id)a3
+- (unique_ptr<const)milValueWithContext:(id)context
 {
   v5 = v3;
-  v14 = a3;
-  v6 = [(SNNMILDataValue *)self dimensions];
+  contextCopy = context;
+  dimensions = [(SNNMILDataValue *)self dimensions];
 
-  if (v6)
+  if (dimensions)
   {
-    v7 = [(SNNMILDataValue *)self bytes];
-    v8 = [(SNNMILDataValue *)self dimensions];
-    v9 = [(SNNMILDataValue *)self dataType];
-    if (v14)
+    bytes = [(SNNMILDataValue *)self bytes];
+    dimensions2 = [(SNNMILDataValue *)self dimensions];
+    dataType = [(SNNMILDataValue *)self dataType];
+    if (contextCopy)
     {
-      [v14 milValueForTensorWithBytes:v7 shape:v8 dataType:v9];
+      [contextCopy milValueForTensorWithBytes:bytes shape:dimensions2 dataType:dataType];
     }
 
     else
@@ -332,9 +332,9 @@
   else if ([(SNNMILDataValue *)self dataType]== 1)
   {
     v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:self->_data encoding:4];
-    if (v14)
+    if (contextCopy)
     {
-      [v14 milValueForString:v10];
+      [contextCopy milValueForString:v10];
     }
 
     else
@@ -345,11 +345,11 @@
 
   else
   {
-    v11 = [(SNNMILDataValue *)self bytes];
-    v12 = [(SNNMILDataValue *)self dataType];
-    if (v14)
+    bytes2 = [(SNNMILDataValue *)self bytes];
+    dataType2 = [(SNNMILDataValue *)self dataType];
+    if (contextCopy)
     {
-      [v14 milValueForScalarWithBytes:v11 dataType:v12];
+      [contextCopy milValueForScalarWithBytes:bytes2 dataType:dataType2];
     }
 
     else

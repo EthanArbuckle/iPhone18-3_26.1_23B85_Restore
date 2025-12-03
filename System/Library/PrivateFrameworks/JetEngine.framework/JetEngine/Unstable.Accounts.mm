@@ -1,11 +1,11 @@
 @interface Unstable.Accounts
-- (void)accountCookiesDidChange:(id)a3;
-- (void)accountStoreDidChange:(id)a3;
+- (void)accountCookiesDidChange:(id)change;
+- (void)accountStoreDidChange:(id)change;
 @end
 
 @implementation Unstable.Accounts
 
-- (void)accountCookiesDidChange:(id)a3
+- (void)accountCookiesDidChange:(id)change
 {
   v4 = sub_1AB45F284();
   v5 = *(v4 - 8);
@@ -21,7 +21,7 @@
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)accountStoreDidChange:(id)a3
+- (void)accountStoreDidChange:(id)change
 {
   v3 = sub_1AB45F284();
   v4 = *(v3 - 8);

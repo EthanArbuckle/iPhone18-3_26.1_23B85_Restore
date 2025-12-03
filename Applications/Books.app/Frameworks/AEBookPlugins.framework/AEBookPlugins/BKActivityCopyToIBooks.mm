@@ -1,8 +1,8 @@
 @interface BKActivityCopyToIBooks
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityTitle;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation BKActivityCopyToIBooks
@@ -15,14 +15,14 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  itemsCopy = items;
+  v4 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -32,7 +32,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         objc_opt_class();
@@ -45,7 +45,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -60,14 +60,14 @@ LABEL_11:
   return v4;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  itemsCopy = items;
+  v5 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -78,7 +78,7 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         objc_opt_class();
@@ -92,7 +92,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -116,8 +116,8 @@ LABEL_11:
   if (!v6)
   {
     v7 = [(BKActivityCopyToIBooks *)self url];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 URLByAppendingPathComponent:v8 isDirectory:0];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
 
     v10 = +[NSFileManager defaultManager];
     v11 = [(BKActivityCopyToIBooks *)self url];
@@ -132,10 +132,10 @@ LABEL_11:
       v20[1] = &__kCFBooleanTrue;
       v13 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
       v14 = +[UIApplication sharedApplication];
-      v15 = [v14 delegate];
+      delegate = [v14 delegate];
 
       v16 = +[UIApplication sharedApplication];
-      [v15 application:v16 openURL:v9 options:v13];
+      [delegate application:v16 openURL:v9 options:v13];
     }
   }
 

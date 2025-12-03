@@ -1,7 +1,7 @@
 @interface TestFlightFeedbackManager
 - (TestFlightFeedbackManager)init;
-- (void)_handleNetworkStateDidChangeNotification:(id)a3;
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
+- (void)_handleNetworkStateDidChangeNotification:(id)notification;
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation TestFlightFeedbackManager
@@ -42,12 +42,12 @@
   return v2;
 }
 
-- (void)_handleNetworkStateDidChangeNotification:(id)a3
+- (void)_handleNetworkStateDidChangeNotification:(id)notification
 {
   v4 = sub_100227468();
-  v5 = [v4 isConnected];
+  isConnected = [v4 isConnected];
 
-  if (v5)
+  if (isConnected)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
@@ -59,28 +59,28 @@
   }
 }
 
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting dialog task", buf, 0xCu);
   }
 
-  v10 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v8];
-  v11 = [v10 present];
+  v10 = [[AMSSystemAlertDialogTask alloc] initWithRequest:requestCopy];
+  present = [v10 present];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100247854;
   v13[3] = &unk_10051E068;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
-  [v11 addFinishBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [present addFinishBlock:v13];
 }
 
 @end

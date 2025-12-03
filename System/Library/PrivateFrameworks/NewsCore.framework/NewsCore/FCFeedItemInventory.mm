@@ -1,47 +1,47 @@
 @interface FCFeedItemInventory
 - (BOOL)_isRefreshNeeded;
 - (FCFeedItemInventory)init;
-- (FCFeedItemInventory)initWithFeedItemService:(id)a3 feedPersonalizer:(id)a4 readingHistory:(id)a5 fileURL:(id)a6 version:(unsigned int)a7 refreshInterval:(double)a8 loggingKey:(id)a9;
+- (FCFeedItemInventory)initWithFeedItemService:(id)service feedPersonalizer:(id)personalizer readingHistory:(id)history fileURL:(id)l version:(unsigned int)version refreshInterval:(double)interval loggingKey:(id)key;
 - (NSArray)allFeedItems;
 - (NSArray)allNetworkEvents;
 - (id)_loadInventoryFromCache;
 - (id)_refreshIfNeeded;
-- (id)allFeedItemScoreProfilesForConfigurationSet:(int64_t)a3 scoringVersion:(unint64_t)a4;
-- (id)allFeedItemsWithTopic:(id)a3;
-- (void)_adoptInventory:(id)a3;
-- (void)_populateScoreProfilesForFeedItems:(id)a3;
-- (void)_populateScoreProfilesForFeedItems:(id)a3 configurationSet:(int64_t)a4;
+- (id)allFeedItemScoreProfilesForConfigurationSet:(int64_t)set scoringVersion:(unint64_t)version;
+- (id)allFeedItemsWithTopic:(id)topic;
+- (void)_adoptInventory:(id)inventory;
+- (void)_populateScoreProfilesForFeedItems:(id)items;
+- (void)_populateScoreProfilesForFeedItems:(id)items configurationSet:(int64_t)set;
 - (void)_prepareForUse;
-- (void)_rescoreInventoryIfNeeded:(id)a3 forScoringVersion:(unint64_t)a4;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4;
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4;
-- (void)refreshIfNeededWithCompletion:(id)a3;
+- (void)_rescoreInventoryIfNeeded:(id)needed forScoringVersion:(unint64_t)version;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion;
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles;
+- (void)refreshIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation FCFeedItemInventory
 
-- (FCFeedItemInventory)initWithFeedItemService:(id)a3 feedPersonalizer:(id)a4 readingHistory:(id)a5 fileURL:(id)a6 version:(unsigned int)a7 refreshInterval:(double)a8 loggingKey:(id)a9
+- (FCFeedItemInventory)initWithFeedItemService:(id)service feedPersonalizer:(id)personalizer readingHistory:(id)history fileURL:(id)l version:(unsigned int)version refreshInterval:(double)interval loggingKey:(id)key
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a9;
+  serviceCopy = service;
+  personalizerCopy = personalizer;
+  historyCopy = history;
+  lCopy = l;
+  keyCopy = key;
   v41.receiver = self;
   v41.super_class = FCFeedItemInventory;
   v22 = [(FCFeedItemInventory *)&v41 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_feedItemService, a3);
-    objc_storeStrong(&v23->_feedPersonalizer, a4);
-    v24 = [v20 copy];
+    objc_storeStrong(&v22->_feedItemService, service);
+    objc_storeStrong(&v23->_feedPersonalizer, personalizer);
+    v24 = [lCopy copy];
     fileURL = v23->_fileURL;
     v23->_fileURL = v24;
 
-    v23->_version = a7;
-    v23->_refreshInterval = a8;
-    v26 = [v21 copy];
+    v23->_version = version;
+    v23->_refreshInterval = interval;
+    v26 = [keyCopy copy];
     loggingKey = v23->_loggingKey;
     v23->_loggingKey = v26;
 
@@ -57,7 +57,7 @@
     networkEvents = v23->_networkEvents;
     v23->_networkEvents = v32;
 
-    [v19 addObserver:v23];
+    [historyCopy addObserver:v23];
     v34 = [objc_alloc(MEMORY[0x1E69B6920]) initWithOptions:1];
     articleIDsToRescoreLock = v23->_articleIDsToRescoreLock;
     v23->_articleIDsToRescoreLock = v34;
@@ -104,12 +104,12 @@
 - (NSArray)allFeedItems
 {
   [(FCFeedItemInventory *)self _prepareForUse];
-  v3 = [(FCFeedItemInventory *)self latestInventory];
-  v4 = [v3 feedItems];
-  v5 = v4;
-  if (v4)
+  latestInventory = [(FCFeedItemInventory *)self latestInventory];
+  feedItems = [latestInventory feedItems];
+  v5 = feedItems;
+  if (feedItems)
   {
-    v6 = v4;
+    v6 = feedItems;
   }
 
   else
@@ -124,24 +124,24 @@
 
 - (NSArray)allNetworkEvents
 {
-  v2 = [(FCFeedItemInventory *)self networkEvents];
-  v3 = [v2 readOnlyArray];
+  networkEvents = [(FCFeedItemInventory *)self networkEvents];
+  readOnlyArray = [networkEvents readOnlyArray];
 
-  return v3;
+  return readOnlyArray;
 }
 
-- (id)allFeedItemScoreProfilesForConfigurationSet:(int64_t)a3 scoringVersion:(unint64_t)a4
+- (id)allFeedItemScoreProfilesForConfigurationSet:(int64_t)set scoringVersion:(unint64_t)version
 {
   v39 = *MEMORY[0x1E69E9840];
   [(FCFeedItemInventory *)self _prepareForUse];
   v7 = [FCMapTable mapTableWithKeyOptions:512 valueOptions:0];
-  v8 = [(FCFeedItemInventory *)self latestInventory];
+  latestInventory = [(FCFeedItemInventory *)self latestInventory];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [v8 feedItems];
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v38 count:16];
+  feedItems = [latestInventory feedItems];
+  v10 = [feedItems countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (!v10)
   {
 
@@ -149,8 +149,8 @@
   }
 
   v11 = v10;
-  v26 = self;
-  v27 = v8;
+  selfCopy = self;
+  v27 = latestInventory;
   v12 = *v29;
   while (2)
   {
@@ -158,19 +158,19 @@
     {
       if (*v29 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(feedItems);
       }
 
       v14 = *(*(&v28 + 1) + 8 * i);
-      if (a3 == 11)
+      if (set == 11)
       {
-        v15 = [*(*(&v28 + 1) + 8 * i) scoreProfiles];
-        v16 = [v15 forYouGroupScoreProfile];
+        scoreProfiles = [*(*(&v28 + 1) + 8 * i) scoreProfiles];
+        forYouGroupScoreProfile = [scoreProfiles forYouGroupScoreProfile];
       }
 
       else
       {
-        if (a3)
+        if (set)
         {
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -189,33 +189,33 @@
           continue;
         }
 
-        v15 = [*(*(&v28 + 1) + 8 * i) scoreProfiles];
-        v16 = [v15 defaultScoreProfile];
+        scoreProfiles = [*(*(&v28 + 1) + 8 * i) scoreProfiles];
+        forYouGroupScoreProfile = [scoreProfiles defaultScoreProfile];
       }
 
-      v17 = v16;
+      v17 = forYouGroupScoreProfile;
 
       if (v17)
       {
-        if ([v17 scoringVersion] != a4)
+        if ([v17 scoringVersion] != version)
         {
           v20 = FCFeedItemInventoryLog;
           if (os_log_type_enabled(FCFeedItemInventoryLog, OS_LOG_TYPE_DEFAULT))
           {
             v21 = v20;
-            v22 = [(FCFeedItemInventory *)v26 loggingKey];
-            v23 = [v17 scoringVersion];
+            loggingKey = [(FCFeedItemInventory *)selfCopy loggingKey];
+            scoringVersion = [v17 scoringVersion];
             *buf = 138543874;
-            v33 = v22;
+            v33 = loggingKey;
             v34 = 2048;
-            v35 = v23;
+            v35 = scoringVersion;
             v36 = 2048;
-            v37[0] = a4;
+            v37[0] = version;
             _os_log_impl(&dword_1B63EF000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] rescoring inventory because cached scored version of %llu doesn't match %llu", buf, 0x20u);
           }
 
-          v8 = v27;
-          [(FCFeedItemInventory *)v26 _rescoreInventoryIfNeeded:v27 forScoringVersion:a4];
+          latestInventory = v27;
+          [(FCFeedItemInventory *)selfCopy _rescoreInventoryIfNeeded:v27 forScoringVersion:version];
           goto LABEL_22;
         }
 
@@ -224,7 +224,7 @@
       }
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v28 objects:v38 count:16];
+    v11 = [feedItems countByEnumeratingWithState:&v28 objects:v38 count:16];
     if (v11)
     {
       continue;
@@ -233,7 +233,7 @@
     break;
   }
 
-  v8 = v27;
+  latestInventory = v27;
 LABEL_22:
 
   v24 = *MEMORY[0x1E69E9840];
@@ -241,17 +241,17 @@ LABEL_22:
   return v7;
 }
 
-- (id)allFeedItemsWithTopic:(id)a3
+- (id)allFeedItemsWithTopic:(id)topic
 {
-  v4 = a3;
-  v5 = [(FCFeedItemInventory *)self allFeedItems];
+  topicCopy = topic;
+  allFeedItems = [(FCFeedItemInventory *)self allFeedItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__FCFeedItemInventory_allFeedItemsWithTopic___block_invoke;
   v9[3] = &unk_1E7C42320;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 fc_arrayOfObjectsPassingTest:v9];
+  v10 = topicCopy;
+  v6 = topicCopy;
+  v7 = [allFeedItems fc_arrayOfObjectsPassingTest:v9];
 
   return v7;
 }
@@ -264,48 +264,48 @@ uint64_t __45__FCFeedItemInventory_allFeedItemsWithTopic___block_invoke(uint64_t
   return v4;
 }
 
-- (void)refreshIfNeededWithCompletion:(id)a3
+- (void)refreshIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(FCFeedItemInventory *)self _prepareForUse];
-  v5 = [(FCFeedItemInventory *)self _refreshIfNeeded];
+  _refreshIfNeeded = [(FCFeedItemInventory *)self _refreshIfNeeded];
   v6 = zalgo();
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__FCFeedItemInventory_refreshIfNeededWithCompletion___block_invoke;
   v9[3] = &unk_1E7C379C8;
-  v10 = v4;
-  v7 = v4;
-  v8 = [v5 alwaysOn:v6 always:v9];
+  v10 = completionCopy;
+  v7 = completionCopy;
+  v8 = [_refreshIfNeeded alwaysOn:v6 always:v9];
 }
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  throttlerCopy = throttler;
+  completionCopy = completion;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__80;
   v27 = __Block_byref_object_dispose__80;
   v28 = 0;
-  v8 = [(FCFeedItemInventory *)self articleIDsToRescoreLock];
+  articleIDsToRescoreLock = [(FCFeedItemInventory *)self articleIDsToRescoreLock];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __78__FCFeedItemInventory_operationThrottler_performAsyncOperationWithCompletion___block_invoke;
   v22[3] = &unk_1E7C37160;
   v22[4] = self;
   v22[5] = &v23;
-  [v8 performWithLockSync:v22];
+  [articleIDsToRescoreLock performWithLockSync:v22];
 
   v9 = FCFeedItemInventoryLog;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(FCFeedItemInventory *)self loggingKey];
+    loggingKey = [(FCFeedItemInventory *)self loggingKey];
     v11 = [v24[5] count];
     *buf = 138543618;
-    v30 = v10;
+    v30 = loggingKey;
     v31 = 2048;
     v32 = v11;
     _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] processing %ld article IDs for targeted rescoring", buf, 0x16u);
@@ -313,15 +313,15 @@ uint64_t __45__FCFeedItemInventory_allFeedItemsWithTopic___block_invoke(uint64_t
 
   if ([v24[5] count])
   {
-    v12 = [(FCFeedItemInventory *)self feedItemsRefreshSerialQueue];
+    feedItemsRefreshSerialQueue = [(FCFeedItemInventory *)self feedItemsRefreshSerialQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __78__FCFeedItemInventory_operationThrottler_performAsyncOperationWithCompletion___block_invoke_2;
     v14[3] = &unk_1E7C45EE0;
     v14[4] = self;
     v16 = &v23;
-    v15 = v7;
-    [v12 enqueueBlock:v14];
+    v15 = completionCopy;
+    [feedItemsRefreshSerialQueue enqueueBlock:v14];
   }
 
   else
@@ -330,7 +330,7 @@ uint64_t __45__FCFeedItemInventory_allFeedItemsWithTopic___block_invoke(uint64_t
     v18 = 3221225472;
     v19 = __78__FCFeedItemInventory_operationThrottler_performAsyncOperationWithCompletion___block_invoke_19;
     v20 = &unk_1E7C379C8;
-    v21 = v7;
+    v21 = completionCopy;
     v21[2]();
   }
 
@@ -414,10 +414,10 @@ uint64_t __78__FCFeedItemInventory_operationThrottler_performAsyncOperationWithC
   return v2();
 }
 
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  articlesCopy = articles;
   v6 = objc_opt_new();
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -425,9 +425,9 @@ uint64_t __78__FCFeedItemInventory_operationThrottler_performAsyncOperationWithC
   v18[3] = &unk_1E7C41CC8;
   v7 = v6;
   v19 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v18];
+  [articlesCopy enumerateKeysAndObjectsUsingBlock:v18];
 
-  v8 = [(FCFeedItemInventory *)self articleIDsToRescoreLock];
+  articleIDsToRescoreLock = [(FCFeedItemInventory *)self articleIDsToRescoreLock];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __67__FCFeedItemInventory_readingHistory_didChangeFeaturesForArticles___block_invoke_2;
@@ -435,23 +435,23 @@ uint64_t __78__FCFeedItemInventory_operationThrottler_performAsyncOperationWithC
   v16[4] = self;
   v9 = v7;
   v17 = v9;
-  [v8 performWithLockSync:v16];
+  [articleIDsToRescoreLock performWithLockSync:v16];
 
   v10 = FCFeedItemInventoryLog;
   if (os_log_type_enabled(FCFeedItemInventoryLog, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [(FCFeedItemInventory *)self loggingKey];
+    loggingKey = [(FCFeedItemInventory *)self loggingKey];
     v13 = [v9 count];
     *buf = 138543618;
-    v21 = v12;
+    v21 = loggingKey;
     v22 = 2048;
     v23 = v13;
     _os_log_impl(&dword_1B63EF000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] enqueuing %ld article IDs for targeted rescoring", buf, 0x16u);
   }
 
-  v14 = [(FCFeedItemInventory *)self targetedRescoreThrottler];
-  [v14 tickle];
+  targetedRescoreThrottler = [(FCFeedItemInventory *)self targetedRescoreThrottler];
+  [targetedRescoreThrottler tickle];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -473,13 +473,13 @@ void __67__FCFeedItemInventory_readingHistory_didChangeFeaturesForArticles___blo
 
 - (void)_prepareForUse
 {
-  v3 = [(FCFeedItemInventory *)self loadFromCacheOnce];
+  loadFromCacheOnce = [(FCFeedItemInventory *)self loadFromCacheOnce];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __37__FCFeedItemInventory__prepareForUse__block_invoke;
   v4[3] = &unk_1E7C36EA0;
   v4[4] = self;
-  [v3 executeOnce:v4];
+  [loadFromCacheOnce executeOnce:v4];
 }
 
 void __37__FCFeedItemInventory__prepareForUse__block_invoke(uint64_t a1)
@@ -788,9 +788,9 @@ uint64_t __39__FCFeedItemInventory__refreshIfNeeded__block_invoke_4_34(void *a1)
   return result;
 }
 
-- (void)_adoptInventory:(id)a3
+- (void)_adoptInventory:(id)inventory
 {
-  [(FCFeedItemInventory *)self setLatestInventory:a3];
+  [(FCFeedItemInventory *)self setLatestInventory:inventory];
   v4 = FCPersistenceQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -846,13 +846,13 @@ void __39__FCFeedItemInventory__adoptInventory___block_invoke(uint64_t a1)
 
 - (BOOL)_isRefreshNeeded
 {
-  v3 = [(FCFeedItemInventory *)self latestInventory];
-  v4 = v3;
-  if (v3)
+  latestInventory = [(FCFeedItemInventory *)self latestInventory];
+  v4 = latestInventory;
+  if (latestInventory)
   {
-    v5 = [v3 lastRefreshed];
-    v6 = [v5 nsDate];
-    [v6 fc_timeIntervalUntilNow];
+    lastRefreshed = [latestInventory lastRefreshed];
+    nsDate = [lastRefreshed nsDate];
+    [nsDate fc_timeIntervalUntilNow];
     v8 = v7;
     [(FCFeedItemInventory *)self refreshInterval];
     v10 = v8 > v9;
@@ -866,19 +866,19 @@ void __39__FCFeedItemInventory__adoptInventory___block_invoke(uint64_t a1)
   return v10;
 }
 
-- (void)_rescoreInventoryIfNeeded:(id)a3 forScoringVersion:(unint64_t)a4
+- (void)_rescoreInventoryIfNeeded:(id)needed forScoringVersion:(unint64_t)version
 {
-  v6 = a3;
-  v7 = [(FCFeedItemInventory *)self feedItemsRefreshSerialQueue];
+  neededCopy = needed;
+  feedItemsRefreshSerialQueue = [(FCFeedItemInventory *)self feedItemsRefreshSerialQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__FCFeedItemInventory__rescoreInventoryIfNeeded_forScoringVersion___block_invoke;
   v9[3] = &unk_1E7C45FA8;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  [v7 enqueueBlock:v9];
+  v10 = neededCopy;
+  versionCopy = version;
+  v8 = neededCopy;
+  [feedItemsRefreshSerialQueue enqueueBlock:v9];
 }
 
 void __67__FCFeedItemInventory__rescoreInventoryIfNeeded_forScoringVersion___block_invoke(uint64_t a1, void *a2)
@@ -994,8 +994,8 @@ LABEL_13:
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v4 = v3;
   v5 = MEMORY[0x1E695DEF0];
-  v6 = [(FCFeedItemInventory *)self fileURL];
-  v7 = [v5 dataWithContentsOfURL:v6];
+  fileURL = [(FCFeedItemInventory *)self fileURL];
+  v7 = [v5 dataWithContentsOfURL:fileURL];
 
   if (!v7)
   {
@@ -1014,8 +1014,8 @@ LABEL_13:
   if (v9)
   {
     v11 = v9;
-    v12 = [(FCPBFeedItemInventory *)v11 inventoryVersion];
-    if (v12 == [(FCFeedItemInventory *)self version])
+    inventoryVersion = [(FCPBFeedItemInventory *)v11 inventoryVersion];
+    if (inventoryVersion == [(FCFeedItemInventory *)self version])
     {
       if ([(FCPBFeedItemInventory *)v11 feedItemVersion]== 24)
       {
@@ -1025,19 +1025,19 @@ LABEL_13:
         if (os_log_type_enabled(FCFeedItemInventoryLog, OS_LOG_TYPE_DEFAULT))
         {
           log = v15;
-          v16 = [(FCFeedItemInventory *)self loggingKey];
-          v25 = [(FCPBFeedItemInventory *)v11 feedItems];
-          v17 = [v25 count];
-          v18 = [(FCPBFeedItemInventory *)v11 lastRefreshed];
-          v19 = [v18 nsDate];
+          loggingKey = [(FCFeedItemInventory *)self loggingKey];
+          feedItems = [(FCPBFeedItemInventory *)v11 feedItems];
+          v17 = [feedItems count];
+          lastRefreshed = [(FCPBFeedItemInventory *)v11 lastRefreshed];
+          nsDate = [lastRefreshed nsDate];
           *buf = 138544130;
-          v34 = v16;
+          v34 = loggingKey;
           v35 = 2048;
           v36 = (fmax(v14 - v4, 0.0) * 1000.0);
           v37 = 2048;
           *v38 = v17;
           *&v38[8] = 2114;
-          *&v38[10] = v19;
+          *&v38[10] = nsDate;
           _os_log_impl(&dword_1B63EF000, log, OS_LOG_TYPE_DEFAULT, "[%{public}@] loaded cached data in %llums with %lu feed items and last-refresh date %{public}@", buf, 0x2Au);
         }
 
@@ -1168,49 +1168,49 @@ uint64_t __46__FCFeedItemInventory__loadInventoryFromCache__block_invoke_47(uint
   return 0;
 }
 
-- (void)_populateScoreProfilesForFeedItems:(id)a3
+- (void)_populateScoreProfilesForFeedItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v6 = v5;
-  [(FCFeedItemInventory *)self _populateScoreProfilesForFeedItems:v4 configurationSet:0];
-  [(FCFeedItemInventory *)self _populateScoreProfilesForFeedItems:v4 configurationSet:11];
+  [(FCFeedItemInventory *)self _populateScoreProfilesForFeedItems:itemsCopy configurationSet:0];
+  [(FCFeedItemInventory *)self _populateScoreProfilesForFeedItems:itemsCopy configurationSet:11];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v8 = v7;
   v9 = FCFeedItemInventoryLog;
   if (os_log_type_enabled(FCFeedItemInventoryLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(FCFeedItemInventory *)self loggingKey];
+    loggingKey = [(FCFeedItemInventory *)self loggingKey];
     v13 = 138543874;
-    v14 = v11;
+    v14 = loggingKey;
     v15 = 2048;
     v16 = (fmax(v8 - v6, 0.0) * 1000.0);
     v17 = 2048;
-    v18 = [v4 count];
+    v18 = [itemsCopy count];
     _os_log_impl(&dword_1B63EF000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] took %llums to generate score profiles for %ld items", &v13, 0x20u);
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_populateScoreProfilesForFeedItems:(id)a3 configurationSet:(int64_t)a4
+- (void)_populateScoreProfilesForFeedItems:(id)items configurationSet:(int64_t)set
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemsCopy = items;
   context = objc_autoreleasePoolPush();
-  v7 = [(FCFeedItemInventory *)self feedPersonalizer];
-  v25 = v6;
-  v8 = [v7 sortItems:v6 options:1 configurationSet:a4];
+  feedPersonalizer = [(FCFeedItemInventory *)self feedPersonalizer];
+  v25 = itemsCopy;
+  v8 = [feedPersonalizer sortItems:itemsCopy options:1 configurationSet:set];
 
   v23 = v8;
-  v9 = [v8 scoreProfiles];
+  scoreProfiles = [v8 scoreProfiles];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v26 objects:v38 count:16];
+  v10 = [scoreProfiles countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1222,32 +1222,32 @@ uint64_t __46__FCFeedItemInventory__loadInventoryFromCache__block_invoke_47(uint
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(scoreProfiles);
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v9 objectForKey:v15];
-        v17 = [v15 scoreProfiles];
+        v16 = [scoreProfiles objectForKey:v15];
+        scoreProfiles2 = [v15 scoreProfiles];
 
-        if (!v17)
+        if (!scoreProfiles2)
         {
           v18 = objc_alloc_init(MEMORY[0x1E69B6FC0]);
           [v15 setScoreProfiles:v18];
         }
 
-        if (a4 == 11)
+        if (set == 11)
         {
-          v19 = [v16 pbScoreProfile];
-          v20 = [v15 scoreProfiles];
-          [v20 setForYouGroupScoreProfile:v19];
+          pbScoreProfile = [v16 pbScoreProfile];
+          scoreProfiles3 = [v15 scoreProfiles];
+          [scoreProfiles3 setForYouGroupScoreProfile:pbScoreProfile];
           goto LABEL_12;
         }
 
-        if (!a4)
+        if (!set)
         {
-          v19 = [v16 pbScoreProfile];
-          v20 = [v15 scoreProfiles];
-          [v20 setDefaultScoreProfile:v19];
+          pbScoreProfile = [v16 pbScoreProfile];
+          scoreProfiles3 = [v15 scoreProfiles];
+          [scoreProfiles3 setDefaultScoreProfile:pbScoreProfile];
 LABEL_12:
 
           goto LABEL_15;
@@ -1270,7 +1270,7 @@ LABEL_12:
 LABEL_15:
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v26 objects:v38 count:16];
+      v11 = [scoreProfiles countByEnumeratingWithState:&v26 objects:v38 count:16];
     }
 
     while (v11);

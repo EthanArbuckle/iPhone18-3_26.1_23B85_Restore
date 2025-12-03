@@ -1,27 +1,27 @@
 @interface PSYTestInput
-+ (id)testInputWithAction:(int64_t)a3;
-- (PSYTestInput)initWithCoder:(id)a3;
++ (id)testInputWithAction:(int64_t)action;
+- (PSYTestInput)initWithCoder:(id)coder;
 @end
 
 @implementation PSYTestInput
 
-+ (id)testInputWithAction:(int64_t)a3
++ (id)testInputWithAction:(int64_t)action
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setAction:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setAction:action];
 
   return v4;
 }
 
-- (PSYTestInput)initWithCoder:(id)a3
+- (PSYTestInput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PSYTestInput;
   v5 = [(PSYTestInput *)&v7 init];
   if (v5)
   {
-    v5->_action = [v4 decodeIntegerForKey:@"action"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"action"];
   }
 
   return v5;

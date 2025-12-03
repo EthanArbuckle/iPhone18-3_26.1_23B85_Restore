@@ -2,24 +2,24 @@
 - (NSUInteger)getDoubleQuaternionArray:(simd_quatd *)valuesArray maxCount:(NSUInteger)maxCount;
 - (NSUInteger)getFloatQuaternionArray:(simd_quatf *)valuesArray maxCount:(NSUInteger)maxCount;
 - (VtValue)defaultVtValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (simd_quatd)doubleQuaternionAtTime:(NSTimeInterval)time;
 - (simd_quatf)floatQuaternionAtTime:(NSTimeInterval)time;
 - (unint64_t)precision;
 - (void)resetWithDoubleQuaternionArray:(const simd_quatd *)valuesArray atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)count;
 - (void)resetWithFloatQuaternionArray:(const simd_quatf *)valuesArray atTimes:(const NSTimeInterval *)timesArray count:(NSUInteger)count;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4;
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5;
-- (void)setDoubleQuaternion:(__int128 *)a3 atTime:;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale;
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time;
+- (void)setDoubleQuaternion:(__int128 *)quaternion atTime:;
 @end
 
 @implementation MDLAnimatedQuaternion
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = MDLAnimatedQuaternion;
-  return [(MDLAnimatedValue *)&v4 copyWithZone:a3];
+  return [(MDLAnimatedValue *)&v4 copyWithZone:zone];
 }
 
 - (unint64_t)precision
@@ -98,7 +98,7 @@ LABEL_10:
   return result;
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale
 {
   v11[2] = *MEMORY[0x277D85DE8];
   pxrInternal__aapl__pxrReserved__::UsdAttribute::GetTimeSamples();
@@ -133,7 +133,7 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetWithUsdAttribute:(const void *)a3 timeScale:(double)a4 time:(double)a5
+- (void)resetWithUsdAttribute:(const void *)attribute timeScale:(double)scale time:(double)time
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v11[0] = 0;
@@ -141,7 +141,7 @@ LABEL_10:
   pxrInternal__aapl__pxrReserved__::UsdAttribute::Get();
   if ((sub_239F2DE8C(v11) & 1) != 0 || (sub_239F284BC(v11) & 1) != 0 || sub_239F28A58(v11))
   {
-    v9 = a5 * a4;
+    v9 = time * scale;
     sub_239E5F7D4(v10, v11);
     sub_239F237C8(&self->super._timeSampledData, &v9);
     sub_239E5B240(v10);
@@ -151,11 +151,11 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDoubleQuaternion:(__int128 *)a3 atTime:
+- (void)setDoubleQuaternion:(__int128 *)quaternion atTime:
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = *a3;
-  v4 = a3[1];
+  v3 = *quaternion;
+  v4 = quaternion[1];
   v5 = 0;
   v6 = &off_284D16AE8;
   operator new();

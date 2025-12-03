@@ -11,21 +11,21 @@
 
 - (id)noisePreferences
 {
-  v2 = [(HDAudioAnalyticsSettingsPreferences *)self _hasPairedWatchWithNoiseApp];
-  v3 = [MEMORY[0x277D12E30] sharedInstance];
-  v4 = [v3 notificationsEnabled];
-  if ([v3 noiseEnabled])
+  _hasPairedWatchWithNoiseApp = [(HDAudioAnalyticsSettingsPreferences *)self _hasPairedWatchWithNoiseApp];
+  mEMORY[0x277D12E30] = [MEMORY[0x277D12E30] sharedInstance];
+  notificationsEnabled = [mEMORY[0x277D12E30] notificationsEnabled];
+  if ([mEMORY[0x277D12E30] noiseEnabled])
   {
-    v5 = [v3 onboardingCompleted];
+    onboardingCompleted = [mEMORY[0x277D12E30] onboardingCompleted];
   }
 
   else
   {
-    v5 = 0;
+    onboardingCompleted = 0;
   }
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "notificationThreshold")}];
-  v7 = [[HDAudioAnalyticsNoiseSettingsResult alloc] initWithWatchPairedWithNoiseApp:v2 hasNoiseEnabled:v5 hasNoiseNotificationsEnabled:v4 noiseThreshold:v6];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(mEMORY[0x277D12E30], "notificationThreshold")}];
+  v7 = [[HDAudioAnalyticsNoiseSettingsResult alloc] initWithWatchPairedWithNoiseApp:_hasPairedWatchWithNoiseApp hasNoiseEnabled:onboardingCompleted hasNoiseNotificationsEnabled:notificationsEnabled noiseThreshold:v6];
 
   return v7;
 }
@@ -33,9 +33,9 @@
 - (id)headphonePreferences
 {
   v3 = [HDAudioAnalyticsHeadphoneSettingsResult alloc];
-  v4 = [(HDAudioAnalyticsSettingsPreferences *)self headphonePreferencesForLocalDevice];
-  v5 = [(HDAudioAnalyticsSettingsPreferences *)self headphonePreferencesForActivePairedWatch];
-  v6 = [(HDAudioAnalyticsHeadphoneSettingsResult *)v3 initWithLocalDevice:v4 activePairedWatch:v5];
+  headphonePreferencesForLocalDevice = [(HDAudioAnalyticsSettingsPreferences *)self headphonePreferencesForLocalDevice];
+  headphonePreferencesForActivePairedWatch = [(HDAudioAnalyticsSettingsPreferences *)self headphonePreferencesForActivePairedWatch];
+  v6 = [(HDAudioAnalyticsHeadphoneSettingsResult *)v3 initWithLocalDevice:headphonePreferencesForLocalDevice activePairedWatch:headphonePreferencesForActivePairedWatch];
 
   return v6;
 }
@@ -49,9 +49,9 @@
 
   else
   {
-    v3 = [MEMORY[0x277D11268] isHeadphoneExposureNotificationsEnabled];
-    v4 = [MEMORY[0x277D11268] isHeadphoneExposureMeasureLevelsEnabled];
-    +[HDAudioAnalyticsHeadphoneSettingsDeviceResult optInSettingsWithHasHAENEnabled:hasMeasureLevelsEnabled:hasIncludeOtherHeadphonesEnabled:](HDAudioAnalyticsHeadphoneSettingsDeviceResult, "optInSettingsWithHasHAENEnabled:hasMeasureLevelsEnabled:hasIncludeOtherHeadphonesEnabled:", v3, v4, [MEMORY[0x277D11268] _isMeasureOtherHeadphonesEnabled]);
+    isHeadphoneExposureNotificationsEnabled = [MEMORY[0x277D11268] isHeadphoneExposureNotificationsEnabled];
+    isHeadphoneExposureMeasureLevelsEnabled = [MEMORY[0x277D11268] isHeadphoneExposureMeasureLevelsEnabled];
+    +[HDAudioAnalyticsHeadphoneSettingsDeviceResult optInSettingsWithHasHAENEnabled:hasMeasureLevelsEnabled:hasIncludeOtherHeadphonesEnabled:](HDAudioAnalyticsHeadphoneSettingsDeviceResult, "optInSettingsWithHasHAENEnabled:hasMeasureLevelsEnabled:hasIncludeOtherHeadphonesEnabled:", isHeadphoneExposureNotificationsEnabled, isHeadphoneExposureMeasureLevelsEnabled, [MEMORY[0x277D11268] _isMeasureOtherHeadphonesEnabled]);
   }
   v2 = ;
 
@@ -179,13 +179,13 @@ LABEL_34:
 - (BOOL)_hasPairedWatchWithNoiseApp
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [v2 getPairedDevices];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  getPairedDevices = [mEMORY[0x277D2BCF8] getPairedDevices];
+  v4 = [getPairedDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -196,7 +196,7 @@ LABEL_34:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(getPairedDevices);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -210,7 +210,7 @@ LABEL_34:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [getPairedDevices countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;

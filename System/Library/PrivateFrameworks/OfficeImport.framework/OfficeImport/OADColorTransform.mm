@@ -1,32 +1,32 @@
 @interface OADColorTransform
-+ (float)alphaByApplyingTransforms:(id)a3 toAlpha:(float)a4;
-+ (float)applyAlphaTransform:(id)a3 toAlpha:(float)a4;
-+ (id)applyExpTransformWithValue:(float)a3 toColor:(id)a4;
-+ (id)applyHSLTransform:(id)a3 toColor:(id)a4;
-+ (id)applyRGBTransform:(id)a3 toColor:(id)a4 skipGamma:(BOOL)a5;
-+ (id)colorByApplyingTransforms:(id)a3 toColor:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (OADColorTransform)initWithType:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (float)alphaByApplyingTransforms:(id)transforms toAlpha:(float)alpha;
++ (float)applyAlphaTransform:(id)transform toAlpha:(float)alpha;
++ (id)applyExpTransformWithValue:(float)value toColor:(id)color;
++ (id)applyHSLTransform:(id)transform toColor:(id)color;
++ (id)applyRGBTransform:(id)transform toColor:(id)color skipGamma:(BOOL)gamma;
++ (id)colorByApplyingTransforms:(id)transforms toColor:(id)color;
+- (BOOL)isEqual:(id)equal;
+- (OADColorTransform)initWithType:(int)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation OADColorTransform
 
-- (OADColorTransform)initWithType:(int)a3
+- (OADColorTransform)initWithType:(int)type
 {
   v5.receiver = self;
   v5.super_class = OADColorTransform;
   result = [(OADColorTransform *)&v5 init];
   if (result)
   {
-    result->mType = a3;
+    result->mType = type;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   mType = self->mType;
@@ -34,21 +34,21 @@
   return [v4 initWithType:mType];
 }
 
-+ (float)alphaByApplyingTransforms:(id)a3 toAlpha:(float)a4
++ (float)alphaByApplyingTransforms:(id)transforms toAlpha:(float)alpha
 {
-  v6 = a3;
-  v7 = [v6 count];
+  transformsCopy = transforms;
+  v7 = [transformsCopy count];
   if (v7)
   {
     v8 = 0;
     do
     {
-      v9 = [v6 objectAtIndex:v8];
+      v9 = [transformsCopy objectAtIndex:v8];
       if ([v9 type] - 6 < 3)
       {
-        *&v10 = a4;
-        [a1 applyAlphaTransform:v9 toAlpha:v10];
-        a4 = v11;
+        *&v10 = alpha;
+        [self applyAlphaTransform:v9 toAlpha:v10];
+        alpha = v11;
       }
 
       ++v8;
@@ -57,17 +57,17 @@
     while (v7 != v8);
   }
 
-  return a4;
+  return alpha;
 }
 
-+ (id)colorByApplyingTransforms:(id)a3 toColor:(id)a4
++ (id)colorByApplyingTransforms:(id)transforms toColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 red];
-  if (v8 == 0.0 && ([v7 blue], v9 == 0.0))
+  transformsCopy = transforms;
+  colorCopy = color;
+  [colorCopy red];
+  if (v8 == 0.0 && ([colorCopy blue], v9 == 0.0))
   {
-    [v7 green];
+    [colorCopy green];
     v11 = v10 == 0.0;
   }
 
@@ -79,69 +79,69 @@
   for (i = 0; ; i = v13 + 1)
   {
     v13 = i;
-    if ([v6 count] <= i)
+    if ([transformsCopy count] <= i)
     {
       break;
     }
 
-    v14 = [v6 objectAtIndex:i];
-    v15 = [v14 type];
-    if (v15 > 17)
+    v14 = [transformsCopy objectAtIndex:i];
+    type = [v14 type];
+    if (type > 17)
     {
-      if (v15 < 27)
+      if (type < 27)
       {
-        v17 = [a1 applyRGBTransform:v14 toColor:v7 skipGamma:v11];
+        v17 = [self applyRGBTransform:v14 toColor:colorCopy skipGamma:v11];
         goto LABEL_12;
       }
 
-      switch(v15)
+      switch(type)
       {
         case 27:
           LODWORD(v16) = 1055439406;
-          v17 = [a1 applyExpTransformWithValue:v7 toColor:v16];
+          v17 = [self applyExpTransformWithValue:colorCopy toColor:v16];
           goto LABEL_12;
         case 28:
           LODWORD(v16) = 1074580685;
-          v17 = [a1 applyExpTransformWithValue:v7 toColor:v16];
+          v17 = [self applyExpTransformWithValue:colorCopy toColor:v16];
           goto LABEL_12;
         case 29:
           [v14 value];
-          v17 = [a1 applyExpTransformWithValue:v7 toColor:?];
+          v17 = [self applyExpTransformWithValue:colorCopy toColor:?];
           goto LABEL_12;
       }
     }
 
     else
     {
-      if (v15 > 8)
+      if (type > 8)
       {
-        v17 = [a1 applyHSLTransform:v14 toColor:v7];
+        v17 = [self applyHSLTransform:v14 toColor:colorCopy];
 LABEL_12:
         v18 = v17;
 
-        v7 = v18;
+        colorCopy = v18;
         goto LABEL_13;
       }
 
-      if (v15 > 3)
+      if (type > 3)
       {
-        if ((v15 - 4) < 2)
+        if ((type - 4) < 2)
         {
-          v17 = [a1 applyRGBTransform:v14 toColor:v7 skipGamma:0];
+          v17 = [self applyRGBTransform:v14 toColor:colorCopy skipGamma:0];
           goto LABEL_12;
         }
       }
 
       else
       {
-        switch(v15)
+        switch(type)
         {
           case 1:
-            [v7 red];
+            [colorCopy red];
             v54 = v27;
-            [v7 green];
+            [colorCopy green];
             v53 = v28;
-            [v7 blue];
+            [colorCopy blue];
             v52 = v29;
             v51 = 0.0;
             v50 = 0;
@@ -172,7 +172,7 @@ LABEL_12:
             goto LABEL_12;
           case 2:
             LODWORD(v16) = 1074580685;
-            v38 = [a1 applyExpTransformWithValue:v7 toColor:v16];
+            v38 = [self applyExpTransformWithValue:colorCopy toColor:v16];
 
             [v38 red];
             v40 = v39;
@@ -185,15 +185,15 @@ LABEL_12:
             v47 = [OADRgbColor rgbColorWithRed:v46 green:v43 blue:v45];
 
             LODWORD(v48) = 1055439406;
-            v7 = [a1 applyExpTransformWithValue:v47 toColor:v48];
+            colorCopy = [self applyExpTransformWithValue:v47 toColor:v48];
 
             break;
           case 3:
-            [v7 red];
+            [colorCopy red];
             v20 = v19;
-            [v7 green];
+            [colorCopy green];
             v22 = v21;
-            [v7 blue];
+            [colorCopy blue];
             v23 = v22 * 0.59;
             v24 = v23 + v20 * 0.3;
             v26 = v24 + v25 * 0.11;
@@ -209,17 +209,17 @@ LABEL_12:
 LABEL_13:
   }
 
-  return v7;
+  return colorCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     mType = self->mType;
-    v6 = mType == [v4 type];
+    v6 = mType == [equalCopy type];
   }
 
   else
@@ -230,28 +230,28 @@ LABEL_13:
   return v6;
 }
 
-+ (float)applyAlphaTransform:(id)a3 toAlpha:(float)a4
++ (float)applyAlphaTransform:(id)transform toAlpha:(float)alpha
 {
-  v5 = a3;
-  [v5 value];
+  transformCopy = transform;
+  [transformCopy value];
   v7 = v6;
-  v8 = [v5 type];
-  if (v8 != 6)
+  type = [transformCopy type];
+  if (type != 6)
   {
-    v9 = v7 * a4;
-    if (v8 != 8)
+    alphaCopy = v7 * alpha;
+    if (type != 8)
     {
-      v9 = a4;
+      alphaCopy = alpha;
     }
 
-    if (v8 == 7)
+    if (type == 7)
     {
-      v7 = v7 + a4;
+      v7 = v7 + alpha;
     }
 
     else
     {
-      v7 = v9;
+      v7 = alphaCopy;
     }
   }
 
@@ -266,39 +266,39 @@ LABEL_13:
   return v11;
 }
 
-+ (id)applyRGBTransform:(id)a3 toColor:(id)a4 skipGamma:(BOOL)a5
++ (id)applyRGBTransform:(id)transform toColor:(id)color skipGamma:(BOOL)gamma
 {
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  transformCopy = transform;
+  colorCopy = color;
+  if (!gamma)
   {
     LODWORD(v10) = 1074580685;
-    v11 = [a1 applyExpTransformWithValue:v9 toColor:v10];
+    v11 = [self applyExpTransformWithValue:colorCopy toColor:v10];
 
-    v9 = v11;
+    colorCopy = v11;
   }
 
-  [v9 red];
+  [colorCopy red];
   v13 = v12;
-  [v9 green];
+  [colorCopy green];
   v15 = v14;
-  [v9 blue];
+  [colorCopy blue];
   v17 = v16;
-  [v8 value];
+  [transformCopy value];
   v19 = v18;
-  v20 = [v8 type];
-  if (v20 <= 20)
+  type = [transformCopy type];
+  if (type <= 20)
   {
-    if (v20 <= 17)
+    if (type <= 17)
     {
-      if (v20 == 4)
+      if (type == 4)
       {
         v13 = (1.0 - v19) + (v13 * v19);
         v15 = (1.0 - v19) + (v15 * v19);
         v17 = (1.0 - v19) + (v17 * v19);
       }
 
-      else if (v20 == 5)
+      else if (type == 5)
       {
         v17 = v17 * v19;
         v15 = v15 * v19;
@@ -306,7 +306,7 @@ LABEL_13:
       }
     }
 
-    else if (v20 == 18)
+    else if (type == 18)
     {
       v13 = v19;
     }
@@ -314,12 +314,12 @@ LABEL_13:
     else
     {
       v22 = v13 * v19;
-      if (v20 != 20)
+      if (type != 20)
       {
         v22 = v13;
       }
 
-      if (v20 == 19)
+      if (type == 19)
       {
         v13 = v13 + v19;
       }
@@ -331,9 +331,9 @@ LABEL_13:
     }
   }
 
-  else if (v20 > 23)
+  else if (type > 23)
   {
-    if (v20 == 24)
+    if (type == 24)
     {
       v17 = v19;
     }
@@ -341,12 +341,12 @@ LABEL_13:
     else
     {
       v23 = v17 * v19;
-      if (v20 != 26)
+      if (type != 26)
       {
         v23 = v17;
       }
 
-      if (v20 == 25)
+      if (type == 25)
       {
         v17 = v17 + v19;
       }
@@ -358,7 +358,7 @@ LABEL_13:
     }
   }
 
-  else if (v20 == 21)
+  else if (type == 21)
   {
     v15 = v19;
   }
@@ -366,12 +366,12 @@ LABEL_13:
   else
   {
     v21 = v15 * v19;
-    if (v20 != 23)
+    if (type != 23)
     {
       v21 = v15;
     }
 
-    if (v20 == 22)
+    if (type == 22)
     {
       v15 = v15 + v19;
     }
@@ -408,10 +408,10 @@ LABEL_13:
   *&v29 = v29;
   v30 = [OADRgbColor rgbColorWithRed:v26 green:v28 blue:v29];
 
-  if (!a5)
+  if (!gamma)
   {
     LODWORD(v31) = 1055439406;
-    v32 = [a1 applyExpTransformWithValue:v30 toColor:v31];
+    v32 = [self applyExpTransformWithValue:v30 toColor:v31];
 
     v30 = v32;
   }
@@ -419,29 +419,29 @@ LABEL_13:
   return v30;
 }
 
-+ (id)applyHSLTransform:(id)a3 toColor:(id)a4
++ (id)applyHSLTransform:(id)transform toColor:(id)color
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 red];
+  transformCopy = transform;
+  colorCopy = color;
+  [colorCopy red];
   v8 = v7;
   v33 = v7;
-  [v6 green];
+  [colorCopy green];
   v10 = v9;
   v32 = v9;
-  [v6 blue];
+  [colorCopy blue];
   v31 = v11;
   v30 = 0.0;
   v29 = 0;
   *&v12 = convertRgbToHsl(v8, v10, v11, &v30, &v29 + 1, &v29);
-  [v5 value];
+  [transformCopy value];
   v14 = v13;
-  v15 = [v5 type];
-  if (v15 <= 12)
+  type = [transformCopy type];
+  if (type <= 12)
   {
-    if (v15 > 10)
+    if (type > 10)
     {
-      if (v15 != 11)
+      if (type != 11)
       {
         *(&v29 + 1) = v14;
         goto LABEL_23;
@@ -452,13 +452,13 @@ LABEL_13:
 
     else
     {
-      if (v15 == 9)
+      if (type == 9)
       {
         v30 = v14;
         goto LABEL_23;
       }
 
-      if (v15 != 10)
+      if (type != 10)
       {
         goto LABEL_23;
       }
@@ -469,9 +469,9 @@ LABEL_13:
     v30 = v17;
   }
 
-  else if (v15 <= 14)
+  else if (type <= 14)
   {
-    if (v15 == 13)
+    if (type == 13)
     {
       v18 = v14 + *(&v29 + 1);
     }
@@ -484,21 +484,21 @@ LABEL_13:
     *(&v29 + 1) = v18;
   }
 
-  else if (v15 == 15)
+  else if (type == 15)
   {
     *&v29 = v14;
   }
 
   else
   {
-    if (v15 == 16)
+    if (type == 16)
     {
       v16 = v14 + *&v29;
     }
 
     else
     {
-      if (v15 != 17)
+      if (type != 17)
       {
         goto LABEL_23;
       }
@@ -537,17 +537,17 @@ LABEL_23:
   return v27;
 }
 
-+ (id)applyExpTransformWithValue:(float)a3 toColor:(id)a4
++ (id)applyExpTransformWithValue:(float)value toColor:(id)color
 {
-  v5 = a4;
-  [v5 red];
-  v7 = powf(v6, a3);
-  [v5 green];
+  colorCopy = color;
+  [colorCopy red];
+  v7 = powf(v6, value);
+  [colorCopy green];
   v9 = v8;
-  [v5 blue];
+  [colorCopy blue];
   v11 = v10;
-  v12 = powf(v9, a3);
-  LODWORD(v13) = powf(v11, a3);
+  v12 = powf(v9, value);
+  LODWORD(v13) = powf(v11, value);
   *&v14 = v7;
   *&v15 = v12;
   v16 = [OADRgbColor rgbColorWithRed:v14 green:v15 blue:v13];

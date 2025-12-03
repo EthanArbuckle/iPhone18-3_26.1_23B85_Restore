@@ -1,6 +1,6 @@
 @interface HomePodSetupPersonalRequestsViewController
-- (_TtC14HDSViewService42HomePodSetupPersonalRequestsViewController)initWithContentView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC14HDSViewService42HomePodSetupPersonalRequestsViewController)initWithContentView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -8,17 +8,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100083B44();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100084ED0(a3);
+  selfCopy = self;
+  sub_100084ED0(appear);
 }
 
-- (_TtC14HDSViewService42HomePodSetupPersonalRequestsViewController)initWithContentView:(id)a3
+- (_TtC14HDSViewService42HomePodSetupPersonalRequestsViewController)initWithContentView:(id)view
 {
   *&self->presenter[OBJC_IVAR____TtC14HDSViewService42HomePodSetupPersonalRequestsViewController_presenter] = 0;
   swift_unknownObjectWeakInit();
@@ -30,7 +30,7 @@
   *&self->PRXFeatureListViewController_opaque[OBJC_IVAR____TtC14HDSViewService42HomePodSetupPersonalRequestsViewController_bottomLabel] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for HomePodSetupPersonalRequestsViewController();
-  return [(HomePodSetupPersonalRequestsViewController *)&v8 initWithContentView:a3];
+  return [(HomePodSetupPersonalRequestsViewController *)&v8 initWithContentView:view];
 }
 
 @end

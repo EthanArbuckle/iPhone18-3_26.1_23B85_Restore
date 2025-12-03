@@ -6,8 +6,8 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(_UIButtonBarButtonAccessibility__PassKitUI__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:kAXCustomButtonIdentifier];
+  accessibilityIdentification = [(_UIButtonBarButtonAccessibility__PassKitUI__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:kAXCustomButtonIdentifier];
 
   if (v4)
   {

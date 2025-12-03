@@ -11,7 +11,7 @@
   result = sharedInstance___NSMessagePortNameServerShared;
   if (!sharedInstance___NSMessagePortNameServerShared)
   {
-    result = [objc_allocWithZone(a1) init];
+    result = [objc_allocWithZone(self) init];
     sharedInstance___NSMessagePortNameServerShared = result;
   }
 

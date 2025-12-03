@@ -1,5 +1,5 @@
 @interface AVVideoPerformanceMetrics
-- (AVVideoPerformanceMetrics)initWithDictionary:(id)a3;
+- (AVVideoPerformanceMetrics)initWithDictionary:(id)dictionary;
 - (double)totalFrameDelay;
 - (int64_t)numberOfCorruptedFrames;
 - (int64_t)numberOfDroppedFrames;
@@ -11,9 +11,9 @@
 
 @implementation AVVideoPerformanceMetrics
 
-- (AVVideoPerformanceMetrics)initWithDictionary:(id)a3
+- (AVVideoPerformanceMetrics)initWithDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
 
     return 0;
@@ -29,7 +29,7 @@
     if (v5)
     {
       CFRetain(v5);
-      v4->_performanceMetricsInternal->_metricsDictionary = a3;
+      v4->_performanceMetricsInternal->_metricsDictionary = dictionary;
       return v4;
     }
 
@@ -69,7 +69,7 @@
   v9 = v7;
   if (!v4)
   {
-    v10 = 0;
+    unsignedLongValue = 0;
     if (!v5)
     {
       goto LABEL_8;
@@ -78,25 +78,25 @@
     goto LABEL_7;
   }
 
-  v10 = [v4 unsignedLongValue];
+  unsignedLongValue = [v4 unsignedLongValue];
   if (v5)
   {
 LABEL_7:
-    v10 += [v5 unsignedLongValue];
+    unsignedLongValue += [v5 unsignedLongValue];
   }
 
 LABEL_8:
   if (v6)
   {
-    v10 += [v6 unsignedLongValue];
+    unsignedLongValue += [v6 unsignedLongValue];
   }
 
   if (v9)
   {
-    v10 += [v9 unsignedLongValue];
+    unsignedLongValue += [v9 unsignedLongValue];
   }
 
-  return v10;
+  return unsignedLongValue;
 }
 
 - (int64_t)numberOfDroppedFrames
@@ -120,8 +120,8 @@ LABEL_8:
   }
 
   v8 = v5;
-  v9 = [v3 unsignedLongValue];
-  v10 = [v4 unsignedLongValue] + v9;
+  unsignedLongValue = [v3 unsignedLongValue];
+  v10 = [v4 unsignedLongValue] + unsignedLongValue;
   return v10 + [v8 unsignedLongValue];
 }
 

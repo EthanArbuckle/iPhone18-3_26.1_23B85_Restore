@@ -1,22 +1,22 @@
 @interface HcStat
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFailureFoOrScStatePpt:(BOOL)a3;
-- (void)setHasFailureIrStatePpt:(BOOL)a3;
-- (void)setHasFailureSoOrFcStatePpt:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFailureFoOrScStatePpt:(BOOL)ppt;
+- (void)setHasFailureIrStatePpt:(BOOL)ppt;
+- (void)setHasFailureSoOrFcStatePpt:(BOOL)ppt;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HcStat
 
-- (void)setHasFailureIrStatePpt:(BOOL)a3
+- (void)setHasFailureIrStatePpt:(BOOL)ppt
 {
-  if (a3)
+  if (ppt)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasFailureFoOrScStatePpt:(BOOL)a3
+- (void)setHasFailureFoOrScStatePpt:(BOOL)ppt
 {
-  if (a3)
+  if (ppt)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasFailureSoOrFcStatePpt:(BOOL)a3
+- (void)setHasFailureSoOrFcStatePpt:(BOOL)ppt
 {
-  if (a3)
+  if (ppt)
   {
     v3 = 8;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = HcStat;
   v3 = [(HcStat *)&v7 description];
-  v4 = [(HcStat *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(HcStat *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -128,9 +128,9 @@ LABEL_6:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -181,14 +181,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_compType;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_compType;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -207,8 +207,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_failureIrStatePpt;
-  *(v4 + 24) |= 4u;
+  toCopy[4] = self->_failureIrStatePpt;
+  *(toCopy + 24) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -222,21 +222,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[3] = self->_failureFoOrScStatePpt;
-  *(v4 + 24) |= 2u;
+  toCopy[3] = self->_failureFoOrScStatePpt;
+  *(toCopy + 24) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    v4[5] = self->_failureSoOrFcStatePpt;
-    *(v4 + 24) |= 8u;
+    toCopy[5] = self->_failureSoOrFcStatePpt;
+    *(toCopy + 24) |= 8u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -288,23 +288,23 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_compType != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_compType != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_21:
     v5 = 0;
@@ -313,34 +313,34 @@ LABEL_21:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_failureIrStatePpt != *(v4 + 4))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_failureIrStatePpt != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_failureFoOrScStatePpt != *(v4 + 3))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_failureFoOrScStatePpt != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_21;
   }
 
-  v5 = (*(v4 + 24) & 8) == 0;
+  v5 = (*(equalCopy + 24) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 24) & 8) == 0 || self->_failureSoOrFcStatePpt != *(v4 + 5))
+    if ((*(equalCopy + 24) & 8) == 0 || self->_failureSoOrFcStatePpt != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
@@ -407,15 +407,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_compType = *(v4 + 2);
+    self->_compType = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -428,14 +428,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 4) == 0)
+  else if ((*(fromCopy + 24) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_failureIrStatePpt = *(v4 + 4);
+  self->_failureIrStatePpt = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -448,12 +448,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_failureFoOrScStatePpt = *(v4 + 3);
+  self->_failureFoOrScStatePpt = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 24) & 8) != 0)
+  if ((*(fromCopy + 24) & 8) != 0)
   {
 LABEL_5:
-    self->_failureSoOrFcStatePpt = *(v4 + 5);
+    self->_failureSoOrFcStatePpt = *(fromCopy + 5);
     *&self->_has |= 8u;
   }
 

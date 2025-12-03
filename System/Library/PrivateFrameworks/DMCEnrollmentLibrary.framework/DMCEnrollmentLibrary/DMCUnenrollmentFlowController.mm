@@ -1,50 +1,50 @@
 @interface DMCUnenrollmentFlowController
-- (DMCUnenrollmentFlowController)initWithPresenter:(id)a3 managedConfigurationHelper:(id)a4;
+- (DMCUnenrollmentFlowController)initWithPresenter:(id)presenter managedConfigurationHelper:(id)helper;
 - (DMCUnenrollmentFlowMigrationDelegate)migrationDelegate;
-- (id)_nameForStep:(unint64_t)a3;
+- (id)_nameForStep:(unint64_t)step;
 - (void)_askForPasscodeIfNeeded;
-- (void)_flowTerminatedWithError:(id)a3 canceled:(BOOL)a4;
-- (void)_preflightUnenrollmentWithUnenrollmentType:(unint64_t)a3 accoutAltDSID:(id)a4;
-- (void)_resetToInitialStepsWithSilent:(BOOL)a3;
+- (void)_flowTerminatedWithError:(id)error canceled:(BOOL)canceled;
+- (void)_preflightUnenrollmentWithUnenrollmentType:(unint64_t)type accoutAltDSID:(id)d;
+- (void)_resetToInitialStepsWithSilent:(BOOL)silent;
 - (void)_workerQueue_flowCompleted;
-- (void)_workerQueue_performFlowStep:(unint64_t)a3;
-- (void)unenrollADEWithCompletionHandler:(id)a3;
+- (void)_workerQueue_performFlowStep:(unint64_t)step;
+- (void)unenrollADEWithCompletionHandler:(id)handler;
 @end
 
 @implementation DMCUnenrollmentFlowController
 
-- (DMCUnenrollmentFlowController)initWithPresenter:(id)a3 managedConfigurationHelper:(id)a4
+- (DMCUnenrollmentFlowController)initWithPresenter:(id)presenter managedConfigurationHelper:(id)helper
 {
-  v7 = a3;
-  v8 = a4;
+  presenterCopy = presenter;
+  helperCopy = helper;
   v12.receiver = self;
   v12.super_class = DMCUnenrollmentFlowController;
   v9 = [(DMCEnrollmentFlowControllerBase *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_presenter, a3);
-    objc_storeStrong(&v10->_managedConfigurationHelper, a4);
+    objc_storeStrong(&v9->_presenter, presenter);
+    objc_storeStrong(&v10->_managedConfigurationHelper, helper);
   }
 
   return v10;
 }
 
-- (void)unenrollADEWithCompletionHandler:(id)a3
+- (void)unenrollADEWithCompletionHandler:(id)handler
 {
-  [(DMCUnenrollmentFlowController *)self setUnenrollmentCompletionHandler:a3];
+  [(DMCUnenrollmentFlowController *)self setUnenrollmentCompletionHandler:handler];
   [(DMCUnenrollmentFlowController *)self setUnenrollmentType:1];
   [(DMCUnenrollmentFlowController *)self _resetToInitialStepsWithSilent:0];
 
   [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
 }
 
-- (void)_resetToInitialStepsWithSilent:(BOOL)a3
+- (void)_resetToInitialStepsWithSilent:(BOOL)silent
 {
   v6.receiver = self;
   v6.super_class = DMCUnenrollmentFlowController;
   [(DMCEnrollmentFlowControllerBase *)&v6 _resetToInitialSteps];
-  if (a3)
+  if (silent)
   {
     [(DMCUnenrollmentFlowController *)self _silentUnenrollmentSteps];
   }
@@ -57,14 +57,14 @@
   [(DMCEnrollmentFlowControllerBase *)self _appendSteps:v5];
 }
 
-- (void)_workerQueue_performFlowStep:(unint64_t)a3
+- (void)_workerQueue_performFlowStep:(unint64_t)step
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = *DMCLogObjects();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(DMCUnenrollmentFlowController *)self _nameForStep:a3];
+    v7 = [(DMCUnenrollmentFlowController *)self _nameForStep:step];
     v16 = 138543362;
     v17 = v7;
     _os_log_impl(&dword_247E39000, v6, OS_LOG_TYPE_DEFAULT, "Will perform unenrollment step: %{public}@", &v16, 0xCu);
@@ -72,39 +72,39 @@
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [MEMORY[0x277D03550] currentPersonaID];
-    v9 = [MEMORY[0x277D03550] currentPersonaTypeString];
+    currentPersonaID = [MEMORY[0x277D03550] currentPersonaID];
+    currentPersonaTypeString = [MEMORY[0x277D03550] currentPersonaTypeString];
     v16 = 136315906;
     v17 = "[DMCUnenrollmentFlowController _workerQueue_performFlowStep:]";
     v18 = 1024;
     v19 = 59;
     v20 = 2114;
-    v21 = v8;
+    v21 = currentPersonaID;
     v22 = 2114;
-    v23 = v9;
+    v23 = currentPersonaTypeString;
     _os_log_impl(&dword_247E39000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s (L: %d): Current persona ID: %{public}@, type: %{public}@", &v16, 0x26u);
   }
 
-  [(DMCEnrollmentFlowControllerBase *)self setCurrentStep:a3];
-  if (a3 > 1)
+  [(DMCEnrollmentFlowControllerBase *)self setCurrentStep:step];
+  if (step > 1)
   {
-    if (a3 == 2)
+    if (step == 2)
     {
       [(DMCUnenrollmentFlowController *)self _askForPasscodeIfNeeded];
     }
 
-    else if (a3 == 3)
+    else if (step == 3)
     {
-      v10 = [(DMCUnenrollmentFlowController *)self profileIdentifier];
-      v11 = [(DMCUnenrollmentFlowController *)self personaID];
-      v12 = [(DMCUnenrollmentFlowController *)self altDSID];
-      [(DMCUnenrollmentFlowController *)self _uninstallEnrollmentProfileWithIdentifier:v10 personaID:v11 altDSID:v12 isAppleMAID:[(DMCUnenrollmentFlowController *)self isAppleMAID] unenrollmentType:[(DMCUnenrollmentFlowController *)self unenrollmentType]];
+      profileIdentifier = [(DMCUnenrollmentFlowController *)self profileIdentifier];
+      personaID = [(DMCUnenrollmentFlowController *)self personaID];
+      altDSID = [(DMCUnenrollmentFlowController *)self altDSID];
+      [(DMCUnenrollmentFlowController *)self _uninstallEnrollmentProfileWithIdentifier:profileIdentifier personaID:personaID altDSID:altDSID isAppleMAID:[(DMCUnenrollmentFlowController *)self isAppleMAID] unenrollmentType:[(DMCUnenrollmentFlowController *)self unenrollmentType]];
     }
   }
 
-  else if (a3)
+  else if (step)
   {
-    if (a3 == 1)
+    if (step == 1)
     {
       [(DMCUnenrollmentFlowController *)self _askForUserConfirmationIsAppleMAID:[(DMCUnenrollmentFlowController *)self isAppleMAID]];
     }
@@ -112,9 +112,9 @@
 
   else
   {
-    v13 = [(DMCUnenrollmentFlowController *)self unenrollmentType];
-    v14 = [(DMCUnenrollmentFlowController *)self altDSID];
-    [(DMCUnenrollmentFlowController *)self _preflightUnenrollmentWithUnenrollmentType:v13 accoutAltDSID:v14];
+    unenrollmentType = [(DMCUnenrollmentFlowController *)self unenrollmentType];
+    altDSID2 = [(DMCUnenrollmentFlowController *)self altDSID];
+    [(DMCUnenrollmentFlowController *)self _preflightUnenrollmentWithUnenrollmentType:unenrollmentType accoutAltDSID:altDSID2];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -129,39 +129,39 @@
     _os_log_impl(&dword_247E39000, v3, OS_LOG_TYPE_DEFAULT, "Unenrollment flow completed!", v9, 2u);
   }
 
-  v4 = [(DMCUnenrollmentFlowController *)self presenter];
+  presenter = [(DMCUnenrollmentFlowController *)self presenter];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DMCUnenrollmentFlowController *)self presenter];
-    [v6 dismissUnenrollmentSceneWithError:0];
+    presenter2 = [(DMCUnenrollmentFlowController *)self presenter];
+    [presenter2 dismissUnenrollmentSceneWithError:0];
   }
 
-  v7 = [(DMCUnenrollmentFlowController *)self unenrollmentCompletionHandler];
+  unenrollmentCompletionHandler = [(DMCUnenrollmentFlowController *)self unenrollmentCompletionHandler];
 
-  if (v7)
+  if (unenrollmentCompletionHandler)
   {
-    v8 = [(DMCUnenrollmentFlowController *)self unenrollmentCompletionHandler];
-    v8[2](v8, 1, 0, 0);
+    unenrollmentCompletionHandler2 = [(DMCUnenrollmentFlowController *)self unenrollmentCompletionHandler];
+    unenrollmentCompletionHandler2[2](unenrollmentCompletionHandler2, 1, 0, 0);
 
     [(DMCUnenrollmentFlowController *)self setUnenrollmentCompletionHandler:0];
   }
 }
 
-- (void)_flowTerminatedWithError:(id)a3 canceled:(BOOL)a4
+- (void)_flowTerminatedWithError:(id)error canceled:(BOOL)canceled
 {
-  v6 = a3;
-  v7 = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
+  errorCopy = error;
+  workerQueue = [(DMCEnrollmentFlowControllerBase *)self workerQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__DMCUnenrollmentFlowController__flowTerminatedWithError_canceled___block_invoke;
   v9[3] = &unk_278EE31E0;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  [v7 queueBlock:v9];
+  canceledCopy = canceled;
+  v10 = errorCopy;
+  selfCopy = self;
+  v8 = errorCopy;
+  [workerQueue queueBlock:v9];
 }
 
 void __67__DMCUnenrollmentFlowController__flowTerminatedWithError_canceled___block_invoke(uint64_t a1)
@@ -212,24 +212,24 @@ void __67__DMCUnenrollmentFlowController__flowTerminatedWithError_canceled___blo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_preflightUnenrollmentWithUnenrollmentType:(unint64_t)a3 accoutAltDSID:(id)a4
+- (void)_preflightUnenrollmentWithUnenrollmentType:(unint64_t)type accoutAltDSID:(id)d
 {
-  v6 = a4;
-  if (a3 == 1)
+  dCopy = d;
+  if (type == 1)
   {
-    v10 = [(DMCUnenrollmentFlowController *)self managedConfigurationHelper];
-    v11 = [v10 installedMDMProfileIdentifier];
-    [(DMCUnenrollmentFlowController *)self setProfileIdentifier:v11];
+    managedConfigurationHelper = [(DMCUnenrollmentFlowController *)self managedConfigurationHelper];
+    installedMDMProfileIdentifier = [managedConfigurationHelper installedMDMProfileIdentifier];
+    [(DMCUnenrollmentFlowController *)self setProfileIdentifier:installedMDMProfileIdentifier];
   }
 
-  else if (!a3)
+  else if (!type)
   {
-    v7 = [MEMORY[0x277CB8F48] defaultStore];
-    v8 = [v7 dmc_remoteManagementAccountForAltDSID:v6];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    v8 = [defaultStore dmc_remoteManagementAccountForAltDSID:dCopy];
 
     if (v8)
     {
-      v9 = [v8 dmc_managementProfileIdentifier];
+      dmc_managementProfileIdentifier = [v8 dmc_managementProfileIdentifier];
       -[DMCUnenrollmentFlowController setIsAppleMAID:](self, "setIsAppleMAID:", [v8 dmc_enrollmentMethod] == 1);
     }
 
@@ -242,10 +242,10 @@ void __67__DMCUnenrollmentFlowController__flowTerminatedWithError_canceled___blo
         _os_log_impl(&dword_247E39000, v12, OS_LOG_TYPE_ERROR, "RM account is missing!", buf, 2u);
       }
 
-      v9 = 0;
+      dmc_managementProfileIdentifier = 0;
     }
 
-    if (![v9 length])
+    if (![dmc_managementProfileIdentifier length])
     {
       v13 = *DMCLogObjects();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -254,13 +254,13 @@ void __67__DMCUnenrollmentFlowController__flowTerminatedWithError_canceled___blo
         _os_log_impl(&dword_247E39000, v13, OS_LOG_TYPE_ERROR, "No profile identifier from the RM account!", v19, 2u);
       }
 
-      v14 = [MEMORY[0x277CB8F48] defaultStore];
-      v15 = [v14 dmc_iCloudAccountForRemoteManagingAccountWithAltDSID:v6];
+      defaultStore2 = [MEMORY[0x277CB8F48] defaultStore];
+      v15 = [defaultStore2 dmc_iCloudAccountForRemoteManagingAccountWithAltDSID:dCopy];
 
       if (v15)
       {
-        v16 = [v15 dmc_personaIdentifier];
-        [(DMCUnenrollmentFlowController *)self setPersonaID:v16];
+        dmc_personaIdentifier = [v15 dmc_personaIdentifier];
+        [(DMCUnenrollmentFlowController *)self setPersonaID:dmc_personaIdentifier];
 
         v8 = v15;
       }
@@ -278,7 +278,7 @@ void __67__DMCUnenrollmentFlowController__flowTerminatedWithError_canceled___blo
       }
     }
 
-    [(DMCUnenrollmentFlowController *)self setProfileIdentifier:v9];
+    [(DMCUnenrollmentFlowController *)self setProfileIdentifier:dmc_managementProfileIdentifier];
   }
 
   [(DMCEnrollmentFlowControllerBase *)self _pollNextStep];
@@ -332,10 +332,10 @@ uint64_t __68__DMCUnenrollmentFlowController__askForUserConfirmationIsAppleMAID_
 
 - (void)_askForPasscodeIfNeeded
 {
-  v3 = [(DMCUnenrollmentFlowController *)self managedConfigurationHelper];
-  v4 = [v3 isDevicePasscodeSet];
+  managedConfigurationHelper = [(DMCUnenrollmentFlowController *)self managedConfigurationHelper];
+  isDevicePasscodeSet = [managedConfigurationHelper isDevicePasscodeSet];
 
-  if (v4)
+  if (isDevicePasscodeSet)
   {
     objc_initWeak(&location, self);
     v17[0] = MEMORY[0x277D85DD0];
@@ -345,41 +345,41 @@ uint64_t __68__DMCUnenrollmentFlowController__askForUserConfirmationIsAppleMAID_
     v17[4] = self;
     objc_copyWeak(&v18, &location);
     v5 = MEMORY[0x24C1BD5A0](v17);
-    v6 = [(DMCUnenrollmentFlowController *)self presenter];
+    presenter = [(DMCUnenrollmentFlowController *)self presenter];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(DMCUnenrollmentFlowController *)self presenter];
+      presenter2 = [(DMCUnenrollmentFlowController *)self presenter];
       v9 = v16;
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __56__DMCUnenrollmentFlowController__askForPasscodeIfNeeded__block_invoke_11;
       v16[3] = &unk_278EE3370;
       v16[4] = v5;
-      [v8 requestDevicePasscodeContextNeedsExtractable:0 completionHandler:v16];
+      [presenter2 requestDevicePasscodeContextNeedsExtractable:0 completionHandler:v16];
     }
 
     else
     {
-      v10 = [(DMCUnenrollmentFlowController *)self presenter];
+      presenter3 = [(DMCUnenrollmentFlowController *)self presenter];
       v11 = objc_opt_respondsToSelector();
 
       if (v11)
       {
-        v8 = [(DMCUnenrollmentFlowController *)self presenter];
+        presenter2 = [(DMCUnenrollmentFlowController *)self presenter];
         v9 = v15;
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __56__DMCUnenrollmentFlowController__askForPasscodeIfNeeded__block_invoke_2_15;
         v15[3] = &unk_278EE3398;
         v15[4] = v5;
-        [v8 requestDevicePasscodeDataWithCompletionHandler:v15];
+        [presenter2 requestDevicePasscodeDataWithCompletionHandler:v15];
       }
 
       else
       {
-        v12 = [(DMCUnenrollmentFlowController *)self presenter];
+        presenter4 = [(DMCUnenrollmentFlowController *)self presenter];
         v13 = objc_opt_respondsToSelector();
 
         if ((v13 & 1) == 0)
@@ -391,14 +391,14 @@ LABEL_12:
           return;
         }
 
-        v8 = [(DMCUnenrollmentFlowController *)self presenter];
+        presenter2 = [(DMCUnenrollmentFlowController *)self presenter];
         v9 = v14;
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __56__DMCUnenrollmentFlowController__askForPasscodeIfNeeded__block_invoke_3;
         v14[3] = &unk_278EE33C0;
         v14[4] = v5;
-        [v8 requestDevicePasscodeWithCompletionHandler:v14];
+        [presenter2 requestDevicePasscodeWithCompletionHandler:v14];
       }
     }
 
@@ -498,16 +498,16 @@ uint64_t __122__DMCUnenrollmentFlowController__uninstallEnrollmentProfileWithIde
   return WeakRetained;
 }
 
-- (id)_nameForStep:(unint64_t)a3
+- (id)_nameForStep:(unint64_t)step
 {
-  if (a3 - 1 > 2)
+  if (step - 1 > 2)
   {
     return @"PreflightUnenrollment";
   }
 
   else
   {
-    return off_278EE4378[a3 - 1];
+    return off_278EE4378[step - 1];
   }
 }
 

@@ -1,31 +1,31 @@
 @interface BDSSyncUserDefaults
-+ (BOOL)_isBundleIdentifierInArray:(__CFArray *)a3;
++ (BOOL)_isBundleIdentifierInArray:(__CFArray *)array;
 + (BOOL)_isICloudDriveSyncOptedIn;
-+ (BOOL)_isServiceDisabledAlternative:(__CFString *)a3;
-+ (BOOL)_isServiceEnabledAlternative:(__CFString *)a3;
++ (BOOL)_isServiceDisabledAlternative:(__CFString *)alternative;
++ (BOOL)_isServiceEnabledAlternative:(__CFString *)alternative;
 + (BOOL)isCloudKitSyncOptedIn;
 + (BOOL)isGlobalICloudDriveSyncOptedIn;
 + (BOOL)isSignedIntoICloud;
 + (id)_stateForLog;
 + (id)iCloudIdentity;
 + (id)makeOSStateHandler;
-+ (void)_setService:(__CFString *)a3 enabled:(BOOL)a4;
++ (void)_setService:(__CFString *)service enabled:(BOOL)enabled;
 @end
 
 @implementation BDSSyncUserDefaults
 
 + (BOOL)isSignedIntoICloud
 {
-  v2 = [MEMORY[0x1E698F538] sharedProvider];
-  v3 = [v2 isUserSignedInToiCloud];
+  mEMORY[0x1E698F538] = [MEMORY[0x1E698F538] sharedProvider];
+  isUserSignedInToiCloud = [mEMORY[0x1E698F538] isUserSignedInToiCloud];
 
-  return v3;
+  return isUserSignedInToiCloud;
 }
 
 + (BOOL)isCloudKitSyncOptedIn
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"BCSyncCloudKit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"BCSyncCloudKit"];
 
   return v3;
 }
@@ -39,37 +39,37 @@
 
 + (BOOL)isGlobalICloudDriveSyncOptedIn
 {
-  v2 = [MEMORY[0x1E698F538] sharedProvider];
-  v3 = [v2 isGlobalICloudDriveSyncOptedIn];
+  mEMORY[0x1E698F538] = [MEMORY[0x1E698F538] sharedProvider];
+  isGlobalICloudDriveSyncOptedIn = [mEMORY[0x1E698F538] isGlobalICloudDriveSyncOptedIn];
 
-  return v3;
+  return isGlobalICloudDriveSyncOptedIn;
 }
 
 + (id)iCloudIdentity
 {
-  v2 = [MEMORY[0x1E698F538] sharedProvider];
-  v3 = [v2 iCloudIdentity];
+  mEMORY[0x1E698F538] = [MEMORY[0x1E698F538] sharedProvider];
+  iCloudIdentity = [mEMORY[0x1E698F538] iCloudIdentity];
 
-  return v3;
+  return iCloudIdentity;
 }
 
 + (BOOL)_isICloudDriveSyncOptedIn
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698F538] sharedProvider];
-  v3 = [v2 isPrimaryAccountManagedAppleID];
+  mEMORY[0x1E698F538] = [MEMORY[0x1E698F538] sharedProvider];
+  isPrimaryAccountManagedAppleID = [mEMORY[0x1E698F538] isPrimaryAccountManagedAppleID];
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"BCSyncICloudDrive"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"BCSyncICloudDrive"];
 
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v6 BOOLForKey:@"BCSyncCloudKit"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults2 BOOLForKey:@"BCSyncCloudKit"];
 
   v8 = BDSUbiquityLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = @"NO";
-    if (v3)
+    if (isPrimaryAccountManagedAppleID)
     {
       v10 = @"YES";
     }
@@ -104,13 +104,13 @@
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return (v3 | v5 & v7) & 1;
+  return (isPrimaryAccountManagedAppleID | v5 & v7) & 1;
 }
 
-+ (BOOL)_isBundleIdentifierInArray:(__CFArray *)a3
++ (BOOL)_isBundleIdentifierInArray:(__CFArray *)array
 {
-  v4 = [a1 _booksAppBundleIdentifier];
-  Count = CFArrayGetCount(a3);
+  _booksAppBundleIdentifier = [self _booksAppBundleIdentifier];
+  Count = CFArrayGetCount(array);
   if (Count)
   {
     v6 = Count;
@@ -118,9 +118,9 @@
     v8 = 1;
     do
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(a3, v7);
+      ValueAtIndex = CFArrayGetValueAtIndex(array, v7);
       v10 = CFGetTypeID(ValueAtIndex);
-      if (v10 == CFStringGetTypeID() && CFStringCompare(ValueAtIndex, v4, 0) == kCFCompareEqualTo)
+      if (v10 == CFStringGetTypeID() && CFStringCompare(ValueAtIndex, _booksAppBundleIdentifier, 0) == kCFCompareEqualTo)
       {
         break;
       }
@@ -139,7 +139,7 @@
   return v8;
 }
 
-+ (BOOL)_isServiceEnabledAlternative:(__CFString *)a3
++ (BOOL)_isServiceEnabledAlternative:(__CFString *)alternative
 {
   v4 = TCCAccessCopyBundleIdentifiersForService();
   if (v4)
@@ -155,14 +155,14 @@
     v8 = BDSCloudKitLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_1E470496C(a3, v8);
+      sub_1E470496C(alternative, v8);
     }
 
     return 0;
   }
 }
 
-+ (BOOL)_isServiceDisabledAlternative:(__CFString *)a3
++ (BOOL)_isServiceDisabledAlternative:(__CFString *)alternative
 {
   v4 = TCCAccessCopyBundleIdentifiersDisabledForService();
   if (v4)
@@ -178,18 +178,18 @@
     v8 = BDSCloudKitLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_1E47049E4(a3, v8);
+      sub_1E47049E4(alternative, v8);
     }
 
     return 1;
   }
 }
 
-+ (void)_setService:(__CFString *)a3 enabled:(BOOL)a4
++ (void)_setService:(__CFString *)service enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = [a1 _booksAppBundleIdentifier];
+  _booksAppBundleIdentifier = [self _booksAppBundleIdentifier];
   v7 = TCCAccessSetForBundleId();
   v8 = BDSCloudKitLog();
   v9 = v8;
@@ -198,13 +198,13 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = @"NO";
-      if (v4)
+      if (enabledCopy)
       {
         v10 = @"YES";
       }
 
       v12 = 138543618;
-      v13 = a3;
+      serviceCopy = service;
       v14 = 2114;
       v15 = v10;
       _os_log_impl(&dword_1E45E0000, v9, OS_LOG_TYPE_INFO, "Successfully set %{public}@ to %{public}@.", &v12, 0x16u);
@@ -213,7 +213,7 @@
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    sub_1E4704A5C(a3, v4, v9);
+    sub_1E4704A5C(service, enabledCopy, v9);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -223,21 +223,21 @@
 {
   v14[5] = *MEMORY[0x1E69E9840];
   v13[0] = @"isSignedIntoICloud";
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isSignedIntoICloud")}];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isSignedIntoICloud")}];
   v14[0] = v3;
   v13[1] = @"isCloudKitSyncOptedIn";
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isCloudKitSyncOptedIn")}];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isCloudKitSyncOptedIn")}];
   v14[1] = v4;
   v13[2] = @"isICloudDriveSyncOptedIn";
-  v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isICloudDriveSyncOptedIn")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isICloudDriveSyncOptedIn")}];
   v14[2] = v5;
   v13[3] = @"isGlobalICloudDriveSyncOptedIn";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "isGlobalICloudDriveSyncOptedIn")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "isGlobalICloudDriveSyncOptedIn")}];
   v14[3] = v6;
   v13[4] = @"iCloudIdentityExists";
   v7 = MEMORY[0x1E696AD98];
-  v8 = [a1 iCloudIdentity];
-  v9 = [v7 numberWithInt:v8 != 0];
+  iCloudIdentity = [self iCloudIdentity];
+  v9 = [v7 numberWithInt:iCloudIdentity != 0];
   v14[4] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:5];
 

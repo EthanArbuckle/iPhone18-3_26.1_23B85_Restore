@@ -1,20 +1,20 @@
 @interface BKLibraryDataSourcePlistUntetheredBooks
-- (BKLibraryDataSourcePlistUntetheredBooks)initWithPlistKind:(int64_t)a3 identifier:(id)a4 assetMetadataProvider:(id)a5 coverImageHelper:(id)a6 assetMetadataCache:(id)a7;
-- (BOOL)isEligibleLocalBookToBeMadeUbiquitous:(id)a3;
-- (BOOL)wantsPlistEntry:(id)a3;
-- (void)fetchAllLocalBooksEligibleToBeMadeUbiquitousWithCompletion:(id)a3;
-- (void)fetchLocalAssetWithID:(id)a3 completion:(id)a4;
-- (void)makeBooksLocal:(id)a3 completion:(id)a4;
-- (void)q_updateUniqueIDIfNeededInMutableEntry:(id)a3 withOriginalBookEntry:(id)a4;
+- (BKLibraryDataSourcePlistUntetheredBooks)initWithPlistKind:(int64_t)kind identifier:(id)identifier assetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache;
+- (BOOL)isEligibleLocalBookToBeMadeUbiquitous:(id)ubiquitous;
+- (BOOL)wantsPlistEntry:(id)entry;
+- (void)fetchAllLocalBooksEligibleToBeMadeUbiquitousWithCompletion:(id)completion;
+- (void)fetchLocalAssetWithID:(id)d completion:(id)completion;
+- (void)makeBooksLocal:(id)local completion:(id)completion;
+- (void)q_updateUniqueIDIfNeededInMutableEntry:(id)entry withOriginalBookEntry:(id)bookEntry;
 @end
 
 @implementation BKLibraryDataSourcePlistUntetheredBooks
 
-- (BKLibraryDataSourcePlistUntetheredBooks)initWithPlistKind:(int64_t)a3 identifier:(id)a4 assetMetadataProvider:(id)a5 coverImageHelper:(id)a6 assetMetadataCache:(id)a7
+- (BKLibraryDataSourcePlistUntetheredBooks)initWithPlistKind:(int64_t)kind identifier:(id)identifier assetMetadataProvider:(id)provider coverImageHelper:(id)helper assetMetadataCache:(id)cache
 {
   v11.receiver = self;
   v11.super_class = BKLibraryDataSourcePlistUntetheredBooks;
-  v7 = [(BKLibraryDataSourcePlist *)&v11 initWithPlistKind:a3 identifier:a4 assetMetadataProvider:a5 coverImageHelper:a6 assetMetadataCache:a7];
+  v7 = [(BKLibraryDataSourcePlist *)&v11 initWithPlistKind:kind identifier:identifier assetMetadataProvider:provider coverImageHelper:helper assetMetadataCache:cache];
   if (v7)
   {
     v8 = dispatch_queue_create("BKLibraryDataSourcePlist.moveUbiquitousBooksToLocalSerialQueue", 0);
@@ -25,9 +25,9 @@
   return v7;
 }
 
-- (BOOL)isEligibleLocalBookToBeMadeUbiquitous:(id)a3
+- (BOOL)isEligibleLocalBookToBeMadeUbiquitous:(id)ubiquitous
 {
-  v4 = a3;
+  ubiquitousCopy = ubiquitous;
   objc_opt_class();
   v5 = BUDynamicCast();
 
@@ -43,11 +43,11 @@
       v9 = 0;
     }
 
-    v10 = [v5 storeID];
-    if (!v10 || v9)
+    storeID = [v5 storeID];
+    if (!storeID || v9)
     {
-      v11 = [v5 permlink];
-      if (v11)
+      permlink = [v5 permlink];
+      if (permlink)
       {
         LOBYTE(v9) = 0;
       }
@@ -67,26 +67,26 @@
   return v9;
 }
 
-- (void)fetchAllLocalBooksEligibleToBeMadeUbiquitousWithCompletion:(id)a3
+- (void)fetchAllLocalBooksEligibleToBeMadeUbiquitousWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100123EAC;
   v4[3] = &unk_100A05E68;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(BKLibraryDataSourcePlist *)v5 fetchAssetIDsWithCompletion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(BKLibraryDataSourcePlist *)selfCopy fetchAssetIDsWithCompletion:v4];
 }
 
-- (void)fetchLocalAssetWithID:(id)a3 completion:(id)a4
+- (void)fetchLocalAssetWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (dCopy)
   {
-    v14 = v6;
+    v14 = dCopy;
     v9 = [NSArray arrayWithObjects:&v14 count:1];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -98,7 +98,7 @@
 
   else
   {
-    v10 = objc_retainBlock(v7);
+    v10 = objc_retainBlock(completionCopy);
     if (v10)
     {
       v11 = [NSError errorWithDomain:kBKLibraryDataSourceDomain code:kBKLibraryDataSourceErrorInvalidAssetError userInfo:0];
@@ -107,29 +107,29 @@
   }
 }
 
-- (void)makeBooksLocal:(id)a3 completion:(id)a4
+- (void)makeBooksLocal:(id)local completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  localCopy = local;
+  completionCopy = completion;
+  if ([localCopy count])
   {
     v8 = objc_opt_new();
-    v9 = [(BKLibraryDataSourcePlistUntetheredBooks *)self moveUbiquitousBooksToLocalSerialQueue];
+    moveUbiquitousBooksToLocalSerialQueue = [(BKLibraryDataSourcePlistUntetheredBooks *)self moveUbiquitousBooksToLocalSerialQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1001244A0;
     v12[3] = &unk_100A04FE8;
-    v13 = v6;
-    v14 = self;
+    v13 = localCopy;
+    selfCopy = self;
     v15 = v8;
-    v16 = v7;
+    v16 = completionCopy;
     v10 = v8;
-    dispatch_async(v9, v12);
+    dispatch_async(moveUbiquitousBooksToLocalSerialQueue, v12);
   }
 
   else
   {
-    v11 = objc_retainBlock(v7);
+    v11 = objc_retainBlock(completionCopy);
     v10 = v11;
     if (v11)
     {
@@ -138,26 +138,26 @@
   }
 }
 
-- (BOOL)wantsPlistEntry:(id)a3
+- (BOOL)wantsPlistEntry:(id)entry
 {
-  v3 = [IMLibraryPlist isSampleFromPlistEntry:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [IMLibraryPlist isSampleFromPlistEntry:entry];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)q_updateUniqueIDIfNeededInMutableEntry:(id)a3 withOriginalBookEntry:(id)a4
+- (void)q_updateUniqueIDIfNeededInMutableEntry:(id)entry withOriginalBookEntry:(id)bookEntry
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(BKLibraryDataSourcePlist *)self _isSupplementalPDFFromPlistEntry:v7]|| ([IMLibraryPlist storeIdFromPlistEntry:v7], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  entryCopy = entry;
+  bookEntryCopy = bookEntry;
+  if ([(BKLibraryDataSourcePlist *)self _isSupplementalPDFFromPlistEntry:bookEntryCopy]|| ([IMLibraryPlist storeIdFromPlistEntry:bookEntryCopy], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [IMLibraryPlist uniqueIdFromPlistEntry:v7];
+    v8 = [IMLibraryPlist uniqueIdFromPlistEntry:bookEntryCopy];
   }
 
-  v9 = [IMLibraryPlist permlinkFromPlistEntry:v7];
-  v10 = [v7 valueForKey:@"Inserted-By-iBooks"];
-  v11 = [v10 BOOLValue];
+  v9 = [IMLibraryPlist permlinkFromPlistEntry:bookEntryCopy];
+  v10 = [bookEntryCopy valueForKey:@"Inserted-By-iBooks"];
+  bOOLValue = [v10 BOOLValue];
 
   if (!v8)
   {
@@ -168,7 +168,7 @@
 
     else
     {
-      v12 = v11;
+      v12 = bOOLValue;
     }
 
     if (v12)
@@ -177,17 +177,17 @@
       goto LABEL_19;
     }
 
-    v13 = [v6 objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
+    v13 = [entryCopy objectForKey:@"BKLibraryDataSourcePlist-FullPath"];
     if (v13)
     {
-      v14 = [(BKLibraryDataSourcePlist *)self fullPathToAssetID];
-      v8 = [v14 objectForKey:v13];
+      fullPathToAssetID = [(BKLibraryDataSourcePlist *)self fullPathToAssetID];
+      v8 = [fullPathToAssetID objectForKey:v13];
 
       if (v8)
       {
 LABEL_17:
         v17 = +[IMLibraryPlist keyNameForUniqueId];
-        [v6 setValue:v8 forKey:v17];
+        [entryCopy setValue:v8 forKey:v17];
 
         goto LABEL_18;
       }
@@ -197,8 +197,8 @@ LABEL_17:
       v15 = v18;
       if (v8 && !v15)
       {
-        v16 = [(BKLibraryDataSourcePlist *)self fullPathToAssetID];
-        [v16 setObject:v8 forKey:v13];
+        fullPathToAssetID2 = [(BKLibraryDataSourcePlist *)self fullPathToAssetID];
+        [fullPathToAssetID2 setObject:v8 forKey:v13];
 
         goto LABEL_17;
       }

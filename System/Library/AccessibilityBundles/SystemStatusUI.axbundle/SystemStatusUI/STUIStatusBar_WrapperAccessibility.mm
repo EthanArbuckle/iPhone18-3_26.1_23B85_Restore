@@ -1,24 +1,24 @@
 @interface STUIStatusBar_WrapperAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityViewIsVisible;
 - (int64_t)_accessibilitySortPriority;
 @end
 
 @implementation STUIStatusBar_WrapperAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBar" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"STUIStatusBar_Wrapper" hasInstanceMethod:@"statusBar" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBar" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"STUIStatusBar_Wrapper" hasInstanceMethod:@"statusBar" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)_accessibilityViewIsVisible
 {
   v2 = [(STUIStatusBar_WrapperAccessibility *)self safeUIViewForKey:@"statusBar"];
-  v3 = [v2 isHidden];
+  isHidden = [v2 isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
 - (int64_t)_accessibilitySortPriority

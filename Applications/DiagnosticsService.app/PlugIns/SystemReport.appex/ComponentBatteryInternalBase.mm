@@ -6,12 +6,12 @@
 - (BOOL)isTrusted;
 - (BOOL)isTrustedForUI;
 - (id)_chargerNodeProperties;
-- (id)_encodeDataInArray:(id)a3;
-- (id)_encodeDataInDictionary:(id)a3;
-- (id)_encodeDataInObject:(id)a3;
-- (id)_nodePropertiesForServiceMatching:(id)a3 extraKey:(id)a4;
+- (id)_encodeDataInArray:(id)array;
+- (id)_encodeDataInDictionary:(id)dictionary;
+- (id)_encodeDataInObject:(id)object;
+- (id)_nodePropertiesForServiceMatching:(id)matching extraKey:(id)key;
 - (id)_powerSourceNodeProperties;
-- (id)_stringToSInt16Array:(id)a3 separatedByString:(id)a4;
+- (id)_stringToSInt16Array:(id)array separatedByString:(id)string;
 - (id)authError;
 - (id)batteryLevel;
 - (id)deviceSupportsBatteryAuth;
@@ -23,45 +23,45 @@
 - (id)generateTemperatureData;
 - (id)generateUPOStepper;
 - (id)getGasGaugeData;
-- (id)integerNumberWithNumber:(id)a3;
+- (id)integerNumberWithNumber:(id)number;
 - (id)isBatteryCharging;
 - (id)isPowerConnected;
 - (id)kioskMode;
 - (id)serialNumber;
 - (id)upoCount;
-- (void)addCycleCountHistoryToDictionary:(id)a3;
-- (void)addDateOfManufactureAndFirstUseToDictionary:(id)a3;
-- (void)addHeatMapToDictionary:(id)a3;
-- (void)addInductiveChargingParametersToDictionary:(id)a3;
-- (void)addRawRaDataToDictionary:(id)a3;
-- (void)addWirelessChargingModeToDictionary:(id)a3;
-- (void)populateAttributes:(id)a3;
+- (void)addCycleCountHistoryToDictionary:(id)dictionary;
+- (void)addDateOfManufactureAndFirstUseToDictionary:(id)dictionary;
+- (void)addHeatMapToDictionary:(id)dictionary;
+- (void)addInductiveChargingParametersToDictionary:(id)dictionary;
+- (void)addRawRaDataToDictionary:(id)dictionary;
+- (void)addWirelessChargingModeToDictionary:(id)dictionary;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentBatteryInternalBase
 
 - (BOOL)isPresent
 {
-  v2 = [(ComponentBatteryInternalBase *)self serialNumber];
-  valid = isValidSerialNumber(v2);
+  serialNumber = [(ComponentBatteryInternalBase *)self serialNumber];
+  valid = isValidSerialNumber(serialNumber);
 
   return valid;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentBatteryInternalBase *)self serialNumber];
-  [v4 setObject:v5 forKeyedSubscript:@"serialNumber"];
+  attributesCopy = attributes;
+  serialNumber = [(ComponentBatteryInternalBase *)self serialNumber];
+  [attributesCopy setObject:serialNumber forKeyedSubscript:@"serialNumber"];
 
-  v6 = [(ComponentBatteryInternalBase *)self getGasGaugeData];
-  [v4 addEntriesFromDictionary:v6];
+  getGasGaugeData = [(ComponentBatteryInternalBase *)self getGasGaugeData];
+  [attributesCopy addEntriesFromDictionary:getGasGaugeData];
 
-  [(ComponentBatteryInternalBase *)self addRawRaDataToDictionary:v4];
+  [(ComponentBatteryInternalBase *)self addRawRaDataToDictionary:attributesCopy];
   if ([(ComponentBatteryInternalBase *)self hasSMC])
   {
-    [(ComponentBatteryInternalBase *)self addCycleCountHistoryToDictionary:v4];
-    [(ComponentBatteryInternalBase *)self addHeatMapToDictionary:v4];
+    [(ComponentBatteryInternalBase *)self addCycleCountHistoryToDictionary:attributesCopy];
+    [(ComponentBatteryInternalBase *)self addHeatMapToDictionary:attributesCopy];
   }
 
   else
@@ -74,70 +74,70 @@
     }
   }
 
-  [(ComponentBatteryInternalBase *)self addInductiveChargingParametersToDictionary:v4];
-  [(ComponentBatteryInternalBase *)self addDateOfManufactureAndFirstUseToDictionary:v4];
-  v8 = [(ComponentBatteryInternalBase *)self isBatteryCharging];
-  v9 = [v8 BOOLValue];
+  [(ComponentBatteryInternalBase *)self addInductiveChargingParametersToDictionary:attributesCopy];
+  [(ComponentBatteryInternalBase *)self addDateOfManufactureAndFirstUseToDictionary:attributesCopy];
+  isBatteryCharging = [(ComponentBatteryInternalBase *)self isBatteryCharging];
+  bOOLValue = [isBatteryCharging BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    [(ComponentBatteryInternalBase *)self addWirelessChargingModeToDictionary:v4];
+    [(ComponentBatteryInternalBase *)self addWirelessChargingModeToDictionary:attributesCopy];
   }
 
-  v10 = [(ComponentBatteryInternalBase *)self isBatteryCharging];
-  [v4 setObject:v10 forKeyedSubscript:@"isBatteryCharging"];
+  isBatteryCharging2 = [(ComponentBatteryInternalBase *)self isBatteryCharging];
+  [attributesCopy setObject:isBatteryCharging2 forKeyedSubscript:@"isBatteryCharging"];
 
-  v11 = [(ComponentBatteryInternalBase *)self batteryLevel];
-  [v4 setObject:v11 forKeyedSubscript:@"currentBatteryLevel"];
+  batteryLevel = [(ComponentBatteryInternalBase *)self batteryLevel];
+  [attributesCopy setObject:batteryLevel forKeyedSubscript:@"currentBatteryLevel"];
 
-  v12 = [(ComponentBatteryInternalBase *)self isPowerConnected];
-  [v4 setObject:v12 forKeyedSubscript:@"isExternalPowerConnected"];
+  isPowerConnected = [(ComponentBatteryInternalBase *)self isPowerConnected];
+  [attributesCopy setObject:isPowerConnected forKeyedSubscript:@"isExternalPowerConnected"];
 
-  v13 = [(ComponentBatteryInternalBase *)self upoCount];
-  [v4 setObject:v13 forKeyedSubscript:@"upoCount"];
+  upoCount = [(ComponentBatteryInternalBase *)self upoCount];
+  [attributesCopy setObject:upoCount forKeyedSubscript:@"upoCount"];
 
-  v14 = [(ComponentBatteryInternalBase *)self kioskMode];
-  [v4 setObject:v14 forKeyedSubscript:@"kioskMode"];
+  kioskMode = [(ComponentBatteryInternalBase *)self kioskMode];
+  [attributesCopy setObject:kioskMode forKeyedSubscript:@"kioskMode"];
 
   v15 = [NSNumber numberWithBool:[(ComponentBatteryInternalBase *)self batteryManufacturingLockStatus]];
-  [v4 setObject:v15 forKeyedSubscript:@"isBatteryManufacturingLocked"];
+  [attributesCopy setObject:v15 forKeyedSubscript:@"isBatteryManufacturingLocked"];
 
-  v16 = [(ComponentBatteryInternalBase *)self deviceSupportsBatteryAuth];
-  [v4 setObject:v16 forKeyedSubscript:@"deviceSupportsBatteryAuth"];
+  deviceSupportsBatteryAuth = [(ComponentBatteryInternalBase *)self deviceSupportsBatteryAuth];
+  [attributesCopy setObject:deviceSupportsBatteryAuth forKeyedSubscript:@"deviceSupportsBatteryAuth"];
 
-  v17 = [v4 objectForKeyedSubscript:@"deviceSupportsBatteryAuth"];
+  v17 = [attributesCopy objectForKeyedSubscript:@"deviceSupportsBatteryAuth"];
   v18 = [v17 isEqualToNumber:&__kCFBooleanTrue];
 
   if (v18)
   {
     v19 = [NSNumber numberWithBool:[(ComponentBatteryInternalBase *)self authPassed]];
-    [v4 setObject:v19 forKeyedSubscript:@"authPassed"];
+    [attributesCopy setObject:v19 forKeyedSubscript:@"authPassed"];
 
-    v20 = [(ComponentBatteryInternalBase *)self fdrValidationStatus];
-    [v4 setObject:v20 forKeyedSubscript:@"fdrValidationStatus"];
+    fdrValidationStatus = [(ComponentBatteryInternalBase *)self fdrValidationStatus];
+    [attributesCopy setObject:fdrValidationStatus forKeyedSubscript:@"fdrValidationStatus"];
 
     v21 = [NSNumber numberWithBool:[(ComponentBatteryInternalBase *)self isTrusted]];
-    [v4 setObject:v21 forKeyedSubscript:@"isTrusted"];
+    [attributesCopy setObject:v21 forKeyedSubscript:@"isTrusted"];
 
-    v22 = [NSNumber numberWithBool:[(ComponentBatteryInternalBase *)self isTrustedForUI]];
+    fbsn = [NSNumber numberWithBool:[(ComponentBatteryInternalBase *)self isTrustedForUI]];
     v23 = @"isTrustedForUI";
   }
 
   else
   {
-    v22 = [(ComponentBatteryInternalBase *)self fbsn];
+    fbsn = [(ComponentBatteryInternalBase *)self fbsn];
     v23 = @"fbsn";
   }
 
-  [v4 setObject:v22 forKeyedSubscript:v23];
+  [attributesCopy setObject:fbsn forKeyedSubscript:v23];
 
-  v24 = [(ComponentBatteryInternalBase *)self authError];
-  [v4 setObject:v24 forKeyedSubscript:@"authErrorCode"];
+  authError = [(ComponentBatteryInternalBase *)self authError];
+  [attributesCopy setObject:authError forKeyedSubscript:@"authErrorCode"];
 }
 
-- (void)addWirelessChargingModeToDictionary:(id)a3
+- (void)addWirelessChargingModeToDictionary:(id)dictionary
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v3 = IOPSCopyExternalPowerAdapterDetails();
   v4 = v3;
   if (v3)
@@ -147,7 +147,7 @@
     if (v5)
     {
       v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 BOOLValue]);
-      [v8 setObject:v7 forKey:@"isChargingWireless"];
+      [dictionaryCopy setObject:v7 forKey:@"isChargingWireless"];
     }
   }
 }
@@ -155,8 +155,8 @@
 - (id)batteryLevel
 {
   v2 = MGCopyAnswer();
-  v3 = [v2 stringValue];
-  v4 = stringOrNull(v3);
+  stringValue = [v2 stringValue];
+  v4 = stringOrNull(stringValue);
 
   return v4;
 }
@@ -177,9 +177,9 @@
   return v3;
 }
 
-- (void)addDateOfManufactureAndFirstUseToDictionary:(id)a3
+- (void)addDateOfManufactureAndFirstUseToDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   blob = 0;
   if (!IOPSCopyPowerSourcesByTypePrecise())
   {
@@ -208,11 +208,11 @@ LABEL_7:
 
 - (id)upoCount
 {
-  v2 = [(ComponentBatteryInternalBase *)self _pmuNodeProperties];
-  v3 = v2;
-  if (v2)
+  _pmuNodeProperties = [(ComponentBatteryInternalBase *)self _pmuNodeProperties];
+  v3 = _pmuNodeProperties;
+  if (_pmuNodeProperties)
   {
-    v4 = [v2 objectForKeyedSubscript:@"IOPMUBootUPOCounter"];
+    v4 = [_pmuNodeProperties objectForKeyedSubscript:@"IOPMUBootUPOCounter"];
   }
 
   else
@@ -227,11 +227,11 @@ LABEL_7:
 
 - (id)fbsn
 {
-  v2 = [(ComponentBatteryInternalBase *)self _chargerNodeProperties];
-  v3 = v2;
-  if (v2)
+  _chargerNodeProperties = [(ComponentBatteryInternalBase *)self _chargerNodeProperties];
+  v3 = _chargerNodeProperties;
+  if (_chargerNodeProperties)
   {
-    v4 = [v2 objectForKeyedSubscript:@"battery-factory-id"];
+    v4 = [_chargerNodeProperties objectForKeyedSubscript:@"battery-factory-id"];
     if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = strnlen([v4 bytes], objc_msgSend(v4, "length")), v5 < objc_msgSend(v4, "length")))
     {
       v6 = +[NSString stringWithCString:encoding:](NSString, "stringWithCString:encoding:", [v4 bytes], 1);
@@ -272,11 +272,11 @@ LABEL_7:
 
 - (id)kioskMode
 {
-  v2 = [(ComponentBatteryInternalBase *)self _powerSourceNodeProperties];
-  v3 = v2;
-  if (v2)
+  _powerSourceNodeProperties = [(ComponentBatteryInternalBase *)self _powerSourceNodeProperties];
+  v3 = _powerSourceNodeProperties;
+  if (_powerSourceNodeProperties)
   {
-    v4 = [v2 objectForKeyedSubscript:@"KioskMode"];
+    v4 = [_powerSourceNodeProperties objectForKeyedSubscript:@"KioskMode"];
     v5 = v4;
     if (v4)
     {
@@ -299,12 +299,12 @@ LABEL_7:
   return v7;
 }
 
-- (void)addRawRaDataToDictionary:(id)a3
+- (void)addRawRaDataToDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(ComponentBatteryInternalBase *)self _powerSourceNodeProperties];
-  v6 = v5;
-  if (v5 && ([v5 objectForKeyedSubscript:@"BatteryData"], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  dictionaryCopy = dictionary;
+  _powerSourceNodeProperties = [(ComponentBatteryInternalBase *)self _powerSourceNodeProperties];
+  v6 = _powerSourceNodeProperties;
+  if (_powerSourceNodeProperties && ([_powerSourceNodeProperties objectForKeyedSubscript:@"BatteryData"], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v8 = [v6 objectForKeyedSubscript:@"BatteryData"];
     v9 = [v8 objectForKeyedSubscript:@"LifetimeData"];
@@ -385,18 +385,18 @@ LABEL_7:
     v14 = &__NSArray0__struct;
   }
 
-  [v4 setObject:v13 forKeyedSubscript:@"lifetimeDataRaw"];
-  [v4 setObject:v14 forKeyedSubscript:@"rawRaData"];
+  [dictionaryCopy setObject:v13 forKeyedSubscript:@"lifetimeDataRaw"];
+  [dictionaryCopy setObject:v14 forKeyedSubscript:@"rawRaData"];
 }
 
 - (id)getGasGaugeData
 {
   v3 = [[NSMutableDictionary alloc] initWithCapacity:5];
-  v4 = [(ComponentBatteryInternalBase *)self _powerSourceNodeProperties];
-  v5 = v4;
-  if (v4)
+  _powerSourceNodeProperties = [(ComponentBatteryInternalBase *)self _powerSourceNodeProperties];
+  v5 = _powerSourceNodeProperties;
+  if (_powerSourceNodeProperties)
   {
-    v6 = [v4 objectForKeyedSubscript:@"NominalChargeCapacity"];
+    v6 = [_powerSourceNodeProperties objectForKeyedSubscript:@"NominalChargeCapacity"];
     if (v6)
     {
       [v3 setObject:v6 forKeyedSubscript:@"nominalChargeCapacity"];
@@ -719,8 +719,8 @@ LABEL_26:
     v5 = [v3 objectForKeyedSubscript:@"BatteryConfig"];
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v5 count])
     {
-      v6 = [v5 lastObject];
-      v7 = [(ComponentBatteryInternalBase *)self _encodeDataInDictionary:v6];
+      lastObject = [v5 lastObject];
+      v7 = [(ComponentBatteryInternalBase *)self _encodeDataInDictionary:lastObject];
 
       if (![NSJSONSerialization isValidJSONObject:v7])
       {
@@ -779,12 +779,12 @@ LABEL_26:
   return v13;
 }
 
-- (id)integerNumberWithNumber:(id)a3
+- (id)integerNumberWithNumber:(id)number
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  numberCopy = number;
+  if (numberCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 integerValue]);
+    v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [numberCopy integerValue]);
   }
 
   else
@@ -795,9 +795,9 @@ LABEL_26:
   return v4;
 }
 
-- (id)_stringToSInt16Array:(id)a3 separatedByString:(id)a4
+- (id)_stringToSInt16Array:(id)array separatedByString:(id)string
 {
-  v4 = [a3 componentsSeparatedByString:a4];
+  v4 = [array componentsSeparatedByString:string];
   v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
   v13 = 0u;
   v14 = 0u;
@@ -844,9 +844,9 @@ LABEL_26:
   return v4 != 0;
 }
 
-- (void)addCycleCountHistoryToDictionary:(id)a3
+- (void)addCycleCountHistoryToDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -922,7 +922,7 @@ LABEL_16:
 
       if ([NSJSONSerialization isValidJSONObject:v10])
       {
-        [v4 setObject:v10 forKeyedSubscript:@"cycleCountHistory"];
+        [dictionaryCopy setObject:v10 forKeyedSubscript:@"cycleCountHistory"];
       }
 
       else
@@ -937,7 +937,7 @@ LABEL_16:
         }
 
         v23 = +[NSNull null];
-        [v4 setObject:v23 forKeyedSubscript:@"cycleCountHistory"];
+        [dictionaryCopy setObject:v23 forKeyedSubscript:@"cycleCountHistory"];
       }
     }
 
@@ -961,9 +961,9 @@ LABEL_14:
   _Block_object_dispose(&v26, 8);
 }
 
-- (void)addHeatMapToDictionary:(id)a3
+- (void)addHeatMapToDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -971,9 +971,9 @@ LABEL_14:
   v39 = sub_1000269D0;
   v40 = 0;
   v4 = [NSMutableDictionary dictionaryWithCapacity:3];
-  [v3 setObject:v4 forKeyedSubscript:@"heatMap"];
+  [dictionaryCopy setObject:v4 forKeyedSubscript:@"heatMap"];
   v30 = v4;
-  v29 = v3;
+  v29 = dictionaryCopy;
   v46[0] = &off_1000C8B88;
   v46[1] = &off_1000C8BA0;
   v47[0] = @"wired";
@@ -1123,32 +1123,32 @@ LABEL_22:
   _Block_object_dispose(&v35, 8);
 }
 
-- (void)addInductiveChargingParametersToDictionary:(id)a3
+- (void)addInductiveChargingParametersToDictionary:(id)dictionary
 {
-  v8 = a3;
-  v4 = [(ComponentBatteryInternalBase *)self _powerSourceNodeProperties];
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  _powerSourceNodeProperties = [(ComponentBatteryInternalBase *)self _powerSourceNodeProperties];
+  v5 = _powerSourceNodeProperties;
+  if (_powerSourceNodeProperties)
   {
-    v6 = [v4 objectForKeyedSubscript:@"InductiveChargingParameters"];
+    v6 = [_powerSourceNodeProperties objectForKeyedSubscript:@"InductiveChargingParameters"];
 
     if (v6)
     {
       v7 = [v5 objectForKeyedSubscript:@"InductiveChargingParameters"];
-      [v8 setObject:v7 forKeyedSubscript:@"inductiveChargingParameters"];
+      [dictionaryCopy setObject:v7 forKeyedSubscript:@"inductiveChargingParameters"];
     }
   }
 }
 
-- (id)_encodeDataInDictionary:(id)a3
+- (id)_encodeDataInDictionary:(id)dictionary
 {
-  v4 = [a3 mutableCopy];
+  v4 = [dictionary mutableCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1159,7 +1159,7 @@ LABEL_22:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -1168,7 +1168,7 @@ LABEL_22:
         [v4 setObject:v12 forKeyedSubscript:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -1179,23 +1179,23 @@ LABEL_22:
   return v13;
 }
 
-- (id)_encodeDataInArray:(id)a3
+- (id)_encodeDataInArray:(id)array
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  if ([v4 count])
+  arrayCopy = array;
+  v5 = [arrayCopy mutableCopy];
+  if ([arrayCopy count])
   {
     v6 = 0;
     do
     {
-      v7 = [v4 objectAtIndexedSubscript:v6];
+      v7 = [arrayCopy objectAtIndexedSubscript:v6];
       v8 = [(ComponentBatteryInternalBase *)self _encodeDataInObject:v7];
       [v5 setObject:v8 atIndexedSubscript:v6];
 
       ++v6;
     }
 
-    while ([v4 count] > v6);
+    while ([arrayCopy count] > v6);
   }
 
   v9 = [v5 copy];
@@ -1203,9 +1203,9 @@ LABEL_22:
   return v9;
 }
 
-- (id)_encodeDataInObject:(id)a3
+- (id)_encodeDataInObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1213,11 +1213,11 @@ LABEL_22:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = objectCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Encoding raw data object: %@", &v9, 0xCu);
     }
 
-    v6 = [v4 base64EncodedStringWithOptions:0];
+    v6 = [objectCopy base64EncodedStringWithOptions:0];
   }
 
   else
@@ -1225,7 +1225,7 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(ComponentBatteryInternalBase *)self _encodeDataInDictionary:v4];
+      v6 = [(ComponentBatteryInternalBase *)self _encodeDataInDictionary:objectCopy];
     }
 
     else
@@ -1236,16 +1236,16 @@ LABEL_22:
         goto LABEL_10;
       }
 
-      v6 = [(ComponentBatteryInternalBase *)self _encodeDataInArray:v4];
+      v6 = [(ComponentBatteryInternalBase *)self _encodeDataInArray:objectCopy];
     }
   }
 
   v7 = v6;
 
-  v4 = v7;
+  objectCopy = v7;
 LABEL_10:
 
-  return v4;
+  return objectCopy;
 }
 
 - (id)_powerSourceNodeProperties
@@ -1286,20 +1286,20 @@ LABEL_10:
   return v5;
 }
 
-- (id)_nodePropertiesForServiceMatching:(id)a3 extraKey:(id)a4
+- (id)_nodePropertiesForServiceMatching:(id)matching extraKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  matchingCopy = matching;
+  keyCopy = key;
+  v7 = matchingCopy;
   MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, v7);
   if (MatchingService)
   {
     v9 = MatchingService;
     properties = 0;
     v10 = IORegistryEntryCreateCFProperties(MatchingService, &properties, 0, 0);
-    if (v6)
+    if (keyCopy)
     {
-      CFProperty = IORegistryEntryCreateCFProperty(v9, v6, 0, 0);
+      CFProperty = IORegistryEntryCreateCFProperty(v9, keyCopy, 0, 0);
       IOObjectRelease(v9);
       if (CFProperty)
       {
@@ -1349,14 +1349,14 @@ LABEL_12:
 LABEL_16:
     v15 = properties;
     v17 = v13 ^ 1;
-    if (!v6)
+    if (!keyCopy)
     {
       v17 = 1;
     }
 
     if (v17)
     {
-      if (!v6)
+      if (!keyCopy)
       {
         v13 = 1;
       }
@@ -1367,7 +1367,7 @@ LABEL_16:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v23 = v6;
+          v23 = keyCopy;
           _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "[ERROR] Could not get extra property %@", buf, 0xCu);
         }
       }
@@ -1375,7 +1375,7 @@ LABEL_16:
 
     else
     {
-      [(__CFDictionary *)properties setObject:CFProperty forKeyedSubscript:v6];
+      [(__CFDictionary *)properties setObject:CFProperty forKeyedSubscript:keyCopy];
     }
 
 LABEL_26:

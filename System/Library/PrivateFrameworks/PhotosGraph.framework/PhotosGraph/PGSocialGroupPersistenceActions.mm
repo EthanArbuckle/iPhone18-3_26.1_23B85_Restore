@@ -24,7 +24,7 @@
 
 - (int64_t)currentAutomaticSocialGroupsToModifyCount
 {
-  v2 = self;
+  selfCopy = self;
   sub_22F3230C0();
   v4 = v3;
 
@@ -39,7 +39,7 @@
     return *(v2 + 16);
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = sub_22F741A00();
 
   return v4;

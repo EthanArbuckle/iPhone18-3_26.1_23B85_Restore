@@ -1,68 +1,68 @@
 @interface NEAgentAppPushExtension
 - (NSXPCInterface)driverInterface;
 - (NSXPCInterface)managerInterface;
-- (void)didReceiveIncomingCallWithUserInfo:(id)a3;
-- (void)didReceivePushToTalkMessageWithUserInfo:(id)a3;
+- (void)didReceiveIncomingCallWithUserInfo:(id)info;
+- (void)didReceivePushToTalkMessageWithUserInfo:(id)info;
 - (void)didReceiveUnmatchEthernet;
-- (void)handleAppsUninstalled:(id)a3;
-- (void)handleAppsUpdateBegins:(id)a3;
-- (void)handleAppsUpdateEnding:(id)a3;
-- (void)handleAppsUpdateEnds:(id)a3;
+- (void)handleAppsUninstalled:(id)uninstalled;
+- (void)handleAppsUpdateBegins:(id)begins;
+- (void)handleAppsUpdateEnding:(id)ending;
+- (void)handleAppsUpdateEnds:(id)ends;
 - (void)sendExtensionFailed;
-- (void)sendOutgoingCallMessage:(id)a3 andMessageID:(id)a4;
+- (void)sendOutgoingCallMessage:(id)message andMessageID:(id)d;
 - (void)sendTimerEvent;
-- (void)setProviderConfiguration:(id)a3;
-- (void)startConnectionWithProviderConfig:(id)a3;
+- (void)setProviderConfiguration:(id)configuration;
+- (void)startConnectionWithProviderConfig:(id)config;
 @end
 
 @implementation NEAgentAppPushExtension
 
 - (void)sendExtensionFailed
 {
-  v2 = [(NEAgentAppPushExtension *)self managerObjectFactory];
-  v3 = [v2 managerObject];
+  managerObjectFactory = [(NEAgentAppPushExtension *)self managerObjectFactory];
+  managerObject = [managerObjectFactory managerObject];
 
-  [v3 sendExtensionFailed];
+  [managerObject sendExtensionFailed];
 }
 
 - (void)sendTimerEvent
 {
-  v2 = [(NEAgentAppPushExtension *)self sessionContext];
-  [v2 sendTimerEvent];
+  sessionContext = [(NEAgentAppPushExtension *)self sessionContext];
+  [sessionContext sendTimerEvent];
 }
 
-- (void)sendOutgoingCallMessage:(id)a3 andMessageID:(id)a4
+- (void)sendOutgoingCallMessage:(id)message andMessageID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NEAgentAppPushExtension *)self sessionContext];
+  dCopy = d;
+  messageCopy = message;
+  sessionContext = [(NEAgentAppPushExtension *)self sessionContext];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100006028;
   v10[3] = &unk_1000EADC0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 sendOutgoingCallMessage:v7 completionHandler:v10];
+  v11 = dCopy;
+  v9 = dCopy;
+  [sessionContext sendOutgoingCallMessage:messageCopy completionHandler:v10];
 }
 
-- (void)setProviderConfiguration:(id)a3
+- (void)setProviderConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(NEAgentAppPushExtension *)self sessionContext];
-  [v5 setProviderConfiguration:v4];
+  configurationCopy = configuration;
+  sessionContext = [(NEAgentAppPushExtension *)self sessionContext];
+  [sessionContext setProviderConfiguration:configurationCopy];
 }
 
-- (void)startConnectionWithProviderConfig:(id)a3
+- (void)startConnectionWithProviderConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(NEAgentAppPushExtension *)self sessionContext];
+  configCopy = config;
+  sessionContext = [(NEAgentAppPushExtension *)self sessionContext];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100006420;
   v6[3] = &unk_1000EB068;
   v6[4] = self;
-  [v5 startConnectionWithProviderConfig:v4 completionHandler:v6];
+  [sessionContext startConnectionWithProviderConfig:configCopy completionHandler:v6];
 }
 
 - (void)didReceiveUnmatchEthernet
@@ -71,85 +71,85 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%@ received request to stop provider for ethernet", &v6, 0xCu);
   }
 
   if (self)
   {
-    v4 = [(NEAgentAppPushExtension *)self managerObjectFactory];
-    v5 = [v4 managerObject];
+    managerObjectFactory = [(NEAgentAppPushExtension *)self managerObjectFactory];
+    managerObject = [managerObjectFactory managerObject];
 
-    [v5 unmatchEthernet];
+    [managerObject unmatchEthernet];
   }
 }
 
-- (void)didReceivePushToTalkMessageWithUserInfo:(id)a3
+- (void)didReceivePushToTalkMessageWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = infoCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ received PushToTalk message with user info %@", &v9, 0x16u);
   }
 
   if (self)
   {
-    v6 = v4;
-    v7 = [(NEAgentAppPushExtension *)self managerObjectFactory];
-    v8 = [v7 managerObject];
+    v6 = infoCopy;
+    managerObjectFactory = [(NEAgentAppPushExtension *)self managerObjectFactory];
+    managerObject = [managerObjectFactory managerObject];
 
-    [v8 reportPushToTalkMessage:v6];
+    [managerObject reportPushToTalkMessage:v6];
   }
 }
 
-- (void)didReceiveIncomingCallWithUserInfo:(id)a3
+- (void)didReceiveIncomingCallWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = infoCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ received incoming call with user info %@", &v9, 0x16u);
   }
 
   if (self)
   {
-    v6 = v4;
-    v7 = [(NEAgentAppPushExtension *)self managerObjectFactory];
-    v8 = [v7 managerObject];
+    v6 = infoCopy;
+    managerObjectFactory = [(NEAgentAppPushExtension *)self managerObjectFactory];
+    managerObject = [managerObjectFactory managerObject];
 
-    [v8 reportIncomingCall:v6];
+    [managerObject reportIncomingCall:v6];
   }
 }
 
-- (void)handleAppsUpdateEnds:(id)a3
+- (void)handleAppsUpdateEnds:(id)ends
 {
-  v4 = a3;
-  v5 = [(NEAgentAppPushExtension *)self extensionIdentifier];
-  if (v5)
+  endsCopy = ends;
+  extensionIdentifier = [(NEAgentAppPushExtension *)self extensionIdentifier];
+  if (extensionIdentifier)
   {
-    v6 = v5;
-    v7 = [(NEAgentAppPushExtension *)self extensionIdentifier];
-    v8 = [v4 containsObject:v7];
+    v6 = extensionIdentifier;
+    extensionIdentifier2 = [(NEAgentAppPushExtension *)self extensionIdentifier];
+    v8 = [endsCopy containsObject:extensionIdentifier2];
 
     if (v8)
     {
       v9 = ne_log_obj();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [(NEAgentAppPushExtension *)self extensionIdentifier];
+        extensionIdentifier3 = [(NEAgentAppPushExtension *)self extensionIdentifier];
         v11 = 138412546;
-        v12 = self;
+        selfCopy = self;
         v13 = 2112;
-        v14 = v10;
+        v14 = extensionIdentifier3;
         _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%@ update for extension [%@] completed", &v11, 0x16u);
       }
 
@@ -158,26 +158,26 @@
   }
 }
 
-- (void)handleAppsUpdateEnding:(id)a3
+- (void)handleAppsUpdateEnding:(id)ending
 {
-  v4 = a3;
-  v5 = [(NEAgentAppPushExtension *)self extensionIdentifier];
-  if (v5)
+  endingCopy = ending;
+  extensionIdentifier = [(NEAgentAppPushExtension *)self extensionIdentifier];
+  if (extensionIdentifier)
   {
-    v6 = v5;
-    v7 = [(NEAgentAppPushExtension *)self extensionIdentifier];
-    v8 = [v4 containsObject:v7];
+    v6 = extensionIdentifier;
+    extensionIdentifier2 = [(NEAgentAppPushExtension *)self extensionIdentifier];
+    v8 = [endingCopy containsObject:extensionIdentifier2];
 
     if (v8)
     {
       v9 = ne_log_obj();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(NEAgentAppPushExtension *)self extensionIdentifier];
+        extensionIdentifier3 = [(NEAgentAppPushExtension *)self extensionIdentifier];
         v11 = 138412546;
-        v12 = self;
+        selfCopy = self;
         v13 = 2112;
-        v14 = v10;
+        v14 = extensionIdentifier3;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ update for extension [%@] is in progress", &v11, 0x16u);
       }
 
@@ -186,26 +186,26 @@
   }
 }
 
-- (void)handleAppsUpdateBegins:(id)a3
+- (void)handleAppsUpdateBegins:(id)begins
 {
-  v4 = a3;
-  v5 = [(NEAgentAppPushExtension *)self extensionIdentifier];
-  if (v5)
+  beginsCopy = begins;
+  extensionIdentifier = [(NEAgentAppPushExtension *)self extensionIdentifier];
+  if (extensionIdentifier)
   {
-    v6 = v5;
-    v7 = [(NEAgentAppPushExtension *)self extensionIdentifier];
-    v8 = [v4 containsObject:v7];
+    v6 = extensionIdentifier;
+    extensionIdentifier2 = [(NEAgentAppPushExtension *)self extensionIdentifier];
+    v8 = [beginsCopy containsObject:extensionIdentifier2];
 
     if (v8)
     {
       v9 = ne_log_obj();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(NEAgentAppPushExtension *)self extensionIdentifier];
+        extensionIdentifier3 = [(NEAgentAppPushExtension *)self extensionIdentifier];
         v11 = 138412546;
-        v12 = self;
+        selfCopy = self;
         v13 = 2112;
-        v14 = v10;
+        v14 = extensionIdentifier3;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ update for extension [%@] started", &v11, 0x16u);
       }
 
@@ -214,26 +214,26 @@
   }
 }
 
-- (void)handleAppsUninstalled:(id)a3
+- (void)handleAppsUninstalled:(id)uninstalled
 {
-  v4 = a3;
-  v5 = [(NEAgentAppPushExtension *)self extensionIdentifier];
-  if (v5)
+  uninstalledCopy = uninstalled;
+  extensionIdentifier = [(NEAgentAppPushExtension *)self extensionIdentifier];
+  if (extensionIdentifier)
   {
-    v6 = v5;
-    v7 = [(NEAgentAppPushExtension *)self extensionIdentifier];
-    v8 = [v4 containsObject:v7];
+    v6 = extensionIdentifier;
+    extensionIdentifier2 = [(NEAgentAppPushExtension *)self extensionIdentifier];
+    v8 = [uninstalledCopy containsObject:extensionIdentifier2];
 
     if (v8)
     {
       v9 = ne_log_obj();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(NEAgentAppPushExtension *)self extensionIdentifier];
+        extensionIdentifier3 = [(NEAgentAppPushExtension *)self extensionIdentifier];
         v11 = 138412546;
-        v12 = self;
+        selfCopy = self;
         v13 = 2112;
-        v14 = v10;
+        v14 = extensionIdentifier3;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ extension [%@] was uninstalled", &v11, 0x16u);
       }
 

@@ -1,22 +1,22 @@
 @interface NRDRemoteableBlock
-- (NRDRemoteableBlock)initWithBlock:(id)a3;
-- (NRDRemoteableBlock)initWithProgressBlock:(id)a3;
-- (void)execute:(id)a3;
-- (void)progress:(id)a3;
+- (NRDRemoteableBlock)initWithBlock:(id)block;
+- (NRDRemoteableBlock)initWithProgressBlock:(id)block;
+- (void)execute:(id)execute;
+- (void)progress:(id)progress;
 @end
 
 @implementation NRDRemoteableBlock
 
-- (NRDRemoteableBlock)initWithBlock:(id)a3
+- (NRDRemoteableBlock)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NRDRemoteableBlock *)self init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v7 = objc_retainBlock(v4);
+      v7 = objc_retainBlock(blockCopy);
       block = v6->_block;
       v6->_block = v7;
     }
@@ -31,16 +31,16 @@
   return v6;
 }
 
-- (NRDRemoteableBlock)initWithProgressBlock:(id)a3
+- (NRDRemoteableBlock)initWithProgressBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NRDRemoteableBlock *)self init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v7 = objc_retainBlock(v4);
+      v7 = objc_retainBlock(blockCopy);
       progressBlock = v6->_progressBlock;
       v6->_progressBlock = v7;
     }
@@ -55,21 +55,21 @@
   return v6;
 }
 
-- (void)execute:(id)a3
+- (void)execute:(id)execute
 {
   block = self->_block;
   if (block)
   {
-    block[2](block, a3);
+    block[2](block, execute);
   }
 }
 
-- (void)progress:(id)a3
+- (void)progress:(id)progress
 {
   progressBlock = self->_progressBlock;
   if (progressBlock)
   {
-    progressBlock[2](progressBlock, a3);
+    progressBlock[2](progressBlock, progress);
   }
 }
 

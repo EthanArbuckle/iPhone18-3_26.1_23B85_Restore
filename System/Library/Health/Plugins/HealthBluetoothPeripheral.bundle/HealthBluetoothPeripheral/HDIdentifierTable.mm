@@ -1,14 +1,14 @@
 @interface HDIdentifierTable
-- (id)objectWithIdentifier:(unint64_t)a3;
-- (unint64_t)addObject:(id)a3;
+- (id)objectWithIdentifier:(unint64_t)identifier;
+- (unint64_t)addObject:(id)object;
 @end
 
 @implementation HDIdentifierTable
 
-- (unint64_t)addObject:(id)a3
+- (unint64_t)addObject:(id)object
 {
-  v4 = a3;
-  if (!v4)
+  objectCopy = object;
+  if (!objectCopy)
   {
     [NSException raise:NSInvalidArgumentException format:@"object cannot be nil"];
   }
@@ -43,17 +43,17 @@
   }
 
   while (NSMapGet(v8, v10));
-  NSMapInsert(self->_map, self->_nextIdentifier, v4);
+  NSMapInsert(self->_map, self->_nextIdentifier, objectCopy);
   v11 = self->_nextIdentifier;
 
   return v11;
 }
 
-- (id)objectWithIdentifier:(unint64_t)a3
+- (id)objectWithIdentifier:(unint64_t)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = NSMapGet(self->_map, a3);
+    v4 = NSMapGet(self->_map, identifier);
   }
 
   else

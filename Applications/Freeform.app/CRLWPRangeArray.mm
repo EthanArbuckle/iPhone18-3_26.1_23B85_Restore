@@ -1,30 +1,30 @@
 @interface CRLWPRangeArray
-+ (CRLWPRangeArray)rangeArrayWithRange:(_NSRange)a3;
++ (CRLWPRangeArray)rangeArrayWithRange:(_NSRange)range;
 + (id)rangeArray;
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3 inclusive:(BOOL)a4;
-- (BOOL)containsRange:(_NSRange)a3;
-- (BOOL)intersectsRange:(_NSRange)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRangeArray:(id)a3;
+- (BOOL)containsCharacterAtIndex:(unint64_t)index inclusive:(BOOL)inclusive;
+- (BOOL)containsRange:(_NSRange)range;
+- (BOOL)intersectsRange:(_NSRange)range;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRangeArray:(id)array;
 - (CRLWPRangeArray)init;
-- (CRLWPRangeArray)initWithRange:(_NSRange)a3;
-- (CRLWPRangeArray)initWithRangeVector:(const void *)a3;
-- (_NSRange)rangeAtIndex:(unint64_t)a3;
-- (_NSRange)rangeContainingPosition:(unint64_t)a3;
+- (CRLWPRangeArray)initWithRange:(_NSRange)range;
+- (CRLWPRangeArray)initWithRangeVector:(const void *)vector;
+- (_NSRange)rangeAtIndex:(unint64_t)index;
+- (_NSRange)rangeContainingPosition:(unint64_t)position;
 - (_NSRange)superRange;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)intersection:(_NSRange)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)rangesIntersecting:(_NSRange)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)intersection:(_NSRange)intersection;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)rangesIntersecting:(_NSRange)intersecting;
 - (unint64_t)hash;
 - (unint64_t)indexCount;
-- (unint64_t)indexForRange:(_NSRange)a3;
+- (unint64_t)indexForRange:(_NSRange)range;
 - (unint64_t)p_finish;
 - (unint64_t)p_start;
-- (void)enumerateRanges:(id)a3;
-- (void)enumerateRangesInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)reverseEnumerateRanges:(id)a3;
+- (void)enumerateRanges:(id)ranges;
+- (void)enumerateRangesInRange:(_NSRange)range usingBlock:(id)block;
+- (void)reverseEnumerateRanges:(id)ranges;
 @end
 
 @implementation CRLWPRangeArray
@@ -36,9 +36,9 @@
   return v2;
 }
 
-+ (CRLWPRangeArray)rangeArrayWithRange:(_NSRange)a3
++ (CRLWPRangeArray)rangeArrayWithRange:(_NSRange)range
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithRange:{a3.location, a3.length}];
+  v3 = [objc_alloc(objc_opt_class()) initWithRange:{range.location, range.length}];
 
   return v3;
 }
@@ -50,9 +50,9 @@
   return [(CRLWPRangeArray *)&v3 init];
 }
 
-- (CRLWPRangeArray)initWithRange:(_NSRange)a3
+- (CRLWPRangeArray)initWithRange:(_NSRange)range
 {
-  v3 = [(CRLWPRangeArray *)self init:a3.location];
+  v3 = [(CRLWPRangeArray *)self init:range.location];
   v4 = v3;
   if (v3)
   {
@@ -62,40 +62,40 @@
   return v4;
 }
 
-- (CRLWPRangeArray)initWithRangeVector:(const void *)a3
+- (CRLWPRangeArray)initWithRangeVector:(const void *)vector
 {
   v4 = [(CRLWPRangeArray *)self init];
   v5 = v4;
   if (v4)
   {
     p_rangeVector = &v4->_rangeVector;
-    if (&v5->_rangeVector != a3)
+    if (&v5->_rangeVector != vector)
     {
-      sub_1000DB520(p_rangeVector, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+      sub_1000DB520(p_rangeVector, *vector, *(vector + 1), (*(vector + 1) - *vector) >> 4);
     }
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRLWPRangeArray alloc];
 
   return [(CRLWPRangeArray *)v4 initWithRangeVector:&self->_rangeVector];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRLWPMutableRangeArray alloc];
 
   return [(CRLWPRangeArray *)v4 initWithRangeVector:&self->_rangeVector];
 }
 
-- (BOOL)isEqualToRangeArray:(id)a3
+- (BOOL)isEqualToRangeArray:(id)array
 {
-  v4 = a3;
-  if (v4 && (begin = self->_rangeVector.__begin_, end = self->_rangeVector.__end_, v7 = v4[1], end - begin == v4[2] - v7))
+  arrayCopy = array;
+  if (arrayCopy && (begin = self->_rangeVector.__begin_, end = self->_rangeVector.__end_, v7 = arrayCopy[1], end - begin == arrayCopy[2] - v7))
   {
     if (end == begin)
     {
@@ -133,10 +133,10 @@
   return v14 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -144,7 +144,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = sub_100014370(v5, v4);
+    v6 = sub_100014370(v5, equalCopy);
     if (v6)
     {
       v7 = [(CRLWPRangeArray *)self isEqualToRangeArray:v6];
@@ -183,32 +183,32 @@
 
 - (_NSRange)superRange
 {
-  v3 = [(CRLWPRangeArray *)self p_start];
-  v4 = [(CRLWPRangeArray *)self p_finish];
-  if (v3 <= v4)
+  p_start = [(CRLWPRangeArray *)self p_start];
+  p_finish = [(CRLWPRangeArray *)self p_finish];
+  if (p_start <= p_finish)
   {
-    v5 = v4;
+    v5 = p_finish;
   }
 
   else
   {
-    v5 = v3;
+    v5 = p_start;
   }
 
-  if (v3 < v4)
+  if (p_start < p_finish)
   {
-    v4 = v3;
+    p_finish = p_start;
   }
 
-  v6 = v5 - v4;
+  v6 = v5 - p_finish;
   result.length = v6;
-  result.location = v4;
+  result.location = p_finish;
   return result;
 }
 
-- (_NSRange)rangeAtIndex:(unint64_t)a3
+- (_NSRange)rangeAtIndex:(unint64_t)index
 {
-  v3 = &self->_rangeVector.__begin_[a3];
+  v3 = &self->_rangeVector.__begin_[index];
   location = v3->location;
   length = v3->length;
   result.length = length;
@@ -216,18 +216,18 @@
   return result;
 }
 
-- (void)enumerateRanges:(id)a3
+- (void)enumerateRanges:(id)ranges
 {
-  v4 = a3;
+  rangesCopy = ranges;
   v9 = 0;
-  v5 = [(CRLWPRangeArray *)self rangeCount];
-  if (v5 >= 1)
+  rangeCount = [(CRLWPRangeArray *)self rangeCount];
+  if (rangeCount >= 1)
   {
     v6 = 0;
     v7 = 1;
     do
     {
-      v4[2](v4, self->_rangeVector.__begin_[v6].location, self->_rangeVector.__begin_[v6].length, v7 - 1, &v9);
+      rangesCopy[2](rangesCopy, self->_rangeVector.__begin_[v6].location, self->_rangeVector.__begin_[v6].length, v7 - 1, &v9);
       if (v9)
       {
         break;
@@ -236,24 +236,24 @@
       ++v6;
     }
 
-    while (v7++ < v5);
+    while (v7++ < rangeCount);
   }
 }
 
-- (void)reverseEnumerateRanges:(id)a3
+- (void)reverseEnumerateRanges:(id)ranges
 {
-  v4 = a3;
-  v5 = [(CRLWPRangeArray *)self rangeCount];
-  v6 = v5;
-  for (i = v5 - 1; (i & 0x8000000000000000) == 0; i = v9)
+  rangesCopy = ranges;
+  rangeCount = [(CRLWPRangeArray *)self rangeCount];
+  v6 = rangeCount;
+  for (i = rangeCount - 1; (i & 0x8000000000000000) == 0; i = v9)
   {
     v8 = &self->_rangeVector.__begin_[v6--];
     v9 = i - 1;
-    v4[2](v4, v8[-1].location, v8[-1].length);
+    rangesCopy[2](rangesCopy, v8[-1].location, v8[-1].length);
   }
 }
 
-- (void)enumerateRangesInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateRangesInRange:(_NSRange)range usingBlock:(id)block
 {
   v10[0] = 0;
   v10[1] = v10;
@@ -263,10 +263,10 @@
   v6[1] = 3221225472;
   v6[2] = sub_10053B2D4;
   v6[3] = &unk_10186D7B8;
-  v9 = a3;
-  v7 = a4;
+  rangeCopy = range;
+  blockCopy = block;
   v8 = v10;
-  v5 = v7;
+  v5 = blockCopy;
   [(CRLWPRangeArray *)self enumerateRanges:v6];
 
   _Block_object_dispose(v10, 8);
@@ -292,7 +292,7 @@
   return result;
 }
 
-- (BOOL)containsCharacterAtIndex:(unint64_t)a3 inclusive:(BOOL)a4
+- (BOOL)containsCharacterAtIndex:(unint64_t)index inclusive:(BOOL)inclusive
 {
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -307,7 +307,7 @@
       location = v8->location;
       v9 = v8 + 1;
       v6 += ~(v6 >> 1);
-      if (location > a3)
+      if (location > index)
       {
         v6 = v7;
       }
@@ -328,13 +328,13 @@
 
   v11 = end[-1].location;
   length = end[-1].length;
-  if (a3 >= v11 && a3 - v11 < length)
+  if (index >= v11 && index - v11 < length)
   {
     return 1;
   }
 
   result = 0;
-  if (a4 && length + v11 == a3)
+  if (inclusive && length + v11 == index)
   {
     return 1;
   }
@@ -342,10 +342,10 @@
   return result;
 }
 
-- (BOOL)containsRange:(_NSRange)a3
+- (BOOL)containsRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = [(CRLWPRangeArray *)self rangeContainingPosition:?];
   v7 = v5 + v6 >= location + length;
   if (v5 > location)
@@ -356,7 +356,7 @@
   return v5 != 0x7FFFFFFFFFFFFFFFLL && v7;
 }
 
-- (_NSRange)rangeContainingPosition:(unint64_t)a3
+- (_NSRange)rangeContainingPosition:(unint64_t)position
 {
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -371,7 +371,7 @@
       location = v7->location;
       v8 = v7 + 1;
       v5 += ~(v5 >> 1);
-      if (location > a3)
+      if (location > position)
       {
         v5 = v6;
       }
@@ -387,7 +387,7 @@
 
   v10 = 0x7FFFFFFFFFFFFFFFLL;
   length = 0;
-  if (begin != end && a3 >= end[-1].location && a3 - end[-1].location < end[-1].length)
+  if (begin != end && position >= end[-1].location && position - end[-1].location < end[-1].length)
   {
     v10 = end[-1].location;
     length = end[-1].length;
@@ -398,10 +398,10 @@
   return result;
 }
 
-- (BOOL)intersectsRange:(_NSRange)a3
+- (BOOL)intersectsRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
   if (end == begin)
@@ -420,7 +420,7 @@
       v12 = *p_location;
       v11 = (p_location + 2);
       v7 += ~(v7 >> 1);
-      if (a3.location < v12)
+      if (range.location < v12)
       {
         v7 = v9;
       }
@@ -432,7 +432,7 @@
     }
 
     while (v7);
-    if (v8 != end && NSIntersectionRange(a3, *v8).length)
+    if (v8 != end && NSIntersectionRange(range, *v8).length)
     {
       return 1;
     }
@@ -448,7 +448,7 @@
   return NSIntersectionRange(v14, *(v8 - 16)).length != 0;
 }
 
-- (unint64_t)indexForRange:(_NSRange)a3
+- (unint64_t)indexForRange:(_NSRange)range
 {
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -463,7 +463,7 @@
       location = v8->location;
       v9 = v8 + 1;
       v5 += ~(v5 >> 1);
-      if (location < a3.location)
+      if (location < range.location)
       {
         v6 = v9;
       }
@@ -477,9 +477,9 @@
     while (v5);
     if (v6 != end)
     {
-      if (v6->location == a3.location)
+      if (v6->location == range.location)
       {
-        end = &v6[a3.length < v6->length];
+        end = &v6[range.length < v6->length];
       }
 
       else
@@ -492,10 +492,10 @@
   return end - begin;
 }
 
-- (id)intersection:(_NSRange)a3
+- (id)intersection:(_NSRange)intersection
 {
-  length = a3.length;
-  location = a3.location;
+  length = intersection.length;
+  location = intersection.location;
   v6 = objc_opt_new();
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -524,10 +524,10 @@
   return v6;
 }
 
-- (id)rangesIntersecting:(_NSRange)a3
+- (id)rangesIntersecting:(_NSRange)intersecting
 {
-  length = a3.length;
-  location = a3.location;
+  length = intersecting.length;
+  location = intersecting.location;
   v6 = objc_opt_new();
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;

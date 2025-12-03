@@ -1,38 +1,38 @@
 @interface SUSSoftwareUpdateTitleCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (id)newProgressBar;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axApplyProgressViewLabel:(id)a3;
+- (void)_axApplyProgressViewLabel:(id)label;
 @end
 
 @implementation SUSSoftwareUpdateTitleCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUSSoftwareUpdateTitleCell" hasInstanceMethod:@"newProgressBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUSSoftwareUpdateTitleCell" hasInstanceVariable:@"_progressBar" withType:"UIProgressView"];
-  [v3 validateClass:@"SUSSoftwareUpdateTitleCell" hasInstanceMethod:@"updateStatusLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUSSoftwareUpdateTitleCell" hasInstanceMethod:@"newProgressBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUSSoftwareUpdateTitleCell" hasInstanceVariable:@"_progressBar" withType:"UIProgressView"];
+  [validationsCopy validateClass:@"SUSSoftwareUpdateTitleCell" hasInstanceMethod:@"updateStatusLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue
 {
   v8.receiver = self;
   v8.super_class = SUSSoftwareUpdateTitleCellAccessibility;
-  v3 = [(SUSSoftwareUpdateTitleCellAccessibility *)&v8 accessibilityValue];
+  accessibilityValue = [(SUSSoftwareUpdateTitleCellAccessibility *)&v8 accessibilityValue];
   v4 = [(SUSSoftwareUpdateTitleCellAccessibility *)self safeValueForKey:@"updateStatusLabel"];
-  v7 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
   v5 = __UIAXStringForVariables();
 
   return v5;
 }
 
-- (void)_axApplyProgressViewLabel:(id)a3
+- (void)_axApplyProgressViewLabel:(id)label
 {
-  v3 = a3;
+  labelCopy = label;
   v4 = accessibilityLocalizedString(@"download.progress");
-  [v3 setAccessibilityLabel:v4];
+  [labelCopy setAccessibilityLabel:v4];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -48,9 +48,9 @@
 {
   v5.receiver = self;
   v5.super_class = SUSSoftwareUpdateTitleCellAccessibility;
-  v3 = [(SUSSoftwareUpdateTitleCellAccessibility *)&v5 newProgressBar];
-  [(SUSSoftwareUpdateTitleCellAccessibility *)self _axApplyProgressViewLabel:v3];
-  return v3;
+  newProgressBar = [(SUSSoftwareUpdateTitleCellAccessibility *)&v5 newProgressBar];
+  [(SUSSoftwareUpdateTitleCellAccessibility *)self _axApplyProgressViewLabel:newProgressBar];
+  return newProgressBar;
 }
 
 @end

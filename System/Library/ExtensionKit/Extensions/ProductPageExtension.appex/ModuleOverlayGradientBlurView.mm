@@ -1,12 +1,12 @@
 @interface ModuleOverlayGradientBlurView
-- (_TtC20ProductPageExtension29ModuleOverlayGradientBlurView)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension29ModuleOverlayGradientBlurView)initWithEffect:(id)a3;
+- (_TtC20ProductPageExtension29ModuleOverlayGradientBlurView)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension29ModuleOverlayGradientBlurView)initWithEffect:(id)effect;
 - (void)layoutSubviews;
 @end
 
 @implementation ModuleOverlayGradientBlurView
 
-- (_TtC20ProductPageExtension29ModuleOverlayGradientBlurView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension29ModuleOverlayGradientBlurView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension29ModuleOverlayGradientBlurView_effectVisibilityThreshold) = 0;
   v4 = OBJC_IVAR____TtC20ProductPageExtension29ModuleOverlayGradientBlurView_alignment;
@@ -36,7 +36,7 @@
   sub_100391D1C();
 }
 
-- (_TtC20ProductPageExtension29ModuleOverlayGradientBlurView)initWithEffect:(id)a3
+- (_TtC20ProductPageExtension29ModuleOverlayGradientBlurView)initWithEffect:(id)effect
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

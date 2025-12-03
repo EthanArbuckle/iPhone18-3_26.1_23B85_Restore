@@ -1,24 +1,24 @@
 @interface PPTemporalClusterServerRequestHandler
 - (PPTemporalClusterServerRequestHandler)init;
-- (void)rankedTemporalClustersForStartDate:(id)a3 endDate:(id)a4 queryId:(unint64_t)a5;
+- (void)rankedTemporalClustersForStartDate:(id)date endDate:(id)endDate queryId:(unint64_t)id;
 @end
 
 @implementation PPTemporalClusterServerRequestHandler
 
-- (void)rankedTemporalClustersForStartDate:(id)a3 endDate:(id)a4 queryId:(unint64_t)a5
+- (void)rankedTemporalClustersForStartDate:(id)date endDate:(id)endDate queryId:(unint64_t)id
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v10 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v21 = v8;
+    v21 = dateCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = endDateCopy;
     v24 = 2048;
-    v25 = a5;
+    idCopy = id;
     _os_log_impl(&dword_23224A000, v10, OS_LOG_TYPE_DEFAULT, "PPTemporalClusterServer: rankedTemporalClustersForStartDate: %@ endDate: %@ queryId: %llu", buf, 0x20u);
   }
 
@@ -27,12 +27,12 @@
   v15[1] = 3221225472;
   v15[2] = __92__PPTemporalClusterServerRequestHandler_rankedTemporalClustersForStartDate_endDate_queryId___block_invoke;
   v15[3] = &unk_278978628;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = a5;
-  v12 = v9;
-  v13 = v8;
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  selfCopy = self;
+  idCopy2 = id;
+  v12 = endDateCopy;
+  v13 = dateCopy;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v15];
 
   v14 = *MEMORY[0x277D85DE8];

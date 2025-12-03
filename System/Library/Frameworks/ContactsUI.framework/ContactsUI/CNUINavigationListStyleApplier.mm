@@ -1,160 +1,160 @@
 @interface CNUINavigationListStyleApplier
-- (CNUINavigationListStyleApplier)initWithNavigationListStyle:(id)a3;
-- (void)applyCollapsedBackgroundNavigationListStyleToCell:(id)a3;
-- (void)applyExpandedBackgroundNavigationListStyleToCell:(id)a3;
-- (void)applyNavigationListStyleToCell:(id)a3;
-- (void)applyNavigationListStyleToDetailCell:(id)a3;
+- (CNUINavigationListStyleApplier)initWithNavigationListStyle:(id)style;
+- (void)applyCollapsedBackgroundNavigationListStyleToCell:(id)cell;
+- (void)applyExpandedBackgroundNavigationListStyleToCell:(id)cell;
+- (void)applyNavigationListStyleToCell:(id)cell;
+- (void)applyNavigationListStyleToDetailCell:(id)cell;
 @end
 
 @implementation CNUINavigationListStyleApplier
 
-- (void)applyCollapsedBackgroundNavigationListStyleToCell:(id)a3
+- (void)applyCollapsedBackgroundNavigationListStyleToCell:(id)cell
 {
-  v4 = a3;
-  v7 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v5 = [v7 cellBackgroundColor];
-  v6 = [v4 backgroundView];
+  cellCopy = cell;
+  navigationListStyle = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  cellBackgroundColor = [navigationListStyle cellBackgroundColor];
+  backgroundView = [cellCopy backgroundView];
 
-  [v6 setBackgroundColor:v5];
+  [backgroundView setBackgroundColor:cellBackgroundColor];
 }
 
-- (void)applyExpandedBackgroundNavigationListStyleToCell:(id)a3
+- (void)applyExpandedBackgroundNavigationListStyleToCell:(id)cell
 {
-  v4 = a3;
-  v7 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v5 = [v7 cellBackgroundExpandedColor];
-  v6 = [v4 backgroundView];
+  cellCopy = cell;
+  navigationListStyle = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  cellBackgroundExpandedColor = [navigationListStyle cellBackgroundExpandedColor];
+  backgroundView = [cellCopy backgroundView];
 
-  [v6 setBackgroundColor:v5];
+  [backgroundView setBackgroundColor:cellBackgroundExpandedColor];
 }
 
-- (void)applyNavigationListStyleToDetailCell:(id)a3
+- (void)applyNavigationListStyleToDetailCell:(id)cell
 {
-  v4 = a3;
-  [(CNUINavigationListStyleApplier *)self applyNavigationListStyleToCell:v4];
-  v5 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v6 = [v5 detailCellTitleFont];
-  v7 = [v4 titleLabel];
-  [v7 setFont:v6];
+  cellCopy = cell;
+  [(CNUINavigationListStyleApplier *)self applyNavigationListStyleToCell:cellCopy];
+  navigationListStyle = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  detailCellTitleFont = [navigationListStyle detailCellTitleFont];
+  titleLabel = [cellCopy titleLabel];
+  [titleLabel setFont:detailCellTitleFont];
 
-  v8 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v9 = [v8 detailCellTitleTextColor];
-  v10 = [v4 titleLabel];
-  [v10 setTextColor:v9];
+  navigationListStyle2 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  detailCellTitleTextColor = [navigationListStyle2 detailCellTitleTextColor];
+  titleLabel2 = [cellCopy titleLabel];
+  [titleLabel2 setTextColor:detailCellTitleTextColor];
 
-  v11 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v12 = [v11 detailCellTitleTextHighlightedColor];
-  v13 = [v4 titleLabel];
-  [v13 setHighlightedTextColor:v12];
+  navigationListStyle3 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  detailCellTitleTextHighlightedColor = [navigationListStyle3 detailCellTitleTextHighlightedColor];
+  titleLabel3 = [cellCopy titleLabel];
+  [titleLabel3 setHighlightedTextColor:detailCellTitleTextHighlightedColor];
 
-  v14 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v15 = [v14 detailCellSubtitleFont];
-  v16 = [v4 subtitleLabel];
-  [v16 setFont:v15];
+  navigationListStyle4 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  detailCellSubtitleFont = [navigationListStyle4 detailCellSubtitleFont];
+  subtitleLabel = [cellCopy subtitleLabel];
+  [subtitleLabel setFont:detailCellSubtitleFont];
 
-  v17 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v18 = [v17 detailCellSubtitleTextColor];
-  v19 = [v4 subtitleLabel];
-  [v19 setTextColor:v18];
+  navigationListStyle5 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  detailCellSubtitleTextColor = [navigationListStyle5 detailCellSubtitleTextColor];
+  subtitleLabel2 = [cellCopy subtitleLabel];
+  [subtitleLabel2 setTextColor:detailCellSubtitleTextColor];
 
-  v20 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v21 = [v20 detailCellSubtitleTextHighlightedColor];
-  v22 = [v4 subtitleLabel];
-  [v22 setHighlightedTextColor:v21];
+  navigationListStyle6 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  detailCellSubtitleTextHighlightedColor = [navigationListStyle6 detailCellSubtitleTextHighlightedColor];
+  subtitleLabel3 = [cellCopy subtitleLabel];
+  [subtitleLabel3 setHighlightedTextColor:detailCellSubtitleTextHighlightedColor];
 
-  v23 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  [v4 setShowSeparator:{objc_msgSend(v23, "showCellSeparator")}];
+  navigationListStyle7 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  [cellCopy setShowSeparator:{objc_msgSend(navigationListStyle7, "showCellSeparator")}];
 }
 
-- (void)applyNavigationListStyleToCell:(id)a3
+- (void)applyNavigationListStyleToCell:(id)cell
 {
-  v39 = a3;
-  v4 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v5 = [v4 cellTitleFont];
-  v6 = [v39 titleLabel];
-  [v6 setFont:v5];
+  cellCopy = cell;
+  navigationListStyle = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  cellTitleFont = [navigationListStyle cellTitleFont];
+  titleLabel = [cellCopy titleLabel];
+  [titleLabel setFont:cellTitleFont];
 
-  v7 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v8 = [v7 cellTitleTextColor];
-  v9 = [v39 titleLabel];
-  [v9 setTextColor:v8];
+  navigationListStyle2 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  cellTitleTextColor = [navigationListStyle2 cellTitleTextColor];
+  titleLabel2 = [cellCopy titleLabel];
+  [titleLabel2 setTextColor:cellTitleTextColor];
 
-  v10 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v11 = [v10 cellTitleTextHighlightedColor];
-  v12 = [v39 titleLabel];
-  [v12 setHighlightedTextColor:v11];
+  navigationListStyle3 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  cellTitleTextHighlightedColor = [navigationListStyle3 cellTitleTextHighlightedColor];
+  titleLabel3 = [cellCopy titleLabel];
+  [titleLabel3 setHighlightedTextColor:cellTitleTextHighlightedColor];
 
-  v13 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v14 = [v13 cellSubtitleFont];
-  v15 = [v39 subtitleLabel];
-  [v15 setFont:v14];
+  navigationListStyle4 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  cellSubtitleFont = [navigationListStyle4 cellSubtitleFont];
+  subtitleLabel = [cellCopy subtitleLabel];
+  [subtitleLabel setFont:cellSubtitleFont];
 
-  v16 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v17 = [v16 cellSubtitleTextColor];
-  v18 = [v39 subtitleLabel];
-  [v18 setTextColor:v17];
+  navigationListStyle5 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  cellSubtitleTextColor = [navigationListStyle5 cellSubtitleTextColor];
+  subtitleLabel2 = [cellCopy subtitleLabel];
+  [subtitleLabel2 setTextColor:cellSubtitleTextColor];
 
-  v19 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v20 = [v19 cellSubtitleTextHighlightedColor];
-  v21 = [v39 subtitleLabel];
-  [v21 setHighlightedTextColor:v20];
+  navigationListStyle6 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  cellSubtitleTextHighlightedColor = [navigationListStyle6 cellSubtitleTextHighlightedColor];
+  subtitleLabel3 = [cellCopy subtitleLabel];
+  [subtitleLabel3 setHighlightedTextColor:cellSubtitleTextHighlightedColor];
 
-  v22 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v23 = [v22 actionIconFillColor];
-  v24 = [v39 titleImageView];
-  [v24 setTintColor:v23];
+  navigationListStyle7 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  actionIconFillColor = [navigationListStyle7 actionIconFillColor];
+  titleImageView = [cellCopy titleImageView];
+  [titleImageView setTintColor:actionIconFillColor];
 
-  v25 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v26 = [v25 cellBackgroundColor];
+  navigationListStyle8 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  cellBackgroundColor = [navigationListStyle8 cellBackgroundColor];
 
-  if (v26)
+  if (cellBackgroundColor)
   {
-    v27 = [MEMORY[0x1E69DC888] clearColor];
-    [v39 setBackgroundColor:v27];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [cellCopy setBackgroundColor:clearColor];
 
     v28 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    [v39 setBackgroundView:v28];
+    [cellCopy setBackgroundView:v28];
 
-    v29 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-    v30 = [v29 cellBackgroundColor];
-    v31 = [v39 backgroundView];
-    [v31 setBackgroundColor:v30];
+    navigationListStyle9 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+    cellBackgroundColor2 = [navigationListStyle9 cellBackgroundColor];
+    backgroundView = [cellCopy backgroundView];
+    [backgroundView setBackgroundColor:cellBackgroundColor2];
   }
 
-  v32 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  v33 = [v32 cellBackgroundHighlightedColor];
+  navigationListStyle10 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  cellBackgroundHighlightedColor = [navigationListStyle10 cellBackgroundHighlightedColor];
 
-  if (v33)
+  if (cellBackgroundHighlightedColor)
   {
     v34 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    [v39 setSelectedBackgroundView:v34];
+    [cellCopy setSelectedBackgroundView:v34];
 
-    v35 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-    v36 = [v35 cellBackgroundHighlightedColor];
-    v37 = [v39 selectedBackgroundView];
-    [v37 setBackgroundColor:v36];
+    navigationListStyle11 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+    cellBackgroundHighlightedColor2 = [navigationListStyle11 cellBackgroundHighlightedColor];
+    selectedBackgroundView = [cellCopy selectedBackgroundView];
+    [selectedBackgroundView setBackgroundColor:cellBackgroundHighlightedColor2];
   }
 
-  v38 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
-  [v39 setShowSeparator:{objc_msgSend(v38, "showCellSeparator")}];
+  navigationListStyle12 = [(CNUINavigationListStyleApplier *)self navigationListStyle];
+  [cellCopy setShowSeparator:{objc_msgSend(navigationListStyle12, "showCellSeparator")}];
 }
 
-- (CNUINavigationListStyleApplier)initWithNavigationListStyle:(id)a3
+- (CNUINavigationListStyleApplier)initWithNavigationListStyle:(id)style
 {
-  v5 = a3;
-  if (v5 && (v9.receiver = self, v9.super_class = CNUINavigationListStyleApplier, v6 = [(CNUINavigationListStyleApplier *)&v9 init], (self = v6) != 0))
+  styleCopy = style;
+  if (styleCopy && (v9.receiver = self, v9.super_class = CNUINavigationListStyleApplier, v6 = [(CNUINavigationListStyleApplier *)&v9 init], (self = v6) != 0))
   {
-    objc_storeStrong(&v6->_navigationListStyle, a3);
+    objc_storeStrong(&v6->_navigationListStyle, style);
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

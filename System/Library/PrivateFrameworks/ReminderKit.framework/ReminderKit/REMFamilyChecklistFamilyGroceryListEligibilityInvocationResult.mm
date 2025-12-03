@@ -1,62 +1,62 @@
 @interface REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult
-- (BOOL)isEqual:(id)a3;
-- (REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult)initWithCoder:(id)a3;
-- (REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult)initWithFamilyGroceryListEligibility:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult)initWithCoder:(id)coder;
+- (REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult)initWithFamilyGroceryListEligibility:(id)eligibility;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult
 
-- (REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult)initWithFamilyGroceryListEligibility:(id)a3
+- (REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult)initWithFamilyGroceryListEligibility:(id)eligibility
 {
-  v5 = a3;
+  eligibilityCopy = eligibility;
   v9.receiver = self;
   v9.super_class = REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult;
   v6 = [(REMStoreInvocationValueStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_familyGroceryListEligibility, a3);
+    objc_storeStrong(&v6->_familyGroceryListEligibility, eligibility);
   }
 
   return v7;
 }
 
-- (REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult)initWithCoder:(id)a3
+- (REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"familyGroceryListEligibility"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"familyGroceryListEligibility"];
 
   v6 = [(REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult *)self initWithFamilyGroceryListEligibility:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult *)self familyGroceryListEligibility];
-  [v4 encodeObject:v5 forKey:@"familyGroceryListEligibility"];
+  coderCopy = coder;
+  familyGroceryListEligibility = [(REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult *)self familyGroceryListEligibility];
+  [coderCopy encodeObject:familyGroceryListEligibility forKey:@"familyGroceryListEligibility"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult *)self familyGroceryListEligibility];
-    v6 = [v4 familyGroceryListEligibility];
-    if (v5 == v6)
+    familyGroceryListEligibility = [(REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult *)self familyGroceryListEligibility];
+    familyGroceryListEligibility2 = [equalCopy familyGroceryListEligibility];
+    if (familyGroceryListEligibility == familyGroceryListEligibility2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult *)self familyGroceryListEligibility];
-      v8 = [v4 familyGroceryListEligibility];
-      v9 = [v7 isEqual:v8];
+      familyGroceryListEligibility3 = [(REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult *)self familyGroceryListEligibility];
+      familyGroceryListEligibility4 = [equalCopy familyGroceryListEligibility];
+      v9 = [familyGroceryListEligibility3 isEqual:familyGroceryListEligibility4];
     }
   }
 
@@ -70,8 +70,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult *)self familyGroceryListEligibility];
-  v3 = [v2 hash];
+  familyGroceryListEligibility = [(REMFamilyChecklistFamilyGroceryListEligibilityInvocationResult *)self familyGroceryListEligibility];
+  v3 = [familyGroceryListEligibility hash];
 
   return v3;
 }

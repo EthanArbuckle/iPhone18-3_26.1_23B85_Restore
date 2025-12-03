@@ -1,25 +1,25 @@
 @interface WXList
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXList
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v14 = a4;
-  v7 = a5;
-  v8 = [v7 WXMainNamespace];
-  Child = OCXFindChild(a3, v8, "lvlOverride");
+  toCopy = to;
+  stateCopy = state;
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  Child = OCXFindChild(from, wXMainNamespace, "lvlOverride");
 
   while (Child)
   {
-    v10 = [v7 WXMainNamespace];
-    v11 = CXRequiredLongAttribute(Child, v10, "ilvl");
+    wXMainNamespace2 = [stateCopy WXMainNamespace];
+    v11 = CXRequiredLongAttribute(Child, wXMainNamespace2, "ilvl");
 
-    v12 = [v14 addLevelOverrideWithLevel:v11];
-    [WXListLevelOverride readFrom:Child to:v12 state:v7];
-    v13 = [v7 WXMainNamespace];
-    Child = OCXFindNextChild(Child, v13, "lvlOverride");
+    v12 = [toCopy addLevelOverrideWithLevel:v11];
+    [WXListLevelOverride readFrom:Child to:v12 state:stateCopy];
+    wXMainNamespace3 = [stateCopy WXMainNamespace];
+    Child = OCXFindNextChild(Child, wXMainNamespace3, "lvlOverride");
   }
 }
 

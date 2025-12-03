@@ -1,14 +1,14 @@
 @interface DebugHierarchyPropertyAction
-- (BOOL)_isTargetingProperty:(id)a3;
-- (BOOL)isTargetingObject:(id)a3;
-- (BOOL)targetsObjectIdentifiers:(id *)a3;
+- (BOOL)_isTargetingProperty:(id)property;
+- (BOOL)isTargetingObject:(id)object;
+- (BOOL)targetsObjectIdentifiers:(id *)identifiers;
 - (DebugHierarchyPropertyAction)init;
 - (NSString)debugDescription;
 - (id)keysToArchiveViaKVC;
-- (void)_fetchValuesForPropertiesWithNames:(id)a3 onObject:(id)a4 inContext:(id)a5;
-- (void)addPropertyNames:(id)a3;
-- (void)performInContext:(id)a3 withObject:(id)a4;
-- (void)setOptions:(int64_t)a3 comparisonStyle:(int64_t)a4;
+- (void)_fetchValuesForPropertiesWithNames:(id)names onObject:(id)object inContext:(id)context;
+- (void)addPropertyNames:(id)names;
+- (void)performInContext:(id)context withObject:(id)object;
+- (void)setOptions:(int64_t)options comparisonStyle:(int64_t)style;
 @end
 
 @implementation DebugHierarchyPropertyAction
@@ -27,20 +27,20 @@
   return result;
 }
 
-- (void)addPropertyNames:(id)a3
+- (void)addPropertyNames:(id)names
 {
-  v4 = a3;
-  v6 = [(DebugHierarchyPropertyAction *)self propertyNames];
-  v5 = [v6 arrayByAddingObjectsFromArray:v4];
+  namesCopy = names;
+  propertyNames = [(DebugHierarchyPropertyAction *)self propertyNames];
+  v5 = [propertyNames arrayByAddingObjectsFromArray:namesCopy];
 
   [(DebugHierarchyPropertyAction *)self setPropertyNames:v5];
 }
 
-- (void)setOptions:(int64_t)a3 comparisonStyle:(int64_t)a4
+- (void)setOptions:(int64_t)options comparisonStyle:(int64_t)style
 {
-  [(DebugHierarchyPropertyAction *)self setOptions:a3];
+  [(DebugHierarchyPropertyAction *)self setOptions:options];
 
-  [(DebugHierarchyPropertyAction *)self setOptionsComparisonStyle:a4];
+  [(DebugHierarchyPropertyAction *)self setOptionsComparisonStyle:style];
 }
 
 - (id)keysToArchiveViaKVC
@@ -61,58 +61,58 @@
   return v2;
 }
 
-- (void)performInContext:(id)a3 withObject:(id)a4
+- (void)performInContext:(id)context withObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(DebugHierarchyPropertyAction *)self isTargetingObject:v7])
+  contextCopy = context;
+  objectCopy = object;
+  if ([(DebugHierarchyPropertyAction *)self isTargetingObject:objectCopy])
   {
-    v8 = [(DebugHierarchyPropertyAction *)self visibility];
-    v9 = [(DebugHierarchyPropertyAction *)self optionsComparisonStyle];
-    v10 = [(DebugHierarchyPropertyAction *)self propertyNames];
-    if (v10)
+    visibility = [(DebugHierarchyPropertyAction *)self visibility];
+    optionsComparisonStyle = [(DebugHierarchyPropertyAction *)self optionsComparisonStyle];
+    propertyNames = [(DebugHierarchyPropertyAction *)self propertyNames];
+    if (propertyNames)
     {
-      v11 = [(DebugHierarchyPropertyAction *)self propertyNames];
-      if (v11)
+      propertyNames2 = [(DebugHierarchyPropertyAction *)self propertyNames];
+      if (propertyNames2)
       {
-        v12 = [(DebugHierarchyPropertyAction *)self propertyNames];
-        if ([v12 count])
+        propertyNames3 = [(DebugHierarchyPropertyAction *)self propertyNames];
+        if ([propertyNames3 count])
         {
-          v13 = 0;
+          propertyNamesAreExclusive = 0;
         }
 
         else
         {
-          v13 = [(DebugHierarchyPropertyAction *)self propertyNamesAreExclusive];
+          propertyNamesAreExclusive = [(DebugHierarchyPropertyAction *)self propertyNamesAreExclusive];
         }
       }
 
       else
       {
-        v13 = 0;
+        propertyNamesAreExclusive = 0;
       }
     }
 
     else
     {
-      v13 = 1;
+      propertyNamesAreExclusive = 1;
     }
 
-    v14 = v8 & 0xF;
+    v14 = visibility & 0xF;
 
-    v15 = [(DebugHierarchyPropertyAction *)self propertyNames];
-    if ([v15 count])
+    propertyNames4 = [(DebugHierarchyPropertyAction *)self propertyNames];
+    if ([propertyNames4 count])
     {
-      v16 = [(DebugHierarchyPropertyAction *)self propertyNamesAreExclusive];
+      propertyNamesAreExclusive2 = [(DebugHierarchyPropertyAction *)self propertyNamesAreExclusive];
     }
 
     else
     {
-      v16 = 0;
+      propertyNamesAreExclusive2 = 0;
     }
 
-    v18 = v14 != 15 || v9 != 0;
-    if (((v18 | v13) & 1) != 0 || v16)
+    v18 = v14 != 15 || optionsComparisonStyle != 0;
+    if (((v18 | propertyNamesAreExclusive) & 1) != 0 || propertyNamesAreExclusive2)
     {
       v20 = objc_opt_class();
       if (v20 && (v21 = v20, object_isClass(v20)))
@@ -125,7 +125,7 @@
         v22 = 0;
       }
 
-      v23 = [v6 runtimeTypeWithName:v22];
+      v23 = [contextCopy runtimeTypeWithName:v22];
       v24 = +[NSMutableArray array];
       v36 = v23;
       if (v36)
@@ -137,10 +137,10 @@
           v40 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v26 = [v25 instanceProperties];
-          v27 = [v26 objectEnumerator];
+          instanceProperties = [v25 instanceProperties];
+          objectEnumerator = [instanceProperties objectEnumerator];
 
-          v28 = [v27 countByEnumeratingWithState:&v37 objects:v41 count:16];
+          v28 = [objectEnumerator countByEnumeratingWithState:&v37 objects:v41 count:16];
           if (v28)
           {
             v29 = v28;
@@ -151,61 +151,61 @@
               {
                 if (*v38 != v30)
                 {
-                  objc_enumerationMutation(v27);
+                  objc_enumerationMutation(objectEnumerator);
                 }
 
                 v32 = *(*(&v37 + 1) + 8 * i);
                 if ([(DebugHierarchyPropertyAction *)self _isTargetingProperty:v32])
                 {
-                  v33 = [v32 name];
-                  [v24 addObject:v33];
+                  name = [v32 name];
+                  [v24 addObject:name];
                 }
               }
 
-              v29 = [v27 countByEnumeratingWithState:&v37 objects:v41 count:16];
+              v29 = [objectEnumerator countByEnumeratingWithState:&v37 objects:v41 count:16];
             }
 
             while (v29);
           }
 
-          v34 = [v25 parentType];
+          parentType = [v25 parentType];
 
-          v25 = v34;
+          v25 = parentType;
         }
 
-        while (v34);
+        while (parentType);
       }
 
       if ([v24 count])
       {
-        v19 = [v24 copy];
+        propertyNames5 = [v24 copy];
       }
 
       else
       {
-        v19 = 0;
+        propertyNames5 = 0;
       }
     }
 
     else
     {
-      v19 = [(DebugHierarchyPropertyAction *)self propertyNames];
+      propertyNames5 = [(DebugHierarchyPropertyAction *)self propertyNames];
     }
 
-    [(DebugHierarchyPropertyAction *)self _fetchValuesForPropertiesWithNames:v19 onObject:v7 inContext:v6];
+    [(DebugHierarchyPropertyAction *)self _fetchValuesForPropertiesWithNames:propertyNames5 onObject:objectCopy inContext:contextCopy];
   }
 }
 
-- (BOOL)targetsObjectIdentifiers:(id *)a3
+- (BOOL)targetsObjectIdentifiers:(id *)identifiers
 {
-  v5 = [(DebugHierarchyPropertyAction *)self objectIdentifiers];
-  if ([v5 count])
+  objectIdentifiers = [(DebugHierarchyPropertyAction *)self objectIdentifiers];
+  if ([objectIdentifiers count])
   {
-    v6 = [(DebugHierarchyPropertyAction *)self objectIdentifiersAreExclusive];
+    objectIdentifiersAreExclusive = [(DebugHierarchyPropertyAction *)self objectIdentifiersAreExclusive];
 
-    if ((v6 & 1) == 0)
+    if ((objectIdentifiersAreExclusive & 1) == 0)
     {
-      *a3 = [(DebugHierarchyPropertyAction *)self objectIdentifiers];
+      *identifiers = [(DebugHierarchyPropertyAction *)self objectIdentifiers];
       return 1;
     }
   }
@@ -217,21 +217,21 @@
   return 0;
 }
 
-- (BOOL)isTargetingObject:(id)a3
+- (BOOL)isTargetingObject:(id)object
 {
-  v4 = a3;
-  v5 = [(DebugHierarchyPropertyAction *)self objectIdentifiers];
-  v6 = [v5 count];
+  objectCopy = object;
+  objectIdentifiers = [(DebugHierarchyPropertyAction *)self objectIdentifiers];
+  v6 = [objectIdentifiers count];
 
-  if (v6 && (!v4 ? (v7 = 0) : (v7 = CFStringCreateWithFormat(0, 0, @"%p", v4)), -[DebugHierarchyPropertyAction objectIdentifiers](self, "objectIdentifiers"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v7], v8, LODWORD(v8) = -[DebugHierarchyPropertyAction objectIdentifiersAreExclusive](self, "objectIdentifiersAreExclusive"), v7, v9 == v8))
+  if (v6 && (!objectCopy ? (v7 = 0) : (v7 = CFStringCreateWithFormat(0, 0, @"%p", objectCopy)), -[DebugHierarchyPropertyAction objectIdentifiers](self, "objectIdentifiers"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v7], v8, LODWORD(v8) = -[DebugHierarchyPropertyAction objectIdentifiersAreExclusive](self, "objectIdentifiersAreExclusive"), v7, v9 == v8))
   {
     LOBYTE(v24) = 0;
   }
 
   else
   {
-    v10 = [(DebugHierarchyPropertyAction *)self types];
-    v11 = [v10 count];
+    types = [(DebugHierarchyPropertyAction *)self types];
+    v11 = [types count];
 
     if (v11)
     {
@@ -241,8 +241,8 @@
         v48 = 0uLL;
         v45 = 0uLL;
         v46 = 0uLL;
-        v12 = [(DebugHierarchyPropertyAction *)self types];
-        v13 = [v12 countByEnumeratingWithState:&v45 objects:v52 count:16];
+        types2 = [(DebugHierarchyPropertyAction *)self types];
+        v13 = [types2 countByEnumeratingWithState:&v45 objects:v52 count:16];
         if (v13)
         {
           v14 = v13;
@@ -253,7 +253,7 @@ LABEL_10:
           {
             if (*v46 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(types2);
             }
 
             if (NSClassFromString(*(*(&v45 + 1) + 8 * v16)) && (objc_opt_isKindOfClass() & 1) != 0)
@@ -263,7 +263,7 @@ LABEL_10:
 
             if (v14 == ++v16)
             {
-              v14 = [v12 countByEnumeratingWithState:&v45 objects:v52 count:16];
+              v14 = [types2 countByEnumeratingWithState:&v45 objects:v52 count:16];
               if (v14)
               {
                 goto LABEL_10;
@@ -281,8 +281,8 @@ LABEL_10:
         v44 = 0uLL;
         v41 = 0uLL;
         v42 = 0uLL;
-        v12 = [(DebugHierarchyPropertyAction *)self types];
-        v24 = [v12 countByEnumeratingWithState:&v41 objects:v51 count:16];
+        types2 = [(DebugHierarchyPropertyAction *)self types];
+        v24 = [types2 countByEnumeratingWithState:&v41 objects:v51 count:16];
         if (!v24)
         {
           goto LABEL_53;
@@ -295,7 +295,7 @@ LABEL_33:
         {
           if (*v42 != v25)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(types2);
           }
 
           if (NSClassFromString(*(*(&v41 + 1) + 8 * v26)) && (objc_opt_isKindOfClass() & 1) != 0)
@@ -305,7 +305,7 @@ LABEL_33:
 
           if (v24 == ++v26)
           {
-            v24 = [v12 countByEnumeratingWithState:&v41 objects:v51 count:16];
+            v24 = [types2 countByEnumeratingWithState:&v41 objects:v51 count:16];
             if (v24)
             {
               goto LABEL_33;
@@ -317,8 +317,8 @@ LABEL_33:
       }
     }
 
-    v17 = [(DebugHierarchyPropertyAction *)self exactTypes];
-    v18 = [v17 count];
+    exactTypes = [(DebugHierarchyPropertyAction *)self exactTypes];
+    v18 = [exactTypes count];
 
     if (v18)
     {
@@ -328,8 +328,8 @@ LABEL_33:
         v40 = 0uLL;
         v37 = 0uLL;
         v38 = 0uLL;
-        v12 = [(DebugHierarchyPropertyAction *)self exactTypes];
-        v19 = [v12 countByEnumeratingWithState:&v37 objects:v50 count:16];
+        types2 = [(DebugHierarchyPropertyAction *)self exactTypes];
+        v19 = [types2 countByEnumeratingWithState:&v37 objects:v50 count:16];
         if (v19)
         {
           v20 = v19;
@@ -340,13 +340,13 @@ LABEL_22:
           {
             if (*v38 != v21)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(types2);
             }
 
             v23 = NSClassFromString(*(*(&v37 + 1) + 8 * v22));
             if (v23)
             {
-              if ([v4 isMemberOfClass:v23])
+              if ([objectCopy isMemberOfClass:v23])
               {
                 goto LABEL_52;
               }
@@ -354,7 +354,7 @@ LABEL_22:
 
             if (v20 == ++v22)
             {
-              v20 = [v12 countByEnumeratingWithState:&v37 objects:v50 count:16];
+              v20 = [types2 countByEnumeratingWithState:&v37 objects:v50 count:16];
               if (v20)
               {
                 goto LABEL_22;
@@ -372,8 +372,8 @@ LABEL_22:
         v36 = 0uLL;
         v33 = 0uLL;
         v34 = 0uLL;
-        v12 = [(DebugHierarchyPropertyAction *)self exactTypes];
-        v27 = [v12 countByEnumeratingWithState:&v33 objects:v49 count:16];
+        types2 = [(DebugHierarchyPropertyAction *)self exactTypes];
+        v27 = [types2 countByEnumeratingWithState:&v33 objects:v49 count:16];
         if (!v27)
         {
 LABEL_52:
@@ -389,13 +389,13 @@ LABEL_44:
         {
           if (*v34 != v29)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(types2);
           }
 
           v31 = NSClassFromString(*(*(&v33 + 1) + 8 * v30));
           if (v31)
           {
-            if ([v4 isMemberOfClass:v31])
+            if ([objectCopy isMemberOfClass:v31])
             {
               break;
             }
@@ -403,7 +403,7 @@ LABEL_44:
 
           if (v28 == ++v30)
           {
-            v28 = [v12 countByEnumeratingWithState:&v33 objects:v49 count:16];
+            v28 = [types2 countByEnumeratingWithState:&v33 objects:v49 count:16];
             LOBYTE(v24) = 1;
             if (v28)
             {
@@ -430,20 +430,20 @@ LABEL_54:
   return v24;
 }
 
-- (BOOL)_isTargetingProperty:(id)a3
+- (BOOL)_isTargetingProperty:(id)property
 {
-  v4 = a3;
-  v5 = [v4 visibility];
-  if ((-[DebugHierarchyPropertyAction visibility](self, "visibility") & v5) != 0 && DebugHierarchyBitMaskComparison([v4 options], -[DebugHierarchyPropertyAction options](self, "options"), -[DebugHierarchyPropertyAction optionsComparisonStyle](self, "optionsComparisonStyle")))
+  propertyCopy = property;
+  visibility = [propertyCopy visibility];
+  if ((-[DebugHierarchyPropertyAction visibility](self, "visibility") & visibility) != 0 && DebugHierarchyBitMaskComparison([propertyCopy options], -[DebugHierarchyPropertyAction options](self, "options"), -[DebugHierarchyPropertyAction optionsComparisonStyle](self, "optionsComparisonStyle")))
   {
-    v6 = [(DebugHierarchyPropertyAction *)self propertyNames];
-    v7 = [v6 count];
+    propertyNames = [(DebugHierarchyPropertyAction *)self propertyNames];
+    v7 = [propertyNames count];
 
     if (v7)
     {
-      v8 = [(DebugHierarchyPropertyAction *)self propertyNames];
-      v9 = [v4 name];
-      v10 = [v8 containsObject:v9];
+      propertyNames2 = [(DebugHierarchyPropertyAction *)self propertyNames];
+      name = [propertyCopy name];
+      v10 = [propertyNames2 containsObject:name];
 
       v11 = v10 ^ [(DebugHierarchyPropertyAction *)self propertyNamesAreExclusive];
     }
@@ -462,14 +462,14 @@ LABEL_54:
   return v11;
 }
 
-- (void)_fetchValuesForPropertiesWithNames:(id)a3 onObject:(id)a4 inContext:(id)a5
+- (void)_fetchValuesForPropertiesWithNames:(id)names onObject:(id)object inContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  namesCopy = names;
+  objectCopy = object;
+  contextCopy = context;
+  if ([namesCopy count])
   {
-    v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+    v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [namesCopy count]);
     v11 = objc_opt_class();
     if (v11 && (v12 = v11, object_isClass(v11)))
     {
@@ -481,14 +481,14 @@ LABEL_54:
       v13 = 0;
     }
 
-    v14 = [v9 runtimeTypeWithName:v13];
+    v14 = [contextCopy runtimeTypeWithName:v13];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v25 = v7;
-    v15 = v7;
+    v25 = namesCopy;
+    v15 = namesCopy;
     v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v16)
     {
@@ -507,13 +507,13 @@ LABEL_54:
           v20 = [v14 propertyWithName:*(*(&v26 + 1) + 8 * v19)];
           if (v20)
           {
-            [DebugHierarchyObjectInterface valueAndOptionsForProperty:v20 onObject:v8 inContext:v9];
-            v21 = v9;
-            v23 = v22 = v8;
+            [DebugHierarchyObjectInterface valueAndOptionsForProperty:v20 onObject:objectCopy inContext:contextCopy];
+            v21 = contextCopy;
+            v23 = v22 = objectCopy;
             [v10 addObject:v23];
 
-            v8 = v22;
-            v9 = v21;
+            objectCopy = v22;
+            contextCopy = v21;
           }
 
           v19 = v19 + 1;
@@ -527,9 +527,9 @@ LABEL_54:
     }
 
     v24 = [v10 copy];
-    [v9 addProperties:v24 toObject:v8];
+    [contextCopy addProperties:v24 toObject:objectCopy];
 
-    v7 = v25;
+    namesCopy = v25;
   }
 }
 
@@ -537,10 +537,10 @@ LABEL_54:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DebugHierarchyPropertyAction *)self objectIdentifiers];
-  v6 = [v5 count];
-  v7 = [(DebugHierarchyPropertyAction *)self propertyNames];
-  v8 = [v7 componentsJoinedByString:{@", "}];
+  objectIdentifiers = [(DebugHierarchyPropertyAction *)self objectIdentifiers];
+  v6 = [objectIdentifiers count];
+  propertyNames = [(DebugHierarchyPropertyAction *)self propertyNames];
+  v8 = [propertyNames componentsJoinedByString:{@", "}];
   v9 = [NSString stringWithFormat:@"<%@ %p identifiers: %lu properties: %@>", v4, self, v6, v8];;
 
   return v9;

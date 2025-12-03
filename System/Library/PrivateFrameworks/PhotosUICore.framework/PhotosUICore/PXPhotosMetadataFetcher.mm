@@ -1,13 +1,13 @@
 @interface PXPhotosMetadataFetcher
-+ (id)sharedFetcherForPhotoLibrary:(id)a3;
-- (BOOL)getAssetCounts:(id *)a3 guestAssetCounts:(id *)a4 forFetchResult:(id)a5 allowFetch:(BOOL)a6;
++ (id)sharedFetcherForPhotoLibrary:(id)library;
+- (BOOL)getAssetCounts:(id *)counts guestAssetCounts:(id *)assetCounts forFetchResult:(id)result allowFetch:(BOOL)fetch;
 - (PHPhotoLibrary)photoLibrary;
 - (PXPhotosMetadataFetcher)init;
-- (PXPhotosMetadataFetcher)initWithPhotoLibrary:(id)a3;
-- (id)_predicateForFact:(unint64_t)a3;
-- (id)_queue_fetchResultForFact:(unint64_t)a3 allowFetch:(BOOL)a4;
-- (id)_queue_oidsForFacts:(unint64_t)a3 allowFetch:(BOOL)a4;
-- (void)photoLibraryWillChange:(id)a3;
+- (PXPhotosMetadataFetcher)initWithPhotoLibrary:(id)library;
+- (id)_predicateForFact:(unint64_t)fact;
+- (id)_queue_fetchResultForFact:(unint64_t)fact allowFetch:(BOOL)fetch;
+- (id)_queue_oidsForFacts:(unint64_t)facts allowFetch:(BOOL)fetch;
+- (void)photoLibraryWillChange:(id)change;
 @end
 
 @implementation PXPhotosMetadataFetcher
@@ -19,17 +19,17 @@
   return WeakRetained;
 }
 
-- (void)photoLibraryWillChange:(id)a3
+- (void)photoLibraryWillChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PXPhotosMetadataFetcher_photoLibraryWillChange___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -116,33 +116,33 @@ LABEL_6:
 LABEL_17:
 }
 
-- (id)_predicateForFact:(unint64_t)a3
+- (id)_predicateForFact:(unint64_t)fact
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  if (a3 == 4)
+  if (fact == 4)
   {
     v4 = MEMORY[0x1E696AB28];
     v5 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForGuestAsset"), 1}];
     v14[0] = v5;
-    v6 = [MEMORY[0x1E6978630] filterPredicateForUnsavedSyndicationAssets];
-    v14[1] = v6;
+    filterPredicateForUnsavedSyndicationAssets = [MEMORY[0x1E6978630] filterPredicateForUnsavedSyndicationAssets];
+    v14[1] = filterPredicateForUnsavedSyndicationAssets;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
     v3 = [v4 andPredicateWithSubpredicates:v7];
   }
 
   else
   {
-    if (a3 == 2)
+    if (fact == 2)
     {
       [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d OR %K = %d", @"kind", 2, @"kind", 3];
     }
 
     else
     {
-      if (a3 != 1)
+      if (fact != 1)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosMetadataFetcher.m" lineNumber:219 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosMetadataFetcher.m" lineNumber:219 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
@@ -155,7 +155,7 @@ LABEL_17:
   return v3;
 }
 
-- (id)_queue_oidsForFacts:(unint64_t)a3 allowFetch:(BOOL)a4
+- (id)_queue_oidsForFacts:(unint64_t)facts allowFetch:(BOOL)fetch
 {
   queue_OIDsByDerivedFacts = self->_queue_OIDsByDerivedFacts;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -172,8 +172,8 @@ LABEL_17:
     v17[1] = 3221225472;
     v18 = __58__PXPhotosMetadataFetcher__queue_oidsForFacts_allowFetch___block_invoke;
     v19 = &unk_1E7735188;
-    v20 = self;
-    v23 = a4;
+    selfCopy = self;
+    fetchCopy = fetch;
     v11 = v10;
     v12 = 0;
     v21 = v11;
@@ -181,7 +181,7 @@ LABEL_17:
     v28 = 0;
     do
     {
-      if (((1 << v12) & a3) != 0)
+      if (((1 << v12) & facts) != 0)
       {
         v18(v17);
         v13 = v28;
@@ -205,7 +205,7 @@ LABEL_17:
     {
       v9 = PXSetsIntersection(v11);
       v14 = self->_queue_OIDsByDerivedFacts;
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:facts];
       [(NSMutableDictionary *)v14 setObject:v9 forKeyedSubscript:v15];
     }
 
@@ -240,9 +240,9 @@ void __58__PXPhotosMetadataFetcher__queue_oidsForFacts_allowFetch___block_invoke
   }
 }
 
-- (id)_queue_fetchResultForFact:(unint64_t)a3 allowFetch:(BOOL)a4
+- (id)_queue_fetchResultForFact:(unint64_t)fact allowFetch:(BOOL)fetch
 {
-  v4 = a4;
+  fetchCopy = fetch;
   queue_fetchResultByFetchedFact = self->_queue_fetchResultByFetchedFact;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
   v9 = [(NSMutableDictionary *)queue_fetchResultByFetchedFact objectForKeyedSubscript:v8];
@@ -254,46 +254,46 @@ void __58__PXPhotosMetadataFetcher__queue_oidsForFacts_allowFetch___block_invoke
 
   else
   {
-    v10 = !v4;
+    v10 = !fetchCopy;
   }
 
   if (!v10)
   {
-    v11 = [(PXPhotosMetadataFetcher *)self photoLibrary];
-    v12 = [v11 librarySpecificFetchOptions];
+    photoLibrary = [(PXPhotosMetadataFetcher *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v12 setIsExclusivePredicate:1];
-    v13 = [(PXPhotosMetadataFetcher *)self _predicateForFact:a3];
-    [v12 setInternalPredicate:v13];
+    [librarySpecificFetchOptions setIsExclusivePredicate:1];
+    v13 = [(PXPhotosMetadataFetcher *)self _predicateForFact:fact];
+    [librarySpecificFetchOptions setInternalPredicate:v13];
 
-    [v12 setInternalSortDescriptors:MEMORY[0x1E695E0F0]];
-    v9 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v12];
+    [librarySpecificFetchOptions setInternalSortDescriptors:MEMORY[0x1E695E0F0]];
+    v9 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
     v14 = self->_queue_fetchResultByFetchedFact;
-    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:fact];
     [(NSMutableDictionary *)v14 setObject:v9 forKeyedSubscript:v15];
   }
 
   return v9;
 }
 
-- (BOOL)getAssetCounts:(id *)a3 guestAssetCounts:(id *)a4 forFetchResult:(id)a5 allowFetch:(BOOL)a6
+- (BOOL)getAssetCounts:(id *)counts guestAssetCounts:(id *)assetCounts forFetchResult:(id)result allowFetch:(BOOL)fetch
 {
-  v6 = a6;
+  fetchCopy = fetch;
   v104 = *MEMORY[0x1E69E9840];
-  object = a5;
-  v55 = self;
+  object = result;
+  selfCopy = self;
   v10 = objc_opt_class();
   objc_sync_enter(v10);
-  v11 = objc_getAssociatedObject(object, &PXPhotosMetadataCountsCacheKey);
+  fetchedObjectIDsSet = objc_getAssociatedObject(object, &PXPhotosMetadataCountsCacheKey);
   objc_sync_exit(v10);
 
-  if (v11)
+  if (fetchedObjectIDsSet)
   {
-    [v11 assetCounts];
+    [fetchedObjectIDsSet assetCounts];
     v12 = v88;
     v13 = v89;
     v14 = v90;
-    [v11 guestAssetCounts];
+    [fetchedObjectIDsSet guestAssetCounts];
     v58 = v89;
     v15 = 1;
     v56 = v88;
@@ -304,14 +304,14 @@ void __58__PXPhotosMetadataFetcher__queue_oidsForFacts_allowFetch___block_invoke
   v17 = *off_1E7721F70;
   v16 = *(off_1E7721F70 + 1);
   v18 = *(off_1E7721F70 + 2);
-  if (v6)
+  if (fetchCopy)
   {
     v56 = *off_1E7721F70;
     v57 = *(off_1E7721F70 + 2);
     v58 = *(off_1E7721F70 + 1);
     v53 = [object count];
-    v11 = [object fetchedObjectIDsSet];
-    if (!v11)
+    fetchedObjectIDsSet = [object fetchedObjectIDsSet];
+    if (!fetchedObjectIDsSet)
     {
       v19 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(object, "count")}];
       v94 = 0u;
@@ -333,12 +333,12 @@ void __58__PXPhotosMetadataFetcher__queue_oidsForFacts_allowFetch___block_invoke
             }
 
             v24 = *(*(&v94 + 1) + 8 * i);
-            v25 = [v24 objectID];
+            objectID = [v24 objectID];
 
-            if (v25)
+            if (objectID)
             {
-              v26 = [v24 objectID];
-              [v19 addObject:v26];
+              objectID2 = [v24 objectID];
+              [v19 addObject:objectID2];
             }
           }
 
@@ -348,7 +348,7 @@ void __58__PXPhotosMetadataFetcher__queue_oidsForFacts_allowFetch___block_invoke
         while (v21);
       }
 
-      v11 = [v19 copy];
+      fetchedObjectIDsSet = [v19 copy];
     }
 
     v88 = 0;
@@ -381,14 +381,14 @@ void __58__PXPhotosMetadataFetcher__queue_oidsForFacts_allowFetch___block_invoke
     v67 = __Block_byref_object_copy__73827;
     v68 = __Block_byref_object_dispose__73828;
     v69 = 0;
-    queue = v55->_queue;
+    queue = selfCopy->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __85__PXPhotosMetadataFetcher_getAssetCounts_guestAssetCounts_forFetchResult_allowFetch___block_invoke;
     block[3] = &unk_1E7735160;
-    block[4] = v55;
+    block[4] = selfCopy;
     block[5] = &v88;
-    v63 = v6;
+    v63 = fetchCopy;
     block[6] = &v82;
     block[7] = &v76;
     block[8] = &v70;
@@ -397,14 +397,14 @@ void __58__PXPhotosMetadataFetcher__queue_oidsForFacts_allowFetch___block_invoke
     v28 = v89[5];
     if (v28 && v83[5] && v77[5] && v71[5] && v65[5])
     {
-      v102[0] = v11;
+      v102[0] = fetchedObjectIDsSet;
       v102[1] = v28;
       v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:2];
       v30 = PXSetsIntersection(v29);
       v13 = [v30 count];
 
       v31 = v83[5];
-      v101[0] = v11;
+      v101[0] = fetchedObjectIDsSet;
       v101[1] = v31;
       v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v101 count:2];
       v33 = PXSetsIntersection(v32);
@@ -414,26 +414,26 @@ void __58__PXPhotosMetadataFetcher__queue_oidsForFacts_allowFetch___block_invoke
       v35 = v14 == 0x7FFFFFFFFFFFFFFFLL || v13 == 0x7FFFFFFFFFFFFFFFLL || v12 == 0x7FFFFFFFFFFFFFFFLL;
       if (v35 && v53 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v51 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v51 handleFailureInMethod:a2 object:v55 file:@"PXPhotosMetadataFetcher.m" lineNumber:140 description:{@"Total count doesn't match individual counts: %lu != %lu", v53, 0x7FFFFFFFFFFFFFFFLL}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXPhotosMetadataFetcher.m" lineNumber:140 description:{@"Total count doesn't match individual counts: %lu != %lu", v53, 0x7FFFFFFFFFFFFFFFLL}];
       }
 
       v36 = v77[5];
-      v100[0] = v11;
+      v100[0] = fetchedObjectIDsSet;
       v100[1] = v36;
       v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v100 count:2];
       v38 = PXSetsIntersection(v37);
       v39 = [v38 count];
 
       v40 = v71[5];
-      v99[0] = v11;
+      v99[0] = fetchedObjectIDsSet;
       v99[1] = v40;
       v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v99 count:2];
       v42 = PXSetsIntersection(v41);
       v58 = [v42 count];
 
       v43 = v65[5];
-      v98[0] = v11;
+      v98[0] = fetchedObjectIDsSet;
       v98[1] = v43;
       v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v98 count:2];
       v45 = PXSetsIntersection(v44);
@@ -444,8 +444,8 @@ void __58__PXPhotosMetadataFetcher__queue_oidsForFacts_allowFetch___block_invoke
       v47 = v46 || v39 - (v58 + v57) == 0x7FFFFFFFFFFFFFFFLL;
       if (v47 && v39 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v52 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v52 handleFailureInMethod:a2 object:v55 file:@"PXPhotosMetadataFetcher.m" lineNumber:146 description:{@"Guest total count doesn't match individual counts: %lu != %lu", v39, 0x7FFFFFFFFFFFFFFFLL}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"PXPhotosMetadataFetcher.m" lineNumber:146 description:{@"Guest total count doesn't match individual counts: %lu != %lu", v39, 0x7FFFFFFFFFFFFFFFLL}];
       }
 
       v61[0] = v53 - (v13 + v14);
@@ -483,7 +483,7 @@ LABEL_45:
     v18 = v57;
     v16 = v58;
     v17 = v56;
-    if (!a3)
+    if (!counts)
     {
       goto LABEL_47;
     }
@@ -495,20 +495,20 @@ LABEL_45:
   v14 = *(off_1E7721F70 + 2);
   v13 = *(off_1E7721F70 + 1);
   v12 = *off_1E7721F70;
-  if (a3)
+  if (counts)
   {
 LABEL_46:
-    a3->var0 = v12;
-    a3->var1 = v13;
-    a3->var2 = v14;
+    counts->var0 = v12;
+    counts->var1 = v13;
+    counts->var2 = v14;
   }
 
 LABEL_47:
-  if (a4)
+  if (assetCounts)
   {
-    a4->var0 = v17;
-    a4->var1 = v16;
-    a4->var2 = v18;
+    assetCounts->var0 = v17;
+    assetCounts->var1 = v16;
+    assetCounts->var2 = v18;
   }
 
   return v15;
@@ -544,22 +544,22 @@ void __85__PXPhotosMetadataFetcher_getAssetCounts_guestAssetCounts_forFetchResul
 
 - (PXPhotosMetadataFetcher)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosMetadataFetcher.m" lineNumber:92 description:{@"%s is not available as initializer", "-[PXPhotosMetadataFetcher init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosMetadataFetcher.m" lineNumber:92 description:{@"%s is not available as initializer", "-[PXPhotosMetadataFetcher init]"}];
 
   abort();
 }
 
-- (PXPhotosMetadataFetcher)initWithPhotoLibrary:(id)a3
+- (PXPhotosMetadataFetcher)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v17.receiver = self;
   v17.super_class = PXPhotosMetadataFetcher;
   v5 = [(PXPhotosMetadataFetcher *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_photoLibrary, v4);
+    objc_storeWeak(&v5->_photoLibrary, libraryCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.photos.metadata-fetcher-queue", v7);
     queue = v6->_queue;
@@ -573,36 +573,36 @@ void __85__PXPhotosMetadataFetcher_getAssetCounts_guestAssetCounts_forFetchResul
     queue_OIDsByDerivedFacts = v6->_queue_OIDsByDerivedFacts;
     v6->_queue_OIDsByDerivedFacts = v12;
 
-    if (v4)
+    if (libraryCopy)
     {
       v14 = v6;
-      v15 = [v4 px_changeDistributor];
-      [v15 registerInternalChangeObserver:v14];
+      px_changeDistributor = [libraryCopy px_changeDistributor];
+      [px_changeDistributor registerInternalChangeObserver:v14];
     }
   }
 
   return v6;
 }
 
-+ (id)sharedFetcherForPhotoLibrary:(id)a3
++ (id)sharedFetcherForPhotoLibrary:(id)library
 {
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PXPhotosMetadataFetcher.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosMetadataFetcher.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary != nil"}];
   }
 
-  v6 = a1;
-  objc_sync_enter(v6);
-  v7 = objc_getAssociatedObject(v5, &sharedFetcherForPhotoLibrary__sharedFetcherForPhotoLibraryKey);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_getAssociatedObject(libraryCopy, &sharedFetcherForPhotoLibrary__sharedFetcherForPhotoLibraryKey);
   if (!v7)
   {
-    v7 = [[PXPhotosMetadataFetcher alloc] initWithPhotoLibrary:v5];
-    objc_setAssociatedObject(v5, &sharedFetcherForPhotoLibrary__sharedFetcherForPhotoLibraryKey, v7, 0x301);
+    v7 = [[PXPhotosMetadataFetcher alloc] initWithPhotoLibrary:libraryCopy];
+    objc_setAssociatedObject(libraryCopy, &sharedFetcherForPhotoLibrary__sharedFetcherForPhotoLibraryKey, v7, 0x301);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }

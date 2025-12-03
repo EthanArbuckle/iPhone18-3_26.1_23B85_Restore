@@ -1,29 +1,29 @@
 @interface AccountPendingFamilyMember
-+ (BOOL)deleteAccountPendingFamilyMembersForAccountPID:(id)a3 inDatabase:(id)a4;
-+ (id)_accountPendingFamilyMembersWithQuery:(id)a3;
-+ (id)_predicateForAltDSID:(id)a3 accountPID:(id)a4;
-+ (id)_predicateForDisplayedNotification:(BOOL)a3;
-+ (id)_predicateForDisplayedNotification:(BOOL)a3 accountPID:(id)a4;
-+ (id)_predicateForInviteEmail:(id)a3 accountPID:(id)a4;
++ (BOOL)deleteAccountPendingFamilyMembersForAccountPID:(id)d inDatabase:(id)database;
++ (id)_accountPendingFamilyMembersWithQuery:(id)query;
++ (id)_predicateForAltDSID:(id)d accountPID:(id)iD;
++ (id)_predicateForDisplayedNotification:(BOOL)notification;
++ (id)_predicateForDisplayedNotification:(BOOL)notification accountPID:(id)d;
++ (id)_predicateForInviteEmail:(id)email accountPID:(id)d;
 + (id)_propertySettersForAccountPendingFamilyMember;
-+ (id)_propertyValuesAccountPendingFamilyMember:(id)a3;
-+ (id)accountPendingFamilyMembersForAccountIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)accountPendingFamilyMembersWithDisplayedNotification:(BOOL)a3 inDatabase:(id)a4;
-+ (id)anyInDatabase:(id)a3 inviteEmail:(id)a4 forAccountPID:(id)a5;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4;
-+ (void)deleteAccountPendingFamilyMember:(id)a3 inDatabase:(id)a4;
-+ (void)deleteAccountPendingFamilyMembersWithAccountIdentifier:(id)a3 altDSIDs:(id)a4 inDatabase:(id)a5;
-+ (void)insertOrUpdateAccountPendingFamilyMembers:(id)a3 inDatabase:(id)a4;
-- (AccountPendingFamilyMember)initWithPendingMember:(id)a3 accountPID:(id)a4 inDatabase:(id)a5;
-- (void)updateWithAccountPendingFamilyMember:(id)a3;
++ (id)_propertyValuesAccountPendingFamilyMember:(id)member;
++ (id)accountPendingFamilyMembersForAccountIdentifier:(id)identifier inDatabase:(id)database;
++ (id)accountPendingFamilyMembersWithDisplayedNotification:(BOOL)notification inDatabase:(id)database;
++ (id)anyInDatabase:(id)database inviteEmail:(id)email forAccountPID:(id)d;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins;
++ (void)deleteAccountPendingFamilyMember:(id)member inDatabase:(id)database;
++ (void)deleteAccountPendingFamilyMembersWithAccountIdentifier:(id)identifier altDSIDs:(id)ds inDatabase:(id)database;
++ (void)insertOrUpdateAccountPendingFamilyMembers:(id)members inDatabase:(id)database;
+- (AccountPendingFamilyMember)initWithPendingMember:(id)member accountPID:(id)d inDatabase:(id)database;
+- (void)updateWithAccountPendingFamilyMember:(id)member;
 @end
 
 @implementation AccountPendingFamilyMember
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"account_pid";
   }
@@ -34,35 +34,35 @@
   }
 }
 
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  propertyCopy = property;
+  joinsCopy = joins;
+  v7 = propertyCopy;
   v9 = v7;
   if (v7 == @"pears.a" || v7 && (v8 = [(__CFString *)v7 isEqualToString:@"pears.a"], v9, v8))
   {
-    [v6 addObject:@"JOIN pears ON pears.pid = account_pending_family_member.account_pid"];
+    [joinsCopy addObject:@"JOIN pears ON pears.pid = account_pending_family_member.account_pid"];
   }
 }
 
-+ (void)insertOrUpdateAccountPendingFamilyMembers:(id)a3 inDatabase:(id)a4
++ (void)insertOrUpdateAccountPendingFamilyMembers:(id)members inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  membersCopy = members;
+  databaseCopy = database;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v6;
-  v8 = [v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  obj = membersCopy;
+  v8 = [membersCopy countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v8)
   {
     v10 = v8;
     v11 = *v25;
     *&v9 = 138412290;
     v20 = v9;
-    v21 = a1;
+    selfCopy = self;
     do
     {
       v12 = 0;
@@ -75,16 +75,16 @@
         }
 
         v13 = *(*(&v24 + 1) + 8 * v12);
-        v14 = [v13 accountIdentifier];
-        v15 = [Account anyInDatabase:v7 withIdentifier:v14];
+        accountIdentifier = [v13 accountIdentifier];
+        v15 = [Account anyInDatabase:databaseCopy withIdentifier:accountIdentifier];
 
         if (v15)
         {
           v16 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v15 persistentID]);
-          v17 = [v13 inviteEmail];
-          if (v17)
+          inviteEmail = [v13 inviteEmail];
+          if (inviteEmail)
           {
-            v18 = [v21 anyInDatabase:v7 inviteEmail:v17 forAccountPID:v16];
+            v18 = [selfCopy anyInDatabase:databaseCopy inviteEmail:inviteEmail forAccountPID:v16];
             v19 = v18;
             if (v18)
             {
@@ -121,67 +121,67 @@
   }
 }
 
-- (AccountPendingFamilyMember)initWithPendingMember:(id)a3 accountPID:(id)a4 inDatabase:(id)a5
+- (AccountPendingFamilyMember)initWithPendingMember:(id)member accountPID:(id)d inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  memberCopy = member;
+  dCopy = d;
+  databaseCopy = database;
   v11 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v8;
+    v16 = memberCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Adding account pending family %@", &v15, 0xCu);
   }
 
-  v12 = [objc_opt_class() _propertyValuesAccountPendingFamilyMember:v8];
-  [v12 setObject:v9 forKey:@"account_pid"];
-  v13 = [(SQLiteEntity *)self initWithPropertyValues:v12 inDatabase:v10];
+  v12 = [objc_opt_class() _propertyValuesAccountPendingFamilyMember:memberCopy];
+  [v12 setObject:dCopy forKey:@"account_pid"];
+  v13 = [(SQLiteEntity *)self initWithPropertyValues:v12 inDatabase:databaseCopy];
 
   return v13;
 }
 
-- (void)updateWithAccountPendingFamilyMember:(id)a3
+- (void)updateWithAccountPendingFamilyMember:(id)member
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _propertyValuesAccountPendingFamilyMember:v4];
+  memberCopy = member;
+  v5 = [objc_opt_class() _propertyValuesAccountPendingFamilyMember:memberCopy];
 
   [(SQLiteEntity *)self setValuesWithDictionary:v5];
 }
 
-+ (id)anyInDatabase:(id)a3 inviteEmail:(id)a4 forAccountPID:(id)a5
++ (id)anyInDatabase:(id)database inviteEmail:(id)email forAccountPID:(id)d
 {
-  v8 = a3;
-  v9 = [a1 _predicateForInviteEmail:a4 accountPID:a5];
-  v10 = [a1 anyInDatabase:v8 predicate:v9];
+  databaseCopy = database;
+  v9 = [self _predicateForInviteEmail:email accountPID:d];
+  v10 = [self anyInDatabase:databaseCopy predicate:v9];
 
   return v10;
 }
 
-+ (id)accountPendingFamilyMembersWithDisplayedNotification:(BOOL)a3 inDatabase:(id)a4
++ (id)accountPendingFamilyMembersWithDisplayedNotification:(BOOL)notification inDatabase:(id)database
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [a1 _predicateForDisplayedNotification:v4];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  notificationCopy = notification;
+  databaseCopy = database;
+  v7 = [self _predicateForDisplayedNotification:notificationCopy];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _accountPendingFamilyMembersWithQuery:v8];
+  v9 = [self _accountPendingFamilyMembersWithQuery:v8];
 
   return v9;
 }
 
-+ (id)accountPendingFamilyMembersForAccountIdentifier:(id)a3 inDatabase:(id)a4
++ (id)accountPendingFamilyMembersForAccountIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [Account anyInDatabase:v6 withIdentifier:a3];
+  databaseCopy = database;
+  v7 = [Account anyInDatabase:databaseCopy withIdentifier:identifier];
   v8 = v7;
   if (v7)
   {
     v9 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v7 persistentID]);
-    v10 = [a1 _predicateForAccountPID:v9];
-    v11 = [a1 queryWithDatabase:v6 predicate:v10];
+    v10 = [self _predicateForAccountPID:v9];
+    v11 = [self queryWithDatabase:databaseCopy predicate:v10];
 
-    v12 = [a1 _accountPendingFamilyMembersWithQuery:v11];
+    v12 = [self _accountPendingFamilyMembersWithQuery:v11];
   }
 
   else
@@ -192,22 +192,22 @@
   return v12;
 }
 
-+ (BOOL)deleteAccountPendingFamilyMembersForAccountPID:(id)a3 inDatabase:(id)a4
++ (BOOL)deleteAccountPendingFamilyMembersForAccountPID:(id)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   LOBYTE(v7) = [v8 deleteAllEntities];
   return v7;
 }
 
-+ (void)deleteAccountPendingFamilyMember:(id)a3 inDatabase:(id)a4
++ (void)deleteAccountPendingFamilyMember:(id)member inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountIdentifier];
-  v9 = [Account anyInDatabase:v7 withIdentifier:v8];
+  memberCopy = member;
+  databaseCopy = database;
+  accountIdentifier = [memberCopy accountIdentifier];
+  v9 = [Account anyInDatabase:databaseCopy withIdentifier:accountIdentifier];
 
   if (v9)
   {
@@ -215,34 +215,34 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v6;
+      v16 = memberCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Deleting account pending family member %@", &v15, 0xCu);
     }
 
-    v11 = [v6 inviteEmail];
+    inviteEmail = [memberCopy inviteEmail];
     v12 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v9 persistentID]);
-    v13 = [a1 _predicateForInviteEmail:v11 accountPID:v12];
-    v14 = [a1 queryWithDatabase:v7 predicate:v13];
+    v13 = [self _predicateForInviteEmail:inviteEmail accountPID:v12];
+    v14 = [self queryWithDatabase:databaseCopy predicate:v13];
 
     [v14 deleteAllEntities];
   }
 }
 
-+ (void)deleteAccountPendingFamilyMembersWithAccountIdentifier:(id)a3 altDSIDs:(id)a4 inDatabase:(id)a5
++ (void)deleteAccountPendingFamilyMembersWithAccountIdentifier:(id)identifier altDSIDs:(id)ds inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v22 = v8;
-  v11 = [Account anyInDatabase:v10 withIdentifier:v8];
+  identifierCopy = identifier;
+  dsCopy = ds;
+  databaseCopy = database;
+  v22 = identifierCopy;
+  v11 = [Account anyInDatabase:databaseCopy withIdentifier:identifierCopy];
   if (v11)
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v9;
-    obj = v9;
+    v21 = dsCopy;
+    obj = dsCopy;
     v12 = [obj countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v12)
     {
@@ -259,8 +259,8 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v11 persistentID]);
-          v18 = [a1 _predicateForAltDSID:v16 accountPID:v17];
-          v19 = [a1 queryWithDatabase:v10 predicate:v18];
+          v18 = [self _predicateForAltDSID:v16 accountPID:v17];
+          v19 = [self queryWithDatabase:databaseCopy predicate:v18];
 
           if ([v19 countOfEntities] >= 1)
           {
@@ -284,16 +284,16 @@
       while (v13);
     }
 
-    v9 = v21;
+    dsCopy = v21;
   }
 }
 
-+ (id)_predicateForInviteEmail:(id)a3 accountPID:(id)a4
++ (id)_predicateForInviteEmail:(id)email accountPID:(id)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForAccountPID:a4];
+  emailCopy = email;
+  v7 = [self _predicateForAccountPID:d];
   v12[0] = v7;
-  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"invite_email" equalToValue:v6];
+  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"invite_email" equalToValue:emailCopy];
 
   v12[1] = v8;
   v9 = [NSArray arrayWithObjects:v12 count:2];
@@ -302,12 +302,12 @@
   return v10;
 }
 
-+ (id)_predicateForAltDSID:(id)a3 accountPID:(id)a4
++ (id)_predicateForAltDSID:(id)d accountPID:(id)iD
 {
-  v6 = a3;
-  v7 = [a1 _predicateForAccountPID:a4];
+  dCopy = d;
+  v7 = [self _predicateForAccountPID:iD];
   v12[0] = v7;
-  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"alt_dsid" equalToValue:v6];
+  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"alt_dsid" equalToValue:dCopy];
 
   v12[1] = v8;
   v9 = [NSArray arrayWithObjects:v12 count:2];
@@ -316,12 +316,12 @@
   return v10;
 }
 
-+ (id)_predicateForDisplayedNotification:(BOOL)a3 accountPID:(id)a4
++ (id)_predicateForDisplayedNotification:(BOOL)notification accountPID:(id)d
 {
-  v4 = a3;
-  v6 = [a1 _predicateForAccountPID:a4];
+  notificationCopy = notification;
+  v6 = [self _predicateForAccountPID:d];
   v11[0] = v6;
-  v7 = [a1 _predicateForDisplayedNotification:v4];
+  v7 = [self _predicateForDisplayedNotification:notificationCopy];
   v11[1] = v7;
   v8 = [NSArray arrayWithObjects:v11 count:2];
   v9 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v8];
@@ -329,50 +329,50 @@
   return v9;
 }
 
-+ (id)_predicateForDisplayedNotification:(BOOL)a3
++ (id)_predicateForDisplayedNotification:(BOOL)notification
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:notification];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"displayed_notification" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_propertyValuesAccountPendingFamilyMember:(id)a3
++ (id)_propertyValuesAccountPendingFamilyMember:(id)member
 {
-  v3 = a3;
+  memberCopy = member;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 inviteEmail];
-  [v4 setObjectOrNull:v5 forKey:@"invite_email"];
+  inviteEmail = [memberCopy inviteEmail];
+  [v4 setObjectOrNull:inviteEmail forKey:@"invite_email"];
 
-  v6 = [v3 altDSID];
-  [v4 setObjectOrNull:v6 forKey:@"alt_dsid"];
+  altDSID = [memberCopy altDSID];
+  [v4 setObjectOrNull:altDSID forKey:@"alt_dsid"];
 
-  v7 = [v3 inviteDate];
+  inviteDate = [memberCopy inviteDate];
   v8 = _SQLValueForDate();
   [v4 setObjectOrNull:v8 forKey:@"invite_date"];
 
-  v9 = [v3 displayedNotification];
-  [v4 setBool:v9 forKey:@"displayed_notification"];
+  displayedNotification = [memberCopy displayedNotification];
+  [v4 setBool:displayedNotification forKey:@"displayed_notification"];
 
   return v4;
 }
 
-+ (id)_accountPendingFamilyMembersWithQuery:(id)a3
++ (id)_accountPendingFamilyMembersWithQuery:(id)query
 {
-  v4 = a3;
-  v5 = [a1 _propertySettersForAccountPendingFamilyMember];
+  queryCopy = query;
+  _propertySettersForAccountPendingFamilyMember = [self _propertySettersForAccountPendingFamilyMember];
   v6 = objc_alloc_init(NSMutableSet);
-  v7 = [v5 allKeys];
+  allKeys = [_propertySettersForAccountPendingFamilyMember allKeys];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000F871C;
   v12[3] = &unk_10083C998;
-  v15 = a1;
-  v13 = v5;
+  selfCopy = self;
+  v13 = _propertySettersForAccountPendingFamilyMember;
   v8 = v6;
   v14 = v8;
-  v9 = v5;
-  [v4 enumeratePersistentIDsAndProperties:v7 usingBlock:v12];
+  v9 = _propertySettersForAccountPendingFamilyMember;
+  [queryCopy enumeratePersistentIDsAndProperties:allKeys usingBlock:v12];
 
   if ([v8 count])
   {

@@ -1,17 +1,17 @@
 @interface SCNAction
-+ (id)actionNamed:(id)a3;
++ (id)actionNamed:(id)named;
 - (SCNAction)init;
-- (SCNAction)initWithCoder:(id)a3;
+- (SCNAction)initWithCoder:(id)coder;
 - (SCNAction)reversedAction;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCppAction:(void *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCppAction:(void *)action;
 - (void)setTimingFunction:(SCNActionTimingFunction)timingFunction;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
-- (void)wasAddedToTarget:(id)a3 atTime:(double)a4;
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4;
+- (void)updateWithTarget:(id)target forTime:(double)time;
+- (void)wasAddedToTarget:(id)target atTime:(double)time;
+- (void)willStartWithTarget:(id)target atTime:(double)time;
 @end
 
 @implementation SCNAction
@@ -46,7 +46,7 @@
   return 0;
 }
 
-- (SCNAction)initWithCoder:(id)a3
+- (SCNAction)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCNAction;
@@ -58,18 +58,18 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_caction->var7), @"_duration"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInteger:", self->_caction->var14), @"_timingMode"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_caction->var5), @"_beginTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_caction->var6), @"_pausedTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_caction->var11), @"_isRunning"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_caction->var10), @"_finished"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_caction->var7), @"_duration"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInteger:", self->_caction->var14), @"_timingMode"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_caction->var5), @"_beginTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithDouble:", self->_caction->var6), @"_pausedTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_caction->var11), @"_isRunning"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", self->_caction->var10), @"_finished"}];
   var13 = self->_caction->var13;
   objc_opt_class();
 
-  SCNEncodeNamedObject(a3, var13);
+  SCNEncodeNamedObject(coder, var13);
 }
 
 - (id)copy
@@ -79,20 +79,20 @@
   return [(SCNAction *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 caction];
+  caction = [v4 caction];
   caction = self->_caction;
-  *(v5 + 104) = caction->var14;
-  *(v5 + 120) = *&caction->var16;
-  *(v5 + 136) = caction->var18;
-  *(v5 + 80) = 0;
-  *(v5 + 56) = *&caction->var7;
+  *(caction + 104) = caction->var14;
+  *(caction + 120) = *&caction->var16;
+  *(caction + 136) = caction->var18;
+  *(caction + 80) = 0;
+  *(caction + 56) = *&caction->var7;
   var2 = caction->var2;
   if (var2)
   {
-    *(v5 + 16) = _Block_copy(var2);
+    *(caction + 16) = _Block_copy(var2);
   }
 
   return v4;
@@ -120,14 +120,14 @@
   [(SCNAction *)&v4 dealloc];
 }
 
-+ (id)actionNamed:(id)a3
++ (id)actionNamed:(id)named
 {
   v4 = objc_opt_class();
 
-  return [SCNAssetCatalog objectWithName:a3 class:v4];
+  return [SCNAssetCatalog objectWithName:named class:v4];
 }
 
-- (void)setCppAction:(void *)a3
+- (void)setCppAction:(void *)action
 {
   caction = self->_caction;
   if (caction)
@@ -135,11 +135,11 @@
     (*(caction->var0 + 1))(caction, a2);
   }
 
-  self->_caction = a3;
-  *(a3 + 3) = self;
+  self->_caction = action;
+  *(action + 3) = self;
 }
 
-- (void)wasAddedToTarget:(id)a3 atTime:(double)a4
+- (void)wasAddedToTarget:(id)target atTime:(double)time
 {
   caction = self->_caction;
   caction->var10 = 0;
@@ -163,23 +163,23 @@
   }
 }
 
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4
+- (void)willStartWithTarget:(id)target atTime:(double)time
 {
   caction = self->_caction;
-  caction->var5 = a4;
+  caction->var5 = time;
   caction->var15 = 0.0;
   caction->var11 = 1;
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
-  SCNCAction::ratioForTime(self->_caction, a4);
+  SCNCAction::ratioForTime(self->_caction, time);
   if (v7.n128_f64[0] >= 1.0)
   {
     caction = self->_caction;
-    v7.n128_f64[0] = a4;
+    v7.n128_f64[0] = time;
 
-    SCNCAction::didFinishWithTargetAtTime(caction, a3, v7);
+    SCNCAction::didFinishWithTargetAtTime(caction, target, v7);
   }
 }
 

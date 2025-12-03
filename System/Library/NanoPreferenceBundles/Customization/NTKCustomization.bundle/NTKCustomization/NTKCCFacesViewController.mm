@@ -2,49 +2,49 @@
 - (BOOL)_canTouchCollectionView;
 - (BOOL)_complicationsAreLoaded;
 - (CGSize)faceSize;
-- (NTKCCFacesViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_detailViewControllerForIndexPath:(id)a3;
-- (id)_viewControllerForFace:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (NTKCCFacesViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_detailViewControllerForIndexPath:(id)path;
+- (id)_viewControllerForFace:(id)face;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_activeDeviceChanged;
-- (void)_clearSelectionsAnimated:(BOOL)a3;
+- (void)_clearSelectionsAnimated:(BOOL)animated;
 - (void)_configureLayout;
 - (void)_editDoneTapped;
 - (void)_editTapped;
-- (void)_faceAddedFromGallery:(id)a3;
-- (void)_faceAddedFromGreenfield:(id)a3;
+- (void)_faceAddedFromGallery:(id)gallery;
+- (void)_faceAddedFromGreenfield:(id)greenfield;
 - (void)_fontSizeDidChange;
 - (void)_loadLibrary;
-- (void)_popDetailViewControllerAnimated:(BOOL)a3;
-- (void)_popLibraryDetailViewControllerForFace:(id)a3;
-- (void)_pushDetailViewController:(id)a3 animated:(BOOL)a4;
+- (void)_popDetailViewControllerAnimated:(BOOL)animated;
+- (void)_popLibraryDetailViewControllerForFace:(id)face;
+- (void)_pushDetailViewController:(id)controller animated:(BOOL)animated;
 - (void)_reloadAllFacesForCollectionView;
 - (void)_reloadFaces;
-- (void)_removeViewControllerForFace:(id)a3;
+- (void)_removeViewControllerForFace:(id)face;
 - (void)_resetCollectionView;
-- (void)_scrollToFace:(id)a3;
+- (void)_scrollToFace:(id)face;
 - (void)_showBearTrap;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)dealloc;
-- (void)faceCollection:(id)a3 didAddFace:(id)a4 atIndex:(unint64_t)a5;
-- (void)faceCollection:(id)a3 didRemoveFace:(id)a4 atIndex:(unint64_t)a5;
-- (void)faceCollectionDidLoad:(id)a3;
-- (void)faceCollectionDidReorderFaces:(id)a3;
-- (void)faceCollectionDidReset:(id)a3;
-- (void)faceConfigurationDidChange:(id)a3;
-- (void)libraryDetail:(id)a3 didRemoveFace:(id)a4;
-- (void)libraryDetail:(id)a3 didSelectFace:(id)a4;
-- (void)setLibrary:(id)a3;
-- (void)upgradeManager:(id)a3 didCompleteWithFace:(id)a4 error:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)faceCollection:(id)collection didAddFace:(id)face atIndex:(unint64_t)index;
+- (void)faceCollection:(id)collection didRemoveFace:(id)face atIndex:(unint64_t)index;
+- (void)faceCollectionDidLoad:(id)load;
+- (void)faceCollectionDidReorderFaces:(id)faces;
+- (void)faceCollectionDidReset:(id)reset;
+- (void)faceConfigurationDidChange:(id)change;
+- (void)libraryDetail:(id)detail didRemoveFace:(id)face;
+- (void)libraryDetail:(id)detail didSelectFace:(id)face;
+- (void)setLibrary:(id)library;
+- (void)upgradeManager:(id)manager didCompleteWithFace:(id)face error:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NTKCCFacesViewController
@@ -78,8 +78,8 @@
     BPSForegroundColor();
   }
   v3 = ;
-  v4 = [(NTKCCFacesViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(NTKCCFacesViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = objc_opt_new();
   if ((_os_feature_enabled_impl() & 1) == 0)
@@ -88,8 +88,8 @@
     [v5 setBackgroundColor:v6];
   }
 
-  v7 = [(NTKCCFacesViewController *)self view];
-  [v7 addSubview:v5];
+  view2 = [(NTKCCFacesViewController *)self view];
+  [view2 addSubview:v5];
 
   v8 = objc_opt_new();
   [(NTKCCFacesViewController *)self setHeaderView:v8];
@@ -109,8 +109,8 @@
     v11 = +[UIColor systemGrayColor];
     [(UILabel *)self->_titleLabel setTextColor:v11];
 
-    v12 = [v10 localizedUppercaseString];
-    [(UILabel *)self->_titleLabel setText:v12];
+    localizedUppercaseString = [v10 localizedUppercaseString];
+    [(UILabel *)self->_titleLabel setText:localizedUppercaseString];
   }
 
   [(UILabel *)self->_titleLabel setLineBreakMode:0];
@@ -156,9 +156,9 @@
   v33 = +[_NTKCCFacesCollectionCell begoniaReuseIdentifier];
   [(UICollectionView *)v31 registerClass:v32 forCellWithReuseIdentifier:v33];
 
-  v34 = [(NTKCCFacesViewController *)self view];
-  v35 = [v34 backgroundColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v35];
+  view3 = [(NTKCCFacesViewController *)self view];
+  backgroundColor = [view3 backgroundColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:backgroundColor];
 
   [(UICollectionView *)self->_collectionView setIndicatorStyle:2];
   [(UICollectionView *)self->_collectionView setDelegate:self];
@@ -172,8 +172,8 @@
   [(UICollectionView *)self->_collectionView contentInset];
   v38 = *(v74 + 1);
   [(UICollectionView *)self->_collectionView setContentInset:?];
-  v39 = [(NTKCCFacesViewController *)self view];
-  [v39 addSubview:self->_collectionView];
+  view4 = [(NTKCCFacesViewController *)self view];
+  [view4 addSubview:self->_collectionView];
 
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
@@ -183,8 +183,8 @@
     v41 = BPSSeparatorColor();
     [(UIView *)self->_topSeparatorView setBackgroundColor:v41];
 
-    v42 = [(NTKCCFacesViewController *)self view];
-    [v42 addSubview:self->_topSeparatorView];
+    view5 = [(NTKCCFacesViewController *)self view];
+    [view5 addSubview:self->_topSeparatorView];
   }
 
   v43 = [UIButton buttonWithType:1];
@@ -198,9 +198,9 @@
   [(UIButton *)editButton setTitle:v46 forState:0];
 
   [(UIButton *)self->_editButton addTarget:self action:"_editTapped" forControlEvents:64];
-  v47 = [(UIButton *)self->_editButton titleLabel];
+  titleLabel = [(UIButton *)self->_editButton titleLabel];
   LODWORD(v48) = 1144750080;
-  [v47 setContentCompressionResistancePriority:0 forAxis:v48];
+  [titleLabel setContentCompressionResistancePriority:0 forAxis:v48];
 
   [(UIButton *)self->_editButton setContentHorizontalAlignment:4];
   [(UIStackView *)self->_headerView addArrangedSubview:self->_editButton];
@@ -247,10 +247,10 @@
     [v49 addObjectsFromArray:v57];
   }
 
-  v58 = [(UICollectionView *)self->_collectionView bottomAnchor];
-  v59 = [(NTKCCFacesViewController *)self view];
-  v60 = [v59 bottomAnchor];
-  v61 = [v58 constraintEqualToAnchor:v60];
+  bottomAnchor = [(UICollectionView *)self->_collectionView bottomAnchor];
+  view6 = [(NTKCCFacesViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v61 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
   LODWORD(v62) = 1132068864;
   [v61 setPriority:v62];
@@ -272,8 +272,8 @@
   v69 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-(HeaderVerticalMargin)-[_headerView]|", 0, v68, v72);
   [v49 addObjectsFromArray:v69];
 
-  v70 = [(UICollectionView *)self->_collectionView heightAnchor];
-  v71 = [v70 constraintEqualToConstant:0.0];
+  heightAnchor = [(UICollectionView *)self->_collectionView heightAnchor];
+  v71 = [heightAnchor constraintEqualToConstant:0.0];
   [(NTKCCFacesViewController *)self setCollectionViewHeightConstraint:v71];
 
   [v49 addObject:self->_collectionViewHeightConstraint];
@@ -296,13 +296,13 @@
   if (_os_feature_enabled_impl())
   {
     v3 = +[UIListContentConfiguration prominentInsetGroupedHeaderConfiguration];
-    v4 = [v3 textProperties];
-    v5 = [v4 font];
-    [(UILabel *)self->_titleLabel setFont:v5];
+    textProperties = [v3 textProperties];
+    font = [textProperties font];
+    [(UILabel *)self->_titleLabel setFont:font];
 
-    v6 = [v3 textProperties];
-    v7 = [v6 color];
-    [(UILabel *)self->_titleLabel setTextColor:v7];
+    textProperties2 = [v3 textProperties];
+    color = [textProperties2 color];
+    [(UILabel *)self->_titleLabel setTextColor:color];
   }
 
   else
@@ -312,8 +312,8 @@
   }
 
   v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v9 = [(UIButton *)self->_editButton titleLabel];
-  [v9 setFont:v8];
+  titleLabel = [(UIButton *)self->_editButton titleLabel];
+  [titleLabel setFont:v8];
 
   [(UIStackView *)self->_headerView setAxis:0];
   [(UIStackView *)self->_headerView setAlignment:2];
@@ -321,8 +321,8 @@
   [(UIStackView *)self->_headerView setSpacing:8.0];
   [(UIStackView *)self->_headerView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height];
   v11 = v10;
-  v12 = [(NTKCCFacesViewController *)self view];
-  [v12 bounds];
+  view = [(NTKCCFacesViewController *)self view];
+  [view bounds];
   v13 = CGRectGetWidth(v40) + *(&v30 + 1) * -2.0;
 
   if (v11 > v13)
@@ -338,9 +338,9 @@
   v15 = *&v34;
   [NTKCFaceContainerView faceSizeForSize:3 style:*(&v33 + 1), *&v34];
   [(NTKCCFacesViewController *)self setFaceSize:?];
-  v16 = [(NTKCCFacesViewController *)self traitCollection];
-  v17 = [v16 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v17);
+  traitCollection = [(NTKCCFacesViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -367,23 +367,23 @@
 - (BOOL)_complicationsAreLoaded
 {
   v2 = +[NTKCompanionRemoteComplicationManager sharedInstance];
-  v3 = [v2 loaded];
+  loaded = [v2 loaded];
 
   v4 = +[NTKCompanionBundleComplicationSyncCoordinator sharedInstance];
-  v5 = [v4 loaded];
+  loaded2 = [v4 loaded];
 
   v6 = +[CLKDevice currentDevice];
   v7 = [NTKCompanionWidgetComplicationManager instanceForDevice:v6];
-  v8 = [v7 loaded];
+  loaded3 = [v7 loaded];
 
-  return v3 & v5 & v8;
+  return loaded & loaded2 & loaded3;
 }
 
-- (NTKCCFacesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NTKCCFacesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = NTKCCFacesViewController;
-  v4 = [(NTKCCFacesViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(NTKCCFacesViewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -416,41 +416,41 @@
   [(NTKCCFacesViewController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = NTKCCFacesViewController;
   [(NTKCCFacesViewController *)&v5 viewWillAppear:?];
-  [(NTKCCFacesViewController *)self _clearSelectionsAnimated:v3];
+  [(NTKCCFacesViewController *)self _clearSelectionsAnimated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = NTKCCFacesViewController;
-  [(NTKCCFacesViewController *)&v4 viewDidAppear:a3];
+  [(NTKCCFacesViewController *)&v4 viewDidAppear:appear];
   [(NTKCCFacesViewController *)self setVisible:1];
   [(NTKCCFacesViewController *)self _popDetailViewControllerAnimated:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = NTKCCFacesViewController;
-  [(NTKCCFacesViewController *)&v4 viewDidDisappear:a3];
+  [(NTKCCFacesViewController *)&v4 viewDidDisappear:disappear];
   [(NTKCCFacesViewController *)self setVisible:0];
 }
 
-- (void)setLibrary:(id)a3
+- (void)setLibrary:(id)library
 {
-  v5 = a3;
-  if (self->_library != v5)
+  libraryCopy = library;
+  if (self->_library != libraryCopy)
   {
     v6 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      if ([(NTKFaceCollection *)v5 hasLoaded])
+      if ([(NTKFaceCollection *)libraryCopy hasLoaded])
       {
         v7 = @"HAS";
       }
@@ -463,7 +463,7 @@
       *buf = 138412546;
       v19 = v7;
       v20 = 2048;
-      v21 = [(NTKFaceCollection *)v5 numberOfFaces];
+      numberOfFaces = [(NTKFaceCollection *)libraryCopy numberOfFaces];
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "new library. %@ been loaded with %lu faces", buf, 0x16u);
     }
 
@@ -475,32 +475,32 @@
     v17[4] = self;
     [(NTKFaceCollection *)library enumerateFacesUsingBlock:v17];
     [(NTKFaceCollection *)self->_library removeObserver:self];
-    objc_storeStrong(&self->_library, a3);
+    objc_storeStrong(&self->_library, library);
     [(NTKFaceCollection *)self->_library addObserver:self];
     [(NTKCCFacesViewController *)self _reloadFaces];
     [(NTKCCFacesViewController *)self _resetCollectionView];
     [(UICollectionView *)self->_collectionView scrollRectToVisible:0 animated:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    v9 = [(NTKCCFacesViewController *)self presentedViewController];
-    if (!v9)
+    presentedViewController = [(NTKCCFacesViewController *)self presentedViewController];
+    if (!presentedViewController)
     {
       goto LABEL_13;
     }
 
-    v10 = v9;
-    v11 = [(NTKCCFacesViewController *)self presentedViewController];
-    v12 = v11;
-    if (v11 == self->_presentedDetailVC)
+    v10 = presentedViewController;
+    presentedViewController2 = [(NTKCCFacesViewController *)self presentedViewController];
+    v12 = presentedViewController2;
+    if (presentedViewController2 == self->_presentedDetailVC)
     {
     }
 
     else
     {
-      v13 = [(NTKCCFacesViewController *)self presentedViewController];
-      v14 = [v13 childViewControllers];
-      v15 = [v14 firstObject];
+      presentedViewController3 = [(NTKCCFacesViewController *)self presentedViewController];
+      childViewControllers = [presentedViewController3 childViewControllers];
+      firstObject = [childViewControllers firstObject];
       presentedListVC = self->_presentedListVC;
 
-      if (v15 != presentedListVC)
+      if (firstObject != presentedListVC)
       {
 LABEL_13:
         [(NTKCCFacesViewController *)self _popDetailViewControllerAnimated:1];
@@ -526,7 +526,7 @@ LABEL_14:
 {
   [(UICollectionView *)self->_collectionView bounds];
   IsEmpty = CGRectIsEmpty(v10);
-  v4 = [(NTKCCFacesViewController *)self _complicationsAreLoaded];
+  _complicationsAreLoaded = [(NTKCCFacesViewController *)self _complicationsAreLoaded];
   if (IsEmpty)
   {
     v5 = _NTKLoggingObjectForDomain();
@@ -537,7 +537,7 @@ LABEL_14:
     }
   }
 
-  if ((v4 & 1) == 0)
+  if ((_complicationsAreLoaded & 1) == 0)
   {
     v6 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -547,18 +547,18 @@ LABEL_14:
     }
   }
 
-  return !IsEmpty & v4;
+  return !IsEmpty & _complicationsAreLoaded;
 }
 
-- (void)_clearSelectionsAnimated:(BOOL)a3
+- (void)_clearSelectionsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  animatedCopy = animated;
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -570,15 +570,15 @@ LABEL_14:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
-        [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v10 + 1) + 8 * v9) animated:v3];
+        [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:*(*(&v10 + 1) + 8 * v9) animated:animatedCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -597,30 +597,30 @@ LABEL_14:
   [(UICollectionView *)self->_collectionView reloadData];
 }
 
-- (void)_faceAddedFromGallery:(id)a3
+- (void)_faceAddedFromGallery:(id)gallery
 {
-  v4 = [a3 object];
-  [(NTKCCFacesViewController *)self _scrollToFace:v4];
+  object = [gallery object];
+  [(NTKCCFacesViewController *)self _scrollToFace:object];
 }
 
-- (void)_faceAddedFromGreenfield:(id)a3
+- (void)_faceAddedFromGreenfield:(id)greenfield
 {
-  v6 = [a3 object];
+  object = [greenfield object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(NTKFaceCollection *)self->_library facesByUUID];
-    v5 = [v4 objectForKey:v6];
+    facesByUUID = [(NTKFaceCollection *)self->_library facesByUUID];
+    v5 = [facesByUUID objectForKey:object];
     [(NTKCCFacesViewController *)self _scrollToFace:v5];
   }
 }
 
-- (void)_scrollToFace:(id)a3
+- (void)_scrollToFace:(id)face
 {
-  v8 = a3;
+  faceCopy = face;
   if ([(NTKCCFacesViewController *)self _canTouchCollectionView])
   {
-    v4 = [(NTKFaceCollection *)self->_library indexOfFace:v8];
+    v4 = [(NTKFaceCollection *)self->_library indexOfFace:faceCopy];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v5 = v4;
@@ -639,8 +639,8 @@ LABEL_14:
   v6 = objc_opt_new();
   v3 = [[NTKCNavigationController alloc] initWithRootViewController:v6];
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_editDoneTapped"];
-  v5 = [v6 navigationItem];
-  [v5 setRightBarButtonItem:v4];
+  navigationItem = [v6 navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 
   [v6 setEditing:1 animated:0];
   [(NTKCCFacesViewController *)self setPresentedListVC:v6];
@@ -665,16 +665,16 @@ LABEL_14:
   [(NTKFaceCollection *)library enumerateFacesUsingBlock:v3];
 }
 
-- (void)_popLibraryDetailViewControllerForFace:(id)a3
+- (void)_popLibraryDetailViewControllerForFace:(id)face
 {
-  v4 = a3;
+  faceCopy = face;
   presentedDetailVC = self->_presentedDetailVC;
   if (presentedDetailVC)
   {
-    v7 = v4;
-    v6 = [(NTKCFaceDetailViewController *)presentedDetailVC face];
+    v7 = faceCopy;
+    face = [(NTKCFaceDetailViewController *)presentedDetailVC face];
 
-    if (v6 == v7)
+    if (face == v7)
     {
       [(NTKCCFacesViewController *)self _popDetailViewControllerAnimated:1];
     }
@@ -683,9 +683,9 @@ LABEL_14:
   _objc_release_x1();
 }
 
-- (id)_viewControllerForFace:(id)a3
+- (id)_viewControllerForFace:(id)face
 {
-  v4 = a3;
+  faceCopy = face;
   faceVCs = self->_faceVCs;
   if (!faceVCs)
   {
@@ -715,9 +715,9 @@ LABEL_5:
       }
 
       v12 = *(*(&v18 + 1) + 8 * v11);
-      v13 = [v12 face];
+      face = [v12 face];
 
-      if (v13 == v4)
+      if (face == faceCopy)
       {
         break;
       }
@@ -747,16 +747,16 @@ LABEL_5:
 LABEL_11:
   }
 
-  v15 = [v4 device];
-  if ([v15 isRunningNapiliGMOrLater])
+  device = [faceCopy device];
+  if ([device isRunningNapiliGMOrLater])
   {
-    v16 = [(NTKFaceCollection *)self->_library uuidForFace:v4];
-    v14 = [[NFGReplicatedSnapshotViewController alloc] initWithFace:v4 uuid:v16];
+    v16 = [(NTKFaceCollection *)self->_library uuidForFace:faceCopy];
+    v14 = [[NFGReplicatedSnapshotViewController alloc] initWithFace:faceCopy uuid:v16];
   }
 
   else
   {
-    v14 = [[NTKFaceSnapshotViewController alloc] initWithFace:v4];
+    v14 = [[NTKFaceSnapshotViewController alloc] initWithFace:faceCopy];
   }
 
   [(NSMutableArray *)self->_faceVCs addObject:v14];
@@ -766,9 +766,9 @@ LABEL_17:
   return v14;
 }
 
-- (void)_removeViewControllerForFace:(id)a3
+- (void)_removeViewControllerForFace:(id)face
 {
-  v4 = a3;
+  faceCopy = face;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -789,9 +789,9 @@ LABEL_3:
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      v11 = [v10 face];
+      face = [v10 face];
 
-      if (v11 == v4)
+      if (face == faceCopy)
       {
         break;
       }
@@ -824,27 +824,27 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)_detailViewControllerForIndexPath:(id)a3
+- (id)_detailViewControllerForIndexPath:(id)path
 {
-  v4 = -[NTKFaceCollection faceAtIndex:](self->_library, "faceAtIndex:", [a3 item]);
-  v5 = [v4 libraryDetailViewController];
-  [v5 setDelegate:self];
+  v4 = -[NTKFaceCollection faceAtIndex:](self->_library, "faceAtIndex:", [path item]);
+  libraryDetailViewController = [v4 libraryDetailViewController];
+  [libraryDetailViewController setDelegate:self];
 
-  return v5;
+  return libraryDetailViewController;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(NTKCCFacesViewController *)self _complicationsAreLoaded:a3];
+  v5 = [(NTKCCFacesViewController *)self _complicationsAreLoaded:view];
   v6 = _NTKLoggingObjectForDomain();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5)
   {
     if (v7)
     {
-      v8 = [(NTKFaceCollection *)self->_library numberOfFaces];
+      numberOfFaces = [(NTKFaceCollection *)self->_library numberOfFaces];
       v10 = 134217984;
-      v11 = v8;
+      v11 = numberOfFaces;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "[_library numberOfFaces] = %lu", &v10, 0xCu);
     }
 
@@ -863,46 +863,46 @@ LABEL_13:
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   collectionView = self->_collectionView;
-  v6 = a4;
+  pathCopy = path;
   v7 = +[_NTKCCFacesCollectionCell reuseIdentifier];
-  v8 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v6];
+  v8 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
   [v8 setFaceSize:{self->_faceSize.width, self->_faceSize.height}];
   [v8 setSelected:0];
   library = self->_library;
-  v10 = [v6 item];
+  item = [pathCopy item];
 
-  v11 = [(NTKFaceCollection *)library faceAtIndex:v10];
+  v11 = [(NTKFaceCollection *)library faceAtIndex:item];
   v12 = [(NTKCCFacesViewController *)self _viewControllerForFace:v11];
-  v13 = [v12 view];
-  [v8 setFaceView:v13];
+  view = [v12 view];
+  [v8 setFaceView:view];
 
-  v14 = [v11 name];
-  [v8 setName:v14];
+  name = [v11 name];
+  [v8 setName:name];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = -[NTKFaceCollection faceAtIndex:](self->_library, "faceAtIndex:", [v6 item]);
-  v8 = [v7 bundleIdentifierForUpgrade];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[NTKFaceCollection faceAtIndex:](self->_library, "faceAtIndex:", [pathCopy item]);
+  bundleIdentifierForUpgrade = [v7 bundleIdentifierForUpgrade];
 
-  if (v8)
+  if (bundleIdentifierForUpgrade)
   {
     v9 = +[NTKFaceBundleManager sharedManager];
-    v10 = [v7 bundleIdentifierForUpgrade];
+    bundleIdentifierForUpgrade2 = [v7 bundleIdentifierForUpgrade];
     v11 = +[CLKDevice currentDevice];
-    v12 = [v9 faceBundleForBundleIdentifier:v10 onDevice:v11];
+    v12 = [v9 faceBundleForBundleIdentifier:bundleIdentifierForUpgrade2 onDevice:v11];
 
-    v13 = [v12 faceClass];
+    faceClass = [v12 faceClass];
     v14 = +[CLKDevice currentDevice];
-    v15 = [v13 upgradeManagerWithFace:v7 forDevice:v14];
+    v15 = [faceClass upgradeManagerWithFace:v7 forDevice:v14];
 
     if ([v15 canUpgradeFace])
     {
@@ -910,107 +910,107 @@ LABEL_13:
       if (v16)
       {
         v17 = v16;
-        [v15 setUpgradingFaceIndex:{objc_msgSend(v6, "item")}];
+        [v15 setUpgradingFaceIndex:{objc_msgSend(pathCopy, "item")}];
         [(NTKCCFacesViewController *)self presentViewController:v17 animated:1 completion:0];
-        [v18 deselectItemAtIndexPath:v6 animated:1];
+        [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
 
         goto LABEL_7;
       }
     }
   }
 
-  v12 = [(NTKCCFacesViewController *)self _detailViewControllerForIndexPath:v6];
+  v12 = [(NTKCCFacesViewController *)self _detailViewControllerForIndexPath:pathCopy];
   [(NTKCCFacesViewController *)self _pushDetailViewController:v12 animated:1];
 LABEL_7:
 }
 
-- (void)_pushDetailViewController:(id)a3 animated:(BOOL)a4
+- (void)_pushDetailViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a3;
-  [(NTKCCFacesViewController *)self setPresentedDetailVC:v5];
-  v7 = [(NTKCCFacesViewController *)self parentViewController];
-  v6 = [v7 navigationController];
-  [v6 pushViewController:v5 animated:1];
+  controllerCopy = controller;
+  [(NTKCCFacesViewController *)self setPresentedDetailVC:controllerCopy];
+  parentViewController = [(NTKCCFacesViewController *)self parentViewController];
+  navigationController = [parentViewController navigationController];
+  [navigationController pushViewController:controllerCopy animated:1];
 }
 
-- (void)_popDetailViewControllerAnimated:(BOOL)a3
+- (void)_popDetailViewControllerAnimated:(BOOL)animated
 {
   if (self->_presentedDetailVC)
   {
-    v4 = a3;
-    v5 = [(NTKCCFacesViewController *)self parentViewController];
-    v6 = [v5 navigationController];
-    v7 = [v6 viewControllers];
-    v8 = [v7 containsObject:self->_presentedDetailVC];
+    animatedCopy = animated;
+    parentViewController = [(NTKCCFacesViewController *)self parentViewController];
+    navigationController = [parentViewController navigationController];
+    viewControllers = [navigationController viewControllers];
+    v8 = [viewControllers containsObject:self->_presentedDetailVC];
 
     if (v8)
     {
-      v9 = [(NTKCCFacesViewController *)self parentViewController];
-      v10 = [v9 navigationController];
-      v11 = [v10 popToViewController:self->_presentedDetailVC animated:0];
+      parentViewController2 = [(NTKCCFacesViewController *)self parentViewController];
+      navigationController2 = [parentViewController2 navigationController];
+      v11 = [navigationController2 popToViewController:self->_presentedDetailVC animated:0];
 
-      v12 = [(NTKCCFacesViewController *)self parentViewController];
-      v13 = [v12 navigationController];
-      v14 = [v13 popViewControllerAnimated:v4];
+      parentViewController3 = [(NTKCCFacesViewController *)self parentViewController];
+      navigationController3 = [parentViewController3 navigationController];
+      v14 = [navigationController3 popViewControllerAnimated:animatedCopy];
     }
   }
 
   [(NTKCCFacesViewController *)self setPresentedDetailVC:0];
 }
 
-- (void)libraryDetail:(id)a3 didRemoveFace:(id)a4
+- (void)libraryDetail:(id)detail didRemoveFace:(id)face
 {
-  v5 = a4;
-  if ([(NTKFaceCollection *)self->_library containsFace:v5])
+  faceCopy = face;
+  if ([(NTKFaceCollection *)self->_library containsFace:faceCopy])
   {
     v6 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v5;
+      v8 = faceCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "user removing face %@ from library", &v7, 0xCu);
     }
 
-    [(NTKFaceCollection *)self->_library removeFace:v5 suppressingCallbackToObserver:0];
-    [(NTKCCFacesViewController *)self _popLibraryDetailViewControllerForFace:v5];
+    [(NTKFaceCollection *)self->_library removeFace:faceCopy suppressingCallbackToObserver:0];
+    [(NTKCCFacesViewController *)self _popLibraryDetailViewControllerForFace:faceCopy];
   }
 }
 
-- (void)libraryDetail:(id)a3 didSelectFace:(id)a4
+- (void)libraryDetail:(id)detail didSelectFace:(id)face
 {
-  v6 = a4;
+  faceCopy = face;
   if ([(NTKFaceCollection *)self->_library containsFace:?])
   {
-    v5 = [(NTKFaceCollection *)self->_library selectedFace];
+    selectedFace = [(NTKFaceCollection *)self->_library selectedFace];
 
-    if (v5 != v6)
+    if (selectedFace != faceCopy)
     {
-      [(NTKFaceCollection *)self->_library setSelectedFace:v6 suppressingCallbackToObserver:0];
+      [(NTKFaceCollection *)self->_library setSelectedFace:faceCopy suppressingCallbackToObserver:0];
     }
   }
 }
 
-- (void)faceConfigurationDidChange:(id)a3
+- (void)faceConfigurationDidChange:(id)change
 {
   library = self->_library;
-  v5 = a3;
-  v6 = [(NTKFaceCollection *)library indexOfFace:v5];
+  changeCopy = change;
+  v6 = [(NTKFaceCollection *)library indexOfFace:changeCopy];
   collectionView = self->_collectionView;
   v8 = [NSIndexPath indexPathForItem:v6 inSection:0];
   v10 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v8];
 
-  v9 = [v5 name];
+  name = [changeCopy name];
 
-  [v10 setName:v9];
+  [v10 setName:name];
 }
 
-- (void)faceCollectionDidLoad:(id)a3
+- (void)faceCollectionDidLoad:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v4 hasLoaded])
+    if ([loadCopy hasLoaded])
     {
       v6 = @"HAS";
     }
@@ -1023,20 +1023,20 @@ LABEL_7:
     v7 = 138412546;
     v8 = v6;
     v9 = 2048;
-    v10 = [v4 numberOfFaces];
+    numberOfFaces = [loadCopy numberOfFaces];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "library %@ loaded with %lu faces", &v7, 0x16u);
   }
 
   [(NTKCCFacesViewController *)self _reloadAllFacesForCollectionView];
 }
 
-- (void)faceCollectionDidReset:(id)a3
+- (void)faceCollectionDidReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v4 hasLoaded])
+    if ([resetCopy hasLoaded])
     {
       v6 = @"HAS";
     }
@@ -1049,7 +1049,7 @@ LABEL_7:
     v7 = 138412546;
     v8 = v6;
     v9 = 2048;
-    v10 = [v4 numberOfFaces];
+    numberOfFaces = [resetCopy numberOfFaces];
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "library %@ reloaded with %lu faces", &v7, 0x16u);
   }
 
@@ -1068,20 +1068,20 @@ LABEL_7:
   }
 }
 
-- (void)faceCollection:(id)a3 didAddFace:(id)a4 atIndex:(unint64_t)a5
+- (void)faceCollection:(id)collection didAddFace:(id)face atIndex:(unint64_t)index
 {
-  v7 = a4;
+  faceCopy = face;
   v8 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *v19 = v7;
+    *v19 = faceCopy;
     *&v19[8] = 1024;
-    *v20 = a5;
+    *v20 = index;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "adding face %@ at index %d", buf, 0x12u);
   }
 
-  [v7 addObserver:self];
+  [faceCopy addObserver:self];
   if ([(NTKCCFacesViewController *)self _canTouchCollectionView])
   {
     v9 = [(UICollectionView *)self->_collectionView numberOfItemsInSection:0];
@@ -1091,12 +1091,12 @@ LABEL_7:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        *v19 = a5;
+        *v19 = index;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "[_collectionView insert:%d];", buf, 8u);
       }
 
       collectionView = self->_collectionView;
-      v12 = [NSIndexPath indexPathForItem:a5 inSection:0];
+      v12 = [NSIndexPath indexPathForItem:index inSection:0];
       v17 = v12;
       v13 = [NSArray arrayWithObjects:&v17 count:1];
       [(UICollectionView *)collectionView insertItemsAtIndexPaths:v13];
@@ -1108,15 +1108,15 @@ LABEL_7:
       v14 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(NTKFaceCollection *)self->_library numberOfFaces];
+        numberOfFaces = [(NTKFaceCollection *)self->_library numberOfFaces];
         *buf = 67109890;
         *v19 = v9;
         *&v19[4] = 1024;
-        *&v19[6] = v15;
+        *&v19[6] = numberOfFaces;
         *v20 = 1024;
-        *&v20[2] = a5;
+        *&v20[2] = index;
         v21 = 2112;
-        v22 = v7;
+        v22 = faceCopy;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "UICollectionView has %d faces, NTKFaceCollection has %d faces and added the #%d face (%@).", buf, 0x1Eu);
       }
 
@@ -1129,36 +1129,36 @@ LABEL_7:
   }
 }
 
-- (void)faceCollection:(id)a3 didRemoveFace:(id)a4 atIndex:(unint64_t)a5
+- (void)faceCollection:(id)collection didRemoveFace:(id)face atIndex:(unint64_t)index
 {
-  v7 = a4;
+  faceCopy = face;
   v8 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *v19 = v7;
+    *v19 = faceCopy;
     *&v19[8] = 1024;
-    *v20 = a5;
+    *v20 = index;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "removing face %@ at index %d", buf, 0x12u);
   }
 
-  [v7 removeObserver:self];
-  [(NTKCCFacesViewController *)self _removeViewControllerForFace:v7];
+  [faceCopy removeObserver:self];
+  [(NTKCCFacesViewController *)self _removeViewControllerForFace:faceCopy];
   if ([(NTKCCFacesViewController *)self _canTouchCollectionView])
   {
     v9 = [(UICollectionView *)self->_collectionView numberOfItemsInSection:0];
-    if (v9 > a5 && [(NTKFaceCollection *)self->_library numberOfFaces]== (v9 - 1))
+    if (v9 > index && [(NTKFaceCollection *)self->_library numberOfFaces]== (v9 - 1))
     {
       v10 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        *v19 = a5;
+        *v19 = index;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "[_collectionView delete:%d];", buf, 8u);
       }
 
       collectionView = self->_collectionView;
-      v12 = [NSIndexPath indexPathForItem:a5 inSection:0];
+      v12 = [NSIndexPath indexPathForItem:index inSection:0];
       v17 = v12;
       v13 = [NSArray arrayWithObjects:&v17 count:1];
       [(UICollectionView *)collectionView deleteItemsAtIndexPaths:v13];
@@ -1170,15 +1170,15 @@ LABEL_7:
       v14 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(NTKFaceCollection *)self->_library numberOfFaces];
+        numberOfFaces = [(NTKFaceCollection *)self->_library numberOfFaces];
         *buf = 67109890;
         *v19 = v9;
         *&v19[4] = 1024;
-        *&v19[6] = v15;
+        *&v19[6] = numberOfFaces;
         *v20 = 1024;
-        *&v20[2] = a5;
+        *&v20[2] = index;
         v21 = 2112;
-        v22 = v7;
+        v22 = faceCopy;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "UICollectionView has %d faces, NTKFaceCollection has %d faces and deleted the #%d face (%@).", buf, 0x1Eu);
       }
 
@@ -1190,10 +1190,10 @@ LABEL_7:
     [v16 postNotificationName:BPSNTKFacesViewControllerDidUpdateContentNotification object:0];
   }
 
-  [(NTKCCFacesViewController *)self _popLibraryDetailViewControllerForFace:v7];
+  [(NTKCCFacesViewController *)self _popLibraryDetailViewControllerForFace:faceCopy];
 }
 
-- (void)faceCollectionDidReorderFaces:(id)a3
+- (void)faceCollectionDidReorderFaces:(id)faces
 {
   v4 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1241,18 +1241,18 @@ LABEL_7:
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = [(UICollectionView *)self->_collectionView indexPathForItemAtPoint:a3, a4.x, a4.y];
+  v5 = [(UICollectionView *)self->_collectionView indexPathForItemAtPoint:interaction, location.x, location.y];
   if (v5)
   {
     [(UICollectionView *)self->_collectionView selectItemAtIndexPath:v5 animated:0 scrollPosition:0];
     v6 = self->_library;
     v7 = -[NTKFaceCollection faceAtIndex:](v6, "faceAtIndex:", [v5 item]);
-    v8 = [v7 bundleIdentifierForUpgrade];
+    bundleIdentifierForUpgrade = [v7 bundleIdentifierForUpgrade];
 
     v9 = 0;
-    if (!v8)
+    if (!bundleIdentifierForUpgrade)
     {
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
@@ -1266,7 +1266,7 @@ LABEL_7:
       v11[3] = &unk_20840;
       v12 = v6;
       v13 = v7;
-      v14 = self;
+      selfCopy = self;
       v9 = [UIContextMenuConfiguration configurationWithIdentifier:v16 previewProvider:v15 actionProvider:v11];
     }
   }
@@ -1279,15 +1279,15 @@ LABEL_7:
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v5 = [a4 identifier];
-  v6 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v5];
+  identifier = [configuration identifier];
+  v6 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:identifier];
   if (v6)
   {
     v7 = [UITargetedPreview alloc];
-    v8 = [v6 faceContainerView];
-    v9 = [v7 initWithView:v8];
+    faceContainerView = [v6 faceContainerView];
+    v9 = [v7 initWithView:faceContainerView];
   }
 
   else
@@ -1298,27 +1298,27 @@ LABEL_7:
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
-  [v6 previewViewController];
+  animatorCopy = animator;
+  [animatorCopy previewViewController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_5B58;
   v9 = v8[3] = &unk_20868;
-  v10 = self;
+  selfCopy = self;
   v7 = v9;
-  [v6 addCompletion:v8];
+  [animatorCopy addCompletion:v8];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_5C28;
   v5[3] = &unk_20890;
   v5[4] = self;
-  [a5 addAnimations:{v5, a4}];
+  [animator addAnimations:{v5, configuration}];
 }
 
 - (void)_fontSizeDidChange
@@ -1337,17 +1337,17 @@ LABEL_7:
   }
 }
 
-- (void)upgradeManager:(id)a3 didCompleteWithFace:(id)a4 error:(id)a5
+- (void)upgradeManager:(id)manager didCompleteWithFace:(id)face error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  managerCopy = manager;
+  faceCopy = face;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_F59C(v8, v10, v11);
+      sub_F59C(managerCopy, errorCopy, v11);
     }
 
 LABEL_4:
@@ -1355,39 +1355,39 @@ LABEL_4:
     goto LABEL_14;
   }
 
-  if (!v9)
+  if (!faceCopy)
   {
     v11 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_F624(v8, v11);
+      sub_F624(managerCopy, v11);
     }
 
     goto LABEL_4;
   }
 
-  if ([v8 upgradingFaceIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([managerCopy upgradingFaceIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [(NTKFaceCollection *)self->_library numberOfFaces];
+    numberOfFaces = [(NTKFaceCollection *)self->_library numberOfFaces];
   }
 
   else
   {
-    v12 = [v8 upgradingFaceIndex] + 1;
+    numberOfFaces = [managerCopy upgradingFaceIndex] + 1;
   }
 
   v13 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v9;
+    v15 = faceCopy;
     v16 = 2048;
-    v17 = v12;
+    v17 = numberOfFaces;
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Adding new, upgraded face %@ to %lu", &v14, 0x16u);
   }
 
-  [(NTKFaceCollection *)self->_library addFace:v9 atIndex:v12 suppressingCallbackToObserver:0];
-  [(NTKFaceCollection *)self->_library setSelectedFaceIndex:v12 suppressingCallbackToObserver:0];
+  [(NTKFaceCollection *)self->_library addFace:faceCopy atIndex:numberOfFaces suppressingCallbackToObserver:0];
+  [(NTKFaceCollection *)self->_library setSelectedFaceIndex:numberOfFaces suppressingCallbackToObserver:0];
 LABEL_14:
 }
 

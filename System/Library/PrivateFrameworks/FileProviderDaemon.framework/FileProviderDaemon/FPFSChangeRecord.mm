@@ -1,7 +1,7 @@
 @interface FPFSChangeRecord
-- (FPFSChangeRecord)initWithPath:(id)a3 fileID:(unint64_t)a4 docID:(unsigned int)a5 flags:(unsigned int)a6 eventID:(unint64_t)a7;
+- (FPFSChangeRecord)initWithPath:(id)path fileID:(unint64_t)d docID:(unsigned int)iD flags:(unsigned int)flags eventID:(unint64_t)eventID;
 - (id)description;
-- (unsigned)additionalDebugFlagsForHistoricalStream:(BOOL)a3;
+- (unsigned)additionalDebugFlagsForHistoricalStream:(BOOL)stream;
 - (unsigned)flags;
 @end
 
@@ -9,9 +9,9 @@
 
 - (unsigned)flags
 {
-  v3 = [(FPFSChangeRecord *)self isBarrier];
+  isBarrier = [(FPFSChangeRecord *)self isBarrier];
   rawFlags = self->_rawFlags;
-  if ((rawFlags & 0x9000) != 0 || v3)
+  if ((rawFlags & 0x9000) != 0 || isBarrier)
   {
     return rawFlags & 0xFFF7FFFF;
   }
@@ -22,55 +22,55 @@
   }
 }
 
-- (FPFSChangeRecord)initWithPath:(id)a3 fileID:(unint64_t)a4 docID:(unsigned int)a5 flags:(unsigned int)a6 eventID:(unint64_t)a7
+- (FPFSChangeRecord)initWithPath:(id)path fileID:(unint64_t)d docID:(unsigned int)iD flags:(unsigned int)flags eventID:(unint64_t)eventID
 {
-  v13 = a3;
+  pathCopy = path;
   v22.receiver = self;
   v22.super_class = FPFSChangeRecord;
   v14 = [(FPFSChangeRecord *)&v22 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_path, a3);
-    v15->_fileID = a4;
-    v15->_docID = a5;
-    v15->_rawFlags = a6;
-    v15->_eventID = a7;
-    v16 = [v13 fpfs_extractFSEventsBarrierUUID];
+    objc_storeStrong(&v14->_path, path);
+    v15->_fileID = d;
+    v15->_docID = iD;
+    v15->_rawFlags = flags;
+    v15->_eventID = eventID;
+    fpfs_extractFSEventsBarrierUUID = [pathCopy fpfs_extractFSEventsBarrierUUID];
     barrierUUID = v15->_barrierUUID;
-    v15->_barrierUUID = v16;
+    v15->_barrierUUID = fpfs_extractFSEventsBarrierUUID;
 
-    v18 = [v13 fpfs_extractFSEventsNotifyUUID];
+    fpfs_extractFSEventsNotifyUUID = [pathCopy fpfs_extractFSEventsNotifyUUID];
 
-    if (v18)
+    if (fpfs_extractFSEventsNotifyUUID)
     {
       v15->_isNotification = 1;
-      v19 = [v13 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
       path = v15->_path;
-      v15->_path = v19;
+      v15->_path = stringByDeletingLastPathComponent;
     }
   }
 
   return v15;
 }
 
-- (unsigned)additionalDebugFlagsForHistoricalStream:(BOOL)a3
+- (unsigned)additionalDebugFlagsForHistoricalStream:(BOOL)stream
 {
-  v3 = a3;
+  streamCopy = stream;
   if (!os_variant_has_internal_content() || (self->_rawFlags & 0x80000) != 0 || ![(NSString *)self->_path hasSuffix:@"-fail-with-dropped"])
   {
     return 0;
   }
 
-  v5 = [(NSString *)self->_path lastPathComponent];
-  if ([v5 containsString:@"kernel"])
+  lastPathComponent = [(NSString *)self->_path lastPathComponent];
+  if ([lastPathComponent containsString:@"kernel"])
   {
     v6 = 4;
   }
 
   else
   {
-    if (v3)
+    if (streamCopy)
     {
       v8 = @"historical";
     }
@@ -80,7 +80,7 @@
       v8 = @"live";
     }
 
-    if ([v5 containsString:v8])
+    if ([lastPathComponent containsString:v8])
     {
       v6 = 2;
     }
@@ -102,8 +102,8 @@
   fileID = self->_fileID;
   docID = self->_docID;
   v8 = [MEMORY[0x1E696AEC0] fpfs_initWithFSEventsFlags:self->_rawFlags];
-  v9 = [(NSString *)self->_path fp_prettyPath];
-  v10 = [v3 stringWithFormat:@"<%@ #%llu fileID:%llu docID:%u flags:%@ path:'%@'>", v4, eventID, fileID, docID, v8, v9];
+  fp_prettyPath = [(NSString *)self->_path fp_prettyPath];
+  v10 = [v3 stringWithFormat:@"<%@ #%llu fileID:%llu docID:%u flags:%@ path:'%@'>", v4, eventID, fileID, docID, v8, fp_prettyPath];
 
   return v10;
 }

@@ -1,33 +1,33 @@
 @interface _MPCPodcastsPlaybackRateHelper
-- (BOOL)canHandlePlaybackRateChangeForCommandEvent:(id)a3;
-- (BOOL)supportsRate:(float)a3;
-- (float)computedRateForChangePlaybackRateCommandEvent:(id)a3;
-- (float)updatedPlaybackRateForChangePlaybackRateCommandEvent:(id)a3 podcastUUID:(id)a4;
-- (void)saveWithRate:(float)a3 uuid:(id)a4;
+- (BOOL)canHandlePlaybackRateChangeForCommandEvent:(id)event;
+- (BOOL)supportsRate:(float)rate;
+- (float)computedRateForChangePlaybackRateCommandEvent:(id)event;
+- (float)updatedPlaybackRateForChangePlaybackRateCommandEvent:(id)event podcastUUID:(id)d;
+- (void)saveWithRate:(float)rate uuid:(id)uuid;
 @end
 
 @implementation _MPCPodcastsPlaybackRateHelper
 
-- (BOOL)supportsRate:(float)a3
+- (BOOL)supportsRate:(float)rate
 {
-  v4 = self;
-  v5 = PodcastsPlaybackRateHelper.supportsRate(_:)(a3);
+  selfCopy = self;
+  v5 = PodcastsPlaybackRateHelper.supportsRate(_:)(rate);
 
   return v5;
 }
 
-- (BOOL)canHandlePlaybackRateChangeForCommandEvent:(id)a3
+- (BOOL)canHandlePlaybackRateChangeForCommandEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = PodcastsPlaybackRateHelper.canHandlePlaybackRateChange(forCommandEvent:)(v4);
+  eventCopy = event;
+  selfCopy = self;
+  LOBYTE(self) = PodcastsPlaybackRateHelper.canHandlePlaybackRateChange(forCommandEvent:)(eventCopy);
 
   return self & 1;
 }
 
-- (float)updatedPlaybackRateForChangePlaybackRateCommandEvent:(id)a3 podcastUUID:(id)a4
+- (float)updatedPlaybackRateForChangePlaybackRateCommandEvent:(id)event podcastUUID:(id)d
 {
-  if (a4)
+  if (d)
   {
     v6 = sub_1C6016940();
     v8 = v7;
@@ -39,27 +39,27 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
+  eventCopy = event;
+  selfCopy = self;
   v11.value._countAndFlagsBits = v6;
   v11.value._object = v8;
-  v12 = PodcastsPlaybackRateHelper.updatedPlaybackRate(forChangePlaybackRateCommandEvent:podcastUUID:)(v9, v11);
+  v12 = PodcastsPlaybackRateHelper.updatedPlaybackRate(forChangePlaybackRateCommandEvent:podcastUUID:)(eventCopy, v11);
 
   return v12;
 }
 
-- (float)computedRateForChangePlaybackRateCommandEvent:(id)a3
+- (float)computedRateForChangePlaybackRateCommandEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  v6 = PodcastsPlaybackRateHelper.computedRate(forChangePlaybackRateCommandEvent:)(v4);
+  eventCopy = event;
+  selfCopy = self;
+  v6 = PodcastsPlaybackRateHelper.computedRate(forChangePlaybackRateCommandEvent:)(eventCopy);
 
   return v6;
 }
 
-- (void)saveWithRate:(float)a3 uuid:(id)a4
+- (void)saveWithRate:(float)rate uuid:(id)uuid
 {
-  if (a4)
+  if (uuid)
   {
     v6 = sub_1C6016940();
     v8 = v7;
@@ -71,10 +71,10 @@
     v8 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
   v10.value._countAndFlagsBits = v6;
   v10.value._object = v8;
-  PodcastsPlaybackRateHelper.save(rate:uuid:)(a3, v10);
+  PodcastsPlaybackRateHelper.save(rate:uuid:)(rate, v10);
 }
 
 @end

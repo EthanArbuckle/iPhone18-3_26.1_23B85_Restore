@@ -1,29 +1,29 @@
 @interface MCAnimationPath
-+ (id)animationPathWithKey:(id)a3;
-- (MCAnimationPath)initWithImprint:(id)a3;
++ (id)animationPathWithKey:(id)key;
+- (MCAnimationPath)initWithImprint:(id)imprint;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 @end
 
 @implementation MCAnimationPath
 
-+ (id)animationPathWithKey:(id)a3
++ (id)animationPathWithKey:(id)key
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setKey:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setKey:key];
 
   return v4;
 }
 
-- (MCAnimationPath)initWithImprint:(id)a3
+- (MCAnimationPath)initWithImprint:(id)imprint
 {
   v7.receiver = self;
   v7.super_class = MCAnimationPath;
   v4 = [(MCObjectLight *)&v7 initWithImprint:?];
   if (v4)
   {
-    v4->mKey = [a3 objectForKey:@"key"];
-    v5 = [a3 objectForKey:@"isTriggered"];
+    v4->mKey = [imprint objectForKey:@"key"];
+    v5 = [imprint objectForKey:@"isTriggered"];
     if (v5)
     {
       LOBYTE(v5) = [v5 BOOLValue];
@@ -39,12 +39,12 @@
 {
   v7.receiver = self;
   v7.super_class = MCAnimationPath;
-  v3 = [(MCObjectLight *)&v7 imprint];
-  v4 = v3;
+  imprint = [(MCObjectLight *)&v7 imprint];
+  v4 = imprint;
   mKey = self->mKey;
   if (mKey)
   {
-    [v3 setObject:mKey forKey:@"key"];
+    [imprint setObject:mKey forKey:@"key"];
   }
 
   if (self->mIsTriggered)
@@ -55,16 +55,16 @@
   return v4;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   mKey = self->mKey;
   if (mKey)
   {
-    *(a3 + 2) = [(NSString *)mKey copy];
+    *(snapshot + 2) = [(NSString *)mKey copy];
   }
 
-  *(a3 + 8) = self->mIsTriggered;
-  *(a3 + 9) = 1;
+  *(snapshot + 8) = self->mIsTriggered;
+  *(snapshot + 9) = 1;
 }
 
 @end

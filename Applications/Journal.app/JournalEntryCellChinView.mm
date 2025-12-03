@@ -1,9 +1,9 @@
 @interface JournalEntryCellChinView
 - (NSDirectionalEdgeInsets)hitTestDirectionalInsets;
-- (void)changeJournal:(id)a3;
+- (void)changeJournal:(id)journal;
 - (void)handleTapUnsupportedTriangleView;
-- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)a3;
-- (void)updateOverflowMenu:(id)a3;
+- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)insets;
+- (void)updateOverflowMenu:(id)menu;
 @end
 
 @implementation JournalEntryCellChinView
@@ -20,12 +20,12 @@
   return result;
 }
 
-- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)a3
+- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   v10.receiver = self;
   v10.super_class = type metadata accessor for JournalEntryCellChinView();
   v7 = v10.receiver;
@@ -38,16 +38,16 @@
   [v9 setHitTestDirectionalInsets:?];
 }
 
-- (void)updateOverflowMenu:(id)a3
+- (void)updateOverflowMenu:(id)menu
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006005A8(v4);
+  menuCopy = menu;
+  selfCopy = self;
+  sub_1006005A8(menuCopy);
 }
 
 - (void)handleTapUnsupportedTriangleView
 {
-  v4 = self;
+  selfCopy = self;
   v2 = UIView.viewControllerForPresenting.getter();
   if (v2)
   {
@@ -56,11 +56,11 @@
   }
 }
 
-- (void)changeJournal:(id)a3
+- (void)changeJournal:(id)journal
 {
-  v4 = a3;
-  v5 = self;
-  sub_100600748(v4);
+  journalCopy = journal;
+  selfCopy = self;
+  sub_100600748(journalCopy);
 }
 
 @end

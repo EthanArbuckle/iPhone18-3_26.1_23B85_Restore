@@ -1,8 +1,8 @@
 @interface MTLPipelineBufferDescriptorArrayInternal
-- (BOOL)isEqual:(id)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
 - (void)dealloc;
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4;
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript;
 @end
 
 @implementation MTLPipelineBufferDescriptorArrayInternal
@@ -21,21 +21,21 @@
   [(MTLPipelineBufferDescriptorArrayInternal *)&v5 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
-    LOBYTE(v6) = 1;
+    LOBYTE(isDefault) = 1;
   }
 
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       v7 = 0;
       descriptors = self->_descriptors;
-      v9 = a3 + 8;
+      v9 = equal + 8;
       do
       {
         v10 = descriptors[v7];
@@ -56,10 +56,10 @@
           {
             if (v10)
             {
-              v6 = [(MTLPipelineBufferDescriptorInternal *)v10 isDefault];
-              if (!v6)
+              isDefault = [(MTLPipelineBufferDescriptorInternal *)v10 isDefault];
+              if (!isDefault)
               {
-                return v6;
+                return isDefault;
               }
 
               v11 = *&v9[v7 * 8];
@@ -67,10 +67,10 @@
 
             if (v11)
             {
-              v6 = [(MTLPipelineBufferDescriptorInternal *)v11 isDefault];
-              if (!v6)
+              isDefault = [(MTLPipelineBufferDescriptorInternal *)v11 isDefault];
+              if (!isDefault)
               {
-                return v6;
+                return isDefault;
               }
             }
           }
@@ -85,70 +85,70 @@
       }
 
       while (v7 != 31);
-      LOBYTE(v6) = 1;
+      LOBYTE(isDefault) = 1;
     }
 
     else
     {
 LABEL_3:
-      LOBYTE(v6) = 0;
+      LOBYTE(isDefault) = 0;
     }
   }
 
-  return v6;
+  return isDefault;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
-  if (a3 >= 0x1F)
+  if (subscript >= 0x1F)
   {
-    [(MTLPipelineBufferDescriptorArrayInternal *)a3 objectAtIndexedSubscript:a2, a3, v3, v4, v5, v6, v7];
+    [(MTLPipelineBufferDescriptorArrayInternal *)subscript objectAtIndexedSubscript:a2, subscript, v3, v4, v5, v6, v7];
   }
 
   descriptors = self->_descriptors;
-  result = descriptors[a3];
+  result = descriptors[subscript];
   if (!result)
   {
     result = objc_alloc_init(MTLPipelineBufferDescriptorInternal);
     v12 = 0;
-    atomic_compare_exchange_strong(&descriptors[a3], &v12, result);
+    atomic_compare_exchange_strong(&descriptors[subscript], &v12, result);
     if (v12)
     {
 
-      return descriptors[a3];
+      return descriptors[subscript];
     }
 
     else
     {
-      descriptors[a3] = result;
+      descriptors[subscript] = result;
     }
   }
 
   return result;
 }
 
-- (void)setObject:(id)a3 atIndexedSubscript:(unint64_t)a4
+- (void)setObject:(id)object atIndexedSubscript:(unint64_t)subscript
 {
-  if (a3)
+  if (object)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if ((isKindOfClass & 1) == 0)
     {
-      [(MTLPipelineBufferDescriptorArrayInternal *)isKindOfClass setObject:a2 atIndexedSubscript:a3, a4, v4, v5, v6, v7, v13];
+      [(MTLPipelineBufferDescriptorArrayInternal *)isKindOfClass setObject:a2 atIndexedSubscript:object, subscript, v4, v5, v6, v7, v13];
     }
   }
 
-  if (a4 >= 0x1F)
+  if (subscript >= 0x1F)
   {
-    [(MTLPipelineBufferDescriptorArrayInternal *)a4 setObject:a2 atIndexedSubscript:a3, a4, v4, v5, v6, v7];
+    [(MTLPipelineBufferDescriptorArrayInternal *)subscript setObject:a2 atIndexedSubscript:object, subscript, v4, v5, v6, v7];
   }
 
   descriptors = self->_descriptors;
-  if (descriptors[a4] != a3)
+  if (descriptors[subscript] != object)
   {
-    v14 = descriptors[a4];
-    descriptors[a4] = [a3 copy];
+    v14 = descriptors[subscript];
+    descriptors[subscript] = [object copy];
   }
 }
 

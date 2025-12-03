@@ -1,23 +1,23 @@
 @interface WLKUserSettings
-- (WLKUserSettings)initWithDictionary:(id)a3;
-- (WLKUserSettings)initWithFavoritesSyncEnabled:(BOOL)a3;
-- (WLKUserSettings)initWithPostPlayAutoPlaySettings:(id)a3;
+- (WLKUserSettings)initWithDictionary:(id)dictionary;
+- (WLKUserSettings)initWithFavoritesSyncEnabled:(BOOL)enabled;
+- (WLKUserSettings)initWithPostPlayAutoPlaySettings:(id)settings;
 - (id)_patchData;
 - (id)_patchJSONDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation WLKUserSettings
 
-- (WLKUserSettings)initWithDictionary:(id)a3
+- (WLKUserSettings)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = WLKUserSettings;
   v5 = [(WLKUserSettings *)&v20 init];
   if (v5)
   {
-    v6 = [v4 wlk_dictionaryForKey:@"data"];
+    v6 = [dictionaryCopy wlk_dictionaryForKey:@"data"];
     v5->_activeUser = [v6 wlk_BOOLForKey:@"activeUser" defaultValue:0];
     v5->_ageVerified = [v6 wlk_BOOLForKey:@"ageVerified" defaultValue:0];
     v7 = [v6 wlk_stringForKey:@"country"];
@@ -60,14 +60,14 @@
   return v5;
 }
 
-- (WLKUserSettings)initWithFavoritesSyncEnabled:(BOOL)a3
+- (WLKUserSettings)initWithFavoritesSyncEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = WLKUserSettings;
   result = [(WLKUserSettings *)&v5 init];
   if (result)
   {
-    result->_favoritesSyncEnabled = a3;
+    result->_favoritesSyncEnabled = enabled;
     *&result->_initWithFavoritesSync = 1;
     result->_initWithPostPlayAutoPlaySetting = 0;
   }
@@ -75,33 +75,33 @@
   return result;
 }
 
-- (WLKUserSettings)initWithPostPlayAutoPlaySettings:(id)a3
+- (WLKUserSettings)initWithPostPlayAutoPlaySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v12.receiver = self;
   v12.super_class = WLKUserSettings;
   v6 = [(WLKUserSettings *)&v12 init];
   if (v6)
   {
-    v7 = [v5 nextEpisodeSettingValue];
+    nextEpisodeSettingValue = [settingsCopy nextEpisodeSettingValue];
 
-    if (v7)
+    if (nextEpisodeSettingValue)
     {
-      v8 = [v5 nextEpisodeSettingValue];
-      v6->_nextEpisodeAutoPlayEnabled = [v8 BOOLValue];
+      nextEpisodeSettingValue2 = [settingsCopy nextEpisodeSettingValue];
+      v6->_nextEpisodeAutoPlayEnabled = [nextEpisodeSettingValue2 BOOLValue];
     }
 
-    v9 = [v5 recommendedItemsSettingValue];
+    recommendedItemsSettingValue = [settingsCopy recommendedItemsSettingValue];
 
-    if (v9)
+    if (recommendedItemsSettingValue)
     {
-      v10 = [v5 recommendedItemsSettingValue];
-      v6->_recommendedItemsAutoPlayEnabled = [v10 BOOLValue];
+      recommendedItemsSettingValue2 = [settingsCopy recommendedItemsSettingValue];
+      v6->_recommendedItemsAutoPlayEnabled = [recommendedItemsSettingValue2 BOOLValue];
     }
 
     *&v6->_initWithFavoritesSync = 0;
     v6->_initWithPostPlayAutoPlaySetting = 1;
-    objc_storeStrong(&v6->_postPlayAutoPlaySettings, a3);
+    objc_storeStrong(&v6->_postPlayAutoPlaySettings, settings);
   }
 
   return v6;
@@ -135,17 +135,17 @@ LABEL_3:
     if (self->_initWithPostPlayAutoPlaySetting)
     {
       v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v7 = [(WLKPostPlayAutoPlaySettings *)self->_postPlayAutoPlaySettings nextEpisodeSettingValue];
+      nextEpisodeSettingValue = [(WLKPostPlayAutoPlaySettings *)self->_postPlayAutoPlaySettings nextEpisodeSettingValue];
 
-      if (v7)
+      if (nextEpisodeSettingValue)
       {
         v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_nextEpisodeAutoPlayEnabled];
         [v3 setObject:v8 forKey:@"nextEpisodeAutoPlayEnabled"];
       }
 
-      v9 = [(WLKPostPlayAutoPlaySettings *)self->_postPlayAutoPlaySettings recommendedItemsSettingValue];
+      recommendedItemsSettingValue = [(WLKPostPlayAutoPlaySettings *)self->_postPlayAutoPlaySettings recommendedItemsSettingValue];
 
-      if (v9)
+      if (recommendedItemsSettingValue)
       {
         v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_recommendedItemsAutoPlayEnabled];
         [v3 setObject:v10 forKey:@"postPlayAutoPlayEnabled"];
@@ -166,9 +166,9 @@ LABEL_13:
 
 - (id)_patchData
 {
-  v2 = [(WLKUserSettings *)self _patchJSONDictionary];
+  _patchJSONDictionary = [(WLKUserSettings *)self _patchJSONDictionary];
   v7 = 0;
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:0 error:&v7];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:_patchJSONDictionary options:0 error:&v7];
   v4 = v3;
   v5 = 0;
   if (!v7)
@@ -179,15 +179,15 @@ LABEL_13:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     *(v5 + 8) = self->_activeUser;
     *(v5 + 9) = self->_ageVerified;
-    v7 = [(NSString *)self->_country copyWithZone:a3];
+    v7 = [(NSString *)self->_country copyWithZone:zone];
     v8 = *(v6 + 24);
     *(v6 + 24) = v7;
 
@@ -195,11 +195,11 @@ LABEL_13:
     *(v6 + 11) = self->_recommendedItemsAutoPlayEnabled;
     *(v6 + 12) = self->_nextEpisodeAutoPlayEnabled;
     *(v6 + 13) = self->_globalAccountConsent;
-    v9 = [(NSDictionary *)self->_brandSidebarSetting copyWithZone:a3];
+    v9 = [(NSDictionary *)self->_brandSidebarSetting copyWithZone:zone];
     v10 = *(v6 + 32);
     *(v6 + 32) = v9;
 
-    v11 = [(WLKPostPlayAutoPlaySettings *)self->_postPlayAutoPlaySettings copyWithZone:a3];
+    v11 = [(WLKPostPlayAutoPlaySettings *)self->_postPlayAutoPlaySettings copyWithZone:zone];
     v12 = *(v6 + 40);
     *(v6 + 40) = v11;
   }

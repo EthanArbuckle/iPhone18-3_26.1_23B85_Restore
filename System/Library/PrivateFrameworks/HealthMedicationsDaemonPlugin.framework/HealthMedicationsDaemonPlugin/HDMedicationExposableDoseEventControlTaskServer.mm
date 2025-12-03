@@ -1,8 +1,8 @@
 @interface HDMedicationExposableDoseEventControlTaskServer
 + (id)requiredEntitlements;
-- (void)remote_deleteDoseEventWithPersistentUUID:(id)a3 completion:(id)a4;
-- (void)remote_doseEventsForDateInterval:(id)a3 medicationIdentifier:(id)a4 completion:(id)a5;
-- (void)remote_writeDoseEvents:(id)a3 completion:(id)a4;
+- (void)remote_deleteDoseEventWithPersistentUUID:(id)d completion:(id)completion;
+- (void)remote_doseEventsForDateInterval:(id)interval medicationIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_writeDoseEvents:(id)events completion:(id)completion;
 @end
 
 @implementation HDMedicationExposableDoseEventControlTaskServer
@@ -19,22 +19,22 @@
   return v3;
 }
 
-- (void)remote_doseEventsForDateInterval:(id)a3 medicationIdentifier:(id)a4 completion:(id)a5
+- (void)remote_doseEventsForDateInterval:(id)interval medicationIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HDStandardTaskServer *)self client];
-  v12 = [v11 authorizationOracle];
-  v13 = [v12 clientHasAuthorizationForAllTypes];
+  intervalCopy = interval;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  client = [(HDStandardTaskServer *)self client];
+  authorizationOracle = [client authorizationOracle];
+  clientHasAuthorizationForAllTypes = [authorizationOracle clientHasAuthorizationForAllTypes];
 
-  if ((v13 & 1) == 0)
+  if ((clientHasAuthorizationForAllTypes & 1) == 0)
   {
-    v15 = [(HDStandardTaskServer *)self client];
-    v16 = [v15 authorizationOracle];
+    client2 = [(HDStandardTaskServer *)self client];
+    authorizationOracle2 = [client2 authorizationOracle];
     v17 = [MEMORY[0x277CCDB68] userTrackedConceptTypeForIdentifier:*MEMORY[0x277CCCE88]];
     v32 = 0;
-    v18 = [v16 authorizationStatusRecordForType:v17 error:&v32];
+    v18 = [authorizationOracle2 authorizationStatusRecordForType:v17 error:&v32];
     v14 = v32;
 
     if (v18)
@@ -66,36 +66,36 @@
 
     v20 = [v28 hk_error:v30 description:v29];
 
-    v10[2](v10, 0, v20);
+    completionCopy[2](completionCopy, 0, v20);
     goto LABEL_12;
   }
 
   v14 = 0;
 LABEL_6:
-  v19 = [(HDStandardTaskServer *)self profile];
+  profile = [(HDStandardTaskServer *)self profile];
   v31 = v14;
-  v18 = [HDMedicationExposableDoseEventEngine doseEventsForDateInterval:v8 medicationIdentifier:v9 profile:v19 error:&v31];
+  v18 = [HDMedicationExposableDoseEventEngine doseEventsForDateInterval:intervalCopy medicationIdentifier:identifierCopy profile:profile error:&v31];
   v20 = v31;
 
-  (v10)[2](v10, v18, v20);
+  (completionCopy)[2](completionCopy, v18, v20);
 LABEL_12:
 }
 
-- (void)remote_writeDoseEvents:(id)a3 completion:(id)a4
+- (void)remote_writeDoseEvents:(id)events completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDStandardTaskServer *)self client];
-  v9 = [v8 authorizationOracle];
-  v10 = [v9 clientHasAuthorizationForAllTypes];
+  eventsCopy = events;
+  completionCopy = completion;
+  client = [(HDStandardTaskServer *)self client];
+  authorizationOracle = [client authorizationOracle];
+  clientHasAuthorizationForAllTypes = [authorizationOracle clientHasAuthorizationForAllTypes];
 
-  if ((v10 & 1) == 0)
+  if ((clientHasAuthorizationForAllTypes & 1) == 0)
   {
-    v12 = [(HDStandardTaskServer *)self client];
-    v13 = [v12 authorizationOracle];
+    client2 = [(HDStandardTaskServer *)self client];
+    authorizationOracle2 = [client2 authorizationOracle];
     v14 = [MEMORY[0x277CCDB68] userTrackedConceptTypeForIdentifier:*MEMORY[0x277CCCE88]];
     v30 = 0;
-    v15 = [v13 authorizationStatusRecordForType:v14 error:&v30];
+    v15 = [authorizationOracle2 authorizationStatusRecordForType:v14 error:&v30];
     v11 = v30;
 
     if (v15)
@@ -127,37 +127,37 @@ LABEL_12:
 
     v18 = [v26 hk_error:v28 description:v27];
 
-    v7[2](v7, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
     goto LABEL_12;
   }
 
   v11 = 0;
 LABEL_6:
-  v16 = [(HDStandardTaskServer *)self profile];
+  profile = [(HDStandardTaskServer *)self profile];
   v29 = v11;
-  v17 = [HDMedicationExposableDoseEventEngine writeDoseEvents:v6 profile:v16 error:&v29];
+  v17 = [HDMedicationExposableDoseEventEngine writeDoseEvents:eventsCopy profile:profile error:&v29];
   v18 = v29;
 
-  v7[2](v7, v17, v18);
+  completionCopy[2](completionCopy, v17, v18);
 LABEL_12:
 }
 
-- (void)remote_deleteDoseEventWithPersistentUUID:(id)a3 completion:(id)a4
+- (void)remote_deleteDoseEventWithPersistentUUID:(id)d completion:(id)completion
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDStandardTaskServer *)self client];
-  v9 = [v8 authorizationOracle];
-  v10 = [v9 clientHasAuthorizationForAllTypes];
+  dCopy = d;
+  completionCopy = completion;
+  client = [(HDStandardTaskServer *)self client];
+  authorizationOracle = [client authorizationOracle];
+  clientHasAuthorizationForAllTypes = [authorizationOracle clientHasAuthorizationForAllTypes];
 
-  if ((v10 & 1) == 0)
+  if ((clientHasAuthorizationForAllTypes & 1) == 0)
   {
-    v12 = [(HDStandardTaskServer *)self client];
-    v13 = [v12 authorizationOracle];
+    client2 = [(HDStandardTaskServer *)self client];
+    authorizationOracle2 = [client2 authorizationOracle];
     v14 = [MEMORY[0x277CCDB68] userTrackedConceptTypeForIdentifier:*MEMORY[0x277CCCE88]];
     v33 = 0;
-    v15 = [v13 authorizationStatusRecordForType:v14 error:&v33];
+    v15 = [authorizationOracle2 authorizationStatusRecordForType:v14 error:&v33];
     v11 = v33;
 
     if (v15)
@@ -189,22 +189,22 @@ LABEL_12:
 
     v20 = [v28 hk_error:v30 description:v29];
 
-    v7[2](v7, 0, v20);
+    completionCopy[2](completionCopy, 0, v20);
     goto LABEL_12;
   }
 
   v11 = 0;
 LABEL_6:
   v15 = objc_alloc_init(MEMORY[0x277D10688]);
-  v16 = [(HDStandardTaskServer *)self profile];
-  v17 = [v16 dataManager];
-  v34[0] = v6;
+  profile = [(HDStandardTaskServer *)self profile];
+  dataManager = [profile dataManager];
+  v34[0] = dCopy;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
   v32 = v11;
-  v19 = [v17 deleteObjectsWithUUIDCollection:v18 configuration:v15 error:&v32];
+  v19 = [dataManager deleteObjectsWithUUIDCollection:v18 configuration:v15 error:&v32];
   v20 = v32;
 
-  v7[2](v7, v19, v20);
+  completionCopy[2](completionCopy, v19, v20);
 LABEL_12:
 
   v31 = *MEMORY[0x277D85DE8];

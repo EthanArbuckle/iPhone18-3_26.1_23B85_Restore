@@ -1,6 +1,6 @@
 @interface PKProgressContentViewController
 - (void)loadView;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -17,15 +17,15 @@
   v4.receiver = self;
   v4.super_class = PKProgressContentViewController;
   [(PKProgressContentViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(PKProgressContentViewController *)self view];
-  [v3 intrinsicContentSize];
+  view = [(PKProgressContentViewController *)self view];
+  [view intrinsicContentSize];
   [(PKProgressContentViewController *)self setPreferredContentSize:?];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v4 = [(PKProgressContentViewController *)self _contentView];
-  [v4 setProgress:a3];
+  _contentView = [(PKProgressContentViewController *)self _contentView];
+  [_contentView setProgress:progress];
 }
 
 @end

@@ -1,116 +1,116 @@
 @interface BCSBusinessQueryController
-- (BCSBusinessQueryController)initWithChatSuggestMegashardFetchTrigger:(id)a3 businessLinkMegashardFetchTrigger:(id)a4 businessCallerMegashardFetchTrigger:(id)a5 businessEmailMegashardFetchTrigger:(id)a6 entitlementVerifier:(id)a7 identityService:(id)a8 chatSuggestController:(id)a9 iconController:(id)a10 cacheClearer:(id)a11 shardCache:(id)a12 configCache:(id)a13 configCacheSkip:(id)a14 shardCacheSkip:(id)a15 chatSuggestConfigResolver:(id)a16 linkConfigResolver:(id)a17 businessCallerConfigResolver:(id)a18 businessEmailConfigResolver:(id)a19 chatSuggestShardResolver:(id)a20 linkShardResolver:(id)a21 businessCallerShardResolver:(id)a22 businessEmailShardResolver:(id)a23 chatSuggestItemResolver:(id)a24 linkItemResolver:(id)a25 businessCallerItemResolver:(id)a26 businessEmailItemResolver:(id)a27 webPresentmentItemResolver:(id)a28 queryChopper:(id)a29 patternController:(id)a30 metricFactory:(id)a31 blastDoorHelper:(id)a32 housekeeper:(id)a33;
-- (BCSBusinessQueryController)initWithChatSuggestMegashardFetcher:(id)a3 businessLinkMegashardFetcher:(id)a4 businessCallerMegashardFetcher:(id)a5 businessEmailMegashardFetcher:(id)a6 shardCache:(id)a7 cacheManager:(id)a8 chatSuggestRemoteFetcher:(id)a9 businessLinkRemoteFetcher:(id)a10 businessCallerRemoteFetcher:(id)a11 businessEmailRemoteFetcher:(id)a12 webPresentmentRemoteFetcher:(id)a13 userDefaults:(id)a14 metricFactory:(id)a15;
-- (char)_itemResolverForType:(uint64_t)a1;
-- (id)_shardIdentifierForQuery:(void *)a1 withItemIdentifier:(void *)a2;
-- (id)_shardResolverForType:(id)a1;
-- (uint64_t)_shardStartIndexForItemIdentifier:(uint64_t)a3 shardType:(uint64_t)a4 shardCount:;
-- (unint64_t)_isBloomFilterCachedForType:(id *)a1;
+- (BCSBusinessQueryController)initWithChatSuggestMegashardFetchTrigger:(id)trigger businessLinkMegashardFetchTrigger:(id)fetchTrigger businessCallerMegashardFetchTrigger:(id)megashardFetchTrigger businessEmailMegashardFetchTrigger:(id)emailMegashardFetchTrigger entitlementVerifier:(id)verifier identityService:(id)service chatSuggestController:(id)controller iconController:(id)self0 cacheClearer:(id)self1 shardCache:(id)self2 configCache:(id)self3 configCacheSkip:(id)self4 shardCacheSkip:(id)self5 chatSuggestConfigResolver:(id)self6 linkConfigResolver:(id)self7 businessCallerConfigResolver:(id)self8 businessEmailConfigResolver:(id)self9 chatSuggestShardResolver:(id)shardResolver linkShardResolver:(id)linkShardResolver businessCallerShardResolver:(id)callerShardResolver businessEmailShardResolver:(id)emailShardResolver chatSuggestItemResolver:(id)itemResolver linkItemResolver:(id)linkItemResolver businessCallerItemResolver:(id)callerItemResolver businessEmailItemResolver:(id)emailItemResolver webPresentmentItemResolver:(id)presentmentItemResolver queryChopper:(id)chopper patternController:(id)trigger0 metricFactory:(id)trigger1 blastDoorHelper:(id)trigger2 housekeeper:(id)trigger3;
+- (BCSBusinessQueryController)initWithChatSuggestMegashardFetcher:(id)fetcher businessLinkMegashardFetcher:(id)megashardFetcher businessCallerMegashardFetcher:(id)callerMegashardFetcher businessEmailMegashardFetcher:(id)emailMegashardFetcher shardCache:(id)cache cacheManager:(id)manager chatSuggestRemoteFetcher:(id)remoteFetcher businessLinkRemoteFetcher:(id)self0 businessCallerRemoteFetcher:(id)self1 businessEmailRemoteFetcher:(id)self2 webPresentmentRemoteFetcher:(id)self3 userDefaults:(id)self4 metricFactory:(id)self5;
+- (char)_itemResolverForType:(uint64_t)type;
+- (id)_shardIdentifierForQuery:(void *)query withItemIdentifier:(void *)identifier;
+- (id)_shardResolverForType:(id)type;
+- (uint64_t)_shardStartIndexForItemIdentifier:(uint64_t)identifier shardType:(uint64_t)type shardCount:;
+- (unint64_t)_isBloomFilterCachedForType:(id *)type;
 - (void)_deleteInMemoryCache;
-- (void)_generateSafeImageURLForItemIdentifier:(void *)a3 imageData:(void *)a4 format:(void *)a5 completion:;
-- (void)cachedBusinessMetadataForEmail:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)a3 completion:(id)a4;
-- (void)clearCachesForType:(int64_t)a3 completion:(id)a4;
-- (void)clearExpiredCachesForType:(int64_t)a3 completion:(id)a4;
-- (void)fetchAreBusinessesRegisteredWithQuery:(id)a3 completion:(id)a4;
-- (void)fetchBrandWithIdentifier:(id)a3 forClientBundleID:(id)a4 serviceType:(int64_t)a5 completion:(id)a6;
-- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)a3 forClientBundleID:(id)a4 metadataCallback:(id)a5 logoURLCallback:(id)a6 completion:(id)a7;
-- (void)fetchBusinessItemWithDetailsForPhoneNumber:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)fetchBusinessItemWithPhoneNumber:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)fetchBusinessLogoForBusinessIdentifier:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)fetchBusinessMetadataForEmail:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)fetchBusinessMetadataForEmailIdentifier:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)fetchBusinessMetadataForEmails:(id)a3 forClientBundleID:(id)a4 requestId:(id)a5 completion:(id)a6;
-- (void)fetchConfigForQuery:(id)a3 completion:(id)a4;
-- (void)fetchIsBusinessPhoneNumber:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)fetchIsBusinessRegisteredWithQuery:(id)a3 completion:(id)a4;
-- (void)fetchItemWithQuery:(id)a3 completion:(id)a4;
-- (void)fetchItemsWithQuery:(id)a3 perItemCompletion:(id)a4 completion:(id)a5;
-- (void)fetchLinkItemModelWithHash:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)fetchShardWithQuery:(id)a3 completion:(id)a4;
-- (void)fetchShardsWithQuery:(id)a3 completion:(id)a4;
-- (void)fetchSquareIconDataForBusinessItem:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)fetchWebPresentmentPermissionsWithIdentifier:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)isBusinessCallerRegisteredForPhoneNumber:(id)a3 forClientBundleID:(id)a4 completion:(id)a5;
-- (void)lookupBloomFiltersForURL:(int)a3 chopURL:(void *)a4 forClientBundleID:(void *)a5 registeredMetric:(void *)a6 completion:;
-- (void)prefetchMegashardsWithCompletion:(id)a3;
-- (void)warmCacheIfNecessaryForPhoneNumbers:(id)a3 forClientBundleID:(id)a4;
+- (void)_generateSafeImageURLForItemIdentifier:(void *)identifier imageData:(void *)data format:(void *)format completion:;
+- (void)cachedBusinessMetadataForEmail:(id)email forClientBundleID:(id)d completion:(id)completion;
+- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)d completion:(id)completion;
+- (void)clearCachesForType:(int64_t)type completion:(id)completion;
+- (void)clearExpiredCachesForType:(int64_t)type completion:(id)completion;
+- (void)fetchAreBusinessesRegisteredWithQuery:(id)query completion:(id)completion;
+- (void)fetchBrandWithIdentifier:(id)identifier forClientBundleID:(id)d serviceType:(int64_t)type completion:(id)completion;
+- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)number forClientBundleID:(id)d completion:(id)completion;
+- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)number forClientBundleID:(id)d metadataCallback:(id)callback logoURLCallback:(id)lCallback completion:(id)completion;
+- (void)fetchBusinessItemWithDetailsForPhoneNumber:(id)number forClientBundleID:(id)d completion:(id)completion;
+- (void)fetchBusinessItemWithPhoneNumber:(id)number forClientBundleID:(id)d completion:(id)completion;
+- (void)fetchBusinessLogoForBusinessIdentifier:(id)identifier forClientBundleID:(id)d completion:(id)completion;
+- (void)fetchBusinessMetadataForEmail:(id)email forClientBundleID:(id)d completion:(id)completion;
+- (void)fetchBusinessMetadataForEmailIdentifier:(id)identifier forClientBundleID:(id)d completion:(id)completion;
+- (void)fetchBusinessMetadataForEmails:(id)emails forClientBundleID:(id)d requestId:(id)id completion:(id)completion;
+- (void)fetchConfigForQuery:(id)query completion:(id)completion;
+- (void)fetchIsBusinessPhoneNumber:(id)number forClientBundleID:(id)d completion:(id)completion;
+- (void)fetchIsBusinessRegisteredWithQuery:(id)query completion:(id)completion;
+- (void)fetchItemWithQuery:(id)query completion:(id)completion;
+- (void)fetchItemsWithQuery:(id)query perItemCompletion:(id)completion completion:(id)a5;
+- (void)fetchLinkItemModelWithHash:(id)hash forClientBundleID:(id)d completion:(id)completion;
+- (void)fetchShardWithQuery:(id)query completion:(id)completion;
+- (void)fetchShardsWithQuery:(id)query completion:(id)completion;
+- (void)fetchSquareIconDataForBusinessItem:(id)item forClientBundleID:(id)d completion:(id)completion;
+- (void)fetchWebPresentmentPermissionsWithIdentifier:(id)identifier forClientBundleID:(id)d completion:(id)completion;
+- (void)isBusinessCallerRegisteredForPhoneNumber:(id)number forClientBundleID:(id)d completion:(id)completion;
+- (void)lookupBloomFiltersForURL:(int)l chopURL:(void *)rL forClientBundleID:(void *)d registeredMetric:(void *)metric completion:;
+- (void)prefetchMegashardsWithCompletion:(id)completion;
+- (void)warmCacheIfNecessaryForPhoneNumbers:(id)numbers forClientBundleID:(id)d;
 @end
 
 @implementation BCSBusinessQueryController
 
-- (BCSBusinessQueryController)initWithChatSuggestMegashardFetcher:(id)a3 businessLinkMegashardFetcher:(id)a4 businessCallerMegashardFetcher:(id)a5 businessEmailMegashardFetcher:(id)a6 shardCache:(id)a7 cacheManager:(id)a8 chatSuggestRemoteFetcher:(id)a9 businessLinkRemoteFetcher:(id)a10 businessCallerRemoteFetcher:(id)a11 businessEmailRemoteFetcher:(id)a12 webPresentmentRemoteFetcher:(id)a13 userDefaults:(id)a14 metricFactory:(id)a15
+- (BCSBusinessQueryController)initWithChatSuggestMegashardFetcher:(id)fetcher businessLinkMegashardFetcher:(id)megashardFetcher businessCallerMegashardFetcher:(id)callerMegashardFetcher businessEmailMegashardFetcher:(id)emailMegashardFetcher shardCache:(id)cache cacheManager:(id)manager chatSuggestRemoteFetcher:(id)remoteFetcher businessLinkRemoteFetcher:(id)self0 businessCallerRemoteFetcher:(id)self1 businessEmailRemoteFetcher:(id)self2 webPresentmentRemoteFetcher:(id)self3 userDefaults:(id)self4 metricFactory:(id)self5
 {
-  v18 = a15;
-  v75 = a14;
-  v58 = a13;
-  v56 = a12;
-  v61 = a11;
-  v54 = a10;
-  v52 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  factoryCopy = factory;
+  defaultsCopy = defaults;
+  presentmentRemoteFetcherCopy = presentmentRemoteFetcher;
+  emailRemoteFetcherCopy = emailRemoteFetcher;
+  callerRemoteFetcherCopy = callerRemoteFetcher;
+  linkRemoteFetcherCopy = linkRemoteFetcher;
+  remoteFetcherCopy = remoteFetcher;
+  managerCopy = manager;
+  cacheCopy = cache;
+  emailMegashardFetcherCopy = emailMegashardFetcher;
+  callerMegashardFetcherCopy = callerMegashardFetcher;
+  megashardFetcherCopy = megashardFetcher;
+  fetcherCopy = fetcher;
   v25 = objc_alloc_init(BCSManualFetchTrigger);
-  [v24 addFetchTrigger:?];
+  [fetcherCopy addFetchTrigger:?];
 
   v26 = objc_alloc_init(BCSManualFetchTrigger);
-  [v23 addFetchTrigger:v26];
+  [megashardFetcherCopy addFetchTrigger:v26];
 
   v80 = objc_alloc_init(BCSManualFetchTrigger);
-  [v22 addFetchTrigger:v80];
+  [callerMegashardFetcherCopy addFetchTrigger:v80];
 
   v27 = objc_alloc_init(BCSManualFetchTrigger);
-  [v21 addFetchTrigger:?];
+  [emailMegashardFetcherCopy addFetchTrigger:?];
 
   v73 = objc_alloc_init(BCSIconController);
   v28 = [BCSChatSuggestController alloc];
   v29 = +[BCSIdentityService sharedInstance];
   v30 = objc_alloc_init(BCSLocaleHelper);
-  v69 = [(BCSChatSuggestController *)&v28->super.isa initWithUserDefaults:v75 identityService:v29 localeHelper:v30];
+  v69 = [(BCSChatSuggestController *)&v28->super.isa initWithUserDefaults:defaultsCopy identityService:v29 localeHelper:v30];
 
   v78 = v25;
-  v76 = [[BCSConfigResolver alloc] initWithConfigCache:v19 cacheSkipper:v19 megashardFetchTrigger:v25 metricFactory:v18];
+  v76 = [[BCSConfigResolver alloc] initWithConfigCache:managerCopy cacheSkipper:managerCopy megashardFetchTrigger:v25 metricFactory:factoryCopy];
   v71 = v26;
-  v74 = [[BCSConfigResolver alloc] initWithConfigCache:v19 cacheSkipper:v19 megashardFetchTrigger:v26 metricFactory:v18];
-  v70 = [[BCSConfigResolver alloc] initWithConfigCache:v19 cacheSkipper:v19 megashardFetchTrigger:v80 metricFactory:v18];
+  v74 = [[BCSConfigResolver alloc] initWithConfigCache:managerCopy cacheSkipper:managerCopy megashardFetchTrigger:v26 metricFactory:factoryCopy];
+  v70 = [[BCSConfigResolver alloc] initWithConfigCache:managerCopy cacheSkipper:managerCopy megashardFetchTrigger:v80 metricFactory:factoryCopy];
   v65 = v27;
-  v68 = [[BCSConfigResolver alloc] initWithConfigCache:v19 cacheSkipper:v19 megashardFetchTrigger:v27 metricFactory:v18];
-  v67 = [[BCSShardResolver alloc] initWithShardCache:v20 cacheSkipper:v19 megashardFetchTrigger:v25 metricFactory:v18];
-  v66 = [[BCSShardResolver alloc] initWithShardCache:v20 cacheSkipper:v19 megashardFetchTrigger:v26 metricFactory:v18];
-  v64 = [[BCSShardResolver alloc] initWithShardCache:v20 cacheSkipper:v19 megashardFetchTrigger:v80 metricFactory:v18];
-  v51 = [[BCSShardResolver alloc] initWithShardCache:v20 cacheSkipper:v19 megashardFetchTrigger:v27 metricFactory:v18];
+  v68 = [[BCSConfigResolver alloc] initWithConfigCache:managerCopy cacheSkipper:managerCopy megashardFetchTrigger:v27 metricFactory:factoryCopy];
+  v67 = [[BCSShardResolver alloc] initWithShardCache:cacheCopy cacheSkipper:managerCopy megashardFetchTrigger:v25 metricFactory:factoryCopy];
+  v66 = [[BCSShardResolver alloc] initWithShardCache:cacheCopy cacheSkipper:managerCopy megashardFetchTrigger:v26 metricFactory:factoryCopy];
+  v64 = [[BCSShardResolver alloc] initWithShardCache:cacheCopy cacheSkipper:managerCopy megashardFetchTrigger:v80 metricFactory:factoryCopy];
+  v51 = [[BCSShardResolver alloc] initWithShardCache:cacheCopy cacheSkipper:managerCopy megashardFetchTrigger:v27 metricFactory:factoryCopy];
 
-  v63 = [[BCSItemResolver alloc] initWithItemCache:v19 cacheSkipper:v19 remoteFetcher:v52 metricFactory:v18];
-  v53 = [[BCSItemResolver alloc] initWithItemCache:v19 cacheSkipper:v19 remoteFetcher:v54 metricFactory:v18];
+  v63 = [[BCSItemResolver alloc] initWithItemCache:managerCopy cacheSkipper:managerCopy remoteFetcher:remoteFetcherCopy metricFactory:factoryCopy];
+  v53 = [[BCSItemResolver alloc] initWithItemCache:managerCopy cacheSkipper:managerCopy remoteFetcher:linkRemoteFetcherCopy metricFactory:factoryCopy];
 
-  v31 = [v61 environment];
+  environment = [callerRemoteFetcherCopy environment];
 
-  v55 = [v31 pirEnvironmentForServerType:1];
+  v55 = [environment pirEnvironmentForServerType:1];
 
-  v62 = [[BCSCallerIdResolver alloc] initWithEnvironment:v55 itemCache:v19 cacheSkipper:v19 metricFactory:v18];
-  v32 = [v56 environment];
-  v50 = [v32 pirEnvironmentForServerType:2];
+  v62 = [[BCSCallerIdResolver alloc] initWithEnvironment:v55 itemCache:managerCopy cacheSkipper:managerCopy metricFactory:factoryCopy];
+  environment2 = [emailRemoteFetcherCopy environment];
+  v50 = [environment2 pirEnvironmentForServerType:2];
 
-  v33 = [v56 environment];
+  environment3 = [emailRemoteFetcherCopy environment];
 
-  v57 = [v33 pirEnvironmentForServerType:3];
+  v57 = [environment3 pirEnvironmentForServerType:3];
 
-  v48 = [[BCSBusinessEmailResolver alloc] initWithMetadataEnvironment:v50 logoEnvironment:v57 itemCache:v19 cacheSkipper:v19 metricFactory:v18];
-  v34 = [v58 environment];
-  v49 = [v34 pirEnvironmentForServerType:2];
+  v48 = [[BCSBusinessEmailResolver alloc] initWithMetadataEnvironment:v50 logoEnvironment:v57 itemCache:managerCopy cacheSkipper:managerCopy metricFactory:factoryCopy];
+  environment4 = [presentmentRemoteFetcherCopy environment];
+  v49 = [environment4 pirEnvironmentForServerType:2];
 
-  v35 = [v58 environment];
+  environment5 = [presentmentRemoteFetcherCopy environment];
 
-  v59 = [v35 pirEnvironmentForServerType:4];
+  v59 = [environment5 pirEnvironmentForServerType:4];
 
-  v47 = [[BCSWebPresentmentItemResolver alloc] initWithMetadataEnvironment:v49 permissionsEnvironment:v59 itemCache:v19 cacheSkipper:v19 metricFactory:v18];
-  v46 = [[BCSQueryChopper alloc] initWithMetricFactory:v18];
-  v36 = [[BCSURLPatternController alloc] initWithCacheManager:v19 metricFactory:v18];
+  v47 = [[BCSWebPresentmentItemResolver alloc] initWithMetadataEnvironment:v49 permissionsEnvironment:v59 itemCache:managerCopy cacheSkipper:managerCopy metricFactory:factoryCopy];
+  v46 = [[BCSQueryChopper alloc] initWithMetricFactory:factoryCopy];
+  v36 = [[BCSURLPatternController alloc] initWithCacheManager:managerCopy metricFactory:factoryCopy];
   v37 = +[BCSBlastDoorHelper defaultHelper];
   v38 = [BCSHousekeeper alloc];
   v39 = +[BCSUserDefaults sharedDefaults];
@@ -118,86 +118,86 @@
 
   v41 = objc_alloc_init(BCSEntitlementVerifier);
   v42 = +[BCSIdentityService sharedInstance];
-  v43 = [(BCSBusinessQueryController *)self initWithChatSuggestMegashardFetchTrigger:v78 businessLinkMegashardFetchTrigger:v26 businessCallerMegashardFetchTrigger:v80 businessEmailMegashardFetchTrigger:v65 entitlementVerifier:v41 identityService:v42 chatSuggestController:v69 iconController:v73 cacheClearer:v19 shardCache:v19 configCache:v19 configCacheSkip:v19 shardCacheSkip:v19 chatSuggestConfigResolver:v76 linkConfigResolver:v74 businessCallerConfigResolver:v70 businessEmailConfigResolver:v68 chatSuggestShardResolver:v67 linkShardResolver:v66 businessCallerShardResolver:v64 businessEmailShardResolver:v51 chatSuggestItemResolver:v63 linkItemResolver:v53 businessCallerItemResolver:v62 businessEmailItemResolver:v48 webPresentmentItemResolver:v47 queryChopper:v46 patternController:v36 metricFactory:v18 blastDoorHelper:v37 housekeeper:v40];
+  v43 = [(BCSBusinessQueryController *)self initWithChatSuggestMegashardFetchTrigger:v78 businessLinkMegashardFetchTrigger:v26 businessCallerMegashardFetchTrigger:v80 businessEmailMegashardFetchTrigger:v65 entitlementVerifier:v41 identityService:v42 chatSuggestController:v69 iconController:v73 cacheClearer:managerCopy shardCache:managerCopy configCache:managerCopy configCacheSkip:managerCopy shardCacheSkip:managerCopy chatSuggestConfigResolver:v76 linkConfigResolver:v74 businessCallerConfigResolver:v70 businessEmailConfigResolver:v68 chatSuggestShardResolver:v67 linkShardResolver:v66 businessCallerShardResolver:v64 businessEmailShardResolver:v51 chatSuggestItemResolver:v63 linkItemResolver:v53 businessCallerItemResolver:v62 businessEmailItemResolver:v48 webPresentmentItemResolver:v47 queryChopper:v46 patternController:v36 metricFactory:factoryCopy blastDoorHelper:v37 housekeeper:v40];
 
   v44 = v43;
   return v44;
 }
 
-- (BCSBusinessQueryController)initWithChatSuggestMegashardFetchTrigger:(id)a3 businessLinkMegashardFetchTrigger:(id)a4 businessCallerMegashardFetchTrigger:(id)a5 businessEmailMegashardFetchTrigger:(id)a6 entitlementVerifier:(id)a7 identityService:(id)a8 chatSuggestController:(id)a9 iconController:(id)a10 cacheClearer:(id)a11 shardCache:(id)a12 configCache:(id)a13 configCacheSkip:(id)a14 shardCacheSkip:(id)a15 chatSuggestConfigResolver:(id)a16 linkConfigResolver:(id)a17 businessCallerConfigResolver:(id)a18 businessEmailConfigResolver:(id)a19 chatSuggestShardResolver:(id)a20 linkShardResolver:(id)a21 businessCallerShardResolver:(id)a22 businessEmailShardResolver:(id)a23 chatSuggestItemResolver:(id)a24 linkItemResolver:(id)a25 businessCallerItemResolver:(id)a26 businessEmailItemResolver:(id)a27 webPresentmentItemResolver:(id)a28 queryChopper:(id)a29 patternController:(id)a30 metricFactory:(id)a31 blastDoorHelper:(id)a32 housekeeper:(id)a33
+- (BCSBusinessQueryController)initWithChatSuggestMegashardFetchTrigger:(id)trigger businessLinkMegashardFetchTrigger:(id)fetchTrigger businessCallerMegashardFetchTrigger:(id)megashardFetchTrigger businessEmailMegashardFetchTrigger:(id)emailMegashardFetchTrigger entitlementVerifier:(id)verifier identityService:(id)service chatSuggestController:(id)controller iconController:(id)self0 cacheClearer:(id)self1 shardCache:(id)self2 configCache:(id)self3 configCacheSkip:(id)self4 shardCacheSkip:(id)self5 chatSuggestConfigResolver:(id)self6 linkConfigResolver:(id)self7 businessCallerConfigResolver:(id)self8 businessEmailConfigResolver:(id)self9 chatSuggestShardResolver:(id)shardResolver linkShardResolver:(id)linkShardResolver businessCallerShardResolver:(id)callerShardResolver businessEmailShardResolver:(id)emailShardResolver chatSuggestItemResolver:(id)itemResolver linkItemResolver:(id)linkItemResolver businessCallerItemResolver:(id)callerItemResolver businessEmailItemResolver:(id)emailItemResolver webPresentmentItemResolver:(id)presentmentItemResolver queryChopper:(id)chopper patternController:(id)trigger0 metricFactory:(id)trigger1 blastDoorHelper:(id)trigger2 housekeeper:(id)trigger3
 {
   v85 = *MEMORY[0x277D85DE8];
-  v79 = a3;
-  v78 = a4;
-  v51 = a5;
-  v77 = a5;
-  v76 = a6;
-  v75 = a7;
-  v52 = a8;
-  v74 = a8;
-  v73 = a9;
-  v72 = a10;
-  v71 = a11;
-  v70 = a12;
-  v69 = a13;
-  v68 = a14;
-  v67 = a15;
-  v66 = a16;
-  v65 = a17;
-  v64 = a18;
-  v63 = a19;
-  v62 = a20;
-  v61 = a21;
-  v60 = a22;
-  v59 = a23;
-  v58 = a24;
-  v57 = a25;
-  v38 = a26;
-  v39 = a27;
-  v40 = a28;
-  v41 = a29;
-  v56 = a30;
-  v55 = a31;
-  v42 = a32;
-  v43 = a33;
+  triggerCopy = trigger;
+  fetchTriggerCopy = fetchTrigger;
+  megashardFetchTriggerCopy = megashardFetchTrigger;
+  megashardFetchTriggerCopy2 = megashardFetchTrigger;
+  emailMegashardFetchTriggerCopy = emailMegashardFetchTrigger;
+  verifierCopy = verifier;
+  serviceCopy = service;
+  serviceCopy2 = service;
+  controllerCopy = controller;
+  iconControllerCopy = iconController;
+  clearerCopy = clearer;
+  cacheCopy = cache;
+  configCacheCopy = configCache;
+  skipCopy = skip;
+  cacheSkipCopy = cacheSkip;
+  resolverCopy = resolver;
+  configResolverCopy = configResolver;
+  callerConfigResolverCopy = callerConfigResolver;
+  emailConfigResolverCopy = emailConfigResolver;
+  shardResolverCopy = shardResolver;
+  linkShardResolverCopy = linkShardResolver;
+  callerShardResolverCopy = callerShardResolver;
+  emailShardResolverCopy = emailShardResolver;
+  itemResolverCopy = itemResolver;
+  linkItemResolverCopy = linkItemResolver;
+  callerItemResolverCopy = callerItemResolver;
+  emailItemResolverCopy = emailItemResolver;
+  presentmentItemResolverCopy = presentmentItemResolver;
+  chopperCopy = chopper;
+  patternControllerCopy = patternController;
+  factoryCopy = factory;
+  helperCopy = helper;
+  housekeeperCopy = housekeeper;
   v80.receiver = self;
   v80.super_class = BCSBusinessQueryController;
   v44 = [(BCSBusinessQueryController *)&v80 init];
   v45 = v44;
   if (v44)
   {
-    v54 = v43;
-    objc_storeStrong(&v44->_chatSuggestMegashardFetchTrigger, a3);
-    objc_storeStrong(&v45->_businessLinkMegashardFetchTrigger, a4);
-    objc_storeStrong(&v45->_businessCallerMegashardFetchTrigger, v51);
-    objc_storeStrong(&v45->_businessEmailMegashardFetchTrigger, a6);
-    objc_storeStrong(&v45->_entitlementVerifier, a7);
-    objc_storeStrong(&v45->_identityService, v52);
-    objc_storeStrong(&v45->_chatSuggestController, a9);
-    objc_storeStrong(&v45->_iconController, a10);
-    objc_storeStrong(&v45->_cacheClearer, a11);
-    objc_storeStrong(&v45->_shardCache, a12);
-    objc_storeStrong(&v45->_configCache, a13);
-    objc_storeStrong(&v45->_configCacheSkip, a14);
-    objc_storeStrong(&v45->_shardCacheSkip, a15);
-    objc_storeStrong(&v45->_chatSuggestConfigResolver, a16);
-    objc_storeStrong(&v45->_linkConfigResolver, a17);
-    objc_storeStrong(&v45->_businessCallerConfigResolver, a18);
-    objc_storeStrong(&v45->_businessEmailConfigResolver, a19);
-    objc_storeStrong(&v45->_chatSuggestShardResolver, a20);
-    objc_storeStrong(&v45->_linkShardResolver, a21);
-    objc_storeStrong(&v45->_businessCallerShardResolver, a22);
-    objc_storeStrong(&v45->_businessEmailShardResolver, a23);
-    objc_storeStrong(&v45->_chatSuggestItemResolver, a24);
-    objc_storeStrong(&v45->_linkItemResolver, a25);
-    objc_storeStrong(&v45->_businessCallerItemResolver, a26);
-    objc_storeStrong(&v45->_businessEmailItemResolver, a27);
-    objc_storeStrong(&v45->_webPresentmentItemResolver, a28);
-    objc_storeStrong(&v45->_queryChopper, a29);
-    objc_storeStrong(&v45->_patternController, a30);
-    objc_storeStrong(&v45->_metricFactory, a31);
-    objc_storeStrong(&v45->_blastDoorHelper, a32);
-    objc_storeStrong(&v45->_housekeeper, a33);
+    v54 = housekeeperCopy;
+    objc_storeStrong(&v44->_chatSuggestMegashardFetchTrigger, trigger);
+    objc_storeStrong(&v45->_businessLinkMegashardFetchTrigger, fetchTrigger);
+    objc_storeStrong(&v45->_businessCallerMegashardFetchTrigger, megashardFetchTriggerCopy);
+    objc_storeStrong(&v45->_businessEmailMegashardFetchTrigger, emailMegashardFetchTrigger);
+    objc_storeStrong(&v45->_entitlementVerifier, verifier);
+    objc_storeStrong(&v45->_identityService, serviceCopy);
+    objc_storeStrong(&v45->_chatSuggestController, controller);
+    objc_storeStrong(&v45->_iconController, iconController);
+    objc_storeStrong(&v45->_cacheClearer, clearer);
+    objc_storeStrong(&v45->_shardCache, cache);
+    objc_storeStrong(&v45->_configCache, configCache);
+    objc_storeStrong(&v45->_configCacheSkip, skip);
+    objc_storeStrong(&v45->_shardCacheSkip, cacheSkip);
+    objc_storeStrong(&v45->_chatSuggestConfigResolver, resolver);
+    objc_storeStrong(&v45->_linkConfigResolver, configResolver);
+    objc_storeStrong(&v45->_businessCallerConfigResolver, callerConfigResolver);
+    objc_storeStrong(&v45->_businessEmailConfigResolver, emailConfigResolver);
+    objc_storeStrong(&v45->_chatSuggestShardResolver, shardResolver);
+    objc_storeStrong(&v45->_linkShardResolver, linkShardResolver);
+    objc_storeStrong(&v45->_businessCallerShardResolver, callerShardResolver);
+    objc_storeStrong(&v45->_businessEmailShardResolver, emailShardResolver);
+    objc_storeStrong(&v45->_chatSuggestItemResolver, itemResolver);
+    objc_storeStrong(&v45->_linkItemResolver, linkItemResolver);
+    objc_storeStrong(&v45->_businessCallerItemResolver, callerItemResolver);
+    objc_storeStrong(&v45->_businessEmailItemResolver, emailItemResolver);
+    objc_storeStrong(&v45->_webPresentmentItemResolver, presentmentItemResolver);
+    objc_storeStrong(&v45->_queryChopper, chopper);
+    objc_storeStrong(&v45->_patternController, patternController);
+    objc_storeStrong(&v45->_metricFactory, factory);
+    objc_storeStrong(&v45->_blastDoorHelper, helper);
+    objc_storeStrong(&v45->_housekeeper, housekeeper);
     v45->_blastDoorWarmedUp = 0;
     v46 = ABSLogCommon();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
@@ -215,7 +215,7 @@
     v84 = v45;
     dispatch_async(v47, &buf);
 
-    v43 = v54;
+    housekeeperCopy = v54;
   }
 
   v48 = *MEMORY[0x277D85DE8];
@@ -242,11 +242,11 @@ void __42__BCSBusinessQueryController_startUpTasks__block_invoke(uint64_t a1)
   }
 }
 
-- (void)warmCacheIfNecessaryForPhoneNumbers:(id)a3 forClientBundleID:(id)a4
+- (void)warmCacheIfNecessaryForPhoneNumbers:(id)numbers forClientBundleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numbersCopy = numbers;
+  dCopy = d;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -259,7 +259,7 @@ void __42__BCSBusinessQueryController_startUpTasks__block_invoke(uint64_t a1)
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = v6;
+  v9 = numbersCopy;
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -275,7 +275,7 @@ void __42__BCSBusinessQueryController_startUpTasks__block_invoke(uint64_t a1)
           objc_enumerationMutation(v9);
         }
 
-        [(BCSBusinessQueryController *)self fetchIsBusinessPhoneNumber:*(*(&v15 + 1) + 8 * v13++) forClientBundleID:v7 completion:&__block_literal_global_4, v15];
+        [(BCSBusinessQueryController *)self fetchIsBusinessPhoneNumber:*(*(&v15 + 1) + 8 * v13++) forClientBundleID:dCopy completion:&__block_literal_global_4, v15];
       }
 
       while (v11 != v13);
@@ -288,12 +288,12 @@ void __42__BCSBusinessQueryController_startUpTasks__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchBusinessItemWithDetailsForPhoneNumber:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchBusinessItemWithDetailsForPhoneNumber:(id)number forClientBundleID:(id)d completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -302,15 +302,15 @@ void __42__BCSBusinessQueryController_startUpTasks__block_invoke(uint64_t a1)
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __102__BCSBusinessQueryController_fetchBusinessItemWithDetailsForPhoneNumber_forClientBundleID_completion___block_invoke;
     v13[3] = &unk_278D39380;
     v13[4] = self;
-    v14 = v10;
-    [(BCSBusinessQueryController *)self fetchBusinessItemWithPhoneNumber:v8 forClientBundleID:v9 completion:v13];
+    v14 = completionCopy;
+    [(BCSBusinessQueryController *)self fetchBusinessItemWithPhoneNumber:numberCopy forClientBundleID:dCopy completion:v13];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -335,12 +335,12 @@ void __102__BCSBusinessQueryController_fetchBusinessItemWithDetailsForPhoneNumbe
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchIsBusinessPhoneNumber:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchIsBusinessPhoneNumber:(id)number forClientBundleID:(id)d completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -349,9 +349,9 @@ void __102__BCSBusinessQueryController_fetchBusinessItemWithDetailsForPhoneNumbe
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v12 = [BCSBusinessItemIdentifier identifierWithPhoneNumber:v8];
+    v12 = [BCSBusinessItemIdentifier identifierWithPhoneNumber:numberCopy];
     if (self)
     {
       metricFactory = self->_metricFactory;
@@ -376,21 +376,21 @@ void __102__BCSBusinessQueryController_fetchBusinessItemWithDetailsForPhoneNumbe
     }
 
     v17 = v16;
-    v18 = [(BCSMetricFactoryProtocol *)v17 measurementFactory];
-    v19 = [v18 itemIsRegisteredTimingMeasurementForItemIdentifier:v12];
+    measurementFactory = [(BCSMetricFactoryProtocol *)v17 measurementFactory];
+    v19 = [measurementFactory itemIsRegisteredTimingMeasurementForItemIdentifier:v12];
     [v15 setTimingMeasurement:v19];
 
-    v20 = [v15 timingMeasurement];
-    [v20 begin];
+    timingMeasurement = [v15 timingMeasurement];
+    [timingMeasurement begin];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __86__BCSBusinessQueryController_fetchIsBusinessPhoneNumber_forClientBundleID_completion___block_invoke;
     v23[3] = &unk_278D39380;
     v24 = v15;
-    v25 = v10;
+    v25 = completionCopy;
     v21 = v15;
-    [(BCSBusinessQueryController *)self fetchBusinessItemWithPhoneNumber:v8 forClientBundleID:v9 completion:v23];
+    [(BCSBusinessQueryController *)self fetchBusinessItemWithPhoneNumber:numberCopy forClientBundleID:dCopy completion:v23];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -408,12 +408,12 @@ void __86__BCSBusinessQueryController_fetchIsBusinessPhoneNumber_forClientBundle
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchSquareIconDataForBusinessItem:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchSquareIconDataForBusinessItem:(id)item forClientBundleID:(id)d completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -422,7 +422,7 @@ void __86__BCSBusinessQueryController_fetchIsBusinessPhoneNumber_forClientBundle
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     if (self)
     {
@@ -433,19 +433,19 @@ void __86__BCSBusinessQueryController_fetchIsBusinessPhoneNumber_forClientBundle
     v13[1] = 3221225472;
     v13[2] = __94__BCSBusinessQueryController_fetchSquareIconDataForBusinessItem_forClientBundleID_completion___block_invoke;
     v13[3] = &unk_278D39050;
-    v14 = v10;
-    [(BCSBusinessQueryController *)self fetchSquareIconDataForBusinessItem:v8 forClientBundleID:v9 completion:v13];
+    v14 = completionCopy;
+    [(BCSBusinessQueryController *)self fetchSquareIconDataForBusinessItem:itemCopy forClientBundleID:dCopy completion:v13];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchBusinessItemWithPhoneNumber:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchBusinessItemWithPhoneNumber:(id)number forClientBundleID:(id)d completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -454,9 +454,9 @@ void __86__BCSBusinessQueryController_fetchIsBusinessPhoneNumber_forClientBundle
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v12 = [BCSBusinessItemIdentifier identifierWithPhoneNumber:v8];
+    v12 = [BCSBusinessItemIdentifier identifierWithPhoneNumber:numberCopy];
     if (self)
     {
       metricFactory = self->_metricFactory;
@@ -481,20 +481,20 @@ void __86__BCSBusinessQueryController_fetchIsBusinessPhoneNumber_forClientBundle
     }
 
     v17 = v16;
-    v18 = [(BCSMetricFactoryProtocol *)v17 measurementFactory];
-    v19 = [v18 itemFetchTimingMeasurementForItemIdentifier:v12];
+    measurementFactory = [(BCSMetricFactoryProtocol *)v17 measurementFactory];
+    v19 = [measurementFactory itemFetchTimingMeasurementForItemIdentifier:v12];
     [v15 setTimingMeasurement:v19];
 
-    v20 = [v15 timingMeasurement];
-    [v20 begin];
+    timingMeasurement = [v15 timingMeasurement];
+    [timingMeasurement begin];
 
-    v21 = [[BCSQuery alloc] initWithItemIdentifier:v12 clientBundleId:v9 shardType:1];
+    v21 = [[BCSQuery alloc] initWithItemIdentifier:v12 clientBundleId:dCopy shardType:1];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __92__BCSBusinessQueryController_fetchBusinessItemWithPhoneNumber_forClientBundleID_completion___block_invoke;
     v24[3] = &unk_278D393A8;
     v25 = v15;
-    v26 = v10;
+    v26 = completionCopy;
     v22 = v15;
     [(BCSBusinessQueryController *)self fetchItemWithQuery:v21 completion:v24];
   }
@@ -617,22 +617,22 @@ void __93__BCSBusinessQueryController_fetchLinkItemModelWithURL_chopURL_forClien
   }
 }
 
-- (unint64_t)_isBloomFilterCachedForType:(id *)a1
+- (unint64_t)_isBloomFilterCachedForType:(id *)type
 {
-  v2 = a1;
-  if (a1)
+  typeCopy = type;
+  if (type)
   {
-    v4 = a1[29];
+    v4 = type[29];
     if ([v4 shouldSkipCacheForConfigItemOfType:a2])
     {
       goto LABEL_3;
     }
 
-    v5 = [*(v2 + 240) shouldSkipCacheForShardItemOfType:a2];
+    v5 = [*(typeCopy + 240) shouldSkipCacheForShardItemOfType:a2];
 
     if ((v5 & 1) == 0)
     {
-      v4 = [*(v2 + 224) configItemForType:a2];
+      v4 = [*(typeCopy + 224) configItemForType:a2];
       if (v4)
       {
         if ((a2 - 2) > 3)
@@ -645,22 +645,22 @@ void __93__BCSBusinessQueryController_fetchLinkItemModelWithURL_chopURL_forClien
           v6 = qword_2420E91D0[a2 - 2];
         }
 
-        v7 = [*(v2 + 216) countOfShardsOfType:v6];
-        v2 = v7 == [v4 filterShardCount];
+        v7 = [*(typeCopy + 216) countOfShardsOfType:v6];
+        typeCopy = v7 == [v4 filterShardCount];
         goto LABEL_11;
       }
 
 LABEL_3:
-      v2 = 0;
+      typeCopy = 0;
 LABEL_11:
 
-      return v2;
+      return typeCopy;
     }
 
     return 0;
   }
 
-  return v2;
+  return typeCopy;
 }
 
 void __93__BCSBusinessQueryController_fetchLinkItemModelWithURL_chopURL_forClientBundleID_completion___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -889,41 +889,41 @@ void __94__BCSBusinessQueryController_isBusinessRegisteredForURL_chopURL_forClie
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lookupBloomFiltersForURL:(int)a3 chopURL:(void *)a4 forClientBundleID:(void *)a5 registeredMetric:(void *)a6 completion:
+- (void)lookupBloomFiltersForURL:(int)l chopURL:(void *)rL forClientBundleID:(void *)d registeredMetric:(void *)metric completion:
 {
   v11 = a2;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (a1)
+  rLCopy = rL;
+  dCopy = d;
+  metricCopy = metric;
+  if (self)
   {
     v15 = [BCSLinkItemIdentifier identifierWithURL:v11];
-    if (a3)
+    if (l)
     {
-      v16 = a1[24];
-      v17 = -[BCSBusinessQueryController _isBloomFilterCachedForType:](a1, [v15 type]);
+      v16 = self[24];
+      v17 = -[BCSBusinessQueryController _isBloomFilterCachedForType:](self, [v15 type]);
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __109__BCSBusinessQueryController_lookupBloomFiltersForURL_chopURL_forClientBundleID_registeredMetric_completion___block_invoke;
       v23[3] = &unk_278D394C0;
-      v24 = v13;
-      v25 = v14;
-      [v16 queryChopperDelegate:a1 isBusinessRegisteredForURL:v11 isBloomFilterCached:v17 forClientBundleID:v12 metric:v24 completion:v23];
+      v24 = dCopy;
+      v25 = metricCopy;
+      [v16 queryChopperDelegate:self isBusinessRegisteredForURL:v11 isBloomFilterCached:v17 forClientBundleID:rLCopy metric:v24 completion:v23];
 
       v18 = v24;
     }
 
     else
     {
-      v18 = [[BCSQuery alloc] initWithItemIdentifier:v15 clientBundleId:v12 shardType:2];
+      v18 = [[BCSQuery alloc] initWithItemIdentifier:v15 clientBundleId:rLCopy shardType:2];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __109__BCSBusinessQueryController_lookupBloomFiltersForURL_chopURL_forClientBundleID_registeredMetric_completion___block_invoke_38;
       v19[3] = &unk_278D394E8;
-      v20 = v13;
+      v20 = dCopy;
       v22 = 0;
-      v21 = v14;
-      [a1 fetchIsBusinessRegisteredWithQuery:v18 completion:v19];
+      v21 = metricCopy;
+      [self fetchIsBusinessRegisteredWithQuery:v18 completion:v19];
     }
   }
 }
@@ -999,12 +999,12 @@ void __109__BCSBusinessQueryController_lookupBloomFiltersForURL_chopURL_forClien
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchLinkItemModelWithHash:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchLinkItemModelWithHash:(id)hash forClientBundleID:(id)d completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hashCopy = hash;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1013,9 +1013,9 @@ void __109__BCSBusinessQueryController_lookupBloomFiltersForURL_chopURL_forClien
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v12 = [BCSLinkItemIdentifier identifierWithHash:v8];
+    v12 = [BCSLinkItemIdentifier identifierWithHash:hashCopy];
     if (v12)
     {
       if (self)
@@ -1042,12 +1042,12 @@ void __109__BCSBusinessQueryController_lookupBloomFiltersForURL_chopURL_forClien
       }
 
       v17 = v16;
-      v18 = [(BCSMetricFactoryProtocol *)v17 measurementFactory];
-      v19 = [v18 businessLinkFetchByHashTimingMeasurementForItemIdentifier:v12];
+      measurementFactory = [(BCSMetricFactoryProtocol *)v17 measurementFactory];
+      v19 = [measurementFactory businessLinkFetchByHashTimingMeasurementForItemIdentifier:v12];
       [v15 setTimingMeasurement:v19];
 
-      v20 = [v15 timingMeasurement];
-      [v20 begin];
+      timingMeasurement = [v15 timingMeasurement];
+      [timingMeasurement begin];
 
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
@@ -1055,7 +1055,7 @@ void __109__BCSBusinessQueryController_lookupBloomFiltersForURL_chopURL_forClien
       v35[3] = &unk_278D393D0;
       v21 = v15;
       v36 = v21;
-      v37 = v10;
+      v37 = completionCopy;
       v22 = MEMORY[0x245D07100](v35);
       if (self)
       {
@@ -1067,8 +1067,8 @@ void __109__BCSBusinessQueryController_lookupBloomFiltersForURL_chopURL_forClien
         v23 = 0;
       }
 
-      v24 = [(BCSMetricFactoryProtocol *)v23 measurementFactory];
-      v25 = [v24 itemCacheHitMeasurementForItemIdentifier:v12];
+      measurementFactory2 = [(BCSMetricFactoryProtocol *)v23 measurementFactory];
+      v25 = [measurementFactory2 itemCacheHitMeasurementForItemIdentifier:v12];
 
       v26 = -[BCSBusinessQueryController _itemResolverForType:](self, [v12 type]);
       v27 = [v26 cachedItemMatching:v12];
@@ -1093,7 +1093,7 @@ void __109__BCSBusinessQueryController_lookupBloomFiltersForURL_chopURL_forClien
       else
       {
         [v25 setFlag:0];
-        v31 = [[BCSQuery alloc] initWithItemIdentifier:v12 clientBundleId:v9 shardType:2 skipRegistrationCheck:1];
+        v31 = [[BCSQuery alloc] initWithItemIdentifier:v12 clientBundleId:dCopy shardType:2 skipRegistrationCheck:1];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __86__BCSBusinessQueryController_fetchLinkItemModelWithHash_forClientBundleID_completion___block_invoke_40;
@@ -1113,7 +1113,7 @@ void __109__BCSBusinessQueryController_lookupBloomFiltersForURL_chopURL_forClien
         _os_log_impl(&dword_242072000, v30, OS_LOG_TYPE_DEFAULT, "%s can't generate a BCSLinkItemIdentifier with the given hash", buf, 0xCu);
       }
 
-      (*(v10 + 2))(v10, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -1136,13 +1136,13 @@ void __86__BCSBusinessQueryController_fetchLinkItemModelWithHash_forClientBundle
   (*(v9 + 16))(v9, v10, v6);
 }
 
-- (char)_itemResolverForType:(uint64_t)a1
+- (char)_itemResolverForType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
     if ((a2 - 1) <= 4)
     {
-      a2 = *(a1 + 24 * (a2 - 1) + 48);
+      a2 = *(type + 24 * (a2 - 1) + 48);
     }
   }
 
@@ -1154,11 +1154,11 @@ void __86__BCSBusinessQueryController_fetchLinkItemModelWithHash_forClientBundle
   return a2;
 }
 
-- (void)fetchConfigForQuery:(id)a3 completion:(id)a4
+- (void)fetchConfigForQuery:(id)query completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1167,9 +1167,9 @@ void __86__BCSBusinessQueryController_fetchLinkItemModelWithHash_forClientBundle
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v9 = [v6 config];
+  config = [queryCopy config];
 
-  if (v9)
+  if (config)
   {
     v10 = ABSLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1184,7 +1184,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v6 skipConfigFetch])
+  if ([queryCopy skipConfigFetch])
   {
     v10 = ABSLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1196,8 +1196,8 @@ LABEL_9:
 
 LABEL_10:
 
-    v12 = [v6 config];
-    v7[2](v7, v12, 0);
+    config2 = [queryCopy config];
+    completionCopy[2](completionCopy, config2, 0);
     goto LABEL_11;
   }
 
@@ -1212,8 +1212,8 @@ LABEL_10:
   }
 
   v15 = metricFactory;
-  v16 = [v6 itemIdentifier];
-  v17 = -[BCSMetricFactoryProtocol configResolutionMetricForConfigType:](v15, "configResolutionMetricForConfigType:", [v16 type]);
+  itemIdentifier = [queryCopy itemIdentifier];
+  v17 = -[BCSMetricFactoryProtocol configResolutionMetricForConfigType:](v15, "configResolutionMetricForConfigType:", [itemIdentifier type]);
 
   if (self)
   {
@@ -1226,42 +1226,42 @@ LABEL_10:
   }
 
   v19 = v18;
-  v20 = [(BCSMetricFactoryProtocol *)v19 measurementFactory];
-  v21 = [v6 itemIdentifier];
-  v22 = [v20 configResolutionTimingMeasurementForConfigType:{objc_msgSend(v21, "type")}];
+  measurementFactory = [(BCSMetricFactoryProtocol *)v19 measurementFactory];
+  itemIdentifier2 = [queryCopy itemIdentifier];
+  v22 = [measurementFactory configResolutionTimingMeasurementForConfigType:{objc_msgSend(itemIdentifier2, "type")}];
   [v17 setTimingMeasurement:v22];
 
-  v23 = [v17 timingMeasurement];
-  [v23 begin];
+  timingMeasurement = [v17 timingMeasurement];
+  [timingMeasurement begin];
 
-  v24 = [v6 itemIdentifier];
-  v25 = [v24 type];
+  itemIdentifier3 = [queryCopy itemIdentifier];
+  type = [itemIdentifier3 type];
   if (self)
   {
-    if ((v25 - 1) > 3)
+    if ((type - 1) > 3)
     {
       self = 0;
     }
 
     else
     {
-      self = *(&self->_cacheClearer + 3 * v25);
+      self = *(&self->_cacheClearer + 3 * type);
     }
   }
 
-  v26 = [v6 itemIdentifier];
-  v27 = [v26 type];
-  v28 = [v6 clientBundleId];
-  v29 = [v6 cacheOnly];
+  itemIdentifier4 = [queryCopy itemIdentifier];
+  type2 = [itemIdentifier4 type];
+  clientBundleId = [queryCopy clientBundleId];
+  cacheOnly = [queryCopy cacheOnly];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __61__BCSBusinessQueryController_fetchConfigForQuery_completion___block_invoke;
   v30[3] = &unk_278D39538;
   v31 = v17;
-  v32 = v6;
-  v33 = v7;
-  v12 = v17;
-  [(BCSBusinessQueryController *)self configItemWithType:v27 clientBundleID:v28 cacheOnly:v29 metric:v12 completion:v30];
+  v32 = queryCopy;
+  v33 = completionCopy;
+  config2 = v17;
+  [(BCSBusinessQueryController *)self configItemWithType:type2 clientBundleID:clientBundleId cacheOnly:cacheOnly metric:config2 completion:v30];
 
 LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
@@ -1312,11 +1312,11 @@ void __61__BCSBusinessQueryController_fetchConfigForQuery_completion___block_inv
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchShardWithQuery:(id)a3 completion:(id)a4
+- (void)fetchShardWithQuery:(id)query completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1329,11 +1329,11 @@ void __61__BCSBusinessQueryController_fetchConfigForQuery_completion___block_inv
   v12[1] = 3221225472;
   v12[2] = __61__BCSBusinessQueryController_fetchShardWithQuery_completion___block_invoke;
   v12[3] = &unk_278D395D8;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v15 = completionCopy;
+  v13 = queryCopy;
+  v9 = queryCopy;
+  v10 = completionCopy;
   [(BCSBusinessQueryController *)self fetchConfigForQuery:v9 completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1426,48 +1426,48 @@ void __61__BCSBusinessQueryController_fetchShardWithQuery_completion___block_inv
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_shardStartIndexForItemIdentifier:(uint64_t)a3 shardType:(uint64_t)a4 shardCount:
+- (uint64_t)_shardStartIndexForItemIdentifier:(uint64_t)identifier shardType:(uint64_t)type shardCount:
 {
   v16 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    if (a4)
+    if (type)
     {
-      if (0x7FFFFFFFFFFFFFFFLL / a4 <= 25000)
+      if (0x7FFFFFFFFFFFFFFFLL / type <= 25000)
       {
         v8 = 25000;
       }
 
       else
       {
-        v8 = 0x7FFFFFFFFFFFFFFFLL / a4;
+        v8 = 0x7FFFFFFFFFFFFFFFLL / type;
       }
 
-      if (a3 == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (identifier == 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         if (v7)
         {
-          v9 = *(v7 + 3);
-          if (!v9)
+          truncatedHash = *(v7 + 3);
+          if (!truncatedHash)
           {
-            v9 = [(BCSLinkItemIdentifier *)v7 _truncatedDomainHashForNormalizedURL:?];
-            *(v7 + 3) = v9;
+            truncatedHash = [(BCSLinkItemIdentifier *)v7 _truncatedDomainHashForNormalizedURL:?];
+            *(v7 + 3) = truncatedHash;
           }
         }
 
         else
         {
-          v9 = 0;
+          truncatedHash = 0;
         }
       }
 
       else
       {
-        v9 = [v7 truncatedHash];
+        truncatedHash = [v7 truncatedHash];
       }
 
-      v10 = v9 / v8;
+      v10 = truncatedHash / v8;
     }
 
     else
@@ -1493,24 +1493,24 @@ void __61__BCSBusinessQueryController_fetchShardWithQuery_completion___block_inv
   return v10;
 }
 
-- (id)_shardResolverForType:(id)a1
+- (id)_shardResolverForType:(id)type
 {
-  if (!a1)
+  if (!type)
   {
 LABEL_4:
 
-    return a1;
+    return type;
   }
 
   if ((a2 - 1) <= 3)
   {
-    a1 = *(a1 + 3 * a2 + 5);
+    type = *(type + 3 * a2 + 5);
     goto LABEL_4;
   }
 
-  a1 = 0;
+  type = 0;
 
-  return a1;
+  return type;
 }
 
 void __61__BCSBusinessQueryController_fetchShardWithQuery_completion___block_invoke_51(uint64_t a1, void *a2, void *a3)
@@ -1555,11 +1555,11 @@ void __61__BCSBusinessQueryController_fetchShardWithQuery_completion___block_inv
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchShardsWithQuery:(id)a3 completion:(id)a4
+- (void)fetchShardsWithQuery:(id)query completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1572,11 +1572,11 @@ void __61__BCSBusinessQueryController_fetchShardWithQuery_completion___block_inv
   v12[1] = 3221225472;
   v12[2] = __62__BCSBusinessQueryController_fetchShardsWithQuery_completion___block_invoke;
   v12[3] = &unk_278D395D8;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v15 = completionCopy;
+  v13 = queryCopy;
+  v9 = queryCopy;
+  v10 = completionCopy;
   [(BCSBusinessQueryController *)self fetchConfigForQuery:v9 completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1715,34 +1715,34 @@ void __62__BCSBusinessQueryController_fetchShardsWithQuery_completion___block_in
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_shardIdentifierForQuery:(void *)a1 withItemIdentifier:(void *)a2
+- (id)_shardIdentifierForQuery:(void *)query withItemIdentifier:(void *)identifier
 {
-  v3 = a2;
-  v4 = v3;
-  if (a1)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (query)
   {
-    v5 = [v3 shardType];
-    v6 = [v4 config];
-    v7 = v6;
-    if (v5 == 3)
+    shardType = [identifierCopy shardType];
+    config = [v4 config];
+    v7 = config;
+    if (shardType == 3)
     {
-      v8 = [v6 domainShardCount];
+      domainShardCount = [config domainShardCount];
     }
 
     else
     {
-      v8 = [v6 filterShardCount];
+      domainShardCount = [config filterShardCount];
     }
 
-    v9 = v8;
+    v9 = domainShardCount;
 
-    v10 = [v4 itemIdentifier];
-    v11 = -[BCSBusinessQueryController _shardStartIndexForItemIdentifier:shardType:shardCount:](a1, v10, [v4 shardType], v9);
+    itemIdentifier = [v4 itemIdentifier];
+    v11 = -[BCSBusinessQueryController _shardStartIndexForItemIdentifier:shardType:shardCount:](query, itemIdentifier, [v4 shardType], v9);
 
-    a1 = +[BCSShardIdentifier identifierWithType:startIndex:shardCount:](BCSShardIdentifier, [v4 shardType], v11, v9);
+    query = +[BCSShardIdentifier identifierWithType:startIndex:shardCount:](BCSShardIdentifier, [v4 shardType], v11, v9);
   }
 
-  return a1;
+  return query;
 }
 
 void __62__BCSBusinessQueryController_fetchShardsWithQuery_completion___block_invoke_60(uint64_t a1, void *a2, void *a3)
@@ -1830,11 +1830,11 @@ void __62__BCSBusinessQueryController_fetchShardsWithQuery_completion___block_in
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchIsBusinessRegisteredWithQuery:(id)a3 completion:(id)a4
+- (void)fetchIsBusinessRegisteredWithQuery:(id)query completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1847,11 +1847,11 @@ void __62__BCSBusinessQueryController_fetchShardsWithQuery_completion___block_in
   v12[1] = 3221225472;
   v12[2] = __76__BCSBusinessQueryController_fetchIsBusinessRegisteredWithQuery_completion___block_invoke;
   v12[3] = &unk_278D395D8;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v15 = completionCopy;
+  v13 = queryCopy;
+  v9 = completionCopy;
+  v10 = queryCopy;
   [(BCSBusinessQueryController *)self fetchConfigForQuery:v10 completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1963,11 +1963,11 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAreBusinessesRegisteredWithQuery:(id)a3 completion:(id)a4
+- (void)fetchAreBusinessesRegisteredWithQuery:(id)query completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1980,11 +1980,11 @@ LABEL_10:
   v12[1] = 3221225472;
   v12[2] = __79__BCSBusinessQueryController_fetchAreBusinessesRegisteredWithQuery_completion___block_invoke;
   v12[3] = &unk_278D395D8;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v15 = completionCopy;
+  v13 = queryCopy;
+  v9 = queryCopy;
+  v10 = completionCopy;
   [(BCSBusinessQueryController *)self fetchConfigForQuery:v9 completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -2178,11 +2178,11 @@ LABEL_16:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchItemWithQuery:(id)a3 completion:(id)a4
+- (void)fetchItemWithQuery:(id)query completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2202,23 +2202,23 @@ LABEL_16:
   }
 
   v10 = metricFactory;
-  v11 = [(BCSMetricFactoryProtocol *)v10 measurementFactory];
-  v12 = [v6 itemIdentifier];
+  measurementFactory = [(BCSMetricFactoryProtocol *)v10 measurementFactory];
+  itemIdentifier = [queryCopy itemIdentifier];
 
-  v13 = [v11 itemCacheHitMeasurementForItemIdentifier:v12];
+  v13 = [measurementFactory itemCacheHitMeasurementForItemIdentifier:itemIdentifier];
 
-  v14 = [v6 itemIdentifier];
-  v15 = -[BCSBusinessQueryController _itemResolverForType:](self, [v14 type]);
-  v16 = [v6 itemIdentifier];
-  v17 = [v15 cachedItemMatching:v16];
+  itemIdentifier2 = [queryCopy itemIdentifier];
+  v15 = -[BCSBusinessQueryController _itemResolverForType:](self, [itemIdentifier2 type]);
+  itemIdentifier3 = [queryCopy itemIdentifier];
+  v17 = [v15 cachedItemMatching:itemIdentifier3];
 
   if (v17)
   {
     v18 = ABSLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v6 itemIdentifier];
-      v20 = NSStringFromBCSType([v19 type]);
+      itemIdentifier4 = [queryCopy itemIdentifier];
+      v20 = NSStringFromBCSType([itemIdentifier4 type]);
       *buf = 136315394;
       v27 = "[BCSBusinessQueryController fetchItemWithQuery:completion:]";
       v28 = 2112;
@@ -2227,7 +2227,7 @@ LABEL_16:
     }
 
     [v13 setFlag:1];
-    v7[2](v7, v17, 0);
+    completionCopy[2](completionCopy, v17, 0);
   }
 
   else
@@ -2237,9 +2237,9 @@ LABEL_16:
     v22[1] = 3221225472;
     v22[2] = __60__BCSBusinessQueryController_fetchItemWithQuery_completion___block_invoke;
     v22[3] = &unk_278D39628;
-    v25 = v7;
-    v23 = v6;
-    v24 = self;
+    v25 = completionCopy;
+    v23 = queryCopy;
+    selfCopy = self;
     [(BCSBusinessQueryController *)self fetchIsBusinessRegisteredWithQuery:v23 completion:v22];
   }
 
@@ -2416,11 +2416,11 @@ void __60__BCSBusinessQueryController_fetchItemWithQuery_completion___block_invo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchItemsWithQuery:(id)a3 perItemCompletion:(id)a4 completion:(id)a5
+- (void)fetchItemsWithQuery:(id)query perItemCompletion:(id)completion completion:(id)a5
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v40 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v37 = a5;
   v9 = ABSLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2431,18 +2431,18 @@ void __60__BCSBusinessQueryController_fetchItemWithQuery_completion___block_invo
   }
 
   v10 = objc_alloc(MEMORY[0x277CBEB58]);
-  v11 = [v8 itemIdentifiers];
-  v12 = [v10 initWithCapacity:{objc_msgSend(v11, "count")}];
+  itemIdentifiers = [queryCopy itemIdentifiers];
+  v12 = [v10 initWithCapacity:{objc_msgSend(itemIdentifiers, "count")}];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v38 = v8;
-  v13 = v8;
+  v38 = queryCopy;
+  v13 = queryCopy;
   v14 = v12;
-  v15 = [v13 itemIdentifiers];
-  v16 = [v15 countByEnumeratingWithState:&v47 objects:v55 count:16];
+  itemIdentifiers2 = [v13 itemIdentifiers];
+  v16 = [itemIdentifiers2 countByEnumeratingWithState:&v47 objects:v55 count:16];
   v39 = v12;
   if (v16)
   {
@@ -2454,7 +2454,7 @@ void __60__BCSBusinessQueryController_fetchItemWithQuery_completion___block_invo
       {
         if (*v48 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(itemIdentifiers2);
         }
 
         v20 = *(*(&v47 + 1) + 8 * i);
@@ -2476,7 +2476,7 @@ void __60__BCSBusinessQueryController_fetchItemWithQuery_completion___block_invo
             v14 = v39;
           }
 
-          v40[2](v40, v20, v22, 0);
+          completionCopy[2](completionCopy, v20, v22, 0);
         }
 
         else
@@ -2485,7 +2485,7 @@ void __60__BCSBusinessQueryController_fetchItemWithQuery_completion___block_invo
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v47 objects:v55 count:16];
+      v17 = [itemIdentifiers2 countByEnumeratingWithState:&v47 objects:v55 count:16];
     }
 
     while (v17);
@@ -2494,11 +2494,11 @@ void __60__BCSBusinessQueryController_fetchItemWithQuery_completion___block_invo
   if ([v14 count])
   {
     v25 = [BCSBatchQuery alloc];
-    v26 = [v14 allObjects];
+    allObjects = [v14 allObjects];
     v27 = v38;
-    v28 = [v38 config];
-    v29 = [v38 clientBundleId];
-    v30 = -[BCSBatchQuery initWithItemIdentifiers:config:clientBundleId:shardType:skipRegistrationCheck:](v25, "initWithItemIdentifiers:config:clientBundleId:shardType:skipRegistrationCheck:", v26, v28, v29, [v38 shardType], objc_msgSend(v38, "skipRegistrationCheck"));
+    config = [v38 config];
+    clientBundleId = [v38 clientBundleId];
+    v30 = -[BCSBatchQuery initWithItemIdentifiers:config:clientBundleId:shardType:skipRegistrationCheck:](v25, "initWithItemIdentifiers:config:clientBundleId:shardType:skipRegistrationCheck:", allObjects, config, clientBundleId, [v38 shardType], objc_msgSend(v38, "skipRegistrationCheck"));
 
     v14 = v39;
     v41[0] = MEMORY[0x277D85DD0];
@@ -2508,10 +2508,10 @@ void __60__BCSBusinessQueryController_fetchItemWithQuery_completion___block_invo
     v42 = v38;
     v31 = v37;
     v45 = v37;
-    v32 = v40;
-    v46 = v40;
+    v32 = completionCopy;
+    v46 = completionCopy;
     v43 = v39;
-    v44 = self;
+    selfCopy = self;
     [(BCSBusinessQueryController *)self fetchAreBusinessesRegisteredWithQuery:v30 completion:v41];
   }
 
@@ -2521,8 +2521,8 @@ void __60__BCSBusinessQueryController_fetchItemWithQuery_completion___block_invo
     v27 = v38;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v38 itemIdentifier];
-      v35 = NSStringFromBCSType([v34 type]);
+      itemIdentifier = [v38 itemIdentifier];
+      v35 = NSStringFromBCSType([itemIdentifier type]);
       *buf = 136315394;
       v52 = "[BCSBusinessQueryController fetchItemsWithQuery:perItemCompletion:completion:]";
       v53 = 2112;
@@ -2534,7 +2534,7 @@ void __60__BCSBusinessQueryController_fetchItemWithQuery_completion___block_invo
 
     v31 = v37;
     (*(v37 + 2))(v37, 0);
-    v32 = v40;
+    v32 = completionCopy;
   }
 
   v36 = *MEMORY[0x277D85DE8];
@@ -2826,12 +2826,12 @@ void __79__BCSBusinessQueryController_fetchItemsWithQuery_perItemCompletion_comp
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)isBusinessCallerRegisteredForPhoneNumber:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)isBusinessCallerRegisteredForPhoneNumber:(id)number forClientBundleID:(id)d completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -2840,15 +2840,15 @@ void __79__BCSBusinessQueryController_fetchItemsWithQuery_perItemCompletion_comp
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     *buf = 0u;
     v27 = 0u;
-    v12 = [MEMORY[0x277CCAE80] currentConnection];
-    v13 = v12;
-    if (v12)
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v13 = currentConnection;
+    if (currentConnection)
     {
-      [v12 auditToken];
+      [currentConnection auditToken];
     }
 
     else
@@ -2885,7 +2885,7 @@ void __79__BCSBusinessQueryController_fetchItemsWithQuery_perItemCompletion_comp
       if (v17)
       {
         v19 = [(BCSQuery *)v17 objectForKeyedSubscript:@"phone"];
-        v20 = [v8 isEqualToString:v19];
+        v20 = [numberCopy isEqualToString:v19];
 
         if (v20)
         {
@@ -2896,19 +2896,19 @@ void __79__BCSBusinessQueryController_fetchItemsWithQuery_perItemCompletion_comp
             _os_log_impl(&dword_242072000, v21, OS_LOG_TYPE_DEFAULT, "BusinessCaller: Returning YES for business caller matching STUB DATA", v25, 2u);
           }
 
-          v10[2](v10, 1, 0);
+          completionCopy[2](completionCopy, 1, 0);
           goto LABEL_21;
         }
       }
     }
 
-    v16 = [[BCSBusinessCallerItemIdentifier alloc] initWithPhoneNumber:v8];
-    v18 = [[BCSQuery alloc] initWithItemIdentifier:v16 clientBundleId:v9 shardType:4];
+    v16 = [[BCSBusinessCallerItemIdentifier alloc] initWithPhoneNumber:numberCopy];
+    v18 = [[BCSQuery alloc] initWithItemIdentifier:v16 clientBundleId:dCopy shardType:4];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_forClientBundleID_completion___block_invoke;
     v23[3] = &unk_278D39718;
-    v24 = v10;
+    v24 = completionCopy;
     [(BCSBusinessQueryController *)self fetchIsBusinessRegisteredWithQuery:v18 completion:v23];
 
 LABEL_21:
@@ -2924,12 +2924,12 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
   (*(v4 + 16))(v4, [a2 hasBusiness], v5);
 }
 
-- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)number forClientBundleID:(id)d completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -2938,15 +2938,15 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", &buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v22 = 0u;
     v23 = 0u;
-    v12 = [MEMORY[0x277CCAE80] currentConnection];
-    v13 = v12;
-    if (v12)
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v13 = currentConnection;
+    if (currentConnection)
     {
-      [v12 auditToken];
+      [currentConnection auditToken];
     }
 
     else
@@ -2995,9 +2995,9 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
     v17[1] = 3221225472;
     v17[2] = __101__BCSBusinessQueryController_fetchBusinessCallerMetadataForPhoneNumber_forClientBundleID_completion___block_invoke_3;
     v17[3] = &unk_278D39790;
-    v18 = v10;
+    v18 = completionCopy;
     p_buf = &buf;
-    [(BCSBusinessQueryController *)self fetchBusinessCallerMetadataForPhoneNumber:v8 forClientBundleID:v9 metadataCallback:v21 logoURLCallback:v20 completion:v17];
+    [(BCSBusinessQueryController *)self fetchBusinessCallerMetadataForPhoneNumber:numberCopy forClientBundleID:dCopy metadataCallback:v21 logoURLCallback:v20 completion:v17];
 
     _Block_object_dispose(&buf, 8);
   }
@@ -3005,14 +3005,14 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)a3 forClientBundleID:(id)a4 metadataCallback:(id)a5 logoURLCallback:(id)a6 completion:(id)a7
+- (void)fetchBusinessCallerMetadataForPhoneNumber:(id)number forClientBundleID:(id)d metadataCallback:(id)callback logoURLCallback:(id)lCallback completion:(id)completion
 {
   v71 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  numberCopy = number;
+  dCopy = d;
+  callbackCopy = callback;
+  lCallbackCopy = lCallback;
+  completionCopy = completion;
   v17 = ABSLogCommon();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -3021,15 +3021,15 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
     _os_log_impl(&dword_242072000, v17, OS_LOG_TYPE_DEFAULT, "%s", &buf, 0xCu);
   }
 
-  if (v16)
+  if (completionCopy)
   {
     buf = 0u;
     v70 = 0u;
-    v18 = [MEMORY[0x277CCAE80] currentConnection];
-    v19 = v18;
-    if (v18)
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v19 = currentConnection;
+    if (currentConnection)
     {
-      [v18 auditToken];
+      [currentConnection auditToken];
     }
 
     else
@@ -3058,26 +3058,26 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
       }
     }
 
-    v22 = [[BCSBusinessCallerItemIdentifier alloc] initWithPhoneNumber:v12];
-    v56 = v13;
+    v22 = [[BCSBusinessCallerItemIdentifier alloc] initWithPhoneNumber:numberCopy];
+    v56 = dCopy;
     if (MEMORY[0x245D06CC0]("[BCSBusinessQueryController fetchBusinessCallerMetadataForPhoneNumber:forClientBundleID:metadataCallback:logoURLCallback:completion:]"))
     {
-      v23 = v16;
+      v23 = completionCopy;
       v24 = +[BCSUserDefaults sharedDefaults];
       v25 = [(BCSQuery *)v24 dictionaryForKey:@"BCSBusinessCallerStubEntry"];
       v26 = v25;
       if (v25)
       {
         v27 = [(BCSBusinessCallerItem *)v25 objectForKeyedSubscript:@"phone"];
-        v28 = [v12 isEqualToString:v27];
+        v28 = [numberCopy isEqualToString:v27];
 
-        v13 = v56;
+        dCopy = v56;
         if (v28)
         {
           v53 = v24;
-          v54 = v12;
-          v29 = v15;
-          v30 = v14;
+          v54 = numberCopy;
+          v29 = lCallbackCopy;
+          v30 = callbackCopy;
           v31 = ABSLogCommon();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
@@ -3092,7 +3092,7 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
           LOBYTE(v52) = 1;
           v36 = [(BCSBusinessCallerItem *)v32 initWithPhoneNumber:v33 name:v34 department:v35 logoURL:0 logo:0 logoFormat:0 verified:v52];
 
-          v14 = v30;
+          callbackCopy = v30;
           if (v30)
           {
             v30[2](v30, v36);
@@ -3103,22 +3103,22 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
           v65[1] = 3221225472;
           v65[2] = __134__BCSBusinessQueryController_fetchBusinessCallerMetadataForPhoneNumber_forClientBundleID_metadataCallback_logoURLCallback_completion___block_invoke;
           v65[3] = &unk_278D397B8;
-          v15 = v29;
+          lCallbackCopy = v29;
           v66 = v29;
           v67 = v23;
           [(BCSBusinessQueryController *)self _generateSafeImageURLForItemIdentifier:v22 imageData:v37 format:@"heic" completion:v65];
 
-          v16 = v23;
+          completionCopy = v23;
           v38 = v53;
-          v12 = v54;
+          numberCopy = v54;
           goto LABEL_27;
         }
       }
 
-      v16 = v23;
+      completionCopy = v23;
     }
 
-    v55 = v16;
+    v55 = completionCopy;
     if (self)
     {
       metricFactory = self->_metricFactory;
@@ -3129,12 +3129,12 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
       metricFactory = 0;
     }
 
-    v40 = v12;
+    v40 = numberCopy;
     v41 = metricFactory;
     v42 = [(BCSMetricFactoryProtocol *)v41 businessCallerFetchMetricForItemIdentifier:v22];
 
-    v43 = v15;
-    v44 = v14;
+    v43 = lCallbackCopy;
+    v44 = callbackCopy;
     if (self)
     {
       v45 = self->_metricFactory;
@@ -3146,29 +3146,29 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
     }
 
     v46 = v45;
-    v47 = [(BCSMetricFactoryProtocol *)v46 measurementFactory];
-    v48 = [v47 itemFetchTimingMeasurementForItemIdentifier:v22];
+    measurementFactory = [(BCSMetricFactoryProtocol *)v46 measurementFactory];
+    v48 = [measurementFactory itemFetchTimingMeasurementForItemIdentifier:v22];
     [(BCSBusinessCallerItem *)v42 setTimingMeasurement:v48];
 
-    v49 = [(BCSBusinessCallerItem *)v42 timingMeasurement];
-    [v49 begin];
+    timingMeasurement = [(BCSBusinessCallerItem *)v42 timingMeasurement];
+    [timingMeasurement begin];
 
-    v50 = [[BCSQuery alloc] initWithItemIdentifier:v22 clientBundleId:v13 shardType:4];
+    v50 = [[BCSQuery alloc] initWithItemIdentifier:v22 clientBundleId:dCopy shardType:4];
     v57[0] = MEMORY[0x277D85DD0];
     v57[1] = 3221225472;
     v57[2] = __134__BCSBusinessQueryController_fetchBusinessCallerMetadataForPhoneNumber_forClientBundleID_metadataCallback_logoURLCallback_completion___block_invoke_2;
     v57[3] = &unk_278D39808;
     v58 = v42;
-    v16 = v55;
+    completionCopy = v55;
     v62 = v55;
     v59 = v40;
-    v14 = v44;
-    v12 = v40;
+    callbackCopy = v44;
+    numberCopy = v40;
     v38 = v50;
-    v63 = v14;
-    v60 = self;
+    v63 = callbackCopy;
+    selfCopy = self;
     v61 = v22;
-    v15 = v43;
+    lCallbackCopy = v43;
     v64 = v43;
     v26 = v42;
     [(BCSBusinessQueryController *)self fetchItemWithQuery:v38 completion:v57];
@@ -3176,7 +3176,7 @@ void __100__BCSBusinessQueryController_isBusinessCallerRegisteredForPhoneNumber_
     v36 = v58;
 LABEL_27:
 
-    v13 = v56;
+    dCopy = v56;
   }
 
   v51 = *MEMORY[0x277D85DE8];
@@ -3193,30 +3193,30 @@ void __134__BCSBusinessQueryController_fetchBusinessCallerMetadataForPhoneNumber
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_generateSafeImageURLForItemIdentifier:(void *)a3 imageData:(void *)a4 format:(void *)a5 completion:
+- (void)_generateSafeImageURLForItemIdentifier:(void *)identifier imageData:(void *)data format:(void *)format completion:
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (a1)
+  formatCopy = format;
+  if (self)
   {
-    v10 = *(a1 + 208);
-    v11 = a4;
-    v12 = a3;
+    v10 = *(self + 208);
+    dataCopy = data;
+    identifierCopy = identifier;
     v13 = a2;
-    v14 = [v10 measurementFactory];
-    v15 = [v14 blastDoorTimingMeasurementForItemIdentifier:v13];
+    measurementFactory = [v10 measurementFactory];
+    v15 = [measurementFactory blastDoorTimingMeasurementForItemIdentifier:v13];
 
     [v15 begin];
-    v16 = *(a1 + 264);
+    v16 = *(self + 264);
     v24 = 0;
     v17 = v16;
-    v18 = [v17 safeImageURLFromImage:v12 imageFormat:v11 error:&v24];
+    v18 = [v17 safeImageURLFromImage:identifierCopy imageFormat:dataCopy error:&v24];
 
     v19 = v24;
     [v15 end];
     if (v18)
     {
-      v9[2](v9, v18, 0);
+      formatCopy[2](formatCopy, v18, 0);
     }
 
     else
@@ -3238,7 +3238,7 @@ void __134__BCSBusinessQueryController_fetchBusinessCallerMetadataForPhoneNumber
         v19 = [v21 errorWithDomain:@"com.apple.businessservices" code:100 userInfo:v22];
       }
 
-      (v9)[2](v9, 0, v19);
+      (formatCopy)[2](formatCopy, 0, v19);
     }
   }
 
@@ -3317,12 +3317,12 @@ uint64_t __134__BCSBusinessQueryController_fetchBusinessCallerMetadataForPhoneNu
   return v5();
 }
 
-- (void)fetchBusinessMetadataForEmail:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchBusinessMetadataForEmail:(id)email forClientBundleID:(id)d completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  emailCopy = email;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -3331,15 +3331,15 @@ uint64_t __134__BCSBusinessQueryController_fetchBusinessCallerMetadataForPhoneNu
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     *buf = 0u;
     v39 = 0u;
-    v12 = [MEMORY[0x277CCAE80] currentConnection];
-    v13 = v12;
-    if (v12)
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v13 = currentConnection;
+    if (currentConnection)
     {
-      [v12 auditToken];
+      [currentConnection auditToken];
     }
 
     else
@@ -3368,16 +3368,16 @@ uint64_t __134__BCSBusinessQueryController_fetchBusinessCallerMetadataForPhoneNu
       }
     }
 
-    if (!v8)
+    if (!emailCopy)
     {
       v16 = [BCSError errorWithDomain:@"com.apple.businessservices" code:44 errorDescription:@"nil email key"];
-      v10[2](v10, 0, v16);
+      completionCopy[2](completionCopy, 0, v16);
 LABEL_24:
 
       goto LABEL_25;
     }
 
-    v16 = [[BCSBusinessEmailItemIdentifier alloc] initWithEmail:v8];
+    v16 = [[BCSBusinessEmailItemIdentifier alloc] initWithEmail:emailCopy];
     if (MEMORY[0x245D06CC0]("[BCSBusinessQueryController fetchBusinessMetadataForEmail:forClientBundleID:completion:]"))
     {
       v17 = +[BCSUserDefaults sharedDefaults];
@@ -3386,7 +3386,7 @@ LABEL_24:
       if (v18)
       {
         v20 = [v18 objectForKeyedSubscript:@"email"];
-        v21 = [v8 isEqualToString:v20];
+        v21 = [emailCopy isEqualToString:v20];
 
         if (v21)
         {
@@ -3408,8 +3408,8 @@ LABEL_24:
           v31[1] = 3221225472;
           v31[2] = __89__BCSBusinessQueryController_fetchBusinessMetadataForEmail_forClientBundleID_completion___block_invoke;
           v31[3] = &unk_278D39830;
-          v36 = v10;
-          v32 = v8;
+          v36 = completionCopy;
+          v32 = emailCopy;
           v33 = v23;
           v34 = v19;
           v35 = v16;
@@ -3422,12 +3422,12 @@ LABEL_24:
       }
     }
 
-    v17 = [[BCSQuery alloc] initWithItemIdentifier:v16 clientBundleId:v9 shardType:5];
+    v17 = [[BCSQuery alloc] initWithItemIdentifier:v16 clientBundleId:dCopy shardType:5];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __89__BCSBusinessQueryController_fetchBusinessMetadataForEmail_forClientBundleID_completion___block_invoke_224;
     v29[3] = &unk_278D39510;
-    v30 = v10;
+    v30 = completionCopy;
     [(BCSBusinessQueryController *)self fetchItemWithQuery:v17 completion:v29];
     v26 = v30;
 LABEL_23:
@@ -3525,12 +3525,12 @@ void __89__BCSBusinessQueryController_fetchBusinessMetadataForEmail_forClientBun
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchBusinessMetadataForEmailIdentifier:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchBusinessMetadataForEmailIdentifier:(id)identifier forClientBundleID:(id)d completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -3539,15 +3539,15 @@ void __89__BCSBusinessQueryController_fetchBusinessMetadataForEmail_forClientBun
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     *buf = 0u;
     v37 = 0u;
-    v12 = [MEMORY[0x277CCAE80] currentConnection];
-    v13 = v12;
-    if (v12)
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v13 = currentConnection;
+    if (currentConnection)
     {
-      [v12 auditToken];
+      [currentConnection auditToken];
     }
 
     else
@@ -3576,12 +3576,12 @@ void __89__BCSBusinessQueryController_fetchBusinessMetadataForEmail_forClientBun
       }
     }
 
-    v16 = [v8 email];
+    email = [identifierCopy email];
 
-    if (!v16)
+    if (!email)
     {
       v17 = [BCSError errorWithDomain:@"com.apple.businessservices" code:44 errorDescription:@"nil email key"];
-      v10[2](v10, 0, v17);
+      completionCopy[2](completionCopy, 0, v17);
 LABEL_27:
 
       goto LABEL_28;
@@ -3594,7 +3594,7 @@ LABEL_27:
       if (v18)
       {
         v19 = [[BCSBusinessEmailIdentifier alloc] initWithDefaultsDictionary:v18];
-        if ([v8 matchesIdentifier:v19])
+        if ([identifierCopy matchesIdentifier:v19])
         {
           v20 = ABSLogCommon();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -3603,37 +3603,37 @@ LABEL_27:
             _os_log_impl(&dword_242072000, v20, OS_LOG_TYPE_DEFAULT, "BusinessEmail: Returning metadata for business email matching STUB DATA", v32, 2u);
           }
 
-          v21 = [[BCSBusinessEmailItem alloc] initWithIdentifier:v8 defaultsDictionary:v18];
+          v21 = [[BCSBusinessEmailItem alloc] initWithIdentifier:identifierCopy defaultsDictionary:v18];
           v22 = ABSLogCommon();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [(BCSBusinessEmailItem *)v21 email];
-            v24 = [(BCSBusinessEmailItem *)v21 name];
+            email2 = [(BCSBusinessEmailItem *)v21 email];
+            name = [(BCSBusinessEmailItem *)v21 name];
             *v32 = 138412546;
-            v33 = v23;
+            v33 = email2;
             v34 = 2112;
-            v35 = v24;
+            v35 = name;
             _os_log_impl(&dword_242072000, v22, OS_LOG_TYPE_DEFAULT, "BusinessEmail: Returning item { Email: %@, Name: %@ }", v32, 0x16u);
           }
 
-          (v10)[2](v10, v21, 0);
+          (completionCopy)[2](completionCopy, v21, 0);
           goto LABEL_26;
         }
       }
     }
 
     v25 = [BCSBusinessEmailItemIdentifier alloc];
-    v26 = [v8 email];
-    v27 = [v8 fullDomain];
-    v28 = [v8 topLevelDomain];
-    v17 = [(BCSBusinessEmailItemIdentifier *)v25 initWithEmail:v26 fullDomain:v27 topLevelDomain:v28];
+    email3 = [identifierCopy email];
+    fullDomain = [identifierCopy fullDomain];
+    topLevelDomain = [identifierCopy topLevelDomain];
+    v17 = [(BCSBusinessEmailItemIdentifier *)v25 initWithEmail:email3 fullDomain:fullDomain topLevelDomain:topLevelDomain];
 
-    v18 = [[BCSQuery alloc] initWithItemIdentifier:v17 clientBundleId:v9 shardType:5];
+    v18 = [[BCSQuery alloc] initWithItemIdentifier:v17 clientBundleId:dCopy shardType:5];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __99__BCSBusinessQueryController_fetchBusinessMetadataForEmailIdentifier_forClientBundleID_completion___block_invoke;
     v30[3] = &unk_278D39510;
-    v31 = v10;
+    v31 = completionCopy;
     [(BCSBusinessQueryController *)self fetchItemWithQuery:v18 completion:v30];
 
 LABEL_26:
@@ -3682,12 +3682,12 @@ void __99__BCSBusinessQueryController_fetchBusinessMetadataForEmailIdentifier_fo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchBusinessLogoForBusinessIdentifier:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchBusinessLogoForBusinessIdentifier:(id)identifier forClientBundleID:(id)d completion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -3696,15 +3696,15 @@ void __99__BCSBusinessQueryController_fetchBusinessMetadataForEmailIdentifier_fo
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v38 = 0u;
     *buf = 0u;
-    v12 = [MEMORY[0x277CCAE80] currentConnection];
-    v13 = v12;
-    if (v12)
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v13 = currentConnection;
+    if (currentConnection)
     {
-      [v12 auditToken];
+      [currentConnection auditToken];
     }
 
     else
@@ -3733,13 +3733,13 @@ void __99__BCSBusinessQueryController_fetchBusinessMetadataForEmailIdentifier_fo
       }
     }
 
-    v16 = [v8 businessId];
+    businessId = [identifierCopy businessId];
 
-    if (v16)
+    if (businessId)
     {
       v17 = [BCSBusinessLogoItemIdentifier alloc];
-      v18 = [v8 businessId];
-      v19 = [(BCSBusinessLogoItemIdentifier *)v17 initWithBusinessId:v18];
+      businessId2 = [identifierCopy businessId];
+      v19 = [(BCSBusinessLogoItemIdentifier *)v17 initWithBusinessId:businessId2];
 
       if (MEMORY[0x245D06CC0]("[BCSBusinessQueryController fetchBusinessLogoForBusinessIdentifier:forClientBundleID:completion:]"))
       {
@@ -3747,9 +3747,9 @@ void __99__BCSBusinessQueryController_fetchBusinessMetadataForEmailIdentifier_fo
         v21 = [(BCSQuery *)v20 dictionaryForKey:@"BCSBusinessLogoStubEntry"];
         if (v21)
         {
-          v22 = [v8 businessId];
+          businessId3 = [identifierCopy businessId];
           v23 = [v21 objectForKeyedSubscript:@"businessId"];
-          v24 = [v22 isEqualToString:v23];
+          v24 = [businessId3 isEqualToString:v23];
 
           if (v24)
           {
@@ -3766,7 +3766,7 @@ void __99__BCSBusinessQueryController_fetchBusinessMetadataForEmailIdentifier_fo
             v33[2] = __98__BCSBusinessQueryController_fetchBusinessLogoForBusinessIdentifier_forClientBundleID_completion___block_invoke;
             v33[3] = &unk_278D39948;
             v34 = v19;
-            v35 = v10;
+            v35 = completionCopy;
             v27 = v19;
             [(BCSBusinessQueryController *)self _generateSafeImageURLForItemIdentifier:v27 imageData:v26 format:@"heic" completion:v33];
 
@@ -3775,13 +3775,13 @@ void __99__BCSBusinessQueryController_fetchBusinessMetadataForEmailIdentifier_fo
         }
       }
 
-      v20 = [[BCSQuery alloc] initWithItemIdentifier:v19 clientBundleId:v9 shardType:5 skipRegistrationCheck:1];
+      v20 = [[BCSQuery alloc] initWithItemIdentifier:v19 clientBundleId:dCopy shardType:5 skipRegistrationCheck:1];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __98__BCSBusinessQueryController_fetchBusinessLogoForBusinessIdentifier_forClientBundleID_completion___block_invoke_237;
       v30[3] = &unk_278D39858;
       v31 = v19;
-      v32 = v10;
+      v32 = completionCopy;
       v30[4] = self;
       v28 = v19;
       [(BCSBusinessQueryController *)self fetchItemWithQuery:v20 completion:v30];
@@ -3790,7 +3790,7 @@ void __99__BCSBusinessQueryController_fetchBusinessMetadataForEmailIdentifier_fo
     else
     {
       v20 = [BCSError errorWithDomain:@"com.apple.businessservices" code:44 errorDescription:@"Invalid email identifier - missing businessId"];
-      (*(v10 + 2))(v10, 0, v20);
+      (*(completionCopy + 2))(completionCopy, 0, v20);
     }
 
 LABEL_23:
@@ -3902,13 +3902,13 @@ void __98__BCSBusinessQueryController_fetchBusinessLogoForBusinessIdentifier_for
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchBusinessMetadataForEmails:(id)a3 forClientBundleID:(id)a4 requestId:(id)a5 completion:(id)a6
+- (void)fetchBusinessMetadataForEmails:(id)emails forClientBundleID:(id)d requestId:(id)id completion:(id)completion
 {
   v100 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v47 = a4;
-  v50 = a5;
-  v51 = a6;
+  emailsCopy = emails;
+  dCopy = d;
+  idCopy = id;
+  completionCopy = completion;
   v9 = ABSLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -3917,19 +3917,19 @@ void __98__BCSBusinessQueryController_fetchBusinessLogoForBusinessIdentifier_for
     _os_log_impl(&dword_242072000, v9, OS_LOG_TYPE_DEFAULT, "%s", &buf, 0xCu);
   }
 
-  if (v51)
+  if (completionCopy)
   {
-    v46 = [MEMORY[0x277CCAE80] currentConnection];
-    v48 = [v46 remoteObjectProxy];
-    if ([v49 count])
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    remoteObjectProxy = [currentConnection remoteObjectProxy];
+    if ([emailsCopy count])
     {
       v88 = 0u;
       v89 = 0u;
-      v10 = [MEMORY[0x277CCAE80] currentConnection];
-      v11 = v10;
-      if (v10)
+      currentConnection2 = [MEMORY[0x277CCAE80] currentConnection];
+      v11 = currentConnection2;
+      if (currentConnection2)
       {
-        [v10 auditToken];
+        [currentConnection2 auditToken];
       }
 
       else
@@ -3950,7 +3950,7 @@ void __98__BCSBusinessQueryController_fetchBusinessLogoForBusinessIdentifier_for
 
       if (([(BCSEntitlementVerifying *)entitlementVerifier auditToken:&v88 hasEntitlement:@"com.apple.businessservicesd.businessmetadata"]& 1) != 0)
       {
-        v52 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v49];
+        v52 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:emailsCopy];
         if (MEMORY[0x245D06CC0]("[BCSBusinessQueryController fetchBusinessMetadataForEmails:forClientBundleID:requestId:completion:]"))
         {
           v15 = +[BCSUserDefaults sharedDefaults];
@@ -3966,7 +3966,7 @@ void __98__BCSBusinessQueryController_fetchBusinessLogoForBusinessIdentifier_for
             v79 = 0u;
             v80 = 0u;
             v81 = 0u;
-            obj = v49;
+            obj = emailsCopy;
             v18 = [obj countByEnumeratingWithState:&v78 objects:v99 count:16];
             if (v18)
             {
@@ -3987,10 +3987,10 @@ void __98__BCSBusinessQueryController_fetchBusinessLogoForBusinessIdentifier_for
                     v75[1] = 3221225472;
                     v75[2] = __100__BCSBusinessQueryController_fetchBusinessMetadataForEmails_forClientBundleID_requestId_completion___block_invoke_3;
                     v75[3] = &unk_278D39880;
-                    v77 = v51;
+                    v77 = completionCopy;
                     v43 = v42;
                     v76 = v43;
-                    [v48 didFetchBusinessMetadataForEmailsForRequestId:v50 error:v43 reply:v75];
+                    [remoteObjectProxy didFetchBusinessMetadataForEmailsForRequestId:idCopy error:v43 reply:v75];
 
                     _Block_object_dispose(&buf, 8);
                     goto LABEL_37;
@@ -4012,7 +4012,7 @@ void __98__BCSBusinessQueryController_fetchBusinessLogoForBusinessIdentifier_for
                     v74[2] = __100__BCSBusinessQueryController_fetchBusinessMetadataForEmails_forClientBundleID_requestId_completion___block_invoke_248;
                     v74[3] = &unk_278D398A8;
                     v74[4] = &buf;
-                    [v48 didFetchBusinessMetadata:v23 forEmailIdentifier:v21 requestId:v50 error:0 reply:v74];
+                    [remoteObjectProxy didFetchBusinessMetadata:v23 forEmailIdentifier:v21 requestId:idCopy error:0 reply:v74];
                     [v52 removeObject:v21];
                     v24 = *(*(&buf + 1) + 24);
 
@@ -4060,10 +4060,10 @@ LABEL_26:
 
               v29 = *(*(&v70 + 1) + 8 * j);
               v30 = [BCSBusinessEmailItemIdentifier alloc];
-              v31 = [v29 email];
-              v32 = [v29 fullDomain];
-              v33 = [v29 topLevelDomain];
-              v34 = [(BCSBusinessEmailItemIdentifier *)v30 initWithEmail:v31 fullDomain:v32 topLevelDomain:v33];
+              email = [v29 email];
+              fullDomain = [v29 fullDomain];
+              topLevelDomain = [v29 topLevelDomain];
+              v34 = [(BCSBusinessEmailItemIdentifier *)v30 initWithEmail:email fullDomain:fullDomain topLevelDomain:topLevelDomain];
 
               [v25 setObject:v29 forKeyedSubscript:v34];
             }
@@ -4086,8 +4086,8 @@ LABEL_26:
         v97 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v35 = objc_alloc_init(MEMORY[0x277CCAAF8]);
         v36 = [BCSBatchQuery alloc];
-        v37 = [v25 allKeys];
-        v38 = [(BCSBatchQuery *)v36 initWithItemIdentifiers:v37 config:0 clientBundleId:v47 shardType:5 skipRegistrationCheck:0];
+        allKeys = [v25 allKeys];
+        v38 = [(BCSBatchQuery *)v36 initWithItemIdentifiers:allKeys config:0 clientBundleId:dCopy shardType:5 skipRegistrationCheck:0];
 
         v59[0] = MEMORY[0x277D85DD0];
         v59[1] = 3221225472;
@@ -4098,8 +4098,8 @@ LABEL_26:
         p_buf = &buf;
         v15 = v25;
         v61 = v15;
-        v62 = v48;
-        v63 = v50;
+        v62 = remoteObjectProxy;
+        v63 = idCopy;
         v53[0] = MEMORY[0x277D85DD0];
         v53[1] = 3221225472;
         v53[2] = __100__BCSBusinessQueryController_fetchBusinessMetadataForEmails_forClientBundleID_requestId_completion___block_invoke_260;
@@ -4109,7 +4109,7 @@ LABEL_26:
         v54 = v39;
         v55 = v62;
         v56 = v63;
-        v57 = v51;
+        v57 = completionCopy;
         [(BCSBusinessQueryController *)self fetchItemsWithQuery:v38 perItemCompletion:v59 completion:v53];
 
         _Block_object_dispose(&buf, 8);
@@ -4123,10 +4123,10 @@ LABEL_26:
         v83 = 3221225472;
         v84 = __100__BCSBusinessQueryController_fetchBusinessMetadataForEmails_forClientBundleID_requestId_completion___block_invoke_2;
         v85 = &unk_278D39880;
-        v87 = v51;
+        v87 = completionCopy;
         v86 = v40;
         v52 = v40;
-        [v48 didFetchBusinessMetadataForEmailsForRequestId:v50 error:? reply:?];
+        [remoteObjectProxy didFetchBusinessMetadataForEmailsForRequestId:idCopy error:? reply:?];
 
         v15 = v87;
       }
@@ -4141,10 +4141,10 @@ LABEL_37:
       v90[1] = 3221225472;
       v90[2] = __100__BCSBusinessQueryController_fetchBusinessMetadataForEmails_forClientBundleID_requestId_completion___block_invoke;
       v90[3] = &unk_278D39880;
-      v92 = v51;
+      v92 = completionCopy;
       v91 = v12;
       v13 = v12;
-      [v48 didFetchBusinessMetadataForEmailsForRequestId:v50 error:v13 reply:v90];
+      [remoteObjectProxy didFetchBusinessMetadataForEmailsForRequestId:idCopy error:v13 reply:v90];
     }
   }
 
@@ -4301,12 +4301,12 @@ void __100__BCSBusinessQueryController_fetchBusinessMetadataForEmails_forClientB
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cachedBusinessMetadataForEmail:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)cachedBusinessMetadataForEmail:(id)email forClientBundleID:(id)d completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  emailCopy = email;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -4315,19 +4315,19 @@ void __100__BCSBusinessQueryController_fetchBusinessMetadataForEmails_forClientB
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v12 = [v8 email];
+    email = [emailCopy email];
 
-    if (v12)
+    if (email)
     {
       *buf = 0u;
       v31 = 0u;
-      v13 = [MEMORY[0x277CCAE80] currentConnection];
-      v14 = v13;
-      if (v13)
+      currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+      v14 = currentConnection;
+      if (currentConnection)
       {
-        [v13 auditToken];
+        [currentConnection auditToken];
       }
 
       else
@@ -4349,7 +4349,7 @@ void __100__BCSBusinessQueryController_fetchBusinessMetadataForEmails_forClientB
       if (([(BCSEntitlementVerifying *)entitlementVerifier auditToken:buf hasEntitlement:@"com.apple.businessservicesd.businessmetadata"]& 1) == 0)
       {
         v17 = [BCSError errorWithDomain:@"com.apple.businessservices" code:99 errorDescription:@"Missing business metadata entitlement"];
-        v10[2](v10, 0, v17);
+        completionCopy[2](completionCopy, 0, v17);
 LABEL_23:
 
         goto LABEL_24;
@@ -4362,7 +4362,7 @@ LABEL_23:
         if (v18)
         {
           v19 = [[BCSBusinessEmailIdentifier alloc] initWithDefaultsDictionary:v18];
-          if ([v8 matchesIdentifier:v19])
+          if ([emailCopy matchesIdentifier:v19])
           {
             v20 = ABSLogCommon();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -4371,8 +4371,8 @@ LABEL_23:
               _os_log_impl(&dword_242072000, v20, OS_LOG_TYPE_DEFAULT, "BusinessEmail: Returning metadata for business email matching STUB DATA", v29, 2u);
             }
 
-            v21 = [[BCSBusinessEmailItem alloc] initWithIdentifier:v8 defaultsDictionary:v18];
-            (v10)[2](v10, v21, 0);
+            v21 = [[BCSBusinessEmailItem alloc] initWithIdentifier:emailCopy defaultsDictionary:v18];
+            (completionCopy)[2](completionCopy, v21, 0);
 
             goto LABEL_22;
           }
@@ -4380,17 +4380,17 @@ LABEL_23:
       }
 
       v22 = [BCSBusinessEmailItemIdentifier alloc];
-      v23 = [v8 email];
-      v24 = [v8 fullDomain];
-      v25 = [v8 topLevelDomain];
-      v17 = [(BCSBusinessEmailItemIdentifier *)v22 initWithEmail:v23 fullDomain:v24 topLevelDomain:v25];
+      email2 = [emailCopy email];
+      fullDomain = [emailCopy fullDomain];
+      topLevelDomain = [emailCopy topLevelDomain];
+      v17 = [(BCSBusinessEmailItemIdentifier *)v22 initWithEmail:email2 fullDomain:fullDomain topLevelDomain:topLevelDomain];
 
-      v18 = [[BCSQuery alloc] initWithItemIdentifier:v17 clientBundleId:v9 shardType:5 cacheOnly:1 skipRegistrationCheck:0 skipConfigFetch:0];
+      v18 = [[BCSQuery alloc] initWithItemIdentifier:v17 clientBundleId:dCopy shardType:5 cacheOnly:1 skipRegistrationCheck:0 skipConfigFetch:0];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __90__BCSBusinessQueryController_cachedBusinessMetadataForEmail_forClientBundleID_completion___block_invoke;
       v27[3] = &unk_278D39510;
-      v28 = v10;
+      v28 = completionCopy;
       [(BCSBusinessQueryController *)self fetchItemWithQuery:v18 completion:v27];
 
 LABEL_22:
@@ -4398,7 +4398,7 @@ LABEL_22:
     }
 
     v15 = [BCSError errorWithDomain:@"com.apple.businessservices" code:44 errorDescription:@"nil email key"];
-    v10[2](v10, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 
 LABEL_24:
@@ -4443,12 +4443,12 @@ void __90__BCSBusinessQueryController_cachedBusinessMetadataForEmail_forClientBu
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchBrandWithIdentifier:(id)a3 forClientBundleID:(id)a4 serviceType:(int64_t)a5 completion:(id)a6
+- (void)fetchBrandWithIdentifier:(id)identifier forClientBundleID:(id)d serviceType:(int64_t)type completion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   v13 = ABSLogCommon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -4457,15 +4457,15 @@ void __90__BCSBusinessQueryController_cachedBusinessMetadataForEmail_forClientBu
     _os_log_impl(&dword_242072000, v13, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v12)
+  if (completionCopy)
   {
     *buf = 0u;
     v45 = 0u;
-    v14 = [MEMORY[0x277CCAE80] currentConnection];
-    v15 = v14;
-    if (v14)
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v15 = currentConnection;
+    if (currentConnection)
     {
-      [v14 auditToken];
+      [currentConnection auditToken];
     }
 
     else
@@ -4494,12 +4494,12 @@ void __90__BCSBusinessQueryController_cachedBusinessMetadataForEmail_forClientBu
       }
     }
 
-    if (a5 != 5)
+    if (type != 5)
     {
       v29 = ABSLogCommon();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v32 = NSStringFromBCSType(a5);
+        v32 = NSStringFromBCSType(type);
         *v40 = 136315394;
         v41 = "[BCSBusinessQueryController fetchBrandWithIdentifier:forClientBundleID:serviceType:completion:]";
         v42 = 2112;
@@ -4508,7 +4508,7 @@ void __90__BCSBusinessQueryController_cachedBusinessMetadataForEmail_forClientBu
       }
 
       v18 = [BCSError errorWithDomain:@"com.apple.businessservices" code:44 errorDescription:@"Unsupported service type"];
-      v12[2](v12, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
       goto LABEL_31;
     }
 
@@ -4520,7 +4520,7 @@ void __90__BCSBusinessQueryController_cachedBusinessMetadataForEmail_forClientBu
       if (v19)
       {
         v21 = [(BCSWebPresentmentItemIdentifier *)v19 objectForKeyedSubscript:@"identifier"];
-        if ([v10 isEqualToString:v21])
+        if ([identifierCopy isEqualToString:v21])
         {
           v22 = ABSLogCommon();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -4529,7 +4529,7 @@ void __90__BCSBusinessQueryController_cachedBusinessMetadataForEmail_forClientBu
             _os_log_impl(&dword_242072000, v22, OS_LOG_TYPE_DEFAULT, "WebPresentment: Returning metadata for web presentment matching STUB DATA", v40, 2u);
           }
 
-          v23 = [[BCSWebPresentmentItemIdentifier alloc] initWithBrandID:v10 serverType:2];
+          v23 = [[BCSWebPresentmentItemIdentifier alloc] initWithBrandID:identifierCopy serverType:2];
           v24 = [(BCSWebPresentmentItemIdentifier *)v20 objectForKeyedSubscript:@"logo"];
           v25 = ABSLogCommon();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -4546,8 +4546,8 @@ void __90__BCSBusinessQueryController_cachedBusinessMetadataForEmail_forClientBu
             v36[1] = 3221225472;
             v36[2] = __96__BCSBusinessQueryController_fetchBrandWithIdentifier_forClientBundleID_serviceType_completion___block_invoke;
             v36[3] = &unk_278D39920;
-            v39 = v12;
-            v37 = v10;
+            v39 = completionCopy;
+            v37 = identifierCopy;
             v38 = v20;
             [(BCSBusinessQueryController *)self _generateSafeImageURLForItemIdentifier:v23 imageData:v24 format:v27 completion:v36];
 
@@ -4556,8 +4556,8 @@ void __90__BCSBusinessQueryController_cachedBusinessMetadataForEmail_forClientBu
 
           else
           {
-            v28 = [[BCSWebPresentmentItem alloc] initWithBrandID:v10 defaultsDictionary:v20];
-            (v12)[2](v12, v28, 0);
+            v28 = [[BCSWebPresentmentItem alloc] initWithBrandID:identifierCopy defaultsDictionary:v20];
+            (completionCopy)[2](completionCopy, v28, 0);
           }
 
           goto LABEL_30;
@@ -4565,14 +4565,14 @@ void __90__BCSBusinessQueryController_cachedBusinessMetadataForEmail_forClientBu
       }
     }
 
-    v30 = [[BCSWebPresentmentItemIdentifier alloc] initWithBrandID:v10 serverType:2];
-    v18 = [[BCSQuery alloc] initWithItemIdentifier:v30 clientBundleId:v11 shardType:6 cacheOnly:0 skipRegistrationCheck:1 skipConfigFetch:1];
+    v30 = [[BCSWebPresentmentItemIdentifier alloc] initWithBrandID:identifierCopy serverType:2];
+    v18 = [[BCSQuery alloc] initWithItemIdentifier:v30 clientBundleId:dCopy shardType:6 cacheOnly:0 skipRegistrationCheck:1 skipConfigFetch:1];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __96__BCSBusinessQueryController_fetchBrandWithIdentifier_forClientBundleID_serviceType_completion___block_invoke_2;
     v33[3] = &unk_278D39858;
     v34 = v30;
-    v35 = v12;
+    v35 = completionCopy;
     v33[4] = self;
     v20 = v30;
     [(BCSBusinessQueryController *)self fetchItemWithQuery:v18 completion:v33];
@@ -4698,12 +4698,12 @@ uint64_t __96__BCSBusinessQueryController_fetchBrandWithIdentifier_forClientBund
   return v5();
 }
 
-- (void)fetchWebPresentmentPermissionsWithIdentifier:(id)a3 forClientBundleID:(id)a4 completion:(id)a5
+- (void)fetchWebPresentmentPermissionsWithIdentifier:(id)identifier forClientBundleID:(id)d completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -4712,15 +4712,15 @@ uint64_t __96__BCSBusinessQueryController_fetchBrandWithIdentifier_forClientBund
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     *buf = 0u;
     v29 = 0u;
-    v12 = [MEMORY[0x277CCAE80] currentConnection];
-    v13 = v12;
-    if (v12)
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v13 = currentConnection;
+    if (currentConnection)
     {
-      [v12 auditToken];
+      [currentConnection auditToken];
     }
 
     else
@@ -4757,7 +4757,7 @@ uint64_t __96__BCSBusinessQueryController_fetchBrandWithIdentifier_forClientBund
       if (v17)
       {
         v19 = [(BCSQuery *)v17 objectForKeyedSubscript:@"identifier"];
-        if ([v8 isEqualToString:v19])
+        if ([identifierCopy isEqualToString:v19])
         {
           v20 = ABSLogCommon();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -4771,13 +4771,13 @@ uint64_t __96__BCSBusinessQueryController_fetchBrandWithIdentifier_forClientBund
           if (v21)
           {
             v23 = [v21 dataUsingEncoding:4];
-            v10[2](v10, v23, 0);
+            completionCopy[2](completionCopy, v23, 0);
           }
 
           else
           {
             v23 = [BCSError errorWithDomain:@"com.apple.businessservices" code:42 errorDescription:@"No match found"];
-            (v10)[2](v10, 0, v23);
+            (completionCopy)[2](completionCopy, 0, v23);
           }
 
           goto LABEL_23;
@@ -4785,13 +4785,13 @@ uint64_t __96__BCSBusinessQueryController_fetchBrandWithIdentifier_forClientBund
       }
     }
 
-    v16 = [[BCSWebPresentmentItemIdentifier alloc] initWithBrandID:v8 serverType:4];
-    v18 = [[BCSQuery alloc] initWithItemIdentifier:v16 clientBundleId:v9 shardType:6 cacheOnly:0 skipRegistrationCheck:1 skipConfigFetch:1];
+    v16 = [[BCSWebPresentmentItemIdentifier alloc] initWithBrandID:identifierCopy serverType:4];
+    v18 = [[BCSQuery alloc] initWithItemIdentifier:v16 clientBundleId:dCopy shardType:6 cacheOnly:0 skipRegistrationCheck:1 skipConfigFetch:1];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __104__BCSBusinessQueryController_fetchWebPresentmentPermissionsWithIdentifier_forClientBundleID_completion___block_invoke;
     v25[3] = &unk_278D39510;
-    v26 = v10;
+    v26 = completionCopy;
     [(BCSBusinessQueryController *)self fetchItemWithQuery:v18 completion:v25];
     v19 = v26;
 LABEL_23:
@@ -4853,18 +4853,18 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prefetchMegashardsWithCompletion:(id)a3
+- (void)prefetchMegashardsWithCompletion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = ABSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCAE80] currentConnection];
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
     *buf = 136315394;
     *&buf[4] = "[BCSBusinessQueryController prefetchMegashardsWithCompletion:]";
     *&buf[12] = 2048;
-    *&buf[14] = [v6 processIdentifier];
+    *&buf[14] = [currentConnection processIdentifier];
     _os_log_impl(&dword_242072000, v5, OS_LOG_TYPE_DEFAULT, "%s Called by process with PID %ld", buf, 0x16u);
   }
 
@@ -4881,11 +4881,11 @@ LABEL_12:
   v46 = 0;
   v35 = 0u;
   v36 = 0u;
-  v8 = [MEMORY[0x277CCAE80] currentConnection];
-  v9 = v8;
-  if (v8)
+  currentConnection2 = [MEMORY[0x277CCAE80] currentConnection];
+  v9 = currentConnection2;
+  if (currentConnection2)
   {
-    [v8 auditToken];
+    [currentConnection2 auditToken];
   }
 
   else
@@ -4964,7 +4964,7 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___block_invoke_293;
     block[3] = &unk_278D399C0;
-    v22 = v4;
+    v22 = completionCopy;
     v23 = v37;
     v24 = buf;
     dispatch_group_notify(v16, v17, block);
@@ -4985,7 +4985,7 @@ LABEL_12:
     }
 
     v18 = [BCSError errorWithDomain:@"com.apple.businessservices" code:99 errorDescription:@"This call requires an entitlement"];
-    (*(v4 + 2))(v4, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, v18);
   }
 
   _Block_object_dispose(buf, 8);
@@ -5076,10 +5076,10 @@ uint64_t __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___blo
   return result;
 }
 
-- (void)clearCachesForType:(int64_t)a3 completion:(id)a4
+- (void)clearCachesForType:(int64_t)type completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = ABSLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -5090,11 +5090,11 @@ uint64_t __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___blo
 
   *buf = 0u;
   v20 = 0u;
-  v8 = [MEMORY[0x277CCAE80] currentConnection];
-  v9 = v8;
-  if (v8)
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v9 = currentConnection;
+  if (currentConnection)
   {
-    [v8 auditToken];
+    [currentConnection auditToken];
   }
 
   else
@@ -5125,7 +5125,7 @@ uint64_t __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___blo
       cacheClearer = 0;
     }
 
-    [(BCSCacheClearing *)cacheClearer clearCachesForType:a3 completion:v6];
+    [(BCSCacheClearing *)cacheClearer clearCachesForType:type completion:completionCopy];
   }
 
   else
@@ -5141,16 +5141,16 @@ uint64_t __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___blo
     }
 
     v13 = [BCSError errorWithDomain:@"com.apple.businessservices" code:99 errorDescription:@"This call requires an entitlement"];
-    v6[2](v6, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearExpiredCachesForType:(int64_t)a3 completion:(id)a4
+- (void)clearExpiredCachesForType:(int64_t)type completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = ABSLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -5161,11 +5161,11 @@ uint64_t __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___blo
 
   *buf = 0u;
   v20 = 0u;
-  v8 = [MEMORY[0x277CCAE80] currentConnection];
-  v9 = v8;
-  if (v8)
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v9 = currentConnection;
+  if (currentConnection)
   {
-    [v8 auditToken];
+    [currentConnection auditToken];
   }
 
   else
@@ -5196,7 +5196,7 @@ uint64_t __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___blo
       cacheClearer = 0;
     }
 
-    [(BCSCacheClearing *)cacheClearer clearExpiredCachesForType:a3 completion:v6];
+    [(BCSCacheClearing *)cacheClearer clearExpiredCachesForType:type completion:completionCopy];
   }
 
   else
@@ -5212,17 +5212,17 @@ uint64_t __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___blo
     }
 
     v13 = [BCSError errorWithDomain:@"com.apple.businessservices" code:99 errorDescription:@"This call requires an entitlement"];
-    v6[2](v6, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)a3 completion:(id)a4
+- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)d completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -5233,11 +5233,11 @@ uint64_t __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___blo
 
   *buf = 0u;
   v21 = 0u;
-  v9 = [MEMORY[0x277CCAE80] currentConnection];
-  v10 = v9;
-  if (v9)
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v10 = currentConnection;
+  if (currentConnection)
   {
-    [v9 auditToken];
+    [currentConnection auditToken];
   }
 
   else
@@ -5268,7 +5268,7 @@ uint64_t __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___blo
       cacheClearer = 0;
     }
 
-    [(BCSCacheClearing *)cacheClearer clearCachesForLinkItemsAssociatedWithBundleID:v6 completion:v7];
+    [(BCSCacheClearing *)cacheClearer clearCachesForLinkItemsAssociatedWithBundleID:dCopy completion:completionCopy];
   }
 
   else
@@ -5284,7 +5284,7 @@ uint64_t __63__BCSBusinessQueryController_prefetchMegashardsWithCompletion___blo
     }
 
     v14 = [BCSError errorWithDomain:@"com.apple.businessservices" code:99 errorDescription:@"This call requires an entitlement"];
-    v7[2](v7, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];

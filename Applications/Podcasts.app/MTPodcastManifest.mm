@@ -1,16 +1,16 @@
 @interface MTPodcastManifest
-+ (void)createManifestForActivity:(id)a3 completion:(id)a4;
-- (MTPodcastManifest)initWithInitialEpisodeUuid:(id)a3 sectionType:(unint64_t)a4;
++ (void)createManifestForActivity:(id)activity completion:(id)completion;
+- (MTPodcastManifest)initWithInitialEpisodeUuid:(id)uuid sectionType:(unint64_t)type;
 - (id)activity;
 - (void)_propertyDidChange;
 @end
 
 @implementation MTPodcastManifest
 
-- (MTPodcastManifest)initWithInitialEpisodeUuid:(id)a3 sectionType:(unint64_t)a4
+- (MTPodcastManifest)initWithInitialEpisodeUuid:(id)uuid sectionType:(unint64_t)type
 {
-  v6 = a3;
-  if ([v6 length])
+  uuidCopy = uuid;
+  if ([uuidCopy length])
   {
     v45 = 0;
     v46 = &v45;
@@ -37,21 +37,21 @@
     v31 = sub_10003B59C;
     v32 = 0;
     v7 = +[MTDB sharedInstance];
-    v8 = [v7 mainOrPrivateContext];
+    mainOrPrivateContext = [v7 mainOrPrivateContext];
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10012F458;
     v19[3] = &unk_1004DD658;
-    v9 = v8;
+    v9 = mainOrPrivateContext;
     v20 = v9;
-    v10 = v6;
+    v10 = uuidCopy;
     v21 = v10;
     v22 = &v45;
     v23 = &v39;
     v24 = &v33;
     v25 = &v27;
-    v26 = a4;
+    typeCopy = type;
     [v9 performBlockAndWait:v19];
     if ([v46[5] length])
     {
@@ -66,7 +66,7 @@
       if (v13)
       {
         [(MTPodcastManifest *)v13 setPodcastUuid:v46[5]];
-        [(MTPodcastManifest *)v14 setSectionType:a4];
+        [(MTPodcastManifest *)v14 setSectionType:type];
         [(MTPodcastManifest *)v14 setTitle:v40[5]];
         v15 = [MTPodcast predicateForPodcastUUID:v46[5]];
         [(MTPredicateManifest *)v14 _observeAllPropertyChangesForEntityName:kMTPodcastEntityName predicate:v15];
@@ -74,12 +74,12 @@
 
       self = v14;
 
-      v16 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v16 = 0;
+      selfCopy = 0;
     }
 
     _Block_object_dispose(&v27, 8);
@@ -91,45 +91,45 @@
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (id)activity
 {
   v6.receiver = self;
   v6.super_class = MTPodcastManifest;
-  v3 = [(MTPlayerManifest *)&v6 activity];
+  activity = [(MTPlayerManifest *)&v6 activity];
   v4 = [NSNumber numberWithUnsignedInteger:[(MTPodcastManifest *)self sectionType]];
-  [v3 setValue:v4 forKey:@"MTPodcastManifestActivitySectionType"];
+  [activity setValue:v4 forKey:@"MTPodcastManifestActivitySectionType"];
 
-  return v3;
+  return activity;
 }
 
-+ (void)createManifestForActivity:(id)a3 completion:(id)a4
++ (void)createManifestForActivity:(id)activity completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 userInfo];
-  v9 = [v8 valueForKey:@"MTPodcastManifestActivitySectionType"];
+  completionCopy = completion;
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v9 = [userInfo valueForKey:@"MTPodcastManifestActivitySectionType"];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10012F6D8;
   v12[3] = &unk_1004DA248;
   v13 = v9;
-  v14 = v6;
+  v14 = completionCopy;
   v10 = v9;
-  v11 = v6;
-  [a1 episodeUuidForActivity:v7 completion:v12];
+  v11 = completionCopy;
+  [self episodeUuidForActivity:activityCopy completion:v12];
 }
 
 - (void)_propertyDidChange
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainOrPrivateContext];
+  mainOrPrivateContext = [v3 mainOrPrivateContext];
 
   v12 = 0;
   v13 = &v12;
@@ -141,14 +141,14 @@
   v8[1] = 3221225472;
   v8[2] = sub_10012F8F0;
   v8[3] = &unk_1004D87E8;
-  v5 = v4;
+  v5 = mainOrPrivateContext;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [v5 performBlockAndWait:v8];
   v6 = v13[5];
-  v7 = [(MTPredicateManifest *)self sortDescriptors];
-  LOBYTE(v6) = [v6 isEqual:v7];
+  sortDescriptors = [(MTPredicateManifest *)self sortDescriptors];
+  LOBYTE(v6) = [v6 isEqual:sortDescriptors];
 
   if ((v6 & 1) == 0)
   {

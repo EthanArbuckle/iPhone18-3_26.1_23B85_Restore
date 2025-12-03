@@ -1,23 +1,23 @@
 @interface HKWeekdayHeaderPaletteView
 + (double)preferredHeight;
 + (id)weekdayFont;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HKWeekdayHeaderPaletteView)initWithFrame:(CGRect)a3 shouldSupportRTL:(BOOL)a4;
-- (double)_xOriginForMonthViewWithIndex:(int64_t)a3 itemWidth:(double)a4 leftMargin:(double)a5;
-- (void)_currentTraitCollectionDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HKWeekdayHeaderPaletteView)initWithFrame:(CGRect)frame shouldSupportRTL:(BOOL)l;
+- (double)_xOriginForMonthViewWithIndex:(int64_t)index itemWidth:(double)width leftMargin:(double)margin;
+- (void)_currentTraitCollectionDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection;
 - (void)_updateFont;
 - (void)layoutSubviews;
 @end
 
 @implementation HKWeekdayHeaderPaletteView
 
-- (HKWeekdayHeaderPaletteView)initWithFrame:(CGRect)a3 shouldSupportRTL:(BOOL)a4
+- (HKWeekdayHeaderPaletteView)initWithFrame:(CGRect)frame shouldSupportRTL:(BOOL)l
 {
-  v4 = a4;
+  lCopy = l;
   v25[1] = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = HKWeekdayHeaderPaletteView;
-  v5 = [(HKWeekdayHeaderPaletteView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(HKWeekdayHeaderPaletteView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -25,22 +25,22 @@
     v5->_weekdayLabels = v6;
 
     [(HKWeekdayHeaderPaletteView *)v5 setLayoutMargins:0.0, 5.0, 3.0, 5.0];
-    v8 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v22 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v9 = [v22 veryShortStandaloneWeekdaySymbols];
-    v10 = [v8 firstWeekday];
-    v23 = v8;
-    v11 = [v8 hk_weekendDays];
-    v12 = v10 - 1;
+    veryShortStandaloneWeekdaySymbols = [v22 veryShortStandaloneWeekdaySymbols];
+    firstWeekday = [currentCalendar firstWeekday];
+    v23 = currentCalendar;
+    hk_weekendDays = [currentCalendar hk_weekendDays];
+    v12 = firstWeekday - 1;
     v13 = 7;
     do
     {
       v14 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-      v15 = [v9 objectAtIndexedSubscript:v12 % 7];
+      v15 = [veryShortStandaloneWeekdaySymbols objectAtIndexedSubscript:v12 % 7];
       [v14 setText:v15];
 
       v16 = [MEMORY[0x1E696AD98] numberWithInteger:v12 % 7 + 1];
-      LOBYTE(v15) = [v11 containsObject:v16];
+      LOBYTE(v15) = [hk_weekendDays containsObject:v16];
 
       if (v15)
       {
@@ -56,7 +56,7 @@
 
       [v14 sizeToFit];
       v18 = v5->_weekdayLabels;
-      if (v4)
+      if (lCopy)
       {
         [(NSMutableArray *)v18 insertObject:v14 atIndex:0];
       }
@@ -106,8 +106,8 @@
         }
 
         v7 = *(*(&v9 + 1) + 8 * v6);
-        v8 = [objc_opt_class() weekdayFont];
-        [v7 setFont:v8];
+        weekdayFont = [objc_opt_class() weekdayFont];
+        [v7 setFont:weekdayFont];
 
         [v7 sizeToFit];
         ++v6;
@@ -141,7 +141,7 @@
   }
 }
 
-- (double)_xOriginForMonthViewWithIndex:(int64_t)a3 itemWidth:(double)a4 leftMargin:(double)a5
+- (double)_xOriginForMonthViewWithIndex:(int64_t)index itemWidth:(double)width leftMargin:(double)margin
 {
   [(HKWeekdayHeaderPaletteView *)self bounds];
 
@@ -149,9 +149,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   [objc_opt_class() preferredHeight];
   v5 = v4;
   v6 = width;
@@ -189,25 +189,25 @@
 
 + (double)preferredHeight
 {
-  v2 = [objc_opt_class() weekdayFont];
-  [v2 _bodyLeading];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 scale];
+  weekdayFont = [objc_opt_class() weekdayFont];
+  [weekdayFont _bodyLeading];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRoundToScale();
   v5 = v4;
 
   return fmax(v5, 17.0);
 }
 
-- (void)_currentTraitCollectionDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)_currentTraitCollectionDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = [a4 preferredContentSizeCategory];
-  v8 = [v6 traitCollection];
+  environmentCopy = environment;
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  traitCollection = [environmentCopy traitCollection];
 
-  v9 = [v8 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-  if (v7 != v9)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(HKWeekdayHeaderPaletteView *)self _updateFont];
 

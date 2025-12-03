@@ -1,13 +1,13 @@
 @interface _HKLegendEntryView
-- (_HKLegendEntryView)initWithLegendEntry:(id)a3;
-- (void)setLegendEntry:(id)a3;
+- (_HKLegendEntryView)initWithLegendEntry:(id)entry;
+- (void)setLegendEntry:(id)entry;
 @end
 
 @implementation _HKLegendEntryView
 
-- (_HKLegendEntryView)initWithLegendEntry:(id)a3
+- (_HKLegendEntryView)initWithLegendEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v17.receiver = self;
   v17.super_class = _HKLegendEntryView;
   v5 = [(_HKLegendEntryView *)&v17 initWithArrangedSubviews:MEMORY[0x1E695E0F0]];
@@ -36,31 +36,31 @@
     legendLabel = v6->_legendLabel;
     v6->_legendLabel = v13;
 
-    v15 = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
-    [(UILabel *)v6->_legendLabel setFont:v15];
+    hk_chartAxisLabelFont = [MEMORY[0x1E69DB878] hk_chartAxisLabelFont];
+    [(UILabel *)v6->_legendLabel setFont:hk_chartAxisLabelFont];
 
     [(_HKLegendEntryView *)v6 addArrangedSubview:v6->_legendLabel];
-    [(_HKLegendEntryView *)v6 setLegendEntry:v4];
+    [(_HKLegendEntryView *)v6 setLegendEntry:entryCopy];
   }
 
   return v6;
 }
 
-- (void)setLegendEntry:(id)a3
+- (void)setLegendEntry:(id)entry
 {
-  v36 = a3;
+  entryCopy = entry;
   if ([(HKLegendEntry *)self->_currentLegendEntry isEqual:?])
   {
     goto LABEL_22;
   }
 
-  v5 = [(HKLegendEntry *)self->_currentLegendEntry title];
-  v6 = [v36 title];
-  if ([v5 isEqualToString:v6])
+  title = [(HKLegendEntry *)self->_currentLegendEntry title];
+  title2 = [entryCopy title];
+  if ([title isEqualToString:title2])
   {
-    v7 = [(HKLegendEntry *)self->_currentLegendEntry labelColor];
-    v8 = [v36 labelColor];
-    v9 = [v7 isEqual:v8];
+    labelColor = [(HKLegendEntry *)self->_currentLegendEntry labelColor];
+    labelColor2 = [entryCopy labelColor];
+    v9 = [labelColor isEqual:labelColor2];
 
     if (v9)
     {
@@ -72,92 +72,92 @@
   {
   }
 
-  v10 = [v36 title];
-  [(UILabel *)self->_legendLabel setText:v10];
+  title3 = [entryCopy title];
+  [(UILabel *)self->_legendLabel setText:title3];
 
-  v11 = [v36 labelColor];
-  if (v11)
+  labelColor3 = [entryCopy labelColor];
+  if (labelColor3)
   {
-    [(UILabel *)self->_legendLabel setTextColor:v11];
+    [(UILabel *)self->_legendLabel setTextColor:labelColor3];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)self->_legendLabel setTextColor:v12];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)self->_legendLabel setTextColor:secondaryLabelColor];
   }
 
   [(UILabel *)self->_legendLabel sizeToFit];
 LABEL_10:
-  v13 = [(UILabel *)self->_legendLabel text];
-  -[UILabel setHidden:](self->_legendLabel, "setHidden:", [v13 length] == 0);
+  text = [(UILabel *)self->_legendLabel text];
+  -[UILabel setHidden:](self->_legendLabel, "setHidden:", [text length] == 0);
 
-  v14 = [(HKLegendEntry *)self->_currentLegendEntry icon];
-  v15 = [v36 icon];
-  v16 = v15;
-  if (v14 != v15)
+  icon = [(HKLegendEntry *)self->_currentLegendEntry icon];
+  icon2 = [entryCopy icon];
+  v16 = icon2;
+  if (icon != icon2)
   {
 
 LABEL_13:
     legendIcon = self->_legendIcon;
-    v20 = [v36 iconTint];
-    [(UIImageView *)legendIcon setTintColor:v20];
+    iconTint = [entryCopy iconTint];
+    [(UIImageView *)legendIcon setTintColor:iconTint];
 
-    v21 = [v36 iconTint];
+    iconTint2 = [entryCopy iconTint];
 
     v22 = self->_legendIcon;
-    v23 = [v36 icon];
-    v24 = v23;
-    if (v21)
+    icon3 = [entryCopy icon];
+    v24 = icon3;
+    if (iconTint2)
     {
-      v25 = [v23 imageWithRenderingMode:2];
+      v25 = [icon3 imageWithRenderingMode:2];
       [(UIImageView *)v22 setImage:v25];
     }
 
     else
     {
-      [(UIImageView *)v22 setImage:v23];
+      [(UIImageView *)v22 setImage:icon3];
     }
 
     goto LABEL_17;
   }
 
-  v17 = [(HKLegendEntry *)self->_currentLegendEntry iconTint];
-  v18 = [v36 iconTint];
+  iconTint3 = [(HKLegendEntry *)self->_currentLegendEntry iconTint];
+  iconTint4 = [entryCopy iconTint];
 
-  if (v17 != v18)
+  if (iconTint3 != iconTint4)
   {
     goto LABEL_13;
   }
 
 LABEL_17:
-  v26 = [v36 icon];
-  [(UIImageView *)self->_legendIcon setHidden:v26 == 0];
+  icon4 = [entryCopy icon];
+  [(UIImageView *)self->_legendIcon setHidden:icon4 == 0];
 
-  v27 = [(HKLegendEntry *)self->_currentLegendEntry dotColor];
-  v28 = [v36 dotColor];
-  v29 = [v27 isEqual:v28];
+  dotColor = [(HKLegendEntry *)self->_currentLegendEntry dotColor];
+  dotColor2 = [entryCopy dotColor];
+  v29 = [dotColor isEqual:dotColor2];
 
   if ((v29 & 1) == 0)
   {
-    v30 = [v36 dotColor];
-    [(_HKLegendDot *)self->_legendDot setDotColor:v30];
+    dotColor3 = [entryCopy dotColor];
+    [(_HKLegendDot *)self->_legendDot setDotColor:dotColor3];
   }
 
-  v31 = [(HKLegendEntry *)self->_currentLegendEntry innerDotColor];
-  v32 = [v36 innerDotColor];
-  v33 = [v31 isEqual:v32];
+  innerDotColor = [(HKLegendEntry *)self->_currentLegendEntry innerDotColor];
+  innerDotColor2 = [entryCopy innerDotColor];
+  v33 = [innerDotColor isEqual:innerDotColor2];
 
   if ((v33 & 1) == 0)
   {
-    v34 = [v36 innerDotColor];
-    [(_HKLegendDot *)self->_legendDot setInnerDotColor:v34];
+    innerDotColor3 = [entryCopy innerDotColor];
+    [(_HKLegendDot *)self->_legendDot setInnerDotColor:innerDotColor3];
   }
 
-  v35 = [v36 dotColor];
-  [(_HKLegendDot *)self->_legendDot setHidden:v35 == 0];
+  dotColor4 = [entryCopy dotColor];
+  [(_HKLegendDot *)self->_legendDot setHidden:dotColor4 == 0];
 
-  objc_storeStrong(&self->_currentLegendEntry, a3);
+  objc_storeStrong(&self->_currentLegendEntry, entry);
 LABEL_22:
 }
 

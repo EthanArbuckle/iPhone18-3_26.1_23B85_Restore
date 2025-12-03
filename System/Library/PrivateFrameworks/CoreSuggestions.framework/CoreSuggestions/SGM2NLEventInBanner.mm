@@ -1,20 +1,20 @@
 @interface SGM2NLEventInBanner
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsActionType:(id)a3;
-- (int)StringAsDateAdj:(id)a3;
-- (int)StringAsDuraAdj:(id)a3;
-- (int)StringAsExtractionLevel:(id)a3;
-- (int)StringAsInterface:(id)a3;
-- (int)StringAsLocationAdj:(id)a3;
-- (int)StringAsMailAppUsageLevel:(id)a3;
-- (int)StringAsMessagesAppUsageLevel:(id)a3;
-- (int)StringAsSignificantSender:(id)a3;
-- (int)StringAsTitleAdj:(id)a3;
-- (int)StringAsTitleSource:(id)a3;
+- (int)StringAsActionType:(id)type;
+- (int)StringAsDateAdj:(id)adj;
+- (int)StringAsDuraAdj:(id)adj;
+- (int)StringAsExtractionLevel:(id)level;
+- (int)StringAsInterface:(id)interface;
+- (int)StringAsLocationAdj:(id)adj;
+- (int)StringAsMailAppUsageLevel:(id)level;
+- (int)StringAsMessagesAppUsageLevel:(id)level;
+- (int)StringAsSignificantSender:(id)sender;
+- (int)StringAsTitleAdj:(id)adj;
+- (int)StringAsTitleSource:(id)source;
 - (int)actionType;
 - (int)dateAdj;
 - (int)duraAdj;
@@ -27,69 +27,69 @@
 - (int)titleAdj;
 - (int)titleSource;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConfidenceScore:(BOOL)a3;
-- (void)setHasDateAdj:(BOOL)a3;
-- (void)setHasDaysFromStartDate:(BOOL)a3;
-- (void)setHasDuraAdj:(BOOL)a3;
-- (void)setHasExtractionLevel:(BOOL)a3;
-- (void)setHasInterface:(BOOL)a3;
-- (void)setHasLocationAdj:(BOOL)a3;
-- (void)setHasMailAppUsageLevel:(BOOL)a3;
-- (void)setHasMessagesAppUsageLevel:(BOOL)a3;
-- (void)setHasParticipantCount:(BOOL)a3;
-- (void)setHasSignificantSender:(BOOL)a3;
-- (void)setHasTitleAdj:(BOOL)a3;
-- (void)setHasTitleSource:(BOOL)a3;
-- (void)setHasUsedBubblesCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConfidenceScore:(BOOL)score;
+- (void)setHasDateAdj:(BOOL)adj;
+- (void)setHasDaysFromStartDate:(BOOL)date;
+- (void)setHasDuraAdj:(BOOL)adj;
+- (void)setHasExtractionLevel:(BOOL)level;
+- (void)setHasInterface:(BOOL)interface;
+- (void)setHasLocationAdj:(BOOL)adj;
+- (void)setHasMailAppUsageLevel:(BOOL)level;
+- (void)setHasMessagesAppUsageLevel:(BOOL)level;
+- (void)setHasParticipantCount:(BOOL)count;
+- (void)setHasSignificantSender:(BOOL)sender;
+- (void)setHasTitleAdj:(BOOL)adj;
+- (void)setHasTitleSource:(BOOL)source;
+- (void)setHasUsedBubblesCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGM2NLEventInBanner
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 8))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(SGM2NLEventInBanner *)self setKey:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x40) != 0)
   {
-    self->_interface = *(v4 + 15);
+    self->_interface = *(fromCopy + 15);
     *&self->_has |= 0x40u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
   }
 
   if (v5)
   {
-    self->_actionType = *(v4 + 2);
+    self->_actionType = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SGM2NLEventInBanner *)self setEventType:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(SGM2NLEventInBanner *)self setLanguageID:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 8) != 0)
   {
-    self->_daysFromStartDate = *(v4 + 10);
+    self->_daysFromStartDate = *(fromCopy + 10);
     *&self->_has |= 8u;
-    v6 = *(v4 + 56);
+    v6 = *(fromCopy + 56);
     if ((v6 & 2) == 0)
     {
 LABEL_13:
@@ -107,9 +107,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  self->_confidenceScore = *(v4 + 8);
+  self->_confidenceScore = *(fromCopy + 8);
   *&self->_has |= 2u;
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 0x800) == 0)
   {
 LABEL_14:
@@ -122,9 +122,9 @@ LABEL_14:
   }
 
 LABEL_36:
-  self->_significantSender = *(v4 + 24);
+  self->_significantSender = *(fromCopy + 24);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 0x400) == 0)
   {
 LABEL_15:
@@ -137,9 +137,9 @@ LABEL_15:
   }
 
 LABEL_37:
-  self->_participantCount = *(v4 + 23);
+  self->_participantCount = *(fromCopy + 23);
   *&self->_has |= 0x400u;
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 0x20) == 0)
   {
 LABEL_16:
@@ -152,9 +152,9 @@ LABEL_16:
   }
 
 LABEL_38:
-  self->_extractionLevel = *(v4 + 14);
+  self->_extractionLevel = *(fromCopy + 14);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 0x4000) == 0)
   {
 LABEL_17:
@@ -167,9 +167,9 @@ LABEL_17:
   }
 
 LABEL_39:
-  self->_usedBubblesCount = *(v4 + 27);
+  self->_usedBubblesCount = *(fromCopy + 27);
   *&self->_has |= 0x4000u;
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 0x2000) == 0)
   {
 LABEL_18:
@@ -182,9 +182,9 @@ LABEL_18:
   }
 
 LABEL_40:
-  self->_titleSource = *(v4 + 26);
+  self->_titleSource = *(fromCopy + 26);
   *&self->_has |= 0x2000u;
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 0x1000) == 0)
   {
 LABEL_19:
@@ -197,9 +197,9 @@ LABEL_19:
   }
 
 LABEL_41:
-  self->_titleAdj = *(v4 + 25);
+  self->_titleAdj = *(fromCopy + 25);
   *&self->_has |= 0x1000u;
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 4) == 0)
   {
 LABEL_20:
@@ -212,9 +212,9 @@ LABEL_20:
   }
 
 LABEL_42:
-  self->_dateAdj = *(v4 + 9);
+  self->_dateAdj = *(fromCopy + 9);
   *&self->_has |= 4u;
-  v6 = *(v4 + 56);
+  v6 = *(fromCopy + 56);
   if ((v6 & 0x10) == 0)
   {
 LABEL_21:
@@ -227,39 +227,39 @@ LABEL_21:
   }
 
 LABEL_43:
-  self->_duraAdj = *(v4 + 11);
+  self->_duraAdj = *(fromCopy + 11);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 56) & 0x80) != 0)
+  if ((*(fromCopy + 56) & 0x80) != 0)
   {
 LABEL_22:
-    self->_locationAdj = *(v4 + 20);
+    self->_locationAdj = *(fromCopy + 20);
     *&self->_has |= 0x80u;
   }
 
 LABEL_23:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SGM2NLEventInBanner *)self setAddedAttendeesCount:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SGM2NLEventInBanner *)self setCalendarAppUsageLevel:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 56);
+  v7 = *(fromCopy + 56);
   if ((v7 & 0x100) != 0)
   {
-    self->_mailAppUsageLevel = *(v4 + 21);
+    self->_mailAppUsageLevel = *(fromCopy + 21);
     *&self->_has |= 0x100u;
-    v7 = *(v4 + 56);
+    v7 = *(fromCopy + 56);
   }
 
   if ((v7 & 0x200) != 0)
   {
-    self->_messagesAppUsageLevel = *(v4 + 22);
+    self->_messagesAppUsageLevel = *(fromCopy + 22);
     *&self->_has |= 0x200u;
   }
 }
@@ -467,16 +467,16 @@ LABEL_31:
   return v25 ^ v26 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_87;
   }
 
   key = self->_key;
-  if (key | *(v4 + 8))
+  if (key | *(equalCopy + 8))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -485,10 +485,10 @@ LABEL_31:
   }
 
   has = self->_has;
-  v7 = *(v4 + 56);
+  v7 = *(equalCopy + 56);
   if ((has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_interface != *(v4 + 15))
+    if ((v7 & 0x40) == 0 || self->_interface != *(equalCopy + 15))
     {
       goto LABEL_87;
     }
@@ -503,7 +503,7 @@ LABEL_87:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_actionType != *(v4 + 2))
+    if ((v7 & 1) == 0 || self->_actionType != *(equalCopy + 2))
     {
       goto LABEL_87;
     }
@@ -515,13 +515,13 @@ LABEL_87:
   }
 
   eventType = self->_eventType;
-  if (eventType | *(v4 + 6) && ![(NSString *)eventType isEqual:?])
+  if (eventType | *(equalCopy + 6) && ![(NSString *)eventType isEqual:?])
   {
     goto LABEL_87;
   }
 
   languageID = self->_languageID;
-  if (languageID | *(v4 + 9))
+  if (languageID | *(equalCopy + 9))
   {
     if (![(NSString *)languageID isEqual:?])
     {
@@ -530,10 +530,10 @@ LABEL_87:
   }
 
   v10 = self->_has;
-  v11 = *(v4 + 56);
+  v11 = *(equalCopy + 56);
   if ((v10 & 8) != 0)
   {
-    if ((v11 & 8) == 0 || self->_daysFromStartDate != *(v4 + 10))
+    if ((v11 & 8) == 0 || self->_daysFromStartDate != *(equalCopy + 10))
     {
       goto LABEL_87;
     }
@@ -546,7 +546,7 @@ LABEL_87:
 
   if ((v10 & 2) != 0)
   {
-    if ((v11 & 2) == 0 || self->_confidenceScore != *(v4 + 8))
+    if ((v11 & 2) == 0 || self->_confidenceScore != *(equalCopy + 8))
     {
       goto LABEL_87;
     }
@@ -559,33 +559,33 @@ LABEL_87:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 56) & 0x800) == 0 || self->_significantSender != *(v4 + 24))
+    if ((*(equalCopy + 56) & 0x800) == 0 || self->_significantSender != *(equalCopy + 24))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(v4 + 56) & 0x800) != 0)
+  else if ((*(equalCopy + 56) & 0x800) != 0)
   {
     goto LABEL_87;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 56) & 0x400) == 0 || self->_participantCount != *(v4 + 23))
+    if ((*(equalCopy + 56) & 0x400) == 0 || self->_participantCount != *(equalCopy + 23))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(v4 + 56) & 0x400) != 0)
+  else if ((*(equalCopy + 56) & 0x400) != 0)
   {
     goto LABEL_87;
   }
 
   if ((v10 & 0x20) != 0)
   {
-    if ((v11 & 0x20) == 0 || self->_extractionLevel != *(v4 + 14))
+    if ((v11 & 0x20) == 0 || self->_extractionLevel != *(equalCopy + 14))
     {
       goto LABEL_87;
     }
@@ -598,46 +598,46 @@ LABEL_87:
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 56) & 0x4000) == 0 || self->_usedBubblesCount != *(v4 + 27))
+    if ((*(equalCopy + 56) & 0x4000) == 0 || self->_usedBubblesCount != *(equalCopy + 27))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(v4 + 56) & 0x4000) != 0)
+  else if ((*(equalCopy + 56) & 0x4000) != 0)
   {
     goto LABEL_87;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 56) & 0x2000) == 0 || self->_titleSource != *(v4 + 26))
+    if ((*(equalCopy + 56) & 0x2000) == 0 || self->_titleSource != *(equalCopy + 26))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(v4 + 56) & 0x2000) != 0)
+  else if ((*(equalCopy + 56) & 0x2000) != 0)
   {
     goto LABEL_87;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 56) & 0x1000) == 0 || self->_titleAdj != *(v4 + 25))
+    if ((*(equalCopy + 56) & 0x1000) == 0 || self->_titleAdj != *(equalCopy + 25))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(v4 + 56) & 0x1000) != 0)
+  else if ((*(equalCopy + 56) & 0x1000) != 0)
   {
     goto LABEL_87;
   }
 
   if ((v10 & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_dateAdj != *(v4 + 9))
+    if ((v11 & 4) == 0 || self->_dateAdj != *(equalCopy + 9))
     {
       goto LABEL_87;
     }
@@ -650,7 +650,7 @@ LABEL_87:
 
   if ((v10 & 0x10) != 0)
   {
-    if ((v11 & 0x10) == 0 || self->_duraAdj != *(v4 + 11))
+    if ((v11 & 0x10) == 0 || self->_duraAdj != *(equalCopy + 11))
     {
       goto LABEL_87;
     }
@@ -663,7 +663,7 @@ LABEL_87:
 
   if ((v10 & 0x80) != 0)
   {
-    if ((v11 & 0x80) == 0 || self->_locationAdj != *(v4 + 20))
+    if ((v11 & 0x80) == 0 || self->_locationAdj != *(equalCopy + 20))
     {
       goto LABEL_87;
     }
@@ -675,13 +675,13 @@ LABEL_87:
   }
 
   addedAttendeesCount = self->_addedAttendeesCount;
-  if (addedAttendeesCount | *(v4 + 2) && ![(NSString *)addedAttendeesCount isEqual:?])
+  if (addedAttendeesCount | *(equalCopy + 2) && ![(NSString *)addedAttendeesCount isEqual:?])
   {
     goto LABEL_87;
   }
 
   calendarAppUsageLevel = self->_calendarAppUsageLevel;
-  if (calendarAppUsageLevel | *(v4 + 3))
+  if (calendarAppUsageLevel | *(equalCopy + 3))
   {
     if (![(NSString *)calendarAppUsageLevel isEqual:?])
     {
@@ -691,20 +691,20 @@ LABEL_87:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 56) & 0x100) == 0 || self->_mailAppUsageLevel != *(v4 + 21))
+    if ((*(equalCopy + 56) & 0x100) == 0 || self->_mailAppUsageLevel != *(equalCopy + 21))
     {
       goto LABEL_87;
     }
   }
 
-  else if ((*(v4 + 56) & 0x100) != 0)
+  else if ((*(equalCopy + 56) & 0x100) != 0)
   {
     goto LABEL_87;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 56) & 0x200) == 0 || self->_messagesAppUsageLevel != *(v4 + 22))
+    if ((*(equalCopy + 56) & 0x200) == 0 || self->_messagesAppUsageLevel != *(equalCopy + 22))
     {
       goto LABEL_87;
     }
@@ -714,7 +714,7 @@ LABEL_87:
 
   else
   {
-    v14 = (*(v4 + 56) & 0x200) == 0;
+    v14 = (*(equalCopy + 56) & 0x200) == 0;
   }
 
 LABEL_88:
@@ -722,10 +722,10 @@ LABEL_88:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -743,11 +743,11 @@ LABEL_88:
     *(v5 + 112) |= 1u;
   }
 
-  v9 = [(NSString *)self->_eventType copyWithZone:a3];
+  v9 = [(NSString *)self->_eventType copyWithZone:zone];
   v10 = *(v5 + 48);
   *(v5 + 48) = v9;
 
-  v11 = [(NSString *)self->_languageID copyWithZone:a3];
+  v11 = [(NSString *)self->_languageID copyWithZone:zone];
   v12 = *(v5 + 72);
   *(v5 + 72) = v11;
 
@@ -904,11 +904,11 @@ LABEL_16:
   }
 
 LABEL_17:
-  v14 = [(NSString *)self->_addedAttendeesCount copyWithZone:a3];
+  v14 = [(NSString *)self->_addedAttendeesCount copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
-  v16 = [(NSString *)self->_calendarAppUsageLevel copyWithZone:a3];
+  v16 = [(NSString *)self->_calendarAppUsageLevel copyWithZone:zone];
   v17 = *(v5 + 24);
   *(v5 + 24) = v16;
 
@@ -929,47 +929,47 @@ LABEL_17:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v8;
+    [toCopy setKey:?];
+    toCopy = v8;
   }
 
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    *(v4 + 15) = self->_interface;
-    *(v4 + 56) |= 0x40u;
+    *(toCopy + 15) = self->_interface;
+    *(toCopy + 56) |= 0x40u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 2) = self->_actionType;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 2) = self->_actionType;
+    *(toCopy + 56) |= 1u;
   }
 
   if (self->_eventType)
   {
     [v8 setEventType:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_languageID)
   {
     [v8 setLanguageID:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    *(v4 + 10) = self->_daysFromStartDate;
-    *(v4 + 56) |= 8u;
+    *(toCopy + 10) = self->_daysFromStartDate;
+    *(toCopy + 56) |= 8u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -988,8 +988,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 8) = self->_confidenceScore;
-  *(v4 + 56) |= 2u;
+  *(toCopy + 8) = self->_confidenceScore;
+  *(toCopy + 56) |= 2u;
   v6 = self->_has;
   if ((v6 & 0x800) == 0)
   {
@@ -1003,8 +1003,8 @@ LABEL_14:
   }
 
 LABEL_36:
-  *(v4 + 24) = self->_significantSender;
-  *(v4 + 56) |= 0x800u;
+  *(toCopy + 24) = self->_significantSender;
+  *(toCopy + 56) |= 0x800u;
   v6 = self->_has;
   if ((v6 & 0x400) == 0)
   {
@@ -1018,8 +1018,8 @@ LABEL_15:
   }
 
 LABEL_37:
-  *(v4 + 23) = self->_participantCount;
-  *(v4 + 56) |= 0x400u;
+  *(toCopy + 23) = self->_participantCount;
+  *(toCopy + 56) |= 0x400u;
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -1033,8 +1033,8 @@ LABEL_16:
   }
 
 LABEL_38:
-  *(v4 + 14) = self->_extractionLevel;
-  *(v4 + 56) |= 0x20u;
+  *(toCopy + 14) = self->_extractionLevel;
+  *(toCopy + 56) |= 0x20u;
   v6 = self->_has;
   if ((v6 & 0x4000) == 0)
   {
@@ -1048,8 +1048,8 @@ LABEL_17:
   }
 
 LABEL_39:
-  *(v4 + 27) = self->_usedBubblesCount;
-  *(v4 + 56) |= 0x4000u;
+  *(toCopy + 27) = self->_usedBubblesCount;
+  *(toCopy + 56) |= 0x4000u;
   v6 = self->_has;
   if ((v6 & 0x2000) == 0)
   {
@@ -1063,8 +1063,8 @@ LABEL_18:
   }
 
 LABEL_40:
-  *(v4 + 26) = self->_titleSource;
-  *(v4 + 56) |= 0x2000u;
+  *(toCopy + 26) = self->_titleSource;
+  *(toCopy + 56) |= 0x2000u;
   v6 = self->_has;
   if ((v6 & 0x1000) == 0)
   {
@@ -1078,8 +1078,8 @@ LABEL_19:
   }
 
 LABEL_41:
-  *(v4 + 25) = self->_titleAdj;
-  *(v4 + 56) |= 0x1000u;
+  *(toCopy + 25) = self->_titleAdj;
+  *(toCopy + 56) |= 0x1000u;
   v6 = self->_has;
   if ((v6 & 4) == 0)
   {
@@ -1093,8 +1093,8 @@ LABEL_20:
   }
 
 LABEL_42:
-  *(v4 + 9) = self->_dateAdj;
-  *(v4 + 56) |= 4u;
+  *(toCopy + 9) = self->_dateAdj;
+  *(toCopy + 56) |= 4u;
   v6 = self->_has;
   if ((v6 & 0x10) == 0)
   {
@@ -1108,51 +1108,51 @@ LABEL_21:
   }
 
 LABEL_43:
-  *(v4 + 11) = self->_duraAdj;
-  *(v4 + 56) |= 0x10u;
+  *(toCopy + 11) = self->_duraAdj;
+  *(toCopy + 56) |= 0x10u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_22:
-    *(v4 + 20) = self->_locationAdj;
-    *(v4 + 56) |= 0x80u;
+    *(toCopy + 20) = self->_locationAdj;
+    *(toCopy + 56) |= 0x80u;
   }
 
 LABEL_23:
   if (self->_addedAttendeesCount)
   {
     [v8 setAddedAttendeesCount:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_calendarAppUsageLevel)
   {
     [v8 setCalendarAppUsageLevel:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((v7 & 0x100) != 0)
   {
-    *(v4 + 21) = self->_mailAppUsageLevel;
-    *(v4 + 56) |= 0x100u;
+    *(toCopy + 21) = self->_mailAppUsageLevel;
+    *(toCopy + 56) |= 0x100u;
     v7 = self->_has;
   }
 
   if ((v7 & 0x200) != 0)
   {
-    *(v4 + 22) = self->_messagesAppUsageLevel;
-    *(v4 + 56) |= 0x200u;
+    *(toCopy + 22) = self->_messagesAppUsageLevel;
+    *(toCopy + 56) |= 0x200u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v23 = v4;
+  toCopy = to;
+  v23 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v23;
+    toCopy = v23;
   }
 
   has = self->_has;
@@ -1160,7 +1160,7 @@ LABEL_23:
   {
     interface = self->_interface;
     PBDataWriterWriteInt32Field();
-    v4 = v23;
+    toCopy = v23;
     has = self->_has;
   }
 
@@ -1168,19 +1168,19 @@ LABEL_23:
   {
     actionType = self->_actionType;
     PBDataWriterWriteInt32Field();
-    v4 = v23;
+    toCopy = v23;
   }
 
   if (self->_eventType)
   {
     PBDataWriterWriteStringField();
-    v4 = v23;
+    toCopy = v23;
   }
 
   if (self->_languageID)
   {
     PBDataWriterWriteStringField();
-    v4 = v23;
+    toCopy = v23;
   }
 
   v8 = self->_has;
@@ -1188,7 +1188,7 @@ LABEL_23:
   {
     daysFromStartDate = self->_daysFromStartDate;
     PBDataWriterWriteUint32Field();
-    v4 = v23;
+    toCopy = v23;
     v8 = self->_has;
     if ((v8 & 2) == 0)
     {
@@ -1209,7 +1209,7 @@ LABEL_13:
 
   confidenceScore = self->_confidenceScore;
   PBDataWriterWriteUint32Field();
-  v4 = v23;
+  toCopy = v23;
   v8 = self->_has;
   if ((v8 & 0x800) == 0)
   {
@@ -1225,7 +1225,7 @@ LABEL_14:
 LABEL_36:
   significantSender = self->_significantSender;
   PBDataWriterWriteInt32Field();
-  v4 = v23;
+  toCopy = v23;
   v8 = self->_has;
   if ((v8 & 0x400) == 0)
   {
@@ -1241,7 +1241,7 @@ LABEL_15:
 LABEL_37:
   participantCount = self->_participantCount;
   PBDataWriterWriteUint32Field();
-  v4 = v23;
+  toCopy = v23;
   v8 = self->_has;
   if ((v8 & 0x20) == 0)
   {
@@ -1257,7 +1257,7 @@ LABEL_16:
 LABEL_38:
   extractionLevel = self->_extractionLevel;
   PBDataWriterWriteInt32Field();
-  v4 = v23;
+  toCopy = v23;
   v8 = self->_has;
   if ((v8 & 0x4000) == 0)
   {
@@ -1273,7 +1273,7 @@ LABEL_17:
 LABEL_39:
   usedBubblesCount = self->_usedBubblesCount;
   PBDataWriterWriteUint32Field();
-  v4 = v23;
+  toCopy = v23;
   v8 = self->_has;
   if ((v8 & 0x2000) == 0)
   {
@@ -1289,7 +1289,7 @@ LABEL_18:
 LABEL_40:
   titleSource = self->_titleSource;
   PBDataWriterWriteInt32Field();
-  v4 = v23;
+  toCopy = v23;
   v8 = self->_has;
   if ((v8 & 0x1000) == 0)
   {
@@ -1305,7 +1305,7 @@ LABEL_19:
 LABEL_41:
   titleAdj = self->_titleAdj;
   PBDataWriterWriteInt32Field();
-  v4 = v23;
+  toCopy = v23;
   v8 = self->_has;
   if ((v8 & 4) == 0)
   {
@@ -1321,7 +1321,7 @@ LABEL_20:
 LABEL_42:
   dateAdj = self->_dateAdj;
   PBDataWriterWriteInt32Field();
-  v4 = v23;
+  toCopy = v23;
   v8 = self->_has;
   if ((v8 & 0x10) == 0)
   {
@@ -1337,26 +1337,26 @@ LABEL_21:
 LABEL_43:
   duraAdj = self->_duraAdj;
   PBDataWriterWriteInt32Field();
-  v4 = v23;
+  toCopy = v23;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_22:
     locationAdj = self->_locationAdj;
     PBDataWriterWriteInt32Field();
-    v4 = v23;
+    toCopy = v23;
   }
 
 LABEL_23:
   if (self->_addedAttendeesCount)
   {
     PBDataWriterWriteStringField();
-    v4 = v23;
+    toCopy = v23;
   }
 
   if (self->_calendarAppUsageLevel)
   {
     PBDataWriterWriteStringField();
-    v4 = v23;
+    toCopy = v23;
   }
 
   v10 = self->_has;
@@ -1364,7 +1364,7 @@ LABEL_23:
   {
     mailAppUsageLevel = self->_mailAppUsageLevel;
     PBDataWriterWriteInt32Field();
-    v4 = v23;
+    toCopy = v23;
     v10 = self->_has;
   }
 
@@ -1372,18 +1372,18 @@ LABEL_23:
   {
     messagesAppUsageLevel = self->_messagesAppUsageLevel;
     PBDataWriterWriteInt32Field();
-    v4 = v23;
+    toCopy = v23;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   has = self->_has;
@@ -1724,31 +1724,31 @@ LABEL_61:
   v8.receiver = self;
   v8.super_class = SGM2NLEventInBanner;
   v4 = [(SGM2NLEventInBanner *)&v8 description];
-  v5 = [(SGM2NLEventInBanner *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGM2NLEventInBanner *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsMessagesAppUsageLevel:(id)a3
+- (int)StringAsMessagesAppUsageLevel:(id)level
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMAppUsageLevelNA"])
+  levelCopy = level;
+  if ([levelCopy isEqualToString:@"SGMAppUsageLevelNA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMAppUsageLevelLow"])
+  else if ([levelCopy isEqualToString:@"SGMAppUsageLevelLow"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMAppUsageLevelMedium"])
+  else if ([levelCopy isEqualToString:@"SGMAppUsageLevelMedium"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMAppUsageLevelHigh"])
+  else if ([levelCopy isEqualToString:@"SGMAppUsageLevelHigh"])
   {
     v4 = 3;
   }
@@ -1761,9 +1761,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasMessagesAppUsageLevel:(BOOL)a3
+- (void)setHasMessagesAppUsageLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 512;
   }
@@ -1789,25 +1789,25 @@ LABEL_61:
   }
 }
 
-- (int)StringAsMailAppUsageLevel:(id)a3
+- (int)StringAsMailAppUsageLevel:(id)level
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMAppUsageLevelNA"])
+  levelCopy = level;
+  if ([levelCopy isEqualToString:@"SGMAppUsageLevelNA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMAppUsageLevelLow"])
+  else if ([levelCopy isEqualToString:@"SGMAppUsageLevelLow"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMAppUsageLevelMedium"])
+  else if ([levelCopy isEqualToString:@"SGMAppUsageLevelMedium"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMAppUsageLevelHigh"])
+  else if ([levelCopy isEqualToString:@"SGMAppUsageLevelHigh"])
   {
     v4 = 3;
   }
@@ -1820,9 +1820,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasMailAppUsageLevel:(BOOL)a3
+- (void)setHasMailAppUsageLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 256;
   }
@@ -1848,30 +1848,30 @@ LABEL_61:
   }
 }
 
-- (int)StringAsLocationAdj:(id)a3
+- (int)StringAsLocationAdj:(id)adj
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMEventLocationAdjNA"])
+  adjCopy = adj;
+  if ([adjCopy isEqualToString:@"SGMEventLocationAdjNA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventLocationAdjConfirmed"])
+  else if ([adjCopy isEqualToString:@"SGMEventLocationAdjConfirmed"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventLocationAdjModified"])
+  else if ([adjCopy isEqualToString:@"SGMEventLocationAdjModified"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventLocationAdjAdded"])
+  else if ([adjCopy isEqualToString:@"SGMEventLocationAdjAdded"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventLocationAdjRemoved"])
+  else if ([adjCopy isEqualToString:@"SGMEventLocationAdjRemoved"])
   {
     v4 = 4;
   }
@@ -1884,9 +1884,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasLocationAdj:(BOOL)a3
+- (void)setHasLocationAdj:(BOOL)adj
 {
-  if (a3)
+  if (adj)
   {
     v3 = 128;
   }
@@ -1912,35 +1912,35 @@ LABEL_61:
   }
 }
 
-- (int)StringAsDuraAdj:(id)a3
+- (int)StringAsDuraAdj:(id)adj
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMEventDurationAdjNA"])
+  adjCopy = adj;
+  if ([adjCopy isEqualToString:@"SGMEventDurationAdjNA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDurationAdjConfirmed"])
+  else if ([adjCopy isEqualToString:@"SGMEventDurationAdjConfirmed"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDurationAdjLessThan30Min"])
+  else if ([adjCopy isEqualToString:@"SGMEventDurationAdjLessThan30Min"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDurationAdj30To60Min"])
+  else if ([adjCopy isEqualToString:@"SGMEventDurationAdj30To60Min"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDurationAdj1To2Hours"])
+  else if ([adjCopy isEqualToString:@"SGMEventDurationAdj1To2Hours"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDurationAdjMoreThan2Hours"])
+  else if ([adjCopy isEqualToString:@"SGMEventDurationAdjMoreThan2Hours"])
   {
     v4 = 5;
   }
@@ -1953,9 +1953,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasDuraAdj:(BOOL)a3
+- (void)setHasDuraAdj:(BOOL)adj
 {
-  if (a3)
+  if (adj)
   {
     v3 = 16;
   }
@@ -1981,55 +1981,55 @@ LABEL_61:
   }
 }
 
-- (int)StringAsDateAdj:(id)a3
+- (int)StringAsDateAdj:(id)adj
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMEventDateAdjNA"])
+  adjCopy = adj;
+  if ([adjCopy isEqualToString:@"SGMEventDateAdjNA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDateAdjConfirmed"])
+  else if ([adjCopy isEqualToString:@"SGMEventDateAdjConfirmed"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDateAdjChangedDay"])
+  else if ([adjCopy isEqualToString:@"SGMEventDateAdjChangedDay"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDateAdjSubTime2hPlus"])
+  else if ([adjCopy isEqualToString:@"SGMEventDateAdjSubTime2hPlus"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDateAdjSubTime2h"])
+  else if ([adjCopy isEqualToString:@"SGMEventDateAdjSubTime2h"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDateAdjSubTime1h"])
+  else if ([adjCopy isEqualToString:@"SGMEventDateAdjSubTime1h"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDateAdjAddTime1h"])
+  else if ([adjCopy isEqualToString:@"SGMEventDateAdjAddTime1h"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDateAdjAddTime2h"])
+  else if ([adjCopy isEqualToString:@"SGMEventDateAdjAddTime2h"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDateAdjAddTime2hPlus"])
+  else if ([adjCopy isEqualToString:@"SGMEventDateAdjAddTime2hPlus"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventDateAdjChangedDayAndTime"])
+  else if ([adjCopy isEqualToString:@"SGMEventDateAdjChangedDayAndTime"])
   {
     v4 = 9;
   }
@@ -2042,9 +2042,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasDateAdj:(BOOL)a3
+- (void)setHasDateAdj:(BOOL)adj
 {
-  if (a3)
+  if (adj)
   {
     v3 = 4;
   }
@@ -2070,30 +2070,30 @@ LABEL_61:
   }
 }
 
-- (int)StringAsTitleAdj:(id)a3
+- (int)StringAsTitleAdj:(id)adj
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMEventStringAdjNA"])
+  adjCopy = adj;
+  if ([adjCopy isEqualToString:@"SGMEventStringAdjNA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventStringAdjConfirmed"])
+  else if ([adjCopy isEqualToString:@"SGMEventStringAdjConfirmed"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventStringAdjPrefixAdded"])
+  else if ([adjCopy isEqualToString:@"SGMEventStringAdjPrefixAdded"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventStringAdjSuffixAdded"])
+  else if ([adjCopy isEqualToString:@"SGMEventStringAdjSuffixAdded"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventStringAdjReplaced"])
+  else if ([adjCopy isEqualToString:@"SGMEventStringAdjReplaced"])
   {
     v4 = 4;
   }
@@ -2106,9 +2106,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasTitleAdj:(BOOL)a3
+- (void)setHasTitleAdj:(BOOL)adj
 {
-  if (a3)
+  if (adj)
   {
     v3 = 4096;
   }
@@ -2134,25 +2134,25 @@ LABEL_61:
   }
 }
 
-- (int)StringAsTitleSource:(id)a3
+- (int)StringAsTitleSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMEventTitleSourceNA"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"SGMEventTitleSourceNA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventTitleSourceSubject"])
+  else if ([sourceCopy isEqualToString:@"SGMEventTitleSourceSubject"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventTitleSourceTemplate"])
+  else if ([sourceCopy isEqualToString:@"SGMEventTitleSourceTemplate"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMEventTitleSourceMLModel"])
+  else if ([sourceCopy isEqualToString:@"SGMEventTitleSourceMLModel"])
   {
     v4 = 3;
   }
@@ -2165,9 +2165,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasTitleSource:(BOOL)a3
+- (void)setHasTitleSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 0x2000;
   }
@@ -2193,9 +2193,9 @@ LABEL_61:
   }
 }
 
-- (void)setHasUsedBubblesCount:(BOOL)a3
+- (void)setHasUsedBubblesCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x4000;
   }
@@ -2208,35 +2208,35 @@ LABEL_61:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (int)StringAsExtractionLevel:(id)a3
+- (int)StringAsExtractionLevel:(id)level
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMNLEventExtractionLevelNA"])
+  levelCopy = level;
+  if ([levelCopy isEqualToString:@"SGMNLEventExtractionLevelNA"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventExtractionLevelFullEvent"])
+  else if ([levelCopy isEqualToString:@"SGMNLEventExtractionLevelFullEvent"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventExtractionLevelTypeOnly"])
+  else if ([levelCopy isEqualToString:@"SGMNLEventExtractionLevelTypeOnly"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventExtractionLevelNone"])
+  else if ([levelCopy isEqualToString:@"SGMNLEventExtractionLevelNone"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventExtractionLevelFullEventWithTitleGeneration"])
+  else if ([levelCopy isEqualToString:@"SGMNLEventExtractionLevelFullEventWithTitleGeneration"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventExtractionLevelTypeOnlyWithTitleGeneration"])
+  else if ([levelCopy isEqualToString:@"SGMNLEventExtractionLevelTypeOnlyWithTitleGeneration"])
   {
     v4 = 5;
   }
@@ -2249,9 +2249,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasExtractionLevel:(BOOL)a3
+- (void)setHasExtractionLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 32;
   }
@@ -2277,9 +2277,9 @@ LABEL_61:
   }
 }
 
-- (void)setHasParticipantCount:(BOOL)a3
+- (void)setHasParticipantCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 1024;
   }
@@ -2292,20 +2292,20 @@ LABEL_61:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (int)StringAsSignificantSender:(id)a3
+- (int)StringAsSignificantSender:(id)sender
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMBoolOptionFalse"])
+  senderCopy = sender;
+  if ([senderCopy isEqualToString:@"SGMBoolOptionFalse"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMBoolOptionTrue"])
+  else if ([senderCopy isEqualToString:@"SGMBoolOptionTrue"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMBoolOptionNA"])
+  else if ([senderCopy isEqualToString:@"SGMBoolOptionNA"])
   {
     v4 = 2;
   }
@@ -2318,9 +2318,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasSignificantSender:(BOOL)a3
+- (void)setHasSignificantSender:(BOOL)sender
 {
-  if (a3)
+  if (sender)
   {
     v3 = 2048;
   }
@@ -2346,9 +2346,9 @@ LABEL_61:
   }
 }
 
-- (void)setHasConfidenceScore:(BOOL)a3
+- (void)setHasConfidenceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -2361,9 +2361,9 @@ LABEL_61:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasDaysFromStartDate:(BOOL)a3
+- (void)setHasDaysFromStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 8;
   }
@@ -2376,50 +2376,50 @@ LABEL_61:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (int)StringAsActionType:(id)a3
+- (int)StringAsActionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMNLEventActionTypeDissected"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SGMNLEventActionTypeDissected"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventActionTypeHarvested"])
+  else if ([typeCopy isEqualToString:@"SGMNLEventActionTypeHarvested"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventActionTypeFiltered"])
+  else if ([typeCopy isEqualToString:@"SGMNLEventActionTypeFiltered"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventActionTypeFound"])
+  else if ([typeCopy isEqualToString:@"SGMNLEventActionTypeFound"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventActionTypeShown"])
+  else if ([typeCopy isEqualToString:@"SGMNLEventActionTypeShown"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventActionTypeEngaged"])
+  else if ([typeCopy isEqualToString:@"SGMNLEventActionTypeEngaged"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventActionTypeConfirmed"])
+  else if ([typeCopy isEqualToString:@"SGMNLEventActionTypeConfirmed"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventActionTypeRejected"])
+  else if ([typeCopy isEqualToString:@"SGMNLEventActionTypeRejected"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventActionTypeDismissed"])
+  else if ([typeCopy isEqualToString:@"SGMNLEventActionTypeDismissed"])
   {
     v4 = 8;
   }
@@ -2445,105 +2445,105 @@ LABEL_61:
   }
 }
 
-- (int)StringAsInterface:(id)a3
+- (int)StringAsInterface:(id)interface
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SGMNLEventInterfaceSuggestd"])
+  interfaceCopy = interface;
+  if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceSuggestd"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceMail"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceMail"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceMailBanner"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceMailBanner"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceMailDDLink"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceMailDDLink"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceMessages"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceMessages"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceMessagesBanner"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceMessagesBanner"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceMessagesDDLink"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceMessagesDDLink"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceCalendar"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceCalendar"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceCalendarNotification"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceCalendarNotification"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceCalendarInbox"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceCalendarInbox"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceCalendarEventDetails"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceCalendarEventDetails"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceCalendarCanvas"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceCalendarCanvas"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceCalendarWidget"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceCalendarWidget"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceCalendarWidgetUpNext"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceCalendarWidgetUpNext"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceCalendarZKW"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceCalendarZKW"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceCalendarAutocomplete"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceCalendarAutocomplete"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceMaps"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceMaps"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceMapsWidget"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceMapsWidget"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceTTLNotification"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceTTLNotification"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SGMNLEventInterfaceSpotlight"])
+  else if ([interfaceCopy isEqualToString:@"SGMNLEventInterfaceSpotlight"])
   {
     v4 = 19;
   }
@@ -2556,9 +2556,9 @@ LABEL_61:
   return v4;
 }
 
-- (void)setHasInterface:(BOOL)a3
+- (void)setHasInterface:(BOOL)interface
 {
-  if (a3)
+  if (interface)
   {
     v3 = 64;
   }

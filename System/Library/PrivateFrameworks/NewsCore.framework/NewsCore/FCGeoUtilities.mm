@@ -17,10 +17,10 @@
 
   else
   {
-    v5 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-    v6 = [v5 countryCode];
+    mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+    countryCode = [mEMORY[0x1E69A1CD8] countryCode];
 
-    v4 = [v6 isEqualToString:@"CN"] ^ 1;
+    v4 = [countryCode isEqualToString:@"CN"] ^ 1;
   }
 
   return v4;
@@ -28,10 +28,10 @@
 
 + (id)currentRegion
 {
-  v2 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-  v3 = [v2 countryCode];
+  mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+  countryCode = [mEMORY[0x1E69A1CD8] countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface HKElectrocardiogramQuery
 - (HKElectrocardiogramQuery)initWithElectrocardiogram:(HKElectrocardiogram *)electrocardiogram dataHandler:(void *)dataHandler;
-- (HKElectrocardiogramQuery)initWithElectrocardiogram:(id)a3 lead:(int64_t)a4 dataHandler:(id)a5;
-- (HKElectrocardiogramQuery)initWithElectrocardiogram:(id)a3 sampleHandler:(id)a4;
-- (void)_enumerateMeasurementsForElectrocardiogram:(id)a3 handler:(id)a4;
+- (HKElectrocardiogramQuery)initWithElectrocardiogram:(id)electrocardiogram lead:(int64_t)lead dataHandler:(id)handler;
+- (HKElectrocardiogramQuery)initWithElectrocardiogram:(id)electrocardiogram sampleHandler:(id)handler;
+- (void)_enumerateMeasurementsForElectrocardiogram:(id)electrocardiogram handler:(id)handler;
 - (void)client_deliverData;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (void)queue_deliverError:(id)error;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 @end
 
 @implementation HKElectrocardiogramQuery
 
-- (HKElectrocardiogramQuery)initWithElectrocardiogram:(id)a3 lead:(int64_t)a4 dataHandler:(id)a5
+- (HKElectrocardiogramQuery)initWithElectrocardiogram:(id)electrocardiogram lead:(int64_t)lead dataHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  electrocardiogramCopy = electrocardiogram;
+  handlerCopy = handler;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
@@ -22,11 +22,11 @@
   v12[1] = 3221225472;
   v12[2] = __71__HKElectrocardiogramQuery_initWithElectrocardiogram_lead_dataHandler___block_invoke;
   v12[3] = &unk_1E737F308;
-  v13 = self;
-  v9 = v8;
+  selfCopy = self;
+  v9 = handlerCopy;
   v14 = v9;
   v15 = v16;
-  v10 = [(HKElectrocardiogramQuery *)v13 initWithElectrocardiogram:v7 dataHandler:v12];
+  v10 = [(HKElectrocardiogramQuery *)selfCopy initWithElectrocardiogram:electrocardiogramCopy dataHandler:v12];
 
   _Block_object_dispose(v16, 8);
   return v10;
@@ -108,14 +108,14 @@ uint64_t __66__HKElectrocardiogramQuery_initWithElectrocardiogram_dataHandler___
   }
 }
 
-- (HKElectrocardiogramQuery)initWithElectrocardiogram:(id)a3 sampleHandler:(id)a4
+- (HKElectrocardiogramQuery)initWithElectrocardiogram:(id)electrocardiogram sampleHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  electrocardiogramCopy = electrocardiogram;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (electrocardiogramCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -139,7 +139,7 @@ LABEL_3:
 
   if (v11)
   {
-    objc_storeStrong(&v11->_electrocardiogram, a3);
+    objc_storeStrong(&v11->_electrocardiogram, electrocardiogram);
     v11->_lead = 1;
     v12 = [v9 copy];
     sampleHandler = v11->_sampleHandler;
@@ -151,13 +151,13 @@ LABEL_3:
 
 - (void)client_deliverData
 {
-  v3 = [(HKQuery *)self queue];
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__HKElectrocardiogramQuery_client_deliverData__block_invoke;
   block[3] = &unk_1E7376780;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __46__HKElectrocardiogramQuery_client_deliverData__block_invoke(uint64_t a1)
@@ -181,32 +181,32 @@ void __46__HKElectrocardiogramQuery_client_deliverData__block_invoke(uint64_t a1
   }
 }
 
-- (void)_enumerateMeasurementsForElectrocardiogram:(id)a3 handler:(id)a4
+- (void)_enumerateMeasurementsForElectrocardiogram:(id)electrocardiogram handler:(id)handler
 {
-  v13 = a3;
-  v6 = a4;
-  if ([v13 numberOfVoltageMeasurements])
+  electrocardiogramCopy = electrocardiogram;
+  handlerCopy = handler;
+  if ([electrocardiogramCopy numberOfVoltageMeasurements])
   {
-    v7 = [(HKQuery *)self deactivateCallCount];
-    v8 = [v13 voltageMeasurementEnumerator];
-    v9 = [v8 nextObject];
-    if (v9)
+    deactivateCallCount = [(HKQuery *)self deactivateCallCount];
+    voltageMeasurementEnumerator = [electrocardiogramCopy voltageMeasurementEnumerator];
+    nextObject = [voltageMeasurementEnumerator nextObject];
+    if (nextObject)
     {
-      v10 = v9;
+      v10 = nextObject;
       while (1)
       {
         v11 = objc_autoreleasePoolPush();
-        if ([(HKQuery *)self deactivateCallCount]> v7)
+        if ([(HKQuery *)self deactivateCallCount]> deactivateCallCount)
         {
           break;
         }
 
-        v12 = [v8 nextObject];
-        v6[2](v6, self, v10, v12 == 0, 0);
+        nextObject2 = [voltageMeasurementEnumerator nextObject];
+        handlerCopy[2](handlerCopy, self, v10, nextObject2 == 0, 0);
 
         objc_autoreleasePoolPop(v11);
-        v10 = v12;
-        if (!v12)
+        v10 = nextObject2;
+        if (!nextObject2)
         {
           goto LABEL_9;
         }
@@ -220,33 +220,33 @@ LABEL_9:
 
   else
   {
-    v6[2](v6, self, 0, 1, 0);
+    handlerCopy[2](handlerCopy, self, 0, 1, 0);
   }
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _Block_copy(self->_sampleHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __47__HKElectrocardiogramQuery_queue_deliverError___block_invoke;
     block[3] = &unk_1E7376618;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKElectrocardiogramQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   sampleHandler = self->_sampleHandler;
   self->_sampleHandler = 0;
 }

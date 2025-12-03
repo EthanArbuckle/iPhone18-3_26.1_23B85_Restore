@@ -7,8 +7,8 @@
 - (id)source
 {
   v3 = [BMCoreDuetDiscoverabilitySignalsSource alloc];
-  v4 = [(BMDiscoverabilitySignalStream *)self identifier];
-  v5 = [(BMSource *)v3 initWithIdentifier:v4];
+  identifier = [(BMDiscoverabilitySignalStream *)self identifier];
+  v5 = [(BMSource *)v3 initWithIdentifier:identifier];
 
   return v5;
 }

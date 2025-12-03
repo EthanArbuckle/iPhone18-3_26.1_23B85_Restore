@@ -113,7 +113,7 @@
   [(NSNumber *)self->inputFaceOrientation floatValue];
   v15 = v14 / 3.14159265;
   v71 = v15;
-  v16 = [(NSNumber *)self->inputOrientation intValue];
+  intValue = [(NSNumber *)self->inputOrientation intValue];
   v17 = *&v8;
   v18 = __sincos_stret(v17);
   v19 = v4;
@@ -164,7 +164,7 @@
   [(NSNumber *)self->inputWidth floatValue];
   v62 = v61;
   v63 = -v58;
-  if (v16 - 5 > 3)
+  if (intValue - 5 > 3)
   {
     v49 = v49 + v58 * v60;
     v55 = v55 + v63 * v62;
@@ -177,14 +177,14 @@
   }
 
   v65 = [CIVector vectorWithX:v55 Y:v57 Z:v49 W:v53];
-  v66 = [(CIPortraitLightingNeckContour *)self _neckContourKernel];
+  _neckContourKernel = [(CIPortraitLightingNeckContour *)self _neckContourKernel];
   [(CIImage *)self->inputImage extent];
   v72[0] = self->inputImage;
   v72[1] = v65;
   v72[2] = v27;
   v72[3] = v45;
   v72[4] = self->inputStrength;
-  return [v66 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v72, 5), v67, v68, v69, v70}];
+  return [_neckContourKernel applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v72, 5), v67, v68, v69, v70}];
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface _SSUSoundScapesDelegateForwarder
 - (SSUSoundscapesPickerControllerDelegate)delegate;
 - (_EXHostViewController)viewController;
-- (id)initForViewController:(id)a3;
+- (id)initForViewController:(id)controller;
 - (void)cleanup;
 - (void)mediaPickerConfirmChoices;
 - (void)pickerDismissed;
 - (void)requestDismiss;
-- (void)selectedSoundScapes:(id)a3 withError:(id)a4;
+- (void)selectedSoundScapes:(id)scapes withError:(id)error;
 @end
 
 @implementation _SSUSoundScapesDelegateForwarder
 
-- (id)initForViewController:(id)a3
+- (id)initForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v24.receiver = self;
   v24.super_class = _SSUSoundScapesDelegateForwarder;
   v5 = [(_SSUSoundScapesDelegateForwarder *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    [(_SSUSoundScapesDelegateForwarder *)v5 setViewController:v4];
+    [(_SSUSoundScapesDelegateForwarder *)v5 setViewController:controllerCopy];
     v7 = +[SSUSoundScapesPickerManager pickerIdentity];
     v8 = MEMORY[0x277CCA8D8];
     v9 = [v7 url];
     v10 = [v8 bundleWithURL:v9];
 
     v11 = [v10 localizedStringForKey:@"AMBIENTSOUNDS" value:0 table:0];
-    v12 = [(_SSUSoundScapesDelegateForwarder *)v6 viewController];
-    v13 = [v12 navigationItem];
-    [v13 setTitle:v11];
+    viewController = [(_SSUSoundScapesDelegateForwarder *)v6 viewController];
+    navigationItem = [viewController navigationItem];
+    [navigationItem setTitle:v11];
 
     if (!v6->_doneButton)
     {
@@ -38,18 +38,18 @@
       doneButton = v6->_doneButton;
       v6->_doneButton = v15;
 
-      v17 = [(_SSUSoundScapesDelegateForwarder *)v6 viewController];
-      v18 = [v17 navigationItem];
-      [v18 setRightBarButtonItem:v6->_doneButton];
+      viewController2 = [(_SSUSoundScapesDelegateForwarder *)v6 viewController];
+      navigationItem2 = [viewController2 navigationItem];
+      [navigationItem2 setRightBarButtonItem:v6->_doneButton];
 
-      v19 = [(_SSUSoundScapesDelegateForwarder *)v6 viewController];
-      v20 = [v19 navigationItem];
-      [v20 setLargeTitleDisplayMode:2];
+      viewController3 = [(_SSUSoundScapesDelegateForwarder *)v6 viewController];
+      navigationItem3 = [viewController3 navigationItem];
+      [navigationItem3 setLargeTitleDisplayMode:2];
     }
 
-    v21 = [(_SSUSoundScapesDelegateForwarder *)v6 viewController];
-    v22 = [v21 view];
-    [v22 setClipsToBounds:1];
+    viewController4 = [(_SSUSoundScapesDelegateForwarder *)v6 viewController];
+    view = [viewController4 view];
+    [view setClipsToBounds:1];
 
     [(_SSUSoundScapesDelegateForwarder *)v6 updateNavigationItem];
     v6->_exiting = 0;
@@ -69,17 +69,17 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)selectedSoundScapes:(id)a3 withError:(id)a4
+- (void)selectedSoundScapes:(id)scapes withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  scapesCopy = scapes;
+  errorCopy = error;
   lastPickedArchive = self->_lastPickedArchive;
-  self->_lastPickedArchive = v6;
-  v9 = v6;
+  self->_lastPickedArchive = scapesCopy;
+  v9 = scapesCopy;
 
   lastPickedError = self->_lastPickedError;
-  self->_lastPickedError = v7;
-  v11 = v7;
+  self->_lastPickedError = errorCopy;
+  v11 = errorCopy;
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -105,13 +105,13 @@
   if (!self->_exiting)
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v5 = [WeakRetained placeholderView];
-    v8 = [v5 viewWithTag:10001];
+    placeholderView = [WeakRetained placeholderView];
+    v8 = [placeholderView viewWithTag:10001];
 
     [v8 setHidden:0];
-    v6 = [(_SSUSoundScapesDelegateForwarder *)self viewController];
-    v7 = [v6 navigationItem];
-    [v7 setRightBarButtonItem:0];
+    viewController = [(_SSUSoundScapesDelegateForwarder *)self viewController];
+    navigationItem = [viewController navigationItem];
+    [navigationItem setRightBarButtonItem:0];
   }
 }
 

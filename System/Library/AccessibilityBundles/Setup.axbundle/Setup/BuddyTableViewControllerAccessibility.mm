@@ -1,5 +1,5 @@
 @interface BuddyTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BuddyTableViewControllerAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityMarkTableViewAsNotAXElement;
@@ -7,11 +7,11 @@
 
 @implementation BuddyTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BuddyTableViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyTableViewController" hasInstanceVariable:@"_tableView" withType:"UITableView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BuddyTableViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyTableViewController" hasInstanceVariable:@"_tableView" withType:"UITableView"];
 }
 
 - (void)_accessibilityMarkTableViewAsNotAXElement

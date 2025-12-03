@@ -1,9 +1,9 @@
 @interface STSReaderAnalyticsLogger
 + (id)sharedCALogger;
 - (STSReaderAnalyticsLogger)init;
-- (void)_postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4;
-- (void)postReaderSessionEvent:(id)a3;
-- (void)postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4;
+- (void)_postReaderTransactionEvent:(id)event prepOnly:(BOOL)only;
+- (void)postReaderSessionEvent:(id)event;
+- (void)postReaderTransactionEvent:(id)event prepOnly:(BOOL)only;
 @end
 
 @implementation STSReaderAnalyticsLogger
@@ -37,14 +37,14 @@
   return v2;
 }
 
-- (void)_postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4
+- (void)_postReaderTransactionEvent:(id)event prepOnly:(BOOL)only
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  onlyCopy = only;
+  eventCopy = event;
+  v6 = eventCopy;
+  if (onlyCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:@"transactionStartEventTime"];
+    v7 = [eventCopy objectForKeyedSubscript:@"transactionStartEventTime"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -160,7 +160,7 @@
   else
   {
     v48 = +[NSUUID UUID];
-    v49 = [v48 UUIDString];
+    uUIDString = [v48 UUIDString];
 
     v53 = qword_100069BA8;
     if (!qword_100069BA8)
@@ -221,8 +221,8 @@
 
       v97[0] = @"transactionUUID";
       v97[1] = @"engagementType";
-      v93 = v49;
-      v98[0] = v49;
+      v93 = uUIDString;
+      v98[0] = uUIDString;
       v98[1] = off_100069378[0];
       v97[2] = @"supportedtedReaderBTRoles";
       v97[3] = @"errorCode";
@@ -273,9 +273,9 @@
 
       v96[1] = v77;
       v95[2] = @"totalSuccessfulNFCEngagementTransactions";
-      v78 = [off_100069378[0] intValue];
+      intValue = [off_100069378[0] intValue];
       v79 = &off_10005F550;
-      if (v78 == 1)
+      if (intValue == 1)
       {
         if ([v47 intValue])
         {
@@ -300,7 +300,7 @@
       v81 = [NSDictionary dictionaryWithObjects:v96 forKeys:v95 count:4];
       [CALogger postCAEventFor:@"com.apple.sts.dailyReaderISO18013Statistics" eventInput:v81];
 
-      v49 = v93;
+      uUIDString = v93;
       v59 = v94;
     }
 
@@ -336,32 +336,32 @@
   }
 }
 
-- (void)postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4
+- (void)postReaderTransactionEvent:(id)event prepOnly:(BOOL)only
 {
-  v6 = a3;
+  eventCopy = event;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000108B0;
   block[3] = &unk_100058C88;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = eventCopy;
+  onlyCopy = only;
+  v8 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)postReaderSessionEvent:(id)a3
+- (void)postReaderSessionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100010958;
   v7[3] = &unk_100058CB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 

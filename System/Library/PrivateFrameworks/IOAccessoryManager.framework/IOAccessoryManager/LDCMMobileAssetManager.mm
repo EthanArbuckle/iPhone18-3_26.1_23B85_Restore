@@ -1,11 +1,11 @@
 @interface LDCMMobileAssetManager
 - (LDCMMobileAssetManager)init;
 - (LDCMMobileAssetManagerDelegate)delegate;
-- (void)downloadAsset:(id)a3;
+- (void)downloadAsset:(id)asset;
 - (void)downloadCatalog;
-- (void)processAsset:(id)a3;
+- (void)processAsset:(id)asset;
 - (void)queryMetadata;
-- (void)scheduleNextQueryAsRetry:(BOOL)a3;
+- (void)scheduleNextQueryAsRetry:(BOOL)retry;
 - (void)updateMetadata;
 @end
 
@@ -39,11 +39,11 @@
     if (v3->_timer)
     {
       v3->_lastProcessedAssetVersion = 0;
-      v9 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v10 = [(LDCMMobileAssetManager *)v9 integerForKey:@"LDCMAssetQueryFrequency"];
-      v11 = [(LDCMMobileAssetManager *)v9 integerForKey:@"LDCMAssetQueryFrequencyTolerance"];
-      v12 = [(LDCMMobileAssetManager *)v9 integerForKey:@"LDCMAssetRetryQueryFrequency"];
-      v13 = [(LDCMMobileAssetManager *)v9 integerForKey:@"LDCMAssetRetryQueryFrequencyTolerance"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v10 = [(LDCMMobileAssetManager *)standardUserDefaults integerForKey:@"LDCMAssetQueryFrequency"];
+      v11 = [(LDCMMobileAssetManager *)standardUserDefaults integerForKey:@"LDCMAssetQueryFrequencyTolerance"];
+      v12 = [(LDCMMobileAssetManager *)standardUserDefaults integerForKey:@"LDCMAssetRetryQueryFrequency"];
+      v13 = [(LDCMMobileAssetManager *)standardUserDefaults integerForKey:@"LDCMAssetRetryQueryFrequencyTolerance"];
       if (v10)
       {
         v14 = v10;
@@ -99,7 +99,7 @@
       dispatch_source_set_timer(v3->_timer, 0, 0xFFFFFFFFFFFFFFFFLL, 0);
       dispatch_resume(v3->_timer);
 
-      v3 = v9;
+      v3 = standardUserDefaults;
     }
 
     else
@@ -203,8 +203,8 @@ uint64_t __41__LDCMMobileAssetManager_downloadCatalog__block_invoke_2(uint64_t a
   v2 = [objc_alloc(MEMORY[0x277D289D8]) initWithType:@"com.apple.MobileAsset.IOAccessoryManager"];
   [v2 setDoNotBlockBeforeFirstUnlock:1];
   [v2 queryMetaDataSync];
-  v3 = [v2 results];
-  if (!v3 || (v4 = v3, [v2 results], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4, !v6))
+  results = [v2 results];
+  if (!results || (v4 = results, [v2 results], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4, !v6))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -248,42 +248,42 @@ uint64_t __41__LDCMMobileAssetManager_downloadCatalog__block_invoke_2(uint64_t a
       }
 
       v13 = *(*(&v39 + 1) + 8 * v12);
-      v14 = [v13 attributes];
-      v15 = [v14 objectForKeyedSubscript:v9];
-      v16 = [v15 intValue];
+      attributes = [v13 attributes];
+      v15 = [attributes objectForKeyedSubscript:v9];
+      intValue = [v15 intValue];
 
-      v17 = [v13 attributes];
-      v18 = [v17 objectForKeyedSubscript:v10];
-      v19 = [v18 intValue];
+      attributes2 = [v13 attributes];
+      v18 = [attributes2 objectForKeyedSubscript:v10];
+      intValue2 = [v18 intValue];
 
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v20 = [v13 state];
+        state = [v13 state];
         *buf = 136315650;
         v44 = "[LDCMMobileAssetManager updateMetadata]";
         v45 = 2048;
-        *v46 = v20;
+        *v46 = state;
         *&v46[8] = 1024;
-        v47[0] = v19;
+        v47[0] = intValue2;
         _os_log_impl(&dword_2548F1000, v11, OS_LOG_TYPE_INFO, "%s found asset state:%ld version:%d", buf, 0x1Cu);
       }
 
-      if ([(LDCMMobileAssetManager *)self supportsCompatabilityVersion:v16])
+      if ([(LDCMMobileAssetManager *)self supportsCompatabilityVersion:intValue])
       {
         if ([v13 state] != 2)
         {
-          if (SHIDWORD(v33) >= v19)
+          if (SHIDWORD(v33) >= intValue2)
           {
             goto LABEL_24;
           }
 
           v25 = v31;
-          HIDWORD(v33) = v19;
+          HIDWORD(v33) = intValue2;
           v31 = v13;
           goto LABEL_23;
         }
 
-        if (v33 >= v19)
+        if (v33 >= intValue2)
         {
           goto LABEL_24;
         }
@@ -291,16 +291,16 @@ uint64_t __41__LDCMMobileAssetManager_downloadCatalog__block_invoke_2(uint64_t a
         v21 = v13;
         if (v32)
         {
-          v22 = [v32 attributes];
-          v23 = [v22 objectForKeyedSubscript:v10];
-          v24 = [v23 intValue];
+          attributes3 = [v32 attributes];
+          v23 = [attributes3 objectForKeyedSubscript:v10];
+          intValue3 = [v23 intValue];
 
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
             *buf = 136315394;
             v44 = "[LDCMMobileAssetManager updateMetadata]";
             v45 = 1024;
-            *v46 = v24;
+            *v46 = intValue3;
             _os_log_impl(&dword_2548F1000, v11, OS_LOG_TYPE_INFO, "%s requesting purge of asset version %d", buf, 0x12u);
           }
 
@@ -308,17 +308,17 @@ uint64_t __41__LDCMMobileAssetManager_downloadCatalog__block_invoke_2(uint64_t a
           v37[1] = 3221225472;
           v37[2] = __40__LDCMMobileAssetManager_updateMetadata__block_invoke;
           v37[3] = &__block_descriptor_36_e8_v16__0q8l;
-          v38 = v24;
+          v38 = intValue3;
           v25 = v32;
           [v32 purge:v37];
-          LODWORD(v33) = v19;
+          LODWORD(v33) = intValue2;
           v32 = v21;
 LABEL_23:
 
           goto LABEL_24;
         }
 
-        LODWORD(v33) = v19;
+        LODWORD(v33) = intValue2;
         v32 = v21;
       }
 
@@ -327,7 +327,7 @@ LABEL_23:
         *buf = 136315394;
         v44 = "[LDCMMobileAssetManager updateMetadata]";
         v45 = 1024;
-        *v46 = v19;
+        *v46 = intValue2;
         _os_log_impl(&dword_2548F1000, v11, OS_LOG_TYPE_INFO, "%s asset version %d not compatible, skipping", buf, 0x12u);
       }
 
@@ -399,11 +399,11 @@ void __40__LDCMMobileAssetManager_updateMetadata__block_invoke(uint64_t a1, uint
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processAsset:(id)a3
+- (void)processAsset:(id)asset
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a3 getLocalFileUrl];
-  v5 = [v4 URLByAppendingPathComponent:@"LDCMBehavior.plist"];
+  getLocalFileUrl = [asset getLocalFileUrl];
+  v5 = [getLocalFileUrl URLByAppendingPathComponent:@"LDCMBehavior.plist"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
@@ -432,17 +432,17 @@ void __40__LDCMMobileAssetManager_updateMetadata__block_invoke(uint64_t a1, uint
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)downloadAsset:(id)a3
+- (void)downloadAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__LDCMMobileAssetManager_downloadAsset___block_invoke;
   v7[3] = &unk_279793430;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = assetCopy;
+  selfCopy = self;
+  v6 = assetCopy;
   [v6 startDownload:v5 then:v7];
 }
 
@@ -482,16 +482,16 @@ uint64_t __40__LDCMMobileAssetManager_downloadAsset___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (void)scheduleNextQueryAsRetry:(BOOL)a3
+- (void)scheduleNextQueryAsRetry:(BOOL)retry
 {
   v4 = 12;
-  if (a3)
+  if (retry)
   {
     v4 = 20;
   }
 
   v5 = 16;
-  if (a3)
+  if (retry)
   {
     v5 = 24;
   }

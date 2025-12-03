@@ -1,5 +1,5 @@
 @interface TLKTitleContainerView
-+ (BOOL)hasNonBoldFormattingInRichText:(id)a3;
++ (BOOL)hasNonBoldFormattingInRichText:(id)text;
 - (TLKTitleContainerView)init;
 - (id)secondaryTitleLabelString;
 - (id)titleFont;
@@ -7,7 +7,7 @@
 - (id)titleLabelString;
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
-- (void)updateResultWithTitle:(id)a3 secondaryTitle:(id)a4 image:(id)a5 detached:(BOOL)a6 useCompactMode:(BOOL)a7 truncateMiddle:(BOOL)a8;
+- (void)updateResultWithTitle:(id)title secondaryTitle:(id)secondaryTitle image:(id)image detached:(BOOL)detached useCompactMode:(BOOL)mode truncateMiddle:(BOOL)middle;
 @end
 
 @implementation TLKTitleContainerView
@@ -25,11 +25,11 @@
     v4 = objc_opt_new();
     [(TLKTitleContainerView *)v3 setTitleField:v4];
 
-    v5 = [(TLKTitleContainerView *)v3 titleField];
-    [v5 setRoundedCornerLabelSizeConfiguration:2];
+    titleField = [(TLKTitleContainerView *)v3 titleField];
+    [titleField setRoundedCornerLabelSizeConfiguration:2];
 
-    v6 = [(TLKTitleContainerView *)v3 titleField];
-    [(TLKStackView *)v3 addArrangedSubview:v6];
+    titleField2 = [(TLKTitleContainerView *)v3 titleField];
+    [(TLKStackView *)v3 addArrangedSubview:titleField2];
   }
 
   return v3;
@@ -37,39 +37,39 @@
 
 - (id)titleLabel
 {
-  v2 = [(TLKTitleContainerView *)self titleField];
-  v3 = [v2 textLabel];
+  titleField = [(TLKTitleContainerView *)self titleField];
+  textLabel = [titleField textLabel];
 
-  return v3;
+  return textLabel;
 }
 
 - (id)viewForFirstBaselineLayout
 {
-  v2 = [(TLKTitleContainerView *)self titleField];
-  v3 = [v2 viewForFirstBaselineLayout];
+  titleField = [(TLKTitleContainerView *)self titleField];
+  viewForFirstBaselineLayout = [titleField viewForFirstBaselineLayout];
 
-  return v3;
+  return viewForFirstBaselineLayout;
 }
 
-- (void)updateResultWithTitle:(id)a3 secondaryTitle:(id)a4 image:(id)a5 detached:(BOOL)a6 useCompactMode:(BOOL)a7 truncateMiddle:(BOOL)a8
+- (void)updateResultWithTitle:(id)title secondaryTitle:(id)secondaryTitle image:(id)image detached:(BOOL)detached useCompactMode:(BOOL)mode truncateMiddle:(BOOL)middle
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  titleCopy = title;
+  secondaryTitleCopy = secondaryTitle;
+  imageCopy = image;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __107__TLKTitleContainerView_updateResultWithTitle_secondaryTitle_image_detached_useCompactMode_truncateMiddle___block_invoke;
   v20[3] = &unk_1E7FD8E20;
-  v21 = v14;
-  v22 = v15;
-  v23 = v16;
-  v24 = self;
-  v25 = a6;
-  v26 = a7;
-  v27 = a8;
-  v17 = v16;
-  v18 = v15;
-  v19 = v14;
+  v21 = titleCopy;
+  v22 = secondaryTitleCopy;
+  v23 = imageCopy;
+  selfCopy = self;
+  detachedCopy = detached;
+  modeCopy = mode;
+  middleCopy = middle;
+  v17 = imageCopy;
+  v18 = secondaryTitleCopy;
+  v19 = titleCopy;
   [(TLKTitleContainerView *)self performBatchUpdates:v20];
 }
 
@@ -342,15 +342,15 @@ LABEL_12:
   [v19 setRichText:v18];
 }
 
-+ (BOOL)hasNonBoldFormattingInRichText:(id)a3
++ (BOOL)hasNonBoldFormattingInRichText:(id)text
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 formattedTextItems];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  formattedTextItems = [text formattedTextItems];
+  v4 = [formattedTextItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -360,7 +360,7 @@ LABEL_12:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(formattedTextItems);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -372,7 +372,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [formattedTextItems countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -389,35 +389,35 @@ LABEL_12:
 
 - (id)titleFont
 {
-  v2 = [(TLKTitleContainerView *)self titleField];
-  v3 = [v2 font];
+  titleField = [(TLKTitleContainerView *)self titleField];
+  font = [titleField font];
 
-  return v3;
+  return font;
 }
 
 - (id)viewForLastBaselineLayout
 {
-  v2 = [(TLKTitleContainerView *)self titleField];
-  v3 = [v2 viewForLastBaselineLayout];
+  titleField = [(TLKTitleContainerView *)self titleField];
+  viewForLastBaselineLayout = [titleField viewForLastBaselineLayout];
 
-  return v3;
+  return viewForLastBaselineLayout;
 }
 
 - (id)titleLabelString
 {
-  v2 = [(TLKTitleContainerView *)self titleField];
-  v3 = [v2 richText];
-  v4 = [v3 text];
+  titleField = [(TLKTitleContainerView *)self titleField];
+  richText = [titleField richText];
+  text = [richText text];
 
-  return v4;
+  return text;
 }
 
 - (id)secondaryTitleLabelString
 {
-  v2 = [(TLKTitleContainerView *)self secondaryLabel];
-  v3 = [v2 text];
+  secondaryLabel = [(TLKTitleContainerView *)self secondaryLabel];
+  text = [secondaryLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

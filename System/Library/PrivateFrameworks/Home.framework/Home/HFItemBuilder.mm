@@ -1,36 +1,36 @@
 @interface HFItemBuilder
 - (HFItemBuilder)init;
-- (HFItemBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
-- (id)_commitSetDiff:(id)a3 withBlock:(id)a4;
-- (id)_failureErrorWithReason:(id)a3;
+- (HFItemBuilder)initWithExistingObject:(id)object inHome:(id)home;
+- (id)_commitSetDiff:(id)diff withBlock:(id)block;
+- (id)_failureErrorWithReason:(id)reason;
 - (id)commitItem;
-- (id)commitItemBuilderSetDiff:(id)a3 addBlock:(id)a4 deleteBlock:(id)a5;
-- (id)commitSetDiff:(id)a3 addBlock:(id)a4 updateBlock:(id)a5 deleteBlock:(id)a6;
-- (id)lazy_verifyNameIsNotEmpty:(id)a3;
-- (id)lazy_verifyPropertiesAreSet:(id)a3;
-- (id)lazy_verifyProperty:(id)a3 matchesCondition:(id)a4 description:(id)a5;
-- (id)verifyNameIsNotEmpty:(id)a3;
-- (id)verifyPropertiesAreSet:(id)a3;
-- (id)verifyProperty:(id)a3 matchesCondition:(id)a4 description:(id)a5;
-- (void)setHome:(id)a3;
-- (void)setHomeKitRepresentation:(id)a3;
+- (id)commitItemBuilderSetDiff:(id)diff addBlock:(id)block deleteBlock:(id)deleteBlock;
+- (id)commitSetDiff:(id)diff addBlock:(id)block updateBlock:(id)updateBlock deleteBlock:(id)deleteBlock;
+- (id)lazy_verifyNameIsNotEmpty:(id)empty;
+- (id)lazy_verifyPropertiesAreSet:(id)set;
+- (id)lazy_verifyProperty:(id)property matchesCondition:(id)condition description:(id)description;
+- (id)verifyNameIsNotEmpty:(id)empty;
+- (id)verifyPropertiesAreSet:(id)set;
+- (id)verifyProperty:(id)property matchesCondition:(id)condition description:(id)description;
+- (void)setHome:(id)home;
+- (void)setHomeKitRepresentation:(id)representation;
 @end
 
 @implementation HFItemBuilder
 
 - (id)commitItem
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFItemBuilder.m" lineNumber:29 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFItemBuilder commitItem]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemBuilder.m" lineNumber:29 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFItemBuilder commitItem]", objc_opt_class()}];
 
   return 0;
 }
 
-- (void)setHomeKitRepresentation:(id)a3
+- (void)setHomeKitRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [objc_opt_class() homeKitRepresentationClass];
-  v11 = v4;
+  representationCopy = representation;
+  homeKitRepresentationClass = [objc_opt_class() homeKitRepresentationClass];
+  v11 = representationCopy;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -49,9 +49,9 @@
       goto LABEL_8;
     }
 
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v8 handleFailureInFunction:v9 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v5, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v9 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", homeKitRepresentationClass, objc_opt_class()}];
   }
 
   v7 = 0;
@@ -63,26 +63,26 @@ LABEL_8:
 
 - (HFItemBuilder)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFItemBuilder.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "-[HFItemBuilder init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemBuilder.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "-[HFItemBuilder init]", v5}];
 
   return 0;
 }
 
-- (HFItemBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFItemBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  homeCopy = home;
   v18.receiver = self;
   v18.super_class = HFItemBuilder;
   v8 = [(HFItemBuilder *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
-    v10 = [objc_opt_class() homeKitRepresentationClass];
-    v11 = v6;
+    objc_storeStrong(&v8->_home, home);
+    homeKitRepresentationClass = [objc_opt_class() homeKitRepresentationClass];
+    v11 = objectCopy;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -101,9 +101,9 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v14 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v14 handleFailureInFunction:v15 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v10, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v15 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", homeKitRepresentationClass, objc_opt_class()}];
     }
 
     v13 = 0;
@@ -116,45 +116,45 @@ LABEL_9:
   return v9;
 }
 
-- (void)setHome:(id)a3
+- (void)setHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   home = self->_home;
   p_home = &self->_home;
-  if (home != v5)
+  if (home != homeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_home, a3);
-    v5 = v8;
+    v8 = homeCopy;
+    objc_storeStrong(p_home, home);
+    homeCopy = v8;
   }
 }
 
-- (id)commitSetDiff:(id)a3 addBlock:(id)a4 updateBlock:(id)a5 deleteBlock:(id)a6
+- (id)commitSetDiff:(id)diff addBlock:(id)block updateBlock:(id)updateBlock deleteBlock:(id)deleteBlock
 {
   v45[3] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v12 || !v13 || !v14)
+  diffCopy = diff;
+  blockCopy = block;
+  updateBlockCopy = updateBlock;
+  deleteBlockCopy = deleteBlock;
+  v15 = deleteBlockCopy;
+  if (!blockCopy || !updateBlockCopy || !deleteBlockCopy)
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"HFItemBuilder.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"addBlock && updateBlock && deleteBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemBuilder.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"addBlock && updateBlock && deleteBlock"}];
   }
 
   v16 = [HFMutableSetDiff alloc];
-  v17 = [v11 fromSet];
-  v18 = [(HFMutableSetDiff *)v16 initWithFromSet:v17];
+  fromSet = [diffCopy fromSet];
+  v18 = [(HFMutableSetDiff *)v16 initWithFromSet:fromSet];
 
-  v19 = [v11 deletions];
-  v20 = [(HFItemBuilder *)self _commitSetDiff:v19 withBlock:v15];
+  deletions = [diffCopy deletions];
+  v20 = [(HFItemBuilder *)self _commitSetDiff:deletions withBlock:v15];
 
-  v21 = [v11 additions];
-  v22 = [(HFItemBuilder *)self _commitSetDiff:v21 withBlock:v12];
+  additions = [diffCopy additions];
+  v22 = [(HFItemBuilder *)self _commitSetDiff:additions withBlock:blockCopy];
 
-  v23 = [v11 updates];
-  v24 = [(HFItemBuilder *)self _commitSetDiff:v23 withBlock:v13];
+  updates = [diffCopy updates];
+  v24 = [(HFItemBuilder *)self _commitSetDiff:updates withBlock:updateBlockCopy];
 
   v25 = MEMORY[0x277D2C900];
   v45[0] = v20;
@@ -233,10 +233,10 @@ id __64__HFItemBuilder_commitSetDiff_addBlock_updateBlock_deleteBlock___block_in
   return v8;
 }
 
-- (id)_commitSetDiff:(id)a3 withBlock:(id)a4
+- (id)_commitSetDiff:(id)diff withBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  diffCopy = diff;
+  blockCopy = block;
   v7 = [MEMORY[0x277CBEB58] set];
   v8 = MEMORY[0x277D2C900];
   v16[0] = MEMORY[0x277D85DD0];
@@ -244,14 +244,14 @@ id __64__HFItemBuilder_commitSetDiff_addBlock_updateBlock_deleteBlock___block_in
   v16[2] = __42__HFItemBuilder__commitSetDiff_withBlock___block_invoke;
   v16[3] = &unk_277DF50D8;
   v18 = v7;
-  v19 = v6;
-  v17 = v5;
+  v19 = blockCopy;
+  v17 = diffCopy;
   v9 = MEMORY[0x277D2C938];
   v10 = v7;
-  v11 = v6;
-  v12 = v5;
-  v13 = [v9 mainThreadScheduler];
-  v14 = [v8 lazyFutureWithBlock:v16 scheduler:v13];
+  v11 = blockCopy;
+  v12 = diffCopy;
+  mainThreadScheduler = [v9 mainThreadScheduler];
+  v14 = [v8 lazyFutureWithBlock:v16 scheduler:mainThreadScheduler];
 
   return v14;
 }
@@ -296,25 +296,25 @@ id __42__HFItemBuilder__commitSetDiff_withBlock___block_invoke_2(uint64_t a1, vo
   return v6;
 }
 
-- (id)commitItemBuilderSetDiff:(id)a3 addBlock:(id)a4 deleteBlock:(id)a5
+- (id)commitItemBuilderSetDiff:(id)diff addBlock:(id)block deleteBlock:(id)deleteBlock
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v10 || !v11)
+  diffCopy = diff;
+  blockCopy = block;
+  deleteBlockCopy = deleteBlock;
+  v12 = deleteBlockCopy;
+  if (!blockCopy || !deleteBlockCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HFItemBuilder.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"addBlock && deleteBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemBuilder.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"addBlock && deleteBlock"}];
   }
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __63__HFItemBuilder_commitItemBuilderSetDiff_addBlock_deleteBlock___block_invoke;
   v17[3] = &unk_277DF5128;
-  v18 = v10;
-  v13 = v10;
-  v14 = [(HFItemBuilder *)self commitSetDiff:v9 addBlock:v17 updateBlock:&__block_literal_global_30 deleteBlock:v12];
+  v18 = blockCopy;
+  v13 = blockCopy;
+  v14 = [(HFItemBuilder *)self commitSetDiff:diffCopy addBlock:v17 updateBlock:&__block_literal_global_30 deleteBlock:v12];
 
   return v14;
 }
@@ -336,15 +336,15 @@ id __63__HFItemBuilder_commitItemBuilderSetDiff_addBlock_deleteBlock___block_inv
   return v7;
 }
 
-- (id)verifyPropertiesAreSet:(id)a3
+- (id)verifyPropertiesAreSet:(id)set
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  setCopy = set;
+  v5 = [setCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -355,7 +355,7 @@ id __63__HFItemBuilder_commitItemBuilderSetDiff_addBlock_deleteBlock___block_inv
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(setCopy);
         }
 
         v9 = [(HFItemBuilder *)self verifyPropertyIsSet:*(*(&v13 + 1) + 8 * i), v13];
@@ -366,7 +366,7 @@ id __63__HFItemBuilder_commitItemBuilderSetDiff_addBlock_deleteBlock___block_inv
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [setCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -384,9 +384,9 @@ LABEL_11:
   return v10;
 }
 
-- (id)verifyNameIsNotEmpty:(id)a3
+- (id)verifyNameIsNotEmpty:(id)empty
 {
-  if ([a3 length])
+  if ([empty length])
   {
     v3 = 0;
   }
@@ -399,20 +399,20 @@ LABEL_11:
   return v3;
 }
 
-- (id)verifyProperty:(id)a3 matchesCondition:(id)a4 description:(id)a5
+- (id)verifyProperty:(id)property matchesCondition:(id)condition description:(id)description
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  propertyCopy = property;
+  conditionCopy = condition;
+  descriptionCopy = description;
+  if (!conditionCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HFItemBuilder.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"condition"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemBuilder.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"condition"}];
   }
 
-  v12 = [(HFItemBuilder *)self valueForKey:v9];
-  v13 = v10[2](v10, v12);
+  v12 = [(HFItemBuilder *)self valueForKey:propertyCopy];
+  v13 = conditionCopy[2](conditionCopy, v12);
 
   if (v13)
   {
@@ -421,18 +421,18 @@ LABEL_11:
 
   else
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ has invalid property %@: %@", self, v9, v11];
+    descriptionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ has invalid property %@: %@", self, propertyCopy, descriptionCopy];
     v16 = HFLogForCategory(0x2BuLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = v15;
+      v23 = descriptionCopy;
       _os_log_error_impl(&dword_20D9BF000, v16, OS_LOG_TYPE_ERROR, "Failed to verify builder: %@ for reason: %@", buf, 0x16u);
     }
 
-    v14 = [(HFItemBuilder *)self _failureErrorWithReason:v15];
+    v14 = [(HFItemBuilder *)self _failureErrorWithReason:descriptionCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -440,7 +440,7 @@ LABEL_11:
   return v14;
 }
 
-- (id)lazy_verifyPropertiesAreSet:(id)a3
+- (id)lazy_verifyPropertiesAreSet:(id)set
 {
   v3 = MEMORY[0x277D2C900];
   v7[0] = MEMORY[0x277D85DD0];
@@ -448,29 +448,29 @@ LABEL_11:
   v7[2] = __45__HFItemBuilder_lazy_verifyPropertiesAreSet___block_invoke;
   v7[3] = &unk_277DF5170;
   v7[4] = self;
-  v4 = [a3 na_map:v7];
+  v4 = [set na_map:v7];
   v5 = [v3 chainFutures:v4];
 
   return v5;
 }
 
-- (id)lazy_verifyProperty:(id)a3 matchesCondition:(id)a4 description:(id)a5
+- (id)lazy_verifyProperty:(id)property matchesCondition:(id)condition description:(id)description
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertyCopy = property;
+  conditionCopy = condition;
+  descriptionCopy = description;
   v11 = MEMORY[0x277D2C900];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __66__HFItemBuilder_lazy_verifyProperty_matchesCondition_description___block_invoke;
   v17[3] = &unk_277DF5198;
   v17[4] = self;
-  v18 = v8;
-  v19 = v10;
-  v20 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = propertyCopy;
+  v19 = descriptionCopy;
+  v20 = conditionCopy;
+  v12 = descriptionCopy;
+  v13 = conditionCopy;
+  v14 = propertyCopy;
   v15 = [v11 lazyFutureWithBlock:v17];
 
   return v15;
@@ -496,31 +496,31 @@ void __66__HFItemBuilder_lazy_verifyProperty_matchesCondition_description___bloc
   }
 }
 
-- (id)lazy_verifyNameIsNotEmpty:(id)a3
+- (id)lazy_verifyNameIsNotEmpty:(id)empty
 {
-  v3 = [a3 length];
+  v3 = [empty length];
   v4 = MEMORY[0x277D2C900];
   if (v3)
   {
-    v5 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA9B8] hf_errorWithCode:1];
-    v5 = [v4 futureWithError:v6];
+    futureWithNoResult = [v4 futureWithError:v6];
   }
 
-  return v5;
+  return futureWithNoResult;
 }
 
-- (id)_failureErrorWithReason:(id)a3
+- (id)_failureErrorWithReason:(id)reason
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"HFItemBuilderFailureReason";
-  v10[0] = a3;
+  v10[0] = reason;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = [v3 dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D2C8B8] code:2 userInfo:v5];
 

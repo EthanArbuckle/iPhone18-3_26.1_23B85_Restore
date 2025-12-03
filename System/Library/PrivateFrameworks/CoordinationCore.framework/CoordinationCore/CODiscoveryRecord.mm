@@ -1,44 +1,44 @@
 @interface CODiscoveryRecord
-+ (CODiscoveryRecord)discoveryRecordWithConstituent:(id)a3 rapportIdentifier:(id)a4 IDSIdentifier:(id)a5 peerAddress:(id)a6 port:(int)a7;
-+ (CODiscoveryRecord)discoveryRecordWithNode:(id)a3;
-+ (CODiscoveryRecord)discoveryRecordWithNodeController:(id)a3;
-- (BOOL)hasSameBackingDeviceAs:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDiscoveryRecord:(id)a3;
++ (CODiscoveryRecord)discoveryRecordWithConstituent:(id)constituent rapportIdentifier:(id)identifier IDSIdentifier:(id)sIdentifier peerAddress:(id)address port:(int)port;
++ (CODiscoveryRecord)discoveryRecordWithNode:(id)node;
++ (CODiscoveryRecord)discoveryRecordWithNodeController:(id)controller;
+- (BOOL)hasSameBackingDeviceAs:(id)as;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDiscoveryRecord:(id)record;
 - (BOOL)producesElectionCapableTransport;
 - (BOOL)shouldAdvertise;
-- (CODiscoveryRecord)initWithCoder:(id)a3;
-- (CODiscoveryRecord)initWithDiscoveryRecord:(id)a3;
+- (CODiscoveryRecord)initWithCoder:(id)coder;
+- (CODiscoveryRecord)initWithDiscoveryRecord:(id)record;
 - (NSString)description;
 - (NSUUID)HomeKitIdentifier;
 - (RPCompanionLinkDevice)companionLinkDevice;
-- (id)_initWithConstituent:(id)a3 rapportIdentifier:(id)a4 IDSIdentifier:(id)a5 destinations:(id)a6;
+- (id)_initWithConstituent:(id)constituent rapportIdentifier:(id)identifier IDSIdentifier:(id)sIdentifier destinations:(id)destinations;
 - (id)companionLinkProvider;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)newTransportWithExecutionContext:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)newTransportWithExecutionContext:(id)context;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCompanionLinkProvider:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCompanionLinkProvider:(id)provider;
 @end
 
 @implementation CODiscoveryRecord
 
-- (id)_initWithConstituent:(id)a3 rapportIdentifier:(id)a4 IDSIdentifier:(id)a5 destinations:(id)a6
+- (id)_initWithConstituent:(id)constituent rapportIdentifier:(id)identifier IDSIdentifier:(id)sIdentifier destinations:(id)destinations
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  constituentCopy = constituent;
+  identifierCopy = identifier;
+  sIdentifierCopy = sIdentifier;
+  destinationsCopy = destinations;
   v23.receiver = self;
   v23.super_class = CODiscoveryRecord;
   v15 = [(CODiscoveryRecord *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_constituent, a3);
-    objc_storeStrong(&v16->_rapportIdentifier, a4);
-    objc_storeStrong(&v16->_IDSIdentifier, a5);
-    objc_storeStrong(&v16->_destinations, a6);
+    objc_storeStrong(&v15->_constituent, constituent);
+    objc_storeStrong(&v16->_rapportIdentifier, identifier);
+    objc_storeStrong(&v16->_IDSIdentifier, sIdentifier);
+    objc_storeStrong(&v16->_destinations, destinations);
     objc_initWeak(&location, v16);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -78,81 +78,81 @@ id __87__CODiscoveryRecord__initWithConstituent_rapportIdentifier_IDSIdentifier_
   return v8;
 }
 
-+ (CODiscoveryRecord)discoveryRecordWithNodeController:(id)a3
++ (CODiscoveryRecord)discoveryRecordWithNodeController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 node];
-  v6 = [v5 remote];
+  controllerCopy = controller;
+  node = [controllerCopy node];
+  remote = [node remote];
 
-  v7 = [v4 rapportTransport];
+  rapportTransport = [controllerCopy rapportTransport];
 
-  v8 = [v7 client];
-  v9 = [v8 destinationDevice];
+  client = [rapportTransport client];
+  destinationDevice = [client destinationDevice];
 
-  v10 = [v9 identifier];
-  v11 = [v9 idsDeviceIdentifier];
-  v12 = [v9 ipAddress];
-  v13 = [v9 listeningPort];
-  if (v13 < 1)
+  identifier = [destinationDevice identifier];
+  idsDeviceIdentifier = [destinationDevice idsDeviceIdentifier];
+  ipAddress = [destinationDevice ipAddress];
+  listeningPort = [destinationDevice listeningPort];
+  if (listeningPort < 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [a1 _destinationForPeerAddress:v12 listeningPort:v13];
+    v14 = [self _destinationForPeerAddress:ipAddress listeningPort:listeningPort];
   }
 
   v15 = 0;
-  if (v6 && v10 && v11 && v14)
+  if (remote && identifier && idsDeviceIdentifier && v14)
   {
     v16 = [objc_alloc(MEMORY[0x277CBEB70]) initWithObject:v14];
-    v15 = [[a1 alloc] _initWithConstituent:v6 rapportIdentifier:v10 IDSIdentifier:v11 destinations:v16];
+    v15 = [[self alloc] _initWithConstituent:remote rapportIdentifier:identifier IDSIdentifier:idsDeviceIdentifier destinations:v16];
   }
 
   return v15;
 }
 
-+ (CODiscoveryRecord)discoveryRecordWithNode:(id)a3
++ (CODiscoveryRecord)discoveryRecordWithNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 remote];
-  v6 = [v4 client];
-  v7 = [v6 destinationDevice];
+  nodeCopy = node;
+  remote = [nodeCopy remote];
+  client = [nodeCopy client];
+  destinationDevice = [client destinationDevice];
 
-  v8 = [v7 identifier];
-  v9 = [v4 IDSIdentifier];
+  identifier = [destinationDevice identifier];
+  iDSIdentifier = [nodeCopy IDSIdentifier];
 
-  v10 = [v7 ipAddress];
-  v11 = [v7 listeningPort];
-  if (v11 < 1)
+  ipAddress = [destinationDevice ipAddress];
+  listeningPort = [destinationDevice listeningPort];
+  if (listeningPort < 1)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [a1 _destinationForPeerAddress:v10 listeningPort:v11];
+    v12 = [self _destinationForPeerAddress:ipAddress listeningPort:listeningPort];
   }
 
   v13 = 0;
-  if (v5 && v8 && v9 && v12)
+  if (remote && identifier && iDSIdentifier && v12)
   {
     v14 = [objc_alloc(MEMORY[0x277CBEB70]) initWithObject:v12];
-    v13 = [[a1 alloc] _initWithConstituent:v5 rapportIdentifier:v8 IDSIdentifier:v9 destinations:v14];
+    v13 = [[self alloc] _initWithConstituent:remote rapportIdentifier:identifier IDSIdentifier:iDSIdentifier destinations:v14];
   }
 
   return v13;
 }
 
-+ (CODiscoveryRecord)discoveryRecordWithConstituent:(id)a3 rapportIdentifier:(id)a4 IDSIdentifier:(id)a5 peerAddress:(id)a6 port:(int)a7
++ (CODiscoveryRecord)discoveryRecordWithConstituent:(id)constituent rapportIdentifier:(id)identifier IDSIdentifier:(id)sIdentifier peerAddress:(id)address port:(int)port
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [a1 _destinationForPeerAddress:a6 listeningPort:a7];
+  constituentCopy = constituent;
+  identifierCopy = identifier;
+  sIdentifierCopy = sIdentifier;
+  v15 = [self _destinationForPeerAddress:address listeningPort:port];
   v16 = [v15 length];
-  if (!a7 || v16)
+  if (!port || v16)
   {
     if (v15)
     {
@@ -165,7 +165,7 @@ id __87__CODiscoveryRecord__initWithConstituent_rapportIdentifier_IDSIdentifier_
     }
 
     v19 = v18;
-    v17 = [[a1 alloc] _initWithConstituent:v12 rapportIdentifier:v13 IDSIdentifier:v14 destinations:v18];
+    v17 = [[self alloc] _initWithConstituent:constituentCopy rapportIdentifier:identifierCopy IDSIdentifier:sIdentifierCopy destinations:v18];
   }
 
   else
@@ -176,36 +176,36 @@ id __87__CODiscoveryRecord__initWithConstituent_rapportIdentifier_IDSIdentifier_
   return v17;
 }
 
-- (CODiscoveryRecord)initWithDiscoveryRecord:(id)a3
+- (CODiscoveryRecord)initWithDiscoveryRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 constituent];
-  v6 = [v5 copy];
-  v7 = [v4 rapportIdentifier];
-  v8 = [v7 copy];
-  v9 = [v4 IDSIdentifier];
-  v10 = [v9 copy];
-  v11 = [v4 destinations];
+  recordCopy = record;
+  constituent = [recordCopy constituent];
+  v6 = [constituent copy];
+  rapportIdentifier = [recordCopy rapportIdentifier];
+  v8 = [rapportIdentifier copy];
+  iDSIdentifier = [recordCopy IDSIdentifier];
+  v10 = [iDSIdentifier copy];
+  destinations = [recordCopy destinations];
 
-  v12 = [v11 copy];
+  v12 = [destinations copy];
   v13 = [(CODiscoveryRecord *)self _initWithConstituent:v6 rapportIdentifier:v8 IDSIdentifier:v10 destinations:v12];
 
   return v13;
 }
 
-- (CODiscoveryRecord)initWithCoder:(id)a3
+- (CODiscoveryRecord)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"version"] == 1)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"version"] == 1)
   {
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
     v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"constituent"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rapportIdentifier"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSIdentifier"];
-    v11 = [v4 decodeObjectOfClasses:v7 forKey:@"destinations"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"constituent"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rapportIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSIdentifier"];
+    v11 = [coderCopy decodeObjectOfClasses:v7 forKey:@"destinations"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -291,26 +291,26 @@ LABEL_24:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:1 forKey:@"version"];
-  v5 = [(CODiscoveryRecord *)self constituent];
-  [v4 encodeObject:v5 forKey:@"constituent"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"version"];
+  constituent = [(CODiscoveryRecord *)self constituent];
+  [coderCopy encodeObject:constituent forKey:@"constituent"];
 
-  v6 = [(CODiscoveryRecord *)self rapportIdentifier];
-  [v4 encodeObject:v6 forKey:@"rapportIdentifier"];
+  rapportIdentifier = [(CODiscoveryRecord *)self rapportIdentifier];
+  [coderCopy encodeObject:rapportIdentifier forKey:@"rapportIdentifier"];
 
-  v7 = [(CODiscoveryRecord *)self IDSIdentifier];
-  [v4 encodeObject:v7 forKey:@"IDSIdentifier"];
+  iDSIdentifier = [(CODiscoveryRecord *)self IDSIdentifier];
+  [coderCopy encodeObject:iDSIdentifier forKey:@"IDSIdentifier"];
 
-  v8 = [(CODiscoveryRecord *)self destinations];
-  [v4 encodeObject:v8 forKey:@"destinations"];
+  destinations = [(CODiscoveryRecord *)self destinations];
+  [coderCopy encodeObject:destinations forKey:@"destinations"];
 }
 
-- (void)setCompanionLinkProvider:(id)a3
+- (void)setCompanionLinkProvider:(id)provider
 {
-  v4 = MEMORY[0x245D5FF10](a3, a2);
+  v4 = MEMORY[0x245D5FF10](provider, a2);
   companionLinkProvider = self->_companionLinkProvider;
   self->_companionLinkProvider = v4;
 
@@ -330,16 +330,16 @@ LABEL_24:
   v3 = self->_HomeKitIdentifier;
   if (!v3)
   {
-    v4 = [(CODiscoveryRecord *)self IDSIdentifier];
+    iDSIdentifier = [(CODiscoveryRecord *)self IDSIdentifier];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(CODiscoveryRecord *)self sourceTransport];
-    v6 = [v5 client];
-    v7 = [v6 activeDevices];
+    sourceTransport = [(CODiscoveryRecord *)self sourceTransport];
+    client = [sourceTransport client];
+    activeDevices = [client activeDevices];
 
-    v3 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v3 = [activeDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v3)
     {
       v8 = *v17;
@@ -349,23 +349,23 @@ LABEL_24:
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(activeDevices);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 idsDeviceIdentifier];
-          if (v11 && ![v4 compare:v11 options:1])
+          idsDeviceIdentifier = [v10 idsDeviceIdentifier];
+          if (idsDeviceIdentifier && ![iDSIdentifier compare:idsDeviceIdentifier options:1])
           {
-            v12 = [v10 homeKitIdentifier];
+            homeKitIdentifier = [v10 homeKitIdentifier];
             HomeKitIdentifier = self->_HomeKitIdentifier;
-            self->_HomeKitIdentifier = v12;
+            self->_HomeKitIdentifier = homeKitIdentifier;
 
-            v3 = v12;
+            v3 = homeKitIdentifier;
             goto LABEL_13;
           }
         }
 
-        v3 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v3 = [activeDevices countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v3)
         {
           continue;
@@ -385,14 +385,14 @@ LABEL_13:
 
 - (BOOL)producesElectionCapableTransport
 {
-  v2 = [(CODiscoveryRecord *)self sourceTransport];
-  v3 = [v2 executionContext];
-  v4 = [v3 leaderElectionConfigured];
+  sourceTransport = [(CODiscoveryRecord *)self sourceTransport];
+  executionContext = [sourceTransport executionContext];
+  leaderElectionConfigured = [executionContext leaderElectionConfigured];
 
-  return v4;
+  return leaderElectionConfigured;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [COMutableDiscoveryRecord alloc];
 
@@ -404,33 +404,33 @@ LABEL_13:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CODiscoveryRecord *)self constituent];
-  v7 = [(CODiscoveryRecord *)self rapportIdentifier];
-  v8 = [(CODiscoveryRecord *)self IDSIdentifier];
-  v9 = [(CODiscoveryRecord *)self destinations];
-  v10 = [v3 stringWithFormat:@"<%@: %p, c(%@) r(%@) i(%@) d(%@)>", v5, self, v6, v7, v8, v9];
+  constituent = [(CODiscoveryRecord *)self constituent];
+  rapportIdentifier = [(CODiscoveryRecord *)self rapportIdentifier];
+  iDSIdentifier = [(CODiscoveryRecord *)self IDSIdentifier];
+  destinations = [(CODiscoveryRecord *)self destinations];
+  v10 = [v3 stringWithFormat:@"<%@: %p, c(%@) r(%@) i(%@) d(%@)>", v5, self, constituent, rapportIdentifier, iDSIdentifier, destinations];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CODiscoveryRecord *)self constituent];
-  v3 = [v2 hash];
+  constituent = [(CODiscoveryRecord *)self constituent];
+  v3 = [constituent hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -453,45 +453,45 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)hasSameBackingDeviceAs:(id)a3
+- (BOOL)hasSameBackingDeviceAs:(id)as
 {
-  v4 = a3;
-  v5 = [(CODiscoveryRecord *)self IDSIdentifier];
-  v6 = [v4 IDSIdentifier];
+  asCopy = as;
+  iDSIdentifier = [(CODiscoveryRecord *)self IDSIdentifier];
+  iDSIdentifier2 = [asCopy IDSIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(asCopy) = [iDSIdentifier isEqualToString:iDSIdentifier2];
+  return asCopy;
 }
 
-- (id)newTransportWithExecutionContext:(id)a3
+- (id)newTransportWithExecutionContext:(id)context
 {
-  v4 = a3;
-  v5 = [[CORapportTransport alloc] initWithDiscoveryRecord:self executionContext:v4];
+  contextCopy = context;
+  v5 = [[CORapportTransport alloc] initWithDiscoveryRecord:self executionContext:contextCopy];
 
-  v6 = [(CODiscoveryRecord *)self sourceTransport];
-  [v6 setAsSink:v5];
+  sourceTransport = [(CODiscoveryRecord *)self sourceTransport];
+  [sourceTransport setAsSink:v5];
 
   return v5;
 }
 
-- (BOOL)isEqualToDiscoveryRecord:(id)a3
+- (BOOL)isEqualToDiscoveryRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CODiscoveryRecord *)self constituent];
-  v6 = [v4 constituent];
-  if ([v5 isEqual:v6])
+  recordCopy = record;
+  constituent = [(CODiscoveryRecord *)self constituent];
+  constituent2 = [recordCopy constituent];
+  if ([constituent isEqual:constituent2])
   {
-    v7 = [(CODiscoveryRecord *)self rapportIdentifier];
-    v8 = [v4 rapportIdentifier];
-    if ([v7 isEqualToString:v8])
+    rapportIdentifier = [(CODiscoveryRecord *)self rapportIdentifier];
+    rapportIdentifier2 = [recordCopy rapportIdentifier];
+    if ([rapportIdentifier isEqualToString:rapportIdentifier2])
     {
-      v9 = [(CODiscoveryRecord *)self IDSIdentifier];
-      v10 = [v4 IDSIdentifier];
-      if ([v9 isEqualToString:v10])
+      iDSIdentifier = [(CODiscoveryRecord *)self IDSIdentifier];
+      iDSIdentifier2 = [recordCopy IDSIdentifier];
+      if ([iDSIdentifier isEqualToString:iDSIdentifier2])
       {
-        v11 = [(CODiscoveryRecord *)self destinations];
-        v12 = [v4 destinations];
-        v13 = [v11 isEqualToOrderedSet:v12];
+        destinations = [(CODiscoveryRecord *)self destinations];
+        destinations2 = [recordCopy destinations];
+        v13 = [destinations isEqualToOrderedSet:destinations2];
       }
 
       else
@@ -516,8 +516,8 @@ LABEL_7:
 
 - (BOOL)shouldAdvertise
 {
-  v2 = [(CODiscoveryRecord *)self destinations];
-  v3 = [v2 count] != 0;
+  destinations = [(CODiscoveryRecord *)self destinations];
+  v3 = [destinations count] != 0;
 
   return v3;
 }
@@ -528,12 +528,12 @@ LABEL_7:
   if (!companionLinkDevice)
   {
     v4 = objc_alloc_init(MEMORY[0x277D44170]);
-    v5 = [(CODiscoveryRecord *)self rapportIdentifier];
-    [v4 setIdentifier:v5];
+    rapportIdentifier = [(CODiscoveryRecord *)self rapportIdentifier];
+    [v4 setIdentifier:rapportIdentifier];
 
-    v6 = [(CODiscoveryRecord *)self destinations];
-    v7 = [v6 firstObject];
-    [v4 setIpAddress:v7];
+    destinations = [(CODiscoveryRecord *)self destinations];
+    firstObject = [destinations firstObject];
+    [v4 setIpAddress:firstObject];
 
     v8 = self->_companionLinkDevice;
     self->_companionLinkDevice = v4;

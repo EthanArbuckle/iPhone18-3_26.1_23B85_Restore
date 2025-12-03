@@ -1,44 +1,44 @@
 @interface IDSFirewallEndpointDonationComponent
-- (BOOL)isCommandExcluded:(id)a3 forService:(id)a4;
-- (IDSFirewallEndpointDonationComponent)initWithServiceController:(id)a3 firewallStore:(id)a4;
-- (id)runIndividuallyWithInput:(id)a3;
+- (BOOL)isCommandExcluded:(id)excluded forService:(id)service;
+- (IDSFirewallEndpointDonationComponent)initWithServiceController:(id)controller firewallStore:(id)store;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IDSFirewallEndpointDonationComponent
 
-- (IDSFirewallEndpointDonationComponent)initWithServiceController:(id)a3 firewallStore:(id)a4
+- (IDSFirewallEndpointDonationComponent)initWithServiceController:(id)controller firewallStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = IDSFirewallEndpointDonationComponent;
   v9 = [(IDSFirewallEndpointDonationComponent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceController, a3);
-    objc_storeStrong(&v10->_firewallStore, a4);
+    objc_storeStrong(&v9->_serviceController, controller);
+    objc_storeStrong(&v10->_firewallStore, store);
   }
 
   return v10;
 }
 
-- (BOOL)isCommandExcluded:(id)a3 forService:(id)a4
+- (BOOL)isCommandExcluded:(id)excluded forService:(id)service
 {
-  v5 = a3;
-  v6 = [a4 identifier];
-  if (![v6 isEqualToIgnoringCase:IDSServiceNameFaceTimeMulti])
+  excludedCopy = excluded;
+  identifier = [service identifier];
+  if (![identifier isEqualToIgnoringCase:IDSServiceNameFaceTimeMulti])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v5 integerValue];
+  integerValue = [excludedCopy integerValue];
 
-  if (v7 == 207)
+  if (integerValue == 207)
   {
 LABEL_5:
-    v8 = [v5 integerValue] == 249;
+    v8 = [excludedCopy integerValue] == 249;
     goto LABEL_6;
   }
 
@@ -48,30 +48,30 @@ LABEL_6:
   return v8;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
-  v4 = a3;
-  v5 = [(IDSFirewallEndpointDonationComponent *)self serviceController];
-  v6 = [v4 service];
-  v7 = [v5 serviceWithIdentifier:v6];
+  inputCopy = input;
+  serviceController = [(IDSFirewallEndpointDonationComponent *)self serviceController];
+  service = [inputCopy service];
+  v7 = [serviceController serviceWithIdentifier:service];
 
   if ([v7 disallowFirewallAutoEnroll])
   {
-    v8 = [v4 wantsFirewallDonation];
+    wantsFirewallDonation = [inputCopy wantsFirewallDonation];
   }
 
   else
   {
-    v8 = 1;
+    wantsFirewallDonation = 1;
   }
 
-  v9 = [v4 messageToSend];
-  v10 = [v9 additionalDictionary];
-  v11 = [v10 objectForKeyedSubscript:@"c"];
+  messageToSend = [inputCopy messageToSend];
+  additionalDictionary = [messageToSend additionalDictionary];
+  v11 = [additionalDictionary objectForKeyedSubscript:@"c"];
 
-  if (v8 && IDSCommandIsUserInteractiveCommand() && ![(IDSFirewallEndpointDonationComponent *)self isCommandExcluded:v11 forService:v7])
+  if (wantsFirewallDonation && IDSCommandIsUserInteractiveCommand() && ![(IDSFirewallEndpointDonationComponent *)self isCommandExcluded:v11 forService:v7])
   {
-    v40 = self;
+    selfCopy = self;
     v41 = v11;
     v42 = v7;
     v12 = objc_alloc_init(NSMutableSet);
@@ -80,9 +80,9 @@ LABEL_6:
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v43 = v4;
-    v17 = [v4 endpoints];
-    v18 = [v17 countByEnumeratingWithState:&v44 objects:v52 count:16];
+    v43 = inputCopy;
+    endpoints = [inputCopy endpoints];
+    v18 = [endpoints countByEnumeratingWithState:&v44 objects:v52 count:16];
     if (v18)
     {
       v19 = v18;
@@ -93,56 +93,56 @@ LABEL_6:
         {
           if (*v45 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(endpoints);
           }
 
           v22 = *(*(&v44 + 1) + 8 * i);
           v23 = [v22 URI];
-          v24 = [v23 prefixedURI];
+          prefixedURI = [v23 prefixedURI];
 
-          if (([v12 containsObject:v24]& 1) == 0)
+          if (([v12 containsObject:prefixedURI]& 1) == 0)
           {
             v25 = [IDSFirewallEntry alloc];
             v26 = [v22 URI];
             v27 = [v25 initWithURI:v26 andLastSeenDate:0];
 
-            v28 = [v22 senderCorrelationIdentifier];
-            [v27 setMergeID:v28];
+            senderCorrelationIdentifier = [v22 senderCorrelationIdentifier];
+            [v27 setMergeID:senderCorrelationIdentifier];
 
             [v16 addObject:v27];
-            [v12 addObject:v24];
+            [v12 addObject:prefixedURI];
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v44 objects:v52 count:16];
+        v19 = [endpoints countByEnumeratingWithState:&v44 objects:v52 count:16];
       }
 
       while (v19);
     }
 
     v7 = v42;
-    v4 = v43;
+    inputCopy = v43;
     if ([v16 count])
     {
-      v29 = [(IDSFirewallEndpointDonationComponent *)v40 firewallStore];
-      v30 = [v43 service];
-      v31 = [NSSet setWithObject:v30];
-      [v29 addEntries:v16 forImpactedServices:v31 category:objc_msgSend(v42 isDonated:{"controlCategory"), objc_msgSend(v43, "wantsFirewallDonation")}];
+      firewallStore = [(IDSFirewallEndpointDonationComponent *)selfCopy firewallStore];
+      service2 = [v43 service];
+      v31 = [NSSet setWithObject:service2];
+      [firewallStore addEntries:v16 forImpactedServices:v31 category:objc_msgSend(v42 isDonated:{"controlCategory"), objc_msgSend(v43, "wantsFirewallDonation")}];
     }
 
     v32 = +[IDSDServiceController sharedInstance];
-    v33 = [v43 service];
-    v34 = [v32 serviceWithIdentifier:v33];
-    v35 = [v34 controlCategory];
+    service3 = [v43 service];
+    v34 = [v32 serviceWithIdentifier:service3];
+    controlCategory = [v34 controlCategory];
 
     v36 = +[IDSFoundationLog delivery];
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v43 guid];
+      guid = [v43 guid];
       *buf = 67109634;
-      *v49 = v35;
+      *v49 = controlCategory;
       *&v49[4] = 2112;
-      *&v49[6] = v37;
+      *&v49[6] = guid;
       *&v49[14] = 2112;
       *&v49[16] = v16;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "IDSFirewall Update to category %u for GUID %@ addEntries %@", buf, 0x1Cu);
@@ -156,8 +156,8 @@ LABEL_6:
     v12 = +[IDSFoundationLog delivery];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 guid];
-      if ([v4 wantsFirewallDonation])
+      guid2 = [inputCopy guid];
+      if ([inputCopy wantsFirewallDonation])
       {
         v14 = @"YES";
       }
@@ -178,7 +178,7 @@ LABEL_6:
         v15 = @"NO";
       }
 
-      *v49 = v13;
+      *v49 = guid2;
       *&v49[8] = 2112;
       *&v49[10] = v14;
       *&v49[18] = 2112;
@@ -189,7 +189,7 @@ LABEL_6:
     }
   }
 
-  v38 = [CUTUnsafePromise fulfilledPromiseWithValue:v4];
+  v38 = [CUTUnsafePromise fulfilledPromiseWithValue:inputCopy];
 
   return v38;
 }

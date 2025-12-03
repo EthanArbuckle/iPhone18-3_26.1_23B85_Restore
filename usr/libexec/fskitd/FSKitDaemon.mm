@@ -60,7 +60,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000087A4;
   block[3] = &unk_100060B68;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000686D8 != -1)
   {
     dispatch_once(&qword_1000686D8, block);
@@ -101,8 +101,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v7 = [(FSKitDaemon *)self lifsQueue];
-  v8 = dispatch_source_create(&_dispatch_source_type_mach_recv, v6, 0, v7);
+  lifsQueue = [(FSKitDaemon *)self lifsQueue];
+  v8 = dispatch_source_create(&_dispatch_source_type_mach_recv, v6, 0, lifsQueue);
   v9 = qword_1000686E8;
   qword_1000686E8 = v8;
 

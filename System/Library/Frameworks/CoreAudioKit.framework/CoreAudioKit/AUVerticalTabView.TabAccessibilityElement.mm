@@ -1,12 +1,12 @@
 @interface AUVerticalTabView.TabAccessibilityElement
 - (BOOL)accessibilityActivate;
 - (_TtCC12CoreAudioKit17AUVerticalTabView23TabAccessibilityElement)init;
-- (_TtCC12CoreAudioKit17AUVerticalTabView23TabAccessibilityElement)initWithAccessibilityContainer:(id)a3;
+- (_TtCC12CoreAudioKit17AUVerticalTabView23TabAccessibilityElement)initWithAccessibilityContainer:(id)container;
 @end
 
 @implementation AUVerticalTabView.TabAccessibilityElement
 
-- (_TtCC12CoreAudioKit17AUVerticalTabView23TabAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (_TtCC12CoreAudioKit17AUVerticalTabView23TabAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   sub_23719682C();
@@ -16,7 +16,7 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   sub_237121C30();
 
   return 1;

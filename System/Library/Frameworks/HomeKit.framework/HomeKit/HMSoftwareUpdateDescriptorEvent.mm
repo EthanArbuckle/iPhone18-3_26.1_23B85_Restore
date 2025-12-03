@@ -1,5 +1,5 @@
 @interface HMSoftwareUpdateDescriptorEvent
-- (HMSoftwareUpdateDescriptorEvent)initWithDescriptor:(id)a3 eventSource:(id)a4 eventTimestamp:(double)a5;
+- (HMSoftwareUpdateDescriptorEvent)initWithDescriptor:(id)descriptor eventSource:(id)source eventTimestamp:(double)timestamp;
 - (id)encodedData;
 @end
 
@@ -7,19 +7,19 @@
 
 - (id)encodedData
 {
-  v2 = [(HMSoftwareUpdateDescriptorEvent *)self descriptor];
-  v3 = [v2 protoPayload];
-  v4 = [v3 data];
+  descriptor = [(HMSoftwareUpdateDescriptorEvent *)self descriptor];
+  protoPayload = [descriptor protoPayload];
+  data = [protoPayload data];
 
-  return v4;
+  return data;
 }
 
-- (HMSoftwareUpdateDescriptorEvent)initWithDescriptor:(id)a3 eventSource:(id)a4 eventTimestamp:(double)a5
+- (HMSoftwareUpdateDescriptorEvent)initWithDescriptor:(id)descriptor eventSource:(id)source eventTimestamp:(double)timestamp
 {
-  v9 = a3;
+  descriptorCopy = descriptor;
   v10 = MEMORY[0x1E69A45F0];
-  v11 = a4;
-  v12 = [[v10 alloc] initWithSource:v11 cachePolicy:2 combineType:2 timestamp:a5];
+  sourceCopy = source;
+  v12 = [[v10 alloc] initWithSource:sourceCopy cachePolicy:2 combineType:2 timestamp:timestamp];
 
   v16.receiver = self;
   v16.super_class = HMSoftwareUpdateDescriptorEvent;
@@ -27,7 +27,7 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_descriptor, a3);
+    objc_storeStrong(&v13->_descriptor, descriptor);
   }
 
   return v14;

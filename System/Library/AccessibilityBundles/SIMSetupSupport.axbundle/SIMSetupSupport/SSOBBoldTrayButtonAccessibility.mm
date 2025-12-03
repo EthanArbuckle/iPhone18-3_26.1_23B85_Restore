@@ -1,18 +1,18 @@
 @interface SSOBBoldTrayButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SSOBBoldTrayButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SSOBBoldTrayButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"SSOBBoldTrayButton" hasInstanceMethod:@"normalStateTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SSOBBoldTrayButton" hasInstanceMethod:@"spinner" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SSSpinner" hasInstanceVariable:@"_label" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SSOBBoldTrayButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"SSOBBoldTrayButton" hasInstanceMethod:@"normalStateTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SSOBBoldTrayButton" hasInstanceMethod:@"spinner" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SSSpinner" hasInstanceVariable:@"_label" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel
@@ -34,7 +34,7 @@
       v6 = [v3 titleForState:0];
     }
 
-    v9 = v6;
+    accessibilityLabel = v6;
   }
 
   else
@@ -44,25 +44,25 @@
     v7 = [v5 safeUIViewForKey:@"_label"];
     v8 = __UIAccessibilityCastAsClass();
 
-    v9 = [v8 accessibilityLabel];
+    accessibilityLabel = [v8 accessibilityLabel];
   }
 
-  return v9;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v5.receiver = self;
   v5.super_class = SSOBBoldTrayButtonAccessibility;
-  v2 = [(SSOBBoldTrayButtonAccessibility *)&v5 accessibilityTraits];
+  accessibilityTraits = [(SSOBBoldTrayButtonAccessibility *)&v5 accessibilityTraits];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
   if (![v3 isEnabled])
   {
-    v2 = *MEMORY[0x29EDC7FA0];
+    accessibilityTraits = *MEMORY[0x29EDC7FA0];
   }
 
-  return v2;
+  return accessibilityTraits;
 }
 
 @end

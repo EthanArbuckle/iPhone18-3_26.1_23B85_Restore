@@ -1,5 +1,5 @@
 @interface CXXPCProvider
-- (CXXPCProvider)initWithConfiguration:(id)a3;
+- (CXXPCProvider)initWithConfiguration:(id)configuration;
 - (NSXPCConnection)connection;
 - (id)hostProtocolDelegate;
 - (void)dealloc;
@@ -10,10 +10,10 @@
 
 - (id)hostProtocolDelegate
 {
-  v2 = [(CXXPCProvider *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(CXXPCProvider *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (NSXPCConnection)connection
@@ -26,11 +26,11 @@
     self->_connection = v4;
 
     [(NSXPCConnection *)self->_connection setExportedObject:self];
-    v6 = [MEMORY[0x1E696B0D0] cx_providerVendorInterface];
-    [(NSXPCConnection *)self->_connection setExportedInterface:v6];
+    cx_providerVendorInterface = [MEMORY[0x1E696B0D0] cx_providerVendorInterface];
+    [(NSXPCConnection *)self->_connection setExportedInterface:cx_providerVendorInterface];
 
-    v7 = [MEMORY[0x1E696B0D0] cx_providerHostInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v7];
+    cx_providerHostInterface = [MEMORY[0x1E696B0D0] cx_providerHostInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:cx_providerHostInterface];
 
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x1E69E9820];
@@ -46,8 +46,8 @@
     objc_copyWeak(&v11, &location);
     [(NSXPCConnection *)self->_connection setInvalidationHandler:v10];
     [(NSXPCConnection *)self->_connection resume];
-    v8 = [(CXProvider *)self abstractProvider];
-    [v8 sendDidBeginForProvider:self];
+    abstractProvider = [(CXProvider *)self abstractProvider];
+    [abstractProvider sendDidBeginForProvider:self];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&v13);
@@ -58,23 +58,23 @@
   return connection;
 }
 
-- (CXXPCProvider)initWithConfiguration:(id)a3
+- (CXXPCProvider)initWithConfiguration:(id)configuration
 {
   v11.receiver = self;
   v11.super_class = CXXPCProvider;
-  v3 = [(CXProvider *)&v11 initWithConfiguration:a3];
+  v3 = [(CXProvider *)&v11 initWithConfiguration:configuration];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CXProvider *)v3 abstractProvider];
-    v6 = [v5 queue];
+    abstractProvider = [(CXProvider *)v3 abstractProvider];
+    queue = [abstractProvider queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __39__CXXPCProvider_initWithConfiguration___block_invoke;
     block[3] = &unk_1E7C06CA8;
     v7 = v4;
     v10 = v7;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
 
     [(CXProvider *)v7 registerCurrentConfiguration];
   }
@@ -202,14 +202,14 @@ void __27__CXXPCProvider_connection__block_invoke_4(uint64_t a1)
 
 - (void)invalidate
 {
-  v3 = [(CXProvider *)self abstractProvider];
-  v4 = [v3 queue];
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __27__CXXPCProvider_invalidate__block_invoke;
   block[3] = &unk_1E7C06CA8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __27__CXXPCProvider_invalidate__block_invoke(uint64_t a1)

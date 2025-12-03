@@ -1,14 +1,14 @@
 @interface SUUIGiftThemePickerFlowLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 @end
 
 @implementation SUUIGiftThemePickerFlowLayout
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
   currentPage = self->_currentPage;
-  v4 = [(SUUIGiftThemePickerFlowLayout *)self collectionView];
-  [v4 frame];
+  collectionView = [(SUUIGiftThemePickerFlowLayout *)self collectionView];
+  [collectionView frame];
   v6 = v5 * currentPage;
 
   v7 = 0.0;

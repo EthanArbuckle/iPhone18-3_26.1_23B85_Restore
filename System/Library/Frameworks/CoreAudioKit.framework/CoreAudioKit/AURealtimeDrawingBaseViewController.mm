@@ -17,7 +17,7 @@
 
 - (void)checkLastRenderedTime
 {
-  v2 = self;
+  selfCopy = self;
   sub_237195B48();
 }
 

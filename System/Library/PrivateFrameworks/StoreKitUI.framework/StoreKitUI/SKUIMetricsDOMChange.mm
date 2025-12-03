@@ -1,26 +1,26 @@
 @interface SKUIMetricsDOMChange
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (SKUIMetricsDOMChange)initWithReportDomBuildTimesMessagePayload:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKUIMetricsDOMChange)initWithReportDomBuildTimesMessagePayload:(id)payload;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SKUIMetricsDOMChange
 
-- (SKUIMetricsDOMChange)initWithReportDomBuildTimesMessagePayload:(id)a3
+- (SKUIMetricsDOMChange)initWithReportDomBuildTimesMessagePayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIMetricsDOMChange initWithReportDomBuildTimesMessagePayload:];
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"buildStartTime"];
-  v6 = [v4 objectForKeyedSubscript:@"buildEndTime"];
+  v5 = [payloadCopy objectForKeyedSubscript:@"buildStartTime"];
+  v6 = [payloadCopy objectForKeyedSubscript:@"buildEndTime"];
   v7 = v6;
-  v8 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     v9 = [(SKUIMetricsDOMChange *)self init];
@@ -30,20 +30,20 @@
       [(SKUIMetricsDOMChange *)v9 setBuildStartTime:?];
       [SKUIMetricsUtilities timeIntervalFromJSTime:v7];
       [(SKUIMetricsDOMChange *)v9 setBuildEndTime:?];
-      v10 = [v4 objectForKeyedSubscript:@"messageWasDeferred"];
+      v10 = [payloadCopy objectForKeyedSubscript:@"messageWasDeferred"];
       -[SKUIMetricsDOMChange setFromDeferredMessage:](v9, "setFromDeferredMessage:", [v10 BOOLValue]);
     }
 
     self = v9;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(SKUIMetricsDOMChange *)self buildStartTime];
   [v4 setBuildStartTime:?];
   [(SKUIMetricsDOMChange *)self buildEndTime];
@@ -90,9 +90,9 @@
   v8 = v6 + 100 * v7;
   [(SKUIMetricsDOMChange *)self renderEndTime];
   v10 = v8 + 1000 * v9;
-  v11 = [(SKUIMetricsDOMChange *)self isFromDeferredMessage];
+  isFromDeferredMessage = [(SKUIMetricsDOMChange *)self isFromDeferredMessage];
   v12 = 10000;
-  if (!v11)
+  if (!isFromDeferredMessage)
   {
     v12 = 0;
   }
@@ -100,10 +100,10 @@
   return v10 + v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v19) = 1;
   }
@@ -113,14 +113,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(SKUIMetricsDOMChange *)self buildStartTime];
       v7 = v6;
       [(SKUIMetricsDOMChange *)v5 buildStartTime];
       if (v7 == v8 && ([(SKUIMetricsDOMChange *)self buildEndTime], v10 = v9, [(SKUIMetricsDOMChange *)v5 buildEndTime], v10 == v11) && ([(SKUIMetricsDOMChange *)self renderStartTime], v13 = v12, [(SKUIMetricsDOMChange *)v5 renderStartTime], v13 == v14) && ([(SKUIMetricsDOMChange *)self renderEndTime], v16 = v15, [(SKUIMetricsDOMChange *)v5 renderEndTime], v16 == v17))
       {
-        v18 = [(SKUIMetricsDOMChange *)self isFromDeferredMessage];
-        v19 = v18 ^ [(SKUIMetricsDOMChange *)v5 isFromDeferredMessage]^ 1;
+        isFromDeferredMessage = [(SKUIMetricsDOMChange *)self isFromDeferredMessage];
+        v19 = isFromDeferredMessage ^ [(SKUIMetricsDOMChange *)v5 isFromDeferredMessage]^ 1;
       }
 
       else

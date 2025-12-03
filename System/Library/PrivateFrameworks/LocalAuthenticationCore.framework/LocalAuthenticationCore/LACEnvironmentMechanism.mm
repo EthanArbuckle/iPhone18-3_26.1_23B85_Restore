@@ -1,68 +1,68 @@
 @interface LACEnvironmentMechanism
-+ (id)environmentMechanismForUser:(unsigned int)a3 auditToken:(id *)a4 dependencies:(id)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
-- (LACEnvironmentMechanism)initWithAvailabilityError:(id)a3 localizedName:(id)a4 iconSystemName:(id)a5;
-- (LACEnvironmentMechanism)initWithCoder:(id)a3;
++ (id)environmentMechanismForUser:(unsigned int)user auditToken:(id *)token dependencies:(id)dependencies error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (LACEnvironmentMechanism)initWithAvailabilityError:(id)error localizedName:(id)name iconSystemName:(id)systemName;
+- (LACEnvironmentMechanism)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LACEnvironmentMechanism
 
-- (LACEnvironmentMechanism)initWithAvailabilityError:(id)a3 localizedName:(id)a4 iconSystemName:(id)a5
+- (LACEnvironmentMechanism)initWithAvailabilityError:(id)error localizedName:(id)name iconSystemName:(id)systemName
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  errorCopy = error;
+  nameCopy = name;
+  systemNameCopy = systemName;
   v15.receiver = self;
   v15.super_class = LACEnvironmentMechanism;
   v12 = [(LACEnvironmentMechanism *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_availabilityError, a3);
-    objc_storeStrong(&v13->_localizedName, a4);
-    objc_storeStrong(&v13->_iconSystemName, a5);
+    objc_storeStrong(&v12->_availabilityError, error);
+    objc_storeStrong(&v13->_localizedName, name);
+    objc_storeStrong(&v13->_iconSystemName, systemName);
   }
 
   return v13;
 }
 
-+ (id)environmentMechanismForUser:(unsigned int)a3 auditToken:(id *)a4 dependencies:(id)a5 error:(id *)a6
++ (id)environmentMechanismForUser:(unsigned int)user auditToken:(id *)token dependencies:(id)dependencies error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = [LACError errorWithCode:-1000 debugDescription:@"Call must be made on a subclass", a5];
+    *error = [LACError errorWithCode:-1000 debugDescription:@"Call must be made on a subclass", dependencies];
   }
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LACEnvironmentMechanism *)self availabilityError];
+  coderCopy = coder;
+  availabilityError = [(LACEnvironmentMechanism *)self availabilityError];
   v6 = NSStringFromSelector(sel_availabilityError);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:availabilityError forKey:v6];
 
-  v7 = [(LACEnvironmentMechanism *)self localizedName];
+  localizedName = [(LACEnvironmentMechanism *)self localizedName];
   v8 = NSStringFromSelector(sel_localizedName);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:localizedName forKey:v8];
 
-  v10 = [(LACEnvironmentMechanism *)self iconSystemName];
+  iconSystemName = [(LACEnvironmentMechanism *)self iconSystemName];
   v9 = NSStringFromSelector(sel_iconSystemName);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:iconSystemName forKey:v9];
 }
 
-- (LACEnvironmentMechanism)initWithCoder:(id)a3
+- (LACEnvironmentMechanism)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_availabilityError);
-  v6 = [v4 decodeObjectForKey:v5];
+  v6 = [coderCopy decodeObjectForKey:v5];
   v7 = NSStringFromSelector(sel_localizedName);
-  v8 = [v4 decodeObjectForKey:v7];
+  v8 = [coderCopy decodeObjectForKey:v7];
   v9 = NSStringFromSelector(sel_iconSystemName);
-  v10 = [v4 decodeObjectForKey:v9];
+  v10 = [coderCopy decodeObjectForKey:v9];
 
   v11 = [(LACEnvironmentMechanism *)self initWithAvailabilityError:v6 localizedName:v8 iconSystemName:v10];
   return v11;
@@ -70,9 +70,9 @@
 
 - (id)description
 {
-  v3 = [(LACEnvironmentMechanism *)self descriptionDetails];
-  v4 = [(LACEnvironmentMechanism *)self availabilityError];
-  if ([LACError error:v4 hasCode:-1004])
+  descriptionDetails = [(LACEnvironmentMechanism *)self descriptionDetails];
+  availabilityError = [(LACEnvironmentMechanism *)self availabilityError];
+  if ([LACError error:availabilityError hasCode:-1004])
   {
     v5 = @"usable";
   }
@@ -80,24 +80,24 @@
   else
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(LACEnvironmentMechanism *)self availabilityError];
-    v8 = [v7 domain];
-    v9 = [(LACEnvironmentMechanism *)self availabilityError];
-    v5 = [v6 stringWithFormat:@"%@ error %d", v8, objc_msgSend(v9, "code")];
+    availabilityError2 = [(LACEnvironmentMechanism *)self availabilityError];
+    domain = [availabilityError2 domain];
+    availabilityError3 = [(LACEnvironmentMechanism *)self availabilityError];
+    v5 = [v6 stringWithFormat:@"%@ error %d", domain, objc_msgSend(availabilityError3, "code")];
   }
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(LACEnvironmentMechanism *)self localizedName];
-  v12 = [v3 componentsJoinedByString:{@", "}];
-  v13 = [v10 stringWithFormat:@"<'%@' %@ (%@)>", v11, v5, v12];
+  localizedName = [(LACEnvironmentMechanism *)self localizedName];
+  v12 = [descriptionDetails componentsJoinedByString:{@", "}];
+  v13 = [v10 stringWithFormat:@"<'%@' %@ (%@)>", localizedName, v5, v12];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -107,19 +107,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(LACEnvironmentMechanism *)self availabilityError];
-      v7 = [(LACEnvironmentMechanism *)v5 availabilityError];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      availabilityError = [(LACEnvironmentMechanism *)self availabilityError];
+      availabilityError2 = [(LACEnvironmentMechanism *)v5 availabilityError];
+      v8 = availabilityError2;
+      if (availabilityError == availabilityError2)
       {
       }
 
       else
       {
-        v9 = [(LACEnvironmentMechanism *)self availabilityError];
-        v10 = [(LACEnvironmentMechanism *)v5 availabilityError];
-        v11 = [v9 isEqual:v10];
+        availabilityError3 = [(LACEnvironmentMechanism *)self availabilityError];
+        availabilityError4 = [(LACEnvironmentMechanism *)v5 availabilityError];
+        v11 = [availabilityError3 isEqual:availabilityError4];
 
         if (!v11)
         {
@@ -127,18 +127,18 @@
         }
       }
 
-      v13 = [(LACEnvironmentMechanism *)self localizedName];
-      v14 = [(LACEnvironmentMechanism *)v5 localizedName];
-      v15 = v14;
-      if (v13 == v14)
+      localizedName = [(LACEnvironmentMechanism *)self localizedName];
+      localizedName2 = [(LACEnvironmentMechanism *)v5 localizedName];
+      v15 = localizedName2;
+      if (localizedName == localizedName2)
       {
       }
 
       else
       {
-        v16 = [(LACEnvironmentMechanism *)self localizedName];
-        v17 = [(LACEnvironmentMechanism *)v5 localizedName];
-        v18 = [v16 isEqualToString:v17];
+        localizedName3 = [(LACEnvironmentMechanism *)self localizedName];
+        localizedName4 = [(LACEnvironmentMechanism *)v5 localizedName];
+        v18 = [localizedName3 isEqualToString:localizedName4];
 
         if (!v18)
         {
@@ -150,18 +150,18 @@ LABEL_17:
         }
       }
 
-      v19 = [(LACEnvironmentMechanism *)self iconSystemName];
-      v20 = [(LACEnvironmentMechanism *)v5 iconSystemName];
-      if (v19 == v20)
+      iconSystemName = [(LACEnvironmentMechanism *)self iconSystemName];
+      iconSystemName2 = [(LACEnvironmentMechanism *)v5 iconSystemName];
+      if (iconSystemName == iconSystemName2)
       {
         v12 = 1;
       }
 
       else
       {
-        v21 = [(LACEnvironmentMechanism *)self iconSystemName];
-        v22 = [(LACEnvironmentMechanism *)v5 iconSystemName];
-        v12 = [v21 isEqualToString:v22];
+        iconSystemName3 = [(LACEnvironmentMechanism *)self iconSystemName];
+        iconSystemName4 = [(LACEnvironmentMechanism *)v5 iconSystemName];
+        v12 = [iconSystemName3 isEqualToString:iconSystemName4];
       }
 
       goto LABEL_17;

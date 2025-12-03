@@ -1,30 +1,30 @@
 @interface CHFriendListCompetitionTableViewCell
-- (CHFriendListCompetitionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CHFriendListCompetitionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)_sectionWidth;
 - (void)layoutSubviews;
-- (void)setFriend:(id)a3;
+- (void)setFriend:(id)friend;
 @end
 
 @implementation CHFriendListCompetitionTableViewCell
 
-- (CHFriendListCompetitionTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHFriendListCompetitionTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v27.receiver = self;
   v27.super_class = CHFriendListCompetitionTableViewCell;
-  v4 = [(CHFriendListCompetitionTableViewCell *)&v27 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CHFriendListCompetitionTableViewCell *)&v27 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor systemBackgroundColor];
     [(CHFriendListCompetitionTableViewCell *)v4 setBackgroundColor:v5];
 
     v6 = sub_100046170();
-    v7 = [(CHFriendListCompetitionTableViewCell *)v4 contentView];
-    [v7 setBackgroundColor:v6];
+    contentView = [(CHFriendListCompetitionTableViewCell *)v4 contentView];
+    [contentView setBackgroundColor:v6];
 
     v8 = sub_10013A904();
-    v9 = [(CHFriendListCompetitionTableViewCell *)v4 contentView];
-    v10 = [v9 layer];
-    [v10 setCornerRadius:v8];
+    contentView2 = [(CHFriendListCompetitionTableViewCell *)v4 contentView];
+    layer = [contentView2 layer];
+    [layer setCornerRadius:v8];
 
     v11 = +[ASCompetitionScoreViewConfiguration companionFriendListConfiguration];
     configuration = v4->_configuration;
@@ -50,8 +50,8 @@
     scoreView = v4->_scoreView;
     v4->_scoreView = v18;
 
-    v20 = [(CHFriendListCompetitionTableViewCell *)v4 contentView];
-    [v20 addSubview:v4->_scoreView];
+    contentView3 = [(CHFriendListCompetitionTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_scoreView];
 
     v21 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     daysRemainingLabel = v4->_daysRemainingLabel;
@@ -66,8 +66,8 @@
     [(UILabel *)v4->_daysRemainingLabel setNumberOfLines:0];
     [(UILabel *)v4->_daysRemainingLabel setLineBreakMode:0];
     [(UILabel *)v4->_daysRemainingLabel setTextAlignment:2];
-    v25 = [(CHFriendListCompetitionTableViewCell *)v4 contentView];
-    [v25 addSubview:v4->_daysRemainingLabel];
+    contentView4 = [(CHFriendListCompetitionTableViewCell *)v4 contentView];
+    [contentView4 addSubview:v4->_daysRemainingLabel];
   }
 
   return v4;
@@ -82,21 +82,21 @@
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  v10 = [(CHFriendListCompetitionTableViewCell *)self contentView];
-  [v10 frame];
+  contentView = [(CHFriendListCompetitionTableViewCell *)self contentView];
+  [contentView frame];
   v12 = v5 + v11;
   v14 = v3 + v13;
   v16 = v15 - (v5 + v9);
   v18 = v17 - (v3 + v7);
-  v19 = [(CHFriendListCompetitionTableViewCell *)self contentView];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  contentView2 = [(CHFriendListCompetitionTableViewCell *)self contentView];
+  [contentView2 setFrame:{v12, v14, v16, v18}];
 
-  v20 = [(CHFriendListCompetitionTableViewCell *)self contentView];
-  [v20 bounds];
+  contentView3 = [(CHFriendListCompetitionTableViewCell *)self contentView];
+  [contentView3 bounds];
   Width = CGRectGetWidth(v29);
 
-  v22 = [(CHFriendListCompetitionTableViewCell *)self contentView];
-  [v22 bounds];
+  contentView4 = [(CHFriendListCompetitionTableViewCell *)self contentView];
+  [contentView4 bounds];
   Height = CGRectGetHeight(v30);
 
   [(ASCompetitionScoreView *)self->_scoreView setFrame:0.0, 0.0, Width, Height];
@@ -121,20 +121,20 @@
   return (v4 - v5 + -32.0 - v6) / 3.0;
 }
 
-- (void)setFriend:(id)a3
+- (void)setFriend:(id)friend
 {
   scoreView = self->_scoreView;
-  v5 = a3;
-  v6 = [v5 currentCompetition];
-  [(ASCompetitionScoreView *)scoreView setFriend:v5 competition:v6];
+  friendCopy = friend;
+  currentCompetition = [friendCopy currentCompetition];
+  [(ASCompetitionScoreView *)scoreView setFriend:friendCopy competition:currentCompetition];
 
-  v7 = [v5 as_competitionStageString];
-  [(UILabel *)self->_daysRemainingLabel setText:v7];
+  as_competitionStageString = [friendCopy as_competitionStageString];
+  [(UILabel *)self->_daysRemainingLabel setText:as_competitionStageString];
 
-  v10 = [v5 UUID];
+  uUID = [friendCopy UUID];
 
-  v8 = [v10 UUIDString];
-  v9 = [NSString stringWithFormat:@"friend_competition_row_%@", v8];
+  uUIDString = [uUID UUIDString];
+  v9 = [NSString stringWithFormat:@"friend_competition_row_%@", uUIDString];
   [(CHFriendListCompetitionTableViewCell *)self setAccessibilityIdentifier:v9];
 }
 

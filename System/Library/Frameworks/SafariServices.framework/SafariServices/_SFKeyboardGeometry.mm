@@ -1,20 +1,20 @@
 @interface _SFKeyboardGeometry
-+ (id)_keyboardGeometryForCurrentDeviceWithInterfaceOrientation:(int64_t)a3;
-+ (id)keyboardGeometryForInterfaceOrientation:(int64_t)a3;
++ (id)_keyboardGeometryForCurrentDeviceWithInterfaceOrientation:(int64_t)orientation;
++ (id)keyboardGeometryForInterfaceOrientation:(int64_t)orientation;
 - (CGSize)sizeWithBar;
 - (CGSize)sizeWithoutBar;
-- (id)_initWithFallbackSizeForOrientation:(int64_t)a3;
-- (id)_initWithSizeWithoutBar:(CGSize)a3 sizeWithBar:(CGSize)a4;
+- (id)_initWithFallbackSizeForOrientation:(int64_t)orientation;
+- (id)_initWithSizeWithoutBar:(CGSize)bar sizeWithBar:(CGSize)withBar;
 @end
 
 @implementation _SFKeyboardGeometry
 
-- (id)_initWithSizeWithoutBar:(CGSize)a3 sizeWithBar:(CGSize)a4
+- (id)_initWithSizeWithoutBar:(CGSize)bar sizeWithBar:(CGSize)withBar
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = withBar.height;
+  width = withBar.width;
+  v6 = bar.height;
+  v7 = bar.width;
   v12.receiver = self;
   v12.super_class = _SFKeyboardGeometry;
   v8 = [(_SFKeyboardGeometry *)&v12 init];
@@ -31,22 +31,22 @@
   return v9;
 }
 
-- (id)_initWithFallbackSizeForOrientation:(int64_t)a3
+- (id)_initWithFallbackSizeForOrientation:(int64_t)orientation
 {
-  [MEMORY[0x1E69DCBE0] defaultSizeForInterfaceOrientation:a3];
+  [MEMORY[0x1E69DCBE0] defaultSizeForInterfaceOrientation:orientation];
 
   return [(_SFKeyboardGeometry *)self _initWithSizeWithoutBar:v4 sizeWithBar:v5, v4, v5];
 }
 
-+ (id)_keyboardGeometryForCurrentDeviceWithInterfaceOrientation:(int64_t)a3
++ (id)_keyboardGeometryForCurrentDeviceWithInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
   v6 = MEMORY[0x1DA6DD1E0](@"en");
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (!v7 || ([v5 inputModeWithIdentifier:v7], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!firstObject || ([mEMORY[0x1E69DCBF0] inputModeWithIdentifier:firstObject], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v33 = [[a1 alloc] _initWithFallbackSizeForOrientation:a3];
+    v33 = [[self alloc] _initWithFallbackSizeForOrientation:orientation];
     goto LABEL_24;
   }
 
@@ -57,16 +57,16 @@
     v11 = v10;
     if (([(objc_class *)v10 isSubclassOfClass:objc_opt_class()]& 1) != 0)
     {
-      v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v12 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [SFKBScreenTraits traitsWithScreen:v12 orientation:a3];
+      v21 = [SFKBScreenTraits traitsWithScreen:mainScreen orientation:orientation];
       Height = v18;
       Width = v20;
-      if ((a3 - 1) >= 2)
+      if ((orientation - 1) >= 2)
       {
         v41.origin.x = v14;
         v41.origin.y = v16;
@@ -102,8 +102,8 @@
         [v21 setSf_isKeyboardMinorEdgeWidth:{v24 == fmin(v25, CGRectGetHeight(v45))}];
       }
 
-      v26 = [v9 identifier];
-      [(objc_class *)v11 keyboardSizeForInputMode:v26 screenTraits:v21 keyboardType:0];
+      identifier = [v9 identifier];
+      [(objc_class *)v11 keyboardSizeForInputMode:identifier screenTraits:v21 keyboardType:0];
       v28 = v27;
       v30 = v29;
 
@@ -124,7 +124,7 @@ LABEL_19:
           v37 = v36;
         }
 
-        v33 = [[a1 alloc] _initWithSizeWithoutBar:v28 sizeWithBar:{v30, v28, v37}];
+        v33 = [[self alloc] _initWithSizeWithoutBar:v28 sizeWithBar:{v30, v28, v37}];
 
         goto LABEL_23;
       }
@@ -159,7 +159,7 @@ LABEL_16:
     }
   }
 
-  v33 = [[a1 alloc] _initWithFallbackSizeForOrientation:a3];
+  v33 = [[self alloc] _initWithFallbackSizeForOrientation:orientation];
 LABEL_23:
 
 LABEL_24:
@@ -167,7 +167,7 @@ LABEL_24:
   return v33;
 }
 
-+ (id)keyboardGeometryForInterfaceOrientation:(int64_t)a3
++ (id)keyboardGeometryForInterfaceOrientation:(int64_t)orientation
 {
   v4 = keyboardGeometryForInterfaceOrientation__portraitKeyboardGeometry;
   v5 = keyboardGeometryForInterfaceOrientation__landscapeKeyboardGeometry;
@@ -183,11 +183,11 @@ LABEL_24:
 
   if (v6)
   {
-    v8 = [a1 _keyboardGeometryForCurrentDeviceWithInterfaceOrientation:1];
+    v8 = [self _keyboardGeometryForCurrentDeviceWithInterfaceOrientation:1];
     v9 = keyboardGeometryForInterfaceOrientation__portraitKeyboardGeometry;
     keyboardGeometryForInterfaceOrientation__portraitKeyboardGeometry = v8;
 
-    v10 = [a1 _keyboardGeometryForCurrentDeviceWithInterfaceOrientation:4];
+    v10 = [self _keyboardGeometryForCurrentDeviceWithInterfaceOrientation:4];
     v11 = keyboardGeometryForInterfaceOrientation__landscapeKeyboardGeometry;
     keyboardGeometryForInterfaceOrientation__landscapeKeyboardGeometry = v10;
 
@@ -195,7 +195,7 @@ LABEL_24:
     v5 = keyboardGeometryForInterfaceOrientation__landscapeKeyboardGeometry;
   }
 
-  if ((a3 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     v12 = v5;
   }

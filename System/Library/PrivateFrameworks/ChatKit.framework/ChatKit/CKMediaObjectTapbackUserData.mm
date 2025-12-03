@@ -1,25 +1,25 @@
 @interface CKMediaObjectTapbackUserData
 - (CKGradientReferenceView)gradientReferenceView;
 - (CKPhotoGridTapbackPileDelegate)photoGridTapbackPileDelegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CKMediaObjectTapbackUserData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(CKMediaObjectTapbackUserData *)self asset];
-  [v4 setAsset:v5];
+  asset = [(CKMediaObjectTapbackUserData *)self asset];
+  [v4 setAsset:asset];
 
-  v6 = [(CKMediaObjectTapbackUserData *)self gradientReferenceView];
-  [v4 setGradientReferenceView:v6];
+  gradientReferenceView = [(CKMediaObjectTapbackUserData *)self gradientReferenceView];
+  [v4 setGradientReferenceView:gradientReferenceView];
 
   [v4 setShouldAnimate:{-[CKMediaObjectTapbackUserData shouldAnimate](self, "shouldAnimate")}];
   [v4 setInvertTailDirection:{-[CKMediaObjectTapbackUserData invertTailDirection](self, "invertTailDirection")}];
   [v4 setDisplayedInGridView:{-[CKMediaObjectTapbackUserData isDisplayedInGridView](self, "isDisplayedInGridView")}];
-  v7 = [(CKMediaObjectTapbackUserData *)self photoGridTapbackPileDelegate];
-  [v4 setPhotoGridTapbackPileDelegate:v7];
+  photoGridTapbackPileDelegate = [(CKMediaObjectTapbackUserData *)self photoGridTapbackPileDelegate];
+  [v4 setPhotoGridTapbackPileDelegate:photoGridTapbackPileDelegate];
 
   return v4;
 }

@@ -6,9 +6,9 @@
 - (BOOL)useSignificantLocations;
 - (_TtC15WeatherSettings20WeatherSettingsUnits)units;
 - (void)refreshPredictedLocationsAuthorization;
-- (void)setResetIdentifier:(BOOL)a3;
-- (void)setShowHomeWorkLabels:(BOOL)a3;
-- (void)setUseSignificantLocations:(BOOL)a3;
+- (void)setResetIdentifier:(BOOL)identifier;
+- (void)setShowHomeWorkLabels:(BOOL)labels;
+- (void)setUseSignificantLocations:(BOOL)locations;
 @end
 
 @implementation WeatherSettingsState
@@ -29,49 +29,49 @@
 
 - (BOOL)resetIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_5DA8();
 
   return v3 & 1;
 }
 
-- (void)setResetIdentifier:(BOOL)a3
+- (void)setResetIdentifier:(BOOL)identifier
 {
-  v3 = self;
+  selfCopy = self;
   sub_5E54();
 }
 
 - (BOOL)showHomeWorkLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_5F14();
 
   return v3 & 1;
 }
 
-- (void)setShowHomeWorkLabels:(BOOL)a3
+- (void)setShowHomeWorkLabels:(BOOL)labels
 {
-  v3 = self;
+  selfCopy = self;
   sub_5FC0();
 }
 
 - (BOOL)useSignificantLocations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_6080();
 
   return v3 & 1;
 }
 
-- (void)setUseSignificantLocations:(BOOL)a3
+- (void)setUseSignificantLocations:(BOOL)locations
 {
-  v3 = self;
+  selfCopy = self;
   sub_612C();
 }
 
 - (BOOL)areSignificantLocationsFeaturesAvailableInWeather
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_61EC();
 
   return v3;
@@ -79,7 +79,7 @@
 
 - (void)refreshPredictedLocationsAuthorization
 {
-  v2 = self;
+  selfCopy = self;
   sub_6288();
 }
 

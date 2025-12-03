@@ -1,34 +1,34 @@
 @interface TIKeyboardCandidateResultSetCoder
-+ (Class)classFromCandidateType:(int)a3;
++ (Class)classFromCandidateType:(int)type;
 + (id)candidateTypeToClassNameMap;
-+ (id)decodeWithData:(id)a3;
-+ (id)encodeWithCandidateResultSet:(id)a3;
++ (id)decodeWithData:(id)data;
++ (id)encodeWithCandidateResultSet:(id)set;
 - (BOOL)isDecoding;
-- (TIKeyboardCandidateResultSetCoder)initWithData:(id)a3 mutableData:(id)a4;
+- (TIKeyboardCandidateResultSetCoder)initWithData:(id)data mutableData:(id)mutableData;
 - (const)bytes;
 - (double)decodeDouble;
 - (id)candidateResultSet;
-- (id)dataFromCandidateResultSet:(id)a3;
+- (id)dataFromCandidateResultSet:(id)set;
 - (id)decodeCandidate;
 - (id)decodePointerValueArray;
 - (id)decodeString;
 - (id)decodeStringArray;
-- (id)initForDecodingWithData:(id)a3;
+- (id)initForDecodingWithData:(id)data;
 - (id)initForEncoding;
 - (unint64_t)decodeUInt64;
 - (unsigned)decodeByte;
 - (unsigned)decodeShort;
 - (unsigned)decodeUInt32;
-- (void)encodeByte:(unsigned __int8)a3;
-- (void)encodeDouble:(double)a3;
-- (void)encodePointerValueArray:(id)a3;
-- (void)encodeShort:(unsigned __int16)a3;
-- (void)encodeString:(id)a3;
-- (void)encodeStringArray:(id)a3;
-- (void)encodeUInt32:(unsigned int)a3;
-- (void)encodeUInt64:(unint64_t)a3;
-- (void)readNumberOfBytes:(unint64_t)a3 into:(void *)a4;
-- (void)setOffset:(unint64_t)a3;
+- (void)encodeByte:(unsigned __int8)byte;
+- (void)encodeDouble:(double)double;
+- (void)encodePointerValueArray:(id)array;
+- (void)encodeShort:(unsigned __int16)short;
+- (void)encodeString:(id)string;
+- (void)encodeStringArray:(id)array;
+- (void)encodeUInt32:(unsigned int)int32;
+- (void)encodeUInt64:(unint64_t)int64;
+- (void)readNumberOfBytes:(unint64_t)bytes into:(void *)into;
+- (void)setOffset:(unint64_t)offset;
 @end
 
 @implementation TIKeyboardCandidateResultSetCoder
@@ -37,8 +37,8 @@
 {
   v90 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(TIKeyboardCandidateResultSet);
-  v4 = [(TIKeyboardCandidateResultSetCoder *)self data];
-  v5 = [v4 length];
+  data = [(TIKeyboardCandidateResultSetCoder *)self data];
+  v5 = [data length];
 
   if (v5 <= 0x38)
   {
@@ -56,56 +56,56 @@ LABEL_59:
     goto LABEL_70;
   }
 
-  v9 = [(TIKeyboardCandidateResultSetCoder *)self data];
-  v10 = [v9 bytes];
+  data2 = [(TIKeyboardCandidateResultSetCoder *)self data];
+  bytes = [data2 bytes];
 
-  if (*v10 == -1)
+  if (*bytes == -1)
   {
     v11 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v11 = *v10;
+    v11 = *bytes;
   }
 
   [(TIKeyboardCandidateResultSet *)v3 setInitialSelectedIndex:v11];
-  [(TIKeyboardCandidateResultSet *)v3 setGeneratedCandidateCount:*(v10 + 13)];
-  [(TIKeyboardCandidateResultSet *)v3 setBatchCandidateLocation:*(v10 + 17)];
-  if (*(v10 + 53) == -1)
+  [(TIKeyboardCandidateResultSet *)v3 setGeneratedCandidateCount:*(bytes + 13)];
+  [(TIKeyboardCandidateResultSet *)v3 setBatchCandidateLocation:*(bytes + 17)];
+  if (*(bytes + 53) == -1)
   {
     v12 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v12 = *(v10 + 53);
+    v12 = *(bytes + 53);
   }
 
   [(TIKeyboardCandidateResultSet *)v3 setSelectedDisambiguationCandidateIndex:v12];
-  v13 = *(v10 + 33);
+  v13 = *(bytes + 33);
   if (v13 == -1)
   {
     v17 = 0;
     goto LABEL_21;
   }
 
-  v14 = [(TIKeyboardCandidateResultSetCoder *)self data];
-  v15 = [v14 length];
+  data3 = [(TIKeyboardCandidateResultSetCoder *)self data];
+  v15 = [data3 length];
 
   if (v15 > v13)
   {
-    [(TIKeyboardCandidateResultSetCoder *)self setOffset:*(v10 + 33)];
-    v16 = *(v10 + 9);
+    [(TIKeyboardCandidateResultSetCoder *)self setOffset:*(bytes + 33)];
+    v16 = *(bytes + 9);
     v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:v16];
     if (v16)
     {
       do
       {
-        v18 = [(TIKeyboardCandidateResultSetCoder *)self decodeCandidate];
-        if (v18)
+        decodeCandidate = [(TIKeyboardCandidateResultSetCoder *)self decodeCandidate];
+        if (decodeCandidate)
         {
-          [v17 addObject:v18];
+          [v17 addObject:decodeCandidate];
         }
 
         --v16;
@@ -114,28 +114,28 @@ LABEL_59:
       while (v16);
     }
 
-    v19 = [v17 subarrayWithRange:{0, *(v10 + 5)}];
+    v19 = [v17 subarrayWithRange:{0, *(bytes + 5)}];
     [(TIKeyboardCandidateResultSet *)v3 setCandidates:v19];
 
-    if (*(v10 + 25))
+    if (*(bytes + 25))
     {
-      v20 = [v17 subarrayWithRange:*(v10 + 21)];
+      v20 = [v17 subarrayWithRange:*(bytes + 21)];
       [(TIKeyboardCandidateResultSet *)v3 setDisambiguationCandidates:v20];
     }
 
-    if (*(v10 + 4))
+    if (*(bytes + 4))
     {
-      v21 = [v17 lastObject];
-      [(TIKeyboardCandidateResultSet *)v3 setDefaultCandidate:v21];
+      lastObject = [v17 lastObject];
+      [(TIKeyboardCandidateResultSet *)v3 setDefaultCandidate:lastObject];
     }
 
 LABEL_21:
-    v22 = *(v10 + 29);
-    v77 = v10;
+    v22 = *(bytes + 29);
+    v77 = bytes;
     if (v22 != -1)
     {
-      v23 = [(TIKeyboardCandidateResultSetCoder *)self data];
-      v24 = [v23 length];
+      data4 = [(TIKeyboardCandidateResultSetCoder *)self data];
+      v24 = [data4 length];
 
       if (v24 <= v22)
       {
@@ -144,7 +144,7 @@ LABEL_21:
           goto LABEL_69;
         }
 
-        v66 = *(v10 + 29);
+        v66 = *(bytes + 29);
         *buf = 67109120;
         v89 = v66;
         v67 = MEMORY[0x1E69E9C10];
@@ -153,30 +153,30 @@ LABEL_21:
       }
 
       v73 = v3;
-      [(TIKeyboardCandidateResultSetCoder *)self setOffset:*(v10 + 29)];
-      v76 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:*(v10 + 37)];
-      v75 = [(TIKeyboardCandidateResultSetCoder *)self decodeStringArray];
-      if (*(v10 + 37))
+      [(TIKeyboardCandidateResultSetCoder *)self setOffset:*(bytes + 29)];
+      v76 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:*(bytes + 37)];
+      decodeStringArray = [(TIKeyboardCandidateResultSetCoder *)self decodeStringArray];
+      if (*(bytes + 37))
       {
         v25 = 0;
         do
         {
-          v26 = [(TIKeyboardCandidateResultSetCoder *)self decodeUInt32];
-          v27 = v26;
-          v28 = [MEMORY[0x1E695DF70] arrayWithCapacity:v26];
-          if (v26)
+          decodeUInt32 = [(TIKeyboardCandidateResultSetCoder *)self decodeUInt32];
+          v27 = decodeUInt32;
+          v28 = [MEMORY[0x1E695DF70] arrayWithCapacity:decodeUInt32];
+          if (decodeUInt32)
           {
             v29 = 0;
             do
             {
               v30 = objc_alloc_init(TIKeyboardCandidateGroup);
-              v31 = [(TIKeyboardCandidateResultSetCoder *)self decodeString];
-              [(TIKeyboardCandidateGroup *)v30 setTitle:v31];
+              decodeString = [(TIKeyboardCandidateResultSetCoder *)self decodeString];
+              [(TIKeyboardCandidateGroup *)v30 setTitle:decodeString];
 
-              v32 = [(TIKeyboardCandidateResultSetCoder *)self decodeUInt32];
-              if (v32)
+              decodeUInt322 = [(TIKeyboardCandidateResultSetCoder *)self decodeUInt32];
+              if (decodeUInt322)
               {
-                v33 = v32;
+                v33 = decodeUInt322;
                 do
                 {
                   v34 = [v17 objectAtIndex:{-[TIKeyboardCandidateResultSetCoder decodeShort](self, "decodeShort")}];
@@ -196,11 +196,11 @@ LABEL_21:
             while (v29 != v27);
           }
 
-          v35 = [v75 objectAtIndex:v25];
+          v35 = [decodeStringArray objectAtIndex:v25];
           [v76 setObject:v28 forKey:v35];
 
           ++v25;
-          v10 = v77;
+          bytes = v77;
         }
 
         while (v25 < *(v77 + 37));
@@ -210,11 +210,11 @@ LABEL_21:
       [(TIKeyboardCandidateResultSet *)v73 setSortMethodGroups:v76];
     }
 
-    v36 = *(v10 + 41);
+    v36 = *(bytes + 41);
     if (v36 != -1)
     {
-      v37 = [(TIKeyboardCandidateResultSetCoder *)self data];
-      v38 = [v37 length];
+      data5 = [(TIKeyboardCandidateResultSetCoder *)self data];
+      v38 = [data5 length];
 
       if (v38 <= v36)
       {
@@ -223,7 +223,7 @@ LABEL_21:
           goto LABEL_69;
         }
 
-        v69 = *(v10 + 41);
+        v69 = *(bytes + 41);
         *buf = 67109120;
         v89 = v69;
         v67 = MEMORY[0x1E69E9C10];
@@ -231,30 +231,30 @@ LABEL_21:
         goto LABEL_68;
       }
 
-      [(TIKeyboardCandidateResultSetCoder *)self setOffset:*(v10 + 41)];
-      v39 = [(TIKeyboardCandidateResultSetCoder *)self decodeStringArray];
-      [(TIKeyboardCandidateResultSet *)v3 setSortMethods:v39];
+      [(TIKeyboardCandidateResultSetCoder *)self setOffset:*(bytes + 41)];
+      decodeStringArray2 = [(TIKeyboardCandidateResultSetCoder *)self decodeStringArray];
+      [(TIKeyboardCandidateResultSet *)v3 setSortMethods:decodeStringArray2];
     }
 
-    v40 = *(v10 + 45);
+    v40 = *(bytes + 45);
     if (v40 == -1)
     {
       goto LABEL_46;
     }
 
-    v41 = [(TIKeyboardCandidateResultSetCoder *)self data];
-    v42 = [v41 length];
+    data6 = [(TIKeyboardCandidateResultSetCoder *)self data];
+    v42 = [data6 length];
 
     if (v42 > v40)
     {
-      [(TIKeyboardCandidateResultSetCoder *)self setOffset:*(v10 + 45)];
-      v43 = [(TIKeyboardCandidateResultSetCoder *)self decodeStringArray];
-      v44 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v43, "count")}];
+      [(TIKeyboardCandidateResultSetCoder *)self setOffset:*(bytes + 45)];
+      decodeStringArray3 = [(TIKeyboardCandidateResultSetCoder *)self decodeStringArray];
+      v44 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(decodeStringArray3, "count")}];
       v82 = 0u;
       v83 = 0u;
       v84 = 0u;
       v85 = 0u;
-      v45 = v43;
+      v45 = decodeStringArray3;
       v46 = [v45 countByEnumeratingWithState:&v82 objects:v87 count:16];
       if (v46)
       {
@@ -270,8 +270,8 @@ LABEL_21:
             }
 
             v50 = *(*(&v82 + 1) + 8 * i);
-            v51 = [(TIKeyboardCandidateResultSetCoder *)self decodeStringArray];
-            [v44 setObject:v51 forKey:v50];
+            decodeStringArray4 = [(TIKeyboardCandidateResultSetCoder *)self decodeStringArray];
+            [v44 setObject:decodeStringArray4 forKey:v50];
           }
 
           v47 = [v45 countByEnumeratingWithState:&v82 objects:v87 count:16];
@@ -281,9 +281,9 @@ LABEL_21:
       }
 
       [(TIKeyboardCandidateResultSet *)v3 setIndexTitles:v44];
-      v10 = v77;
+      bytes = v77;
 LABEL_46:
-      v52 = *(v10 + 49);
+      v52 = *(bytes + 49);
       if (v52 == -1)
       {
 LABEL_56:
@@ -292,20 +292,20 @@ LABEL_56:
         goto LABEL_71;
       }
 
-      v53 = [(TIKeyboardCandidateResultSetCoder *)self data];
-      v54 = [v53 length];
+      data7 = [(TIKeyboardCandidateResultSetCoder *)self data];
+      v54 = [data7 length];
 
       if (v54 > v52)
       {
         v74 = v3;
-        [(TIKeyboardCandidateResultSetCoder *)self setOffset:*(v10 + 49)];
-        v55 = [(TIKeyboardCandidateResultSetCoder *)self decodeStringArray];
-        v56 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v55, "count")}];
+        [(TIKeyboardCandidateResultSetCoder *)self setOffset:*(bytes + 49)];
+        decodeStringArray5 = [(TIKeyboardCandidateResultSetCoder *)self decodeStringArray];
+        v56 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(decodeStringArray5, "count")}];
         v78 = 0u;
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
-        v57 = v55;
+        v57 = decodeStringArray5;
         v58 = [v57 countByEnumeratingWithState:&v78 objects:v86 count:16];
         if (v58)
         {
@@ -339,7 +339,7 @@ LABEL_56:
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v71 = *(v10 + 49);
+        v71 = *(bytes + 49);
         *buf = 67109120;
         v89 = v71;
         v67 = MEMORY[0x1E69E9C10];
@@ -357,7 +357,7 @@ LABEL_69:
       goto LABEL_69;
     }
 
-    v70 = *(v10 + 45);
+    v70 = *(bytes + 45);
     *buf = 67109120;
     v89 = v70;
     v67 = MEMORY[0x1E69E9C10];
@@ -369,7 +369,7 @@ LABEL_68:
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v65 = *(v10 + 33);
+    v65 = *(bytes + 33);
     *buf = 67109120;
     v89 = v65;
     v6 = MEMORY[0x1E69E9C10];
@@ -385,79 +385,79 @@ LABEL_71:
   return v64;
 }
 
-- (id)dataFromCandidateResultSet:(id)a3
+- (id)dataFromCandidateResultSet:(id)set
 {
   v151 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 initialSelectedIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  setCopy = set;
+  if ([setCopy initialSelectedIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v96 = -1;
+    initialSelectedIndex = -1;
   }
 
   else
   {
-    v96 = [v4 initialSelectedIndex];
+    initialSelectedIndex = [setCopy initialSelectedIndex];
   }
 
-  v99 = [v4 defaultCandidate];
+  defaultCandidate = [setCopy defaultCandidate];
 
-  v5 = [v4 candidates];
-  v95 = [v5 count];
+  candidates = [setCopy candidates];
+  v95 = [candidates count];
 
-  v94 = [v4 generatedCandidateCount];
-  v93 = [v4 batchCandidateLocation];
-  v6 = [v4 disambiguationCandidates];
-  v98 = [v6 count];
+  generatedCandidateCount = [setCopy generatedCandidateCount];
+  batchCandidateLocation = [setCopy batchCandidateLocation];
+  disambiguationCandidates = [setCopy disambiguationCandidates];
+  v98 = [disambiguationCandidates count];
 
-  v7 = [v4 sortMethodGroups];
-  v97 = [v7 count];
+  sortMethodGroups = [setCopy sortMethodGroups];
+  v97 = [sortMethodGroups count];
 
-  if ([v4 selectedDisambiguationCandidateIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([setCopy selectedDisambiguationCandidateIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v92 = 0xFFFFFFFFLL;
+    selectedDisambiguationCandidateIndex = 0xFFFFFFFFLL;
   }
 
   else
   {
-    v92 = [v4 selectedDisambiguationCandidateIndex];
+    selectedDisambiguationCandidateIndex = [setCopy selectedDisambiguationCandidateIndex];
   }
 
-  v105 = v4;
+  v105 = setCopy;
   if (v97)
   {
     v8 = MEMORY[0x1E695DF70];
-    v9 = [v4 candidates];
-    v114 = [v8 arrayWithArray:v9];
+    candidates2 = [setCopy candidates];
+    v114 = [v8 arrayWithArray:candidates2];
 
-    v10 = [v4 candidates];
-    v11 = [v10 count];
+    candidates3 = [setCopy candidates];
+    v11 = [candidates3 count];
 
     v12 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:v11];
     v13 = 0x1E696A000uLL;
-    v14 = v4;
+    v14 = setCopy;
     if (v11)
     {
       for (i = 0; i != v11; ++i)
       {
-        v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{i, v92}];
-        v17 = [v14 candidates];
-        v18 = [v17 objectAtIndex:i];
+        v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{i, selectedDisambiguationCandidateIndex}];
+        candidates4 = [v14 candidates];
+        v18 = [candidates4 objectAtIndex:i];
         [v12 setObject:v16 forKey:v18];
 
         v13 = 0x1E696A000uLL;
       }
     }
 
-    v19 = [v14 sortMethodGroups];
-    v20 = [v19 allKeys];
+    sortMethodGroups2 = [v14 sortMethodGroups];
+    allKeys = [sortMethodGroups2 allKeys];
 
-    [(TIKeyboardCandidateResultSetCoder *)self encodeStringArray:v20];
+    [(TIKeyboardCandidateResultSetCoder *)self encodeStringArray:allKeys];
     v142 = 0u;
     v143 = 0u;
     v140 = 0u;
     v141 = 0u;
-    obj = v20;
-    v4 = v14;
+    obj = allKeys;
+    setCopy = v14;
     v102 = [obj countByEnumeratingWithState:&v140 objects:v150 count:16];
     if (v102)
     {
@@ -474,8 +474,8 @@ LABEL_71:
 
           v103 = v21;
           v22 = *(*(&v140 + 1) + 8 * v21);
-          v23 = [v4 sortMethodGroups];
-          v24 = [v23 objectForKey:v22];
+          sortMethodGroups3 = [setCopy sortMethodGroups];
+          v24 = [sortMethodGroups3 objectForKey:v22];
 
           -[TIKeyboardCandidateResultSetCoder encodeUInt32:](self, "encodeUInt32:", [v24 count]);
           v138 = 0u;
@@ -499,18 +499,18 @@ LABEL_71:
 
                 v112 = v25;
                 v26 = *(*(&v136 + 1) + 8 * v25);
-                v27 = [v26 title];
-                [(TIKeyboardCandidateResultSetCoder *)self encodeString:v27];
+                title = [v26 title];
+                [(TIKeyboardCandidateResultSetCoder *)self encodeString:title];
 
-                v28 = [v26 candidates];
-                -[TIKeyboardCandidateResultSetCoder encodeUInt32:](self, "encodeUInt32:", [v28 count]);
+                candidates5 = [v26 candidates];
+                -[TIKeyboardCandidateResultSetCoder encodeUInt32:](self, "encodeUInt32:", [candidates5 count]);
 
                 v134 = 0u;
                 v135 = 0u;
                 v132 = 0u;
                 v133 = 0u;
-                v29 = [v26 candidates];
-                v30 = [v29 countByEnumeratingWithState:&v132 objects:v148 count:16];
+                candidates6 = [v26 candidates];
+                v30 = [candidates6 countByEnumeratingWithState:&v132 objects:v148 count:16];
                 if (v30)
                 {
                   v31 = v30;
@@ -521,12 +521,12 @@ LABEL_71:
                     {
                       if (*v133 != v32)
                       {
-                        objc_enumerationMutation(v29);
+                        objc_enumerationMutation(candidates6);
                       }
 
                       v34 = *(*(&v132 + 1) + 8 * j);
                       v35 = [v12 objectForKey:v34];
-                      v36 = [v35 integerValue];
+                      integerValue = [v35 integerValue];
                       if (!v35)
                       {
                         [v114 addObject:v34];
@@ -534,13 +534,13 @@ LABEL_71:
                         [v12 setObject:v37 forKey:v34];
 
                         v13 = 0x1E696A000;
-                        v36 = v11++;
+                        integerValue = v11++;
                       }
 
-                      [(TIKeyboardCandidateResultSetCoder *)self encodeShort:v36];
+                      [(TIKeyboardCandidateResultSetCoder *)self encodeShort:integerValue];
                     }
 
-                    v31 = [v29 countByEnumeratingWithState:&v132 objects:v148 count:16];
+                    v31 = [candidates6 countByEnumeratingWithState:&v132 objects:v148 count:16];
                   }
 
                   while (v31);
@@ -557,7 +557,7 @@ LABEL_71:
           }
 
           v21 = v103 + 1;
-          v4 = v105;
+          setCopy = v105;
         }
 
         while (v103 + 1 != v102);
@@ -569,9 +569,9 @@ LABEL_71:
 
     if (v114)
     {
-      v38 = v114;
+      candidates7 = v114;
       v115 = 57;
-      v113 = v38;
+      v113 = candidates7;
       goto LABEL_39;
     }
 
@@ -584,12 +584,12 @@ LABEL_71:
   }
 
   v115 = v39;
-  v38 = [v4 candidates];
+  candidates7 = [setCopy candidates];
   v113 = 0;
 LABEL_39:
-  v111 = [v38 count];
-  v40 = v98 + [v38 count];
-  if (v99)
+  v111 = [candidates7 count];
+  v40 = v98 + [candidates7 count];
+  if (defaultCandidate)
   {
     ++v40;
   }
@@ -597,14 +597,14 @@ LABEL_39:
   v109 = v40;
   if (v40)
   {
-    v41 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-    v107 = [v41 length];
+    mutableData = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+    v107 = [mutableData length];
 
     v130 = 0u;
     v131 = 0u;
     v128 = 0u;
     v129 = 0u;
-    v42 = v38;
+    v42 = candidates7;
     v43 = [v42 countByEnumeratingWithState:&v128 objects:v147 count:16];
     if (v43)
     {
@@ -632,8 +632,8 @@ LABEL_39:
     v127 = 0u;
     v124 = 0u;
     v125 = 0u;
-    v47 = [v105 disambiguationCandidates];
-    v48 = [v47 countByEnumeratingWithState:&v124 objects:v146 count:16];
+    disambiguationCandidates2 = [v105 disambiguationCandidates];
+    v48 = [disambiguationCandidates2 countByEnumeratingWithState:&v124 objects:v146 count:16];
     if (v48)
     {
       v49 = v48;
@@ -644,25 +644,25 @@ LABEL_39:
         {
           if (*v125 != v50)
           {
-            objc_enumerationMutation(v47);
+            objc_enumerationMutation(disambiguationCandidates2);
           }
 
           [*(*(&v124 + 1) + 8 * m) encodeWithCandidateResultSetCoder:self];
         }
 
-        v49 = [v47 countByEnumeratingWithState:&v124 objects:v146 count:16];
+        v49 = [disambiguationCandidates2 countByEnumeratingWithState:&v124 objects:v146 count:16];
       }
 
       while (v49);
     }
 
-    v4 = v105;
-    v52 = [v105 defaultCandidate];
+    setCopy = v105;
+    defaultCandidate2 = [v105 defaultCandidate];
 
-    if (v52)
+    if (defaultCandidate2)
     {
-      v53 = [v105 defaultCandidate];
-      [v53 encodeWithCandidateResultSetCoder:self];
+      defaultCandidate3 = [v105 defaultCandidate];
+      [defaultCandidate3 encodeWithCandidateResultSetCoder:self];
     }
   }
 
@@ -671,17 +671,17 @@ LABEL_39:
     v107 = -1;
   }
 
-  v54 = [v4 sortMethods];
-  v55 = v4;
-  v56 = [v54 count];
+  sortMethods = [setCopy sortMethods];
+  v55 = setCopy;
+  v56 = [sortMethods count];
 
   if (v56)
   {
-    v57 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-    v104 = [v57 length];
+    mutableData2 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+    v104 = [mutableData2 length];
 
-    v58 = [v55 sortMethods];
-    [(TIKeyboardCandidateResultSetCoder *)self encodeStringArray:v58];
+    sortMethods2 = [v55 sortMethods];
+    [(TIKeyboardCandidateResultSetCoder *)self encodeStringArray:sortMethods2];
   }
 
   else
@@ -690,24 +690,24 @@ LABEL_39:
   }
 
   v59 = v55;
-  v60 = [v55 indexTitles];
-  v61 = [v60 count];
+  indexTitles = [v55 indexTitles];
+  v61 = [indexTitles count];
 
   if (v61)
   {
-    v62 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-    v63 = [v62 length];
+    mutableData3 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+    v63 = [mutableData3 length];
 
-    v64 = [v55 indexTitles];
-    v65 = [v64 allKeys];
-    [(TIKeyboardCandidateResultSetCoder *)self encodeStringArray:v65];
+    indexTitles2 = [v55 indexTitles];
+    allKeys2 = [indexTitles2 allKeys];
+    [(TIKeyboardCandidateResultSetCoder *)self encodeStringArray:allKeys2];
 
     v122 = 0u;
     v123 = 0u;
     v120 = 0u;
     v121 = 0u;
-    v66 = [v55 indexTitles];
-    v67 = [v66 countByEnumeratingWithState:&v120 objects:v145 count:16];
+    indexTitles3 = [v55 indexTitles];
+    v67 = [indexTitles3 countByEnumeratingWithState:&v120 objects:v145 count:16];
     if (v67)
     {
       v68 = v67;
@@ -718,17 +718,17 @@ LABEL_39:
         {
           if (*v121 != v69)
           {
-            objc_enumerationMutation(v66);
+            objc_enumerationMutation(indexTitles3);
           }
 
           v71 = *(*(&v120 + 1) + 8 * n);
-          v72 = [v59 indexTitles];
-          v73 = [v72 objectForKey:v71];
+          indexTitles4 = [v59 indexTitles];
+          v73 = [indexTitles4 objectForKey:v71];
 
           [(TIKeyboardCandidateResultSetCoder *)self encodeStringArray:v73];
         }
 
-        v68 = [v66 countByEnumeratingWithState:&v120 objects:v145 count:16];
+        v68 = [indexTitles3 countByEnumeratingWithState:&v120 objects:v145 count:16];
       }
 
       while (v68);
@@ -740,24 +740,24 @@ LABEL_39:
     v63 = -1;
   }
 
-  v74 = [v59 showExtensionCandidates];
-  v75 = [v74 count];
+  showExtensionCandidates = [v59 showExtensionCandidates];
+  v75 = [showExtensionCandidates count];
 
   if (v75)
   {
-    v76 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-    v77 = [v76 length];
+    mutableData4 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+    v77 = [mutableData4 length];
 
-    v78 = [v59 showExtensionCandidates];
-    v79 = [v78 allKeys];
-    [(TIKeyboardCandidateResultSetCoder *)self encodeStringArray:v79];
+    showExtensionCandidates2 = [v59 showExtensionCandidates];
+    allKeys3 = [showExtensionCandidates2 allKeys];
+    [(TIKeyboardCandidateResultSetCoder *)self encodeStringArray:allKeys3];
 
     v118 = 0u;
     v119 = 0u;
     v116 = 0u;
     v117 = 0u;
-    v80 = [v59 showExtensionCandidates];
-    v81 = [v80 countByEnumeratingWithState:&v116 objects:v144 count:16];
+    showExtensionCandidates3 = [v59 showExtensionCandidates];
+    v81 = [showExtensionCandidates3 countByEnumeratingWithState:&v116 objects:v144 count:16];
     if (v81)
     {
       v82 = v81;
@@ -768,17 +768,17 @@ LABEL_39:
         {
           if (*v117 != v83)
           {
-            objc_enumerationMutation(v80);
+            objc_enumerationMutation(showExtensionCandidates3);
           }
 
           v85 = *(*(&v116 + 1) + 8 * ii);
-          v86 = [v105 showExtensionCandidates];
-          v87 = [v86 objectForKey:v85];
+          showExtensionCandidates4 = [v105 showExtensionCandidates];
+          v87 = [showExtensionCandidates4 objectForKey:v85];
 
           -[TIKeyboardCandidateResultSetCoder encodeByte:](self, "encodeByte:", [v87 integerValue] != 0);
         }
 
-        v82 = [v80 countByEnumeratingWithState:&v116 objects:v144 count:16];
+        v82 = [showExtensionCandidates3 countByEnumeratingWithState:&v116 objects:v144 count:16];
       }
 
       while (v82);
@@ -792,40 +792,40 @@ LABEL_39:
     v77 = -1;
   }
 
-  v88 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-  v89 = [v88 bytes];
+  mutableData5 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+  bytes = [mutableData5 bytes];
 
-  *v89 = v96;
-  *(v89 + 4) = v99 != 0;
-  *(v89 + 5) = v95;
-  *(v89 + 9) = v109;
-  *(v89 + 13) = v94;
-  *(v89 + 17) = v93;
-  *(v89 + 21) = v111;
-  *(v89 + 25) = v98;
-  *(v89 + 29) = v115;
-  *(v89 + 33) = v107;
-  *(v89 + 37) = v97;
-  *(v89 + 41) = v104;
-  *(v89 + 45) = v63;
-  *(v89 + 49) = v77;
-  *(v89 + 53) = v92;
-  v90 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+  *bytes = initialSelectedIndex;
+  *(bytes + 4) = defaultCandidate != 0;
+  *(bytes + 5) = v95;
+  *(bytes + 9) = v109;
+  *(bytes + 13) = generatedCandidateCount;
+  *(bytes + 17) = batchCandidateLocation;
+  *(bytes + 21) = v111;
+  *(bytes + 25) = v98;
+  *(bytes + 29) = v115;
+  *(bytes + 33) = v107;
+  *(bytes + 37) = v97;
+  *(bytes + 41) = v104;
+  *(bytes + 45) = v63;
+  *(bytes + 49) = v77;
+  *(bytes + 53) = selectedDisambiguationCandidateIndex;
+  mutableData6 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
 
-  return v90;
+  return mutableData6;
 }
 
 - (id)decodePointerValueArray
 {
-  v3 = [(TIKeyboardCandidateResultSetCoder *)self decodeUInt32];
-  v4 = v3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:v3];
-  if (v3)
+  decodeUInt32 = [(TIKeyboardCandidateResultSetCoder *)self decodeUInt32];
+  v4 = decodeUInt32;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:decodeUInt32];
+  if (decodeUInt32)
   {
     do
     {
-      v6 = [(TIKeyboardCandidateResultSetCoder *)self decodeUInt64];
-      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v6];
+      decodeUInt64 = [(TIKeyboardCandidateResultSetCoder *)self decodeUInt64];
+      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:decodeUInt64];
       [v5 addObject:v7];
 
       --v4;
@@ -837,19 +837,19 @@ LABEL_39:
   return v5;
 }
 
-- (void)encodePointerValueArray:(id)a3
+- (void)encodePointerValueArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v15 = [v4 count];
-  v5 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-  [v5 appendBytes:&v15 length:4];
+  arrayCopy = array;
+  v15 = [arrayCopy count];
+  mutableData = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+  [mutableData appendBytes:&v15 length:4];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v7)
   {
@@ -878,15 +878,15 @@ LABEL_39:
 
 - (id)decodeStringArray
 {
-  v3 = [(TIKeyboardCandidateResultSetCoder *)self decodeUInt32];
-  v4 = v3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:v3];
-  if (v3)
+  decodeUInt32 = [(TIKeyboardCandidateResultSetCoder *)self decodeUInt32];
+  v4 = decodeUInt32;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:decodeUInt32];
+  if (decodeUInt32)
   {
     do
     {
-      v6 = [(TIKeyboardCandidateResultSetCoder *)self decodeString];
-      [v5 addObject:v6];
+      decodeString = [(TIKeyboardCandidateResultSetCoder *)self decodeString];
+      [v5 addObject:decodeString];
 
       --v4;
     }
@@ -897,19 +897,19 @@ LABEL_39:
   return v5;
 }
 
-- (void)encodeStringArray:(id)a3
+- (void)encodeStringArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v15 = [v4 count];
-  v5 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-  [v5 appendBytes:&v15 length:4];
+  arrayCopy = array;
+  v15 = [arrayCopy count];
+  mutableData = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+  [mutableData appendBytes:&v15 length:4];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v7)
   {
@@ -938,8 +938,8 @@ LABEL_39:
 
 - (id)decodeString
 {
-  v3 = [(TIKeyboardCandidateResultSetCoder *)self currentPosition];
-  [(TIKeyboardCandidateResultSetCoder *)self setOffset:strlen(v3) + [(TIKeyboardCandidateResultSetCoder *)self offset]+ 1];
+  currentPosition = [(TIKeyboardCandidateResultSetCoder *)self currentPosition];
+  [(TIKeyboardCandidateResultSetCoder *)self setOffset:strlen(currentPosition) + [(TIKeyboardCandidateResultSetCoder *)self offset]+ 1];
   if ([(TIKeyboardCandidateResultSetCoder *)self offsetHasPassedEndOfData])
   {
     v4 = &stru_1EF56D550;
@@ -947,19 +947,19 @@ LABEL_39:
 
   else
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:currentPosition];
   }
 
   return v4;
 }
 
-- (void)encodeString:(id)a3
+- (void)encodeString:(id)string
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  if (v6)
+  stringCopy = string;
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v7 = v6;
+    v7 = uTF8String;
   }
 
   else
@@ -967,8 +967,8 @@ LABEL_39:
     v7 = "";
   }
 
-  v8 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-  [v8 appendBytes:v7 length:strlen(v7) + 1];
+  mutableData = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+  [mutableData appendBytes:v7 length:strlen(v7) + 1];
 }
 
 - (unint64_t)decodeUInt64
@@ -978,11 +978,11 @@ LABEL_39:
   return v3;
 }
 
-- (void)encodeUInt64:(unint64_t)a3
+- (void)encodeUInt64:(unint64_t)int64
 {
-  v4 = a3;
-  v3 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-  [v3 appendBytes:&v4 length:8];
+  int64Copy = int64;
+  mutableData = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+  [mutableData appendBytes:&int64Copy length:8];
 }
 
 - (unsigned)decodeUInt32
@@ -992,11 +992,11 @@ LABEL_39:
   return v3;
 }
 
-- (void)encodeUInt32:(unsigned int)a3
+- (void)encodeUInt32:(unsigned int)int32
 {
-  v4 = a3;
-  v3 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-  [v3 appendBytes:&v4 length:4];
+  int32Copy = int32;
+  mutableData = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+  [mutableData appendBytes:&int32Copy length:4];
 }
 
 - (double)decodeDouble
@@ -1006,11 +1006,11 @@ LABEL_39:
   return v3;
 }
 
-- (void)encodeDouble:(double)a3
+- (void)encodeDouble:(double)double
 {
-  v4 = a3;
-  v3 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-  [v3 appendBytes:&v4 length:8];
+  doubleCopy = double;
+  mutableData = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+  [mutableData appendBytes:&doubleCopy length:8];
 }
 
 - (unsigned)decodeShort
@@ -1020,16 +1020,16 @@ LABEL_39:
   return v3;
 }
 
-- (void)encodeShort:(unsigned __int16)a3
+- (void)encodeShort:(unsigned __int16)short
 {
-  v4 = a3;
-  v3 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-  [v3 appendBytes:&v4 length:2];
+  shortCopy = short;
+  mutableData = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+  [mutableData appendBytes:&shortCopy length:2];
 }
 
-- (void)readNumberOfBytes:(unint64_t)a3 into:(void *)a4
+- (void)readNumberOfBytes:(unint64_t)bytes into:(void *)into
 {
-  if (a3 && a4)
+  if (bytes && into)
   {
     if ([(TIKeyboardCandidateResultSetCoder *)self offsetHasPassedEndOfData])
     {
@@ -1038,15 +1038,15 @@ LABEL_39:
 
     else
     {
-      v8 = [(TIKeyboardCandidateResultSetCoder *)self data];
-      v9 = [v8 length];
+      data = [(TIKeyboardCandidateResultSetCoder *)self data];
+      v9 = [data length];
       v7 = (v9 - [(TIKeyboardCandidateResultSetCoder *)self offset]);
     }
 
-    if (v7 >= a3)
+    if (v7 >= bytes)
     {
-      memcpy(a4, [(TIKeyboardCandidateResultSetCoder *)self currentPosition], a3);
-      v10 = [(TIKeyboardCandidateResultSetCoder *)self offset]+ a3;
+      memcpy(into, [(TIKeyboardCandidateResultSetCoder *)self currentPosition], bytes);
+      v10 = [(TIKeyboardCandidateResultSetCoder *)self offset]+ bytes;
 
       [(TIKeyboardCandidateResultSetCoder *)self setOffset:v10];
     }
@@ -1065,11 +1065,11 @@ LABEL_39:
   return v3;
 }
 
-- (void)encodeByte:(unsigned __int8)a3
+- (void)encodeByte:(unsigned __int8)byte
 {
-  v4 = a3;
-  v3 = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
-  [v3 appendBytes:&v4 length:1];
+  byteCopy = byte;
+  mutableData = [(TIKeyboardCandidateResultSetCoder *)self mutableData];
+  [mutableData appendBytes:&byteCopy length:1];
 }
 
 - (id)decodeCandidate
@@ -1085,38 +1085,38 @@ LABEL_39:
 
 - (const)bytes
 {
-  v2 = [(TIKeyboardCandidateResultSetCoder *)self data];
-  v3 = [v2 bytes];
+  data = [(TIKeyboardCandidateResultSetCoder *)self data];
+  bytes = [data bytes];
 
-  return v3;
+  return bytes;
 }
 
 - (BOOL)isDecoding
 {
-  v2 = [(TIKeyboardCandidateResultSetCoder *)self data];
-  v3 = v2 != 0;
+  data = [(TIKeyboardCandidateResultSetCoder *)self data];
+  v3 = data != 0;
 
   return v3;
 }
 
-- (void)setOffset:(unint64_t)a3
+- (void)setOffset:(unint64_t)offset
 {
   if ([(TIKeyboardCandidateResultSetCoder *)self isDecoding])
   {
-    v5 = [(TIKeyboardCandidateResultSetCoder *)self data];
-    v6 = [v5 length];
+    data = [(TIKeyboardCandidateResultSetCoder *)self data];
+    v6 = [data length];
 
     if (v6)
     {
-      v7 = [(TIKeyboardCandidateResultSetCoder *)self data];
-      v8 = [v7 length];
+      data2 = [(TIKeyboardCandidateResultSetCoder *)self data];
+      v8 = [data2 length];
 
-      if (v8 <= a3)
+      if (v8 <= offset)
       {
         [(TIKeyboardCandidateResultSetCoder *)self offsetHasPassedEndOfData];
         [(TIKeyboardCandidateResultSetCoder *)self setOffsetHasPassedEndOfData:1];
-        v9 = [(TIKeyboardCandidateResultSetCoder *)self data];
-        a3 = [v9 length] - 1;
+        data3 = [(TIKeyboardCandidateResultSetCoder *)self data];
+        offset = [data3 length] - 1;
       }
     }
 
@@ -1124,25 +1124,25 @@ LABEL_39:
     {
       [(TIKeyboardCandidateResultSetCoder *)self offsetHasPassedEndOfData];
       [(TIKeyboardCandidateResultSetCoder *)self setOffsetHasPassedEndOfData:1];
-      a3 = 0;
+      offset = 0;
     }
   }
 
-  self->_offset = a3;
+  self->_offset = offset;
 }
 
-- (TIKeyboardCandidateResultSetCoder)initWithData:(id)a3 mutableData:(id)a4
+- (TIKeyboardCandidateResultSetCoder)initWithData:(id)data mutableData:(id)mutableData
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  mutableDataCopy = mutableData;
   v12.receiver = self;
   v12.super_class = TIKeyboardCandidateResultSetCoder;
   v9 = [(TIKeyboardCandidateResultSetCoder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_mutableData, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_mutableData, mutableData);
     v10->_offset = 0;
     v10->_offsetHasPassedEndOfData = 0;
   }
@@ -1150,21 +1150,21 @@ LABEL_39:
   return v10;
 }
 
-- (id)initForDecodingWithData:(id)a3
+- (id)initForDecodingWithData:(id)data
 {
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    self = [(TIKeyboardCandidateResultSetCoder *)self initWithData:v4 mutableData:0];
-    v5 = self;
+    self = [(TIKeyboardCandidateResultSetCoder *)self initWithData:dataCopy mutableData:0];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
@@ -1177,28 +1177,28 @@ LABEL_39:
   return v4;
 }
 
-+ (id)decodeWithData:(id)a3
++ (id)decodeWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[TIKeyboardCandidateResultSetCoder alloc] initForDecodingWithData:v3];
+  dataCopy = data;
+  v4 = [[TIKeyboardCandidateResultSetCoder alloc] initForDecodingWithData:dataCopy];
 
-  v5 = [v4 candidateResultSet];
+  candidateResultSet = [v4 candidateResultSet];
+
+  return candidateResultSet;
+}
+
++ (id)encodeWithCandidateResultSet:(id)set
+{
+  setCopy = set;
+  initForEncoding = [[TIKeyboardCandidateResultSetCoder alloc] initForEncoding];
+  v5 = [initForEncoding dataFromCandidateResultSet:setCopy];
 
   return v5;
 }
 
-+ (id)encodeWithCandidateResultSet:(id)a3
++ (Class)classFromCandidateType:(int)type
 {
-  v3 = a3;
-  v4 = [[TIKeyboardCandidateResultSetCoder alloc] initForEncoding];
-  v5 = [v4 dataFromCandidateResultSet:v3];
-
-  return v5;
-}
-
-+ (Class)classFromCandidateType:(int)a3
-{
-  v3 = *&a3;
+  v3 = *&type;
   v5 = classFromCandidateType____candidateTypeToClassMap;
   if (!classFromCandidateType____candidateTypeToClassMap)
   {
@@ -1214,9 +1214,9 @@ LABEL_39:
 
   if (!v9)
   {
-    v10 = [a1 candidateTypeToClassNameMap];
+    candidateTypeToClassNameMap = [self candidateTypeToClassNameMap];
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
-    v12 = [v10 objectForKey:v11];
+    v12 = [candidateTypeToClassNameMap objectForKey:v11];
 
     if (v12)
     {

@@ -1,19 +1,19 @@
 @interface WLWiFiDeviceClient
 - (BOOL)_completionMapsAreEmpty;
-- (WLWiFiDeviceClient)initWithWiFiDeviceClientRef:(__WiFiDeviceClient *)a3;
+- (WLWiFiDeviceClient)initWithWiFiDeviceClientRef:(__WiFiDeviceClient *)ref;
 - (id)_hostedNetworks;
 - (id)_initWithoutWiFiDeviceClientRef;
-- (id)hostedNetworkMatchingSSID:(id)a3;
-- (int)_startNetworkWithRole:(int)a3 request:(id)a4 session:(id)a5;
-- (int)_stopNetwork:(id)a3 session:(id)a4;
+- (id)hostedNetworkMatchingSSID:(id)d;
+- (int)_startNetworkWithRole:(int)role request:(id)request session:(id)session;
+- (int)_stopNetwork:(id)network session:(id)session;
 - (void)dealloc;
 - (void)disassociate;
-- (void)stopNetwork:(id)a3 completion:(id)a4;
+- (void)stopNetwork:(id)network completion:(id)completion;
 @end
 
 @implementation WLWiFiDeviceClient
 
-- (WLWiFiDeviceClient)initWithWiFiDeviceClientRef:(__WiFiDeviceClient *)a3
+- (WLWiFiDeviceClient)initWithWiFiDeviceClientRef:(__WiFiDeviceClient *)ref
 {
   v7.receiver = self;
   v7.super_class = WLWiFiDeviceClient;
@@ -21,7 +21,7 @@
   v5 = v4;
   if (v4)
   {
-    [(WLWiFiDeviceClient *)v4 setRef:a3];
+    [(WLWiFiDeviceClient *)v4 setRef:ref];
     CFRetain([(WLWiFiDeviceClient *)v5 ref]);
   }
 
@@ -47,10 +47,10 @@
   [(WLWiFiDeviceClient *)&v3 dealloc];
 }
 
-- (id)hostedNetworkMatchingSSID:(id)a3
+- (id)hostedNetworkMatchingSSID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(WLWiFiDeviceClient *)self _hostedNetworks];
   v14 = 0u;
   v15 = 0u;
@@ -70,8 +70,8 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 ssid];
-        v11 = [v10 isEqualToString:v4];
+        ssid = [v9 ssid];
+        v11 = [ssid isEqualToString:dCopy];
 
         if (v11)
         {
@@ -114,51 +114,51 @@ LABEL_11:
   MEMORY[0x282187638](v2, 0);
 }
 
-- (int)_startNetworkWithRole:(int)a3 request:(id)a4 session:(id)a5
+- (int)_startNetworkWithRole:(int)role request:(id)request session:(id)session
 {
-  v7 = a5;
-  v8 = a4;
+  sessionCopy = session;
+  requestCopy = request;
   [(WLWiFiDeviceClient *)self ref];
   started = WiFiDeviceClientStartNetwork();
 
   return started;
 }
 
-- (void)stopNetwork:(id)a3 completion:(id)a4
+- (void)stopNetwork:(id)network completion:(id)completion
 {
-  v14 = a3;
-  v6 = a4;
+  networkCopy = network;
+  completionCopy = completion;
   v7 = _stopSessionToCompletionMap();
-  v8 = [MEMORY[0x277CCACA8] wl_uniqueIdentifier];
+  wl_uniqueIdentifier = [MEMORY[0x277CCACA8] wl_uniqueIdentifier];
   v9 = v7;
   objc_sync_enter(v9);
-  v10 = MEMORY[0x2743DF630](v6);
-  [v9 setObject:v10 forKeyedSubscript:v8];
+  v10 = MEMORY[0x2743DF630](completionCopy);
+  [v9 setObject:v10 forKeyedSubscript:wl_uniqueIdentifier];
 
   objc_sync_exit(v9);
-  v11 = [(WLWiFiDeviceClient *)self _stopNetwork:v14 session:v8];
+  v11 = [(WLWiFiDeviceClient *)self _stopNetwork:networkCopy session:wl_uniqueIdentifier];
   if (v11)
   {
     v13 = v11;
     _WLLog();
     v12 = v9;
     objc_sync_enter(v12);
-    [v12 setObject:0 forKeyedSubscript:{v8, v13}];
+    [v12 setObject:0 forKeyedSubscript:{wl_uniqueIdentifier, v13}];
     objc_sync_exit(v12);
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (int)_stopNetwork:(id)a3 session:(id)a4
+- (int)_stopNetwork:(id)network session:(id)session
 {
-  v6 = a4;
-  v7 = a3;
+  sessionCopy = session;
+  networkCopy = network;
   [(WLWiFiDeviceClient *)self ref];
-  [v7 ref];
+  [networkCopy ref];
 
-  LODWORD(v7) = WiFiDeviceClientStopNetwork();
-  return v7;
+  LODWORD(networkCopy) = WiFiDeviceClientStopNetwork();
+  return networkCopy;
 }
 
 - (BOOL)_completionMapsAreEmpty

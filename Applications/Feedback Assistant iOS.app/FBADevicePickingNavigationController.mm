@@ -1,25 +1,25 @@
 @interface FBADevicePickingNavigationController
-- (id)initForPlatform:(id)a3 completion:(id)a4;
-- (void)deviceChoicesController:(id)a3 didChooseDevices:(id)a4;
-- (void)deviceChoicesControllerDidCancelWithController:(id)a3;
-- (void)pairedDevicesDidChangeWithAddedDevice:(id)a3 removed:(id)a4;
+- (id)initForPlatform:(id)platform completion:(id)completion;
+- (void)deviceChoicesController:(id)controller didChooseDevices:(id)devices;
+- (void)deviceChoicesControllerDidCancelWithController:(id)controller;
+- (void)pairedDevicesDidChangeWithAddedDevice:(id)device removed:(id)removed;
 - (void)pairingViewDidCancel;
 - (void)pairingViewDidClose;
 @end
 
 @implementation FBADevicePickingNavigationController
 
-- (id)initForPlatform:(id)a3 completion:(id)a4
+- (id)initForPlatform:(id)platform completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  platformCopy = platform;
   v8 = +[UIStoryboard fbaMainStoryboard];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v11 = [v8 instantiateViewControllerWithIdentifier:v10];
 
   [v11 setContext:4];
-  [v11 setFilterPlatform:v7];
+  [v11 setFilterPlatform:platformCopy];
 
   [v11 setDelegate:self];
   v15.receiver = self;
@@ -28,22 +28,22 @@
   v13 = v12;
   if (v12)
   {
-    [(FBADevicePickingNavigationController *)v12 setCompletion:v6];
+    [(FBADevicePickingNavigationController *)v12 setCompletion:completionCopy];
   }
 
   return v13;
 }
 
-- (void)pairedDevicesDidChangeWithAddedDevice:(id)a3 removed:(id)a4
+- (void)pairedDevicesDidChangeWithAddedDevice:(id)device removed:(id)removed
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  deviceCopy = device;
+  removedCopy = removed;
+  if (deviceCopy)
   {
     v8 = +[FBALog ded];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v6 description];
+      v9 = [deviceCopy description];
       *buf = 138543362;
       v16 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "device picker paired new device [%{public}@]", buf, 0xCu);
@@ -54,7 +54,7 @@
     v13[2] = sub_1000324E8;
     v13[3] = &unk_1000DE4D0;
     v13[4] = self;
-    v14 = v6;
+    v14 = deviceCopy;
     [(FBADevicePickingNavigationController *)self dismissViewControllerAnimated:1 completion:v13];
   }
 
@@ -62,11 +62,11 @@
   {
     v10 = +[FBALog ded];
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (removedCopy)
     {
       if (v11)
       {
-        v12 = [v7 description];
+        v12 = [removedCopy description];
         *buf = 138543362;
         v16 = v12;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "removed device [%{public}@] while being asked to pair with new one, noop", buf, 0xCu);
@@ -107,13 +107,13 @@
   [(FBADevicePickingNavigationController *)self dismissViewControllerAnimated:1 completion:v4];
 }
 
-- (void)deviceChoicesController:(id)a3 didChooseDevices:(id)a4
+- (void)deviceChoicesController:(id)controller didChooseDevices:(id)devices
 {
-  v5 = a4;
+  devicesCopy = devices;
   v6 = +[FBALog ded];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 valueForKeyPath:@"publicLogDescription"];
+    v7 = [devicesCopy valueForKeyPath:@"publicLogDescription"];
     *buf = 138543362;
     v12 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "device picker chose devices [%{public}@]", buf, 0xCu);
@@ -124,12 +124,12 @@
   v9[2] = sub_100032888;
   v9[3] = &unk_1000DE4D0;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
+  v10 = devicesCopy;
+  v8 = devicesCopy;
   [(FBADevicePickingNavigationController *)self dismissViewControllerAnimated:1 completion:v9];
 }
 
-- (void)deviceChoicesControllerDidCancelWithController:(id)a3
+- (void)deviceChoicesControllerDidCancelWithController:(id)controller
 {
   v4 = +[FBALog ded];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

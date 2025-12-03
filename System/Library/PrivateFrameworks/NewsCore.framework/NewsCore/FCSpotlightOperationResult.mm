@@ -1,57 +1,57 @@
 @interface FCSpotlightOperationResult
-- (FCSpotlightOperationResult)initWithSpotlightGroupConfig:(id)a3 headline:(id)a4;
+- (FCSpotlightOperationResult)initWithSpotlightGroupConfig:(id)config headline:(id)headline;
 @end
 
 @implementation FCSpotlightOperationResult
 
-- (FCSpotlightOperationResult)initWithSpotlightGroupConfig:(id)a3 headline:(id)a4
+- (FCSpotlightOperationResult)initWithSpotlightGroupConfig:(id)config headline:(id)headline
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  headlineCopy = headline;
   v33.receiver = self;
   v33.super_class = FCSpotlightOperationResult;
   v8 = [(FCSpotlightOperationResult *)&v33 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_headline, a4);
-    v10 = [v6 spotlightEyebrowTitle];
-    v11 = [v10 copy];
+    objc_storeStrong(&v8->_headline, headline);
+    spotlightEyebrowTitle = [configCopy spotlightEyebrowTitle];
+    v11 = [spotlightEyebrowTitle copy];
     eyebrowTitle = v9->_eyebrowTitle;
     v9->_eyebrowTitle = v11;
 
-    v13 = [v6 groupName];
-    v14 = [v13 copy];
+    groupName = [configCopy groupName];
+    v14 = [groupName copy];
     titleText = v9->_titleText;
     v9->_titleText = v14;
 
-    v16 = [v6 groupSubtitle];
-    v17 = [v16 copy];
+    groupSubtitle = [configCopy groupSubtitle];
+    v17 = [groupSubtitle copy];
     subTitleText = v9->_subTitleText;
     v9->_subTitleText = v17;
 
-    v19 = [v6 spotlightCallToActionTitle];
-    v20 = [v19 copy];
+    spotlightCallToActionTitle = [configCopy spotlightCallToActionTitle];
+    v20 = [spotlightCallToActionTitle copy];
     ctaText = v9->_ctaText;
     v9->_ctaText = v20;
 
-    v22 = [v6 publishDate];
-    v23 = [v22 copy];
+    publishDate = [configCopy publishDate];
+    v23 = [publishDate copy];
     publishDate = v9->_publishDate;
     v9->_publishDate = v23;
 
-    v25 = [v6 groupTitleColor];
-    v26 = [v25 copy];
+    groupTitleColor = [configCopy groupTitleColor];
+    v26 = [groupTitleColor copy];
     titleColor = v9->_titleColor;
     v9->_titleColor = v26;
 
-    v28 = [v6 spotlightItemStyle];
+    spotlightItemStyle = [configCopy spotlightItemStyle];
     spotlightItemStyle = v9->_spotlightItemStyle;
-    v9->_spotlightItemStyle = v28;
+    v9->_spotlightItemStyle = spotlightItemStyle;
 
-    v30 = [v6 spotlightItemDarkStyle];
+    spotlightItemDarkStyle = [configCopy spotlightItemDarkStyle];
     spotlightItemDarkStyle = v9->_spotlightItemDarkStyle;
-    v9->_spotlightItemDarkStyle = v30;
+    v9->_spotlightItemDarkStyle = spotlightItemDarkStyle;
   }
 
   return v9;

@@ -1,7 +1,7 @@
 @interface AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl
 - (AVAudioSession)targetAudioSession;
 - (AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl)init;
-- (AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl)initWithFigRouteDiscovererCreator:(id)a3;
+- (AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl)initWithFigRouteDiscovererCreator:(id)creator;
 - (AVOutputDeviceDiscoverySessionAvailableOutputDevices)availableOutputDevicesObject;
 - (BOOL)devicePresenceDetected;
 - (uint64_t)_serverDied;
@@ -11,11 +11,11 @@
 - (void)_routePresentChanged;
 - (void)_serverDied;
 - (void)dealloc;
-- (void)outputDeviceDiscoverySessionBluetoothOnlyDiscoveryDidChange:(id)a3;
-- (void)outputDeviceDiscoverySessionCachedDiscoveryDidChange:(id)a3;
-- (void)outputDeviceDiscoverySessionDidChangeDiscoveryMode:(id)a3 forClientIdentifiers:(id)a4;
-- (void)outputDeviceDiscoverySessionFastDiscoveryDidChange:(id)a3;
-- (void)setTargetAudioSession:(id)a3;
+- (void)outputDeviceDiscoverySessionBluetoothOnlyDiscoveryDidChange:(id)change;
+- (void)outputDeviceDiscoverySessionCachedDiscoveryDidChange:(id)change;
+- (void)outputDeviceDiscoverySessionDidChangeDiscoveryMode:(id)mode forClientIdentifiers:(id)identifiers;
+- (void)outputDeviceDiscoverySessionFastDiscoveryDidChange:(id)change;
+- (void)setTargetAudioSession:(id)session;
 @end
 
 @implementation AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl
@@ -98,16 +98,16 @@
 
 - (void)_availableRoutesChanged
 {
-  v3 = [(AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl *)self parentOutputDeviceDiscoverySession];
+  parentOutputDeviceDiscoverySession = [(AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl *)self parentOutputDeviceDiscoverySession];
 
-  [(AVOutputDeviceDiscoverySession *)v3 outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:self];
+  [(AVOutputDeviceDiscoverySession *)parentOutputDeviceDiscoverySession outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:self];
 }
 
 - (void)_routePresentChanged
 {
-  v3 = [(AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl *)self parentOutputDeviceDiscoverySession];
+  parentOutputDeviceDiscoverySession = [(AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl *)self parentOutputDeviceDiscoverySession];
 
-  [(AVOutputDeviceDiscoverySession *)v3 outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:self];
+  [(AVOutputDeviceDiscoverySession *)parentOutputDeviceDiscoverySession outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:self];
 }
 
 - (AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl)init
@@ -119,11 +119,11 @@
   objc_exception_throw(v12);
 }
 
-- (void)setTargetAudioSession:(id)a3
+- (void)setTargetAudioSession:(id)session
 {
-  if (a3)
+  if (session)
   {
-    [a3 opaqueSessionID];
+    [session opaqueSessionID];
   }
 
   v4 = *MEMORY[0x1E695E480];
@@ -146,9 +146,9 @@
 
 - (void)_availableGroupsChanged
 {
-  v3 = [(AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl *)self parentOutputDeviceDiscoverySession];
+  parentOutputDeviceDiscoverySession = [(AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl *)self parentOutputDeviceDiscoverySession];
 
-  [(AVOutputDeviceDiscoverySession *)v3 outputDeviceDiscoverySessionImplDidChangeAvailableOutputDeviceGroups:self];
+  [(AVOutputDeviceDiscoverySession *)parentOutputDeviceDiscoverySession outputDeviceDiscoverySessionImplDidChangeAvailableOutputDeviceGroups:self];
 }
 
 - (BOOL)devicePresenceDetected
@@ -187,9 +187,9 @@ LABEL_4:
 
 - (void)_endpointDescriptorChanged
 {
-  v3 = [(AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl *)self parentOutputDeviceDiscoverySession];
+  parentOutputDeviceDiscoverySession = [(AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl *)self parentOutputDeviceDiscoverySession];
 
-  [(AVOutputDeviceDiscoverySession *)v3 outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:self];
+  [(AVOutputDeviceDiscoverySession *)parentOutputDeviceDiscoverySession outputDeviceDiscoverySessionImplDidChangeAvailableOutputDevices:self];
 }
 
 - (void)_serverDied
@@ -206,10 +206,10 @@ LABEL_4:
   }
 }
 
-- (void)outputDeviceDiscoverySessionBluetoothOnlyDiscoveryDidChange:(id)a3
+- (void)outputDeviceDiscoverySessionBluetoothOnlyDiscoveryDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 onlyDiscoversBluetoothDevices];
+  onlyDiscoversBluetoothDevices = [change onlyDiscoversBluetoothDevices];
   if (dword_1ED6F6BC8)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -218,7 +218,7 @@ LABEL_4:
   }
 
   discoverer = self->_discoverer;
-  if (v4)
+  if (onlyDiscoversBluetoothDevices)
   {
     v7 = MEMORY[0x1E695E4D0];
   }
@@ -237,10 +237,10 @@ LABEL_4:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)outputDeviceDiscoverySessionCachedDiscoveryDidChange:(id)a3
+- (void)outputDeviceDiscoverySessionCachedDiscoveryDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 cachedDiscoveryEnabled];
+  cachedDiscoveryEnabled = [change cachedDiscoveryEnabled];
   if (dword_1ED6F6BC8)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -249,7 +249,7 @@ LABEL_4:
   }
 
   discoverer = self->_discoverer;
-  if (v4)
+  if (cachedDiscoveryEnabled)
   {
     v7 = MEMORY[0x1E695E4D0];
   }
@@ -268,10 +268,10 @@ LABEL_4:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)outputDeviceDiscoverySessionFastDiscoveryDidChange:(id)a3
+- (void)outputDeviceDiscoverySessionFastDiscoveryDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 fastDiscoveryEnabled];
+  fastDiscoveryEnabled = [change fastDiscoveryEnabled];
   if (dword_1ED6F6BC8)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -280,7 +280,7 @@ LABEL_4:
   }
 
   discoverer = self->_discoverer;
-  if (v4)
+  if (fastDiscoveryEnabled)
   {
     v7 = MEMORY[0x1E695E4D0];
   }
@@ -299,21 +299,21 @@ LABEL_4:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)outputDeviceDiscoverySessionDidChangeDiscoveryMode:(id)a3 forClientIdentifiers:(id)a4
+- (void)outputDeviceDiscoverySessionDidChangeDiscoveryMode:(id)mode forClientIdentifiers:(id)identifiers
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = [a3 discoveryMode];
+  discoveryMode = [mode discoveryMode];
   v7 = 0;
-  if (v6 > 1)
+  if (discoveryMode > 1)
   {
-    if (v6 == 2)
+    if (discoveryMode == 2)
     {
       v8 = MEMORY[0x1E69AF2D0];
     }
 
     else
     {
-      if (v6 != 3)
+      if (discoveryMode != 3)
       {
         goto LABEL_11;
       }
@@ -322,9 +322,9 @@ LABEL_4:
     }
   }
 
-  else if (v6)
+  else if (discoveryMode)
   {
-    if (v6 != 1)
+    if (discoveryMode != 1)
     {
       goto LABEL_11;
     }
@@ -360,7 +360,7 @@ LABEL_11:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = [a4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  v13 = [identifiers countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -371,13 +371,13 @@ LABEL_11:
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(identifiers);
         }
 
         CFDictionarySetValue(Mutable, *(*(&v20 + 1) + 8 * i), v7);
       }
 
-      v14 = [a4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v14 = [identifiers countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v14);
@@ -398,13 +398,13 @@ LABEL_11:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl)initWithFigRouteDiscovererCreator:(id)a3
+- (AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl)initWithFigRouteDiscovererCreator:(id)creator
 {
   [AVRoutingCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   v25.receiver = self;
   v25.super_class = AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl;
   v5 = [(AVFigRouteDiscovererOutputDeviceDiscoverySessionImpl *)&v25 init];
-  v6 = [a3 copy];
+  v6 = [creator copy];
   *(v5 + 1) = v6;
   if (!v6)
   {

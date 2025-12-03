@@ -1,15 +1,15 @@
 @interface HUUtilityOnboardingQuickLookupViewController
 - (Class)onboardingFlowClass;
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUUtilityOnboardingQuickLookupViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (HUUtilityOnboardingQuickLookupViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (HUUtilityOnboardingQuickLookupViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (HUUtilityOnboardingQuickLookupViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (id)hu_preloadContent;
 - (void)editAccountDetailsButtonTapped;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)verifyAddressAndSubmitTAF;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUUtilityOnboardingQuickLookupViewController
@@ -22,56 +22,56 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR___HUUtilityOnboardingQuickLookupViewController_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFE2038();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for UtilityOnboardingQuickLookup();
   v4 = v7.receiver;
-  [(HUUtilityOnboardingQuickLookupViewController *)&v7 viewWillAppear:v3];
+  [(HUUtilityOnboardingQuickLookupViewController *)&v7 viewWillAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR___HUUtilityOnboardingQuickLookupViewController_context];
-  v6 = [v4 headerView];
-  sub_20CEE70AC(v6);
+  headerView = [v4 headerView];
+  sub_20CEE70AC(headerView);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20CFE2B34(a3);
+  selfCopy = self;
+  sub_20CFE2B34(disappear);
 }
 
 - (void)editAccountDetailsButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFE2E6C();
 }
 
 - (void)verifyAddressAndSubmitTAF
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CFE319C();
 }
 
 - (id)hu_preloadContent
 {
-  v2 = [objc_opt_self() futureWithNoResult];
+  futureWithNoResult = [objc_opt_self() futureWithNoResult];
 
-  return v2;
+  return futureWithNoResult;
 }
 
 - (Class)onboardingFlowClass
@@ -81,14 +81,14 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (HUUtilityOnboardingQuickLookupViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (HUUtilityOnboardingQuickLookupViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (HUUtilityOnboardingQuickLookupViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (HUUtilityOnboardingQuickLookupViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

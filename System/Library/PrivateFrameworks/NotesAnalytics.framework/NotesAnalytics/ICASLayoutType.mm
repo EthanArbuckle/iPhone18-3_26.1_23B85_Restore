@@ -1,33 +1,33 @@
 @interface ICASLayoutType
-- (ICASLayoutType)initWithLayoutType:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASLayoutType)initWithLayoutType:(int64_t)type;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASLayoutType
 
-- (ICASLayoutType)initWithLayoutType:(int64_t)a3
+- (ICASLayoutType)initWithLayoutType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICASLayoutType;
   result = [(ICASLayoutType *)&v5 init];
   if (result)
   {
-    result->_layoutType = a3;
+    result->_layoutType = type;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASLayoutType *)self layoutType];
+  layoutType = [(ICASLayoutType *)self layoutType];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (layoutType == 1)
   {
     v4 = @"list";
   }
 
-  if (v3 == 2)
+  if (layoutType == 2)
   {
     return @"grid";
   }

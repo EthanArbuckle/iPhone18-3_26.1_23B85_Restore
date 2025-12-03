@@ -1,16 +1,16 @@
 @interface FedStatsPluginIHAConsentChecker
-- (id)checkConsentForClientIdentifier:(id)a3 error:(id *)a4;
+- (id)checkConsentForClientIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation FedStatsPluginIHAConsentChecker
 
-- (id)checkConsentForClientIdentifier:(id)a3 error:(id *)a4
+- (id)checkConsentForClientIdentifier:(id)identifier error:(id *)error
 {
-  if ([&unk_285E17AD0 containsObject:{a3, a4}])
+  if ([&unk_285E17AD0 containsObject:{identifier, error}])
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [MEMORY[0x277D262A0] sharedConnection];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "isHealthDataSubmissionAllowed")}];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v6 = [v4 numberWithBool:{objc_msgSend(mEMORY[0x277D262A0], "isHealthDataSubmissionAllowed")}];
   }
 
   else

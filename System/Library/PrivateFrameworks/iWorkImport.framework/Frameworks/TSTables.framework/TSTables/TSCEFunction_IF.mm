@@ -1,33 +1,33 @@
 @interface TSCEFunction_IF
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_IF
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   if (objc_msgSend_isThunk(v8, v9, v10, v11, v12))
   {
-    v16 = objc_msgSend_unwrapThunk_(a3, v13, v8, v14, v15);
+    v16 = objc_msgSend_unwrapThunk_(context, v13, v8, v14, v15);
 
     v8 = v16;
   }
 
   v54 = 0;
-  v17 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v8, v13, a3, a4, 0, &v54);
+  v17 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v8, v13, context, spec, 0, &v54);
   v22 = v54;
   if (v22)
   {
     v23 = 0;
-    v24 = objc_msgSend_raiseErrorOrConvert_(a3, v18, v22, v20, v21);
+    v24 = objc_msgSend_raiseErrorOrConvert_(context, v18, v22, v20, v21);
 LABEL_16:
     v38 = v24;
     goto LABEL_17;
   }
 
-  v25 = *a5;
-  v26 = *(a5 + 1) - *a5;
+  v25 = *arguments;
+  v26 = *(arguments + 1) - *arguments;
   if (v17)
   {
     if (v26 <= 8)
@@ -71,9 +71,9 @@ LABEL_15:
   }
 
 LABEL_20:
-  v40 = objc_msgSend_functionName(a4, v18, v19, v20, v21);
-  v43 = objc_msgSend_wrongNumberOfArgumentsErrorForFunctionName_provided_(TSCEError, v41, v40, ((*(a5 + 1) - *a5) >> 3), v42);
-  v38 = objc_msgSend_raiseErrorOrConvert_(a3, v44, v43, v45, v46);
+  v40 = objc_msgSend_functionName(spec, v18, v19, v20, v21);
+  v43 = objc_msgSend_wrongNumberOfArgumentsErrorForFunctionName_provided_(TSCEError, v41, v40, ((*(arguments + 1) - *arguments) >> 3), v42);
+  v38 = objc_msgSend_raiseErrorOrConvert_(context, v44, v43, v45, v46);
 
   v23 = 0;
 LABEL_17:

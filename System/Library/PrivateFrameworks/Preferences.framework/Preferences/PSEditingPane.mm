@@ -1,12 +1,12 @@
 @interface PSEditingPane
 + (id)defaultBackgroundColor;
 - (BOOL)shouldInsetContent;
-- (PSEditingPane)initWithFrame:(CGRect)a3;
+- (PSEditingPane)initWithFrame:(CGRect)frame;
 - (UIViewController)viewController;
 - (id)scrollViewToBeInsetted;
 - (void)insetContent;
-- (void)layoutInsetContent:(CGRect)a3;
-- (void)setPreferenceSpecifier:(id)a3;
+- (void)layoutInsetContent:(CGRect)content;
+- (void)setPreferenceSpecifier:(id)specifier;
 @end
 
 @implementation PSEditingPane
@@ -14,27 +14,27 @@
 + (id)defaultBackgroundColor
 {
   v2 = +[PSListController appearance];
-  v3 = [v2 backgroundColor];
+  backgroundColor = [v2 backgroundColor];
 
-  if (v3)
+  if (backgroundColor)
   {
     v4 = +[PSListController appearance];
-    v5 = [v4 backgroundColor];
+    backgroundColor2 = [v4 backgroundColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    backgroundColor2 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
 
-  return v5;
+  return backgroundColor2;
 }
 
-- (PSEditingPane)initWithFrame:(CGRect)a3
+- (PSEditingPane)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PSEditingPane;
-  v3 = [(PSEditingPane *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PSEditingPane *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -44,21 +44,21 @@
   return v4;
 }
 
-- (void)setPreferenceSpecifier:(id)a3
+- (void)setPreferenceSpecifier:(id)specifier
 {
-  v5 = a3;
-  if (self->_specifier != v5)
+  specifierCopy = specifier;
+  if (self->_specifier != specifierCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_specifier, a3);
-    v5 = v6;
+    v6 = specifierCopy;
+    objc_storeStrong(&self->_specifier, specifier);
+    specifierCopy = v6;
   }
 }
 
 - (BOOL)shouldInsetContent
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v2 sf_isiPad])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice sf_isiPad])
   {
     v3 = PSIsRunningInAssistant() ^ 1;
   }
@@ -73,29 +73,29 @@
 
 - (void)insetContent
 {
-  v3 = [(PSEditingPane *)self scrollViewToBeInsetted];
-  if (v3)
+  scrollViewToBeInsetted = [(PSEditingPane *)self scrollViewToBeInsetted];
+  if (scrollViewToBeInsetted)
   {
-    v5 = v3;
-    [v3 setScrollIndicatorInsets:{0.0, 0.0, 0.0, -PSTableViewSideInset()}];
+    v5 = scrollViewToBeInsetted;
+    [scrollViewToBeInsetted setScrollIndicatorInsets:{0.0, 0.0, 0.0, -PSTableViewSideInset()}];
     [v5 setClipsToBounds:0];
-    v4 = [MEMORY[0x1E69DC888] groupTableViewBackgroundColor];
-    [(PSEditingPane *)self setBackgroundColor:v4];
+    groupTableViewBackgroundColor = [MEMORY[0x1E69DC888] groupTableViewBackgroundColor];
+    [(PSEditingPane *)self setBackgroundColor:groupTableViewBackgroundColor];
 
-    v3 = v5;
+    scrollViewToBeInsetted = v5;
   }
 }
 
-- (void)layoutInsetContent:(CGRect)a3
+- (void)layoutInsetContent:(CGRect)content
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(PSEditingPane *)self scrollViewToBeInsetted];
-  if (v7)
+  height = content.size.height;
+  width = content.size.width;
+  y = content.origin.y;
+  x = content.origin.x;
+  scrollViewToBeInsetted = [(PSEditingPane *)self scrollViewToBeInsetted];
+  if (scrollViewToBeInsetted)
   {
-    v9 = v7;
+    v9 = scrollViewToBeInsetted;
     v8 = PSTableViewSideInset();
     v11.origin.x = x;
     v11.origin.y = y;
@@ -103,7 +103,7 @@
     v11.size.height = height;
     v12 = CGRectInset(v11, v8, 0.0);
     [v9 setFrame:{v12.origin.x, v12.origin.y, v12.size.width, v12.size.height}];
-    v7 = v9;
+    scrollViewToBeInsetted = v9;
   }
 }
 

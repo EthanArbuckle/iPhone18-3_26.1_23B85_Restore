@@ -1,44 +1,44 @@
 @interface PKPassContent
 - (NSArray)primaryFields;
-- (PKPassContent)initWithCoder:(id)a3;
-- (PKPassContent)initWithDictionary:(id)a3 bundle:(id)a4 privateBundle:(id)a5 passType:(unint64_t)a6;
-- (id)currencyAmountForSemanticKey:(id)a3;
-- (id)dateForSemanticKey:(id)a3;
-- (id)dictionariesForSemanticKey:(id)a3;
-- (id)eventDateInfoForSemanticKey:(id)a3;
-- (id)locationForSemanticKey:(id)a3;
-- (id)numberForSemanticKey:(id)a3;
-- (id)personNameComponentsForSemanticKey:(id)a3;
-- (id)stringForSemanticKey:(id)a3;
-- (id)stringsForSemanticKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKPassContent)initWithCoder:(id)coder;
+- (PKPassContent)initWithDictionary:(id)dictionary bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type;
+- (id)currencyAmountForSemanticKey:(id)key;
+- (id)dateForSemanticKey:(id)key;
+- (id)dictionariesForSemanticKey:(id)key;
+- (id)eventDateInfoForSemanticKey:(id)key;
+- (id)locationForSemanticKey:(id)key;
+- (id)numberForSemanticKey:(id)key;
+- (id)personNameComponentsForSemanticKey:(id)key;
+- (id)stringForSemanticKey:(id)key;
+- (id)stringsForSemanticKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
 - (void)flushFormattedFieldValues;
 @end
 
 @implementation PKPassContent
 
-- (PKPassContent)initWithDictionary:(id)a3 bundle:(id)a4 privateBundle:(id)a5 passType:(unint64_t)a6
+- (PKPassContent)initWithDictionary:(id)dictionary bundle:(id)bundle privateBundle:(id)privateBundle passType:(unint64_t)type
 {
   v217 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
+  privateBundleCopy = privateBundle;
   v202.receiver = self;
   v202.super_class = PKPassContent;
-  v13 = [(PKContent *)&v202 initWithDictionary:v10 bundle:v11 privateBundle:v12 passType:a6];
+  v13 = [(PKContent *)&v202 initWithDictionary:dictionaryCopy bundle:bundleCopy privateBundle:privateBundleCopy passType:type];
   if (!v13)
   {
     goto LABEL_86;
   }
 
-  v14 = [v11 bundleURL];
-  v15 = PKPrivateObjectDictionaryWithError(v14, 0);
+  bundleURL = [bundleCopy bundleURL];
+  v15 = PKPrivateObjectDictionaryWithError(bundleURL, 0);
 
-  v16 = [(PKContent *)v13 barcodes];
-  v17 = v16;
-  if (v16)
+  barcodes = [(PKContent *)v13 barcodes];
+  v17 = barcodes;
+  if (barcodes)
   {
-    v18 = v16;
+    v18 = barcodes;
   }
 
   else
@@ -46,13 +46,13 @@
     v18 = MEMORY[0x1E695E0F0];
   }
 
-  v19 = [PKBarcode barcodesWithPassDictionary:v15 bundle:v12];
+  v19 = [PKBarcode barcodesWithPassDictionary:v15 bundle:privateBundleCopy];
   v20 = [v18 arrayByAddingObjectsFromArray:v19];
 
   [(PKContent *)v13 setBarcodes:v20];
-  v21 = PKPassStyleForCardDictionary(v10, v11);
-  v22 = PKPassStyleDictionaryKeyForCardDictionary(v10);
-  v141 = [v10 objectForKey:v22];
+  v21 = PKPassStyleForCardDictionary(dictionaryCopy, bundleCopy);
+  v22 = PKPassStyleDictionaryKeyForCardDictionary(dictionaryCopy);
+  v141 = [dictionaryCopy objectForKey:v22];
   v139 = v15;
   v23 = v15;
   v24 = v21;
@@ -96,7 +96,7 @@ LABEL_14:
 
   if (v21 == 9)
   {
-    v34 = [v10 PKStringForKey:@"eventLogoText"];
+    v34 = [dictionaryCopy PKStringForKey:@"eventLogoText"];
     v25 = 0;
     v26 = 0;
     if (v34)
@@ -114,15 +114,15 @@ LABEL_14:
   }
 
 LABEL_15:
-  v34 = [v10 PKStringForKey:@"logoText"];
+  v34 = [dictionaryCopy PKStringForKey:@"logoText"];
 LABEL_16:
   v124 = v34;
-  PKLocalizedPassStringForPassBundle(v34, v11, v12);
+  PKLocalizedPassStringForPassBundle(v34, bundleCopy, privateBundleCopy);
   v123 = v143 = v13;
   [(PKPassContent *)v13 setLogoText:?];
   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v140 = v10;
+  v140 = dictionaryCopy;
   v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v148 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -133,13 +133,13 @@ LABEL_16:
   aBlock[1] = 3221225472;
   aBlock[2] = __66__PKPassContent_initWithDictionary_bundle_privateBundle_passType___block_invoke;
   aBlock[3] = &unk_1E79E2610;
-  v156 = v11;
+  v156 = bundleCopy;
   v189 = v156;
-  v127 = v12;
+  v127 = privateBundleCopy;
   v200 = v26;
-  v154 = v12;
+  v154 = privateBundleCopy;
   v190 = v154;
-  v199 = a6;
+  typeCopy = type;
   v136 = v35;
   v191 = v136;
   v142 = v36;
@@ -177,7 +177,7 @@ LABEL_16:
           objc_enumerationMutation(v41);
         }
 
-        v46 = _FieldForTypeWithDictionaryAndBundle(4, *(*(&v184 + 1) + 8 * i), v156, v154, 1, v26, a6);
+        v46 = _FieldForTypeWithDictionaryAndBundle(4, *(*(&v184 + 1) + 8 * i), v156, v154, 1, v26, type);
         if (v46)
         {
           [v146 addObject:v46];
@@ -190,7 +190,7 @@ LABEL_16:
     while (v43);
   }
 
-  v128 = v11;
+  v128 = bundleCopy;
 
   v130[2](v130, v141);
   v130[2](v130, v138);
@@ -271,7 +271,7 @@ LABEL_16:
           objc_enumerationMutation(v58);
         }
 
-        v63 = [[PKPassAuxiliaryPassInformation alloc] initWithInformation:*(*(&v176 + 1) + 8 * k) bundle:v156 privateBundle:v154 passType:a6];
+        v63 = [[PKPassAuxiliaryPassInformation alloc] initWithInformation:*(*(&v176 + 1) + 8 * k) bundle:v156 privateBundle:v154 passType:type];
         [v149 safelyAddObject:v63];
       }
 
@@ -301,7 +301,7 @@ LABEL_16:
       v211[0] = @"top_right_background_title";
       v211[1] = v66;
       v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v211 forKeys:v210 count:2];
-      v69 = _FieldForTypeWithDictionaryAndBundle(0, v68, v156, v154, 0, v26, a6);
+      v69 = _FieldForTypeWithDictionaryAndBundle(0, v68, v156, v154, 0, v26, type);
       [v142 addObject:v69];
     }
   }
@@ -317,7 +317,7 @@ LABEL_16:
       v209[0] = @"top_left_background_title";
       v209[1] = v70;
       v72 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v209 forKeys:v208 count:2];
-      v73 = _FieldForTypeWithDictionaryAndBundle(3, v72, v156, v154, 0, v26, a6);
+      v73 = _FieldForTypeWithDictionaryAndBundle(3, v72, v156, v154, 0, v26, type);
       [v40 addObject:v73];
     }
   }
@@ -330,10 +330,10 @@ LABEL_16:
   v173 = 0u;
   v174 = 0u;
   v175 = 0u;
-  v75 = [(PKPassContent *)v143 backFieldBuckets];
-  v206[0] = v75;
-  v76 = [(PKPassContent *)v143 frontFieldBuckets];
-  v206[1] = v76;
+  backFieldBuckets = [(PKPassContent *)v143 backFieldBuckets];
+  v206[0] = backFieldBuckets;
+  frontFieldBuckets = [(PKPassContent *)v143 frontFieldBuckets];
+  v206[1] = frontFieldBuckets;
   v77 = [MEMORY[0x1E695DEC8] arrayWithObjects:v206 count:2];
 
   obj = v77;
@@ -392,10 +392,10 @@ LABEL_16:
                       objc_enumerationMutation(v86);
                     }
 
-                    v91 = [*(*(&v164 + 1) + 8 * n) semantics];
-                    if (v91)
+                    semantics = [*(*(&v164 + 1) + 8 * n) semantics];
+                    if (semantics)
                     {
-                      [v74 addEntriesFromDictionary:v91];
+                      [v74 addEntriesFromDictionary:semantics];
                     }
                   }
 
@@ -426,7 +426,7 @@ LABEL_16:
   [v92 addEntriesFromDictionary:v74];
   v13 = v143;
   [(PKPassContent *)v143 setAllSemantics:v92];
-  v10 = v140;
+  dictionaryCopy = v140;
   v93 = [v140 PKStringForKey:@"businessChatIdentifier"];
   [(PKPassContent *)v143 setBusinessChatIdentifier:v93];
 
@@ -495,27 +495,27 @@ LABEL_16:
     v13 = v143;
     [(PKPassContent *)v143 setBalances:v113];
 
-    v10 = v140;
+    dictionaryCopy = v140;
     v100 = v155;
     v92 = v157;
   }
 
   v114 = [PKFidoProfile alloc];
-  v115 = [v10 PKDictionaryForKey:@"fidoProfile"];
+  v115 = [dictionaryCopy PKDictionaryForKey:@"fidoProfile"];
   v116 = [(PKFidoProfile *)v114 initWithDictionary:v115];
   [(PKPassContent *)v13 setFidoProfile:v116];
 
-  v117 = [v10 PKDictionaryForKey:@"issuerBindingData"];
+  v117 = [dictionaryCopy PKDictionaryForKey:@"issuerBindingData"];
   [(PKPassContent *)v13 setIssuerBindingInformation:v117];
 
-  v118 = [v10 PKDictionaryForKey:@"liveDataConfiguration"];
+  v118 = [dictionaryCopy PKDictionaryForKey:@"liveDataConfiguration"];
   v119 = [v118 PKSetForKey:@"excludedSemantics"];
 
   v120 = [PKPassLiveDataConfiguration configurationForPassStyle:v137 excludingSemantics:v119];
   [(PKPassContent *)v13 setLiveDataConfiguration:v120];
 
-  v12 = v127;
-  v11 = v128;
+  privateBundleCopy = v127;
+  bundleCopy = v128;
 LABEL_86:
 
   return v13;
@@ -1013,69 +1013,69 @@ void __66__PKPassContent_initWithDictionary_bundle_privateBundle_passType___bloc
   }
 }
 
-- (PKPassContent)initWithCoder:(id)a3
+- (PKPassContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v71.receiver = self;
   v71.super_class = PKPassContent;
-  v6 = [(PKContent *)&v71 initWithCoder:v4];
+  v6 = [(PKContent *)&v71 initWithCoder:coderCopy];
   if (v6)
   {
-    v6->_transitType = [v4 decodeIntegerForKey:@"transitType"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"logoText"];
+    v6->_transitType = [coderCopy decodeIntegerForKey:@"transitType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"logoText"];
     logoText = v6->_logoText;
     v6->_logoText = v7;
 
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"frontFieldBuckets"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"frontFieldBuckets"];
     frontFieldBuckets = v6->_frontFieldBuckets;
     v6->_frontFieldBuckets = v12;
 
-    v14 = [v4 decodeObjectOfClasses:v11 forKey:@"backFieldBuckets"];
+    v14 = [coderCopy decodeObjectOfClasses:v11 forKey:@"backFieldBuckets"];
     backFieldBuckets = v6->_backFieldBuckets;
     v6->_backFieldBuckets = v14;
 
-    v16 = [v4 decodeObjectOfClasses:v11 forKey:@"balanceFields"];
+    v16 = [coderCopy decodeObjectOfClasses:v11 forKey:@"balanceFields"];
     balanceFields = v6->_balanceFields;
     v6->_balanceFields = v16;
 
-    v18 = [v4 decodeObjectOfClasses:v11 forKey:@"autoTopUpFields"];
+    v18 = [coderCopy decodeObjectOfClasses:v11 forKey:@"autoTopUpFields"];
     autoTopUpFields = v6->_autoTopUpFields;
     v6->_autoTopUpFields = v18;
 
-    v20 = [v4 decodeObjectOfClasses:v11 forKey:@"additionalInfoFields"];
+    v20 = [coderCopy decodeObjectOfClasses:v11 forKey:@"additionalInfoFields"];
     additionalInfoFields = v6->_additionalInfoFields;
     v6->_additionalInfoFields = v20;
 
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"balances"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"balances"];
     balances = v6->_balances;
     v6->_balances = v25;
 
     v27 = MEMORY[0x1E695DFD8];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"passDetailSections"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"passDetailSections"];
     passDetailSections = v6->_passDetailSections;
     v6->_passDetailSections = v30;
 
     v32 = MEMORY[0x1E695DFD8];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"auxiliaryPassInformation"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"auxiliaryPassInformation"];
     auxiliaryPassInformationSections = v6->_auxiliaryPassInformationSections;
     v6->_auxiliaryPassInformationSections = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"upcomingPassInformation"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"upcomingPassInformation"];
     upcomingPassInformation = v6->_upcomingPassInformation;
     v6->_upcomingPassInformation = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personalization"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personalization"];
     personalization = v6->_personalization;
     v6->_personalization = v39;
 
@@ -1083,23 +1083,23 @@ void __66__PKPassContent_initWithDictionary_bundle_privateBundle_passType___bloc
     v42 = objc_opt_class();
     v43 = objc_opt_class();
     v44 = [v41 setWithObjects:{v42, v43, objc_opt_class(), 0}];
-    v45 = [v4 decodeObjectOfClasses:v44 forKey:@"semantics"];
+    v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"semantics"];
     semantics = v6->_semantics;
     v6->_semantics = v45;
 
-    v47 = [v4 decodeObjectOfClasses:v44 forKey:@"allSemantics"];
+    v47 = [coderCopy decodeObjectOfClasses:v44 forKey:@"allSemantics"];
     allSemantics = v6->_allSemantics;
     v6->_allSemantics = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"businessChatIdentifier"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"businessChatIdentifier"];
     businessChatIdentifier = v6->_businessChatIdentifier;
     v6->_businessChatIdentifier = v49;
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"barcodeSettings"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"barcodeSettings"];
     barcodeSettings = v6->_barcodeSettings;
     v6->_barcodeSettings = v51;
 
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardholderInfoSectionTitle"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardholderInfoSectionTitle"];
     cardholderInfoSectionTitle = v6->_cardholderInfoSectionTitle;
     v6->_cardholderInfoSectionTitle = v53;
 
@@ -1107,22 +1107,22 @@ void __66__PKPassContent_initWithDictionary_bundle_privateBundle_passType___bloc
     v56 = objc_opt_class();
     v57 = objc_opt_class();
     v58 = [v55 setWithObjects:{v56, v57, objc_opt_class(), 0}];
-    v59 = [v4 decodeObjectOfClasses:v58 forKey:@"supportedFeatures"];
+    v59 = [coderCopy decodeObjectOfClasses:v58 forKey:@"supportedFeatures"];
     features = v6->_features;
     v6->_features = v59;
 
-    v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fidoProfile"];
+    v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fidoProfile"];
     fidoProfile = v6->_fidoProfile;
     v6->_fidoProfile = v61;
 
     v63 = MEMORY[0x1E695DFD8];
     v64 = objc_opt_class();
     v65 = [v63 setWithObjects:{v64, objc_opt_class(), 0}];
-    v66 = [v4 decodeObjectOfClasses:v65 forKey:@"issuerBindingData"];
+    v66 = [coderCopy decodeObjectOfClasses:v65 forKey:@"issuerBindingData"];
     issuerBindingInformation = v6->_issuerBindingInformation;
     v6->_issuerBindingInformation = v66;
 
-    v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"liveDataConfiguration"];
+    v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"liveDataConfiguration"];
     liveDataConfiguration = v6->_liveDataConfiguration;
     v6->_liveDataConfiguration = v68;
   }
@@ -1132,33 +1132,33 @@ void __66__PKPassContent_initWithDictionary_bundle_privateBundle_passType___bloc
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassContent;
-  v4 = a3;
-  [(PKContent *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_transitType forKey:{@"transitType", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_logoText forKey:@"logoText"];
-  [v4 encodeObject:self->_frontFieldBuckets forKey:@"frontFieldBuckets"];
-  [v4 encodeObject:self->_backFieldBuckets forKey:@"backFieldBuckets"];
-  [v4 encodeObject:self->_balanceFields forKey:@"balanceFields"];
-  [v4 encodeObject:self->_autoTopUpFields forKey:@"autoTopUpFields"];
-  [v4 encodeObject:self->_additionalInfoFields forKey:@"additionalInfoFields"];
-  [v4 encodeObject:self->_balances forKey:@"balances"];
-  [v4 encodeObject:self->_passDetailSections forKey:@"passDetailSections"];
-  [v4 encodeObject:self->_auxiliaryPassInformationSections forKey:@"auxiliaryPassInformation"];
-  [v4 encodeObject:self->_upcomingPassInformation forKey:@"upcomingPassInformation"];
-  [v4 encodeObject:self->_personalization forKey:@"personalization"];
-  [v4 encodeObject:self->_semantics forKey:@"semantics"];
-  [v4 encodeObject:self->_allSemantics forKey:@"allSemantics"];
-  [v4 encodeObject:self->_businessChatIdentifier forKey:@"businessChatIdentifier"];
-  [v4 encodeObject:self->_barcodeSettings forKey:@"barcodeSettings"];
-  [v4 encodeObject:self->_cardholderInfoSectionTitle forKey:@"cardholderInfoSectionTitle"];
-  [v4 encodeObject:self->_features forKey:@"supportedFeatures"];
-  [v4 encodeObject:self->_fidoProfile forKey:@"fidoProfile"];
-  [v4 encodeObject:self->_issuerBindingInformation forKey:@"issuerBindingData"];
-  [v4 encodeObject:self->_liveDataConfiguration forKey:@"liveDataConfiguration"];
+  coderCopy = coder;
+  [(PKContent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_transitType forKey:{@"transitType", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_logoText forKey:@"logoText"];
+  [coderCopy encodeObject:self->_frontFieldBuckets forKey:@"frontFieldBuckets"];
+  [coderCopy encodeObject:self->_backFieldBuckets forKey:@"backFieldBuckets"];
+  [coderCopy encodeObject:self->_balanceFields forKey:@"balanceFields"];
+  [coderCopy encodeObject:self->_autoTopUpFields forKey:@"autoTopUpFields"];
+  [coderCopy encodeObject:self->_additionalInfoFields forKey:@"additionalInfoFields"];
+  [coderCopy encodeObject:self->_balances forKey:@"balances"];
+  [coderCopy encodeObject:self->_passDetailSections forKey:@"passDetailSections"];
+  [coderCopy encodeObject:self->_auxiliaryPassInformationSections forKey:@"auxiliaryPassInformation"];
+  [coderCopy encodeObject:self->_upcomingPassInformation forKey:@"upcomingPassInformation"];
+  [coderCopy encodeObject:self->_personalization forKey:@"personalization"];
+  [coderCopy encodeObject:self->_semantics forKey:@"semantics"];
+  [coderCopy encodeObject:self->_allSemantics forKey:@"allSemantics"];
+  [coderCopy encodeObject:self->_businessChatIdentifier forKey:@"businessChatIdentifier"];
+  [coderCopy encodeObject:self->_barcodeSettings forKey:@"barcodeSettings"];
+  [coderCopy encodeObject:self->_cardholderInfoSectionTitle forKey:@"cardholderInfoSectionTitle"];
+  [coderCopy encodeObject:self->_features forKey:@"supportedFeatures"];
+  [coderCopy encodeObject:self->_fidoProfile forKey:@"fidoProfile"];
+  [coderCopy encodeObject:self->_issuerBindingInformation forKey:@"issuerBindingData"];
+  [coderCopy encodeObject:self->_liveDataConfiguration forKey:@"liveDataConfiguration"];
 }
 
 - (NSArray)primaryFields
@@ -1176,103 +1176,103 @@ void __66__PKPassContent_initWithDictionary_bundle_privateBundle_passType___bloc
   return v3;
 }
 
-- (id)stringForSemanticKey:(id)a3
+- (id)stringForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPassContent *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPassContent *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 stringValue];
+  stringValue = [v6 stringValue];
 
-  return v7;
+  return stringValue;
 }
 
-- (id)dateForSemanticKey:(id)a3
+- (id)dateForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPassContent *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPassContent *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 dateValue];
+  dateValue = [v6 dateValue];
 
-  return v7;
+  return dateValue;
 }
 
-- (id)eventDateInfoForSemanticKey:(id)a3
+- (id)eventDateInfoForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPassContent *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPassContent *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 eventDateInfoValue];
+  eventDateInfoValue = [v6 eventDateInfoValue];
 
-  return v7;
+  return eventDateInfoValue;
 }
 
-- (id)numberForSemanticKey:(id)a3
+- (id)numberForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPassContent *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPassContent *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 numberValue];
+  numberValue = [v6 numberValue];
 
-  return v7;
+  return numberValue;
 }
 
-- (id)locationForSemanticKey:(id)a3
+- (id)locationForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPassContent *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPassContent *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 locationValue];
+  locationValue = [v6 locationValue];
 
-  return v7;
+  return locationValue;
 }
 
-- (id)currencyAmountForSemanticKey:(id)a3
+- (id)currencyAmountForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPassContent *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPassContent *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 currencyAmountValue];
+  currencyAmountValue = [v6 currencyAmountValue];
 
-  return v7;
+  return currencyAmountValue;
 }
 
-- (id)personNameComponentsForSemanticKey:(id)a3
+- (id)personNameComponentsForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPassContent *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPassContent *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 personNameComponentsValue];
+  personNameComponentsValue = [v6 personNameComponentsValue];
 
-  return v7;
+  return personNameComponentsValue;
 }
 
-- (id)stringsForSemanticKey:(id)a3
+- (id)stringsForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPassContent *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPassContent *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 stringsValue];
+  stringsValue = [v6 stringsValue];
 
-  return v7;
+  return stringsValue;
 }
 
-- (id)dictionariesForSemanticKey:(id)a3
+- (id)dictionariesForSemanticKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PKPassContent *)self allSemantics];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  allSemantics = [(PKPassContent *)self allSemantics];
+  v6 = [allSemantics objectForKey:keyCopy];
 
-  v7 = [v6 dictionariesValue];
+  dictionariesValue = [v6 dictionariesValue];
 
-  return v7;
+  return dictionariesValue;
 }
 
 @end

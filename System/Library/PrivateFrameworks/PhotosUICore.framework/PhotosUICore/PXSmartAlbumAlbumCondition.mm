@@ -1,10 +1,10 @@
 @interface PXSmartAlbumAlbumCondition
 + (PXLabeledValue)anyAlbumValue;
-+ (id)defaultSingleQueryForEditingContext:(id)a3;
++ (id)defaultSingleQueryForEditingContext:(id)context;
 - (BOOL)albumValueIsOrphaned;
 - (PXLabeledValue)albumValue;
 - (id)_albumValues;
-- (void)setAlbumValue:(id)a3;
+- (void)setAlbumValue:(id)value;
 @end
 
 @implementation PXSmartAlbumAlbumCondition
@@ -14,10 +14,10 @@
   albumValues = self->_albumValues;
   if (!albumValues)
   {
-    v4 = [(PXSmartAlbumCondition *)self editingContext];
-    v5 = [v4 albumValues];
+    editingContext = [(PXSmartAlbumCondition *)self editingContext];
+    albumValues = [editingContext albumValues];
     v6 = self->_albumValues;
-    self->_albumValues = v5;
+    self->_albumValues = albumValues;
 
     albumValues = self->_albumValues;
   }
@@ -25,26 +25,26 @@
   return albumValues;
 }
 
-- (void)setAlbumValue:(id)a3
+- (void)setAlbumValue:(id)value
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 value];
-  v6 = [v4 localizedLabel];
+  valueCopy = value;
+  value = [valueCopy value];
+  localizedLabel = [valueCopy localizedLabel];
 
-  v7 = [(PXSmartAlbumCondition *)self singleQuery];
-  v8 = v7;
-  if (v5)
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  v8 = singleQuery;
+  if (value)
   {
-    [v7 setStringValue:v5];
-    [v8 setSecondStringValue:v6];
+    [singleQuery setStringValue:value];
+    [v8 setSecondStringValue:localizedLabel];
     v9 = PLUIGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v14 = 138412546;
-      v15 = v5;
+      v15 = value;
       v16 = 2112;
-      v17 = v6;
+      v17 = localizedLabel;
       v10 = "PXSmartAlbums: album value set to: %@:%@";
       v11 = v9;
       v12 = 22;
@@ -55,7 +55,7 @@ LABEL_6:
 
   else
   {
-    [v7 setSecondStringValue:0];
+    [singleQuery setSecondStringValue:0];
     [v8 setStringValue:0];
     v9 = PLUIGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -68,19 +68,19 @@ LABEL_6:
     }
   }
 
-  v13 = [(PXSmartAlbumCondition *)self delegate];
-  [v13 conditionDidChange:self];
+  delegate = [(PXSmartAlbumCondition *)self delegate];
+  [delegate conditionDidChange:self];
 }
 
 - (BOOL)albumValueIsOrphaned
 {
-  v3 = [(PXSmartAlbumCondition *)self singleQuery];
-  v4 = [v3 stringValue];
-  v5 = [(PXSmartAlbumAlbumCondition *)self _albumValues];
-  v6 = v5;
-  if (v4)
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  stringValue = [singleQuery stringValue];
+  _albumValues = [(PXSmartAlbumAlbumCondition *)self _albumValues];
+  v6 = _albumValues;
+  if (stringValue)
   {
-    v7 = PXLabeledValueForValueInLabeledValues(v5, v4);
+    v7 = PXLabeledValueForValueInLabeledValues(_albumValues, stringValue);
     v8 = v7 == 0;
   }
 
@@ -94,25 +94,25 @@ LABEL_6:
 
 - (PXLabeledValue)albumValue
 {
-  v3 = [(PXSmartAlbumCondition *)self singleQuery];
-  v4 = [v3 stringValue];
-  if (v4)
+  singleQuery = [(PXSmartAlbumCondition *)self singleQuery];
+  stringValue = [singleQuery stringValue];
+  if (stringValue)
   {
-    v5 = [(PXSmartAlbumAlbumCondition *)self _albumValues];
-    v6 = PXLabeledValueForValueInLabeledValues(v5, v4);
+    _albumValues = [(PXSmartAlbumAlbumCondition *)self _albumValues];
+    v6 = PXLabeledValueForValueInLabeledValues(_albumValues, stringValue);
     if (!v6)
     {
-      v7 = [v3 secondStringValue];
-      v8 = v7;
+      secondStringValue = [singleQuery secondStringValue];
+      v8 = secondStringValue;
       v9 = @"<missing>";
-      if (v7)
+      if (secondStringValue)
       {
-        v9 = v7;
+        v9 = secondStringValue;
       }
 
       v10 = v9;
 
-      v6 = [[PXLabeledValue alloc] initWithValue:v4 localizedLabel:v10];
+      v6 = [[PXLabeledValue alloc] initWithValue:stringValue localizedLabel:v10];
     }
   }
 
@@ -124,7 +124,7 @@ LABEL_6:
   return v6;
 }
 
-+ (id)defaultSingleQueryForEditingContext:(id)a3
++ (id)defaultSingleQueryForEditingContext:(id)context
 {
   v3 = objc_alloc_init(MEMORY[0x1E69BF300]);
   [v3 setKey:100];

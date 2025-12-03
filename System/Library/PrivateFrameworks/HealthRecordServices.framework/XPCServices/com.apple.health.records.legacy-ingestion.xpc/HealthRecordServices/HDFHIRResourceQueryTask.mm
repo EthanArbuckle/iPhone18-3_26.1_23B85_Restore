@@ -1,32 +1,32 @@
 @interface HDFHIRResourceQueryTask
-- (HDFHIRResourceQueryTask)initWithCredentialedSession:(id)a3 resourceSchema:(id)a4 queryMode:(int64_t)a5 bindings:(id)a6 completion:(id)a7;
-- (id)createURLRequestWithCredentialResult:(id)a3 error:(id *)a4;
+- (HDFHIRResourceQueryTask)initWithCredentialedSession:(id)session resourceSchema:(id)schema queryMode:(int64_t)mode bindings:(id)bindings completion:(id)completion;
+- (id)createURLRequestWithCredentialResult:(id)result error:(id *)error;
 - (id)resourceType;
-- (void)handleError:(id)a3 endState:(id)a4;
+- (void)handleError:(id)error endState:(id)state;
 @end
 
 @implementation HDFHIRResourceQueryTask
 
-- (HDFHIRResourceQueryTask)initWithCredentialedSession:(id)a3 resourceSchema:(id)a4 queryMode:(int64_t)a5 bindings:(id)a6 completion:(id)a7
+- (HDFHIRResourceQueryTask)initWithCredentialedSession:(id)session resourceSchema:(id)schema queryMode:(int64_t)mode bindings:(id)bindings completion:(id)completion
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  schemaCopy = schema;
+  bindingsCopy = bindings;
+  completionCopy = completion;
   v23.receiver = self;
   v23.super_class = HDFHIRResourceQueryTask;
-  v15 = [(HDFHIRCredentialedRequestTask *)&v23 initWithCredentialedSession:a3];
+  v15 = [(HDFHIRCredentialedRequestTask *)&v23 initWithCredentialedSession:session];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [schemaCopy copy];
     resourceSchema = v15->_resourceSchema;
     v15->_resourceSchema = v16;
 
-    v15->_queryMode = a5;
-    v18 = [v14 copy];
+    v15->_queryMode = mode;
+    v18 = [completionCopy copy];
     queryCompletion = v15->_queryCompletion;
     v15->_queryCompletion = v18;
 
-    v20 = [v13 copy];
+    v20 = [bindingsCopy copy];
     bindings = v15->_bindings;
     v15->_bindings = v20;
   }
@@ -36,31 +36,31 @@
 
 - (id)resourceType
 {
-  v2 = [(HDFHIRResourceQueryTask *)self resourceSchema];
-  v3 = [v2 name];
+  resourceSchema = [(HDFHIRResourceQueryTask *)self resourceSchema];
+  name = [resourceSchema name];
 
-  return v3;
+  return name;
 }
 
-- (id)createURLRequestWithCredentialResult:(id)a3 error:(id *)a4
+- (id)createURLRequestWithCredentialResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDFHIRResourceQueryTask *)self resourceSchema];
-  v8 = [v6 credential];
+  resultCopy = result;
+  resourceSchema = [(HDFHIRResourceQueryTask *)self resourceSchema];
+  credential = [resultCopy credential];
 
-  v9 = [(HDFHIRResourceQueryTask *)self bindings];
-  v10 = [v7 createRequestWithCredential:v8 bindings:v9 queryMode:-[HDFHIRResourceQueryTask queryMode](self error:{"queryMode"), a4}];
+  bindings = [(HDFHIRResourceQueryTask *)self bindings];
+  v10 = [resourceSchema createRequestWithCredential:credential bindings:bindings queryMode:-[HDFHIRResourceQueryTask queryMode](self error:{"queryMode"), error}];
 
   return v10;
 }
 
-- (void)handleError:(id)a3 endState:(id)a4
+- (void)handleError:(id)error endState:(id)state
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = v11;
-  v9 = v7;
-  if (!v11)
+  errorCopy = error;
+  stateCopy = state;
+  v8 = errorCopy;
+  v9 = stateCopy;
+  if (!errorCopy)
   {
     sub_10000C6CC(a2, self);
     v8 = 0;

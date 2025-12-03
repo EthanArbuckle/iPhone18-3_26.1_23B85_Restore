@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __23__SKAnalytics_instance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (instance_dispatcher != -1)
   {
     dispatch_once(&instance_dispatcher, block);
@@ -34,18 +34,18 @@ void __23__SKAnalytics_instance__block_invoke(uint64_t a1)
   bundleID = self->_bundleID;
   if (!bundleID)
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     v6 = self->_bundleID;
-    self->_bundleID = v5;
+    self->_bundleID = bundleIdentifier;
 
     bundleID = self->_bundleID;
     if (!bundleID)
     {
-      v7 = [MEMORY[0x277CCAC38] processInfo];
-      v8 = [v7 processName];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      processName = [processInfo processName];
       v9 = self->_bundleID;
-      self->_bundleID = v8;
+      self->_bundleID = processName;
 
       bundleID = self->_bundleID;
     }

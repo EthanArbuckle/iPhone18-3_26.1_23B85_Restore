@@ -1,15 +1,15 @@
 @interface MLCTransposeLayer
-+ (BOOL)supportsDataType:(int)a3 onDevice:(id)a4;
++ (BOOL)supportsDataType:(int)type onDevice:(id)device;
 + (MLCTransposeLayer)layerWithDimensions:(NSArray *)dimensions;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
 - (BOOL)isStaticBatchSize;
-- (BOOL)isSupportedShapeForTensorSources:(id)a3;
-- (MLCTransposeLayer)initWithDimensions:(id)a3;
+- (BOOL)isSupportedShapeForTensorSources:(id)sources;
+- (MLCTransposeLayer)initWithDimensions:(id)dimensions;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
+- (id)resultTensorFromSources:(id)sources;
 - (id)summarizedDOTDescription;
-- (unint64_t)resultSizeFromSourceSize:(unint64_t)a3 dimension:(unint64_t)a4;
-- (unint64_t)resultSizeFromSourceSizes:(id)a3 dimension:(unint64_t)a4;
+- (unint64_t)resultSizeFromSourceSize:(unint64_t)size dimension:(unint64_t)dimension;
+- (unint64_t)resultSizeFromSourceSizes:(id)sizes dimension:(unint64_t)dimension;
 @end
 
 @implementation MLCTransposeLayer
@@ -17,15 +17,15 @@
 + (MLCTransposeLayer)layerWithDimensions:(NSArray *)dimensions
 {
   v4 = dimensions;
-  v5 = [[a1 alloc] initWithDimensions:v4];
+  v5 = [[self alloc] initWithDimensions:v4];
 
   return v5;
 }
 
-- (MLCTransposeLayer)initWithDimensions:(id)a3
+- (MLCTransposeLayer)initWithDimensions:(id)dimensions
 {
-  v5 = a3;
-  if ([v5 count] < 2)
+  dimensionsCopy = dimensions;
+  if ([dimensionsCopy count] < 2)
   {
     v6 = +[MLCLog framework];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -34,25 +34,25 @@
     }
 
 LABEL_15:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
-  if ([v5 count])
+  if ([dimensionsCopy count])
   {
     v7 = 0;
     while (1)
     {
-      v8 = [v5 objectAtIndexedSubscript:v7];
-      v9 = [v8 unsignedIntegerValue];
-      v10 = [v5 count] - 1;
+      v8 = [dimensionsCopy objectAtIndexedSubscript:v7];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
+      v10 = [dimensionsCopy count] - 1;
 
-      if (v9 > v10)
+      if (unsignedIntegerValue > v10)
       {
         break;
       }
 
-      if (++v7 >= [v5 count])
+      if (++v7 >= [dimensionsCopy count])
       {
         goto LABEL_9;
       }
@@ -73,38 +73,38 @@ LABEL_9:
   v11 = [(MLCLayer *)&v17 initWithLabel:@"Transpose"];
   if (v11)
   {
-    v12 = [v5 copy];
+    v12 = [dimensionsCopy copy];
     dimensions = v11->_dimensions;
     v11->_dimensions = v12;
   }
 
   self = v11;
-  v14 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v14;
+  return selfCopy;
 }
 
-+ (BOOL)supportsDataType:(int)a3 onDevice:(id)a4
++ (BOOL)supportsDataType:(int)type onDevice:(id)device
 {
-  if ([a4 type])
+  if ([device type])
   {
-    return a3 == 1;
+    return type == 1;
   }
 
   else
   {
-    return ((a3 - 1) & 0xFFFFFFFD) == 0;
+    return ((type - 1) & 0xFFFFFFFD) == 0;
   }
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 count] != 1)
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  if ([tensorsCopy count] != 1)
   {
     v22 = +[MLCLog framework];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -115,28 +115,28 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v12 = [v10 objectAtIndexedSubscript:0];
-  v13 = [v12 descriptor];
-  v14 = [v13 tensorAllocationSizeInBytes];
-  v15 = [v11 descriptor];
-  v16 = [v15 tensorAllocationSizeInBytes];
+  v12 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor = [v12 descriptor];
+  tensorAllocationSizeInBytes = [descriptor tensorAllocationSizeInBytes];
+  descriptor2 = [tensorCopy descriptor];
+  tensorAllocationSizeInBytes2 = [descriptor2 tensorAllocationSizeInBytes];
 
-  if (v14 != v16)
+  if (tensorAllocationSizeInBytes != tensorAllocationSizeInBytes2)
   {
     v22 = +[MLCLog framework];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v25 = NSStringFromSelector(a2);
-      v26 = [v10 objectAtIndexedSubscript:0];
-      v27 = [v26 descriptor];
-      v28 = [v27 tensorAllocationSizeInBytes];
-      v29 = [v11 descriptor];
+      v26 = [tensorsCopy objectAtIndexedSubscript:0];
+      descriptor3 = [v26 descriptor];
+      tensorAllocationSizeInBytes3 = [descriptor3 tensorAllocationSizeInBytes];
+      descriptor4 = [tensorCopy descriptor];
       *buf = 138412802;
       v35 = v25;
       v36 = 2048;
-      *v37 = v28;
+      *v37 = tensorAllocationSizeInBytes3;
       *&v37[8] = 2048;
-      *&v37[10] = [v29 tensorAllocationSizeInBytes];
+      *&v37[10] = [descriptor4 tensorAllocationSizeInBytes];
       _os_log_error_impl(&dword_238C1D000, v22, OS_LOG_TYPE_ERROR, "%@: invalid result tensor size. sourceSize=%lu : resultSize=%lu", buf, 0x20u);
 
 LABEL_13:
@@ -147,11 +147,11 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v17 = [v10 objectAtIndexedSubscript:0];
-  v18 = [v17 descriptor];
-  v19 = [v18 dataType];
+  v17 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor5 = [v17 descriptor];
+  dataType = [descriptor5 dataType];
 
-  if (![MLCTransposeLayer supportsDataType:v19 onDevice:v9])
+  if (![MLCTransposeLayer supportsDataType:dataType onDevice:deviceCopy])
   {
     v22 = +[MLCLog framework];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -160,9 +160,9 @@ LABEL_17:
       *buf = 138412802;
       v35 = v25;
       v36 = 1024;
-      *v37 = v19;
+      *v37 = dataType;
       *&v37[4] = 2112;
-      *&v37[6] = v9;
+      *&v37[6] = deviceCopy;
       _os_log_error_impl(&dword_238C1D000, v22, OS_LOG_TYPE_ERROR, "%@: transpose layer with data type = %d is not supported on a device = %@", buf, 0x1Cu);
       goto LABEL_13;
     }
@@ -170,9 +170,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v20 = [v9 computeEngine];
-  v21 = [(MLCTransposeLayer *)self dimensions];
-  v22 = [v20 transposeLayerWithShape:v21];
+  computeEngine = [deviceCopy computeEngine];
+  dimensions = [(MLCTransposeLayer *)self dimensions];
+  v22 = [computeEngine transposeLayerWithShape:dimensions];
 
   if (!v22 || ![v22 count])
   {
@@ -185,21 +185,21 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v23 = [v9 computeEngine];
-  v24 = [v23 compileLayerDeviceOps:v22 sourceTensors:v10 resultTensor:v11];
+  computeEngine2 = [deviceCopy computeEngine];
+  v24 = [computeEngine2 compileLayerDeviceOps:v22 sourceTensors:tensorsCopy resultTensor:tensorCopy];
 
   v33.receiver = self;
   v33.super_class = MLCTransposeLayer;
-  [(MLCLayer *)&v33 bindDevice:v9 deviceOps:v22];
+  [(MLCLayer *)&v33 bindDevice:deviceCopy deviceOps:v22];
 LABEL_18:
 
   v31 = *MEMORY[0x277D85DE8];
   return v24;
 }
 
-- (unint64_t)resultSizeFromSourceSize:(unint64_t)a3 dimension:(unint64_t)a4
+- (unint64_t)resultSizeFromSourceSize:(unint64_t)size dimension:(unint64_t)dimension
 {
-  v5 = [MLCLog framework:a3];
+  v5 = [MLCLog framework:size];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [MLCTransposeLayer resultSizeFromSourceSize:a2 dimension:?];
@@ -208,57 +208,57 @@ LABEL_18:
   return 0;
 }
 
-- (unint64_t)resultSizeFromSourceSizes:(id)a3 dimension:(unint64_t)a4
+- (unint64_t)resultSizeFromSourceSizes:(id)sizes dimension:(unint64_t)dimension
 {
-  v6 = a3;
-  v7 = [(MLCTransposeLayer *)self dimensions];
-  v8 = [v7 objectAtIndexedSubscript:a4];
-  v9 = [v8 unsignedIntegerValue];
+  sizesCopy = sizes;
+  dimensions = [(MLCTransposeLayer *)self dimensions];
+  v8 = [dimensions objectAtIndexedSubscript:dimension];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v10 = [v6 objectAtIndexedSubscript:v9];
+  v10 = [sizesCopy objectAtIndexedSubscript:unsignedIntegerValue];
 
-  v11 = [v10 unsignedIntegerValue];
-  return v11;
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
+  return unsignedIntegerValue2;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
-  v5 = a3;
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 descriptor];
-  v8 = [v7 shape];
-  v9 = [v8 count];
-  v10 = [(MLCTransposeLayer *)self dimensions];
-  v11 = [v10 count];
+  sourcesCopy = sources;
+  v6 = [sourcesCopy objectAtIndexedSubscript:0];
+  descriptor = [v6 descriptor];
+  shape = [descriptor shape];
+  v9 = [shape count];
+  dimensions = [(MLCTransposeLayer *)self dimensions];
+  v11 = [dimensions count];
 
   if (v9 == v11)
   {
     v12 = [MEMORY[0x277CBEBF8] mutableCopy];
     for (i = 0; ; ++i)
     {
-      v14 = [v5 objectAtIndexedSubscript:0];
-      v15 = [v14 descriptor];
-      v16 = [v15 shape];
-      v17 = [v16 count];
+      v14 = [sourcesCopy objectAtIndexedSubscript:0];
+      descriptor2 = [v14 descriptor];
+      shape2 = [descriptor2 shape];
+      v17 = [shape2 count];
 
       if (i >= v17)
       {
         break;
       }
 
-      v18 = [v5 objectAtIndexedSubscript:0];
-      v19 = [v18 descriptor];
-      v20 = [v19 shape];
-      v21 = [(MLCTransposeLayer *)self resultSizeFromSourceSizes:v20 dimension:i];
+      v18 = [sourcesCopy objectAtIndexedSubscript:0];
+      descriptor3 = [v18 descriptor];
+      shape3 = [descriptor3 shape];
+      v21 = [(MLCTransposeLayer *)self resultSizeFromSourceSizes:shape3 dimension:i];
 
       v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21];
       [v12 setObject:v22 atIndexedSubscript:i];
     }
 
     v23 = [v12 copy];
-    v24 = [v5 objectAtIndexedSubscript:0];
-    v25 = [v24 descriptor];
-    v26 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v23, [v25 dataType]);
+    v24 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor4 = [v24 descriptor];
+    v26 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v23, [descriptor4 dataType]);
 
     v27 = [MLCTensor tensorWithDescriptor:v26];
   }
@@ -277,18 +277,18 @@ LABEL_18:
   return v27;
 }
 
-- (BOOL)isSupportedShapeForTensorSources:(id)a3
+- (BOOL)isSupportedShapeForTensorSources:(id)sources
 {
-  v3 = a3;
-  if ([v3 count])
+  sourcesCopy = sources;
+  if ([sourcesCopy count])
   {
     v4 = 0;
     do
     {
-      v5 = [v3 objectAtIndexedSubscript:v4];
-      v6 = [v5 descriptor];
-      v7 = [v6 shape];
-      v8 = [v7 count];
+      v5 = [sourcesCopy objectAtIndexedSubscript:v4];
+      descriptor = [v5 descriptor];
+      shape = [descriptor shape];
+      v8 = [shape count];
 
       v9 = v8 > 1;
       if (v8 <= 1)
@@ -299,7 +299,7 @@ LABEL_18:
       ++v4;
     }
 
-    while (v4 < [v3 count]);
+    while (v4 < [sourcesCopy count]);
   }
 
   else
@@ -312,20 +312,20 @@ LABEL_18:
 
 - (BOOL)isStaticBatchSize
 {
-  v14 = [(MLCLayer *)self sourceTensors];
-  v3 = [v14 objectAtIndexedSubscript:0];
-  v4 = [v3 descriptor];
-  v5 = [v4 shape];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 unsignedIntegerValue];
-  v8 = [(MLCLayer *)self resultTensors];
-  v9 = [v8 objectAtIndexedSubscript:0];
-  v10 = [v9 descriptor];
-  v11 = [v10 shape];
-  v12 = [v11 objectAtIndexedSubscript:0];
-  LOBYTE(v7) = v7 == [v12 unsignedIntegerValue];
+  sourceTensors = [(MLCLayer *)self sourceTensors];
+  v3 = [sourceTensors objectAtIndexedSubscript:0];
+  descriptor = [v3 descriptor];
+  shape = [descriptor shape];
+  v6 = [shape objectAtIndexedSubscript:0];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v9 = [resultTensors objectAtIndexedSubscript:0];
+  descriptor2 = [v9 descriptor];
+  shape2 = [descriptor2 shape];
+  v12 = [shape2 objectAtIndexedSubscript:0];
+  LOBYTE(unsignedIntegerValue) = unsignedIntegerValue == [v12 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (id)description
@@ -333,10 +333,10 @@ LABEL_18:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCTransposeLayer *)self dimensions];
-  v7 = [(MLCLayer *)self conditionalTreeNode];
-  v8 = [(MLCLayer *)self resultTensors];
-  v9 = [v3 stringWithFormat:@"%@: { dimensions=%@ : conditionalTreeNode=%@ : resultTensor=%@ }", v5, v6, v7, v8];
+  dimensions = [(MLCTransposeLayer *)self dimensions];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v9 = [v3 stringWithFormat:@"%@: { dimensions=%@ : conditionalTreeNode=%@ : resultTensor=%@ }", v5, dimensions, conditionalTreeNode, resultTensors];
 
   return v9;
 }
@@ -346,9 +346,9 @@ LABEL_18:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCLayer *)self layerID];
-  v7 = [(MLCTransposeLayer *)self dimensions];
-  v8 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Permutation: %@</FONT>>", v5, v6, v7];
+  layerID = [(MLCLayer *)self layerID];
+  dimensions = [(MLCTransposeLayer *)self dimensions];
+  v8 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Permutation: %@</FONT>>", v5, layerID, dimensions];
 
   return v8;
 }

@@ -6,14 +6,14 @@
 
 - (id)bm_description
 {
-  v3 = [(CKDistributedTimestamp *)self siteIdentifierObject];
-  v4 = [v3 identifier];
+  siteIdentifierObject = [(CKDistributedTimestamp *)self siteIdentifierObject];
+  identifier = [siteIdentifierObject identifier];
 
-  v5 = [v4 bytes];
+  bytes = [identifier bytes];
   v6 = [NSString alloc];
-  if (v5)
+  if (bytes)
   {
-    v7 = [v6 initWithFormat:@"%.8s:%lu", objc_msgSend(v4, "bytes"), -[CKDistributedTimestamp clockValue](self, "clockValue")];
+    v7 = [v6 initWithFormat:@"%.8s:%lu", objc_msgSend(identifier, "bytes"), -[CKDistributedTimestamp clockValue](self, "clockValue")];
   }
 
   else

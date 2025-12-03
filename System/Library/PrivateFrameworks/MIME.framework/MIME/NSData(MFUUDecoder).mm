@@ -9,23 +9,23 @@
 
 - (id)mf_decodeUuencoded
 {
-  if (a1 && vcvtpd_u64_f64([(NSData *)a1 length]* 0.74 + 100.0) > 0x20000)
+  if (self && vcvtpd_u64_f64([(NSData *)self length]* 0.74 + 100.0) > 0x20000)
   {
-    v2 = [(NSData *)a1 _uudecoded_large];
+    _uudecoded_large = [(NSData *)self _uudecoded_large];
   }
 
   else
   {
-    v2 = [(NSData *)a1 _uudecoded_small];
+    _uudecoded_large = [(NSData *)self _uudecoded_small];
   }
 
-  return v2;
+  return _uudecoded_large;
 }
 
 - (uint64_t)_uudecoded_small
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -37,7 +37,7 @@
 - (uint64_t)_uudecoded_large
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -48,7 +48,7 @@
 
 - (size_t)_uudecoded_large
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   result = fwrite(__ptr, 0x2DuLL, 1uLL, *(v2 + 16));
   *(v2 + 24) += 45;
   return result;

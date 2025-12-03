@@ -1,5 +1,5 @@
 @interface MUPoolObject
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)pooledClasses;
 + (int64_t)clearPool;
 + (void)clearAllPools;
@@ -58,29 +58,29 @@
   objc_sync_exit(v2);
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v4 = qword_1EF2B8;
   objc_sync_enter(qword_1EF2B8);
-  v5 = [objc_opt_class() poolInfo];
-  if (!*v5)
+  poolInfo = [objc_opt_class() poolInfo];
+  if (!*poolInfo)
   {
-    *v5 = objc_opt_class();
-    v5[1] = 0;
-    *(v5 + 24) = [objc_opt_class() clearVars];
-    v5[2] = objc_alloc_init(NSObject);
-    *(v5 + 25) = 0;
+    *poolInfo = objc_opt_class();
+    poolInfo[1] = 0;
+    *(poolInfo + 24) = [objc_opt_class() clearVars];
+    poolInfo[2] = objc_alloc_init(NSObject);
+    *(poolInfo + 25) = 0;
     [+[MUPoolObject pooledClasses](MUPoolObject "pooledClasses")];
   }
 
   objc_sync_exit(v4);
-  v6 = v5[2];
+  v6 = poolInfo[2];
   objc_sync_enter(v6);
-  v7 = v5[1];
+  v7 = poolInfo[1];
   if (v7)
   {
-    v5[1] = v7[1];
-    if (*(v5 + 24) == 1)
+    poolInfo[1] = v7[1];
+    if (*(poolInfo + 24) == 1)
     {
       v8 = malloc_size(v7);
       bzero(v7 + 2, v8 - 16);
@@ -91,7 +91,7 @@
 
   else
   {
-    v9 = NSAllocateObject(a1, 0, 0);
+    v9 = NSAllocateObject(self, 0, 0);
   }
 
   objc_sync_exit(v6);
@@ -110,15 +110,15 @@
 {
   v3 = qword_1EF2B8;
   objc_sync_enter(qword_1EF2B8);
-  v4 = [objc_opt_class() poolInfo];
+  poolInfo = [objc_opt_class() poolInfo];
   objc_sync_exit(v3);
-  if ([(MUPoolObject *)self retainCount]== &dword_0 + 1 && (*(v4 + 25) & 1) == 0)
+  if ([(MUPoolObject *)self retainCount]== &dword_0 + 1 && (*(poolInfo + 25) & 1) == 0)
   {
     [(MUPoolObject *)self purge];
-    v5 = *(v4 + 2);
+    v5 = *(poolInfo + 2);
     objc_sync_enter(v5);
-    self->mPoolPrev = *(v4 + 1);
-    *(v4 + 1) = self;
+    self->mPoolPrev = *(poolInfo + 1);
+    *(poolInfo + 1) = self;
 
     objc_sync_exit(v5);
   }
@@ -133,21 +133,21 @@
 
 + (int64_t)clearPool
 {
-  v2 = [objc_opt_class() poolInfo];
-  v3 = *(v2 + 2);
+  poolInfo = [objc_opt_class() poolInfo];
+  v3 = *(poolInfo + 2);
   objc_sync_enter(v3);
-  *(v2 + 25) = 1;
-  v4 = *(v2 + 1);
+  *(poolInfo + 25) = 1;
+  v4 = *(poolInfo + 1);
   if (v4)
   {
     v5 = 0;
     do
     {
-      *(v2 + 1) = v4[1];
+      *(poolInfo + 1) = v4[1];
       [v4 purge];
 
       ++v5;
-      v4 = *(v2 + 1);
+      v4 = *(poolInfo + 1);
     }
 
     while (v4);
@@ -159,9 +159,9 @@
   }
 
   objc_sync_exit(v3);
-  *(v2 + 1) = 0;
+  *(poolInfo + 1) = 0;
 
-  *(v2 + 2) = 0;
+  *(poolInfo + 2) = 0;
   return v5;
 }
 

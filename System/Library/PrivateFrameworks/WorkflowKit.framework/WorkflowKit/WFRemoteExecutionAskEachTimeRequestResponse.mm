@@ -1,76 +1,76 @@
 @interface WFRemoteExecutionAskEachTimeRequestResponse
-- (BOOL)readMessageFromData:(id)a3 error:(id *)a4;
-- (WFRemoteExecutionAskEachTimeRequestResponse)initWithData:(id)a3 error:(id *)a4;
-- (WFRemoteExecutionAskEachTimeRequestResponse)initWithOriginatingRequestIdentifier:(id)a3 inputtedStates:(id)a4 error:(id)a5;
-- (id)writeMessageToWriter:(id)a3 error:(id *)a4;
-- (void)inflateInputtedStatesWithAction:(id)a3;
+- (BOOL)readMessageFromData:(id)data error:(id *)error;
+- (WFRemoteExecutionAskEachTimeRequestResponse)initWithData:(id)data error:(id *)error;
+- (WFRemoteExecutionAskEachTimeRequestResponse)initWithOriginatingRequestIdentifier:(id)identifier inputtedStates:(id)states error:(id)error;
+- (id)writeMessageToWriter:(id)writer error:(id *)error;
+- (void)inflateInputtedStatesWithAction:(id)action;
 @end
 
 @implementation WFRemoteExecutionAskEachTimeRequestResponse
 
-- (id)writeMessageToWriter:(id)a3 error:(id *)a4
+- (id)writeMessageToWriter:(id)writer error:(id *)error
 {
-  v5 = a3;
+  writerCopy = writer;
   v6 = objc_opt_new();
-  v7 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self originatingRequestIdentifier];
-  [v6 setOriginatingRequestIdentifier:v7];
+  originatingRequestIdentifier = [(WFRemoteExecutionAskEachTimeRequestResponse *)self originatingRequestIdentifier];
+  [v6 setOriginatingRequestIdentifier:originatingRequestIdentifier];
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self inputtedStates];
+  inputtedStates = [(WFRemoteExecutionAskEachTimeRequestResponse *)self inputtedStates];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __74__WFRemoteExecutionAskEachTimeRequestResponse_writeMessageToWriter_error___block_invoke;
   v32[3] = &unk_1E837D6E8;
   v10 = v8;
   v33 = v10;
-  [v9 enumerateKeysAndObjectsUsingBlock:v32];
+  [inputtedStates enumerateKeysAndObjectsUsingBlock:v32];
 
   [v6 setInputtedStates:v10];
-  v11 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
+  error = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
 
-  if (v11)
+  if (error)
   {
     v12 = objc_opt_new();
-    v13 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
-    [v12 setCode:{objc_msgSend(v13, "code")}];
+    error2 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
+    [v12 setCode:{objc_msgSend(error2, "code")}];
 
-    v14 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
-    v15 = [v14 domain];
-    [v12 setDomain:v15];
+    error3 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
+    domain = [error3 domain];
+    [v12 setDomain:domain];
 
-    v16 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
-    v17 = [v16 userInfo];
+    error4 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
+    userInfo = [error4 userInfo];
     v18 = *MEMORY[0x1E696A578];
-    v19 = [v17 objectForKey:*MEMORY[0x1E696A578]];
+    v19 = [userInfo objectForKey:*MEMORY[0x1E696A578]];
 
     if (v19)
     {
-      v20 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
-      v21 = [v20 userInfo];
-      v22 = [v21 objectForKey:v18];
+      error5 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
+      userInfo2 = [error5 userInfo];
+      v22 = [userInfo2 objectForKey:v18];
       [v12 setLocalizedDescription:v22];
     }
 
-    v23 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
-    v24 = [v23 userInfo];
+    error6 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
+    userInfo3 = [error6 userInfo];
     v25 = *MEMORY[0x1E696A588];
-    v26 = [v24 objectForKey:*MEMORY[0x1E696A588]];
+    v26 = [userInfo3 objectForKey:*MEMORY[0x1E696A588]];
 
     if (v26)
     {
-      v27 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
-      v28 = [v27 userInfo];
-      v29 = [v28 objectForKey:v25];
+      error7 = [(WFRemoteExecutionAskEachTimeRequestResponse *)self error];
+      userInfo4 = [error7 userInfo];
+      v29 = [userInfo4 objectForKey:v25];
       [v12 setLocalizedFailureReason:v29];
     }
 
     [v6 setError:v12];
   }
 
-  [v6 writeTo:v5];
-  v30 = [v5 immutableData];
+  [v6 writeTo:writerCopy];
+  immutableData = [writerCopy immutableData];
 
-  return v30;
+  return immutableData;
 }
 
 void __74__WFRemoteExecutionAskEachTimeRequestResponse_writeMessageToWriter_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -89,12 +89,12 @@ void __74__WFRemoteExecutionAskEachTimeRequestResponse_writeMessageToWriter_erro
   [*(a1 + 32) addObject:v10];
 }
 
-- (BOOL)readMessageFromData:(id)a3 error:(id *)a4
+- (BOOL)readMessageFromData:(id)data error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69C65B8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithData:v7];
+  dataCopy = data;
+  v8 = [[v6 alloc] initWithData:dataCopy];
 
   v9 = objc_alloc_init(WFREPBAskWhenRunRequestResponse);
   v32 = 0;
@@ -102,39 +102,39 @@ void __74__WFRemoteExecutionAskEachTimeRequestResponse_writeMessageToWriter_erro
   v11 = v32;
   if (v10)
   {
-    v12 = [(WFREPBAskWhenRunRequestResponse *)v9 originatingRequestIdentifier];
+    originatingRequestIdentifier = [(WFREPBAskWhenRunRequestResponse *)v9 originatingRequestIdentifier];
     originatingRequestIdentifier = self->_originatingRequestIdentifier;
-    self->_originatingRequestIdentifier = v12;
+    self->_originatingRequestIdentifier = originatingRequestIdentifier;
 
-    v14 = [(WFREPBAskWhenRunRequestResponse *)v9 inputtedStates];
+    inputtedStates = [(WFREPBAskWhenRunRequestResponse *)v9 inputtedStates];
     inputtedStatesData = self->_inputtedStatesData;
-    self->_inputtedStatesData = v14;
+    self->_inputtedStatesData = inputtedStates;
 
-    v16 = [(WFREPBAskWhenRunRequestResponse *)v9 error];
-    if (v16)
+    error = [(WFREPBAskWhenRunRequestResponse *)v9 error];
+    if (error)
     {
       v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v18 = [v16 localizedDescription];
-      v19 = [v18 length];
+      localizedDescription = [error localizedDescription];
+      v19 = [localizedDescription length];
 
       if (v19)
       {
-        v20 = [v16 localizedDescription];
-        [v17 setObject:v20 forKey:*MEMORY[0x1E696A578]];
+        localizedDescription2 = [error localizedDescription];
+        [v17 setObject:localizedDescription2 forKey:*MEMORY[0x1E696A578]];
       }
 
-      v21 = [v16 localizedFailureReason];
-      v22 = [v21 length];
+      localizedFailureReason = [error localizedFailureReason];
+      v22 = [localizedFailureReason length];
 
       if (v22)
       {
-        v23 = [v16 localizedFailureReason];
-        [v17 setObject:v23 forKey:*MEMORY[0x1E696A588]];
+        localizedFailureReason2 = [error localizedFailureReason];
+        [v17 setObject:localizedFailureReason2 forKey:*MEMORY[0x1E696A588]];
       }
 
       v24 = MEMORY[0x1E696ABC0];
-      v25 = [v16 domain];
-      v26 = [v24 errorWithDomain:v25 code:objc_msgSend(v16 userInfo:{"code"), v17}];
+      domain = [error domain];
+      v26 = [v24 errorWithDomain:domain code:objc_msgSend(error userInfo:{"code"), v17}];
       error = self->_error;
       self->_error = v26;
     }
@@ -152,10 +152,10 @@ void __74__WFRemoteExecutionAskEachTimeRequestResponse_writeMessageToWriter_erro
       _os_log_impl(&dword_1CA256000, v28, OS_LOG_TYPE_FAULT, "%s Failed to read ask each time request response protobuf, %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v29 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -163,10 +163,10 @@ void __74__WFRemoteExecutionAskEachTimeRequestResponse_writeMessageToWriter_erro
   return v10;
 }
 
-- (void)inflateInputtedStatesWithAction:(id)a3
+- (void)inflateInputtedStatesWithAction:(id)action
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
@@ -189,11 +189,11 @@ void __74__WFRemoteExecutionAskEachTimeRequestResponse_writeMessageToWriter_erro
 
         v10 = *(*(&v21 + 1) + 8 * i);
         v11 = MEMORY[0x1E696AE40];
-        v12 = [v10 value];
-        v13 = [v11 propertyListWithData:v12 options:0 format:0 error:0];
+        value = [v10 value];
+        v13 = [v11 propertyListWithData:value options:0 format:0 error:0];
 
         v14 = [v10 key];
-        v15 = [v4 parameterForKey:v14];
+        v15 = [actionCopy parameterForKey:v14];
 
         v16 = [objc_alloc(objc_msgSend(v15 "stateClass"))];
         if (v16)
@@ -216,15 +216,15 @@ void __74__WFRemoteExecutionAskEachTimeRequestResponse_writeMessageToWriter_erro
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (WFRemoteExecutionAskEachTimeRequestResponse)initWithOriginatingRequestIdentifier:(id)a3 inputtedStates:(id)a4 error:(id)a5
+- (WFRemoteExecutionAskEachTimeRequestResponse)initWithOriginatingRequestIdentifier:(id)identifier inputtedStates:(id)states error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  identifierCopy = identifier;
+  statesCopy = states;
+  errorCopy = error;
+  if (!identifierCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionAskEachTimeRequestResponse.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"requestIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionAskEachTimeRequestResponse.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"requestIdentifier"}];
   }
 
   v18.receiver = self;
@@ -233,20 +233,20 @@ void __74__WFRemoteExecutionAskEachTimeRequestResponse_writeMessageToWriter_erro
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_originatingRequestIdentifier, a3);
-    objc_storeStrong(&v14->_inputtedStates, a4);
-    objc_storeStrong(&v14->_error, a5);
+    objc_storeStrong(&v13->_originatingRequestIdentifier, identifier);
+    objc_storeStrong(&v14->_inputtedStates, states);
+    objc_storeStrong(&v14->_error, error);
     v15 = v14;
   }
 
   return v14;
 }
 
-- (WFRemoteExecutionAskEachTimeRequestResponse)initWithData:(id)a3 error:(id *)a4
+- (WFRemoteExecutionAskEachTimeRequestResponse)initWithData:(id)data error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = WFRemoteExecutionAskEachTimeRequestResponse;
-  return [(WFRemoteExecutionRequest *)&v5 initWithData:a3 error:a4];
+  return [(WFRemoteExecutionRequest *)&v5 initWithData:data error:error];
 }
 
 @end

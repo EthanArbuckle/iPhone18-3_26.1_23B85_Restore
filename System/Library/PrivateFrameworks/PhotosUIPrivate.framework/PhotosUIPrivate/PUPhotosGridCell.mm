@@ -1,27 +1,27 @@
 @interface PUPhotosGridCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PUPhotosGridCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PUPhotosGridCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)fillerEdgeInsets;
 - (void)_layoutTransitionFillerView;
 - (void)_updateCloudIcon;
 - (void)_updateContentViewClipsToBounds;
 - (void)_updateHighlight;
-- (void)_updateProgressImmediately:(BOOL)a3;
+- (void)_updateProgressImmediately:(BOOL)immediately;
 - (void)_updateSelectionBadge;
 - (void)_updateSubviewOrdering;
 - (void)addTemporaryPhotoContentView;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)dragStateDidChange:(int64_t)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)dragStateDidChange:(int64_t)change;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)removeTemporaryPhotoContentView;
-- (void)setCloudIconVisible:(BOOL)a3;
-- (void)setFillerEdgeInsets:(UIEdgeInsets)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setProgress:(id)a3 immediately:(BOOL)a4;
-- (void)setSelectionBadgeVisible:(BOOL)a3;
-- (void)setTemporaryPhotoImage:(id)a3 with:(int64_t)a4;
-- (void)setTransitionFillerViewEnabled:(BOOL)a3;
+- (void)setCloudIconVisible:(BOOL)visible;
+- (void)setFillerEdgeInsets:(UIEdgeInsets)insets;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setProgress:(id)progress immediately:(BOOL)immediately;
+- (void)setSelectionBadgeVisible:(BOOL)visible;
+- (void)setTemporaryPhotoImage:(id)image with:(int64_t)with;
+- (void)setTransitionFillerViewEnabled:(BOOL)enabled;
 - (void)updateConstraints;
 @end
 
@@ -40,57 +40,57 @@
   return result;
 }
 
-- (void)setProgress:(id)a3 immediately:(BOOL)a4
+- (void)setProgress:(id)progress immediately:(BOOL)immediately
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_progress != v7)
+  immediatelyCopy = immediately;
+  progressCopy = progress;
+  if (self->_progress != progressCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_progress, a3);
-    [(PUPhotosGridCell *)self _updateProgressImmediately:v4];
-    v7 = v8;
+    v8 = progressCopy;
+    objc_storeStrong(&self->_progress, progress);
+    [(PUPhotosGridCell *)self _updateProgressImmediately:immediatelyCopy];
+    progressCopy = v8;
   }
 }
 
-- (void)dragStateDidChange:(int64_t)a3
+- (void)dragStateDidChange:(int64_t)change
 {
   v5.receiver = self;
   v5.super_class = PUPhotosGridCell;
   [(PUPhotosGridCell *)&v5 dragStateDidChange:?];
-  if ([(PUPhotosGridCell *)self dragState]!= a3)
+  if ([(PUPhotosGridCell *)self dragState]!= change)
   {
-    [(PUPhotosGridCell *)self setDragState:a3];
+    [(PUPhotosGridCell *)self setDragState:change];
     [(PUPhotosGridCell *)self _updateSelectionBadge];
   }
 }
 
-- (void)setCloudIconVisible:(BOOL)a3
+- (void)setCloudIconVisible:(BOOL)visible
 {
-  if (self->_cloudIconVisible != a3)
+  if (self->_cloudIconVisible != visible)
   {
-    self->_cloudIconVisible = a3;
+    self->_cloudIconVisible = visible;
     [(PUPhotosGridCell *)self _updateCloudIcon];
   }
 }
 
-- (void)setSelectionBadgeVisible:(BOOL)a3
+- (void)setSelectionBadgeVisible:(BOOL)visible
 {
-  if (self->_selectionBadgeVisible != a3)
+  if (self->_selectionBadgeVisible != visible)
   {
-    self->_selectionBadgeVisible = a3;
+    self->_selectionBadgeVisible = visible;
     [(PUPhotosGridCell *)self _updateSelectionBadge];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(PUPhotosGridCell *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(PUPhotosGridCell *)self isHighlighted]!= highlighted)
   {
     v5.receiver = self;
     v5.super_class = PUPhotosGridCell;
-    [(PUPhotosGridCell *)&v5 setHighlighted:v3];
+    [(PUPhotosGridCell *)&v5 setHighlighted:highlightedCopy];
     [(PUPhotosGridCell *)self _updateHighlight];
   }
 }
@@ -108,36 +108,36 @@
   [(PUPhotosGridCell *)self setProgress:0 immediately:1];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v13 = a3;
+  attributesCopy = attributes;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v13 interactiveTransitionProgress];
+    [attributesCopy interactiveTransitionProgress];
     if (v4 >= 0.0)
     {
-      v5 = [(PUPhotosGridCell *)self transitionIsAppearing];
-      [v13 interactiveTransitionProgress];
+      transitionIsAppearing = [(PUPhotosGridCell *)self transitionIsAppearing];
+      [attributesCopy interactiveTransitionProgress];
       v7 = fmin(v6, 1.0);
-      v8 = [(PUPhotosGridCell *)self transitionFillerView];
-      v9 = v8;
-      if (v8)
+      transitionFillerView = [(PUPhotosGridCell *)self transitionFillerView];
+      v9 = transitionFillerView;
+      if (transitionFillerView)
       {
         v10 = 1.0 - v7;
-        if (v5)
+        if (transitionIsAppearing)
         {
           v10 = v7;
         }
 
-        [v8 setAlpha:v10];
+        [transitionFillerView setAlpha:v10];
       }
 
       temporaryPhotoContentView = self->_temporaryPhotoContentView;
       if (temporaryPhotoContentView)
       {
         v12 = 1.0 - v7;
-        if (!v5)
+        if (!transitionIsAppearing)
         {
           v12 = v7;
         }
@@ -148,13 +148,13 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PUPhotosGridCell *)self photoContentView];
-  v6 = [v5 contentHelper];
-  [v6 contentViewSizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  photoContentView = [(PUPhotosGridCell *)self photoContentView];
+  contentHelper = [photoContentView contentHelper];
+  [contentHelper contentViewSizeThatFits:{width, height}];
   v8 = v7;
   v10 = v9;
 
@@ -174,16 +174,16 @@
   {
     if (!self->_progressIndicatorViewConstraints)
     {
-      v3 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v4 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_progressIndicatorView attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
-      [(NSArray *)v3 addObject:v4];
+      [(NSArray *)array addObject:v4];
 
       v5 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_progressIndicatorView attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
-      [(NSArray *)v3 addObject:v5];
+      [(NSArray *)array addObject:v5];
 
-      [(PUPhotosGridCell *)self addConstraints:v3];
+      [(PUPhotosGridCell *)self addConstraints:array];
       progressIndicatorViewConstraints = self->_progressIndicatorViewConstraints;
-      self->_progressIndicatorViewConstraints = v3;
+      self->_progressIndicatorViewConstraints = array;
     }
   }
 }
@@ -192,8 +192,8 @@
 {
   if (self->_transitionFillerView)
   {
-    v3 = [(PUPhotosGridCell *)self contentView];
-    [v3 bounds];
+    contentView = [(PUPhotosGridCell *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -204,9 +204,9 @@
     v13 = (self->_fillerEdgeInsets.bottom - self->_fillerEdgeInsets.top) * 0.5;
     memset(&v16, 0, sizeof(v16));
     CGAffineTransformMakeTranslation(&v16, v12, v13);
-    v14 = [(UIView *)self->_transitionFillerView layer];
+    layer = [(UIView *)self->_transitionFillerView layer];
     v15 = v16;
-    [v14 setContentsTransform:&v15];
+    [layer setContentsTransform:&v15];
   }
 }
 
@@ -220,13 +220,13 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PUPhotosGridCell *)self contentView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  contentView = [(PUPhotosGridCell *)self contentView];
+  [contentView setFrame:{v4, v6, v8, v10}];
 
   [(PUPhotoView *)self->_temporaryPhotoContentView setFrame:v4, v6, v8, v10];
-  v12 = [(PUPhotosGridCell *)self photoContentView];
-  v13 = [v12 contentHelper];
-  [v13 imageContentFrame];
+  photoContentView = [(PUPhotosGridCell *)self photoContentView];
+  contentHelper = [photoContentView contentHelper];
+  [contentHelper imageContentFrame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -260,9 +260,9 @@
   v38.size.width = v19;
   v38.size.height = v21;
   [(UIImageView *)self->_cloudIconImageView setFrame:v31, CGRectGetMaxY(v38) - v30 + -5.0, v28, v30];
-  v32 = [(PUPhotosGridCell *)self photoContentView];
-  v33 = [v32 contentHelper];
-  [v33 layoutSubviewsOfContentView];
+  photoContentView2 = [(PUPhotosGridCell *)self photoContentView];
+  contentHelper2 = [photoContentView2 contentHelper];
+  [contentHelper2 layoutSubviewsOfContentView];
 
   [(PUPhotosGridCell *)self _layoutTransitionFillerView];
 }
@@ -290,9 +290,9 @@
   [(PUPhotosGridCell *)self bringSubviewToFront:temporaryPhotoContentView];
 }
 
-- (void)_updateProgressImmediately:(BOOL)a3
+- (void)_updateProgressImmediately:(BOOL)immediately
 {
-  v3 = a3;
+  immediatelyCopy = immediately;
   progress = self->_progress;
   progressIndicatorView = self->_progressIndicatorView;
   if (!progress)
@@ -315,7 +315,7 @@
     v15[3] = &unk_1E7B80DD0;
     v16 = v9;
     v12 = v9;
-    [(PUProgressIndicatorView *)v12 endShowingProgressImmediately:v3 animated:v3 ^ 1 withCompletionHandler:v15];
+    [(PUProgressIndicatorView *)v12 endShowingProgressImmediately:immediatelyCopy animated:immediatelyCopy ^ 1 withCompletionHandler:v15];
 
 LABEL_6:
     progressIndicatorView = self->_progressIndicatorView;
@@ -334,7 +334,7 @@ LABEL_6:
     self->_progressIndicatorView = v7;
 
     [(PUProgressIndicatorView *)self->_progressIndicatorView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(PUProgressIndicatorView *)self->_progressIndicatorView beginShowingProgressImmediately:v3 animated:v3 ^ 1];
+    [(PUProgressIndicatorView *)self->_progressIndicatorView beginShowingProgressImmediately:immediatelyCopy animated:immediatelyCopy ^ 1];
     [(PUPhotosGridCell *)self addSubview:self->_progressIndicatorView];
     [(PUPhotosGridCell *)self _updateSubviewOrdering];
     [(PUPhotosGridCell *)self setNeedsUpdateConstraints];
@@ -396,8 +396,8 @@ LABEL_7:
 
       [(UIView *)self->_selectionOverlayView setUserInteractionEnabled:0];
       v11 = self->_selectionOverlayView;
-      v12 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      [(UIView *)v11 setBackgroundColor:v12];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      [(UIView *)v11 setBackgroundColor:systemBackgroundColor];
 
       [(UIView *)self->_selectionOverlayView setAlpha:0.25];
       [(PUPhotosGridCell *)self addSubview:self->_selectionOverlayView];
@@ -411,8 +411,8 @@ LABEL_7:
     else
     {
       v13 = MEMORY[0x1E69DD250];
-      v14 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v15 = [v13 px_circularGlyphViewWithName:@"checkmark.circle" backgroundColor:v14];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      v15 = [v13 px_circularGlyphViewWithName:@"checkmark.circle" backgroundColor:systemBlueColor];
       selectionBadgeView = self->_selectionBadgeView;
       self->_selectionBadgeView = v15;
 
@@ -429,10 +429,10 @@ LABEL_7:
     v4 = 1;
   }
 
-  v5 = [MEMORY[0x1E69C35C0] sharedInstance];
-  v6 = [v5 disableSelectionOverlayView];
+  mEMORY[0x1E69C35C0] = [MEMORY[0x1E69C35C0] sharedInstance];
+  disableSelectionOverlayView = [mEMORY[0x1E69C35C0] disableSelectionOverlayView];
 
-  [(UIView *)self->_selectionOverlayView setHidden:v4 | v6];
+  [(UIView *)self->_selectionOverlayView setHidden:v4 | disableSelectionOverlayView];
   [(UIView *)self->_selectionBadgeView setHidden:v4];
   [(PUPhotosGridCell *)self _updateCloudIcon];
   if (v3)
@@ -458,8 +458,8 @@ LABEL_7:
 
       [(UIView *)self->_highlightOverlayView setUserInteractionEnabled:0];
       v7 = self->_highlightOverlayView;
-      v8 = [MEMORY[0x1E69DC888] labelColor];
-      [(UIView *)v7 setBackgroundColor:v8];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(UIView *)v7 setBackgroundColor:labelColor];
 
       [(UIView *)self->_highlightOverlayView setAlpha:0.5];
       [(PUPhotosGridCell *)self addSubview:self->_highlightOverlayView];
@@ -478,15 +478,15 @@ LABEL_7:
   [(PUPhotosGridCell *)self setNeedsLayout];
 }
 
-- (void)setFillerEdgeInsets:(UIEdgeInsets)a3
+- (void)setFillerEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_fillerEdgeInsets.top, v3), vceqq_f64(*&self->_fillerEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_fillerEdgeInsets = a3;
+    self->_fillerEdgeInsets = insets;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __40__PUPhotosGridCell_setFillerEdgeInsets___block_invoke;
@@ -496,12 +496,12 @@ LABEL_7:
   }
 }
 
-- (void)setTransitionFillerViewEnabled:(BOOL)a3
+- (void)setTransitionFillerViewEnabled:(BOOL)enabled
 {
-  if (self->_transitionFillerViewEnabled != a3)
+  if (self->_transitionFillerViewEnabled != enabled)
   {
-    self->_transitionFillerViewEnabled = a3;
-    if (a3)
+    self->_transitionFillerViewEnabled = enabled;
+    if (enabled)
     {
       v5 = objc_alloc(MEMORY[0x1E69DD250]);
       v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -513,8 +513,8 @@ LABEL_7:
       [(PUPhotosGridCell *)self _updateSubviewOrdering];
       v8 = +[PUInterfaceManager currentTheme];
       v9 = self->_transitionFillerView;
-      v10 = [v8 photoCollectionViewBackgroundColor];
-      [(UIView *)v9 setBackgroundColor:v10];
+      photoCollectionViewBackgroundColor = [v8 photoCollectionViewBackgroundColor];
+      [(UIView *)v9 setBackgroundColor:photoCollectionViewBackgroundColor];
 
       [(UIView *)self->_transitionFillerView setOpaque:1];
     }
@@ -530,21 +530,21 @@ LABEL_7:
   }
 }
 
-- (void)setTemporaryPhotoImage:(id)a3 with:(int64_t)a4
+- (void)setTemporaryPhotoImage:(id)image with:(int64_t)with
 {
   temporaryPhotoContentView = self->_temporaryPhotoContentView;
-  v7 = a3;
-  v8 = [(PUPhotoView *)temporaryPhotoContentView contentHelper];
-  [v8 setPhotoImage:v7];
+  imageCopy = image;
+  contentHelper = [(PUPhotoView *)temporaryPhotoContentView contentHelper];
+  [contentHelper setPhotoImage:imageCopy];
 
-  v9 = [(PUPhotoView *)self->_temporaryPhotoContentView contentHelper];
-  v10 = [(PUPhotosGridCell *)self photoContentView];
-  v11 = [v10 contentHelper];
-  [v11 photoSize];
-  [v9 setPhotoSize:?];
+  contentHelper2 = [(PUPhotoView *)self->_temporaryPhotoContentView contentHelper];
+  photoContentView = [(PUPhotosGridCell *)self photoContentView];
+  contentHelper3 = [photoContentView contentHelper];
+  [contentHelper3 photoSize];
+  [contentHelper2 setPhotoSize:?];
 
-  v12 = [(PUPhotoView *)self->_temporaryPhotoContentView contentHelper];
-  [v12 setFillMode:a4];
+  contentHelper4 = [(PUPhotoView *)self->_temporaryPhotoContentView contentHelper];
+  [contentHelper4 setFillMode:with];
 }
 
 - (void)removeTemporaryPhotoContentView
@@ -559,18 +559,18 @@ LABEL_7:
   if (!self->_temporaryPhotoContentView)
   {
     v3 = [PUPhotoView alloc];
-    v4 = [(PUPhotosGridCell *)self contentView];
-    [v4 bounds];
+    contentView = [(PUPhotosGridCell *)self contentView];
+    [contentView bounds];
     v5 = [(PUPhotoView *)v3 initWithFrame:?];
     temporaryPhotoContentView = self->_temporaryPhotoContentView;
     self->_temporaryPhotoContentView = v5;
 
-    v7 = [(PUPhotoView *)self->_temporaryPhotoContentView contentHelper];
-    [v7 setAvoidsImageViewIfPossible:1];
+    contentHelper = [(PUPhotoView *)self->_temporaryPhotoContentView contentHelper];
+    [contentHelper setAvoidsImageViewIfPossible:1];
 
     [(PUPhotoView *)self->_temporaryPhotoContentView setAlpha:0.0];
-    v8 = [(PUPhotoView *)self->_temporaryPhotoContentView layer];
-    [v8 setAllowsGroupOpacity:0];
+    layer = [(PUPhotoView *)self->_temporaryPhotoContentView layer];
+    [layer setAllowsGroupOpacity:0];
 
     [(PUPhotosGridCell *)self addSubview:self->_temporaryPhotoContentView];
 
@@ -578,25 +578,25 @@ LABEL_7:
   }
 }
 
-- (PUPhotosGridCell)initWithFrame:(CGRect)a3
+- (PUPhotosGridCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PUPhotosGridCell;
-  v4 = [(PUPhotosGridCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PUPhotosGridCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PUPhotosGridCell *)v4 contentView];
+    contentView = [(PUPhotosGridCell *)v4 contentView];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:v5 file:@"PUPhotosGridCell.m" lineNumber:63 description:{@"The content view must be a PUPhotoView: %@", v6}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v5 file:@"PUPhotosGridCell.m" lineNumber:63 description:{@"The content view must be a PUPhotoView: %@", contentView}];
     }
 
-    [(PUPhotosGridCell *)v5 setPhotoContentView:v6];
-    v7 = [(PUPhotosGridCell *)v5 layer];
-    [v7 setAllowsGroupOpacity:0];
+    [(PUPhotosGridCell *)v5 setPhotoContentView:contentView];
+    layer = [(PUPhotosGridCell *)v5 layer];
+    [layer setAllowsGroupOpacity:0];
   }
 
   return v5;

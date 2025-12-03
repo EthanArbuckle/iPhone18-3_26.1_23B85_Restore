@@ -1,21 +1,21 @@
 @interface SYNotesActivationCommand
 + (Class)_iOSImpl;
-+ (void)activateWithDomainIdentifier:(id)a3 noteIdentifier:(id)a4 completion:(id)a5;
-+ (void)activateWithMetaActivity:(id)a3 completion:(id)a4;
-+ (void)setRemotePresentationEnabled:(BOOL)a3;
++ (void)activateWithDomainIdentifier:(id)identifier noteIdentifier:(id)noteIdentifier completion:(id)completion;
++ (void)activateWithMetaActivity:(id)activity completion:(id)completion;
++ (void)setRemotePresentationEnabled:(BOOL)enabled;
 - (SYNotesActivationCommand)init;
-- (void)_loadDataFromFileURLs:(id)a3 withCompletion:(id)a4;
-- (void)activateWithCompletion:(id)a3;
+- (void)_loadDataFromFileURLs:(id)ls withCompletion:(id)completion;
+- (void)activateWithCompletion:(id)completion;
 @end
 
 @implementation SYNotesActivationCommand
 
-+ (void)setRemotePresentationEnabled:(BOOL)a3
++ (void)setRemotePresentationEnabled:(BOOL)enabled
 {
   v8 = *MEMORY[0x277D85DE8];
   if (SYIsPhone())
   {
-    SYRemotePresentationEnabled = a3;
+    SYRemotePresentationEnabled = enabled;
     v5 = os_log_create("com.apple.synapse", "");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -37,19 +37,19 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)activateWithMetaActivity:(id)a3 completion:(id)a4
++ (void)activateWithMetaActivity:(id)activity completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [objc_msgSend(a1 "_iOSImpl")];
+  completionCopy = completion;
+  activityCopy = activity;
+  [objc_msgSend(self "_iOSImpl")];
 }
 
-+ (void)activateWithDomainIdentifier:(id)a3 noteIdentifier:(id)a4 completion:(id)a5
++ (void)activateWithDomainIdentifier:(id)identifier noteIdentifier:(id)noteIdentifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [objc_msgSend(a1 "_iOSImpl")];
+  completionCopy = completion;
+  noteIdentifierCopy = noteIdentifier;
+  identifierCopy = identifier;
+  [objc_msgSend(self "_iOSImpl")];
 }
 
 + (Class)_iOSImpl
@@ -59,8 +59,8 @@
     v2 = off_27856B040;
     if ((SYRemotePresentationEnabled & 1) == 0)
     {
-      v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v4 = [v3 BOOLForKey:@"SYEnableSystemPaperRemoteAlert"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v4 = [standardUserDefaults BOOLForKey:@"SYEnableSystemPaperRemoteAlert"];
 
       if (!v4)
       {
@@ -95,66 +95,66 @@
   return v2;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x277CC1EF0]) initWithActivityType:@"com.apple.notes.activity.insert-data"];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __51__SYNotesActivationCommand_activateWithCompletion___block_invoke;
   v34[3] = &unk_27856C3F0;
   v7 = v5;
   v35 = v7;
-  v8 = v6;
+  v8 = dictionary;
   v36 = v8;
-  v37 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = completionCopy;
   v38 = v9;
   v10 = MEMORY[0x22AA6A360](v34);
-  v11 = [(SYNotesActivationCommand *)self activationRequest];
-  v12 = [v11 urls];
-  v13 = [v12 count];
+  activationRequest = [(SYNotesActivationCommand *)self activationRequest];
+  urls = [activationRequest urls];
+  v13 = [urls count];
 
   if (v13)
   {
-    v14 = [(SYNotesActivationCommand *)self activationRequest];
-    v15 = [v14 urls];
-    [v8 setObject:v15 forKeyedSubscript:@"SYContentItemURLs"];
+    activationRequest2 = [(SYNotesActivationCommand *)self activationRequest];
+    urls2 = [activationRequest2 urls];
+    [v8 setObject:urls2 forKeyedSubscript:@"SYContentItemURLs"];
   }
 
-  v16 = [(SYNotesActivationCommand *)self activationRequest];
-  v17 = [v16 imagesData];
-  v18 = [v17 count];
+  activationRequest3 = [(SYNotesActivationCommand *)self activationRequest];
+  imagesData = [activationRequest3 imagesData];
+  v18 = [imagesData count];
 
   if (v18)
   {
-    v19 = [(SYNotesActivationCommand *)self activationRequest];
-    v20 = [v19 imagesData];
-    [v8 setObject:v20 forKeyedSubscript:@"SYContentItemImageData"];
+    activationRequest4 = [(SYNotesActivationCommand *)self activationRequest];
+    imagesData2 = [activationRequest4 imagesData];
+    [v8 setObject:imagesData2 forKeyedSubscript:@"SYContentItemImageData"];
   }
 
-  v21 = [(SYNotesActivationCommand *)self activationRequest];
-  v22 = [v21 imageFileURLs];
-  v23 = [v22 count];
+  activationRequest5 = [(SYNotesActivationCommand *)self activationRequest];
+  imageFileURLs = [activationRequest5 imageFileURLs];
+  v23 = [imageFileURLs count];
 
   if (v23)
   {
-    v24 = [(SYNotesActivationCommand *)self activationRequest];
-    v25 = [v24 imageFileURLs];
+    activationRequest6 = [(SYNotesActivationCommand *)self activationRequest];
+    imageFileURLs2 = [activationRequest6 imageFileURLs];
     v28 = MEMORY[0x277D85DD0];
     v29 = 3221225472;
     v30 = __51__SYNotesActivationCommand_activateWithCompletion___block_invoke_14;
     v31 = &unk_27856B830;
     v32 = v8;
     v33 = v10;
-    [(SYNotesActivationCommand *)self _loadDataFromFileURLs:v25 withCompletion:&v28];
+    [(SYNotesActivationCommand *)self _loadDataFromFileURLs:imageFileURLs2 withCompletion:&v28];
   }
 
   v26 = [(SYNotesActivationCommand *)self activationRequest:v28];
-  v27 = [v26 shouldAutoInsertLinkToCurrentActivity];
+  shouldAutoInsertLinkToCurrentActivity = [v26 shouldAutoInsertLinkToCurrentActivity];
 
-  if (v27)
+  if (shouldAutoInsertLinkToCurrentActivity)
   {
     [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SYAutoInsertLinkToCurrentUserActivity"];
   }
@@ -225,11 +225,11 @@ uint64_t __51__SYNotesActivationCommand_activateWithCompletion___block_invoke_2(
   return v5();
 }
 
-- (void)_loadDataFromFileURLs:(id)a3 withCompletion:(id)a4
+- (void)_loadDataFromFileURLs:(id)ls withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  lsCopy = ls;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [SYNotesActivationCommand _loadDataFromFileURLs:a2 withCompletion:self];
   }
@@ -239,10 +239,10 @@ uint64_t __51__SYNotesActivationCommand_activateWithCompletion___block_invoke_2(
   v12[1] = 3221225472;
   v12[2] = __65__SYNotesActivationCommand__loadDataFromFileURLs_withCompletion___block_invoke;
   v12[3] = &unk_27856B978;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = lsCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = lsCopy;
   dispatch_async(dataLoadingQueue, v12);
 }
 

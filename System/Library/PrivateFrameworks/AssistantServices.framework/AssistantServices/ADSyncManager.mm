@@ -1,33 +1,33 @@
 @interface ADSyncManager
-- (ADSyncManager)initWithServiceManager:(id)a3 queue:(id)a4;
-- (BOOL)shouldSyncEverythingForReason:(id)a3;
-- (BOOL)shouldSyncIntentPolicyForSyncKeys:(id)a3;
+- (ADSyncManager)initWithServiceManager:(id)manager queue:(id)queue;
+- (BOOL)shouldSyncEverythingForReason:(id)reason;
+- (BOOL)shouldSyncIntentPolicyForSyncKeys:(id)keys;
 - (id)_preferredSyncKeyOrder;
-- (id)_sortedAnchorsFromAnchors:(id)a3;
+- (id)_sortedAnchorsFromAnchors:(id)anchors;
 - (id)queuedAnchors;
-- (id)syncKeysForReason:(id)a3;
+- (id)syncKeysForReason:(id)reason;
 - (void)_continueSync;
 - (void)_finishSync;
-- (void)_invokeContinueBlockWithKeepGoingArgument:(BOOL)a3;
-- (void)_setAnchorsToSync:(id)a3;
+- (void)_invokeContinueBlockWithKeepGoingArgument:(BOOL)argument;
+- (void)_setAnchorsToSync:(id)sync;
 - (void)_setCurrentAnchorToNext;
-- (void)_syncFinishedForService:(id)a3 error:(id)a4;
-- (void)_syncingService:(id)a3 withSyncInfo:(id)a4 receivedChunk:(id)a5 continueBlock:(id)a6;
+- (void)_syncFinishedForService:(id)service error:(id)error;
+- (void)_syncingService:(id)service withSyncInfo:(id)info receivedChunk:(id)chunk continueBlock:(id)block;
 - (void)_waitUntilSafeToContinue;
-- (void)addQueuedAnchors:(id)a3 forReasons:(id)a4;
-- (void)cancelSyncForAnchor:(id)a3;
+- (void)addQueuedAnchors:(id)anchors forReasons:(id)reasons;
+- (void)cancelSyncForAnchor:(id)anchor;
 - (void)clearQueuedAnchorsAndReasons;
 - (void)continueSync;
-- (void)prepareSyncWithAnchors:(id)a3 forReasons:(id)a4 delegate:(id)a5;
+- (void)prepareSyncWithAnchors:(id)anchors forReasons:(id)reasons delegate:(id)delegate;
 - (void)reset;
-- (void)serviceTimedoutForSync:(id)a3;
+- (void)serviceTimedoutForSync:(id)sync;
 @end
 
 @implementation ADSyncManager
 
 - (void)reset
 {
-  v3 = [(ADSyncManager *)self isSyncing];
+  isSyncing = [(ADSyncManager *)self isSyncing];
   v4 = self->_delegate;
   [(ADSyncManager *)self cancelSyncForAnchor:self->_currentAnchor];
   delegate = self->_delegate;
@@ -60,7 +60,7 @@
   timedoutServices = self->_timedoutServices;
   self->_timedoutServices = 0;
 
-  if (v3)
+  if (isSyncing)
   {
     v15 = AFSiriLogContextSync;
     if (os_log_type_enabled(AFSiriLogContextSync, OS_LOG_TYPE_INFO))
@@ -166,11 +166,11 @@ LABEL_14:
   }
 }
 
-- (void)serviceTimedoutForSync:(id)a3
+- (void)serviceTimedoutForSync:(id)sync
 {
   timedoutServices = self->_timedoutServices;
-  v5 = [a3 identifier];
-  [(NSMutableSet *)timedoutServices addObject:v5];
+  identifier = [sync identifier];
+  [(NSMutableSet *)timedoutServices addObject:identifier];
 
   if ([(NSMutableSet *)self->_timedoutServices count]>= 3)
   {
@@ -186,25 +186,25 @@ LABEL_14:
   }
 }
 
-- (void)_invokeContinueBlockWithKeepGoingArgument:(BOOL)a3
+- (void)_invokeContinueBlockWithKeepGoingArgument:(BOOL)argument
 {
   continueBlock = self->_continueBlock;
   if (continueBlock)
   {
-    v5 = a3;
+    argumentCopy = argument;
     v7 = objc_retainBlock(continueBlock);
     v6 = self->_continueBlock;
     self->_continueBlock = 0;
 
-    v7[2](v7, v5);
+    v7[2](v7, argumentCopy);
   }
 }
 
-- (void)cancelSyncForAnchor:(id)a3
+- (void)cancelSyncForAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = self->_currentAnchor;
-  v6 = v4;
+  v6 = anchorCopy;
   v7 = [(SASyncAnchor *)v5 key];
   v8 = [v6 key];
   if (v7 | v8 && ![v7 isEqual:v8])
@@ -213,12 +213,12 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v9 = [(SASyncAnchor *)v5 appMetaData];
-  v10 = [v6 appMetaData];
-  if (v9 | v10)
+  appMetaData = [(SASyncAnchor *)v5 appMetaData];
+  appMetaData2 = [v6 appMetaData];
+  if (appMetaData | appMetaData2)
   {
-    v11 = v10;
-    v12 = [v9 isEqual:v10];
+    v11 = appMetaData2;
+    v12 = [appMetaData isEqual:appMetaData2];
 
     if ((v12 & 1) == 0)
     {
@@ -299,13 +299,13 @@ LABEL_13:
 
 - (id)queuedAnchors
 {
-  v3 = [(NSMutableDictionary *)self->_queuedAnchorsByNormalizedKey count];
-  if (v3)
+  allValues = [(NSMutableDictionary *)self->_queuedAnchorsByNormalizedKey count];
+  if (allValues)
   {
-    v3 = [(NSMutableDictionary *)self->_queuedAnchorsByNormalizedKey allValues];
+    allValues = [(NSMutableDictionary *)self->_queuedAnchorsByNormalizedKey allValues];
   }
 
-  return v3;
+  return allValues;
 }
 
 - (void)clearQueuedAnchorsAndReasons
@@ -317,10 +317,10 @@ LABEL_13:
   self->_queuedReasons = 0;
 }
 
-- (void)addQueuedAnchors:(id)a3 forReasons:(id)a4
+- (void)addQueuedAnchors:(id)anchors forReasons:(id)reasons
 {
-  v6 = a3;
-  v7 = a4;
+  anchorsCopy = anchors;
+  reasonsCopy = reasons;
   if (!self->_queuedAnchorsByNormalizedKey)
   {
     v8 = objc_alloc_init(NSMutableDictionary);
@@ -348,8 +348,8 @@ LABEL_13:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v36 + 1) + 8 * i) _af_normalizedKey];
-        [v10 addObject:v16];
+        _af_normalizedKey = [*(*(&v36 + 1) + 8 * i) _af_normalizedKey];
+        [v10 addObject:_af_normalizedKey];
       }
 
       v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v36 objects:v47 count:16];
@@ -362,7 +362,7 @@ LABEL_13:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v17 = v6;
+  v17 = anchorsCopy;
   v18 = [v17 countByEnumeratingWithState:&v32 objects:v46 count:16];
   if (v18)
   {
@@ -378,10 +378,10 @@ LABEL_13:
         }
 
         v22 = *(*(&v32 + 1) + 8 * j);
-        v23 = [v22 _af_normalizedKey];
-        if (([v10 containsObject:v23] & 1) == 0)
+        _af_normalizedKey2 = [v22 _af_normalizedKey];
+        if (([v10 containsObject:_af_normalizedKey2] & 1) == 0)
         {
-          [(NSMutableDictionary *)self->_queuedAnchorsByNormalizedKey setObject:v22 forKey:v23];
+          [(NSMutableDictionary *)self->_queuedAnchorsByNormalizedKey setObject:v22 forKey:_af_normalizedKey2];
         }
       }
 
@@ -401,29 +401,29 @@ LABEL_13:
     queuedReasons = self->_queuedReasons;
   }
 
-  [(NSMutableSet *)queuedReasons addObjectsFromArray:v7, v32];
+  [(NSMutableSet *)queuedReasons addObjectsFromArray:reasonsCopy, v32];
   v27 = AFSiriLogContextSync;
   if (os_log_type_enabled(AFSiriLogContextSync, OS_LOG_TYPE_DEBUG))
   {
     v28 = self->_queuedAnchorsByNormalizedKey;
     v29 = v27;
-    v30 = [(NSMutableDictionary *)v28 allKeys];
+    allKeys = [(NSMutableDictionary *)v28 allKeys];
     v31 = self->_queuedReasons;
     *buf = 136315650;
     v41 = "[ADSyncManager addQueuedAnchors:forReasons:]";
     v42 = 2112;
-    v43 = v30;
+    v43 = allKeys;
     v44 = 2112;
     v45 = v31;
     _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "%s Anchors in queue: %@ for reasons: %@", buf, 0x20u);
   }
 }
 
-- (void)prepareSyncWithAnchors:(id)a3 forReasons:(id)a4 delegate:(id)a5
+- (void)prepareSyncWithAnchors:(id)anchors forReasons:(id)reasons delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  anchorsCopy = anchors;
+  reasonsCopy = reasons;
+  delegateCopy = delegate;
   if (self->_delegate)
   {
     v24 = +[NSAssertionHandler currentHandler];
@@ -431,7 +431,7 @@ LABEL_13:
   }
 
   v12 = +[ADAudioFileWriter _savedAudioFilesDirectory]_0();
-  objc_storeStrong(&self->_delegate, a5);
+  objc_storeStrong(&self->_delegate, delegate);
   v13 = objc_alloc_init(NSUUID);
   currentSyncID = self->_currentSyncID;
   self->_currentSyncID = v13;
@@ -445,13 +445,13 @@ LABEL_13:
     v27 = 2112;
     v28 = v16;
     v29 = 2112;
-    v30 = v10;
+    v30 = reasonsCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s Preparing sync with ID %@ for reasons: %@", &v25, 0x20u);
   }
 
-  v17 = [(ADSyncManager *)self _sortedAnchorsFromAnchors:v9];
+  v17 = [(ADSyncManager *)self _sortedAnchorsFromAnchors:anchorsCopy];
   [(ADSyncManager *)self _setAnchorsToSync:v17];
-  v18 = [[NSSet alloc] initWithArray:v10];
+  v18 = [[NSSet alloc] initWithArray:reasonsCopy];
   currentSyncReasons = self->_currentSyncReasons;
   self->_currentSyncReasons = v18;
 
@@ -467,19 +467,19 @@ LABEL_13:
   [(ADSyncManagerDelegate *)self->_delegate syncManagerIsPausingSync:self];
 }
 
-- (id)_sortedAnchorsFromAnchors:(id)a3
+- (id)_sortedAnchorsFromAnchors:(id)anchors
 {
-  v4 = a3;
-  if ([v4 count])
+  anchorsCopy = anchors;
+  if ([anchorsCopy count])
   {
-    v23 = self;
-    v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    selfCopy = self;
+    v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(anchorsCopy, "count")}];
     v6 = objc_alloc_init(NSMutableArray);
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = v4;
+    v7 = anchorsCopy;
     v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v8)
     {
@@ -514,14 +514,14 @@ LABEL_13:
     }
 
     v15 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
-    v16 = [(ADSyncManager *)v23 _preferredSyncKeyOrder];
-    v17 = [v16 count];
+    _preferredSyncKeyOrder = [(ADSyncManager *)selfCopy _preferredSyncKeyOrder];
+    v17 = [_preferredSyncKeyOrder count];
     if (v17)
     {
       v18 = v17 - 1;
       do
       {
-        v19 = [v16 objectAtIndex:v18];
+        v19 = [_preferredSyncKeyOrder objectAtIndex:v18];
         v20 = [v5 objectForKey:v19];
         if (v20)
         {
@@ -535,10 +535,10 @@ LABEL_13:
       while (v18 != -1);
     }
 
-    v21 = [v5 allValues];
-    if (v21)
+    allValues = [v5 allValues];
+    if (allValues)
     {
-      [v6 addObjectsFromArray:v21];
+      [v6 addObjectsFromArray:allValues];
     }
 
     if (v15)
@@ -549,25 +549,25 @@ LABEL_13:
 
   else
   {
-    v6 = v4;
+    v6 = anchorsCopy;
   }
 
   return v6;
 }
 
-- (void)_syncFinishedForService:(id)a3 error:(id)a4
+- (void)_syncFinishedForService:(id)service error:(id)error
 {
-  [a3 setDelegate:0];
+  [service setDelegate:0];
   currentSyncService = self->_currentSyncService;
   self->_currentSyncService = 0;
 
-  if (!a4 && !self->_currentSyncShouldCancel)
+  if (!error && !self->_currentSyncShouldCancel)
   {
-    v7 = [(ADSyncManager *)self _currentAnchor];
-    if (v7)
+    _currentAnchor = [(ADSyncManager *)self _currentAnchor];
+    if (_currentAnchor)
     {
-      [(NSMutableArray *)self->_syncedAnchors addObject:v7];
-      v8 = [v7 key];
+      [(NSMutableArray *)self->_syncedAnchors addObject:_currentAnchor];
+      v8 = [_currentAnchor key];
       v10 = v8;
       v9 = [NSArray arrayWithObjects:&v10 count:1];
       sub_1002F3A14(v9);
@@ -579,66 +579,66 @@ LABEL_13:
   [(ADSyncManagerDelegate *)self->_delegate syncManagerIsPausingSync:self];
 }
 
-- (void)_syncingService:(id)a3 withSyncInfo:(id)a4 receivedChunk:(id)a5 continueBlock:(id)a6
+- (void)_syncingService:(id)service withSyncInfo:(id)info receivedChunk:(id)chunk continueBlock:(id)block
 {
-  v39 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 appMetadata];
-  v14 = [v13 appIdentifyingInfo];
+  serviceCopy = service;
+  infoCopy = info;
+  chunkCopy = chunk;
+  blockCopy = block;
+  appMetadata = [infoCopy appMetadata];
+  appIdentifyingInfo = [appMetadata appIdentifyingInfo];
 
-  v15 = [v11 toAdd];
-  *(&v38 + 1) = [v15 count];
+  toAdd = [chunkCopy toAdd];
+  *(&v38 + 1) = [toAdd count];
 
-  v16 = [v11 toRemove];
-  *&v38 = [v16 count];
+  toRemove = [chunkCopy toRemove];
+  *&v38 = [toRemove count];
 
   v17 = AFSiriLogContextSync;
   if (os_log_type_enabled(AFSiriLogContextSync, OS_LOG_TYPE_INFO))
   {
     log = v17;
-    v36 = [v10 key];
-    v37 = [v10 anchor];
-    v35 = [v10 validity];
-    v32 = [v10 count];
-    v28 = [v14 bundleId];
-    v27 = [v14 version];
-    v18 = [v14 clientIdentifier];
-    v19 = [v14 buildNumber];
-    v29 = [v10 appMetadata];
-    [v29 syncSlots];
-    v20 = v30 = v10;
-    v21 = [v11 pre];
-    v22 = [v11 post];
-    [v11 validity];
-    v23 = v33 = v12;
+    v36 = [infoCopy key];
+    anchor = [infoCopy anchor];
+    validity = [infoCopy validity];
+    v32 = [infoCopy count];
+    bundleId = [appIdentifyingInfo bundleId];
+    version = [appIdentifyingInfo version];
+    clientIdentifier = [appIdentifyingInfo clientIdentifier];
+    buildNumber = [appIdentifyingInfo buildNumber];
+    appMetadata2 = [infoCopy appMetadata];
+    [appMetadata2 syncSlots];
+    v20 = v30 = infoCopy;
+    v21 = [chunkCopy pre];
+    post = [chunkCopy post];
+    [chunkCopy validity];
+    v23 = v33 = blockCopy;
     *buf = 136318978;
     v41 = "[ADSyncManager _syncingService:withSyncInfo:receivedChunk:continueBlock:]";
     v42 = 2112;
-    v43 = v39;
+    v43 = serviceCopy;
     v44 = 2112;
     v45 = v36;
     v46 = 2112;
-    v47 = v37;
+    v47 = anchor;
     v48 = 2112;
-    v49 = v35;
+    v49 = validity;
     v50 = 2048;
     v51 = v32;
     v52 = 2112;
-    v53 = v28;
+    v53 = bundleId;
     v54 = 2112;
-    v55 = v27;
+    v55 = version;
     v56 = 2112;
-    v57 = v18;
+    v57 = clientIdentifier;
     v58 = 2112;
-    v59 = v19;
+    v59 = buildNumber;
     v60 = 2112;
     v61 = v20;
     v62 = 2112;
     v63 = v21;
     v64 = 2112;
-    v65 = v22;
+    v65 = post;
     v66 = 2112;
     v67 = v23;
     v68 = 2048;
@@ -647,8 +647,8 @@ LABEL_13:
     v71 = v38;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s %@  Sync - key: %@  anchor: %@  validity: %@  count %lu\nApp Metadata - bundleId: %@  version: %@  clientIdentifier: %@  buildNumber: %@  syncSlots: %@\nChunk - pre: %@  post: %@  validity: %@  toAdd: %lu  toRemove: %lu", buf, 0xA2u);
 
-    v12 = v33;
-    v10 = v30;
+    blockCopy = v33;
+    infoCopy = v30;
   }
 
   if (self->_continueBlock)
@@ -659,31 +659,31 @@ LABEL_13:
 
   if (self->_currentSyncShouldCancel)
   {
-    v12[2](v12, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
   else
   {
-    [(ADSyncManager *)self _setContinueBlock:v12];
+    [(ADSyncManager *)self _setContinueBlock:blockCopy];
     if (v38 != 0)
     {
       self->_currentSyncHasChanges = 1;
     }
 
-    v24 = [v11 post];
+    post2 = [chunkCopy post];
     currentSyncGeneration = self->_currentSyncGeneration;
-    self->_currentSyncGeneration = v24;
+    self->_currentSyncGeneration = post2;
 
-    [(ADSyncManagerDelegate *)self->_delegate syncManager:self chunkForSyncInfo:v10 chunkInfo:v11];
+    [(ADSyncManagerDelegate *)self->_delegate syncManager:self chunkForSyncInfo:infoCopy chunkInfo:chunkCopy];
     [(ADSyncManagerDelegate *)self->_delegate syncManagerIsPausingSync:self];
   }
 }
 
 - (void)_setCurrentAnchorToNext
 {
-  v3 = [(NSMutableArray *)self->_anchorsToSync lastObject];
-  [(ADSyncManager *)self _setCurrentAnchor:v3];
-  if (v3)
+  lastObject = [(NSMutableArray *)self->_anchorsToSync lastObject];
+  [(ADSyncManager *)self _setCurrentAnchor:lastObject];
+  if (lastObject)
   {
     [(NSMutableArray *)self->_anchorsToSync removeLastObject];
   }
@@ -704,7 +704,7 @@ LABEL_13:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v27 = self;
+  selfCopy = self;
   obj = self->_syncedAnchors;
   v5 = [(NSMutableArray *)obj countByEnumeratingWithState:&v31 objects:v47 count:16];
   if (v5)
@@ -730,27 +730,27 @@ LABEL_13:
           if (os_log_type_enabled(AFSiriLogContextSync, OS_LOG_TYPE_INFO))
           {
             log = v11;
-            v12 = [v9 generation];
+            generation = [v9 generation];
             v13 = v6;
             v14 = v7;
             v15 = [v9 count];
-            v16 = [v9 validity];
-            v17 = [v9 appMetaData];
-            v18 = [v17 syncSlots];
+            validity = [v9 validity];
+            appMetaData = [v9 appMetaData];
+            syncSlots = [appMetaData syncSlots];
             *buf = 136316418;
             v36 = "[ADSyncManager _finishSync]";
             v37 = 2112;
             v38 = v10;
             v39 = 2112;
-            v40 = v12;
+            v40 = generation;
             v41 = 2048;
             v42 = v15;
             v7 = v14;
             v6 = v13;
             v43 = 2112;
-            v44 = v16;
+            v44 = validity;
             v45 = 2112;
-            v46 = v18;
+            v46 = syncSlots;
             _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s Anchor key: %@  generation: %@   count: %lu  validity: %@  syncSlots: %@", buf, 0x3Eu);
 
             v4 = v28;
@@ -764,39 +764,39 @@ LABEL_13:
     while (v6);
   }
 
-  delegate = v27->_delegate;
-  v27->_delegate = 0;
+  delegate = selfCopy->_delegate;
+  selfCopy->_delegate = 0;
   v20 = delegate;
 
-  currentAnchor = v27->_currentAnchor;
-  v27->_currentAnchor = 0;
+  currentAnchor = selfCopy->_currentAnchor;
+  selfCopy->_currentAnchor = 0;
 
-  anchorsToSync = v27->_anchorsToSync;
-  v27->_anchorsToSync = 0;
+  anchorsToSync = selfCopy->_anchorsToSync;
+  selfCopy->_anchorsToSync = 0;
 
-  syncedAnchors = v27->_syncedAnchors;
-  v27->_syncedAnchors = 0;
+  syncedAnchors = selfCopy->_syncedAnchors;
+  selfCopy->_syncedAnchors = 0;
 
-  currentSyncID = v27->_currentSyncID;
-  v27->_currentSyncID = 0;
+  currentSyncID = selfCopy->_currentSyncID;
+  selfCopy->_currentSyncID = 0;
 
-  currentSyncReasons = v27->_currentSyncReasons;
-  v27->_currentSyncReasons = 0;
+  currentSyncReasons = selfCopy->_currentSyncReasons;
+  selfCopy->_currentSyncReasons = 0;
 
-  timedoutServices = v27->_timedoutServices;
-  v27->_timedoutServices = 0;
+  timedoutServices = selfCopy->_timedoutServices;
+  selfCopy->_timedoutServices = 0;
 
-  v27->_forceResetOnNextSync = 0;
-  [(ADSyncManagerDelegate *)v20 syncManager:v27 finishedSyncForKeys:v4 postNotification:1];
+  selfCopy->_forceResetOnNextSync = 0;
+  [(ADSyncManagerDelegate *)v20 syncManager:selfCopy finishedSyncForKeys:v4 postNotification:1];
 
-  [(ADSyncManager *)v27 _postSyncFinishedNotification];
+  [(ADSyncManager *)selfCopy _postSyncFinishedNotification];
 }
 
-- (void)_setAnchorsToSync:(id)a3
+- (void)_setAnchorsToSync:(id)sync
 {
-  if (self->_anchorsToSync != a3)
+  if (self->_anchorsToSync != sync)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [sync mutableCopy];
     anchorsToSync = self->_anchorsToSync;
     self->_anchorsToSync = v5;
 
@@ -804,18 +804,18 @@ LABEL_13:
   }
 }
 
-- (ADSyncManager)initWithServiceManager:(id)a3 queue:(id)a4
+- (ADSyncManager)initWithServiceManager:(id)manager queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = ADSyncManager;
   v9 = [(ADSyncManager *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceManager, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_serviceManager, manager);
+    objc_storeStrong(&v10->_queue, queue);
     v11 = v10->_queue;
     v12 = +[ADQueueMonitor sharedMonitor];
     v15[0] = _NSConcreteStackBlock;
@@ -854,40 +854,40 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)shouldSyncIntentPolicyForSyncKeys:(id)a3
+- (BOOL)shouldSyncIntentPolicyForSyncKeys:(id)keys
 {
-  v3 = a3;
-  if ([v3 containsObject:@"com.apple.siri.appIntentSupportPolicyAndVocab"])
+  keysCopy = keys;
+  if ([keysCopy containsObject:@"com.apple.siri.appIntentSupportPolicyAndVocab"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 containsObject:@"com.apple.siri.appIntentSupportPolicyAndVocab.nano"];
+    v4 = [keysCopy containsObject:@"com.apple.siri.appIntentSupportPolicyAndVocab.nano"];
   }
 
   return v4;
 }
 
-- (BOOL)shouldSyncEverythingForReason:(id)a3
+- (BOOL)shouldSyncEverythingForReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = [[NSSet alloc] initWithObjects:{@"assistant_enabled", @"daily_sync", @"requested_by_assistantd", @"com.apple.assistant.sync_data_changed", @"Safety net", @"siri_locale_change", 0}];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:reasonCopy];
 
   return v5;
 }
 
-- (id)syncKeysForReason:(id)a3
+- (id)syncKeysForReason:(id)reason
 {
-  v4 = sub_1002F356C(a3);
+  v4 = sub_1002F356C(reason);
   if (![v4 count])
   {
-    v5 = [(ADSyncManager *)self _serviceManager];
-    v6 = [v5 allSyncAnchorKeys];
+    _serviceManager = [(ADSyncManager *)self _serviceManager];
+    allSyncAnchorKeys = [_serviceManager allSyncAnchorKeys];
 
-    v4 = v6;
+    v4 = allSyncAnchorKeys;
   }
 
   return v4;

@@ -1,7 +1,7 @@
 @interface TRIFileBackedMutableStringArray
-+ (id)arrayFromDirectory:(id)a3;
-- (BOOL)addString:(id)a3;
-- (BOOL)enumerateStringsWithBlock:(id)a3;
++ (id)arrayFromDirectory:(id)directory;
+- (BOOL)addString:(id)string;
+- (BOOL)enumerateStringsWithBlock:(id)block;
 - (TRIFileBackedMutableStringArray)init;
 - (void)dealloc;
 @end
@@ -32,20 +32,20 @@ LABEL_8:
   v7 = v19;
   if (v6)
   {
-    v8 = [v6 path];
-    v9 = unlink([v8 fileSystemRepresentation]);
+    path = [v6 path];
+    v9 = unlink([path fileSystemRepresentation]);
 
     if (v9)
     {
       v10 = TRILogCategory_ClientFramework();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v6 path];
+        path2 = [v6 path];
         v16 = __error();
         v17 = strerror(*v16);
         v18 = *__error();
         *buf = 138412802;
-        v22 = v15;
+        v22 = path2;
         v23 = 2080;
         v24 = v17;
         v25 = 1024;
@@ -89,31 +89,31 @@ LABEL_12:
   [(TRIFileBackedMutableStringArray *)&v4 dealloc];
 }
 
-+ (id)arrayFromDirectory:(id)a3
++ (id)arrayFromDirectory:(id)directory
 {
-  v5 = a3;
+  directoryCopy = directory;
   v6 = objc_opt_new();
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
-    v9 = [v7 enumeratorAtURL:v8 includingPropertiesForKeys:0 options:1 errorHandler:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:directoryCopy];
+    v9 = [defaultManager enumeratorAtURL:v8 includingPropertiesForKeys:0 options:1 errorHandler:0];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = [v9 nextObject];
-    if (v11)
+    nextObject = [v9 nextObject];
+    if (nextObject)
     {
-      v12 = v11;
+      nextObject2 = nextObject;
       while (1)
       {
-        v13 = [v12 path];
-        if (!v13)
+        path = [nextObject2 path];
+        if (!path)
         {
-          v15 = [MEMORY[0x277CCA890] currentHandler];
-          [v15 handleFailureInMethod:a2 object:a1 file:@"TRIFileBackedMutableStringArray.m" lineNumber:72 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFileBackedMutableStringArray.m" lineNumber:72 description:{@"Expression was unexpectedly nil/false: %@", @"url.path"}];
         }
 
-        v14 = [v6 addString:v13];
+        v14 = [v6 addString:path];
 
         objc_autoreleasePoolPop(v10);
         if (!v14)
@@ -122,8 +122,8 @@ LABEL_12:
         }
 
         v10 = objc_autoreleasePoolPush();
-        v12 = [v9 nextObject];
-        if (!v12)
+        nextObject2 = [v9 nextObject];
+        if (!nextObject2)
         {
           goto LABEL_8;
         }
@@ -148,15 +148,15 @@ LABEL_8:
   return v16;
 }
 
-- (BOOL)addString:(id)a3
+- (BOOL)addString:(id)string
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 UTF8String];
-  if (v6)
+  uTF8String = [stringCopy UTF8String];
+  if (uTF8String)
   {
-    v7 = v6;
+    v7 = uTF8String;
     v8 = [objc_alloc(MEMORY[0x277CCA9F8]) initWithFileDescriptor:self->_fd closeOnDealloc:0];
     v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v7 length:strlen(v7) + 1 freeWhenDone:0];
     v15 = 0;
@@ -185,7 +185,7 @@ LABEL_8:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v4;
+      v17 = stringCopy;
       _os_log_error_impl(&dword_22EA6B000, v8, OS_LOG_TYPE_ERROR, "Failed to add non-UTF-8 string to TRIFileBackedMutableStringArray: %@", buf, 0xCu);
     }
 
@@ -197,10 +197,10 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)enumerateStringsWithBlock:(id)a3
+- (BOOL)enumerateStringsWithBlock:(id)block
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  blockCopy = block;
   memset(&v36, 0, sizeof(v36));
   if (!fstat(self->_fd, &v36))
   {
@@ -252,11 +252,11 @@ LABEL_21:
         v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v12];
         if (!v16)
         {
-          v31 = [MEMORY[0x277CCA890] currentHandler];
-          [v31 handleFailureInMethod:a2 object:self file:@"TRIFileBackedMutableStringArray.m" lineNumber:145 description:@"String somehow did not survive round-trip to UTF-8."];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFileBackedMutableStringArray.m" lineNumber:145 description:@"String somehow did not survive round-trip to UTF-8."];
         }
 
-        v5[2](v5, v16, &v36);
+        blockCopy[2](blockCopy, v16, &v36);
 
         objc_autoreleasePoolPop(v15);
         v12 = v14 + 1;

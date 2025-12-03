@@ -1,15 +1,15 @@
 @interface PUAlbumStreamActivity
-+ (BOOL)canPerformWithAssets:(id)a3;
-- (BOOL)canPerformWithActivityItems:(id)a3;
++ (BOOL)canPerformWithAssets:(id)assets;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (PUAlbumStreamActivity)init;
 - (UIViewController)referenceViewController;
-- (id)_perAssetCreationOptionsForAssets:(id)a3;
+- (id)_perAssetCreationOptionsForAssets:(id)assets;
 - (id)itemSourceController;
-- (void)_handleDismissWithSuccess:(BOOL)a3;
-- (void)_performPresentationOnViewController:(id)a3 completion:(id)a4;
-- (void)prepareWithActivityItems:(id)a3;
-- (void)prepareWithAssets:(id)a3;
-- (void)presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_handleDismissWithSuccess:(BOOL)success;
+- (void)_performPresentationOnViewController:(id)controller completion:(id)completion;
+- (void)prepareWithActivityItems:(id)items;
+- (void)prepareWithAssets:(id)assets;
+- (void)presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation PUAlbumStreamActivity
@@ -28,14 +28,14 @@
   return WeakRetained;
 }
 
-- (void)presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  if (v7)
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (controllerCopy)
   {
-    objc_storeWeak(&self->_referenceViewController, v7);
-    [(PUAlbumStreamActivity *)self _performPresentationOnViewController:v7 completion:v8];
+    objc_storeWeak(&self->_referenceViewController, controllerCopy);
+    [(PUAlbumStreamActivity *)self _performPresentationOnViewController:controllerCopy completion:completionCopy];
   }
 
   else
@@ -49,10 +49,10 @@
   }
 }
 
-- (void)_performPresentationOnViewController:(id)a3 completion:(id)a4
+- (void)_performPresentationOnViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   activityController = self->_activityController;
   if (activityController)
   {
@@ -62,13 +62,13 @@
     v10[1] = 3221225472;
     v10[2] = __73__PUAlbumStreamActivity__performPresentationOnViewController_completion___block_invoke;
     v10[3] = &unk_1E7B80C88;
-    v11 = v7;
-    [v6 presentViewController:v9 animated:1 completion:v10];
+    v11 = completionCopy;
+    [controllerCopy presentViewController:v9 animated:1 completion:v10];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -83,21 +83,21 @@ uint64_t __73__PUAlbumStreamActivity__performPresentationOnViewController_comple
   return result;
 }
 
-- (void)_handleDismissWithSuccess:(BOOL)a3
+- (void)_handleDismissWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   if ([(PUAlbumStreamActivity *)self isPresentedFromActivityViewController])
   {
 
-    [(UIActivity *)self activityDidFinish:v3];
+    [(UIActivity *)self activityDidFinish:successCopy];
   }
 
   else
   {
-    v6 = [(PXActivity *)self actionDelegate];
+    actionDelegate = [(PXActivity *)self actionDelegate];
     if (objc_opt_respondsToSelector())
     {
-      if (v3)
+      if (successCopy)
       {
         WeakRetained = 0;
       }
@@ -107,7 +107,7 @@ uint64_t __73__PUAlbumStreamActivity__performPresentationOnViewController_comple
         WeakRetained = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3072 userInfo:0];
       }
 
-      [v6 activity:self didFinishWithSuccess:v3 error:WeakRetained];
+      [actionDelegate activity:self didFinishWithSuccess:successCopy error:WeakRetained];
     }
 
     else
@@ -118,43 +118,43 @@ uint64_t __73__PUAlbumStreamActivity__performPresentationOnViewController_comple
   }
 }
 
-- (void)prepareWithAssets:(id)a3
+- (void)prepareWithAssets:(id)assets
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUAlbumStreamActivity *)self itemSourceController];
-  v6 = v5;
-  if (v5)
+  assetsCopy = assets;
+  itemSourceController = [(PUAlbumStreamActivity *)self itemSourceController];
+  v6 = itemSourceController;
+  if (itemSourceController)
   {
-    v7 = [v5 assets];
+    assets = [itemSourceController assets];
   }
 
   else
   {
-    v7 = v4;
+    assets = assetsCopy;
   }
 
-  v8 = v7;
-  v9 = [v6 shouldExcludeCaptionInAllItemSources];
+  v8 = assets;
+  shouldExcludeCaptionInAllItemSources = [v6 shouldExcludeCaptionInAllItemSources];
   v10 = 0;
-  if ([v8 count] == 1 && (v9 & 1) == 0)
+  if ([v8 count] == 1 && (shouldExcludeCaptionInAllItemSources & 1) == 0)
   {
-    v11 = [v8 firstObject];
-    [v11 fetchPropertySetsIfNeeded];
-    v12 = [v11 descriptionProperties];
-    v13 = [v12 assetDescription];
+    firstObject = [v8 firstObject];
+    [firstObject fetchPropertySetsIfNeeded];
+    descriptionProperties = [firstObject descriptionProperties];
+    assetDescription = [descriptionProperties assetDescription];
 
-    if ([v13 length])
+    if ([assetDescription length])
     {
       v14 = PLShareSheetGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138412290;
-        v21 = v13;
+        v21 = assetDescription;
         _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_DEFAULT, "Sharing single asset which has a caption. Setting as starting text for posting as a comment: %@", &v20, 0xCu);
       }
 
-      v10 = v13;
+      v10 = assetDescription;
     }
 
     else
@@ -165,45 +165,45 @@ uint64_t __73__PUAlbumStreamActivity__performPresentationOnViewController_comple
 
   v15 = [(PUAlbumStreamActivity *)self _perAssetCreationOptionsForAssets:v8];
   v16 = objc_alloc(MEMORY[0x1E69C39E0]);
-  v17 = [v8 array];
-  v18 = [v16 initWithAssets:v17 batchComment:v10 perAssetCreationOptions:v15];
+  array = [v8 array];
+  v18 = [v16 initWithAssets:array batchComment:v10 perAssetCreationOptions:v15];
 
   [(UIViewController *)v18 setActionControllerDelegate:self];
   activityController = self->_activityController;
   self->_activityController = v18;
 }
 
-- (id)_perAssetCreationOptionsForAssets:(id)a3
+- (id)_perAssetCreationOptionsForAssets:(id)assets
 {
-  v5 = a3;
-  v6 = [(PUAlbumStreamActivity *)self itemSourceController];
-  v7 = v6;
-  if (v6)
+  assetsCopy = assets;
+  itemSourceController = [(PUAlbumStreamActivity *)self itemSourceController];
+  v7 = itemSourceController;
+  if (itemSourceController)
   {
-    v8 = [v6 assetItemSources];
-    v9 = [v8 array];
+    assetItemSources = [itemSourceController assetItemSources];
+    array = [assetItemSources array];
 
-    v10 = [v9 count];
-    if (v10 != [v5 count])
+    v10 = [array count];
+    if (v10 != [assetsCopy count])
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"PUAlbumStreamActivity.m" lineNumber:149 description:@"Invalid item or asset count while creating sharing options"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUAlbumStreamActivity.m" lineNumber:149 description:@"Invalid item or asset count while creating sharing options"];
     }
 
-    v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
-    v12 = [v7 shouldExcludeLivenessInAllItemSources];
-    v13 = [v7 shouldExcludeLocationInAllItemSources];
+    v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(assetsCopy, "count")}];
+    shouldExcludeLivenessInAllItemSources = [v7 shouldExcludeLivenessInAllItemSources];
+    shouldExcludeLocationInAllItemSources = [v7 shouldExcludeLocationInAllItemSources];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __59__PUAlbumStreamActivity__perAssetCreationOptionsForAssets___block_invoke;
     v18[3] = &unk_1E7B75188;
-    v19 = v9;
-    v21 = v12;
-    v22 = v13;
+    v19 = array;
+    v21 = shouldExcludeLivenessInAllItemSources;
+    v22 = shouldExcludeLocationInAllItemSources;
     v14 = v11;
     v20 = v14;
-    v15 = v9;
-    [v5 enumerateObjectsUsingBlock:v18];
+    v15 = array;
+    [assetsCopy enumerateObjectsUsingBlock:v18];
   }
 
   else
@@ -227,25 +227,25 @@ void __59__PUAlbumStreamActivity__perAssetCreationOptionsForAssets___block_invok
   [v8 setObject:v7 forKeyedSubscript:v9];
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   if (PFIsPhotosAppAnyPlatform())
   {
-    v7 = [(PUAlbumStreamActivity *)self itemSourceController];
-    v4 = [v7 assets];
-    [(PUAlbumStreamActivity *)self prepareWithAssets:v4];
+    itemSourceController = [(PUAlbumStreamActivity *)self itemSourceController];
+    assets = [itemSourceController assets];
+    [(PUAlbumStreamActivity *)self prepareWithAssets:assets];
   }
 
   else
   {
     v5 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:*MEMORY[0x1E69BFF18]];
-    v6 = [MEMORY[0x1E698B0D8] sharedGuard];
+    mEMORY[0x1E698B0D8] = [MEMORY[0x1E698B0D8] sharedGuard];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __50__PUAlbumStreamActivity_prepareWithActivityItems___block_invoke;
     v8[3] = &unk_1E7B80280;
     v8[4] = self;
-    [v6 initiateAuthenticationWithShieldingForSubject:v5 completion:v8];
+    [mEMORY[0x1E698B0D8] initiateAuthenticationWithShieldingForSubject:v5 completion:v8];
   }
 }
 
@@ -302,19 +302,19 @@ void __50__PUAlbumStreamActivity_prepareWithActivityItems___block_invoke_2(uint6
   [v1 prepareWithAssets:v2];
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v4 = MEMORY[0x1E69BE6A8];
-  v5 = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
-  v6 = [v4 sharedStreamsEnabledForPhotoLibraryURL:v5];
+  systemPhotoLibraryURL = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
+  v6 = [v4 sharedStreamsEnabledForPhotoLibraryURL:systemPhotoLibraryURL];
 
   if (v6)
   {
-    v7 = [(PUAlbumStreamActivity *)self itemSourceController];
-    if ([v7 isPreparingIndividualItems])
+    itemSourceController = [(PUAlbumStreamActivity *)self itemSourceController];
+    if ([itemSourceController isPreparingIndividualItems])
     {
-      v8 = [v7 assets];
-      LOBYTE(v6) = [PUAlbumStreamActivity canPerformWithAssets:v8];
+      assets = [itemSourceController assets];
+      LOBYTE(v6) = [PUAlbumStreamActivity canPerformWithAssets:assets];
     }
 
     else
@@ -339,17 +339,17 @@ void __50__PUAlbumStreamActivity_prepareWithActivityItems___block_invoke_2(uint6
   return result;
 }
 
-+ (BOOL)canPerformWithAssets:(id)a3
++ (BOOL)canPerformWithAssets:(id)assets
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v5 = MEMORY[0x1E69BE6A8];
-  v4 = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
-  LODWORD(v5) = [v5 sharedStreamsEnabledForPhotoLibraryURL:v4];
+  systemPhotoLibraryURL = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
+  LODWORD(v5) = [v5 sharedStreamsEnabledForPhotoLibraryURL:systemPhotoLibraryURL];
 
   if (v5)
   {
-    v5 = [v3 count];
+    v5 = [assetsCopy count];
     if (PFIsPhotosAppAnyPlatform())
     {
       v6 = 1;
@@ -364,7 +364,7 @@ void __50__PUAlbumStreamActivity_prepareWithActivityItems___block_invoke_2(uint6
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = v3;
+    v7 = assetsCopy;
     v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {

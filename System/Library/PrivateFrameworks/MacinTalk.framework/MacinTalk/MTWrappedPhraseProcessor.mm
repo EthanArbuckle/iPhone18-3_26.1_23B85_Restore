@@ -1,58 +1,58 @@
 @interface MTWrappedPhraseProcessor
 - (BOOL)processNextPhrase;
 - (MTFVoice)voice;
-- (MTWrappedPhraseProcessor)initWithVoice:(id)a3 frontend:(id)a4;
+- (MTWrappedPhraseProcessor)initWithVoice:(id)voice frontend:(id)frontend;
 - (MacinTalkPhraseProcessorDelegate)delegate;
 - (id)nextBuffer;
 - (void)dealloc;
 - (void)finishedSampleGeneration;
-- (void)setPitchModulation:(id)a3;
+- (void)setPitchModulation:(id)modulation;
 @end
 
 @implementation MTWrappedPhraseProcessor
 
-- (MTWrappedPhraseProcessor)initWithVoice:(id)a3 frontend:(id)a4
+- (MTWrappedPhraseProcessor)initWithVoice:(id)voice frontend:(id)frontend
 {
-  v6 = a3;
-  v7 = a4;
+  voiceCopy = voice;
+  frontendCopy = frontend;
   v12.receiver = self;
   v12.super_class = MTWrappedPhraseProcessor;
   v8 = [(MTWrappedPhraseProcessor *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_voice, v6);
+    objc_storeWeak(&v8->_voice, voiceCopy);
     v9->_currentSampleCount = 0;
     pitchModulation = v9->_pitchModulation;
     v9->_pitchModulation = &unk_2868FD840;
 
-    objc_storeStrong(&v9->_frontend, a4);
+    objc_storeStrong(&v9->_frontend, frontend);
     operator new();
   }
 
   return 0;
 }
 
-- (void)setPitchModulation:(id)a3
+- (void)setPitchModulation:(id)modulation
 {
-  v10 = a3;
-  v5 = [(MTWrappedPhraseProcessor *)self defaultModulation];
-  [v5 floatValue];
+  modulationCopy = modulation;
+  defaultModulation = [(MTWrappedPhraseProcessor *)self defaultModulation];
+  [defaultModulation floatValue];
   v7 = v6;
-  [v10 floatValue];
+  [modulationCopy floatValue];
   v9 = v8;
 
-  objc_storeStrong(&self->_pitchModulation, a3);
+  objc_storeStrong(&self->_pitchModulation, modulation);
   *([(MTWrappedPhraseProcessor *)self notifier]+ 16) = vcvts_n_s32_f32(v7 * v9, 0x10uLL);
 }
 
 - (BOOL)processNextPhrase
 {
-  v2 = [(MTWrappedPhraseProcessor *)self frontend];
-  v3 = [v2 nextObject];
+  frontend = [(MTWrappedPhraseProcessor *)self frontend];
+  nextObject = [frontend nextObject];
 
-  [v3 setUnOwned:1];
-  if (v3)
+  [nextObject setUnOwned:1];
+  if (nextObject)
   {
     operator new();
   }
@@ -90,18 +90,18 @@ uint64_t __38__MTWrappedPhraseProcessor_nextBuffer__block_invoke(uint64_t a1)
 
 - (void)finishedSampleGeneration
 {
-  v2 = [(MTWrappedPhraseProcessor *)self delegate];
-  [v2 didFinishGeneratingSamples];
+  delegate = [(MTWrappedPhraseProcessor *)self delegate];
+  [delegate didFinishGeneratingSamples];
 }
 
 - (void)dealloc
 {
   if ([(MTWrappedPhraseProcessor *)self processor])
   {
-    v3 = [(MTWrappedPhraseProcessor *)self processor];
-    if (v3)
+    processor = [(MTWrappedPhraseProcessor *)self processor];
+    if (processor)
     {
-      (*(*v3 + 48))(v3);
+      (*(*processor + 48))(processor);
     }
   }
 
@@ -128,29 +128,29 @@ uint64_t __38__MTWrappedPhraseProcessor_nextBuffer__block_invoke(uint64_t a1)
     CFRelease([(MTWrappedPhraseProcessor *)self fPParams][40]);
   }
 
-  v6 = [(MTWrappedPhraseProcessor *)self fPParams];
-  if (v6)
+  fPParams = [(MTWrappedPhraseProcessor *)self fPParams];
+  if (fPParams)
   {
-    MTBEPersistentParam::~MTBEPersistentParam(v6);
+    MTBEPersistentParam::~MTBEPersistentParam(fPParams);
     MEMORY[0x259C6DA90]();
   }
 
-  v7 = [(MTWrappedPhraseProcessor *)self saveState];
-  if (v7)
+  saveState = [(MTWrappedPhraseProcessor *)self saveState];
+  if (saveState)
   {
-    (*(v7->var0 + 1))(v7);
+    (*(saveState->var0 + 1))(saveState);
   }
 
-  v8 = [(MTWrappedPhraseProcessor *)self resetState];
-  if (v8)
+  resetState = [(MTWrappedPhraseProcessor *)self resetState];
+  if (resetState)
   {
-    (*(v8->var0 + 1))(v8);
+    (*(resetState->var0 + 1))(resetState);
   }
 
-  v9 = [(MTWrappedPhraseProcessor *)self notifier];
-  if (v9)
+  notifier = [(MTWrappedPhraseProcessor *)self notifier];
+  if (notifier)
   {
-    (*(v9->var0 + 1))(v9);
+    (*(notifier->var0 + 1))(notifier);
   }
 
   v10.receiver = self;

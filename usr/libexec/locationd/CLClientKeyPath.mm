@@ -139,7 +139,7 @@
 
 - (NSString)legacyClientKey
 {
-  v3 = [(CLClientKeyPath *)self userName];
+  userName = [(CLClientKeyPath *)self userName];
   v4 = [(CLClientKeyPath *)self findComponent:1];
   v5 = *v4;
   v6 = [(CLClientKeyPath *)self extractComponentFromCharPtr:v4 + 1];
@@ -163,7 +163,7 @@ LABEL_11:
 LABEL_14:
         v9 = v13;
 LABEL_15:
-        if (!v3)
+        if (!userName)
         {
           return v9;
         }
@@ -188,7 +188,7 @@ LABEL_13:
   }
 
   v9 = v6;
-  if (!v3)
+  if (!userName)
   {
     return v9;
   }
@@ -205,7 +205,7 @@ LABEL_16:
     v14 = __p[0];
   }
 
-  v9 = [NSString stringWithFormat:@"%@%s%@", v3, v14, v9];
+  v9 = [NSString stringWithFormat:@"%@%s%@", userName, v14, v9];
   if (v17 < 0)
   {
     operator delete(__p[0]);
@@ -271,11 +271,11 @@ LABEL_16:
   *&retstr[4].var0 = 0u;
   *(&retstr[5].fUserName.__rep_.__l + 3) = 0u;
   v4 = *[v1 findComponent:1];
-  v5 = [v2 clientAnchor];
+  clientAnchor = [v2 clientAnchor];
   v6 = [v2 findComponent:2];
   if (!v6)
   {
-    if (v5)
+    if (clientAnchor)
     {
       goto LABEL_23;
     }
@@ -304,20 +304,20 @@ LABEL_38:
   }
 
   v7 = *v6;
-  v8 = [v2 subIdentityId];
-  if (!v5)
+  subIdentityId = [v2 subIdentityId];
+  if (!clientAnchor)
   {
     goto LABEL_27;
   }
 
   if (v7 == 112)
   {
-    if (v8)
+    if (subIdentityId)
     {
       if (v4 == 108)
       {
-        sub_10000EC00(&v17, [v8 UTF8String]);
-        sub_10000EC00(&v16, [v5 UTF8String]);
+        sub_10000EC00(&v17, [subIdentityId UTF8String]);
+        sub_10000EC00(&v16, [clientAnchor UTF8String]);
         sub_101320864(&v17, &v16, &__str);
         sub_100034F70(retstr, &__str);
         if (v33 < 0)
@@ -373,7 +373,7 @@ LABEL_62:
         goto LABEL_64;
       }
 
-      sub_10000EC00(&v17, [v8 UTF8String]);
+      sub_10000EC00(&v17, [subIdentityId UTF8String]);
       sub_1000E1C7C(&v17, &__str);
 LABEL_47:
       sub_100034F70(retstr, &__str);
@@ -454,7 +454,7 @@ LABEL_23:
   switch(v4)
   {
     case 'e':
-      sub_10000EC00(&__str, [v5 UTF8String]);
+      sub_10000EC00(&__str, [clientAnchor UTF8String]);
       std::string::operator=(&retstr->var0, &__str);
       if ((__str_20[3] & 0x80000000) == 0)
       {
@@ -466,11 +466,11 @@ LABEL_64:
       operator delete(v12);
       goto LABEL_65;
     case 'p':
-      sub_10000EC00(&v17, [v5 UTF8String]);
+      sub_10000EC00(&v17, [clientAnchor UTF8String]);
       sub_1000E1C7C(&v17, &__str);
       goto LABEL_47;
     case 'i':
-      sub_10000EC00(&v17, [v5 UTF8String]);
+      sub_10000EC00(&v17, [clientAnchor UTF8String]);
       sub_100034EE4(&v17, &__str);
       goto LABEL_47;
   }
@@ -516,9 +516,9 @@ LABEL_65:
   }
 
   v4 = [(CLClientKeyPath *)self extractComponentFromCharPtr:v3 + 1];
-  v5 = [(CLClientKeyPath *)self userName];
+  userName = [(CLClientKeyPath *)self userName];
 
-  return [CLClientKeyPath clientKeyPathWithUserName:v5 clientAnchor:v4 anchorType:105];
+  return [CLClientKeyPath clientKeyPathWithUserName:userName clientAnchor:v4 anchorType:105];
 }
 
 - (char)subIdentityType

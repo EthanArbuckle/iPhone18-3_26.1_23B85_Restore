@@ -1,39 +1,39 @@
 @interface AXUIMessageSendHandler
-- (AXUIMessageSendHandler)initWithMessageSender:(id)a3 delegate:(id)a4;
+- (AXUIMessageSendHandler)initWithMessageSender:(id)sender delegate:(id)delegate;
 - (AXUIMessageSender)messageSender;
 - (AXUIMessageSenderDelegate)delegate;
-- (void)_sendMessage:(id)a3 context:(void *)a4 previousError:(id)a5;
-- (void)sendXPCMessage:(id)a3 context:(void *)a4 completion:(id)a5;
+- (void)_sendMessage:(id)message context:(void *)context previousError:(id)error;
+- (void)sendXPCMessage:(id)message context:(void *)context completion:(id)completion;
 - (void)stopSendingXPCMessage;
 @end
 
 @implementation AXUIMessageSendHandler
 
-- (AXUIMessageSendHandler)initWithMessageSender:(id)a3 delegate:(id)a4
+- (AXUIMessageSendHandler)initWithMessageSender:(id)sender delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  senderCopy = sender;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = AXUIMessageSendHandler;
   v8 = [(AXUIMessageSendHandler *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_messageSender, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_messageSender, senderCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v9;
 }
 
-- (void)sendXPCMessage:(id)a3 context:(void *)a4 completion:(id)a5
+- (void)sendXPCMessage:(id)message context:(void *)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  messageCopy = message;
   [(AXUIMessageSendHandler *)self setRemainingAttempts:10];
-  [(AXUIMessageSendHandler *)self setCompletion:v8];
+  [(AXUIMessageSendHandler *)self setCompletion:completionCopy];
 
-  [(AXUIMessageSendHandler *)self _sendMessage:v9 context:a4 previousError:0];
+  [(AXUIMessageSendHandler *)self _sendMessage:messageCopy context:context previousError:0];
 }
 
 - (void)stopSendingXPCMessage
@@ -45,10 +45,10 @@
   [(AXUIMessageSendHandler *)self setDelegate:0];
 }
 
-- (void)_sendMessage:(id)a3 context:(void *)a4 previousError:(id)a5
+- (void)_sendMessage:(id)message context:(void *)context previousError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  errorCopy = error;
   if ([(AXUIMessageSendHandler *)self remainingAttempts])
   {
     v27[0] = MEMORY[0x277D85DD0];
@@ -56,24 +56,24 @@
     v27[2] = __61__AXUIMessageSendHandler__sendMessage_context_previousError___block_invoke;
     v27[3] = &unk_278BF53E8;
     v27[4] = self;
-    v10 = v8;
+    v10 = messageCopy;
     v28 = v10;
-    v29 = a4;
+    contextCopy = context;
     v11 = MEMORY[0x23EEF9640](v27);
-    v12 = [(AXUIMessageSendHandler *)self delegate];
+    delegate = [(AXUIMessageSendHandler *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(AXUIMessageSendHandler *)self messageSender];
+      messageSender = [(AXUIMessageSendHandler *)self messageSender];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __61__AXUIMessageSendHandler__sendMessage_context_previousError___block_invoke_6;
       v21[3] = &unk_278BF5438;
       v26 = v11;
       v22 = v10;
-      v23 = v12;
-      v24 = self;
-      v25 = v9;
-      [v23 messageSender:v13 accessLaunchAngelConnectionForMessageWithContext:a4 usingBlock:v21];
+      v23 = delegate;
+      selfCopy = self;
+      v25 = errorCopy;
+      [v23 messageSender:messageSender accessLaunchAngelConnectionForMessageWithContext:context usingBlock:v21];
 
       v14 = v26;
     }
@@ -87,17 +87,17 @@
 
   else
   {
-    v15 = [MEMORY[0x277CE69B8] dictionaryFromXPCMessage:v8 error:0];
+    v15 = [MEMORY[0x277CE69B8] dictionaryFromXPCMessage:messageCopy error:0];
     v16 = MEMORY[0x277CCA9B8];
-    v17 = [v9 ax_nonRedundantDescription];
-    v18 = [v16 ax_errorWithDomain:@"AXUIErrorDomainCommunication" description:{@"Failed to send message %@ to the %@. Last encountered error: %@.", v15, @"Accessibility UI Server", v17}];
+    ax_nonRedundantDescription = [errorCopy ax_nonRedundantDescription];
+    v18 = [v16 ax_errorWithDomain:@"AXUIErrorDomainCommunication" description:{@"Failed to send message %@ to the %@. Last encountered error: %@.", v15, @"Accessibility UI Server", ax_nonRedundantDescription}];
 
-    v19 = [(AXUIMessageSendHandler *)self completion];
+    completion = [(AXUIMessageSendHandler *)self completion];
 
-    if (v19)
+    if (completion)
     {
-      v20 = [(AXUIMessageSendHandler *)self completion];
-      (v20)[2](v20, 0, 0, v18);
+      completion2 = [(AXUIMessageSendHandler *)self completion];
+      (completion2)[2](completion2, 0, 0, v18);
     }
   }
 }

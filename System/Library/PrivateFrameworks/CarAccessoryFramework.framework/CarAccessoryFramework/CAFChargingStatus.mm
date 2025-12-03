@@ -16,25 +16,25 @@
 - (unsigned)cableState;
 - (unsigned)chargingState;
 - (unsigned)portSideIndicator;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFChargingStatus
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFChargingStatus;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -47,12 +47,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -68,13 +68,13 @@
 - (CAFStringCharacteristic)chargingModeIdentifierCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000004000000C"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000004000000C"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000004000000C"];
@@ -93,16 +93,16 @@
 
 - (NSString)chargingModeIdentifier
 {
-  v2 = [(CAFChargingStatus *)self chargingModeIdentifierCharacteristic];
-  v3 = [v2 stringValue];
+  chargingModeIdentifierCharacteristic = [(CAFChargingStatus *)self chargingModeIdentifierCharacteristic];
+  stringValue = [chargingModeIdentifierCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (BOOL)hasChargingModeIdentifier
 {
-  v2 = [(CAFChargingStatus *)self chargingModeIdentifierCharacteristic];
-  v3 = v2 != 0;
+  chargingModeIdentifierCharacteristic = [(CAFChargingStatus *)self chargingModeIdentifierCharacteristic];
+  v3 = chargingModeIdentifierCharacteristic != 0;
 
   return v3;
 }
@@ -110,13 +110,13 @@
 - (CAFChargingStateCharacteristic)chargingStateCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000040000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000040000005"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000040000005"];
@@ -135,16 +135,16 @@
 
 - (unsigned)chargingState
 {
-  v2 = [(CAFChargingStatus *)self chargingStateCharacteristic];
-  v3 = [v2 chargingStateValue];
+  chargingStateCharacteristic = [(CAFChargingStatus *)self chargingStateCharacteristic];
+  chargingStateValue = [chargingStateCharacteristic chargingStateValue];
 
-  return v3;
+  return chargingStateValue;
 }
 
 - (BOOL)hasChargingState
 {
-  v2 = [(CAFChargingStatus *)self chargingStateCharacteristic];
-  v3 = v2 != 0;
+  chargingStateCharacteristic = [(CAFChargingStatus *)self chargingStateCharacteristic];
+  v3 = chargingStateCharacteristic != 0;
 
   return v3;
 }
@@ -152,13 +152,13 @@
 - (CAFCableStateCharacteristic)cableStateCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000040000007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000040000007"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000040000007"];
@@ -177,16 +177,16 @@
 
 - (unsigned)cableState
 {
-  v2 = [(CAFChargingStatus *)self cableStateCharacteristic];
-  v3 = [v2 cableStateValue];
+  cableStateCharacteristic = [(CAFChargingStatus *)self cableStateCharacteristic];
+  cableStateValue = [cableStateCharacteristic cableStateValue];
 
-  return v3;
+  return cableStateValue;
 }
 
 - (BOOL)hasCableState
 {
-  v2 = [(CAFChargingStatus *)self cableStateCharacteristic];
-  v3 = v2 != 0;
+  cableStateCharacteristic = [(CAFChargingStatus *)self cableStateCharacteristic];
+  v3 = cableStateCharacteristic != 0;
 
   return v3;
 }
@@ -194,13 +194,13 @@
 - (CAFPortSideIndicatorCharacteristic)portSideIndicatorCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000041000013"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000013"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000041000013"];
@@ -219,16 +219,16 @@
 
 - (unsigned)portSideIndicator
 {
-  v2 = [(CAFChargingStatus *)self portSideIndicatorCharacteristic];
-  v3 = [v2 portSideIndicatorValue];
+  portSideIndicatorCharacteristic = [(CAFChargingStatus *)self portSideIndicatorCharacteristic];
+  portSideIndicatorValue = [portSideIndicatorCharacteristic portSideIndicatorValue];
 
-  return v3;
+  return portSideIndicatorValue;
 }
 
 - (BOOL)hasPortSideIndicator
 {
-  v2 = [(CAFChargingStatus *)self portSideIndicatorCharacteristic];
-  v3 = v2 != 0;
+  portSideIndicatorCharacteristic = [(CAFChargingStatus *)self portSideIndicatorCharacteristic];
+  v3 = portSideIndicatorCharacteristic != 0;
 
   return v3;
 }
@@ -236,13 +236,13 @@
 - (BOOL)registeredForChargingModeIdentifier
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000004000000C"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000004000000C"];
 
   return v10;
 }
@@ -250,13 +250,13 @@
 - (BOOL)registeredForChargingState
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000040000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000040000005"];
 
   return v10;
 }
@@ -264,13 +264,13 @@
 - (BOOL)registeredForCableState
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000040000007"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000040000007"];
 
   return v10;
 }
@@ -278,13 +278,13 @@
 - (BOOL)registeredForPortSideIndicator
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000041000013"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000041000013"];
 
   return v10;
 }

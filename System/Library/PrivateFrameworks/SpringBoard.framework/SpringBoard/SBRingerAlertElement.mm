@@ -1,33 +1,33 @@
 @interface SBRingerAlertElement
-- (BOOL)isProvidedViewConcentric:(id)a3 inLayoutMode:(int64_t)a4;
-- (BOOL)overridesConcentricPaddingForView:(id)a3 inLayoutMode:(int64_t)a4;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5;
-- (SBRingerAlertElement)initWithSource:(unint64_t)a3 ringerSilent:(BOOL)a4 forPreviewing:(BOOL)a5;
+- (BOOL)isProvidedViewConcentric:(id)concentric inLayoutMode:(int64_t)mode;
+- (BOOL)overridesConcentricPaddingForView:(id)view inLayoutMode:(int64_t)mode;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets;
+- (SBRingerAlertElement)initWithSource:(unint64_t)source ringerSilent:(BOOL)silent forPreviewing:(BOOL)previewing;
 - (SBRingerAlertElementDelegate)delegate;
 - (UIColor)keyColor;
-- (id)_bellImageForRingerSilent:(BOOL)a3;
-- (id)_colorForRingerSilent:(BOOL)a3;
-- (id)_containedVolumeSliderViewWithSize:(CGSize)a3 layoutAxis:(int64_t)a4;
+- (id)_bellImageForRingerSilent:(BOOL)silent;
+- (id)_colorForRingerSilent:(BOOL)silent;
+- (id)_containedVolumeSliderViewWithSize:(CGSize)size layoutAxis:(int64_t)axis;
 - (id)_leadingContentViewProviderForVolume;
-- (id)_minimalContentForSource:(unint64_t)a3 visualStyle:(unint64_t)a4 ringerSilent:(BOOL)a5;
-- (id)_ringerPackageNameForVisualStyle:(unint64_t)a3 minimal:(BOOL)a4;
-- (id)_textForRingerSilent:(BOOL)a3;
+- (id)_minimalContentForSource:(unint64_t)source visualStyle:(unint64_t)style ringerSilent:(BOOL)silent;
+- (id)_ringerPackageNameForVisualStyle:(unint64_t)style minimal:(BOOL)minimal;
+- (id)_textForRingerSilent:(BOOL)silent;
 - (id)alertHost;
-- (void)_getRingerPackageSizesForVisualStyle:(unint64_t)a3 ringerSilent:(BOOL)a4 leadingSize:(CGSize *)a5 minimalSize:(CGSize *)a6;
-- (void)_setRingerSilent:(BOOL)a3 skipUpdate:(BOOL)a4;
+- (void)_getRingerPackageSizesForVisualStyle:(unint64_t)style ringerSilent:(BOOL)silent leadingSize:(CGSize *)size minimalSize:(CGSize *)minimalSize;
+- (void)_setRingerSilent:(BOOL)silent skipUpdate:(BOOL)update;
 - (void)_shakeRingerBell;
-- (void)_updateStateWithTransitionType:(unint64_t)a3;
-- (void)_updateVolumeSliderAnimated:(BOOL)a3;
-- (void)nudgeUp:(BOOL)a3;
-- (void)presentForMuteChange:(BOOL)a3;
-- (void)setVolume:(float)a3 animated:(BOOL)a4 forKeyPress:(BOOL)a5;
+- (void)_updateStateWithTransitionType:(unint64_t)type;
+- (void)_updateVolumeSliderAnimated:(BOOL)animated;
+- (void)nudgeUp:(BOOL)up;
+- (void)presentForMuteChange:(BOOL)change;
+- (void)setVolume:(float)volume animated:(BOOL)animated forKeyPress:(BOOL)press;
 @end
 
 @implementation SBRingerAlertElement
 
-- (SBRingerAlertElement)initWithSource:(unint64_t)a3 ringerSilent:(BOOL)a4 forPreviewing:(BOOL)a5
+- (SBRingerAlertElement)initWithSource:(unint64_t)source ringerSilent:(BOOL)silent forPreviewing:(BOOL)previewing
 {
-  v5 = a4;
+  silentCopy = silent;
   v8 = objc_alloc_init(MEMORY[0x277D67DF0]);
   v9 = (SBUIHasHIDRingerButton() & 1) != 0 || _os_feature_enabled_impl();
   v10 = v9;
@@ -38,16 +38,16 @@
   v14 = [v12 initWithPackageName:v11 inBundle:v13];
 
   v15 = objc_alloc(MEMORY[0x277D67E58]);
-  v16 = [(SBRingerAlertElement *)self _textForRingerSilent:v5];
+  v16 = [(SBRingerAlertElement *)self _textForRingerSilent:silentCopy];
   v17 = [v15 initWithText:v16 style:4];
 
-  v18 = [(SBRingerAlertElement *)self _colorForRingerSilent:v5];
+  v18 = [(SBRingerAlertElement *)self _colorForRingerSilent:silentCopy];
   [v17 setContentColor:v18];
 
-  v31 = [(SBRingerAlertElement *)self _leadingContentViewProviderForVolume];
+  _leadingContentViewProviderForVolume = [(SBRingerAlertElement *)self _leadingContentViewProviderForVolume];
   v19 = [(SBRingerAlertElement *)self _containedVolumeSliderViewWithSize:0 layoutAxis:82.0, 5.0];
-  v20 = [v19 subviews];
-  v21 = [v20 bs_firstObjectOfClass:objc_opt_class()];
+  subviews = [v19 subviews];
+  v21 = [subviews bs_firstObjectOfClass:objc_opt_class()];
 
   objc_storeStrong(&self->_sliderView, v21);
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
@@ -59,21 +59,21 @@
   v30 = [objc_alloc(MEMORY[0x277D67E10]) initWithView:v19];
   v22 = v14;
   v23 = v17;
-  if (a3)
+  if (source)
   {
-    if (a3 != 1)
+    if (source != 1)
     {
       goto LABEL_11;
     }
 
     v23 = v30;
-    v22 = v31;
+    v22 = _leadingContentViewProviderForVolume;
   }
 
   [v8 setLeadingContentViewProvider:v22];
   [v8 setTrailingContentViewProvider:v23];
 LABEL_11:
-  v24 = [(SBRingerAlertElement *)self _minimalContentForSource:a3 visualStyle:v10 ringerSilent:v5];
+  v24 = [(SBRingerAlertElement *)self _minimalContentForSource:source visualStyle:v10 ringerSilent:silentCopy];
   [v8 setMinimalContentViewProvider:v24];
   v32.receiver = self;
   v32.super_class = SBRingerAlertElement;
@@ -81,38 +81,38 @@ LABEL_11:
   v26 = v25;
   if (v25)
   {
-    v25->_source = a3;
+    v25->_source = source;
     v25->_visualStyle = v10;
     objc_storeStrong(&v25->_contentProvider, v8);
-    v26->_activatedForPreviewing = a5;
+    v26->_activatedForPreviewing = previewing;
     objc_storeStrong(&v26->_leadingRingerContentViewProvider, v14);
     objc_storeStrong(&v26->_minimalContentViewProvider, v24);
     objc_storeStrong(&v26->_trailingTextContentViewProvider, v17);
     [(SBSystemApertureProvidedContentElement *)v26 setMinimumSupportedLayoutMode:-1];
     [(SBSystemApertureProvidedContentElement *)v26 setMaximumSupportedLayoutMode:2];
     [(SBSystemApertureProvidedContentElement *)v26 setPreferredLayoutMode:2];
-    [(SBRingerAlertElement *)v26 _setRingerSilent:v5 skipUpdate:1];
-    [(SBRingerAlertElement *)v26 _updateStateWithTransitionType:v5 ^ 1];
+    [(SBRingerAlertElement *)v26 _setRingerSilent:silentCopy skipUpdate:1];
+    [(SBRingerAlertElement *)v26 _updateStateWithTransitionType:silentCopy ^ 1];
   }
 
   return v26;
 }
 
-- (BOOL)isProvidedViewConcentric:(id)a3 inLayoutMode:(int64_t)a4
+- (BOOL)isProvidedViewConcentric:(id)concentric inLayoutMode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = [(SBRingerAlertElement *)self leadingRingerContentViewProvider];
-  v7 = [v6 providedView];
-  v8 = [(SBRingerAlertElement *)self minimalRingerContentViewProvider];
-  v9 = [v8 providedView];
+  concentricCopy = concentric;
+  leadingRingerContentViewProvider = [(SBRingerAlertElement *)self leadingRingerContentViewProvider];
+  providedView = [leadingRingerContentViewProvider providedView];
+  minimalRingerContentViewProvider = [(SBRingerAlertElement *)self minimalRingerContentViewProvider];
+  providedView2 = [minimalRingerContentViewProvider providedView];
 
-  v11 = v7 == v5 || v9 == v5;
+  v11 = providedView == concentricCopy || providedView2 == concentricCopy;
   return v11;
 }
 
 - (UIColor)keyColor
 {
-  v3 = [(SBRingerAlertElement *)self isRingerSilent];
+  isRingerSilent = [(SBRingerAlertElement *)self isRingerSilent];
   if ([(SBRingerAlertElement *)self source])
   {
     v4 = 0;
@@ -120,39 +120,39 @@ LABEL_11:
 
   else
   {
-    v4 = v3;
+    v4 = isRingerSilent;
   }
 
   return [(SBRingerAlertElement *)self _colorForRingerSilent:v4];
 }
 
-- (BOOL)overridesConcentricPaddingForView:(id)a3 inLayoutMode:(int64_t)a4
+- (BOOL)overridesConcentricPaddingForView:(id)view inLayoutMode:(int64_t)mode
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = [(SBRingerAlertElement *)self visualStyle]== 1;
-  LOBYTE(a4) = [(SBRingerAlertElement *)self isProvidedViewConcentric:v6 inLayoutMode:a4];
+  LOBYTE(mode) = [(SBRingerAlertElement *)self isProvidedViewConcentric:viewCopy inLayoutMode:mode];
 
-  return v7 & a4;
+  return v7 & mode;
 }
 
-- (void)_setRingerSilent:(BOOL)a3 skipUpdate:(BOOL)a4
+- (void)_setRingerSilent:(BOOL)silent skipUpdate:(BOOL)update
 {
   v16 = *MEMORY[0x277D85DE8];
   ringerSilent = self->_ringerSilent;
-  if (ringerSilent != a3)
+  if (ringerSilent != silent)
   {
-    v6 = a3;
-    self->_ringerSilent = a3;
+    silentCopy = silent;
+    self->_ringerSilent = silent;
     v8 = SBLogRingerHUD();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v15 = v6;
+      v15 = silentCopy;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "SBRingerAlertElement setRingerSilent: %{BOOL}d", buf, 8u);
     }
 
     self->_lastEventIsAVolumeChange = 0;
-    if (!a4)
+    if (!update)
     {
       if (ringerSilent)
       {
@@ -167,56 +167,56 @@ LABEL_11:
       [(SBRingerAlertElement *)self _updateStateWithTransitionType:v9];
     }
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v12 = @"SBSystemApertureNotificationUserInfoElementKey";
-    v13 = self;
-    v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-    [v10 postNotificationName:@"SBSystemApertureElementKeyColorDidInvalidateNotification" object:0 userInfo:v11];
+    selfCopy = self;
+    v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&selfCopy forKeys:&v12 count:1];
+    [defaultCenter postNotificationName:@"SBSystemApertureElementKeyColorDidInvalidateNotification" object:0 userInfo:v11];
   }
 }
 
-- (void)setVolume:(float)a3 animated:(BOOL)a4 forKeyPress:(BOOL)a5
+- (void)setVolume:(float)volume animated:(BOOL)animated forKeyPress:(BOOL)press
 {
-  v5 = a5;
-  v6 = a4;
+  pressCopy = press;
+  animatedCopy = animated;
   v17 = *MEMORY[0x277D85DE8];
   v9 = SBLogRingerHUD();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134218496;
-    v12 = a3;
+    volumeCopy = volume;
     v13 = 1024;
-    v14 = v6;
+    v14 = animatedCopy;
     v15 = 1024;
-    v16 = v5;
+    v16 = pressCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "SBRingerAlertElement setVolume:%.2f animated:%{BOOL}d forKeyPress:%{BOOL}d", &v11, 0x18u);
   }
 
-  v10 = [(SBRingerAlertElement *)self delegate];
-  [v10 ringerAlertElementWantsToResetAutomaticInvalidationTimer:self];
-  if (v5)
+  delegate = [(SBRingerAlertElement *)self delegate];
+  [delegate ringerAlertElementWantsToResetAutomaticInvalidationTimer:self];
+  if (pressCopy)
   {
     self->_lastEventIsAVolumeChange = 1;
   }
 
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_volume = a3;
-    [(SBRingerAlertElement *)self _updateVolumeSliderAnimated:v6];
+    self->_volume = volume;
+    [(SBRingerAlertElement *)self _updateVolumeSliderAnimated:animatedCopy];
   }
 }
 
-- (void)presentForMuteChange:(BOOL)a3
+- (void)presentForMuteChange:(BOOL)change
 {
   [(SBRingerAlertElement *)self _updateVolumeSliderAnimated:0];
-  v4 = [(SBRingerAlertElement *)self delegate];
-  [v4 ringerAlertElementWantsToBePresented:self];
-  [v4 ringerAlertElementWantsToResetAutomaticInvalidationTimer:self];
+  delegate = [(SBRingerAlertElement *)self delegate];
+  [delegate ringerAlertElementWantsToBePresented:self];
+  [delegate ringerAlertElementWantsToResetAutomaticInvalidationTimer:self];
 }
 
-- (void)nudgeUp:(BOOL)a3
+- (void)nudgeUp:(BOOL)up
 {
-  if (a3)
+  if (up)
   {
     if ((BSFloatIsOne() & 1) == 0)
     {
@@ -241,42 +241,42 @@ LABEL_11:
   [(SBRingerAlertElement *)self _updateVolumeSliderAnimated:1];
 }
 
-- (void)_updateVolumeSliderAnimated:(BOOL)a3
+- (void)_updateVolumeSliderAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = self->_overshoot + self->_volume;
   v6 = v5;
   [(SBRingerVolumeSliderView *)self->_sliderView setValue:v5 animated:?];
   minimalSliderView = self->_minimalSliderView;
 
-  [(SBRingerVolumeSliderView *)minimalSliderView setValue:v3 animated:v6];
+  [(SBRingerVolumeSliderView *)minimalSliderView setValue:animatedCopy animated:v6];
 }
 
-- (void)_updateStateWithTransitionType:(unint64_t)a3
+- (void)_updateStateWithTransitionType:(unint64_t)type
 {
-  v5 = [(SBRingerAlertElement *)self source];
-  if (v5 != 1)
+  source = [(SBRingerAlertElement *)self source];
+  if (source != 1)
   {
-    if (v5)
+    if (source)
     {
       return;
     }
 
-    v6 = [(SBSystemApertureProvidedContentElement *)self layoutHost];
-    v7 = [(SBRingerAlertElement *)self isRingerSilent];
-    v8 = [(SBRingerAlertElement *)self visualStyle];
-    v9 = [(SBRingerAlertElement *)self leadingRingerContentViewProvider];
-    v10 = [(SBRingerAlertElement *)self minimalRingerContentViewProvider];
+    layoutHost = [(SBSystemApertureProvidedContentElement *)self layoutHost];
+    isRingerSilent = [(SBRingerAlertElement *)self isRingerSilent];
+    visualStyle = [(SBRingerAlertElement *)self visualStyle];
+    leadingRingerContentViewProvider = [(SBRingerAlertElement *)self leadingRingerContentViewProvider];
+    minimalRingerContentViewProvider = [(SBRingerAlertElement *)self minimalRingerContentViewProvider];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __55__SBRingerAlertElement__updateStateWithTransitionType___block_invoke;
     v29[3] = &unk_2783AB438;
     v29[4] = self;
-    v32 = v8;
-    v33 = v7;
-    v11 = v9;
+    v32 = visualStyle;
+    v33 = isRingerSilent;
+    v11 = leadingRingerContentViewProvider;
     v30 = v11;
-    v12 = v10;
+    v12 = minimalRingerContentViewProvider;
     v31 = v12;
     v13 = MEMORY[0x223D6F7F0](v29);
     v26[0] = MEMORY[0x277D85DD0];
@@ -289,9 +289,9 @@ LABEL_11:
     v28 = v15;
     v16 = MEMORY[0x223D6F7F0](v26);
     v17 = v16;
-    if (a3 > 1)
+    if (type > 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v19 = (v16 + 16);
         (*(v16 + 16))(v16, @"ringer", 0);
@@ -299,18 +299,18 @@ LABEL_11:
         (*v19)(v17, @"silent", 1);
       }
 
-      else if (a3 == 3)
+      else if (type == 3)
       {
         (*(v16 + 16))(v16, @"ringer", 1);
         [MEMORY[0x277D75D18] animateWithDuration:v13 animations:0.18];
-        [v6 preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
+        [layoutHost preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
         [(SBRingerAlertElement *)self _shakeRingerBell];
       }
     }
 
     else
     {
-      if (!a3)
+      if (!type)
       {
         (*(v16 + 16))(v16, @"silent", 0);
         v13[2](v13);
@@ -319,7 +319,7 @@ LABEL_18:
         return;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         (*(v16 + 16))(v16, @"ringer", 0);
         v13[2](v13);
@@ -338,17 +338,17 @@ LABEL_18:
       }
     }
 
-    v20 = [(SBRingerAlertElement *)self _textForRingerSilent:v7];
-    v21 = [(SBRingerAlertElement *)self _colorForRingerSilent:v7];
-    v22 = [(SBRingerAlertElement *)self trailingTextContentViewProvider];
-    [v22 swapInText:v20 textColor:v21];
+    v20 = [(SBRingerAlertElement *)self _textForRingerSilent:isRingerSilent];
+    v21 = [(SBRingerAlertElement *)self _colorForRingerSilent:isRingerSilent];
+    trailingTextContentViewProvider = [(SBRingerAlertElement *)self trailingTextContentViewProvider];
+    [trailingTextContentViewProvider swapInText:v20 textColor:v21];
 
     goto LABEL_18;
   }
 
-  v23 = [(SBRingerAlertElement *)self _leadingContentViewProviderForVolume];
-  v18 = [(SBRingerAlertElement *)self contentProvider];
-  [v18 setLeadingContentViewProvider:v23];
+  _leadingContentViewProviderForVolume = [(SBRingerAlertElement *)self _leadingContentViewProviderForVolume];
+  contentProvider = [(SBRingerAlertElement *)self contentProvider];
+  [contentProvider setLeadingContentViewProvider:_leadingContentViewProviderForVolume];
 }
 
 uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invoke(uint64_t a1)
@@ -378,12 +378,12 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
   return v2();
 }
 
-- (id)_textForRingerSilent:(BOOL)a3
+- (id)_textForRingerSilent:(BOOL)silent
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = v4;
-  if (v3)
+  silentCopy = silent;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = mainBundle;
+  if (silentCopy)
   {
     v6 = @"RINGER_COMPACT_OFF";
   }
@@ -393,14 +393,14 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
     v6 = @"RINGER_COMPACT_ON";
   }
 
-  v7 = [v4 localizedStringForKey:v6 value:&stru_283094718 table:@"SpringBoard"];
+  v7 = [mainBundle localizedStringForKey:v6 value:&stru_283094718 table:@"SpringBoard"];
 
   return v7;
 }
 
-- (id)_colorForRingerSilent:(BOOL)a3
+- (id)_colorForRingerSilent:(BOOL)silent
 {
-  if (a3)
+  if (silent)
   {
     [MEMORY[0x277D75348] colorWithRed:0.996078431 green:0.266666667 blue:0.160784314 alpha:1.0];
   }
@@ -419,12 +419,12 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
   if ([(SBSystemApertureProvidedContentElement *)self layoutMode]!= 1)
   {
     v3 = +[SBSystemApertureDomain rootSettings];
-    v4 = [v3 shakeRingerBell];
+    shakeRingerBell = [v3 shakeRingerBell];
 
-    if (v4)
+    if (shakeRingerBell)
     {
-      v5 = [(SBSystemApertureProvidedContentElement *)self elementHost];
-      [v5 elementRequestsNegativeResponse:self];
+      elementHost = [(SBSystemApertureProvidedContentElement *)self elementHost];
+      [elementHost elementRequestsNegativeResponse:self];
     }
   }
 }
@@ -435,12 +435,12 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
   v2 = [(SBRingerAlertElement *)self _bellImageForRingerSilent:[(SBRingerAlertElement *)self isRingerSilent]];
   v3 = [objc_alloc(MEMORY[0x277D67E20]) initWithImage:v2];
   v4 = objc_alloc(MEMORY[0x277D67E58]);
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 localizedStringForKey:@"RINGER_VOLUME" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v6 = [mainBundle localizedStringForKey:@"RINGER_VOLUME" value:&stru_283094718 table:@"SpringBoard"];
   v7 = [v4 initWithText:v6 style:4];
 
-  v8 = [v7 contentColor];
-  [v3 setContentColor:v8];
+  contentColor = [v7 contentColor];
+  [v3 setContentColor:contentColor];
 
   v9 = objc_alloc(MEMORY[0x277D67E50]);
   v13[0] = v3;
@@ -454,21 +454,21 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
   return v11;
 }
 
-- (id)_minimalContentForSource:(unint64_t)a3 visualStyle:(unint64_t)a4 ringerSilent:(BOOL)a5
+- (id)_minimalContentForSource:(unint64_t)source visualStyle:(unint64_t)style ringerSilent:(BOOL)silent
 {
   v52[9] = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (source == 1)
   {
-    v51 = [(SBRingerAlertElement *)self _bellImageForRingerSilent:a5, a4];
-    v10 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v51];
+    style = [(SBRingerAlertElement *)self _bellImageForRingerSilent:silent, style];
+    v10 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:style];
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [MEMORY[0x277D75348] systemWhiteColor];
-    [v10 setTintColor:v11];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [v10 setTintColor:systemWhiteColor];
 
     v12 = [(SBRingerAlertElement *)self _containedVolumeSliderViewWithSize:1 layoutAxis:6.0, 42.0];
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [v12 subviews];
-    v14 = [v13 bs_firstObjectOfClass:objc_opt_class()];
+    subviews = [v12 subviews];
+    v14 = [subviews bs_firstObjectOfClass:objc_opt_class()];
     minimalSliderView = self->_minimalSliderView;
     self->_minimalSliderView = v14;
 
@@ -481,40 +481,40 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
     v19 = v18;
     v21 = v20;
     v40 = MEMORY[0x277CCAAD0];
-    v50 = [v12 widthAnchor];
-    v49 = [v50 constraintEqualToConstant:v19];
+    widthAnchor = [v12 widthAnchor];
+    v49 = [widthAnchor constraintEqualToConstant:v19];
     v52[0] = v49;
-    v48 = [v12 heightAnchor];
-    v47 = [v48 constraintEqualToConstant:v21];
+    heightAnchor = [v12 heightAnchor];
+    v47 = [heightAnchor constraintEqualToConstant:v21];
     v52[1] = v47;
-    v46 = [v12 topAnchor];
-    v45 = [v17 topAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    topAnchor = [v12 topAnchor];
+    topAnchor2 = [v17 topAnchor];
+    v44 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v52[2] = v44;
-    v43 = [v12 centerXAnchor];
-    v42 = [v17 centerXAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42];
+    centerXAnchor = [v12 centerXAnchor];
+    centerXAnchor2 = [v17 centerXAnchor];
+    v41 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v52[3] = v41;
-    v38 = [v10 topAnchor];
-    v37 = [v12 bottomAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37 constant:3.0];
+    topAnchor3 = [v10 topAnchor];
+    bottomAnchor = [v12 bottomAnchor];
+    v36 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:3.0];
     v52[4] = v36;
-    v35 = [v10 centerXAnchor];
-    v34 = [v17 centerXAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    centerXAnchor3 = [v10 centerXAnchor];
+    centerXAnchor4 = [v17 centerXAnchor];
+    v33 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v52[5] = v33;
-    v32 = [v10 bottomAnchor];
-    v31 = [v17 bottomAnchor];
-    v22 = [v32 constraintEqualToAnchor:v31];
+    bottomAnchor2 = [v10 bottomAnchor];
+    bottomAnchor3 = [v17 bottomAnchor];
+    v22 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v52[6] = v22;
-    v23 = [v17 leadingAnchor];
+    leadingAnchor = [v17 leadingAnchor];
     v39 = v10;
-    v24 = [v10 leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    leadingAnchor2 = [v10 leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v52[7] = v25;
-    v26 = [v17 trailingAnchor];
-    v27 = [v10 trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    trailingAnchor = [v17 trailingAnchor];
+    trailingAnchor2 = [v10 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v52[8] = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:9];
     [v40 activateConstraints:v29];
@@ -522,12 +522,12 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
     v5 = [objc_alloc(MEMORY[0x277D67E10]) initWithView:v17];
   }
 
-  else if (!a3)
+  else if (!source)
   {
-    v7 = [(SBRingerAlertElement *)self _ringerPackageNameForVisualStyle:a4 minimal:1, a5];
+    silent = [(SBRingerAlertElement *)self _ringerPackageNameForVisualStyle:style minimal:1, silent];
     v8 = objc_alloc(MEMORY[0x277D67DE8]);
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [v8 initWithPackageName:v7 inBundle:v9];
+    v5 = [v8 initWithPackageName:silent inBundle:v9];
 
     objc_storeStrong(&self->_minimalRingerContentViewProvider, v5);
   }
@@ -535,13 +535,13 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
   return v5;
 }
 
-- (id)_containedVolumeSliderViewWithSize:(CGSize)a3 layoutAxis:(int64_t)a4
+- (id)_containedVolumeSliderViewWithSize:(CGSize)size layoutAxis:(int64_t)axis
 {
   v5 = [SBRingerVolumeSliderView alloc];
   BSRectWithSize();
   v6 = [(SBRingerVolumeSliderView *)v5 initWithFrame:?];
   [(SBRingerVolumeSliderView *)v6 setStyle:1];
-  [(SBRingerVolumeSliderView *)v6 setLayoutAxis:a4];
+  [(SBRingerVolumeSliderView *)v6 setLayoutAxis:axis];
   [(SBRingerVolumeSliderView *)v6 setRoundedStyle:1];
   v7 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v7 addSubview:v6];
@@ -550,8 +550,8 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
   [v7 center];
   v9 = v8;
   v11 = v10;
-  v12 = [v7 superview];
-  [v7 convertPoint:v12 toView:{v9, v11}];
+  superview = [v7 superview];
+  [v7 convertPoint:superview toView:{v9, v11}];
   v14 = v13;
   v16 = v15;
 
@@ -560,10 +560,10 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
   return v7;
 }
 
-- (id)_bellImageForRingerSilent:(BOOL)a3
+- (id)_bellImageForRingerSilent:(BOOL)silent
 {
   v3 = @"bell.fill";
-  if (a3)
+  if (silent)
   {
     v3 = @"bell.slash.fill";
   }
@@ -579,14 +579,14 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
   return v9;
 }
 
-- (id)_ringerPackageNameForVisualStyle:(unint64_t)a3 minimal:(BOOL)a4
+- (id)_ringerPackageNameForVisualStyle:(unint64_t)style minimal:(BOOL)minimal
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v6 = @"Ringer-Leading-D83";
   }
 
-  else if (a3)
+  else if (style)
   {
     v6 = 0;
   }
@@ -594,7 +594,7 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
   else
   {
     v5 = @"Ringer-Leading-D73";
-    if (a4)
+    if (minimal)
     {
       v5 = @"Ringer-Minimal-D73";
     }
@@ -605,16 +605,16 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
   return v6;
 }
 
-- (void)_getRingerPackageSizesForVisualStyle:(unint64_t)a3 ringerSilent:(BOOL)a4 leadingSize:(CGSize *)a5 minimalSize:(CGSize *)a6
+- (void)_getRingerPackageSizesForVisualStyle:(unint64_t)style ringerSilent:(BOOL)silent leadingSize:(CGSize *)size minimalSize:(CGSize *)minimalSize
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v10 = vdupq_n_s64(0x4042555555555555uLL);
     v8 = 36.6666667;
     v7 = 36.6666667;
   }
 
-  else if (a3)
+  else if (style)
   {
     v10 = 0;
     v8 = 0.0;
@@ -623,7 +623,7 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
 
   else
   {
-    if (a4)
+    if (silent)
     {
       v6 = 52.42;
     }
@@ -635,7 +635,7 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
 
     v7 = 25.2;
     v8 = 49.32;
-    if (!a4)
+    if (!silent)
     {
       v8 = 25.2;
     }
@@ -645,16 +645,16 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
     v10.width = v6;
   }
 
-  *a5 = v10;
-  a6->width = v7;
-  a6->height = v8;
+  *size = v10;
+  minimalSize->width = v7;
+  minimalSize->height = v8;
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets
 {
   v11.receiver = self;
   v11.super_class = SBRingerAlertElement;
-  [(SBSystemApertureProvidedContentElement *)&v11 preferredEdgeOutsetsForLayoutMode:a4.top suggestedOutsets:a4.leading maximumOutsets:a4.bottom, a4.trailing, a5.top, a5.leading, a5.bottom, a5.trailing];
+  [(SBSystemApertureProvidedContentElement *)&v11 preferredEdgeOutsetsForLayoutMode:outsets.top suggestedOutsets:outsets.leading maximumOutsets:outsets.bottom, outsets.trailing, maximumOutsets.top, maximumOutsets.leading, maximumOutsets.bottom, maximumOutsets.trailing];
   if (v7 <= v9)
   {
     v10 = v7;
@@ -665,7 +665,7 @@ uint64_t __55__SBRingerAlertElement__updateStateWithTransitionType___block_invok
     v10 = v9;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     v9 = v10;
     v7 = v10;

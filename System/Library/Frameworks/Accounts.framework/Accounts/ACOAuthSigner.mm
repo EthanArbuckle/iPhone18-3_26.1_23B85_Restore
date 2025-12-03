@@ -1,17 +1,17 @@
 @interface ACOAuthSigner
-- (ACOAuthSigner)initWithAccount:(id)a3 remoteEndpoint:(id)a4;
-- (id)signedURLRequestWithURLRequest:(id)a3 applicationID:(id)a4 timestamp:(id)a5;
-- (id)signedURLRequestWithURLRequest:(id)a3 callingPID:(id)a4 timestamp:(id)a5;
-- (void)_connectToRemoteOAuthSignerUsingEndpoint:(id)a3;
+- (ACOAuthSigner)initWithAccount:(id)account remoteEndpoint:(id)endpoint;
+- (id)signedURLRequestWithURLRequest:(id)request applicationID:(id)d timestamp:(id)timestamp;
+- (id)signedURLRequestWithURLRequest:(id)request callingPID:(id)d timestamp:(id)timestamp;
+- (void)_connectToRemoteOAuthSignerUsingEndpoint:(id)endpoint;
 - (void)dealloc;
 @end
 
 @implementation ACOAuthSigner
 
-- (ACOAuthSigner)initWithAccount:(id)a3 remoteEndpoint:(id)a4
+- (ACOAuthSigner)initWithAccount:(id)account remoteEndpoint:(id)endpoint
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  endpointCopy = endpoint;
   v14.receiver = self;
   v14.super_class = ACOAuthSigner;
   v9 = [(ACOAuthSigner *)&v14 init];
@@ -19,14 +19,14 @@
   if (v9)
   {
     v9->_shouldIncludeAppIdInRequest = 1;
-    objc_storeStrong(&v9->_account, a3);
-    [(ACOAuthSigner *)v10 _connectToRemoteOAuthSignerUsingEndpoint:v8];
-    v11 = [(ACAccount *)v10->_account accountStore];
-    v12 = [v11 effectiveBundleID];
+    objc_storeStrong(&v9->_account, account);
+    [(ACOAuthSigner *)v10 _connectToRemoteOAuthSignerUsingEndpoint:endpointCopy];
+    accountStore = [(ACAccount *)v10->_account accountStore];
+    effectiveBundleID = [accountStore effectiveBundleID];
 
-    if (v12)
+    if (effectiveBundleID)
     {
-      [(ACDOAuthSignerProtocol *)v10->_proxyShim setClientBundleID:v12 withHandler:&__block_literal_global_4];
+      [(ACDOAuthSignerProtocol *)v10->_proxyShim setClientBundleID:effectiveBundleID withHandler:&__block_literal_global_4];
     }
   }
 
@@ -53,14 +53,14 @@ void __48__ACOAuthSigner_initWithAccount_remoteEndpoint___block_invoke(uint64_t 
   [(ACOAuthSigner *)&v3 dealloc];
 }
 
-- (id)signedURLRequestWithURLRequest:(id)a3 callingPID:(id)a4 timestamp:(id)a5
+- (id)signedURLRequestWithURLRequest:(id)request callingPID:(id)d timestamp:(id)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  requestCopy = request;
+  dCopy = d;
+  timestampCopy = timestamp;
+  if (!dCopy)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInt:0];
+    dCopy = [MEMORY[0x1E696AD98] numberWithInt:0];
   }
 
   v20 = 0;
@@ -80,7 +80,7 @@ void __48__ACOAuthSigner_initWithAccount_remoteEndpoint___block_invoke(uint64_t 
   v19 = &v20;
   v14 = v11;
   v18 = v14;
-  [(ACDOAuthSignerProtocol *)proxyShim signURLRequest:v8 withAccount:account callingPID:v9 timestamp:v10 handler:v17];
+  [(ACDOAuthSignerProtocol *)proxyShim signURLRequest:requestCopy withAccount:account callingPID:dCopy timestamp:timestampCopy handler:v17];
   dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
   v15 = v21[5];
 
@@ -110,11 +110,11 @@ void __69__ACOAuthSigner_signedURLRequestWithURLRequest_callingPID_timestamp___b
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)signedURLRequestWithURLRequest:(id)a3 applicationID:(id)a4 timestamp:(id)a5
+- (id)signedURLRequestWithURLRequest:(id)request applicationID:(id)d timestamp:(id)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  dCopy = d;
+  timestampCopy = timestamp;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -131,7 +131,7 @@ void __69__ACOAuthSigner_signedURLRequestWithURLRequest_callingPID_timestamp___b
   v19 = &v20;
   v14 = v11;
   v18 = v14;
-  [(ACDOAuthSignerProtocol *)proxyShim signURLRequest:v8 withAccount:account applicationID:v9 timestamp:v10 handler:v17];
+  [(ACDOAuthSignerProtocol *)proxyShim signURLRequest:requestCopy withAccount:account applicationID:dCopy timestamp:timestampCopy handler:v17];
   dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
   v15 = v21[5];
 
@@ -161,13 +161,13 @@ void __72__ACOAuthSigner_signedURLRequestWithURLRequest_applicationID_timestamp_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_connectToRemoteOAuthSignerUsingEndpoint:(id)a3
+- (void)_connectToRemoteOAuthSignerUsingEndpoint:(id)endpoint
 {
-  v10 = a3;
+  endpointCopy = endpoint;
   v4 = objc_alloc(MEMORY[0x1E696B0B8]);
-  if (v10)
+  if (endpointCopy)
   {
-    v5 = [v4 initWithListenerEndpoint:v10];
+    v5 = [v4 initWithListenerEndpoint:endpointCopy];
   }
 
   else
@@ -182,9 +182,9 @@ void __72__ACOAuthSigner_signedURLRequestWithURLRequest_applicationID_timestamp_
   [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v7];
 
   [(NSXPCConnection *)self->_connection setInterruptionHandler:&__block_literal_global_60];
-  v8 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
   proxyShim = self->_proxyShim;
-  self->_proxyShim = v8;
+  self->_proxyShim = remoteObjectProxy;
 
   [(NSXPCConnection *)self->_connection resume];
 }

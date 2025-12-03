@@ -1,47 +1,47 @@
 @interface MADActivityCommandRequest
-- (id)initForClient:(id)a3 requestingAction:(id)a4;
-- (void)associateAbsoluteId:(id)a3;
-- (void)associateAllowDifferences:(id)a3;
-- (void)associateAssetId:(id)a3;
-- (void)associateAssetIdsToPreserve:(id)a3;
-- (void)associateAssetState:(int64_t)a3;
-- (void)associateAssetType:(id)a3;
-- (void)associateAssetTypesList:(id)a3;
-- (void)associateBaseUrl:(id)a3;
-- (void)associateCleanupInFlightDownloads:(BOOL)a3;
-- (void)associateClientExtractorData:(id)a3 ofLength:(unint64_t)a4;
-- (void)associateConnectionIdentifier:(id)a3;
-- (void)associateDoNotBlockBeforeFirstUnlock:(BOOL)a3;
-- (void)associateDoNotBlockOnNetworkStatus:(BOOL)a3;
-- (void)associateDownloadConfig:(id)a3;
-- (void)associateDownloadOptions:(id)a3;
-- (void)associateDownloadSize:(unint64_t)a3;
-- (void)associateGCOverrideDays:(unint64_t)a3;
-- (void)associateNotificationInterval:(unint64_t)a3;
-- (void)associatePallasAudience:(id)a3;
-- (void)associatePallasEnabled:(BOOL)a3;
-- (void)associatePallasUrl:(id)a3;
-- (void)associatePurpose:(id)a3;
-- (void)associateQueryParams:(id)a3;
-- (void)associateRelativeUrl:(id)a3;
-- (void)associateServerUrl:(id)a3;
-- (void)associateUnarchiveSize:(int64_t)a3;
+- (id)initForClient:(id)client requestingAction:(id)action;
+- (void)associateAbsoluteId:(id)id;
+- (void)associateAllowDifferences:(id)differences;
+- (void)associateAssetId:(id)id;
+- (void)associateAssetIdsToPreserve:(id)preserve;
+- (void)associateAssetState:(int64_t)state;
+- (void)associateAssetType:(id)type;
+- (void)associateAssetTypesList:(id)list;
+- (void)associateBaseUrl:(id)url;
+- (void)associateCleanupInFlightDownloads:(BOOL)downloads;
+- (void)associateClientExtractorData:(id)data ofLength:(unint64_t)length;
+- (void)associateConnectionIdentifier:(id)identifier;
+- (void)associateDoNotBlockBeforeFirstUnlock:(BOOL)unlock;
+- (void)associateDoNotBlockOnNetworkStatus:(BOOL)status;
+- (void)associateDownloadConfig:(id)config;
+- (void)associateDownloadOptions:(id)options;
+- (void)associateDownloadSize:(unint64_t)size;
+- (void)associateGCOverrideDays:(unint64_t)days;
+- (void)associateNotificationInterval:(unint64_t)interval;
+- (void)associatePallasAudience:(id)audience;
+- (void)associatePallasEnabled:(BOOL)enabled;
+- (void)associatePallasUrl:(id)url;
+- (void)associatePurpose:(id)purpose;
+- (void)associateQueryParams:(id)params;
+- (void)associateRelativeUrl:(id)url;
+- (void)associateServerUrl:(id)url;
+- (void)associateUnarchiveSize:(int64_t)size;
 @end
 
 @implementation MADActivityCommandRequest
 
-- (id)initForClient:(id)a3 requestingAction:(id)a4
+- (id)initForClient:(id)client requestingAction:(id)action
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  actionCopy = action;
   v28.receiver = self;
   v28.super_class = MADActivityCommandRequest;
   v9 = [(MADActivityCommandRequest *)&v28 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientName, a3);
-    objc_storeStrong(&v10->_action, a4);
+    objc_storeStrong(&v9->_clientName, client);
+    objc_storeStrong(&v10->_action, action);
     assetType = v10->_assetType;
     v10->_assetType = 0;
 
@@ -104,276 +104,276 @@
   return v10;
 }
 
-- (void)associateAssetType:(id)a3
+- (void)associateAssetType:(id)type
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self assetType];
+  typeCopy = type;
+  assetType = [(MADActivityCommandRequest *)self assetType];
 
-  if (!v4)
+  if (!assetType)
   {
-    [(MADActivityCommandRequest *)self setAssetType:v5];
+    [(MADActivityCommandRequest *)self setAssetType:typeCopy];
   }
 }
 
-- (void)associateAssetId:(id)a3
+- (void)associateAssetId:(id)id
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self assetId];
+  idCopy = id;
+  assetId = [(MADActivityCommandRequest *)self assetId];
 
-  if (!v4)
+  if (!assetId)
   {
-    [(MADActivityCommandRequest *)self setAssetId:v5];
+    [(MADActivityCommandRequest *)self setAssetId:idCopy];
   }
 }
 
-- (void)associateDoNotBlockBeforeFirstUnlock:(BOOL)a3
+- (void)associateDoNotBlockBeforeFirstUnlock:(BOOL)unlock
 {
-  v3 = a3;
+  unlockCopy = unlock;
   if (![(MADActivityCommandRequest *)self doNotBlockBeforeFirstUnlock])
   {
 
-    [(MADActivityCommandRequest *)self setDoNotBlockBeforeFirstUnlock:v3];
+    [(MADActivityCommandRequest *)self setDoNotBlockBeforeFirstUnlock:unlockCopy];
   }
 }
 
-- (void)associateDoNotBlockOnNetworkStatus:(BOOL)a3
+- (void)associateDoNotBlockOnNetworkStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   if (![(MADActivityCommandRequest *)self doNotBlockOnNetworkStatus])
   {
 
-    [(MADActivityCommandRequest *)self setDoNotBlockOnNetworkStatus:v3];
+    [(MADActivityCommandRequest *)self setDoNotBlockOnNetworkStatus:statusCopy];
   }
 }
 
-- (void)associateQueryParams:(id)a3
+- (void)associateQueryParams:(id)params
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self queryParams];
+  paramsCopy = params;
+  queryParams = [(MADActivityCommandRequest *)self queryParams];
 
-  if (!v4)
+  if (!queryParams)
   {
-    [(MADActivityCommandRequest *)self setQueryParams:v5];
+    [(MADActivityCommandRequest *)self setQueryParams:paramsCopy];
   }
 }
 
-- (void)associateRelativeUrl:(id)a3
+- (void)associateRelativeUrl:(id)url
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self relativeUrl];
+  urlCopy = url;
+  relativeUrl = [(MADActivityCommandRequest *)self relativeUrl];
 
-  if (!v4)
+  if (!relativeUrl)
   {
-    [(MADActivityCommandRequest *)self setRelativeUrl:v5];
+    [(MADActivityCommandRequest *)self setRelativeUrl:urlCopy];
   }
 }
 
-- (void)associateDownloadOptions:(id)a3
+- (void)associateDownloadOptions:(id)options
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self downloadOptions];
+  optionsCopy = options;
+  downloadOptions = [(MADActivityCommandRequest *)self downloadOptions];
 
-  if (!v4)
+  if (!downloadOptions)
   {
-    [(MADActivityCommandRequest *)self setDownloadOptions:v5];
+    [(MADActivityCommandRequest *)self setDownloadOptions:optionsCopy];
   }
 }
 
-- (void)associateDownloadSize:(unint64_t)a3
+- (void)associateDownloadSize:(unint64_t)size
 {
   if (![(MADActivityCommandRequest *)self downloadSize])
   {
 
-    [(MADActivityCommandRequest *)self setDownloadSize:a3];
+    [(MADActivityCommandRequest *)self setDownloadSize:size];
   }
 }
 
-- (void)associateNotificationInterval:(unint64_t)a3
+- (void)associateNotificationInterval:(unint64_t)interval
 {
   if (![(MADActivityCommandRequest *)self notificationInterval])
   {
 
-    [(MADActivityCommandRequest *)self setNotificationInterval:a3];
+    [(MADActivityCommandRequest *)self setNotificationInterval:interval];
   }
 }
 
-- (void)associateDownloadConfig:(id)a3
+- (void)associateDownloadConfig:(id)config
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self downloadConfig];
+  configCopy = config;
+  downloadConfig = [(MADActivityCommandRequest *)self downloadConfig];
 
-  if (!v4)
+  if (!downloadConfig)
   {
-    [(MADActivityCommandRequest *)self setDownloadConfig:v5];
+    [(MADActivityCommandRequest *)self setDownloadConfig:configCopy];
   }
 }
 
-- (void)associateAssetTypesList:(id)a3
+- (void)associateAssetTypesList:(id)list
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self assetTypesList];
+  listCopy = list;
+  assetTypesList = [(MADActivityCommandRequest *)self assetTypesList];
 
-  if (!v4)
+  if (!assetTypesList)
   {
-    [(MADActivityCommandRequest *)self setAssetTypesList:v5];
+    [(MADActivityCommandRequest *)self setAssetTypesList:listCopy];
   }
 }
 
-- (void)associateAssetState:(int64_t)a3
+- (void)associateAssetState:(int64_t)state
 {
   if (![(MADActivityCommandRequest *)self assetState])
   {
 
-    [(MADActivityCommandRequest *)self setAssetState:a3];
+    [(MADActivityCommandRequest *)self setAssetState:state];
   }
 }
 
-- (void)associateAssetIdsToPreserve:(id)a3
+- (void)associateAssetIdsToPreserve:(id)preserve
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self assetIdsToPreserve];
+  preserveCopy = preserve;
+  assetIdsToPreserve = [(MADActivityCommandRequest *)self assetIdsToPreserve];
 
-  if (!v4)
+  if (!assetIdsToPreserve)
   {
-    [(MADActivityCommandRequest *)self setAssetIdsToPreserve:v5];
+    [(MADActivityCommandRequest *)self setAssetIdsToPreserve:preserveCopy];
   }
 }
 
-- (void)associatePallasEnabled:(BOOL)a3
+- (void)associatePallasEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (![(MADActivityCommandRequest *)self pallasEnabled])
   {
 
-    [(MADActivityCommandRequest *)self setPallasEnabled:v3];
+    [(MADActivityCommandRequest *)self setPallasEnabled:enabledCopy];
   }
 }
 
-- (void)associateServerUrl:(id)a3
+- (void)associateServerUrl:(id)url
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self serverUrl];
+  urlCopy = url;
+  serverUrl = [(MADActivityCommandRequest *)self serverUrl];
 
-  if (!v4)
+  if (!serverUrl)
   {
-    [(MADActivityCommandRequest *)self setServerUrl:v5];
+    [(MADActivityCommandRequest *)self setServerUrl:urlCopy];
   }
 }
 
-- (void)associatePallasUrl:(id)a3
+- (void)associatePallasUrl:(id)url
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self pallasUrl];
+  urlCopy = url;
+  pallasUrl = [(MADActivityCommandRequest *)self pallasUrl];
 
-  if (!v4)
+  if (!pallasUrl)
   {
-    [(MADActivityCommandRequest *)self setPallasUrl:v5];
+    [(MADActivityCommandRequest *)self setPallasUrl:urlCopy];
   }
 }
 
-- (void)associatePallasAudience:(id)a3
+- (void)associatePallasAudience:(id)audience
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self pallasAudience];
+  audienceCopy = audience;
+  pallasAudience = [(MADActivityCommandRequest *)self pallasAudience];
 
-  if (!v4)
+  if (!pallasAudience)
   {
-    [(MADActivityCommandRequest *)self setPallasAudience:v5];
+    [(MADActivityCommandRequest *)self setPallasAudience:audienceCopy];
   }
 }
 
-- (void)associateUnarchiveSize:(int64_t)a3
+- (void)associateUnarchiveSize:(int64_t)size
 {
   if (![(MADActivityCommandRequest *)self unarchiveSize])
   {
 
-    [(MADActivityCommandRequest *)self setUnarchiveSize:a3];
+    [(MADActivityCommandRequest *)self setUnarchiveSize:size];
   }
 }
 
-- (void)associateGCOverrideDays:(unint64_t)a3
+- (void)associateGCOverrideDays:(unint64_t)days
 {
   if (![(MADActivityCommandRequest *)self gcOverrideDays])
   {
 
-    [(MADActivityCommandRequest *)self setGcOverrideDays:a3];
+    [(MADActivityCommandRequest *)self setGcOverrideDays:days];
   }
 }
 
-- (void)associateCleanupInFlightDownloads:(BOOL)a3
+- (void)associateCleanupInFlightDownloads:(BOOL)downloads
 {
-  v3 = a3;
+  downloadsCopy = downloads;
   if (![(MADActivityCommandRequest *)self cleanupInFlightDownloads])
   {
 
-    [(MADActivityCommandRequest *)self setCleanupInFlightDownloads:v3];
+    [(MADActivityCommandRequest *)self setCleanupInFlightDownloads:downloadsCopy];
   }
 }
 
-- (void)associateConnectionIdentifier:(id)a3
+- (void)associateConnectionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self connectionIdentifier];
+  identifierCopy = identifier;
+  connectionIdentifier = [(MADActivityCommandRequest *)self connectionIdentifier];
 
-  if (!v4)
+  if (!connectionIdentifier)
   {
-    [(MADActivityCommandRequest *)self setConnectionIdentifier:v5];
+    [(MADActivityCommandRequest *)self setConnectionIdentifier:identifierCopy];
   }
 }
 
-- (void)associatePurpose:(id)a3
+- (void)associatePurpose:(id)purpose
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self purpose];
+  purposeCopy = purpose;
+  purpose = [(MADActivityCommandRequest *)self purpose];
 
-  if (!v4)
+  if (!purpose)
   {
-    [(MADActivityCommandRequest *)self setPurpose:v5];
+    [(MADActivityCommandRequest *)self setPurpose:purposeCopy];
   }
 }
 
-- (void)associateBaseUrl:(id)a3
+- (void)associateBaseUrl:(id)url
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self baseUrl];
+  urlCopy = url;
+  baseUrl = [(MADActivityCommandRequest *)self baseUrl];
 
-  if (!v4)
+  if (!baseUrl)
   {
-    [(MADActivityCommandRequest *)self setBaseUrl:v5];
+    [(MADActivityCommandRequest *)self setBaseUrl:urlCopy];
   }
 }
 
-- (void)associateClientExtractorData:(id)a3 ofLength:(unint64_t)a4
+- (void)associateClientExtractorData:(id)data ofLength:(unint64_t)length
 {
-  v7 = a3;
-  v6 = [(MADActivityCommandRequest *)self clientExtractorData];
+  dataCopy = data;
+  clientExtractorData = [(MADActivityCommandRequest *)self clientExtractorData];
 
-  if (!v6)
+  if (!clientExtractorData)
   {
-    [(MADActivityCommandRequest *)self setClientExtractorData:v7];
-    [(MADActivityCommandRequest *)self setClientExtractorLen:a4];
+    [(MADActivityCommandRequest *)self setClientExtractorData:dataCopy];
+    [(MADActivityCommandRequest *)self setClientExtractorLen:length];
   }
 }
 
-- (void)associateAbsoluteId:(id)a3
+- (void)associateAbsoluteId:(id)id
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self absoluteId];
+  idCopy = id;
+  absoluteId = [(MADActivityCommandRequest *)self absoluteId];
 
-  if (!v4)
+  if (!absoluteId)
   {
-    [(MADActivityCommandRequest *)self setAbsoluteId:v5];
+    [(MADActivityCommandRequest *)self setAbsoluteId:idCopy];
   }
 }
 
-- (void)associateAllowDifferences:(id)a3
+- (void)associateAllowDifferences:(id)differences
 {
-  v5 = a3;
-  v4 = [(MADActivityCommandRequest *)self allowDifferences];
+  differencesCopy = differences;
+  allowDifferences = [(MADActivityCommandRequest *)self allowDifferences];
 
-  if (!v4)
+  if (!allowDifferences)
   {
-    [(MADActivityCommandRequest *)self setAllowDifferences:v5];
+    [(MADActivityCommandRequest *)self setAllowDifferences:differencesCopy];
   }
 }
 

@@ -1,17 +1,17 @@
 @interface StocksAssistantStockListCell
-- (StocksAssistantStockListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (StocksAssistantStockListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setRequestType:(unint64_t)a3;
-- (void)setStock:(id)a3;
+- (void)setRequestType:(unint64_t)type;
+- (void)setStock:(id)stock;
 @end
 
 @implementation StocksAssistantStockListCell
 
-- (StocksAssistantStockListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (StocksAssistantStockListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v29.receiver = self;
   v29.super_class = StocksAssistantStockListCell;
-  v4 = [(StocksAssistantStockCell *)&v29 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(StocksAssistantStockCell *)&v29 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UILabel alloc];
@@ -42,8 +42,8 @@
     [(UILabel *)v4->_tickerLabel setFont:v16];
 
     [(UILabel *)v4->_tickerLabel setAdjustsFontSizeToFitWidth:1];
-    v17 = [(UILabel *)v4->_tickerLabel font];
-    [v17 pointSize];
+    font = [(UILabel *)v4->_tickerLabel font];
+    [font pointSize];
     [(UILabel *)v4->_tickerLabel setMinimumScaleFactor:14.0 / v18];
 
     [(UILabel *)v4->_tickerLabel setLineBreakMode:5];
@@ -63,8 +63,8 @@
     [(UILabel *)v4->_priceLabel setFont:v23];
 
     [(UILabel *)v4->_priceLabel setAdjustsFontSizeToFitWidth:1];
-    v24 = [(UILabel *)v4->_priceLabel font];
-    [v24 pointSize];
+    font2 = [(UILabel *)v4->_priceLabel font];
+    [font2 pointSize];
     [(UILabel *)v4->_priceLabel setMinimumScaleFactor:14.0 / v25];
 
     [(UILabel *)v4->_priceLabel setLineBreakMode:5];
@@ -81,48 +81,48 @@
   return v4;
 }
 
-- (void)setStock:(id)a3
+- (void)setStock:(id)stock
 {
   v14.receiver = self;
   v14.super_class = StocksAssistantStockListCell;
-  [(StocksAssistantStockCell *)&v14 setStock:a3];
-  v4 = [(StocksAssistantStockCell *)self stock];
-  v5 = [v4 companyName];
-  [(UILabel *)self->_companyNameLabel setText:v5];
+  [(StocksAssistantStockCell *)&v14 setStock:stock];
+  stock = [(StocksAssistantStockCell *)self stock];
+  companyName = [stock companyName];
+  [(UILabel *)self->_companyNameLabel setText:companyName];
 
   [(UILabel *)self->_companyNameLabel sizeToFit];
-  v6 = [(StocksAssistantStockCell *)self stock];
-  v7 = [v6 listName];
-  v8 = [v7 uppercaseString];
-  [(UILabel *)self->_tickerLabel setText:v8];
+  stock2 = [(StocksAssistantStockCell *)self stock];
+  listName = [stock2 listName];
+  uppercaseString = [listName uppercaseString];
+  [(UILabel *)self->_tickerLabel setText:uppercaseString];
 
   [(UILabel *)self->_tickerLabel sizeToFit];
-  v9 = [(StocksAssistantStockCell *)self stock];
-  v10 = [v9 price];
-  if ([v10 length])
+  stock3 = [(StocksAssistantStockCell *)self stock];
+  price = [stock3 price];
+  if ([price length])
   {
-    v11 = [(StocksAssistantStockCell *)self stock];
-    v12 = [v11 formattedPrice];
+    stock4 = [(StocksAssistantStockCell *)self stock];
+    formattedPrice = [stock4 formattedPrice];
     p_priceLabel = &self->_priceLabel;
-    [(UILabel *)*p_priceLabel setText:v12];
+    [(UILabel *)*p_priceLabel setText:formattedPrice];
   }
 
   else
   {
-    v11 = +[Stock BlankValueString];
+    stock4 = +[Stock BlankValueString];
     p_priceLabel = &self->_priceLabel;
-    [(UILabel *)*p_priceLabel setText:v11];
+    [(UILabel *)*p_priceLabel setText:stock4];
   }
 
   [(UILabel *)*p_priceLabel sizeToFit];
 }
 
-- (void)setRequestType:(unint64_t)a3
+- (void)setRequestType:(unint64_t)type
 {
   v49.receiver = self;
   v49.super_class = StocksAssistantStockListCell;
   [(StocksAssistantStockCell *)&v49 setRequestType:?];
-  if (a3 <= 9)
+  if (type <= 9)
   {
     [(UILabel *)self->_changeLabel removeFromSuperview];
     changeLabel = self->_changeLabel;
@@ -168,7 +168,7 @@
       [(StocksAssistantStockListCell *)self addSubview:self->_attributeValue];
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v16 = [StocksBundles getBundle:1];
       [v16 siriUILocalizedStringForKey:@"LongMarketCap" table:@"Localizable"];
@@ -177,13 +177,13 @@
     else
     {
       v16 = +[StocksAssistantStockCell infoAttributes];
-      [v16 objectAtIndex:a3];
+      [v16 objectAtIndex:type];
     }
     v44 = ;
     [(UILabel *)self->_attributeTitle setText:v44];
 
     [(UILabel *)self->_attributeTitle sizeToFit];
-    v45 = [(StocksAssistantStockCell *)self valueForAttribute:a3];
+    v45 = [(StocksAssistantStockCell *)self valueForAttribute:type];
     [(UILabel *)self->_attributeValue setText:v45];
 
     v46 = self->_attributeValue;
@@ -200,9 +200,9 @@ LABEL_21:
   v18 = self->_attributeValue;
   self->_attributeValue = 0;
 
-  v19 = [(StocksAssistantStockCell *)self stock];
-  v20 = [v19 price];
-  [v20 floatValue];
+  stock = [(StocksAssistantStockCell *)self stock];
+  price = [stock price];
+  [price floatValue];
   v22 = v21;
 
   v23 = self->_changeLabel;
@@ -229,16 +229,16 @@ LABEL_21:
       [(StocksAssistantStockListCell *)self addSubview:self->_changeLabel];
     }
 
-    v30 = [(StocksAssistantStockCell *)self stock];
-    v31 = [v30 change];
-    v32 = [v31 length];
+    stock2 = [(StocksAssistantStockCell *)self stock];
+    change = [stock2 change];
+    v32 = [change length];
 
     if (v32)
     {
-      v33 = [(StocksAssistantStockCell *)self stock];
-      v34 = [v33 changeIsNegative];
+      stock3 = [(StocksAssistantStockCell *)self stock];
+      changeIsNegative = [stock3 changeIsNegative];
       v35 = @"+";
-      if (v34)
+      if (changeIsNegative)
       {
         v35 = @"-";
       }
@@ -247,10 +247,10 @@ LABEL_21:
 
       v37 = [StocksBundles getBundle:1];
       v38 = [v37 siriUILocalizedStringForKey:@"CHANGE" table:@"Localizable"];
-      v39 = [(StocksAssistantStockCell *)self stock];
-      v40 = [v39 formattedChangePercent:0];
-      v41 = [(StocksAssistantStockCell *)self stock];
-      v42 = [v41 formattedChangePercent:1];
+      stock4 = [(StocksAssistantStockCell *)self stock];
+      v40 = [stock4 formattedChangePercent:0];
+      stock5 = [(StocksAssistantStockCell *)self stock];
+      v42 = [stock5 formattedChangePercent:1];
       v43 = [(__CFString *)v36 stringByAppendingFormat:v38, v40, v42];
 
       [(UILabel *)self->_changeLabel setText:v43];
@@ -280,19 +280,19 @@ LABEL_21:
 - (void)layoutSubviews
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v5 userInterfaceLayoutDirection];
 
   v7 = 22.0;
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v7 = 28.0;
   }
 
   rect_24 = v7;
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v8 = 48.0;
   }
@@ -318,7 +318,7 @@ LABEL_21:
   v20 = v19;
   v21 = 0.0;
   v22 = 0.0;
-  if (v6 == &dword_0 + 1)
+  if (userInterfaceLayoutDirection == &dword_0 + 1)
   {
     v23 = v15;
     v24 = v16;
@@ -334,8 +334,8 @@ LABEL_21:
     v22 = MaxX - CGRectGetWidth(v89);
   }
 
-  v26 = [(UILabel *)self->_tickerLabel font];
-  [v26 ascender];
+  font = [(UILabel *)self->_tickerLabel font];
+  [font ascender];
   RoundToPixel();
   v28 = rect_24 - v27;
 
@@ -343,7 +343,7 @@ LABEL_21:
   [(UILabel *)self->_priceLabel frame];
   v30 = v29;
   rect_16 = v31;
-  if (v6 != &dword_0 + 1)
+  if (userInterfaceLayoutDirection != &dword_0 + 1)
   {
     v90.origin.x = v11;
     v90.origin.y = v85;
@@ -353,8 +353,8 @@ LABEL_21:
   }
 
   rect_8 = v11;
-  v32 = [(UILabel *)self->_priceLabel font];
-  [v32 ascender];
+  font2 = [(UILabel *)self->_priceLabel font];
+  [font2 ascender];
   RoundToPixel();
   v33 = v8;
   v35 = v8 - v34;
@@ -369,7 +369,7 @@ LABEL_21:
     v40 = v39;
     v42 = v41;
     v43 = 0.0;
-    if (v6 != &dword_0 + 1)
+    if (userInterfaceLayoutDirection != &dword_0 + 1)
     {
       v91.origin.x = rect_8;
       v91.origin.y = v85;
@@ -378,8 +378,8 @@ LABEL_21:
       v43 = CGRectGetMaxX(v91) - v40;
     }
 
-    v44 = [(UILabel *)*p_changeLabel font];
-    [v44 ascender];
+    font3 = [(UILabel *)*p_changeLabel font];
+    [font3 ascender];
     RoundToPixel();
     v28 = rect_24 - v45;
 
@@ -428,7 +428,7 @@ LABEL_14:
       }
 
       recta = v67;
-      if (v6 == &dword_0 + 1)
+      if (userInterfaceLayoutDirection == &dword_0 + 1)
       {
         v43 = 0.0;
         v68 = 0;
@@ -459,12 +459,12 @@ LABEL_15:
   v47 = v46;
   v49 = v48;
   v51 = v50;
-  v52 = [(UILabel *)self->_companyNameLabel font];
-  [v52 ascender];
+  font4 = [(UILabel *)self->_companyNameLabel font];
+  [font4 ascender];
   RoundToPixel();
   v54 = v33 - v53;
 
-  if (v6 == &dword_0 + 1)
+  if (userInterfaceLayoutDirection == &dword_0 + 1)
   {
     rect = v47;
     v92.origin.x = rect_8;

@@ -20,7 +20,7 @@
   block[3] = &unk_1E8491DA8;
   v22 = v12;
   v23 = v13;
-  block[4] = a1;
+  block[4] = self;
   v20 = v10;
   v21 = v11;
   v15 = v12;
@@ -69,10 +69,10 @@
     goto LABEL_10;
   }
 
-  v9 = [v3 pathExtension];
-  if ([v9 length])
+  pathExtension = [v3 pathExtension];
+  if ([pathExtension length])
   {
-    v10 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v9];
+    v10 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension];
   }
 
   else

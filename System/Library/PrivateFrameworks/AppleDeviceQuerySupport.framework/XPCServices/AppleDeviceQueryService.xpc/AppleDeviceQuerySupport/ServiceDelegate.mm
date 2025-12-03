@@ -1,34 +1,34 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ZhuGeServiceProtocol];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = +[(ZhuGeSingletonService *)ZhuGeService];
-  [v4 setExportedObject:v6];
+  [connectionCopy setExportedObject:v6];
 
   if (isZhuGeInRestoreOS())
   {
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ZhuGeRestoreLogProtocol];
-    [v4 setRemoteObjectInterface:v7];
+    [connectionCopy setRemoteObjectInterface:v7];
   }
 
-  [v4 activate];
+  [connectionCopy activate];
   v8 = +[(ZhuGeSingletonService *)ZhuGeLockerService];
-  [v8 setXpcConnection:v4];
+  [v8 setXpcConnection:connectionCopy];
 
   v12 = 0;
   v9 = [ZhuGeSupportAssistant getSharedInstanceByName:@"OBJC_CLASS_$_ZhuGeLockerArmory" withError:&v12];
   v10 = v9;
   if (v9)
   {
-    [v9 setXpcConnection:v4];
+    [v9 setXpcConnection:connectionCopy];
   }
 
   return 1;

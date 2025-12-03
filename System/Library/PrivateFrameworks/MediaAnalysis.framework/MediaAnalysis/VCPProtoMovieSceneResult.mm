@@ -1,23 +1,23 @@
 @interface VCPProtoMovieSceneResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFlickerScore:(BOOL)a3;
-- (void)setHasSceneprintDistanceToPreviousScene:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFlickerScore:(BOOL)score;
+- (void)setHasSceneprintDistanceToPreviousScene:(BOOL)scene;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieSceneResult
 
-- (void)setHasFlickerScore:(BOOL)a3
+- (void)setHasFlickerScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSceneprintDistanceToPreviousScene:(BOOL)a3
+- (void)setHasSceneprintDistanceToPreviousScene:(BOOL)scene
 {
-  if (a3)
+  if (scene)
   {
     v3 = 4;
   }
@@ -51,32 +51,32 @@
   v8.receiver = self;
   v8.super_class = VCPProtoMovieSceneResult;
   v4 = [(VCPProtoMovieSceneResult *)&v8 description];
-  v5 = [(VCPProtoMovieSceneResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieSceneResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v6 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   *&v4 = self->_qualityScore;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v7 forKey:@"qualityScore"];
+  [dictionary setObject:v7 forKey:@"qualityScore"];
 
   has = self->_has;
   if (has)
   {
     *&v8 = self->_distanceToPreviousScene;
     v12 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
-    [v3 setObject:v12 forKey:@"distanceToPreviousScene"];
+    [dictionary setObject:v12 forKey:@"distanceToPreviousScene"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -98,24 +98,24 @@ LABEL_5:
 
   *&v8 = self->_flickerScore;
   v13 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
-  [v3 setObject:v13 forKey:@"flickerScore"];
+  [dictionary setObject:v13 forKey:@"flickerScore"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     *&v8 = self->_sceneprintDistanceToPreviousScene;
     v10 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
-    [v3 setObject:v10 forKey:@"sceneprintDistanceToPreviousScene"];
+    [dictionary setObject:v10 forKey:@"sceneprintDistanceToPreviousScene"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteFloatField();
   has = self->_has;
@@ -150,16 +150,16 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setTimeRange:self->_timeRange];
-  *(v5 + 4) = LODWORD(self->_qualityScore);
+  toCopy = to;
+  [toCopy setTimeRange:self->_timeRange];
+  *(toCopy + 4) = LODWORD(self->_qualityScore);
   has = self->_has;
   if (has)
   {
-    *(v5 + 2) = LODWORD(self->_distanceToPreviousScene);
-    *(v5 + 32) |= 1u;
+    *(toCopy + 2) = LODWORD(self->_distanceToPreviousScene);
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -178,22 +178,22 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v5 + 3) = LODWORD(self->_flickerScore);
-  *(v5 + 32) |= 2u;
+  *(toCopy + 3) = LODWORD(self->_flickerScore);
+  *(toCopy + 32) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v5 + 5) = LODWORD(self->_sceneprintDistanceToPreviousScene);
-    *(v5 + 32) |= 4u;
+    *(toCopy + 5) = LODWORD(self->_sceneprintDistanceToPreviousScene);
+    *(toCopy + 32) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -236,16 +236,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   timeRange = self->_timeRange;
-  if (timeRange | *(v4 + 3))
+  if (timeRange | *(equalCopy + 3))
   {
     if (![(VCPProtoTimeRange *)timeRange isEqual:?])
     {
@@ -253,20 +253,20 @@ LABEL_4:
     }
   }
 
-  if (self->_qualityScore != *(v4 + 4))
+  if (self->_qualityScore != *(equalCopy + 4))
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_distanceToPreviousScene != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_distanceToPreviousScene != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_19:
     v6 = 0;
@@ -275,21 +275,21 @@ LABEL_19:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_flickerScore != *(v4 + 3))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_flickerScore != *(equalCopy + 3))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_19;
   }
 
-  v6 = (*(v4 + 32) & 4) == 0;
+  v6 = (*(equalCopy + 32) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_sceneprintDistanceToPreviousScene != *(v4 + 5))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_sceneprintDistanceToPreviousScene != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
@@ -440,11 +440,11 @@ LABEL_32:
   return v13 ^ v3 ^ v14 ^ v16 ^ v25;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (timeRange)
   {
     if (!v6)
@@ -452,7 +452,7 @@ LABEL_32:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(VCPProtoTimeRange *)timeRange mergeFrom:?];
   }
 
@@ -463,19 +463,19 @@ LABEL_32:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(VCPProtoMovieSceneResult *)self setTimeRange:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  self->_qualityScore = *(v4 + 4);
-  v7 = *(v4 + 32);
+  self->_qualityScore = *(fromCopy + 4);
+  v7 = *(fromCopy + 32);
   if (v7)
   {
-    self->_distanceToPreviousScene = *(v4 + 2);
+    self->_distanceToPreviousScene = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v7 = *(v4 + 32);
+    v7 = *(fromCopy + 32);
     if ((v7 & 2) == 0)
     {
 LABEL_9:
@@ -488,30 +488,30 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 32) & 2) == 0)
+  else if ((*(fromCopy + 32) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_flickerScore = *(v4 + 3);
+  self->_flickerScore = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 32) & 4) != 0)
+  if ((*(fromCopy + 32) & 4) != 0)
   {
 LABEL_10:
-    self->_sceneprintDistanceToPreviousScene = *(v4 + 5);
+    self->_sceneprintDistanceToPreviousScene = *(fromCopy + 5);
     *&self->_has |= 4u;
   }
 
 LABEL_11:
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"attributes"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
   memset(&v13, 0, sizeof(v13));
-  CMTimeRangeMakeFromDictionary(&v13, v3);
-  v5 = [v3 objectForKeyedSubscript:@"quality"];
+  CMTimeRangeMakeFromDictionary(&v13, dictionaryCopy);
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"quality"];
   v6 = [v4 objectForKeyedSubscript:@"distance"];
   v7 = [v4 objectForKeyedSubscript:@"slowMoFlicker"];
   v8 = [v4 objectForKeyedSubscript:@"sceneprintDistance"];
@@ -564,13 +564,13 @@ LABEL_11:
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(VCPProtoMovieSceneResult *)self hasDistanceToPreviousScene])
   {
     v4 = MEMORY[0x1E696AD98];
     [(VCPProtoMovieSceneResult *)self distanceToPreviousScene];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"distance"];
+    [dictionary setObject:v5 forKeyedSubscript:@"distance"];
   }
 
   if ([(VCPProtoMovieSceneResult *)self hasSceneprintDistanceToPreviousScene])
@@ -578,7 +578,7 @@ LABEL_11:
     v6 = MEMORY[0x1E696AD98];
     [(VCPProtoMovieSceneResult *)self sceneprintDistanceToPreviousScene];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"sceneprintDistance"];
+    [dictionary setObject:v7 forKeyedSubscript:@"sceneprintDistance"];
   }
 
   if ([(VCPProtoMovieSceneResult *)self hasFlickerScore])
@@ -586,14 +586,14 @@ LABEL_11:
     v8 = MEMORY[0x1E696AD98];
     [(VCPProtoMovieSceneResult *)self flickerScore];
     v9 = [v8 numberWithFloat:?];
-    [v3 setObject:v9 forKeyedSubscript:@"slowMoFlicker"];
+    [dictionary setObject:v9 forKeyedSubscript:@"slowMoFlicker"];
   }
 
-  v10 = [(VCPProtoMovieSceneResult *)self timeRange];
-  v11 = v10;
-  if (v10)
+  timeRange = [(VCPProtoMovieSceneResult *)self timeRange];
+  v11 = timeRange;
+  if (timeRange)
   {
-    [v10 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -610,9 +610,9 @@ LABEL_11:
   v15 = [v14 numberWithFloat:?];
   [v13 setObject:v15 forKeyedSubscript:@"quality"];
 
-  if ([v3 count])
+  if ([dictionary count])
   {
-    [v13 setObject:v3 forKeyedSubscript:@"attributes"];
+    [v13 setObject:dictionary forKeyedSubscript:@"attributes"];
   }
 
   return v13;

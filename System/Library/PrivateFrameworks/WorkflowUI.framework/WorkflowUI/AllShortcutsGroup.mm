@@ -1,13 +1,13 @@
 @interface AllShortcutsGroup
-- (void)databaseResultDidChange:(id)a3;
+- (void)databaseResultDidChange:(id)change;
 @end
 
 @implementation AllShortcutsGroup
 
-- (void)databaseResultDidChange:(id)a3
+- (void)databaseResultDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_274787BE8();
 }
 

@@ -1,9 +1,9 @@
 @interface MFObjectTable
 - (MFObjectTable)init;
-- (id)getObject:(unsigned int)a3;
-- (int)deleteObject:(unsigned int)a3;
-- (int)putObject:(id)a3 in_objectPos:(unsigned int)a4;
-- (int)selectInto:(int)a3 io_DC:(id)a4;
+- (id)getObject:(unsigned int)object;
+- (int)deleteObject:(unsigned int)object;
+- (int)putObject:(id)object in_objectPos:(unsigned int)pos;
+- (int)selectInto:(int)into io_DC:(id)c;
 - (unsigned)insertPos;
 @end
 
@@ -16,9 +16,9 @@
   v2 = [(MFObjectTable *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     m_objects = v2->m_objects;
-    v2->m_objects = v3;
+    v2->m_objects = array;
 
     v2->m_maximumSize = 0;
   }
@@ -55,57 +55,57 @@
   return v3;
 }
 
-- (int)deleteObject:(unsigned int)a3
+- (int)deleteObject:(unsigned int)object
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->m_objects objectAtIndex:a3];
+  objectCopy = object;
+  v5 = [(NSMutableArray *)self->m_objects objectAtIndex:object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     m_objects = self->m_objects;
-    v8 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableArray *)m_objects replaceObjectAtIndex:v4 withObject:v8];
+    null = [MEMORY[0x277CBEB68] null];
+    [(NSMutableArray *)m_objects replaceObjectAtIndex:objectCopy withObject:null];
   }
 
   return 0;
 }
 
-- (int)selectInto:(int)a3 io_DC:(id)a4
+- (int)selectInto:(int)into io_DC:(id)c
 {
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->m_objects objectAtIndex:a3];
+  cCopy = c;
+  v7 = [(NSMutableArray *)self->m_objects objectAtIndex:into];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [v7 selectInto:v6];
+    [v7 selectInto:cCopy];
   }
 
   return 0;
 }
 
-- (int)putObject:(id)a3 in_objectPos:(unsigned int)a4
+- (int)putObject:(id)object in_objectPos:(unsigned int)pos
 {
-  v6 = a3;
-  if (self->m_maximumSize - 1 >= a4)
+  objectCopy = object;
+  if (self->m_maximumSize - 1 >= pos)
   {
-    if (a4 == -1)
+    if (pos == -1)
     {
-      a4 = [(MFObjectTable *)self insertPos];
+      pos = [(MFObjectTable *)self insertPos];
     }
 
     v8 = [(NSMutableArray *)self->m_objects count];
-    v9 = a4 - v8;
-    if (a4 >= v8)
+    v9 = pos - v8;
+    if (pos >= v8)
     {
-      if (a4 > v8)
+      if (pos > v8)
       {
         do
         {
           m_objects = self->m_objects;
-          v11 = [MEMORY[0x277CBEB68] null];
-          [(NSMutableArray *)m_objects addObject:v11];
+          null = [MEMORY[0x277CBEB68] null];
+          [(NSMutableArray *)m_objects addObject:null];
 
           --v9;
         }
@@ -113,12 +113,12 @@
         while (v9);
       }
 
-      [(NSMutableArray *)self->m_objects addObject:v6];
+      [(NSMutableArray *)self->m_objects addObject:objectCopy];
     }
 
     else
     {
-      [(NSMutableArray *)self->m_objects replaceObjectAtIndex:a4 withObject:v6];
+      [(NSMutableArray *)self->m_objects replaceObjectAtIndex:pos withObject:objectCopy];
     }
 
     v7 = 0;
@@ -132,9 +132,9 @@
   return v7;
 }
 
-- (id)getObject:(unsigned int)a3
+- (id)getObject:(unsigned int)object
 {
-  v5 = [(NSMutableArray *)self->m_objects objectAtIndex:a3];
+  v5 = [(NSMutableArray *)self->m_objects objectAtIndex:object];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

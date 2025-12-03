@@ -1,32 +1,32 @@
 @interface MCLRatingsView
-- (MCLRatingsView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setEmptyImage:(id)a3;
-- (void)setFullImage:(id)a3;
-- (void)setValue:(double)a3;
+- (MCLRatingsView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setEmptyImage:(id)image;
+- (void)setFullImage:(id)image;
+- (void)setValue:(double)value;
 - (void)updateConstraints;
 @end
 
 @implementation MCLRatingsView
 
-- (MCLRatingsView)initWithFrame:(CGRect)a3
+- (MCLRatingsView)initWithFrame:(CGRect)frame
 {
-  v10 = a3;
+  frameCopy = frame;
   v8 = a2;
   v9 = 0;
   v7.receiver = self;
   v7.super_class = MCLRatingsView;
-  v9 = [(MCLRatingsView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(MCLRatingsView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v9, v9);
   if (v9)
   {
-    v5 = [(MCLRatingsView *)v9 layer];
-    [v5 setShouldRasterize:1];
-    MEMORY[0x277D82BD8](v5);
+    layer = [(MCLRatingsView *)v9 layer];
+    [layer setShouldRasterize:1];
+    MEMORY[0x277D82BD8](layer);
     [(MCLRatingsView *)v9 setContentMode:3];
-    v6 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     [(MCLRatingsView *)v9 setBackgroundColor:?];
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](whiteColor);
     [(MCLRatingsView *)v9 setSpacing:?];
     [(MCLRatingsView *)v9 setValue:0.0];
     v9->_imageaspect = 1.0;
@@ -37,11 +37,11 @@
   return v4;
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (a3 >= 0.0)
+  if (value >= 0.0)
   {
-    if (a3 > 5.0)
+    if (value > 5.0)
     {
       self->_value = 5.0;
     }
@@ -52,68 +52,68 @@
     self->_value = 0.0;
   }
 
-  if (a3 != self->_value)
+  if (value != self->_value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(MCLRatingsView *)self setNeedsDisplay];
   }
 }
 
-- (void)setEmptyImage:(id)a3
+- (void)setEmptyImage:(id)image
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_emptyImage, location[0]);
-  [(MCLRatingsView *)v4 setNeedsDisplay];
+  objc_storeStrong(location, image);
+  objc_storeStrong(&selfCopy->_emptyImage, location[0]);
+  [(MCLRatingsView *)selfCopy setNeedsDisplay];
   objc_storeStrong(location, 0);
 }
 
-- (void)setFullImage:(id)a3
+- (void)setFullImage:(id)image
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, image);
   if (location[0] && ([location[0] size], v3 > 0.0))
   {
-    objc_storeStrong(&v8->_fullImage, location[0]);
+    objc_storeStrong(&selfCopy->_fullImage, location[0]);
     [location[0] size];
     v6 = v4;
     [location[0] size];
-    v8->_imageaspect = v6 / v5;
+    selfCopy->_imageaspect = v6 / v5;
   }
 
   else
   {
-    v8->_imageaspect = 1.0;
+    selfCopy->_imageaspect = 1.0;
   }
 
-  [(MCLRatingsView *)v8 setNeedsUpdateConstraints];
-  [(MCLRatingsView *)v8 setNeedsDisplay];
+  [(MCLRatingsView *)selfCopy setNeedsUpdateConstraints];
+  [(MCLRatingsView *)selfCopy setNeedsDisplay];
   objc_storeStrong(location, 0);
 }
 
 - (void)updateConstraints
 {
-  v4 = self;
+  selfCopy = self;
   v3[1] = a2;
   if (self->_widthConstraint)
   {
-    [(NSLayoutConstraint *)v4->_widthConstraint setActive:0];
+    [(NSLayoutConstraint *)selfCopy->_widthConstraint setActive:0];
   }
 
-  v3[0] = [MEMORY[0x277CCAAD0] constraintWithItem:v4 attribute:7 relatedBy:0 toItem:v4 attribute:8 multiplier:5.0 * v4->_imageaspect constant:5.0 * v4->_spacing];
+  v3[0] = [MEMORY[0x277CCAAD0] constraintWithItem:selfCopy attribute:7 relatedBy:0 toItem:selfCopy attribute:8 multiplier:5.0 * selfCopy->_imageaspect constant:5.0 * selfCopy->_spacing];
   [v3[0] setActive:1];
-  objc_storeStrong(&v4->_widthConstraint, v3[0]);
-  v2.receiver = v4;
+  objc_storeStrong(&selfCopy->_widthConstraint, v3[0]);
+  v2.receiver = selfCopy;
   v2.super_class = MCLRatingsView;
   [(MCLRatingsView *)&v2 updateConstraints];
   objc_storeStrong(v3, 0);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_fullImage)
   {

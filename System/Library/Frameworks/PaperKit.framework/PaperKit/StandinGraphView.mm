@@ -1,5 +1,5 @@
 @interface StandinGraphView
-- (_TtC8PaperKit16StandinGraphView)initWithCoder:(id)a3;
+- (_TtC8PaperKit16StandinGraphView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   StandinGraphView.layoutSubviews()();
 }
 
-- (_TtC8PaperKit16StandinGraphView)initWithCoder:(id)a3
+- (_TtC8PaperKit16StandinGraphView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit16StandinGraphView_label) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit16StandinGraphView_expressions) = MEMORY[0x1E69E7CC0];

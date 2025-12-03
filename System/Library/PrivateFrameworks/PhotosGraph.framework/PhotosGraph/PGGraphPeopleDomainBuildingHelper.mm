@@ -1,36 +1,36 @@
 @interface PGGraphPeopleDomainBuildingHelper
 - (PGGraphPeopleDomainBuildingHelper)init;
-- (id)cachedAuthorNodeForShareParticipant:(id)a3;
-- (id)insertIdentifiedPersonWithPersonNode:(id)a3 forPersonLocalIdentifier:(id)a4;
-- (void)cacheAuthorNode:(id)a3 forShareParticipant:(id)a4;
+- (id)cachedAuthorNodeForShareParticipant:(id)participant;
+- (id)insertIdentifiedPersonWithPersonNode:(id)node forPersonLocalIdentifier:(id)identifier;
+- (void)cacheAuthorNode:(id)node forShareParticipant:(id)participant;
 @end
 
 @implementation PGGraphPeopleDomainBuildingHelper
 
-- (id)cachedAuthorNodeForShareParticipant:(id)a3
+- (id)cachedAuthorNodeForShareParticipant:(id)participant
 {
   authorNodeByLocalIdentifier = self->_authorNodeByLocalIdentifier;
-  v4 = [a3 localIdentifier];
-  v5 = [(NSMutableDictionary *)authorNodeByLocalIdentifier objectForKeyedSubscript:v4];
+  localIdentifier = [participant localIdentifier];
+  v5 = [(NSMutableDictionary *)authorNodeByLocalIdentifier objectForKeyedSubscript:localIdentifier];
 
   return v5;
 }
 
-- (void)cacheAuthorNode:(id)a3 forShareParticipant:(id)a4
+- (void)cacheAuthorNode:(id)node forShareParticipant:(id)participant
 {
   authorNodeByLocalIdentifier = self->_authorNodeByLocalIdentifier;
-  v6 = a3;
-  v7 = [a4 localIdentifier];
-  [(NSMutableDictionary *)authorNodeByLocalIdentifier setObject:v6 forKeyedSubscript:v7];
+  nodeCopy = node;
+  localIdentifier = [participant localIdentifier];
+  [(NSMutableDictionary *)authorNodeByLocalIdentifier setObject:nodeCopy forKeyedSubscript:localIdentifier];
 }
 
-- (id)insertIdentifiedPersonWithPersonNode:(id)a3 forPersonLocalIdentifier:(id)a4
+- (id)insertIdentifiedPersonWithPersonNode:(id)node forPersonLocalIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PGGraphBuilderInsertedIdentifiedPerson alloc] initWithPersonNode:v7];
+  identifierCopy = identifier;
+  nodeCopy = node;
+  v8 = [[PGGraphBuilderInsertedIdentifiedPerson alloc] initWithPersonNode:nodeCopy];
 
-  [(NSMutableDictionary *)self->_insertedIdentifiedPersonByPersonLocalIdentifier setObject:v8 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_insertedIdentifiedPersonByPersonLocalIdentifier setObject:v8 forKeyedSubscript:identifierCopy];
 
   return v8;
 }

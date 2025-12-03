@@ -1,34 +1,34 @@
 @interface RTTripClusterRecencyStore
-+ (id)_predicateForClusterID:(id)a3;
-- (BOOL)deleteTripClusterRecencyPredating:(id)a3;
-- (BOOL)deleteTripClusterRecencyWithClusterID:(id)a3;
-- (RTTripClusterRecencyStore)initWithPersistenceManager:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5 inManagedObjectContext:(id)a6;
-- (id)fetchRequestFromStoredTripClusterRecencyOptions:(id)a3 inManagedObjectContext:(id)a4;
-- (id)getTripClusterRecencyWithOptions:(id)a3;
-- (void)_deleteTripClusterRecencyPredating:(id)a3 handler:(id)a4;
-- (void)_deleteTripClusterRecencyWithClusterID:(id)a3 handler:(id)a4;
-- (void)_fetchClusterRecencyCountForClusterID:(id)a3 handler:(id)a4;
-- (void)_fetchTripClusterRecencyWithContext:(id)a3 handler:(id)a4;
-- (void)_fetchTripClusterRecencyWithOptions:(id)a3 handler:(id)a4;
-- (void)_purgeTripClusterRecencyWithHandler:(id)a3;
-- (void)_storeTripClusterRecency:(id)a3 handler:(id)a4;
-- (void)deleteTripClusterRecencyPredating:(id)a3 handler:(id)a4;
-- (void)deleteTripClusterRecencyWithClusterID:(id)a3 handler:(id)a4;
-- (void)fetchTripClusterRecencyWithContext:(id)a3 handler:(id)a4;
-- (void)fetchTripClusterRecencyWithOptions:(id)a3 handler:(id)a4;
-- (void)purgeTripClusterRecencyWithHandler:(id)a3;
-- (void)storeTripClusterRecency:(id)a3;
-- (void)storeTripClusterRecency:(id)a3 handler:(id)a4;
++ (id)_predicateForClusterID:(id)d;
+- (BOOL)deleteTripClusterRecencyPredating:(id)predating;
+- (BOOL)deleteTripClusterRecencyWithClusterID:(id)d;
+- (RTTripClusterRecencyStore)initWithPersistenceManager:(id)manager;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error inManagedObjectContext:(id)context;
+- (id)fetchRequestFromStoredTripClusterRecencyOptions:(id)options inManagedObjectContext:(id)context;
+- (id)getTripClusterRecencyWithOptions:(id)options;
+- (void)_deleteTripClusterRecencyPredating:(id)predating handler:(id)handler;
+- (void)_deleteTripClusterRecencyWithClusterID:(id)d handler:(id)handler;
+- (void)_fetchClusterRecencyCountForClusterID:(id)d handler:(id)handler;
+- (void)_fetchTripClusterRecencyWithContext:(id)context handler:(id)handler;
+- (void)_fetchTripClusterRecencyWithOptions:(id)options handler:(id)handler;
+- (void)_purgeTripClusterRecencyWithHandler:(id)handler;
+- (void)_storeTripClusterRecency:(id)recency handler:(id)handler;
+- (void)deleteTripClusterRecencyPredating:(id)predating handler:(id)handler;
+- (void)deleteTripClusterRecencyWithClusterID:(id)d handler:(id)handler;
+- (void)fetchTripClusterRecencyWithContext:(id)context handler:(id)handler;
+- (void)fetchTripClusterRecencyWithOptions:(id)options handler:(id)handler;
+- (void)purgeTripClusterRecencyWithHandler:(id)handler;
+- (void)storeTripClusterRecency:(id)recency;
+- (void)storeTripClusterRecency:(id)recency handler:(id)handler;
 @end
 
 @implementation RTTripClusterRecencyStore
 
-- (RTTripClusterRecencyStore)initWithPersistenceManager:(id)a3
+- (RTTripClusterRecencyStore)initWithPersistenceManager:(id)manager
 {
-  v3 = self;
+  selfCopy = self;
   v18 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (manager)
   {
     v13.receiver = self;
     v13.super_class = RTTripClusterRecencyStore;
@@ -49,8 +49,8 @@
       }
     }
 
-    v3 = v5;
-    v7 = v3;
+    selfCopy = v5;
+    v7 = selfCopy;
   }
 
   else
@@ -68,17 +68,17 @@
   return v7;
 }
 
-- (void)_storeTripClusterRecency:(id)a3 handler:(id)a4
+- (void)_storeTripClusterRecency:(id)recency handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__RTTripClusterRecencyStore__storeTripClusterRecency_handler___block_invoke;
   v8[3] = &unk_2788C4F60;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(RTStore *)self storeWritableObjects:a3 handler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(RTStore *)self storeWritableObjects:recency handler:v8];
 }
 
 void __62__RTTripClusterRecencyStore__storeTripClusterRecency_handler___block_invoke(uint64_t a1, void *a2)
@@ -108,12 +108,12 @@ void __62__RTTripClusterRecencyStore__storeTripClusterRecency_handler___block_in
   }
 }
 
-- (void)storeTripClusterRecency:(id)a3 handler:(id)a4
+- (void)storeTripClusterRecency:(id)recency handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  recencyCopy = recency;
+  handlerCopy = handler;
+  if (!recencyCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -126,24 +126,24 @@ void __62__RTTripClusterRecencyStore__storeTripClusterRecency_handler___block_in
     }
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__RTTripClusterRecencyStore_storeTripClusterRecency_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = recencyCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = recencyCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)storeTripClusterRecency:(id)a3
+- (void)storeTripClusterRecency:(id)recency
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  recencyCopy = recency;
+  if ([recencyCopy count])
   {
     v5 = dispatch_semaphore_create(0);
     v29[0] = MEMORY[0x277D85DD0];
@@ -153,7 +153,7 @@ void __62__RTTripClusterRecencyStore__storeTripClusterRecency_handler___block_in
     v29[4] = self;
     v6 = v5;
     v30 = v6;
-    [(RTTripClusterRecencyStore *)self storeTripClusterRecency:v4 handler:v29];
+    [(RTTripClusterRecencyStore *)self storeTripClusterRecency:recencyCopy handler:v29];
     v7 = v6;
     v8 = [MEMORY[0x277CBEAA8] now];
     v9 = dispatch_time(0, 3600000000000);
@@ -164,11 +164,11 @@ void __62__RTTripClusterRecencyStore__storeTripClusterRecency_handler___block_in
       v11 = v10;
       v12 = objc_opt_new();
       v13 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_120];
-      v14 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v15 = [v14 filteredArrayUsingPredicate:v13];
-      v16 = [v15 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v15 = [callStackSymbols filteredArrayUsingPredicate:v13];
+      firstObject = [v15 firstObject];
 
-      [v12 submitToCoreAnalytics:v16 type:1 duration:v11];
+      [v12 submitToCoreAnalytics:firstObject type:1 duration:v11];
       v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
@@ -202,11 +202,11 @@ void __62__RTTripClusterRecencyStore__storeTripClusterRecency_handler___block_in
       {
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
-        v27 = [v23 localizedDescription];
+        localizedDescription = [v23 localizedDescription];
         *buf = 138412546;
         *&buf[4] = v26;
         v32 = 2112;
-        v33 = v27;
+        v33 = localizedDescription;
         _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "%@,Semaphore Error updating cluster recency,error,%@", buf, 0x16u);
       }
     }
@@ -236,18 +236,18 @@ void __53__RTTripClusterRecencyStore_storeTripClusterRecency___block_invoke(uint
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)_fetchClusterRecencyCountForClusterID:(id)a3 handler:(id)a4
+- (void)_fetchClusterRecencyCountForClusterID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __75__RTTripClusterRecencyStore__fetchClusterRecencyCountForClusterID_handler___block_invoke;
     aBlock[3] = &unk_2788C4898;
-    v13 = v6;
-    v8 = v7;
+    v13 = dCopy;
+    v8 = handlerCopy;
     v14 = v8;
     v9 = _Block_copy(aBlock);
     v10[0] = MEMORY[0x277D85DD0];
@@ -273,14 +273,14 @@ void __75__RTTripClusterRecencyStore__fetchClusterRecencyCountForClusterID_handl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchTripClusterRecencyWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchTripClusterRecencyWithOptions:(id)options handler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v6)
+    if (optionsCopy)
     {
       goto LABEL_10;
     }
@@ -298,7 +298,7 @@ void __75__RTTripClusterRecencyStore__fetchClusterRecencyCountForClusterID_handl
     _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", &v11, 0x12u);
   }
 
-  if (!v6)
+  if (!optionsCopy)
   {
 LABEL_7:
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -313,48 +313,48 @@ LABEL_7:
   }
 
 LABEL_10:
-  v10 = [objc_alloc(MEMORY[0x277D01380]) initWithEnumerationOptions:v6];
-  [(RTTripClusterRecencyStore *)self _fetchTripClusterRecencyWithContext:v10 handler:v7];
+  v10 = [objc_alloc(MEMORY[0x277D01380]) initWithEnumerationOptions:optionsCopy];
+  [(RTTripClusterRecencyStore *)self _fetchTripClusterRecencyWithContext:v10 handler:handlerCopy];
 }
 
-- (void)fetchTripClusterRecencyWithOptions:(id)a3 handler:(id)a4
+- (void)fetchTripClusterRecencyWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__RTTripClusterRecencyStore_fetchTripClusterRecencyWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fetchTripClusterRecencyWithContext:(id)a3 handler:(id)a4
+- (void)fetchTripClusterRecencyWithContext:(id)context handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  contextCopy = context;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__RTTripClusterRecencyStore_fetchTripClusterRecencyWithContext_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = contextCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = contextCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)getTripClusterRecencyWithOptions:(id)a3
+- (id)getTripClusterRecencyWithOptions:(id)options
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -366,8 +366,8 @@ LABEL_10:
   v34 = 3221225472;
   v35 = __62__RTTripClusterRecencyStore_getTripClusterRecencyWithOptions___block_invoke;
   v36 = &unk_2788C4870;
-  v37 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = optionsCopy;
   v38 = v6;
   v40 = &v41;
   v7 = v5;
@@ -383,11 +383,11 @@ LABEL_10:
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_120];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -420,15 +420,15 @@ LABEL_10:
     {
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
-      v30 = [v6 clusterID];
-      v31 = [v30 UUIDString];
-      v32 = [v24 localizedDescription];
+      clusterID = [v6 clusterID];
+      uUIDString = [clusterID UUIDString];
+      localizedDescription = [v24 localizedDescription];
       *buf = 138412802;
       *&buf[4] = v29;
       v48 = 2112;
-      v49 = v31;
+      v49 = uUIDString;
       v50 = 2112;
-      v51 = v32;
+      v51 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@,Semaphore Error fetching Recencys for cluster with cluster ID,%@,error,%@", buf, 0x20u);
     }
   }
@@ -483,24 +483,24 @@ void __62__RTTripClusterRecencyStore_getTripClusterRecencyWithOptions___block_in
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)_fetchTripClusterRecencyWithContext:(id)a3 handler:(id)a4
+- (void)_fetchTripClusterRecencyWithContext:(id)context handler:(id)handler
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __73__RTTripClusterRecencyStore__fetchTripClusterRecencyWithContext_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
     aBlock[4] = self;
-    v8 = v6;
+    v8 = contextCopy;
     v25 = v8;
-    v9 = v7;
+    v9 = handlerCopy;
     v26 = v9;
     v10 = _Block_copy(aBlock);
-    v11 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__RTTripClusterRecencyStore__fetchTripClusterRecencyWithContext_handler___block_invoke_38;
@@ -510,7 +510,7 @@ void __62__RTTripClusterRecencyStore_getTripClusterRecencyWithOptions___block_in
     v22 = v10;
     v23 = v9;
     v12 = v10;
-    dispatch_async(v11, block);
+    dispatch_async(queue, block);
   }
 
   else
@@ -536,11 +536,11 @@ void __62__RTTripClusterRecencyStore_getTripClusterRecencyWithOptions___block_in
       {
         v17 = objc_opt_class();
         v18 = NSStringFromClass(v17);
-        v19 = [v15 localizedDescription];
+        localizedDescription = [v15 localizedDescription];
         *buf = 138412546;
         v28 = v18;
         v29 = 2112;
-        v30 = v19;
+        v30 = localizedDescription;
         _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%@,Error,%@", buf, 0x16u);
       }
     }
@@ -737,12 +737,12 @@ void __73__RTTripClusterRecencyStore__fetchTripClusterRecencyWithContext_handler
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5 inManagedObjectContext:(id)a6
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error inManagedObjectContext:(id)context
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (!a5)
+  optionsCopy = options;
+  contextCopy = context;
+  if (!error)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -754,7 +754,7 @@ void __73__RTTripClusterRecencyStore__fetchTripClusterRecencyWithContext_handler
     goto LABEL_8;
   }
 
-  if (v10)
+  if (optionsCopy)
   {
     v12 = objc_opt_class();
     if (v12 != objc_opt_class())
@@ -772,16 +772,16 @@ void __73__RTTripClusterRecencyStore__fetchTripClusterRecencyWithContext_handler
       v20 = [v17 errorWithDomain:v18 code:7 userInfo:v19];
 
       v21 = v20;
-      *a5 = v20;
+      *error = v20;
 
 LABEL_8:
       v23 = 0;
       goto LABEL_13;
     }
 
-    v23 = [(RTTripClusterRecencyStore *)self fetchRequestFromStoredTripClusterRecencyOptions:v10 inManagedObjectContext:v11];
-    [v23 setFetchOffset:a4];
-    *a5 = 0;
+    v23 = [(RTTripClusterRecencyStore *)self fetchRequestFromStoredTripClusterRecencyOptions:optionsCopy inManagedObjectContext:contextCopy];
+    [v23 setFetchOffset:offset];
+    *error = 0;
   }
 
   else
@@ -794,7 +794,7 @@ LABEL_8:
     }
 
     _RTErrorInvalidParameterCreate(@"options");
-    *a5 = v23 = 0;
+    *error = v23 = 0;
   }
 
 LABEL_13:
@@ -802,12 +802,12 @@ LABEL_13:
   return v23;
 }
 
-- (id)fetchRequestFromStoredTripClusterRecencyOptions:(id)a3 inManagedObjectContext:(id)a4
+- (id)fetchRequestFromStoredTripClusterRecencyOptions:(id)options inManagedObjectContext:(id)context
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  optionsCopy = options;
+  contextCopy = context;
+  if (optionsCopy)
   {
     v7 = +[RTTripClusterRecencyMO fetchRequest];
     [v7 setReturnsObjectsAsFaults:0];
@@ -816,16 +816,16 @@ LABEL_13:
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     [v7 setSortDescriptors:v9];
 
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [v5 clusterID];
+    array = [MEMORY[0x277CBEB18] array];
+    clusterID = [optionsCopy clusterID];
 
-    if (v11)
+    if (clusterID)
     {
       v12 = MEMORY[0x277CCAC30];
-      v13 = [v5 clusterID];
-      v14 = [v12 predicateWithFormat:@"clusterID == %@", v13];
+      clusterID2 = [optionsCopy clusterID];
+      v14 = [v12 predicateWithFormat:@"clusterID == %@", clusterID2];
 
-      [v10 addObject:v14];
+      [array addObject:v14];
     }
 
     else
@@ -847,40 +847,40 @@ LABEL_13:
     }
 
 LABEL_5:
-    v15 = [RTTripClusterDeviceHelper currentDevicePredicateWithPropertyName:@"device" inManagedObjectContext:v6];
+    v15 = [RTTripClusterDeviceHelper currentDevicePredicateWithPropertyName:@"device" inManagedObjectContext:contextCopy];
     if (v15)
     {
-      [v10 addObject:v15];
+      [array addObject:v15];
     }
 
     v16 = +[RTCloudManagedObject notTombstonedPredicate];
-    [v10 addObject:v16];
-    if ([v10 count])
+    [array addObject:v16];
+    if ([array count])
     {
-      v17 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v10];
+      v17 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
       [v7 setPredicate:v17];
     }
 
-    if ([v5 batchSize])
+    if ([optionsCopy batchSize])
     {
-      v18 = [v5 batchSize];
+      batchSize = [optionsCopy batchSize];
     }
 
     else
     {
-      v18 = 3600;
+      batchSize = 3600;
     }
 
-    [v7 setFetchLimit:v18];
+    [v7 setFetchLimit:batchSize];
 
     goto LABEL_19;
   }
 
-  v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  array = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+  if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options", buf, 2u);
+    _os_log_error_impl(&dword_2304B3000, array, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options", buf, 2u);
   }
 
   v7 = 0;
@@ -889,11 +889,11 @@ LABEL_19:
   return v7;
 }
 
-+ (id)_predicateForClusterID:(id)a3
++ (id)_predicateForClusterID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"clusterID == %@", a3];
+    v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"clusterID == %@", d];
   }
 
   else
@@ -911,15 +911,15 @@ LABEL_19:
   return v3;
 }
 
-- (void)_deleteTripClusterRecencyWithClusterID:(id)a3 handler:(id)a4
+- (void)_deleteTripClusterRecencyWithClusterID:(id)d handler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (dCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -968,13 +968,13 @@ LABEL_10:
     }
   }
 
-  if (v7)
+  if (dCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __76__RTTripClusterRecencyStore__deleteTripClusterRecencyWithClusterID_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v23 = v7;
+    v23 = dCopy;
     v25 = a2;
     v13 = v9;
     v24 = v13;
@@ -1037,27 +1037,27 @@ void __76__RTTripClusterRecencyStore__deleteTripClusterRecencyWithClusterID_hand
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteTripClusterRecencyWithClusterID:(id)a3 handler:(id)a4
+- (void)deleteTripClusterRecencyWithClusterID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75__RTTripClusterRecencyStore_deleteTripClusterRecencyWithClusterID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (BOOL)deleteTripClusterRecencyWithClusterID:(id)a3
+- (BOOL)deleteTripClusterRecencyWithClusterID:(id)d
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -1072,7 +1072,7 @@ void __76__RTTripClusterRecencyStore__deleteTripClusterRecencyWithClusterID_hand
   v40 = &v41;
   v6 = v5;
   v39 = v6;
-  [(RTTripClusterRecencyStore *)self deleteTripClusterRecencyWithClusterID:v4 handler:&v35];
+  [(RTTripClusterRecencyStore *)self deleteTripClusterRecencyWithClusterID:dCopy handler:&v35];
   v7 = v6;
   v8 = [MEMORY[0x277CBEAA8] now];
   v9 = dispatch_time(0, 3600000000000);
@@ -1083,11 +1083,11 @@ void __76__RTTripClusterRecencyStore__deleteTripClusterRecencyWithClusterID_hand
     v12 = v11;
     v13 = objc_opt_new();
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_120];
-    v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v16 = [v15 filteredArrayUsingPredicate:v14];
-    v17 = [v16 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+    firstObject = [v16 firstObject];
 
-    [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+    [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
@@ -1120,14 +1120,14 @@ void __76__RTTripClusterRecencyStore__deleteTripClusterRecencyWithClusterID_hand
     {
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
-      v27 = [v4 UUIDString];
-      v28 = [v23 localizedDescription];
+      uUIDString = [dCopy UUIDString];
+      localizedDescription = [v23 localizedDescription];
       *buf = 138412802;
       *&buf[4] = v26;
       v48 = 2112;
-      v49 = v27;
+      v49 = uUIDString;
       v50 = 2112;
-      v51 = v28;
+      v51 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "%@,Semaphore error deleting Cluster Recency for cluster ID,%@,error,%@", buf, 0x20u);
     }
   }
@@ -1145,14 +1145,14 @@ void __76__RTTripClusterRecencyStore__deleteTripClusterRecencyWithClusterID_hand
     {
       v31 = objc_opt_class();
       v32 = NSStringFromClass(v31);
-      v33 = [v4 UUIDString];
-      v34 = [v42[5] localizedDescription];
+      uUIDString2 = [dCopy UUIDString];
+      localizedDescription2 = [v42[5] localizedDescription];
       *buf = 138412802;
       *&buf[4] = v32;
       v48 = 2112;
-      v49 = v33;
+      v49 = uUIDString2;
       v50 = 2112;
-      v51 = v34;
+      v51 = localizedDescription2;
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "%@,Error deleting Cluster Recency for cluster ID,%@,error,%@", buf, 0x20u);
     }
   }
@@ -1171,15 +1171,15 @@ void __67__RTTripClusterRecencyStore_deleteTripClusterRecencyWithClusterID___blo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_deleteTripClusterRecencyPredating:(id)a3 handler:(id)a4
+- (void)_deleteTripClusterRecencyPredating:(id)predating handler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (predatingCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -1222,7 +1222,7 @@ LABEL_10:
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
       v21 = NSStringFromSelector(a2);
-      v22 = [v12 stringFromDate:v7];
+      v22 = [v12 stringFromDate:predatingCopy];
       *buf = 138412802;
       v29 = v20;
       v30 = 2112;
@@ -1233,7 +1233,7 @@ LABEL_10:
     }
   }
 
-  if (v7)
+  if (predatingCopy)
   {
     v24 = @"startTime";
     v23 = objc_opt_class();
@@ -1241,7 +1241,7 @@ LABEL_10:
     v25 = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
 
-    [(RTStore *)self purgePredating:v7 predicateMappings:v15 handler:v9];
+    [(RTStore *)self purgePredating:predatingCopy predicateMappings:v15 handler:v9];
   }
 
   else
@@ -1260,27 +1260,27 @@ LABEL_10:
   }
 }
 
-- (void)deleteTripClusterRecencyPredating:(id)a3 handler:(id)a4
+- (void)deleteTripClusterRecencyPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__RTTripClusterRecencyStore_deleteTripClusterRecencyPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (BOOL)deleteTripClusterRecencyPredating:(id)a3
+- (BOOL)deleteTripClusterRecencyPredating:(id)predating
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predatingCopy = predating;
   v5 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v5 setDateFormat:@"YYYY-MM-dd"];
   v40 = 0;
@@ -1297,8 +1297,8 @@ LABEL_10:
   v39 = &v40;
   v7 = v6;
   v38 = v7;
-  v36 = v4;
-  [(RTTripClusterRecencyStore *)self deleteTripClusterRecencyPredating:v4 handler:v37];
+  v36 = predatingCopy;
+  [(RTTripClusterRecencyStore *)self deleteTripClusterRecencyPredating:predatingCopy handler:v37];
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
   v10 = dispatch_time(0, 3600000000000);
@@ -1309,11 +1309,11 @@ LABEL_10:
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_120];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -1347,13 +1347,13 @@ LABEL_10:
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
       v28 = [v5 stringFromDate:v36];
-      v29 = [v24 localizedDescription];
+      localizedDescription = [v24 localizedDescription];
       *buf = 138412802;
       *&buf[4] = v27;
       v47 = 2112;
       v48 = v28;
       v49 = 2112;
-      v50 = v29;
+      v50 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@,Semaphore error deleting Cluster Recency Predating,%@,error,%@", buf, 0x20u);
     }
   }
@@ -1372,13 +1372,13 @@ LABEL_10:
       v32 = objc_opt_class();
       v33 = NSStringFromClass(v32);
       v34 = [v5 stringFromDate:v36];
-      v35 = [v41[5] localizedDescription];
+      localizedDescription2 = [v41[5] localizedDescription];
       *buf = 138412802;
       *&buf[4] = v33;
       v47 = 2112;
       v48 = v34;
       v49 = 2112;
-      v50 = v35;
+      v50 = localizedDescription2;
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@,Error deleting Cluster Recency Predating,%@,error,%@", buf, 0x20u);
     }
   }
@@ -1397,10 +1397,10 @@ void __63__RTTripClusterRecencyStore_deleteTripClusterRecencyPredating___block_i
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_purgeTripClusterRecencyWithHandler:(id)a3
+- (void)_purgeTripClusterRecencyWithHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -1419,21 +1419,21 @@ void __63__RTTripClusterRecencyStore_deleteTripClusterRecencyPredating___block_i
 
   v11 = objc_opt_class();
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
-  [(RTStore *)self removeAll:v7 handler:v5];
+  [(RTStore *)self removeAll:v7 handler:handlerCopy];
 }
 
-- (void)purgeTripClusterRecencyWithHandler:(id)a3
+- (void)purgeTripClusterRecencyWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__RTTripClusterRecencyStore_purgeTripClusterRecencyWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 @end

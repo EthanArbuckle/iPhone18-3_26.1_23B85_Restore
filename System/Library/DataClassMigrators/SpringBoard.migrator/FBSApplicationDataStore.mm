@@ -1,27 +1,27 @@
 @interface FBSApplicationDataStore
 - (id)_cachedSceneDataStores;
-- (id)_createSceneStoreWithIdentifier:(id)a3 data:(id)a4;
+- (id)_createSceneStoreWithIdentifier:(id)identifier data:(id)data;
 - (id)_fetchPersistedSceneDataStores;
-- (id)sceneStoreForIdentifier:(id)a3 creatingIfNecessary:(BOOL)a4;
-- (void)_modifyPersistentSceneData:(unint64_t)a3 identifier:(id)a4 data:(id)a5;
-- (void)enumerateSceneStoresUsingBlock:(id)a3;
+- (id)sceneStoreForIdentifier:(id)identifier creatingIfNecessary:(BOOL)necessary;
+- (void)_modifyPersistentSceneData:(unint64_t)data identifier:(id)identifier data:(id)a5;
+- (void)enumerateSceneStoresUsingBlock:(id)block;
 - (void)removeAllSceneDataStores;
-- (void)removeSceneStoreForIdentifier:(id)a3;
+- (void)removeSceneStoreForIdentifier:(id)identifier;
 @end
 
 @implementation FBSApplicationDataStore
 
-- (id)sceneStoreForIdentifier:(id)a3 creatingIfNecessary:(BOOL)a4
+- (id)sceneStoreForIdentifier:(id)identifier creatingIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
+  necessaryCopy = necessary;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
-  v7 = [(FBSApplicationDataStore *)self _cachedSceneDataStores];
-  v8 = [v7 objectForKey:v6];
+  _cachedSceneDataStores = [(FBSApplicationDataStore *)self _cachedSceneDataStores];
+  v8 = [_cachedSceneDataStores objectForKey:identifierCopy];
   if (!v8)
   {
-    v9 = [(FBSApplicationDataStore *)self _fetchPersistedSceneDataStores];
-    v10 = [v9 objectForKey:v6];
+    _fetchPersistedSceneDataStores = [(FBSApplicationDataStore *)self _fetchPersistedSceneDataStores];
+    v10 = [_fetchPersistedSceneDataStores objectForKey:identifierCopy];
     if (v10)
     {
       v11 = [[NSMutableDictionary alloc] initWithDictionary:v10];
@@ -29,7 +29,7 @@
 
     else
     {
-      if (!v4)
+      if (!necessaryCopy)
       {
         v8 = 0;
 LABEL_9:
@@ -41,11 +41,11 @@ LABEL_9:
     }
 
     v12 = v11;
-    v8 = [(FBSApplicationDataStore *)self _createSceneStoreWithIdentifier:v6 data:v11];
+    v8 = [(FBSApplicationDataStore *)self _createSceneStoreWithIdentifier:identifierCopy data:v11];
 
     if (v8)
     {
-      [v7 setObject:v8 forKey:v6];
+      [_cachedSceneDataStores setObject:v8 forKey:identifierCopy];
     }
 
     goto LABEL_9;
@@ -56,16 +56,16 @@ LABEL_10:
   return v8;
 }
 
-- (void)removeSceneStoreForIdentifier:(id)a3
+- (void)removeSceneStoreForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
-  v6 = [(FBSApplicationDataStore *)self _cachedSceneDataStores];
-  v5 = [v6 objectForKey:v4];
+  _cachedSceneDataStores = [(FBSApplicationDataStore *)self _cachedSceneDataStores];
+  v5 = [_cachedSceneDataStores objectForKey:identifierCopy];
   [v5 _invalidate];
 
-  [v6 removeObjectForKey:v4];
-  [(FBSApplicationDataStore *)self _modifyPersistentSceneData:0 identifier:v4 data:0];
+  [_cachedSceneDataStores removeObjectForKey:identifierCopy];
+  [(FBSApplicationDataStore *)self _modifyPersistentSceneData:0 identifier:identifierCopy data:0];
 }
 
 - (void)removeAllSceneDataStores
@@ -75,10 +75,10 @@ LABEL_10:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(FBSApplicationDataStore *)self _cachedSceneDataStores];
-  v4 = [v3 objectEnumerator];
+  _cachedSceneDataStores = [(FBSApplicationDataStore *)self _cachedSceneDataStores];
+  objectEnumerator = [_cachedSceneDataStores objectEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -90,7 +90,7 @@ LABEL_10:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * v8) _invalidate];
@@ -98,7 +98,7 @@ LABEL_10:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -108,20 +108,20 @@ LABEL_10:
   [(FBSApplicationDataStore *)self _removeAllPersistentSceneData];
 }
 
-- (void)enumerateSceneStoresUsingBlock:(id)a3
+- (void)enumerateSceneStoresUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   BSDispatchQueueAssertMain();
   v28 = 0;
-  v5 = [(FBSApplicationDataStore *)self _cachedSceneDataStores];
-  v22 = self;
-  v6 = [(FBSApplicationDataStore *)self _fetchPersistedSceneDataStores];
+  _cachedSceneDataStores = [(FBSApplicationDataStore *)self _cachedSceneDataStores];
+  selfCopy = self;
+  _fetchPersistedSceneDataStores = [(FBSApplicationDataStore *)self _fetchPersistedSceneDataStores];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [v6 allKeys];
-  v23 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  allKeys = [_fetchPersistedSceneDataStores allKeys];
+  v23 = [allKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v23)
   {
     v8 = *v25;
@@ -132,37 +132,37 @@ LABEL_10:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v24 + 1) + 8 * v9);
-        v11 = [v5 objectForKey:v10];
+        v11 = [_cachedSceneDataStores objectForKey:v10];
         if (v11)
         {
           v12 = v11;
 LABEL_8:
-          v4[2](v4, v10, v12, &v28);
+          blockCopy[2](blockCopy, v10, v12, &v28);
 
           goto LABEL_9;
         }
 
-        v13 = [v6 objectForKey:v10];
+        v13 = [_fetchPersistedSceneDataStores objectForKey:v10];
         if (v13)
         {
           v14 = v13;
-          v15 = v4;
+          v15 = blockCopy;
           v16 = v8;
-          v17 = v5;
-          v18 = v7;
-          v19 = v6;
+          v17 = _cachedSceneDataStores;
+          v18 = allKeys;
+          v19 = _fetchPersistedSceneDataStores;
           v20 = [[NSMutableDictionary alloc] initWithDictionary:v13];
-          v12 = [(FBSApplicationDataStore *)v22 _createSceneStoreWithIdentifier:v10 data:v20];
+          v12 = [(FBSApplicationDataStore *)selfCopy _createSceneStoreWithIdentifier:v10 data:v20];
 
-          v6 = v19;
-          v7 = v18;
-          v5 = v17;
+          _fetchPersistedSceneDataStores = v19;
+          allKeys = v18;
+          _cachedSceneDataStores = v17;
           v8 = v16;
-          v4 = v15;
+          blockCopy = v15;
 
           if (v12)
           {
@@ -180,7 +180,7 @@ LABEL_9:
       }
 
       while (v23 != v9);
-      v21 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v21 = [allKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
       v23 = v21;
     }
 
@@ -207,14 +207,14 @@ LABEL_16:
   return v4;
 }
 
-- (id)_createSceneStoreWithIdentifier:(id)a3 data:(id)a4
+- (id)_createSceneStoreWithIdentifier:(id)identifier data:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  dataCopy = data;
+  v9 = dataCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (dataCopy)
     {
       goto LABEL_3;
     }
@@ -238,10 +238,10 @@ LABEL_3:
   v14[2] = sub_C1E8;
   v14[3] = &unk_198F0;
   objc_copyWeak(v17, &location);
-  v11 = v7;
+  v11 = identifierCopy;
   v17[1] = a2;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v12 = [(SBSceneDataStore *)v10 _initWithIdentifier:v11 data:v9 changeHandler:v14];
 
   objc_destroyWeak(v17);
@@ -257,22 +257,22 @@ LABEL_3:
   return [(FBSApplicationDataStore *)self safeObjectForKey:@"_SBScenes" ofType:v3];
 }
 
-- (void)_modifyPersistentSceneData:(unint64_t)a3 identifier:(id)a4 data:(id)a5
+- (void)_modifyPersistentSceneData:(unint64_t)data identifier:(id)identifier data:(id)a5
 {
-  v12 = a4;
+  identifierCopy = identifier;
   v8 = a5;
   v9 = [NSMutableDictionary alloc];
-  v10 = [(FBSApplicationDataStore *)self _fetchPersistedSceneDataStores];
-  v11 = [v9 initWithDictionary:v10];
+  _fetchPersistedSceneDataStores = [(FBSApplicationDataStore *)self _fetchPersistedSceneDataStores];
+  v11 = [v9 initWithDictionary:_fetchPersistedSceneDataStores];
 
-  if (a3 == 1)
+  if (data == 1)
   {
-    [v11 setObject:v8 forKey:v12];
+    [v11 setObject:v8 forKey:identifierCopy];
   }
 
-  else if (!a3)
+  else if (!data)
   {
-    [v11 removeObjectForKey:v12];
+    [v11 removeObjectForKey:identifierCopy];
   }
 
   [(FBSApplicationDataStore *)self setObject:v11 forKey:@"_SBScenes"];

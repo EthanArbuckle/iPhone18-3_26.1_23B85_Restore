@@ -1,7 +1,7 @@
 @interface PulldownButton
 - (BOOL)isHighlighted;
-- (_TtC9SeymourUI14PulldownButton)initWithCoder:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC9SeymourUI14PulldownButton)initWithCoder:(id)coder;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)tintColorDidChange;
 @end
 
@@ -14,16 +14,16 @@
   return [(PulldownButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PulldownButton();
   v4 = v7.receiver;
-  [(PulldownButton *)&v7 setHighlighted:v3];
-  v5 = [v4 isHighlighted];
+  [(PulldownButton *)&v7 setHighlighted:highlightedCopy];
+  isHighlighted = [v4 isHighlighted];
   v6 = 0.4;
-  if (!v5)
+  if (!isHighlighted)
   {
     v6 = 1.0;
   }
@@ -31,7 +31,7 @@
   [v4 setAlpha_];
 }
 
-- (_TtC9SeymourUI14PulldownButton)initWithCoder:(id)a3
+- (_TtC9SeymourUI14PulldownButton)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC9SeymourUI14PulldownButton_appearance;
   sub_20BCBD68C(v10);
@@ -52,7 +52,7 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BCBBF20();
 }
 

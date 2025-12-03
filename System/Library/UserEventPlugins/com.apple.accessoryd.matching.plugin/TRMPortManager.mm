@@ -2,22 +2,22 @@
 - (BOOL)_startMatchingNotifications;
 - (NSArray)ports;
 - (NSString)description;
-- (TRMPortManager)initWithMatchingDictionary:(id)a3 andDelegate:(id)a4;
+- (TRMPortManager)initWithMatchingDictionary:(id)dictionary andDelegate:(id)delegate;
 - (TRMPortManagerDelegate)delegate;
 - (void)_startMatchingNotifications;
 - (void)_stopMatchingNotifications;
 - (void)dealloc;
-- (void)portDidTerminate:(id)a3;
-- (void)portDidUpdate:(id)a3;
-- (void)portDidUpdateAuthorizationState:(id)a3;
+- (void)portDidTerminate:(id)terminate;
+- (void)portDidUpdate:(id)update;
+- (void)portDidUpdateAuthorizationState:(id)state;
 @end
 
 @implementation TRMPortManager
 
-- (TRMPortManager)initWithMatchingDictionary:(id)a3 andDelegate:(id)a4
+- (TRMPortManager)initWithMatchingDictionary:(id)dictionary andDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  delegateCopy = delegate;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
@@ -25,9 +25,9 @@
     *buf = 138412802;
     v23 = v10;
     v24 = 2112;
-    v25 = v7;
+    v25 = dictionaryCopy;
     v26 = 2112;
-    v27 = v8;
+    v27 = delegateCopy;
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Initializing %@... (matchingDictionary: %@, delegate: %@)", buf, 0x20u);
   }
 
@@ -37,10 +37,10 @@
   v12 = v11;
   if (v11)
   {
-    if (v7)
+    if (dictionaryCopy)
     {
-      objc_storeWeak(&v11->_delegate, v8);
-      objc_storeStrong(&v12->_ioMatchingDictionary, a3);
+      objc_storeWeak(&v11->_delegate, delegateCopy);
+      objc_storeStrong(&v12->_ioMatchingDictionary, dictionary);
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
       v15 = [NSString stringWithFormat:@"%@", v14];
@@ -93,19 +93,19 @@
 
 - (NSArray)ports
 {
-  v2 = [(TRMPortManager *)self portsMutable];
-  v3 = [v2 allValues];
+  portsMutable = [(TRMPortManager *)self portsMutable];
+  allValues = [portsMutable allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (BOOL)_startMatchingNotifications
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(TRMPortManager *)self ioMatchingDictionary];
+    ioMatchingDictionary = [(TRMPortManager *)self ioMatchingDictionary];
     v10 = 138412290;
-    v11 = v3;
+    v11 = ioMatchingDictionary;
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Adding matching notifications... (ioMatchingDictionary: %@)", &v10, 0xCu);
   }
 
@@ -115,13 +115,13 @@
   }
 
   [(TRMPortManager *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-  v4 = [(TRMPortManager *)self ioNotificationPort];
-  v5 = [(TRMPortManager *)self queue];
-  IONotificationPortSetDispatchQueue(v4, v5);
+  ioNotificationPort = [(TRMPortManager *)self ioNotificationPort];
+  queue = [(TRMPortManager *)self queue];
+  IONotificationPortSetDispatchQueue(ioNotificationPort, queue);
 
-  v6 = [(TRMPortManager *)self ioNotificationPort];
-  v7 = [(TRMPortManager *)self ioMatchingDictionary];
-  v8 = IOServiceAddMatchingNotification(v6, "IOServiceMatched", v7, _serviceAdded, self, &self->_ioServiceAddedIterator);
+  ioNotificationPort2 = [(TRMPortManager *)self ioNotificationPort];
+  ioMatchingDictionary2 = [(TRMPortManager *)self ioMatchingDictionary];
+  v8 = IOServiceAddMatchingNotification(ioNotificationPort2, "IOServiceMatched", ioMatchingDictionary2, _serviceAdded, self, &self->_ioServiceAddedIterator);
 
   if (v8)
   {
@@ -141,9 +141,9 @@
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(TRMPortManager *)self ioMatchingDictionary];
+    ioMatchingDictionary = [(TRMPortManager *)self ioMatchingDictionary];
     v4 = 138412290;
-    v5 = v3;
+    v5 = ioMatchingDictionary;
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Removing matching notifications... (ioMatchingDictionary: %@)", &v4, 0xCu);
   }
 
@@ -160,18 +160,18 @@
   [(TRMPortManager *)self setMatchingNotificationsStarted:0];
 }
 
-- (void)portDidUpdate:(id)a3
+- (void)portDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(TRMPortManager *)self queue];
+  updateCopy = update;
+  queue = [(TRMPortManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __32__TRMPortManager_portDidUpdate___block_invoke;
   v7[3] = &unk_59758;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updateCopy;
+  v6 = updateCopy;
+  dispatch_async(queue, v7);
 }
 
 void __32__TRMPortManager_portDidUpdate___block_invoke(uint64_t a1)
@@ -186,26 +186,26 @@ void __32__TRMPortManager_portDidUpdate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)portDidUpdateAuthorizationState:(id)a3
+- (void)portDidUpdateAuthorizationState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 description];
+    v5 = [stateCopy description];
     *buf = 136315138;
-    v11 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "portDidUpdateAuthorizationState: %s\n", buf, 0xCu);
   }
 
-  v6 = [(TRMPortManager *)self queue];
+  queue = [(TRMPortManager *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __50__TRMPortManager_portDidUpdateAuthorizationState___block_invoke;
   v8[3] = &unk_59758;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = stateCopy;
+  v7 = stateCopy;
+  dispatch_async(queue, v8);
 }
 
 void __50__TRMPortManager_portDidUpdateAuthorizationState___block_invoke(uint64_t a1)
@@ -220,26 +220,26 @@ void __50__TRMPortManager_portDidUpdateAuthorizationState___block_invoke(uint64_
   }
 }
 
-- (void)portDidTerminate:(id)a3
+- (void)portDidTerminate:(id)terminate
 {
-  v4 = a3;
+  terminateCopy = terminate;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 description];
+    v5 = [terminateCopy description];
     *buf = 136315138;
-    v11 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "portDidTerminate: %s\n", buf, 0xCu);
   }
 
-  v6 = [(TRMPortManager *)self queue];
+  queue = [(TRMPortManager *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __35__TRMPortManager_portDidTerminate___block_invoke;
   v8[3] = &unk_59758;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = terminateCopy;
+  v7 = terminateCopy;
+  dispatch_async(queue, v8);
 }
 
 void __35__TRMPortManager_portDidTerminate___block_invoke(uint64_t a1)
@@ -270,7 +270,7 @@ void __35__TRMPortManager_portDidTerminate___block_invoke(uint64_t a1)
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v2[0] = 67109120;
-    v2[1] = a1;
+    v2[1] = self;
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IOServiceAddMatchingNotification failed: %08x", v2, 8u);
   }
 }

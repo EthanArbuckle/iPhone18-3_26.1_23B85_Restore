@@ -4,8 +4,8 @@
 - (BOOL)hasSize;
 - (NSString)debugDescription;
 - (NSString)description;
-- (_NUMediaGeometry)initWithSize:(id)a3 orientation:(int64_t)a4;
-- (_NUMediaGeometry)initWithSize:(id)a3 orientation:(int64_t)a4 duration:(id *)a5;
+- (_NUMediaGeometry)initWithSize:(id)size orientation:(int64_t)orientation;
+- (_NUMediaGeometry)initWithSize:(id)size orientation:(int64_t)orientation duration:(id *)duration;
 @end
 
 @implementation _NUMediaGeometry
@@ -32,8 +32,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_NUMediaGeometry *)self hasSize];
-  if (v4)
+  hasSize = [(_NUMediaGeometry *)self hasSize];
+  if (hasSize)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lux%lu", self->_size.width, self->_size.height];
   }
@@ -62,7 +62,7 @@
     v9 = [v3 stringWithFormat:@"size: %@, orientation: %@, duration: %@", v5, v7, @"n/a"];
   }
 
-  if (v4)
+  if (hasSize)
   {
   }
 
@@ -98,27 +98,27 @@
   return CMTimeCompare(&time1, &v5) > 0;
 }
 
-- (_NUMediaGeometry)initWithSize:(id)a3 orientation:(int64_t)a4 duration:(id *)a5
+- (_NUMediaGeometry)initWithSize:(id)size orientation:(int64_t)orientation duration:(id *)duration
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v11.receiver = self;
   v11.super_class = _NUMediaGeometry;
   result = [(_NUMediaGeometry *)&v11 init];
   result->_size.width = var0;
   result->_size.height = var1;
-  var3 = a5->var3;
-  *&result->_duration.value = *&a5->var0;
+  var3 = duration->var3;
+  *&result->_duration.value = *&duration->var0;
   result->_duration.epoch = var3;
-  result->_orientation = a4;
+  result->_orientation = orientation;
   return result;
 }
 
-- (_NUMediaGeometry)initWithSize:(id)a3 orientation:(int64_t)a4
+- (_NUMediaGeometry)initWithSize:(id)size orientation:(int64_t)orientation
 {
   v5 = *MEMORY[0x1E6960CC0];
   v6 = *(MEMORY[0x1E6960CC0] + 16);
-  return [(_NUMediaGeometry *)self initWithSize:a3.var0 orientation:a3.var1 duration:a4, &v5];
+  return [(_NUMediaGeometry *)self initWithSize:size.var0 orientation:size.var1 duration:orientation, &v5];
 }
 
 @end

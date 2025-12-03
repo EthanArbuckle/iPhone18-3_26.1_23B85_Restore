@@ -1,6 +1,6 @@
 @interface MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct
 - (MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -28,17 +28,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct);
-  v5 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)self presetID];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)v4 setPresetID:v5];
+  presetID = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)self presetID];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)v4 setPresetID:presetID];
 
-  v6 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)self name];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)v4 setName:v6];
+  name = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)self name];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)v4 setName:name];
 
-  v7 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)self settings];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)v4 setSettings:v7];
+  settings = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)self settings];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZPresetStruct *)v4 setSettings:settings];
 
   return v4;
 }

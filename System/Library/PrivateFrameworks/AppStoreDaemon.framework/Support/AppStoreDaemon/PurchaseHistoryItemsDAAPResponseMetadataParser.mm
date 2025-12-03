@@ -1,14 +1,14 @@
 @interface PurchaseHistoryItemsDAAPResponseMetadataParser
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (void)parser:(id)a3 didFailWithError:(id)a4;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
-- (void)parserDidCancel:(id)a3;
-- (void)parserDidStart:(id)a3;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (void)parser:(id)parser didFailWithError:(id)error;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
+- (void)parserDidCancel:(id)cancel;
+- (void)parserDidStart:(id)start;
 @end
 
 @implementation PurchaseHistoryItemsDAAPResponseMetadataParser
 
-- (void)parserDidStart:(id)a3
+- (void)parserDidStart:(id)start
 {
   isUpdate = self->_isUpdate;
   self->_isUpdate = 0;
@@ -25,7 +25,7 @@
   self->_hasParsedData = 0;
 }
 
-- (void)parserDidCancel:(id)a3
+- (void)parserDidCancel:(id)cancel
 {
   isUpdate = self->_isUpdate;
   self->_isUpdate = 0;
@@ -50,9 +50,9 @@
   }
 }
 
-- (void)parser:(id)a3 didFailWithError:(id)a4
+- (void)parser:(id)parser didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   isUpdate = self->_isUpdate;
   self->_isUpdate = 0;
 
@@ -72,18 +72,18 @@
     v12 = 138412546;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v5;
+    v15 = errorCopy;
     v11 = v13;
     _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[%@]: Parser failed with error: %{public}@", &v12, 0x16u);
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 <= 1836282995)
+  if (code <= 1836282995)
   {
-    if (a4 == 1633968755)
+    if (code == 1633968755)
     {
       return result;
     }
@@ -92,11 +92,11 @@
     goto LABEL_7;
   }
 
-  if (a4 != 1836282996 && a4 != 1836413810)
+  if (code != 1836282996 && code != 1836413810)
   {
     v5 = 1836414073;
 LABEL_7:
-    if (a4 != v5)
+    if (code != v5)
     {
       return 0;
     }
@@ -105,28 +105,28 @@ LABEL_7:
   return result;
 }
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  v10 = a3;
-  if (a4 > 1836413809)
+  parserCopy = parser;
+  if (code > 1836413809)
   {
-    if (a4 == 1836413810)
+    if (code == 1836413810)
     {
-      v17 = v10;
-      v16 = [NSNumber numberWithUnsignedInt:bswap32(*a5)];
+      v17 = parserCopy;
+      v16 = [NSNumber numberWithUnsignedInt:bswap32(*bytes)];
       revision = self->_revision;
       self->_revision = v16;
     }
 
     else
     {
-      if (a4 != 1836414073)
+      if (code != 1836414073)
       {
         goto LABEL_14;
       }
 
-      v17 = v10;
-      if (*a5)
+      v17 = parserCopy;
+      if (*bytes)
       {
         v13 = &__kCFBooleanTrue;
       }
@@ -142,28 +142,28 @@ LABEL_7:
     }
   }
 
-  else if (a4 == 1836081511)
+  else if (code == 1836081511)
   {
-    v17 = v10;
-    v15 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+    v17 = parserCopy;
+    v15 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
     revision = self->_paginationToken;
     self->_paginationToken = v15;
   }
 
   else
   {
-    if (a4 != 1836282996)
+    if (code != 1836282996)
     {
       goto LABEL_14;
     }
 
-    v17 = v10;
-    v11 = [NSNumber numberWithUnsignedInt:bswap32(*a5)];
+    v17 = parserCopy;
+    v11 = [NSNumber numberWithUnsignedInt:bswap32(*bytes)];
     revision = self->_status;
     self->_status = v11;
   }
 
-  v10 = v17;
+  parserCopy = v17;
 LABEL_14:
 }
 

@@ -1,12 +1,12 @@
 @interface ATXTimelineDonationsPruner
-- (void)pruneTimelineRelevanceTableWithXPCActivity:(id)a3;
+- (void)pruneTimelineRelevanceTableWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXTimelineDonationsPruner
 
-- (void)pruneTimelineRelevanceTableWithXPCActivity:(id)a3
+- (void)pruneTimelineRelevanceTableWithXPCActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = __atxlog_handle_timeline();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -14,8 +14,8 @@
     _os_log_impl(&dword_2263AA000, v4, OS_LOG_TYPE_DEFAULT, "Pruning timeline donations", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277CEB5C8] sharedInstance];
-  if ([v3 didDefer])
+  mEMORY[0x277CEB5C8] = [MEMORY[0x277CEB5C8] sharedInstance];
+  if ([activityCopy didDefer])
   {
     v6 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -31,10 +31,10 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v9 = [v5 pruneTimelineEntries];
+  pruneTimelineEntries = [mEMORY[0x277CEB5C8] pruneTimelineEntries];
   v10 = __atxlog_handle_timeline();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (pruneTimelineEntries)
   {
     if (!v11)
     {
@@ -61,7 +61,7 @@ LABEL_20:
   _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_DEFAULT, v12, v13, 2u);
 LABEL_12:
 
-  if ([v3 didDefer])
+  if ([activityCopy didDefer])
   {
     v6 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -75,10 +75,10 @@ LABEL_12:
 
   else
   {
-    v14 = [v5 pruneInvalidSuggestions];
+    pruneInvalidSuggestions = [mEMORY[0x277CEB5C8] pruneInvalidSuggestions];
     v6 = __atxlog_handle_timeline();
     v15 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v14)
+    if (pruneInvalidSuggestions)
     {
       if (v15)
       {

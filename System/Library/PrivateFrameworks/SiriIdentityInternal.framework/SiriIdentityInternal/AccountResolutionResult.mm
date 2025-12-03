@@ -1,22 +1,22 @@
 @interface AccountResolutionResult
-+ (id)confirmationRequiredWithAccountToConfirm:(id)a3;
-+ (id)disambiguationWithAccountsToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedAccount:(id)a3;
++ (id)confirmationRequiredWithAccountToConfirm:(id)confirm;
++ (id)disambiguationWithAccountsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedAccount:(id)account;
 @end
 
 @implementation AccountResolutionResult
 
-+ (id)successWithResolvedAccount:(id)a3
++ (id)successWithResolvedAccount:(id)account
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static AccountResolutionResult.success(with:)(v4);
+  accountCopy = account;
+  v5 = static AccountResolutionResult.success(with:)(accountCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithAccountsToDisambiguate:(id)a3
++ (id)disambiguationWithAccountsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for Account();
   v3 = sub_266E9D0C4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithAccountToConfirm:(id)a3
++ (id)confirmationRequiredWithAccountToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static AccountResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static AccountResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_266E99920();
   sub_266E9D0C4();

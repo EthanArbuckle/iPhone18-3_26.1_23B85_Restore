@@ -1,38 +1,38 @@
 @interface SAQuery
-+ (BOOL)isStagedAppContainer:(container_object_s *)a3;
-+ (id)getFSPurgeableInfo:(id)a3 options:(int)a4;
-+ (id)getVendorNameForBundleIDs:(id)a3;
-+ (id)getVendorNameFromBundleRecord:(id)a3;
-+ (id)guesstimateBundleId:(id)a3;
-+ (void)enumerateAppPathsOnVolume:(id)a3;
-+ (void)enumeratePurgeableAssets:(int)a3 block:(id)a4;
-+ (void)enumerateWithContainerQuery:(unint64_t)a3 existingQuery:(container_query_s *)a4 outQuery:(container_query_s *)a5 transientContainers:(BOOL)a6 stagedContainers:(BOOL)a7 block:(id)a8;
-+ (void)getAppPathForAppContainer:(id)a3 identifier:(id)a4 block:(id)a5;
-+ (void)getAppPathForContainer:(id)a3 identifier:(id)a4 containerClass:(unint64_t)a5 personaString:(id)a6 existingQuery:(container_query_s *)a7 block:(id)a8;
-+ (void)getAppPathForDataContainer:(id)a3 identifier:(id)a4 containerClass:(unint64_t)a5 personaString:(id)a6 existingQuery:(container_query_s *)a7 block:(id)a8;
-+ (void)getAppPathForInternalDaemonContainer:(id)a3 identifier:(id)a4 block:(id)a5;
-+ (void)installedAppGroupsAtVolume:(id)a3;
-+ (void)installedAppsAtVolume:(BOOL)a3 sortForUrgency:(int)a4 options:(int)a5 block:(id)a6;
++ (BOOL)isStagedAppContainer:(container_object_s *)container;
++ (id)getFSPurgeableInfo:(id)info options:(int)options;
++ (id)getVendorNameForBundleIDs:(id)ds;
++ (id)getVendorNameFromBundleRecord:(id)record;
++ (id)guesstimateBundleId:(id)id;
++ (void)enumerateAppPathsOnVolume:(id)volume;
++ (void)enumeratePurgeableAssets:(int)assets block:(id)block;
++ (void)enumerateWithContainerQuery:(unint64_t)query existingQuery:(container_query_s *)existingQuery outQuery:(container_query_s *)outQuery transientContainers:(BOOL)containers stagedContainers:(BOOL)stagedContainers block:(id)block;
++ (void)getAppPathForAppContainer:(id)container identifier:(id)identifier block:(id)block;
++ (void)getAppPathForContainer:(id)container identifier:(id)identifier containerClass:(unint64_t)class personaString:(id)string existingQuery:(container_query_s *)query block:(id)block;
++ (void)getAppPathForDataContainer:(id)container identifier:(id)identifier containerClass:(unint64_t)class personaString:(id)string existingQuery:(container_query_s *)query block:(id)block;
++ (void)getAppPathForInternalDaemonContainer:(id)container identifier:(id)identifier block:(id)block;
++ (void)installedAppGroupsAtVolume:(id)volume;
++ (void)installedAppsAtVolume:(BOOL)volume sortForUrgency:(int)urgency options:(int)options block:(id)block;
 @end
 
 @implementation SAQuery
 
-+ (void)installedAppsAtVolume:(BOOL)a3 sortForUrgency:(int)a4 options:(int)a5 block:(id)a6
++ (void)installedAppsAtVolume:(BOOL)volume sortForUrgency:(int)urgency options:(int)options block:(id)block
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002FB3C;
   v7[3] = &unk_100065A20;
-  v10 = a5 & 1;
-  v9 = a4;
-  v8 = a6;
-  v6 = v8;
+  v10 = options & 1;
+  urgencyCopy = urgency;
+  blockCopy = block;
+  v6 = blockCopy;
   [SAQuery enumerateAppPathsOnVolume:v7];
 }
 
-+ (void)installedAppGroupsAtVolume:(id)a3
++ (void)installedAppGroupsAtVolume:(id)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   v4 = objc_autoreleasePoolPush();
   v17[0] = 0;
   v17[1] = v17;
@@ -43,7 +43,7 @@
     container_query_set_class();
     container_query_operation_set_flags();
     container_query_set_include_other_owners();
-    v16 = v3;
+    v16 = volumeCopy;
     iterate_results_sync = container_query_iterate_results_sync();
     container_query_get_last_error();
     v6 = container_error_copy_unlocalized_description();
@@ -83,14 +83,14 @@
   objc_autoreleasePoolPop(v4);
 }
 
-+ (void)enumeratePurgeableAssets:(int)a3 block:(id)a4
++ (void)enumeratePurgeableAssets:(int)assets block:(id)block
 {
-  v5 = a4;
-  v4 = v5;
+  blockCopy = block;
+  v4 = blockCopy;
   CacheManagementEnumerateAssets();
 }
 
-+ (BOOL)isStagedAppContainer:(container_object_s *)a3
++ (BOOL)isStagedAppContainer:(container_object_s *)container
 {
   path = container_get_path();
   if (path)
@@ -148,14 +148,14 @@ LABEL_15:
   return path;
 }
 
-+ (void)enumerateAppPathsOnVolume:(id)a3
++ (void)enumerateAppPathsOnVolume:(id)volume
 {
   v4 = 0;
-  v3 = a3;
-  [SAQuery enumerateWithContainerQuery:2 existingQuery:0 outQuery:&v4 transientContainers:0 stagedContainers:0 block:v3];
-  [SAQuery enumerateWithContainerQuery:4 existingQuery:v4 outQuery:0 transientContainers:0 stagedContainers:0 block:v3];
-  [SAQuery enumerateWithContainerQuery:10 existingQuery:v4 outQuery:0 transientContainers:0 stagedContainers:0 block:v3];
-  [SAQuery enumerateWithContainerQuery:1 existingQuery:v4 outQuery:0 transientContainers:1 stagedContainers:1 block:v3];
+  volumeCopy = volume;
+  [SAQuery enumerateWithContainerQuery:2 existingQuery:0 outQuery:&v4 transientContainers:0 stagedContainers:0 block:volumeCopy];
+  [SAQuery enumerateWithContainerQuery:4 existingQuery:v4 outQuery:0 transientContainers:0 stagedContainers:0 block:volumeCopy];
+  [SAQuery enumerateWithContainerQuery:10 existingQuery:v4 outQuery:0 transientContainers:0 stagedContainers:0 block:volumeCopy];
+  [SAQuery enumerateWithContainerQuery:1 existingQuery:v4 outQuery:0 transientContainers:1 stagedContainers:1 block:volumeCopy];
 
   if (v4)
   {
@@ -163,9 +163,9 @@ LABEL_15:
   }
 }
 
-+ (void)enumerateWithContainerQuery:(unint64_t)a3 existingQuery:(container_query_s *)a4 outQuery:(container_query_s *)a5 transientContainers:(BOOL)a6 stagedContainers:(BOOL)a7 block:(id)a8
++ (void)enumerateWithContainerQuery:(unint64_t)query existingQuery:(container_query_s *)existingQuery outQuery:(container_query_s *)outQuery transientContainers:(BOOL)containers stagedContainers:(BOOL)stagedContainers block:(id)block
 {
-  v12 = a8;
+  blockCopy = block;
   context = objc_autoreleasePoolPush();
   v13 = container_query_create();
   v14 = objc_opt_new();
@@ -184,8 +184,8 @@ LABEL_15:
     v39 = 3221225472;
     v40 = sub_100030500;
     v41 = &unk_100065A98;
-    v45 = a6;
-    v46 = a7;
+    containersCopy = containers;
+    stagedContainersCopy = stagedContainers;
     v16 = v14;
     v42 = v16;
     v17 = v15;
@@ -220,13 +220,13 @@ LABEL_15:
     block[3] = &unk_100065AC0;
     v33 = v17;
     v34 = v16;
-    v36 = a3;
-    v37 = a4;
-    v35 = v12;
+    queryCopy = query;
+    existingQueryCopy = existingQuery;
+    v35 = blockCopy;
     dispatch_apply(v29, 0, block);
-    if (a5)
+    if (outQuery)
     {
-      *a5 = v13;
+      *outQuery = v13;
     }
 
     else
@@ -250,23 +250,23 @@ LABEL_15:
   objc_autoreleasePoolPop(context);
 }
 
-+ (void)getAppPathForInternalDaemonContainer:(id)a3 identifier:(id)a4 block:(id)a5
++ (void)getAppPathForInternalDaemonContainer:(id)container identifier:(id)identifier block:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 path];
-  v10 = [SAAppPath appPathWithRecord:0 identifier:v8 dataContainerPath:v9 personaUniqueString:0 isPlugin:0 isGroup:0];
+  blockCopy = block;
+  identifierCopy = identifier;
+  path = [container path];
+  v10 = [SAAppPath appPathWithRecord:0 identifier:identifierCopy dataContainerPath:path personaUniqueString:0 isPlugin:0 isGroup:0];
 
-  v7[2](v7, v10);
+  blockCopy[2](blockCopy, v10);
 }
 
-+ (void)getAppPathForAppContainer:(id)a3 identifier:(id)a4 block:(id)a5
++ (void)getAppPathForAppContainer:(id)container identifier:(id)identifier block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  containerCopy = container;
+  identifierCopy = identifier;
+  blockCopy = block;
   v17 = 0;
-  v10 = [LSBundleRecord bundleRecordWithBundleIdentifier:v8 allowPlaceholder:1 error:&v17];
+  v10 = [LSBundleRecord bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v17];
   v11 = v17;
   v12 = v11;
   if (v10)
@@ -281,13 +281,13 @@ LABEL_15:
 
   if (v13)
   {
-    v15 = [v10 bundleIdentifier];
-    v14 = [SAAppPath appPathWithRecord:v10 identifier:v15 dataContainerPath:0 personaUniqueString:0 isPlugin:0 isGroup:0];
+    bundleIdentifier = [v10 bundleIdentifier];
+    v14 = [SAAppPath appPathWithRecord:v10 identifier:bundleIdentifier dataContainerPath:0 personaUniqueString:0 isPlugin:0 isGroup:0];
 
-    v16 = [v7 path];
-    [v14 addBinaryPath:v16];
+    path = [containerCopy path];
+    [v14 addBinaryPath:path];
 
-    v9[2](v9, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   else
@@ -300,28 +300,28 @@ LABEL_15:
   }
 }
 
-+ (void)getAppPathForDataContainer:(id)a3 identifier:(id)a4 containerClass:(unint64_t)a5 personaString:(id)a6 existingQuery:(container_query_s *)a7 block:(id)a8
++ (void)getAppPathForDataContainer:(id)container identifier:(id)identifier containerClass:(unint64_t)class personaString:(id)string existingQuery:(container_query_s *)query block:(id)block
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
+  containerCopy = container;
+  identifierCopy = identifier;
+  stringCopy = string;
+  blockCopy = block;
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x2020000000;
   v35 = 1;
-  if (a5 == 4)
+  if (class == 4)
   {
     v33 = 0;
     v17 = &v33;
-    v18 = [LSApplicationExtensionRecord bundleRecordWithBundleIdentifier:v14 allowPlaceholder:1 error:&v33];
+    v18 = [LSApplicationExtensionRecord bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v33];
   }
 
   else
   {
     v32 = 0;
     v17 = &v32;
-    v18 = [LSBundleRecord bundleRecordWithBundleIdentifier:v14 allowPlaceholder:1 error:&v32];
+    v18 = [LSBundleRecord bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v32];
   }
 
   v19 = v18;
@@ -343,14 +343,14 @@ LABEL_15:
     v24[2] = sub_100030C8C;
     v24[3] = &unk_100065AE8;
     v25 = v19;
-    v31 = a5 == 4;
-    v26 = v15;
-    v30 = a7;
-    v27 = v14;
+    v31 = class == 4;
+    v26 = stringCopy;
+    queryCopy = query;
+    v27 = identifierCopy;
     v29 = v34;
-    v28 = v16;
+    v28 = blockCopy;
     v22 = objc_retainBlock(v24);
-    (v22[2])(v22, v13);
+    (v22[2])(v22, containerCopy);
 
     v23 = v25;
   }
@@ -358,37 +358,37 @@ LABEL_15:
   _Block_object_dispose(v34, 8);
 }
 
-+ (void)getAppPathForContainer:(id)a3 identifier:(id)a4 containerClass:(unint64_t)a5 personaString:(id)a6 existingQuery:(container_query_s *)a7 block:(id)a8
++ (void)getAppPathForContainer:(id)container identifier:(id)identifier containerClass:(unint64_t)class personaString:(id)string existingQuery:(container_query_s *)query block:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  if (a5 <= 3)
+  containerCopy = container;
+  identifierCopy = identifier;
+  stringCopy = string;
+  blockCopy = block;
+  if (class <= 3)
   {
-    if (a5 == 1)
+    if (class == 1)
     {
-      [a1 getAppPathForAppContainer:v14 identifier:v15 block:v17];
+      [self getAppPathForAppContainer:containerCopy identifier:identifierCopy block:blockCopy];
       goto LABEL_12;
     }
 
-    if (a5 != 2)
+    if (class != 2)
     {
       goto LABEL_4;
     }
 
 LABEL_9:
-    [a1 getAppPathForDataContainer:v14 identifier:v15 containerClass:a5 personaString:v16 existingQuery:a7 block:v17];
+    [self getAppPathForDataContainer:containerCopy identifier:identifierCopy containerClass:class personaString:stringCopy existingQuery:query block:blockCopy];
     goto LABEL_12;
   }
 
-  if (a5 == 10)
+  if (class == 10)
   {
-    [a1 getAppPathForInternalDaemonContainer:v14 identifier:v15 block:v17];
+    [self getAppPathForInternalDaemonContainer:containerCopy identifier:identifierCopy block:blockCopy];
     goto LABEL_12;
   }
 
-  if (a5 == 4)
+  if (class == 4)
   {
     goto LABEL_9;
   }
@@ -403,11 +403,11 @@ LABEL_4:
 LABEL_12:
 }
 
-+ (id)getFSPurgeableInfo:(id)a3 options:(int)a4
++ (id)getFSPurgeableInfo:(id)info options:(int)options
 {
-  v5 = a3;
-  valuePtr = (a4 >> 2) & 1;
-  if ((a4 & 4) != 0)
+  infoCopy = info;
+  valuePtr = (options >> 2) & 1;
+  if ((options & 4) != 0)
   {
     v6 = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &valuePtr);
   }
@@ -417,7 +417,7 @@ LABEL_12:
     v6 = 0;
   }
 
-  v7 = CFStringCreateWithCString(kCFAllocatorDefault, [v5 UTF8String], 0x8000100u);
+  v7 = CFStringCreateWithCString(kCFAllocatorDefault, [infoCopy UTF8String], 0x8000100u);
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   CFDictionarySetValue(Mutable, @"CACHE_DELETE_VOLUME", v7);
   if (v6)
@@ -450,12 +450,12 @@ LABEL_12:
   return v10;
 }
 
-+ (id)getVendorNameFromBundleRecord:(id)a3
++ (id)getVendorNameFromBundleRecord:(id)record
 {
-  v3 = a3;
-  if ([v3 developerType] == 1)
+  recordCopy = record;
+  if ([recordCopy developerType] == 1)
   {
-    v4 = @"Apple";
+    artistName2 = @"Apple";
   }
 
   else
@@ -463,17 +463,17 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
-      v6 = [v5 containingBundleRecord];
+      v5 = recordCopy;
+      containingBundleRecord = [v5 containingBundleRecord];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v5 containingBundleRecord];
+        containingBundleRecord2 = [v5 containingBundleRecord];
       }
 
       else
       {
-        v7 = 0;
+        containingBundleRecord2 = 0;
       }
     }
 
@@ -482,46 +482,46 @@ LABEL_12:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v3;
+        containingBundleRecord2 = recordCopy;
       }
 
       else
       {
-        v7 = 0;
+        containingBundleRecord2 = 0;
       }
     }
 
-    v8 = [v7 iTunesMetadata];
-    v9 = [v8 artistName];
+    iTunesMetadata = [containingBundleRecord2 iTunesMetadata];
+    artistName = [iTunesMetadata artistName];
 
-    if (v9)
+    if (artistName)
     {
-      v4 = [v8 artistName];
+      artistName2 = [iTunesMetadata artistName];
     }
 
     else
     {
-      v4 = @"Unknown";
+      artistName2 = @"Unknown";
     }
   }
 
-  return v4;
+  return artistName2;
 }
 
-+ (id)guesstimateBundleId:(id)a3
++ (id)guesstimateBundleId:(id)id
 {
-  v3 = a3;
-  v4 = [SAQuery getVendorNameFromBundleRecord:v3];
+  idCopy = id;
+  v4 = [SAQuery getVendorNameFromBundleRecord:idCopy];
   if ([v4 hasPrefix:@"Apple Inc."])
   {
     v5 = SALog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v3 bundleIdentifier];
+      bundleIdentifier = [idCopy bundleIdentifier];
       v9 = 136315394;
       v10 = "+[SAQuery guesstimateBundleId:]";
       v11 = 2112;
-      v12 = v6;
+      v12 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: Shorten Apple Inc for %@", &v9, 0x16u);
     }
 
@@ -536,10 +536,10 @@ LABEL_12:
   return v7;
 }
 
-+ (id)getVendorNameForBundleIDs:(id)a3
++ (id)getVendorNameForBundleIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [SAUtilities breakCommaSeparatedStringToComponents:v3];
+  dsCopy = ds;
+  v4 = [SAUtilities breakCommaSeparatedStringToComponents:dsCopy];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;

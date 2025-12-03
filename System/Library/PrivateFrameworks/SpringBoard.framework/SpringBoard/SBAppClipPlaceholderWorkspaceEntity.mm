@@ -1,38 +1,38 @@
 @interface SBAppClipPlaceholderWorkspaceEntity
-+ (BOOL)isAppClipUpdateAvailableForBundleIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SBAppClipPlaceholderWorkspaceEntity)initWithBundleIdentifier:(id)a3 futureSceneIdentifier:(id)a4 needsUpdate:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)isAppClipUpdateAvailableForBundleIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (SBAppClipPlaceholderWorkspaceEntity)initWithBundleIdentifier:(id)identifier futureSceneIdentifier:(id)sceneIdentifier needsUpdate:(BOOL)update;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)entityGenerator;
 - (void)entityGenerator;
 @end
 
 @implementation SBAppClipPlaceholderWorkspaceEntity
 
-+ (BOOL)isAppClipUpdateAvailableForBundleIdentifier:(id)a3
++ (BOOL)isAppClipUpdateAvailableForBundleIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
+  identifierCopy = identifier;
+  v5 = [[v3 alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:0];
 
-  v6 = [v5 appClipMetadata];
+  appClipMetadata = [v5 appClipMetadata];
 
-  v8 = [v5 updateAvailability] == 1 && v6 != 0;
+  v8 = [v5 updateAvailability] == 1 && appClipMetadata != 0;
   return v8;
 }
 
-- (SBAppClipPlaceholderWorkspaceEntity)initWithBundleIdentifier:(id)a3 futureSceneIdentifier:(id)a4 needsUpdate:(BOOL)a5
+- (SBAppClipPlaceholderWorkspaceEntity)initWithBundleIdentifier:(id)identifier futureSceneIdentifier:(id)sceneIdentifier needsUpdate:(BOOL)update
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  identifierCopy = identifier;
+  sceneIdentifierCopy = sceneIdentifier;
+  if (sceneIdentifierCopy)
   {
-    if (v8)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -41,7 +41,7 @@
   else
   {
     [SBAppClipPlaceholderWorkspaceEntity initWithBundleIdentifier:futureSceneIdentifier:needsUpdate:];
-    if (v8)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -49,22 +49,22 @@
 
   [SBAppClipPlaceholderWorkspaceEntity initWithBundleIdentifier:futureSceneIdentifier:needsUpdate:];
 LABEL_3:
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Placeholder-%@", v9];
+  sceneIdentifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Placeholder-%@", sceneIdentifierCopy];
   v17.receiver = self;
   v17.super_class = SBAppClipPlaceholderWorkspaceEntity;
-  v11 = [(SBWorkspaceEntity *)&v17 initWithIdentifier:v10 displayChangeSettings:0];
+  v11 = [(SBWorkspaceEntity *)&v17 initWithIdentifier:sceneIdentifierCopy displayChangeSettings:0];
 
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [sceneIdentifierCopy copy];
     futureSceneIdentifier = v11->_futureSceneIdentifier;
     v11->_futureSceneIdentifier = v14;
 
-    v11->_needsUpdate = a5;
+    v11->_needsUpdate = update;
   }
 
   return v11;
@@ -119,10 +119,10 @@ id __54__SBAppClipPlaceholderWorkspaceEntity_entityGenerator__block_invoke(uint6
   return v1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -132,14 +132,14 @@ id __54__SBAppClipPlaceholderWorkspaceEntity_entityGenerator__block_invoke(uint6
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       bundleIdentifier = self->_bundleIdentifier;
-      v7 = [(SBAppClipPlaceholderWorkspaceEntity *)v5 bundleIdentifier];
-      if ([(NSString *)bundleIdentifier isEqualToString:v7])
+      bundleIdentifier = [(SBAppClipPlaceholderWorkspaceEntity *)v5 bundleIdentifier];
+      if ([(NSString *)bundleIdentifier isEqualToString:bundleIdentifier])
       {
         futureSceneIdentifier = self->_futureSceneIdentifier;
-        v9 = [(SBAppClipPlaceholderWorkspaceEntity *)v5 futureSceneIdentifier];
-        v10 = [(NSString *)futureSceneIdentifier isEqualToString:v9];
+        futureSceneIdentifier = [(SBAppClipPlaceholderWorkspaceEntity *)v5 futureSceneIdentifier];
+        v10 = [(NSString *)futureSceneIdentifier isEqualToString:futureSceneIdentifier];
       }
 
       else
@@ -157,11 +157,11 @@ id __54__SBAppClipPlaceholderWorkspaceEntity_entityGenerator__block_invoke(uint6
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SBAppClipPlaceholderWorkspaceEntity;
-  v4 = [(SBWorkspaceEntity *)&v10 copyWithZone:a3];
+  v4 = [(SBWorkspaceEntity *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_bundleIdentifier copy];
   v6 = v4[6];
   v4[6] = v5;
@@ -193,7 +193,7 @@ id __54__SBAppClipPlaceholderWorkspaceEntity_entityGenerator__block_invoke(uint6
 - (void)entityGenerator
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:@"futureSceneIdentifier" object:? file:? lineNumber:? description:?];
 }

@@ -1,18 +1,18 @@
 @interface DMRebootAnalyticsUploader
-+ (id)_createSubmissionClientWithErrorHandler:(id)a3;
-+ (id)createRebootAnalyticsUploaderIfAppropriateWithEnvironment:(id)a3;
-- (id)_initWithSubmissionClient:(id)a3;
++ (id)_createSubmissionClientWithErrorHandler:(id)handler;
++ (id)createRebootAnalyticsUploaderIfAppropriateWithEnvironment:(id)environment;
+- (id)_initWithSubmissionClient:(id)client;
 - (void)start;
-- (void)waitForCompletionWithTimeoutTimeInterval:(double)a3;
+- (void)waitForCompletionWithTimeoutTimeInterval:(double)interval;
 @end
 
 @implementation DMRebootAnalyticsUploader
 
-+ (id)createRebootAnalyticsUploaderIfAppropriateWithEnvironment:(id)a3
++ (id)createRebootAnalyticsUploaderIfAppropriateWithEnvironment:(id)environment
 {
-  if ([a3 migrationRebootCount] == 1)
+  if ([environment migrationRebootCount] == 1)
   {
-    v4 = [a1 _createSubmissionClientWithErrorHandler:&stru_100024740];
+    v4 = [self _createSubmissionClientWithErrorHandler:&stru_100024740];
     v5 = [[DMRebootAnalyticsUploader alloc] _initWithSubmissionClient:v4];
   }
 
@@ -24,9 +24,9 @@
   return v5;
 }
 
-+ (id)_createSubmissionClientWithErrorHandler:(id)a3
++ (id)_createSubmissionClientWithErrorHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -45,21 +45,21 @@
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [[v4 alloc] initWithErrorHandler:v3];
+  v6 = [[v4 alloc] initWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)_initWithSubmissionClient:(id)a3
+- (id)_initWithSubmissionClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v8.receiver = self;
   v8.super_class = DMRebootAnalyticsUploader;
   v5 = [(DMRebootAnalyticsUploader *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DMRebootAnalyticsUploader *)v5 setSubmissionClient:v4];
+    [(DMRebootAnalyticsUploader *)v5 setSubmissionClient:clientCopy];
   }
 
   return v6;
@@ -77,16 +77,16 @@
   [(DMRebootAnalyticsUploader *)self setSubmissionBlock:v4];
 
   v5 = dispatch_get_global_queue(25, 0);
-  v6 = [(DMRebootAnalyticsUploader *)self submissionBlock];
-  dispatch_async(v5, v6);
+  submissionBlock = [(DMRebootAnalyticsUploader *)self submissionBlock];
+  dispatch_async(v5, submissionBlock);
 }
 
-- (void)waitForCompletionWithTimeoutTimeInterval:(double)a3
+- (void)waitForCompletionWithTimeoutTimeInterval:(double)interval
 {
   _DMLogFunc();
-  v5 = [(DMRebootAnalyticsUploader *)self submissionBlock];
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
-  v7 = dispatch_block_wait(v5, v6);
+  submissionBlock = [(DMRebootAnalyticsUploader *)self submissionBlock];
+  v6 = dispatch_time(0, (interval * 1000000000.0));
+  v7 = dispatch_block_wait(submissionBlock, v6);
 
   v8 = [NSNumber numberWithInt:v7 != 0];
   _DMLogFunc();

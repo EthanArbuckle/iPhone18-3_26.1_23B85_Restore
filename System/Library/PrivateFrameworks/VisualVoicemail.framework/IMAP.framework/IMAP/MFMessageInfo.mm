@@ -1,24 +1,24 @@
 @interface MFMessageInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MFMessageInfo)init;
-- (MFMessageInfo)initWithUid:(unsigned int)a3 mailboxID:(unsigned int)a4 messageID:(int64_t)a5 dateReceivedInterval:(unsigned int)a6 dateSentInterval:(unsigned int)a7 conversationHash:(int64_t)a8 read:(BOOL)a9 knownToHaveAttachments:(BOOL)a10 flagged:(BOOL)a11 isVIP:(BOOL)a12;
+- (MFMessageInfo)initWithUid:(unsigned int)uid mailboxID:(unsigned int)d messageID:(int64_t)iD dateReceivedInterval:(unsigned int)interval dateSentInterval:(unsigned int)sentInterval conversationHash:(int64_t)hash read:(BOOL)read knownToHaveAttachments:(BOOL)self0 flagged:(BOOL)self1 isVIP:(BOOL)self2;
 - (NSString)description;
 - (id)_flagDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)generationCompare:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)generationCompare:(id)compare;
 - (unint64_t)hash;
-- (void)setDeleted:(BOOL)a3;
-- (void)setIsVIP:(BOOL)a3;
-- (void)setKnownToHaveAttachments:(BOOL)a3;
-- (void)setRead:(BOOL)a3;
-- (void)setUidIsLibraryID:(BOOL)a3;
+- (void)setDeleted:(BOOL)deleted;
+- (void)setIsVIP:(BOOL)p;
+- (void)setKnownToHaveAttachments:(BOOL)attachments;
+- (void)setRead:(BOOL)read;
+- (void)setUidIsLibraryID:(BOOL)d;
 @end
 
 @implementation MFMessageInfo
 
-- (void)setRead:(BOOL)a3
+- (void)setRead:(BOOL)read
 {
-  if (a3)
+  if (read)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *(self + 8) = *(self + 8) & 0xFD | v3;
 }
 
-- (void)setDeleted:(BOOL)a3
+- (void)setDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 4;
   }
@@ -46,9 +46,9 @@
   *(self + 8) = *(self + 8) & 0xFB | v3;
 }
 
-- (void)setUidIsLibraryID:(BOOL)a3
+- (void)setUidIsLibraryID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 8;
   }
@@ -61,9 +61,9 @@
   *(self + 8) = *(self + 8) & 0xF7 | v3;
 }
 
-- (void)setKnownToHaveAttachments:(BOOL)a3
+- (void)setKnownToHaveAttachments:(BOOL)attachments
 {
-  if (a3)
+  if (attachments)
   {
     v3 = 16;
   }
@@ -76,9 +76,9 @@
   *(self + 8) = *(self + 8) & 0xEF | v3;
 }
 
-- (void)setIsVIP:(BOOL)a3
+- (void)setIsVIP:(BOOL)p
 {
-  if (a3)
+  if (p)
   {
     v3 = 32;
   }
@@ -104,20 +104,20 @@
   return result;
 }
 
-- (MFMessageInfo)initWithUid:(unsigned int)a3 mailboxID:(unsigned int)a4 messageID:(int64_t)a5 dateReceivedInterval:(unsigned int)a6 dateSentInterval:(unsigned int)a7 conversationHash:(int64_t)a8 read:(BOOL)a9 knownToHaveAttachments:(BOOL)a10 flagged:(BOOL)a11 isVIP:(BOOL)a12
+- (MFMessageInfo)initWithUid:(unsigned int)uid mailboxID:(unsigned int)d messageID:(int64_t)iD dateReceivedInterval:(unsigned int)interval dateSentInterval:(unsigned int)sentInterval conversationHash:(int64_t)hash read:(BOOL)read knownToHaveAttachments:(BOOL)self0 flagged:(BOOL)self1 isVIP:(BOOL)self2
 {
   result = [(MFMessageInfo *)self init];
   if (result)
   {
-    result->_uid = a3;
-    result->_dateReceivedInterval = a6;
-    result->_sortUid = a3;
-    result->_sortDateReceivedInterval = a6;
-    result->_dateSentInterval = a7;
-    result->_mailboxID = a4;
-    result->_conversationHash = a8;
-    result->_messageIDHash = a5;
-    if (a9)
+    result->_uid = uid;
+    result->_dateReceivedInterval = interval;
+    result->_sortUid = uid;
+    result->_sortDateReceivedInterval = interval;
+    result->_dateSentInterval = sentInterval;
+    result->_mailboxID = d;
+    result->_conversationHash = hash;
+    result->_messageIDHash = iD;
+    if (read)
     {
       v19 = 2;
     }
@@ -127,7 +127,7 @@
       v19 = 0;
     }
 
-    if (a10)
+    if (attachments)
     {
       v20 = 16;
     }
@@ -137,7 +137,7 @@
       v20 = 0;
     }
 
-    if (a12)
+    if (p)
     {
       v21 = 32;
     }
@@ -147,15 +147,15 @@
       v21 = 0;
     }
 
-    *(result + 8) = v20 | v19 | a11 | v21 | *(result + 8) & 0xCC;
+    *(result + 8) = v20 | v19 | flagged | v21 | *(result + 8) & 0xCC;
   }
 
   return result;
 }
 
-- (int64_t)generationCompare:(id)a3
+- (int64_t)generationCompare:(id)compare
 {
-  v3 = *(a3 + 6);
+  v3 = *(compare + 6);
   generationNumber = self->_generationNumber;
   v5 = v3 <= generationNumber;
   v6 = v3 < generationNumber;
@@ -170,13 +170,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     uid = self->_uid;
     v7 = uid && v5[5] == uid && v5[4] == self->_mailboxID;
   }
@@ -205,12 +205,12 @@
   sortUid = self->_sortUid;
   if (self->_uid == sortUid)
   {
-    v15 = &stru_288159858;
+    sortUid = &stru_288159858;
   }
 
   else
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@", sortUid=%u", sortUid];
+    sortUid = [MEMORY[0x277CCACA8] stringWithFormat:@", sortUid=%u", sortUid];
   }
 
   if (self->_dateReceivedInterval == self->_sortDateReceivedInterval)
@@ -230,8 +230,8 @@
   mailboxID = self->_mailboxID;
   uid = self->_uid;
   dateReceivedInterval = self->_dateReceivedInterval;
-  v11 = [(MFMessageInfo *)self _flagDescription];
-  v12 = [v14 stringWithFormat:@"<%@: %p uid=%u; mailboxID=%U; conversation=%lld; messageID=%lld; received=%u%@%@; %@;>", v5, self, uid, mailboxID, conversationHash, messageIDHash, dateReceivedInterval, v15, v4, v11];;
+  _flagDescription = [(MFMessageInfo *)self _flagDescription];
+  v12 = [v14 stringWithFormat:@"<%@: %p uid=%u; mailboxID=%U; conversation=%lld; messageID=%lld; received=%u%@%@; %@;>", v5, self, uid, mailboxID, conversationHash, messageIDHash, dateReceivedInterval, sortUid, v4, _flagDescription];;
 
   return v12;
 }
@@ -242,25 +242,25 @@
   v4 = asNSStringBOOL([(MFMessageInfo *)self read]);
   v5 = [v3 stringWithFormat:@"read=%@", v4];
 
-  v6 = [(MFMessageInfo *)self flagged];
+  flagged = [(MFMessageInfo *)self flagged];
   v7 = @", flagged=YES";
-  if (!v6)
+  if (!flagged)
   {
     v7 = &stru_288159858;
   }
 
   v8 = v7;
-  v9 = [(MFMessageInfo *)self isVIP];
+  isVIP = [(MFMessageInfo *)self isVIP];
   v10 = @", isVIP=YES";
-  if (!v9)
+  if (!isVIP)
   {
     v10 = &stru_288159858;
   }
 
   v11 = v10;
-  v12 = [(MFMessageInfo *)self isKnownToHaveAttachments];
+  isKnownToHaveAttachments = [(MFMessageInfo *)self isKnownToHaveAttachments];
   v13 = @", hasAttachments=YES";
-  if (!v12)
+  if (!isKnownToHaveAttachments)
   {
     v13 = &stru_288159858;
   }
@@ -270,7 +270,7 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = *(self + 8);

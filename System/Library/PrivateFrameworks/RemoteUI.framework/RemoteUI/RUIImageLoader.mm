@@ -1,21 +1,21 @@
 @interface RUIImageLoader
 + (id)sharedImageLoader;
-- (BOOL)_locked_URLIsLoading:(id)a3;
+- (BOOL)_locked_URLIsLoading:(id)loading;
 - (BOOL)isLoadingImages;
-- (CGImage)imageForURL:(id)a3 loadIfAbsent:(BOOL)a4;
+- (CGImage)imageForURL:(id)l loadIfAbsent:(BOOL)absent;
 - (RUIImageLoader)init;
 - (id)notificationCenter;
-- (void)_callCompletionsForURL:(id)a3 image:(CGImage *)a4 error:(id)a5;
-- (void)_imageLoadFinished:(id)a3;
-- (void)_loadImageURL:(id)a3 completion:(id)a4;
+- (void)_callCompletionsForURL:(id)l image:(CGImage *)image error:(id)error;
+- (void)_imageLoadFinished:(id)finished;
+- (void)_loadImageURL:(id)l completion:(id)completion;
 - (void)_loadingStatusChanged;
-- (void)_locked_loadImageForURL:(id)a3;
+- (void)_locked_loadImageForURL:(id)l;
 - (void)_mainThread_postLoadingStatusChanged;
-- (void)_postImageLoadedNotification:(id)a3;
+- (void)_postImageLoadedNotification:(id)notification;
 - (void)_postLoadingStatusChanged;
-- (void)_setImageData:(id)a3 forURL:(id)a4 error:(id)a5;
+- (void)_setImageData:(id)data forURL:(id)l error:(id)error;
 - (void)_startLoader;
-- (void)imageForURL:(id)a3 scale:(double)a4 completion:(id)a5;
+- (void)imageForURL:(id)l scale:(double)scale completion:(id)completion;
 @end
 
 @implementation RUIImageLoader
@@ -105,22 +105,22 @@
   return v3;
 }
 
-- (void)imageForURL:(id)a3 scale:(double)a4 completion:(id)a5
+- (void)imageForURL:(id)l scale:(double)scale completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  lCopy = l;
+  completionCopy = completion;
+  if (lCopy)
   {
     [(NSLock *)self->_cacheLock lock];
-    v10 = [(NSMutableDictionary *)self->_imageCache objectForKey:v8];
+    v10 = [(NSMutableDictionary *)self->_imageCache objectForKey:lCopy];
     if (v10)
     {
       v11 = v10;
-      [(NSMutableArray *)self->_imageCacheLRU removeObject:v8];
-      [(NSMutableArray *)self->_imageCacheLRU addObject:v8];
+      [(NSMutableArray *)self->_imageCacheLRU removeObject:lCopy];
+      [(NSMutableArray *)self->_imageCacheLRU addObject:lCopy];
       [(NSLock *)self->_cacheLock unlock];
-      v12 = [MEMORY[0x277D755B8] imageWithCGImage:v11 scale:0 orientation:a4];
-      v9[2](v9, v12, 0);
+      v12 = [MEMORY[0x277D755B8] imageWithCGImage:v11 scale:0 orientation:scale];
+      completionCopy[2](completionCopy, v12, 0);
     }
 
     else
@@ -129,9 +129,9 @@
       v14 = 3221225472;
       v15 = __47__RUIImageLoader_imageForURL_scale_completion___block_invoke;
       v16 = &unk_2782E8370;
-      v18 = a4;
-      v17 = v9;
-      [(RUIImageLoader *)self _loadImageURL:v8 completion:&v13];
+      scaleCopy = scale;
+      v17 = completionCopy;
+      [(RUIImageLoader *)self _loadImageURL:lCopy completion:&v13];
 
       [(NSLock *)self->_cacheLock unlock:v13];
     }
@@ -159,23 +159,23 @@ void __47__RUIImageLoader_imageForURL_scale_completion___block_invoke(uint64_t a
   (*(*(a1 + 32) + 16))(*(a1 + 32), a2, v5);
 }
 
-- (CGImage)imageForURL:(id)a3 loadIfAbsent:(BOOL)a4
+- (CGImage)imageForURL:(id)l loadIfAbsent:(BOOL)absent
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  absentCopy = absent;
+  lCopy = l;
+  if (lCopy)
   {
     [(NSLock *)self->_cacheLock lock];
-    v7 = [(NSMutableDictionary *)self->_imageCache objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_imageCache objectForKey:lCopy];
     if (v7)
     {
-      [(NSMutableArray *)self->_imageCacheLRU removeObject:v6];
-      [(NSMutableArray *)self->_imageCacheLRU addObject:v6];
+      [(NSMutableArray *)self->_imageCacheLRU removeObject:lCopy];
+      [(NSMutableArray *)self->_imageCacheLRU addObject:lCopy];
     }
 
-    else if (v4)
+    else if (absentCopy)
     {
-      [(RUIImageLoader *)self _loadImageURL:v6 completion:0];
+      [(RUIImageLoader *)self _loadImageURL:lCopy completion:0];
     }
 
     [(NSLock *)self->_cacheLock unlock];
@@ -206,8 +206,8 @@ void __47__RUIImageLoader_imageForURL_scale_completion___block_invoke(uint64_t a
 
 - (void)_mainThread_postLoadingStatusChanged
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:RUIImageLoaderLoadingStatusDidChangeNotification object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:RUIImageLoaderLoadingStatusDidChangeNotification object:self];
 }
 
 - (void)_postLoadingStatusChanged
@@ -251,23 +251,23 @@ void __47__RUIImageLoader_imageForURL_scale_completion___block_invoke(uint64_t a
   }
 }
 
-- (BOOL)_locked_URLIsLoading:(id)a3
+- (BOOL)_locked_URLIsLoading:(id)loading
 {
-  v4 = a3;
-  v5 = [(NSMutableSet *)self->_loadsInProgress objectEnumerator];
-  v6 = 0;
+  loadingCopy = loading;
+  objectEnumerator = [(NSMutableSet *)self->_loadsInProgress objectEnumerator];
+  nextObject = 0;
   while (1)
   {
-    v7 = v6;
-    v6 = [v5 nextObject];
+    v7 = nextObject;
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v6)
+    if (!nextObject)
     {
       break;
     }
 
-    v8 = [v6 URL];
-    v9 = [v8 isEqual:v4];
+    v8 = [nextObject URL];
+    v9 = [v8 isEqual:loadingCopy];
 
     if (v9)
     {
@@ -276,58 +276,58 @@ void __47__RUIImageLoader_imageForURL_scale_completion___block_invoke(uint64_t a
     }
   }
 
-  v11 = [(NSMutableArray *)self->_loadQueue objectEnumerator];
+  objectEnumerator2 = [(NSMutableArray *)self->_loadQueue objectEnumerator];
 
   do
   {
-    v12 = v6;
-    v6 = [v11 nextObject];
+    v12 = nextObject;
+    nextObject = [objectEnumerator2 nextObject];
 
-    v10 = v6 != 0;
-    if (!v6)
+    v10 = nextObject != 0;
+    if (!nextObject)
     {
       break;
     }
 
-    v13 = [v6 URL];
-    v14 = [v13 isEqual:v4];
+    v13 = [nextObject URL];
+    v14 = [v13 isEqual:loadingCopy];
   }
 
   while (!v14);
-  v5 = v11;
+  objectEnumerator = objectEnumerator2;
 LABEL_9:
 
   return v10;
 }
 
-- (void)_locked_loadImageForURL:(id)a3
+- (void)_locked_loadImageForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(RUIImageLoad);
-  [(RUIImageLoad *)v5 setURL:v4];
+  [(RUIImageLoad *)v5 setURL:lCopy];
 
   [(NSMutableArray *)self->_loadQueue addObject:v5];
 }
 
-- (void)_loadImageURL:(id)a3 completion:(id)a4
+- (void)_loadImageURL:(id)l completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  lCopy = l;
+  completionCopy = completion;
   [(NSLock *)self->_queueLock lock];
-  v7 = v10;
-  if (v6)
+  v7 = lCopy;
+  if (completionCopy)
   {
-    v8 = [(NSMutableDictionary *)self->_loadCompletions objectForKey:v10];
+    v8 = [(NSMutableDictionary *)self->_loadCompletions objectForKey:lCopy];
     if (!v8)
     {
       v8 = objc_opt_new();
-      [(NSMutableDictionary *)self->_loadCompletions setObject:v8 forKey:v10];
+      [(NSMutableDictionary *)self->_loadCompletions setObject:v8 forKey:lCopy];
     }
 
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(completionCopy);
     [v8 addObject:v9];
 
-    v7 = v10;
+    v7 = lCopy;
   }
 
   if ([(RUIImageLoader *)self _locked_URLIsLoading:v7])
@@ -337,30 +337,30 @@ LABEL_9:
 
   else
   {
-    [(RUIImageLoader *)self _locked_loadImageForURL:v10];
+    [(RUIImageLoader *)self _locked_loadImageForURL:lCopy];
     [(NSLock *)self->_queueLock unlock];
     CFRunLoopSourceSignal(self->_loaderSource);
     CFRunLoopWakeUp(self->_loaderRunLoop);
   }
 }
 
-- (void)_callCompletionsForURL:(id)a3 image:(CGImage *)a4 error:(id)a5
+- (void)_callCompletionsForURL:(id)l image:(CGImage *)image error:(id)error
 {
-  v8 = a5;
+  errorCopy = error;
   loadCompletions = self->_loadCompletions;
-  v10 = a3;
-  v11 = [(NSMutableDictionary *)loadCompletions objectForKey:v10];
+  lCopy = l;
+  v11 = [(NSMutableDictionary *)loadCompletions objectForKey:lCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__RUIImageLoader__callCompletionsForURL_image_error___block_invoke;
   block[3] = &unk_2782E8398;
-  v16 = v8;
-  v17 = a4;
+  v16 = errorCopy;
+  imageCopy = image;
   v15 = v11;
-  v12 = v8;
+  v12 = errorCopy;
   v13 = v11;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  [(NSMutableDictionary *)self->_loadCompletions removeObjectForKey:v10];
+  [(NSMutableDictionary *)self->_loadCompletions removeObjectForKey:lCopy];
 }
 
 void __53__RUIImageLoader__callCompletionsForURL_image_error___block_invoke(uint64_t a1)
@@ -398,32 +398,32 @@ void __53__RUIImageLoader__callCompletionsForURL_image_error___block_invoke(uint
   }
 }
 
-- (void)_setImageData:(id)a3 forURL:(id)a4 error:(id)a5
+- (void)_setImageData:(id)data forURL:(id)l error:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  lCopy = l;
+  errorCopy = error;
   if (_isInternalInstall())
   {
     v12 = _RUILoggingFacility();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v23 = v10;
+      v23 = lCopy;
       v24 = 2112;
-      v25 = v11;
+      v25 = errorCopy;
       _os_log_impl(&dword_21B93D000, v12, OS_LOG_TYPE_DEFAULT, "Image load for %@ complete, error %@", buf, 0x16u);
     }
   }
 
   [(NSLock *)self->_cacheLock lock];
-  if (!v9)
+  if (!dataCopy)
   {
     goto LABEL_11;
   }
 
-  v13 = CGImageSourceCreateWithData(v9, 0);
+  v13 = CGImageSourceCreateWithData(dataCopy, 0);
   if (!v13)
   {
     v15 = @"%@, no image source";
@@ -440,15 +440,15 @@ LABEL_10:
     NSLog(&v15->isa, v16);
 
 LABEL_11:
-    [(RUIImageLoader *)self _callCompletionsForURL:v10 image:0 error:v11];
+    [(RUIImageLoader *)self _callCompletionsForURL:lCopy image:0 error:errorCopy];
     [(NSLock *)self->_cacheLock unlock];
     goto LABEL_12;
   }
 
   ImageAtIndex = CGImageSourceCreateImageAtIndex(v14, 0, 0);
   CFRelease(v14);
-  [(NSMutableDictionary *)self->_imageCache setObject:ImageAtIndex forKey:v10];
-  [(NSMutableArray *)self->_imageCacheLRU addObject:v10];
+  [(NSMutableDictionary *)self->_imageCache setObject:ImageAtIndex forKey:lCopy];
+  [(NSMutableArray *)self->_imageCacheLRU addObject:lCopy];
   CGImageRelease(ImageAtIndex);
   v18 = [(NSMutableArray *)self->_imageCacheLRU count];
   if (v18 >= 0x65)
@@ -467,30 +467,30 @@ LABEL_11:
     [(NSMutableArray *)self->_imageCacheLRU removeObjectsInRange:0, v20];
   }
 
-  [(RUIImageLoader *)self _callCompletionsForURL:v10 image:ImageAtIndex error:0];
+  [(RUIImageLoader *)self _callCompletionsForURL:lCopy image:ImageAtIndex error:0];
   [(NSLock *)self->_cacheLock unlock];
-  [(RUIImageLoader *)self performSelectorOnMainThread:sel__postImageLoadedNotification_ withObject:v10 waitUntilDone:0];
+  [(RUIImageLoader *)self performSelectorOnMainThread:sel__postImageLoadedNotification_ withObject:lCopy waitUntilDone:0];
 LABEL_12:
 }
 
-- (void)_postImageLoadedNotification:(id)a3
+- (void)_postImageLoadedNotification:(id)notification
 {
   notificationCenter = self->_notificationCenter;
   if (notificationCenter)
   {
     v4 = RUIImageLoaderDidLoadImageNotification;
-    v6 = [a3 absoluteString];
-    v5 = [(__CFString *)v4 stringByAppendingString:v6];
+    absoluteString = [notification absoluteString];
+    v5 = [(__CFString *)v4 stringByAppendingString:absoluteString];
     [(NSNotificationCenter *)notificationCenter postNotificationName:v5 object:0];
   }
 }
 
-- (void)_imageLoadFinished:(id)a3
+- (void)_imageLoadFinished:(id)finished
 {
   queueLock = self->_queueLock;
-  v5 = a3;
+  finishedCopy = finished;
   [(NSLock *)queueLock lock];
-  [(NSMutableSet *)self->_loadsInProgress removeObject:v5];
+  [(NSMutableSet *)self->_loadsInProgress removeObject:finishedCopy];
 
   [(NSLock *)self->_queueLock unlock];
 

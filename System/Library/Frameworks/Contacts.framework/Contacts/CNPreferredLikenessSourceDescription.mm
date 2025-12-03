@@ -1,20 +1,20 @@
 @interface CNPreferredLikenessSourceDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNPreferredLikenessSourceDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 preferredLikenessSource];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  preferredLikenessSource = [contactCopy preferredLikenessSource];
+  if (!preferredLikenessSource)
   {
-    v4 = [v7 preferredLikenessSource];
-    if (!v4)
+    preferredLikenessSource2 = [otherCopy preferredLikenessSource];
+    if (!preferredLikenessSource2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 preferredLikenessSource];
-  v10 = [v7 preferredLikenessSource];
-  v11 = [v9 isEqual:v10];
+  preferredLikenessSource3 = [contactCopy preferredLikenessSource];
+  preferredLikenessSource4 = [otherCopy preferredLikenessSource];
+  v11 = [preferredLikenessSource3 isEqual:preferredLikenessSource4];
 
-  if (!v8)
+  if (!preferredLikenessSource)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_preferredLikenessSource"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preferredLikenessSource"];
 
   v7 = [v9 copy];
-  v8 = v5[73];
-  v5[73] = v7;
+  v8 = contactCopy[73];
+  contactCopy[73] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A570];
+    *d = *MEMORY[0x1E698A570];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

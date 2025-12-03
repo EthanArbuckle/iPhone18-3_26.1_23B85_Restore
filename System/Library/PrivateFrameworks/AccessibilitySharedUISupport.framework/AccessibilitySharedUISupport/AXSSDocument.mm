@@ -1,33 +1,33 @@
 @interface AXSSDocument
-+ (id)documentWithAttributedText:(id)a3;
-+ (id)documentWithText:(id)a3;
++ (id)documentWithAttributedText:(id)text;
++ (id)documentWithText:(id)text;
 - (AXSSDocument)init;
 - (NSArray)nodes;
 - (id)_generateAllDocIssues;
 - (id)_generateAllWordIssues;
 - (id)generateAllIssues;
-- (id)stringByAcceptingFirstSuggestionForIssues:(id)a3;
-- (void)addNode:(id)a3;
+- (id)stringByAcceptingFirstSuggestionForIssues:(id)issues;
+- (void)addNode:(id)node;
 @end
 
 @implementation AXSSDocument
 
-+ (id)documentWithText:(id)a3
++ (id)documentWithText:(id)text
 {
   v4 = MEMORY[0x277CCA898];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithString:v5];
+  textCopy = text;
+  v6 = [[v4 alloc] initWithString:textCopy];
 
-  v7 = [a1 documentWithAttributedText:v6];
+  v7 = [self documentWithAttributedText:v6];
 
   return v7;
 }
 
-+ (id)documentWithAttributedText:(id)a3
++ (id)documentWithAttributedText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = objc_alloc_init(AXSSDocumentNode);
-  [(AXSSDocumentNode *)v4 setText:v3];
+  [(AXSSDocumentNode *)v4 setText:textCopy];
 
   v5 = objc_opt_new();
   [v5 addNode:v4];
@@ -52,24 +52,24 @@
 
 - (NSArray)nodes
 {
-  v2 = [(AXSSDocument *)self _nodes];
-  v3 = [v2 copy];
+  _nodes = [(AXSSDocument *)self _nodes];
+  v3 = [_nodes copy];
 
   return v3;
 }
 
-- (void)addNode:(id)a3
+- (void)addNode:(id)node
 {
-  v4 = a3;
-  v5 = [(AXSSDocument *)self _nodes];
-  [v5 addObject:v4];
+  nodeCopy = node;
+  _nodes = [(AXSSDocument *)self _nodes];
+  [_nodes addObject:nodeCopy];
 }
 
 - (id)generateAllIssues
 {
-  v3 = [(AXSSDocument *)self _generateAllWordIssues];
-  v4 = [(AXSSDocument *)self _generateAllDocIssues];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  _generateAllWordIssues = [(AXSSDocument *)self _generateAllWordIssues];
+  _generateAllDocIssues = [(AXSSDocument *)self _generateAllDocIssues];
+  v5 = [_generateAllWordIssues arrayByAddingObjectsFromArray:_generateAllDocIssues];
 
   return v5;
 }
@@ -97,16 +97,16 @@
           objc_enumerationMutation(obj);
         }
 
-        v5 = [*(*(&v33 + 1) + 8 * i) text];
-        if ([v5 length])
+        text = [*(*(&v33 + 1) + 8 * i) text];
+        if ([text length])
         {
           v23 = i;
           v31 = 0u;
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v24 = [v20 rulesets];
-          v6 = [v24 countByEnumeratingWithState:&v29 objects:v38 count:16];
+          rulesets = [v20 rulesets];
+          v6 = [rulesets countByEnumeratingWithState:&v29 objects:v38 count:16];
           if (v6)
           {
             v7 = v6;
@@ -117,7 +117,7 @@
               {
                 if (*v30 != v8)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(rulesets);
                 }
 
                 v10 = [*(*(&v29 + 1) + 8 * j) rulesForGranularity:2];
@@ -139,7 +139,7 @@
                         objc_enumerationMutation(v10);
                       }
 
-                      v15 = [*(*(&v25 + 1) + 8 * k) issuesInText:v5];
+                      v15 = [*(*(&v25 + 1) + 8 * k) issuesInText:text];
                       if ([v15 count])
                       {
                         [v3 addObjectsFromArray:v15];
@@ -153,7 +153,7 @@
                 }
               }
 
-              v7 = [v24 countByEnumeratingWithState:&v29 objects:v38 count:16];
+              v7 = [rulesets countByEnumeratingWithState:&v29 objects:v38 count:16];
             }
 
             while (v7);
@@ -202,8 +202,8 @@
 
         v6 = *(*(&v41 + 1) + 8 * i);
         v7 = objc_opt_new();
-        v8 = [v6 text];
-        v9 = [v8 string];
+        text = [v6 text];
+        string = [text string];
         v35 = 0;
         v36 = &v35;
         v37 = 0x3032000000;
@@ -215,12 +215,12 @@
         v32 = 0x3010000000;
         v33 = &unk_23DBBDEAD;
         v34 = v20;
-        v10 = [v9 length];
+        v10 = [string length];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __38__AXSSDocument__generateAllWordIssues__block_invoke;
         v23[3] = &unk_278BF03B8;
-        v11 = v8;
+        v11 = text;
         v24 = v11;
         v25 = v6;
         v28 = &v35;
@@ -229,7 +229,7 @@
         v26 = v12;
         v13 = v22;
         v27 = v13;
-        [v9 enumerateSubstringsInRange:0 options:v10 usingBlock:{1027, v23}];
+        [string enumerateSubstringsInRange:0 options:v10 usingBlock:{1027, v23}];
         if (v36[5] && [v11 length] >= 3)
         {
           v14 = objc_opt_new();
@@ -274,13 +274,13 @@ void __38__AXSSDocument__generateAllWordIssues__block_invoke(uint64_t a1, uint64
   *(v9 + 40) = v7;
 }
 
-- (id)stringByAcceptingFirstSuggestionForIssues:(id)a3
+- (id)stringByAcceptingFirstSuggestionForIssues:(id)issues
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  issuesCopy = issues;
   v29 = objc_opt_new();
-  v27 = v4;
-  v31 = [v4 mutableCopy];
+  v27 = issuesCopy;
+  v31 = [issuesCopy mutableCopy];
   [v31 sortUsingComparator:&__block_literal_global_0];
   v43 = 0u;
   v44 = 0u;
@@ -303,8 +303,8 @@ void __38__AXSSDocument__generateAllWordIssues__block_invoke(uint64_t a1, uint64
 
         v33 = v5;
         v6 = *(*(&v41 + 1) + 8 * v5);
-        v7 = [v6 text];
-        v34 = [v7 mutableCopy];
+        text = [v6 text];
+        v34 = [text mutableCopy];
 
         v39 = 0u;
         v40 = 0u;
@@ -329,20 +329,20 @@ void __38__AXSSDocument__generateAllWordIssues__block_invoke(uint64_t a1, uint64
               }
 
               v13 = *(*(&v37 + 1) + 8 * v12);
-              v14 = [v13 node];
-              v15 = [v14 isEqual:v6];
+              node = [v13 node];
+              v15 = [node isEqual:v6];
 
               if (v15)
               {
-                v16 = [v13 range];
+                range = [v13 range];
                 v18 = v17;
-                v19 = [v13 suggestions];
-                v20 = [v19 firstObject];
-                if (v20)
+                suggestions = [v13 suggestions];
+                firstObject = [suggestions firstObject];
+                if (firstObject)
                 {
                   v21 = v6;
                   v22 = [v34 length];
-                  [v34 replaceCharactersInRange:v16 - v10 withAttributedString:{v18, v20}];
+                  [v34 replaceCharactersInRange:range - v10 withAttributedString:{v18, firstObject}];
                   v23 = [v34 length];
                   v24 = v22 + v10;
                   v6 = v21;

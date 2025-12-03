@@ -1,15 +1,15 @@
 @interface TSWPFontVerificationCache
 - (TSWPFontVerificationCache)init;
-- (id)filterFontNames:(id)a3 withStatus:(int64_t)a4;
-- (id)filterFontNames:(id)a3 withStatusInSet:(id)a4;
-- (id)filterFontNames:(id)a3 withoutStatus:(int64_t)a4;
-- (id)fontNamesWithStatus:(int64_t)a3;
-- (id)fontNamesWithStatusInSet:(id)a3;
-- (int64_t)statusForFontName:(id)a3;
-- (void)resetFontNames:(id)a3 withStatus:(int64_t)a4;
-- (void)resetFontNames:(id)a3 withStatusInSet:(id)a4;
-- (void)setStatus:(int64_t)a3 forFontName:(id)a4;
-- (void)setStatus:(int64_t)a3 forFontNames:(id)a4;
+- (id)filterFontNames:(id)names withStatus:(int64_t)status;
+- (id)filterFontNames:(id)names withStatusInSet:(id)set;
+- (id)filterFontNames:(id)names withoutStatus:(int64_t)status;
+- (id)fontNamesWithStatus:(int64_t)status;
+- (id)fontNamesWithStatusInSet:(id)set;
+- (int64_t)statusForFontName:(id)name;
+- (void)resetFontNames:(id)names withStatus:(int64_t)status;
+- (void)resetFontNames:(id)names withStatusInSet:(id)set;
+- (void)setStatus:(int64_t)status forFontName:(id)name;
+- (void)setStatus:(int64_t)status forFontNames:(id)names;
 @end
 
 @implementation TSWPFontVerificationCache
@@ -29,9 +29,9 @@
   return v2;
 }
 
-- (int64_t)statusForFontName:(id)a3
+- (int64_t)statusForFontName:(id)name
 {
-  v3 = objc_msgSend_objectForKeyedSubscript_(self->_verifiedFonts, a2, a3);
+  v3 = objc_msgSend_objectForKeyedSubscript_(self->_verifiedFonts, a2, name);
   v6 = v3;
   if (v3)
   {
@@ -46,36 +46,36 @@
   return v7;
 }
 
-- (void)setStatus:(int64_t)a3 forFontName:(id)a4
+- (void)setStatus:(int64_t)status forFontName:(id)name
 {
-  if (a3)
+  if (status)
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = a4;
-    v12 = objc_msgSend_numberWithInteger_(v6, v8, a3);
-    objc_msgSend_setObject_forKeyedSubscript_(self->_verifiedFonts, v9, v12, v7);
+    nameCopy = name;
+    nameCopy2 = objc_msgSend_numberWithInteger_(v6, v8, status);
+    objc_msgSend_setObject_forKeyedSubscript_(self->_verifiedFonts, v9, nameCopy2, nameCopy);
   }
 
   else
   {
     verifiedFonts = self->_verifiedFonts;
-    v12 = a4;
-    objc_msgSend_removeObjectForKey_(verifiedFonts, v11, v12);
+    nameCopy2 = name;
+    objc_msgSend_removeObjectForKey_(verifiedFonts, v11, nameCopy2);
   }
 }
 
-- (void)setStatus:(int64_t)a3 forFontNames:(id)a4
+- (void)setStatus:(int64_t)status forFontNames:(id)names
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (a3)
+  namesCopy = names;
+  if (status)
   {
-    v8 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v6, a3);
+    v8 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v6, status);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = v7;
+    v9 = namesCopy;
     v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v16, v20, 16);
     if (v11)
     {
@@ -104,39 +104,39 @@
 
   else
   {
-    objc_msgSend_removeObjectsForKeys_(self->_verifiedFonts, v6, v7);
+    objc_msgSend_removeObjectsForKeys_(self->_verifiedFonts, v6, namesCopy);
   }
 }
 
-- (void)resetFontNames:(id)a3 withStatus:(int64_t)a4
+- (void)resetFontNames:(id)names withStatus:(int64_t)status
 {
-  if (a4)
+  if (status)
   {
-    v10 = objc_msgSend_fontNamesWithStatus_(self, a2, a4);
+    v10 = objc_msgSend_fontNamesWithStatus_(self, a2, status);
     verifiedFonts = self->_verifiedFonts;
     v8 = objc_msgSend_allObjects(v10, v6, v7);
     objc_msgSend_removeObjectsForKeys_(verifiedFonts, v9, v8);
   }
 }
 
-- (void)resetFontNames:(id)a3 withStatusInSet:(id)a4
+- (void)resetFontNames:(id)names withStatusInSet:(id)set
 {
-  v10 = objc_msgSend_fontNamesWithStatusInSet_(self, a2, a4);
+  v10 = objc_msgSend_fontNamesWithStatusInSet_(self, a2, set);
   verifiedFonts = self->_verifiedFonts;
   v8 = objc_msgSend_allObjects(v10, v6, v7);
   objc_msgSend_removeObjectsForKeys_(verifiedFonts, v9, v8);
 }
 
-- (id)fontNamesWithStatus:(int64_t)a3
+- (id)fontNamesWithStatus:(int64_t)status
 {
-  if (a3)
+  if (status)
   {
     verifiedFonts = self->_verifiedFonts;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = sub_276DDF000;
     v6[3] = &unk_27A6F4870;
-    v6[4] = a3;
+    v6[4] = status;
     v4 = objc_msgSend_keysOfEntriesPassingTest_(verifiedFonts, a2, v6);
   }
 
@@ -148,27 +148,27 @@
   return v4;
 }
 
-- (id)fontNamesWithStatusInSet:(id)a3
+- (id)fontNamesWithStatusInSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   verifiedFonts = self->_verifiedFonts;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_276DDF0E8;
   v10[3] = &unk_27A6F4898;
-  v11 = v4;
-  v6 = v4;
+  v11 = setCopy;
+  v6 = setCopy;
   v8 = objc_msgSend_keysOfEntriesPassingTest_(verifiedFonts, v7, v10);
 
   return v8;
 }
 
-- (id)filterFontNames:(id)a3 withStatus:(int64_t)a4
+- (id)filterFontNames:(id)names withStatus:(int64_t)status
 {
-  v8 = objc_msgSend_mutableCopy(a3, a2, a3);
-  if (a4)
+  v8 = objc_msgSend_mutableCopy(names, a2, names);
+  if (status)
   {
-    v9 = objc_msgSend_fontNamesWithStatus_(self, v6, a4);
+    v9 = objc_msgSend_fontNamesWithStatus_(self, v6, status);
     objc_msgSend_intersectSet_(v8, v10, v9);
   }
 
@@ -185,30 +185,30 @@
   return v17;
 }
 
-- (id)filterFontNames:(id)a3 withStatusInSet:(id)a4
+- (id)filterFontNames:(id)names withStatusInSet:(id)set
 {
-  v6 = a4;
+  setCopy = set;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_276DDF268;
   v11[3] = &unk_27A6F48C0;
   v11[4] = self;
-  v12 = v6;
-  v7 = v6;
-  v9 = objc_msgSend_objectsPassingTest_(a3, v8, v11);
+  v12 = setCopy;
+  v7 = setCopy;
+  v9 = objc_msgSend_objectsPassingTest_(names, v8, v11);
 
   return v9;
 }
 
-- (id)filterFontNames:(id)a3 withoutStatus:(int64_t)a4
+- (id)filterFontNames:(id)names withoutStatus:(int64_t)status
 {
   v6 = MEMORY[0x277CBEB58];
-  v7 = a3;
+  namesCopy = names;
   v9 = objc_msgSend_setWithObjects_(v6, v8, &unk_2886275C0, &unk_2886275D8, &unk_2886275F0, &unk_288627608, 0);
-  v11 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v10, a4);
+  v11 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v10, status);
   objc_msgSend_removeObject_(v9, v12, v11);
 
-  v14 = objc_msgSend_filterFontNames_withStatusInSet_(self, v13, v7, v9);
+  v14 = objc_msgSend_filterFontNames_withStatusInSet_(self, v13, namesCopy, v9);
 
   return v14;
 }

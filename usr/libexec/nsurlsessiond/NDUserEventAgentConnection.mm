@@ -1,11 +1,11 @@
 @interface NDUserEventAgentConnection
 + (id)sharedUserEventAgentConnection;
-- (BOOL)canLaunchProcessWithIdentifier:(id)a3;
+- (BOOL)canLaunchProcessWithIdentifier:(id)identifier;
 - (NDUserEventAgentConnection)init;
-- (void)handleNewConnection:(id)a3;
-- (void)launchProcessWithIdentifier:(id)a3 sessionIdentifier:(id)a4;
-- (void)performWake:(id)a3 uponNotification:(id)a4 sessionIdentifier:(id)a5;
-- (void)removePendingWakeForClient:(id)a3 sessionIdentifier:(id)a4;
+- (void)handleNewConnection:(id)connection;
+- (void)launchProcessWithIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier;
+- (void)performWake:(id)wake uponNotification:(id)notification sessionIdentifier:(id)identifier;
+- (void)removePendingWakeForClient:(id)client sessionIdentifier:(id)identifier;
 - (void)start;
 @end
 
@@ -23,71 +23,71 @@
   return v3;
 }
 
-- (void)removePendingWakeForClient:(id)a3 sessionIdentifier:(id)a4
+- (void)removePendingWakeForClient:(id)client sessionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040AD0;
   block[3] = &unk_1000D6130;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = clientCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = clientCopy;
   dispatch_async(queue, block);
 }
 
-- (void)performWake:(id)a3 uponNotification:(id)a4 sessionIdentifier:(id)a5
+- (void)performWake:(id)wake uponNotification:(id)notification sessionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  wakeCopy = wake;
+  notificationCopy = notification;
+  identifierCopy = identifier;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100040C84;
   v15[3] = &unk_1000D5568;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = notificationCopy;
+  v17 = identifierCopy;
+  v18 = wakeCopy;
+  v12 = wakeCopy;
+  v13 = identifierCopy;
+  v14 = notificationCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)launchProcessWithIdentifier:(id)a3 sessionIdentifier:(id)a4
+- (void)launchProcessWithIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100040E9C;
   block[3] = &unk_1000D6130;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = sessionIdentifierCopy;
+  selfCopy = self;
+  v9 = sessionIdentifierCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (BOOL)canLaunchProcessWithIdentifier:(id)a3
+- (BOOL)canLaunchProcessWithIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_registeredClients objectForKey:a3];
+  v3 = [(NSDictionary *)self->_registeredClients objectForKey:identifier];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)handleNewConnection:(id)a3
+- (void)handleNewConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   p_connection = &self->_connection;
   connection = self->_connection;
   if (connection)
@@ -105,14 +105,14 @@
     *p_connection = 0;
   }
 
-  objc_storeStrong(&self->_connection, a3);
+  objc_storeStrong(&self->_connection, connection);
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1000411C8;
   handler[3] = &unk_1000D5540;
   handler[4] = self;
-  xpc_connection_set_event_handler(v5, handler);
-  xpc_connection_set_target_queue(v5, self->_queue);
+  xpc_connection_set_event_handler(connectionCopy, handler);
+  xpc_connection_set_target_queue(connectionCopy, self->_queue);
   xpc_connection_resume(*p_connection);
 }
 

@@ -1,44 +1,44 @@
 @interface SBContinuousExposeToHomeSwitcherModifier
 - (BOOL)_isEffectivelyHome;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (SBContinuousExposeToHomeSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 exposeModifier:(id)a5;
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)handleScrollEvent:(id)a3;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (SBContinuousExposeToHomeSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction exposeModifier:(id)modifier;
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)handleScrollEvent:(id)event;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
-- (int64_t)headerStyleForIndex:(unint64_t)a3;
+- (int64_t)headerStyleForIndex:(unint64_t)index;
 - (int64_t)homeScreenBackdropBlurType;
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 @end
 
 @implementation SBContinuousExposeToHomeSwitcherModifier
 
-- (SBContinuousExposeToHomeSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 exposeModifier:(id)a5
+- (SBContinuousExposeToHomeSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction exposeModifier:(id)modifier
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  modifierCopy = modifier;
   v14.receiver = self;
   v14.super_class = SBContinuousExposeToHomeSwitcherModifier;
-  v11 = [(SBTransitionSwitcherModifier *)&v14 initWithTransitionID:v9];
+  v11 = [(SBTransitionSwitcherModifier *)&v14 initWithTransitionID:dCopy];
   if (v11)
   {
-    if (!v10)
+    if (!modifierCopy)
     {
       [SBContinuousExposeToHomeSwitcherModifier initWithTransitionID:a2 direction:v11 exposeModifier:?];
     }
 
-    v11->_direction = a4;
-    objc_storeStrong(&v11->_exposeModifier, a5);
+    v11->_direction = direction;
+    objc_storeStrong(&v11->_exposeModifier, modifier);
     [(SBWindowingModifierBase *)v11->_exposeModifier setStaticTemporaryChildModifier:1];
-    v12 = [(SBHomeToSwitcherSwitcherModifier *)[SBHomeToGridSwitcherModifier alloc] initWithTransitionID:v9 direction:a4 != 0 multitaskingModifier:v11->_exposeModifier];
+    v12 = [(SBHomeToSwitcherSwitcherModifier *)[SBHomeToGridSwitcherModifier alloc] initWithTransitionID:dCopy direction:direction != 0 multitaskingModifier:v11->_exposeModifier];
     [(SBChainableModifier *)v11 addChildModifier:v12];
   }
 
@@ -49,17 +49,17 @@
 {
   v12.receiver = self;
   v12.super_class = SBContinuousExposeToHomeSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v12 transitionWillBegin];
   v4 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
-  v5 = SBAppendSwitcherModifierResponse(v4, v3);
+  v5 = SBAppendSwitcherModifierResponse(v4, transitionWillBegin);
 
-  v6 = [(SBContinuousExposeToHomeSwitcherModifier *)self recentAppLayouts];
-  v7 = [(SBContinuousExposeToHomeSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:v6];
-  v8 = [v7 firstObject];
+  recentAppLayouts = [(SBContinuousExposeToHomeSwitcherModifier *)self recentAppLayouts];
+  v7 = [(SBContinuousExposeToHomeSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:recentAppLayouts];
+  firstObject = [v7 firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v9 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v8 alignment:0 animated:0];
+    v9 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:firstObject alignment:0 animated:0];
     v10 = SBAppendSwitcherModifierResponse(v9, v5);
 
     v5 = v10;
@@ -68,9 +68,9 @@
   return v5;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -84,7 +84,7 @@
   v9[3] = &unk_2783AB258;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = layoutsCopy;
   v10 = v6;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:exposeModifier usingBlock:v9];
   v7 = v13[5];
@@ -132,15 +132,15 @@ void __61__SBContinuousExposeToHomeSwitcherModifier_visibleAppLayouts__block_inv
   *(v3 + 40) = v2;
 }
 
-- (id)handleScrollEvent:(id)a3
+- (id)handleScrollEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBContinuousExposeToHomeSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v10 handleScrollEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v10 handleScrollEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 == 1)
+  if (phase == 1)
   {
     exposeModifier = self->_exposeModifier;
     v9[0] = MEMORY[0x277D85DD0];
@@ -154,9 +154,9 @@ void __61__SBContinuousExposeToHomeSwitcherModifier_visibleAppLayouts__block_inv
   return v5;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -167,11 +167,11 @@ void __61__SBContinuousExposeToHomeSwitcherModifier_visibleAppLayouts__block_inv
   v13[2] = __85__SBContinuousExposeToHomeSwitcherModifier_opacityForLayoutRole_inAppLayout_atIndex___block_invoke;
   v13[3] = &unk_2783AA690;
   v15 = &v18;
-  v16 = a3;
+  roleCopy = role;
   v13[4] = self;
-  v10 = v8;
+  v10 = layoutCopy;
   v14 = v10;
-  v17 = a5;
+  indexCopy = index;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:exposeModifier usingBlock:v13];
   v11 = v19[3];
 
@@ -186,7 +186,7 @@ uint64_t __85__SBContinuousExposeToHomeSwitcherModifier_opacityForLayoutRole_inA
   return result;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -199,7 +199,7 @@ uint64_t __85__SBContinuousExposeToHomeSwitcherModifier_opacityForLayoutRole_inA
   v6[3] = &unk_2783AA618;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = index;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:exposeModifier usingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -213,7 +213,7 @@ uint64_t __72__SBContinuousExposeToHomeSwitcherModifier_titleAndIconOpacityForIn
   return result;
 }
 
-- (int64_t)headerStyleForIndex:(unint64_t)a3
+- (int64_t)headerStyleForIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -226,7 +226,7 @@ uint64_t __72__SBContinuousExposeToHomeSwitcherModifier_titleAndIconOpacityForIn
   v6[3] = &unk_2783AA618;
   v6[4] = self;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = index;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:exposeModifier usingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -240,9 +240,9 @@ uint64_t __64__SBContinuousExposeToHomeSwitcherModifier_headerStyleForIndex___bl
   return result;
 }
 
-- (int64_t)shadowStyleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)shadowStyleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -253,9 +253,9 @@ uint64_t __64__SBContinuousExposeToHomeSwitcherModifier_headerStyleForIndex___bl
   v11[2] = __81__SBContinuousExposeToHomeSwitcherModifier_shadowStyleForLayoutRole_inAppLayout___block_invoke;
   v11[3] = &unk_2783AA668;
   v13 = &v15;
-  v14 = a3;
+  roleCopy = role;
   v11[4] = self;
-  v8 = v6;
+  v8 = layoutCopy;
   v12 = v8;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:exposeModifier usingBlock:v11];
   v9 = v16[3];
@@ -297,7 +297,7 @@ uint64_t __70__SBContinuousExposeToHomeSwitcherModifier_homeScreenBackdropBlurTy
   return result;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
   v10 = 0;
   v11 = &v10;
@@ -312,8 +312,8 @@ uint64_t __70__SBContinuousExposeToHomeSwitcherModifier_homeScreenBackdropBlurTy
   v9[3] = &unk_2783AA6B8;
   v9[4] = self;
   v9[5] = &v10;
-  v9[6] = a3;
-  v9[7] = a4;
+  v9[6] = index;
+  v9[7] = alignment;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:exposeModifier usingBlock:v9];
   v5 = v11[4];
   v6 = v11[5];
@@ -334,16 +334,16 @@ uint64_t __76__SBContinuousExposeToHomeSwitcherModifier_contentOffsetForIndex_al
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposeToHomeSwitcherModifier *)self _isEffectivelyHome];
+  _isEffectivelyHome = [(SBContinuousExposeToHomeSwitcherModifier *)self _isEffectivelyHome];
   v6 = 0.5;
   v7 = 0.5;
-  if (!v5)
+  if (!_isEffectivelyHome)
   {
     v8.receiver = self;
     v8.super_class = SBContinuousExposeToHomeSwitcherModifier;
-    [(SBContinuousExposeToHomeSwitcherModifier *)&v8 anchorPointForIndex:a3, 0.5, 0.5];
+    [(SBContinuousExposeToHomeSwitcherModifier *)&v8 anchorPointForIndex:index, 0.5, 0.5];
   }
 
   result.y = v7;
@@ -351,7 +351,7 @@ uint64_t __76__SBContinuousExposeToHomeSwitcherModifier_contentOffsetForIndex_al
   return result;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
   if ([(SBContinuousExposeToHomeSwitcherModifier *)self _isEffectivelyHome])
   {
@@ -360,10 +360,10 @@ uint64_t __76__SBContinuousExposeToHomeSwitcherModifier_contentOffsetForIndex_al
 
   v6.receiver = self;
   v6.super_class = SBContinuousExposeToHomeSwitcherModifier;
-  return [(SBContinuousExposeToHomeSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+  return [(SBContinuousExposeToHomeSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
   if ([(SBContinuousExposeToHomeSwitcherModifier *)self _isEffectivelyHome])
   {
@@ -375,7 +375,7 @@ uint64_t __76__SBContinuousExposeToHomeSwitcherModifier_contentOffsetForIndex_al
   {
     v7.receiver = self;
     v7.super_class = SBContinuousExposeToHomeSwitcherModifier;
-    [(SBContinuousExposeToHomeSwitcherModifier *)&v7 perspectiveAngleForIndex:a3];
+    [(SBContinuousExposeToHomeSwitcherModifier *)&v7 perspectiveAngleForIndex:index];
   }
 
   result.y = v6;
@@ -383,18 +383,18 @@ uint64_t __76__SBContinuousExposeToHomeSwitcherModifier_contentOffsetForIndex_al
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
   if (![(SBContinuousExposeToHomeSwitcherModifier *)self _isEffectivelyHome])
   {
     v18.receiver = self;
     v18.super_class = SBContinuousExposeToHomeSwitcherModifier;
-    [(SBContinuousExposeToHomeSwitcherModifier *)&v18 adjustedSpaceAccessoryViewFrame:v9 forAppLayout:x, y, width, height];
+    [(SBContinuousExposeToHomeSwitcherModifier *)&v18 adjustedSpaceAccessoryViewFrame:layoutCopy forAppLayout:x, y, width, height];
     x = v10;
     y = v11;
     width = v12;
@@ -412,18 +412,18 @@ uint64_t __76__SBContinuousExposeToHomeSwitcherModifier_contentOffsetForIndex_al
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
   v8 = 0.5;
   v9 = 0.5;
   if (![(SBContinuousExposeToHomeSwitcherModifier *)self _isEffectivelyHome])
   {
     v14.receiver = self;
     v14.super_class = SBContinuousExposeToHomeSwitcherModifier;
-    [(SBContinuousExposeToHomeSwitcherModifier *)&v14 adjustedSpaceAccessoryViewAnchorPoint:v7 forAppLayout:x, y];
+    [(SBContinuousExposeToHomeSwitcherModifier *)&v14 adjustedSpaceAccessoryViewAnchorPoint:layoutCopy forAppLayout:x, y];
     v8 = v10;
     v9 = v11;
   }
@@ -435,9 +435,9 @@ uint64_t __76__SBContinuousExposeToHomeSwitcherModifier_contentOffsetForIndex_al
   return result;
 }
 
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -449,8 +449,8 @@ uint64_t __76__SBContinuousExposeToHomeSwitcherModifier_contentOffsetForIndex_al
   v11[3] = &unk_2783AA668;
   v13 = &v15;
   v11[4] = self;
-  v14 = a3;
-  v8 = v6;
+  scaleCopy = scale;
+  v8 = layoutCopy;
   v12 = v8;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:exposeModifier usingBlock:v11];
   v9 = v16[3];

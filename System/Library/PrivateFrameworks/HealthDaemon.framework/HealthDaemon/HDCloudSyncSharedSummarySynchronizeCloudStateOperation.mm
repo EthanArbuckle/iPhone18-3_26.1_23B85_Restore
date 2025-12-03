@@ -1,14 +1,14 @@
 @interface HDCloudSyncSharedSummarySynchronizeCloudStateOperation
-- (BOOL)_isActiveParticipant:(id)a3;
-- (BOOL)_updateOwnerParticipantForParticipantRecord:(id)a3 zone:(id)a4 error:(id *)a5;
-- (BOOL)_updateShareForAllNonOwnerParticipantsInZone:(id)a3 error:(id *)a4;
-- (BOOL)_validateCloudStateForParticipantRecord:(id)a3 error:(id *)a4;
-- (BOOL)_validateParticipantRecordCloudStateWithError:(id *)a3;
-- (id)_currentZoneStateForParticipant:(id)a3 zone:(id)a4 error:(id *)a5;
-- (id)_deleteInvalidZonesOperationWithError:(id *)a3;
-- (id)_removeInvalidSharesOperationWithError:(id *)a3;
-- (id)_zoneIdentifierForParticipant:(id)a3;
-- (id)_zonesForParticipant:(id)a3 error:(id *)a4;
+- (BOOL)_isActiveParticipant:(id)participant;
+- (BOOL)_updateOwnerParticipantForParticipantRecord:(id)record zone:(id)zone error:(id *)error;
+- (BOOL)_updateShareForAllNonOwnerParticipantsInZone:(id)zone error:(id *)error;
+- (BOOL)_validateCloudStateForParticipantRecord:(id)record error:(id *)error;
+- (BOOL)_validateParticipantRecordCloudStateWithError:(id *)error;
+- (id)_currentZoneStateForParticipant:(id)participant zone:(id)zone error:(id *)error;
+- (id)_deleteInvalidZonesOperationWithError:(id *)error;
+- (id)_removeInvalidSharesOperationWithError:(id *)error;
+- (id)_zoneIdentifierForParticipant:(id)participant;
+- (id)_zonesForParticipant:(id)participant error:(id *)error;
 - (void)main;
 @end
 
@@ -17,21 +17,21 @@
 - (void)main
 {
   v81 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 syncAvailability];
-  v6 = [v5 shouldSyncSummarySharingPush];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  syncAvailability = [repository syncAvailability];
+  shouldSyncSummarySharingPush = [syncAvailability shouldSyncSummarySharingPush];
 
-  if (v6)
+  if (shouldSyncSummarySharingPush)
   {
-    v7 = [(HDCloudSyncOperation *)self configuration];
-    v8 = [v7 cachedCloudState];
-    v9 = [(HDCloudSyncOperation *)self configuration];
-    v10 = [v9 repository];
-    v11 = [v10 primaryCKContainer];
-    v12 = [v11 containerIdentifier];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    cachedCloudState = [configuration2 cachedCloudState];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration3 repository];
+    primaryCKContainer = [repository2 primaryCKContainer];
+    containerIdentifier = [primaryCKContainer containerIdentifier];
     v76 = 0;
-    v13 = [v8 privateMetadataZoneForContainerID:v12 error:&v76];
+    v13 = [cachedCloudState privateMetadataZoneForContainerID:containerIdentifier error:&v76];
     v14 = v76;
     privateMetadataZone = self->_privateMetadataZone;
     self->_privateMetadataZone = v13;
@@ -79,7 +79,7 @@ LABEL_38:
         v27 = v25;
         v28 = [(NSArray *)v26 count];
         *buf = 138543618;
-        v78 = self;
+        selfCopy5 = self;
         v79 = 2048;
         v80 = v28;
         _os_log_impl(&dword_228986000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@: [summary-sharing] Found %lu participant records in private metadata zone", buf, 0x16u);
@@ -114,19 +114,19 @@ LABEL_38:
         {
           v69 = v39;
           v40 = [HDCloudSyncCompoundOperation alloc];
-          v41 = [(HDCloudSyncOperation *)self configuration];
-          v42 = [(HDCloudSyncCompoundOperation *)v40 initWithConfiguration:v41 cloudState:0 name:@"Synchronize Cloud Summary State" continueOnSubOperationError:0];
+          configuration4 = [(HDCloudSyncOperation *)self configuration];
+          v42 = [(HDCloudSyncCompoundOperation *)v40 initWithConfiguration:configuration4 cloudState:0 name:@"Synchronize Cloud Summary State" continueOnSubOperationError:0];
 
-          v43 = [v36 deletedRecordIDs];
-          v44 = [v43 count];
+          deletedRecordIDs = [v36 deletedRecordIDs];
+          v44 = [deletedRecordIDs count];
 
           if (v44)
           {
             [(HDCloudSyncCompoundOperation *)v42 addOperation:v36 transitionHandler:0];
           }
 
-          v45 = [v38 recordZoneIDsToDelete];
-          v46 = [v45 count];
+          recordZoneIDsToDelete = [v38 recordZoneIDsToDelete];
+          v46 = [recordZoneIDsToDelete count];
 
           if (v46)
           {
@@ -146,10 +146,10 @@ LABEL_38:
             [(HDCloudSyncOperation *)self configuration];
             v68 = v38;
             v51 = v50 = v42;
-            v52 = [(HDCloudSyncOperation *)self configuration];
-            v53 = [v52 repository];
-            v54 = [v53 primaryCKContainer];
-            v55 = [(HDCloudSyncModifyRecordsOperation *)v49 initWithConfiguration:v51 container:v54 recordsToSave:v48 recordIDsToDelete:0];
+            configuration5 = [(HDCloudSyncOperation *)self configuration];
+            repository3 = [configuration5 repository];
+            primaryCKContainer2 = [repository3 primaryCKContainer];
+            v55 = [(HDCloudSyncModifyRecordsOperation *)v49 initWithConfiguration:v51 container:primaryCKContainer2 recordsToSave:v48 recordIDsToDelete:0];
 
             v42 = v50;
             v38 = v68;
@@ -159,14 +159,14 @@ LABEL_38:
           if ([(NSMutableSet *)self->_sharesToDelete count])
           {
             v56 = [(NSMutableSet *)self->_sharesToDelete hk_map:&__block_literal_global_303_0];
-            v57 = [v56 allObjects];
+            allObjects = [v56 allObjects];
 
             v58 = [HDCloudSyncModifyRecordsOperation alloc];
-            v59 = [(HDCloudSyncOperation *)self configuration];
-            v60 = [(HDCloudSyncOperation *)self configuration];
-            v61 = [v60 repository];
-            v62 = [v61 primaryCKContainer];
-            v63 = [(HDCloudSyncModifyRecordsOperation *)v58 initWithConfiguration:v59 container:v62 scope:3 recordsToSave:0 recordIDsToDelete:v57];
+            configuration6 = [(HDCloudSyncOperation *)self configuration];
+            configuration7 = [(HDCloudSyncOperation *)self configuration];
+            repository4 = [configuration7 repository];
+            primaryCKContainer3 = [repository4 primaryCKContainer];
+            v63 = [(HDCloudSyncModifyRecordsOperation *)v58 initWithConfiguration:configuration6 container:primaryCKContainer3 scope:3 recordsToSave:0 recordIDsToDelete:allObjects];
 
             [(HDCloudSyncCompoundOperation *)v42 addOperation:v63 transitionHandler:0];
           }
@@ -184,7 +184,7 @@ LABEL_38:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v78 = self;
+            selfCopy5 = self;
             v79 = 2114;
             v80 = v39;
             _os_log_error_impl(&dword_228986000, v66, OS_LOG_TYPE_ERROR, "%{public}@: [summary-sharing] Failed to compute invalid zones for removal: %{public}@", buf, 0x16u);
@@ -203,7 +203,7 @@ LABEL_38:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v78 = self;
+          selfCopy5 = self;
           v79 = 2114;
           v80 = v37;
           _os_log_error_impl(&dword_228986000, v65, OS_LOG_TYPE_ERROR, "%{public}@: [summary-sharing] Failed to compute invalid shares for removal: %{public}@", buf, 0x16u);
@@ -222,7 +222,7 @@ LABEL_38:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v78 = self;
+        selfCopy5 = self;
         v79 = 2114;
         v80 = v35;
         _os_log_error_impl(&dword_228986000, v64, OS_LOG_TYPE_ERROR, "%{public}@: [summary-sharing] Failed to validate participant records: %{public}@", buf, 0x16u);
@@ -239,7 +239,7 @@ LABEL_38:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v78 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping operation because platform/profile does not support summary sharing", buf, 0xCu);
   }
 
@@ -276,23 +276,23 @@ id __62__HDCloudSyncSharedSummarySynchronizeCloudStateOperation_main__block_invo
   return v6;
 }
 
-- (BOOL)_validateCloudStateForParticipantRecord:(id)a3 error:(id *)a4
+- (BOOL)_validateCloudStateForParticipantRecord:(id)record error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 relationshipType];
-  if (v7)
+  recordCopy = record;
+  relationshipType = [recordCopy relationshipType];
+  if (relationshipType)
   {
-    v8 = v7;
-    v9 = [v6 relationshipType];
-    v10 = [v9 longValue];
+    v8 = relationshipType;
+    relationshipType2 = [recordCopy relationshipType];
+    longValue = [relationshipType2 longValue];
 
-    if (!v10)
+    if (!longValue)
     {
-      v12 = [v6 relationshipStatus];
-      v13 = [v12 longValue];
+      relationshipStatus = [recordCopy relationshipStatus];
+      longValue2 = [relationshipStatus longValue];
 
-      v14 = [(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _zonesForParticipant:v6 error:a4];
+      v14 = [(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _zonesForParticipant:recordCopy error:error];
       v15 = v14;
       if (!v14)
       {
@@ -302,25 +302,25 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v16 = [v14 firstObject];
-      v17 = [(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _currentZoneStateForParticipant:v6 zone:v16 error:a4];
+      firstObject = [v14 firstObject];
+      v17 = [(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _currentZoneStateForParticipant:recordCopy zone:firstObject error:error];
       v18 = v17;
       if (!v17)
       {
         goto LABEL_10;
       }
 
-      v19 = [v17 longValue];
-      v20 = [v6 relationshipStatus];
+      longValue3 = [v17 longValue];
+      relationshipStatus2 = [recordCopy relationshipStatus];
 
-      if (v20)
+      if (relationshipStatus2)
       {
-        if ((v13 - 2) < 3)
+        if ((longValue2 - 2) < 3)
         {
-          v21 = [v6 relationshipDirection];
-          if ([v21 longValue] == 1)
+          relationshipDirection = [recordCopy relationshipDirection];
+          if ([relationshipDirection longValue] == 1)
           {
-            v22 = [(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _updateShareForAllNonOwnerParticipantsInZone:v16 error:a4];
+            v22 = [(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _updateShareForAllNonOwnerParticipantsInZone:firstObject error:error];
 
             if (!v22)
             {
@@ -341,9 +341,9 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        if (v13 == 1)
+        if (longValue2 == 1)
         {
-          if (v19 >= 2)
+          if (longValue3 >= 2)
           {
             _HKInitializeLogging();
             v32 = *MEMORY[0x277CCC328];
@@ -355,7 +355,7 @@ LABEL_17:
               *v47 = 138544130;
               *&v47[4] = self;
               *&v47[12] = 2112;
-              *&v47[14] = v6;
+              *&v47[14] = recordCopy;
               *&v47[22] = 2114;
               v48 = v34;
               LOWORD(v49) = 2114;
@@ -363,17 +363,17 @@ LABEL_17:
               _os_log_impl(&dword_228986000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: [summary-sharing] %@: Updating status from %{public}@ to %{public}@ due to zone state.", v47, 0x2Au);
             }
 
-            [v6 setRelationshipStatus:v18];
+            [recordCopy setRelationshipStatus:v18];
           }
 
-          v36 = [v6 relationshipDirection];
-          if ([v36 longValue] == 1)
+          relationshipDirection2 = [recordCopy relationshipDirection];
+          if ([relationshipDirection2 longValue] == 1)
           {
-            v37 = [v6 ownerParticipant];
+            ownerParticipant = [recordCopy ownerParticipant];
 
-            if (!v37)
+            if (!ownerParticipant)
             {
-              if (![(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _updateOwnerParticipantForParticipantRecord:v6 zone:v16 error:a4])
+              if (![(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _updateOwnerParticipantForParticipantRecord:recordCopy zone:firstObject error:error])
               {
                 goto LABEL_10;
               }
@@ -386,7 +386,7 @@ LABEL_17:
           {
           }
 
-          if (v19 < 2)
+          if (longValue3 < 2)
           {
             goto LABEL_18;
           }
@@ -394,22 +394,22 @@ LABEL_17:
           goto LABEL_16;
         }
 
-        if (v13)
+        if (longValue2)
         {
           goto LABEL_18;
         }
 
-        v29 = [v6 relationshipDirection];
-        v30 = [v29 longValue];
+        relationshipDirection3 = [recordCopy relationshipDirection];
+        longValue4 = [relationshipDirection3 longValue];
 
-        if (!v19)
+        if (!longValue3)
         {
           goto LABEL_18;
         }
 
-        if (v30)
+        if (longValue4)
         {
-          if (v19 == 4)
+          if (longValue3 == 4)
           {
             goto LABEL_18;
           }
@@ -425,14 +425,14 @@ LABEL_17:
         else
         {
           Current = CFAbsoluteTimeGetCurrent();
-          v39 = [v6 entryInvitationDate];
-          [v39 timeIntervalSinceReferenceDate];
+          entryInvitationDate = [recordCopy entryInvitationDate];
+          [entryInvitationDate timeIntervalSinceReferenceDate];
           v41 = Current - v40;
 
           _HKInitializeLogging();
           v31 = *MEMORY[0x277CCC328];
           v42 = os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT);
-          if (v41 < 3600.0 && v19 != 1)
+          if (v41 < 3600.0 && longValue3 != 1)
           {
             if (v42)
             {
@@ -441,7 +441,7 @@ LABEL_17:
               *v47 = 138543874;
               *&v47[4] = self;
               *&v47[12] = 2112;
-              *&v47[14] = v6;
+              *&v47[14] = recordCopy;
               *&v47[22] = 2114;
               v48 = v44;
               _os_log_impl(&dword_228986000, v43, OS_LOG_TYPE_DEFAULT, "%{public}@: [summary-sharing] %@: Ignoring new pending participant despite mismatch with zone status %{public}@.", v47, 0x20u);
@@ -462,7 +462,7 @@ LABEL_17:
         *v47 = 138544130;
         *&v47[4] = self;
         *&v47[12] = 2112;
-        *&v47[14] = v6;
+        *&v47[14] = recordCopy;
         *&v47[22] = 2114;
         v48 = v45;
         LOWORD(v49) = 2114;
@@ -477,11 +477,11 @@ LABEL_17:
         if (!os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
 LABEL_15:
-          [v6 setRelationshipStatus:{v18, *v47, *&v47[16], v48, v49}];
+          [recordCopy setRelationshipStatus:{v18, *v47, *&v47[16], v48, v49}];
 LABEL_16:
           updatedParticipantRecordIDs = self->_updatedParticipantRecordIDs;
-          v21 = [v6 recordID];
-          [(NSMutableSet *)updatedParticipantRecordIDs addObject:v21];
+          relationshipDirection = [recordCopy recordID];
+          [(NSMutableSet *)updatedParticipantRecordIDs addObject:relationshipDirection];
           goto LABEL_17;
         }
 
@@ -490,7 +490,7 @@ LABEL_16:
         *v47 = 138543874;
         *&v47[4] = self;
         *&v47[12] = 2112;
-        *&v47[14] = v6;
+        *&v47[14] = recordCopy;
         *&v47[22] = 2114;
         v48 = v25;
         _os_log_impl(&dword_228986000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: [summary-sharing] %@: Filling out initial status from zone state: %{public}@.", v47, 0x20u);
@@ -507,16 +507,16 @@ LABEL_21:
   return v11;
 }
 
-- (id)_zoneIdentifierForParticipant:(id)a3
+- (id)_zoneIdentifierForParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [v4 relationshipDirection];
-  if (v5)
+  participantCopy = participant;
+  relationshipDirection = [participantCopy relationshipDirection];
+  if (relationshipDirection)
   {
-    v6 = [v4 relationshipDirection];
-    v7 = [v6 longValue];
+    relationshipDirection2 = [participantCopy relationshipDirection];
+    longValue = [relationshipDirection2 longValue];
     v8 = 2;
-    if (v7)
+    if (longValue)
     {
       v8 = 3;
     }
@@ -530,20 +530,20 @@ LABEL_21:
   }
 
   v9 = MEMORY[0x277CBC5F8];
-  v10 = [(HDCloudSyncOperation *)self configuration];
-  v11 = [v10 syncContainerPrefix];
-  v12 = [v4 UUID];
-  v13 = [v9 hd_sharedSummaryZoneIDWithSyncCircleIdentifier:v11 userIdentifier:v12];
-  v14 = [(HDCloudSyncOperation *)self configuration];
-  v15 = [v14 repository];
-  v16 = [v15 primaryCKContainer];
-  v17 = [v16 containerIdentifier];
-  v18 = [HDCloudSyncZoneIdentifier identifierForZone:v13 container:v17 scope:v20];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  syncContainerPrefix = [configuration syncContainerPrefix];
+  uUID = [participantCopy UUID];
+  v13 = [v9 hd_sharedSummaryZoneIDWithSyncCircleIdentifier:syncContainerPrefix userIdentifier:uUID];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  primaryCKContainer = [repository primaryCKContainer];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
+  v18 = [HDCloudSyncZoneIdentifier identifierForZone:v13 container:containerIdentifier scope:v20];
 
   return v18;
 }
 
-- (BOOL)_validateParticipantRecordCloudStateWithError:(id *)a3
+- (BOOL)_validateParticipantRecordCloudStateWithError:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
@@ -565,7 +565,7 @@ LABEL_21:
           objc_enumerationMutation(v5);
         }
 
-        if (![(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _validateCloudStateForParticipantRecord:*(*(&v13 + 1) + 8 * i) error:a3, v13])
+        if (![(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _validateCloudStateForParticipantRecord:*(*(&v13 + 1) + 8 * i) error:error, v13])
         {
           v10 = 0;
           goto LABEL_11;
@@ -589,17 +589,17 @@ LABEL_11:
   return v10;
 }
 
-- (id)_zonesForParticipant:(id)a3 error:(id *)a4
+- (id)_zonesForParticipant:(id)participant error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _zoneIdentifierForParticipant:v6];
-  v8 = [v6 relationshipDirection];
+  participantCopy = participant;
+  v7 = [(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _zoneIdentifierForParticipant:participantCopy];
+  relationshipDirection = [participantCopy relationshipDirection];
   v23 = v7;
-  if (v8)
+  if (relationshipDirection)
   {
-    v9 = [v6 relationshipDirection];
-    if ([v9 longValue])
+    relationshipDirection2 = [participantCopy relationshipDirection];
+    if ([relationshipDirection2 longValue])
     {
       v10 = 3;
     }
@@ -615,13 +615,13 @@ LABEL_11:
     v10 = 2;
   }
 
-  v11 = [(HDCloudSyncOperation *)self configuration];
-  v12 = [v11 cachedCloudState];
-  v13 = [(HDCloudSyncOperation *)self configuration];
-  v14 = [v13 repository];
-  v15 = [v14 primaryCKContainer];
-  v16 = [v15 containerIdentifier];
-  v17 = [v12 zoneIdentifiersForContainerIdentifier:v16 databaseScope:v10 error:a4];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  primaryCKContainer = [repository primaryCKContainer];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
+  v17 = [cachedCloudState zoneIdentifiersForContainerIdentifier:containerIdentifier databaseScope:v10 error:error];
 
   if (v17)
   {
@@ -631,7 +631,7 @@ LABEL_11:
     v24[3] = &unk_278620448;
     v18 = v23;
     v25 = v23;
-    v26 = self;
+    selfCopy = self;
     v19 = [v17 hk_map:v24];
   }
 
@@ -643,9 +643,9 @@ LABEL_11:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2112;
-      v30 = v6;
+      v30 = participantCopy;
       _os_log_error_impl(&dword_228986000, v20, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Failed to load zones when looking for state for participant %@", buf, 0x16u);
     }
 
@@ -678,15 +678,15 @@ id __85__HDCloudSyncSharedSummarySynchronizeCloudStateOperation__zonesForPartici
   return v9;
 }
 
-- (id)_currentZoneStateForParticipant:(id)a3 zone:(id)a4 error:(id *)a5
+- (id)_currentZoneStateForParticipant:(id)participant zone:(id)zone error:(id *)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = v8;
-  if (a4)
+  participantCopy = participant;
+  v9 = participantCopy;
+  if (zone)
   {
     v40 = 0;
-    v10 = [a4 zoneShareWithError:&v40];
+    v10 = [zone zoneShareWithError:&v40];
     v11 = v40;
     v12 = v11;
     if (v10)
@@ -695,8 +695,8 @@ id __85__HDCloudSyncSharedSummarySynchronizeCloudStateOperation__zonesForPartici
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v13 = [v10 participants];
-      v14 = [v13 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      participants = [v10 participants];
+      v14 = [participants countByEnumeratingWithState:&v36 objects:v41 count:16];
       if (v14)
       {
         v15 = v14;
@@ -708,7 +708,7 @@ id __85__HDCloudSyncSharedSummarySynchronizeCloudStateOperation__zonesForPartici
           {
             if (*v37 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(participants);
             }
 
             v19 = *(*(&v36 + 1) + 8 * i);
@@ -729,7 +729,7 @@ LABEL_23:
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v36 objects:v41 count:16];
+          v15 = [participants countByEnumeratingWithState:&v36 objects:v41 count:16];
           if (v15)
           {
             continue;
@@ -739,17 +739,17 @@ LABEL_23:
         }
       }
 
-      v20 = [v9 relationshipStatus];
-      if ([v20 longValue] == 1)
+      relationshipStatus = [v9 relationshipStatus];
+      if ([relationshipStatus longValue] == 1)
       {
       }
 
       else
       {
-        v28 = [v9 relationshipStatus];
-        v29 = [v28 longValue];
+        relationshipStatus2 = [v9 relationshipStatus];
+        longValue = [relationshipStatus2 longValue];
 
-        if (v29)
+        if (longValue)
         {
 LABEL_29:
           v17 = &unk_283CB2100;
@@ -764,7 +764,7 @@ LABEL_35:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v43 = self;
+        selfCopy3 = self;
         v44 = 2112;
         v45 = v9;
         _os_log_impl(&dword_228986000, v30, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Failed to find participant on share for %@: Marking as declined.", buf, 0x16u);
@@ -775,11 +775,11 @@ LABEL_35:
 
     if (v11)
     {
-      if (a5)
+      if (error)
       {
         v26 = v11;
         v17 = 0;
-        *a5 = v12;
+        *error = v12;
       }
 
       else
@@ -791,17 +791,17 @@ LABEL_35:
       goto LABEL_35;
     }
 
-    v27 = [v9 relationshipStatus];
-    if ([v27 longValue] == 1)
+    relationshipStatus3 = [v9 relationshipStatus];
+    if ([relationshipStatus3 longValue] == 1)
     {
     }
 
     else
     {
-      v31 = [v9 relationshipStatus];
-      v32 = [v31 longValue];
+      relationshipStatus4 = [v9 relationshipStatus];
+      longValue2 = [relationshipStatus4 longValue];
 
-      if (v32)
+      if (longValue2)
       {
 LABEL_34:
         v17 = &unk_283CB20B8;
@@ -814,7 +814,7 @@ LABEL_34:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v43 = self;
+      selfCopy3 = self;
       v44 = 2112;
       v45 = v9;
       _os_log_impl(&dword_228986000, v33, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Failed to find share for %@: Marking as revoked.", buf, 0x16u);
@@ -823,10 +823,10 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v21 = [v8 relationshipStatus];
-  v22 = [v21 longValue];
+  relationshipStatus5 = [participantCopy relationshipStatus];
+  longValue3 = [relationshipStatus5 longValue];
 
-  if (v22 == 1)
+  if (longValue3 == 1)
   {
     _HKInitializeLogging();
     v23 = *MEMORY[0x277CCC328];
@@ -835,7 +835,7 @@ LABEL_34:
       v24 = v23;
       v25 = [(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _zoneIdentifierForParticipant:v9];
       *buf = 138543874;
-      v43 = self;
+      selfCopy3 = self;
       v44 = 2114;
       v45 = v25;
       v46 = 2112;
@@ -851,15 +851,15 @@ LABEL_36:
   return v17;
 }
 
-- (BOOL)_updateShareForAllNonOwnerParticipantsInZone:(id)a3 error:(id *)a4
+- (BOOL)_updateShareForAllNonOwnerParticipantsInZone:(id)zone error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  zoneCopy = zone;
+  v7 = zoneCopy;
+  if (zoneCopy)
   {
     v33 = 0;
-    v8 = [v6 zoneShareWithError:&v33];
+    v8 = [zoneCopy zoneShareWithError:&v33];
     v9 = v33;
     if (v8)
     {
@@ -867,8 +867,8 @@ LABEL_36:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v10 = [v8 participants];
-      v11 = [v10 copy];
+      participants = [v8 participants];
+      v11 = [participants copy];
 
       v12 = [v11 countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v12)
@@ -897,7 +897,7 @@ LABEL_36:
               if (os_log_type_enabled(*v15, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v36 = self;
+                selfCopy3 = self;
                 _os_log_impl(&dword_228986000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [summary-sharing] Participant on the share is not an owner.", buf, 0xCu);
               }
 
@@ -908,7 +908,7 @@ LABEL_36:
                 if (os_log_type_enabled(*v15, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543618;
-                  v36 = self;
+                  selfCopy3 = self;
                   v37 = 2112;
                   v38 = v18;
                   _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Deleting share for participant %@.", buf, 0x16u);
@@ -950,7 +950,7 @@ LABEL_36:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v36 = self;
+        selfCopy3 = self;
         v37 = 2112;
         v38 = v7;
         v39 = 2114;
@@ -960,11 +960,11 @@ LABEL_36:
 
       if (v9)
       {
-        if (a4)
+        if (error)
         {
           v23 = v9;
           v21 = 0;
-          *a4 = v9;
+          *error = v9;
         }
 
         else
@@ -990,24 +990,24 @@ LABEL_32:
   return v21;
 }
 
-- (BOOL)_updateOwnerParticipantForParticipantRecord:(id)a3 zone:(id)a4 error:(id *)a5
+- (BOOL)_updateOwnerParticipantForParticipantRecord:(id)record zone:(id)zone error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a4)
+  recordCopy = record;
+  if (zone)
   {
     v21 = 0;
-    v9 = [a4 zoneShareWithError:&v21];
+    v9 = [zone zoneShareWithError:&v21];
     v10 = v21;
     v11 = v10;
     if (v9)
     {
-      v12 = [v9 participants];
-      v13 = [v12 hk_firstObjectPassingTest:&__block_literal_global_317_3];
+      participants = [v9 participants];
+      v13 = [participants hk_firstObjectPassingTest:&__block_literal_global_317_3];
 
       if (v13)
       {
-        [v8 setOwnerParticipant:v13];
+        [recordCopy setOwnerParticipant:v13];
       }
 
       else
@@ -1017,9 +1017,9 @@ LABEL_32:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v23 = self;
+          selfCopy3 = self;
           v24 = 2112;
-          v25 = v8;
+          v25 = recordCopy;
           _os_log_impl(&dword_228986000, v17, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Share contains no owner attempting to update owner participant for %@.", buf, 0x16u);
         }
       }
@@ -1029,11 +1029,11 @@ LABEL_32:
     {
       if (v10)
       {
-        if (a5)
+        if (error)
         {
           v16 = v10;
           v15 = 0;
-          *a5 = v11;
+          *error = v11;
         }
 
         else
@@ -1050,9 +1050,9 @@ LABEL_32:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v23 = self;
+        selfCopy3 = self;
         v24 = 2112;
-        v25 = v8;
+        v25 = recordCopy;
         _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: No share for participant %@ when attempting to update owner participant.", buf, 0x16u);
       }
     }
@@ -1068,9 +1068,9 @@ LABEL_15:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v23 = self;
+    selfCopy3 = self;
     v24 = 2112;
-    v25 = v8;
+    v25 = recordCopy;
     _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: No zone for participant %@ when attempting to update owner participant.", buf, 0x16u);
   }
 
@@ -1081,17 +1081,17 @@ LABEL_16:
   return v15;
 }
 
-- (id)_removeInvalidSharesOperationWithError:(id *)a3
+- (id)_removeInvalidSharesOperationWithError:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(HDCloudSyncOperation *)self configuration];
-  v7 = [v6 cachedCloudState];
-  v8 = [(HDCloudSyncOperation *)self configuration];
-  v9 = [v8 repository];
-  v10 = [v9 primaryCKContainer];
-  v11 = [v10 containerIdentifier];
-  v12 = [v7 zoneIdentifiersForContainerIdentifier:v11 databaseScope:3 error:a3];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  primaryCKContainer = [repository primaryCKContainer];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
+  v12 = [cachedCloudState zoneIdentifiersForContainerIdentifier:containerIdentifier databaseScope:3 error:error];
 
   if (v12)
   {
@@ -1118,30 +1118,30 @@ LABEL_16:
           }
 
           v17 = *(*(&v46 + 1) + 8 * i);
-          v18 = [v17 zoneIdentifier];
+          zoneIdentifier = [v17 zoneIdentifier];
           v44 = 0;
           v45 = 0;
-          v19 = [v18 hd_isSharedSummaryZoneIDForUserIdentifier:&v45 syncCircleIdentifier:&v44];
+          v19 = [zoneIdentifier hd_isSharedSummaryZoneIDForUserIdentifier:&v45 syncCircleIdentifier:&v44];
           v20 = v45;
           v21 = v44;
 
           if (v19)
           {
-            v22 = [(HDCloudSyncOperation *)self configuration];
-            v23 = [v22 syncContainerPrefix];
-            v24 = [v21 isEqualToString:v23];
+            configuration3 = [(HDCloudSyncOperation *)self configuration];
+            syncContainerPrefix = [configuration3 syncContainerPrefix];
+            v24 = [v21 isEqualToString:syncContainerPrefix];
 
             if (v24)
             {
               v25 = [(NSDictionary *)self->_participantRecordsByUUID objectForKeyedSubscript:v20];
-              v26 = [v25 relationshipDirection];
-              v27 = [v26 longValue];
+              relationshipDirection = [v25 relationshipDirection];
+              longValue = [relationshipDirection longValue];
 
-              if (v27 == 1 && ![(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _isActiveParticipant:v25])
+              if (longValue == 1 && ![(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _isActiveParticipant:v25])
               {
                 v28 = objc_alloc(MEMORY[0x277CBC5D0]);
-                v29 = [v17 zoneIdentifier];
-                v30 = [v28 initWithRecordName:v41 zoneID:v29];
+                zoneIdentifier2 = [v17 zoneIdentifier];
+                v30 = [v28 initWithRecordName:v41 zoneID:zoneIdentifier2];
 
                 [v42 addObject:v30];
               }
@@ -1156,13 +1156,13 @@ LABEL_16:
     }
 
     v31 = [HDCloudSyncModifyRecordsOperation alloc];
-    v32 = [(HDCloudSyncOperation *)self configuration];
-    v33 = [(HDCloudSyncOperation *)self configuration];
-    v34 = [v33 repository];
-    v35 = [v34 primaryCKContainer];
+    configuration4 = [(HDCloudSyncOperation *)self configuration];
+    configuration5 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration5 repository];
+    primaryCKContainer2 = [repository2 primaryCKContainer];
     v36 = v31;
     v5 = v42;
-    v37 = [(HDCloudSyncModifyRecordsOperation *)v36 initWithConfiguration:v32 container:v35 scope:3 recordsToSave:0 recordIDsToDelete:v42];
+    v37 = [(HDCloudSyncModifyRecordsOperation *)v36 initWithConfiguration:configuration4 container:primaryCKContainer2 scope:3 recordsToSave:0 recordIDsToDelete:v42];
 
     v12 = v40;
   }
@@ -1177,17 +1177,17 @@ LABEL_16:
   return v37;
 }
 
-- (id)_deleteInvalidZonesOperationWithError:(id *)a3
+- (id)_deleteInvalidZonesOperationWithError:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(HDCloudSyncOperation *)self configuration];
-  v7 = [v6 cachedCloudState];
-  v8 = [(HDCloudSyncOperation *)self configuration];
-  v9 = [v8 repository];
-  v10 = [v9 primaryCKContainer];
-  v11 = [v10 containerIdentifier];
-  v12 = [v7 zoneIdentifiersForContainerIdentifier:v11 databaseScope:2 error:a3];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  primaryCKContainer = [repository primaryCKContainer];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
+  v12 = [cachedCloudState zoneIdentifiersForContainerIdentifier:containerIdentifier databaseScope:2 error:error];
 
   if (v12)
   {
@@ -1213,29 +1213,29 @@ LABEL_16:
           }
 
           v17 = *(*(&v42 + 1) + 8 * i);
-          v18 = [v17 zoneIdentifier];
+          zoneIdentifier = [v17 zoneIdentifier];
           v40 = 0;
           v41 = 0;
-          v19 = [v18 hd_isSharedSummaryZoneIDForUserIdentifier:&v41 syncCircleIdentifier:&v40];
+          v19 = [zoneIdentifier hd_isSharedSummaryZoneIDForUserIdentifier:&v41 syncCircleIdentifier:&v40];
           v20 = v41;
           v21 = v40;
 
           if (v19)
           {
-            v22 = [(HDCloudSyncOperation *)self configuration];
-            v23 = [v22 syncContainerPrefix];
-            v24 = [v21 isEqualToString:v23];
+            configuration3 = [(HDCloudSyncOperation *)self configuration];
+            syncContainerPrefix = [configuration3 syncContainerPrefix];
+            v24 = [v21 isEqualToString:syncContainerPrefix];
 
             if (v24)
             {
               v25 = [(NSDictionary *)self->_participantRecordsByUUID objectForKeyedSubscript:v20];
-              v26 = [v25 relationshipDirection];
-              v27 = [v26 longValue];
+              relationshipDirection = [v25 relationshipDirection];
+              longValue = [relationshipDirection longValue];
 
-              if (!v27 && ![(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _isActiveParticipant:v25])
+              if (!longValue && ![(HDCloudSyncSharedSummarySynchronizeCloudStateOperation *)self _isActiveParticipant:v25])
               {
-                v28 = [v17 zoneIdentifier];
-                [v38 addObject:v28];
+                zoneIdentifier2 = [v17 zoneIdentifier];
+                [v38 addObject:zoneIdentifier2];
               }
             }
           }
@@ -1248,12 +1248,12 @@ LABEL_16:
     }
 
     v29 = [HDCloudSyncModifyRecordZonesOperation alloc];
-    v30 = [(HDCloudSyncOperation *)self configuration];
-    v31 = [(HDCloudSyncOperation *)self configuration];
-    v32 = [v31 repository];
-    v33 = [v32 primaryCKContainer];
+    configuration4 = [(HDCloudSyncOperation *)self configuration];
+    configuration5 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration5 repository];
+    primaryCKContainer2 = [repository2 primaryCKContainer];
     v5 = v38;
-    v34 = [(HDCloudSyncModifyRecordZonesOperation *)v29 initWithConfiguration:v30 container:v33 scope:2 recordZonesToSave:0 recordZoneIDsToDelete:v38];
+    v34 = [(HDCloudSyncModifyRecordZonesOperation *)v29 initWithConfiguration:configuration4 container:primaryCKContainer2 scope:2 recordZonesToSave:0 recordZoneIDsToDelete:v38];
 
     v12 = v37;
   }
@@ -1268,17 +1268,17 @@ LABEL_16:
   return v34;
 }
 
-- (BOOL)_isActiveParticipant:(id)a3
+- (BOOL)_isActiveParticipant:(id)participant
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  participantCopy = participant;
+  v4 = participantCopy;
+  if (participantCopy)
   {
-    v5 = [v3 relationshipStatus];
-    if ([v5 longValue])
+    relationshipStatus = [participantCopy relationshipStatus];
+    if ([relationshipStatus longValue])
     {
-      v6 = [v4 relationshipStatus];
-      v7 = [v6 longValue] == 1;
+      relationshipStatus2 = [v4 relationshipStatus];
+      v7 = [relationshipStatus2 longValue] == 1;
     }
 
     else

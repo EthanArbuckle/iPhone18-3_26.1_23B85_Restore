@@ -1,7 +1,7 @@
 @interface BlastDoorDrawingStroke
-+ (id)createBDStroke:(id)a3;
++ (id)createBDStroke:(id)stroke;
 - (BlastDoorDrawingStroke)init;
-- (id)createDKStroke:(id)a3;
+- (id)createDKStroke:(id)stroke;
 @end
 
 @implementation BlastDoorDrawingStroke
@@ -14,19 +14,19 @@
   v2 = [(BlastDoorDrawingStroke *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     strokePoints = v2->_strokePoints;
-    v2->_strokePoints = v3;
+    v2->_strokePoints = array;
   }
 
   v5 = *MEMORY[0x277D85DE8];
   return v2;
 }
 
-- (id)createDKStroke:(id)a3
+- (id)createDKStroke:(id)stroke
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  strokeCopy = stroke;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -50,7 +50,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v3;
+  v7 = strokeCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (v8)
   {
@@ -64,9 +64,9 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * i) createDKStrokePoint];
-        v12 = [v6 strokePoints];
-        [v12 addObject:v11];
+        createDKStrokePoint = [*(*(&v21 + 1) + 8 * i) createDKStrokePoint];
+        strokePoints = [v6 strokePoints];
+        [strokePoints addObject:createDKStrokePoint];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v21 objects:v20 count:16];
@@ -80,17 +80,17 @@
   return v6;
 }
 
-+ (id)createBDStroke:(id)a3
++ (id)createBDStroke:(id)stroke
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  strokeCopy = stroke;
   v4 = objc_alloc_init(BlastDoorDrawingStroke);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v3 strokePoints];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v15 count:16];
+  strokePoints = [strokeCopy strokePoints];
+  v6 = [strokePoints countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -101,7 +101,7 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(strokePoints);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -112,11 +112,11 @@
         [(BlastDoorDrawingStrokePoint *)v11 setForce:?];
         [v10 velocity];
         [(BlastDoorDrawingStrokePoint *)v11 setVelocity:?];
-        v12 = [(BlastDoorDrawingStroke *)v4 strokePoints];
-        [v12 addObject:v11];
+        strokePoints2 = [(BlastDoorDrawingStroke *)v4 strokePoints];
+        [strokePoints2 addObject:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v15 count:16];
+      v7 = [strokePoints countByEnumeratingWithState:&v16 objects:v15 count:16];
     }
 
     while (v7);

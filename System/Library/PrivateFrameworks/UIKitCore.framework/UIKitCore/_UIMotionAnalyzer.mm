@@ -1,21 +1,21 @@
 @interface _UIMotionAnalyzer
 - (_UIMotionAnalyzer)init;
-- (_UIMotionAnalyzer)initWithSettings:(id)a3;
+- (_UIMotionAnalyzer)initWithSettings:(id)settings;
 - (id)description;
 @end
 
 @implementation _UIMotionAnalyzer
 
-- (_UIMotionAnalyzer)initWithSettings:(id)a3
+- (_UIMotionAnalyzer)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v12.receiver = self;
   v12.super_class = _UIMotionAnalyzer;
   v6 = [(_UIMotionAnalyzer *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     v8 = objc_alloc_init(_UIViewerRelativeDevicePose);
     viewerRelativeDevicePose = v7->_viewerRelativeDevicePose;
     v7->_viewerRelativeDevicePose = v8;
@@ -40,8 +40,8 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   settings = self->_settings;
-  v7 = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
-  v8 = [v3 stringWithFormat:@"<%@: %p settings=%@ viewerRelativeDevicePose=%@>", v5, self, settings, v7];
+  viewerRelativeDevicePose = [(_UIMotionAnalyzer *)self viewerRelativeDevicePose];
+  v8 = [v3 stringWithFormat:@"<%@: %p settings=%@ viewerRelativeDevicePose=%@>", v5, self, settings, viewerRelativeDevicePose];
 
   return v8;
 }

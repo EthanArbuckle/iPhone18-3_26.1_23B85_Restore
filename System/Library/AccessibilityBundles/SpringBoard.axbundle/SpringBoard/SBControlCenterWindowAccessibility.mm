@@ -1,5 +1,5 @@
 @interface SBControlCenterWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)accessibilityViewIsModal;
@@ -7,13 +7,13 @@
 
 @implementation SBControlCenterWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBControlCenterController"];
-  [v3 validateClass:@"SBControlCenterCoordinator" hasClassMethod:@"sharedInstanceIfExists" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBControlCenterController" hasInstanceMethod:@"handleMenuButtonTap" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SpringBoardAccessibility" hasInstanceMethod:@"_accessibilityIsShowingLongLookNotification" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBControlCenterController"];
+  [validationsCopy validateClass:@"SBControlCenterCoordinator" hasClassMethod:@"sharedInstanceIfExists" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBControlCenterController" hasInstanceMethod:@"handleMenuButtonTap" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SpringBoardAccessibility" hasInstanceMethod:@"_accessibilityIsShowingLongLookNotification" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -27,8 +27,8 @@
 
 - (BOOL)accessibilityElementsHidden
 {
-  v2 = [MEMORY[0x29EDBDFA8] server];
-  if ([v2 isControlCenterVisible] && (v3 = MEMORY[0x29EDC8008], (objc_msgSend(*MEMORY[0x29EDC8008], "safeBoolForKey:", @"_accessibilityIsShowingLongLookNotification") & 1) == 0))
+  server = [MEMORY[0x29EDBDFA8] server];
+  if ([server isControlCenterVisible] && (v3 = MEMORY[0x29EDC8008], (objc_msgSend(*MEMORY[0x29EDC8008], "safeBoolForKey:", @"_accessibilityIsShowingLongLookNotification") & 1) == 0))
   {
     v4 = [*v3 safeBoolForKey:@"_accessibilityIsShowingShortcutsUI"];
   }
@@ -43,10 +43,10 @@
 
 - (BOOL)accessibilityViewIsModal
 {
-  v2 = [MEMORY[0x29EDBDFA8] server];
-  v3 = [v2 isControlCenterVisible];
+  server = [MEMORY[0x29EDBDFA8] server];
+  isControlCenterVisible = [server isControlCenterVisible];
 
-  return v3;
+  return isControlCenterVisible;
 }
 
 @end

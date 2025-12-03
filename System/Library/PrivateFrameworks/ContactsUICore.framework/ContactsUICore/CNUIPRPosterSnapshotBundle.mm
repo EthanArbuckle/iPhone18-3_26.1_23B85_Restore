@@ -1,30 +1,30 @@
 @interface CNUIPRPosterSnapshotBundle
-- (CNUIPRPosterSnapshotBundle)initWithWrappedBundle:(id)a3;
-- (id)snapshotForLevelSet:(id)a3;
+- (CNUIPRPosterSnapshotBundle)initWithWrappedBundle:(id)bundle;
+- (id)snapshotForLevelSet:(id)set;
 @end
 
 @implementation CNUIPRPosterSnapshotBundle
 
-- (CNUIPRPosterSnapshotBundle)initWithWrappedBundle:(id)a3
+- (CNUIPRPosterSnapshotBundle)initWithWrappedBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v9.receiver = self;
   v9.super_class = CNUIPRPosterSnapshotBundle;
   v6 = [(CNUIPRPosterSnapshotBundle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedSnapshotBundle, a3);
+    objc_storeStrong(&v6->_wrappedSnapshotBundle, bundle);
   }
 
   return v7;
 }
 
-- (id)snapshotForLevelSet:(id)a3
+- (id)snapshotForLevelSet:(id)set
 {
   wrappedSnapshotBundle = self->_wrappedSnapshotBundle;
-  v4 = [a3 wrappedLevelSet];
-  v5 = [(PRPosterSnapshotBundle *)wrappedSnapshotBundle snapshotForLevelSet:v4];
+  wrappedLevelSet = [set wrappedLevelSet];
+  v5 = [(PRPosterSnapshotBundle *)wrappedSnapshotBundle snapshotForLevelSet:wrappedLevelSet];
 
   return v5;
 }

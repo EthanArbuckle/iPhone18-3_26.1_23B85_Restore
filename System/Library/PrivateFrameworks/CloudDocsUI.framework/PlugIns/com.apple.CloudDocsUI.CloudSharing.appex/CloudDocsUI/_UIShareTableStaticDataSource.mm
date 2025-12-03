@@ -1,50 +1,50 @@
 @interface _UIShareTableStaticDataSource
-- (BOOL)tableView:(id)a3 canPerformAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canPerformAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (UITableView)tableView;
 - (_UIShareTableStaticDataSource)init;
-- (_UIShareTableStaticDataSource)initWithTableView:(id)a3;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (_UIShareTableStaticDataSource)initWithTableView:(id)view;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)defaultTarget;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 editActionsForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view editActionsForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)target;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_toggleValueChanged:(id)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_toggleValueChanged:(id)changed;
 - (void)_updateEstimatedHeightsForDynamicTypeChange;
-- (void)menuWillHide:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)menuWillHide:(id)hide;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 @end
 
 @implementation _UIShareTableStaticDataSource
 
-- (_UIShareTableStaticDataSource)initWithTableView:(id)a3
+- (_UIShareTableStaticDataSource)initWithTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = _UIShareTableStaticDataSource;
   v5 = [(_UIShareTableStaticDataSource *)&v8 init];
   if (v5)
   {
-    [v4 setDelegate:v5];
-    [v4 setDataSource:v5];
-    [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"action"];
-    [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"link"];
-    [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"toggle"];
-    [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"radio"];
-    [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"centered"];
-    [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"subtitle"];
-    [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"header"];
-    [v4 setRowHeight:UITableViewAutomaticDimension];
-    [v4 setSectionFooterHeight:UITableViewAutomaticDimension];
-    [v4 setSectionHeaderHeight:UITableViewAutomaticDimension];
-    [(_UIShareTableStaticDataSource *)v5 setTableView:v4];
+    [viewCopy setDelegate:v5];
+    [viewCopy setDataSource:v5];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"action"];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"link"];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"toggle"];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"radio"];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"centered"];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"subtitle"];
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"header"];
+    [viewCopy setRowHeight:UITableViewAutomaticDimension];
+    [viewCopy setSectionFooterHeight:UITableViewAutomaticDimension];
+    [viewCopy setSectionHeaderHeight:UITableViewAutomaticDimension];
+    [(_UIShareTableStaticDataSource *)v5 setTableView:viewCopy];
     [(_UIShareTableStaticDataSource *)v5 _updateEstimatedHeightsForDynamicTypeChange];
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 addObserver:v5 selector:"_updateEstimatedHeightsForDynamicTypeChange" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -59,10 +59,10 @@
   [v3 scaledValueForValue:44.0];
   v5 = v4;
 
-  v6 = [(_UIShareTableStaticDataSource *)self tableView];
-  [v6 setEstimatedRowHeight:v5];
-  [v6 setEstimatedSectionHeaderHeight:v5];
-  [v6 setEstimatedSectionFooterHeight:v5];
+  tableView = [(_UIShareTableStaticDataSource *)self tableView];
+  [tableView setEstimatedRowHeight:v5];
+  [tableView setEstimatedSectionHeaderHeight:v5];
+  [tableView setEstimatedSectionFooterHeight:v5];
 }
 
 - (_UIShareTableStaticDataSource)init
@@ -76,31 +76,31 @@
 
 - (id)target
 {
-  v2 = self;
-  v3 = [(_UIShareTableStaticDataSource *)self defaultTarget];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  defaultTarget = [(_UIShareTableStaticDataSource *)self defaultTarget];
+  v4 = defaultTarget;
+  if (defaultTarget)
   {
-    v2 = v3;
+    selfCopy = defaultTarget;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(_UIShareTableStaticDataSource *)self sections];
-  v4 = [v3 count];
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(_UIShareTableStaticDataSource *)self sections];
-  v6 = [v5 objectAtIndex:a4];
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v6 = [sections objectAtIndex:section];
 
   v7 = [v6 objectForKey:@"items"];
   v8 = [v7 count];
@@ -108,15 +108,15 @@
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIShareTableStaticDataSource *)self sections];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v7, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v9 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   v10 = [v9 objectForKey:@"items"];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v7, "row")}];
+  v11 = [v10 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   v12 = [v11 objectForKey:@"type"];
   v13 = [v11 objectForKey:@"celltype"];
@@ -133,12 +133,12 @@
 
   v16 = v15;
 
-  v17 = [v6 dequeueReusableCellWithIdentifier:v16];
+  v17 = [viewCopy dequeueReusableCellWithIdentifier:v16];
   objc_opt_class();
-  v116 = v7;
+  v116 = pathCopy;
   if (objc_opt_isKindOfClass())
   {
-    v18 = v6;
+    v18 = viewCopy;
     v19 = v16;
     v20 = v12;
     v21 = v17;
@@ -148,16 +148,16 @@
     [v24 setImage:v22];
 
     v25 = [v11 objectForKey:@"title"];
-    v26 = [v21 sharedItemLabel];
-    [v26 setText:v25];
+    sharedItemLabel = [v21 sharedItemLabel];
+    [sharedItemLabel setText:v25];
 
     v27 = [v11 objectForKey:@"detail"];
-    v28 = [v21 sharedWithinLabel];
-    [v28 setText:v27];
+    sharedWithinLabel = [v21 sharedWithinLabel];
+    [sharedWithinLabel setText:v27];
 
     v29 = [v11 objectForKey:@"sharedByModifiedBy"];
-    v30 = [v21 sharedByModifiedByLabel];
-    [v30 setText:v29];
+    sharedByModifiedByLabel = [v21 sharedByModifiedByLabel];
+    [sharedByModifiedByLabel setText:v29];
 
     v31 = [v11 objectForKey:@"shareElementBadge"];
     v32 = +[NSNull null];
@@ -174,13 +174,13 @@
 
     v35 = v21;
     v12 = v20;
-    v36 = [v35 sharedItemBadge];
+    sharedItemBadge = [v35 sharedItemBadge];
     v37 = v34;
     v11 = v33;
-    [v36 setImage:v37];
+    [sharedItemBadge setImage:v37];
 
     v16 = v19;
-    v6 = v18;
+    viewCopy = v18;
 
     goto LABEL_55;
   }
@@ -189,15 +189,15 @@
   v39 = v38;
   if (v38)
   {
-    v40 = v38;
+    target = v38;
   }
 
   else
   {
-    v40 = [(_UIShareTableStaticDataSource *)self target];
+    target = [(_UIShareTableStaticDataSource *)self target];
   }
 
-  v41 = v40;
+  v41 = target;
 
   if ([v17 conformsToProtocol:&OBJC_PROTOCOL____UIShareTableValueCell])
   {
@@ -211,29 +211,29 @@
   v44 = v9;
   if (v43)
   {
-    v45 = [v43 BOOLValue];
+    bOOLValue = [v43 BOOLValue];
   }
 
   else
   {
-    v45 = 1;
+    bOOLValue = 1;
   }
 
-  v46 = [v17 textLabel];
-  [v46 setEnabled:v45];
+  textLabel = [v17 textLabel];
+  [textLabel setEnabled:bOOLValue];
 
-  v47 = [v17 textLabel];
-  [v47 setLineBreakMode:0];
+  textLabel2 = [v17 textLabel];
+  [textLabel2 setLineBreakMode:0];
 
-  v48 = [v17 textLabel];
-  [v48 setNumberOfLines:3];
+  textLabel3 = [v17 textLabel];
+  [textLabel3 setNumberOfLines:3];
 
-  v49 = [v17 detailTextLabel];
-  [v49 setEnabled:v45];
+  detailTextLabel = [v17 detailTextLabel];
+  [detailTextLabel setEnabled:bOOLValue];
 
   v50 = [v11 objectForKey:@"title"];
-  v51 = [v17 textLabel];
-  [v51 setText:v50];
+  textLabel4 = [v17 textLabel];
+  [textLabel4 setText:v50];
 
   v52 = [v11 objectForKey:@"axIdentifier"];
   [v17 setAccessibilityIdentifier:v52];
@@ -313,19 +313,19 @@ LABEL_32:
     v72 = [v11 objectForKey:@"detail"];
     if (v72)
     {
-      v73 = [v17 detailTextLabel];
-      [v73 setText:v72];
+      detailTextLabel2 = [v17 detailTextLabel];
+      [detailTextLabel2 setText:v72];
 
       v74 = +[UIColor secondaryLabelColor];
       [v17 detailTextLabel];
-      v75 = v6;
+      v75 = viewCopy;
       v76 = v16;
       v78 = v77 = v11;
       [v78 setTextColor:v74];
 
       v11 = v77;
       v16 = v76;
-      v6 = v75;
+      viewCopy = v75;
       v71 = v114;
     }
 
@@ -350,7 +350,7 @@ LABEL_32:
         v83 = NSSelectorFromString(v82);
 
         v84 = v80;
-        v85 = v114;
+        selfCopy = v114;
         v86 = v83;
       }
 
@@ -359,10 +359,10 @@ LABEL_32:
         objc_setAssociatedObject(v80, &unk_100060300, v11, 0x301);
         v86 = "_toggleValueChanged:";
         v84 = v80;
-        v85 = self;
+        selfCopy = self;
       }
 
-      [v84 addTarget:v85 action:v86 forControlEvents:4096];
+      [v84 addTarget:selfCopy action:v86 forControlEvents:4096];
       v100 = [v11 objectForKey:@"toggleCreationCallback"];
 
       if (v100)
@@ -391,12 +391,12 @@ LABEL_32:
   v56 = [v11 objectForKey:@"detail"];
   if (v56)
   {
-    v57 = [v17 detailTextLabel];
-    [v57 setText:v56];
+    detailTextLabel3 = [v17 detailTextLabel];
+    [detailTextLabel3 setText:v56];
 
     v58 = +[UIColor secondaryLabelColor];
-    v59 = [v17 detailTextLabel];
-    [v59 setTextColor:v58];
+    detailTextLabel4 = [v17 detailTextLabel];
+    [detailTextLabel4 setTextColor:v58];
 
 LABEL_40:
     v89 = [v11 objectForKey:@"action"];
@@ -405,11 +405,11 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v87 = [v17 textLabel];
-  [v87 setTextAlignment:1];
+  textLabel5 = [v17 textLabel];
+  [textLabel5 setTextAlignment:1];
 
-  v88 = [v17 detailTextLabel];
-  [v88 setText:0];
+  detailTextLabel5 = [v17 detailTextLabel];
+  [detailTextLabel5 setText:0];
 
   if (v16 != @"centered")
   {
@@ -417,7 +417,7 @@ LABEL_40:
   }
 
 LABEL_41:
-  v111 = v6;
+  v111 = viewCopy;
   v90 = [v11 objectForKey:@"accessibilityLabel"];
   if (v90)
   {
@@ -435,31 +435,31 @@ LABEL_41:
 
   v93 = v11;
   v94 = [v11 objectForKey:@"destructive"];
-  v95 = [v94 BOOLValue];
-  v96 = [v17 textLabel];
-  v97 = v96;
-  if (v95)
+  bOOLValue2 = [v94 BOOLValue];
+  textLabel6 = [v17 textLabel];
+  v97 = textLabel6;
+  if (bOOLValue2)
   {
-    [v96 _setTextColorFollowsTintColor:0];
+    [textLabel6 _setTextColorFollowsTintColor:0];
 
-    v98 = +[UIColor systemRedColor];
-    v99 = [v17 textLabel];
-    [v99 setTextColor:v98];
+    textLabel8 = +[UIColor systemRedColor];
+    textLabel7 = [v17 textLabel];
+    [textLabel7 setTextColor:textLabel8];
   }
 
   else
   {
-    [v96 setTextColor:0];
+    [textLabel6 setTextColor:0];
 
-    v98 = [v17 textLabel];
-    [v98 _setTextColorFollowsTintColor:v56 == 0];
+    textLabel8 = [v17 textLabel];
+    [textLabel8 _setTextColorFollowsTintColor:v56 == 0];
   }
 
   v23 = v44;
   v11 = v93;
   v16 = v91;
   v12 = v109;
-  v6 = v111;
+  viewCopy = v111;
   v71 = v114;
 LABEL_54:
   v105 = v17;
@@ -469,38 +469,38 @@ LABEL_55:
   return v17;
 }
 
-- (void)_toggleValueChanged:(id)a3
+- (void)_toggleValueChanged:(id)changed
 {
-  v4 = a3;
-  v12 = objc_getAssociatedObject(v4, &unk_100060300);
+  changedCopy = changed;
+  v12 = objc_getAssociatedObject(changedCopy, &unk_100060300);
   v5 = [v12 objectForKey:@"target"];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    target = v5;
   }
 
   else
   {
-    v7 = [(_UIShareTableStaticDataSource *)self target];
+    target = [(_UIShareTableStaticDataSource *)self target];
   }
 
-  v8 = v7;
+  v8 = target;
 
-  v9 = [v4 isOn];
-  v10 = [NSNumber numberWithBool:v9];
+  isOn = [changedCopy isOn];
+  v10 = [NSNumber numberWithBool:isOn];
   v11 = [v12 objectForKey:@"key"];
   [v8 setValue:v10 forKey:v11];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_UIShareTableStaticDataSource *)self sections];
-  v7 = [v6 objectAtIndex:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v7 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   v8 = [v7 objectForKey:@"items"];
-  v9 = [v5 row];
+  v9 = [pathCopy row];
 
   v10 = [v8 objectAtIndex:v9];
 
@@ -527,7 +527,7 @@ LABEL_55:
       goto LABEL_6;
     }
 
-    v15 = 0;
+    bOOLValue = 0;
     goto LABEL_10;
   }
 
@@ -536,43 +536,43 @@ LABEL_6:
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
   }
 
   else
   {
-    v15 = 1;
+    bOOLValue = 1;
   }
 
 LABEL_10:
-  return v15;
+  return bOOLValue;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v46 = a3;
-  v6 = a4;
-  v7 = [(_UIShareTableStaticDataSource *)self sections];
-  v8 = [v7 objectAtIndex:{objc_msgSend(v6, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v8 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   v9 = [v8 objectForKey:@"items"];
-  v45 = v6;
-  v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+  v45 = pathCopy;
+  v10 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   v11 = [v10 objectForKey:@"type"];
   v12 = [v10 objectForKey:@"target"];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    target = v12;
   }
 
   else
   {
-    v14 = [(_UIShareTableStaticDataSource *)self target];
+    target = [(_UIShareTableStaticDataSource *)self target];
   }
 
-  v15 = v14;
+  v15 = target;
 
   if ([v11 isEqual:@"radio"])
   {
@@ -614,7 +614,7 @@ LABEL_11:
       v20 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v18, [v45 section]);
       v48 = v20;
       v23 = [NSArray arrayWithObjects:&v48 count:1];
-      [v46 reloadRowsAtIndexPaths:v23 withRowAnimation:100];
+      [viewCopy reloadRowsAtIndexPaths:v23 withRowAnimation:100];
 
 LABEL_10:
       goto LABEL_11;
@@ -641,7 +641,7 @@ LABEL_12:
 
     else
     {
-      v28 = [v46 cellForRowAtIndexPath:v45];
+      v28 = [viewCopy cellForRowAtIndexPath:v45];
     }
 
     v40 = v28;
@@ -651,10 +651,10 @@ LABEL_12:
 
   else if ([v11 isEqual:@"link"])
   {
-    [v46 cellForRowAtIndexPath:v6];
+    [viewCopy cellForRowAtIndexPath:pathCopy];
     v30 = v29 = v15;
-    v31 = [v30 window];
-    [v31 makeKeyWindow];
+    window = [v30 window];
+    [window makeKeyWindow];
 
     [v30 becomeFirstResponder];
     v32 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
@@ -680,20 +680,20 @@ LABEL_12:
   }
 }
 
-- (void)menuWillHide:(id)a3
+- (void)menuWillHide:(id)hide
 {
-  v6 = [(_UIShareTableStaticDataSource *)self tableView];
+  tableView = [(_UIShareTableStaticDataSource *)self tableView];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:UIMenuControllerWillHideMenuNotification object:0];
 
-  v5 = [v6 indexPathForSelectedRow];
-  [v6 deselectRowAtIndexPath:v5 animated:1];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (BOOL)tableView:(id)a3 canPerformAction:(SEL)a4 forRowAtIndexPath:(id)a5 withSender:(id)a6
+- (BOOL)tableView:(id)view canPerformAction:(SEL)action forRowAtIndexPath:(id)path withSender:(id)sender
 {
-  v7 = [a3 cellForRowAtIndexPath:a5];
-  if ("copyLink:" == a4 || "copy:" == a4)
+  v7 = [view cellForRowAtIndexPath:path];
+  if ("copyLink:" == action || "copy:" == action)
   {
     v9 = objc_opt_respondsToSelector();
   }
@@ -706,21 +706,21 @@ LABEL_12:
   return v9 & 1;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(_UIShareTableStaticDataSource *)self sections];
-  v6 = [v5 objectAtIndex:a4];
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v6 = [sections objectAtIndex:section];
 
   v7 = [v6 objectForKey:@"title"];
-  v8 = [v7 localizedUppercaseString];
+  localizedUppercaseString = [v7 localizedUppercaseString];
 
-  return v8;
+  return localizedUppercaseString;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [(_UIShareTableStaticDataSource *)self sections];
-  v6 = [v5 objectAtIndex:a4];
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v6 = [sections objectAtIndex:section];
 
   v7 = [v6 objectForKey:@"title"];
   if (v7)
@@ -739,19 +739,19 @@ LABEL_12:
 
   v8 = objc_alloc_init(UITableViewHeaderFooterView);
   v9 = +[UIColor systemGrayColor];
-  v10 = [v8 textLabel];
-  [v10 setTextColor:v9];
+  textLabel = [v8 textLabel];
+  [textLabel setTextColor:v9];
 
 LABEL_5:
 
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(_UIShareTableStaticDataSource *)self sections];
-  v8 = [v7 objectAtIndex:a4];
+  viewCopy = view;
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v8 = [sections objectAtIndex:section];
 
   v9 = [v8 objectForKey:@"footer"];
   if (v9)
@@ -759,23 +759,23 @@ LABEL_5:
 
 LABEL_4:
     v10 = objc_alloc_init(_UIShareHeaderFooterView);
-    v11 = [v6 backgroundColor];
-    v12 = [(_UIShareHeaderFooterView *)v10 contentView];
-    [v12 setBackgroundColor:v11];
+    backgroundColor = [viewCopy backgroundColor];
+    contentView = [(_UIShareHeaderFooterView *)v10 contentView];
+    [contentView setBackgroundColor:backgroundColor];
 
     v13 = [v8 objectForKey:@"footer"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v15 = [(_UIShareHeaderFooterView *)v10 centeredTitleView];
-    v16 = v15;
+    centeredTitleView = [(_UIShareHeaderFooterView *)v10 centeredTitleView];
+    v16 = centeredTitleView;
     if (isKindOfClass)
     {
-      [v15 setAttributedText:v13];
+      [centeredTitleView setAttributedText:v13];
     }
 
     else
     {
-      [v15 setText:v13];
+      [centeredTitleView setText:v13];
     }
 
     goto LABEL_8;
@@ -793,27 +793,27 @@ LABEL_8:
   return v10;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v12 = a4;
-  v6 = a3;
+  headerViewCopy = headerView;
+  viewCopy = view;
   v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-  v8 = [v12 textLabel];
-  [v8 setFont:v7];
+  textLabel = [headerViewCopy textLabel];
+  [textLabel setFont:v7];
 
-  v9 = [v12 textLabel];
-  [v9 setAdjustsFontForContentSizeCategory:1];
+  textLabel2 = [headerViewCopy textLabel];
+  [textLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v10 = [v6 backgroundColor];
+  backgroundColor = [viewCopy backgroundColor];
 
-  v11 = [v12 contentView];
-  [v11 setBackgroundColor:v10];
+  contentView = [headerViewCopy contentView];
+  [contentView setBackgroundColor:backgroundColor];
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v5 = [(_UIShareTableStaticDataSource *)self sections];
-  v6 = [v5 objectAtIndex:a4];
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v6 = [sections objectAtIndex:section];
 
   v7 = [v6 objectForKey:@"hheight"];
   v8 = v7;
@@ -840,10 +840,10 @@ LABEL_8:
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v5 = [(_UIShareTableStaticDataSource *)self sections];
-  v6 = [v5 objectAtIndex:a4];
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v6 = [sections objectAtIndex:section];
 
   v7 = [v6 objectForKey:@"fheight"];
   v8 = v7;
@@ -870,29 +870,29 @@ LABEL_8:
   return v11;
 }
 
-- (id)tableView:(id)a3 editActionsForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view editActionsForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIShareTableStaticDataSource *)self sections];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v7, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(_UIShareTableStaticDataSource *)self sections];
+  v9 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   v10 = [v9 objectForKey:@"items"];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v7, "row")}];
+  v11 = [v10 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   v12 = [v11 objectForKey:@"target"];
   v13 = v12;
   if (v12)
   {
-    v14 = v12;
+    target = v12;
   }
 
   else
   {
-    v14 = [(_UIShareTableStaticDataSource *)self target];
+    target = [(_UIShareTableStaticDataSource *)self target];
   }
 
-  v15 = v14;
+  v15 = target;
 
   v16 = [v11 objectForKey:@"remact"];
 
@@ -905,8 +905,8 @@ LABEL_8:
     v24 = sub_100011E2C;
     v25 = &unk_10004CEA8;
     v26 = v11;
-    v27 = v6;
-    v28 = v7;
+    v27 = viewCopy;
+    v28 = pathCopy;
     v29 = v15;
     v19 = [UITableViewRowAction rowActionWithStyle:0 title:v18 handler:&v22];
 

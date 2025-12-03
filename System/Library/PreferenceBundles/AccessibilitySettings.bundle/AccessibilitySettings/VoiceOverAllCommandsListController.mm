@@ -11,9 +11,9 @@
   {
     v29 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_opt_new();
-    v5 = self;
+    selfCopy = self;
     v6 = OBJC_IVAR___PSViewController__specifier;
-    v33 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
+    voCommandManager = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSViewController__specifier] voCommandManager];
     v28 = +[PSSpecifier emptyGroupSpecifier];
     [v4 addObject:?];
     v36 = 0u;
@@ -40,9 +40,9 @@
           }
 
           v13 = *(*(&v34 + 1) + 8 * v11);
-          v14 = [*&v5->AXUISettingsBaseListController_opaque[v6] voCommandContext];
-          v15 = [v14 resolver];
-          v9 = [PSSpecifier voSubmenuForCommandCategory:v13 commandManager:v33 resolver:v15];
+          voCommandContext = [*&selfCopy->AXUISettingsBaseListController_opaque[v6] voCommandContext];
+          resolver = [voCommandContext resolver];
+          v9 = [PSSpecifier voSubmenuForCommandCategory:v13 commandManager:voCommandManager resolver:resolver];
 
           v4 = v32;
           [v32 addObject:v9];
@@ -62,9 +62,9 @@
       v9 = 0;
     }
 
-    v16 = v5;
-    v17 = [*&v5->AXUISettingsBaseListController_opaque[v6] voCommandResolver];
-    v18 = [v33 allSiriShortcutCommandsWithResolver:v17];
+    v16 = selfCopy;
+    voCommandResolver = [*&selfCopy->AXUISettingsBaseListController_opaque[v6] voCommandResolver];
+    v18 = [voCommandManager allSiriShortcutCommandsWithResolver:voCommandResolver];
     if ([v18 count])
     {
       obja = +[PSSpecifier emptyGroupSpecifier];
@@ -72,12 +72,12 @@
       [v4 addObject:obja];
       v19 = settingsLocString(@"vo.siri.shortcuts", @"VoiceOverSettings");
       v20 = objc_opt_class();
-      v21 = [*&v16->AXUISettingsBaseListController_opaque[v6] voCommandContext];
-      [v21 resolver];
-      v23 = v22 = v17;
-      v24 = [PSSpecifier voGenericSubmenuWithTitle:v19 childViewControllerClass:v20 commandManager:v33 resolver:v23];
+      voCommandContext2 = [*&v16->AXUISettingsBaseListController_opaque[v6] voCommandContext];
+      [voCommandContext2 resolver];
+      v23 = v22 = voCommandResolver;
+      v24 = [PSSpecifier voGenericSubmenuWithTitle:v19 childViewControllerClass:v20 commandManager:voCommandManager resolver:v23];
 
-      v17 = v22;
+      voCommandResolver = v22;
       v4 = v32;
 
       [v32 addObject:v24];

@@ -3,29 +3,29 @@
 - (CGSize)previewContentSize;
 - (CGSize)previewScaledSize;
 - (UIBezierPath)outline;
-- (_UIDragMonitorSessionPreview)initWithImageComponent:(id)a3 preview:(id)a4;
-- (id)previewImageWithSnapshotSettings:(id)a3;
+- (_UIDragMonitorSessionPreview)initWithImageComponent:(id)component preview:(id)preview;
+- (id)previewImageWithSnapshotSettings:(id)settings;
 @end
 
 @implementation _UIDragMonitorSessionPreview
 
-- (_UIDragMonitorSessionPreview)initWithImageComponent:(id)a3 preview:(id)a4
+- (_UIDragMonitorSessionPreview)initWithImageComponent:(id)component preview:(id)preview
 {
-  v7 = a3;
-  v8 = a4;
+  componentCopy = component;
+  previewCopy = preview;
   v16.receiver = self;
   v16.super_class = _UIDragMonitorSessionPreview;
   v9 = [(_UIDragMonitorSessionPreview *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_imageComponent, a3);
-    objc_storeStrong(&v10->_preview, a4);
-    v11 = [v8 parameters];
-    v12 = v11;
-    if (v11)
+    objc_storeStrong(&v9->_imageComponent, component);
+    objc_storeStrong(&v10->_preview, preview);
+    parameters = [previewCopy parameters];
+    v12 = parameters;
+    if (parameters)
     {
-      v13 = v11;
+      v13 = parameters;
     }
 
     else
@@ -40,28 +40,28 @@
   return v10;
 }
 
-- (id)previewImageWithSnapshotSettings:(id)a3
+- (id)previewImageWithSnapshotSettings:(id)settings
 {
   v36[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIDragMonitorSessionPreview *)self imageComponent];
-  v6 = [v5 createSnapshotViewForPreview:self->_preview];
+  settingsCopy = settings;
+  imageComponent = [(_UIDragMonitorSessionPreview *)self imageComponent];
+  v6 = [imageComponent createSnapshotViewForPreview:self->_preview];
 
   [(_UIDragMonitorSessionPreview *)self previewContentSize];
   v8 = v7;
   v10 = v9;
-  v11 = [(UIPreviewParameters *)self->_parameters visiblePath];
-  if (v11)
+  visiblePath = [(UIPreviewParameters *)self->_parameters visiblePath];
+  if (visiblePath)
   {
     [(_DUIPreview *)self->_preview contentOffset];
     v12 = objc_alloc_init(MEMORY[0x1E69794A0]);
     [v6 bounds];
     [v12 setFrame:?];
-    [v12 setPath:{objc_msgSend(v11, "CGPath")}];
-    v13 = [v6 layer];
-    [v13 setMask:v12];
+    [v12 setPath:{objc_msgSend(visiblePath, "CGPath")}];
+    layer = [v6 layer];
+    [layer setMask:v12];
 
-    [v11 bounds];
+    [visiblePath bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -118,13 +118,13 @@
   v36[3] = &unk_1EFE32E60;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:4];
 
-  v28 = [v4 windowSceneForSnapshotting];
+  windowSceneForSnapshotting = [settingsCopy windowSceneForSnapshotting];
 
-  if (v28)
+  if (windowSceneForSnapshotting)
   {
     v29 = [v27 mutableCopy];
-    v30 = [v4 windowSceneForSnapshotting];
-    [v29 setObject:v30 forKeyedSubscript:@"src-window-scene"];
+    windowSceneForSnapshotting2 = [settingsCopy windowSceneForSnapshotting];
+    [v29 setObject:windowSceneForSnapshotting2 forKeyedSubscript:@"src-window-scene"];
 
     v27 = v29;
   }
@@ -136,8 +136,8 @@
 
 - (CGSize)previewScaledSize
 {
-  v2 = [(_UIDragMonitorSessionPreview *)self preview];
-  [v2 scaledSize];
+  preview = [(_UIDragMonitorSessionPreview *)self preview];
+  [preview scaledSize];
   v4 = v3;
   v6 = v5;
 
@@ -150,8 +150,8 @@
 
 - (CGSize)previewContentSize
 {
-  v2 = [(_UIDragMonitorSessionPreview *)self preview];
-  [v2 contentSize];
+  preview = [(_UIDragMonitorSessionPreview *)self preview];
+  [preview contentSize];
   v4 = v3;
   v6 = v5;
 
@@ -164,8 +164,8 @@
 
 - (CGPoint)previewContentOffset
 {
-  v2 = [(_UIDragMonitorSessionPreview *)self preview];
-  [v2 contentOffset];
+  preview = [(_UIDragMonitorSessionPreview *)self preview];
+  [preview contentOffset];
   v4 = v3;
   v6 = v5;
 
@@ -178,10 +178,10 @@
 
 - (UIBezierPath)outline
 {
-  v2 = [(_UIDragMonitorSessionPreview *)self preview];
-  v3 = [v2 outline];
+  preview = [(_UIDragMonitorSessionPreview *)self preview];
+  outline = [preview outline];
 
-  return v3;
+  return outline;
 }
 
 @end

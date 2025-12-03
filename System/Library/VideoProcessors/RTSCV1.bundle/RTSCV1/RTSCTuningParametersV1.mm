@@ -1,6 +1,6 @@
 @interface RTSCTuningParametersV1
 - (RTSCTuningParametersV1)init;
-- (RTSCTuningParametersV1)initWithDictionary:(id)a3;
+- (RTSCTuningParametersV1)initWithDictionary:(id)dictionary;
 @end
 
 @implementation RTSCTuningParametersV1
@@ -27,15 +27,15 @@
   return v6;
 }
 
-- (RTSCTuningParametersV1)initWithDictionary:(id)a3
+- (RTSCTuningParametersV1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = RTSCTuningParametersV1;
   v5 = [(RTSCTuningParametersV1 *)&v14 init];
   plist = v5->_plist;
-  v5->_plist = v4;
-  v7 = v4;
+  v5->_plist = dictionaryCopy;
+  v7 = dictionaryCopy;
 
   v13 = 0;
   [(NSDictionary *)v5->_plist cmi_floatValueForKey:@"naturalOutputFOV" defaultValue:&v13 found:0.0];

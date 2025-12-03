@@ -1,27 +1,27 @@
 @interface WLDClientConnection
-- (WLDClientConnection)initWithConnection:(id)a3 clientIdentifier:(id)a4;
+- (WLDClientConnection)initWithConnection:(id)connection clientIdentifier:(id)identifier;
 - (WLDClientConnectionDelegate)delegate;
 - (void)_didInvalidate;
 - (void)checkPendingPlaybackReports;
-- (void)clearOffers:(id)a3;
-- (void)deletePlaybackActivityWithIdentifier:(id)a3 bundleID:(id)a4;
-- (void)endPlaybackSession:(id)a3;
-- (void)fetchApplications:(id)a3;
-- (void)fetchLocationAuthorizationStatus:(id)a3;
-- (void)fetchSettings:(id)a3;
-- (void)performSportsFavoritesAction:(unint64_t)a3 ids:(id)a4 caller:(id)a5 completion:(id)a6;
-- (void)postSettings:(id)a3 replyHandler:(id)a4;
+- (void)clearOffers:(id)offers;
+- (void)deletePlaybackActivityWithIdentifier:(id)identifier bundleID:(id)d;
+- (void)endPlaybackSession:(id)session;
+- (void)fetchApplications:(id)applications;
+- (void)fetchLocationAuthorizationStatus:(id)status;
+- (void)fetchSettings:(id)settings;
+- (void)performSportsFavoritesAction:(unint64_t)action ids:(id)ids caller:(id)caller completion:(id)completion;
+- (void)postSettings:(id)settings replyHandler:(id)handler;
 - (void)prewarm;
-- (void)readSettingsStore:(id)a3;
-- (void)removeOfferByBadgeId:(id)a3 completionHandler:(id)a4;
-- (void)reportFederatedPunchout:(id)a3;
-- (void)reportPlayback:(id)a3 sessionID:(id)a4 completion:(id)a5;
-- (void)requestConsentForBundleID:(id)a3 forceAuth:(BOOL)a4 replyHandler:(id)a5;
-- (void)requestDecoratedNowPlayingSummaries:(id)a3;
-- (void)requestNowPlayingSummaries:(id)a3;
-- (void)saveOffer:(id)a3 completionHandler:(id)a4;
-- (void)vppaConsentedBundleIDsWithCompletion:(id)a3;
-- (void)writeSettingsStore:(id)a3 replyHandler:(id)a4;
+- (void)readSettingsStore:(id)store;
+- (void)removeOfferByBadgeId:(id)id completionHandler:(id)handler;
+- (void)reportFederatedPunchout:(id)punchout;
+- (void)reportPlayback:(id)playback sessionID:(id)d completion:(id)completion;
+- (void)requestConsentForBundleID:(id)d forceAuth:(BOOL)auth replyHandler:(id)handler;
+- (void)requestDecoratedNowPlayingSummaries:(id)summaries;
+- (void)requestNowPlayingSummaries:(id)summaries;
+- (void)saveOffer:(id)offer completionHandler:(id)handler;
+- (void)vppaConsentedBundleIDsWithCompletion:(id)completion;
+- (void)writeSettingsStore:(id)store replyHandler:(id)handler;
 @end
 
 @implementation WLDClientConnection
@@ -32,18 +32,18 @@
   [v2 checkPendingReports];
 }
 
-- (WLDClientConnection)initWithConnection:(id)a3 clientIdentifier:(id)a4
+- (WLDClientConnection)initWithConnection:(id)connection clientIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  identifierCopy = identifier;
   v27.receiver = self;
   v27.super_class = WLDClientConnection;
   v9 = [(WLDClientConnection *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_connection, connection);
+    v11 = [identifierCopy copy];
     clientIdentifier = v10->_clientIdentifier;
     v10->_clientIdentifier = v11;
 
@@ -87,20 +87,20 @@ void __59__WLDClientConnection_initWithConnection_clientIdentifier___block_invok
   }
 }
 
-- (void)deletePlaybackActivityWithIdentifier:(id)a3 bundleID:(id)a4
+- (void)deletePlaybackActivityWithIdentifier:(id)identifier bundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = [[WLKTransactionScope alloc] initWithIdentifier:@"WLDClientConnection.deletePlaybackActivityWithIdentifier"];
-  if (v5 && v6)
+  if (identifierCopy && dCopy)
   {
-    NSLog(@"Delete requested for content ID: %@, bundle ID: %@", v5, v6);
-    v7 = [[WLKPlayHistoryRemoveRequest alloc] initWithBundleID:v6 externalID:v5];
+    NSLog(@"Delete requested for content ID: %@, bundle ID: %@", identifierCopy, dCopy);
+    v7 = [[WLKPlayHistoryRemoveRequest alloc] initWithBundleID:dCopy externalID:identifierCopy];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = __69__WLDClientConnection_deletePlaybackActivityWithIdentifier_bundleID___block_invoke;
@@ -111,7 +111,7 @@ void __59__WLDClientConnection_initWithConnection_clientIdentifier___block_invok
 
   else
   {
-    NSLog(@"Invalid delete requested for content ID: %@, bundle ID: %@. Ignoring.", v5, v6);
+    NSLog(@"Invalid delete requested for content ID: %@, bundle ID: %@. Ignoring.", identifierCopy, dCopy);
     v7 = v10[5];
     v10[5] = 0;
   }
@@ -126,9 +126,9 @@ void __69__WLDClientConnection_deletePlaybackActivityWithIdentifier_bundleID___b
   *(v1 + 40) = 0;
 }
 
-- (void)requestNowPlayingSummaries:(id)a3
+- (void)requestNowPlayingSummaries:(id)summaries
 {
-  v3 = a3;
+  summariesCopy = summaries;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -140,7 +140,7 @@ void __69__WLDClientConnection_deletePlaybackActivityWithIdentifier_bundleID___b
   v6[1] = 3221225472;
   v6[2] = __50__WLDClientConnection_requestNowPlayingSummaries___block_invoke;
   v6[3] = &unk_100044B38;
-  v5 = v3;
+  v5 = summariesCopy;
   v7 = v5;
   v8 = v9;
   [v4 fetchNowPlayingSummaries:v6];
@@ -161,9 +161,9 @@ void __50__WLDClientConnection_requestNowPlayingSummaries___block_invoke(uint64_
   *(v3 + 40) = 0;
 }
 
-- (void)requestDecoratedNowPlayingSummaries:(id)a3
+- (void)requestDecoratedNowPlayingSummaries:(id)summaries
 {
-  v3 = a3;
+  summariesCopy = summaries;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -175,7 +175,7 @@ void __50__WLDClientConnection_requestNowPlayingSummaries___block_invoke(uint64_
   v6[1] = 3221225472;
   v6[2] = __59__WLDClientConnection_requestDecoratedNowPlayingSummaries___block_invoke;
   v6[3] = &unk_100044B60;
-  v5 = v3;
+  v5 = summariesCopy;
   v7 = v5;
   v8 = v9;
   [v4 fetchDecoratedNowPlayingSummaries:v6];
@@ -196,24 +196,24 @@ void __59__WLDClientConnection_requestDecoratedNowPlayingSummaries___block_invok
   *(v3 + 40) = 0;
 }
 
-- (void)reportPlayback:(id)a3 sessionID:(id)a4 completion:(id)a5
+- (void)reportPlayback:(id)playback sessionID:(id)d completion:(id)completion
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  playbackCopy = playback;
+  dCopy = d;
+  completionCopy = completion;
   v10 = [[WLKTransactionScope alloc] initWithIdentifier:@"WLDClientConnection.reportPlayback"];
-  v11 = [(WLDClientConnection *)self connection];
+  connection = [(WLDClientConnection *)self connection];
   v12 = WLKEntitlementPlaybackReport;
-  HasBoolValueForEntitlement = WLDConnectionHasBoolValueForEntitlement(v11, WLKEntitlementPlaybackReport);
+  HasBoolValueForEntitlement = WLDConnectionHasBoolValueForEntitlement(connection, WLKEntitlementPlaybackReport);
 
   if (HasBoolValueForEntitlement)
   {
     v14 = +[WLDPlaybackManager sharedManager];
-    [v14 handleDirectPlaybackSummary:v17 sessionID:v8];
+    [v14 handleDirectPlaybackSummary:playbackCopy sessionID:dCopy];
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
@@ -221,27 +221,27 @@ void __59__WLDClientConnection_requestDecoratedNowPlayingSummaries___block_invok
   {
     v15 = [NSString stringWithFormat:@"Ignoring reportPlayback request from client lacking the entitlement: %@", v12];
     NSLog(@"Error: %@", v15);
-    if (v9)
+    if (completionCopy)
     {
       v16 = WLKError();
-      (v9)[2](v9, 0, v16);
+      (completionCopy)[2](completionCopy, 0, v16);
     }
   }
 }
 
-- (void)endPlaybackSession:(id)a3
+- (void)endPlaybackSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v4 = +[WLDPlaybackManager sharedManager];
-  [v4 endDirectPlaybackSession:v3];
+  [v4 endDirectPlaybackSession:sessionCopy];
 }
 
-- (void)requestConsentForBundleID:(id)a3 forceAuth:(BOOL)a4 replyHandler:(id)a5
+- (void)requestConsentForBundleID:(id)d forceAuth:(BOOL)auth replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if (v6)
+  authCopy = auth;
+  dCopy = d;
+  handlerCopy = handler;
+  if (authCopy)
   {
     v9 = dispatch_time(0, 2000000000);
     dispatch_after(v9, &_dispatch_main_q, &__block_literal_global_34);
@@ -252,9 +252,9 @@ void __59__WLDClientConnection_requestDecoratedNowPlayingSummaries___block_invok
   v12[1] = 3221225472;
   v12[2] = __72__WLDClientConnection_requestConsentForBundleID_forceAuth_replyHandler___block_invoke_3;
   v12[3] = &unk_100044C08;
-  v13 = v8;
-  v11 = v8;
-  [(WLDPlaybackManager *)v10 requestToPromptForBundleID:v7 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(WLDPlaybackManager *)v10 requestToPromptForBundleID:dCopy completionHandler:v12];
 }
 
 void __72__WLDClientConnection_requestConsentForBundleID_forceAuth_replyHandler___block_invoke(id a1)
@@ -279,21 +279,21 @@ uint64_t __72__WLDClientConnection_requestConsentForBundleID_forceAuth_replyHand
   return result;
 }
 
-- (void)fetchApplications:(id)a3
+- (void)fetchApplications:(id)applications
 {
-  if (a3)
+  if (applications)
   {
-    v3 = a3;
+    applicationsCopy = applications;
     v6 = [[WLKTransactionScope alloc] initWithIdentifier:@"WLDClientConnection.fetchApplications"];
     v4 = +[WLKAppLibrary defaultAppLibrary];
-    v5 = [v4 allAppProxiesPerCategory];
-    v3[2](v3, v5);
+    allAppProxiesPerCategory = [v4 allAppProxiesPerCategory];
+    applicationsCopy[2](applicationsCopy, allAppProxiesPerCategory);
   }
 }
 
-- (void)readSettingsStore:(id)a3
+- (void)readSettingsStore:(id)store
 {
-  v3 = a3;
+  storeCopy = store;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -305,7 +305,7 @@ uint64_t __72__WLDClientConnection_requestConsentForBundleID_forceAuth_replyHand
   v6[1] = 3221225472;
   v6[2] = __41__WLDClientConnection_readSettingsStore___block_invoke;
   v6[3] = &unk_100044B60;
-  v5 = v3;
+  v5 = storeCopy;
   v7 = v5;
   v8 = v9;
   [v4 _dictionaryOnDisk:v6];
@@ -326,10 +326,10 @@ void __41__WLDClientConnection_readSettingsStore___block_invoke(uint64_t a1)
   *(v3 + 40) = 0;
 }
 
-- (void)writeSettingsStore:(id)a3 replyHandler:(id)a4
+- (void)writeSettingsStore:(id)store replyHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  handlerCopy = handler;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
@@ -341,10 +341,10 @@ void __41__WLDClientConnection_readSettingsStore___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __55__WLDClientConnection_writeSettingsStore_replyHandler___block_invoke;
   v9[3] = &unk_100044C30;
-  v8 = v6;
+  v8 = handlerCopy;
   v10 = v8;
   v11 = v12;
-  [v7 _writeToDisk:v5 completion:v9];
+  [v7 _writeToDisk:storeCopy completion:v9];
 
   _Block_object_dispose(v12, 8);
 }
@@ -362,10 +362,10 @@ void __55__WLDClientConnection_writeSettingsStore_replyHandler___block_invoke(ui
   *(v3 + 40) = 0;
 }
 
-- (void)postSettings:(id)a3 replyHandler:(id)a4
+- (void)postSettings:(id)settings replyHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  settingsCopy = settings;
+  handlerCopy = handler;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -376,10 +376,10 @@ void __55__WLDClientConnection_writeSettingsStore_replyHandler___block_invoke(ui
   v8[1] = 3221225472;
   v8[2] = __49__WLDClientConnection_postSettings_replyHandler___block_invoke;
   v8[3] = &unk_100044C58;
-  v7 = v6;
+  v7 = handlerCopy;
   v9 = v7;
   v10 = v11;
-  [WLKSettingsCloudUtilities _postChangeDictionaryToCloud:v5 completion:v8];
+  [WLKSettingsCloudUtilities _postChangeDictionaryToCloud:settingsCopy completion:v8];
 
   _Block_object_dispose(v11, 8);
 }
@@ -397,9 +397,9 @@ void __49__WLDClientConnection_postSettings_replyHandler___block_invoke(uint64_t
   *(v3 + 40) = 0;
 }
 
-- (void)fetchSettings:(id)a3
+- (void)fetchSettings:(id)settings
 {
-  v3 = a3;
+  settingsCopy = settings;
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x3032000000;
@@ -410,7 +410,7 @@ void __49__WLDClientConnection_postSettings_replyHandler___block_invoke(uint64_t
   v5[1] = 3221225472;
   v5[2] = __37__WLDClientConnection_fetchSettings___block_invoke;
   v5[3] = &unk_100044C80;
-  v4 = v3;
+  v4 = settingsCopy;
   v6 = v4;
   v7 = v8;
   [WLKSettingsCloudUtilities _fetchSyncDictionary:v5];
@@ -432,9 +432,9 @@ void __37__WLDClientConnection_fetchSettings___block_invoke(uint64_t a1, void *a
   *(v7 + 40) = 0;
 }
 
-- (void)fetchLocationAuthorizationStatus:(id)a3
+- (void)fetchLocationAuthorizationStatus:(id)status
 {
-  v3 = a3;
+  statusCopy = status;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -446,7 +446,7 @@ void __37__WLDClientConnection_fetchSettings___block_invoke(uint64_t a1, void *a
   v6[1] = 3221225472;
   v6[2] = __56__WLDClientConnection_fetchLocationAuthorizationStatus___block_invoke;
   v6[3] = &unk_100044CA8;
-  v5 = v3;
+  v5 = statusCopy;
   v7 = v5;
   v8 = v9;
   [v4 _locationAuthorizationStatus:v6];
@@ -474,10 +474,10 @@ void __56__WLDClientConnection_fetchLocationAuthorizationStatus___block_invoke(u
   [v2 prewarm];
 }
 
-- (void)saveOffer:(id)a3 completionHandler:(id)a4
+- (void)saveOffer:(id)offer completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  offerCopy = offer;
+  handlerCopy = handler;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
@@ -489,10 +489,10 @@ void __56__WLDClientConnection_fetchLocationAuthorizationStatus___block_invoke(u
   v9[1] = 3221225472;
   v9[2] = __51__WLDClientConnection_saveOffer_completionHandler___block_invoke;
   v9[3] = &unk_100044CD0;
-  v8 = v6;
+  v8 = handlerCopy;
   v10 = v8;
   v11 = v12;
-  [v7 saveOffer:v5 completionHandler:v9];
+  [v7 saveOffer:offerCopy completionHandler:v9];
 
   _Block_object_dispose(v12, 8);
 }
@@ -511,10 +511,10 @@ void __51__WLDClientConnection_saveOffer_completionHandler___block_invoke(uint64
   *(v5 + 40) = 0;
 }
 
-- (void)removeOfferByBadgeId:(id)a3 completionHandler:(id)a4
+- (void)removeOfferByBadgeId:(id)id completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  handlerCopy = handler;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
@@ -526,10 +526,10 @@ void __51__WLDClientConnection_saveOffer_completionHandler___block_invoke(uint64
   v9[1] = 3221225472;
   v9[2] = __62__WLDClientConnection_removeOfferByBadgeId_completionHandler___block_invoke;
   v9[3] = &unk_100044CD0;
-  v8 = v6;
+  v8 = handlerCopy;
   v10 = v8;
   v11 = v12;
-  [v7 removeOfferByBadgeId:v5 completionHandler:v9];
+  [v7 removeOfferByBadgeId:idCopy completionHandler:v9];
 
   _Block_object_dispose(v12, 8);
 }
@@ -563,9 +563,9 @@ void __46__WLDClientConnection_fetchOffers_completion___block_invoke(uint64_t a1
   *(v8 + 40) = 0;
 }
 
-- (void)clearOffers:(id)a3
+- (void)clearOffers:(id)offers
 {
-  v3 = a3;
+  offersCopy = offers;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -577,7 +577,7 @@ void __46__WLDClientConnection_fetchOffers_completion___block_invoke(uint64_t a1
   v6[1] = 3221225472;
   v6[2] = __35__WLDClientConnection_clearOffers___block_invoke;
   v6[3] = &unk_100044CD0;
-  v5 = v3;
+  v5 = offersCopy;
   v7 = v5;
   v8 = v9;
   [v4 clearOffers:v6];
@@ -646,11 +646,11 @@ void __72__WLDClientConnection_fetchSubscriptionData_callerProcessID_completion_
   *(v10 + 40) = 0;
 }
 
-- (void)reportFederatedPunchout:(id)a3
+- (void)reportFederatedPunchout:(id)punchout
 {
-  v3 = a3;
+  punchoutCopy = punchout;
   v4 = +[WLDFederatedPunchoutReporter sharedFederatedPunchoutReporter];
-  [v4 recordPunchout:v3];
+  [v4 recordPunchout:punchoutCopy];
 }
 
 void __47__WLDClientConnection_refreshSubscriptionData___block_invoke(uint64_t a1)
@@ -660,18 +660,18 @@ void __47__WLDClientConnection_refreshSubscriptionData___block_invoke(uint64_t a
   *(v1 + 40) = 0;
 }
 
-- (void)vppaConsentedBundleIDsWithCompletion:(id)a3
+- (void)vppaConsentedBundleIDsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[WLDChannelManager defaultChannelManager];
-  [v4 vppaConsentedBundleIDsWithCompletion:v3];
+  [v4 vppaConsentedBundleIDsWithCompletion:completionCopy];
 }
 
-- (void)performSportsFavoritesAction:(unint64_t)a3 ids:(id)a4 caller:(id)a5 completion:(id)a6
+- (void)performSportsFavoritesAction:(unint64_t)action ids:(id)ids caller:(id)caller completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  idsCopy = ids;
+  callerCopy = caller;
+  completionCopy = completion;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -683,10 +683,10 @@ void __47__WLDClientConnection_refreshSubscriptionData___block_invoke(uint64_t a
   v14[1] = 3221225472;
   v14[2] = __74__WLDClientConnection_performSportsFavoritesAction_ids_caller_completion___block_invoke;
   v14[3] = &unk_100044D70;
-  v13 = v11;
+  v13 = completionCopy;
   v15 = v13;
   v16 = v17;
-  [v12 _performAction:a3 withIDs:v9 caller:v10 completion:v14];
+  [v12 _performAction:action withIDs:idsCopy caller:callerCopy completion:v14];
 
   _Block_object_dispose(v17, 8);
 }

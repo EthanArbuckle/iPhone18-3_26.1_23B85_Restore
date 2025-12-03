@@ -1,8 +1,8 @@
 @interface PTPRemoteCameraDeviceManager
 - (BOOL)startUSBPTPInterfaceNotifications;
 - (PTPRemoteCameraDeviceManager)init;
-- (id)uuidStringForDeviceProperties:(id)a3;
-- (void)cameraReset:(id)a3;
+- (id)uuidStringForDeviceProperties:(id)properties;
+- (void)cameraReset:(id)reset;
 - (void)dealloc;
 - (void)immediateMatch;
 @end
@@ -138,9 +138,9 @@
     {
       v10 = v6;
       v11 = v9;
-      v12 = [(__CFString *)v6 UTF8String];
+      uTF8String = [(__CFString *)v6 UTF8String];
       *buf = 136446466;
-      *&buf[4] = v12;
+      *&buf[4] = uTF8String;
       v33 = 2114;
       v34 = v8;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -160,20 +160,20 @@
         {
           v15 = *buf;
           v16 = [*buf objectForKey:@"bInterfaceClass"];
-          v17 = [v16 unsignedCharValue];
+          unsignedCharValue = [v16 unsignedCharValue];
 
           v18 = [v15 objectForKey:@"bInterfaceSubClass"];
-          v19 = [v18 unsignedCharValue];
+          unsignedCharValue2 = [v18 unsignedCharValue];
 
           v20 = [v15 objectForKey:@"bInterfaceProtocol"];
-          v21 = [v20 unsignedCharValue];
+          unsignedCharValue3 = [v20 unsignedCharValue];
 
-          if (v17 == 6 && v19 == 1 && v21 == 1)
+          if (unsignedCharValue == 6 && unsignedCharValue2 == 1 && unsignedCharValue3 == 1)
           {
             v22 = [v15 objectForKey:@"locationID"];
             parent = 0;
             v23 = +[NSUUID UUID];
-            v24 = [v23 UUIDString];
+            uUIDString = [v23 UUIDString];
 
             if (!IORegistryEntryGetParentEntry(v14, "IOService", &parent))
             {
@@ -185,14 +185,14 @@
                   v25 = properties;
                   v26 = [(PTPRemoteCameraDeviceManager *)self uuidStringForDeviceProperties:properties];
 
-                  v24 = v26;
+                  uUIDString = v26;
                 }
               }
             }
 
             v27 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [v22 unsignedIntegerValue]);
             v28 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"LOC:%lu", [v22 unsignedIntegerValue]);
-            [(PTPRemoteCameraDeviceManager *)self notifyClientDeviceAdded:v27 uuidString:v24 deviceName:v28];
+            [(PTPRemoteCameraDeviceManager *)self notifyClientDeviceAdded:v27 uuidString:uUIDString deviceName:v28];
           }
         }
 
@@ -207,10 +207,10 @@
   }
 }
 
-- (void)cameraReset:(id)a3
+- (void)cameraReset:(id)reset
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"locationID"];
+  userInfo = [reset userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"locationID"];
   v6 = v5;
   if (v5)
   {
@@ -219,7 +219,7 @@
     block[2] = sub_10001C854;
     block[3] = &unk_10002C900;
     v10 = v5;
-    v11 = self;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, block);
     v7 = dispatch_time(0, 2000000000);
     v8[0] = _NSConcreteStackBlock;
@@ -231,17 +231,17 @@
   }
 }
 
-- (id)uuidStringForDeviceProperties:(id)a3
+- (id)uuidStringForDeviceProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"USB Serial Number"];
-  v5 = [v3 objectForKeyedSubscript:@"idVendor"];
-  v6 = [v5 unsignedShortValue];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKey:@"USB Serial Number"];
+  v5 = [propertiesCopy objectForKeyedSubscript:@"idVendor"];
+  unsignedShortValue = [v5 unsignedShortValue];
 
-  v7 = [v3 objectForKeyedSubscript:@"idProduct"];
-  v8 = [v7 unsignedShortValue];
+  v7 = [propertiesCopy objectForKeyedSubscript:@"idProduct"];
+  unsignedShortValue2 = [v7 unsignedShortValue];
 
-  if ([v4 length] == 24 && v6 == 1452)
+  if ([v4 length] == 24 && unsignedShortValue == 1452)
   {
     v9 = [v4 substringWithRange:{0, 8}];
     v10 = [v4 substringFromIndex:9];
@@ -252,20 +252,20 @@
 
   if (!v4)
   {
-    v32 = [v3 objectForKeyedSubscript:@"locationID"];
-    v33 = [v32 unsignedIntValue];
+    v32 = [propertiesCopy objectForKeyedSubscript:@"locationID"];
+    unsignedIntValue = [v32 unsignedIntValue];
 
-    v34 = CFUUIDCreateWithBytes(kCFAllocatorDefault, HIBYTE(v33), BYTE2(v33), BYTE1(v33), v33, 0, 0, 0, 0, 0, 0, 0, 0, BYTE1(v6), v6, BYTE1(v8), v8);
+    v34 = CFUUIDCreateWithBytes(kCFAllocatorDefault, HIBYTE(unsignedIntValue), BYTE2(unsignedIntValue), BYTE1(unsignedIntValue), unsignedIntValue, 0, 0, 0, 0, 0, 0, 0, 0, BYTE1(unsignedShortValue), unsignedShortValue, BYTE1(unsignedShortValue2), unsignedShortValue2);
     if (v34)
     {
       v35 = v34;
-      v12 = CFUUIDCreateString(kCFAllocatorDefault, v34);
+      uUIDString = CFUUIDCreateString(kCFAllocatorDefault, v34);
       CFRelease(v35);
     }
 
     else
     {
-      v12 = 0;
+      uUIDString = 0;
     }
 
     __ICOSLogCreate();
@@ -276,7 +276,7 @@
       v36 = [v37 stringByAppendingString:@".."];
     }
 
-    v38 = [NSString stringWithFormat:@"Device Serial Missing: %d/%d, Setting: %@", v6, v8, v12];
+    v38 = [NSString stringWithFormat:@"Device Serial Missing: %d/%d, Setting: %@", unsignedShortValue, unsignedShortValue2, uUIDString];
     v39 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_ERROR))
     {
@@ -284,7 +284,7 @@
     }
 
 LABEL_22:
-    if (v12)
+    if (uUIDString)
     {
       goto LABEL_28;
     }
@@ -295,7 +295,7 @@ LABEL_22:
   __src[0] = 0;
   __src[1] = 0;
   v46 = 0;
-  v12 = 0;
+  uUIDString = 0;
   if (![v4 getBytes:__src maxLength:16 usedLength:&v46 encoding:objc_msgSend(v4 options:"smallestEncoding") range:1 remainingRange:{0, objc_msgSend(v4, "length"), 0}])
   {
     goto LABEL_22;
@@ -351,11 +351,11 @@ LABEL_22:
   }
 
   v30 = CFUUIDCreateWithBytes(kCFAllocatorDefault, v28, v27, v26, v25, v24, v23, v22, byte7, v20, v19, v18, v17, v16, v15, v14, byte15);
-  if (!v30 || (v31 = v30, v12 = CFUUIDCreateString(kCFAllocatorDefault, v30), CFRelease(v31), !v12))
+  if (!v30 || (v31 = v30, uUIDString = CFUUIDCreateString(kCFAllocatorDefault, v30), CFRelease(v31), !uUIDString))
   {
 LABEL_23:
     v40 = +[NSUUID UUID];
-    v12 = [v40 UUIDString];
+    uUIDString = [v40 UUIDString];
 
     __ICOSLogCreate();
     v41 = @"UUID Gen";
@@ -365,7 +365,7 @@ LABEL_23:
       v41 = [v42 stringByAppendingString:@".."];
     }
 
-    v43 = [NSString stringWithFormat:@"UUID Generation failed: %@/%d/%d, Setting: %@", v4, v6, v8, v12];
+    v43 = [NSString stringWithFormat:@"UUID Generation failed: %@/%d/%d, Setting: %@", v4, unsignedShortValue, unsignedShortValue2, uUIDString];
     v44 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_ERROR))
     {
@@ -375,7 +375,7 @@ LABEL_23:
 
 LABEL_28:
 
-  return v12;
+  return uUIDString;
 }
 
 @end

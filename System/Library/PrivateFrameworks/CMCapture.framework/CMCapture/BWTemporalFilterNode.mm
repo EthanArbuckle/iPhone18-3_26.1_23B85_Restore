@@ -1,27 +1,27 @@
 @interface BWTemporalFilterNode
 + (void)initialize;
-- (__CVBuffer)_createMatchingOutputFormatIfNeededForInputBuffer:(uint64_t)a1;
+- (__CVBuffer)_createMatchingOutputFormatIfNeededForInputBuffer:(uint64_t)buffer;
 - (uint64_t)_dumpFrameMetaData:(uint64_t)result;
 - (uint64_t)_dumpFrameStats;
 - (uint64_t)_invalidateFilterSession;
 - (uint64_t)_shouldBypassTemporalFilteringForSampleBuffer:(uint64_t)result;
 - (uint64_t)_updateOutputRequirements;
-- (uint64_t)initWithMaxLossyCompression:(void *)a3 filterSessionConfiguration:(char)a4 lowLightBandingMitigationEnabled:;
-- (void)_dropInputSampleWithPTS:(uint64_t)a1;
+- (uint64_t)initWithMaxLossyCompression:(void *)compression filterSessionConfiguration:(char)configuration lowLightBandingMitigationEnabled:;
+- (void)_dropInputSampleWithPTS:(uint64_t)s;
 - (void)_supportedOutputPixelFormats;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWTemporalFilterNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -72,9 +72,9 @@
   return result;
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  [(BWNodeOutput *)self->_videoOutput setFormat:a3, a4];
+  [(BWNodeOutput *)self->_videoOutput setFormat:format, input];
 
   [(BWTemporalFilterNode *)self _updateOutputRequirements];
 }
@@ -87,7 +87,7 @@ id __50__BWTemporalFilterNode_didReachEndOfDataForInput___block_invoke(uint64_t 
   return objc_msgSendSuper2(&v3, sel_didReachEndOfDataForInput_, v1);
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v54 = 0;
   pixelBufferOut = 0;
@@ -144,7 +144,7 @@ id __50__BWTemporalFilterNode_didReachEndOfDataForInput___block_invoke(uint64_t 
         v41 = 136315394;
         v42 = "[BWTemporalFilterNode renderSampleBuffer:forInput:]";
         v43 = 2112;
-        v44 = self;
+        selfCopy2 = self;
         LODWORD(v40) = 22;
         v39 = &v41;
         _os_log_send_and_compose_impl();
@@ -158,7 +158,7 @@ id __50__BWTemporalFilterNode_didReachEndOfDataForInput___block_invoke(uint64_t 
     *&self->_frameStats.framesWithMCTFAppliedCount = 0u;
   }
 
-  v16 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v16 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v16)
   {
     goto LABEL_66;
@@ -176,14 +176,14 @@ id __50__BWTemporalFilterNode_didReachEndOfDataForInput___block_invoke(uint64_t 
   }
 
   CMTimeMakeFromDictionary(&v52, Value);
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (!ImageBuffer)
   {
     goto LABEL_65;
   }
 
   v19 = ImageBuffer;
-  if (self->_enforceTemporalFilter || !self->_bypassTemporalFilter && ![(BWTemporalFilterNode *)self _shouldBypassTemporalFilteringForSampleBuffer:a3])
+  if (self->_enforceTemporalFilter || !self->_bypassTemporalFilter && ![(BWTemporalFilterNode *)self _shouldBypassTemporalFilteringForSampleBuffer:buffer])
   {
     if (self->_mctfSession)
     {
@@ -212,7 +212,7 @@ id __50__BWTemporalFilterNode_didReachEndOfDataForInput___block_invoke(uint64_t 
             v41 = 136315906;
             v42 = "[BWTemporalFilterNode renderSampleBuffer:forInput:]";
             v43 = 2112;
-            v44 = self;
+            selfCopy2 = self;
             v45 = 2112;
             v46 = v23;
             v47 = 2048;
@@ -236,11 +236,11 @@ LABEL_46:
         v49 = v52;
         if (!VTTemporalFilterSessionProcessFrame())
         {
-          if (!CMSimpleQueueEnqueue(self->_inputSampleBufferQueue, a3))
+          if (!CMSimpleQueueEnqueue(self->_inputSampleBufferQueue, buffer))
           {
-            if (a3)
+            if (buffer)
             {
-              CFRetain(a3);
+              CFRetain(buffer);
             }
 
             v16 = 0;
@@ -262,15 +262,15 @@ LABEL_46:
         v28 = CVBufferCopyAttachments(pixelBufferOut, kCVAttachmentMode_ShouldPropagate);
         if (v28 && (v29 = CFAutorelease(v28)) != 0)
         {
-          v30 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v29];
+          dictionary = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v29];
         }
 
         else
         {
-          v30 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
         }
 
-        v31 = v30;
+        v31 = dictionary;
         v32 = *off_1E798B4C0;
         v33 = [(__CFDictionary *)v16 objectForKeyedSubscript:*off_1E798B4C0, v39, v40];
         if (v33)
@@ -304,16 +304,16 @@ LABEL_65:
   if (!v16)
   {
     videoOutput = self->_videoOutput;
-    v38 = a3;
+    bufferCopy = buffer;
     goto LABEL_78;
   }
 
-  if (!BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, v16, &v54, &v53))
+  if (!BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, v16, &v54, &v53))
   {
     videoOutput = self->_videoOutput;
-    v38 = v53;
+    bufferCopy = v53;
 LABEL_78:
-    [(BWNodeOutput *)videoOutput emitSampleBuffer:v38, v39, v40];
+    [(BWNodeOutput *)videoOutput emitSampleBuffer:bufferCopy, v39, v40];
     ++self->_frameStats.framesDispatchedCount;
 LABEL_51:
     if (pixelBufferOut)
@@ -364,14 +364,14 @@ LABEL_66:
   [(BWTemporalFilterNode *)self _dropInputSampleWithPTS:?];
 }
 
-- (uint64_t)initWithMaxLossyCompression:(void *)a3 filterSessionConfiguration:(char)a4 lowLightBandingMitigationEnabled:
+- (uint64_t)initWithMaxLossyCompression:(void *)compression filterSessionConfiguration:(char)configuration lowLightBandingMitigationEnabled:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = BWTemporalFilterNode;
   v7 = objc_msgSendSuper2(&v18, sel_init);
   v8 = v7;
@@ -381,9 +381,9 @@ LABEL_66:
   }
 
   v7[32] = a2;
-  v9 = a3;
-  *(v8 + 240) = v9;
-  v10 = [objc_msgSend(v9 objectForKeyedSubscript:{@"ForceEnabled", "BOOLValue"}];
+  compressionCopy = compression;
+  *(v8 + 240) = compressionCopy;
+  v10 = [objc_msgSend(compressionCopy objectForKeyedSubscript:{@"ForceEnabled", "BOOLValue"}];
   *(v8 + 170) = 0;
   *(v8 + 171) = v10;
   *(v8 + 232) = 0;
@@ -407,7 +407,7 @@ LABEL_66:
     return 0;
   }
 
-  *(v8 + 265) = a4;
+  *(v8 + 265) = configuration;
   *(v8 + 136) = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v8];
   v12 = objc_alloc_init(BWVideoFormatRequirements);
   if (*(v8 + 265))
@@ -446,18 +446,18 @@ LABEL_66:
 
 - (void)_supportedOutputPixelFormats
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (*(a1 + 265))
+  if (*(self + 265))
   {
     return &unk_1F2249CF0;
   }
 
   v2 = [MEMORY[0x1E695DF70] arrayWithArray:&unk_1F2249CD8];
-  v3 = [objc_msgSend(*(a1 + 136) "videoFormat")];
+  v3 = [objc_msgSend(*(self + 136) "videoFormat")];
   if (v3)
   {
     IsFullRange = FigCapturePixelFormatIsFullRange(v3);
@@ -527,14 +527,14 @@ LABEL_66:
       v3 = 0;
     }
 
-    v4 = [(BWTemporalFilterNode *)v1 _supportedOutputPixelFormats];
-    v5 = [*(v1 + 160) formatRequirements];
+    _supportedOutputPixelFormats = [(BWTemporalFilterNode *)v1 _supportedOutputPixelFormats];
+    formatRequirements = [*(v1 + 160) formatRequirements];
     [objc_msgSend(*(v1 + 136) "videoFormat")];
     [OUTLINED_FUNCTION_7() setWidth:?];
     [objc_msgSend(*(v1 + 136) "videoFormat")];
     [OUTLINED_FUNCTION_7() setHeight:?];
-    [v5 setSupportedColorSpaceProperties:v3];
-    return [v5 setSupportedPixelFormats:v4];
+    [formatRequirements setSupportedColorSpaceProperties:v3];
+    return [formatRequirements setSupportedPixelFormats:_supportedOutputPixelFormats];
   }
 
   return result;
@@ -550,30 +550,30 @@ LABEL_66:
     if ([(BWPipelineStage *)[(BWNodeConnection *)[(BWNodeInput *)self->_videoInput connection] pipelineStage] queue])
     {
       self->_sampleBufferSerialQueue = [(BWPipelineStage *)[(BWNodeConnection *)[(BWNodeInput *)self->_videoInput connection] pipelineStage] queue];
-      v3 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BWVideoFormat pixelFormat](-[BWNodeInput videoFormat](self->_videoInput, "videoFormat"), "pixelFormat")}];
       v5 = *MEMORY[0x1E6966130];
-      [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E6966130]];
+      [dictionary setObject:v4 forKeyedSubscript:*MEMORY[0x1E6966130]];
       v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{-[BWVideoFormat width](-[BWNodeInput videoFormat](self->_videoInput, "videoFormat"), "width")}];
       v13 = *MEMORY[0x1E6966208];
-      [v3 setObject:v6 forKeyedSubscript:?];
+      [dictionary setObject:v6 forKeyedSubscript:?];
       v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{-[BWVideoFormat height](-[BWNodeInput videoFormat](self->_videoInput, "videoFormat"), "height")}];
       v12 = *MEMORY[0x1E69660B8];
-      [v3 setObject:v7 forKeyedSubscript:?];
+      [dictionary setObject:v7 forKeyedSubscript:?];
       v11 = *MEMORY[0x1E69660D8];
-      [v3 setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:?];
-      v8 = [MEMORY[0x1E695DF90] dictionary];
-      [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", getpid()), *MEMORY[0x1E6984150]}];
-      [v8 setObject:@"BWTemporalFilterNode" forKeyedSubscript:*MEMORY[0x1E6984158]];
-      v9 = [MEMORY[0x1E695DF90] dictionary];
-      [v9 setObject:@"com.apple.videotoolbox.temporalfilter.mctf" forKeyedSubscript:*MEMORY[0x1E6984160]];
-      v10 = [MEMORY[0x1E695DF90] dictionary];
-      [v10 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", -[BWVideoFormat pixelFormat](-[BWNodeOutput videoFormat](self->_videoOutput, "videoFormat"), "pixelFormat")), v5}];
+      [dictionary setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:?];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary2 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", getpid()), *MEMORY[0x1E6984150]}];
+      [dictionary2 setObject:@"BWTemporalFilterNode" forKeyedSubscript:*MEMORY[0x1E6984158]];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary3 setObject:@"com.apple.videotoolbox.temporalfilter.mctf" forKeyedSubscript:*MEMORY[0x1E6984160]];
+      dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", -[BWVideoFormat pixelFormat](-[BWNodeOutput videoFormat](self->_videoOutput, "videoFormat"), "pixelFormat")), v5}];
       [(BWVideoFormat *)[(BWNodeOutput *)self->_videoOutput videoFormat] width];
-      [v10 setObject:objc_msgSend(OUTLINED_FUNCTION_7() forKeyedSubscript:{"numberWithUnsignedLong:"), v13}];
+      [dictionary4 setObject:objc_msgSend(OUTLINED_FUNCTION_7() forKeyedSubscript:{"numberWithUnsignedLong:"), v13}];
       [(BWVideoFormat *)[(BWNodeOutput *)self->_videoOutput videoFormat] height];
-      [v10 setObject:objc_msgSend(OUTLINED_FUNCTION_7() forKeyedSubscript:{"numberWithUnsignedLong:"), v12}];
-      [v10 setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:v11];
+      [dictionary4 setObject:objc_msgSend(OUTLINED_FUNCTION_7() forKeyedSubscript:{"numberWithUnsignedLong:"), v12}];
+      [dictionary4 setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:v11];
       [(BWVideoFormat *)[(BWNodeInput *)self->_videoInput videoFormat] width];
       [(BWVideoFormat *)[(BWNodeInput *)self->_videoInput videoFormat] height];
       VTTemporalFilterSessionCreate();
@@ -581,16 +581,16 @@ LABEL_66:
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if (self->_videoInput == a5)
+  if (self->_videoInput == input)
   {
     if (self->_mctfSession)
     {
-      v6 = [(BWPixelBufferPool *)[(BWNodeOutput *)self->_videoOutput preparedPixelBufferPool:a3] cvPixelBufferPool];
-      if (v6)
+      cvPixelBufferPool = [(BWPixelBufferPool *)[(BWNodeOutput *)self->_videoOutput preparedPixelBufferPool:d] cvPixelBufferPool];
+      if (cvPixelBufferPool)
       {
-        VTSessionSetProperty(self->_mctfSession, *MEMORY[0x1E6984140], v6);
+        VTSessionSetProperty(self->_mctfSession, *MEMORY[0x1E6984140], cvPixelBufferPool);
         VTSessionSetProperty(self->_mctfSession, *MEMORY[0x1E6984130], *MEMORY[0x1E6984110]);
         VTSessionSetProperty(self->_mctfSession, *MEMORY[0x1E6984148], *MEMORY[0x1E695E4D0]);
         VTSessionSetProperty(self->_mctfSession, @"TemporalFilterPriority", &unk_1F2246DF8);
@@ -608,7 +608,7 @@ LABEL_66:
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   dispatch_assert_queue_V2(self->_sampleBufferSerialQueue);
   if (self->_mctfSession)
@@ -620,29 +620,29 @@ LABEL_66:
     v6[1] = 3221225472;
     v6[2] = __50__BWTemporalFilterNode_didReachEndOfDataForInput___block_invoke;
     v6[3] = &unk_1E798F898;
-    v6[4] = a3;
+    v6[4] = input;
     v6[5] = self;
     dispatch_async(sampleBufferSerialQueue, v6);
   }
 }
 
-- (__CVBuffer)_createMatchingOutputFormatIfNeededForInputBuffer:(uint64_t)a1
+- (__CVBuffer)_createMatchingOutputFormatIfNeededForInputBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0;
   }
 
   PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
-  if (PixelFormatType == [objc_msgSend(*(a1 + 160) "videoFormat")] || !*(a1 + 176) && (VTPixelTransferSessionCreate(*MEMORY[0x1E695E480], (a1 + 176)) || !*(a1 + 176)))
+  if (PixelFormatType == [objc_msgSend(*(buffer + 160) "videoFormat")] || !*(buffer + 176) && (VTPixelTransferSessionCreate(*MEMORY[0x1E695E480], (buffer + 176)) || !*(buffer + 176)))
   {
     return 0;
   }
 
-  v5 = [objc_msgSend(*(a1 + 16) "livePixelBufferPool")];
+  v5 = [objc_msgSend(*(buffer + 16) "livePixelBufferPool")];
   if (v5)
   {
-    VTPixelTransferSessionTransferImage(*(a1 + 176), pixelBuffer, v5);
+    VTPixelTransferSessionTransferImage(*(buffer + 176), pixelBuffer, v5);
   }
 
   return v5;
@@ -736,17 +736,17 @@ LABEL_66:
   return result;
 }
 
-- (void)_dropInputSampleWithPTS:(uint64_t)a1
+- (void)_dropInputSampleWithPTS:(uint64_t)s
 {
-  if (a1)
+  if (s)
   {
     if (*(a2 + 12))
     {
-      ++*(a1 + 216);
+      ++*(s + 216);
       v4 = *a2;
       v5 = *(a2 + 2);
       v3 = [BWDroppedSample newDroppedSampleWithReason:0x1F219C150 pts:&v4];
-      [*(a1 + 160) emitDroppedSample:v3];
+      [*(s + 160) emitDroppedSample:v3];
     }
   }
 }

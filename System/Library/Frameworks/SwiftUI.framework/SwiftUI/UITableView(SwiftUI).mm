@@ -6,10 +6,10 @@
 
 - (uint64_t)horizontalMargin
 {
-  [a1 effectiveUserInterfaceLayoutDirection];
-  [a1 safeAreaInsets];
-  [a1 _defaultLeadingCellMarginWidth];
-  return [a1 _sectionContentInsetFollowsLayoutMargins];
+  [self effectiveUserInterfaceLayoutDirection];
+  [self safeAreaInsets];
+  [self _defaultLeadingCellMarginWidth];
+  return [self _sectionContentInsetFollowsLayoutMargins];
 }
 
 @end

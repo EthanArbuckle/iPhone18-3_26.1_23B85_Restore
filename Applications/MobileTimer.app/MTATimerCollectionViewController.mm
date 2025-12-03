@@ -1,92 +1,92 @@
 @interface MTATimerCollectionViewController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)singleTimerSectionSize;
-- (MTATimerCollectionViewController)initWithTimerManager:(id)a3 dataSource:(id)a4;
+- (MTATimerCollectionViewController)initWithTimerManager:(id)manager dataSource:(id)source;
 - (NSString)menuIdentifier;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (UIMenuBuilder)menuBuilder;
 - (double)cellHeight;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)currentTone;
 - (id)defaultEditLabel;
 - (id)shortcutItemForCurrentState;
 - (id)singleTimerCell;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
-- (void)_addOrEditControllerDidDismissCommitChanges:(BOOL)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)_addOrEditControllerDidDismissCommitChanges:(BOOL)changes;
 - (void)_handleNumberOfItemsDidChange;
-- (void)_presentAddEditForTimer:(id)a3 isNewTimer:(BOOL)a4;
-- (void)_reloadUI:(id)a3;
-- (void)_removeTimer:(id)a3 withCompletionBlock:(id)a4;
+- (void)_presentAddEditForTimer:(id)timer isNewTimer:(BOOL)newTimer;
+- (void)_reloadUI:(id)i;
+- (void)_removeTimer:(id)timer withCompletionBlock:(id)block;
 - (void)buildMenuBarRecentMenu;
-- (void)cancelTimer:(id)a3;
-- (void)cancelTimerForCell:(id)a3;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)cancelTimer:(id)timer;
+- (void)cancelTimerForCell:(id)cell;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)confirmPickingSound;
-- (void)dataSourceDidReload:(id)a3;
-- (void)dataSourceDidReloadRecentDurations:(id)a3;
+- (void)dataSourceDidReload:(id)reload;
+- (void)dataSourceDidReloadRecentDurations:(id)durations;
 - (void)dealloc;
 - (void)deleteRecentSection;
-- (void)deleteRecentTimerForCell:(id)a3;
-- (void)didCancelTimerWithSender:(id)a3;
+- (void)deleteRecentTimerForCell:(id)cell;
+- (void)didCancelTimerWithSender:(id)sender;
 - (void)didReceiveStartTimerShortcutAction;
-- (void)didStartTimerWithDuration:(double)a3 title:(id)a4 sound:(id)a5 sender:(id)a6;
-- (void)didUpdateWithLabel:(id)a3 sender:(id)a4;
-- (void)dismissAddViewController:(id)a3;
+- (void)didStartTimerWithDuration:(double)duration title:(id)title sound:(id)sound sender:(id)sender;
+- (void)didUpdateWithLabel:(id)label sender:(id)sender;
+- (void)dismissAddViewController:(id)controller;
 - (void)dismissSoundPicker;
-- (void)handleContentSizeChange:(id)a3;
+- (void)handleContentSizeChange:(id)change;
 - (void)handleOrientationChange;
 - (void)handleStartTimerShortcutAction;
 - (void)handleStopTimerShortcutAction;
-- (void)menuBarAppearedWithBuilder:(id)a3 targetMenuIdentifier:(id)a4;
-- (void)pauseResumeTimer:(id)a3;
-- (void)pauseResumeTimerForCell:(id)a3;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
-- (void)prepareUIForState:(unint64_t)a3 forceRefresh:(BOOL)a4;
-- (void)prepareUIForState:(unint64_t)a3 inCell:(id)a4 forceRefresh:(BOOL)a5;
+- (void)menuBarAppearedWithBuilder:(id)builder targetMenuIdentifier:(id)identifier;
+- (void)pauseResumeTimer:(id)timer;
+- (void)pauseResumeTimerForCell:(id)cell;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
+- (void)prepareUIForState:(unint64_t)state forceRefresh:(BOOL)refresh;
+- (void)prepareUIForState:(unint64_t)state inCell:(id)cell forceRefresh:(BOOL)refresh;
 - (void)reloadSections;
-- (void)reloadState:(id)a3;
+- (void)reloadState:(id)state;
 - (void)setupAddButton;
-- (void)showAddTimerViewWithTimer:(id)a3;
+- (void)showAddTimerViewWithTimer:(id)timer;
 - (void)showAddView;
-- (void)showAddViewForTimer:(id)a3;
-- (void)showAddViewWithCompletion:(id)a3;
-- (void)showSoundPicker:(id)a3;
-- (void)startRecentTimerForCell:(id)a3;
-- (void)startTimer:(id)a3;
-- (void)startTimerForCell:(id)a3 withDuration:(double)a4;
+- (void)showAddViewForTimer:(id)timer;
+- (void)showAddViewWithCompletion:(id)completion;
+- (void)showSoundPicker:(id)picker;
+- (void)startRecentTimerForCell:(id)cell;
+- (void)startTimer:(id)timer;
+- (void)startTimerForCell:(id)cell withDuration:(double)duration;
 - (void)startUpdatingSingleTimerUI;
 - (void)startUpdatingTimerUI;
 - (void)stopUpdatingTimerUI;
-- (void)timerAddEditControllerDidCancel:(id)a3 reload:(BOOL)a4;
-- (void)timerTick:(id)a3;
-- (void)tipViewControllerDidBecomeAvailableWithSiriTipsController:(id)a3 tipView:(id)a4;
-- (void)tipViewControllerWasInvalidatedWithSiriTipsController:(id)a3;
+- (void)timerAddEditControllerDidCancel:(id)cancel reload:(BOOL)reload;
+- (void)timerTick:(id)tick;
+- (void)tipViewControllerDidBecomeAvailableWithSiriTipsController:(id)controller tipView:(id)view;
+- (void)tipViewControllerWasInvalidatedWithSiriTipsController:(id)controller;
 - (void)updateAddButton;
 - (void)updateLatestDuration;
 - (void)updateSelectedTone;
-- (void)updateSelectedToneForCell:(id)a3;
+- (void)updateSelectedToneForCell:(id)cell;
 - (void)updateStateAndReloadData;
-- (void)updateTimerTick:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateTimerTick:(id)tick;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTATimerCollectionViewController
 
-- (MTATimerCollectionViewController)initWithTimerManager:(id)a3 dataSource:(id)a4
+- (MTATimerCollectionViewController)initWithTimerManager:(id)manager dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  sourceCopy = source;
   v8 = objc_alloc_init(UICollectionViewFlowLayout);
   v22.receiver = self;
   v22.super_class = MTATimerCollectionViewController;
@@ -99,19 +99,19 @@
     [(MTATimerCollectionViewController *)v9 setTitle:v11];
 
     v12 = [UIImage systemImageNamed:@"timer"];
-    v13 = [(MTATimerCollectionViewController *)v9 tabBarItem];
-    [v13 setImage:v12];
+    tabBarItem = [(MTATimerCollectionViewController *)v9 tabBarItem];
+    [tabBarItem setImage:v12];
 
-    [(MTATimerCollectionViewController *)v9 setTimerManager:v6];
-    [(MTATimerCollectionViewController *)v9 setDataSource:v7];
-    v14 = [(MTATimerCollectionViewController *)v9 dataSource];
-    [v14 registerObserver:v9];
+    [(MTATimerCollectionViewController *)v9 setTimerManager:managerCopy];
+    [(MTATimerCollectionViewController *)v9 setDataSource:sourceCopy];
+    dataSource = [(MTATimerCollectionViewController *)v9 dataSource];
+    [dataSource registerObserver:v9];
 
     v15 = objc_opt_new();
     [(MTATimerCollectionViewController *)v9 setSections:v15];
 
-    v16 = [(MTATimerCollectionViewController *)v9 title];
-    v17 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.timer" title:v16];
+    title = [(MTATimerCollectionViewController *)v9 title];
+    v17 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.timer" title:title];
     userActivity = v9->_userActivity;
     v9->_userActivity = v17;
 
@@ -152,29 +152,29 @@
 
   [(MTATimerCollectionViewController *)self reloadState];
   v5 = +[UIColor mtui_backgroundColor];
-  v6 = [(MTATimerCollectionViewController *)self collectionView];
-  [v6 setBackgroundColor:v5];
+  collectionView = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView setBackgroundColor:v5];
 
-  v7 = [(MTATimerCollectionViewController *)self collectionView];
-  [v7 setAllowsSelectionDuringEditing:1];
+  collectionView2 = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView2 setAllowsSelectionDuringEditing:1];
 
-  v8 = [(MTATimerCollectionViewController *)self collectionView];
-  [v8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kMTATimerActiveCollectionIdentifier"];
+  collectionView3 = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kMTATimerActiveCollectionIdentifier"];
 
-  v9 = [(MTATimerCollectionViewController *)self collectionView];
-  [v9 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kMTASingleTimerCellIdentifierNew"];
+  collectionView4 = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kMTASingleTimerCellIdentifierNew"];
 
-  v10 = [(MTATimerCollectionViewController *)self collectionView];
-  [v10 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kMTASingleTimerCellIdentifierActive"];
+  collectionView5 = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kMTASingleTimerCellIdentifierActive"];
 
-  v11 = [(MTATimerCollectionViewController *)self collectionView];
-  [v11 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kMTATimerRecentCollectionIdentifier"];
+  collectionView6 = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kMTATimerRecentCollectionIdentifier"];
 
-  v12 = [(MTATimerCollectionViewController *)self collectionView];
-  [v12 registerClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"kMTATimerCollectionHeaderIdentifier"];
+  collectionView7 = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView7 registerClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"kMTATimerCollectionHeaderIdentifier"];
 
-  v13 = [(MTATimerCollectionViewController *)self collectionView];
-  [v13 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kMTATimerTipCollectionViewCellIdentifier"];
+  collectionView8 = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"kMTATimerTipCollectionViewCellIdentifier"];
 
   v14 = +[NSNotificationCenter defaultCenter];
   [v14 addObserver:self selector:"handleContentSizeChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -197,48 +197,48 @@
   else
   {
     [(MTATimerCollectionViewController *)self dismissAddViewController:self];
-    v3 = [(MTATimerCollectionViewController *)self navigationItem];
-    [v3 setRightBarButtonItem:0];
+    navigationItem = [(MTATimerCollectionViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
   }
 }
 
 - (void)setupAddButton
 {
-  v3 = [(MTATimerCollectionViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItem];
+  navigationItem = [(MTATimerCollectionViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  if (!v4)
+  if (!rightBarButtonItem)
   {
     v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:4 target:self action:"addTimer:"];
-    v5 = [(MTATimerCollectionViewController *)self navigationItem];
-    [v5 setRightBarButtonItem:v6];
+    navigationItem2 = [(MTATimerCollectionViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v6];
   }
 }
 
 - (void)buildMenuBarRecentMenu
 {
-  v3 = [(MTATimerCollectionViewController *)self menuBuilder];
+  menuBuilder = [(MTATimerCollectionViewController *)self menuBuilder];
 
-  if (v3)
+  if (menuBuilder)
   {
-    v4 = [(MTATimerCollectionViewController *)self menuBuilder];
+    menuBuilder2 = [(MTATimerCollectionViewController *)self menuBuilder];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000546B0;
     v6[3] = &unk_1000ADF80;
     v6[4] = self;
-    [v4 replaceChildrenOfMenuForIdentifier:UIMenuFile fromChildrenBlock:v6];
+    [menuBuilder2 replaceChildrenOfMenuForIdentifier:UIMenuFile fromChildrenBlock:v6];
 
     v5 = +[UIMenuSystem mainSystem];
     [v5 setNeedsRebuild];
   }
 }
 
-- (void)menuBarAppearedWithBuilder:(id)a3 targetMenuIdentifier:(id)a4
+- (void)menuBarAppearedWithBuilder:(id)builder targetMenuIdentifier:(id)identifier
 {
-  v6 = a4;
-  [(MTATimerCollectionViewController *)self setMenuBuilder:a3];
-  [(MTATimerCollectionViewController *)self setMenuIdentifier:v6];
+  identifierCopy = identifier;
+  [(MTATimerCollectionViewController *)self setMenuBuilder:builder];
+  [(MTATimerCollectionViewController *)self setMenuIdentifier:identifierCopy];
 
   [(MTTimerDataSource *)self->_dataSource reloadTimerDurations];
 
@@ -247,13 +247,13 @@
 
 - (void)reloadSections
 {
-  v3 = [(MTATimerCollectionViewController *)self sections];
-  [v3 removeAllObjects];
+  sections = [(MTATimerCollectionViewController *)self sections];
+  [sections removeAllObjects];
 
   if (self->_siriTipView)
   {
-    v4 = [(MTATimerCollectionViewController *)self sections];
-    [v4 addObject:&off_1000B1998];
+    sections2 = [(MTATimerCollectionViewController *)self sections];
+    [sections2 addObject:&off_1000B1998];
   }
 
   if ([(MTTimerDataSource *)self->_dataSource numberOfActiveTimers]> 1 || self->_remainInMultipleTimerMode)
@@ -271,48 +271,48 @@
     v5 = &off_1000B19B0;
   }
 
-  v6 = [(MTATimerCollectionViewController *)self sections];
-  [v6 addObject:v5];
+  sections3 = [(MTATimerCollectionViewController *)self sections];
+  [sections3 addObject:v5];
 
 LABEL_12:
   [(MTATimerCollectionViewController *)self buildMenuBarRecentMenu];
   if (![(MTTimerDataSource *)self->_dataSource numberOfActiveTimers]|| [(MTTimerDataSource *)self->_dataSource numberOfActiveTimers]> 1 || self->_remainInMultipleTimerMode)
   {
-    v7 = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
-    v8 = [v7 count];
+    getRecentDurations = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
+    v8 = [getRecentDurations count];
 
     if (v8)
     {
-      v9 = [(MTATimerCollectionViewController *)self sections];
-      [v9 addObject:&off_1000B19E0];
+      sections4 = [(MTATimerCollectionViewController *)self sections];
+      [sections4 addObject:&off_1000B19E0];
     }
   }
 }
 
-- (void)handleContentSizeChange:(id)a3
+- (void)handleContentSizeChange:(id)change
 {
   self->_cellHeight = -1.0;
-  v6 = [(MTATimerCollectionViewController *)self singleTimerCell];
-  if (v6)
+  singleTimerCell = [(MTATimerCollectionViewController *)self singleTimerCell];
+  if (singleTimerCell)
   {
-    v4 = [v6 controlsView];
-    [v4 handleContentSizeChange];
+    controlsView = [singleTimerCell controlsView];
+    [controlsView handleContentSizeChange];
   }
 
-  v5 = [(MTATimerCollectionViewController *)self collectionViewLayout];
-  [v5 invalidateLayout];
+  collectionViewLayout = [(MTATimerCollectionViewController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)handleOrientationChange
 {
-  v2 = [(MTATimerCollectionViewController *)self singleTimerCell];
-  if (v2)
+  singleTimerCell = [(MTATimerCollectionViewController *)self singleTimerCell];
+  if (singleTimerCell)
   {
-    v4 = v2;
-    v3 = [v2 controlsView];
-    [v3 handleContentSizeChange];
+    v4 = singleTimerCell;
+    controlsView = [singleTimerCell controlsView];
+    [controlsView handleContentSizeChange];
 
-    v2 = v4;
+    singleTimerCell = v4;
   }
 }
 
@@ -328,88 +328,88 @@ LABEL_12:
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MTATimerCollectionViewController;
-  [(MTATimerCollectionViewController *)&v6 viewWillAppear:a3];
+  [(MTATimerCollectionViewController *)&v6 viewWillAppear:appear];
   [(MTATimerCollectionViewController *)self reloadState];
   [(MTATimerCollectionViewController *)self startUpdatingTimerUI];
-  v4 = [(MTATimerCollectionViewController *)self siriTipsController];
-  [v4 setDelegate:self];
+  siriTipsController = [(MTATimerCollectionViewController *)self siriTipsController];
+  [siriTipsController setDelegate:self];
 
-  v5 = [(MTATimerCollectionViewController *)self siriTipsController];
-  [v5 checkForSiriTips];
+  siriTipsController2 = [(MTATimerCollectionViewController *)self siriTipsController];
+  [siriTipsController2 checkForSiriTips];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MTATimerCollectionViewController;
-  [(MTATimerCollectionViewController *)&v7 viewDidAppear:a3];
-  v4 = [(MTATimerCollectionViewController *)self userActivity];
-  [v4 becomeCurrent];
+  [(MTATimerCollectionViewController *)&v7 viewDidAppear:appear];
+  userActivity = [(MTATimerCollectionViewController *)self userActivity];
+  [userActivity becomeCurrent];
 
-  v5 = [(MTATimerCollectionViewController *)self deferredAddingTimer];
+  deferredAddingTimer = [(MTATimerCollectionViewController *)self deferredAddingTimer];
 
-  if (v5)
+  if (deferredAddingTimer)
   {
-    v6 = [(MTATimerCollectionViewController *)self deferredAddingTimer];
-    v6[2]();
+    deferredAddingTimer2 = [(MTATimerCollectionViewController *)self deferredAddingTimer];
+    deferredAddingTimer2[2]();
 
     [(MTATimerCollectionViewController *)self setDeferredAddingTimer:0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(MTATimerCollectionViewController *)self stopUpdatingTimerUI];
   [(NSUserActivity *)self->_userActivity resignCurrent];
-  v5 = [(MTATimerCollectionViewController *)self siriTipsController];
-  [v5 setDelegate:0];
+  siriTipsController = [(MTATimerCollectionViewController *)self siriTipsController];
+  [siriTipsController setDelegate:0];
 
-  v6 = [(MTATimerCollectionViewController *)self siriTipsController];
-  [v6 cancel];
+  siriTipsController2 = [(MTATimerCollectionViewController *)self siriTipsController];
+  [siriTipsController2 cancel];
 
   siriTipView = self->_siriTipView;
   self->_siriTipView = 0;
 
   v8.receiver = self;
   v8.super_class = MTATimerCollectionViewController;
-  [(MTATimerCollectionViewController *)&v8 viewWillDisappear:v3];
+  [(MTATimerCollectionViewController *)&v8 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = MTATimerCollectionViewController;
-  v7 = a4;
-  [(MTATimerCollectionViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(MTATimerCollectionViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000553F8;
   v8[3] = &unk_1000AD9C8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)_removeTimer:(id)a3 withCompletionBlock:(id)a4
+- (void)_removeTimer:(id)timer withCompletionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTATimerCollectionViewController *)self dataSource];
-  v9 = [v8 removeTimer:v7];
+  blockCopy = block;
+  timerCopy = timer;
+  dataSource = [(MTATimerCollectionViewController *)self dataSource];
+  v9 = [dataSource removeTimer:timerCopy];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100055538;
   v12[3] = &unk_1000AE118;
   v12[4] = self;
-  v13 = v6;
-  v10 = v6;
+  v13 = blockCopy;
+  v10 = blockCopy;
   v11 = [v9 addSuccessBlock:v12];
 }
 
@@ -475,16 +475,16 @@ LABEL_12:
   self->_updateTimer = 0;
 }
 
-- (void)updateTimerTick:(id)a3
+- (void)updateTimerTick:(id)tick
 {
-  v4 = [(MTATimerCollectionViewController *)self collectionView];
-  v5 = [v4 indexPathsForVisibleItems];
+  collectionView = [(MTATimerCollectionViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v5;
+  v6 = indexPathsForVisibleItems;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -501,23 +501,23 @@ LABEL_12:
 
         v11 = *(*(&v21 + 1) + 8 * i);
         v12 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v11 section]);
-        v13 = [v12 integerValue];
+        integerValue = [v12 integerValue];
 
-        if (v13 == 1)
+        if (integerValue == 1)
         {
           v14 = [v11 row];
-          v15 = [(MTATimerCollectionViewController *)self dataSource];
-          v16 = [v15 numberOfActiveTimers];
+          dataSource = [(MTATimerCollectionViewController *)self dataSource];
+          numberOfActiveTimers = [dataSource numberOfActiveTimers];
 
-          if (v14 < v16)
+          if (v14 < numberOfActiveTimers)
           {
-            v17 = [(MTATimerCollectionViewController *)self dataSource];
-            v18 = [v17 activeTimerAtRow:{objc_msgSend(v11, "row")}];
+            dataSource2 = [(MTATimerCollectionViewController *)self dataSource];
+            v18 = [dataSource2 activeTimerAtRow:{objc_msgSend(v11, "row")}];
 
             if ([v18 state] == 3)
             {
-              v19 = [(MTATimerCollectionViewController *)self collectionView];
-              v20 = [v19 cellForItemAtIndexPath:v11];
+              collectionView2 = [(MTATimerCollectionViewController *)self collectionView];
+              v20 = [collectionView2 cellForItemAtIndexPath:v11];
 
               [v20 refreshUI:v18 animated:1];
             }
@@ -532,9 +532,9 @@ LABEL_12:
   }
 }
 
-- (void)reloadState:(id)a3
+- (void)reloadState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -542,43 +542,43 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Reloading collection view", buf, 2u);
   }
 
-  v6 = [(MTTimerDataSource *)self->_dataSource reloadTimers];
+  reloadTimers = [(MTTimerDataSource *)self->_dataSource reloadTimers];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100055B64;
   v12 = &unk_1000AE810;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
-  v8 = [v6 addCompletionBlock:&v9];
+  selfCopy = self;
+  v14 = stateCopy;
+  v7 = stateCopy;
+  v8 = [reloadTimers addCompletionBlock:&v9];
 
   [(MTTimerDataSource *)self->_dataSource reloadTimerDurations:v9];
 }
 
-- (void)_reloadUI:(id)a3
+- (void)_reloadUI:(id)i
 {
-  v5 = a3;
+  iCopy = i;
   [(MTATimerCollectionViewController *)self _handleNumberOfItemsDidChange];
-  v4 = v5;
-  if (v5)
+  v4 = iCopy;
+  if (iCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(iCopy + 2))(iCopy);
+    v4 = iCopy;
   }
 }
 
-- (void)dataSourceDidReload:(id)a3
+- (void)dataSourceDidReload:(id)reload
 {
   [(MTATimerCollectionViewController *)self _reloadUI:0];
   [(MTATimerCollectionViewController *)self updateStateAndReloadData];
-  v4 = [(MTTimerDataSource *)self->_dataSource numberOfActiveTimers];
-  v5 = v4;
-  if (v4 > 1 || v4 == 1 && self->_remainInMultipleTimerMode)
+  numberOfActiveTimers = [(MTTimerDataSource *)self->_dataSource numberOfActiveTimers];
+  v5 = numberOfActiveTimers;
+  if (numberOfActiveTimers > 1 || numberOfActiveTimers == 1 && self->_remainInMultipleTimerMode)
   {
     [(MTATimerCollectionViewController *)self startUpdatingTimerUI];
   }
 
-  else if (!v4)
+  else if (!numberOfActiveTimers)
   {
     [(MTATimerCollectionViewController *)self stopUpdatingTimerUI];
   }
@@ -609,97 +609,97 @@ LABEL_12:
 LABEL_6:
   [(MTATimerCollectionViewController *)self reloadSections];
   [(MTATimerCollectionViewController *)self updateAddButton];
-  v4 = [(MTATimerCollectionViewController *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)dataSourceDidReloadRecentDurations:(id)a3
+- (void)dataSourceDidReloadRecentDurations:(id)durations
 {
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ dataSourceDidReloadRecentDurations reloading table", &v6, 0xCu);
   }
 
   [(MTATimerCollectionViewController *)self reloadSections];
-  v5 = [(MTATimerCollectionViewController *)self collectionView];
-  [v5 reloadData];
+  collectionView = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)updateLatestDuration
 {
-  v3 = [(MTATimerCollectionViewController *)self singleTimerCell];
-  if (v3)
+  singleTimerCell = [(MTATimerCollectionViewController *)self singleTimerCell];
+  if (singleTimerCell)
   {
-    v8 = v3;
-    v4 = [v3 controlsView];
-    v5 = [(MTATimerCollectionViewController *)self dataSource];
-    v6 = [v5 getLatestDuration];
-    [v6 duration];
-    [v4 setCountDownDuration:?];
+    v8 = singleTimerCell;
+    controlsView = [singleTimerCell controlsView];
+    dataSource = [(MTATimerCollectionViewController *)self dataSource];
+    getLatestDuration = [dataSource getLatestDuration];
+    [getLatestDuration duration];
+    [controlsView setCountDownDuration:?];
 
-    v7 = [(MTATimerCollectionViewController *)self currentTone];
-    [(MTATimerCollectionViewController *)self setSound:v7];
+    currentTone = [(MTATimerCollectionViewController *)self currentTone];
+    [(MTATimerCollectionViewController *)self setSound:currentTone];
 
     [(MTATimerCollectionViewController *)self updateSelectedTone];
-    v3 = v8;
+    singleTimerCell = v8;
   }
 }
 
 - (void)updateSelectedTone
 {
-  v3 = [(MTATimerCollectionViewController *)self singleTimerCell];
-  if (v3)
+  singleTimerCell = [(MTATimerCollectionViewController *)self singleTimerCell];
+  if (singleTimerCell)
   {
-    [(MTATimerCollectionViewController *)self updateSelectedToneForCell:v3];
+    [(MTATimerCollectionViewController *)self updateSelectedToneForCell:singleTimerCell];
   }
 
   _objc_release_x1();
 }
 
-- (void)updateSelectedToneForCell:(id)a3
+- (void)updateSelectedToneForCell:(id)cell
 {
-  v13 = a3;
-  v4 = [(MTATimerCollectionViewController *)self currentTone];
-  v5 = [v4 toneIdentifier];
+  cellCopy = cell;
+  currentTone = [(MTATimerCollectionViewController *)self currentTone];
+  toneIdentifier = [currentTone toneIdentifier];
 
-  v6 = [(MTATimerCollectionViewController *)self sound];
-  LODWORD(v4) = [v6 interruptAudio];
+  sound = [(MTATimerCollectionViewController *)self sound];
+  LODWORD(currentTone) = [sound interruptAudio];
 
-  if (v4)
+  if (currentTone)
   {
-    v7 = [v13 controlsView];
+    controlsView = [cellCopy controlsView];
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"STOP_PLAYING" value:&stru_1000AEF10 table:0];
-    v10 = v7;
+    controlsView2 = controlsView;
     v11 = v9;
   }
 
   else
   {
-    v7 = +[TLToneManager sharedToneManager];
-    if (([v7 toneWithIdentifierIsValid:v5] & 1) == 0)
+    controlsView = +[TLToneManager sharedToneManager];
+    if (([controlsView toneWithIdentifierIsValid:toneIdentifier] & 1) == 0)
     {
-      v12 = [v7 defaultToneIdentifierForAlertType:13];
+      v12 = [controlsView defaultToneIdentifierForAlertType:13];
 
-      v5 = v12;
+      toneIdentifier = v12;
     }
 
-    v8 = [v7 nameForToneIdentifier:v5];
-    v10 = [v13 controlsView];
-    v9 = v10;
+    v8 = [controlsView nameForToneIdentifier:toneIdentifier];
+    controlsView2 = [cellCopy controlsView];
+    v9 = controlsView2;
     v11 = v8;
   }
 
-  [v10 setTimerToneName:v11];
+  [controlsView2 setTimerToneName:v11];
 }
 
 - (id)singleTimerCell
 {
-  v3 = [(MTATimerCollectionViewController *)self sections];
-  v4 = [v3 indexOfObject:&off_1000B19B0];
+  sections = [(MTATimerCollectionViewController *)self sections];
+  v4 = [sections indexOfObject:&off_1000B19B0];
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -708,9 +708,9 @@ LABEL_6:
 
   else
   {
-    v6 = [(MTATimerCollectionViewController *)self collectionView];
+    collectionView = [(MTATimerCollectionViewController *)self collectionView];
     v7 = [NSIndexPath indexPathForRow:0 inSection:v4];
-    v5 = [v6 cellForItemAtIndexPath:v7];
+    v5 = [collectionView cellForItemAtIndexPath:v7];
   }
 
   return v5;
@@ -718,10 +718,10 @@ LABEL_6:
 
 - (void)_handleNumberOfItemsDidChange
 {
-  v3 = [(MTATimerCollectionViewController *)self dataSource];
-  v4 = [v3 numberOfActiveTimers];
+  dataSource = [(MTATimerCollectionViewController *)self dataSource];
+  numberOfActiveTimers = [dataSource numberOfActiveTimers];
 
-  if (!v4)
+  if (!numberOfActiveTimers)
   {
 
     [(MTATimerCollectionViewController *)self setEditing:0];
@@ -739,15 +739,15 @@ LABEL_6:
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (void)showAddViewForTimer:(id)a3
+- (void)showAddViewForTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [(MTATimerCollectionViewController *)self view];
-  v6 = [v5 window];
+  timerCopy = timer;
+  view = [(MTATimerCollectionViewController *)self view];
+  window = [view window];
 
-  if ([(MTATimerCollectionViewController *)self isViewLoaded]&& v6)
+  if ([(MTATimerCollectionViewController *)self isViewLoaded]&& window)
   {
-    [(MTATimerCollectionViewController *)self showAddTimerViewWithTimer:v4];
+    [(MTATimerCollectionViewController *)self showAddTimerViewWithTimer:timerCopy];
   }
 
   else
@@ -758,7 +758,7 @@ LABEL_6:
     v7[2] = sub_10005637C;
     v7[3] = &unk_1000AE1A0;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = timerCopy;
     [(MTATimerCollectionViewController *)self setDeferredAddingTimer:v7];
 
     objc_destroyWeak(&v9);
@@ -766,16 +766,16 @@ LABEL_6:
   }
 }
 
-- (void)showAddTimerViewWithTimer:(id)a3
+- (void)showAddTimerViewWithTimer:(id)timer
 {
-  v14 = a3;
+  timerCopy = timer;
   [(MTATimerCollectionViewController *)self setEditing:0];
-  if (v14)
+  if (timerCopy)
   {
-    v4 = [(MTATimerCollectionViewController *)self dataSource];
-    v5 = [v4 rowForTimer:v14];
+    dataSource = [(MTATimerCollectionViewController *)self dataSource];
+    v5 = [dataSource rowForTimer:timerCopy];
 
-    [(MTATimerCollectionViewController *)self _presentAddEditForTimer:v14 isNewTimer:v5 == 0x7FFFFFFFFFFFFFFFLL];
+    [(MTATimerCollectionViewController *)self _presentAddEditForTimer:timerCopy isNewTimer:v5 == 0x7FFFFFFFFFFFFFFFLL];
     v6 = +[MTAStateStore shared];
     v7 = [MTAStateStoreEvent eventWithType:9];
     [v6 pushEvent:v7];
@@ -783,9 +783,9 @@ LABEL_6:
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = +[MTAStateStore shared];
-      v9 = [v14 timerID];
-      v10 = [v9 UUIDString];
-      v11 = [MTAStateStoreEvent eventWithType:10 identifier:v10];
+      timerID = [timerCopy timerID];
+      uUIDString = [timerID UUIDString];
+      v11 = [MTAStateStoreEvent eventWithType:10 identifier:uUIDString];
       [v8 pushEvent:v11];
 
       goto LABEL_6;
@@ -801,74 +801,74 @@ LABEL_6:
   }
 
   v8 = +[MTAStateStore shared];
-  v9 = [MTAStateStoreEvent eventWithType:9];
-  [v8 pushEvent:v9];
+  timerID = [MTAStateStoreEvent eventWithType:9];
+  [v8 pushEvent:timerID];
 LABEL_6:
 }
 
-- (void)_presentAddEditForTimer:(id)a3 isNewTimer:(BOOL)a4
+- (void)_presentAddEditForTimer:(id)timer isNewTimer:(BOOL)newTimer
 {
-  v5 = [(MTATimerCollectionViewController *)self navigationItem:a3];
-  v6 = [v5 rightBarButtonItem];
+  v5 = [(MTATimerCollectionViewController *)self navigationItem:timer];
+  rightBarButtonItem = [v5 rightBarButtonItem];
 
-  if (v6)
+  if (rightBarButtonItem)
   {
     v15 = [[MTATimerAddViewController alloc] initWithDataSource:self->_dataSource timerManager:self->_timerManager delegate:self];
     [(MTATimerCollectionViewController *)self setAddEditTimerController:v15];
     v7 = [MTAAddSheetNavigationController alloc];
-    v8 = [(MTATimerCollectionViewController *)self addEditTimerController];
-    v9 = [(MTAAddSheetNavigationController *)v7 initWithRootViewController:v8];
+    addEditTimerController = [(MTATimerCollectionViewController *)self addEditTimerController];
+    v9 = [(MTAAddSheetNavigationController *)v7 initWithRootViewController:addEditTimerController];
 
-    v10 = [(MTATimerCollectionViewController *)self addEditTimerController];
-    [v10 preferredContentSize];
+    addEditTimerController2 = [(MTATimerCollectionViewController *)self addEditTimerController];
+    [addEditTimerController2 preferredContentSize];
     [(MTAAddSheetNavigationController *)v9 setPreferredContentSize:?];
 
     [(MTAAddSheetNavigationController *)v9 setModalPresentationStyle:7];
-    v11 = [(MTATimerCollectionViewController *)self navigationItem];
-    v12 = [v11 rightBarButtonItem];
-    v13 = [(MTAAddSheetNavigationController *)v9 popoverPresentationController];
-    [v13 setBarButtonItem:v12];
+    navigationItem = [(MTATimerCollectionViewController *)self navigationItem];
+    rightBarButtonItem2 = [navigationItem rightBarButtonItem];
+    popoverPresentationController = [(MTAAddSheetNavigationController *)v9 popoverPresentationController];
+    [popoverPresentationController setBarButtonItem:rightBarButtonItem2];
 
-    v14 = [(MTAAddSheetNavigationController *)v9 popoverPresentationController];
-    [v14 setDelegate:self];
+    popoverPresentationController2 = [(MTAAddSheetNavigationController *)v9 popoverPresentationController];
+    [popoverPresentationController2 setDelegate:self];
 
     [(MTATimerCollectionViewController *)self presentViewController:v9 animated:1 completion:0];
   }
 }
 
-- (void)dismissAddViewController:(id)a3
+- (void)dismissAddViewController:(id)controller
 {
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 isSuspended];
+  isSuspended = [v4 isSuspended];
 
-  [(MTATimerCollectionViewController *)self dismissViewControllerAnimated:v5 ^ 1 completion:&stru_1000AE830];
+  [(MTATimerCollectionViewController *)self dismissViewControllerAnimated:isSuspended ^ 1 completion:&stru_1000AE830];
 }
 
-- (void)showAddViewWithCompletion:(id)a3
+- (void)showAddViewWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(MTATimerCollectionViewController *)self showAddViewForTimer:0];
-  v4 = v5;
-  if (v5)
+  v4 = completionCopy;
+  if (completionCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(completionCopy + 2))(completionCopy);
+    v4 = completionCopy;
   }
 }
 
-- (void)didStartTimerWithDuration:(double)a3 title:(id)a4 sound:(id)a5 sender:(id)a6
+- (void)didStartTimerWithDuration:(double)duration title:(id)title sound:(id)sound sender:(id)sender
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [[MTMutableTimer alloc] initWithState:3 duration:a3];
-  [v13 setSound:v11];
-  [(MTATimerCollectionViewController *)self setSound:v11];
+  senderCopy = sender;
+  soundCopy = sound;
+  titleCopy = title;
+  v13 = [[MTMutableTimer alloc] initWithState:3 duration:duration];
+  [v13 setSound:soundCopy];
+  [(MTATimerCollectionViewController *)self setSound:soundCopy];
 
-  [v13 setTitle:v12];
-  [MTTimerManager setDefaultDuration:a3];
-  v14 = [(MTATimerCollectionViewController *)self timerManager];
-  v15 = [v14 addTimer:v13];
+  [v13 setTitle:titleCopy];
+  [MTTimerManager setDefaultDuration:duration];
+  timerManager = [(MTATimerCollectionViewController *)self timerManager];
+  v15 = [timerManager addTimer:v13];
   v16 = +[NAScheduler mtMainThreadScheduler];
   v17 = [v15 reschedule:v16];
 
@@ -878,38 +878,38 @@ LABEL_6:
   v21[3] = &unk_1000AE530;
   v21[4] = self;
   v22 = v13;
-  v23 = v10;
-  v18 = v10;
+  v23 = senderCopy;
+  v18 = senderCopy;
   v19 = v13;
   v20 = [v17 addSuccessBlock:v21];
 }
 
-- (void)timerAddEditControllerDidCancel:(id)a3 reload:(BOOL)a4
+- (void)timerAddEditControllerDidCancel:(id)cancel reload:(BOOL)reload
 {
-  v4 = a4;
-  [(MTATimerCollectionViewController *)self dismissAddViewController:a3];
-  if (v4)
+  reloadCopy = reload;
+  [(MTATimerCollectionViewController *)self dismissAddViewController:cancel];
+  if (reloadCopy)
   {
 
     [(MTATimerCollectionViewController *)self reloadState];
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v8 section]);
-  v10 = [v9 integerValue];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  integerValue = [v9 integerValue];
 
-  if (v10 == 3)
+  if (integerValue == 3)
   {
-    [v7 bounds];
+    [viewCopy bounds];
     [MTATimerTipCollectionViewCell sizeThatFits:self->_siriTipView siriTipView:v13, v14];
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!integerValue)
   {
     [(MTATimerCollectionViewController *)self singleTimerSectionSize];
 LABEL_5:
@@ -918,7 +918,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v7 bounds];
+  [viewCopy bounds];
   width = CGSizeZero.width;
   height = CGSizeZero.height;
   if (v19 != CGSizeZero.width || v20 != height)
@@ -929,7 +929,7 @@ LABEL_5:
     UIFloorToViewScale();
     height = v25;
     v26 = v24 - v25 * v23;
-    if (!([v8 row] % v23))
+    if (!([pathCopy row] % v23))
     {
       height = height + v26;
     }
@@ -948,8 +948,8 @@ LABEL_6:
 
 - (CGSize)singleTimerSectionSize
 {
-  v3 = [(MTATimerCollectionViewController *)self collectionView];
-  [v3 frame];
+  collectionView = [(MTATimerCollectionViewController *)self collectionView];
+  [collectionView frame];
   v5 = v4;
   v7 = v6;
 
@@ -963,12 +963,12 @@ LABEL_6:
     v8 = 8.0;
   }
 
-  v9 = [(MTATimerCollectionViewController *)self traitCollection];
-  v10 = [v9 horizontalSizeClass];
+  traitCollection = [(MTATimerCollectionViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v11 = [(MTATimerCollectionViewController *)self collectionView];
-  v12 = [v11 window];
-  [v12 size];
+  collectionView2 = [(MTATimerCollectionViewController *)self collectionView];
+  window = [collectionView2 window];
+  [window size];
   v14 = v13;
 
   v15 = [MTAUtilities estimatedSplitLayoutForWindowWidth:v14];
@@ -982,7 +982,7 @@ LABEL_6:
         {
           +[MTATimerControlsView estimatedViewHeight];
           v7 = v16;
-          if (v10 != 1)
+          if (horizontalSizeClass != 1)
           {
             goto LABEL_20;
           }
@@ -990,7 +990,7 @@ LABEL_6:
 
         else
         {
-          if (v10 != 1)
+          if (horizontalSizeClass != 1)
           {
             v17 = v8;
             v7 = v14;
@@ -1021,7 +1021,7 @@ LABEL_20:
     +[MTATimerControlsView estimatedViewHeight];
     v7 = v22;
     v17 = 0.0;
-    if (v10 == 1 && +[MTAUtilities isLandscape])
+    if (horizontalSizeClass == 1 && +[MTAUtilities isLandscape])
     {
 LABEL_19:
       v7 = v7 + 84.0;
@@ -1050,7 +1050,7 @@ LABEL_21:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = 0.0;
   v6 = 15.0;
@@ -1063,21 +1063,21 @@ LABEL_21:
   return result;
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
   [(MTATimerCollectionViewController *)self confirmPickingSound];
-  v5 = [(MTATimerCollectionViewController *)self navigationItem];
-  v4 = [v5 leftBarButtonItem];
-  [v4 setEnabled:1];
+  navigationItem = [(MTATimerCollectionViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:1];
 }
 
-- (void)_addOrEditControllerDidDismissCommitChanges:(BOOL)a3
+- (void)_addOrEditControllerDidDismissCommitChanges:(BOOL)changes
 {
-  if (a3)
+  if (changes)
   {
-    v4 = [(MTATimerCollectionViewController *)self addEditTimerController];
+    addEditTimerController = [(MTATimerCollectionViewController *)self addEditTimerController];
 
-    if (!v4)
+    if (!addEditTimerController)
     {
       NSLog(@"Attempting to dismiss add or edit controller when there isn't one.");
     }
@@ -1089,50 +1089,50 @@ LABEL_21:
   [v6 pushEvent:v5];
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(MTATimerCollectionViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(MTATimerCollectionViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:a4];
-  v6 = [v5 integerValue];
+  v5 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:section];
+  integerValue = [v5 integerValue];
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
-    v8 = [(MTATimerCollectionViewController *)self dataSource];
-    v9 = [v8 numberOfActiveTimers];
+    dataSource = [(MTATimerCollectionViewController *)self dataSource];
+    numberOfActiveTimers = [dataSource numberOfActiveTimers];
     goto LABEL_7;
   }
 
-  if (v6 == 2)
+  if (integerValue == 2)
   {
-    v8 = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
-    v9 = [v8 count];
+    dataSource = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
+    numberOfActiveTimers = [dataSource count];
 LABEL_7:
-    v10 = v9;
+    v10 = numberOfActiveTimers;
 
     return v10;
   }
 
-  return v6 != 3 || self->_siriTipView != 0;
+  return integerValue != 3 || self->_siriTipView != 0;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  if ([a4 isEqualToString:UICollectionElementKindSectionHeader] && (-[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", objc_msgSend(v9, "section")), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "integerValue"), v10, v11 == 2))
+  viewCopy = view;
+  pathCopy = path;
+  if ([kind isEqualToString:UICollectionElementKindSectionHeader] && (-[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", objc_msgSend(pathCopy, "section")), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "integerValue"), v10, v11 == 2))
   {
-    v12 = [v8 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"kMTATimerCollectionHeaderIdentifier" forIndexPath:v9];
+    v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"kMTATimerCollectionHeaderIdentifier" forIndexPath:pathCopy];
     v13 = +[NSBundle mainBundle];
     v14 = [v13 localizedStringForKey:@"TIMER_HEADER_RECENT" value:&stru_1000AEF10 table:0];
-    v15 = [v12 headerTitle];
-    [v15 setText:v14];
+    headerTitle = [v12 headerTitle];
+    [headerTitle setText:v14];
   }
 
   else
@@ -1143,21 +1143,21 @@ LABEL_7:
   return v12;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v6 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:a5, a4];
-  v7 = [v6 integerValue];
+  layout = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:section, layout];
+  integerValue = [layout integerValue];
 
-  if (v7 == 3 || v7 <= 1)
+  if (integerValue == 3 || integerValue <= 1)
   {
     width = CGSizeZero.width;
     height = CGSizeZero.height;
   }
 
-  else if (v7 == 2 && MTUIShouldUseLargePadLayout() && !+[MTAUtilities isLandscape](MTAUtilities, "isLandscape") && (-[MTATimerCollectionViewController dataSource](self, "dataSource"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 numberOfActiveTimers], v10, !v11))
+  else if (integerValue == 2 && MTUIShouldUseLargePadLayout() && !+[MTAUtilities isLandscape](MTAUtilities, "isLandscape") && (-[MTATimerCollectionViewController dataSource](self, "dataSource"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 numberOfActiveTimers], v10, !v11))
   {
-    v15 = [(MTATimerCollectionViewController *)self collectionView];
-    [v15 frame];
+    collectionView = [(MTATimerCollectionViewController *)self collectionView];
+    [collectionView frame];
     width = v16;
 
     height = 114.0;
@@ -1165,8 +1165,8 @@ LABEL_7:
 
   else
   {
-    v12 = [(MTATimerCollectionViewController *)self collectionView];
-    [v12 frame];
+    collectionView2 = [(MTATimerCollectionViewController *)self collectionView];
+    [collectionView2 frame];
     width = v13;
 
     height = 64.0;
@@ -1178,33 +1178,33 @@ LABEL_7:
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v7 section]);
-  v9 = [v8 integerValue];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  integerValue = [v8 integerValue];
 
-  if (v9 <= 1)
+  if (integerValue <= 1)
   {
-    if (!v9)
+    if (!integerValue)
     {
-      v16 = [(MTATimerCollectionViewController *)self traitCollection];
-      v17 = [v16 horizontalSizeClass];
-      v18 = [(MTATimerCollectionViewController *)self collectionView];
-      v19 = [v18 window];
-      [v19 frame];
-      v21 = [MTAUtilities shouldUseCompactLayoutForSizeClass:v17 windowWidth:v20];
+      traitCollection = [(MTATimerCollectionViewController *)self traitCollection];
+      horizontalSizeClass = [traitCollection horizontalSizeClass];
+      collectionView = [(MTATimerCollectionViewController *)self collectionView];
+      window = [collectionView window];
+      [window frame];
+      v21 = [MTAUtilities shouldUseCompactLayoutForSizeClass:horizontalSizeClass windowWidth:v20];
 
-      v22 = [(MTATimerCollectionViewController *)self dataSource];
-      v23 = [v22 numberOfActiveTimers];
+      dataSource = [(MTATimerCollectionViewController *)self dataSource];
+      numberOfActiveTimers = [dataSource numberOfActiveTimers];
 
-      if (v23)
+      if (numberOfActiveTimers)
       {
-        v24 = [(MTATimerCollectionViewController *)self dataSource];
-        v25 = [v24 numberOfActiveTimers];
+        dataSource2 = [(MTATimerCollectionViewController *)self dataSource];
+        numberOfActiveTimers2 = [dataSource2 numberOfActiveTimers];
 
-        if (v25 >= 2)
+        if (numberOfActiveTimers2 >= 2)
         {
           v26 = MTLogForCategory();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1213,7 +1213,7 @@ LABEL_7:
           }
         }
 
-        v27 = [v6 dequeueReusableCellWithReuseIdentifier:@"kMTASingleTimerCellIdentifierActive" forIndexPath:v7];
+        v27 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"kMTASingleTimerCellIdentifierActive" forIndexPath:pathCopy];
         v10 = v27;
         if (v21)
         {
@@ -1225,32 +1225,32 @@ LABEL_7:
           v28 = 4;
         }
 
-        v29 = [v27 controlsView];
-        [v29 setStyle:v28];
+        controlsView = [v27 controlsView];
+        [controlsView setStyle:v28];
 
-        v30 = [(MTATimerCollectionViewController *)self dataSource];
-        v31 = [v30 activeTimerAtRow:0];
+        dataSource3 = [(MTATimerCollectionViewController *)self dataSource];
+        v31 = [dataSource3 activeTimerAtRow:0];
         -[MTATimerCollectionViewController prepareUIForState:inCell:forceRefresh:](self, "prepareUIForState:inCell:forceRefresh:", [v31 state], v10, 1);
 
         v32 = [(MTTimerDataSource *)self->_dataSource activeTimerAtRow:0];
-        v33 = v32;
+        controlsView5 = v32;
         if (v32)
         {
           [v32 remainingTime];
           v35 = v34;
-          v36 = [v10 controlsView];
-          [v36 setTime:v35];
+          controlsView2 = [v10 controlsView];
+          [controlsView2 setTime:v35];
 
-          v37 = [v33 title];
-          [(MTATimerCollectionViewController *)self setCurrentTitle:v37];
+          title = [controlsView5 title];
+          [(MTATimerCollectionViewController *)self setCurrentTitle:title];
         }
       }
 
       else
       {
-        v10 = [v6 dequeueReusableCellWithReuseIdentifier:@"kMTASingleTimerCellIdentifierNew" forIndexPath:v7];
-        v41 = [v10 controlsView];
-        [v41 setTimerControlState:0];
+        v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"kMTASingleTimerCellIdentifierNew" forIndexPath:pathCopy];
+        controlsView3 = [v10 controlsView];
+        [controlsView3 setTimerControlState:0];
 
         if (v21)
         {
@@ -1262,41 +1262,41 @@ LABEL_7:
           v42 = 4;
         }
 
-        v43 = [v10 controlsView];
-        [v43 setStyle:v42];
+        controlsView4 = [v10 controlsView];
+        [controlsView4 setStyle:v42];
 
-        v33 = [v10 controlsView];
-        [v33 setState:1];
+        controlsView5 = [v10 controlsView];
+        [controlsView5 setState:1];
       }
 
-      v44 = [v10 controlsView];
-      v45 = [(MTATimerCollectionViewController *)self currentTitle];
-      [v44 setCurrentLabel:v45];
+      controlsView6 = [v10 controlsView];
+      currentTitle = [(MTATimerCollectionViewController *)self currentTitle];
+      [controlsView6 setCurrentLabel:currentTitle];
 
       [v10 setAccessibilityIdentifier:@"single-timer-1"];
-      v46 = [v10 controlsView];
-      v47 = [(MTATimerCollectionViewController *)self dataSource];
-      v48 = [v47 getLatestDuration];
-      [v48 duration];
-      [v46 setCountDownDuration:?];
+      controlsView7 = [v10 controlsView];
+      dataSource4 = [(MTATimerCollectionViewController *)self dataSource];
+      getLatestDuration = [dataSource4 getLatestDuration];
+      [getLatestDuration duration];
+      [controlsView7 setCountDownDuration:?];
 
       [(MTATimerCollectionViewController *)self updateSelectedToneForCell:v10];
-      v12 = [v10 controlsView];
-      [v12 setControlsViewDelegate:self];
+      controlsView8 = [v10 controlsView];
+      [controlsView8 setControlsViewDelegate:self];
       goto LABEL_29;
     }
 
-    if (v9 == 1)
+    if (integerValue == 1)
     {
-      v10 = [v6 dequeueReusableCellWithReuseIdentifier:@"kMTATimerActiveCollectionIdentifier" forIndexPath:v7];
-      v11 = [(MTATimerCollectionViewController *)self dataSource];
-      v12 = [v11 activeTimerAtRow:{objc_msgSend(v7, "row")}];
+      v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"kMTATimerActiveCollectionIdentifier" forIndexPath:pathCopy];
+      dataSource5 = [(MTATimerCollectionViewController *)self dataSource];
+      controlsView8 = [dataSource5 activeTimerAtRow:{objc_msgSend(pathCopy, "row")}];
 
-      v13 = [v12 timerIDString];
-      v14 = [NSString stringWithFormat:@"active-timer-%@", v13];
+      timerIDString = [controlsView8 timerIDString];
+      v14 = [NSString stringWithFormat:@"active-timer-%@", timerIDString];
       [v10 setAccessibilityIdentifier:v14];
 
-      [v10 refreshUI:v12 animated:0];
+      [v10 refreshUI:controlsView8 animated:0];
 LABEL_29:
 
       goto LABEL_30;
@@ -1305,11 +1305,11 @@ LABEL_29:
     goto LABEL_8;
   }
 
-  if (v9 != 2)
+  if (integerValue != 2)
   {
-    if (v9 == 3)
+    if (integerValue == 3)
     {
-      v10 = [v6 dequeueReusableCellWithReuseIdentifier:@"kMTATimerTipCollectionViewCellIdentifier" forIndexPath:v7];
+      v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"kMTATimerTipCollectionViewCellIdentifier" forIndexPath:pathCopy];
       [v10 setSiriTipView:self->_siriTipView];
       goto LABEL_30;
     }
@@ -1325,12 +1325,12 @@ LABEL_8:
     goto LABEL_30;
   }
 
-  v10 = [v6 dequeueReusableCellWithReuseIdentifier:@"kMTATimerRecentCollectionIdentifier" forIndexPath:v7];
-  v38 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"recent-timer-%ld", [v7 row]);
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"kMTATimerRecentCollectionIdentifier" forIndexPath:pathCopy];
+  v38 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"recent-timer-%ld", [pathCopy row]);
   [v10 setAccessibilityIdentifier:v38];
 
-  v39 = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
-  v40 = [v39 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  getRecentDurations = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
+  v40 = [getRecentDurations objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   if (v40)
   {
@@ -1342,15 +1342,15 @@ LABEL_30:
   return v10;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  v7 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [a5 section]);
-  v8 = [v7 integerValue];
+  cellCopy = cell;
+  v7 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [path section]);
+  integerValue = [v7 integerValue];
 
-  if (v8)
+  if (integerValue)
   {
-    v9 = v8 == 3;
+    v9 = integerValue == 3;
   }
 
   else
@@ -1360,17 +1360,17 @@ LABEL_30:
 
   if (!v9)
   {
-    [v10 setDelegate:self];
+    [cellCopy setDelegate:self];
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setDelegate:0];
+    [cellCopy setDelegate:0];
   }
 
   else
@@ -1381,58 +1381,58 @@ LABEL_30:
       v7 = MTLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(MTATimerCollectionViewController *)self singleTimerVC];
+        singleTimerVC = [(MTATimerCollectionViewController *)self singleTimerVC];
         v11 = 138543618;
-        v12 = self;
+        selfCopy = self;
         v13 = 2114;
-        v14 = v8;
+        v14 = singleTimerVC;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ didEndDisplayingCell, current vc: %{public}@", &v11, 0x16u);
       }
 
-      v9 = [(MTATimerCollectionViewController *)self singleTimerVC];
-      [v9 stopUpdatingTimerUI];
+      singleTimerVC2 = [(MTATimerCollectionViewController *)self singleTimerVC];
+      [singleTimerVC2 stopUpdatingTimerUI];
 
-      v10 = [(MTATimerCollectionViewController *)self singleTimerVC];
-      [v10 removeNotificationObserver];
+      singleTimerVC3 = [(MTATimerCollectionViewController *)self singleTimerVC];
+      [singleTimerVC3 removeNotificationObserver];
     }
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [a4 section]);
-  v5 = [v4 integerValue];
+  v4 = -[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [path section]);
+  integerValue = [v4 integerValue];
 
-  return v5 == 1;
+  return integerValue == 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MTATimerCollectionViewController *)self dataSource];
-  v7 = [v5 row];
+  pathCopy = path;
+  dataSource = [(MTATimerCollectionViewController *)self dataSource];
+  v7 = [pathCopy row];
 
-  v10 = [v6 activeTimerAtRow:v7];
+  v10 = [dataSource activeTimerAtRow:v7];
 
   v8 = [[MTATimerViewController alloc] initWithTimer:v10 timerManager:self->_timerManager dataSource:self->_dataSource delegate:self];
-  v9 = [(MTATimerCollectionViewController *)self navigationController];
-  [v9 pushViewController:v8 animated:1];
+  navigationController = [(MTATimerCollectionViewController *)self navigationController];
+  [navigationController pushViewController:v8 animated:1];
 }
 
-- (void)startTimerForCell:(id)a3 withDuration:(double)a4
+- (void)startTimerForCell:(id)cell withDuration:(double)duration
 {
-  v6 = a3;
-  v7 = [(MTATimerCollectionViewController *)self collectionView];
-  v8 = [v7 indexPathForCell:v6];
+  cellCopy = cell;
+  collectionView = [(MTATimerCollectionViewController *)self collectionView];
+  v8 = [collectionView indexPathForCell:cellCopy];
 
-  v9 = [(MTATimerCollectionViewController *)self dataSource];
-  v10 = [v9 activeTimerAtRow:{objc_msgSend(v8, "row")}];
+  dataSource = [(MTATimerCollectionViewController *)self dataSource];
+  v10 = [dataSource activeTimerAtRow:{objc_msgSend(v8, "row")}];
   v11 = [v10 mutableCopy];
 
-  [v11 setDuration:a4];
+  [v11 setDuration:duration];
   [v11 setState:3];
-  v12 = [(MTATimerCollectionViewController *)self timerManager];
-  v13 = [v12 updateTimer:v11];
+  timerManager = [(MTATimerCollectionViewController *)self timerManager];
+  v13 = [timerManager updateTimer:v11];
   v14 = +[NAScheduler mtMainThreadScheduler];
   v15 = [v13 reschedule:v14];
 
@@ -1446,29 +1446,29 @@ LABEL_30:
   v17 = [v15 addSuccessBlock:v18];
 }
 
-- (void)cancelTimerForCell:(id)a3
+- (void)cancelTimerForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(MTATimerCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  collectionView = [(MTATimerCollectionViewController *)self collectionView];
+  v6 = [collectionView indexPathForCell:cellCopy];
 
-  v7 = [(MTATimerCollectionViewController *)self dataSource];
-  v8 = [v7 activeTimerAtRow:{objc_msgSend(v6, "row")}];
+  dataSource = [(MTATimerCollectionViewController *)self dataSource];
+  v8 = [dataSource activeTimerAtRow:{objc_msgSend(v6, "row")}];
   v9 = [v8 timerByUpdatingWithState:1];
 
   v10 = MTLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 timerID];
+    timerID = [v9 timerID];
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v11;
+    v21 = timerID;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Stopping a timer: %{public}@", buf, 0x16u);
   }
 
-  v12 = [(MTATimerCollectionViewController *)self timerManager];
-  v13 = [v12 updateTimer:v9];
+  timerManager = [(MTATimerCollectionViewController *)self timerManager];
+  v13 = [timerManager updateTimer:v9];
   v14 = +[NAScheduler mtMainThreadScheduler];
   v15 = [v13 reschedule:v14];
 
@@ -1480,14 +1480,14 @@ LABEL_30:
   v16 = [v15 addSuccessBlock:v17];
 }
 
-- (void)pauseResumeTimerForCell:(id)a3
+- (void)pauseResumeTimerForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(MTATimerCollectionViewController *)self collectionView];
-  v6 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  collectionView = [(MTATimerCollectionViewController *)self collectionView];
+  v6 = [collectionView indexPathForCell:cellCopy];
 
-  v7 = [(MTATimerCollectionViewController *)self dataSource];
-  v8 = [v7 activeTimerAtRow:{objc_msgSend(v6, "row")}];
+  dataSource = [(MTATimerCollectionViewController *)self dataSource];
+  v8 = [dataSource activeTimerAtRow:{objc_msgSend(v6, "row")}];
   v9 = [v8 mutableCopy];
 
   if ([v9 state] == 3)
@@ -1501,8 +1501,8 @@ LABEL_30:
   }
 
   [v9 setState:v10];
-  v11 = [(MTATimerCollectionViewController *)self timerManager];
-  v12 = [v11 updateTimer:v9];
+  timerManager = [(MTATimerCollectionViewController *)self timerManager];
+  v12 = [timerManager updateTimer:v9];
   v13 = +[NAScheduler mtMainThreadScheduler];
   v14 = [v12 reschedule:v13];
 
@@ -1516,19 +1516,19 @@ LABEL_30:
   v16 = [v14 addSuccessBlock:v17];
 }
 
-- (void)deleteRecentTimerForCell:(id)a3
+- (void)deleteRecentTimerForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(MTATimerCollectionViewController *)self collectionView];
-  v13 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  collectionView = [(MTATimerCollectionViewController *)self collectionView];
+  v13 = [collectionView indexPathForCell:cellCopy];
 
-  v6 = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v13, "row")}];
+  getRecentDurations = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
+  v7 = [getRecentDurations objectAtIndexedSubscript:{objc_msgSend(v13, "row")}];
 
   if (v7)
   {
-    v8 = [(MTATimerCollectionViewController *)self timerManager];
-    v9 = [v8 removeRecentDuration:v7];
+    timerManager = [(MTATimerCollectionViewController *)self timerManager];
+    v9 = [timerManager removeRecentDuration:v7];
 
     v10 = +[NAScheduler mainThreadScheduler];
     v11 = [v9 reschedule:v10];
@@ -1536,22 +1536,22 @@ LABEL_30:
   }
 }
 
-- (void)startRecentTimerForCell:(id)a3
+- (void)startRecentTimerForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(MTATimerCollectionViewController *)self collectionView];
-  v12 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  collectionView = [(MTATimerCollectionViewController *)self collectionView];
+  v12 = [collectionView indexPathForCell:cellCopy];
 
-  v6 = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v12, "row")}];
+  getRecentDurations = [(MTTimerDataSource *)self->_dataSource getRecentDurations];
+  v7 = [getRecentDurations objectAtIndexedSubscript:{objc_msgSend(v12, "row")}];
 
   if (v7)
   {
     [v7 duration];
     v9 = v8;
-    v10 = [v7 title];
-    v11 = [v7 sound];
-    [(MTATimerCollectionViewController *)self didStartTimerWithDuration:v10 title:v11 sound:0 sender:v9];
+    title = [v7 title];
+    sound = [v7 sound];
+    [(MTATimerCollectionViewController *)self didStartTimerWithDuration:title title:sound sound:0 sender:v9];
   }
 }
 
@@ -1592,18 +1592,18 @@ LABEL_30:
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (void)didCancelTimerWithSender:(id)a3
+- (void)didCancelTimerWithSender:(id)sender
 {
-  v4 = [(MTATimerCollectionViewController *)self navigationController];
-  v5 = [v4 popViewControllerAnimated:1];
+  navigationController = [(MTATimerCollectionViewController *)self navigationController];
+  v5 = [navigationController popViewControllerAnimated:1];
 
   [(MTATimerCollectionViewController *)self reloadState];
 }
 
 - (void)didReceiveStartTimerShortcutAction
 {
-  v3 = [(MTATimerCollectionViewController *)self navigationController];
-  v4 = [v3 popViewControllerAnimated:1];
+  navigationController = [(MTATimerCollectionViewController *)self navigationController];
+  v4 = [navigationController popViewControllerAnimated:1];
 
   [(MTATimerCollectionViewController *)self handleStartTimerShortcutAction];
 }
@@ -1616,49 +1616,49 @@ LABEL_30:
   return v3;
 }
 
-- (void)didUpdateWithLabel:(id)a3 sender:(id)a4
+- (void)didUpdateWithLabel:(id)label sender:(id)sender
 {
-  v11 = a3;
+  labelCopy = label;
   [(MTATimerCollectionViewController *)self setCurrentTitle:?];
-  v5 = [(MTATimerCollectionViewController *)self dataSource];
-  v6 = [v5 numberOfActiveTimers];
+  dataSource = [(MTATimerCollectionViewController *)self dataSource];
+  numberOfActiveTimers = [dataSource numberOfActiveTimers];
 
-  if (v6 == 1)
+  if (numberOfActiveTimers == 1)
   {
     v7 = [(MTTimerDataSource *)self->_dataSource activeTimerAtRow:0];
     v8 = [v7 mutableCopy];
 
-    [v8 setTitle:v11];
-    v9 = [(MTATimerCollectionViewController *)self dataSource];
-    v10 = [v9 updateTimer:v8 reload:0];
+    [v8 setTitle:labelCopy];
+    dataSource2 = [(MTATimerCollectionViewController *)self dataSource];
+    v10 = [dataSource2 updateTimer:v8 reload:0];
   }
 }
 
-- (void)startTimer:(id)a3
+- (void)startTimer:(id)timer
 {
-  v4 = [(MTATimerCollectionViewController *)self singleTimerCell];
-  v5 = v4;
-  if (v4)
+  singleTimerCell = [(MTATimerCollectionViewController *)self singleTimerCell];
+  v5 = singleTimerCell;
+  if (singleTimerCell)
   {
-    v6 = [v4 controlsView];
-    [v6 countDownDuration];
+    controlsView = [singleTimerCell controlsView];
+    [controlsView countDownDuration];
     v8 = v7;
 
     if (v8 > 0.0)
     {
       v9 = [[MTMutableTimer alloc] initWithState:3 duration:v8];
-      v10 = [v5 controlsView];
-      v11 = [v10 getCurrentLabel];
+      controlsView2 = [v5 controlsView];
+      getCurrentLabel = [controlsView2 getCurrentLabel];
 
-      if ([v11 length])
+      if ([getCurrentLabel length])
       {
-        [v9 setTitle:v11];
+        [v9 setTitle:getCurrentLabel];
       }
 
-      v12 = [(MTATimerCollectionViewController *)self sound];
-      if (v12)
+      sound = [(MTATimerCollectionViewController *)self sound];
+      if (sound)
       {
-        [v9 setSound:v12];
+        [v9 setSound:sound];
       }
 
       else
@@ -1670,16 +1670,16 @@ LABEL_30:
       v14 = MTLogForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [v9 timerID];
+        timerID = [v9 timerID];
         *buf = 138543618;
-        v25 = self;
+        selfCopy = self;
         v26 = 2114;
-        v27 = v15;
+        v27 = timerID;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%{public}@ starting new timer: %{public}@ and dismissing add controller", buf, 0x16u);
       }
 
-      v16 = [(MTATimerCollectionViewController *)self dataSource];
-      v17 = [v16 addTimer:v9 reload:1];
+      dataSource = [(MTATimerCollectionViewController *)self dataSource];
+      v17 = [dataSource addTimer:v9 reload:1];
       v18 = +[NAScheduler mtMainThreadScheduler];
       v19 = [v17 reschedule:v18];
 
@@ -1697,78 +1697,78 @@ LABEL_30:
 
 - (void)deleteRecentSection
 {
-  v3 = [(MTATimerCollectionViewController *)self sections];
-  v4 = [v3 indexOfObject:&off_1000B19E0];
+  sections = [(MTATimerCollectionViewController *)self sections];
+  v4 = [sections indexOfObject:&off_1000B19E0];
 
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(MTATimerCollectionViewController *)self sections];
-    [v5 removeObjectAtIndex:v4];
+    sections2 = [(MTATimerCollectionViewController *)self sections];
+    [sections2 removeObjectAtIndex:v4];
 
-    v7 = [(MTATimerCollectionViewController *)self collectionView];
+    collectionView = [(MTATimerCollectionViewController *)self collectionView];
     v6 = [NSIndexSet indexSetWithIndex:v4];
-    [v7 deleteSections:v6];
+    [collectionView deleteSections:v6];
   }
 }
 
-- (void)prepareUIForState:(unint64_t)a3 forceRefresh:(BOOL)a4
+- (void)prepareUIForState:(unint64_t)state forceRefresh:(BOOL)refresh
 {
-  v4 = a4;
-  v7 = [(MTATimerCollectionViewController *)self singleTimerCell];
-  if (v7)
+  refreshCopy = refresh;
+  singleTimerCell = [(MTATimerCollectionViewController *)self singleTimerCell];
+  if (singleTimerCell)
   {
-    [(MTATimerCollectionViewController *)self prepareUIForState:a3 inCell:v7 forceRefresh:v4];
+    [(MTATimerCollectionViewController *)self prepareUIForState:state inCell:singleTimerCell forceRefresh:refreshCopy];
   }
 
   _objc_release_x1();
 }
 
-- (void)prepareUIForState:(unint64_t)a3 inCell:(id)a4 forceRefresh:(BOOL)a5
+- (void)prepareUIForState:(unint64_t)state inCell:(id)cell forceRefresh:(BOOL)refresh
 {
-  v5 = a5;
-  v8 = a4;
+  refreshCopy = refresh;
+  cellCopy = cell;
   v9 = MTLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
-    v20 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Preparing UI for state %lu", buf, 0x16u);
   }
 
   if ([(MTTimerDataSource *)self->_dataSource numberOfActiveTimers])
   {
     v10 = [(MTTimerDataSource *)self->_dataSource activeTimerAtRow:0];
-    v11 = [v8 controlsView];
+    controlsView = [cellCopy controlsView];
     [v10 remainingTime];
     v13 = v12;
     [v10 duration];
     v15 = v14;
     if ([v10 isCurrentTimer])
     {
-      [v11 setRemainingTime:a3 duration:0 state:v5 title:v13 forceRefresh:v15];
+      [controlsView setRemainingTime:state duration:0 state:refreshCopy title:v13 forceRefresh:v15];
     }
 
     else
     {
-      v16 = [v10 title];
-      [v11 setRemainingTime:a3 duration:v16 state:v5 title:v13 forceRefresh:v15];
+      title = [v10 title];
+      [controlsView setRemainingTime:state duration:title state:refreshCopy title:v13 forceRefresh:v15];
     }
 
     [(MTATimerCollectionViewController *)self updateAddButton];
-    if (a3 > 1)
+    if (state > 1)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
         [(MTATimerCollectionViewController *)self stopUpdatingTimerUI];
         [(MTATimerCollectionViewController *)self timerTick:0];
         goto LABEL_19;
       }
 
-      if (a3 != 4)
+      if (state != 4)
       {
-        if (a3 == 3)
+        if (state == 3)
         {
           [(MTATimerCollectionViewController *)self timerTick:0];
           [(MTATimerCollectionViewController *)self startUpdatingSingleTimerUI];
@@ -1778,16 +1778,16 @@ LABEL_30:
       }
 
 LABEL_17:
-      NSLog(@"Unexpected timer state %ld", a3);
+      NSLog(@"Unexpected timer state %ld", state);
       goto LABEL_19;
     }
 
-    if (!a3)
+    if (!state)
     {
       goto LABEL_17;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
       [(MTATimerCollectionViewController *)self stopUpdatingTimerUI];
     }
@@ -1805,13 +1805,13 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)timerTick:(id)a3
+- (void)timerTick:(id)tick
 {
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ timerTick", &v14, 0xCu);
   }
 
@@ -1819,8 +1819,8 @@ LABEL_19:
   {
     if (![(MTTimerDataSource *)self->_dataSource numberOfActiveTimers])
     {
-      v5 = MTLogForCategory();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      singleTimerCell = MTLogForCategory();
+      if (os_log_type_enabled(singleTimerCell, OS_LOG_TYPE_ERROR))
       {
         sub_1000741DC();
       }
@@ -1828,8 +1828,8 @@ LABEL_19:
       goto LABEL_22;
     }
 
-    v5 = [(MTATimerCollectionViewController *)self singleTimerCell];
-    if (!v5)
+    singleTimerCell = [(MTATimerCollectionViewController *)self singleTimerCell];
+    if (!singleTimerCell)
     {
 LABEL_22:
 
@@ -1839,47 +1839,47 @@ LABEL_22:
     v6 = [(MTTimerDataSource *)self->_dataSource activeTimerAtRow:0];
     [v6 remainingTime];
     v8 = v7;
-    v9 = [v6 state];
-    if (v9 <= 1)
+    state = [v6 state];
+    if (state <= 1)
     {
-      if (!v9)
+      if (!state)
       {
         goto LABEL_18;
       }
 
-      if (v9 == 1)
+      if (state == 1)
       {
         [(MTATimerCollectionViewController *)self prepareUIForState:1 forceRefresh:0];
-        v11 = [v5 controlsView];
-        v12 = v11;
+        controlsView = [singleTimerCell controlsView];
+        v12 = controlsView;
         v13 = 0.0;
 LABEL_16:
-        [v11 setTime:v13];
+        [controlsView setTime:v13];
 LABEL_20:
       }
     }
 
     else
     {
-      if ((v9 - 2) < 2)
+      if ((state - 2) < 2)
       {
         v10 = MTLogForCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138543618;
-          v15 = self;
+          selfCopy2 = self;
           v16 = 2048;
           v17 = v8;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ remainingTime: %f", &v14, 0x16u);
         }
 
-        v11 = [v5 controlsView];
-        v12 = v11;
+        controlsView = [singleTimerCell controlsView];
+        v12 = controlsView;
         v13 = v8;
         goto LABEL_16;
       }
 
-      if (v9 == 4)
+      if (state == 4)
       {
 LABEL_18:
         v12 = MTLogForCategory();
@@ -1896,7 +1896,7 @@ LABEL_18:
   }
 }
 
-- (void)cancelTimer:(id)a3
+- (void)cancelTimer:(id)timer
 {
   if ([(MTTimerDataSource *)self->_dataSource numberOfActiveTimers]== 1)
   {
@@ -1906,11 +1906,11 @@ LABEL_18:
       v5 = MTLogForCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [v4 timerID];
+        timerID = [v4 timerID];
         *buf = 138543618;
-        v9 = self;
+        selfCopy = self;
         v10 = 2114;
-        v11 = v6;
+        v11 = timerID;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Stopping a single active timer: %{public}@", buf, 0x16u);
       }
 
@@ -1924,10 +1924,10 @@ LABEL_18:
   }
 }
 
-- (void)pauseResumeTimer:(id)a3
+- (void)pauseResumeTimer:(id)timer
 {
-  v4 = [(MTATimerCollectionViewController *)self singleTimerCell];
-  if (v4 && [(MTTimerDataSource *)self->_dataSource numberOfActiveTimers])
+  singleTimerCell = [(MTATimerCollectionViewController *)self singleTimerCell];
+  if (singleTimerCell && [(MTTimerDataSource *)self->_dataSource numberOfActiveTimers])
   {
     v5 = [(MTTimerDataSource *)self->_dataSource activeTimerAtRow:0];
     if ([v5 state] == 3)
@@ -1944,11 +1944,11 @@ LABEL_18:
     v8 = MTLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 timerID];
+      timerID = [v7 timerID];
       *buf = 138543618;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v9;
+      v20 = timerID;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Pausing a timer: %{public}@", buf, 0x16u);
     }
 
@@ -1972,9 +1972,9 @@ LABEL_18:
   }
 }
 
-- (void)showSoundPicker:(id)a3
+- (void)showSoundPicker:(id)picker
 {
-  v34 = a3;
+  pickerCopy = picker;
   if (!self->_tonePickerViewController)
   {
     v4 = [[TKTonePickerViewController alloc] _initWithAlertType:13 tableViewStyle:2];
@@ -1994,24 +1994,24 @@ LABEL_18:
     v10 = objc_opt_new();
     [(TKTonePickerViewController *)self->_tonePickerViewController setStyleProvider:v10];
 
-    v11 = [(TKTonePickerViewController *)self->_tonePickerViewController navigationItem];
+    navigationItem = [(TKTonePickerViewController *)self->_tonePickerViewController navigationItem];
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"WHEN_TIMER_ENDS" value:&stru_1000AEF10 table:0];
-    [v11 setTitle:v13];
+    [navigationItem setTitle:v13];
 
     v14 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"dismissSoundPicker"];
-    [v11 setLeftBarButtonItem:v14];
+    [navigationItem setLeftBarButtonItem:v14];
 
     v15 = [UIBarButtonItem alloc];
     v16 = +[NSBundle mainBundle];
     v17 = [v16 localizedStringForKey:@"SET" value:&stru_1000AEF10 table:0];
     v18 = [v15 initWithTitle:v17 style:2 target:self action:"confirmPickingSound"];
-    [v11 setRightBarButtonItem:v18];
+    [navigationItem setRightBarButtonItem:v18];
   }
 
-  v19 = [(MTATimerCollectionViewController *)self currentTone];
-  v20 = [v19 toneIdentifier];
-  [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedToneIdentifier:v20];
+  currentTone = [(MTATimerCollectionViewController *)self currentTone];
+  toneIdentifier = [currentTone toneIdentifier];
+  [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedToneIdentifier:toneIdentifier];
 
   [(TKTonePickerViewController *)self->_tonePickerViewController setShowsToneStore:MTShouldAllowToneStore()];
   v21 = +[NSNotificationCenter defaultCenter];
@@ -2020,12 +2020,12 @@ LABEL_18:
   v22 = [[UINavigationController alloc] initWithRootViewController:self->_tonePickerViewController];
   [v22 setDelegate:self];
   [v22 setModalPresentationStyle:2];
-  v23 = [v22 popoverPresentationController];
-  [v23 setDelegate:self];
+  popoverPresentationController = [v22 popoverPresentationController];
+  [popoverPresentationController setDelegate:self];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = v34;
+    v24 = pickerCopy;
     [v24 bounds];
     x = v25;
     y = v27;
@@ -2042,75 +2042,75 @@ LABEL_18:
     height = CGRectZero.size.height;
   }
 
-  [v23 setSourceView:v24];
-  [v23 setSourceRect:{x, y, width, height}];
+  [popoverPresentationController setSourceView:v24];
+  [popoverPresentationController setSourceRect:{x, y, width, height}];
   v33 = +[UIColor mtui_backgroundColor];
-  [v23 setBackgroundColor:v33];
+  [popoverPresentationController setBackgroundColor:v33];
 
   [(MTATimerCollectionViewController *)self presentViewController:v22 animated:1 completion:0];
 }
 
 - (id)currentTone
 {
-  v3 = [(MTATimerCollectionViewController *)self sound];
+  sound = [(MTATimerCollectionViewController *)self sound];
 
-  if (v3)
+  if (sound)
   {
-    v4 = [(MTATimerCollectionViewController *)self sound];
+    sound2 = [(MTATimerCollectionViewController *)self sound];
 LABEL_3:
-    v5 = v4;
+    sound4 = sound2;
     goto LABEL_6;
   }
 
-  v6 = [(MTTimerDataSource *)self->_dataSource getLatestDuration];
-  v7 = [v6 sound];
+  getLatestDuration = [(MTTimerDataSource *)self->_dataSource getLatestDuration];
+  sound3 = [getLatestDuration sound];
 
-  if (!v7)
+  if (!sound3)
   {
-    v4 = [MTSound defaultSoundForCategory:1];
+    sound2 = [MTSound defaultSoundForCategory:1];
     goto LABEL_3;
   }
 
-  v8 = [(MTTimerDataSource *)self->_dataSource getLatestDuration];
-  v5 = [v8 sound];
+  getLatestDuration2 = [(MTTimerDataSource *)self->_dataSource getLatestDuration];
+  sound4 = [getLatestDuration2 sound];
 
 LABEL_6:
 
-  return v5;
+  return sound4;
 }
 
 - (void)confirmPickingSound
 {
-  v3 = [(TKTonePickerViewController *)self->_tonePickerViewController selectedToneIdentifier];
-  if (!v3)
+  selectedToneIdentifier = [(TKTonePickerViewController *)self->_tonePickerViewController selectedToneIdentifier];
+  if (!selectedToneIdentifier)
   {
-    v3 = [(TKTonePickerViewController *)self->_tonePickerViewController defaultToneIdentifier];
+    selectedToneIdentifier = [(TKTonePickerViewController *)self->_tonePickerViewController defaultToneIdentifier];
   }
 
-  v17 = v3;
-  v4 = [(MTATimerCollectionViewController *)self sound];
-  v5 = [v4 vibrationIdentifier];
-  v6 = [(MTATimerCollectionViewController *)self sound];
-  v7 = [v6 soundVolume];
-  v8 = [MTSound toneSoundWithIdentifier:v17 vibrationIdentifer:v5 volume:v7];
+  v17 = selectedToneIdentifier;
+  sound = [(MTATimerCollectionViewController *)self sound];
+  vibrationIdentifier = [sound vibrationIdentifier];
+  sound2 = [(MTATimerCollectionViewController *)self sound];
+  soundVolume = [sound2 soundVolume];
+  v8 = [MTSound toneSoundWithIdentifier:v17 vibrationIdentifer:vibrationIdentifier volume:soundVolume];
   [(MTATimerCollectionViewController *)self setSound:v8];
 
   [(MTATimerCollectionViewController *)self updateSelectedTone];
   [(MTATimerCollectionViewController *)self dismissSoundPicker];
-  v9 = [(MTATimerCollectionViewController *)self dataSource];
-  v10 = [v9 numberOfActiveTimers];
+  dataSource = [(MTATimerCollectionViewController *)self dataSource];
+  numberOfActiveTimers = [dataSource numberOfActiveTimers];
 
-  if (v10 == 1)
+  if (numberOfActiveTimers == 1)
   {
-    v11 = [(MTATimerCollectionViewController *)self dataSource];
-    v12 = [v11 activeTimerAtRow:0];
+    dataSource2 = [(MTATimerCollectionViewController *)self dataSource];
+    v12 = [dataSource2 activeTimerAtRow:0];
     v13 = [v12 mutableCopy];
 
-    v14 = [(MTATimerCollectionViewController *)self sound];
-    [v13 setSound:v14];
+    sound3 = [(MTATimerCollectionViewController *)self sound];
+    [v13 setSound:sound3];
 
-    v15 = [(MTATimerCollectionViewController *)self dataSource];
-    v16 = [v15 updateTimer:v13 reload:0];
+    dataSource3 = [(MTATimerCollectionViewController *)self dataSource];
+    v16 = [dataSource3 updateTimer:v13 reload:0];
   }
 }
 
@@ -2119,21 +2119,21 @@ LABEL_6:
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self name:UIApplicationSuspendedNotification object:0];
 
-  v4 = [(MTATimerCollectionViewController *)self presentedViewController];
-  v5 = [v4 popoverPresentationController];
+  presentedViewController = [(MTATimerCollectionViewController *)self presentedViewController];
+  popoverPresentationController = [presentedViewController popoverPresentationController];
 
-  if (v5)
+  if (popoverPresentationController)
   {
-    v6 = [(MTATimerCollectionViewController *)self navigationItem];
-    v7 = [v6 leftBarButtonItem];
-    [v7 setEnabled:1];
+    navigationItem = [(MTATimerCollectionViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setEnabled:1];
   }
 
   v8 = +[UIApplication sharedApplication];
   -[MTATimerCollectionViewController dismissViewControllerAnimated:completion:](self, "dismissViewControllerAnimated:completion:", [v8 isSuspended] ^ 1, 0);
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
   if (MTUIIsPadIdiom())
   {
@@ -2146,11 +2146,11 @@ LABEL_6:
   }
 }
 
-- (void)tipViewControllerDidBecomeAvailableWithSiriTipsController:(id)a3 tipView:(id)a4
+- (void)tipViewControllerDidBecomeAvailableWithSiriTipsController:(id)controller tipView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_siriTipsController != v7)
+  controllerCopy = controller;
+  viewCopy = view;
+  if (self->_siriTipsController != controllerCopy)
   {
     sub_1000742DC(a2, self);
   }
@@ -2162,19 +2162,19 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Siri tip became available", v11, 2u);
   }
 
-  objc_storeStrong(&self->_siriTipView, a4);
+  objc_storeStrong(&self->_siriTipView, view);
   if (([(NSMutableArray *)self->_sections containsObject:&off_1000B1998]& 1) == 0)
   {
     [(NSMutableArray *)self->_sections insertObject:&off_1000B1998 atIndex:0];
-    v10 = [(MTATimerCollectionViewController *)self collectionView];
-    [v10 reloadData];
+    collectionView = [(MTATimerCollectionViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (void)tipViewControllerWasInvalidatedWithSiriTipsController:(id)a3
+- (void)tipViewControllerWasInvalidatedWithSiriTipsController:(id)controller
 {
-  v5 = a3;
-  if (self->_siriTipsController != v5)
+  controllerCopy = controller;
+  if (self->_siriTipsController != controllerCopy)
   {
     sub_100074350(a2, self);
   }
@@ -2195,8 +2195,8 @@ LABEL_6:
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(NSMutableArray *)self->_sections removeObjectAtIndex:v8];
-      v9 = [(MTATimerCollectionViewController *)self collectionView];
-      [v9 reloadData];
+      collectionView = [(MTATimerCollectionViewController *)self collectionView];
+      [collectionView reloadData];
     }
   }
 }

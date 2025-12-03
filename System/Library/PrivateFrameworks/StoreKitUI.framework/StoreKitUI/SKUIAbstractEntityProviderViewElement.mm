@@ -1,15 +1,15 @@
 @interface SKUIAbstractEntityProviderViewElement
-- (SKUIAbstractEntityProviderViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUIAbstractEntityProviderViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUIAbstractEntityProviderViewElement
 
-- (SKUIAbstractEntityProviderViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIAbstractEntityProviderViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIAbstractEntityProviderViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,10 +17,10 @@
 
   v21.receiver = self;
   v21.super_class = SKUIAbstractEntityProviderViewElement;
-  v11 = [(SKUIViewElement *)&v21 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v21 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"entityType"];
+    v12 = [elementCopy getAttribute:@"entityType"];
     if ([v12 length])
     {
       v13 = [v12 copy];
@@ -28,7 +28,7 @@
       v11->_entityTypeString = v13;
     }
 
-    v15 = [v8 getAttribute:@"prefetchedProperties"];
+    v15 = [elementCopy getAttribute:@"prefetchedProperties"];
     v16 = [v15 mutableCopy];
 
     [v16 replaceOccurrencesOfString:@" " withString:&stru_2827FFAC8 options:1 range:{0, objc_msgSend(v16, "length")}];
@@ -53,22 +53,22 @@
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SKUIAbstractEntityProviderViewElement;
-  v5 = [(SKUIViewElement *)&v14 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v14 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    v7 = [(SKUIAbstractEntityProviderViewElement *)v4 entityTypeString];
-    v8 = [v7 copy];
+    entityTypeString = [(SKUIAbstractEntityProviderViewElement *)elementCopy entityTypeString];
+    v8 = [entityTypeString copy];
     entityTypeString = self->_entityTypeString;
     self->_entityTypeString = v8;
 
-    v10 = [(SKUIAbstractEntityProviderViewElement *)v4 prefetchedProperties];
-    v11 = [v10 copy];
+    prefetchedProperties = [(SKUIAbstractEntityProviderViewElement *)elementCopy prefetchedProperties];
+    v11 = [prefetchedProperties copy];
     prefetchedProperties = self->_prefetchedProperties;
     self->_prefetchedProperties = v11;
   }

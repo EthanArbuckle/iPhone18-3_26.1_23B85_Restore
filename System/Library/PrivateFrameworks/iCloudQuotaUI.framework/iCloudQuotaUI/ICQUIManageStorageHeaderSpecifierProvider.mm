@@ -1,36 +1,36 @@
 @interface ICQUIManageStorageHeaderSpecifierProvider
-- (ICQUIManageStorageHeaderSpecifierProvider)initWithAccountManager:(id)a3 storageSummary:(id)a4;
+- (ICQUIManageStorageHeaderSpecifierProvider)initWithAccountManager:(id)manager storageSummary:(id)summary;
 - (ICQUIManageStorageSpecifierProviderDelegate)delegate;
 - (NSArray)specifiers;
-- (id)_valueForStorageGraphSpecifier:(id)a3;
+- (id)_valueForStorageGraphSpecifier:(id)specifier;
 - (id)account;
 - (id)makeFamilyAndPlanManagementSpecifiers;
 - (id)makeThermometerSpecifiers;
-- (int64_t)cellTypeForAction:(int64_t)a3;
-- (int64_t)cellTypeForSpecifierInfo:(id)a3;
+- (int64_t)cellTypeForAction:(int64_t)action;
+- (int64_t)cellTypeForSpecifierInfo:(id)info;
 - (void)_fetchStorageSummaryAndRefreshSpecifiers;
 - (void)dealloc;
-- (void)launchActionFromSpecifier:(id)a3;
-- (void)refreshHeaderSpecifiersWithSummary:(id)a3;
-- (void)setSpecifiers:(id)a3;
+- (void)launchActionFromSpecifier:(id)specifier;
+- (void)refreshHeaderSpecifiersWithSummary:(id)summary;
+- (void)setSpecifiers:(id)specifiers;
 @end
 
 @implementation ICQUIManageStorageHeaderSpecifierProvider
 
-- (ICQUIManageStorageHeaderSpecifierProvider)initWithAccountManager:(id)a3 storageSummary:(id)a4
+- (ICQUIManageStorageHeaderSpecifierProvider)initWithAccountManager:(id)manager storageSummary:(id)summary
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  summaryCopy = summary;
   v13.receiver = self;
   v13.super_class = ICQUIManageStorageHeaderSpecifierProvider;
   v9 = [(ICQUIManageStorageHeaderSpecifierProvider *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeStrong(&v10->_storageSummary, a4);
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v10 selector:sel__fetchStorageSummaryAndRefreshSpecifiers name:@"QuotaDidChange" object:0];
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeStrong(&v10->_storageSummary, summary);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__fetchStorageSummaryAndRefreshSpecifiers name:@"QuotaDidChange" object:0];
   }
 
   return v10;
@@ -48,8 +48,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -65,11 +65,11 @@
   else
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [(ICQUIManageStorageHeaderSpecifierProvider *)self makeThermometerSpecifiers];
-    [v5 addObjectsFromArray:v6];
+    makeThermometerSpecifiers = [(ICQUIManageStorageHeaderSpecifierProvider *)self makeThermometerSpecifiers];
+    [v5 addObjectsFromArray:makeThermometerSpecifiers];
 
-    v7 = [(ICQUIManageStorageHeaderSpecifierProvider *)self makeFamilyAndPlanManagementSpecifiers];
-    [v5 addObjectsFromArray:v7];
+    makeFamilyAndPlanManagementSpecifiers = [(ICQUIManageStorageHeaderSpecifierProvider *)self makeFamilyAndPlanManagementSpecifiers];
+    [v5 addObjectsFromArray:makeFamilyAndPlanManagementSpecifiers];
 
     v8 = [v5 copy];
     v9 = self->_specifiers;
@@ -85,69 +85,69 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"MANAGE_STORAGE_THERMOMETER"];
-  v5 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
-  v6 = [v5 manageStoragePage];
-  v7 = [v6 storageGraphFooterText];
+  storageSummary = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
+  manageStoragePage = [storageSummary manageStoragePage];
+  storageGraphFooterText = [manageStoragePage storageGraphFooterText];
 
-  if (v7)
+  if (storageGraphFooterText)
   {
-    [v4 setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
+    [v4 setProperty:storageGraphFooterText forKey:*MEMORY[0x277D3FF88]];
   }
 
   [v3 addObject:v4];
-  v8 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
+  storageSpecifier = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
 
-  if (!v8)
+  if (!storageSpecifier)
   {
     v9 = MEMORY[0x277D3FAD8];
-    v10 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
-    v11 = [v10 displayLabel];
-    v12 = [v9 preferenceSpecifierNamed:v11 target:self set:0 get:sel__valueForStorageGraphSpecifier_ detail:0 cell:-1 edit:0];
+    storageSummary2 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
+    displayLabel = [storageSummary2 displayLabel];
+    v12 = [v9 preferenceSpecifierNamed:displayLabel target:self set:0 get:sel__valueForStorageGraphSpecifier_ detail:0 cell:-1 edit:0];
     [(ICQUIManageStorageHeaderSpecifierProvider *)self setStorageSpecifier:v12];
 
-    v13 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
-    [v13 setIdentifier:@"CLOUD_STORAGE_GRAPH"];
+    storageSpecifier2 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
+    [storageSpecifier2 setIdentifier:@"CLOUD_STORAGE_GRAPH"];
 
     v14 = objc_opt_class();
-    v15 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
-    [v15 setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FE58]];
+    storageSpecifier3 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
+    [storageSpecifier3 setObject:v14 forKeyedSubscript:*MEMORY[0x277D3FE58]];
 
-    v16 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
+    storageSpecifier4 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
     v17 = *MEMORY[0x277D3FF38];
-    [v16 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FF38]];
+    [storageSpecifier4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FF38]];
 
-    v18 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
-    [v18 setObject:self forKeyedSubscript:*MEMORY[0x277D40148]];
+    storageSpecifier5 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
+    [storageSpecifier5 setObject:self forKeyedSubscript:*MEMORY[0x277D40148]];
 
     v19 = MEMORY[0x277CCABB0];
-    v20 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
-    v21 = [v19 numberWithInt:v20 != 0];
-    v22 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
-    [v22 setObject:v21 forKeyedSubscript:v17];
+    storageSummary3 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
+    v21 = [v19 numberWithInt:storageSummary3 != 0];
+    storageSpecifier6 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
+    [storageSpecifier6 setObject:v21 forKeyedSubscript:v17];
 
-    v23 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
-    v24 = [v23 displayLabel];
-    v25 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
-    [v25 setObject:v24 forKeyedSubscript:*MEMORY[0x277D40170]];
+    storageSummary4 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
+    displayLabel2 = [storageSummary4 displayLabel];
+    storageSpecifier7 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
+    [storageSpecifier7 setObject:displayLabel2 forKeyedSubscript:*MEMORY[0x277D40170]];
   }
 
-  v26 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
-  [v3 addObject:v26];
+  storageSpecifier8 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSpecifier];
+  [v3 addObject:storageSpecifier8];
 
   v27 = [v3 copy];
 
   return v27;
 }
 
-- (void)setSpecifiers:(id)a3
+- (void)setSpecifiers:(id)specifiers
 {
-  v7 = a3;
-  if (v7)
+  specifiersCopy = specifiers;
+  if (specifiersCopy)
   {
     v5 = [(NSArray *)self->_specifiers copy];
-    objc_storeStrong(&self->_specifiers, a3);
-    v6 = [(ICQUIManageStorageHeaderSpecifierProvider *)self delegate];
-    [v6 reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:1];
+    objc_storeStrong(&self->_specifiers, specifiers);
+    delegate = [(ICQUIManageStorageHeaderSpecifierProvider *)self delegate];
+    [delegate reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:1];
   }
 
   else
@@ -156,24 +156,24 @@
   }
 }
 
-- (id)_valueForStorageGraphSpecifier:(id)a3
+- (id)_valueForStorageGraphSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
-  v6 = [v5 totalStorage];
-  [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x277CEC9D0]];
+  specifierCopy = specifier;
+  storageSummary = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
+  totalStorage = [storageSummary totalStorage];
+  [specifierCopy setObject:totalStorage forKeyedSubscript:*MEMORY[0x277CEC9D0]];
 
-  v7 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
-  v8 = [v7 freeStorage];
-  [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x277CEC9C8]];
+  storageSummary2 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
+  freeStorage = [storageSummary2 freeStorage];
+  [specifierCopy setObject:freeStorage forKeyedSubscript:*MEMORY[0x277CEC9C8]];
 
-  v9 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
-  v10 = [v9 usedStorage];
-  [v4 setObject:v10 forKeyedSubscript:*MEMORY[0x277CEC9E0]];
+  storageSummary3 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
+  usedStorage = [storageSummary3 usedStorage];
+  [specifierCopy setObject:usedStorage forKeyedSubscript:*MEMORY[0x277CEC9E0]];
 
-  v11 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
-  v12 = [v11 icqui_AAUIiCloudMediaUsageInfo];
-  [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x277CEC9D8]];
+  storageSummary4 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
+  icqui_AAUIiCloudMediaUsageInfo = [storageSummary4 icqui_AAUIiCloudMediaUsageInfo];
+  [specifierCopy setObject:icqui_AAUIiCloudMediaUsageInfo forKeyedSubscript:*MEMORY[0x277CEC9D8]];
 
   return 0;
 }
@@ -186,12 +186,12 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
-  v4 = [v3 manageStoragePage];
-  v5 = [v4 specifiers];
+  storageSummary = [(ICQUIManageStorageHeaderSpecifierProvider *)self storageSummary];
+  manageStoragePage = [storageSummary manageStoragePage];
+  specifiers = [manageStoragePage specifiers];
 
-  obj = v5;
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  obj = specifiers;
+  v6 = [specifiers countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (!v6)
   {
     goto LABEL_19;
@@ -213,23 +213,23 @@
       }
 
       v10 = *(*(&v28 + 1) + 8 * v9);
-      v11 = [v10 actions];
-      v12 = [v11 firstObject];
+      actions = [v10 actions];
+      firstObject = [actions firstObject];
 
-      v13 = [v10 title];
-      if (v13 || ([v12 title], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+      title = [v10 title];
+      if (title || ([firstObject title], (title = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v14 = v13;
+        v14 = title;
         v15 = [(ICQUIManageStorageHeaderSpecifierProvider *)self cellTypeForSpecifierInfo:v10];
         v16 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v14 target:self set:0 get:0 detail:0 cell:v15 edit:0];
         [v16 setIdentifier:v14];
         [v16 setObject:objc_opt_class() forKeyedSubscript:v27];
-        [v16 setObject:v12 forKeyedSubscript:@"ACTION_INFO"];
+        [v16 setObject:firstObject forKeyedSubscript:@"ACTION_INFO"];
         [v16 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v26];
         if (v15 == 1)
         {
-          v17 = [v10 subtitle];
-          [v16 setObject:v17 forKeyedSubscript:v23];
+          subtitle = [v10 subtitle];
+          [v16 setObject:subtitle forKeyedSubscript:v23];
 
           [v16 setControllerLoadAction:sel_launchActionFromSpecifier_];
           if (!v16)
@@ -292,11 +292,11 @@ LABEL_19:
   return v21;
 }
 
-- (int64_t)cellTypeForSpecifierInfo:(id)a3
+- (int64_t)cellTypeForSpecifierInfo:(id)info
 {
-  v3 = [a3 subtitle];
+  subtitle = [info subtitle];
 
-  if (v3)
+  if (subtitle)
   {
     return 1;
   }
@@ -307,35 +307,35 @@ LABEL_19:
   }
 }
 
-- (int64_t)cellTypeForAction:(int64_t)a3
+- (int64_t)cellTypeForAction:(int64_t)action
 {
-  if ((a3 - 112) > 9)
+  if ((action - 112) > 9)
   {
     return 13;
   }
 
   else
   {
-    return qword_2757A3D70[a3 - 112];
+    return qword_2757A3D70[action - 112];
   }
 }
 
-- (void)launchActionFromSpecifier:(id)a3
+- (void)launchActionFromSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(ICQUIManageStorageHeaderSpecifierProvider *)self delegate];
-  [v5 provider:self loadActionFromSpecifier:v4];
+  specifierCopy = specifier;
+  delegate = [(ICQUIManageStorageHeaderSpecifierProvider *)self delegate];
+  [delegate provider:self loadActionFromSpecifier:specifierCopy];
 }
 
-- (void)refreshHeaderSpecifiersWithSummary:(id)a3
+- (void)refreshHeaderSpecifiersWithSummary:(id)summary
 {
-  [(ICQUIManageStorageHeaderSpecifierProvider *)self setStorageSummary:a3];
+  [(ICQUIManageStorageHeaderSpecifierProvider *)self setStorageSummary:summary];
   v6 = [(NSArray *)self->_specifiers copy];
   specifiers = self->_specifiers;
   self->_specifiers = 0;
 
-  v5 = [(ICQUIManageStorageHeaderSpecifierProvider *)self delegate];
-  [v5 reloadSpecifiersForProvider:self oldSpecifiers:v6 animated:1];
+  delegate = [(ICQUIManageStorageHeaderSpecifierProvider *)self delegate];
+  [delegate reloadSpecifiersForProvider:self oldSpecifiers:v6 animated:1];
 }
 
 - (void)_fetchStorageSummaryAndRefreshSpecifiers
@@ -346,8 +346,8 @@ LABEL_19:
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
   v3 = objc_alloc(MEMORY[0x277D7F338]);
-  v4 = [(ICQUIManageStorageHeaderSpecifierProvider *)self account];
-  v12 = [v3 initWithAccount:v4];
+  account = [(ICQUIManageStorageHeaderSpecifierProvider *)self account];
+  v12 = [v3 initWithAccount:account];
 
   v5 = v8[5];
   v6[0] = MEMORY[0x277D85DD0];

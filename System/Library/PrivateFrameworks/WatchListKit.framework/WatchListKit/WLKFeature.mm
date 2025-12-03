@@ -1,9 +1,9 @@
 @interface WLKFeature
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFeature:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFeature:(id)feature;
 - (id)description;
 - (id)jsonRepresentation;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation WLKFeature
@@ -21,20 +21,20 @@
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(WLKFeature *)self name];
-  v6 = [v4 name];
+  compareCopy = compare;
+  name = [(WLKFeature *)self name];
+  name2 = [compareCopy name];
 
-  v7 = [v5 compare:v6];
+  v7 = [name compare:name2];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -42,25 +42,25 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKFeature *)self isEqualToFeature:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKFeature *)self isEqualToFeature:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToFeature:(id)a3
+- (BOOL)isEqualToFeature:(id)feature
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  featureCopy = feature;
+  v5 = featureCopy;
+  if (featureCopy)
   {
     name = self->_name;
-    v7 = [v4 name];
-    if ([(NSString *)name isEqual:v7])
+    name = [featureCopy name];
+    if ([(NSString *)name isEqual:name])
     {
       domain = self->_domain;
-      v9 = [v5 domain];
-      if ([(NSString *)domain isEqual:v9])
+      domain = [v5 domain];
+      if ([(NSString *)domain isEqual:domain])
       {
         enabled = self->_enabled;
         v11 = enabled == [v5 enabled];
@@ -92,8 +92,8 @@
   v8.receiver = self;
   v8.super_class = WLKFeature;
   v4 = [(WLKFeature *)&v8 description];
-  v5 = [(WLKFeature *)self jsonRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  jsonRepresentation = [(WLKFeature *)self jsonRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, jsonRepresentation];
 
   return v6;
 }

@@ -1,19 +1,19 @@
 @interface WLDPushNotificationController
-- (BOOL)pushPaylod:(id)a3 shouldUpdateBadgeForBundleIdentifier:(id)a4 badgeIdentifier:(id)a5 enabled:(BOOL)a6;
+- (BOOL)pushPaylod:(id)paylod shouldUpdateBadgeForBundleIdentifier:(id)identifier badgeIdentifier:(id)badgeIdentifier enabled:(BOOL)enabled;
 - (WLDPushNotificationController)init;
-- (id)_portNameForEnvironmentName:(id)a3;
-- (void)_augmentCustomEventInfo:(id)a3;
-- (void)_loadURLBagWithCompletionHandler:(id)a3;
-- (void)_postNotificationToUser:(id)a3 title:(id)a4 body:(id)a5 options:(id)a6;
-- (void)_postNotificationWithPayload:(id)a3;
+- (id)_portNameForEnvironmentName:(id)name;
+- (void)_augmentCustomEventInfo:(id)info;
+- (void)_loadURLBagWithCompletionHandler:(id)handler;
+- (void)_postNotificationToUser:(id)user title:(id)title body:(id)body options:(id)options;
+- (void)_postNotificationWithPayload:(id)payload;
 - (void)_registerOpportunisticTopics;
-- (void)_reportBulletinMetrics:(id)a3;
-- (void)_reportMercuryMetrics:(id)a3;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)_reportBulletinMetrics:(id)metrics;
+- (void)_reportMercuryMetrics:(id)metrics;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
-- (void)handleAction:(id)a3;
-- (void)pushPayload:(id)a3 withBadgeRequest:(id)a4;
+- (void)handleAction:(id)action;
+- (void)pushPayload:(id)payload withBadgeRequest:(id)request;
 - (void)registerOpportunisticTopics;
 @end
 
@@ -208,19 +208,19 @@ id __60__WLDPushNotificationController_registerOpportunisticTopics__block_invoke
   }
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   v6 = WLKPushNotificationsLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - didReceivePublicToken: %@", &v10, 0xCu);
   }
 
-  v7 = [(APSConnection *)self->_connection publicToken];
-  v8 = [v7 base64EncodedStringWithOptions:0];
+  publicToken = [(APSConnection *)self->_connection publicToken];
+  v8 = [publicToken base64EncodedStringWithOptions:0];
 
   if ([v8 length])
   {
@@ -229,11 +229,11 @@ id __60__WLDPushNotificationController_registerOpportunisticTopics__block_invoke
   }
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  topicCopy = topic;
+  infoCopy = info;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -244,21 +244,21 @@ id __60__WLDPushNotificationController_registerOpportunisticTopics__block_invoke
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v55 = v10;
+    v55 = infoCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - Received push notification: %@", buf, 0xCu);
   }
 
-  if (![v9 isEqualToString:@"com.apple.watchList"])
+  if (![topicCopy isEqualToString:@"com.apple.watchList"])
   {
-    if ([v9 isEqualToString:@"com.apple.tv.upnext"])
+    if ([topicCopy isEqualToString:@"com.apple.tv.upnext"])
     {
-      if (![(WLDUTSPushHandler *)self->_utsPushHandler shouldHandleNotification:v10])
+      if (![(WLDUTSPushHandler *)self->_utsPushHandler shouldHandleNotification:infoCopy])
       {
         v27 = WLKPushNotificationsLogObject();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v55 = v9;
+          v55 = topicCopy;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - Notification is unhandled: %@", buf, 0xCu);
         }
 
@@ -268,13 +268,13 @@ id __60__WLDPushNotificationController_registerOpportunisticTopics__block_invoke
 
     else
     {
-      if (![v9 isEqualToString:@"com.apple.tv.favoriteTeams"])
+      if (![topicCopy isEqualToString:@"com.apple.tv.favoriteTeams"])
       {
         v28 = WLKPushNotificationsLogObject();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v55 = v9;
+          v55 = topicCopy;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - Ignoring unknown topic: %@", buf, 0xCu);
         }
 
@@ -284,13 +284,13 @@ id __60__WLDPushNotificationController_registerOpportunisticTopics__block_invoke
         goto LABEL_61;
       }
 
-      if (![(WLDUTSPushHandler *)self->_utsPushHandler shouldHandleNotification:v10])
+      if (![(WLDUTSPushHandler *)self->_utsPushHandler shouldHandleNotification:infoCopy])
       {
         v27 = WLKPushNotificationsLogObject();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v55 = v9;
+          v55 = topicCopy;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - Notification is unhandled: %@", buf, 0xCu);
         }
 
@@ -298,7 +298,7 @@ id __60__WLDPushNotificationController_registerOpportunisticTopics__block_invoke
       }
     }
 
-    [(WLDUTSPushHandler *)self->_utsPushHandler handleNotification:v10];
+    [(WLDUTSPushHandler *)self->_utsPushHandler handleNotification:infoCopy];
 LABEL_55:
     v37 = v49[5];
     v49[5] = 0;
@@ -306,7 +306,7 @@ LABEL_55:
     goto LABEL_61;
   }
 
-  v12 = [WLDPushParsing actionTypeForNotification:v10];
+  v12 = [WLDPushParsing actionTypeForNotification:infoCopy];
   v13 = v12;
   if (v12 == 31 || v12 == 21)
   {
@@ -319,10 +319,10 @@ LABEL_55:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - Received sync request of type: %@", buf, 0xCu);
     }
 
-    v16 = [WLDPushParsing accountIdentifierForNotification:v10];
+    v16 = [WLDPushParsing accountIdentifierForNotification:infoCopy];
     v17 = +[TVAppAccountStoreObjC activeAccount];
-    v18 = [v17 ams_DSID];
-    v19 = [v16 isEqual:v18];
+    ams_DSID = [v17 ams_DSID];
+    v19 = [v16 isEqual:ams_DSID];
 
     if (v19)
     {
@@ -386,23 +386,23 @@ LABEL_49:
     goto LABEL_49;
   }
 
-  if ([(AMSPushHandler *)self->_amsPushHandler shouldHandleNotification:v10])
+  if ([(AMSPushHandler *)self->_amsPushHandler shouldHandleNotification:infoCopy])
   {
     v22 = WLKPushNotificationsLogObject();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v55 = v9;
+      v55 = topicCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - AMS wants to handle notification: %@", buf, 0xCu);
     }
 
-    v23 = [v10 objectForKeyedSubscript:@"aps"];
+    v23 = [infoCopy objectForKeyedSubscript:@"aps"];
     v24 = [v23 objectForKeyedSubscript:@"_ss"];
     v25 = v24 == 0;
 
     if (!v25)
     {
-      [(AMSPushHandler *)self->_amsPushHandler handleNotification:v10];
+      [(AMSPushHandler *)self->_amsPushHandler handleNotification:infoCopy];
       goto LABEL_55;
     }
 
@@ -417,17 +417,17 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  if ([(WLDMercuryPushHandler *)self->_mercuryPushHandler shouldHandleNotification:v10])
+  if ([(WLDMercuryPushHandler *)self->_mercuryPushHandler shouldHandleNotification:infoCopy])
   {
     v30 = WLKPushNotificationsLogObject();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v55 = v9;
+      v55 = topicCopy;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - Handling mercury notification: %@", buf, 0xCu);
     }
 
-    v31 = [v10 wlk_dictionaryForKey:@"aps"];
+    v31 = [infoCopy wlk_dictionaryForKey:@"aps"];
     v32 = [v31 wlk_dictionaryForKey:@"payload"];
     v33 = [v32 objectForKey:@"metrics"];
     if (v33)
@@ -452,12 +452,12 @@ LABEL_54:
       v34 = 0;
     }
 
-    [(WLDMercuryPushHandler *)self->_mercuryPushHandler handleNotification:v10 shouldBadge:v34];
+    [(WLDMercuryPushHandler *)self->_mercuryPushHandler handleNotification:infoCopy shouldBadge:v34];
     v39 = v49[5];
     v49[5] = 0;
   }
 
-  else if ([(WLDSportsLiveActivityPushHandler *)self->_sportsLiveActivityPushHandler shouldHandleNotification:v10])
+  else if ([(WLDSportsLiveActivityPushHandler *)self->_sportsLiveActivityPushHandler shouldHandleNotification:infoCopy])
   {
     objc_initWeak(buf, self);
     sportsLiveActivityPushHandler = self->_sportsLiveActivityPushHandler;
@@ -466,7 +466,7 @@ LABEL_54:
     v42[2] = __79__WLDPushNotificationController_connection_didReceiveMessageForTopic_userInfo___block_invoke_54;
     v42[3] = &unk_100045870;
     objc_copyWeak(&v45, buf);
-    v43 = v10;
+    v43 = infoCopy;
     v44 = &v48;
     [(WLDSportsLiveActivityPushHandler *)sportsLiveActivityPushHandler handleNotification:v43 completion:v42];
 
@@ -476,7 +476,7 @@ LABEL_54:
 
   else
   {
-    v40 = [v10 wlk_dictionaryForKey:@"payload"];
+    v40 = [infoCopy wlk_dictionaryForKey:@"payload"];
     [(WLDPushNotificationController *)self _postNotificationWithPayload:v40];
     v41 = v49[5];
     v49[5] = 0;
@@ -571,28 +571,28 @@ void __79__WLDPushNotificationController_connection_didReceiveMessageForTopic_us
   *(v5 + 40) = 0;
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
-  v8 = a3;
+  actionCopy = action;
   v4 = [[WLKTransactionScope alloc] initWithIdentifier:@"WLDPushNotificationController.handleAction"];
-  v5 = [v8 objectForKey:WLKNotificationsOnActionKeyReason];
-  v6 = [v8 objectForKey:WLKNotificationsKeyActionMetrics];
+  v5 = [actionCopy objectForKey:WLKNotificationsOnActionKeyReason];
+  v6 = [actionCopy objectForKey:WLKNotificationsKeyActionMetrics];
   if (v6 && [v5 isEqual:WLKNotificationsOnActionKeyReasonActivation])
   {
     [(WLDPushNotificationController *)self _reportBulletinMetrics:v6];
   }
 
-  v7 = [v8 wlk_stringForKey:@"identifier"];
+  v7 = [actionCopy wlk_stringForKey:@"identifier"];
   if ([v5 isEqual:WLKNotificationsOnActionKeyReasonSession])
   {
     [(WLDSportsLiveActivityPushHandler *)self->_sportsLiveActivityPushHandler createLiveActivityForCanonicalId:v7 supplementaryData:0 completion:&__block_literal_global_10];
   }
 }
 
-- (BOOL)pushPaylod:(id)a3 shouldUpdateBadgeForBundleIdentifier:(id)a4 badgeIdentifier:(id)a5 enabled:(BOOL)a6
+- (BOOL)pushPaylod:(id)paylod shouldUpdateBadgeForBundleIdentifier:(id)identifier badgeIdentifier:(id)badgeIdentifier enabled:(BOOL)enabled
 {
-  v6 = a6;
-  v8 = a5;
+  enabledCopy = enabled;
+  badgeIdentifierCopy = badgeIdentifier;
   if (([(WLKNotificationCenter *)self->_notifCenter isCategoryEnabledByUser:4]& 1) == 0)
   {
     v9 = WLKPushNotificationsLogObject();
@@ -605,9 +605,9 @@ void __79__WLDPushNotificationController_connection_didReceiveMessageForTopic_us
     goto LABEL_13;
   }
 
-  if (v6)
+  if (enabledCopy)
   {
-    if ([WLKBadgingUtilities addBadgeIdentifier:v8])
+    if ([WLKBadgingUtilities addBadgeIdentifier:badgeIdentifierCopy])
     {
       v9 = +[WLKBadgingUtilities currentBadgeNumber];
       v10 = WLKPushNotificationsLogObject();
@@ -625,7 +625,7 @@ LABEL_11:
     }
   }
 
-  else if ([WLKBadgingUtilities removeBadgeIdentifier:v8])
+  else if ([WLKBadgingUtilities removeBadgeIdentifier:badgeIdentifierCopy])
   {
     v9 = +[WLKBadgingUtilities currentBadgeNumber];
     v10 = WLKPushNotificationsLogObject();
@@ -653,8 +653,8 @@ LABEL_13:
   v3 = WLDDispatchQueue();
   dispatch_assert_queue_V2(v3);
 
-  v4 = [(APSConnection *)self->_connection opportunisticTopics];
-  if (([v4 containsObject:@"com.apple.tv.upnext"] & 1) == 0)
+  opportunisticTopics = [(APSConnection *)self->_connection opportunisticTopics];
+  if (([opportunisticTopics containsObject:@"com.apple.tv.upnext"] & 1) == 0)
   {
     v5 = WLKPushNotificationsLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -672,41 +672,41 @@ LABEL_13:
   }
 }
 
-- (void)_augmentCustomEventInfo:(id)a3
+- (void)_augmentCustomEventInfo:(id)info
 {
-  v21 = a3;
+  infoCopy = info;
   v3 = +[WLKSettingsStore sharedSettings];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 optedIn]);
-  [v21 setObject:v4 forKey:@"gac"];
+  [infoCopy setObject:v4 forKey:@"gac"];
 
-  v5 = [v3 consentedBrands];
-  v6 = [v5 componentsJoinedByString:{@", "}];
-  [v21 setObject:v6 forKey:@"cbids"];
+  consentedBrands = [v3 consentedBrands];
+  v6 = [consentedBrands componentsJoinedByString:{@", "}];
+  [infoCopy setObject:v6 forKey:@"cbids"];
 
-  v7 = [v3 deniedBrands];
-  v8 = [v7 componentsJoinedByString:{@", "}];
-  [v21 setObject:v8 forKey:@"dbids"];
+  deniedBrands = [v3 deniedBrands];
+  v8 = [deniedBrands componentsJoinedByString:{@", "}];
+  [infoCopy setObject:v8 forKey:@"dbids"];
 
   v9 = +[WLKAppLibrary defaultAppLibrary];
-  v10 = [v9 installedAppBundleIdentifiers];
-  v11 = [v10 componentsJoinedByString:{@", "}];
-  [v21 setObject:v11 forKey:@"ibids"];
+  installedAppBundleIdentifiers = [v9 installedAppBundleIdentifiers];
+  v11 = [installedAppBundleIdentifiers componentsJoinedByString:{@", "}];
+  [infoCopy setObject:v11 forKey:@"ibids"];
 
-  v12 = [v9 subscribedAppBundleIdentifiers];
-  v13 = [v12 componentsJoinedByString:{@", "}];
-  [v21 setObject:v13 forKey:@"sbids"];
+  subscribedAppBundleIdentifiers = [v9 subscribedAppBundleIdentifiers];
+  v13 = [subscribedAppBundleIdentifiers componentsJoinedByString:{@", "}];
+  [infoCopy setObject:v13 forKey:@"sbids"];
 
   v14 = +[WLKStoredConfigurationManager sharedInstance];
-  v15 = [v14 storedConfiguration];
+  storedConfiguration = [v14 storedConfiguration];
 
-  v16 = [v15 vppaState];
-  if (v16)
+  vppaState = [storedConfiguration vppaState];
+  if (vppaState)
   {
-    [v21 setObject:v16 forKey:@"vppaState"];
+    [infoCopy setObject:vppaState forKey:@"vppaState"];
   }
 
   v17 = WLKTVAppBundleID();
-  [v21 setObject:v17 forKey:@"app"];
+  [infoCopy setObject:v17 forKey:@"app"];
 
   v18 = +[TVAppBag app];
   v19 = [v18 dictionaryForKey:kBagKeyMetrics];
@@ -716,30 +716,30 @@ LABEL_13:
     v20 = [v19 valueForKey:@"metricsBase"];
     if (v20)
     {
-      [v21 addEntriesFromDictionary:v20];
+      [infoCopy addEntriesFromDictionary:v20];
     }
   }
 }
 
-- (void)_reportBulletinMetrics:(id)a3
+- (void)_reportBulletinMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = metricsCopy;
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v4 count])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![metricsCopy count])
     {
       v6 = 0;
       goto LABEL_8;
     }
 
-    v16 = v4;
+    v16 = metricsCopy;
     v5 = [NSArray arrayWithObjects:&v16 count:1];
   }
 
@@ -818,25 +818,25 @@ void __56__WLDPushNotificationController__reportBulletinMetrics___block_invoke(u
   [WLDMetricsUtilities sendMetricsEvents:v14 metricsController:v15];
 }
 
-- (void)_reportMercuryMetrics:(id)a3
+- (void)_reportMercuryMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = metricsCopy;
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v4 count])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![metricsCopy count])
     {
       v6 = 0;
       goto LABEL_8;
     }
 
-    v15 = v4;
+    v15 = metricsCopy;
     v5 = [NSArray arrayWithObjects:&v15 count:1];
   }
 
@@ -850,7 +850,7 @@ LABEL_8:
   block[3] = &unk_1000458B8;
   v12 = v6;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v9 = v7;
   v10 = v6;
   dispatch_async(v8, block);
@@ -918,26 +918,26 @@ void __55__WLDPushNotificationController__reportMercuryMetrics___block_invoke(ui
   [WLDMetricsUtilities sendMetricsEvents:v11 metricsController:v12];
 }
 
-- (void)_postNotificationWithPayload:(id)a3
+- (void)_postNotificationWithPayload:(id)payload
 {
-  v86 = a3;
+  payloadCopy = payload;
   v111 = 0;
   v112 = &v111;
   v113 = 0x3032000000;
   v114 = __Block_byref_object_copy__2;
   v115 = __Block_byref_object_dispose__2;
   v116 = [[WLKTransactionScope alloc] initWithIdentifier:@"WLDPushNotificationController._postNotificationWithPayload"];
-  v79 = [v86 wlk_numberForKey:@"interruptionLevel"];
-  v77 = [v86 wlk_stringForKey:@"entityId"];
-  v84 = [v86 wlk_stringForKey:@"coalescingId"];
-  v80 = [v86 wlk_stringForKey:WLKNotificationsKeyType];
+  v79 = [payloadCopy wlk_numberForKey:@"interruptionLevel"];
+  v77 = [payloadCopy wlk_stringForKey:@"entityId"];
+  v84 = [payloadCopy wlk_stringForKey:@"coalescingId"];
+  v80 = [payloadCopy wlk_stringForKey:WLKNotificationsKeyType];
   v76 = MGCopyAnswer();
   v78 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v80 isEqualToString:@"gameStartWithFollow"] & (objc_msgSend(v76, "isEqualToString:", @"iPad") ^ 1));
-  v3 = [v86 wlk_dictionaryForKey:@"localizedTitle"];
+  v3 = [payloadCopy wlk_dictionaryForKey:@"localizedTitle"];
   v82 = WLKPlatformStringFromDictionary(v3);
 
   has_internal_content = os_variant_has_internal_content();
-  v5 = v86;
+  v5 = payloadCopy;
   if (has_internal_content)
   {
     v6 = WLKPushNotificationsLogObject();
@@ -950,7 +950,7 @@ void __55__WLDPushNotificationController__reportMercuryMetrics___block_invoke(ui
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - Canonical ID: %@ Coalescing ID: %@", buf, 0x16u);
     }
 
-    v5 = v86;
+    v5 = payloadCopy;
   }
 
   v7 = [v5 wlk_dictionaryForKey:{@"localizedText", self}];
@@ -960,23 +960,23 @@ void __55__WLDPushNotificationController__reportMercuryMetrics___block_invoke(ui
   [v8 setObject:&off_100049CC8 forKey:WLKNotificationsKeySource];
   [v8 wlk_setObjectUnlessNil:v79 forKey:WLKNotificationsKeyInterruptionLevel];
   v85 = v8;
-  v9 = [v86 wlk_stringForKey:@"threadId"];
+  v9 = [payloadCopy wlk_stringForKey:@"threadId"];
   [v8 wlk_setObjectUnlessNil:v9 forKey:WLKNotificationsKeyThreadID];
   v75 = v9;
-  v10 = [v86 wlk_dateFromMillisecondsSince1970ForKey:@"displayEndTime"];
+  v10 = [payloadCopy wlk_dateFromMillisecondsSince1970ForKey:@"displayEndTime"];
   [v8 wlk_setObjectUnlessNil:v10 forKey:WLKNotificationsKeyExpirationDate];
   v74 = v10;
-  v83 = [v86 objectForKey:@"metrics"];
+  v83 = [payloadCopy objectForKey:@"metrics"];
   [v8 wlk_setObjectUnlessNil:v83 forKey:WLKNotificationsKeyMetrics];
   [v8 wlk_setObjectUnlessNil:v78 forKey:WLKNotificationsKeyIsSession];
   v11 = +[WLKAppLibrary defaultAppLibrary];
-  v92 = [v11 allAppBundleIdentifiers];
+  allAppBundleIdentifiers = [v11 allAppBundleIdentifiers];
 
   v109 = 0u;
   v110 = 0u;
   v107 = 0u;
   v108 = 0u;
-  v12 = [v86 wlk_arrayForKey:@"actions"];
+  v12 = [payloadCopy wlk_arrayForKey:@"actions"];
   v13 = [v12 countByEnumeratingWithState:&v107 objects:v118 count:16];
   obj = v12;
   if (v13)
@@ -1001,7 +1001,7 @@ void __55__WLDPushNotificationController__reportMercuryMetrics___block_invoke(ui
         if (objc_opt_isKindOfClass())
         {
           v17 = [v16 wlk_numberForKey:@"isTvAppAction"];
-          v18 = [v17 BOOLValue];
+          bOOLValue = [v17 BOOLValue];
 
           v19 = [v16 wlk_stringForKey:@"type"];
           if (([v19 isEqualToString:@"LiveActivityAutostart"] & 1) == 0)
@@ -1013,7 +1013,7 @@ void __55__WLDPushNotificationController__reportMercuryMetrics___block_invoke(ui
 
             else
             {
-              v20 = v18;
+              v20 = bOOLValue;
             }
 
             if (v20)
@@ -1080,9 +1080,9 @@ LABEL_42:
                 v30 = +[WLKChannelUtilities sharedInstance];
                 v31 = [v30 channelForID:v29];
 
-                v32 = [v31 appBundleIDs];
+                appBundleIDs = [v31 appBundleIDs];
 
-                v28 = v32;
+                v28 = appBundleIDs;
               }
 
               v105 = 0u;
@@ -1103,7 +1103,7 @@ LABEL_42:
                       objc_enumerationMutation(v33);
                     }
 
-                    if ([v92 containsObject:*(*(&v103 + 1) + 8 * i)])
+                    if ([allAppBundleIdentifiers containsObject:*(*(&v103 + 1) + 8 * i)])
                     {
 
                       goto LABEL_16;
@@ -1134,9 +1134,9 @@ LABEL_42:
                 if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
                 {
                   v39 = +[WLKAppLibrary defaultAppLibrary];
-                  v40 = [v39 dictionaryRepresentation];
+                  dictionaryRepresentation = [v39 dictionaryRepresentation];
                   *buf = 138412290;
-                  v120 = v40;
+                  v120 = dictionaryRepresentation;
                   _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - App library: %@", buf, 0xCu);
                 }
               }
@@ -1181,7 +1181,7 @@ LABEL_61:
 LABEL_62:
   [v85 wlk_setObjectUnlessNil:v89 forKey:WLKNotificationsKeyActionURL];
   [v85 wlk_setObjectUnlessNil:v87 forKey:WLKNotificationsKeyActionMetrics];
-  v48 = [v86 wlk_stringForKey:@"settingType"];
+  v48 = [payloadCopy wlk_stringForKey:@"settingType"];
   if ([v48 isEqual:@"Explicit"])
   {
     v49 = 1;
@@ -1211,8 +1211,8 @@ LABEL_62:
   v51 = [NSNumber numberWithInteger:v50];
   [v85 setObject:v51 forKey:WLKNotificationsKeyCategory];
 
-  v52 = [v86 wlk_numberForKey:@"hasScore"];
-  v53 = [v52 BOOLValue];
+  v52 = [payloadCopy wlk_numberForKey:@"hasScore"];
+  bOOLValue2 = [v52 BOOLValue];
 
   v54 = [v84 length];
   v55 = v54 != 0;
@@ -1252,7 +1252,7 @@ LABEL_62:
 
   if (v89)
   {
-    if (!v53)
+    if (!bOOLValue2)
     {
       goto LABEL_93;
     }
@@ -1268,7 +1268,7 @@ LABEL_62:
   }
 
   v55 = 0;
-  if (v53)
+  if (bOOLValue2)
   {
 LABEL_87:
     v60 = WLKPushNotificationsLogObject();
@@ -1279,9 +1279,9 @@ LABEL_87:
     }
 
     v61 = +[WLKSystemPreferencesStore sharedPreferences];
-    v62 = [v61 sportsScoreSpoilersAllowed];
+    sportsScoreSpoilersAllowed = [v61 sportsScoreSpoilersAllowed];
 
-    if ((v62 & 1) == 0)
+    if ((sportsScoreSpoilersAllowed & 1) == 0)
     {
       v63 = WLKPushNotificationsLogObject();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
@@ -1295,7 +1295,7 @@ LABEL_87:
   }
 
 LABEL_93:
-  if ([WLDSportsLiveActivityPushHandler shouldSuppressNotification:v86])
+  if ([WLDSportsLiveActivityPushHandler shouldSuppressNotification:payloadCopy])
   {
     v64 = WLKPushNotificationsLogObject();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
@@ -1307,7 +1307,7 @@ LABEL_93:
     v55 = 0;
   }
 
-  if (_os_feature_enabled_impl() && ([v86 wlk_BOOLForKey:@"isOnTv" defaultValue:1] & 1) == 0)
+  if (_os_feature_enabled_impl() && ([payloadCopy wlk_BOOLForKey:@"isOnTv" defaultValue:1] & 1) == 0)
   {
     v65 = WLKPushNotificationsLogObject();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
@@ -1358,7 +1358,7 @@ LABEL_113:
     goto LABEL_116;
   }
 
-  if ([v86 wlk_BOOLForKey:@"suppressIfTunedIn" defaultValue:0])
+  if ([payloadCopy wlk_BOOLForKey:@"suppressIfTunedIn" defaultValue:0])
   {
     v68 = +[WLDPlaybackManager sharedManager];
     v93[0] = _NSConcreteStackBlock;
@@ -1465,12 +1465,12 @@ void __62__WLDPushNotificationController__postNotificationWithPayload___block_in
   }
 }
 
-- (void)_postNotificationToUser:(id)a3 title:(id)a4 body:(id)a5 options:(id)a6
+- (void)_postNotificationToUser:(id)user title:(id)title body:(id)body options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  userCopy = user;
+  titleCopy = title;
+  bodyCopy = body;
+  optionsCopy = options;
   v14 = [UNUserNotificationCenter alloc];
   v15 = WLKTVAppBundleID();
   v16 = [v14 initWithBundleIdentifier:v15];
@@ -1481,13 +1481,13 @@ void __62__WLDPushNotificationController__postNotificationWithPayload___block_in
   v21[2] = __76__WLDPushNotificationController__postNotificationToUser_title_body_options___block_invoke;
   v21[3] = &unk_100045930;
   objc_copyWeak(&v26, &location);
-  v17 = v10;
+  v17 = userCopy;
   v22 = v17;
-  v18 = v11;
+  v18 = titleCopy;
   v23 = v18;
-  v19 = v12;
+  v19 = bodyCopy;
   v24 = v19;
-  v20 = v13;
+  v20 = optionsCopy;
   v25 = v20;
   [v16 getNotificationSettingsWithCompletionHandler:v21];
 
@@ -1521,9 +1521,9 @@ void __76__WLDPushNotificationController__postNotificationToUser_title_body_opti
   }
 }
 
-- (void)_loadURLBagWithCompletionHandler:(id)a3
+- (void)_loadURLBagWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -1547,10 +1547,10 @@ void __76__WLDPushNotificationController__postNotificationToUser_title_body_opti
   v11[2] = __66__WLDPushNotificationController__loadURLBagWithCompletionHandler___block_invoke;
   v11[3] = &unk_100045958;
   v12 = v6;
-  v13 = self;
-  v14 = v4;
+  selfCopy = self;
+  v14 = handlerCopy;
   v15 = v16;
-  v9 = v4;
+  v9 = handlerCopy;
   v10 = v6;
   dispatch_async(v8, v11);
 
@@ -1593,20 +1593,20 @@ void __66__WLDPushNotificationController__loadURLBagWithCompletionHandler___bloc
   *(v9 + 40) = 0;
 }
 
-- (id)_portNameForEnvironmentName:(id)a3
+- (id)_portNameForEnvironmentName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:APSEnvironmentProduction])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:APSEnvironmentProduction])
   {
     v4 = @"com.apple.aps.watchlistd";
   }
 
-  else if ([v3 isEqualToString:APSEnvironmentDevelopment])
+  else if ([nameCopy isEqualToString:APSEnvironmentDevelopment])
   {
     v4 = @"com.apple.aps.watchlistd.dev";
   }
 
-  else if ([v3 isEqualToString:APSEnvironmentDemo])
+  else if ([nameCopy isEqualToString:APSEnvironmentDemo])
   {
     v4 = @"com.apple.aps.watchlistd.demo";
   }
@@ -1619,21 +1619,21 @@ void __66__WLDPushNotificationController__loadURLBagWithCompletionHandler___bloc
   return v4;
 }
 
-- (void)pushPayload:(id)a3 withBadgeRequest:(id)a4
+- (void)pushPayload:(id)payload withBadgeRequest:(id)request
 {
-  v4 = a4;
+  requestCopy = request;
   if (_os_feature_enabled_impl())
   {
-    v5 = [v4 metrics];
-    v6 = [v4 enabled];
+    metrics = [requestCopy metrics];
+    enabled = [requestCopy enabled];
     v7 = +[WLKNotificationCenter defaultCenter];
-    if (v6)
+    if (enabled)
     {
       v8 = [NSNumber numberWithInt:1];
       [v7 setBadgeNumber:v8 withCompletionHandler:0];
 
-      [WLKBadgingUtilities storeBadgeRequest:v4];
-      if (!v5)
+      [WLKBadgingUtilities storeBadgeRequest:requestCopy];
+      if (!metrics)
       {
         goto LABEL_14;
       }
@@ -1644,8 +1644,8 @@ void __66__WLDPushNotificationController__loadURLBagWithCompletionHandler___bloc
       v9 = [NSNumber numberWithInt:0];
       [v7 setBadgeNumber:v9 withCompletionHandler:0];
 
-      [WLKBadgingUtilities removeBadgeRequest:v4];
-      if (!v5)
+      [WLKBadgingUtilities removeBadgeRequest:requestCopy];
+      if (!metrics)
       {
 LABEL_14:
 
@@ -1658,16 +1658,16 @@ LABEL_14:
     v12 = +[AMSBag wlk_defaultBag];
     v13 = [v10 initWithContainerID:v11 bag:v12];
 
-    v14 = [[AMSMetricsEvent alloc] initWithUnderlyingDictionary:v5];
+    v14 = [[AMSMetricsEvent alloc] initWithUnderlyingDictionary:metrics];
     v15 = WLKPushNotificationsLogObject();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
     if (v14)
     {
       if (v16)
       {
-        v17 = [v4 badgeIdentifier];
+        badgeIdentifier = [requestCopy badgeIdentifier];
         v19 = 138412290;
-        v20 = v17;
+        v20 = badgeIdentifier;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - WLDPushNotificationController: pushed display metrics for id %@", &v19, 0xCu);
       }
 
@@ -1678,9 +1678,9 @@ LABEL_14:
     {
       if (v16)
       {
-        v18 = [v4 badgeIdentifier];
+        badgeIdentifier2 = [requestCopy badgeIdentifier];
         v19 = 138412290;
-        v20 = v18;
+        v20 = badgeIdentifier2;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "WLDPushNotificationController - WLDPushNotificationController: found empty badge display metrics id %@", &v19, 0xCu);
       }
     }

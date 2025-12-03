@@ -1,25 +1,25 @@
 @interface MediaControlsStandaloneEndpointController
-- (BOOL)controller:(id)a3 shouldRetryFailedRequestWithError:(id)a4;
-- (MediaControlsStandaloneEndpointController)initWithEndpoint:(id)a3 client:(id)a4 player:(id)a5;
-- (MediaControlsStandaloneEndpointController)initWithRouteUID:(id)a3 client:(id)a4 player:(id)a5;
-- (id)_routeForEndpoint:(__MRAVEndpointRef *)a3;
+- (BOOL)controller:(id)controller shouldRetryFailedRequestWithError:(id)error;
+- (MediaControlsStandaloneEndpointController)initWithEndpoint:(id)endpoint client:(id)client player:(id)player;
+- (MediaControlsStandaloneEndpointController)initWithRouteUID:(id)d client:(id)client player:(id)player;
+- (id)_routeForEndpoint:(__MRAVEndpointRef *)endpoint;
 - (void)beginObserving;
 - (void)dealloc;
 - (void)endObserving;
-- (void)setEndpointDiscovered:(BOOL)a3;
-- (void)setEndpointObserver:(id)a3;
-- (void)setRoute:(id)a3;
-- (void)setRouteUID:(id)a3;
+- (void)setEndpointDiscovered:(BOOL)discovered;
+- (void)setEndpointObserver:(id)observer;
+- (void)setRoute:(id)route;
+- (void)setRouteUID:(id)d;
 - (void)updateAllowsAutomaticResponseLoading;
 @end
 
 @implementation MediaControlsStandaloneEndpointController
 
-- (MediaControlsStandaloneEndpointController)initWithEndpoint:(id)a3 client:(id)a4 player:(id)a5
+- (MediaControlsStandaloneEndpointController)initWithEndpoint:(id)endpoint client:(id)client player:(id)player
 {
   v13.receiver = self;
   v13.super_class = MediaControlsStandaloneEndpointController;
-  v5 = [(MediaControlsEndpointController *)&v13 initWithEndpoint:a3 client:a4 player:a5];
+  v5 = [(MediaControlsEndpointController *)&v13 initWithEndpoint:endpoint client:client player:player];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E6970458]) initWithThrottlingEnabled:1];
@@ -36,12 +36,12 @@
   return v5;
 }
 
-- (MediaControlsStandaloneEndpointController)initWithRouteUID:(id)a3 client:(id)a4 player:(id)a5
+- (MediaControlsStandaloneEndpointController)initWithRouteUID:(id)d client:(id)client player:(id)player
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && ![v8 isEqualToString:@"LOCAL"])
+  dCopy = d;
+  clientCopy = client;
+  playerCopy = player;
+  if (dCopy && ![dCopy isEqualToString:@"LOCAL"])
   {
     v11 = 0;
     v12 = 0;
@@ -55,12 +55,12 @@
 
   v16.receiver = self;
   v16.super_class = MediaControlsStandaloneEndpointController;
-  v13 = [(MediaControlsEndpointController *)&v16 initWithEndpoint:v11 client:v9 player:v10];
+  v13 = [(MediaControlsEndpointController *)&v16 initWithEndpoint:v11 client:clientCopy player:playerCopy];
   v14 = v13;
   if (v13)
   {
     v13->_endpointDiscovered = v12;
-    [(MediaControlsStandaloneEndpointController *)v13 setRouteUID:v8];
+    [(MediaControlsStandaloneEndpointController *)v13 setRouteUID:dCopy];
   }
 
   return v14;
@@ -77,12 +77,12 @@
   [(MediaControlsStandaloneEndpointController *)&v4 dealloc];
 }
 
-- (void)setRouteUID:(id)a3
+- (void)setRouteUID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   if (([(NSString *)self->_routeUID isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_routeUID, a3);
+    objc_storeStrong(&self->_routeUID, d);
     v5 = MRAVEndpointObserverCreateWithOutputDeviceUID();
     v6 = [objc_alloc(MEMORY[0x1E6970580]) initWithMRAVEndpointObserver:v5];
     [(MediaControlsStandaloneEndpointController *)self setEndpointObserver:v6];
@@ -91,23 +91,23 @@
   }
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v4 = a3;
-  [(MediaControlsStandaloneEndpointController *)self setEndpointDiscovered:v4 != 0];
+  routeCopy = route;
+  [(MediaControlsStandaloneEndpointController *)self setEndpointDiscovered:routeCopy != 0];
   [(MediaControlsStandaloneEndpointController *)self updateAllowsAutomaticResponseLoading];
-  if (v4)
+  if (routeCopy)
   {
     v5.receiver = self;
     v5.super_class = MediaControlsStandaloneEndpointController;
-    [(MediaControlsEndpointController *)&v5 setRoute:v4];
+    [(MediaControlsEndpointController *)&v5 setRoute:routeCopy];
   }
 }
 
 - (void)updateAllowsAutomaticResponseLoading
 {
-  v3 = [(MediaControlsEndpointController *)self route];
-  if (v3)
+  route = [(MediaControlsEndpointController *)self route];
+  if (route)
   {
     allowsAutomaticResponseLoading = self->_allowsAutomaticResponseLoading;
   }
@@ -122,31 +122,31 @@
   [(MediaControlsEndpointController *)&v5 setAllowsAutomaticResponseLoading:allowsAutomaticResponseLoading];
 }
 
-- (void)setEndpointDiscovered:(BOOL)a3
+- (void)setEndpointDiscovered:(BOOL)discovered
 {
-  if (self->_endpointDiscovered != a3)
+  if (self->_endpointDiscovered != discovered)
   {
-    self->_endpointDiscovered = a3;
-    v5 = [(MediaControlsEndpointController *)self delegate];
-    [v5 endpointControllerDidChangeState:self];
+    self->_endpointDiscovered = discovered;
+    delegate = [(MediaControlsEndpointController *)self delegate];
+    [delegate endpointControllerDidChangeState:self];
   }
 }
 
-- (void)setEndpointObserver:(id)a3
+- (void)setEndpointObserver:(id)observer
 {
-  v5 = a3;
-  v6 = [(MediaControlsStandaloneEndpointController *)self endpointObserver];
+  observerCopy = observer;
+  endpointObserver = [(MediaControlsStandaloneEndpointController *)self endpointObserver];
 
-  if (v6)
+  if (endpointObserver)
   {
-    v7 = [(MediaControlsStandaloneEndpointController *)self endpointObserver];
-    MEMORY[0x1A58DBB90]([v7 unwrappedValue]);
+    endpointObserver2 = [(MediaControlsStandaloneEndpointController *)self endpointObserver];
+    MEMORY[0x1A58DBB90]([endpointObserver2 unwrappedValue]);
   }
 
-  objc_storeStrong(&self->_endpointObserver, a3);
+  objc_storeStrong(&self->_endpointObserver, observer);
   objc_initWeak(&location, self);
-  v8 = [(MediaControlsStandaloneEndpointController *)self endpointObserver];
-  [v8 unwrappedValue];
+  endpointObserver3 = [(MediaControlsStandaloneEndpointController *)self endpointObserver];
+  [endpointObserver3 unwrappedValue];
   objc_copyWeak(&v9, &location);
   MRAVEndpointObserverAddEndpointChangedCallback();
 
@@ -210,14 +210,14 @@ uint64_t __65__MediaControlsStandaloneEndpointController_setEndpointObserver___b
   v3 = MCLogCategoryRouting();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MediaControlsEndpointController *)self route];
+    route = [(MediaControlsEndpointController *)self route];
     v6 = 138543362;
-    v7 = v4;
+    v7 = route;
     _os_log_impl(&dword_1A20FC000, v3, OS_LOG_TYPE_DEFAULT, "Begin observing: %{public}@", &v6, 0xCu);
   }
 
-  v5 = [(MediaControlsStandaloneEndpointController *)self endpointObserver];
-  MEMORY[0x1A58DBB70]([v5 unwrappedValue]);
+  endpointObserver = [(MediaControlsStandaloneEndpointController *)self endpointObserver];
+  MEMORY[0x1A58DBB70]([endpointObserver unwrappedValue]);
 }
 
 - (void)endObserving
@@ -226,44 +226,44 @@ uint64_t __65__MediaControlsStandaloneEndpointController_setEndpointObserver___b
   v3 = MCLogCategoryRouting();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MediaControlsEndpointController *)self route];
+    route = [(MediaControlsEndpointController *)self route];
     v6 = 138543362;
-    v7 = v4;
+    v7 = route;
     _os_log_impl(&dword_1A20FC000, v3, OS_LOG_TYPE_DEFAULT, "End observing: %{public}@", &v6, 0xCu);
   }
 
-  v5 = [(MediaControlsStandaloneEndpointController *)self endpointObserver];
-  MEMORY[0x1A58DBB90]([v5 unwrappedValue]);
+  endpointObserver = [(MediaControlsStandaloneEndpointController *)self endpointObserver];
+  MEMORY[0x1A58DBB90]([endpointObserver unwrappedValue]);
 }
 
-- (BOOL)controller:(id)a3 shouldRetryFailedRequestWithError:(id)a4
+- (BOOL)controller:(id)controller shouldRetryFailedRequestWithError:(id)error
 {
-  v4 = a4;
-  v5 = [v4 domain];
-  v6 = v5 != *MEMORY[0x1E696F850];
-  if (v5 == *MEMORY[0x1E696F850])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = domain != *MEMORY[0x1E696F850];
+  if (domain == *MEMORY[0x1E696F850])
   {
-    v7 = [v4 code];
+    code = [errorCopy code];
 
-    if (v7 != 2)
+    if (code != 2)
     {
       v6 = 1;
       goto LABEL_5;
     }
 
     v8 = MEMORY[0x1E6970490];
-    v5 = [MEMORY[0x1E6970490] systemRoute];
-    [v8 setActiveRoute:v5 reason:@"invalid route error" completion:0];
+    domain = [MEMORY[0x1E6970490] systemRoute];
+    [v8 setActiveRoute:domain reason:@"invalid route error" completion:0];
   }
 
 LABEL_5:
   return v6;
 }
 
-- (id)_routeForEndpoint:(__MRAVEndpointRef *)a3
+- (id)_routeForEndpoint:(__MRAVEndpointRef *)endpoint
 {
   ExternalDevice = MRAVEndpointGetExternalDevice();
-  v5 = [objc_alloc(MEMORY[0x1E6970450]) initWithEndpoint:a3];
+  v5 = [objc_alloc(MEMORY[0x1E6970450]) initWithEndpoint:endpoint];
   if (ExternalDevice)
   {
     v6 = [objc_alloc(MEMORY[0x1E6970488]) initWithExternalDevice:ExternalDevice];

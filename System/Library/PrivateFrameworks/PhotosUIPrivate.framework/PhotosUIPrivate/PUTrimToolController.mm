@@ -1,32 +1,32 @@
 @interface PUTrimToolController
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_currentPlayerScaledTimeFromOriginalTime:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_currentPlayerScaledTimeFromOriginalTime:(SEL)time;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)_frameDuration;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_originalTimeFromCurrentPlayerScaledTime:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_originalTimeFromCurrentPlayerScaledTime:(SEL)time;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)adjustedStillFrameTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentStillFrameTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)playheadTime;
 - (BOOL)_allowsKeyFrameCreation;
 - (BOOL)_showKeyFrameSelection;
-- (BOOL)slowMotionEditorRequestForceZoom:(id)a3;
+- (BOOL)slowMotionEditorRequestForceZoom:(id)zoom;
 - (CGRect)_presentationRectFromLoupeRect;
 - (PULivePhotoKeyFrameSelectionViewController)livePhotoKeyFramePicker;
-- (PUTrimToolController)initWithPlayerWrapper:(id)a3 playButtonEnabled:(BOOL)a4 slomoEnabled:(BOOL)a5 portraitVideoEnabled:(BOOL)a6;
+- (PUTrimToolController)initWithPlayerWrapper:(id)wrapper playButtonEnabled:(BOOL)enabled slomoEnabled:(BOOL)slomoEnabled portraitVideoEnabled:(BOOL)videoEnabled;
 - (PUTrimToolControllerDelegate)delegate;
 - (UIButton)playPauseButton;
 - (double)_frameRate;
 - (id)_slomoMapperForCurrentConfiguration;
-- (id)axDescriptionForFocusEventATime:(id *)a3;
+- (id)axDescriptionForFocusEventATime:(id *)time;
 - (void)_createRendererIfNeeded;
-- (void)_didCompleteInteractiveEditForElement:(int64_t)a3 atTime:(id *)a4 state:(unint64_t)a5;
+- (void)_didCompleteInteractiveEditForElement:(int64_t)element atTime:(id *)time state:(unint64_t)state;
 - (void)_dismissKeyFramePickerAndResetToStillFrame;
-- (void)_handlePlayPauseButton:(id)a3;
-- (void)_handleScrubberTimelineOverlayButton:(id)a3;
+- (void)_handlePlayPauseButton:(id)button;
+- (void)_handleScrubberTimelineOverlayButton:(id)button;
 - (void)_hideScrubberTimelineOverlay;
-- (void)_livePhotoKeyFramePickerDidDismiss:(id)a3;
+- (void)_livePhotoKeyFramePickerDidDismiss:(id)dismiss;
 - (void)_resetScrubberToStillPhotoFrame;
-- (void)_seekToTimeForElement:(int64_t)a3 exact:(BOOL)a4 forceSeek:(BOOL)a5;
-- (void)_setPosterFrameTime:(id *)a3 onCompositionController:(id)a4;
-- (void)_setState:(unint64_t)a3;
+- (void)_seekToTimeForElement:(int64_t)element exact:(BOOL)exact forceSeek:(BOOL)seek;
+- (void)_setPosterFrameTime:(id *)time onCompositionController:(id)controller;
+- (void)_setState:(unint64_t)state;
 - (void)_updateCompositionController;
 - (void)_updateDebugPlayerTimeLabel;
 - (void)_updateDebugPlayheadStyleLabel;
@@ -42,86 +42,86 @@
 - (void)_updateScrubberPresentedPlayhead;
 - (void)_updateScrubberTimelineOverlayButtonOffset;
 - (void)_updateScrubberTimes;
-- (void)_updateSlomoViewAnimated:(BOOL)a3;
+- (void)_updateSlomoViewAnimated:(BOOL)animated;
 - (void)_updateSnapStripController;
 - (void)_updateSnappingDots;
 - (void)_updateTimeCodeOverlay;
 - (void)_updateVideo;
-- (void)compositionControllerDidChangeForAdjustments:(id)a3;
-- (void)didUpdateFocusEventsWithTimes:(id)a3;
-- (void)enableFocusTimeline:(BOOL)a3;
-- (void)focusTimeline:(id)a3 presentAction:(id)a4 locationInTimeline:(CGPoint)a5;
-- (void)focusTimeline:(id)a3 updateTrackingProgressShouldStop:(BOOL *)a4;
-- (void)livePhotoRenderDidChange:(BOOL)a3;
-- (void)objectTrackingStartedAtTime:(id *)a3;
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments;
+- (void)didUpdateFocusEventsWithTimes:(id)times;
+- (void)enableFocusTimeline:(BOOL)timeline;
+- (void)focusTimeline:(id)timeline presentAction:(id)action locationInTimeline:(CGPoint)inTimeline;
+- (void)focusTimeline:(id)timeline updateTrackingProgressShouldStop:(BOOL *)stop;
+- (void)livePhotoRenderDidChange:(BOOL)change;
+- (void)objectTrackingStartedAtTime:(id *)time;
 - (void)pause;
 - (void)play;
-- (void)playerStatusChangedForPlayerWrapper:(id)a3;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
+- (void)playerStatusChangedForPlayerWrapper:(id)wrapper;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
 - (void)releaseAVObjects;
-- (void)setAdjustedStillFrameTime:(id *)a3;
-- (void)setCachedFrameDuration:(id *)a3;
-- (void)setCompositionController:(id)a3;
-- (void)setDebugPlayerTime:(id *)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setEditSource:(id)a3;
-- (void)setInternalState:(unint64_t)a3;
-- (void)setLayoutOrientation:(int64_t)a3;
-- (void)setOriginalEndTime:(id *)a3;
-- (void)setOriginalStartTime:(id *)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setPlayheadStyle:(unint64_t)a3;
-- (void)setPlayheadTime:(id *)a3 forceSeek:(BOOL)a4;
-- (void)setSlomoEnabled:(BOOL)a3;
-- (void)setSuggestedKeyFrameTime:(id *)a3;
-- (void)setUnadjustedAssetDuration:(id *)a3;
-- (void)setUnadjustedStillImageTime:(id *)a3;
-- (void)showFocusTimeline:(BOOL)a3;
-- (void)slowMotionEditorDidBeginEditing:(id)a3 withStartHandle:(BOOL)a4;
-- (void)slowMotionEditorDidEndEditing:(id)a3;
-- (void)slowMotionEditorEndValueChanged:(id)a3;
-- (void)slowMotionEditorStartValueChanged:(id)a3;
-- (void)stepByCount:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
-- (void)trimScrubber:(id)a3 debugEndOffset:(CGRect)a4;
-- (void)trimScrubber:(id)a3 debugEndRect:(CGRect)a4;
-- (void)trimScrubber:(id)a3 debugStartOffset:(CGRect)a4;
-- (void)trimScrubber:(id)a3 debugStartRect:(CGRect)a4;
-- (void)trimScrubber:(id)a3 didBeginInteractivelyEditingElement:(int64_t)a4;
-- (void)trimScrubber:(id)a3 didChangeTimeForElement:(int64_t)a4;
-- (void)trimScrubber:(id)a3 didEndInteractivelyEditingElement:(int64_t)a4 successful:(BOOL)a5;
-- (void)trimScrubber:(id)a3 didTapElement:(int64_t)a4;
-- (void)trimScrubber:(id)a3 didTapTimelineAtTime:(id *)a4;
-- (void)trimScrubber:(id)a3 didZoomToMinimumValue:(double)a4 maximumValue:(double)a5;
-- (void)trimScrubberAssetDurationDidChange:(id)a3;
-- (void)trimScrubberDidLayoutSubviews:(id)a3;
-- (void)trimScrubberDidUnzoom:(id)a3;
-- (void)trimScrubberPausePlayer:(id)a3;
-- (void)updateFocusTimelineWithEvent:(id *)a3 userInitiated:(BOOL)a4 shouldAnimate:(BOOL)a5;
-- (void)updateFocusTimelineWithTimeRange:(id *)a3;
-- (void)updateLivePortraitForKeyFrameChange:(id)a3;
-- (void)updateObjectTrackingProgressAtTime:(id *)a3 shouldStop:(BOOL *)a4;
-- (void)userDidRequestToMakeKeyPhoto:(id)a3;
+- (void)setAdjustedStillFrameTime:(id *)time;
+- (void)setCachedFrameDuration:(id *)duration;
+- (void)setCompositionController:(id)controller;
+- (void)setDebugPlayerTime:(id *)time;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setEditSource:(id)source;
+- (void)setInternalState:(unint64_t)state;
+- (void)setLayoutOrientation:(int64_t)orientation;
+- (void)setOriginalEndTime:(id *)time;
+- (void)setOriginalStartTime:(id *)time;
+- (void)setPlaceholderImage:(id)image;
+- (void)setPlayheadStyle:(unint64_t)style;
+- (void)setPlayheadTime:(id *)time forceSeek:(BOOL)seek;
+- (void)setSlomoEnabled:(BOOL)enabled;
+- (void)setSuggestedKeyFrameTime:(id *)time;
+- (void)setUnadjustedAssetDuration:(id *)duration;
+- (void)setUnadjustedStillImageTime:(id *)time;
+- (void)showFocusTimeline:(BOOL)timeline;
+- (void)slowMotionEditorDidBeginEditing:(id)editing withStartHandle:(BOOL)handle;
+- (void)slowMotionEditorDidEndEditing:(id)editing;
+- (void)slowMotionEditorEndValueChanged:(id)changed;
+- (void)slowMotionEditorStartValueChanged:(id)changed;
+- (void)stepByCount:(int64_t)count;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
+- (void)trimScrubber:(id)scrubber debugEndOffset:(CGRect)offset;
+- (void)trimScrubber:(id)scrubber debugEndRect:(CGRect)rect;
+- (void)trimScrubber:(id)scrubber debugStartOffset:(CGRect)offset;
+- (void)trimScrubber:(id)scrubber debugStartRect:(CGRect)rect;
+- (void)trimScrubber:(id)scrubber didBeginInteractivelyEditingElement:(int64_t)element;
+- (void)trimScrubber:(id)scrubber didChangeTimeForElement:(int64_t)element;
+- (void)trimScrubber:(id)scrubber didEndInteractivelyEditingElement:(int64_t)element successful:(BOOL)successful;
+- (void)trimScrubber:(id)scrubber didTapElement:(int64_t)element;
+- (void)trimScrubber:(id)scrubber didTapTimelineAtTime:(id *)time;
+- (void)trimScrubber:(id)scrubber didZoomToMinimumValue:(double)value maximumValue:(double)maximumValue;
+- (void)trimScrubberAssetDurationDidChange:(id)change;
+- (void)trimScrubberDidLayoutSubviews:(id)subviews;
+- (void)trimScrubberDidUnzoom:(id)unzoom;
+- (void)trimScrubberPausePlayer:(id)player;
+- (void)updateFocusTimelineWithEvent:(id *)event userInitiated:(BOOL)initiated shouldAnimate:(BOOL)animate;
+- (void)updateFocusTimelineWithTimeRange:(id *)range;
+- (void)updateLivePortraitForKeyFrameChange:(id)change;
+- (void)updateObjectTrackingProgressAtTime:(id *)time shouldStop:(BOOL *)stop;
+- (void)userDidRequestToMakeKeyPhoto:(id)photo;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PUTrimToolController
 
-- (void)setUnadjustedAssetDuration:(id *)a3
+- (void)setUnadjustedAssetDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_unadjustedAssetDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_unadjustedAssetDuration.value = *&duration->var0;
   self->_unadjustedAssetDuration.epoch = var3;
 }
 
-- (void)setCachedFrameDuration:(id *)a3
+- (void)setCachedFrameDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_cachedFrameDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_cachedFrameDuration.value = *&duration->var0;
   self->_cachedFrameDuration.epoch = var3;
 }
 
@@ -132,10 +132,10 @@
   return WeakRetained;
 }
 
-- (void)setSuggestedKeyFrameTime:(id *)a3
+- (void)setSuggestedKeyFrameTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_suggestedKeyFrameTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_suggestedKeyFrameTime.value = *&time->var0;
   self->_suggestedKeyFrameTime.epoch = var3;
 }
 
@@ -146,33 +146,33 @@
   return WeakRetained;
 }
 
-- (id)axDescriptionForFocusEventATime:(id *)a3
+- (id)axDescriptionForFocusEventATime:(id *)time
 {
-  v4 = [(PUTrimToolController *)self delegate];
-  v7 = *a3;
-  v5 = [v4 axDescriptionForFocusDecisionAtTime:&v7];
+  delegate = [(PUTrimToolController *)self delegate];
+  v7 = *time;
+  v5 = [delegate axDescriptionForFocusDecisionAtTime:&v7];
 
   return v5;
 }
 
-- (void)focusTimeline:(id)a3 updateTrackingProgressShouldStop:(BOOL *)a4
+- (void)focusTimeline:(id)timeline updateTrackingProgressShouldStop:(BOOL *)stop
 {
   if (self->_objectTrackingShouldStop)
   {
-    *a4 = 1;
+    *stop = 1;
   }
 }
 
-- (void)focusTimeline:(id)a3 presentAction:(id)a4 locationInTimeline:(CGPoint)a5
+- (void)focusTimeline:(id)timeline presentAction:(id)action locationInTimeline:(CGPoint)inTimeline
 {
-  v7 = a4;
-  v8 = [(PUTrimToolController *)self playerWrapper];
-  [v8 pause];
+  actionCopy = action;
+  playerWrapper = [(PUTrimToolController *)self playerWrapper];
+  [playerWrapper pause];
 
-  v9 = [(PUTrimToolController *)self playerWrapper];
-  if (v7)
+  playerWrapper2 = [(PUTrimToolController *)self playerWrapper];
+  if (actionCopy)
   {
-    [v7 time];
+    [actionCopy time];
   }
 
   else
@@ -180,20 +180,20 @@
     memset(v19, 0, sizeof(v19));
   }
 
-  [v9 seekToTime:v19];
+  [playerWrapper2 seekToTime:v19];
 
-  if ([v7 kind] == 2)
+  if ([actionCopy kind] == 2)
   {
     [(PUTrimToolController *)self _hideScrubberTimelineOverlay];
   }
 
   else
   {
-    objc_storeStrong(&self->_focusTimelineAction, a4);
+    objc_storeStrong(&self->_focusTimelineAction, action);
     self->_objectTrackingShouldStop = 0;
-    v10 = [v7 kind];
+    kind = [actionCopy kind];
     v11 = @"xmark";
-    if (!v10)
+    if (!kind)
     {
       v11 = @"trash";
     }
@@ -208,8 +208,8 @@
     [(PUTrimToolController *)self _updateScrubberTimelineOverlayButtonOffset];
     [(PXLivePhotoTrimScrubber *)self->_trimScrubber setPlayheadStyle:0];
     [(UIView *)self->_trimScrubberTimelineOverlayView setHidden:0];
-    v17 = [(PUTrimToolController *)self playPauseButton];
-    [v17 setEnabled:0];
+    playPauseButton = [(PUTrimToolController *)self playPauseButton];
+    [playPauseButton setEnabled:0];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -227,8 +227,8 @@
     focusTimelineAction = self->_focusTimelineAction;
     self->_focusTimelineAction = 0;
 
-    v4 = [(PUTrimToolController *)self playPauseButton];
-    [v4 setEnabled:1];
+    playPauseButton = [(PUTrimToolController *)self playPauseButton];
+    [playPauseButton setEnabled:1];
 
     [(PUTrimToolController *)self _updateScrubberPresentedPlayhead];
     v5[0] = MEMORY[0x1E69E9820];
@@ -252,10 +252,10 @@ uint64_t __52__PUTrimToolController__hideScrubberTimelineOverlay__block_invoke(u
 {
   if ([(PUTrimToolController *)self isPortraitVideo]&& self->_focusTimelineAction)
   {
-    v3 = [(PXLivePhotoTrimScrubber *)self->_trimScrubber useMiniScrubber];
+    useMiniScrubber = [(PXLivePhotoTrimScrubber *)self->_trimScrubber useMiniScrubber];
     [(PUTrimToolController *)self scrubberHeight];
     v5 = -4.0;
-    if (v3)
+    if (useMiniScrubber)
     {
       v5 = -1.0;
     }
@@ -277,25 +277,25 @@ uint64_t __52__PUTrimToolController__hideScrubberTimelineOverlay__block_invoke(u
 
     [(PXLivePhotoTrimScrubber *)trimScrubber offsetForTime:v12];
     [(UIButton *)self->_trimScrubberTimelineOverlayButton setFrame:v10 - v6 * 0.5, MidY - v6 * 0.5, v6, v6];
-    v11 = [(UIButton *)self->_trimScrubberTimelineOverlayButton layer];
-    [v11 setCornerRadius:v6 * 0.5];
+    layer = [(UIButton *)self->_trimScrubberTimelineOverlayButton layer];
+    [layer setCornerRadius:v6 * 0.5];
   }
 }
 
-- (void)_handleScrubberTimelineOverlayButton:(id)a3
+- (void)_handleScrubberTimelineOverlayButton:(id)button
 {
   focusTimelineAction = self->_focusTimelineAction;
   if (focusTimelineAction)
   {
-    v5 = [(PXFocusTimelineAction *)focusTimelineAction kind];
-    if (v5 == 1)
+    kind = [(PXFocusTimelineAction *)focusTimelineAction kind];
+    if (kind == 1)
     {
       self->_objectTrackingShouldStop = 1;
     }
 
-    else if (!v5)
+    else if (!kind)
     {
-      v6 = [(PUTrimToolController *)self delegate];
+      delegate = [(PUTrimToolController *)self delegate];
       v7 = self->_focusTimelineAction;
       if (v7)
       {
@@ -307,18 +307,18 @@ uint64_t __52__PUTrimToolController__hideScrubberTimelineOverlay__block_invoke(u
         memset(v8, 0, sizeof(v8));
       }
 
-      [v6 removeFocusDecisionAtTime:v8];
+      [delegate removeFocusDecisionAtTime:v8];
     }
 
     [(PUTrimToolController *)self _hideScrubberTimelineOverlay];
   }
 }
 
-- (BOOL)slowMotionEditorRequestForceZoom:(id)a3
+- (BOOL)slowMotionEditorRequestForceZoom:(id)zoom
 {
-  v4 = [(PUTrimToolController *)self slomoDraggingStartHandle];
+  slomoDraggingStartHandle = [(PUTrimToolController *)self slomoDraggingStartHandle];
   slomoView = self->_slomoView;
-  if (v4)
+  if (slomoDraggingStartHandle)
   {
     [(PXSlowMotionEditor *)slomoView startValue];
   }
@@ -333,7 +333,7 @@ uint64_t __52__PUTrimToolController__hideScrubberTimelineOverlay__block_invoke(u
   return [(PXLivePhotoTrimScrubber *)trimScrubber tryZoomAtTime:&v9];
 }
 
-- (void)slowMotionEditorEndValueChanged:(id)a3
+- (void)slowMotionEditorEndValueChanged:(id)changed
 {
   [(PXSlowMotionEditor *)self->_slomoView endValue];
   CMTimeMakeWithSeconds(&v8, v4, [MEMORY[0x1E69C0890] preferredTimeScale]);
@@ -347,7 +347,7 @@ uint64_t __52__PUTrimToolController__hideScrubberTimelineOverlay__block_invoke(u
   [(PUTrimToolController *)self _updateTimeCodeOverlay];
 }
 
-- (void)slowMotionEditorStartValueChanged:(id)a3
+- (void)slowMotionEditorStartValueChanged:(id)changed
 {
   [(PXSlowMotionEditor *)self->_slomoView startValue];
   CMTimeMakeWithSeconds(&v8, v4, [MEMORY[0x1E69C0890] preferredTimeScale]);
@@ -361,24 +361,24 @@ uint64_t __52__PUTrimToolController__hideScrubberTimelineOverlay__block_invoke(u
   [(PUTrimToolController *)self _updateTimeCodeOverlay];
 }
 
-- (void)slowMotionEditorDidEndEditing:(id)a3
+- (void)slowMotionEditorDidEndEditing:(id)editing
 {
   [(PUTrimToolController *)self setInternalState:0];
-  v4 = [(PUTrimToolController *)self compositionController];
+  compositionController = [(PUTrimToolController *)self compositionController];
   v5 = *MEMORY[0x1E69BE160];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__PUTrimToolController_slowMotionEditorDidEndEditing___block_invoke;
   v8[3] = &unk_1E7B7F748;
   v8[4] = self;
-  [v4 modifyAdjustmentWithKey:v5 modificationBlock:v8];
+  [compositionController modifyAdjustmentWithKey:v5 modificationBlock:v8];
 
   [(PUTrimToolController *)self _updateCompositionController];
   [(PUTrimToolController *)self _updateDebugTimeCodeLabel];
   PLSAggregateDictionaryAddValueForScalarKey();
-  v6 = [(PUTrimToolController *)self delegate];
+  delegate = [(PUTrimToolController *)self delegate];
   v7 = PULocalizedString(@"PHOTOEDIT_SLOMO_ACTION_TITLE");
-  [v6 didModifyAdjustmentWithLocalizedName:v7];
+  [delegate didModifyAdjustmentWithLocalizedName:v7];
 }
 
 void __54__PUTrimToolController_slowMotionEditorDidEndEditing___block_invoke(uint64_t a1, void *a2)
@@ -395,41 +395,41 @@ void __54__PUTrimToolController_slowMotionEditorDidEndEditing___block_invoke(uin
   [v4 setEndTime:&v8];
 }
 
-- (void)slowMotionEditorDidBeginEditing:(id)a3 withStartHandle:(BOOL)a4
+- (void)slowMotionEditorDidBeginEditing:(id)editing withStartHandle:(BOOL)handle
 {
-  v4 = a4;
-  v6 = [(PUTrimToolController *)self delegate];
-  [v6 willModifyAdjustment];
+  handleCopy = handle;
+  delegate = [(PUTrimToolController *)self delegate];
+  [delegate willModifyAdjustment];
 
   [(PUTrimToolController *)self setInternalState:3];
   [(PXLivePhotoTrimScrubber *)self->_trimScrubber setPlayheadStyle:0];
-  [(PUTrimToolController *)self setSlomoDraggingStartHandle:v4];
+  [(PUTrimToolController *)self setSlomoDraggingStartHandle:handleCopy];
   [(PUTrimToolController *)self _updateTimeCodeOverlay];
 
   [(PUTrimToolController *)self _dismissKeyFramePickerAndResetToStillFrame];
 }
 
-- (void)updateLivePortraitForKeyFrameChange:(id)a3
+- (void)updateLivePortraitForKeyFrameChange:(id)change
 {
-  v6 = a3;
-  v4 = [(PUTrimToolController *)self delegate];
-  v5 = [v4 livePortraitBehaviorController];
+  changeCopy = change;
+  delegate = [(PUTrimToolController *)self delegate];
+  livePortraitBehaviorController = [delegate livePortraitBehaviorController];
 
-  if (v5)
+  if (livePortraitBehaviorController)
   {
-    [v5 applySideEffectsForAction:5 compositionController:v6];
+    [livePortraitBehaviorController applySideEffectsForAction:5 compositionController:changeCopy];
   }
 }
 
-- (void)userDidRequestToMakeKeyPhoto:(id)a3
+- (void)userDidRequestToMakeKeyPhoto:(id)photo
 {
-  v4 = a3;
-  v5 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+  photoCopy = photo;
+  livePhotoKeyFramePicker = [(PUTrimToolController *)self livePhotoKeyFramePicker];
 
-  if (v5 == v4)
+  if (livePhotoKeyFramePicker == photoCopy)
   {
-    v6 = [(PUTrimToolController *)self delegate];
-    [v6 willModifyAdjustment];
+    delegate = [(PUTrimToolController *)self delegate];
+    [delegate willModifyAdjustment];
 
     trimScrubber = self->_trimScrubber;
     if (trimScrubber)
@@ -445,13 +445,13 @@ void __54__PUTrimToolController_slowMotionEditorDidEndEditing___block_invoke(uin
     time1 = v20;
     [(PUTrimToolController *)self setAdjustedStillFrameTime:&time1];
     [(PUTrimToolController *)self _updateCompositionController];
-    v8 = [(PUTrimToolController *)self compositionController];
-    [(PUTrimToolController *)self updateLivePortraitForKeyFrameChange:v8];
+    compositionController = [(PUTrimToolController *)self compositionController];
+    [(PUTrimToolController *)self updateLivePortraitForKeyFrameChange:compositionController];
 
     [(PUTrimToolController *)self _updateScrubberTimes];
-    v9 = [(PUTrimToolController *)self delegate];
+    delegate2 = [(PUTrimToolController *)self delegate];
     v10 = PULocalizedString(@"PHOTOEDIT_MAKE_KEY_FRAME_ACTION_TITLE");
-    [v9 didModifyAdjustmentWithLocalizedName:v10];
+    [delegate2 didModifyAdjustmentWithLocalizedName:v10];
 
     v11 = self->_trimScrubber;
     if (v11)
@@ -466,16 +466,16 @@ void __54__PUTrimToolController_slowMotionEditorDidEndEditing___block_invoke(uin
 
     [(PUTrimToolController *)self unadjustedStillImageTime];
     v12 = CMTimeCompare(&time1, &time2);
-    v13 = [(PUTrimToolController *)self delegate];
-    v14 = v13;
+    delegate3 = [(PUTrimToolController *)self delegate];
+    v14 = delegate3;
     if (v12)
     {
-      [v13 removeCropToolGainMap];
+      [delegate3 removeCropToolGainMap];
     }
 
     else
     {
-      [v13 addCropToolGainMapIfNeeded];
+      [delegate3 addCropToolGainMapIfNeeded];
     }
 
     objc_initWeak(&time1, self);
@@ -484,7 +484,7 @@ void __54__PUTrimToolController_slowMotionEditorDidEndEditing___block_invoke(uin
     v15[2] = __53__PUTrimToolController_userDidRequestToMakeKeyPhoto___block_invoke;
     v15[3] = &unk_1E7B80610;
     objc_copyWeak(&v17, &time1);
-    v16 = v4;
+    v16 = photoCopy;
     [v16 dismissViewControllerAnimated:1 completion:v15];
 
     objc_destroyWeak(&v17);
@@ -498,15 +498,15 @@ void __53__PUTrimToolController_userDidRequestToMakeKeyPhoto___block_invoke(uint
   [WeakRetained _livePhotoKeyFramePickerDidDismiss:*(a1 + 32)];
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
-  v4 = [a3 presentedViewController];
-  v5 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+  presentedViewController = [popover presentedViewController];
+  livePhotoKeyFramePicker = [(PUTrimToolController *)self livePhotoKeyFramePicker];
 
-  if (v4 == v5)
+  if (presentedViewController == livePhotoKeyFramePicker)
   {
-    v6 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
-    [(PUTrimToolController *)self _livePhotoKeyFramePickerDidDismiss:v6];
+    livePhotoKeyFramePicker2 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+    [(PUTrimToolController *)self _livePhotoKeyFramePickerDidDismiss:livePhotoKeyFramePicker2];
   }
 }
 
@@ -533,10 +533,10 @@ uint64_t __50__PUTrimToolController_playerWrapper_timeChanged___block_invoke(uin
   return [*(a1 + 32) setDebugPlayerTime:&v7];
 }
 
-- (void)playerStatusChangedForPlayerWrapper:(id)a3
+- (void)playerStatusChangedForPlayerWrapper:(id)wrapper
 {
-  v4 = a3;
-  v3 = v4;
+  wrapperCopy = wrapper;
+  v3 = wrapperCopy;
   px_dispatch_on_main_queue();
 }
 
@@ -575,14 +575,14 @@ void __61__PUTrimToolController_compositionDidUpdateForPlayerWrapper___block_inv
 
 - (id)_slomoMapperForCurrentConfiguration
 {
-  v3 = [(PUTrimToolController *)self compositionController];
-  v4 = [v3 slomoAdjustmentController];
+  compositionController = [(PUTrimToolController *)self compositionController];
+  slomoAdjustmentController = [compositionController slomoAdjustmentController];
 
   memset(&v22, 0, sizeof(v22));
-  if (v4)
+  if (slomoAdjustmentController)
   {
-    [v4 startTime];
-    [v4 endTime];
+    [slomoAdjustmentController startTime];
+    [slomoAdjustmentController endTime];
   }
 
   else
@@ -594,11 +594,11 @@ void __61__PUTrimToolController_compositionDidUpdateForPlayerWrapper___block_inv
   CMTimeRangeFromTimeToTime(&v22, &start.start, &end.start);
   v20 = 0uLL;
   v21 = 0;
-  v5 = [(PUTrimToolController *)self currentVideoAsset];
-  v6 = v5;
-  if (v5)
+  currentVideoAsset = [(PUTrimToolController *)self currentVideoAsset];
+  v6 = currentVideoAsset;
+  if (currentVideoAsset)
   {
-    [v5 duration];
+    [currentVideoAsset duration];
   }
 
   else
@@ -607,14 +607,14 @@ void __61__PUTrimToolController_compositionDidUpdateForPlayerWrapper___block_inv
     v21 = 0;
   }
 
-  v7 = [(PUTrimToolController *)self compositionController];
-  v8 = [v7 trimAdjustmentController];
+  compositionController2 = [(PUTrimToolController *)self compositionController];
+  trimAdjustmentController = [compositionController2 trimAdjustmentController];
 
-  if (v8)
+  if (trimAdjustmentController)
   {
     v18 = 0uLL;
     v19 = 0;
-    [v8 startTime];
+    [trimAdjustmentController startTime];
     *&end.start.value = *&v22.start.value;
     end.start.epoch = v22.start.epoch;
     *&v15.start.value = v18;
@@ -636,7 +636,7 @@ void __61__PUTrimToolController_compositionDidUpdateForPlayerWrapper___block_inv
   *&start.start.value = v20;
   start.start.epoch = v21;
   Seconds = CMTimeGetSeconds(&start.start);
-  [v4 rate];
+  [slomoAdjustmentController rate];
   *&v12 = v11;
   start = v22;
   v13 = [v9 timeRangeMapperForSourceDuration:&start slowMotionRate:1 slowMotionTimeRange:Seconds forExport:v12];
@@ -644,36 +644,36 @@ void __61__PUTrimToolController_compositionDidUpdateForPlayerWrapper___block_inv
   return v13;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_originalTimeFromCurrentPlayerScaledTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_originalTimeFromCurrentPlayerScaledTime:(SEL)time
 {
   *retstr = *a4;
   result = [(PUTrimToolController *)self isSlomoEnabled];
   if (result && (a4->var2 & 0x1D) == 1)
   {
-    v8 = [(PUTrimToolController *)self compositionController];
-    v9 = [v8 trimAdjustmentController];
+    compositionController = [(PUTrimToolController *)self compositionController];
+    trimAdjustmentController = [compositionController trimAdjustmentController];
 
-    if (v9)
+    if (trimAdjustmentController)
     {
-      [v9 startTime];
+      [trimAdjustmentController startTime];
       v13 = *a4;
       CMTimeSubtract(&time, &v13, &rhs);
       *a4 = time;
     }
 
-    v10 = [(PUTrimToolController *)self _slomoMapperForCurrentConfiguration];
-    if (v10)
+    _slomoMapperForCurrentConfiguration = [(PUTrimToolController *)self _slomoMapperForCurrentConfiguration];
+    if (_slomoMapperForCurrentConfiguration)
     {
       time = *a4;
       Seconds = CMTimeGetSeconds(&time);
       *&Seconds = Seconds;
-      [v10 originalTimeForScaledTime:Seconds];
+      [_slomoMapperForCurrentConfiguration originalTimeForScaledTime:Seconds];
       CMTimeMakeWithSeconds(retstr, v12, [MEMORY[0x1E69C0890] preferredTimeScale]);
     }
 
-    if (v9)
+    if (trimAdjustmentController)
     {
-      [v9 startTime];
+      [trimAdjustmentController startTime];
       v13 = *retstr;
       CMTimeAdd(&time, &v13, &rhs);
       *retstr = time;
@@ -683,36 +683,36 @@ void __61__PUTrimToolController_compositionDidUpdateForPlayerWrapper___block_inv
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_currentPlayerScaledTimeFromOriginalTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)_currentPlayerScaledTimeFromOriginalTime:(SEL)time
 {
   *retstr = *a4;
   result = [(PUTrimToolController *)self isSlomoEnabled];
   if (result && (a4->var2 & 0x1D) == 1)
   {
-    v8 = [(PUTrimToolController *)self compositionController];
-    v9 = [v8 trimAdjustmentController];
+    compositionController = [(PUTrimToolController *)self compositionController];
+    trimAdjustmentController = [compositionController trimAdjustmentController];
 
-    if (v9)
+    if (trimAdjustmentController)
     {
-      [v9 startTime];
+      [trimAdjustmentController startTime];
       v13 = *a4;
       CMTimeSubtract(&time, &v13, &rhs);
       *a4 = time;
     }
 
-    v10 = [(PUTrimToolController *)self _slomoMapperForCurrentConfiguration];
-    if (v10)
+    _slomoMapperForCurrentConfiguration = [(PUTrimToolController *)self _slomoMapperForCurrentConfiguration];
+    if (_slomoMapperForCurrentConfiguration)
     {
       time = *a4;
       Seconds = CMTimeGetSeconds(&time);
       *&Seconds = Seconds;
-      [v10 scaledTimeForOriginalTime:Seconds];
+      [_slomoMapperForCurrentConfiguration scaledTimeForOriginalTime:Seconds];
       CMTimeMakeWithSeconds(retstr, v12, [MEMORY[0x1E69C0890] preferredTimeScale]);
     }
 
-    if (v9)
+    if (trimAdjustmentController)
     {
-      [v9 startTime];
+      [trimAdjustmentController startTime];
       v13 = *retstr;
       CMTimeAdd(&time, &v13, &rhs);
       *retstr = time;
@@ -722,19 +722,19 @@ void __61__PUTrimToolController_compositionDidUpdateForPlayerWrapper___block_inv
   return result;
 }
 
-- (void)stepByCount:(int64_t)a3
+- (void)stepByCount:(int64_t)count
 {
-  v5 = [(PUTrimToolController *)self playerWrapper];
+  playerWrapper = [(PUTrimToolController *)self playerWrapper];
   [(PUTrimToolController *)self playheadTime];
-  [v5 stepByCount:a3 playheadTime:v10];
+  [playerWrapper stepByCount:count playheadTime:v10];
   v6 = dispatch_time(0, 100000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__PUTrimToolController_stepByCount___block_invoke;
   block[3] = &unk_1E7B80C38;
   block[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = playerWrapper;
+  v7 = playerWrapper;
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
 }
 
@@ -757,40 +757,40 @@ uint64_t __36__PUTrimToolController_stepByCount___block_invoke(uint64_t a1)
 
 - (void)pause
 {
-  v2 = [(PUTrimToolController *)self playerWrapper];
-  [v2 pause];
+  playerWrapper = [(PUTrimToolController *)self playerWrapper];
+  [playerWrapper pause];
 }
 
 - (void)play
 {
-  v2 = [(PUTrimToolController *)self playerWrapper];
-  [v2 play];
+  playerWrapper = [(PUTrimToolController *)self playerWrapper];
+  [playerWrapper play];
 }
 
-- (void)_handlePlayPauseButton:(id)a3
+- (void)_handlePlayPauseButton:(id)button
 {
-  v3 = [(PUTrimToolController *)self playerWrapper];
-  if ([v3 isPlaying])
+  playerWrapper = [(PUTrimToolController *)self playerWrapper];
+  if ([playerWrapper isPlaying])
   {
-    [v3 pause];
+    [playerWrapper pause];
   }
 
   else
   {
-    [v3 play];
+    [playerWrapper play];
   }
 }
 
 - (void)_updatePlayPauseButton
 {
-  v7 = [(PUTrimToolController *)self _playPauseButtonIfLoaded];
-  if (v7)
+  _playPauseButtonIfLoaded = [(PUTrimToolController *)self _playPauseButtonIfLoaded];
+  if (_playPauseButtonIfLoaded)
   {
-    v3 = [(PUTrimToolController *)self playerWrapper];
-    if ([v3 isReadyToPlay])
+    playerWrapper = [(PUTrimToolController *)self playerWrapper];
+    if ([playerWrapper isReadyToPlay])
     {
-      [v7 setEnabled:1];
-      if ([v3 isPlaying])
+      [_playPauseButtonIfLoaded setEnabled:1];
+      if ([playerWrapper isPlaying])
       {
         v4 = @"PUVideoEditPauseButton";
       }
@@ -803,28 +803,28 @@ uint64_t __36__PUTrimToolController_stepByCount___block_invoke(uint64_t a1)
       v5 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:v4];
       v6 = [v5 imageWithRenderingMode:2];
 
-      [v7 setImage:v6 forState:0];
+      [_playPauseButtonIfLoaded setImage:v6 forState:0];
     }
 
     else
     {
-      [v7 setEnabled:0];
+      [_playPauseButtonIfLoaded setEnabled:0];
     }
   }
 }
 
-- (void)_livePhotoKeyFramePickerDidDismiss:(id)a3
+- (void)_livePhotoKeyFramePickerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+  dismissCopy = dismiss;
+  livePhotoKeyFramePicker = [(PUTrimToolController *)self livePhotoKeyFramePicker];
 
-  if (v5 == v4)
+  if (livePhotoKeyFramePicker == dismissCopy)
   {
     [(PUTrimToolController *)self setInternalState:0];
     [(PUTrimToolController *)self setLivePhotoKeyFramePicker:0];
     if ([(PXLivePhotoTrimScrubber *)self->_trimScrubber currentlyInteractingElement]!= 3)
     {
-      v6 = [(PUTrimToolController *)self currentEditSource];
+      currentEditSource = [(PUTrimToolController *)self currentEditSource];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -834,8 +834,8 @@ uint64_t __36__PUTrimToolController_stepByCount___block_invoke(uint64_t a1)
       }
     }
 
-    v8 = [(PUTrimToolController *)self snapStripController];
-    [v8 updateSnapStripView];
+    snapStripController = [(PUTrimToolController *)self snapStripController];
+    [snapStripController updateSnapStripView];
   }
 }
 
@@ -846,8 +846,8 @@ uint64_t __36__PUTrimToolController_stepByCount___block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXLivePhotoTrimScrubber *)self->_trimScrubber superview];
-  [v11 convertPoint:self->_trimScrubber fromView:{v4, v6}];
+  superview = [(PXLivePhotoTrimScrubber *)self->_trimScrubber superview];
+  [superview convertPoint:self->_trimScrubber fromView:{v4, v6}];
   v13 = v12;
   v15 = v14;
 
@@ -878,23 +878,23 @@ uint64_t __36__PUTrimToolController_stepByCount___block_invoke(uint64_t a1)
     v15 = v17;
     v16 = v18;
     [(PXLivePhotoTrimScrubber *)v14 performAnimatedChanges:v13];
-    v4 = [(PUTrimToolController *)self playerWrapper];
+    playerWrapper = [(PUTrimToolController *)self playerWrapper];
     v11 = *MEMORY[0x1E6960C70];
     v12 = *(MEMORY[0x1E6960C70] + 16);
-    [v4 seekToTime:&v11];
+    [playerWrapper seekToTime:&v11];
   }
 
-  v5 = [(PUTrimToolController *)self compositionController];
-  v6 = [v5 trimAdjustmentController];
+  compositionController = [(PUTrimToolController *)self compositionController];
+  trimAdjustmentController = [compositionController trimAdjustmentController];
 
   v11 = 0uLL;
   v12 = 0;
-  if (v6)
+  if (trimAdjustmentController)
   {
-    [v6 startTime];
+    [trimAdjustmentController startTime];
     v9 = 0uLL;
     v10 = 0;
-    [v6 endTime];
+    [trimAdjustmentController endTime];
     if (BYTE12(v11))
     {
       v7 = v11;
@@ -932,10 +932,10 @@ uint64_t __55__PUTrimToolController__resetScrubberToStillPhotoFrame__block_invok
   {
     v5 = MEMORY[0x1E69C0708];
     v6 = *MEMORY[0x1E6987608];
-    v7 = [(PUTrimToolController *)self currentVideoAsset];
-    v8 = [v5 tracksWithMediaType:v6 forAsset:v7];
-    v9 = [v8 firstObject];
-    [v9 nominalFrameRate];
+    currentVideoAsset = [(PUTrimToolController *)self currentVideoAsset];
+    v8 = [v5 tracksWithMediaType:v6 forAsset:currentVideoAsset];
+    firstObject = [v8 firstObject];
+    [firstObject nominalFrameRate];
     v4 = v10;
 
     [(PUTrimToolController *)self setCachedFrameRate:v4];
@@ -959,14 +959,14 @@ uint64_t __55__PUTrimToolController__resetScrubberToStillPhotoFrame__block_invok
   {
     v6 = MEMORY[0x1E69C0708];
     v7 = *MEMORY[0x1E6987608];
-    v8 = [(PUTrimToolController *)self currentVideoAsset];
-    v9 = [v6 tracksWithMediaType:v7 forAsset:v8];
+    currentVideoAsset = [(PUTrimToolController *)self currentVideoAsset];
+    v9 = [v6 tracksWithMediaType:v7 forAsset:currentVideoAsset];
 
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     *&retstr->var1 = 0;
     retstr->var3 = 0;
     retstr->var0 = 0;
-    [MEMORY[0x1E69B3D40] minimumFrameDurationForAssetTrack:v10];
+    [MEMORY[0x1E69B3D40] minimumFrameDurationForAssetTrack:firstObject];
     v11 = *&retstr->var0;
     var3 = retstr->var3;
     [(PUTrimToolController *)self setCachedFrameDuration:&v11];
@@ -975,9 +975,9 @@ uint64_t __55__PUTrimToolController__resetScrubberToStillPhotoFrame__block_invok
   return result;
 }
 
-- (void)_updateSlomoViewAnimated:(BOOL)a3
+- (void)_updateSlomoViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(PUTrimToolController *)self isSlomoEnabled])
   {
     if (!self->_slomoView)
@@ -991,28 +991,28 @@ uint64_t __55__PUTrimToolController__resetScrubberToStillPhotoFrame__block_invok
       [(PXSlowMotionEditor *)self->_slomoView setDelegate:self];
       [(PXSlowMotionEditor *)self->_slomoView setRegionEditorStyle:1];
       [(PXSlowMotionEditor *)self->_slomoView setTrimHandleWidth:0.0];
-      v7 = [(UIVisualEffectView *)self->_auxilaryContainerView contentView];
-      [v7 addSubview:self->_slomoView];
+      contentView = [(UIVisualEffectView *)self->_auxilaryContainerView contentView];
+      [contentView addSubview:self->_slomoView];
 
-      v8 = [(PXSlowMotionEditor *)self->_slomoView leftAnchor];
-      v9 = [(UIVisualEffectView *)self->_auxilaryContainerView leftAnchor];
+      leftAnchor = [(PXSlowMotionEditor *)self->_slomoView leftAnchor];
+      leftAnchor2 = [(UIVisualEffectView *)self->_auxilaryContainerView leftAnchor];
       v10 = 66.0;
       if (!self->_playButtonEnabled)
       {
         v10 = 24.0;
       }
 
-      v11 = [v8 constraintEqualToAnchor:v9 constant:v10];
+      v11 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v10];
       [v11 setActive:1];
 
-      v12 = [(PXSlowMotionEditor *)self->_slomoView rightAnchor];
-      v13 = [(UIVisualEffectView *)self->_auxilaryContainerView rightAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13 constant:-18.0];
+      rightAnchor = [(PXSlowMotionEditor *)self->_slomoView rightAnchor];
+      rightAnchor2 = [(UIVisualEffectView *)self->_auxilaryContainerView rightAnchor];
+      v14 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-18.0];
       [v14 setActive:1];
 
-      v15 = [(PXSlowMotionEditor *)self->_slomoView centerYAnchor];
-      v16 = [(UIVisualEffectView *)self->_auxilaryContainerView centerYAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16];
+      centerYAnchor = [(PXSlowMotionEditor *)self->_slomoView centerYAnchor];
+      centerYAnchor2 = [(UIVisualEffectView *)self->_auxilaryContainerView centerYAnchor];
+      v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       [v17 setActive:1];
     }
 
@@ -1026,7 +1026,7 @@ uint64_t __55__PUTrimToolController__resetScrubberToStillPhotoFrame__block_invok
   aBlock[4] = self;
   v18 = _Block_copy(aBlock);
   v19 = v18;
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v18 animations:0.2];
   }
@@ -1060,13 +1060,13 @@ uint64_t __49__PUTrimToolController__updateSlomoViewAnimated___block_invoke(uint
     _os_log_impl(&dword_1B36F3000, v3, OS_LOG_TYPE_DEFAULT, "Trim Scrubber: Requesting video asset", buf, 2u);
   }
 
-  v4 = [(PUTrimToolController *)self playerWrapper];
+  playerWrapper = [(PUTrimToolController *)self playerWrapper];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __36__PUTrimToolController__updateVideo__block_invoke;
   v5[3] = &unk_1E7B7F6F8;
   v5[4] = self;
-  [v4 requestAssetWithCompletion:v5];
+  [playerWrapper requestAssetWithCompletion:v5];
 }
 
 void __36__PUTrimToolController__updateVideo__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1148,8 +1148,8 @@ void __36__PUTrimToolController__updateVideo__block_invoke_160(id *a1)
 
     if ([v3 count])
     {
-      v8 = [v3 array];
-      [(PXLivePhotoTrimScrubber *)self->_trimScrubber setSnapKeyTimes:v8];
+      array = [v3 array];
+      [(PXLivePhotoTrimScrubber *)self->_trimScrubber setSnapKeyTimes:array];
     }
   }
 }
@@ -1157,17 +1157,17 @@ void __36__PUTrimToolController__updateVideo__block_invoke_160(id *a1)
 - (void)_updateScrubberFocusEventTimes
 {
   focusEventTimes = self->_focusEventTimes;
-  v4 = [(PXLivePhotoTrimScrubber *)self->_trimScrubber focusEventTimes];
-  if (focusEventTimes == v4)
+  focusEventTimes = [(PXLivePhotoTrimScrubber *)self->_trimScrubber focusEventTimes];
+  if (focusEventTimes == focusEventTimes)
   {
 
-    MEMORY[0x1EEE66BB8](v4, v4);
+    MEMORY[0x1EEE66BB8](focusEventTimes, focusEventTimes);
   }
 
   else
   {
-    v7 = v4;
-    v5 = [(NSArray *)focusEventTimes isEqual:v4];
+    v7 = focusEventTimes;
+    v5 = [(NSArray *)focusEventTimes isEqual:focusEventTimes];
 
     if ((v5 & 1) == 0)
     {
@@ -1192,20 +1192,20 @@ void __36__PUTrimToolController__updateVideo__block_invoke_160(id *a1)
 - (void)_updateScrubberTimes
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUTrimToolController *)self compositionController];
-  v4 = [v3 trimAdjustmentController];
+  compositionController = [(PUTrimToolController *)self compositionController];
+  trimAdjustmentController = [compositionController trimAdjustmentController];
 
   memset(&v46[32], 0, 24);
-  if (v4)
+  if (trimAdjustmentController)
   {
-    [v4 startTime];
+    [trimAdjustmentController startTime];
     if ((v46[44] & 1) == 0)
     {
       *&v46[32] = **&MEMORY[0x1E6960CC0];
     }
 
     memset(v46, 0, 24);
-    [v4 endTime];
+    [trimAdjustmentController endTime];
   }
 
   else
@@ -1214,11 +1214,11 @@ void __36__PUTrimToolController__updateVideo__block_invoke_160(id *a1)
     memset(v46, 0, 24);
   }
 
-  v5 = [(PUTrimToolController *)self currentVideoAsset];
-  v6 = v5;
-  if (v5)
+  currentVideoAsset = [(PUTrimToolController *)self currentVideoAsset];
+  v6 = currentVideoAsset;
+  if (currentVideoAsset)
   {
-    [v5 duration];
+    [currentVideoAsset duration];
   }
 
   else
@@ -1268,11 +1268,11 @@ void __36__PUTrimToolController__updateVideo__block_invoke_160(id *a1)
     [(PXLivePhotoTrimScrubber *)self->_trimScrubber setSnapTrimEndTimes:0];
   }
 
-  v11 = [(PUTrimToolController *)self compositionController];
-  v12 = [v11 composition];
-  v13 = [v12 mediaType];
+  compositionController2 = [(PUTrimToolController *)self compositionController];
+  composition = [compositionController2 composition];
+  mediaType = [composition mediaType];
 
-  if (v13 != 2 && ([(PUTrimToolController *)self currentStillFrameTime], (v41 & 1) != 0))
+  if (mediaType != 2 && ([(PUTrimToolController *)self currentStillFrameTime], (v41 & 1) != 0))
   {
     [(PUTrimToolController *)self currentStillFrameTime];
   }
@@ -1285,27 +1285,27 @@ void __36__PUTrimToolController__updateVideo__block_invoke_160(id *a1)
   trimScrubber = self->_trimScrubber;
   time1 = v42;
   [(PXLivePhotoTrimScrubber *)trimScrubber setKeyTime:&time1];
-  v15 = [(PUTrimToolController *)self playheadStyle];
-  if (v15 == 1)
+  playheadStyle = [(PUTrimToolController *)self playheadStyle];
+  if (playheadStyle == 1)
   {
     v16 = 1;
   }
 
   else
   {
-    v16 = 2 * (v15 == 2);
+    v16 = 2 * (playheadStyle == 2);
   }
 
   [(PXLivePhotoTrimScrubber *)self->_trimScrubber setPlayheadStyle:v16];
   v17 = +[PUPhotoEditProtoSettings sharedInstance];
-  v18 = [v17 disableVideoFilmstrip];
+  disableVideoFilmstrip = [v17 disableVideoFilmstrip];
 
-  if ((v18 & 1) == 0)
+  if ((disableVideoFilmstrip & 1) == 0)
   {
     v19 = self->_trimScrubber;
-    v20 = [(PUTrimToolController *)self playerWrapper];
-    v21 = [v20 loupePlayerView];
-    [(PXLivePhotoTrimScrubber *)v19 setLoupePlayerView:v21];
+    playerWrapper = [(PUTrimToolController *)self playerWrapper];
+    loupePlayerView = [playerWrapper loupePlayerView];
+    [(PXLivePhotoTrimScrubber *)v19 setLoupePlayerView:loupePlayerView];
   }
 
   [(PUTrimToolController *)self _updateSnappingDots];
@@ -1316,9 +1316,9 @@ void __36__PUTrimToolController__updateVideo__block_invoke_160(id *a1)
   }
 
   v22 = +[PUPhotoEditProtoSettings sharedInstance];
-  v23 = [v22 showSuggestedKeyFrame];
+  showSuggestedKeyFrame = [v22 showSuggestedKeyFrame];
 
-  if (!v23)
+  if (!showSuggestedKeyFrame)
   {
     goto LABEL_31;
   }
@@ -1362,13 +1362,13 @@ LABEL_31:
     }
 
     [(PXSlowMotionEditor *)self->_slomoView setMaxValue:Seconds];
-    v28 = [(PUTrimToolController *)self compositionController];
-    v29 = [v28 slomoAdjustmentController];
+    compositionController3 = [(PUTrimToolController *)self compositionController];
+    slomoAdjustmentController = [compositionController3 slomoAdjustmentController];
 
     memset(&time1, 0, sizeof(time1));
-    if (v29)
+    if (slomoAdjustmentController)
     {
-      [v29 startTime];
+      [slomoAdjustmentController startTime];
       if ((time1.flags & 0x1D) == 1)
       {
         time2 = time1;
@@ -1376,7 +1376,7 @@ LABEL_31:
       }
 
       memset(&time2, 0, sizeof(time2));
-      [v29 endTime];
+      [slomoAdjustmentController endTime];
       if ((time2.flags & 0x1D) == 1)
       {
         time = time2;
@@ -1389,12 +1389,12 @@ LABEL_31:
       memset(&time2, 0, sizeof(time2));
     }
 
-    v30 = [(PUTrimToolController *)self slomoTimeForPlayheadUpdate];
+    slomoTimeForPlayheadUpdate = [(PUTrimToolController *)self slomoTimeForPlayheadUpdate];
 
-    if (v30)
+    if (slomoTimeForPlayheadUpdate)
     {
-      v31 = [(PUTrimToolController *)self slomoTimeForPlayheadUpdate];
-      [v31 floatValue];
+      slomoTimeForPlayheadUpdate2 = [(PUTrimToolController *)self slomoTimeForPlayheadUpdate];
+      [slomoTimeForPlayheadUpdate2 floatValue];
       v33 = v32;
 
       CMTimeMakeWithSeconds(&v35, v33, 600);
@@ -1407,17 +1407,17 @@ LABEL_31:
 
   if (v26)
   {
-    v34 = [(PUTrimToolController *)self snapStripController];
-    [v34 updateSnapStripView];
+    snapStripController = [(PUTrimToolController *)self snapStripController];
+    [snapStripController updateSnapStripView];
   }
 }
 
 - (void)_updateScrubberContents
 {
   trimScrubber = self->_trimScrubber;
-  v4 = [(PUTrimToolController *)self currentVideoAsset];
-  v5 = [(PUTrimToolController *)self currentVideoComposition];
-  [(PXLivePhotoTrimScrubber *)trimScrubber setAsset:v4 videoComposition:v5];
+  currentVideoAsset = [(PUTrimToolController *)self currentVideoAsset];
+  currentVideoComposition = [(PUTrimToolController *)self currentVideoComposition];
+  [(PXLivePhotoTrimScrubber *)trimScrubber setAsset:currentVideoAsset videoComposition:currentVideoComposition];
 
   [(PUTrimToolController *)self _updateScrubberTimes];
 
@@ -1426,22 +1426,22 @@ LABEL_31:
 
 - (void)_updatePlayerWrapperTrim
 {
-  v3 = [(PUTrimToolController *)self compositionController];
-  v4 = [v3 trimAdjustmentController];
+  compositionController = [(PUTrimToolController *)self compositionController];
+  trimAdjustmentController = [compositionController trimAdjustmentController];
 
   v5 = *(MEMORY[0x1E6960C98] + 16);
   v13 = *MEMORY[0x1E6960C98];
   v14 = v5;
   v15 = *(MEMORY[0x1E6960C98] + 32);
-  if ([v4 enabled])
+  if ([trimAdjustmentController enabled])
   {
     v7 = 0uLL;
     *&v8 = 0;
-    if (v4)
+    if (trimAdjustmentController)
     {
-      [v4 startTime];
+      [trimAdjustmentController startTime];
       memset(&v12, 0, sizeof(v12));
-      [v4 endTime];
+      [trimAdjustmentController endTime];
     }
 
     else
@@ -1466,8 +1466,8 @@ LABEL_31:
 
 - (void)_updateCompositionController
 {
-  v3 = [(PUTrimToolController *)self delegate];
-  [v3 willModifyAdjustment];
+  delegate = [(PUTrimToolController *)self delegate];
+  [delegate willModifyAdjustment];
 
   v4 = self->_trimScrubber;
   v5 = v4;
@@ -1572,31 +1572,31 @@ LABEL_31:
   }
 
   v7 = v6 == 0;
-  v8 = [(PXLivePhotoTrimScrubber *)v5 trimStatus];
+  trimStatus = [(PXLivePhotoTrimScrubber *)v5 trimStatus];
   [(PUTrimToolController *)self _createRendererIfNeeded];
-  v9 = [(PUTrimToolController *)self renderer];
-  v10 = [(PUTrimToolController *)self currentEditSource];
-  v11 = [(PUTrimToolController *)self compositionController];
+  renderer = [(PUTrimToolController *)self renderer];
+  currentEditSource = [(PUTrimToolController *)self currentEditSource];
+  compositionController = [(PUTrimToolController *)self compositionController];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__PUTrimToolController__updateCompositionController__block_invoke;
   v15[3] = &unk_1E7B7F6D0;
   v23 = v7;
   v19 = time;
-  v16 = v10;
-  v17 = self;
-  v18 = v8;
+  v16 = currentEditSource;
+  selfCopy = self;
+  v18 = trimStatus;
   v20 = v34;
   v21 = v35;
   v22 = v33;
-  v12 = v10;
-  [v9 applySourceChangesToCompositionAsynchronously:v11 source:v12 withBlock:v15 completionBlock:0];
+  v12 = currentEditSource;
+  [renderer applySourceChangesToCompositionAsynchronously:compositionController source:v12 withBlock:v15 completionBlock:0];
 
   [(PUTrimToolController *)self _updatePlayerWrapperTrim];
   [(PUTrimToolController *)self _updateSnappingDots];
-  v13 = [(PUTrimToolController *)self delegate];
+  delegate2 = [(PUTrimToolController *)self delegate];
   v14 = PULocalizedString(@"PHOTOEDIT_TRIM_ACTION_TITLE");
-  [v13 didModifyAdjustmentWithLocalizedName:v14];
+  [delegate2 didModifyAdjustmentWithLocalizedName:v14];
 }
 
 void __52__PUTrimToolController__updateCompositionController__block_invoke(uint64_t a1, void *a2)
@@ -1753,7 +1753,7 @@ uint64_t __52__PUTrimToolController__updateCompositionController__block_invoke_4
 {
   v35 = *MEMORY[0x1E69E9840];
   v3 = [(PUTrimToolController *)self internalState]== 2 || [(PUTrimToolController *)self internalState]== 3 || [(PUTrimToolController *)self internalState]== 4 || [(PUTrimToolController *)self internalState]== 5;
-  v4 = [(PUTrimToolController *)self editSource];
+  editSource = [(PUTrimToolController *)self editSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1766,17 +1766,17 @@ uint64_t __52__PUTrimToolController__updateCompositionController__block_invoke_4
       v8 = self->_timeCodeOverlayView;
       self->_timeCodeOverlayView = v7;
 
-      v9 = [(PUTrimToolController *)self view];
-      [v9 addSubview:self->_timeCodeOverlayView];
+      view = [(PUTrimToolController *)self view];
+      [view addSubview:self->_timeCodeOverlayView];
 
-      v10 = [(PXLivePhotoTrimScrubber *)self->_trimScrubber topAnchor];
-      v11 = [(PUTimeCodeOverlayView *)self->_timeCodeOverlayView bottomAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 constant:4.0];
+      topAnchor = [(PXLivePhotoTrimScrubber *)self->_trimScrubber topAnchor];
+      bottomAnchor = [(PUTimeCodeOverlayView *)self->_timeCodeOverlayView bottomAnchor];
+      v12 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:4.0];
       [v12 setActive:1];
 
-      v13 = [(PUTimeCodeOverlayView *)self->_timeCodeOverlayView centerXAnchor];
-      v14 = [(PXLivePhotoTrimScrubber *)self->_trimScrubber leftAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      centerXAnchor = [(PUTimeCodeOverlayView *)self->_timeCodeOverlayView centerXAnchor];
+      leftAnchor = [(PXLivePhotoTrimScrubber *)self->_trimScrubber leftAnchor];
+      v15 = [centerXAnchor constraintEqualToAnchor:leftAnchor];
       timeCodeHorizontalConstraint = self->_timeCodeHorizontalConstraint;
       self->_timeCodeHorizontalConstraint = v15;
 
@@ -1818,11 +1818,11 @@ uint64_t __52__PUTrimToolController__updateCompositionController__block_invoke_4
 
     else
     {
-      v25 = [(PXLivePhotoTrimScrubber *)self->_trimScrubber currentlyInteractingElement];
+      currentlyInteractingElement = [(PXLivePhotoTrimScrubber *)self->_trimScrubber currentlyInteractingElement];
       trimScrubber = self->_trimScrubber;
       if (trimScrubber)
       {
-        [(PXLivePhotoTrimScrubber *)trimScrubber timeForElement:v25];
+        [(PXLivePhotoTrimScrubber *)trimScrubber timeForElement:currentlyInteractingElement];
         flags = v32.flags;
         epoch = v32.epoch;
         trimScrubber = self->_trimScrubber;
@@ -1858,9 +1858,9 @@ uint64_t __52__PUTrimToolController__updateCompositionController__block_invoke_4
     v32.epoch = epoch;
     [(PUTimeCodeOverlayView *)self->_timeCodeOverlayView setDisplayedTimeInterval:CMTimeGetSeconds(&v32)];
     v30 = +[PUPhotoEditProtoSettings sharedInstance];
-    v31 = [v30 showFrameNumberOnVideoScrubber];
+    showFrameNumberOnVideoScrubber = [v30 showFrameNumberOnVideoScrubber];
 
-    if (v31)
+    if (showFrameNumberOnVideoScrubber)
     {
       [(PUTrimToolController *)self _frameRate];
       [(PUTimeCodeOverlayView *)self->_timeCodeOverlayView setFrameRate:?];
@@ -1882,10 +1882,10 @@ uint64_t __52__PUTrimToolController__updateCompositionController__block_invoke_4
 
 - (void)_updateScrubberPresentedPlayhead
 {
-  v3 = [(PUTrimToolController *)self playheadStyle];
-  if (v3 <= 2)
+  playheadStyle = [(PUTrimToolController *)self playheadStyle];
+  if (playheadStyle <= 2)
   {
-    v4 = v3;
+    v4 = playheadStyle;
     trimScrubber = self->_trimScrubber;
 
     [(PXLivePhotoTrimScrubber *)trimScrubber setPlayheadStyle:v4];
@@ -1920,17 +1920,17 @@ void __56__PUTrimToolController__updatePlayerWrapperTimeObserver__block_invoke(u
 
 - (void)_updateSnapStripController
 {
-  v3 = [(PUTrimToolController *)self delegate];
-  v6 = [v3 livePortraitBehaviorController];
+  delegate = [(PUTrimToolController *)self delegate];
+  livePortraitBehaviorController = [delegate livePortraitBehaviorController];
 
-  v4 = [v6 hasLivePortrait];
-  v5 = [(PUTrimToolController *)self snapStripSpec];
-  [v5 setLivePortraitStyle:v4];
+  hasLivePortrait = [livePortraitBehaviorController hasLivePortrait];
+  snapStripSpec = [(PUTrimToolController *)self snapStripSpec];
+  [snapStripSpec setLivePortraitStyle:hasLivePortrait];
 }
 
 - (void)_updatePlayheadStyle
 {
-  v3 = [(PUTrimToolController *)self currentEditSource];
+  currentEditSource = [(PUTrimToolController *)self currentEditSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1943,12 +1943,12 @@ void __56__PUTrimToolController__updatePlayerWrapperTimeObserver__block_invoke(u
 
     else
     {
-      v7 = [(PUTrimToolController *)self compositionController];
-      v8 = v7;
-      if (v7)
+      compositionController = [(PUTrimToolController *)self compositionController];
+      v8 = compositionController;
+      if (compositionController)
       {
-        v9 = [v7 autoLoopAdjustmentController];
-        v10 = [v9 flavor];
+        autoLoopAdjustmentController = [compositionController autoLoopAdjustmentController];
+        flavor = [autoLoopAdjustmentController flavor];
         v11 = PIAutoLoopFlavorFromString() == 0;
 
         v6 = 2 * v11;
@@ -1963,16 +1963,16 @@ void __56__PUTrimToolController__updatePlayerWrapperTimeObserver__block_invoke(u
     goto LABEL_15;
   }
 
-  v5 = [(PUTrimToolController *)self state];
-  if (v5 >= 2)
+  state = [(PUTrimToolController *)self state];
+  if (state >= 2)
   {
-    if (v5 == 3)
+    if (state == 3)
     {
       v6 = 2;
       goto LABEL_15;
     }
 
-    if (v5 != 2)
+    if (state != 2)
     {
       return;
     }
@@ -1992,15 +1992,15 @@ LABEL_15:
 
 - (void)_updatePublicState
 {
-  v3 = [(PUTrimToolController *)self internalState];
-  if (v3 > 6)
+  internalState = [(PUTrimToolController *)self internalState];
+  if (internalState > 6)
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = qword_1B3D0D760[v3];
+    v4 = qword_1B3D0D760[internalState];
   }
 
   [(PUTrimToolController *)self _setState:v4];
@@ -2008,102 +2008,102 @@ LABEL_15:
 
 - (void)_updateDebugPlayheadStyleLabel
 {
-  v3 = [(PUTrimToolController *)self debugTrimToolPlayheadStyleLabel];
+  debugTrimToolPlayheadStyleLabel = [(PUTrimToolController *)self debugTrimToolPlayheadStyleLabel];
 
-  if (v3)
+  if (debugTrimToolPlayheadStyleLabel)
   {
-    v4 = [(PUTrimToolController *)self playheadStyle];
-    if (v4 <= 2)
+    playheadStyle = [(PUTrimToolController *)self playheadStyle];
+    if (playheadStyle <= 2)
     {
-      v5 = off_1E7B7F788[v4];
-      v6 = [(PUTrimToolController *)self debugTrimToolPlayheadStyleLabel];
-      [v6 setText:v5];
+      v5 = off_1E7B7F788[playheadStyle];
+      debugTrimToolPlayheadStyleLabel2 = [(PUTrimToolController *)self debugTrimToolPlayheadStyleLabel];
+      [debugTrimToolPlayheadStyleLabel2 setText:v5];
     }
   }
 }
 
 - (void)_updateDebugTrimToolStateLabel
 {
-  v3 = [(PUTrimToolController *)self debugTrimToolStateLabel];
+  debugTrimToolStateLabel = [(PUTrimToolController *)self debugTrimToolStateLabel];
 
-  if (v3)
+  if (debugTrimToolStateLabel)
   {
-    v4 = [(PUTrimToolController *)self state];
-    if (v4 > 1)
+    state = [(PUTrimToolController *)self state];
+    if (state > 1)
     {
-      if (v4 == 2)
+      if (state == 2)
       {
-        v9 = [(PUTrimToolController *)self internalState];
-        if (v9 - 2 > 3)
+        internalState = [(PUTrimToolController *)self internalState];
+        if (internalState - 2 > 3)
         {
           v10 = @"Unknown";
         }
 
         else
         {
-          v10 = off_1E7B7F768[v9 - 2];
+          v10 = off_1E7B7F768[internalState - 2];
         }
 
         v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Interacting(%@)", v10];
-        v12 = [(PUTrimToolController *)self debugTrimToolStateLabel];
-        [v12 setText:v11];
+        debugTrimToolStateLabel2 = [(PUTrimToolController *)self debugTrimToolStateLabel];
+        [debugTrimToolStateLabel2 setText:v11];
 
-        v6 = [MEMORY[0x1E69DC888] yellowColor];
+        yellowColor = [MEMORY[0x1E69DC888] yellowColor];
       }
 
       else
       {
-        if (v4 != 3)
+        if (state != 3)
         {
           return;
         }
 
-        v7 = [(PUTrimToolController *)self debugTrimToolStateLabel];
-        [v7 setText:@"Picking"];
+        debugTrimToolStateLabel3 = [(PUTrimToolController *)self debugTrimToolStateLabel];
+        [debugTrimToolStateLabel3 setText:@"Picking"];
 
-        v6 = [MEMORY[0x1E69DC888] magentaColor];
+        yellowColor = [MEMORY[0x1E69DC888] magentaColor];
       }
     }
 
-    else if (v4)
+    else if (state)
     {
-      if (v4 != 1)
+      if (state != 1)
       {
         return;
       }
 
-      v5 = [(PUTrimToolController *)self debugTrimToolStateLabel];
-      [v5 setText:@"Playing"];
+      debugTrimToolStateLabel4 = [(PUTrimToolController *)self debugTrimToolStateLabel];
+      [debugTrimToolStateLabel4 setText:@"Playing"];
 
-      v6 = [MEMORY[0x1E69DC888] greenColor];
+      yellowColor = [MEMORY[0x1E69DC888] greenColor];
     }
 
     else
     {
-      v8 = [(PUTrimToolController *)self debugTrimToolStateLabel];
-      [v8 setText:@"Paused"];
+      debugTrimToolStateLabel5 = [(PUTrimToolController *)self debugTrimToolStateLabel];
+      [debugTrimToolStateLabel5 setText:@"Paused"];
 
-      v6 = [MEMORY[0x1E69DC888] redColor];
+      yellowColor = [MEMORY[0x1E69DC888] redColor];
     }
 
-    v14 = v6;
-    v13 = [(PUTrimToolController *)self debugTrimToolStateLabel];
-    [v13 setTextColor:v14];
+    v14 = yellowColor;
+    debugTrimToolStateLabel6 = [(PUTrimToolController *)self debugTrimToolStateLabel];
+    [debugTrimToolStateLabel6 setTextColor:v14];
   }
 }
 
 - (void)_updateDebugPlayerTimeLabel
 {
-  v3 = [(PUTrimToolController *)self debugPlayerTimeLabel];
+  debugPlayerTimeLabel = [(PUTrimToolController *)self debugPlayerTimeLabel];
 
-  if (v3)
+  if (debugPlayerTimeLabel)
   {
     memset(&v31, 0, sizeof(v31));
-    v4 = [(PUTrimToolController *)self currentVideoAsset];
-    v5 = v4;
-    if (v4)
+    currentVideoAsset = [(PUTrimToolController *)self currentVideoAsset];
+    v5 = currentVideoAsset;
+    if (currentVideoAsset)
     {
-      [v4 duration];
+      [currentVideoAsset duration];
     }
 
     else
@@ -2122,8 +2122,8 @@ LABEL_15:
       CMTimeGetSeconds(&time);
       v8 = PXTrimTimeCodeStringFromSecondsAndRound();
       v9 = [v6 stringWithFormat:@"P:%@/%@", v7, v8];
-      v10 = [(PUTrimToolController *)self debugPlayerTimeLabel];
-      [v10 setText:v9];
+      debugPlayerTimeLabel2 = [(PUTrimToolController *)self debugPlayerTimeLabel];
+      [debugPlayerTimeLabel2 setText:v9];
 
       memset(&time, 0, sizeof(time));
       [(PUTrimToolController *)self debugPlayerTime];
@@ -2139,8 +2139,8 @@ LABEL_15:
       CMTimeGetSeconds(&v27);
       v13 = PXTrimTimeCodeStringFromSecondsAndRound();
       v14 = [v11 stringWithFormat:@"O:%@/%@", v12, v13];
-      v15 = [(PUTrimToolController *)self debugOriginalTimeLabel];
-      [v15 setText:v14];
+      debugOriginalTimeLabel = [(PUTrimToolController *)self debugOriginalTimeLabel];
+      [debugOriginalTimeLabel setText:v14];
     }
 
     else
@@ -2148,52 +2148,52 @@ LABEL_15:
       v16 = MEMORY[0x1E696AEC0];
       v17 = PXTrimTimeCodeStringFromSecondsAndRound();
       v18 = [v16 stringWithFormat:@"P:%@", v17];
-      v19 = [(PUTrimToolController *)self debugPlayerTimeLabel];
-      [v19 setText:v18];
+      debugPlayerTimeLabel3 = [(PUTrimToolController *)self debugPlayerTimeLabel];
+      [debugPlayerTimeLabel3 setText:v18];
 
       v20 = MEMORY[0x1E696AEC0];
       v12 = PXTrimTimeCodeStringFromSecondsAndRound();
       v21 = [v20 stringWithFormat:@"O:%@", v12];
-      v22 = [(PUTrimToolController *)self debugOriginalTimeLabel];
-      [v22 setText:v21];
+      debugOriginalTimeLabel2 = [(PUTrimToolController *)self debugOriginalTimeLabel];
+      [debugOriginalTimeLabel2 setText:v21];
     }
 
-    v23 = [MEMORY[0x1E69DC888] greenColor];
-    v24 = [(PUTrimToolController *)self debugPlayerTimeLabel];
-    [v24 setTextColor:v23];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    debugPlayerTimeLabel4 = [(PUTrimToolController *)self debugPlayerTimeLabel];
+    [debugPlayerTimeLabel4 setTextColor:greenColor];
 
-    v25 = [MEMORY[0x1E69DC888] whiteColor];
-    v26 = [(PUTrimToolController *)self debugOriginalTimeLabel];
-    [v26 setTextColor:v25];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    debugOriginalTimeLabel3 = [(PUTrimToolController *)self debugOriginalTimeLabel];
+    [debugOriginalTimeLabel3 setTextColor:whiteColor];
   }
 }
 
 - (void)_updateDebugTimeCodeLabel
 {
-  v3 = [(PUTrimToolController *)self debugTimeCodeLabel];
+  debugTimeCodeLabel = [(PUTrimToolController *)self debugTimeCodeLabel];
 
-  if (v3)
+  if (debugTimeCodeLabel)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v5 = [(PUTrimToolController *)self compositionController];
-    v6 = [v5 trimAdjustmentController];
+    compositionController = [(PUTrimToolController *)self compositionController];
+    trimAdjustmentController = [compositionController trimAdjustmentController];
 
-    if (v6)
+    if (trimAdjustmentController)
     {
-      [v6 startTime];
+      [trimAdjustmentController startTime];
       Seconds = CMTimeGetSeconds(&time);
-      [v6 endTime];
+      [trimAdjustmentController endTime];
       v21 = CMTimeGetSeconds(&time);
       [v4 appendFormat:@"Trim(s:%.1f, e:%.1f, d:%.1f)", *&Seconds, *&v21, v21 - Seconds, time.value, *&time.timescale, time.epoch];
     }
 
     else
     {
-      v8 = [(PUTrimToolController *)self currentVideoAsset];
-      v9 = v8;
-      if (v8)
+      currentVideoAsset = [(PUTrimToolController *)self currentVideoAsset];
+      v9 = currentVideoAsset;
+      if (currentVideoAsset)
       {
-        [v8 duration];
+        [currentVideoAsset duration];
       }
 
       else
@@ -2206,14 +2206,14 @@ LABEL_15:
       [v4 appendFormat:@"Trim(s:%.1f, e:%.1f, d:%.1f)", 0, *&v10, *&v10, time.value, *&time.timescale, time.epoch];
     }
 
-    v11 = [(PUTrimToolController *)self compositionController];
-    v12 = [v11 slomoAdjustmentController];
+    compositionController2 = [(PUTrimToolController *)self compositionController];
+    slomoAdjustmentController = [compositionController2 slomoAdjustmentController];
 
-    if (v12)
+    if (slomoAdjustmentController)
     {
-      [v12 startTime];
+      [slomoAdjustmentController startTime];
       v13 = CMTimeGetSeconds(&time);
-      [v12 endTime];
+      [slomoAdjustmentController endTime];
       v14 = CMTimeGetSeconds(&time);
       [v4 appendFormat:@" Slo(s:%.1f, e:%.1f, d:%.1f)", *&v13, *&v14, v14 - v13];
     }
@@ -2242,47 +2242,47 @@ LABEL_15:
     }
 
     [v4 appendFormat:@"VP(%.1f, %.1f)", *&v16, CMTimeGetSeconds(&time)];
-    v18 = [(PUTrimToolController *)self debugTimeCodeLabel];
-    [v18 setText:v4];
+    debugTimeCodeLabel2 = [(PUTrimToolController *)self debugTimeCodeLabel];
+    [debugTimeCodeLabel2 setText:v4];
 
-    v19 = [MEMORY[0x1E69DC888] whiteColor];
-    v20 = [(PUTrimToolController *)self debugTimeCodeLabel];
-    [v20 setTextColor:v19];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    debugTimeCodeLabel3 = [(PUTrimToolController *)self debugTimeCodeLabel];
+    [debugTimeCodeLabel3 setTextColor:whiteColor];
   }
 }
 
-- (void)setDebugPlayerTime:(id *)a3
+- (void)setDebugPlayerTime:(id *)time
 {
   p_debugPlayerTime = &self->_debugPlayerTime;
   time1 = self->_debugPlayerTime;
-  v7 = *a3;
+  v7 = *time;
   if (CMTimeCompare(&time1, &v7))
   {
-    v6 = *&a3->var0;
-    p_debugPlayerTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_debugPlayerTime->epoch = time->var3;
     *&p_debugPlayerTime->value = v6;
     [(PUTrimToolController *)self _updateDebugPlayerTimeLabel];
   }
 }
 
-- (void)_setPosterFrameTime:(id *)a3 onCompositionController:(id)a4
+- (void)_setPosterFrameTime:(id *)time onCompositionController:(id)controller
 {
-  v5 = a4;
-  if ((a3->var2 & 1) != 0 && (time1 = *a3, time2 = **&MEMORY[0x1E6960CC0], CMTimeCompare(&time1, &time2)))
+  controllerCopy = controller;
+  if ((time->var2 & 1) != 0 && (time1 = *time, time2 = **&MEMORY[0x1E6960CC0], CMTimeCompare(&time1, &time2)))
   {
     v6 = *MEMORY[0x1E69BE188];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __68__PUTrimToolController__setPosterFrameTime_onCompositionController___block_invoke;
     v7[3] = &__block_descriptor_56_e48_v16__0__PIVideoPosterFrameAdjustmentController_8l;
-    v8 = *&a3->var0;
-    var3 = a3->var3;
-    [v5 modifyAdjustmentWithKey:v6 modificationBlock:v7];
+    v8 = *&time->var0;
+    var3 = time->var3;
+    [controllerCopy modifyAdjustmentWithKey:v6 modificationBlock:v7];
   }
 
   else
   {
-    [v5 removeAdjustmentWithKey:*MEMORY[0x1E69BE188]];
+    [controllerCopy removeAdjustmentWithKey:*MEMORY[0x1E69BE188]];
   }
 }
 
@@ -2295,25 +2295,25 @@ uint64_t __68__PUTrimToolController__setPosterFrameTime_onCompositionController_
 
 - (BOOL)_showKeyFrameSelection
 {
-  v3 = [(PUTrimToolController *)self _allowsKeyFrameCreation];
-  if (v3)
+  _allowsKeyFrameCreation = [(PUTrimToolController *)self _allowsKeyFrameCreation];
+  if (_allowsKeyFrameCreation)
   {
-    v4 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
+    livePhotoKeyFramePickerAppearanceTimer = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
 
-    if (v4)
+    if (livePhotoKeyFramePickerAppearanceTimer)
     {
-      v5 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
-      [v5 invalidate];
+      livePhotoKeyFramePickerAppearanceTimer2 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
+      [livePhotoKeyFramePickerAppearanceTimer2 invalidate];
 
       [(PUTrimToolController *)self setLivePhotoKeyFramePickerAppearanceTimer:0];
     }
 
-    v6 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+    livePhotoKeyFramePicker = [(PUTrimToolController *)self livePhotoKeyFramePicker];
 
-    if (v6)
+    if (livePhotoKeyFramePicker)
     {
-      v7 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
-      [v7 dismissViewControllerAnimated:0 completion:0];
+      livePhotoKeyFramePicker2 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+      [livePhotoKeyFramePicker2 dismissViewControllerAnimated:0 completion:0];
 
       [(PUTrimToolController *)self setLivePhotoKeyFramePicker:0];
     }
@@ -2327,7 +2327,7 @@ uint64_t __68__PUTrimToolController__setPosterFrameTime_onCompositionController_
     [(PUTrimToolController *)self setLivePhotoKeyFramePickerAppearanceTimer:v8];
   }
 
-  return v3;
+  return _allowsKeyFrameCreation;
 }
 
 void __46__PUTrimToolController__showKeyFrameSelection__block_invoke(uint64_t a1)
@@ -2380,30 +2380,30 @@ void __46__PUTrimToolController__showKeyFrameSelection__block_invoke(uint64_t a1
 
 - (BOOL)_allowsKeyFrameCreation
 {
-  v2 = [(PUTrimToolController *)self currentEditSource];
+  currentEditSource = [(PUTrimToolController *)self currentEditSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v3 = +[PUPhotoEditProtoSettings sharedInstance];
-    v4 = [v3 allowMakePosterFrameForVideo];
+    allowMakePosterFrameForVideo = [v3 allowMakePosterFrameForVideo];
   }
 
   else
   {
-    v4 = 0;
+    allowMakePosterFrameForVideo = 0;
   }
 
   objc_opt_class();
-  v5 = objc_opt_isKindOfClass() | v4;
+  v5 = objc_opt_isKindOfClass() | allowMakePosterFrameForVideo;
 
   return v5 & 1;
 }
 
-- (void)setInternalState:(unint64_t)a3
+- (void)setInternalState:(unint64_t)state
 {
-  if (self->_internalState != a3)
+  if (self->_internalState != state)
   {
-    self->_internalState = a3;
+    self->_internalState = state;
     [(PUTrimToolController *)self _updatePublicState];
     [(PUTrimToolController *)self _updatePlayheadStyle];
     [(PUTrimToolController *)self _updateDebugTrimToolStateLabel];
@@ -2412,11 +2412,11 @@ void __46__PUTrimToolController__showKeyFrameSelection__block_invoke(uint64_t a1
   }
 }
 
-- (void)setPlayheadStyle:(unint64_t)a3
+- (void)setPlayheadStyle:(unint64_t)style
 {
-  if (self->_playheadStyle != a3)
+  if (self->_playheadStyle != style)
   {
-    self->_playheadStyle = a3;
+    self->_playheadStyle = style;
     [(PUTrimToolController *)self _updateScrubberPresentedPlayhead];
     [(PUTrimToolController *)self _updatePlayerWrapperTimeObserver];
 
@@ -2424,46 +2424,46 @@ void __46__PUTrimToolController__showKeyFrameSelection__block_invoke(uint64_t a1
   }
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v6 = [(PUTrimToolController *)self delegate];
-    [v6 trimToolControllerDidChange:self state:a3];
+    self->_state = state;
+    delegate = [(PUTrimToolController *)self delegate];
+    [delegate trimToolControllerDidChange:self state:state];
   }
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)adjustedStillFrameTime
 {
-  v5 = [(PUTrimToolController *)self currentEditSource];
+  currentEditSource = [(PUTrimToolController *)self currentEditSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [(PUTrimToolController *)self compositionController];
-  v8 = v7;
+  compositionController = [(PUTrimToolController *)self compositionController];
+  v8 = compositionController;
   if (isKindOfClass)
   {
-    v12 = [v7 livePhotoKeyFrameAdjustmentController];
+    livePhotoKeyFrameAdjustmentController = [compositionController livePhotoKeyFrameAdjustmentController];
 
-    v9 = v12;
-    if (v12)
+    v9 = livePhotoKeyFrameAdjustmentController;
+    if (livePhotoKeyFrameAdjustmentController)
     {
-      [v12 keyFrameTime];
+      [livePhotoKeyFrameAdjustmentController keyFrameTime];
 LABEL_6:
-      v9 = v12;
+      v9 = livePhotoKeyFrameAdjustmentController;
       goto LABEL_8;
     }
   }
 
   else
   {
-    v12 = [v7 videoPosterFrameAdjustmentController];
+    livePhotoKeyFrameAdjustmentController = [compositionController videoPosterFrameAdjustmentController];
 
-    v9 = v12;
-    if (v12)
+    v9 = livePhotoKeyFrameAdjustmentController;
+    if (livePhotoKeyFrameAdjustmentController)
     {
-      [v12 posterFrameTime];
+      [livePhotoKeyFrameAdjustmentController posterFrameTime];
       goto LABEL_6;
     }
   }
@@ -2476,19 +2476,19 @@ LABEL_8:
   return result;
 }
 
-- (void)setAdjustedStillFrameTime:(id *)a3
+- (void)setAdjustedStillFrameTime:(id *)time
 {
-  v5 = [(PUTrimToolController *)self currentEditSource];
+  currentEditSource = [(PUTrimToolController *)self currentEditSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(PUTrimToolController *)self unadjustedStillImageTime];
-    time1 = *a3;
+    time1 = *time;
     if (CMTimeCompare(&time1, &time2))
     {
-      var2 = a3->var2;
-      v7 = [(PUTrimToolController *)self compositionController];
-      v8 = v7;
+      var2 = time->var2;
+      compositionController = [(PUTrimToolController *)self compositionController];
+      compositionController2 = compositionController;
       v9 = *MEMORY[0x1E69BE030];
       if (var2)
       {
@@ -2496,32 +2496,32 @@ LABEL_8:
         v13[1] = 3221225472;
         v13[2] = __50__PUTrimToolController_setAdjustedStillFrameTime___block_invoke;
         v13[3] = &__block_descriptor_56_e49_v16__0__PILivePhotoKeyFrameAdjustmentController_8l;
-        v14 = *&a3->var0;
-        var3 = a3->var3;
-        [v7 modifyAdjustmentWithKey:v9 modificationBlock:v13];
+        v14 = *&time->var0;
+        var3 = time->var3;
+        [compositionController modifyAdjustmentWithKey:v9 modificationBlock:v13];
       }
 
       else
       {
-        [v7 removeAdjustmentWithKey:v9];
+        [compositionController removeAdjustmentWithKey:v9];
       }
     }
 
     else
     {
-      v8 = [(PUTrimToolController *)self compositionController];
-      v10 = [(PUTrimToolController *)self compositionController];
-      v11 = [v10 adjustmentConstants];
-      v12 = [v11 PILivePhotoKeyFrameAdjustmentKey];
-      [v8 removeAdjustmentWithKey:v12];
+      compositionController2 = [(PUTrimToolController *)self compositionController];
+      compositionController3 = [(PUTrimToolController *)self compositionController];
+      adjustmentConstants = [compositionController3 adjustmentConstants];
+      pILivePhotoKeyFrameAdjustmentKey = [adjustmentConstants PILivePhotoKeyFrameAdjustmentKey];
+      [compositionController2 removeAdjustmentWithKey:pILivePhotoKeyFrameAdjustmentKey];
     }
   }
 
   else
   {
-    v8 = [(PUTrimToolController *)self compositionController];
-    time2 = *a3;
-    [(PUTrimToolController *)self _setPosterFrameTime:&time2 onCompositionController:v8];
+    compositionController2 = [(PUTrimToolController *)self compositionController];
+    time2 = *time;
+    [(PUTrimToolController *)self _setPosterFrameTime:&time2 onCompositionController:compositionController2];
   }
 }
 
@@ -2548,47 +2548,47 @@ uint64_t __50__PUTrimToolController_setAdjustedStillFrameTime___block_invoke(uin
   return result;
 }
 
-- (void)updateObjectTrackingProgressAtTime:(id *)a3 shouldStop:(BOOL *)a4
+- (void)updateObjectTrackingProgressAtTime:(id *)time shouldStop:(BOOL *)stop
 {
   focusTimelineView = self->_focusTimelineView;
-  v5 = *a3;
-  [(PXFocusTimelineView *)focusTimelineView updateObjectTrackingProgressAtTime:&v5 shouldStop:a4];
+  v5 = *time;
+  [(PXFocusTimelineView *)focusTimelineView updateObjectTrackingProgressAtTime:&v5 shouldStop:stop];
 }
 
-- (void)objectTrackingStartedAtTime:(id *)a3
+- (void)objectTrackingStartedAtTime:(id *)time
 {
   focusTimelineView = self->_focusTimelineView;
-  v4 = *a3;
+  v4 = *time;
   [(PXFocusTimelineView *)focusTimelineView objectTrackingStartedAtTime:&v4];
 }
 
-- (void)didUpdateFocusEventsWithTimes:(id)a3
+- (void)didUpdateFocusEventsWithTimes:(id)times
 {
-  objc_storeStrong(&self->_focusEventTimes, a3);
+  objc_storeStrong(&self->_focusEventTimes, times);
 
   [(PUTrimToolController *)self _updateScrubberFocusEventTimes];
 }
 
-- (void)updateFocusTimelineWithEvent:(id *)a3 userInitiated:(BOOL)a4 shouldAnimate:(BOOL)a5
+- (void)updateFocusTimelineWithEvent:(id *)event userInitiated:(BOOL)initiated shouldAnimate:(BOOL)animate
 {
   focusTimelineView = self->_focusTimelineView;
-  v6 = *a3;
-  [(PXFocusTimelineView *)focusTimelineView addFocusEvent:&v6 userInitiated:a4 shouldAnimate:a5];
+  v6 = *event;
+  [(PXFocusTimelineView *)focusTimelineView addFocusEvent:&v6 userInitiated:initiated shouldAnimate:animate];
 }
 
-- (void)updateFocusTimelineWithTimeRange:(id *)a3
+- (void)updateFocusTimelineWithTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var3;
-  v4[0] = *&a3->var0.var0;
+  v3 = *&range->var0.var3;
+  v4[0] = *&range->var0.var0;
   v4[1] = v3;
-  v4[2] = *&a3->var1.var1;
+  v4[2] = *&range->var1.var1;
   [(PXFocusTimelineView *)self->_focusTimelineView setTimeRange:v4];
 }
 
-- (void)showFocusTimeline:(BOOL)a3
+- (void)showFocusTimeline:(BOOL)timeline
 {
   v3 = 0.0;
-  if (a3)
+  if (timeline)
   {
     v3 = 1.0;
   }
@@ -2596,11 +2596,11 @@ uint64_t __50__PUTrimToolController_setAdjustedStillFrameTime___block_invoke(uin
   [(UIVisualEffectView *)self->_auxilaryContainerView setAlpha:v3];
 }
 
-- (void)enableFocusTimeline:(BOOL)a3
+- (void)enableFocusTimeline:(BOOL)timeline
 {
-  self->_portraitVideoEnabled = a3;
-  v4 = !a3;
-  [(PXFocusTimelineView *)self->_focusTimelineView setDimmed:!a3];
+  self->_portraitVideoEnabled = timeline;
+  v4 = !timeline;
+  [(PXFocusTimelineView *)self->_focusTimelineView setDimmed:!timeline];
   if (v4)
   {
 
@@ -2614,28 +2614,28 @@ uint64_t __50__PUTrimToolController_setAdjustedStillFrameTime___block_invoke(uin
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    v4 = a3;
-    self->_disabled = a3;
-    v6 = [(PUTrimToolController *)self view];
-    [v6 setUserInteractionEnabled:v4 ^ 1];
+    disabledCopy = disabled;
+    self->_disabled = disabled;
+    view = [(PUTrimToolController *)self view];
+    [view setUserInteractionEnabled:disabledCopy ^ 1];
 
-    [(PXLivePhotoTrimScrubber *)self->_trimScrubber setDisabled:v4];
-    v7 = [(PUTrimToolController *)self snapStripController];
-    [v7 updateSnapStripView];
+    [(PXLivePhotoTrimScrubber *)self->_trimScrubber setDisabled:disabledCopy];
+    snapStripController = [(PUTrimToolController *)self snapStripController];
+    [snapStripController updateSnapStripView];
   }
 }
 
-- (void)setEditSource:(id)a3
+- (void)setEditSource:(id)source
 {
-  v5 = a3;
-  if (self->_editSource != v5)
+  sourceCopy = source;
+  if (self->_editSource != sourceCopy)
   {
-    objc_storeStrong(&self->_editSource, a3);
-    v6 = [(PUTrimToolController *)self currentEditSource];
+    objc_storeStrong(&self->_editSource, source);
+    currentEditSource = [(PUTrimToolController *)self currentEditSource];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2658,7 +2658,7 @@ uint64_t __50__PUTrimToolController_setAdjustedStillFrameTime___block_invoke(uin
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v6;
+      videoEditSource = currentEditSource;
     }
 
     else
@@ -2672,15 +2672,15 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v9 = [v6 videoEditSource];
+      videoEditSource = [currentEditSource videoEditSource];
     }
 
-    v10 = v9;
-    if (v9)
+    v10 = videoEditSource;
+    if (videoEditSource)
     {
       v11 = MEMORY[0x1E6987E28];
-      v12 = [v9 videoURL];
-      v13 = [v11 assetWithURL:v12];
+      videoURL = [videoEditSource videoURL];
+      v13 = [v11 assetWithURL:videoURL];
 
       if (v13)
       {
@@ -2704,35 +2704,35 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)setCompositionController:(id)a3
+- (void)setCompositionController:(id)controller
 {
-  v5 = a3;
-  if (self->_compositionController != v5)
+  controllerCopy = controller;
+  if (self->_compositionController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_compositionController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_compositionController, controller);
     [(PUTrimToolController *)self _updatePlayheadStyle];
     [(PUTrimToolController *)self _updateScrubberContents];
     [(PUTrimToolController *)self _updatePlayerWrapperTrim];
     [(PUTrimToolController *)self _updateDebugTimeCodeLabel];
     [(PUTrimToolController *)self _updateSnapStripController];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)setUnadjustedStillImageTime:(id *)a3
+- (void)setUnadjustedStillImageTime:(id *)time
 {
   p_unadjustedStillImageTime = &self->_unadjustedStillImageTime;
-  time1 = *a3;
+  time1 = *time;
   unadjustedStillImageTime = self->_unadjustedStillImageTime;
   if (CMTimeCompare(&time1, &unadjustedStillImageTime))
   {
-    v6 = *&a3->var0;
-    p_unadjustedStillImageTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_unadjustedStillImageTime->epoch = time->var3;
     *&p_unadjustedStillImageTime->value = v6;
     [(PUTrimToolController *)self _updateScrubberContents];
-    v7 = [(PUTrimToolController *)self snapStripController];
-    [v7 updateSnapStripView];
+    snapStripController = [(PUTrimToolController *)self snapStripController];
+    [snapStripController updateSnapStripView];
   }
 }
 
@@ -2750,7 +2750,7 @@ LABEL_15:
   self->_currentVideoComposition = 0;
 }
 
-- (void)trimScrubberDidLayoutSubviews:(id)a3
+- (void)trimScrubberDidLayoutSubviews:(id)subviews
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -2766,19 +2766,19 @@ void __54__PUTrimToolController_trimScrubberDidLayoutSubviews___block_invoke(uin
   [v1 updateSnapStripView];
 }
 
-- (void)trimScrubberPausePlayer:(id)a3
+- (void)trimScrubberPausePlayer:(id)player
 {
-  v4 = [(PUTrimToolController *)self _playPauseButtonIfLoaded];
-  v5 = [v4 window];
+  _playPauseButtonIfLoaded = [(PUTrimToolController *)self _playPauseButtonIfLoaded];
+  window = [_playPauseButtonIfLoaded window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [(PUTrimToolController *)self playerWrapper];
-    [v6 pause];
+    playerWrapper = [(PUTrimToolController *)self playerWrapper];
+    [playerWrapper pause];
   }
 }
 
-- (void)trimScrubberDidUnzoom:(id)a3
+- (void)trimScrubberDidUnzoom:(id)unzoom
 {
   slomoView = self->_slomoView;
   [(PXSlowMotionEditor *)slomoView maxValue];
@@ -2791,75 +2791,75 @@ void __54__PUTrimToolController_trimScrubberDidLayoutSubviews___block_invoke(uin
   [(PUTrimToolController *)self _updateDebugTimeCodeLabel];
 }
 
-- (void)trimScrubber:(id)a3 didZoomToMinimumValue:(double)a4 maximumValue:(double)a5
+- (void)trimScrubber:(id)scrubber didZoomToMinimumValue:(double)value maximumValue:(double)maximumValue
 {
-  [(PXSlowMotionEditor *)self->_slomoView setZoomMinValue:a3 maxValue:?];
+  [(PXSlowMotionEditor *)self->_slomoView setZoomMinValue:scrubber maxValue:?];
   if ([(PUTrimToolController *)self isPortraitVideo])
   {
-    [(PXFocusTimelineView *)self->_focusTimelineView setZoomMinValue:a4 maxValue:a5];
+    [(PXFocusTimelineView *)self->_focusTimelineView setZoomMinValue:value maxValue:maximumValue];
   }
 
   [(PUTrimToolController *)self _updateDebugTimeCodeLabel];
 }
 
-- (void)trimScrubberAssetDurationDidChange:(id)a3
+- (void)trimScrubberAssetDurationDidChange:(id)change
 {
-  v3 = [(PUTrimToolController *)self snapStripController];
-  [v3 updateSnapStripView];
+  snapStripController = [(PUTrimToolController *)self snapStripController];
+  [snapStripController updateSnapStripView];
 }
 
-- (void)trimScrubber:(id)a3 didChangeTimeForElement:(int64_t)a4
+- (void)trimScrubber:(id)scrubber didChangeTimeForElement:(int64_t)element
 {
-  if ([a3 currentlyInteractingElement])
+  if ([scrubber currentlyInteractingElement])
   {
-    [(PUTrimToolController *)self _seekToTimeForElement:a4 exact:1];
-    v6 = [(PUTrimToolController *)self snapStripController];
-    [v6 updateSnapStripView];
+    [(PUTrimToolController *)self _seekToTimeForElement:element exact:1];
+    snapStripController = [(PUTrimToolController *)self snapStripController];
+    [snapStripController updateSnapStripView];
 
     [(PUTrimToolController *)self _updateTimeCodeOverlay];
   }
 }
 
-- (void)_didCompleteInteractiveEditForElement:(int64_t)a3 atTime:(id *)a4 state:(unint64_t)a5
+- (void)_didCompleteInteractiveEditForElement:(int64_t)element atTime:(id *)time state:(unint64_t)state
 {
-  v9 = a3 - 1;
-  v10 = [(PUTrimToolController *)self currentEditSource];
+  v9 = element - 1;
+  currentEditSource = [(PUTrimToolController *)self currentEditSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (v9 <= 1 && (isKindOfClass & 1) != 0)
   {
-    v13 = *&a4->var0;
-    var3 = a4->var3;
+    v13 = *&time->var0;
+    var3 = time->var3;
     [(PUTrimToolController *)self setPlayheadTime:&v13 forceSeek:1];
   }
 
   self->_currentlyInteractingElement = 0;
-  [(PUTrimToolController *)self setInternalState:a5];
-  v12 = [(PUTrimToolController *)self delegate];
-  [v12 trimToolController:self didEndInteractivelyEditingElement:a3];
+  [(PUTrimToolController *)self setInternalState:state];
+  delegate = [(PUTrimToolController *)self delegate];
+  [delegate trimToolController:self didEndInteractivelyEditingElement:element];
 }
 
-- (void)trimScrubber:(id)a3 didEndInteractivelyEditingElement:(int64_t)a4 successful:(BOOL)a5
+- (void)trimScrubber:(id)scrubber didEndInteractivelyEditingElement:(int64_t)element successful:(BOOL)successful
 {
-  v5 = a5;
-  v8 = a3;
-  if (a4 != 3)
+  successfulCopy = successful;
+  scrubberCopy = scrubber;
+  if (element != 3)
   {
-    v9 = [(PUTrimToolController *)self _playPauseButtonIfLoaded];
-    v10 = [v9 window];
+    _playPauseButtonIfLoaded = [(PUTrimToolController *)self _playPauseButtonIfLoaded];
+    window = [_playPauseButtonIfLoaded window];
 
-    if (a4 == 4)
+    if (element == 4)
     {
-      if (v10)
+      if (window)
       {
         v11 = +[PUPhotoEditProtoSettings sharedInstance];
-        v12 = [v11 pauseAfterMovingPlayhead];
+        pauseAfterMovingPlayhead = [v11 pauseAfterMovingPlayhead];
 
-        if (v12)
+        if (pauseAfterMovingPlayhead)
         {
-          v13 = [(PUTrimToolController *)self playerWrapper];
-          [v13 pause];
+          playerWrapper = [(PUTrimToolController *)self playerWrapper];
+          [playerWrapper pause];
         }
 
         [(PUTrimToolController *)self _seekToTimeForElement:4 exact:1 forceSeek:1];
@@ -2871,14 +2871,14 @@ void __54__PUTrimToolController_trimScrubberDidLayoutSubviews___block_invoke(uin
   trimScrubber = self->_trimScrubber;
   if (trimScrubber)
   {
-    [(PXLivePhotoTrimScrubber *)trimScrubber timeForElement:a4];
+    [(PXLivePhotoTrimScrubber *)trimScrubber timeForElement:element];
   }
 
-  if ((a4 - 1) > 1)
+  if ((element - 1) > 1)
   {
-    if ((a4 - 3) <= 1)
+    if ((element - 3) <= 1)
     {
-      if (v5)
+      if (successfulCopy)
       {
         memset(location, 0, 24);
         v20 = self->_trimScrubber;
@@ -2891,10 +2891,10 @@ void __54__PUTrimToolController_trimScrubberDidLayoutSubviews___block_invoke(uin
         v26 = location[0];
         v21 = CMTimeCompare(&v26, &time2);
         v22 = +[PUPhotoEditProtoSettings sharedInstance];
-        v23 = [v22 requireTapToShowMakePosterFrame];
+        requireTapToShowMakePosterFrame = [v22 requireTapToShowMakePosterFrame];
 
         v24 = 0;
-        if (v21 && (v23 & 1) == 0)
+        if (v21 && (requireTapToShowMakePosterFrame & 1) == 0)
         {
           if ([(PUTrimToolController *)self _showKeyFrameSelection])
           {
@@ -2916,15 +2916,15 @@ void __54__PUTrimToolController_trimScrubberDidLayoutSubviews___block_invoke(uin
     v24 = 0;
 LABEL_22:
     location[0] = location[1];
-    [(PUTrimToolController *)self _didCompleteInteractiveEditForElement:a4 atTime:location state:v24];
+    [(PUTrimToolController *)self _didCompleteInteractiveEditForElement:element atTime:location state:v24];
     goto LABEL_23;
   }
 
   [MEMORY[0x1E69B3C60] begin];
   [(PUTrimToolController *)self _updateCompositionController];
-  v15 = [(PUTrimToolController *)self playerWrapper];
+  playerWrapper2 = [(PUTrimToolController *)self playerWrapper];
   location[0] = **&MEMORY[0x1E6960C70];
-  [v15 seekToTime:location];
+  [playerWrapper2 seekToTime:location];
 
   objc_initWeak(location, self);
   v16 = MEMORY[0x1E69B3C60];
@@ -2935,20 +2935,20 @@ LABEL_22:
   v28[2] = __82__PUTrimToolController_trimScrubber_didEndInteractivelyEditingElement_successful___block_invoke;
   v28[3] = &unk_1E7B7F5D8;
   objc_copyWeak(v29, location);
-  v29[1] = a4;
+  v29[1] = element;
   v30 = location[1];
   [v16 commitAndNotifyOnQueue:v17 withBlock:v28];
 
-  v19 = [(PUTrimToolController *)self snapStripController];
-  [v19 updateSnapStripView];
+  snapStripController = [(PUTrimToolController *)self snapStripController];
+  [snapStripController updateSnapStripView];
 
   [(PUTrimToolController *)self _updateDebugTimeCodeLabel];
   objc_destroyWeak(v29);
   objc_destroyWeak(location);
 LABEL_23:
   [(PUTrimToolController *)self setIsPerformingLiveInteraction:0];
-  v25 = [(PUTrimToolController *)self delegate];
-  [v25 trimToolController:self didChangeIsPerformingLiveInteraction:{-[PUTrimToolController isPerformingLiveInteraction](self, "isPerformingLiveInteraction")}];
+  delegate = [(PUTrimToolController *)self delegate];
+  [delegate trimToolController:self didChangeIsPerformingLiveInteraction:{-[PUTrimToolController isPerformingLiveInteraction](self, "isPerformingLiveInteraction")}];
 }
 
 void __82__PUTrimToolController_trimScrubber_didEndInteractivelyEditingElement_successful___block_invoke(uint64_t a1)
@@ -2960,18 +2960,18 @@ void __82__PUTrimToolController_trimScrubber_didEndInteractivelyEditingElement_s
   [WeakRetained _didCompleteInteractiveEditForElement:v3 atTime:&v4 state:0];
 }
 
-- (void)trimScrubber:(id)a3 didBeginInteractivelyEditingElement:(int64_t)a4
+- (void)trimScrubber:(id)scrubber didBeginInteractivelyEditingElement:(int64_t)element
 {
-  v16 = a3;
+  scrubberCopy = scrubber;
   v6 = 0;
-  self->_currentlyInteractingElement = a4;
+  self->_currentlyInteractingElement = element;
   v7 = 1;
-  if ((a4 - 1) < 2)
+  if ((element - 1) < 2)
   {
     v8 = 2;
   }
 
-  else if (a4 == 4)
+  else if (element == 4)
   {
     v7 = 0;
     v6 = 1;
@@ -2980,7 +2980,7 @@ void __82__PUTrimToolController_trimScrubber_didEndInteractivelyEditingElement_s
 
   else
   {
-    if (a4 != 3)
+    if (element != 3)
     {
       goto LABEL_8;
     }
@@ -2991,52 +2991,52 @@ void __82__PUTrimToolController_trimScrubber_didEndInteractivelyEditingElement_s
 
   [(PUTrimToolController *)self setInternalState:v8];
 LABEL_8:
-  [(PUTrimToolController *)self _seekToTimeForElement:a4 exact:v7 forceSeek:v6];
-  v9 = [(PUTrimToolController *)self snapStripController];
-  [v9 updateSnapStripView];
+  [(PUTrimToolController *)self _seekToTimeForElement:element exact:v7 forceSeek:v6];
+  snapStripController = [(PUTrimToolController *)self snapStripController];
+  [snapStripController updateSnapStripView];
 
-  v10 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
+  livePhotoKeyFramePickerAppearanceTimer = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
 
-  if (v10)
+  if (livePhotoKeyFramePickerAppearanceTimer)
   {
-    v11 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
-    [v11 invalidate];
+    livePhotoKeyFramePickerAppearanceTimer2 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
+    [livePhotoKeyFramePickerAppearanceTimer2 invalidate];
 
     [(PUTrimToolController *)self setLivePhotoKeyFramePickerAppearanceTimer:0];
   }
 
-  v12 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+  livePhotoKeyFramePicker = [(PUTrimToolController *)self livePhotoKeyFramePicker];
 
-  if (v12)
+  if (livePhotoKeyFramePicker)
   {
-    v13 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
-    [v13 dismissViewControllerAnimated:0 completion:0];
+    livePhotoKeyFramePicker2 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+    [livePhotoKeyFramePicker2 dismissViewControllerAnimated:0 completion:0];
   }
 
-  v14 = [(PUTrimToolController *)self delegate];
-  [v14 trimToolController:self didBeginInteractivelyEditingElement:a4];
+  delegate = [(PUTrimToolController *)self delegate];
+  [delegate trimToolController:self didBeginInteractivelyEditingElement:element];
 
   [(PUTrimToolController *)self setIsPerformingLiveInteraction:1];
-  v15 = [(PUTrimToolController *)self delegate];
-  [v15 trimToolController:self didChangeIsPerformingLiveInteraction:{-[PUTrimToolController isPerformingLiveInteraction](self, "isPerformingLiveInteraction")}];
+  delegate2 = [(PUTrimToolController *)self delegate];
+  [delegate2 trimToolController:self didChangeIsPerformingLiveInteraction:{-[PUTrimToolController isPerformingLiveInteraction](self, "isPerformingLiveInteraction")}];
 }
 
-- (void)trimScrubber:(id)a3 didTapTimelineAtTime:(id *)a4
+- (void)trimScrubber:(id)scrubber didTapTimelineAtTime:(id *)time
 {
   v6 = +[PUPhotoEditProtoSettings sharedInstance];
-  v7 = [v6 tapTimelineToSeek];
+  tapTimelineToSeek = [v6 tapTimelineToSeek];
 
-  if (v7)
+  if (tapTimelineToSeek)
   {
-    v8 = *&a4->var0;
-    var3 = a4->var3;
+    v8 = *&time->var0;
+    var3 = time->var3;
     [(PUTrimToolController *)self setPlayheadTime:&v8];
   }
 }
 
-- (void)trimScrubber:(id)a3 didTapElement:(int64_t)a4
+- (void)trimScrubber:(id)scrubber didTapElement:(int64_t)element
 {
-  if ([(PUTrimToolController *)self internalState:a3]!= 6)
+  if ([(PUTrimToolController *)self internalState:scrubber]!= 6)
   {
     if ([(PUTrimToolController *)self _showKeyFrameSelection])
     {
@@ -3052,45 +3052,45 @@ LABEL_8:
   }
 }
 
-- (void)setSlomoEnabled:(BOOL)a3
+- (void)setSlomoEnabled:(BOOL)enabled
 {
-  if (self->_slomoEnabled != a3)
+  if (self->_slomoEnabled != enabled)
   {
-    self->_slomoEnabled = a3;
+    self->_slomoEnabled = enabled;
     [(PUTrimToolController *)self _updateSlomoViewAnimated:1];
   }
 }
 
 - (void)_dismissKeyFramePickerAndResetToStillFrame
 {
-  v3 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
+  livePhotoKeyFramePickerAppearanceTimer = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
 
-  if (v3)
+  if (livePhotoKeyFramePickerAppearanceTimer)
   {
-    v4 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
-    [v4 invalidate];
+    livePhotoKeyFramePickerAppearanceTimer2 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
+    [livePhotoKeyFramePickerAppearanceTimer2 invalidate];
 
     [(PUTrimToolController *)self setLivePhotoKeyFramePickerAppearanceTimer:0];
-    v5 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+    livePhotoKeyFramePicker = [(PUTrimToolController *)self livePhotoKeyFramePicker];
 
-    if (!v5)
+    if (!livePhotoKeyFramePicker)
     {
       [(PUTrimToolController *)self _resetScrubberToStillPhotoFrame];
     }
   }
 
-  v6 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+  livePhotoKeyFramePicker2 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
 
-  if (v6)
+  if (livePhotoKeyFramePicker2)
   {
     objc_initWeak(&location, self);
-    v7 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+    livePhotoKeyFramePicker3 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __66__PUTrimToolController__dismissKeyFramePickerAndResetToStillFrame__block_invoke;
     v8[3] = &unk_1E7B80638;
     objc_copyWeak(&v9, &location);
-    [v7 dismissViewControllerAnimated:0 completion:v8];
+    [livePhotoKeyFramePicker3 dismissViewControllerAnimated:0 completion:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -3103,26 +3103,26 @@ void __66__PUTrimToolController__dismissKeyFramePickerAndResetToStillFrame__bloc
   [WeakRetained _resetScrubberToStillPhotoFrame];
 }
 
-- (void)setLayoutOrientation:(int64_t)a3
+- (void)setLayoutOrientation:(int64_t)orientation
 {
-  self->_layoutOrientation = a3;
+  self->_layoutOrientation = orientation;
   [(PUTrimToolController *)self _dismissKeyFramePickerAndResetToStillFrame];
 
   [(PUTrimToolController *)self _resetScrubberToStillPhotoFrame];
 }
 
-- (void)_seekToTimeForElement:(int64_t)a3 exact:(BOOL)a4 forceSeek:(BOOL)a5
+- (void)_seekToTimeForElement:(int64_t)element exact:(BOOL)exact forceSeek:(BOOL)seek
 {
-  v5 = a5;
-  v6 = a4;
+  seekCopy = seek;
+  exactCopy = exact;
   memset(&v15, 0, sizeof(v15));
   trimScrubber = self->_trimScrubber;
   if (trimScrubber)
   {
-    [(PXLivePhotoTrimScrubber *)trimScrubber timeForElement:a3];
+    [(PXLivePhotoTrimScrubber *)trimScrubber timeForElement:element];
   }
 
-  if (a3 == 4)
+  if (element == 4)
   {
     time1 = v15;
     [(PUTrimToolController *)self _currentPlayerScaledTimeFromOriginalTime:&time1];
@@ -3131,7 +3131,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 == 3)
+  if (element == 3)
   {
     v10 = self->_trimScrubber;
     if (v10)
@@ -3155,20 +3155,20 @@ LABEL_11:
   }
 
 LABEL_12:
-  v11 = [(PUTrimToolController *)self playerWrapper];
+  playerWrapper = [(PUTrimToolController *)self playerWrapper];
   time2 = v15;
-  [v11 seekToTime:&time2 untrimmed:(a3 - 1) < 2 exact:v6 forceSeek:v5];
+  [playerWrapper seekToTime:&time2 untrimmed:(element - 1) < 2 exact:exactCopy forceSeek:seekCopy];
 
   time2 = v15;
   [(PUTrimToolController *)self setDebugPlayerTime:&time2];
 }
 
-- (void)setPlayheadTime:(id *)a3 forceSeek:(BOOL)a4
+- (void)setPlayheadTime:(id *)time forceSeek:(BOOL)seek
 {
-  v4 = a4;
-  v6 = *a3;
+  seekCopy = seek;
+  v6 = *time;
   [(PXLivePhotoTrimScrubber *)self->_trimScrubber setKeyTime:&v6];
-  [(PUTrimToolController *)self _seekToTimeForElement:4 exact:1 forceSeek:v4];
+  [(PUTrimToolController *)self _seekToTimeForElement:4 exact:1 forceSeek:seekCopy];
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)playheadTime
@@ -3193,8 +3193,8 @@ LABEL_12:
     v4 = objc_alloc(MEMORY[0x1E69DC738]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     v6 = +[PUInterfaceManager currentTheme];
-    v7 = [v6 videoEditingToolbarToolButtonColor];
-    [(UIButton *)v5 setTintColor:v7];
+    videoEditingToolbarToolButtonColor = [v6 videoEditingToolbarToolButtonColor];
+    [(UIButton *)v5 setTintColor:videoEditingToolbarToolButtonColor];
 
     v8 = [MEMORY[0x1E69DCAB8] pu_PhotosUIImageNamed:@"PUVideoEditPlayButton"];
     v9 = [v8 imageWithRenderingMode:2];
@@ -3211,22 +3211,22 @@ LABEL_12:
   return playPauseButton;
 }
 
-- (void)setOriginalEndTime:(id *)a3
+- (void)setOriginalEndTime:(id *)time
 {
   v11[1] = *MEMORY[0x1E69E9840];
   p_originalEndTime = &self->_originalEndTime;
   time1 = self->_originalEndTime;
-  v9 = *a3;
+  v9 = *time;
   if (CMTimeCompare(&time1, &v9))
   {
-    v6 = *&a3->var0;
-    p_originalEndTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_originalEndTime->epoch = time->var3;
     *&p_originalEndTime->value = v6;
-    time1 = *a3;
+    time1 = *time;
     [(PXLivePhotoTrimScrubber *)self->_trimScrubber setOriginalEndTime:&time1];
-    if (a3->var2)
+    if (time->var2)
     {
-      time1 = *a3;
+      time1 = *time;
       v7 = [MEMORY[0x1E696B098] valueWithCMTime:&time1];
       v11[0] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -3240,22 +3240,22 @@ LABEL_12:
   }
 }
 
-- (void)setOriginalStartTime:(id *)a3
+- (void)setOriginalStartTime:(id *)time
 {
   v11[1] = *MEMORY[0x1E69E9840];
   p_originalStartTime = &self->_originalStartTime;
   time1 = self->_originalStartTime;
-  v9 = *a3;
+  v9 = *time;
   if (CMTimeCompare(&time1, &v9))
   {
-    v6 = *&a3->var0;
-    p_originalStartTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_originalStartTime->epoch = time->var3;
     *&p_originalStartTime->value = v6;
-    time1 = *a3;
+    time1 = *time;
     [(PXLivePhotoTrimScrubber *)self->_trimScrubber setOriginalStartTime:&time1];
-    if (a3->var2)
+    if (time->var2)
     {
-      time1 = *a3;
+      time1 = *time;
       v7 = [MEMORY[0x1E696B098] valueWithCMTime:&time1];
       v11[0] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -3271,45 +3271,45 @@ LABEL_12:
 
 - (void)_createRendererIfNeeded
 {
-  v3 = [(PUTrimToolController *)self renderer];
+  renderer = [(PUTrimToolController *)self renderer];
 
-  if (!v3)
+  if (!renderer)
   {
     v4 = objc_alloc(MEMORY[0x1E69BE658]);
-    v5 = [(PUTrimToolController *)self editSource];
-    v6 = [v4 initWithEditSource:v5];
+    editSource = [(PUTrimToolController *)self editSource];
+    v6 = [v4 initWithEditSource:editSource];
 
     [(PUTrimToolController *)self setRenderer:v6];
   }
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v6 = a3;
+  imageCopy = image;
   v4 = +[PUPhotoEditProtoSettings sharedInstance];
-  v5 = [v4 disableVideoFilmstrip];
+  disableVideoFilmstrip = [v4 disableVideoFilmstrip];
 
-  if ((v5 & 1) == 0)
+  if ((disableVideoFilmstrip & 1) == 0)
   {
-    [(PXLivePhotoTrimScrubber *)self->_trimScrubber setPlaceholderImage:v6];
+    [(PXLivePhotoTrimScrubber *)self->_trimScrubber setPlaceholderImage:imageCopy];
   }
 }
 
-- (void)livePhotoRenderDidChange:(BOOL)a3
+- (void)livePhotoRenderDidChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     self->_needsUpdateRenderForVisualChanges = 1;
-    v3 = [(PUTrimToolController *)self playerWrapper];
-    [v3 invalidateComposition];
+    playerWrapper = [(PUTrimToolController *)self playerWrapper];
+    [playerWrapper invalidateComposition];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = PUTrimToolController;
-  [(PUTrimToolController *)&v6 touchesBegan:a3 withEvent:a4];
+  [(PUTrimToolController *)&v6 touchesBegan:began withEvent:event];
   focusTimelineAction = self->_focusTimelineAction;
   if (focusTimelineAction)
   {
@@ -3320,16 +3320,16 @@ LABEL_12:
   }
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = [a4 verticalSizeClass];
-  v6 = [(PUTrimToolController *)self traitCollection];
-  v7 = [v6 verticalSizeClass];
+  verticalSizeClass = [collection verticalSizeClass];
+  traitCollection = [(PUTrimToolController *)self traitCollection];
+  verticalSizeClass2 = [traitCollection verticalSizeClass];
 
-  if (v5 != v7)
+  if (verticalSizeClass != verticalSizeClass2)
   {
-    v8 = [(PUTrimToolController *)self traitCollection];
-    v9 = [v8 verticalSizeClass] == 1;
+    traitCollection2 = [(PUTrimToolController *)self traitCollection];
+    v9 = [traitCollection2 verticalSizeClass] == 1;
 
     trimScrubber = self->_trimScrubber;
 
@@ -3342,15 +3342,15 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = PUTrimToolController;
   [(PUTrimToolController *)&v8 viewDidLayoutSubviews];
-  v3 = [(PUTrimToolController *)self traitCollection];
-  -[PXLivePhotoTrimScrubber setUseMiniScrubber:](self->_trimScrubber, "setUseMiniScrubber:", [v3 verticalSizeClass] == 1);
+  traitCollection = [(PUTrimToolController *)self traitCollection];
+  -[PXLivePhotoTrimScrubber setUseMiniScrubber:](self->_trimScrubber, "setUseMiniScrubber:", [traitCollection verticalSizeClass] == 1);
 
-  v4 = [MEMORY[0x1E6979518] disableActions];
+  disableActions = [MEMORY[0x1E6979518] disableActions];
   [MEMORY[0x1E6979518] setDisableActions:0];
-  v5 = [(PUTrimToolController *)self snapStripController];
-  [v5 updateSnapStripView];
+  snapStripController = [(PUTrimToolController *)self snapStripController];
+  [snapStripController updateSnapStripView];
 
-  [MEMORY[0x1E6979518] setDisableActions:v4];
+  [MEMORY[0x1E6979518] setDisableActions:disableActions];
   v6 = dispatch_time(0, 100000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3360,49 +3360,49 @@ LABEL_12:
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = PUTrimToolController;
-  [(PUTrimToolController *)&v8 viewWillDisappear:a3];
-  v4 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
+  [(PUTrimToolController *)&v8 viewWillDisappear:disappear];
+  livePhotoKeyFramePickerAppearanceTimer = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
 
-  if (v4)
+  if (livePhotoKeyFramePickerAppearanceTimer)
   {
-    v5 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
-    [v5 invalidate];
+    livePhotoKeyFramePickerAppearanceTimer2 = [(PUTrimToolController *)self livePhotoKeyFramePickerAppearanceTimer];
+    [livePhotoKeyFramePickerAppearanceTimer2 invalidate];
 
     [(PUTrimToolController *)self setLivePhotoKeyFramePickerAppearanceTimer:0];
   }
 
-  v6 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+  livePhotoKeyFramePicker = [(PUTrimToolController *)self livePhotoKeyFramePicker];
 
-  if (v6)
+  if (livePhotoKeyFramePicker)
   {
-    v7 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
-    [v7 dismissViewControllerAnimated:0 completion:0];
+    livePhotoKeyFramePicker2 = [(PUTrimToolController *)self livePhotoKeyFramePicker];
+    [livePhotoKeyFramePicker2 dismissViewControllerAnimated:0 completion:0];
 
     [(PUTrimToolController *)self setLivePhotoKeyFramePicker:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUTrimToolController;
-  [(PUTrimToolController *)&v4 viewWillAppear:a3];
+  [(PUTrimToolController *)&v4 viewWillAppear:appear];
   [(PUTrimToolController *)self _updatePlayheadStyle];
 }
 
-- (void)trimScrubber:(id)a3 debugEndOffset:(CGRect)a4
+- (void)trimScrubber:(id)scrubber debugEndOffset:(CGRect)offset
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(PUTrimToolController *)self view];
-  [v9 convertRect:v10 toView:{x, y, width, height}];
+  height = offset.size.height;
+  width = offset.size.width;
+  y = offset.origin.y;
+  x = offset.origin.x;
+  scrubberCopy = scrubber;
+  view = [(PUTrimToolController *)self view];
+  [scrubberCopy convertRect:view toView:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -3413,15 +3413,15 @@ LABEL_12:
   [(UIView *)debugEndOffsetView setFrame:v12, v14, v16, v18];
 }
 
-- (void)trimScrubber:(id)a3 debugStartOffset:(CGRect)a4
+- (void)trimScrubber:(id)scrubber debugStartOffset:(CGRect)offset
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(PUTrimToolController *)self view];
-  [v9 convertRect:v10 toView:{x, y, width, height}];
+  height = offset.size.height;
+  width = offset.size.width;
+  y = offset.origin.y;
+  x = offset.origin.x;
+  scrubberCopy = scrubber;
+  view = [(PUTrimToolController *)self view];
+  [scrubberCopy convertRect:view toView:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -3432,15 +3432,15 @@ LABEL_12:
   [(UIView *)debugStartOffsetView setFrame:v12, v14, v16, v18];
 }
 
-- (void)trimScrubber:(id)a3 debugEndRect:(CGRect)a4
+- (void)trimScrubber:(id)scrubber debugEndRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(PUTrimToolController *)self view];
-  [v9 convertRect:v10 toView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  scrubberCopy = scrubber;
+  view = [(PUTrimToolController *)self view];
+  [scrubberCopy convertRect:view toView:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -3451,15 +3451,15 @@ LABEL_12:
   [(UIView *)debugEndRectView setFrame:v12, v14, v16, v18];
 }
 
-- (void)trimScrubber:(id)a3 debugStartRect:(CGRect)a4
+- (void)trimScrubber:(id)scrubber debugStartRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(PUTrimToolController *)self view];
-  [v9 convertRect:v10 toView:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  scrubberCopy = scrubber;
+  view = [(PUTrimToolController *)self view];
+  [scrubberCopy convertRect:view toView:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -3476,100 +3476,100 @@ LABEL_12:
   v213.receiver = self;
   v213.super_class = PUTrimToolController;
   [(PUTrimToolController *)&v213 viewDidLoad];
-  v210 = [(PUTrimToolController *)self playerWrapper];
-  [v210 setPlayerObserver:self];
+  playerWrapper = [(PUTrimToolController *)self playerWrapper];
+  [playerWrapper setPlayerObserver:self];
   v3 = objc_alloc_init(MEMORY[0x1E69C3670]);
   spec = self->_spec;
   self->_spec = v3;
 
   v5 = +[PUInterfaceManager currentTheme];
-  v6 = [v5 photoEditingAdjustmentsBarDisabledColor];
-  [(PXLivePhotoTrimScrubberSpec *)self->_spec setDisabledOverlayColor:v6];
+  photoEditingAdjustmentsBarDisabledColor = [v5 photoEditingAdjustmentsBarDisabledColor];
+  [(PXLivePhotoTrimScrubberSpec *)self->_spec setDisabledOverlayColor:photoEditingAdjustmentsBarDisabledColor];
 
   v7 = objc_alloc(MEMORY[0x1E69C3C10]);
   v8 = objc_opt_class();
   v9 = self->_spec;
-  v10 = [(PUTrimToolController *)self px_extendedTraitCollection];
-  v11 = [v7 initWithFilmStripViewClass:v8 spec:v9 traitCollection:v10];
+  px_extendedTraitCollection = [(PUTrimToolController *)self px_extendedTraitCollection];
+  v11 = [v7 initWithFilmStripViewClass:v8 spec:v9 traitCollection:px_extendedTraitCollection];
   trimScrubber = self->_trimScrubber;
   self->_trimScrubber = v11;
 
   [(PXLivePhotoTrimScrubber *)self->_trimScrubber setAllowZoom:[(PUTrimToolController *)self playButtonEnabled]];
   [(PXLivePhotoTrimScrubber *)self->_trimScrubber setDelegate:self];
   v13 = +[PUPhotoEditProtoSettings sharedInstance];
-  v14 = [v13 showVideoScrubberDebugOverlay];
+  showVideoScrubberDebugOverlay = [v13 showVideoScrubberDebugOverlay];
 
-  v206 = v14;
-  [(PXLivePhotoTrimScrubber *)self->_trimScrubber setShowVideoScrubberDebugOverlay:v14];
+  v206 = showVideoScrubberDebugOverlay;
+  [(PXLivePhotoTrimScrubber *)self->_trimScrubber setShowVideoScrubberDebugOverlay:showVideoScrubberDebugOverlay];
   v15 = +[PUInterfaceManager currentTheme];
-  v16 = [(PUTrimToolController *)self view];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(PUTrimToolController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   v17 = self->_trimScrubber;
   [(PXLivePhotoTrimScrubber *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
   v18 = [MEMORY[0x1E69DC730] effectWithStyle:6];
   v19 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v18];
   [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v20 = [v19 layer];
-  [v20 setCornerRadius:5.0];
+  layer = [v19 layer];
+  [layer setCornerRadius:5.0];
 
   [v19 setClipsToBounds:1];
-  v21 = [v15 photoEditingTrimControllerBackgroundColor];
-  [v19 setBackgroundColor:v21];
+  photoEditingTrimControllerBackgroundColor = [v15 photoEditingTrimControllerBackgroundColor];
+  [v19 setBackgroundColor:photoEditingTrimControllerBackgroundColor];
 
   v22 = 0.0;
   [v19 setAlpha:0.0];
   objc_storeStrong(&self->_auxilaryContainerView, v19);
-  [v16 addSubview:self->_auxilaryContainerView];
+  [view addSubview:self->_auxilaryContainerView];
   v208 = v18;
   v23 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v18];
   [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v24 = [v23 layer];
-  [v24 setCornerRadius:5.0];
+  layer2 = [v23 layer];
+  [layer2 setCornerRadius:5.0];
 
   [v23 setClipsToBounds:1];
   v209 = v15;
-  v25 = [v15 photoEditingTrimControllerBackgroundColor];
-  [v23 setBackgroundColor:v25];
+  photoEditingTrimControllerBackgroundColor2 = [v15 photoEditingTrimControllerBackgroundColor];
+  [v23 setBackgroundColor:photoEditingTrimControllerBackgroundColor2];
 
   objc_storeStrong(&self->_scrubberPlayButtonContainerView, v23);
-  [v16 addSubview:v23];
-  v26 = [v23 contentView];
-  [v26 addSubview:v17];
+  [view addSubview:v23];
+  contentView = [v23 contentView];
+  [contentView addSubview:v17];
 
-  v27 = [v23 topAnchor];
-  v28 = [(PXLivePhotoTrimScrubber *)v17 topAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  topAnchor = [v23 topAnchor];
+  topAnchor2 = [(PXLivePhotoTrimScrubber *)v17 topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v29 setActive:1];
 
-  v30 = [v23 bottomAnchor];
-  v31 = [(PXLivePhotoTrimScrubber *)v17 bottomAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  bottomAnchor = [v23 bottomAnchor];
+  bottomAnchor2 = [(PXLivePhotoTrimScrubber *)v17 bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v32 setActive:1];
 
-  v33 = [v23 rightAnchor];
+  rightAnchor = [v23 rightAnchor];
   v212 = v17;
-  v34 = [(PXLivePhotoTrimScrubber *)v17 rightAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  rightAnchor2 = [(PXLivePhotoTrimScrubber *)v17 rightAnchor];
+  v35 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v35 setActive:1];
 
-  v36 = [v23 leftAnchor];
-  v37 = [v16 leftAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37 constant:10.0];
+  leftAnchor = [v23 leftAnchor];
+  leftAnchor2 = [view leftAnchor];
+  v38 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:10.0];
   [v38 setActive:1];
 
-  v39 = [v23 rightAnchor];
-  v40 = [v16 rightAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40 constant:-10.0];
+  rightAnchor3 = [v23 rightAnchor];
+  rightAnchor4 = [view rightAnchor];
+  v41 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4 constant:-10.0];
   [v41 setActive:1];
 
-  v42 = [v19 leftAnchor];
-  v43 = [v23 leftAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  leftAnchor3 = [v19 leftAnchor];
+  leftAnchor4 = [v23 leftAnchor];
+  v44 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   [v44 setActive:1];
 
-  v45 = [v19 rightAnchor];
-  v46 = [v23 rightAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  rightAnchor5 = [v19 rightAnchor];
+  rightAnchor6 = [v23 rightAnchor];
+  v47 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6];
   [v47 setActive:1];
 
   if (self->_playButtonEnabled)
@@ -3577,82 +3577,82 @@ LABEL_12:
     v22 = *MEMORY[0x1E69C4050];
   }
 
-  v48 = [v19 heightAnchor];
-  v49 = [v48 constraintEqualToConstant:v22];
+  heightAnchor = [v19 heightAnchor];
+  v49 = [heightAnchor constraintEqualToConstant:v22];
   [v49 setActive:1];
 
-  v50 = [v19 bottomAnchor];
-  v51 = [v16 bottomAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  bottomAnchor3 = [v19 bottomAnchor];
+  bottomAnchor4 = [view bottomAnchor];
+  v52 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v52 setActive:1];
 
   v211 = v19;
   v53 = v19;
   v54 = v23;
-  v55 = [v53 topAnchor];
-  v56 = [v23 bottomAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56 constant:3.0];
+  topAnchor3 = [v53 topAnchor];
+  bottomAnchor5 = [v23 bottomAnchor];
+  v57 = [topAnchor3 constraintEqualToAnchor:bottomAnchor5 constant:3.0];
   [v57 setActive:1];
 
   if (self->_playButtonEnabled)
   {
-    v58 = [(PUTrimToolController *)self playPauseButton];
-    v59 = [v54 contentView];
-    [v59 addSubview:v58];
+    playPauseButton = [(PUTrimToolController *)self playPauseButton];
+    contentView2 = [v54 contentView];
+    [contentView2 addSubview:playPauseButton];
 
-    [v58 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v60 = [v54 centerYAnchor];
-    v61 = [v58 centerYAnchor];
-    v62 = [v60 constraintEqualToAnchor:v61 constant:0.0];
+    [playPauseButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    centerYAnchor = [v54 centerYAnchor];
+    centerYAnchor2 = [playPauseButton centerYAnchor];
+    v62 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
     [v62 setActive:1];
 
-    v63 = [v54 leftAnchor];
-    v64 = [v58 leftAnchor];
-    v65 = [v63 constraintEqualToAnchor:v64 constant:0.0];
+    leftAnchor5 = [v54 leftAnchor];
+    leftAnchor6 = [playPauseButton leftAnchor];
+    v65 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6 constant:0.0];
     [v65 setActive:1];
 
-    v66 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    [v66 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v67 = [v66 widthAnchor];
-    v68 = [v67 constraintEqualToConstant:1.0];
+    leftAnchor10 = objc_alloc_init(MEMORY[0x1E69DD250]);
+    [leftAnchor10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    widthAnchor = [leftAnchor10 widthAnchor];
+    v68 = [widthAnchor constraintEqualToConstant:1.0];
     [v68 setActive:1];
 
-    v69 = [v54 contentView];
-    [v69 addSubview:v66];
+    contentView3 = [v54 contentView];
+    [contentView3 addSubview:leftAnchor10];
 
-    v70 = [v66 leftAnchor];
-    v71 = [v54 leftAnchor];
-    [v70 constraintEqualToAnchor:v71 constant:47.0];
-    v73 = v72 = v16;
+    leftAnchor7 = [leftAnchor10 leftAnchor];
+    leftAnchor8 = [v54 leftAnchor];
+    [leftAnchor7 constraintEqualToAnchor:leftAnchor8 constant:47.0];
+    v73 = v72 = view;
     [v73 setActive:1];
 
-    v74 = [v66 topAnchor];
-    v75 = [v54 topAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75 constant:0.0];
+    topAnchor4 = [leftAnchor10 topAnchor];
+    topAnchor5 = [v54 topAnchor];
+    v76 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:0.0];
     [v76 setActive:1];
 
-    v77 = [v66 bottomAnchor];
-    v78 = [v54 bottomAnchor];
-    v79 = [v77 constraintEqualToAnchor:v78 constant:0.0];
+    bottomAnchor6 = [leftAnchor10 bottomAnchor];
+    bottomAnchor7 = [v54 bottomAnchor];
+    v79 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:0.0];
     [v79 setActive:1];
 
-    v80 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [v66 setBackgroundColor:v80];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [leftAnchor10 setBackgroundColor:systemBackgroundColor];
 
-    v81 = [(PXLivePhotoTrimScrubber *)v17 leftAnchor];
-    v82 = [v66 rightAnchor];
-    v83 = [v81 constraintEqualToAnchor:v82 constant:0.0];
+    leftAnchor9 = [(PXLivePhotoTrimScrubber *)v17 leftAnchor];
+    rightAnchor7 = [leftAnchor10 rightAnchor];
+    v83 = [leftAnchor9 constraintEqualToAnchor:rightAnchor7 constant:0.0];
     [v83 setActive:1];
 
-    v16 = v72;
+    view = v72;
   }
 
   else
   {
-    v58 = [v23 leftAnchor];
-    v66 = [(PXLivePhotoTrimScrubber *)v17 leftAnchor];
-    v81 = [v58 constraintEqualToAnchor:v66];
-    [v81 setActive:1];
+    playPauseButton = [v23 leftAnchor];
+    leftAnchor10 = [(PXLivePhotoTrimScrubber *)v17 leftAnchor];
+    leftAnchor9 = [playPauseButton constraintEqualToAnchor:leftAnchor10];
+    [leftAnchor9 setActive:1];
   }
 
   if ([(PUTrimToolController *)self isSlomoEnabled])
@@ -3670,8 +3670,8 @@ LABEL_12:
     [(PXFocusTimelineView *)self->_focusTimelineView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PXFocusTimelineView *)self->_focusTimelineView setDelegate:self];
     v205 = v54;
-    v86 = [v211 contentView];
-    [v86 addSubview:self->_focusTimelineView];
+    contentView4 = [v211 contentView];
+    [contentView4 addSubview:self->_focusTimelineView];
 
     [v211 setAlpha:1.0];
     focusTimelineAction = self->_focusTimelineAction;
@@ -3688,32 +3688,32 @@ LABEL_12:
       v89 = 24.0;
     }
 
-    v90 = [(PXFocusTimelineView *)self->_focusTimelineView leftAnchor];
-    v91 = [v211 leftAnchor];
-    v92 = [v90 constraintEqualToAnchor:v91 constant:v89 - v88];
+    leftAnchor11 = [(PXFocusTimelineView *)self->_focusTimelineView leftAnchor];
+    leftAnchor12 = [v211 leftAnchor];
+    v92 = [leftAnchor11 constraintEqualToAnchor:leftAnchor12 constant:v89 - v88];
     [v92 setActive:1];
 
-    v93 = [(PXFocusTimelineView *)self->_focusTimelineView rightAnchor];
-    v94 = [v211 rightAnchor];
-    v95 = [v93 constraintEqualToAnchor:v94 constant:v88 + -18.0];
+    rightAnchor8 = [(PXFocusTimelineView *)self->_focusTimelineView rightAnchor];
+    rightAnchor9 = [v211 rightAnchor];
+    v95 = [rightAnchor8 constraintEqualToAnchor:rightAnchor9 constant:v88 + -18.0];
     [v95 setActive:1];
 
-    v96 = [(PXFocusTimelineView *)self->_focusTimelineView topAnchor];
-    v97 = [v211 topAnchor];
-    v98 = [v96 constraintEqualToAnchor:v97];
+    topAnchor6 = [(PXFocusTimelineView *)self->_focusTimelineView topAnchor];
+    topAnchor7 = [v211 topAnchor];
+    v98 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
     [v98 setActive:1];
 
-    v99 = [(PXFocusTimelineView *)self->_focusTimelineView bottomAnchor];
-    v100 = [v211 bottomAnchor];
-    v101 = [v99 constraintEqualToAnchor:v100];
+    bottomAnchor8 = [(PXFocusTimelineView *)self->_focusTimelineView bottomAnchor];
+    bottomAnchor9 = [v211 bottomAnchor];
+    v101 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
     [v101 setActive:1];
 
     v102 = objc_alloc_init(MEMORY[0x1E69DD250]);
     trimScrubberTimelineOverlayView = self->_trimScrubberTimelineOverlayView;
     self->_trimScrubberTimelineOverlayView = v102;
 
-    v104 = [MEMORY[0x1E69DC888] blackColor];
-    v105 = [v104 colorWithAlphaComponent:0.6];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v105 = [blackColor colorWithAlphaComponent:0.6];
     [(UIView *)self->_trimScrubberTimelineOverlayView setBackgroundColor:v105];
 
     [(UIView *)self->_trimScrubberTimelineOverlayView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -3721,22 +3721,22 @@ LABEL_12:
     [(UIView *)self->_trimScrubberTimelineOverlayView setAlpha:0.0];
     [(PXLivePhotoTrimScrubber *)v17 addSubview:self->_trimScrubberTimelineOverlayView];
     v199 = MEMORY[0x1E696ACD8];
-    v203 = [(UIView *)self->_trimScrubberTimelineOverlayView leadingAnchor];
-    v202 = [(PXLivePhotoTrimScrubber *)v17 leadingAnchor];
-    v201 = [v203 constraintEqualToAnchor:v202];
+    leadingAnchor = [(UIView *)self->_trimScrubberTimelineOverlayView leadingAnchor];
+    leadingAnchor2 = [(PXLivePhotoTrimScrubber *)v17 leadingAnchor];
+    v201 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v214[0] = v201;
-    v200 = [(UIView *)self->_trimScrubberTimelineOverlayView trailingAnchor];
-    v198 = [(PXLivePhotoTrimScrubber *)v17 trailingAnchor];
-    v197 = [v200 constraintEqualToAnchor:v198];
+    trailingAnchor = [(UIView *)self->_trimScrubberTimelineOverlayView trailingAnchor];
+    trailingAnchor2 = [(PXLivePhotoTrimScrubber *)v17 trailingAnchor];
+    v197 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v214[1] = v197;
-    v106 = [(UIView *)self->_trimScrubberTimelineOverlayView topAnchor];
-    v107 = [(PXLivePhotoTrimScrubber *)v17 topAnchor];
-    v108 = [v106 constraintEqualToAnchor:v107];
+    topAnchor8 = [(UIView *)self->_trimScrubberTimelineOverlayView topAnchor];
+    topAnchor9 = [(PXLivePhotoTrimScrubber *)v17 topAnchor];
+    v108 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
     v214[2] = v108;
     [(UIView *)self->_trimScrubberTimelineOverlayView bottomAnchor];
-    v109 = v204 = v16;
-    v110 = [(PXLivePhotoTrimScrubber *)v17 bottomAnchor];
-    v111 = [v109 constraintEqualToAnchor:v110];
+    v109 = v204 = view;
+    bottomAnchor10 = [(PXLivePhotoTrimScrubber *)v17 bottomAnchor];
+    v111 = [v109 constraintEqualToAnchor:bottomAnchor10];
     v214[3] = v111;
     v112 = [MEMORY[0x1E695DEC8] arrayWithObjects:v214 count:4];
     [v199 activateConstraints:v112];
@@ -3746,62 +3746,62 @@ LABEL_12:
     trimScrubberTimelineOverlayButton = self->_trimScrubberTimelineOverlayButton;
     self->_trimScrubberTimelineOverlayButton = v113;
 
-    v115 = [MEMORY[0x1E69DC888] blackColor];
-    v116 = [v115 colorWithAlphaComponent:0.4];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    v116 = [blackColor2 colorWithAlphaComponent:0.4];
     [(UIButton *)self->_trimScrubberTimelineOverlayButton setBackgroundColor:v116];
 
-    v117 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIButton *)self->_trimScrubberTimelineOverlayButton setTintColor:v117];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIButton *)self->_trimScrubberTimelineOverlayButton setTintColor:whiteColor];
 
-    v118 = [(UIButton *)self->_trimScrubberTimelineOverlayButton layer];
-    [v118 setMasksToBounds:1];
+    layer3 = [(UIButton *)self->_trimScrubberTimelineOverlayButton layer];
+    [layer3 setMasksToBounds:1];
 
     v119 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.6];
-    v120 = [v119 CGColor];
-    v121 = [(UIButton *)self->_trimScrubberTimelineOverlayButton layer];
-    [v121 setBorderColor:v120];
+    cGColor = [v119 CGColor];
+    layer4 = [(UIButton *)self->_trimScrubberTimelineOverlayButton layer];
+    [layer4 setBorderColor:cGColor];
 
-    v122 = [(UIButton *)self->_trimScrubberTimelineOverlayButton layer];
-    [v122 setBorderWidth:1.0];
+    layer5 = [(UIButton *)self->_trimScrubberTimelineOverlayButton layer];
+    [layer5 setBorderWidth:1.0];
 
     [(UIButton *)self->_trimScrubberTimelineOverlayButton addTarget:self action:sel__handleScrubberTimelineOverlayButton_ forControlEvents:64];
-    v16 = v204;
+    view = v204;
     [(UIView *)self->_trimScrubberTimelineOverlayView addSubview:self->_trimScrubberTimelineOverlayButton];
   }
 
   v123 = objc_alloc_init(MEMORY[0x1E69C3A60]);
   [v123 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v16 addSubview:v123];
-  v124 = [v123 leftAnchor];
-  v125 = [v16 leftAnchor];
-  v126 = [v124 constraintEqualToAnchor:v125];
+  [view addSubview:v123];
+  leftAnchor13 = [v123 leftAnchor];
+  leftAnchor14 = [view leftAnchor];
+  v126 = [leftAnchor13 constraintEqualToAnchor:leftAnchor14];
   [v126 setActive:1];
 
-  v127 = [v123 rightAnchor];
-  v128 = [v16 rightAnchor];
-  v129 = [v127 constraintEqualToAnchor:v128];
+  rightAnchor10 = [v123 rightAnchor];
+  rightAnchor11 = [view rightAnchor];
+  v129 = [rightAnchor10 constraintEqualToAnchor:rightAnchor11];
   [v129 setActive:1];
 
-  v130 = [v123 topAnchor];
-  v131 = [v16 topAnchor];
-  v132 = [v130 constraintEqualToAnchor:v131];
+  topAnchor10 = [v123 topAnchor];
+  topAnchor11 = [view topAnchor];
+  v132 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
   [v132 setActive:1];
 
-  v133 = [v123 heightAnchor];
-  v134 = [v133 constraintEqualToConstant:12.0];
+  heightAnchor2 = [v123 heightAnchor];
+  v134 = [heightAnchor2 constraintEqualToConstant:12.0];
   [v134 setActive:1];
 
-  v135 = [v54 topAnchor];
-  v136 = [v123 bottomAnchor];
-  v137 = [v135 constraintEqualToAnchor:v136 constant:5.0];
+  topAnchor12 = [v54 topAnchor];
+  bottomAnchor11 = [v123 bottomAnchor];
+  v137 = [topAnchor12 constraintEqualToAnchor:bottomAnchor11 constant:5.0];
   [v137 setActive:1];
 
   v138 = objc_opt_new();
   v139 = objc_opt_new();
   [(PUTrimToolController *)self setSnapStripSpec:v139];
 
-  v140 = [(PUTrimToolController *)self snapStripSpec];
-  [v138 setSpec:v140];
+  snapStripSpec = [(PUTrimToolController *)self snapStripSpec];
+  [v138 setSpec:snapStripSpec];
 
   [v138 setTrimScrubber:self->_trimScrubber];
   [v138 setSnapStripView:v123];
@@ -3842,96 +3842,96 @@ LABEL_12:
     self->_debugTrimToolPlayheadStyleLabel = v151;
 
     [(UILabel *)self->_debugTrimToolPlayheadStyleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v153 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)self->_debugTrimToolPlayheadStyleLabel setTextColor:v153];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)self->_debugTrimToolPlayheadStyleLabel setTextColor:whiteColor2];
 
     [(UILabel *)self->_debugTrimToolPlayheadStyleLabel setFont:v142];
     v154 = objc_alloc_init(MEMORY[0x1E69DD250]);
     debugStartRectView = self->_debugStartRectView;
     self->_debugStartRectView = v154;
 
-    v156 = [MEMORY[0x1E69DC888] magentaColor];
-    [(UIView *)self->_debugStartRectView setBackgroundColor:v156];
+    magentaColor = [MEMORY[0x1E69DC888] magentaColor];
+    [(UIView *)self->_debugStartRectView setBackgroundColor:magentaColor];
 
     v157 = objc_alloc_init(MEMORY[0x1E69DD250]);
     debugEndRectView = self->_debugEndRectView;
     self->_debugEndRectView = v157;
 
-    v159 = [MEMORY[0x1E69DC888] systemTealColor];
-    v160 = [v159 colorWithAlphaComponent:0.5];
+    systemTealColor = [MEMORY[0x1E69DC888] systemTealColor];
+    v160 = [systemTealColor colorWithAlphaComponent:0.5];
     [(UIView *)self->_debugEndRectView setBackgroundColor:v160];
 
     v161 = objc_alloc_init(MEMORY[0x1E69DD250]);
     debugStartOffsetView = self->_debugStartOffsetView;
     self->_debugStartOffsetView = v161;
 
-    v163 = [MEMORY[0x1E69DC888] redColor];
-    [(UIView *)self->_debugStartOffsetView setBackgroundColor:v163];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [(UIView *)self->_debugStartOffsetView setBackgroundColor:redColor];
 
     v164 = objc_alloc_init(MEMORY[0x1E69DD250]);
     debugEndOffsetView = self->_debugEndOffsetView;
     self->_debugEndOffsetView = v164;
 
-    v166 = [MEMORY[0x1E69DC888] blueColor];
-    [(UIView *)self->_debugEndOffsetView setBackgroundColor:v166];
+    blueColor = [MEMORY[0x1E69DC888] blueColor];
+    [(UIView *)self->_debugEndOffsetView setBackgroundColor:blueColor];
 
-    [v16 addSubview:self->_debugTimeCodeLabel];
-    [v16 addSubview:self->_debugPlayerTimeLabel];
-    [v16 addSubview:self->_debugOriginalTimeLabel];
-    [v16 addSubview:self->_debugTrimToolStateLabel];
-    [v16 addSubview:self->_debugTrimToolPlayheadStyleLabel];
-    [v16 addSubview:self->_debugStartRectView];
-    [v16 addSubview:self->_debugEndRectView];
-    [v16 addSubview:self->_debugStartOffsetView];
-    [v16 addSubview:self->_debugEndOffsetView];
-    v167 = [(UILabel *)self->_debugTimeCodeLabel leadingAnchor];
-    v168 = [(UILabel *)self->_debugTrimToolStateLabel leadingAnchor];
-    v169 = [v167 constraintEqualToAnchor:v168];
+    [view addSubview:self->_debugTimeCodeLabel];
+    [view addSubview:self->_debugPlayerTimeLabel];
+    [view addSubview:self->_debugOriginalTimeLabel];
+    [view addSubview:self->_debugTrimToolStateLabel];
+    [view addSubview:self->_debugTrimToolPlayheadStyleLabel];
+    [view addSubview:self->_debugStartRectView];
+    [view addSubview:self->_debugEndRectView];
+    [view addSubview:self->_debugStartOffsetView];
+    [view addSubview:self->_debugEndOffsetView];
+    leadingAnchor3 = [(UILabel *)self->_debugTimeCodeLabel leadingAnchor];
+    leadingAnchor4 = [(UILabel *)self->_debugTrimToolStateLabel leadingAnchor];
+    v169 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v169 setActive:1];
 
-    v170 = [(UILabel *)self->_debugTimeCodeLabel bottomAnchor];
-    v171 = [(UILabel *)self->_debugTrimToolStateLabel topAnchor];
-    v172 = [v170 constraintEqualToAnchor:v171 constant:-4.0];
+    bottomAnchor12 = [(UILabel *)self->_debugTimeCodeLabel bottomAnchor];
+    topAnchor13 = [(UILabel *)self->_debugTrimToolStateLabel topAnchor];
+    v172 = [bottomAnchor12 constraintEqualToAnchor:topAnchor13 constant:-4.0];
     [v172 setActive:1];
 
-    v173 = [(UILabel *)self->_debugPlayerTimeLabel trailingAnchor];
-    v174 = [(UILabel *)self->_debugTrimToolPlayheadStyleLabel trailingAnchor];
-    v175 = [v173 constraintEqualToAnchor:v174];
+    trailingAnchor3 = [(UILabel *)self->_debugPlayerTimeLabel trailingAnchor];
+    trailingAnchor4 = [(UILabel *)self->_debugTrimToolPlayheadStyleLabel trailingAnchor];
+    v175 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v175 setActive:1];
 
-    v176 = [(UILabel *)self->_debugPlayerTimeLabel bottomAnchor];
-    v177 = [(UILabel *)self->_debugTimeCodeLabel bottomAnchor];
-    v178 = [v176 constraintEqualToAnchor:v177];
+    bottomAnchor13 = [(UILabel *)self->_debugPlayerTimeLabel bottomAnchor];
+    bottomAnchor14 = [(UILabel *)self->_debugTimeCodeLabel bottomAnchor];
+    v178 = [bottomAnchor13 constraintEqualToAnchor:bottomAnchor14];
     [v178 setActive:1];
 
-    v179 = [(UILabel *)self->_debugOriginalTimeLabel trailingAnchor];
-    v180 = [(UILabel *)self->_debugPlayerTimeLabel trailingAnchor];
-    v181 = [v179 constraintEqualToAnchor:v180];
+    trailingAnchor5 = [(UILabel *)self->_debugOriginalTimeLabel trailingAnchor];
+    trailingAnchor6 = [(UILabel *)self->_debugPlayerTimeLabel trailingAnchor];
+    v181 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v181 setActive:1];
 
-    v182 = [(UILabel *)self->_debugOriginalTimeLabel bottomAnchor];
-    v183 = [(UILabel *)self->_debugPlayerTimeLabel topAnchor];
-    v184 = [v182 constraintEqualToAnchor:v183 constant:-4.0];
+    bottomAnchor15 = [(UILabel *)self->_debugOriginalTimeLabel bottomAnchor];
+    topAnchor14 = [(UILabel *)self->_debugPlayerTimeLabel topAnchor];
+    v184 = [bottomAnchor15 constraintEqualToAnchor:topAnchor14 constant:-4.0];
     [v184 setActive:1];
 
-    v185 = [(UILabel *)self->_debugTrimToolStateLabel leadingAnchor];
-    v186 = [v16 leadingAnchor];
-    v187 = [v185 constraintEqualToAnchor:v186 constant:10.0];
+    leadingAnchor5 = [(UILabel *)self->_debugTrimToolStateLabel leadingAnchor];
+    leadingAnchor6 = [view leadingAnchor];
+    v187 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:10.0];
     [v187 setActive:1];
 
-    v188 = [(UILabel *)self->_debugTrimToolStateLabel bottomAnchor];
-    v189 = [v16 topAnchor];
-    v190 = [v188 constraintEqualToAnchor:v189];
+    bottomAnchor16 = [(UILabel *)self->_debugTrimToolStateLabel bottomAnchor];
+    topAnchor15 = [view topAnchor];
+    v190 = [bottomAnchor16 constraintEqualToAnchor:topAnchor15];
     [v190 setActive:1];
 
-    v191 = [(UILabel *)self->_debugTrimToolPlayheadStyleLabel trailingAnchor];
-    v192 = [v16 trailingAnchor];
-    v193 = [v191 constraintEqualToAnchor:v192 constant:-10.0];
+    trailingAnchor7 = [(UILabel *)self->_debugTrimToolPlayheadStyleLabel trailingAnchor];
+    trailingAnchor8 = [view trailingAnchor];
+    v193 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-10.0];
     [v193 setActive:1];
 
-    v194 = [(UILabel *)self->_debugTrimToolPlayheadStyleLabel bottomAnchor];
-    v195 = [v16 topAnchor];
-    v196 = [v194 constraintEqualToAnchor:v195];
+    bottomAnchor17 = [(UILabel *)self->_debugTrimToolPlayheadStyleLabel bottomAnchor];
+    topAnchor16 = [view topAnchor];
+    v196 = [bottomAnchor17 constraintEqualToAnchor:topAnchor16];
     [v196 setActive:1];
 
     [(PUTrimToolController *)self _updateDebugTimeCodeLabel];
@@ -3945,20 +3945,20 @@ LABEL_12:
   [(PUTrimToolController *)self _updateScrubberPresentedPlayhead];
 }
 
-- (void)compositionControllerDidChangeForAdjustments:(id)a3
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments
 {
-  v10 = a3;
-  v4 = [(PUTrimToolController *)self compositionController];
-  v5 = [v4 adjustmentConstants];
+  adjustmentsCopy = adjustments;
+  compositionController = [(PUTrimToolController *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
 
-  v6 = [v5 PITrimAdjustmentKey];
-  if ([v10 containsObject:v6])
+  pITrimAdjustmentKey = [adjustmentConstants PITrimAdjustmentKey];
+  if ([adjustmentsCopy containsObject:pITrimAdjustmentKey])
   {
     goto LABEL_4;
   }
 
-  v7 = [v5 PILivePhotoKeyFrameAdjustmentKey];
-  if ([v10 containsObject:v7])
+  pILivePhotoKeyFrameAdjustmentKey = [adjustmentConstants PILivePhotoKeyFrameAdjustmentKey];
+  if ([adjustmentsCopy containsObject:pILivePhotoKeyFrameAdjustmentKey])
   {
 
 LABEL_4:
@@ -3967,8 +3967,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [v5 PISlomoAdjustmentKey];
-  v9 = [v10 containsObject:v8];
+  pISlomoAdjustmentKey = [adjustmentConstants PISlomoAdjustmentKey];
+  v9 = [adjustmentsCopy containsObject:pISlomoAdjustmentKey];
 
   if (v9)
   {
@@ -3978,20 +3978,20 @@ LABEL_5:
 LABEL_6:
 }
 
-- (PUTrimToolController)initWithPlayerWrapper:(id)a3 playButtonEnabled:(BOOL)a4 slomoEnabled:(BOOL)a5 portraitVideoEnabled:(BOOL)a6
+- (PUTrimToolController)initWithPlayerWrapper:(id)wrapper playButtonEnabled:(BOOL)enabled slomoEnabled:(BOOL)slomoEnabled portraitVideoEnabled:(BOOL)videoEnabled
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  wrapperCopy = wrapper;
   v19.receiver = self;
   v19.super_class = PUTrimToolController;
   v12 = [(PUTrimToolController *)&v19 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    v12->_playButtonEnabled = a4;
-    objc_storeStrong(&v12->_playerWrapper, a3);
-    v13->_slomoEnabled = a5;
-    v13->_isPortraitVideo = a6;
+    v12->_playButtonEnabled = enabled;
+    objc_storeStrong(&v12->_playerWrapper, wrapper);
+    v13->_slomoEnabled = slomoEnabled;
+    v13->_isPortraitVideo = videoEnabled;
     v13->_currentlyInteractingElement = 0;
     v14 = [MEMORY[0x1E69BDD68] setCoalescerWithLabel:@"PUTrimToolController._updateVideoCoalescer" target:v13 queue:MEMORY[0x1E69E96A0] action:&__block_literal_global_90826];
     updateVideoCoalescer = v13->_updateVideoCoalescer;

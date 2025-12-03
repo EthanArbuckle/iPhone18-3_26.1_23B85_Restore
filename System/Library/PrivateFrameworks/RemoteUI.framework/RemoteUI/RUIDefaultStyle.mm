@@ -1,18 +1,18 @@
 @interface RUIDefaultStyle
-- (void)applyToObjectModel:(id)a3;
+- (void)applyToObjectModel:(id)model;
 @end
 
 @implementation RUIDefaultStyle
 
-- (void)applyToObjectModel:(id)a3
+- (void)applyToObjectModel:(id)model
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 allPages];
+  allPages = [model allPages];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [allPages countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -24,29 +24,29 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allPages);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
-        v10 = [(RUIStyle *)self backgroundColor];
-        v11 = [v9 view];
-        [v11 setBackgroundColor:v10];
+        backgroundColor = [(RUIStyle *)self backgroundColor];
+        view = [v9 view];
+        [view setBackgroundColor:backgroundColor];
 
         if ([v9 hasTableView])
         {
-          v12 = [v9 tableViewOM];
-          v13 = [v12 tableView];
-          v14 = [MEMORY[0x277D75348] tableBackgroundColor];
-          [v13 setBackgroundColor:v14];
+          tableViewOM = [v9 tableViewOM];
+          tableView = [tableViewOM tableView];
+          tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
+          [tableView setBackgroundColor:tableBackgroundColor];
 
-          [v13 setBackgroundView:0];
+          [tableView setBackgroundView:0];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [allPages countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

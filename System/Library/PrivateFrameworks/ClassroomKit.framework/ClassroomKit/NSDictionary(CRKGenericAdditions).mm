@@ -9,7 +9,7 @@
 - (id)crk_mapToDictionary:()CRKGenericAdditions
 {
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(self, "count")}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__NSDictionary_CRKGenericAdditions__crk_mapToDictionary___block_invoke;
@@ -25,7 +25,7 @@
   v14 = v7;
   v8 = v7;
   v9 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v12];
+  [self enumerateKeysAndObjectsUsingBlock:v12];
   v10 = [v6 copy];
 
   return v10;
@@ -36,7 +36,7 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSDictionary(CRKGenericAdditions) *)a2 crk_mapUsingBlock:a1];
+    [(NSDictionary(CRKGenericAdditions) *)a2 crk_mapUsingBlock:self];
   }
 
   v6 = objc_opt_new();
@@ -48,7 +48,7 @@
   v16 = v5;
   v7 = v5;
   v8 = v6;
-  [a1 enumerateKeysAndObjectsUsingBlock:&v11];
+  [self enumerateKeysAndObjectsUsingBlock:&v11];
   v9 = [v8 copy];
 
   return v9;
@@ -79,7 +79,7 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [a1 objectForKeyedSubscript:{v11, v15}];
+        v12 = [self objectForKeyedSubscript:{v11, v15}];
         [v5 setObject:v12 forKeyedSubscript:v11];
       }
 

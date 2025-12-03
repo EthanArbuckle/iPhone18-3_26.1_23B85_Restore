@@ -11,7 +11,7 @@
   v3[0] = 0;
   v3[1] = 0;
   v4 = getpid();
-  return fcntl([a1 fileDescriptor], 8, v3);
+  return fcntl([self fileDescriptor], 8, v3);
 }
 
 - (uint64_t)ml_lock
@@ -20,7 +20,7 @@
   v3[0] = 0;
   v3[1] = 0;
   v4 = getpid();
-  return fcntl([a1 fileDescriptor], 9, v3);
+  return fcntl([self fileDescriptor], 9, v3);
 }
 
 @end

@@ -17,7 +17,7 @@
 
 - (void)stopObserving
 {
-  v11 = self;
+  selfCopy = self;
   v3 = *sub_5544(25);
   v4 = v3;
   if (v3 && os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -29,7 +29,7 @@
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Unregistering WRM_UCMInterface client", buf, 0x12u);
   }
 
-  v10 = &v11;
+  v10 = &selfCopy;
   fObj = self->queue.fObj.fObj;
   v7 = v6 = fObj;
   *buf = _NSConcreteStackBlock;

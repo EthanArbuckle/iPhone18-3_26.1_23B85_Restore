@@ -1,39 +1,39 @@
 @interface PhotoOptionsPicker
 + (BOOL)_supportsCamera;
-+ (BOOL)supportsSourceType:(int64_t)a3;
++ (BOOL)supportsSourceType:(int64_t)type;
 + (int64_t)preferredSourceType;
 + (unint64_t)numberOfSupportedSourceTypes;
-- (PhotoOptionsPicker)initWithPresentingViewController:(id)a3 sourceView:(id)a4 delegate:(id)a5;
+- (PhotoOptionsPicker)initWithPresentingViewController:(id)controller sourceView:(id)view delegate:(id)delegate;
 - (void)_createAlertController;
-- (void)presentPhotoOptionsWithPreparationBlock:(id)a3;
+- (void)presentPhotoOptionsWithPreparationBlock:(id)block;
 @end
 
 @implementation PhotoOptionsPicker
 
-- (void)presentPhotoOptionsWithPreparationBlock:(id)a3
+- (void)presentPhotoOptionsWithPreparationBlock:(id)block
 {
-  v18 = a3;
+  blockCopy = block;
   v4 = self->_anchoringView;
-  v5 = [(UIViewController *)self->_presentingViewController view];
-  v6 = [(UIAlertController *)self->_photoOptionsActionSheet popoverPresentationController];
-  [v6 setSourceView:v5];
+  view = [(UIViewController *)self->_presentingViewController view];
+  popoverPresentationController = [(UIAlertController *)self->_photoOptionsActionSheet popoverPresentationController];
+  [popoverPresentationController setSourceView:view];
 
   [(UIView *)v4 bounds];
-  [v5 convertRect:v4 fromView:?];
+  [view convertRect:v4 fromView:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(UIAlertController *)self->_photoOptionsActionSheet popoverPresentationController];
-  [v15 setSourceRect:{v8, v10, v12, v14}];
+  popoverPresentationController2 = [(UIAlertController *)self->_photoOptionsActionSheet popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v8, v10, v12, v14}];
 
-  v16 = [(UIAlertController *)self->_photoOptionsActionSheet popoverPresentationController];
-  [v16 setPermittedArrowDirections:3];
+  popoverPresentationController3 = [(UIAlertController *)self->_photoOptionsActionSheet popoverPresentationController];
+  [popoverPresentationController3 setPermittedArrowDirections:3];
 
-  if (v18)
+  if (blockCopy)
   {
-    v17 = [(UIAlertController *)self->_photoOptionsActionSheet popoverPresentationController];
-    v18[2](v18, v17);
+    popoverPresentationController4 = [(UIAlertController *)self->_photoOptionsActionSheet popoverPresentationController];
+    blockCopy[2](blockCopy, popoverPresentationController4);
   }
 
   [(UIViewController *)self->_presentingViewController presentViewController:self->_photoOptionsActionSheet animated:1 completion:0];
@@ -90,7 +90,7 @@
   v18 = sub_100CF87EC;
   v19 = &unk_1016540D8;
   objc_copyWeak(&v21, &location);
-  v20 = self;
+  selfCopy = self;
   v15 = [UIAlertAction actionWithTitle:v14 style:1 handler:&v16];
 
   [v15 setAccessibilityIdentifier:{@"CancelAction", v16, v17, v18, v19}];
@@ -100,36 +100,36 @@
   objc_destroyWeak(&location);
 }
 
-- (PhotoOptionsPicker)initWithPresentingViewController:(id)a3 sourceView:(id)a4 delegate:(id)a5
+- (PhotoOptionsPicker)initWithPresentingViewController:(id)controller sourceView:(id)view delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  viewCopy = view;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = PhotoOptionsPicker;
   v12 = [(PhotoOptionsPicker *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_presentingViewController, a3);
-    objc_storeWeak(&v13->_delegate, v11);
-    objc_storeStrong(&v13->_anchoringView, a4);
+    objc_storeStrong(&v12->_presentingViewController, controller);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_anchoringView, view);
     [(PhotoOptionsPicker *)v13 _createAlertController];
   }
 
   return v13;
 }
 
-+ (BOOL)supportsSourceType:(int64_t)a3
++ (BOOL)supportsSourceType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    return [a1 _supportsPhotoLibrary];
+    return [self _supportsPhotoLibrary];
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    return [a1 _supportsCamera];
+    return [self _supportsCamera];
   }
 
   return 0;

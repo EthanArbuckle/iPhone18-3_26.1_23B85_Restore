@@ -2,11 +2,11 @@
 - (PSSpecifier)mainSwitchSpecifier;
 - (TPSCallWaitingController)callWaitingController;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)callWaitingController:(id)a3 didChangeState:(int64_t)a4 error:(id)a5;
-- (void)configureCell:(id)a3;
-- (void)configureCell:(id)a3 forSpecifier:(id)a4;
-- (void)setMainSwitchOn:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)callWaitingController:(id)controller didChangeState:(int64_t)state error:(id)error;
+- (void)configureCell:(id)cell;
+- (void)configureCell:(id)cell forSpecifier:(id)specifier;
+- (void)setMainSwitchOn:(id)on;
 @end
 
 @implementation TPSCallWaitingListController
@@ -17,8 +17,8 @@
   if (!callWaitingController)
   {
     v4 = [TPSCallWaitingController alloc];
-    v5 = [(TPSCallWaitingListController *)self subscriptionContext];
-    v6 = [(TPSCallWaitingController *)v4 initWithSubscriptionContext:v5];
+    subscriptionContext = [(TPSCallWaitingListController *)self subscriptionContext];
+    v6 = [(TPSCallWaitingController *)v4 initWithSubscriptionContext:subscriptionContext];
     v7 = self->_callWaitingController;
     self->_callWaitingController = v6;
 
@@ -35,12 +35,12 @@
   v4 = *&self->TPSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(TPSCallWaitingListController *)self subscriptionContext];
-    if (v5)
+    subscriptionContext = [(TPSCallWaitingListController *)self subscriptionContext];
+    if (subscriptionContext)
     {
       v6 = +[NSMutableArray array];
-      v7 = [(TPSCallWaitingListController *)self mainSwitchSpecifier];
-      [v6 addObject:v7];
+      mainSwitchSpecifier = [(TPSCallWaitingListController *)self mainSwitchSpecifier];
+      [v6 addObject:mainSwitchSpecifier];
 
       v8 = [v6 copy];
       v9 = *&self->TPSListController_opaque[v3];
@@ -53,11 +53,11 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = TPSCallWaitingListController;
-  v5 = [(TPSCallWaitingListController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(TPSCallWaitingListController *)&v7 tableView:view cellForRowAtIndexPath:path];
   [(TPSCallWaitingListController *)self configureCell:v5];
 
   return v5;
@@ -79,9 +79,9 @@
   return mainSwitchSpecifier;
 }
 
-- (void)setMainSwitchOn:(id)a3
+- (void)setMainSwitchOn:(id)on
 {
-  if ([a3 isOn])
+  if ([on isOn])
   {
     v4 = 2;
   }
@@ -91,41 +91,41 @@
     v4 = 1;
   }
 
-  v5 = [(TPSCallWaitingListController *)self callWaitingController];
-  [v5 requestStateChange:v4];
+  callWaitingController = [(TPSCallWaitingListController *)self callWaitingController];
+  [callWaitingController requestStateChange:v4];
 
   [(TPSCallWaitingListController *)self reloadSpecifiers];
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v6 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
-    v5 = [v4 specifier];
-    [(TPSCallWaitingListController *)self configureCell:v4 forSpecifier:v5];
+    v4 = cellCopy;
+    specifier = [v4 specifier];
+    [(TPSCallWaitingListController *)self configureCell:v4 forSpecifier:specifier];
   }
 }
 
-- (void)configureCell:(id)a3 forSpecifier:(id)a4
+- (void)configureCell:(id)cell forSpecifier:(id)specifier
 {
-  v11 = a3;
-  v5 = [v11 specifier];
-  v6 = [(TPSCallWaitingListController *)self mainSwitchSpecifier];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  mainSwitchSpecifier = [(TPSCallWaitingListController *)self mainSwitchSpecifier];
 
-  if (v5 == v6)
+  if (specifier == mainSwitchSpecifier)
   {
-    v7 = [(TPSCallWaitingListController *)self callWaitingController];
-    v8 = [v7 state];
+    callWaitingController = [(TPSCallWaitingListController *)self callWaitingController];
+    state = [callWaitingController state];
 
-    if (v8)
+    if (state)
     {
       v9 = [[UISwitch alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
       [v9 addTarget:self action:"setMainSwitchOn:" forControlEvents:4096];
-      v10 = [(TPSCallWaitingListController *)self callWaitingController];
-      [v9 setOn:{objc_msgSend(v10, "state") == &dword_0 + 2}];
+      callWaitingController2 = [(TPSCallWaitingListController *)self callWaitingController];
+      [v9 setOn:{objc_msgSend(callWaitingController2, "state") == &dword_0 + 2}];
     }
 
     else
@@ -134,23 +134,23 @@
       [v9 startAnimating];
     }
 
-    [v11 setAccessoryView:v9];
+    [cellCopy setAccessoryView:v9];
   }
 }
 
-- (void)callWaitingController:(id)a3 didChangeState:(int64_t)a4 error:(id)a5
+- (void)callWaitingController:(id)controller didChangeState:(int64_t)state error:(id)error
 {
-  v7 = a5;
-  if (v7)
+  errorCopy = error;
+  if (errorCopy)
   {
     if (os_variant_has_internal_diagnostics())
     {
-      [UIAlertController tps_tapToRadarAlertControllerWithError:v7];
+      [UIAlertController tps_tapToRadarAlertControllerWithError:errorCopy];
     }
 
     else
     {
-      [UIAlertController tps_alertControllerWithError:v7];
+      [UIAlertController tps_alertControllerWithError:errorCopy];
     }
     v6 = ;
     if (v6)

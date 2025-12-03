@@ -1,20 +1,20 @@
 @interface AVTUIAvatarPickerMemojiPickerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axLabelForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axLabelForIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axMarkupCell:(id)a3 atIndexPath:(id)a4;
+- (void)_axMarkupCell:(id)cell atIndexPath:(id)path;
 @end
 
 @implementation AVTUIAvatarPickerMemojiPickerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTUIAvatarPickerMemojiPickerViewController" hasInstanceMethod:@"collectionView:didSelectItemAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"AVTUIAvatarPickerMemojiPickerViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTUIAvatarPickerMemojiPickerViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarRecordDataSource" hasInstanceMethod:@"recordAtIndex:" withFullSignature:{"@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTUIAvatarPickerMemojiPickerViewController" hasInstanceMethod:@"collectionView:didSelectItemAtIndexPath:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"AVTUIAvatarPickerMemojiPickerViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTUIAvatarPickerMemojiPickerViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarRecordDataSource" hasInstanceMethod:@"recordAtIndex:" withFullSignature:{"@", "q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -32,8 +32,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 visibleCells];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  visibleCells = [v4 visibleCells];
+  v6 = [visibleCells countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -44,7 +44,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -52,7 +52,7 @@
         [(AVTUIAvatarPickerMemojiPickerViewControllerAccessibility *)self _axMarkupCell:v10 atIndexPath:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v7);
@@ -61,22 +61,22 @@
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_axMarkupCell:(id)a3 atIndexPath:(id)a4
+- (void)_axMarkupCell:(id)cell atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 setIsAccessibilityElement:1];
-  v8 = [v6 accessibilityTraits];
-  [v6 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | v8];
+  cellCopy = cell;
+  pathCopy = path;
+  [cellCopy setIsAccessibilityElement:1];
+  accessibilityTraits = [cellCopy accessibilityTraits];
+  [cellCopy setAccessibilityTraits:*MEMORY[0x29EDC7F70] | accessibilityTraits];
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __86__AVTUIAvatarPickerMemojiPickerViewControllerAccessibility__axMarkupCell_atIndexPath___block_invoke;
   v10[3] = &unk_29F2A36E0;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = pathCopy;
   v11 = v9;
-  [v6 _setAccessibilityLabelBlock:v10];
+  [cellCopy _setAccessibilityLabelBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -90,10 +90,10 @@ id __86__AVTUIAvatarPickerMemojiPickerViewControllerAccessibility__axMarkupCell_
   return v3;
 }
 
-- (id)_axLabelForIndexPath:(id)a3
+- (id)_axLabelForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
+  pathCopy = path;
+  v5 = [pathCopy row];
   if (v5)
   {
     if (v5 < 1)
@@ -144,13 +144,13 @@ uint64_t __81__AVTUIAvatarPickerMemojiPickerViewControllerAccessibility__axLabel
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = AVTUIAvatarPickerMemojiPickerViewControllerAccessibility;
-  v6 = a4;
-  v7 = [(AVTUIAvatarPickerMemojiPickerViewControllerAccessibility *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
-  [(AVTUIAvatarPickerMemojiPickerViewControllerAccessibility *)self _axMarkupCell:v7 atIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  v7 = [(AVTUIAvatarPickerMemojiPickerViewControllerAccessibility *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
+  [(AVTUIAvatarPickerMemojiPickerViewControllerAccessibility *)self _axMarkupCell:v7 atIndexPath:pathCopy, v9.receiver, v9.super_class];
 
   return v7;
 }

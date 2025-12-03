@@ -1,8 +1,8 @@
 @interface AXVoiceOverSceneDescriptionsController
-- (id)_sceneDescriptions:(id)a3;
+- (id)_sceneDescriptions:(id)descriptions;
 - (id)specifiers;
-- (void)_setSceneDescriptions:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_setSceneDescriptions:(id)descriptions specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AXVoiceOverSceneDescriptionsController
@@ -45,14 +45,14 @@
   return v4;
 }
 
-- (void)_setSceneDescriptions:(id)a3 specifier:(id)a4
+- (void)_setSceneDescriptions:(id)descriptions specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [descriptions BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setVoiceOverSceneDescriptionsEnabled:v4];
+  [v5 setVoiceOverSceneDescriptionsEnabled:bOOLValue];
 }
 
-- (id)_sceneDescriptions:(id)a3
+- (id)_sceneDescriptions:(id)descriptions
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 voiceOverSceneDescriptionsEnabled]);
@@ -60,19 +60,19 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXVoiceOverSceneDescriptionsController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXVoiceOverSceneDescriptionsController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:PSIDKey];
   v10 = [v9 isEqualToString:@"apps"];
 
   if (v10)
   {
     v11 = objc_alloc_init(AXAppSelectionController);
-    v12 = [(AXVoiceOverSceneDescriptionsController *)self rootController];
-    [(AXAppSelectionController *)v11 setRootController:v12];
+    rootController = [(AXVoiceOverSceneDescriptionsController *)self rootController];
+    [(AXAppSelectionController *)v11 setRootController:rootController];
 
     [(AXAppSelectionController *)v11 setSpecifier:v8];
     [(AXAppSelectionController *)v11 setParentController:self];
@@ -94,7 +94,7 @@
   {
     v13.receiver = self;
     v13.super_class = AXVoiceOverSceneDescriptionsController;
-    [(AXVoiceOverSceneDescriptionsController *)&v13 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(AXVoiceOverSceneDescriptionsController *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface MCSingleSignOnPayloadKerberosInfo
-- (BOOL)validateAppIdentifierMatch:(id)a3 outError:(id *)a4;
-- (BOOL)validateURLPrefixMatch:(id)a3 outNormalizedString:(id *)a4 outError:(id *)a5;
-- (MCSingleSignOnPayloadKerberosInfo)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (BOOL)validateAppIdentifierMatch:(id)match outError:(id *)error;
+- (BOOL)validateURLPrefixMatch:(id)match outNormalizedString:(id *)string outError:(id *)error;
+- (MCSingleSignOnPayloadKerberosInfo)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)description;
 - (id)stubDictionary;
 @end
 
 @implementation MCSingleSignOnPayloadKerberosInfo
 
-- (MCSingleSignOnPayloadKerberosInfo)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCSingleSignOnPayloadKerberosInfo)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v83 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v80.receiver = self;
   v80.super_class = MCSingleSignOnPayloadKerberosInfo;
   v10 = [(MCSingleSignOnPayloadKerberosInfo *)&v80 init];
@@ -22,7 +22,7 @@
   }
 
   v79 = 0;
-  v11 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v8 key:@"PrincipalName" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v79];
+  v11 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"PrincipalName" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v79];
   v12 = v79;
   principalName = v10->_principalName;
   v10->_principalName = v11;
@@ -30,14 +30,14 @@
   if (!v12)
   {
     v78 = 0;
-    v14 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:v8 key:@"Realm" errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v78];
+    v14 = [MCProfile removeRequiredNonZeroLengthStringInDictionary:dictionaryCopy key:@"Realm" errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v78];
     v12 = v78;
     realm = v10->_realm;
     v10->_realm = v14;
   }
 
   v77 = v12;
-  v16 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"PayloadCertificateUUID" isRequired:0 outError:&v77];
+  v16 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"PayloadCertificateUUID" isRequired:0 outError:&v77];
   v17 = v77;
 
   certificateUUID = v10->_certificateUUID;
@@ -46,15 +46,15 @@
   if (!v17)
   {
     v76 = 0;
-    v19 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"AppIdentifierMatches" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v76];
+    v19 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"AppIdentifierMatches" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v76];
     v17 = v76;
     appIdentifierMatches = v10->_appIdentifierMatches;
     v10->_appIdentifierMatches = v19;
 
     if (!v17)
     {
-      v60 = a5;
-      v61 = v9;
+      errorCopy = error;
+      v61 = profileCopy;
       v74 = 0u;
       v75 = 0u;
       v72 = 0u;
@@ -87,8 +87,8 @@
               v29 = [MCPayload badFieldValueErrorWithField:@"AppIdentifierMatches" underlyingError:v17];
 
               v17 = v29;
-              a5 = v60;
-              v9 = v61;
+              error = errorCopy;
+              profileCopy = v61;
               goto LABEL_16;
             }
 
@@ -115,9 +115,9 @@
       if ([(NSArray *)v10->_appIdentifierMatches count])
       {
         v30 = [MEMORY[0x1E695DFD8] setWithArray:v10->_appIdentifierMatches];
-        v31 = [v30 allObjects];
+        allObjects = [v30 allObjects];
         v32 = v10->_appIdentifierMatches;
-        v10->_appIdentifierMatches = v31;
+        v10->_appIdentifierMatches = allObjects;
       }
 
       else
@@ -126,8 +126,8 @@
         v10->_appIdentifierMatches = &unk_1F1AA5A28;
       }
 
-      a5 = v60;
-      v9 = v61;
+      error = errorCopy;
+      profileCopy = v61;
 
       if (!v17)
       {
@@ -142,7 +142,7 @@
           if ([(NSString *)v10->_realm rangeOfString:@"@"]== 0x7FFFFFFFFFFFFFFFLL)
           {
             v70 = 0;
-            v37 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"URLPrefixMatches" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v70];
+            v37 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"URLPrefixMatches" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v70];
             v17 = v70;
             URLPrefixMatches = v10->_URLPrefixMatches;
             v10->_URLPrefixMatches = v37;
@@ -188,8 +188,8 @@
                     v56 = [MCPayload badFieldValueErrorWithField:@"URLPrefixMatches" underlyingError:v17];
 
                     v17 = v56;
-                    a5 = v60;
-                    v9 = v61;
+                    error = errorCopy;
+                    profileCopy = v61;
 
                     goto LABEL_48;
                   }
@@ -213,18 +213,18 @@
 
             v48 = v40;
             v49 = [MEMORY[0x1E695DFD8] setWithArray:v40];
-            v50 = [v49 allObjects];
+            allObjects2 = [v49 allObjects];
             v51 = v10->_URLPrefixMatches;
-            v10->_URLPrefixMatches = v50;
+            v10->_URLPrefixMatches = allObjects2;
 
-            v9 = v61;
+            profileCopy = v61;
             if ([v61 isStub])
             {
-              a5 = v60;
+              error = errorCopy;
               if (!v17)
               {
                 v63 = 0;
-                v52 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v8 key:@"AccountGUID" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v63];
+                v52 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"AccountGUID" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v63];
                 v17 = v63;
                 accountGUID = v10->_accountGUID;
                 v10->_accountGUID = v52;
@@ -232,7 +232,7 @@
                 if (!v17)
                 {
                   v62 = 0;
-                  v54 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v8 key:@"AccountTypeGUID" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v62];
+                  v54 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"AccountTypeGUID" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v62];
                   v17 = v62;
                   obja = v10->_accountTypeGUID;
                   v10->_accountTypeGUID = v54;
@@ -242,7 +242,7 @@
 
             else
             {
-              a5 = v60;
+              error = errorCopy;
             }
 
 LABEL_48:
@@ -266,10 +266,10 @@ LABEL_16:
   }
 
 LABEL_23:
-  if (a5)
+  if (error)
   {
     v33 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   v10 = 0;
@@ -279,10 +279,10 @@ LABEL_26:
   return v10;
 }
 
-- (BOOL)validateAppIdentifierMatch:(id)a3 outError:(id *)a4
+- (BOOL)validateAppIdentifierMatch:(id)match outError:(id *)error
 {
-  v5 = a3;
-  if (([v5 isEqualToString:@"*"] & 1) != 0 || (v7 = objc_msgSend(v5, "rangeOfString:options:", @"*", 12), v7 == objc_msgSend(v5, "rangeOfString:", @"*")) && (v7 == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v5, "rangeOfString:options:", @".*", 12) != 0x7FFFFFFFFFFFFFFFLL))
+  matchCopy = match;
+  if (([matchCopy isEqualToString:@"*"] & 1) != 0 || (v7 = objc_msgSend(matchCopy, "rangeOfString:options:", @"*", 12), v7 == objc_msgSend(matchCopy, "rangeOfString:", @"*")) && (v7 == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(matchCopy, "rangeOfString:options:", @".*", 12) != 0x7FFFFFFFFFFFFFFFLL))
   {
     v6 = 1;
   }
@@ -290,13 +290,13 @@ LABEL_26:
   else
   {
     v15 = MEMORY[0x1E696ABC0];
-    v16 = MCErrorArray(@"SSO_BAD_APP_IDENTIFIER_MATCH_P_PATTERN", v8, v9, v10, v11, v12, v13, v14, v5);
+    v16 = MCErrorArray(@"SSO_BAD_APP_IDENTIFIER_MATCH_P_PATTERN", v8, v9, v10, v11, v12, v13, v14, matchCopy);
     v17 = [v15 MCErrorWithDomain:@"MCOSSErrorDomain" code:34000 descriptionArray:v16 errorType:@"MCFatalError"];
 
-    if (a4)
+    if (error)
     {
       v18 = v17;
-      *a4 = v17;
+      *error = v17;
     }
 
     v6 = 0;
@@ -312,79 +312,79 @@ LABEL_26:
   v3 = [(MCSingleSignOnPayloadKerberosInfo *)&v20 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(MCSingleSignOnPayloadKerberosInfo *)self principalName];
+  principalName = [(MCSingleSignOnPayloadKerberosInfo *)self principalName];
 
-  if (v5)
+  if (principalName)
   {
-    v6 = [(MCSingleSignOnPayloadKerberosInfo *)self principalName];
-    [v4 appendFormat:@"Principal     : %@\n", v6];
+    principalName2 = [(MCSingleSignOnPayloadKerberosInfo *)self principalName];
+    [v4 appendFormat:@"Principal     : %@\n", principalName2];
   }
 
-  v7 = [(MCSingleSignOnPayloadKerberosInfo *)self realm];
+  realm = [(MCSingleSignOnPayloadKerberosInfo *)self realm];
 
-  if (v7)
+  if (realm)
   {
-    v8 = [(MCSingleSignOnPayloadKerberosInfo *)self realm];
-    [v4 appendFormat:@"Realm         : %@\n", v8];
+    realm2 = [(MCSingleSignOnPayloadKerberosInfo *)self realm];
+    [v4 appendFormat:@"Realm         : %@\n", realm2];
   }
 
-  v9 = [(MCSingleSignOnPayloadKerberosInfo *)self certificateUUID];
+  certificateUUID = [(MCSingleSignOnPayloadKerberosInfo *)self certificateUUID];
 
-  if (v9)
+  if (certificateUUID)
   {
-    v10 = [(MCSingleSignOnPayloadKerberosInfo *)self certificateUUID];
-    [v4 appendFormat:@"Cert UUID     : %@\n", v10];
+    certificateUUID2 = [(MCSingleSignOnPayloadKerberosInfo *)self certificateUUID];
+    [v4 appendFormat:@"Cert UUID     : %@\n", certificateUUID2];
   }
 
-  v11 = [(MCSingleSignOnPayloadKerberosInfo *)self URLPrefixMatches];
+  uRLPrefixMatches = [(MCSingleSignOnPayloadKerberosInfo *)self URLPrefixMatches];
 
-  if (v11)
+  if (uRLPrefixMatches)
   {
-    v12 = [(MCSingleSignOnPayloadKerberosInfo *)self URLPrefixMatches];
-    [v4 appendFormat:@"URL Prefix Matches:\n%@\n", v12];
+    uRLPrefixMatches2 = [(MCSingleSignOnPayloadKerberosInfo *)self URLPrefixMatches];
+    [v4 appendFormat:@"URL Prefix Matches:\n%@\n", uRLPrefixMatches2];
   }
 
-  v13 = [(MCSingleSignOnPayloadKerberosInfo *)self accountGUID];
+  accountGUID = [(MCSingleSignOnPayloadKerberosInfo *)self accountGUID];
 
-  if (v13)
+  if (accountGUID)
   {
-    v14 = [(MCSingleSignOnPayloadKerberosInfo *)self accountGUID];
-    [v4 appendFormat:@"Acct GUID     : %@\n", v14];
+    accountGUID2 = [(MCSingleSignOnPayloadKerberosInfo *)self accountGUID];
+    [v4 appendFormat:@"Acct GUID     : %@\n", accountGUID2];
   }
 
-  v15 = [(MCSingleSignOnPayloadKerberosInfo *)self accountTypeGUID];
+  accountTypeGUID = [(MCSingleSignOnPayloadKerberosInfo *)self accountTypeGUID];
 
-  if (v15)
+  if (accountTypeGUID)
   {
-    v16 = [(MCSingleSignOnPayloadKerberosInfo *)self accountTypeGUID];
-    [v4 appendFormat:@"AcctType GUID : %@\n", v16];
+    accountTypeGUID2 = [(MCSingleSignOnPayloadKerberosInfo *)self accountTypeGUID];
+    [v4 appendFormat:@"AcctType GUID : %@\n", accountTypeGUID2];
   }
 
-  v17 = [(MCSingleSignOnPayloadKerberosInfo *)self appIdentifierMatches];
+  appIdentifierMatches = [(MCSingleSignOnPayloadKerberosInfo *)self appIdentifierMatches];
 
-  if (v17)
+  if (appIdentifierMatches)
   {
-    v18 = [(MCSingleSignOnPayloadKerberosInfo *)self appIdentifierMatches];
-    [v4 appendFormat:@"App Matches:\n%@\n", v18];
+    appIdentifierMatches2 = [(MCSingleSignOnPayloadKerberosInfo *)self appIdentifierMatches];
+    [v4 appendFormat:@"App Matches:\n%@\n", appIdentifierMatches2];
   }
 
   return v4;
 }
 
-- (BOOL)validateURLPrefixMatch:(id)a3 outNormalizedString:(id *)a4 outError:(id *)a5
+- (BOOL)validateURLPrefixMatch:(id)match outNormalizedString:(id *)string outError:(id *)error
 {
-  v7 = a3;
-  v8 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:v7];
-  v9 = [v7 mutableCopy];
-  v10 = [v8 scheme];
-  if ([v10 isEqualToString:@"http"])
+  matchCopy = match;
+  v8 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:matchCopy];
+  v9 = [matchCopy mutableCopy];
+  scheme = [v8 scheme];
+  if ([scheme isEqualToString:@"http"])
   {
   }
 
   else
   {
-    v11 = [v8 scheme];
-    v12 = [v11 isEqualToString:@"https"];
+    scheme2 = [v8 scheme];
+    v12 = [scheme2 isEqualToString:@"https"];
 
     if (!v12)
     {
@@ -392,30 +392,30 @@ LABEL_26:
     }
   }
 
-  v13 = [v8 fragment];
-  v14 = [v13 length];
+  fragment = [v8 fragment];
+  v14 = [fragment length];
 
   if (!v14)
   {
-    v15 = [v8 query];
-    v16 = [v15 length];
+    query = [v8 query];
+    v16 = [query length];
 
     if (!v16)
     {
-      v17 = [v8 host];
-      v18 = [v17 rangeOfString:@"*" options:4];
-      if (([v17 isEqualToString:@"*"] & 1) == 0 && (objc_msgSend(v17, "isEqualToString:", @"*.") & 1) == 0 && (objc_msgSend(v17, "isEqualToString:", @".") & 1) == 0 && (!objc_msgSend(v17, "hasPrefix:", @"*") || objc_msgSend(v17, "hasPrefix:", @"*.")) && (v18 == 0x7FFFFFFFFFFFFFFFLL || !v18))
+      host = [v8 host];
+      v18 = [host rangeOfString:@"*" options:4];
+      if (([host isEqualToString:@"*"] & 1) == 0 && (objc_msgSend(host, "isEqualToString:", @"*.") & 1) == 0 && (objc_msgSend(host, "isEqualToString:", @".") & 1) == 0 && (!objc_msgSend(host, "hasPrefix:", @"*") || objc_msgSend(host, "hasPrefix:", @"*.")) && (v18 == 0x7FFFFFFFFFFFFFFFLL || !v18))
       {
-        v33 = [v8 rangeOfHost];
-        if ([v17 hasPrefix:@"*."])
+        rangeOfHost = [v8 rangeOfHost];
+        if ([host hasPrefix:@"*."])
         {
-          v34 = [v8 string];
-          v35 = [v34 substringToIndex:{objc_msgSend(@"*.", "length") + v33}];
+          string = [v8 string];
+          v35 = [string substringToIndex:{objc_msgSend(@"*.", "length") + rangeOfHost}];
           v36 = [v9 hasPrefix:v35];
 
           if (v36)
           {
-            [v9 deleteCharactersInRange:{v33, 1}];
+            [v9 deleteCharactersInRange:{rangeOfHost, 1}];
           }
         }
 
@@ -426,10 +426,10 @@ LABEL_26:
 
         v31 = [v9 copy];
 
-        if (a4)
+        if (string)
         {
           v37 = v31;
-          *a4 = v31;
+          *string = v31;
         }
 
         v30 = 1;
@@ -441,13 +441,13 @@ LABEL_26:
 LABEL_10:
 
   v19 = MEMORY[0x1E696ABC0];
-  v27 = MCErrorArray(@"SSO_BAD_URL_MATCH_PATTERN_P_PATTERN", v20, v21, v22, v23, v24, v25, v26, v7);
+  v27 = MCErrorArray(@"SSO_BAD_URL_MATCH_PATTERN_P_PATTERN", v20, v21, v22, v23, v24, v25, v26, matchCopy);
   v28 = [v19 MCErrorWithDomain:@"MCOSSErrorDomain" code:34001 descriptionArray:v27 errorType:@"MCFatalError"];
 
-  if (a5)
+  if (error)
   {
     v29 = v28;
-    *a5 = v28;
+    *error = v28;
   }
 
   v30 = 0;
@@ -459,56 +459,56 @@ LABEL_13:
 
 - (id)stubDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(MCSingleSignOnPayloadKerberosInfo *)self principalName];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  principalName = [(MCSingleSignOnPayloadKerberosInfo *)self principalName];
 
-  if (v4)
+  if (principalName)
   {
-    v5 = [(MCSingleSignOnPayloadKerberosInfo *)self principalName];
-    [v3 setObject:v5 forKeyedSubscript:@"PrincipalName"];
+    principalName2 = [(MCSingleSignOnPayloadKerberosInfo *)self principalName];
+    [dictionary setObject:principalName2 forKeyedSubscript:@"PrincipalName"];
   }
 
-  v6 = [(MCSingleSignOnPayloadKerberosInfo *)self realm];
+  realm = [(MCSingleSignOnPayloadKerberosInfo *)self realm];
 
-  if (v6)
+  if (realm)
   {
-    v7 = [(MCSingleSignOnPayloadKerberosInfo *)self realm];
-    [v3 setObject:v7 forKeyedSubscript:@"Realm"];
+    realm2 = [(MCSingleSignOnPayloadKerberosInfo *)self realm];
+    [dictionary setObject:realm2 forKeyedSubscript:@"Realm"];
   }
 
-  v8 = [(MCSingleSignOnPayloadKerberosInfo *)self URLPrefixMatches];
+  uRLPrefixMatches = [(MCSingleSignOnPayloadKerberosInfo *)self URLPrefixMatches];
 
-  if (v8)
+  if (uRLPrefixMatches)
   {
-    v9 = [(MCSingleSignOnPayloadKerberosInfo *)self URLPrefixMatches];
-    [v3 setObject:v9 forKeyedSubscript:@"URLPrefixMatches"];
+    uRLPrefixMatches2 = [(MCSingleSignOnPayloadKerberosInfo *)self URLPrefixMatches];
+    [dictionary setObject:uRLPrefixMatches2 forKeyedSubscript:@"URLPrefixMatches"];
   }
 
-  v10 = [(MCSingleSignOnPayloadKerberosInfo *)self accountTypeGUID];
+  accountTypeGUID = [(MCSingleSignOnPayloadKerberosInfo *)self accountTypeGUID];
 
-  if (v10)
+  if (accountTypeGUID)
   {
-    v11 = [(MCSingleSignOnPayloadKerberosInfo *)self accountTypeGUID];
-    [v3 setObject:v11 forKeyedSubscript:@"AccountTypeGUID"];
+    accountTypeGUID2 = [(MCSingleSignOnPayloadKerberosInfo *)self accountTypeGUID];
+    [dictionary setObject:accountTypeGUID2 forKeyedSubscript:@"AccountTypeGUID"];
   }
 
-  v12 = [(MCSingleSignOnPayloadKerberosInfo *)self accountGUID];
+  accountGUID = [(MCSingleSignOnPayloadKerberosInfo *)self accountGUID];
 
-  if (v12)
+  if (accountGUID)
   {
-    v13 = [(MCSingleSignOnPayloadKerberosInfo *)self accountGUID];
-    [v3 setObject:v13 forKeyedSubscript:@"AccountGUID"];
+    accountGUID2 = [(MCSingleSignOnPayloadKerberosInfo *)self accountGUID];
+    [dictionary setObject:accountGUID2 forKeyedSubscript:@"AccountGUID"];
   }
 
-  v14 = [(MCSingleSignOnPayloadKerberosInfo *)self appIdentifierMatches];
+  appIdentifierMatches = [(MCSingleSignOnPayloadKerberosInfo *)self appIdentifierMatches];
 
-  if (v14)
+  if (appIdentifierMatches)
   {
-    v15 = [(MCSingleSignOnPayloadKerberosInfo *)self appIdentifierMatches];
-    [v3 setObject:v15 forKeyedSubscript:@"AppIdentifierMatches"];
+    appIdentifierMatches2 = [(MCSingleSignOnPayloadKerberosInfo *)self appIdentifierMatches];
+    [dictionary setObject:appIdentifierMatches2 forKeyedSubscript:@"AppIdentifierMatches"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

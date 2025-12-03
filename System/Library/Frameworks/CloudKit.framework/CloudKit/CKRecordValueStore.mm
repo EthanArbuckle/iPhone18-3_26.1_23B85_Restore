@@ -1,29 +1,29 @@
 @interface CKRecordValueStore
 + (void)initialize;
-- (BOOL)containsValueOfClasses:(id)a3 options:(unint64_t)a4 passingTest:(id)a5;
-- (CKRecordValueStore)initWithCoder:(id)a3;
-- (CKRecordValueStore)initWithRecord:(id)a3;
+- (BOOL)containsValueOfClasses:(id)classes options:(unint64_t)options passingTest:(id)test;
+- (CKRecordValueStore)initWithCoder:(id)coder;
+- (CKRecordValueStore)initWithRecord:(id)record;
 - (NSMutableDictionary)originalValues;
 - (NSMutableDictionary)values;
 - (NSMutableSet)changedKeysSet;
 - (id)allKeys;
 - (id)allRawValues;
 - (id)changedKeys;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)rawValueForKey:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)rawValueForKey:(id)key;
 - (id)recordID;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateKeysAndValuesOfClasses:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateKeysAndValuesOfClasses:(id)classes options:(unint64_t)options usingBlock:(id)block;
 - (void)resetChangedKeys;
-- (void)setChangedKeysSet:(id)a3;
-- (void)setNilValueForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
-- (void)setObjectNoValidate:(id)a3 forKey:(id)a4;
-- (void)setOriginalValues:(id)a3;
-- (void)setRawValue:(id)a3 forKey:(id)a4;
-- (void)setValues:(id)a3;
+- (void)setChangedKeysSet:(id)set;
+- (void)setNilValueForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
+- (void)setObjectNoValidate:(id)validate forKey:(id)key;
+- (void)setOriginalValues:(id)values;
+- (void)setRawValue:(id)value forKey:(id)key;
+- (void)setValues:(id)values;
 @end
 
 @implementation CKRecordValueStore
@@ -34,19 +34,19 @@
   v3 = objc_opt_class();
   v7[0] = objc_opt_class();
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v4, v7, 1);
-  sub_1886CEE50(a1, v3, v5, 0, 1);
+  sub_1886CEE50(self, v3, v5, 0, 1);
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
 - (id)allKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_values(v2, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_values(selfCopy, v3, v4);
   v8 = objc_msgSend_allKeys(v5, v6, v7);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -71,44 +71,44 @@
 
 - (NSMutableDictionary)originalValues
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_originalValues;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_originalValues;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSMutableSet)changedKeysSet
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_changedKeysSet;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_changedKeysSet;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSMutableDictionary)values
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_values;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_values;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (CKRecordValueStore)initWithRecord:(id)a3
+- (CKRecordValueStore)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v14.receiver = self;
   v14.super_class = CKRecordValueStore;
   v5 = [(CKRecordValueStore *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_record, v4);
+    objc_storeWeak(&v5->_record, recordCopy);
     v7 = objc_opt_new();
     values = v6->_values;
     v6->_values = v7;
@@ -127,89 +127,89 @@
   return v6;
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
-  v11 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v6 = objc_msgSend_CKMapValues_(v11, v5, &unk_1EFA2ECE8);
+  valuesCopy = values;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend_CKMapValues_(valuesCopy, v5, &unk_1EFA2ECE8);
   v9 = objc_msgSend_mutableCopy(v6, v7, v8);
-  values = v4->_values;
-  v4->_values = v9;
+  values = selfCopy->_values;
+  selfCopy->_values = v9;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setOriginalValues:(id)a3
+- (void)setOriginalValues:(id)values
 {
-  v11 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v6 = objc_msgSend_CKMapValues_(v11, v5, &unk_1EFA2ED08);
+  valuesCopy = values;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend_CKMapValues_(valuesCopy, v5, &unk_1EFA2ED08);
   v9 = objc_msgSend_mutableCopy(v6, v7, v8);
-  originalValues = v4->_originalValues;
-  v4->_originalValues = v9;
+  originalValues = selfCopy->_originalValues;
+  selfCopy->_originalValues = v9;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setChangedKeysSet:(id)a3
+- (void)setChangedKeysSet:(id)set
 {
-  v12 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_CKDeepCopy(v12, v5, v6);
+  setCopy = set;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_CKDeepCopy(setCopy, v5, v6);
   v10 = objc_msgSend_mutableCopy(v7, v8, v9);
-  changedKeysSet = v4->_changedKeysSet;
-  v4->_changedKeysSet = v10;
+  changedKeysSet = selfCopy->_changedKeysSet;
+  selfCopy->_changedKeysSet = v10;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v8 = objc_msgSend_values(v5, v6, v7);
-  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, v4);
+  subscriptCopy = subscript;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objc_msgSend_values(selfCopy, v6, v7);
+  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, subscriptCopy);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (id)rawValueForKey:(id)a3
+- (id)rawValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v8 = objc_msgSend_values(v5, v6, v7);
-  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, v4);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objc_msgSend_values(selfCopy, v6, v7);
+  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, keyCopy);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (void)setRawValue:(id)a3 forKey:(id)a4
+- (void)setRawValue:(id)value forKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = sub_188408790(v13);
-  v11 = objc_msgSend_values(v7, v9, v10);
-  objc_msgSend_setObject_forKeyedSubscript_(v11, v12, v8, v6);
+  valueCopy = value;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = sub_188408790(valueCopy);
+  v11 = objc_msgSend_values(selfCopy, v9, v10);
+  objc_msgSend_setObject_forKeyedSubscript_(v11, v12, v8, keyCopy);
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v166 = a3;
-  v7 = v6;
+  keyCopy = key;
+  objectCopy = object;
+  v7 = keyCopy;
   v8 = v7;
   if (self)
   {
@@ -288,7 +288,7 @@ LABEL_61:
           goto LABEL_80;
         }
 
-        v30 = v166;
+        v30 = objectCopy;
         v31 = v17;
         v34 = objc_msgSend_recordID(self, v32, v33);
         isEncrypted = objc_msgSend_isEncrypted(self, v35, v36);
@@ -528,45 +528,45 @@ LABEL_69:
   }
 
   v93 = v8;
-  v94 = v166;
+  v94 = objectCopy;
   v95 = v93;
 LABEL_53:
 
-  objc_msgSend__setObject_forKey_(self, v92, v166, v8);
+  objc_msgSend__setObject_forKey_(self, v92, objectCopy, v8);
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  if (a4)
+  if (subscript)
   {
-    objc_msgSend_setObject_forKey_(self, a2, a3);
+    objc_msgSend_setObject_forKey_(self, a2, object);
   }
 }
 
-- (void)setObjectNoValidate:(id)a3 forKey:(id)a4
+- (void)setObjectNoValidate:(id)validate forKey:(id)key
 {
-  v33 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  sub_18857F044(v7, v33, v6);
-  v10 = objc_msgSend_values(v7, v8, v9);
-  v13 = objc_msgSend_originalValues(v7, v11, v12);
+  validateCopy = validate;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sub_18857F044(selfCopy, validateCopy, keyCopy);
+  v10 = objc_msgSend_values(selfCopy, v8, v9);
+  v13 = objc_msgSend_originalValues(selfCopy, v11, v12);
   v15 = v13;
-  if (v7)
+  if (selfCopy)
   {
-    trackChanges = v7->_trackChanges;
-    if (v6 && v7->_trackChanges)
+    trackChanges = selfCopy->_trackChanges;
+    if (keyCopy && selfCopy->_trackChanges)
     {
-      v17 = objc_msgSend_objectForKeyedSubscript_(v13, v14, v6);
+      v17 = objc_msgSend_objectForKeyedSubscript_(v13, v14, keyCopy);
 
       if (!v17)
       {
-        v19 = objc_msgSend_objectForKeyedSubscript_(v10, v18, v6);
+        v19 = objc_msgSend_objectForKeyedSubscript_(v10, v18, keyCopy);
 
         if (v19)
         {
-          objc_msgSend_objectForKeyedSubscript_(v10, v20, v6);
+          objc_msgSend_objectForKeyedSubscript_(v10, v20, keyCopy);
         }
 
         else
@@ -574,7 +574,7 @@ LABEL_53:
           objc_msgSend_null(MEMORY[0x1E695DFB0], v20, v21);
         }
         v22 = ;
-        objc_msgSend_setObject_forKeyedSubscript_(v15, v23, v22, v6);
+        objc_msgSend_setObject_forKeyedSubscript_(v15, v23, v22, keyCopy);
       }
 
       trackChanges = 1;
@@ -586,37 +586,37 @@ LABEL_53:
     trackChanges = 0;
   }
 
-  v24 = sub_188408790(v33);
-  objc_msgSend_setObject_forKeyedSubscript_(v10, v25, v24, v6);
+  v24 = sub_188408790(validateCopy);
+  objc_msgSend_setObject_forKeyedSubscript_(v10, v25, v24, keyCopy);
 
   if (trackChanges)
   {
-    v28 = objc_msgSend_changedKeysSet(v7, v26, v27);
-    v31 = objc_msgSend_copy(v6, v29, v30);
+    v28 = objc_msgSend_changedKeysSet(selfCopy, v26, v27);
+    v31 = objc_msgSend_copy(keyCopy, v29, v30);
     objc_msgSend_addObject_(v28, v32, v31);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setNilValueForKey:(id)a3
+- (void)setNilValueForKey:(id)key
 {
-  v24 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_values(v4, v5, v6);
-  v11 = objc_msgSend_originalValues(v4, v8, v9);
-  if (v4 && v4->_trackChanges)
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_values(selfCopy, v5, v6);
+  v11 = objc_msgSend_originalValues(selfCopy, v8, v9);
+  if (selfCopy && selfCopy->_trackChanges)
   {
-    v12 = objc_msgSend_objectForKeyedSubscript_(v7, v10, v24);
+    v12 = objc_msgSend_objectForKeyedSubscript_(v7, v10, keyCopy);
     if (v12)
     {
-      v13 = objc_msgSend_objectForKeyedSubscript_(v11, v10, v24);
+      v13 = objc_msgSend_objectForKeyedSubscript_(v11, v10, keyCopy);
 
       if (!v13)
       {
-        v14 = objc_msgSend_objectForKeyedSubscript_(v7, v10, v24);
-        objc_msgSend_setObject_forKeyedSubscript_(v11, v15, v14, v24);
+        v14 = objc_msgSend_objectForKeyedSubscript_(v7, v10, keyCopy);
+        objc_msgSend_setObject_forKeyedSubscript_(v11, v15, v14, keyCopy);
       }
     }
 
@@ -628,37 +628,37 @@ LABEL_53:
     v16 = 0;
   }
 
-  objc_msgSend_removeObjectForKey_(v7, v10, v24);
+  objc_msgSend_removeObjectForKey_(v7, v10, keyCopy);
   if (v16)
   {
-    v19 = objc_msgSend_changedKeysSet(v4, v17, v18);
-    v22 = objc_msgSend_copy(v24, v20, v21);
+    v19 = objc_msgSend_changedKeysSet(selfCopy, v17, v18);
+    v22 = objc_msgSend_copy(keyCopy, v20, v21);
     objc_msgSend_addObject_(v19, v23, v22);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)allRawValues
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_values(v2, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_values(selfCopy, v3, v4);
   v8 = objc_msgSend_allValues(v5, v6, v7);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
 - (id)changedKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_changedKeysSet(v2, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_changedKeysSet(selfCopy, v3, v4);
   v8 = objc_msgSend_allObjects(v5, v6, v7);
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -676,23 +676,23 @@ LABEL_53:
   objc_sync_exit(obj);
 }
 
-- (BOOL)containsValueOfClasses:(id)a3 options:(unint64_t)a4 passingTest:(id)a5
+- (BOOL)containsValueOfClasses:(id)classes options:(unint64_t)options passingTest:(id)test
 {
-  v6 = a4;
+  optionsCopy = options;
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v51 = v10;
-  if (v6)
+  classesCopy = classes;
+  testCopy = test;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v51 = selfCopy;
+  if (optionsCopy)
   {
-    objc_msgSend_changedKeys(v10, v11, v12);
+    objc_msgSend_changedKeys(selfCopy, v11, v12);
   }
 
   else
   {
-    objc_msgSend_allKeys(v10, v11, v12);
+    objc_msgSend_allKeys(selfCopy, v11, v12);
   }
 
   v70 = 0u;
@@ -707,7 +707,7 @@ LABEL_53:
   }
 
   v55 = *v69;
-  v50 = v8;
+  v50 = classesCopy;
   v52 = v13;
   do
   {
@@ -720,7 +720,7 @@ LABEL_53:
       }
 
       v19 = *(*(&v68 + 1) + 8 * i);
-      v20 = objc_msgSend_values(v10, v16, v17);
+      v20 = objc_msgSend_values(selfCopy, v16, v17);
       v22 = objc_msgSend_objectForKeyedSubscript_(v20, v21, v19);
 
       objc_opt_class();
@@ -742,14 +742,14 @@ LABEL_53:
         if (v28)
         {
           v53 = v28;
-          if (v8)
+          if (classesCopy)
           {
             v29 = objc_opt_class();
             v62 = 0u;
             v63 = 0u;
             v60 = 0u;
             v61 = 0u;
-            v30 = v8;
+            v30 = classesCopy;
             v33 = objc_msgSend_countByEnumeratingWithState_objects_count_(v30, v31, &v60, v73, 16);
             if (v33)
             {
@@ -766,8 +766,8 @@ LABEL_53:
                   if (objc_msgSend_isSubclassOfClass_(v29, v32, *(*(&v60 + 1) + 8 * j)))
                   {
 
-                    v8 = v50;
-                    v10 = v51;
+                    classesCopy = v50;
+                    selfCopy = v51;
                     v13 = v52;
                     goto LABEL_35;
                   }
@@ -782,9 +782,9 @@ LABEL_53:
                 break;
               }
 
-              v10 = v51;
+              selfCopy = v51;
 LABEL_44:
-              v8 = v50;
+              classesCopy = v50;
             }
 
             v13 = v52;
@@ -811,10 +811,10 @@ LABEL_35:
                     objc_enumerationMutation(v30);
                   }
 
-                  if (v9[2](v9, v19, *(*(&v56 + 1) + 8 * k)))
+                  if (testCopy[2](testCopy, v19, *(*(&v56 + 1) + 8 * k)))
                   {
 
-                    v8 = v50;
+                    classesCopy = v50;
                     v13 = v52;
 
                     goto LABEL_59;
@@ -844,14 +844,14 @@ LABEL_52:
         goto LABEL_53;
       }
 
-      if (v8)
+      if (classesCopy)
       {
         v36 = objc_opt_class();
         v66 = 0u;
         v67 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v27 = v8;
+        v27 = classesCopy;
         v39 = objc_msgSend_countByEnumeratingWithState_objects_count_(v27, v37, &v64, v74, 16);
         if (v39)
         {
@@ -868,8 +868,8 @@ LABEL_52:
               if (objc_msgSend_isSubclassOfClass_(v36, v38, *(*(&v64 + 1) + 8 * m)))
               {
 
-                v8 = v50;
-                v10 = v51;
+                classesCopy = v50;
+                selfCopy = v51;
                 v13 = v52;
                 goto LABEL_47;
               }
@@ -884,21 +884,21 @@ LABEL_52:
             break;
           }
 
-          v8 = v50;
-          v10 = v51;
+          classesCopy = v50;
+          selfCopy = v51;
           v13 = v52;
         }
 
         else
         {
-          v10 = v51;
+          selfCopy = v51;
         }
 
         goto LABEL_52;
       }
 
 LABEL_47:
-      if ((v9)[2](v9, v19, v22))
+      if ((testCopy)[2](testCopy, v19, v22))
       {
 LABEL_59:
 
@@ -916,30 +916,30 @@ LABEL_53:
   while (v15);
 LABEL_61:
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
   v48 = *MEMORY[0x1E69E9840];
   return v47;
 }
 
-- (void)enumerateKeysAndValuesOfClasses:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateKeysAndValuesOfClasses:(id)classes options:(unint64_t)options usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_18857FB98;
   v11[3] = &unk_1E70BDF10;
-  v12 = v8;
-  v9 = v8;
-  objc_msgSend_containsValueOfClasses_options_passingTest_(self, v10, a3, a4, v11);
+  v12 = blockCopy;
+  v9 = blockCopy;
+  objc_msgSend_containsValueOfClasses_options_passingTest_(self, v10, classes, options, v11);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    WeakRetained = objc_loadWeakRetained(&v3->_record);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_record);
   }
 
   else
@@ -949,21 +949,21 @@ LABEL_61:
 
   v5 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_initWithRecord_(v5, v6, WeakRetained);
-  v10 = objc_msgSend_values(v3, v8, v9);
+  v10 = objc_msgSend_values(selfCopy, v8, v9);
   objc_msgSend_setValues_(v7, v11, v10);
 
-  v14 = objc_msgSend_originalValues(v3, v12, v13);
+  v14 = objc_msgSend_originalValues(selfCopy, v12, v13);
   objc_msgSend_setOriginalValues_(v7, v15, v14);
 
-  v18 = objc_msgSend_changedKeysSet(v3, v16, v17);
+  v18 = objc_msgSend_changedKeysSet(selfCopy, v16, v17);
   v21 = objc_msgSend_CKDeepCopy(v18, v19, v20);
   v24 = objc_msgSend_mutableCopy(v21, v22, v23);
   v25 = *(v7 + 32);
   *(v7 + 32) = v24;
 
-  if (v3)
+  if (selfCopy)
   {
-    trackChanges = v3->_trackChanges;
+    trackChanges = selfCopy->_trackChanges;
   }
 
   else
@@ -973,33 +973,33 @@ LABEL_61:
 
   *(v7 + 8) = trackChanges;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v18 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
-  objc_sync_enter(v5);
-  v8 = objc_msgSend_values(v5, v6, v7);
-  objc_msgSend_encodeObject_forKey_(v18, v9, v8, @"RecordValues");
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objc_msgSend_values(selfCopy, v6, v7);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v8, @"RecordValues");
 
-  v12 = objc_msgSend_originalValues(v5, v10, v11);
-  objc_msgSend_encodeObject_forKey_(v18, v13, v12, @"OriginalValues");
+  v12 = objc_msgSend_originalValues(selfCopy, v10, v11);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, v12, @"OriginalValues");
 
-  v16 = objc_msgSend_changedKeysSet(v5, v14, v15);
-  objc_msgSend_encodeObject_forKey_(v18, v17, v16, @"ChangedKeys");
+  v16 = objc_msgSend_changedKeysSet(selfCopy, v14, v15);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v17, v16, @"ChangedKeys");
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKRecordValueStore)initWithCoder:(id)a3
+- (CKRecordValueStore)initWithCoder:(id)coder
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v45.receiver = self;
   v45.super_class = CKRecordValueStore;
   v5 = [(CKRecordValueStore *)&v45 init];
@@ -1011,7 +1011,7 @@ LABEL_61:
     v47[1] = objc_opt_class();
     v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v8, v47, 2);
     v11 = objc_msgSend_setByAddingObjectsFromArray_(v7, v10, v9);
-    v13 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v12, v11, @"RecordValues");
+    v13 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v12, v11, @"RecordValues");
     v16 = objc_msgSend_mutableCopy(v13, v14, v15);
     values = v5->_values;
     v5->_values = v16;
@@ -1022,7 +1022,7 @@ LABEL_61:
     v46[2] = objc_opt_class();
     v20 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v19, v46, 3);
     v22 = objc_msgSend_setByAddingObjectsFromArray_(v18, v21, v20);
-    v24 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v23, v22, @"OriginalValues");
+    v24 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v23, v22, @"OriginalValues");
     v27 = objc_msgSend_mutableCopy(v24, v25, v26);
     originalValues = v5->_originalValues;
     v5->_originalValues = v27;
@@ -1031,7 +1031,7 @@ LABEL_61:
     v30 = objc_opt_class();
     v31 = objc_opt_class();
     v33 = objc_msgSend_setWithObjects_(v29, v32, v30, v31, 0);
-    v35 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v34, v33, @"ChangedKeys");
+    v35 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v34, v33, @"ChangedKeys");
     changedKeysSet = v5->_changedKeysSet;
     v5->_changedKeysSet = v35;
 

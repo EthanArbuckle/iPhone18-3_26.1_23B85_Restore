@@ -1,20 +1,20 @@
 @interface AXTeachableLongFormViewController
-- (AXTeachableLongFormViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didReceiveNotification:(id)a3;
+- (AXTeachableLongFormViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didReceiveNotification:(id)notification;
 @end
 
 @implementation AXTeachableLongFormViewController
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  AXTeachableLongFormViewController.didReceive(_:)(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  AXTeachableLongFormViewController.didReceive(_:)(notificationCopy);
 }
 
-- (AXTeachableLongFormViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AXTeachableLongFormViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1000030B8();
     v7 = v6;
@@ -26,8 +26,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return AXTeachableLongFormViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return AXTeachableLongFormViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

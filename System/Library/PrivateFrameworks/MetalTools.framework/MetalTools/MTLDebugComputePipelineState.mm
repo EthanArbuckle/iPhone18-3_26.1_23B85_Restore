@@ -1,73 +1,73 @@
 @interface MTLDebugComputePipelineState
-- (BOOL)isAncestorOf:(id)a3;
-- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)a3 parent:(id)a4 mtl4Descriptor:(id)a5;
-- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 descriptor:(id)a6;
-- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 mtl4Descriptor:(id)a6;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)functionHandleToDebugFunctionHandle:(id)a3;
-- (id)functionHandleToDebugFunctionHandle:(id)a3 binaryFunction:(id)a4;
-- (id)functionHandleToDebugFunctionHandle:(id)a3 parentFunction:(id)a4;
-- (id)functionHandleWithBinaryFunction:(id)a3;
-- (id)functionHandleWithFunction:(id)a3;
-- (id)functionHandleWithName:(id)a3;
-- (id)getParameter:(id)a3;
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 resourceIndices:(unint64_t *)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3;
+- (BOOL)isAncestorOf:(id)of;
+- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)state parent:(id)parent mtl4Descriptor:(id)descriptor;
+- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)state reflection:(id)reflection parent:(id)parent descriptor:(id)descriptor;
+- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)state reflection:(id)reflection parent:(id)parent mtl4Descriptor:(id)descriptor;
+- (id)formattedDescription:(unint64_t)description;
+- (id)functionHandleToDebugFunctionHandle:(id)handle;
+- (id)functionHandleToDebugFunctionHandle:(id)handle binaryFunction:(id)function;
+- (id)functionHandleToDebugFunctionHandle:(id)handle parentFunction:(id)function;
+- (id)functionHandleWithBinaryFunction:(id)function;
+- (id)functionHandleWithFunction:(id)function;
+- (id)functionHandleWithName:(id)name;
+- (id)getParameter:(id)parameter;
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions resourceIndices:(unint64_t *)indices error:(id *)error;
+- (id)newComputePipelineStateWithBinaryFunctions:(id)functions error:(id *)error;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor;
 - (int64_t)shaderValidation;
 - (int64_t)shaderValidationState;
 - (void)dealloc;
 - (void)initCommon;
-- (void)validateHandleForSetFunction:(id)a3;
+- (void)validateHandleForSetFunction:(id)function;
 @end
 
 @implementation MTLDebugComputePipelineState
 
-- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)a3 parent:(id)a4 mtl4Descriptor:(id)a5
+- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)state parent:(id)parent mtl4Descriptor:(id)descriptor
 {
   v9.receiver = self;
   v9.super_class = MTLDebugComputePipelineState;
-  v7 = [(MTLToolsObject *)&v9 initWithBaseObject:a3 parent:a4];
+  v7 = [(MTLToolsObject *)&v9 initWithBaseObject:state parent:parent];
   if (v7)
   {
-    v7->_mtl4Descriptor = [a5 copy];
-    v7->_validationReflection = [a3 reflection];
+    v7->_mtl4Descriptor = [descriptor copy];
+    v7->_validationReflection = [state reflection];
     [(MTLDebugComputePipelineState *)v7 initCommon];
   }
 
   return v7;
 }
 
-- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 mtl4Descriptor:(id)a6
+- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)state reflection:(id)reflection parent:(id)parent mtl4Descriptor:(id)descriptor
 {
   v10.receiver = self;
   v10.super_class = MTLDebugComputePipelineState;
-  v8 = [(MTLToolsObject *)&v10 initWithBaseObject:a3 parent:a5];
+  v8 = [(MTLToolsObject *)&v10 initWithBaseObject:state parent:parent];
   if (v8)
   {
-    v8->_mtl4Descriptor = [a6 copy];
-    v8->_validationReflection = a4;
+    v8->_mtl4Descriptor = [descriptor copy];
+    v8->_validationReflection = reflection;
     [(MTLDebugComputePipelineState *)v8 initCommon];
   }
 
   return v8;
 }
 
-- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)a3 reflection:(id)a4 parent:(id)a5 descriptor:(id)a6
+- (MTLDebugComputePipelineState)initWithComputePipelineState:(id)state reflection:(id)reflection parent:(id)parent descriptor:(id)descriptor
 {
   v11.receiver = self;
   v11.super_class = MTLDebugComputePipelineState;
-  v8 = [(MTLToolsObject *)&v11 initWithBaseObject:a3 parent:a5];
+  v8 = [(MTLToolsObject *)&v11 initWithBaseObject:state parent:parent];
   if (v8)
   {
-    v9 = [a6 copy];
+    v9 = [descriptor copy];
     v8->_descriptor = v9;
     [(MTLComputePipelineDescriptor *)v9 setBinaryArchives:0];
     [(MTLComputePipelineDescriptor *)v8->_descriptor setPreloadedLibraries:MEMORY[0x277CBEBF8]];
-    v8->_function = [a6 computeFunction];
-    v8->_validationReflection = a4;
+    v8->_function = [descriptor computeFunction];
+    v8->_validationReflection = reflection;
     [(MTLDebugComputePipelineState *)v8 initCommon];
   }
 
@@ -84,12 +84,12 @@
 - (void)initCommon
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(MTLComputePipelineReflection *)self->_validationReflection builtInArguments];
+  builtInArguments = [(MTLComputePipelineReflection *)self->_validationReflection builtInArguments];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v4 = [builtInArguments countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -100,26 +100,26 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(builtInArguments);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 builtInDataType];
+        builtInDataType = [v8 builtInDataType];
         v10 = 1;
-        if (v9 > 40)
+        if (builtInDataType > 40)
         {
-          if (v9 == 41)
+          if (builtInDataType == 41)
           {
             v11 = 1;
           }
 
           else
           {
-            if (v9 != 42)
+            if (builtInDataType != 42)
             {
               v11 = 1;
               v12 = 1;
-              if (v9 != 43)
+              if (builtInDataType != 43)
               {
                 goto LABEL_21;
               }
@@ -135,18 +135,18 @@
 
         else
         {
-          if (v9 == 33)
+          if (builtInDataType == 33)
           {
             v11 = 1;
           }
 
           else
           {
-            if (v9 != 34)
+            if (builtInDataType != 34)
             {
               v11 = 1;
               v12 = 1;
-              if (v9 != 35)
+              if (builtInDataType != 35)
               {
                 goto LABEL_21;
               }
@@ -161,10 +161,10 @@
         }
 
 LABEL_21:
-        v13 = [v8 builtInType];
-        if (v13 <= 7)
+        builtInType = [v8 builtInType];
+        if (builtInType <= 7)
         {
-          switch(v13)
+          switch(builtInType)
           {
             case 5:
               v14 = 48;
@@ -180,16 +180,16 @@ LABEL_21:
           }
         }
 
-        else if (v13 > 9)
+        else if (builtInType > 9)
         {
-          if (v13 == 10)
+          if (builtInType == 10)
           {
             v14 = 168;
           }
 
           else
           {
-            if (v13 != 11)
+            if (builtInType != 11)
             {
               continue;
             }
@@ -200,7 +200,7 @@ LABEL_21:
 
         else
         {
-          if (v13 == 8)
+          if (builtInType == 8)
           {
             self->_maxThreadIndexInThreadgroup[0] = v12;
             continue;
@@ -215,7 +215,7 @@ LABEL_21:
         v15[2] = v10;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [builtInArguments countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);
@@ -224,31 +224,31 @@ LABEL_21:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v4.receiver = self;
   v4.super_class = MTLDebugComputePipelineState;
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", -[MTLToolsObject description](&v4, sel_description), -[MTLComputePipelineDescriptor formattedDescription:](self->_descriptor, "formattedDescription:", a3 + 4)];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", -[MTLToolsObject description](&v4, sel_description), -[MTLComputePipelineDescriptor formattedDescription:](self->_descriptor, "formattedDescription:", description + 4)];
 }
 
-- (id)getParameter:(id)a3
+- (id)getParameter:(id)parameter
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getParameter:a3];
+  return [baseObject getParameter:parameter];
 }
 
-- (id)functionHandleToDebugFunctionHandle:(id)a3 parentFunction:(id)a4
+- (id)functionHandleToDebugFunctionHandle:(id)handle parentFunction:(id)function
 {
-  v7 = *([a4 device] + 48);
+  v7 = *([function device] + 48);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_parentFunction___block_invoke;
   v9[3] = &unk_2787B4A20;
-  v9[4] = a3;
+  v9[4] = handle;
   v9[5] = self;
-  v9[6] = a4;
-  return [v7 getCachedObjectForKey:a3 onMiss:v9];
+  v9[6] = function;
+  return [v7 getCachedObjectForKey:handle onMiss:v9];
 }
 
 uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_parentFunction___block_invoke(void *a1)
@@ -261,11 +261,11 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
   return [(MTLDebugFunctionHandle *)v2 initWithBaseObject:v3 parent:v4 function:v5 stage:1];
 }
 
-- (id)functionHandleWithFunction:(id)a3
+- (id)functionHandleWithFunction:(id)function
 {
-  if (a3)
+  if (function)
   {
-    if (([a3 conformsToProtocol:&unk_2842379F0] & 1) == 0)
+    if (([function conformsToProtocol:&unk_2842379F0] & 1) == 0)
     {
       [MTLDebugComputePipelineState functionHandleWithFunction:];
     }
@@ -278,10 +278,10 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
 
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return [(MTLDebugComputePipelineState *)self functionHandleToDebugFunctionHandle:v5 parentFunction:a3];
+  return [(MTLDebugComputePipelineState *)self functionHandleToDebugFunctionHandle:v5 parentFunction:function];
 }
 
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
   if (self->_mtl4Descriptor)
@@ -297,20 +297,20 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
     [MTLDebugComputePipelineState newComputePipelineStateWithAdditionalBinaryFunctions:error:];
   }
 
-  v7 = [(MTLToolsComputePipelineState *)self device];
-  if (a3 && (v8 = v7, [a3 count]))
+  device = [(MTLToolsComputePipelineState *)self device];
+  if (functions && (v8 = device, [functions count]))
   {
     if (([-[MTLDevice baseObject](v8 "baseObject")] & 1) == 0)
     {
       [MTLDebugComputePipelineState newComputePipelineStateWithAdditionalBinaryFunctions:error:];
     }
 
-    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(functions, "count")}];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v10 = [functions countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
       v11 = v10;
@@ -321,18 +321,18 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
         {
           if (*v23 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(functions);
           }
 
-          v14 = [*(*(&v22 + 1) + 8 * i) baseObject];
-          [v9 addObject:v14];
-          if (![v14 precompiledOutput])
+          baseObject = [*(*(&v22 + 1) + 8 * i) baseObject];
+          [v9 addObject:baseObject];
+          if (![baseObject precompiledOutput])
           {
-            [MTLDebugComputePipelineState newComputePipelineStateWithAdditionalBinaryFunctions:v14 error:?];
+            [MTLDebugComputePipelineState newComputePipelineStateWithAdditionalBinaryFunctions:baseObject error:?];
           }
         }
 
-        v11 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v11 = [functions countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v11);
@@ -345,9 +345,9 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
   }
 
   v21 = 0;
-  if (!a4)
+  if (!error)
   {
-    a4 = &v21;
+    error = &v21;
   }
 
   v15 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -379,7 +379,7 @@ LABEL_25:
   {
     v17 = [(MTLComputePipelineDescriptor *)self->_descriptor copy];
     v18 = objc_alloc_init(MEMORY[0x277CD6EB8]);
-    [v18 setBinaryFunctions:a3];
+    [v18 setBinaryFunctions:functions];
     [v17 setLinkedFunctions:v18];
 
     v16 = [[MTLDebugComputePipelineState alloc] initWithComputePipelineState:v15 reflection:self->_validationReflection parent:self descriptor:v17];
@@ -390,11 +390,11 @@ LABEL_30:
   return v16;
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor
 {
   if ([-[MTLDevice baseObject](-[MTLToolsComputePipelineState device](self "device")])
   {
-    if (a3)
+    if (descriptor)
     {
       goto LABEL_3;
     }
@@ -405,7 +405,7 @@ LABEL_9:
   }
 
   [MTLDebugComputePipelineState newVisibleFunctionTableWithDescriptor:];
-  if (!a3)
+  if (!descriptor)
   {
     goto LABEL_9;
   }
@@ -422,7 +422,7 @@ LABEL_5:
   if (result)
   {
     v6 = result;
-    v7 = [[MTLDebugVisibleFunctionTable alloc] initWithVisibleFunctionTable:result parent:self descriptor:a3 pipelineState:self stage:1];
+    v7 = [[MTLDebugVisibleFunctionTable alloc] initWithVisibleFunctionTable:result parent:self descriptor:descriptor pipelineState:self stage:1];
 
     return v7;
   }
@@ -430,9 +430,9 @@ LABEL_5:
   return result;
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -450,7 +450,7 @@ LABEL_5:
   if (result)
   {
     v6 = result;
-    v7 = [[MTLDebugIntersectionFunctionTable alloc] initWithIntersectionFunctionTable:result parent:self descriptor:a3 pipelineState:self stage:1];
+    v7 = [[MTLDebugIntersectionFunctionTable alloc] initWithIntersectionFunctionTable:result parent:self descriptor:descriptor pipelineState:self stage:1];
 
     return v7;
   }
@@ -458,16 +458,16 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isAncestorOf:(id)a3
+- (BOOL)isAncestorOf:(id)of
 {
-  if (self == a3)
+  if (self == of)
   {
     return 1;
   }
 
-  v3 = a3;
-  v5 = a3;
-  while (v3)
+  ofCopy = of;
+  ofCopy2 = of;
+  while (ofCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -475,13 +475,13 @@ LABEL_5:
       break;
     }
 
-    v6 = [v3 parent];
+    parent = [ofCopy parent];
 
-    v3 = v6;
-    if (v6 == self)
+    ofCopy = parent;
+    if (parent == self)
     {
       v7 = 1;
-      v3 = v6;
+      ofCopy = parent;
       goto LABEL_8;
     }
   }
@@ -492,18 +492,18 @@ LABEL_8:
   return v7;
 }
 
-- (void)validateHandleForSetFunction:(id)a3
+- (void)validateHandleForSetFunction:(id)function
 {
-  v5 = [a3 parent];
-  if (([v5 isAncestorOf:self] & 1) == 0 && !-[MTLDebugComputePipelineState isAncestorOf:](self, "isAncestorOf:", v5))
+  parent = [function parent];
+  if (([parent isAncestorOf:self] & 1) == 0 && !-[MTLDebugComputePipelineState isAncestorOf:](self, "isAncestorOf:", parent))
   {
-    [MTLDebugComputePipelineState validateHandleForSetFunction:a3];
+    [MTLDebugComputePipelineState validateHandleForSetFunction:function];
   }
 }
 
 - (int64_t)shaderValidation
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -518,7 +518,7 @@ LABEL_8:
       break;
     }
 
-    v2 = [v2 baseObject];
+    baseObject = [baseObject baseObject];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -526,12 +526,12 @@ LABEL_8:
     }
   }
 
-  return [v2 shaderValidation];
+  return [baseObject shaderValidation];
 }
 
 - (int64_t)shaderValidationState
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -546,7 +546,7 @@ LABEL_8:
       break;
     }
 
-    v2 = [v2 baseObject];
+    baseObject = [baseObject baseObject];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -554,19 +554,19 @@ LABEL_8:
     }
   }
 
-  return [v2 shaderValidationState];
+  return [baseObject shaderValidationState];
 }
 
-- (id)functionHandleToDebugFunctionHandle:(id)a3
+- (id)functionHandleToDebugFunctionHandle:(id)handle
 {
   functionHandleObjectCache = self->super.super._device->functionHandleObjectCache;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __68__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle___block_invoke;
   v5[3] = &unk_2787B49F8;
-  v5[4] = a3;
+  v5[4] = handle;
   v5[5] = self;
-  return [(MTLToolsObjectCache *)functionHandleObjectCache getCachedObjectForKey:a3 onMiss:v5];
+  return [(MTLToolsObjectCache *)functionHandleObjectCache getCachedObjectForKey:handle onMiss:v5];
 }
 
 uint64_t __68__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle___block_invoke(uint64_t a1)
@@ -578,17 +578,17 @@ uint64_t __68__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
   return [(MTLDebugFunctionHandle *)v2 initWithBaseObject:v3 parent:v4 stage:1];
 }
 
-- (id)functionHandleToDebugFunctionHandle:(id)a3 binaryFunction:(id)a4
+- (id)functionHandleToDebugFunctionHandle:(id)handle binaryFunction:(id)function
 {
   functionHandleObjectCache = self->super.super._device->functionHandleObjectCache;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_binaryFunction___block_invoke;
   v6[3] = &unk_2787B4A20;
-  v6[4] = a3;
+  v6[4] = handle;
   v6[5] = self;
-  v6[6] = a4;
-  return [(MTLToolsObjectCache *)functionHandleObjectCache getCachedObjectForKey:a3 onMiss:v6];
+  v6[6] = function;
+  return [(MTLToolsObjectCache *)functionHandleObjectCache getCachedObjectForKey:handle onMiss:v6];
 }
 
 uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_binaryFunction___block_invoke(void *a1)
@@ -601,11 +601,11 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
   return [(MTLDebugFunctionHandle *)v2 initWithBaseObject:v3 parent:v4 binaryFunction:v5 stage:1];
 }
 
-- (id)functionHandleWithBinaryFunction:(id)a3
+- (id)functionHandleWithBinaryFunction:(id)function
 {
   device = self->super.super._device;
   _MTLMessageContextBegin_();
-  if (!a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!function || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     _MTLMessageContextPush_();
   }
@@ -615,7 +615,7 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v7)
   {
-    v8 = [(MTLDebugComputePipelineState *)self functionHandleToDebugFunctionHandle:v7 binaryFunction:a3];
+    v8 = [(MTLDebugComputePipelineState *)self functionHandleToDebugFunctionHandle:v7 binaryFunction:function];
   }
 
   else
@@ -627,11 +627,11 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
   return v8;
 }
 
-- (id)functionHandleWithName:(id)a3
+- (id)functionHandleWithName:(id)name
 {
   device = self->super.super._device;
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!name)
   {
     _MTLMessageContextPush_();
   }
@@ -653,21 +653,21 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
   return v8;
 }
 
-- (id)newComputePipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithBinaryFunctions:(id)functions error:(id *)error
 {
   device = self->super.super._device;
   _MTLMessageContextBegin_();
-  if (!a3)
+  if (!functions)
   {
     _MTLMessageContextPush_();
   }
 
-  if ([a3 count])
+  if ([functions count])
   {
     v8 = 0;
     do
     {
-      [a3 objectAtIndexedSubscript:v8];
+      [functions objectAtIndexedSubscript:v8];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -678,21 +678,21 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
       ++v8;
     }
 
-    while (v8 < [a3 count]);
+    while (v8 < [functions count]);
   }
 
   _MTLMessageContextEnd();
   v9 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
-  if ([a3 count])
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(functions, "count")}];
+  if ([functions count])
   {
     v11 = 0;
     do
     {
-      [v10 addObject:{objc_msgSend(objc_msgSend(a3, "objectAtIndexedSubscript:", v11++), "baseObject")}];
+      [v10 addObject:{objc_msgSend(objc_msgSend(functions, "objectAtIndexedSubscript:", v11++), "baseObject")}];
     }
 
-    while (v11 < [a3 count]);
+    while (v11 < [functions count]);
   }
 
   v12 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -724,7 +724,7 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
   return v18;
 }
 
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 resourceIndices:(unint64_t *)a4 error:(id *)a5
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions resourceIndices:(unint64_t *)indices error:(id *)error
 {
   device = self->super.super._device;
   _MTLMessageContextBegin_();
@@ -734,7 +734,7 @@ uint64_t __83__MTLDebugComputePipelineState_functionHandleToDebugFunctionHandle_
     {
 LABEL_21:
       _MTLMessageContextPush_();
-      if (a3)
+      if (functions)
       {
         goto LABEL_6;
       }
@@ -748,7 +748,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (a3)
+  if (functions)
   {
     goto LABEL_6;
   }
@@ -756,12 +756,12 @@ LABEL_21:
 LABEL_22:
   _MTLMessageContextPush_();
 LABEL_6:
-  if ([a3 count])
+  if ([functions count])
   {
     v10 = 0;
     do
     {
-      [a3 objectAtIndexedSubscript:v10];
+      [functions objectAtIndexedSubscript:v10];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -772,21 +772,21 @@ LABEL_6:
       ++v10;
     }
 
-    while (v10 < [a3 count]);
+    while (v10 < [functions count]);
   }
 
   _MTLMessageContextEnd();
   v11 = objc_autoreleasePoolPush();
-  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
-  if ([a3 count])
+  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(functions, "count")}];
+  if ([functions count])
   {
     v13 = 0;
     do
     {
-      [v12 addObject:{objc_msgSend(objc_msgSend(a3, "objectAtIndexedSubscript:", v13++), "baseObject")}];
+      [v12 addObject:{objc_msgSend(objc_msgSend(functions, "objectAtIndexedSubscript:", v13++), "baseObject")}];
     }
 
-    while (v13 < [a3 count]);
+    while (v13 < [functions count]);
   }
 
   v14 = [-[MTLToolsObject baseObject](self "baseObject")];

@@ -1,15 +1,15 @@
 @interface iOSSetupWiFiViewController
-- (void)handleContinueButton:(id)a3;
-- (void)handleDismissButton:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleContinueButton:(id)button;
+- (void)handleDismissButton:(id)button;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation iOSSetupWiFiViewController
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -18,9 +18,9 @@
   [(iOSSetupBaseViewController *)self dismissWithType:5];
 }
 
-- (void)handleContinueButton:(id)a3
+- (void)handleContinueButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -60,9 +60,9 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -70,12 +70,12 @@
 
   v5.receiver = self;
   v5.super_class = iOSSetupWiFiViewController;
-  [(iOSSetupWiFiViewController *)&v5 viewDidDisappear:v3];
+  [(iOSSetupWiFiViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -83,7 +83,7 @@
 
   v10.receiver = self;
   v10.super_class = iOSSetupWiFiViewController;
-  [(SVSBaseViewController *)&v10 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v10 viewWillAppear:appearCopy];
   v5 = sub_10012794C(@"Localizable", @"WIFI_TURN_ON_TITLE");
   [*(&self->super.super._didReactivateContainerViewAfterLayingOut + 1) setText:v5];
 

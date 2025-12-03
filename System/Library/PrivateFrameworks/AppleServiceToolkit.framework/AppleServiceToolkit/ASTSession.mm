@@ -1,88 +1,88 @@
 @interface ASTSession
-+ (id)sessionWithContext:(id)a3;
-+ (id)sessionWithIdentity:(id)a3;
-+ (id)sessionWithSerialNumber:(id)a3;
-+ (void)requestAsset:(id)a3 completionHandler:(id)a4;
-+ (void)requestAsset:(id)a3 serverURL:(id)a4 endpoint:(id)a5 completionHandler:(id)a6;
-+ (void)sessionExistsForIdentities:(id)a3 ticketNumber:(id)a4 completionHandler:(id)a5;
-+ (void)sessionExistsForIdentities:(id)a3 ticketNumber:(id)a4 timeout:(double)a5 completion:(id)a6;
-+ (void)sessionExistsForIdentities:(id)a3 ticketNumber:(id)a4 timeout:(double)a5 completionHandler:(id)a6;
-+ (void)sessionExistsForSerialNumbers:(id)a3 ticketNumber:(id)a4 timeout:(double)a5 completionHandler:(id)a6;
-- (ASTSession)initWithContext:(id)a3;
-- (ASTSession)initWithIdentity:(id)a3;
-- (ASTSession)initWithSerialNumber:(id)a3;
++ (id)sessionWithContext:(id)context;
++ (id)sessionWithIdentity:(id)identity;
++ (id)sessionWithSerialNumber:(id)number;
++ (void)requestAsset:(id)asset completionHandler:(id)handler;
++ (void)requestAsset:(id)asset serverURL:(id)l endpoint:(id)endpoint completionHandler:(id)handler;
++ (void)sessionExistsForIdentities:(id)identities ticketNumber:(id)number completionHandler:(id)handler;
++ (void)sessionExistsForIdentities:(id)identities ticketNumber:(id)number timeout:(double)timeout completion:(id)completion;
++ (void)sessionExistsForIdentities:(id)identities ticketNumber:(id)number timeout:(double)timeout completionHandler:(id)handler;
++ (void)sessionExistsForSerialNumbers:(id)numbers ticketNumber:(id)number timeout:(double)timeout completionHandler:(id)handler;
+- (ASTSession)initWithContext:(id)context;
+- (ASTSession)initWithIdentity:(id)identity;
+- (ASTSession)initWithSerialNumber:(id)number;
 - (ASTSessionDelegate)delegate;
-- (BOOL)sendAuthInfoResult:(id)a3 error:(id *)a4;
-- (BOOL)sendProfileResult:(id)a3 error:(id *)a4;
-- (BOOL)sendTestResult:(id)a3 error:(id *)a4;
-- (BOOL)shouldEvictCachedAssetForName:(id)a3;
+- (BOOL)sendAuthInfoResult:(id)result error:(id *)error;
+- (BOOL)sendProfileResult:(id)result error:(id *)error;
+- (BOOL)sendTestResult:(id)result error:(id *)error;
+- (BOOL)shouldEvictCachedAssetForName:(id)name;
 - (BOOL)shouldShowResults;
 - (id)destinationAssetDirectory;
-- (id)destinationURLForAsset:(id)a3;
-- (id)readContentsOfFileHandle:(id)a3 error:(id *)a4;
+- (id)destinationURLForAsset:(id)asset;
+- (id)readContentsOfFileHandle:(id)handle error:(id *)error;
 - (void)archive;
 - (void)dealloc;
 - (void)end;
-- (void)fetchAsset:(id)a3 sessionClass:(Class)a4 serverURL:(id)a5 endpoint:(id)a6 completionHandler:(id)a7;
+- (void)fetchAsset:(id)asset sessionClass:(Class)class serverURL:(id)l endpoint:(id)endpoint completionHandler:(id)handler;
 - (void)idle;
-- (void)idleWithCompletion:(id)a3;
+- (void)idleWithCompletion:(id)completion;
 - (void)invalidate;
 - (void)removeDownloadedAssets;
-- (void)requestAsset:(id)a3 completionHandler:(id)a4;
-- (void)requestAsset:(id)a3 serverURL:(id)a4 endpoint:(id)a5 completionHandler:(id)a6;
-- (void)requestSuiteStart:(id)a3 completionHandler:(id)a4;
-- (void)requestSuiteSummary:(id)a3 completionHandler:(id)a4;
-- (void)requestSuitesAvailableWithCompletionHandler:(id)a3;
-- (void)session:(id)a3 cancelTest:(id)a4;
-- (void)session:(id)a3 didEndWithError:(id)a4;
-- (void)session:(id)a3 didPauseWithError:(id)a4;
-- (void)session:(id)a3 generateAuthInfoWithNonce:(id)a4;
-- (void)session:(id)a3 profile:(id)a4 filteredByComponents:(id)a5;
-- (void)session:(id)a3 signFile:(id)a4 completionHandler:(id)a5;
-- (void)session:(id)a3 signPayload:(id)a4 completionHandler:(id)a5;
-- (void)session:(id)a3 startTest:(id)a4 parameters:(id)a5 testResult:(id)a6;
-- (void)sessionDidResume:(id)a3;
-- (void)sessionDidStart:(id)a3;
-- (void)setActiveSession:(id)a3;
-- (void)startWithMode:(int)a3;
-- (void)updateAction:(id)a3;
+- (void)requestAsset:(id)asset completionHandler:(id)handler;
+- (void)requestAsset:(id)asset serverURL:(id)l endpoint:(id)endpoint completionHandler:(id)handler;
+- (void)requestSuiteStart:(id)start completionHandler:(id)handler;
+- (void)requestSuiteSummary:(id)summary completionHandler:(id)handler;
+- (void)requestSuitesAvailableWithCompletionHandler:(id)handler;
+- (void)session:(id)session cancelTest:(id)test;
+- (void)session:(id)session didEndWithError:(id)error;
+- (void)session:(id)session didPauseWithError:(id)error;
+- (void)session:(id)session generateAuthInfoWithNonce:(id)nonce;
+- (void)session:(id)session profile:(id)profile filteredByComponents:(id)components;
+- (void)session:(id)session signFile:(id)file completionHandler:(id)handler;
+- (void)session:(id)session signPayload:(id)payload completionHandler:(id)handler;
+- (void)session:(id)session startTest:(id)test parameters:(id)parameters testResult:(id)result;
+- (void)sessionDidResume:(id)resume;
+- (void)sessionDidStart:(id)start;
+- (void)setActiveSession:(id)session;
+- (void)startWithMode:(int)mode;
+- (void)updateAction:(id)action;
 @end
 
 @implementation ASTSession
 
-+ (id)sessionWithSerialNumber:(id)a3
++ (id)sessionWithSerialNumber:(id)number
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSerialNumber:v4];
+  numberCopy = number;
+  v5 = [[self alloc] initWithSerialNumber:numberCopy];
 
   return v5;
 }
 
-+ (id)sessionWithIdentity:(id)a3
++ (id)sessionWithIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentity:v4];
+  identityCopy = identity;
+  v5 = [[self alloc] initWithIdentity:identityCopy];
 
   return v5;
 }
 
-+ (id)sessionWithContext:(id)a3
++ (id)sessionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithContext:v4];
+  contextCopy = context;
+  v5 = [[self alloc] initWithContext:contextCopy];
 
   return v5;
 }
 
-- (ASTSession)initWithSerialNumber:(id)a3
+- (ASTSession)initWithSerialNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v15.receiver = self;
   v15.super_class = ASTSession;
   v5 = [(ASTSession *)&v15 init];
   if (v5)
   {
-    v6 = [[ASTRemoteServerSession alloc] initWithSerialNumber:v4];
+    v6 = [[ASTRemoteServerSession alloc] initWithSerialNumber:numberCopy];
     serverSession = v5->_serverSession;
     v5->_serverSession = v6;
 
@@ -94,23 +94,23 @@
     startedSessions = v5->_startedSessions;
     v5->_startedSessions = v10;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     destinations = v5->_destinations;
-    v5->_destinations = v12;
+    v5->_destinations = array;
   }
 
   return v5;
 }
 
-- (ASTSession)initWithIdentity:(id)a3
+- (ASTSession)initWithIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v15.receiver = self;
   v15.super_class = ASTSession;
   v5 = [(ASTSession *)&v15 init];
   if (v5)
   {
-    v6 = [[ASTRemoteServerSession alloc] initWithIdentity:v4];
+    v6 = [[ASTRemoteServerSession alloc] initWithIdentity:identityCopy];
     serverSession = v5->_serverSession;
     v5->_serverSession = v6;
 
@@ -122,23 +122,23 @@
     startedSessions = v5->_startedSessions;
     v5->_startedSessions = v10;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     destinations = v5->_destinations;
-    v5->_destinations = v12;
+    v5->_destinations = array;
   }
 
   return v5;
 }
 
-- (ASTSession)initWithContext:(id)a3
+- (ASTSession)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = ASTSession;
   v5 = [(ASTSession *)&v15 init];
   if (v5)
   {
-    v6 = [[ASTRemoteServerSession alloc] initWithContext:v4];
+    v6 = [[ASTRemoteServerSession alloc] initWithContext:contextCopy];
     serverSession = v5->_serverSession;
     v5->_serverSession = v6;
 
@@ -150,46 +150,46 @@
     startedSessions = v5->_startedSessions;
     v5->_startedSessions = v10;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     destinations = v5->_destinations;
-    v5->_destinations = v12;
+    v5->_destinations = array;
   }
 
   return v5;
 }
 
-- (void)setActiveSession:(id)a3
+- (void)setActiveSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   [(ASTSession *)self->_activeSession setDelegate:0];
   activeSession = self->_activeSession;
-  self->_activeSession = v4;
-  v6 = v4;
+  self->_activeSession = sessionCopy;
+  v6 = sessionCopy;
 
-  v7 = [(ASTSession *)self delegate];
-  [(ASTSession *)self->_activeSession setDelegate:v7];
+  delegate = [(ASTSession *)self delegate];
+  [(ASTSession *)self->_activeSession setDelegate:delegate];
 }
 
 - (BOOL)shouldShowResults
 {
-  v2 = [(ASTSession *)self activeSession];
-  v3 = [v2 shouldShowResults];
+  activeSession = [(ASTSession *)self activeSession];
+  shouldShowResults = [activeSession shouldShowResults];
 
-  return v3;
+  return shouldShowResults;
 }
 
-+ (void)sessionExistsForSerialNumbers:(id)a3 ticketNumber:(id)a4 timeout:(double)a5 completionHandler:(id)a6
++ (void)sessionExistsForSerialNumbers:(id)numbers ticketNumber:(id)number timeout:(double)timeout completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  numbersCopy = numbers;
+  numberCopy = number;
+  handlerCopy = handler;
+  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(numbersCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v13 = v9;
+  v13 = numbersCopy;
   v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v14)
   {
@@ -218,44 +218,44 @@
     while (v15);
   }
 
-  [objc_opt_class() sessionExistsForIdentities:v12 ticketNumber:v10 timeout:v11 completionHandler:a5];
+  [objc_opt_class() sessionExistsForIdentities:v12 ticketNumber:numberCopy timeout:handlerCopy completionHandler:timeout];
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sessionExistsForIdentities:(id)a3 ticketNumber:(id)a4 completionHandler:(id)a5
++ (void)sessionExistsForIdentities:(id)identities ticketNumber:(id)number completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__ASTSession_sessionExistsForIdentities_ticketNumber_completionHandler___block_invoke;
   v10[3] = &unk_278CBCF68;
-  v11 = v8;
-  v9 = v8;
-  [a1 sessionStatusForIdentities:a3 ticketNumber:a4 timeout:v10 completionHandler:15.0];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [self sessionStatusForIdentities:identities ticketNumber:number timeout:v10 completionHandler:15.0];
 }
 
-+ (void)sessionExistsForIdentities:(id)a3 ticketNumber:(id)a4 timeout:(double)a5 completionHandler:(id)a6
++ (void)sessionExistsForIdentities:(id)identities ticketNumber:(id)number timeout:(double)timeout completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __80__ASTSession_sessionExistsForIdentities_ticketNumber_timeout_completionHandler___block_invoke;
   v12[3] = &unk_278CBCF68;
-  v13 = v10;
-  v11 = v10;
-  [a1 sessionStatusForIdentities:a3 ticketNumber:a4 timeout:v12 completionHandler:a5];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [self sessionStatusForIdentities:identities ticketNumber:number timeout:v12 completionHandler:timeout];
 }
 
-+ (void)sessionExistsForIdentities:(id)a3 ticketNumber:(id)a4 timeout:(double)a5 completion:(id)a6
++ (void)sessionExistsForIdentities:(id)identities ticketNumber:(id)number timeout:(double)timeout completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__ASTSession_sessionExistsForIdentities_ticketNumber_timeout_completion___block_invoke;
   v12[3] = &unk_278CBCF68;
-  v13 = v10;
-  v11 = v10;
-  [a1 sessionStatusForIdentities:a3 ticketNumber:a4 timeout:0 requestQueuedSuiteInfo:v12 completionHandler:a5];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [self sessionStatusForIdentities:identities ticketNumber:number timeout:0 requestQueuedSuiteInfo:v12 completionHandler:timeout];
 }
 
 void __73__ASTSession_sessionExistsForIdentities_ticketNumber_timeout_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -273,7 +273,7 @@ void __103__ASTSession_sessionStatusForIdentities_ticketNumber_timeout_requestQu
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)startWithMode:(int)a3
+- (void)startWithMode:(int)mode
 {
   v78 = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
@@ -281,11 +281,11 @@ void __103__ASTSession_sessionStatusForIdentities_ticketNumber_timeout_requestQu
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v77 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "Starting ASTSession in mode %d", buf, 8u);
   }
 
-  v6 = [(ASTSession *)self destinations];
+  destinations = [(ASTSession *)self destinations];
   v7 = [ASTSelfServiceDestination alloc];
   v8 = [(ASTSelfServiceDestination *)v7 initWithEndpoint:1 suites:MEMORY[0x277CBEBF8]];
   v75[0] = v8;
@@ -293,7 +293,7 @@ void __103__ASTSession_sessionStatusForIdentities_ticketNumber_timeout_requestQu
   v10 = [(ASTSelfServiceDestination *)v9 initWithEndpoint:2 suites:MEMORY[0x277CBEBF8]];
   v75[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:2];
-  v12 = [v6 isEqualToArray:v11];
+  v12 = [destinations isEqualToArray:v11];
 
   if (v12)
   {
@@ -305,19 +305,19 @@ void __103__ASTSession_sessionStatusForIdentities_ticketNumber_timeout_requestQu
     }
   }
 
-  else if (a3 == 2 || (isASTGuidedSession & 1) == 0)
+  else if (mode == 2 || (isASTGuidedSession & 1) == 0)
   {
     v21 = dispatch_group_create();
     [(ASTSession *)self setSessionStartDispatchGroup:v21];
 
-    if (a3 == 2)
+    if (mode == 2)
     {
       goto LABEL_21;
     }
 
-    v22 = [(ASTSession *)self startedSessions];
-    v23 = [(ASTSession *)self serverSession];
-    v24 = [v22 containsObject:v23];
+    startedSessions = [(ASTSession *)self startedSessions];
+    serverSession = [(ASTSession *)self serverSession];
+    v24 = [startedSessions containsObject:serverSession];
 
     if (v24)
     {
@@ -331,8 +331,8 @@ void __103__ASTSession_sessionStatusForIdentities_ticketNumber_timeout_requestQu
 
     else
     {
-      v26 = [(ASTSession *)self sessionStartDispatchGroup];
-      dispatch_group_enter(v26);
+      sessionStartDispatchGroup = [(ASTSession *)self sessionStartDispatchGroup];
+      dispatch_group_enter(sessionStartDispatchGroup);
 
       v27 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
@@ -343,12 +343,12 @@ void __103__ASTSession_sessionStatusForIdentities_ticketNumber_timeout_requestQu
       dispatch_async(v27, block);
     }
 
-    if (a3 != 1)
+    if (mode != 1)
     {
 LABEL_21:
-      v28 = [(ASTSession *)self startedSessions];
-      v29 = [(ASTSession *)self repairSession];
-      v30 = [v28 containsObject:v29];
+      startedSessions2 = [(ASTSession *)self startedSessions];
+      repairSession = [(ASTSession *)self repairSession];
+      v30 = [startedSessions2 containsObject:repairSession];
 
       if (v30)
       {
@@ -362,8 +362,8 @@ LABEL_21:
 
       else
       {
-        v32 = [(ASTSession *)self sessionStartDispatchGroup];
-        dispatch_group_enter(v32);
+        sessionStartDispatchGroup2 = [(ASTSession *)self sessionStartDispatchGroup];
+        dispatch_group_enter(sessionStartDispatchGroup2);
 
         v33 = dispatch_get_global_queue(0, 0);
         v72[0] = MEMORY[0x277D85DD0];
@@ -375,25 +375,25 @@ LABEL_21:
       }
     }
 
-    v34 = [(ASTSession *)self sessionStartDispatchGroup];
+    sessionStartDispatchGroup3 = [(ASTSession *)self sessionStartDispatchGroup];
     v35 = dispatch_time(0, 300000000000);
-    dispatch_group_wait(v34, v35);
+    dispatch_group_wait(sessionStartDispatchGroup3, v35);
 
     [(ASTSession *)self setSessionStartDispatchGroup:0];
     v36 = dispatch_group_create();
-    v37 = [(ASTSession *)self repairSession];
-    if (v37)
+    repairSession2 = [(ASTSession *)self repairSession];
+    if (repairSession2)
     {
-      v38 = [(ASTSession *)self startedSessions];
-      v39 = [(ASTSession *)self repairSession];
-      v40 = [v38 containsObject:v39];
+      startedSessions3 = [(ASTSession *)self startedSessions];
+      repairSession3 = [(ASTSession *)self repairSession];
+      v40 = [startedSessions3 containsObject:repairSession3];
 
       if (v40)
       {
-        v41 = [(ASTSession *)self destinations];
+        destinations2 = [(ASTSession *)self destinations];
         v42 = [ASTSelfServiceDestination alloc];
         v43 = [(ASTSelfServiceDestination *)v42 initWithEndpoint:2 suites:MEMORY[0x277CBEBF8]];
-        v44 = [v41 containsObject:v43];
+        v44 = [destinations2 containsObject:v43];
 
         if (v44)
         {
@@ -408,7 +408,7 @@ LABEL_21:
         else
         {
           dispatch_group_enter(v36);
-          v46 = [(ASTSession *)self repairSession];
+          repairSession4 = [(ASTSession *)self repairSession];
           v69[0] = MEMORY[0x277D85DD0];
           v69[1] = 3221225472;
           v69[2] = __28__ASTSession_startWithMode___block_invoke_26;
@@ -416,26 +416,26 @@ LABEL_21:
           objc_copyWeak(&v71, &location);
           v69[4] = self;
           v70 = v36;
-          [v46 requestSuitesAvailableWithCompletionHandler:v69];
+          [repairSession4 requestSuitesAvailableWithCompletionHandler:v69];
 
           objc_destroyWeak(&v71);
         }
       }
     }
 
-    v47 = [(ASTSession *)self serverSession];
-    if (v47)
+    serverSession2 = [(ASTSession *)self serverSession];
+    if (serverSession2)
     {
-      v48 = [(ASTSession *)self startedSessions];
-      v49 = [(ASTSession *)self serverSession];
-      v50 = [v48 containsObject:v49];
+      startedSessions4 = [(ASTSession *)self startedSessions];
+      serverSession3 = [(ASTSession *)self serverSession];
+      v50 = [startedSessions4 containsObject:serverSession3];
 
       if (v50)
       {
-        v51 = [(ASTSession *)self destinations];
+        destinations3 = [(ASTSession *)self destinations];
         v52 = [ASTSelfServiceDestination alloc];
         v53 = [(ASTSelfServiceDestination *)v52 initWithEndpoint:1 suites:MEMORY[0x277CBEBF8]];
-        v54 = [v51 containsObject:v53];
+        v54 = [destinations3 containsObject:v53];
 
         if (v54)
         {
@@ -450,7 +450,7 @@ LABEL_21:
         else
         {
           dispatch_group_enter(v36);
-          v56 = [(ASTSession *)self serverSession];
+          serverSession4 = [(ASTSession *)self serverSession];
           v66[0] = MEMORY[0x277D85DD0];
           v66[1] = 3221225472;
           v66[2] = __28__ASTSession_startWithMode___block_invoke_28;
@@ -458,7 +458,7 @@ LABEL_21:
           objc_copyWeak(&v68, &location);
           v66[4] = self;
           v67 = v36;
-          [v56 requestSuitesAvailableWithCompletionHandler:v66];
+          [serverSession4 requestSuitesAvailableWithCompletionHandler:v66];
 
           objc_destroyWeak(&v68);
         }
@@ -468,30 +468,30 @@ LABEL_21:
     v57 = dispatch_time(0, 5000000000);
     dispatch_group_wait(v36, v57);
 
-    v58 = [(ASTSession *)self delegate];
+    delegate = [(ASTSession *)self delegate];
     v59 = objc_opt_respondsToSelector();
 
     if (v59)
     {
-      v60 = [(ASTSession *)self delegate];
-      v61 = [(ASTSession *)self destinations];
+      delegate2 = [(ASTSession *)self delegate];
+      destinations4 = [(ASTSession *)self destinations];
       v64[0] = MEMORY[0x277D85DD0];
       v64[1] = 3221225472;
       v64[2] = __28__ASTSession_startWithMode___block_invoke_29;
       v64[3] = &unk_278CBD000;
       objc_copyWeak(&v65, &location);
-      [v60 session:self didRequestSuiteRunWithDestinations:v61 confirmation:v64];
+      [delegate2 session:self didRequestSuiteRunWithDestinations:destinations4 confirmation:v64];
 
       objc_destroyWeak(&v65);
     }
 
     else
     {
-      v62 = [(ASTSession *)self serverSession];
-      [(ASTSession *)self setActiveSession:v62];
+      serverSession5 = [(ASTSession *)self serverSession];
+      [(ASTSession *)self setActiveSession:serverSession5];
 
-      v63 = [(ASTSession *)self repairSession];
-      [v63 end];
+      repairSession5 = [(ASTSession *)self repairSession];
+      [repairSession5 end];
 
       [(ASTSession *)self setRepairSession:0];
     }
@@ -506,20 +506,20 @@ LABEL_21:
       _os_log_impl(&dword_240F3C000, v15, OS_LOG_TYPE_DEFAULT, "Guided session was detected.", buf, 2u);
     }
 
-    v16 = [(ASTSession *)self serverSession];
-    [v16 start];
+    serverSession6 = [(ASTSession *)self serverSession];
+    [serverSession6 start];
 
-    v17 = [(ASTSession *)self serverSession];
-    [(ASTSession *)self setActiveSession:v17];
+    serverSession7 = [(ASTSession *)self serverSession];
+    [(ASTSession *)self setActiveSession:serverSession7];
 
     [(ASTSession *)self setRepairSession:0];
-    v18 = [(ASTSession *)self delegate];
+    delegate3 = [(ASTSession *)self delegate];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v20 = [(ASTSession *)self delegate];
-      [v20 session:self didRequestSuiteRunWithDestinations:MEMORY[0x277CBEBF8] confirmation:&__block_literal_global_0];
+      delegate4 = [(ASTSession *)self delegate];
+      [delegate4 session:self didRequestSuiteRunWithDestinations:MEMORY[0x277CBEBF8] confirmation:&__block_literal_global_0];
     }
   }
 
@@ -712,34 +712,34 @@ LABEL_13:
 
 - (void)idle
 {
-  v2 = [(ASTSession *)self activeSession];
-  [v2 idle];
+  activeSession = [(ASTSession *)self activeSession];
+  [activeSession idle];
 }
 
-- (void)idleWithCompletion:(id)a3
+- (void)idleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ASTSession *)self activeSession];
-  [v5 idleWithCompletion:v4];
+  completionCopy = completion;
+  activeSession = [(ASTSession *)self activeSession];
+  [activeSession idleWithCompletion:completionCopy];
 }
 
 - (void)end
 {
-  v2 = [(ASTSession *)self activeSession];
-  [v2 end];
+  activeSession = [(ASTSession *)self activeSession];
+  [activeSession end];
 }
 
 - (void)invalidate
 {
-  v2 = [(ASTSession *)self activeSession];
-  [v2 invalidate];
+  activeSession = [(ASTSession *)self activeSession];
+  [activeSession invalidate];
 }
 
 - (void)archive
 {
-  v3 = [(ASTSession *)self serverSession];
+  serverSession = [(ASTSession *)self serverSession];
 
-  if (v3)
+  if (serverSession)
   {
     v4 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -748,178 +748,178 @@ LABEL_13:
       _os_log_impl(&dword_240F3C000, v4, OS_LOG_TYPE_DEFAULT, "Archiving AST2 session", v6, 2u);
     }
 
-    v5 = [(ASTSession *)self serverSession];
-    [v5 archive];
+    serverSession2 = [(ASTSession *)self serverSession];
+    [serverSession2 archive];
   }
 }
 
-- (BOOL)sendAuthInfoResult:(id)a3 error:(id *)a4
+- (BOOL)sendAuthInfoResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ASTSession *)self activeSession];
-  LOBYTE(a4) = [v7 sendAuthInfoResult:v6 error:a4];
+  resultCopy = result;
+  activeSession = [(ASTSession *)self activeSession];
+  LOBYTE(error) = [activeSession sendAuthInfoResult:resultCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)sendProfileResult:(id)a3 error:(id *)a4
+- (BOOL)sendProfileResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ASTSession *)self activeSession];
-  LOBYTE(a4) = [v7 sendProfileResult:v6 error:a4];
+  resultCopy = result;
+  activeSession = [(ASTSession *)self activeSession];
+  LOBYTE(error) = [activeSession sendProfileResult:resultCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)sendTestResult:(id)a3 error:(id *)a4
+- (BOOL)sendTestResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ASTSession *)self activeSession];
-  LOBYTE(a4) = [v7 sendTestResult:v6 error:a4];
+  resultCopy = result;
+  activeSession = [(ASTSession *)self activeSession];
+  LOBYTE(error) = [activeSession sendTestResult:resultCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)updateAction:(id)a3
+- (void)updateAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ASTSession *)self activeSession];
-  [v5 updateAction:v4];
+  actionCopy = action;
+  activeSession = [(ASTSession *)self activeSession];
+  [activeSession updateAction:actionCopy];
 }
 
-- (void)requestSuitesAvailableWithCompletionHandler:(id)a3
+- (void)requestSuitesAvailableWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ASTSession *)self activeSession];
-  [v5 requestSuitesAvailableWithCompletionHandler:v4];
+  handlerCopy = handler;
+  activeSession = [(ASTSession *)self activeSession];
+  [activeSession requestSuitesAvailableWithCompletionHandler:handlerCopy];
 }
 
-- (void)requestSuiteStart:(id)a3 completionHandler:(id)a4
+- (void)requestSuiteStart:(id)start completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASTSession *)self activeSession];
-  [v8 requestSuiteStart:v7 completionHandler:v6];
+  handlerCopy = handler;
+  startCopy = start;
+  activeSession = [(ASTSession *)self activeSession];
+  [activeSession requestSuiteStart:startCopy completionHandler:handlerCopy];
 }
 
-- (void)requestSuiteSummary:(id)a3 completionHandler:(id)a4
+- (void)requestSuiteSummary:(id)summary completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  summaryCopy = summary;
+  handlerCopy = handler;
+  if ([summaryCopy length])
   {
-    v8 = [(ASTSession *)self activeSession];
-    [v8 requestSuiteSummary:v6 completionHandler:v7];
+    activeSession = [(ASTSession *)self activeSession];
+    [activeSession requestSuiteSummary:summaryCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v8 = ASTLogHandleForCategory(0);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    activeSession = ASTLogHandleForCategory(0);
+    if (os_log_type_enabled(activeSession, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&dword_240F3C000, v8, OS_LOG_TYPE_DEFAULT, "Not requesting suite summary because diagnostic event id is nil", v9, 2u);
+      _os_log_impl(&dword_240F3C000, activeSession, OS_LOG_TYPE_DEFAULT, "Not requesting suite summary because diagnostic event id is nil", v9, 2u);
     }
   }
 }
 
-- (void)session:(id)a3 startTest:(id)a4 parameters:(id)a5 testResult:(id)a6
+- (void)session:(id)session startTest:(id)test parameters:(id)parameters testResult:(id)result
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(ASTSession *)self activeSession];
+  sessionCopy = session;
+  testCopy = test;
+  parametersCopy = parameters;
+  resultCopy = result;
+  activeSession = [(ASTSession *)self activeSession];
 
-  if (v13 == v15)
+  if (activeSession == sessionCopy)
   {
-    v14 = [(ASTSession *)self delegate];
-    [v14 session:v15 startTest:v10 parameters:v11 testResult:v12];
+    delegate = [(ASTSession *)self delegate];
+    [delegate session:sessionCopy startTest:testCopy parameters:parametersCopy testResult:resultCopy];
   }
 }
 
-- (void)session:(id)a3 cancelTest:(id)a4
+- (void)session:(id)session cancelTest:(id)test
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ASTSession *)self activeSession];
+  sessionCopy = session;
+  testCopy = test;
+  activeSession = [(ASTSession *)self activeSession];
 
-  if (v7 == v9)
+  if (activeSession == sessionCopy)
   {
-    v8 = [(ASTSession *)self delegate];
-    [v8 session:v9 cancelTest:v6];
+    delegate = [(ASTSession *)self delegate];
+    [delegate session:sessionCopy cancelTest:testCopy];
   }
 }
 
-- (void)session:(id)a3 profile:(id)a4 filteredByComponents:(id)a5
+- (void)session:(id)session profile:(id)profile filteredByComponents:(id)components
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ASTSession *)self delegate];
-  [v11 session:v10 profile:v9 filteredByComponents:v8];
+  componentsCopy = components;
+  profileCopy = profile;
+  sessionCopy = session;
+  delegate = [(ASTSession *)self delegate];
+  [delegate session:sessionCopy profile:profileCopy filteredByComponents:componentsCopy];
 }
 
-- (void)session:(id)a3 didPauseWithError:(id)a4
+- (void)session:(id)session didPauseWithError:(id)error
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(ASTSession *)self delegate];
+  sessionCopy = session;
+  errorCopy = error;
+  delegate = [(ASTSession *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(ASTSession *)self delegate];
-    [v9 session:v10 didPauseWithError:v6];
+    delegate2 = [(ASTSession *)self delegate];
+    [delegate2 session:sessionCopy didPauseWithError:errorCopy];
   }
 }
 
-- (void)sessionDidResume:(id)a3
+- (void)sessionDidResume:(id)resume
 {
-  v7 = a3;
-  v4 = [(ASTSession *)self delegate];
+  resumeCopy = resume;
+  delegate = [(ASTSession *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ASTSession *)self delegate];
-    [v6 sessionDidResume:v7];
+    delegate2 = [(ASTSession *)self delegate];
+    [delegate2 sessionDidResume:resumeCopy];
   }
 }
 
-- (void)session:(id)a3 didEndWithError:(id)a4
+- (void)session:(id)session didEndWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASTSession *)self serverSession];
+  sessionCopy = session;
+  errorCopy = error;
+  serverSession = [(ASTSession *)self serverSession];
 
-  if (v8 != v6)
+  if (serverSession != sessionCopy)
   {
-    v9 = [(ASTSession *)self repairSession];
+    repairSession = [(ASTSession *)self repairSession];
 
-    if (v9 == v6)
+    if (repairSession == sessionCopy)
     {
-      v13 = [(ASTSession *)self sessionStartDispatchGroup];
+      sessionStartDispatchGroup = [(ASTSession *)self sessionStartDispatchGroup];
 
-      if (v13)
+      if (sessionStartDispatchGroup)
       {
-        v14 = [(ASTSession *)self sessionStartDispatchGroup];
-        dispatch_group_leave(v14);
+        sessionStartDispatchGroup2 = [(ASTSession *)self sessionStartDispatchGroup];
+        dispatch_group_leave(sessionStartDispatchGroup2);
       }
 
-      v15 = [(ASTSession *)self startedSessions];
-      v16 = [(ASTSession *)self repairSession];
-      v17 = [v15 containsObject:v16];
+      startedSessions = [(ASTSession *)self startedSessions];
+      repairSession2 = [(ASTSession *)self repairSession];
+      v17 = [startedSessions containsObject:repairSession2];
 
       if (v17)
       {
-        v18 = self;
-        objc_sync_enter(v18);
-        v19 = [(ASTSession *)v18 startedSessions];
-        v20 = [(ASTSession *)v18 repairSession];
-        [v19 removeObject:v20];
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        startedSessions2 = [(ASTSession *)selfCopy startedSessions];
+        repairSession3 = [(ASTSession *)selfCopy repairSession];
+        [startedSessions2 removeObject:repairSession3];
 
-        objc_sync_exit(v18);
+        objc_sync_exit(selfCopy);
       }
 
       [(ASTSession *)self setRepairSession:0];
@@ -937,61 +937,61 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  v11 = [(ASTSession *)self sessionStartDispatchGroup];
+  sessionStartDispatchGroup3 = [(ASTSession *)self sessionStartDispatchGroup];
 
-  if (v11)
+  if (sessionStartDispatchGroup3)
   {
-    v12 = [(ASTSession *)self sessionStartDispatchGroup];
-    dispatch_group_leave(v12);
+    sessionStartDispatchGroup4 = [(ASTSession *)self sessionStartDispatchGroup];
+    dispatch_group_leave(sessionStartDispatchGroup4);
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v21 = [(ASTSession *)self activeSession];
+  activeSession = [(ASTSession *)self activeSession];
 
-  if (v21 != v6)
+  if (activeSession != sessionCopy)
   {
-    v12 = [(ASTSession *)self delegate];
-    [v12 session:v6 didEndWithError:v7];
+    sessionStartDispatchGroup4 = [(ASTSession *)self delegate];
+    [sessionStartDispatchGroup4 session:sessionCopy didEndWithError:errorCopy];
     goto LABEL_15;
   }
 
 LABEL_16:
-  v22 = [(ASTSession *)self startedSessions];
-  v23 = [(ASTSession *)self serverSession];
-  v24 = [v22 containsObject:v23];
+  startedSessions3 = [(ASTSession *)self startedSessions];
+  serverSession2 = [(ASTSession *)self serverSession];
+  v24 = [startedSessions3 containsObject:serverSession2];
 
   if (v24)
   {
-    v25 = self;
-    objc_sync_enter(v25);
-    v26 = [(ASTSession *)v25 startedSessions];
-    v27 = [(ASTSession *)v25 serverSession];
-    [v26 removeObject:v27];
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    startedSessions4 = [(ASTSession *)selfCopy2 startedSessions];
+    serverSession3 = [(ASTSession *)selfCopy2 serverSession];
+    [startedSessions4 removeObject:serverSession3];
 
-    objc_sync_exit(v25);
+    objc_sync_exit(selfCopy2);
   }
 
   [(ASTSession *)self setServerSession:0];
 LABEL_19:
 }
 
-- (void)sessionDidStart:(id)a3
+- (void)sessionDidStart:(id)start
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTSession *)self serverSession];
-  v6 = v5;
-  if (v5 == v4)
+  startCopy = start;
+  serverSession = [(ASTSession *)self serverSession];
+  v6 = serverSession;
+  if (serverSession == startCopy)
   {
   }
 
   else
   {
-    v7 = [(ASTSession *)self repairSession];
+    repairSession = [(ASTSession *)self repairSession];
 
-    if (v7 != v4)
+    if (repairSession != startCopy)
     {
       v8 = ASTLogHandleForCategory(0);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1003,26 +1003,26 @@ LABEL_19:
     }
   }
 
-  v9 = [(ASTSession *)self sessionStartDispatchGroup];
+  sessionStartDispatchGroup = [(ASTSession *)self sessionStartDispatchGroup];
 
-  if (v9)
+  if (sessionStartDispatchGroup)
   {
-    v10 = [(ASTSession *)self sessionStartDispatchGroup];
-    dispatch_group_leave(v10);
+    sessionStartDispatchGroup2 = [(ASTSession *)self sessionStartDispatchGroup];
+    dispatch_group_leave(sessionStartDispatchGroup2);
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(ASTSession *)v11 startedSessions];
-  [v12 addObject:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  startedSessions = [(ASTSession *)selfCopy startedSessions];
+  [startedSessions addObject:startCopy];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
   v8 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(ASTSession *)v11 startedSessions];
+    startedSessions2 = [(ASTSession *)selfCopy startedSessions];
     v15 = 138412290;
-    v16 = v13;
+    v16 = startedSessions2;
     _os_log_impl(&dword_240F3C000, v8, OS_LOG_TYPE_DEFAULT, "Started sessions: %@", &v15, 0xCu);
   }
 
@@ -1031,120 +1031,120 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 generateAuthInfoWithNonce:(id)a4
+- (void)session:(id)session generateAuthInfoWithNonce:(id)nonce
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(ASTSession *)self delegate];
-  v8 = [v7 conformsToProtocol:&unk_2852D8970];
+  sessionCopy = session;
+  nonceCopy = nonce;
+  delegate = [(ASTSession *)self delegate];
+  v8 = [delegate conformsToProtocol:&unk_2852D8970];
 
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [(ASTSession *)self delegate];
-    [v10 session:v11 generateAuthInfoWithNonce:v6];
+    delegate2 = [(ASTSession *)self delegate];
+    [delegate2 session:sessionCopy generateAuthInfoWithNonce:nonceCopy];
 
     objc_autoreleasePoolPop(v9);
   }
 }
 
-- (void)session:(id)a3 signPayload:(id)a4 completionHandler:(id)a5
+- (void)session:(id)session signPayload:(id)payload completionHandler:(id)handler
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ASTSession *)self delegate];
-  v11 = [v10 conformsToProtocol:&unk_2852D8970];
+  sessionCopy = session;
+  payloadCopy = payload;
+  handlerCopy = handler;
+  delegate = [(ASTSession *)self delegate];
+  v11 = [delegate conformsToProtocol:&unk_2852D8970];
 
   if (v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = [(ASTSession *)self delegate];
-    [v13 session:v14 signPayload:v8 completionHandler:v9];
+    delegate2 = [(ASTSession *)self delegate];
+    [delegate2 session:sessionCopy signPayload:payloadCopy completionHandler:handlerCopy];
 
     objc_autoreleasePoolPop(v12);
   }
 }
 
-- (void)session:(id)a3 signFile:(id)a4 completionHandler:(id)a5
+- (void)session:(id)session signFile:(id)file completionHandler:(id)handler
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ASTSession *)self delegate];
-  v11 = [v10 conformsToProtocol:&unk_2852D8970];
+  sessionCopy = session;
+  fileCopy = file;
+  handlerCopy = handler;
+  delegate = [(ASTSession *)self delegate];
+  v11 = [delegate conformsToProtocol:&unk_2852D8970];
 
   if (v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = [(ASTSession *)self delegate];
-    [v13 session:v14 signFile:v8 completionHandler:v9];
+    delegate2 = [(ASTSession *)self delegate];
+    [delegate2 session:sessionCopy signFile:fileCopy completionHandler:handlerCopy];
 
     objc_autoreleasePoolPop(v12);
   }
 }
 
-+ (void)requestAsset:(id)a3 completionHandler:(id)a4
++ (void)requestAsset:(id)asset completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  assetCopy = asset;
   v9 = +[ASTEnvironment currentEnvironment];
-  v8 = [v9 assetURL];
-  [a1 requestAsset:v7 serverURL:v8 endpoint:0 completionHandler:v6];
+  assetURL = [v9 assetURL];
+  [self requestAsset:assetCopy serverURL:assetURL endpoint:0 completionHandler:handlerCopy];
 }
 
-+ (void)requestAsset:(id)a3 serverURL:(id)a4 endpoint:(id)a5 completionHandler:(id)a6
++ (void)requestAsset:(id)asset serverURL:(id)l endpoint:(id)endpoint completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  handlerCopy = handler;
+  endpointCopy = endpoint;
+  lCopy = l;
+  assetCopy = asset;
   v13 = objc_alloc_init(ASTSession);
-  [(ASTSession *)v13 requestAsset:v12 serverURL:v11 endpoint:v10 completionHandler:v9];
+  [(ASTSession *)v13 requestAsset:assetCopy serverURL:lCopy endpoint:endpointCopy completionHandler:handlerCopy];
 }
 
-- (void)requestAsset:(id)a3 completionHandler:(id)a4
+- (void)requestAsset:(id)asset completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  assetCopy = asset;
   v9 = +[ASTEnvironment currentEnvironment];
-  v8 = [v9 assetURL];
-  [(ASTSession *)self requestAsset:v7 serverURL:v8 endpoint:0 completionHandler:v6];
+  assetURL = [v9 assetURL];
+  [(ASTSession *)self requestAsset:assetCopy serverURL:assetURL endpoint:0 completionHandler:handlerCopy];
 }
 
-- (void)requestAsset:(id)a3 serverURL:(id)a4 endpoint:(id)a5 completionHandler:(id)a6
+- (void)requestAsset:(id)asset serverURL:(id)l endpoint:(id)endpoint completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(ASTSession *)self activeSession];
-  [(ASTSession *)self fetchAsset:v13 sessionClass:objc_opt_class() serverURL:v12 endpoint:v11 completionHandler:v10];
+  handlerCopy = handler;
+  endpointCopy = endpoint;
+  lCopy = l;
+  assetCopy = asset;
+  activeSession = [(ASTSession *)self activeSession];
+  [(ASTSession *)self fetchAsset:assetCopy sessionClass:objc_opt_class() serverURL:lCopy endpoint:endpointCopy completionHandler:handlerCopy];
 }
 
-- (void)fetchAsset:(id)a3 sessionClass:(Class)a4 serverURL:(id)a5 endpoint:(id)a6 completionHandler:(id)a7
+- (void)fetchAsset:(id)asset sessionClass:(Class)class serverURL:(id)l endpoint:(id)endpoint completionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v33 = a5;
-  v34 = a6;
-  v13 = a7;
-  if (!a4)
+  assetCopy = asset;
+  lCopy = l;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
+  if (!class)
   {
-    a4 = objc_opt_class();
+    class = objc_opt_class();
   }
 
-  if (a4 == objc_opt_class() || a4 == objc_opt_class())
+  if (class == objc_opt_class() || class == objc_opt_class())
   {
-    v15 = [(ASTSession *)self destinationURLForAsset:v12];
-    v16 = [v15 path];
-    v17 = self;
-    objc_sync_enter(v17);
-    if (-[ASTSession shouldEvictCachedAssetForName:](v17, "shouldEvictCachedAssetForName:", v12) && ([MEMORY[0x277CCAA00] defaultManager], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "fileExistsAtPath:", v16), v18, v19))
+    v15 = [(ASTSession *)self destinationURLForAsset:assetCopy];
+    path = [v15 path];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (-[ASTSession shouldEvictCachedAssetForName:](selfCopy, "shouldEvictCachedAssetForName:", assetCopy) && ([MEMORY[0x277CCAA00] defaultManager], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "fileExistsAtPath:", path), v18, v19))
     {
-      v20 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v42 = 0;
-      v21 = [v20 removeItemAtPath:v16 error:&v42];
+      v21 = [defaultManager removeItemAtPath:path error:&v42];
       v22 = v42;
 
       if (v21)
@@ -1153,7 +1153,7 @@ LABEL_10:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v44 = v12;
+          v44 = assetCopy;
           _os_log_impl(&dword_240F3C000, v23, OS_LOG_TYPE_DEFAULT, "Eviction of stale asset [%@] from disk was successful", buf, 0xCu);
         }
       }
@@ -1173,8 +1173,8 @@ LABEL_10:
       v22 = 0;
     }
 
-    v24 = [MEMORY[0x277CCAA00] defaultManager];
-    v25 = [v24 fileExistsAtPath:v16];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v25 = [defaultManager2 fileExistsAtPath:path];
 
     if (v25)
     {
@@ -1182,12 +1182,12 @@ LABEL_10:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v44 = v12;
+        v44 = assetCopy;
         _os_log_impl(&dword_240F3C000, v26, OS_LOG_TYPE_DEFAULT, "Using cached version of asset [%@] on disk", buf, 0xCu);
       }
 
-      v27 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v16];
-      v13[2](v13, v27, v22);
+      v27 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:path];
+      handlerCopy[2](handlerCopy, v27, v22);
       v28 = v22;
     }
 
@@ -1203,20 +1203,20 @@ LABEL_10:
         v35[1] = 3221225472;
         v35[2] = __75__ASTSession_fetchAsset_sessionClass_serverURL_endpoint_completionHandler___block_invoke;
         v35[3] = &unk_278CBD028;
-        v29 = v12;
+        v29 = assetCopy;
         v36 = v29;
-        v37 = v17;
+        v37 = selfCopy;
         v27 = v27;
         v38 = v27;
-        v39 = v16;
-        v40 = v13;
+        v39 = path;
+        v40 = handlerCopy;
         v30 = MEMORY[0x245CD5130](v35);
-        if (a4 == objc_opt_class())
+        if (class == objc_opt_class())
         {
-          [ASTRemoteServerSession downloadAsset:v29 serverURL:v33 endpoint:v34 fileHandle:v27 completionHandler:v30];
+          [ASTRemoteServerSession downloadAsset:v29 serverURL:lCopy endpoint:endpointCopy fileHandle:v27 completionHandler:v30];
         }
 
-        else if (a4 == objc_opt_class())
+        else if (class == objc_opt_class())
         {
           [ASTRepairSession downloadAsset:v29 fileHandle:v27 completionHandler:v30];
         }
@@ -1230,11 +1230,11 @@ LABEL_10:
           [ASTSession fetchAsset:sessionClass:serverURL:endpoint:completionHandler:];
         }
 
-        v13[2](v13, 0, v28);
+        handlerCopy[2](handlerCopy, 0, v28);
       }
     }
 
-    objc_sync_exit(v17);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1246,7 +1246,7 @@ LABEL_10:
     }
 
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-1002 userInfo:0];
-    v13[2](v13, 0, v15);
+    handlerCopy[2](handlerCopy, 0, v15);
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -1319,12 +1319,12 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)destinationURLForAsset:(id)a3
+- (id)destinationURLForAsset:(id)asset
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTSession *)self destinationAssetDirectory];
-  v6 = [ASTEncodingUtilities SHA256HashForString:v4];
+  assetCopy = asset;
+  destinationAssetDirectory = [(ASTSession *)self destinationAssetDirectory];
+  v6 = [ASTEncodingUtilities SHA256HashForString:assetCopy];
   if (v6)
   {
     v7 = v6;
@@ -1335,14 +1335,14 @@ LABEL_13:
     v7 = @"unknown";
   }
 
-  v8 = [v5 URLByAppendingPathComponent:v7];
+  v8 = [destinationAssetDirectory URLByAppendingPathComponent:v7];
   v9 = ASTLogHandleForCategory(1);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = assetCopy;
     _os_log_impl(&dword_240F3C000, v9, OS_LOG_TYPE_DEFAULT, "Using [%@] as path for asset [%@]", &v12, 0x16u);
   }
 
@@ -1354,14 +1354,14 @@ LABEL_13:
 - (id)destinationAssetDirectory
 {
   v8[3] = *MEMORY[0x277D85DE8];
-  v2 = NSTemporaryDirectory();
-  if (!v2)
+  string = NSTemporaryDirectory();
+  if (!string)
   {
-    v2 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   v3 = MEMORY[0x277CBEBC0];
-  v8[0] = v2;
+  v8[0] = string;
   v8[1] = @"com.apple.AppleServiceToolkit";
   v8[2] = @"assets";
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:3];
@@ -1372,34 +1372,34 @@ LABEL_13:
   return v5;
 }
 
-- (id)readContentsOfFileHandle:(id)a3 error:(id *)a4
+- (id)readContentsOfFileHandle:(id)handle error:(id *)error
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 seekToFileOffset:0];
-  v5 = [v4 readDataToEndOfFile];
+  handleCopy = handle;
+  [handleCopy seekToFileOffset:0];
+  readDataToEndOfFile = [handleCopy readDataToEndOfFile];
 
   v6 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return readDataToEndOfFile;
 }
 
 - (void)removeDownloadedAssets
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [(ASTSession *)self destinationAssetDirectory];
-  [v4 removeItemAtURL:v3 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  destinationAssetDirectory = [(ASTSession *)self destinationAssetDirectory];
+  [defaultManager removeItemAtURL:destinationAssetDirectory error:0];
 }
 
-- (BOOL)shouldEvictCachedAssetForName:(id)a3
+- (BOOL)shouldEvictCachedAssetForName:(id)name
 {
-  v4 = a3;
-  v5 = [(ASTSession *)self destinationURLForAsset:v4];
-  v6 = [v5 path];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6];
+  nameCopy = name;
+  v5 = [(ASTSession *)self destinationURLForAsset:nameCopy];
+  path = [v5 path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:path];
 
-  v9 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
+  v9 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:path];
   v10 = v9;
   if (v8)
   {
@@ -1423,7 +1423,7 @@ LABEL_13:
       v12 = shouldEvictCachedAssetForName__evictCacheForAssets;
     }
 
-    v15 = [v12 containsObject:v4];
+    v15 = [v12 containsObject:nameCopy];
   }
 
   else

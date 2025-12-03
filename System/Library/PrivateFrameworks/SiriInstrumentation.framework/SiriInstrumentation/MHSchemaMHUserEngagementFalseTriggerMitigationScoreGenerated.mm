@@ -1,26 +1,26 @@
 @interface MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated)initWithDictionary:(id)a3;
-- (MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated)initWithDictionary:(id)dictionary;
+- (MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasUemThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasUemThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated
 
-- (MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated)initWithDictionary:(id)a3
+- (MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated;
   v5 = [(MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"uemScore"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"uemScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated *)v5 setUemScore:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"uemThreshold"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"uemThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,30 +42,30 @@
   return v5;
 }
 
-- (MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated)initWithJSON:(id)a3
+- (MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -78,14 +78,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = MEMORY[0x1E696AD98];
     [(MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated *)self uemScore];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"uemScore"];
+    [dictionary setObject:v6 forKeyedSubscript:@"uemScore"];
 
     has = self->_has;
   }
@@ -95,12 +95,12 @@
     v7 = MEMORY[0x1E696AD98];
     [(MHSchemaMHUserEngagementFalseTriggerMitigationScoreGenerated *)self uemThreshold];
     v8 = [v7 numberWithFloat:?];
-    [v3 setObject:v8 forKeyedSubscript:@"uemThreshold"];
+    [dictionary setObject:v8 forKeyedSubscript:@"uemThreshold"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -185,16 +185,16 @@
   return v9 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   has = self->_has;
-  v6 = v4[16];
+  v6 = equalCopy[16];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_9;
@@ -203,20 +203,20 @@
   if (*&has)
   {
     uemScore = self->_uemScore;
-    [v4 uemScore];
+    [equalCopy uemScore];
     if (uemScore != v8)
     {
       goto LABEL_9;
     }
 
     has = self->_has;
-    v6 = v4[16];
+    v6 = equalCopy[16];
   }
 
   v9 = (*&has >> 1) & 1;
   if (v9 == ((v6 >> 1) & 1))
   {
-    if (!v9 || (uemThreshold = self->_uemThreshold, [v4 uemThreshold], uemThreshold == v11))
+    if (!v9 || (uemThreshold = self->_uemThreshold, [equalCopy uemThreshold], uemThreshold == v11))
     {
       v12 = 1;
       goto LABEL_10;
@@ -230,28 +230,28 @@ LABEL_10:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasUemThreshold:(BOOL)a3
+- (void)setHasUemThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 2;
   }

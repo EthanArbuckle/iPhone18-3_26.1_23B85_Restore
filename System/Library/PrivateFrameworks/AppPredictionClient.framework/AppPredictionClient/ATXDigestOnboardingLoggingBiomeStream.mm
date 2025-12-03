@@ -1,29 +1,29 @@
 @interface ATXDigestOnboardingLoggingBiomeStream
-- (ATXDigestOnboardingLoggingBiomeStream)initWithStoreConfig:(id)a3;
+- (ATXDigestOnboardingLoggingBiomeStream)initWithStoreConfig:(id)config;
 @end
 
 @implementation ATXDigestOnboardingLoggingBiomeStream
 
-- (ATXDigestOnboardingLoggingBiomeStream)initWithStoreConfig:(id)a3
+- (ATXDigestOnboardingLoggingBiomeStream)initWithStoreConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v11.receiver = self;
   v11.super_class = ATXDigestOnboardingLoggingBiomeStream;
   v5 = [(ATXDigestOnboardingLoggingBiomeStream *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (configCopy)
     {
-      v6 = v4;
+      atx_storeConfig = configCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E698F130] atx_storeConfig];
+      atx_storeConfig = [MEMORY[0x1E698F130] atx_storeConfig];
     }
 
-    v7 = v6;
-    v8 = [objc_alloc(MEMORY[0x1E698F318]) initWithPrivateStreamIdentifier:@"digestOnboardingLoggingEvent" storeConfig:v6 eventDataClass:objc_opt_class()];
+    v7 = atx_storeConfig;
+    v8 = [objc_alloc(MEMORY[0x1E698F318]) initWithPrivateStreamIdentifier:@"digestOnboardingLoggingEvent" storeConfig:atx_storeConfig eventDataClass:objc_opt_class()];
     inner = v5->_inner;
     v5->_inner = v8;
   }

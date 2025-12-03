@@ -1,7 +1,7 @@
 @interface TIKeyboardCandidate
 - (BOOL)isAddress;
 - (BOOL)isCompletionCandidate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPunctuation;
 - (BOOL)isPunctuationCompletionCandidate;
 - (BOOL)isPunctuationKeyCandidate;
@@ -10,12 +10,12 @@
 - (NSString)inputWithoutSupplementalItemPrefix;
 - (NSString)shortDescription;
 - (TIKeyboardCandidate)init;
-- (TIKeyboardCandidate)initWithCandidateResultSetCoder:(id)a3;
-- (TIKeyboardCandidate)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TIKeyboardCandidate)initWithCandidateResultSetCoder:(id)coder;
+- (TIKeyboardCandidate)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCandidateResultSetCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCandidateResultSetCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIKeyboardCandidate
@@ -35,38 +35,38 @@
 
 - (BOOL)isSupplementalItemCandidate
 {
-  v2 = [(TIKeyboardCandidate *)self supplementalItemIdentifiers];
-  v3 = [v2 count] != 0;
+  supplementalItemIdentifiers = [(TIKeyboardCandidate *)self supplementalItemIdentifiers];
+  v3 = [supplementalItemIdentifiers count] != 0;
 
   return v3;
 }
 
-- (void)encodeWithCandidateResultSetCoder:(id)a3
+- (void)encodeWithCandidateResultSetCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 encodeByte:{objc_msgSend(objc_opt_class(), "type")}];
-  v5 = [(TIKeyboardCandidate *)self alternativeText];
-  [v4 encodeString:v5];
+  coderCopy = coder;
+  [coderCopy encodeByte:{objc_msgSend(objc_opt_class(), "type")}];
+  alternativeText = [(TIKeyboardCandidate *)self alternativeText];
+  [coderCopy encodeString:alternativeText];
 
-  v6 = [(TIKeyboardCandidate *)self annotationText];
-  [v4 encodeString:v6];
+  annotationText = [(TIKeyboardCandidate *)self annotationText];
+  [coderCopy encodeString:annotationText];
 
-  [v4 encodeUInt32:{-[TIKeyboardCandidate slotID](self, "slotID")}];
+  [coderCopy encodeUInt32:{-[TIKeyboardCandidate slotID](self, "slotID")}];
   [(TIKeyboardCandidate *)self secureCandidateWidth];
-  [v4 encodeDouble:?];
-  [v4 encodeBool:{-[TIKeyboardCandidate isSecureCandidateDoubleLines](self, "isSecureCandidateDoubleLines")}];
-  [v4 encodeUInt64:{-[TIKeyboardCandidate secureCandidateHash](self, "secureCandidateHash")}];
-  [v4 encodeUInt64:{-[TIKeyboardCandidate customInfoType](self, "customInfoType")}];
-  [v4 encodeUInt32:{-[TIKeyboardCandidate indexForMetrics](self, "indexForMetrics")}];
-  [v4 encodeBool:{-[TIKeyboardCandidate isResponseKitCandidate](self, "isResponseKitCandidate")}];
-  v7 = [(TIKeyboardCandidate *)self responseKitCategory];
-  [v4 encodeString:v7];
+  [coderCopy encodeDouble:?];
+  [coderCopy encodeBool:{-[TIKeyboardCandidate isSecureCandidateDoubleLines](self, "isSecureCandidateDoubleLines")}];
+  [coderCopy encodeUInt64:{-[TIKeyboardCandidate secureCandidateHash](self, "secureCandidateHash")}];
+  [coderCopy encodeUInt64:{-[TIKeyboardCandidate customInfoType](self, "customInfoType")}];
+  [coderCopy encodeUInt32:{-[TIKeyboardCandidate indexForMetrics](self, "indexForMetrics")}];
+  [coderCopy encodeBool:{-[TIKeyboardCandidate isResponseKitCandidate](self, "isResponseKitCandidate")}];
+  responseKitCategory = [(TIKeyboardCandidate *)self responseKitCategory];
+  [coderCopy encodeString:responseKitCategory];
 
-  [v4 encodeShort:self->_supplementalItemPrefix];
-  [v4 encodeUInt32:{-[TIKeyboardCandidate typingEngine](self, "typingEngine")}];
-  [v4 encodeUInt32:{-[TIKeyboardCandidate confidence](self, "confidence")}];
-  [v4 encodeUInt64:{-[NSArray count](self->_supplementalItemIdentifiers, "count")}];
+  [coderCopy encodeShort:self->_supplementalItemPrefix];
+  [coderCopy encodeUInt32:{-[TIKeyboardCandidate typingEngine](self, "typingEngine")}];
+  [coderCopy encodeUInt32:{-[TIKeyboardCandidate confidence](self, "confidence")}];
+  [coderCopy encodeUInt64:{-[NSArray count](self->_supplementalItemIdentifiers, "count")}];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -87,7 +87,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [v4 encodeUInt64:{objc_msgSend(*(*(&v13 + 1) + 8 * v12++), "unsignedLongLongValue", v13)}];
+        [coderCopy encodeUInt64:{objc_msgSend(*(*(&v13 + 1) + 8 * v12++), "unsignedLongLongValue", v13)}];
       }
 
       while (v10 != v12);
@@ -98,49 +98,49 @@
   }
 }
 
-- (TIKeyboardCandidate)initWithCandidateResultSetCoder:(id)a3
+- (TIKeyboardCandidate)initWithCandidateResultSetCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = TIKeyboardCandidate;
   v5 = [(TIKeyboardCandidate *)&v22 init];
   if (v5)
   {
-    [v4 decodeByte];
-    v6 = [v4 decodeString];
-    v7 = [v6 copy];
+    [coderCopy decodeByte];
+    decodeString = [coderCopy decodeString];
+    v7 = [decodeString copy];
     alternativeText = v5->_alternativeText;
     v5->_alternativeText = v7;
 
-    v9 = [v4 decodeString];
-    v10 = [v9 copy];
+    decodeString2 = [coderCopy decodeString];
+    v10 = [decodeString2 copy];
     annotationText = v5->_annotationText;
     v5->_annotationText = v10;
 
-    v5->_slotID = [v4 decodeUInt32];
-    [v4 decodeDouble];
+    v5->_slotID = [coderCopy decodeUInt32];
+    [coderCopy decodeDouble];
     v5->_secureCandidateWidth = v12;
-    v5->_isSecureCandidateDoubleLines = [v4 decodeBool];
-    v5->_secureCandidateHash = [v4 decodeUInt64];
-    v5->_customInfoType = [v4 decodeUInt64];
-    v5->_indexForMetrics = [v4 decodeUInt32];
-    v5->_responseKitCandidate = [v4 decodeBool];
-    v13 = [v4 decodeString];
-    v14 = [v13 copy];
+    v5->_isSecureCandidateDoubleLines = [coderCopy decodeBool];
+    v5->_secureCandidateHash = [coderCopy decodeUInt64];
+    v5->_customInfoType = [coderCopy decodeUInt64];
+    v5->_indexForMetrics = [coderCopy decodeUInt32];
+    v5->_responseKitCandidate = [coderCopy decodeBool];
+    decodeString3 = [coderCopy decodeString];
+    v14 = [decodeString3 copy];
     responseKitCategory = v5->_responseKitCategory;
     v5->_responseKitCategory = v14;
 
-    v5->_supplementalItemPrefix = [v4 decodeShort];
-    v5->_typingEngine = [v4 decodeUInt32];
-    v5->_confidence = [v4 decodeUInt32];
-    v16 = [v4 decodeUInt64];
-    if (v16)
+    v5->_supplementalItemPrefix = [coderCopy decodeShort];
+    v5->_typingEngine = [coderCopy decodeUInt32];
+    v5->_confidence = [coderCopy decodeUInt32];
+    decodeUInt64 = [coderCopy decodeUInt64];
+    if (decodeUInt64)
     {
-      v17 = v16;
-      v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v16];
+      v17 = decodeUInt64;
+      v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:decodeUInt64];
       do
       {
-        v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "decodeUInt64")}];
+        v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(coderCopy, "decodeUInt64")}];
         [(NSArray *)v18 addObject:v19];
 
         --v17;
@@ -157,100 +157,100 @@
 
 - (BOOL)isPunctuationCompletionCandidate
 {
-  v3 = [(TIKeyboardCandidate *)self isPunctuation];
-  if (v3)
+  isPunctuation = [(TIKeyboardCandidate *)self isPunctuation];
+  if (isPunctuation)
   {
-    LOBYTE(v3) = [(TIKeyboardCandidate *)self deleteCount]== 0;
+    LOBYTE(isPunctuation) = [(TIKeyboardCandidate *)self deleteCount]== 0;
   }
 
-  return v3;
+  return isPunctuation;
 }
 
 - (BOOL)isPunctuationKeyCandidate
 {
-  v3 = [(TIKeyboardCandidate *)self isPunctuation];
-  if (v3)
+  isPunctuation = [(TIKeyboardCandidate *)self isPunctuation];
+  if (isPunctuation)
   {
-    LOBYTE(v3) = [(TIKeyboardCandidate *)self deleteCount]!= 0;
+    LOBYTE(isPunctuation) = [(TIKeyboardCandidate *)self deleteCount]!= 0;
   }
 
-  return v3;
+  return isPunctuation;
 }
 
 - (BOOL)isPunctuation
 {
-  v2 = [(TIKeyboardCandidate *)self label];
-  v3 = [v2 _containsSymbolsAndPunctuationOnly];
+  label = [(TIKeyboardCandidate *)self label];
+  _containsSymbolsAndPunctuationOnly = [label _containsSymbolsAndPunctuationOnly];
 
-  return v3;
+  return _containsSymbolsAndPunctuationOnly;
 }
 
 - (BOOL)isCompletionCandidate
 {
-  v3 = [(TIKeyboardCandidate *)self input];
-  if ([v3 length])
+  input = [(TIKeyboardCandidate *)self input];
+  if ([input length])
   {
-    v4 = [(TIKeyboardCandidate *)self isInlineCompletionCandidate];
+    isInlineCompletionCandidate = [(TIKeyboardCandidate *)self isInlineCompletionCandidate];
   }
 
   else
   {
-    v4 = 1;
+    isInlineCompletionCandidate = 1;
   }
 
-  return v4;
+  return isInlineCompletionCandidate;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(TIKeyboardCandidate *)self candidate];
-  v4 = [v3 hash];
+  candidate = [(TIKeyboardCandidate *)self candidate];
+  v4 = [candidate hash];
 
-  v5 = [(TIKeyboardCandidate *)self alternativeText];
-  v6 = 257 * [v5 hash];
-  v7 = [(TIKeyboardCandidate *)self annotationText];
-  v8 = 65537 * [v7 hash];
+  alternativeText = [(TIKeyboardCandidate *)self alternativeText];
+  v6 = 257 * [alternativeText hash];
+  annotationText = [(TIKeyboardCandidate *)self annotationText];
+  v8 = 65537 * [annotationText hash];
 
   return v6 + v4 + v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(TIKeyboardCandidate *)self candidate];
-    v7 = [v5 candidate];
-    v8 = [v6 isEqualToString:v7];
+    v5 = equalCopy;
+    candidate = [(TIKeyboardCandidate *)self candidate];
+    candidate2 = [v5 candidate];
+    v8 = [candidate isEqualToString:candidate2];
 
     if (!v8)
     {
       goto LABEL_32;
     }
 
-    v9 = [(TIKeyboardCandidate *)self input];
-    v10 = [v5 input];
-    v11 = [v9 isEqualToString:v10];
+    input = [(TIKeyboardCandidate *)self input];
+    input2 = [v5 input];
+    v11 = [input isEqualToString:input2];
 
     if (!v11)
     {
       goto LABEL_32;
     }
 
-    v12 = [(TIKeyboardCandidate *)self alternativeText];
-    v13 = [v5 alternativeText];
-    v14 = v13;
-    if (v12 == v13)
+    alternativeText = [(TIKeyboardCandidate *)self alternativeText];
+    alternativeText2 = [v5 alternativeText];
+    v14 = alternativeText2;
+    if (alternativeText == alternativeText2)
     {
     }
 
     else
     {
-      v15 = [(TIKeyboardCandidate *)self alternativeText];
-      v16 = [v5 alternativeText];
-      v17 = [v15 isEqualToString:v16];
+      alternativeText3 = [(TIKeyboardCandidate *)self alternativeText];
+      alternativeText4 = [v5 alternativeText];
+      v17 = [alternativeText3 isEqualToString:alternativeText4];
 
       if (!v17)
       {
@@ -258,18 +258,18 @@
       }
     }
 
-    v19 = [(TIKeyboardCandidate *)self annotationText];
-    v20 = [v5 annotationText];
-    v21 = v20;
-    if (v19 == v20)
+    annotationText = [(TIKeyboardCandidate *)self annotationText];
+    annotationText2 = [v5 annotationText];
+    v21 = annotationText2;
+    if (annotationText == annotationText2)
     {
     }
 
     else
     {
-      v22 = [(TIKeyboardCandidate *)self annotationText];
-      v23 = [v5 annotationText];
-      v24 = [v22 isEqualToString:v23];
+      annotationText3 = [(TIKeyboardCandidate *)self annotationText];
+      annotationText4 = [v5 annotationText];
+      v24 = [annotationText3 isEqualToString:annotationText4];
 
       if (!v24)
       {
@@ -277,37 +277,37 @@
       }
     }
 
-    v25 = [(TIKeyboardCandidate *)self slotID];
-    if (v25 == [v5 slotID])
+    slotID = [(TIKeyboardCandidate *)self slotID];
+    if (slotID == [v5 slotID])
     {
       [(TIKeyboardCandidate *)self secureCandidateWidth];
       v27 = v26;
       [v5 secureCandidateWidth];
       if (v27 == v28)
       {
-        v29 = [(TIKeyboardCandidate *)self isSecureCandidateDoubleLines];
-        if (v29 == [v5 isSecureCandidateDoubleLines])
+        isSecureCandidateDoubleLines = [(TIKeyboardCandidate *)self isSecureCandidateDoubleLines];
+        if (isSecureCandidateDoubleLines == [v5 isSecureCandidateDoubleLines])
         {
-          v30 = [(TIKeyboardCandidate *)self secureCandidateHash];
-          if (v30 == [v5 secureCandidateHash])
+          secureCandidateHash = [(TIKeyboardCandidate *)self secureCandidateHash];
+          if (secureCandidateHash == [v5 secureCandidateHash])
           {
-            v31 = [(TIKeyboardCandidate *)self learningFlagsMask];
-            if (v31 == [v5 learningFlagsMask])
+            learningFlagsMask = [(TIKeyboardCandidate *)self learningFlagsMask];
+            if (learningFlagsMask == [v5 learningFlagsMask])
             {
-              v32 = [(TIKeyboardCandidate *)self isContinuousPathConversion];
-              if (v32 == [v5 isContinuousPathConversion])
+              isContinuousPathConversion = [(TIKeyboardCandidate *)self isContinuousPathConversion];
+              if (isContinuousPathConversion == [v5 isContinuousPathConversion])
               {
-                v33 = [(TIKeyboardCandidate *)self shouldAccept];
-                if (v33 == [v5 shouldAccept])
+                shouldAccept = [(TIKeyboardCandidate *)self shouldAccept];
+                if (shouldAccept == [v5 shouldAccept])
                 {
-                  v34 = [(TIKeyboardCandidate *)self customInfoType];
-                  if (v34 == [v5 customInfoType])
+                  customInfoType = [(TIKeyboardCandidate *)self customInfoType];
+                  if (customInfoType == [v5 customInfoType])
                   {
-                    v35 = [(TIKeyboardCandidate *)self isResponseKitCandidate];
-                    if (v35 == [v5 isResponseKitCandidate])
+                    isResponseKitCandidate = [(TIKeyboardCandidate *)self isResponseKitCandidate];
+                    if (isResponseKitCandidate == [v5 isResponseKitCandidate])
                     {
-                      v36 = [(TIKeyboardCandidate *)self isTransliterationCandidate];
-                      if (v36 == [v5 isTransliterationCandidate])
+                      isTransliterationCandidate = [(TIKeyboardCandidate *)self isTransliterationCandidate];
+                      if (isTransliterationCandidate == [v5 isTransliterationCandidate])
                       {
                         v37 = [(NSArray *)self->_supplementalItemIdentifiers count];
                         if ((v37 == [v5[15] count] || -[NSArray isEqualToArray:](self->_supplementalItemIdentifiers, "isEqualToArray:", v5[15])) && self->_supplementalItemPrefix == *(v5 + 17) && self->_typingEngine == *(v5 + 11) && self->_confidence == *(v5 + 10) && self->_candidateProperty == v5[2] && self->_isAlternativeInput == *(v5 + 30) && self->_shouldHintAtAlternativeInput == *(v5 + 31))
@@ -335,7 +335,7 @@ LABEL_32:
 
   v39.receiver = self;
   v39.super_class = TIKeyboardCandidate;
-  v18 = [(TIKeyboardCandidate *)&v39 isEqual:v4];
+  v18 = [(TIKeyboardCandidate *)&v39 isEqual:equalCopy];
 LABEL_34:
 
   return v18;
@@ -343,34 +343,34 @@ LABEL_34:
 
 - (BOOL)isAddress
 {
-  v2 = [(TIKeyboardCandidate *)self proactiveTrigger];
-  v3 = [v2 attributes];
-  v4 = [v3 objectForKey:@"field"];
+  proactiveTrigger = [(TIKeyboardCandidate *)self proactiveTrigger];
+  attributes = [proactiveTrigger attributes];
+  v4 = [attributes objectForKey:@"field"];
 
-  LOBYTE(v2) = [v4 containsString:@"ADDRESS"];
-  return v2;
+  LOBYTE(proactiveTrigger) = [v4 containsString:@"ADDRESS"];
+  return proactiveTrigger;
 }
 
 - (NSString)inputWithoutSupplementalItemPrefix
 {
-  v3 = [(TIKeyboardCandidate *)self input];
-  v4 = [v3 length];
-  v5 = [(TIKeyboardCandidate *)self input];
-  v6 = v5;
+  input = [(TIKeyboardCandidate *)self input];
+  v4 = [input length];
+  input2 = [(TIKeyboardCandidate *)self input];
+  v6 = input2;
   if (v4)
   {
-    if ([v5 characterAtIndex:0] == self->_supplementalItemPrefix)
+    if ([input2 characterAtIndex:0] == self->_supplementalItemPrefix)
     {
-      v7 = [(TIKeyboardCandidate *)self input];
-      v8 = [v7 substringFromIndex:1];
+      input3 = [(TIKeyboardCandidate *)self input];
+      input4 = [input3 substringFromIndex:1];
     }
 
     else
     {
-      v8 = [(TIKeyboardCandidate *)self input];
+      input4 = [(TIKeyboardCandidate *)self input];
     }
 
-    v6 = v8;
+    v6 = input4;
   }
 
   return v6;
@@ -379,9 +379,9 @@ LABEL_34:
 - (NSString)shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(TIKeyboardCandidate *)self input];
-  v5 = [(TIKeyboardCandidate *)self candidate];
-  v6 = [v3 stringWithFormat:@"'%@' -> '%@'", v4, v5];
+  input = [(TIKeyboardCandidate *)self input];
+  candidate = [(TIKeyboardCandidate *)self candidate];
+  v6 = [v3 stringWithFormat:@"'%@' -> '%@'", input, candidate];
 
   return v6;
 }
@@ -390,23 +390,23 @@ LABEL_34:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TIKeyboardCandidate *)self input];
-  v6 = [(TIKeyboardCandidate *)self candidate];
-  v7 = [(TIKeyboardCandidate *)self isExtensionCandidate];
+  input = [(TIKeyboardCandidate *)self input];
+  candidate = [(TIKeyboardCandidate *)self candidate];
+  isExtensionCandidate = [(TIKeyboardCandidate *)self isExtensionCandidate];
   v8 = [(NSArray *)self->_supplementalItemIdentifiers componentsJoinedByString:@", "];
-  v9 = [v3 stringWithFormat:@"<%@: %p '%@' -> '%@' (extension: %d), supplementalItemIDs: [%@]>", v4, self, v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p '%@' -> '%@' (extension: %d), supplementalItemIDs: [%@]>", v4, self, input, candidate, isExtensionCandidate, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   alternativeText = self->_alternativeText;
-  v17 = v4;
+  v17 = coderCopy;
   if (alternativeText)
   {
-    [v4 encodeObject:alternativeText forKey:@"alternativeText"];
+    [coderCopy encodeObject:alternativeText forKey:@"alternativeText"];
   }
 
   annotationText = self->_annotationText;
@@ -470,42 +470,42 @@ LABEL_34:
   }
 }
 
-- (TIKeyboardCandidate)initWithCoder:(id)a3
+- (TIKeyboardCandidate)initWithCoder:(id)coder
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = TIKeyboardCandidate;
   v5 = [(TIKeyboardCandidate *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alternativeText"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alternativeText"];
     alternativeText = v5->_alternativeText;
     v5->_alternativeText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"annotationText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"annotationText"];
     annotationText = v5->_annotationText;
     v5->_annotationText = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"slotID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"slotID"];
     v5->_slotID = [v10 unsignedIntValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureCandidateWidth"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureCandidateWidth"];
     [v11 floatValue];
     v5->_secureCandidateWidth = v12;
 
-    v5->_isSecureCandidateDoubleLines = [v4 decodeBoolForKey:@"isSecureCandidateDoubleLines"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureCandidateHash"];
+    v5->_isSecureCandidateDoubleLines = [coderCopy decodeBoolForKey:@"isSecureCandidateDoubleLines"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureCandidateHash"];
     v5->_secureCandidateHash = [v13 unsignedLongValue];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customInfoType"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customInfoType"];
     v5->_customInfoType = [v14 unsignedLongValue];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"indexForMetrics"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"indexForMetrics"];
     v5->_indexForMetrics = [v15 unsignedIntValue];
 
-    v5->_responseKitCandidate = [v4 decodeBoolForKey:@"responseKitCandidate"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"responseKitCategory"];
+    v5->_responseKitCandidate = [coderCopy decodeBoolForKey:@"responseKitCandidate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"responseKitCategory"];
     responseKitCategory = v5->_responseKitCategory;
     v5->_responseKitCategory = v16;
 
@@ -514,22 +514,22 @@ LABEL_34:
     v30[1] = objc_opt_class();
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
     v20 = [v18 setWithArray:v19];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"supplementalItemIdentifiers"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"supplementalItemIdentifiers"];
     supplementalItemIdentifiers = v5->_supplementalItemIdentifiers;
     v5->_supplementalItemIdentifiers = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supplementalItemPrefix"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supplementalItemPrefix"];
     v5->_supplementalItemPrefix = [v23 unsignedShortValue];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"typingEngine"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typingEngine"];
     v5->_typingEngine = [v24 unsignedIntValue];
 
-    v5->_confidence = [v4 decodeInt32ForKey:@"candidateConfidence"];
-    v5->_candidateProperty = [v4 decodeIntForKey:@"candidateProperty"];
-    v5->_isAlternativeInput = [v4 decodeBoolForKey:@"isAlternativeInput"];
-    v5->_shouldHintAtAlternativeInput = [v4 decodeBoolForKey:@"shouldHintAtAlternativeInput"];
-    v5->_isOneTimeCodeThatRequiresAuthentication = [v4 decodeBoolForKey:@"isOneTimeCodeThatRequiresAuthentication"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wordSeparator"];
+    v5->_confidence = [coderCopy decodeInt32ForKey:@"candidateConfidence"];
+    v5->_candidateProperty = [coderCopy decodeIntForKey:@"candidateProperty"];
+    v5->_isAlternativeInput = [coderCopy decodeBoolForKey:@"isAlternativeInput"];
+    v5->_shouldHintAtAlternativeInput = [coderCopy decodeBoolForKey:@"shouldHintAtAlternativeInput"];
+    v5->_isOneTimeCodeThatRequiresAuthentication = [coderCopy decodeBoolForKey:@"isOneTimeCodeThatRequiresAuthentication"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wordSeparator"];
     wordSeparator = v5->_wordSeparator;
     v5->_wordSeparator = v25;
 
@@ -539,16 +539,16 @@ LABEL_34:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSString *)self->_alternativeText copyWithZone:a3];
+    v6 = [(NSString *)self->_alternativeText copyWithZone:zone];
     v7 = *(v5 + 48);
     *(v5 + 48) = v6;
 
-    v8 = [(NSString *)self->_annotationText copyWithZone:a3];
+    v8 = [(NSString *)self->_annotationText copyWithZone:zone];
     v9 = *(v5 + 56);
     *(v5 + 56) = v8;
 
@@ -558,11 +558,11 @@ LABEL_34:
     *(v5 + 72) = *&self->_secureCandidateHash;
     *(v5 + 88) = self->_indexForMetrics;
     *(v5 + 8) = self->_responseKitCandidate;
-    v10 = [(NSString *)self->_responseKitCategory copyWithZone:a3];
+    v10 = [(NSString *)self->_responseKitCategory copyWithZone:zone];
     v11 = *(v5 + 96);
     *(v5 + 96) = v10;
 
-    v12 = [(NSArray *)self->_supplementalItemIdentifiers copyWithZone:a3];
+    v12 = [(NSArray *)self->_supplementalItemIdentifiers copyWithZone:zone];
     v13 = *(v5 + 120);
     *(v5 + 120) = v12;
 

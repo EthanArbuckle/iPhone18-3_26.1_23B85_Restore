@@ -1,7 +1,7 @@
 @interface MPModelPlaylistAuthorKind
-+ (id)kindWithVariants:(unint64_t)a3;
++ (id)kindWithVariants:(unint64_t)variants;
 - (id)humanDescription;
-- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)a3;
+- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)property;
 @end
 
 @implementation MPModelPlaylistAuthorKind
@@ -41,36 +41,36 @@ LABEL_4:
 
 LABEL_5:
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [v4 msv_compactDescription];
-  v8 = [v6 stringWithFormat:@"playlist author: variants:[%@]", v7];
+  msv_compactDescription = [v4 msv_compactDescription];
+  v8 = [v6 stringWithFormat:@"playlist author: variants:[%@]", msv_compactDescription];
 
   return v8;
 }
 
-+ (id)kindWithVariants:(unint64_t)a3
++ (id)kindWithVariants:(unint64_t)variants
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PlaylistAuthor:v%lu", a3];
+  variants = [MEMORY[0x1E696AEC0] stringWithFormat:@"PlaylistAuthor:v%lu", variants];
   v6 = objc_opt_class();
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__MPModelPlaylistAuthorKind_kindWithVariants___block_invoke;
   v9[3] = &__block_descriptor_40_e35_v16__0__MPModelPlaylistAuthorKind_8l;
-  v9[4] = a3;
-  v7 = [a1 kindWithModelClass:v6 cacheKey:v5 block:v9];
+  v9[4] = variants;
+  v7 = [self kindWithModelClass:v6 cacheKey:variants block:v9];
 
   return v7;
 }
 
-- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)a3
+- (shared_ptr<mlcore::Predicate>)predicateWithBaseProperty:(void *)property
 {
   v12 = *MEMORY[0x1E69E9840];
   v7 = 0;
   v8 = 0;
   v9 = 0;
   Property = mlcore::PlaylistAuthorPropertyRole(self);
-  if (a3)
+  if (property)
   {
-    Property = MPMediaLibraryGetProperty(a3, Property);
+    Property = MPMediaLibraryGetProperty(property, Property);
   }
 
   v6 = 1;

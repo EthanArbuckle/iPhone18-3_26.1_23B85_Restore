@@ -26,16 +26,16 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v3 = [(NSMutableArray *)self->_nonSentinelPoints lastObject];
-  v4 = [(_PointQueue *)self nonSentinelPoints];
+  lastObject = [(NSMutableArray *)self->_nonSentinelPoints lastObject];
+  nonSentinelPoints = [(_PointQueue *)self nonSentinelPoints];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47___PointQueue_effectiveStartIndexBasedOnLength__block_invoke;
   v8[3] = &unk_1E7119670;
-  v5 = v3;
+  v5 = lastObject;
   v9 = v5;
   v10 = &v11;
-  [v4 enumerateObjectsWithOptions:2 usingBlock:v8];
+  [nonSentinelPoints enumerateObjectsWithOptions:2 usingBlock:v8];
 
   v6 = v12[3];
   _Block_object_dispose(&v11, 8);

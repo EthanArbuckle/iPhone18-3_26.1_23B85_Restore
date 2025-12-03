@@ -2,127 +2,127 @@
 + (id)sharedService;
 - (BOOL)_homeKitSettingsDidChangeForDeviceOwner;
 - (BOOL)_isCurrentLanguageMultiUserCompatible;
-- (BOOL)_isTrackingUUIDForInFlightVoiceProfile:(id)a3;
-- (BOOL)_multiUserListenerShouldAcceptNewConnection:(id)a3;
+- (BOOL)_isTrackingUUIDForInFlightVoiceProfile:(id)profile;
+- (BOOL)_multiUserListenerShouldAcceptNewConnection:(id)connection;
 - (BOOL)_profileLimitReached;
-- (BOOL)_removeUser:(id)a3 homeUserID:(id)a4 sharedUserID:(id)a5 iCloudAltDSID:(id)a6 error:(id *)a7;
-- (BOOL)_updateDeviceOwner:(id)a3 sharedUserId:(id)a4 enrollmentName:(id)a5 companionInfo:(id)a6 shareOwnerName:(id)a7 homeMemberSettings:(id)a8 loggingAllowed:(BOOL)a9;
-- (BOOL)_updateHomeKitSettings:(id)a3;
-- (BOOL)_updateNonHomeUserSettings:(id)a3;
+- (BOOL)_removeUser:(id)user homeUserID:(id)d sharedUserID:(id)iD iCloudAltDSID:(id)sID error:(id *)error;
+- (BOOL)_updateDeviceOwner:(id)owner sharedUserId:(id)id enrollmentName:(id)name companionInfo:(id)info shareOwnerName:(id)ownerName homeMemberSettings:(id)settings loggingAllowed:(BOOL)allowed;
+- (BOOL)_updateHomeKitSettings:(id)settings;
+- (BOOL)_updateNonHomeUserSettings:(id)settings;
 - (BOOL)_updateVoiceProfileInfo;
 - (BOOL)getAllowExplicitContentSettingForRecognizedUser;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)personalDomainSettingsDidChange:(id)a3 newUserSettings:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)personalDomainSettingsDidChange:(id)change newUserSettings:(id)settings;
 - (id)_allUsersBySharedUserID;
-- (id)_augmentUserPropertiesWithHomeInfoForUser:(id)a3;
-- (id)_confidenceScoreForSharedUserID:(id)a3 expectedSpeakerSharedUserID:(id)a4 expectedSpeakerConfidenceScore:(int64_t)a5 confidenceScores:(id)a6;
-- (id)_generateDeviceUserWithHomeUserUUID:(id)a3 sharedUserId:(id)a4 loggableSharedUserId:(id)a5 adaccount:(id)a6;
-- (id)_getLoggableMultiUserSharedUserIdForSharedUserID:(id)a3;
-- (id)_getUserAgentStringForSharedUserID:(id)a3;
+- (id)_augmentUserPropertiesWithHomeInfoForUser:(id)user;
+- (id)_confidenceScoreForSharedUserID:(id)d expectedSpeakerSharedUserID:(id)iD expectedSpeakerConfidenceScore:(int64_t)score confidenceScores:(id)scores;
+- (id)_generateDeviceUserWithHomeUserUUID:(id)d sharedUserId:(id)id loggableSharedUserId:(id)userId adaccount:(id)adaccount;
+- (id)_getLoggableMultiUserSharedUserIdForSharedUserID:(id)d;
+- (id)_getUserAgentStringForSharedUserID:(id)d;
 - (id)_homeMembersForPlatform;
 - (id)_inFlightVoiceProfilesByUUID;
-- (id)_initWithPreferences:(id)a3 ssrManager:(id)a4 homeInfoManager:(id)a5;
+- (id)_initWithPreferences:(id)preferences ssrManager:(id)manager homeInfoManager:(id)infoManager;
 - (id)allUsersBySharedUserID;
-- (id)confidenceScoresForMultiUserTestingExpectedSpeakerSharedUserID:(id)a3 expectedSpeakerConfidenceScore:(int64_t)a4 nonspeakerConfidenceScores:(id)a5;
+- (id)confidenceScoresForMultiUserTestingExpectedSpeakerSharedUserID:(id)d expectedSpeakerConfidenceScore:(int64_t)score nonspeakerConfidenceScores:(id)scores;
 - (id)currentOwnerSharedUserID;
-- (id)getAssistantIdentifierForIDS:(id)a3;
+- (id)getAssistantIdentifierForIDS:(id)s;
 - (id)getDeviceOwnerSharedUserId;
-- (id)getSharedUserIdForHomeUserId:(id)a3;
-- (id)getSharedUserIdForShareOwnerName:(id)a3;
-- (id)getSyncableSharedUserIdForSharedUserId:(id)a3;
-- (id)getSyncableSharedUserIdsForSharedUserIds:(id)a3;
-- (id)getUserAgentStringForSharedUserID:(id)a3;
+- (id)getSharedUserIdForHomeUserId:(id)id;
+- (id)getSharedUserIdForShareOwnerName:(id)name;
+- (id)getSyncableSharedUserIdForSharedUserId:(id)id;
+- (id)getSyncableSharedUserIdsForSharedUserIds:(id)ids;
+- (id)getUserAgentStringForSharedUserID:(id)d;
 - (id)homeUserIdToNames;
 - (id)multiUserSAObject;
 - (id)sharedRemoteDevices;
-- (id)validateAndReturnScores:(id)a3 classifiedUser:(id)a4 donatedScores:(id)a5 unknownUserSharedId:(id *)a6 totalUsers:(unint64_t *)a7 ghostVoiceProfileDetected:(BOOL *)a8;
+- (id)validateAndReturnScores:(id)scores classifiedUser:(id)user donatedScores:(id)donatedScores unknownUserSharedId:(id *)id totalUsers:(unint64_t *)users ghostVoiceProfileDetected:(BOOL *)detected;
 - (unint64_t)_countVoiceProfiles;
-- (unint64_t)addIfSiriCloudSyncEnabledForUser:(id)a3;
+- (unint64_t)addIfSiriCloudSyncEnabledForUser:(id)user;
 - (unint64_t)countUsersWithLocationServicesEnabled;
 - (unint64_t)countUsersWithMatchingSiriLanguage;
 - (unint64_t)countUsersWithPersonalRequestsEnabled;
 - (unint64_t)countUsersWithSiriCloudSyncEnabled;
 - (unint64_t)countVoiceProfiles;
-- (void)_addDeviceOwner:(id)a3 sharedUserId:(id)a4 loggableSharedUserId:(id)a5 iCloudAltDSID:(id)a6 audioAppSignals:(id)a7 enrollmentName:(id)a8 companionInfo:(id)a9 shareOwnerName:(id)a10 homeMemberSettings:(id)a11 loggingAllowed:(BOOL)a12 completion:(id)a13;
-- (void)_addUser:(id)a3 sharedUserId:(id)a4 loggableSharedUserId:(id)a5 iCloudAltDSID:(id)a6 enrollmentName:(id)a7 isPrimary:(BOOL)a8 nonCloudSyncedUser:(BOOL)a9 completion:(id)a10;
-- (void)_allowVoiceIdentificationForThisUser:(id)a3 iCloudAltDSID:(id)a4 completion:(id)a5;
-- (void)_currentHomeIsReady:(id)a3;
-- (void)_deleteShareForUser:(id)a3;
-- (void)_describeSAMultiUserInfo:(id)a3;
-- (void)_forceCloudSyncedUserDownload:(id)a3;
+- (void)_addDeviceOwner:(id)owner sharedUserId:(id)id loggableSharedUserId:(id)userId iCloudAltDSID:(id)d audioAppSignals:(id)signals enrollmentName:(id)name companionInfo:(id)info shareOwnerName:(id)self0 homeMemberSettings:(id)self1 loggingAllowed:(BOOL)self2 completion:(id)self3;
+- (void)_addUser:(id)user sharedUserId:(id)id loggableSharedUserId:(id)userId iCloudAltDSID:(id)d enrollmentName:(id)name isPrimary:(BOOL)primary nonCloudSyncedUser:(BOOL)syncedUser completion:(id)self0;
+- (void)_allowVoiceIdentificationForThisUser:(id)user iCloudAltDSID:(id)d completion:(id)completion;
+- (void)_currentHomeIsReady:(id)ready;
+- (void)_deleteShareForUser:(id)user;
+- (void)_describeSAMultiUserInfo:(id)info;
+- (void)_forceCloudSyncedUserDownload:(id)download;
 - (void)_languageCodeDidChange;
 - (void)_loadCloudSyncedUsersFromCache;
-- (void)_logRelevantAnalyticsOnUserAddedWithSharedUserID:(id)a3 isPrimary:(BOOL)a4;
+- (void)_logRelevantAnalyticsOnUserAddedWithSharedUserID:(id)d isPrimary:(BOOL)primary;
 - (void)_postRemovalStateCleanup;
-- (void)_primaryUserSharedUserIdentifierDidChangeNotification:(id)a3;
-- (void)_refreshUsersAndVoiceProfiles:(BOOL)a3;
+- (void)_primaryUserSharedUserIdentifierDidChangeNotification:(id)notification;
+- (void)_refreshUsersAndVoiceProfiles:(BOOL)profiles;
 - (void)_removeGhostVoiceProfiles;
 - (void)_resetAllUsers;
 - (void)_resetPrimaryUser;
 - (void)_saveDeviceOwnerToKeychainCache;
 - (void)_savePrimaryAndDeviceOwner;
 - (void)_saveSharedUsers;
-- (void)_setPrimaryUserMeDevice:(BOOL)a3;
-- (void)_setPrimaryUserSiriLanguage:(id)a3;
-- (void)_setSharedUserMeDevice:(BOOL)a3 forSharedUser:(id)a4;
-- (void)_setSharedUserSiriLanguage:(id)a3 forSharedUser:(id)a4;
+- (void)_setPrimaryUserMeDevice:(BOOL)device;
+- (void)_setPrimaryUserSiriLanguage:(id)language;
+- (void)_setSharedUserMeDevice:(BOOL)device forSharedUser:(id)user;
+- (void)_setSharedUserSiriLanguage:(id)language forSharedUser:(id)user;
 - (void)_setupMultiUserListener;
-- (void)_trackGhostVoiceProfile:(id)a3;
-- (void)_trackHomeUserUUIDForInFlightVoiceProfile:(id)a3;
+- (void)_trackGhostVoiceProfile:(id)profile;
+- (void)_trackHomeUserUUIDForInFlightVoiceProfile:(id)profile;
 - (void)_untrackAllHomeUserUUIDsForInFlightVoiceProfile;
-- (void)_untrackHomeUserUUIDForInFlightVoiceProfile:(id)a3;
-- (void)_untrackUUIDsForUser:(id)a3;
-- (void)_updateCommunalDeviceUser:(id)a3 withSettings:(id)a4;
+- (void)_untrackHomeUserUUIDForInFlightVoiceProfile:(id)profile;
+- (void)_untrackUUIDsForUser:(id)user;
+- (void)_updateCommunalDeviceUser:(id)user withSettings:(id)settings;
 - (void)_updateHomeKitSettingsForDeviceOwner;
-- (void)_updateMappingsForSharedUser:(id)a3;
+- (void)_updateMappingsForSharedUser:(id)user;
 - (void)_updateSAMultiUserInfo;
-- (void)addDeviceOwner:(id)a3 sharedUserId:(id)a4 loggableSharedUserId:(id)a5 iCloudAltDSID:(id)a6 audioAppSignals:(id)a7 enrollmentName:(id)a8 companionInfo:(id)a9 shareOwnerName:(id)a10 homeMemberSettings:(id)a11 loggingAllowed:(BOOL)a12 completion:(id)a13;
-- (void)addUser:(id)a3 sharedUserId:(id)a4 loggableSharedUserId:(id)a5 iCloudAltDSID:(id)a6 enrollmentName:(id)a7 isPrimary:(BOOL)a8 nonCloudSyncedUser:(BOOL)a9 completion:(id)a10;
+- (void)addDeviceOwner:(id)owner sharedUserId:(id)id loggableSharedUserId:(id)userId iCloudAltDSID:(id)d audioAppSignals:(id)signals enrollmentName:(id)name companionInfo:(id)info shareOwnerName:(id)self0 homeMemberSettings:(id)self1 loggingAllowed:(BOOL)self2 completion:(id)self3;
+- (void)addUser:(id)user sharedUserId:(id)id loggableSharedUserId:(id)userId iCloudAltDSID:(id)d enrollmentName:(id)name isPrimary:(BOOL)primary nonCloudSyncedUser:(BOOL)syncedUser completion:(id)self0;
 - (void)dealloc;
-- (void)didReceiveIDs:(id)a3 forUser:(id)a4;
-- (void)downloadVoiceProfileForiCloudAltDSID:(id)a3 completion:(id)a4;
-- (void)dumpAssistantStateChunk:(id)a3;
-- (void)fetchDeviceOwnerAsSAMultiUserInfo:(id)a3;
-- (void)getCompanionAssistantIdForRecognizedUser:(id)a3;
-- (void)getConformingSharedUserIdForHomeUserId:(id)a3 completion:(id)a4;
-- (void)getConformingSharedUserIds:(id)a3;
-- (void)getFirstNameForSharedUserId:(id)a3 completion:(id)a4;
-- (void)getHomeUserIdForSharedUserId:(id)a3 completion:(id)a4;
-- (void)getHomeUserIdOfRecognizedUserWithCompletion:(id)a3;
-- (void)getIDSIdentifierForAssistantId:(id)a3 completion:(id)a4;
-- (void)getLoggableIdentiferForUserWithSharedUserID:(id)a3 iCloudAltDSID:(id)a4 sessionID:(id)a5 completion:(id)a6;
-- (void)getLoggableMultiUserSharedUserIdForSharedUserID:(id)a3 completion:(id)a4;
-- (void)getMultiUserAudioAppSignalsForSharedUserID:(id)a3 completion:(id)a4;
-- (void)getMultiUserCompanionInfoWithCompletion:(id)a3;
-- (void)getMultiUserSettingsForRecognizedUserWithCompletion:(id)a3;
-- (void)getMultiUserSettingsForSharedUserID:(id)a3 completion:(id)a4;
-- (void)getPreferredMediaUserHomeUserIDWithCompletion:(id)a3;
-- (void)getPrimaryUserSharedUserInfoWithCompletion:(id)a3;
-- (void)getRecognizableUsersConfromingSharedUserIds:(id)a3;
-- (void)getSharedUserIdForHomeUserId:(id)a3 completion:(id)a4;
-- (void)getSharedUserIdForiCloudAltDSID:(id)a3 completion:(id)a4;
-- (void)getSharedUserInfoForSharedUserID:(id)a3 completion:(id)a4;
-- (void)getSharedUserInfoForiCloudAltDSID:(id)a3 completion:(id)a4;
-- (void)getUserAgentStringForSharedUserID:(id)a3 completion:(id)a4;
-- (void)getiCloudAltDSIDOfRecognizedUserWithCompletion:(id)a3;
-- (void)homeUserIdToNames:(id)a3;
-- (void)onUserAnalyticsIdsChanged:(id)a3 iCloudAltDSId:(id)a4 sharedUserId:(id)a5;
-- (void)postMessageToMUXWithMultiUserInfo:(id)a3 completion:(id)a4;
+- (void)didReceiveIDs:(id)ds forUser:(id)user;
+- (void)downloadVoiceProfileForiCloudAltDSID:(id)d completion:(id)completion;
+- (void)dumpAssistantStateChunk:(id)chunk;
+- (void)fetchDeviceOwnerAsSAMultiUserInfo:(id)info;
+- (void)getCompanionAssistantIdForRecognizedUser:(id)user;
+- (void)getConformingSharedUserIdForHomeUserId:(id)id completion:(id)completion;
+- (void)getConformingSharedUserIds:(id)ids;
+- (void)getFirstNameForSharedUserId:(id)id completion:(id)completion;
+- (void)getHomeUserIdForSharedUserId:(id)id completion:(id)completion;
+- (void)getHomeUserIdOfRecognizedUserWithCompletion:(id)completion;
+- (void)getIDSIdentifierForAssistantId:(id)id completion:(id)completion;
+- (void)getLoggableIdentiferForUserWithSharedUserID:(id)d iCloudAltDSID:(id)iD sessionID:(id)sessionID completion:(id)completion;
+- (void)getLoggableMultiUserSharedUserIdForSharedUserID:(id)d completion:(id)completion;
+- (void)getMultiUserAudioAppSignalsForSharedUserID:(id)d completion:(id)completion;
+- (void)getMultiUserCompanionInfoWithCompletion:(id)completion;
+- (void)getMultiUserSettingsForRecognizedUserWithCompletion:(id)completion;
+- (void)getMultiUserSettingsForSharedUserID:(id)d completion:(id)completion;
+- (void)getPreferredMediaUserHomeUserIDWithCompletion:(id)completion;
+- (void)getPrimaryUserSharedUserInfoWithCompletion:(id)completion;
+- (void)getRecognizableUsersConfromingSharedUserIds:(id)ids;
+- (void)getSharedUserIdForHomeUserId:(id)id completion:(id)completion;
+- (void)getSharedUserIdForiCloudAltDSID:(id)d completion:(id)completion;
+- (void)getSharedUserInfoForSharedUserID:(id)d completion:(id)completion;
+- (void)getSharedUserInfoForiCloudAltDSID:(id)d completion:(id)completion;
+- (void)getUserAgentStringForSharedUserID:(id)d completion:(id)completion;
+- (void)getiCloudAltDSIDOfRecognizedUserWithCompletion:(id)completion;
+- (void)homeUserIdToNames:(id)names;
+- (void)onUserAnalyticsIdsChanged:(id)changed iCloudAltDSId:(id)id sharedUserId:(id)userId;
+- (void)postMessageToMUXWithMultiUserInfo:(id)info completion:(id)completion;
 - (void)refreshHomeKitOnboardedUsers;
 - (void)removeDeviceOwner;
-- (void)removeUserWithHomeUUID:(id)a3 completion:(id)a4;
-- (void)removeUserWithShareOwnerNames:(id)a3 completion:(id)a4;
-- (void)removeUserWithSharedUserID:(id)a3 completion:(id)a4;
+- (void)removeUserWithHomeUUID:(id)d completion:(id)completion;
+- (void)removeUserWithShareOwnerNames:(id)names completion:(id)completion;
+- (void)removeUserWithSharedUserID:(id)d completion:(id)completion;
 - (void)resetAllUsers;
-- (void)setEnrollmentName:(id)a3 forHomeUser:(id)a4;
-- (void)setPrimaryUser:(id)a3;
-- (void)setShareOwnerName:(id)a3 homeMemberSettings:(id)a4 audioAppSignals:(id)a5 loggingAllowed:(BOOL)a6 forSharedUserId:(id)a7;
-- (void)showMultiUserSharedUserIDsCompletion:(id)a3;
-- (void)showMultiUsersWithCompletion:(id)a3;
-- (void)showPrimaryUserSharedUserIDWithCompletion:(id)a3;
-- (void)triggerMultiUserMetricsWithCompletion:(id)a3;
-- (void)triggerVoiceProfileUploadWithCompletion:(id)a3 completion:(id)a4;
-- (void)updateMultiUserWithSharedUserId:(id)a3 companionInfo:(id)a4 completion:(id)a5;
+- (void)setEnrollmentName:(id)name forHomeUser:(id)user;
+- (void)setPrimaryUser:(id)user;
+- (void)setShareOwnerName:(id)name homeMemberSettings:(id)settings audioAppSignals:(id)signals loggingAllowed:(BOOL)allowed forSharedUserId:(id)id;
+- (void)showMultiUserSharedUserIDsCompletion:(id)completion;
+- (void)showMultiUsersWithCompletion:(id)completion;
+- (void)showPrimaryUserSharedUserIDWithCompletion:(id)completion;
+- (void)triggerMultiUserMetricsWithCompletion:(id)completion;
+- (void)triggerVoiceProfileUploadWithCompletion:(id)completion completion:(id)a4;
+- (void)updateMultiUserWithSharedUserId:(id)id companionInfo:(id)info completion:(id)completion;
 - (void)updateVoiceProfiles;
 - (void)voiceProfilesOutOfSync;
 @end
@@ -149,42 +149,42 @@
   return v2;
 }
 
-- (id)_confidenceScoreForSharedUserID:(id)a3 expectedSpeakerSharedUserID:(id)a4 expectedSpeakerConfidenceScore:(int64_t)a5 confidenceScores:(id)a6
+- (id)_confidenceScoreForSharedUserID:(id)d expectedSpeakerSharedUserID:(id)iD expectedSpeakerConfidenceScore:(int64_t)score confidenceScores:(id)scores
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  scoresCopy = scores;
   v12 = objc_alloc_init(SAUserConfidenceScore);
-  v13 = [v9 uppercaseString];
-  [v12 setSharedUserId:v13];
+  uppercaseString = [dCopy uppercaseString];
+  [v12 setSharedUserId:uppercaseString];
 
-  v14 = [v9 uppercaseString];
-  v15 = [v11 objectForKey:v14];
+  uppercaseString2 = [dCopy uppercaseString];
+  v15 = [scoresCopy objectForKey:uppercaseString2];
 
   if (v15)
   {
-    v16 = [v15 integerValue];
+    scoreCopy = [v15 integerValue];
   }
 
-  else if ([v10 caseInsensitiveCompare:v9])
+  else if ([iDCopy caseInsensitiveCompare:dCopy])
   {
-    v16 = 0;
+    scoreCopy = 0;
   }
 
   else
   {
-    v16 = a5;
+    scoreCopy = score;
   }
 
-  [v12 setConfidenceScore:v16];
+  [v12 setConfidenceScore:scoreCopy];
 
   return v12;
 }
 
-- (id)confidenceScoresForMultiUserTestingExpectedSpeakerSharedUserID:(id)a3 expectedSpeakerConfidenceScore:(int64_t)a4 nonspeakerConfidenceScores:(id)a5
+- (id)confidenceScoresForMultiUserTestingExpectedSpeakerSharedUserID:(id)d expectedSpeakerConfidenceScore:(int64_t)score nonspeakerConfidenceScores:(id)scores
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  scoresCopy = scores;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -197,12 +197,12 @@
   block[2] = sub_1002A071C;
   block[3] = &unk_100519B60;
   block[4] = self;
-  v16 = v8;
+  v16 = dCopy;
   v18 = &v20;
-  v19 = a4;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
+  scoreCopy = score;
+  v17 = scoresCopy;
+  v11 = scoresCopy;
+  v12 = dCopy;
   dispatch_sync(queue, block);
   v13 = v21[5];
 
@@ -211,46 +211,46 @@
   return v13;
 }
 
-- (void)getSharedUserIdForiCloudAltDSID:(id)a3 completion:(id)a4
+- (void)getSharedUserIdForiCloudAltDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1002A09A4;
     v9[3] = &unk_100519B38;
-    v11 = v7;
-    v10 = v6;
+    v11 = completionCopy;
+    v10 = dCopy;
     [(ADMultiUserService *)self getSharedUserInfoForiCloudAltDSID:v10 completion:v9];
   }
 }
 
-- (void)getSharedUserInfoForiCloudAltDSID:(id)a3 completion:(id)a4
+- (void)getSharedUserInfoForiCloudAltDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1002A0B9C;
     block[3] = &unk_10051E088;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = dCopy;
+    selfCopy = self;
+    v12 = completionCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)getPrimaryUserSharedUserInfoWithCompletion:(id)a3
+- (void)getPrimaryUserSharedUserInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -258,25 +258,25 @@
     v7[2] = sub_1002A1154;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getSharedUserInfoForSharedUserID:(id)a3 completion:(id)a4
+- (void)getSharedUserInfoForSharedUserID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1002A12E8;
     block[3] = &unk_10051E088;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = dCopy;
+    selfCopy = self;
+    v12 = completionCopy;
     dispatch_async(queue, block);
   }
 }
@@ -303,22 +303,22 @@
   return v3;
 }
 
-- (id)getAssistantIdentifierForIDS:(id)a3
+- (id)getAssistantIdentifierForIDS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 136315138;
     *(&buf + 4) = "[ADMultiUserService getAssistantIdentifierForIDS:]";
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s ", &buf, 0xCu);
-    if (!v4)
+    if (!sCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (!v4)
+  else if (!sCopy)
   {
     goto LABEL_6;
   }
@@ -337,7 +337,7 @@
     block[2] = sub_1002A1720;
     block[3] = &unk_10051C588;
     block[4] = self;
-    v10 = v4;
+    v10 = sCopy;
     p_buf = &buf;
     dispatch_sync(queue, block);
     v7 = *(*(&buf + 1) + 40);
@@ -353,11 +353,11 @@ LABEL_7:
   return v7;
 }
 
-- (void)getIDSIdentifierForAssistantId:(id)a3 completion:(id)a4
+- (void)getIDSIdentifierForAssistantId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -365,13 +365,13 @@ LABEL_7:
       *buf = 136315138;
       v16 = "[ADMultiUserService getIDSIdentifierForAssistantId:completion:]";
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s ", buf, 0xCu);
-      if (!v6)
+      if (!idCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v6)
+    else if (!idCopy)
     {
       goto LABEL_7;
     }
@@ -383,9 +383,9 @@ LABEL_7:
       block[1] = 3221225472;
       block[2] = sub_1002A1BC0;
       block[3] = &unk_10051E088;
-      v12 = v6;
-      v13 = self;
-      v14 = v7;
+      v12 = idCopy;
+      selfCopy = self;
+      v14 = completionCopy;
       dispatch_async(queue, block);
 
       v10 = v12;
@@ -396,38 +396,38 @@ LABEL_8:
 
 LABEL_7:
     v10 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6002 userInfo:&__NSDictionary0__struct];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)getPreferredMediaUserHomeUserIDWithCompletion:(id)a3
+- (void)getPreferredMediaUserHomeUserIDWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ((AFSupportsMultiUser() & 1) == 0)
     {
-      v7 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6004 userInfo:&__NSDictionary0__struct];
-      v4[2](v4, 0, v7);
+      preferredMediaUserSharedUserID = [NSError errorWithDomain:kAFAssistantErrorDomain code:6004 userInfo:&__NSDictionary0__struct];
+      completionCopy[2](completionCopy, 0, preferredMediaUserSharedUserID);
 LABEL_12:
 
       goto LABEL_13;
     }
 
     v5 = +[ADHomeInfoManager sharedInfoManager];
-    v6 = [v5 preferredMediaUserInfo];
-    v7 = [v6 preferredMediaUserSharedUserID];
+    preferredMediaUserInfo = [v5 preferredMediaUserInfo];
+    preferredMediaUserSharedUserID = [preferredMediaUserInfo preferredMediaUserSharedUserID];
 
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       v10 = @"nil";
-      if (v7)
+      if (preferredMediaUserSharedUserID)
       {
-        v10 = v7;
+        v10 = preferredMediaUserSharedUserID;
       }
 
       *buf = 136315395;
@@ -435,21 +435,21 @@ LABEL_12:
       v15 = 2113;
       v16 = v10;
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s preferredMediaUserSharedUserID (%{private}@)", buf, 0x16u);
-      if (v7)
+      if (preferredMediaUserSharedUserID)
       {
         goto LABEL_5;
       }
     }
 
-    else if (v7)
+    else if (preferredMediaUserSharedUserID)
     {
 LABEL_5:
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_1002A2148;
       v11[3] = &unk_100519B10;
-      v12 = v4;
-      [(ADMultiUserService *)self getHomeUserIdForSharedUserId:v7 completion:v11];
+      v12 = completionCopy;
+      [(ADMultiUserService *)self getHomeUserIdForSharedUserId:preferredMediaUserSharedUserID completion:v11];
       v9 = v12;
 LABEL_11:
 
@@ -457,36 +457,36 @@ LABEL_11:
     }
 
     v9 = [AFError errorWithCode:6200 description:@"Unable to determine the preferred media user"];
-    v4[2](v4, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
     goto LABEL_11;
   }
 
 LABEL_13:
 }
 
-- (void)homeUserIdToNames:(id)a3
+- (void)homeUserIdToNames:(id)names
 {
-  v6 = a3;
-  v4 = [(ADMultiUserService *)self homeUserIdToNames];
-  if (v4)
+  namesCopy = names;
+  homeUserIdToNames = [(ADMultiUserService *)self homeUserIdToNames];
+  if (homeUserIdToNames)
   {
-    v6[2](v6, v4, 0);
+    namesCopy[2](namesCopy, homeUserIdToNames, 0);
   }
 
   else
   {
     v5 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6001 userInfo:0];
-    (v6)[2](v6, 0, v5);
+    (namesCopy)[2](namesCopy, 0, v5);
   }
 }
 
-- (void)getMultiUserAudioAppSignalsForSharedUserID:(id)a3 completion:(id)a4
+- (void)getMultiUserAudioAppSignalsForSharedUserID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6 && (AFSupportsMultiUser() & 1) != 0)
+    if (dCopy && (AFSupportsMultiUser() & 1) != 0)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -494,26 +494,26 @@ LABEL_13:
       block[2] = sub_1002A233C;
       block[3] = &unk_10051E088;
       block[4] = self;
-      v12 = v7;
-      v11 = v6;
+      v12 = completionCopy;
+      v11 = dCopy;
       dispatch_async(queue, block);
     }
 
     else
     {
       v9 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6002 userInfo:&__NSDictionary0__struct];
-      (*(v7 + 2))(v7, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 }
 
-- (void)getMultiUserSettingsForSharedUserID:(id)a3 completion:(id)a4
+- (void)getMultiUserSettingsForSharedUserID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6 && (AFSupportsMultiUser() & 1) != 0)
+    if (dCopy && (AFSupportsMultiUser() & 1) != 0)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -521,23 +521,23 @@ LABEL_13:
       block[2] = sub_1002A26F8;
       block[3] = &unk_10051E088;
       block[4] = self;
-      v11 = v6;
-      v12 = v7;
+      v11 = dCopy;
+      v12 = completionCopy;
       dispatch_async(queue, block);
     }
 
     else
     {
       v9 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6002 userInfo:&__NSDictionary0__struct];
-      (*(v7 + 2))(v7, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 }
 
-- (void)getCompanionAssistantIdForRecognizedUser:(id)a3
+- (void)getCompanionAssistantIdForRecognizedUser:(id)user
 {
-  v4 = a3;
-  if (v4)
+  userCopy = user;
+  if (userCopy)
   {
     if (AFSupportsMultiUser())
     {
@@ -547,22 +547,22 @@ LABEL_13:
       v7[2] = sub_1002A2BAC;
       v7[3] = &unk_10051E038;
       v7[4] = self;
-      v8 = v4;
+      v8 = userCopy;
       dispatch_async(queue, v7);
     }
 
     else
     {
       v6 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6004 userInfo:&__NSDictionary0__struct];
-      (*(v4 + 2))(v4, 0, v6);
+      (*(userCopy + 2))(userCopy, 0, v6);
     }
   }
 }
 
-- (void)getMultiUserSettingsForRecognizedUserWithCompletion:(id)a3
+- (void)getMultiUserSettingsForRecognizedUserWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (AFSupportsMultiUser())
     {
@@ -572,22 +572,22 @@ LABEL_13:
       v7[2] = sub_1002A2FE8;
       v7[3] = &unk_10051E038;
       v7[4] = self;
-      v8 = v4;
+      v8 = completionCopy;
       dispatch_async(queue, v7);
     }
 
     else
     {
       v6 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6004 userInfo:&__NSDictionary0__struct];
-      (*(v4 + 2))(v4, 0, v6);
+      (*(completionCopy + 2))(completionCopy, 0, v6);
     }
   }
 }
 
-- (void)getiCloudAltDSIDOfRecognizedUserWithCompletion:(id)a3
+- (void)getiCloudAltDSIDOfRecognizedUserWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (AFSupportsMultiUser())
     {
@@ -597,22 +597,22 @@ LABEL_13:
       v7[2] = sub_1002A32EC;
       v7[3] = &unk_10051E038;
       v7[4] = self;
-      v8 = v4;
+      v8 = completionCopy;
       dispatch_async(queue, v7);
     }
 
     else
     {
       v6 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6004 userInfo:&__NSDictionary0__struct];
-      (*(v4 + 2))(v4, 0, v6);
+      (*(completionCopy + 2))(completionCopy, 0, v6);
     }
   }
 }
 
-- (void)getHomeUserIdOfRecognizedUserWithCompletion:(id)a3
+- (void)getHomeUserIdOfRecognizedUserWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (AFSupportsMultiUser())
     {
@@ -622,22 +622,22 @@ LABEL_13:
       v7[2] = sub_1002A3728;
       v7[3] = &unk_10051E038;
       v7[4] = self;
-      v8 = v4;
+      v8 = completionCopy;
       dispatch_async(queue, v7);
     }
 
     else
     {
       v6 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6004 userInfo:&__NSDictionary0__struct];
-      (*(v4 + 2))(v4, 0, v6);
+      (*(completionCopy + 2))(completionCopy, 0, v6);
     }
   }
 }
 
-- (void)getRecognizableUsersConfromingSharedUserIds:(id)a3
+- (void)getRecognizableUsersConfromingSharedUserIds:(id)ids
 {
-  v4 = a3;
-  if (v4)
+  idsCopy = ids;
+  if (idsCopy)
   {
     if (AFSupportsMultiUser())
     {
@@ -647,22 +647,22 @@ LABEL_13:
       v7[2] = sub_1002A3CA4;
       v7[3] = &unk_10051E038;
       v7[4] = self;
-      v8 = v4;
+      v8 = idsCopy;
       dispatch_async(queue, v7);
     }
 
     else
     {
       v6 = [NSError errorWithDomain:kAFAssistantErrorDomain code:13 userInfo:&__NSDictionary0__struct];
-      (*(v4 + 2))(v4, 0, v6);
+      (*(idsCopy + 2))(idsCopy, 0, v6);
     }
   }
 }
 
-- (void)getConformingSharedUserIds:(id)a3
+- (void)getConformingSharedUserIds:(id)ids
 {
-  v4 = a3;
-  if (v4)
+  idsCopy = ids;
+  if (idsCopy)
   {
     if (AFSupportsMultiUser())
     {
@@ -672,25 +672,25 @@ LABEL_13:
       v7[2] = sub_1002A422C;
       v7[3] = &unk_10051E038;
       v7[4] = self;
-      v8 = v4;
+      v8 = idsCopy;
       dispatch_async(queue, v7);
     }
 
     else
     {
       v6 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6002 userInfo:&__NSDictionary0__struct];
-      (*(v4 + 2))(v4, 0, v6);
+      (*(idsCopy + 2))(idsCopy, 0, v6);
     }
   }
 }
 
-- (void)getConformingSharedUserIdForHomeUserId:(id)a3 completion:(id)a4
+- (void)getConformingSharedUserIdForHomeUserId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6 && (AFSupportsMultiUser() & 1) != 0)
+    if (idCopy && (AFSupportsMultiUser() & 1) != 0)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -698,51 +698,51 @@ LABEL_13:
       block[2] = sub_1002A47BC;
       block[3] = &unk_10051E088;
       block[4] = self;
-      v11 = v6;
-      v12 = v7;
+      v11 = idCopy;
+      v12 = completionCopy;
       dispatch_async(queue, block);
     }
 
     else
     {
       v9 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6002 userInfo:&__NSDictionary0__struct];
-      (*(v7 + 2))(v7, 0, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v9);
     }
   }
 }
 
-- (void)getFirstNameForSharedUserId:(id)a3 completion:(id)a4
+- (void)getFirstNameForSharedUserId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v6 && (AFSupportsMultiUser() & 1) != 0)
+    if (idCopy && (AFSupportsMultiUser() & 1) != 0)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1002A4BD4;
       block[3] = &unk_10051E088;
-      v11 = v6;
-      v12 = self;
-      v13 = v7;
+      v11 = idCopy;
+      selfCopy = self;
+      v13 = completionCopy;
       dispatch_async(queue, block);
     }
 
     else
     {
       v9 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6002 userInfo:&__NSDictionary0__struct];
-      (*(v7 + 2))(v7, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 }
 
-- (void)getSharedUserIdForHomeUserId:(id)a3 completion:(id)a4
+- (void)getSharedUserIdForHomeUserId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -750,15 +750,15 @@ LABEL_13:
       *buf = 136315395;
       v15 = "[ADMultiUserService getSharedUserIdForHomeUserId:completion:]";
       v16 = 2113;
-      v17 = v6;
+      v17 = idCopy;
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Retrieving shared user id for homeUserId = %{private}@", buf, 0x16u);
-      if (!v6)
+      if (!idCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v6)
+    else if (!idCopy)
     {
       goto LABEL_7;
     }
@@ -771,8 +771,8 @@ LABEL_13:
       block[2] = sub_1002A4F40;
       block[3] = &unk_10051E088;
       block[4] = self;
-      v12 = v6;
-      v13 = v7;
+      v12 = idCopy;
+      v13 = completionCopy;
       dispatch_async(queue, block);
 
       goto LABEL_8;
@@ -780,17 +780,17 @@ LABEL_13:
 
 LABEL_7:
     v10 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6002 userInfo:&__NSDictionary0__struct];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 
 LABEL_8:
 }
 
-- (void)getHomeUserIdForSharedUserId:(id)a3 completion:(id)a4
+- (void)getHomeUserIdForSharedUserId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -798,15 +798,15 @@ LABEL_8:
       *buf = 136315395;
       v15 = "[ADMultiUserService getHomeUserIdForSharedUserId:completion:]";
       v16 = 2113;
-      v17 = v6;
+      v17 = idCopy;
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s %{private}@", buf, 0x16u);
-      if (!v6)
+      if (!idCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v6)
+    else if (!idCopy)
     {
       goto LABEL_7;
     }
@@ -819,8 +819,8 @@ LABEL_8:
       block[2] = sub_1002A53FC;
       block[3] = &unk_10051E088;
       block[4] = self;
-      v12 = v6;
-      v13 = v7;
+      v12 = idCopy;
+      v13 = completionCopy;
       dispatch_async(queue, block);
 
       goto LABEL_8;
@@ -828,7 +828,7 @@ LABEL_8:
 
 LABEL_7:
     v10 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6002 userInfo:&__NSDictionary0__struct];
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
   }
 
 LABEL_8:
@@ -840,9 +840,9 @@ LABEL_8:
   v10 = &v9;
   v11 = 0x2020000000;
   v3 = +[ADPreferences sharedPreferences];
-  v4 = [v3 allowExplicitContent];
+  allowExplicitContent = [v3 allowExplicitContent];
 
-  v12 = v4;
+  v12 = allowExplicitContent;
   if (AFSupportsMultiUser())
   {
     queue = self->_queue;
@@ -860,11 +860,11 @@ LABEL_8:
   return v6;
 }
 
-- (id)getSharedUserIdForHomeUserId:(id)a3
+- (id)getSharedUserIdForHomeUserId:(id)id
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  idCopy = id;
+  v5 = idCopy;
+  if (idCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -878,7 +878,7 @@ LABEL_8:
     block[2] = sub_1002A5B3C;
     block[3] = &unk_10051C588;
     block[4] = self;
-    v10 = v4;
+    v10 = idCopy;
     v11 = &v12;
     dispatch_sync(queue, block);
     v7 = v13[5];
@@ -894,9 +894,9 @@ LABEL_8:
   return v7;
 }
 
-- (id)getSyncableSharedUserIdsForSharedUserIds:(id)a3
+- (id)getSyncableSharedUserIdsForSharedUserIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -908,10 +908,10 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_1002A5D60;
   block[3] = &unk_10051C588;
-  v10 = v4;
-  v11 = self;
+  v10 = idsCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = idsCopy;
   dispatch_sync(queue, block);
   v7 = v14[5];
 
@@ -920,9 +920,9 @@ LABEL_8:
   return v7;
 }
 
-- (id)getSyncableSharedUserIdForSharedUserId:(id)a3
+- (id)getSyncableSharedUserIdForSharedUserId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -934,10 +934,10 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_1002A6044;
   block[3] = &unk_10051C588;
-  v10 = v4;
-  v11 = self;
+  v10 = idCopy;
+  selfCopy = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = idCopy;
   dispatch_sync(queue, block);
   v7 = v14[5];
 
@@ -946,17 +946,17 @@ LABEL_8:
   return v7;
 }
 
-- (id)getSharedUserIdForShareOwnerName:(id)a3
+- (id)getSharedUserIdForShareOwnerName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
+  nameCopy = name;
+  v5 = nameCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_1002A0704;
   v16 = sub_1002A0714;
   v17 = 0;
-  if (v4)
+  if (nameCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -964,7 +964,7 @@ LABEL_8:
     block[2] = sub_1002A6280;
     block[3] = &unk_10051C588;
     block[4] = self;
-    v10 = v4;
+    v10 = nameCopy;
     v11 = &v12;
     dispatch_sync(queue, block);
     v7 = v13[5];
@@ -996,36 +996,36 @@ LABEL_8:
   return v4 >= AFMultiUserServiceUserProfileLimit;
 }
 
-- (void)setShareOwnerName:(id)a3 homeMemberSettings:(id)a4 audioAppSignals:(id)a5 loggingAllowed:(BOOL)a6 forSharedUserId:(id)a7
+- (void)setShareOwnerName:(id)name homeMemberSettings:(id)settings audioAppSignals:(id)signals loggingAllowed:(BOOL)allowed forSharedUserId:(id)id
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  nameCopy = name;
+  settingsCopy = settings;
+  signalsCopy = signals;
+  idCopy = id;
   queue = self->_queue;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1002A65A0;
   v21[3] = &unk_100519AC0;
   v21[4] = self;
-  v22 = v15;
-  v26 = a6;
-  v23 = v12;
-  v24 = v13;
-  v25 = v14;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
-  v20 = v15;
+  v22 = idCopy;
+  allowedCopy = allowed;
+  v23 = nameCopy;
+  v24 = settingsCopy;
+  v25 = signalsCopy;
+  v17 = signalsCopy;
+  v18 = settingsCopy;
+  v19 = nameCopy;
+  v20 = idCopy;
   dispatch_async(queue, v21);
 }
 
-- (void)setEnrollmentName:(id)a3 forHomeUser:(id)a4
+- (void)setEnrollmentName:(id)name forHomeUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  nameCopy = name;
+  userCopy = user;
+  v8 = userCopy;
+  if (nameCopy && userCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -1033,17 +1033,17 @@ LABEL_8:
     block[2] = sub_1002A679C;
     block[3] = &unk_10051DB68;
     block[4] = self;
-    v11 = v7;
-    v12 = v6;
+    v11 = userCopy;
+    v12 = nameCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)updateMultiUserWithSharedUserId:(id)a3 companionInfo:(id)a4 completion:(id)a5
+- (void)updateMultiUserWithSharedUserId:(id)id companionInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  infoCopy = info;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -1054,15 +1054,15 @@ LABEL_8:
 
   if (AFSupportsMultiUser())
   {
-    v29 = [v9 assistantID];
-    v28 = [v9 speechID];
-    v27 = [v9 idsIdentifier];
-    v26 = [v9 productPrefix];
-    v25 = [v9 aceHost];
-    v23 = [v9 companionName];
-    if ([v9 meDevice])
+    assistantID = [infoCopy assistantID];
+    speechID = [infoCopy speechID];
+    idsIdentifier = [infoCopy idsIdentifier];
+    productPrefix = [infoCopy productPrefix];
+    aceHost = [infoCopy aceHost];
+    companionName = [infoCopy companionName];
+    if ([infoCopy meDevice])
     {
-      v12 = [v9 meDevice];
+      meDevice = [infoCopy meDevice];
     }
 
     else
@@ -1075,10 +1075,10 @@ LABEL_8:
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s meDevice field not found", &buf, 0xCu);
       }
 
-      v12 = 1;
+      meDevice = 1;
     }
 
-    v15 = [v9 siriLanguage];
+    siriLanguage = [infoCopy siriLanguage];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v47 = 0x3032000000;
@@ -1095,26 +1095,26 @@ LABEL_8:
     block[2] = sub_1002A6BF8;
     block[3] = &unk_100519A98;
     block[4] = self;
-    v31 = v8;
-    v32 = v29;
+    v31 = idCopy;
+    v32 = assistantID;
     p_buf = &buf;
     v42 = v44;
-    v33 = v28;
-    v34 = v27;
-    v35 = v26;
-    v36 = v25;
-    v37 = v9;
-    v38 = v23;
-    v39 = v15;
-    v43 = v12;
-    v40 = v10;
-    v22 = v15;
-    v24 = v23;
-    v17 = v25;
-    v18 = v26;
-    v19 = v27;
-    v20 = v28;
-    v21 = v29;
+    v33 = speechID;
+    v34 = idsIdentifier;
+    v35 = productPrefix;
+    v36 = aceHost;
+    v37 = infoCopy;
+    v38 = companionName;
+    v39 = siriLanguage;
+    v43 = meDevice;
+    v40 = completionCopy;
+    v22 = siriLanguage;
+    v24 = companionName;
+    v17 = aceHost;
+    v18 = productPrefix;
+    v19 = idsIdentifier;
+    v20 = speechID;
+    v21 = assistantID;
     dispatch_async(queue, block);
 
     _Block_object_dispose(v44, 8);
@@ -1124,17 +1124,17 @@ LABEL_8:
   else
   {
     v13 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6004 userInfo:&__NSDictionary0__struct];
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, v13);
+      (*(completionCopy + 2))(completionCopy, v13);
     }
   }
 }
 
-- (void)triggerMultiUserMetricsWithCompletion:(id)a3
+- (void)triggerMultiUserMetricsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (AFSupportsMultiUser())
     {
@@ -1146,7 +1146,7 @@ LABEL_8:
         v9[2] = sub_1002A7B98;
         v9[3] = &unk_10051D188;
         v9[4] = self;
-        v10 = v4;
+        v10 = completionCopy;
         [v5 getVoiceSettingsForHomeMembers:v9];
 
         goto LABEL_8;
@@ -1163,7 +1163,7 @@ LABEL_8:
     }
 
     v8 = [NSError errorWithDomain:v6 code:v7 userInfo:&__NSDictionary0__struct];
-    (*(v4 + 2))(v4, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 
 LABEL_8:
@@ -1209,16 +1209,16 @@ LABEL_8:
   }
 }
 
-- (void)_trackGhostVoiceProfile:(id)a3
+- (void)_trackGhostVoiceProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v9 = 136315395;
     v10 = "[ADMultiUserService _trackGhostVoiceProfile:]";
     v11 = 2113;
-    v12 = v4;
+    v12 = profileCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s sharedUserID %{private}@", &v9, 0x16u);
   }
 
@@ -1232,14 +1232,14 @@ LABEL_8:
     ghostVoiceProfileSharedUserIDs = self->_ghostVoiceProfileSharedUserIDs;
   }
 
-  [(NSMutableSet *)ghostVoiceProfileSharedUserIDs addObject:v4];
+  [(NSMutableSet *)ghostVoiceProfileSharedUserIDs addObject:profileCopy];
 }
 
-- (void)getLoggableMultiUserSharedUserIdForSharedUserID:(id)a3 completion:(id)a4
+- (void)getLoggableMultiUserSharedUserIdForSharedUserID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ADMultiUserService *)self _getLoggableMultiUserSharedUserIdForSharedUserID:v6];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = [(ADMultiUserService *)self _getLoggableMultiUserSharedUserIdForSharedUserID:dCopy];
   v9 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1248,130 +1248,130 @@ LABEL_8:
     v12 = 2112;
     v13 = v8;
     v14 = 2112;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s get loggable multiUserSharedUserId: %@ for sharedUserId: %@", &v10, 0x20u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (void)postMessageToMUXWithMultiUserInfo:(id)a3 completion:(id)a4
+- (void)postMessageToMUXWithMultiUserInfo:(id)info completion:(id)completion
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [v4 homeMembers];
+    homeMembers = [infoCopy homeMembers];
     v9 = 136315394;
     v10 = "[ADMultiUserService postMessageToMUXWithMultiUserInfo:completion:]";
     v11 = 2048;
-    v12 = [v7 count];
+    v12 = [homeMembers count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Posting MUX message with %ld home members", &v9, 0x16u);
   }
 
   v8 = +[ADCommandCenter sharedCommandCenter];
-  [v8 postMessageToMUXWithMultiUserInfo:v4];
+  [v8 postMessageToMUXWithMultiUserInfo:infoCopy];
 }
 
-- (void)getLoggableIdentiferForUserWithSharedUserID:(id)a3 iCloudAltDSID:(id)a4 sessionID:(id)a5 completion:(id)a6
+- (void)getLoggableIdentiferForUserWithSharedUserID:(id)d iCloudAltDSID:(id)iD sessionID:(id)sessionID completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002A8760;
   block[3] = &unk_10051D2A0;
-  v20 = v10;
-  v21 = self;
-  v23 = v12;
-  v24 = v13;
-  v22 = v11;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
-  v18 = v10;
+  v20 = dCopy;
+  selfCopy = self;
+  v23 = sessionIDCopy;
+  v24 = completionCopy;
+  v22 = iDCopy;
+  v15 = sessionIDCopy;
+  v16 = completionCopy;
+  v17 = iDCopy;
+  v18 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (id)_getLoggableMultiUserSharedUserIdForSharedUserID:(id)a3
+- (id)_getLoggableMultiUserSharedUserIdForSharedUserID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
-    v7 = 0;
+    loggableMultiUserSharedUserID = 0;
     goto LABEL_9;
   }
 
-  primaryUser = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:v4];
+  primaryUser = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:dCopy];
   v6 = primaryUser;
   if (!primaryUser)
   {
-    v8 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
-    v9 = [v8 isEqualToString:v4];
+    sharedUserID = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+    v9 = [sharedUserID isEqualToString:dCopy];
 
     if (!v9)
     {
-      v7 = 0;
+      loggableMultiUserSharedUserID = 0;
       goto LABEL_8;
     }
 
     primaryUser = self->_primaryUser;
   }
 
-  v7 = [primaryUser loggableMultiUserSharedUserID];
+  loggableMultiUserSharedUserID = [primaryUser loggableMultiUserSharedUserID];
 LABEL_8:
 
 LABEL_9:
 
-  return v7;
+  return loggableMultiUserSharedUserID;
 }
 
-- (id)_getUserAgentStringForSharedUserID:(id)a3
+- (id)_getUserAgentStringForSharedUserID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
-    v7 = 0;
+    productPrefix = 0;
     goto LABEL_9;
   }
 
-  primaryUser = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:v4];
+  primaryUser = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:dCopy];
   v6 = primaryUser;
   if (!primaryUser)
   {
-    v8 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
-    v9 = [v8 isEqualToString:v4];
+    sharedUserID = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+    v9 = [sharedUserID isEqualToString:dCopy];
 
     if (!v9)
     {
-      v7 = 0;
+      productPrefix = 0;
       goto LABEL_8;
     }
 
     primaryUser = self->_primaryUser;
   }
 
-  v7 = [primaryUser productPrefix];
+  productPrefix = [primaryUser productPrefix];
 LABEL_8:
 
 LABEL_9:
 
-  return v7;
+  return productPrefix;
 }
 
-- (void)getUserAgentStringForSharedUserID:(id)a3 completion:(id)a4
+- (void)getUserAgentStringForSharedUserID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (dCopy && completionCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -1379,23 +1379,23 @@ LABEL_9:
     block[2] = sub_1002A8CB4;
     block[3] = &unk_10051E088;
     block[4] = self;
-    v11 = v6;
+    v11 = dCopy;
     v12 = v8;
     dispatch_async(queue, block);
   }
 }
 
-- (id)getUserAgentStringForSharedUserID:(id)a3
+- (id)getUserAgentStringForSharedUserID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_1002A0704;
   v17 = sub_1002A0714;
   v18 = 0;
-  if (v4)
+  if (dCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -1404,7 +1404,7 @@ LABEL_9:
     block[3] = &unk_10051C588;
     v12 = &v13;
     block[4] = self;
-    v11 = v4;
+    v11 = dCopy;
     dispatch_sync(queue, block);
 
     v7 = v14[5];
@@ -1421,15 +1421,15 @@ LABEL_9:
   return v8;
 }
 
-- (void)setPrimaryUser:(id)a3
+- (void)setPrimaryUser:(id)user
 {
-  v5 = a3;
+  userCopy = user;
   v6 = dispatch_get_current_queue();
   queue = self->_queue;
 
   if (v6 == queue)
   {
-    objc_storeStrong(&self->_primaryUser, a3);
+    objc_storeStrong(&self->_primaryUser, user);
   }
 
   else
@@ -1440,7 +1440,7 @@ LABEL_9:
     v9[2] = sub_1002A8F6C;
     v9[3] = &unk_10051E010;
     v9[4] = self;
-    v10 = v5;
+    v10 = userCopy;
     dispatch_sync(v8, v9);
   }
 }
@@ -1467,18 +1467,18 @@ LABEL_9:
   dispatch_async(queue, block);
 }
 
-- (id)validateAndReturnScores:(id)a3 classifiedUser:(id)a4 donatedScores:(id)a5 unknownUserSharedId:(id *)a6 totalUsers:(unint64_t *)a7 ghostVoiceProfileDetected:(BOOL *)a8
+- (id)validateAndReturnScores:(id)scores classifiedUser:(id)user donatedScores:(id)donatedScores unknownUserSharedId:(id *)id totalUsers:(unint64_t *)users ghostVoiceProfileDetected:(BOOL *)detected
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  scoresCopy = scores;
+  userCopy = user;
+  donatedScoresCopy = donatedScores;
   v16 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     *&buf[4] = "[ADMultiUserService validateAndReturnScores:classifiedUser:donatedScores:unknownUserSharedId:totalUsers:ghostVoiceProfileDetected:]";
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = scoresCopy;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%s Incoming scores %@", buf, 0x16u);
   }
 
@@ -1501,12 +1501,12 @@ LABEL_9:
   block[3] = &unk_1005199E0;
   block[4] = self;
   v38 = &v41;
-  v20 = v14;
+  v20 = userCopy;
   v33 = v20;
-  v40 = a8;
-  v21 = v13;
+  detectedCopy = detected;
+  v21 = scoresCopy;
   v34 = v21;
-  v22 = v15;
+  v22 = donatedScoresCopy;
   v35 = v22;
   v23 = v18;
   v36 = v23;
@@ -1535,7 +1535,7 @@ LABEL_9:
 
   if (!os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    if (!a6)
+    if (!id)
     {
       goto LABEL_8;
     }
@@ -1548,16 +1548,16 @@ LABEL_9:
   v47 = 2113;
   v48 = v23;
   _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "%s (%{private}@)", v45, 0x16u);
-  if (a6)
+  if (id)
   {
 LABEL_7:
-    *a6 = *(*&buf[8] + 40);
+    *id = *(*&buf[8] + 40);
   }
 
 LABEL_8:
-  if (a7)
+  if (users)
   {
-    *a7 = v42[3];
+    *users = v42[3];
   }
 
   v28 = v37;
@@ -1587,12 +1587,12 @@ LABEL_8:
   return v5;
 }
 
-- (id)_generateDeviceUserWithHomeUserUUID:(id)a3 sharedUserId:(id)a4 loggableSharedUserId:(id)a5 adaccount:(id)a6
+- (id)_generateDeviceUserWithHomeUserUUID:(id)d sharedUserId:(id)id loggableSharedUserId:(id)userId adaccount:(id)adaccount
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  idCopy = id;
+  userIdCopy = userId;
+  adaccountCopy = adaccount;
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1602,71 +1602,71 @@ LABEL_8:
   }
 
   v15 = +[ADAssistantDataManager sharedDataManager];
-  v16 = [v15 _cachedAssistantData];
-  v17 = [[ADCommunalDeviceUser alloc] init:v10 sharedUserId:v11 loggableSharedUserId:v12 iCloudAltDSID:0 attribute:0];
-  v18 = [v15 unredactedAnchor];
+  _cachedAssistantData = [v15 _cachedAssistantData];
+  v17 = [[ADCommunalDeviceUser alloc] init:dCopy sharedUserId:idCopy loggableSharedUserId:userIdCopy iCloudAltDSID:0 attribute:0];
+  unredactedAnchor = [v15 unredactedAnchor];
   cachedAssistantDataUnredactedAnchor = self->_cachedAssistantDataUnredactedAnchor;
-  self->_cachedAssistantDataUnredactedAnchor = v18;
+  self->_cachedAssistantDataUnredactedAnchor = unredactedAnchor;
 
   [v17 setEnrollmentName:@"primary_user"];
-  v20 = [v13 aceHost];
-  [v17 setAceHost:v20];
+  aceHost = [adaccountCopy aceHost];
+  [v17 setAceHost:aceHost];
 
-  v21 = [v13 speechIdentifier];
-  [v17 setSpeechID:v21];
+  speechIdentifier = [adaccountCopy speechIdentifier];
+  [v17 setSpeechID:speechIdentifier];
 
-  v22 = [v13 peerAssistantIdentifier];
-  [v17 setCompanionAssistantID:v22];
+  peerAssistantIdentifier = [adaccountCopy peerAssistantIdentifier];
+  [v17 setCompanionAssistantID:peerAssistantIdentifier];
 
-  v23 = [v13 peerSpeechIdentifier];
-  [v17 setCompanionSpeechID:v23];
+  peerSpeechIdentifier = [adaccountCopy peerSpeechIdentifier];
+  [v17 setCompanionSpeechID:peerSpeechIdentifier];
 
   [v17 setVoiceIDAllowedByUser:0];
   v24 = objc_alloc_init(SAHomeMemberSettings);
-  v25 = [v16 region];
-  [v24 setRegion:v25];
+  region = [_cachedAssistantData region];
+  [v24 setRegion:region];
 
-  v26 = [v16 ttsVoice];
-  [v24 setTtsVoice:v26];
+  ttsVoice = [_cachedAssistantData ttsVoice];
+  [v24 setTtsVoice:ttsVoice];
 
-  v27 = [v16 twentyFourHourTimeDisplay];
-  [v24 setTwentyFourHourTimeDisplay:v27];
+  twentyFourHourTimeDisplay = [_cachedAssistantData twentyFourHourTimeDisplay];
+  [v24 setTwentyFourHourTimeDisplay:twentyFourHourTimeDisplay];
 
-  v28 = [v16 temperatureUnit];
-  [v24 setTemperatureUnit:v28];
+  temperatureUnit = [_cachedAssistantData temperatureUnit];
+  [v24 setTemperatureUnit:temperatureUnit];
 
-  v29 = [v16 countryCode];
-  [v24 setCountryCode:v29];
+  countryCode = [_cachedAssistantData countryCode];
+  [v24 setCountryCode:countryCode];
 
-  v30 = [v16 parentalRestrictions];
-  [v24 setParentalRestrictions:v30];
+  parentalRestrictions = [_cachedAssistantData parentalRestrictions];
+  [v24 setParentalRestrictions:parentalRestrictions];
 
-  [v24 setMediaPlayerExplicitContentDisallowed:{objc_msgSend(v16, "mediaPlayerExplicitContentDisallowed")}];
-  v31 = [v15 _unredactedMeCards];
-  v32 = [v31 count];
+  [v24 setMediaPlayerExplicitContentDisallowed:{objc_msgSend(_cachedAssistantData, "mediaPlayerExplicitContentDisallowed")}];
+  _unredactedMeCards = [v15 _unredactedMeCards];
+  v32 = [_unredactedMeCards count];
 
   if (v32)
   {
-    v33 = [v15 _unredactedMeCards];
-    v34 = [v33 objectAtIndexedSubscript:0];
+    _unredactedMeCards2 = [v15 _unredactedMeCards];
+    v34 = [_unredactedMeCards2 objectAtIndexedSubscript:0];
     [v24 setMeCard:v34];
   }
 
-  v35 = [v24 dictionary];
-  [v17 setSettings:v35];
+  dictionary = [v24 dictionary];
+  [v17 setSettings:dictionary];
 
   return v17;
 }
 
-- (void)fetchDeviceOwnerAsSAMultiUserInfo:(id)a3
+- (void)fetchDeviceOwnerAsSAMultiUserInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
     if (self->_deviceOwner)
     {
       v5 = [ADCommunalDeviceUser saMultiUserInfo:?];
-      v4[2](v4, v5);
+      infoCopy[2](infoCopy, v5);
     }
 
     else
@@ -1685,7 +1685,7 @@ LABEL_8:
       v8[2] = sub_1002AA858;
       v8[3] = &unk_100519990;
       v8[4] = self;
-      v9 = v4;
+      v9 = infoCopy;
       [v7 fetchActiveAccount:v8];
     }
   }
@@ -1713,22 +1713,22 @@ LABEL_8:
   return v3;
 }
 
-- (void)dumpAssistantStateChunk:(id)a3
+- (void)dumpAssistantStateChunk:(id)chunk
 {
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_1002AAE64;
   v29[3] = &unk_10051CF08;
-  v24 = a3;
-  v30 = v24;
+  chunkCopy = chunk;
+  v30 = chunkCopy;
   v23 = objc_retainBlock(v29);
-  v4 = [(ADMultiUserService *)self allUsersBySharedUserID];
+  allUsersBySharedUserID = [(ADMultiUserService *)self allUsersBySharedUserID];
   v5 = objc_alloc_init(NSMutableDictionary);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = allUsersBySharedUserID;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v7)
   {
@@ -1746,8 +1746,8 @@ LABEL_8:
         v11 = *(*(&v25 + 1) + 8 * i);
         v12 = [v6 objectForKey:v11];
         v13 = [NSMutableDictionary alloc];
-        v14 = [v12 loggableDictionary];
-        v15 = [v13 initWithDictionary:v14 copyItems:1];
+        loggableDictionary = [v12 loggableDictionary];
+        v15 = [v13 initWithDictionary:loggableDictionary copyItems:1];
 
         [v5 setObject:v15 forKey:v11];
       }
@@ -1783,11 +1783,11 @@ LABEL_8:
   (v23[2])(v23, v5);
 }
 
-- (void)showMultiUserSharedUserIDsCompletion:(id)a3
+- (void)showMultiUserSharedUserIDsCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1795,16 +1795,16 @@ LABEL_8:
     v7[2] = sub_1002AAF24;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)showPrimaryUserSharedUserIDWithCompletion:(id)a3
+- (void)showPrimaryUserSharedUserIDWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1812,16 +1812,16 @@ LABEL_8:
     v7[2] = sub_1002AB154;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getMultiUserCompanionInfoWithCompletion:(id)a3
+- (void)getMultiUserCompanionInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1829,16 +1829,16 @@ LABEL_8:
     v7[2] = sub_1002AB274;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)showMultiUsersWithCompletion:(id)a3
+- (void)showMultiUsersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1846,39 +1846,39 @@ LABEL_8:
     v7[2] = sub_1002AB570;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (id)_augmentUserPropertiesWithHomeInfoForUser:(id)a3
+- (id)_augmentUserPropertiesWithHomeInfoForUser:(id)user
 {
-  v3 = a3;
-  v4 = [v3 userProperties];
-  v5 = [v4 mutableCopy];
+  userCopy = user;
+  userProperties = [userCopy userProperties];
+  v5 = [userProperties mutableCopy];
 
-  v6 = [v3 homeUserUUID];
+  homeUserUUID = [userCopy homeUserUUID];
 
-  if (v6)
+  if (homeUserUUID)
   {
     v7 = +[ADHomeInfoManager sharedInfoManager];
-    v8 = [v7 currentHome];
+    currentHome = [v7 currentHome];
 
-    v9 = [v8 name];
+    name = [currentHome name];
 
-    if (v9)
+    if (name)
     {
-      v10 = [v8 name];
-      [v5 setObject:v10 forKey:@"homeName"];
+      name2 = [currentHome name];
+      [v5 setObject:name2 forKey:@"homeName"];
     }
 
-    v11 = [v8 uniqueIdentifier];
+    uniqueIdentifier = [currentHome uniqueIdentifier];
 
-    if (v11)
+    if (uniqueIdentifier)
     {
-      v12 = [v8 uniqueIdentifier];
-      v13 = [v12 UUIDString];
-      [v5 setObject:v13 forKey:@"homeId"];
+      uniqueIdentifier2 = [currentHome uniqueIdentifier];
+      uUIDString = [uniqueIdentifier2 UUIDString];
+      [v5 setObject:uUIDString forKey:@"homeId"];
     }
   }
 
@@ -1894,10 +1894,10 @@ LABEL_8:
   }
 
   v3 = [ADCommunalDeviceUser saHomeMemberInfo:?];
-  v4 = [v3 homeMemberSettings];
-  v5 = [v4 meCard];
+  homeMemberSettings = [v3 homeMemberSettings];
+  meCard = [homeMemberSettings meCard];
 
-  if (!v5)
+  if (!meCard)
   {
     v8 = AFSiriLogContextConnection;
     if (!os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -1906,23 +1906,23 @@ LABEL_8:
     }
 
     primaryUser = self->_primaryUser;
-    v7 = v8;
-    v26 = [(ADCommunalDeviceUser *)primaryUser homeUserUUID];
+    homeUserUUID3 = v8;
+    homeUserUUID = [(ADCommunalDeviceUser *)primaryUser homeUserUUID];
     *buf = 136315395;
     v35 = "[ADMultiUserService homeUserIdToNames]";
     v36 = 2113;
-    v37 = v26;
-    _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s Empty meCard for homeUserId %{private}@", buf, 0x16u);
+    v37 = homeUserUUID;
+    _os_log_debug_impl(&_mh_execute_header, homeUserUUID3, OS_LOG_TYPE_DEBUG, "%s Empty meCard for homeUserId %{private}@", buf, 0x16u);
 
     goto LABEL_5;
   }
 
-  v6 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+  homeUserUUID2 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
 
-  if (v6)
+  if (homeUserUUID2)
   {
-    v7 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
-    [v28 setObject:v5 forKey:v7];
+    homeUserUUID3 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+    [v28 setObject:meCard forKey:homeUserUUID3];
 LABEL_5:
   }
 
@@ -1956,33 +1956,33 @@ LABEL_8:
 
       v15 = [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID objectForKey:*(*(&v29 + 1) + 8 * v14), v27];
       v16 = [ADCommunalDeviceUser saHomeMemberInfo:v15];
-      v17 = [v16 homeMemberSettings];
-      v18 = [v17 meCard];
+      homeMemberSettings2 = [v16 homeMemberSettings];
+      meCard2 = [homeMemberSettings2 meCard];
 
-      if (v18)
+      if (meCard2)
       {
-        v19 = [v15 homeUserUUID];
+        homeUserUUID4 = [v15 homeUserUUID];
 
-        if (!v19)
+        if (!homeUserUUID4)
         {
           goto LABEL_18;
         }
 
-        v20 = [v15 homeUserUUID];
-        [v28 setObject:v18 forKey:v20];
+        homeUserUUID5 = [v15 homeUserUUID];
+        [v28 setObject:meCard2 forKey:homeUserUUID5];
         goto LABEL_16;
       }
 
       v21 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
       {
-        v20 = v21;
-        v22 = [v15 homeUserUUID];
+        homeUserUUID5 = v21;
+        homeUserUUID6 = [v15 homeUserUUID];
         *buf = v27;
         v35 = "[ADMultiUserService homeUserIdToNames]";
         v36 = 2113;
-        v37 = v22;
-        _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%s Empty meCard for homeUserId %{private}@", buf, 0x16u);
+        v37 = homeUserUUID6;
+        _os_log_debug_impl(&_mh_execute_header, homeUserUUID5, OS_LOG_TYPE_DEBUG, "%s Empty meCard for homeUserId %{private}@", buf, 0x16u);
 
 LABEL_16:
       }
@@ -2003,21 +2003,21 @@ LABEL_22:
   return v28;
 }
 
-- (void)removeUserWithSharedUserID:(id)a3 completion:(id)a4
+- (void)removeUserWithSharedUserID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315395;
     v14 = "[ADMultiUserService removeUserWithSharedUserID:completion:]";
     v15 = 2113;
-    v16 = v6;
+    v16 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Remove user with shared user id %{private}@", buf, 0x16u);
   }
 
-  if (v6)
+  if (dCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -2025,32 +2025,32 @@ LABEL_22:
     block[2] = sub_1002AC084;
     block[3] = &unk_10051E088;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = dCopy;
+    v12 = completionCopy;
     dispatch_async(queue, block);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)removeUserWithHomeUUID:(id)a3 completion:(id)a4
+- (void)removeUserWithHomeUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315395;
     v14 = "[ADMultiUserService removeUserWithHomeUUID:completion:]";
     v15 = 2113;
-    v16 = v6;
+    v16 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s Remove user with home user id %{private}@", buf, 0x16u);
   }
 
-  if (v6)
+  if (dCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -2058,14 +2058,14 @@ LABEL_22:
     block[2] = sub_1002AC290;
     block[3] = &unk_10051E088;
     block[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = dCopy;
+    v12 = completionCopy;
     dispatch_async(queue, block);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -2077,13 +2077,13 @@ LABEL_22:
   [(ADMultiUserService *)self _updateSAMultiUserInfo];
 }
 
-- (BOOL)_removeUser:(id)a3 homeUserID:(id)a4 sharedUserID:(id)a5 iCloudAltDSID:(id)a6 error:(id *)a7
+- (BOOL)_removeUser:(id)user homeUserID:(id)d sharedUserID:(id)iD iCloudAltDSID:(id)sID error:(id *)error
 {
-  v61 = a7;
-  v12 = a3;
-  v62 = a4;
-  v13 = a5;
-  v14 = a6;
+  errorCopy = error;
+  userCopy = user;
+  dCopy = d;
+  iDCopy = iD;
+  sIDCopy = sID;
   v15 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -2092,38 +2092,38 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  v16 = v14;
+  v16 = sIDCopy;
   v17 = AFIsATVOnly();
-  v18 = v16;
+  iCloudAltDSID = v16;
   if (!v16)
   {
-    v18 = 0;
+    iCloudAltDSID = 0;
     if (v17)
     {
-      if (v12)
+      if (userCopy)
       {
-        v18 = [v12 iCloudAltDSID];
+        iCloudAltDSID = [userCopy iCloudAltDSID];
       }
 
       else
       {
-        v18 = 0;
+        iCloudAltDSID = 0;
       }
 
-      if (v62)
+      if (dCopy)
       {
-        v19 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
-        v7 = [v19 isEqualToString:v62];
+        homeUserUUID = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+        iCloudAltDSID3 = [homeUserUUID isEqualToString:dCopy];
 
-        if (v7)
+        if (iCloudAltDSID3)
         {
-          v20 = [(ADCommunalDeviceUser *)self->_primaryUser iCloudAltDSID];
+          iCloudAltDSID2 = [(ADCommunalDeviceUser *)self->_primaryUser iCloudAltDSID];
 
-          v18 = v20;
+          iCloudAltDSID = iCloudAltDSID2;
         }
       }
 
-      if (!v18)
+      if (!iCloudAltDSID)
       {
         v21 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2133,14 +2133,14 @@ LABEL_22:
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s #multi-user-atv No iCloudAltDSID found for user.. checking local mapping", buf, 0xCu);
         }
 
-        v18 = [(NSMutableDictionary *)self->_iCloudAltDSIDByHomeUserID objectForKey:v62, v61];
+        iCloudAltDSID = [(NSMutableDictionary *)self->_iCloudAltDSIDByHomeUserID objectForKey:dCopy, errorCopy];
         v22 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
         {
           *buf = 136315395;
           v64 = "[ADMultiUserService _removeUser:homeUserID:sharedUserID:iCloudAltDSID:error:]";
           v65 = 2113;
-          v66 = v18;
+          v66 = iCloudAltDSID;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%s #multi-user-atv Found %{private}@", buf, 0x16u);
         }
       }
@@ -2148,22 +2148,22 @@ LABEL_22:
   }
 
   v23 = AFIsATVOnly();
-  if (v12 || !v23 || (-[ADCommunalDeviceUser iCloudAltDSID](self->_primaryUser, "iCloudAltDSID"), v24 = objc_claimAutoreleasedReturnValue(), v7 = [v18 isEqualToString:v24], v24, (v7 & 1) != 0))
+  if (userCopy || !v23 || (-[ADCommunalDeviceUser iCloudAltDSID](self->_primaryUser, "iCloudAltDSID"), homeUserUUID5 = objc_claimAutoreleasedReturnValue(), iCloudAltDSID3 = [iCloudAltDSID isEqualToString:homeUserUUID5], homeUserUUID5, (iCloudAltDSID3 & 1) != 0))
   {
-    v24 = AFSiriLogContextDaemon;
+    homeUserUUID5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       primaryUser = self->_primaryUser;
-      v24 = v24;
-      v7 = [(ADCommunalDeviceUser *)primaryUser iCloudAltDSID];
+      homeUserUUID5 = homeUserUUID5;
+      iCloudAltDSID3 = [(ADCommunalDeviceUser *)primaryUser iCloudAltDSID];
       *buf = 136315395;
       v64 = "[ADMultiUserService _removeUser:homeUserID:sharedUserID:iCloudAltDSID:error:]";
       v65 = 2113;
-      v66 = v7;
-      _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%s #multi-user-atv Shared user not found or is primary %{private}@ ", buf, 0x16u);
+      v66 = iCloudAltDSID3;
+      _os_log_impl(&_mh_execute_header, homeUserUUID5, OS_LOG_TYPE_INFO, "%s #multi-user-atv Shared user not found or is primary %{private}@ ", buf, 0x16u);
     }
 
-    if (v12)
+    if (userCopy)
     {
       goto LABEL_22;
     }
@@ -2171,29 +2171,29 @@ LABEL_22:
 
   else
   {
-    v12 = [(NSMutableDictionary *)self->_sharedUsersByiCloudAltDSID objectForKey:v18];
-    if (v12)
+    userCopy = [(NSMutableDictionary *)self->_sharedUsersByiCloudAltDSID objectForKey:iCloudAltDSID];
+    if (userCopy)
     {
 LABEL_22:
       v26 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
         v27 = v26;
-        v28 = [v12 homeUserUUID];
-        v29 = [v12 sharedUserID];
-        [v12 iCloudAltDSID];
-        v31 = v30 = v13;
+        homeUserUUID2 = [userCopy homeUserUUID];
+        sharedUserID = [userCopy sharedUserID];
+        [userCopy iCloudAltDSID];
+        v31 = v30 = iDCopy;
         *buf = 136315907;
         v64 = "[ADMultiUserService _removeUser:homeUserID:sharedUserID:iCloudAltDSID:error:]";
         v65 = 2113;
-        v66 = v28;
+        v66 = homeUserUUID2;
         v67 = 2113;
-        v68 = v29;
+        v68 = sharedUserID;
         v69 = 2113;
         v70 = v31;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "%s Deleting shared user with home User ID (%{private}@) shared User ID (%{private}@) iCloud AltDSID: (%{private}@)", buf, 0x2Au);
 
-        v13 = v30;
+        iDCopy = v30;
         v26 = AFSiriLogContextDaemon;
       }
 
@@ -2204,57 +2204,57 @@ LABEL_22:
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "%s PB User profile does not exist.", buf, 0xCu);
       }
 
-      v32 = [v12 homeUserUUID];
+      homeUserUUID3 = [userCopy homeUserUUID];
 
-      if (v32)
+      if (homeUserUUID3)
       {
         sharedUsersByHomeUserUUID = self->_sharedUsersByHomeUserUUID;
-        v34 = [v12 homeUserUUID];
-        [(NSMutableDictionary *)sharedUsersByHomeUserUUID removeObjectForKey:v34];
+        homeUserUUID4 = [userCopy homeUserUUID];
+        [(NSMutableDictionary *)sharedUsersByHomeUserUUID removeObjectForKey:homeUserUUID4];
       }
 
-      v35 = [v12 sharedUserID];
+      sharedUserID2 = [userCopy sharedUserID];
 
-      if (v35)
+      if (sharedUserID2)
       {
         sharedUsersBySharedUserID = self->_sharedUsersBySharedUserID;
-        v37 = [v12 sharedUserID];
-        [(NSMutableDictionary *)sharedUsersBySharedUserID removeObjectForKey:v37];
+        sharedUserID3 = [userCopy sharedUserID];
+        [(NSMutableDictionary *)sharedUsersBySharedUserID removeObjectForKey:sharedUserID3];
       }
 
-      v38 = [v12 iCloudAltDSID];
+      iCloudAltDSID4 = [userCopy iCloudAltDSID];
 
-      if (v38)
+      if (iCloudAltDSID4)
       {
         sharedUsersByiCloudAltDSID = self->_sharedUsersByiCloudAltDSID;
-        v40 = [v12 iCloudAltDSID];
-        [(NSMutableDictionary *)sharedUsersByiCloudAltDSID removeObjectForKey:v40];
+        iCloudAltDSID5 = [userCopy iCloudAltDSID];
+        [(NSMutableDictionary *)sharedUsersByiCloudAltDSID removeObjectForKey:iCloudAltDSID5];
       }
 
-      [(ADMultiUserService *)self _untrackUUIDsForUser:v12];
+      [(ADMultiUserService *)self _untrackUUIDsForUser:userCopy];
       v41 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
         v42 = v41;
-        v43 = [v12 sharedUserID];
+        sharedUserID4 = [userCopy sharedUserID];
         *buf = 136315395;
         v64 = "[ADMultiUserService _removeUser:homeUserID:sharedUserID:iCloudAltDSID:error:]";
         v65 = 2113;
-        v66 = v43;
+        v66 = sharedUserID4;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "%s Posting notification that shared user with sharedUserId: (%{private}@) has been removed", buf, 0x16u);
       }
 
       v44 = +[NSNotificationCenter defaultCenter];
-      [v44 postNotificationName:@"ADMultiUserSharedUserRemovedNotification" object:v12];
+      [v44 postNotificationName:@"ADMultiUserSharedUserRemovedNotification" object:userCopy];
 
-      v45 = [v12 sharedUserID];
-      [(ADMultiUserService *)self _removeVoiceProfileIfNeeded:v45 forLanguageCode:0];
+      sharedUserID5 = [userCopy sharedUserID];
+      [(ADMultiUserService *)self _removeVoiceProfileIfNeeded:sharedUserID5 forLanguageCode:0];
 
 LABEL_35:
-      if (v18)
+      if (iCloudAltDSID)
       {
         v46 = +[ADAnalyticsIdentifiersProvider sharedInstance];
-        [v46 removeObserver:self foriCloudAltDSId:v18];
+        [v46 removeObserver:self foriCloudAltDSId:iCloudAltDSID];
       }
 
       notify_post(AFCachedFusePersonalizationTokenChanged);
@@ -2263,22 +2263,22 @@ LABEL_35:
     }
   }
 
-  v49 = v13;
-  if (v62)
+  v49 = iDCopy;
+  if (dCopy)
   {
-    v24 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
-    if (([v24 isEqualToString:v62]& 1) != 0)
+    homeUserUUID5 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+    if (([homeUserUUID5 isEqualToString:dCopy]& 1) != 0)
     {
       goto LABEL_45;
     }
 
-    if (v13)
+    if (iDCopy)
     {
       goto LABEL_43;
     }
 
 LABEL_47:
-    if (!v18)
+    if (!iCloudAltDSID)
     {
       v50 = 0;
       goto LABEL_54;
@@ -2287,35 +2287,35 @@ LABEL_47:
     goto LABEL_50;
   }
 
-  if (!v13)
+  if (!iDCopy)
   {
     goto LABEL_47;
   }
 
 LABEL_43:
-  v7 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
-  if ([v7 isEqualToString:v13])
+  iCloudAltDSID3 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+  if ([iCloudAltDSID3 isEqualToString:iDCopy])
   {
 
-    if (!v62)
+    if (!dCopy)
     {
 LABEL_56:
-      [(ADMultiUserService *)self _untrackUUIDsForUser:self->_primaryUser, v61];
+      [(ADMultiUserService *)self _untrackUUIDsForUser:self->_primaryUser, errorCopy];
       v52 = AFSiriLogContextDaemon;
-      v13 = v49;
+      iDCopy = v49;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
         v53 = self->_primaryUser;
         v54 = v52;
-        v55 = [(ADCommunalDeviceUser *)v53 iCloudAltDSID];
+        iCloudAltDSID6 = [(ADCommunalDeviceUser *)v53 iCloudAltDSID];
         *buf = 136315907;
         v64 = "[ADMultiUserService _removeUser:homeUserID:sharedUserID:iCloudAltDSID:error:]";
         v65 = 2113;
-        v66 = v62;
+        v66 = dCopy;
         v67 = 2113;
         v68 = v49;
         v69 = 2113;
-        v70 = v55;
+        v70 = iCloudAltDSID6;
         _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "%s Trying to delete the primary user with home User ID (%{private}@) shared User ID (%{private}@) iCloud AltDSID (%{private}@)", buf, 0x2Au);
       }
 
@@ -2333,15 +2333,15 @@ LABEL_45:
     goto LABEL_56;
   }
 
-  if (!v18)
+  if (!iCloudAltDSID)
   {
     v50 = 0;
     goto LABEL_53;
   }
 
 LABEL_50:
-  v51 = [(ADCommunalDeviceUser *)self->_primaryUser iCloudAltDSID];
-  v50 = [v51 isEqualToString:v18];
+  iCloudAltDSID7 = [(ADCommunalDeviceUser *)self->_primaryUser iCloudAltDSID];
+  v50 = [iCloudAltDSID7 isEqualToString:iCloudAltDSID];
 
   if (v49)
   {
@@ -2349,7 +2349,7 @@ LABEL_53:
   }
 
 LABEL_54:
-  if (v62)
+  if (dCopy)
   {
 
     if (v50)
@@ -2367,24 +2367,24 @@ LABEL_54:
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v57 = v56;
-    v58 = [0 homeUserUUID];
-    v59 = [0 sharedUserID];
-    v60 = [0 iCloudAltDSID];
+    homeUserUUID6 = [0 homeUserUUID];
+    sharedUserID6 = [0 sharedUserID];
+    iCloudAltDSID8 = [0 iCloudAltDSID];
     *buf = 136315907;
     v64 = "[ADMultiUserService _removeUser:homeUserID:sharedUserID:iCloudAltDSID:error:]";
     v65 = 2113;
-    v66 = v58;
+    v66 = homeUserUUID6;
     v67 = 2113;
-    v68 = v59;
+    v68 = sharedUserID6;
     v69 = 2113;
-    v70 = v60;
+    v70 = iCloudAltDSID8;
     _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "%s Multi user not found for home User ID (%{private}@) shared User ID (%{private}@) iCloud AltDSID (%{private}@)", buf, 0x2Au);
   }
 
-  if (v61)
+  if (errorCopy)
   {
     [NSError errorWithDomain:kAFAssistantErrorDomain code:6001 userInfo:&__NSDictionary0__struct];
-    *v61 = v47 = 0;
+    *errorCopy = v47 = 0;
   }
 
   else
@@ -2392,13 +2392,13 @@ LABEL_54:
     v47 = 0;
   }
 
-  v13 = v49;
+  iDCopy = v49;
 LABEL_38:
 
   return v47;
 }
 
-- (void)_logRelevantAnalyticsOnUserAddedWithSharedUserID:(id)a3 isPrimary:(BOOL)a4
+- (void)_logRelevantAnalyticsOnUserAddedWithSharedUserID:(id)d isPrimary:(BOOL)primary
 {
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2413,15 +2413,15 @@ LABEL_38:
   v7[1] = 3221225472;
   v7[2] = sub_1002ACCD8;
   v7[3] = &unk_100519940;
-  v8 = a4;
+  primaryCopy = primary;
   [v6 logEventWithType:6112 contextProvider:v7];
 }
 
-- (void)removeUserWithShareOwnerNames:(id)a3 completion:(id)a4
+- (void)removeUserWithShareOwnerNames:(id)names completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || ![v6 count])
+  namesCopy = names;
+  completionCopy = completion;
+  if (!namesCopy || ![namesCopy count])
   {
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -2429,18 +2429,18 @@ LABEL_38:
       *buf = 136315138;
       v14 = "[ADMultiUserService removeUserWithShareOwnerNames:completion:]";
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s no shareOwnerNames", buf, 0xCu);
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v7)
+    else if (!completionCopy)
     {
       goto LABEL_7;
     }
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_7;
   }
 
@@ -2450,8 +2450,8 @@ LABEL_38:
   block[2] = sub_1002ACF50;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
+  v11 = namesCopy;
+  v12 = completionCopy;
   dispatch_async(queue, block);
 
 LABEL_7:
@@ -2476,22 +2476,22 @@ LABEL_7:
   dispatch_async(queue, block);
 }
 
-- (void)_addUser:(id)a3 sharedUserId:(id)a4 loggableSharedUserId:(id)a5 iCloudAltDSID:(id)a6 enrollmentName:(id)a7 isPrimary:(BOOL)a8 nonCloudSyncedUser:(BOOL)a9 completion:(id)a10
+- (void)_addUser:(id)user sharedUserId:(id)id loggableSharedUserId:(id)userId iCloudAltDSID:(id)d enrollmentName:(id)name isPrimary:(BOOL)primary nonCloudSyncedUser:(BOOL)syncedUser completion:(id)self0
 {
-  v10 = a8;
-  v16 = a3;
-  v17 = a4;
-  v90 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a10;
-  v91 = v19;
+  primaryCopy = primary;
+  userCopy = user;
+  idCopy = id;
+  userIdCopy = userId;
+  dCopy = d;
+  nameCopy = name;
+  completionCopy = completion;
+  v91 = nameCopy;
   if (![(ADMultiUserService *)self _profileLimitReached])
   {
     goto LABEL_5;
   }
 
-  v21 = [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID objectForKey:v16];
+  v21 = [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID objectForKey:userCopy];
   if (v21)
   {
 
@@ -2499,27 +2499,27 @@ LABEL_7:
   }
 
   [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
-  v22 = v89 = v17;
-  v23 = [v16 isEqualToString:v22];
+  v22 = v89 = idCopy;
+  v23 = [userCopy isEqualToString:v22];
 
-  v17 = v89;
+  idCopy = v89;
   if (v23)
   {
 LABEL_5:
-    if (v10)
+    if (primaryCopy)
     {
       primaryUser = self->_primaryUser;
-      v25 = v90;
+      v25 = userIdCopy;
       if (primaryUser)
       {
-        if (v19)
+        if (nameCopy)
         {
-          [(ADCommunalDeviceUser *)primaryUser setEnrollmentName:v19];
+          [(ADCommunalDeviceUser *)primaryUser setEnrollmentName:nameCopy];
           primaryUser = self->_primaryUser;
         }
 
-        v26 = [(ADCommunalDeviceUser *)primaryUser sharedUserID];
-        v27 = [v26 isEqualToString:v17];
+        sharedUserID = [(ADCommunalDeviceUser *)primaryUser sharedUserID];
+        v27 = [sharedUserID isEqualToString:idCopy];
 
         if (v27)
         {
@@ -2528,8 +2528,8 @@ LABEL_5:
           goto LABEL_48;
         }
 
-        v62 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
-        v63 = [v62 isEqualToString:v16];
+        homeUserUUID = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+        v63 = [homeUserUUID isEqualToString:userCopy];
 
         if (v63)
         {
@@ -2541,30 +2541,30 @@ LABEL_5:
             _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_INFO, "%s Resetting sharedUserID on existing primary user since home User ID matches", buf, 0xCu);
           }
 
-          v65 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
-          [(ADMultiUserService *)self _removeVoiceProfileIfNeeded:v65 forLanguageCode:0];
+          sharedUserID2 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+          [(ADMultiUserService *)self _removeVoiceProfileIfNeeded:sharedUserID2 forLanguageCode:0];
 
-          [(ADCommunalDeviceUser *)self->_primaryUser setSharedUserID:v17];
+          [(ADCommunalDeviceUser *)self->_primaryUser setSharedUserID:idCopy];
         }
 
         goto LABEL_79;
       }
 
-      v56 = [[ADCommunalDeviceUser alloc] init:v16 sharedUserId:v17 loggableSharedUserId:v90 iCloudAltDSID:v18 attribute:0];
+      v56 = [[ADCommunalDeviceUser alloc] init:userCopy sharedUserId:idCopy loggableSharedUserId:userIdCopy iCloudAltDSID:dCopy attribute:0];
       v57 = self->_primaryUser;
       self->_primaryUser = v56;
 
       objc_storeStrong(&self->_deviceOwner, self->_primaryUser);
       [(ADMultiUserService *)self _saveDeviceOwnerToKeychainCache];
-      [(ADCommunalDeviceUser *)self->_primaryUser setEnrollmentName:v19];
+      [(ADCommunalDeviceUser *)self->_primaryUser setEnrollmentName:nameCopy];
       v58 = +[ADAnalyticsIdentifiersProvider sharedInstance];
       [v58 addObserver:self foriCloudAltDSId:0];
 
-      v59 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+      homeUserUUID2 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
 
-      if (v59)
+      if (homeUserUUID2)
       {
-        v60 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+        homeUserUUID3 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
       }
 
       else
@@ -2572,7 +2572,7 @@ LABEL_5:
         if (!AFIsATV() || ([(ADCommunalDeviceUser *)self->_primaryUser sharedUserID], v74 = objc_claimAutoreleasedReturnValue(), v74, !v74))
         {
 LABEL_57:
-          if (a9)
+          if (syncedUser)
           {
             [(ADCommunalDeviceUser *)self->_primaryUser setNonCloudSyncedUserAttribute:1];
             goto LABEL_79;
@@ -2586,27 +2586,27 @@ LABEL_57:
             *buf = 136315650;
             v93 = "[ADMultiUserService _addUser:sharedUserId:loggableSharedUserId:iCloudAltDSID:enrollmentName:isPrimary:nonCloudSyncedUser:completion:]";
             v94 = 2112;
-            v95 = v17;
+            v95 = idCopy;
             v96 = 2112;
-            v97 = v18;
+            v97 = dCopy;
             _os_log_debug_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEBUG, "%s #multi-user Logging userAddedWithSharedUserID:(%@) iCloudAltDSID (%@) for primary User ", buf, 0x20u);
           }
 
           if (AFIsATV())
           {
-            if (v18)
+            if (dCopy)
             {
-              [(NSMutableDictionary *)self->_sharedUsersByiCloudAltDSID removeObjectForKey:v18];
+              [(NSMutableDictionary *)self->_sharedUsersByiCloudAltDSID removeObjectForKey:dCopy];
             }
 
-            if (v17)
+            if (idCopy)
             {
-              [(NSMutableDictionary *)self->_sharedUsersBySharedUserID removeObjectForKey:v17];
+              [(NSMutableDictionary *)self->_sharedUsersBySharedUserID removeObjectForKey:idCopy];
             }
 
-            if (v16)
+            if (userCopy)
             {
-              [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID removeObjectForKey:v16];
+              [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID removeObjectForKey:userCopy];
             }
           }
 
@@ -2614,11 +2614,11 @@ LABEL_57:
           if (!sharedUsersByiCloudAltDSID)
           {
 LABEL_78:
-            [(ADMultiUserService *)self _logRelevantAnalyticsOnUserAddedWithSharedUserID:v17 isPrimary:1];
+            [(ADMultiUserService *)self _logRelevantAnalyticsOnUserAddedWithSharedUserID:idCopy isPrimary:1];
             goto LABEL_79;
           }
 
-          v77 = [(NSMutableDictionary *)sharedUsersByiCloudAltDSID objectForKey:v18];
+          v77 = [(NSMutableDictionary *)sharedUsersByiCloudAltDSID objectForKey:dCopy];
           if (!v77)
           {
 LABEL_77:
@@ -2626,45 +2626,45 @@ LABEL_77:
             goto LABEL_78;
           }
 
-          v78 = v17;
+          v78 = idCopy;
           v79 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
           {
             *buf = 136315138;
             v93 = "[ADMultiUserService _addUser:sharedUserId:loggableSharedUserId:iCloudAltDSID:enrollmentName:isPrimary:nonCloudSyncedUser:completion:]";
             _os_log_debug_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEBUG, "%s #multi-user-atv primary user existed as shared user. Untracking as shared user.", buf, 0xCu);
-            if (!v16)
+            if (!userCopy)
             {
               goto LABEL_73;
             }
           }
 
-          else if (!v16)
+          else if (!userCopy)
           {
 LABEL_73:
-            v17 = v78;
+            idCopy = v78;
             if (v78)
             {
               [(NSMutableDictionary *)self->_sharedUsersBySharedUserID removeObjectForKey:v78];
             }
 
-            if (v18)
+            if (dCopy)
             {
-              [(NSMutableDictionary *)self->_sharedUsersByiCloudAltDSID removeObjectForKey:v18];
+              [(NSMutableDictionary *)self->_sharedUsersByiCloudAltDSID removeObjectForKey:dCopy];
             }
 
             goto LABEL_77;
           }
 
-          [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID removeObjectForKey:v16];
+          [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID removeObjectForKey:userCopy];
           goto LABEL_73;
         }
 
-        v60 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+        homeUserUUID3 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
       }
 
-      v61 = v60;
-      [(ADMultiUserService *)self _trackHomeUserUUIDForInFlightVoiceProfile:v60];
+      v61 = homeUserUUID3;
+      [(ADMultiUserService *)self _trackHomeUserUUIDForInFlightVoiceProfile:homeUserUUID3];
 
       goto LABEL_57;
     }
@@ -2690,32 +2690,32 @@ LABEL_73:
       self->_sharedUsersByiCloudAltDSID = v34;
     }
 
-    v36 = [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID objectForKey:v16];
-    v37 = [v36 homeUserUUID];
-    v38 = [v37 isEqualToString:v16];
+    v36 = [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID objectForKey:userCopy];
+    homeUserUUID4 = [v36 homeUserUUID];
+    v38 = [homeUserUUID4 isEqualToString:userCopy];
 
     if (v38)
     {
-      v39 = v17;
-      v40 = [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID objectForKey:v16];
+      v39 = idCopy;
+      v40 = [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID objectForKey:userCopy];
       v41 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
         v42 = v41;
-        v43 = [v40 sharedUserID];
+        sharedUserID3 = [v40 sharedUserID];
         *buf = 136315906;
         v93 = "[ADMultiUserService _addUser:sharedUserId:loggableSharedUserId:iCloudAltDSID:enrollmentName:isPrimary:nonCloudSyncedUser:completion:]";
         v94 = 2112;
         v95 = v39;
         v96 = 2112;
-        v97 = v18;
+        v97 = dCopy;
         v98 = 2112;
-        v99 = v43;
+        v99 = sharedUserID3;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "%s Secondary user exists for (%@) iCloudAltDSID (%@), rewriting (%@)", buf, 0x2Au);
       }
 
-      v44 = [v40 sharedUserID];
-      if (([v44 isEqualToString:v39] & 1) == 0)
+      sharedUserID4 = [v40 sharedUserID];
+      if (([sharedUserID4 isEqualToString:v39] & 1) == 0)
       {
         v45 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2723,35 +2723,35 @@ LABEL_73:
           *buf = 136315395;
           v93 = "[ADMultiUserService _addUser:sharedUserId:loggableSharedUserId:iCloudAltDSID:enrollmentName:isPrimary:nonCloudSyncedUser:completion:]";
           v94 = 2113;
-          v95 = v44;
+          v95 = sharedUserID4;
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "%s Deleting %{private}@", buf, 0x16u);
         }
 
-        [(ADMultiUserService *)self _removeVoiceProfileIfNeeded:v44 forLanguageCode:0];
-        [(NSMutableDictionary *)self->_sharedUsersBySharedUserID removeObjectForKey:v44];
+        [(ADMultiUserService *)self _removeVoiceProfileIfNeeded:sharedUserID4 forLanguageCode:0];
+        [(NSMutableDictionary *)self->_sharedUsersBySharedUserID removeObjectForKey:sharedUserID4];
         [v40 setSharedUserID:v39];
         [(NSMutableDictionary *)self->_sharedUsersBySharedUserID setObject:v40 forKey:v39];
       }
 
 LABEL_25:
-      v17 = v39;
-      v25 = v90;
+      idCopy = v39;
+      v25 = userIdCopy;
       goto LABEL_79;
     }
 
-    v46 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
-    if (([v46 isEqualToString:v16] & 1) == 0)
+    homeUserUUID5 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+    if (([homeUserUUID5 isEqualToString:userCopy] & 1) == 0)
     {
-      v47 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
-      v48 = v17;
-      v49 = v47;
+      sharedUserID5 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+      v48 = idCopy;
+      v49 = sharedUserID5;
       v39 = v48;
-      if (![v47 isEqualToString:?])
+      if (![sharedUserID5 isEqualToString:?])
       {
-        v81 = [(ADCommunalDeviceUser *)self->_primaryUser iCloudAltDSID];
-        v82 = [v81 isEqualToString:v18];
+        iCloudAltDSID = [(ADCommunalDeviceUser *)self->_primaryUser iCloudAltDSID];
+        v82 = [iCloudAltDSID isEqualToString:dCopy];
 
-        v17 = v39;
+        idCopy = v39;
         if ((v82 & 1) == 0)
         {
           v83 = AFSiriLogContextDaemon;
@@ -2764,9 +2764,9 @@ LABEL_25:
             _os_log_impl(&_mh_execute_header, v83, OS_LOG_TYPE_INFO, "%s Secondary user added for (%@)", buf, 0x16u);
           }
 
-          v40 = [[ADCommunalDeviceUser alloc] init:v16 sharedUserId:v39 loggableSharedUserId:v90 iCloudAltDSID:v18 attribute:1];
+          v40 = [[ADCommunalDeviceUser alloc] init:userCopy sharedUserId:v39 loggableSharedUserId:userIdCopy iCloudAltDSID:dCopy attribute:1];
           [v40 setEnrollmentName:v91];
-          if (a9)
+          if (syncedUser)
           {
             [v40 setNonCloudSyncedUserAttribute:1];
           }
@@ -2788,11 +2788,11 @@ LABEL_25:
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
           {
             v86 = v85;
-            v87 = [v40 sharedUserID];
+            sharedUserID6 = [v40 sharedUserID];
             *buf = 136315395;
             v93 = "[ADMultiUserService _addUser:sharedUserId:loggableSharedUserId:iCloudAltDSID:enrollmentName:isPrimary:nonCloudSyncedUser:completion:]";
             v94 = 2113;
-            v95 = v87;
+            v95 = sharedUserID6;
             _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_INFO, "%s Posting notification that shared user with sharedUserId: (%{private}@) has been added", buf, 0x16u);
           }
 
@@ -2809,11 +2809,11 @@ LABEL_30:
           *buf = 136315394;
           v93 = "[ADMultiUserService _addUser:sharedUserId:loggableSharedUserId:iCloudAltDSID:enrollmentName:isPrimary:nonCloudSyncedUser:completion:]";
           v94 = 2112;
-          v95 = v17;
+          v95 = idCopy;
           _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "%s Secondary user not added for (%@) due to conflicts", buf, 0x16u);
         }
 
-        v25 = v90;
+        v25 = userIdCopy;
         if (!AFIsATV())
         {
           v28 = kAFAssistantErrorDomain;
@@ -2841,10 +2841,10 @@ LABEL_48:
           _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "%s Replacing primary user for (%@)", buf, 0x16u);
         }
 
-        v53 = v17;
-        v54 = [[ADCommunalDeviceUser alloc] init:v16 sharedUserId:v17 loggableSharedUserId:v90 iCloudAltDSID:v18 attribute:1];
+        v53 = idCopy;
+        v54 = [[ADCommunalDeviceUser alloc] init:userCopy sharedUserId:idCopy loggableSharedUserId:userIdCopy iCloudAltDSID:dCopy attribute:1];
         [v54 setEnrollmentName:v91];
-        if (a9)
+        if (syncedUser)
         {
           [v54 setNonCloudSyncedUserAttribute:1];
         }
@@ -2861,7 +2861,7 @@ LABEL_48:
           _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "%s #multi-user Logging userAddedWithSharedUserID:(%@) for secondary User ", buf, 0x16u);
         }
 
-        v17 = v53;
+        idCopy = v53;
         [(ADMultiUserService *)self _logRelevantAnalyticsOnUserAddedWithSharedUserID:v53 isPrimary:0];
 
 LABEL_79:
@@ -2870,7 +2870,7 @@ LABEL_79:
         goto LABEL_80;
       }
 
-      v17 = v39;
+      idCopy = v39;
     }
 
     goto LABEL_30;
@@ -2890,40 +2890,40 @@ LABEL_79:
   v66 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6011 userInfo:&__NSDictionary0__struct];
   v69 = +[SiriCoreSymptomsReporter sharedInstance];
   v70 = +[NSProcessInfo processInfo];
-  v71 = [v70 processIdentifier];
+  processIdentifier = [v70 processIdentifier];
   v72 = byte_100590548;
   v73 = sub_100097574();
-  [v69 reportIssueForError:v66 type:6102 context:&__NSDictionary0__struct processIdentifier:v71 walkboutStatus:v72 triggerForIDSIdentifiers:v73];
+  [v69 reportIssueForError:v66 type:6102 context:&__NSDictionary0__struct processIdentifier:processIdentifier walkboutStatus:v72 triggerForIDSIdentifiers:v73];
 
-  v17 = v89;
-  v25 = v90;
+  idCopy = v89;
+  v25 = userIdCopy;
   if (!v66)
   {
     goto LABEL_79;
   }
 
 LABEL_80:
-  if (v18)
+  if (dCopy)
   {
     v80 = +[ADAnalyticsIdentifiersProvider sharedInstance];
-    [v80 addObserver:self foriCloudAltDSId:v18];
+    [v80 addObserver:self foriCloudAltDSId:dCopy];
   }
 
   [(ADMultiUserService *)self _updateSAMultiUserInfo];
-  if (v20)
+  if (completionCopy)
   {
-    v20[2](v20, v66);
+    completionCopy[2](completionCopy, v66);
   }
 }
 
-- (void)addUser:(id)a3 sharedUserId:(id)a4 loggableSharedUserId:(id)a5 iCloudAltDSID:(id)a6 enrollmentName:(id)a7 isPrimary:(BOOL)a8 nonCloudSyncedUser:(BOOL)a9 completion:(id)a10
+- (void)addUser:(id)user sharedUserId:(id)id loggableSharedUserId:(id)userId iCloudAltDSID:(id)d enrollmentName:(id)name isPrimary:(BOOL)primary nonCloudSyncedUser:(BOOL)syncedUser completion:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
+  userCopy = user;
+  idCopy = id;
+  userIdCopy = userId;
+  dCopy = d;
+  nameCopy = name;
+  completionCopy = completion;
   v22 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -2934,9 +2934,9 @@ LABEL_80:
 
   if ([(ADMultiUserService *)self _isHostingMultiUserLanguage])
   {
-    if (v16)
+    if (userCopy)
     {
-      if (!v17)
+      if (!idCopy)
       {
         goto LABEL_14;
       }
@@ -2945,10 +2945,10 @@ LABEL_80:
     else
     {
       v25 = AFIsATV();
-      if (!v17 || (v25 & 1) == 0)
+      if (!idCopy || (v25 & 1) == 0)
       {
 LABEL_14:
-        if (v21)
+        if (completionCopy)
         {
           v23 = kAFAssistantErrorDomain;
           v24 = 6002;
@@ -2959,22 +2959,22 @@ LABEL_14:
       }
     }
 
-    if (v18 && v20)
+    if (userIdCopy && nameCopy)
     {
       queue = self->_queue;
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_1002AE33C;
       v28[3] = &unk_100519920;
-      v35 = a9;
+      syncedUserCopy = syncedUser;
       v28[4] = self;
-      v29 = v16;
-      v30 = v17;
-      v31 = v18;
-      v32 = v19;
-      v33 = v20;
-      v36 = a8;
-      v34 = v21;
+      v29 = userCopy;
+      v30 = idCopy;
+      v31 = userIdCopy;
+      v32 = dCopy;
+      v33 = nameCopy;
+      primaryCopy = primary;
+      v34 = completionCopy;
       dispatch_async(queue, v28);
 
       goto LABEL_17;
@@ -2983,38 +2983,38 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v21)
+  if (completionCopy)
   {
     v23 = kAFAssistantErrorDomain;
     v24 = 6012;
 LABEL_16:
     v27 = [NSError errorWithDomain:v23 code:v24 userInfo:&__NSDictionary0__struct];
-    (*(v21 + 2))(v21, v27);
+    (*(completionCopy + 2))(completionCopy, v27);
   }
 
 LABEL_17:
 }
 
-- (void)_addDeviceOwner:(id)a3 sharedUserId:(id)a4 loggableSharedUserId:(id)a5 iCloudAltDSID:(id)a6 audioAppSignals:(id)a7 enrollmentName:(id)a8 companionInfo:(id)a9 shareOwnerName:(id)a10 homeMemberSettings:(id)a11 loggingAllowed:(BOOL)a12 completion:(id)a13
+- (void)_addDeviceOwner:(id)owner sharedUserId:(id)id loggableSharedUserId:(id)userId iCloudAltDSID:(id)d audioAppSignals:(id)signals enrollmentName:(id)name companionInfo:(id)info shareOwnerName:(id)self0 homeMemberSettings:(id)self1 loggingAllowed:(BOOL)self2 completion:(id)self3
 {
-  v61 = a3;
-  v63 = a4;
-  v19 = a5;
-  v20 = a6;
-  v62 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a13;
+  ownerCopy = owner;
+  idCopy = id;
+  userIdCopy = userId;
+  dCopy = d;
+  signalsCopy = signals;
+  nameCopy = name;
+  infoCopy = info;
+  ownerNameCopy = ownerName;
+  settingsCopy = settings;
+  completionCopy = completion;
   if (!self->_primaryUser)
   {
-    v60 = v21;
-    v29 = self;
+    v60 = nameCopy;
+    selfCopy = self;
     v30 = AFSiriLogContextDaemon;
     if (self->_deviceOwner)
     {
-      v27 = v61;
+      v27 = ownerCopy;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
         *buf = 136315138;
@@ -3022,10 +3022,10 @@ LABEL_17:
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "%s Device owner already exists.", buf, 0xCu);
       }
 
-      LOBYTE(v55) = a12;
-      v31 = [(ADMultiUserService *)self _updateDeviceOwner:v61 sharedUserId:v63 enrollmentName:v60 companionInfo:v22 shareOwnerName:v23 homeMemberSettings:v24 loggingAllowed:v55];
+      LOBYTE(v55) = allowed;
+      v31 = [(ADMultiUserService *)self _updateDeviceOwner:ownerCopy sharedUserId:idCopy enrollmentName:v60 companionInfo:infoCopy shareOwnerName:ownerNameCopy homeMemberSettings:settingsCopy loggingAllowed:v55];
       self->_isMultiUserInfoDirty = v31;
-      v28 = v19;
+      v28 = userIdCopy;
       if (!v31)
       {
         goto LABEL_9;
@@ -3034,17 +3034,17 @@ LABEL_17:
 
     else
     {
-      v27 = v61;
+      v27 = ownerCopy;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
       {
         *buf = 136315395;
         v65 = "[ADMultiUserService _addDeviceOwner:sharedUserId:loggableSharedUserId:iCloudAltDSID:audioAppSignals:enrollmentName:companionInfo:shareOwnerName:homeMemberSettings:loggingAllowed:completion:]";
         v66 = 2113;
-        v67 = v63;
+        v67 = idCopy;
         _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "%s A new device owner will be added:(%{private}@)", buf, 0x16u);
       }
 
-      v36 = [(NSMutableDictionary *)self->_homeUserSettings objectForKey:v61];
+      v36 = [(NSMutableDictionary *)self->_homeUserSettings objectForKey:ownerCopy];
       v37 = [v36 objectForKey:@"personalDomainsIsEnabled"];
       v58 = [v37 integerValue] == 1;
 
@@ -3055,72 +3055,72 @@ LABEL_17:
       v39 = [v36 objectForKey:@"allowExplicitContent"];
       v56 = [v39 integerValue] == 1;
 
-      v28 = v19;
-      v40 = [[ADCommunalDeviceUser alloc] init:v61 sharedUserId:v63 loggableSharedUserId:v19 iCloudAltDSID:v20 attribute:0];
-      deviceOwner = v29->_deviceOwner;
-      v29->_deviceOwner = v40;
+      v28 = userIdCopy;
+      v40 = [[ADCommunalDeviceUser alloc] init:ownerCopy sharedUserId:idCopy loggableSharedUserId:userIdCopy iCloudAltDSID:dCopy attribute:0];
+      deviceOwner = selfCopy->_deviceOwner;
+      selfCopy->_deviceOwner = v40;
 
-      [(ADCommunalDeviceUser *)v29->_deviceOwner setEnrollmentName:v60];
-      v42 = v29->_deviceOwner;
-      [v22 assistantID];
-      v44 = v43 = v20;
+      [(ADCommunalDeviceUser *)selfCopy->_deviceOwner setEnrollmentName:v60];
+      v42 = selfCopy->_deviceOwner;
+      [infoCopy assistantID];
+      v44 = v43 = dCopy;
       [(ADCommunalDeviceUser *)v42 setCompanionAssistantID:v44];
 
-      v45 = v29->_deviceOwner;
-      v46 = [v22 speechID];
-      [(ADCommunalDeviceUser *)v45 setCompanionSpeechID:v46];
+      v45 = selfCopy->_deviceOwner;
+      speechID = [infoCopy speechID];
+      [(ADCommunalDeviceUser *)v45 setCompanionSpeechID:speechID];
 
-      v47 = v29->_deviceOwner;
-      v48 = [v22 idsIdentifier];
-      [(ADCommunalDeviceUser *)v47 setCompanionIDSIdentifier:v48];
+      v47 = selfCopy->_deviceOwner;
+      idsIdentifier = [infoCopy idsIdentifier];
+      [(ADCommunalDeviceUser *)v47 setCompanionIDSIdentifier:idsIdentifier];
 
-      v49 = v29->_deviceOwner;
-      v50 = [v22 productPrefix];
-      [(ADCommunalDeviceUser *)v49 setProductPrefix:v50];
+      v49 = selfCopy->_deviceOwner;
+      productPrefix = [infoCopy productPrefix];
+      [(ADCommunalDeviceUser *)v49 setProductPrefix:productPrefix];
 
-      v51 = v29->_deviceOwner;
-      v52 = [v22 aceHost];
-      [(ADCommunalDeviceUser *)v51 setAceHost:v52];
+      v51 = selfCopy->_deviceOwner;
+      aceHost = [infoCopy aceHost];
+      [(ADCommunalDeviceUser *)v51 setAceHost:aceHost];
 
-      [(ADCommunalDeviceUser *)v29->_deviceOwner setShareOwnerName:v23];
-      [(ADCommunalDeviceUser *)v29->_deviceOwner setAllowExplicitContent:v56];
-      v53 = v29->_deviceOwner;
-      v54 = [v24 dictionary];
-      [(ADCommunalDeviceUser *)v53 setSettings:v54];
+      [(ADCommunalDeviceUser *)selfCopy->_deviceOwner setShareOwnerName:ownerNameCopy];
+      [(ADCommunalDeviceUser *)selfCopy->_deviceOwner setAllowExplicitContent:v56];
+      v53 = selfCopy->_deviceOwner;
+      dictionary = [settingsCopy dictionary];
+      [(ADCommunalDeviceUser *)v53 setSettings:dictionary];
 
-      v20 = v43;
-      [(ADCommunalDeviceUser *)v29->_deviceOwner testAndSetLoggingIsAllowed:a12];
-      [(ADCommunalDeviceUser *)v29->_deviceOwner setVoiceIDAllowedByUser:0];
-      [(ADCommunalDeviceUser *)v29->_deviceOwner setPersonalDomainsIsEnabled:v58];
-      [(ADCommunalDeviceUser *)v29->_deviceOwner setUnauthenticatedRequestsAllowed:v57];
-      -[ADCommunalDeviceUser setCompanionPeerToPeerHandoffCapable:](v29->_deviceOwner, "setCompanionPeerToPeerHandoffCapable:", [v22 peerToPeerHandoffCapability]);
-      [(ADCommunalDeviceUser *)v29->_deviceOwner setAudioAppSignals:v62];
-      v29->_isMultiUserInfoDirty = 1;
+      dCopy = v43;
+      [(ADCommunalDeviceUser *)selfCopy->_deviceOwner testAndSetLoggingIsAllowed:allowed];
+      [(ADCommunalDeviceUser *)selfCopy->_deviceOwner setVoiceIDAllowedByUser:0];
+      [(ADCommunalDeviceUser *)selfCopy->_deviceOwner setPersonalDomainsIsEnabled:v58];
+      [(ADCommunalDeviceUser *)selfCopy->_deviceOwner setUnauthenticatedRequestsAllowed:v57];
+      -[ADCommunalDeviceUser setCompanionPeerToPeerHandoffCapable:](selfCopy->_deviceOwner, "setCompanionPeerToPeerHandoffCapable:", [infoCopy peerToPeerHandoffCapability]);
+      [(ADCommunalDeviceUser *)selfCopy->_deviceOwner setAudioAppSignals:signalsCopy];
+      selfCopy->_isMultiUserInfoDirty = 1;
 
-      if (!v29->_isMultiUserInfoDirty)
+      if (!selfCopy->_isMultiUserInfoDirty)
       {
         goto LABEL_9;
       }
     }
 
     v32 = +[ADPreferences sharedPreferences];
-    [(ADCommunalDeviceUser *)v29->_deviceOwner dictionaryRepresentation];
-    v34 = v33 = v20;
+    [(ADCommunalDeviceUser *)selfCopy->_deviceOwner dictionaryRepresentation];
+    v34 = v33 = dCopy;
     [v32 setDeviceOwner:v34];
 
-    v20 = v33;
+    dCopy = v33;
 LABEL_9:
-    [(ADMultiUserService *)v29 _saveDeviceOwnerToKeychainCache];
+    [(ADMultiUserService *)selfCopy _saveDeviceOwnerToKeychainCache];
     v35 = +[ADAnalyticsIdentifiersProvider sharedInstance];
-    [v35 addObserver:v29 foriCloudAltDSId:0];
+    [v35 addObserver:selfCopy foriCloudAltDSId:0];
 
-    v21 = v60;
+    nameCopy = v60;
     goto LABEL_10;
   }
 
   v26 = AFSiriLogContextDaemon;
-  v27 = v61;
-  v28 = v19;
+  v27 = ownerCopy;
+  v28 = userIdCopy;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
@@ -3129,38 +3129,38 @@ LABEL_9:
   }
 
 LABEL_10:
-  v25[2](v25, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (BOOL)_updateDeviceOwner:(id)a3 sharedUserId:(id)a4 enrollmentName:(id)a5 companionInfo:(id)a6 shareOwnerName:(id)a7 homeMemberSettings:(id)a8 loggingAllowed:(BOOL)a9
+- (BOOL)_updateDeviceOwner:(id)owner sharedUserId:(id)id enrollmentName:(id)name companionInfo:(id)info shareOwnerName:(id)ownerName homeMemberSettings:(id)settings loggingAllowed:(BOOL)allowed
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  ownerCopy = owner;
+  idCopy = id;
+  nameCopy = name;
+  infoCopy = info;
+  ownerNameCopy = ownerName;
+  settingsCopy = settings;
   if (!self->_primaryUser)
   {
     deviceOwner = self->_deviceOwner;
     if (deviceOwner)
     {
-      v24 = [(ADCommunalDeviceUser *)deviceOwner homeUserUUID];
-      v25 = v15;
+      homeUserUUID = [(ADCommunalDeviceUser *)deviceOwner homeUserUUID];
+      v25 = ownerCopy;
       v26 = v25;
-      if (v24 == v25)
+      if (homeUserUUID == v25)
       {
       }
 
       else
       {
-        if (!v25 || !v24)
+        if (!v25 || !homeUserUUID)
         {
 
           goto LABEL_17;
         }
 
-        v27 = [v24 isEqual:v25];
+        v27 = [homeUserUUID isEqual:v25];
 
         if ((v27 & 1) == 0)
         {
@@ -3170,11 +3170,11 @@ LABEL_17:
           {
             v33 = self->_deviceOwner;
             v34 = v32;
-            v35 = [(ADCommunalDeviceUser *)v33 homeUserUUID];
+            homeUserUUID2 = [(ADCommunalDeviceUser *)v33 homeUserUUID];
             *buf = 136315650;
             v112 = "[ADMultiUserService _updateDeviceOwner:sharedUserId:enrollmentName:companionInfo:shareOwnerName:homeMemberSettings:loggingAllowed:]";
             v113 = 2112;
-            v114 = v35;
+            v114 = homeUserUUID2;
             v115 = 2112;
             v116 = v26;
             _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "%s Not updating deviceOwner since homeUserUUIDs are different %@, %@", buf, 0x20u);
@@ -3184,17 +3184,17 @@ LABEL_17:
         }
       }
 
-      v28 = [(ADCommunalDeviceUser *)self->_deviceOwner enrollmentName];
-      v29 = v17;
+      enrollmentName = [(ADCommunalDeviceUser *)self->_deviceOwner enrollmentName];
+      v29 = nameCopy;
       v30 = v29;
-      v110 = v16;
-      if (v28 == v29)
+      v110 = idCopy;
+      if (enrollmentName == v29)
       {
       }
 
       else
       {
-        if (!v29 || !v28)
+        if (!v29 || !enrollmentName)
         {
 
 LABEL_22:
@@ -3209,18 +3209,18 @@ LABEL_22:
           [(ADCommunalDeviceUser *)self->_deviceOwner setEnrollmentName:v30];
           v21 = 1;
 LABEL_25:
-          v37 = [(ADCommunalDeviceUser *)self->_deviceOwner sharedUserID];
+          sharedUserID = [(ADCommunalDeviceUser *)self->_deviceOwner sharedUserID];
           v38 = v110;
           v39 = v38;
-          if (v37 == v38)
+          if (sharedUserID == v38)
           {
 
             goto LABEL_35;
           }
 
-          if (v38 && v37)
+          if (v38 && sharedUserID)
           {
-            v40 = [v37 isEqual:v38];
+            v40 = [sharedUserID isEqual:v38];
 
             if (v40)
             {
@@ -3243,37 +3243,37 @@ LABEL_25:
           [(ADCommunalDeviceUser *)self->_deviceOwner setSharedUserID:v39];
           v21 = 1;
 LABEL_35:
-          v42 = [(ADCommunalDeviceUser *)self->_deviceOwner settings];
-          v43 = [v20 dictionary];
-          v44 = v42;
-          v45 = v43;
+          settings = [(ADCommunalDeviceUser *)self->_deviceOwner settings];
+          dictionary = [settingsCopy dictionary];
+          dictionary2 = settings;
+          v45 = dictionary;
           v46 = v45;
-          if (v44 == v45)
+          if (dictionary2 == v45)
           {
           }
 
           else
           {
-            if (v44 && v45)
+            if (dictionary2 && v45)
             {
-              v47 = [v44 isEqual:v45];
+              v47 = [dictionary2 isEqual:v45];
 
               if (v47)
               {
 LABEL_46:
-                v50 = [(ADCommunalDeviceUser *)self->_deviceOwner shareOwnerName];
-                v51 = v19;
+                shareOwnerName = [(ADCommunalDeviceUser *)self->_deviceOwner shareOwnerName];
+                v51 = ownerNameCopy;
                 v52 = v51;
-                v108 = v17;
-                if (v50 == v51)
+                v108 = nameCopy;
+                if (shareOwnerName == v51)
                 {
 
                   goto LABEL_56;
                 }
 
-                if (v51 && v50)
+                if (v51 && shareOwnerName)
                 {
-                  v53 = [v50 isEqual:v51];
+                  v53 = [shareOwnerName isEqual:v51];
 
                   if (v53)
                   {
@@ -3296,7 +3296,7 @@ LABEL_46:
                 [(ADCommunalDeviceUser *)self->_deviceOwner setShareOwnerName:v52, v108];
                 v21 = 1;
 LABEL_56:
-                if ([(ADCommunalDeviceUser *)self->_deviceOwner loggingIsAllowed]!= a9)
+                if ([(ADCommunalDeviceUser *)self->_deviceOwner loggingIsAllowed]!= allowed)
                 {
                   v55 = AFSiriLogContextDaemon;
                   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3306,43 +3306,43 @@ LABEL_56:
                     _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "%s Updating loggingIsAllowed", buf, 0xCu);
                   }
 
-                  [(ADCommunalDeviceUser *)self->_deviceOwner testAndSetLoggingIsAllowed:a9];
+                  [(ADCommunalDeviceUser *)self->_deviceOwner testAndSetLoggingIsAllowed:allowed];
                   v21 = 1;
                 }
 
-                v56 = [(ADCommunalDeviceUser *)self->_deviceOwner companionSpeechID];
-                v57 = [v18 speechID];
-                v58 = v56;
-                v59 = v57;
+                companionSpeechID = [(ADCommunalDeviceUser *)self->_deviceOwner companionSpeechID];
+                speechID = [infoCopy speechID];
+                speechID2 = companionSpeechID;
+                v59 = speechID;
                 v60 = v59;
-                if (v58 == v59)
+                if (speechID2 == v59)
                 {
                 }
 
                 else
                 {
-                  if (v58 && v59)
+                  if (speechID2 && v59)
                   {
-                    v61 = [v58 isEqual:v59];
+                    v61 = [speechID2 isEqual:v59];
 
                     if (v61)
                     {
 LABEL_71:
-                      v64 = [(ADCommunalDeviceUser *)self->_deviceOwner companionAssistantID];
-                      v65 = [v18 assistantID];
-                      v66 = v64;
-                      v67 = v65;
+                      companionAssistantID = [(ADCommunalDeviceUser *)self->_deviceOwner companionAssistantID];
+                      assistantID = [infoCopy assistantID];
+                      assistantID2 = companionAssistantID;
+                      v67 = assistantID;
                       v68 = v67;
-                      v69 = v66 != v67;
-                      if (v66 == v67)
+                      v69 = assistantID2 != v67;
+                      if (assistantID2 == v67)
                       {
                       }
 
                       else
                       {
-                        if (v66 && v67)
+                        if (assistantID2 && v67)
                         {
-                          v70 = [v66 isEqual:v67];
+                          v70 = [assistantID2 isEqual:v67];
 
                           if (v70)
                           {
@@ -3364,67 +3364,67 @@ LABEL_71:
                         }
 
                         v72 = self->_deviceOwner;
-                        v66 = [v18 assistantID];
-                        [(ADCommunalDeviceUser *)v72 setCompanionAssistantID:v66];
+                        assistantID2 = [infoCopy assistantID];
+                        [(ADCommunalDeviceUser *)v72 setCompanionAssistantID:assistantID2];
                       }
 
 LABEL_82:
-                      v73 = [(ADCommunalDeviceUser *)self->_deviceOwner companionIDSIdentifier];
-                      v74 = [v18 idsIdentifier];
-                      v75 = v73;
-                      v76 = v74;
+                      companionIDSIdentifier = [(ADCommunalDeviceUser *)self->_deviceOwner companionIDSIdentifier];
+                      idsIdentifier = [infoCopy idsIdentifier];
+                      idsIdentifier2 = companionIDSIdentifier;
+                      v76 = idsIdentifier;
                       v77 = v76;
-                      if (v75 == v76)
+                      if (idsIdentifier2 == v76)
                       {
                       }
 
                       else
                       {
-                        if (v75 && v76)
+                        if (idsIdentifier2 && v76)
                         {
-                          v78 = [v75 isEqual:v76];
+                          v78 = [idsIdentifier2 isEqual:v76];
 
                           if (v78)
                           {
 LABEL_93:
-                            v81 = [(ADCommunalDeviceUser *)self->_deviceOwner productPrefix];
-                            v82 = [v18 productPrefix];
-                            v83 = v81;
-                            v84 = v82;
+                            productPrefix = [(ADCommunalDeviceUser *)self->_deviceOwner productPrefix];
+                            productPrefix2 = [infoCopy productPrefix];
+                            productPrefix3 = productPrefix;
+                            v84 = productPrefix2;
                             v85 = v84;
-                            if (v83 == v84)
+                            if (productPrefix3 == v84)
                             {
                             }
 
                             else
                             {
-                              if (v83 && v84)
+                              if (productPrefix3 && v84)
                               {
-                                v86 = [v83 isEqual:v84];
+                                v86 = [productPrefix3 isEqual:v84];
 
                                 if (v86)
                                 {
 LABEL_104:
-                                  v89 = [(ADCommunalDeviceUser *)self->_deviceOwner aceHost];
-                                  v90 = [v18 aceHost];
-                                  v91 = v89;
-                                  v92 = v90;
+                                  aceHost = [(ADCommunalDeviceUser *)self->_deviceOwner aceHost];
+                                  aceHost2 = [infoCopy aceHost];
+                                  aceHost3 = aceHost;
+                                  v92 = aceHost2;
                                   v93 = v92;
-                                  if (v91 == v92)
+                                  if (aceHost3 == v92)
                                   {
                                   }
 
                                   else
                                   {
-                                    if (v91 && v92)
+                                    if (aceHost3 && v92)
                                     {
-                                      v94 = [v91 isEqual:v92];
+                                      v94 = [aceHost3 isEqual:v92];
 
                                       if (v94)
                                       {
 LABEL_115:
-                                        v97 = [(ADCommunalDeviceUser *)self->_deviceOwner companionPeerToPeerHandoffCapable];
-                                        if (v97 != [v18 peerToPeerHandoffCapability])
+                                        companionPeerToPeerHandoffCapable = [(ADCommunalDeviceUser *)self->_deviceOwner companionPeerToPeerHandoffCapable];
+                                        if (companionPeerToPeerHandoffCapable != [infoCopy peerToPeerHandoffCapability])
                                         {
                                           v98 = AFSiriLogContextDaemon;
                                           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3434,12 +3434,12 @@ LABEL_115:
                                             _os_log_impl(&_mh_execute_header, v98, OS_LOG_TYPE_INFO, "%s Updating companion sync metadata capability", buf, 0xCu);
                                           }
 
-                                          -[ADCommunalDeviceUser setCompanionPeerToPeerHandoffCapable:](self->_deviceOwner, "setCompanionPeerToPeerHandoffCapable:", [v18 peerToPeerHandoffCapability]);
+                                          -[ADCommunalDeviceUser setCompanionPeerToPeerHandoffCapable:](self->_deviceOwner, "setCompanionPeerToPeerHandoffCapable:", [infoCopy peerToPeerHandoffCapability]);
                                           v69 = 1;
                                         }
 
-                                        v99 = [v18 companionName];
-                                        if (v99 && (-[ADCommunalDeviceUser companionName](self->_deviceOwner, "companionName"), v100 = objc_claimAutoreleasedReturnValue(), v101 = [v100 isEqualToString:v99], v100, (v101 & 1) == 0))
+                                        companionName = [infoCopy companionName];
+                                        if (companionName && (-[ADCommunalDeviceUser companionName](self->_deviceOwner, "companionName"), v100 = objc_claimAutoreleasedReturnValue(), v101 = [v100 isEqualToString:companionName], v100, (v101 & 1) == 0))
                                         {
                                           v102 = AFSiriLogContextDaemon;
                                           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3447,22 +3447,22 @@ LABEL_115:
                                             *buf = 136315394;
                                             v112 = "[ADMultiUserService _updateDeviceOwner:sharedUserId:enrollmentName:companionInfo:shareOwnerName:homeMemberSettings:loggingAllowed:]";
                                             v113 = 2112;
-                                            v114 = v99;
+                                            v114 = companionName;
                                             _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_INFO, "%s Updating companionName: %@", buf, 0x16u);
                                           }
 
-                                          [(ADCommunalDeviceUser *)self->_deviceOwner setCompanionName:v99];
-                                          v17 = v109;
+                                          [(ADCommunalDeviceUser *)self->_deviceOwner setCompanionName:companionName];
+                                          nameCopy = v109;
                                         }
 
                                         else
                                         {
-                                          v17 = v109;
+                                          nameCopy = v109;
                                           if (!v69)
                                           {
 LABEL_129:
 
-                                            v16 = v110;
+                                            idCopy = v110;
                                             goto LABEL_3;
                                           }
                                         }
@@ -3472,14 +3472,14 @@ LABEL_129:
                                         {
                                           v104 = self->_deviceOwner;
                                           v105 = v103;
-                                          v106 = [(ADCommunalDeviceUser *)v104 sharedUserID];
+                                          sharedUserID2 = [(ADCommunalDeviceUser *)v104 sharedUserID];
                                           *buf = 136315395;
                                           v112 = "[ADMultiUserService _updateDeviceOwner:sharedUserId:enrollmentName:companionInfo:shareOwnerName:homeMemberSettings:loggingAllowed:]";
                                           v113 = 2113;
-                                          v114 = v106;
+                                          v114 = sharedUserID2;
                                           _os_log_impl(&_mh_execute_header, v105, OS_LOG_TYPE_INFO, "%s Posting notification that companion device information/capabilities changed for deviceOwner: (%{private}@)", buf, 0x16u);
 
-                                          v17 = v109;
+                                          nameCopy = v109;
                                         }
 
                                         v107 = +[NSNotificationCenter defaultCenter];
@@ -3503,8 +3503,8 @@ LABEL_129:
                                     }
 
                                     v96 = self->_deviceOwner;
-                                    v91 = [v18 aceHost];
-                                    [(ADCommunalDeviceUser *)v96 setAceHost:v91];
+                                    aceHost3 = [infoCopy aceHost];
+                                    [(ADCommunalDeviceUser *)v96 setAceHost:aceHost3];
                                     v69 = 1;
                                   }
 
@@ -3525,8 +3525,8 @@ LABEL_129:
                               }
 
                               v88 = self->_deviceOwner;
-                              v83 = [v18 productPrefix];
-                              [(ADCommunalDeviceUser *)v88 setProductPrefix:v83];
+                              productPrefix3 = [infoCopy productPrefix];
+                              [(ADCommunalDeviceUser *)v88 setProductPrefix:productPrefix3];
                               v21 = 1;
                             }
 
@@ -3547,8 +3547,8 @@ LABEL_129:
                         }
 
                         v80 = self->_deviceOwner;
-                        v75 = [v18 idsIdentifier];
-                        [(ADCommunalDeviceUser *)v80 setCompanionIDSIdentifier:v75];
+                        idsIdentifier2 = [infoCopy idsIdentifier];
+                        [(ADCommunalDeviceUser *)v80 setCompanionIDSIdentifier:idsIdentifier2];
                         v21 = 1;
                       }
 
@@ -3569,8 +3569,8 @@ LABEL_129:
                   }
 
                   v63 = self->_deviceOwner;
-                  v58 = [v18 speechID];
-                  [(ADCommunalDeviceUser *)v63 setCompanionSpeechID:v58];
+                  speechID2 = [infoCopy speechID];
+                  [(ADCommunalDeviceUser *)v63 setCompanionSpeechID:speechID2];
                   v21 = 1;
                 }
 
@@ -3591,15 +3591,15 @@ LABEL_129:
             }
 
             v49 = self->_deviceOwner;
-            v44 = [v20 dictionary];
-            [(ADCommunalDeviceUser *)v49 setSettings:v44];
+            dictionary2 = [settingsCopy dictionary];
+            [(ADCommunalDeviceUser *)v49 setSettings:dictionary2];
             v21 = 1;
           }
 
           goto LABEL_46;
         }
 
-        v31 = [v28 isEqual:v29];
+        v31 = [enrollmentName isEqual:v29];
 
         if ((v31 & 1) == 0)
         {
@@ -3619,18 +3619,18 @@ LABEL_3:
   return v21;
 }
 
-- (void)addDeviceOwner:(id)a3 sharedUserId:(id)a4 loggableSharedUserId:(id)a5 iCloudAltDSID:(id)a6 audioAppSignals:(id)a7 enrollmentName:(id)a8 companionInfo:(id)a9 shareOwnerName:(id)a10 homeMemberSettings:(id)a11 loggingAllowed:(BOOL)a12 completion:(id)a13
+- (void)addDeviceOwner:(id)owner sharedUserId:(id)id loggableSharedUserId:(id)userId iCloudAltDSID:(id)d audioAppSignals:(id)signals enrollmentName:(id)name companionInfo:(id)info shareOwnerName:(id)self0 homeMemberSettings:(id)self1 loggingAllowed:(BOOL)self2 completion:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v32 = a7;
-  v22 = a8;
-  v31 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a13;
+  ownerCopy = owner;
+  idCopy = id;
+  userIdCopy = userId;
+  dCopy = d;
+  signalsCopy = signals;
+  nameCopy = name;
+  infoCopy = info;
+  ownerNameCopy = ownerName;
+  settingsCopy = settings;
+  completionCopy = completion;
   v26 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -3639,8 +3639,8 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  v27 = v18;
-  if (v18 && v19 && v20 && v22)
+  v27 = ownerCopy;
+  if (ownerCopy && idCopy && userIdCopy && nameCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -3648,47 +3648,47 @@ LABEL_3:
     block[2] = sub_1002AFAB4;
     block[3] = &unk_1005198D0;
     block[4] = self;
-    v34 = v18;
-    v35 = v19;
-    v36 = v20;
-    v37 = v21;
-    v38 = v32;
-    v39 = v22;
-    v40 = v31;
-    v41 = v23;
-    v42 = v24;
-    v44 = a12;
-    v43 = v25;
+    v34 = ownerCopy;
+    v35 = idCopy;
+    v36 = userIdCopy;
+    v37 = dCopy;
+    v38 = signalsCopy;
+    v39 = nameCopy;
+    v40 = infoCopy;
+    v41 = ownerNameCopy;
+    v42 = settingsCopy;
+    allowedCopy = allowed;
+    v43 = completionCopy;
     dispatch_async(queue, block);
   }
 
-  else if (v25)
+  else if (completionCopy)
   {
     v29 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6002 userInfo:&__NSDictionary0__struct];
-    (*(v25 + 2))(v25, v29);
+    (*(completionCopy + 2))(completionCopy, v29);
   }
 }
 
-- (void)_deleteShareForUser:(id)a3
+- (void)_deleteShareForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(ADMultiUserService *)self getCloudKitManager];
-  [v5 deleteShareForUser:v4 completion:&stru_1005198A8];
+  userCopy = user;
+  getCloudKitManager = [(ADMultiUserService *)self getCloudKitManager];
+  [getCloudKitManager deleteShareForUser:userCopy completion:&stru_1005198A8];
 }
 
-- (void)_allowVoiceIdentificationForThisUser:(id)a3 iCloudAltDSID:(id)a4 completion:(id)a5
+- (void)_allowVoiceIdentificationForThisUser:(id)user iCloudAltDSID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  userCopy = user;
+  dCopy = d;
+  completionCopy = completion;
   homeUserSettings = self->_homeUserSettings;
   if (homeUserSettings)
   {
-    v12 = [(NSMutableDictionary *)self->_homeUserSettings objectForKey:v8];
+    v12 = [(NSMutableDictionary *)self->_homeUserSettings objectForKey:userCopy];
     if (v12)
     {
       v13 = v12;
-      if (AFIsATVOnly() && [(NSString *)self->_userWithRMVEnabledDuringBuddy isEqualToString:v9])
+      if (AFIsATVOnly() && [(NSString *)self->_userWithRMVEnabledDuringBuddy isEqualToString:dCopy])
       {
         v14 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3696,13 +3696,13 @@ LABEL_3:
           *buf = 136315394;
           v28 = "[ADMultiUserService _allowVoiceIdentificationForThisUser:iCloudAltDSID:completion:]";
           v29 = 2112;
-          v30 = v9;
+          v30 = dCopy;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Now past buddy and sync is done; set RMV enabled for the user requested during buddy flow with iCloudAltDSID %@", buf, 0x16u);
         }
 
         v15 = [v13 mutableCopy];
         [v15 setObject:&off_100533F20 forKey:@"allowVoiceID"];
-        [(NSMutableDictionary *)self->_homeUserSettings setObject:v15 forKey:v8];
+        [(NSMutableDictionary *)self->_homeUserSettings setObject:v15 forKey:userCopy];
 
         v13 = v15;
       }
@@ -3711,9 +3711,9 @@ LABEL_3:
       v17 = v16;
       if (v16 && [v16 integerValue] == 1)
       {
-        if (v10)
+        if (completionCopy)
         {
-          v10[2](v10, 0);
+          completionCopy[2](completionCopy, 0);
         }
 
         goto LABEL_27;
@@ -3725,7 +3725,7 @@ LABEL_3:
         *buf = 136315394;
         v28 = "[ADMultiUserService _allowVoiceIdentificationForThisUser:iCloudAltDSID:completion:]";
         v29 = 2112;
-        v30 = v8;
+        v30 = userCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s VoiceID disallowed for (%@) checking with HomeKit as they sometimes miss notifying us.", buf, 0x16u);
       }
     }
@@ -3738,7 +3738,7 @@ LABEL_3:
         *buf = 136315394;
         v28 = "[ADMultiUserService _allowVoiceIdentificationForThisUser:iCloudAltDSID:completion:]";
         v29 = 2112;
-        v30 = v8;
+        v30 = userCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%s Missing setting for (%@) checking with HomeKit as they sometimes miss notifying us.", buf, 0x16u);
       }
     }
@@ -3758,16 +3758,16 @@ LABEL_3:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s #multi-user-atv Voice ID allowed for user on ATV with profile in state %ld", buf, 0x16u);
       }
 
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
-    else if (v10)
+    else if (completionCopy)
     {
       v22 = [NSError errorWithDomain:kAFAssistantErrorDomain code:6010 userInfo:&__NSDictionary0__struct];
-      (v10)[2](v10, v22);
+      (completionCopy)[2](completionCopy, v22);
     }
   }
 
@@ -3779,18 +3779,18 @@ LABEL_3:
     v23[2] = sub_1002B0034;
     v23[3] = &unk_100519888;
     v23[4] = self;
-    v24 = v8;
-    v26 = v10;
-    v25 = v9;
+    v24 = userCopy;
+    v26 = completionCopy;
+    v25 = dCopy;
     [v21 settingsForMultiUserWithRefresh:homeUserSettings != 0 completion:v23];
   }
 
 LABEL_27:
 }
 
-- (BOOL)_updateNonHomeUserSettings:(id)a3
+- (BOOL)_updateNonHomeUserSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -3799,11 +3799,11 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ", &v18, 0xCu);
   }
 
-  v6 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:settingsCopy];
   if (!v6)
   {
-    v7 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
-    v8 = [v7 isEqualToString:v4];
+    sharedUserID = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+    v8 = [sharedUserID isEqualToString:settingsCopy];
 
     if (v8)
     {
@@ -3820,19 +3820,19 @@ LABEL_27:
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [(ADCommunalDeviceUser *)v6 iCloudAltDSID];
+    iCloudAltDSID = [(ADCommunalDeviceUser *)v6 iCloudAltDSID];
     v18 = 136315394;
     v19 = "[ADMultiUserService _updateNonHomeUserSettings:]";
     v20 = 2112;
-    v21 = v11;
+    v21 = iCloudAltDSID;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s %@", &v18, 0x16u);
   }
 
-  v12 = [(ADCommunalDeviceUser *)v6 iCloudAltDSID];
-  v13 = v12;
+  iCloudAltDSID2 = [(ADCommunalDeviceUser *)v6 iCloudAltDSID];
+  v13 = iCloudAltDSID2;
   if (v6)
   {
-    v14 = v12 == 0;
+    v14 = iCloudAltDSID2 == 0;
   }
 
   else
@@ -3850,15 +3850,15 @@ LABEL_27:
   return v15;
 }
 
-- (BOOL)_updateHomeKitSettings:(id)a3
+- (BOOL)_updateHomeKitSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_homeUserSettings objectForKey:v4];
-  v6 = [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID objectForKey:v4];
+  settingsCopy = settings;
+  v5 = [(NSMutableDictionary *)self->_homeUserSettings objectForKey:settingsCopy];
+  v6 = [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID objectForKey:settingsCopy];
   if (!v6)
   {
-    v7 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
-    v8 = [v7 isEqualToString:v4];
+    homeUserUUID = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+    v8 = [homeUserUUID isEqualToString:settingsCopy];
 
     if (!v8)
     {
@@ -3901,13 +3901,13 @@ LABEL_11:
   if (!self->_primaryUser && [(ADMultiUserService *)self _homeKitSettingsDidChangeForDeviceOwner])
   {
     homeUserSettings = self->_homeUserSettings;
-    v4 = [(ADCommunalDeviceUser *)self->_deviceOwner homeUserUUID];
-    v5 = [(NSMutableDictionary *)homeUserSettings objectForKey:v4];
+    homeUserUUID = [(ADCommunalDeviceUser *)self->_deviceOwner homeUserUUID];
+    v5 = [(NSMutableDictionary *)homeUserSettings objectForKey:homeUserUUID];
 
     [(ADMultiUserService *)self _updateCommunalDeviceUser:self->_deviceOwner withSettings:v5];
     v6 = +[ADPreferences sharedPreferences];
-    v7 = [(ADCommunalDeviceUser *)self->_deviceOwner dictionaryRepresentation];
-    [v6 setDeviceOwner:v7];
+    dictionaryRepresentation = [(ADCommunalDeviceUser *)self->_deviceOwner dictionaryRepresentation];
+    [v6 setDeviceOwner:dictionaryRepresentation];
 
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3924,13 +3924,13 @@ LABEL_11:
 - (BOOL)_homeKitSettingsDidChangeForDeviceOwner
 {
   homeUserSettings = self->_homeUserSettings;
-  v4 = [(ADCommunalDeviceUser *)self->_deviceOwner homeUserUUID];
-  v5 = [(NSMutableDictionary *)homeUserSettings objectForKey:v4];
+  homeUserUUID = [(ADCommunalDeviceUser *)self->_deviceOwner homeUserUUID];
+  v5 = [(NSMutableDictionary *)homeUserSettings objectForKey:homeUserUUID];
 
   v6 = [v5 objectForKey:@"allowVoiceID"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  if ((v7 != 1) == [(ADCommunalDeviceUser *)self->_deviceOwner voiceIDAllowedByUser])
+  if ((integerValue != 1) == [(ADCommunalDeviceUser *)self->_deviceOwner voiceIDAllowedByUser])
   {
     v8 = 1;
   }
@@ -3943,44 +3943,44 @@ LABEL_11:
   return v8;
 }
 
-- (void)_updateCommunalDeviceUser:(id)a3 withSettings:(id)a4
+- (void)_updateCommunalDeviceUser:(id)user withSettings:(id)settings
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKey:@"allowVoiceID"];
-  v8 = [v6 objectForKey:@"personalDomainsIsEnabled"];
-  v9 = [v6 objectForKey:@"allowUnauthenticatedRequests"];
-  v10 = [v6 objectForKey:@"allowExplicitContent"];
+  userCopy = user;
+  settingsCopy = settings;
+  v7 = [settingsCopy objectForKey:@"allowVoiceID"];
+  v8 = [settingsCopy objectForKey:@"personalDomainsIsEnabled"];
+  v9 = [settingsCopy objectForKey:@"allowUnauthenticatedRequests"];
+  v10 = [settingsCopy objectForKey:@"allowExplicitContent"];
 
-  v11 = [v7 integerValue];
-  v12 = [v5 personalDomainsIsEnabled];
-  if (v12 != [v8 BOOLValue])
+  integerValue = [v7 integerValue];
+  personalDomainsIsEnabled = [userCopy personalDomainsIsEnabled];
+  if (personalDomainsIsEnabled != [v8 BOOLValue])
   {
-    [v5 setPersonalDomainsIsEnabled:{objc_msgSend(v8, "BOOLValue")}];
+    [userCopy setPersonalDomainsIsEnabled:{objc_msgSend(v8, "BOOLValue")}];
     v13 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       v14 = v13;
-      v15 = [v5 sharedUserID];
+      sharedUserID = [userCopy sharedUserID];
       v20 = 136315395;
       v21 = "[ADMultiUserService _updateCommunalDeviceUser:withSettings:]";
       v22 = 2113;
-      v23 = v15;
+      v23 = sharedUserID;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Posting notification that Personal Domains setting changed for sharedUserId: (%{private}@)", &v20, 0x16u);
     }
 
     v16 = +[NSNotificationCenter defaultCenter];
-    [v16 postNotificationName:@"ADMultiUserSharedUserPersonalDomainsChangedNotification" object:v5];
+    [v16 postNotificationName:@"ADMultiUserSharedUserPersonalDomainsChangedNotification" object:userCopy];
   }
 
-  [v5 setUnauthenticatedRequestsAllowed:{objc_msgSend(v9, "BOOLValue")}];
-  [v5 setAllowExplicitContent:{objc_msgSend(v10, "BOOLValue")}];
-  [v5 setVoiceIDAllowedByUser:v11 == 1];
+  [userCopy setUnauthenticatedRequestsAllowed:{objc_msgSend(v9, "BOOLValue")}];
+  [userCopy setAllowExplicitContent:{objc_msgSend(v10, "BOOLValue")}];
+  [userCopy setVoiceIDAllowedByUser:integerValue == 1];
   v17 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v18 = v17;
-    v19 = [v5 homeUserUUID];
+    homeUserUUID = [userCopy homeUserUUID];
     v20 = 136316419;
     v21 = "[ADMultiUserService _updateCommunalDeviceUser:withSettings:]";
     v22 = 2112;
@@ -3992,27 +3992,27 @@ LABEL_11:
     v28 = 2112;
     v29 = v9;
     v30 = 2113;
-    v31 = v19;
+    v31 = homeUserUUID;
     _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "%s allowExplicitContent: (%@) setVoiceIDAllowedByUser: (%@) personalDomainsIsEnabled: (%@) unauthenticatedRequestsAllowed: (%@) for (%{private}@)", &v20, 0x3Eu);
   }
 }
 
-- (BOOL)personalDomainSettingsDidChange:(id)a3 newUserSettings:(id)a4
+- (BOOL)personalDomainSettingsDidChange:(id)change newUserSettings:(id)settings
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKey:@"personalDomainsIsEnabled"];
-  v8 = [v7 BOOLValue];
+  changeCopy = change;
+  settingsCopy = settings;
+  v7 = [settingsCopy objectForKey:@"personalDomainsIsEnabled"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v6 objectForKey:@"allowUnauthenticatedRequests"];
-  v10 = [v9 BOOLValue];
+  v9 = [settingsCopy objectForKey:@"allowUnauthenticatedRequests"];
+  bOOLValue2 = [v9 BOOLValue];
 
-  v11 = [v6 objectForKey:@"allowExplicitContent"];
+  v11 = [settingsCopy objectForKey:@"allowExplicitContent"];
 
-  v12 = [v11 BOOLValue];
-  if (v8 == [v5 personalDomainsIsEnabled] && v10 == objc_msgSend(v5, "unauthenticatedRequestsAllowed"))
+  bOOLValue3 = [v11 BOOLValue];
+  if (bOOLValue == [changeCopy personalDomainsIsEnabled] && bOOLValue2 == objc_msgSend(changeCopy, "unauthenticatedRequestsAllowed"))
   {
-    v13 = v12 ^ [v5 allowExplicitContent];
+    v13 = bOOLValue3 ^ [changeCopy allowExplicitContent];
   }
 
   else
@@ -4028,13 +4028,13 @@ LABEL_11:
   deviceOwner = self->_deviceOwner;
   if (deviceOwner)
   {
-    v4 = [(ADCommunalDeviceUser *)deviceOwner sharedUserID];
-    if (v4)
+    sharedUserID = [(ADCommunalDeviceUser *)deviceOwner sharedUserID];
+    if (sharedUserID)
     {
-      v5 = v4;
+      v5 = sharedUserID;
       v6 = +[ADPreferences sharedPreferences];
-      v7 = [v6 sharedUserIdentifier];
-      v8 = [v7 isEqualToString:v5];
+      sharedUserIdentifier = [v6 sharedUserIdentifier];
+      v8 = [sharedUserIdentifier isEqualToString:v5];
 
       if ((v8 & 1) == 0)
       {
@@ -4047,9 +4047,9 @@ LABEL_11:
         }
 
         v10 = +[ADPreferences sharedPreferences];
-        v11 = [(ADCommunalDeviceUser *)self->_deviceOwner sharedUserID];
-        v12 = [(ADCommunalDeviceUser *)self->_deviceOwner loggableSharedUserID];
-        [v10 setSharedUserIdentifier:v11 loggingSharedUserIdentifier:v12];
+        sharedUserID2 = [(ADCommunalDeviceUser *)self->_deviceOwner sharedUserID];
+        loggableSharedUserID = [(ADCommunalDeviceUser *)self->_deviceOwner loggableSharedUserID];
+        [v10 setSharedUserIdentifier:sharedUserID2 loggingSharedUserIdentifier:loggableSharedUserID];
       }
     }
 
@@ -4082,19 +4082,19 @@ LABEL_11:
   }
 }
 
-- (void)_setSharedUserSiriLanguage:(id)a3 forSharedUser:(id)a4
+- (void)_setSharedUserSiriLanguage:(id)language forSharedUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  languageCopy = language;
+  userCopy = user;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v14 = 136315650;
     v15 = "[ADMultiUserService _setSharedUserSiriLanguage:forSharedUser:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = languageCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = userCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s siriLanguage:%@ sharedUserID:%@", &v14, 0x20u);
   }
 
@@ -4105,14 +4105,14 @@ LABEL_11:
     self->_sharedUsersSiriLanguageBySharedUserID = v9;
   }
 
-  if (v7)
+  if (userCopy)
   {
-    [(NSMutableDictionary *)self->_sharedUsersSiriLanguageBySharedUserID setValue:v6 forKey:v7];
-    v11 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:v7];
+    [(NSMutableDictionary *)self->_sharedUsersSiriLanguageBySharedUserID setValue:languageCopy forKey:userCopy];
+    v11 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:userCopy];
     v12 = v11;
     if (v11)
     {
-      [v11 setCompanionSiriLanguage:v6];
+      [v11 setCompanionSiriLanguage:languageCopy];
     }
 
     else
@@ -4128,39 +4128,39 @@ LABEL_11:
   }
 }
 
-- (void)_setPrimaryUserSiriLanguage:(id)a3
+- (void)_setPrimaryUserSiriLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "[ADMultiUserService _setPrimaryUserSiriLanguage:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = languageCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s siriLanguage:%@", &v8, 0x16u);
   }
 
   primaryUserSiriLanguage = self->_primaryUserSiriLanguage;
-  self->_primaryUserSiriLanguage = v4;
-  v7 = v4;
+  self->_primaryUserSiriLanguage = languageCopy;
+  v7 = languageCopy;
 
   [(ADCommunalDeviceUser *)self->_primaryUser setCompanionSiriLanguage:v7];
 }
 
-- (void)_setSharedUserMeDevice:(BOOL)a3 forSharedUser:(id)a4
+- (void)_setSharedUserMeDevice:(BOOL)device forSharedUser:(id)user
 {
-  v4 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  userCopy = user;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v12 = 136315650;
     v13 = "[ADMultiUserService _setSharedUserMeDevice:forSharedUser:]";
     v14 = 1024;
-    v15 = v4;
+    v15 = deviceCopy;
     v16 = 2112;
-    v17 = v6;
+    v17 = userCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s meDevice:%d, sharedUserID:%@", &v12, 0x1Cu);
   }
 
@@ -4174,24 +4174,24 @@ LABEL_11:
     sharedUsersMeDeviceBySharedUserID = self->_sharedUsersMeDeviceBySharedUserID;
   }
 
-  v11 = [NSNumber numberWithBool:v4];
-  [(NSMutableDictionary *)sharedUsersMeDeviceBySharedUserID setValue:v11 forKey:v6];
+  v11 = [NSNumber numberWithBool:deviceCopy];
+  [(NSMutableDictionary *)sharedUsersMeDeviceBySharedUserID setValue:v11 forKey:userCopy];
 }
 
-- (void)_setPrimaryUserMeDevice:(BOOL)a3
+- (void)_setPrimaryUserMeDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v6 = 136315394;
     v7 = "[ADMultiUserService _setPrimaryUserMeDevice:]";
     v8 = 1024;
-    v9 = v3;
+    v9 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s meDevice:%d", &v6, 0x12u);
   }
 
-  self->_primaryUserMeDevice = v3;
+  self->_primaryUserMeDevice = deviceCopy;
 }
 
 - (void)_saveSharedUsers
@@ -4230,11 +4230,11 @@ LABEL_11:
         {
           if (AFIsATVOnly())
           {
-            v11 = [v10 iCloudAltDSID];
+            iCloudAltDSID = [v10 iCloudAltDSID];
 
-            if (v11)
+            if (iCloudAltDSID)
             {
-              v12 = [v10 iCloudAltDSID];
+              iCloudAltDSID2 = [v10 iCloudAltDSID];
               if (_AFPreferencesSiriRMVSetting() == 1)
               {
                 [v10 setVoiceIDAllowedByUser:1];
@@ -4242,14 +4242,14 @@ LABEL_11:
 
               else
               {
-                v13 = [v10 iCloudAltDSID];
+                iCloudAltDSID3 = [v10 iCloudAltDSID];
                 [v10 setVoiceIDAllowedByUser:_AFPreferencesSiriRMVSetting() == 2];
               }
             }
           }
 
-          v14 = [v10 dictionaryRepresentation];
-          [v4 addObject:v14];
+          dictionaryRepresentation = [v10 dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v9 = v9 + 1;
@@ -4285,12 +4285,12 @@ LABEL_11:
           }
 
           v20 = [(NSMutableDictionary *)self->_sharedUsersByiCloudAltDSID objectForKey:*(*(&v29 + 1) + 8 * v19), v29];
-          v21 = [v20 sharedUserID];
+          sharedUserID = [v20 sharedUserID];
 
-          if (!v21)
+          if (!sharedUserID)
           {
-            v22 = [v20 dictionaryRepresentation];
-            [v4 addObject:v22];
+            dictionaryRepresentation2 = [v20 dictionaryRepresentation];
+            [v4 addObject:dictionaryRepresentation2];
           }
 
           v19 = v19 + 1;
@@ -4355,12 +4355,12 @@ LABEL_11:
 {
   if (AFIsATVOnly())
   {
-    v3 = [(ADCommunalDeviceUser *)self->_primaryUser iCloudAltDSID];
+    iCloudAltDSID = [(ADCommunalDeviceUser *)self->_primaryUser iCloudAltDSID];
 
-    if (v3)
+    if (iCloudAltDSID)
     {
       primaryUser = self->_primaryUser;
-      v5 = [(ADCommunalDeviceUser *)primaryUser iCloudAltDSID];
+      iCloudAltDSID2 = [(ADCommunalDeviceUser *)primaryUser iCloudAltDSID];
       if (_AFPreferencesSiriRMVSetting() == 1)
       {
         [(ADCommunalDeviceUser *)primaryUser setVoiceIDAllowedByUser:1];
@@ -4368,19 +4368,19 @@ LABEL_11:
 
       else
       {
-        v6 = [(ADCommunalDeviceUser *)self->_primaryUser iCloudAltDSID];
+        iCloudAltDSID3 = [(ADCommunalDeviceUser *)self->_primaryUser iCloudAltDSID];
         [(ADCommunalDeviceUser *)primaryUser setVoiceIDAllowedByUser:_AFPreferencesSiriRMVSetting() == 2];
       }
     }
   }
 
   v7 = +[ADPreferences sharedPreferences];
-  v8 = [(ADCommunalDeviceUser *)self->_primaryUser dictionaryRepresentation];
-  [v7 setMultiUserPrimaryUser:v8];
+  dictionaryRepresentation = [(ADCommunalDeviceUser *)self->_primaryUser dictionaryRepresentation];
+  [v7 setMultiUserPrimaryUser:dictionaryRepresentation];
 
   v9 = +[ADPreferences sharedPreferences];
-  v10 = [(ADCommunalDeviceUser *)self->_deviceOwner dictionaryRepresentation];
-  [v9 setDeviceOwner:v10];
+  dictionaryRepresentation2 = [(ADCommunalDeviceUser *)self->_deviceOwner dictionaryRepresentation];
+  [v9 setDeviceOwner:dictionaryRepresentation2];
 
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -4398,8 +4398,8 @@ LABEL_11:
 {
   v3 = objc_alloc_init(SAMultiUserInfo);
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [(SAMultiUserInfo *)self->_multiUserInfo homeMembers];
-  v6 = [v5 count] != 0;
+  homeMembers = [(SAMultiUserInfo *)self->_multiUserInfo homeMembers];
+  v6 = [homeMembers count] != 0;
 
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -4408,7 +4408,7 @@ LABEL_11:
     v9 = v7;
     v10 = [(NSMutableArray *)usersWithAvailableVoiceProfiles count];
     v11 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID count];
-    v12 = [(SAMultiUserInfo *)self->_multiUserInfo homeMembers];
+    homeMembers2 = [(SAMultiUserInfo *)self->_multiUserInfo homeMembers];
     *buf = 136315906;
     *&buf[4] = "[ADMultiUserService _updateSAMultiUserInfo]";
     *&buf[12] = 2048;
@@ -4416,15 +4416,15 @@ LABEL_11:
     *&buf[22] = 2048;
     v41 = v11;
     v42 = 2048;
-    v43 = [v12 count];
+    v43 = [homeMembers2 count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s _usersWithAvailableVoiceProfiles: %lu, _sharedUsersBySharedUserID: %lu, multiUsersPreviousCount: %lu", buf, 0x2Au);
   }
 
   if ([(ADMultiUserService *)self _isHostingMultiUserLanguage])
   {
-    v13 = [(ADMultiUserService *)self _homeMembersForPlatform];
+    _homeMembersForPlatform = [(ADMultiUserService *)self _homeMembersForPlatform];
 
-    v4 = v13;
+    v4 = _homeMembersForPlatform;
   }
 
   else
@@ -4490,11 +4490,11 @@ LABEL_11:
       v20 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v32 = [(SAHomeMemberInfo *)self->_saUnknownUser sharedUserId];
+        sharedUserId = [(SAHomeMemberInfo *)self->_saUnknownUser sharedUserId];
         *v34 = 136315395;
         v35 = "[ADMultiUserService _updateSAMultiUserInfo]";
         v36 = 2113;
-        v37 = v32;
+        v37 = sharedUserId;
         _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%s adding _saUnknownUser: %{private}@", v34, 0x16u);
       }
 
@@ -4518,8 +4518,8 @@ LABEL_11:
     [v3 setHomeMembers:0];
   }
 
-  v22 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
-  v23 = [v22 count];
+  _inFlightVoiceProfilesByUUID = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
+  v23 = [_inFlightVoiceProfilesByUUID count];
 
   [v3 setVoiceProfilesAreInFlight:v23 != 0];
   v24 = AFSiriLogContextDaemon;
@@ -4532,9 +4532,9 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%s MultiUserInfo profiles are in-flight: %{BOOL}d", buf, 0x12u);
   }
 
-  v25 = [(SAMultiUserInfo *)self->_multiUserInfo dictionary];
-  v26 = [v3 dictionary];
-  v27 = [v25 isEqualToDictionary:v26];
+  dictionary = [(SAMultiUserInfo *)self->_multiUserInfo dictionary];
+  dictionary2 = [v3 dictionary];
+  v27 = [dictionary isEqualToDictionary:dictionary2];
 
   if ((v27 & 1) == 0)
   {
@@ -4565,7 +4565,7 @@ LABEL_11:
   }
 
   v89 = objc_alloc_init(NSMutableArray);
-  v86 = self;
+  selfCopy = self;
   primaryUser = self->_primaryUser;
   v6 = AFSiriLogContextDaemon;
   v7 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG);
@@ -4575,36 +4575,36 @@ LABEL_11:
     if (v7)
     {
       v69 = v6;
-      v70 = [(ADCommunalDeviceUser *)primaryUser companionAssistantID];
-      v71 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
-      v72 = [(ADCommunalDeviceUser *)self->_primaryUser voiceIDAllowedByUser];
-      v73 = [(ADCommunalDeviceUser *)v86->_primaryUser nonCloudSyncedUser];
+      companionAssistantID = [(ADCommunalDeviceUser *)primaryUser companionAssistantID];
+      sharedUserID = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+      voiceIDAllowedByUser = [(ADCommunalDeviceUser *)self->_primaryUser voiceIDAllowedByUser];
+      nonCloudSyncedUser = [(ADCommunalDeviceUser *)selfCopy->_primaryUser nonCloudSyncedUser];
       *buf = 136316163;
       v97 = "[ADMultiUserService _homeMembersForPlatform]";
       v98 = 2113;
-      v99 = v70;
+      v99 = companionAssistantID;
       v100 = 2113;
-      v101 = v71;
+      v101 = sharedUserID;
       v102 = 2048;
-      v103 = v72;
+      v103 = voiceIDAllowedByUser;
       v104 = 2048;
-      v105 = v73;
+      v105 = nonCloudSyncedUser;
       _os_log_debug_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEBUG, "%s _primaryUser companionAssistantID: %{private}@, sharedUserID: %{private}@, voiceIDAllowedByUser=%lu, nonCloudSyncedUser=%lu", buf, 0x34u);
 
-      primaryUser = v86->_primaryUser;
+      primaryUser = selfCopy->_primaryUser;
       p_vtable = (ADAnalyticsIdentifiersProvider + 24);
     }
 
-    v9 = [(ADCommunalDeviceUser *)primaryUser companionAssistantID];
+    companionAssistantID2 = [(ADCommunalDeviceUser *)primaryUser companionAssistantID];
 
-    if (v9)
+    if (companionAssistantID2)
     {
-      v10 = [p_vtable + 17 saHomeMemberInfo:v86->_primaryUser];
-      if (v10 && ([(ADCommunalDeviceUser *)v86->_primaryUser voiceIDAllowedByUser]|| [(ADCommunalDeviceUser *)v86->_primaryUser nonCloudSyncedUser]))
+      v10 = [p_vtable + 17 saHomeMemberInfo:selfCopy->_primaryUser];
+      if (v10 && ([(ADCommunalDeviceUser *)selfCopy->_primaryUser voiceIDAllowedByUser]|| [(ADCommunalDeviceUser *)selfCopy->_primaryUser nonCloudSyncedUser]))
       {
-        usersWithAvailableVoiceProfiles = v86->_usersWithAvailableVoiceProfiles;
-        v12 = [(ADCommunalDeviceUser *)v86->_primaryUser sharedUserID];
-        LODWORD(usersWithAvailableVoiceProfiles) = [(NSMutableArray *)usersWithAvailableVoiceProfiles containsObject:v12];
+        usersWithAvailableVoiceProfiles = selfCopy->_usersWithAvailableVoiceProfiles;
+        sharedUserID2 = [(ADCommunalDeviceUser *)selfCopy->_primaryUser sharedUserID];
+        LODWORD(usersWithAvailableVoiceProfiles) = [(NSMutableArray *)usersWithAvailableVoiceProfiles containsObject:sharedUserID2];
 
         if (usersWithAvailableVoiceProfiles)
         {
@@ -4612,59 +4612,59 @@ LABEL_11:
           v13 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
           {
-            v74 = v86->_primaryUser;
+            v74 = selfCopy->_primaryUser;
             v75 = v13;
-            v76 = [(ADCommunalDeviceUser *)v74 sharedUserID];
-            v77 = [(ADCommunalDeviceUser *)v86->_primaryUser homeUserUUID];
-            v78 = [(ADCommunalDeviceUser *)v86->_primaryUser iCloudAltDSID];
-            v79 = [(ADCommunalDeviceUser *)v86->_primaryUser ephemeralID];
+            sharedUserID3 = [(ADCommunalDeviceUser *)v74 sharedUserID];
+            homeUserUUID = [(ADCommunalDeviceUser *)selfCopy->_primaryUser homeUserUUID];
+            iCloudAltDSID = [(ADCommunalDeviceUser *)selfCopy->_primaryUser iCloudAltDSID];
+            ephemeralID = [(ADCommunalDeviceUser *)selfCopy->_primaryUser ephemeralID];
             *buf = 136316163;
             v97 = "[ADMultiUserService _homeMembersForPlatform]";
             v98 = 2113;
-            v99 = v76;
+            v99 = sharedUserID3;
             v100 = 2113;
-            v101 = v77;
+            v101 = homeUserUUID;
             v102 = 2113;
-            v103 = v78;
+            v103 = iCloudAltDSID;
             v104 = 2113;
-            v105 = v79;
+            v105 = ephemeralID;
             _os_log_debug_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEBUG, "%s Adding primaryUser with sharedUserId %{private}@ and homeUserUUID %{private}@ and iCloudAltDSID %{private}@ and ephemeralID %{private}@", buf, 0x34u);
           }
 
-          v14 = [v10 lastVisitedAceHost];
+          lastVisitedAceHost = [v10 lastVisitedAceHost];
 
-          if (!v14)
+          if (!lastVisitedAceHost)
           {
             v15 = AFSiriLogContextDaemon;
             if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
             {
-              v16 = v86->_primaryUser;
+              v16 = selfCopy->_primaryUser;
               v17 = v15;
-              v18 = [(ADCommunalDeviceUser *)v16 sharedUserID];
+              sharedUserID4 = [(ADCommunalDeviceUser *)v16 sharedUserID];
               *buf = 136315395;
               v97 = "[ADMultiUserService _homeMembersForPlatform]";
               v98 = 2113;
-              v99 = v18;
+              v99 = sharedUserID4;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s PrimaryUser %{private}@ has nil aceHost", buf, 0x16u);
             }
           }
 
-          if ([(ADMultiUserService *)v86 _isTrackingUUIDForInFlightVoiceProfile:v86->_primaryUser])
+          if ([(ADMultiUserService *)selfCopy _isTrackingUUIDForInFlightVoiceProfile:selfCopy->_primaryUser])
           {
             v19 = AFSiriLogContextDaemon;
             if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
             {
-              v20 = v86->_primaryUser;
+              v20 = selfCopy->_primaryUser;
               v21 = v19;
-              v22 = [(ADCommunalDeviceUser *)v20 homeUserUUID];
+              homeUserUUID2 = [(ADCommunalDeviceUser *)v20 homeUserUUID];
               *buf = 136315395;
               v97 = "[ADMultiUserService _homeMembersForPlatform]";
               v98 = 2113;
-              v99 = v22;
+              v99 = homeUserUUID2;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "%s HomeUserID (%{private}@) voice profile is available but it's still being tracked as in-flight. Stop tracking it", buf, 0x16u);
             }
 
-            [(ADMultiUserService *)v86 _untrackUUIDsForUser:v86->_primaryUser];
+            [(ADMultiUserService *)selfCopy _untrackUUIDsForUser:selfCopy->_primaryUser];
           }
         }
       }
@@ -4678,12 +4678,12 @@ LABEL_11:
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%s _primaryUser is nil", buf, 0xCu);
   }
 
-  v23 = v86;
+  v23 = selfCopy;
   if (AFIsATV())
   {
-    if (!v86->_primaryUser)
+    if (!selfCopy->_primaryUser)
     {
-      deviceOwner = v86->_deviceOwner;
+      deviceOwner = selfCopy->_deviceOwner;
       if (deviceOwner)
       {
         v25 = AFSiriLogContextDaemon;
@@ -4692,15 +4692,15 @@ LABEL_11:
           *buf = 136315138;
           v97 = "[ADMultiUserService _homeMembersForPlatform]";
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "%s primary User is nil but we have a device owner.", buf, 0xCu);
-          deviceOwner = v86->_deviceOwner;
+          deviceOwner = selfCopy->_deviceOwner;
         }
 
         v26 = [p_vtable + 17 saHomeMemberInfo:deviceOwner];
-        if (v26 && ([(ADCommunalDeviceUser *)v86->_deviceOwner voiceIDAllowedByUser]|| [(ADCommunalDeviceUser *)v86->_deviceOwner nonCloudSyncedUser]))
+        if (v26 && ([(ADCommunalDeviceUser *)selfCopy->_deviceOwner voiceIDAllowedByUser]|| [(ADCommunalDeviceUser *)selfCopy->_deviceOwner nonCloudSyncedUser]))
         {
-          v27 = v86->_usersWithAvailableVoiceProfiles;
-          v28 = [(ADCommunalDeviceUser *)v86->_deviceOwner sharedUserID];
-          LODWORD(v27) = [(NSMutableArray *)v27 containsObject:v28];
+          v27 = selfCopy->_usersWithAvailableVoiceProfiles;
+          sharedUserID5 = [(ADCommunalDeviceUser *)selfCopy->_deviceOwner sharedUserID];
+          LODWORD(v27) = [(NSMutableArray *)v27 containsObject:sharedUserID5];
 
           if (v27)
           {
@@ -4708,61 +4708,61 @@ LABEL_11:
             v29 = AFSiriLogContextDaemon;
             if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
             {
-              v80 = v86->_deviceOwner;
+              v80 = selfCopy->_deviceOwner;
               v81 = v29;
-              v82 = [(ADCommunalDeviceUser *)v80 sharedUserID];
-              v83 = [(ADCommunalDeviceUser *)v86->_deviceOwner homeUserUUID];
-              v84 = [(ADCommunalDeviceUser *)v86->_deviceOwner iCloudAltDSID];
+              sharedUserID6 = [(ADCommunalDeviceUser *)v80 sharedUserID];
+              homeUserUUID3 = [(ADCommunalDeviceUser *)selfCopy->_deviceOwner homeUserUUID];
+              iCloudAltDSID2 = [(ADCommunalDeviceUser *)selfCopy->_deviceOwner iCloudAltDSID];
               *buf = 136315907;
               v97 = "[ADMultiUserService _homeMembersForPlatform]";
               v98 = 2113;
-              v99 = v82;
+              v99 = sharedUserID6;
               v100 = 2113;
-              v101 = v83;
+              v101 = homeUserUUID3;
               v102 = 2113;
-              v103 = v84;
+              v103 = iCloudAltDSID2;
               _os_log_debug_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEBUG, "%s Adding device owner with sharedUserId %{private}@ and homeUserUUID %{private}@ and iCloudAltDSID %{private}@", buf, 0x2Au);
             }
 
-            v30 = [v26 lastVisitedAceHost];
+            lastVisitedAceHost2 = [v26 lastVisitedAceHost];
 
-            if (!v30)
+            if (!lastVisitedAceHost2)
             {
               v31 = AFSiriLogContextDaemon;
               if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
               {
-                v32 = v86->_deviceOwner;
+                v32 = selfCopy->_deviceOwner;
                 v33 = v31;
-                v34 = [(ADCommunalDeviceUser *)v32 sharedUserID];
+                sharedUserID7 = [(ADCommunalDeviceUser *)v32 sharedUserID];
                 *buf = 136315395;
                 v97 = "[ADMultiUserService _homeMembersForPlatform]";
                 v98 = 2113;
-                v99 = v34;
+                v99 = sharedUserID7;
                 _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "%s device owner %{private}@ has nil aceHost", buf, 0x16u);
               }
             }
 
-            if ([(ADMultiUserService *)v86 _isTrackingUUIDForInFlightVoiceProfile:v86->_deviceOwner])
+            if ([(ADMultiUserService *)selfCopy _isTrackingUUIDForInFlightVoiceProfile:selfCopy->_deviceOwner])
             {
               v35 = AFSiriLogContextDaemon;
               if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
               {
-                v36 = v86->_deviceOwner;
+                v36 = selfCopy->_deviceOwner;
                 v37 = v35;
-                v38 = [(ADCommunalDeviceUser *)v36 homeUserUUID];
+                homeUserUUID4 = [(ADCommunalDeviceUser *)v36 homeUserUUID];
                 *buf = 136315395;
                 v97 = "[ADMultiUserService _homeMembersForPlatform]";
                 v98 = 2113;
-                v99 = v38;
+                v99 = homeUserUUID4;
                 _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "%s HomeUserID (%{private}@) voice profile is available but it's still being tracked as in-flight. Stop tracking it", buf, 0x16u);
               }
 
-              [(ADMultiUserService *)v86 _untrackUUIDsForUser:v86->_deviceOwner];
+              [(ADMultiUserService *)selfCopy _untrackUUIDsForUser:selfCopy->_deviceOwner];
             }
           }
         }
 
-        v23 = v86;
+        v23 = selfCopy;
       }
     }
   }
@@ -4796,23 +4796,23 @@ LABEL_11:
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
         {
           loga = v46;
-          v59 = [v44 voiceIDAllowedByUser];
-          v60 = [v44 companionAssistantID];
-          v61 = [v44 nonCloudSyncedUser];
-          v62 = [v44 ephemeralID];
+          voiceIDAllowedByUser2 = [v44 voiceIDAllowedByUser];
+          companionAssistantID3 = [v44 companionAssistantID];
+          nonCloudSyncedUser2 = [v44 nonCloudSyncedUser];
+          ephemeralID2 = [v44 ephemeralID];
           *buf = 136316419;
           v97 = "[ADMultiUserService _homeMembersForPlatform]";
           v98 = 2113;
           v99 = v43;
           v100 = 2048;
-          v101 = v59;
-          v23 = v86;
+          v101 = voiceIDAllowedByUser2;
+          v23 = selfCopy;
           v102 = 2113;
-          v103 = v60;
+          v103 = companionAssistantID3;
           v104 = 2048;
-          v105 = v61;
+          v105 = nonCloudSyncedUser2;
           v106 = 2113;
-          v107 = v62;
+          v107 = ephemeralID2;
           _os_log_debug_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEBUG, "%s sharedUserId: %{private}@, voiceIDAllowedByUser: %lu, companionAssistantID: %{private}@, nonCloudSyncedUser: %lu, ephemeralID: %{private}@", buf, 0x3Eu);
 
           p_vtable = (ADAnalyticsIdentifiersProvider + 24);
@@ -4827,8 +4827,8 @@ LABEL_11:
           goto LABEL_68;
         }
 
-        v47 = [v44 voiceIDAllowedByUser];
-        if (!v47)
+        voiceIDAllowedByUser3 = [v44 voiceIDAllowedByUser];
+        if (!voiceIDAllowedByUser3)
         {
           if (![v44 nonCloudSyncedUser])
           {
@@ -4837,10 +4837,10 @@ LABEL_11:
 
 LABEL_54:
           v48 = v23->_usersWithAvailableVoiceProfiles;
-          v49 = [v44 sharedUserID];
-          v50 = [(NSMutableArray *)v48 containsObject:v49];
+          sharedUserID8 = [v44 sharedUserID];
+          v50 = [(NSMutableArray *)v48 containsObject:sharedUserID8];
 
-          if (v47)
+          if (voiceIDAllowedByUser3)
           {
 
             if ((v50 & 1) == 0)
@@ -4861,36 +4861,36 @@ LABEL_67:
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
           {
             log = v51;
-            v63 = [v44 sharedUserID];
-            v64 = [v44 homeUserUUID];
-            v65 = [v44 iCloudAltDSID];
-            v66 = [v44 ephemeralID];
+            sharedUserID9 = [v44 sharedUserID];
+            homeUserUUID5 = [v44 homeUserUUID];
+            iCloudAltDSID3 = [v44 iCloudAltDSID];
+            ephemeralID3 = [v44 ephemeralID];
             *buf = v85;
             v97 = "[ADMultiUserService _homeMembersForPlatform]";
             v98 = 2113;
-            v99 = v63;
+            v99 = sharedUserID9;
             v100 = 2113;
-            v101 = v64;
+            v101 = homeUserUUID5;
             v102 = 2113;
-            v103 = v65;
+            v103 = iCloudAltDSID3;
             v104 = 2113;
-            v105 = v66;
+            v105 = ephemeralID3;
             _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "%s Adding user with sharedUserId %{private}@ and homeUserUUID %{private}@ and iCloudAltDSID %{private}@ and ephemeralID %{private}@", buf, 0x34u);
           }
 
-          v52 = [v45 lastVisitedAceHost];
+          lastVisitedAceHost3 = [v45 lastVisitedAceHost];
 
-          if (!v52)
+          if (!lastVisitedAceHost3)
           {
             v53 = AFSiriLogContextDaemon;
             if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
             {
               v54 = v53;
-              v55 = [v44 sharedUserID];
+              sharedUserID10 = [v44 sharedUserID];
               *buf = 136315395;
               v97 = "[ADMultiUserService _homeMembersForPlatform]";
               v98 = 2113;
-              v99 = v55;
+              v99 = sharedUserID10;
               _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "%s SharedUser %{private}@ has nil aceHost", buf, 0x16u);
             }
           }
@@ -4901,11 +4901,11 @@ LABEL_67:
             if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
             {
               v57 = v56;
-              v58 = [v44 homeUserUUID];
+              homeUserUUID6 = [v44 homeUserUUID];
               *buf = 136315395;
               v97 = "[ADMultiUserService _homeMembersForPlatform]";
               v98 = 2113;
-              v99 = v58;
+              v99 = homeUserUUID6;
               _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_INFO, "%s removed HomeUserID (%{private}@) voice profile is available but it's still being tracked as in-flight. Stop tracking it", buf, 0x16u);
             }
 
@@ -4915,8 +4915,8 @@ LABEL_67:
           goto LABEL_67;
         }
 
-        v2 = [v44 companionAssistantID];
-        if (v2 || ([v44 nonCloudSyncedUser] & 1) != 0)
+        companionAssistantID4 = [v44 companionAssistantID];
+        if (companionAssistantID4 || ([v44 nonCloudSyncedUser] & 1) != 0)
         {
           goto LABEL_54;
         }
@@ -4937,11 +4937,11 @@ LABEL_68:
   return v89;
 }
 
-- (void)_describeSAMultiUserInfo:(id)a3
+- (void)_describeSAMultiUserInfo:(id)info
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 count])
+  infoCopy = info;
+  v4 = infoCopy;
+  if (!infoCopy || ![infoCopy count])
   {
     v5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -4976,17 +4976,17 @@ LABEL_68:
         {
           v12 = *(*(&v17 + 1) + 8 * i);
           v13 = v11;
-          v14 = [v12 enrollmentName];
-          v15 = [v12 sharedUserId];
-          v16 = [v12 ephemeralUserId];
+          enrollmentName = [v12 enrollmentName];
+          sharedUserId = [v12 sharedUserId];
+          ephemeralUserId = [v12 ephemeralUserId];
           *buf = 136315907;
           v22 = "[ADMultiUserService _describeSAMultiUserInfo:]";
           v23 = 2113;
-          v24 = v14;
+          v24 = enrollmentName;
           v25 = 2113;
-          v26 = v15;
+          v26 = sharedUserId;
           v27 = 2113;
-          v28 = v16;
+          v28 = ephemeralUserId;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s homeMember enrollmentName: %{private}@ sharedUserId: %{private}@, ephemeralId: %{private}@", buf, 0x2Au);
         }
       }
@@ -5001,11 +5001,11 @@ LABEL_68:
 - (unint64_t)countUsersWithMatchingSiriLanguage
 {
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 languageCode];
+  languageCode = [v3 languageCode];
 
   if (self->_primaryUser)
   {
-    v5 = [v4 isEqualToString:self->_primaryUserSiriLanguage];
+    v5 = [languageCode isEqualToString:self->_primaryUserSiriLanguage];
     v6 = AFSiriLogContextDaemon;
     v7 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG);
     if (v5)
@@ -5014,13 +5014,13 @@ LABEL_68:
       {
         primaryUser = self->_primaryUser;
         v28 = v6;
-        v29 = [(ADCommunalDeviceUser *)primaryUser sharedUserID];
-        v30 = [(ADCommunalDeviceUser *)self->_primaryUser settings];
-        v31 = [v30 objectForKey:SAHomeMemberSettingsPreferredLanguagePListKey];
+        sharedUserID = [(ADCommunalDeviceUser *)primaryUser sharedUserID];
+        settings = [(ADCommunalDeviceUser *)self->_primaryUser settings];
+        v31 = [settings objectForKey:SAHomeMemberSettingsPreferredLanguagePListKey];
         *buf = 136315906;
         v52 = "[ADMultiUserService countUsersWithMatchingSiriLanguage]";
         v53 = 2112;
-        v54 = v29;
+        v54 = sharedUserID;
         v55 = 2112;
         v56 = v31;
         v57 = 2048;
@@ -5042,9 +5042,9 @@ LABEL_68:
       primaryUserSiriLanguage = self->_primaryUserSiriLanguage;
       v33 = self->_primaryUser;
       v34 = v6;
-      v35 = [(ADCommunalDeviceUser *)v33 settings];
-      v36 = [v35 objectForKey:SAHomeMemberSettingsPreferredLanguagePListKey];
-      v37 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+      settings2 = [(ADCommunalDeviceUser *)v33 settings];
+      v36 = [settings2 objectForKey:SAHomeMemberSettingsPreferredLanguagePListKey];
+      sharedUserID2 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
       *buf = 136316162;
       v52 = "[ADMultiUserService countUsersWithMatchingSiriLanguage]";
       v53 = 2112;
@@ -5052,7 +5052,7 @@ LABEL_68:
       v55 = 2112;
       v56 = v36;
       v57 = 2112;
-      v58 = v37;
+      v58 = sharedUserID2;
       v59 = 2048;
       v60 = 0;
       _os_log_debug_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEBUG, "%s Primary user's Siri language (%@) doesn't match HomePod's. sharedUserId: %@, device language: %@, current count: %lu", buf, 0x34u);
@@ -5089,10 +5089,10 @@ LABEL_9:
 
       v14 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKeyedSubscript:*(*(&v46 + 1) + 8 * v13), v38];
       sharedUsersSiriLanguageBySharedUserID = self->_sharedUsersSiriLanguageBySharedUserID;
-      v16 = [v14 sharedUserID];
-      v17 = [(NSMutableDictionary *)sharedUsersSiriLanguageBySharedUserID objectForKeyedSubscript:v16];
+      sharedUserID3 = [v14 sharedUserID];
+      v17 = [(NSMutableDictionary *)sharedUsersSiriLanguageBySharedUserID objectForKeyedSubscript:sharedUserID3];
 
-      if ([v4 isEqualToString:v17])
+      if ([languageCode isEqualToString:v17])
       {
         ++v8;
         v18 = AFSiriLogContextDaemon;
@@ -5102,13 +5102,13 @@ LABEL_9:
         }
 
         log = v18;
-        v40 = [v14 sharedUserID];
-        v41 = [v14 settings];
-        v39 = [v41 objectForKey:v44];
+        sharedUserID4 = [v14 sharedUserID];
+        settings3 = [v14 settings];
+        v39 = [settings3 objectForKey:v44];
         *buf = 136315906;
         v52 = "[ADMultiUserService countUsersWithMatchingSiriLanguage]";
         v53 = 2112;
-        v54 = v40;
+        v54 = sharedUserID4;
         v55 = 2112;
         v56 = v39;
         v57 = 2048;
@@ -5128,15 +5128,15 @@ LABEL_9:
         }
 
         loga = v23;
-        v40 = [v14 sharedUserID];
-        v41 = [v14 settings];
-        v39 = [v41 objectForKey:v44];
+        sharedUserID4 = [v14 sharedUserID];
+        settings3 = [v14 settings];
+        v39 = [settings3 objectForKey:v44];
         *buf = v38;
         v52 = "[ADMultiUserService countUsersWithMatchingSiriLanguage]";
         v53 = 2112;
         v54 = v17;
         v55 = 2112;
-        v56 = v40;
+        v56 = sharedUserID4;
         v57 = 2112;
         v58 = v39;
         v59 = 2048;
@@ -5167,7 +5167,7 @@ LABEL_23:
     *buf = 136315650;
     v52 = "[ADMultiUserService countUsersWithMatchingSiriLanguage]";
     v53 = 2112;
-    v54 = v4;
+    v54 = languageCode;
     v55 = 2048;
     v56 = v8;
     _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "%s Total users with matching Siri languages to HomePod's (%@): %lu", buf, 0x20u);
@@ -5189,11 +5189,11 @@ LABEL_23:
       if (v6)
       {
         v28 = v5;
-        v29 = [primaryUser sharedUserID];
+        sharedUserID = [primaryUser sharedUserID];
         *buf = 136315650;
         v38 = "[ADMultiUserService countUsersWithLocationServicesEnabled]";
         v39 = 2112;
-        v40 = v29;
+        v40 = sharedUserID;
         v41 = 2048;
         primaryUser = 1;
         v42 = 1;
@@ -5211,11 +5211,11 @@ LABEL_23:
       if (v6)
       {
         v30 = v5;
-        v31 = [primaryUser sharedUserID];
+        sharedUserID2 = [primaryUser sharedUserID];
         *buf = 136315650;
         v38 = "[ADMultiUserService countUsersWithLocationServicesEnabled]";
         v39 = 2112;
-        v40 = v31;
+        v40 = sharedUserID2;
         v41 = 2048;
         v42 = 0;
         _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "%s Primary user's location sharing disabled (not meDevice). sharedUserId: %@, current count: %lu", buf, 0x20u);
@@ -5251,8 +5251,8 @@ LABEL_23:
         v11 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:*(*(&v33 + 1) + 8 * i), v32];
 
         sharedUsersMeDeviceBySharedUserID = self->_sharedUsersMeDeviceBySharedUserID;
-        v16 = [v11 sharedUserID];
-        v17 = [(NSMutableDictionary *)sharedUsersMeDeviceBySharedUserID objectForKey:v16];
+        sharedUserID3 = [v11 sharedUserID];
+        v17 = [(NSMutableDictionary *)sharedUsersMeDeviceBySharedUserID objectForKey:sharedUserID3];
 
         if (v17)
         {
@@ -5267,13 +5267,13 @@ LABEL_23:
             }
 
             v19 = v24;
-            v20 = [v11 sharedUserID];
+            sharedUserID4 = [v11 sharedUserID];
             *buf = v32;
             v38 = "[ADMultiUserService countUsersWithLocationServicesEnabled]";
             v39 = 2112;
             v40 = v17;
             v41 = 2112;
-            v42 = v20;
+            v42 = sharedUserID4;
             v43 = 2048;
             v44 = primaryUser;
             _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%s Secondary user's meDevice enablement field is corrupted. Counting as having a meDevice. value: %@, sharedUserId: %@, current count: %lu", buf, 0x2Au);
@@ -5290,11 +5290,11 @@ LABEL_23:
             }
 
             v19 = v18;
-            v20 = [v11 sharedUserID];
+            sharedUserID4 = [v11 sharedUserID];
             *buf = 136315650;
             v38 = "[ADMultiUserService countUsersWithLocationServicesEnabled]";
             v39 = 2112;
-            v40 = v20;
+            v40 = sharedUserID4;
             v41 = 2048;
             v42 = primaryUser;
             v21 = v19;
@@ -5310,11 +5310,11 @@ LABEL_23:
             }
 
             v19 = v25;
-            v20 = [v11 sharedUserID];
+            sharedUserID4 = [v11 sharedUserID];
             *buf = 136315650;
             v38 = "[ADMultiUserService countUsersWithLocationServicesEnabled]";
             v39 = 2112;
-            v40 = v20;
+            v40 = sharedUserID4;
             v41 = 2048;
             v42 = primaryUser;
             v21 = v19;
@@ -5332,11 +5332,11 @@ LABEL_23:
           }
 
           v19 = v23;
-          v20 = [v11 sharedUserID];
+          sharedUserID4 = [v11 sharedUserID];
           *buf = 136315650;
           v38 = "[ADMultiUserService countUsersWithLocationServicesEnabled]";
           v39 = 2112;
-          v40 = v20;
+          v40 = sharedUserID4;
           v41 = 2048;
           v42 = primaryUser;
           v21 = v19;
@@ -5376,20 +5376,20 @@ LABEL_26:
   primaryUser = self->_primaryUser;
   if (primaryUser)
   {
-    v4 = [(ADCommunalDeviceUser *)primaryUser personalDomainsIsEnabled];
+    personalDomainsIsEnabled = [(ADCommunalDeviceUser *)primaryUser personalDomainsIsEnabled];
     v5 = AFSiriLogContextDaemon;
     v6 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG);
-    if (v4)
+    if (personalDomainsIsEnabled)
     {
       if (v6)
       {
         v25 = self->_primaryUser;
         v26 = v5;
-        v27 = [(ADCommunalDeviceUser *)v25 sharedUserID];
+        sharedUserID = [(ADCommunalDeviceUser *)v25 sharedUserID];
         *buf = 136315650;
         v38 = "[ADMultiUserService countUsersWithPersonalRequestsEnabled]";
         v39 = 2112;
-        v40 = v27;
+        v40 = sharedUserID;
         v41 = 2048;
         v7 = 1;
         v42 = 1;
@@ -5408,11 +5408,11 @@ LABEL_26:
     {
       v28 = self->_primaryUser;
       v29 = v5;
-      v30 = [(ADCommunalDeviceUser *)v28 sharedUserID];
+      sharedUserID2 = [(ADCommunalDeviceUser *)v28 sharedUserID];
       *buf = 136315650;
       v38 = "[ADMultiUserService countUsersWithPersonalRequestsEnabled]";
       v39 = 2112;
-      v40 = v30;
+      v40 = sharedUserID2;
       v41 = 2048;
       v42 = 0;
       _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "%s Primary user's Siri personal requests disabled. sharedUserId: %@, current count: %lu", buf, 0x20u);
@@ -5460,11 +5460,11 @@ LABEL_8:
         }
 
         v17 = v16;
-        v18 = [v12 sharedUserID];
+        sharedUserID3 = [v12 sharedUserID];
         *buf = v31;
         v38 = "[ADMultiUserService countUsersWithPersonalRequestsEnabled]";
         v39 = 2112;
-        v40 = v18;
+        v40 = sharedUserID3;
         v41 = 2048;
         v42 = v7;
         v19 = v17;
@@ -5480,11 +5480,11 @@ LABEL_8:
         }
 
         v17 = v21;
-        v18 = [v12 sharedUserID];
+        sharedUserID3 = [v12 sharedUserID];
         *buf = v31;
         v38 = "[ADMultiUserService countUsersWithPersonalRequestsEnabled]";
         v39 = 2112;
-        v40 = v18;
+        v40 = sharedUserID3;
         v41 = 2048;
         v42 = v7;
         v19 = v17;
@@ -5575,8 +5575,8 @@ LABEL_23:
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s Checking if primary user has enabled cloudsync.", buf, 0xCu);
   }
 
-  v8 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
-  v9 = [(ADMultiUserService *)self addIfSiriCloudSyncEnabledForUser:v8];
+  sharedUserID = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+  v9 = [(ADMultiUserService *)self addIfSiriCloudSyncEnabledForUser:sharedUserID];
 
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -5614,8 +5614,8 @@ LABEL_23:
 
         if (v15)
         {
-          v20 = [v15 sharedUserID];
-          v9 += [(ADMultiUserService *)self addIfSiriCloudSyncEnabledForUser:v20];
+          sharedUserID2 = [v15 sharedUserID];
+          v9 += [(ADMultiUserService *)self addIfSiriCloudSyncEnabledForUser:sharedUserID2];
         }
 
         else
@@ -5651,42 +5651,42 @@ LABEL_23:
   return v9;
 }
 
-- (unint64_t)addIfSiriCloudSyncEnabledForUser:(id)a3
+- (unint64_t)addIfSiriCloudSyncEnabledForUser:(id)user
 {
-  v4 = a3;
-  v5 = sub_10001A3B0(v4);
-  v6 = [(NSMutableDictionary *)self->_sharedUsersSiriCloudSyncBySharedUserID objectForKey:v4];
+  userCopy = user;
+  v5 = sub_10001A3B0(userCopy);
+  v6 = [(NSMutableDictionary *)self->_sharedUsersSiriCloudSyncBySharedUserID objectForKey:userCopy];
 
   if (v6)
   {
-    v7 = [(NSMutableDictionary *)self->_sharedUsersSiriCloudSyncBySharedUserID objectForKey:v4];
-    v8 = [v7 BOOLValue];
+    v7 = [(NSMutableDictionary *)self->_sharedUsersSiriCloudSyncBySharedUserID objectForKey:userCopy];
+    bOOLValue = [v7 BOOLValue];
 
     if (v5)
     {
 LABEL_3:
-      v9 = [v5 isSiriCloudSyncEnabled];
+      isSiriCloudSyncEnabled = [v5 isSiriCloudSyncEnabled];
       v10 = AFSiriLogContextDaemon;
       v11 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG);
-      if (v9)
+      if (isSiriCloudSyncEnabled)
       {
         if (v11)
         {
           v17 = 136315906;
           v18 = "[ADMultiUserService addIfSiriCloudSyncEnabledForUser:]";
           v19 = 1024;
-          v20 = v8;
+          v20 = bOOLValue;
           v21 = 2112;
-          v22 = v4;
+          v22 = userCopy;
           v23 = 2048;
-          v8 = 1;
+          bOOLValue = 1;
           v24 = 1;
           _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s PeerInfo found - user's Siri cloud sync is enabled. oldCloudSyncEnabled: %d, sharedUserId: %@, current count: %lu", &v17, 0x26u);
         }
 
         else
         {
-          v8 = 1;
+          bOOLValue = 1;
         }
       }
 
@@ -5697,20 +5697,20 @@ LABEL_3:
           v17 = 136315906;
           v18 = "[ADMultiUserService addIfSiriCloudSyncEnabledForUser:]";
           v19 = 1024;
-          v20 = v8;
+          v20 = bOOLValue;
           v21 = 2112;
-          v22 = v4;
+          v22 = userCopy;
           v23 = 2048;
           v24 = 0;
           _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s PeerInfo found - user's Siri cloud sync is disabled. oldCloudSyncEnabled: %d, sharedUserId: %@, current count: %lu", &v17, 0x26u);
         }
 
-        v8 = 0;
+        bOOLValue = 0;
       }
 
       sharedUsersSiriCloudSyncBySharedUserID = self->_sharedUsersSiriCloudSyncBySharedUserID;
       v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 isSiriCloudSyncEnabled]);
-      [(NSMutableDictionary *)sharedUsersSiriCloudSyncBySharedUserID setObject:v15 forKey:v4];
+      [(NSMutableDictionary *)sharedUsersSiriCloudSyncBySharedUserID setObject:v15 forKey:userCopy];
 
       goto LABEL_17;
     }
@@ -5726,7 +5726,7 @@ LABEL_3:
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s User's oldCloudSyncEnabled was not found. Defaulting to YES.", &v17, 0xCu);
     }
 
-    v8 = 1;
+    bOOLValue = 1;
     if (v5)
     {
       goto LABEL_3;
@@ -5747,17 +5747,17 @@ LABEL_3:
     v17 = 136315906;
     v18 = "[ADMultiUserService addIfSiriCloudSyncEnabledForUser:]";
     v19 = 1024;
-    v20 = v8;
+    v20 = bOOLValue;
     v21 = 2112;
-    v22 = v4;
+    v22 = userCopy;
     v23 = 2048;
-    v24 = v8;
+    v24 = bOOLValue;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s oldCloudSyncEnabled:%d sharedUserId: %@, current count: %lu", &v17, 0x26u);
   }
 
 LABEL_17:
 
-  return v8;
+  return bOOLValue;
 }
 
 - (unint64_t)countVoiceProfiles
@@ -5867,15 +5867,15 @@ LABEL_17:
       }
 
       v19 = *(*(&v32 + 1) + 8 * i);
-      v20 = [v19 appDomain];
-      if ([v20 isEqualToString:v16])
+      appDomain = [v19 appDomain];
+      if ([appDomain isEqualToString:v16])
       {
       }
 
       else
       {
-        v21 = [v19 appDomain];
-        v22 = [v21 isEqualToString:v17];
+        appDomain2 = [v19 appDomain];
+        v22 = [appDomain2 isEqualToString:v17];
 
         if (!v22)
         {
@@ -5883,11 +5883,11 @@ LABEL_17:
         }
       }
 
-      v23 = [v19 sharedSiriId];
-      if (v23 && ([(NSMutableArray *)self->_usersWithAvailableVoiceProfiles containsObject:v23]& 1) == 0)
+      sharedSiriId = [v19 sharedSiriId];
+      if (sharedSiriId && ([(NSMutableArray *)self->_usersWithAvailableVoiceProfiles containsObject:sharedSiriId]& 1) == 0)
       {
-        [(NSMutableArray *)self->_usersWithAvailableVoiceProfiles addObject:v23];
-        v24 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:v23];
+        [(NSMutableArray *)self->_usersWithAvailableVoiceProfiles addObject:sharedSiriId];
+        v24 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:sharedSiriId];
         [(ADMultiUserService *)self _untrackUUIDsForUser:v24];
 
         v30 = 1;
@@ -5931,29 +5931,29 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Untracking all UUIDs for in-flight voice profiles. Total profiles in-flight was: %lu", &v7, 0x16u);
   }
 
-  v6 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
-  [v6 removeAllObjects];
+  _inFlightVoiceProfilesByUUID = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
+  [_inFlightVoiceProfilesByUUID removeAllObjects];
 }
 
-- (BOOL)_isTrackingUUIDForInFlightVoiceProfile:(id)a3
+- (BOOL)_isTrackingUUIDForInFlightVoiceProfile:(id)profile
 {
-  v4 = a3;
-  if (v4)
+  profileCopy = profile;
+  if (profileCopy)
   {
-    v5 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
-    v6 = [v4 homeUserUUID];
-    v7 = [v5 containsObject:v6];
+    _inFlightVoiceProfilesByUUID = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
+    homeUserUUID = [profileCopy homeUserUUID];
+    v7 = [_inFlightVoiceProfilesByUUID containsObject:homeUserUUID];
 
-    if (v7 & 1) != 0 || (-[ADMultiUserService _inFlightVoiceProfilesByUUID](self, "_inFlightVoiceProfilesByUUID"), v8 = objc_claimAutoreleasedReturnValue(), [v4 sharedUserID], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "containsObject:", v9), v9, v8, (v10))
+    if (v7 & 1) != 0 || (-[ADMultiUserService _inFlightVoiceProfilesByUUID](self, "_inFlightVoiceProfilesByUUID"), v8 = objc_claimAutoreleasedReturnValue(), [profileCopy sharedUserID], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "containsObject:", v9), v9, v8, (v10))
     {
       v11 = 1;
     }
 
     else
     {
-      v12 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
-      v13 = [v4 iCloudAltDSID];
-      v11 = [v12 containsObject:v13];
+      _inFlightVoiceProfilesByUUID2 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
+      iCloudAltDSID = [profileCopy iCloudAltDSID];
+      v11 = [_inFlightVoiceProfilesByUUID2 containsObject:iCloudAltDSID];
     }
   }
 
@@ -5965,32 +5965,32 @@ LABEL_24:
   return v11;
 }
 
-- (void)_untrackUUIDsForUser:(id)a3
+- (void)_untrackUUIDsForUser:(id)user
 {
-  v4 = a3;
-  v5 = [v4 homeUserUUID];
-  [(ADMultiUserService *)self _untrackHomeUserUUIDForInFlightVoiceProfile:v5];
+  userCopy = user;
+  homeUserUUID = [userCopy homeUserUUID];
+  [(ADMultiUserService *)self _untrackHomeUserUUIDForInFlightVoiceProfile:homeUserUUID];
 
-  v6 = [v4 sharedUserID];
-  [(ADMultiUserService *)self _untrackHomeUserUUIDForInFlightVoiceProfile:v6];
+  sharedUserID = [userCopy sharedUserID];
+  [(ADMultiUserService *)self _untrackHomeUserUUIDForInFlightVoiceProfile:sharedUserID];
 
-  v7 = [v4 iCloudAltDSID];
+  iCloudAltDSID = [userCopy iCloudAltDSID];
 
-  [(ADMultiUserService *)self _untrackHomeUserUUIDForInFlightVoiceProfile:v7];
+  [(ADMultiUserService *)self _untrackHomeUserUUIDForInFlightVoiceProfile:iCloudAltDSID];
 }
 
-- (void)_untrackHomeUserUUIDForInFlightVoiceProfile:(id)a3
+- (void)_untrackHomeUserUUIDForInFlightVoiceProfile:(id)profile
 {
-  v4 = a3;
-  if (v4)
+  profileCopy = profile;
+  if (profileCopy)
   {
-    v5 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
-    v6 = [v5 containsObject:v4];
+    _inFlightVoiceProfilesByUUID = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
+    v6 = [_inFlightVoiceProfilesByUUID containsObject:profileCopy];
 
     if (v6)
     {
-      v7 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
-      [v7 removeObject:v4];
+      _inFlightVoiceProfilesByUUID2 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
+      [_inFlightVoiceProfilesByUUID2 removeObject:profileCopy];
 
       v8 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -6000,7 +6000,7 @@ LABEL_24:
         v11 = 136315651;
         v12 = "[ADMultiUserService _untrackHomeUserUUIDForInFlightVoiceProfile:]";
         v13 = 2113;
-        v14 = v4;
+        v14 = profileCopy;
         v15 = 2048;
         v16 = [(NSMutableSet *)inFlightVoiceProfilesByUUID count];
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Untracking voice profile in-flight for %{private}@. Total profiles in-flight: %lu", &v11, 0x20u);
@@ -6009,18 +6009,18 @@ LABEL_24:
   }
 }
 
-- (void)_trackHomeUserUUIDForInFlightVoiceProfile:(id)a3
+- (void)_trackHomeUserUUIDForInFlightVoiceProfile:(id)profile
 {
-  v4 = a3;
-  if (v4)
+  profileCopy = profile;
+  if (profileCopy)
   {
-    v5 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
-    v6 = [v5 containsObject:v4];
+    _inFlightVoiceProfilesByUUID = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
+    v6 = [_inFlightVoiceProfilesByUUID containsObject:profileCopy];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
-      [v7 addObject:v4];
+      _inFlightVoiceProfilesByUUID2 = [(ADMultiUserService *)self _inFlightVoiceProfilesByUUID];
+      [_inFlightVoiceProfilesByUUID2 addObject:profileCopy];
 
       v8 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -6030,7 +6030,7 @@ LABEL_24:
         v11 = 136315651;
         v12 = "[ADMultiUserService _trackHomeUserUUIDForInFlightVoiceProfile:]";
         v13 = 2113;
-        v14 = v4;
+        v14 = profileCopy;
         v15 = 2048;
         v16 = [(NSMutableSet *)inFlightVoiceProfilesByUUID count];
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Tracking voice profile in-flight for %{private}@. Total profiles in-flight: %lu", &v11, 0x20u);
@@ -6056,10 +6056,10 @@ LABEL_24:
 
 - (id)getDeviceOwnerSharedUserId
 {
-  v2 = [(ADMultiUserService *)self deviceOwner];
-  v3 = [v2 sharedUserID];
+  deviceOwner = [(ADMultiUserService *)self deviceOwner];
+  sharedUserID = [deviceOwner sharedUserID];
 
-  return v3;
+  return sharedUserID;
 }
 
 - (BOOL)_isCurrentLanguageMultiUserCompatible
@@ -6090,9 +6090,9 @@ LABEL_24:
   return v5;
 }
 
-- (void)triggerVoiceProfileUploadWithCompletion:(id)a3 completion:(id)a4
+- (void)triggerVoiceProfileUploadWithCompletion:(id)completion completion:(id)a4
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = a4;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -6100,7 +6100,7 @@ LABEL_24:
     v9 = 136315394;
     v10 = "[ADMultiUserService triggerVoiceProfileUploadWithCompletion:completion:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = completionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s sharedUserid = %@", &v9, 0x16u);
   }
 
@@ -6111,10 +6111,10 @@ LABEL_24:
   }
 }
 
-- (void)downloadVoiceProfileForiCloudAltDSID:(id)a3 completion:(id)a4
+- (void)downloadVoiceProfileForiCloudAltDSID:(id)d completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -6124,15 +6124,15 @@ LABEL_24:
   }
 
   v8 = [AFError errorWithCode:13];
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (void)_forceCloudSyncedUserDownload:(id)a3
+- (void)_forceCloudSyncedUserDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -6143,13 +6143,13 @@ LABEL_24:
 
   if ([(ADMultiUserService *)self _isHostingMultiUserLanguage])
   {
-    v6 = [(ADMultiUserService *)self getCloudKitManager];
+    getCloudKitManager = [(ADMultiUserService *)self getCloudKitManager];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1002B5548;
     v8[3] = &unk_10051D2F0;
-    v9 = v4;
-    [v6 forceMultiUserSync:0 download:1 activity:0 completion:v8];
+    v9 = downloadCopy;
+    [getCloudKitManager forceMultiUserSync:0 download:1 activity:0 completion:v8];
   }
 
   else
@@ -6162,9 +6162,9 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Current Language is not supported for Multiuser. Skipping _forceCloudSyncedUserDownload!", buf, 0xCu);
     }
 
-    if (v4)
+    if (downloadCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(downloadCopy + 2))(downloadCopy, 0);
     }
   }
 }
@@ -6219,8 +6219,8 @@ LABEL_24:
   primaryUser = self->_primaryUser;
   if (primaryUser)
   {
-    v11 = [(ADCommunalDeviceUser *)primaryUser sharedUserID];
-    [(ADMultiUserService *)self _removeVoiceProfileIfNeeded:v11 forLanguageCode:0];
+    sharedUserID = [(ADCommunalDeviceUser *)primaryUser sharedUserID];
+    [(ADMultiUserService *)self _removeVoiceProfileIfNeeded:sharedUserID forLanguageCode:0];
 
     v12 = self->_primaryUser;
   }
@@ -6254,8 +6254,8 @@ LABEL_24:
   primaryUser = self->_primaryUser;
   if (primaryUser)
   {
-    v5 = [(ADCommunalDeviceUser *)primaryUser sharedUserID];
-    [(ADMultiUserService *)self _removeVoiceProfileIfNeeded:v5 forLanguageCode:0];
+    sharedUserID = [(ADCommunalDeviceUser *)primaryUser sharedUserID];
+    [(ADMultiUserService *)self _removeVoiceProfileIfNeeded:sharedUserID forLanguageCode:0];
   }
 
   v6 = +[ADPreferences sharedPreferences];
@@ -6308,7 +6308,7 @@ LABEL_24:
     while (v3);
   }
 
-  v10 = self;
+  selfCopy3 = self;
   if (obj)
   {
     v11 = [[ADCommunalDeviceUser alloc] initWithDictionary:obj attribute:0];
@@ -6320,25 +6320,25 @@ LABEL_24:
     v13 = +[ADAnalyticsIdentifiersProvider sharedInstance];
     [v13 addObserver:self foriCloudAltDSId:0];
 
-    v14 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+    homeUserUUID = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
 
-    if (v14)
+    if (homeUserUUID)
     {
-      v15 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
+      homeUserUUID2 = [(ADCommunalDeviceUser *)self->_primaryUser homeUserUUID];
 LABEL_13:
-      v16 = v15;
-      [(ADMultiUserService *)self _trackHomeUserUUIDForInFlightVoiceProfile:v15];
+      v16 = homeUserUUID2;
+      [(ADMultiUserService *)self _trackHomeUserUUIDForInFlightVoiceProfile:homeUserUUID2];
 
       goto LABEL_17;
     }
 
     if (AFIsATV())
     {
-      v17 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+      sharedUserID = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
 
-      if (v17)
+      if (sharedUserID)
       {
-        v15 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+        homeUserUUID2 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
         goto LABEL_13;
       }
     }
@@ -6347,12 +6347,12 @@ LABEL_13:
 LABEL_17:
   if (!self->_deviceOwner)
   {
-    v18 = [(ADPreferences *)self->_adPreferences deviceOwner];
+    deviceOwner = [(ADPreferences *)self->_adPreferences deviceOwner];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v19 = [v18 countByEnumeratingWithState:&v55 objects:v72 count:16];
+    v19 = [deviceOwner countByEnumeratingWithState:&v55 objects:v72 count:16];
     if (v19)
     {
       v20 = v19;
@@ -6363,7 +6363,7 @@ LABEL_17:
         {
           if (*v56 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(deviceOwner);
           }
 
           v23 = AFSiriLogContextDaemon;
@@ -6371,7 +6371,7 @@ LABEL_17:
           {
             v24 = *(*(&v55 + 1) + 8 * j);
             v25 = v23;
-            v26 = [v18 valueForKey:v24];
+            v26 = [deviceOwner valueForKey:v24];
             *buf = 136315651;
             v64 = "[ADMultiUserService _loadCloudSyncedUsersFromCache]";
             v65 = 2112;
@@ -6382,16 +6382,16 @@ LABEL_17:
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v55 objects:v72 count:16];
+        v20 = [deviceOwner countByEnumeratingWithState:&v55 objects:v72 count:16];
       }
 
       while (v20);
     }
 
-    v10 = self;
-    if (v18)
+    selfCopy3 = self;
+    if (deviceOwner)
     {
-      v27 = [[ADCommunalDeviceUser alloc] initWithDictionary:v18 attribute:0];
+      v27 = [[ADCommunalDeviceUser alloc] initWithDictionary:deviceOwner attribute:0];
       deviceOwner = self->_deviceOwner;
       self->_deviceOwner = v27;
 
@@ -6399,36 +6399,36 @@ LABEL_17:
     }
   }
 
-  v29 = [(ADPreferences *)v10->_adPreferences multiUserSharedUsers];
-  if (v29)
+  multiUserSharedUsers = [(ADPreferences *)selfCopy3->_adPreferences multiUserSharedUsers];
+  if (multiUserSharedUsers)
   {
-    if (!v10->_sharedUsersBySharedUserID)
+    if (!selfCopy3->_sharedUsersBySharedUserID)
     {
       v30 = objc_alloc_init(NSMutableDictionary);
-      sharedUsersBySharedUserID = v10->_sharedUsersBySharedUserID;
-      v10->_sharedUsersBySharedUserID = v30;
+      sharedUsersBySharedUserID = selfCopy3->_sharedUsersBySharedUserID;
+      selfCopy3->_sharedUsersBySharedUserID = v30;
     }
 
-    if (!v10->_sharedUsersByHomeUserUUID)
+    if (!selfCopy3->_sharedUsersByHomeUserUUID)
     {
       v32 = objc_alloc_init(NSMutableDictionary);
-      sharedUsersByHomeUserUUID = v10->_sharedUsersByHomeUserUUID;
-      v10->_sharedUsersByHomeUserUUID = v32;
+      sharedUsersByHomeUserUUID = selfCopy3->_sharedUsersByHomeUserUUID;
+      selfCopy3->_sharedUsersByHomeUserUUID = v32;
     }
 
-    if (!v10->_sharedUsersByiCloudAltDSID)
+    if (!selfCopy3->_sharedUsersByiCloudAltDSID)
     {
       v34 = objc_alloc_init(NSMutableDictionary);
-      sharedUsersByiCloudAltDSID = v10->_sharedUsersByiCloudAltDSID;
-      v10->_sharedUsersByiCloudAltDSID = v34;
+      sharedUsersByiCloudAltDSID = selfCopy3->_sharedUsersByiCloudAltDSID;
+      selfCopy3->_sharedUsersByiCloudAltDSID = v34;
     }
 
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v48 = v29;
-    v36 = v29;
+    v48 = multiUserSharedUsers;
+    v36 = multiUserSharedUsers;
     v37 = [v36 countByEnumeratingWithState:&v51 objects:v71 count:16];
     if (v37)
     {
@@ -6444,20 +6444,20 @@ LABEL_17:
           }
 
           v41 = [[ADCommunalDeviceUser alloc] initWithDictionary:*(*(&v51 + 1) + 8 * k) attribute:1];
-          v42 = [(ADCommunalDeviceUser *)v41 sharedUserID];
-          v43 = [(ADCommunalDeviceUser *)v41 homeUserUUID];
-          v44 = [(ADCommunalDeviceUser *)v41 iCloudAltDSID];
+          sharedUserID2 = [(ADCommunalDeviceUser *)v41 sharedUserID];
+          homeUserUUID3 = [(ADCommunalDeviceUser *)v41 homeUserUUID];
+          iCloudAltDSID = [(ADCommunalDeviceUser *)v41 iCloudAltDSID];
           v45 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
           {
             *buf = 136315907;
             v64 = "[ADMultiUserService _loadCloudSyncedUsersFromCache]";
             v65 = 2113;
-            v66 = v42;
+            v66 = sharedUserID2;
             v67 = 2113;
-            v68 = v43;
+            v68 = homeUserUUID3;
             v69 = 2113;
-            v70 = v44;
+            v70 = iCloudAltDSID;
             _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "%s sharedUser = %{private}@, homeUserUUID = %{private}@, iCloudAltDSID = %{private}@", buf, 0x2Au);
           }
 
@@ -6470,8 +6470,8 @@ LABEL_17:
       while (v38);
     }
 
-    v10 = self;
-    v29 = v48;
+    selfCopy3 = self;
+    multiUserSharedUsers = v48;
   }
 
   else
@@ -6493,12 +6493,12 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "%s Configured Cloud Synced Users.", buf, 0xCu);
   }
 
-  [(ADMultiUserService *)v10 _updateSAMultiUserInfo];
+  [(ADMultiUserService *)selfCopy3 _updateSAMultiUserInfo];
 }
 
-- (void)_updateMappingsForSharedUser:(id)a3
+- (void)_updateMappingsForSharedUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   if (!self->_sharedUsersBySharedUserID)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
@@ -6520,27 +6520,27 @@ LABEL_17:
     self->_sharedUsersByiCloudAltDSID = v9;
   }
 
-  v11 = [v4 sharedUserID];
-  v12 = [v4 homeUserUUID];
-  v13 = [v4 iCloudAltDSID];
-  if (v11)
+  sharedUserID = [userCopy sharedUserID];
+  homeUserUUID = [userCopy homeUserUUID];
+  iCloudAltDSID = [userCopy iCloudAltDSID];
+  if (sharedUserID)
   {
-    [(NSMutableDictionary *)self->_sharedUsersBySharedUserID setObject:v4 forKey:v11];
+    [(NSMutableDictionary *)self->_sharedUsersBySharedUserID setObject:userCopy forKey:sharedUserID];
   }
 
-  if (v12)
+  if (homeUserUUID)
   {
-    [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID setObject:v4 forKey:v12];
-    v14 = v12;
+    [(NSMutableDictionary *)self->_sharedUsersByHomeUserUUID setObject:userCopy forKey:homeUserUUID];
+    v14 = homeUserUUID;
 LABEL_13:
     [(ADMultiUserService *)self _trackHomeUserUUIDForInFlightVoiceProfile:v14];
     goto LABEL_14;
   }
 
   v15 = AFIsATV();
-  if (v11)
+  if (sharedUserID)
   {
-    v14 = v11;
+    v14 = sharedUserID;
     if (v15)
     {
       goto LABEL_13;
@@ -6548,9 +6548,9 @@ LABEL_13:
   }
 
 LABEL_14:
-  if (v13)
+  if (iCloudAltDSID)
   {
-    [(NSMutableDictionary *)self->_sharedUsersByiCloudAltDSID setObject:v4 forKey:v13];
+    [(NSMutableDictionary *)self->_sharedUsersByiCloudAltDSID setObject:userCopy forKey:iCloudAltDSID];
   }
 
   v16 = AFSiriLogContextDaemon;
@@ -6565,49 +6565,49 @@ LABEL_14:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, kAFSharedUserUpdateDarwinNotification, 0, 0, 1u);
 }
 
-- (void)didReceiveIDs:(id)a3 forUser:(id)a4
+- (void)didReceiveIDs:(id)ds forUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  userCopy = user;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002B6294;
   block[3] = &unk_10051DB68;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = userCopy;
+  selfCopy = self;
+  v14 = dsCopy;
+  v9 = dsCopy;
+  v10 = userCopy;
   dispatch_async(queue, block);
 }
 
-- (void)onUserAnalyticsIdsChanged:(id)a3 iCloudAltDSId:(id)a4 sharedUserId:(id)a5
+- (void)onUserAnalyticsIdsChanged:(id)changed iCloudAltDSId:(id)id sharedUserId:(id)userId
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changedCopy = changed;
+  idCopy = id;
+  userIdCopy = userId;
   v11 = AFSiriLogContextDaemon;
   v12 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO);
-  if (v9)
+  if (idCopy)
   {
     if (v12)
     {
       v13 = v11;
-      v14 = [v8 userEphemeralId];
-      v15 = [v14 UUIDString];
-      v16 = [v8 userAggregationId];
-      v17 = [v16 UUIDString];
+      userEphemeralId = [changedCopy userEphemeralId];
+      uUIDString = [userEphemeralId UUIDString];
+      userAggregationId = [changedCopy userAggregationId];
+      uUIDString2 = [userAggregationId UUIDString];
       *v21 = 136316163;
       *&v21[4] = "[ADMultiUserService onUserAnalyticsIdsChanged:iCloudAltDSId:sharedUserId:]";
       *&v21[12] = 2113;
-      *&v21[14] = v9;
+      *&v21[14] = idCopy;
       *&v21[22] = 2113;
-      v22 = v10;
+      v22 = userIdCopy;
       *v23 = 2113;
-      *&v23[2] = v15;
+      *&v23[2] = uUIDString;
       *&v23[10] = 2113;
-      *&v23[12] = v17;
+      *&v23[12] = uUIDString2;
       v18 = "%s Received an Ephemeral & Aggregation ID Update for user with iCloudAltDSId %{private}@ and sharedUserId %{private}@: Ephemeral ID: %{private}@, Aggregation ID: %{private}@";
       v19 = v13;
       v20 = 52;
@@ -6619,16 +6619,16 @@ LABEL_6:
   else if (v12)
   {
     v13 = v11;
-    v14 = [v8 userEphemeralId];
-    v15 = [v14 UUIDString];
-    v16 = [v8 userAggregationId];
-    v17 = [v16 UUIDString];
+    userEphemeralId = [changedCopy userEphemeralId];
+    uUIDString = [userEphemeralId UUIDString];
+    userAggregationId = [changedCopy userAggregationId];
+    uUIDString2 = [userAggregationId UUIDString];
     *v21 = 136315651;
     *&v21[4] = "[ADMultiUserService onUserAnalyticsIdsChanged:iCloudAltDSId:sharedUserId:]";
     *&v21[12] = 2113;
-    *&v21[14] = v15;
+    *&v21[14] = uUIDString;
     *&v21[22] = 2113;
-    v22 = v17;
+    v22 = uUIDString2;
     v18 = "%s Received an Ephemeral & Aggregation ID Update for the device owner: Ephemeral ID: %{private}@, Aggregation ID: %{private}@";
     v19 = v13;
     v20 = 32;
@@ -6638,20 +6638,20 @@ LABEL_6:
   [(ADMultiUserService *)self _updateSAMultiUserInfo:*v21];
 }
 
-- (void)_refreshUsersAndVoiceProfiles:(BOOL)a3
+- (void)_refreshUsersAndVoiceProfiles:(BOOL)profiles
 {
-  v3 = a3;
+  profilesCopy = profiles;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v106 = "[ADMultiUserService _refreshUsersAndVoiceProfiles:]";
     v107 = 1024;
-    LODWORD(v108) = v3;
+    LODWORD(v108) = profilesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s liveOnOnboardedProfilesDidChange = %{BOOL}d", buf, 0x12u);
   }
 
-  v71 = v3;
+  v71 = profilesCopy;
   v6 = objc_alloc_init(NSMutableArray);
   v69 = objc_alloc_init(NSMutableSet);
   v7 = objc_alloc_init(NSMutableSet);
@@ -6721,26 +6721,26 @@ LABEL_6:
 
       if (AFIsInternalInstall())
       {
-        v22 = [(NSString *)v20 appDomain];
-        v23 = [v22 isEqualToString:v17];
+        appDomain = [(NSString *)v20 appDomain];
+        v23 = [appDomain isEqualToString:v17];
 
         if (v23)
         {
           [v70 addObject:v20];
-          v24 = [(NSString *)v20 sharedSiriId];
-          [v69 addObject:v24];
+          sharedSiriId = [(NSString *)v20 sharedSiriId];
+          [v69 addObject:sharedSiriId];
         }
       }
 
-      v25 = [(NSString *)v20 appDomain];
-      if ([v25 isEqualToString:v18])
+      appDomain2 = [(NSString *)v20 appDomain];
+      if ([appDomain2 isEqualToString:v18])
       {
       }
 
       else
       {
-        v26 = [(NSString *)v20 appDomain];
-        v27 = [v26 isEqualToString:v17];
+        appDomain3 = [(NSString *)v20 appDomain];
+        v27 = [appDomain3 isEqualToString:v17];
 
         if (!v27)
         {
@@ -6755,11 +6755,11 @@ LABEL_6:
         self->_usersWithAvailableVoiceProfiles = v28;
       }
 
-      v30 = [(NSString *)v20 sharedSiriId];
-      if (v30 && ([(NSMutableArray *)self->_usersWithAvailableVoiceProfiles containsObject:v30]& 1) == 0)
+      sharedSiriId2 = [(NSString *)v20 sharedSiriId];
+      if (sharedSiriId2 && ([(NSMutableArray *)self->_usersWithAvailableVoiceProfiles containsObject:sharedSiriId2]& 1) == 0)
       {
-        [(NSMutableArray *)self->_usersWithAvailableVoiceProfiles addObject:v30];
-        v31 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:v30];
+        [(NSMutableArray *)self->_usersWithAvailableVoiceProfiles addObject:sharedSiriId2];
+        v31 = [(NSMutableDictionary *)self->_sharedUsersBySharedUserID objectForKey:sharedSiriId2];
         [(ADMultiUserService *)self _untrackUUIDsForUser:v31];
 
         v68 = 1;
@@ -6893,14 +6893,14 @@ LABEL_30:
         }
 
         v54 = *(*(&v80 + 1) + 8 * v53);
-        v55 = [v54 sharedSiriId];
-        v56 = [v54 homeId];
-        v57 = [v54 userName];
+        sharedSiriId3 = [v54 sharedSiriId];
+        homeId = [v54 homeId];
+        userName = [v54 userName];
         v58 = SiriCoreUUIDStringCreate();
         v59 = SiriCoreUUIDStringCreate();
-        if (v56)
+        if (homeId)
         {
-          if (v55)
+          if (sharedSiriId3)
           {
             goto LABEL_61;
           }
@@ -6908,19 +6908,19 @@ LABEL_30:
 
         else
         {
-          v56 = SiriCoreUUIDStringCreate();
-          if (v55)
+          homeId = SiriCoreUUIDStringCreate();
+          if (sharedSiriId3)
           {
             goto LABEL_61;
           }
         }
 
-        v55 = SiriCoreUUIDStringCreate();
+        sharedSiriId3 = SiriCoreUUIDStringCreate();
 LABEL_61:
         v60 = @"whatsinaname";
-        if (v57)
+        if (userName)
         {
-          v60 = v57;
+          v60 = userName;
         }
 
         v78[0] = _NSConcreteStackBlock;
@@ -6930,7 +6930,7 @@ LABEL_61:
         v79 = v60;
         v61 = v60;
         LOBYTE(v65) = 1;
-        [(ADMultiUserService *)self addUser:v56 sharedUserId:v55 loggableSharedUserId:v58 iCloudAltDSID:v59 enrollmentName:v61 isPrimary:0 nonCloudSyncedUser:v65 completion:v78];
+        [(ADMultiUserService *)self addUser:homeId sharedUserId:sharedSiriId3 loggableSharedUserId:v58 iCloudAltDSID:v59 enrollmentName:v61 isPrimary:0 nonCloudSyncedUser:v65 completion:v78];
 
         v53 = v53 + 1;
       }
@@ -6964,7 +6964,7 @@ LABEL_71:
     block[2] = sub_1002B7480;
     block[3] = &unk_10051E010;
     v76 = v63;
-    v77 = self;
+    selfCopy = self;
     dispatch_async(queue, block);
   }
 }
@@ -6980,7 +6980,7 @@ LABEL_71:
   dispatch_async(queue, block);
 }
 
-- (void)_currentHomeIsReady:(id)a3
+- (void)_currentHomeIsReady:(id)ready
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEFAULT))
@@ -6999,7 +6999,7 @@ LABEL_71:
   dispatch_async(queue, block);
 }
 
-- (void)_primaryUserSharedUserIdentifierDidChangeNotification:(id)a3
+- (void)_primaryUserSharedUserIdentifierDidChangeNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -7010,11 +7010,11 @@ LABEL_71:
   dispatch_async(queue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  if (self->_multiUserListener == a3)
+  if (self->_multiUserListener == listener)
   {
-    return [(ADMultiUserService *)self _multiUserListenerShouldAcceptNewConnection:a4];
+    return [(ADMultiUserService *)self _multiUserListenerShouldAcceptNewConnection:connection];
   }
 
   else
@@ -7023,42 +7023,42 @@ LABEL_71:
   }
 }
 
-- (BOOL)_multiUserListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)_multiUserListenerShouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   HasEntitlement = AFConnectionHasEntitlement();
   if (HasEntitlement)
   {
-    v6 = [v4 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     v7 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       v16 = "[ADMultiUserService _multiUserListenerShouldAcceptNewConnection:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = connectionCopy;
       v19 = 1024;
-      v20 = v6;
+      v20 = processIdentifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s %@ MultiUser Connection Connected (pid=%d])", buf, 0x1Cu);
     }
 
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AFMultiUserService];
-    [v4 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v4 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1002B8858;
     v13[3] = &unk_10051A380;
-    v14 = v6;
-    [v4 setInvalidationHandler:v13];
+    v14 = processIdentifier;
+    [connectionCopy setInvalidationHandler:v13];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1002B8914;
     v11[3] = &unk_10051A380;
-    v12 = v6;
-    [v4 setInterruptionHandler:v11];
-    [v4 resume];
+    v12 = processIdentifier;
+    [connectionCopy setInterruptionHandler:v11];
+    [connectionCopy resume];
   }
 
   else
@@ -7069,7 +7069,7 @@ LABEL_71:
       *buf = 136315394;
       v16 = "[ADMultiUserService _multiUserListenerShouldAcceptNewConnection:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = connectionCopy;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s %@ MultiUser Connection does not have required entitlements.", buf, 0x16u);
     }
   }
@@ -7119,15 +7119,15 @@ LABEL_71:
   primaryUser = self->_primaryUser;
   if (primaryUser)
   {
-    v7 = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
-    [v5 setObject:primaryUser forKey:v7];
+    sharedUserID = [(ADCommunalDeviceUser *)self->_primaryUser sharedUserID];
+    [v5 setObject:primaryUser forKey:sharedUserID];
   }
 
   deviceOwner = self->_deviceOwner;
   if (deviceOwner && !self->_primaryUser)
   {
-    v9 = [(ADCommunalDeviceUser *)self->_deviceOwner sharedUserID];
-    [v5 setObject:deviceOwner forKey:v9];
+    sharedUserID2 = [(ADCommunalDeviceUser *)self->_deviceOwner sharedUserID];
+    [v5 setObject:deviceOwner forKey:sharedUserID2];
   }
 
   [v5 addEntriesFromDictionary:self->_sharedUsersBySharedUserID];
@@ -7185,11 +7185,11 @@ LABEL_71:
   [(ADMultiUserService *)&v5 dealloc];
 }
 
-- (id)_initWithPreferences:(id)a3 ssrManager:(id)a4 homeInfoManager:(id)a5
+- (id)_initWithPreferences:(id)preferences ssrManager:(id)manager homeInfoManager:(id)infoManager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  preferencesCopy = preferences;
+  managerCopy = manager;
+  infoManagerCopy = infoManager;
   v39.receiver = self;
   v39.super_class = ADMultiUserService;
   v12 = [(ADMultiUserService *)&v39 init];
@@ -7201,18 +7201,18 @@ LABEL_71:
     queue = v12->_queue;
     v12->_queue = v14;
 
-    objc_storeStrong(&v12->_adPreferences, a3);
+    objc_storeStrong(&v12->_adPreferences, preferences);
     v16 = [ADCommunalDeviceUser saHomeMemberInfo:0];
     saUnknownUser = v12->_saUnknownUser;
     v12->_saUnknownUser = v16;
 
-    objc_storeStrong(&v12->_voiceProfileManager, a4);
-    objc_storeStrong(&v12->_homeInfoManager, a5);
-    v18 = [v9 languageCode];
-    v19 = v18;
-    if (v18)
+    objc_storeStrong(&v12->_voiceProfileManager, manager);
+    objc_storeStrong(&v12->_homeInfoManager, infoManager);
+    languageCode = [preferencesCopy languageCode];
+    v19 = languageCode;
+    if (languageCode)
     {
-      v20 = v18;
+      v20 = languageCode;
     }
 
     else
@@ -7238,7 +7238,7 @@ LABEL_71:
     }
 
     v23 = +[NSNotificationCenter defaultCenter];
-    [v23 addObserver:v12 selector:"_primaryUserSharedUserIdentifierDidChangeNotification:" name:@"ADPreferencesSharedUserIdentifierDidChangeNotification" object:v9];
+    [v23 addObserver:v12 selector:"_primaryUserSharedUserIdentifierDidChangeNotification:" name:@"ADPreferencesSharedUserIdentifierDidChangeNotification" object:preferencesCopy];
     [v23 addObserver:v12 selector:"_currentHomeIsReady:" name:@"ADHomeInfoCurrentHomeIsReady" object:0];
     [v23 addObserver:v12 selector:"_homeInfoDidChange:" name:@"ADHomeInfoForThisDeviceDidChangeNotification" object:0];
     [v23 addObserver:v12 selector:"_languageCodeDidChange" name:AFLanguageCodeDidChangeNotification object:0];

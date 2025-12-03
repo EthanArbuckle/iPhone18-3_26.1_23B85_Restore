@@ -1,61 +1,61 @@
 @interface _MRCommandInfoProtobuf
-- (BOOL)isEqual:(id)a3;
-- (double)preferredIntervalAtIndex:(unint64_t)a3;
-- (float)extendedSupportedRateAtIndex:(unint64_t)a3;
-- (float)supportedRateAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (double)preferredIntervalAtIndex:(unint64_t)index;
+- (float)extendedSupportedRateAtIndex:(unint64_t)index;
+- (float)supportedRateAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCommand:(id)a3;
-- (int)StringAsCurrentQueueEndAction:(id)a3;
-- (int)StringAsDisabledReason:(id)a3;
-- (int)StringAsRepeatMode:(id)a3;
-- (int)StringAsShuffleMode:(id)a3;
-- (int)StringAsSleepTimerStopMode:(id)a3;
-- (int)StringAsSupportedQueueEndActions:(id)a3;
+- (int)StringAsCommand:(id)command;
+- (int)StringAsCurrentQueueEndAction:(id)action;
+- (int)StringAsDisabledReason:(id)reason;
+- (int)StringAsRepeatMode:(id)mode;
+- (int)StringAsShuffleMode:(id)mode;
+- (int)StringAsSleepTimerStopMode:(id)mode;
+- (int)StringAsSupportedQueueEndActions:(id)actions;
 - (int)command;
 - (int)currentQueueEndAction;
 - (int)disabledReason;
 - (int)repeatMode;
 - (int)shuffleMode;
 - (int)sleepTimerStopMode;
-- (int)supportedInsertionPositionsAtIndex:(unint64_t)a3;
-- (int)supportedPlaybackQueueTypesAtIndex:(unint64_t)a3;
-- (int)supportedQueueEndActionsAtIndex:(unint64_t)a3;
+- (int)supportedInsertionPositionsAtIndex:(unint64_t)index;
+- (int)supportedPlaybackQueueTypesAtIndex:(unint64_t)index;
+- (int)supportedQueueEndActionsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addCurrentPlaybackSessionTypes:(id)a3;
-- (void)addSupportedCustomQueueIdentifier:(id)a3;
-- (void)addSupportedPlaybackSessionIdentifiers:(id)a3;
-- (void)addSupportedPlaybackSessionTypes:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addCurrentPlaybackSessionTypes:(id)types;
+- (void)addSupportedCustomQueueIdentifier:(id)identifier;
+- (void)addSupportedPlaybackSessionIdentifiers:(id)identifiers;
+- (void)addSupportedPlaybackSessionTypes:(id)types;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActive:(BOOL)a3;
-- (void)setHasCanScrub:(BOOL)a3;
-- (void)setHasCommand:(BOOL)a3;
-- (void)setHasCurrentQueueEndAction:(BOOL)a3;
-- (void)setHasDisabledReason:(BOOL)a3;
-- (void)setHasEnabled:(BOOL)a3;
-- (void)setHasMaximumRating:(BOOL)a3;
-- (void)setHasMinimumRating:(BOOL)a3;
-- (void)setHasNumAvailableSkips:(BOOL)a3;
-- (void)setHasPreferredPlaybackRate:(BOOL)a3;
-- (void)setHasPresentationStyle:(BOOL)a3;
-- (void)setHasRepeatMode:(BOOL)a3;
-- (void)setHasShuffleMode:(BOOL)a3;
-- (void)setHasSkipFrequency:(BOOL)a3;
-- (void)setHasSkipInterval:(BOOL)a3;
-- (void)setHasSleepTimerStopMode:(BOOL)a3;
-- (void)setHasSleepTimerTime:(BOOL)a3;
-- (void)setHasSupportsReferencePosition:(BOOL)a3;
-- (void)setHasTransitionStyle:(BOOL)a3;
-- (void)setHasUpNextItemCount:(BOOL)a3;
-- (void)setHasVocalsControlActive:(BOOL)a3;
-- (void)setHasVocalsControlContinuous:(BOOL)a3;
-- (void)setHasVocalsControlLevel:(BOOL)a3;
-- (void)setHasVocalsControlMaxLevel:(BOOL)a3;
-- (void)setHasVocalsControlMinLevel:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasActive:(BOOL)active;
+- (void)setHasCanScrub:(BOOL)scrub;
+- (void)setHasCommand:(BOOL)command;
+- (void)setHasCurrentQueueEndAction:(BOOL)action;
+- (void)setHasDisabledReason:(BOOL)reason;
+- (void)setHasEnabled:(BOOL)enabled;
+- (void)setHasMaximumRating:(BOOL)rating;
+- (void)setHasMinimumRating:(BOOL)rating;
+- (void)setHasNumAvailableSkips:(BOOL)skips;
+- (void)setHasPreferredPlaybackRate:(BOOL)rate;
+- (void)setHasPresentationStyle:(BOOL)style;
+- (void)setHasRepeatMode:(BOOL)mode;
+- (void)setHasShuffleMode:(BOOL)mode;
+- (void)setHasSkipFrequency:(BOOL)frequency;
+- (void)setHasSkipInterval:(BOOL)interval;
+- (void)setHasSleepTimerStopMode:(BOOL)mode;
+- (void)setHasSleepTimerTime:(BOOL)time;
+- (void)setHasSupportsReferencePosition:(BOOL)position;
+- (void)setHasTransitionStyle:(BOOL)style;
+- (void)setHasUpNextItemCount:(BOOL)count;
+- (void)setHasVocalsControlActive:(BOOL)active;
+- (void)setHasVocalsControlContinuous:(BOOL)continuous;
+- (void)setHasVocalsControlLevel:(BOOL)level;
+- (void)setHasVocalsControlMaxLevel:(BOOL)level;
+- (void)setHasVocalsControlMinLevel:(BOOL)level;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRCommandInfoProtobuf
@@ -86,9 +86,9 @@
   }
 }
 
-- (void)setHasCommand:(BOOL)a3
+- (void)setHasCommand:(BOOL)command
 {
-  if (a3)
+  if (command)
   {
     v3 = 8;
   }
@@ -101,335 +101,335 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (int)StringAsCommand:(id)a3
+- (int)StringAsCommand:(id)command
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  commandCopy = command;
+  if ([commandCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Play"])
+  else if ([commandCopy isEqualToString:@"Play"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Pause"])
+  else if ([commandCopy isEqualToString:@"Pause"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TogglePlayPause"])
+  else if ([commandCopy isEqualToString:@"TogglePlayPause"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Stop"])
+  else if ([commandCopy isEqualToString:@"Stop"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NextTrack"])
+  else if ([commandCopy isEqualToString:@"NextTrack"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PreviousTrack"])
+  else if ([commandCopy isEqualToString:@"PreviousTrack"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AdvanceShuffleMode"])
+  else if ([commandCopy isEqualToString:@"AdvanceShuffleMode"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AdvanceRepeatMode"])
+  else if ([commandCopy isEqualToString:@"AdvanceRepeatMode"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"BeginFastForward"])
+  else if ([commandCopy isEqualToString:@"BeginFastForward"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"EndFastForward"])
+  else if ([commandCopy isEqualToString:@"EndFastForward"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"BeginRewind"])
+  else if ([commandCopy isEqualToString:@"BeginRewind"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"EndRewind"])
+  else if ([commandCopy isEqualToString:@"EndRewind"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Rewind15Seconds"])
+  else if ([commandCopy isEqualToString:@"Rewind15Seconds"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"FastForward15Seconds"])
+  else if ([commandCopy isEqualToString:@"FastForward15Seconds"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Rewind30Seconds"])
+  else if ([commandCopy isEqualToString:@"Rewind30Seconds"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"FastForward30Seconds"])
+  else if ([commandCopy isEqualToString:@"FastForward30Seconds"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SkipForward"])
+  else if ([commandCopy isEqualToString:@"SkipForward"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SkipBackward"])
+  else if ([commandCopy isEqualToString:@"SkipBackward"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"ChangePlaybackRate"])
+  else if ([commandCopy isEqualToString:@"ChangePlaybackRate"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"RateTrack"])
+  else if ([commandCopy isEqualToString:@"RateTrack"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"LikeTrack"])
+  else if ([commandCopy isEqualToString:@"LikeTrack"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"DislikeTrack"])
+  else if ([commandCopy isEqualToString:@"DislikeTrack"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"BookmarkTrack"])
+  else if ([commandCopy isEqualToString:@"BookmarkTrack"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"SeekToPlaybackPosition"])
+  else if ([commandCopy isEqualToString:@"SeekToPlaybackPosition"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"ChangeRepeatMode"])
+  else if ([commandCopy isEqualToString:@"ChangeRepeatMode"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"ChangeShuffleMode"])
+  else if ([commandCopy isEqualToString:@"ChangeShuffleMode"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"EnableLanguageOption"])
+  else if ([commandCopy isEqualToString:@"EnableLanguageOption"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"DisableLanguageOption"])
+  else if ([commandCopy isEqualToString:@"DisableLanguageOption"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"NextChapter"])
+  else if ([commandCopy isEqualToString:@"NextChapter"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"PreviousChapter"])
+  else if ([commandCopy isEqualToString:@"PreviousChapter"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"NextAlbum"])
+  else if ([commandCopy isEqualToString:@"NextAlbum"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"PreviousAlbum"])
+  else if ([commandCopy isEqualToString:@"PreviousAlbum"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"NextPlaylist"])
+  else if ([commandCopy isEqualToString:@"NextPlaylist"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"PreviousPlaylist"])
+  else if ([commandCopy isEqualToString:@"PreviousPlaylist"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"BanTrack"])
+  else if ([commandCopy isEqualToString:@"BanTrack"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"AddTrackToWishList"])
+  else if ([commandCopy isEqualToString:@"AddTrackToWishList"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"RemoveTrackFromWishList"])
+  else if ([commandCopy isEqualToString:@"RemoveTrackFromWishList"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"NextInContext"])
+  else if ([commandCopy isEqualToString:@"NextInContext"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"PreviousInContext"])
+  else if ([commandCopy isEqualToString:@"PreviousInContext"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"ResetPlaybackTimeout"])
+  else if ([commandCopy isEqualToString:@"ResetPlaybackTimeout"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"SetPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"SetPlaybackQueue"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"AddNowPlayingItemToLibrary"])
+  else if ([commandCopy isEqualToString:@"AddNowPlayingItemToLibrary"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"CreateRadioStation"])
+  else if ([commandCopy isEqualToString:@"CreateRadioStation"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"AddItemToLibrary"])
+  else if ([commandCopy isEqualToString:@"AddItemToLibrary"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"InsertIntoPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"InsertIntoPlaybackQueue"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"ReorderPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"ReorderPlaybackQueue"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"RemoveFromPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"RemoveFromPlaybackQueue"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"PlayItemInPlaybackQueue"])
+  else if ([commandCopy isEqualToString:@"PlayItemInPlaybackQueue"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"PrepareForSetQueue"])
+  else if ([commandCopy isEqualToString:@"PrepareForSetQueue"])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:@"SetPlaybackSession"])
+  else if ([commandCopy isEqualToString:@"SetPlaybackSession"])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:@"PreloadPlaybackSession"])
+  else if ([commandCopy isEqualToString:@"PreloadPlaybackSession"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"SetPriorityForPlaybackSession"])
+  else if ([commandCopy isEqualToString:@"SetPriorityForPlaybackSession"])
   {
     v4 = 61;
   }
 
-  else if ([v3 isEqualToString:@"DiscardPlaybackSession"])
+  else if ([commandCopy isEqualToString:@"DiscardPlaybackSession"])
   {
     v4 = 62;
   }
 
-  else if ([v3 isEqualToString:@"Reshuffle"])
+  else if ([commandCopy isEqualToString:@"Reshuffle"])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:@"LeaveSharedPlaybackSession"])
+  else if ([commandCopy isEqualToString:@"LeaveSharedPlaybackSession"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"PostEventNotice"])
+  else if ([commandCopy isEqualToString:@"PostEventNotice"])
   {
     v4 = 65;
   }
 
-  else if ([v3 isEqualToString:@"SetSleepTimer"])
+  else if ([commandCopy isEqualToString:@"SetSleepTimer"])
   {
     v4 = 124;
   }
 
-  else if ([v3 isEqualToString:@"ChangeQueueEndAction"])
+  else if ([commandCopy isEqualToString:@"ChangeQueueEndAction"])
   {
     v4 = 135;
   }
 
-  else if ([v3 isEqualToString:@"VocalsControl"])
+  else if ([commandCopy isEqualToString:@"VocalsControl"])
   {
     v4 = 142;
   }
 
-  else if ([v3 isEqualToString:@"PrepareVocalsControl"])
+  else if ([commandCopy isEqualToString:@"PrepareVocalsControl"])
   {
     v4 = 143;
   }
 
-  else if ([v3 isEqualToString:@"ClearUpNextQueue"])
+  else if ([commandCopy isEqualToString:@"ClearUpNextQueue"])
   {
     v4 = 144;
   }
 
-  else if ([v3 isEqualToString:@"PerformDialogAction"])
+  else if ([commandCopy isEqualToString:@"PerformDialogAction"])
   {
     v4 = 145;
   }
 
-  else if ([v3 isEqualToString:@"DelegateAccount"])
+  else if ([commandCopy isEqualToString:@"DelegateAccount"])
   {
     v4 = 146;
   }
 
-  else if ([v3 isEqualToString:@"EnhanceDialogue"])
+  else if ([commandCopy isEqualToString:@"EnhanceDialogue"])
   {
     v4 = 147;
   }
 
-  else if ([v3 isEqualToString:@"ToggleTransitions"])
+  else if ([commandCopy isEqualToString:@"ToggleTransitions"])
   {
     v4 = 149;
   }
@@ -442,9 +442,9 @@
   return v4;
 }
 
-- (void)setHasEnabled:(BOOL)a3
+- (void)setHasEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x400000;
   }
@@ -457,9 +457,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasActive:(BOOL)a3
+- (void)setHasActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 0x200000;
   }
@@ -472,25 +472,25 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (double)preferredIntervalAtIndex:(unint64_t)a3
+- (double)preferredIntervalAtIndex:(unint64_t)index
 {
   p_preferredIntervals = &self->_preferredIntervals;
   count = self->_preferredIntervals.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_preferredIntervals->list[a3];
+  return p_preferredIntervals->list[index];
 }
 
-- (void)setHasMinimumRating:(BOOL)a3
+- (void)setHasMinimumRating:(BOOL)rating
 {
-  if (a3)
+  if (rating)
   {
     v3 = 128;
   }
@@ -503,9 +503,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasMaximumRating:(BOOL)a3
+- (void)setHasMaximumRating:(BOOL)rating
 {
-  if (a3)
+  if (rating)
   {
     v3 = 64;
   }
@@ -518,20 +518,20 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (float)supportedRateAtIndex:(unint64_t)a3
+- (float)supportedRateAtIndex:(unint64_t)index
 {
   p_supportedRates = &self->_supportedRates;
   count = self->_supportedRates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_supportedRates->list[a3];
+  return p_supportedRates->list[index];
 }
 
 - (int)repeatMode
@@ -547,9 +547,9 @@
   }
 }
 
-- (void)setHasRepeatMode:(BOOL)a3
+- (void)setHasRepeatMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2048;
   }
@@ -562,25 +562,25 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (int)StringAsRepeatMode:(id)a3
+- (int)StringAsRepeatMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([modeCopy isEqualToString:@"None"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"One"])
+  else if ([modeCopy isEqualToString:@"One"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"All"])
+  else if ([modeCopy isEqualToString:@"All"])
   {
     v4 = 3;
   }
@@ -606,9 +606,9 @@
   }
 }
 
-- (void)setHasShuffleMode:(BOOL)a3
+- (void)setHasShuffleMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 4096;
   }
@@ -621,25 +621,25 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (int)StringAsShuffleMode:(id)a3
+- (int)StringAsShuffleMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Off"])
+  else if ([modeCopy isEqualToString:@"Off"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Albums"])
+  else if ([modeCopy isEqualToString:@"Albums"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Songs"])
+  else if ([modeCopy isEqualToString:@"Songs"])
   {
     v4 = 3;
   }
@@ -652,9 +652,9 @@
   return v4;
 }
 
-- (void)setHasPresentationStyle:(BOOL)a3
+- (void)setHasPresentationStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 1024;
   }
@@ -667,9 +667,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasSkipInterval:(BOOL)a3
+- (void)setHasSkipInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 0x4000;
   }
@@ -682,9 +682,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasNumAvailableSkips:(BOOL)a3
+- (void)setHasNumAvailableSkips:(BOOL)skips
 {
-  if (a3)
+  if (skips)
   {
     v3 = 256;
   }
@@ -697,9 +697,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasSkipFrequency:(BOOL)a3
+- (void)setHasSkipFrequency:(BOOL)frequency
 {
-  if (a3)
+  if (frequency)
   {
     v3 = 0x2000;
   }
@@ -712,9 +712,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasCanScrub:(BOOL)a3
+- (void)setHasCanScrub:(BOOL)scrub
 {
-  if (a3)
+  if (scrub)
   {
     v3 = 4;
   }
@@ -727,59 +727,59 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (int)supportedPlaybackQueueTypesAtIndex:(unint64_t)a3
+- (int)supportedPlaybackQueueTypesAtIndex:(unint64_t)index
 {
   p_supportedPlaybackQueueTypes = &self->_supportedPlaybackQueueTypes;
   count = self->_supportedPlaybackQueueTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_supportedPlaybackQueueTypes->list[a3];
+  return p_supportedPlaybackQueueTypes->list[index];
 }
 
-- (void)addSupportedCustomQueueIdentifier:(id)a3
+- (void)addSupportedCustomQueueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   supportedCustomQueueIdentifiers = self->_supportedCustomQueueIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!supportedCustomQueueIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_supportedCustomQueueIdentifiers;
     self->_supportedCustomQueueIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     supportedCustomQueueIdentifiers = self->_supportedCustomQueueIdentifiers;
   }
 
-  [(NSMutableArray *)supportedCustomQueueIdentifiers addObject:v4];
+  [(NSMutableArray *)supportedCustomQueueIdentifiers addObject:identifierCopy];
 }
 
-- (int)supportedInsertionPositionsAtIndex:(unint64_t)a3
+- (int)supportedInsertionPositionsAtIndex:(unint64_t)index
 {
   p_supportedInsertionPositions = &self->_supportedInsertionPositions;
   count = self->_supportedInsertionPositions.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_supportedInsertionPositions->list[a3];
+  return p_supportedInsertionPositions->list[index];
 }
 
-- (void)setHasUpNextItemCount:(BOOL)a3
+- (void)setHasUpNextItemCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x20000;
   }
@@ -792,9 +792,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasPreferredPlaybackRate:(BOOL)a3
+- (void)setHasPreferredPlaybackRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 512;
   }
@@ -807,40 +807,40 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)addSupportedPlaybackSessionTypes:(id)a3
+- (void)addSupportedPlaybackSessionTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   supportedPlaybackSessionTypes = self->_supportedPlaybackSessionTypes;
-  v8 = v4;
+  v8 = typesCopy;
   if (!supportedPlaybackSessionTypes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_supportedPlaybackSessionTypes;
     self->_supportedPlaybackSessionTypes = v6;
 
-    v4 = v8;
+    typesCopy = v8;
     supportedPlaybackSessionTypes = self->_supportedPlaybackSessionTypes;
   }
 
-  [(NSMutableArray *)supportedPlaybackSessionTypes addObject:v4];
+  [(NSMutableArray *)supportedPlaybackSessionTypes addObject:typesCopy];
 }
 
-- (void)addCurrentPlaybackSessionTypes:(id)a3
+- (void)addCurrentPlaybackSessionTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   currentPlaybackSessionTypes = self->_currentPlaybackSessionTypes;
-  v8 = v4;
+  v8 = typesCopy;
   if (!currentPlaybackSessionTypes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_currentPlaybackSessionTypes;
     self->_currentPlaybackSessionTypes = v6;
 
-    v4 = v8;
+    typesCopy = v8;
     currentPlaybackSessionTypes = self->_currentPlaybackSessionTypes;
   }
 
-  [(NSMutableArray *)currentPlaybackSessionTypes addObject:v4];
+  [(NSMutableArray *)currentPlaybackSessionTypes addObject:typesCopy];
 }
 
 - (int)currentQueueEndAction
@@ -856,9 +856,9 @@
   }
 }
 
-- (void)setHasCurrentQueueEndAction:(BOOL)a3
+- (void)setHasCurrentQueueEndAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 16;
   }
@@ -871,25 +871,25 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (int)StringAsCurrentQueueEndAction:(id)a3
+- (int)StringAsCurrentQueueEndAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Clear"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"Clear"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([actionCopy isEqualToString:@"None"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Reset"])
+  else if ([actionCopy isEqualToString:@"Reset"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AutoPlay"])
+  else if ([actionCopy isEqualToString:@"AutoPlay"])
   {
     v4 = 3;
   }
@@ -902,41 +902,41 @@
   return v4;
 }
 
-- (int)supportedQueueEndActionsAtIndex:(unint64_t)a3
+- (int)supportedQueueEndActionsAtIndex:(unint64_t)index
 {
   p_supportedQueueEndActions = &self->_supportedQueueEndActions;
   count = self->_supportedQueueEndActions.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_supportedQueueEndActions->list[a3];
+  return p_supportedQueueEndActions->list[index];
 }
 
-- (int)StringAsSupportedQueueEndActions:(id)a3
+- (int)StringAsSupportedQueueEndActions:(id)actions
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Clear"])
+  actionsCopy = actions;
+  if ([actionsCopy isEqualToString:@"Clear"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([actionsCopy isEqualToString:@"None"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Reset"])
+  else if ([actionsCopy isEqualToString:@"Reset"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AutoPlay"])
+  else if ([actionsCopy isEqualToString:@"AutoPlay"])
   {
     v4 = 3;
   }
@@ -962,9 +962,9 @@
   }
 }
 
-- (void)setHasDisabledReason:(BOOL)a3
+- (void)setHasDisabledReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 32;
   }
@@ -977,25 +977,25 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (int)StringAsDisabledReason:(id)a3
+- (int)StringAsDisabledReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AdPlayback"])
+  else if ([reasonCopy isEqualToString:@"AdPlayback"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SkipLimitReached"])
+  else if ([reasonCopy isEqualToString:@"SkipLimitReached"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"InvalidAdRanges"])
+  else if ([reasonCopy isEqualToString:@"InvalidAdRanges"])
   {
     v4 = 3;
   }
@@ -1008,27 +1008,27 @@
   return v4;
 }
 
-- (void)addSupportedPlaybackSessionIdentifiers:(id)a3
+- (void)addSupportedPlaybackSessionIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   supportedPlaybackSessionIdentifiers = self->_supportedPlaybackSessionIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!supportedPlaybackSessionIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_supportedPlaybackSessionIdentifiers;
     self->_supportedPlaybackSessionIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     supportedPlaybackSessionIdentifiers = self->_supportedPlaybackSessionIdentifiers;
   }
 
-  [(NSMutableArray *)supportedPlaybackSessionIdentifiers addObject:v4];
+  [(NSMutableArray *)supportedPlaybackSessionIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasVocalsControlActive:(BOOL)a3
+- (void)setHasVocalsControlActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 0x1000000;
   }
@@ -1041,9 +1041,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasVocalsControlLevel:(BOOL)a3
+- (void)setHasVocalsControlLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 0x40000;
   }
@@ -1056,9 +1056,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasVocalsControlMaxLevel:(BOOL)a3
+- (void)setHasVocalsControlMaxLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 0x80000;
   }
@@ -1071,9 +1071,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasVocalsControlMinLevel:(BOOL)a3
+- (void)setHasVocalsControlMinLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 0x100000;
   }
@@ -1086,9 +1086,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasVocalsControlContinuous:(BOOL)a3
+- (void)setHasVocalsControlContinuous:(BOOL)continuous
 {
-  if (a3)
+  if (continuous)
   {
     v3 = 0x2000000;
   }
@@ -1101,9 +1101,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasSleepTimerTime:(BOOL)a3
+- (void)setHasSleepTimerTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -1129,9 +1129,9 @@
   }
 }
 
-- (void)setHasSleepTimerStopMode:(BOOL)a3
+- (void)setHasSleepTimerStopMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x8000;
   }
@@ -1144,25 +1144,25 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (int)StringAsSleepTimerStopMode:(id)a3
+- (int)StringAsSleepTimerStopMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Off"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Off"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Time"])
+  else if ([modeCopy isEqualToString:@"Time"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ChapterEnd"])
+  else if ([modeCopy isEqualToString:@"ChapterEnd"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ItemEnd"])
+  else if ([modeCopy isEqualToString:@"ItemEnd"])
   {
     v4 = 3;
   }
@@ -1175,9 +1175,9 @@
   return v4;
 }
 
-- (void)setHasSupportsReferencePosition:(BOOL)a3
+- (void)setHasSupportsReferencePosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 0x800000;
   }
@@ -1190,25 +1190,25 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (float)extendedSupportedRateAtIndex:(unint64_t)a3
+- (float)extendedSupportedRateAtIndex:(unint64_t)index
 {
   p_extendedSupportedRates = &self->_extendedSupportedRates;
   count = self->_extendedSupportedRates.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_extendedSupportedRates->list[a3];
+  return p_extendedSupportedRates->list[index];
 }
 
-- (void)setHasTransitionStyle:(BOOL)a3
+- (void)setHasTransitionStyle:(BOOL)style
 {
-  if (a3)
+  if (style)
   {
     v3 = 0x10000;
   }
@@ -1227,8 +1227,8 @@
   v8.receiver = self;
   v8.super_class = _MRCommandInfoProtobuf;
   v4 = [(_MRCommandInfoProtobuf *)&v8 description];
-  v5 = [(_MRCommandInfoProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRCommandInfoProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -1236,7 +1236,7 @@
 - (id)dictionaryRepresentation
 {
   v81 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((*&has & 8) != 0)
   {
@@ -1445,7 +1445,7 @@
         break;
     }
 
-    [v3 setObject:v5 forKey:@"command"];
+    [dictionary setObject:v5 forKey:@"command"];
 
     has = self->_has;
   }
@@ -1453,7 +1453,7 @@
   if ((*&has & 0x400000) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_enabled];
-    [v3 setObject:v6 forKey:@"enabled"];
+    [dictionary setObject:v6 forKey:@"enabled"];
 
     has = self->_has;
   }
@@ -1461,22 +1461,22 @@
   if ((*&has & 0x200000) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_active];
-    [v3 setObject:v7 forKey:@"active"];
+    [dictionary setObject:v7 forKey:@"active"];
   }
 
   v8 = PBRepeatedDoubleNSArray();
-  [v3 setObject:v8 forKey:@"preferredInterval"];
+  [dictionary setObject:v8 forKey:@"preferredInterval"];
 
   localizedTitle = self->_localizedTitle;
   if (localizedTitle)
   {
-    [v3 setObject:localizedTitle forKey:@"localizedTitle"];
+    [dictionary setObject:localizedTitle forKey:@"localizedTitle"];
   }
 
   localizedShortTitle = self->_localizedShortTitle;
   if (localizedShortTitle)
   {
-    [v3 setObject:localizedShortTitle forKey:@"localizedShortTitle"];
+    [dictionary setObject:localizedShortTitle forKey:@"localizedShortTitle"];
   }
 
   v12 = self->_has;
@@ -1484,7 +1484,7 @@
   {
     *&v9 = self->_minimumRating;
     v13 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
-    [v3 setObject:v13 forKey:@"minimumRating"];
+    [dictionary setObject:v13 forKey:@"minimumRating"];
 
     v12 = self->_has;
   }
@@ -1493,11 +1493,11 @@
   {
     *&v9 = self->_maximumRating;
     v14 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
-    [v3 setObject:v14 forKey:@"maximumRating"];
+    [dictionary setObject:v14 forKey:@"maximumRating"];
   }
 
   v15 = PBRepeatedFloatNSArray();
-  [v3 setObject:v15 forKey:@"supportedRate"];
+  [dictionary setObject:v15 forKey:@"supportedRate"];
 
   v16 = self->_has;
   if ((*&v16 & 0x800) != 0)
@@ -1513,7 +1513,7 @@
       v31 = off_1E76A0AA8[repeatMode];
     }
 
-    [v3 setObject:v31 forKey:@"repeatMode"];
+    [dictionary setObject:v31 forKey:@"repeatMode"];
 
     v16 = self->_has;
     if ((*&v16 & 0x1000) == 0)
@@ -1544,7 +1544,7 @@ LABEL_84:
     v40 = off_1E76A0AC8[shuffleMode];
   }
 
-  [v3 setObject:v40 forKey:@"shuffleMode"];
+  [dictionary setObject:v40 forKey:@"shuffleMode"];
 
   v16 = self->_has;
   if ((*&v16 & 0x400) == 0)
@@ -1560,7 +1560,7 @@ LABEL_85:
 
 LABEL_167:
   v72 = [MEMORY[0x1E696AD98] numberWithInt:self->_presentationStyle];
-  [v3 setObject:v72 forKey:@"presentationStyle"];
+  [dictionary setObject:v72 forKey:@"presentationStyle"];
 
   v16 = self->_has;
   if ((*&v16 & 0x4000) == 0)
@@ -1576,7 +1576,7 @@ LABEL_86:
 
 LABEL_168:
   v73 = [MEMORY[0x1E696AD98] numberWithInt:self->_skipInterval];
-  [v3 setObject:v73 forKey:@"skipInterval"];
+  [dictionary setObject:v73 forKey:@"skipInterval"];
 
   v16 = self->_has;
   if ((*&v16 & 0x100) == 0)
@@ -1592,7 +1592,7 @@ LABEL_87:
 
 LABEL_169:
   v74 = [MEMORY[0x1E696AD98] numberWithInt:self->_numAvailableSkips];
-  [v3 setObject:v74 forKey:@"numAvailableSkips"];
+  [dictionary setObject:v74 forKey:@"numAvailableSkips"];
 
   v16 = self->_has;
   if ((*&v16 & 0x2000) == 0)
@@ -1608,33 +1608,33 @@ LABEL_88:
 
 LABEL_170:
   v75 = [MEMORY[0x1E696AD98] numberWithInt:self->_skipFrequency];
-  [v3 setObject:v75 forKey:@"skipFrequency"];
+  [dictionary setObject:v75 forKey:@"skipFrequency"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_89:
     v17 = [MEMORY[0x1E696AD98] numberWithInt:self->_canScrub];
-    [v3 setObject:v17 forKey:@"canScrub"];
+    [dictionary setObject:v17 forKey:@"canScrub"];
   }
 
 LABEL_90:
   v18 = PBRepeatedInt32NSArray();
-  [v3 setObject:v18 forKey:@"supportedPlaybackQueueTypes"];
+  [dictionary setObject:v18 forKey:@"supportedPlaybackQueueTypes"];
 
   supportedCustomQueueIdentifiers = self->_supportedCustomQueueIdentifiers;
   if (supportedCustomQueueIdentifiers)
   {
-    [v3 setObject:supportedCustomQueueIdentifiers forKey:@"supportedCustomQueueIdentifier"];
+    [dictionary setObject:supportedCustomQueueIdentifiers forKey:@"supportedCustomQueueIdentifier"];
   }
 
   v20 = PBRepeatedInt32NSArray();
-  [v3 setObject:v20 forKey:@"supportedInsertionPositions"];
+  [dictionary setObject:v20 forKey:@"supportedInsertionPositions"];
 
   v22 = self->_has;
   if ((*&v22 & 0x20000) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithInt:self->_upNextItemCount];
-    [v3 setObject:v23 forKey:@"upNextItemCount"];
+    [dictionary setObject:v23 forKey:@"upNextItemCount"];
 
     v22 = self->_has;
   }
@@ -1643,25 +1643,25 @@ LABEL_90:
   {
     *&v21 = self->_preferredPlaybackRate;
     v24 = [MEMORY[0x1E696AD98] numberWithFloat:v21];
-    [v3 setObject:v24 forKey:@"preferredPlaybackRate"];
+    [dictionary setObject:v24 forKey:@"preferredPlaybackRate"];
   }
 
   supportedPlaybackSessionTypes = self->_supportedPlaybackSessionTypes;
   if (supportedPlaybackSessionTypes)
   {
-    [v3 setObject:supportedPlaybackSessionTypes forKey:@"supportedPlaybackSessionTypes"];
+    [dictionary setObject:supportedPlaybackSessionTypes forKey:@"supportedPlaybackSessionTypes"];
   }
 
   currentPlaybackSessionTypes = self->_currentPlaybackSessionTypes;
   if (currentPlaybackSessionTypes)
   {
-    [v3 setObject:currentPlaybackSessionTypes forKey:@"currentPlaybackSessionTypes"];
+    [dictionary setObject:currentPlaybackSessionTypes forKey:@"currentPlaybackSessionTypes"];
   }
 
   playbackSessionIdentifier = self->_playbackSessionIdentifier;
   if (playbackSessionIdentifier)
   {
-    [v3 setObject:playbackSessionIdentifier forKey:@"playbackSessionIdentifier"];
+    [dictionary setObject:playbackSessionIdentifier forKey:@"playbackSessionIdentifier"];
   }
 
   if ((*&self->_has & 0x10) != 0)
@@ -1677,7 +1677,7 @@ LABEL_90:
       v29 = off_1E76A0AE8[currentQueueEndAction];
     }
 
-    [v3 setObject:v29 forKey:@"currentQueueEndAction"];
+    [dictionary setObject:v29 forKey:@"currentQueueEndAction"];
   }
 
   p_supportedQueueEndActions = &self->_supportedQueueEndActions;
@@ -1708,7 +1708,7 @@ LABEL_90:
       while (v34 < self->_supportedQueueEndActions.count);
     }
 
-    [v3 setObject:v33 forKey:@"supportedQueueEndActions"];
+    [dictionary setObject:v33 forKey:@"supportedQueueEndActions"];
   }
 
   if ((*&self->_has & 0x20) != 0)
@@ -1724,7 +1724,7 @@ LABEL_90:
       v38 = off_1E76A0B08[disabledReason];
     }
 
-    [v3 setObject:v38 forKey:@"disabledReason"];
+    [dictionary setObject:v38 forKey:@"disabledReason"];
   }
 
   if ([(NSMutableArray *)self->_supportedPlaybackSessionIdentifiers count])
@@ -1749,8 +1749,8 @@ LABEL_90:
             objc_enumerationMutation(v43);
           }
 
-          v48 = [*(*(&v76 + 1) + 8 * i) dictionaryRepresentation];
-          [v42 addObject:v48];
+          dictionaryRepresentation = [*(*(&v76 + 1) + 8 * i) dictionaryRepresentation];
+          [v42 addObject:dictionaryRepresentation];
         }
 
         v45 = [(NSMutableArray *)v43 countByEnumeratingWithState:&v76 objects:v80 count:16];
@@ -1759,21 +1759,21 @@ LABEL_90:
       while (v45);
     }
 
-    [v3 setObject:v42 forKey:@"supportedPlaybackSessionIdentifiers"];
+    [dictionary setObject:v42 forKey:@"supportedPlaybackSessionIdentifiers"];
   }
 
   proactiveCommandOptions = self->_proactiveCommandOptions;
   if (proactiveCommandOptions)
   {
-    v50 = [(_MRCommandOptionsProtobuf *)proactiveCommandOptions dictionaryRepresentation];
-    [v3 setObject:v50 forKey:@"proactiveCommandOptions"];
+    dictionaryRepresentation2 = [(_MRCommandOptionsProtobuf *)proactiveCommandOptions dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"proactiveCommandOptions"];
   }
 
   v51 = self->_has;
   if ((*&v51 & 0x1000000) != 0)
   {
     v64 = [MEMORY[0x1E696AD98] numberWithBool:self->_vocalsControlActive];
-    [v3 setObject:v64 forKey:@"vocalsControlActive"];
+    [dictionary setObject:v64 forKey:@"vocalsControlActive"];
 
     v51 = self->_has;
     if ((*&v51 & 0x40000) == 0)
@@ -1795,7 +1795,7 @@ LABEL_139:
 
   *&v41 = self->_vocalsControlLevel;
   v65 = [MEMORY[0x1E696AD98] numberWithFloat:v41];
-  [v3 setObject:v65 forKey:@"vocalsControlLevel"];
+  [dictionary setObject:v65 forKey:@"vocalsControlLevel"];
 
   v51 = self->_has;
   if ((*&v51 & 0x80000) == 0)
@@ -1812,7 +1812,7 @@ LABEL_140:
 LABEL_159:
   *&v41 = self->_vocalsControlMaxLevel;
   v66 = [MEMORY[0x1E696AD98] numberWithFloat:v41];
-  [v3 setObject:v66 forKey:@"vocalsControlMaxLevel"];
+  [dictionary setObject:v66 forKey:@"vocalsControlMaxLevel"];
 
   v51 = self->_has;
   if ((*&v51 & 0x100000) == 0)
@@ -1829,7 +1829,7 @@ LABEL_141:
 LABEL_160:
   *&v41 = self->_vocalsControlMinLevel;
   v67 = [MEMORY[0x1E696AD98] numberWithFloat:v41];
-  [v3 setObject:v67 forKey:@"vocalsControlMinLevel"];
+  [dictionary setObject:v67 forKey:@"vocalsControlMinLevel"];
 
   v51 = self->_has;
   if ((*&v51 & 0x2000000) == 0)
@@ -1845,7 +1845,7 @@ LABEL_142:
 
 LABEL_161:
   v68 = [MEMORY[0x1E696AD98] numberWithBool:self->_vocalsControlContinuous];
-  [v3 setObject:v68 forKey:@"vocalsControlContinuous"];
+  [dictionary setObject:v68 forKey:@"vocalsControlContinuous"];
 
   v51 = self->_has;
   if ((*&v51 & 2) == 0)
@@ -1861,7 +1861,7 @@ LABEL_143:
 
 LABEL_162:
   v69 = [MEMORY[0x1E696AD98] numberWithDouble:self->_sleepTimerTime];
-  [v3 setObject:v69 forKey:@"sleepTimerTime"];
+  [dictionary setObject:v69 forKey:@"sleepTimerTime"];
 
   v51 = self->_has;
   if ((*&v51 & 0x8000) == 0)
@@ -1887,61 +1887,61 @@ LABEL_163:
     v71 = off_1E76A0B28[sleepTimerStopMode];
   }
 
-  [v3 setObject:v71 forKey:@"sleepTimerStopMode"];
+  [dictionary setObject:v71 forKey:@"sleepTimerStopMode"];
 
   if (*&self->_has)
   {
 LABEL_145:
     v52 = [MEMORY[0x1E696AD98] numberWithDouble:self->_sleepTimerFireDate];
-    [v3 setObject:v52 forKey:@"sleepTimerFireDate"];
+    [dictionary setObject:v52 forKey:@"sleepTimerFireDate"];
   }
 
 LABEL_146:
   dialogOptions = self->_dialogOptions;
   if (dialogOptions)
   {
-    v54 = [(_MRDictionaryProtobuf *)dialogOptions dictionaryRepresentation];
-    [v3 setObject:v54 forKey:@"dialogOptions"];
+    dictionaryRepresentation3 = [(_MRDictionaryProtobuf *)dialogOptions dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"dialogOptions"];
   }
 
   lastSectionContentItemID = self->_lastSectionContentItemID;
   if (lastSectionContentItemID)
   {
-    [v3 setObject:lastSectionContentItemID forKey:@"lastSectionContentItemID"];
+    [dictionary setObject:lastSectionContentItemID forKey:@"lastSectionContentItemID"];
   }
 
   if ((*(&self->_has + 2) & 0x80) != 0)
   {
     v56 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsReferencePosition];
-    [v3 setObject:v56 forKey:@"supportsReferencePosition"];
+    [dictionary setObject:v56 forKey:@"supportsReferencePosition"];
   }
 
   playbackSessionRequirements = self->_playbackSessionRequirements;
   if (playbackSessionRequirements)
   {
-    v58 = [(_MRDictionaryProtobuf *)playbackSessionRequirements dictionaryRepresentation];
-    [v3 setObject:v58 forKey:@"playbackSessionRequirements"];
+    dictionaryRepresentation4 = [(_MRDictionaryProtobuf *)playbackSessionRequirements dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"playbackSessionRequirements"];
   }
 
   v59 = PBRepeatedFloatNSArray();
-  [v3 setObject:v59 forKey:@"extendedSupportedRate"];
+  [dictionary setObject:v59 forKey:@"extendedSupportedRate"];
 
   if (*(&self->_has + 2))
   {
     v60 = [MEMORY[0x1E696AD98] numberWithInt:self->_transitionStyle];
-    [v3 setObject:v60 forKey:@"transitionStyle"];
+    [dictionary setObject:v60 forKey:@"transitionStyle"];
   }
 
-  v61 = v3;
+  v61 = dictionary;
 
   v62 = *MEMORY[0x1E69E9840];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v93 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 8) != 0)
   {
@@ -2460,9 +2460,9 @@ LABEL_85:
   v57 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -2472,8 +2472,8 @@ LABEL_85:
     }
 
 LABEL_96:
-    v4[349] = self->_enabled;
-    *(v4 + 89) |= 0x400000u;
+    toCopy[349] = self->_enabled;
+    *(toCopy + 89) |= 0x400000u;
     if ((*&self->_has & 0x200000) == 0)
     {
       goto LABEL_5;
@@ -2482,8 +2482,8 @@ LABEL_96:
     goto LABEL_4;
   }
 
-  *(v4 + 43) = self->_command;
-  *(v4 + 89) |= 8u;
+  *(toCopy + 43) = self->_command;
+  *(toCopy + 89) |= 8u;
   has = self->_has;
   if ((*&has & 0x400000) != 0)
   {
@@ -2494,19 +2494,19 @@ LABEL_3:
   if ((*&has & 0x200000) != 0)
   {
 LABEL_4:
-    v4[348] = self->_active;
-    *(v4 + 89) |= 0x200000u;
+    toCopy[348] = self->_active;
+    *(toCopy + 89) |= 0x200000u;
   }
 
 LABEL_5:
-  v45 = v4;
+  v45 = toCopy;
   if ([(_MRCommandInfoProtobuf *)self preferredIntervalsCount])
   {
     [v45 clearPreferredIntervals];
-    v6 = [(_MRCommandInfoProtobuf *)self preferredIntervalsCount];
-    if (v6)
+    preferredIntervalsCount = [(_MRCommandInfoProtobuf *)self preferredIntervalsCount];
+    if (preferredIntervalsCount)
     {
-      v7 = v6;
+      v7 = preferredIntervalsCount;
       for (i = 0; i != v7; ++i)
       {
         [(_MRCommandInfoProtobuf *)self preferredIntervalAtIndex:i];
@@ -2537,10 +2537,10 @@ LABEL_5:
   if ([(_MRCommandInfoProtobuf *)self supportedRatesCount])
   {
     [v45 clearSupportedRates];
-    v10 = [(_MRCommandInfoProtobuf *)self supportedRatesCount];
-    if (v10)
+    supportedRatesCount = [(_MRCommandInfoProtobuf *)self supportedRatesCount];
+    if (supportedRatesCount)
     {
-      v11 = v10;
+      v11 = supportedRatesCount;
       for (j = 0; j != v11; ++j)
       {
         [(_MRCommandInfoProtobuf *)self supportedRateAtIndex:j];
@@ -2650,10 +2650,10 @@ LABEL_29:
   if ([(_MRCommandInfoProtobuf *)self supportedPlaybackQueueTypesCount])
   {
     [v45 clearSupportedPlaybackQueueTypes];
-    v14 = [(_MRCommandInfoProtobuf *)self supportedPlaybackQueueTypesCount];
-    if (v14)
+    supportedPlaybackQueueTypesCount = [(_MRCommandInfoProtobuf *)self supportedPlaybackQueueTypesCount];
+    if (supportedPlaybackQueueTypesCount)
     {
-      v15 = v14;
+      v15 = supportedPlaybackQueueTypesCount;
       for (k = 0; k != v15; ++k)
       {
         [v45 addSupportedPlaybackQueueTypes:{-[_MRCommandInfoProtobuf supportedPlaybackQueueTypesAtIndex:](self, "supportedPlaybackQueueTypesAtIndex:", k)}];
@@ -2664,10 +2664,10 @@ LABEL_29:
   if ([(_MRCommandInfoProtobuf *)self supportedCustomQueueIdentifiersCount])
   {
     [v45 clearSupportedCustomQueueIdentifiers];
-    v17 = [(_MRCommandInfoProtobuf *)self supportedCustomQueueIdentifiersCount];
-    if (v17)
+    supportedCustomQueueIdentifiersCount = [(_MRCommandInfoProtobuf *)self supportedCustomQueueIdentifiersCount];
+    if (supportedCustomQueueIdentifiersCount)
     {
-      v18 = v17;
+      v18 = supportedCustomQueueIdentifiersCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(_MRCommandInfoProtobuf *)self supportedCustomQueueIdentifierAtIndex:m];
@@ -2679,10 +2679,10 @@ LABEL_29:
   if ([(_MRCommandInfoProtobuf *)self supportedInsertionPositionsCount])
   {
     [v45 clearSupportedInsertionPositions];
-    v21 = [(_MRCommandInfoProtobuf *)self supportedInsertionPositionsCount];
-    if (v21)
+    supportedInsertionPositionsCount = [(_MRCommandInfoProtobuf *)self supportedInsertionPositionsCount];
+    if (supportedInsertionPositionsCount)
     {
-      v22 = v21;
+      v22 = supportedInsertionPositionsCount;
       for (n = 0; n != v22; ++n)
       {
         [v45 addSupportedInsertionPositions:{-[_MRCommandInfoProtobuf supportedInsertionPositionsAtIndex:](self, "supportedInsertionPositionsAtIndex:", n)}];
@@ -2707,10 +2707,10 @@ LABEL_29:
   if ([(_MRCommandInfoProtobuf *)self supportedPlaybackSessionTypesCount])
   {
     [v45 clearSupportedPlaybackSessionTypes];
-    v25 = [(_MRCommandInfoProtobuf *)self supportedPlaybackSessionTypesCount];
-    if (v25)
+    supportedPlaybackSessionTypesCount = [(_MRCommandInfoProtobuf *)self supportedPlaybackSessionTypesCount];
+    if (supportedPlaybackSessionTypesCount)
     {
-      v26 = v25;
+      v26 = supportedPlaybackSessionTypesCount;
       for (ii = 0; ii != v26; ++ii)
       {
         v28 = [(_MRCommandInfoProtobuf *)self supportedPlaybackSessionTypesAtIndex:ii];
@@ -2722,10 +2722,10 @@ LABEL_29:
   if ([(_MRCommandInfoProtobuf *)self currentPlaybackSessionTypesCount])
   {
     [v45 clearCurrentPlaybackSessionTypes];
-    v29 = [(_MRCommandInfoProtobuf *)self currentPlaybackSessionTypesCount];
-    if (v29)
+    currentPlaybackSessionTypesCount = [(_MRCommandInfoProtobuf *)self currentPlaybackSessionTypesCount];
+    if (currentPlaybackSessionTypesCount)
     {
-      v30 = v29;
+      v30 = currentPlaybackSessionTypesCount;
       for (jj = 0; jj != v30; ++jj)
       {
         v32 = [(_MRCommandInfoProtobuf *)self currentPlaybackSessionTypesAtIndex:jj];
@@ -2748,10 +2748,10 @@ LABEL_29:
   if ([(_MRCommandInfoProtobuf *)self supportedQueueEndActionsCount])
   {
     [v45 clearSupportedQueueEndActions];
-    v33 = [(_MRCommandInfoProtobuf *)self supportedQueueEndActionsCount];
-    if (v33)
+    supportedQueueEndActionsCount = [(_MRCommandInfoProtobuf *)self supportedQueueEndActionsCount];
+    if (supportedQueueEndActionsCount)
     {
-      v34 = v33;
+      v34 = supportedQueueEndActionsCount;
       for (kk = 0; kk != v34; ++kk)
       {
         [v45 addSupportedQueueEndActions:{-[_MRCommandInfoProtobuf supportedQueueEndActionsAtIndex:](self, "supportedQueueEndActionsAtIndex:", kk)}];
@@ -2768,10 +2768,10 @@ LABEL_29:
   if ([(_MRCommandInfoProtobuf *)self supportedPlaybackSessionIdentifiersCount])
   {
     [v45 clearSupportedPlaybackSessionIdentifiers];
-    v36 = [(_MRCommandInfoProtobuf *)self supportedPlaybackSessionIdentifiersCount];
-    if (v36)
+    supportedPlaybackSessionIdentifiersCount = [(_MRCommandInfoProtobuf *)self supportedPlaybackSessionIdentifiersCount];
+    if (supportedPlaybackSessionIdentifiersCount)
     {
-      v37 = v36;
+      v37 = supportedPlaybackSessionIdentifiersCount;
       for (mm = 0; mm != v37; ++mm)
       {
         v39 = [(_MRCommandInfoProtobuf *)self supportedPlaybackSessionIdentifiersAtIndex:mm];
@@ -2920,10 +2920,10 @@ LABEL_78:
   if ([(_MRCommandInfoProtobuf *)self extendedSupportedRatesCount])
   {
     [v45 clearExtendedSupportedRates];
-    v42 = [(_MRCommandInfoProtobuf *)self extendedSupportedRatesCount];
-    if (v42)
+    extendedSupportedRatesCount = [(_MRCommandInfoProtobuf *)self extendedSupportedRatesCount];
+    if (extendedSupportedRatesCount)
     {
-      v43 = v42;
+      v43 = extendedSupportedRatesCount;
       for (nn = 0; nn != v43; ++nn)
       {
         [(_MRCommandInfoProtobuf *)self extendedSupportedRateAtIndex:nn];
@@ -2939,10 +2939,10 @@ LABEL_78:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v73 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 8) != 0)
@@ -2978,7 +2978,7 @@ LABEL_4:
 
 LABEL_5:
   PBRepeatedDoubleCopy();
-  v8 = [(NSString *)self->_localizedTitle copyWithZone:a3];
+  v8 = [(NSString *)self->_localizedTitle copyWithZone:zone];
   v9 = *(v6 + 224);
   *(v6 + 224) = v8;
 
@@ -2997,7 +2997,7 @@ LABEL_5:
   }
 
   PBRepeatedFloatCopy();
-  v11 = [(NSString *)self->_localizedShortTitle copyWithZone:a3];
+  v11 = [(NSString *)self->_localizedShortTitle copyWithZone:zone];
   v12 = *(v6 + 216);
   *(v6 + 216) = v11;
 
@@ -3115,7 +3115,7 @@ LABEL_17:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v65 + 1) + 8 * v18) copyWithZone:a3];
+        v19 = [*(*(&v65 + 1) + 8 * v18) copyWithZone:zone];
         [v6 addSupportedCustomQueueIdentifier:v19];
 
         ++v18;
@@ -3163,7 +3163,7 @@ LABEL_17:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v61 + 1) + 8 * v25) copyWithZone:a3];
+        v26 = [*(*(&v61 + 1) + 8 * v25) copyWithZone:zone];
         [v6 addSupportedPlaybackSessionTypes:v26];
 
         ++v25;
@@ -3196,7 +3196,7 @@ LABEL_17:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v57 + 1) + 8 * v31) copyWithZone:a3];
+        v32 = [*(*(&v57 + 1) + 8 * v31) copyWithZone:zone];
         [v6 addCurrentPlaybackSessionTypes:v32];
 
         ++v31;
@@ -3209,7 +3209,7 @@ LABEL_17:
     while (v29);
   }
 
-  v33 = [(NSString *)self->_playbackSessionIdentifier copyWithZone:a3];
+  v33 = [(NSString *)self->_playbackSessionIdentifier copyWithZone:zone];
   v34 = *(v6 + 248);
   *(v6 + 248) = v33;
 
@@ -3246,7 +3246,7 @@ LABEL_17:
           objc_enumerationMutation(v35);
         }
 
-        v40 = [*(*(&v53 + 1) + 8 * v39) copyWithZone:{a3, v53}];
+        v40 = [*(*(&v53 + 1) + 8 * v39) copyWithZone:{zone, v53}];
         [v6 addSupportedPlaybackSessionIdentifiers:v40];
 
         ++v39;
@@ -3259,7 +3259,7 @@ LABEL_17:
     while (v37);
   }
 
-  v41 = [(_MRCommandOptionsProtobuf *)self->_proactiveCommandOptions copyWithZone:a3];
+  v41 = [(_MRCommandOptionsProtobuf *)self->_proactiveCommandOptions copyWithZone:zone];
   v42 = *(v6 + 272);
   *(v6 + 272) = v41;
 
@@ -3371,11 +3371,11 @@ LABEL_61:
   }
 
 LABEL_62:
-  v44 = [(_MRDictionaryProtobuf *)self->_dialogOptions copyWithZone:a3, v53];
+  v44 = [(_MRDictionaryProtobuf *)self->_dialogOptions copyWithZone:zone, v53];
   v45 = *(v6 + 192);
   *(v6 + 192) = v44;
 
-  v46 = [(NSString *)self->_lastSectionContentItemID copyWithZone:a3];
+  v46 = [(NSString *)self->_lastSectionContentItemID copyWithZone:zone];
   v47 = *(v6 + 208);
   *(v6 + 208) = v46;
 
@@ -3385,7 +3385,7 @@ LABEL_62:
     *(v6 + 356) |= 0x800000u;
   }
 
-  v48 = [(_MRDictionaryProtobuf *)self->_playbackSessionRequirements copyWithZone:a3];
+  v48 = [(_MRDictionaryProtobuf *)self->_playbackSessionRequirements copyWithZone:zone];
   v49 = *(v6 + 256);
   *(v6 + 256) = v48;
 
@@ -3402,19 +3402,19 @@ LABEL_62:
   return v50;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_175;
   }
 
   has = self->_has;
-  v6 = *(v4 + 89);
+  v6 = *(equalCopy + 89);
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_command != *(v4 + 43))
+    if ((v6 & 8) == 0 || self->_command != *(equalCopy + 43))
     {
       goto LABEL_175;
     }
@@ -3432,16 +3432,16 @@ LABEL_62:
       goto LABEL_175;
     }
 
-    v10 = *(v4 + 349);
+    v10 = *(equalCopy + 349);
     if (self->_enabled)
     {
-      if ((*(v4 + 349) & 1) == 0)
+      if ((*(equalCopy + 349) & 1) == 0)
       {
         goto LABEL_175;
       }
     }
 
-    else if (*(v4 + 349))
+    else if (*(equalCopy + 349))
     {
       goto LABEL_175;
     }
@@ -3459,16 +3459,16 @@ LABEL_62:
       goto LABEL_175;
     }
 
-    v11 = *(v4 + 348);
+    v11 = *(equalCopy + 348);
     if (self->_active)
     {
-      if ((*(v4 + 348) & 1) == 0)
+      if ((*(equalCopy + 348) & 1) == 0)
       {
         goto LABEL_175;
       }
     }
 
-    else if (*(v4 + 348))
+    else if (*(equalCopy + 348))
     {
       goto LABEL_175;
     }
@@ -3485,7 +3485,7 @@ LABEL_62:
   }
 
   localizedTitle = self->_localizedTitle;
-  if (localizedTitle | *(v4 + 28))
+  if (localizedTitle | *(equalCopy + 28))
   {
     if (![(NSString *)localizedTitle isEqual:?])
     {
@@ -3494,10 +3494,10 @@ LABEL_62:
   }
 
   v8 = self->_has;
-  v9 = *(v4 + 89);
+  v9 = *(equalCopy + 89);
   if ((*&v8 & 0x80) != 0)
   {
-    if ((v9 & 0x80) == 0 || self->_minimumRating != *(v4 + 59))
+    if ((v9 & 0x80) == 0 || self->_minimumRating != *(equalCopy + 59))
     {
       goto LABEL_175;
     }
@@ -3510,7 +3510,7 @@ LABEL_62:
 
   if ((*&v8 & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_maximumRating != *(v4 + 58))
+    if ((v9 & 0x40) == 0 || self->_maximumRating != *(equalCopy + 58))
     {
       goto LABEL_175;
     }
@@ -3527,7 +3527,7 @@ LABEL_62:
   }
 
   localizedShortTitle = self->_localizedShortTitle;
-  if (localizedShortTitle | *(v4 + 27))
+  if (localizedShortTitle | *(equalCopy + 27))
   {
     if (![(NSString *)localizedShortTitle isEqual:?])
     {
@@ -3536,10 +3536,10 @@ LABEL_62:
   }
 
   v13 = self->_has;
-  v14 = *(v4 + 89);
+  v14 = *(equalCopy + 89);
   if ((*&v13 & 0x800) != 0)
   {
-    if ((v14 & 0x800) == 0 || self->_repeatMode != *(v4 + 70))
+    if ((v14 & 0x800) == 0 || self->_repeatMode != *(equalCopy + 70))
     {
       goto LABEL_175;
     }
@@ -3552,7 +3552,7 @@ LABEL_62:
 
   if ((*&v13 & 0x1000) != 0)
   {
-    if ((v14 & 0x1000) == 0 || self->_shuffleMode != *(v4 + 71))
+    if ((v14 & 0x1000) == 0 || self->_shuffleMode != *(equalCopy + 71))
     {
       goto LABEL_175;
     }
@@ -3565,7 +3565,7 @@ LABEL_62:
 
   if ((*&v13 & 0x400) != 0)
   {
-    if ((v14 & 0x400) == 0 || self->_presentationStyle != *(v4 + 67))
+    if ((v14 & 0x400) == 0 || self->_presentationStyle != *(equalCopy + 67))
     {
       goto LABEL_175;
     }
@@ -3578,7 +3578,7 @@ LABEL_62:
 
   if ((*&v13 & 0x4000) != 0)
   {
-    if ((v14 & 0x4000) == 0 || self->_skipInterval != *(v4 + 73))
+    if ((v14 & 0x4000) == 0 || self->_skipInterval != *(equalCopy + 73))
     {
       goto LABEL_175;
     }
@@ -3591,7 +3591,7 @@ LABEL_62:
 
   if ((*&v13 & 0x100) != 0)
   {
-    if ((v14 & 0x100) == 0 || self->_numAvailableSkips != *(v4 + 60))
+    if ((v14 & 0x100) == 0 || self->_numAvailableSkips != *(equalCopy + 60))
     {
       goto LABEL_175;
     }
@@ -3604,7 +3604,7 @@ LABEL_62:
 
   if ((*&v13 & 0x2000) != 0)
   {
-    if ((v14 & 0x2000) == 0 || self->_skipFrequency != *(v4 + 72))
+    if ((v14 & 0x2000) == 0 || self->_skipFrequency != *(equalCopy + 72))
     {
       goto LABEL_175;
     }
@@ -3617,7 +3617,7 @@ LABEL_62:
 
   if ((*&v13 & 4) != 0)
   {
-    if ((v14 & 4) == 0 || self->_canScrub != *(v4 + 42))
+    if ((v14 & 4) == 0 || self->_canScrub != *(equalCopy + 42))
     {
       goto LABEL_175;
     }
@@ -3634,7 +3634,7 @@ LABEL_62:
   }
 
   supportedCustomQueueIdentifiers = self->_supportedCustomQueueIdentifiers;
-  if (supportedCustomQueueIdentifiers | *(v4 + 38))
+  if (supportedCustomQueueIdentifiers | *(equalCopy + 38))
   {
     if (![(NSMutableArray *)supportedCustomQueueIdentifiers isEqual:?])
     {
@@ -3648,10 +3648,10 @@ LABEL_62:
   }
 
   v16 = self->_has;
-  v17 = *(v4 + 89);
+  v17 = *(equalCopy + 89);
   if ((*&v16 & 0x20000) != 0)
   {
-    if ((v17 & 0x20000) == 0 || self->_upNextItemCount != *(v4 + 83))
+    if ((v17 & 0x20000) == 0 || self->_upNextItemCount != *(equalCopy + 83))
     {
       goto LABEL_175;
     }
@@ -3664,7 +3664,7 @@ LABEL_62:
 
   if ((*&v16 & 0x200) != 0)
   {
-    if ((v17 & 0x200) == 0 || self->_preferredPlaybackRate != *(v4 + 66))
+    if ((v17 & 0x200) == 0 || self->_preferredPlaybackRate != *(equalCopy + 66))
     {
       goto LABEL_175;
     }
@@ -3676,13 +3676,13 @@ LABEL_62:
   }
 
   supportedPlaybackSessionTypes = self->_supportedPlaybackSessionTypes;
-  if (supportedPlaybackSessionTypes | *(v4 + 40) && ![(NSMutableArray *)supportedPlaybackSessionTypes isEqual:?])
+  if (supportedPlaybackSessionTypes | *(equalCopy + 40) && ![(NSMutableArray *)supportedPlaybackSessionTypes isEqual:?])
   {
     goto LABEL_175;
   }
 
   currentPlaybackSessionTypes = self->_currentPlaybackSessionTypes;
-  if (currentPlaybackSessionTypes | *(v4 + 22))
+  if (currentPlaybackSessionTypes | *(equalCopy + 22))
   {
     if (![(NSMutableArray *)currentPlaybackSessionTypes isEqual:?])
     {
@@ -3691,7 +3691,7 @@ LABEL_62:
   }
 
   playbackSessionIdentifier = self->_playbackSessionIdentifier;
-  if (playbackSessionIdentifier | *(v4 + 31))
+  if (playbackSessionIdentifier | *(equalCopy + 31))
   {
     if (![(NSString *)playbackSessionIdentifier isEqual:?])
     {
@@ -3699,10 +3699,10 @@ LABEL_62:
     }
   }
 
-  v21 = *(v4 + 89);
+  v21 = *(equalCopy + 89);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v21 & 0x10) == 0 || self->_currentQueueEndAction != *(v4 + 46))
+    if ((v21 & 0x10) == 0 || self->_currentQueueEndAction != *(equalCopy + 46))
     {
       goto LABEL_175;
     }
@@ -3720,10 +3720,10 @@ LABEL_175:
     goto LABEL_176;
   }
 
-  v22 = *(v4 + 89);
+  v22 = *(equalCopy + 89);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v22 & 0x20) == 0 || self->_disabledReason != *(v4 + 50))
+    if ((v22 & 0x20) == 0 || self->_disabledReason != *(equalCopy + 50))
     {
       goto LABEL_175;
     }
@@ -3735,13 +3735,13 @@ LABEL_175:
   }
 
   supportedPlaybackSessionIdentifiers = self->_supportedPlaybackSessionIdentifiers;
-  if (supportedPlaybackSessionIdentifiers | *(v4 + 39) && ![(NSMutableArray *)supportedPlaybackSessionIdentifiers isEqual:?])
+  if (supportedPlaybackSessionIdentifiers | *(equalCopy + 39) && ![(NSMutableArray *)supportedPlaybackSessionIdentifiers isEqual:?])
   {
     goto LABEL_175;
   }
 
   proactiveCommandOptions = self->_proactiveCommandOptions;
-  if (proactiveCommandOptions | *(v4 + 34))
+  if (proactiveCommandOptions | *(equalCopy + 34))
   {
     if (![(_MRCommandOptionsProtobuf *)proactiveCommandOptions isEqual:?])
     {
@@ -3750,7 +3750,7 @@ LABEL_175:
   }
 
   v25 = self->_has;
-  v26 = *(v4 + 89);
+  v26 = *(equalCopy + 89);
   if ((*&v25 & 0x1000000) != 0)
   {
     if ((v26 & 0x1000000) == 0)
@@ -3758,16 +3758,16 @@ LABEL_175:
       goto LABEL_175;
     }
 
-    v27 = *(v4 + 351);
+    v27 = *(equalCopy + 351);
     if (self->_vocalsControlActive)
     {
-      if ((*(v4 + 351) & 1) == 0)
+      if ((*(equalCopy + 351) & 1) == 0)
       {
         goto LABEL_175;
       }
     }
 
-    else if (*(v4 + 351))
+    else if (*(equalCopy + 351))
     {
       goto LABEL_175;
     }
@@ -3780,7 +3780,7 @@ LABEL_175:
 
   if ((*&v25 & 0x40000) != 0)
   {
-    if ((v26 & 0x40000) == 0 || self->_vocalsControlLevel != *(v4 + 84))
+    if ((v26 & 0x40000) == 0 || self->_vocalsControlLevel != *(equalCopy + 84))
     {
       goto LABEL_175;
     }
@@ -3793,7 +3793,7 @@ LABEL_175:
 
   if ((*&v25 & 0x80000) != 0)
   {
-    if ((v26 & 0x80000) == 0 || self->_vocalsControlMaxLevel != *(v4 + 85))
+    if ((v26 & 0x80000) == 0 || self->_vocalsControlMaxLevel != *(equalCopy + 85))
     {
       goto LABEL_175;
     }
@@ -3806,7 +3806,7 @@ LABEL_175:
 
   if ((*&v25 & 0x100000) != 0)
   {
-    if ((v26 & 0x100000) == 0 || self->_vocalsControlMinLevel != *(v4 + 86))
+    if ((v26 & 0x100000) == 0 || self->_vocalsControlMinLevel != *(equalCopy + 86))
     {
       goto LABEL_175;
     }
@@ -3824,16 +3824,16 @@ LABEL_175:
       goto LABEL_175;
     }
 
-    v28 = *(v4 + 352);
+    v28 = *(equalCopy + 352);
     if (self->_vocalsControlContinuous)
     {
-      if ((*(v4 + 352) & 1) == 0)
+      if ((*(equalCopy + 352) & 1) == 0)
       {
         goto LABEL_175;
       }
     }
 
-    else if (*(v4 + 352))
+    else if (*(equalCopy + 352))
     {
       goto LABEL_175;
     }
@@ -3846,7 +3846,7 @@ LABEL_175:
 
   if ((*&v25 & 2) != 0)
   {
-    if ((v26 & 2) == 0 || self->_sleepTimerTime != *(v4 + 20))
+    if ((v26 & 2) == 0 || self->_sleepTimerTime != *(equalCopy + 20))
     {
       goto LABEL_175;
     }
@@ -3859,7 +3859,7 @@ LABEL_175:
 
   if ((*&v25 & 0x8000) != 0)
   {
-    if ((v26 & 0x8000) == 0 || self->_sleepTimerStopMode != *(v4 + 74))
+    if ((v26 & 0x8000) == 0 || self->_sleepTimerStopMode != *(equalCopy + 74))
     {
       goto LABEL_175;
     }
@@ -3872,7 +3872,7 @@ LABEL_175:
 
   if (*&v25)
   {
-    if ((v26 & 1) == 0 || self->_sleepTimerFireDate != *(v4 + 19))
+    if ((v26 & 1) == 0 || self->_sleepTimerFireDate != *(equalCopy + 19))
     {
       goto LABEL_175;
     }
@@ -3884,13 +3884,13 @@ LABEL_175:
   }
 
   dialogOptions = self->_dialogOptions;
-  if (dialogOptions | *(v4 + 24) && ![(_MRDictionaryProtobuf *)dialogOptions isEqual:?])
+  if (dialogOptions | *(equalCopy + 24) && ![(_MRDictionaryProtobuf *)dialogOptions isEqual:?])
   {
     goto LABEL_175;
   }
 
   lastSectionContentItemID = self->_lastSectionContentItemID;
-  if (lastSectionContentItemID | *(v4 + 26))
+  if (lastSectionContentItemID | *(equalCopy + 26))
   {
     if (![(NSString *)lastSectionContentItemID isEqual:?])
     {
@@ -3898,15 +3898,15 @@ LABEL_175:
     }
   }
 
-  v31 = *(v4 + 89);
+  v31 = *(equalCopy + 89);
   if ((*(&self->_has + 2) & 0x80) != 0)
   {
     if ((v31 & 0x800000) != 0)
     {
-      v32 = *(v4 + 350);
+      v32 = *(equalCopy + 350);
       if (self->_supportsReferencePosition)
       {
-        if ((*(v4 + 350) & 1) == 0)
+        if ((*(equalCopy + 350) & 1) == 0)
         {
           goto LABEL_175;
         }
@@ -3914,7 +3914,7 @@ LABEL_175:
         goto LABEL_167;
       }
 
-      if ((*(v4 + 350) & 1) == 0)
+      if ((*(equalCopy + 350) & 1) == 0)
       {
         goto LABEL_167;
       }
@@ -3930,15 +3930,15 @@ LABEL_175:
 
 LABEL_167:
   playbackSessionRequirements = self->_playbackSessionRequirements;
-  if (playbackSessionRequirements | *(v4 + 32) && ![(_MRDictionaryProtobuf *)playbackSessionRequirements isEqual:?]|| !PBRepeatedFloatIsEqual())
+  if (playbackSessionRequirements | *(equalCopy + 32) && ![(_MRDictionaryProtobuf *)playbackSessionRequirements isEqual:?]|| !PBRepeatedFloatIsEqual())
   {
     goto LABEL_175;
   }
 
-  v34 = *(v4 + 89);
+  v34 = *(equalCopy + 89);
   if (*(&self->_has + 2))
   {
-    if ((v34 & 0x10000) == 0 || self->_transitionStyle != *(v4 + 82))
+    if ((v34 & 0x10000) == 0 || self->_transitionStyle != *(equalCopy + 82))
     {
       goto LABEL_175;
     }
@@ -4478,17 +4478,17 @@ LABEL_90:
   return v87 ^ v88 ^ v86 ^ v85 ^ v83 ^ v82 ^ v81 ^ v84 ^ v80 ^ v79 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v56 ^ v58 ^ v36 ^ v57 ^ v43 ^ v55 ^ v44 ^ v48 ^ v49 ^ v50 ^ v51 ^ v52 ^ v53;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 89);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 89);
   if ((v6 & 8) != 0)
   {
-    self->_command = *(v4 + 43);
+    self->_command = *(fromCopy + 43);
     *&self->_has |= 8u;
-    v6 = *(v4 + 89);
+    v6 = *(fromCopy + 89);
     if ((v6 & 0x400000) == 0)
     {
 LABEL_3:
@@ -4506,20 +4506,20 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_enabled = *(v4 + 349);
+  self->_enabled = *(fromCopy + 349);
   *&self->_has |= 0x400000u;
-  if ((*(v4 + 89) & 0x200000) != 0)
+  if ((*(fromCopy + 89) & 0x200000) != 0)
   {
 LABEL_4:
-    self->_active = *(v4 + 348);
+    self->_active = *(fromCopy + 348);
     *&self->_has |= 0x200000u;
   }
 
 LABEL_5:
-  v7 = [v4 preferredIntervalsCount];
-  if (v7)
+  preferredIntervalsCount = [fromCopy preferredIntervalsCount];
+  if (preferredIntervalsCount)
   {
-    v8 = v7;
+    v8 = preferredIntervalsCount;
     for (i = 0; i != v8; ++i)
     {
       [v5 preferredIntervalAtIndex:i];
@@ -4546,10 +4546,10 @@ LABEL_5:
     *&self->_has |= 0x40u;
   }
 
-  v11 = [v5 supportedRatesCount];
-  if (v11)
+  supportedRatesCount = [v5 supportedRatesCount];
+  if (supportedRatesCount)
   {
-    v12 = v11;
+    v12 = supportedRatesCount;
     for (j = 0; j != v12; ++j)
     {
       [v5 supportedRateAtIndex:j];
@@ -4655,10 +4655,10 @@ LABEL_26:
   }
 
 LABEL_27:
-  v15 = [v5 supportedPlaybackQueueTypesCount];
-  if (v15)
+  supportedPlaybackQueueTypesCount = [v5 supportedPlaybackQueueTypesCount];
+  if (supportedPlaybackQueueTypesCount)
   {
-    v16 = v15;
+    v16 = supportedPlaybackQueueTypesCount;
     for (k = 0; k != v16; ++k)
     {
       -[_MRCommandInfoProtobuf addSupportedPlaybackQueueTypes:](self, "addSupportedPlaybackQueueTypes:", [v5 supportedPlaybackQueueTypesAtIndex:k]);
@@ -4693,10 +4693,10 @@ LABEL_27:
     while (v20);
   }
 
-  v23 = [v5 supportedInsertionPositionsCount];
-  if (v23)
+  supportedInsertionPositionsCount = [v5 supportedInsertionPositionsCount];
+  if (supportedInsertionPositionsCount)
   {
-    v24 = v23;
+    v24 = supportedInsertionPositionsCount;
     for (n = 0; n != v24; ++n)
     {
       -[_MRCommandInfoProtobuf addSupportedInsertionPositions:](self, "addSupportedInsertionPositions:", [v5 supportedInsertionPositionsAtIndex:n]);
@@ -4784,10 +4784,10 @@ LABEL_27:
     *&self->_has |= 0x10u;
   }
 
-  v37 = [v5 supportedQueueEndActionsCount];
-  if (v37)
+  supportedQueueEndActionsCount = [v5 supportedQueueEndActionsCount];
+  if (supportedQueueEndActionsCount)
   {
-    v38 = v37;
+    v38 = supportedQueueEndActionsCount;
     for (kk = 0; kk != v38; ++kk)
     {
       -[_MRCommandInfoProtobuf addSupportedQueueEndActions:](self, "addSupportedQueueEndActions:", [v5 supportedQueueEndActionsAtIndex:kk]);
@@ -4992,10 +4992,10 @@ LABEL_98:
     [(_MRCommandInfoProtobuf *)self setPlaybackSessionRequirements:?];
   }
 
-  v52 = [v5 extendedSupportedRatesCount];
-  if (v52)
+  extendedSupportedRatesCount = [v5 extendedSupportedRatesCount];
+  if (extendedSupportedRatesCount)
   {
-    v53 = v52;
+    v53 = extendedSupportedRatesCount;
     for (nn = 0; nn != v53; ++nn)
     {
       [v5 extendedSupportedRateAtIndex:nn];

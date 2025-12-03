@@ -1,5 +1,5 @@
 @interface PMLDataChunkPlist
-+ (id)chunkWithPlist:(id)a3;
++ (id)chunkWithPlist:(id)plist;
 - (id)plist;
 @end
 
@@ -8,18 +8,18 @@
 - (id)plist
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_parsed)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_parsed)
   {
-    backingData = v2->super._backingData;
+    backingData = selfCopy->super._backingData;
     v11 = 0;
     v4 = [MEMORY[0x277CCAC58] propertyListWithData:backingData options:0 format:0 error:&v11];
     v5 = v11;
-    plist = v2->_plist;
-    v2->_plist = v4;
+    plist = selfCopy->_plist;
+    selfCopy->_plist = v4;
 
-    if (!v2->_plist)
+    if (!selfCopy->_plist)
     {
       v7 = PML_LogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -31,19 +31,19 @@
     }
   }
 
-  v8 = v2->_plist;
-  objc_sync_exit(v2);
+  v8 = selfCopy->_plist;
+  objc_sync_exit(selfCopy);
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-+ (id)chunkWithPlist:(id)a3
++ (id)chunkWithPlist:(id)plist
 {
   v12 = *MEMORY[0x277D85DE8];
   v9 = 0;
-  v3 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:&v9];
+  v3 = [MEMORY[0x277CCAC58] dataWithPropertyList:plist format:200 options:0 error:&v9];
   v4 = v9;
   if (v3)
   {

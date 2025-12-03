@@ -1,27 +1,27 @@
 @interface OpusNewClassicProducer
-- (BOOL)_authorBootstrap:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorCluster:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorFinish:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)_authorProduce:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)liveAuthorInitialBootstrap:(id)a3 error:(id *)a4;
+- (BOOL)_authorBootstrap:(id)bootstrap progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorCluster:(id)cluster progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorFinish:(id)finish progressBlock:(id)block error:(id *)error;
+- (BOOL)_authorProduce:(id)produce progressBlock:(id)block error:(id *)error;
+- (BOOL)liveAuthorInitialBootstrap:(id)bootstrap error:(id *)error;
 - (BOOL)needsLiveAuthoring;
 - (BOOL)resetLiveAuthoring;
 - (OpusNewClassicProducer)init;
 - (float)currentLiveAuthoringProgress;
-- (float)liveAuthoringProgressForMediaItem:(id)a3;
-- (id)_addPageForMediaItem:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (id)_contentModeOfPageForAllResolutions:(double)a3;
-- (id)_createContentEffectSettingsForMediatItemAtIndex:(unint64_t)a3 metadata:(id)a4;
-- (id)_fontSizesFromScreenSizes:(id)a3;
+- (float)liveAuthoringProgressForMediaItem:(id)item;
+- (id)_addPageForMediaItem:(id)item progressBlock:(id)block error:(id *)error;
+- (id)_contentModeOfPageForAllResolutions:(double)resolutions;
+- (id)_createContentEffectSettingsForMediatItemAtIndex:(unint64_t)index metadata:(id)metadata;
+- (id)_fontSizesFromScreenSizes:(id)sizes;
 - (id)_setupResolutions;
-- (id)_titleFramesFromScreenSizes:(id)a3;
-- (id)liveAuthorNextChunk:(id)a3 error:(id *)a4;
-- (id)stringForTransitionDirection:(unint64_t)a3;
-- (id)transitionForType:(id)a3 withDuration:(double)a4 withDirection:(unint64_t)a5;
+- (id)_titleFramesFromScreenSizes:(id)sizes;
+- (id)liveAuthorNextChunk:(id)chunk error:(id *)error;
+- (id)stringForTransitionDirection:(unint64_t)direction;
+- (id)transitionForType:(id)type withDuration:(double)duration withDirection:(unint64_t)direction;
 - (unint64_t)totalNumberOfLiveAuthoringItems;
-- (void)_addSynopsisGuideline:(id)a3 forPageName:(id)a4 withTextItem:(id)a5;
+- (void)_addSynopsisGuideline:(id)guideline forPageName:(id)name withTextItem:(id)item;
 - (void)_initCouchPotatoSettings;
-- (void)_initDurationsForMediaItems:(id)a3;
+- (void)_initDurationsForMediaItems:(id)items;
 - (void)_initNavigatorSettings;
 - (void)_initTemplates;
 - (void)dealloc;
@@ -64,11 +64,11 @@
   [(OpusNewClassicProducer *)&v5 dealloc];
 }
 
-- (id)_createContentEffectSettingsForMediatItemAtIndex:(unint64_t)a3 metadata:(id)a4
+- (id)_createContentEffectSettingsForMediatItemAtIndex:(unint64_t)index metadata:(id)metadata
 {
   v7 = +[NSMutableDictionary dictionary];
   v8 = [NSMutableDictionary dictionaryWithDictionary:&off_91C0];
-  [a4 aspectRatio];
+  [metadata aspectRatio];
   if (v9 >= 2.0)
   {
     v11 = 1;
@@ -76,7 +76,7 @@
 
   else
   {
-    [a4 aspectRatio];
+    [metadata aspectRatio];
     v11 = v10 <= 0.5;
   }
 
@@ -96,17 +96,17 @@
 
   else
   {
-    if ([a4 hasRegionsOfInterest])
+    if ([metadata hasRegionsOfInterest])
     {
-      v28 = a3;
+      indexCopy = index;
       v29 = v8;
-      v14 = [a4 regionsOfInterest];
-      v15 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v14, "count")}];
+      regionsOfInterest = [metadata regionsOfInterest];
+      v15 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(regionsOfInterest, "count")}];
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v16 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v16 = [regionsOfInterest countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v16)
       {
         v17 = v16;
@@ -118,7 +118,7 @@
           {
             if (*v31 != v18)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(regionsOfInterest);
             }
 
             v21 = [*(*(&v30 + 1) + 8 * i) objectForKeyedSubscript:v19];
@@ -128,14 +128,14 @@
             }
           }
 
-          v17 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v17 = [regionsOfInterest countByEnumeratingWithState:&v30 objects:v34 count:16];
         }
 
         while (v17);
       }
 
       [v7 setObject:v15 forKey:@"mediaItemRegionsOfInterest"];
-      a3 = v28;
+      index = indexCopy;
       v8 = v29;
     }
 
@@ -154,7 +154,7 @@
   v22 = arc4random();
   [v7 setObject:+[NSNumber numberWithInteger:](NSNumber forKeyedSubscript:{"numberWithInteger:", arc4random() | (v22 << 32)), kOKWidgetContentEffectSettingSeed}];
   [v7 setObject:&__kCFBooleanTrue forKeyedSubscript:@"autoplay"];
-  [a4 aspectRatio];
+  [metadata aspectRatio];
   [v7 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"mediaItemAspectRatio"}];
   if (v11)
   {
@@ -167,7 +167,7 @@
     couchStepDurations = self->_couchStepDurations;
     if (couchStepDurations)
     {
-      v24 = [(NSMutableArray *)couchStepDurations objectAtIndexedSubscript:a3];
+      v24 = [(NSMutableArray *)couchStepDurations objectAtIndexedSubscript:index];
     }
 
     else
@@ -185,51 +185,51 @@
   return v8;
 }
 
-- (id)transitionForType:(id)a3 withDuration:(double)a4 withDirection:(unint64_t)a5
+- (id)transitionForType:(id)type withDuration:(double)duration withDirection:(unint64_t)direction
 {
-  if (a4 <= 0.1)
+  if (duration <= 0.1)
   {
-    NSLog(@"ERROR: invalid transition duration: %.3f", *&a4);
+    NSLog(@"ERROR: invalid transition duration: %.3f", *&duration);
     return 0;
   }
 
-  v9 = [NSString stringWithFormat:@"OKTransition%@", a3];
-  v10 = [(OpusNewClassicProducer *)self stringForTransitionDirection:a5];
-  if ([a3 isEqualToString:@"Dissolve"])
+  type = [NSString stringWithFormat:@"OKTransition%@", type];
+  v10 = [(OpusNewClassicProducer *)self stringForTransitionDirection:direction];
+  if ([type isEqualToString:@"Dissolve"])
   {
     v10 = 0;
   }
 
   else
   {
-    if ([a3 isEqualToString:@"Control"])
+    if ([type isEqualToString:@"Control"])
     {
-      v9 = @"OKTransitionParallaxControl";
+      type = @"OKTransitionParallaxControl";
       goto LABEL_16;
     }
 
-    if ([a3 isEqualToString:@"Uncover"])
+    if ([type isEqualToString:@"Uncover"])
     {
-      v9 = @"OKTransitionParallaxReveal";
+      type = @"OKTransitionParallaxReveal";
       goto LABEL_16;
     }
 
-    if ([a3 isEqualToString:@"Cover"])
+    if ([type isEqualToString:@"Cover"])
     {
-      v9 = @"OKTransitionParallaxMoveIn";
+      type = @"OKTransitionParallaxMoveIn";
       goto LABEL_16;
     }
 
-    if ([a3 isEqualToString:@"FadeThruColor"])
+    if ([type isEqualToString:@"FadeThruColor"])
     {
-      v9 = @"OKTransitionFadeThruColor";
+      type = @"OKTransitionFadeThruColor";
       goto LABEL_16;
     }
   }
 
-  if (!v9)
+  if (!type)
   {
-    NSLog(@"ERROR: unknown transition: %@", a3);
+    NSLog(@"ERROR: unknown transition: %@", type);
     return 0;
   }
 
@@ -242,37 +242,37 @@ LABEL_16:
     [v12 setValue:v10 forKey:@"direction"];
   }
 
-  [v13 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", a4), @"duration"}];
-  [v11 setValue:v9 forKey:@"class"];
+  [v13 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", duration), @"duration"}];
+  [v11 setValue:type forKey:@"class"];
   [v11 setValue:v13 forKey:@"settings"];
   return v11;
 }
 
-- (id)stringForTransitionDirection:(unint64_t)a3
+- (id)stringForTransitionDirection:(unint64_t)direction
 {
-  if (a3 - 1 > 3)
+  if (direction - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_8280 + a3 - 1);
+    return *(&off_8280 + direction - 1);
   }
 }
 
-- (void)_addSynopsisGuideline:(id)a3 forPageName:(id)a4 withTextItem:(id)a5
+- (void)_addSynopsisGuideline:(id)guideline forPageName:(id)name withTextItem:(id)item
 {
   v17[0] = &off_9328;
   v16[0] = kOKPresentationGuidelineAuthoringSynopsisItemType;
   v16[1] = kOKPresentationGuidelineAuthoringSynopsisItemValue;
-  v17[1] = [objc_msgSend(a3 "uniqueURL")];
+  v17[1] = [objc_msgSend(guideline "uniqueURL")];
   v16[2] = kOKPresentationGuidelineAuthoringSynopsisItemNavigationKeyPath;
-  v17[2] = [a4 stringByAppendingString:@".media"];
+  v17[2] = [name stringByAppendingString:@".media"];
   v8 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:3];
-  if (a5)
+  if (item)
   {
-    v15[0] = a5;
+    v15[0] = item;
     v15[1] = v8;
     v9 = v15;
     v10 = 2;
@@ -288,18 +288,18 @@ LABEL_16:
   v11 = [NSArray arrayWithObjects:v9 count:v10];
   v12[0] = kOKPresentationGuidelineAuthoringSynopsisGroupName;
   v12[1] = kOKPresentationGuidelineAuthoringSynopsisGroupItems;
-  v13[0] = a4;
+  v13[0] = name;
   v13[1] = v11;
   [(NSMutableArray *)self->_synopsisGroups addObject:[NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2]];
 }
 
-- (id)_addPageForMediaItem:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (id)_addPageForMediaItem:(id)item progressBlock:(id)block error:(id *)error
 {
   v9 = [objc_msgSend(objc_msgSend(-[OpusNewClassicProducer presentation](self "presentation")];
   v10 = [NSString stringWithFormat:@"page%ld", v9 + 1];
   v11 = [NSString stringWithFormat:@"\ndocument.mainNavigator.navigateToNext();"];
-  v52 = a3;
-  v12 = [a3 metadataWithProgress:a4 error:a5];
+  itemCopy = item;
+  v12 = [item metadataWithProgress:block error:error];
   v13 = [objc_msgSend(objc_msgSend(objc_msgSend(-[OpusNewClassicProducer presentation](self "presentation")];
   v14 = [v12 type] != &dword_0 + 3;
   if (!v12)
@@ -358,7 +358,7 @@ LABEL_14:
   v24 = [-[OpusNewClassicProducer presentation](self "presentation")];
   v25 = [NSString stringWithFormat:@"page%ld", v9 + 1];
   v59 = @"media.url";
-  v60 = [objc_msgSend(a3 "uniqueURL")];
+  v60 = [objc_msgSend(item "uniqueURL")];
   v26 = [NSMutableDictionary dictionaryWithDictionary:[NSDictionary dictionaryWithObjects:&v60 forKeys:&v59 count:1]];
   [(NSMutableDictionary *)v26 setObject:@"page.data = null;" forKey:@"didAppearActionScript"];
   if (v14)
@@ -431,17 +431,17 @@ LABEL_29:
     goto LABEL_41;
   }
 
-  v34 = [(NSDictionary *)v24 text];
-  v35 = [(NSDictionary *)v24 attributedText];
-  if (!(v34 | v35))
+  text = [(NSDictionary *)v24 text];
+  attributedText = [(NSDictionary *)v24 attributedText];
+  if (!(text | attributedText))
   {
     v39 = 0;
     v24 = 0;
     goto LABEL_29;
   }
 
-  v36 = v35;
-  if (v35)
+  v36 = attributedText;
+  if (attributedText)
   {
     v37 = @"subtitle.attributedText";
     v38 = v26;
@@ -451,7 +451,7 @@ LABEL_29:
   {
     v37 = @"subtitle.text";
     v38 = v26;
-    v36 = v34;
+    v36 = text;
   }
 
   [(NSMutableDictionary *)v38 setObject:v36 forKeyedSubscript:v37];
@@ -503,7 +503,7 @@ LABEL_41:
   [-[OpusNewClassicProducer presentation](self "presentation")];
   if (self->_synopsisGroups)
   {
-    [(OpusNewClassicProducer *)self _addSynopsisGuideline:v52 forPageName:v25 withTextItem:v24];
+    [(OpusNewClassicProducer *)self _addSynopsisGuideline:itemCopy forPageName:v25 withTextItem:v24];
   }
 
   [objc_msgSend(-[OpusNewClassicProducer presentation](self "presentation")];
@@ -512,7 +512,7 @@ LABEL_41:
     v48 = kOKPresentationThumbnailNavigatorName;
     v49 = [OKPresentationPage pageWithName:[NSString stringWithFormat:@"%@-%@" templateName:v25 navigatorName:kOKPresentationThumbnailNavigatorName] properties:v43 settings:0 userData:0 widgets:v26, 0, 0];
     [-[OpusNewClassicProducer presentation](self "presentation")];
-    v53 = [(OKPresentationPage *)v49 name];
+    name = [(OKPresentationPage *)v49 name];
     [-[OpusNewClassicProducer presentation](self "presentation")];
     if (!v40)
     {
@@ -525,7 +525,7 @@ LABEL_41:
   if (v40)
   {
 LABEL_53:
-    [objc_msgSend(-[OKPresentationPage widgetWithName:](v44 widgetWithName:{@"subtitle", "userSettings"), "setObject:forKeyedSubscript:", objc_msgSend(objc_msgSend(v52, "uniqueURL"), "absoluteString"), @"associatedMediaURL"}];
+    [objc_msgSend(-[OKPresentationPage widgetWithName:](v44 widgetWithName:{@"subtitle", "userSettings"), "setObject:forKeyedSubscript:", objc_msgSend(objc_msgSend(itemCopy, "uniqueURL"), "absoluteString"), @"associatedMediaURL"}];
   }
 
 LABEL_54:
@@ -548,7 +548,7 @@ LABEL_54:
   return &off_9370;
 }
 
-- (id)_contentModeOfPageForAllResolutions:(double)a3
+- (id)_contentModeOfPageForAllResolutions:(double)resolutions
 {
   v5 = +[NSMutableDictionary dictionary];
   v6 = [-[OpusNewClassicProducer presentation](self "presentation")];
@@ -573,14 +573,14 @@ LABEL_54:
 
         [*(*(&v18 + 1) + 8 * i) CGSizeValue];
         v14 = v12 / v13;
-        if (v12 / v13 <= a3)
+        if (v12 / v13 <= resolutions)
         {
-          v15 = (a3 - v14) / a3;
+          v15 = (resolutions - v14) / resolutions;
         }
 
         else
         {
-          v15 = (1.0 / a3 + -1.0 / v14) / (1.0 / a3);
+          v15 = (1.0 / resolutions + -1.0 / v14) / (1.0 / resolutions);
         }
 
         v16 = [OKRuntime resolutionStringWithSize:1 keepAspectRatio:?];
@@ -621,7 +621,7 @@ LABEL_54:
   v3 = [-[OpusNewClassicProducer presentation](self "presentation")];
   if (v3 && (v4 = v3, [v3 count]))
   {
-    v18 = self;
+    selfCopy = self;
     v5 = +[NSMutableArray array];
     v6 = +[NSMutableDictionary dictionary];
     v19 = 0u;
@@ -660,7 +660,7 @@ LABEL_54:
       while (v8);
     }
 
-    [objc_msgSend(-[OpusNewClassicProducer presentation](v18 "presentation")];
+    [objc_msgSend(-[OpusNewClassicProducer presentation](selfCopy "presentation")];
   }
 
   else
@@ -676,15 +676,15 @@ LABEL_54:
   return v6;
 }
 
-- (id)_titleFramesFromScreenSizes:(id)a3
+- (id)_titleFramesFromScreenSizes:(id)sizes
 {
   v4 = +[NSMutableDictionary dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [sizes allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -695,15 +695,15 @@ LABEL_54:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        [objc_msgSend(a3 objectForKeyedSubscript:{v10), "CGRectValue"}];
+        [objc_msgSend(sizes objectForKeyedSubscript:{v10), "CGRectValue"}];
         [v4 setObject:+[NSValue valueWithCGRect:](NSValue forKey:{"valueWithCGRect:"), v10}];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -712,15 +712,15 @@ LABEL_54:
   return v4;
 }
 
-- (id)_fontSizesFromScreenSizes:(id)a3
+- (id)_fontSizesFromScreenSizes:(id)sizes
 {
   v4 = +[NSMutableDictionary dictionary];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [sizes allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -731,7 +731,7 @@ LABEL_54:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -758,7 +758,7 @@ LABEL_54:
         [v4 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", v11), v10}];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -779,9 +779,9 @@ LABEL_54:
   }
 
   v19 = v3;
-  v7 = [(OpusNewClassicProducer *)self _setupResolutions];
-  v8 = [(OpusNewClassicProducer *)self _titleFramesFromScreenSizes:v7];
-  v9 = [(OpusNewClassicProducer *)self _fontSizesFromScreenSizes:v7];
+  _setupResolutions = [(OpusNewClassicProducer *)self _setupResolutions];
+  v8 = [(OpusNewClassicProducer *)self _titleFramesFromScreenSizes:_setupResolutions];
+  v9 = [(OpusNewClassicProducer *)self _fontSizesFromScreenSizes:_setupResolutions];
   v10 = [objc_msgSend(objc_msgSend(objc_msgSend(-[OpusNewClassicProducer presentation](self "presentation")];
   v27[0] = @"fontName";
   v27[1] = @"@fontSize";
@@ -835,7 +835,7 @@ LABEL_54:
   [-[OpusNewClassicProducer presentation](self "presentation")];
   v23[0] = @"@frame";
   v23[1] = @"contentMode";
-  v24[0] = v7;
+  v24[0] = _setupResolutions;
   v24[1] = v18;
   v23[2] = @"backgroundColor";
   v23[3] = @"disablePlayButton";
@@ -858,17 +858,17 @@ LABEL_54:
 
 - (void)_initCouchPotatoSettings
 {
-  v2 = [(OpusNewClassicProducer *)self presentation];
-  v3 = [v2 info];
-  [v3 setCouchPotatoSupported:1];
-  [v3 setCouchPotatoDelay:0.0];
-  [v2 guidelineAuthoringPageDuration];
-  [v3 setCouchPotatoStepDuration:?];
-  [v2 addCouch:{+[OKPresentationCouch couchWithName:settings:steps:restartScript:](OKPresentationCouch, "couchWithName:settings:steps:restartScript:", kOKPresentationRootNavigatorName, &__NSDictionary0__struct, 0, @"document.mainNavigator.navigateToPage('page1', true, info.completionBlock);")}];
-  v4 = [v2 rootCouch];
+  presentation = [(OpusNewClassicProducer *)self presentation];
+  info = [presentation info];
+  [info setCouchPotatoSupported:1];
+  [info setCouchPotatoDelay:0.0];
+  [presentation guidelineAuthoringPageDuration];
+  [info setCouchPotatoStepDuration:?];
+  [presentation addCouch:{+[OKPresentationCouch couchWithName:settings:steps:restartScript:](OKPresentationCouch, "couchWithName:settings:steps:restartScript:", kOKPresentationRootNavigatorName, &__NSDictionary0__struct, 0, @"document.mainNavigator.navigateToPage('page1', true, info.completionBlock);")}];
+  rootCouch = [presentation rootCouch];
   v5 = [OKPresentationCouchStep couchStepWithAnchorPageName:@"page1" script:@"document.mainNavigator.navigateToNext();" duration:&__NSDictionary0__struct settings:0.0];
 
-  [v4 setLoopStep:v5];
+  [rootCouch setLoopStep:v5];
 }
 
 - (void)_initNavigatorSettings
@@ -920,10 +920,10 @@ LABEL_7:
   }
 
 LABEL_8:
-  v12 = [-[OpusNewClassicProducer presentation](self presentation];
-  if (v12)
+  presentation = [-[OpusNewClassicProducer presentation](self presentation];
+  if (presentation)
   {
-    [v3 setObject:v12 forKeyedSubscript:@"interactiveTransitionSettings"];
+    [v3 setObject:presentation forKeyedSubscript:@"interactiveTransitionSettings"];
   }
 
   v13 = [-[OpusNewClassicProducer presentation](self "presentation")];
@@ -985,7 +985,7 @@ LABEL_8:
   [-[OpusNewClassicProducer presentation](self "presentation")];
 }
 
-- (void)_initDurationsForMediaItems:(id)a3
+- (void)_initDurationsForMediaItems:(id)items
 {
   [-[OpusNewClassicProducer presentation](self "presentation")];
   v6 = v5;
@@ -995,7 +995,7 @@ LABEL_8:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v46 objects:v50 count:16];
+  v8 = [items countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (!v8)
   {
     v45 = -1;
@@ -1025,7 +1025,7 @@ LABEL_8:
     {
       if (*v47 != v11)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(items);
       }
 
       v15 = *(*(&v46 + 1) + 8 * v13);
@@ -1041,10 +1041,10 @@ LABEL_8:
         v18 = -1.0;
       }
 
-      v19 = [v15 metadata];
-      if ([v19 type] == &dword_0 + 3)
+      metadata = [v15 metadata];
+      if ([metadata type] == &dword_0 + 3)
       {
-        [v19 duration];
+        [metadata duration];
 LABEL_16:
         [v7 addObject:{+[OFRescalableSegment nonRescalableSegmentWithDuration:](OFRescalableSegment, "nonRescalableSegmentWithDuration:", v20)}];
         goto LABEL_17;
@@ -1073,7 +1073,7 @@ LABEL_16:
       }
 
 LABEL_17:
-      if (v14 < [a3 count])
+      if (v14 < [items count])
       {
         [v7 addObject:{+[OFRescalableSegment nonRescalableSegmentWithDuration:](OFRescalableSegment, "nonRescalableSegmentWithDuration:", self->_transitionDuration)}];
       }
@@ -1084,7 +1084,7 @@ LABEL_17:
 
     while (v9 != v13);
     v10 = &v9[v43];
-    v22 = [a3 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    v22 = [items countByEnumeratingWithState:&v46 objects:v50 count:16];
     v9 = v22;
   }
 
@@ -1115,24 +1115,24 @@ LABEL_29:
     [v27 computeSegmentDurations:v24 forTotalDuration:audioPlaylistDuration];
     v36 = v35;
     [-[OpusNewClassicProducer presentation](self "presentation")];
-    v37 = [(OpusNewClassicProducer *)self presentation];
+    presentation = [(OpusNewClassicProducer *)self presentation];
     [v27 minimumDuration];
-    [v37 addGuideline:{+[OKPresentationGuideline guidelineAuthoringMinimumDuration:](OKPresentationGuideline, "guidelineAuthoringMinimumDuration:")}];
-    v38 = [(OpusNewClassicProducer *)self presentation];
+    [presentation addGuideline:{+[OKPresentationGuideline guidelineAuthoringMinimumDuration:](OKPresentationGuideline, "guidelineAuthoringMinimumDuration:")}];
+    presentation2 = [(OpusNewClassicProducer *)self presentation];
     if ((v44 & 1) == 0)
     {
       [v27 maximumDuration];
       v36 = v39;
     }
 
-    [v38 addGuideline:{+[OKPresentationGuideline guidelineAuthoringMaximumDuration:](OKPresentationGuideline, "guidelineAuthoringMaximumDuration:", v36)}];
-    v40 = [(OpusNewClassicProducer *)self presentation];
+    [presentation2 addGuideline:{+[OKPresentationGuideline guidelineAuthoringMaximumDuration:](OKPresentationGuideline, "guidelineAuthoringMaximumDuration:", v36)}];
+    presentation3 = [(OpusNewClassicProducer *)self presentation];
     if (v45 != -1)
     {
       v6 = v24[v45];
     }
 
-    [v40 addGuideline:{+[OKPresentationGuideline guidelineAuthoringCurrentPageDuration:](OKPresentationGuideline, "guidelineAuthoringCurrentPageDuration:", v6)}];
+    [presentation3 addGuideline:{+[OKPresentationGuideline guidelineAuthoringCurrentPageDuration:](OKPresentationGuideline, "guidelineAuthoringCurrentPageDuration:", v6)}];
     if (v27)
     {
     }
@@ -1155,7 +1155,7 @@ LABEL_29:
   }
 }
 
-- (BOOL)_authorBootstrap:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorBootstrap:(id)bootstrap progressBlock:(id)block error:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -1190,15 +1190,15 @@ LABEL_29:
 
   v8[2] = v9;
   v8[3] = &unk_8210;
-  v8[4] = a4;
+  v8[4] = block;
   v8[5] = &v16;
   [(OpusNewClassicProducer *)self cleanupPresentation:v12, v13];
   v10 = *(v17 + 24);
   if (v10 == 1)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
     }
   }
 
@@ -1211,16 +1211,16 @@ LABEL_29:
   return v10 ^ 1;
 }
 
-- (BOOL)_authorCluster:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorCluster:(id)cluster progressBlock:(id)block error:(id *)error
 {
   v8 = 0;
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, &v8, a3, 0.3);
+    (*(block + 2))(block, &v8, cluster, 0.3);
     v6 = v8;
-    if (a5 && (v8 & 1) != 0)
+    if (error && (v8 & 1) != 0)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       v6 = 1;
     }
   }
@@ -1233,12 +1233,12 @@ LABEL_29:
   return (v6 & 1) == 0;
 }
 
-- (BOOL)_authorProduce:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorProduce:(id)produce progressBlock:(id)block error:(id *)error
 {
-  v8 = [-[OpusNewClassicProducer presentation](self presentation];
-  if (v8)
+  presentation = [-[OpusNewClassicProducer presentation](self presentation];
+  if (presentation)
   {
-    v9 = [v8 mediaItemsAtIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, objc_msgSend(v8, "numberOfMediaItems"))}];
+    v9 = [presentation mediaItemsAtIndexes:{+[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, objc_msgSend(presentation, "numberOfMediaItems"))}];
   }
 
   else
@@ -1275,8 +1275,8 @@ LABEL_6:
       v18[2] = sub_37E4;
       v18[3] = &unk_8238;
       v18[4] = v10;
-      v18[5] = a4;
-      v16 = [(OpusNewClassicProducer *)self _addPageForMediaItem:v15 progressBlock:v18 error:a5];
+      v18[5] = block;
+      v16 = [(OpusNewClassicProducer *)self _addPageForMediaItem:v15 progressBlock:v18 error:error];
       if (!v16)
       {
         break;
@@ -1304,7 +1304,7 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)_authorFinish:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)_authorFinish:(id)finish progressBlock:(id)block error:(id *)error
 {
   v11 = 0;
   v12[0] = kOKPresentationGuidelineAuthoringSynopsisCollectionName;
@@ -1314,13 +1314,13 @@ LABEL_12:
   v13[1] = synopsisGroups;
   v14 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
   [-[OpusNewClassicProducer presentation](self "presentation")];
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, &v11, 1.0);
+    (*(block + 2))(block, &v11, 1.0);
     v9 = v11;
-    if (a5 && (v11 & 1) != 0)
+    if (error && (v11 & 1) != 0)
     {
-      *a5 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
+      *error = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
       v9 = 1;
     }
   }
@@ -1350,26 +1350,26 @@ LABEL_12:
   return 0;
 }
 
-- (BOOL)liveAuthorInitialBootstrap:(id)a3 error:(id *)a4
+- (BOOL)liveAuthorInitialBootstrap:(id)bootstrap error:(id *)error
 {
   v9 = 0;
   [(OpusNewClassicProducer *)self _initTemplates];
-  if (!a3)
+  if (!bootstrap)
   {
     [(OpusNewClassicProducer *)self _initCouchPotatoSettings];
     [(OpusNewClassicProducer *)self _initNavigatorSettings];
     return 1;
   }
 
-  (*(a3 + 2))(a3, &v9, 0.3);
+  (*(bootstrap + 2))(bootstrap, &v9, 0.3);
   if (v9 != 1)
   {
     [(OpusNewClassicProducer *)self _initCouchPotatoSettings];
-    (*(a3 + 2))(a3, &v9, 0.6);
+    (*(bootstrap + 2))(bootstrap, &v9, 0.6);
     if (v9 != 1)
     {
       [(OpusNewClassicProducer *)self _initNavigatorSettings];
-      (*(a3 + 2))(a3, &v9, 0.6);
+      (*(bootstrap + 2))(bootstrap, &v9, 0.6);
       if ((v9 & 1) == 0)
       {
         return 1;
@@ -1377,18 +1377,18 @@ LABEL_12:
     }
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
 
   v7 = [NSError errorWithDomain:OKErrorDomain code:-4 userInfo:0];
   result = 0;
-  *a4 = v7;
+  *error = v7;
   return result;
 }
 
-- (id)liveAuthorNextChunk:(id)a3 error:(id *)a4
+- (id)liveAuthorNextChunk:(id)chunk error:(id *)error
 {
   objc_sync_enter(self);
   v7 = [-[OpusNewClassicProducer presentation](self "presentation")];
@@ -1401,8 +1401,8 @@ LABEL_12:
     v15[1] = 3221225472;
     v15[2] = sub_3ED0;
     v15[3] = &unk_8260;
-    v15[4] = a3;
-    v10 = -[OpusNewClassicProducer _addPageForMediaItem:progressBlock:error:](self, "_addPageForMediaItem:progressBlock:error:", [v7 mediaItemAtIndex:?], v15, a4);
+    v15[4] = chunk;
+    v10 = -[OpusNewClassicProducer _addPageForMediaItem:progressBlock:error:](self, "_addPageForMediaItem:progressBlock:error:", [v7 mediaItemAtIndex:?], v15, error);
   }
 
   else
@@ -1412,8 +1412,8 @@ LABEL_12:
     v17[1] = 3221225472;
     v17[2] = sub_3E98;
     v17[3] = &unk_8260;
-    v17[4] = a3;
-    v11 = -[OpusNewClassicProducer _addPageForMediaItem:progressBlock:error:](self, "_addPageForMediaItem:progressBlock:error:", [v7 mediaItemAtIndex:?], v17, a4);
+    v17[4] = chunk;
+    v11 = -[OpusNewClassicProducer _addPageForMediaItem:progressBlock:error:](self, "_addPageForMediaItem:progressBlock:error:", [v7 mediaItemAtIndex:?], v17, error);
     if (!v11)
     {
       goto LABEL_9;
@@ -1431,23 +1431,23 @@ LABEL_12:
     v16[1] = 3221225472;
     v16[2] = sub_3EB0;
     v16[3] = &unk_8260;
-    v16[4] = a3;
-    v10 = -[OpusNewClassicProducer _addPageForMediaItem:progressBlock:error:](self, "_addPageForMediaItem:progressBlock:error:", [v7 mediaItemAtIndex:?], v16, a4);
+    v16[4] = chunk;
+    v10 = -[OpusNewClassicProducer _addPageForMediaItem:progressBlock:error:](self, "_addPageForMediaItem:progressBlock:error:", [v7 mediaItemAtIndex:?], v16, error);
   }
 
   if (!v10)
   {
 LABEL_9:
-    v13 = 0;
+    allObjects = 0;
     goto LABEL_10;
   }
 
   [v8 addObjectsFromArray:v10];
 LABEL_8:
-  v13 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 LABEL_10:
   objc_sync_exit(self);
-  return v13;
+  return allObjects;
 }
 
 - (unint64_t)totalNumberOfLiveAuthoringItems
@@ -1467,7 +1467,7 @@ LABEL_10:
   return v4;
 }
 
-- (float)liveAuthoringProgressForMediaItem:(id)a3
+- (float)liveAuthoringProgressForMediaItem:(id)item
 {
   objc_sync_enter(self);
   v5 = [objc_msgSend(-[OpusNewClassicProducer presentation](self "presentation")];

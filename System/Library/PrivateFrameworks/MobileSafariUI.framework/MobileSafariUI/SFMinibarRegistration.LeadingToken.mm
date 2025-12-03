@@ -1,39 +1,39 @@
 @interface SFMinibarRegistration.LeadingToken
-- (id)viewForBarItem:(int64_t)a3;
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4;
-- (void)setBarItem:(int64_t)a3 menu:(id)a4;
-- (void)updateBarAnimated:(BOOL)a3;
+- (id)viewForBarItem:(int64_t)item;
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled;
+- (void)setBarItem:(int64_t)item menu:(id)menu;
+- (void)updateBarAnimated:(BOOL)animated;
 @end
 
 @implementation SFMinibarRegistration.LeadingToken
 
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled
 {
-  v6 = self;
-  sub_215A095A8(a3, a4);
+  selfCopy = self;
+  sub_215A095A8(item, enabled);
 }
 
-- (void)setBarItem:(int64_t)a3 menu:(id)a4
+- (void)setBarItem:(int64_t)item menu:(id)menu
 {
-  if (sub_215828ED8(a3, *(&self->super.super.isa + OBJC_IVAR____TtCE14MobileSafariUICSo21SFMinibarRegistration5Token_items)))
+  if (sub_215828ED8(item, *(&self->super.super.isa + OBJC_IVAR____TtCE14MobileSafariUICSo21SFMinibarRegistration5Token_items)))
   {
-    v7 = a4;
-    v9 = self;
-    v8 = sub_215A09188(a3);
+    menuCopy = menu;
+    selfCopy = self;
+    v8 = sub_215A09188(item);
     [v8 setMenu_];
   }
 }
 
-- (void)updateBarAnimated:(BOOL)a3
+- (void)updateBarAnimated:(BOOL)animated
 {
-  v3 = self;
+  selfCopy = self;
   sub_215A0BBC4();
 }
 
-- (id)viewForBarItem:(int64_t)a3
+- (id)viewForBarItem:(int64_t)item
 {
-  v4 = self;
-  v5 = sub_215A09188(a3);
+  selfCopy = self;
+  v5 = sub_215A09188(item);
 
   return v5;
 }

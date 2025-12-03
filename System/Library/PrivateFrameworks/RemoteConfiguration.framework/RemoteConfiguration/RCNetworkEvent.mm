@@ -1,32 +1,32 @@
 @interface RCNetworkEvent
-- (RCNetworkEvent)initWithResultType:(int64_t)a3 request:(id)a4 startDate:(id)a5 operationID:(id)a6 requestID:(id)a7 response:(id)a8 metrics:(id)a9 error:(id)a10;
+- (RCNetworkEvent)initWithResultType:(int64_t)type request:(id)request startDate:(id)date operationID:(id)d requestID:(id)iD response:(id)response metrics:(id)metrics error:(id)self0;
 @end
 
 @implementation RCNetworkEvent
 
-- (RCNetworkEvent)initWithResultType:(int64_t)a3 request:(id)a4 startDate:(id)a5 operationID:(id)a6 requestID:(id)a7 response:(id)a8 metrics:(id)a9 error:(id)a10
+- (RCNetworkEvent)initWithResultType:(int64_t)type request:(id)request startDate:(id)date operationID:(id)d requestID:(id)iD response:(id)response metrics:(id)metrics error:(id)self0
 {
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v16 = a9;
-  v17 = a10;
+  requestCopy = request;
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  responseCopy = response;
+  metricsCopy = metrics;
+  errorCopy = error;
   v27.receiver = self;
   v27.super_class = RCNetworkEvent;
   v18 = [(RCNetworkEvent *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    v18->_resultType = a3;
-    objc_storeStrong(&v18->_request, a4);
-    objc_storeStrong(&v19->_startDate, a5);
-    objc_storeStrong(&v19->_operationID, a6);
-    objc_storeStrong(&v19->_requestID, a7);
-    objc_storeStrong(&v19->_response, a8);
-    objc_storeStrong(&v19->_metrics, a9);
-    objc_storeStrong(&v19->_error, a10);
+    v18->_resultType = type;
+    objc_storeStrong(&v18->_request, request);
+    objc_storeStrong(&v19->_startDate, date);
+    objc_storeStrong(&v19->_operationID, d);
+    objc_storeStrong(&v19->_requestID, iD);
+    objc_storeStrong(&v19->_response, response);
+    objc_storeStrong(&v19->_metrics, metrics);
+    objc_storeStrong(&v19->_error, error);
   }
 
   return v19;

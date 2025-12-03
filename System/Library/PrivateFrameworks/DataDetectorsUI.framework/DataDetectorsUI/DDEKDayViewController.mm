@@ -1,9 +1,9 @@
 @interface DDEKDayViewController
 - (CGSize)preferredContentSize;
 - (void)dd_update_scroll;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DDEKDayViewController
@@ -21,22 +21,22 @@
 {
   if ([(DDEKDayViewController *)self isViewLoaded])
   {
-    v3 = [(DDEKDayViewController *)self view];
-    v4 = [v3 window];
+    view = [(DDEKDayViewController *)self view];
+    window = [view window];
 
-    if (v4)
+    if (window)
     {
-      v5 = [(DDEKDayViewController *)self dd_event];
-      [(EKDayViewController *)self scrollEventIntoView:v5 animated:0];
+      dd_event = [(DDEKDayViewController *)self dd_event];
+      [(EKDayViewController *)self scrollEventIntoView:dd_event animated:0];
     }
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = DDEKDayViewController;
-  [(DDEKDayViewController *)&v4 didMoveToParentViewController:a3];
+  [(DDEKDayViewController *)&v4 didMoveToParentViewController:controller];
   [(DDEKDayViewController *)self dd_update_scroll];
 }
 
@@ -48,11 +48,11 @@
   [(EKDayViewController *)&v3 viewDidLayoutSubviews];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = DDEKDayViewController;
-  [(EKDayViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(EKDayViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(DDEKDayViewController *)self dd_update_scroll];
 }
 

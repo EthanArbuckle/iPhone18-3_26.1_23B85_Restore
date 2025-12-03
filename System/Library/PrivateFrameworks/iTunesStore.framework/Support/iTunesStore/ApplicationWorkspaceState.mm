@@ -1,11 +1,11 @@
 @interface ApplicationWorkspaceState
-+ (BOOL)_completeNotification:(id)a3 bundleIdentifier:(id)a4;
-+ (BOOL)_incompleteNotification:(id)a3 forDownload:(int64_t)a4 bundleIdentifier:(id)a5;
++ (BOOL)_completeNotification:(id)notification bundleIdentifier:(id)identifier;
++ (BOOL)_incompleteNotification:(id)notification forDownload:(int64_t)download bundleIdentifier:(id)identifier;
 @end
 
 @implementation ApplicationWorkspaceState
 
-+ (BOOL)_completeNotification:(id)a3 bundleIdentifier:(id)a4
++ (BOOL)_completeNotification:(id)notification bundleIdentifier:(id)identifier
 {
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
@@ -13,15 +13,15 @@
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
   if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -34,7 +34,7 @@
     v12 = 138412546;
     v13 = objc_opt_class();
     v14 = 2112;
-    v15 = a4;
+    identifierCopy = identifier;
     LODWORD(v11) = 22;
     v8 = _os_log_send_and_compose_impl();
     if (v8)
@@ -49,7 +49,7 @@
   return 0;
 }
 
-+ (BOOL)_incompleteNotification:(id)a3 forDownload:(int64_t)a4 bundleIdentifier:(id)a5
++ (BOOL)_incompleteNotification:(id)notification forDownload:(int64_t)download bundleIdentifier:(id)identifier
 {
   v28 = 0;
   v29 = &v28;
@@ -63,29 +63,29 @@
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
-    v10 = [v8 shouldLogToDisk];
-    v11 = [v8 OSLogObject];
-    if (v10)
+    shouldLog = [v8 shouldLog];
+    shouldLogToDisk = [v8 shouldLogToDisk];
+    oSLogObject = [v8 OSLogObject];
+    if (shouldLogToDisk)
     {
-      v9 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v9 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (v9)
+    if (shouldLog)
     {
       v12 = objc_opt_class();
       v13 = +[SSStackShot generateSymbolicatedStackShot];
       v32 = 138412802;
       v33 = v12;
       v34 = 2048;
-      v35 = a4;
+      notificationCopy = download;
       v36 = 2112;
-      v37 = v13;
+      identifierCopy = v13;
       LODWORD(v26) = 32;
       v14 = _os_log_send_and_compose_impl();
       if (v14)
@@ -106,28 +106,28 @@
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
-    v18 = [v16 shouldLogToDisk];
-    v19 = [v16 OSLogObject];
-    if (v18)
+    shouldLog2 = [v16 shouldLog];
+    shouldLogToDisk2 = [v16 shouldLogToDisk];
+    oSLogObject2 = [v16 OSLogObject];
+    if (shouldLogToDisk2)
     {
-      v17 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
-      v17 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v17)
+    if (shouldLog2)
     {
       v20 = objc_opt_class();
       v32 = 138412802;
       v33 = v20;
       v34 = 2112;
-      v35 = a3;
+      notificationCopy = notification;
       v36 = 2112;
-      v37 = a5;
+      identifierCopy = identifier;
       LODWORD(v26) = 32;
       v21 = _os_log_send_and_compose_impl();
       if (v21)
@@ -140,16 +140,16 @@
     }
 
     v23 = objc_autoreleasePoolPush();
-    if ([a5 length])
+    if ([identifier length])
     {
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_1000CDDB4;
       v27[3] = &unk_100328120;
-      v27[4] = a5;
-      v27[5] = a3;
+      v27[4] = identifier;
+      v27[5] = notification;
       v27[6] = &v28;
-      v27[7] = a4;
+      v27[7] = download;
       [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
     }
 

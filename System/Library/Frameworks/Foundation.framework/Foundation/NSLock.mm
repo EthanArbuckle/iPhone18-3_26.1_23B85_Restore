@@ -24,11 +24,11 @@
 
 - (NSLock)init
 {
-  v2 = self;
+  selfCopy = self;
   v5 = *MEMORY[0x1E69E9840];
   if (pthread_mutex_init(&self->_priv.m, 0))
   {
-    v4.receiver = v2;
+    v4.receiver = selfCopy;
     v4.super_class = NSLock;
     [(NSLock *)&v4 dealloc];
     return 0;
@@ -36,10 +36,10 @@
 
   else
   {
-    v2->_priv.n = 0;
+    selfCopy->_priv.n = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)dealloc

@@ -1,24 +1,24 @@
 @interface ECMessageBodyParser
-+ (BOOL)isLinebreakImpliedAfterTagName:(id)a3;
-+ (BOOL)isLinebreakImpliedBeforeTagName:(id)a3;
-- (BOOL)isLandmarkTagName:(id)a3;
-- (BOOL)shouldIgnoreTagWithTagName:(id)a3;
++ (BOOL)isLinebreakImpliedAfterTagName:(id)name;
++ (BOOL)isLinebreakImpliedBeforeTagName:(id)name;
+- (BOOL)isLandmarkTagName:(id)name;
+- (BOOL)shouldIgnoreTagWithTagName:(id)name;
 - (BOOL)shouldProceedParsing;
 - (ECMessageBodyParser)init;
 - (NSError)parserError;
 - (NSNumberFormatter)currencyFormatter;
 - (id)getAvailableMessageBodyElement;
-- (id)newStringAccumulatorWithOptions:(unint64_t)a3 lengthLimit:(unint64_t)a4;
-- (unint64_t)quoteLevelForBodyNode:(id)a3;
-- (void)addSubparser:(id)a3;
+- (id)newStringAccumulatorWithOptions:(unint64_t)options lengthLimit:(unint64_t)limit;
+- (unint64_t)quoteLevelForBodyNode:(id)node;
+- (void)addSubparser:(id)subparser;
 - (void)dealloc;
-- (void)didFindBodyElement:(id)a3;
-- (void)didFindError:(id)a3;
+- (void)didFindBodyElement:(id)element;
+- (void)didFindError:(id)error;
 - (void)didFinishParsing;
-- (void)enqueueParagraphNode:(id)a3 withTagName:(id)a4;
+- (void)enqueueParagraphNode:(id)node withTagName:(id)name;
 - (void)flushParagraphNodes;
-- (void)getLevel:(int64_t *)a3 quoteLevel:(int64_t *)a4 forBodyNode:(id)a5;
-- (void)setFoundMessageBodyElementBlock:(id)a3;
+- (void)getLevel:(int64_t *)level quoteLevel:(int64_t *)quoteLevel forBodyNode:(id)node;
+- (void)setFoundMessageBodyElementBlock:(id)block;
 - (void)willBeginParsing;
 @end
 
@@ -103,13 +103,13 @@ os_log_t ___ef_log_ECMessageBodyParser_block_invoke()
 {
   v5.receiver = self;
   v5.super_class = ECMessageBodyParser;
-  v3 = [(ECMessageBodyParserObject *)&v5 shouldProceedParsing];
-  if (v3)
+  shouldProceedParsing = [(ECMessageBodyParserObject *)&v5 shouldProceedParsing];
+  if (shouldProceedParsing)
   {
-    LOBYTE(v3) = self->_parserError == 0;
+    LOBYTE(shouldProceedParsing) = self->_parserError == 0;
   }
 
-  return v3;
+  return shouldProceedParsing;
 }
 
 - (NSError)parserError
@@ -133,26 +133,26 @@ os_log_t ___ef_log_ECMessageBodyParser_block_invoke()
   return result;
 }
 
-- (id)newStringAccumulatorWithOptions:(unint64_t)a3 lengthLimit:(unint64_t)a4
+- (id)newStringAccumulatorWithOptions:(unint64_t)options lengthLimit:(unint64_t)limit
 {
   v7 = objc_alloc([(ECMessageBodyParser *)self messageBodyStringAccumulatorClass]);
-  v8 = [(ECMessageBodyParser *)self messageBodyStringAccumulatorDefaultOptions];
-  v9 = [(ECMessageBodyParser *)self currencyFormatter];
+  messageBodyStringAccumulatorDefaultOptions = [(ECMessageBodyParser *)self messageBodyStringAccumulatorDefaultOptions];
+  currencyFormatter = [(ECMessageBodyParser *)self currencyFormatter];
 
-  return [v7 initWithOptions:v8 | a3 lengthLimit:a4 currencyFormatter:v9];
+  return [v7 initWithOptions:messageBodyStringAccumulatorDefaultOptions | options lengthLimit:limit currencyFormatter:currencyFormatter];
 }
 
-- (void)setFoundMessageBodyElementBlock:(id)a3
+- (void)setFoundMessageBodyElementBlock:(id)block
 {
   foundMessageBodyElementBlock = self->_foundMessageBodyElementBlock;
-  if (foundMessageBodyElementBlock != a3)
+  if (foundMessageBodyElementBlock != block)
   {
 
-    self->_foundMessageBodyElementBlock = [a3 copy];
+    self->_foundMessageBodyElementBlock = [block copy];
   }
 }
 
-- (void)addSubparser:(id)a3
+- (void)addSubparser:(id)subparser
 {
   subparsers = self->_subparsers;
   if (!subparsers)
@@ -161,7 +161,7 @@ os_log_t ___ef_log_ECMessageBodyParser_block_invoke()
     self->_subparsers = subparsers;
   }
 
-  [(NSMutableArray *)subparsers addObject:a3];
+  [(NSMutableArray *)subparsers addObject:subparser];
 }
 
 - (id)getAvailableMessageBodyElement
@@ -220,69 +220,69 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)isLandmarkTagName:(id)a3
+- (BOOL)isLandmarkTagName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  if ([a3 compare:@"div" options:3] && objc_msgSend(a3, "compare:options:", @"p", 3) && objc_msgSend(a3, "compare:options:", @"br", 3))
+  if ([name compare:@"div" options:3] && objc_msgSend(name, "compare:options:", @"p", 3) && objc_msgSend(name, "compare:options:", @"br", 3))
   {
-    return [a3 compare:@"blockquote" options:3] == 0;
+    return [name compare:@"blockquote" options:3] == 0;
   }
 
   return 1;
 }
 
-- (BOOL)shouldIgnoreTagWithTagName:(id)a3
+- (BOOL)shouldIgnoreTagWithTagName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  if ([a3 compare:@"title" options:3] && objc_msgSend(a3, "compare:options:", @"script", 3))
+  if ([name compare:@"title" options:3] && objc_msgSend(name, "compare:options:", @"script", 3))
   {
-    return [a3 compare:@"style" options:3] == 0;
+    return [name compare:@"style" options:3] == 0;
   }
 
   return 1;
 }
 
-+ (BOOL)isLinebreakImpliedBeforeTagName:(id)a3
++ (BOOL)isLinebreakImpliedBeforeTagName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  if ([a3 compare:@"div" options:3] && objc_msgSend(a3, "compare:options:", @"p", 3) && objc_msgSend(a3, "compare:options:", @"h1", 3) && objc_msgSend(a3, "compare:options:", @"h2", 3) && objc_msgSend(a3, "compare:options:", @"h3", 3) && objc_msgSend(a3, "compare:options:", @"h4", 3) && objc_msgSend(a3, "compare:options:", @"h5", 3) && objc_msgSend(a3, "compare:options:", @"h6", 3))
+  if ([name compare:@"div" options:3] && objc_msgSend(name, "compare:options:", @"p", 3) && objc_msgSend(name, "compare:options:", @"h1", 3) && objc_msgSend(name, "compare:options:", @"h2", 3) && objc_msgSend(name, "compare:options:", @"h3", 3) && objc_msgSend(name, "compare:options:", @"h4", 3) && objc_msgSend(name, "compare:options:", @"h5", 3) && objc_msgSend(name, "compare:options:", @"h6", 3))
   {
-    return [a3 compare:@"li" options:3] == 0;
+    return [name compare:@"li" options:3] == 0;
   }
 
   return 1;
 }
 
-+ (BOOL)isLinebreakImpliedAfterTagName:(id)a3
++ (BOOL)isLinebreakImpliedAfterTagName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  if ([a3 compare:@"div" options:3] && objc_msgSend(a3, "compare:options:", @"br", 3) && objc_msgSend(a3, "compare:options:", @"p", 3))
+  if ([name compare:@"div" options:3] && objc_msgSend(name, "compare:options:", @"br", 3) && objc_msgSend(name, "compare:options:", @"p", 3))
   {
-    return [a3 compare:@"blockquote" options:3] == 0;
+    return [name compare:@"blockquote" options:3] == 0;
   }
 
   return 1;
 }
 
-- (void)enqueueParagraphNode:(id)a3 withTagName:(id)a4
+- (void)enqueueParagraphNode:(id)node withTagName:(id)name
 {
-  if ([objc_opt_class() isLinebreakImpliedBeforeTagName:a4])
+  if ([objc_opt_class() isLinebreakImpliedBeforeTagName:name])
   {
     [(ECMessageBodyParser *)self flushParagraphNodes];
   }
@@ -294,8 +294,8 @@ LABEL_12:
     self->_paragraphNodes = paragraphNodes;
   }
 
-  [(NSMutableArray *)paragraphNodes addObject:a3];
-  if ([objc_opt_class() isLinebreakImpliedAfterTagName:a4])
+  [(NSMutableArray *)paragraphNodes addObject:node];
+  if ([objc_opt_class() isLinebreakImpliedAfterTagName:name])
   {
 
     [(ECMessageBodyParser *)self flushParagraphNodes];
@@ -306,22 +306,22 @@ LABEL_12:
 {
   if ([(NSMutableArray *)self->_paragraphNodes count])
   {
-    v3 = [(ECMessageBodyParser *)self getAvailableMessageBodyElement];
-    [v3 setNodes:self->_paragraphNodes];
-    [(ECMessageBodyParser *)self didFindBodyElement:v3];
+    getAvailableMessageBodyElement = [(ECMessageBodyParser *)self getAvailableMessageBodyElement];
+    [getAvailableMessageBodyElement setNodes:self->_paragraphNodes];
+    [(ECMessageBodyParser *)self didFindBodyElement:getAvailableMessageBodyElement];
     paragraphNodes = self->_paragraphNodes;
 
     [(NSMutableArray *)paragraphNodes removeAllObjects];
   }
 }
 
-- (void)didFindBodyElement:(id)a3
+- (void)didFindBodyElement:(id)element
 {
   v18 = *MEMORY[0x277D85DE8];
   foundMessageBodyElementBlock = self->_foundMessageBodyElementBlock;
   if (foundMessageBodyElementBlock)
   {
-    foundMessageBodyElementBlock[2](foundMessageBodyElementBlock, a3);
+    foundMessageBodyElementBlock[2](foundMessageBodyElementBlock, element);
   }
 
   v15 = 0u;
@@ -346,7 +346,7 @@ LABEL_12:
         v11 = *(*(&v13 + 1) + 8 * i);
         if ([v11 shouldProceedParsing])
         {
-          [v11 messageBodyParser:self foundMessageBodyElement:a3];
+          [v11 messageBodyParser:self foundMessageBodyElement:element];
         }
       }
 
@@ -461,7 +461,7 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFindError:(id)a3
+- (void)didFindError:(id)error
 {
   if (_ef_log_ECMessageBodyParser_onceToken != -1)
   {
@@ -471,27 +471,27 @@ LABEL_12:
   v5 = _ef_log_ECMessageBodyParser_log;
   if (os_log_type_enabled(_ef_log_ECMessageBodyParser_log, OS_LOG_TYPE_ERROR))
   {
-    [(ECMessageBodyParser *)a3 didFindError:v5];
+    [(ECMessageBodyParser *)error didFindError:v5];
   }
 
   if (!self->_parserError)
   {
-    self->_parserError = a3;
+    self->_parserError = error;
   }
 }
 
-- (unint64_t)quoteLevelForBodyNode:(id)a3
+- (unint64_t)quoteLevelForBodyNode:(id)node
 {
   v4 = 0;
-  [(ECMessageBodyParser *)self getLevel:0 quoteLevel:&v4 forBodyNode:a3];
+  [(ECMessageBodyParser *)self getLevel:0 quoteLevel:&v4 forBodyNode:node];
   return v4;
 }
 
-- (void)getLevel:(int64_t *)a3 quoteLevel:(int64_t *)a4 forBodyNode:(id)a5
+- (void)getLevel:(int64_t *)level quoteLevel:(int64_t *)quoteLevel forBodyNode:(id)node
 {
   v14 = 0;
   value = 0;
-  if (a5)
+  if (node)
   {
     if (!self->_nodesStackCache)
     {
@@ -521,11 +521,11 @@ LABEL_12:
       nodesLevelCache = self->_nodesLevelCache;
     }
 
-    if (!CFDictionaryGetValueIfPresent(nodesLevelCache, a5, &value) || !CFDictionaryGetValueIfPresent(self->_nodesQuoteLevelCache, a5, &v14))
+    if (!CFDictionaryGetValueIfPresent(nodesLevelCache, node, &value) || !CFDictionaryGetValueIfPresent(self->_nodesQuoteLevelCache, node, &v14))
     {
-      -[ECMessageBodyParser getLevel:quoteLevel:forBodyNode:](self, "getLevel:quoteLevel:forBodyNode:", &value, &v14, [a5 parentNode]);
+      -[ECMessageBodyParser getLevel:quoteLevel:forBodyNode:](self, "getLevel:quoteLevel:forBodyNode:", &value, &v14, [node parentNode]);
       value = value + 1;
-      if ((objc_opt_respondsToSelector() & 1) != 0 && ![@"blockquote" compare:objc_msgSend(a5 options:{"tagName"), 1}] && ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend(@"cite", "compare:options:", objc_msgSend(a5, "getAttribute:", @"type"), 1) || !objc_msgSend(@"gmail_quote", "compare:options:", objc_msgSend(a5, "getAttribute:", @"class"), 1)))
+      if ((objc_opt_respondsToSelector() & 1) != 0 && ![@"blockquote" compare:objc_msgSend(node options:{"tagName"), 1}] && ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend(@"cite", "compare:options:", objc_msgSend(node, "getAttribute:", @"type"), 1) || !objc_msgSend(@"gmail_quote", "compare:options:", objc_msgSend(node, "getAttribute:", @"class"), 1)))
       {
         v14 = v14 + 1;
       }
@@ -546,20 +546,20 @@ LABEL_12:
         while (v12 > value);
       }
 
-      CFArrayAppendValue(self->_nodesStackCache, a5);
-      CFDictionarySetValue(self->_nodesLevelCache, a5, value);
-      CFDictionarySetValue(self->_nodesQuoteLevelCache, a5, v14);
+      CFArrayAppendValue(self->_nodesStackCache, node);
+      CFDictionarySetValue(self->_nodesLevelCache, node, value);
+      CFDictionarySetValue(self->_nodesQuoteLevelCache, node, v14);
     }
   }
 
-  if (a3)
+  if (level)
   {
-    *a3 = value;
+    *level = value;
   }
 
-  if (a4)
+  if (quoteLevel)
   {
-    *a4 = v14;
+    *quoteLevel = v14;
   }
 }
 

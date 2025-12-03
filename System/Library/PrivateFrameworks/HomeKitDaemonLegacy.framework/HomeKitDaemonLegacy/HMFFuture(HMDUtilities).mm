@@ -18,7 +18,7 @@
   v8[3] = &unk_279733400;
   v3 = v11;
   v9 = v3;
-  v4 = [a1 then:v10 orRecover:v8];
+  v4 = [self then:v10 orRecover:v8];
   v5 = v9;
   v6 = v3;
 

@@ -1,37 +1,37 @@
 @interface _MKMultiPolygonGeoRegion
-- (BOOL)_loadWithJSONObject:(id)a3 error:(id *)a4;
-- (BOOL)_loadWithRootJSONObject:(id)a3 error:(id *)a4;
-- (BOOL)coordinateLiesInRegion:(CLLocationCoordinate2D)a3;
-- (_MKMultiPolygonGeoRegion)initWithContentsOfFile:(id)a3 error:(id *)a4;
-- (_MKMultiPolygonGeoRegion)initWithJSONObject:(id)a3 error:(id *)a4;
+- (BOOL)_loadWithJSONObject:(id)object error:(id *)error;
+- (BOOL)_loadWithRootJSONObject:(id)object error:(id *)error;
+- (BOOL)coordinateLiesInRegion:(CLLocationCoordinate2D)region;
+- (_MKMultiPolygonGeoRegion)initWithContentsOfFile:(id)file error:(id *)error;
+- (_MKMultiPolygonGeoRegion)initWithJSONObject:(id)object error:(id *)error;
 @end
 
 @implementation _MKMultiPolygonGeoRegion
 
-- (BOOL)_loadWithJSONObject:(id)a3 error:(id *)a4
+- (BOOL)_loadWithJSONObject:(id)object error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = objectCopy;
     v8 = [v7 count];
     if ((v8 - 1) >= 0x32)
     {
-      if (a4)
+      if (error)
       {
         v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid number of polygons: %lu. Expected between %lu and %lu.", v8, 1, 50];
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObject:v19 forKey:@"ParseError"];
-        *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v20];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v20];
 
-        LOBYTE(a4) = 0;
+        LOBYTE(error) = 0;
       }
     }
 
     else
     {
-      v22 = self;
+      selfCopy = self;
       v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
       v23 = 0u;
       v24 = 0u;
@@ -52,11 +52,11 @@
               objc_enumerationMutation(v10);
             }
 
-            v15 = [[_MKPolygonGeoRegion alloc] initWithJSONObject:*(*(&v23 + 1) + 8 * i) error:a4];
+            v15 = [[_MKPolygonGeoRegion alloc] initWithJSONObject:*(*(&v23 + 1) + 8 * i) error:error];
             if (!v15)
             {
 
-              LOBYTE(a4) = 0;
+              LOBYTE(error) = 0;
               goto LABEL_17;
             }
 
@@ -74,43 +74,43 @@
         }
       }
 
-      [(_MKMultiPolygonGeoRegion *)v22 setPolygons:v9];
-      LOBYTE(a4) = 1;
+      [(_MKMultiPolygonGeoRegion *)selfCopy setPolygons:v9];
+      LOBYTE(error) = 1;
 LABEL_17:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Expected an array in the coordinates field."];
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObject:v17 forKey:@"ParseError"];
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v18];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v18];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_loadWithRootJSONObject:(id)a3 error:(id *)a4
+- (BOOL)_loadWithRootJSONObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = objectCopy;
     v8 = [v7 objectForKey:@"type"];
     v9 = [v8 isEqual:@"MultiPolygon"];
 
     if (v9)
     {
       v10 = [v7 objectForKey:@"coordinates"];
-      v11 = [(_MKMultiPolygonGeoRegion *)self _loadWithJSONObject:v10 error:a4];
+      v11 = [(_MKMultiPolygonGeoRegion *)self _loadWithJSONObject:v10 error:error];
     }
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v11 = 0;
         goto LABEL_9;
@@ -118,7 +118,7 @@ LABEL_17:
 
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Expected MultiPolygon as the root type."];
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObject:v10 forKey:@"ParseError"];
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v12];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v12];
 
       v11 = 0;
     }
@@ -126,7 +126,7 @@ LABEL_17:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v11 = 0;
       goto LABEL_10;
@@ -135,7 +135,7 @@ LABEL_17:
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Expected JSON root object to be NSDictionary"];
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:v7 forKey:@"ParseError"];
     [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v10];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
 LABEL_9:
@@ -144,10 +144,10 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)coordinateLiesInRegion:(CLLocationCoordinate2D)a3
+- (BOOL)coordinateLiesInRegion:(CLLocationCoordinate2D)region
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = region.longitude;
+  latitude = region.latitude;
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
@@ -189,24 +189,24 @@ LABEL_11:
   return v6;
 }
 
-- (_MKMultiPolygonGeoRegion)initWithJSONObject:(id)a3 error:(id *)a4
+- (_MKMultiPolygonGeoRegion)initWithJSONObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v10.receiver = self;
   v10.super_class = _MKMultiPolygonGeoRegion;
   v7 = [(_MKMultiPolygonGeoRegion *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(_MKMultiPolygonGeoRegion *)v7 _loadWithJSONObject:v6 error:a4];
+    [(_MKMultiPolygonGeoRegion *)v7 _loadWithJSONObject:objectCopy error:error];
   }
 
   return v8;
 }
 
-- (_MKMultiPolygonGeoRegion)initWithContentsOfFile:(id)a3 error:(id *)a4
+- (_MKMultiPolygonGeoRegion)initWithContentsOfFile:(id)file error:(id *)error
 {
-  v6 = a3;
+  fileCopy = file;
   v15.receiver = self;
   v15.super_class = _MKMultiPolygonGeoRegion;
   v7 = [(_MKMultiPolygonGeoRegion *)&v15 init];
@@ -215,14 +215,14 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v6 options:0 error:a4];
+  v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:fileCopy options:0 error:error];
   if (!v8)
   {
     goto LABEL_7;
   }
 
   v9 = v8;
-  v10 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:a4];
+  v10 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v8 options:0 error:error];
   if (!v10)
   {
 
@@ -230,7 +230,7 @@ LABEL_11:
   }
 
   v11 = v10;
-  v12 = [(_MKMultiPolygonGeoRegion *)v7 _loadWithRootJSONObject:v10 error:a4];
+  v12 = [(_MKMultiPolygonGeoRegion *)v7 _loadWithRootJSONObject:v10 error:error];
 
   if (!v12)
   {

@@ -47,12 +47,12 @@
 
   else
   {
-    v5 = [(CIWhitePointAdjust *)self _kernel];
+    _kernel = [(CIWhitePointAdjust *)self _kernel];
     [(CIImage *)self->inputImage extent];
     inputColor = self->inputColor;
     v11[0] = self->inputImage;
     v11[1] = inputColor;
-    return [v5 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v11, 2), v7, v8, v9, v10}];
+    return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v11, 2), v7, v8, v9, v10}];
   }
 }
 

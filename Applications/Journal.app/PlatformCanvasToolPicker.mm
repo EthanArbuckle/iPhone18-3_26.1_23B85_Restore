@@ -1,6 +1,6 @@
 @interface PlatformCanvasToolPicker
 - (_TtC7Journal24PlatformCanvasToolPicker)init;
-- (void)toolPickerVisibilityDidChange:(id)a3;
+- (void)toolPickerVisibilityDidChange:(id)change;
 @end
 
 @implementation PlatformCanvasToolPicker
@@ -15,16 +15,16 @@
   return [(PlatformCanvasToolPicker *)&v4 init];
 }
 
-- (void)toolPickerVisibilityDidChange:(id)a3
+- (void)toolPickerVisibilityDidChange:(id)change
 {
   v5 = self + OBJC_IVAR____TtC7Journal24PlatformCanvasToolPicker_delegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v6 = *(v5 + 1);
     ObjectType = swift_getObjectType();
-    v8 = a3;
-    v9 = self;
-    (*(v6 + 8))(v9, [v8 isVisible], ObjectType, v6);
+    changeCopy = change;
+    selfCopy = self;
+    (*(v6 + 8))(selfCopy, [changeCopy isVisible], ObjectType, v6);
     swift_unknownObjectRelease();
   }
 }

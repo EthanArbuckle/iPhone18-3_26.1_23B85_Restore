@@ -1,8 +1,8 @@
 @interface CSPosterSwitcherViewController
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (CGRect)leadingTopButtonFrame;
 - (CGRect)trailingTopButtonFrame;
-- (CSPosterSwitcherViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CSPosterSwitcherViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIView)coverSheetBackgroundView;
 - (UIView)coverSheetFloatingView;
 - (UIView)coverSheetWallpaperView;
@@ -11,60 +11,60 @@
 - (unint64_t)_initialAlongsideLayoutMode;
 - (void)_applicationHosterDidInvalidate;
 - (void)_dismissEntirely;
-- (void)_dismissTier:(BOOL)a3;
+- (void)_dismissTier:(BOOL)tier;
 - (void)_evaluateInitialTouchTransferActuation;
 - (void)_evaluateInitialTransitionActivation;
 - (void)_sendDismissEntirelyActionToScene;
-- (void)_transitionScene:(id)a3 toLayoutMode:(unint64_t)a4 animated:(BOOL)a5;
-- (void)_updateAdaptiveTimeTextHeightForSceneSettings:(id)a3;
-- (void)_updateAppearanceWithClientLayoutMode:(unint64_t)a3 previousLayoutMode:(unint64_t)a4 transitionContext:(id)a5;
+- (void)_transitionScene:(id)scene toLayoutMode:(unint64_t)mode animated:(BOOL)animated;
+- (void)_updateAdaptiveTimeTextHeightForSceneSettings:(id)settings;
+- (void)_updateAppearanceWithClientLayoutMode:(unint64_t)mode previousLayoutMode:(unint64_t)layoutMode transitionContext:(id)context;
 - (void)_updateAppearanceWithoutAnimation;
-- (void)_updateComplicationRowHiddenForSceneSettings:(id)a3;
-- (void)_updateFloatingLayerInlinedForSceneSettings:(id)a3;
-- (void)_updateLiveContentViewSpecificationForSceneSettings:(id)a3;
-- (void)_updateLiveFloatingViewSpecificationForSceneSettings:(id)a3;
-- (void)_updateLockVibrancyConfigurationForSceneSettings:(id)a3;
-- (void)_updateOverlayViewSpecificationForSceneSettings:(id)a3;
-- (void)_updatePreferredActiveAppearance:(int64_t)a3 withReason:(id)a4 forSceneHandle:(id)a5;
-- (void)_updateTopButtonLayoutForSceneSettings:(id)a3;
-- (void)addGrabberView:(id)a3;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)appendToHostedAppSceneSettings:(id)a3;
+- (void)_updateComplicationRowHiddenForSceneSettings:(id)settings;
+- (void)_updateFloatingLayerInlinedForSceneSettings:(id)settings;
+- (void)_updateLiveContentViewSpecificationForSceneSettings:(id)settings;
+- (void)_updateLiveFloatingViewSpecificationForSceneSettings:(id)settings;
+- (void)_updateLockVibrancyConfigurationForSceneSettings:(id)settings;
+- (void)_updateOverlayViewSpecificationForSceneSettings:(id)settings;
+- (void)_updatePreferredActiveAppearance:(int64_t)appearance withReason:(id)reason forSceneHandle:(id)handle;
+- (void)_updateTopButtonLayoutForSceneSettings:(id)settings;
+- (void)addGrabberView:(id)view;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)appendToHostedAppSceneSettings:(id)settings;
 - (void)dismissForHomeButton;
 - (void)loadView;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneHandle:(id)a3 didUpdateContentState:(int64_t)a4;
-- (void)setAppHostConfiguring:(id)a3;
-- (void)setCoverSheetBackgroundView:(id)a3;
-- (void)setCoverSheetComplicationRowHidden:(BOOL)a3;
-- (void)setCoverSheetFloatingView:(id)a3;
-- (void)setCoverSheetWallpaperFloatingLayerInlined:(BOOL)a3;
-- (void)setCoverSheetWallpaperView:(id)a3;
-- (void)setLastAdaptiveTimeTextHeight:(double)a3;
-- (void)setLeadingTopButtonFrame:(CGRect)a3 trailingTopButtonFrame:(CGRect)a4;
-- (void)setVibrancyConfiguration:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)sceneHandle:(id)handle didUpdateContentState:(int64_t)state;
+- (void)setAppHostConfiguring:(id)configuring;
+- (void)setCoverSheetBackgroundView:(id)view;
+- (void)setCoverSheetComplicationRowHidden:(BOOL)hidden;
+- (void)setCoverSheetFloatingView:(id)view;
+- (void)setCoverSheetWallpaperFloatingLayerInlined:(BOOL)inlined;
+- (void)setCoverSheetWallpaperView:(id)view;
+- (void)setLastAdaptiveTimeTextHeight:(double)height;
+- (void)setLeadingTopButtonFrame:(CGRect)frame trailingTopButtonFrame:(CGRect)buttonFrame;
+- (void)setVibrancyConfiguration:(id)configuration;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CSPosterSwitcherViewController
 
-- (CSPosterSwitcherViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CSPosterSwitcherViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = CSPosterSwitcherViewController;
-  v4 = [(CSCoverSheetViewControllerBase *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(CSCoverSheetViewControllerBase *)&v9 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
     v4->_clientSwitcherLayoutMode = 0;
-    v6 = [MEMORY[0x277D3EB38] diffInspectorForObservingDiffContext];
+    diffInspectorForObservingDiffContext = [MEMORY[0x277D3EB38] diffInspectorForObservingDiffContext];
     sceneClientSettingsDiffInspector = v5->_sceneClientSettingsDiffInspector;
-    v5->_sceneClientSettingsDiffInspector = v6;
+    v5->_sceneClientSettingsDiffInspector = diffInspectorForObservingDiffContext;
   }
 
   return v5;
@@ -76,71 +76,71 @@
   v8.super_class = CSPosterSwitcherViewController;
   [(CSCoverSheetViewControllerBase *)&v8 loadView];
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [(CSPosterSwitcherViewController *)self view];
-  [v4 bounds];
+  view = [(CSPosterSwitcherViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:?];
   scaleView = self->_scaleView;
   self->_scaleView = v5;
 
   [(UIView *)self->_scaleView setAutoresizingMask:18];
-  v7 = [(CSPosterSwitcherViewController *)self view];
-  [v7 addSubview:self->_scaleView];
+  view2 = [(CSPosterSwitcherViewController *)self view];
+  [view2 addSubview:self->_scaleView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSPosterSwitcherViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:appear];
   [(CSPosterSwitcherViewController *)self setHasEverAppeared:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CSPosterSwitcherViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:a3];
-  v4 = [(SBApplicationHosting *)self->_applicationHoster hostedAppSceneHandle];
-  [v4 addObserver:self];
-  [v4 addActionConsumer:self];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:appear];
+  hostedAppSceneHandle = [(SBApplicationHosting *)self->_applicationHoster hostedAppSceneHandle];
+  [hostedAppSceneHandle addObserver:self];
+  [hostedAppSceneHandle addActionConsumer:self];
   if (__sb__runningInSpringBoard())
   {
-    [v4 setContentPrefersToDisableClipping:SBFEffectiveDeviceClass() == 2];
+    [hostedAppSceneHandle setContentPrefersToDisableClipping:SBFEffectiveDeviceClass() == 2];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    [v4 setContentPrefersToDisableClipping:{objc_msgSend(v5, "userInterfaceIdiom") == 1}];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    [hostedAppSceneHandle setContentPrefersToDisableClipping:{objc_msgSend(currentDevice, "userInterfaceIdiom") == 1}];
   }
 
-  [(CSPosterSwitcherViewController *)self _updatePreferredActiveAppearance:1 withReason:@"poster view controller did appear" forSceneHandle:v4];
+  [(CSPosterSwitcherViewController *)self _updatePreferredActiveAppearance:1 withReason:@"poster view controller did appear" forSceneHandle:hostedAppSceneHandle];
   [(CSPosterSwitcherViewController *)self _evaluateInitialTransitionActivation];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CSPosterSwitcherViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:a3];
-  v4 = [(SBApplicationHosting *)self->_applicationHoster hostedAppSceneHandle];
-  [v4 removeObserver:self];
-  [v4 removeActionConsumer:self];
-  [v4 setContentPrefersToDisableClipping:0];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:disappear];
+  hostedAppSceneHandle = [(SBApplicationHosting *)self->_applicationHoster hostedAppSceneHandle];
+  [hostedAppSceneHandle removeObserver:self];
+  [hostedAppSceneHandle removeActionConsumer:self];
+  [hostedAppSceneHandle setContentPrefersToDisableClipping:0];
   [(SBSceneHandleActiveAppearanceAssertion *)self->_activeAppearanceAssertion invalidate];
   activeAppearanceAssertion = self->_activeAppearanceAssertion;
   self->_activeAppearanceAssertion = 0;
 }
 
-- (void)_updatePreferredActiveAppearance:(int64_t)a3 withReason:(id)a4 forSceneHandle:(id)a5
+- (void)_updatePreferredActiveAppearance:(int64_t)appearance withReason:(id)reason forSceneHandle:(id)handle
 {
-  v13 = a4;
-  v8 = a5;
+  reasonCopy = reason;
+  handleCopy = handle;
   v9 = self->_activeAppearanceAssertion;
   v10 = v9;
-  if (!v9 || [(SBSceneHandleActiveAppearanceAssertion *)v9 activeAppearance]!= a3)
+  if (!v9 || [(SBSceneHandleActiveAppearanceAssertion *)v9 activeAppearance]!= appearance)
   {
-    v11 = [v8 acquireActiveAppearanceAssertionWithReason:v13 activeAppearance:1 priority:1];
+    v11 = [handleCopy acquireActiveAppearanceAssertionWithReason:reasonCopy activeAppearance:1 priority:1];
     activeAppearanceAssertion = self->_activeAppearanceAssertion;
     self->_activeAppearanceAssertion = v11;
 
@@ -148,18 +148,18 @@
   }
 }
 
-- (void)setAppHostConfiguring:(id)a3
+- (void)setAppHostConfiguring:(id)configuring
 {
-  v6 = a3;
+  configuringCopy = configuring;
   appHostConfiguring = self->_appHostConfiguring;
-  if (appHostConfiguring != v6)
+  if (appHostConfiguring != configuringCopy)
   {
     if (appHostConfiguring)
     {
       [(CSPosterSwitcherViewController *)self bs_removeChildViewController:self->_applicationHoster];
     }
 
-    objc_storeStrong(&self->_appHostConfiguring, a3);
+    objc_storeStrong(&self->_appHostConfiguring, configuring);
     [(SBApplicationHosting *)self->_applicationHoster setInvalidationHandler:0];
     v8 = [(CSTraitAwareAppHostConfiguring *)self->_appHostConfiguring applicationHosterForTraitsHostContextProvider:self];
     applicationHoster = self->_applicationHoster;
@@ -192,10 +192,10 @@
     [(CSPosterSwitcherViewController *)self loadViewIfNeeded];
     v11 = self->_appHostConfiguring;
     v12 = self->_applicationHoster;
-    v13 = [(CSPosterSwitcherViewController *)self view];
-    v14 = [v13 window];
-    targetWindow = v14;
-    if (!v14)
+    view = [(CSPosterSwitcherViewController *)self view];
+    window = [view window];
+    targetWindow = window;
+    if (!window)
     {
       targetWindow = self->_targetWindow;
     }
@@ -233,125 +233,125 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
   v4[2](v4);
 }
 
-- (void)setCoverSheetBackgroundView:(id)a3
+- (void)setCoverSheetBackgroundView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetBackgroundView);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
-    objc_storeWeak(&self->_coverSheetBackgroundView, v4);
-    v6 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+    objc_storeWeak(&self->_coverSheetBackgroundView, viewCopy);
+    _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __62__CSPosterSwitcherViewController_setCoverSheetBackgroundView___block_invoke;
     v7[3] = &unk_27838D230;
     v7[4] = self;
-    [v6 updateSettingsWithBlock:v7];
+    [_sceneIfExists updateSettingsWithBlock:v7];
   }
 }
 
-- (void)setCoverSheetWallpaperView:(id)a3
+- (void)setCoverSheetWallpaperView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetWallpaperView);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
-    objc_storeWeak(&self->_coverSheetWallpaperView, v4);
-    v6 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+    objc_storeWeak(&self->_coverSheetWallpaperView, viewCopy);
+    _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __61__CSPosterSwitcherViewController_setCoverSheetWallpaperView___block_invoke;
     v7[3] = &unk_27838D230;
     v7[4] = self;
-    [v6 updateSettingsWithBlock:v7];
+    [_sceneIfExists updateSettingsWithBlock:v7];
   }
 }
 
-- (void)setCoverSheetFloatingView:(id)a3
+- (void)setCoverSheetFloatingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_coverSheetFloatingView);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
-    objc_storeWeak(&self->_coverSheetFloatingView, v4);
-    v6 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+    objc_storeWeak(&self->_coverSheetFloatingView, viewCopy);
+    _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __60__CSPosterSwitcherViewController_setCoverSheetFloatingView___block_invoke;
     v7[3] = &unk_27838D230;
     v7[4] = self;
-    [v6 updateSettingsWithBlock:v7];
+    [_sceneIfExists updateSettingsWithBlock:v7];
   }
 }
 
-- (void)setCoverSheetWallpaperFloatingLayerInlined:(BOOL)a3
+- (void)setCoverSheetWallpaperFloatingLayerInlined:(BOOL)inlined
 {
-  if (self->_coverSheetWallpaperFloatingLayerInlined != a3)
+  if (self->_coverSheetWallpaperFloatingLayerInlined != inlined)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_coverSheetWallpaperFloatingLayerInlined = a3;
-    v6 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+    self->_coverSheetWallpaperFloatingLayerInlined = inlined;
+    _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __77__CSPosterSwitcherViewController_setCoverSheetWallpaperFloatingLayerInlined___block_invoke;
     v7[3] = &unk_27838D230;
     v7[4] = self;
-    [v6 updateSettingsWithBlock:v7];
+    [_sceneIfExists updateSettingsWithBlock:v7];
   }
 }
 
-- (void)setCoverSheetComplicationRowHidden:(BOOL)a3
+- (void)setCoverSheetComplicationRowHidden:(BOOL)hidden
 {
-  if (self->_coverSheetComplicationRowHidden != a3)
+  if (self->_coverSheetComplicationRowHidden != hidden)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_coverSheetComplicationRowHidden = a3;
-    v6 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+    self->_coverSheetComplicationRowHidden = hidden;
+    _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __69__CSPosterSwitcherViewController_setCoverSheetComplicationRowHidden___block_invoke;
     v7[3] = &unk_27838D230;
     v7[4] = self;
-    [v6 updateSettingsWithBlock:v7];
+    [_sceneIfExists updateSettingsWithBlock:v7];
   }
 }
 
-- (void)setVibrancyConfiguration:(id)a3
+- (void)setVibrancyConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [configurationCopy copy];
     vibrancyConfiguration = self->_vibrancyConfiguration;
     self->_vibrancyConfiguration = v5;
 
-    v7 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+    _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __59__CSPosterSwitcherViewController_setVibrancyConfiguration___block_invoke;
     v8[3] = &unk_27838D230;
     v8[4] = self;
-    [v7 updateSettingsWithBlock:v8];
+    [_sceneIfExists updateSettingsWithBlock:v8];
   }
 }
 
-- (void)setLeadingTopButtonFrame:(CGRect)a3 trailingTopButtonFrame:(CGRect)a4
+- (void)setLeadingTopButtonFrame:(CGRect)frame trailingTopButtonFrame:(CGRect)buttonFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = buttonFrame.size.height;
+  width = buttonFrame.size.width;
+  y = buttonFrame.origin.y;
+  x = buttonFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   p_leadingTopButtonFrame = &self->_leadingTopButtonFrame;
-  if (!CGRectEqualToRect(a3, self->_leadingTopButtonFrame) || (v16.origin.x = x, v16.origin.y = y, v16.size.width = width, v16.size.height = height, !CGRectEqualToRect(v16, self->_trailingTopButtonFrame)))
+  if (!CGRectEqualToRect(frame, self->_leadingTopButtonFrame) || (v16.origin.x = x, v16.origin.y = y, v16.size.width = width, v16.size.height = height, !CGRectEqualToRect(v16, self->_trailingTopButtonFrame)))
   {
     p_leadingTopButtonFrame->origin.x = v11;
     p_leadingTopButtonFrame->origin.y = v10;
@@ -361,39 +361,39 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
     self->_trailingTopButtonFrame.origin.y = y;
     self->_trailingTopButtonFrame.size.width = width;
     self->_trailingTopButtonFrame.size.height = height;
-    v14 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+    _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __82__CSPosterSwitcherViewController_setLeadingTopButtonFrame_trailingTopButtonFrame___block_invoke;
     v15[3] = &unk_27838D230;
     v15[4] = self;
-    [v14 updateSettingsWithBlock:v15];
+    [_sceneIfExists updateSettingsWithBlock:v15];
   }
 }
 
-- (void)setLastAdaptiveTimeTextHeight:(double)a3
+- (void)setLastAdaptiveTimeTextHeight:(double)height
 {
-  if (self->_lastAdaptiveTimeTextHeight != a3)
+  if (self->_lastAdaptiveTimeTextHeight != height)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_lastAdaptiveTimeTextHeight = a3;
-    v6 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+    self->_lastAdaptiveTimeTextHeight = height;
+    _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __64__CSPosterSwitcherViewController_setLastAdaptiveTimeTextHeight___block_invoke;
     v7[3] = &unk_27838D230;
     v7[4] = self;
-    [v6 updateSettingsWithBlock:v7];
+    [_sceneIfExists updateSettingsWithBlock:v7];
   }
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
   v6.receiver = self;
   v6.super_class = CSPosterSwitcherViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v6 aggregateBehavior:v4];
+  behaviorCopy = behavior;
+  [(CSCoverSheetViewControllerBase *)&v6 aggregateBehavior:behaviorCopy];
   if (self->_hasEverGoneBeyondAlongside)
   {
     v5 = 16;
@@ -404,20 +404,20 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
     v5 = 13;
   }
 
-  [v4 setIdleTimerDuration:{v5, v6.receiver, v6.super_class}];
-  [v4 setIdleTimerMode:1];
-  [v4 setIdleWarnMode:2];
-  [v4 setNotificationBehavior:2];
-  [v4 addRestrictedCapabilities:4096];
+  [behaviorCopy setIdleTimerDuration:{v5, v6.receiver, v6.super_class}];
+  [behaviorCopy setIdleTimerMode:1];
+  [behaviorCopy setIdleWarnMode:2];
+  [behaviorCopy setNotificationBehavior:2];
+  [behaviorCopy addRestrictedCapabilities:4096];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v100[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appearanceCopy = appearance;
   v97.receiver = self;
   v97.super_class = CSPosterSwitcherViewController;
-  [(CSCoverSheetViewControllerBase *)&v97 aggregateAppearance:v4];
+  [(CSCoverSheetViewControllerBase *)&v97 aggregateAppearance:appearanceCopy];
   v5 = +[CSComponent proudLock];
   v100[0] = v5;
   v6 = +[CSComponent quickActions];
@@ -430,22 +430,22 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
   v100[4] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v100 count:5];
 
-  v11 = [(CSPosterSwitcherViewController *)self clientSwitcherLayoutMode];
+  clientSwitcherLayoutMode = [(CSPosterSwitcherViewController *)self clientSwitcherLayoutMode];
   v12 = SBLogDashBoard();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [(CSPosterSwitcherViewController *)v11 != 0 aggregateAppearance:v12, v13, v14, v15, v16, v17, v18];
+    [(CSPosterSwitcherViewController *)clientSwitcherLayoutMode != 0 aggregateAppearance:v12, v13, v14, v15, v16, v17, v18];
   }
 
-  v78 = self;
-  v19 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
-  v20 = [v19 clientSettings];
+  selfCopy = self;
+  _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+  clientSettings = [_sceneIfExists clientSettings];
 
-  [v20 pruis_primaryPosterScale];
+  [clientSettings pruis_primaryPosterScale];
   v22 = v21;
-  v79 = v20;
-  [v20 pruis_primaryPosterOffset];
-  if (v22 <= 0.0 || v11 == 0)
+  v79 = clientSettings;
+  [clientSettings pruis_primaryPosterOffset];
+  if (v22 <= 0.0 || clientSwitcherLayoutMode == 0)
   {
     v26 = 1.0;
   }
@@ -457,7 +457,7 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
 
   v27 = *MEMORY[0x277CBF348];
   v28 = *(MEMORY[0x277CBF348] + 8);
-  if (v11)
+  if (clientSwitcherLayoutMode)
   {
     v29 = v24;
   }
@@ -469,7 +469,7 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
 
   v95 = 0u;
   v96 = 0u;
-  if (v11)
+  if (clientSwitcherLayoutMode)
   {
     v30 = v23;
   }
@@ -504,7 +504,7 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v99 count:5];
   v38 = [v31 arrayByAddingObjectsFromArray:v37];
 
-  if (v11)
+  if (clientSwitcherLayoutMode)
   {
     v39 = [v38 bs_map:&__block_literal_global_15];
 
@@ -514,7 +514,7 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
   v40 = objc_opt_new();
   v41 = [v40 suppressTeachableMomentsAnimation:1];
   v42 = [v41 priority:40];
-  v43 = [v42 hidden:v11 != 0];
+  v43 = [v42 hidden:clientSwitcherLayoutMode != 0];
 
   v44 = [v43 transitionModifiers:24];
   v87 = v94;
@@ -543,7 +543,7 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
           objc_enumerationMutation(v47);
         }
 
-        [v4 addComponent:*(*(&v83 + 1) + 8 * i)];
+        [appearanceCopy addComponent:*(*(&v83 + 1) + 8 * i)];
       }
 
       v49 = [v47 countByEnumeratingWithState:&v83 objects:v98 count:16];
@@ -552,10 +552,10 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
     while (v49);
   }
 
-  v52 = [(CSPosterSwitcherViewController *)v78 hostedAppSceneHandle];
-  v53 = [v52 isContentReady];
+  hostedAppSceneHandle = [(CSPosterSwitcherViewController *)selfCopy hostedAppSceneHandle];
+  isContentReady = [hostedAppSceneHandle isContentReady];
 
-  if (v53)
+  if (isContentReady)
   {
     if (__sb__runningInSpringBoard())
     {
@@ -567,10 +567,10 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
 
     else
     {
-      v54 = [MEMORY[0x277D75418] currentDevice];
-      v55 = [v54 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v55 != 1)
+      if (userInterfaceIdiom != 1)
       {
         goto LABEL_30;
       }
@@ -579,16 +579,16 @@ void __56__CSPosterSwitcherViewController_setAppHostConfiguring___block_invoke_2
     v56 = +[CSComponent complicationSidebar];
     v57 = [v56 priority:40];
     v58 = [v57 hidden:1];
-    [v4 addComponent:v58];
+    [appearanceCopy addComponent:v58];
 
     v59 = +[CSComponent fullBleedContent];
     v60 = [v59 priority:40];
     v61 = [v60 flag:1];
-    [v4 addComponent:v61];
+    [appearanceCopy addComponent:v61];
   }
 
 LABEL_30:
-  fullscreenTransitionAnimationCount = v78->_fullscreenTransitionAnimationCount;
+  fullscreenTransitionAnimationCount = selfCopy->_fullscreenTransitionAnimationCount;
   if (fullscreenTransitionAnimationCount)
   {
     v63 = 1;
@@ -596,7 +596,7 @@ LABEL_30:
 
   else
   {
-    v63 = v11 == 0;
+    v63 = clientSwitcherLayoutMode == 0;
   }
 
   if (v63)
@@ -612,7 +612,7 @@ LABEL_30:
     v81 = v88;
     v82 = v89;
     v67 = [v66 transitionInputs:&v80];
-    [v4 addComponent:v67];
+    [appearanceCopy addComponent:v67];
 
     v68 = +[CSComponent backgroundContent];
     v69 = [v68 priority:40];
@@ -621,7 +621,7 @@ LABEL_30:
     v81 = v88;
     v82 = v89;
     v71 = [v70 transitionInputs:&v80];
-    [v4 addComponent:v71];
+    [appearanceCopy addComponent:v71];
   }
 
   v72 = objc_opt_new();
@@ -629,23 +629,23 @@ LABEL_30:
   v74 = [v73 hidden:0];
 
   [v74 setLevel:1];
-  if (fullscreenTransitionAnimationCount | v11)
+  if (fullscreenTransitionAnimationCount | clientSwitcherLayoutMode)
   {
     v75 = objc_opt_new();
     v76 = [v75 shouldMatchMove:0];
     v77 = [v76 priority:40];
 
     [v77 setLevel:1];
-    if (v11)
+    if (clientSwitcherLayoutMode)
     {
       [v77 setShouldRenderForPosterSwitcher:1];
       [v74 setShouldMatchBackgroundStyle:0];
     }
 
-    [v4 addComponent:v77];
+    [appearanceCopy addComponent:v77];
   }
 
-  [v4 addComponent:v74];
+  [appearanceCopy addComponent:v74];
 }
 
 id __54__CSPosterSwitcherViewController_aggregateAppearance___block_invoke(uint64_t a1, void *a2)
@@ -668,25 +668,25 @@ id __54__CSPosterSwitcherViewController_aggregateAppearance___block_invoke_2(uin
   return v3;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 9)
+  eventCopy = event;
+  if ([eventCopy type] == 9)
   {
     [(CSPosterSwitcherViewController *)self _sendDismissEntirelyActionToScene];
   }
 
   v13.receiver = self;
   v13.super_class = CSPosterSwitcherViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v13, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v13, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    if (v6 == 13)
+    type = [eventCopy type];
+    if (type == 13)
     {
-      v9 = [v4 value];
-      v10 = [v9 BOOLValue];
+      value = [eventCopy value];
+      bOOLValue = [value BOOLValue];
 
-      if ((v10 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v7 = SBLogDashBoard();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -702,7 +702,7 @@ LABEL_14:
       }
     }
 
-    else if (v6 == 25)
+    else if (type == 25)
     {
       v7 = SBLogDashBoard();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -717,28 +717,28 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v5 = 0;
+    isConsumable = 0;
     goto LABEL_16;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_16:
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)addGrabberView:(id)a3
+- (void)addGrabberView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v4 = [(CSPosterSwitcherViewController *)self view];
-    [v4 bounds];
-    [v5 setFrame:?];
+    view = [(CSPosterSwitcherViewController *)self view];
+    [view bounds];
+    [viewCopy setFrame:?];
 
-    [v5 setAutoresizingMask:18];
-    [v5 setAlpha:0.0];
-    [(UIView *)self->_scaleView addSubview:v5];
+    [viewCopy setAutoresizingMask:18];
+    [viewCopy setAlpha:0.0];
+    [(UIView *)self->_scaleView addSubview:viewCopy];
   }
 }
 
@@ -756,36 +756,36 @@ LABEL_16:
 
 - (void)_applicationHosterDidInvalidate
 {
-  v2 = [(CSPosterSwitcherViewController *)self invalidationHandler];
-  if (v2)
+  invalidationHandler = [(CSPosterSwitcherViewController *)self invalidationHandler];
+  if (invalidationHandler)
   {
-    v3 = v2;
-    v2[2]();
-    v2 = v3;
+    v3 = invalidationHandler;
+    invalidationHandler[2]();
+    invalidationHandler = v3;
   }
 }
 
-- (void)appendToHostedAppSceneSettings:(id)a3
+- (void)appendToHostedAppSceneSettings:(id)settings
 {
-  v4 = a3;
-  [v4 pruis_setPreferredSwitcherLayoutMode:0];
-  [(CSPosterSwitcherViewController *)self _updateOverlayViewSpecificationForSceneSettings:v4];
-  [(CSPosterSwitcherViewController *)self _updateLiveContentViewSpecificationForSceneSettings:v4];
-  [(CSPosterSwitcherViewController *)self _updateLiveFloatingViewSpecificationForSceneSettings:v4];
-  [(CSPosterSwitcherViewController *)self _updateFloatingLayerInlinedForSceneSettings:v4];
-  [(CSPosterSwitcherViewController *)self _updateComplicationRowHiddenForSceneSettings:v4];
-  [(CSPosterSwitcherViewController *)self _updateTopButtonLayoutForSceneSettings:v4];
-  [(CSPosterSwitcherViewController *)self _updateLockVibrancyConfigurationForSceneSettings:v4];
-  [(CSPosterSwitcherViewController *)self _updateAdaptiveTimeTextHeightForSceneSettings:v4];
+  settingsCopy = settings;
+  [settingsCopy pruis_setPreferredSwitcherLayoutMode:0];
+  [(CSPosterSwitcherViewController *)self _updateOverlayViewSpecificationForSceneSettings:settingsCopy];
+  [(CSPosterSwitcherViewController *)self _updateLiveContentViewSpecificationForSceneSettings:settingsCopy];
+  [(CSPosterSwitcherViewController *)self _updateLiveFloatingViewSpecificationForSceneSettings:settingsCopy];
+  [(CSPosterSwitcherViewController *)self _updateFloatingLayerInlinedForSceneSettings:settingsCopy];
+  [(CSPosterSwitcherViewController *)self _updateComplicationRowHiddenForSceneSettings:settingsCopy];
+  [(CSPosterSwitcherViewController *)self _updateTopButtonLayoutForSceneSettings:settingsCopy];
+  [(CSPosterSwitcherViewController *)self _updateLockVibrancyConfigurationForSceneSettings:settingsCopy];
+  [(CSPosterSwitcherViewController *)self _updateAdaptiveTimeTextHeightForSceneSettings:settingsCopy];
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
   traitsAwareViewController = self->_traitsAwareViewController;
-  v7 = a3;
-  v8 = [(CSTraitsAwareOrientedAppHosting *)traitsAwareViewController hostedSceneHandle];
+  handleCopy = handle;
+  hostedSceneHandle = [(CSTraitsAwareOrientedAppHosting *)traitsAwareViewController hostedSceneHandle];
 
-  if (a4 && v8 == v7 && [(CSPosterSwitcherViewController *)self bs_isAppearingOrAppeared])
+  if (scene && hostedSceneHandle == handleCopy && [(CSPosterSwitcherViewController *)self bs_isAppearingOrAppeared])
   {
     v9 = self->_traitsAwareViewController;
 
@@ -793,13 +793,13 @@ LABEL_16:
   }
 }
 
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene
 {
-  v6 = a3;
+  handleCopy = handle;
   [(CSPosterSwitcherViewController *)self _dismissEntirely];
-  v7 = [(CSTraitsAwareOrientedAppHosting *)self->_traitsAwareViewController hostedSceneHandle];
+  hostedSceneHandle = [(CSTraitsAwareOrientedAppHosting *)self->_traitsAwareViewController hostedSceneHandle];
 
-  if (a4 && v7 == v6)
+  if (scene && hostedSceneHandle == handleCopy)
   {
     traitsAwareViewController = self->_traitsAwareViewController;
 
@@ -807,11 +807,11 @@ LABEL_16:
   }
 }
 
-- (void)sceneHandle:(id)a3 didUpdateContentState:(int64_t)a4
+- (void)sceneHandle:(id)handle didUpdateContentState:(int64_t)state
 {
-  v5 = a3;
+  handleCopy = handle;
   [(CSPosterSwitcherViewController *)self _evaluateInitialTransitionActivation];
-  if ([v5 isContentReady])
+  if ([handleCopy isContentReady])
   {
     v6 = MEMORY[0x277CD9FF0];
     v7[0] = MEMORY[0x277D85DD0];
@@ -819,7 +819,7 @@ LABEL_16:
     v7[2] = __68__CSPosterSwitcherViewController_sceneHandle_didUpdateContentState___block_invoke;
     v7[3] = &unk_27838B838;
     v7[4] = self;
-    v8 = v5;
+    v8 = handleCopy;
     [v6 bs_performAfterSynchronizedCommit:v7];
   }
 
@@ -837,21 +837,21 @@ uint64_t __68__CSPosterSwitcherViewController_sceneHandle_didUpdateContentState_
   return [v2 _evaluateInitialTouchTransferActuation];
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 settingsDiff];
-  v9 = [v6 transitionContext];
+  settingsCopy = settings;
+  handleCopy = handle;
+  settingsDiff = [settingsCopy settingsDiff];
+  transitionContext = [settingsCopy transitionContext];
 
-  v10 = [v7 scene];
+  scene = [handleCopy scene];
 
-  v11 = [v10 clientSettings];
-  v12 = [v11 pruis_switcherLayoutMode];
+  clientSettings = [scene clientSettings];
+  pruis_switcherLayoutMode = [clientSettings pruis_switcherLayoutMode];
 
   v21 = 0;
-  v13 = [(CSPosterSwitcherViewController *)self sceneClientSettingsDiffInspector];
-  [v13 inspectDiff:v8 withContext:&v21];
+  sceneClientSettingsDiffInspector = [(CSPosterSwitcherViewController *)self sceneClientSettingsDiffInspector];
+  [sceneClientSettingsDiffInspector inspectDiff:settingsDiff withContext:&v21];
 
   v14 = v21;
   if ((v21 & 2) != 0)
@@ -859,11 +859,11 @@ uint64_t __68__CSPosterSwitcherViewController_sceneHandle_didUpdateContentState_
     [(CSPosterSwitcherViewController *)self _evaluateInitialTouchTransferActuation];
   }
 
-  v15 = [(CSPosterSwitcherViewController *)self clientSwitcherLayoutMode];
+  clientSwitcherLayoutMode = [(CSPosterSwitcherViewController *)self clientSwitcherLayoutMode];
   if (v14)
   {
-    v16 = v15;
-    if (v12 != v15)
+    v16 = clientSwitcherLayoutMode;
+    if (pruis_switcherLayoutMode != clientSwitcherLayoutMode)
     {
       v17 = SBLogDashBoard();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -873,7 +873,7 @@ uint64_t __68__CSPosterSwitcherViewController_sceneHandle_didUpdateContentState_
 
       if (v16)
       {
-        v18 = v12 == 0;
+        v18 = pruis_switcherLayoutMode == 0;
       }
 
       else
@@ -882,9 +882,9 @@ uint64_t __68__CSPosterSwitcherViewController_sceneHandle_didUpdateContentState_
       }
 
       v19 = v18;
-      if (!v16 || v12)
+      if (!v16 || pruis_switcherLayoutMode)
       {
-        if (!self->_hasEverGoneBeyondAlongside && v12 && v12 != [(CSPosterSwitcherViewController *)self _initialAlongsideLayoutMode])
+        if (!self->_hasEverGoneBeyondAlongside && pruis_switcherLayoutMode && pruis_switcherLayoutMode != [(CSPosterSwitcherViewController *)self _initialAlongsideLayoutMode])
         {
           self->_hasEverGoneBeyondAlongside = 1;
           [(CSCoverSheetViewControllerBase *)self updateBehaviorForController:self];
@@ -896,10 +896,10 @@ uint64_t __68__CSPosterSwitcherViewController_sceneHandle_didUpdateContentState_
         [(CSPosterSwitcherViewController *)self _updateAppearanceWithoutAnimation];
       }
 
-      [(CSPosterSwitcherViewController *)self setClientSwitcherLayoutMode:v12];
+      [(CSPosterSwitcherViewController *)self setClientSwitcherLayoutMode:pruis_switcherLayoutMode];
       if (v19)
       {
-        v20 = v9;
+        v20 = transitionContext;
         _UISceneSettingsDiffActionPerformChangesWithTransitionContext();
       }
     }
@@ -908,25 +908,25 @@ uint64_t __68__CSPosterSwitcherViewController_sceneHandle_didUpdateContentState_
 
 - (id)_sceneIfExists
 {
-  v2 = [(CSPosterSwitcherViewController *)self hostedAppSceneHandle];
-  v3 = [v2 sceneIfExists];
+  hostedAppSceneHandle = [(CSPosterSwitcherViewController *)self hostedAppSceneHandle];
+  sceneIfExists = [hostedAppSceneHandle sceneIfExists];
 
-  return v3;
+  return sceneIfExists;
 }
 
 - (void)_evaluateInitialTransitionActivation
 {
   if (![(CSPosterSwitcherViewController *)self handledInitialTransition]&& [(CSPosterSwitcherViewController *)self _appearState]== 2)
   {
-    v5 = [(CSPosterSwitcherViewController *)self hostedAppSceneHandle];
-    v3 = [v5 sceneIfExists];
-    if (v3 && [v5 isContentReady])
+    hostedAppSceneHandle = [(CSPosterSwitcherViewController *)self hostedAppSceneHandle];
+    sceneIfExists = [hostedAppSceneHandle sceneIfExists];
+    if (sceneIfExists && [hostedAppSceneHandle isContentReady])
     {
       [(CSPosterSwitcherViewController *)self setHandledInitialTransition:1];
-      v4 = [v3 clientSettings];
-      -[CSPosterSwitcherViewController setClientSwitcherLayoutMode:](self, "setClientSwitcherLayoutMode:", [v4 pruis_switcherLayoutMode]);
+      clientSettings = [sceneIfExists clientSettings];
+      -[CSPosterSwitcherViewController setClientSwitcherLayoutMode:](self, "setClientSwitcherLayoutMode:", [clientSettings pruis_switcherLayoutMode]);
 
-      [(CSPosterSwitcherViewController *)self _transitionScene:v3 toLayoutMode:[(CSPosterSwitcherViewController *)self _initialAlongsideLayoutMode] animated:1];
+      [(CSPosterSwitcherViewController *)self _transitionScene:sceneIfExists toLayoutMode:[(CSPosterSwitcherViewController *)self _initialAlongsideLayoutMode] animated:1];
       [(CSPosterSwitcherViewController *)self _updateAppearanceWithoutAnimation];
     }
   }
@@ -950,7 +950,7 @@ uint64_t __68__CSPosterSwitcherViewController_sceneHandle_didUpdateContentState_
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Why are we trying to transfer touches to a non-foreground scene?"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_1_1();
@@ -975,9 +975,9 @@ uint64_t __72__CSPosterSwitcherViewController__evaluateInitialTouchTransferActua
   return [v2 numberWithUnsignedInt:v3];
 }
 
-- (void)_transitionScene:(id)a3 toLayoutMode:(unint64_t)a4 animated:(BOOL)a5
+- (void)_transitionScene:(id)scene toLayoutMode:(unint64_t)mode animated:(BOOL)animated
 {
-  v7 = a3;
+  sceneCopy = scene;
   v8 = SBLogDashBoard();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -988,10 +988,10 @@ uint64_t __72__CSPosterSwitcherViewController__evaluateInitialTouchTransferActua
   v10[1] = 3221225472;
   v10[2] = __73__CSPosterSwitcherViewController__transitionScene_toLayoutMode_animated___block_invoke;
   v10[3] = &unk_27838D2E0;
-  v13 = a5;
-  v11 = v7;
-  v12 = a4;
-  v9 = v7;
+  animatedCopy = animated;
+  v11 = sceneCopy;
+  modeCopy = mode;
+  v9 = sceneCopy;
   [v9 updateSettingsWithTransitionBlock:v10];
 }
 
@@ -1013,87 +1013,87 @@ id __73__CSPosterSwitcherViewController__transitionScene_toLayoutMode_animated__
   return v3;
 }
 
-- (void)_updateOverlayViewSpecificationForSceneSettings:(id)a3
+- (void)_updateOverlayViewSpecificationForSceneSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(CSPosterSwitcherViewController *)self coverSheetBackgroundView];
-  v7 = [v5 layer];
+  settingsCopy = settings;
+  coverSheetBackgroundView = [(CSPosterSwitcherViewController *)self coverSheetBackgroundView];
+  layer = [coverSheetBackgroundView layer];
 
-  if (v7)
+  if (layer)
   {
-    [v4 pruis_setLockPosterOverlayLayerRenderID:CALayerGetRenderId()];
-    v6 = [v7 context];
-    [v4 pruis_setLockPosterOverlayLayerContextID:{objc_msgSend(v6, "contextId")}];
+    [settingsCopy pruis_setLockPosterOverlayLayerRenderID:CALayerGetRenderId()];
+    context = [layer context];
+    [settingsCopy pruis_setLockPosterOverlayLayerContextID:{objc_msgSend(context, "contextId")}];
 
-    v4 = v6;
+    settingsCopy = context;
   }
 
   else
   {
-    [v4 pruis_setLockPosterOverlayLayerRenderID:0];
-    [v4 pruis_setLockPosterOverlayLayerContextID:0];
+    [settingsCopy pruis_setLockPosterOverlayLayerRenderID:0];
+    [settingsCopy pruis_setLockPosterOverlayLayerContextID:0];
   }
 }
 
-- (void)_updateLiveContentViewSpecificationForSceneSettings:(id)a3
+- (void)_updateLiveContentViewSpecificationForSceneSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(CSPosterSwitcherViewController *)self coverSheetWallpaperView];
-  v7 = [v5 layer];
+  settingsCopy = settings;
+  coverSheetWallpaperView = [(CSPosterSwitcherViewController *)self coverSheetWallpaperView];
+  layer = [coverSheetWallpaperView layer];
 
-  if (v7)
+  if (layer)
   {
-    [v4 pruis_setLockPosterLiveContentLayerRenderID:CALayerGetRenderId()];
-    v6 = [v7 context];
-    [v4 pruis_setLockPosterLiveContentLayerContextID:{objc_msgSend(v6, "contextId")}];
+    [settingsCopy pruis_setLockPosterLiveContentLayerRenderID:CALayerGetRenderId()];
+    context = [layer context];
+    [settingsCopy pruis_setLockPosterLiveContentLayerContextID:{objc_msgSend(context, "contextId")}];
 
-    v4 = v6;
+    settingsCopy = context;
   }
 
   else
   {
-    [v4 pruis_setLockPosterLiveContentLayerRenderID:0];
-    [v4 pruis_setLockPosterLiveContentLayerContextID:0];
+    [settingsCopy pruis_setLockPosterLiveContentLayerRenderID:0];
+    [settingsCopy pruis_setLockPosterLiveContentLayerContextID:0];
   }
 }
 
-- (void)_updateLiveFloatingViewSpecificationForSceneSettings:(id)a3
+- (void)_updateLiveFloatingViewSpecificationForSceneSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(CSPosterSwitcherViewController *)self coverSheetFloatingView];
-  v7 = [v5 layer];
+  settingsCopy = settings;
+  coverSheetFloatingView = [(CSPosterSwitcherViewController *)self coverSheetFloatingView];
+  layer = [coverSheetFloatingView layer];
 
-  if (v7)
+  if (layer)
   {
-    [v4 pruis_setLockPosterLiveFloatingLayerRenderID:CALayerGetRenderId()];
-    v6 = [v7 context];
-    [v4 pruis_setLockPosterLiveFloatingLayerContextID:{objc_msgSend(v6, "contextId")}];
+    [settingsCopy pruis_setLockPosterLiveFloatingLayerRenderID:CALayerGetRenderId()];
+    context = [layer context];
+    [settingsCopy pruis_setLockPosterLiveFloatingLayerContextID:{objc_msgSend(context, "contextId")}];
 
-    v4 = v6;
+    settingsCopy = context;
   }
 
   else
   {
-    [v4 pruis_setLockPosterLiveFloatingLayerRenderID:0];
-    [v4 pruis_setLockPosterLiveFloatingLayerContextID:0];
+    [settingsCopy pruis_setLockPosterLiveFloatingLayerRenderID:0];
+    [settingsCopy pruis_setLockPosterLiveFloatingLayerContextID:0];
   }
 }
 
-- (void)_updateFloatingLayerInlinedForSceneSettings:(id)a3
+- (void)_updateFloatingLayerInlinedForSceneSettings:(id)settings
 {
-  v4 = a3;
-  [v4 pruis_setLockPosterFloatingLayerInlined:{-[CSPosterSwitcherViewController isCoverSheetWallpaperFloatingLayerInlined](self, "isCoverSheetWallpaperFloatingLayerInlined")}];
+  settingsCopy = settings;
+  [settingsCopy pruis_setLockPosterFloatingLayerInlined:{-[CSPosterSwitcherViewController isCoverSheetWallpaperFloatingLayerInlined](self, "isCoverSheetWallpaperFloatingLayerInlined")}];
 }
 
-- (void)_updateComplicationRowHiddenForSceneSettings:(id)a3
+- (void)_updateComplicationRowHiddenForSceneSettings:(id)settings
 {
-  v4 = a3;
-  [v4 pruis_setLockPosterComplicationRowHidden:{-[CSPosterSwitcherViewController isCoverSheetComplicationRowHidden](self, "isCoverSheetComplicationRowHidden")}];
+  settingsCopy = settings;
+  [settingsCopy pruis_setLockPosterComplicationRowHidden:{-[CSPosterSwitcherViewController isCoverSheetComplicationRowHidden](self, "isCoverSheetComplicationRowHidden")}];
 }
 
-- (void)_updateTopButtonLayoutForSceneSettings:(id)a3
+- (void)_updateTopButtonLayoutForSceneSettings:(id)settings
 {
-  v20 = a3;
+  settingsCopy = settings;
   [(CSPosterSwitcherViewController *)self leadingTopButtonFrame];
   v5 = v4;
   v7 = v6;
@@ -1104,23 +1104,23 @@ id __73__CSPosterSwitcherViewController__transitionScene_toLayoutMode_animated__
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v20 pruis_setLeadingTopButtonFrame:{v5, v7, v9, v11}];
-  [v20 pruis_setTrailingTopButtonFrame:{v13, v15, v17, v19}];
+  [settingsCopy pruis_setLeadingTopButtonFrame:{v5, v7, v9, v11}];
+  [settingsCopy pruis_setTrailingTopButtonFrame:{v13, v15, v17, v19}];
 }
 
-- (void)_updateLockVibrancyConfigurationForSceneSettings:(id)a3
+- (void)_updateLockVibrancyConfigurationForSceneSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(CSPosterSwitcherViewController *)self vibrancyConfiguration];
-  [v4 pruis_setLockVibrancyConfiguration:v5];
+  settingsCopy = settings;
+  vibrancyConfiguration = [(CSPosterSwitcherViewController *)self vibrancyConfiguration];
+  [settingsCopy pruis_setLockVibrancyConfiguration:vibrancyConfiguration];
 }
 
-- (void)_updateAppearanceWithClientLayoutMode:(unint64_t)a3 previousLayoutMode:(unint64_t)a4 transitionContext:(id)a5
+- (void)_updateAppearanceWithClientLayoutMode:(unint64_t)mode previousLayoutMode:(unint64_t)layoutMode transitionContext:(id)context
 {
-  v8 = a5;
-  if (a3)
+  contextCopy = context;
+  if (mode)
   {
-    v9 = a4 == 0;
+    v9 = layoutMode == 0;
   }
 
   else
@@ -1138,14 +1138,14 @@ id __73__CSPosterSwitcherViewController__transitionScene_toLayoutMode_animated__
   v14[1] = 3221225472;
   v14[2] = __109__CSPosterSwitcherViewController__updateAppearanceWithClientLayoutMode_previousLayoutMode_transitionContext___block_invoke;
   v14[3] = &unk_27838D308;
-  v15 = v8;
+  v15 = contextCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __109__CSPosterSwitcherViewController__updateAppearanceWithClientLayoutMode_previousLayoutMode_transitionContext___block_invoke_2;
   v12[3] = &unk_27838D198;
   v13 = v10;
   v12[4] = self;
-  v11 = v8;
+  v11 = contextCopy;
   [(CSCoverSheetViewControllerBase *)self updateAppearance:v14 completion:v12];
 }
 
@@ -1195,11 +1195,11 @@ uint64_t __109__CSPosterSwitcherViewController__updateAppearanceWithClientLayout
   return result;
 }
 
-- (void)_updateAdaptiveTimeTextHeightForSceneSettings:(id)a3
+- (void)_updateAdaptiveTimeTextHeightForSceneSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   [(CSPosterSwitcherViewController *)self lastAdaptiveTimeTextHeight];
-  [v4 pruis_setTitleAdaptiveTextHeight:?];
+  [settingsCopy pruis_setTitleAdaptiveTextHeight:?];
 }
 
 - (void)_updateAppearanceWithoutAnimation
@@ -1214,32 +1214,32 @@ uint64_t __109__CSPosterSwitcherViewController__updateAppearanceWithClientLayout
 
 - (unint64_t)_effectiveSceneClientLayoutMode
 {
-  v2 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
-  v3 = v2;
-  if (v2)
+  _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+  v3 = _sceneIfExists;
+  if (_sceneIfExists)
   {
-    v4 = [v2 clientSettings];
-    v5 = [v4 pruis_switcherLayoutMode];
+    clientSettings = [_sceneIfExists clientSettings];
+    pruis_switcherLayoutMode = [clientSettings pruis_switcherLayoutMode];
   }
 
   else
   {
-    v5 = 0;
+    pruis_switcherLayoutMode = 0;
   }
 
-  return v5;
+  return pruis_switcherLayoutMode;
 }
 
-- (void)_dismissTier:(BOOL)a3
+- (void)_dismissTier:(BOOL)tier
 {
-  v3 = a3;
-  v8 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
-  if ([v8 contentState] == 2)
+  tierCopy = tier;
+  _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+  if ([_sceneIfExists contentState] == 2)
   {
     v5 = MEMORY[0x277CBEB98];
-    v6 = [MEMORY[0x277D3EB30] actionWithAnimation:v3];
+    v6 = [MEMORY[0x277D3EB30] actionWithAnimation:tierCopy];
     v7 = [v5 setWithObject:v6];
-    [v8 sendActions:v7];
+    [_sceneIfExists sendActions:v7];
   }
 
   else
@@ -1250,11 +1250,11 @@ uint64_t __109__CSPosterSwitcherViewController__updateAppearanceWithClientLayout
 
 - (void)_sendDismissEntirelyActionToScene
 {
-  v5 = [(CSPosterSwitcherViewController *)self _sceneIfExists];
+  _sceneIfExists = [(CSPosterSwitcherViewController *)self _sceneIfExists];
   v2 = MEMORY[0x277CBEB98];
   v3 = [MEMORY[0x277D3EB28] actionActivatingCurrentPoster:0];
   v4 = [v2 setWithObject:v3];
-  [v5 sendActions:v4];
+  [_sceneIfExists sendActions:v4];
 }
 
 - (void)_dismissEntirely

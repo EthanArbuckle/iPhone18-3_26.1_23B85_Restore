@@ -1,117 +1,117 @@
 @interface BuddyLanguageLocaleFlow
 + (id)allowedFlowItems;
-- (BOOL)userSelectedLanguageWithLocale:(id)a3 countryCode:(id)a4 localePaneScrollOffset:(double)a5;
-- (BuddyLanguageLocaleFlow)initWithNavigationController:(id)a3 dataSource:(id)a4 flowDelegate:(id)a5 flowStarter:(id)a6 dependencyInjector:(id)a7;
-- (BuddyLanguageLocaleFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6;
+- (BOOL)userSelectedLanguageWithLocale:(id)locale countryCode:(id)code localePaneScrollOffset:(double)offset;
+- (BuddyLanguageLocaleFlow)initWithNavigationController:(id)controller dataSource:(id)source flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
+- (BuddyLanguageLocaleFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
 - (id)firstItem;
 - (id)precedingItemsClasses;
-- (void)_injectDependencies:(id)a3;
-- (void)configureFlowItem:(id)a3;
-- (void)flowItemDone:(id)a3 nextItem:(id)a4;
+- (void)_injectDependencies:(id)dependencies;
+- (void)configureFlowItem:(id)item;
+- (void)flowItemDone:(id)done nextItem:(id)item;
 - (void)languageCompositeUpdated;
-- (void)observer:(id)a3 didObserveLanguageChange:(BOOL)a4 localeChange:(BOOL)a5;
-- (void)setBuddyPreferencesExcludedFromBackup:(id)a3;
-- (void)userSelectedLanguage:(id)a3;
+- (void)observer:(id)observer didObserveLanguageChange:(BOOL)change localeChange:(BOOL)localeChange;
+- (void)setBuddyPreferencesExcludedFromBackup:(id)backup;
+- (void)userSelectedLanguage:(id)language;
 @end
 
 @implementation BuddyLanguageLocaleFlow
 
-- (BuddyLanguageLocaleFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6
+- (BuddyLanguageLocaleFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, delegate);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, starter);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
+  objc_storeStrong(&v13, injector);
   v12 = objc_alloc_init(BuddyLanguageLocaleDataSource);
-  v9 = v17;
-  v17 = 0;
-  v17 = [v9 initWithNavigationController:location[0] dataSource:v12 flowDelegate:v15 flowStarter:v14 dependencyInjector:v13];
-  v10 = v17;
+  v9 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [v9 initWithNavigationController:location[0] dataSource:v12 flowDelegate:v15 flowStarter:v14 dependencyInjector:v13];
+  v10 = selfCopy;
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (BuddyLanguageLocaleFlow)initWithNavigationController:(id)a3 dataSource:(id)a4 flowDelegate:(id)a5 flowStarter:(id)a6 dependencyInjector:(id)a7
+- (BuddyLanguageLocaleFlow)initWithNavigationController:(id)controller dataSource:(id)source flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, source);
   v24 = 0;
-  objc_storeStrong(&v24, a5);
+  objc_storeStrong(&v24, delegate);
   v23 = 0;
-  objc_storeStrong(&v23, a6);
+  objc_storeStrong(&v23, starter);
   v22 = 0;
-  objc_storeStrong(&v22, a7);
-  v11 = v27;
-  v27 = 0;
+  objc_storeStrong(&v22, injector);
+  v11 = selfCopy;
+  selfCopy = 0;
   v21.receiver = v11;
   v21.super_class = BuddyLanguageLocaleFlow;
-  v27 = [(BuddyLanguageLocaleFlow *)&v21 initWithNavigationController:location[0] flowDelegate:v24 flowStarter:v23 dependencyInjector:v22];
-  objc_storeStrong(&v27, v27);
-  if (v27)
+  selfCopy = [(BuddyLanguageLocaleFlow *)&v21 initWithNavigationController:location[0] flowDelegate:v24 flowStarter:v23 dependencyInjector:v22];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [v27 setDataSource:v25];
-    v12 = v27;
-    v13 = [v27 dataSource];
-    [v13 setDelegate:v12];
+    [selfCopy setDataSource:v25];
+    v12 = selfCopy;
+    dataSource = [selfCopy dataSource];
+    [dataSource setDelegate:v12];
 
     v28[0] = objc_opt_class();
     v28[1] = objc_opt_class();
     v14 = [NSArray arrayWithObjects:v28 count:2];
-    [v27 setClassList:v14];
+    [selfCopy setClassList:v14];
 
     v15 = objc_alloc_init(BuddyLanguageChangeObserver);
-    [v27 setLanguageChangeObserver:v15];
+    [selfCopy setLanguageChangeObserver:v15];
 
-    v16 = v27;
-    v17 = [v27 languageChangeObserver];
-    [v17 setDelegate:v16];
+    v16 = selfCopy;
+    languageChangeObserver = [selfCopy languageChangeObserver];
+    [languageChangeObserver setDelegate:v16];
 
-    v18 = [v27 languageChangeObserver];
-    [v18 startObservingLanguageChanges];
+    languageChangeObserver2 = [selfCopy languageChangeObserver];
+    [languageChangeObserver2 startObservingLanguageChanges];
   }
 
-  v19 = v27;
+  v19 = selfCopy;
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v27, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v19;
 }
 
-- (void)setBuddyPreferencesExcludedFromBackup:(id)a3
+- (void)setBuddyPreferencesExcludedFromBackup:(id)backup
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v6->_buddyPreferencesExcludedFromBackup, location[0]);
+  objc_storeStrong(location, backup);
+  objc_storeStrong(&selfCopy->_buddyPreferencesExcludedFromBackup, location[0]);
   v3 = location[0];
-  v4 = [(BuddyLanguageLocaleFlow *)v6 dataSource];
-  [(BuddyLanguageLocaleDataSource *)v4 setBuddyPreferencesExcludedFromBackup:v3];
+  dataSource = [(BuddyLanguageLocaleFlow *)selfCopy dataSource];
+  [(BuddyLanguageLocaleDataSource *)dataSource setBuddyPreferencesExcludedFromBackup:v3];
 
   objc_storeStrong(location, 0);
 }
 
 - (id)firstItem
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   v7.receiver = self;
   v7.super_class = BuddyLanguageLocaleFlow;
@@ -119,9 +119,9 @@
   if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___BuddyLanguageDependencyReceiver])
   {
     v2 = location[0];
-    v3 = [(BuddyLanguageLocaleFlow *)v9 dataSource];
-    v4 = [(BuddyLanguageLocaleDataSource *)v3 languageComposite];
-    [v2 setLanguageComposite:v4];
+    dataSource = [(BuddyLanguageLocaleFlow *)selfCopy dataSource];
+    languageComposite = [(BuddyLanguageLocaleDataSource *)dataSource languageComposite];
+    [v2 setLanguageComposite:languageComposite];
   }
 
   v5 = location[0];
@@ -145,16 +145,16 @@
   return v3;
 }
 
-- (void)configureFlowItem:(id)a3
+- (void)configureFlowItem:(id)item
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, item);
+  v3.receiver = selfCopy;
   v3.super_class = BuddyLanguageLocaleFlow;
   [(BuddyLanguageLocaleFlow *)&v3 configureFlowItem:location[0]];
-  [(BuddyLanguageLocaleFlow *)v5 _injectDependencies:location[0]];
+  [(BuddyLanguageLocaleFlow *)selfCopy _injectDependencies:location[0]];
   objc_storeStrong(location, 0);
 }
 
@@ -165,51 +165,51 @@
   return [NSArray arrayWithObjects:v3 count:2];
 }
 
-- (void)_injectDependencies:(id)a3
+- (void)_injectDependencies:(id)dependencies
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyLanguageLocaleFlow *)v12 injector];
-  v4 = v3[2](v3, location[0]);
+  objc_storeStrong(location, dependencies);
+  injector = [(BuddyLanguageLocaleFlow *)selfCopy injector];
+  v4 = injector[2](injector, location[0]);
 
   if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___BuddyLanguageDependencyReceiver])
   {
     v10 = location[0];
-    v5 = [(BuddyLanguageLocaleFlow *)v12 dataSource];
-    v6 = [(BuddyLanguageLocaleDataSource *)v5 languageComposite];
-    [v10 setLanguageComposite:v6];
+    dataSource = [(BuddyLanguageLocaleFlow *)selfCopy dataSource];
+    languageComposite = [(BuddyLanguageLocaleDataSource *)dataSource languageComposite];
+    [v10 setLanguageComposite:languageComposite];
 
-    [v10 setSelectionReceiver:v12];
+    [v10 setSelectionReceiver:selfCopy];
     objc_storeStrong(&v10, 0);
   }
 
   else if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___BuddyLocaleDependencyReceiver])
   {
     v9 = location[0];
-    v7 = [(BuddyLanguageLocaleFlow *)v12 dataSource];
-    v8 = [(BuddyLanguageLocaleDataSource *)v7 localeComposite];
-    [v9 setLocaleComposite:v8];
+    dataSource2 = [(BuddyLanguageLocaleFlow *)selfCopy dataSource];
+    localeComposite = [(BuddyLanguageLocaleDataSource *)dataSource2 localeComposite];
+    [v9 setLocaleComposite:localeComposite];
 
-    [v9 setSelectionReceiver:v12];
-    [v9 setResumingFromLanguageReboot:{-[BuddyLanguageLocaleFlow isResumingFromLanguageReboot](v12, "isResumingFromLanguageReboot")}];
+    [v9 setSelectionReceiver:selfCopy];
+    [v9 setResumingFromLanguageReboot:{-[BuddyLanguageLocaleFlow isResumingFromLanguageReboot](selfCopy, "isResumingFromLanguageReboot")}];
     objc_storeStrong(&v9, 0);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3 nextItem:(id)a4
+- (void)flowItemDone:(id)done nextItem:(id)item
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  [(BuddyLanguageLocaleFlow *)v11 setResumingFromLanguageReboot:0];
-  [(BuddyLanguageLocaleFlow *)v11 _injectDependencies:v9];
+  objc_storeStrong(&v9, item);
+  [(BuddyLanguageLocaleFlow *)selfCopy setResumingFromLanguageReboot:0];
+  [(BuddyLanguageLocaleFlow *)selfCopy _injectDependencies:v9];
   v8 = 0;
   if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___BuddyLanguageDependencyReceiver])
   {
@@ -225,57 +225,57 @@
     objc_storeStrong(&v6, 0);
   }
 
-  v5.receiver = v11;
+  v5.receiver = selfCopy;
   v5.super_class = BuddyLanguageLocaleFlow;
   [(BuddyLanguageLocaleFlow *)&v5 flowItemDone:location[0] nextItem:v9];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)observer:(id)a3 didObserveLanguageChange:(BOOL)a4 localeChange:(BOOL)a5
+- (void)observer:(id)observer didObserveLanguageChange:(BOOL)change localeChange:(BOOL)localeChange
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(BuddyLanguageLocaleFlow *)v10 classList];
-  v6 = [(BuddyLanguageLocaleFlow *)v10 navigationController];
-  v7 = [v6 topViewController];
-  v8 = [v5 containsObject:objc_opt_class()] ^ 1;
+  objc_storeStrong(location, observer);
+  classList = [(BuddyLanguageLocaleFlow *)selfCopy classList];
+  navigationController = [(BuddyLanguageLocaleFlow *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
+  v8 = [classList containsObject:objc_opt_class()] ^ 1;
 
   if ((v8 & 1) == 0)
   {
-    [(BuddyLanguageLocaleFlow *)v10 flowItemDone:v10 nextItem:0];
+    [(BuddyLanguageLocaleFlow *)selfCopy flowItemDone:selfCopy nextItem:0];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)userSelectedLanguage:(id)a3
+- (void)userSelectedLanguage:(id)language
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyLanguageLocaleFlow *)v6 dataSource];
-  [(BuddyLanguageLocaleDataSource *)v3 userSelectedLanguage:location[0]];
+  objc_storeStrong(location, language);
+  dataSource = [(BuddyLanguageLocaleFlow *)selfCopy dataSource];
+  [(BuddyLanguageLocaleDataSource *)dataSource userSelectedLanguage:location[0]];
 
-  v4 = [(BuddyLanguageLocaleFlow *)v6 receiver];
-  [(BuddyLanguageLocaleSelectionReceiver *)v4 userSelectedLanguage:location[0]];
+  receiver = [(BuddyLanguageLocaleFlow *)selfCopy receiver];
+  [(BuddyLanguageLocaleSelectionReceiver *)receiver userSelectedLanguage:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)userSelectedLanguageWithLocale:(id)a3 countryCode:(id)a4 localePaneScrollOffset:(double)a5
+- (BOOL)userSelectedLanguageWithLocale:(id)locale countryCode:(id)code localePaneScrollOffset:(double)offset
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, locale);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v7 = [(BuddyLanguageLocaleFlow *)v12 receiver];
-  v8 = [(BuddyLanguageLocaleSelectionReceiver *)v7 userSelectedLanguageWithLocale:location[0] countryCode:v10 localePaneScrollOffset:a5];
+  objc_storeStrong(&v10, code);
+  receiver = [(BuddyLanguageLocaleFlow *)selfCopy receiver];
+  v8 = [(BuddyLanguageLocaleSelectionReceiver *)receiver userSelectedLanguageWithLocale:location[0] countryCode:v10 localePaneScrollOffset:offset];
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
@@ -284,27 +284,27 @@
 
 - (void)languageCompositeUpdated
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = +[NSMutableArray array];
-  v2 = [(BuddyLanguageLocaleFlow *)v20 controllers];
-  v3 = [v2 count];
+  controllers = [(BuddyLanguageLocaleFlow *)selfCopy controllers];
+  v3 = [controllers count];
 
   if (v3)
   {
-    v4 = [(BuddyLanguageLocaleFlow *)v20 controllers];
-    [location[0] addObjectsFromArray:v4];
+    controllers2 = [(BuddyLanguageLocaleFlow *)selfCopy controllers];
+    [location[0] addObjectsFromArray:controllers2];
   }
 
-  v5 = [(BuddyLanguageLocaleFlow *)v20 navigationController];
-  v6 = [v5 viewControllers];
-  v7 = [v6 count];
+  navigationController = [(BuddyLanguageLocaleFlow *)selfCopy navigationController];
+  viewControllers = [navigationController viewControllers];
+  v7 = [viewControllers count];
 
   if (v7)
   {
-    v8 = [(BuddyLanguageLocaleFlow *)v20 navigationController];
-    v9 = [v8 viewControllers];
-    [location[0] addObjectsFromArray:v9];
+    navigationController2 = [(BuddyLanguageLocaleFlow *)selfCopy navigationController];
+    viewControllers2 = [navigationController2 viewControllers];
+    [location[0] addObjectsFromArray:viewControllers2];
   }
 
   memset(__b, 0, sizeof(__b));
@@ -326,9 +326,9 @@
         if ([v18 conformsToProtocol:&OBJC_PROTOCOL___BuddyLanguageDependencyReceiver])
         {
           v16 = v18;
-          v14 = [(BuddyLanguageLocaleFlow *)v20 dataSource];
-          v15 = [(BuddyLanguageLocaleDataSource *)v14 languageComposite];
-          [v16 setLanguageComposite:v15];
+          dataSource = [(BuddyLanguageLocaleFlow *)selfCopy dataSource];
+          languageComposite = [(BuddyLanguageLocaleDataSource *)dataSource languageComposite];
+          [v16 setLanguageComposite:languageComposite];
 
           objc_storeStrong(&v16, 0);
         }

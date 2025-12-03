@@ -1,6 +1,6 @@
 @interface NeroMessageCenterSocket
-- (BOOL)sendMemoryBlock:(void *)a3 withLength:(unint64_t)a4;
-- (NeroMessageCenterSocket)initWithIDSService:(id)a3 connection:(OpaqueFigTransportConnection *)a4;
+- (BOOL)sendMemoryBlock:(void *)block withLength:(unint64_t)length;
+- (NeroMessageCenterSocket)initWithIDSService:(id)service connection:(OpaqueFigTransportConnection *)connection;
 - (int)activateConnection;
 - (void)deactivateConnection;
 - (void)dealloc;
@@ -11,7 +11,7 @@
 
 @implementation NeroMessageCenterSocket
 
-- (NeroMessageCenterSocket)initWithIDSService:(id)a3 connection:(OpaqueFigTransportConnection *)a4
+- (NeroMessageCenterSocket)initWithIDSService:(id)service connection:(OpaqueFigTransportConnection *)connection
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -20,8 +20,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_connection = a4;
-    v6->_service = a3;
+    v6->_connection = connection;
+    v6->_service = service;
     v11[0] = *ids_IDSOpenSocketOptionTransportKey;
     v12[0] = &unk_1F0B8F630;
     v11[1] = *ids_IDSOpenSocketOptionPriorityKey;
@@ -72,8 +72,8 @@ LABEL_22:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [(IDSService *)self->_service devices];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  devices = [(IDSService *)self->_service devices];
+  v7 = [devices countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v7)
   {
     v8 = v7;
@@ -84,7 +84,7 @@ LABEL_22:
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devices);
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
@@ -94,7 +94,7 @@ LABEL_22:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v8 = [devices countByEnumeratingWithState:&v28 objects:v35 count:16];
     }
 
     while (v8);
@@ -289,7 +289,7 @@ void __47__NeroMessageCenterSocket_deactivateConnection__block_invoke(uint64_t a
   }
 }
 
-- (BOOL)sendMemoryBlock:(void *)a3 withLength:(unint64_t)a4
+- (BOOL)sendMemoryBlock:(void *)block withLength:(unint64_t)length
 {
   if (self->_isActive)
   {
@@ -297,8 +297,8 @@ void __47__NeroMessageCenterSocket_deactivateConnection__block_invoke(uint64_t a
     if (v7)
     {
       v8 = v7;
-      *(v7 + 1) = a3;
-      *(v7 + 2) = a4;
+      *(v7 + 1) = block;
+      *(v7 + 2) = length;
       pthread_mutex_lock(&self->_outgoingQueueMutex);
       *v8 = 0;
       *self->_outgoingPackageQueue.stqh_last = v8;
@@ -455,8 +455,8 @@ LABEL_8:
       revents = self->_pollfd.revents;
       if ((revents & 8) != 0)
       {
-        v14 = OUTLINED_FUNCTION_1_29(v4, v5, v6, v7, v8, v9, v10, v11, v43, v47, block, v52, v53, v54, v55, v56, v57, v58, v59);
-        v22 = OUTLINED_FUNCTION_5_14(v14, v15, v16, v17, v18, v19, v20, v21, v44, v48, block, v52, v53, v54, v55, v56, v57, v58, v59);
+        v14 = OUTLINED_FUNCTION_1_29(v4, v5, v6, v7, v8, v9, v10, v11, v43, v47, block, v52, v53, v54, selfCopy, v56, v57, v58, v59);
+        v22 = OUTLINED_FUNCTION_5_14(v14, v15, v16, v17, v18, v19, v20, v21, v44, v48, block, v52, v53, v54, selfCopy, v56, v57, v58, v59);
         if (OUTLINED_FUNCTION_6_2(v22))
         {
           goto LABEL_20;
@@ -467,8 +467,8 @@ LABEL_8:
 
       if ((revents & 0x10) != 0)
       {
-        v24 = OUTLINED_FUNCTION_1_29(v4, v5, v6, v7, v8, v9, v10, v11, v43, v47, block, v52, v53, v54, v55, v56, v57, v58, v59);
-        v32 = OUTLINED_FUNCTION_5_14(v24, v25, v26, v27, v28, v29, v30, v31, v45, v49, block, v52, v53, v54, v55, v56, v57, v58, v59);
+        v24 = OUTLINED_FUNCTION_1_29(v4, v5, v6, v7, v8, v9, v10, v11, v43, v47, block, v52, v53, v54, selfCopy, v56, v57, v58, v59);
+        v32 = OUTLINED_FUNCTION_5_14(v24, v25, v26, v27, v28, v29, v30, v31, v45, v49, block, v52, v53, v54, selfCopy, v56, v57, v58, v59);
         if (OUTLINED_FUNCTION_6_2(v32))
         {
           goto LABEL_20;
@@ -507,8 +507,8 @@ LABEL_8:
       }
     }
 
-    v33 = OUTLINED_FUNCTION_1_29(v4, v5, v6, v7, v8, v9, v10, v11, v43, v47, block, v52, v53, v54, v55, v56, v57, v58, v59);
-    v41 = OUTLINED_FUNCTION_5_14(v33, v34, v35, v36, v37, v38, v39, v40, v46, v50, block, v52, v53, v54, v55, v56, v57, v58, v59);
+    v33 = OUTLINED_FUNCTION_1_29(v4, v5, v6, v7, v8, v9, v10, v11, v43, v47, block, v52, v53, v54, selfCopy, v56, v57, v58, v59);
+    v41 = OUTLINED_FUNCTION_5_14(v33, v34, v35, v36, v37, v38, v39, v40, v46, v50, block, v52, v53, v54, selfCopy, v56, v57, v58, v59);
     if (OUTLINED_FUNCTION_6_2(v41))
     {
 LABEL_20:
@@ -533,7 +533,7 @@ LABEL_12:
     v52 = 3221225472;
     v53 = __35__NeroMessageCenterSocket_mainLoop__block_invoke;
     v54 = &unk_1E749CE18;
-    v55 = self;
+    selfCopy = self;
     dispatch_async(v13, &block);
   }
 }

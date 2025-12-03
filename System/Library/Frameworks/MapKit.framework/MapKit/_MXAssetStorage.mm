@@ -1,8 +1,8 @@
 @interface _MXAssetStorage
 - (_MXAssetStorage)init;
-- (void)fetchAssetForKey:(id)a3 completion:(id)a4;
-- (void)loadAssetForKey:(id)a3 withBlock:(id)a4;
-- (void)setAsset:(id)a3 forKey:(id)a4;
+- (void)fetchAssetForKey:(id)key completion:(id)completion;
+- (void)loadAssetForKey:(id)key withBlock:(id)block;
+- (void)setAsset:(id)asset forKey:(id)key;
 @end
 
 @implementation _MXAssetStorage
@@ -35,10 +35,10 @@
   return v2;
 }
 
-- (void)fetchAssetForKey:(id)a3 completion:(id)a4
+- (void)fetchAssetForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -52,9 +52,9 @@
   v11[3] = &unk_1E76C8DB0;
   v14 = &v15;
   v11[4] = self;
-  v9 = v6;
+  v9 = keyCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
   dispatch_sync(lock, v11);
   if (v16[5])
@@ -65,10 +65,10 @@
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)setAsset:(id)a3 forKey:(id)a4
+- (void)setAsset:(id)asset forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  keyCopy = key;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -80,12 +80,12 @@
   block[1] = 3221225472;
   block[2] = __35___MXAssetStorage_setAsset_forKey___block_invoke;
   block[3] = &unk_1E76C8D88;
-  v9 = v6;
+  v9 = assetCopy;
   v16 = v9;
-  v17 = self;
-  v18 = v7;
+  selfCopy = self;
+  v18 = keyCopy;
   v19 = v20;
-  v10 = v7;
+  v10 = keyCopy;
   dispatch_sync(lock, block);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -99,11 +99,11 @@
   _Block_object_dispose(v20, 8);
 }
 
-- (void)loadAssetForKey:(id)a3 withBlock:(id)a4
+- (void)loadAssetForKey:(id)key withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  blockCopy = block;
+  if (blockCopy)
   {
     lock = self->_lock;
     block[0] = MEMORY[0x1E69E9820];
@@ -111,8 +111,8 @@
     block[2] = __45___MXAssetStorage_loadAssetForKey_withBlock___block_invoke;
     block[3] = &unk_1E76CAA70;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = keyCopy;
+    v11 = blockCopy;
     dispatch_sync(lock, block);
   }
 }

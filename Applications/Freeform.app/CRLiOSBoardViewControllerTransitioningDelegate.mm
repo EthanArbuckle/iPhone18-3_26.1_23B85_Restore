@@ -1,7 +1,7 @@
 @interface CRLiOSBoardViewControllerTransitioningDelegate
 - (_TtC8Freeform46CRLiOSBoardViewControllerTransitioningDelegate)init;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 @end
 
 @implementation CRLiOSBoardViewControllerTransitioningDelegate
@@ -13,22 +13,22 @@
   return [(CRLiOSBoardViewControllerTransitioningDelegate *)&v3 init];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1006BDF38(v8, v9);
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
+  selfCopy = self;
+  v12 = sub_1006BDF38(controllerCopy, presentingControllerCopy);
 
   return v12;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006BE6F4(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1006BE6F4(controllerCopy);
   v7 = v6;
 
   return v7;

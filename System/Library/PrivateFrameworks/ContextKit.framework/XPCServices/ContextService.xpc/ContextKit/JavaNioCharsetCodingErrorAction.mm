@@ -14,7 +14,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaNioCharsetCodingErrorAction alloc];
     JreStrongAssign(&v2->action_, @"IGNORE");

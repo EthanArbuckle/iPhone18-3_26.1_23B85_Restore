@@ -15,9 +15,9 @@
 + (id)hk_allTime
 {
   v0 = objc_alloc(MEMORY[0x1E696AB80]);
-  v1 = [MEMORY[0x1E695DF00] distantPast];
-  v2 = [MEMORY[0x1E695DF00] distantFuture];
-  v3 = [v0 initWithStartDate:v1 endDate:v2];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v3 = [v0 initWithStartDate:distantPast endDate:distantFuture];
 
   return v3;
 }
@@ -25,7 +25,7 @@
 + (id)hk_dateIntervalWithStart:()HealthKit end:
 {
   v4 = objc_alloc(MEMORY[0x1E696AB80]);
-  v5 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:a1];
+  v5 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:self];
   v6 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceReferenceDate:a2];
   v7 = [v4 initWithStartDate:v5 endDate:v6];
 
@@ -45,7 +45,7 @@
 {
   v7 = MEMORY[0x1E695DF00];
   v8 = a5;
-  v9 = [[v7 alloc] initWithTimeInterval:v8 sinceDate:a1];
+  v9 = [[v7 alloc] initWithTimeInterval:v8 sinceDate:self];
   v10 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeInterval:v8 sinceDate:a2];
 
   v11 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v9 endDate:v10];
@@ -74,18 +74,18 @@
   v8 = a3;
   v9 = [[v6 alloc] initWithStartDate:v8 endDate:v7];
 
-  v10 = [a1 intersectsDateInterval:v9];
+  v10 = [self intersectsDateInterval:v9];
   return v10;
 }
 
 - (uint64_t)hk_containsDateInterval:()HealthKit
 {
   v4 = a3;
-  v5 = [v4 startDate];
-  if ([a1 containsDate:v5])
+  startDate = [v4 startDate];
+  if ([self containsDate:startDate])
   {
-    v6 = [v4 endDate];
-    v7 = [a1 containsDate:v6];
+    endDate = [v4 endDate];
+    v7 = [self containsDate:endDate];
   }
 
   else
@@ -98,11 +98,11 @@
 
 - (BOOL)hk_containsTime:()HealthKit
 {
-  v4 = [a1 startDate];
-  [v4 timeIntervalSinceReferenceDate];
+  startDate = [self startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v6 = v5;
 
-  [a1 duration];
+  [self duration];
   v8 = v6 <= a2;
   if (v6 + v7 < a2)
   {
@@ -123,9 +123,9 @@
 - (id)hk_prettyString
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 startDate];
-  v4 = [a1 endDate];
-  v5 = [v2 stringWithFormat:@"<startDate: %@, endDate: %@>", v3, v4];
+  startDate = [self startDate];
+  endDate = [self endDate];
+  v5 = [v2 stringWithFormat:@"<startDate: %@, endDate: %@>", startDate, endDate];
 
   return v5;
 }

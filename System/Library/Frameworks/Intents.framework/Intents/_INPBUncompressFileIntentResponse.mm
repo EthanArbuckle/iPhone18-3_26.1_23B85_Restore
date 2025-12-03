@@ -1,29 +1,29 @@
 @interface _INPBUncompressFileIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBUncompressFileIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBUncompressFileIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBUncompressFileIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBUncompressFileIntentResponse *)self entityName];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"entityName"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  entityName = [(_INPBUncompressFileIntentResponse *)self entityName];
+  dictionaryRepresentation = [entityName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"entityName"];
 
   if ([(_INPBUncompressFileIntentResponse *)self hasSuccess])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBUncompressFileIntentResponse success](self, "success")}];
-    [v3 setObject:v6 forKeyedSubscript:@"success"];
+    [dictionary setObject:v6 forKeyedSubscript:@"success"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -42,26 +42,26 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = [(_INPBUncompressFileIntentResponse *)self entityName];
-  v6 = [v4 entityName];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  entityName = [(_INPBUncompressFileIntentResponse *)self entityName];
+  entityName2 = [equalCopy entityName];
+  v7 = entityName2;
+  if ((entityName != 0) != (entityName2 == 0))
   {
-    v8 = [(_INPBUncompressFileIntentResponse *)self entityName];
-    if (v8)
+    entityName3 = [(_INPBUncompressFileIntentResponse *)self entityName];
+    if (entityName3)
     {
-      v9 = v8;
-      v10 = [(_INPBUncompressFileIntentResponse *)self entityName];
-      v11 = [v4 entityName];
-      v12 = [v10 isEqual:v11];
+      v9 = entityName3;
+      entityName4 = [(_INPBUncompressFileIntentResponse *)self entityName];
+      entityName5 = [equalCopy entityName];
+      v12 = [entityName4 isEqual:entityName5];
 
       if (!v12)
       {
@@ -73,10 +73,10 @@
     {
     }
 
-    v13 = [(_INPBUncompressFileIntentResponse *)self hasSuccess];
-    if (v13 == [v4 hasSuccess])
+    hasSuccess = [(_INPBUncompressFileIntentResponse *)self hasSuccess];
+    if (hasSuccess == [equalCopy hasSuccess])
     {
-      if (!-[_INPBUncompressFileIntentResponse hasSuccess](self, "hasSuccess") || ![v4 hasSuccess] || (success = self->_success, success == objc_msgSend(v4, "success")))
+      if (!-[_INPBUncompressFileIntentResponse hasSuccess](self, "hasSuccess") || ![equalCopy hasSuccess] || (success = self->_success, success == objc_msgSend(equalCopy, "success")))
       {
         v14 = 1;
         goto LABEL_10;
@@ -95,10 +95,10 @@ LABEL_10:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBUncompressFileIntentResponse allocWithZone:](_INPBUncompressFileIntentResponse init];
-  v6 = [(_INPBString *)self->_entityName copyWithZone:a3];
+  v6 = [(_INPBString *)self->_entityName copyWithZone:zone];
   [(_INPBUncompressFileIntentResponse *)v5 setEntityName:v6];
 
   if ([(_INPBUncompressFileIntentResponse *)self hasSuccess])
@@ -109,38 +109,38 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBUncompressFileIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBUncompressFileIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBUncompressFileIntentResponse)initWithCoder:(id)a3
+- (_INPBUncompressFileIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBUncompressFileIntentResponse *)self initWithData:v6];
+    self = [(_INPBUncompressFileIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_INPBUncompressFileIntentResponse *)self entityName];
+  toCopy = to;
+  entityName = [(_INPBUncompressFileIntentResponse *)self entityName];
 
-  if (v4)
+  if (entityName)
   {
-    v5 = [(_INPBUncompressFileIntentResponse *)self entityName];
+    entityName2 = [(_INPBUncompressFileIntentResponse *)self entityName];
     PBDataWriterWriteSubmessage();
   }
 

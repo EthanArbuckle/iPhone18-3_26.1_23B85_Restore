@@ -1,58 +1,58 @@
 @interface UISApplicationStateService
-- (BOOL)_isCurrentConnectionAuthorizedForApplicationBundleIdentifier:(id)a3 description:(id)a4 legacyEntitlement:(id)a5;
+- (BOOL)_isCurrentConnectionAuthorizedForApplicationBundleIdentifier:(id)identifier description:(id)description legacyEntitlement:(id)entitlement;
 - (UISApplicationStateService)init;
-- (UISApplicationStateService)initWithCalloutQueue:(id)a3;
+- (UISApplicationStateService)initWithCalloutQueue:(id)queue;
 - (UISApplicationStateServiceDelegate)delegate;
-- (id)_dataSourceForApplicationBundleIdentifier:(id)a3;
+- (id)_dataSourceForApplicationBundleIdentifier:(id)identifier;
 - (id)_operatingBundleIdentifier;
-- (void)badgeValueWithCompletion:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)nextWakeIntervalSinceReferenceDateWithCompletion:(id)a3;
-- (void)setBadgeValue:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setMinimumBackgroundFetchInterval:(id)a3;
-- (void)setNextWakeIntervalSinceReferenceDate:(id)a3;
-- (void)setUsesBackgroundNetwork:(id)a3;
-- (void)usesBackgroundNetworkWithCompletion:(id)a3;
+- (void)badgeValueWithCompletion:(id)completion;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)nextWakeIntervalSinceReferenceDateWithCompletion:(id)completion;
+- (void)setBadgeValue:(id)value;
+- (void)setDelegate:(id)delegate;
+- (void)setMinimumBackgroundFetchInterval:(id)interval;
+- (void)setNextWakeIntervalSinceReferenceDate:(id)date;
+- (void)setUsesBackgroundNetwork:(id)network;
+- (void)usesBackgroundNetworkWithCompletion:(id)completion;
 @end
 
 @implementation UISApplicationStateService
 
 - (id)_operatingBundleIdentifier
 {
-  v4 = [MEMORY[0x1E698F490] currentContext];
-  v5 = [v4 userInfo];
+  currentContext = [MEMORY[0x1E698F490] currentContext];
+  userInfo = [currentContext userInfo];
 
-  if (!v5)
+  if (!userInfo)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    v8 = [MEMORY[0x1E698F490] currentContext];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISApplicationStateService.m" lineNumber:320 description:{@"Must have a bundle identifier on the connection - userInfo: %@ (currentContext: %@)", 0, v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    currentContext2 = [MEMORY[0x1E698F490] currentContext];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationStateService.m" lineNumber:320 description:{@"Must have a bundle identifier on the connection - userInfo: %@ (currentContext: %@)", 0, currentContext2}];
   }
 
-  return v5;
+  return userInfo;
 }
 
 - (UISApplicationStateService)init
 {
   v3 = MEMORY[0x1E698F4D0];
-  v4 = [MEMORY[0x1E698F500] userInteractive];
-  v5 = [v3 queueWithName:@"com.apple.uikit.applicationstateservice.server" serviceQuality:v4];
+  userInteractive = [MEMORY[0x1E698F500] userInteractive];
+  v5 = [v3 queueWithName:@"com.apple.uikit.applicationstateservice.server" serviceQuality:userInteractive];
 
   v6 = [(UISApplicationStateService *)self initWithCalloutQueue:v5];
   return v6;
 }
 
-- (UISApplicationStateService)initWithCalloutQueue:(id)a3
+- (UISApplicationStateService)initWithCalloutQueue:(id)queue
 {
-  v6 = a3;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = UISApplicationStateService;
   v7 = [(UISApplicationStateService *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_calloutQueue, a3);
+    objc_storeStrong(&v7->_calloutQueue, queue);
     v9 = MEMORY[0x1E698F4B8];
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
@@ -91,9 +91,9 @@ void __51__UISApplicationStateService_initWithCalloutQueue___block_invoke(uint64
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -104,10 +104,10 @@ void __51__UISApplicationStateService_initWithCalloutQueue___block_invoke(uint64
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a4;
-  v8 = [a5 decodeStringForKey:0x1F0A7AD18];
+  connectionCopy = connection;
+  v8 = [context decodeStringForKey:0x1F0A7AD18];
   v9 = v8;
   if (v8 && [v8 length])
   {
@@ -120,16 +120,16 @@ void __51__UISApplicationStateService_initWithCalloutQueue___block_invoke(uint64
     v13[2] = __72__UISApplicationStateService_listener_didReceiveConnection_withContext___block_invoke;
     v13[3] = &unk_1E7459108;
     v14 = v10;
-    v15 = self;
+    selfCopy = self;
     v16 = v9;
     v12 = v10;
-    [v7 configureConnection:v13];
-    [v7 activate];
+    [connectionCopy configureConnection:v13];
+    [connectionCopy activate];
   }
 
   else
   {
-    [v7 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -145,52 +145,52 @@ void __72__UISApplicationStateService_listener_didReceiveConnection_withContext_
   [v4 setUserInfo:a1[6]];
 }
 
-- (void)nextWakeIntervalSinceReferenceDateWithCompletion:(id)a3
+- (void)nextWakeIntervalSinceReferenceDateWithCompletion:(id)completion
 {
-  v13 = a3;
-  if (!v13)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UISApplicationStateService.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationStateService.m" lineNumber:124 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
-  v5 = [(UISApplicationStateService *)self _operatingBundleIdentifier];
-  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:v5 description:@"get next wake interval"])
+  _operatingBundleIdentifier = [(UISApplicationStateService *)self _operatingBundleIdentifier];
+  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:_operatingBundleIdentifier description:@"get next wake interval"])
   {
-    v6 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:v5];
+    v6 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:_operatingBundleIdentifier];
     v7 = -1.0;
     if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v8 = [v6 nextWakeDate];
-      v9 = v8;
-      if (v8)
+      nextWakeDate = [v6 nextWakeDate];
+      v9 = nextWakeDate;
+      if (nextWakeDate)
       {
-        [v8 timeIntervalSinceReferenceDate];
+        [nextWakeDate timeIntervalSinceReferenceDate];
         v7 = v10;
       }
     }
 
     v11 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
-    v13[2](v13, v11, 0);
+    completionCopy[2](completionCopy, v11, 0);
   }
 
   else
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:0x1F0A7ADB8 code:0 userInfo:0];
-    (v13)[2](v13, &unk_1F0A84388, v6);
+    (completionCopy)[2](completionCopy, &unk_1F0A84388, v6);
   }
 }
 
-- (void)setNextWakeIntervalSinceReferenceDate:(id)a3
+- (void)setNextWakeIntervalSinceReferenceDate:(id)date
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
-  v5 = [(UISApplicationStateService *)self _operatingBundleIdentifier];
-  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:v5 description:@"set next wake interval"])
+  _operatingBundleIdentifier = [(UISApplicationStateService *)self _operatingBundleIdentifier];
+  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:_operatingBundleIdentifier description:@"set next wake interval"])
   {
-    [v4 doubleValue];
+    [dateCopy doubleValue];
     v7 = v6;
     v8 = BSFloatEqualToFloat();
     v9 = v8;
@@ -208,7 +208,7 @@ void __72__UISApplicationStateService_listener_didReceiveConnection_withContext_
       }
     }
 
-    v11 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:v5];
+    v11 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:_operatingBundleIdentifier];
     if (objc_opt_respondsToSelector())
     {
       v12 = dispatch_get_global_queue(21, 0);
@@ -316,21 +316,21 @@ void __68__UISApplicationStateService_setNextWakeIntervalSinceReferenceDate___bl
   }
 }
 
-- (void)setMinimumBackgroundFetchInterval:(id)a3
+- (void)setMinimumBackgroundFetchInterval:(id)interval
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  intervalCopy = interval;
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
-  v5 = [(UISApplicationStateService *)self _operatingBundleIdentifier];
-  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:v5 description:@"set maximum background fetch interval"])
+  _operatingBundleIdentifier = [(UISApplicationStateService *)self _operatingBundleIdentifier];
+  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:_operatingBundleIdentifier description:@"set maximum background fetch interval"])
   {
-    [v4 doubleValue];
+    [intervalCopy doubleValue];
     v7 = v6;
     v8 = _UISStateServiceLogger();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      *&buf[4] = v5;
+      *&buf[4] = _operatingBundleIdentifier;
       *&buf[12] = 2048;
       *&buf[14] = v7;
       _os_log_impl(&dword_195FF3000, v8, OS_LOG_TYPE_INFO, "%{public}@ wants minFetchInterval: %f", buf, 0x16u);
@@ -354,84 +354,84 @@ void __68__UISApplicationStateService_setNextWakeIntervalSinceReferenceDate___bl
 
     v10 = v9;
     _Block_object_dispose(&v12, 8);
-    v11 = [v9 sharedScheduler];
-    [v11 setMinimumBackgroundFetchInterval:v5 forApp:v7];
+    sharedScheduler = [v9 sharedScheduler];
+    [sharedScheduler setMinimumBackgroundFetchInterval:_operatingBundleIdentifier forApp:v7];
   }
 }
 
-- (void)usesBackgroundNetworkWithCompletion:(id)a3
+- (void)usesBackgroundNetworkWithCompletion:(id)completion
 {
-  v10 = a3;
-  if (!v10)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UISApplicationStateService.m" lineNumber:219 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationStateService.m" lineNumber:219 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
-  v5 = [(UISApplicationStateService *)self _operatingBundleIdentifier];
-  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:v5 description:@"get uses background network"])
+  _operatingBundleIdentifier = [(UISApplicationStateService *)self _operatingBundleIdentifier];
+  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:_operatingBundleIdentifier description:@"get uses background network"])
   {
-    v6 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:v5];
+    v6 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:_operatingBundleIdentifier];
     if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v7 = [v6 usesBackgroundNetwork];
+      usesBackgroundNetwork = [v6 usesBackgroundNetwork];
     }
 
     else
     {
-      v7 = 0;
+      usesBackgroundNetwork = 0;
     }
 
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v7];
-    v10[2](v10, v8, 0);
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:usesBackgroundNetwork];
+    completionCopy[2](completionCopy, v8, 0);
   }
 
   else
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:0x1F0A7ADB8 code:0 userInfo:0];
-    (v10)[2](v10, MEMORY[0x1E695E110], v6);
+    (completionCopy)[2](completionCopy, MEMORY[0x1E695E110], v6);
   }
 }
 
-- (void)setUsesBackgroundNetwork:(id)a3
+- (void)setUsesBackgroundNetwork:(id)network
 {
-  v7 = a3;
+  networkCopy = network;
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
-  v4 = [(UISApplicationStateService *)self _operatingBundleIdentifier];
-  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:v4 description:@"set uses background network"])
+  _operatingBundleIdentifier = [(UISApplicationStateService *)self _operatingBundleIdentifier];
+  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:_operatingBundleIdentifier description:@"set uses background network"])
   {
-    v5 = [v7 BOOLValue];
-    v6 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:v4];
+    bOOLValue = [networkCopy BOOLValue];
+    v6 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:_operatingBundleIdentifier];
     if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v6 setUsesBackgroundNetwork:v5];
+      [v6 setUsesBackgroundNetwork:bOOLValue];
     }
   }
 }
 
-- (void)badgeValueWithCompletion:(id)a3
+- (void)badgeValueWithCompletion:(id)completion
 {
-  v13 = a3;
-  if (!v13)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UISApplicationStateService.m" lineNumber:260 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISApplicationStateService.m" lineNumber:260 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
-  v5 = [(UISApplicationStateService *)self _operatingBundleIdentifier];
-  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:v5 description:@"get badge value" legacyEntitlement:@"com.apple.frontboard.app-badge-value-access"])
+  _operatingBundleIdentifier = [(UISApplicationStateService *)self _operatingBundleIdentifier];
+  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:_operatingBundleIdentifier description:@"get badge value" legacyEntitlement:@"com.apple.frontboard.app-badge-value-access"])
   {
-    v6 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:v5];
+    v6 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:_operatingBundleIdentifier];
     if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v7 = [v6 badgeValue];
+      badgeValue = [v6 badgeValue];
     }
 
     else
     {
-      v7 = 0;
+      badgeValue = 0;
     }
 
     objc_opt_class();
@@ -440,7 +440,7 @@ void __68__UISApplicationStateService_setNextWakeIntervalSinceReferenceDate___bl
     v9 = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v10 = v7;
+      v10 = badgeValue;
     }
 
     else
@@ -450,7 +450,7 @@ void __68__UISApplicationStateService_setNextWakeIntervalSinceReferenceDate___bl
 
     if (v9)
     {
-      v11 = v7;
+      v11 = badgeValue;
     }
 
     else
@@ -458,40 +458,40 @@ void __68__UISApplicationStateService_setNextWakeIntervalSinceReferenceDate___bl
       v11 = 0;
     }
 
-    v13[2](v13, v10, v11, 0);
+    completionCopy[2](completionCopy, v10, v11, 0);
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696ABC0] errorWithDomain:0x1F0A7ADB8 code:0 userInfo:0];
-    (v13)[2](v13, 0, 0, v7);
+    badgeValue = [MEMORY[0x1E696ABC0] errorWithDomain:0x1F0A7ADB8 code:0 userInfo:0];
+    (completionCopy)[2](completionCopy, 0, 0, badgeValue);
   }
 }
 
-- (void)setBadgeValue:(id)a3
+- (void)setBadgeValue:(id)value
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
-  v5 = [(UISApplicationStateService *)self _operatingBundleIdentifier];
-  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:v5 description:@"set badge value" legacyEntitlement:@"com.apple.frontboard.app-badge-value-access"])
+  _operatingBundleIdentifier = [(UISApplicationStateService *)self _operatingBundleIdentifier];
+  if ([(UISApplicationStateService *)self _isCurrentConnectionAuthorizedForApplicationBundleIdentifier:_operatingBundleIdentifier description:@"set badge value" legacyEntitlement:@"com.apple.frontboard.app-badge-value-access"])
   {
-    v6 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:v5];
+    v6 = [(UISApplicationStateService *)self _dataSourceForApplicationBundleIdentifier:_operatingBundleIdentifier];
     if (v6)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v6 setBadgeValue:v4];
+        [v6 setBadgeValue:valueCopy];
         v7 = _UISStateServiceLogger();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [MEMORY[0x1E698F490] currentContext];
+          currentContext = [MEMORY[0x1E698F490] currentContext];
           v10 = 138543874;
-          v11 = v8;
+          v11 = currentContext;
           v12 = 2114;
-          v13 = v5;
+          v13 = _operatingBundleIdentifier;
           v14 = 2114;
-          v15 = v4;
+          v15 = valueCopy;
           v9 = "Client %{public}@ set the badge value of %{public}@ to %{public}@";
 LABEL_10:
           _os_log_impl(&dword_195FF3000, v7, OS_LOG_TYPE_DEFAULT, v9, &v10, 0x20u);
@@ -503,13 +503,13 @@ LABEL_10:
         v7 = _UISStateServiceLogger();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [MEMORY[0x1E698F490] currentContext];
+          currentContext = [MEMORY[0x1E698F490] currentContext];
           v10 = 138543874;
-          v11 = v8;
+          v11 = currentContext;
           v12 = 2114;
-          v13 = v5;
+          v13 = _operatingBundleIdentifier;
           v14 = 2114;
-          v15 = v4;
+          v15 = valueCopy;
           v9 = "Ignored client %{public}@ request to change the badge value of %{public}@ to %{public}@ because the server does not support setting badge values for this application.";
           goto LABEL_10;
         }
@@ -521,13 +521,13 @@ LABEL_10:
       v7 = _UISStateServiceLogger();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [MEMORY[0x1E698F490] currentContext];
+        currentContext = [MEMORY[0x1E698F490] currentContext];
         v10 = 138543874;
-        v11 = v8;
+        v11 = currentContext;
         v12 = 2114;
-        v13 = v5;
+        v13 = _operatingBundleIdentifier;
         v14 = 2114;
-        v15 = v4;
+        v15 = valueCopy;
         v9 = "Ignored client %{public}@ request to change the badge value of %{public}@ to %{public}@ because the server reported no data source for the application.";
         goto LABEL_10;
       }
@@ -535,43 +535,43 @@ LABEL_10:
   }
 }
 
-- (BOOL)_isCurrentConnectionAuthorizedForApplicationBundleIdentifier:(id)a3 description:(id)a4 legacyEntitlement:(id)a5
+- (BOOL)_isCurrentConnectionAuthorizedForApplicationBundleIdentifier:(id)identifier description:(id)description legacyEntitlement:(id)entitlement
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  entitlementCopy = entitlement;
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
-  v11 = [MEMORY[0x1E698F490] currentContext];
-  v12 = [v11 remoteProcess];
-  v13 = v12;
-  if (!v12)
+  currentContext = [MEMORY[0x1E698F490] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  v13 = remoteProcess;
+  if (!remoteProcess)
   {
     v17 = _UISStateServiceLogger();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
-      v20 = v11;
+      v20 = currentContext;
       _os_log_impl(&dword_195FF3000, v17, OS_LOG_TYPE_DEFAULT, "Client: %{public}@ unable to validate caller.", &v19, 0xCu);
     }
 
     goto LABEL_11;
   }
 
-  v14 = [v12 bundleIdentifier];
-  v15 = [v14 isEqualToString:v8];
+  bundleIdentifier = [remoteProcess bundleIdentifier];
+  v15 = [bundleIdentifier isEqualToString:identifierCopy];
 
-  if ((v15 & 1) == 0 && ([v13 hasEntitlement:@"com.apple.uikitservices.app.value-access"] & 1) == 0 && (!v10 || (objc_msgSend(v13, "hasEntitlement:", v10) & 1) == 0))
+  if ((v15 & 1) == 0 && ([v13 hasEntitlement:@"com.apple.uikitservices.app.value-access"] & 1) == 0 && (!entitlementCopy || (objc_msgSend(v13, "hasEntitlement:", entitlementCopy) & 1) == 0))
   {
     v17 = _UISStateServiceLogger();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v19 = 138543874;
-      v20 = v11;
+      v20 = currentContext;
       v21 = 2114;
-      v22 = v9;
+      v22 = descriptionCopy;
       v23 = 2114;
-      v24 = v8;
+      v24 = identifierCopy;
       _os_log_error_impl(&dword_195FF3000, v17, OS_LOG_TYPE_ERROR, "Client: %{public}@ not authorized to %{public}@ on behalf of application: %{public}@", &v19, 0x20u);
     }
 
@@ -587,14 +587,14 @@ LABEL_12:
   return v16;
 }
 
-- (id)_dataSourceForApplicationBundleIdentifier:(id)a3
+- (id)_dataSourceForApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(BSServiceQueue *)self->_calloutQueue assertBarrierOnQueue];
   if (*&self->_delegateFlags)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [WeakRetained dataSourceForApplicationBundleIdentifier:v4];
+    v5 = [WeakRetained dataSourceForApplicationBundleIdentifier:identifierCopy];
   }
 
   else

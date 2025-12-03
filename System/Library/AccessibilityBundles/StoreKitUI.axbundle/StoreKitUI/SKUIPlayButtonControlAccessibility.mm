@@ -1,29 +1,29 @@
 @interface SKUIPlayButtonControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_showPlayIndicator:(BOOL)a3;
+- (void)_showPlayIndicator:(BOOL)indicator;
 - (void)beginIndeterminateAnimation;
 - (void)endIndeterminateAnimation;
 @end
 
 @implementation SKUIPlayButtonControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIPlayButtonControl" hasInstanceMethod:@"_showPlayIndicator:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SKUIPlayButtonControl" hasInstanceMethod:@"beginIndeterminateAnimation" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SKUIPlayButtonControl" hasInstanceMethod:@"endIndeterminateAnimation" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIPlayButtonControl" hasInstanceMethod:@"_showPlayIndicator:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SKUIPlayButtonControl" hasInstanceMethod:@"beginIndeterminateAnimation" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SKUIPlayButtonControl" hasInstanceMethod:@"endIndeterminateAnimation" withFullSignature:{"v", 0}];
 }
 
-- (void)_showPlayIndicator:(BOOL)a3
+- (void)_showPlayIndicator:(BOOL)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   v7.receiver = self;
   v7.super_class = SKUIPlayButtonControlAccessibility;
   [(SKUIPlayButtonControlAccessibility *)&v7 _showPlayIndicator:?];
-  if (v3)
+  if (indicatorCopy)
   {
     v5 = @"play.button";
   }

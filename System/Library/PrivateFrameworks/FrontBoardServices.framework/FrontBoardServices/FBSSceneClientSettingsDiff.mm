@@ -1,24 +1,24 @@
 @interface FBSSceneClientSettingsDiff
-+ (id)diffFromSettings:(id)a3 toSettings:(id)a4;
-- (id)settingsByApplyingToMutableCopyOfSettings:(id)a3;
++ (id)diffFromSettings:(id)settings toSettings:(id)toSettings;
+- (id)settingsByApplyingToMutableCopyOfSettings:(id)settings;
 @end
 
 @implementation FBSSceneClientSettingsDiff
 
-+ (id)diffFromSettings:(id)a3 toSettings:(id)a4
++ (id)diffFromSettings:(id)settings toSettings:(id)toSettings
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___FBSSceneClientSettingsDiff;
-  v4 = objc_msgSendSuper2(&v6, sel_diffFromSettings_toSettings_, a3, a4);
+  v4 = objc_msgSendSuper2(&v6, sel_diffFromSettings_toSettings_, settings, toSettings);
 
   return v4;
 }
 
-- (id)settingsByApplyingToMutableCopyOfSettings:(id)a3
+- (id)settingsByApplyingToMutableCopyOfSettings:(id)settings
 {
   v5.receiver = self;
   v5.super_class = FBSSceneClientSettingsDiff;
-  v3 = [(FBSSettingsDiff *)&v5 settingsByApplyingToMutableCopyOfSettings:a3];
+  v3 = [(FBSSettingsDiff *)&v5 settingsByApplyingToMutableCopyOfSettings:settings];
 
   return v3;
 }

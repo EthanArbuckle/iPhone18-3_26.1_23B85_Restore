@@ -1,47 +1,47 @@
 @interface ICChecklistsFilterTypeSelection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToICChecklistsFilterTypeSelection:(id)a3;
-- (ICChecklistsFilterTypeSelection)initWithSelectionType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToICChecklistsFilterTypeSelection:(id)selection;
+- (ICChecklistsFilterTypeSelection)initWithSelectionType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)rawFilterValue;
 - (unint64_t)hash;
 @end
 
 @implementation ICChecklistsFilterTypeSelection
 
-- (ICChecklistsFilterTypeSelection)initWithSelectionType:(unint64_t)a3
+- (ICChecklistsFilterTypeSelection)initWithSelectionType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = ICChecklistsFilterTypeSelection;
   result = [(ICChecklistsFilterTypeSelection *)&v5 init];
   if (result)
   {
-    result->_selectionType = a3;
+    result->_selectionType = type;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICChecklistsFilterTypeSelection allocWithZone:a3];
-  v5 = [(ICChecklistsFilterTypeSelection *)self selectionType];
+  v4 = [ICChecklistsFilterTypeSelection allocWithZone:zone];
+  selectionType = [(ICChecklistsFilterTypeSelection *)self selectionType];
 
-  return [(ICChecklistsFilterTypeSelection *)v4 initWithSelectionType:v5];
+  return [(ICChecklistsFilterTypeSelection *)v4 initWithSelectionType:selectionType];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICChecklistsFilterTypeSelection *)self isEqualToICChecklistsFilterTypeSelection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICChecklistsFilterTypeSelection *)self isEqualToICChecklistsFilterTypeSelection:v5];
   }
 
   return v6;
@@ -64,25 +64,25 @@
 
 - (id)rawFilterValue
 {
-  v2 = [(ICChecklistsFilterTypeSelection *)self selectionType];
-  if (v2 - 1 > 2)
+  selectionType = [(ICChecklistsFilterTypeSelection *)self selectionType];
+  if (selectionType - 1 > 2)
   {
     return @"Any";
   }
 
   else
   {
-    return off_278196478[v2 - 1];
+    return off_278196478[selectionType - 1];
   }
 }
 
-- (BOOL)isEqualToICChecklistsFilterTypeSelection:(id)a3
+- (BOOL)isEqualToICChecklistsFilterTypeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(ICChecklistsFilterTypeSelection *)self selectionType];
-  v6 = [v4 selectionType];
+  selectionCopy = selection;
+  selectionType = [(ICChecklistsFilterTypeSelection *)self selectionType];
+  selectionType2 = [selectionCopy selectionType];
 
-  return v5 == v6;
+  return selectionType == selectionType2;
 }
 
 @end

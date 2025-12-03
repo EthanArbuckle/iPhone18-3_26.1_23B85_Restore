@@ -1,9 +1,9 @@
 @interface _CPLCloudKitOperationSession
-- (BOOL)beginTask:(id)a3;
+- (BOOL)beginTask:(id)task;
 - (_CPLCloudKitOperationSession)init;
 - (id)status;
 - (id)statusObject;
-- (void)endTask:(id)a3 withOperationClasses:(id)a4 operationsAllowingCellular:(id)a5;
+- (void)endTask:(id)task withOperationClasses:(id)classes operationsAllowingCellular:(id)cellular;
 @end
 
 @implementation _CPLCloudKitOperationSession
@@ -39,9 +39,9 @@
   return v2;
 }
 
-- (BOOL)beginTask:(id)a3
+- (BOOL)beginTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   if (qword_1002C5618 != -1)
   {
     sub_1001AD3CC();
@@ -66,11 +66,11 @@
   return v9;
 }
 
-- (void)endTask:(id)a3 withOperationClasses:(id)a4 operationsAllowingCellular:(id)a5
+- (void)endTask:(id)task withOperationClasses:(id)classes operationsAllowingCellular:(id)cellular
 {
-  v9 = a3;
-  v10 = a4;
-  v29 = a5;
+  taskCopy = task;
+  classesCopy = classes;
+  cellularCopy = cellular;
   if (qword_1002C5618 != -1)
   {
     sub_1001AD3CC();
@@ -92,7 +92,7 @@
     self->_lastOperationDate = v12;
   }
 
-  v27 = v9;
+  v27 = taskCopy;
   v14 = [(NSMutableDictionary *)self->_classCountPerTaskClass objectForKeyedSubscript:v11];
   v15 = [(NSMutableDictionary *)self->_cellularClassCountPerTaskClass objectForKeyedSubscript:v11];
   if (!v14)
@@ -109,7 +109,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v17 = v10;
+  v17 = classesCopy;
   v18 = [v17 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v18)
   {
@@ -131,7 +131,7 @@
         [v14 setObject:v24 forKeyedSubscript:v21];
 
         v25 = [v15 objectForKeyedSubscript:v21];
-        v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v25 unsignedIntegerValue] + objc_msgSend(v29, "countForObject:", v21));
+        v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v25 unsignedIntegerValue] + objc_msgSend(cellularCopy, "countForObject:", v21));
         [v15 setObject:v26 forKeyedSubscript:v21];
       }
 

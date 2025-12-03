@@ -1,31 +1,31 @@
 @interface NSMutableAttributedString
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)appendFormat:(id)a3;
-- (void)appendString:(id)a3;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)appendFormat:(id)format;
+- (void)appendString:(id)string;
 @end
 
 @implementation NSMutableAttributedString
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  v4 = [(NSMutableAttributedString *)self string];
-  LOWORD(a3) = [v4 characterAtIndex:a3];
+  string = [(NSMutableAttributedString *)self string];
+  LOWORD(index) = [string characterAtIndex:index];
 
-  return a3;
+  return index;
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v4 = a3;
-  v5 = [[NSAttributedString alloc] initWithString:v4];
+  stringCopy = string;
+  v5 = [[NSAttributedString alloc] initWithString:stringCopy];
 
   [(NSMutableAttributedString *)self appendAttributedString:v5];
 }
 
-- (void)appendFormat:(id)a3
+- (void)appendFormat:(id)format
 {
-  v4 = a3;
-  v5 = [[NSString alloc] initWithFormat:v4 locale:0 arguments:&v6];
+  formatCopy = format;
+  v5 = [[NSString alloc] initWithFormat:formatCopy locale:0 arguments:&v6];
 
   [(NSMutableAttributedString *)self appendString:v5];
 }

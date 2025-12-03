@@ -1,21 +1,21 @@
 @interface FCTopStoriesGroupConfig
-- (FCTopStoriesGroupConfig)initWithDictionary:(id)a3;
+- (FCTopStoriesGroupConfig)initWithDictionary:(id)dictionary;
 @end
 
 @implementation FCTopStoriesGroupConfig
 
-- (FCTopStoriesGroupConfig)initWithDictionary:(id)a3
+- (FCTopStoriesGroupConfig)initWithDictionary:(id)dictionary
 {
   v31.receiver = self;
   v31.super_class = FCTopStoriesGroupConfig;
-  v3 = [(FCGroupConfig *)&v31 initWithDictionary:a3];
+  v3 = [(FCGroupConfig *)&v31 initWithDictionary:dictionary];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    v7 = [(FCGroupConfig *)v3 dictionary];
-    v8 = [v7 objectForKeyedSubscript:@"mandatory_articles"];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [(FCGroupConfig *)v3 dictionary];
+    v8 = [dictionary2 objectForKeyedSubscript:@"mandatory_articles"];
 
     if (v8)
     {
@@ -23,13 +23,13 @@
       v28[1] = 3221225472;
       v28[2] = __46__FCTopStoriesGroupConfig_initWithDictionary___block_invoke;
       v28[3] = &unk_1E7C3EEC0;
-      v29 = v6;
-      v30 = v4;
+      v29 = dictionary;
+      v30 = array;
       [v8 enumerateObjectsUsingBlock:v28];
     }
 
-    v9 = [(FCGroupConfig *)v3 dictionary];
-    v10 = [v9 objectForKeyedSubscript:@"personalized_articles"];
+    dictionary3 = [(FCGroupConfig *)v3 dictionary];
+    v10 = [dictionary3 objectForKeyedSubscript:@"personalized_articles"];
 
     if (v10)
     {
@@ -37,8 +37,8 @@
       v23 = 3221225472;
       v24 = __46__FCTopStoriesGroupConfig_initWithDictionary___block_invoke_2;
       v25 = &unk_1E7C3EEC0;
-      v26 = v5;
-      v27 = v6;
+      v26 = array2;
+      v27 = dictionary;
       [v10 enumerateObjectsUsingBlock:&v22];
     }
 
@@ -56,16 +56,16 @@
     }
 
     mandatoryArticleIDPairs = v3->_mandatoryArticleIDPairs;
-    v3->_mandatoryArticleIDPairs = v4;
-    v15 = v4;
+    v3->_mandatoryArticleIDPairs = array;
+    v15 = array;
 
     optionalArticleIDs = v3->_optionalArticleIDs;
-    v3->_optionalArticleIDs = v5;
-    v17 = v5;
+    v3->_optionalArticleIDs = array2;
+    v17 = array2;
 
     topStoriesMetadataByArticleID = v3->_topStoriesMetadataByArticleID;
-    v3->_topStoriesMetadataByArticleID = v6;
-    v19 = v6;
+    v3->_topStoriesMetadataByArticleID = dictionary;
+    v19 = dictionary;
 
     publishDate = v3->_publishDate;
     v3->_publishDate = v13;

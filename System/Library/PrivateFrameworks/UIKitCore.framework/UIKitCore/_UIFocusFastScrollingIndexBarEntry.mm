@@ -1,36 +1,36 @@
 @interface _UIFocusFastScrollingIndexBarEntry
-+ (_UIFocusFastScrollingIndexBarEntry)entryWithTitle:(id)a3 contentOffset:(CGPoint)a4;
-+ (_UIFocusFastScrollingIndexBarEntry)entryWithTitle:(id)a3 generator:(id)a4;
-+ (id)placeholderEntryWithEntryBefore:(id)a3 after:(id)a4;
++ (_UIFocusFastScrollingIndexBarEntry)entryWithTitle:(id)title contentOffset:(CGPoint)offset;
++ (_UIFocusFastScrollingIndexBarEntry)entryWithTitle:(id)title generator:(id)generator;
++ (id)placeholderEntryWithEntryBefore:(id)before after:(id)after;
 - (CGPoint)contentOffset;
-- (_UIFocusFastScrollingIndexBarEntry)initWithTitle:(id)a3 contentOffset:(CGPoint)a4;
-- (_UIFocusFastScrollingIndexBarEntry)initWithTitle:(id)a3 generator:(id)a4;
+- (_UIFocusFastScrollingIndexBarEntry)initWithTitle:(id)title contentOffset:(CGPoint)offset;
+- (_UIFocusFastScrollingIndexBarEntry)initWithTitle:(id)title generator:(id)generator;
 - (id)description;
 @end
 
 @implementation _UIFocusFastScrollingIndexBarEntry
 
-+ (_UIFocusFastScrollingIndexBarEntry)entryWithTitle:(id)a3 contentOffset:(CGPoint)a4
++ (_UIFocusFastScrollingIndexBarEntry)entryWithTitle:(id)title contentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTitle:v7 contentOffset:{x, y}];
+  y = offset.y;
+  x = offset.x;
+  titleCopy = title;
+  v8 = [[self alloc] initWithTitle:titleCopy contentOffset:{x, y}];
 
   return v8;
 }
 
-- (_UIFocusFastScrollingIndexBarEntry)initWithTitle:(id)a3 contentOffset:(CGPoint)a4
+- (_UIFocusFastScrollingIndexBarEntry)initWithTitle:(id)title contentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = offset.y;
+  x = offset.x;
+  titleCopy = title;
   v12.receiver = self;
   v12.super_class = _UIFocusFastScrollingIndexBarEntry;
   v8 = [(_UIFocusFastScrollingIndexBarEntry *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
@@ -42,29 +42,29 @@
   return v8;
 }
 
-+ (_UIFocusFastScrollingIndexBarEntry)entryWithTitle:(id)a3 generator:(id)a4
++ (_UIFocusFastScrollingIndexBarEntry)entryWithTitle:(id)title generator:(id)generator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTitle:v7 generator:v6];
+  generatorCopy = generator;
+  titleCopy = title;
+  v8 = [[self alloc] initWithTitle:titleCopy generator:generatorCopy];
 
   return v8;
 }
 
-- (_UIFocusFastScrollingIndexBarEntry)initWithTitle:(id)a3 generator:(id)a4
+- (_UIFocusFastScrollingIndexBarEntry)initWithTitle:(id)title generator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  generatorCopy = generator;
   v14.receiver = self;
   v14.super_class = _UIFocusFastScrollingIndexBarEntry;
   v8 = [(_UIFocusFastScrollingIndexBarEntry *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [generatorCopy copy];
     contentOffsetGenerator = v8->_contentOffsetGenerator;
     v8->_contentOffsetGenerator = v11;
 
@@ -74,11 +74,11 @@
   return v8;
 }
 
-+ (id)placeholderEntryWithEntryBefore:(id)a3 after:(id)a4
++ (id)placeholderEntryWithEntryBefore:(id)before after:(id)after
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  beforeCopy = before;
+  afterCopy = after;
+  v8 = objc_alloc_init(self);
   v8[8] = 1;
   v9 = *(v8 + 5);
   *(v8 + 5) = @"•";
@@ -88,10 +88,10 @@
   v15[1] = 3221225472;
   v15[2] = __76___UIFocusFastScrollingIndexBarEntry_placeholderEntryWithEntryBefore_after___block_invoke;
   v15[3] = &unk_1E7109020;
-  v16 = v6;
-  v17 = v7;
-  v10 = v7;
-  v11 = v6;
+  v16 = beforeCopy;
+  v17 = afterCopy;
+  v10 = afterCopy;
+  v11 = beforeCopy;
   v12 = _Block_copy(v15);
   v13 = *(v8 + 4);
   *(v8 + 4) = v12;

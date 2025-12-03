@@ -32,8 +32,8 @@
   v2 = objc_opt_class();
   v9 = NSStringFromClass(v2);
   requestDate = self->_requestDate;
-  v3 = [(AKURLBagFetchContext *)self->_context altDSID];
-  v8 = v3;
+  altDSID = [(AKURLBagFetchContext *)self->_context altDSID];
+  v8 = altDSID;
   v4 = @"YES";
   if (self->_fromURLCache)
   {
@@ -50,7 +50,7 @@
     v4 = @"NO";
   }
 
-  v10 = [NSString stringWithFormat:@"<%@: %p : %@> altDSID %@, require HTTP cache: %@, ignore memory cache: %@", v9, self, requestDate, v3, v5, v4];
+  v10 = [NSString stringWithFormat:@"<%@: %p : %@> altDSID %@, require HTTP cache: %@, ignore memory cache: %@", v9, self, requestDate, altDSID, v5, v4];
   _objc_release(v8);
   _objc_release(v9);
 

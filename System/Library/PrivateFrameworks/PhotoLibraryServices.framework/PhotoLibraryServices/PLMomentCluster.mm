@@ -1,16 +1,16 @@
 @interface PLMomentCluster
-- (BOOL)isEqual:(id)a3;
-- (PLMomentCluster)initWithMomentClusters:(id)a3;
-- (PLMomentCluster)initWithMoments:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PLMomentCluster)initWithMomentClusters:(id)clusters;
+- (PLMomentCluster)initWithMoments:(id)moments;
 - (unint64_t)hash;
 @end
 
 @implementation PLMomentCluster
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -21,16 +21,16 @@
     if (objc_opt_isKindOfClass())
     {
       startDate = self->_startDate;
-      v6 = [(PLMomentCluster *)v4 startDate];
-      if ([(NSDate *)startDate isEqual:v6])
+      startDate = [(PLMomentCluster *)equalCopy startDate];
+      if ([(NSDate *)startDate isEqual:startDate])
       {
         endDate = self->_endDate;
-        v8 = [(PLMomentCluster *)v4 endDate];
-        if ([(NSDate *)endDate isEqual:v8])
+        endDate = [(PLMomentCluster *)equalCopy endDate];
+        if ([(NSDate *)endDate isEqual:endDate])
         {
           v9 = [(NSArray *)self->_moments count];
-          v10 = [(PLMomentCluster *)v4 moments];
-          v11 = v9 == [v10 count];
+          moments = [(PLMomentCluster *)equalCopy moments];
+          v11 = v9 == [moments count];
         }
 
         else
@@ -61,16 +61,16 @@
   return v4 ^ [(NSDate *)self->_endDate hash];
 }
 
-- (PLMomentCluster)initWithMomentClusters:(id)a3
+- (PLMomentCluster)initWithMomentClusters:(id)clusters
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clustersCopy = clusters;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = clustersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -86,8 +86,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) moments];
-        [v5 addObjectsFromArray:v11];
+        moments = [*(*(&v14 + 1) + 8 * v10) moments];
+        [v5 addObjectsFromArray:moments];
 
         ++v10;
       }
@@ -103,41 +103,41 @@
   return v12;
 }
 
-- (PLMomentCluster)initWithMoments:(id)a3
+- (PLMomentCluster)initWithMoments:(id)moments
 {
-  v4 = a3;
-  if ([v4 count])
+  momentsCopy = moments;
+  if ([momentsCopy count])
   {
     v21.receiver = self;
     v21.super_class = PLMomentCluster;
     v5 = [(PLMomentCluster *)&v21 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [momentsCopy copy];
       moments = v5->_moments;
       v5->_moments = v6;
 
-      v8 = [(NSArray *)v5->_moments firstObject];
-      v9 = [(NSArray *)v5->_moments lastObject];
-      v10 = [v8 startDate];
+      firstObject = [(NSArray *)v5->_moments firstObject];
+      lastObject = [(NSArray *)v5->_moments lastObject];
+      startDate = [firstObject startDate];
       startDate = v5->_startDate;
-      v5->_startDate = v10;
+      v5->_startDate = startDate;
 
-      v12 = [v9 endDate];
+      endDate = [lastObject endDate];
       endDate = v5->_endDate;
-      v5->_endDate = v12;
+      v5->_endDate = endDate;
 
-      v14 = [v8 localStartDate];
+      localStartDate = [firstObject localStartDate];
       localStartDate = v5->_localStartDate;
-      v5->_localStartDate = v14;
+      v5->_localStartDate = localStartDate;
 
-      v16 = [v9 localEndDate];
+      localEndDate = [lastObject localEndDate];
       localEndDate = v5->_localEndDate;
-      v5->_localEndDate = v16;
+      v5->_localEndDate = localEndDate;
     }
 
     self = v5;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
@@ -149,10 +149,10 @@
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Trying to initialize MomentCluster with 0 moments.", buf, 2u);
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 @end

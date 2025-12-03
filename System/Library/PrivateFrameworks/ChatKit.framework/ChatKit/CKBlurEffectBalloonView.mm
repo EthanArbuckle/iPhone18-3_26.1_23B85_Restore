@@ -1,5 +1,5 @@
 @interface CKBlurEffectBalloonView
-- (CKBlurEffectBalloonView)initWithFrame:(CGRect)a3;
+- (CKBlurEffectBalloonView)initWithFrame:(CGRect)frame;
 - (UIView)commSafetyBadgeView;
 - (UIVisualEffectView)blurEffectView;
 - (id)description;
@@ -11,25 +11,25 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CKImageBalloonView *)self animatedImage];
+  animatedImage = [(CKImageBalloonView *)self animatedImage];
   v8.receiver = self;
   v8.super_class = CKBlurEffectBalloonView;
   v5 = [(CKImageBalloonView *)&v8 description];
-  v6 = [v3 stringWithFormat:@"[CKBlurEffectBalloonView animatedImage:%@ %@]", v4, v5];
+  v6 = [v3 stringWithFormat:@"[CKBlurEffectBalloonView animatedImage:%@ %@]", animatedImage, v5];
 
   return v6;
 }
 
-- (CKBlurEffectBalloonView)initWithFrame:(CGRect)a3
+- (CKBlurEffectBalloonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKBlurEffectBalloonView;
-  v3 = [(CKImageBalloonView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKImageBalloonView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKBlurEffectBalloonView *)v3 blurEffectView];
-    [(CKBlurEffectBalloonView *)v4 addSubview:v5];
+    blurEffectView = [(CKBlurEffectBalloonView *)v3 blurEffectView];
+    [(CKBlurEffectBalloonView *)v4 addSubview:blurEffectView];
   }
 
   return v4;
@@ -42,29 +42,29 @@
   [(CKImageBalloonView *)&v31 layoutSubviews];
   if (CKIsRunningInMessagesNotificationExtension() || CKIsRunningInMessagesNotificationViewService())
   {
-    v3 = [(CKBlurEffectBalloonView *)self layer];
-    [v3 setContents:0];
+    layer = [(CKBlurEffectBalloonView *)self layer];
+    [layer setContents:0];
   }
 
-  v4 = [(CKBlurEffectBalloonView *)self blurEffectView];
+  blurEffectView = [(CKBlurEffectBalloonView *)self blurEffectView];
   [(CKBlurEffectBalloonView *)self bounds];
-  [v4 setFrame:?];
+  [blurEffectView setFrame:?];
 
-  v5 = [(CKBlurEffectBalloonView *)self blurEffectView];
-  [(CKBlurEffectBalloonView *)self bringSubviewToFront:v5];
+  blurEffectView2 = [(CKBlurEffectBalloonView *)self blurEffectView];
+  [(CKBlurEffectBalloonView *)self bringSubviewToFront:blurEffectView2];
 
-  v6 = [(CKBlurEffectBalloonView *)self blurEffectView];
-  v7 = [v6 superview];
+  blurEffectView3 = [(CKBlurEffectBalloonView *)self blurEffectView];
+  superview = [blurEffectView3 superview];
 
-  if (!v7)
+  if (!superview)
   {
-    v8 = [(CKBlurEffectBalloonView *)self blurEffectView];
-    [(CKBlurEffectBalloonView *)self addSubview:v8];
+    blurEffectView4 = [(CKBlurEffectBalloonView *)self blurEffectView];
+    [(CKBlurEffectBalloonView *)self addSubview:blurEffectView4];
   }
 
-  v9 = [(CKBlurEffectBalloonView *)self commSafetyBadgeView];
+  commSafetyBadgeView = [(CKBlurEffectBalloonView *)self commSafetyBadgeView];
 
-  if (v9)
+  if (commSafetyBadgeView)
   {
     v10 = +[CKUIBehavior sharedBehaviors];
     [v10 verticalBalloonBadgeInset];
@@ -74,11 +74,11 @@
     [v13 horizontalBalloonBadgeInset];
     v15 = v14;
 
-    v16 = [(CKBlurEffectBalloonView *)self commSafetyBadgeView];
-    [v16 sizeToFit];
+    commSafetyBadgeView2 = [(CKBlurEffectBalloonView *)self commSafetyBadgeView];
+    [commSafetyBadgeView2 sizeToFit];
 
-    v17 = [(CKBlurEffectBalloonView *)self commSafetyBadgeView];
-    [v17 frame];
+    commSafetyBadgeView3 = [(CKBlurEffectBalloonView *)self commSafetyBadgeView];
+    [commSafetyBadgeView3 frame];
     v19 = v18;
     v21 = v20;
 
@@ -93,15 +93,15 @@
       v23 = v23 - v27;
     }
 
-    v28 = [(CKBlurEffectBalloonView *)self commSafetyBadgeView];
-    [v28 setFrame:{v23, v25, v19, v21}];
+    commSafetyBadgeView4 = [(CKBlurEffectBalloonView *)self commSafetyBadgeView];
+    [commSafetyBadgeView4 setFrame:{v23, v25, v19, v21}];
   }
 
-  v29 = [(CKBlurEffectBalloonView *)self blurEffectView];
-  if (v29)
+  blurEffectView5 = [(CKBlurEffectBalloonView *)self blurEffectView];
+  if (blurEffectView5)
   {
-    v30 = [(CKBlurEffectBalloonView *)self commSafetyBadgeView];
-    [(CKBlurEffectBalloonView *)self insertSubview:v30 aboveSubview:v29];
+    commSafetyBadgeView5 = [(CKBlurEffectBalloonView *)self commSafetyBadgeView];
+    [(CKBlurEffectBalloonView *)self insertSubview:commSafetyBadgeView5 aboveSubview:blurEffectView5];
   }
 }
 
@@ -129,8 +129,8 @@
   if (!commSafetyBadgeView)
   {
     v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"eye.slash"];
-    v5 = [MEMORY[0x1E69DC888] labelColor];
-    v6 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:v5];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v6 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:labelColor];
     v7 = [v4 imageWithSymbolConfiguration:v6];
 
     v8 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];

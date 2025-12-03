@@ -1,6 +1,6 @@
 @interface COSHeadphoneHearingProtectionController
 - (COSHeadphoneHearingProtectionController)init;
-- (id)creatNotificationDataStructure:(id)a3 toDate:(id)a4;
+- (id)creatNotificationDataStructure:(id)structure toDate:(id)date;
 - (id)getHeadphoneLevelLimitEnabled;
 - (id)getHeadphoneLevelLimitSetting;
 - (id)getHeadphoneNotificationsEnabled;
@@ -11,23 +11,23 @@
 - (id)headphoneNotificationsGroupSpecifier;
 - (id)headphoneNotificationsSwitchSpecifier;
 - (id)headphoneWeeklyNotificationDescriptionSpecifier;
-- (id)hkQueryForSampleType:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 notificationData:(id)a6;
+- (id)hkQueryForSampleType:(id)type predicate:(id)predicate sortDescriptors:(id)descriptors notificationData:(id)data;
 - (id)specifiers;
 - (id)startDate;
 - (id)updateHeadphoneLevelLimitDescriptionText;
 - (id)updateHeadphoneLevelLimitText;
-- (id)weeklyNotificationCount:(id)a3;
+- (id)weeklyNotificationCount:(id)count;
 - (void)dealloc;
 - (void)loadView;
 - (void)openAboutHeadphoneNotifications;
 - (void)openHealthArticleSafeListening;
 - (void)openHealthPrivacySettings;
-- (void)queryNotificationCountsFromDate:(id)a3 toDate:(id)a4;
-- (void)setHeadphoneLevelLimitEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setHeadphoneLevelLimitValue:(id)a3 forSpecifier:(id)a4;
-- (void)setHeadphoneNotificationsEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)updateNotificationCountsForData:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)queryNotificationCountsFromDate:(id)date toDate:(id)toDate;
+- (void)setHeadphoneLevelLimitEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setHeadphoneLevelLimitValue:(id)value forSpecifier:(id)specifier;
+- (void)setHeadphoneNotificationsEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)updateNotificationCountsForData:(id)data;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSHeadphoneHearingProtectionController
@@ -88,9 +88,9 @@
   audioSettingsManager = self->_audioSettingsManager;
   self->_audioSettingsManager = v7;
 
-  v9 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v10 = sub_10009C630();
-  v11 = [v9 getPreferenceFor:v10];
+  v11 = [audioSettingsManager getPreferenceFor:v10];
   [(COSHeadphoneHearingProtectionController *)self setLevelLimitThreshold:v11];
 
   v12 = objc_alloc_init(NSNumberFormatter);
@@ -120,34 +120,34 @@
   self->_weeklyNotificationCount = 0;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v19.receiver = self;
   v19.super_class = COSHeadphoneHearingProtectionController;
-  [(COSHeadphoneHearingProtectionController *)&v19 viewWillAppear:a3];
+  [(COSHeadphoneHearingProtectionController *)&v19 viewWillAppear:appear];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
   v6 = [_NSLocalizedStringResource alloc];
   v7 = +[NSLocale currentLocale];
-  v8 = [v6 initWithKey:@"HEADPHONE_HEARING_PROTECTION" table:@"Sounds" locale:v7 bundleURL:v5];
+  v8 = [v6 initWithKey:@"HEADPHONE_HEARING_PROTECTION" table:@"Sounds" locale:v7 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
-  v11 = [v9 initWithKey:@"SOUNDS" table:@"Settings" locale:v10 bundleURL:v5];
+  v11 = [v9 initWithKey:@"SOUNDS" table:@"Settings" locale:v10 bundleURL:bundleURL];
 
   v20 = v11;
   v12 = [NSArray arrayWithObjects:&v20 count:1];
   v13 = [NSURL URLWithString:@"bridge:root=SOUNDS_ID&path=HEADPHONE_LEVEL_LIMIT_SETTING"];
   [BPSWatchSettingsNavigationDonation emitNavigationEventForSystemSettingWithIconSpecifierIdentifier:@"SOUNDS_ID" title:v8 localizedNavigationComponents:v12 deepLink:v13];
 
-  v14 = [(COSHeadphoneHearingProtectionController *)self startDate];
-  v15 = [(COSHeadphoneHearingProtectionController *)self endDate];
-  [(COSHeadphoneHearingProtectionController *)self queryNotificationCountsFromDate:v14 toDate:v15];
+  startDate = [(COSHeadphoneHearingProtectionController *)self startDate];
+  endDate = [(COSHeadphoneHearingProtectionController *)self endDate];
+  [(COSHeadphoneHearingProtectionController *)self queryNotificationCountsFromDate:startDate toDate:endDate];
 
-  v16 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v17 = sub_10009C630();
-  v18 = [v16 getPreferenceFor:v17];
+  v18 = [audioSettingsManager getPreferenceFor:v17];
   [(COSHeadphoneHearingProtectionController *)self setLevelLimitThreshold:v18];
 }
 
@@ -161,62 +161,62 @@
   }
 
   v5 = objc_opt_new();
-  v6 = [(COSHeadphoneHearingProtectionController *)self headphoneNotificationsGroupSpecifier];
-  [v5 addObject:v6];
+  headphoneNotificationsGroupSpecifier = [(COSHeadphoneHearingProtectionController *)self headphoneNotificationsGroupSpecifier];
+  [v5 addObject:headphoneNotificationsGroupSpecifier];
 
-  v7 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v8 = sub_10009CC04();
-  v9 = [v7 getNanoPreferenceFor:v8];
-  v10 = [v9 BOOLValue];
+  v9 = [audioSettingsManager getNanoPreferenceFor:v8];
+  bOOLValue = [v9 BOOLValue];
 
-  if ((v10 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v11 = [(COSHeadphoneHearingProtectionController *)self headphoneNotificationsSwitchSpecifier];
-    [v5 addObject:v11];
+    headphoneNotificationsSwitchSpecifier = [(COSHeadphoneHearingProtectionController *)self headphoneNotificationsSwitchSpecifier];
+    [v5 addObject:headphoneNotificationsSwitchSpecifier];
   }
 
-  v12 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager2 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v13 = sub_10009CD08();
-  v14 = [v12 getNanoPreferenceFor:v13];
+  v14 = [audioSettingsManager2 getNanoPreferenceFor:v13];
   if ([v14 BOOLValue])
   {
 
 LABEL_7:
-    v19 = [(COSHeadphoneHearingProtectionController *)self headphoneWeeklyNotificationDescriptionSpecifier];
-    [v5 addObject:v19];
+    headphoneWeeklyNotificationDescriptionSpecifier = [(COSHeadphoneHearingProtectionController *)self headphoneWeeklyNotificationDescriptionSpecifier];
+    [v5 addObject:headphoneWeeklyNotificationDescriptionSpecifier];
 
     goto LABEL_8;
   }
 
-  v15 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager3 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v16 = sub_10009CC04();
-  v17 = [v15 getNanoPreferenceFor:v16];
-  v18 = [v17 BOOLValue];
+  v17 = [audioSettingsManager3 getNanoPreferenceFor:v16];
+  bOOLValue2 = [v17 BOOLValue];
 
-  if (v18)
+  if (bOOLValue2)
   {
     goto LABEL_7;
   }
 
 LABEL_8:
-  v20 = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitGroupSpecifier];
-  [v5 addObject:v20];
+  headphoneLevelLimitGroupSpecifier = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitGroupSpecifier];
+  [v5 addObject:headphoneLevelLimitGroupSpecifier];
 
-  v21 = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitSwitchSpecifier];
-  [v5 addObject:v21];
+  headphoneLevelLimitSwitchSpecifier = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitSwitchSpecifier];
+  [v5 addObject:headphoneLevelLimitSwitchSpecifier];
 
-  v22 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager4 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v23 = sub_10009CE0C();
-  v24 = [v22 getNanoPreferenceFor:v23];
-  v25 = [v24 BOOLValue];
+  v24 = [audioSettingsManager4 getNanoPreferenceFor:v23];
+  bOOLValue3 = [v24 BOOLValue];
 
-  if (v25)
+  if (bOOLValue3)
   {
-    v26 = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitDescriptionSpecifier];
-    [v5 addObject:v26];
+    headphoneLevelLimitDescriptionSpecifier = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitDescriptionSpecifier];
+    [v5 addObject:headphoneLevelLimitDescriptionSpecifier];
 
-    v27 = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitSliderSpecifier];
-    [v5 addObject:v27];
+    headphoneLevelLimitSliderSpecifier = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitSliderSpecifier];
+    [v5 addObject:headphoneLevelLimitSliderSpecifier];
   }
 
   v28 = *&self->BPSListController_opaque[v3];
@@ -236,12 +236,12 @@ LABEL_11:
 
   v6 = PSFooterHyperlinkViewActionKey;
   [v3 setProperty:@"openAboutHeadphoneNotifications" forKey:PSFooterHyperlinkViewActionKey];
-  v7 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v8 = sub_10009CC04();
-  v9 = [v7 getNanoPreferenceFor:v8];
-  v10 = [v9 BOOLValue];
+  v9 = [audioSettingsManager getNanoPreferenceFor:v8];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"HEADPHONE_LEVEL_NOTIFICATIONS_GROUP" value:&stru_10026E598 table:@"Sounds"];
@@ -267,12 +267,12 @@ LABEL_11:
     v23 = [v22 localizedStringForKey:@"LEARN_MORE_IN_HEALTH_LINK" value:&stru_10026E598 table:@"Sounds"];
     v20 = [NSString stringWithFormat:v5, v23];
 
-    v24 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+    audioSettingsManager2 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
     v25 = sub_10009D3A0();
-    v26 = [v24 getNanoPreferenceFor:v25];
-    v27 = [v26 BOOLValue];
+    v26 = [audioSettingsManager2 getNanoPreferenceFor:v25];
+    bOOLValue2 = [v26 BOOLValue];
 
-    if ((v27 & 1) == 0)
+    if ((bOOLValue2 & 1) == 0)
     {
       v28 = +[NSBundle mainBundle];
       [v28 localizedStringForKey:@"HEADPHONE_LEVEL_NOTIFICATIONS_DISABLED_FOOTER" value:&stru_10026E598 table:@"Sounds"];
@@ -295,8 +295,8 @@ LABEL_11:
   [v3 setProperty:v34 forKey:PSFooterCellClassGroupKey];
 
   [v3 setProperty:v20 forKey:PSFooterHyperlinkViewTitleKey];
-  v35 = [v21[501] mainBundle];
-  v36 = [v35 localizedStringForKey:v17 value:&stru_10026E598 table:@"Sounds"];
+  mainBundle = [v21[501] mainBundle];
+  v36 = [mainBundle localizedStringForKey:v17 value:&stru_10026E598 table:@"Sounds"];
   v42.location = [v20 rangeOfString:v36];
   v37 = NSStringFromRange(v42);
   [v3 setProperty:v37 forKey:PSFooterHyperlinkViewLinkRangeKey];
@@ -314,9 +314,9 @@ LABEL_11:
   v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:self set:"setHeadphoneNotificationsEnabled:forSpecifier:" get:"getHeadphoneNotificationsEnabled" detail:0 cell:6 edit:0];
 
   [v5 setProperty:@"COSHeadphoneNotificationsSwitchKey" forKey:PSIDKey];
-  v6 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v7 = sub_10009D3A0();
-  v8 = [v6 getNanoPreferenceFor:v7];
+  v8 = [audioSettingsManager getNanoPreferenceFor:v7];
   v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 BOOLValue]);
   [v5 setProperty:v9 forKey:PSEnabledKey];
 
@@ -381,8 +381,8 @@ LABEL_11:
 
 - (id)headphoneLevelLimitDescriptionSpecifier
 {
-  v3 = [(COSHeadphoneHearingProtectionController *)self updateHeadphoneLevelLimitText];
-  v4 = [PSSpecifier preferenceSpecifierNamed:v3 target:self set:0 get:"updateHeadphoneLevelLimitDescriptionText" detail:0 cell:4 edit:0];
+  updateHeadphoneLevelLimitText = [(COSHeadphoneHearingProtectionController *)self updateHeadphoneLevelLimitText];
+  v4 = [PSSpecifier preferenceSpecifierNamed:updateHeadphoneLevelLimitText target:self set:0 get:"updateHeadphoneLevelLimitDescriptionText" detail:0 cell:4 edit:0];
 
   [v4 setProperty:@"COSHeadphoneLevelLimitDescriptionKey" forKey:PSIDKey];
   [v4 setProperty:objc_opt_class() forKey:PSCellClassKey];
@@ -417,14 +417,14 @@ LABEL_11:
 
 - (id)updateHeadphoneLevelLimitText
 {
-  v3 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v4 = sub_10009C630();
-  v5 = [v3 getNanoPreferenceFor:v4];
+  v5 = [audioSettingsManager getNanoPreferenceFor:v4];
 
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"HEADPHONE_LEVEL_LIMIT_SET_LEVEL" value:&stru_10026E598 table:@"Sounds"];
-  v8 = [(COSHeadphoneHearingProtectionController *)self numberFormatter];
-  v9 = [v8 stringFromNumber:v5];
+  numberFormatter = [(COSHeadphoneHearingProtectionController *)self numberFormatter];
+  v9 = [numberFormatter stringFromNumber:v5];
   v10 = [NSString stringWithFormat:v7, v9];
 
   return v10;
@@ -432,12 +432,12 @@ LABEL_11:
 
 - (id)updateHeadphoneLevelLimitDescriptionText
 {
-  v2 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v3 = sub_10009C630();
-  v4 = [v2 getNanoPreferenceFor:v3];
+  v4 = [audioSettingsManager getNanoPreferenceFor:v3];
 
-  v5 = [v4 stringValue];
-  v6 = [NSString stringWithFormat:@"HEADPHONE_LEVEL_LIMIT_%@_INFO", v5];
+  stringValue = [v4 stringValue];
+  v6 = [NSString stringWithFormat:@"HEADPHONE_LEVEL_LIMIT_%@_INFO", stringValue];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:v6 value:&stru_10026E598 table:@"Sounds"];
@@ -458,12 +458,12 @@ LABEL_11:
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismiss"];
   [v4 setRightBarButtonItem:v5];
   v6 = [UINavigationBar alloc];
-  v7 = [(COSHeadphoneHearingProtectionController *)self view];
-  [v7 frame];
+  view = [(COSHeadphoneHearingProtectionController *)self view];
+  [view frame];
   v9 = v8;
-  v10 = [(COSHeadphoneHearingProtectionController *)self navigationController];
-  v11 = [v10 navigationBar];
-  [v11 frame];
+  navigationController = [(COSHeadphoneHearingProtectionController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v12 = [v6 initWithFrame:{0.0, 0.0, v9}];
 
   v16 = v4;
@@ -475,8 +475,8 @@ LABEL_11:
 
   [v12 setTranslucent:0];
   [v12 _setHidesShadow:1];
-  v15 = [(COSHeadphoneNotificationsController *)v3 view];
-  [v15 addSubview:v12];
+  view2 = [(COSHeadphoneNotificationsController *)v3 view];
+  [view2 addSubview:v12];
 
   [(COSHeadphoneHearingProtectionController *)self presentViewController:v3 animated:1 completion:0];
 }
@@ -488,16 +488,16 @@ LABEL_11:
   [v2 openURL:v3 withCompletionHandler:0];
 }
 
-- (void)setHeadphoneLevelLimitEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setHeadphoneLevelLimitEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   [(COSHeadphoneHearingProtectionController *)self setLocalChange:1];
-  if ([v5 BOOLValue])
+  if ([enabledCopy BOOLValue])
   {
-    v6 = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitDescriptionSpecifier];
-    v12[0] = v6;
-    v7 = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitSliderSpecifier];
-    v12[1] = v7;
+    headphoneLevelLimitDescriptionSpecifier = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitDescriptionSpecifier];
+    v12[0] = headphoneLevelLimitDescriptionSpecifier;
+    headphoneLevelLimitSliderSpecifier = [(COSHeadphoneHearingProtectionController *)self headphoneLevelLimitSliderSpecifier];
+    v12[1] = headphoneLevelLimitSliderSpecifier;
     v8 = [NSArray arrayWithObjects:v12 count:2];
     [(COSHeadphoneHearingProtectionController *)self insertContiguousSpecifiers:v8 afterSpecifierID:@"COSHeadphoneLevelLimitSwitchKey" animated:1];
   }
@@ -508,37 +508,37 @@ LABEL_11:
     [(COSHeadphoneHearingProtectionController *)self removeSpecifierID:@"COSHeadphoneLevelLimitSliderKey" animated:1];
   }
 
-  v9 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v10 = sub_10009CE0C();
-  v11 = [v9 setNanoPreferenceFor:v10 value:v5];
+  v11 = [audioSettingsManager setNanoPreferenceFor:v10 value:enabledCopy];
 }
 
 - (id)getHeadphoneLevelLimitEnabled
 {
-  v2 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v3 = sub_10009CE0C();
-  v4 = [v2 getNanoPreferenceFor:v3];
+  v4 = [audioSettingsManager getNanoPreferenceFor:v3];
 
   return v4;
 }
 
-- (void)setHeadphoneLevelLimitValue:(id)a3 forSpecifier:(id)a4
+- (void)setHeadphoneLevelLimitValue:(id)value forSpecifier:(id)specifier
 {
-  v13 = a3;
+  valueCopy = value;
   [(COSHeadphoneHearingProtectionController *)self setLocalChange:1];
-  v5 = [(COSHeadphoneHearingProtectionController *)self levelLimitThreshold];
+  levelLimitThreshold = [(COSHeadphoneHearingProtectionController *)self levelLimitThreshold];
 
-  if (v5 != v13)
+  if (levelLimitThreshold != valueCopy)
   {
-    [(COSHeadphoneHearingProtectionController *)self setLevelLimitThreshold:v13];
-    v6 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+    [(COSHeadphoneHearingProtectionController *)self setLevelLimitThreshold:valueCopy];
+    audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
     v7 = sub_10009C630();
-    v8 = [v6 setNanoPreferenceFor:v7 value:v13];
+    v8 = [audioSettingsManager setNanoPreferenceFor:v7 value:valueCopy];
 
     v9 = OBJC_IVAR___PSListController__specifiers;
     v10 = [*&self->BPSListController_opaque[OBJC_IVAR___PSListController__specifiers] specifierForID:@"COSHeadphoneLevelLimitDescriptionKey"];
-    v11 = [(COSHeadphoneHearingProtectionController *)self updateHeadphoneLevelLimitText];
-    [v10 setName:v11];
+    updateHeadphoneLevelLimitText = [(COSHeadphoneHearingProtectionController *)self updateHeadphoneLevelLimitText];
+    [v10 setName:updateHeadphoneLevelLimitText];
 
     v12 = [*&self->BPSListController_opaque[v9] specifierForID:@"COSHeadphoneLevelLimitDescriptionKey"];
     [(COSHeadphoneHearingProtectionController *)self reloadSpecifier:v12];
@@ -547,21 +547,21 @@ LABEL_11:
 
 - (id)getHeadphoneLevelLimitSetting
 {
-  v2 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v3 = sub_10009C630();
-  v4 = [v2 getNanoPreferenceFor:v3];
+  v4 = [audioSettingsManager getNanoPreferenceFor:v3];
 
   return v4;
 }
 
-- (void)setHeadphoneNotificationsEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setHeadphoneNotificationsEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v9 = a3;
+  enabledCopy = enabled;
   [(COSHeadphoneHearingProtectionController *)self setLocalChange:1];
-  if ([v9 BOOLValue])
+  if ([enabledCopy BOOLValue])
   {
-    v5 = [(COSHeadphoneHearingProtectionController *)self headphoneWeeklyNotificationDescriptionSpecifier];
-    [(COSHeadphoneHearingProtectionController *)self insertSpecifier:v5 afterSpecifierID:@"COSHeadphoneNotificationsSwitchKey" animated:1];
+    headphoneWeeklyNotificationDescriptionSpecifier = [(COSHeadphoneHearingProtectionController *)self headphoneWeeklyNotificationDescriptionSpecifier];
+    [(COSHeadphoneHearingProtectionController *)self insertSpecifier:headphoneWeeklyNotificationDescriptionSpecifier afterSpecifierID:@"COSHeadphoneNotificationsSwitchKey" animated:1];
   }
 
   else
@@ -569,34 +569,34 @@ LABEL_11:
     [(COSHeadphoneHearingProtectionController *)self removeSpecifierID:@"COSHeadphoneWeeklyNotificationsKey" animated:1];
   }
 
-  v6 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v7 = sub_10009CD08();
-  v8 = [v6 setNanoPreferenceFor:v7 value:v9];
+  v8 = [audioSettingsManager setNanoPreferenceFor:v7 value:enabledCopy];
 }
 
 - (id)getHeadphoneNotificationsEnabled
 {
-  v2 = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
+  audioSettingsManager = [(COSHeadphoneHearingProtectionController *)self audioSettingsManager];
   v3 = sub_10009CD08();
-  v4 = [v2 getNanoPreferenceFor:v3];
+  v4 = [audioSettingsManager getNanoPreferenceFor:v3];
 
   return v4;
 }
 
-- (id)weeklyNotificationCount:(id)a3
+- (id)weeklyNotificationCount:(id)count
 {
-  v4 = [(COSHeadphoneHearingProtectionController *)self numberFormatter];
+  numberFormatter = [(COSHeadphoneHearingProtectionController *)self numberFormatter];
   v5 = [NSNumber numberWithInt:self->_weeklyNotificationCount];
-  v6 = [v4 stringFromNumber:v5];
+  v6 = [numberFormatter stringFromNumber:v5];
 
   return v6;
 }
 
-- (void)updateNotificationCountsForData:(id)a3
+- (void)updateNotificationCountsForData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v26 = objc_alloc_init(NSMutableArray);
-  v4 = [v3 objectAtIndex:0];
+  v4 = [dataCopy objectAtIndex:0];
   v5 = [v4 count];
 
   if (v5)
@@ -604,27 +604,27 @@ LABEL_11:
     v6 = 0;
     do
     {
-      v7 = [v3 objectAtIndex:1];
+      v7 = [dataCopy objectAtIndex:1];
       v8 = [v7 objectAtIndexedSubscript:v6];
       v27 = v8;
 
       v32[0] = @"month";
-      v31 = [v3 objectAtIndex:0];
+      v31 = [dataCopy objectAtIndex:0];
       v30 = [v31 objectAtIndexedSubscript:v6];
       v33[0] = v30;
       v32[1] = @"count";
-      v29 = [v3 objectAtIndex:1];
+      v29 = [dataCopy objectAtIndex:1];
       v28 = [v29 objectAtIndexedSubscript:v6];
       v33[1] = v28;
       v32[2] = @"order";
       v9 = [NSNumber numberWithInt:v6];
-      v10 = [v9 stringValue];
-      v33[2] = v10;
+      stringValue = [v9 stringValue];
+      v33[2] = stringValue;
       v32[3] = @"desc";
-      v11 = [v8 integerValue];
+      integerValue = [v8 integerValue];
       v12 = +[NSBundle mainBundle];
       v13 = v12;
-      if (v11 == 1)
+      if (integerValue == 1)
       {
         v14 = @"HEADPHONE_LEVEL_NOTIFICATION_DESCRIPTION_SINGULAR";
       }
@@ -638,14 +638,14 @@ LABEL_11:
       v16 = [NSString stringWithFormat:@"%@ %@", v8, v15];
       v33[3] = v16;
       v32[4] = @"date";
-      v17 = [v3 objectAtIndex:2];
+      v17 = [dataCopy objectAtIndex:2];
       v18 = [v17 objectAtIndexedSubscript:v6];
       v33[4] = v18;
       v19 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:5];
       [(NSArray *)v26 setObject:v19 atIndexedSubscript:v6];
 
       ++v6;
-      v20 = [v3 objectAtIndex:0];
+      v20 = [dataCopy objectAtIndex:0];
       v21 = [v20 count];
     }
 
@@ -655,7 +655,7 @@ LABEL_11:
   weeklyNotificationData = self->_weeklyNotificationData;
   self->_weeklyNotificationData = v26;
 
-  v23 = [v3 objectAtIndex:1];
+  v23 = [dataCopy objectAtIndex:1];
   v24 = [v23 valueForKeyPath:@"@sum.self"];
   -[COSHeadphoneHearingProtectionController setWeeklyNotificationCount:](self, "setWeeklyNotificationCount:", [v24 intValue]);
 }
@@ -673,38 +673,38 @@ LABEL_11:
   return v6;
 }
 
-- (void)queryNotificationCountsFromDate:(id)a3 toDate:(id)a4
+- (void)queryNotificationCountsFromDate:(id)date toDate:(id)toDate
 {
-  v6 = a4;
-  v7 = a3;
+  toDateCopy = toDate;
+  dateCopy = date;
   v12 = [HKObjectType categoryTypeForIdentifier:HKCategoryTypeIdentifierHeadphoneAudioExposureEvent];
-  v8 = [HKQuery predicateForSamplesWithStartDate:v7 endDate:v6 options:0];
+  v8 = [HKQuery predicateForSamplesWithStartDate:dateCopy endDate:toDateCopy options:0];
   v9 = [[NSSortDescriptor alloc] initWithKey:HKSampleSortIdentifierEndDate ascending:0];
-  v10 = [(COSHeadphoneHearingProtectionController *)self creatNotificationDataStructure:v7 toDate:v6];
+  v10 = [(COSHeadphoneHearingProtectionController *)self creatNotificationDataStructure:dateCopy toDate:toDateCopy];
 
   v11 = [(COSHeadphoneHearingProtectionController *)self hkQueryForSampleType:v12 predicate:v8 sortDescriptors:v9 notificationData:v10];
 
   [(HKHealthStore *)self->_healthStore executeQuery:v11];
 }
 
-- (id)hkQueryForSampleType:(id)a3 predicate:(id)a4 sortDescriptors:(id)a5 notificationData:(id)a6
+- (id)hkQueryForSampleType:(id)type predicate:(id)predicate sortDescriptors:(id)descriptors notificationData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  dataCopy = data;
   objc_initWeak(&location, self);
   v14 = [HKSampleQuery alloc];
-  v23 = v12;
+  v23 = descriptorsCopy;
   v15 = [NSArray arrayWithObjects:&v23 count:1];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10009EE38;
   v19[3] = &unk_10026A760;
-  v16 = v13;
+  v16 = dataCopy;
   v20 = v16;
   objc_copyWeak(&v21, &location);
-  v17 = [v14 initWithSampleType:v10 predicate:v11 limit:0 sortDescriptors:v15 resultsHandler:v19];
+  v17 = [v14 initWithSampleType:typeCopy predicate:predicateCopy limit:0 sortDescriptors:v15 resultsHandler:v19];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -712,9 +712,9 @@ LABEL_11:
   return v17;
 }
 
-- (id)creatNotificationDataStructure:(id)a3 toDate:(id)a4
+- (id)creatNotificationDataStructure:(id)structure toDate:(id)date
 {
-  v22 = a3;
+  structureCopy = structure;
   v19 = objc_alloc_init(NSMutableArray);
   v21 = objc_alloc_init(NSMutableArray);
   v20 = objc_alloc_init(NSMutableArray);
@@ -724,13 +724,13 @@ LABEL_11:
   for (i = 0; i != 6; ++i)
   {
     [v7 setMonth:i];
-    v9 = [v6 dateByAddingComponents:v7 toDate:v22 options:0];
+    v9 = [v6 dateByAddingComponents:v7 toDate:structureCopy options:0];
     [v5 addObject:v9];
-    v10 = [(COSHeadphoneHearingProtectionController *)self monthFormatter];
-    v11 = [v10 stringFromDate:v9];
+    monthFormatter = [(COSHeadphoneHearingProtectionController *)self monthFormatter];
+    v11 = [monthFormatter stringFromDate:v9];
 
-    v12 = [(COSHeadphoneHearingProtectionController *)self monthNumberFormatter];
-    v13 = [v12 stringFromDate:v9];
+    monthNumberFormatter = [(COSHeadphoneHearingProtectionController *)self monthNumberFormatter];
+    v13 = [monthNumberFormatter stringFromDate:v9];
     v14 = [NSString stringWithFormat:@"MONTH_%@", v13];
 
     v15 = +[NSBundle mainBundle];

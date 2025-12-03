@@ -1,48 +1,48 @@
 @interface CAMSemanticStylePicker
 - (BOOL)_isScrollActive;
 - (BOOL)expanded;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)scrollEnabled;
 - (BOOL)scrollViewUserInteractionEnabled;
-- (CAMSemanticStylePicker)initWithFrame:(CGRect)a3;
+- (CAMSemanticStylePicker)initWithFrame:(CGRect)frame;
 - (CAMSemanticStylePickerDelegate)delegate;
-- (CGPoint)_contentOffsetForIndex:(unint64_t)a3;
-- (CGRect)modelStyleRectAtIndex:(unint64_t)a3;
-- (CGRect)presentatationStyleRectAtIndex:(unint64_t)a3;
+- (CGPoint)_contentOffsetForIndex:(unint64_t)index;
+- (CGRect)modelStyleRectAtIndex:(unint64_t)index;
+- (CGRect)presentatationStyleRectAtIndex:(unint64_t)index;
 - (double)_fractionalIndexForContentOffset;
-- (double)_fractionalIndexForContentOffset:(CGPoint)a3;
+- (double)_fractionalIndexForContentOffset:(CGPoint)offset;
 - (id)_tileFrames;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_handlePageControlValueChanged:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_handlePageControlValueChanged:(id)changed;
 - (void)_performHaptics;
 - (void)_prepareHaptics;
-- (void)_setSelectedStyleIndex:(unint64_t)a3 shouldDelegate:(BOOL)a4 shouldUpdateLayout:(BOOL)a5 animated:(BOOL)a6;
-- (void)_setSelectedTileExpanded:(BOOL)a3;
-- (void)_updateMaterialOpacityWithDuration:(double)a3;
+- (void)_setSelectedStyleIndex:(unint64_t)index shouldDelegate:(BOOL)delegate shouldUpdateLayout:(BOOL)layout animated:(BOOL)animated;
+- (void)_setSelectedTileExpanded:(BOOL)expanded;
+- (void)_updateMaterialOpacityWithDuration:(double)duration;
 - (void)_updateScrollViewContentOffset;
 - (void)_updateTileAlphas;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentBottomMargin:(double)a3;
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
-- (void)setMaterial:(int64_t)a3 withDuration:(double)a4;
-- (void)setMaterialColor:(id)a3;
-- (void)setNumberOfStyles:(unint64_t)a3;
-- (void)setPageControlMaxNumberOfDots:(int64_t)a3;
-- (void)setScrollEnabled:(BOOL)a3;
-- (void)setScrollViewUserInteractionEnabled:(BOOL)a3;
-- (void)setSpacerWidth:(double)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentBottomMargin:(double)margin;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
+- (void)setMaterial:(int64_t)material withDuration:(double)duration;
+- (void)setMaterialColor:(id)color;
+- (void)setNumberOfStyles:(unint64_t)styles;
+- (void)setPageControlMaxNumberOfDots:(int64_t)dots;
+- (void)setScrollEnabled:(BOOL)enabled;
+- (void)setScrollViewUserInteractionEnabled:(BOOL)enabled;
+- (void)setSpacerWidth:(double)width;
 @end
 
 @implementation CAMSemanticStylePicker
 
-- (CAMSemanticStylePicker)initWithFrame:(CGRect)a3
+- (CAMSemanticStylePicker)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = CAMSemanticStylePicker;
-  v3 = [(CAMSemanticStylePicker *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMSemanticStylePicker *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCD10]);
@@ -88,9 +88,9 @@
     v3->__selectedTileExpanded = 1;
     v3->_hidesSelfWhenNotExpanded = 1;
     v14 = +[CAMCaptureCapabilities capabilities];
-    v15 = [v14 allowHaptics];
+    allowHaptics = [v14 allowHaptics];
 
-    if (v15)
+    if (allowHaptics)
     {
       v16 = +[CAMFeedbackController sharedController];
       feedbackController = v3->__feedbackController;
@@ -103,40 +103,40 @@
 
 - (BOOL)scrollEnabled
 {
-  v2 = [(CAMSemanticStylePicker *)self _scrollView];
-  v3 = [v2 isScrollEnabled];
+  _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+  isScrollEnabled = [_scrollView isScrollEnabled];
 
-  return v3;
+  return isScrollEnabled;
 }
 
-- (void)setScrollEnabled:(BOOL)a3
+- (void)setScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(CAMSemanticStylePicker *)self _scrollView];
-  [v4 setScrollEnabled:v3];
+  enabledCopy = enabled;
+  _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+  [_scrollView setScrollEnabled:enabledCopy];
 }
 
 - (BOOL)scrollViewUserInteractionEnabled
 {
-  v2 = [(CAMSemanticStylePicker *)self _scrollView];
-  v3 = [v2 isUserInteractionEnabled];
+  _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+  isUserInteractionEnabled = [_scrollView isUserInteractionEnabled];
 
-  return v3;
+  return isUserInteractionEnabled;
 }
 
-- (void)setScrollViewUserInteractionEnabled:(BOOL)a3
+- (void)setScrollViewUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(CAMSemanticStylePicker *)self _scrollView];
-  [v4 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+  [_scrollView setUserInteractionEnabled:enabledCopy];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CAMSemanticStylePicker *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -149,12 +149,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CAMSemanticStylePicker *)self frame];
   v9 = v8;
   v11 = v10;
@@ -167,22 +167,22 @@
   }
 }
 
-- (void)setSpacerWidth:(double)a3
+- (void)setSpacerWidth:(double)width
 {
-  if (self->_spacerWidth != a3)
+  if (self->_spacerWidth != width)
   {
-    self->_spacerWidth = a3;
+    self->_spacerWidth = width;
     [(CAMSemanticStylePicker *)self setNeedsLayout];
   }
 }
 
-- (void)setNumberOfStyles:(unint64_t)a3
+- (void)setNumberOfStyles:(unint64_t)styles
 {
-  if (self->_numberOfStyles != a3)
+  if (self->_numberOfStyles != styles)
   {
-    self->_numberOfStyles = a3;
-    v6 = [(CAMSemanticStylePicker *)self _tileViews];
-    v7 = [v6 count] - a3;
+    self->_numberOfStyles = styles;
+    _tileViews = [(CAMSemanticStylePicker *)self _tileViews];
+    v7 = [_tileViews count] - styles;
 
     if (v7 < 1)
     {
@@ -201,18 +201,18 @@
         do
         {
           v15 = objc_alloc_init(CAMSemanticStylePickerTileOverlayView);
-          v16 = [(CAMSemanticStylePicker *)self _tileViews];
-          [v16 addObject:v15];
+          _tileViews2 = [(CAMSemanticStylePicker *)self _tileViews];
+          [_tileViews2 addObject:v15];
 
-          v17 = [(CAMSemanticStylePicker *)self _scrollView];
-          [v17 addSubview:v15];
+          _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+          [_scrollView addSubview:v15];
 
           v18 = objc_alloc_init(MEMORY[0x1E69DD250]);
-          v19 = [(CAMSemanticStylePicker *)self _spacerViews];
-          [v19 addObject:v18];
+          _spacerViews = [(CAMSemanticStylePicker *)self _spacerViews];
+          [_spacerViews addObject:v18];
 
-          v20 = [(CAMSemanticStylePicker *)self _scrollView];
-          [v20 addSubview:v18];
+          _scrollView2 = [(CAMSemanticStylePicker *)self _scrollView];
+          [_scrollView2 addSubview:v18];
 
           --v14;
         }
@@ -225,19 +225,19 @@
     {
       do
       {
-        v8 = [(CAMSemanticStylePicker *)self _tileViews];
-        v9 = [v8 lastObject];
+        _tileViews3 = [(CAMSemanticStylePicker *)self _tileViews];
+        lastObject = [_tileViews3 lastObject];
 
-        [v9 removeFromSuperview];
-        v10 = [(CAMSemanticStylePicker *)self _tileViews];
-        [v10 removeLastObject];
+        [lastObject removeFromSuperview];
+        _tileViews4 = [(CAMSemanticStylePicker *)self _tileViews];
+        [_tileViews4 removeLastObject];
 
-        v11 = [(CAMSemanticStylePicker *)self _spacerViews];
-        v12 = [v11 lastObject];
+        _spacerViews2 = [(CAMSemanticStylePicker *)self _spacerViews];
+        lastObject2 = [_spacerViews2 lastObject];
 
-        [v12 removeFromSuperview];
-        v13 = [(CAMSemanticStylePicker *)self _spacerViews];
-        [v13 removeLastObject];
+        [lastObject2 removeFromSuperview];
+        _spacerViews3 = [(CAMSemanticStylePicker *)self _spacerViews];
+        [_spacerViews3 removeLastObject];
 
         --v7;
       }
@@ -245,12 +245,12 @@
       while (v7);
     }
 
-    v21 = [(CAMSemanticStylePicker *)self pageControl];
-    [v21 setNumberOfPages:a3];
+    pageControl = [(CAMSemanticStylePicker *)self pageControl];
+    [pageControl setNumberOfPages:styles];
 
-    if ([(CAMSemanticStylePicker *)self selectedStyleIndex]>= a3)
+    if ([(CAMSemanticStylePicker *)self selectedStyleIndex]>= styles)
     {
-      [(CAMSemanticStylePicker *)self setSelectedStyleIndex:a3 - 1];
+      [(CAMSemanticStylePicker *)self setSelectedStyleIndex:styles - 1];
       [(CAMSemanticStylePicker *)self _setSelectedStyleIndex:[(CAMSemanticStylePicker *)self selectedStyleIndex] shouldDelegate:1 shouldUpdateLayout:1 animated:0];
     }
 
@@ -261,27 +261,27 @@
   }
 }
 
-- (void)_setSelectedStyleIndex:(unint64_t)a3 shouldDelegate:(BOOL)a4 shouldUpdateLayout:(BOOL)a5 animated:(BOOL)a6
+- (void)_setSelectedStyleIndex:(unint64_t)index shouldDelegate:(BOOL)delegate shouldUpdateLayout:(BOOL)layout animated:(BOOL)animated
 {
-  if (self->_selectedStyleIndex != a3)
+  if (self->_selectedStyleIndex != index)
   {
-    v6 = a6;
-    v7 = a5;
-    v8 = a4;
-    if (a5 && a6)
+    animatedCopy = animated;
+    layoutCopy = layout;
+    delegateCopy = delegate;
+    if (layout && animated)
     {
       [(CAMSemanticStylePicker *)self layoutIfNeeded];
     }
 
-    self->_selectedStyleIndex = a3;
-    v11 = [(CAMSemanticStylePicker *)self pageControl];
-    [v11 setCurrentPage:a3];
+    self->_selectedStyleIndex = index;
+    pageControl = [(CAMSemanticStylePicker *)self pageControl];
+    [pageControl setCurrentPage:index];
 
-    if (v7)
+    if (layoutCopy)
     {
       [(CAMSemanticStylePicker *)self setNeedsLayout];
       v12 = 0.3;
-      if (!v6)
+      if (!animatedCopy)
       {
         v12 = 0.0;
       }
@@ -294,10 +294,10 @@
       [CAMView animateIfNeededWithDuration:v14 animations:v12];
     }
 
-    if (v8)
+    if (delegateCopy)
     {
-      v13 = [(CAMSemanticStylePicker *)self delegate];
-      [v13 semanticStylePickerDidChangeSelectedStyle:self];
+      delegate = [(CAMSemanticStylePicker *)self delegate];
+      [delegate semanticStylePickerDidChangeSelectedStyle:self];
     }
   }
 }
@@ -310,11 +310,11 @@ uint64_t __92__CAMSemanticStylePicker__setSelectedStyleIndex_shouldDelegate_shou
   return [v2 _updateScrollViewContentOffset];
 }
 
-- (void)_setSelectedTileExpanded:(BOOL)a3
+- (void)_setSelectedTileExpanded:(BOOL)expanded
 {
-  if (self->__selectedTileExpanded != a3)
+  if (self->__selectedTileExpanded != expanded)
   {
-    self->__selectedTileExpanded = a3;
+    self->__selectedTileExpanded = expanded;
     [(CAMSemanticStylePicker *)self setNeedsLayout];
   }
 }
@@ -332,13 +332,13 @@ uint64_t __92__CAMSemanticStylePicker__setSelectedStyleIndex_shouldDelegate_shou
   }
 }
 
-- (void)setExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v5 = a3;
-  if ([(CAMSemanticStylePicker *)self expanded]!= a3)
+  expandedCopy = expanded;
+  if ([(CAMSemanticStylePicker *)self expanded]!= expanded)
   {
-    [(CAMSemanticStylePicker *)self setUserInteractionEnabled:v5];
-    if (v5)
+    [(CAMSemanticStylePicker *)self setUserInteractionEnabled:expandedCopy];
+    if (expandedCopy)
     {
       v7 = 1.0;
     }
@@ -348,16 +348,16 @@ uint64_t __92__CAMSemanticStylePicker__setSelectedStyleIndex_shouldDelegate_shou
       v7 = 0.0;
     }
 
-    v8 = [(CAMSemanticStylePicker *)self hidesSelfWhenNotExpanded];
-    if (a4)
+    hidesSelfWhenNotExpanded = [(CAMSemanticStylePicker *)self hidesSelfWhenNotExpanded];
+    if (animated)
     {
-      if (v8)
+      if (hidesSelfWhenNotExpanded)
       {
         [(CAMSemanticStylePicker *)self setHidden:0];
       }
 
       [(CAMSemanticStylePicker *)self layoutIfNeeded];
-      [(CAMSemanticStylePicker *)self _setSelectedTileExpanded:v5 ^ 1];
+      [(CAMSemanticStylePicker *)self _setSelectedTileExpanded:expandedCopy ^ 1];
       [(CAMSemanticStylePicker *)self _setExpandedAnimationCounter:[(CAMSemanticStylePicker *)self _expansionAnimationCounter]+ 1];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -370,20 +370,20 @@ uint64_t __92__CAMSemanticStylePicker__setSelectedStyleIndex_shouldDelegate_shou
       v10[2] = __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2;
       v10[3] = &unk_1E76F8AA0;
       v10[4] = self;
-      v11 = !v5;
+      v11 = !expandedCopy;
       [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v12 usingSpringWithDamping:v10 initialSpringVelocity:0.5 options:0.0 animations:1.0 completion:1.0];
     }
 
     else
     {
-      if (v8)
+      if (hidesSelfWhenNotExpanded)
       {
-        [(CAMSemanticStylePicker *)self setHidden:v5 ^ 1];
+        [(CAMSemanticStylePicker *)self setHidden:expandedCopy ^ 1];
       }
 
-      [(CAMSemanticStylePicker *)self _setSelectedTileExpanded:v5 ^ 1];
-      v9 = [(CAMSemanticStylePicker *)self pageControl];
-      [v9 setAlpha:v7];
+      [(CAMSemanticStylePicker *)self _setSelectedTileExpanded:expandedCopy ^ 1];
+      pageControl = [(CAMSemanticStylePicker *)self pageControl];
+      [pageControl setAlpha:v7];
     }
   }
 }
@@ -418,12 +418,12 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
   return result;
 }
 
-- (CGRect)presentatationStyleRectAtIndex:(unint64_t)a3
+- (CGRect)presentatationStyleRectAtIndex:(unint64_t)index
 {
-  v5 = [(CAMSemanticStylePicker *)self _tileViews];
-  v6 = [v5 count];
+  _tileViews = [(CAMSemanticStylePicker *)self _tileViews];
+  v6 = [_tileViews count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v21 = *MEMORY[0x1E695F050];
     v22 = *(MEMORY[0x1E695F050] + 8);
@@ -433,16 +433,16 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
 
   else
   {
-    v7 = [(CAMSemanticStylePicker *)self _tileViews];
-    v8 = [v7 objectAtIndex:a3];
+    _tileViews2 = [(CAMSemanticStylePicker *)self _tileViews];
+    v8 = [_tileViews2 objectAtIndex:index];
 
-    v9 = [v8 layer];
-    v10 = [v9 presentationLayer];
-    if (v10)
+    layer = [v8 layer];
+    presentationLayer = [layer presentationLayer];
+    if (presentationLayer)
     {
-      v11 = [v8 layer];
-      v12 = [v11 presentationLayer];
-      [v12 frame];
+      layer2 = [v8 layer];
+      presentationLayer2 = [layer2 presentationLayer];
+      [presentationLayer2 frame];
       v14 = v13;
       v16 = v15;
       v18 = v17;
@@ -458,8 +458,8 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
       v20 = v28;
     }
 
-    v29 = [v8 superview];
-    [(CAMSemanticStylePicker *)self convertRect:v29 fromView:v14, v16, v18, v20];
+    superview = [v8 superview];
+    [(CAMSemanticStylePicker *)self convertRect:superview fromView:v14, v16, v18, v20];
     v21 = v30;
     v22 = v31;
     v23 = v32;
@@ -477,12 +477,12 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
   return result;
 }
 
-- (CGRect)modelStyleRectAtIndex:(unint64_t)a3
+- (CGRect)modelStyleRectAtIndex:(unint64_t)index
 {
-  v5 = [(CAMSemanticStylePicker *)self _tileViews];
-  v6 = [v5 count];
+  _tileViews = [(CAMSemanticStylePicker *)self _tileViews];
+  v6 = [_tileViews count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v21 = *MEMORY[0x1E695F050];
     v23 = *(MEMORY[0x1E695F050] + 8);
@@ -492,19 +492,19 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
 
   else
   {
-    v7 = [(CAMSemanticStylePicker *)self _tileViews];
-    v8 = [v7 objectAtIndex:a3];
+    _tileViews2 = [(CAMSemanticStylePicker *)self _tileViews];
+    v8 = [_tileViews2 objectAtIndex:index];
 
-    v9 = [(CAMSemanticStylePicker *)self _tileFrames];
-    v10 = [v9 objectAtIndexedSubscript:a3];
+    _tileFrames = [(CAMSemanticStylePicker *)self _tileFrames];
+    v10 = [_tileFrames objectAtIndexedSubscript:index];
     [v10 CGRectValue];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [v8 superview];
-    [(CAMSemanticStylePicker *)self convertRect:v19 fromView:v12, v14, v16, v18];
+    superview = [v8 superview];
+    [(CAMSemanticStylePicker *)self convertRect:superview fromView:v12, v14, v16, v18];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -524,29 +524,29 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
 
 - (BOOL)_isScrollActive
 {
-  v2 = [(CAMSemanticStylePicker *)self _scrollView];
-  if ([v2 isTracking])
+  _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+  if ([_scrollView isTracking])
   {
-    v3 = 1;
+    isDecelerating = 1;
   }
 
   else
   {
-    v3 = [v2 isDecelerating];
+    isDecelerating = [_scrollView isDecelerating];
   }
 
-  return v3;
+  return isDecelerating;
 }
 
-- (CGPoint)_contentOffsetForIndex:(unint64_t)a3
+- (CGPoint)_contentOffsetForIndex:(unint64_t)index
 {
   if ([(CAMSemanticStylePicker *)self numberOfStyles])
   {
-    v5 = [(CAMSemanticStylePicker *)self _scrollView];
-    [v5 frame];
+    _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+    [_scrollView frame];
     v7 = v6;
 
-    v8 = v7 * a3;
+    v8 = v7 * index;
     v9 = 0.0;
   }
 
@@ -563,18 +563,18 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
 
 - (double)_fractionalIndexForContentOffset
 {
-  v3 = [(CAMSemanticStylePicker *)self _scrollView];
-  [v3 contentOffset];
+  _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+  [_scrollView contentOffset];
   [(CAMSemanticStylePicker *)self _fractionalIndexForContentOffset:?];
   v5 = v4;
 
   return v5;
 }
 
-- (double)_fractionalIndexForContentOffset:(CGPoint)a3
+- (double)_fractionalIndexForContentOffset:(CGPoint)offset
 {
-  x = a3.x;
-  v4 = [(CAMSemanticStylePicker *)self _scrollView:a3.x];
+  x = offset.x;
+  v4 = [(CAMSemanticStylePicker *)self _scrollView:offset.x];
   [v4 frame];
   v6 = v5;
 
@@ -592,30 +592,30 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
   [(CAMSemanticStylePicker *)self _contentOffsetForIndex:[(CAMSemanticStylePicker *)self selectedStyleIndex]];
   v4 = v3;
   v6 = v5;
-  v7 = [(CAMSemanticStylePicker *)self _scrollView];
-  [v7 setContentOffset:{v4, v6}];
+  _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+  [_scrollView setContentOffset:{v4, v6}];
 
-  v8 = [(CAMSemanticStylePicker *)self delegate];
+  delegate = [(CAMSemanticStylePicker *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CAMSemanticStylePicker *)self delegate];
-    [v10 semanticStylePickerDidUpdateFractionalPageIndex:self];
+    delegate2 = [(CAMSemanticStylePicker *)self delegate];
+    [delegate2 semanticStylePickerDidUpdateFractionalPageIndex:self];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v19.receiver = self;
   v19.super_class = CAMSemanticStylePicker;
-  v7 = [(CAMSemanticStylePicker *)&v19 pointInside:a4 withEvent:?];
+  v7 = [(CAMSemanticStylePicker *)&v19 pointInside:event withEvent:?];
   if (v7)
   {
-    v8 = [(CAMSemanticStylePicker *)self pageControl];
-    [v8 alpha];
+    pageControl = [(CAMSemanticStylePicker *)self pageControl];
+    [pageControl alpha];
     v10 = v9;
 
     if (v10 <= 0.0 || (-[CAMSemanticStylePicker pageControl](self, "pageControl"), v11 = objc_claimAutoreleasedReturnValue(), -[CAMSemanticStylePicker convertPoint:toView:](self, "convertPoint:toView:", v11, x, y), v13 = v12, v11, -[CAMSemanticStylePicker pageControl](self, "pageControl"), v14 = objc_claimAutoreleasedReturnValue(), [v14 bounds], v15 = CGRectGetMaxY(v20) + 15.0, v14, v13 <= v15))
@@ -639,54 +639,54 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
   return v7;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = CAMSemanticStylePicker;
-  v5 = [(CAMSemanticStylePicker *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CAMSemanticStylePicker *)&v10 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
-    v6 = [(CAMSemanticStylePicker *)self _scrollView];
-    v7 = [v6 isScrollEnabled];
+    _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+    isScrollEnabled = [_scrollView isScrollEnabled];
 
-    if (v7)
+    if (isScrollEnabled)
     {
-      v8 = [(CAMSemanticStylePicker *)self _scrollView];
+      _scrollView2 = [(CAMSemanticStylePicker *)self _scrollView];
     }
 
     else
     {
-      v8 = 0;
+      _scrollView2 = 0;
     }
 
-    v5 = v8;
+    v5 = _scrollView2;
   }
 
   return v5;
 }
 
-- (void)setMaterial:(int64_t)a3 withDuration:(double)a4
+- (void)setMaterial:(int64_t)material withDuration:(double)duration
 {
-  if (self->_material != a3)
+  if (self->_material != material)
   {
-    self->_material = a3;
-    [(CAMSemanticStylePicker *)self _updateMaterialOpacityWithDuration:a4];
+    self->_material = material;
+    [(CAMSemanticStylePicker *)self _updateMaterialOpacityWithDuration:duration];
   }
 }
 
-- (void)setMaterialColor:(id)a3
+- (void)setMaterialColor:(id)color
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(UIColor *)self->_materialColor isEqual:v4]& 1) == 0)
+  colorCopy = color;
+  if (([(UIColor *)self->_materialColor isEqual:colorCopy]& 1) == 0)
   {
-    self->_materialColor = v4;
+    self->_materialColor = colorCopy;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(CAMSemanticStylePicker *)self _tileViews];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _tileViews = [(CAMSemanticStylePicker *)self _tileViews];
+    v6 = [_tileViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -698,14 +698,14 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_tileViews);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) setMaterialColor:v4];
+          [*(*(&v10 + 1) + 8 * v9++) setMaterialColor:colorCopy];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [_tileViews countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -715,13 +715,13 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
   }
 }
 
-- (void)_updateMaterialOpacityWithDuration:(double)a3
+- (void)_updateMaterialOpacityWithDuration:(double)duration
 {
-  v5 = [(CAMSemanticStylePicker *)self material];
+  material = [(CAMSemanticStylePicker *)self material];
   v6 = 0;
-  if (v5 <= 4)
+  if (material <= 4)
   {
-    v6 = qword_1A3A69E20[v5];
+    v6 = qword_1A3A69E20[material];
   }
 
   v7[0] = MEMORY[0x1E69E9820];
@@ -730,7 +730,7 @@ uint64_t __47__CAMSemanticStylePicker_setExpanded_animated___block_invoke_2(uint
   v7[3] = &unk_1E76F7A38;
   v7[4] = self;
   v7[5] = v6;
-  [CAMView animateIfNeededWithDuration:4 options:v7 animations:0 completion:a3];
+  [CAMView animateIfNeededWithDuration:4 options:v7 animations:0 completion:duration];
 }
 
 void __61__CAMSemanticStylePicker__updateMaterialOpacityWithDuration___block_invoke(uint64_t a1)
@@ -802,11 +802,11 @@ void __61__CAMSemanticStylePicker__updateMaterialOpacityWithDuration___block_inv
   }
 }
 
-- (void)setPageControlMaxNumberOfDots:(int64_t)a3
+- (void)setPageControlMaxNumberOfDots:(int64_t)dots
 {
-  if (self->_pageControlMaxNumberOfDots != a3)
+  if (self->_pageControlMaxNumberOfDots != dots)
   {
-    self->_pageControlMaxNumberOfDots = a3;
+    self->_pageControlMaxNumberOfDots = dots;
     [(CAMSemanticStylePicker *)self setNeedsLayout];
   }
 }
@@ -814,8 +814,8 @@ void __61__CAMSemanticStylePicker__updateMaterialOpacityWithDuration___block_inv
 - (id)_tileFrames
 {
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(CAMSemanticStylePicker *)self _tileViews];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  _tileViews = [(CAMSemanticStylePicker *)self _tileViews];
+  v5 = [v3 initWithCapacity:{objc_msgSend(_tileViews, "count")}];
 
   [(CAMSemanticStylePicker *)self bounds];
   v7 = v6;
@@ -831,7 +831,7 @@ void __61__CAMSemanticStylePicker__updateMaterialOpacityWithDuration___block_inv
   CEKProgressClamped();
   UICeilToViewScale();
   v20 = v19;
-  v21 = [(CAMSemanticStylePicker *)self _tileViews];
+  _tileViews2 = [(CAMSemanticStylePicker *)self _tileViews];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __37__CAMSemanticStylePicker__tileFrames__block_invoke;
@@ -847,7 +847,7 @@ void __61__CAMSemanticStylePicker__updateMaterialOpacityWithDuration___block_inv
   v35 = v20;
   v22 = v5;
   v27 = v22;
-  [v21 enumerateObjectsUsingBlock:v26];
+  [_tileViews2 enumerateObjectsUsingBlock:v26];
 
   v23 = v27;
   v24 = v22;
@@ -906,24 +906,24 @@ LABEL_9:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(CAMSemanticStylePicker *)self _scrollView];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  _scrollView = [(CAMSemanticStylePicker *)self _scrollView];
+  [_scrollView setFrame:{v13, v15, v17, v19}];
 
   v21 = v11 * [(CAMSemanticStylePicker *)self numberOfStyles];
-  v22 = [(CAMSemanticStylePicker *)self _scrollView];
-  [v22 setContentSize:{v21, v8}];
+  _scrollView2 = [(CAMSemanticStylePicker *)self _scrollView];
+  [_scrollView2 setContentSize:{v21, v8}];
 
-  v23 = [(CAMSemanticStylePicker *)self _tileFrames];
-  v24 = [(CAMSemanticStylePicker *)self _tileViews];
+  _tileFrames = [(CAMSemanticStylePicker *)self _tileFrames];
+  _tileViews = [(CAMSemanticStylePicker *)self _tileViews];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __40__CAMSemanticStylePicker_layoutSubviews__block_invoke;
   v52[3] = &unk_1E76FB488;
-  v25 = v23;
+  v25 = _tileFrames;
   v53 = v25;
-  [v24 enumerateObjectsUsingBlock:v52];
+  [_tileViews enumerateObjectsUsingBlock:v52];
 
-  v26 = [(CAMSemanticStylePicker *)self _spacerViews];
+  _spacerViews = [(CAMSemanticStylePicker *)self _spacerViews];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __40__CAMSemanticStylePicker_layoutSubviews__block_invoke_2;
@@ -937,22 +937,22 @@ LABEL_9:
   v50 = v6;
   v51 = v8;
   v27 = v25;
-  [v26 enumerateObjectsUsingBlock:v44];
+  [_spacerViews enumerateObjectsUsingBlock:v44];
 
-  v28 = [(CAMSemanticStylePicker *)self pageControl];
-  v29 = [v28 numberOfPages];
+  pageControl = [(CAMSemanticStylePicker *)self pageControl];
+  numberOfPages = [pageControl numberOfPages];
 
   if ([(CAMSemanticStylePicker *)self pageControlMaxNumberOfDots]>= 1)
   {
-    v30 = [(CAMSemanticStylePicker *)self pageControlMaxNumberOfDots];
-    if (v29 >= v30)
+    pageControlMaxNumberOfDots = [(CAMSemanticStylePicker *)self pageControlMaxNumberOfDots];
+    if (numberOfPages >= pageControlMaxNumberOfDots)
     {
-      v29 = v30;
+      numberOfPages = pageControlMaxNumberOfDots;
     }
   }
 
-  v31 = [(CAMSemanticStylePicker *)self pageControl];
-  [v31 sizeForNumberOfPages:v29];
+  pageControl2 = [(CAMSemanticStylePicker *)self pageControl];
+  [pageControl2 sizeForNumberOfPages:numberOfPages];
   v33 = v32;
   v35 = v34;
 
@@ -960,8 +960,8 @@ LABEL_9:
   UIPointRoundToViewScale();
   v37 = v36;
   v39 = v38;
-  v40 = [(CAMSemanticStylePicker *)self pageControl];
-  [v40 setFrame:{v37, v39, v33, v35 + 20.0}];
+  pageControl3 = [(CAMSemanticStylePicker *)self pageControl];
+  [pageControl3 setFrame:{v37, v39, v33, v35 + 20.0}];
 
   if ([(CAMSemanticStylePicker *)self _needsUpdateContentOffset])
   {
@@ -1032,11 +1032,11 @@ void __40__CAMSemanticStylePicker_layoutSubviews__block_invoke_2(uint64_t a1, vo
   [v31 setFrame:{MaxX, 0.0, v10, *(a1 + 88)}];
 }
 
-- (void)setContentBottomMargin:(double)a3
+- (void)setContentBottomMargin:(double)margin
 {
-  if (self->_contentBottomMargin != a3)
+  if (self->_contentBottomMargin != margin)
   {
-    self->_contentBottomMargin = a3;
+    self->_contentBottomMargin = margin;
     [(CAMSemanticStylePicker *)self setNeedsLayout];
   }
 }
@@ -1048,8 +1048,8 @@ void __40__CAMSemanticStylePicker_layoutSubviews__block_invoke_2(uint64_t a1, vo
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v3 = [(CAMSemanticStylePicker *)self _tileViews];
-  v4 = [v3 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  _tileViews = [(CAMSemanticStylePicker *)self _tileViews];
+  v4 = [_tileViews countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1060,7 +1060,7 @@ void __40__CAMSemanticStylePicker_layoutSubviews__block_invoke_2(uint64_t a1, vo
       {
         if (*v31 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_tileViews);
         }
 
         v8 = *(*(&v30 + 1) + 8 * i);
@@ -1069,8 +1069,8 @@ void __40__CAMSemanticStylePicker_layoutSubviews__block_invoke_2(uint64_t a1, vo
         v12 = v11;
         v14 = v13;
         v16 = v15;
-        v17 = [v8 superview];
-        [(CAMSemanticStylePicker *)self convertRect:v17 fromView:v10, v12, v14, v16];
+        superview = [v8 superview];
+        [(CAMSemanticStylePicker *)self convertRect:superview fromView:v10, v12, v14, v16];
         v19 = v18;
         v21 = v20;
         v23 = v22;
@@ -1091,14 +1091,14 @@ void __40__CAMSemanticStylePicker_layoutSubviews__block_invoke_2(uint64_t a1, vo
         [v8 setTileAlpha:?];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v5 = [_tileViews countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if ([(CAMSemanticStylePicker *)self _isScrollActive])
   {
@@ -1116,40 +1116,40 @@ void __40__CAMSemanticStylePicker_layoutSubviews__block_invoke_2(uint64_t a1, vo
   }
 
   [(CAMSemanticStylePicker *)self _updateTileAlphas];
-  v6 = [(CAMSemanticStylePicker *)self delegate];
-  [v6 semanticStylePickerDidScroll:self];
+  delegate = [(CAMSemanticStylePicker *)self delegate];
+  [delegate semanticStylePickerDidScroll:self];
 
-  v7 = [(CAMSemanticStylePicker *)self delegate];
+  delegate2 = [(CAMSemanticStylePicker *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CAMSemanticStylePicker *)self delegate];
-    [v9 semanticStylePickerDidUpdateFractionalPageIndex:self];
+    delegate3 = [(CAMSemanticStylePicker *)self delegate];
+    [delegate3 semanticStylePickerDidUpdateFractionalPageIndex:self];
   }
 }
 
 - (void)_prepareHaptics
 {
-  v2 = [(CAMSemanticStylePicker *)self _feedbackController];
-  [v2 prepareDiscreteFeedback:0];
+  _feedbackController = [(CAMSemanticStylePicker *)self _feedbackController];
+  [_feedbackController prepareDiscreteFeedback:0];
 }
 
 - (void)_performHaptics
 {
-  v2 = [(CAMSemanticStylePicker *)self _feedbackController];
-  [v2 performDiscreteFeedback:0];
+  _feedbackController = [(CAMSemanticStylePicker *)self _feedbackController];
+  [_feedbackController performDiscreteFeedback:0];
 }
 
-- (void)_handlePageControlValueChanged:(id)a3
+- (void)_handlePageControlValueChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   [(CAMSemanticStylePicker *)self _performHaptics];
   [(CAMSemanticStylePicker *)self _prepareHaptics];
-  v5 = [v4 interactionState];
+  interactionState = [changedCopy interactionState];
 
-  v6 = [(CAMSemanticStylePicker *)self pageControl];
-  -[CAMSemanticStylePicker _setSelectedStyleIndex:shouldDelegate:shouldUpdateLayout:animated:](self, "_setSelectedStyleIndex:shouldDelegate:shouldUpdateLayout:animated:", [v6 currentPage], 1, 1, v5 == 1);
+  pageControl = [(CAMSemanticStylePicker *)self pageControl];
+  -[CAMSemanticStylePicker _setSelectedStyleIndex:shouldDelegate:shouldUpdateLayout:animated:](self, "_setSelectedStyleIndex:shouldDelegate:shouldUpdateLayout:animated:", [pageControl currentPage], 1, 1, interactionState == 1);
 }
 
 - (CAMSemanticStylePickerDelegate)delegate

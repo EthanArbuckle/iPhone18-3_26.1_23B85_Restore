@@ -12,7 +12,7 @@
 + (id)pu_rowWithTitle:()PhotosUI settings:condition:
 {
   v8 = a5;
-  v9 = [a1 pu_rowWithTitle:a3 settings:a4];
+  v9 = [self pu_rowWithTitle:a3 settings:a4];
   [v9 setCondition:v8];
 
   return v9;
@@ -28,7 +28,7 @@
   v13 = v8;
   v14 = a5;
   v9 = v8;
-  v10 = [a1 px_rowWithTitle:a3 action:v12];
+  v10 = [self px_rowWithTitle:a3 action:v12];
 
   return v10;
 }
@@ -42,7 +42,7 @@
   v10[3] = &unk_1E7B80838;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 pu_rowWithTitle:a3 settingsProvider:v10];
+  v8 = [self pu_rowWithTitle:a3 settingsProvider:v10];
 
   return v8;
 }
@@ -51,7 +51,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 row];
+  v8 = [self row];
   [v8 setStaticTitle:v7];
 
   v9 = MEMORY[0x1E69C6658];
@@ -76,7 +76,7 @@
   v10[3] = &unk_1E7B807E8;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 px_rowWithTitle:a3 action:v10];
+  v8 = [self px_rowWithTitle:a3 action:v10];
 
   return v8;
 }
@@ -90,7 +90,7 @@
   v10[3] = &unk_1E7B807C0;
   v11 = v6;
   v7 = v6;
-  v8 = [a1 pu_rowWithTitle:a3 asynchronousOutputProducer:v10];
+  v8 = [self pu_rowWithTitle:a3 asynchronousOutputProducer:v10];
 
   return v8;
 }

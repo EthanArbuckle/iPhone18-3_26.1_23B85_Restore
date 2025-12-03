@@ -1,6 +1,6 @@
 @interface PXStoryChromeLayoutItemController
 - (PXStoryChromeLayoutItemController)init;
-- (PXStoryChromeLayoutItemController)initWithViewModel:(id)a3 chromeItem:(unint64_t)a4;
+- (PXStoryChromeLayoutItemController)initWithViewModel:(id)model chromeItem:(unint64_t)item;
 - (void)_invalidateAlpha;
 - (void)_invalidatePlaybackEndDarkening;
 - (void)_invalidateTargetAlpha;
@@ -9,22 +9,22 @@
 - (void)_updatePlaybackEndDarkening;
 - (void)_updateTargetAlpha;
 - (void)_updateTargetPlaybackEndDarkening;
-- (void)animateChangeToTargetAlpha:(double)a3;
+- (void)animateChangeToTargetAlpha:(double)alpha;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setAlpha:(double)a3;
-- (void)setTargetAlpha:(double)a3;
-- (void)setTargetPlaybackEndDarkening:(double)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setAlpha:(double)alpha;
+- (void)setTargetAlpha:(double)alpha;
+- (void)setTargetPlaybackEndDarkening:(double)darkening;
 @end
 
 @implementation PXStoryChromeLayoutItemController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (ViewModelObservationContext_243408 == a5)
+  observableCopy = observable;
+  if (ViewModelObservationContext_243408 == context)
   {
-    if ((a4 & 0x400000) != 0)
+    if ((change & 0x400000) != 0)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -34,7 +34,7 @@
       [(PXStoryChromeLayoutItemController *)self performChanges:v17];
     }
 
-    if ((a4 & 0x1800000000000) != 0)
+    if ((change & 0x1800000000000) != 0)
     {
       v10 = v16;
       v16[0] = MEMORY[0x1E69E9820];
@@ -44,9 +44,9 @@
     }
   }
 
-  else if (AlphaAnimatorObservationContext == a5)
+  else if (AlphaAnimatorObservationContext == context)
   {
-    if ((a4 & 2) != 0)
+    if ((change & 2) != 0)
     {
       v10 = v15;
       v15[0] = MEMORY[0x1E69E9820];
@@ -58,15 +58,15 @@
 
   else
   {
-    if (PlaybackEndDarkeningAnimatorObservationContext != a5)
+    if (PlaybackEndDarkeningAnimatorObservationContext != context)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayoutItemController.m" lineNumber:183 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayoutItemController.m" lineNumber:183 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((a4 & 2) != 0)
+    if ((change & 2) != 0)
     {
       v10 = &v13;
       v13 = MEMORY[0x1E69E9820];
@@ -83,13 +83,13 @@ LABEL_12:
 
 - (void)_updatePlaybackEndDarkening
 {
-  v3 = [(PXStoryChromeLayoutItemController *)self viewModel];
+  viewModel = [(PXStoryChromeLayoutItemController *)self viewModel];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __64__PXStoryChromeLayoutItemController__updatePlaybackEndDarkening__block_invoke;
   v4[3] = &unk_1E774B048;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [viewModel performChanges:v4];
 }
 
 void __64__PXStoryChromeLayoutItemController__updatePlaybackEndDarkening__block_invoke(uint64_t a1, void *a2)
@@ -103,16 +103,16 @@ void __64__PXStoryChromeLayoutItemController__updatePlaybackEndDarkening__block_
 
 - (void)_invalidatePlaybackEndDarkening
 {
-  v2 = [(PXStoryChromeLayoutItemController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePlaybackEndDarkening];
+  updater = [(PXStoryChromeLayoutItemController *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePlaybackEndDarkening];
 }
 
 - (void)_updateTargetPlaybackEndDarkening
 {
-  v7 = [(PXStoryChromeLayoutItemController *)self viewModel];
-  if ([v7 wantsPlaybackEndDarkening])
+  viewModel = [(PXStoryChromeLayoutItemController *)self viewModel];
+  if ([viewModel wantsPlaybackEndDarkening])
   {
-    [v7 outroFractionCompleted];
+    [viewModel outroFractionCompleted];
     v4 = v3;
     v5 = +[PXStorySettings sharedInstance];
     [v5 legibilityPlaybackEndDimming];
@@ -127,32 +127,32 @@ void __64__PXStoryChromeLayoutItemController__updatePlaybackEndDarkening__block_
 
 - (void)_invalidateTargetPlaybackEndDarkening
 {
-  v2 = [(PXStoryChromeLayoutItemController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTargetPlaybackEndDarkening];
+  updater = [(PXStoryChromeLayoutItemController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTargetPlaybackEndDarkening];
 }
 
 - (void)_updateAlpha
 {
-  v3 = [(PXStoryChromeLayoutItemController *)self alphaAnimator];
-  [v3 presentationValue];
+  alphaAnimator = [(PXStoryChromeLayoutItemController *)self alphaAnimator];
+  [alphaAnimator presentationValue];
   [(PXStoryChromeLayoutItemController *)self setAlpha:?];
 }
 
 - (void)_invalidateAlpha
 {
-  v2 = [(PXStoryChromeLayoutItemController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAlpha];
+  updater = [(PXStoryChromeLayoutItemController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAlpha];
 }
 
 - (void)_updateTargetAlpha
 {
   [(PXStoryChromeLayoutItemController *)self targetAlphaForVisibleState];
   v4 = v3;
-  v8 = [(PXStoryChromeLayoutItemController *)self viewModel];
-  v5 = [v8 chromeItems];
-  v6 = [(PXStoryChromeLayoutItemController *)self chromeItem];
+  viewModel = [(PXStoryChromeLayoutItemController *)self viewModel];
+  chromeItems = [viewModel chromeItems];
+  chromeItem = [(PXStoryChromeLayoutItemController *)self chromeItem];
   v7 = 0.0;
-  if ((v6 & ~v5) == 0)
+  if ((chromeItem & ~chromeItems) == 0)
   {
     v7 = v4;
   }
@@ -162,19 +162,19 @@ void __64__PXStoryChromeLayoutItemController__updatePlaybackEndDarkening__block_
 
 - (void)_invalidateTargetAlpha
 {
-  v2 = [(PXStoryChromeLayoutItemController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTargetAlpha];
+  updater = [(PXStoryChromeLayoutItemController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTargetAlpha];
 }
 
-- (void)animateChangeToTargetAlpha:(double)a3
+- (void)animateChangeToTargetAlpha:(double)alpha
 {
-  v4 = [(PXStoryChromeLayoutItemController *)self alphaAnimator];
+  alphaAnimator = [(PXStoryChromeLayoutItemController *)self alphaAnimator];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__PXStoryChromeLayoutItemController_animateChangeToTargetAlpha___block_invoke;
   v5[3] = &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l;
-  *&v5[4] = a3;
-  [v4 performChangesUsingDefaultOpacityAnimation:v5];
+  *&v5[4] = alpha;
+  [alphaAnimator performChangesUsingDefaultOpacityAnimation:v5];
 }
 
 - (void)didPerformChanges
@@ -182,21 +182,21 @@ void __64__PXStoryChromeLayoutItemController__updatePlaybackEndDarkening__block_
   v4.receiver = self;
   v4.super_class = PXStoryChromeLayoutItemController;
   [(PXStoryChromeLayoutItemController *)&v4 didPerformChanges];
-  v3 = [(PXStoryChromeLayoutItemController *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryChromeLayoutItemController *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)setTargetPlaybackEndDarkening:(double)a3
+- (void)setTargetPlaybackEndDarkening:(double)darkening
 {
-  if (self->_targetPlaybackEndDarkening != a3)
+  if (self->_targetPlaybackEndDarkening != darkening)
   {
-    self->_targetPlaybackEndDarkening = a3;
+    self->_targetPlaybackEndDarkening = darkening;
     v4 = +[PXStorySettings sharedInstance];
-    v5 = [(PXStoryChromeLayoutItemController *)self viewModel];
-    v6 = [v5 shouldAutoReplayPreference];
+    viewModel = [(PXStoryChromeLayoutItemController *)self viewModel];
+    shouldAutoReplayPreference = [viewModel shouldAutoReplayPreference];
 
     targetPlaybackEndDarkening = self->_targetPlaybackEndDarkening;
-    if (v6)
+    if (shouldAutoReplayPreference)
     {
       if (targetPlaybackEndDarkening <= 0.0)
       {
@@ -220,46 +220,46 @@ void __64__PXStoryChromeLayoutItemController__updatePlaybackEndDarkening__block_
     }
 
     v9 = v8;
-    v10 = [(PXStoryChromeLayoutItemController *)self playbackEndDarkeningAnimator];
+    playbackEndDarkeningAnimator = [(PXStoryChromeLayoutItemController *)self playbackEndDarkeningAnimator];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __67__PXStoryChromeLayoutItemController_setTargetPlaybackEndDarkening___block_invoke;
     v11[3] = &unk_1E774A230;
     v11[4] = self;
-    [v10 performChangesWithDuration:1 curve:v11 changes:v9];
+    [playbackEndDarkeningAnimator performChangesWithDuration:1 curve:v11 changes:v9];
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  if (self->_alpha != a3)
+  if (self->_alpha != alpha)
   {
-    self->_alpha = a3;
+    self->_alpha = alpha;
     [(PXStoryChromeLayoutItemController *)self signalChange:1];
   }
 }
 
-- (void)setTargetAlpha:(double)a3
+- (void)setTargetAlpha:(double)alpha
 {
-  if (self->_targetAlpha != a3)
+  if (self->_targetAlpha != alpha)
   {
-    self->_targetAlpha = a3;
+    self->_targetAlpha = alpha;
     [(PXStoryChromeLayoutItemController *)self animateChangeToTargetAlpha:?];
   }
 }
 
-- (PXStoryChromeLayoutItemController)initWithViewModel:(id)a3 chromeItem:(unint64_t)a4
+- (PXStoryChromeLayoutItemController)initWithViewModel:(id)model chromeItem:(unint64_t)item
 {
-  v7 = a3;
+  modelCopy = model;
   v19.receiver = self;
   v19.super_class = PXStoryChromeLayoutItemController;
   v8 = [(PXStoryChromeLayoutItemController *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_viewModel, a3);
+    objc_storeStrong(&v8->_viewModel, model);
     [(PXStoryViewModel *)v9->_viewModel registerChangeObserver:v9 context:ViewModelObservationContext_243408];
-    v9->_chromeItem = a4;
+    v9->_chromeItem = item;
     v10 = [[off_1E77217D0 alloc] initWithValue:0.0];
     alphaAnimator = v9->_alphaAnimator;
     v9->_alphaAnimator = v10;
@@ -300,8 +300,8 @@ uint64_t __66__PXStoryChromeLayoutItemController_initWithViewModel_chromeItem___
 
 - (PXStoryChromeLayoutItemController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayoutItemController.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXStoryChromeLayoutItemController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryChromeLayoutItemController.m" lineNumber:33 description:{@"%s is not available as initializer", "-[PXStoryChromeLayoutItemController init]"}];
 
   abort();
 }

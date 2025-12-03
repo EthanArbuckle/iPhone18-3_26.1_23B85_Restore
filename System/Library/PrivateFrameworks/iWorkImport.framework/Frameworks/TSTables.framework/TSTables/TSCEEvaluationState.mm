@@ -1,19 +1,19 @@
 @interface TSCEEvaluationState
-- (TSCEEvaluationState)initWithAST:(const TSCEASTNodeArray *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 warnings:(id)a5;
+- (TSCEEvaluationState)initWithAST:(const TSCEASTNodeArray *)t rewriteContext:(TSCEFormulaRewriteContext *)context warnings:(id)warnings;
 - (void)dealloc;
 @end
 
 @implementation TSCEEvaluationState
 
-- (TSCEEvaluationState)initWithAST:(const TSCEASTNodeArray *)a3 rewriteContext:(TSCEFormulaRewriteContext *)a4 warnings:(id)a5
+- (TSCEEvaluationState)initWithAST:(const TSCEASTNodeArray *)t rewriteContext:(TSCEFormulaRewriteContext *)context warnings:(id)warnings
 {
-  v7 = a5;
+  warningsCopy = warnings;
   v10.receiver = self;
   v10.super_class = TSCEEvaluationState;
   v8 = [(TSCEEvaluationState *)&v10 init];
   if (v8)
   {
-    v8->_AST = a3;
+    v8->_AST = t;
     operator new();
   }
 

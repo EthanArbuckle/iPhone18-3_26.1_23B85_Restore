@@ -57,16 +57,16 @@
       while (v6);
     }
 
-    a1 = [a1 initWithBytesNoCopy:v9 length:v8 encoding:1 freeWhenDone:1];
-    v16 = a1;
+    self = [self initWithBytesNoCopy:v9 length:v8 encoding:1 freeWhenDone:1];
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

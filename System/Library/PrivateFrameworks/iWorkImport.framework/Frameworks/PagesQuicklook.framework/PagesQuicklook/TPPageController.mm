@@ -1,39 +1,39 @@
 @interface TPPageController
-- (BOOL)okToAnchorDrawable:(id)a3 toPageIndex:(unint64_t)a4;
-- (BOOL)okToAnchorDrawables:(id)a3 toPageIndex:(unint64_t)a4;
-- (BOOL)textIsVerticalForFootnoteReferenceStorage:(id)a3;
+- (BOOL)okToAnchorDrawable:(id)drawable toPageIndex:(unint64_t)index;
+- (BOOL)okToAnchorDrawables:(id)drawables toPageIndex:(unint64_t)index;
+- (BOOL)textIsVerticalForFootnoteReferenceStorage:(id)storage;
 - (TPDocumentRoot)documentRoot;
-- (TPPageController)initWithDocumentRoot:(id)a3;
-- (_NSRange)bodyRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (_NSRange)documentPageRangeOfSectionIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (_NSRange)footnoteLayoutRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (id)markStringForFootnoteReferenceStorage:(id)a3 ignoreDeletedFootnotes:(BOOL)a4 forceDocumentEndnotes:(BOOL)a5;
-- (id)pageInfoForPageIndex:(unint64_t)a3;
+- (TPPageController)initWithDocumentRoot:(id)root;
+- (_NSRange)bodyRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (_NSRange)documentPageRangeOfSectionIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (_NSRange)footnoteLayoutRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (id)markStringForFootnoteReferenceStorage:(id)storage ignoreDeletedFootnotes:(BOOL)footnotes forceDocumentEndnotes:(BOOL)endnotes;
+- (id)pageInfoForPageIndex:(unint64_t)index;
 - (int64_t)nominalFootnoteKind;
 - (int64_t)nominalFootnoteNumbering;
-- (unint64_t)p_autoNumberForStorage:(id)a3 ignoreDeletedFootnotes:(BOOL)a4 footnoteKind:(int64_t)a5;
-- (unint64_t)pageIndexFromCanvasPoint:(CGPoint)a3;
-- (unint64_t)sectionIndexForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4;
-- (void)accquireLockAndPerformAction:(id)a3;
+- (unint64_t)p_autoNumberForStorage:(id)storage ignoreDeletedFootnotes:(BOOL)footnotes footnoteKind:(int64_t)kind;
+- (unint64_t)pageIndexFromCanvasPoint:(CGPoint)point;
+- (unint64_t)sectionIndexForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination;
+- (void)accquireLockAndPerformAction:(id)action;
 - (void)changeTrackingVisibilityDidChange;
 - (void)dealloc;
-- (void)paginateThroughPageIndex:(unint64_t)a3 forLayoutController:(id)a4;
+- (void)paginateThroughPageIndex:(unint64_t)index forLayoutController:(id)controller;
 - (void)teardown;
-- (void)withPageLayoutAtIndex:(unint64_t)a3 preferredLayoutController:(id)a4 executeBlock:(id)a5;
+- (void)withPageLayoutAtIndex:(unint64_t)index preferredLayoutController:(id)controller executeBlock:(id)block;
 @end
 
 @implementation TPPageController
 
-- (TPPageController)initWithDocumentRoot:(id)a3
+- (TPPageController)initWithDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v23.receiver = self;
   v23.super_class = TPPageController;
   v5 = [(TPPageController *)&v23 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_documentRoot, v4);
+    objc_storeWeak(&v5->_documentRoot, rootCopy);
     v7 = objc_alloc(MEMORY[0x277D80FA0]);
     WeakRetained = objc_loadWeakRetained(&v6->_documentRoot);
     v14 = objc_msgSend_bodyStorage(WeakRetained, v9, v10, v11, v12, v13);
@@ -60,10 +60,10 @@
   self->_bodyTopicNumbers = 0;
 }
 
-- (void)paginateThroughPageIndex:(unint64_t)a3 forLayoutController:(id)a4
+- (void)paginateThroughPageIndex:(unint64_t)index forLayoutController:(id)controller
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController paginateThroughPageIndex:forLayoutController:]", a4);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController paginateThroughPageIndex:forLayoutController:]", controller);
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v20, v9, v15, 41, 0, "subclass should override");
 
@@ -72,10 +72,10 @@
   objc_msgSend_logFullBacktrace(v26, v21, v22, v23, v24, v25);
 }
 
-- (_NSRange)bodyRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (_NSRange)bodyRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController bodyRangeForPageIndex:forcePagination:]", a4);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController bodyRangeForPageIndex:forcePagination:]", pagination);
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v20, v9, v15, 45, 0, "subclass should override");
 
@@ -87,10 +87,10 @@
   return result;
 }
 
-- (_NSRange)footnoteLayoutRangeForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (_NSRange)footnoteLayoutRangeForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController footnoteLayoutRangeForPageIndex:forcePagination:]", a4);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController footnoteLayoutRangeForPageIndex:forcePagination:]", pagination);
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v20, v9, v15, 50, 0, "subclass should override");
 
@@ -102,10 +102,10 @@
   return result;
 }
 
-- (_NSRange)documentPageRangeOfSectionIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (_NSRange)documentPageRangeOfSectionIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController documentPageRangeOfSectionIndex:forcePagination:]", a4);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController documentPageRangeOfSectionIndex:forcePagination:]", pagination);
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v20, v9, v15, 65, 0, "subclass should override");
 
@@ -117,10 +117,10 @@
   return result;
 }
 
-- (unint64_t)sectionIndexForPageIndex:(unint64_t)a3 forcePagination:(BOOL)a4
+- (unint64_t)sectionIndexForPageIndex:(unint64_t)index forcePagination:(BOOL)pagination
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController sectionIndexForPageIndex:forcePagination:]", a4);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController sectionIndexForPageIndex:forcePagination:]", pagination);
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v20, v9, v15, 70, 0, "subclass should override");
 
@@ -128,7 +128,7 @@
   return 0;
 }
 
-- (id)pageInfoForPageIndex:(unint64_t)a3
+- (id)pageInfoForPageIndex:(unint64_t)index
 {
   v7 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPPageController pageInfoForPageIndex:]");
@@ -139,10 +139,10 @@
   return 0;
 }
 
-- (void)withPageLayoutAtIndex:(unint64_t)a3 preferredLayoutController:(id)a4 executeBlock:(id)a5
+- (void)withPageLayoutAtIndex:(unint64_t)index preferredLayoutController:(id)controller executeBlock:(id)block
 {
   v9 = MEMORY[0x277D81150];
-  v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v5, v6, v7, v8, "[TPPageController withPageLayoutAtIndex:preferredLayoutController:executeBlock:]", a4, a5);
+  v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v5, v6, v7, v8, "[TPPageController withPageLayoutAtIndex:preferredLayoutController:executeBlock:]", controller, block);
   v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v17, v18, v19, v20, v21, v10, v16, 94, 0, "subclass should override");
 
@@ -151,7 +151,7 @@
   objc_msgSend_logFullBacktrace(v27, v22, v23, v24, v25, v26);
 }
 
-- (void)accquireLockAndPerformAction:(id)a3
+- (void)accquireLockAndPerformAction:(id)action
 {
   v7 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPPageController accquireLockAndPerformAction:]");
@@ -163,10 +163,10 @@
   objc_msgSend_logFullBacktrace(v25, v20, v21, v22, v23, v24);
 }
 
-- (BOOL)okToAnchorDrawable:(id)a3 toPageIndex:(unint64_t)a4
+- (BOOL)okToAnchorDrawable:(id)drawable toPageIndex:(unint64_t)index
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController okToAnchorDrawable:toPageIndex:]", a4);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController okToAnchorDrawable:toPageIndex:]", index);
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v20, v9, v15, 119, 0, "subclass should override");
 
@@ -174,10 +174,10 @@
   return 0;
 }
 
-- (BOOL)okToAnchorDrawables:(id)a3 toPageIndex:(unint64_t)a4
+- (BOOL)okToAnchorDrawables:(id)drawables toPageIndex:(unint64_t)index
 {
   v8 = MEMORY[0x277D81150];
-  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController okToAnchorDrawables:toPageIndex:]", a4);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, v7, "[TPPageController okToAnchorDrawables:toPageIndex:]", index);
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v16, v17, v18, v19, v20, v9, v15, 124, 0, "subclass should override");
 
@@ -185,10 +185,10 @@
   return 0;
 }
 
-- (unint64_t)pageIndexFromCanvasPoint:(CGPoint)a3
+- (unint64_t)pageIndexFromCanvasPoint:(CGPoint)point
 {
   v5 = MEMORY[0x277D81150];
-  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3, *&a3.y, v3, v4, "[TPPageController pageIndexFromCanvasPoint:]");
+  v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, point, *&point.y, v3, v4, "[TPPageController pageIndexFromCanvasPoint:]");
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v8, v9, v10, v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageController.m");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v13, v14, v15, v16, v17, v6, v12, 129, 0, "subclass should override");
 
@@ -227,12 +227,12 @@
   return v14;
 }
 
-- (id)markStringForFootnoteReferenceStorage:(id)a3 ignoreDeletedFootnotes:(BOOL)a4 forceDocumentEndnotes:(BOOL)a5
+- (id)markStringForFootnoteReferenceStorage:(id)storage ignoreDeletedFootnotes:(BOOL)footnotes forceDocumentEndnotes:(BOOL)endnotes
 {
-  v6 = a4;
-  v8 = a3;
+  footnotesCopy = footnotes;
+  storageCopy = storage;
   objc_opt_class();
-  v14 = objc_msgSend_owningAttachment(v8, v9, v10, v11, v12, v13);
+  v14 = objc_msgSend_owningAttachment(storageCopy, v9, v10, v11, v12, v13);
   v15 = TSUDynamicCast();
 
   if (!v15)
@@ -269,15 +269,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a5)
+  if (endnotes)
   {
-    v80 = objc_msgSend_p_autoNumberForStorage_ignoreDeletedFootnotes_footnoteKind_(self, v71, v72, v73, v74, v75, v8, v6, 1);
+    v80 = objc_msgSend_p_autoNumberForStorage_ignoreDeletedFootnotes_footnoteKind_(self, v71, v72, v73, v74, v75, storageCopy, footnotesCopy, 1);
   }
 
   else
   {
     v86 = objc_msgSend_nominalFootnoteKind(self, v71, v72, v73, v74, v75);
-    v80 = objc_msgSend_p_autoNumberForStorage_ignoreDeletedFootnotes_footnoteKind_(self, v87, v88, v89, v90, v91, v8, v6, v86);
+    v80 = objc_msgSend_p_autoNumberForStorage_ignoreDeletedFootnotes_footnoteKind_(self, v87, v88, v89, v90, v91, storageCopy, footnotesCopy, v86);
   }
 
   if (v80 == 0x7FFFFFFFFFFFFFFFLL)
@@ -319,7 +319,7 @@ LABEL_8:
   return v78;
 }
 
-- (BOOL)textIsVerticalForFootnoteReferenceStorage:(id)a3
+- (BOOL)textIsVerticalForFootnoteReferenceStorage:(id)storage
 {
   WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
   v9 = objc_msgSend_laysOutBodyVertically(WeakRetained, v4, v5, v6, v7, v8);
@@ -327,9 +327,9 @@ LABEL_8:
   return v9;
 }
 
-- (unint64_t)p_autoNumberForStorage:(id)a3 ignoreDeletedFootnotes:(BOOL)a4 footnoteKind:(int64_t)a5
+- (unint64_t)p_autoNumberForStorage:(id)storage ignoreDeletedFootnotes:(BOOL)footnotes footnoteKind:(int64_t)kind
 {
-  v182 = a3;
+  storageCopy = storage;
   v178 = objc_msgSend_nominalFootnoteNumbering(self, v7, v8, v9, v10, v11);
   WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
   if (objc_msgSend_laysOutBodyVertically(WeakRetained, v13, v14, v15, v16, v17))
@@ -357,8 +357,8 @@ LABEL_44:
 
   v176 = hasFacingPages;
   v44 = 0;
-  v46 = a5 != 1 && v178 != 0;
-  v48 = a5 == 2 || v178 == 2;
+  v46 = kind != 1 && v178 != 0;
+  v48 = kind == 2 || v178 == 2;
   v180 = v48;
   v181 = v46;
   v49 = 1;
@@ -379,7 +379,7 @@ LABEL_44:
       goto LABEL_43;
     }
 
-    if (!a4)
+    if (!footnotes)
     {
       break;
     }
@@ -475,7 +475,7 @@ LABEL_23:
 
   v151 = objc_msgSend_customMarkString(v62, v146, v147, v148, v149, v150);
 
-  if (v145 != v182)
+  if (v145 != storageCopy)
   {
     if (!v151)
     {

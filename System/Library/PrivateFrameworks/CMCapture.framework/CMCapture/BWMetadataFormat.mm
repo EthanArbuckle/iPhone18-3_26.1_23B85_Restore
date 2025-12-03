@@ -1,21 +1,21 @@
 @interface BWMetadataFormat
-+ (id)formatWithMetadataFormatDescription:(opaqueCMFormatDescription *)a3;
++ (id)formatWithMetadataFormatDescription:(opaqueCMFormatDescription *)description;
 - (id)debugDescription;
 - (id)description;
-- (void)_initWithMetadataFormat:(void *)a1;
+- (void)_initWithMetadataFormat:(void *)format;
 - (void)dealloc;
 @end
 
 @implementation BWMetadataFormat
 
-+ (id)formatWithMetadataFormatDescription:(opaqueCMFormatDescription *)a3
++ (id)formatWithMetadataFormatDescription:(opaqueCMFormatDescription *)description
 {
-  if (!a3 || CMFormatDescriptionGetMediaType(a3) != 1835365473)
+  if (!description || CMFormatDescriptionGetMediaType(description) != 1835365473)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"must be passed a metadata format description" userInfo:0]);
   }
 
-  v4 = [[BWMetadataFormat alloc] _initWithMetadataFormat:a3];
+  v4 = [[BWMetadataFormat alloc] _initWithMetadataFormat:description];
 
   return v4;
 }
@@ -35,7 +35,7 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   MediaSubType = CMFormatDescriptionGetMediaSubType(self->_desc);
   v5 = bswap32(MediaSubType);
   if (!MediaSubType)
@@ -44,20 +44,20 @@
   }
 
   v9 = v5;
-  [v3 appendFormat:@"meta, %.4s", &v9];
+  [string appendFormat:@"meta, %.4s", &v9];
   Identifiers = CMMetadataFormatDescriptionGetIdentifiers(self->_desc);
   if ([(__CFArray *)Identifiers count])
   {
     v7 = 0;
     do
     {
-      [v3 appendFormat:@", %@", -[__CFArray objectAtIndexedSubscript:](Identifiers, "objectAtIndexedSubscript:", v7++)];
+      [string appendFormat:@", %@", -[__CFArray objectAtIndexedSubscript:](Identifiers, "objectAtIndexedSubscript:", v7++)];
     }
 
     while (v7 < [(__CFArray *)Identifiers count]);
   }
 
-  return v3;
+  return string;
 }
 
 - (id)debugDescription
@@ -67,14 +67,14 @@
   return [v3 stringWithFormat:@"<%@: %p> %@", NSStringFromClass(v4), self, -[BWMetadataFormat description](self, "description")];
 }
 
-- (void)_initWithMetadataFormat:(void *)a1
+- (void)_initWithMetadataFormat:(void *)format
 {
-  if (!a1)
+  if (!format)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = format;
   v6.super_class = BWMetadataFormat;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   if (v3)

@@ -1,17 +1,17 @@
 @interface LibraryMainViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation LibraryMainViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Music.LibraryMainViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"Music.LibraryMainViewController" hasInstanceMethod:@"setEditing:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"Music.LibraryMainViewController" hasSwiftField:@"accountButton" withSwiftType:"AccountButtonWrapper"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Music.LibraryMainViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"Music.LibraryMainViewController" hasInstanceMethod:@"setEditing:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"Music.LibraryMainViewController" hasSwiftField:@"accountButton" withSwiftType:"AccountButtonWrapper"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

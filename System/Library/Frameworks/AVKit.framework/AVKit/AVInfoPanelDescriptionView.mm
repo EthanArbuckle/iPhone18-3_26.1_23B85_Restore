@@ -1,24 +1,24 @@
 @interface AVInfoPanelDescriptionView
 + (CGSize)layoutSize;
 + (UIImage)closedCaptioningBadgeImage;
-- (AVInfoPanelDescriptionView)initWithFrame:(CGRect)a3;
+- (AVInfoPanelDescriptionView)initWithFrame:(CGRect)frame;
 - (void)_updateActionButtons;
-- (void)setActions:(id)a3;
-- (void)setContentMediaRatingText:(id)a3 image:(id)a4;
-- (void)setDateText:(id)a3;
-- (void)setDurationText:(id)a3;
-- (void)setGenreText:(id)a3;
-- (void)setPosterImage:(id)a3;
-- (void)setSeasonEpisodeText:(id)a3;
-- (void)setSecondaryTitleText:(id)a3;
-- (void)setSummaryText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextFont:(id)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setTitleTextColor:(id)a3;
-- (void)setTomatoFreshness:(unint64_t)a3 rating:(float)a4 hidden:(BOOL)a5;
-- (void)setViewingModeBadge:(int64_t)a3;
+- (void)setActions:(id)actions;
+- (void)setContentMediaRatingText:(id)text image:(id)image;
+- (void)setDateText:(id)text;
+- (void)setDurationText:(id)text;
+- (void)setGenreText:(id)text;
+- (void)setPosterImage:(id)image;
+- (void)setSeasonEpisodeText:(id)text;
+- (void)setSecondaryTitleText:(id)text;
+- (void)setSummaryText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)setTextFont:(id)font;
+- (void)setTitleFont:(id)font;
+- (void)setTitleText:(id)text;
+- (void)setTitleTextColor:(id)color;
+- (void)setTomatoFreshness:(unint64_t)freshness rating:(float)rating hidden:(BOOL)hidden;
+- (void)setViewingModeBadge:(int64_t)badge;
 @end
 
 @implementation AVInfoPanelDescriptionView
@@ -30,8 +30,8 @@
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v3 = [(UIStackView *)self->_actionButtonsStackView arrangedSubviews];
-  v4 = [v3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  arrangedSubviews = [(UIStackView *)self->_actionButtonsStackView arrangedSubviews];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v4)
   {
     v5 = v4;
@@ -42,7 +42,7 @@
       {
         if (*v30 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v8 = *(*(&v29 + 1) + 8 * i);
@@ -50,7 +50,7 @@
         [v8 removeFromSuperview];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v5);
@@ -77,22 +77,22 @@
         }
 
         v14 = *(*(&v25 + 1) + 8 * j);
-        v15 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-        [v15 setImagePadding:8.0];
-        v16 = [MEMORY[0x1E69DC888] whiteColor];
-        [v15 setBaseForegroundColor:v16];
+        grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+        [grayButtonConfiguration setImagePadding:8.0];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [grayButtonConfiguration setBaseForegroundColor:whiteColor];
 
-        v17 = [v15 background];
-        [v17 setCornerRadius:16.0];
+        background = [grayButtonConfiguration background];
+        [background setCornerRadius:16.0];
 
-        [v15 setCornerStyle:3];
-        [v15 setContentInsets:{16.0, 16.0, 16.0, 16.0}];
-        [v15 setButtonSize:1];
-        v18 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v15 primaryAction:v14];
+        [grayButtonConfiguration setCornerStyle:3];
+        [grayButtonConfiguration setContentInsets:{16.0, 16.0, 16.0, 16.0}];
+        [grayButtonConfiguration setButtonSize:1];
+        v18 = [MEMORY[0x1E69DC738] buttonWithConfiguration:grayButtonConfiguration primaryAction:v14];
         [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v18 sizeToFit];
-        v19 = [v18 widthAnchor];
-        v20 = [v19 constraintEqualToConstant:180.0];
+        widthAnchor = [v18 widthAnchor];
+        v20 = [widthAnchor constraintEqualToConstant:180.0];
         [v9 addObject:v20];
 
         [(UIStackView *)self->_actionButtonsStackView addArrangedSubview:v18];
@@ -104,8 +104,8 @@
     while (v11);
   }
 
-  v21 = [(AVInfoPanelDescriptionView *)self actions];
-  v22 = [v21 count];
+  actions = [(AVInfoPanelDescriptionView *)self actions];
+  v22 = [actions count];
 
   actionButtonsStackViewWidthConstraint = self->_actionButtonsStackViewWidthConstraint;
   if (v22)
@@ -120,11 +120,11 @@
   }
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
-  if (self->_actions != a3)
+  if (self->_actions != actions)
   {
-    v4 = [a3 copy];
+    v4 = [actions copy];
     actions = self->_actions;
     self->_actions = v4;
 
@@ -132,25 +132,25 @@
   }
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v5 = a3;
-  if (self->_titleFont != v5)
+  fontCopy = font;
+  if (self->_titleFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_titleFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_titleFont, font);
     [(UILabel *)self->_titleLabel setFont:v6];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setTextFont:(id)a3
+- (void)setTextFont:(id)font
 {
-  v5 = a3;
-  if (self->_textFont != v5)
+  fontCopy = font;
+  if (self->_textFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_textFont, font);
     [(UILabel *)self->_subtitleLabel setFont:v6];
     [(UILabel *)self->_seasonEpisodeLabel setFont:v6];
     [(AVTomatoRatingView *)self->_tomatoRatingView setFont:v6];
@@ -158,31 +158,31 @@
     [(UILabel *)self->_genreLabel setFont:v6];
     [(UILabel *)self->_dateLabel setFont:v6];
     [(UILabel *)self->_mediaContentRatingLabel setFont:v6];
-    v5 = [(UILabel *)self->_summaryView setFont:v6];
+    fontCopy = [(UILabel *)self->_summaryView setFont:v6];
   }
 
-  MEMORY[0x1EEE66BE0](v5);
+  MEMORY[0x1EEE66BE0](fontCopy);
 }
 
-- (void)setTitleTextColor:(id)a3
+- (void)setTitleTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_titleTextColor != v5)
+  colorCopy = color;
+  if (self->_titleTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_titleTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_titleTextColor, color);
     [(UILabel *)self->_titleLabel setTextColor:v6];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(UILabel *)self->_subtitleLabel setTextColor:v6];
     [(UILabel *)self->_seasonEpisodeLabel setTextColor:v6];
     [(AVTomatoRatingView *)self->_tomatoRatingView setTextColor:v6];
@@ -193,17 +193,17 @@
     [(UIImageView *)self->_mediaContentRatingImageView setTintColor:v6];
     [(UIImageView *)self->_viewingModeBadgeImageView setTintColor:v6];
     [(UIImageView *)self->_closedCaptionBadge setTintColor:v6];
-    v5 = [(UILabel *)self->_summaryView setTextColor:v6];
+    colorCopy = [(UILabel *)self->_summaryView setTextColor:v6];
   }
 
-  MEMORY[0x1EEE66BE0](v5);
+  MEMORY[0x1EEE66BE0](colorCopy);
 }
 
-- (AVInfoPanelDescriptionView)initWithFrame:(CGRect)a3
+- (AVInfoPanelDescriptionView)initWithFrame:(CGRect)frame
 {
   v105.receiver = self;
   v105.super_class = AVInfoPanelDescriptionView;
-  v3 = [(AVInfoPanelDescriptionView *)&v105 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVInfoPanelDescriptionView *)&v105 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCF90]);
@@ -218,17 +218,17 @@
     textFont = v3->_textFont;
     v3->_textFont = v5;
 
-    v7 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     textColor = v3->_textColor;
-    v3->_textColor = v7;
+    v3->_textColor = blackColor;
 
     v9 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD40] weight:*MEMORY[0x1E69DB980]];
     titleFont = v3->_titleFont;
     v3->_titleFont = v9;
 
-    v11 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     titleTextColor = v3->_titleTextColor;
-    v3->_titleTextColor = v11;
+    v3->_titleTextColor = whiteColor;
 
     objc_initWeak(&location, v3);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -242,14 +242,14 @@
     v3->_posterView = v14;
 
     v16 = v3->_posterView;
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIImageView *)v16 setBackgroundColor:v17];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIImageView *)v16 setBackgroundColor:clearColor];
 
     [(UIImageView *)v3->_posterView setContentMode:1];
     [(UIImageView *)v3->_posterView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v3->_posterView setAccessibilityIdentifier:@"AVPoster"];
-    v18 = [(UIImageView *)v3->_posterView layer];
-    [v18 setCornerRadius:16.0];
+    layer = [(UIImageView *)v3->_posterView layer];
+    [layer setCornerRadius:16.0];
 
     [(UIImageView *)v3->_posterView setClipsToBounds:1];
     [v101 addArrangedSubview:v3->_posterView];
@@ -268,12 +268,12 @@
     v3->_titleLabel = v21;
 
     v23 = v3->_titleLabel;
-    v24 = [(AVInfoPanelDescriptionView *)v3 titleFont];
-    [(UILabel *)v23 setFont:v24];
+    titleFont = [(AVInfoPanelDescriptionView *)v3 titleFont];
+    [(UILabel *)v23 setFont:titleFont];
 
     v25 = v3->_titleLabel;
-    v26 = [(AVInfoPanelDescriptionView *)v3 titleTextColor];
-    [(UILabel *)v25 setTextColor:v26];
+    titleTextColor = [(AVInfoPanelDescriptionView *)v3 titleTextColor];
+    [(UILabel *)v25 setTextColor:titleTextColor];
 
     [(UILabel *)v3->_titleLabel setLineBreakMode:4];
     [(UILabel *)v3->_titleLabel setAccessibilityIdentifier:@"AVTitle"];
@@ -302,12 +302,12 @@
     v3->_tomatoRatingView = v32;
 
     v34 = v3->_tomatoRatingView;
-    v35 = [(AVInfoPanelDescriptionView *)v3 textFont];
-    [(AVTomatoRatingView *)v34 setFont:v35];
+    textFont = [(AVInfoPanelDescriptionView *)v3 textFont];
+    [(AVTomatoRatingView *)v34 setFont:textFont];
 
     v36 = v3->_tomatoRatingView;
-    v37 = [(AVInfoPanelDescriptionView *)v3 textColor];
-    [(AVTomatoRatingView *)v36 setTextColor:v37];
+    textColor = [(AVInfoPanelDescriptionView *)v3 textColor];
+    [(AVTomatoRatingView *)v36 setTextColor:textColor];
 
     [v29 addArrangedSubview:v3->_tomatoRatingView];
     v38 = v13[2](v13);
@@ -339,13 +339,13 @@
     v3->_mediaContentRatingImageView = v46;
 
     v48 = v3->_mediaContentRatingImageView;
-    v49 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIImageView *)v48 setBackgroundColor:v49];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIImageView *)v48 setBackgroundColor:clearColor2];
 
     [(UIImageView *)v3->_mediaContentRatingImageView setContentMode:1];
     v50 = v3->_mediaContentRatingImageView;
-    v51 = [(AVInfoPanelDescriptionView *)v3 textColor];
-    [(UIImageView *)v50 setTintColor:v51];
+    textColor2 = [(AVInfoPanelDescriptionView *)v3 textColor];
+    [(UIImageView *)v50 setTintColor:textColor2];
 
     [(UIImageView *)v3->_mediaContentRatingImageView setAccessibilityIdentifier:@"AVMediaContentRatingImage"];
     [v29 addArrangedSubview:v3->_mediaContentRatingImageView];
@@ -354,13 +354,13 @@
     v3->_viewingModeBadgeImageView = v52;
 
     v54 = v3->_viewingModeBadgeImageView;
-    v55 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIImageView *)v54 setBackgroundColor:v55];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIImageView *)v54 setBackgroundColor:clearColor3];
 
     [(UIImageView *)v3->_viewingModeBadgeImageView setContentMode:1];
     v56 = v3->_viewingModeBadgeImageView;
-    v57 = [(AVInfoPanelDescriptionView *)v3 textColor];
-    [(UIImageView *)v56 setTintColor:v57];
+    textColor3 = [(AVInfoPanelDescriptionView *)v3 textColor];
+    [(UIImageView *)v56 setTintColor:textColor3];
 
     [(UIImageView *)v3->_viewingModeBadgeImageView setAccessibilityIdentifier:@"AVViewingModeImage"];
     [v29 addArrangedSubview:v3->_viewingModeBadgeImageView];
@@ -369,17 +369,17 @@
     v3->_closedCaptionBadge = v58;
 
     v60 = v3->_closedCaptionBadge;
-    v61 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIImageView *)v60 setBackgroundColor:v61];
+    clearColor4 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIImageView *)v60 setBackgroundColor:clearColor4];
 
     [(UIImageView *)v3->_closedCaptionBadge setContentMode:1];
     v62 = v3->_closedCaptionBadge;
-    v63 = [objc_opt_class() closedCaptioningBadgeImage];
-    [(UIImageView *)v62 setImage:v63];
+    closedCaptioningBadgeImage = [objc_opt_class() closedCaptioningBadgeImage];
+    [(UIImageView *)v62 setImage:closedCaptioningBadgeImage];
 
     v64 = v3->_closedCaptionBadge;
-    v65 = [(AVInfoPanelDescriptionView *)v3 textColor];
-    [(UIImageView *)v64 setTintColor:v65];
+    textColor4 = [(AVInfoPanelDescriptionView *)v3 textColor];
+    [(UIImageView *)v64 setTintColor:textColor4];
 
     [(UIImageView *)v3->_closedCaptionBadge setAccessibilityIdentifier:@"AVClosedCaptions"];
     [v29 addArrangedSubview:v3->_closedCaptionBadge];
@@ -401,59 +401,59 @@
     [(UIStackView *)v3->_actionButtonsStackView setDistribution:3];
     [(UIStackView *)v3->_actionButtonsStackView setSpacing:12.0];
     [(UIStackView *)v3->_actionButtonsStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v70 = [(UIStackView *)v3->_actionButtonsStackView widthAnchor];
-    v71 = [v70 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIStackView *)v3->_actionButtonsStackView widthAnchor];
+    v71 = [widthAnchor constraintEqualToConstant:0.0];
     actionButtonsStackViewWidthConstraint = v3->_actionButtonsStackViewWidthConstraint;
     v3->_actionButtonsStackViewWidthConstraint = v71;
 
     [v101 addArrangedSubview:v3->_actionButtonsStackView];
-    v73 = [MEMORY[0x1E695DF70] array];
-    v74 = [v101 centerXAnchor];
-    v75 = [(AVInfoPanelDescriptionView *)v3 centerXAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75];
-    [v73 addObject:v76];
+    array = [MEMORY[0x1E695DF70] array];
+    centerXAnchor = [v101 centerXAnchor];
+    centerXAnchor2 = [(AVInfoPanelDescriptionView *)v3 centerXAnchor];
+    v76 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v76];
 
-    v77 = [v101 centerYAnchor];
-    v78 = [(AVInfoPanelDescriptionView *)v3 centerYAnchor];
-    v79 = [v77 constraintEqualToAnchor:v78];
-    [v73 addObject:v79];
+    centerYAnchor = [v101 centerYAnchor];
+    centerYAnchor2 = [(AVInfoPanelDescriptionView *)v3 centerYAnchor];
+    v79 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v79];
 
     [objc_opt_class() layoutSize];
     v81 = v80;
-    v82 = [v101 widthAnchor];
-    v83 = [v82 constraintLessThanOrEqualToConstant:v81];
-    [v73 addObject:v83];
+    widthAnchor2 = [v101 widthAnchor];
+    v83 = [widthAnchor2 constraintLessThanOrEqualToConstant:v81];
+    [array addObject:v83];
 
-    v84 = [(AVInfoPanelDescriptionView *)v3 heightAnchor];
-    v85 = [v101 heightAnchor];
-    v86 = [v84 constraintEqualToAnchor:v85];
-    [v73 addObject:v86];
+    heightAnchor = [(AVInfoPanelDescriptionView *)v3 heightAnchor];
+    heightAnchor2 = [v101 heightAnchor];
+    v86 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
+    [array addObject:v86];
 
-    v87 = [(AVInfoPanelDescriptionView *)v3 widthAnchor];
-    v88 = [v101 widthAnchor];
-    v89 = [v87 constraintEqualToAnchor:v88];
-    [v73 addObject:v89];
+    widthAnchor3 = [(AVInfoPanelDescriptionView *)v3 widthAnchor];
+    widthAnchor4 = [v101 widthAnchor];
+    v89 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
+    [array addObject:v89];
 
-    [v73 addObject:v3->_actionButtonsStackViewWidthConstraint];
-    v90 = [(AVInfoPanelDescriptionView *)v3 textFont];
-    [v90 lineHeight];
+    [array addObject:v3->_actionButtonsStackViewWidthConstraint];
+    textFont2 = [(AVInfoPanelDescriptionView *)v3 textFont];
+    [textFont2 lineHeight];
     v92 = v91;
 
-    v93 = [(UIImageView *)v3->_viewingModeBadgeImageView heightAnchor];
-    v94 = [v93 constraintEqualToConstant:v92];
-    [v73 addObject:v94];
+    heightAnchor3 = [(UIImageView *)v3->_viewingModeBadgeImageView heightAnchor];
+    v94 = [heightAnchor3 constraintEqualToConstant:v92];
+    [array addObject:v94];
 
-    v95 = [(UIImageView *)v3->_viewingModeBadgeImageView widthAnchor];
-    v96 = [v95 constraintEqualToConstant:0.0];
+    widthAnchor5 = [(UIImageView *)v3->_viewingModeBadgeImageView widthAnchor];
+    v96 = [widthAnchor5 constraintEqualToConstant:0.0];
     viewingModeBadgeWidthConstraint = v3->_viewingModeBadgeWidthConstraint;
     v3->_viewingModeBadgeWidthConstraint = v96;
 
-    [v73 addObject:v3->_viewingModeBadgeWidthConstraint];
-    v98 = [(UIImageView *)v3->_mediaContentRatingImageView heightAnchor];
-    v99 = [v98 constraintEqualToConstant:v92];
-    [v73 addObject:v99];
+    [array addObject:v3->_viewingModeBadgeWidthConstraint];
+    heightAnchor4 = [(UIImageView *)v3->_mediaContentRatingImageView heightAnchor];
+    v99 = [heightAnchor4 constraintEqualToConstant:v92];
+    [array addObject:v99];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v73];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
     [(AVInfoPanelDescriptionView *)v3 _updateActionButtons];
 
     objc_destroyWeak(&v103);
@@ -502,16 +502,16 @@ AVDarkModeCompatibleLabel *__44__AVInfoPanelDescriptionView_initWithFrame___bloc
   return v6;
 }
 
-- (void)setViewingModeBadge:(int64_t)a3
+- (void)setViewingModeBadge:(int64_t)badge
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3 == 2)
+  if (badge == 2)
   {
     v5 = 0;
     v6 = @"Badge2";
   }
 
-  else if (a3 == 1)
+  else if (badge == 1)
   {
     v5 = 0;
     v6 = @"Badge1";
@@ -529,7 +529,7 @@ AVDarkModeCompatibleLabel *__44__AVInfoPanelDescriptionView_initWithFrame___bloc
     v20 = 136315650;
     v21 = "[AVInfoPanelDescriptionView(Facade) setViewingModeBadge:]";
     v22 = 2048;
-    v23 = a3;
+    badgeCopy = badge;
     v24 = 2114;
     v25 = v6;
     _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "%s viewingModeBadge %ld ==> image %{public}@", &v20, 0x20u);
@@ -553,8 +553,8 @@ AVDarkModeCompatibleLabel *__44__AVInfoPanelDescriptionView_initWithFrame___bloc
   {
     [v8 size];
     v14 = v12 / v13;
-    v15 = [(AVInfoPanelDescriptionView *)self textFont];
-    [v15 lineHeight];
+    textFont = [(AVInfoPanelDescriptionView *)self textFont];
+    [textFont lineHeight];
     v17 = v16;
 
     viewingModeBadgeWidthConstraint = self->_viewingModeBadgeWidthConstraint;
@@ -571,103 +571,103 @@ AVDarkModeCompatibleLabel *__44__AVInfoPanelDescriptionView_initWithFrame___bloc
   [(UIImageView *)self->_viewingModeBadgeImageView setHidden:v8 == 0];
 }
 
-- (void)setContentMediaRatingText:(id)a3 image:(id)a4
+- (void)setContentMediaRatingText:(id)text image:(id)image
 {
   mediaContentRatingLabel = self->_mediaContentRatingLabel;
-  v7 = a4;
-  [(UILabel *)mediaContentRatingLabel setText:a3];
-  [(UIImageView *)self->_mediaContentRatingImageView setImage:v7];
+  imageCopy = image;
+  [(UILabel *)mediaContentRatingLabel setText:text];
+  [(UIImageView *)self->_mediaContentRatingImageView setImage:imageCopy];
 
-  if (v7)
+  if (imageCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = a3 == 0;
+    v8 = text == 0;
   }
 
-  [(UIImageView *)self->_mediaContentRatingImageView setHidden:v7 == 0];
+  [(UIImageView *)self->_mediaContentRatingImageView setHidden:imageCopy == 0];
   v9 = self->_mediaContentRatingLabel;
 
   [(UILabel *)v9 setHidden:v8];
 }
 
-- (void)setTomatoFreshness:(unint64_t)a3 rating:(float)a4 hidden:(BOOL)a5
+- (void)setTomatoFreshness:(unint64_t)freshness rating:(float)rating hidden:(BOOL)hidden
 {
-  v5 = a5;
-  [(AVTomatoRatingView *)self->_tomatoRatingView setTomatoFreshness:a3];
-  *&v8 = a4;
+  hiddenCopy = hidden;
+  [(AVTomatoRatingView *)self->_tomatoRatingView setTomatoFreshness:freshness];
+  *&v8 = rating;
   [(AVTomatoRatingView *)self->_tomatoRatingView setTomatoRating:v8];
   tomatoRatingView = self->_tomatoRatingView;
 
-  [(AVTomatoRatingView *)tomatoRatingView setHidden:v5];
+  [(AVTomatoRatingView *)tomatoRatingView setHidden:hiddenCopy];
 }
 
-- (void)setDateText:(id)a3
+- (void)setDateText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v4 = self->_dateLabel;
-  [(UILabel *)v4 setText:v5];
-  -[UILabel setHidden:](v4, "setHidden:", [v5 length] == 0);
+  [(UILabel *)v4 setText:textCopy];
+  -[UILabel setHidden:](v4, "setHidden:", [textCopy length] == 0);
 }
 
-- (void)setGenreText:(id)a3
+- (void)setGenreText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v4 = self->_genreLabel;
-  [(UILabel *)v4 setText:v5];
-  -[UILabel setHidden:](v4, "setHidden:", [v5 length] == 0);
+  [(UILabel *)v4 setText:textCopy];
+  -[UILabel setHidden:](v4, "setHidden:", [textCopy length] == 0);
 }
 
-- (void)setDurationText:(id)a3
+- (void)setDurationText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v4 = self->_durationLabel;
-  [(UILabel *)v4 setText:v5];
-  -[UILabel setHidden:](v4, "setHidden:", [v5 length] == 0);
+  [(UILabel *)v4 setText:textCopy];
+  -[UILabel setHidden:](v4, "setHidden:", [textCopy length] == 0);
 }
 
-- (void)setSeasonEpisodeText:(id)a3
+- (void)setSeasonEpisodeText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v4 = self->_seasonEpisodeLabel;
-  [(UILabel *)v4 setText:v5];
-  -[UILabel setHidden:](v4, "setHidden:", [v5 length] == 0);
+  [(UILabel *)v4 setText:textCopy];
+  -[UILabel setHidden:](v4, "setHidden:", [textCopy length] == 0);
 }
 
-- (void)setSecondaryTitleText:(id)a3
+- (void)setSecondaryTitleText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v4 = self->_subtitleLabel;
-  [(UILabel *)v4 setText:v5];
-  -[UILabel setHidden:](v4, "setHidden:", [v5 length] == 0);
+  [(UILabel *)v4 setText:textCopy];
+  -[UILabel setHidden:](v4, "setHidden:", [textCopy length] == 0);
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v4 = self->_titleLabel;
-  [(UILabel *)v4 setText:v5];
-  -[UILabel setHidden:](v4, "setHidden:", [v5 length] == 0);
+  [(UILabel *)v4 setText:textCopy];
+  -[UILabel setHidden:](v4, "setHidden:", [textCopy length] == 0);
 }
 
-- (void)setSummaryText:(id)a3
+- (void)setSummaryText:(id)text
 {
   summaryView = self->_summaryView;
-  v5 = a3;
-  [(UILabel *)summaryView setText:v5];
-  v6 = [v5 length];
+  textCopy = text;
+  [(UILabel *)summaryView setText:textCopy];
+  v6 = [textCopy length];
 
   v7 = self->_summaryView;
 
   [(UILabel *)v7 setHidden:v6 == 0];
 }
 
-- (void)setPosterImage:(id)a3
+- (void)setPosterImage:(id)image
 {
-  v26 = a3;
+  imageCopy = image;
   if (self->_posterViewHeightConstraint)
   {
     posterViewWidthConstraint = self->_posterViewWidthConstraint;
@@ -680,37 +680,37 @@ AVDarkModeCompatibleLabel *__44__AVInfoPanelDescriptionView_initWithFrame___bloc
 
   [(UIStackView *)self->_nextToPosterStackView systemLayoutSizeFittingSize:*MEMORY[0x1E69DE098], *(MEMORY[0x1E69DE098] + 8)];
   v6 = v5;
-  v7 = [(AVInfoPanelDescriptionView *)self textFont];
-  [v7 lineHeight];
+  textFont = [(AVInfoPanelDescriptionView *)self textFont];
+  [textFont lineHeight];
   v9 = v8;
 
-  v10 = [(AVInfoPanelDescriptionView *)self textFont];
-  [v10 lineHeight];
+  textFont2 = [(AVInfoPanelDescriptionView *)self textFont];
+  [textFont2 lineHeight];
   v12 = v11;
 
-  if (v26 && v6 > v12 * 3.0)
+  if (imageCopy && v6 > v12 * 3.0)
   {
     if (v9 * 5.0 >= v6)
     {
       v6 = v9 * 5.0;
     }
 
-    [(UIImageView *)self->_posterView setImage:v26];
-    v13 = [(UIImageView *)self->_posterView image];
-    [v13 size];
+    [(UIImageView *)self->_posterView setImage:imageCopy];
+    image = [(UIImageView *)self->_posterView image];
+    [image size];
     v15 = v14;
-    v16 = [(UIImageView *)self->_posterView image];
-    [v16 size];
+    image2 = [(UIImageView *)self->_posterView image];
+    [image2 size];
     v18 = v15 / v17;
 
-    v19 = [(UIImageView *)self->_posterView heightAnchor];
-    v20 = [v19 constraintEqualToConstant:v6];
+    heightAnchor = [(UIImageView *)self->_posterView heightAnchor];
+    v20 = [heightAnchor constraintEqualToConstant:v6];
     posterViewHeightConstraint = self->_posterViewHeightConstraint;
     self->_posterViewHeightConstraint = v20;
 
-    v22 = [(UIImageView *)self->_posterView widthAnchor];
-    v23 = [(UIImageView *)self->_posterView heightAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 multiplier:v18];
+    widthAnchor = [(UIImageView *)self->_posterView widthAnchor];
+    heightAnchor2 = [(UIImageView *)self->_posterView heightAnchor];
+    v24 = [widthAnchor constraintEqualToAnchor:heightAnchor2 multiplier:v18];
     v25 = self->_posterViewWidthConstraint;
     self->_posterViewWidthConstraint = v24;
 

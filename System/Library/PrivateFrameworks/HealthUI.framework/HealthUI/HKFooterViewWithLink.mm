@@ -1,72 +1,72 @@
 @interface HKFooterViewWithLink
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (HKFooterViewWithLink)initWithReuseIdentifier:(id)a3 bodyText:(id)a4 linkText:(id)a5 link:(id)a6;
-- (HKFooterViewWithLink)initWithReuseIdentifier:(id)a3 fullText:(id)a4 linkRange:(_NSRange)a5 link:(id)a6;
-- (HKFooterViewWithLink)initWithReuseIdentifier:(id)a3 markdown:(id)a4;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (HKFooterViewWithLink)initWithReuseIdentifier:(id)identifier bodyText:(id)text linkText:(id)linkText link:(id)link;
+- (HKFooterViewWithLink)initWithReuseIdentifier:(id)identifier fullText:(id)text linkRange:(_NSRange)range link:(id)link;
+- (HKFooterViewWithLink)initWithReuseIdentifier:(id)identifier markdown:(id)markdown;
 - (UITextViewDelegate)textViewDelegate;
-- (id)_createAttributedMarkdown:(id)a3;
-- (id)_createAttributedTextWithFullText:(id)a3 linkRange:(_NSRange)a4 link:(id)a5;
+- (id)_createAttributedMarkdown:(id)markdown;
+- (id)_createAttributedTextWithFullText:(id)text linkRange:(_NSRange)range link:(id)link;
 - (id)getTextViewDelegate;
-- (void)_setUpFooterTextViewWithBodyText:(id)a3 linkText:(id)a4 link:(id)a5;
-- (void)_setUpFooterTextViewWithFullText:(id)a3 linkRange:(_NSRange)a4 link:(id)a5;
+- (void)_setUpFooterTextViewWithBodyText:(id)text linkText:(id)linkText link:(id)link;
+- (void)_setUpFooterTextViewWithFullText:(id)text linkRange:(_NSRange)range link:(id)link;
 - (void)_setUpTextView;
 - (void)_setupConstraints;
-- (void)setTextViewDelegate:(id)a3;
-- (void)updateWithMarkdown:(id)a3;
+- (void)setTextViewDelegate:(id)delegate;
+- (void)updateWithMarkdown:(id)markdown;
 @end
 
 @implementation HKFooterViewWithLink
 
-- (HKFooterViewWithLink)initWithReuseIdentifier:(id)a3 fullText:(id)a4 linkRange:(_NSRange)a5 link:(id)a6
+- (HKFooterViewWithLink)initWithReuseIdentifier:(id)identifier fullText:(id)text linkRange:(_NSRange)range link:(id)link
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a4;
-  v12 = a6;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  linkCopy = link;
   v16.receiver = self;
   v16.super_class = HKFooterViewWithLink;
-  v13 = [(HKFooterViewWithLink *)&v16 initWithReuseIdentifier:a3];
+  v13 = [(HKFooterViewWithLink *)&v16 initWithReuseIdentifier:identifier];
   v14 = v13;
   if (v13)
   {
-    [(HKFooterViewWithLink *)v13 _setUpFooterTextViewWithFullText:v11 linkRange:location link:length, v12];
+    [(HKFooterViewWithLink *)v13 _setUpFooterTextViewWithFullText:textCopy linkRange:location link:length, linkCopy];
     [(HKFooterViewWithLink *)v14 _setupConstraints];
   }
 
   return v14;
 }
 
-- (HKFooterViewWithLink)initWithReuseIdentifier:(id)a3 bodyText:(id)a4 linkText:(id)a5 link:(id)a6
+- (HKFooterViewWithLink)initWithReuseIdentifier:(id)identifier bodyText:(id)text linkText:(id)linkText link:(id)link
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  textCopy = text;
+  linkTextCopy = linkText;
+  linkCopy = link;
   v16.receiver = self;
   v16.super_class = HKFooterViewWithLink;
-  v13 = [(HKFooterViewWithLink *)&v16 initWithReuseIdentifier:a3];
+  v13 = [(HKFooterViewWithLink *)&v16 initWithReuseIdentifier:identifier];
   v14 = v13;
   if (v13)
   {
-    [(HKFooterViewWithLink *)v13 _setUpFooterTextViewWithBodyText:v10 linkText:v11 link:v12];
+    [(HKFooterViewWithLink *)v13 _setUpFooterTextViewWithBodyText:textCopy linkText:linkTextCopy link:linkCopy];
     [(HKFooterViewWithLink *)v14 _setupConstraints];
   }
 
   return v14;
 }
 
-- (HKFooterViewWithLink)initWithReuseIdentifier:(id)a3 markdown:(id)a4
+- (HKFooterViewWithLink)initWithReuseIdentifier:(id)identifier markdown:(id)markdown
 {
-  v6 = a4;
+  markdownCopy = markdown;
   v12.receiver = self;
   v12.super_class = HKFooterViewWithLink;
-  v7 = [(HKFooterViewWithLink *)&v12 initWithReuseIdentifier:a3];
+  v7 = [(HKFooterViewWithLink *)&v12 initWithReuseIdentifier:identifier];
   v8 = v7;
   if (v7)
   {
     [(HKFooterViewWithLink *)v7 _setUpTextView];
-    v9 = [(HKFooterViewWithLink *)v8 _createAttributedMarkdown:v6];
-    v10 = [(HKFooterViewWithLink *)v8 footerTextView];
-    [v10 setAttributedText:v9];
+    v9 = [(HKFooterViewWithLink *)v8 _createAttributedMarkdown:markdownCopy];
+    footerTextView = [(HKFooterViewWithLink *)v8 footerTextView];
+    [footerTextView setAttributedText:v9];
 
     [(HKFooterViewWithLink *)v8 _setupConstraints];
   }
@@ -74,24 +74,24 @@
   return v8;
 }
 
-- (void)updateWithMarkdown:(id)a3
+- (void)updateWithMarkdown:(id)markdown
 {
-  v5 = [(HKFooterViewWithLink *)self _createAttributedMarkdown:a3];
-  v4 = [(HKFooterViewWithLink *)self footerTextView];
-  [v4 setAttributedText:v5];
+  v5 = [(HKFooterViewWithLink *)self _createAttributedMarkdown:markdown];
+  footerTextView = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView setAttributedText:v5];
 }
 
-- (void)_setUpFooterTextViewWithBodyText:(id)a3 linkText:(id)a4 link:(id)a5
+- (void)_setUpFooterTextViewWithBodyText:(id)text linkText:(id)linkText link:(id)link
 {
   v8 = MEMORY[0x1E696AEC0];
-  v9 = a5;
-  v10 = a3;
-  v14 = [v8 localizedStringWithFormat:@"%@ %@", v10, a4];
-  v11 = [v10 length];
-  v12 = [v14 length];
-  v13 = [v10 length];
+  linkCopy = link;
+  textCopy = text;
+  linkText = [v8 localizedStringWithFormat:@"%@ %@", textCopy, linkText];
+  v11 = [textCopy length];
+  v12 = [linkText length];
+  v13 = [textCopy length];
 
-  [(HKFooterViewWithLink *)self _setUpFooterTextViewWithFullText:v14 linkRange:v11 + 1 link:v12 + ~v13, v9];
+  [(HKFooterViewWithLink *)self _setUpFooterTextViewWithFullText:linkText linkRange:v11 + 1 link:v12 + ~v13, linkCopy];
 }
 
 - (void)_setUpTextView
@@ -101,69 +101,69 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(HKFooterViewWithLink *)self setFooterTextView:v4];
 
-  v5 = [(HKFooterViewWithLink *)self footerTextView];
-  [v5 setAdjustsFontForContentSizeCategory:1];
+  footerTextView = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView setAdjustsFontForContentSizeCategory:1];
 
-  v6 = [(HKFooterViewWithLink *)self footerTextView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  footerTextView2 = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(HKFooterViewWithLink *)self footerTextView];
-  [v7 setScrollEnabled:0];
+  footerTextView3 = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView3 setScrollEnabled:0];
 
-  v8 = [(HKFooterViewWithLink *)self footerTextView];
-  [v8 setUserInteractionEnabled:1];
+  footerTextView4 = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView4 setUserInteractionEnabled:1];
 
-  v9 = [(HKFooterViewWithLink *)self footerTextView];
-  [v9 setDelegate:self];
+  footerTextView5 = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView5 setDelegate:self];
 
-  v10 = [(HKFooterViewWithLink *)self footerTextView];
-  [v10 setEditable:0];
+  footerTextView6 = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView6 setEditable:0];
 
-  v11 = [(HKFooterViewWithLink *)self footerTextView];
-  [v11 _setInteractiveTextSelectionDisabled:1];
+  footerTextView7 = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView7 _setInteractiveTextSelectionDisabled:1];
 
-  v12 = [(HKFooterViewWithLink *)self footerTextView];
-  [v12 setDataDetectorTypes:2];
+  footerTextView8 = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView8 setDataDetectorTypes:2];
 
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  v14 = [(HKFooterViewWithLink *)self footerTextView];
-  [v14 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  footerTextView9 = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView9 setBackgroundColor:clearColor];
 
   v20 = *MEMORY[0x1E69DB650];
-  v15 = [MEMORY[0x1E69DC888] hk_appKeyColor];
-  v21[0] = v15;
+  hk_appKeyColor = [MEMORY[0x1E69DC888] hk_appKeyColor];
+  v21[0] = hk_appKeyColor;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-  v17 = [(HKFooterViewWithLink *)self footerTextView];
-  [v17 setLinkTextAttributes:v16];
+  footerTextView10 = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView10 setLinkTextAttributes:v16];
 
-  v18 = [(HKFooterViewWithLink *)self contentView];
-  v19 = [(HKFooterViewWithLink *)self footerTextView];
-  [v18 addSubview:v19];
+  contentView = [(HKFooterViewWithLink *)self contentView];
+  footerTextView11 = [(HKFooterViewWithLink *)self footerTextView];
+  [contentView addSubview:footerTextView11];
 }
 
-- (void)_setUpFooterTextViewWithFullText:(id)a3 linkRange:(_NSRange)a4 link:(id)a5
+- (void)_setUpFooterTextViewWithFullText:(id)text linkRange:(_NSRange)range link:(id)link
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = a3;
+  length = range.length;
+  location = range.location;
+  linkCopy = link;
+  textCopy = text;
   [(HKFooterViewWithLink *)self _setUpTextView];
-  v12 = [(HKFooterViewWithLink *)self _createAttributedTextWithFullText:v10 linkRange:location link:length, v9];
+  linkCopy = [(HKFooterViewWithLink *)self _createAttributedTextWithFullText:textCopy linkRange:location link:length, linkCopy];
 
-  v11 = [(HKFooterViewWithLink *)self footerTextView];
-  [v11 setAttributedText:v12];
+  footerTextView = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView setAttributedText:linkCopy];
 }
 
-- (id)_createAttributedMarkdown:(id)a3
+- (id)_createAttributedMarkdown:(id)markdown
 {
   v34[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AD40];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithMarkdownString:v5 options:0 baseURL:0 error:0];
+  markdownCopy = markdown;
+  v6 = [[v4 alloc] initWithMarkdownString:markdownCopy options:0 baseURL:0 error:0];
 
-  v7 = [(HKFooterViewWithLink *)self defaultContentConfiguration];
-  v8 = [v7 textProperties];
-  v9 = [v8 color];
+  defaultContentConfiguration = [(HKFooterViewWithLink *)self defaultContentConfiguration];
+  textProperties = [defaultContentConfiguration textProperties];
+  color = [textProperties color];
 
   v32 = *MEMORY[0x1E69DB648];
   v10 = v32;
@@ -172,15 +172,15 @@
   v33 = *MEMORY[0x1E69DB650];
   v13 = v33;
   v34[0] = v12;
-  v34[1] = v9;
+  v34[1] = color;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v32 count:2];
 
   v30[0] = v10;
   v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v11];
   v30[1] = v13;
   v31[0] = v15;
-  v16 = [MEMORY[0x1E69DC888] hk_appKeyColor];
-  v31[1] = v16;
+  hk_appKeyColor = [MEMORY[0x1E69DC888] hk_appKeyColor];
+  v31[1] = hk_appKeyColor;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
 
   v18 = *MEMORY[0x1E69DB670];
@@ -213,16 +213,16 @@ uint64_t __50__HKFooterViewWithLink__createAttributedMarkdown___block_invoke(uin
   return [*(a1 + 32) addAttributes:*(a1 + v4) range:{a3, a4}];
 }
 
-- (id)_createAttributedTextWithFullText:(id)a3 linkRange:(_NSRange)a4 link:(id)a5
+- (id)_createAttributedTextWithFullText:(id)text linkRange:(_NSRange)range link:(id)link
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v27[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v10 = [(HKFooterViewWithLink *)self defaultContentConfiguration];
-  v11 = [v10 textProperties];
-  v12 = [v11 color];
+  linkCopy = link;
+  textCopy = text;
+  defaultContentConfiguration = [(HKFooterViewWithLink *)self defaultContentConfiguration];
+  textProperties = [defaultContentConfiguration textProperties];
+  color = [textProperties color];
 
   v13 = *MEMORY[0x1E69DB648];
   v26[0] = *MEMORY[0x1E69DB648];
@@ -231,20 +231,20 @@ uint64_t __50__HKFooterViewWithLink__createAttributedMarkdown___block_invoke(uin
   v16 = *MEMORY[0x1E69DB650];
   v26[1] = *MEMORY[0x1E69DB650];
   v27[0] = v15;
-  v27[1] = v12;
+  v27[1] = color;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
 
-  v18 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v9 attributes:v17];
+  v18 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:textCopy attributes:v17];
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
     v24[0] = v13;
     v19 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v14];
     v25[0] = v19;
     v24[1] = v16;
-    v20 = [MEMORY[0x1E69DC888] hk_appKeyColor];
+    hk_appKeyColor = [MEMORY[0x1E69DC888] hk_appKeyColor];
     v24[2] = *MEMORY[0x1E69DB670];
-    v25[1] = v20;
-    v25[2] = v8;
+    v25[1] = hk_appKeyColor;
+    v25[2] = linkCopy;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
     [v18 addAttributes:v21 range:{location, length}];
@@ -255,70 +255,70 @@ uint64_t __50__HKFooterViewWithLink__createAttributedMarkdown___block_invoke(uin
 
 - (void)_setupConstraints
 {
-  v3 = [(HKFooterViewWithLink *)self footerTextView];
-  v4 = [v3 firstBaselineAnchor];
-  v5 = [(HKFooterViewWithLink *)self contentView];
-  v6 = [v5 layoutMarginsGuide];
-  v7 = [v6 topAnchor];
-  v8 = [v4 constraintEqualToAnchor:v7 constant:12.0];
+  footerTextView = [(HKFooterViewWithLink *)self footerTextView];
+  firstBaselineAnchor = [footerTextView firstBaselineAnchor];
+  contentView = [(HKFooterViewWithLink *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  topAnchor = [layoutMarginsGuide topAnchor];
+  v8 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:12.0];
   [v8 setActive:1];
 
-  v9 = [(HKFooterViewWithLink *)self footerTextView];
-  v10 = [v9 leadingAnchor];
-  v11 = [(HKFooterViewWithLink *)self contentView];
-  v12 = [v11 leadingAnchor];
-  v13 = [v10 constraintEqualToSystemSpacingAfterAnchor:v12 multiplier:2.0];
+  footerTextView2 = [(HKFooterViewWithLink *)self footerTextView];
+  leadingAnchor = [footerTextView2 leadingAnchor];
+  contentView2 = [(HKFooterViewWithLink *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:2.0];
   [v13 setActive:1];
 
-  v14 = [(HKFooterViewWithLink *)self contentView];
-  v15 = [v14 trailingAnchor];
-  v16 = [(HKFooterViewWithLink *)self footerTextView];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToSystemSpacingAfterAnchor:v17 multiplier:1.0];
+  contentView3 = [(HKFooterViewWithLink *)self contentView];
+  trailingAnchor = [contentView3 trailingAnchor];
+  footerTextView3 = [(HKFooterViewWithLink *)self footerTextView];
+  trailingAnchor2 = [footerTextView3 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
   [v18 setActive:1];
 
-  v23 = [(HKFooterViewWithLink *)self contentView];
-  v19 = [v23 bottomAnchor];
-  v20 = [(HKFooterViewWithLink *)self footerTextView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToSystemSpacingBelowAnchor:v21 multiplier:1.0];
+  contentView4 = [(HKFooterViewWithLink *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  footerTextView4 = [(HKFooterViewWithLink *)self footerTextView];
+  bottomAnchor2 = [footerTextView4 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
   [v22 setActive:1];
 }
 
-- (void)setTextViewDelegate:(id)a3
+- (void)setTextViewDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HKFooterViewWithLink *)self footerTextView];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  footerTextView = [(HKFooterViewWithLink *)self footerTextView];
+  [footerTextView setDelegate:delegateCopy];
 }
 
 - (id)getTextViewDelegate
 {
-  v2 = [(HKFooterViewWithLink *)self footerTextView];
-  v3 = [v2 delegate];
+  footerTextView = [(HKFooterViewWithLink *)self footerTextView];
+  delegate = [footerTextView delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v7 = a4;
-  v8 = [v7 scheme];
-  if ([v8 isEqualToString:@"bridge"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"bridge"])
   {
     v9 = 1;
   }
 
   else
   {
-    v10 = [v7 scheme];
-    v9 = [v10 isEqualToString:@"prefs"];
+    scheme2 = [lCopy scheme];
+    v9 = [scheme2 isEqualToString:@"prefs"];
   }
 
-  if (!a6 && v9)
+  if (!interaction && v9)
   {
-    v11 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v11 openSensitiveURL:v7 withOptions:0];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace openSensitiveURL:lCopy withOptions:0];
   }
 
   return v9 ^ 1;

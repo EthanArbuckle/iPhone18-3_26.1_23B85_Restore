@@ -1,11 +1,11 @@
 @interface STStorageHLSController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (id)hlsSpecifiers;
-- (id)specifierAtIndexPath:(id)a3;
+- (id)specifierAtIndexPath:(id)path;
 - (id)specifiers;
-- (void)deleteAssets:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)toggleEditing:(id)a3;
+- (void)deleteAssets:(id)assets;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)toggleEditing:(id)editing;
 - (void)updateHLSSpecs;
 - (void)viewDidLoad;
 @end
@@ -24,19 +24,19 @@
   self->deleteQueue = v5;
 
   [(STStorageHLSController *)self setEditing:0];
-  v7 = [(STStorageHLSController *)self table];
-  [v7 setAllowsMultipleSelectionDuringEditing:0];
+  table = [(STStorageHLSController *)self table];
+  [table setAllowsMultipleSelectionDuringEditing:0];
 
   v8 = +[NSNotificationCenter defaultCenter];
   [v8 addObserver:self selector:"updateHLSSpecs" name:UIApplicationDidBecomeActiveNotification object:0];
 }
 
-- (void)toggleEditing:(id)a3
+- (void)toggleEditing:(id)editing
 {
-  v4 = [(STStorageHLSController *)self isEditing];
-  [(STStorageHLSController *)self setEditing:v4 ^ 1];
-  v5 = [(STStorageHLSController *)self table];
-  [v5 setEditing:v4 ^ 1];
+  isEditing = [(STStorageHLSController *)self isEditing];
+  [(STStorageHLSController *)self setEditing:isEditing ^ 1];
+  table = [(STStorageHLSController *)self table];
+  [table setEditing:isEditing ^ 1];
 }
 
 - (id)hlsSpecifiers
@@ -52,13 +52,13 @@
   v69 = v4;
   CacheManagementEnumerateAssets();
   v45 = v68;
-  v5 = [v68 allKeys];
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  allKeys = [v68 allKeys];
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [allKeys count]);
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v7 = v5;
+  v7 = allKeys;
   v8 = [v7 countByEnumeratingWithState:&v60 objects:v73 count:16];
   if (v8)
   {
@@ -113,28 +113,28 @@
         }
 
         v16 = *(*(&v56 + 1) + 8 * j);
-        v17 = [v16 localizedName];
-        if (![v17 length])
+        localizedName = [v16 localizedName];
+        if (![localizedName length])
         {
-          v18 = [v16 bundleIdentifier];
-          v19 = v18;
+          bundleIdentifier = [v16 bundleIdentifier];
+          v19 = bundleIdentifier;
           v20 = @"???";
-          if (v18)
+          if (bundleIdentifier)
           {
-            v20 = v18;
+            v20 = bundleIdentifier;
           }
 
           v21 = v20;
 
-          v17 = v21;
+          localizedName = v21;
         }
 
-        v47 = v17;
-        v22 = [PSSpecifier groupSpecifierWithName:v17];
+        v47 = localizedName;
+        v22 = [PSSpecifier groupSpecifierWithName:localizedName];
         [v14 addObject:v22];
 
-        v23 = [v16 bundleIdentifier];
-        v24 = [v45 objectForKey:v23];
+        bundleIdentifier2 = [v16 bundleIdentifier];
+        v24 = [v45 objectForKey:bundleIdentifier2];
 
         [v24 sortUsingComparator:&stru_AAA48];
         v54 = 0u;
@@ -252,14 +252,14 @@
   return v7;
 }
 
-- (void)deleteAssets:(id)a3
+- (void)deleteAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [assetsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -271,7 +271,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -287,18 +287,18 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [assetsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)specifierAtIndexPath:(id)a3
+- (id)specifierAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = STStorageHLSController;
-  v3 = [(STStorageHLSController *)&v6 specifierAtIndexPath:a3];
+  v3 = [(STStorageHLSController *)&v6 specifierAtIndexPath:path];
   v4 = [v3 propertyForKey:@"stCacheAsset"];
 
   if (v4)
@@ -309,18 +309,18 @@
   return v4;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(STStorageHLSController *)self specifierAtIndexPath:a4];
+  v4 = [(STStorageHLSController *)self specifierAtIndexPath:path];
 
   return v4 != 0;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v6 = [(STStorageHLSController *)self specifierAtIndexPath:a5];
+    v6 = [(STStorageHLSController *)self specifierAtIndexPath:path];
     v7 = v6;
     if (v6)
     {

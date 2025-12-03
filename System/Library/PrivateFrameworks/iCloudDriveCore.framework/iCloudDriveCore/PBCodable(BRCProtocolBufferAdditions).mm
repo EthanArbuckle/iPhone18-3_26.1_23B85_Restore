@@ -8,8 +8,8 @@
 
 - (void)sqliteBind:()BRCProtocolBufferAdditions index:
 {
-  v6 = [a1 data];
-  [v6 sqliteBind:a3 index:a4];
+  data = [self data];
+  [data sqliteBind:a3 index:a4];
 }
 
 + (uint64_t)newFromSqliteValue:()BRCProtocolBufferAdditions

@@ -1,38 +1,38 @@
 @interface BGSystemTaskResult
-- (BGSystemTaskResult)initWithIdentifier:(id)a3 consumptionCount:(unint64_t)a4;
-- (BGSystemTaskResult)initWithIdentifier:(id)a3 cumulativeProductionCount:(unint64_t)a4;
+- (BGSystemTaskResult)initWithIdentifier:(id)identifier consumptionCount:(unint64_t)count;
+- (BGSystemTaskResult)initWithIdentifier:(id)identifier cumulativeProductionCount:(unint64_t)count;
 - (id)asDASActivityResult;
 @end
 
 @implementation BGSystemTaskResult
 
-- (BGSystemTaskResult)initWithIdentifier:(id)a3 cumulativeProductionCount:(unint64_t)a4
+- (BGSystemTaskResult)initWithIdentifier:(id)identifier cumulativeProductionCount:(unint64_t)count
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = BGSystemTaskResult;
   v8 = [(BGSystemTaskResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_count = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_count = count;
   }
 
   return v9;
 }
 
-- (BGSystemTaskResult)initWithIdentifier:(id)a3 consumptionCount:(unint64_t)a4
+- (BGSystemTaskResult)initWithIdentifier:(id)identifier consumptionCount:(unint64_t)count
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = BGSystemTaskResult;
   v8 = [(BGSystemTaskResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_count = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_count = count;
   }
 
   return v9;

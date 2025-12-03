@@ -1,6 +1,6 @@
 @interface _EARLanguageDetectorV2RequestOptions
 - (_EARLanguageDetectorV2RequestOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _EARLanguageDetectorV2RequestOptions
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_EARLanguageDetectorV2RequestOptions allocWithZone:?]];
   [(_EARLanguageDetectorV2RequestOptions *)v4 setReportingFrequency:[(_EARLanguageDetectorV2RequestOptions *)self reportingFrequency]];

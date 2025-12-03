@@ -1,8 +1,8 @@
 @interface TVPSecureKeyStandardConnector
 - (TVPSecureKeyStandardConnector)init;
-- (id)secureKeyStandardLoader:(id)a3 requestForFetchingDataFromURL:(id)a4;
-- (id)secureKeyStandardLoader:(id)a3 requestForPostingData:(id)a4 toURL:(id)a5;
-- (void)secureKeyStandardLoader:(id)a3 sendAsynchronousRequest:(id)a4 completionHandler:(id)a5;
+- (id)secureKeyStandardLoader:(id)loader requestForFetchingDataFromURL:(id)l;
+- (id)secureKeyStandardLoader:(id)loader requestForPostingData:(id)data toURL:(id)l;
+- (void)secureKeyStandardLoader:(id)loader sendAsynchronousRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation TVPSecureKeyStandardConnector
@@ -24,11 +24,11 @@
   return v2;
 }
 
-- (id)secureKeyStandardLoader:(id)a3 requestForFetchingDataFromURL:(id)a4
+- (id)secureKeyStandardLoader:(id)loader requestForFetchingDataFromURL:(id)l
 {
   v4 = MEMORY[0x277CCAB70];
-  v5 = a4;
-  v6 = [[v4 alloc] initWithURL:v5];
+  lCopy = l;
+  v6 = [[v4 alloc] initWithURL:lCopy];
 
   [v6 setHTTPMethod:@"GET"];
   [v6 setTimeoutInterval:30.0];
@@ -36,15 +36,15 @@
   return v6;
 }
 
-- (id)secureKeyStandardLoader:(id)a3 requestForPostingData:(id)a4 toURL:(id)a5
+- (id)secureKeyStandardLoader:(id)loader requestForPostingData:(id)data toURL:(id)l
 {
   v6 = MEMORY[0x277CCAB70];
-  v7 = a5;
-  v8 = a4;
-  v9 = [[v6 alloc] initWithURL:v7];
+  lCopy = l;
+  dataCopy = data;
+  v9 = [[v6 alloc] initWithURL:lCopy];
 
   [v9 setHTTPMethod:@"POST"];
-  [v9 setHTTPBody:v8];
+  [v9 setHTTPBody:dataCopy];
 
   [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   [v9 setTimeoutInterval:30.0];
@@ -52,24 +52,24 @@
   return v9;
 }
 
-- (void)secureKeyStandardLoader:(id)a3 sendAsynchronousRequest:(id)a4 completionHandler:(id)a5
+- (void)secureKeyStandardLoader:(id)loader sendAsynchronousRequest:(id)request completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURLRequest:v9];
+  loaderCopy = loader;
+  requestCopy = request;
+  handlerCopy = handler;
+  v11 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURLRequest:requestCopy];
   [v11 setITunesStoreRequest:1];
   objc_initWeak(&location, v11);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __99__TVPSecureKeyStandardConnector_secureKeyStandardLoader_sendAsynchronousRequest_completionHandler___block_invoke;
   v14[3] = &unk_279D7D280;
-  v12 = v10;
+  v12 = handlerCopy;
   v15 = v12;
   objc_copyWeak(&v16, &location);
   [v11 setOutputBlock:v14];
-  v13 = [(TVPSecureKeyStandardConnector *)self operationQueue];
-  [v13 addOperation:v11];
+  operationQueue = [(TVPSecureKeyStandardConnector *)self operationQueue];
+  [operationQueue addOperation:v11];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);

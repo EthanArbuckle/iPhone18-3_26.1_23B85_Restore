@@ -68,8 +68,8 @@ void __45__EKResourceChange_knownRelationshipWeakKeys__block_invoke()
   v3 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992C10]];
   if (!v3)
   {
-    v4 = [(EKResourceChange *)self changedByFirstName];
-    v5 = [(EKResourceChange *)self changedByLastName];
+    changedByFirstName = [(EKResourceChange *)self changedByFirstName];
+    changedByLastName = [(EKResourceChange *)self changedByLastName];
     v3 = DisplayNameStringForIdentityWithProperties();
   }
 
@@ -94,56 +94,56 @@ void __45__EKResourceChange_knownRelationshipWeakKeys__block_invoke()
 
 - (id)emailAddress
 {
-  v2 = [(EKResourceChange *)self changedByAddress];
-  v3 = [v2 cal_emailAddressString];
+  changedByAddress = [(EKResourceChange *)self changedByAddress];
+  cal_emailAddressString = [changedByAddress cal_emailAddressString];
 
-  return v3;
+  return cal_emailAddressString;
 }
 
 - (id)phoneNumber
 {
-  v2 = [(EKResourceChange *)self changedByAddress];
-  v3 = [v2 cal_phoneNumberString];
+  changedByAddress = [(EKResourceChange *)self changedByAddress];
+  cal_phoneNumberString = [changedByAddress cal_phoneNumberString];
 
-  return v3;
+  return cal_phoneNumberString;
 }
 
 - (unsigned)changeType
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992C00]];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)changedProperties
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992C28]];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (BOOL)alerted
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992BE8]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unsigned)publicStatus
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992C50]];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (void)clearAlertedStatus
 {
-  v2 = [(EKObject *)self persistentObject];
-  [v2 unloadPropertyForKey:*MEMORY[0x1E6992BE8]];
+  persistentObject = [(EKObject *)self persistentObject];
+  [persistentObject unloadPropertyForKey:*MEMORY[0x1E6992BE8]];
 }
 
 @end

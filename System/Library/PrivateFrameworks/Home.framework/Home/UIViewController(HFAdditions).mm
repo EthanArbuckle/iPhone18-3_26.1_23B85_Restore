@@ -6,29 +6,29 @@
 
 - (id)hf_topmostViewController
 {
-  v1 = a1;
-  v2 = [v1 presentedViewController];
-  if (v2)
+  selfCopy = self;
+  presentedViewController = [selfCopy presentedViewController];
+  if (presentedViewController)
   {
-    v3 = v2;
+    v3 = presentedViewController;
     do
     {
       if (([v3 isBeingDismissed] & 1) == 0)
       {
         v4 = v3;
 
-        v1 = v4;
+        selfCopy = v4;
       }
 
-      v5 = [v3 presentedViewController];
+      presentedViewController2 = [v3 presentedViewController];
 
-      v3 = v5;
+      v3 = presentedViewController2;
     }
 
-    while (v5);
+    while (presentedViewController2);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

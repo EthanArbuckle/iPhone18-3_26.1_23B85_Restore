@@ -1,11 +1,11 @@
 @interface IMMetricsAppOpenEvent
-- (IMMetricsAppOpenEvent)initWithReason:(int64_t)a3;
-- (void)setEnterTypeWithLaunchReason:(int64_t)a3;
+- (IMMetricsAppOpenEvent)initWithReason:(int64_t)reason;
+- (void)setEnterTypeWithLaunchReason:(int64_t)reason;
 @end
 
 @implementation IMMetricsAppOpenEvent
 
-- (IMMetricsAppOpenEvent)initWithReason:(int64_t)a3
+- (IMMetricsAppOpenEvent)initWithReason:(int64_t)reason
 {
   v7.receiver = self;
   v7.super_class = IMMetricsAppOpenEvent;
@@ -14,17 +14,17 @@
   if (v4)
   {
     [(IMAMSMetricsEvent *)v4 setEventType:@"app_open"];
-    [(IMMetricsAppOpenEvent *)v5 setEnterTypeWithLaunchReason:a3];
+    [(IMMetricsAppOpenEvent *)v5 setEnterTypeWithLaunchReason:reason];
   }
 
   return v5;
 }
 
-- (void)setEnterTypeWithLaunchReason:(int64_t)a3
+- (void)setEnterTypeWithLaunchReason:(int64_t)reason
 {
-  if (a3 <= 3)
+  if (reason <= 3)
   {
-    [(AMSMetricsEvent *)self im_setName:off_1E8569D88[a3]];
+    [(AMSMetricsEvent *)self im_setName:off_1E8569D88[reason]];
   }
 }
 

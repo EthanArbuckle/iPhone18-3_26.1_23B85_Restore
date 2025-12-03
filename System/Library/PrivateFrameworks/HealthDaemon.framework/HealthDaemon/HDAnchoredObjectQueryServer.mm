@@ -1,23 +1,23 @@
 @interface HDAnchoredObjectQueryServer
 - (BOOL)_shouldObserveOnPause;
-- (BOOL)prepareToActivateServerWithError:(id *)a3;
-- (BOOL)validateConfiguration:(id *)a3;
-- (HDAnchoredObjectQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (id)_queue_secureClientTokenWithError:(void *)a1;
+- (BOOL)prepareToActivateServerWithError:(id *)error;
+- (BOOL)validateConfiguration:(id *)configuration;
+- (HDAnchoredObjectQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (id)_queue_secureClientTokenWithError:(void *)error;
 - (id)_supportedTypesForBackgroundRunningCollection;
 - (id)description;
 - (id)objectTypes;
-- (uint64_t)_batchObjectsWithAnchor:(uint64_t)a3 error:(void *)a4 batchHandler:;
+- (uint64_t)_batchObjectsWithAnchor:(uint64_t)anchor error:(void *)error batchHandler:;
 - (uint64_t)_queue_shouldAcceptUpdates;
-- (void)_queue_deliverSamples:(void *)a3 deletedObjects:(void *)a4 anchor:(uint64_t)a5 clearPendingSamples:(uint64_t)a6 deliverResults:(void *)a7 description:;
-- (void)_queue_didChangeStateFromPreviousState:(int64_t)a3 state:(int64_t)a4;
+- (void)_queue_deliverSamples:(void *)samples deletedObjects:(void *)objects anchor:(uint64_t)anchor clearPendingSamples:(uint64_t)pendingSamples deliverResults:(void *)results description:;
+- (void)_queue_didChangeStateFromPreviousState:(int64_t)state state:(int64_t)a4;
 - (void)_queue_didDeactivate;
-- (void)_queue_handleBatchedQueryResult:(void *)a3 error:;
+- (void)_queue_handleBatchedQueryResult:(void *)result error:;
 - (void)_queue_runNextUpdateBlock;
 - (void)_queue_start;
-- (void)didAddSamplesOfTypes:(id)a3 anchor:(id)a4;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (void)didAddSamplesOfTypes:(id)types anchor:(id)anchor;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDAnchoredObjectQueryServer
@@ -40,10 +40,10 @@
       _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Running for initial results", buf, 0xCu);
     }
 
-    v11 = [(HDQueryServer *)self queryQueue];
-    dispatch_assert_queue_V2(v11);
+    queryQueue = [(HDQueryServer *)self queryQueue];
+    dispatch_assert_queue_V2(queryQueue);
 
-    v12 = [(HDQueryServer *)self clientProxy];
+    clientProxy = [(HDQueryServer *)self clientProxy];
     v42 = 0;
     v43 = &v42;
     v44 = 0x2020000000;
@@ -56,25 +56,25 @@
       *(v43 + 24) = 1;
     }
 
-    v13 = [(HKQueryAnchor *)self->_startAnchor _clientToken];
-    v14 = [(HDQueryServer *)self queryQueue];
-    dispatch_assert_queue_V2(v14);
+    _clientToken = [(HKQueryAnchor *)self->_startAnchor _clientToken];
+    queryQueue2 = [(HDQueryServer *)self queryQueue];
+    dispatch_assert_queue_V2(queryQueue2);
 
-    if (v13)
+    if (_clientToken)
     {
       v15 = [HDAnchoredObjectQueryServer _queue_secureClientTokenWithError:?];
       if (v15)
       {
-        v16 = [v13 isEqualToString:v15];
+        v16 = [_clientToken isEqualToString:v15];
 
         if (v16)
         {
 LABEL_27:
           v24 = self->_anchor;
-          v25 = [(HDQueryServer *)self profile];
-          v26 = [v25 database];
+          profile = [(HDQueryServer *)self profile];
+          database = [profile database];
           *buf = 0;
-          v27 = [(HDHealthEntity *)HDSampleEntity maxRowIDForPredicate:0 healthDatabase:v26 error:buf];
+          v27 = [(HDHealthEntity *)HDSampleEntity maxRowIDForPredicate:0 healthDatabase:database error:buf];
           v28 = *buf;
 
           if (v27)
@@ -95,8 +95,8 @@ LABEL_27:
           v32 = v29;
           if (v27)
           {
-            v33 = [(HKQueryAnchor *)v24 _rowid];
-            if (v33 > [v27 longLongValue])
+            _rowid = [(HKQueryAnchor *)v24 _rowid];
+            if (_rowid > [v27 longLongValue])
             {
               v34 = [MEMORY[0x277CCD840] _anchorWithRowid:{objc_msgSend(v27, "longLongValue")}];
 
@@ -108,7 +108,7 @@ LABEL_27:
             *&buf[8] = 3221225472;
             *&buf[16] = __60__HDAnchoredObjectQueryServer__queue_startForInitialResults__block_invoke;
             v47 = &unk_27861C5D0;
-            v48 = self;
+            selfCopy2 = self;
             v49 = &v42;
             v35 = [(HDAnchoredObjectQueryServer *)self _batchObjectsWithAnchor:v24 error:&v41 batchHandler:buf];
             v36 = v41;
@@ -142,8 +142,8 @@ LABEL_27:
           else if (v32)
           {
 LABEL_41:
-            v38 = [(HDQueryServer *)self queryUUID];
-            [v12 client_deliverError:v32 forQuery:v38];
+            queryUUID = [(HDQueryServer *)self queryUUID];
+            [clientProxy client_deliverError:v32 forQuery:queryUUID];
 
 LABEL_42:
             _Block_object_dispose(&v42, 8);
@@ -158,11 +158,11 @@ LABEL_42:
 
       else
       {
-        v18 = [0 hk_isDatabaseSchemaRolledBackError];
+        hk_isDatabaseSchemaRolledBackError = [0 hk_isDatabaseSchemaRolledBackError];
         _HKInitializeLogging();
         v19 = *v9;
         v20 = *v9;
-        if (v18)
+        if (hk_isDatabaseSchemaRolledBackError)
         {
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
@@ -236,7 +236,7 @@ LABEL_42:
   *&buf[8] = 3221225472;
   *&buf[16] = __52__HDAnchoredObjectQueryServer__queue_startForUpdate__block_invoke;
   v47 = &unk_27861C5F8;
-  v48 = self;
+  selfCopy2 = self;
   v7 = [(HDAnchoredObjectQueryServer *)self _batchObjectsWithAnchor:v6 error:&v42 batchHandler:buf];
   v8 = v42;
   [(HDAnchoredObjectQueryServer *)self _queue_handleBatchedQueryResult:v7 error:v8];
@@ -300,58 +300,58 @@ void __60__HDAnchoredObjectQueryServer__queue_startForInitialResults__block_invo
 
 - (uint64_t)_queue_shouldAcceptUpdates
 {
-  if (*(a1 + 225) != 1)
+  if (*(self + 225) != 1)
   {
     return 0;
   }
 
-  if ([a1 queryState] == 2)
+  if ([self queryState] == 2)
   {
     return 1;
   }
 
-  result = [a1 clientHasActiveWorkout];
+  result = [self clientHasActiveWorkout];
   if (result)
   {
-    v3 = [*(a1 + 264) count];
-    return ([*(a1 + 272) count] + v3) < 0xC8;
+    v3 = [*(self + 264) count];
+    return ([*(self + 272) count] + v3) < 0xC8;
   }
 
   return result;
 }
 
-- (HDAnchoredObjectQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDAnchoredObjectQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  clientCopy = client;
   v25.receiver = self;
   v25.super_class = HDAnchoredObjectQueryServer;
-  v12 = [(HDQueryServer *)&v25 initWithUUID:a3 configuration:v10 client:v11 delegate:a6];
+  v12 = [(HDQueryServer *)&v25 initWithUUID:d configuration:configurationCopy client:clientCopy delegate:delegate];
   if (v12)
   {
-    v13 = [v10 anchor];
+    anchor = [configurationCopy anchor];
     startAnchor = v12->_startAnchor;
-    v12->_startAnchor = v13;
+    v12->_startAnchor = anchor;
 
     objc_storeStrong(&v12->_anchor, v12->_startAnchor);
-    v12->_limit = [v10 limit];
-    v12->_deliversUpdates = [v10 shouldDeactivateAfterInitialResults] ^ 1;
-    v12->_includeDeletedObjects = [v10 includeDeletedObjects];
-    v12->_includeAutomaticTimeZones = [v10 includeAutomaticTimeZones];
-    [v10 collectionInterval];
+    v12->_limit = [configurationCopy limit];
+    v12->_deliversUpdates = [configurationCopy shouldDeactivateAfterInitialResults] ^ 1;
+    v12->_includeDeletedObjects = [configurationCopy includeDeletedObjects];
+    v12->_includeAutomaticTimeZones = [configurationCopy includeAutomaticTimeZones];
+    [configurationCopy collectionInterval];
     [(HDQueryServer *)v12 setCollectionInterval:?];
-    v12->_includeContributorInformation = [v10 includeContributorInformation];
-    v15 = [v10 queryDescriptors];
+    v12->_includeContributorInformation = [configurationCopy includeContributorInformation];
+    queryDescriptors = [configurationCopy queryDescriptors];
     queryDescriptors = v12->_queryDescriptors;
-    v12->_queryDescriptors = v15;
+    v12->_queryDescriptors = queryDescriptors;
 
-    v17 = [v10 queryDescriptors];
+    queryDescriptors2 = [configurationCopy queryDescriptors];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegate___block_invoke;
     v23[3] = &unk_27861C4C8;
-    v24 = v11;
-    v18 = [v17 hk_mapToDictionary:v23];
+    v24 = clientCopy;
+    v18 = [queryDescriptors2 hk_mapToDictionary:v23];
     sampleTypeToFilterMap = v12->_sampleTypeToFilterMap;
     v12->_sampleTypeToFilterMap = v18;
 
@@ -381,10 +381,10 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
   v10.receiver = self;
   v10.super_class = HDAnchoredObjectQueryServer;
   v4 = [(HDQueryServer *)&v10 description];
-  v5 = [(HDQueryServer *)self client];
-  v6 = [v5 process];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@ %@>", v4, v7];
+  client = [(HDQueryServer *)self client];
+  process = [client process];
+  bundleIdentifier = [process bundleIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@ %@>", v4, bundleIdentifier];
 
   return v8;
 }
@@ -399,7 +399,7 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
   return [(HDAnchoredObjectQueryServer *)self hk_mapToSet:&__block_literal_global_65];
 }
 
-- (BOOL)validateConfiguration:(id *)a3
+- (BOOL)validateConfiguration:(id *)configuration
 {
   v9.receiver = self;
   v9.super_class = HDAnchoredObjectQueryServer;
@@ -408,7 +408,7 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
   {
     if (self->_includeAutomaticTimeZones && (-[HDQueryServer client](self, "client"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 hasPrivateMetadataAccess], v6, (v7 & 1) == 0))
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a3 code:4 description:@"Unauthorized use of includeAutomaticTimeZones"];
+      [MEMORY[0x277CCA9B8] hk_assignError:configuration code:4 description:@"Unauthorized use of includeAutomaticTimeZones"];
       LOBYTE(v5) = 0;
     }
 
@@ -421,16 +421,16 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
   return v5;
 }
 
-- (BOOL)prepareToActivateServerWithError:(id *)a3
+- (BOOL)prepareToActivateServerWithError:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = HDAnchoredObjectQueryServer;
   if ([(HDQueryServer *)&v28 prepareToActivateServerWithError:?])
   {
-    v5 = [(HDQueryServer *)self client];
-    v6 = [v5 entitlements];
-    v7 = [v6 hasEntitlement:*MEMORY[0x277CCB868]];
+    client = [(HDQueryServer *)self client];
+    entitlements = [client entitlements];
+    v7 = [entitlements hasEntitlement:*MEMORY[0x277CCB868]];
 
     if (v7)
     {
@@ -439,11 +439,11 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
 
     else
     {
-      v9 = [(HDQueryServer *)self profile];
-      v10 = [v9 sourceManager];
-      v11 = [(HDQueryServer *)self client];
+      profile = [(HDQueryServer *)self profile];
+      sourceManager = [profile sourceManager];
+      client2 = [(HDQueryServer *)self client];
       v27 = 0;
-      v12 = [v10 createOrUpdateSourceForClient:v11 error:&v27];
+      v12 = [sourceManager createOrUpdateSourceForClient:client2 error:&v27];
       v13 = v27;
 
       if ([v13 hk_isAuthorizationDeniedError])
@@ -453,7 +453,7 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
         if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEBUG))
         {
           *buf = 138543362;
-          v30 = self;
+          selfCopy3 = self;
           _os_log_debug_impl(&dword_228986000, v14, OS_LOG_TYPE_DEBUG, "%{public}@: Client has no source bundle identifier", buf, 0xCu);
         }
 
@@ -463,18 +463,18 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
 
       else if (v12)
       {
-        v16 = [(HDQueryServer *)self profile];
+        profile2 = [(HDQueryServer *)self profile];
         v26 = v13;
-        v17 = [v12 sourceUUIDWithProfile:v16 error:&v26];
+        v17 = [v12 sourceUUIDWithProfile:profile2 error:&v26];
         v15 = v26;
 
         v8 = v17 != 0;
         if (v17)
         {
-          v19 = [v17 UUIDString];
+          uUIDString = [v17 UUIDString];
           if (self)
           {
-            objc_setProperty_atomic_copy(self, v18, v19, 328);
+            objc_setProperty_atomic_copy(self, v18, uUIDString, 328);
           }
         }
 
@@ -485,19 +485,19 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
           if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v30 = self;
+            selfCopy3 = self;
             v31 = 2114;
             v32 = v15;
             _os_log_error_impl(&dword_228986000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Failed to retrieve source UUID: %{public}@", buf, 0x16u);
           }
 
-          v19 = v15;
-          if (v19)
+          uUIDString = v15;
+          if (uUIDString)
           {
-            if (a3)
+            if (error)
             {
-              v23 = v19;
-              *a3 = v19;
+              v23 = uUIDString;
+              *error = uUIDString;
             }
 
             else
@@ -515,7 +515,7 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
         if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v30 = self;
+          selfCopy3 = self;
           v31 = 2114;
           v32 = v13;
           _os_log_error_impl(&dword_228986000, v20, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch/create local client source: %{public}@", buf, 0x16u);
@@ -524,10 +524,10 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
         v15 = v13;
         if (v15)
         {
-          if (a3)
+          if (error)
           {
             v21 = v15;
-            *a3 = v15;
+            *error = v15;
           }
 
           else
@@ -554,20 +554,20 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
 {
   if (self->_initialResultsSent)
   {
-    v3 = [(HDQueryServer *)self clientHasActiveWorkout];
-    if (v3)
+    clientHasActiveWorkout = [(HDQueryServer *)self clientHasActiveWorkout];
+    if (clientHasActiveWorkout)
     {
       v4 = [(NSMutableArray *)self->_addedSamplesPendingResume count];
-      LOBYTE(v3) = ([(NSMutableArray *)self->_deletedSamplesPendingResume count]+ v4) < 0xC8;
+      LOBYTE(clientHasActiveWorkout) = ([(NSMutableArray *)self->_deletedSamplesPendingResume count]+ v4) < 0xC8;
     }
   }
 
   else
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(clientHasActiveWorkout) = 1;
   }
 
-  return v3;
+  return clientHasActiveWorkout;
 }
 
 - (void)_queue_didDeactivate
@@ -578,7 +578,7 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: did deactivate", &v5, 0xCu);
   }
 
@@ -586,7 +586,7 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_didChangeStateFromPreviousState:(int64_t)a3 state:(int64_t)a4
+- (void)_queue_didChangeStateFromPreviousState:(int64_t)state state:(int64_t)a4
 {
   v19 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
@@ -597,10 +597,10 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = HDStringFromQueryServerState(a3);
+    v9 = HDStringFromQueryServerState(state);
     v10 = HDStringFromQueryServerState(a4);
     *buf = 138543874;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v9;
     v17 = 2112;
@@ -613,19 +613,19 @@ void __74__HDAnchoredObjectQueryServer_initWithUUID_configuration_client_delegat
 
 - (void)_queue_runNextUpdateBlock
 {
-  if (a1 && (*(a1 + 296) & 1) == 0)
+  if (self && (*(self + 296) & 1) == 0)
   {
-    v2 = [*(a1 + 288) firstObject];
-    if (v2)
+    firstObject = [*(self + 288) firstObject];
+    if (firstObject)
     {
-      [*(a1 + 288) removeObjectAtIndex:0];
-      *(a1 + 296) = 1;
+      [*(self + 288) removeObjectAtIndex:0];
+      *(self + 296) = 1;
       v3[0] = MEMORY[0x277D85DD0];
       v3[1] = 3221225472;
       v3[2] = __56__HDAnchoredObjectQueryServer__queue_runNextUpdateBlock__block_invoke;
       v3[3] = &unk_278613968;
-      v3[4] = a1;
-      (v2)[2](v2, v3);
+      v3[4] = self;
+      (firstObject)[2](firstObject, v3);
     }
   }
 }
@@ -704,27 +704,27 @@ uint64_t __65__HDAnchoredObjectQueryServer__enqueueDatabaseAccessUpdateBlock___b
   return v2();
 }
 
-- (void)_queue_deliverSamples:(void *)a3 deletedObjects:(void *)a4 anchor:(uint64_t)a5 clearPendingSamples:(uint64_t)a6 deliverResults:(void *)a7 description:
+- (void)_queue_deliverSamples:(void *)samples deletedObjects:(void *)objects anchor:(uint64_t)anchor clearPendingSamples:(uint64_t)pendingSamples deliverResults:(void *)results description:
 {
   v38 = *MEMORY[0x277D85DE8];
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v23 = a7;
-  if (a1)
+  samplesCopy = samples;
+  objectsCopy = objects;
+  resultsCopy = results;
+  if (self)
   {
-    v16 = [a1 queryQueue];
-    dispatch_assert_queue_V2(v16);
+    queryQueue = [self queryQueue];
+    dispatch_assert_queue_V2(queryQueue);
 
-    v17 = [HDAnchoredObjectQueryServer _queue_secureClientTokenWithError:a1];
+    v17 = [HDAnchoredObjectQueryServer _queue_secureClientTokenWithError:self];
     if (v17)
     {
-      [v15 _setClientToken:v17];
+      [objectsCopy _setClientToken:v17];
     }
 
-    if (!v15)
+    if (!objectsCopy)
     {
-      v15 = [MEMORY[0x277CCD840] latestAnchor];
+      objectsCopy = [MEMORY[0x277CCD840] latestAnchor];
     }
 
     _HKInitializeLogging();
@@ -733,25 +733,25 @@ uint64_t __65__HDAnchoredObjectQueryServer__enqueueDatabaseAccessUpdateBlock___b
     {
       v19 = v18;
       *buf = 138544898;
-      v25 = a1;
+      selfCopy = self;
       v26 = 2114;
-      v27 = v23;
+      v27 = resultsCopy;
       v28 = 2048;
       v29 = [v13 count];
       v30 = 2048;
-      v31 = [v14 count];
+      v31 = [samplesCopy count];
       v32 = 2048;
-      v33 = [v15 _rowid];
+      _rowid = [objectsCopy _rowid];
       v34 = 1024;
-      v35 = a5;
+      anchorCopy = anchor;
       v36 = 1024;
-      v37 = a6;
+      pendingSamplesCopy = pendingSamples;
       _os_log_impl(&dword_228986000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Delivering %{public}@: %lu samples, %lu deleted objects (anchor:%llu clear-pending:%{BOOL}d deliver:%{BOOL}d)", buf, 0x40u);
     }
 
-    v20 = [a1 clientProxy];
-    v21 = [a1 queryUUID];
-    [v20 client_deliverSampleObjects:v13 deletedObjects:v14 anchor:v15 clearPendingSamples:a5 deliverResults:a6 query:v21];
+    clientProxy = [self clientProxy];
+    queryUUID = [self queryUUID];
+    [clientProxy client_deliverSampleObjects:v13 deletedObjects:samplesCopy anchor:objectsCopy clearPendingSamples:anchor deliverResults:pendingSamples query:queryUUID];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -777,17 +777,17 @@ uint64_t __62__HDAnchoredObjectQueryServer__queue_didAddSamplesWithAnchor___bloc
   return v3 ^ 1u;
 }
 
-- (void)didAddSamplesOfTypes:(id)a3 anchor:(id)a4
+- (void)didAddSamplesOfTypes:(id)types anchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  anchorCopy = anchor;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__HDAnchoredObjectQueryServer_didAddSamplesOfTypes_anchor___block_invoke;
   v11[3] = &unk_278617620;
   objc_copyWeak(&v13, &location);
-  v8 = v7;
+  v8 = anchorCopy;
   v12 = v8;
   v9 = v11;
   v10 = v9;
@@ -1048,16 +1048,16 @@ void __59__HDAnchoredObjectQueryServer_didAddSamplesOfTypes_anchor___block_invok
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v5 = a3;
+  addedCopy = added;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HDAnchoredObjectQueryServer_samplesAdded_anchor___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = addedCopy;
+  v6 = addedCopy;
   [(HDQueryServer *)self onQueue:v7];
 }
 
@@ -1079,17 +1079,17 @@ uint64_t __51__HDAnchoredObjectQueryServer_samplesAdded_anchor___block_invoke(ui
   return [v2 addObjectsFromArray:v6];
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  anchorCopy = anchor;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__HDAnchoredObjectQueryServer_samplesOfTypesWereRemoved_anchor___block_invoke;
   v10[3] = &unk_278617620;
   objc_copyWeak(&v12, &location);
-  v8 = v7;
+  v8 = anchorCopy;
   v11 = v8;
   v9 = v10;
   if (self)
@@ -1249,65 +1249,65 @@ void __64__HDAnchoredObjectQueryServer_samplesOfTypesWereRemoved_anchor___block_
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_batchObjectsWithAnchor:(uint64_t)a3 error:(void *)a4 batchHandler:
+- (uint64_t)_batchObjectsWithAnchor:(uint64_t)anchor error:(void *)error batchHandler:
 {
   v45[1] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a4;
-  if ([*(a1 + 320) count] == 1)
+  errorCopy = error;
+  if ([*(self + 320) count] == 1)
   {
     v41 = v7;
-    v40 = v8;
-    v9 = [a1 queryQueue];
-    dispatch_assert_queue_V2(v9);
+    v40 = errorCopy;
+    queryQueue = [self queryQueue];
+    dispatch_assert_queue_V2(queryQueue);
 
-    v10 = [a1 newDataEntityEnumerator];
-    v11 = [a1 filter];
-    [v10 setFilter:v11];
+    newDataEntityEnumerator = [self newDataEntityEnumerator];
+    filter = [self filter];
+    [newDataEntityEnumerator setFilter:filter];
 
-    v12 = [a1 sampleAuthorizationFilter];
-    [v10 setAuthorizationFilter:v12];
+    sampleAuthorizationFilter = [self sampleAuthorizationFilter];
+    [newDataEntityEnumerator setAuthorizationFilter:sampleAuthorizationFilter];
 
     v13 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:*MEMORY[0x277CCC5B8] ascending:1];
     v45[0] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
-    [v10 setSortDescriptors:v14];
+    [newDataEntityEnumerator setSortDescriptors:v14];
 
-    v15 = [a1 client];
-    v16 = [v15 authorizationOracle];
-    v17 = [a1 objectType];
+    client = [self client];
+    authorizationOracle = [client authorizationOracle];
+    objectType = [self objectType];
     v44 = 0;
-    v18 = [v16 additionalAuthorizationPredicateForObjectType:v17 error:&v44];
+    v18 = [authorizationOracle additionalAuthorizationPredicateForObjectType:objectType error:&v44];
     v19 = v44;
 
     if (v18)
     {
-      [v10 setPredicate:v18];
-      if (*(a1 + 297) == 1)
+      [newDataEntityEnumerator setPredicate:v18];
+      if (*(self + 297) == 1)
       {
-        [v10 setEncodingOption:MEMORY[0x277CBEC38] forKey:@"IncludeAutomaticTimeZone"];
+        [newDataEntityEnumerator setEncodingOption:MEMORY[0x277CBEC38] forKey:@"IncludeAutomaticTimeZone"];
       }
 
-      if (*(a1 + 298) == 1)
+      if (*(self + 298) == 1)
       {
-        v20 = [a1 client];
-        v21 = [v20 hasEntitlement:*MEMORY[0x277CCBB98]];
+        client2 = [self client];
+        v21 = [client2 hasEntitlement:*MEMORY[0x277CCBB98]];
 
         if (v21)
         {
-          [v10 setEncodingOption:MEMORY[0x277CBEC38] forKey:@"IncludeContributorInformation"];
+          [newDataEntityEnumerator setEncodingOption:MEMORY[0x277CBEC38] forKey:@"IncludeContributorInformation"];
         }
       }
 
-      v22 = [a1 objectType];
-      if ([v22 code] == 273)
+      objectType2 = [self objectType];
+      if ([objectType2 code] == 273)
       {
-        v23 = [a1 client];
-        v24 = [v23 hasEntitlement:*MEMORY[0x277CCC8B0]];
+        client3 = [self client];
+        v24 = [client3 hasEntitlement:*MEMORY[0x277CCC8B0]];
 
         if ((v24 & 1) == 0)
         {
-          [v10 setEncodingOption:MEMORY[0x277CBEC38] forKey:@"HDMedicationDoseEventEntityEncodingOptionExcludePrivateMedicationInfo"];
+          [newDataEntityEnumerator setEncodingOption:MEMORY[0x277CBEC38] forKey:@"HDMedicationDoseEventEntityEncodingOptionExcludePrivateMedicationInfo"];
         }
       }
 
@@ -1315,34 +1315,34 @@ void __64__HDAnchoredObjectQueryServer_samplesOfTypesWereRemoved_anchor___block_
       {
       }
 
-      v32 = v10;
+      v32 = newDataEntityEnumerator;
     }
 
     else
     {
       v29 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:sel__queue_configuredEntityEnumerator format:@"Unable to determine authorization status."];
-      v30 = [a1 clientProxy];
-      v31 = [a1 queryUUID];
-      [v30 client_deliverError:v29 forQuery:v31];
+      clientProxy = [self clientProxy];
+      queryUUID = [self queryUUID];
+      [clientProxy client_deliverError:v29 forQuery:queryUUID];
 
       v32 = 0;
     }
 
     if (v32)
     {
-      v33 = *(a1 + 312);
-      if (v33 && (*(a1 + 225) & 1) == 0)
+      v33 = *(self + 312);
+      if (v33 && (*(self + 225) & 1) == 0)
       {
-        [v32 setLimitCount:v33 - *(a1 + 248)];
+        [v32 setLimitCount:v33 - *(self + 248)];
       }
 
       v34 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v41, "_rowid")}];
       [v32 setAnchor:v34];
 
-      v35 = *(a1 + 227);
-      v36 = a1;
+      v35 = *(self + 227);
+      selfCopy = self;
       v37 = v40;
-      v28 = [v36 batchObjectsWithEnumerator:v32 includeDeletedObjects:v35 error:a3 batchHandler:v40];
+      v28 = [selfCopy batchObjectsWithEnumerator:v32 includeDeletedObjects:v35 error:anchor batchHandler:v40];
     }
 
     else
@@ -1354,25 +1354,25 @@ void __64__HDAnchoredObjectQueryServer_samplesOfTypesWereRemoved_anchor___block_
 
   else
   {
-    v25 = [objc_alloc(MEMORY[0x277CCD8C0]) initWithQueryDescriptors:*(a1 + 320) sortDescriptors:0 followingAnchor:v7 upToAndIncludingAnchor:0 distinctByKeyPaths:0 state:0];
-    v26 = *(a1 + 227);
-    v27 = *(a1 + 312);
+    v25 = [objc_alloc(MEMORY[0x277CCD8C0]) initWithQueryDescriptors:*(self + 320) sortDescriptors:0 followingAnchor:v7 upToAndIncludingAnchor:0 distinctByKeyPaths:0 state:0];
+    v26 = *(self + 227);
+    v27 = *(self + 312);
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __74__HDAnchoredObjectQueryServer__batchObjectsWithAnchor_error_batchHandler___block_invoke;
     v42[3] = &unk_27861C648;
-    v43 = v8;
-    v28 = [a1 batchObjectsWithMultitypeQueryCursor:v25 includeDeletedObjects:v26 limit:v27 error:a3 batchHandler:v42];
+    v43 = errorCopy;
+    v28 = [self batchObjectsWithMultitypeQueryCursor:v25 includeDeletedObjects:v26 limit:v27 error:anchor batchHandler:v42];
   }
 
   v38 = *MEMORY[0x277D85DE8];
   return v28;
 }
 
-- (void)_queue_handleBatchedQueryResult:(void *)a3 error:
+- (void)_queue_handleBatchedQueryResult:(void *)result error:
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  resultCopy = result;
   if (a2 <= 2)
   {
     if (a2 != 1)
@@ -1384,7 +1384,7 @@ void __64__HDAnchoredObjectQueryServer_samplesOfTypesWereRemoved_anchor___block_
         if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_INFO))
         {
           v12 = 138543362;
-          v13 = a1;
+          selfCopy4 = self;
           v7 = "%{public}@: Client no longer authorized";
 LABEL_16:
           _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_INFO, v7, &v12, 0xCu);
@@ -1400,27 +1400,27 @@ LABEL_16:
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
     {
       v12 = 138543618;
-      v13 = a1;
+      selfCopy4 = self;
       v14 = 2114;
-      v15 = v5;
+      v15 = resultCopy;
       _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Encountered error enumerating update results: %{public}@", &v12, 0x16u);
-      if (v5)
+      if (resultCopy)
       {
         goto LABEL_13;
       }
     }
 
-    else if (v5)
+    else if (resultCopy)
     {
 LABEL_13:
-      v9 = [a1 clientProxy];
-      v10 = [a1 queryUUID];
-      [v9 client_deliverError:v5 forQuery:v10];
+      clientProxy = [self clientProxy];
+      queryUUID = [self queryUUID];
+      [clientProxy client_deliverError:resultCopy forQuery:queryUUID];
 
       goto LABEL_17;
     }
 
-    v5 = [MEMORY[0x277CCA9B8] hk_error:122 format:@"Sample enumeration failed without reporting an error."];
+    resultCopy = [MEMORY[0x277CCA9B8] hk_error:122 format:@"Sample enumeration failed without reporting an error."];
     goto LABEL_13;
   }
 
@@ -1431,7 +1431,7 @@ LABEL_13:
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_INFO))
     {
       v12 = 138543362;
-      v13 = a1;
+      selfCopy4 = self;
       v7 = "%{public}@: Canceled during enumeration";
       goto LABEL_16;
     }
@@ -1444,7 +1444,7 @@ LABEL_13:
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_INFO))
     {
       v12 = 138543362;
-      v13 = a1;
+      selfCopy4 = self;
       v7 = "%{public}@: Suspended during enumeration";
       goto LABEL_16;
     }
@@ -1470,26 +1470,26 @@ void __52__HDAnchoredObjectQueryServer__queue_startForUpdate__block_invoke(uint6
   }
 }
 
-- (id)_queue_secureClientTokenWithError:(void *)a1
+- (id)_queue_secureClientTokenWithError:(void *)error
 {
-  v2 = [a1 queryQueue];
-  dispatch_assert_queue_V2(v2);
+  queryQueue = [error queryQueue];
+  dispatch_assert_queue_V2(queryQueue);
 
-  v4 = a1[30];
+  v4 = error[30];
   if (!v4)
   {
-    v5 = objc_getProperty(a1, v3, 328, 1);
+    v5 = objc_getProperty(error, v3, 328, 1);
     if (!v5)
     {
       goto LABEL_5;
     }
 
     v6 = v5;
-    v7 = [v5 hk_SHA512Hash];
-    v8 = a1[30];
-    a1[30] = v7;
+    hk_SHA512Hash = [v5 hk_SHA512Hash];
+    v8 = error[30];
+    error[30] = hk_SHA512Hash;
 
-    v4 = a1[30];
+    v4 = error[30];
   }
 
   v5 = v4;

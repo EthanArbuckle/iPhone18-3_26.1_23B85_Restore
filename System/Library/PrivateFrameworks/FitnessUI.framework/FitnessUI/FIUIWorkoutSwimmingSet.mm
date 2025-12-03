@@ -3,21 +3,21 @@
 - (double)_activeDuration;
 - (double)_restingDuration;
 - (id)description;
-- (id)formattedActiveDurationWithFormattingManager:(id)a3;
-- (id)formattedDistanceValueWithFormattingManager:(id)a3;
+- (id)formattedActiveDurationWithFormattingManager:(id)manager;
+- (id)formattedDistanceValueWithFormattingManager:(id)manager;
 - (id)formattedDominantStrokeStyle;
-- (id)formattedPaceUsingFormatType:(int64_t)a3 formattingManager:(id)a4;
-- (id)formattedRestDurationWithFormattingManager:(id)a3;
-- (id)formattedStrokeCountUsingFormatType:(int64_t)a3 formattingManager:(id)a4;
+- (id)formattedPaceUsingFormatType:(int64_t)type formattingManager:(id)manager;
+- (id)formattedRestDurationWithFormattingManager:(id)manager;
+- (id)formattedStrokeCountUsingFormatType:(int64_t)type formattingManager:(id)manager;
 @end
 
 @implementation FIUIWorkoutSwimmingSet
 
 - (double)_activeDuration
 {
-  v3 = [(FIUIWorkoutSwimmingSet *)self movementEndDate];
-  v4 = [(FIUIWorkoutSwimmingSet *)self startDate];
-  [v3 timeIntervalSinceDate:v4];
+  movementEndDate = [(FIUIWorkoutSwimmingSet *)self movementEndDate];
+  startDate = [(FIUIWorkoutSwimmingSet *)self startDate];
+  [movementEndDate timeIntervalSinceDate:startDate];
   v6 = v5;
 
   return v6;
@@ -25,28 +25,28 @@
 
 - (double)_restingDuration
 {
-  v3 = [(FIUIWorkoutSwimmingSet *)self endDate];
-  v4 = [(FIUIWorkoutSwimmingSet *)self movementEndDate];
-  [v3 timeIntervalSinceDate:v4];
+  endDate = [(FIUIWorkoutSwimmingSet *)self endDate];
+  movementEndDate = [(FIUIWorkoutSwimmingSet *)self movementEndDate];
+  [endDate timeIntervalSinceDate:movementEndDate];
   v6 = v5;
 
   return v6;
 }
 
-- (id)formattedActiveDurationWithFormattingManager:(id)a3
+- (id)formattedActiveDurationWithFormattingManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   [(FIUIWorkoutSwimmingSet *)self _activeDuration];
-  v5 = [v4 stringWithDuration:3 durationFormat:?];
+  v5 = [managerCopy stringWithDuration:3 durationFormat:?];
 
   return v5;
 }
 
-- (id)formattedRestDurationWithFormattingManager:(id)a3
+- (id)formattedRestDurationWithFormattingManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   [(FIUIWorkoutSwimmingSet *)self _restingDuration];
-  v5 = [v4 stringWithDuration:3 durationFormat:?];
+  v5 = [managerCopy stringWithDuration:3 durationFormat:?];
 
   return v5;
 }
@@ -76,34 +76,34 @@ uint64_t __49__FIUIWorkoutSwimmingSet__decimalNumberFormatter__block_invoke()
   return [v2 setNumberStyle:1];
 }
 
-- (id)formattedDistanceValueWithFormattingManager:(id)a3
+- (id)formattedDistanceValueWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(FIUIWorkoutSwimmingSet *)self distance];
-  v6 = [MEMORY[0x1E696C510] meterUnit];
-  [v5 doubleValueForUnit:v6];
-  v7 = [v4 localizedStringWithDistanceInMeters:3 distanceType:1 unitStyle:?];
+  managerCopy = manager;
+  distance = [(FIUIWorkoutSwimmingSet *)self distance];
+  meterUnit = [MEMORY[0x1E696C510] meterUnit];
+  [distance doubleValueForUnit:meterUnit];
+  v7 = [managerCopy localizedStringWithDistanceInMeters:3 distanceType:1 unitStyle:?];
 
   return v7;
 }
 
-- (id)formattedPaceUsingFormatType:(int64_t)a3 formattingManager:(id)a4
+- (id)formattedPaceUsingFormatType:(int64_t)type formattingManager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   [(FIUIWorkoutSwimmingSet *)self _activeDuration];
   v8 = v7;
-  v9 = [(FIUIWorkoutSwimmingSet *)self distance];
-  v10 = [v6 localizedSwimmingPaceStringWithDistance:v9 overDuration:a3 paceFormat:v8];
+  distance = [(FIUIWorkoutSwimmingSet *)self distance];
+  v10 = [managerCopy localizedSwimmingPaceStringWithDistance:distance overDuration:type paceFormat:v8];
 
   return v10;
 }
 
-- (id)formattedStrokeCountUsingFormatType:(int64_t)a3 formattingManager:(id)a4
+- (id)formattedStrokeCountUsingFormatType:(int64_t)type formattingManager:(id)manager
 {
-  v6 = a4;
-  v7 = [(FIUIWorkoutSwimmingSet *)self strokeCount];
-  v8 = [(FIUIWorkoutSwimmingSet *)self distance];
-  v9 = [v6 localizedStrokeCountStringWithCount:v7 overDistance:v8 paceFormat:a3];
+  managerCopy = manager;
+  strokeCount = [(FIUIWorkoutSwimmingSet *)self strokeCount];
+  distance = [(FIUIWorkoutSwimmingSet *)self distance];
+  v9 = [managerCopy localizedStrokeCountStringWithCount:strokeCount overDistance:distance paceFormat:type];
 
   return v9;
 }
@@ -121,12 +121,12 @@ uint64_t __49__FIUIWorkoutSwimmingSet__decimalNumberFormatter__block_invoke()
   v12.receiver = self;
   v12.super_class = FIUIWorkoutSwimmingSet;
   v4 = [(FIUIWorkoutSwimmingSet *)&v12 description];
-  v5 = [(FIUIWorkoutSwimmingSet *)self startDate];
-  v6 = [(FIUIWorkoutSwimmingSet *)self endDate];
-  v7 = [(FIUIWorkoutSwimmingSet *)self distance];
+  startDate = [(FIUIWorkoutSwimmingSet *)self startDate];
+  endDate = [(FIUIWorkoutSwimmingSet *)self endDate];
+  distance = [(FIUIWorkoutSwimmingSet *)self distance];
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FIUIWorkoutSwimmingSet strokeCount](self, "strokeCount")}];
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:{-[FIUIWorkoutSwimmingSet dominantStrokeStyle](self, "dominantStrokeStyle")}];
-  v10 = [v3 stringWithFormat:@"%@: Start: %@ End: %@; Distance: %@; Stroke Count: %@; Stroke Style: %@", v4, v5, v6, v7, v8, v9];;
+  v10 = [v3 stringWithFormat:@"%@: Start: %@ End: %@; Distance: %@; Stroke Count: %@; Stroke Style: %@", v4, startDate, endDate, distance, v8, v9];;
 
   return v10;
 }

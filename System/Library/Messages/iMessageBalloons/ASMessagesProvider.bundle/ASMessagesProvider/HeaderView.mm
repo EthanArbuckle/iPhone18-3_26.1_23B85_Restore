@@ -1,14 +1,14 @@
 @interface HeaderView
-- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761810HeaderView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761810HeaderView)initWithReuseIdentifier:(id)a3;
-- (_TtC18ASMessagesProviderP33_F8126028EBC951D565C2F73D484F972E10HeaderView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProviderP33_F8126028EBC951D565C2F73D484F972E10HeaderView)initWithFrame:(CGRect)a3;
+- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761810HeaderView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761810HeaderView)initWithReuseIdentifier:(id)identifier;
+- (_TtC18ASMessagesProviderP33_F8126028EBC951D565C2F73D484F972E10HeaderView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProviderP33_F8126028EBC951D565C2F73D484F972E10HeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation HeaderView
 
-- (_TtC18ASMessagesProviderP33_F8126028EBC951D565C2F73D484F972E10HeaderView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProviderP33_F8126028EBC951D565C2F73D484F972E10HeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProviderP33_F8126028EBC951D565C2F73D484F972E10HeaderView_mediaView;
   type metadata accessor for StoryCardMediaView();
@@ -23,20 +23,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3EE188();
 }
 
-- (_TtC18ASMessagesProviderP33_F8126028EBC951D565C2F73D484F972E10HeaderView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProviderP33_F8126028EBC951D565C2F73D484F972E10HeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761810HeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761810HeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     sub_769240();
     v4 = sub_769210();
@@ -54,12 +54,12 @@
   return v5;
 }
 
-- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761810HeaderView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProviderP33_325AD3F8116EAD3DD531EDE1E760761810HeaderView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _s18ASMessagesProvider10HeaderViewCMa_0();
-  v4 = a3;
-  v5 = [(HeaderView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HeaderView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

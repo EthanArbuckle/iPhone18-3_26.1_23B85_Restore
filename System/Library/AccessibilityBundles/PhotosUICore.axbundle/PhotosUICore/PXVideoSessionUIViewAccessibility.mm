@@ -16,8 +16,8 @@
   if (!v3)
   {
     v4 = [(PXVideoSessionUIViewAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_7 startWithSelf:1];
-    v5 = [v4 _accessibilityViewController];
-    v6 = [v5 safeValueForKey:@"_accessoryVisibilityInteractionController"];
+    _accessibilityViewController = [v4 _accessibilityViewController];
+    v6 = [_accessibilityViewController safeValueForKey:@"_accessoryVisibilityInteractionController"];
     v7 = [v6 safeValueForKey:@"_currentAssetViewModel"];
     v3 = [v7 safeValueForKey:@"asset"];
   }
@@ -36,51 +36,51 @@ uint64_t __47__PXVideoSessionUIViewAccessibility__axPHAsset__block_invoke(uint64
 
 - (id)accessibilityLabel
 {
-  v2 = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
-  v3 = [v2 accessibilityLabel];
+  _axPHAsset = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
+  accessibilityLabel = [_axPHAsset accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
-  v3 = [v2 accessibilityValue];
+  _axPHAsset = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
+  accessibilityValue = [_axPHAsset accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)_accessibilityPHAssetLocalIdentifier
 {
-  v2 = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityPHAssetLocalIdentifier];
+  _axPHAsset = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
+  _accessibilityPHAssetLocalIdentifier = [_axPHAsset _accessibilityPHAssetLocalIdentifier];
 
-  return v3;
+  return _accessibilityPHAssetLocalIdentifier;
 }
 
 - (id)_accessibilityPhotoLibraryURL
 {
-  v2 = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityPhotoLibraryURL];
+  _axPHAsset = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
+  _accessibilityPhotoLibraryURL = [_axPHAsset _accessibilityPhotoLibraryURL];
 
-  return v3;
+  return _accessibilityPhotoLibraryURL;
 }
 
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable
 {
-  v2 = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityIsPHAssetLocallyAvailable];
+  _axPHAsset = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
+  _accessibilityIsPHAssetLocallyAvailable = [_axPHAsset _accessibilityIsPHAssetLocallyAvailable];
 
-  return v3;
+  return _accessibilityIsPHAssetLocallyAvailable;
 }
 
 - (id)accessibilityURL
 {
-  v3 = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
+  _axPHAsset = [(PXVideoSessionUIViewAccessibility *)self _axPHAsset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 accessibilityURL];
+    accessibilityURL = [_axPHAsset accessibilityURL];
   }
 
   else
@@ -88,7 +88,7 @@ uint64_t __47__PXVideoSessionUIViewAccessibility__axPHAsset__block_invoke(uint64
     if (objc_opt_respondsToSelector())
     {
       v9 = 0;
-      v5 = [v3 safeValueForKey:@"mainFileURL"];
+      v5 = [_axPHAsset safeValueForKey:@"mainFileURL"];
       v6 = __UIAccessibilitySafeClass();
 
       goto LABEL_7;
@@ -96,10 +96,10 @@ uint64_t __47__PXVideoSessionUIViewAccessibility__axPHAsset__block_invoke(uint64
 
     v8.receiver = self;
     v8.super_class = PXVideoSessionUIViewAccessibility;
-    v4 = [(PXVideoSessionUIViewAccessibility *)&v8 accessibilityURL];
+    accessibilityURL = [(PXVideoSessionUIViewAccessibility *)&v8 accessibilityURL];
   }
 
-  v6 = v4;
+  v6 = accessibilityURL;
 LABEL_7:
 
   return v6;

@@ -1,29 +1,29 @@
 @interface ECPackedDataUtils
-+ (char)prepareForDataOfLength:(unsigned int)a3 atIndex:(unsigned int)a4 withPreviousLength:(unsigned int)a5 inPackedData:(__CFData *)a6 packedDataSize:(unsigned int)a7;
-+ (id)dumpDataToHexadecimalString:(char *)a3 start:(unsigned int)a4 stop:(unsigned int)a5 nicelyFormatted:(BOOL)a6;
-+ (id)readStringFromData:(char *)a3 atOffset:(unsigned int)a4 withLength:(unsigned int)a5;
-+ (void)writeString:(id)a3 toPackedData:(__CFData *)a4 packedDataSize:(unsigned int)a5 atIndex:(unsigned int)a6 withPreviousLength:(unsigned __int16)a7 outLength:(unsigned __int16 *)a8;
++ (char)prepareForDataOfLength:(unsigned int)length atIndex:(unsigned int)index withPreviousLength:(unsigned int)previousLength inPackedData:(__CFData *)data packedDataSize:(unsigned int)size;
++ (id)dumpDataToHexadecimalString:(char *)string start:(unsigned int)start stop:(unsigned int)stop nicelyFormatted:(BOOL)formatted;
++ (id)readStringFromData:(char *)data atOffset:(unsigned int)offset withLength:(unsigned int)length;
++ (void)writeString:(id)string toPackedData:(__CFData *)data packedDataSize:(unsigned int)size atIndex:(unsigned int)index withPreviousLength:(unsigned __int16)length outLength:(unsigned __int16 *)outLength;
 @end
 
 @implementation ECPackedDataUtils
 
-+ (char)prepareForDataOfLength:(unsigned int)a3 atIndex:(unsigned int)a4 withPreviousLength:(unsigned int)a5 inPackedData:(__CFData *)a6 packedDataSize:(unsigned int)a7
++ (char)prepareForDataOfLength:(unsigned int)length atIndex:(unsigned int)index withPreviousLength:(unsigned int)previousLength inPackedData:(__CFData *)data packedDataSize:(unsigned int)size
 {
-  v7 = a6;
-  if (a6)
+  dataCopy = data;
+  if (data)
   {
-    if (a3 > a5)
+    if (length > previousLength)
     {
-      CFDataIncreaseLength(a6, a3 - a5);
+      CFDataIncreaseLength(data, length - previousLength);
     }
 
-    MutableBytePtr = CFDataGetMutableBytePtr(v7);
+    MutableBytePtr = CFDataGetMutableBytePtr(dataCopy);
     if (MutableBytePtr)
     {
-      v7 = &MutableBytePtr[a4];
-      if (a3 != a5)
+      dataCopy = &MutableBytePtr[index];
+      if (length != previousLength)
       {
-        memmove(v7 + a3, v7 + a5, a7 - (a5 + a4));
+        memmove(dataCopy + length, dataCopy + previousLength, size - (previousLength + index));
       }
     }
 
@@ -33,14 +33,14 @@
     }
   }
 
-  return v7;
+  return dataCopy;
 }
 
-+ (id)readStringFromData:(char *)a3 atOffset:(unsigned int)a4 withLength:(unsigned int)a5
++ (id)readStringFromData:(char *)data atOffset:(unsigned int)offset withLength:(unsigned int)length
 {
-  if (a5)
+  if (length)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithCharacters:&a3[a4] length:a5 >> 1];
+    v6 = [MEMORY[0x277CCACA8] stringWithCharacters:&data[offset] length:length >> 1];
   }
 
   else
@@ -51,65 +51,65 @@
   return v6;
 }
 
-+ (void)writeString:(id)a3 toPackedData:(__CFData *)a4 packedDataSize:(unsigned int)a5 atIndex:(unsigned int)a6 withPreviousLength:(unsigned __int16)a7 outLength:(unsigned __int16 *)a8
++ (void)writeString:(id)string toPackedData:(__CFData *)data packedDataSize:(unsigned int)size atIndex:(unsigned int)index withPreviousLength:(unsigned __int16)length outLength:(unsigned __int16 *)outLength
 {
-  v12 = a3;
-  v10 = [v12 length];
+  stringCopy = string;
+  v10 = [stringCopy length];
   if ((2 * v10) < 0x10000)
   {
-    if (a8)
+    if (outLength)
     {
-      *a8 = 2 * v10;
+      *outLength = 2 * v10;
     }
 
-    [v12 getCharacters:objc_msgSend(a1 range:{"prepareForDataOfLength:atIndex:withPreviousLength:inPackedData:packedDataSize:"), 0, v10}];
-    v11 = v12;
+    [stringCopy getCharacters:objc_msgSend(self range:{"prepareForDataOfLength:atIndex:withPreviousLength:inPackedData:packedDataSize:"), 0, v10}];
+    v11 = stringCopy;
   }
 
   else
   {
-    *a8 = 0;
-    v11 = v12;
+    *outLength = 0;
+    v11 = stringCopy;
   }
 }
 
-+ (id)dumpDataToHexadecimalString:(char *)a3 start:(unsigned int)a4 stop:(unsigned int)a5 nicelyFormatted:(BOOL)a6
++ (id)dumpDataToHexadecimalString:(char *)string start:(unsigned int)start stop:(unsigned int)stop nicelyFormatted:(BOOL)formatted
 {
-  if (a5 == a4)
+  if (stop == start)
   {
-    v6 = &stru_286EE1130;
+    string = &stru_286EE1130;
   }
 
   else
   {
-    v7 = a6;
-    v6 = [MEMORY[0x277CCAB68] string];
-    v11 = a5 - a4;
-    if (a5 > a4)
+    formattedCopy = formatted;
+    string = [MEMORY[0x277CCAB68] string];
+    v11 = stop - start;
+    if (stop > start)
     {
       v12 = 0;
-      v13 = a4;
+      startCopy = start;
       do
       {
-        if (v13 > a4 && v7 && (v12 & 3) == 0)
+        if (startCopy > start && formattedCopy && (v12 & 3) == 0)
         {
-          [(__CFString *)v6 appendString:@" "];
+          [(__CFString *)string appendString:@" "];
         }
 
-        [(__CFString *)v6 appendFormat:@"%02X", a3[v13++]];
+        [(__CFString *)string appendFormat:@"%02X", string[startCopy++]];
         ++v12;
       }
 
       while (v11 != v12);
     }
 
-    if (v7)
+    if (formattedCopy)
     {
-      [(__CFString *)v6 appendFormat:@" (%i bytes)", v11];
+      [(__CFString *)string appendFormat:@" (%i bytes)", v11];
     }
   }
 
-  return v6;
+  return string;
 }
 
 @end

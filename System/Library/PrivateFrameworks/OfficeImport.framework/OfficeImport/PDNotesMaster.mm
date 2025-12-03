@@ -4,7 +4,7 @@
 - (id)description;
 - (id)drawingTheme;
 - (id)fontScheme;
-- (id)parentTextStyleForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 defaultTextListStyle:(id)a5 overrideIndex:(BOOL)a6;
+- (id)parentTextStyleForPlaceholderType:(int)type placeholderTypeIndex:(int)index defaultTextListStyle:(id)style overrideIndex:(BOOL)overrideIndex;
 - (id)styleMatrix;
 - (void)doneWithContent;
 - (void)removeUnnecessaryOverrides;
@@ -40,41 +40,41 @@
 
 - (id)colorScheme
 {
-  v2 = [(PDNotesMaster *)self theme];
-  v3 = [v2 baseStyles];
-  v4 = [v3 colorScheme];
+  theme = [(PDNotesMaster *)self theme];
+  baseStyles = [theme baseStyles];
+  colorScheme = [baseStyles colorScheme];
 
-  return v4;
+  return colorScheme;
 }
 
 - (id)fontScheme
 {
-  v2 = [(PDNotesMaster *)self theme];
-  v3 = [v2 baseStyles];
-  v4 = [v3 fontScheme];
+  theme = [(PDNotesMaster *)self theme];
+  baseStyles = [theme baseStyles];
+  fontScheme = [baseStyles fontScheme];
 
-  return v4;
+  return fontScheme;
 }
 
 - (id)styleMatrix
 {
-  v2 = [(PDNotesMaster *)self theme];
-  v3 = [v2 baseStyles];
-  v4 = [v3 styleMatrix];
+  theme = [(PDNotesMaster *)self theme];
+  baseStyles = [theme baseStyles];
+  styleMatrix = [baseStyles styleMatrix];
 
-  return v4;
+  return styleMatrix;
 }
 
-- (id)parentTextStyleForPlaceholderType:(int)a3 placeholderTypeIndex:(int)a4 defaultTextListStyle:(id)a5 overrideIndex:(BOOL)a6
+- (id)parentTextStyleForPlaceholderType:(int)type placeholderTypeIndex:(int)index defaultTextListStyle:(id)style overrideIndex:(BOOL)overrideIndex
 {
-  v8 = a5;
-  v9 = v8;
-  if (a3 == 1)
+  styleCopy = style;
+  notesTextStyle = styleCopy;
+  if (type == 1)
   {
-    v9 = [(PDNotesMaster *)self notesTextStyle];
+    notesTextStyle = [(PDNotesMaster *)self notesTextStyle];
   }
 
-  return v9;
+  return notesTextStyle;
 }
 
 - (void)doneWithContent

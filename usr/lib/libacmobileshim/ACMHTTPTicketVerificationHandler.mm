@@ -1,6 +1,6 @@
 @interface ACMHTTPTicketVerificationHandler
 + (id)handlerName;
-- (ACMHTTPTicketVerificationHandler)initWithContext:(id)a3;
+- (ACMHTTPTicketVerificationHandler)initWithContext:(id)context;
 - (id)requestBody;
 @end
 
@@ -13,11 +13,11 @@
   return NSStringFromClass(v2);
 }
 
-- (ACMHTTPTicketVerificationHandler)initWithContext:(id)a3
+- (ACMHTTPTicketVerificationHandler)initWithContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = ACMHTTPTicketVerificationHandler;
-  v3 = [(ACCHTTPHandler *)&v6 initWithContext:a3];
+  v3 = [(ACCHTTPHandler *)&v6 initWithContext:context];
   v4 = v3;
   if (v3)
   {

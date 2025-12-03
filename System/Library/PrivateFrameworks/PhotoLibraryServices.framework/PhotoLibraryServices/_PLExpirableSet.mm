@@ -1,64 +1,64 @@
 @interface _PLExpirableSet
-- (BOOL)_didExpireObject:(id)a3;
-- (BOOL)containsObject:(id)a3;
-- (_PLExpirableSet)initWithSecondsToExpire:(double)a3;
-- (void)_touch:(id)a3;
-- (void)addObject:(id)a3;
+- (BOOL)_didExpireObject:(id)object;
+- (BOOL)containsObject:(id)object;
+- (_PLExpirableSet)initWithSecondsToExpire:(double)expire;
+- (void)_touch:(id)_touch;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)removeObject:(id)a3;
+- (void)removeObject:(id)object;
 @end
 
 @implementation _PLExpirableSet
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_set removeObject:v5];
-  [(NSMutableDictionary *)v4->_recentTouches removeObjectForKey:v5];
-  objc_sync_exit(v4);
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_set removeObject:objectCopy];
+  [(NSMutableDictionary *)selfCopy->_recentTouches removeObjectForKey:objectCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_set addObject:v5];
-  [(_PLExpirableSet *)v4 _touch:v5];
-  objc_sync_exit(v4);
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_set addObject:objectCopy];
+  [(_PLExpirableSet *)selfCopy _touch:objectCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(_PLExpirableSet *)v5 _didExpireObject:v4])
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(_PLExpirableSet *)selfCopy _didExpireObject:objectCopy])
   {
-    [(_PLExpirableSet *)v5 removeObject:v4];
+    [(_PLExpirableSet *)selfCopy removeObject:objectCopy];
 LABEL_5:
     v6 = 0;
     goto LABEL_6;
   }
 
-  if (![(NSMutableSet *)v5->_set containsObject:v4])
+  if (![(NSMutableSet *)selfCopy->_set containsObject:objectCopy])
   {
     goto LABEL_5;
   }
 
-  [(_PLExpirableSet *)v5 _touch:v4];
+  [(_PLExpirableSet *)selfCopy _touch:objectCopy];
   v6 = 1;
 LABEL_6:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)_didExpireObject:(id)a3
+- (BOOL)_didExpireObject:(id)object
 {
-  v4 = [(NSMutableDictionary *)self->_recentTouches objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_recentTouches objectForKeyedSubscript:object];
   v5 = v4;
   if (v4)
   {
@@ -75,15 +75,15 @@ LABEL_6:
   return v8;
 }
 
-- (void)_touch:(id)a3
+- (void)_touch:(id)_touch
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  _touchCopy = _touch;
   v6 = objc_alloc_init(v4);
-  [(NSMutableDictionary *)self->_recentTouches setObject:v6 forKeyedSubscript:v5];
+  [(NSMutableDictionary *)self->_recentTouches setObject:v6 forKeyedSubscript:_touchCopy];
 }
 
-- (_PLExpirableSet)initWithSecondsToExpire:(double)a3
+- (_PLExpirableSet)initWithSecondsToExpire:(double)expire
 {
   v11.receiver = self;
   v11.super_class = _PLExpirableSet;
@@ -91,7 +91,7 @@ LABEL_6:
   v5 = v4;
   if (v4)
   {
-    v4->_secondsToExpire = a3;
+    v4->_secondsToExpire = expire;
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     recentTouches = v5->_recentTouches;
     v5->_recentTouches = v6;

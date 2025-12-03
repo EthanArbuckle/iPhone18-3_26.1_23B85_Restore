@@ -1,21 +1,21 @@
 @interface WFActionDrawerCoordinator
-- (_TtC10WorkflowUI25WFActionDrawerCoordinator)initWithWorkflow:(id)a3 home:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (_TtC10WorkflowUI25WFActionDrawerCoordinator)initWithWorkflow:(id)workflow home:(id)home;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation WFActionDrawerCoordinator
 
-- (_TtC10WorkflowUI25WFActionDrawerCoordinator)initWithWorkflow:(id)a3 home:(id)a4
+- (_TtC10WorkflowUI25WFActionDrawerCoordinator)initWithWorkflow:(id)workflow home:(id)home
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_274814998(v5, a4);
+  workflowCopy = workflow;
+  homeCopy = home;
+  return sub_274814998(workflowCopy, home);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_2748183D0();
 }
 

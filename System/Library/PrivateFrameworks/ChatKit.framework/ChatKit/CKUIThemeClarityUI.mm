@@ -43,8 +43,8 @@ void __47__CKUIThemeClarityUI_transcriptBackgroundColor__block_invoke()
   {
     v5 = MEMORY[0x1E69DC888];
     v6 = [MEMORY[0x1E69DC888] colorWithRed:0.333333333 green:0.333333333 blue:0.345098039 alpha:1.0];
-    v7 = [MEMORY[0x1E69DC888] systemLightGrayColor];
-    v8 = [v5 dynamicColorWithLightColor:v6 darkColor:v7];
+    systemLightGrayColor = [MEMORY[0x1E69DC888] systemLightGrayColor];
+    v8 = [v5 dynamicColorWithLightColor:v6 darkColor:systemLightGrayColor];
     v9 = transcriptTextColor_sBehavior;
     transcriptTextColor_sBehavior = v8;
 

@@ -1,28 +1,28 @@
 @interface PHBatchFetchingArray
-- (BOOL)_shouldRetrieveRestrictedAssetOIDsWithSample:(id)a3;
-- (BOOL)containsObject:(id)a3;
+- (BOOL)_shouldRetrieveRestrictedAssetOIDsWithSample:(id)sample;
+- (BOOL)containsObject:(id)object;
 - (NSSet)oidsSet;
 - (NSString)description;
-- (PHBatchFetchingArray)initWithOIDs:(id)a3 options:(id)a4 dataSource:(id)a5;
-- (PHBatchFetchingArray)initWithObjects:(id)a3 options:(id)a4 photoLibrary:(id)a5;
-- (id)_batchForBatchNumber:(unint64_t)a3 shouldUpdateLastBatch:(BOOL)a4;
-- (id)_fetchObjectsInBatchNumber:(unint64_t)a3;
-- (id)_phObjectAtIndex:(unint64_t)a3;
-- (id)_phObjectsForOIDs:(id)a3;
-- (id)_prepareObjectsByOIDsFromOIDsToFetch:(id)a3 andUpdateUUIDsByOIDsForRestrictedObjectsUsingFetchedObjects:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)subarrayWithRange:(_NSRange)a3;
-- (unint64_t)_populateObjectBuffer:(id *)a3 range:(_NSRange)a4;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)indexOfObject:(id)a3;
-- (unint64_t)indexOfObject:(id)a3 inRange:(_NSRange)a4;
+- (PHBatchFetchingArray)initWithOIDs:(id)ds options:(id)options dataSource:(id)source;
+- (PHBatchFetchingArray)initWithObjects:(id)objects options:(id)options photoLibrary:(id)library;
+- (id)_batchForBatchNumber:(unint64_t)number shouldUpdateLastBatch:(BOOL)batch;
+- (id)_fetchObjectsInBatchNumber:(unint64_t)number;
+- (id)_phObjectAtIndex:(unint64_t)index;
+- (id)_phObjectsForOIDs:(id)ds;
+- (id)_prepareObjectsByOIDsFromOIDsToFetch:(id)fetch andUpdateUUIDsByOIDsForRestrictedObjectsUsingFetchedObjects:(id)objects;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)subarrayWithRange:(_NSRange)range;
+- (unint64_t)_populateObjectBuffer:(id *)buffer range:(_NSRange)range;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)indexOfObject:(id)object;
+- (unint64_t)indexOfObject:(id)object inRange:(_NSRange)range;
 - (unint64_t)test_lastBatchIndex;
-- (void)_rememberUUIDsForBatch:(id)a3;
+- (void)_rememberUUIDsForBatch:(id)batch;
 - (void)dealloc;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
-- (void)prefetchObjectsAtIndexes:(id)a3;
-- (void)test_evictBatchNumber:(int64_t)a3;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
+- (void)prefetchObjectsAtIndexes:(id)indexes;
+- (void)test_evictBatchNumber:(int64_t)number;
 @end
 
 @implementation PHBatchFetchingArray
@@ -77,9 +77,9 @@ void __31__PHBatchFetchingArray_oidsSet__block_invoke(uint64_t a1)
   objc_storeStrong(v7, v3);
 }
 
-- (void)prefetchObjectsAtIndexes:(id)a3
+- (void)prefetchObjectsAtIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
@@ -92,7 +92,7 @@ void __31__PHBatchFetchingArray_oidsSet__block_invoke(uint64_t a1)
   v6[4] = self;
   v6[5] = v8;
   v7 = v5;
-  [v4 enumerateRangesUsingBlock:v6];
+  [indexesCopy enumerateRangesUsingBlock:v6];
   _Block_object_dispose(v8, 8);
 }
 
@@ -143,22 +143,22 @@ void *__49__PHBatchFetchingArray_prefetchObjectsAtIndexes___block_invoke(void *r
   return lastBatchIndex;
 }
 
-- (void)test_evictBatchNumber:(int64_t)a3
+- (void)test_evictBatchNumber:(int64_t)number
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:number];
   [(NSCache *)self->_cache removeObjectForKey:v4];
 }
 
-- (void)_rememberUUIDsForBatch:(id)a3
+- (void)_rememberUUIDsForBatch:(id)batch
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [a3 objectValue];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  objectValue = [batch objectValue];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = objectValue;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -174,9 +174,9 @@ void *__49__PHBatchFetchingArray_prefetchObjectsAtIndexes___block_invoke(void *r
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v10 objectID];
-        [v4 setObject:v11 forKeyedSubscript:v12];
+        uuid = [v10 uuid];
+        objectID = [v10 objectID];
+        [dictionary setObject:uuid forKeyedSubscript:objectID];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -185,7 +185,7 @@ void *__49__PHBatchFetchingArray_prefetchObjectsAtIndexes___block_invoke(void *r
     while (v7);
   }
 
-  v13 = v4;
+  v13 = dictionary;
   pl_dispatch_async();
 }
 
@@ -207,12 +207,12 @@ uint64_t __47__PHBatchFetchingArray__rememberUUIDsForBatch___block_invoke(uint64
   return [v2 addEntriesFromDictionary:v6];
 }
 
-- (id)_fetchObjectsInBatchNumber:(unint64_t)a3
+- (id)_fetchObjectsInBatchNumber:(unint64_t)number
 {
   v34 = *MEMORY[0x1E69E9840];
   batchSize = self->_batchSize;
-  v5 = batchSize * a3;
-  v6 = batchSize * a3 + batchSize;
+  v5 = batchSize * number;
+  v6 = batchSize * number + batchSize;
   if (v6 >= self->_count)
   {
     count = self->_count;
@@ -223,15 +223,15 @@ uint64_t __47__PHBatchFetchingArray__rememberUUIDsForBatch___block_invoke(uint64
     count = v6;
   }
 
-  v8 = [(PHBatchFetchingArray *)self oids];
+  oids = [(PHBatchFetchingArray *)self oids];
   v9 = count - v5;
-  v10 = [v8 subarrayWithRange:{v5, count - v5}];
+  v10 = [oids subarrayWithRange:{v5, count - v5}];
 
   if (kdebug_is_enabled())
   {
-    v11 = [v10 firstObject];
+    firstObject = [v10 firstObject];
     objc_opt_class();
-    v12 = v11;
+    v12 = firstObject;
     if (objc_opt_isKindOfClass())
     {
       v13 = v12;
@@ -244,8 +244,8 @@ uint64_t __47__PHBatchFetchingArray__rememberUUIDsForBatch___block_invoke(uint64
 
     v14 = v13;
 
-    v15 = [v14 entity];
-    v16 = [v15 name];
+    entity = [v14 entity];
+    name = [entity name];
 
     v17 = PLPhotoKitGetLog();
     v18 = os_signpost_id_generate(v17);
@@ -255,7 +255,7 @@ uint64_t __47__PHBatchFetchingArray__rememberUUIDsForBatch___block_invoke(uint64
     {
       v21 = self->_count;
       v26 = 138413058;
-      v27 = v16;
+      v27 = name;
       v28 = 2048;
       v29 = v5;
       v30 = 2048;
@@ -287,16 +287,16 @@ uint64_t __47__PHBatchFetchingArray__rememberUUIDsForBatch___block_invoke(uint64
   return v22;
 }
 
-- (id)_batchForBatchNumber:(unint64_t)a3 shouldUpdateLastBatch:(BOOL)a4
+- (id)_batchForBatchNumber:(unint64_t)number shouldUpdateLastBatch:(BOOL)batch
 {
-  v4 = a4;
-  v7 = self;
+  batchCopy = batch;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lastBatchLock);
-  lastBatchIndex = v7->_lastBatchIndex;
-  v9 = v7->_lastBatch;
-  os_unfair_lock_unlock(&v7->_lastBatchLock);
+  lastBatchIndex = selfCopy->_lastBatchIndex;
+  v9 = selfCopy->_lastBatch;
+  os_unfair_lock_unlock(&selfCopy->_lastBatchLock);
 
-  if (lastBatchIndex == a3)
+  if (lastBatchIndex == number)
   {
     if (v9)
     {
@@ -308,14 +308,14 @@ uint64_t __47__PHBatchFetchingArray__rememberUUIDsForBatch___block_invoke(uint64
   {
   }
 
-  os_unfair_lock_lock(&v7->_cacheLock);
-  cache = v7->_cache;
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  os_unfair_lock_lock(&selfCopy->_cacheLock);
+  cache = selfCopy->_cache;
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:number];
   v12 = [(NSCache *)cache objectForKey:v11];
 
   if (!v12)
   {
-    v13 = objc_initWeak(&location, v7);
+    v13 = objc_initWeak(&location, selfCopy);
 
     v14 = objc_alloc(MEMORY[0x1E69BF270]);
     v22[0] = MEMORY[0x1E69E9820];
@@ -323,24 +323,24 @@ uint64_t __47__PHBatchFetchingArray__rememberUUIDsForBatch___block_invoke(uint64
     v22[2] = __67__PHBatchFetchingArray__batchForBatchNumber_shouldUpdateLastBatch___block_invoke;
     v22[3] = &unk_1E75A9EE8;
     objc_copyWeak(v23, &location);
-    v23[1] = a3;
+    v23[1] = number;
     v12 = [v14 initWithBlock:v22];
     objc_destroyWeak(v23);
     objc_destroyWeak(&location);
-    v15 = v7->_cache;
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v15 = selfCopy->_cache;
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:number];
     [(NSCache *)v15 setObject:v12 forKey:v16];
   }
 
-  os_unfair_lock_unlock(&v7->_cacheLock);
-  v17 = [v12 objectValue];
-  v9 = v17;
-  if (v4)
+  os_unfair_lock_unlock(&selfCopy->_cacheLock);
+  objectValue = [v12 objectValue];
+  v9 = objectValue;
+  if (batchCopy)
   {
-    v18 = v17;
-    v19 = v7;
-    os_unfair_lock_lock(&v7->_lastBatchLock);
-    v19->_lastBatchIndex = a3;
+    v18 = objectValue;
+    v19 = selfCopy;
+    os_unfair_lock_lock(&selfCopy->_lastBatchLock);
+    v19->_lastBatchIndex = number;
     lastBatch = v19->_lastBatch;
     v19->_lastBatch = v18;
 
@@ -369,30 +369,30 @@ id __67__PHBatchFetchingArray__batchForBatchNumber_shouldUpdateLastBatch___block
   return v4;
 }
 
-- (id)_phObjectAtIndex:(unint64_t)a3
+- (id)_phObjectAtIndex:(unint64_t)index
 {
-  v5 = a3 / self->_batchSize;
+  v5 = index / self->_batchSize;
   v6 = [(PHBatchFetchingArray *)self _batchForBatchNumber:v5 shouldUpdateLastBatch:1];
-  v7 = [v6 objectAtIndex:a3 - self->_batchSize * v5];
+  v7 = [v6 objectAtIndex:index - self->_batchSize * v5];
 
   return v7;
 }
 
-- (id)_prepareObjectsByOIDsFromOIDsToFetch:(id)a3 andUpdateUUIDsByOIDsForRestrictedObjectsUsingFetchedObjects:(id)a4
+- (id)_prepareObjectsByOIDsFromOIDsToFetch:(id)fetch andUpdateUUIDsByOIDsForRestrictedObjectsUsingFetchedObjects:(id)objects
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
-  v9 = [v7 count];
-  if (v9 < [v6 count] && -[PHBatchFetchingArray _shouldRetrieveRestrictedAssetOIDsWithSample:](self, "_shouldRetrieveRestrictedAssetOIDsWithSample:", v6))
+  fetchCopy = fetch;
+  objectsCopy = objects;
+  v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(fetchCopy, "count")}];
+  v9 = [objectsCopy count];
+  if (v9 < [fetchCopy count] && -[PHBatchFetchingArray _shouldRetrieveRestrictedAssetOIDsWithSample:](self, "_shouldRetrieveRestrictedAssetOIDsWithSample:", fetchCopy))
   {
-    v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v6];
+    v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:fetchCopy];
     v28 = MEMORY[0x1E69E9820];
     v29 = 3221225472;
     v30 = __121__PHBatchFetchingArray__prepareObjectsByOIDsFromOIDsToFetch_andUpdateUUIDsByOIDsForRestrictedObjectsUsingFetchedObjects___block_invoke;
     v31 = &unk_1E75AAEB0;
-    v32 = self;
+    selfCopy = self;
     v11 = v10;
     v33 = v11;
     pl_dispatch_sync();
@@ -407,7 +407,7 @@ id __67__PHBatchFetchingArray__batchForBatchNumber_shouldUpdateLastBatch___block
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v7;
+  v12 = objectsCopy;
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v13)
   {
@@ -423,9 +423,9 @@ id __67__PHBatchFetchingArray__batchForBatchNumber_shouldUpdateLastBatch___block
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [v17 objectID];
-        [v8 setObject:v17 forKey:v18];
-        [v11 removeObject:v18];
+        objectID = [v17 objectID];
+        [v8 setObject:v17 forKey:objectID];
+        [v11 removeObject:objectID];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v24 objects:v34 count:16];
@@ -437,8 +437,8 @@ id __67__PHBatchFetchingArray__batchForBatchNumber_shouldUpdateLastBatch___block
   if ([v11 count])
   {
     dataSource = self->_dataSource;
-    v20 = [v11 allObjects];
-    v21 = [(PHBatchFetchingArrayDataSource *)dataSource bfa_fetchUUIDsForRestrictedOIDs:v20];
+    allObjects = [v11 allObjects];
+    v21 = [(PHBatchFetchingArrayDataSource *)dataSource bfa_fetchUUIDsForRestrictedOIDs:allObjects];
 
     if (v21)
     {
@@ -481,22 +481,22 @@ uint64_t __121__PHBatchFetchingArray__prepareObjectsByOIDsFromOIDsToFetch_andUpd
   return [v2 addEntriesFromDictionary:v6];
 }
 
-- (id)_phObjectsForOIDs:(id)a3
+- (id)_phObjectsForOIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  if ([v4 count])
+  dsCopy = ds;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  if ([dsCopy count])
   {
-    v6 = [(PHBatchFetchingArrayFetchedClass *)self->_overridenFetchResultClass fetchedPropertySetClass];
+    fetchedPropertySetClass = [(PHBatchFetchingArrayFetchedClass *)self->_overridenFetchResultClass fetchedPropertySetClass];
     dataSource = self->_dataSource;
-    if (v6)
+    if (fetchedPropertySetClass)
     {
-      [(PHBatchFetchingArrayDataSource *)dataSource bfa_fetchedObjectsForOIDs:v4 propertySetClass:[(PHBatchFetchingArrayFetchedClass *)self->_overridenFetchResultClass fetchedPropertySetClass]];
+      [(PHBatchFetchingArrayDataSource *)dataSource bfa_fetchedObjectsForOIDs:dsCopy propertySetClass:[(PHBatchFetchingArrayFetchedClass *)self->_overridenFetchResultClass fetchedPropertySetClass]];
     }
 
     else
     {
-      [(PHBatchFetchingArrayDataSource *)dataSource bfa_fetchObjectsForOIDs:v4 propertyHint:self->_propertyHint overrideResultsWithClass:[(PHBatchFetchingArrayFetchedClass *)self->_overridenFetchResultClass fetchedObjectClass]];
+      [(PHBatchFetchingArrayDataSource *)dataSource bfa_fetchObjectsForOIDs:dsCopy propertyHint:self->_propertyHint overrideResultsWithClass:[(PHBatchFetchingArrayFetchedClass *)self->_overridenFetchResultClass fetchedObjectClass]];
     }
     v8 = ;
   }
@@ -506,17 +506,17 @@ uint64_t __121__PHBatchFetchingArray__prepareObjectsByOIDsFromOIDsToFetch_andUpd
     v8 = 0;
   }
 
-  v9 = [(PHBatchFetchingArray *)self _prepareObjectsByOIDsFromOIDsToFetch:v4 andUpdateUUIDsByOIDsForRestrictedObjectsUsingFetchedObjects:v8];
+  v9 = [(PHBatchFetchingArray *)self _prepareObjectsByOIDsFromOIDsToFetch:dsCopy andUpdateUUIDsByOIDsForRestrictedObjectsUsingFetchedObjects:v8];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __42__PHBatchFetchingArray__phObjectsForOIDs___block_invoke;
   v15[3] = &unk_1E75A9EC0;
   v16 = v9;
-  v17 = self;
+  selfCopy = self;
   v10 = v5;
   v18 = v10;
   v11 = v9;
-  [v4 enumerateObjectsUsingBlock:v15];
+  [dsCopy enumerateObjectsUsingBlock:v15];
   v12 = v18;
   v13 = v10;
 
@@ -595,19 +595,19 @@ uint64_t __42__PHBatchFetchingArray__phObjectsForOIDs___block_invoke_92(void *a1
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (BOOL)_shouldRetrieveRestrictedAssetOIDsWithSample:(id)a3
+- (BOOL)_shouldRetrieveRestrictedAssetOIDsWithSample:(id)sample
 {
-  v4 = a3;
-  v5 = [v4 count] && (-[PHBatchFetchingArrayDataSource bfa_supportsPrivacyRestrictionsForOIDs:](self->_dataSource, "bfa_supportsPrivacyRestrictionsForOIDs:", v4) & 1) != 0;
+  sampleCopy = sample;
+  v5 = [sampleCopy count] && (-[PHBatchFetchingArrayDataSource bfa_supportsPrivacyRestrictionsForOIDs:](self->_dataSource, "bfa_supportsPrivacyRestrictionsForOIDs:", sampleCopy) & 1) != 0;
 
   return v5;
 }
 
-- (unint64_t)_populateObjectBuffer:(id *)a3 range:(_NSRange)a4
+- (unint64_t)_populateObjectBuffer:(id *)buffer range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  Mutable = CFArrayCreateMutable(0, a4.length, MEMORY[0x1E695E9C0]);
+  length = range.length;
+  location = range.location;
+  Mutable = CFArrayCreateMutable(0, range.length, MEMORY[0x1E695E9C0]);
   if (location < location + length)
   {
     do
@@ -625,42 +625,42 @@ uint64_t __42__PHBatchFetchingArray__phObjectsForOIDs___block_invoke_92(void *a1
   Count = CFArrayGetCount(Mutable);
   v12.location = 0;
   v12.length = Count;
-  CFArrayGetValues(Mutable, v12, a3);
+  CFArrayGetValues(Mutable, v12, buffer);
   CFAutorelease(Mutable);
   return Count;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = state->var0;
+  if (!state->var0)
   {
-    a3->var2 = &a3->var2;
+    state->var2 = &state->var2;
   }
 
   count = self->_count;
-  v9 = var0 + a5 - count;
-  if (var0 + a5 < count)
+  v9 = var0 + count - count;
+  if (var0 + count < count)
   {
     v9 = 0;
   }
 
-  v10 = a5 - v9;
-  if (a5 == v9)
+  v10 = count - v9;
+  if (count == v9)
   {
     return 0;
   }
 
-  result = [(PHBatchFetchingArray *)self _populateObjectBuffer:a4 range:var0, a5 - v9];
-  a3->var0 = v10 + var0;
-  a3->var1 = a4;
+  result = [(PHBatchFetchingArray *)self _populateObjectBuffer:objects range:var0, count - v9];
+  state->var0 = v10 + var0;
+  state->var1 = objects;
   return result;
 }
 
-- (id)subarrayWithRange:(_NSRange)a3
+- (id)subarrayWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v18[3] = *MEMORY[0x1E69E9840];
   cache = self->_cache;
   if (cache)
@@ -685,22 +685,22 @@ uint64_t __42__PHBatchFetchingArray__phObjectsForOIDs___block_invoke_92(void *a1
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
   v12 = [PHBatchFetchingArray alloc];
-  v13 = [(PHBatchFetchingArray *)self oids];
-  v14 = [v13 subarrayWithRange:{location, length}];
+  oids = [(PHBatchFetchingArray *)self oids];
+  v14 = [oids subarrayWithRange:{location, length}];
   v15 = [(PHBatchFetchingArray *)v12 initWithOIDs:v14 options:v11 dataSource:self->_dataSource];
 
   return v15;
 }
 
-- (unint64_t)indexOfObject:(id)a3 inRange:(_NSRange)a4
+- (unint64_t)indexOfObject:(id)object inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = _objectIDForObject(a3);
+  length = range.length;
+  location = range.location;
+  v7 = _objectIDForObject(object);
   if (v7)
   {
-    v8 = [(PHBatchFetchingArray *)self oids];
-    v9 = [v8 indexOfObject:v7 inRange:{location, length}];
+    oids = [(PHBatchFetchingArray *)self oids];
+    v9 = [oids indexOfObject:v7 inRange:{location, length}];
   }
 
   else
@@ -711,13 +711,13 @@ uint64_t __42__PHBatchFetchingArray__phObjectsForOIDs___block_invoke_92(void *a1
   return v9;
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  v4 = _objectIDForObject(a3);
+  v4 = _objectIDForObject(object);
   if (v4)
   {
-    v5 = [(PHBatchFetchingArray *)self oids];
-    v6 = [v5 indexOfObject:v4];
+    oids = [(PHBatchFetchingArray *)self oids];
+    v6 = [oids indexOfObject:v4];
   }
 
   else
@@ -728,13 +728,13 @@ uint64_t __42__PHBatchFetchingArray__phObjectsForOIDs___block_invoke_92(void *a1
   return v6;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = _objectIDForObject(a3);
+  v4 = _objectIDForObject(object);
   if (v4)
   {
-    v5 = [(PHBatchFetchingArray *)self oids];
-    v6 = [v5 containsObject:v4];
+    oids = [(PHBatchFetchingArray *)self oids];
+    v6 = [oids containsObject:v4];
   }
 
   else
@@ -745,11 +745,11 @@ uint64_t __42__PHBatchFetchingArray__phObjectsForOIDs___block_invoke_92(void *a1
   return v6;
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
   if (self->_count)
   {
-    [(PHBatchFetchingArray *)self _populateObjectBuffer:a3 range:a4.location, a4.length];
+    [(PHBatchFetchingArray *)self _populateObjectBuffer:objects range:range.location, range.length];
   }
 }
 
@@ -763,12 +763,12 @@ uint64_t __42__PHBatchFetchingArray__phObjectsForOIDs___block_invoke_92(void *a1
   return v6;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   count = self->_count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%p: index (%lu) beyond bounds (%lu)", self, a3, count}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"%p: index (%lu) beyond bounds (%lu)", self, index, count}];
     v4 = 0;
   }
 
@@ -780,17 +780,17 @@ uint64_t __42__PHBatchFetchingArray__phObjectsForOIDs___block_invoke_92(void *a1
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"This array is truly immutable" userInfo:0];
   objc_exception_throw(v3);
 }
 
-- (PHBatchFetchingArray)initWithOIDs:(id)a3 options:(id)a4 dataSource:(id)a5
+- (PHBatchFetchingArray)initWithOIDs:(id)ds options:(id)options dataSource:(id)source
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dsCopy = ds;
+  optionsCopy = options;
+  sourceCopy = source;
   v40.receiver = self;
   v40.super_class = PHBatchFetchingArray;
   v13 = [(PHBatchFetchingArray *)&v40 init];
@@ -799,35 +799,35 @@ uint64_t __42__PHBatchFetchingArray__phObjectsForOIDs___block_invoke_92(void *a1
     goto LABEL_31;
   }
 
-  if (!v12 && [v10 count])
+  if (!sourceCopy && [dsCopy count])
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:v13 file:@"PHBatchFetchingArray.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"dataSource || oids.count == 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v13 file:@"PHBatchFetchingArray.m" lineNumber:132 description:{@"Invalid parameter not satisfying: %@", @"dataSource || oids.count == 0"}];
   }
 
   v13->_cacheLock._os_unfair_lock_opaque = 0;
   v13->_lastBatchLock._os_unfair_lock_opaque = 0;
-  objc_storeStrong(&v13->_oids, a3);
-  objc_storeStrong(&v13->_dataSource, a5);
-  v14 = [v11 objectForKeyedSubscript:@"propertyHint"];
+  objc_storeStrong(&v13->_oids, ds);
+  objc_storeStrong(&v13->_dataSource, source);
+  v14 = [optionsCopy objectForKeyedSubscript:@"propertyHint"];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 integerValue];
+    integerValue = [v14 integerValue];
   }
 
   else
   {
-    v16 = 2;
+    integerValue = 2;
   }
 
-  v13->_propertyHint = v16;
-  v17 = [v11 objectForKeyedSubscript:@"fetchedObjectBatchPropertySetClass"];
+  v13->_propertyHint = integerValue;
+  v17 = [optionsCopy objectForKeyedSubscript:@"fetchedObjectBatchPropertySetClass"];
 
   if (v17)
   {
     v18 = [PHBatchFetchingArrayFetchedClass alloc];
-    v19 = [v11 objectForKeyedSubscript:@"fetchedObjectBatchPropertySetClass"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"fetchedObjectBatchPropertySetClass"];
     v20 = [(PHBatchFetchingArrayFetchedClass *)v18 initWithFetchedPropertySetClass:v19];
 LABEL_12:
     overridenFetchResultClass = v13->_overridenFetchResultClass;
@@ -836,12 +836,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v21 = [v11 objectForKeyedSubscript:@"fetchedObjectClass"];
+  v21 = [optionsCopy objectForKeyedSubscript:@"fetchedObjectClass"];
 
   if (v21)
   {
     v22 = [PHBatchFetchingArrayFetchedClass alloc];
-    v19 = [v11 objectForKeyedSubscript:@"fetchedObjectClass"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"fetchedObjectClass"];
     v20 = [(PHBatchFetchingArrayFetchedClass *)v22 initWithFetchedObjectClass:v19];
     goto LABEL_12;
   }
@@ -851,13 +851,13 @@ LABEL_13:
   v13->_count = v24;
   if (v24)
   {
-    v25 = [v11 objectForKeyedSubscript:@"batchSize"];
-    v26 = [v25 unsignedIntegerValue];
+    v25 = [optionsCopy objectForKeyedSubscript:@"batchSize"];
+    unsignedIntegerValue = [v25 unsignedIntegerValue];
 
     count = 200;
-    if (v26)
+    if (unsignedIntegerValue)
     {
-      count = v26;
+      count = unsignedIntegerValue;
     }
 
     if (count >= v13->_count)
@@ -874,22 +874,22 @@ LABEL_13:
 
     if (v28 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v31 = [v11 objectForKeyedSubscript:@"cacheSize"];
+      v31 = [optionsCopy objectForKeyedSubscript:@"cacheSize"];
       v32 = v31;
       if (v31)
       {
-        v33 = [v31 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v31 unsignedIntegerValue];
       }
 
       else
       {
-        v33 = 10000;
+        unsignedIntegerValue2 = 10000;
       }
 
       v34 = v13->_count;
-      if (v33 < v34)
+      if (unsignedIntegerValue2 < v34)
       {
-        v34 = v33;
+        v34 = unsignedIntegerValue2;
       }
 
       if (v34)
@@ -919,18 +919,18 @@ LABEL_31:
   return v13;
 }
 
-- (PHBatchFetchingArray)initWithObjects:(id)a3 options:(id)a4 photoLibrary:(id)a5
+- (PHBatchFetchingArray)initWithObjects:(id)objects options:(id)options photoLibrary:(id)library
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  objectsCopy = objects;
+  optionsCopy = options;
+  libraryCopy = library;
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objectsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v8;
+  v12 = objectsCopy;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
@@ -946,8 +946,8 @@ LABEL_31:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) objectID];
-        [v11 addObject:v17];
+        objectID = [*(*(&v20 + 1) + 8 * v16) objectID];
+        [v11 addObject:objectID];
 
         ++v16;
       }
@@ -959,7 +959,7 @@ LABEL_31:
     while (v14);
   }
 
-  v18 = [(PHBatchFetchingArray *)self initWithOIDs:v11 options:v9 dataSource:v10];
+  v18 = [(PHBatchFetchingArray *)self initWithOIDs:v11 options:optionsCopy dataSource:libraryCopy];
   return v18;
 }
 

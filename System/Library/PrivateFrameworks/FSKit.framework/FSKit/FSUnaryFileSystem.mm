@@ -1,6 +1,6 @@
 @interface FSUnaryFileSystem
 - (FSUnaryFileSystem)init;
-- (void)wipeResource:(id)a3 completionHandler:(id)a4;
+- (void)wipeResource:(id)resource completionHandler:(id)handler;
 @end
 
 @implementation FSUnaryFileSystem
@@ -21,12 +21,12 @@
   return v2;
 }
 
-- (void)wipeResource:(id)a3 completionHandler:(id)a4
+- (void)wipeResource:(id)resource completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FSUnaryFileSystem *)self extension];
-  [FSFileSystemBasis wipeResource:v7 extension:v8 completionHandler:v6];
+  handlerCopy = handler;
+  resourceCopy = resource;
+  extension = [(FSUnaryFileSystem *)self extension];
+  [FSFileSystemBasis wipeResource:resourceCopy extension:extension completionHandler:handlerCopy];
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface AEHighlightedTextLabel
-+ (CGSize)sizeForAnnotation:(id)a3 font:(id)a4 width:(double)a5 numberOfLines:(unint64_t)a6 useSelectedText:(BOOL)a7;
-+ (__CTParagraphStyle)createParagraphStyleForFont:(__CTFont *)a3;
-+ (double)adjustedLeadingForFont:(__CTFont *)a3;
-+ (void)collapseNewlinesForMutableAttributedString:(id)a3;
-- (AEHighlightedTextLabel)initWithFrame:(CGRect)a3 generateHighlight:(BOOL)a4 generateHighlightAsynchronously:(BOOL)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (CGSize)sizeForAnnotation:(id)annotation font:(id)font width:(double)width numberOfLines:(unint64_t)lines useSelectedText:(BOOL)text;
++ (__CTParagraphStyle)createParagraphStyleForFont:(__CTFont *)font;
++ (double)adjustedLeadingForFont:(__CTFont *)font;
++ (void)collapseNewlinesForMutableAttributedString:(id)string;
+- (AEHighlightedTextLabel)initWithFrame:(CGRect)frame generateHighlight:(BOOL)highlight generateHighlightAsynchronously:(BOOL)asynchronously;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSAttributedString)annotationAttributedString;
 - (UIFont)font;
 - (void)_updateBackgroundColors;
 - (void)clearHighlights;
-- (void)drawLabelInRect:(CGRect)a3;
+- (void)drawLabelInRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)p_renderHighlightLayer:(id)a3 inContext:(CGContext *)a4 flippingOriginWithY:(double)a5;
-- (void)setAnnotation:(id)a3;
-- (void)setAnnotationBlendMode:(int)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setHighlightedTextColor:(id)a3;
-- (void)setPageTheme:(int64_t)a3;
-- (void)setTextColor:(id)a3;
+- (void)p_renderHighlightLayer:(id)layer inContext:(CGContext *)context flippingOriginWithY:(double)y;
+- (void)setAnnotation:(id)annotation;
+- (void)setAnnotationBlendMode:(int)mode;
+- (void)setBackgroundColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setHighlightedTextColor:(id)color;
+- (void)setPageTheme:(int64_t)theme;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation AEHighlightedTextLabel
 
-- (AEHighlightedTextLabel)initWithFrame:(CGRect)a3 generateHighlight:(BOOL)a4 generateHighlightAsynchronously:(BOOL)a5
+- (AEHighlightedTextLabel)initWithFrame:(CGRect)frame generateHighlight:(BOOL)highlight generateHighlightAsynchronously:(BOOL)asynchronously
 {
   v17.receiver = self;
   v17.super_class = AEHighlightedTextLabel;
-  v7 = [(AEHighlightedTextLabel *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(AEHighlightedTextLabel *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v7)
   {
     v8 = objc_alloc_init(AEHighlightRenderingController);
@@ -37,8 +37,8 @@
 
     [(AEHighlightRenderingController *)v7->_renderingController setCanUseFilters:1];
     v7->_numberOfLines = 2;
-    v7->_generateHighlight = a4;
-    v7->_generateHighlightAsynchronously = a5;
+    v7->_generateHighlight = highlight;
+    v7->_generateHighlightAsynchronously = asynchronously;
     v7->_annotationBlendMode = 0;
     v7->_highlightedAnnotationBlendMode = 3;
     [(AEHighlightedTextLabel *)v7 setContentMode:3];
@@ -66,13 +66,13 @@
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = objc_opt_class();
-  v6 = [(AEHighlightedTextLabel *)self annotation];
-  v7 = [(AEHighlightedTextLabel *)self font];
-  [v5 sizeForAnnotation:v6 font:v7 width:-[AEHighlightedTextLabel numberOfLines](self numberOfLines:"numberOfLines") useSelectedText:{-[AEHighlightedTextLabel useSelectedText](self, "useSelectedText"), width}];
+  annotation = [(AEHighlightedTextLabel *)self annotation];
+  font = [(AEHighlightedTextLabel *)self font];
+  [v5 sizeForAnnotation:annotation font:font width:-[AEHighlightedTextLabel numberOfLines](self numberOfLines:"numberOfLines") useSelectedText:{-[AEHighlightedTextLabel useSelectedText](self, "useSelectedText"), width}];
   v9 = v8;
   v11 = v10;
 
@@ -92,11 +92,11 @@
   [(AEHighlightedTextLabelTextView *)self->_textView setFrame:?];
 }
 
-+ (double)adjustedLeadingForFont:(__CTFont *)a3
++ (double)adjustedLeadingForFont:(__CTFont *)font
 {
-  Ascent = CTFontGetAscent(a3);
-  Descent = CTFontGetDescent(a3);
-  result = CTFontGetLeading(a3);
+  Ascent = CTFontGetAscent(font);
+  Descent = CTFontGetDescent(font);
+  result = CTFontGetLeading(font);
   if (result < (Ascent + Descent) * 0.2)
   {
     return (Ascent + Descent) * 0.2;
@@ -105,11 +105,11 @@
   return result;
 }
 
-+ (__CTParagraphStyle)createParagraphStyleForFont:(__CTFont *)a3
++ (__CTParagraphStyle)createParagraphStyleForFont:(__CTFont *)font
 {
-  Ascent = CTFontGetAscent(a3);
-  Descent = CTFontGetDescent(a3);
-  [a1 adjustedLeadingForFont:a3];
+  Ascent = CTFontGetAscent(font);
+  Descent = CTFontGetDescent(font);
+  [self adjustedLeadingForFont:font];
   v10 = v7;
   v9 = Ascent + Descent + v7;
   settings.spec = kCTParagraphStyleSpecifierMinimumLineSpacing;
@@ -124,12 +124,12 @@
   return CTParagraphStyleCreate(&settings, 3uLL);
 }
 
-- (void)drawLabelInRect:(CGRect)a3
+- (void)drawLabelInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   v9 = *&CGAffineTransformIdentity.c;
   *&v145.a = *&CGAffineTransformIdentity.a;
@@ -147,30 +147,30 @@
   CGAffineTransformScale(&transform, &v143, 1.0, -1.0);
   v145 = transform;
   CGContextConcatCTM(CurrentContext, &transform);
-  v11 = [(AEHighlightedTextLabel *)self annotation];
-  v12 = [(AEHighlightedTextLabel *)self renderingController];
-  v13 = [v11 annotationUuid];
-  [v12 removeHighlightForData:v13];
+  annotation = [(AEHighlightedTextLabel *)self annotation];
+  renderingController = [(AEHighlightedTextLabel *)self renderingController];
+  annotationUuid = [annotation annotationUuid];
+  [renderingController removeHighlightForData:annotationUuid];
 
   if ([(AEHighlightedTextLabel *)self useSelectedText])
   {
-    [AEAnnotation annotatedAttributedStringForAnnotation:v11];
+    [AEAnnotation annotatedAttributedStringForAnnotation:annotation];
   }
 
   else
   {
-    +[AEAnnotation annotatedAttributedStringForAnnotation:withPossibleLength:](AEAnnotation, "annotatedAttributedStringForAnnotation:withPossibleLength:", v11, -[AEHighlightedTextLabel numberOfLines](self, "numberOfLines") * [objc_opt_class() possibleLineLengthForAnnotation:v11 size:{CGSizeZero.width, CGSizeZero.height}]);
+    +[AEAnnotation annotatedAttributedStringForAnnotation:withPossibleLength:](AEAnnotation, "annotatedAttributedStringForAnnotation:withPossibleLength:", annotation, -[AEHighlightedTextLabel numberOfLines](self, "numberOfLines") * [objc_opt_class() possibleLineLengthForAnnotation:annotation size:{CGSizeZero.width, CGSizeZero.height}]);
   }
   v14 = ;
   v15 = [v14 mutableCopy];
 
   if (v15)
   {
-    v16 = [(AEHighlightedTextLabel *)self font];
-    v17 = [v16 fontName];
-    v18 = [(AEHighlightedTextLabel *)self font];
-    [v18 pointSize];
-    v20 = CTFontCreateWithName(v17, v19, 0);
+    font = [(AEHighlightedTextLabel *)self font];
+    fontName = [font fontName];
+    font2 = [(AEHighlightedTextLabel *)self font];
+    [font2 pointSize];
+    v20 = CTFontCreateWithName(fontName, v19, 0);
 
     v21 = [objc_opt_class() createParagraphStyleForFont:v20];
     if (v21)
@@ -202,17 +202,17 @@
     [v15 addAttributes:v25 range:{0, objc_msgSend(v15, "length")}];
     [objc_opt_class() collapseNewlinesForMutableAttributedString:v15];
     v26 = CTFramesetterCreateWithAttributedString(v15);
-    v27 = [UIBezierPath bezierPathWithRect:x, y, width, height];
-    v28 = [v27 CGPath];
+    height = [UIBezierPath bezierPathWithRect:x, y, width, height];
+    cGPath = [height CGPath];
     cf = v26;
     v149.location = 0;
     v149.length = 0;
-    v29 = CTFramesetterCreateFrame(v26, v149, v28, 0);
+    v29 = CTFramesetterCreateFrame(v26, v149, cGPath, 0);
 
     frame = v29;
     v30 = [(__CFArray *)CTFrameGetLines(v29) mutableCopy];
     v100 = v20;
-    v101 = v11;
+    v101 = annotation;
     v97.size.width = width;
     v97.size.height = height;
     v97.origin.x = x;
@@ -220,9 +220,9 @@
     v103 = v15;
     if ([v30 count])
     {
-      v31 = self;
+      selfCopy = self;
       v32 = CurrentContext;
-      v33 = [v30 lastObject];
+      lastObject = [v30 lastObject];
       v34 = [v15 attributesAtIndex:0 effectiveRange:0];
 
       v35 = [v34 mutableCopy];
@@ -237,7 +237,7 @@
         CFRelease(v38);
       }
 
-      location = CTLineGetStringRange(v33).location;
+      location = CTLineGetStringRange(lastObject).location;
       v152.length = [v103 length] - location;
       v152.location = location;
       v41 = CFAttributedStringCreateWithSubstring(0, v103, v152);
@@ -261,7 +261,7 @@
       }
 
       CurrentContext = v32;
-      self = v31;
+      self = selfCopy;
       if (v41)
       {
         CFRelease(v41);
@@ -298,7 +298,7 @@
       v114 = CGRectNull.origin.y;
       v112 = CGRectNull.size.height;
       v113 = CGRectNull.size.width;
-      v108 = self;
+      selfCopy2 = self;
       context = CurrentContext;
       do
       {
@@ -458,8 +458,8 @@
 
           CurrentContext = context;
           CTLineDraw(v49, context);
-          self = v108;
-          if (v108->_generateHighlight)
+          self = selfCopy2;
+          if (selfCopy2->_generateHighlight)
           {
             v164.origin.x = v61;
             v164.origin.y = v60;
@@ -501,7 +501,7 @@
               v170.size.height = v83;
               v171 = CGRectIntegral(v170);
               [(AEHighlightLine *)v84 setCurrentLineRect:v171.origin.x, v171.origin.y, v171.size.width, v171.size.height];
-              [(AEHighlightLine *)v84 setLightenBlend:v108->_shouldInvertContent];
+              [(AEHighlightLine *)v84 setLightenBlend:selfCopy2->_shouldInvertContent];
               [(AEHighlightLine *)v84 setMultiplyImage:0];
               v172.origin.x = v80;
               v172.origin.y = v82;
@@ -525,7 +525,7 @@
       while (v111);
     }
 
-    v11 = v101;
+    annotation = v101;
     v85 = v102;
     if ([v105 count])
     {
@@ -552,18 +552,18 @@
 
       else
       {
-        v88 = [(AEHighlightedTextLabel *)self renderingController];
-        v89 = [v101 annotationUuid];
-        [v88 addHighlight:v86 forData:v89];
+        renderingController2 = [(AEHighlightedTextLabel *)self renderingController];
+        annotationUuid2 = [v101 annotationUuid];
+        [renderingController2 addHighlight:v86 forData:annotationUuid2];
 
-        v90 = [(AEHighlightedTextLabel *)self renderingController];
-        v91 = [v90 highlightLayers];
+        renderingController3 = [(AEHighlightedTextLabel *)self renderingController];
+        highlightLayers = [renderingController3 highlightLayers];
 
         v123 = 0u;
         v124 = 0u;
         v121 = 0u;
         v122 = 0u;
-        v92 = v91;
+        v92 = highlightLayers;
         v93 = [v92 countByEnumeratingWithState:&v121 objects:v146 count:16];
         if (v93)
         {
@@ -612,42 +612,42 @@
   }
 }
 
-- (void)p_renderHighlightLayer:(id)a3 inContext:(CGContext *)a4 flippingOriginWithY:(double)a5
+- (void)p_renderHighlightLayer:(id)layer inContext:(CGContext *)context flippingOriginWithY:(double)y
 {
-  v7 = a3;
-  v8 = [v7 valueForKey:@"kAEHighlightLayerCurrentRectKey"];
+  layerCopy = layer;
+  v8 = [layerCopy valueForKey:@"kAEHighlightLayerCurrentRectKey"];
   [v8 CGRectValue];
   v10 = v9;
   v12 = v11;
 
-  CGContextSaveGState(a4);
+  CGContextSaveGState(context);
   memset(&v15, 0, sizeof(v15));
-  CGAffineTransformMakeTranslation(&v15, 0.0, a5);
+  CGAffineTransformMakeTranslation(&v15, 0.0, y);
   v13 = v15;
   CGAffineTransformScale(&transform, &v13, 1.0, -1.0);
   v15 = transform;
-  CGContextConcatCTM(a4, &transform);
+  CGContextConcatCTM(context, &transform);
   memset(&transform, 0, sizeof(transform));
   CGAffineTransformMakeTranslation(&transform, v10, v12);
   v13 = transform;
-  CGContextConcatCTM(a4, &v13);
-  [v7 renderInContext:a4];
+  CGContextConcatCTM(context, &v13);
+  [layerCopy renderInContext:context];
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [objc_opt_class() areAnimationsEnabled];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  areAnimationsEnabled = [objc_opt_class() areAnimationsEnabled];
   [objc_opt_class() setAnimationsEnabled:0];
   v9.receiver = self;
   v9.super_class = AEHighlightedTextLabel;
   [(AEHighlightedTextLabel *)&v9 setFrame:x, y, width, height];
-  [objc_opt_class() setAnimationsEnabled:v8];
+  [objc_opt_class() setAnimationsEnabled:areAnimationsEnabled];
 }
 
 - (UIFont)font
@@ -661,40 +661,40 @@
   return v2;
 }
 
-+ (void)collapseNewlinesForMutableAttributedString:(id)a3
++ (void)collapseNewlinesForMutableAttributedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v6 = 0;
   v4 = [NSRegularExpression regularExpressionWithPattern:@"[\r\n]+" options:0 error:&v6];
   if (v4)
   {
-    v5 = [v3 mutableString];
-    [v4 replaceMatchesInString:v5 options:0 range:0 withTemplate:{objc_msgSend(v3, "length"), @"\n"}];
+    mutableString = [stringCopy mutableString];
+    [v4 replaceMatchesInString:mutableString options:0 range:0 withTemplate:{objc_msgSend(stringCopy, "length"), @"\n"}];
   }
 }
 
-+ (CGSize)sizeForAnnotation:(id)a3 font:(id)a4 width:(double)a5 numberOfLines:(unint64_t)a6 useSelectedText:(BOOL)a7
++ (CGSize)sizeForAnnotation:(id)annotation font:(id)font width:(double)width numberOfLines:(unint64_t)lines useSelectedText:(BOOL)text
 {
-  v12 = a3;
-  v13 = a4;
-  if (a7)
+  annotationCopy = annotation;
+  fontCopy = font;
+  if (text)
   {
-    [AEAnnotation annotatedAttributedStringForAnnotation:v12];
+    [AEAnnotation annotatedAttributedStringForAnnotation:annotationCopy];
   }
 
   else
   {
-    +[AEAnnotation annotatedAttributedStringForAnnotation:withPossibleLength:](AEAnnotation, "annotatedAttributedStringForAnnotation:withPossibleLength:", v12, [a1 possibleLineLengthForAnnotation:v12 size:{CGSizeZero.width, CGSizeZero.height}] * a6);
+    +[AEAnnotation annotatedAttributedStringForAnnotation:withPossibleLength:](AEAnnotation, "annotatedAttributedStringForAnnotation:withPossibleLength:", annotationCopy, [self possibleLineLengthForAnnotation:annotationCopy size:{CGSizeZero.width, CGSizeZero.height}] * lines);
   }
   v14 = ;
   v15 = [v14 mutableCopy];
 
   if (v15)
   {
-    [a1 collapseNewlinesForMutableAttributedString:v15];
-    v16 = [v13 fontName];
-    [v13 pointSize];
-    v18 = CTFontCreateWithName(v16, v17, 0);
+    [self collapseNewlinesForMutableAttributedString:v15];
+    fontName = [fontCopy fontName];
+    [fontCopy pointSize];
+    v18 = CTFontCreateWithName(fontName, v17, 0);
 
     Ascent = CTFontGetAscent(v18);
     Descent = CTFontGetDescent(v18);
@@ -709,13 +709,13 @@
       CFRelease(v24);
     }
 
-    v25 = (ceil(Ascent + Descent) + ceil(v22)) * a6;
+    v25 = (ceil(Ascent + Descent) + ceil(v22)) * lines;
     v26 = CTFramesetterCreateWithAttributedString(v15);
-    v27 = [UIBezierPath bezierPathWithRect:0.0, 0.0, a5, v25];
-    v28 = [v27 CGPath];
+    v27 = [UIBezierPath bezierPathWithRect:0.0, 0.0, width, v25];
+    cGPath = [v27 CGPath];
     v51.location = 0;
     v51.length = 0;
-    Frame = CTFramesetterCreateFrame(v26, v51, v28, 0);
+    Frame = CTFramesetterCreateFrame(v26, v51, cGPath, 0);
 
     v30 = CTFrameGetLines(Frame);
     v47 = 0;
@@ -736,7 +736,7 @@
     v42[1] = 3221225472;
     v42[2] = sub_47228;
     v42[3] = &unk_2C9768;
-    v42[6] = a6;
+    v42[6] = lines;
     v42[7] = v31;
     v42[4] = &v47;
     v42[5] = &v43;
@@ -772,39 +772,39 @@
     height = CGSizeZero.height;
   }
 
-  v39 = width;
+  widthCopy = width;
   v40 = height;
   result.height = v40;
-  result.width = v39;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
-  v5 = a3;
-  if (self->_annotation != v5)
+  annotationCopy = annotation;
+  if (self->_annotation != annotationCopy)
   {
-    v8 = v5;
-    v6 = [(AEHighlightedTextLabel *)self renderingController];
-    v7 = [(AEAnnotation *)self->_annotation annotationUuid];
-    [v6 removeHighlightForData:v7];
+    v8 = annotationCopy;
+    renderingController = [(AEHighlightedTextLabel *)self renderingController];
+    annotationUuid = [(AEAnnotation *)self->_annotation annotationUuid];
+    [renderingController removeHighlightForData:annotationUuid];
 
-    objc_storeStrong(&self->_annotation, a3);
+    objc_storeStrong(&self->_annotation, annotation);
     [(AEHighlightedTextLabelTextView *)self->_textView setNeedsDisplay];
-    v5 = v8;
+    annotationCopy = v8;
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  colorCopy = color;
+  v5 = colorCopy;
+  if (!colorCopy)
   {
-    v4 = +[UIColor blackColor];
+    colorCopy = +[UIColor blackColor];
   }
 
-  objc_storeStrong(&self->_textColor, v4);
+  objc_storeStrong(&self->_textColor, colorCopy);
   if (!v5)
   {
   }
@@ -817,23 +817,23 @@
   [(AEHighlightedTextLabelTextView *)self->_textView setNeedsDisplay];
 }
 
-- (void)setHighlightedTextColor:(id)a3
+- (void)setHighlightedTextColor:(id)color
 {
-  textColor = a3;
-  if (!a3)
+  textColor = color;
+  if (!color)
   {
     textColor = self->_textColor;
   }
 
   objc_storeStrong(&self->_highlightedTextColor, textColor);
-  v6 = a3;
+  colorCopy = color;
   [(AEHighlightedTextLabelTextView *)self->_textView setNeedsDisplay];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_bk_backgroundColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_bk_backgroundColor, color);
+  colorCopy = color;
   v6 = +[UIColor clearColor];
   v7.receiver = self;
   v7.super_class = AEHighlightedTextLabel;
@@ -859,22 +859,22 @@
   [(AEHighlightedTextLabelTextView *)self->_textView setNeedsDisplay];
 }
 
-- (void)setPageTheme:(int64_t)a3
+- (void)setPageTheme:(int64_t)theme
 {
-  if ([(AEHighlightRenderingController *)self->_renderingController pageTheme]!= a3)
+  if ([(AEHighlightRenderingController *)self->_renderingController pageTheme]!= theme)
   {
-    [(AEHighlightRenderingController *)self->_renderingController setPageTheme:a3];
+    [(AEHighlightRenderingController *)self->_renderingController setPageTheme:theme];
     textView = self->_textView;
 
     [(AEHighlightedTextLabelTextView *)textView setNeedsDisplay];
   }
 }
 
-- (void)setAnnotationBlendMode:(int)a3
+- (void)setAnnotationBlendMode:(int)mode
 {
-  v3 = *&a3;
-  self->_annotationBlendMode = a3;
-  if ([(AEHighlightRenderingController *)self->_renderingController annotationBlendMode]!= a3)
+  v3 = *&mode;
+  self->_annotationBlendMode = mode;
+  if ([(AEHighlightRenderingController *)self->_renderingController annotationBlendMode]!= mode)
   {
     [(AEHighlightRenderingController *)self->_renderingController setAnnotationBlendMode:v3];
     textView = self->_textView;
@@ -883,14 +883,14 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
     v9 = v3;
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     v8 = &OBJC_IVAR___AEHighlightedTextLabel__annotationBlendMode;
-    if (a3)
+    if (highlighted)
     {
       v8 = &OBJC_IVAR___AEHighlightedTextLabel__highlightedAnnotationBlendMode;
     }
@@ -903,15 +903,15 @@
 
 - (NSAttributedString)annotationAttributedString
 {
-  v3 = [(AEHighlightedTextLabel *)self annotation];
+  annotation = [(AEHighlightedTextLabel *)self annotation];
   if ([(AEHighlightedTextLabel *)self useSelectedText])
   {
-    [AEAnnotation annotatedAttributedStringForAnnotation:v3];
+    [AEAnnotation annotatedAttributedStringForAnnotation:annotation];
   }
 
   else
   {
-    +[AEAnnotation annotatedAttributedStringForAnnotation:withPossibleLength:](AEAnnotation, "annotatedAttributedStringForAnnotation:withPossibleLength:", v3, -[AEHighlightedTextLabel numberOfLines](self, "numberOfLines") * [objc_opt_class() possibleLineLengthForAnnotation:v3 size:{CGSizeZero.width, CGSizeZero.height}]);
+    +[AEAnnotation annotatedAttributedStringForAnnotation:withPossibleLength:](AEAnnotation, "annotatedAttributedStringForAnnotation:withPossibleLength:", annotation, -[AEHighlightedTextLabel numberOfLines](self, "numberOfLines") * [objc_opt_class() possibleLineLengthForAnnotation:annotation size:{CGSizeZero.width, CGSizeZero.height}]);
   }
   v4 = ;
   v5 = [v4 mutableCopy];
@@ -921,10 +921,10 @@
 
 - (void)clearHighlights
 {
-  v5 = [(AEHighlightedTextLabel *)self renderingController];
-  v3 = [(AEHighlightedTextLabel *)self annotation];
-  v4 = [v3 annotationUuid];
-  [v5 removeHighlightForData:v4];
+  renderingController = [(AEHighlightedTextLabel *)self renderingController];
+  annotation = [(AEHighlightedTextLabel *)self annotation];
+  annotationUuid = [annotation annotationUuid];
+  [renderingController removeHighlightForData:annotationUuid];
 }
 
 @end

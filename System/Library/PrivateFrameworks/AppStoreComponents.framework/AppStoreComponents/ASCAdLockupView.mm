@@ -1,6 +1,6 @@
 @interface ASCAdLockupView
-- (ASCAdLockupView)initWithCoder:(id)a3;
-- (ASCAdLockupView)initWithFrame:(CGRect)a3;
+- (ASCAdLockupView)initWithCoder:(id)coder;
+- (ASCAdLockupView)initWithFrame:(CGRect)frame;
 - (ASCAdLockupViewDelegate)delegate;
 - (ASCLockup)lockup;
 - (ASCLockupRequest)request;
@@ -11,7 +11,7 @@
 - (BOOL)isVideoLoopingEnabled;
 - (BOOL)isVideoMuted;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityUserRating;
 - (NSString)description;
 - (UIViewController)presentingViewController;
@@ -23,7 +23,7 @@
 - (id)context;
 - (id)metricsActivityForPresentingProductDetails;
 - (id)metricsParametersForPresentingProductDetails;
-- (id)metricsParametersFromMetricsActivity:(id)a3;
+- (id)metricsParametersFromMetricsActivity:(id)activity;
 - (id)offerTheme;
 - (unint64_t)accessibilityTraits;
 - (void)didMoveToWindow;
@@ -34,35 +34,35 @@
 - (void)lockupMediaPresenterDidBeginScreenshotsFetchRequest;
 - (void)lockupMediaPresenterDidCancelScreenshotsFetchRequest;
 - (void)lockupMediaPresenterDidFinishScreenshotsFetchRequest;
-- (void)lockupMediaPresenterVideoStateDidChange:(int64_t)a3;
+- (void)lockupMediaPresenterVideoStateDidChange:(int64_t)change;
 - (void)lockupPresenterDidBeginRequest;
-- (void)lockupPresenterDidFailRequestWithError:(id)a3;
+- (void)lockupPresenterDidFailRequestWithError:(id)error;
 - (void)lockupPresenterDidFinishRequest;
-- (void)offerPresenterDidObserveChangeToState:(id)a3;
-- (void)offerPresenterPreprocessOffer:(id)a3 inState:(id)a4 completionBlock:(id)a5;
-- (void)offerPresenterWillPerformActionOfOffer:(id)a3 inState:(id)a4 withActivity:(id *)a5 inContext:(id *)a6 withPaymentSheetView:(id)a7;
+- (void)offerPresenterDidObserveChangeToState:(id)state;
+- (void)offerPresenterPreprocessOffer:(id)offer inState:(id)state completionBlock:(id)block;
+- (void)offerPresenterWillPerformActionOfOffer:(id)offer inState:(id)state withActivity:(id *)activity inContext:(id *)context withPaymentSheetView:(id)view;
 - (void)performAdTransparencyAction;
 - (void)performLockupAction;
 - (void)performOfferAction;
 - (void)presentProductDetailsViewController;
 - (void)presentingViewController;
-- (void)setAdMarkerHidden:(BOOL)a3;
-- (void)setAdTransparencyButtonHidden:(BOOL)a3;
-- (void)setAppearMetricsActivity:(id)a3;
-- (void)setAutomaticallyGeneratesAppearMetrics:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDeveloperName:(id)a3;
-- (void)setGroup:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
-- (void)setLockup:(id)a3;
-- (void)setOfferTheme:(id)a3;
-- (void)setRequest:(id)a3;
-- (void)setVideoLoopingEnabled:(BOOL)a3;
-- (void)setVideoMuted:(BOOL)a3;
-- (void)updateLayoutMarginsForContext:(id)a3;
-- (void)updateVisibility:(int64_t)a3;
+- (void)setAdMarkerHidden:(BOOL)hidden;
+- (void)setAdTransparencyButtonHidden:(BOOL)hidden;
+- (void)setAppearMetricsActivity:(id)activity;
+- (void)setAutomaticallyGeneratesAppearMetrics:(BOOL)metrics;
+- (void)setDelegate:(id)delegate;
+- (void)setDeveloperName:(id)name;
+- (void)setGroup:(id)group;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
+- (void)setLockup:(id)lockup;
+- (void)setOfferTheme:(id)theme;
+- (void)setRequest:(id)request;
+- (void)setVideoLoopingEnabled:(BOOL)enabled;
+- (void)setVideoMuted:(BOOL)muted;
+- (void)updateLayoutMarginsForContext:(id)context;
+- (void)updateVisibility:(int64_t)visibility;
 @end
 
 @implementation ASCAdLockupView
@@ -71,9 +71,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = ASCLocalizedFormatString(@"AX_USER_RATINGS");
-  v5 = [(ASCAdLockupView *)self lockup];
-  v6 = [v5 productRatingBadge];
-  v7 = [v3 localizedStringWithFormat:v4, v6];
+  lockup = [(ASCAdLockupView *)self lockup];
+  productRatingBadge = [lockup productRatingBadge];
+  v7 = [v3 localizedStringWithFormat:v4, productRatingBadge];
 
   return v7;
 }
@@ -83,11 +83,11 @@
   v8.receiver = self;
   v8.super_class = ASCAdLockupView;
   v3 = *MEMORY[0x277D76548] | [(ASCAdLockupView *)&v8 accessibilityTraits];
-  v4 = [(ASCAdLockupView *)self contentView];
-  v5 = [v4 isEnabled];
+  contentView = [(ASCAdLockupView *)self contentView];
+  isEnabled = [contentView isEnabled];
 
   v6 = *MEMORY[0x277D76580];
-  if (v5)
+  if (isEnabled)
   {
     v6 = 0;
   }
@@ -97,31 +97,31 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(ASCAdLockupView *)self contentView];
+  contentView = [(ASCAdLockupView *)self contentView];
   v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:6];
-  v5 = [(ASCAdLockupView *)self accessibilityAdvertisement];
-  [v4 addObject:v5];
+  accessibilityAdvertisement = [(ASCAdLockupView *)self accessibilityAdvertisement];
+  [v4 addObject:accessibilityAdvertisement];
 
-  v6 = [v3 headingLabelIfLoaded];
+  headingLabelIfLoaded = [contentView headingLabelIfLoaded];
 
-  if (v6)
+  if (headingLabelIfLoaded)
   {
-    v7 = [v3 headingLabelIfLoaded];
-    [v4 addObject:v7];
+    headingLabelIfLoaded2 = [contentView headingLabelIfLoaded];
+    [v4 addObject:headingLabelIfLoaded2];
   }
 
-  v8 = [v3 titleLabel];
-  [v4 addObject:v8];
+  titleLabel = [contentView titleLabel];
+  [v4 addObject:titleLabel];
 
-  v9 = [v3 subtitleLabel];
-  [v4 addObject:v9];
+  subtitleLabel = [contentView subtitleLabel];
+  [v4 addObject:subtitleLabel];
 
-  v10 = [v3 offerStatusLabelIfLoaded];
+  offerStatusLabelIfLoaded = [contentView offerStatusLabelIfLoaded];
 
-  if (v10)
+  if (offerStatusLabelIfLoaded)
   {
-    v11 = [v3 offerStatusLabelIfLoaded];
-    [v4 addObject:v11];
+    offerStatusLabelIfLoaded2 = [contentView offerStatusLabelIfLoaded];
+    [v4 addObject:offerStatusLabelIfLoaded2];
   }
 
   v12 = ASCAXLabelForElements(v4);
@@ -132,19 +132,19 @@
 - (id)_accessibilitySupplementaryHeaderViews
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ASCAdLockupView *)self accessibilityAdvertisement];
-  v4 = [(ASCAdLockupView *)self adTransparencyContainer];
-  v5 = [v4 adTransparencyButton];
-  [v5 setAccessibilityLabel:v3];
+  accessibilityAdvertisement = [(ASCAdLockupView *)self accessibilityAdvertisement];
+  adTransparencyContainer = [(ASCAdLockupView *)self adTransparencyContainer];
+  adTransparencyButton = [adTransparencyContainer adTransparencyButton];
+  [adTransparencyButton setAccessibilityLabel:accessibilityAdvertisement];
 
   v6 = *MEMORY[0x277D76548];
-  v7 = [(ASCAdLockupView *)self adTransparencyContainer];
-  v8 = [v7 adTransparencyButton];
-  [v8 setAccessibilityTraits:v6];
+  adTransparencyContainer2 = [(ASCAdLockupView *)self adTransparencyContainer];
+  adTransparencyButton2 = [adTransparencyContainer2 adTransparencyButton];
+  [adTransparencyButton2 setAccessibilityTraits:v6];
 
-  v9 = [(ASCAdLockupView *)self adTransparencyContainer];
-  v10 = [v9 adTransparencyButton];
-  v13[0] = v10;
+  adTransparencyContainer3 = [(ASCAdLockupView *)self adTransparencyContainer];
+  adTransparencyButton3 = [adTransparencyContainer3 adTransparencyButton];
+  v13[0] = adTransparencyButton3;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
 
   return v11;
@@ -153,11 +153,11 @@
 - (id)_accessibilitySupplementaryFooterViews
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ASCAdLockupView *)self contentView];
-  v4 = [v3 offerButton];
-  v8[0] = v4;
-  v5 = [(ASCAdLockupView *)self mediaView];
-  v8[1] = v5;
+  contentView = [(ASCAdLockupView *)self contentView];
+  offerButton = [contentView offerButton];
+  v8[0] = offerButton;
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  v8[1] = mediaView;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 
   return v6;
@@ -165,60 +165,60 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(ASCAdLockupView *)self contentView];
-  v4 = [v3 isEnabled];
+  contentView = [(ASCAdLockupView *)self contentView];
+  isEnabled = [contentView isEnabled];
 
-  if (!v4)
+  if (!isEnabled)
   {
     return 0;
   }
 
-  v5 = [(ASCAdLockupView *)self contentView];
-  [v5 sendActionsForControlEvents:64];
+  contentView2 = [(ASCAdLockupView *)self contentView];
+  [contentView2 sendActionsForControlEvents:64];
 
   return [(ASCAdLockupView *)self automaticallyPresentsProductDetails];
 }
 
 - (id)accessibilityIdentifier
 {
-  v3 = [(ASCAdLockupView *)self lockup];
-  v4 = [v3 id];
-  v5 = [v4 stringValue];
+  lockup = [(ASCAdLockupView *)self lockup];
+  v4 = [lockup id];
+  stringValue = [v4 stringValue];
 
   v6 = MEMORY[0x277CCACA8];
-  if (v5)
+  if (stringValue)
   {
-    v7 = [(ASCAdLockupView *)self lockup];
-    v8 = [v7 id];
-    v9 = [v8 stringValue];
-    v10 = [v6 stringWithFormat:@"AdLockup[id=%@]", v9];
+    lockup2 = [(ASCAdLockupView *)self lockup];
+    v8 = [lockup2 id];
+    stringValue2 = [v8 stringValue];
+    v10 = [v6 stringWithFormat:@"AdLockup[id=%@]", stringValue2];
     v11 = ASCAXIdentifierWithSuffix(v10);
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"AdLockup"];
-    v11 = ASCAXIdentifierWithSuffix(v7);
+    lockup2 = [MEMORY[0x277CCACA8] stringWithFormat:@"AdLockup"];
+    v11 = ASCAXIdentifierWithSuffix(lockup2);
   }
 
   return v11;
 }
 
-- (ASCAdLockupView)initWithFrame:(CGRect)a3
+- (ASCAdLockupView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v40[1] = *MEMORY[0x277D85DE8];
   +[ASCEligibility assertCurrentProcessEligibility];
   v39.receiver = self;
   v39.super_class = ASCAdLockupView;
-  v8 = [(ASCAdLockupView *)&v39 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(ASCAdLockupView *)&v39 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v8->_automaticallyPresentsProductDetails = 1;
+    height->_automaticallyPresentsProductDetails = 1;
     v10 = [ASCLockupContentView alloc];
     v11 = *MEMORY[0x277CBF3A0];
     v12 = *(MEMORY[0x277CBF3A0] + 8);
@@ -290,7 +290,7 @@
   return v9;
 }
 
-- (ASCAdLockupView)initWithCoder:(id)a3
+- (ASCAdLockupView)initWithCoder:(id)coder
 {
   [(ASCAdLockupView *)self doesNotRecognizeSelector:a2];
 
@@ -300,29 +300,29 @@
 - (UIViewController)presentingViewController
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(ASCAdLockupView *)self delegate];
-  v4 = [v3 presentingViewControllerForAdLockupView:self];
+  delegate = [(ASCAdLockupView *)self delegate];
+  v4 = [delegate presentingViewControllerForAdLockupView:self];
 
   if (v4)
   {
-    v5 = v4;
+    rootViewController = v4;
   }
 
   else
   {
-    v6 = [(ASCAdLockupView *)self window];
-    v5 = [v6 rootViewController];
+    window = [(ASCAdLockupView *)self window];
+    rootViewController = [window rootViewController];
 
-    if (v5)
+    if (rootViewController)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v9 = 138412290;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&dword_21571A000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Lockup view %@ is presenting from root view controller", &v9, 0xCu);
       }
 
-      v7 = v5;
+      v7 = rootViewController;
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -331,19 +331,19 @@
     }
   }
 
-  return v5;
+  return rootViewController;
 }
 
-- (void)setAdMarkerHidden:(BOOL)a3
+- (void)setAdMarkerHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_adMarkerHidden = a3;
-  v5 = [(ASCAdLockupView *)self adTransparencyContainer];
-  [v5 setHidden:v3];
+  hiddenCopy = hidden;
+  self->_adMarkerHidden = hidden;
+  adTransparencyContainer = [(ASCAdLockupView *)self adTransparencyContainer];
+  [adTransparencyContainer setHidden:hiddenCopy];
 
-  v6 = [(ASCAdLockupView *)self request];
-  v7 = [v6 context];
-  [(ASCAdLockupView *)self updateLayoutMarginsForContext:v7];
+  request = [(ASCAdLockupView *)self request];
+  context = [request context];
+  [(ASCAdLockupView *)self updateLayoutMarginsForContext:context];
 
   [(ASCAdLockupView *)self setNeedsLayout];
 
@@ -352,69 +352,69 @@
 
 - (ASCLockup)lockup
 {
-  v2 = [(ASCAdLockupView *)self lockupPresenter];
-  v3 = [v2 lockup];
+  lockupPresenter = [(ASCAdLockupView *)self lockupPresenter];
+  lockup = [lockupPresenter lockup];
 
-  return v3;
+  return lockup;
 }
 
-- (void)setLockup:(id)a3
+- (void)setLockup:(id)lockup
 {
-  v4 = a3;
-  v5 = [(ASCAdLockupView *)self lockupPresenter];
-  [v5 setLockup:v4];
+  lockupCopy = lockup;
+  lockupPresenter = [(ASCAdLockupView *)self lockupPresenter];
+  [lockupPresenter setLockup:lockupCopy];
 }
 
 - (ASCLockupViewGroup)group
 {
-  v2 = [(ASCAdLockupView *)self lockupPresenter];
-  v3 = [v2 group];
+  lockupPresenter = [(ASCAdLockupView *)self lockupPresenter];
+  group = [lockupPresenter group];
 
-  return v3;
+  return group;
 }
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(ASCAdLockupView *)self lockupPresenter];
-  [v5 setGroup:v4];
+  groupCopy = group;
+  lockupPresenter = [(ASCAdLockupView *)self lockupPresenter];
+  [lockupPresenter setGroup:groupCopy];
 }
 
 - (ASCLockupRequest)request
 {
-  v2 = [(ASCAdLockupView *)self lockupPresenter];
-  v3 = [v2 request];
+  lockupPresenter = [(ASCAdLockupView *)self lockupPresenter];
+  request = [lockupPresenter request];
 
-  return v3;
+  return request;
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v39 = a3;
-  v4 = [(ASCAdLockupView *)self request];
-  v5 = [v4 context];
+  requestCopy = request;
+  request = [(ASCAdLockupView *)self request];
+  context = [request context];
 
-  v6 = [v39 context];
-  v7 = [(ASCAdLockupView *)self mediaView];
-  [v7 setContext:v6];
+  context2 = [requestCopy context];
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  [mediaView setContext:context2];
 
-  v8 = [v39 context];
-  LOBYTE(v7) = [v8 isEqualToString:v5];
+  context3 = [requestCopy context];
+  LOBYTE(mediaView) = [context3 isEqualToString:context];
 
-  if ((v7 & 1) == 0)
+  if ((mediaView & 1) == 0)
   {
-    v9 = [v39 context];
-    [(ASCAdLockupView *)self updateLayoutMarginsForContext:v9];
+    context4 = [requestCopy context];
+    [(ASCAdLockupView *)self updateLayoutMarginsForContext:context4];
   }
 
-  v10 = [v39 context];
-  IsAdMaterialContext = ASCLockupContextIsAdMaterialContext(v10);
+  context5 = [requestCopy context];
+  IsAdMaterialContext = ASCLockupContextIsAdMaterialContext(context5);
 
   if (IsAdMaterialContext)
   {
-    v12 = [(ASCAdLockupView *)self materialBackgroundView];
+    materialBackgroundView = [(ASCAdLockupView *)self materialBackgroundView];
 
-    if (!v12)
+    if (!materialBackgroundView)
     {
       v13 = [ASCMaterialBackgroundView alloc];
       v14 = [(ASCMaterialBackgroundView *)v13 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -422,38 +422,38 @@
       self->_materialBackgroundView = v14;
 
       v16 = self->_materialBackgroundView;
-      v17 = [(ASCAdLockupView *)self lockupMediaPresenter];
-      [v17 setBackgroundView:v16];
+      lockupMediaPresenter = [(ASCAdLockupView *)self lockupMediaPresenter];
+      [lockupMediaPresenter setBackgroundView:v16];
 
       [(ASCAdLockupView *)self insertSubview:self->_materialBackgroundView atIndex:0];
     }
 
-    v18 = [(ASCAdLockupView *)self adTransparencyContainer];
-    [v18 setBackgroundHidden:1];
+    adTransparencyContainer = [(ASCAdLockupView *)self adTransparencyContainer];
+    [adTransparencyContainer setBackgroundHidden:1];
 
-    v19 = [(ASCAdLockupView *)self materialBackgroundView];
-    [v19 setHidden:0];
+    materialBackgroundView2 = [(ASCAdLockupView *)self materialBackgroundView];
+    [materialBackgroundView2 setHidden:0];
 
-    v20 = [(ASCAdLockupView *)self gradientBackgroundView];
-    [v20 setHidden:1];
+    gradientBackgroundView = [(ASCAdLockupView *)self gradientBackgroundView];
+    [gradientBackgroundView setHidden:1];
 
     v21 = +[ASCStaticLockupTheme adTheme];
 LABEL_11:
-    v33 = v21;
-    v34 = [(ASCAdLockupView *)self contentView];
-    [v34 setLockupTheme:v33];
+    contentView2 = v21;
+    contentView = [(ASCAdLockupView *)self contentView];
+    [contentView setLockupTheme:contentView2];
 
     goto LABEL_13;
   }
 
-  v22 = [v39 context];
-  IsAdGridContext = ASCLockupContextIsAdGridContext(v22);
+  context6 = [requestCopy context];
+  IsAdGridContext = ASCLockupContextIsAdGridContext(context6);
 
   if (IsAdGridContext)
   {
-    v24 = [(ASCAdLockupView *)self gradientBackgroundView];
+    gradientBackgroundView2 = [(ASCAdLockupView *)self gradientBackgroundView];
 
-    if (!v24)
+    if (!gradientBackgroundView2)
     {
       v25 = [ASCGradientBackgroundView alloc];
       v26 = [(ASCGradientBackgroundView *)v25 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -461,71 +461,71 @@ LABEL_11:
       self->_gradientBackgroundView = v26;
 
       v28 = self->_gradientBackgroundView;
-      v29 = [(ASCAdLockupView *)self mediaView];
-      [(ASCAdLockupView *)self insertSubview:v28 aboveSubview:v29];
+      mediaView2 = [(ASCAdLockupView *)self mediaView];
+      [(ASCAdLockupView *)self insertSubview:v28 aboveSubview:mediaView2];
     }
 
-    v30 = [(ASCAdLockupView *)self adTransparencyContainer];
-    [v30 setBackgroundHidden:0];
+    adTransparencyContainer2 = [(ASCAdLockupView *)self adTransparencyContainer];
+    [adTransparencyContainer2 setBackgroundHidden:0];
 
-    v31 = [(ASCAdLockupView *)self materialBackgroundView];
-    [v31 setHidden:1];
+    materialBackgroundView3 = [(ASCAdLockupView *)self materialBackgroundView];
+    [materialBackgroundView3 setHidden:1];
 
-    v32 = [(ASCAdLockupView *)self gradientBackgroundView];
-    [v32 setHidden:0];
+    gradientBackgroundView3 = [(ASCAdLockupView *)self gradientBackgroundView];
+    [gradientBackgroundView3 setHidden:0];
 
     v21 = +[ASCStaticLockupTheme adWhiteTheme];
     goto LABEL_11;
   }
 
-  v35 = [(ASCAdLockupView *)self adTransparencyContainer];
-  [v35 setBackgroundHidden:1];
+  adTransparencyContainer3 = [(ASCAdLockupView *)self adTransparencyContainer];
+  [adTransparencyContainer3 setBackgroundHidden:1];
 
-  v36 = [(ASCAdLockupView *)self materialBackgroundView];
-  [v36 setHidden:1];
+  materialBackgroundView4 = [(ASCAdLockupView *)self materialBackgroundView];
+  [materialBackgroundView4 setHidden:1];
 
-  v37 = [(ASCAdLockupView *)self gradientBackgroundView];
-  [v37 setHidden:1];
+  gradientBackgroundView4 = [(ASCAdLockupView *)self gradientBackgroundView];
+  [gradientBackgroundView4 setHidden:1];
 
-  v33 = [(ASCAdLockupView *)self contentView];
-  [v33 setLockupTheme:0];
+  contentView2 = [(ASCAdLockupView *)self contentView];
+  [contentView2 setLockupTheme:0];
 LABEL_13:
 
-  v38 = [(ASCAdLockupView *)self lockupPresenter];
-  [v38 setRequest:v39];
+  lockupPresenter = [(ASCAdLockupView *)self lockupPresenter];
+  [lockupPresenter setRequest:requestCopy];
 }
 
 - (id)context
 {
-  v2 = [(ASCAdLockupView *)self request];
-  v3 = [v2 context];
+  request = [(ASCAdLockupView *)self request];
+  context = [request context];
 
-  return v3;
+  return context;
 }
 
-- (void)setAdTransparencyButtonHidden:(BOOL)a3
+- (void)setAdTransparencyButtonHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(ASCAdLockupView *)self isAdMarkerHidden];
-  v6 = [(ASCAdLockupView *)self adTransparencyContainer];
-  [v6 setHidden:v5 | v3];
+  hiddenCopy = hidden;
+  isAdMarkerHidden = [(ASCAdLockupView *)self isAdMarkerHidden];
+  adTransparencyContainer = [(ASCAdLockupView *)self adTransparencyContainer];
+  [adTransparencyContainer setHidden:isAdMarkerHidden | hiddenCopy];
 
   [(ASCAdLockupView *)self setNeedsLayout];
 }
 
-- (void)setDeveloperName:(id)a3
+- (void)setDeveloperName:(id)name
 {
-  v4 = a3;
-  v5 = [(ASCAdLockupView *)self adTransparencyContainer];
-  [v5 setDeveloperName:v4];
+  nameCopy = name;
+  adTransparencyContainer = [(ASCAdLockupView *)self adTransparencyContainer];
+  [adTransparencyContainer setDeveloperName:nameCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v20 = a3;
-  objc_storeWeak(&self->_delegate, v20);
-  v4 = v20;
-  if (v20)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  v4 = delegateCopy;
+  if (delegateCopy)
   {
     *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xFFFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
@@ -672,7 +672,7 @@ LABEL_13:
 
     *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xDFFF | v17;
     v18 = (objc_opt_respondsToSelector() & 1) == 0;
-    v4 = v20;
+    v4 = delegateCopy;
     if (v18)
     {
       v19 = 0;
@@ -694,62 +694,62 @@ LABEL_13:
 
 - (BOOL)isHighlighted
 {
-  v2 = [(ASCAdLockupView *)self contentView];
-  v3 = [v2 isHighlighted];
+  contentView = [(ASCAdLockupView *)self contentView];
+  isHighlighted = [contentView isHighlighted];
 
-  return v3;
+  return isHighlighted;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v4 = [(ASCAdLockupView *)self contentView];
-  [v4 setHighlighted:v3];
+  highlightedCopy = highlighted;
+  contentView = [(ASCAdLockupView *)self contentView];
+  [contentView setHighlighted:highlightedCopy];
 }
 
 - (BOOL)automaticallyGeneratesAppearMetrics
 {
-  v2 = [(ASCAdLockupView *)self metricsPresenter];
-  v3 = [v2 isEnabled];
+  metricsPresenter = [(ASCAdLockupView *)self metricsPresenter];
+  isEnabled = [metricsPresenter isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)setAutomaticallyGeneratesAppearMetrics:(BOOL)a3
+- (void)setAutomaticallyGeneratesAppearMetrics:(BOOL)metrics
 {
-  v3 = a3;
-  v4 = [(ASCAdLockupView *)self metricsPresenter];
-  [v4 setEnabled:v3];
+  metricsCopy = metrics;
+  metricsPresenter = [(ASCAdLockupView *)self metricsPresenter];
+  [metricsPresenter setEnabled:metricsCopy];
 }
 
 - (id)appearMetricsActivity
 {
-  v2 = [(ASCAdLockupView *)self metricsPresenter];
-  v3 = [v2 activity];
+  metricsPresenter = [(ASCAdLockupView *)self metricsPresenter];
+  activity = [metricsPresenter activity];
 
-  return v3;
+  return activity;
 }
 
-- (void)setAppearMetricsActivity:(id)a3
+- (void)setAppearMetricsActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(ASCAdLockupView *)self metricsPresenter];
-  [v5 setActivity:v4];
+  activityCopy = activity;
+  metricsPresenter = [(ASCAdLockupView *)self metricsPresenter];
+  [metricsPresenter setActivity:activityCopy];
 }
 
 - (id)offerTheme
 {
-  v2 = [(ASCAdLockupView *)self contentView];
-  v3 = [v2 offerTheme];
+  contentView = [(ASCAdLockupView *)self contentView];
+  offerTheme = [contentView offerTheme];
 
-  return v3;
+  return offerTheme;
 }
 
-- (void)setOfferTheme:(id)a3
+- (void)setOfferTheme:(id)theme
 {
-  v4 = a3;
-  v5 = [(ASCAdLockupView *)self contentView];
-  [v5 setOfferTheme:v4];
+  themeCopy = theme;
+  contentView = [(ASCAdLockupView *)self contentView];
+  [contentView setOfferTheme:themeCopy];
 }
 
 - (void)layoutMarginsDidChange
@@ -761,19 +761,19 @@ LABEL_13:
   [(ASCAdLockupView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
   v6.receiver = self;
   v6.super_class = ASCAdLockupView;
-  [(ASCAdLockupView *)&v6 setLayoutMargins:a3.top, a3.left, a3.bottom, a3.right];
-  v4 = [(ASCAdLockupView *)self request];
-  v5 = [v4 context];
-  [(ASCAdLockupView *)self updateLayoutMarginsForContext:v5];
+  [(ASCAdLockupView *)&v6 setLayoutMargins:margins.top, margins.left, margins.bottom, margins.right];
+  request = [(ASCAdLockupView *)self request];
+  context = [request context];
+  [(ASCAdLockupView *)self updateLayoutMarginsForContext:context];
 }
 
-- (void)updateLayoutMarginsForContext:(id)a3
+- (void)updateLayoutMarginsForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(ASCAdLockupView *)self layoutMargins];
   v6 = v5;
   v8 = v7;
@@ -784,7 +784,7 @@ LABEL_13:
     v6 = 0.0;
   }
 
-  IsAdGridContext = ASCLockupContextIsAdGridContext(v4);
+  IsAdGridContext = ASCLockupContextIsAdGridContext(contextCopy);
 
   if (!IsAdGridContext)
   {
@@ -795,72 +795,72 @@ LABEL_13:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(ASCAdLockupView *)self contentView];
-  [v20 setLayoutMargins:{v6, v8, v10, v12}];
+  contentView = [(ASCAdLockupView *)self contentView];
+  [contentView setLayoutMargins:{v6, v8, v10, v12}];
 
-  v21 = [(ASCAdLockupView *)self mediaView];
-  [v21 setLayoutMargins:{0.0, v15, v17, v19}];
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  [mediaView setLayoutMargins:{0.0, v15, v17, v19}];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v5.receiver = self;
   v5.super_class = ASCAdLockupView;
-  [(ASCAdLockupView *)&v5 setHidden:a3];
-  v4 = [(ASCAdLockupView *)self metricsPresenter];
-  [v4 viewDidSetHidden];
+  [(ASCAdLockupView *)&v5 setHidden:hidden];
+  metricsPresenter = [(ASCAdLockupView *)self metricsPresenter];
+  [metricsPresenter viewDidSetHidden];
 }
 
-- (void)updateVisibility:(int64_t)a3
+- (void)updateVisibility:(int64_t)visibility
 {
-  if ((a3 - 1) >= 2)
+  if ((visibility - 1) >= 2)
   {
-    if (a3)
+    if (visibility)
     {
       return;
     }
 
-    v4 = [(ASCAdLockupView *)self mediaView];
-    v3 = [v4 videoView];
-    [v3 playVideo];
+    mediaView = [(ASCAdLockupView *)self mediaView];
+    videoView = [mediaView videoView];
+    [videoView playVideo];
   }
 
   else
   {
-    v4 = [(ASCAdLockupView *)self mediaView];
-    v3 = [v4 videoView];
-    [v3 pauseVideo];
+    mediaView = [(ASCAdLockupView *)self mediaView];
+    videoView = [mediaView videoView];
+    [videoView pauseVideo];
   }
 }
 
 - (BOOL)isVideoLoopingEnabled
 {
-  v2 = [(ASCAdLockupView *)self mediaView];
-  v3 = [v2 isVideoLoopingEnabled];
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  isVideoLoopingEnabled = [mediaView isVideoLoopingEnabled];
 
-  return v3;
+  return isVideoLoopingEnabled;
 }
 
-- (void)setVideoLoopingEnabled:(BOOL)a3
+- (void)setVideoLoopingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(ASCAdLockupView *)self mediaView];
-  [v4 setVideoLoopingEnabled:v3];
+  enabledCopy = enabled;
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  [mediaView setVideoLoopingEnabled:enabledCopy];
 }
 
 - (BOOL)isVideoMuted
 {
-  v2 = [(ASCAdLockupView *)self mediaView];
-  v3 = [v2 isVideoMuted];
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  isVideoMuted = [mediaView isVideoMuted];
 
-  return v3;
+  return isVideoMuted;
 }
 
-- (void)setVideoMuted:(BOOL)a3
+- (void)setVideoMuted:(BOOL)muted
 {
-  v3 = a3;
-  v4 = [(ASCAdLockupView *)self mediaView];
-  [v4 setVideoMuted:v3];
+  mutedCopy = muted;
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  [mediaView setVideoMuted:mutedCopy];
 }
 
 - (void)didMoveToWindow
@@ -868,8 +868,8 @@ LABEL_13:
   v4.receiver = self;
   v4.super_class = ASCAdLockupView;
   [(ASCAdLockupView *)&v4 didMoveToWindow];
-  v3 = [(ASCAdLockupView *)self metricsPresenter];
-  [v3 viewDidMoveToWindow];
+  metricsPresenter = [(ASCAdLockupView *)self metricsPresenter];
+  [metricsPresenter viewDidMoveToWindow];
 }
 
 - (void)invalidateIntrinsicContentSize
@@ -886,14 +886,14 @@ LABEL_13:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(ASCAdLockupView *)self contentView];
+  contentView = [(ASCAdLockupView *)self contentView];
   [(ASCAdLockupView *)self bounds];
-  [v3 sizeThatFits:{v4, v5}];
+  [contentView sizeThatFits:{v4, v5}];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(ASCAdLockupView *)self mediaView];
-  [v10 intrinsicContentSize];
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  [mediaView intrinsicContentSize];
   v12 = v11;
 
   if (v12 > 2.22044605e-16)
@@ -911,9 +911,9 @@ LABEL_13:
     v13 = v13 + v15 + v16;
     if (![(ASCAdLockupView *)self isLargeSizeClass])
     {
-      v17 = [(ASCAdLockupView *)self adTransparencyContainer];
+      adTransparencyContainer = [(ASCAdLockupView *)self adTransparencyContainer];
       [(ASCAdLockupView *)self bounds];
-      [v17 sizeThatFits:{v18, v19}];
+      [adTransparencyContainer sizeThatFits:{v18, v19}];
       v21 = v20;
 
       v13 = v13 + v21;
@@ -927,17 +927,17 @@ LABEL_13:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(ASCAdLockupView *)self contentView];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  contentView = [(ASCAdLockupView *)self contentView];
+  [contentView sizeThatFits:{width, height}];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(ASCAdLockupView *)self mediaView];
-  [v11 sizeThatFits:{width, height}];
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  [mediaView sizeThatFits:{width, height}];
   v13 = v12;
 
   if (v13 > 2.22044605e-16)
@@ -955,9 +955,9 @@ LABEL_13:
     v14 = v14 + v16 + v17;
     if (![(ASCAdLockupView *)self isLargeSizeClass])
     {
-      v18 = [(ASCAdLockupView *)self adTransparencyContainer];
+      adTransparencyContainer = [(ASCAdLockupView *)self adTransparencyContainer];
       [(ASCAdLockupView *)self bounds];
-      [v18 sizeThatFits:{v19, v20}];
+      [adTransparencyContainer sizeThatFits:{v19, v20}];
       v22 = v21;
 
       v14 = v14 + v22;
@@ -979,8 +979,8 @@ LABEL_13:
   width = v21.size.width;
   height = v21.size.height;
   IsEmpty = CGRectIsEmpty(v21);
-  v8 = [(ASCAdLockupView *)self contentView];
-  v19 = v8;
+  contentView = [(ASCAdLockupView *)self contentView];
+  v19 = contentView;
   if (IsEmpty)
   {
     v9 = x;
@@ -991,7 +991,7 @@ LABEL_13:
 
   else
   {
-    [v8 sizeThatFits:{width, height}];
+    [contentView sizeThatFits:{width, height}];
     v14 = v13;
     v16 = v15;
 
@@ -1017,15 +1017,15 @@ LABEL_13:
     v25.size.width = width;
     v25.size.height = height;
     v18 = floor(CGRectGetMidY(v25) + v16 * -0.5);
-    v8 = [(ASCAdLockupView *)self contentView];
-    v19 = v8;
+    contentView = [(ASCAdLockupView *)self contentView];
+    v19 = contentView;
     v9 = MinX;
     v10 = v18;
     v11 = v14;
     v12 = v16;
   }
 
-  [v8 setFrame:{v9, v10, v11, v12}];
+  [contentView setFrame:{v9, v10, v11, v12}];
 }
 
 void __38__ASCAdLockupView_layoutAdContentView__block_invoke()
@@ -1059,19 +1059,19 @@ void __38__ASCAdLockupView_layoutAdContentView__block_invoke()
 
   else
   {
-    v13 = [(ASCAdLockupView *)self adTransparencyContainer];
+    adTransparencyContainer = [(ASCAdLockupView *)self adTransparencyContainer];
     v58 = v10;
-    [v13 sizeThatFits:{v8, v10}];
+    [adTransparencyContainer sizeThatFits:{v8, v10}];
     v15 = v14;
 
     [(ASCAdLockupView *)self layoutMargins];
     v17 = v8 * 0.5 - v16;
     if ([(ASCAdLockupView *)self isLargeSizeClass])
     {
-      v18 = [(ASCAdLockupView *)self contentView];
-      v19 = [v18 lockupSize];
-      v20 = [(ASCAdLockupView *)self traitCollection];
-      v21 = ASCLockupViewSizeGetIconSize(v19, [v20 horizontalSizeClass]) * 0.5;
+      contentView = [(ASCAdLockupView *)self contentView];
+      lockupSize = [contentView lockupSize];
+      traitCollection = [(ASCAdLockupView *)self traitCollection];
+      v21 = ASCLockupViewSizeGetIconSize(lockupSize, [traitCollection horizontalSizeClass]) * 0.5;
 
       v17 = v17 - (v21 + 15.0);
     }
@@ -1080,17 +1080,17 @@ void __38__ASCAdLockupView_layoutAdContentView__block_invoke()
     v23 = v22;
     [(ASCAdLockupView *)self layoutMargins];
     v25 = v24;
-    v26 = [(UIView *)self asc_layoutTraitEnvironment];
+    asc_layoutTraitEnvironment = [(UIView *)self asc_layoutTraitEnvironment];
     v27 = v15;
     v56 = v15;
     v11 = v4;
-    [__ASCLayoutProxy rectWithLayoutDirectionForRect:v26 inTraitEnvironment:v23 relativeTo:v25, v17, v27, v4, v6, v8, v58];
+    [__ASCLayoutProxy rectWithLayoutDirectionForRect:asc_layoutTraitEnvironment inTraitEnvironment:v23 relativeTo:v25, v17, v27, v4, v6, v8, v58];
     v29 = v28;
     v31 = v30;
     v33 = v32;
     v35 = v34;
-    v36 = [(ASCAdLockupView *)self adTransparencyContainer];
-    [v36 setFrame:{v29, v31, v33, v35}];
+    adTransparencyContainer2 = [(ASCAdLockupView *)self adTransparencyContainer];
+    [adTransparencyContainer2 setFrame:{v29, v31, v33, v35}];
 
     if ([(ASCAdLockupView *)self isLargeSizeClass])
     {
@@ -1112,14 +1112,14 @@ void __38__ASCAdLockupView_layoutAdContentView__block_invoke()
     v10 = v58;
   }
 
-  v40 = [(ASCAdLockupView *)self contentView];
-  [v40 sizeThatFits:{v8, v10}];
+  contentView2 = [(ASCAdLockupView *)self contentView];
+  [contentView2 sizeThatFits:{v8, v10}];
   v59 = v41;
   v43 = v42;
 
-  v44 = [(ASCAdLockupView *)self request];
-  v45 = [v44 context];
-  IsAdGridContext = ASCLockupContextIsAdGridContext(v45);
+  request = [(ASCAdLockupView *)self request];
+  context = [request context];
+  IsAdGridContext = ASCLockupContextIsAdGridContext(context);
 
   if (IsAdGridContext)
   {
@@ -1147,67 +1147,67 @@ void __38__ASCAdLockupView_layoutAdContentView__block_invoke()
     v47 = v60;
   }
 
-  v50 = [(ASCAdLockupView *)self contentView];
-  [v50 setFrame:{0.0, v12, v59, v43}];
+  contentView3 = [(ASCAdLockupView *)self contentView];
+  [contentView3 setFrame:{0.0, v12, v59, v43}];
 
-  v51 = [(ASCAdLockupView *)self mediaView];
-  [v51 setFrame:{0.0, v48, v8, v57}];
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  [mediaView setFrame:{0.0, v48, v8, v57}];
 
-  v52 = [(ASCAdLockupView *)self materialBackgroundView];
-  [v52 setFrame:{v11, v47, v8, v10}];
+  materialBackgroundView = [(ASCAdLockupView *)self materialBackgroundView];
+  [materialBackgroundView setFrame:{v11, v47, v8, v10}];
 
-  v53 = [(ASCAdLockupView *)self gradientBackgroundView];
-  [v53 setFrame:{v11, v47, v8, v10}];
+  gradientBackgroundView = [(ASCAdLockupView *)self gradientBackgroundView];
+  [gradientBackgroundView setFrame:{v11, v47, v8, v10}];
 
-  v54 = [(ASCAdLockupView *)self lockupMediaPresenter];
-  [v54 viewDidLayoutSubviews];
+  lockupMediaPresenter = [(ASCAdLockupView *)self lockupMediaPresenter];
+  [lockupMediaPresenter viewDidLayoutSubviews];
 }
 
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCAdLockupView *)self adTransparencyContainer];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"adTransparencyContainer"];
+  adTransparencyContainer = [(ASCAdLockupView *)self adTransparencyContainer];
+  [(ASCDescriber *)v3 addObject:adTransparencyContainer withName:@"adTransparencyContainer"];
 
-  v5 = [(ASCAdLockupView *)self contentView];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"contentView"];
+  contentView = [(ASCAdLockupView *)self contentView];
+  [(ASCDescriber *)v3 addObject:contentView withName:@"contentView"];
 
-  v6 = [(ASCAdLockupView *)self mediaView];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"mediaView"];
+  mediaView = [(ASCAdLockupView *)self mediaView];
+  [(ASCDescriber *)v3 addObject:mediaView withName:@"mediaView"];
 
-  v7 = [(ASCAdLockupView *)self offerPresenter];
-  [(ASCDescriber *)v3 addObject:v7 withName:@"offerPresenter"];
+  offerPresenter = [(ASCAdLockupView *)self offerPresenter];
+  [(ASCDescriber *)v3 addObject:offerPresenter withName:@"offerPresenter"];
 
-  v8 = [(ASCAdLockupView *)self lockupPresenter];
-  [(ASCDescriber *)v3 addObject:v8 withName:@"lockupPresenter"];
+  lockupPresenter = [(ASCAdLockupView *)self lockupPresenter];
+  [(ASCDescriber *)v3 addObject:lockupPresenter withName:@"lockupPresenter"];
 
-  v9 = [(ASCAdLockupView *)self adLockupPresenter];
-  [(ASCDescriber *)v3 addObject:v9 withName:@"adLockupPresenter"];
+  adLockupPresenter = [(ASCAdLockupView *)self adLockupPresenter];
+  [(ASCDescriber *)v3 addObject:adLockupPresenter withName:@"adLockupPresenter"];
 
-  v10 = [(ASCAdLockupView *)self lockupMediaPresenter];
-  [(ASCDescriber *)v3 addObject:v10 withName:@"lockupMediaPresenter"];
+  lockupMediaPresenter = [(ASCAdLockupView *)self lockupMediaPresenter];
+  [(ASCDescriber *)v3 addObject:lockupMediaPresenter withName:@"lockupMediaPresenter"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[ASCAdLockupView isAdMarkerHidden](self, "isAdMarkerHidden")}];
   [(ASCDescriber *)v3 addObject:v11 withName:@"adMarkerHidden"];
 
-  v12 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v12;
+  return finalizeDescription;
 }
 
 - (void)presentProductDetailsViewController
 {
-  v3 = [(ASCAdLockupView *)self lockup];
-  if (v3)
+  lockup = [(ASCAdLockupView *)self lockup];
+  if (lockup)
   {
-    v4 = [(ASCAdLockupView *)self metricsParametersForPresentingProductDetails];
-    v5 = [(ASCAdLockupView *)self presentingViewController];
-    if (v5)
+    metricsParametersForPresentingProductDetails = [(ASCAdLockupView *)self metricsParametersForPresentingProductDetails];
+    presentingViewController = [(ASCAdLockupView *)self presentingViewController];
+    if (presentingViewController)
     {
       v6 = [ASCLockupProductDetails alloc];
-      v7 = [(ASCAdLockupView *)self storeSheetHostBundleID];
-      v8 = [(ASCAdLockupView *)self storeSheetUsageContext];
-      v9 = [(ASCLockupProductDetails *)v6 initWithLockup:v3 storeSheetHostBundleID:v7 storeSheetUsageContext:v8 parameters:v4];
+      storeSheetHostBundleID = [(ASCAdLockupView *)self storeSheetHostBundleID];
+      storeSheetUsageContext = [(ASCAdLockupView *)self storeSheetUsageContext];
+      v9 = [(ASCLockupProductDetails *)v6 initWithLockup:lockup storeSheetHostBundleID:storeSheetHostBundleID storeSheetUsageContext:storeSheetUsageContext parameters:metricsParametersForPresentingProductDetails];
 
       objc_initWeak(&location, self);
       v11 = MEMORY[0x277D85DD0];
@@ -1215,7 +1215,7 @@ void __38__ASCAdLockupView_layoutAdContentView__block_invoke()
       v13 = __54__ASCAdLockupView_presentProductDetailsViewController__block_invoke;
       v14 = &unk_2781CCA70;
       objc_copyWeak(&v15, &location);
-      [(ASCLockupProductDetails *)v9 presentFromViewController:v5 animated:1 completion:&v11];
+      [(ASCLockupProductDetails *)v9 presentFromViewController:presentingViewController animated:1 completion:&v11];
       v10 = [(ASCAdLockupView *)self metricsPresenter:v11];
       [v10 viewDidAction];
 
@@ -1240,13 +1240,13 @@ void __54__ASCAdLockupView_presentProductDetailsViewController__block_invoke(uin
 
 - (void)performLockupAction
 {
-  v3 = [(ASCAdLockupView *)self lockupPresenter];
+  lockupPresenter = [(ASCAdLockupView *)self lockupPresenter];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __38__ASCAdLockupView_performLockupAction__block_invoke;
   v4[3] = &unk_2781CCA98;
   v4[4] = self;
-  [v3 retryRequestIfNeeded:v4];
+  [lockupPresenter retryRequestIfNeeded:v4];
 }
 
 uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result, char a2)
@@ -1268,16 +1268,16 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
 
 - (void)performOfferAction
 {
-  v2 = [(ASCAdLockupView *)self offerPresenter];
-  [v2 performOfferAction];
+  offerPresenter = [(ASCAdLockupView *)self offerPresenter];
+  [offerPresenter performOfferAction];
 }
 
 - (void)performAdTransparencyAction
 {
   if ((*&self->_delegateRespondsTo & 0x200) != 0)
   {
-    v4 = [(ASCAdLockupView *)self delegate];
-    [v4 adLockupViewDidSelectAdMarker:self];
+    delegate = [(ASCAdLockupView *)self delegate];
+    [delegate adLockupViewDidSelectAdMarker:self];
   }
 }
 
@@ -1285,10 +1285,10 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
 {
   if ((*&self->_delegateRespondsTo & 0x10) != 0)
   {
-    v4 = [(ASCAdLockupView *)self delegate];
-    v5 = [(ASCAdLockupView *)self offerPresenter];
-    v6 = [v5 mostRecentAppState];
-    v2 = [v4 metricsActivityForPresentingProductDetailsOfAdLockupView:self inState:v6];
+    delegate = [(ASCAdLockupView *)self delegate];
+    offerPresenter = [(ASCAdLockupView *)self offerPresenter];
+    mostRecentAppState = [offerPresenter mostRecentAppState];
+    v2 = [delegate metricsActivityForPresentingProductDetailsOfAdLockupView:self inState:mostRecentAppState];
   }
 
   else
@@ -1299,23 +1299,23 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
   return v2;
 }
 
-- (id)metricsParametersFromMetricsActivity:(id)a3
+- (id)metricsParametersFromMetricsActivity:(id)activity
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [a3 fields];
-  v4 = [v3 objectForKeyedSubscript:@"redirectUrlParameters"];
+  fields = [activity fields];
+  v4 = [fields objectForKeyedSubscript:@"redirectUrlParameters"];
 
   if (v4)
   {
     v5 = [@"https://?" stringByAppendingString:v4];
     v6 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v5];
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v6 queryItems];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    queryItems = [v6 queryItems];
+    v9 = [queryItems countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1326,16 +1326,16 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(queryItems);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 value];
-          v15 = [v13 name];
-          [v7 setObject:v14 forKeyedSubscript:v15];
+          value = [v13 value];
+          name = [v13 name];
+          [dictionary setObject:value forKeyedSubscript:name];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [queryItems countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -1344,16 +1344,16 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
 
   else
   {
-    v7 = 0;
+    dictionary = 0;
   }
 
-  return v7;
+  return dictionary;
 }
 
 - (id)metricsParametersForPresentingProductDetails
 {
-  v3 = [(ASCAdLockupView *)self metricsActivityForPresentingProductDetails];
-  v4 = [(ASCAdLockupView *)self metricsParametersFromMetricsActivity:v3];
+  metricsActivityForPresentingProductDetails = [(ASCAdLockupView *)self metricsActivityForPresentingProductDetails];
+  v4 = [(ASCAdLockupView *)self metricsParametersFromMetricsActivity:metricsActivityForPresentingProductDetails];
 
   return v4;
 }
@@ -1362,8 +1362,8 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
 {
   if (*&self->_delegateRespondsTo)
   {
-    v4 = [(ASCAdLockupView *)self delegate];
-    [v4 adLockupViewDidBeginRequest:self];
+    delegate = [(ASCAdLockupView *)self delegate];
+    [delegate adLockupViewDidBeginRequest:self];
   }
 }
 
@@ -1371,72 +1371,72 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
 {
   if ((*&self->_delegateRespondsTo & 2) != 0)
   {
-    v4 = [(ASCAdLockupView *)self delegate];
-    [v4 adLockupViewDidFinishRequest:self];
+    delegate = [(ASCAdLockupView *)self delegate];
+    [delegate adLockupViewDidFinishRequest:self];
   }
 }
 
-- (void)lockupPresenterDidFailRequestWithError:(id)a3
+- (void)lockupPresenterDidFailRequestWithError:(id)error
 {
   if ((*&self->_delegateRespondsTo & 4) != 0)
   {
-    v5 = a3;
-    v6 = [(ASCAdLockupView *)self delegate];
-    [v6 adLockupView:self didFailRequestWithError:v5];
+    errorCopy = error;
+    delegate = [(ASCAdLockupView *)self delegate];
+    [delegate adLockupView:self didFailRequestWithError:errorCopy];
   }
 }
 
-- (void)offerPresenterDidObserveChangeToState:(id)a3
+- (void)offerPresenterDidObserveChangeToState:(id)state
 {
   if ((*&self->_delegateRespondsTo & 8) != 0)
   {
-    v5 = a3;
-    v6 = [(ASCAdLockupView *)self delegate];
-    [v6 adLockupView:self appStateDidChange:v5];
+    stateCopy = state;
+    delegate = [(ASCAdLockupView *)self delegate];
+    [delegate adLockupView:self appStateDidChange:stateCopy];
   }
 }
 
-- (void)offerPresenterWillPerformActionOfOffer:(id)a3 inState:(id)a4 withActivity:(id *)a5 inContext:(id *)a6 withPaymentSheetView:(id)a7
+- (void)offerPresenterWillPerformActionOfOffer:(id)offer inState:(id)state withActivity:(id *)activity inContext:(id *)context withPaymentSheetView:(id)view
 {
-  v16 = a3;
-  v11 = a4;
-  v12 = a7;
+  offerCopy = offer;
+  stateCopy = state;
+  viewCopy = view;
   delegateRespondsTo = self->_delegateRespondsTo;
   if ((delegateRespondsTo & 0x20) != 0)
   {
-    v14 = [(ASCAdLockupView *)self delegate];
-    *a5 = [v14 metricsActivityForAdLockupView:self toPerformActionOfOffer:v16 inState:v11];
+    delegate = [(ASCAdLockupView *)self delegate];
+    *activity = [delegate metricsActivityForAdLockupView:self toPerformActionOfOffer:offerCopy inState:stateCopy];
 
     delegateRespondsTo = self->_delegateRespondsTo;
   }
 
   if ((delegateRespondsTo & 0x100) != 0)
   {
-    v15 = [(ASCAdLockupView *)self delegate];
-    [v15 adLockupView:self didSelectOfferWithState:v11];
+    delegate2 = [(ASCAdLockupView *)self delegate];
+    [delegate2 adLockupView:self didSelectOfferWithState:stateCopy];
   }
 }
 
-- (void)offerPresenterPreprocessOffer:(id)a3 inState:(id)a4 completionBlock:(id)a5
+- (void)offerPresenterPreprocessOffer:(id)offer inState:(id)state completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  offerCopy = offer;
+  stateCopy = state;
+  blockCopy = block;
+  v11 = blockCopy;
   if ((*&self->_delegateRespondsTo & 0x2000) != 0)
   {
-    v12 = [(ASCAdLockupView *)self delegate];
+    delegate = [(ASCAdLockupView *)self delegate];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __73__ASCAdLockupView_offerPresenterPreprocessOffer_inState_completionBlock___block_invoke;
     v13[3] = &unk_2781CC480;
     v14 = v11;
-    [v12 adLockupView:self preprocessOffer:v8 inState:v9 completionBlock:v13];
+    [delegate adLockupView:self preprocessOffer:offerCopy inState:stateCopy completionBlock:v13];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -1444,8 +1444,8 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
 {
   if ((*&self->_delegateRespondsTo & 0x400) != 0)
   {
-    v4 = [(ASCAdLockupView *)self delegate];
-    [v4 adLockupViewDidBeginScreenshotsFetchRequest:self];
+    delegate = [(ASCAdLockupView *)self delegate];
+    [delegate adLockupViewDidBeginScreenshotsFetchRequest:self];
   }
 }
 
@@ -1453,8 +1453,8 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
 {
   if ((*&self->_delegateRespondsTo & 0x800) != 0)
   {
-    v4 = [(ASCAdLockupView *)self delegate];
-    [v4 adLockupViewDidCancelScreenshotsFetchRequest:self];
+    delegate = [(ASCAdLockupView *)self delegate];
+    [delegate adLockupViewDidCancelScreenshotsFetchRequest:self];
   }
 }
 
@@ -1462,17 +1462,17 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
 {
   if ((*&self->_delegateRespondsTo & 0x1000) != 0)
   {
-    v4 = [(ASCAdLockupView *)self delegate];
-    [v4 adLockupViewDidFinishScreenshotsFetchRequest:self];
+    delegate = [(ASCAdLockupView *)self delegate];
+    [delegate adLockupViewDidFinishScreenshotsFetchRequest:self];
   }
 }
 
-- (void)lockupMediaPresenterVideoStateDidChange:(int64_t)a3
+- (void)lockupMediaPresenterVideoStateDidChange:(int64_t)change
 {
   if ((*&self->_delegateRespondsTo & 0x4000) != 0)
   {
-    v6 = [(ASCAdLockupView *)self delegate];
-    [v6 adLockupView:self videoStateDidChange:a3];
+    delegate = [(ASCAdLockupView *)self delegate];
+    [delegate adLockupView:self videoStateDidChange:change];
   }
 }
 
@@ -1487,7 +1487,7 @@ uint64_t __38__ASCAdLockupView_performLockupAction__block_invoke(uint64_t result
 {
   v3 = *MEMORY[0x277D85DE8];
   v1 = 138412290;
-  v2 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21571A000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Lockup view %@ could not find view controller to present from.", &v1, 0xCu);
 }
 

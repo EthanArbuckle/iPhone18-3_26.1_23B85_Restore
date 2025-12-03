@@ -8,7 +8,7 @@
 {
   v34[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 managedObjectContext];
+  managedObjectContext = [self managedObjectContext];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -40,11 +40,11 @@
   v16[1] = 3221225472;
   v16[2] = __59__NoteObject_ICLegacyNoteUI__appendAttributedString_error___block_invoke;
   v16[3] = &unk_1E8469740;
-  v16[4] = a1;
+  v16[4] = self;
   v19 = &v21;
   v12 = v4;
   v17 = v12;
-  v13 = v5;
+  v13 = managedObjectContext;
   v18 = v13;
   v20 = &v27;
   [v13 performBlockAndWait:v16];

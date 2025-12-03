@@ -1,12 +1,12 @@
 @interface ASCSignpostSpan
 - (ASCSignpostSpan)init;
-- (ASCSignpostSpan)initWithCoder:(id)a3;
+- (ASCSignpostSpan)initWithCoder:(id)coder;
 - (NSDateInterval)dateRange;
 - (NSSet)supplementaryTags;
 - (id)description;
-- (void)addSupplementaryTag:(unint64_t)a3;
+- (void)addSupplementaryTag:(unint64_t)tag;
 - (void)beginEmitting;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)endEmitting;
 @end
 
@@ -29,13 +29,13 @@
   return v3;
 }
 
-- (ASCSignpostSpan)initWithCoder:(id)a3
+- (ASCSignpostSpan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
   v6 = objc_opt_class();
   v7 = [v5 initWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"supplementaryTags"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"supplementaryTags"];
   if (v8)
   {
     v18.receiver = self;
@@ -43,22 +43,22 @@
     v9 = [(ASCSignpostSpan *)&v18 init];
     if (v9)
     {
-      v9->_primaryTag = [v4 decodeInt64ForKey:@"primaryTag"];
+      v9->_primaryTag = [coderCopy decodeInt64ForKey:@"primaryTag"];
       v10 = [v8 mutableCopy];
       mutableSupplementaryTags = v9->_mutableSupplementaryTags;
       v9->_mutableSupplementaryTags = v10;
 
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
       startDate = v9->_startDate;
       v9->_startDate = v12;
 
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
       endDate = v9->_endDate;
       v9->_endDate = v14;
     }
 
     self = v9;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -68,54 +68,54 @@
       [ASCSignpostSpan initWithCoder:];
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[ASCSignpostSpan primaryTag](self forKey:{"primaryTag"), @"primaryTag"}];
-  v5 = [(ASCSignpostSpan *)self supplementaryTags];
-  [v4 encodeObject:v5 forKey:@"supplementaryTags"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[ASCSignpostSpan primaryTag](self forKey:{"primaryTag"), @"primaryTag"}];
+  supplementaryTags = [(ASCSignpostSpan *)self supplementaryTags];
+  [coderCopy encodeObject:supplementaryTags forKey:@"supplementaryTags"];
 
-  v6 = [(ASCSignpostSpan *)self startDate];
-  [v4 encodeObject:v6 forKey:@"startDate"];
+  startDate = [(ASCSignpostSpan *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
 
-  v7 = [(ASCSignpostSpan *)self endDate];
-  [v4 encodeObject:v7 forKey:@"endDate"];
+  endDate = [(ASCSignpostSpan *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 }
 
 - (NSSet)supplementaryTags
 {
-  v2 = [(ASCSignpostSpan *)self mutableSupplementaryTags];
-  v3 = [v2 copy];
+  mutableSupplementaryTags = [(ASCSignpostSpan *)self mutableSupplementaryTags];
+  v3 = [mutableSupplementaryTags copy];
 
   return v3;
 }
 
 - (NSDateInterval)dateRange
 {
-  v3 = [(ASCSignpostSpan *)self startDate];
-  if (!v3)
+  startDate = [(ASCSignpostSpan *)self startDate];
+  if (!startDate)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(ASCSignpostSpan *)self endDate];
-  if (!v5)
+  startDate3 = startDate;
+  endDate = [(ASCSignpostSpan *)self endDate];
+  if (!endDate)
   {
     v12 = 0;
     goto LABEL_7;
   }
 
-  v6 = v5;
-  v7 = [(ASCSignpostSpan *)self endDate];
-  v8 = [(ASCSignpostSpan *)self startDate];
-  v9 = [v7 compare:v8];
+  v6 = endDate;
+  endDate2 = [(ASCSignpostSpan *)self endDate];
+  startDate2 = [(ASCSignpostSpan *)self startDate];
+  v9 = [endDate2 compare:startDate2];
 
   if (v9 == -1)
   {
@@ -125,9 +125,9 @@ LABEL_5:
   }
 
   v10 = objc_alloc(MEMORY[0x277CCA970]);
-  v4 = [(ASCSignpostSpan *)self startDate];
-  v11 = [(ASCSignpostSpan *)self endDate];
-  v12 = [v10 initWithStartDate:v4 endDate:v11];
+  startDate3 = [(ASCSignpostSpan *)self startDate];
+  endDate3 = [(ASCSignpostSpan *)self endDate];
+  v12 = [v10 initWithStartDate:startDate3 endDate:endDate3];
 
 LABEL_7:
 LABEL_8:
@@ -135,18 +135,18 @@ LABEL_8:
   return v12;
 }
 
-- (void)addSupplementaryTag:(unint64_t)a3
+- (void)addSupplementaryTag:(unint64_t)tag
 {
-  v5 = [(ASCSignpostSpan *)self mutableSupplementaryTags];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  [v5 addObject:v4];
+  mutableSupplementaryTags = [(ASCSignpostSpan *)self mutableSupplementaryTags];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:tag];
+  [mutableSupplementaryTags addObject:v4];
 }
 
 - (void)beginEmitting
 {
-  v3 = [(ASCSignpostSpan *)self startDate];
+  startDate = [(ASCSignpostSpan *)self startDate];
 
-  if (v3)
+  if (startDate)
   {
     v4 = objc_alloc(MEMORY[0x277CBEAD8]);
     objc_exception_throw([v4 initWithName:*MEMORY[0x277CBE658] reason:@"Signpost span has already begun" userInfo:0]);
@@ -158,9 +158,9 @@ LABEL_8:
 
 - (void)endEmitting
 {
-  v3 = [(ASCSignpostSpan *)self startDate];
+  startDate = [(ASCSignpostSpan *)self startDate];
 
-  if (!v3)
+  if (!startDate)
   {
     v5 = objc_alloc(MEMORY[0x277CBEAD8]);
     v6 = *MEMORY[0x277CBE658];
@@ -168,9 +168,9 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v4 = [(ASCSignpostSpan *)self endDate];
+  endDate = [(ASCSignpostSpan *)self endDate];
 
-  if (v4)
+  if (endDate)
   {
     v5 = objc_alloc(MEMORY[0x277CBEAD8]);
     v6 = *MEMORY[0x277CBE658];
@@ -187,18 +187,18 @@ LABEL_8:
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
   [(ASCDescriber *)v3 addUInt64:[(ASCSignpostSpan *)self primaryTag] withName:@"primaryTag"];
-  v4 = [(ASCSignpostSpan *)self mutableSupplementaryTags];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"supplementaryTags"];
+  mutableSupplementaryTags = [(ASCSignpostSpan *)self mutableSupplementaryTags];
+  [(ASCDescriber *)v3 addObject:mutableSupplementaryTags withName:@"supplementaryTags"];
 
-  v5 = [(ASCSignpostSpan *)self startDate];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"startDate"];
+  startDate = [(ASCSignpostSpan *)self startDate];
+  [(ASCDescriber *)v3 addObject:startDate withName:@"startDate"];
 
-  v6 = [(ASCSignpostSpan *)self endDate];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"endDate"];
+  endDate = [(ASCSignpostSpan *)self endDate];
+  [(ASCDescriber *)v3 addObject:endDate withName:@"endDate"];
 
-  v7 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v7;
+  return finalizeDescription;
 }
 
 @end

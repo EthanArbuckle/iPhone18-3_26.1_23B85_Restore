@@ -11,9 +11,9 @@
 - (BOOL)isNotificationDisabled
 {
   v2 = CFPreferencesCopyValue(@"notificationsAllowed", @"com.apple.EscrowSecurityAlert", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldAllowSnooze
@@ -31,20 +31,20 @@
   if (v2)
   {
     v3 = v2;
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
 
-    if (v4 >= 1)
+    if (intValue >= 1)
     {
-      v4 = (v4 - 1);
+      intValue = (intValue - 1);
     }
   }
 
   else
   {
-    v4 = 1;
+    intValue = 1;
   }
 
-  CFPreferencesSetValue(@"thresholdLevel", [NSNumber numberWithInt:v4], @"com.apple.EscrowSecurityAlert", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
+  CFPreferencesSetValue(@"thresholdLevel", [NSNumber numberWithInt:intValue], @"com.apple.EscrowSecurityAlert", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
 
   CFPreferencesSynchronize(@"com.apple.EscrowSecurityAlert", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
 }
@@ -55,9 +55,9 @@
   if (v2)
   {
     v3 = v2;
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
 
-    LODWORD(v2) = v4;
+    LODWORD(v2) = intValue;
   }
 
   return v2;

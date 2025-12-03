@@ -1,10 +1,10 @@
 @interface SBHomeScreenView
-- (SBHomeScreenView)initWithFrame:(CGRect)a3;
+- (SBHomeScreenView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
-- (void)setIconContentView:(id)a3;
-- (void)setUsesGlassGroup:(BOOL)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setIconContentView:(id)view;
+- (void)setUsesGlassGroup:(BOOL)group;
 - (void)updateGlassGroup;
 @end
 
@@ -20,15 +20,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBHomeScreenView *)self statusBarLegibilityView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  statusBarLegibilityView = [(SBHomeScreenView *)self statusBarLegibilityView];
+  [statusBarLegibilityView setFrame:{v4, v6, v8, v10}];
 }
 
-- (SBHomeScreenView)initWithFrame:(CGRect)a3
+- (SBHomeScreenView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SBHomeScreenView;
-  v3 = [(SBHomeScreenView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHomeScreenView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D65F50]);
@@ -43,17 +43,17 @@
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SBHomeScreenView *)self window];
-  v9 = v8;
-  if (v8)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  window = [(SBHomeScreenView *)self window];
+  v9 = window;
+  if (window)
   {
-    [v8 bounds];
+    [window bounds];
     x = v10;
     y = v11;
     width = v12;
@@ -83,11 +83,11 @@
   v13.receiver = self;
   v13.super_class = SBHomeScreenView;
   [(SBHomeScreenView *)&v13 didMoveToWindow];
-  v3 = [(SBHomeScreenView *)self window];
-  v4 = v3;
-  if (v3)
+  window = [(SBHomeScreenView *)self window];
+  v4 = window;
+  if (window)
   {
-    [v3 bounds];
+    [window bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -104,30 +104,30 @@
   }
 }
 
-- (void)setUsesGlassGroup:(BOOL)a3
+- (void)setUsesGlassGroup:(BOOL)group
 {
-  if (self->_usesGlassGroup != a3)
+  if (self->_usesGlassGroup != group)
   {
-    self->_usesGlassGroup = a3;
+    self->_usesGlassGroup = group;
     [(SBHomeScreenView *)self updateGlassGroup];
   }
 }
 
-- (void)setIconContentView:(id)a3
+- (void)setIconContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   iconContentView = self->_iconContentView;
-  if (iconContentView != v5)
+  if (iconContentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)iconContentView removeFromSuperview];
-    objc_storeStrong(&self->_iconContentView, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_iconContentView, view);
+    viewCopy = v7;
     if (v7)
     {
       [(SBHomeScreenView *)self addSubview:v7];
       [(SBHomeScreenView *)self updateGlassGroup];
-      v5 = v7;
+      viewCopy = v7;
     }
   }
 }
@@ -144,8 +144,8 @@
     v4 = 0;
   }
 
-  v3 = [(SBHomeScreenView *)self iconContentView];
-  [v3 _setBackground:v4];
+  iconContentView = [(SBHomeScreenView *)self iconContentView];
+  [iconContentView _setBackground:v4];
 }
 
 @end

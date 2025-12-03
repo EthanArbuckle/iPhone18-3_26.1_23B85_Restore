@@ -1,23 +1,23 @@
 @interface PKFamilyMember
-- (BOOL)hasAppleIDAlias:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFamilyMember:(id)a3;
+- (BOOL)hasAppleIDAlias:(id)alias;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFamilyMember:(id)member;
 - (CNContact)contact;
 - (NSString)firstName;
 - (NSString)lastName;
-- (PKFamilyMember)initWithCoder:(id)a3;
-- (PKFamilyMember)initWithFAFamilyMember:(id)a3;
+- (PKFamilyMember)initWithCoder:(id)coder;
+- (PKFamilyMember)initWithFAFamilyMember:(id)member;
 - (id)description;
 - (id)labelName;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFamilyMember
 
-- (PKFamilyMember)initWithFAFamilyMember:(id)a3
+- (PKFamilyMember)initWithFAFamilyMember:(id)member
 {
-  v5 = a3;
+  memberCopy = member;
   v45.receiver = self;
   v45.super_class = PKFamilyMember;
   v6 = [(PKFamilyMember *)&v45 init];
@@ -27,21 +27,21 @@
     goto LABEL_18;
   }
 
-  objc_storeStrong(&v6->_member, a3);
-  v8 = [v5 statusString];
-  v9 = [v8 lowercaseString];
-  v10 = v9;
-  if (v9 == @"accepted")
+  objc_storeStrong(&v6->_member, member);
+  statusString = [memberCopy statusString];
+  lowercaseString = [statusString lowercaseString];
+  v10 = lowercaseString;
+  if (lowercaseString == @"accepted")
   {
     goto LABEL_5;
   }
 
-  if (!v9)
+  if (!lowercaseString)
   {
     goto LABEL_9;
   }
 
-  v11 = [(__CFString *)v9 isEqualToString:@"accepted"];
+  v11 = [(__CFString *)lowercaseString isEqualToString:@"accepted"];
 
   if (v11)
   {
@@ -65,47 +65,47 @@ LABEL_9:
 LABEL_10:
 
   v7->_status = v12;
-  v7->_me = [v5 isMe];
-  v16 = [v5 appleID];
+  v7->_me = [memberCopy isMe];
+  appleID = [memberCopy appleID];
   appleID = v7->_appleID;
-  v7->_appleID = v16;
+  v7->_appleID = appleID;
 
-  v18 = [v5 dsid];
+  dsid = [memberCopy dsid];
   dsid = v7->_dsid;
-  v7->_dsid = v18;
+  v7->_dsid = dsid;
 
-  v20 = [v5 altDSID];
+  altDSID = [memberCopy altDSID];
   altDSID = v7->_altDSID;
-  v7->_altDSID = v20;
+  v7->_altDSID = altDSID;
 
-  v22 = [v5 firstName];
+  firstName = [memberCopy firstName];
   firstName = v7->_firstName;
-  v7->_firstName = v22;
+  v7->_firstName = firstName;
 
-  v24 = [v5 lastName];
+  lastName = [memberCopy lastName];
   lastName = v7->_lastName;
-  v7->_lastName = v24;
+  v7->_lastName = lastName;
 
-  v26 = [v5 joinedDate];
+  joinedDate = [memberCopy joinedDate];
   joinedDate = v7->_joinedDate;
-  v7->_joinedDate = v26;
+  v7->_joinedDate = joinedDate;
 
-  v7->_parentalControlsEnabled = [v5 hasParentalControlsEnabled];
-  v7->_askToBuyEnabled = [v5 hasAskToBuyEnabled];
-  v7->_parent = [v5 isParent];
-  v7->_organizer = [v5 isOrganizer];
-  v28 = [v5 dictionary];
-  v29 = [v28 PKSetContaining:objc_opt_class() forKey:@"member-appleID-aliases"];
+  v7->_parentalControlsEnabled = [memberCopy hasParentalControlsEnabled];
+  v7->_askToBuyEnabled = [memberCopy hasAskToBuyEnabled];
+  v7->_parent = [memberCopy isParent];
+  v7->_organizer = [memberCopy isOrganizer];
+  dictionary = [memberCopy dictionary];
+  v29 = [dictionary PKSetContaining:objc_opt_class() forKey:@"member-appleID-aliases"];
   appleIDAliases = v7->_appleIDAliases;
   v7->_appleIDAliases = v29;
 
-  v31 = [v5 inviteEmail];
+  inviteEmail = [memberCopy inviteEmail];
   inviteEmail = v7->_inviteEmail;
-  v7->_inviteEmail = v31;
+  v7->_inviteEmail = inviteEmail;
 
-  v33 = [v5 invitationDate];
+  invitationDate = [memberCopy invitationDate];
   invitationDate = v7->_invitationDate;
-  v7->_invitationDate = v33;
+  v7->_invitationDate = invitationDate;
 
   if (PKPreferenceBOOLforKey(@"PKForceU13AccountKey"))
   {
@@ -120,8 +120,8 @@ LABEL_10:
 
   else
   {
-    v37 = [v5 dictionary];
-    v38 = [v37 objectForKey:@"member-date-of-birth"];
+    dictionary2 = [memberCopy dictionary];
+    v38 = [dictionary2 objectForKey:@"member-date-of-birth"];
 
     if (v38)
     {
@@ -131,20 +131,20 @@ LABEL_10:
       v7->_dateOfBirth = v40;
     }
 
-    v7->_childAccount = [v5 isChildAccount];
-    v42 = [v5 memberType];
-    if (v42 >= 3)
+    v7->_childAccount = [memberCopy isChildAccount];
+    memberType = [memberCopy memberType];
+    if (memberType >= 3)
     {
       v43 = -1;
     }
 
     else
     {
-      v43 = v42;
+      v43 = memberType;
     }
 
     v7->_memberType = v43;
-    v7->_age = [v5 age];
+    v7->_age = [memberCopy age];
   }
 
 LABEL_18:
@@ -152,73 +152,73 @@ LABEL_18:
   return v7;
 }
 
-- (PKFamilyMember)initWithCoder:(id)a3
+- (PKFamilyMember)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = PKFamilyMember;
   v5 = [(PKFamilyMember *)&v35 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"member"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"member"];
     member = v5->_member;
     v5->_member = v6;
 
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v5->_me = [v4 decodeBoolForKey:@"me"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleID"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v5->_me = [coderCopy decodeBoolForKey:@"me"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleID"];
     appleID = v5->_appleID;
     v5->_appleID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
     dsid = v5->_dsid;
     v5->_dsid = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v16;
 
-    v5->_age = [v4 decodeIntegerForKey:@"age"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"memberType"];
+    v5->_age = [coderCopy decodeIntegerForKey:@"age"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"memberType"];
     v5->_memberType = PKFamilyMemberTypeFromString(v18);
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"joinedDate"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"joinedDate"];
     joinedDate = v5->_joinedDate;
     v5->_joinedDate = v19;
 
-    v5->_childAccount = [v4 decodeBoolForKey:@"childAccount"];
-    v5->_parentalControlsEnabled = [v4 decodeBoolForKey:@"parentalControlsEnabled"];
-    v5->_askToBuyEnabled = [v4 decodeBoolForKey:@"askToBuyEnabled"];
-    v5->_parent = [v4 decodeBoolForKey:@"parent"];
-    v5->_organizer = [v4 decodeBoolForKey:@"organizer"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateOfBirth"];
+    v5->_childAccount = [coderCopy decodeBoolForKey:@"childAccount"];
+    v5->_parentalControlsEnabled = [coderCopy decodeBoolForKey:@"parentalControlsEnabled"];
+    v5->_askToBuyEnabled = [coderCopy decodeBoolForKey:@"askToBuyEnabled"];
+    v5->_parent = [coderCopy decodeBoolForKey:@"parent"];
+    v5->_organizer = [coderCopy decodeBoolForKey:@"organizer"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateOfBirth"];
     dateOfBirth = v5->_dateOfBirth;
     v5->_dateOfBirth = v21;
 
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"appleIDAliases"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"appleIDAliases"];
     appleIDAliases = v5->_appleIDAliases;
     v5->_appleIDAliases = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
     contact = v5->_contact;
     v5->_contact = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inviteEmail"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inviteEmail"];
     inviteEmail = v5->_inviteEmail;
     v5->_inviteEmail = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitationDate"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitationDate"];
     invitationDate = v5->_invitationDate;
     v5->_invitationDate = v32;
   }
@@ -231,9 +231,9 @@ LABEL_18:
   contact = self->_contact;
   if (!contact)
   {
-    v4 = [(FAFamilyMember *)self->_member contact];
+    contact = [(FAFamilyMember *)self->_member contact];
     v5 = self->_contact;
-    self->_contact = v4;
+    self->_contact = contact;
 
     contact = self->_contact;
   }
@@ -246,16 +246,16 @@ LABEL_18:
   firstName = self->_firstName;
   if (firstName)
   {
-    v3 = firstName;
+    givenName = firstName;
   }
 
   else
   {
-    v4 = [(PKFamilyMember *)self contact];
-    v3 = [v4 givenName];
+    contact = [(PKFamilyMember *)self contact];
+    givenName = [contact givenName];
   }
 
-  return v3;
+  return givenName;
 }
 
 - (NSString)lastName
@@ -263,37 +263,37 @@ LABEL_18:
   lastName = self->_lastName;
   if (lastName)
   {
-    v3 = lastName;
+    familyName = lastName;
   }
 
   else
   {
-    v4 = [(PKFamilyMember *)self contact];
-    v3 = [v4 familyName];
+    contact = [(PKFamilyMember *)self contact];
+    familyName = [contact familyName];
   }
 
-  return v3;
+  return familyName;
 }
 
 - (id)labelName
 {
   v3 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v4 = [(PKFamilyMember *)self lastName];
-  [v3 setFamilyName:v4];
+  lastName = [(PKFamilyMember *)self lastName];
+  [v3 setFamilyName:lastName];
 
-  v5 = [(PKFamilyMember *)self firstName];
-  [v3 setGivenName:v5];
+  firstName = [(PKFamilyMember *)self firstName];
+  [v3 setGivenName:firstName];
 
   v6 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v3 style:2 options:0];
 
   return v6;
 }
 
-- (BOOL)hasAppleIDAlias:(id)a3
+- (BOOL)hasAppleIDAlias:(id)alias
 {
-  v4 = a3;
+  aliasCopy = alias;
   appleID = self->_appleID;
-  v6 = v4;
+  v6 = aliasCopy;
   v7 = appleID;
   v8 = v7;
   if (v7 == v6)
@@ -324,18 +324,18 @@ LABEL_10:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_member forKey:@"member"];
-  [v6 encodeInteger:self->_status forKey:@"status"];
-  [v6 encodeBool:self->_me forKey:@"me"];
-  [v6 encodeObject:self->_appleID forKey:@"appleID"];
-  [v6 encodeObject:self->_dsid forKey:@"dsid"];
-  [v6 encodeObject:self->_altDSID forKey:@"altDSID"];
-  [v6 encodeObject:self->_firstName forKey:@"firstName"];
-  [v6 encodeObject:self->_lastName forKey:@"lastName"];
-  [v6 encodeInteger:self->_age forKey:@"age"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_member forKey:@"member"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeBool:self->_me forKey:@"me"];
+  [coderCopy encodeObject:self->_appleID forKey:@"appleID"];
+  [coderCopy encodeObject:self->_dsid forKey:@"dsid"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
+  [coderCopy encodeObject:self->_firstName forKey:@"firstName"];
+  [coderCopy encodeObject:self->_lastName forKey:@"lastName"];
+  [coderCopy encodeInteger:self->_age forKey:@"age"];
   memberType = self->_memberType;
   if (memberType > 2)
   {
@@ -347,42 +347,42 @@ LABEL_10:
     v5 = off_1E79DF5A8[memberType];
   }
 
-  [v6 encodeObject:v5 forKey:@"memberType"];
-  [v6 encodeObject:self->_joinedDate forKey:@"joinedDate"];
-  [v6 encodeBool:self->_childAccount forKey:@"childAccount"];
-  [v6 encodeBool:self->_parentalControlsEnabled forKey:@"parentalControlsEnabled"];
-  [v6 encodeBool:self->_askToBuyEnabled forKey:@"askToBuyEnabled"];
-  [v6 encodeBool:self->_parent forKey:@"parent"];
-  [v6 encodeBool:self->_organizer forKey:@"organizer"];
-  [v6 encodeObject:self->_dateOfBirth forKey:@"dateOfBirth"];
-  [v6 encodeObject:self->_appleIDAliases forKey:@"appleIDAliases"];
-  [v6 encodeObject:self->_contact forKey:@"contact"];
-  [v6 encodeObject:self->_invitationDate forKey:@"invitationDate"];
-  [v6 encodeObject:self->_inviteEmail forKey:@"inviteEmail"];
+  [coderCopy encodeObject:v5 forKey:@"memberType"];
+  [coderCopy encodeObject:self->_joinedDate forKey:@"joinedDate"];
+  [coderCopy encodeBool:self->_childAccount forKey:@"childAccount"];
+  [coderCopy encodeBool:self->_parentalControlsEnabled forKey:@"parentalControlsEnabled"];
+  [coderCopy encodeBool:self->_askToBuyEnabled forKey:@"askToBuyEnabled"];
+  [coderCopy encodeBool:self->_parent forKey:@"parent"];
+  [coderCopy encodeBool:self->_organizer forKey:@"organizer"];
+  [coderCopy encodeObject:self->_dateOfBirth forKey:@"dateOfBirth"];
+  [coderCopy encodeObject:self->_appleIDAliases forKey:@"appleIDAliases"];
+  [coderCopy encodeObject:self->_contact forKey:@"contact"];
+  [coderCopy encodeObject:self->_invitationDate forKey:@"invitationDate"];
+  [coderCopy encodeObject:self->_inviteEmail forKey:@"inviteEmail"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKFamilyMember *)self isEqualToFamilyMember:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKFamilyMember *)self isEqualToFamilyMember:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFamilyMember:(id)a3
+- (BOOL)isEqualToFamilyMember:(id)member
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  memberCopy = member;
+  v6 = memberCopy;
+  if (!memberCopy)
   {
     v3 = 0;
     goto LABEL_16;
@@ -417,7 +417,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v10 = v5[15];
+  v10 = memberCopy[15];
   v11 = self->_inviteEmail;
   v12 = v10;
   v13 = v12;

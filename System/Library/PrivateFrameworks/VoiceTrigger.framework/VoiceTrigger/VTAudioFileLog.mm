@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (VTAudioFileLog)init;
 - (void)_closeAudioFile;
-- (void)appendAudioData:(AudioBuffer)a3;
+- (void)appendAudioData:(AudioBuffer)data;
 - (void)dealloc;
 - (void)startRecording;
 - (void)stopRecording;
@@ -40,10 +40,10 @@ uint64_t __31__VTAudioFileLog_stopRecording__block_invoke(uint64_t a1)
   return [*(a1 + 32) _closeAudioFile];
 }
 
-- (void)appendAudioData:(AudioBuffer)a3
+- (void)appendAudioData:(AudioBuffer)data
 {
-  mData = a3.mData;
-  mDataByteSize = a3.mDataByteSize;
+  mData = data.mData;
+  mDataByteSize = data.mDataByteSize;
   v6 = objc_autoreleasePoolPush();
   v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:mData length:mDataByteSize];
   queue = self->_queue;
@@ -231,9 +231,9 @@ LABEL_14:
   if (v2)
   {
     v3 = +[VTPreferences sharedPreferences];
-    v4 = [v3 fileLoggingIsEnabled];
+    fileLoggingIsEnabled = [v3 fileLoggingIsEnabled];
 
-    if (!v4)
+    if (!fileLoggingIsEnabled)
     {
       v9 = 0;
       goto LABEL_6;

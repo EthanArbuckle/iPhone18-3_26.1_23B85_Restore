@@ -8,26 +8,26 @@
 + (BOOL)isNetworkReachable
 {
   v3 = objc_alloc_init(MEMORY[0x277CEC5D0]);
-  if ([v3 airplaneMode] && !objc_msgSend(a1, "isWifiEnabled"))
+  if ([v3 airplaneMode] && !objc_msgSend(self, "isWifiEnabled"))
   {
-    v5 = 0;
+    isNetworkReachable = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-    v5 = [v4 isNetworkReachable];
+    mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+    isNetworkReachable = [mEMORY[0x277CEC5B8] isNetworkReachable];
   }
 
-  return v5;
+  return isNetworkReachable;
 }
 
 + (BOOL)isWifiEnabled
 {
-  v2 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  v3 = [v2 isWiFiEnabled];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  isWiFiEnabled = [mEMORY[0x277CEC5B8] isWiFiEnabled];
 
-  return v3;
+  return isWiFiEnabled;
 }
 
 @end

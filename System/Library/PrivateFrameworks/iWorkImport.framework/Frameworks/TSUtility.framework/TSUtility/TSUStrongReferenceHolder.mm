@@ -1,14 +1,14 @@
 @interface TSUStrongReferenceHolder
 + (id)strongReferenceHolder;
 - (TSUStrongReferenceHolder)init;
-- (id)uniqueReferenceForObject:(id)a3;
+- (id)uniqueReferenceForObject:(id)object;
 @end
 
 @implementation TSUStrongReferenceHolder
 
 + (id)strongReferenceHolder
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -22,9 +22,9 @@
   if (v2)
   {
     pthread_rwlock_init(&v2->_rwLock, 0);
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     strongReferences = v3->_strongReferences;
-    v3->_strongReferences = v4;
+    v3->_strongReferences = array;
 
     v11[0] = xmmword_28862A818;
     v11[1] = unk_28862A828;
@@ -40,27 +40,27 @@
   return v3;
 }
 
-- (id)uniqueReferenceForObject:(id)a3
+- (id)uniqueReferenceForObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = a3;
+    objectCopy = object;
     pthread_rwlock_rdlock(&self->_rwLock);
-    v6 = [(TSUCustomCallBackDictionary *)self->_objectUniquingDictionary objectForKey:v4];
+    v6 = [(TSUCustomCallBackDictionary *)self->_objectUniquingDictionary objectForKey:objectCopy];
 
-    if (v6 || (pthread_rwlock_unlock(&self->_rwLock), pthread_rwlock_wrlock(&self->_rwLock), [(TSUCustomCallBackDictionary *)self->_objectUniquingDictionary objectForKey:v4], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+    if (v6 || (pthread_rwlock_unlock(&self->_rwLock), pthread_rwlock_wrlock(&self->_rwLock), [(TSUCustomCallBackDictionary *)self->_objectUniquingDictionary objectForKey:objectCopy], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
     {
-      v4 = v6;
+      objectCopy = v6;
     }
 
     else
     {
-      [(NSMutableArray *)self->_strongReferences addObject:v4];
-      [(TSUCustomCallBackDictionary *)self->_objectUniquingDictionary setObject:v4 forUncopiedKey:v4];
+      [(NSMutableArray *)self->_strongReferences addObject:objectCopy];
+      [(TSUCustomCallBackDictionary *)self->_objectUniquingDictionary setObject:objectCopy forUncopiedKey:objectCopy];
     }
 
     pthread_rwlock_unlock(&self->_rwLock);
-    v7 = v4;
+    v7 = objectCopy;
   }
 
   else

@@ -1,23 +1,23 @@
 @interface AVAssetWriterInputGroup
 + (AVAssetWriterInputGroup)assetWriterInputGroupWithInputs:(NSArray *)inputs defaultInput:(AVAssetWriterInput *)defaultInput;
-+ (AVAssetWriterInputGroup)assetWriterInputGroupWithInputs:(id)a3 provisionalInputs:(id)a4 defaultInput:(id)a5;
++ (AVAssetWriterInputGroup)assetWriterInputGroupWithInputs:(id)inputs provisionalInputs:(id)provisionalInputs defaultInput:(id)input;
 - (AVAssetWriterInputGroup)initWithInputs:(NSArray *)inputs defaultInput:(AVAssetWriterInput *)defaultInput;
-- (AVAssetWriterInputGroup)initWithInputs:(id)a3 provisionalInputs:(id)a4 defaultInput:(id)a5;
+- (AVAssetWriterInputGroup)initWithInputs:(id)inputs provisionalInputs:(id)provisionalInputs defaultInput:(id)input;
 - (NSArray)inputs;
 - (NSArray)provisionalInputs;
-- (id)mediaSelectionOptionWithPropertyList:(id)a3;
+- (id)mediaSelectionOptionWithPropertyList:(id)list;
 - (id)options;
 - (void)_startObservingInputPropertiesThatMayChangeValueOfOptions;
 - (void)_stopObservingInputPropertiesThatMayChangeValueOfOptions;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation AVAssetWriterInputGroup
 
 + (AVAssetWriterInputGroup)assetWriterInputGroupWithInputs:(NSArray *)inputs defaultInput:(AVAssetWriterInput *)defaultInput
 {
-  v4 = [[a1 alloc] initWithInputs:inputs defaultInput:defaultInput];
+  v4 = [[self alloc] initWithInputs:inputs defaultInput:defaultInput];
 
   return v4;
 }
@@ -26,7 +26,7 @@
 {
   if (!inputs)
   {
-    v11 = self;
+    selfCopy = self;
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
     v19 = "inputs != nil";
@@ -35,7 +35,7 @@
 
   if (![(NSArray *)inputs count])
   {
-    v20 = self;
+    selfCopy2 = self;
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
     v19 = "[inputs count] > 0";
@@ -44,7 +44,7 @@
 
   if (defaultInput && ![(NSArray *)inputs containsObject:defaultInput])
   {
-    v21 = self;
+    selfCopy3 = self;
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
     v19 = "defaultInput == nil || [inputs containsObject:defaultInput]";
@@ -175,11 +175,11 @@ LABEL_13:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"AVAssetWriterInputGroupOptionsChangedContext")
+  if (context == @"AVAssetWriterInputGroupOptionsChangedContext")
   {
-    [(AVAssetWriterInputGroup *)self willChangeValueForKey:@"options", a4, a5];
+    [(AVAssetWriterInputGroup *)self willChangeValueForKey:@"options", object, change];
 
     [(AVAssetWriterInputGroup *)self didChangeValueForKey:@"options"];
   }
@@ -188,7 +188,7 @@ LABEL_13:
 - (id)options
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -215,7 +215,7 @@ LABEL_13:
           goto LABEL_18;
         }
 
-        v10 = [v9 sourceFormatHint];
+        sourceFormatHint = [v9 sourceFormatHint];
         if ([v9 outputSettings])
         {
           v11 = 1;
@@ -223,12 +223,12 @@ LABEL_13:
 
         else
         {
-          v11 = v10 == 0;
+          v11 = sourceFormatHint == 0;
         }
 
-        if (v11 || (v12 = CFGetTypeID(v10), v12 != CMFormatDescriptionGetTypeID()) || CMFormatDescriptionGetMediaType(v10) != 1935832172 || (displayFlagsOut = 0, CMTextFormatDescriptionGetDisplayFlags(v10, &displayFlagsOut)) || (displayFlagsOut & 0x80000000) == 0)
+        if (v11 || (v12 = CFGetTypeID(sourceFormatHint), v12 != CMFormatDescriptionGetTypeID()) || CMFormatDescriptionGetMediaType(sourceFormatHint) != 1935832172 || (displayFlagsOut = 0, CMTextFormatDescriptionGetDisplayFlags(sourceFormatHint, &displayFlagsOut)) || (displayFlagsOut & 0x80000000) == 0)
         {
-          [v3 addObject:{+[AVAssetWriterInputSelectionOption assetWriterInputSelectionOptionWithAssetWriterInput:displaysNonForcedSubtitles:](AVAssetWriterInputSelectionOption, "assetWriterInputSelectionOptionWithAssetWriterInput:displaysNonForcedSubtitles:", v9, 1)}];
+          [array addObject:{+[AVAssetWriterInputSelectionOption assetWriterInputSelectionOptionWithAssetWriterInput:displaysNonForcedSubtitles:](AVAssetWriterInputSelectionOption, "assetWriterInputSelectionOptionWithAssetWriterInput:displaysNonForcedSubtitles:", v9, 1)}];
           if ([objc_msgSend(objc_msgSend(v9 "_trackReferences")])
           {
             continue;
@@ -237,7 +237,7 @@ LABEL_13:
 
         v13 = [AVAssetWriterInputSelectionOption assetWriterInputSelectionOptionWithAssetWriterInput:v9 displaysNonForcedSubtitles:0];
 LABEL_18:
-        [v3 addObject:v13];
+        [array addObject:v13];
         continue;
       }
 
@@ -247,35 +247,35 @@ LABEL_18:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-+ (AVAssetWriterInputGroup)assetWriterInputGroupWithInputs:(id)a3 provisionalInputs:(id)a4 defaultInput:(id)a5
++ (AVAssetWriterInputGroup)assetWriterInputGroupWithInputs:(id)inputs provisionalInputs:(id)provisionalInputs defaultInput:(id)input
 {
-  v5 = [[a1 alloc] initWithInputs:a3 provisionalInputs:a4 defaultInput:a5];
+  v5 = [[self alloc] initWithInputs:inputs provisionalInputs:provisionalInputs defaultInput:input];
 
   return v5;
 }
 
-- (AVAssetWriterInputGroup)initWithInputs:(id)a3 provisionalInputs:(id)a4 defaultInput:(id)a5
+- (AVAssetWriterInputGroup)initWithInputs:(id)inputs provisionalInputs:(id)provisionalInputs defaultInput:(id)input
 {
-  if (a5 && ([a3 containsObject:a5] & 1) == 0)
+  if (input && ([inputs containsObject:input] & 1) == 0)
   {
-    v23 = self;
+    selfCopy = self;
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
     v19 = "defaultInput == nil || [inputs containsObject:defaultInput]";
     goto LABEL_16;
   }
 
-  if (![a3 count] || !objc_msgSend(a4, "count"))
+  if (![inputs count] || !objc_msgSend(provisionalInputs, "count"))
   {
-    if ([a3 count] || objc_msgSend(a4, "count"))
+    if ([inputs count] || objc_msgSend(provisionalInputs, "count"))
     {
       goto LABEL_9;
     }
 
-    v24 = self;
+    selfCopy2 = self;
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
     v19 = "[inputs count] > 0 || [provisionalInputs count] > 0";
@@ -284,10 +284,10 @@ LABEL_16:
     objc_exception_throw(v25);
   }
 
-  v10 = [MEMORY[0x1E695DFD8] setWithArray:a3];
-  if ([v10 intersectsSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", a4)}])
+  v10 = [MEMORY[0x1E695DFD8] setWithArray:inputs];
+  if ([v10 intersectsSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", provisionalInputs)}])
   {
-    v11 = self;
+    selfCopy3 = self;
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
     v19 = "! [[NSSet setWithArray:inputs] intersectsSet:[NSSet setWithArray:provisionalInputs]]";
@@ -305,9 +305,9 @@ LABEL_9:
     if (v21)
     {
       CFRetain(v21);
-      v20->_internal->inputs = [a3 copy];
-      v20->_internal->defaultInput = a5;
-      v20->_internal->provisionalInputs = [a4 copy];
+      v20->_internal->inputs = [inputs copy];
+      v20->_internal->defaultInput = input;
+      v20->_internal->provisionalInputs = [provisionalInputs copy];
       [(AVAssetWriterInputGroup *)v20 _startObservingInputPropertiesThatMayChangeValueOfOptions];
     }
 
@@ -332,9 +332,9 @@ LABEL_9:
   return result;
 }
 
-- (id)mediaSelectionOptionWithPropertyList:(id)a3
+- (id)mediaSelectionOptionWithPropertyList:(id)list
 {
-  v4 = [a3 objectForKey:@"UnsafeUnretainedPointerData"];
+  v4 = [list objectForKey:@"UnsafeUnretainedPointerData"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = 0, [v4 length] == 8) && (objc_msgSend(v4, "getBytes:length:", &v7, 8), v5 = -[AVAssetWriterInputGroup inputs](self, "inputs"), -[NSArray indexOfObjectIdenticalTo:](v5, "indexOfObjectIdenticalTo:", v7) != 0x7FFFFFFFFFFFFFFFLL))
   {

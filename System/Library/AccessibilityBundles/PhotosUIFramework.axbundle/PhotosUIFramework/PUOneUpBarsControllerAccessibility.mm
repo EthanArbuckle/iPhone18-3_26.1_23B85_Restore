@@ -1,42 +1,42 @@
 @interface PUOneUpBarsControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axDetailsShowing;
 - (BOOL)_axIsFavorite;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)_axAssetViewModel;
-- (id)_newBarButtonItemWithIdentifier:(int64_t)a3 location:(int64_t)a4;
+- (id)_newBarButtonItemWithIdentifier:(int64_t)identifier location:(int64_t)location;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axLoadAirplayButtonAccessibility:(id)a3;
-- (void)_axLoadBackButtonWithNoTitleAccessibility:(id)a3;
-- (void)_axLoadDeleteButtonAccessibility:(id)a3;
-- (void)_axLoadDetailsButtonAccessibility:(id)a3;
-- (void)_axLoadDoneButtonAccessibility:(id)a3;
-- (void)_axLoadEditButtonAccessibility:(id)a3;
-- (void)_axLoadFavoriteButtonAccessibility:(id)a3;
-- (void)_axLoadLikeButtonAccessibility:(id)a3 identifier:(int64_t)a4;
-- (void)_axLoadMuteButtonAccessibility:(id)a3;
-- (void)_axLoadRewindButtonAccessibility:(id)a3;
-- (void)_axLoadShareButtonAccessibility:(id)a3;
-- (void)_axLoadUnmuteButtonAccessibility:(id)a3;
-- (void)_handleFavoriteButton:(id)a3;
+- (void)_axLoadAirplayButtonAccessibility:(id)accessibility;
+- (void)_axLoadBackButtonWithNoTitleAccessibility:(id)accessibility;
+- (void)_axLoadDeleteButtonAccessibility:(id)accessibility;
+- (void)_axLoadDetailsButtonAccessibility:(id)accessibility;
+- (void)_axLoadDoneButtonAccessibility:(id)accessibility;
+- (void)_axLoadEditButtonAccessibility:(id)accessibility;
+- (void)_axLoadFavoriteButtonAccessibility:(id)accessibility;
+- (void)_axLoadLikeButtonAccessibility:(id)accessibility identifier:(int64_t)identifier;
+- (void)_axLoadMuteButtonAccessibility:(id)accessibility;
+- (void)_axLoadRewindButtonAccessibility:(id)accessibility;
+- (void)_axLoadShareButtonAccessibility:(id)accessibility;
+- (void)_axLoadUnmuteButtonAccessibility:(id)accessibility;
+- (void)_handleFavoriteButton:(id)button;
 @end
 
 @implementation PUOneUpBarsControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUScrubberView"];
-  [v3 validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"browsingSession" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"_scrubberView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUBrowsingSession" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUAssetViewModel" hasInstanceMethod:@"isFavorite" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUAssetViewModel" hasInstanceMethod:@"isAccessoryViewVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"_newBarButtonItemWithIdentifier: location:" withFullSignature:{"@", "q", "q", 0}];
-  [v3 validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"_activeBarButtonItemForIdentifier:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"_handleFavoriteButton:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"assetViewModelForAssetReference:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"currentAssetReference" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUScrubberView"];
+  [validationsCopy validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"browsingSession" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"_scrubberView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingSession" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUAssetViewModel" hasInstanceMethod:@"isFavorite" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUAssetViewModel" hasInstanceMethod:@"isAccessoryViewVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"_newBarButtonItemWithIdentifier: location:" withFullSignature:{"@", "q", "q", 0}];
+  [validationsCopy validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"_activeBarButtonItemForIdentifier:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"PUOneUpBarsController" hasInstanceMethod:@"_handleFavoriteButton:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"assetViewModelForAssetReference:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"PUBrowsingViewModel" hasInstanceMethod:@"currentAssetReference" withFullSignature:{"@", 0}];
 }
 
 - (id)_axAssetViewModel
@@ -71,25 +71,25 @@ uint64_t __55__PUOneUpBarsControllerAccessibility__axAssetViewModel__block_invok
 
 - (BOOL)_axIsFavorite
 {
-  v2 = [(PUOneUpBarsControllerAccessibility *)self _axAssetViewModel];
-  v3 = [v2 safeBoolForKey:@"isFavorite"];
+  _axAssetViewModel = [(PUOneUpBarsControllerAccessibility *)self _axAssetViewModel];
+  v3 = [_axAssetViewModel safeBoolForKey:@"isFavorite"];
 
   return v3;
 }
 
 - (BOOL)_axDetailsShowing
 {
-  v2 = [(PUOneUpBarsControllerAccessibility *)self _axAssetViewModel];
-  v3 = [v2 safeBoolForKey:@"isAccessoryViewVisible"];
+  _axAssetViewModel = [(PUOneUpBarsControllerAccessibility *)self _axAssetViewModel];
+  v3 = [_axAssetViewModel safeBoolForKey:@"isAccessoryViewVisible"];
 
   return v3;
 }
 
-- (void)_axLoadFavoriteButtonAccessibility:(id)a3
+- (void)_axLoadFavoriteButtonAccessibility:(id)accessibility
 {
-  v4 = a3;
+  accessibilityCopy = accessibility;
   v5 = accessibilityPULocalizedString(@"photo.favorite");
-  [v4 setAccessibilityLabel:v5];
+  [accessibilityCopy setAccessibilityLabel:v5];
 
   objc_initWeak(&location, self);
   v7 = MEMORY[0x29EDCA5F8];
@@ -97,11 +97,11 @@ uint64_t __55__PUOneUpBarsControllerAccessibility__axAssetViewModel__block_invok
   v9 = __73__PUOneUpBarsControllerAccessibility__axLoadFavoriteButtonAccessibility___block_invoke;
   v10 = &unk_29F2E8158;
   objc_copyWeak(&v11, &location);
-  [v4 _setAccessibilityValueBlock:&v7];
+  [accessibilityCopy _setAccessibilityValueBlock:&v7];
   v6 = accessibilityPULocalizedString(@"photo.favorite.hint");
-  [v4 setAccessibilityHint:{v6, v7, v8, v9, v10}];
+  [accessibilityCopy setAccessibilityHint:{v6, v7, v8, v9, v10}];
 
-  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | *MEMORY[0x29EDBDCB8]];
+  [accessibilityCopy setAccessibilityTraits:*MEMORY[0x29EDC7F70] | *MEMORY[0x29EDBDCB8]];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
@@ -124,18 +124,18 @@ __CFString *__73__PUOneUpBarsControllerAccessibility__axLoadFavoriteButtonAccess
   return v2;
 }
 
-- (void)_axLoadLikeButtonAccessibility:(id)a3 identifier:(int64_t)a4
+- (void)_axLoadLikeButtonAccessibility:(id)accessibility identifier:(int64_t)identifier
 {
   v5 = AXIsPhotoSharingLikeButtonKey;
-  v6 = a3;
-  [v6 _accessibilitySetRetainedValue:MEMORY[0x29EDB8EB0] forKey:v5];
+  accessibilityCopy = accessibility;
+  [accessibilityCopy _accessibilitySetRetainedValue:MEMORY[0x29EDB8EB0] forKey:v5];
   v7 = accessibilityPULocalizedString(@"shared.photo.like");
-  [v6 setAccessibilityLabel:v7];
+  [accessibilityCopy setAccessibilityLabel:v7];
 
   v8 = accessibilityPULocalizedString(@"shared.photo.like.hint");
-  [v6 setAccessibilityHint:v8];
+  [accessibilityCopy setAccessibilityHint:v8];
 
-  if (a4 == 19)
+  if (identifier == 19)
   {
     v9 = @"shared.photo.like.value.like";
   }
@@ -146,91 +146,91 @@ __CFString *__73__PUOneUpBarsControllerAccessibility__axLoadFavoriteButtonAccess
   }
 
   v10 = accessibilityPULocalizedString(v9);
-  [v6 setAccessibilityValue:v10];
+  [accessibilityCopy setAccessibilityValue:v10];
 }
 
-- (void)_axLoadEditButtonAccessibility:(id)a3
+- (void)_axLoadEditButtonAccessibility:(id)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v4 = accessibilityPULocalizedString(@"photo.edit");
-  [v3 setAccessibilityLabel:v4];
+  [accessibilityCopy setAccessibilityLabel:v4];
 }
 
-- (void)_axLoadDetailsButtonAccessibility:(id)a3
+- (void)_axLoadDetailsButtonAccessibility:(id)accessibility
 {
-  v8 = a3;
+  accessibilityCopy = accessibility;
   if ([(PUOneUpBarsControllerAccessibility *)self _axDetailsShowing])
   {
-    v4 = [v8 accessibilityTraits];
-    v5 = *MEMORY[0x29EDC7FC0] | v4;
+    accessibilityTraits = [accessibilityCopy accessibilityTraits];
+    v5 = *MEMORY[0x29EDC7FC0] | accessibilityTraits;
   }
 
   else
   {
     v6 = *MEMORY[0x29EDC7FC0];
-    v5 = [v8 accessibilityTraits] & ~v6;
+    v5 = [accessibilityCopy accessibilityTraits] & ~v6;
   }
 
-  [v8 setAccessibilityTraits:v5];
-  [v8 setIsAccessibilityElement:1];
+  [accessibilityCopy setAccessibilityTraits:v5];
+  [accessibilityCopy setIsAccessibilityElement:1];
   v7 = accessibilityPULocalizedString(@"photo.info");
-  [v8 setAccessibilityLabel:v7];
+  [accessibilityCopy setAccessibilityLabel:v7];
 }
 
-- (void)_axLoadAirplayButtonAccessibility:(id)a3
+- (void)_axLoadAirplayButtonAccessibility:(id)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v4 = accessibilityPULocalizedString(@"photo.airplay");
-  [v3 setAccessibilityLabel:v4];
+  [accessibilityCopy setAccessibilityLabel:v4];
 }
 
-- (void)_axLoadBackButtonWithNoTitleAccessibility:(id)a3
+- (void)_axLoadBackButtonWithNoTitleAccessibility:(id)accessibility
 {
-  v4 = a3;
-  v3 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7500] | v3];
+  accessibilityCopy = accessibility;
+  accessibilityTraits = [accessibilityCopy accessibilityTraits];
+  [accessibilityCopy setAccessibilityTraits:*MEMORY[0x29EDC7500] | accessibilityTraits];
 }
 
-- (void)_axLoadDoneButtonAccessibility:(id)a3
+- (void)_axLoadDoneButtonAccessibility:(id)accessibility
 {
-  v4 = a3;
-  v3 = [v4 accessibilityTraits];
-  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7500] | v3];
+  accessibilityCopy = accessibility;
+  accessibilityTraits = [accessibilityCopy accessibilityTraits];
+  [accessibilityCopy setAccessibilityTraits:*MEMORY[0x29EDC7500] | accessibilityTraits];
 }
 
-- (void)_axLoadShareButtonAccessibility:(id)a3
+- (void)_axLoadShareButtonAccessibility:(id)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v4 = accessibilityPULocalizedString(@"photo.share");
-  [v3 setAccessibilityLabel:v4];
+  [accessibilityCopy setAccessibilityLabel:v4];
 }
 
-- (void)_axLoadDeleteButtonAccessibility:(id)a3
+- (void)_axLoadDeleteButtonAccessibility:(id)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v4 = accessibilityPULocalizedString(@"photo.delete");
-  [v3 setAccessibilityLabel:v4];
+  [accessibilityCopy setAccessibilityLabel:v4];
 }
 
-- (void)_axLoadRewindButtonAccessibility:(id)a3
+- (void)_axLoadRewindButtonAccessibility:(id)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v4 = accessibilityPULocalizedString(@"photo.rewind");
-  [v3 setAccessibilityLabel:v4];
+  [accessibilityCopy setAccessibilityLabel:v4];
 }
 
-- (void)_axLoadMuteButtonAccessibility:(id)a3
+- (void)_axLoadMuteButtonAccessibility:(id)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v4 = accessibilityPULocalizedString(@"photo.volume.button");
-  [v3 setAccessibilityLabel:v4];
+  [accessibilityCopy setAccessibilityLabel:v4];
 }
 
-- (void)_axLoadUnmuteButtonAccessibility:(id)a3
+- (void)_axLoadUnmuteButtonAccessibility:(id)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v4 = accessibilityPULocalizedString(@"photo.volume.muted.button");
-  [v3 setAccessibilityLabel:v4];
+  [accessibilityCopy setAccessibilityLabel:v4];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -271,7 +271,7 @@ void __80__PUOneUpBarsControllerAccessibility__accessibilityLoadAccessibilityInf
   [*(a1 + 32) _axLoadDetailsButtonAccessibility:v10];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v5 = [(PUOneUpBarsControllerAccessibility *)self safeValueForKey:@"__scrubberView"];
   if (!v5)
@@ -287,52 +287,52 @@ void __80__PUOneUpBarsControllerAccessibility__accessibilityLoadAccessibilityInf
 
   v6 = v5;
   v7 = v6;
-  if (a3 == 1)
+  if (scroll == 1)
   {
-    v8 = [v6 _axDecrementForThreeFingerScroll];
+    _axDecrementForThreeFingerScroll = [v6 _axDecrementForThreeFingerScroll];
     goto LABEL_7;
   }
 
-  if (a3 != 2)
+  if (scroll != 2)
   {
 
 LABEL_9:
     v11.receiver = self;
     v11.super_class = PUOneUpBarsControllerAccessibility;
-    v9 = [(PUOneUpBarsControllerAccessibility *)&v11 accessibilityScroll:a3];
+    v9 = [(PUOneUpBarsControllerAccessibility *)&v11 accessibilityScroll:scroll];
     goto LABEL_10;
   }
 
-  v8 = [v6 _axIncrementForThreeFingerScroll];
+  _axDecrementForThreeFingerScroll = [v6 _axIncrementForThreeFingerScroll];
 LABEL_7:
-  v9 = v8;
+  v9 = _axDecrementForThreeFingerScroll;
 
 LABEL_10:
   return v9;
 }
 
-- (id)_newBarButtonItemWithIdentifier:(int64_t)a3 location:(int64_t)a4
+- (id)_newBarButtonItemWithIdentifier:(int64_t)identifier location:(int64_t)location
 {
   v9.receiver = self;
   v9.super_class = PUOneUpBarsControllerAccessibility;
-  v6 = [(PUOneUpBarsControllerAccessibility *)&v9 _newBarButtonItemWithIdentifier:a3 location:a4];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 8)
+  v6 = [(PUOneUpBarsControllerAccessibility *)&v9 _newBarButtonItemWithIdentifier:identifier location:location];
+  if ((identifier & 0xFFFFFFFFFFFFFFFELL) == 8)
   {
     v7 = [(PUOneUpBarsControllerAccessibility *)self _activeBarButtonItemForIdentifier:7];
     [(PUOneUpBarsControllerAccessibility *)self _axLoadFavoriteButtonAccessibility:v7];
   }
 
-  else if ((a3 - 19) > 1)
+  else if ((identifier - 19) > 1)
   {
-    if (a3 <= 9)
+    if (identifier <= 9)
     {
-      if (a3 == 1)
+      if (identifier == 1)
       {
         [(PUOneUpBarsControllerAccessibility *)self _axLoadEditButtonAccessibility:v6];
         return v6;
       }
 
-      if (a3 == 6)
+      if (identifier == 6)
       {
         [(PUOneUpBarsControllerAccessibility *)self _axLoadShareButtonAccessibility:v6];
         return v6;
@@ -341,7 +341,7 @@ LABEL_10:
 
     else
     {
-      switch(a3)
+      switch(identifier)
       {
         case 10:
           [(PUOneUpBarsControllerAccessibility *)self _axLoadDoneButtonAccessibility:v6];
@@ -355,14 +355,14 @@ LABEL_10:
       }
     }
 
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((identifier & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       [(PUOneUpBarsControllerAccessibility *)self _axLoadDeleteButtonAccessibility:v6];
     }
 
     else
     {
-      switch(a3)
+      switch(identifier)
       {
         case '#':
           [(PUOneUpBarsControllerAccessibility *)self _axLoadDetailsButtonAccessibility:v6];
@@ -379,17 +379,17 @@ LABEL_10:
 
   else
   {
-    [(PUOneUpBarsControllerAccessibility *)self _axLoadLikeButtonAccessibility:v6 identifier:a3];
+    [(PUOneUpBarsControllerAccessibility *)self _axLoadLikeButtonAccessibility:v6 identifier:identifier];
   }
 
   return v6;
 }
 
-- (void)_handleFavoriteButton:(id)a3
+- (void)_handleFavoriteButton:(id)button
 {
   v3.receiver = self;
   v3.super_class = PUOneUpBarsControllerAccessibility;
-  [(PUOneUpBarsControllerAccessibility *)&v3 _handleFavoriteButton:a3];
+  [(PUOneUpBarsControllerAccessibility *)&v3 _handleFavoriteButton:button];
   AXPerformSafeBlock();
 }
 

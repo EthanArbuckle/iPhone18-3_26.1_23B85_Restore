@@ -20,11 +20,11 @@
 
 - (_NSRange)accessibilityRowRange
 {
-  v3 = [(HUQuickControlSegmentedControlSegmentAccessibility *)self superview];
-  v4 = [v3 subviews];
+  superview = [(HUQuickControlSegmentedControlSegmentAccessibility *)self superview];
+  subviews = [superview subviews];
 
-  v5 = [v4 indexOfObject:self];
-  v6 = [v4 count];
+  v5 = [subviews indexOfObject:self];
+  v6 = [subviews count];
 
   v7 = v5;
   v8 = v6;

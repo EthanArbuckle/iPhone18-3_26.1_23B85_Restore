@@ -28,13 +28,13 @@
   [v4 setAllowedUnits:224];
   [v4 setFormattingContext:2];
   [v4 setUnitsStyle:2];
-  v5 = [objc_opt_class() _defaultPresets];
+  _defaultPresets = [objc_opt_class() _defaultPresets];
   v6 = objc_alloc_init(NSMutableOrderedSet);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v5;
+  obj = _defaultPresets;
   v7 = [obj countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v7)
   {
@@ -53,11 +53,11 @@
         [v11 floatValue];
         v13 = [v4 stringFromTimeInterval:v12];
         v14 = [CLKComplicationDescriptor alloc];
-        v15 = [v11 stringValue];
+        stringValue = [v11 stringValue];
         v25 = @"Duration";
         v26 = v11;
         v16 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-        v17 = [v14 initWithIdentifier:v15 displayName:v13 supportedFamilies:v20 userInfo:v16];
+        v17 = [v14 initWithIdentifier:stringValue displayName:v13 supportedFamilies:v20 userInfo:v16];
 
         [v6 addObject:v17];
       }
@@ -74,8 +74,8 @@
 - (id)currentSwitcherTemplate
 {
   v3 = [NTKTimerBundleTimelineEntry alloc];
-  v4 = [(NTKTimerRecentsBundleComplicationDataSource *)self device];
-  v5 = [(NTKTimerBundleTimelineEntry *)v3 initWithDevice:v4];
+  device = [(NTKTimerRecentsBundleComplicationDataSource *)self device];
+  v5 = [(NTKTimerBundleTimelineEntry *)v3 initWithDevice:device];
 
   v6 = +[NTKDate unmodifiedDate];
   [(NTKTimerBundleTimelineEntry *)v5 setEntryDate:v6];
@@ -89,9 +89,9 @@
   [(NTKTimerBundleTimelineEntry *)v5 setTitle:0];
   [(NTKTimerBundleTimelineEntry *)v5 setState:1];
   v7 = [(NTKTimerBundleTimelineEntry *)v5 entryForComplicationFamily:[(NTKTimerRecentsBundleComplicationDataSource *)self family]];
-  v8 = [v7 complicationTemplate];
+  complicationTemplate = [v7 complicationTemplate];
 
-  return v8;
+  return complicationTemplate;
 }
 
 @end

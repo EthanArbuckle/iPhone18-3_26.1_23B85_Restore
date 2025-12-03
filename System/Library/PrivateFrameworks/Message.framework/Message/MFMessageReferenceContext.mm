@@ -8,14 +8,14 @@
 - (NSArray)senderList;
 - (NSArray)toList;
 - (NSSet)participants;
-- (void)setBcc:(id)a3;
-- (void)setBccList:(id)a3;
-- (void)setCc:(id)a3;
-- (void)setCcList:(id)a3;
-- (void)setSender:(id)a3;
-- (void)setSenderList:(id)a3;
-- (void)setTo:(id)a3;
-- (void)setToList:(id)a3;
+- (void)setBcc:(id)bcc;
+- (void)setBccList:(id)list;
+- (void)setCc:(id)cc;
+- (void)setCcList:(id)list;
+- (void)setSender:(id)sender;
+- (void)setSenderList:(id)list;
+- (void)setTo:(id)to;
+- (void)setToList:(id)list;
 @end
 
 @implementation MFMessageReferenceContext
@@ -36,20 +36,20 @@
   return v3;
 }
 
-- (void)setSender:(id)a3
+- (void)setSender:(id)sender
 {
-  v4 = a3;
-  if (self->_sender != v4)
+  senderCopy = sender;
+  if (self->_sender != senderCopy)
   {
-    v8 = v4;
-    v5 = [(ECEmailAddressConvertible *)v4 copyWithZone:0];
+    v8 = senderCopy;
+    v5 = [(ECEmailAddressConvertible *)senderCopy copyWithZone:0];
     sender = self->_sender;
     self->_sender = v5;
 
     senderList = self->_senderList;
     self->_senderList = 0;
 
-    v4 = v8;
+    senderCopy = v8;
   }
 }
 
@@ -63,27 +63,27 @@
 
   else
   {
-    v4 = [(ECEmailAddressConvertible *)self->_sender stringValue];
-    v3 = MFAddressListFromDatabaseEncodedString(v4);
+    stringValue = [(ECEmailAddressConvertible *)self->_sender stringValue];
+    v3 = MFAddressListFromDatabaseEncodedString(stringValue);
   }
 
   return v3;
 }
 
-- (void)setSenderList:(id)a3
+- (void)setSenderList:(id)list
 {
-  v4 = a3;
-  if (self->_senderList != v4)
+  listCopy = list;
+  if (self->_senderList != listCopy)
   {
-    v8 = v4;
-    v5 = [(NSArray *)v4 copy];
+    v8 = listCopy;
+    v5 = [(NSArray *)listCopy copy];
     senderList = self->_senderList;
     self->_senderList = v5;
 
     sender = self->_sender;
     self->_sender = 0;
 
-    v4 = v8;
+    listCopy = v8;
   }
 }
 
@@ -103,20 +103,20 @@
   return v3;
 }
 
-- (void)setTo:(id)a3
+- (void)setTo:(id)to
 {
-  v4 = a3;
-  if (self->_to != v4)
+  toCopy = to;
+  if (self->_to != toCopy)
   {
-    v8 = v4;
-    v5 = [(ECEmailAddressConvertible *)v4 copyWithZone:0];
+    v8 = toCopy;
+    v5 = [(ECEmailAddressConvertible *)toCopy copyWithZone:0];
     to = self->_to;
     self->_to = v5;
 
     toList = self->_toList;
     self->_toList = 0;
 
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
@@ -130,27 +130,27 @@
 
   else
   {
-    v4 = [(ECEmailAddressConvertible *)self->_to stringValue];
-    v3 = MFAddressListFromDatabaseEncodedString(v4);
+    stringValue = [(ECEmailAddressConvertible *)self->_to stringValue];
+    v3 = MFAddressListFromDatabaseEncodedString(stringValue);
   }
 
   return v3;
 }
 
-- (void)setToList:(id)a3
+- (void)setToList:(id)list
 {
-  v4 = a3;
-  if (self->_toList != v4)
+  listCopy = list;
+  if (self->_toList != listCopy)
   {
-    v8 = v4;
-    v5 = [(NSArray *)v4 copy];
+    v8 = listCopy;
+    v5 = [(NSArray *)listCopy copy];
     toList = self->_toList;
     self->_toList = v5;
 
     to = self->_to;
     self->_to = 0;
 
-    v4 = v8;
+    listCopy = v8;
   }
 }
 
@@ -170,20 +170,20 @@
   return v3;
 }
 
-- (void)setCc:(id)a3
+- (void)setCc:(id)cc
 {
-  v4 = a3;
-  if (self->_cc != v4)
+  ccCopy = cc;
+  if (self->_cc != ccCopy)
   {
-    v8 = v4;
-    v5 = [(ECEmailAddressConvertible *)v4 copyWithZone:0];
+    v8 = ccCopy;
+    v5 = [(ECEmailAddressConvertible *)ccCopy copyWithZone:0];
     cc = self->_cc;
     self->_cc = v5;
 
     ccList = self->_ccList;
     self->_ccList = 0;
 
-    v4 = v8;
+    ccCopy = v8;
   }
 }
 
@@ -197,27 +197,27 @@
 
   else
   {
-    v4 = [(ECEmailAddressConvertible *)self->_cc stringValue];
-    v3 = MFAddressListFromDatabaseEncodedString(v4);
+    stringValue = [(ECEmailAddressConvertible *)self->_cc stringValue];
+    v3 = MFAddressListFromDatabaseEncodedString(stringValue);
   }
 
   return v3;
 }
 
-- (void)setCcList:(id)a3
+- (void)setCcList:(id)list
 {
-  v4 = a3;
-  if (self->_ccList != v4)
+  listCopy = list;
+  if (self->_ccList != listCopy)
   {
-    v8 = v4;
-    v5 = [(NSArray *)v4 copy];
+    v8 = listCopy;
+    v5 = [(NSArray *)listCopy copy];
     ccList = self->_ccList;
     self->_ccList = v5;
 
     cc = self->_cc;
     self->_cc = 0;
 
-    v4 = v8;
+    listCopy = v8;
   }
 }
 
@@ -237,20 +237,20 @@
   return v3;
 }
 
-- (void)setBcc:(id)a3
+- (void)setBcc:(id)bcc
 {
-  v4 = a3;
-  if (self->_bcc != v4)
+  bccCopy = bcc;
+  if (self->_bcc != bccCopy)
   {
-    v8 = v4;
-    v5 = [(ECEmailAddressConvertible *)v4 copy];
+    v8 = bccCopy;
+    v5 = [(ECEmailAddressConvertible *)bccCopy copy];
     bcc = self->_bcc;
     self->_bcc = v5;
 
     bccList = self->_bccList;
     self->_bccList = 0;
 
-    v4 = v8;
+    bccCopy = v8;
   }
 }
 
@@ -264,27 +264,27 @@
 
   else
   {
-    v4 = [(ECEmailAddressConvertible *)self->_bcc stringValue];
-    v3 = MFAddressListFromDatabaseEncodedString(v4);
+    stringValue = [(ECEmailAddressConvertible *)self->_bcc stringValue];
+    v3 = MFAddressListFromDatabaseEncodedString(stringValue);
   }
 
   return v3;
 }
 
-- (void)setBccList:(id)a3
+- (void)setBccList:(id)list
 {
-  v4 = a3;
-  if (self->_bccList != v4)
+  listCopy = list;
+  if (self->_bccList != listCopy)
   {
-    v8 = v4;
-    v5 = [(NSArray *)v4 copy];
+    v8 = listCopy;
+    v5 = [(NSArray *)listCopy copy];
     bccList = self->_bccList;
     self->_bccList = v5;
 
     bcc = self->_bcc;
     self->_bcc = 0;
 
-    v4 = v8;
+    listCopy = v8;
   }
 }
 
@@ -298,17 +298,17 @@
   v4 = v3;
   v13 = v4;
   v5 = _Block_copy(aBlock);
-  v6 = [(MFMessageReferenceContext *)self senderList];
-  v5[2](v5, v6);
+  senderList = [(MFMessageReferenceContext *)self senderList];
+  v5[2](v5, senderList);
 
-  v7 = [(MFMessageReferenceContext *)self toList];
-  v5[2](v5, v7);
+  toList = [(MFMessageReferenceContext *)self toList];
+  v5[2](v5, toList);
 
-  v8 = [(MFMessageReferenceContext *)self ccList];
-  v5[2](v5, v8);
+  ccList = [(MFMessageReferenceContext *)self ccList];
+  v5[2](v5, ccList);
 
-  v9 = [(MFMessageReferenceContext *)self bccList];
-  v5[2](v5, v9);
+  bccList = [(MFMessageReferenceContext *)self bccList];
+  v5[2](v5, bccList);
 
   v10 = v4;
   return v4;

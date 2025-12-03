@@ -5,44 +5,44 @@
 - (BOOL)isExperimentationEnabled;
 - (BOOL)isPreviewing;
 - (BOOL)resignFirstResponder;
-- (BOOL)shouldOccludeAccessibilityElement:(id)a3;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
-- (_TtC12NewsArticles21ArticleViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)URLHandler:(id)a3 willOpenURL:(id)a4;
-- (void)articleHostViewController:(id)a3 didScrollToPosition:(id)a4;
-- (void)articleHostViewControllerDidScrollToBottomOfPrimaryContent:(id)a3;
-- (void)bundleSubscriptionDidSubscribe:(id)a3;
+- (BOOL)shouldOccludeAccessibilityElement:(id)element;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
+- (_TtC12NewsArticles21ArticleViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)URLHandler:(id)handler willOpenURL:(id)l;
+- (void)articleHostViewController:(id)controller didScrollToPosition:(id)position;
+- (void)articleHostViewControllerDidScrollToBottomOfPrimaryContent:(id)content;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe;
 - (void)decreaseTextSize;
-- (void)didLoadArticle:(id)a3 withContext:(id)a4;
-- (void)didStartExperimentForArticleID:(id)a3 experimentIdentifier:(id)a4 treatmentGroup:(id)a5;
-- (void)footerNeedsLayout:(id)a3;
-- (void)handleKeyCommandWithKeyCommand:(id)a3;
+- (void)didLoadArticle:(id)article withContext:(id)context;
+- (void)didStartExperimentForArticleID:(id)d experimentIdentifier:(id)identifier treatmentGroup:(id)group;
+- (void)footerNeedsLayout:(id)layout;
+- (void)handleKeyCommandWithKeyCommand:(id)command;
 - (void)increaseTextSize;
-- (void)loadedArticle:(id)a3 didApplyDocumentStyle:(id)a4;
-- (void)loadingDidFinishWithError:(id)a3;
+- (void)loadedArticle:(id)article didApplyDocumentStyle:(id)style;
+- (void)loadingDidFinishWithError:(id)error;
 - (void)loadingWillStart;
 - (void)resetZoom;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willLoadArticle:(id)a3 withContext:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willLoadArticle:(id)article withContext:(id)context;
 - (void)zoomIn;
 - (void)zoomOut;
 @end
 
 @implementation ArticleViewController
 
-- (_TtC12NewsArticles21ArticleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles21ArticleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -51,52 +51,52 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ArticleViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  ArticleViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  ArticleViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  ArticleViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  ArticleViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ArticleViewController *)&v5 viewWillDisappear:v3];
+  [(ArticleViewController *)&v5 viewWillDisappear:disappearCopy];
   sub_1D7D2A4EC();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  ArticleViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  ArticleViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = swift_getObjectType();
   v4 = v10.receiver;
-  v5 = a3;
-  [(ArticleViewController *)&v10 traitCollectionDidChange:v5];
-  v6 = [v4 traitCollection];
-  v7 = [v4 view];
-  if (v7)
+  changeCopy = change;
+  [(ArticleViewController *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [v4 traitCollection];
+  view = [v4 view];
+  if (view)
   {
-    v8 = v7;
+    v8 = view;
 
-    v9 = [objc_opt_self() systemBackgroundColor];
+    systemBackgroundColor = [objc_opt_self() systemBackgroundColor];
     [v8 setBackgroundColor_];
   }
 
@@ -108,7 +108,7 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ArticleViewController.viewWillLayoutSubviews()();
 }
 
@@ -123,18 +123,18 @@
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   ArticleViewController.viewSafeAreaInsetsDidChange()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v7 = v9.receiver;
-  [(ArticleViewController *)&v9 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(ArticleViewController *)&v9 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = &v7[OBJC_IVAR____TtC12NewsArticles21ArticleViewController_destinationViewSize];
   *v8 = width;
   v8[1] = height;
@@ -144,62 +144,62 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_articleViewController);
-  v5 = self;
+  selfCopy = self;
   [v4 resignFirstResponder];
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   LOBYTE(ObjectType) = [(ArticleViewController *)&v7 resignFirstResponder];
 
   return ObjectType;
 }
 
-- (void)handleKeyCommandWithKeyCommand:(id)a3
+- (void)handleKeyCommandWithKeyCommand:(id)command
 {
-  v7 = a3;
-  v4 = self;
-  v5 = sub_1D7AFD344(v7);
+  commandCopy = command;
+  selfCopy = self;
+  v5 = sub_1D7AFD344(commandCopy);
   if (_s12NewsArticles21ArticleViewControllerC12isPreviewingSbyF_0())
   {
     if ((v5 & 1) == 0)
     {
 LABEL_3:
-      v6 = v7;
-      v7 = v4;
+      v6 = commandCopy;
+      commandCopy = selfCopy;
       goto LABEL_6;
     }
   }
 
-  else if (!((*(&v4->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_hardPaywallViewController) == 0) | v5 & 1))
+  else if (!((*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_hardPaywallViewController) == 0) | v5 & 1))
   {
     goto LABEL_3;
   }
 
-  [*(&v4->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_keyCommandManager) handleKeyCommand_];
-  v6 = v4;
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_keyCommandManager) handleKeyCommand_];
+  v6 = selfCopy;
 LABEL_6:
 }
 
-- (void)articleHostViewController:(id)a3 didScrollToPosition:(id)a4
+- (void)articleHostViewController:(id)controller didScrollToPosition:(id)position
 {
   v6 = swift_allocObject();
   swift_weakInit();
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  *(v7 + 24) = a4;
-  v9 = a4;
-  v8 = self;
+  *(v7 + 24) = position;
+  positionCopy = position;
+  selfCopy = self;
 
   sub_1D79E75B0();
 }
 
-- (void)articleHostViewControllerDidScrollToBottomOfPrimaryContent:(id)a3
+- (void)articleHostViewControllerDidScrollToBottomOfPrimaryContent:(id)content
 {
-  v4 = a3;
-  v5 = self;
+  contentCopy = content;
+  selfCopy = self;
   _s12NewsArticles21ArticleViewControllerC011articleHostdE33DidScrollToBottomOfPrimaryContentyySo09NUArticlegdE0CF_0();
 }
 
-- (void)didStartExperimentForArticleID:(id)a3 experimentIdentifier:(id)a4 treatmentGroup:(id)a5
+- (void)didStartExperimentForArticleID:(id)d experimentIdentifier:(id)identifier treatmentGroup:(id)group
 {
   v6 = sub_1D7D3034C();
   v8 = v7;
@@ -207,7 +207,7 @@ LABEL_6:
   v11 = v10;
   v12 = sub_1D7D3034C();
   v14 = v13;
-  v15 = self;
+  selfCopy = self;
   v16._countAndFlagsBits = v6;
   v16._object = v8;
   v17._countAndFlagsBits = v9;
@@ -219,7 +219,7 @@ LABEL_6:
 
 - (BOOL)isExperimentationEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ArticleViewController.isExperimentationEnabled()();
 
   return v3;
@@ -227,120 +227,120 @@ LABEL_6:
 
 - (void)loadingWillStart
 {
-  v2 = self;
+  selfCopy = self;
   ArticleViewController.loadingWillStart()();
 }
 
-- (void)loadingDidFinishWithError:(id)a3
+- (void)loadingDidFinishWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  ArticleViewController.loadingDidFinishWithError(_:)(a3);
+  selfCopy = self;
+  errorCopy = error;
+  ArticleViewController.loadingDidFinishWithError(_:)(error);
 }
 
-- (void)willLoadArticle:(id)a3 withContext:(id)a4
+- (void)willLoadArticle:(id)article withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s12NewsArticles21ArticleViewControllerC8willLoad_4withySo9FCArticleC_So9SXContextCtF_0(v6);
+  articleCopy = article;
+  contextCopy = context;
+  selfCopy = self;
+  _s12NewsArticles21ArticleViewControllerC8willLoad_4withySo9FCArticleC_So9SXContextCtF_0(articleCopy);
 }
 
-- (void)didLoadArticle:(id)a3 withContext:(id)a4
+- (void)didLoadArticle:(id)article withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  ArticleViewController.didLoad(_:with:)(v6, v7);
+  articleCopy = article;
+  contextCopy = context;
+  selfCopy = self;
+  ArticleViewController.didLoad(_:with:)(articleCopy, contextCopy);
 }
 
-- (void)loadedArticle:(id)a3 didApplyDocumentStyle:(id)a4
+- (void)loadedArticle:(id)article didApplyDocumentStyle:(id)style
 {
-  v6 = a3;
+  articleCopy = article;
   swift_unknownObjectRetain();
-  v7 = self;
-  ArticleViewController.loadedArticle(_:didApply:)(v6, a4);
+  selfCopy = self;
+  ArticleViewController.loadedArticle(_:didApply:)(articleCopy, style);
 
   swift_unknownObjectRelease();
 }
 
-- (void)footerNeedsLayout:(id)a3
+- (void)footerNeedsLayout:(id)layout
 {
-  v4 = a3;
-  v5 = self;
+  layoutCopy = layout;
+  selfCopy = self;
   _s12NewsArticles21ArticleViewControllerC17footerNeedsLayoutyyAA0C10FooterType_So06UIViewE0CXcF_0();
 }
 
 - (BOOL)isPreviewing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _s12NewsArticles21ArticleViewControllerC12isPreviewingSbyF_0();
 
   return v3 & 1;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  ArticleViewController.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  ArticleViewController.scrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v6 = a3;
-  v4 = self;
-  if (sub_1D7AFEC98(v4))
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  if (sub_1D7AFEC98(selfCopy))
   {
-    sub_1D7A348AC((*(&v4->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_eventHandler))[11]);
-    v5 = v4;
+    sub_1D7A348AC((*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_eventHandler))[11]);
+    v5 = selfCopy;
   }
 
   else
   {
-    v5 = v6;
-    v6 = v4;
+    v5 = deceleratingCopy;
+    deceleratingCopy = selfCopy;
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v8 = a3;
-    v6 = self;
-    if (sub_1D7AFEC98(v6))
+    draggingCopy = dragging;
+    selfCopy = self;
+    if (sub_1D7AFEC98(selfCopy))
     {
-      sub_1D7A348AC((*(&v6->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_eventHandler))[11]);
-      v7 = v6;
+      sub_1D7A348AC((*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_eventHandler))[11]);
+      v7 = selfCopy;
     }
 
     else
     {
-      v7 = v8;
-      v8 = v6;
+      v7 = draggingCopy;
+      draggingCopy = selfCopy;
     }
   }
 }
 
-- (BOOL)shouldOccludeAccessibilityElement:(id)a3
+- (BOOL)shouldOccludeAccessibilityElement:(id)element
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1D7B04390(v4);
+  elementCopy = element;
+  selfCopy = self;
+  LOBYTE(self) = sub_1D7B04390(elementCopy);
 
   return self & 1;
 }
 
 - (void)increaseTextSize
 {
-  v2 = self;
+  selfCopy = self;
   ArticleViewController.increaseTextSize()();
 }
 
 - (void)decreaseTextSize
 {
-  v2 = self;
+  selfCopy = self;
   ArticleViewController.decreaseTextSize()();
 }
 
@@ -352,10 +352,10 @@ LABEL_6:
   }
 
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_articleViewController);
-  v4 = self;
-  v5 = [v3 contentScale];
+  selfCopy = self;
+  contentScale = [v3 contentScale];
 
-  return v5 != 11;
+  return contentScale != 11;
 }
 
 - (BOOL)canZoomOut
@@ -366,10 +366,10 @@ LABEL_6:
   }
 
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_articleViewController);
-  v4 = self;
-  v5 = [v3 contentScale];
+  selfCopy = self;
+  contentScale = [v3 contentScale];
 
-  return v5 != 1;
+  return contentScale != 1;
 }
 
 - (void)zoomIn
@@ -377,7 +377,7 @@ LABEL_6:
   if (!*(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_hardPaywallViewController))
   {
     v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_articleViewController);
-    v4 = self;
+    selfCopy = self;
     if ([v3 contentScale] != 11)
     {
       [v3 setContentScale_];
@@ -390,7 +390,7 @@ LABEL_6:
   if (!*(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_hardPaywallViewController))
   {
     v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles21ArticleViewController_articleViewController);
-    v4 = self;
+    selfCopy = self;
     if ([v3 contentScale] != 1)
     {
       [v3 setContentScale_];
@@ -400,7 +400,7 @@ LABEL_6:
 
 - (BOOL)canResetZoom
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ArticleViewController.canResetZoom()();
 
   return v3;
@@ -408,18 +408,18 @@ LABEL_6:
 
 - (void)resetZoom
 {
-  v2 = self;
+  selfCopy = self;
   ArticleViewController.resetZoom()();
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe
 {
-  v4 = a3;
-  v5 = self;
+  subscribeCopy = subscribe;
+  selfCopy = self;
   _s12NewsArticles21ArticleViewControllerC30bundleSubscriptionDidSubscribeyySo08FCBundleG0CF_0();
 }
 
-- (void)URLHandler:(id)a3 willOpenURL:(id)a4
+- (void)URLHandler:(id)handler willOpenURL:(id)l
 {
   v4 = sub_1D7D2824C();
   v5 = *(v4 - 8);
@@ -429,11 +429,11 @@ LABEL_6:
   (*(v5 + 8))(v8, v4);
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = ArticleViewController.shouldUpdateFocus(in:)(v4);
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(self) = ArticleViewController.shouldUpdateFocus(in:)(contextCopy);
 
   return self & 1;
 }

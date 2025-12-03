@@ -2,12 +2,12 @@
 - (BOOL)isScanning;
 - (WFHotspotInterface)init;
 - (WFHotspotInterfaceDelegate)delegate;
-- (id)enableHotspot:(id)a3 error:(id *)a4;
-- (void)_stopBrowsingRemoveCache:(BOOL)a3;
+- (id)enableHotspot:(id)hotspot error:(id *)error;
+- (void)_stopBrowsingRemoveCache:(BOOL)cache;
 - (void)init;
-- (void)session:(id)a3 updatedFoundDevices:(id)a4;
+- (void)session:(id)session updatedFoundDevices:(id)devices;
 - (void)startBrowsing;
-- (void)updateNetworksWithHotspots:(id)a3;
+- (void)updateNetworksWithHotspots:(id)hotspots;
 @end
 
 @implementation WFHotspotInterface
@@ -59,16 +59,16 @@ LABEL_6:
   return v2;
 }
 
-- (void)updateNetworksWithHotspots:(id)a3
+- (void)updateNetworksWithHotspots:(id)hotspots
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hotspotsCopy = hotspots;
   v5 = [MEMORY[0x277CBEB58] set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = hotspotsCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v7)
   {
@@ -97,17 +97,17 @@ LABEL_6:
     while (v8);
   }
 
-  v12 = [(WFHotspotInterface *)self networks];
-  v13 = [v5 isEqualToSet:v12];
+  networks = [(WFHotspotInterface *)self networks];
+  v13 = [v5 isEqualToSet:networks];
 
   if (v13)
   {
-    v14 = WFLogForCategory(0);
+    delegate = WFLogForCategory(0);
     v15 = OSLogForWFLogLevel(3uLL);
-    if (WFCurrentLogLevel() >= 3 && v14 && os_log_type_enabled(v14, v15))
+    if (WFCurrentLogLevel() >= 3 && delegate && os_log_type_enabled(delegate, v15))
     {
       *buf = 0;
-      _os_log_impl(&dword_273ECD000, v14, v15, "Instant HS scan finished-> No new networks found.", buf, 2u);
+      _os_log_impl(&dword_273ECD000, delegate, v15, "Instant HS scan finished-> No new networks found.", buf, 2u);
     }
   }
 
@@ -125,16 +125,16 @@ LABEL_6:
       _os_log_impl(&dword_273ECD000, v16, v17, "%s: new hotspots %@", buf, 0x16u);
     }
 
-    v14 = [(WFHotspotInterface *)self delegate];
-    if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(WFHotspotInterface *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __49__WFHotspotInterface_updateNetworksWithHotspots___block_invoke;
       v19[3] = &unk_279EBD290;
-      v14 = v14;
-      v20 = v14;
-      v21 = self;
+      delegate = delegate;
+      v20 = delegate;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], v19);
     }
   }
@@ -142,12 +142,12 @@ LABEL_6:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)enableHotspot:(id)a3 error:(id *)a4
+- (id)enableHotspot:(id)hotspot error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 hotspotDevice];
+  hotspotCopy = hotspot;
+  hotspotDevice = [hotspotCopy hotspotDevice];
 
-  if (v7)
+  if (hotspotDevice)
   {
     *buf = 0;
     v28 = buf;
@@ -162,8 +162,8 @@ LABEL_6:
     v25 = __Block_byref_object_dispose__7;
     v26 = 0;
     v8 = dispatch_semaphore_create(0);
-    v9 = [(WFHotspotInterface *)self hotspotSession];
-    v10 = [v6 hotspotDevice];
+    hotspotSession = [(WFHotspotInterface *)self hotspotSession];
+    hotspotDevice2 = [hotspotCopy hotspotDevice];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __42__WFHotspotInterface_enableHotspot_error___block_invoke;
@@ -172,15 +172,15 @@ LABEL_6:
     v20 = buf;
     v11 = v8;
     v18 = v11;
-    [v9 enableRemoteHotspotForDevice:v10 withCompletionHandler:v17];
+    [hotspotSession enableRemoteHotspotForDevice:hotspotDevice2 withCompletionHandler:v17];
 
     dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
-    if (a4)
+    if (error)
     {
       v12 = v22[5];
       if (v12)
       {
-        *a4 = v12;
+        *error = v12;
       }
     }
 
@@ -288,7 +288,7 @@ uint64_t __35__WFHotspotInterface_startBrowsing__block_invoke(uint64_t a1)
   return [v3 setScanning:1];
 }
 
-- (void)_stopBrowsingRemoveCache:(BOOL)a3
+- (void)_stopBrowsingRemoveCache:(BOOL)cache
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -296,7 +296,7 @@ uint64_t __35__WFHotspotInterface_startBrowsing__block_invoke(uint64_t a1)
   v4[2] = __47__WFHotspotInterface__stopBrowsingRemoveCache___block_invoke;
   v4[3] = &unk_279EBDF00;
   v4[4] = self;
-  v5 = a3;
+  cacheCopy = cache;
   dispatch_sync(internalQueue, v4);
 }
 
@@ -329,21 +329,21 @@ uint64_t __47__WFHotspotInterface__stopBrowsingRemoveCache___block_invoke(uint64
   return result;
 }
 
-- (void)session:(id)a3 updatedFoundDevices:(id)a4
+- (void)session:(id)session updatedFoundDevices:(id)devices
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  devicesCopy = devices;
   v6 = WFLogForCategory(0);
   v7 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v6 && os_log_type_enabled(v6, v7))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = devicesCopy;
     _os_log_impl(&dword_273ECD000, v6, v7, "Found hotspots %@", &v10, 0xCu);
   }
 
   v8 = [MEMORY[0x277CBEB58] set];
-  [v8 addObjectsFromArray:v5];
+  [v8 addObjectsFromArray:devicesCopy];
   [(WFHotspotInterface *)self updateNetworksWithHotspots:v8];
 
   v9 = *MEMORY[0x277D85DE8];

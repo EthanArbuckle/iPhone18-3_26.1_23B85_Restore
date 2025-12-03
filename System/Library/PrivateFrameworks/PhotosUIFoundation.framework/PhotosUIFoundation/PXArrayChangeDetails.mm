@@ -1,42 +1,42 @@
 @interface PXArrayChangeDetails
-+ (id)changeDetailsByMergingChangeDetails:(id)a3;
-+ (id)changeDetailsFromArray:(id)a3 toArray:(id)a4 changedObjects:(id)a5 objectComparator:(id)a6;
-+ (id)changeDetailsFromSubrange:(_NSRange)a3 toSubrange:(_NSRange)a4;
-+ (id)changeDetailsWithChangedIndexRange:(_NSRange)a3;
-+ (id)changeDetailsWithChangedIndexes:(id)a3;
-+ (id)changeDetailsWithInsertedIndexRange:(_NSRange)a3;
-+ (id)changeDetailsWithInsertedIndexes:(id)a3;
-+ (id)changeDetailsWithMovedFromIndexRange:(_NSRange)a3 toIndexRange:(_NSRange)a4;
++ (id)changeDetailsByMergingChangeDetails:(id)details;
++ (id)changeDetailsFromArray:(id)array toArray:(id)toArray changedObjects:(id)objects objectComparator:(id)comparator;
++ (id)changeDetailsFromSubrange:(_NSRange)subrange toSubrange:(_NSRange)toSubrange;
++ (id)changeDetailsWithChangedIndexRange:(_NSRange)range;
++ (id)changeDetailsWithChangedIndexes:(id)indexes;
++ (id)changeDetailsWithInsertedIndexRange:(_NSRange)range;
++ (id)changeDetailsWithInsertedIndexes:(id)indexes;
++ (id)changeDetailsWithMovedFromIndexRange:(_NSRange)range toIndexRange:(_NSRange)indexRange;
 + (id)changeDetailsWithNoChanges;
 + (id)changeDetailsWithNoIncrementalChanges;
-+ (id)changeDetailsWithOldKeyItemIndex:(int64_t)a3 oldCount:(int64_t)a4 newKeyItemIndex:(int64_t)a5 newCount:(int64_t)a6;
-+ (id)changeDetailsWithRemovedIndexRange:(_NSRange)a3;
-+ (id)changeDetailsWithRemovedIndexes:(id)a3;
-+ (unint64_t)indexAfterApplyingChanges:(id)a3 toIndex:(unint64_t)a4 objectChanged:(BOOL *)a5;
-+ (unint64_t)indexAfterRevertingChanges:(id)a3 fromIndex:(unint64_t)a4 objectChanged:(BOOL *)a5;
-- (BOOL)canPreserveIncrementalChangesWhenAddingChangeDetails:(id)a3;
++ (id)changeDetailsWithOldKeyItemIndex:(int64_t)index oldCount:(int64_t)count newKeyItemIndex:(int64_t)itemIndex newCount:(int64_t)newCount;
++ (id)changeDetailsWithRemovedIndexRange:(_NSRange)range;
++ (id)changeDetailsWithRemovedIndexes:(id)indexes;
++ (unint64_t)indexAfterApplyingChanges:(id)changes toIndex:(unint64_t)index objectChanged:(BOOL *)changed;
++ (unint64_t)indexAfterRevertingChanges:(id)changes fromIndex:(unint64_t)index objectChanged:(BOOL *)changed;
+- (BOOL)canPreserveIncrementalChangesWhenAddingChangeDetails:(id)details;
 - (BOOL)hasMoves;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOnlyInsertionAtEnd:(BOOL *)a3 orRemovalAtEnd:(BOOL *)a4 countBeforeChange:(int64_t)a5 countAfterChange:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOnlyInsertionAtEnd:(BOOL *)end orRemovalAtEnd:(BOOL *)atEnd countBeforeChange:(int64_t)change countAfterChange:(int64_t)afterChange;
 - (PXArrayChangeDetails)init;
-- (PXArrayChangeDetails)initWithIncrementalChangeDetailsRemovedIndexes:(id)a3 insertedIndexes:(id)a4 movesToIndexes:(id)a5 movesFromIndexes:(__CFArray *)a6 changedIndexes:(id)a7 indexesWithChangesByProperty:(id)a8;
-- (id)changeDetailsByAddingChangeDetails:(id)a3;
-- (id)changeDetailsByAddingChangedIndexes:(id)a3;
+- (PXArrayChangeDetails)initWithIncrementalChangeDetailsRemovedIndexes:(id)indexes insertedIndexes:(id)insertedIndexes movesToIndexes:(id)toIndexes movesFromIndexes:(__CFArray *)fromIndexes changedIndexes:(id)changedIndexes indexesWithChangesByProperty:(id)property;
+- (id)changeDetailsByAddingChangeDetails:(id)details;
+- (id)changeDetailsByAddingChangedIndexes:(id)indexes;
 - (id)changeDetailsByReplacingChangedItemsWithRemovalsAndInsertions;
-- (id)changeDetailsShiftedBy:(int64_t)a3;
-- (id)changedPropertiesForIndex:(int64_t)a3;
+- (id)changeDetailsShiftedBy:(int64_t)by;
+- (id)changedPropertiesForIndex:(int64_t)index;
 - (id)description;
-- (id)indexSetAfterApplyingChangesToIndexSet:(id)a3;
-- (id)indexSetAfterRevertingChangesToIndexSet:(id)a3;
-- (id)indexesWithChangesToProperty:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (unint64_t)indexAfterApplyingChangesToIndex:(unint64_t)a3;
-- (unint64_t)indexAfterRevertingChangesFromIndex:(unint64_t)a3;
-- (void)applyToDictionary:(id)a3 removalHandler:(id)a4 moveHandler:(id)a5;
-- (void)applyToIndexSet:(id)a3;
+- (id)indexSetAfterApplyingChangesToIndexSet:(id)set;
+- (id)indexSetAfterRevertingChangesToIndexSet:(id)set;
+- (id)indexesWithChangesToProperty:(id)property;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (unint64_t)indexAfterApplyingChangesToIndex:(unint64_t)index;
+- (unint64_t)indexAfterRevertingChangesFromIndex:(unint64_t)index;
+- (void)applyToDictionary:(id)dictionary removalHandler:(id)handler moveHandler:(id)moveHandler;
+- (void)applyToIndexSet:(id)set;
 - (void)dealloc;
-- (void)enumerateMovedIndexesUsingBlock:(id)a3;
-- (void)enumerateMovedRangesUsingBlock:(id)a3;
+- (void)enumerateMovedIndexesUsingBlock:(id)block;
+- (void)enumerateMovedRangesUsingBlock:(id)block;
 @end
 
 @implementation PXArrayChangeDetails
@@ -62,8 +62,8 @@ uint64_t __61__PXArrayChangeDetails_changeDetailsWithNoIncrementalChanges__block
 
 - (BOOL)hasMoves
 {
-  v2 = [(PXArrayChangeDetails *)self movesToIndexes];
-  v3 = [v2 count] != 0;
+  movesToIndexes = [(PXArrayChangeDetails *)self movesToIndexes];
+  v3 = [movesToIndexes count] != 0;
 
   return v3;
 }
@@ -84,7 +84,7 @@ uint64_t __61__PXArrayChangeDetails_changeDetailsWithNoIncrementalChanges__block
 
 + (id)changeDetailsWithNoChanges
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (changeDetailsWithNoChanges_onceToken != -1)
     {
@@ -96,7 +96,7 @@ uint64_t __61__PXArrayChangeDetails_changeDetailsWithNoIncrementalChanges__block
 
   else
   {
-    v3 = [[a1 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
+    v3 = [[self alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
   }
 
   return v3;
@@ -109,21 +109,21 @@ uint64_t __50__PXArrayChangeDetails_changeDetailsWithNoChanges__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)changeDetailsByMergingChangeDetails:(id)a3
++ (id)changeDetailsByMergingChangeDetails:(id)details
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 count])
+  detailsCopy = details;
+  if (![detailsCopy count])
   {
-    v4 = +[PXArrayChangeDetails changeDetailsWithNoChanges];
+    firstObject = +[PXArrayChangeDetails changeDetailsWithNoChanges];
     goto LABEL_5;
   }
 
-  if ([v3 count] == 1)
+  if ([detailsCopy count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [detailsCopy firstObject];
 LABEL_5:
-    v5 = v4;
+    v5 = firstObject;
     goto LABEL_24;
   }
 
@@ -131,7 +131,7 @@ LABEL_5:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v3;
+  v6 = detailsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -210,20 +210,20 @@ LABEL_24:
   v4 = v3;
   v26 = v4;
   [(PXArrayChangeDetails *)self enumerateMovedIndexesUsingBlock:v25];
-  v5 = [(PXArrayChangeDetails *)self indexesWithChangesByProperty];
-  v6 = [v5 count];
+  indexesWithChangesByProperty = [(PXArrayChangeDetails *)self indexesWithChangesByProperty];
+  v6 = [indexesWithChangesByProperty count];
 
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [(PXArrayChangeDetails *)self indexesWithChangesByProperty];
+    indexesWithChangesByProperty2 = [(PXArrayChangeDetails *)self indexesWithChangesByProperty];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __35__PXArrayChangeDetails_description__block_invoke_2;
     v23[3] = &unk_1E7BB6FF0;
     v24 = v7;
     v9 = v7;
-    [v8 enumerateKeysAndObjectsUsingBlock:v23];
+    [indexesWithChangesByProperty2 enumerateKeysAndObjectsUsingBlock:v23];
 
     v10 = MEMORY[0x1E696AEC0];
     v11 = [v9 componentsJoinedByString:{@", "}];
@@ -249,11 +249,11 @@ LABEL_24:
     v15 = @"NO";
   }
 
-  v16 = [(NSIndexSet *)self->_removedIndexes px_shortDescription];
-  v17 = [(NSIndexSet *)self->_insertedIndexes px_shortDescription];
+  px_shortDescription = [(NSIndexSet *)self->_removedIndexes px_shortDescription];
+  px_shortDescription2 = [(NSIndexSet *)self->_insertedIndexes px_shortDescription];
   v18 = [v4 componentsJoinedByString:{@", "}];
-  v19 = [(NSIndexSet *)self->_changedIndexes px_shortDescription];
-  v20 = [v13 stringWithFormat:@"<%@ hasIncremental:%@ removed:%@ inserted:%@ moved:[%@] changed:%@%@>", v14, v15, v16, v17, v18, v19, v12];
+  px_shortDescription3 = [(NSIndexSet *)self->_changedIndexes px_shortDescription];
+  v20 = [v13 stringWithFormat:@"<%@ hasIncremental:%@ removed:%@ inserted:%@ moved:[%@] changed:%@%@>", v14, v15, px_shortDescription, px_shortDescription2, v18, px_shortDescription3, v12];
 
   return v20;
 }
@@ -276,14 +276,14 @@ void __35__PXArrayChangeDetails_description__block_invoke_2(uint64_t a1, void *a
   [v4 addObject:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v29 = 1;
   }
@@ -293,12 +293,12 @@ void __35__PXArrayChangeDetails_description__block_invoke_2(uint64_t a1, void *a
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXArrayChangeDetails *)self hasMoves];
-      v7 = [(PXArrayChangeDetails *)v5 hasMoves];
+      v5 = equalCopy;
+      hasMoves = [(PXArrayChangeDetails *)self hasMoves];
+      hasMoves2 = [(PXArrayChangeDetails *)v5 hasMoves];
       v8 = v27;
-      *(v27 + 24) = v6 ^ v7 ^ 1;
-      if ((v6 ^ v7))
+      *(v27 + 24) = hasMoves ^ hasMoves2 ^ 1;
+      if ((hasMoves ^ hasMoves2))
       {
         *(v8 + 24) = 0;
       }
@@ -409,17 +409,17 @@ const void *__32__PXArrayChangeDetails_isEqual___block_invoke(void *a1, uint64_t
   return result;
 }
 
-- (BOOL)isOnlyInsertionAtEnd:(BOOL *)a3 orRemovalAtEnd:(BOOL *)a4 countBeforeChange:(int64_t)a5 countAfterChange:(int64_t)a6
+- (BOOL)isOnlyInsertionAtEnd:(BOOL *)end orRemovalAtEnd:(BOOL *)atEnd countBeforeChange:(int64_t)change countAfterChange:(int64_t)afterChange
 {
   if ([(PXArrayChangeDetails *)self hasIncrementalChanges]&& ![(PXArrayChangeDetails *)self hasMoves])
   {
-    v15 = [(PXArrayChangeDetails *)self insertedIndexes];
-    v16 = [(PXArrayChangeDetails *)self removedIndexes];
-    v17 = [v16 count];
+    insertedIndexes = [(PXArrayChangeDetails *)self insertedIndexes];
+    removedIndexes = [(PXArrayChangeDetails *)self removedIndexes];
+    v17 = [removedIndexes count];
     v12 = v17 == 0;
     if (v17)
     {
-      if ([v15 count])
+      if ([insertedIndexes count])
       {
         v11 = 0;
         v13 = 0;
@@ -427,18 +427,18 @@ const void *__32__PXArrayChangeDetails_isEqual___block_invoke(void *a1, uint64_t
 
       else
       {
-        v13 = [v16 px_isSingleRangeWithMax:a5];
+        v13 = [removedIndexes px_isSingleRangeWithMax:change];
         v11 = 1;
       }
     }
 
     else
     {
-      v13 = [v15 px_isSingleRangeWithMax:a6];
+      v13 = [insertedIndexes px_isSingleRangeWithMax:afterChange];
       v11 = 0;
     }
 
-    if (!a3)
+    if (!end)
     {
       goto LABEL_5;
     }
@@ -449,29 +449,29 @@ const void *__32__PXArrayChangeDetails_isEqual___block_invoke(void *a1, uint64_t
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    if (!a3)
+    if (!end)
     {
       goto LABEL_5;
     }
   }
 
-  *a3 = v12;
+  *end = v12;
 LABEL_5:
-  if (a4)
+  if (atEnd)
   {
-    *a4 = v11;
+    *atEnd = v11;
   }
 
   return v13;
 }
 
-- (id)changeDetailsByAddingChangeDetails:(id)a3
+- (id)changeDetailsByAddingChangeDetails:(id)details
 {
-  v4 = a3;
-  if ([(PXArrayChangeDetails *)self canPreserveIncrementalChangesWhenAddingChangeDetails:v4])
+  detailsCopy = details;
+  if ([(PXArrayChangeDetails *)self canPreserveIncrementalChangesWhenAddingChangeDetails:detailsCopy])
   {
     v5 = [(PXArrayChangeDetails *)self mutableCopy];
-    [v5 addChangeDetails:v4];
+    [v5 addChangeDetails:detailsCopy];
     v6 = [v5 copy];
   }
 
@@ -483,14 +483,14 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)canPreserveIncrementalChangesWhenAddingChangeDetails:(id)a3
+- (BOOL)canPreserveIncrementalChangesWhenAddingChangeDetails:(id)details
 {
-  v4 = a3;
-  if (-[PXArrayChangeDetails hasIncrementalChanges](self, "hasIncrementalChanges") && [v4 hasIncrementalChanges])
+  detailsCopy = details;
+  if (-[PXArrayChangeDetails hasIncrementalChanges](self, "hasIncrementalChanges") && [detailsCopy hasIncrementalChanges])
   {
     if ([(PXArrayChangeDetails *)self hasMoves])
     {
-      v5 = [v4 hasAnyInsertionsRemovalsOrMoves] ^ 1;
+      v5 = [detailsCopy hasAnyInsertionsRemovalsOrMoves] ^ 1;
     }
 
     else
@@ -507,23 +507,23 @@ LABEL_5:
   return v5;
 }
 
-- (void)applyToDictionary:(id)a3 removalHandler:(id)a4 moveHandler:(id)a5
+- (void)applyToDictionary:(id)dictionary removalHandler:(id)handler moveHandler:(id)moveHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
+  moveHandlerCopy = moveHandler;
   if ([(PXArrayChangeDetails *)self hasAnyInsertionsRemovalsOrMoves])
   {
-    v11 = [v8 copy];
-    [v8 removeAllObjects];
+    v11 = [dictionaryCopy copy];
+    [dictionaryCopy removeAllObjects];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__PXArrayChangeDetails_applyToDictionary_removalHandler_moveHandler___block_invoke;
     v12[3] = &unk_1E7BB6F78;
     v12[4] = self;
-    v14 = v9;
-    v13 = v8;
-    v15 = v10;
+    v14 = handlerCopy;
+    v13 = dictionaryCopy;
+    v15 = moveHandlerCopy;
     [v11 enumerateKeysAndObjectsUsingBlock:v12];
   }
 }
@@ -557,60 +557,60 @@ void __69__PXArrayChangeDetails_applyToDictionary_removalHandler_moveHandler___b
   }
 }
 
-- (void)applyToIndexSet:(id)a3
+- (void)applyToIndexSet:(id)set
 {
-  v5 = a3;
-  if ([v5 count])
+  setCopy = set;
+  if ([setCopy count])
   {
-    v4 = [(PXArrayChangeDetails *)self indexSetAfterApplyingChangesToIndexSet:v5];
-    if (v4 != v5)
+    v4 = [(PXArrayChangeDetails *)self indexSetAfterApplyingChangesToIndexSet:setCopy];
+    if (v4 != setCopy)
     {
-      [v5 removeAllIndexes];
-      [v5 addIndexes:v4];
+      [setCopy removeAllIndexes];
+      [setCopy addIndexes:v4];
     }
   }
 }
 
-- (id)indexSetAfterRevertingChangesToIndexSet:(id)a3
+- (id)indexSetAfterRevertingChangesToIndexSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   if (![(PXArrayChangeDetails *)self hasIncrementalChanges])
   {
-    v13 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
     goto LABEL_10;
   }
 
-  v5 = [(PXArrayChangeDetails *)self insertedIndexes];
-  if (![v5 count])
+  insertedIndexes = [(PXArrayChangeDetails *)self insertedIndexes];
+  if (![insertedIndexes count])
   {
-    v6 = [(PXArrayChangeDetails *)self removedIndexes];
-    if ([v6 count])
+    removedIndexes = [(PXArrayChangeDetails *)self removedIndexes];
+    if ([removedIndexes count])
     {
 
       goto LABEL_5;
     }
 
-    v15 = [(PXArrayChangeDetails *)self hasMoves];
+    hasMoves = [(PXArrayChangeDetails *)self hasMoves];
 
-    if (v15)
+    if (hasMoves)
     {
       goto LABEL_6;
     }
 
-    v13 = v4;
+    indexSet = setCopy;
 LABEL_10:
-    v12 = v13;
+    v12 = indexSet;
     goto LABEL_11;
   }
 
 LABEL_5:
 
 LABEL_6:
-  v7 = [v4 mutableCopy];
-  [v7 addIndexes:v4];
+  v7 = [setCopy mutableCopy];
+  [v7 addIndexes:setCopy];
   if ([(PXArrayChangeDetails *)self hasMoves])
   {
-    v8 = [v4 mutableCopy];
+    v8 = [setCopy mutableCopy];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __64__PXArrayChangeDetails_indexSetAfterRevertingChangesToIndexSet___block_invoke;
@@ -624,8 +624,8 @@ LABEL_6:
   v10 = [(PXArrayChangeDetails *)self insertedIndexes:v16];
   [v7 px_adjustIndexesForDeletions:v10];
 
-  v11 = [(PXArrayChangeDetails *)self removedIndexes];
-  [v7 px_adjustIndexesForInsertions:v11];
+  removedIndexes2 = [(PXArrayChangeDetails *)self removedIndexes];
+  [v7 px_adjustIndexesForInsertions:removedIndexes2];
 
   v12 = [v7 copy];
 LABEL_11:
@@ -649,47 +649,47 @@ void __64__PXArrayChangeDetails_indexSetAfterRevertingChangesToIndexSet___block_
   [v10 enumerateIndexesInRange:a4 options:a5 usingBlock:{0, v11}];
 }
 
-- (id)indexSetAfterApplyingChangesToIndexSet:(id)a3
+- (id)indexSetAfterApplyingChangesToIndexSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   if (![(PXArrayChangeDetails *)self hasIncrementalChanges])
   {
-    v13 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
     goto LABEL_10;
   }
 
-  v5 = [(PXArrayChangeDetails *)self insertedIndexes];
-  if (![v5 count])
+  insertedIndexes = [(PXArrayChangeDetails *)self insertedIndexes];
+  if (![insertedIndexes count])
   {
-    v6 = [(PXArrayChangeDetails *)self removedIndexes];
-    if ([v6 count])
+    removedIndexes = [(PXArrayChangeDetails *)self removedIndexes];
+    if ([removedIndexes count])
     {
 
       goto LABEL_5;
     }
 
-    v15 = [(PXArrayChangeDetails *)self hasMoves];
+    hasMoves = [(PXArrayChangeDetails *)self hasMoves];
 
-    if (v15)
+    if (hasMoves)
     {
       goto LABEL_6;
     }
 
-    v13 = v4;
+    indexSet = setCopy;
 LABEL_10:
-    v12 = v13;
+    v12 = indexSet;
     goto LABEL_11;
   }
 
 LABEL_5:
 
 LABEL_6:
-  v7 = [v4 mutableCopy];
-  v8 = [(PXArrayChangeDetails *)self removedIndexes];
-  [v7 px_adjustIndexesForDeletions:v8];
+  v7 = [setCopy mutableCopy];
+  removedIndexes2 = [(PXArrayChangeDetails *)self removedIndexes];
+  [v7 px_adjustIndexesForDeletions:removedIndexes2];
 
-  v9 = [(PXArrayChangeDetails *)self insertedIndexes];
-  [v7 px_adjustIndexesForInsertions:v9];
+  insertedIndexes2 = [(PXArrayChangeDetails *)self insertedIndexes];
+  [v7 px_adjustIndexesForInsertions:insertedIndexes2];
 
   if ([(PXArrayChangeDetails *)self hasMoves])
   {
@@ -727,15 +727,15 @@ void __63__PXArrayChangeDetails_indexSetAfterApplyingChangesToIndexSet___block_i
   [v10 enumerateIndexesInRange:a2 options:a3 usingBlock:{0, v11}];
 }
 
-- (unint64_t)indexAfterRevertingChangesFromIndex:(unint64_t)a3
+- (unint64_t)indexAfterRevertingChangesFromIndex:(unint64_t)index
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
-    v14 = a3;
+    indexCopy = index;
     if ([(PXArrayChangeDetails *)self hasMoves])
     {
       v10[0] = MEMORY[0x1E69E9820];
@@ -822,15 +822,15 @@ uint64_t __60__PXArrayChangeDetails_indexAfterRevertingChangesFromIndex___block_
   return result;
 }
 
-- (unint64_t)indexAfterApplyingChangesToIndex:(unint64_t)a3
+- (unint64_t)indexAfterApplyingChangesToIndex:(unint64_t)index
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
-    v14 = a3;
+    indexCopy = index;
     removedIndexes = self->_removedIndexes;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -918,7 +918,7 @@ uint64_t __57__PXArrayChangeDetails_indexAfterApplyingChangesToIndex___block_inv
   return result;
 }
 
-- (id)changedPropertiesForIndex:(int64_t)a3
+- (id)changedPropertiesForIndex:(int64_t)index
 {
   v10 = 0;
   v11 = &v10;
@@ -926,15 +926,15 @@ uint64_t __57__PXArrayChangeDetails_indexAfterApplyingChangesToIndex___block_inv
   v13 = __Block_byref_object_copy__10783;
   v14 = __Block_byref_object_dispose__10784;
   v15 = 0;
-  v5 = [(PXArrayChangeDetails *)self indexesWithChangesByProperty];
+  indexesWithChangesByProperty = [(PXArrayChangeDetails *)self indexesWithChangesByProperty];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__PXArrayChangeDetails_changedPropertiesForIndex___block_invoke;
   v9[3] = &unk_1E7BB6ED8;
   v9[5] = &v10;
-  v9[6] = a3;
+  v9[6] = index;
   v9[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [indexesWithChangesByProperty enumerateKeysAndObjectsUsingBlock:v9];
 
   v6 = v11[5];
   if (v6)
@@ -974,34 +974,34 @@ void __50__PXArrayChangeDetails_changedPropertiesForIndex___block_invoke(uint64_
   }
 }
 
-- (id)indexesWithChangesToProperty:(id)a3
+- (id)indexesWithChangesToProperty:(id)property
 {
-  v3 = [(NSDictionary *)self->_indexesWithChangesByProperty objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_indexesWithChangesByProperty objectForKeyedSubscript:property];
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    indexSet = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
   }
 
-  v6 = v5;
+  v6 = indexSet;
 
   return v6;
 }
 
-- (void)enumerateMovedIndexesUsingBlock:(id)a3
+- (void)enumerateMovedIndexesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__PXArrayChangeDetails_enumerateMovedIndexesUsingBlock___block_invoke;
   v6[3] = &unk_1E7BB6EB0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(PXArrayChangeDetails *)self enumerateMovedRangesUsingBlock:v6];
 }
 
@@ -1030,10 +1030,10 @@ uint64_t __56__PXArrayChangeDetails_enumerateMovedIndexesUsingBlock___block_invo
   return result;
 }
 
-- (void)enumerateMovedRangesUsingBlock:(id)a3
+- (void)enumerateMovedRangesUsingBlock:(id)block
 {
-  v5 = a3;
-  v6 = v5;
+  blockCopy = block;
+  v6 = blockCopy;
   movesToIndexes = self->_movesToIndexes;
   if (movesToIndexes)
   {
@@ -1048,7 +1048,7 @@ uint64_t __56__PXArrayChangeDetails_enumerateMovedIndexesUsingBlock___block_invo
     v8[4] = self;
     v10 = v12;
     v11 = a2;
-    v9 = v5;
+    v9 = blockCopy;
     [(NSIndexSet *)movesToIndexes enumerateRangesUsingBlock:v8];
 
     _Block_object_dispose(v12, 8);
@@ -1145,16 +1145,16 @@ LABEL_20:
   }
 }
 
-- (id)changeDetailsByAddingChangedIndexes:(id)a3
+- (id)changeDetailsByAddingChangedIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   if ([(PXArrayChangeDetails *)self hasIncrementalChanges])
   {
-    v5 = [(PXArrayChangeDetails *)self changedIndexes];
-    if ([v5 count])
+    changedIndexes = [(PXArrayChangeDetails *)self changedIndexes];
+    if ([changedIndexes count])
     {
-      v6 = [(PXArrayChangeDetails *)self changedIndexes];
-      v7 = [v6 mutableCopy];
+      changedIndexes2 = [(PXArrayChangeDetails *)self changedIndexes];
+      v7 = [changedIndexes2 mutableCopy];
     }
 
     else
@@ -1162,31 +1162,31 @@ LABEL_20:
       v7 = objc_opt_new();
     }
 
-    [v7 addIndexes:v4];
+    [v7 addIndexes:indexesCopy];
     v9 = [PXArrayChangeDetails alloc];
-    v10 = [(PXArrayChangeDetails *)self removedIndexes];
-    v11 = [(PXArrayChangeDetails *)self insertedIndexes];
-    v12 = [(PXArrayChangeDetails *)self movesToIndexes];
-    v8 = [(PXArrayChangeDetails *)v9 initWithIncrementalChangeDetailsRemovedIndexes:v10 insertedIndexes:v11 movesToIndexes:v12 movesFromIndexes:[(PXArrayChangeDetails *)self movesFromIndexes] changedIndexes:v7];
+    removedIndexes = [(PXArrayChangeDetails *)self removedIndexes];
+    insertedIndexes = [(PXArrayChangeDetails *)self insertedIndexes];
+    movesToIndexes = [(PXArrayChangeDetails *)self movesToIndexes];
+    selfCopy = [(PXArrayChangeDetails *)v9 initWithIncrementalChangeDetailsRemovedIndexes:removedIndexes insertedIndexes:insertedIndexes movesToIndexes:movesToIndexes movesFromIndexes:[(PXArrayChangeDetails *)self movesFromIndexes] changedIndexes:v7];
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)changeDetailsShiftedBy:(int64_t)a3
+- (id)changeDetailsShiftedBy:(int64_t)by
 {
-  if ([(PXArrayChangeDetails *)self hasIncrementalChanges]&& (v5 = [(PXArrayChangeDetails *)self hasAnyChanges], a3) && v5)
+  if ([(PXArrayChangeDetails *)self hasIncrementalChanges]&& (v5 = [(PXArrayChangeDetails *)self hasAnyChanges], by) && v5)
   {
-    v6 = [(PXArrayChangeDetails *)self removedIndexes];
-    if ([v6 count])
+    removedIndexes = [(PXArrayChangeDetails *)self removedIndexes];
+    if ([removedIndexes count])
     {
-      v7 = [(PXArrayChangeDetails *)self removedIndexes];
-      v8 = [v7 mutableCopy];
+      removedIndexes2 = [(PXArrayChangeDetails *)self removedIndexes];
+      v8 = [removedIndexes2 mutableCopy];
     }
 
     else
@@ -1194,11 +1194,11 @@ LABEL_20:
       v8 = [0 mutableCopy];
     }
 
-    v10 = [(PXArrayChangeDetails *)self insertedIndexes];
-    if ([v10 count])
+    insertedIndexes = [(PXArrayChangeDetails *)self insertedIndexes];
+    if ([insertedIndexes count])
     {
-      v11 = [(PXArrayChangeDetails *)self insertedIndexes];
-      v12 = [v11 mutableCopy];
+      insertedIndexes2 = [(PXArrayChangeDetails *)self insertedIndexes];
+      v12 = [insertedIndexes2 mutableCopy];
     }
 
     else
@@ -1206,11 +1206,11 @@ LABEL_20:
       v12 = [0 mutableCopy];
     }
 
-    v13 = [(PXArrayChangeDetails *)self movesToIndexes];
-    if ([v13 count])
+    movesToIndexes = [(PXArrayChangeDetails *)self movesToIndexes];
+    if ([movesToIndexes count])
     {
-      v14 = [(PXArrayChangeDetails *)self movesToIndexes];
-      v15 = [v14 mutableCopy];
+      movesToIndexes2 = [(PXArrayChangeDetails *)self movesToIndexes];
+      v15 = [movesToIndexes2 mutableCopy];
     }
 
     else
@@ -1218,11 +1218,11 @@ LABEL_20:
       v15 = [0 mutableCopy];
     }
 
-    v16 = [(PXArrayChangeDetails *)self changedIndexes];
-    if ([v16 count])
+    changedIndexes = [(PXArrayChangeDetails *)self changedIndexes];
+    if ([changedIndexes count])
     {
-      v17 = [(PXArrayChangeDetails *)self changedIndexes];
-      v18 = [v17 mutableCopy];
+      changedIndexes2 = [(PXArrayChangeDetails *)self changedIndexes];
+      v18 = [changedIndexes2 mutableCopy];
     }
 
     else
@@ -1230,28 +1230,28 @@ LABEL_20:
       v18 = [0 mutableCopy];
     }
 
-    [v8 shiftIndexesStartingAtIndex:0 by:a3];
-    [v12 shiftIndexesStartingAtIndex:0 by:a3];
-    [v15 shiftIndexesStartingAtIndex:0 by:a3];
-    [v18 shiftIndexesStartingAtIndex:0 by:a3];
+    [v8 shiftIndexesStartingAtIndex:0 by:by];
+    [v12 shiftIndexesStartingAtIndex:0 by:by];
+    [v15 shiftIndexesStartingAtIndex:0 by:by];
+    [v18 shiftIndexesStartingAtIndex:0 by:by];
     v19 = 0;
     if ([(PXArrayChangeDetails *)self hasMoves])
     {
       v20 = [v15 count];
-      v21 = [(PXArrayChangeDetails *)self movesFromIndexes];
+      movesFromIndexes = [(PXArrayChangeDetails *)self movesFromIndexes];
       v25 = *byte_1F2B86DF8;
       v19 = CFArrayCreateMutable(0, v20, &v25);
       if (v20 >= 1)
       {
         for (i = 0; i != v20; ++i)
         {
-          ValueAtIndex = CFArrayGetValueAtIndex(v21, i);
-          CFArrayAppendValue(v19, &ValueAtIndex[a3]);
+          ValueAtIndex = CFArrayGetValueAtIndex(movesFromIndexes, i);
+          CFArrayAppendValue(v19, &ValueAtIndex[by]);
         }
       }
     }
 
-    v9 = [[PXArrayChangeDetails alloc] initWithIncrementalChangeDetailsRemovedIndexes:v8 insertedIndexes:v12 movesToIndexes:v15 movesFromIndexes:v19 changedIndexes:v18];
+    selfCopy = [[PXArrayChangeDetails alloc] initWithIncrementalChangeDetailsRemovedIndexes:v8 insertedIndexes:v12 movesToIndexes:v15 movesFromIndexes:v19 changedIndexes:v18];
     if (v19)
     {
       CFRelease(v19);
@@ -1260,23 +1260,23 @@ LABEL_20:
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   if ([(PXArrayChangeDetails *)self hasIncrementalChanges])
   {
     v4 = [PXMutableArrayChangeDetails alloc];
-    v5 = [(PXArrayChangeDetails *)self removedIndexes];
-    v6 = [(PXArrayChangeDetails *)self insertedIndexes];
-    v7 = [(PXArrayChangeDetails *)self movesToIndexes];
-    v8 = [(PXArrayChangeDetails *)self movesFromIndexes];
-    v9 = [(PXArrayChangeDetails *)self changedIndexes];
-    v10 = [(PXArrayChangeDetails *)v4 initWithIncrementalChangeDetailsRemovedIndexes:v5 insertedIndexes:v6 movesToIndexes:v7 movesFromIndexes:v8 changedIndexes:v9];
+    removedIndexes = [(PXArrayChangeDetails *)self removedIndexes];
+    insertedIndexes = [(PXArrayChangeDetails *)self insertedIndexes];
+    movesToIndexes = [(PXArrayChangeDetails *)self movesToIndexes];
+    movesFromIndexes = [(PXArrayChangeDetails *)self movesFromIndexes];
+    changedIndexes = [(PXArrayChangeDetails *)self changedIndexes];
+    v10 = [(PXArrayChangeDetails *)v4 initWithIncrementalChangeDetailsRemovedIndexes:removedIndexes insertedIndexes:insertedIndexes movesToIndexes:movesToIndexes movesFromIndexes:movesFromIndexes changedIndexes:changedIndexes];
 
     return v10;
   }
@@ -1288,22 +1288,22 @@ LABEL_20:
   }
 }
 
-- (PXArrayChangeDetails)initWithIncrementalChangeDetailsRemovedIndexes:(id)a3 insertedIndexes:(id)a4 movesToIndexes:(id)a5 movesFromIndexes:(__CFArray *)a6 changedIndexes:(id)a7 indexesWithChangesByProperty:(id)a8
+- (PXArrayChangeDetails)initWithIncrementalChangeDetailsRemovedIndexes:(id)indexes insertedIndexes:(id)insertedIndexes movesToIndexes:(id)toIndexes movesFromIndexes:(__CFArray *)fromIndexes changedIndexes:(id)changedIndexes indexesWithChangesByProperty:(id)property
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
+  indexesCopy = indexes;
+  insertedIndexesCopy = insertedIndexes;
+  toIndexesCopy = toIndexes;
+  changedIndexesCopy = changedIndexes;
+  propertyCopy = property;
   v58.receiver = self;
   v58.super_class = PXArrayChangeDetails;
   v20 = [(PXArrayChangeDetails *)&v58 init];
   if (v20)
   {
-    v21 = [v17 count];
-    if (a6)
+    v21 = [toIndexesCopy count];
+    if (fromIndexes)
     {
-      Count = CFArrayGetCount(a6);
+      Count = CFArrayGetCount(fromIndexes);
     }
 
     else
@@ -1313,13 +1313,13 @@ LABEL_20:
 
     if (v21 != Count)
     {
-      v57 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v57 handleFailureInMethod:a2 object:v20 file:@"PXArrayChangeDetails.m" lineNumber:340 description:{@"Invalid parameter not satisfying: %@", @"[movesToIndexes count] == (movesFromIndexes == nil ? 0 : CFArrayGetCount(movesFromIndexes))"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v20 file:@"PXArrayChangeDetails.m" lineNumber:340 description:{@"Invalid parameter not satisfying: %@", @"[movesToIndexes count] == (movesFromIndexes == nil ? 0 : CFArrayGetCount(movesFromIndexes))"}];
     }
 
     if ([objc_opt_class() _mutableCopyInputs])
     {
-      v23 = [v15 mutableCopy];
+      v23 = [indexesCopy mutableCopy];
       v24 = v23;
       if (v23)
       {
@@ -1334,7 +1334,7 @@ LABEL_20:
       removedIndexes = v20->_removedIndexes;
       v20->_removedIndexes = v25;
 
-      v30 = [v16 mutableCopy];
+      v30 = [insertedIndexesCopy mutableCopy];
       v31 = v30;
       if (v30)
       {
@@ -1349,7 +1349,7 @@ LABEL_20:
       insertedIndexes = v20->_insertedIndexes;
       v20->_insertedIndexes = v32;
 
-      v38 = [v17 mutableCopy];
+      v38 = [toIndexesCopy mutableCopy];
       v39 = v38;
       if (v38)
       {
@@ -1365,10 +1365,10 @@ LABEL_20:
       v20->_movesToIndexes = v40;
 
       v46 = *MEMORY[0x1E695E480];
-      if (a6)
+      if (fromIndexes)
       {
-        v47 = CFArrayGetCount(a6);
-        MutableCopy = CFArrayCreateMutableCopy(v46, v47, a6);
+        v47 = CFArrayGetCount(fromIndexes);
+        MutableCopy = CFArrayCreateMutableCopy(v46, v47, fromIndexes);
       }
 
       else
@@ -1377,7 +1377,7 @@ LABEL_20:
       }
 
       v20->_movesFromIndexes = MutableCopy;
-      v49 = [v18 mutableCopy];
+      v49 = [changedIndexesCopy mutableCopy];
       if (v49)
       {
 LABEL_32:
@@ -1387,7 +1387,7 @@ LABEL_35:
         changedIndexes = v20->_changedIndexes;
         v20->_changedIndexes = v51;
 
-        v54 = [v19 copy];
+        v54 = [propertyCopy copy];
         indexesWithChangesByProperty = v20->_indexesWithChangesByProperty;
         v20->_indexesWithChangesByProperty = v54;
 
@@ -1399,7 +1399,7 @@ LABEL_35:
 
     else
     {
-      v26 = [v15 copy];
+      v26 = [indexesCopy copy];
       v27 = v26;
       if (v26)
       {
@@ -1414,7 +1414,7 @@ LABEL_35:
       v33 = v20->_removedIndexes;
       v20->_removedIndexes = v28;
 
-      v34 = [v16 copy];
+      v34 = [insertedIndexesCopy copy];
       v35 = v34;
       if (v34)
       {
@@ -1429,13 +1429,13 @@ LABEL_35:
       v41 = v20->_insertedIndexes;
       v20->_insertedIndexes = v36;
 
-      v42 = [v17 copy];
+      v42 = [toIndexesCopy copy];
       v43 = v20->_movesToIndexes;
       v20->_movesToIndexes = v42;
 
-      if (a6)
+      if (fromIndexes)
       {
-        v44 = CFRetain(a6);
+        v44 = CFRetain(fromIndexes);
       }
 
       else
@@ -1444,7 +1444,7 @@ LABEL_35:
       }
 
       v20->_movesFromIndexes = v44;
-      v49 = [v18 copy];
+      v49 = [changedIndexesCopy copy];
       if (v49)
       {
         goto LABEL_32;
@@ -1465,35 +1465,35 @@ LABEL_36:
 
 - (PXArrayChangeDetails)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXArrayChangeDetails.m" lineNumber:330 description:{@"%@ not supported", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXArrayChangeDetails.m" lineNumber:330 description:{@"%@ not supported", v5}];
 
   abort();
 }
 
 - (id)changeDetailsByReplacingChangedItemsWithRemovalsAndInsertions
 {
-  v2 = self;
-  v3 = [(PXArrayChangeDetails *)v2 changedIndexes];
-  if ([v3 count])
+  selfCopy = self;
+  changedIndexes = [(PXArrayChangeDetails *)selfCopy changedIndexes];
+  if ([changedIndexes count])
   {
-    v4 = [[PXArrayChangeDetails alloc] initWithIncrementalChangeDetailsRemovedIndexes:v3 insertedIndexes:v3 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
-    v5 = [(PXArrayChangeDetails *)v2 changeDetailsByAddingChangeDetails:v4];
+    v4 = [[PXArrayChangeDetails alloc] initWithIncrementalChangeDetailsRemovedIndexes:changedIndexes insertedIndexes:changedIndexes movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
+    v5 = [(PXArrayChangeDetails *)selfCopy changeDetailsByAddingChangeDetails:v4];
 
-    v2 = v5;
+    selfCopy = v5;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-+ (unint64_t)indexAfterRevertingChanges:(id)a3 fromIndex:(unint64_t)a4 objectChanged:(BOOL *)a5
++ (unint64_t)indexAfterRevertingChanges:(id)changes fromIndex:(unint64_t)index objectChanged:(BOOL *)changed
 {
-  v7 = a3;
+  changesCopy = changes;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
-  v19 = a4;
+  indexCopy = index;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1504,11 +1504,11 @@ LABEL_36:
   v11[3] = &unk_1E7BB6E60;
   v11[4] = &v12;
   v11[5] = &v16;
-  [v7 enumerateObjectsWithOptions:2 usingBlock:v11];
-  if (a5)
+  [changesCopy enumerateObjectsWithOptions:2 usingBlock:v11];
+  if (changed)
   {
     v8 = *(v13 + 24) == 1 && v17[3] != 0x7FFFFFFFFFFFFFFFLL;
-    *a5 = v8;
+    *changed = v8;
   }
 
   v9 = v17[3];
@@ -1532,15 +1532,15 @@ void __75__PXArrayChangeDetails_indexAfterRevertingChanges_fromIndex_objectChang
   }
 }
 
-+ (unint64_t)indexAfterApplyingChanges:(id)a3 toIndex:(unint64_t)a4 objectChanged:(BOOL *)a5
++ (unint64_t)indexAfterApplyingChanges:(id)changes toIndex:(unint64_t)index objectChanged:(BOOL *)changed
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = a3;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  changesCopy = changes;
+  v8 = [changesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1552,22 +1552,22 @@ void __75__PXArrayChangeDetails_indexAfterRevertingChanges_fromIndex_objectChang
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(changesCopy);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        a4 = [v13 indexAfterApplyingChangesToIndex:{a4, v16}];
-        v14 = [v13 changedIndexes];
-        v10 |= [v14 containsIndex:a4];
+        index = [v13 indexAfterApplyingChangesToIndex:{index, v16}];
+        changedIndexes = [v13 changedIndexes];
+        v10 |= [changedIndexes containsIndex:index];
 
-        if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+        if (index == 0x7FFFFFFFFFFFFFFFLL)
         {
-          a4 = 0x7FFFFFFFFFFFFFFFLL;
+          index = 0x7FFFFFFFFFFFFFFFLL;
           goto LABEL_12;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [changesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         continue;
@@ -1584,41 +1584,41 @@ void __75__PXArrayChangeDetails_indexAfterRevertingChanges_fromIndex_objectChang
 
 LABEL_12:
 
-  if (a5)
+  if (changed)
   {
-    *a5 = v10 & (a4 != 0x7FFFFFFFFFFFFFFFLL);
+    *changed = v10 & (index != 0x7FFFFFFFFFFFFFFFLL);
   }
 
-  return a4;
+  return index;
 }
 
-+ (id)changeDetailsWithOldKeyItemIndex:(int64_t)a3 oldCount:(int64_t)a4 newKeyItemIndex:(int64_t)a5 newCount:(int64_t)a6
++ (id)changeDetailsWithOldKeyItemIndex:(int64_t)index oldCount:(int64_t)count newKeyItemIndex:(int64_t)itemIndex newCount:(int64_t)newCount
 {
-  v10 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, a4}];
-  [v10 removeIndex:a3];
-  v11 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, a6}];
-  [v11 removeIndex:a5];
-  v12 = [[a1 alloc] initWithIncrementalChangeDetailsRemovedIndexes:v10 insertedIndexes:v11 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
+  v10 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, count}];
+  [v10 removeIndex:index];
+  v11 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, newCount}];
+  [v11 removeIndex:itemIndex];
+  v12 = [[self alloc] initWithIncrementalChangeDetailsRemovedIndexes:v10 insertedIndexes:v11 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
 
   return v12;
 }
 
-+ (id)changeDetailsWithMovedFromIndexRange:(_NSRange)a3 toIndexRange:(_NSRange)a4
++ (id)changeDetailsWithMovedFromIndexRange:(_NSRange)range toIndexRange:(_NSRange)indexRange
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3.length;
-  v7 = a3.location;
-  if (a3.length != a4.length)
+  length = indexRange.length;
+  location = indexRange.location;
+  v6 = range.length;
+  v7 = range.location;
+  if (range.length != indexRange.length)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"PXArrayChangeDetails.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"fromIndexRange.length == toIndexRange.length"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXArrayChangeDetails.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"fromIndexRange.length == toIndexRange.length"}];
   }
 
   if (v7 + v6 > location && location + length > v7)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"PXArrayChangeDetails.m" lineNumber:214 description:{@"Invalid parameter not satisfying: %@", @"NSMaxRange(fromIndexRange) <= toIndexRange.location || NSMaxRange(toIndexRange) <= fromIndexRange.location"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXArrayChangeDetails.m" lineNumber:214 description:{@"Invalid parameter not satisfying: %@", @"NSMaxRange(fromIndexRange) <= toIndexRange.location || NSMaxRange(toIndexRange) <= fromIndexRange.location"}];
   }
 
   v27.location = v7;
@@ -1669,82 +1669,82 @@ LABEL_12:
     while (v12);
   }
 
-  v21 = [[a1 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:v13 movesFromIndexes:v15 changedIndexes:0];
+  v21 = [[self alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:v13 movesFromIndexes:v15 changedIndexes:0];
   CFRelease(v15);
 
   return v21;
 }
 
-+ (id)changeDetailsWithChangedIndexes:(id)a3
++ (id)changeDetailsWithChangedIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:v4];
+  indexesCopy = indexes;
+  v5 = [[self alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:indexesCopy];
 
   return v5;
 }
 
-+ (id)changeDetailsWithRemovedIndexes:(id)a3
++ (id)changeDetailsWithRemovedIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIncrementalChangeDetailsRemovedIndexes:v4 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
+  indexesCopy = indexes;
+  v5 = [[self alloc] initWithIncrementalChangeDetailsRemovedIndexes:indexesCopy insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
 
   return v5;
 }
 
-+ (id)changeDetailsWithInsertedIndexes:(id)a3
++ (id)changeDetailsWithInsertedIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:v4 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
+  indexesCopy = indexes;
+  v5 = [[self alloc] initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:indexesCopy movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
 
   return v5;
 }
 
-+ (id)changeDetailsWithChangedIndexRange:(_NSRange)a3
++ (id)changeDetailsWithChangedIndexRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [a1 alloc];
+  length = range.length;
+  location = range.location;
+  v5 = [self alloc];
   v6 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{location, length}];
   v7 = [v5 initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:v6];
 
   return v7;
 }
 
-+ (id)changeDetailsWithRemovedIndexRange:(_NSRange)a3
++ (id)changeDetailsWithRemovedIndexRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [a1 alloc];
+  length = range.length;
+  location = range.location;
+  v5 = [self alloc];
   v6 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{location, length}];
   v7 = [v5 initWithIncrementalChangeDetailsRemovedIndexes:v6 insertedIndexes:0 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
 
   return v7;
 }
 
-+ (id)changeDetailsWithInsertedIndexRange:(_NSRange)a3
++ (id)changeDetailsWithInsertedIndexRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [a1 alloc];
+  length = range.length;
+  location = range.location;
+  v5 = [self alloc];
   v6 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{location, length}];
   v7 = [v5 initWithIncrementalChangeDetailsRemovedIndexes:0 insertedIndexes:v6 movesToIndexes:0 movesFromIndexes:0 changedIndexes:0];
 
   return v7;
 }
 
-+ (id)changeDetailsFromSubrange:(_NSRange)a3 toSubrange:(_NSRange)a4
++ (id)changeDetailsFromSubrange:(_NSRange)subrange toSubrange:(_NSRange)toSubrange
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3.length;
-  v7 = a3.location;
-  v9 = NSIntersectionRange(a3, a4);
+  length = toSubrange.length;
+  location = toSubrange.location;
+  v6 = subrange.length;
+  v7 = subrange.location;
+  v9 = NSIntersectionRange(subrange, toSubrange);
   if (v7 == location && v6 == length)
   {
-    v10 = [a1 changeDetailsWithNoChanges];
-    if (v10)
+    changeDetailsWithNoChanges = [self changeDetailsWithNoChanges];
+    if (changeDetailsWithNoChanges)
     {
-      v11 = v10;
+      v11 = changeDetailsWithNoChanges;
       goto LABEL_24;
     }
   }
@@ -1761,7 +1761,7 @@ LABEL_12:
     }
   }
 
-  v25 = a1;
+  selfCopy = self;
   v14 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v15 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v16 = objc_alloc_init(MEMORY[0x1E696AD50]);
@@ -1820,7 +1820,7 @@ LABEL_17:
     Mutable = 0;
   }
 
-  v11 = [[v25 alloc] initWithIncrementalChangeDetailsRemovedIndexes:v14 insertedIndexes:v15 movesToIndexes:v16 movesFromIndexes:Mutable changedIndexes:0];
+  v11 = [[selfCopy alloc] initWithIncrementalChangeDetailsRemovedIndexes:v14 insertedIndexes:v15 movesToIndexes:v16 movesFromIndexes:Mutable changedIndexes:0];
   if (Mutable)
   {
     CFRelease(Mutable);
@@ -1831,34 +1831,34 @@ LABEL_24:
   return v11;
 }
 
-+ (id)changeDetailsFromArray:(id)a3 toArray:(id)a4 changedObjects:(id)a5 objectComparator:(id)a6
++ (id)changeDetailsFromArray:(id)array toArray:(id)toArray changedObjects:(id)objects objectComparator:(id)comparator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count] || objc_msgSend(v11, "count"))
+  arrayCopy = array;
+  toArrayCopy = toArray;
+  objectsCopy = objects;
+  comparatorCopy = comparator;
+  if ([arrayCopy count] || objc_msgSend(toArrayCopy, "count"))
   {
     v24 = 0;
     v25 = 0;
     v22 = 0;
     v23 = 0;
     v21 = 0;
-    PXDiffArraysWithObjectComparator(v10, v11, v12, v13, &v24, &v23, &v22, &v25, &v21);
+    PXDiffArraysWithObjectComparator(arrayCopy, toArrayCopy, objectsCopy, comparatorCopy, &v24, &v23, &v22, &v25, &v21);
     v14 = v24;
     v15 = v23;
     v16 = v22;
     v17 = v21;
-    v18 = [a1 alloc];
-    v19 = [v18 initWithIncrementalChangeDetailsRemovedIndexes:v14 insertedIndexes:v15 movesToIndexes:v16 movesFromIndexes:v25 changedIndexes:v17];
+    v18 = [self alloc];
+    changeDetailsWithNoChanges = [v18 initWithIncrementalChangeDetailsRemovedIndexes:v14 insertedIndexes:v15 movesToIndexes:v16 movesFromIndexes:v25 changedIndexes:v17];
   }
 
   else
   {
-    v19 = [a1 changeDetailsWithNoChanges];
+    changeDetailsWithNoChanges = [self changeDetailsWithNoChanges];
   }
 
-  return v19;
+  return changeDetailsWithNoChanges;
 }
 
 @end

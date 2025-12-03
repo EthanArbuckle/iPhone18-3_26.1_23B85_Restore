@@ -3,8 +3,8 @@
 - (OADCustomShapeGeometry)init;
 - (id)description;
 - (void)dealloc;
-- (void)setGeometryCoordSpace:(CsRect<int>)a3;
-- (void)setLimo:(CsPoint<int>)a3;
+- (void)setGeometryCoordSpace:(CsRect<int>)space;
+- (void)setLimo:(CsPoint<int>)limo;
 @end
 
 @implementation OADCustomShapeGeometry
@@ -48,20 +48,20 @@
   return result;
 }
 
-- (void)setGeometryCoordSpace:(CsRect<int>)a3
+- (void)setGeometryCoordSpace:(CsRect<int>)space
 {
   mGeometryCoordSpace = self->mGeometryCoordSpace;
-  *mGeometryCoordSpace = **a3.var0;
-  mGeometryCoordSpace[1] = *(*a3.var0 + 4);
-  mGeometryCoordSpace[2] = *(*a3.var0 + 8);
-  mGeometryCoordSpace[3] = *(*a3.var0 + 12);
+  *mGeometryCoordSpace = **space.var0;
+  mGeometryCoordSpace[1] = *(*space.var0 + 4);
+  mGeometryCoordSpace[2] = *(*space.var0 + 8);
+  mGeometryCoordSpace[3] = *(*space.var0 + 12);
 }
 
-- (void)setLimo:(CsPoint<int>)a3
+- (void)setLimo:(CsPoint<int>)limo
 {
   mLimo = self->mLimo;
-  *mLimo = *a3.var0[0];
-  mLimo[1] = *(*&a3 + 4);
+  *mLimo = *limo.var0[0];
+  mLimo[1] = *(*&limo + 4);
 }
 
 - (id)description

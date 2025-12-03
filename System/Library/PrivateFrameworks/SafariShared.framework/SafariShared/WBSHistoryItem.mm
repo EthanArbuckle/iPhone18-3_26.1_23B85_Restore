@@ -1,6 +1,6 @@
 @interface WBSHistoryItem
 + (void)initialize;
-- (BOOL)_visitsPendingWriteSetContains:(id)a3;
+- (BOOL)_visitsPendingWriteSetContains:(id)contains;
 - (BOOL)lastVisitWasFailure;
 - (BOOL)lastVisitWasHTTPNonGet;
 - (NSDate)lastVisitedDate;
@@ -11,36 +11,36 @@
 - (NSString)userVisibleURLString;
 - (NSURL)url;
 - (WBSHistoryItem)endOfLastVisitRedirectChain;
-- (WBSHistoryItem)initWithHistoryStreamedItem:(const _HistoryStreamedItem *)a3;
-- (WBSHistoryItem)initWithURLString:(id)a3;
+- (WBSHistoryItem)initWithHistoryStreamedItem:(const _HistoryStreamedItem *)item;
+- (WBSHistoryItem)initWithURLString:(id)string;
 - (WBSHistoryItem)lastVisitRedirectDestinationItem;
 - (WBSHistoryVisit)lastVisit;
 - (double)lastVisitedTimeInterval;
-- (id)_visitsPendingWriteSetCreatingIfNeeded:(BOOL)a3;
-- (id)visitForTimeOnSynchronizationQueue:(double)a3;
-- (void)_addExistingVisit:(id)a3;
-- (void)_addVisit:(id)a3;
-- (void)_addVisitToPendingWriteSet:(id)a3;
-- (void)addExistingVisit:(id)a3;
+- (id)_visitsPendingWriteSetCreatingIfNeeded:(BOOL)needed;
+- (id)visitForTimeOnSynchronizationQueue:(double)queue;
+- (void)_addExistingVisit:(id)visit;
+- (void)_addVisit:(id)visit;
+- (void)_addVisitToPendingWriteSet:(id)set;
+- (void)addExistingVisit:(id)visit;
 - (void)clearVisitsPendingWriteToDataStoreFromSynchronizationQueue;
 - (void)dealloc;
-- (void)mergeDataFromItem:(id)a3;
-- (void)removeVisits:(id)a3 candidateLastVisit:(id)a4;
-- (void)removeVisitsOnSynchronizationQueue:(id)a3 candidateLastVisit:(id)a4;
-- (void)setLastVisitWasFailure:(BOOL)a3;
-- (void)updateLastVisitIfNil:(id)a3;
-- (void)updateWithServiceItem:(id)a3;
-- (void)updateWithStreamedItem:(const _HistoryStreamedItem *)a3;
-- (void)visitWasModified:(id)a3;
-- (void)wasRedirectedFrom:(id)a3 to:(id)a4;
-- (void)wasVisited:(id)a3;
+- (void)mergeDataFromItem:(id)item;
+- (void)removeVisits:(id)visits candidateLastVisit:(id)visit;
+- (void)removeVisitsOnSynchronizationQueue:(id)queue candidateLastVisit:(id)visit;
+- (void)setLastVisitWasFailure:(BOOL)failure;
+- (void)updateLastVisitIfNil:(id)nil;
+- (void)updateWithServiceItem:(id)item;
+- (void)updateWithStreamedItem:(const _HistoryStreamedItem *)item;
+- (void)visitWasModified:(id)modified;
+- (void)wasRedirectedFrom:(id)from to:(id)to;
+- (void)wasVisited:(id)visited;
 @end
 
 @implementation WBSHistoryItem
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = dispatch_queue_create("com.apple.SafariShared.WBSHistoryItem.Synchronization", 0);
     v3 = WBSHistoryItemSynchronizationQueue;
@@ -52,19 +52,19 @@
   }
 }
 
-- (WBSHistoryItem)initWithURLString:(id)a3
+- (WBSHistoryItem)initWithURLString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = WBSHistoryItem;
   v5 = [(WBSHistoryItem *)&v12 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     visits = v5->_visits;
-    v5->_visits = v6;
+    v5->_visits = array;
 
-    v8 = [v4 copy];
+    v8 = [stringCopy copy];
     urlString = v5->_urlString;
     v5->_urlString = v8;
 
@@ -141,24 +141,24 @@ void __21__WBSHistoryItem_url__block_invoke(uint64_t a1)
 
 - (NSString)userVisibleURLString
 {
-  v2 = [(NSString *)self->_urlString safari_userVisibleURL];
-  v3 = [v2 safari_stringByFoldingWideCharactersAndNormalizing];
+  safari_userVisibleURL = [(NSString *)self->_urlString safari_userVisibleURL];
+  safari_stringByFoldingWideCharactersAndNormalizing = [safari_userVisibleURL safari_stringByFoldingWideCharactersAndNormalizing];
 
-  return v3;
+  return safari_stringByFoldingWideCharactersAndNormalizing;
 }
 
 - (NSString)userVisibleHostOrFallbackURLString
 {
   v2 = [(WBSHistoryItem *)self url];
-  v3 = [v2 safari_userVisibleHostWithoutWWWSubdomain];
-  if (![v3 length])
+  safari_userVisibleHostWithoutWWWSubdomain = [v2 safari_userVisibleHostWithoutWWWSubdomain];
+  if (![safari_userVisibleHostWithoutWWWSubdomain length])
   {
-    v4 = [v2 safari_userVisibleString];
+    safari_userVisibleString = [v2 safari_userVisibleString];
 
-    v3 = v4;
+    safari_userVisibleHostWithoutWWWSubdomain = safari_userVisibleString;
   }
 
-  return v3;
+  return safari_userVisibleHostWithoutWWWSubdomain;
 }
 
 - (WBSHistoryVisit)lastVisit
@@ -210,8 +210,8 @@ uint64_t __41__WBSHistoryItem_lastVisitedTimeInterval__block_invoke(uint64_t a1)
 - (NSDate)lastVisitedDate
 {
   v2 = MEMORY[0x1E695DF00];
-  v3 = [(WBSHistoryItem *)self lastVisit];
-  [v3 visitTime];
+  lastVisit = [(WBSHistoryItem *)self lastVisit];
+  [lastVisit visitTime];
   v4 = [v2 dateWithTimeIntervalSinceReferenceDate:?];
 
   return v4;
@@ -242,14 +242,14 @@ uint64_t __37__WBSHistoryItem_lastVisitWasFailure__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setLastVisitWasFailure:(BOOL)a3
+- (void)setLastVisitWasFailure:(BOOL)failure
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __41__WBSHistoryItem_setLastVisitWasFailure___block_invoke;
   v3[3] = &unk_1E7FB7A40;
   v3[4] = self;
-  v4 = a3;
+  failureCopy = failure;
   dispatch_sync(WBSHistoryItemSynchronizationQueue, v3);
 }
 
@@ -290,28 +290,28 @@ uint64_t __40__WBSHistoryItem_lastVisitWasHTTPNonGet__block_invoke(uint64_t a1)
 - (NSString)stringForUserTypedDomainExpansion
 {
   v2 = [(WBSHistoryItem *)self url];
-  v3 = [v2 host];
+  host = [v2 host];
 
-  if (([v3 safari_hasCaseInsensitiveSuffix:@".com"] & 1) == 0)
+  if (([host safari_hasCaseInsensitiveSuffix:@".com"] & 1) == 0)
   {
     v6 = 0;
     goto LABEL_8;
   }
 
-  if (([v3 safari_hasCaseInsensitivePrefix:@"www."] & 1) == 0)
+  if (([host safari_hasCaseInsensitivePrefix:@"www."] & 1) == 0)
   {
-    v7 = [v3 length];
+    v7 = [host length];
     v5 = 0;
     v4 = v7 - 4;
     goto LABEL_7;
   }
 
-  if ([v3 caseInsensitiveCompare:@"www.com"])
+  if ([host caseInsensitiveCompare:@"www.com"])
   {
-    v4 = [v3 length] - 8;
+    v4 = [host length] - 8;
     v5 = 4;
 LABEL_7:
-    v6 = [v3 substringWithRange:{v5, v4}];
+    v6 = [host substringWithRange:{v5, v4}];
     goto LABEL_8;
   }
 
@@ -407,19 +407,19 @@ void __45__WBSHistoryItem_endOfLastVisitRedirectChain__block_invoke(uint64_t a1)
   v13 = v2;
 }
 
-- (void)mergeDataFromItem:(id)a3
+- (void)mergeDataFromItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy != self)
   {
     v6 = WBSHistoryItemSynchronizationQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __36__WBSHistoryItem_mergeDataFromItem___block_invoke;
     v7[3] = &unk_1E7FB7F10;
-    v8 = v4;
-    v9 = self;
+    v8 = itemCopy;
+    selfCopy = self;
     dispatch_sync(v6, v7);
   }
 }
@@ -479,68 +479,68 @@ void __36__WBSHistoryItem_mergeDataFromItem___block_invoke(uint64_t a1)
   }
 }
 
-- (void)wasVisited:(id)a3
+- (void)wasVisited:(id)visited
 {
-  v4 = a3;
+  visitedCopy = visited;
   v5 = WBSHistoryItemSynchronizationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__WBSHistoryItem_wasVisited___block_invoke;
   v7[3] = &unk_1E7FB7F10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = visitedCopy;
+  v6 = visitedCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)_addVisit:(id)a3
+- (void)_addVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   [(WBSHistoryItem *)self _addExistingVisit:?];
-  [(WBSHistoryItem *)self _addVisitToPendingWriteSet:v4];
+  [(WBSHistoryItem *)self _addVisitToPendingWriteSet:visitCopy];
 }
 
-- (void)addExistingVisit:(id)a3
+- (void)addExistingVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   v5 = WBSHistoryItemSynchronizationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__WBSHistoryItem_addExistingVisit___block_invoke;
   v7[3] = &unk_1E7FB7F10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = visitCopy;
+  v6 = visitCopy;
   dispatch_sync(v5, v7);
 }
 
-- (void)_addExistingVisit:(id)a3
+- (void)_addExistingVisit:(id)visit
 {
   p_lastVisit = &self->_lastVisit;
-  if (!self->_lastVisit || ([a3 visitTime], v7 = v6, -[WBSHistoryVisit visitTime](*p_lastVisit, "visitTime"), v7 >= v8))
+  if (!self->_lastVisit || ([visit visitTime], v7 = v6, -[WBSHistoryVisit visitTime](*p_lastVisit, "visitTime"), v7 >= v8))
   {
-    objc_storeStrong(p_lastVisit, a3);
+    objc_storeStrong(p_lastVisit, visit);
   }
 
   visits = self->_visits;
 
-  [(NSMutableArray *)visits addObject:a3];
+  [(NSMutableArray *)visits addObject:visit];
 }
 
-- (void)wasRedirectedFrom:(id)a3 to:(id)a4
+- (void)wasRedirectedFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v8 = WBSHistoryItemSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__WBSHistoryItem_wasRedirectedFrom_to___block_invoke;
   block[3] = &unk_1E7FB7DD0;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = toCopy;
+  v13 = fromCopy;
+  selfCopy = self;
+  v9 = fromCopy;
+  v10 = toCopy;
   dispatch_async(v8, block);
 }
 
@@ -554,27 +554,27 @@ uint64_t __39__WBSHistoryItem_wasRedirectedFrom_to___block_invoke(uint64_t a1)
   return [v2 _wasVisitedOnSynchronizationQueue:v3];
 }
 
-- (void)removeVisits:(id)a3 candidateLastVisit:(id)a4
+- (void)removeVisits:(id)visits candidateLastVisit:(id)visit
 {
-  v6 = a3;
-  v7 = a4;
+  visitsCopy = visits;
+  visitCopy = visit;
   v8 = WBSHistoryItemSynchronizationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__WBSHistoryItem_removeVisits_candidateLastVisit___block_invoke;
   block[3] = &unk_1E7FB7DD0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = visitsCopy;
+  v13 = visitCopy;
+  v9 = visitCopy;
+  v10 = visitsCopy;
   dispatch_sync(v8, block);
 }
 
-- (void)removeVisitsOnSynchronizationQueue:(id)a3 candidateLastVisit:(id)a4
+- (void)removeVisitsOnSynchronizationQueue:(id)queue candidateLastVisit:(id)visit
 {
-  v11 = a4;
-  v7 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  visitCopy = visit;
+  v7 = [MEMORY[0x1E695DFD8] setWithArray:queue];
   v8 = [(WBSHistoryItem *)self _visitsPendingWriteSetCreatingIfNeeded:0];
   [v8 minusSet:v7];
   if (![v8 count])
@@ -586,25 +586,25 @@ uint64_t __39__WBSHistoryItem_wasRedirectedFrom_to___block_invoke(uint64_t a1)
   p_lastVisit = &self->_lastVisit;
   if ([v7 containsObject:lastVisit])
   {
-    objc_storeStrong(p_lastVisit, a4);
+    objc_storeStrong(p_lastVisit, visit);
   }
 }
 
-- (void)visitWasModified:(id)a3
+- (void)visitWasModified:(id)modified
 {
-  v4 = a3;
+  modifiedCopy = modified;
   v5 = WBSHistoryItemSynchronizationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__WBSHistoryItem_visitWasModified___block_invoke;
   v7[3] = &unk_1E7FB7F10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = modifiedCopy;
+  v6 = modifiedCopy;
   dispatch_async(v5, v7);
 }
 
-- (id)visitForTimeOnSynchronizationQueue:(double)a3
+- (id)visitForTimeOnSynchronizationQueue:(double)queue
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -627,7 +627,7 @@ uint64_t __39__WBSHistoryItem_wasRedirectedFrom_to___block_invoke(uint64_t a1)
 
         v8 = *(*(&v11 + 1) + 8 * i);
         [v8 visitTime];
-        if (v9 == a3)
+        if (v9 == queue)
         {
           v5 = v8;
           goto LABEL_11;
@@ -649,9 +649,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)_visitsPendingWriteSetCreatingIfNeeded:(BOOL)a3
+- (id)_visitsPendingWriteSetCreatingIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v5 = [visitsPendingWriteTable objectForKey:self];
   if (v5)
   {
@@ -660,7 +660,7 @@ LABEL_11:
 
   else
   {
-    v6 = !v3;
+    v6 = !neededCopy;
   }
 
   if (!v6)
@@ -682,18 +682,18 @@ LABEL_11:
   return v5;
 }
 
-- (void)_addVisitToPendingWriteSet:(id)a3
+- (void)_addVisitToPendingWriteSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v4 = [(WBSHistoryItem *)self _visitsPendingWriteSetCreatingIfNeeded:1];
-  [v4 addObject:v5];
+  [v4 addObject:setCopy];
 }
 
-- (BOOL)_visitsPendingWriteSetContains:(id)a3
+- (BOOL)_visitsPendingWriteSetContains:(id)contains
 {
-  v4 = a3;
+  containsCopy = contains;
   v5 = [(WBSHistoryItem *)self _visitsPendingWriteSetCreatingIfNeeded:0];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:containsCopy];
 
   return v6;
 }
@@ -725,27 +725,27 @@ LABEL_11:
   }
 }
 
-- (void)updateWithServiceItem:(id)a3
+- (void)updateWithServiceItem:(id)item
 {
-  v4 = a3;
-  self->_databaseID = [v4 databaseID];
-  self->_statusCode = [v4 statusCode];
+  itemCopy = item;
+  self->_databaseID = [itemCopy databaseID];
+  self->_statusCode = [itemCopy statusCode];
 }
 
-- (WBSHistoryItem)initWithHistoryStreamedItem:(const _HistoryStreamedItem *)a3
+- (WBSHistoryItem)initWithHistoryStreamedItem:(const _HistoryStreamedItem *)item
 {
   v9.receiver = self;
   v9.super_class = WBSHistoryItem;
   v4 = [(WBSHistoryItem *)&v9 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->var6];
+    v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:item->var6];
     v6 = [(WBSHistoryItem *)v4 initWithURLString:v5];
     v4 = v6;
     if (v6)
     {
-      v6->_databaseID = a3->var1;
-      v6->_statusCode = a3->var5;
+      v6->_databaseID = item->var1;
+      v6->_statusCode = item->var5;
       v7 = v6;
     }
   }
@@ -753,10 +753,10 @@ LABEL_11:
   return v4;
 }
 
-- (void)updateWithStreamedItem:(const _HistoryStreamedItem *)a3
+- (void)updateWithStreamedItem:(const _HistoryStreamedItem *)item
 {
-  var1 = a3->var1;
-  var5 = a3->var5;
+  var1 = item->var1;
+  var5 = item->var5;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__WBSHistoryItem_HistoryStreamedItem__updateWithStreamedItem___block_invoke;
@@ -780,16 +780,16 @@ void *__62__WBSHistoryItem_HistoryStreamedItem__updateWithStreamedItem___block_i
   return result;
 }
 
-- (void)updateLastVisitIfNil:(id)a3
+- (void)updateLastVisitIfNil:(id)nil
 {
-  v5 = a3;
+  nilCopy = nil;
   lastVisit = self->_lastVisit;
   p_lastVisit = &self->_lastVisit;
   if (!lastVisit)
   {
-    v8 = v5;
-    objc_storeStrong(p_lastVisit, a3);
-    v5 = v8;
+    v8 = nilCopy;
+    objc_storeStrong(p_lastVisit, nil);
+    nilCopy = v8;
   }
 }
 

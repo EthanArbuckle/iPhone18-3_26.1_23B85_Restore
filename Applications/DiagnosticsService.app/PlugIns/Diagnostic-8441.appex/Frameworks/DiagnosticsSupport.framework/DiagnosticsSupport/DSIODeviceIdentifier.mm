@@ -1,31 +1,31 @@
 @interface DSIODeviceIdentifier
-+ (id)identifierForAccessoryModel:(unint64_t)a3;
-+ (id)identifierForIOHIDDevice:(__IOHIDDevice *)a3;
-- (DSIODeviceIdentifier)initWithAccessoryModel:(unint64_t)a3 usagePage:(unsigned int)a4 usage:(unsigned int)a5 vendorID:(unsigned int)a6 productID:(unsigned int)a7;
++ (id)identifierForAccessoryModel:(unint64_t)model;
++ (id)identifierForIOHIDDevice:(__IOHIDDevice *)device;
+- (DSIODeviceIdentifier)initWithAccessoryModel:(unint64_t)model usagePage:(unsigned int)page usage:(unsigned int)usage vendorID:(unsigned int)d productID:(unsigned int)iD;
 @end
 
 @implementation DSIODeviceIdentifier
 
-- (DSIODeviceIdentifier)initWithAccessoryModel:(unint64_t)a3 usagePage:(unsigned int)a4 usage:(unsigned int)a5 vendorID:(unsigned int)a6 productID:(unsigned int)a7
+- (DSIODeviceIdentifier)initWithAccessoryModel:(unint64_t)model usagePage:(unsigned int)page usage:(unsigned int)usage vendorID:(unsigned int)d productID:(unsigned int)iD
 {
   v13.receiver = self;
   v13.super_class = DSIODeviceIdentifier;
   result = [(DSIODeviceIdentifier *)&v13 init];
   if (result)
   {
-    result->_accessoryModel = a3;
-    result->_usagePage = a4;
-    result->_usage = a5;
-    result->_vendorID = a6;
-    result->_productID = a7;
+    result->_accessoryModel = model;
+    result->_usagePage = page;
+    result->_usage = usage;
+    result->_vendorID = d;
+    result->_productID = iD;
   }
 
   return result;
 }
 
-+ (id)identifierForAccessoryModel:(unint64_t)a3
++ (id)identifierForAccessoryModel:(unint64_t)model
 {
-  switch(a3)
+  switch(model)
   {
     case 0uLL:
       v5 = [DSIODeviceIdentifier alloc];
@@ -199,11 +199,11 @@ LABEL_25:
   return v11;
 }
 
-+ (id)identifierForIOHIDDevice:(__IOHIDDevice *)a3
++ (id)identifierForIOHIDDevice:(__IOHIDDevice *)device
 {
-  v4 = IOHIDDeviceGetProperty(a3, @"DeviceUsagePairs");
-  v23 = IOHIDDeviceGetProperty(a3, @"VendorID");
-  IOHIDDeviceGetProperty(a3, @"ProductID");
+  v4 = IOHIDDeviceGetProperty(device, @"DeviceUsagePairs");
+  v23 = IOHIDDeviceGetProperty(device, @"VendorID");
+  IOHIDDeviceGetProperty(device, @"ProductID");
   v22 = v21 = v4;
   v5 = 0;
   v6 = 0uLL;
@@ -232,17 +232,17 @@ LABEL_25:
           v13 = [v12 objectForKeyedSubscript:@"DeviceUsagePage"];
           v14 = [v12 objectForKeyedSubscript:@"DeviceUsage"];
           v15 = [DSIODeviceIdentifier identifierForAccessoryModel:v5];
-          v16 = [v15 usagePage];
-          if (v16 == [v13 unsignedIntValue])
+          usagePage = [v15 usagePage];
+          if (usagePage == [v13 unsignedIntValue])
           {
-            v17 = [v15 usage];
-            if (v17 == [v14 unsignedIntValue])
+            usage = [v15 usage];
+            if (usage == [v14 unsignedIntValue])
             {
-              v18 = [v15 vendorID];
-              if (v18 == [v23 unsignedIntValue])
+              vendorID = [v15 vendorID];
+              if (vendorID == [v23 unsignedIntValue])
               {
-                v19 = [v15 productID];
-                if (v19 == [v22 unsignedIntValue])
+                productID = [v15 productID];
+                if (productID == [v22 unsignedIntValue])
                 {
 
                   goto LABEL_16;

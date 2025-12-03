@@ -1,9 +1,9 @@
 @interface HKSHQuickScheduleManagementViewControllerInternal
 - (HKSHQuickScheduleManagementViewControllerDelegateInternal)sleepDelegate;
-- (HKSHQuickScheduleManagementViewControllerInternal)initWithRootViewController:(id)a3;
-- (HKSHQuickScheduleManagementViewControllerInternal)initWithSleepStore:(id)a3 provenanceSource:(id)a4;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
-- (void)setSleepDelegate:(id)a3;
+- (HKSHQuickScheduleManagementViewControllerInternal)initWithRootViewController:(id)controller;
+- (HKSHQuickScheduleManagementViewControllerInternal)initWithSleepStore:(id)store provenanceSource:(id)source;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
+- (void)setSleepDelegate:(id)delegate;
 @end
 
 @implementation HKSHQuickScheduleManagementViewControllerInternal
@@ -24,7 +24,7 @@
   return Strong;
 }
 
-- (void)setSleepDelegate:(id)a3
+- (void)setSleepDelegate:(id)delegate
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -38,7 +38,7 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (HKSHQuickScheduleManagementViewControllerInternal)initWithSleepStore:(id)a3 provenanceSource:(id)a4
+- (HKSHQuickScheduleManagementViewControllerInternal)initWithSleepStore:(id)store provenanceSource:(id)source
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -48,12 +48,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = QuickScheduleManagementViewController.init(sleepStore:provenanceSource:)(a3, a4);
+  v6 = QuickScheduleManagementViewController.init(sleepStore:provenanceSource:)(store, source);
 
   return v6;
 }
 
-- (HKSHQuickScheduleManagementViewControllerInternal)initWithRootViewController:(id)a3
+- (HKSHQuickScheduleManagementViewControllerInternal)initWithRootViewController:(id)controller
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -68,15 +68,15 @@
   return result;
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
   sub_269D9A8E0();
   v7[2] = self;
-  v7[3] = a3;
+  v7[3] = completion;
   v7[4] = ObjectType;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_269C71EBC(sub_269D87AB8, v7);
   swift_unknownObjectRelease();
 }

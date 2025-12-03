@@ -2,8 +2,8 @@
 - (MTLCommandBuffer)commandBuffer;
 - (MTLCommandQueue)commandQueue;
 - (MTLDevice)device;
-- (id)inputTextureWithName:(id)a3;
-- (id)outputTextureWithName:(id)a3;
+- (id)inputTextureWithName:(id)name;
+- (id)outputTextureWithName:(id)name;
 @end
 
 @implementation SCNPassContext
@@ -29,20 +29,20 @@
   return [(SCNMTLRenderContext *)RenderContext device];
 }
 
-- (id)inputTextureWithName:(id)a3
+- (id)inputTextureWithName:(id)name
 {
   var5 = self->_context->var0[1].var5;
-  v4 = [a3 UTF8String];
+  uTF8String = [name UTF8String];
 
-  return C3DPassGetInputTextureNamed(var5, v4);
+  return C3DPassGetInputTextureNamed(var5, uTF8String);
 }
 
-- (id)outputTextureWithName:(id)a3
+- (id)outputTextureWithName:(id)name
 {
   var5 = self->_context->var0[1].var5;
-  v4 = [a3 UTF8String];
+  uTF8String = [name UTF8String];
 
-  return C3DPassGetOutputTextureNamed(var5, v4);
+  return C3DPassGetOutputTextureNamed(var5, uTF8String);
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface GDGraphEventRelationship
-- (GDGraphEventRelationship)initWithEventIdField:(id)a3 allEventIdField:(id)a4;
+- (GDGraphEventRelationship)initWithEventIdField:(id)field allEventIdField:(id)idField;
 @end
 
 @implementation GDGraphEventRelationship
 
-- (GDGraphEventRelationship)initWithEventIdField:(id)a3 allEventIdField:(id)a4
+- (GDGraphEventRelationship)initWithEventIdField:(id)field allEventIdField:(id)idField
 {
-  v7 = a3;
-  v8 = a4;
+  fieldCopy = field;
+  idFieldCopy = idField;
   v12.receiver = self;
   v12.super_class = GDGraphEventRelationship;
   v9 = [(GDGraphEventRelationship *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventId, a3);
-    objc_storeStrong(&v10->_allEventId, a4);
+    objc_storeStrong(&v9->_eventId, field);
+    objc_storeStrong(&v10->_allEventId, idField);
   }
 
   return v10;

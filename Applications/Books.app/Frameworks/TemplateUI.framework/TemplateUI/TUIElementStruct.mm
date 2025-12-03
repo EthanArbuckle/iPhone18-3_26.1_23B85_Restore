@@ -1,7 +1,7 @@
 @interface TUIElementStruct
 + (id)attributesToIgnoreWhenResolving;
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementStruct
@@ -18,24 +18,24 @@
   return v3;
 }
 
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [v8 constantNameForAttribute:137 node:a3.var0];
-  v11 = [v8 closureForNode:a3.var0];
-  v12 = [v8 structForAttribute:32 node:a3.var0];
-  v13 = [[_TUIElementStructBuilder alloc] initWithName:v10 closure:v11 basedOn:v12 context:v9];
+  attributesCopy = attributes;
+  contextCopy = context;
+  v10 = [attributesCopy constantNameForAttribute:137 node:node.var0];
+  v11 = [attributesCopy closureForNode:node.var0];
+  v12 = [attributesCopy structForAttribute:32 node:node.var0];
+  v13 = [[_TUIElementStructBuilder alloc] initWithName:v10 closure:v11 basedOn:v12 context:contextCopy];
 
   return v13;
 }
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v8 = a4;
-  v6 = a5;
-  v7 = [v8 finalizeStruct];
-  [v6 defineStruct:v7 withName:{objc_msgSend(v8, "name")}];
+  builderCopy = builder;
+  contextCopy = context;
+  finalizeStruct = [builderCopy finalizeStruct];
+  [contextCopy defineStruct:finalizeStruct withName:{objc_msgSend(builderCopy, "name")}];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface SBRootSceneWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SBRootSceneWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBRootSceneWindow" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconController"];
-  [v3 validateClass:@"SBIconController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconController" hasInstanceMethod:@"iconManager" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBRootSceneWindow" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconController"];
+  [validationsCopy validateClass:@"SBIconController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconController" hasInstanceMethod:@"iconManager" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,8 +22,8 @@
   v5.super_class = SBRootSceneWindowAccessibility;
   [(SBRootSceneWindowAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
   v3 = [(SBRootSceneWindowAccessibility *)self safeArrayForKey:@"subviews"];
-  v4 = [v3 firstObject];
-  [v4 _setAccessibilityElementsHiddenBlock:&__block_literal_global_11];
+  firstObject = [v3 firstObject];
+  [firstObject _setAccessibilityElementsHiddenBlock:&__block_literal_global_11];
 }
 
 uint64_t __76__SBRootSceneWindowAccessibility__accessibilityLoadAccessibilityInformation__block_invoke()

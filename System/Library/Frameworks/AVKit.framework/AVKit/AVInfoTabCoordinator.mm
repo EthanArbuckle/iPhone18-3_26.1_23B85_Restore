@@ -1,26 +1,26 @@
 @interface AVInfoTabCoordinator
 - (AVInfoTabCoordinator)init;
-- (AVInfoTabCoordinator)initWithPlayerItem:(id)a3 actions:(id)a4;
+- (AVInfoTabCoordinator)initWithPlayerItem:(id)item actions:(id)actions;
 - (NSArray)actions;
-- (void)setActions:(id)a3;
-- (void)setInfoTabViewController:(id)a3;
-- (void)setPlayerItem:(id)a3;
+- (void)setActions:(id)actions;
+- (void)setInfoTabViewController:(id)controller;
+- (void)setPlayerItem:(id)item;
 @end
 
 @implementation AVInfoTabCoordinator
 
-- (void)setInfoTabViewController:(id)a3
+- (void)setInfoTabViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___AVInfoTabCoordinator_infoTabViewController);
-  *(self + OBJC_IVAR___AVInfoTabCoordinator_infoTabViewController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___AVInfoTabCoordinator_infoTabViewController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)setPlayerItem:(id)a3
+- (void)setPlayerItem:(id)item
 {
-  v5 = a3;
-  v6 = self;
-  sub_18B4AC09C(a3);
+  itemCopy = item;
+  selfCopy = self;
+  sub_18B4AC09C(item);
 }
 
 - (NSArray)actions
@@ -32,19 +32,19 @@
   return v2;
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
   sub_18B4AC60C(0, &qword_1EA9C3980);
   v4 = sub_18B6C576C();
-  v5 = self;
+  selfCopy = self;
   sub_18B4AC2FC(v4);
 }
 
-- (AVInfoTabCoordinator)initWithPlayerItem:(id)a3 actions:(id)a4
+- (AVInfoTabCoordinator)initWithPlayerItem:(id)item actions:(id)actions
 {
   sub_18B4AC60C(0, &qword_1EA9C3980);
   v5 = sub_18B6C576C();
-  return sub_18B4AC3EC(a3, v5);
+  return sub_18B4AC3EC(item, v5);
 }
 
 - (AVInfoTabCoordinator)init

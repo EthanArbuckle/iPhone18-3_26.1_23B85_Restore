@@ -1,18 +1,18 @@
 @interface TUIPredictionCellButton
-- (TUIPredictionCellButton)initWithFrame:(CGRect)a3;
+- (TUIPredictionCellButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation TUIPredictionCellButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = TUIPredictionCellButton;
   [(TUIPredictionCellButton *)&v5 setHighlighted:?];
-  [(TUIPredictionViewCell *)self->_cellView setHighlighted:v3];
+  [(TUIPredictionViewCell *)self->_cellView setHighlighted:highlightedCopy];
 }
 
 - (void)layoutSubviews
@@ -24,11 +24,11 @@
   [(TUIPredictionViewCell *)self->_cellView setFrame:?];
 }
 
-- (TUIPredictionCellButton)initWithFrame:(CGRect)a3
+- (TUIPredictionCellButton)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = TUIPredictionCellButton;
-  v3 = [(TUIPredictionCellButton *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIPredictionCellButton *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [TUIPredictionViewCell alloc];

@@ -1,30 +1,30 @@
 @interface SAStrokeData
-- (SAStrokeData)initWithCharacter:(id)a3 strokeAnimationRepresention:(id)a4 strokeNames:(id)a5 pronunciation:(id)a6;
-- (SAStrokeData)initWithCharacters:(id)a3 strokeAnimationRepresention:(id)a4 strokeNames:(id)a5 pronunciations:(id)a6;
+- (SAStrokeData)initWithCharacter:(id)character strokeAnimationRepresention:(id)represention strokeNames:(id)names pronunciation:(id)pronunciation;
+- (SAStrokeData)initWithCharacters:(id)characters strokeAnimationRepresention:(id)represention strokeNames:(id)names pronunciations:(id)pronunciations;
 @end
 
 @implementation SAStrokeData
 
-- (SAStrokeData)initWithCharacter:(id)a3 strokeAnimationRepresention:(id)a4 strokeNames:(id)a5 pronunciation:(id)a6
+- (SAStrokeData)initWithCharacter:(id)character strokeAnimationRepresention:(id)represention strokeNames:(id)names pronunciation:(id)pronunciation
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, character);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, represention);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, names);
   v24 = 0;
-  objc_storeStrong(&v24, a6);
-  v6 = v28;
-  v28 = 0;
+  objc_storeStrong(&v24, pronunciation);
+  v6 = selfCopy;
+  selfCopy = 0;
   v23.receiver = v6;
   v23.super_class = SAStrokeData;
   v18 = [(SAStrokeData *)&v23 init];
-  v28 = v18;
-  objc_storeStrong(&v28, v18);
+  selfCopy = v18;
+  objc_storeStrong(&selfCopy, v18);
   if (v18)
   {
     v14 = [SAStrokeDataInternal alloc];
@@ -59,7 +59,7 @@
     }
 
     v9 = [(SAStrokeDataInternal *)v14 initWithCharacters:v13 strokeAnimationRepresention:v11 strokeNames:v12 pronunciations:v10];
-    [(SAStrokeData *)v28 setUnderlyingObject:?];
+    [(SAStrokeData *)selfCopy setUnderlyingObject:?];
     MEMORY[0x277D82BD8](v9);
     if (v19)
     {
@@ -72,49 +72,49 @@
     }
   }
 
-  v8 = MEMORY[0x277D82BE0](v28);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (SAStrokeData)initWithCharacters:(id)a3 strokeAnimationRepresention:(id)a4 strokeNames:(id)a5 pronunciations:(id)a6
+- (SAStrokeData)initWithCharacters:(id)characters strokeAnimationRepresention:(id)represention strokeNames:(id)names pronunciations:(id)pronunciations
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, characters);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, represention);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, names);
   v16 = 0;
-  objc_storeStrong(&v16, a6);
-  v6 = v20;
-  v20 = 0;
+  objc_storeStrong(&v16, pronunciations);
+  v6 = selfCopy;
+  selfCopy = 0;
   v15.receiver = v6;
   v15.super_class = SAStrokeData;
   v14 = [(SAStrokeData *)&v15 init];
-  v20 = v14;
-  objc_storeStrong(&v20, v14);
+  selfCopy = v14;
+  objc_storeStrong(&selfCopy, v14);
   if (v14)
   {
     v7 = [SAStrokeDataInternal alloc];
     v10 = [(SAStrokeDataInternal *)v7 initWithCharacters:location[0] strokeAnimationRepresention:v18 strokeNames:v17 pronunciations:v16];
-    [(SAStrokeData *)v20 setUnderlyingObject:?];
+    [(SAStrokeData *)selfCopy setUnderlyingObject:?];
     MEMORY[0x277D82BD8](v10);
   }
 
-  v9 = MEMORY[0x277D82BE0](v20);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 

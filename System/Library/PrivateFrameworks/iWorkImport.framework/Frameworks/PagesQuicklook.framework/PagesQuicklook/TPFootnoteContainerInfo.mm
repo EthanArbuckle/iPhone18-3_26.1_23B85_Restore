@@ -1,14 +1,14 @@
 @interface TPFootnoteContainerInfo
-- (id)copyWithContext:(id)a3;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setOwningAttachment:(id)a3;
-- (void)setPrimitiveGeometry:(id)a3;
+- (id)copyWithContext:(id)context;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
+- (void)setGeometry:(id)geometry;
+- (void)setOwningAttachment:(id)attachment;
+- (void)setPrimitiveGeometry:(id)geometry;
 @end
 
 @implementation TPFootnoteContainerInfo
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v8 = MEMORY[0x277D81150];
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPFootnoteContainerInfo setGeometry:]");
@@ -20,7 +20,7 @@
   objc_msgSend_logBacktraceThrottled(v26, v21, v22, v23, v24, v25);
 }
 
-- (void)setPrimitiveGeometry:(id)a3
+- (void)setPrimitiveGeometry:(id)geometry
 {
   v8 = MEMORY[0x277D81150];
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPFootnoteContainerInfo setPrimitiveGeometry:]");
@@ -32,7 +32,7 @@
   objc_msgSend_logBacktraceThrottled(v26, v21, v22, v23, v24, v25);
 }
 
-- (void)setOwningAttachment:(id)a3
+- (void)setOwningAttachment:(id)attachment
 {
   v8 = MEMORY[0x277D81150];
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPFootnoteContainerInfo setOwningAttachment:]");
@@ -44,19 +44,19 @@
   objc_msgSend_logBacktraceThrottled(v26, v21, v22, v23, v24, v25);
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v10 = objc_msgSend_parentInfo(self, v5, v6, v7, v8, v9);
 
-  if (v10 == v4)
+  if (v10 == neededCopy)
   {
 
     objc_msgSend_setParentInfo_(self, v11, v12, v13, v14, v15, 0);
   }
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v8 = MEMORY[0x277D81150];
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPFootnoteContainerInfo copyWithContext:]");

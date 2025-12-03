@@ -4,39 +4,39 @@
 - (BOOL)shouldAutorotate;
 - (CGAffineTransform)presentationContentTransform;
 - (CGAffineTransform)presentationHomeGrabberTransform;
-- (CGRect)_currentStatusBarFrameForStyle:(int64_t)a3;
+- (CGRect)_currentStatusBarFrameForStyle:(int64_t)style;
 - (CGRect)windowedAccessoryCutoutFrameInScreen;
 - (NSString)preferredDisplayLayoutElementIdentifier;
 - (SBIdleTimerCoordinating)idleTimerCoordinator;
 - (SBSDisplayLayoutElement)_displayLayoutElement;
-- (SBTransientOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBTransientOverlayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SBTransientOverlayViewControllerDelegate)transientOverlayDelegate;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
 - (UIView)contentView;
 - (_UILegibilitySettings)preferredStatusBarLegibilitySettings;
-- (id)_newHomeGrabberViewWithFrame:(CGRect)a3;
+- (id)_newHomeGrabberViewWithFrame:(CGRect)frame;
 - (id)_sbWindowScene;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)newTransientOverlayDismissalTransitionCoordinator;
 - (id)newTransientOverlayPresentationTransitionCoordinator;
 - (id)succinctDescription;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_applyStatusBarStyleRequestWithInitialStatusBarSettings:(id)a3;
+- (void)_applyStatusBarStyleRequestWithInitialStatusBarSettings:(id)settings;
 - (void)_invalidateKeyboardHomeAffordanceAssertion;
-- (void)_keyboardWillHideNotification:(id)a3;
-- (void)_keyboardWillShowNotification:(id)a3;
+- (void)_keyboardWillHideNotification:(id)notification;
+- (void)_keyboardWillShowNotification:(id)notification;
 - (void)_updateGrabberViewConfiguration;
-- (void)_updateGrabberViewHiddenConfigurationAnimated:(BOOL)a3;
-- (void)addPresentationBackgroundView:(id)a3;
+- (void)_updateGrabberViewHiddenConfigurationAnimated:(BOOL)animated;
+- (void)addPresentationBackgroundView:(id)view;
 - (void)dealloc;
 - (void)endIgnoringAppearanceUpdates;
 - (void)endIgnoringContentOverlayInsetUpdates;
-- (void)preserveInputViewsAnimated:(BOOL)a3;
-- (void)removePresentationBackgroundView:(id)a3;
-- (void)restoreInputViewsAnimated:(BOOL)a3;
-- (void)setContainerOrientation:(int64_t)a3;
-- (void)setDisplayLayoutElementActive:(BOOL)a3;
+- (void)preserveInputViewsAnimated:(BOOL)animated;
+- (void)removePresentationBackgroundView:(id)view;
+- (void)restoreInputViewsAnimated:(BOOL)animated;
+- (void)setContainerOrientation:(int64_t)orientation;
+- (void)setDisplayLayoutElementActive:(BOOL)active;
 - (void)setNeedsAudioCategoriesDisablingVolumeHUDUpdate;
 - (void)setNeedsContentOpaqueUpdate;
 - (void)setNeedsFeaturePolicyUpdate;
@@ -50,35 +50,35 @@
 - (void)setNeedsUpdateOfSupportedInterfaceOrientations;
 - (void)setNeedsWhitePointAdaptivityStyleUpdate;
 - (void)setNeedsWindowHitTestingUpdate;
-- (void)setPresentationContentCornerRadius:(double)a3;
-- (void)setPresentationContentTransform:(CGAffineTransform *)a3;
-- (void)setPresentationDimmingViewHidden:(BOOL)a3;
-- (void)setPresentationHomeGrabberAdditionalEdgeSpacing:(double)a3;
-- (void)setPresentationHomeGrabberAlpha:(double)a3;
-- (void)setPresentationHomeGrabberTransform:(CGAffineTransform *)a3;
-- (void)setPresentationPrefersHomeGrabberHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPresentationPrefersStatusBarHidden:(BOOL)a3 initialStatusBarSettings:(id)a4;
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setPresentationContentCornerRadius:(double)radius;
+- (void)setPresentationContentTransform:(CGAffineTransform *)transform;
+- (void)setPresentationDimmingViewHidden:(BOOL)hidden;
+- (void)setPresentationHomeGrabberAdditionalEdgeSpacing:(double)spacing;
+- (void)setPresentationHomeGrabberAlpha:(double)alpha;
+- (void)setPresentationHomeGrabberTransform:(CGAffineTransform *)transform;
+- (void)setPresentationPrefersHomeGrabberHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setPresentationPrefersStatusBarHidden:(BOOL)hidden initialStatusBarSettings:(id)settings;
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBTransientOverlayViewController
 
-- (SBTransientOverlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBTransientOverlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v13.receiver = self;
   v13.super_class = SBTransientOverlayViewController;
-  v4 = [(SBTransientOverlayViewController *)&v13 initWithNibName:a3 bundle:a4];
+  v4 = [(SBTransientOverlayViewController *)&v13 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x277D65E80] rootSettings];
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
     v6 = *(v4 + 129);
-    *(v4 + 129) = v5;
+    *(v4 + 129) = rootSettings;
 
     *(v4 + 159) = 0x3FF0000000000000;
     v7 = MEMORY[0x277CBF2C0];
@@ -94,9 +94,9 @@
     *(v4 + 136) = 0x7FFFFFFFFFFFFFFFLL;
     *(v4 + 134) = 0x7FFFFFFFFFFFFFFFLL;
     v4[1126] = 1;
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v4 selector:sel__keyboardWillHideNotification_ name:*MEMORY[0x277D76C50] object:0];
-    [v11 addObserver:v4 selector:sel__keyboardWillShowNotification_ name:*MEMORY[0x277D76C60] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__keyboardWillHideNotification_ name:*MEMORY[0x277D76C50] object:0];
+    [defaultCenter addObserver:v4 selector:sel__keyboardWillShowNotification_ name:*MEMORY[0x277D76C60] object:0];
     [v4 setPresentationDimmingViewHidden:1];
   }
 
@@ -107,18 +107,18 @@
 {
   if (self->_statusBar)
   {
-    v3 = [(SBTransientOverlayViewController *)self _sbWindowScene];
-    v4 = [v3 statusBarManager];
-    v5 = [v4 reusePool];
-    [v5 recycleStatusBar:self->_statusBar];
+    _sbWindowScene = [(SBTransientOverlayViewController *)self _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
+    reusePool = [statusBarManager reusePool];
+    [reusePool recycleStatusBar:self->_statusBar];
   }
 
   [(SBTransientOverlayViewController *)self _invalidateKeyboardHomeAffordanceAssertion];
   [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
   self->_isDisplayLayoutElementActive = 0;
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
-  [v6 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
 
   v7.receiver = self;
   v7.super_class = SBTransientOverlayViewController;
@@ -127,18 +127,18 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBTransientOverlayViewController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBTransientOverlayViewController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBTransientOverlayViewController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBTransientOverlayViewController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (SBSDisplayLayoutElement)_displayLayoutElement
@@ -147,8 +147,8 @@
   if (!displayLayoutElement)
   {
     v4 = objc_alloc(MEMORY[0x277D66A50]);
-    v5 = [(SBTransientOverlayViewController *)self preferredDisplayLayoutElementIdentifier];
-    v6 = [v4 initWithIdentifier:v5];
+    preferredDisplayLayoutElementIdentifier = [(SBTransientOverlayViewController *)self preferredDisplayLayoutElementIdentifier];
+    v6 = [v4 initWithIdentifier:preferredDisplayLayoutElementIdentifier];
     v7 = self->_displayLayoutElement;
     self->_displayLayoutElement = v6;
 
@@ -158,45 +158,45 @@
   return displayLayoutElement;
 }
 
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder
 {
-  v16 = a3;
-  v4 = [(SBTransientOverlayViewController *)self _displayLayoutElement];
+  builderCopy = builder;
+  _displayLayoutElement = [(SBTransientOverlayViewController *)self _displayLayoutElement];
   if (self->_displayLayoutElementAssertion)
   {
-    v5 = [(SBTransientOverlayViewController *)self _sbWindowScene];
-    v6 = [v5 displayLayoutPublisher];
+    _sbWindowScene = [(SBTransientOverlayViewController *)self _sbWindowScene];
+    displayLayoutPublisher = [_sbWindowScene displayLayoutPublisher];
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v6 transitionAssertionWithReason:v8];
+    v9 = [displayLayoutPublisher transitionAssertionWithReason:v8];
 
     [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
     displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = 0;
 
-    v16[2](v16, v4);
+    builderCopy[2](builderCopy, _displayLayoutElement);
   }
 
   else
   {
-    v16[2](v16, v4);
+    builderCopy[2](builderCopy, _displayLayoutElement);
     if (![(SBTransientOverlayViewController *)self isDisplayLayoutElementActive])
     {
       goto LABEL_6;
     }
 
-    v11 = [(SBTransientOverlayViewController *)self _sbWindowScene];
-    v6 = [v11 displayLayoutPublisher];
+    _sbWindowScene2 = [(SBTransientOverlayViewController *)self _sbWindowScene];
+    displayLayoutPublisher = [_sbWindowScene2 displayLayoutPublisher];
 
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v9 = [v6 transitionAssertionWithReason:v13];
+    v9 = [displayLayoutPublisher transitionAssertionWithReason:v13];
 
-    v16[2](v16, v4);
+    builderCopy[2](builderCopy, _displayLayoutElement);
   }
 
-  v14 = [v6 addElement:v4];
+  v14 = [displayLayoutPublisher addElement:_displayLayoutElement];
   v15 = self->_displayLayoutElementAssertion;
   self->_displayLayoutElementAssertion = v14;
 
@@ -204,10 +204,10 @@
 LABEL_6:
 }
 
-- (void)setDisplayLayoutElementActive:(BOOL)a3
+- (void)setDisplayLayoutElementActive:(BOOL)active
 {
-  self->_isDisplayLayoutElementActive = a3;
-  if (a3)
+  self->_isDisplayLayoutElementActive = active;
+  if (active)
   {
 
     [(SBTransientOverlayViewController *)self updateDisplayLayoutElementWithBuilder:&__block_literal_global_447];
@@ -239,8 +239,8 @@ LABEL_6:
 
 - (void)setNeedsWhitePointAdaptivityStyleUpdate
 {
-  v3 = [(SBTransientOverlayViewController *)self transientOverlayDelegate];
-  [v3 transientOverlayViewControllerNeedsWhitePointAdaptivityStyleUpdate:self];
+  transientOverlayDelegate = [(SBTransientOverlayViewController *)self transientOverlayDelegate];
+  [transientOverlayDelegate transientOverlayViewControllerNeedsWhitePointAdaptivityStyleUpdate:self];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -264,22 +264,22 @@ LABEL_6:
   return v5;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v4 viewDidAppear:a3];
+  [(SBTransientOverlayViewController *)&v4 viewDidAppear:appear];
   if (![(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates])
   {
     [(SBTransientOverlayViewController *)self setDisplayLayoutElementActive:1];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v4 viewDidDisappear:a3];
+  [(SBTransientOverlayViewController *)&v4 viewDidDisappear:disappear];
   if (![(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates])
   {
     [(SBTransientOverlayViewController *)self setDisplayLayoutElementActive:0];
@@ -292,8 +292,8 @@ LABEL_6:
   v25.receiver = self;
   v25.super_class = SBTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v25 viewDidLayoutSubviews];
-  v3 = [(SBTransientOverlayViewController *)self view];
-  [v3 bounds];
+  view = [(SBTransientOverlayViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -304,8 +304,8 @@ LABEL_6:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [(UIView *)self->_presentationBackgroundView subviews];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  subviews = [(UIView *)self->_presentationBackgroundView subviews];
+  v13 = [subviews countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -316,7 +316,7 @@ LABEL_6:
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(subviews);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
@@ -324,7 +324,7 @@ LABEL_6:
         [v17 setFrame:?];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v14 = [subviews countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v14);
@@ -349,8 +349,8 @@ LABEL_6:
   v30.receiver = self;
   v30.super_class = SBTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v30 viewDidLoad];
-  v3 = [(SBTransientOverlayViewController *)self view];
-  [v3 bounds];
+  view = [(SBTransientOverlayViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -359,7 +359,7 @@ LABEL_6:
   backgroundView = self->_backgroundView;
   self->_backgroundView = v12;
 
-  [v3 addSubview:self->_backgroundView];
+  [view addSubview:self->_backgroundView];
   if ([(SBTransientOverlayViewController *)self preventsClippingToBounds])
   {
     v14 = 0;
@@ -382,7 +382,7 @@ LABEL_6:
   v28 = v18;
   v29 = *&self->_presentationContentTransform.tx;
   [(UIView *)v17 setTransform:&v27];
-  [v3 addSubview:self->_contentContainerView];
+  [view addSubview:self->_contentContainerView];
   v19 = [objc_alloc(MEMORY[0x277D65F80]) initWithFrame:{v5, v7, v9, v11}];
   homeGrabberContainerView = self->_homeGrabberContainerView;
   self->_homeGrabberContainerView = v19;
@@ -395,7 +395,7 @@ LABEL_6:
   v28 = v22;
   v29 = *&self->_presentationHomeGrabberTransform.tx;
   [(UIView *)v21 setTransform:&v27];
-  [v3 addSubview:self->_homeGrabberContainerView];
+  [view addSubview:self->_homeGrabberContainerView];
   v23 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v5, v7, v9, v11}];
   contentView = self->_contentView;
   self->_contentView = v23;
@@ -420,31 +420,31 @@ LABEL_6:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8 = SBFWindowForViewControllerTransition();
-  v9 = [v8 _toWindowOrientation];
-  v10 = [v8 isRotating];
+  _toWindowOrientation = [v8 _toWindowOrientation];
+  isRotating = [v8 isRotating];
   v13.receiver = self;
   v13.super_class = SBTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  if (v10)
+  [(SBTransientOverlayViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  if (isRotating)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __87__SBTransientOverlayViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
     v12[3] = &unk_2783BE3B8;
     v12[4] = self;
-    v12[5] = v9;
+    v12[5] = _toWindowOrientation;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __87__SBTransientOverlayViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
     v11[3] = &unk_2783A9488;
     v11[4] = self;
-    [v7 animateAlongsideTransition:v12 completion:v11];
+    [coordinatorCopy animateAlongsideTransition:v12 completion:v11];
   }
 }
 
@@ -460,49 +460,49 @@ void __87__SBTransientOverlayViewController_viewWillTransitionToSize_withTransit
   [WeakRetained transientOverlayViewControllerDidEndRotation:*(a1 + 32)];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v7 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v12.receiver = self;
   v12.super_class = SBTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v12 viewDidMoveToWindow:v7 shouldAppearOrDisappear:v4];
+  [(SBTransientOverlayViewController *)&v12 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
   keyboardHomeAffordanceAssertion = self->_keyboardHomeAffordanceAssertion;
-  if (keyboardHomeAffordanceAssertion && self->_keyboardHomeAffordanceAssertionWindow != v7)
+  if (keyboardHomeAffordanceAssertion && self->_keyboardHomeAffordanceAssertionWindow != windowCopy)
   {
     v9 = keyboardHomeAffordanceAssertion;
-    v10 = [SBKeyboardHomeAffordanceAssertion assertionForGestureWindow:v7];
+    v10 = [SBKeyboardHomeAffordanceAssertion assertionForGestureWindow:windowCopy];
     v11 = self->_keyboardHomeAffordanceAssertion;
     self->_keyboardHomeAffordanceAssertion = v10;
 
-    objc_storeStrong(&self->_keyboardHomeAffordanceAssertionWindow, a3);
+    objc_storeStrong(&self->_keyboardHomeAffordanceAssertionWindow, window);
     [(SBKeyboardHomeAffordanceAssertion *)v9 invalidate];
   }
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
-  v6 = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
-  v7 = [(SBTransientOverlayViewController *)self hasVisibleStatusBar];
+  sb_thisDeviceDisplayEdgeInfo = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
+  hasVisibleStatusBar = [(SBTransientOverlayViewController *)self hasVisibleStatusBar];
   v8 = 0.0;
-  if (v7)
+  if (hasVisibleStatusBar)
   {
     [(UIStatusBar *)self->_statusBar currentHeight];
   }
 
-  v9 = [v6 sb_displayEdgeInfoWithSafeAreaInsetsForStatusBarHeight:v8];
+  v9 = [sb_thisDeviceDisplayEdgeInfo sb_displayEdgeInfoWithSafeAreaInsetsForStatusBarHeight:v8];
 
-  v10 = [(SBTransientOverlayViewController *)self containerOrientation];
-  v11 = [(SBTransientOverlayViewController *)self traitCollection];
-  [v9 sb_orientedEdgeInsetsForInterfaceOrientation:v10 traitCollection:v11];
+  containerOrientation = [(SBTransientOverlayViewController *)self containerOrientation];
+  traitCollection = [(SBTransientOverlayViewController *)self traitCollection];
+  [v9 sb_orientedEdgeInsetsForInterfaceOrientation:containerOrientation traitCollection:traitCollection];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  if (a4)
+  if (absolute)
   {
-    *a4 = 1;
+    *absolute = 1;
   }
 
   v20 = v13;
@@ -538,19 +538,19 @@ void __87__SBTransientOverlayViewController_viewWillTransitionToSize_withTransit
   return NSStringFromClass(v2);
 }
 
-- (void)setContainerOrientation:(int64_t)a3
+- (void)setContainerOrientation:(int64_t)orientation
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_containerOrientation != a3)
+  if (self->_containerOrientation != orientation)
   {
-    self->_containerOrientation = a3;
+    self->_containerOrientation = orientation;
     [(UIStatusBar *)self->_statusBar setOrientation:?];
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(SBTransientOverlayViewController *)self childViewControllers];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    childViewControllers = [(SBTransientOverlayViewController *)self childViewControllers];
+    v5 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -562,14 +562,14 @@ void __87__SBTransientOverlayViewController_viewWillTransitionToSize_withTransit
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(childViewControllers);
           }
 
           [*(*(&v9 + 1) + 8 * v8++) _updateContentOverlayInsetsFromParentIfNecessary];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -577,12 +577,12 @@ void __87__SBTransientOverlayViewController_viewWillTransitionToSize_withTransit
   }
 }
 
-- (void)setPresentationContentCornerRadius:(double)a3
+- (void)setPresentationContentCornerRadius:(double)radius
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_presentationContentCornerRadius = a3;
-    [(UIView *)self->_contentView _setContinuousCornerRadius:a3];
+    self->_presentationContentCornerRadius = radius;
+    [(UIView *)self->_contentView _setContinuousCornerRadius:radius];
     if ([(SBTransientOverlayViewController *)self preventsClippingToBounds])
     {
       v5 = 0;
@@ -599,65 +599,65 @@ void __87__SBTransientOverlayViewController_viewWillTransitionToSize_withTransit
   }
 }
 
-- (void)setPresentationContentTransform:(CGAffineTransform *)a3
+- (void)setPresentationContentTransform:(CGAffineTransform *)transform
 {
   p_presentationContentTransform = &self->_presentationContentTransform;
   v6 = *&self->_presentationContentTransform.c;
   *&t1.a = *&self->_presentationContentTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_presentationContentTransform.tx;
-  v7 = *&a3->c;
-  *&v12.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v12.a = *&transform->a;
   *&v12.c = v7;
-  *&v12.tx = *&a3->tx;
+  *&v12.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v12))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_presentationContentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_presentationContentTransform->c = *&transform->c;
     *&p_presentationContentTransform->tx = v9;
     *&p_presentationContentTransform->a = v8;
     contentContainerView = self->_contentContainerView;
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v11 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(UIView *)contentContainerView setTransform:&t1];
   }
 }
 
-- (void)setPresentationHomeGrabberTransform:(CGAffineTransform *)a3
+- (void)setPresentationHomeGrabberTransform:(CGAffineTransform *)transform
 {
   p_presentationHomeGrabberTransform = &self->_presentationHomeGrabberTransform;
   v6 = *&self->_presentationHomeGrabberTransform.c;
   *&t1.a = *&self->_presentationHomeGrabberTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_presentationHomeGrabberTransform.tx;
-  v7 = *&a3->c;
-  *&v12.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v12.a = *&transform->a;
   *&v12.c = v7;
-  *&v12.tx = *&a3->tx;
+  *&v12.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v12))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_presentationHomeGrabberTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_presentationHomeGrabberTransform->c = *&transform->c;
     *&p_presentationHomeGrabberTransform->tx = v9;
     *&p_presentationHomeGrabberTransform->a = v8;
     homeGrabberContainerView = self->_homeGrabberContainerView;
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v11 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(UIView *)homeGrabberContainerView setTransform:&t1];
   }
 }
 
-- (void)setPresentationHomeGrabberAdditionalEdgeSpacing:(double)a3
+- (void)setPresentationHomeGrabberAdditionalEdgeSpacing:(double)spacing
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_presentationHomeGrabberAdditionalEdgeSpacing = a3;
+    self->_presentationHomeGrabberAdditionalEdgeSpacing = spacing;
     [(SBHomeGrabberView *)self->_grabberView setNeedsLayout];
     grabberView = self->_grabberView;
 
@@ -665,13 +665,13 @@ void __87__SBTransientOverlayViewController_viewWillTransitionToSize_withTransit
   }
 }
 
-- (void)setPresentationDimmingViewHidden:(BOOL)a3
+- (void)setPresentationDimmingViewHidden:(BOOL)hidden
 {
-  if (self->_presentationDimmingViewHidden != a3)
+  if (self->_presentationDimmingViewHidden != hidden)
   {
-    self->_presentationDimmingViewHidden = a3;
+    self->_presentationDimmingViewHidden = hidden;
     dimmingView = self->_dimmingView;
-    if (a3)
+    if (hidden)
     {
       if (dimmingView)
       {
@@ -715,14 +715,14 @@ uint64_t __69__SBTransientOverlayViewController_setPresentationDimmingViewHidden
   return [v10 addPresentationBackgroundView:v11];
 }
 
-- (void)setPresentationHomeGrabberAlpha:(double)a3
+- (void)setPresentationHomeGrabberAlpha:(double)alpha
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_presentationHomeGrabberAlpha = a3;
+    self->_presentationHomeGrabberAlpha = alpha;
     grabberView = self->_grabberView;
 
-    [(SBHomeGrabberView *)grabberView setAlpha:a3];
+    [(SBHomeGrabberView *)grabberView setAlpha:alpha];
   }
 }
 
@@ -730,20 +730,20 @@ uint64_t __69__SBTransientOverlayViewController_setPresentationDimmingViewHidden
 {
   v14.receiver = self;
   v14.super_class = SBTransientOverlayViewController;
-  v3 = [(UIViewController *)&v14 _sbWindowScene];
-  v4 = v3;
-  if (v3)
+  _sbWindowScene = [(UIViewController *)&v14 _sbWindowScene];
+  v4 = _sbWindowScene;
+  if (_sbWindowScene)
   {
-    v5 = v3;
+    associatedWindowScene = _sbWindowScene;
   }
 
   else
   {
-    v6 = [(SBTransientOverlayViewController *)self viewIfLoaded];
-    v7 = [v6 window];
-    v8 = [v7 windowScene];
+    viewIfLoaded = [(SBTransientOverlayViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    windowScene = [window windowScene];
     v9 = objc_opt_class();
-    v10 = v8;
+    v10 = windowScene;
     if (v9)
     {
       if (objc_opt_isKindOfClass())
@@ -764,10 +764,10 @@ uint64_t __69__SBTransientOverlayViewController_setPresentationDimmingViewHidden
 
     v12 = v11;
 
-    v5 = [v12 associatedWindowScene];
+    associatedWindowScene = [v12 associatedWindowScene];
   }
 
-  return v5;
+  return associatedWindowScene;
 }
 
 - (void)endIgnoringAppearanceUpdates
@@ -827,57 +827,57 @@ void __88__SBTransientOverlayViewController_newTransientOverlayPresentationTrans
   [v2 completeTransition:1];
 }
 
-- (void)preserveInputViewsAnimated:(BOOL)a3
+- (void)preserveInputViewsAnimated:(BOOL)animated
 {
   if (!self->_hasPreservedInputViews)
   {
-    v4 = a3;
+    animatedCopy = animated;
     self->_hasPreservedInputViews = 1;
-    v7 = [MEMORY[0x277D75830] sharedInstance];
+    mEMORY[0x277D75830] = [MEMORY[0x277D75830] sharedInstance];
     v6 = [MEMORY[0x277CCAE60] valueWithPointer:self];
-    [v7 _preserveInputViewsWithId:v6 animated:v4];
+    [mEMORY[0x277D75830] _preserveInputViewsWithId:v6 animated:animatedCopy];
   }
 }
 
-- (void)restoreInputViewsAnimated:(BOOL)a3
+- (void)restoreInputViewsAnimated:(BOOL)animated
 {
   if (self->_hasPreservedInputViews)
   {
-    v4 = a3;
+    animatedCopy = animated;
     self->_hasPreservedInputViews = 0;
-    v7 = [MEMORY[0x277D75830] sharedInstance];
+    mEMORY[0x277D75830] = [MEMORY[0x277D75830] sharedInstance];
     v6 = [MEMORY[0x277CCAE60] valueWithPointer:self];
-    [v7 _restoreInputViewsWithId:v6 animated:v4];
+    [mEMORY[0x277D75830] _restoreInputViewsWithId:v6 animated:animatedCopy];
   }
 }
 
 - (_UILegibilitySettings)preferredStatusBarLegibilitySettings
 {
-  v3 = [(SBTransientOverlayViewController *)self preferredStatusBarStyle];
-  if (v3 == -1)
+  preferredStatusBarStyle = [(SBTransientOverlayViewController *)self preferredStatusBarStyle];
+  if (preferredStatusBarStyle == -1)
   {
     v7 = 0;
   }
 
   else
   {
-    if (!v3)
+    if (!preferredStatusBarStyle)
     {
-      v4 = [(SBTransientOverlayViewController *)self traitCollection];
-      v5 = [v4 userInterfaceStyle];
+      traitCollection = [(SBTransientOverlayViewController *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v5 == 2)
+      if (userInterfaceStyle == 2)
       {
-        v3 = 1;
+        preferredStatusBarStyle = 1;
       }
 
       else
       {
-        v3 = 3;
+        preferredStatusBarStyle = 3;
       }
     }
 
-    if (v3 == 3)
+    if (preferredStatusBarStyle == 3)
     {
       v6 = 2;
     }
@@ -950,32 +950,32 @@ void __88__SBTransientOverlayViewController_newTransientOverlayPresentationTrans
   [WeakRetained transientOverlayViewControllerNeedsSceneDeactivationUpdate:self];
 }
 
-- (void)setPresentationPrefersHomeGrabberHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setPresentationPrefersHomeGrabberHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   presentationPrefersHomeGrabberHidden = self->_presentationPrefersHomeGrabberHidden;
   if (presentationPrefersHomeGrabberHidden == 0x7FFFFFFFFFFFFFFFLL || presentationPrefersHomeGrabberHidden != BSSettingFlagForBool())
   {
     self->_presentationPrefersHomeGrabberHidden = BSSettingFlagForBool();
 
-    [(SBTransientOverlayViewController *)self _updateGrabberViewHiddenConfigurationAnimated:v4];
+    [(SBTransientOverlayViewController *)self _updateGrabberViewHiddenConfigurationAnimated:animatedCopy];
   }
 }
 
-- (void)setPresentationPrefersStatusBarHidden:(BOOL)a3 initialStatusBarSettings:(id)a4
+- (void)setPresentationPrefersStatusBarHidden:(BOOL)hidden initialStatusBarSettings:(id)settings
 {
-  v4 = a3;
-  v6 = a4;
+  hiddenCopy = hidden;
+  settingsCopy = settings;
   presentationPrefersStatusBarHidden = self->_presentationPrefersStatusBarHidden;
-  v10 = v6;
-  if (v6 || (v8 = 0, presentationPrefersStatusBarHidden != v4))
+  v10 = settingsCopy;
+  if (settingsCopy || (v8 = 0, presentationPrefersStatusBarHidden != hiddenCopy))
   {
-    self->_presentationPrefersStatusBarHidden = v4;
-    [(SBTransientOverlayViewController *)self _applyStatusBarStyleRequestWithInitialStatusBarSettings:v6];
+    self->_presentationPrefersStatusBarHidden = hiddenCopy;
+    [(SBTransientOverlayViewController *)self _applyStatusBarStyleRequestWithInitialStatusBarSettings:settingsCopy];
     v8 = v10;
   }
 
-  if (presentationPrefersStatusBarHidden != v4)
+  if (presentationPrefersStatusBarHidden != hiddenCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_transientOverlayDelegate);
     [WeakRetained transientOverlayViewControllerDidUpdatePresentationPrefersStatusBarHidden:self];
@@ -996,43 +996,43 @@ void __88__SBTransientOverlayViewController_newTransientOverlayPresentationTrans
   [WeakRetained transientOverlayViewControllerDidUpdateHIDEventDeferringDisabled:self];
 }
 
-- (void)addPresentationBackgroundView:(id)a3
+- (void)addPresentationBackgroundView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   presentationBackgroundView = self->_presentationBackgroundView;
-  v10 = v4;
+  v10 = viewCopy;
   if (!presentationBackgroundView)
   {
-    v6 = [(SBTransientOverlayViewController *)self view];
+    view = [(SBTransientOverlayViewController *)self view];
     v7 = objc_alloc(MEMORY[0x277D75D18]);
-    [v6 bounds];
+    [view bounds];
     v8 = [v7 initWithFrame:?];
     v9 = self->_presentationBackgroundView;
     self->_presentationBackgroundView = v8;
 
-    [v6 insertSubview:self->_presentationBackgroundView belowSubview:self->_backgroundView];
-    v4 = v10;
+    [view insertSubview:self->_presentationBackgroundView belowSubview:self->_backgroundView];
+    viewCopy = v10;
     presentationBackgroundView = self->_presentationBackgroundView;
   }
 
-  [(UIView *)presentationBackgroundView addSubview:v4];
+  [(UIView *)presentationBackgroundView addSubview:viewCopy];
   [(UIView *)self->_presentationBackgroundView bounds];
   [v10 setFrame:?];
 }
 
-- (void)removePresentationBackgroundView:(id)a3
+- (void)removePresentationBackgroundView:(id)view
 {
-  v9 = a3;
-  v4 = [v9 superview];
+  viewCopy = view;
+  superview = [viewCopy superview];
   presentationBackgroundView = self->_presentationBackgroundView;
 
-  if (v4 == presentationBackgroundView)
+  if (superview == presentationBackgroundView)
   {
-    [v9 removeFromSuperview];
+    [viewCopy removeFromSuperview];
   }
 
-  v6 = [(UIView *)self->_presentationBackgroundView subviews];
-  v7 = [v6 count];
+  subviews = [(UIView *)self->_presentationBackgroundView subviews];
+  v7 = [subviews count];
 
   if (!v7)
   {
@@ -1042,7 +1042,7 @@ void __88__SBTransientOverlayViewController_newTransientOverlayPresentationTrans
   }
 }
 
-- (void)_keyboardWillHideNotification:(id)a3
+- (void)_keyboardWillHideNotification:(id)notification
 {
   if (self->_keyboardVisible)
   {
@@ -1053,7 +1053,7 @@ void __88__SBTransientOverlayViewController_newTransientOverlayPresentationTrans
   [(SBTransientOverlayViewController *)self handleWillShowKeyboard:0];
 }
 
-- (void)_keyboardWillShowNotification:(id)a3
+- (void)_keyboardWillShowNotification:(id)notification
 {
   if ([(SBTransientOverlayViewController *)self _isKeyboardVisibleForSpringBoard])
   {
@@ -1074,55 +1074,55 @@ void __88__SBTransientOverlayViewController_newTransientOverlayPresentationTrans
 
 - (BOOL)_isKeyboardVisibleForSpringBoard
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_transientOverlayDelegate);
-  LOBYTE(v2) = [WeakRetained isKeyboardVisibleForSpringBoardForTransientOverlayViewController:v2];
+  LOBYTE(selfCopy) = [WeakRetained isKeyboardVisibleForSpringBoardForTransientOverlayViewController:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)_newHomeGrabberViewWithFrame:(CGRect)a3
+- (id)_newHomeGrabberViewWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [SBHomeGrabberView alloc];
 
   return [(SBHomeGrabberView *)v7 initWithFrame:x, y, width, height];
 }
 
-- (void)_applyStatusBarStyleRequestWithInitialStatusBarSettings:(id)a3
+- (void)_applyStatusBarStyleRequestWithInitialStatusBarSettings:(id)settings
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBTransientOverlayViewController *)self _preferredStatusBarVisibility];
-  if (self->_presentationPrefersStatusBarHidden || (v6 = v5) == 0)
+  settingsCopy = settings;
+  _preferredStatusBarVisibility = [(SBTransientOverlayViewController *)self _preferredStatusBarVisibility];
+  if (self->_presentationPrefersStatusBarHidden || (v6 = _preferredStatusBarVisibility) == 0)
   {
     [(UIStatusBar *)self->_statusBar setAlpha:0.0];
   }
 
   else
   {
-    v7 = [(SBTransientOverlayViewController *)self preferredStatusBarStyle];
-    v8 = [(SBTransientOverlayViewController *)self _sbWindowScene];
-    v9 = [v8 statusBarManager];
+    preferredStatusBarStyle = [(SBTransientOverlayViewController *)self preferredStatusBarStyle];
+    _sbWindowScene = [(SBTransientOverlayViewController *)self _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
 
-    v10 = [v9 reusePool];
-    v11 = [v9 assertionManager];
+    reusePool = [statusBarManager reusePool];
+    assertionManager = [statusBarManager assertionManager];
     if (!self->_statusBar)
     {
-      [(SBTransientOverlayViewController *)self _currentStatusBarFrameForStyle:v7];
-      v12 = [v10 getReusableStatusBarWithReason:@"TransientOverlay" withFrame:?];
+      [(SBTransientOverlayViewController *)self _currentStatusBarFrameForStyle:preferredStatusBarStyle];
+      v12 = [reusePool getReusableStatusBarWithReason:@"TransientOverlay" withFrame:?];
       statusBar = self->_statusBar;
       self->_statusBar = v12;
 
       [(UIView *)self->_contentContainerView addSubview:self->_statusBar];
     }
 
-    if (v4)
+    if (settingsCopy)
     {
-      v14 = [v11 effectiveStatusBarStyleRequestWithSettings:v4];
+      v14 = [assertionManager effectiveStatusBarStyleRequestWithSettings:settingsCopy];
       objc_storeStrong(&self->_currentStatusBarStyleRequest, v14);
       v15 = MEMORY[0x277D75D18];
       v32[0] = MEMORY[0x277D85DD0];
@@ -1131,7 +1131,7 @@ void __88__SBTransientOverlayViewController_newTransientOverlayPresentationTrans
       v32[3] = &unk_2783A8ED8;
       v32[4] = self;
       v33 = v14;
-      v34 = v4;
+      v34 = settingsCopy;
       v16 = v14;
       [v15 performWithoutAnimation:v32];
     }
@@ -1148,14 +1148,14 @@ void __88__SBTransientOverlayViewController_newTransientOverlayPresentationTrans
       v19 = 0.0;
     }
 
-    [(SBMutableStatusBarSettings *)v17 setStyle:v7];
-    v20 = [(SBTransientOverlayViewController *)self preferredStatusBarLegibilitySettings];
-    [(SBMutableStatusBarSettings *)v18 setLegibilitySettings:v20];
+    [(SBMutableStatusBarSettings *)v17 setStyle:preferredStatusBarStyle];
+    preferredStatusBarLegibilitySettings = [(SBTransientOverlayViewController *)self preferredStatusBarLegibilitySettings];
+    [(SBMutableStatusBarSettings *)v18 setLegibilitySettings:preferredStatusBarLegibilitySettings];
 
-    v21 = [(SBTransientOverlayViewController *)self preferredBackgroundActivitiesToSuppress];
-    [(SBMutableStatusBarSettings *)v18 setBackgroundActivitiesToSuppress:v21];
+    preferredBackgroundActivitiesToSuppress = [(SBTransientOverlayViewController *)self preferredBackgroundActivitiesToSuppress];
+    [(SBMutableStatusBarSettings *)v18 setBackgroundActivitiesToSuppress:preferredBackgroundActivitiesToSuppress];
 
-    v22 = [v11 effectiveStatusBarStyleRequestWithSettings:v18];
+    v22 = [assertionManager effectiveStatusBarStyleRequestWithSettings:v18];
     objc_storeStrong(&self->_currentStatusBarStyleRequest, v22);
     [(UIStatusBar *)self->_statusBar setAlpha:v19];
     if (BSFloatGreaterThanFloat())
@@ -1168,8 +1168,8 @@ void __88__SBTransientOverlayViewController_newTransientOverlayPresentationTrans
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v23 = [(SBTransientOverlayViewController *)self childViewControllers];
-  v24 = [v23 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  childViewControllers = [(SBTransientOverlayViewController *)self childViewControllers];
+  v24 = [childViewControllers countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v24)
   {
     v25 = v24;
@@ -1180,13 +1180,13 @@ void __88__SBTransientOverlayViewController_newTransientOverlayPresentationTrans
       {
         if (*v29 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [*(*(&v28 + 1) + 8 * i) _updateContentOverlayInsetsFromParentIfNecessary];
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v25 = [childViewControllers countByEnumeratingWithState:&v28 objects:v35 count:16];
     }
 
     while (v25);
@@ -1202,11 +1202,11 @@ void __92__SBTransientOverlayViewController__applyStatusBarStyleRequestWithIniti
   [v2 setAlpha:v3];
 }
 
-- (CGRect)_currentStatusBarFrameForStyle:(int64_t)a3
+- (CGRect)_currentStatusBarFrameForStyle:(int64_t)style
 {
   [(UIView *)self->_contentContainerView bounds];
   CGRectGetWidth(v10);
-  [MEMORY[0x277D75A78] heightForStyle:a3 orientation:{-[SBTransientOverlayViewController containerOrientation](self, "containerOrientation")}];
+  [MEMORY[0x277D75A78] heightForStyle:style orientation:{-[SBTransientOverlayViewController containerOrientation](self, "containerOrientation")}];
 
   BSRectWithSize();
   result.size.height = v8;
@@ -1228,18 +1228,18 @@ void __92__SBTransientOverlayViewController__applyStatusBarStyleRequestWithIniti
 
 - (void)_updateGrabberViewConfiguration
 {
-  v3 = [(SBTransientOverlayViewController *)self childViewControllerForHomeIndicatorAutoHidden];
-  v4 = v3;
-  if (!v3)
+  selfCopy = [(SBTransientOverlayViewController *)self childViewControllerForHomeIndicatorAutoHidden];
+  v4 = selfCopy;
+  if (!selfCopy)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  v5 = [v3 prefersHomeIndicatorAutoHidden];
+  prefersHomeIndicatorAutoHidden = [selfCopy prefersHomeIndicatorAutoHidden];
 
   grabberView = self->_grabberView;
   grabberSettings = self->_grabberSettings;
-  if (v5)
+  if (prefersHomeIndicatorAutoHidden)
   {
     [(SBFHomeGrabberSettings *)grabberSettings autoHideTimeOnAppRequest];
     [(SBHomeGrabberView *)grabberView turnOnAutoHideWithInitialDelay:?];
@@ -1251,16 +1251,16 @@ void __92__SBTransientOverlayViewController__applyStatusBarStyleRequestWithIniti
     [(SBHomeGrabberView *)grabberView turnOffAutoHideWithDelay:?];
   }
 
-  v8 = [(SBTransientOverlayViewController *)self childViewControllerForScreenEdgesDeferringSystemGestures];
-  v9 = v8;
-  if (!v8)
+  selfCopy2 = [(SBTransientOverlayViewController *)self childViewControllerForScreenEdgesDeferringSystemGestures];
+  v9 = selfCopy2;
+  if (!selfCopy2)
   {
-    v8 = self;
+    selfCopy2 = self;
   }
 
-  v10 = [v8 preferredScreenEdgesDeferringSystemGestures];
+  preferredScreenEdgesDeferringSystemGestures = [selfCopy2 preferredScreenEdgesDeferringSystemGestures];
 
-  [(SBHomeGrabberView *)self->_grabberView setEdgeProtectEnabled:(v10 >> 2) & 1];
+  [(SBHomeGrabberView *)self->_grabberView setEdgeProtectEnabled:(preferredScreenEdgesDeferringSystemGestures >> 2) & 1];
   WeakRetained = objc_loadWeakRetained(&self->_transientOverlayDelegate);
   v12 = [WeakRetained transientOverlayViewControllerIsForegroundActive:self];
 
@@ -1269,7 +1269,7 @@ void __92__SBTransientOverlayViewController__applyStatusBarStyleRequestWithIniti
   [(SBHomeGrabberView *)v13 setHomeAffordanceInteractionEnabled:v12];
 }
 
-- (void)_updateGrabberViewHiddenConfigurationAnimated:(BOOL)a3
+- (void)_updateGrabberViewHiddenConfigurationAnimated:(BOOL)animated
 {
   if (self->_presentationPrefersHomeGrabberHidden == 0x7FFFFFFFFFFFFFFFLL || SBFEffectiveHomeButtonType() != 2)
   {
@@ -1287,14 +1287,14 @@ void __92__SBTransientOverlayViewController__applyStatusBarStyleRequestWithIniti
   {
     [(SBTransientOverlayViewController *)self _invalidateKeyboardHomeAffordanceAssertion];
     grabberView = self->_grabberView;
-    if (a3)
+    if (animated)
     {
       obj = [(SBFHomeGrabberSettings *)self->_grabberSettings hideAnimationSettings];
-      v6 = [obj BSAnimationSettings];
+      bSAnimationSettings = [obj BSAnimationSettings];
       v7 = grabberView;
       v8 = 1;
 LABEL_18:
-      [(SBHomeGrabberView *)v7 setHidden:v8 forReason:@"_SBTransientOverlayViewControllerHomeGrabberHiddenReason" withAnimationSettings:v6];
+      [(SBHomeGrabberView *)v7 setHidden:v8 forReason:@"_SBTransientOverlayViewControllerHomeGrabberHiddenReason" withAnimationSettings:bSAnimationSettings];
       goto LABEL_19;
     }
 
@@ -1306,8 +1306,8 @@ LABEL_18:
   {
     if (self->_keyboardVisible == 1)
     {
-      v9 = [(SBTransientOverlayViewController *)self view];
-      obj = [v9 window];
+      view = [(SBTransientOverlayViewController *)self view];
+      obj = [view window];
 
       if (obj && !self->_keyboardHomeAffordanceAssertion)
       {
@@ -1319,15 +1319,15 @@ LABEL_18:
       }
 
       v12 = self->_grabberView;
-      if (!a3)
+      if (!animated)
       {
         [(SBHomeGrabberView *)self->_grabberView setHidden:1 forReason:@"_SBTransientOverlayViewControllerHomeGrabberHiddenReason" withAnimationSettings:0];
         goto LABEL_20;
       }
 
-      v6 = [(SBFHomeGrabberSettings *)self->_grabberSettings hideAnimationSettings];
-      v13 = [v6 BSAnimationSettings];
-      [(SBHomeGrabberView *)v12 setHidden:1 forReason:@"_SBTransientOverlayViewControllerHomeGrabberHiddenReason" withAnimationSettings:v13];
+      bSAnimationSettings = [(SBFHomeGrabberSettings *)self->_grabberSettings hideAnimationSettings];
+      v6BSAnimationSettings = [bSAnimationSettings BSAnimationSettings];
+      [(SBHomeGrabberView *)v12 setHidden:1 forReason:@"_SBTransientOverlayViewControllerHomeGrabberHiddenReason" withAnimationSettings:v6BSAnimationSettings];
 
 LABEL_19:
 LABEL_20:
@@ -1338,10 +1338,10 @@ LABEL_20:
     [(SBTransientOverlayViewController *)self _invalidateKeyboardHomeAffordanceAssertion];
     [(SBHomeGrabberView *)self->_grabberView resetAutoHide];
     v16 = self->_grabberView;
-    if (a3)
+    if (animated)
     {
       obj = [(SBFHomeGrabberSettings *)self->_grabberSettings unhideAnimationSettings];
-      v6 = [obj BSAnimationSettings];
+      bSAnimationSettings = [obj BSAnimationSettings];
       v7 = v16;
       v8 = 0;
       goto LABEL_18;

@@ -1,26 +1,26 @@
 @interface PGSchemaPGPromptTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PGSchemaPGPromptTier1)initWithDictionary:(id)a3;
-- (PGSchemaPGPromptTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PGSchemaPGPromptTier1)initWithDictionary:(id)dictionary;
+- (PGSchemaPGPromptTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PGSchemaPGPromptTier1
 
-- (PGSchemaPGPromptTier1)initWithDictionary:(id)a3
+- (PGSchemaPGPromptTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PGSchemaPGPromptTier1;
   v5 = [(PGSchemaPGPromptTier1 *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PGSchemaPGPromptTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"prompt"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"prompt"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PGSchemaPGPromptTier1 *)v5 setPrompt:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"grammar"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"grammar"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (PGSchemaPGPromptTier1)initWithJSON:(id)a3
+- (PGSchemaPGPromptTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PGSchemaPGPromptTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PGSchemaPGPromptTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PGSchemaPGPromptTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,40 +86,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_grammar)
   {
-    v4 = [(PGSchemaPGPromptTier1 *)self grammar];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"grammar"];
+    grammar = [(PGSchemaPGPromptTier1 *)self grammar];
+    v5 = [grammar copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"grammar"];
   }
 
   if (self->_linkId)
   {
-    v6 = [(PGSchemaPGPromptTier1 *)self linkId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    linkId = [(PGSchemaPGPromptTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_prompt)
   {
-    v9 = [(PGSchemaPGPromptTier1 *)self prompt];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"prompt"];
+    prompt = [(PGSchemaPGPromptTier1 *)self prompt];
+    v10 = [prompt copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"prompt"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -129,28 +129,28 @@
   return v4 ^ [(NSString *)self->_grammar hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(PGSchemaPGPromptTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(PGSchemaPGPromptTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(PGSchemaPGPromptTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(PGSchemaPGPromptTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(PGSchemaPGPromptTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(PGSchemaPGPromptTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -162,20 +162,20 @@
   {
   }
 
-  v5 = [(PGSchemaPGPromptTier1 *)self prompt];
-  v6 = [v4 prompt];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(PGSchemaPGPromptTier1 *)self prompt];
+  linkId2 = [equalCopy prompt];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(PGSchemaPGPromptTier1 *)self prompt];
-  if (v12)
+  prompt = [(PGSchemaPGPromptTier1 *)self prompt];
+  if (prompt)
   {
-    v13 = v12;
-    v14 = [(PGSchemaPGPromptTier1 *)self prompt];
-    v15 = [v4 prompt];
-    v16 = [v14 isEqual:v15];
+    v13 = prompt;
+    prompt2 = [(PGSchemaPGPromptTier1 *)self prompt];
+    prompt3 = [equalCopy prompt];
+    v16 = [prompt2 isEqual:prompt3];
 
     if (!v16)
     {
@@ -187,12 +187,12 @@
   {
   }
 
-  v5 = [(PGSchemaPGPromptTier1 *)self grammar];
-  v6 = [v4 grammar];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(PGSchemaPGPromptTier1 *)self grammar];
+  linkId2 = [equalCopy grammar];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v17 = [(PGSchemaPGPromptTier1 *)self grammar];
-    if (!v17)
+    grammar = [(PGSchemaPGPromptTier1 *)self grammar];
+    if (!grammar)
     {
 
 LABEL_20:
@@ -200,10 +200,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(PGSchemaPGPromptTier1 *)self grammar];
-    v20 = [v4 grammar];
-    v21 = [v19 isEqual:v20];
+    v18 = grammar;
+    grammar2 = [(PGSchemaPGPromptTier1 *)self grammar];
+    grammar3 = [equalCopy grammar];
+    v21 = [grammar2 isEqual:grammar3];
 
     if (v21)
     {
@@ -223,75 +223,75 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(PGSchemaPGPromptTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(PGSchemaPGPromptTier1 *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(PGSchemaPGPromptTier1 *)self linkId];
+    linkId2 = [(PGSchemaPGPromptTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PGSchemaPGPromptTier1 *)self prompt];
+  prompt = [(PGSchemaPGPromptTier1 *)self prompt];
 
-  if (v6)
+  if (prompt)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(PGSchemaPGPromptTier1 *)self grammar];
+  grammar = [(PGSchemaPGPromptTier1 *)self grammar];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (grammar)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = PGSchemaPGPromptTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PGSchemaPGPromptTier1 *)self deletePrompt];
     [(PGSchemaPGPromptTier1 *)self deleteGrammar];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PGSchemaPGPromptTier1 *)self deletePrompt];
     [(PGSchemaPGPromptTier1 *)self deleteGrammar];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PGSchemaPGPromptTier1 *)self deletePrompt];
     [(PGSchemaPGPromptTier1 *)self deleteGrammar];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PGSchemaPGPromptTier1 *)self deletePrompt];
     [(PGSchemaPGPromptTier1 *)self deleteGrammar];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PGSchemaPGPromptTier1 *)self deletePrompt];
     [(PGSchemaPGPromptTier1 *)self deleteGrammar];
   }
 
-  v6 = [(PGSchemaPGPromptTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(PGSchemaPGPromptTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PGSchemaPGPromptTier1 *)self deleteLinkId];
   }

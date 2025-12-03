@@ -1,22 +1,22 @@
 @interface BKAudiobookBufferInfo
-+ (id)infoWithAudiobookPositions:(id)a3 audiobookDurations:(id)a4 chapterPositions:(id)a5 chapterDurations:(id)a6;
++ (id)infoWithAudiobookPositions:(id)positions audiobookDurations:(id)durations chapterPositions:(id)chapterPositions chapterDurations:(id)chapterDurations;
 @end
 
 @implementation BKAudiobookBufferInfo
 
-+ (id)infoWithAudiobookPositions:(id)a3 audiobookDurations:(id)a4 chapterPositions:(id)a5 chapterDurations:(id)a6
++ (id)infoWithAudiobookPositions:(id)positions audiobookDurations:(id)durations chapterPositions:(id)chapterPositions chapterDurations:(id)chapterDurations
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  chapterDurationsCopy = chapterDurations;
+  chapterPositionsCopy = chapterPositions;
+  durationsCopy = durations;
+  positionsCopy = positions;
   v13 = objc_opt_new();
-  [v13 setAudiobookPositions:v12];
+  [v13 setAudiobookPositions:positionsCopy];
 
-  [v13 setAudiobookDurations:v11];
-  [v13 setChapterPositions:v10];
+  [v13 setAudiobookDurations:durationsCopy];
+  [v13 setChapterPositions:chapterPositionsCopy];
 
-  [v13 setChapterDurations:v9];
+  [v13 setChapterDurations:chapterDurationsCopy];
 
   return v13;
 }

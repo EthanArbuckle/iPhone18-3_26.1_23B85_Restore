@@ -1,42 +1,42 @@
 @interface PowerUINotificationManager
-+ (id)chargeLimitRecommendationContentWithLimit:(unint64_t)a3;
-+ (id)chargeLimitRecommendationRequestWithLimit:(unint64_t)a3;
++ (id)chargeLimitRecommendationContentWithLimit:(unint64_t)limit;
++ (id)chargeLimitRecommendationRequestWithLimit:(unint64_t)limit;
 + (id)chargingAdviceNotificationContent;
 + (id)chargingAdviceNotificationRequest;
-+ (id)fullChargeDeadlineStringFromDate:(id)a3;
++ (id)fullChargeDeadlineStringFromDate:(id)date;
 + (id)lowRuntimeNotificationContent;
 + (id)lowRuntimeNotificationRequest;
-+ (id)obcEngagedContentWithDeadline:(id)a3 toppingOff:(BOOL)a4;
-+ (id)pausedNotificationContentFromDate:(id)a3 bundle:(id)a4;
++ (id)obcEngagedContentWithDeadline:(id)deadline toppingOff:(BOOL)off;
++ (id)pausedNotificationContentFromDate:(id)date bundle:(id)bundle;
 + (id)sharedInstance;
 - (BOOL)internalCECNotificationsDisabled;
 - (PowerUINotificationManager)init;
-- (id)contentForInternalDurationPredictionWithDuration:(double)a3 withConfidence:(double)a4;
+- (id)contentForInternalDurationPredictionWithDuration:(double)duration withConfidence:(double)confidence;
 - (id)currentOBCEngagedNotification;
 - (id)getDeliveredNotifications;
-- (id)postCECEngagedNotificationWithDate:(id)a3;
+- (id)postCECEngagedNotificationWithDate:(id)date;
 - (id)postCECFirstTimeNotification;
-- (id)postChargeLimitRecommendationWithLimit:(unint64_t)a3;
+- (id)postChargeLimitRecommendationWithLimit:(unint64_t)limit;
 - (id)postChargingAdviceNotification;
-- (id)postInternalCECNotificationWithID:(id)a3 chargingStatus:(BOOL)a4 information:(id)a5 shouldReplace:(BOOL)a6;
-- (id)postInternalChargingIntelligenceNotificationWithChargingStatus:(BOOL)a3 information:(id)a4 url:(id)a5 validUntil:(id)a6;
+- (id)postInternalCECNotificationWithID:(id)d chargingStatus:(BOOL)status information:(id)information shouldReplace:(BOOL)replace;
+- (id)postInternalChargingIntelligenceNotificationWithChargingStatus:(BOOL)status information:(id)information url:(id)url validUntil:(id)until;
 - (id)postLowRuntimeNotification;
-- (id)postNotificationWithRequest:(id)a3;
-- (id)postOBCEngagedNotificationWithDate:(id)a3;
-- (id)postOBCEngagedTopOffNotificationWithDate:(id)a3;
+- (id)postNotificationWithRequest:(id)request;
+- (id)postOBCEngagedNotificationWithDate:(id)date;
+- (id)postOBCEngagedTopOffNotificationWithDate:(id)date;
 - (id)ttrURLforLocationFailure;
-- (void)cancelNotificationRequestWithIdentifier:(id)a3;
-- (void)handleLocationFailures:(id)a3;
-- (void)postInternalCECNotificationForChargingDates:(id)a3;
-- (void)postInternalChargeDurationNotificationWithDuration:(double)a3 withConfidence:(double)a4;
+- (void)cancelNotificationRequestWithIdentifier:(id)identifier;
+- (void)handleLocationFailures:(id)failures;
+- (void)postInternalCECNotificationForChargingDates:(id)dates;
+- (void)postInternalChargeDurationNotificationWithDuration:(double)duration withConfidence:(double)confidence;
 - (void)postInternalLocationFailureNotification;
-- (void)postInternalNotificationAtDate:(id)a3 withTitle:(id)a4 withTextContent:(id)a5 icon:(id)a6 url:(id)a7 expirationDate:(id)a8;
+- (void)postInternalNotificationAtDate:(id)date withTitle:(id)title withTextContent:(id)content icon:(id)icon url:(id)url expirationDate:(id)expirationDate;
 - (void)removeAllNotifications;
 - (void)removeCECNotifications;
 - (void)removeCECPausedNotification;
 - (void)resetAll;
-- (void)updateOBCEngagedNotificationWithDate:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)updateOBCEngagedNotificationWithDate:(id)date;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation PowerUINotificationManager
@@ -277,19 +277,19 @@ void __44__PowerUINotificationManager_sharedInstance__block_invoke()
   }
 }
 
-+ (id)fullChargeDeadlineStringFromDate:(id)a3
++ (id)fullChargeDeadlineStringFromDate:(id)date
 {
   v3 = fullChargeDeadlineStringFromDate__onceToken;
-  v4 = a3;
+  dateCopy = date;
   if (v3 != -1)
   {
     +[PowerUINotificationManager fullChargeDeadlineStringFromDate:];
   }
 
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  [fullChargeDeadlineStringFromDate__formatter setLocale:v5];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [fullChargeDeadlineStringFromDate__formatter setLocale:currentLocale];
 
-  v6 = [fullChargeDeadlineStringFromDate__formatter stringFromDate:v4];
+  v6 = [fullChargeDeadlineStringFromDate__formatter stringFromDate:dateCopy];
 
   return v6;
 }
@@ -306,9 +306,9 @@ uint64_t __63__PowerUINotificationManager_fullChargeDeadlineStringFromDate___blo
   return [v2 setTimeStyle:1];
 }
 
-- (void)updateOBCEngagedNotificationWithDate:(id)a3
+- (void)updateOBCEngagedNotificationWithDate:(id)date
 {
-  v4 = [PowerUINotificationManager obcEngagedContentWithDeadline:a3 toppingOff:0];
+  v4 = [PowerUINotificationManager obcEngagedContentWithDeadline:date toppingOff:0];
   if (v4)
   {
     [(UNUserNotificationCenter *)self->_unCenter replaceContentForRequestWithIdentifier:self->_lastScheduledFullChargeNotificationID replacementContent:v4 completionHandler:0];
@@ -317,27 +317,27 @@ uint64_t __63__PowerUINotificationManager_fullChargeDeadlineStringFromDate___blo
   MEMORY[0x2821F96F8]();
 }
 
-- (id)postOBCEngagedNotificationWithDate:(id)a3
+- (id)postOBCEngagedNotificationWithDate:(id)date
 {
-  v4 = [PowerUINotificationManager obcEngagedRequestWithDeadline:a3 isToppingOff:0];
+  v4 = [PowerUINotificationManager obcEngagedRequestWithDeadline:date isToppingOff:0];
   [(UNUserNotificationCenter *)self->_unCenter addNotificationRequest:v4 withCompletionHandler:0];
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
-- (id)postOBCEngagedTopOffNotificationWithDate:(id)a3
+- (id)postOBCEngagedTopOffNotificationWithDate:(id)date
 {
-  v4 = [PowerUINotificationManager obcEngagedRequestWithDeadline:a3 isToppingOff:1];
+  v4 = [PowerUINotificationManager obcEngagedRequestWithDeadline:date isToppingOff:1];
   [(UNUserNotificationCenter *)self->_unCenter addNotificationRequest:v4 withCompletionHandler:0];
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
-- (id)postNotificationWithRequest:(id)a3
+- (id)postNotificationWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -350,7 +350,7 @@ uint64_t __63__PowerUINotificationManager_fullChargeDeadlineStringFromDate___blo
   v8[2] = __58__PowerUINotificationManager_postNotificationWithRequest___block_invoke;
   v8[3] = &unk_2782D40A0;
   v8[4] = &v9;
-  [(UNUserNotificationCenter *)unCenter addNotificationRequest:v4 withCompletionHandler:v8];
+  [(UNUserNotificationCenter *)unCenter addNotificationRequest:requestCopy withCompletionHandler:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
@@ -470,20 +470,20 @@ void __52__PowerUINotificationManager_removeAllNotifications__block_invoke(uint6
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)pausedNotificationContentFromDate:(id)a3 bundle:(id)a4
++ (id)pausedNotificationContentFromDate:(id)date bundle:(id)bundle
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [PowerUINotificationManager fullChargeDeadlineStringFromDate:v6];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 components:32 fromDate:v6];
+  bundleCopy = bundle;
+  dateCopy = date;
+  v7 = [PowerUINotificationManager fullChargeDeadlineStringFromDate:dateCopy];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar components:32 fromDate:dateCopy];
 
   if ([v9 hour] == 1)
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = @"OBC_CHARGING_PAUSED_BODY_TIME_SINGULAR";
 LABEL_9:
-    v14 = [v5 localizedStringForKey:v11 value:&stru_282D0B728 table:@"Localizable"];
+    v14 = [bundleCopy localizedStringForKey:v11 value:&stru_282D0B728 table:@"Localizable"];
     v18 = [v10 stringWithFormat:v14, v7];
     goto LABEL_10;
   }
@@ -496,8 +496,8 @@ LABEL_9:
   }
 
   v12 = MEMORY[0x277CCA968];
-  v13 = [MEMORY[0x277CBEAF8] currentLocale];
-  v14 = [v12 dateFormatFromTemplate:@"j" options:0 locale:v13];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v14 = [v12 dateFormatFromTemplate:@"j" options:0 locale:currentLocale];
 
   v15 = @"OBC_CHARGING_PAUSED_BODY_TIME_PLURAL";
   if (([v14 containsString:@"H"] & 1) == 0 && !objc_msgSend(v14, "containsString:", @"k"))
@@ -506,7 +506,7 @@ LABEL_9:
   }
 
   v16 = MEMORY[0x277CCACA8];
-  v17 = [v5 localizedStringForKey:v15 value:&stru_282D0B728 table:@"Localizable"];
+  v17 = [bundleCopy localizedStringForKey:v15 value:&stru_282D0B728 table:@"Localizable"];
   v18 = [v16 stringWithFormat:v17, v7];
 
 LABEL_10:
@@ -515,22 +515,22 @@ LABEL_10:
   return v19;
 }
 
-+ (id)obcEngagedContentWithDeadline:(id)a3 toppingOff:(BOOL)a4
++ (id)obcEngagedContentWithDeadline:(id)deadline toppingOff:(BOOL)off
 {
-  v4 = a4;
-  v5 = a3;
+  offCopy = off;
+  deadlineCopy = deadline;
   v6 = objc_alloc_init(MEMORY[0x277CE1F60]);
-  if (v5)
+  if (deadlineCopy)
   {
     v7 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:@"/System/Library/PrivateFrameworks/PowerUI.framework"];
     v8 = [MEMORY[0x277CCA8D8] bundleWithURL:v7];
     v9 = [v8 localizedStringForKey:@"OBC_FEATURE_TITLE" value:&stru_282D0B728 table:@"Localizable"];
     [v6 setTitle:v9];
 
-    v10 = [PowerUINotificationManager pausedNotificationContentFromDate:v5 bundle:v8];
+    v10 = [PowerUINotificationManager pausedNotificationContentFromDate:deadlineCopy bundle:v8];
     [v6 setBody:v10];
 
-    if (v4)
+    if (offCopy)
     {
       v11 = @"chargingToFullCategory";
     }
@@ -552,7 +552,7 @@ LABEL_10:
     v13 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.Battery"];
     [v6 setDefaultActionURL:v13];
 
-    [v6 setExpirationDate:v5];
+    [v6 setExpirationDate:deadlineCopy];
     v14 = v6;
   }
 
@@ -575,7 +575,7 @@ LABEL_10:
   [(NSUserDefaults *)defaults removeObjectForKey:@"immediateCharge"];
 }
 
-+ (id)chargeLimitRecommendationContentWithLimit:(unint64_t)a3
++ (id)chargeLimitRecommendationContentWithLimit:(unint64_t)limit
 {
   v4 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:@"/System/Library/PrivateFrameworks/PowerUI.framework"];
   v5 = [MEMORY[0x277CCA8D8] bundleWithURL:v4];
@@ -599,15 +599,15 @@ LABEL_10:
   [v6 setExpirationDate:v10];
 
   v11 = objc_alloc_init(MEMORY[0x277CCABB8]);
-  v12 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v11 setLocale:v12];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [v11 setLocale:currentLocale];
 
   [v11 setNumberStyle:3];
   [v11 setMaximumFractionDigits:0];
   [v11 setMultiplier:&unk_282D4E0F8];
   v13 = MEMORY[0x277CCACA8];
   v14 = [v5 localizedStringForKey:@"CHARGE_LIMIT_RECOMMENDATION" value:&stru_282D0B728 table:@"Localizable"];
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:limit];
   v16 = [v11 stringFromNumber:v15];
   v17 = [v13 stringWithFormat:v14, v16];
   [v6 setBody:v17];
@@ -615,9 +615,9 @@ LABEL_10:
   return v6;
 }
 
-+ (id)chargeLimitRecommendationRequestWithLimit:(unint64_t)a3
++ (id)chargeLimitRecommendationRequestWithLimit:(unint64_t)limit
 {
-  v3 = [PowerUINotificationManager chargeLimitRecommendationContentWithLimit:a3];
+  v3 = [PowerUINotificationManager chargeLimitRecommendationContentWithLimit:limit];
   if (v3)
   {
     v4 = [MEMORY[0x277CE1FC0] requestWithIdentifier:@"recommendedLimitRequest" content:v3 trigger:0];
@@ -673,22 +673,22 @@ LABEL_10:
   return v3;
 }
 
-- (id)postChargeLimitRecommendationWithLimit:(unint64_t)a3
+- (id)postChargeLimitRecommendationWithLimit:(unint64_t)limit
 {
-  v4 = [PowerUINotificationManager chargeLimitRecommendationRequestWithLimit:a3];
+  v4 = [PowerUINotificationManager chargeLimitRecommendationRequestWithLimit:limit];
   [(UNUserNotificationCenter *)self->_unCenter addNotificationRequest:v4 withCompletionHandler:0];
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
 - (id)postLowRuntimeNotification
 {
   v3 = +[PowerUINotificationManager lowRuntimeNotificationRequest];
   [(UNUserNotificationCenter *)self->_unCenter addNotificationRequest:v3 withCompletionHandler:0];
-  v4 = [v3 identifier];
+  identifier = [v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
 + (id)chargingAdviceNotificationContent
@@ -736,14 +736,14 @@ LABEL_10:
 {
   v3 = +[PowerUINotificationManager chargingAdviceNotificationRequest];
   [(UNUserNotificationCenter *)self->_unCenter addNotificationRequest:v3 withCompletionHandler:0];
-  v4 = [v3 identifier];
+  identifier = [v3 identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (id)postCECEngagedNotificationWithDate:(id)a3
+- (id)postCECEngagedNotificationWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -751,7 +751,7 @@ LABEL_10:
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Posting CEC Engaged notification", v17, 2u);
   }
 
-  v6 = [PowerUISmartChargeUtilities roundedDateFromDate:v4];
+  v6 = [PowerUISmartChargeUtilities roundedDateFromDate:dateCopy];
   v7 = objc_alloc_init(MEMORY[0x277CE1F60]);
   v8 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:@"/System/Library/PrivateFrameworks/PowerUI.framework"];
   v9 = [MEMORY[0x277CCA8D8] bundleWithURL:v8];
@@ -778,9 +778,9 @@ LABEL_10:
   v14 = [MEMORY[0x277CE1FC0] requestWithIdentifier:@"cec-pausedCharging" content:v7 trigger:0];
   [v14 setDestinations:2];
   [(UNUserNotificationCenter *)self->_unCenter addNotificationRequest:v14 withCompletionHandler:0];
-  v15 = [v14 identifier];
+  identifier = [v14 identifier];
 
-  return v15;
+  return identifier;
 }
 
 - (id)postCECFirstTimeNotification
@@ -814,15 +814,15 @@ LABEL_10:
   [v4 setExpirationDate:v10];
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [MEMORY[0x277CBEAA8] date];
-  v13 = [v11 stringWithFormat:@"cec-FirstTime-%@", v12];
+  date = [MEMORY[0x277CBEAA8] date];
+  v13 = [v11 stringWithFormat:@"cec-FirstTime-%@", date];
 
   v14 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v13 content:v4 trigger:0];
   [v14 setDestinations:2];
   [(UNUserNotificationCenter *)self->_unCenter addNotificationRequest:v14 withCompletionHandler:0];
-  v15 = [v14 identifier];
+  identifier = [v14 identifier];
 
-  return v15;
+  return identifier;
 }
 
 - (void)removeCECPausedNotification
@@ -834,7 +834,7 @@ LABEL_10:
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Removing CEC notification", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = dispatch_semaphore_create(0);
   unCenter = self->_unCenter;
   v10[0] = MEMORY[0x277D85DD0];
@@ -842,7 +842,7 @@ LABEL_10:
   v10[2] = __57__PowerUINotificationManager_removeCECPausedNotification__block_invoke;
   v10[3] = &unk_2782D40C8;
   v10[4] = self;
-  v7 = v4;
+  v7 = array;
   v11 = v7;
   v8 = v5;
   v12 = v8;
@@ -926,7 +926,7 @@ void __57__PowerUINotificationManager_removeCECPausedNotification__block_invoke(
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Removing CEC notifications", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = dispatch_semaphore_create(0);
   unCenter = self->_unCenter;
   v10[0] = MEMORY[0x277D85DD0];
@@ -934,7 +934,7 @@ void __57__PowerUINotificationManager_removeCECPausedNotification__block_invoke(
   v10[2] = __52__PowerUINotificationManager_removeCECNotifications__block_invoke;
   v10[3] = &unk_2782D40C8;
   v10[4] = self;
-  v7 = v4;
+  v7 = array;
   v11 = v7;
   v8 = v5;
   v12 = v8;
@@ -1028,24 +1028,24 @@ void __52__PowerUINotificationManager_removeCECNotifications__block_invoke(uint6
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v12 = log;
-    v13 = [v9 actionIdentifier];
+    actionIdentifier = [responseCopy actionIdentifier];
     v22 = 138412290;
-    v23 = v13;
+    v23 = actionIdentifier;
     _os_log_impl(&dword_21B766000, v12, OS_LOG_TYPE_INFO, "notification request coming in: %@", &v22, 0xCu);
   }
 
-  v14 = [v9 actionIdentifier];
-  v15 = [v14 isEqualToString:@"fullCharge"];
+  actionIdentifier2 = [responseCopy actionIdentifier];
+  v15 = [actionIdentifier2 isEqualToString:@"fullCharge"];
 
   if (v15)
   {
@@ -1069,14 +1069,14 @@ void __52__PowerUINotificationManager_removeCECNotifications__block_invoke(uint6
     [(NSUserDefaults *)self->_defaults setBool:1 forKey:@"immediateCharge"];
   }
 
-  [(PowerUINotificationManager *)self handleLocationFailures:v9];
+  [(PowerUINotificationManager *)self handleLocationFailures:responseCopy];
   v19 = +[PowerUICECManager manager];
-  [v19 handleNotificationResponse:v9];
+  [v19 handleNotificationResponse:responseCopy];
 
   v20 = +[PowerUISmartChargeManager manager];
-  [v20 handleNotificationResponse:v9];
+  [v20 handleNotificationResponse:responseCopy];
 
-  v10[2](v10);
+  handlerCopy[2](handlerCopy);
   v21 = *MEMORY[0x277D85DE8];
 }
 
@@ -1087,37 +1087,37 @@ void __52__PowerUINotificationManager_removeCECNotifications__block_invoke(uint6
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)postInternalCECNotificationForChargingDates:(id)a3
+- (void)postInternalCECNotificationForChargingDates:(id)dates
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!-[PowerUINotificationManager internalCECNotificationsDisabled](self, "internalCECNotificationsDisabled") && [v4 count])
+  datesCopy = dates;
+  if (!-[PowerUINotificationManager internalCECNotificationsDisabled](self, "internalCECNotificationsDisabled") && [datesCopy count])
   {
-    v31 = self;
+    selfCopy = self;
     v5 = objc_alloc_init(MEMORY[0x277CE1F60]);
     v6 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:@"[CEC INTERNAL]" arguments:0];
     v30 = v5;
     [v5 setTitle:v6];
 
-    v7 = [v4 objectAtIndexedSubscript:0];
-    v8 = [v4 objectAtIndexedSubscript:0];
+    v7 = [datesCopy objectAtIndexedSubscript:0];
+    v8 = [datesCopy objectAtIndexedSubscript:0];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v32 = v4;
-    obj = v4;
+    v32 = datesCopy;
+    obj = datesCopy;
     v36 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v36)
     {
@@ -1185,47 +1185,47 @@ void __52__PowerUINotificationManager_removeCECNotifications__block_invoke(uint6
     [v30 setShouldIgnoreDoNotDisturb:1];
     [v30 setCategoryIdentifier:@"cecEngagedCategory"];
     v28 = [MEMORY[0x277CE1FC0] requestWithIdentifier:@"emissionChargingDates" content:v30 trigger:0];
-    [(UNUserNotificationCenter *)v31->_unCenter addNotificationRequest:v28 withCompletionHandler:0];
+    [(UNUserNotificationCenter *)selfCopy->_unCenter addNotificationRequest:v28 withCompletionHandler:0];
 
-    v4 = v32;
+    datesCopy = v32;
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postInternalNotificationAtDate:(id)a3 withTitle:(id)a4 withTextContent:(id)a5 icon:(id)a6 url:(id)a7 expirationDate:(id)a8
+- (void)postInternalNotificationAtDate:(id)date withTitle:(id)title withTextContent:(id)content icon:(id)icon url:(id)url expirationDate:(id)expirationDate
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  dateCopy = date;
+  titleCopy = title;
+  contentCopy = content;
+  iconCopy = icon;
+  urlCopy = url;
+  expirationDateCopy = expirationDate;
   if (+[PowerUISmartChargeUtilities isInternalBuild])
   {
-    v29 = self;
+    selfCopy = self;
     v20 = objc_alloc_init(MEMORY[0x277CE1F60]);
     [v20 setCategoryIdentifier:@"powerUIInternal"];
-    v21 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:v15 arguments:0];
+    v21 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:titleCopy arguments:0];
     [v20 setTitle:v21];
 
-    [v20 setBody:v16];
-    if (v17)
+    [v20 setBody:contentCopy];
+    if (iconCopy)
     {
-      [v20 setIcon:v17];
+      [v20 setIcon:iconCopy];
     }
 
-    if (v19)
+    if (expirationDateCopy)
     {
-      [v20 setExpirationDate:v19];
+      [v20 setExpirationDate:expirationDateCopy];
     }
 
-    if (v18)
+    if (urlCopy)
     {
-      [v20 setDefaultActionURL:v18];
+      [v20 setDefaultActionURL:urlCopy];
     }
 
-    [v14 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     if (v22 <= 0.0)
     {
       v24 = 0;
@@ -1234,7 +1234,7 @@ void __52__PowerUINotificationManager_removeCECNotifications__block_invoke(uint6
     else
     {
       v23 = MEMORY[0x277CE2020];
-      [v14 timeIntervalSinceNow];
+      [dateCopy timeIntervalSinceNow];
       v24 = [v23 triggerWithTimeInterval:0 repeats:?];
     }
 
@@ -1243,7 +1243,7 @@ void __52__PowerUINotificationManager_removeCECNotifications__block_invoke(uint6
     v27 = [v25 stringWithFormat:@"com.apple.powerui-internal-notification:%lf", v26];
     v28 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v27 content:v20 trigger:v24];
     [v28 setDestinations:15];
-    [(UNUserNotificationCenter *)v29->_unCenter addNotificationRequest:v28 withCompletionHandler:0];
+    [(UNUserNotificationCenter *)selfCopy->_unCenter addNotificationRequest:v28 withCompletionHandler:0];
   }
 
   else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_FAULT))
@@ -1252,27 +1252,27 @@ void __52__PowerUINotificationManager_removeCECNotifications__block_invoke(uint6
   }
 }
 
-- (id)postInternalCECNotificationWithID:(id)a3 chargingStatus:(BOOL)a4 information:(id)a5 shouldReplace:(BOOL)a6
+- (id)postInternalCECNotificationWithID:(id)d chargingStatus:(BOOL)status information:(id)information shouldReplace:(BOOL)replace
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
+  statusCopy = status;
+  dCopy = d;
+  informationCopy = information;
   if ([(PowerUINotificationManager *)self internalCECNotificationsDisabled])
   {
-    v12 = 0;
+    identifier = 0;
   }
 
   else
   {
     v13 = objc_alloc_init(MEMORY[0x277CE1F60]);
     v14 = @"Charging On Hold";
-    if (v8)
+    if (statusCopy)
     {
       v14 = @"Charging Now";
     }
 
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", @"[CEC Internal]", v14];
-    [v13 setBody:v11];
+    [v13 setBody:informationCopy];
     v16 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:v15 arguments:0];
     [v13 setTitle:v16];
 
@@ -1284,35 +1284,35 @@ void __52__PowerUINotificationManager_removeCECNotifications__block_invoke(uint6
 
     [v13 setShouldIgnoreDoNotDisturb:1];
     [v13 setCategoryIdentifier:@"cecEngagedCategory"];
-    if (v8)
+    if (statusCopy)
     {
       [v13 setAccessoryImageName:@"bolt.and.smog.fill"];
     }
 
-    if (!a6)
+    if (!replace)
     {
       v21 = MEMORY[0x277CCACA8];
-      v22 = [MEMORY[0x277CBEAA8] date];
-      v23 = [v21 stringWithFormat:@"%@-%@", v10, v22];
+      date = [MEMORY[0x277CBEAA8] date];
+      v23 = [v21 stringWithFormat:@"%@-%@", dCopy, date];
 
-      v10 = v23;
+      dCopy = v23;
     }
 
-    v24 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v10 content:v13 trigger:0];
+    v24 = [MEMORY[0x277CE1FC0] requestWithIdentifier:dCopy content:v13 trigger:0];
     [(UNUserNotificationCenter *)self->_unCenter addNotificationRequest:v24 withCompletionHandler:0];
-    v12 = [v24 identifier];
+    identifier = [v24 identifier];
   }
 
-  return v12;
+  return identifier;
 }
 
-- (id)contentForInternalDurationPredictionWithDuration:(double)a3 withConfidence:(double)a4
+- (id)contentForInternalDurationPredictionWithDuration:(double)duration withConfidence:(double)confidence
 {
   v29 = *MEMORY[0x277D85DE8];
   v7 = objc_alloc_init(MEMORY[0x277CE1F60]);
-  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
+  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:duration];
   v9 = [MEMORY[0x277CCA968] localizedStringFromDate:v8 dateStyle:1 timeStyle:1];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[Internal]\nPredicted to be plugged in for %d hours and %d minutes - plugout at %@ with confidence %.2f", (a3 / 3600), ((((34953 * (a3 % 3600)) >> 16) >> 5) + (((a3 % 3600 + ((-30583 * (a3 % 3600)) >> 16)) & 0x8000) >> 15)), v9, *&a4];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[Internal]\nPredicted to be plugged in for %d hours and %d minutes - plugout at %@ with confidence %.2f", (duration / 3600), ((((34953 * (duration % 3600)) >> 16) >> 5) + (((duration % 3600 + ((-30583 * (duration % 3600)) >> 16)) & 0x8000) >> 15)), v9, *&confidence];
   v11 = [PowerUISmartChargeUtilities batteryLevelHistogramAroundTime:0 withDelta:7200.0 withOffset:7200.0];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -1350,12 +1350,12 @@ void __52__PowerUINotificationManager_removeCECNotifications__block_invoke(uint6
   v10 = v20;
 LABEL_8:
   v21 = @"Medium Length Charge Session Predicted";
-  if (a3 > 19800.0)
+  if (duration > 19800.0)
   {
     v21 = @"Long Charge Session Predicted";
   }
 
-  if (a3 < 5400.0)
+  if (duration < 5400.0)
   {
     v21 = @"Short Charge Session Predicted";
   }
@@ -1379,9 +1379,9 @@ LABEL_8:
   return v7;
 }
 
-- (void)postInternalChargeDurationNotificationWithDuration:(double)a3 withConfidence:(double)a4
+- (void)postInternalChargeDurationNotificationWithDuration:(double)duration withConfidence:(double)confidence
 {
-  v5 = [(PowerUINotificationManager *)self contentForInternalDurationPredictionWithDuration:a3 withConfidence:a4];
+  v5 = [(PowerUINotificationManager *)self contentForInternalDurationPredictionWithDuration:duration withConfidence:confidence];
   if (v5)
   {
     v6 = [MEMORY[0x277CE1FC0] requestWithIdentifier:@"charging-intelligence-notification" content:v5 trigger:0];
@@ -1395,15 +1395,15 @@ LABEL_8:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)postInternalChargingIntelligenceNotificationWithChargingStatus:(BOOL)a3 information:(id)a4 url:(id)a5 validUntil:(id)a6
+- (id)postInternalChargingIntelligenceNotificationWithChargingStatus:(BOOL)status information:(id)information url:(id)url validUntil:(id)until
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
+  urlCopy = url;
+  untilCopy = until;
+  informationCopy = information;
   [(PowerUINotificationManager *)self cancelNotificationRequestWithIdentifier:@"charging-intelligence-notification"];
   v12 = objc_alloc_init(MEMORY[0x277CE1F60]);
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", @"[Charging Intelligence Internal]", &stru_282D0B728];
-  [v12 setBody:v11];
+  [v12 setBody:informationCopy];
 
   v14 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:v13 arguments:0];
   [v12 setTitle:v14];
@@ -1413,44 +1413,44 @@ LABEL_8:
   [v12 setShouldHideDate:0];
   [v12 setShouldSuppressScreenLightUp:1];
   [v12 setCategoryIdentifier:@"chargingIntelligence"];
-  [v12 setExpirationDate:v10];
+  [v12 setExpirationDate:untilCopy];
 
   v15 = [MEMORY[0x277CE1FB0] iconForSystemImageNamed:@"bolt.fill"];
   [v12 setIcon:v15];
 
-  if (v9)
+  if (urlCopy)
   {
-    [v12 setDefaultActionURL:v9];
+    [v12 setDefaultActionURL:urlCopy];
   }
 
   v16 = [MEMORY[0x277CE1FC0] requestWithIdentifier:@"charging-intelligence-notification" content:v12 trigger:0];
   [(UNUserNotificationCenter *)self->_unCenter addNotificationRequest:v16 withCompletionHandler:0];
-  v17 = [v16 identifier];
+  identifier = [v16 identifier];
 
-  return v17;
+  return identifier;
 }
 
-- (void)handleLocationFailures:(id)a3
+- (void)handleLocationFailures:(id)failures
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 notification];
-  v6 = [v5 request];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:@"com.apple.powerui.note.location"];
+  failuresCopy = failures;
+  notification = [failuresCopy notification];
+  request = [notification request];
+  identifier = [request identifier];
+  v8 = [identifier isEqualToString:@"com.apple.powerui.note.location"];
 
   if (!v8)
   {
     goto LABEL_10;
   }
 
-  v9 = [v4 actionIdentifier];
-  if ([v9 isEqualToString:@"yesAction"])
+  actionIdentifier = [failuresCopy actionIdentifier];
+  if ([actionIdentifier isEqualToString:@"yesAction"])
   {
 
 LABEL_5:
-    v12 = [v4 actionIdentifier];
-    v13 = [v12 isEqualToString:@"noAction"];
+    actionIdentifier2 = [failuresCopy actionIdentifier];
+    v13 = [actionIdentifier2 isEqualToString:@"noAction"];
 
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -1475,27 +1475,27 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  v10 = [v4 actionIdentifier];
-  v11 = [v10 isEqualToString:@"noAction"];
+  actionIdentifier3 = [failuresCopy actionIdentifier];
+  v11 = [actionIdentifier3 isEqualToString:@"noAction"];
 
   if (v11)
   {
     goto LABEL_5;
   }
 
-  v17 = [v4 actionIdentifier];
-  v18 = [v17 isEqualToString:@"poweruiTTR"];
+  actionIdentifier4 = [failuresCopy actionIdentifier];
+  v18 = [actionIdentifier4 isEqualToString:@"poweruiTTR"];
 
   if (v18)
   {
-    v19 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v20 = [(PowerUINotificationManager *)self ttrURLforLocationFailure];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    ttrURLforLocationFailure = [(PowerUINotificationManager *)self ttrURLforLocationFailure];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __53__PowerUINotificationManager_handleLocationFailures___block_invoke_2;
     v21[3] = &unk_2782D4110;
     v21[4] = self;
-    [v19 openURL:v20 configuration:0 completionHandler:v21];
+    [defaultWorkspace openURL:ttrURLforLocationFailure configuration:0 completionHandler:v21];
   }
 
 LABEL_10:
@@ -1534,8 +1534,8 @@ void __53__PowerUINotificationManager_handleLocationFailures___block_invoke_2(ui
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"tap-to-radar://new?Title=OBC Location Error&Classification=Serious Bug&ComponentID=971083&ComponentName=PowerUI&ComponentVersion=all&Reproducible=Sometimes&Description=If you have charged here in the past, could you describe how recently and general frequency of charge sessions that are at least one hour long?"];
-  v4 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v4];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v5 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   v6 = [MEMORY[0x277CBEBC0] URLWithString:v5];
   log = self->_log;
@@ -1571,18 +1571,18 @@ void __53__PowerUINotificationManager_handleLocationFailures___block_invoke_2(ui
   [(UNUserNotificationCenter *)self->_unCenter addNotificationRequest:v5 withCompletionHandler:0];
 }
 
-- (void)cancelNotificationRequestWithIdentifier:(id)a3
+- (void)cancelNotificationRequestWithIdentifier:(id)identifier
 {
   v12[1] = *MEMORY[0x277D85DE8];
   unCenter = self->_unCenter;
-  v12[0] = a3;
+  v12[0] = identifier;
   v5 = MEMORY[0x277CBEA60];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [v5 arrayWithObjects:v12 count:1];
   [(UNUserNotificationCenter *)unCenter removeDeliveredNotificationsWithIdentifiers:v7];
 
   v8 = self->_unCenter;
-  v11 = v6;
+  v11 = identifierCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
   [(UNUserNotificationCenter *)v8 removePendingNotificationRequestsWithIdentifiers:v9];
 

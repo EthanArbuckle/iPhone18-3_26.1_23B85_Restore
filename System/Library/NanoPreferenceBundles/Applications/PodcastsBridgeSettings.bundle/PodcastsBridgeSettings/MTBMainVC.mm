@@ -1,7 +1,7 @@
 @interface MTBMainVC
 - (BOOL)_isOutOfSpace;
-- (BOOL)_isPodcastWithFeedURLPinned:(id)a3;
-- (BOOL)_isStationWithUUIDPinned:(id)a3;
+- (BOOL)_isPodcastWithFeedURLPinned:(id)pinned;
+- (BOOL)_isStationWithUUIDPinned:(id)pinned;
 - (BOOL)_legacyIsCharging;
 - (BOOL)_shouldShowProgress;
 - (MTBMainVC)init;
@@ -13,42 +13,42 @@
 - (PSSpecifier)podcastsSettingsSpecifier;
 - (PSSpecifier)signInSpecifier;
 - (float)_contentHeaderViewProgress;
-- (id)_cellImageWithSymbolName:(id)a3;
+- (id)_cellImageWithSymbolName:(id)name;
 - (id)_contentHeaderViewSubtitle;
 - (id)_contentHeaderViewTitle;
 - (id)_localizedEpisodeDownloadExplanation;
 - (id)_newLoadingSpecifier;
 - (id)_podcastSpecifiers;
-- (id)_podcastSwitchCellValueForSpecifier:(id)a3;
+- (id)_podcastSwitchCellValueForSpecifier:(id)specifier;
 - (id)_savedAndStationSpecifiers;
-- (id)_savedEpisodesSwitchCellValueForSpecifier:(id)a3;
+- (id)_savedEpisodesSwitchCellValueForSpecifier:(id)specifier;
 - (id)_selfOrPresentedViewController;
-- (id)_specifierForPodcast:(id)a3;
+- (id)_specifierForPodcast:(id)podcast;
 - (id)_specifierForSavedEpisodes;
-- (id)_specifierForStation:(id)a3;
-- (id)_stationSwitchCellValueForSpecifier:(id)a3;
+- (id)_specifierForStation:(id)station;
+- (id)_stationSwitchCellValueForSpecifier:(id)specifier;
 - (id)_syncGroupSpecifiers;
 - (id)specifiers;
-- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)a3;
+- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)state;
 - (void)_configureHeaderIfNeeded;
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3;
-- (void)_handleApplicationWillEnterForegroundNotification:(id)a3;
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification;
+- (void)_handleApplicationWillEnterForegroundNotification:(id)notification;
 - (void)_handlePodcastsDidUpdateNotification;
-- (void)_handlePodcastsIdentifiersDidChangeNotification:(id)a3;
-- (void)_handleSyncInfoDidUpdateNotification:(id)a3;
+- (void)_handlePodcastsIdentifiersDidChangeNotification:(id)notification;
+- (void)_handleSyncInfoDidUpdateNotification:(id)notification;
 - (void)_launchPodcasts;
-- (void)_podcastsSettingsAction:(id)a3;
+- (void)_podcastsSettingsAction:(id)action;
 - (void)_reload;
-- (void)_setPodcastSwitchCell:(id)a3 specifier:(id)a4;
-- (void)_setSavedEpisodesSwitchCell:(id)a3 specifier:(id)a4;
-- (void)_setStationSwitchCell:(id)a3 specifier:(id)a4;
+- (void)_setPodcastSwitchCell:(id)cell specifier:(id)specifier;
+- (void)_setSavedEpisodesSwitchCell:(id)cell specifier:(id)specifier;
+- (void)_setStationSwitchCell:(id)cell specifier:(id)specifier;
 - (void)_showSyncStorageWarning;
-- (void)_signInAction:(id)a3;
+- (void)_signInAction:(id)action;
 - (void)_updateHeaderAndSyncProgress;
 - (void)_updateProgressIfNeeded;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -72,9 +72,9 @@
     v6 = +[NRPairedDeviceRegistry sharedInstance];
     v7 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v8 = [v6 getAllDevicesWithArchivedAltAccountDevicesMatching:v7];
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
     v10 = [[NSUUID alloc] initWithUUIDString:@"2E9A45BB-4F07-4D6B-9B65-41933EED0DCA"];
-    v11 = [v9 supportsCapability:v10];
+    v11 = [firstObject supportsCapability:v10];
 
     if (v11)
     {
@@ -126,9 +126,9 @@
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"2E9A45BB-4F07-4D6B-9B65-41933EED0DCA"];
-  if ([v6 supportsCapability:v7])
+  if ([firstObject supportsCapability:v7])
   {
     syncInfoController = self->_syncInfoController;
 
@@ -156,8 +156,8 @@
   if (!cachedPinnedFeedURLs)
   {
     v4 = +[NMSMediaPinningManager sharedManager];
-    v5 = [v4 podcastFeedURLs];
-    v6 = [NSOrderedSet orderedSetWithArray:v5];
+    podcastFeedURLs = [v4 podcastFeedURLs];
+    v6 = [NSOrderedSet orderedSetWithArray:podcastFeedURLs];
     v7 = self->_cachedPinnedFeedURLs;
     self->_cachedPinnedFeedURLs = v6;
 
@@ -173,8 +173,8 @@
   if (!cachedPinnedStationUUIDs)
   {
     v4 = +[NMSMediaPinningManager sharedManager];
-    v5 = [v4 podcastStationUUIDs];
-    v6 = [NSOrderedSet orderedSetWithArray:v5];
+    podcastStationUUIDs = [v4 podcastStationUUIDs];
+    v6 = [NSOrderedSet orderedSetWithArray:podcastStationUUIDs];
     v7 = self->_cachedPinnedStationUUIDs;
     self->_cachedPinnedStationUUIDs = v6;
 
@@ -192,9 +192,9 @@
   {
     v5 = +[NSMutableArray array];
     v6 = +[NMBUIAccountUtil sharedInstance];
-    v7 = [v6 hasITunesAccount];
+    hasITunesAccount = [v6 hasITunesAccount];
 
-    if (v7)
+    if (hasITunesAccount)
     {
       v8 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
       v9 = [v8 BOOLForKey:kMTSyncSubscriptionsKey];
@@ -206,23 +206,23 @@
         [v10 setProperty:v11 forKey:PSFooterTextGroupKey];
 
         [v5 addObject:v10];
-        v12 = [(MTBMainVC *)self _syncGroupSpecifiers];
-        [v5 addObjectsFromArray:v12];
+        _syncGroupSpecifiers = [(MTBMainVC *)self _syncGroupSpecifiers];
+        [v5 addObjectsFromArray:_syncGroupSpecifiers];
 
         v13 = +[NMSMediaPinningManager sharedManager];
-        v14 = [v13 pinnedPodcastsAreUserSet];
+        pinnedPodcastsAreUserSet = [v13 pinnedPodcastsAreUserSet];
 
-        if (!v14)
+        if (!pinnedPodcastsAreUserSet)
         {
 LABEL_10:
 
           v30.receiver = self;
           v30.super_class = MTBMainVC;
-          v21 = [(MTBMainVC *)&v30 specifiers];
-          v22 = v21;
-          if (v21)
+          specifiers = [(MTBMainVC *)&v30 specifiers];
+          v22 = specifiers;
+          if (specifiers)
           {
-            v23 = v21;
+            v23 = specifiers;
           }
 
           else
@@ -245,11 +245,11 @@ LABEL_10:
           goto LABEL_14;
         }
 
-        v15 = [(MTBMainVC *)self _savedAndStationSpecifiers];
-        [v5 addObjectsFromArray:v15];
+        _savedAndStationSpecifiers = [(MTBMainVC *)self _savedAndStationSpecifiers];
+        [v5 addObjectsFromArray:_savedAndStationSpecifiers];
 
-        v16 = [(MTBMainVC *)self _podcastSpecifiers];
-        [v5 addObjectsFromArray:v16];
+        _podcastSpecifiers = [(MTBMainVC *)self _podcastSpecifiers];
+        [v5 addObjectsFromArray:_podcastSpecifiers];
 LABEL_9:
 
         goto LABEL_10;
@@ -260,8 +260,8 @@ LABEL_9:
       [v10 setProperty:v19 forKey:PSFooterTextGroupKey];
 
       v31[0] = v10;
-      v16 = [(MTBMainVC *)self podcastsSettingsSpecifier];
-      v31[1] = v16;
+      _podcastSpecifiers = [(MTBMainVC *)self podcastsSettingsSpecifier];
+      v31[1] = _podcastSpecifiers;
       v18 = v31;
     }
 
@@ -272,8 +272,8 @@ LABEL_9:
       [v10 setProperty:v17 forKey:PSFooterTextGroupKey];
 
       v32[0] = v10;
-      v16 = [(MTBMainVC *)self signInSpecifier];
-      v32[1] = v16;
+      _podcastSpecifiers = [(MTBMainVC *)self signInSpecifier];
+      v32[1] = _podcastSpecifiers;
       v18 = v32;
     }
 
@@ -321,19 +321,19 @@ LABEL_14:
 
     [v14 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     v15 = +[NMSMediaPinningManager sharedManager];
-    v16 = [v15 pinnedPodcastsAreUserSet];
+    pinnedPodcastsAreUserSet = [v15 pinnedPodcastsAreUserSet];
 
-    if (v16)
+    if (pinnedPodcastsAreUserSet)
     {
-      v17 = [(MTBMainVC *)self _localizedEpisodeDownloadExplanation];
-      [v14 setProperty:v17 forKey:PSFooterTextGroupKey];
+      _localizedEpisodeDownloadExplanation = [(MTBMainVC *)self _localizedEpisodeDownloadExplanation];
+      [v14 setProperty:_localizedEpisodeDownloadExplanation forKey:PSFooterTextGroupKey];
       v18 = &self->_syncCustomCellSpecifier;
     }
 
     else
     {
-      v17 = +[NSBundle podcastsFoundationBundle];
-      v19 = [v17 localizedStringForKey:@"UP_NEXT_FOOTER_STRING" value:@"Your iPhone will try to add one episode from each of the top 10 shows in Up Next." table:0];
+      _localizedEpisodeDownloadExplanation = +[NSBundle podcastsFoundationBundle];
+      v19 = [_localizedEpisodeDownloadExplanation localizedStringForKey:@"UP_NEXT_FOOTER_STRING" value:@"Your iPhone will try to add one episode from each of the top 10 shows in Up Next." table:0];
       [v14 setProperty:v19 forKey:PSFooterTextGroupKey];
 
       v18 = p_syncUpNextCellSpecifier;
@@ -373,7 +373,7 @@ LABEL_14:
   return signInSpecifier;
 }
 
-- (void)_signInAction:(id)a3
+- (void)_signInAction:(id)action
 {
   v4 = [NSURL URLWithString:@"prefs:root=APPLE_ACCOUNT&path=STORE_SERVICE"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
@@ -398,25 +398,25 @@ LABEL_14:
   return podcastsSettingsSpecifier;
 }
 
-- (BOOL)_isPodcastWithFeedURLPinned:(id)a3
+- (BOOL)_isPodcastWithFeedURLPinned:(id)pinned
 {
-  v4 = a3;
-  v5 = [(MTBMainVC *)self cachedPinnedFeedURLs];
-  v6 = [v5 containsObject:v4];
+  pinnedCopy = pinned;
+  cachedPinnedFeedURLs = [(MTBMainVC *)self cachedPinnedFeedURLs];
+  v6 = [cachedPinnedFeedURLs containsObject:pinnedCopy];
 
   return v6;
 }
 
-- (BOOL)_isStationWithUUIDPinned:(id)a3
+- (BOOL)_isStationWithUUIDPinned:(id)pinned
 {
-  v4 = a3;
-  v5 = [(MTBMainVC *)self cachedPinnedStationUUIDs];
-  v6 = [v5 containsObject:v4];
+  pinnedCopy = pinned;
+  cachedPinnedStationUUIDs = [(MTBMainVC *)self cachedPinnedStationUUIDs];
+  v6 = [cachedPinnedStationUUIDs containsObject:pinnedCopy];
 
   return v6;
 }
 
-- (void)_podcastsSettingsAction:(id)a3
+- (void)_podcastsSettingsAction:(id)action
 {
   v4 = [NSURL URLWithString:@"app-prefs:com.apple.podcasts"];
   v3 = +[LSApplicationWorkspace defaultWorkspace];
@@ -433,12 +433,12 @@ LABEL_14:
   return v2;
 }
 
-- (void)_setPodcastSwitchCell:(id)a3 specifier:(id)a4
+- (void)_setPodcastSwitchCell:(id)cell specifier:(id)specifier
 {
   v5 = NMBUISpecifierModelObjectKey;
-  v6 = a3;
-  v9 = [a4 propertyForKey:v5];
-  LODWORD(v5) = [v6 BOOLValue];
+  cellCopy = cell;
+  v9 = [specifier propertyForKey:v5];
+  LODWORD(v5) = [cellCopy BOOLValue];
 
   v7 = +[NMSMediaPinningManager sharedManager];
   v8 = v7;
@@ -453,22 +453,22 @@ LABEL_14:
   }
 }
 
-- (id)_podcastSwitchCellValueForSpecifier:(id)a3
+- (id)_podcastSwitchCellValueForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:NMBUISpecifierModelObjectKey];
+  v4 = [specifier propertyForKey:NMBUISpecifierModelObjectKey];
   v5 = [NSNumber numberWithBool:[(MTBMainVC *)self _isPodcastWithFeedURLPinned:v4]];
 
   return v5;
 }
 
-- (void)_setSavedEpisodesSwitchCell:(id)a3 specifier:(id)a4
+- (void)_setSavedEpisodesSwitchCell:(id)cell specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [cell BOOLValue];
   v5 = +[NMSMediaPinningManager sharedManager];
-  [v5 setSavedEpisodesEnabled:v4];
+  [v5 setSavedEpisodesEnabled:bOOLValue];
 }
 
-- (id)_savedEpisodesSwitchCellValueForSpecifier:(id)a3
+- (id)_savedEpisodesSwitchCellValueForSpecifier:(id)specifier
 {
   v3 = +[NMSMediaPinningManager sharedManager];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 savedEpisodesEnabled]);
@@ -476,12 +476,12 @@ LABEL_14:
   return v4;
 }
 
-- (void)_setStationSwitchCell:(id)a3 specifier:(id)a4
+- (void)_setStationSwitchCell:(id)cell specifier:(id)specifier
 {
   v5 = NMBUISpecifierModelObjectKey;
-  v6 = a3;
-  v9 = [a4 propertyForKey:v5];
-  LODWORD(v5) = [v6 BOOLValue];
+  cellCopy = cell;
+  v9 = [specifier propertyForKey:v5];
+  LODWORD(v5) = [cellCopy BOOLValue];
 
   v7 = +[NMSMediaPinningManager sharedManager];
   v8 = v7;
@@ -496,9 +496,9 @@ LABEL_14:
   }
 }
 
-- (id)_stationSwitchCellValueForSpecifier:(id)a3
+- (id)_stationSwitchCellValueForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:NMBUISpecifierModelObjectKey];
+  v4 = [specifier propertyForKey:NMBUISpecifierModelObjectKey];
   v5 = [NSNumber numberWithBool:[(MTBMainVC *)self _isStationWithUUIDPinned:v4]];
 
   return v5;
@@ -515,8 +515,8 @@ LABEL_14:
       v5 = +[MTPodcast predicateForEntitledShows];
       v6 = [v4 AND:v5];
       v7 = kPodcastTitle;
-      v8 = [NSPredicate predicateWithFormat:@"%K != NULL", kPodcastTitle];
-      v9 = [v6 AND:v8];
+      kPodcastTitle = [NSPredicate predicateWithFormat:@"%K != NULL", kPodcastTitle];
+      v9 = [v6 AND:kPodcastTitle];
       [v3 setPredicate:v9];
 
       v10 = [MTPodcast sortDescriptorsForTitle:1];
@@ -531,13 +531,13 @@ LABEL_14:
       [v3 setFetchBatchSize:20];
       v12 = [NSFetchedResultsController alloc];
       v13 = +[MTDB sharedInstance];
-      v14 = [v13 mainQueueContext];
-      v15 = [v12 initWithFetchRequest:v3 managedObjectContext:v14 sectionNameKeyPath:0 cacheName:0];
+      mainQueueContext = [v13 mainQueueContext];
+      v15 = [v12 initWithFetchRequest:v3 managedObjectContext:mainQueueContext sectionNameKeyPath:0 cacheName:0];
 
       v22 = 0;
-      LOBYTE(v14) = [(NSFetchedResultsController *)v15 performFetch:&v22];
+      LOBYTE(mainQueueContext) = [(NSFetchedResultsController *)v15 performFetch:&v22];
       v16 = v22;
-      if ((v14 & 1) == 0)
+      if ((mainQueueContext & 1) == 0)
       {
         v17 = _MTLogCategoryBridge();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -578,8 +578,8 @@ LABEL_14:
     {
       v3 = [NSFetchRequest fetchRequestWithEntityName:kMTPlaylistEntityName];
       v4 = +[MTPlaylist topLevelPlaylistsPredicate];
-      v5 = [NSPredicate predicateWithFormat:@"%K != NULL", kPlaylistTitle];
-      v6 = [v4 AND:v5];
+      kPlaylistTitle = [NSPredicate predicateWithFormat:@"%K != NULL", kPlaylistTitle];
+      v6 = [v4 AND:kPlaylistTitle];
       [v3 setPredicate:v6];
 
       v7 = +[MTPlaylist sortDescriptors];
@@ -587,9 +587,9 @@ LABEL_14:
 
       [v3 setFetchBatchSize:20];
       v8 = +[MTDB sharedInstance];
-      v9 = [v8 mainQueueContext];
+      mainQueueContext = [v8 mainQueueContext];
 
-      v10 = [[NSFetchedResultsController alloc] initWithFetchRequest:v3 managedObjectContext:v9 sectionNameKeyPath:0 cacheName:0];
+      v10 = [[NSFetchedResultsController alloc] initWithFetchRequest:v3 managedObjectContext:mainQueueContext sectionNameKeyPath:0 cacheName:0];
       v18 = 0;
       v11 = [(NSFetchedResultsController *)v10 performFetch:&v18];
       v12 = v18;
@@ -626,7 +626,7 @@ LABEL_14:
   return v16;
 }
 
-- (void)_handlePodcastsIdentifiersDidChangeNotification:(id)a3
+- (void)_handlePodcastsIdentifiersDidChangeNotification:(id)notification
 {
   cachedPinnedFeedURLs = self->_cachedPinnedFeedURLs;
   self->_cachedPinnedFeedURLs = 0;
@@ -637,12 +637,12 @@ LABEL_14:
   [(MTBMainVC *)self _reload];
 }
 
-- (void)_handleSyncInfoDidUpdateNotification:(id)a3
+- (void)_handleSyncInfoDidUpdateNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(MTBMainVC *)self syncInfoController];
+  object = [notification object];
+  syncInfoController = [(MTBMainVC *)self syncInfoController];
 
-  if (v4 == v5)
+  if (object == syncInfoController)
   {
 
     [(MTBMainVC *)self _updateHeaderAndSyncProgress];
@@ -659,48 +659,48 @@ LABEL_14:
   }
 }
 
-- (void)_handleApplicationWillEnterForegroundNotification:(id)a3
+- (void)_handleApplicationWillEnterForegroundNotification:(id)notification
 {
-  v3 = [(MTBMainVC *)self syncInfoController];
-  [v3 beginObservingSyncInfo];
+  syncInfoController = [(MTBMainVC *)self syncInfoController];
+  [syncInfoController beginObservingSyncInfo];
 }
 
-- (void)_handleApplicationDidEnterBackgroundNotification:(id)a3
+- (void)_handleApplicationDidEnterBackgroundNotification:(id)notification
 {
-  v3 = [(MTBMainVC *)self syncInfoController];
-  [v3 endObservingSyncInfo];
+  syncInfoController = [(MTBMainVC *)self syncInfoController];
+  [syncInfoController endObservingSyncInfo];
 }
 
 - (void)_handlePodcastsDidUpdateNotification
 {
   [(MTBMainVC *)self setWaitingForDatabaseSetup:0];
-  v3 = [(MTBMainVC *)self availablePodcastsFetchedResultsController];
-  [v3 performFetch:0];
+  availablePodcastsFetchedResultsController = [(MTBMainVC *)self availablePodcastsFetchedResultsController];
+  [availablePodcastsFetchedResultsController performFetch:0];
 
-  v4 = [(MTBMainVC *)self availablePodcastStationsFetchedResultsController];
-  [v4 performFetch:0];
+  availablePodcastStationsFetchedResultsController = [(MTBMainVC *)self availablePodcastStationsFetchedResultsController];
+  [availablePodcastStationsFetchedResultsController performFetch:0];
 
   [(MTBMainVC *)self _reload];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
   v14 = v13;
-  if (v13 != v11)
+  if (v13 != objectCopy)
   {
 
 LABEL_5:
     v16.receiver = self;
     v16.super_class = MTBMainVC;
-    [(MTBMainVC *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MTBMainVC *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_6;
   }
 
-  v15 = [v10 isEqualToString:kMTSyncSubscriptionsKey];
+  v15 = [pathCopy isEqualToString:kMTSyncSubscriptionsKey];
 
   if (!v15)
   {
@@ -716,19 +716,19 @@ LABEL_6:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"C7C06707-D0C2-405E-AFB4-7F215413B262"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (!v8)
   {
     v13 = +[NMSMediaPinningManager sharedManager];
-    v14 = [v13 podcastFeedURLs];
-    v15 = [v14 count];
+    podcastFeedURLs = [v13 podcastFeedURLs];
+    v15 = [podcastFeedURLs count];
 
     v16 = +[NMSMediaPinningManager sharedManager];
-    v17 = [v16 podcastStationUUIDs];
-    v18 = [v17 count];
+    podcastStationUUIDs = [v16 podcastStationUUIDs];
+    v18 = [podcastStationUUIDs count];
 
     if (v15 && v18)
     {
@@ -762,18 +762,18 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  v9 = [(MTBMainVC *)self syncInfoController];
-  v10 = [v9 syncInfo];
-  v11 = [v10 itemCount];
+  syncInfoController = [(MTBMainVC *)self syncInfoController];
+  syncInfo = [syncInfoController syncInfo];
+  itemCount = [syncInfo itemCount];
 
-  if (!v11)
+  if (!itemCount)
   {
 LABEL_12:
     v12 = +[MTBridgeUtilities localizedNoPodcastsString];
     goto LABEL_13;
   }
 
-  v12 = [MTBridgeUtilities localizedStringForEpisodeCount:v11];
+  v12 = [MTBridgeUtilities localizedStringForEpisodeCount:itemCount];
 LABEL_13:
   v21 = v12;
 LABEL_14:
@@ -786,24 +786,24 @@ LABEL_14:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"C7C06707-D0C2-405E-AFB4-7F215413B262"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (!v8)
   {
     v16 = +[NMSMediaPinningManager sharedManager];
-    v17 = [v16 podcastFeedURLs];
-    if (![v17 count])
+    podcastFeedURLs = [v16 podcastFeedURLs];
+    if (![podcastFeedURLs count])
     {
       v18 = +[NMSMediaPinningManager sharedManager];
-      v19 = [v18 podcastStationUUIDs];
-      if (![v19 count])
+      podcastStationUUIDs = [v18 podcastStationUUIDs];
+      if (![podcastStationUUIDs count])
       {
         v30 = +[NMSMediaPinningManager sharedManager];
-        v31 = [v30 savedEpisodesEnabled];
+        savedEpisodesEnabled = [v30 savedEpisodesEnabled];
 
-        if ((v31 & 1) == 0)
+        if ((savedEpisodesEnabled & 1) == 0)
         {
           goto LABEL_3;
         }
@@ -815,19 +815,19 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  v9 = [(MTBMainVC *)self syncInfoController];
-  v10 = [v9 syncInfo];
-  v11 = [v10 itemCount];
+  syncInfoController = [(MTBMainVC *)self syncInfoController];
+  syncInfo = [syncInfoController syncInfo];
+  itemCount = [syncInfo itemCount];
 
-  if (!v11)
+  if (!itemCount)
   {
 LABEL_3:
     v12 = +[NSBundle podcastsFoundationBundle];
-    v13 = v12;
+    syncInfoController2 = v12;
     v14 = @"SYNC_SETTINGS_CONTENT_SUMMARY_HEADER_NOTHING_ADDED_MESSAGE";
     v15 = @"You can choose to automatically keep your Up Next episodes up-to-date on your Apple Watch, or manually add shows and stations from your iPhone.";
 LABEL_13:
-    v26 = [v12 localizedStringForKey:v14 value:v15 table:0];
+    syncStatusDetailText = [v12 localizedStringForKey:v14 value:v15 table:0];
     goto LABEL_14;
   }
 
@@ -835,32 +835,32 @@ LABEL_8:
   v20 = +[NRPairedDeviceRegistry sharedInstance];
   v21 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v22 = [v20 getAllDevicesWithArchivedAltAccountDevicesMatching:v21];
-  v23 = [v22 firstObject];
+  firstObject2 = [v22 firstObject];
   v24 = [[NSUUID alloc] initWithUUIDString:@"2E9A45BB-4F07-4D6B-9B65-41933EED0DCA"];
-  v25 = [v23 supportsCapability:v24];
+  v25 = [firstObject2 supportsCapability:v24];
 
   if (!v25)
   {
     if ([(MTBMainVC *)self _legacyIsCharging])
     {
-      v13 = +[NMSSyncManager sharedManager];
-      v27 = [v13 podcastsProgressInfo];
-      v28 = [v27 _trackProgressTextForMediaType:4];
+      syncInfoController2 = +[NMSSyncManager sharedManager];
+      podcastsProgressInfo = [syncInfoController2 podcastsProgressInfo];
+      v28 = [podcastsProgressInfo _trackProgressTextForMediaType:4];
 
       goto LABEL_15;
     }
 
     v12 = +[NSBundle podcastsFoundationBundle];
-    v13 = v12;
+    syncInfoController2 = v12;
     v14 = @"SYNC_SETTINGS_OFF_PUCK_HEADER_MESSAGE";
     v15 = @"Podcasts download when Apple Watch is charging";
     goto LABEL_13;
   }
 
-  v13 = [(MTBMainVC *)self syncInfoController];
-  v26 = [v13 syncStatusDetailText];
+  syncInfoController2 = [(MTBMainVC *)self syncInfoController];
+  syncStatusDetailText = [syncInfoController2 syncStatusDetailText];
 LABEL_14:
-  v28 = v26;
+  v28 = syncStatusDetailText;
 LABEL_15:
 
   return v28;
@@ -871,22 +871,22 @@ LABEL_15:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"2E9A45BB-4F07-4D6B-9B65-41933EED0DCA"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(MTBMainVC *)self syncInfoController];
-    v10 = [v9 syncInfo];
-    [v10 progress];
+    syncInfoController = [(MTBMainVC *)self syncInfoController];
+    syncInfo = [syncInfoController syncInfo];
+    [syncInfo progress];
   }
 
   else
   {
-    v9 = +[NMSSyncManager sharedManager];
-    v10 = [v9 podcastsProgressInfo];
-    [v10 estimatedSyncProgress];
+    syncInfoController = +[NMSSyncManager sharedManager];
+    syncInfo = [syncInfoController podcastsProgressInfo];
+    [syncInfo estimatedSyncProgress];
   }
 
   v12 = v11;
@@ -899,17 +899,17 @@ LABEL_15:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"2E9A45BB-4F07-4D6B-9B65-41933EED0DCA"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(MTBMainVC *)self syncInfoController];
-    v10 = [v9 syncInfo];
-    v11 = [v10 hasItemsOverStorageLimit];
+    syncInfoController = [(MTBMainVC *)self syncInfoController];
+    syncInfo = [syncInfoController syncInfo];
+    hasItemsOverStorageLimit = [syncInfo hasItemsOverStorageLimit];
 
-    return v11;
+    return hasItemsOverStorageLimit;
   }
 
   v36 = 0u;
@@ -917,9 +917,9 @@ LABEL_15:
   v34 = 0u;
   v35 = 0u;
   v13 = +[NMSMediaPinningManager sharedManager];
-  v14 = [v13 podcastFeedURLs];
+  podcastFeedURLs = [v13 podcastFeedURLs];
 
-  v15 = [v14 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  v15 = [podcastFeedURLs countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v15)
   {
     v16 = v15;
@@ -930,7 +930,7 @@ LABEL_5:
     {
       if (*v35 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(podcastFeedURLs);
       }
 
       v19 = [NMSMediaItemGroup itemGroupWithCustomPodcastFeedURL:*(*(&v34 + 1) + 8 * v18) downloadedItemsOnly:0];
@@ -944,7 +944,7 @@ LABEL_5:
 
       if (v16 == ++v18)
       {
-        v16 = [v14 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v16 = [podcastFeedURLs countByEnumeratingWithState:&v34 objects:v39 count:16];
         if (v16)
         {
           goto LABEL_5;
@@ -964,9 +964,9 @@ LABEL_11:
     v30 = 0u;
     v31 = 0u;
     v22 = +[NMSMediaPinningManager sharedManager];
-    v14 = [v22 podcastStationUUIDs];
+    podcastFeedURLs = [v22 podcastStationUUIDs];
 
-    v23 = [v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    v23 = [podcastFeedURLs countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (!v23)
     {
 LABEL_19:
@@ -982,7 +982,7 @@ LABEL_13:
     {
       if (*v31 != v25)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(podcastFeedURLs);
       }
 
       v27 = [NMSMediaItemGroup itemGroupWithPodcastStationUUID:*(*(&v30 + 1) + 8 * v26) downloadedItemsOnly:0];
@@ -996,7 +996,7 @@ LABEL_13:
 
       if (v24 == ++v26)
       {
-        v24 = [v14 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v24 = [podcastFeedURLs countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v24)
         {
           goto LABEL_13;
@@ -1015,24 +1015,24 @@ LABEL_13:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"C7C06707-D0C2-405E-AFB4-7F215413B262"];
-  v8 = [v6 supportsCapability:v7];
+  v8 = [firstObject supportsCapability:v7];
 
   if (v8)
   {
-    v9 = [(MTBMainVC *)self syncInfoController];
-    v10 = [v9 syncInfo];
-    if ([v10 itemCount])
+    syncInfoController = [(MTBMainVC *)self syncInfoController];
+    syncInfo = [syncInfoController syncInfo];
+    if ([syncInfo itemCount])
     {
-      v11 = [(MTBMainVC *)self syncInfoController];
-      v12 = [v11 syncInfo];
-      v13 = [v12 status] != &dword_4;
+      syncInfoController2 = [(MTBMainVC *)self syncInfoController];
+      syncInfo2 = [syncInfoController2 syncInfo];
+      _isSyncing = [syncInfo2 status] != &dword_4;
     }
 
     else
     {
-      v13 = 0;
+      _isSyncing = 0;
     }
 
     goto LABEL_15;
@@ -1041,27 +1041,27 @@ LABEL_13:
   v14 = +[NRPairedDeviceRegistry sharedInstance];
   v15 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v16 = [v14 getAllDevicesWithArchivedAltAccountDevicesMatching:v15];
-  v17 = [v16 firstObject];
+  firstObject2 = [v16 firstObject];
   v18 = [[NSUUID alloc] initWithUUIDString:@"2E9A45BB-4F07-4D6B-9B65-41933EED0DCA"];
-  v19 = [v17 supportsCapability:v18];
+  v19 = [firstObject2 supportsCapability:v18];
 
   if (v19)
   {
     v20 = +[NMSMediaPinningManager sharedManager];
-    v21 = [v20 podcastFeedURLs];
-    v22 = [v21 count];
+    podcastFeedURLs = [v20 podcastFeedURLs];
+    v22 = [podcastFeedURLs count];
 
     v23 = +[NMSMediaPinningManager sharedManager];
-    v24 = [v23 podcastStationUUIDs];
-    v25 = [v24 count];
+    podcastStationUUIDs = [v23 podcastStationUUIDs];
+    v25 = [podcastStationUUIDs count];
 
     v26 = -v25;
     v27 = +[NRPairedDeviceRegistry sharedInstance];
     v28 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v29 = [v27 getAllDevicesWithArchivedAltAccountDevicesMatching:v28];
-    v30 = [v29 firstObject];
+    firstObject3 = [v29 firstObject];
     v31 = [[NSUUID alloc] initWithUUIDString:@"B743795D-BA43-40D7-BA73-D1415B0895D4"];
-    v32 = [v30 supportsCapability:v31];
+    v32 = [firstObject3 supportsCapability:v31];
 
     if (v32)
     {
@@ -1071,9 +1071,9 @@ LABEL_13:
       }
 
       v33 = +[NMSMediaPinningManager sharedManager];
-      v34 = [v33 savedEpisodesEnabled];
+      savedEpisodesEnabled = [v33 savedEpisodesEnabled];
 
-      if (v34)
+      if (savedEpisodesEnabled)
       {
         goto LABEL_14;
       }
@@ -1082,21 +1082,21 @@ LABEL_13:
     else if (v22 != v26)
     {
 LABEL_14:
-      v9 = [(MTBMainVC *)self syncInfoController];
-      v10 = [v9 syncInfo];
-      v13 = [v10 status] != &dword_4;
+      syncInfoController = [(MTBMainVC *)self syncInfoController];
+      syncInfo = [syncInfoController syncInfo];
+      _isSyncing = [syncInfo status] != &dword_4;
       goto LABEL_15;
     }
   }
 
   else if ([(MTBMainVC *)self _legacyIsCharging])
   {
-    v9 = +[NMSSyncManager sharedManager];
-    v10 = [v9 podcastsProgressInfo];
-    v13 = [v10 _isSyncing];
+    syncInfoController = +[NMSSyncManager sharedManager];
+    syncInfo = [syncInfoController podcastsProgressInfo];
+    _isSyncing = [syncInfo _isSyncing];
 LABEL_15:
 
-    return v13;
+    return _isSyncing;
   }
 
   return 0;
@@ -1109,14 +1109,14 @@ LABEL_15:
     return;
   }
 
-  v39 = [(MTBMainVC *)self table];
+  table = [(MTBMainVC *)self table];
   v3 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
   if ([v3 BOOLForKey:kMTSyncSubscriptionsKey])
   {
     v4 = +[NMBUIAccountUtil sharedInstance];
-    v5 = [v4 hasITunesAccount];
+    hasITunesAccount = [v4 hasITunesAccount];
 
-    if (v5)
+    if (hasITunesAccount)
     {
       v6 = +[NSMutableArray array];
       if ([(MTBMainVC *)self _isOutOfSpace])
@@ -1131,12 +1131,12 @@ LABEL_15:
         [v12 setTintColor:v13];
 
         v14 = +[MTBridgeUtilities localizedOutOfSpaceHeaderTitle];
-        v15 = [v12 textLabel];
-        [v15 setText:v14];
+        textLabel = [v12 textLabel];
+        [textLabel setText:v14];
 
         v16 = +[MTBridgeUtilities localizedOutOfSpaceHeaderMessage];
-        v17 = [v12 detailTextLabel];
-        [v17 setText:v16];
+        detailTextLabel = [v12 detailTextLabel];
+        [detailTextLabel setText:v16];
 
         [v12 setPreservesSuperviewLayoutMargins:1];
         [v6 addObject:v12];
@@ -1151,42 +1151,42 @@ LABEL_15:
       }
 
       v18 = [[NMBUIContentHeaderView alloc] initWithFrame:{x, y, width, height}];
-      v19 = [(MTBMainVC *)self _contentHeaderViewTitle];
-      v20 = [v18 textLabel];
-      [v20 setText:v19];
+      _contentHeaderViewTitle = [(MTBMainVC *)self _contentHeaderViewTitle];
+      textLabel2 = [v18 textLabel];
+      [textLabel2 setText:_contentHeaderViewTitle];
 
-      v21 = [(MTBMainVC *)self _contentHeaderViewSubtitle];
-      v22 = [v18 detailTextLabel];
-      [v22 setText:v21];
+      _contentHeaderViewSubtitle = [(MTBMainVC *)self _contentHeaderViewSubtitle];
+      detailTextLabel2 = [v18 detailTextLabel];
+      [detailTextLabel2 setText:_contentHeaderViewSubtitle];
 
       [v18 setPreservesSuperviewLayoutMargins:1];
       if ([(MTBMainVC *)self _shouldShowProgress])
       {
         [(MTBMainVC *)self _contentHeaderViewProgress];
         v24 = v23;
-        v25 = [v18 progressView];
+        progressView = [v18 progressView];
         LODWORD(v26) = v24;
-        [v25 setProgress:v26];
+        [progressView setProgress:v26];
       }
 
       [v6 addObject:v18];
       v27 = [[UIStackView alloc] initWithArrangedSubviews:v6];
       [v27 setAxis:1];
-      [v39 directionalLayoutMargins];
+      [table directionalLayoutMargins];
       v29 = v28;
       v30 = +[UIListContentConfiguration cellConfiguration];
       [v30 directionalLayoutMargins];
       v32 = v29 + v31;
 
       [v27 setDirectionalLayoutMargins:{0.0, v32, 0.0, v32}];
-      [v39 bounds];
+      [table bounds];
       v34 = v33;
       v36 = v35;
       LODWORD(v33) = 1148846080;
       LODWORD(v35) = 1112014848;
       [v27 systemLayoutSizeFittingSize:v34 withHorizontalFittingPriority:v36 verticalFittingPriority:{v33, v35}];
       [v27 setBounds:{0.0, 0.0, v37, v38}];
-      [v39 setTableHeaderView:v27];
+      [table setTableHeaderView:v27];
 
       goto LABEL_13;
     }
@@ -1196,13 +1196,13 @@ LABEL_15:
   {
   }
 
-  [v39 setTableHeaderView:0];
+  [table setTableHeaderView:0];
 LABEL_13:
 }
 
 - (void)_updateProgressIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -1232,48 +1232,48 @@ LABEL_13:
         v7 = [v6 propertyForKey:v38];
         if (v7)
         {
-          if (-[MTBMainVC _isPodcastWithFeedURLPinned:](v2, "_isPodcastWithFeedURLPinned:", v7) || -[MTBMainVC _isStationWithUUIDPinned:](v2, "_isStationWithUUIDPinned:", v7) || [v7 isEqualToString:v33] && (+[NMSMediaPinningManager sharedManager](NMSMediaPinningManager, "sharedManager"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "savedEpisodesEnabled"), v30, v31))
+          if (-[MTBMainVC _isPodcastWithFeedURLPinned:](selfCopy, "_isPodcastWithFeedURLPinned:", v7) || -[MTBMainVC _isStationWithUUIDPinned:](selfCopy, "_isStationWithUUIDPinned:", v7) || [v7 isEqualToString:v33] && (+[NMSMediaPinningManager sharedManager](NMSMediaPinningManager, "sharedManager"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "savedEpisodesEnabled"), v30, v31))
           {
             v8 = [v6 propertyForKey:v37];
-            v41 = [v8 unsignedIntegerValue];
+            unsignedIntegerValue = [v8 unsignedIntegerValue];
 
             v9 = [v6 propertyForKey:v36];
             [v9 floatValue];
             v11 = v10;
 
-            v12 = [(MTBMainVC *)v2 syncInfoController];
-            v40 = [v12 downloadStateForModelObject:v7];
+            syncInfoController = [(MTBMainVC *)selfCopy syncInfoController];
+            v40 = [syncInfoController downloadStateForModelObject:v7];
 
             v13 = +[NRPairedDeviceRegistry sharedInstance];
             +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
-            v15 = v14 = v2;
+            v15 = v14 = selfCopy;
             v16 = [v13 getAllDevicesWithArchivedAltAccountDevicesMatching:v15];
-            v17 = [v16 firstObject];
+            firstObject = [v16 firstObject];
             v18 = [[NSUUID alloc] initWithUUIDString:@"2E9A45BB-4F07-4D6B-9B65-41933EED0DCA"];
-            v19 = [v17 supportsCapability:v18];
+            v19 = [firstObject supportsCapability:v18];
 
             if (v19)
             {
-              v2 = v14;
+              selfCopy = v14;
               v20 = v40;
             }
 
             else
             {
               v20 = [(MTBMainVC *)v14 _resolvedProgressViewStateForState:v40];
-              v2 = v14;
+              selfCopy = v14;
             }
 
-            v21 = [(MTBMainVC *)v2 syncInfoController];
-            [v21 progressForModelObject:v7];
+            syncInfoController2 = [(MTBMainVC *)selfCopy syncInfoController];
+            [syncInfoController2 progressForModelObject:v7];
             v23 = v22;
 
             v4 = v35;
-            if (v41 != v20 || vabds_f32(v11, v23) > 0.00000011921)
+            if (unsignedIntegerValue != v20 || vabds_f32(v11, v23) > 0.00000011921)
             {
-              v24 = [(MTBMainVC *)v2 table];
-              v25 = [(MTBMainVC *)v2 indexPathForSpecifier:v6];
-              v26 = [v24 cellForRowAtIndexPath:v25];
+              table = [(MTBMainVC *)selfCopy table];
+              v25 = [(MTBMainVC *)selfCopy indexPathForSpecifier:v6];
+              v26 = [table cellForRowAtIndexPath:v25];
 
               v27 = [NSNumber numberWithUnsignedInteger:v20];
               [v6 setProperty:v27 forKey:v37];
@@ -1331,9 +1331,9 @@ LABEL_13:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
   v7 = [[NSUUID alloc] initWithUUIDString:@"B743795D-BA43-40D7-BA73-D1415B0895D4"];
-  if ([v6 supportsCapability:v7])
+  if ([firstObject supportsCapability:v7])
   {
   }
 
@@ -1343,9 +1343,9 @@ LABEL_13:
     +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v8 = v41 = v3;
     v9 = [v40 getAllDevicesWithArchivedAltAccountDevicesMatching:v8];
-    v10 = [v9 firstObject];
+    firstObject2 = [v9 firstObject];
     v11 = [[NSUUID alloc] initWithUUIDString:@"B51CCBC5-6C2B-47BB-90EA-002DE9C4DA79"];
-    v12 = [v10 supportsCapability:v11];
+    v12 = [firstObject2 supportsCapability:v11];
 
     if ((v12 & 1) == 0)
     {
@@ -1361,8 +1361,8 @@ LABEL_13:
 
   if ([(MTBMainVC *)self isWaitingForDatabaseSetup])
   {
-    v17 = [(MTBMainVC *)self _newLoadingSpecifier];
-    [v16 addObject:v17];
+    _newLoadingSpecifier = [(MTBMainVC *)self _newLoadingSpecifier];
+    [v16 addObject:_newLoadingSpecifier];
   }
 
   else
@@ -1370,22 +1370,22 @@ LABEL_13:
     v18 = +[NRPairedDeviceRegistry sharedInstance];
     v19 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v20 = [v18 getAllDevicesWithArchivedAltAccountDevicesMatching:v19];
-    v21 = [v20 firstObject];
+    firstObject3 = [v20 firstObject];
     v22 = [[NSUUID alloc] initWithUUIDString:@"B743795D-BA43-40D7-BA73-D1415B0895D4"];
-    v23 = [v21 supportsCapability:v22];
+    v23 = [firstObject3 supportsCapability:v22];
 
     if (v23)
     {
-      v24 = [(MTBMainVC *)self _specifierForSavedEpisodes];
-      [v16 addObject:v24];
+      _specifierForSavedEpisodes = [(MTBMainVC *)self _specifierForSavedEpisodes];
+      [v16 addObject:_specifierForSavedEpisodes];
     }
 
     v25 = +[NRPairedDeviceRegistry sharedInstance];
     v26 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v27 = [v25 getAllDevicesWithArchivedAltAccountDevicesMatching:v26];
-    v28 = [v27 firstObject];
+    firstObject4 = [v27 firstObject];
     v29 = [[NSUUID alloc] initWithUUIDString:@"B51CCBC5-6C2B-47BB-90EA-002DE9C4DA79"];
-    v30 = [v28 supportsCapability:v29];
+    v30 = [firstObject4 supportsCapability:v29];
 
     if (v30)
     {
@@ -1393,10 +1393,10 @@ LABEL_13:
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v31 = [(MTBMainVC *)self availablePodcastStationsFetchedResultsController];
-      v32 = [v31 fetchedObjects];
+      availablePodcastStationsFetchedResultsController = [(MTBMainVC *)self availablePodcastStationsFetchedResultsController];
+      fetchedObjects = [availablePodcastStationsFetchedResultsController fetchedObjects];
 
-      v33 = [v32 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v33 = [fetchedObjects countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v33)
       {
         v34 = v33;
@@ -1407,14 +1407,14 @@ LABEL_13:
           {
             if (*v43 != v35)
             {
-              objc_enumerationMutation(v32);
+              objc_enumerationMutation(fetchedObjects);
             }
 
             v37 = [(MTBMainVC *)self _specifierForStation:*(*(&v42 + 1) + 8 * i)];
             [v16 addObject:v37];
           }
 
-          v34 = [v32 countByEnumeratingWithState:&v42 objects:v46 count:16];
+          v34 = [fetchedObjects countByEnumeratingWithState:&v42 objects:v46 count:16];
         }
 
         while (v34);
@@ -1445,24 +1445,24 @@ LABEL_19:
   [v4 setProperty:kNMSMediaSyncInfoSavedEpisodesIdentifier forKey:NMBUISpecifierModelObjectKey];
   [v4 setProperty:&__kCFBooleanTrue forKey:NMBUISpecifierShouldShowSwitchKey];
   v8 = +[NMSMediaPinningManager sharedManager];
-  v9 = [v8 savedEpisodesEnabled];
+  savedEpisodesEnabled = [v8 savedEpisodesEnabled];
 
-  if (v9)
+  if (savedEpisodesEnabled)
   {
     v10 = +[NRPairedDeviceRegistry sharedInstance];
     v11 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v12 = [v10 getAllDevicesWithArchivedAltAccountDevicesMatching:v11];
-    v13 = [v12 firstObject];
+    firstObject = [v12 firstObject];
     v14 = [[NSUUID alloc] initWithUUIDString:@"2E9A45BB-4F07-4D6B-9B65-41933EED0DCA"];
-    v15 = [v13 supportsCapability:v14];
+    v15 = [firstObject supportsCapability:v14];
 
     if (v15)
     {
-      v16 = [(MTBMainVC *)self syncInfoController];
-      v17 = [v16 downloadStateForModelObject:v7];
+      syncInfoController = [(MTBMainVC *)self syncInfoController];
+      v17 = [syncInfoController downloadStateForModelObject:v7];
 
-      v18 = [(MTBMainVC *)self syncInfoController];
-      [v18 progressForModelObject:v7];
+      syncInfoController2 = [(MTBMainVC *)self syncInfoController];
+      [syncInfoController2 progressForModelObject:v7];
       v20 = v19;
 
       [v4 setProperty:&__kCFBooleanTrue forKey:NMBUISpecifierShouldShowDownloadInfoKey];
@@ -1472,14 +1472,14 @@ LABEL_19:
       LODWORD(v22) = v20;
       self = [NSNumber numberWithFloat:v22];
       v23 = &NMBUISpecifierDownloadProgressKey;
-      v24 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v24 = [NMSMediaItemGroup itemGroupWithSavedEpisodesDownloadedItemsOnly:0];
+      selfCopy = [NMSMediaItemGroup itemGroupWithSavedEpisodesDownloadedItemsOnly:0];
       v25 = +[NMSMediaPinningManager sharedManager];
-      v26 = [v25 isItemGroupWithinQuota:v24];
+      v26 = [v25 isItemGroupWithinQuota:selfCopy];
 
       if (v26)
       {
@@ -1504,56 +1504,56 @@ LABEL_8:
   return v4;
 }
 
-- (id)_specifierForStation:(id)a3
+- (id)_specifierForStation:(id)station
 {
-  v4 = a3;
+  stationCopy = station;
   v5 = _MTLogCategoryBridge();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 title];
+    title = [stationCopy title];
     *buf = 138412290;
-    v38 = v6;
+    v38 = title;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "podcast station specifier <%@>", buf, 0xCu);
   }
 
-  v7 = [v4 title];
-  v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:"_setStationSwitchCell:specifier:" get:"_stationSwitchCellValueForSpecifier:" detail:0 cell:4 edit:0];
+  title2 = [stationCopy title];
+  v8 = [PSSpecifier preferenceSpecifierNamed:title2 target:self set:"_setStationSwitchCell:specifier:" get:"_stationSwitchCellValueForSpecifier:" detail:0 cell:4 edit:0];
 
   [v8 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v9 = [v4 title];
-  [v8 setProperty:v9 forKey:NMBUISpecifierTitleKey];
+  title3 = [stationCopy title];
+  [v8 setProperty:title3 forKey:NMBUISpecifierTitleKey];
 
-  v10 = [v4 artworkCatalog];
-  [v8 setProperty:v10 forKey:NMBUISpecifierArtworkCatalogKey];
+  artworkCatalog = [stationCopy artworkCatalog];
+  [v8 setProperty:artworkCatalog forKey:NMBUISpecifierArtworkCatalogKey];
 
-  v11 = [(MTBMainVC *)self _placeholderPodcastsImage];
-  [v8 setProperty:v11 forKey:NMBUISpecifierPlaceholderImageKey];
+  _placeholderPodcastsImage = [(MTBMainVC *)self _placeholderPodcastsImage];
+  [v8 setProperty:_placeholderPodcastsImage forKey:NMBUISpecifierPlaceholderImageKey];
 
-  v12 = [v4 uuid];
-  [v8 setProperty:v12 forKey:NMBUISpecifierModelObjectKey];
+  uuid = [stationCopy uuid];
+  [v8 setProperty:uuid forKey:NMBUISpecifierModelObjectKey];
 
   [v8 setProperty:&__kCFBooleanTrue forKey:NMBUISpecifierShouldShowSwitchKey];
-  v13 = [v4 uuid];
-  v14 = [(MTBMainVC *)self _isStationWithUUIDPinned:v13];
+  uuid2 = [stationCopy uuid];
+  v14 = [(MTBMainVC *)self _isStationWithUUIDPinned:uuid2];
 
   if (v14)
   {
     v15 = +[NRPairedDeviceRegistry sharedInstance];
     v16 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v17 = [v15 getAllDevicesWithArchivedAltAccountDevicesMatching:v16];
-    v18 = [v17 firstObject];
+    firstObject = [v17 firstObject];
     v19 = [[NSUUID alloc] initWithUUIDString:@"2E9A45BB-4F07-4D6B-9B65-41933EED0DCA"];
-    v20 = [v18 supportsCapability:v19];
+    v20 = [firstObject supportsCapability:v19];
 
     if (v20)
     {
-      v21 = [(MTBMainVC *)self syncInfoController];
-      v22 = [v4 uuid];
-      v23 = [v21 downloadStateForModelObject:v22];
+      syncInfoController = [(MTBMainVC *)self syncInfoController];
+      uuid3 = [stationCopy uuid];
+      v23 = [syncInfoController downloadStateForModelObject:uuid3];
 
-      v24 = [(MTBMainVC *)self syncInfoController];
-      v25 = [v4 uuid];
-      [v24 progressForModelObject:v25];
+      syncInfoController2 = [(MTBMainVC *)self syncInfoController];
+      uuid4 = [stationCopy uuid];
+      [syncInfoController2 progressForModelObject:uuid4];
       v27 = v26;
 
       [v8 setProperty:&__kCFBooleanTrue forKey:NMBUISpecifierShouldShowDownloadInfoKey];
@@ -1563,16 +1563,16 @@ LABEL_8:
       LODWORD(v29) = v27;
       self = [NSNumber numberWithFloat:v29];
       v30 = &NMBUISpecifierDownloadProgressKey;
-      v31 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v32 = [v4 uuid];
-      v31 = [NMSMediaItemGroup itemGroupWithPodcastStationUUID:v32 downloadedItemsOnly:0];
+      uuid5 = [stationCopy uuid];
+      selfCopy = [NMSMediaItemGroup itemGroupWithPodcastStationUUID:uuid5 downloadedItemsOnly:0];
 
       v33 = +[NMSMediaPinningManager sharedManager];
-      v34 = [v33 isItemGroupWithinQuota:v31];
+      v34 = [v33 isItemGroupWithinQuota:selfCopy];
 
       if (v34)
       {
@@ -1606,8 +1606,8 @@ LABEL_10:
 
   if ([(MTBMainVC *)self isWaitingForDatabaseSetup])
   {
-    v6 = [(MTBMainVC *)self _newLoadingSpecifier];
-    [v3 addObject:v6];
+    _newLoadingSpecifier = [(MTBMainVC *)self _newLoadingSpecifier];
+    [v3 addObject:_newLoadingSpecifier];
   }
 
   else
@@ -1616,10 +1616,10 @@ LABEL_10:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(MTBMainVC *)self availablePodcastsFetchedResultsController];
-    v8 = [v7 fetchedObjects];
+    availablePodcastsFetchedResultsController = [(MTBMainVC *)self availablePodcastsFetchedResultsController];
+    fetchedObjects = [availablePodcastsFetchedResultsController fetchedObjects];
 
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v9 = [fetchedObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1630,14 +1630,14 @@ LABEL_10:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(fetchedObjects);
           }
 
           v13 = [(MTBMainVC *)self _specifierForPodcast:*(*(&v16 + 1) + 8 * i)];
           [v3 addObject:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [fetchedObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
@@ -1649,56 +1649,56 @@ LABEL_10:
   return v14;
 }
 
-- (id)_specifierForPodcast:(id)a3
+- (id)_specifierForPodcast:(id)podcast
 {
-  v4 = a3;
+  podcastCopy = podcast;
   v5 = _MTLogCategoryBridge();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 title];
+    title = [podcastCopy title];
     *buf = 138412290;
-    v38 = v6;
+    v38 = title;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "podcast specifier <%@>", buf, 0xCu);
   }
 
-  v7 = [v4 title];
-  v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:"_setPodcastSwitchCell:specifier:" get:"_podcastSwitchCellValueForSpecifier:" detail:0 cell:4 edit:0];
+  title2 = [podcastCopy title];
+  v8 = [PSSpecifier preferenceSpecifierNamed:title2 target:self set:"_setPodcastSwitchCell:specifier:" get:"_podcastSwitchCellValueForSpecifier:" detail:0 cell:4 edit:0];
 
   [v8 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v9 = [v4 title];
-  [v8 setProperty:v9 forKey:NMBUISpecifierTitleKey];
+  title3 = [podcastCopy title];
+  [v8 setProperty:title3 forKey:NMBUISpecifierTitleKey];
 
-  v10 = [v4 artworkCatalog];
-  [v8 setProperty:v10 forKey:NMBUISpecifierArtworkCatalogKey];
+  artworkCatalog = [podcastCopy artworkCatalog];
+  [v8 setProperty:artworkCatalog forKey:NMBUISpecifierArtworkCatalogKey];
 
-  v11 = [(MTBMainVC *)self _placeholderPodcastsImage];
-  [v8 setProperty:v11 forKey:NMBUISpecifierPlaceholderImageKey];
+  _placeholderPodcastsImage = [(MTBMainVC *)self _placeholderPodcastsImage];
+  [v8 setProperty:_placeholderPodcastsImage forKey:NMBUISpecifierPlaceholderImageKey];
 
-  v12 = [v4 feedURL];
-  [v8 setProperty:v12 forKey:NMBUISpecifierModelObjectKey];
+  feedURL = [podcastCopy feedURL];
+  [v8 setProperty:feedURL forKey:NMBUISpecifierModelObjectKey];
 
   [v8 setProperty:&__kCFBooleanTrue forKey:NMBUISpecifierShouldShowSwitchKey];
-  v13 = [v4 feedURL];
-  v14 = [(MTBMainVC *)self _isPodcastWithFeedURLPinned:v13];
+  feedURL2 = [podcastCopy feedURL];
+  v14 = [(MTBMainVC *)self _isPodcastWithFeedURLPinned:feedURL2];
 
   if (v14)
   {
     v15 = +[NRPairedDeviceRegistry sharedInstance];
     v16 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v17 = [v15 getAllDevicesWithArchivedAltAccountDevicesMatching:v16];
-    v18 = [v17 firstObject];
+    firstObject = [v17 firstObject];
     v19 = [[NSUUID alloc] initWithUUIDString:@"2E9A45BB-4F07-4D6B-9B65-41933EED0DCA"];
-    v20 = [v18 supportsCapability:v19];
+    v20 = [firstObject supportsCapability:v19];
 
     if (v20)
     {
-      v21 = [(MTBMainVC *)self syncInfoController];
-      v22 = [v4 feedURL];
-      v23 = [v21 downloadStateForModelObject:v22];
+      syncInfoController = [(MTBMainVC *)self syncInfoController];
+      feedURL3 = [podcastCopy feedURL];
+      v23 = [syncInfoController downloadStateForModelObject:feedURL3];
 
-      v24 = [(MTBMainVC *)self syncInfoController];
-      v25 = [v4 feedURL];
-      [v24 progressForModelObject:v25];
+      syncInfoController2 = [(MTBMainVC *)self syncInfoController];
+      feedURL4 = [podcastCopy feedURL];
+      [syncInfoController2 progressForModelObject:feedURL4];
       v27 = v26;
 
       [v8 setProperty:&__kCFBooleanTrue forKey:NMBUISpecifierShouldShowDownloadInfoKey];
@@ -1708,16 +1708,16 @@ LABEL_10:
       LODWORD(v29) = v27;
       self = [NSNumber numberWithFloat:v29];
       v30 = &NMBUISpecifierDownloadProgressKey;
-      v31 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v32 = [v4 feedURL];
-      v31 = [NMSMediaItemGroup itemGroupWithCustomPodcastFeedURL:v32 downloadedItemsOnly:0];
+      feedURL5 = [podcastCopy feedURL];
+      selfCopy = [NMSMediaItemGroup itemGroupWithCustomPodcastFeedURL:feedURL5 downloadedItemsOnly:0];
 
       v33 = +[NMSMediaPinningManager sharedManager];
-      v34 = [v33 isItemGroupWithinQuota:v31];
+      v34 = [v33 isItemGroupWithinQuota:selfCopy];
 
       if (v34)
       {
@@ -1755,25 +1755,25 @@ LABEL_10:
   v9 = [UIAlertAction actionWithTitle:v8 style:0 handler:0];
   [v11 addAction:v9];
 
-  v10 = [(MTBMainVC *)self _selfOrPresentedViewController];
-  [v10 presentViewController:v11 animated:1 completion:0];
+  _selfOrPresentedViewController = [(MTBMainVC *)self _selfOrPresentedViewController];
+  [_selfOrPresentedViewController presentViewController:v11 animated:1 completion:0];
 }
 
 - (id)_selfOrPresentedViewController
 {
-  v3 = [(MTBMainVC *)self presentedViewController];
+  presentedViewController = [(MTBMainVC *)self presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
-    v4 = [(MTBMainVC *)self presentedViewController];
+    selfCopy = [(MTBMainVC *)self presentedViewController];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)_launchPodcasts
@@ -1814,9 +1814,9 @@ LABEL_10:
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
   v6 = [[NSUUID alloc] initWithUUIDString:@"B51CCBC5-6C2B-47BB-90EA-002DE9C4DA79"];
-  v7 = [v5 supportsCapability:v6];
+  v7 = [firstObject supportsCapability:v6];
 
   v8 = +[NSBundle podcastsFoundationBundle];
   v9 = v8;
@@ -1837,9 +1837,9 @@ LABEL_10:
   return v12;
 }
 
-- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)a3
+- (unint64_t)_resolvedProgressViewStateForState:(unint64_t)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     if ([(MTBMainVC *)self _legacyIsCharging:v3])
     {
@@ -1852,18 +1852,18 @@ LABEL_10:
     }
   }
 
-  return a3;
+  return state;
 }
 
 - (BOOL)_legacyIsCharging
 {
   v2 = +[NMSSyncManager sharedManager];
-  v3 = [v2 podcastsProgressInfo];
-  if ([v3 syncState] == &dword_0 + 3)
+  podcastsProgressInfo = [v2 podcastsProgressInfo];
+  if ([podcastsProgressInfo syncState] == &dword_0 + 3)
   {
     v4 = +[NMSSyncManager sharedManager];
-    v5 = [v4 podcastsProgressInfo];
-    v6 = [v5 syncWaitingSubstate] != &dword_0 + 1;
+    podcastsProgressInfo2 = [v4 podcastsProgressInfo];
+    v6 = [podcastsProgressInfo2 syncWaitingSubstate] != &dword_0 + 1;
   }
 
   else
@@ -1874,11 +1874,11 @@ LABEL_10:
   return v6;
 }
 
-- (id)_cellImageWithSymbolName:(id)a3
+- (id)_cellImageWithSymbolName:(id)name
 {
-  v4 = a3;
-  v5 = [(MTBMainVC *)self imageCache];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  imageCache = [(MTBMainVC *)self imageCache];
+  v6 = [imageCache objectForKey:nameCopy];
 
   if (v6)
   {
@@ -1887,7 +1887,7 @@ LABEL_10:
 
   else
   {
-    v8 = [UIImage _systemImageNamed:v4];
+    v8 = [UIImage _systemImageNamed:nameCopy];
     v9 = [UIImageSymbolConfiguration configurationWithPointSize:24.0];
     v10 = [v8 imageWithSymbolConfiguration:v9];
     v11 = [v10 imageWithRenderingMode:2];
@@ -1925,33 +1925,33 @@ LABEL_10:
     v7 = UIGraphicsGetImageFromCurrentImageContext();
 
     UIGraphicsEndImageContext();
-    v32 = [(MTBMainVC *)self imageCache];
-    [v32 setObject:v7 forKey:v4];
+    imageCache2 = [(MTBMainVC *)self imageCache];
+    [imageCache2 setObject:v7 forKey:nameCopy];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = MTBMainVC;
-  [(MTBMainVC *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
+  [(MTBMainVC *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
   if (self->_syncGroupSpecifier)
   {
     v7 = [(MTBMainVC *)self indexPathForSpecifier:?];
-    v8 = [v7 section];
+    section = [v7 section];
   }
 
   else
   {
-    v8 = -1;
+    section = -1;
   }
 
-  if ([v6 section] == v8)
+  if ([pathCopy section] == section)
   {
-    v9 = [v6 row];
+    v9 = [pathCopy row];
     if (!v9)
     {
       v10 = 0;

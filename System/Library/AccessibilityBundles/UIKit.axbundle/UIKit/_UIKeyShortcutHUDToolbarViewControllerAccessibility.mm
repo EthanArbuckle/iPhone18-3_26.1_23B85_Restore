@@ -1,19 +1,19 @@
 @interface _UIKeyShortcutHUDToolbarViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)didCompleteSearchTransition;
-- (void)setSearching:(BOOL)a3;
+- (void)setSearching:(BOOL)searching;
 @end
 
 @implementation _UIKeyShortcutHUDToolbarViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIKeyShortcutHUDToolbarViewController";
   v6 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -30,35 +30,35 @@
 
 - (void)didCompleteSearchTransition
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = _UIKeyShortcutHUDToolbarViewControllerAccessibility;
   [(_UIKeyShortcutHUDToolbarViewControllerAccessibility *)&v7 didCompleteSearchTransition];
-  v5 = [(_UIKeyShortcutHUDToolbarViewControllerAccessibility *)v9 safeValueForKey:@"delegate"];
+  v5 = [(_UIKeyShortcutHUDToolbarViewControllerAccessibility *)selfCopy safeValueForKey:@"delegate"];
   v6 = [v5 safeBoolForKey:@"isSearching"];
   *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
   if (v6)
   {
     notification = *MEMORY[0x29EDC7ED8];
-    v4 = [(_UIKeyShortcutHUDToolbarViewControllerAccessibility *)v9 safeValueForKeyPath:@"searchBar.searchTextField", v2];
+    v4 = [(_UIKeyShortcutHUDToolbarViewControllerAccessibility *)selfCopy safeValueForKeyPath:@"searchBar.searchTextField", v2];
     UIAccessibilityPostNotification(notification, v4);
     MEMORY[0x29EDC9740](v4);
   }
 }
 
-- (void)setSearching:(BOOL)a3
+- (void)setSearching:(BOOL)searching
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  searchingCopy = searching;
   v5.receiver = self;
   v5.super_class = _UIKeyShortcutHUDToolbarViewControllerAccessibility;
-  [(_UIKeyShortcutHUDToolbarViewControllerAccessibility *)&v5 setSearching:a3];
-  if (!v6)
+  [(_UIKeyShortcutHUDToolbarViewControllerAccessibility *)&v5 setSearching:searching];
+  if (!searchingCopy)
   {
     notification = *MEMORY[0x29EDC7ED8];
-    v4 = [(_UIKeyShortcutHUDToolbarViewControllerAccessibility *)v8 safeValueForKey:@"searchButton"];
+    v4 = [(_UIKeyShortcutHUDToolbarViewControllerAccessibility *)selfCopy safeValueForKey:@"searchButton"];
     UIAccessibilityPostNotification(notification, v4);
     MEMORY[0x29EDC9740](v4);
   }

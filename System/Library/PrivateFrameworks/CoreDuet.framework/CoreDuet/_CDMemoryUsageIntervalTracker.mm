@@ -1,8 +1,8 @@
 @interface _CDMemoryUsageIntervalTracker
 + (id)sharedInstance;
 - (_CDMemoryUsageIntervalTracker)init;
-- (void)beginInterval:(uint64_t)a1;
-- (void)endInterval:(uint64_t)a1;
+- (void)beginInterval:(uint64_t)interval;
+- (void)endInterval:(uint64_t)interval;
 @end
 
 @implementation _CDMemoryUsageIntervalTracker
@@ -42,9 +42,9 @@
       goto LABEL_8;
     }
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     activeIntervals = v3->_activeIntervals;
-    v3->_activeIntervals = v5;
+    v3->_activeIntervals = weakObjectsHashTable;
 
     v3->_intervalTimeout = 60000000000;
   }
@@ -55,22 +55,22 @@ LABEL_8:
   return v7;
 }
 
-- (void)beginInterval:(uint64_t)a1
+- (void)beginInterval:(uint64_t)interval
 {
   v51 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (interval)
   {
     context = objc_autoreleasePoolPush();
-    os_unfair_lock_lock((a1 + 8));
-    v4 = (*(a1 + 16) + 1) % 0x7FFFFFFFFFFFFFFEuLL;
+    os_unfair_lock_lock((interval + 8));
+    v4 = (*(interval + 16) + 1) % 0x7FFFFFFFFFFFFFFEuLL;
     if (v4 <= 1)
     {
       v4 = 1;
     }
 
-    v32 = a1;
-    *(a1 + 16) = v4;
+    intervalCopy = interval;
+    *(interval + 16) = v4;
     if (v3)
     {
       v3[10] = v4;
@@ -78,13 +78,13 @@ LABEL_8:
 
     v37 = 0;
     get_memory_usage(v3 + 1, &v37, v3 + 2, 1);
-    v31 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v5 = [*(a1 + 32) allObjects];
-    v6 = [v5 countByEnumeratingWithState:&v33 objects:v50 count:16];
+    allObjects = [*(interval + 32) allObjects];
+    v6 = [allObjects countByEnumeratingWithState:&v33 objects:v50 count:16];
     v7 = 0x1E7366000uLL;
     v30 = v3;
     if (v6)
@@ -97,37 +97,37 @@ LABEL_8:
         {
           if (*v34 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObjects);
           }
 
           v10 = *(*(&v33 + 1) + 8 * v9);
           if (v10)
           {
             v11 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW_APPROX) - v10[7];
-            if (v11 > *(v32 + 40))
+            if (v11 > *(intervalCopy + 40))
             {
-              v12 = [*(v7 + 648) instrumentationChannel];
-              if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+              instrumentationChannel = [*(v7 + 648) instrumentationChannel];
+              if (os_log_type_enabled(instrumentationChannel, OS_LOG_TYPE_ERROR))
               {
                 v15 = v10[10];
-                v16 = [v10 name];
-                v17 = [v10 client];
+                name = [v10 name];
+                client = [v10 client];
                 *buf = 134218754;
                 v39 = v15;
                 v40 = 2112;
-                v41 = v16;
+                v41 = name;
                 v42 = 2112;
-                v43 = v17;
+                v43 = client;
                 v44 = 2048;
                 v45 = v11 / 0x3B9ACA00;
-                _os_log_error_impl(&dword_191750000, v12, OS_LOG_TYPE_ERROR, "[error] id=%lu name=%@ client=%@ tracking stopped due to age %llus", buf, 0x2Au);
+                _os_log_error_impl(&dword_191750000, instrumentationChannel, OS_LOG_TYPE_ERROR, "[error] id=%lu name=%@ client=%@ tracking stopped due to age %llus", buf, 0x2Au);
 
                 v3 = v30;
                 v7 = 0x1E7366000;
               }
 
               v10[6] = 2;
-              [*(v32 + 32) removeObject:v10];
+              [*(intervalCopy + 32) removeObject:v10];
               goto LABEL_21;
             }
 
@@ -146,7 +146,7 @@ LABEL_8:
             v14 = 0;
           }
 
-          [v31 addIndex:v14];
+          [indexSet addIndex:v14];
           if (v3)
           {
             *(v3 + 64) = 1;
@@ -157,16 +157,16 @@ LABEL_21:
         }
 
         while (v6 != v9);
-        v18 = [v5 countByEnumeratingWithState:&v33 objects:v50 count:16];
+        v18 = [allObjects countByEnumeratingWithState:&v33 objects:v50 count:16];
         v6 = v18;
       }
 
       while (v18);
     }
 
-    [*(v32 + 32) addObject:v3];
-    v19 = [*(v7 + 648) instrumentationChannel];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+    [*(intervalCopy + 32) addObject:v3];
+    instrumentationChannel2 = [*(v7 + 648) instrumentationChannel];
+    if (os_log_type_enabled(instrumentationChannel2, OS_LOG_TYPE_DEBUG))
     {
       v21 = v3;
       if (v3)
@@ -174,8 +174,8 @@ LABEL_21:
         v3 = v3[10];
       }
 
-      v22 = [v21 name];
-      v23 = [v30 client];
+      name2 = [v21 name];
+      client2 = [v30 client];
       if (v30)
       {
         v24 = v30[1] * 0.0009765625 * 0.0009765625;
@@ -188,8 +188,8 @@ LABEL_21:
         v24 = 0.0;
       }
 
-      v26 = [v31 _cd_commaSeparatedIndexes];
-      v27 = v26;
+      _cd_commaSeparatedIndexes = [indexSet _cd_commaSeparatedIndexes];
+      v27 = _cd_commaSeparatedIndexes;
       v28 = "";
       *buf = 134219266;
       v39 = v3;
@@ -199,34 +199,34 @@ LABEL_21:
         v28 = "*, concurrent: ";
       }
 
-      v41 = v22;
+      v41 = name2;
       v42 = 2112;
-      v43 = v23;
+      v43 = client2;
       v44 = 2048;
       v45 = *&v24;
       v46 = 2082;
       v47 = v28;
       v48 = 2114;
-      v49 = v26;
-      _os_log_debug_impl(&dword_191750000, v19, OS_LOG_TYPE_DEBUG, "[begin] id=%ld name=%@ client=%@ (start: %.1fMB%{public}s%{public}@)", buf, 0x3Eu);
+      v49 = _cd_commaSeparatedIndexes;
+      _os_log_debug_impl(&dword_191750000, instrumentationChannel2, OS_LOG_TYPE_DEBUG, "[begin] id=%ld name=%@ client=%@ (start: %.1fMB%{public}s%{public}@)", buf, 0x3Eu);
 
       v3 = v30;
     }
 
-    os_unfair_lock_unlock((v32 + 8));
+    os_unfair_lock_unlock((intervalCopy + 8));
     objc_autoreleasePoolPop(context);
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)endInterval:(uint64_t)a1
+- (void)endInterval:(uint64_t)interval
 {
   v74 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (interval)
   {
-    os_unfair_lock_lock((a1 + 8));
+    os_unfair_lock_lock((interval + 8));
     v48 = 0;
     get_memory_usage(v3 + 3, &v48, v3 + 4, 0);
     if (v3)
@@ -258,13 +258,13 @@ LABEL_21:
       v6 = "*";
     }
 
-    [*(a1 + 32) removeObject:v3];
-    v7 = [MEMORY[0x1E696AD50] indexSet];
+    [*(interval + 32) removeObject:v3];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v8 = *(a1 + 32);
+    v8 = *(interval + 32);
     v9 = [v8 countByEnumeratingWithState:&v44 objects:v73 count:16];
     if (v9)
     {
@@ -298,7 +298,7 @@ LABEL_21:
             v15 = 0;
           }
 
-          [v7 addIndex:v15];
+          [indexSet addIndex:v15];
           ++v12;
         }
 
@@ -325,7 +325,7 @@ LABEL_21:
       v17 = 0;
     }
 
-    v18 = *(a1 + 24);
+    v18 = *(interval + 24);
     v19 = v18;
     v20 = v18 * 0.9;
     v21 = v20 < v48 && v20 > v17;
@@ -365,8 +365,8 @@ LABEL_21:
         v40 = 0;
       }
 
-      v41 = [v3 name];
-      v39 = [v3 client];
+      name = [v3 name];
+      client = [v3 client];
       if (v23)
       {
         v43 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"error: operation peaked over limit of %.0fMB ", v19 * 0.0009765625 * 0.0009765625];
@@ -411,9 +411,9 @@ LABEL_21:
         v29 = "";
       }
 
-      v32 = [v7 count];
-      v33 = [v7 _cd_commaSeparatedIndexes];
-      v34 = v33;
+      v32 = [indexSet count];
+      _cd_commaSeparatedIndexes = [indexSet _cd_commaSeparatedIndexes];
+      v34 = _cd_commaSeparatedIndexes;
       *buf = 134220802;
       v35 = ", concurrent: ";
       v50 = v40;
@@ -423,9 +423,9 @@ LABEL_21:
       }
 
       v51 = 2112;
-      v52 = v41;
+      v52 = name;
       v53 = 2112;
-      v54 = v39;
+      v54 = client;
       v55 = 2114;
       v56 = v43;
       v57 = 2048;
@@ -443,7 +443,7 @@ LABEL_21:
       v69 = 2082;
       v70 = v35;
       v71 = 2114;
-      v72 = v33;
+      v72 = _cd_commaSeparatedIndexes;
       _os_log_impl(&dword_191750000, v25, v27, "[end]   id=%lu name=%@ client=%@ %{public}@(start: %.1fMB%{public}s, peak: %.1fMB%{public}s, end: %.1fMB%{public}s%{public}s%{public}@)", buf, 0x7Au);
 
       if (v37)
@@ -455,7 +455,7 @@ LABEL_21:
       }
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((interval + 8));
   }
 
   v36 = *MEMORY[0x1E69E9840];

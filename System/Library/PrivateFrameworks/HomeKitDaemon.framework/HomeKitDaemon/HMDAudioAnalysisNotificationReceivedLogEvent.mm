@@ -1,5 +1,5 @@
 @interface HMDAudioAnalysisNotificationReceivedLogEvent
-- (HMDAudioAnalysisNotificationReceivedLogEvent)initWithReason:(unint64_t)a3 state:(unint64_t)a4 notificationSentDate:(id)a5;
+- (HMDAudioAnalysisNotificationReceivedLogEvent)initWithReason:(unint64_t)reason state:(unint64_t)state notificationSentDate:(id)date;
 - (NSDate)endDate;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (double)latency;
@@ -36,9 +36,9 @@
     return 0.0;
   }
 
-  v3 = [(HMDAudioAnalysisNotificationReceivedLogEvent *)self endDate];
-  v4 = [(HMDAudioAnalysisNotificationReceivedLogEvent *)self notificationSentDate];
-  [v3 timeIntervalSinceDate:v4];
+  endDate = [(HMDAudioAnalysisNotificationReceivedLogEvent *)self endDate];
+  notificationSentDate = [(HMDAudioAnalysisNotificationReceivedLogEvent *)self notificationSentDate];
+  [endDate timeIntervalSinceDate:notificationSentDate];
   v6 = v5;
 
   return v6;
@@ -61,26 +61,26 @@
   os_unfair_lock_lock_with_options();
   if (!self->_endDate)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     endDate = self->_endDate;
-    self->_endDate = v3;
+    self->_endDate = date;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (HMDAudioAnalysisNotificationReceivedLogEvent)initWithReason:(unint64_t)a3 state:(unint64_t)a4 notificationSentDate:(id)a5
+- (HMDAudioAnalysisNotificationReceivedLogEvent)initWithReason:(unint64_t)reason state:(unint64_t)state notificationSentDate:(id)date
 {
-  v9 = a5;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = HMDAudioAnalysisNotificationReceivedLogEvent;
   v10 = [(HMMLogEvent *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_state = a4;
-    v10->_reason = a3;
-    objc_storeStrong(&v10->_notificationSentDate, a5);
+    v10->_state = state;
+    v10->_reason = reason;
+    objc_storeStrong(&v10->_notificationSentDate, date);
   }
 
   return v11;

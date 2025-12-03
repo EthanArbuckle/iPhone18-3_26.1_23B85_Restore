@@ -1,8 +1,8 @@
 @interface CustomReactionPickerEntryView
 - (_TtC22_GroupActivities_UIKit29CustomReactionPickerEntryView)init;
-- (_TtC22_GroupActivities_UIKit29CustomReactionPickerEntryView)initWithCoder:(id)a3;
-- (_TtC22_GroupActivities_UIKit29CustomReactionPickerEntryView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (void)insertText:(id)a3;
+- (_TtC22_GroupActivities_UIKit29CustomReactionPickerEntryView)initWithCoder:(id)coder;
+- (_TtC22_GroupActivities_UIKit29CustomReactionPickerEntryView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (void)insertText:(id)text;
 @end
 
 @implementation CustomReactionPickerEntryView
@@ -22,7 +22,7 @@
   return v5;
 }
 
-- (_TtC22_GroupActivities_UIKit29CustomReactionPickerEntryView)initWithCoder:(id)a3
+- (_TtC22_GroupActivities_UIKit29CustomReactionPickerEntryView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22_GroupActivities_UIKit29CustomReactionPickerEntryView_onReaction);
   *v3 = 0;
@@ -32,17 +32,17 @@
   return result;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   CustomReactionPickerEntryView.insertText(_:)(v8);
 }
 
-- (_TtC22_GroupActivities_UIKit29CustomReactionPickerEntryView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC22_GroupActivities_UIKit29CustomReactionPickerEntryView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

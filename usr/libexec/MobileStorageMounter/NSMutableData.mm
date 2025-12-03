@@ -1,40 +1,40 @@
 @interface NSMutableData
-+ (NSMutableData)dataWithHexString:(id)a3;
-- (id)initDataWithHexString:(id)a3;
++ (NSMutableData)dataWithHexString:(id)string;
+- (id)initDataWithHexString:(id)string;
 @end
 
 @implementation NSMutableData
 
-+ (NSMutableData)dataWithHexString:(id)a3
++ (NSMutableData)dataWithHexString:(id)string
 {
-  v3 = a3;
-  v4 = [[NSMutableData alloc] initDataWithHexString:v3];
+  stringCopy = string;
+  v4 = [[NSMutableData alloc] initDataWithHexString:stringCopy];
 
   return v4;
 }
 
-- (id)initDataWithHexString:(id)a3
+- (id)initDataWithHexString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v15 = 0;
-  if (v4)
+  if (stringCopy)
   {
     v5 = +[NSCharacterSet alphanumericCharacterSet];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    v6 = [stringCopy stringByTrimmingCharactersInSet:v5];
 
     if ([v6 isEqualToString:&stru_100033AC0])
     {
-      if ([v4 length])
+      if ([stringCopy length])
       {
-        v7 = [[NSString alloc] initWithFormat:@"0%@", v4];
+        stringCopy = [[NSString alloc] initWithFormat:@"0%@", stringCopy];
       }
 
       else
       {
-        v7 = [v4 copy];
+        stringCopy = [stringCopy copy];
       }
 
-      v9 = v7;
+      v9 = stringCopy;
       self = [(NSMutableData *)self init];
       if (self)
       {
@@ -55,30 +55,30 @@
           while (v10 < [v9 length] / 2);
         }
 
-        v8 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v8 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
       v9 = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
     v9 = 0;
     v6 = 0;
   }
 
-  v12 = v8;
+  v12 = selfCopy;
 
   return v12;
 }

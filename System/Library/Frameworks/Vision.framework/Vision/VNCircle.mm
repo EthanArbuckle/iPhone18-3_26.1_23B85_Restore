@@ -2,13 +2,13 @@
 + (VNCircle)zeroCircle;
 - (BOOL)containsPoint:(VNPoint *)point;
 - (BOOL)containsPoint:(VNPoint *)point inCircumferentialRingOfWidth:(double)ringWidth;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VNCircle)init;
 - (VNCircle)initWithCenter:(VNPoint *)center radius:(double)radius;
-- (VNCircle)initWithCoder:(id)a3;
+- (VNCircle)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNCircle
@@ -16,24 +16,24 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(VNCircle *)self center];
+  center = [(VNCircle *)self center];
   [(VNCircle *)self radius];
   v6 = v5;
   [(VNCircle *)self diameter];
-  v8 = [v3 initWithFormat:@"center = %@; radius = %f (diameter = %f)", v4, v6, v7];
+  v8 = [v3 initWithFormat:@"center = %@; radius = %f (diameter = %f)", center, v6, v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(VNCircle *)self center];
-    v7 = [v5 center];
+    v5 = equalCopy;
+    center = [(VNCircle *)self center];
+    center2 = [v5 center];
     v8 = VisionCoreEqualOrNilObjects();
 
     if (v8)
@@ -63,8 +63,8 @@
   v9.receiver = self;
   v9.super_class = VNCircle;
   v3 = [(VNCircle *)&v9 hash];
-  v4 = [(VNCircle *)self center];
-  v5 = [v4 hash] ^ __ROR8__(v3, 51);
+  center = [(VNCircle *)self center];
+  v5 = [center hash] ^ __ROR8__(v3, 51);
 
   [(VNCircle *)self radius];
   v7 = v6;
@@ -81,15 +81,15 @@
   v6 = point;
   if (ringWidth >= 0.0)
   {
-    v8 = [(VNCircle *)self center];
+    center = [(VNCircle *)self center];
     v9 = [VNVector alloc];
     [(VNPoint *)v6 x];
     v11 = v10;
-    [v8 x];
+    [center x];
     v13 = v12;
     [(VNPoint *)v6 y];
     v15 = v14;
-    [v8 y];
+    [center y];
     v17 = [(VNVector *)v9 initWithXComponent:v11 - v13 yComponent:v15 - v16];
     [(VNVector *)v17 length];
     v19 = v18;
@@ -120,15 +120,15 @@
 - (BOOL)containsPoint:(VNPoint *)point
 {
   v4 = point;
-  v5 = [(VNCircle *)self center];
+  center = [(VNCircle *)self center];
   v6 = [VNVector alloc];
   [(VNPoint *)v4 x];
   v8 = v7;
-  [v5 x];
+  [center x];
   v10 = v9;
   [(VNPoint *)v4 y];
   v12 = v11;
-  [v5 y];
+  [center y];
   v14 = [(VNVector *)v6 initWithXComponent:v8 - v10 yComponent:v12 - v13];
   [(VNVector *)v14 length];
   v16 = v15;
@@ -138,20 +138,20 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_center forKey:@"ctr"];
-  [v4 encodeDouble:@"rds" forKey:self->_radius];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_center forKey:@"ctr"];
+  [coderCopy encodeDouble:@"rds" forKey:self->_radius];
 }
 
-- (VNCircle)initWithCoder:(id)a3
+- (VNCircle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ctr"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ctr"];
   v6 = [v5 copy];
 
-  [v4 decodeDoubleForKey:@"rds"];
+  [coderCopy decodeDoubleForKey:@"rds"];
   v7 = [(VNCircle *)self initWithCenter:v6 radius:?];
 
   return v7;

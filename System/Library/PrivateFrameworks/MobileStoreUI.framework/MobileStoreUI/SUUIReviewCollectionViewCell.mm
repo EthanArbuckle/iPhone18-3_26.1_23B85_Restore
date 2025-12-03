@@ -1,24 +1,24 @@
 @interface SUUIReviewCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForDateLabel:(id)a3 context:(id)a4;
-+ (id)_attributedStringForTitleLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForDateLabel:(id)label context:(id)context;
++ (id)_attributedStringForTitleLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
 - (void)_resetTapGestures;
-- (void)contentViewTapped:(id)a3;
+- (void)contentViewTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setHighlighted:(BOOL)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SUUIReviewCollectionViewCell
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -29,17 +29,17 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a5;
+  contextCopy = context;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __74__SUUIReviewCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke;
   v9[3] = &unk_2798FA8F8;
-  v11 = a4;
-  v10 = v7;
-  v8 = v7;
-  [a3 enumerateChildrenUsingBlock:v9];
+  widthCopy = width;
+  v10 = contextCopy;
+  v8 = contextCopy;
+  [element enumerateChildrenUsingBlock:v9];
 }
 
 void __74__SUUIReviewCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -86,16 +86,16 @@ LABEL_11:
 LABEL_12:
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3010000000;
   v25 = "";
   v26 = *MEMORY[0x277CBF3A8];
-  *&v26 = a3;
+  *&v26 = width;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -108,13 +108,13 @@ LABEL_12:
   v14[1] = 3221225472;
   v14[2] = __70__SUUIReviewCollectionViewCell_sizeThatFitsWidth_viewElement_context___block_invoke;
   v14[3] = &unk_2798F7600;
-  v19 = a3;
-  v9 = v8;
+  widthCopy = width;
+  v9 = contextCopy;
   v15 = v9;
   v16 = &v22;
   v17 = v21;
   v18 = v20;
-  [v7 enumerateChildrenUsingBlock:v14];
+  [elementCopy enumerateChildrenUsingBlock:v14];
   v10 = v23[4];
   v11 = v23[5];
 
@@ -168,20 +168,20 @@ LABEL_9:
   ++*(*(*(a1 + 48) + 8) + 24);
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __68__SUUIReviewCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v12[3] = &unk_2798F5EF0;
-  v16 = a4;
-  v13 = v8;
-  v14 = v9;
-  v15 = self;
-  v10 = v9;
-  v11 = v8;
+  widthCopy = width;
+  v13 = elementCopy;
+  v14 = contextCopy;
+  selfCopy = self;
+  v10 = contextCopy;
+  v11 = elementCopy;
   [(SUUIViewReuseCollectionViewCell *)self modifyUsingBlock:v12];
 }
 
@@ -261,13 +261,13 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = SUUIReviewCollectionViewCell;
   [(SUUICollectionViewCell *)&v9 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     v5 = [MEMORY[0x277D75348] colorWithWhite:0.9 alpha:1.0];
     [(SUUIViewReuseCollectionViewCell *)self setBackgroundColor:v5];
@@ -277,14 +277,14 @@ LABEL_15:
 
   else
   {
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIViewReuseCollectionViewCell *)self setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUIViewReuseCollectionViewCell *)self setBackgroundColor:clearColor];
 
     [MEMORY[0x277D75348] clearColor];
   }
   v7 = ;
-  v8 = [(SUUIReviewCollectionViewCell *)self contentView];
-  [v8 setBackgroundColor:v7];
+  contentView = [(SUUIReviewCollectionViewCell *)self contentView];
+  [contentView setBackgroundColor:v7];
 }
 
 - (void)layoutSubviews
@@ -293,8 +293,8 @@ LABEL_15:
   v27.super_class = SUUIReviewCollectionViewCell;
   [(SUUICollectionViewCell *)&v27 layoutSubviews];
   v3 = storeShouldReverseLayoutDirection() ^ 1;
-  v4 = [(SUUIReviewCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SUUIReviewCollectionViewCell *)self contentView];
+  [contentView bounds];
   v22 = v5;
   v7 = v6;
   v9 = v8;
@@ -306,7 +306,7 @@ LABEL_15:
   v17 = v16;
   v19 = v18;
   v20 = v9 - v14 - v18;
-  v21 = [(SUUIViewReuseCollectionViewCell *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseCollectionViewCell *)self allExistingViews];
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -332,7 +332,7 @@ LABEL_15:
   v23[13] = v7;
   *&v23[14] = v9;
   v23[15] = v11;
-  [v21 enumerateObjectsUsingBlock:v23];
+  [allExistingViews enumerateObjectsUsingBlock:v23];
   _Block_object_dispose(v25, 8);
   _Block_object_dispose(v26, 8);
 }
@@ -401,104 +401,104 @@ void __46__SUUIReviewCollectionViewCell_layoutSubviews__block_invoke(uint64_t a1
   *(*(*(a1 + 40) + 8) + 24) = CGRectGetMaxY(v28);
 }
 
-- (void)contentViewTapped:(id)a3
+- (void)contentViewTapped:(id)tapped
 {
-  v28 = a3;
-  v4 = [(SUUIReviewCollectionViewCell *)self descriptionView];
-  v5 = [v4 superview];
-  [v28 locationInView:v5];
+  tappedCopy = tapped;
+  descriptionView = [(SUUIReviewCollectionViewCell *)self descriptionView];
+  superview = [descriptionView superview];
+  [tappedCopy locationInView:superview];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(SUUIReviewCollectionViewCell *)self descriptionTapAction];
-  if (v10)
+  descriptionTapAction = [(SUUIReviewCollectionViewCell *)self descriptionTapAction];
+  if (descriptionTapAction)
   {
-    v11 = v10;
-    v12 = [(SUUIReviewCollectionViewCell *)self descriptionView];
-    [v12 frame];
+    v11 = descriptionTapAction;
+    descriptionView2 = [(SUUIReviewCollectionViewCell *)self descriptionView];
+    [descriptionView2 frame];
     v30.x = v7;
     v30.y = v9;
     v13 = CGRectContainsPoint(v32, v30);
 
     if (v13)
     {
-      v14 = [(SUUIReviewCollectionViewCell *)self descriptionTapAction];
-      v14[2]();
+      descriptionTapAction2 = [(SUUIReviewCollectionViewCell *)self descriptionTapAction];
+      descriptionTapAction2[2]();
     }
   }
 
-  v15 = [(SUUIReviewCollectionViewCell *)self responseView];
-  v16 = [v15 descriptionView];
-  v17 = [v16 superview];
-  [v28 locationInView:v17];
+  responseView = [(SUUIReviewCollectionViewCell *)self responseView];
+  descriptionView3 = [responseView descriptionView];
+  superview2 = [descriptionView3 superview];
+  [tappedCopy locationInView:superview2];
   v19 = v18;
   v21 = v20;
 
-  v22 = [(SUUIReviewCollectionViewCell *)self responseDescriptionTapAction];
-  if (v22)
+  responseDescriptionTapAction = [(SUUIReviewCollectionViewCell *)self responseDescriptionTapAction];
+  if (responseDescriptionTapAction)
   {
-    v23 = v22;
-    v24 = [(SUUIReviewCollectionViewCell *)self responseView];
-    v25 = [v24 descriptionView];
-    [v25 frame];
+    v23 = responseDescriptionTapAction;
+    responseView2 = [(SUUIReviewCollectionViewCell *)self responseView];
+    descriptionView4 = [responseView2 descriptionView];
+    [descriptionView4 frame];
     v31.x = v19;
     v31.y = v21;
     v26 = CGRectContainsPoint(v33, v31);
 
     if (v26)
     {
-      v27 = [(SUUIReviewCollectionViewCell *)self responseDescriptionTapAction];
-      v27[2]();
+      responseDescriptionTapAction2 = [(SUUIReviewCollectionViewCell *)self responseDescriptionTapAction];
+      responseDescriptionTapAction2[2]();
     }
   }
 }
 
-+ (id)_attributedStringForTitleLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForTitleLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SUUIFontPreferredFontForTextStyle(1);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SUUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  blackColor = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v10)
+  if (!blackColor)
   {
-    v10 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v11 = [v5 text];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  text = [labelCopy text];
+  v12 = [text attributedStringWithDefaultFont:v8 foregroundColor:blackColor style:style];
 
   return v12;
 }
 
-+ (id)_attributedStringForDateLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForDateLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SUUIFontPreferredFontForTextStyle(21);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SUUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  v10 = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
     v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
   }
 
-  v11 = [v5 text];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  text = [labelCopy text];
+  v12 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10 style:style];
 
   return v12;
 }
@@ -506,17 +506,17 @@ void __46__SUUIReviewCollectionViewCell_layoutSubviews__block_invoke(uint64_t a1
 - (void)_resetTapGestures
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIReviewCollectionViewCell *)self contentView];
-  [v3 setUserInteractionEnabled:1];
+  contentView = [(SUUIReviewCollectionViewCell *)self contentView];
+  [contentView setUserInteractionEnabled:1];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SUUIReviewCollectionViewCell *)self contentView];
-  v5 = [v4 gestureRecognizers];
+  contentView2 = [(SUUIReviewCollectionViewCell *)self contentView];
+  gestureRecognizers = [contentView2 gestureRecognizers];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [gestureRecognizers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -528,26 +528,26 @@ void __46__SUUIReviewCollectionViewCell_layoutSubviews__block_invoke(uint64_t a1
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(SUUIReviewCollectionViewCell *)self contentView];
-        [v11 removeGestureRecognizer:v10];
+        contentView3 = [(SUUIReviewCollectionViewCell *)self contentView];
+        [contentView3 removeGestureRecognizer:v10];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [gestureRecognizers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
   v12 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_contentViewTapped_];
-  v13 = [(SUUIReviewCollectionViewCell *)self contentView];
-  [v13 addGestureRecognizer:v12];
+  contentView4 = [(SUUIReviewCollectionViewCell *)self contentView];
+  [contentView4 addGestureRecognizer:v12];
 }
 
 @end

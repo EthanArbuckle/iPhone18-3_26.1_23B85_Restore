@@ -1,12 +1,12 @@
 @interface TSCH3DActiveLabelsTypeBounds
-- (BOOL)hasAnyCachedBoundsAtIndices:(id)a3;
-- (BOOL)hasCachedBoundsAtIndex:(unint64_t)a3;
-- (BOOL)resetIndex:(int64_t)a3;
-- (BOOL)setActiveType:(int64_t)a3;
+- (BOOL)hasAnyCachedBoundsAtIndices:(id)indices;
+- (BOOL)hasCachedBoundsAtIndex:(unint64_t)index;
+- (BOOL)resetIndex:(int64_t)index;
+- (BOOL)setActiveType:(int64_t)type;
 - (TSCH3DActiveLabelsTypeBounds)init;
 - (id)active;
-- (id)arrayAtIndex:(int64_t)a3;
-- (void)addBounds:(id)a3;
+- (id)arrayAtIndex:(int64_t)index;
+- (void)addBounds:(id)bounds;
 @end
 
 @implementation TSCH3DActiveLabelsTypeBounds
@@ -35,27 +35,27 @@
   return v2;
 }
 
-- (BOOL)setActiveType:(int64_t)a3
+- (BOOL)setActiveType:(int64_t)type
 {
   v8 = objc_msgSend_containsIndex_(self->_activeIndices, a2, v3, v4, v5);
   v9 = objc_alloc(MEMORY[0x277CCABB0]);
-  v14 = objc_msgSend_initWithInteger_(v9, v10, v11, v12, v13, a3);
+  v14 = objc_msgSend_initWithInteger_(v9, v10, v11, v12, v13, type);
   activeType = self->_activeType;
   self->_activeType = v14;
 
   if ((v8 & 1) == 0)
   {
-    objc_msgSend_addIndex_(self->_activeIndices, v16, v17, v18, v19, a3);
+    objc_msgSend_addIndex_(self->_activeIndices, v16, v17, v18, v19, type);
   }
 
   return v8 ^ 1;
 }
 
-- (void)addBounds:(id)a3
+- (void)addBounds:(id)bounds
 {
-  v13 = a3;
+  boundsCopy = bounds;
   v8 = objc_msgSend_active(self, v4, v5, v6, v7);
-  objc_msgSend_addLabelBounds_(v8, v9, v10, v11, v12, v13);
+  objc_msgSend_addLabelBounds_(v8, v9, v10, v11, v12, boundsCopy);
 }
 
 - (id)active
@@ -77,9 +77,9 @@
   return objc_msgSend_arrayAtIndex_(self, v22, v24, v25, v26, v23);
 }
 
-- (id)arrayAtIndex:(int64_t)a3
+- (id)arrayAtIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DActiveLabelsTypeBounds arrayAtIndex:]");
@@ -89,7 +89,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  v23 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], a2, v3, v4, v5, a3);
+  v23 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], a2, v3, v4, v5, index);
   v28 = objc_msgSend_objectForKeyedSubscript_(self->_map, v24, v25, v26, v27, v23);
 
   if (!v28)
@@ -103,9 +103,9 @@
   return v38;
 }
 
-- (BOOL)hasCachedBoundsAtIndex:(unint64_t)a3
+- (BOOL)hasCachedBoundsAtIndex:(unint64_t)index
 {
-  v7 = objc_msgSend_arrayAtIndex_(self, a2, v3, v4, v5, a3);
+  v7 = objc_msgSend_arrayAtIndex_(self, a2, v3, v4, v5, index);
   if (!v7)
   {
     v11 = MEMORY[0x277D81150];
@@ -121,23 +121,23 @@
   return isEmpty ^ 1;
 }
 
-- (BOOL)hasAnyCachedBoundsAtIndices:(id)a3
+- (BOOL)hasAnyCachedBoundsAtIndices:(id)indices
 {
-  v4 = a3;
+  indicesCopy = indices;
     ;
   }
 
   return i != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)resetIndex:(int64_t)a3
+- (BOOL)resetIndex:(int64_t)index
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
   v10 = objc_msgSend_initWithInteger_(v5, v6, v7, v8, v9, 0x7FFFFFFFFFFFFFFFLL);
   activeType = self->_activeType;
   self->_activeType = v10;
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     hasAnyCachedBoundsAtIndices = objc_msgSend_hasAnyCachedBoundsAtIndices_(self, v12, v13, v14, v15, self->_activeIndices);
     objc_msgSend_removeAllIndexes(self->_activeIndices, v17, v18, v19, v20);
@@ -147,9 +147,9 @@
 
   else
   {
-    hasCachedBoundsAtIndex = objc_msgSend_hasCachedBoundsAtIndex_(self, v12, v13, v14, v15, a3);
-    objc_msgSend_removeIndex_(self->_activeIndices, v27, v28, v29, v30, a3);
-    v35 = objc_msgSend_arrayAtIndex_(self, v31, v32, v33, v34, a3);
+    hasCachedBoundsAtIndex = objc_msgSend_hasCachedBoundsAtIndex_(self, v12, v13, v14, v15, index);
+    objc_msgSend_removeIndex_(self->_activeIndices, v27, v28, v29, v30, index);
+    v35 = objc_msgSend_arrayAtIndex_(self, v31, v32, v33, v34, index);
     objc_msgSend_clear(v35, v36, v37, v38, v39);
 
     return hasCachedBoundsAtIndex;

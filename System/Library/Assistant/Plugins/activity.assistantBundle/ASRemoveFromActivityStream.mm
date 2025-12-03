@@ -1,25 +1,25 @@
 @interface ASRemoveFromActivityStream
-- (ASRemoveFromActivityStream)removeFromActivityStreamWithPredicate:(id)a3 completion:(id)a4;
-- (void)performWithCompletion:(id)a3;
+- (ASRemoveFromActivityStream)removeFromActivityStreamWithPredicate:(id)predicate completion:(id)completion;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation ASRemoveFromActivityStream
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ASRemoveFromActivityStream *)self fromDate];
-  v6 = [(ASRemoveFromActivityStream *)self toDate];
-  v7 = [ASDateUtils predicateForEventsWithDateRangeFromDate:v5 toDate:v6];
+  completionCopy = completion;
+  fromDate = [(ASRemoveFromActivityStream *)self fromDate];
+  toDate = [(ASRemoveFromActivityStream *)self toDate];
+  v7 = [ASDateUtils predicateForEventsWithDateRangeFromDate:fromDate toDate:toDate];
 
   if (v7)
   {
-    v8 = [(ASRemoveFromActivityStream *)self activityType];
+    activityType = [(ASRemoveFromActivityStream *)self activityType];
 
-    if (v8)
+    if (activityType)
     {
-      v9 = [(ASRemoveFromActivityStream *)self activityType];
-      v10 = [_DKAnyStringIdentifier withValue:v9];
+      activityType2 = [(ASRemoveFromActivityStream *)self activityType];
+      v10 = [_DKAnyStringIdentifier withValue:activityType2];
       v11 = [_DKQuery predicateForEventsWithIdentifierValue:v10];
 
       v22[0] = v7;
@@ -43,7 +43,7 @@
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "%s remove activity predicate %@", buf, 0x16u);
     }
 
-    [(ASRemoveFromActivityStream *)self removeFromActivityStreamWithPredicate:v13 completion:v4];
+    [(ASRemoveFromActivityStream *)self removeFromActivityStreamWithPredicate:v13 completion:completionCopy];
   }
 
   else
@@ -59,26 +59,26 @@
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v15 = [[SACommandFailed alloc] initWithReason:v13];
-      v16 = [v15 dictionary];
-      v4[2](v4, v16);
+      dictionary = [v15 dictionary];
+      completionCopy[2](completionCopy, dictionary);
     }
   }
 }
 
-- (ASRemoveFromActivityStream)removeFromActivityStreamWithPredicate:(id)a3 completion:(id)a4
+- (ASRemoveFromActivityStream)removeFromActivityStreamWithPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  completionCopy = completion;
   v8 = [ASStorageUtils duetStoreForCommand:self];
-  v9 = [(ASRemoveFromActivityStream *)self streamType];
-  v10 = v9;
+  streamType = [(ASRemoveFromActivityStream *)self streamType];
+  v10 = streamType;
   v11 = @"com.apple.internal.siri.guidance";
-  if (v9)
+  if (streamType)
   {
-    v11 = v9;
+    v11 = streamType;
   }
 
   v12 = v11;
@@ -94,23 +94,23 @@
     v29 = 2112;
     v30 = v14;
     v31 = 2112;
-    v32 = v6;
+    v32 = predicateCopy;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "%s deleting activities from streams [%@] with predicate [%@]", buf, 0x20u);
   }
 
   v26 = v14;
   v16 = [NSArray arrayWithObjects:&v26 count:1];
-  v17 = [_DKEventQuery eventQueryWithPredicate:v6 eventStreams:v16 offset:0 limit:0 sortDescriptors:0];
+  v17 = [_DKEventQuery eventQueryWithPredicate:predicateCopy eventStreams:v16 offset:0 limit:0 sortDescriptors:0];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_3780;
   v22[3] = &unk_C438;
   v24 = v8;
-  v25 = v7;
+  v25 = completionCopy;
   v23 = v17;
   v18 = v8;
-  v19 = v7;
+  v19 = completionCopy;
   v20 = v17;
   [v18 executeQuery:v20 responseQueue:0 withCompletion:v22];
 

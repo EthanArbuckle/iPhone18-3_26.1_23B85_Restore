@@ -1,65 +1,65 @@
 @interface SLWebAuthFlowController
-- (BOOL)shouldHideWebViewForLoadWithRequest:(id)a3;
-- (SLWebAuthFlowController)initWithWebClient:(id)a3;
-- (id)authURLForUsername:(id)a3;
-- (id)requestForAuthURL:(id)a3;
-- (void)setAuthFlowCompletion:(id)a3;
-- (void)webViewDidFinishLoadWithPageTitleSupplier:(id)a3;
+- (BOOL)shouldHideWebViewForLoadWithRequest:(id)request;
+- (SLWebAuthFlowController)initWithWebClient:(id)client;
+- (id)authURLForUsername:(id)username;
+- (id)requestForAuthURL:(id)l;
+- (void)setAuthFlowCompletion:(id)completion;
+- (void)webViewDidFinishLoadWithPageTitleSupplier:(id)supplier;
 @end
 
 @implementation SLWebAuthFlowController
 
-- (SLWebAuthFlowController)initWithWebClient:(id)a3
+- (SLWebAuthFlowController)initWithWebClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = SLWebAuthFlowController;
   v6 = [(SLWebAuthFlowController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_webClient, a3);
+    objc_storeStrong(&v6->_webClient, client);
   }
 
   return v7;
 }
 
-- (void)setAuthFlowCompletion:(id)a3
+- (void)setAuthFlowCompletion:(id)completion
 {
-  self->_completion = MEMORY[0x1C6917BF0](a3, a2);
+  self->_completion = MEMORY[0x1C6917BF0](completion, a2);
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)authURLForUsername:(id)a3
+- (id)authURLForUsername:(id)username
 {
-  v4 = a3;
-  v5 = [(SLWebAuthFlowController *)self webClient];
+  usernameCopy = username;
+  webClient = [(SLWebAuthFlowController *)self webClient];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SLWebClient *)self->_webClient defaultScope];
+    defaultScope = [(SLWebClient *)self->_webClient defaultScope];
   }
 
   else
   {
-    v7 = 0;
+    defaultScope = 0;
   }
 
-  v8 = [(SLWebClient *)self->_webClient webAuthRequestClass];
-  v9 = [(SLWebClient *)self->_webClient clientID];
-  v10 = [(SLWebClient *)self->_webClient clientRedirect];
-  v11 = [(SLWebClient *)self->_webClient authRequestURL];
-  v12 = [v8 urlForClientID:v9 redirectURI:v10 scope:v7 username:v4 authRequestURL:v11];
+  webAuthRequestClass = [(SLWebClient *)self->_webClient webAuthRequestClass];
+  clientID = [(SLWebClient *)self->_webClient clientID];
+  clientRedirect = [(SLWebClient *)self->_webClient clientRedirect];
+  authRequestURL = [(SLWebClient *)self->_webClient authRequestURL];
+  v12 = [webAuthRequestClass urlForClientID:clientID redirectURI:clientRedirect scope:defaultScope username:usernameCopy authRequestURL:authRequestURL];
 
   return v12;
 }
 
-- (id)requestForAuthURL:(id)a3
+- (id)requestForAuthURL:(id)l
 {
   webClient = self->_webClient;
-  v4 = a3;
+  lCopy = l;
   v5 = [-[SLWebClient webAuthRequestClass](webClient "webAuthRequestClass")];
 
   v6 = [v5 mutableCopy];
@@ -67,25 +67,25 @@
   return v6;
 }
 
-- (BOOL)shouldHideWebViewForLoadWithRequest:(id)a3
+- (BOOL)shouldHideWebViewForLoadWithRequest:(id)request
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SLWebClient *)self->_webClient webAuthRequestClass];
-  v8 = [v6 URL];
-  LODWORD(v7) = [v7 urlPageWillContainAuthorizationCode:v8];
+  requestCopy = request;
+  webAuthRequestClass = [(SLWebClient *)self->_webClient webAuthRequestClass];
+  v8 = [requestCopy URL];
+  LODWORD(webAuthRequestClass) = [webAuthRequestClass urlPageWillContainAuthorizationCode:v8];
 
-  if (v7)
+  if (webAuthRequestClass)
   {
     _SLLog(v3, 7, @"SLWebAuthFlowController shouldHideWebViewForLoadWithRequest: waiting for authentication code in page load url");
-    objc_storeStrong(&self->_requestWithAuthorizationCode, a3);
+    objc_storeStrong(&self->_requestWithAuthorizationCode, request);
     v9 = 1;
   }
 
   else
   {
     v10 = MEMORY[0x1E696AF20];
-    v11 = [v6 URL];
+    v11 = [requestCopy URL];
     v12 = [v10 componentsWithURL:v11 resolvingAgainstBaseURL:0];
 
     v36 = 0u;
@@ -99,9 +99,9 @@
     {
       v14 = v13;
       v28 = v13 != 0;
-      v29 = self;
+      selfCopy = self;
       v30 = v12;
-      v31 = v6;
+      v31 = requestCopy;
       v15 = 0;
       v16 = 0;
       v17 = *v35;
@@ -115,24 +115,24 @@
           }
 
           v19 = *(*(&v34 + 1) + 8 * i);
-          v20 = [v19 name];
-          v21 = [@"account" isEqualToString:v20];
+          name = [v19 name];
+          v21 = [@"account" isEqualToString:name];
 
           if (v21)
           {
-            v22 = [v19 value];
+            value = [v19 value];
 
-            v15 = v22;
+            v15 = value;
           }
 
-          v23 = [v19 name];
-          v24 = [@"email" isEqualToString:v23];
+          name2 = [v19 name];
+          v24 = [@"email" isEqualToString:name2];
 
           if (v24)
           {
-            v25 = [v19 value];
+            value2 = [v19 value];
 
-            v16 = v25;
+            v16 = value2;
           }
         }
 
@@ -145,14 +145,14 @@
       if (v16)
       {
         v12 = v30;
-        v6 = v31;
+        requestCopy = v31;
         if (v15)
         {
           if ([v15 isEqualToString:@"yahoo_japan"])
           {
             v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v16];
-            obja = v29->_yahooJapanUserName;
-            v29->_yahooJapanUserName = v26;
+            obja = selfCopy->_yahooJapanUserName;
+            selfCopy->_yahooJapanUserName = v26;
             v9 = v28;
           }
 
@@ -166,7 +166,7 @@
       else
       {
         v12 = v30;
-        v6 = v31;
+        requestCopy = v31;
       }
     }
 
@@ -180,25 +180,25 @@
   return v9;
 }
 
-- (void)webViewDidFinishLoadWithPageTitleSupplier:(id)a3
+- (void)webViewDidFinishLoadWithPageTitleSupplier:(id)supplier
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  supplierCopy = supplier;
   if (self->_requestWithAuthorizationCode)
   {
     v5 = [-[SLWebClient webAuthRequestClass](self->_webClient "webAuthRequestClass")];
     if ([v5 length])
     {
       v6 = [[SLWebTokenHandlerController alloc] initWithWebClient:self->_webClient];
-      v7 = [(SLWebClient *)self->_webClient clientRedirect];
+      clientRedirect = [(SLWebClient *)self->_webClient clientRedirect];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __69__SLWebAuthFlowController_webViewDidFinishLoadWithPageTitleSupplier___block_invoke;
       v11[3] = &unk_1E81762A8;
       v5 = v5;
       v12 = v5;
-      v13 = self;
-      [(SLWebTokenHandlerController *)v6 exchangeAuthCode:v5 usingRedirect:v7 codeVerifier:0 forTokensAndUsernameWithCompletion:v11];
+      selfCopy = self;
+      [(SLWebTokenHandlerController *)v6 exchangeAuthCode:v5 usingRedirect:clientRedirect codeVerifier:0 forTokensAndUsernameWithCompletion:v11];
 
 LABEL_8:
       goto LABEL_9;

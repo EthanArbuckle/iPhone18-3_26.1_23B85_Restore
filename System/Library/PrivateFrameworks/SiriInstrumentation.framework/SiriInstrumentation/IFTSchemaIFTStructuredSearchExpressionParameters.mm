@@ -1,25 +1,25 @@
 @interface IFTSchemaIFTStructuredSearchExpressionParameters
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTStructuredSearchExpressionParameters)initWithDictionary:(id)a3;
-- (IFTSchemaIFTStructuredSearchExpressionParameters)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTStructuredSearchExpressionParameters)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTStructuredSearchExpressionParameters)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTStructuredSearchExpressionParameters
 
-- (IFTSchemaIFTStructuredSearchExpressionParameters)initWithDictionary:(id)a3
+- (IFTSchemaIFTStructuredSearchExpressionParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = IFTSchemaIFTStructuredSearchExpressionParameters;
   v5 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"structuredSearchParameterName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"structuredSearchParameterName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(IFTSchemaIFTStructuredSearchExpressionParameters *)v5 setStructuredSearchParameterName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"statementId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"statementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTStructuredSearchExpressionParameters)initWithJSON:(id)a3
+- (IFTSchemaIFTStructuredSearchExpressionParameters)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,57 +77,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_statementId)
   {
-    v4 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    statementId = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
+    dictionaryRepresentation = [statementId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"statementId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"statementId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"statementId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"statementId"];
     }
   }
 
   if (self->_structuredSearchParameterName)
   {
-    v7 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self structuredSearchParameterName];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"structuredSearchParameterName"];
+    structuredSearchParameterName = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self structuredSearchParameterName];
+    v8 = [structuredSearchParameterName copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"structuredSearchParameterName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self structuredSearchParameterName];
-  v6 = [v4 structuredSearchParameterName];
-  if ((v5 != 0) == (v6 == 0))
+  structuredSearchParameterName = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self structuredSearchParameterName];
+  structuredSearchParameterName2 = [equalCopy structuredSearchParameterName];
+  if ((structuredSearchParameterName != 0) == (structuredSearchParameterName2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self structuredSearchParameterName];
-  if (v7)
+  structuredSearchParameterName3 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self structuredSearchParameterName];
+  if (structuredSearchParameterName3)
   {
-    v8 = v7;
-    v9 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self structuredSearchParameterName];
-    v10 = [v4 structuredSearchParameterName];
-    v11 = [v9 isEqual:v10];
+    v8 = structuredSearchParameterName3;
+    structuredSearchParameterName4 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self structuredSearchParameterName];
+    structuredSearchParameterName5 = [equalCopy structuredSearchParameterName];
+    v11 = [structuredSearchParameterName4 isEqual:structuredSearchParameterName5];
 
     if (!v11)
     {
@@ -139,12 +139,12 @@
   {
   }
 
-  v5 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
-  v6 = [v4 statementId];
-  if ((v5 != 0) != (v6 == 0))
+  structuredSearchParameterName = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
+  structuredSearchParameterName2 = [equalCopy statementId];
+  if ((structuredSearchParameterName != 0) != (structuredSearchParameterName2 == 0))
   {
-    v12 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
-    if (!v12)
+    statementId = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
+    if (!statementId)
     {
 
 LABEL_15:
@@ -152,10 +152,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
-    v15 = [v4 statementId];
-    v16 = [v14 isEqual:v15];
+    v13 = statementId;
+    statementId2 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
+    statementId3 = [equalCopy statementId];
+    v16 = [statementId2 isEqual:statementId3];
 
     if (v16)
     {
@@ -175,36 +175,36 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self structuredSearchParameterName];
+  toCopy = to;
+  structuredSearchParameterName = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self structuredSearchParameterName];
 
-  if (v4)
+  if (structuredSearchParameterName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
+  statementId = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
 
-  if (v5)
+  if (statementId)
   {
-    v6 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
+    statementId2 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTStructuredSearchExpressionParameters;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTStructuredSearchExpressionParameters *)self statementId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IFTSchemaIFTStructuredSearchExpressionParameters *)self deleteStatementId];
   }

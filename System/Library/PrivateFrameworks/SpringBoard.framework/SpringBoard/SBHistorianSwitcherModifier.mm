@@ -1,16 +1,16 @@
 @interface SBHistorianSwitcherModifier
-- (SBHistorianSwitcherModifier)initWithRootModifier:(id)a3;
+- (SBHistorianSwitcherModifier)initWithRootModifier:(id)modifier;
 - (SBHistorianSwitcherModifierDelegate)historianDelegate;
-- (id)handleEvent:(id)a3;
-- (void)setDelegate:(id)a3;
+- (id)handleEvent:(id)event;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SBHistorianSwitcherModifier
 
-- (SBHistorianSwitcherModifier)initWithRootModifier:(id)a3
+- (SBHistorianSwitcherModifier)initWithRootModifier:(id)modifier
 {
-  v6 = a3;
-  if (!v6)
+  modifierCopy = modifier;
+  if (!modifierCopy)
   {
     [(SBHistorianSwitcherModifier *)a2 initWithRootModifier:?];
   }
@@ -21,18 +21,18 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_rootModifier, a3);
+    objc_storeStrong(&v7->_rootModifier, modifier);
   }
 
   return v8;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = SBHistorianSwitcherModifier;
   [(SBChainableModifier *)&v5 setDelegate:?];
-  if (a3)
+  if (delegate)
   {
     if (![(SBChainableModifier *)self containsChildModifier:self->_rootModifier])
     {
@@ -41,27 +41,27 @@
   }
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SBHistorianSwitcherModifier *)self historianDelegate];
-  if ([v5 historianModifier:self shouldRecordEvent:v4])
+  eventCopy = event;
+  historianDelegate = [(SBHistorianSwitcherModifier *)self historianDelegate];
+  if ([historianDelegate historianModifier:self shouldRecordEvent:eventCopy])
   {
-    v6 = [[SBSwitcherModifierEventSnapshot alloc] initWithEvent:v4];
+    v6 = [[SBSwitcherModifierEventSnapshot alloc] initWithEvent:eventCopy];
     v13.receiver = self;
     v13.super_class = SBHistorianSwitcherModifier;
-    v7 = [(SBChainableModifier *)&v13 handleEvent:v4];
+    v7 = [(SBChainableModifier *)&v13 handleEvent:eventCopy];
     v8 = [[SBSwitcherModifierEventResponseSnapshot alloc] initWithEventResponse:v7];
     v9 = [[SBSwitcherModifierStackSnapshot alloc] initWithRootModifier:self->_rootModifier];
     v10 = [[SBSwitcherModifierTimelineEntry alloc] initWithEventSnapshot:v6 responseSnapshot:v8 stackSnapshotAfterEvent:v9];
-    [v5 historianModifier:self didRecordEntry:v10];
+    [historianDelegate historianModifier:self didRecordEntry:v10];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = SBHistorianSwitcherModifier;
-    v7 = [(SBChainableModifier *)&v12 handleEvent:v4];
+    v7 = [(SBChainableModifier *)&v12 handleEvent:eventCopy];
   }
 
   return v7;

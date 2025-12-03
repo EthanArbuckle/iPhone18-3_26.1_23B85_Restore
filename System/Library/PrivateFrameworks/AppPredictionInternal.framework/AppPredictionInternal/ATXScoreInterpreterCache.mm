@@ -3,7 +3,7 @@
 - (ATXScoreInterpreterCache)init;
 - (id)_assetNamesToSkipCaching;
 - (void)dealloc;
-- (void)handleMemoryPressureOfType:(unint64_t)a3;
+- (void)handleMemoryPressureOfType:(unint64_t)type;
 - (void)resetCache;
 @end
 
@@ -43,9 +43,9 @@ void __42__ATXScoreInterpreterCache_sharedInstance__block_invoke()
     v2->_cachedInterpreters = v3;
 
     v2->_memoryPressureAllowsCaching = 1;
-    v5 = [MEMORY[0x277CEBC88] sharedInstance];
+    mEMORY[0x277CEBC88] = [MEMORY[0x277CEBC88] sharedInstance];
     memoryPressureMonitor = v2->_memoryPressureMonitor;
-    v2->_memoryPressureMonitor = v5;
+    v2->_memoryPressureMonitor = mEMORY[0x277CEBC88];
 
     [(ATXMemoryPressureMonitor *)v2->_memoryPressureMonitor registerObserver:v2];
   }
@@ -68,12 +68,12 @@ void __42__ATXScoreInterpreterCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)handleMemoryPressureOfType:(unint64_t)a3
+- (void)handleMemoryPressureOfType:(unint64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = self->_cachedInterpreters;
   objc_sync_enter(v5);
-  if (a3)
+  if (type)
   {
     v6 = __atxlog_handle_default();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))

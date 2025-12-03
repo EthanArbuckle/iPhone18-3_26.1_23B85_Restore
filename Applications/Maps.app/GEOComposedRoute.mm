@@ -1,18 +1,18 @@
 @interface GEOComposedRoute
-+ (id)_maps_composedRouteWithPersistentData:(id)a3;
++ (id)_maps_composedRouteWithPersistentData:(id)data;
 - ($873BFAB23BBB6E2F0B0288ED2F935688)_maps_boundingMapRect;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_maps_boundingRectForStep:(id)a3;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_maps_boundingRectForStep:(id)a3 fromPoint:(unint64_t)a4;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_maps_closestMapPointToMapPoint:(id)a3;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_maps_boundingRectForStep:(id)step;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_maps_boundingRectForStep:(id)step fromPoint:(unint64_t)point;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_maps_closestMapPointToMapPoint:(id)point;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)arrivalStorefrontLocation;
-- (BOOL)_isChargingWaypoint:(id)a3;
-- (BOOL)_isStartWaypoint:(id)a3;
-- (BOOL)_maps_isEqualToComposedRoute:(id)a3;
+- (BOOL)_isChargingWaypoint:(id)waypoint;
+- (BOOL)_isStartWaypoint:(id)waypoint;
+- (BOOL)_maps_isEqualToComposedRoute:(id)route;
 - (BOOL)carplayDestinationHandoffRequired;
 - (BOOL)hasArrivalStorefrontGeometry;
-- (BOOL)isLegIndexOfLastLeg:(unint64_t)a3;
-- (BOOL)shouldReturnToRoutePickerWhenEndingDirectionsAtStepIndex:(unint64_t)a3;
-- (CLLocationCoordinate2D)_mkCoordAt:(unsigned int)a3;
+- (BOOL)isLegIndexOfLastLeg:(unint64_t)leg;
+- (BOOL)shouldReturnToRoutePickerWhenEndingDirectionsAtStepIndex:(unint64_t)index;
+- (CLLocationCoordinate2D)_mkCoordAt:(unsigned int)at;
 - (GEOComposedRouteAdvisory)clickableAdvisory;
 - (GEOComposedRouteStep)startRouteStep;
 - (GuidanceETA)guidanceETA;
@@ -32,44 +32,44 @@
 - (NSString)expandedDistance;
 - (NSString)expandedTravelTime;
 - (TransitDirectionsStepsListDataProvider)transitDirectionsStepsListDataProvider;
-- (id)_arrivalInstructionStringForStep:(id)a3;
-- (id)_maps_convertToNavigableRouteWithTraits:(id)a3 errorHandler:(id)a4 completionHandler:(id)a5;
+- (id)_arrivalInstructionStringForStep:(id)step;
+- (id)_maps_convertToNavigableRouteWithTraits:(id)traits errorHandler:(id)handler completionHandler:(id)completionHandler;
 - (id)_maps_routeRequestStorage;
-- (id)_maps_trafficIncidentsObservers:(BOOL)a3;
-- (id)_signForTransitStationStep:(id)a3;
-- (id)_signForTransitTripStep:(id)a3;
-- (id)_signForWalkingStep:(id)a3;
-- (id)advisoriesForAutoSharingContacts:(id)a3 scale:(double)a4;
+- (id)_maps_trafficIncidentsObservers:(BOOL)observers;
+- (id)_signForTransitStationStep:(id)step;
+- (id)_signForTransitTripStep:(id)step;
+- (id)_signForWalkingStep:(id)step;
+- (id)advisoriesForAutoSharingContacts:(id)contacts scale:(double)scale;
 - (id)advisoriesStyleAttributes;
-- (id)arrivalInstructionStringForLegIndex:(unint64_t)a3;
-- (id)arrivalInstructionStringForStepIndex:(unint64_t)a3;
-- (id)batteryLevelForStepIndex:(unint64_t)a3;
+- (id)arrivalInstructionStringForLegIndex:(unint64_t)index;
+- (id)arrivalInstructionStringForStepIndex:(unint64_t)index;
+- (id)batteryLevelForStepIndex:(unint64_t)index;
 - (id)bookmarkRepresentation;
 - (id)chargingStationInfos;
-- (id)combinedDescriptionForFont:(id)a3;
+- (id)combinedDescriptionForFont:(id)font;
 - (id)distanceAndElevationString;
-- (id)nextLaneGuidanceEventAfterEvent:(id)a3;
+- (id)nextLaneGuidanceEventAfterEvent:(id)event;
 - (id)nextWaypoint;
 - (id)rapDestinationTitle;
 - (id)secondaryText;
 - (id)tertiaryText;
-- (id)timeAndElevationDescriptionStringWithAttributes:(id)a3;
-- (id)timeStringWithAttributes:(id)a3;
-- (id)waypointsAfterStepIndex:(unint64_t)a3 legIndex:(unint64_t *)a4;
+- (id)timeAndElevationDescriptionStringWithAttributes:(id)attributes;
+- (id)timeStringWithAttributes:(id)attributes;
+- (id)waypointsAfterStepIndex:(unint64_t)index legIndex:(unint64_t *)legIndex;
 - (unint64_t)_maps_routeIndex;
 - (unint64_t)mapType;
-- (unint64_t)suggestedNavigationModeForLocation:(id)a3 context:(unint64_t)a4 ignoreDeviceNavigability:(BOOL)a5;
+- (unint64_t)suggestedNavigationModeForLocation:(id)location context:(unint64_t)context ignoreDeviceNavigability:(BOOL)navigability;
 - (unsigned)tollCurrencyType;
-- (void)_getMapPoints:(id *)a3 count:(unint64_t *)a4 startIndex:(unint64_t)a5 limit:(unint64_t)a6;
-- (void)_maps_addTrafficIncidentsObserver:(id)a3;
-- (void)_maps_getMapPoints:(id *)a3 count:(unint64_t *)a4;
-- (void)_maps_getMapPoints:(id *)a3 count:(unint64_t *)a4 forStep:(id)a5;
+- (void)_getMapPoints:(id *)points count:(unint64_t *)count startIndex:(unint64_t)index limit:(unint64_t)limit;
+- (void)_maps_addTrafficIncidentsObserver:(id)observer;
+- (void)_maps_getMapPoints:(id *)points count:(unint64_t *)count;
+- (void)_maps_getMapPoints:(id *)points count:(unint64_t *)count forStep:(id)step;
 - (void)_maps_refreshTrafficIncidentsOnRoute;
-- (void)_maps_removeTrafficIncidentsObserver:(id)a3;
-- (void)_maps_routeCollectionOnly_setRouteCollectionWhenNil:(id)a3;
+- (void)_maps_removeTrafficIncidentsObserver:(id)observer;
+- (void)_maps_routeCollectionOnly_setRouteCollectionWhenNil:(id)nil;
 - (void)updateCustomRouteStartEndCaptions;
 - (void)updateMyLocationAnchorNames;
-- (void)updateWaypointStyleAttributesWithItemSource:(id)a3 personalizedItemManager:(id)a4;
+- (void)updateWaypointStyleAttributesWithItemSource:(id)source personalizedItemManager:(id)manager;
 @end
 
 @implementation GEOComposedRoute
@@ -84,9 +84,9 @@
     v45 = 0u;
     v46 = 0u;
     v4 = +[SharedTripSuggestionsCache sharedInstance];
-    v5 = [v4 suggestedContacts];
+    suggestedContacts = [v4 suggestedContacts];
 
-    v6 = [v5 countByEnumeratingWithState:&v43 objects:v48 count:16];
+    v6 = [suggestedContacts countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v6)
     {
       v7 = v6;
@@ -97,16 +97,16 @@
         {
           if (*v44 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(suggestedContacts);
           }
 
           v10 = *(*(&v43 + 1) + 8 * i);
-          v11 = [v10 contact];
-          v12 = [v11 identifier];
-          [v3 setObject:v10 forKey:v12];
+          contact = [v10 contact];
+          identifier = [contact identifier];
+          [v3 setObject:v10 forKey:identifier];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v43 objects:v48 count:16];
+        v7 = [suggestedContacts countByEnumeratingWithState:&v43 objects:v48 count:16];
       }
 
       while (v7);
@@ -114,8 +114,8 @@
 
     v13 = +[NSMutableArray array];
     v14 = +[AddressBookManager sharedManager];
-    v15 = [v14 meCard];
-    v38 = [v15 identifier];
+    meCard = [v14 meCard];
+    identifier2 = [meCard identifier];
 
     v41 = 0u;
     v42 = 0u;
@@ -137,71 +137,71 @@
           }
 
           v20 = *(*(&v39 + 1) + 8 * j);
-          v21 = [v20 findMyHandle];
-          v22 = [v21 contact];
+          findMyHandle = [v20 findMyHandle];
+          contact2 = [findMyHandle contact];
 
-          if (v22)
+          if (contact2)
           {
-            v23 = [v20 findMyHandle];
-            v24 = [v23 contact];
+            findMyHandle2 = [v20 findMyHandle];
+            contact3 = [findMyHandle2 contact];
 
-            v25 = [v20 findMyHandle];
-            v26 = [v25 identifier];
+            findMyHandle3 = [v20 findMyHandle];
+            identifier3 = [findMyHandle3 identifier];
           }
 
           else
           {
-            v27 = [v20 addressBookAddress];
-            v26 = [v27 contact];
+            addressBookAddress = [v20 addressBookAddress];
+            identifier3 = [addressBookAddress contact];
 
-            if (!v26)
+            if (!identifier3)
             {
-              v24 = 0;
+              contact3 = 0;
               goto LABEL_27;
             }
 
-            v25 = [v20 addressBookAddress];
-            v24 = [v25 contact];
-            v26 = 0;
+            findMyHandle3 = [v20 addressBookAddress];
+            contact3 = [findMyHandle3 contact];
+            identifier3 = 0;
           }
 
-          if (v24)
+          if (contact3)
           {
-            v28 = [v24 identifier];
-            v29 = [v28 isEqualToString:v38];
+            identifier4 = [contact3 identifier];
+            v29 = [identifier4 isEqualToString:identifier2];
 
             if ((v29 & 1) == 0)
             {
-              v30 = [v24 identifier];
-              v31 = [v3 objectForKey:v30];
+              identifier5 = [contact3 identifier];
+              firstObject = [v3 objectForKey:identifier5];
 
-              if (v31)
+              if (firstObject)
               {
                 goto LABEL_26;
               }
 
-              if (!v26)
+              if (!identifier3)
               {
-                v36 = [v20 addressBookAddress];
-                v32 = [v36 contact];
-                [MSPSharedTripContact contactsFromCNContact:v32];
+                addressBookAddress2 = [v20 addressBookAddress];
+                contact4 = [addressBookAddress2 contact];
+                [MSPSharedTripContact contactsFromCNContact:contact4];
                 v34 = v33 = v13;
-                v31 = [v34 firstObject];
+                firstObject = [v34 firstObject];
 
                 v13 = v33;
-                if (!v31)
+                if (!firstObject)
                 {
                   goto LABEL_27;
                 }
 
 LABEL_26:
-                [v13 addObject:v31];
+                [v13 addObject:firstObject];
 
                 goto LABEL_27;
               }
 
-              v31 = [[MSPSharedTripContact alloc] initWithContact:v24 handle:v26];
-              if (v31)
+              firstObject = [[MSPSharedTripContact alloc] initWithContact:contact3 handle:identifier3];
+              if (firstObject)
               {
                 goto LABEL_26;
               }
@@ -228,27 +228,27 @@ LABEL_27:
 
 - (void)_maps_refreshTrafficIncidentsOnRoute
 {
-  v13 = [(GEOComposedRoute *)self traffic];
-  v3 = [v13 trafficIncidents];
-  v4 = [v13 trafficIncidentOffsets];
-  v5 = [v3 count];
-  if (v5 == [v4 count])
+  traffic = [(GEOComposedRoute *)self traffic];
+  trafficIncidents = [traffic trafficIncidents];
+  trafficIncidentOffsets = [traffic trafficIncidentOffsets];
+  v5 = [trafficIncidents count];
+  if (v5 == [trafficIncidentOffsets count])
   {
-    v6 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
-    if ([v3 count])
+    v6 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(trafficIncidents, "count")}];
+    if ([trafficIncidents count])
     {
       v7 = 0;
       do
       {
-        v8 = [v3 objectAtIndexedSubscript:v7];
-        v9 = [v4 objectAtIndexedSubscript:v7];
+        v8 = [trafficIncidents objectAtIndexedSubscript:v7];
+        v9 = [trafficIncidentOffsets objectAtIndexedSubscript:v7];
         v10 = [[VKTrafficIncidentFeature alloc] initWithRouteIncident:v8 routeOffsetInMeters:objc_msgSend(v9 routeRelevance:"unsignedIntValue") onRoute:{3, self}];
         [v6 addObject:v10];
 
         ++v7;
       }
 
-      while (v7 < [v3 count]);
+      while (v7 < [trafficIncidents count]);
     }
 
     v11 = [v6 copy];
@@ -308,8 +308,8 @@ LABEL_27:
   v3 = objc_getAssociatedObject(self, &unk_10195CC30);
   if (!v3)
   {
-    v4 = [(GEOComposedRoute *)self waypoints];
-    v3 = sub_100021DB0(v4, &stru_101623A00);
+    waypoints = [(GEOComposedRoute *)self waypoints];
+    v3 = sub_100021DB0(waypoints, &stru_101623A00);
 
     objc_setAssociatedObject(self, &unk_10195CC30, v3, 1);
   }
@@ -317,57 +317,57 @@ LABEL_27:
   return v3;
 }
 
-- (BOOL)_isChargingWaypoint:(id)a3
+- (BOOL)_isChargingWaypoint:(id)waypoint
 {
-  v4 = a3;
-  v5 = [(GEOComposedRoute *)self _maps_directionsWaypoints];
-  v6 = [v5 indexOfObject:v4];
+  waypointCopy = waypoint;
+  _maps_directionsWaypoints = [(GEOComposedRoute *)self _maps_directionsWaypoints];
+  v6 = [_maps_directionsWaypoints indexOfObject:waypointCopy];
 
-  v7 = [(GEOComposedRoute *)self waypoints];
-  if (v6 >= [v7 count])
+  waypoints = [(GEOComposedRoute *)self waypoints];
+  if (v6 >= [waypoints count])
   {
     v9 = 0;
   }
 
   else
   {
-    v8 = [(GEOComposedRoute *)self waypoints];
-    v9 = [v8 objectAtIndexedSubscript:v6];
+    waypoints2 = [(GEOComposedRoute *)self waypoints];
+    v9 = [waypoints2 objectAtIndexedSubscript:v6];
   }
 
-  v10 = [v9 chargingInfo];
-  v11 = v10 != 0;
+  chargingInfo = [v9 chargingInfo];
+  v11 = chargingInfo != 0;
 
   return v11;
 }
 
-- (BOOL)_isStartWaypoint:(id)a3
+- (BOOL)_isStartWaypoint:(id)waypoint
 {
-  v4 = a3;
-  v5 = [(GEOComposedRoute *)self _maps_directionsWaypoints];
-  v6 = [v5 firstObject];
-  v7 = [v6 isEqual:v4];
+  waypointCopy = waypoint;
+  _maps_directionsWaypoints = [(GEOComposedRoute *)self _maps_directionsWaypoints];
+  firstObject = [_maps_directionsWaypoints firstObject];
+  v7 = [firstObject isEqual:waypointCopy];
 
   return v7;
 }
 
-- (void)_maps_removeTrafficIncidentsObserver:(id)a3
+- (void)_maps_removeTrafficIncidentsObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = [(GEOComposedRoute *)self _maps_trafficIncidentsObservers:0];
-  [v5 unregisterObserver:v4];
+  [v5 unregisterObserver:observerCopy];
 }
 
-- (void)_maps_addTrafficIncidentsObserver:(id)a3
+- (void)_maps_addTrafficIncidentsObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = [(GEOComposedRoute *)self _maps_trafficIncidentsObservers:1];
-  [v5 registerObserver:v4];
+  [v5 registerObserver:observerCopy];
 }
 
-- (id)_maps_trafficIncidentsObservers:(BOOL)a3
+- (id)_maps_trafficIncidentsObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v5 = objc_getAssociatedObject(self, &unk_10195D0F2);
   if (v5)
   {
@@ -376,7 +376,7 @@ LABEL_27:
 
   else
   {
-    v6 = !v3;
+    v6 = !observersCopy;
   }
 
   if (!v6)
@@ -394,8 +394,8 @@ LABEL_27:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(GEOComposedRoute *)self waypoints];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  waypoints = [(GEOComposedRoute *)self waypoints];
+  v4 = [waypoints countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -406,7 +406,7 @@ LABEL_27:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(waypoints);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -417,7 +417,7 @@ LABEL_27:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [waypoints countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -426,18 +426,18 @@ LABEL_27:
 
 - (void)updateCustomRouteStartEndCaptions
 {
-  v3 = [(GEOComposedRoute *)self waypoints];
-  v10 = [v3 firstObject];
+  waypoints = [(GEOComposedRoute *)self waypoints];
+  firstObject = [waypoints firstObject];
 
-  v4 = [(GEOComposedRoute *)self waypoints];
-  v5 = [v4 lastObject];
+  waypoints2 = [(GEOComposedRoute *)self waypoints];
+  lastObject = [waypoints2 lastObject];
 
-  v6 = [(GEOComposedRoute *)self waypointDisplayInfoForWaypoint:v10];
-  v7 = [(GEOComposedRoute *)self waypointDisplayInfoForWaypoint:v5];
-  v8 = [(GEOComposedRoute *)self anchorPoints];
-  v9 = [v8 startAndEndAreTheSame];
+  v6 = [(GEOComposedRoute *)self waypointDisplayInfoForWaypoint:firstObject];
+  v7 = [(GEOComposedRoute *)self waypointDisplayInfoForWaypoint:lastObject];
+  anchorPoints = [(GEOComposedRoute *)self anchorPoints];
+  startAndEndAreTheSame = [anchorPoints startAndEndAreTheSame];
 
-  if (v9)
+  if (startAndEndAreTheSame)
   {
     [v7 _routeCreation_setStartEndWaypointCaption];
   }
@@ -449,17 +449,17 @@ LABEL_27:
   }
 }
 
-- (void)updateWaypointStyleAttributesWithItemSource:(id)a3 personalizedItemManager:(id)a4
+- (void)updateWaypointStyleAttributesWithItemSource:(id)source personalizedItemManager:(id)manager
 {
-  v6 = a3;
-  v25 = a4;
-  v7 = [(GEOComposedRoute *)self waypoints];
+  sourceCopy = source;
+  managerCopy = manager;
+  waypoints = [(GEOComposedRoute *)self waypoints];
   v8 = +[NSMapTable strongToStrongObjectsMapTable];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v7;
+  v9 = waypoints;
   v10 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v10)
   {
@@ -475,12 +475,12 @@ LABEL_27:
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
-        v15 = [v14 styleAttributesData];
+        styleAttributesData = [v14 styleAttributesData];
 
-        if (!v15)
+        if (!styleAttributesData)
         {
           v16 = [[SearchResult alloc] initWithComposedWaypoint:v14];
-          v17 = [v6 itemMatchingLocation:v16];
+          v17 = [sourceCopy itemMatchingLocation:v16];
           if (v17)
           {
             [v8 setObject:v14 forKey:v17];
@@ -503,19 +503,19 @@ LABEL_27:
       *buf = 134218242;
       v34 = v19;
       v35 = 2112;
-      v36 = v6;
+      v36 = sourceCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Will attempt to find custom style attributes for %lu waypoints from item source: %@", buf, 0x16u);
     }
 
-    v20 = [v6 allItems];
-    if ([v25 updateInProgress])
+    allItems = [sourceCopy allItems];
+    if ([managerCopy updateInProgress])
     {
-      [v25 previousItems];
+      [managerCopy previousItems];
     }
 
     else
     {
-      [v25 allItems];
+      [managerCopy allItems];
     }
     v21 = ;
     v22 = sub_100798A3C();
@@ -534,27 +534,27 @@ LABEL_27:
     v27 = v8;
     v28 = v21;
     v24 = v21;
-    [v20 enumerateObjectsUsingBlock:v26];
+    [allItems enumerateObjectsUsingBlock:v26];
   }
 }
 
 - (id)nextWaypoint
 {
-  v3 = [(GEOComposedRoute *)self waypoints];
-  v4 = [v3 count];
+  waypoints = [(GEOComposedRoute *)self waypoints];
+  v4 = [waypoints count];
 
   if (v4 > 2)
   {
-    v6 = [(GEOComposedRoute *)self waypoints];
-    v5 = [v6 objectAtIndexedSubscript:1];
+    waypoints2 = [(GEOComposedRoute *)self waypoints];
+    destination = [waypoints2 objectAtIndexedSubscript:1];
   }
 
   else
   {
-    v5 = [(GEOComposedRoute *)self destination];
+    destination = [(GEOComposedRoute *)self destination];
   }
 
-  return v5;
+  return destination;
 }
 
 - (unint64_t)mapType
@@ -572,17 +572,17 @@ LABEL_27:
 
 - (NSData)rideSelectionsAsNSData
 {
-  v3 = [(GEOComposedRoute *)self rideSelections];
-  v4 = 4 * [v3 count];
+  rideSelections = [(GEOComposedRoute *)self rideSelections];
+  v4 = 4 * [rideSelections count];
 
   v5 = malloc_type_malloc(v4, 0x97F847E2uLL);
-  v6 = [(GEOComposedRoute *)self rideSelections];
+  rideSelections2 = [(GEOComposedRoute *)self rideSelections];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1007A38E0;
   v9[3] = &unk_101629CC8;
   v9[4] = v5;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [rideSelections2 enumerateObjectsUsingBlock:v9];
 
   v7 = [NSData dataWithBytesNoCopy:v5 length:v4 freeWhenDone:1];
 
@@ -591,23 +591,23 @@ LABEL_27:
 
 - (id)rapDestinationTitle
 {
-  v3 = [(GEOComposedRoute *)self destination];
-  v4 = [v3 hasFindMyHandleID];
+  destination = [(GEOComposedRoute *)self destination];
+  hasFindMyHandleID = [destination hasFindMyHandleID];
 
-  if (v4)
+  if (hasFindMyHandleID)
   {
-    v5 = [(GEOComposedRoute *)self destination];
-    [v5 arrivingDisplayName];
+    destination2 = [(GEOComposedRoute *)self destination];
+    [destination2 arrivingDisplayName];
   }
 
   else
   {
     v6 = [MKMapItem alloc];
-    v7 = [(GEOComposedRoute *)self destination];
-    v8 = [v7 mapItemStorage];
-    v5 = [v6 initWithGeoMapItem:v8 isPlaceHolderPlace:0];
+    destination3 = [(GEOComposedRoute *)self destination];
+    mapItemStorage = [destination3 mapItemStorage];
+    destination2 = [v6 initWithGeoMapItem:mapItemStorage isPlaceHolderPlace:0];
 
-    [v5 name];
+    [destination2 name];
   }
   v9 = ;
 
@@ -620,16 +620,16 @@ LABEL_27:
   if (!v3)
   {
     v3 = objc_alloc_init(MNTraceRecordingData);
-    v4 = [(GEOComposedRoute *)self routeInitializerData];
-    v5 = [v4 directionsRequest];
-    [v3 setInitialDirectionsRequest:v5];
+    routeInitializerData = [(GEOComposedRoute *)self routeInitializerData];
+    directionsRequest = [routeInitializerData directionsRequest];
+    [v3 setInitialDirectionsRequest:directionsRequest];
 
-    v6 = [(GEOComposedRoute *)self routeInitializerData];
-    v7 = [v6 directionsResponse];
-    [v3 setInitialDirectionsResponse:v7];
+    routeInitializerData2 = [(GEOComposedRoute *)self routeInitializerData];
+    directionsResponse = [routeInitializerData2 directionsResponse];
+    [v3 setInitialDirectionsResponse:directionsResponse];
 
-    v8 = [(GEOComposedRoute *)self userRequestedWaypoints];
-    [v3 setWaypoints:v8];
+    userRequestedWaypoints = [(GEOComposedRoute *)self userRequestedWaypoints];
+    [v3 setWaypoints:userRequestedWaypoints];
 
     [(GEOComposedRoute *)self _maps_setTraceRecordingData:v3];
   }
@@ -637,28 +637,28 @@ LABEL_27:
   return v3;
 }
 
-- (id)batteryLevelForStepIndex:(unint64_t)a3
+- (id)batteryLevelForStepIndex:(unint64_t)index
 {
-  v5 = [(GEOComposedRoute *)self steps];
-  v6 = [v5 count];
+  steps = [(GEOComposedRoute *)self steps];
+  v6 = [steps count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v13 = 0;
   }
 
   else
   {
-    v7 = [(GEOComposedRoute *)self steps];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    steps2 = [(GEOComposedRoute *)self steps];
+    v8 = [steps2 objectAtIndexedSubscript:index];
 
-    v9 = [v8 evInfo];
-    if (v9)
+    evInfo = [v8 evInfo];
+    if (evInfo)
     {
       v10 = [NSMeasurement alloc];
-      v11 = [v9 remainingBatteryCharge];
+      remainingBatteryCharge = [evInfo remainingBatteryCharge];
       v12 = +[NSUnitEnergy wattHours];
-      v13 = [v10 initWithDoubleValue:v12 unit:v11];
+      v13 = [v10 initWithDoubleValue:v12 unit:remainingBatteryCharge];
     }
 
     else
@@ -670,12 +670,12 @@ LABEL_27:
   return v13;
 }
 
-- (BOOL)isLegIndexOfLastLeg:(unint64_t)a3
+- (BOOL)isLegIndexOfLastLeg:(unint64_t)leg
 {
-  v4 = [(GEOComposedRoute *)self legs];
-  LOBYTE(a3) = [v4 count] - 1 == a3;
+  legs = [(GEOComposedRoute *)self legs];
+  LOBYTE(leg) = [legs count] - 1 == leg;
 
-  return a3;
+  return leg;
 }
 
 - (id)chargingStationInfos
@@ -685,8 +685,8 @@ LABEL_27:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(GEOComposedRoute *)self legs];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  legs = [(GEOComposedRoute *)self legs];
+  v5 = [legs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -697,20 +697,20 @@ LABEL_27:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(legs);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 chargingStationInfo];
+        chargingStationInfo = [v9 chargingStationInfo];
 
-        if (v10)
+        if (chargingStationInfo)
         {
-          v11 = [v9 chargingStationInfo];
-          [v3 addObject:v11];
+          chargingStationInfo2 = [v9 chargingStationInfo];
+          [v3 addObject:chargingStationInfo2];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [legs countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -719,35 +719,35 @@ LABEL_27:
   return v3;
 }
 
-- (id)waypointsAfterStepIndex:(unint64_t)a3 legIndex:(unint64_t *)a4
+- (id)waypointsAfterStepIndex:(unint64_t)index legIndex:(unint64_t *)legIndex
 {
   v7 = objc_opt_new();
-  v8 = [(GEOComposedRoute *)self legIndexForStepIndex:a3];
-  v9 = [(GEOComposedRoute *)self legs];
-  v10 = [v9 count];
+  v8 = [(GEOComposedRoute *)self legIndexForStepIndex:index];
+  legs = [(GEOComposedRoute *)self legs];
+  v10 = [legs count];
 
   if (v8 < v10)
   {
     v11 = v8;
     do
     {
-      v12 = [(GEOComposedRoute *)self legs];
-      v13 = [v12 objectAtIndexedSubscript:v11];
+      legs2 = [(GEOComposedRoute *)self legs];
+      v13 = [legs2 objectAtIndexedSubscript:v11];
 
-      v14 = [v13 destination];
-      [v7 addObject:v14];
+      destination = [v13 destination];
+      [v7 addObject:destination];
 
       ++v11;
-      v15 = [(GEOComposedRoute *)self legs];
-      v16 = [v15 count];
+      legs3 = [(GEOComposedRoute *)self legs];
+      v16 = [legs3 count];
     }
 
     while (v11 < v16);
   }
 
-  if (a4)
+  if (legIndex)
   {
-    *a4 = v8;
+    *legIndex = v8;
   }
 
   return v7;
@@ -755,15 +755,15 @@ LABEL_27:
 
 - (NSArray)steppingSigns
 {
-  v3 = [(GEOComposedRoute *)self segments];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  segments = [(GEOComposedRoute *)self segments];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [segments count]);
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(GEOComposedRoute *)self steps];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  steps = [(GEOComposedRoute *)self steps];
+  v6 = [steps countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -774,24 +774,24 @@ LABEL_27:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(steps);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 routeSegmentType];
-        if (v11 == 6)
+        routeSegmentType = [v10 routeSegmentType];
+        if (routeSegmentType == 6)
         {
           v12 = [(GEOComposedRoute *)self _signForTransitTripStep:v10];
           goto LABEL_12;
         }
 
-        if (v11 == 5)
+        if (routeSegmentType == 5)
         {
           v12 = [(GEOComposedRoute *)self _signForTransitStationStep:v10];
           goto LABEL_12;
         }
 
-        if (v11 == 2)
+        if (routeSegmentType == 2)
         {
           v12 = [(GEOComposedRoute *)self _signForWalkingStep:v10];
 LABEL_12:
@@ -803,21 +803,21 @@ LABEL_12:
 LABEL_14:
         if ([v13 hasValidInstructions])
         {
-          v14 = [v4 lastObject];
-          v15 = v14;
-          if (v14)
+          lastObject = [v4 lastObject];
+          v15 = lastObject;
+          if (lastObject)
           {
-            v16 = [v14 stepIndexRange];
+            stepIndexRange = [lastObject stepIndexRange];
             v18 = v17;
           }
 
           else
           {
-            v16 = 0;
+            stepIndexRange = 0;
             v18 = 0;
           }
 
-          if (([v13 stepIndexRange] - v16) != v18)
+          if (([v13 stepIndexRange] - stepIndexRange) != v18)
           {
             [v13 stepIndexRange];
             [v13 setStepIndexRange:?];
@@ -827,7 +827,7 @@ LABEL_14:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [steps countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v7);
@@ -836,35 +836,35 @@ LABEL_14:
   return v4;
 }
 
-- (id)_signForTransitTripStep:(id)a3
+- (id)_signForTransitTripStep:(id)step
 {
-  v4 = a3;
-  v5 = [v4 maneuver];
-  if (v5 == 9 || v5 == 5)
+  stepCopy = step;
+  maneuver = [stepCopy maneuver];
+  if (maneuver == 9 || maneuver == 5)
   {
-    if ([v4 maneuver] == 9)
+    if ([stepCopy maneuver] == 9)
     {
-      v7 = [v4 getPreviousStep];
-      v8 = -[GEOComposedRoute segmentForStepIndex:](self, "segmentForStepIndex:", [v7 stepIndex]);
-      v9 = [v8 startStepIndex];
+      getPreviousStep = [stepCopy getPreviousStep];
+      v8 = -[GEOComposedRoute segmentForStepIndex:](self, "segmentForStepIndex:", [getPreviousStep stepIndex]);
+      startStepIndex = [v8 startStepIndex];
     }
 
     else
     {
-      v7 = -[GEOComposedRoute segmentForStepIndex:](self, "segmentForStepIndex:", [v4 stepIndex]);
-      v9 = [v7 startStepIndex] + 1;
+      getPreviousStep = -[GEOComposedRoute segmentForStepIndex:](self, "segmentForStepIndex:", [stepCopy stepIndex]);
+      startStepIndex = [getPreviousStep startStepIndex] + 1;
     }
 
-    v14 = -[TransitSegmentSteppingModeSign initWithStep:stepIndexRange:]([TransitSegmentSteppingModeSign alloc], "initWithStep:stepIndexRange:", v4, v9, [v4 stepIndex] - v9 + 1);
+    v14 = -[TransitSegmentSteppingModeSign initWithStep:stepIndexRange:]([TransitSegmentSteppingModeSign alloc], "initWithStep:stepIndexRange:", stepCopy, startStepIndex, [stepCopy stepIndex] - startStepIndex + 1);
   }
 
-  else if (v5 == 3)
+  else if (maneuver == 3)
   {
-    v10 = [v4 getPreviousStep];
-    v11 = v10;
-    if (v10)
+    getPreviousStep2 = [stepCopy getPreviousStep];
+    v11 = getPreviousStep2;
+    if (getPreviousStep2)
     {
-      v12 = v10;
+      v12 = getPreviousStep2;
       do
       {
         if ([v12 routeSegmentType] != 5)
@@ -872,12 +872,12 @@ LABEL_14:
           break;
         }
 
-        v13 = [v12 getPreviousStep];
+        getPreviousStep3 = [v12 getPreviousStep];
 
-        v12 = v13;
+        v12 = getPreviousStep3;
       }
 
-      while (v13);
+      while (getPreviousStep3);
     }
 
     else
@@ -885,24 +885,24 @@ LABEL_14:
       v12 = 0;
     }
 
-    v15 = [v4 stepIndex];
-    v16 = [v4 stepIndex];
+    stepIndex = [stepCopy stepIndex];
+    stepIndex2 = [stepCopy stepIndex];
     if (v11 && [v11 routeSegmentType] == 5)
     {
       v17 = v11;
       if ([v17 maneuver] == 6)
       {
         v18 = [v17 transitInstructionInContext:1];
-        v19 = [v18 majorInstructionStrings];
+        majorInstructionStrings = [v18 majorInstructionStrings];
 
-        if (!v19)
+        if (!majorInstructionStrings)
         {
-          v15 = [v17 stepIndex];
+          stepIndex = [v17 stepIndex];
         }
       }
     }
 
-    v14 = [[TransitSegmentSteppingModeSign alloc] initWithStep:v4 stepIndexRange:v15, v16 - v15 + 1];
+    v14 = [[TransitSegmentSteppingModeSign alloc] initWithStep:stepCopy stepIndexRange:stepIndex, stepIndex2 - stepIndex + 1];
   }
 
   else
@@ -913,85 +913,85 @@ LABEL_14:
   return v14;
 }
 
-- (id)_signForTransitStationStep:(id)a3
+- (id)_signForTransitStationStep:(id)step
 {
-  v3 = a3;
-  if ([v3 maneuver] - 6 > 2)
+  stepCopy = step;
+  if ([stepCopy maneuver] - 6 > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = -[TransitSegmentSteppingModeSign initWithStep:stepIndexRange:]([TransitSegmentSteppingModeSign alloc], "initWithStep:stepIndexRange:", v3, [v3 stepIndex], 1);
+    v4 = -[TransitSegmentSteppingModeSign initWithStep:stepIndexRange:]([TransitSegmentSteppingModeSign alloc], "initWithStep:stepIndexRange:", stepCopy, [stepCopy stepIndex], 1);
   }
 
   return v4;
 }
 
-- (id)_signForWalkingStep:(id)a3
+- (id)_signForWalkingStep:(id)step
 {
-  v4 = a3;
-  v5 = -[GEOComposedRoute segmentForStepIndex:](self, "segmentForStepIndex:", [v4 stepIndex]);
-  if ([v4 isArrivalStep])
+  stepCopy = step;
+  v5 = -[GEOComposedRoute segmentForStepIndex:](self, "segmentForStepIndex:", [stepCopy stepIndex]);
+  if ([stepCopy isArrivalStep])
   {
-    v6 = -[TransitSegmentSteppingModeSign initWithStep:stepIndexRange:]([TransitSegmentSteppingModeSign alloc], "initWithStep:stepIndexRange:", v4, [v4 stepIndex], 1);
+    v6 = -[TransitSegmentSteppingModeSign initWithStep:stepIndexRange:]([TransitSegmentSteppingModeSign alloc], "initWithStep:stepIndexRange:", stepCopy, [stepCopy stepIndex], 1);
   }
 
   else
   {
-    v7 = [v5 steps];
-    v8 = [v7 firstObject];
+    steps = [v5 steps];
+    firstObject = [steps firstObject];
 
-    if (v8 == v4)
+    if (firstObject == stepCopy)
     {
-      v9 = [v5 steps];
-      v10 = [v9 lastObject];
+      steps2 = [v5 steps];
+      lastObject = [steps2 lastObject];
 
-      if ([v10 isArrivalStep])
+      if ([lastObject isArrivalStep])
       {
-        v11 = [v10 getPreviousStep];
+        getPreviousStep = [lastObject getPreviousStep];
 
-        v10 = v11;
+        lastObject = getPreviousStep;
       }
 
-      v12 = [v4 stepIndex];
-      v13 = [v10 stepIndex];
-      v14 = [v4 getPreviousStep];
-      v15 = v14;
-      if (v14 && [v14 routeSegmentType] == 5)
+      stepIndex = [stepCopy stepIndex];
+      stepIndex2 = [lastObject stepIndex];
+      getPreviousStep2 = [stepCopy getPreviousStep];
+      v15 = getPreviousStep2;
+      if (getPreviousStep2 && [getPreviousStep2 routeSegmentType] == 5)
       {
         v16 = v15;
         if ([v16 maneuver] == 8)
         {
           v17 = [v16 transitInstructionInContext:1];
-          v18 = [v17 majorInstructionStrings];
+          majorInstructionStrings = [v17 majorInstructionStrings];
 
-          if (!v18)
+          if (!majorInstructionStrings)
           {
-            v12 = [v16 stepIndex];
+            stepIndex = [v16 stepIndex];
           }
         }
       }
 
-      v19 = [v10 getNextStep];
-      v20 = v19;
-      if (v19 && [v19 routeSegmentType] == 5)
+      getNextStep = [lastObject getNextStep];
+      v20 = getNextStep;
+      if (getNextStep && [getNextStep routeSegmentType] == 5)
       {
         v21 = v20;
         if ([v21 maneuver] == 7)
         {
           v22 = [v21 transitInstructionInContext:1];
-          v23 = [v22 majorInstructionStrings];
+          majorInstructionStrings2 = [v22 majorInstructionStrings];
 
-          if (!v23)
+          if (!majorInstructionStrings2)
           {
-            v13 = [v21 stepIndex];
+            stepIndex2 = [v21 stepIndex];
           }
         }
       }
 
-      v6 = [[TransitSegmentSteppingModeSign alloc] initWithWalkingSegment:v5 stepIndexRange:v12, v13 - v12 + 1];
+      v6 = [[TransitSegmentSteppingModeSign alloc] initWithWalkingSegment:v5 stepIndexRange:stepIndex, stepIndex2 - stepIndex + 1];
     }
 
     else
@@ -1009,8 +1009,8 @@ LABEL_14:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(GEOComposedRoute *)self steps];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  steps = [(GEOComposedRoute *)self steps];
+  v3 = [steps countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -1020,21 +1020,21 @@ LABEL_14:
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(steps);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 geoStep];
-        v8 = [v7 maneuverType];
+        geoStep = [v6 geoStep];
+        maneuverType = [geoStep maneuverType];
 
-        if (v8 == 17)
+        if (maneuverType == 17)
         {
           v3 = v6;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [steps countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v3)
       {
         continue;
@@ -1049,16 +1049,16 @@ LABEL_11:
   return v3;
 }
 
-- (id)combinedDescriptionForFont:(id)a3
+- (id)combinedDescriptionForFont:(id)font
 {
-  v4 = a3;
-  v5 = [(GEOComposedRoute *)self routeDescriptions];
-  if ([v5 count])
+  fontCopy = font;
+  routeDescriptions = [(GEOComposedRoute *)self routeDescriptions];
+  if ([routeDescriptions count])
   {
-    if (v4)
+    if (fontCopy)
     {
       v19 = NSFontAttributeName;
-      v20 = v4;
+      v20 = fontCopy;
       v6 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     }
 
@@ -1067,8 +1067,8 @@ LABEL_11:
       v6 = 0;
     }
 
-    v8 = [v5 firstObject];
-    v9 = [NSAttributedString _mapkit_attributedTransitStringForServerFormattedString:v8 defaultAttributes:v6];
+    firstObject = [routeDescriptions firstObject];
+    v9 = [NSAttributedString _mapkit_attributedTransitStringForServerFormattedString:firstObject defaultAttributes:v6];
 
     v10 = [[NSMutableAttributedString alloc] initWithAttributedString:v9];
     v11 = [NSAttributedString alloc];
@@ -1076,20 +1076,20 @@ LABEL_11:
     v13 = [v12 localizedStringForKey:@" · [Route description delimiter]" value:@"localized string not found" table:0];
     v14 = [v11 initWithString:v13];
 
-    if ([v5 count] >= 2)
+    if ([routeDescriptions count] >= 2)
     {
       v15 = 1;
       do
       {
         [v10 appendAttributedString:v14];
-        v16 = [v5 objectAtIndexedSubscript:v15];
+        v16 = [routeDescriptions objectAtIndexedSubscript:v15];
         v17 = [NSAttributedString _mapkit_attributedTransitStringForServerFormattedString:v16 defaultAttributes:v6];
         [v10 appendAttributedString:v17];
 
         ++v15;
       }
 
-      while (v15 < [v5 count]);
+      while (v15 < [routeDescriptions count]);
     }
 
     v7 = [v10 copy];
@@ -1121,43 +1121,43 @@ LABEL_11:
   v6 = v5;
   if (v5)
   {
-    v2 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v2 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
-- (id)_arrivalInstructionStringForStep:(id)a3
+- (id)_arrivalInstructionStringForStep:(id)step
 {
-  v4 = a3;
-  v5 = [v4 waypoint];
-  v6 = [v5 findMyHandleID];
-  if (v6)
+  stepCopy = step;
+  waypoint = [stepCopy waypoint];
+  findMyHandleID = [waypoint findMyHandleID];
+  if (findMyHandleID)
   {
 
 LABEL_4:
-    v8 = [v5 arrivingDisplayName];
+    arrivingDisplayName = [waypoint arrivingDisplayName];
 LABEL_5:
-    v9 = v8;
-    v10 = [(RouteStepManeuverItem *)v8 copy];
+    v9 = arrivingDisplayName;
+    v10 = [(RouteStepManeuverItem *)arrivingDisplayName copy];
     goto LABEL_6;
   }
 
-  v7 = [v5 addressBookAddress];
+  addressBookAddress = [waypoint addressBookAddress];
 
-  if (v7)
+  if (addressBookAddress)
   {
     goto LABEL_4;
   }
 
-  if ([v4 maneuverType] - 33 > 1)
+  if ([stepCopy maneuverType] - 33 > 1)
   {
-    v8 = [v5 navDisplayName];
+    arrivingDisplayName = [waypoint navDisplayName];
     goto LABEL_5;
   }
 
@@ -1165,23 +1165,23 @@ LABEL_5:
   v13 = objc_opt_class();
   v14 = +[RouteStepListMetrics navSignMetrics];
   LOBYTE(v17) = 0;
-  v9 = [(RouteStepManeuverItem *)v12 initWithRouteStep:v4 cellClass:v13 state:1 metrics:v14 context:1 route:self scale:0.0 isMissedStep:v17];
+  v9 = [(RouteStepManeuverItem *)v12 initWithRouteStep:stepCopy cellClass:v13 state:1 metrics:v14 context:1 route:self scale:0.0 isMissedStep:v17];
 
-  v15 = [(RouteStepManeuverItem *)v9 secondaryText];
-  v16 = [v15 string];
-  v10 = [v16 copy];
+  secondaryText = [(RouteStepManeuverItem *)v9 secondaryText];
+  string = [secondaryText string];
+  v10 = [string copy];
 
 LABEL_6:
 
   return v10;
 }
 
-- (id)arrivalInstructionStringForLegIndex:(unint64_t)a3
+- (id)arrivalInstructionStringForLegIndex:(unint64_t)index
 {
-  v5 = [(GEOComposedRoute *)self legs];
-  v6 = [v5 count];
+  legs = [(GEOComposedRoute *)self legs];
+  v6 = [legs count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v13 = sub_10006D178();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1210,18 +1210,18 @@ LABEL_6:
     }
   }
 
-  v7 = [(GEOComposedRoute *)self legs];
-  v8 = [v7 count];
+  legs2 = [(GEOComposedRoute *)self legs];
+  v8 = [legs2 count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
     v11 = 0;
   }
 
   else
   {
-    v9 = [(GEOComposedRoute *)self legs];
-    v10 = [v9 objectAtIndex:a3];
+    legs3 = [(GEOComposedRoute *)self legs];
+    v10 = [legs3 objectAtIndex:index];
 
     v11 = -[GEOComposedRoute arrivalInstructionStringForStepIndex:](self, "arrivalInstructionStringForStepIndex:", [v10 endStepIndex]);
   }
@@ -1229,12 +1229,12 @@ LABEL_6:
   return v11;
 }
 
-- (id)arrivalInstructionStringForStepIndex:(unint64_t)a3
+- (id)arrivalInstructionStringForStepIndex:(unint64_t)index
 {
-  v5 = [(GEOComposedRoute *)self steps];
-  v6 = [v5 count];
+  steps = [(GEOComposedRoute *)self steps];
+  v6 = [steps count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v13 = sub_10006D178();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1263,18 +1263,18 @@ LABEL_6:
     }
   }
 
-  v7 = [(GEOComposedRoute *)self steps];
-  v8 = [v7 count];
+  steps2 = [(GEOComposedRoute *)self steps];
+  v8 = [steps2 count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
     v11 = 0;
   }
 
   else
   {
-    v9 = [(GEOComposedRoute *)self steps];
-    v10 = [v9 objectAtIndex:a3];
+    steps3 = [(GEOComposedRoute *)self steps];
+    v10 = [steps3 objectAtIndex:index];
 
     v11 = [(GEOComposedRoute *)self _arrivalInstructionStringForStep:v10];
   }
@@ -1284,8 +1284,8 @@ LABEL_6:
 
 - (NSDate)transitRouteArrivalDate
 {
-  v3 = [(GEOComposedRoute *)self startDate];
-  v4 = [v3 dateByAddingTimeInterval:{-[GEOComposedRoute expectedTime](self, "expectedTime")}];
+  startDate = [(GEOComposedRoute *)self startDate];
+  v4 = [startDate dateByAddingTimeInterval:{-[GEOComposedRoute expectedTime](self, "expectedTime")}];
 
   return v4;
 }
@@ -1300,8 +1300,8 @@ LABEL_6:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [(GEOComposedRoute *)self segments];
-    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    segments = [(GEOComposedRoute *)self segments];
+    v5 = [segments countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1312,7 +1312,7 @@ LABEL_6:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(segments);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
@@ -1336,7 +1336,7 @@ LABEL_6:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [segments countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
@@ -1350,28 +1350,28 @@ LABEL_6:
 
 - (unint64_t)_maps_routeIndex
 {
-  v3 = [(GEOComposedRoute *)self _maps_routeCollection];
-  v4 = v3;
-  if (v3)
+  _maps_routeCollection = [(GEOComposedRoute *)self _maps_routeCollection];
+  v4 = _maps_routeCollection;
+  if (_maps_routeCollection)
   {
-    v5 = [v3 indexOfRoute:self];
+    indexInResponse = [_maps_routeCollection indexOfRoute:self];
   }
 
   else
   {
-    v5 = [(GEOComposedRoute *)self indexInResponse];
+    indexInResponse = [(GEOComposedRoute *)self indexInResponse];
   }
 
-  v6 = v5;
+  v6 = indexInResponse;
 
   return v6;
 }
 
-- (void)_maps_routeCollectionOnly_setRouteCollectionWhenNil:(id)a3
+- (void)_maps_routeCollectionOnly_setRouteCollectionWhenNil:(id)nil
 {
-  value = a3;
-  v4 = [(GEOComposedRoute *)self _maps_routeCollection];
-  if (!v4)
+  value = nil;
+  _maps_routeCollection = [(GEOComposedRoute *)self _maps_routeCollection];
+  if (!_maps_routeCollection)
   {
     objc_setAssociatedObject(self, &unk_10195E100, value, 0);
   }
@@ -1379,11 +1379,11 @@ LABEL_6:
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)arrivalStorefrontLocation
 {
-  v2 = [(GEOComposedRoute *)self legs];
-  v3 = [v2 lastObject];
+  legs = [(GEOComposedRoute *)self legs];
+  lastObject = [legs lastObject];
 
-  v4 = [v3 destinationDisplayInfo];
-  [v4 position];
+  destinationDisplayInfo = [lastObject destinationDisplayInfo];
+  [destinationDisplayInfo position];
   v6 = v5;
   v8 = v7;
 
@@ -1396,40 +1396,40 @@ LABEL_6:
 
 - (BOOL)hasArrivalStorefrontGeometry
 {
-  v2 = [(GEOComposedRoute *)self legs];
-  v3 = [v2 lastObject];
+  legs = [(GEOComposedRoute *)self legs];
+  lastObject = [legs lastObject];
 
-  v4 = [v3 destinationDisplayInfo];
-  v5 = [v4 arInfo];
+  destinationDisplayInfo = [lastObject destinationDisplayInfo];
+  arInfo = [destinationDisplayInfo arInfo];
 
-  v6 = [v5 storefrontFaceGeometrys];
-  v7 = [v6 count] != 0;
+  storefrontFaceGeometrys = [arInfo storefrontFaceGeometrys];
+  v7 = [storefrontFaceGeometrys count] != 0;
 
   return v7;
 }
 
 - (GEOComposedRouteAdvisory)clickableAdvisory
 {
-  v2 = [(GEOComposedRoute *)self advisories];
-  v3 = sub_1000282CC(v2, &stru_10164D3F0);
+  advisories = [(GEOComposedRoute *)self advisories];
+  v3 = sub_1000282CC(advisories, &stru_10164D3F0);
 
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)advisoriesStyleAttributes
 {
-  v2 = [(GEOComposedRoute *)self routeLabelArtwork];
-  v3 = [v2 iconDataSource];
-  v4 = [v3 styleAttributes];
+  routeLabelArtwork = [(GEOComposedRoute *)self routeLabelArtwork];
+  iconDataSource = [routeLabelArtwork iconDataSource];
+  styleAttributes = [iconDataSource styleAttributes];
 
-  return v4;
+  return styleAttributes;
 }
 
-- (CLLocationCoordinate2D)_mkCoordAt:(unsigned int)a3
+- (CLLocationCoordinate2D)_mkCoordAt:(unsigned int)at
 {
-  [(GEOComposedRoute *)self pointAt:a3];
+  [(GEOComposedRoute *)self pointAt:at];
 
   v7 = CLLocationCoordinate2DMake(v3, v4);
   longitude = v7.longitude;
@@ -1439,11 +1439,11 @@ LABEL_6:
   return result;
 }
 
-- (void)_getMapPoints:(id *)a3 count:(unint64_t *)a4 startIndex:(unint64_t)a5 limit:(unint64_t)a6
+- (void)_getMapPoints:(id *)points count:(unint64_t *)count startIndex:(unint64_t)index limit:(unint64_t)limit
 {
-  if (!a3 || !a6 || (v8 = a5, [(GEOComposedRoute *)self pointCount]<= a5))
+  if (!points || !limit || (v8 = index, [(GEOComposedRoute *)self pointCount]<= index))
   {
-    if (!a4)
+    if (!count)
     {
       return;
     }
@@ -1452,16 +1452,16 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v11 = a6 + v8;
-  if (a6 + v8 >= [(GEOComposedRoute *)self pointCount])
+  pointCount = limit + v8;
+  if (limit + v8 >= [(GEOComposedRoute *)self pointCount])
   {
-    v11 = [(GEOComposedRoute *)self pointCount];
+    pointCount = [(GEOComposedRoute *)self pointCount];
   }
 
-  v12 = malloc_type_malloc(16 * (v11 - v8), 0x1000040451B5BE8uLL);
+  v12 = malloc_type_malloc(16 * (pointCount - v8), 0x1000040451B5BE8uLL);
   v13 = v12;
-  v14 = v11 - v8;
-  if (v11 > v8)
+  v14 = pointCount - v8;
+  if (pointCount > v8)
   {
     v15 = v12 + 8;
     do
@@ -1472,37 +1472,37 @@ LABEL_6:
       v15 += 16;
     }
 
-    while (v11 != v8);
+    while (pointCount != v8);
   }
 
-  *a3 = v13;
-  if (a4)
+  *points = v13;
+  if (count)
   {
 LABEL_13:
-    *a4 = v14;
+    *count = v14;
   }
 }
 
-- (void)_maps_getMapPoints:(id *)a3 count:(unint64_t *)a4 forStep:(id)a5
+- (void)_maps_getMapPoints:(id *)points count:(unint64_t *)count forStep:(id)step
 {
-  v8 = a5;
-  v9 = [v8 startPointIndex];
-  v10 = [v8 pointCount];
+  stepCopy = step;
+  startPointIndex = [stepCopy startPointIndex];
+  pointCount = [stepCopy pointCount];
 
-  [(GEOComposedRoute *)self _getMapPoints:a3 count:a4 startIndex:v9 limit:v10];
+  [(GEOComposedRoute *)self _getMapPoints:points count:count startIndex:startPointIndex limit:pointCount];
 }
 
-- (void)_maps_getMapPoints:(id *)a3 count:(unint64_t *)a4
+- (void)_maps_getMapPoints:(id *)points count:(unint64_t *)count
 {
-  v7 = [(GEOComposedRoute *)self pointCount];
+  pointCount = [(GEOComposedRoute *)self pointCount];
 
-  [(GEOComposedRoute *)self _getMapPoints:a3 count:a4 startIndex:0 limit:v7];
+  [(GEOComposedRoute *)self _getMapPoints:points count:count startIndex:0 limit:pointCount];
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_maps_closestMapPointToMapPoint:(id)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_maps_closestMapPointToMapPoint:(id)point
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = point.var1;
+  var0 = point.var0;
   v16 = 0;
   v17 = 0;
   [(GEOComposedRoute *)self _maps_getMapPoints:&v16 count:&v17];
@@ -1556,11 +1556,11 @@ LABEL_13:
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_maps_boundingRectForStep:(id)a3 fromPoint:(unint64_t)a4
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_maps_boundingRectForStep:(id)step fromPoint:(unint64_t)point
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  stepCopy = step;
+  v7 = stepCopy;
+  if (!stepCopy)
   {
     NSLog(@"Error, Route:boundingRectForStep called with nil step");
 LABEL_12:
@@ -1571,27 +1571,27 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v6 stepIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([stepCopy stepIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_12;
   }
 
-  if ([v7 startPointIndex] > a4 || objc_msgSend(v7, "endPointIndex") < a4)
+  if ([v7 startPointIndex] > point || objc_msgSend(v7, "endPointIndex") < point)
   {
     NSLog(@"Error, Route:boundingRectForStep called with invalid startPointIndex");
-    if ([v7 startPointIndex] >= a4)
+    if ([v7 startPointIndex] >= point)
     {
-      a4 = [v7 startPointIndex];
+      point = [v7 startPointIndex];
     }
 
-    if (a4 >= [v7 endPointIndex])
+    if (point >= [v7 endPointIndex])
     {
-      a4 = [v7 endPointIndex];
+      point = [v7 endPointIndex];
     }
   }
 
   v21 = 0;
-  -[GEOComposedRoute _getMapPoints:count:startIndex:limit:](self, "_getMapPoints:count:startIndex:limit:", &v20, &v21, a4, [v7 pointCount] - a4 + objc_msgSend(v7, "startPointIndex"));
+  -[GEOComposedRoute _getMapPoints:count:startIndex:limit:](self, "_getMapPoints:count:startIndex:limit:", &v20, &v21, point, [v7 pointCount] - point + objc_msgSend(v7, "startPointIndex"));
   if (!v21)
   {
     goto LABEL_12;
@@ -1616,10 +1616,10 @@ LABEL_13:
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_maps_boundingRectForStep:(id)a3
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_maps_boundingRectForStep:(id)step
 {
-  v4 = a3;
-  if ([v4 stepIndex] == 0x7FFFFFFFFFFFFFFFLL || (v17 = 0, v18 = 0, -[GEOComposedRoute _maps_getMapPoints:count:forStep:](self, "_maps_getMapPoints:count:forStep:", &v17, &v18, v4), !v18))
+  stepCopy = step;
+  if ([stepCopy stepIndex] == 0x7FFFFFFFFFFFFFFFLL || (v17 = 0, v18 = 0, -[GEOComposedRoute _maps_getMapPoints:count:forStep:](self, "_maps_getMapPoints:count:forStep:", &v17, &v18, stepCopy), !v18))
   {
     x = MKMapRectNull.origin.x;
     y = MKMapRectNull.origin.y;
@@ -1629,7 +1629,7 @@ LABEL_13:
 
   else
   {
-    [v4 pointCount];
+    [stepCopy pointCount];
     MKMapRectBoundingMapPoints();
     x = v5;
     y = v7;
@@ -1651,7 +1651,7 @@ LABEL_13:
 
 - ($873BFAB23BBB6E2F0B0288ED2F935688)_maps_boundingMapRect
 {
-  v2 = [(GEOComposedRoute *)self boundingMapRegion];
+  boundingMapRegion = [(GEOComposedRoute *)self boundingMapRegion];
   GEOMapRectForMapRegion();
   v4 = v3;
   v6 = v5;
@@ -1669,25 +1669,25 @@ LABEL_13:
   return result;
 }
 
-- (id)timeStringWithAttributes:(id)a3
+- (id)timeStringWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   [(GEOComposedRoute *)self expectedTime];
-  v5 = v4;
+  v5 = attributesCopy;
   v6 = GEOStringForDuration();
   v7 = [[NSAttributedString alloc] initWithString:v6 attributes:v5];
 
   return v7;
 }
 
-- (id)timeAndElevationDescriptionStringWithAttributes:(id)a3
+- (id)timeAndElevationDescriptionStringWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(GEOComposedRoute *)self previewDurationString];
+  attributesCopy = attributes;
+  previewDurationString = [(GEOComposedRoute *)self previewDurationString];
   [(GEOComposedRoute *)self travelAndChargingDuration];
   v7 = v6;
-  v8 = [(GEOComposedRoute *)self elevationProfile];
-  v9 = sub_100C86368(v5, v8, v4, v7);
+  elevationProfile = [(GEOComposedRoute *)self elevationProfile];
+  v9 = sub_100C86368(previewDurationString, elevationProfile, attributesCopy, v7);
 
   return v9;
 }
@@ -1695,8 +1695,8 @@ LABEL_13:
 - (id)distanceAndElevationString
 {
   [(GEOComposedRoute *)self distance];
-  v3 = [(GEOComposedRoute *)self elevationProfile];
-  v4 = sub_100C86990(v3);
+  elevationProfile = [(GEOComposedRoute *)self elevationProfile];
+  v4 = sub_100C86990(elevationProfile);
 
   return v4;
 }
@@ -1705,16 +1705,16 @@ LABEL_13:
 {
   v3 = objc_alloc_init(SyncedBookmarkRepr);
   [(SyncedBookmarkRepr *)v3 setType:4];
-  v4 = [(GEOComposedRoute *)self transportType];
-  if (v4 <= 4)
+  transportType = [(GEOComposedRoute *)self transportType];
+  if (transportType <= 4)
   {
-    [(SyncedBookmarkRepr *)v3 setDirectionsMode:dword_101215AE4[v4]];
+    [(SyncedBookmarkRepr *)v3 setDirectionsMode:dword_101215AE4[transportType]];
   }
 
-  v5 = [(GEOComposedRoute *)self origin];
-  v6 = [v5 isCurrentLocation];
+  origin = [(GEOComposedRoute *)self origin];
+  isCurrentLocation = [origin isCurrentLocation];
 
-  if (v6)
+  if (isCurrentLocation)
   {
     v7 = +[SearchResult currentLocationSearchResult];
     v8 = v7;
@@ -1723,9 +1723,9 @@ LABEL_13:
   else
   {
     v9 = [SearchResult alloc];
-    v10 = [(GEOComposedRoute *)self origin];
-    v11 = [v10 geoMapItem];
-    v8 = [(SearchResult *)v9 initWithGEOMapItem:v11];
+    origin2 = [(GEOComposedRoute *)self origin];
+    geoMapItem = [origin2 geoMapItem];
+    v8 = [(SearchResult *)v9 initWithGEOMapItem:geoMapItem];
 
     if (!v8)
     {
@@ -1735,14 +1735,14 @@ LABEL_13:
     v7 = v8;
   }
 
-  v12 = [(SearchResult *)v7 bookmarkRepresentation];
-  [(SyncedBookmarkRepr *)v3 addPlaces:v12];
+  bookmarkRepresentation = [(SearchResult *)v7 bookmarkRepresentation];
+  [(SyncedBookmarkRepr *)v3 addPlaces:bookmarkRepresentation];
 
 LABEL_8:
-  v13 = [(GEOComposedRoute *)self destination];
-  v14 = [v13 isCurrentLocation];
+  destination = [(GEOComposedRoute *)self destination];
+  isCurrentLocation2 = [destination isCurrentLocation];
 
-  if (v14)
+  if (isCurrentLocation2)
   {
     v15 = +[SearchResult currentLocationSearchResult];
     v16 = v15;
@@ -1751,9 +1751,9 @@ LABEL_8:
   else
   {
     v17 = [SearchResult alloc];
-    v18 = [(GEOComposedRoute *)self destination];
-    v19 = [v18 geoMapItem];
-    v16 = [(SearchResult *)v17 initWithGEOMapItem:v19];
+    destination2 = [(GEOComposedRoute *)self destination];
+    geoMapItem2 = [destination2 geoMapItem];
+    v16 = [(SearchResult *)v17 initWithGEOMapItem:geoMapItem2];
 
     if (!v16)
     {
@@ -1763,19 +1763,19 @@ LABEL_8:
     v15 = v16;
   }
 
-  v20 = [(SearchResult *)v15 bookmarkRepresentation];
-  [(SyncedBookmarkRepr *)v3 addPlaces:v20];
+  bookmarkRepresentation2 = [(SearchResult *)v15 bookmarkRepresentation];
+  [(SyncedBookmarkRepr *)v3 addPlaces:bookmarkRepresentation2];
 
 LABEL_13:
 
   return v3;
 }
 
-- (id)_maps_convertToNavigableRouteWithTraits:(id)a3 errorHandler:(id)a4 completionHandler:(id)a5
+- (id)_maps_convertToNavigableRouteWithTraits:(id)traits errorHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  traitsCopy = traits;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v11 = objc_opt_new();
   v12 = [GEORouteAttributes defaultRouteAttributesForTransportType:[(GEOComposedRoute *)self transportType]];
   if (+[PedestrianARSessionTask isPedestrianARModeSupported])
@@ -1787,7 +1787,7 @@ LABEL_13:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[%{public}p] Marking route request with supportsArMode", buf, 0xCu);
     }
   }
@@ -1798,15 +1798,15 @@ LABEL_13:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}p] NOT marking route request with supportsArMode", buf, 0xCu);
     }
   }
 
   [v11 setRouteAttributes:v12];
-  if (v8)
+  if (traitsCopy)
   {
-    [v11 setTraits:v8];
+    [v11 setTraits:traitsCopy];
   }
 
   else
@@ -1823,24 +1823,24 @@ LABEL_13:
   v21[1] = 3221225472;
   v21[2] = sub_100CFB2C8;
   v21[3] = &unk_101650F80;
-  v22 = v9;
-  v23 = v10;
-  v17 = v10;
-  v18 = v9;
+  v22 = handlerCopy;
+  v23 = completionHandlerCopy;
+  v17 = completionHandlerCopy;
+  v18 = handlerCopy;
   v19 = [MNRouteEditor convertToNavigableRoute:v11 finishedHandler:v21];
 
   return v19;
 }
 
-+ (id)_maps_composedRouteWithPersistentData:(id)a3
++ (id)_maps_composedRouteWithPersistentData:(id)data
 {
-  v3 = a3;
-  v4 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:v3];
+  dataCopy = data;
+  v4 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:dataCopy];
 
-  v5 = [v4 buildRoute];
-  [v5 updateCustomRouteStartEndCaptions];
+  buildRoute = [v4 buildRoute];
+  [buildRoute updateCustomRouteStartEndCaptions];
 
-  return v5;
+  return buildRoute;
 }
 
 - (GuidanceETA)guidanceETA
@@ -1849,14 +1849,14 @@ LABEL_13:
   v4 = v3;
   [(GEOComposedRoute *)self travelAndChargingDuration];
   v6 = v5;
-  v7 = [(GEOComposedRoute *)self destination];
-  v8 = [v7 timezone];
+  destination = [(GEOComposedRoute *)self destination];
+  timezone = [destination timezone];
 
   if ([(GEOComposedRoute *)self isEVRoute])
   {
-    v9 = [(GEOComposedRoute *)self lastEVStep];
-    v10 = [v9 evInfo];
-    v11 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v10 remainingBatteryPercentage]);
+    lastEVStep = [(GEOComposedRoute *)self lastEVStep];
+    evInfo = [lastEVStep evInfo];
+    v11 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [evInfo remainingBatteryPercentage]);
   }
 
   else
@@ -1864,30 +1864,30 @@ LABEL_13:
     v11 = 0;
   }
 
-  v12 = [[GuidanceETA alloc] initWithRemainingTime:v11 remainingDistance:v8 arrivalBatteryCharge:[(GEOComposedRoute *)self transportType] destinationTimeZone:v6 transportType:v4];
+  v12 = [[GuidanceETA alloc] initWithRemainingTime:v11 remainingDistance:timezone arrivalBatteryCharge:[(GEOComposedRoute *)self transportType] destinationTimeZone:v6 transportType:v4];
 
   return v12;
 }
 
-- (unint64_t)suggestedNavigationModeForLocation:(id)a3 context:(unint64_t)a4 ignoreDeviceNavigability:(BOOL)a5
+- (unint64_t)suggestedNavigationModeForLocation:(id)location context:(unint64_t)context ignoreDeviceNavigability:(BOOL)navigability
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [[MNSuggestedNavigationModeFinder alloc] initWithRoute:self context:a4 ignoreDeviceNavigability:v5];
-  v10 = [v9 suggestedNavigationModeForLocation:v8];
+  navigabilityCopy = navigability;
+  locationCopy = location;
+  v9 = [[MNSuggestedNavigationModeFinder alloc] initWithRoute:self context:context ignoreDeviceNavigability:navigabilityCopy];
+  v10 = [v9 suggestedNavigationModeForLocation:locationCopy];
 
   return v10;
 }
 
-- (id)nextLaneGuidanceEventAfterEvent:(id)a3
+- (id)nextLaneGuidanceEventAfterEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(GEOComposedRoute *)self composedGuidanceEvents];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  composedGuidanceEvents = [(GEOComposedRoute *)self composedGuidanceEvents];
+  v6 = [composedGuidanceEvents countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = 0;
@@ -1898,14 +1898,14 @@ LABEL_13:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(composedGuidanceEvents);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if (v7)
         {
-          v11 = [*(*(&v14 + 1) + 8 * i) lanes];
-          v12 = [v11 count];
+          lanes = [*(*(&v14 + 1) + 8 * i) lanes];
+          v12 = [lanes count];
 
           if (v12)
           {
@@ -1914,10 +1914,10 @@ LABEL_13:
           }
         }
 
-        v7 |= v10 == v4;
+        v7 |= v10 == eventCopy;
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [composedGuidanceEvents countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1934,23 +1934,23 @@ LABEL_12:
 
 - (NSArray)composedGuidanceEventsWithLaneGuidance
 {
-  v2 = [(GEOComposedRoute *)self composedGuidanceEvents];
+  composedGuidanceEvents = [(GEOComposedRoute *)self composedGuidanceEvents];
   v3 = [NSPredicate predicateWithBlock:&stru_101656498];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [composedGuidanceEvents filteredArrayUsingPredicate:v3];
 
   return v4;
 }
 
 - (NSArray)composedGuidanceEventsWithSignGuidance
 {
-  v2 = [(GEOComposedRoute *)self composedGuidanceEvents];
+  composedGuidanceEvents = [(GEOComposedRoute *)self composedGuidanceEvents];
   v3 = [NSPredicate predicateWithBlock:&stru_101656478];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [composedGuidanceEvents filteredArrayUsingPredicate:v3];
 
   return v4;
 }
 
-- (BOOL)shouldReturnToRoutePickerWhenEndingDirectionsAtStepIndex:(unint64_t)a3
+- (BOOL)shouldReturnToRoutePickerWhenEndingDirectionsAtStepIndex:(unint64_t)index
 {
   if (([(GEOComposedRoute *)self isWalkingOnlyTransitRoute]& 1) != 0)
   {
@@ -1962,48 +1962,48 @@ LABEL_12:
     return 0;
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 1;
   }
 
   v6 = +[MNNavigationService sharedService];
-  v7 = [v6 isTrackingCurrentLocation];
+  isTrackingCurrentLocation = [v6 isTrackingCurrentLocation];
 
-  if (!v7)
+  if (!isTrackingCurrentLocation)
   {
     return 1;
   }
 
-  v8 = [(GEOComposedRoute *)self steps];
-  v9 = [v8 firstObject];
-  v10 = [v9 nextAlightingStep];
+  steps = [(GEOComposedRoute *)self steps];
+  firstObject = [steps firstObject];
+  nextAlightingStep = [firstObject nextAlightingStep];
 
-  v5 = [v10 stepIndex] >= a3;
+  v5 = [nextAlightingStep stepIndex] >= index;
   return v5;
 }
 
 - (NSString)clientPickingDescription
 {
-  v3 = [(GEOComposedRoute *)self abbreviatedDistance];
-  v4 = [(GEOComposedRoute *)self name];
-  if ([v3 length] && objc_msgSend(v4, "length"))
+  abbreviatedDistance = [(GEOComposedRoute *)self abbreviatedDistance];
+  name = [(GEOComposedRoute *)self name];
+  if ([abbreviatedDistance length] && objc_msgSend(name, "length"))
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"WalkingDrivingRoute_SecondaryTextFormat" value:@"localized string not found" table:0];
-    v7 = [NSString stringWithFormat:v6, v3, v4];
+    v7 = [NSString stringWithFormat:v6, abbreviatedDistance, name];
   }
 
   else
   {
-    if ([v3 length])
+    if ([abbreviatedDistance length])
     {
-      v8 = v3;
+      v8 = abbreviatedDistance;
     }
 
     else
     {
-      v8 = v4;
+      v8 = name;
     }
 
     v7 = v8;
@@ -2080,13 +2080,13 @@ LABEL_12:
   return v4;
 }
 
-- (id)advisoriesForAutoSharingContacts:(id)a3 scale:(double)a4
+- (id)advisoriesForAutoSharingContacts:(id)contacts scale:(double)scale
 {
-  v6 = a3;
-  v7 = [(GEOComposedRoute *)self advisories];
-  v8 = [RouteAdvisoryViewModel viewModelsForAdvisories:v7];
+  contactsCopy = contacts;
+  advisories = [(GEOComposedRoute *)self advisories];
+  v8 = [RouteAdvisoryViewModel viewModelsForAdvisories:advisories];
 
-  if ([v6 count])
+  if ([contactsCopy count])
   {
     [(GEOComposedRoute *)self transportType];
     if (MSPSharedTripSharingSupportedForTransportType())
@@ -2094,9 +2094,9 @@ LABEL_12:
       if (MSPSharedTripSharingAvailable())
       {
         v9 = [v8 mutableCopy];
-        v10 = [RouteAdvisoryViewModel advisoryTextForAutomaticSharingContacts:v6];
+        v10 = [RouteAdvisoryViewModel advisoryTextForAutomaticSharingContacts:contactsCopy];
         v11 = +[GEOFeatureStyleAttributes shareETAAdvisoryStyleAttributes];
-        v12 = [MKIconManager imageForStyle:v11 size:0 forScale:0 format:a4];
+        v12 = [MKIconManager imageForStyle:v11 size:0 forScale:0 format:scale];
 
         v13 = +[RouteAdvisoryViewModel viewModelWithText:buttonRange:image:handler:](RouteAdvisoryViewModel, "viewModelWithText:buttonRange:image:handler:", v10, 0, [v10 length], v12, 0);
         [v9 addObject:v13];
@@ -2113,33 +2113,33 @@ LABEL_12:
 - (id)tertiaryText
 {
   v2 = [RouteOverviewStringProvider routeDescriptionTextForRoute:self font:0];
-  v3 = [v2 attributedString];
+  attributedString = [v2 attributedString];
 
-  return v3;
+  return attributedString;
 }
 
 - (id)secondaryText
 {
   v2 = [RouteOverviewStringProvider secondaryMultiPartTextForRoute:self font:0];
-  v3 = [v2 attributedString];
+  attributedString = [v2 attributedString];
 
-  return v3;
+  return attributedString;
 }
 
-- (BOOL)_maps_isEqualToComposedRoute:(id)a3
+- (BOOL)_maps_isEqualToComposedRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [v4 uniqueRouteID];
-    v8 = [(GEOComposedRoute *)self uniqueRouteID];
-    if ([v7 isEqual:v8])
+    uniqueRouteID = [routeCopy uniqueRouteID];
+    uniqueRouteID2 = [(GEOComposedRoute *)self uniqueRouteID];
+    if ([uniqueRouteID isEqual:uniqueRouteID2])
     {
-      v9 = [v4 rideSelections];
-      v10 = [(GEOComposedRoute *)self rideSelections];
-      v11 = v9;
-      v12 = v10;
+      rideSelections = [routeCopy rideSelections];
+      rideSelections2 = [(GEOComposedRoute *)self rideSelections];
+      v11 = rideSelections;
+      v12 = rideSelections2;
       if (!(v11 | v12))
       {
         v6 = 1;
@@ -2162,9 +2162,9 @@ LABEL_8:
     {
     }
 
-    v7 = [v4 segments];
-    v8 = [(GEOComposedRoute *)self segments];
-    v6 = [v7 isEqualToArray:v8];
+    uniqueRouteID = [routeCopy segments];
+    uniqueRouteID2 = [(GEOComposedRoute *)self segments];
+    v6 = [uniqueRouteID isEqualToArray:uniqueRouteID2];
     goto LABEL_8;
   }
 
@@ -2222,26 +2222,26 @@ LABEL_9:
 - (id)_maps_routeRequestStorage
 {
   v3 = objc_alloc_init(GEOStorageRouteRequestStorage);
-  v4 = [(GEOComposedRoute *)self waypoints];
-  v5 = [v4 mutableCopy];
+  waypoints = [(GEOComposedRoute *)self waypoints];
+  v5 = [waypoints mutableCopy];
   [v3 setWaypoints:v5];
 
-  v6 = [(GEOComposedRoute *)self persistentData];
-  [v3 setDestinationRouteData:v6];
+  persistentData = [(GEOComposedRoute *)self persistentData];
+  [v3 setDestinationRouteData:persistentData];
 
   [v3 setTransportType:{-[GEOComposedRoute transportType](self, "transportType")}];
-  v7 = [(GEOComposedRoute *)self routeAttributes];
-  v8 = [v7 automobileOptions];
-  [v3 setAutomobileOptions:v8];
+  routeAttributes = [(GEOComposedRoute *)self routeAttributes];
+  automobileOptions = [routeAttributes automobileOptions];
+  [v3 setAutomobileOptions:automobileOptions];
 
-  v9 = [v7 walkingOptions];
-  [v3 setWalkingOptions:v9];
+  walkingOptions = [routeAttributes walkingOptions];
+  [v3 setWalkingOptions:walkingOptions];
 
-  v10 = [v7 transitOptions];
-  [v3 setTransitOptions:v10];
+  transitOptions = [routeAttributes transitOptions];
+  [v3 setTransitOptions:transitOptions];
 
-  v11 = [v7 cyclingOptions];
-  [v3 setCyclingOptions:v11];
+  cyclingOptions = [routeAttributes cyclingOptions];
+  [v3 setCyclingOptions:cyclingOptions];
 
   return v3;
 }

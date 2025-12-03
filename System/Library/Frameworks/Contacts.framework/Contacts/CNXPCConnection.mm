@@ -1,8 +1,8 @@
 @interface CNXPCConnection
-- (CNXPCConnection)initWithConnection:(id)a3 interface:(id)a4 logger:(id)a5;
-- (id)remoteResultForSelector:(SEL)a3 param1:(id)a4 error:(id *)a5;
-- (id)remoteResultForSelector:(SEL)a3 param1:(id)a4 param2:(id)a5 error:(id *)a6;
-- (id)remoteResultForSelector:(SEL)a3 parameters:(id)a4 error:(id *)a5;
+- (CNXPCConnection)initWithConnection:(id)connection interface:(id)interface logger:(id)logger;
+- (id)remoteResultForSelector:(SEL)selector param1:(id)param1 error:(id *)error;
+- (id)remoteResultForSelector:(SEL)selector param1:(id)param1 param2:(id)param2 error:(id *)error;
+- (id)remoteResultForSelector:(SEL)selector parameters:(id)parameters error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -16,23 +16,23 @@
   [(CNXPCConnection *)&v3 dealloc];
 }
 
-- (CNXPCConnection)initWithConnection:(id)a3 interface:(id)a4 logger:(id)a5
+- (CNXPCConnection)initWithConnection:(id)connection interface:(id)interface logger:(id)logger
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9 && (v32.receiver = self, v32.super_class = CNXPCConnection, v12 = [(CNXPCConnection *)&v32 init], (self = v12) != 0))
+  connectionCopy = connection;
+  interfaceCopy = interface;
+  loggerCopy = logger;
+  if (connectionCopy && (v32.receiver = self, v32.super_class = CNXPCConnection, v12 = [(CNXPCConnection *)&v32 init], (self = v12) != 0))
   {
-    objc_storeStrong(&v12->_logger, a5);
-    objc_storeStrong(&self->_connection, a3);
+    objc_storeStrong(&v12->_logger, logger);
+    objc_storeStrong(&self->_connection, connection);
     connection = self->_connection;
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __55__CNXPCConnection_initWithConnection_interface_logger___block_invoke;
     v29[3] = &unk_1E74121B8;
-    v14 = v11;
+    v14 = loggerCopy;
     v30 = v14;
-    v15 = v9;
+    v15 = connectionCopy;
     v31 = v15;
     [(NSXPCConnection *)connection setInterruptionHandler:v29];
     v16 = self->_connection;
@@ -44,7 +44,7 @@
     v27 = v17;
     v28 = v15;
     [(NSXPCConnection *)v16 setInvalidationHandler:v26];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v10];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:interfaceCopy];
     [(NSXPCConnection *)self->_connection resume];
     Property = objc_getProperty(self, v18, 16, 1);
     v24[0] = MEMORY[0x1E69E9820];
@@ -57,15 +57,15 @@
     self->_serviceProxy = v20;
 
     self = self;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 void __55__CNXPCConnection_initWithConnection_interface_logger___block_invoke(uint64_t a1)
@@ -82,28 +82,28 @@ void __55__CNXPCConnection_initWithConnection_interface_logger___block_invoke_2(
   [v1 XPCConnectionWasInvalidatedForService:v2];
 }
 
-- (id)remoteResultForSelector:(SEL)a3 param1:(id)a4 error:(id *)a5
+- (id)remoteResultForSelector:(SEL)selector param1:(id)param1 error:(id *)error
 {
   v8 = MEMORY[0x1E696AE08];
-  v9 = a4;
-  v10 = [v8 weakObjectsPointerArray];
-  [v10 addPointer:v9];
+  param1Copy = param1;
+  weakObjectsPointerArray = [v8 weakObjectsPointerArray];
+  [weakObjectsPointerArray addPointer:param1Copy];
 
-  v11 = [(CNXPCConnection *)self remoteResultForSelector:a3 parameters:v10 error:a5];
+  v11 = [(CNXPCConnection *)self remoteResultForSelector:selector parameters:weakObjectsPointerArray error:error];
 
   return v11;
 }
 
-- (id)remoteResultForSelector:(SEL)a3 param1:(id)a4 param2:(id)a5 error:(id *)a6
+- (id)remoteResultForSelector:(SEL)selector param1:(id)param1 param2:(id)param2 error:(id *)error
 {
   v10 = MEMORY[0x1E696AE08];
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 weakObjectsPointerArray];
-  [v13 addPointer:v12];
+  param2Copy = param2;
+  param1Copy = param1;
+  weakObjectsPointerArray = [v10 weakObjectsPointerArray];
+  [weakObjectsPointerArray addPointer:param1Copy];
 
-  [v13 addPointer:v11];
-  v14 = [(CNXPCConnection *)self remoteResultForSelector:a3 parameters:v13 error:a6];
+  [weakObjectsPointerArray addPointer:param2Copy];
+  v14 = [(CNXPCConnection *)self remoteResultForSelector:selector parameters:weakObjectsPointerArray error:error];
 
   return v14;
 }
@@ -125,9 +125,9 @@ void __60__CNXPCConnection_remoteResultForSelector_parameters_error___block_invo
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (id)remoteResultForSelector:(SEL)a3 parameters:(id)a4 error:(id *)a5
+- (id)remoteResultForSelector:(SEL)selector parameters:(id)parameters error:(id *)error
 {
-  v9 = a4;
+  parametersCopy = parameters;
   if (self && objc_getProperty(self, v8, 16, 1))
   {
     v44 = 0;
@@ -154,16 +154,16 @@ void __60__CNXPCConnection_remoteResultForSelector_parameters_error___block_invo
     aBlock[5] = &v38;
     aBlock[6] = &v34;
     v10 = _Block_copy(aBlock);
-    v11 = [v9 count];
-    v12 = [(CNXPCConnection *)self serviceProxy];
-    v13 = v12;
+    v11 = [parametersCopy count];
+    serviceProxy = [(CNXPCConnection *)self serviceProxy];
+    v13 = serviceProxy;
     switch(v11)
     {
       case 0:
-        [v12 a3];
+        [serviceProxy selector];
         break;
       case 1:
-        [v12 a3];
+        [serviceProxy selector];
         break;
       case 2:
         OUTLINED_FUNCTION_2_4();
@@ -174,22 +174,22 @@ void __60__CNXPCConnection_remoteResultForSelector_parameters_error___block_invo
       case 3:
         OUTLINED_FUNCTION_2_4();
         OUTLINED_FUNCTION_1_3();
-        [v9 pointerAtIndex:2];
+        [parametersCopy pointerAtIndex:2];
         v18 = OUTLINED_FUNCTION_0_6();
         [v18 v19];
         break;
       case 4:
         OUTLINED_FUNCTION_2_4();
         OUTLINED_FUNCTION_1_3();
-        [v9 pointerAtIndex:2];
-        [v9 pointerAtIndex:3];
+        [parametersCopy pointerAtIndex:2];
+        [parametersCopy pointerAtIndex:3];
         v14 = OUTLINED_FUNCTION_0_6();
         [v14 v15];
         break;
       default:
         v20 = MEMORY[0x1E695DF30];
         v21 = MEMORY[0x1E696AEC0];
-        v22 = NSStringFromSelector(a3);
+        v22 = NSStringFromSelector(selector);
         v23 = [v21 stringWithFormat:@"Too many arguments to %@", v22];
         v24 = [v20 exceptionWithName:@"CNXPCVariadicOverflow" reason:v23 userInfo:0];
 
@@ -206,10 +206,10 @@ void __60__CNXPCConnection_remoteResultForSelector_parameters_error___block_invo
     v27 = v39[5];
     v28 = v45[5];
     v29 = v28;
-    if (a5 && !v28)
+    if (error && !v28)
     {
       v30 = v27;
-      *a5 = v27;
+      *error = v27;
     }
 
     _Block_object_dispose(&v34, 8);
@@ -221,10 +221,10 @@ void __60__CNXPCConnection_remoteResultForSelector_parameters_error___block_invo
   else
   {
     v31 = [CNErrorFactory errorWithCode:100 userInfo:0];
-    if (a5)
+    if (error)
     {
       v31 = v31;
-      *a5 = v31;
+      *error = v31;
     }
 
     v29 = 0;

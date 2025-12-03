@@ -1,7 +1,7 @@
 @interface DBGLongLong
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withValue:(int64_t)a3;
-- (DBGLongLong)initWithLongLong:(int64_t)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withValue:(int64_t)value;
+- (DBGLongLong)initWithLongLong:(int64_t)long;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -10,21 +10,21 @@
 
 @implementation DBGLongLong
 
-+ (id)withValue:(int64_t)a3
++ (id)withValue:(int64_t)value
 {
-  v3 = [[a1 alloc] initWithLongLong:a3];
+  v3 = [[self alloc] initWithLongLong:value];
 
   return v3;
 }
 
-- (DBGLongLong)initWithLongLong:(int64_t)a3
+- (DBGLongLong)initWithLongLong:(int64_t)long
 {
   v5.receiver = self;
   v5.super_class = DBGLongLong;
   result = [(DBGLongLong *)&v5 init];
   if (result)
   {
-    result->_longLongValue = a3;
+    result->_longLongValue = long;
   }
 
   return result;
@@ -32,15 +32,15 @@
 
 - (id)objectValue
 {
-  v2 = [(DBGLongLong *)self longLongValue];
+  longLongValue = [(DBGLongLong *)self longLongValue];
 
-  return [NSNumber numberWithLongLong:v2];
+  return [NSNumber numberWithLongLong:longLongValue];
 }
 
 - (NSString)description
 {
-  v2 = [(DBGLongLong *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGLongLong *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -55,37 +55,37 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"ll"])
+  valueCopy = value;
+  if ([format isEqualToString:@"ll"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 longLongValue];
+      longLongValue = [valueCopy longLongValue];
 LABEL_6:
-      v10 = v9;
+      v10 = longLongValue;
       goto LABEL_10;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 dbgLongLongValue];
+      longLongValue = [valueCopy dbgLongLongValue];
       goto LABEL_6;
     }
   }
 
   v10 = 0;
-  if (!v8 && a5)
+  if (!valueCopy && error)
   {
     v10 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
 LABEL_10:
-  v11 = [a1 withValue:v10];
+  v11 = [self withValue:v10];
 
   return v11;
 }

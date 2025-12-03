@@ -1,19 +1,19 @@
 @interface WebPresentmentSessionProxy
-- (void)cancelRequestWithCompletionHandler:(id)a3;
-- (void)performRequest:(_TtC13CoreIDVShared31XPCPartialWebPresentmentRequest *)a3 completionHandler:(id)a4;
+- (void)cancelRequestWithCompletionHandler:(id)handler;
+- (void)performRequest:(_TtC13CoreIDVShared31XPCPartialWebPresentmentRequest *)request completionHandler:(id)handler;
 @end
 
 @implementation WebPresentmentSessionProxy
 
-- (void)performRequest:(_TtC13CoreIDVShared31XPCPartialWebPresentmentRequest *)a3 completionHandler:(id)a4
+- (void)performRequest:(_TtC13CoreIDVShared31XPCPartialWebPresentmentRequest *)request completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -28,18 +28,18 @@
   v15[3] = 0;
   v15[4] = &unk_1006E6D78;
   v15[5] = v14;
-  v16 = a3;
+  requestCopy = request;
 
   sub_100500D54(0, 0, v10, &unk_1006E6D80, v15);
 }
 
-- (void)cancelRequestWithCompletionHandler:(id)a3
+- (void)cancelRequestWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;

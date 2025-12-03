@@ -10,15 +10,15 @@
 {
   if (a4)
   {
-    v4 = [a3 _ltRemoveAllWhitespaces];
-    v5 = [v4 length];
+    _ltRemoveAllWhitespaces = [a3 _ltRemoveAllWhitespaces];
+    v5 = [_ltRemoveAllWhitespaces length];
   }
 
   else
   {
-    v4 = [a3 _ltTrimWhitespaces];
-    v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v7 = [v4 componentsSeparatedByCharactersInSet:v6];
+    _ltRemoveAllWhitespaces = [a3 _ltTrimWhitespaces];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v7 = [_ltRemoveAllWhitespaces componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
     v5 = [v7 count];
   }
 
@@ -49,7 +49,7 @@
 
   if ([v14 length])
   {
-    [v9 setInputTokenCount:{objc_msgSend(a1, "_countWithTokenString:countCharacters:", v14, IsCharacterBasedLocale)}];
+    [v9 setInputTokenCount:{objc_msgSend(self, "_countWithTokenString:countCharacters:", v14, IsCharacterBasedLocale)}];
   }
 
   v15 = [v6 objectForKeyedSubscript:@"firstleg sentencepiece decoder output"];
@@ -68,7 +68,7 @@
 
   if ([v18 length])
   {
-    [v9 setInputSubtokenCount:{objc_msgSend(a1, "_countWithTokenString:countCharacters:", v18, IsCharacterBasedLocale)}];
+    [v9 setInputSubtokenCount:{objc_msgSend(self, "_countWithTokenString:countCharacters:", v18, IsCharacterBasedLocale)}];
   }
 
   return v9;
@@ -77,8 +77,8 @@
 - (void)copyWithZone:()Daemon
 {
   v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  [v4 setInputTokenCount:{objc_msgSend(a1, "inputTokenCount")}];
-  [v4 setInputSubtokenCount:{objc_msgSend(a1, "inputSubtokenCount")}];
+  [v4 setInputTokenCount:{objc_msgSend(self, "inputTokenCount")}];
+  [v4 setInputSubtokenCount:{objc_msgSend(self, "inputSubtokenCount")}];
   return v4;
 }
 

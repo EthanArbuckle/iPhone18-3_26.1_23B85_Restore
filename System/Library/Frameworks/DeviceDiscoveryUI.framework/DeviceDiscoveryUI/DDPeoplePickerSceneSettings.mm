@@ -1,12 +1,12 @@
 @interface DDPeoplePickerSceneSettings
 - (BOOL)isDedicatedDevicePicker;
 - (BOOL)isMicOnlyDevicePicker;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DDPeoplePickerSceneSettings
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DDPeoplePickerMutableSceneSettings alloc];
 
@@ -15,20 +15,20 @@
 
 - (BOOL)isDedicatedDevicePicker
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:18492850];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:18492850];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isMicOnlyDevicePicker
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:18492851];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:18492851];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

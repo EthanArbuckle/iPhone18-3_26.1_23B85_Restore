@@ -1,21 +1,21 @@
 @interface FMDRequestAccessoryLocations
-- (BOOL)canReplace:(id)a3;
-- (FMDRequestAccessoryLocations)initWithAccount:(id)a3 accessoryLocations:(id)a4;
+- (BOOL)canReplace:(id)replace;
+- (FMDRequestAccessoryLocations)initWithAccount:(id)account accessoryLocations:(id)locations;
 - (id)requestBody;
 @end
 
 @implementation FMDRequestAccessoryLocations
 
-- (FMDRequestAccessoryLocations)initWithAccount:(id)a3 accessoryLocations:(id)a4
+- (FMDRequestAccessoryLocations)initWithAccount:(id)account accessoryLocations:(id)locations
 {
-  v6 = a4;
+  locationsCopy = locations;
   v10.receiver = self;
   v10.super_class = FMDRequestAccessoryLocations;
-  v7 = [(FMDRequest *)&v10 initWithAccount:a3];
+  v7 = [(FMDRequest *)&v10 initWithAccount:account];
   v8 = v7;
   if (v7)
   {
-    [(FMDRequestAccessoryLocations *)v7 setAccessoryLocations:v6];
+    [(FMDRequestAccessoryLocations *)v7 setAccessoryLocations:locationsCopy];
   }
 
   return v8;
@@ -25,16 +25,16 @@
 {
   v6.receiver = self;
   v6.super_class = FMDRequestAccessoryLocations;
-  v3 = [(FMDRequest *)&v6 requestBody];
-  v4 = [(FMDRequestAccessoryLocations *)self accessoryLocations];
-  [v3 fm_safeSetObject:v4 forKey:@"locations"];
+  requestBody = [(FMDRequest *)&v6 requestBody];
+  accessoryLocations = [(FMDRequestAccessoryLocations *)self accessoryLocations];
+  [requestBody fm_safeSetObject:accessoryLocations forKey:@"locations"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v3 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

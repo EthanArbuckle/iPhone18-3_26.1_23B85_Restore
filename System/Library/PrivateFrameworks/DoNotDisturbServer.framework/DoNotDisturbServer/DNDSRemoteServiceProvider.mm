@@ -1,88 +1,88 @@
 @interface DNDSRemoteServiceProvider
-- (DNDSRemoteServiceProvider)initWithClientDetailsProvider:(id)a3;
+- (DNDSRemoteServiceProvider)initWithClientDetailsProvider:(id)provider;
 - (DNDSRemoteServiceProviderDelegate)delegate;
-- (id)_clientDetailsForClientIdentifier:(id)a3 clientConnection:(id)a4;
-- (void)_addConnection:(id)a3;
-- (void)_handleClientConnectionInterrupted:(id)a3;
-- (void)_handleClientConnectionInvalidated:(id)a3;
-- (void)_iterateClientConnectionsToSendWithHandler:(id)a3;
-- (void)_queryStateWithCompletionHandler:(id)a3;
-- (void)_registerOrMutateConnectionDetailsForClientConnection:(id)a3 handler:(id)a4;
-- (void)_removeConnection:(id)a3;
-- (void)_unregisterConnectionDetailsForClientConnection:(id)a3;
-- (void)activateModeWithDetails:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)activeModeAssertionWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)clearAppActionWithIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 withRequestDetails:(id)a6 completionHandler:(id)a7;
-- (void)clearSystemActionWithIdentifier:(id)a3 forModeIdentifier:(id)a4 withRequestDetails:(id)a5 completionHandler:(id)a6;
+- (id)_clientDetailsForClientIdentifier:(id)identifier clientConnection:(id)connection;
+- (void)_addConnection:(id)connection;
+- (void)_handleClientConnectionInterrupted:(id)interrupted;
+- (void)_handleClientConnectionInvalidated:(id)invalidated;
+- (void)_iterateClientConnectionsToSendWithHandler:(id)handler;
+- (void)_queryStateWithCompletionHandler:(id)handler;
+- (void)_registerOrMutateConnectionDetailsForClientConnection:(id)connection handler:(id)handler;
+- (void)_removeConnection:(id)connection;
+- (void)_unregisterConnectionDetailsForClientConnection:(id)connection;
+- (void)activateModeWithDetails:(id)details withRequestDetails:(id)requestDetails completionHandler:(id)handler;
+- (void)activeModeAssertionWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)clearAppActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)clearSystemActionWithIdentifier:(id)identifier forModeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler;
 - (void)dealloc;
-- (void)didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)getAccountFeatureSupportWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getActiveModeAssertionWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getAllModeAssertionsWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getAllModesWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getAllowedModesForContactHandle:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)getAppActionsForModeIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)getAppConfigurationPredicateForActionIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 withRequestDetails:(id)a6 completionHandler:(id)a7;
-- (void)getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)getAppInfoForBundleIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)getAppInfoForBundleIdentifiers:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)getAvailableModesWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getBehaviorSettingsWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getCloudSyncStateWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getLatestModeAssertionInvalidationWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getModeConfigurationForModeIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)getModeConfigurationsWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getModesCanImpactAvailabilityWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getPairSyncStateWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getPreventAutoReplyWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getScheduleSettingsWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getSilencedModesForContactHandle:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)getStateDumpWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)getSystemActionsForModeIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)getUserAvailabilityInActiveModeForContactHandle:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)handleAppConfigurationContextUpdateForModeIdentifier:(id)a3;
-- (void)handleMeDeviceStateUpdate:(id)a3;
-- (void)handleModeAssertionUpdateResult:(id)a3;
-- (void)handleStateUpdate:(id)a3;
-- (void)handleUpdatedBehaviorSettings:(id)a3;
-- (void)handleUpdatedModes:(id)a3 availableModes:(id)a4;
-- (void)handleUpdatedPairSyncState:(unint64_t)a3;
-- (void)handleUpdatedPhoneCallBypassSettings:(id)a3;
-- (void)handleUpdatedScheduleSettings:(id)a3;
+- (void)didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getAccountFeatureSupportWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getActiveModeAssertionWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getAllModeAssertionsWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getAllModesWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getAllowedModesForContactHandle:(id)handle withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getAppActionsForModeIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getAppConfigurationPredicateForActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getAppInfoForBundleIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getAppInfoForBundleIdentifiers:(id)identifiers withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getAvailableModesWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getBehaviorSettingsWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getCloudSyncStateWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getLatestModeAssertionInvalidationWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getModeConfigurationForModeIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getModeConfigurationsWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getModesCanImpactAvailabilityWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getPairSyncStateWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getPreventAutoReplyWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getScheduleSettingsWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getSilencedModesForContactHandle:(id)handle withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getStateDumpWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getSystemActionsForModeIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)getUserAvailabilityInActiveModeForContactHandle:(id)handle withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)handleAppConfigurationContextUpdateForModeIdentifier:(id)identifier;
+- (void)handleMeDeviceStateUpdate:(id)update;
+- (void)handleModeAssertionUpdateResult:(id)result;
+- (void)handleStateUpdate:(id)update;
+- (void)handleUpdatedBehaviorSettings:(id)settings;
+- (void)handleUpdatedModes:(id)modes availableModes:(id)availableModes;
+- (void)handleUpdatedPairSyncState:(unint64_t)state;
+- (void)handleUpdatedPhoneCallBypassSettings:(id)settings;
+- (void)handleUpdatedScheduleSettings:(id)settings;
 - (void)invalidate;
-- (void)invalidateActiveModeAssertionWithDetails:(id)a3 reasonOverride:(id)a4 requestDetails:(id)a5 completionHandler:(id)a6;
-- (void)invalidateAllActiveModeAssertionsWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)invalidateModeAssertionWithUUID:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)publishStatusKitAvailabilityWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)queryMeDeviceStateWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)queryStateForUpdateWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)queryStateWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)registerForAssertionUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)registerForGlobalConfigurationUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)registerForMeDeviceStateUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)registerForModeSelectionUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)registerForSettingsUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)registerForStateUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)removeModeConfigurationForModeIdentifier:(id)a3 deletePlaceholder:(id)a4 withRequestDetails:(id)a5 completionHandler:(id)a6;
-- (void)resetAppConfigurationStateWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)resolveBehaviorForEventDetails:(id)a3 requestDetails:(id)a4 completionHandler:(id)a5;
+- (void)invalidateActiveModeAssertionWithDetails:(id)details reasonOverride:(id)override requestDetails:(id)requestDetails completionHandler:(id)handler;
+- (void)invalidateAllActiveModeAssertionsWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)invalidateModeAssertionWithUUID:(id)d withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)publishStatusKitAvailabilityWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)queryMeDeviceStateWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)queryStateForUpdateWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)queryStateWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)registerForAssertionUpdatesWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)registerForGlobalConfigurationUpdatesWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)registerForMeDeviceStateUpdatesWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)registerForModeSelectionUpdatesWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)registerForSettingsUpdatesWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)registerForStateUpdatesWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)removeModeConfigurationForModeIdentifier:(id)identifier deletePlaceholder:(id)placeholder withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)resetAppConfigurationStateWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)resolveBehaviorForEventDetails:(id)details requestDetails:(id)requestDetails completionHandler:(id)handler;
 - (void)resume;
-- (void)setAppAction:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 withRequestDetails:(id)a6 completionHandler:(id)a7;
-- (void)setAppConfigurationPredicate:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 withRequestDetails:(id)a7 completionHandler:(id)a8;
-- (void)setAppConfigurationTargetContentIdentifierPrefix:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 withRequestDetails:(id)a7 completionHandler:(id)a8;
-- (void)setBehaviorSettings:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)setCloudSyncPreferenceEnabled:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)setHearingTestIsActive:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)setModeConfiguration:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)setModesCanImpactAvailability:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)setPairSyncPreferenceEnabled:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)setPreventAutoReply:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)setScheduleSettings:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5;
-- (void)setScreenIsShared:(id)a3 screenIsMirrored:(id)a4 withRequestDetails:(id)a5 completionHandler:(id)a6;
-- (void)setSystemAction:(id)a3 forModeIdentifier:(id)a4 withRequestDetails:(id)a5 completionHandler:(id)a6;
-- (void)syncModeConfigurationsWithRequestDetails:(id)a3 completionHandler:(id)a4;
-- (void)takeModeAssertionWithDetails:(id)a3 requestDetails:(id)a4 completionHandler:(id)a5;
+- (void)setAppAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setAppConfigurationPredicate:(id)predicate forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setAppConfigurationTargetContentIdentifierPrefix:(id)prefix forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setBehaviorSettings:(id)settings withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setCloudSyncPreferenceEnabled:(id)enabled withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setHearingTestIsActive:(id)active withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setModeConfiguration:(id)configuration withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setModesCanImpactAvailability:(id)availability withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setPairSyncPreferenceEnabled:(id)enabled withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setPreventAutoReply:(id)reply withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setScheduleSettings:(id)settings withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setScreenIsShared:(id)shared screenIsMirrored:(id)mirrored withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)setSystemAction:(id)action forModeIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler;
+- (void)syncModeConfigurationsWithRequestDetails:(id)details completionHandler:(id)handler;
+- (void)takeModeAssertionWithDetails:(id)details requestDetails:(id)requestDetails completionHandler:(id)handler;
 @end
 
 @implementation DNDSRemoteServiceProvider
@@ -94,9 +94,9 @@
   return WeakRetained;
 }
 
-- (DNDSRemoteServiceProvider)initWithClientDetailsProvider:(id)a3
+- (DNDSRemoteServiceProvider)initWithClientDetailsProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v31.receiver = self;
   v31.super_class = DNDSRemoteServiceProvider;
   v6 = [(DNDSRemoteServiceProvider *)&v31 init];
@@ -130,11 +130,11 @@
     monitorListener = v15->_monitorListener;
     v15->_monitorListener = v16;
 
-    v18 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     clientConnectionDetailsByConnection = v15->_clientConnectionDetailsByConnection;
-    v15->_clientConnectionDetailsByConnection = v18;
+    v15->_clientConnectionDetailsByConnection = weakToStrongObjectsMapTable;
 
-    objc_storeStrong(&v15->_clientDetailsProvider, a3);
+    objc_storeStrong(&v15->_clientDetailsProvider, provider);
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v21 = dispatch_queue_create("com.apple.donotdisturbd.remoteserviceprovider", v20);
     clientNotificationQueue = v15->_clientNotificationQueue;
@@ -190,15 +190,15 @@ void __59__DNDSRemoteServiceProvider_initWithClientDetailsProvider___block_invok
   [(BSServiceConnectionListener *)requestListener invalidate];
 }
 
-- (void)handleStateUpdate:(id)a3
+- (void)handleStateUpdate:(id)update
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = DNDSLogServiceProvider;
   if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = updateCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Did receive state update, will handle; stateUpdate=%{public}@", buf, 0xCu);
   }
 
@@ -206,9 +206,9 @@ void __59__DNDSRemoteServiceProvider_initWithClientDetailsProvider___block_invok
   v8[1] = 3221225472;
   v8[2] = __47__DNDSRemoteServiceProvider_handleStateUpdate___block_invoke;
   v8[3] = &unk_278F8BE08;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = updateCopy;
+  selfCopy = self;
+  v6 = updateCopy;
   [(DNDSRemoteServiceProvider *)self _iterateClientConnectionsToSendWithHandler:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -313,17 +313,17 @@ void __47__DNDSRemoteServiceProvider_handleStateUpdate___block_invoke(uint64_t a
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleModeAssertionUpdateResult:(id)a3
+- (void)handleModeAssertionUpdateResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   clientNotificationQueue = self->_clientNotificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__DNDSRemoteServiceProvider_handleModeAssertionUpdateResult___block_invoke;
   v7[3] = &unk_278F89F48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = resultCopy;
+  selfCopy = self;
+  v6 = resultCopy;
   dispatch_async(clientNotificationQueue, v7);
 }
 
@@ -573,15 +573,15 @@ uint64_t __61__DNDSRemoteServiceProvider_handleModeAssertionUpdateResult___block
   return v5;
 }
 
-- (void)handleUpdatedBehaviorSettings:(id)a3
+- (void)handleUpdatedBehaviorSettings:(id)settings
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = DNDSLogServiceProvider;
   if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = settingsCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Did receive updated behavior settings, will handle; settings=%{public}@", buf, 0xCu);
   }
 
@@ -589,8 +589,8 @@ uint64_t __61__DNDSRemoteServiceProvider_handleModeAssertionUpdateResult___block
   v8[1] = 3221225472;
   v8[2] = __59__DNDSRemoteServiceProvider_handleUpdatedBehaviorSettings___block_invoke;
   v8[3] = &unk_278F8BE80;
-  v9 = v4;
-  v6 = v4;
+  v9 = settingsCopy;
+  v6 = settingsCopy;
   [(DNDSRemoteServiceProvider *)self _iterateClientConnectionsToSendWithHandler:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -620,15 +620,15 @@ void __59__DNDSRemoteServiceProvider_handleUpdatedBehaviorSettings___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedPhoneCallBypassSettings:(id)a3
+- (void)handleUpdatedPhoneCallBypassSettings:(id)settings
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = DNDSLogServiceProvider;
   if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = settingsCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Did receive updated phone call bypass settings, will handle; settings=%{public}@", buf, 0xCu);
   }
 
@@ -636,8 +636,8 @@ void __59__DNDSRemoteServiceProvider_handleUpdatedBehaviorSettings___block_invok
   v8[1] = 3221225472;
   v8[2] = __66__DNDSRemoteServiceProvider_handleUpdatedPhoneCallBypassSettings___block_invoke;
   v8[3] = &unk_278F8BE80;
-  v9 = v4;
-  v6 = v4;
+  v9 = settingsCopy;
+  v6 = settingsCopy;
   [(DNDSRemoteServiceProvider *)self _iterateClientConnectionsToSendWithHandler:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -668,7 +668,7 @@ void __66__DNDSRemoteServiceProvider_handleUpdatedPhoneCallBypassSettings___bloc
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedPairSyncState:(unint64_t)a3
+- (void)handleUpdatedPairSyncState:(unint64_t)state
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = DNDSLogServiceProvider;
@@ -676,7 +676,7 @@ void __66__DNDSRemoteServiceProvider_handleUpdatedPhoneCallBypassSettings___bloc
   {
     v6 = MEMORY[0x277CCABB0];
     v7 = v5;
-    v8 = [v6 numberWithUnsignedInteger:a3];
+    v8 = [v6 numberWithUnsignedInteger:state];
     *buf = 138543362;
     v12 = v8;
     _os_log_impl(&dword_24912E000, v7, OS_LOG_TYPE_DEFAULT, "Did receive updated pair sync state, will handle; state=%{public}@", buf, 0xCu);
@@ -686,7 +686,7 @@ void __66__DNDSRemoteServiceProvider_handleUpdatedPhoneCallBypassSettings___bloc
   v10[1] = 3221225472;
   v10[2] = __56__DNDSRemoteServiceProvider_handleUpdatedPairSyncState___block_invoke;
   v10[3] = &__block_descriptor_40_e89_v24__0__DNDSClientConnectionDetails_8__BSServiceConnection_BSServiceConnectionContext__16l;
-  v10[4] = a3;
+  v10[4] = state;
   [(DNDSRemoteServiceProvider *)self _iterateClientConnectionsToSendWithHandler:v10];
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -748,15 +748,15 @@ void __66__DNDSRemoteServiceProvider_handleUpdatedPreventAutoReplySetting___bloc
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedScheduleSettings:(id)a3
+- (void)handleUpdatedScheduleSettings:(id)settings
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = DNDSLogServiceProvider;
   if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = settingsCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Did receive updated schedule settings, will handle; settings=%{public}@", buf, 0xCu);
   }
 
@@ -764,8 +764,8 @@ void __66__DNDSRemoteServiceProvider_handleUpdatedPreventAutoReplySetting___bloc
   v8[1] = 3221225472;
   v8[2] = __59__DNDSRemoteServiceProvider_handleUpdatedScheduleSettings___block_invoke;
   v8[3] = &unk_278F8BE80;
-  v9 = v4;
-  v6 = v4;
+  v9 = settingsCopy;
+  v6 = settingsCopy;
   [(DNDSRemoteServiceProvider *)self _iterateClientConnectionsToSendWithHandler:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -795,16 +795,16 @@ void __59__DNDSRemoteServiceProvider_handleUpdatedScheduleSettings___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedModes:(id)a3 availableModes:(id)a4
+- (void)handleUpdatedModes:(id)modes availableModes:(id)availableModes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modesCopy = modes;
+  availableModesCopy = availableModes;
   v8 = DNDSLogServiceProvider;
   if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v7;
+    v16 = availableModesCopy;
     _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Did receive updated available modes, will handle; modes=%{public}@", buf, 0xCu);
   }
 
@@ -812,10 +812,10 @@ void __59__DNDSRemoteServiceProvider_handleUpdatedScheduleSettings___block_invok
   v12[1] = 3221225472;
   v12[2] = __63__DNDSRemoteServiceProvider_handleUpdatedModes_availableModes___block_invoke;
   v12[3] = &unk_278F8BE08;
-  v13 = v7;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = availableModesCopy;
+  v14 = modesCopy;
+  v9 = modesCopy;
+  v10 = availableModesCopy;
   [(DNDSRemoteServiceProvider *)self _iterateClientConnectionsToSendWithHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -869,15 +869,15 @@ void __63__DNDSRemoteServiceProvider_handleUpdatedModes_availableModes___block_i
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAppConfigurationContextUpdateForModeIdentifier:(id)a3
+- (void)handleAppConfigurationContextUpdateForModeIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = DNDSLogServiceProvider;
   if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = identifierCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Mode did receive updated app configuration context, will handle; mode=%{public}@", buf, 0xCu);
   }
 
@@ -885,8 +885,8 @@ void __63__DNDSRemoteServiceProvider_handleUpdatedModes_availableModes___block_i
   v8[1] = 3221225472;
   v8[2] = __82__DNDSRemoteServiceProvider_handleAppConfigurationContextUpdateForModeIdentifier___block_invoke;
   v8[3] = &unk_278F8BE80;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   [(DNDSRemoteServiceProvider *)self _iterateClientConnectionsToSendWithHandler:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -921,21 +921,21 @@ void __82__DNDSRemoteServiceProvider_handleAppConfigurationContextUpdateForModeI
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMeDeviceStateUpdate:(id)a3
+- (void)handleMeDeviceStateUpdate:(id)update
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = DNDSLogServiceProvider;
   if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    [v4 meDeviceStatus];
+    [updateCopy meDeviceStatus];
     v7 = DNDMeDeviceStatusToString();
-    v8 = [v4 meDeviceName];
+    meDeviceName = [updateCopy meDeviceName];
     *buf = 138543618;
     v14 = v7;
     v15 = 2114;
-    v16 = v8;
+    v16 = meDeviceName;
     _os_log_impl(&dword_24912E000, v6, OS_LOG_TYPE_DEFAULT, "Did receive updated 'Me Device' state, will handle; meDeviceStatus=%{public}@, meDeviceName=%{public}@", buf, 0x16u);
   }
 
@@ -943,8 +943,8 @@ void __82__DNDSRemoteServiceProvider_handleAppConfigurationContextUpdateForModeI
   v11[1] = 3221225472;
   v11[2] = __55__DNDSRemoteServiceProvider_handleMeDeviceStateUpdate___block_invoke;
   v11[3] = &unk_278F8BE80;
-  v12 = v4;
-  v9 = v4;
+  v12 = updateCopy;
+  v9 = updateCopy;
   [(DNDSRemoteServiceProvider *)self _iterateClientConnectionsToSendWithHandler:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -983,14 +983,14 @@ void __55__DNDSRemoteServiceProvider_handleMeDeviceStateUpdate___block_invoke(ui
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   objc_initWeak(&location, self);
-  if (self->_requestListener == v8)
+  if (self->_requestListener == listenerCopy)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -999,14 +999,14 @@ void __55__DNDSRemoteServiceProvider_handleMeDeviceStateUpdate___block_invoke(ui
     v17[4] = self;
     v11 = &v18;
     objc_copyWeak(&v18, &location);
-    [v9 configureConnection:v17];
+    [connectionCopy configureConnection:v17];
   }
 
   else
   {
-    if (self->_monitorListener != v8)
+    if (self->_monitorListener != listenerCopy)
     {
-      [v9 invalidate];
+      [connectionCopy invalidate];
       goto LABEL_11;
     }
 
@@ -1017,30 +1017,30 @@ void __55__DNDSRemoteServiceProvider_handleMeDeviceStateUpdate___block_invoke(ui
     v15[4] = self;
     v11 = &v16;
     objc_copyWeak(&v16, &location);
-    [v9 configureConnection:v15];
+    [connectionCopy configureConnection:v15];
   }
 
   objc_destroyWeak(v11);
-  if ([v9 dnds_hasAnyValidEntitlement])
+  if ([connectionCopy dnds_hasAnyValidEntitlement])
   {
-    [(DNDSRemoteServiceProvider *)self _addConnection:v9];
-    [v9 activate];
+    [(DNDSRemoteServiceProvider *)self _addConnection:connectionCopy];
+    [connectionCopy activate];
     v12 = DNDSLogServiceProvider;
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = v9;
+      v21 = connectionCopy;
       _os_log_impl(&dword_24912E000, v12, OS_LOG_TYPE_DEFAULT, "XPC connection successfully accepted: connection=%{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    [v9 invalidate];
+    [connectionCopy invalidate];
     v13 = DNDSLogServiceProvider;
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_ERROR))
     {
-      [DNDSRemoteServiceProvider listener:v9 didReceiveConnection:v13 withContext:?];
+      [DNDSRemoteServiceProvider listener:connectionCopy didReceiveConnection:v13 withContext:?];
     }
   }
 
@@ -1134,38 +1134,38 @@ void __71__DNDSRemoteServiceProvider_listener_didReceiveConnection_withContext__
   [WeakRetained _removeConnection:v3];
 }
 
-- (void)resolveBehaviorForEventDetails:(id)a3 requestDetails:(id)a4 completionHandler:(id)a5
+- (void)resolveBehaviorForEventDetails:(id)details requestDetails:(id)requestDetails completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  detailsCopy = details;
+  requestDetailsCopy = requestDetails;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  if ([v16 dnds_hasBehaviorResolutionEntitlementForClientIdentifier:v17])
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [requestDetailsCopy clientIdentifier];
+  if ([currentContext dnds_hasBehaviorResolutionEntitlementForClientIdentifier:clientIdentifier])
   {
-    v18 = [(DNDSRemoteServiceProvider *)self _clientDetailsForClientIdentifier:v17 clientConnection:v16];
+    v18 = [(DNDSRemoteServiceProvider *)self _clientDetailsForClientIdentifier:clientIdentifier clientConnection:currentContext];
     [(DNDSRemoteServiceProvider *)self delegate];
-    v19 = v26 = v11;
-    v20 = [MEMORY[0x277CBEAA8] date];
+    v19 = v26 = handlerCopy;
+    date = [MEMORY[0x277CBEAA8] date];
     v27 = 0;
-    v21 = [v19 remoteServiceProvider:self resolveBehaviorForEventDetails:v9 clientDetails:v18 date:v20 error:&v27];
-    v22 = v10;
+    v21 = [v19 remoteServiceProvider:self resolveBehaviorForEventDetails:detailsCopy clientDetails:v18 date:date error:&v27];
+    v22 = requestDetailsCopy;
     v23 = v15;
-    v24 = v9;
+    v24 = detailsCopy;
     v25 = v27;
 
-    v11 = v26;
+    handlerCopy = v26;
     v26[2](v26, v21, v25);
 
-    v9 = v24;
+    detailsCopy = v24;
     v15 = v23;
-    v10 = v22;
+    requestDetailsCopy = v22;
   }
 
   else
@@ -1175,34 +1175,34 @@ void __71__DNDSRemoteServiceProvider_listener_didReceiveConnection_withContext__
       [DNDSRemoteServiceProvider resolveBehaviorForEventDetails:requestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)takeModeAssertionWithDetails:(id)a3 requestDetails:(id)a4 completionHandler:(id)a5
+- (void)takeModeAssertionWithDetails:(id)details requestDetails:(id)requestDetails completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  detailsCopy = details;
+  requestDetailsCopy = requestDetails;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  if ([v16 dnds_hasEntitlementsToRequestAssertionWithDetails:v9 clientIdentifier:v17])
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [requestDetailsCopy clientIdentifier];
+  if ([currentContext dnds_hasEntitlementsToRequestAssertionWithDetails:detailsCopy clientIdentifier:clientIdentifier])
   {
-    v18 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v26 = 0;
-    v19 = [v18 remoteServiceProvider:self takeModeAssertionWithDetails:v9 clientIdentifier:v17 error:&v26];
+    v19 = [delegate remoteServiceProvider:self takeModeAssertionWithDetails:detailsCopy clientIdentifier:clientIdentifier error:&v26];
     v20 = v26;
 
     if (v19)
     {
-      v21 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:v17];
+      v21 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:clientIdentifier];
       if (([v21 isPersistentAssertionClient] & 1) == 0)
       {
         v24[0] = MEMORY[0x277D85DD0];
@@ -1210,11 +1210,11 @@ void __71__DNDSRemoteServiceProvider_listener_didReceiveConnection_withContext__
         v24[2] = __91__DNDSRemoteServiceProvider_takeModeAssertionWithDetails_requestDetails_completionHandler___block_invoke;
         v24[3] = &unk_278F8BEE8;
         v25 = v19;
-        [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:v16 handler:v24];
+        [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:currentContext handler:v24];
       }
     }
 
-    v11[2](v11, v19, v20);
+    handlerCopy[2](handlerCopy, v19, v20);
   }
 
   else
@@ -1223,15 +1223,15 @@ void __71__DNDSRemoteServiceProvider_listener_didReceiveConnection_withContext__
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v28 = v10;
+      v28 = requestDetailsCopy;
       v29 = 2114;
-      v30 = v16;
+      v30 = currentContext;
       v31 = 2114;
-      v32 = v9;
+      v32 = detailsCopy;
       _os_log_error_impl(&dword_24912E000, v22, OS_LOG_TYPE_ERROR, "[%{public}@] XPC connection without any valid entitlements tried to take mode assertion, will invalidate: connection=%{public}@, assertionDetails=%{public}@", buf, 0x20u);
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -1246,28 +1246,28 @@ id __91__DNDSRemoteServiceProvider_takeModeAssertionWithDetails_requestDetails_c
   return v3;
 }
 
-- (void)invalidateActiveModeAssertionWithDetails:(id)a3 reasonOverride:(id)a4 requestDetails:(id)a5 completionHandler:(id)a6
+- (void)invalidateActiveModeAssertionWithDetails:(id)details reasonOverride:(id)override requestDetails:(id)requestDetails completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  detailsCopy = details;
+  overrideCopy = override;
+  requestDetailsCopy = requestDetails;
+  handlerCopy = handler;
   v15 = MEMORY[0x277CCACA8];
   v16 = NSStringFromSelector(a2);
   v17 = [v15 stringWithFormat:@"com.apple.donotdisturbd.%@", v16];
   [v17 UTF8String];
   v18 = os_transaction_create();
 
-  v19 = [MEMORY[0x277CF3280] currentContext];
-  v20 = [v13 clientIdentifier];
-  if ([v19 dnds_hasModeAssertionEntitlementForClientIdentifier:v20])
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [requestDetailsCopy clientIdentifier];
+  if ([currentContext dnds_hasModeAssertionEntitlementForClientIdentifier:clientIdentifier])
   {
-    v21 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v24 = 0;
-    v22 = [v21 remoteServiceProvider:self invalidateModeAssertionForClientIdentifier:v20 reason:3 reasonOverride:objc_msgSend(v12 details:"unsignedIntegerValue") error:{v11, &v24}];
+    v22 = [delegate remoteServiceProvider:self invalidateModeAssertionForClientIdentifier:clientIdentifier reason:3 reasonOverride:objc_msgSend(overrideCopy details:"unsignedIntegerValue") error:{detailsCopy, &v24}];
     v23 = v24;
 
-    v14[2](v14, v22, v23);
+    handlerCopy[2](handlerCopy, v22, v23);
   }
 
   else
@@ -1277,30 +1277,30 @@ id __91__DNDSRemoteServiceProvider_takeModeAssertionWithDetails_requestDetails_c
       [DNDSRemoteServiceProvider invalidateActiveModeAssertionWithDetails:reasonOverride:requestDetails:completionHandler:];
     }
 
-    [v19 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getActiveModeAssertionWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getActiveModeAssertionWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  if ([v13 dnds_hasModeAssertionEntitlementForClientIdentifier:v14])
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  if ([currentContext dnds_hasModeAssertionEntitlementForClientIdentifier:clientIdentifier])
   {
-    v15 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v18 = 0;
-    v16 = [v15 remoteServiceProvider:self assertionWithClientIdentifer:v14 error:&v18];
+    v16 = [delegate remoteServiceProvider:self assertionWithClientIdentifer:clientIdentifier error:&v18];
     v17 = v18;
 
-    v8[2](v8, v16, v17);
+    handlerCopy[2](handlerCopy, v16, v17);
   }
 
   else
@@ -1310,30 +1310,30 @@ id __91__DNDSRemoteServiceProvider_takeModeAssertionWithDetails_requestDetails_c
       [DNDSRemoteServiceProvider getActiveModeAssertionWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getLatestModeAssertionInvalidationWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getLatestModeAssertionInvalidationWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  if ([v13 dnds_hasModeAssertionEntitlementForClientIdentifier:v14])
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  if ([currentContext dnds_hasModeAssertionEntitlementForClientIdentifier:clientIdentifier])
   {
-    v15 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v18 = 0;
-    v16 = [v15 remoteServiceProvider:self latestInvalidationWithClientIdentifer:v14 error:&v18];
+    v16 = [delegate remoteServiceProvider:self latestInvalidationWithClientIdentifer:clientIdentifier error:&v18];
     v17 = v18;
 
-    v8[2](v8, v16, v17);
+    handlerCopy[2](handlerCopy, v16, v17);
   }
 
   else
@@ -1343,32 +1343,32 @@ id __91__DNDSRemoteServiceProvider_takeModeAssertionWithDetails_requestDetails_c
       [DNDSRemoteServiceProvider getLatestModeAssertionInvalidationWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)invalidateAllActiveModeAssertionsWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)invalidateAllActiveModeAssertionsWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  if ([v13 dnds_hasModeAssertionEntitlementForClientIdentifier:v14] && objc_msgSend(v13, "dnds_hasUserRequestedModeAssertionEntitlementForClientIdentifier:", v14))
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  if ([currentContext dnds_hasModeAssertionEntitlementForClientIdentifier:clientIdentifier] && objc_msgSend(currentContext, "dnds_hasUserRequestedModeAssertionEntitlementForClientIdentifier:", clientIdentifier))
   {
-    v15 = [(DNDSRemoteServiceProvider *)self delegate];
-    v16 = [MEMORY[0x277CBEAA8] date];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
+    date = [MEMORY[0x277CBEAA8] date];
     v20 = 0;
-    v17 = [v15 remoteServiceProvider:self invalidateAllModeAssertionsTakenBeforeDate:v16 forReason:2 clientIdentifier:v14 error:&v20];
+    v17 = [delegate remoteServiceProvider:self invalidateAllModeAssertionsTakenBeforeDate:date forReason:2 clientIdentifier:clientIdentifier error:&v20];
     v18 = v20;
 
     v19 = [MEMORY[0x277CCABB0] numberWithBool:v17 != 0];
-    v8[2](v8, v19, v18);
+    handlerCopy[2](handlerCopy, v19, v18);
   }
 
   else
@@ -1378,30 +1378,30 @@ id __91__DNDSRemoteServiceProvider_takeModeAssertionWithDetails_requestDetails_c
       [DNDSRemoteServiceProvider invalidateAllActiveModeAssertionsWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getAllModeAssertionsWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getAllModeAssertionsWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  if ([v13 dnds_hasModeAssertionEntitlementForClientIdentifier:v14])
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  if ([currentContext dnds_hasModeAssertionEntitlementForClientIdentifier:clientIdentifier])
   {
-    v15 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v18 = 0;
-    v16 = [v15 remoteServiceProvider:self allActiveModeAssertionsWithError:&v18];
+    v16 = [delegate remoteServiceProvider:self allActiveModeAssertionsWithError:&v18];
     v17 = v18;
 
-    v8[2](v8, v16, v17);
+    handlerCopy[2](handlerCopy, v16, v17);
   }
 
   else
@@ -1411,31 +1411,31 @@ id __91__DNDSRemoteServiceProvider_takeModeAssertionWithDetails_requestDetails_c
       [DNDSRemoteServiceProvider getAllModeAssertionsWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)registerForAssertionUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)registerForAssertionUpdatesWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  if ([v13 dnds_hasModeAssertionEntitlementForClientIdentifier:v14])
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  if ([currentContext dnds_hasModeAssertionEntitlementForClientIdentifier:clientIdentifier])
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __93__DNDSRemoteServiceProvider_registerForAssertionUpdatesWithRequestDetails_completionHandler___block_invoke;
     v15[3] = &unk_278F8BEE8;
-    v16 = v14;
-    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:v13 handler:v15];
-    (*(v8 + 2))(v8, MEMORY[0x277CBEC38], 0);
+    v16 = clientIdentifier;
+    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:currentContext handler:v15];
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC38], 0);
   }
 
   else
@@ -1445,7 +1445,7 @@ id __91__DNDSRemoteServiceProvider_takeModeAssertionWithDetails_requestDetails_c
       [DNDSRemoteServiceProvider registerForAssertionUpdatesWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
@@ -1460,23 +1460,23 @@ id __93__DNDSRemoteServiceProvider_registerForAssertionUpdatesWithRequestDetails
   return v3;
 }
 
-- (void)queryStateWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)queryStateWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasStateRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasStateRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    [(DNDSRemoteServiceProvider *)self _queryStateWithCompletionHandler:v8];
+    [(DNDSRemoteServiceProvider *)self _queryStateWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -1486,27 +1486,27 @@ id __93__DNDSRemoteServiceProvider_registerForAssertionUpdatesWithRequestDetails
       [DNDSRemoteServiceProvider queryStateWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)queryStateForUpdateWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)queryStateForUpdateWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasStateUpdatesEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasStateUpdatesEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    [(DNDSRemoteServiceProvider *)self _queryStateWithCompletionHandler:v8];
+    [(DNDSRemoteServiceProvider *)self _queryStateWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -1516,39 +1516,39 @@ id __93__DNDSRemoteServiceProvider_registerForAssertionUpdatesWithRequestDetails
       [DNDSRemoteServiceProvider queryStateForUpdateWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)_queryStateWithCompletionHandler:(id)a3
+- (void)_queryStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DNDSRemoteServiceProvider *)self delegate];
+  handlerCopy = handler;
+  delegate = [(DNDSRemoteServiceProvider *)self delegate];
   v8 = 0;
-  v6 = [v5 remoteServiceProvider:self currentStateWithError:&v8];
+  v6 = [delegate remoteServiceProvider:self currentStateWithError:&v8];
   v7 = v8;
 
-  v4[2](v4, v6, v7);
+  handlerCopy[2](handlerCopy, v6, v7);
 }
 
-- (void)registerForStateUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)registerForStateUpdatesWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasStateUpdatesEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasStateUpdatesEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:v13 handler:&__block_literal_global_36];
-    (*(v8 + 2))(v8, MEMORY[0x277CBEC38], 0);
+    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:currentContext handler:&__block_literal_global_36];
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC38], 0);
   }
 
   else
@@ -1558,7 +1558,7 @@ id __93__DNDSRemoteServiceProvider_registerForAssertionUpdatesWithRequestDetails
       [DNDSRemoteServiceProvider registerForStateUpdatesWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
@@ -1570,31 +1570,31 @@ id __89__DNDSRemoteServiceProvider_registerForStateUpdatesWithRequestDetails_com
   return v2;
 }
 
-- (void)setScreenIsShared:(id)a3 screenIsMirrored:(id)a4 withRequestDetails:(id)a5 completionHandler:(id)a6
+- (void)setScreenIsShared:(id)shared screenIsMirrored:(id)mirrored withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sharedCopy = shared;
+  mirroredCopy = mirrored;
+  detailsCopy = details;
+  handlerCopy = handler;
   v15 = MEMORY[0x277CCACA8];
   v16 = NSStringFromSelector(a2);
   v17 = [v15 stringWithFormat:@"com.apple.donotdisturbd.%@", v16];
   [v17 UTF8String];
   v18 = os_transaction_create();
 
-  v19 = [MEMORY[0x277CF3280] currentContext];
-  v20 = [v13 clientIdentifier];
-  v21 = [v19 dnds_hasAuxiliaryStateModificationEntitlementForClientIdentifier:v20];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v21 = [currentContext dnds_hasAuxiliaryStateModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v21)
   {
-    v22 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v26 = 0;
-    v23 = [v22 remoteServiceProvider:self setScreenIsShared:objc_msgSend(v11 screenIsMirrored:"BOOLValue") withError:{objc_msgSend(v12, "BOOLValue"), &v26}];
+    v23 = [delegate remoteServiceProvider:self setScreenIsShared:objc_msgSend(sharedCopy screenIsMirrored:"BOOLValue") withError:{objc_msgSend(mirroredCopy, "BOOLValue"), &v26}];
     v24 = v26;
 
     v25 = [MEMORY[0x277CCABB0] numberWithBool:v23];
-    v14[2](v14, v25, v24);
+    handlerCopy[2](handlerCopy, v25, v24);
   }
 
   else
@@ -1604,35 +1604,35 @@ id __89__DNDSRemoteServiceProvider_registerForStateUpdatesWithRequestDetails_com
       [DNDSRemoteServiceProvider setScreenIsShared:screenIsMirrored:withRequestDetails:completionHandler:];
     }
 
-    [v19 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)setHearingTestIsActive:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)setHearingTestIsActive:(id)active withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  activeCopy = active;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasHearingTestEventUpdateEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasHearingTestEventUpdateEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
-    v20 = -[DNDSHearingTestEvent initWithIsHearingTestActive:]([DNDSHearingTestEvent alloc], "initWithIsHearingTestActive:", [v9 BOOLValue]);
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
+    v20 = -[DNDSHearingTestEvent initWithIsHearingTestActive:]([DNDSHearingTestEvent alloc], "initWithIsHearingTestActive:", [activeCopy BOOLValue]);
     v24 = 0;
-    v21 = [v19 remoteServiceProvider:self handleHearingTestEvent:v20 withError:&v24];
+    v21 = [delegate remoteServiceProvider:self handleHearingTestEvent:v20 withError:&v24];
     v22 = v24;
 
     v23 = [MEMORY[0x277CCABB0] numberWithBool:v21];
-    v11[2](v11, v23, v22);
+    handlerCopy[2](handlerCopy, v23, v22);
   }
 
   else
@@ -1642,32 +1642,32 @@ id __89__DNDSRemoteServiceProvider_registerForStateUpdatesWithRequestDetails_com
       [DNDSRemoteServiceProvider setScreenIsShared:screenIsMirrored:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getBehaviorSettingsWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getBehaviorSettingsWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v19 = 0;
-    v17 = [v16 remoteServiceProvider:self behaviorSettingsWithError:&v19];
+    v17 = [delegate remoteServiceProvider:self behaviorSettingsWithError:&v19];
     v18 = v19;
 
-    v8[2](v8, v17, v18);
+    handlerCopy[2](handlerCopy, v17, v18);
   }
 
   else
@@ -1677,34 +1677,34 @@ id __89__DNDSRemoteServiceProvider_registerForStateUpdatesWithRequestDetails_com
       [DNDSRemoteServiceProvider getBehaviorSettingsWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)setBehaviorSettings:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)setBehaviorSettings:(id)settings withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  settingsCopy = settings;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasSettingsModificationEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasSettingsModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v23 = 0;
-    v20 = [v19 remoteServiceProvider:self setBehaviorSettings:v9 withError:&v23];
+    v20 = [delegate remoteServiceProvider:self setBehaviorSettings:settingsCopy withError:&v23];
     v21 = v23;
 
     v22 = [MEMORY[0x277CCABB0] numberWithBool:v20];
-    v11[2](v11, v22, v21);
+    handlerCopy[2](handlerCopy, v22, v21);
   }
 
   else
@@ -1714,32 +1714,32 @@ id __89__DNDSRemoteServiceProvider_registerForStateUpdatesWithRequestDetails_com
       [DNDSRemoteServiceProvider setBehaviorSettings:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getScheduleSettingsWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getScheduleSettingsWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v19 = 0;
-    v17 = [v16 remoteServiceProvider:self scheduleSettingsWithError:&v19];
+    v17 = [delegate remoteServiceProvider:self scheduleSettingsWithError:&v19];
     v18 = v19;
 
-    v8[2](v8, v17, v18);
+    handlerCopy[2](handlerCopy, v17, v18);
   }
 
   else
@@ -1749,34 +1749,34 @@ id __89__DNDSRemoteServiceProvider_registerForStateUpdatesWithRequestDetails_com
       [DNDSRemoteServiceProvider getScheduleSettingsWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)setScheduleSettings:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)setScheduleSettings:(id)settings withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  settingsCopy = settings;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasSettingsModificationEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasSettingsModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v23 = 0;
-    v20 = [v19 remoteServiceProvider:self setScheduleSettings:v9 withError:&v23];
+    v20 = [delegate remoteServiceProvider:self setScheduleSettings:settingsCopy withError:&v23];
     v21 = v23;
 
     v22 = [MEMORY[0x277CCABB0] numberWithBool:v20];
-    v11[2](v11, v22, v21);
+    handlerCopy[2](handlerCopy, v22, v21);
   }
 
   else
@@ -1786,28 +1786,28 @@ id __89__DNDSRemoteServiceProvider_registerForStateUpdatesWithRequestDetails_com
       [DNDSRemoteServiceProvider setScheduleSettings:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)registerForSettingsUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)registerForSettingsUpdatesWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsUpdatesEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsUpdatesEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:v13 handler:&__block_literal_global_42];
-    (*(v8 + 2))(v8, MEMORY[0x277CBEC38], 0);
+    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:currentContext handler:&__block_literal_global_42];
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC38], 0);
   }
 
   else
@@ -1817,7 +1817,7 @@ id __89__DNDSRemoteServiceProvider_registerForStateUpdatesWithRequestDetails_com
       [DNDSRemoteServiceProvider setScheduleSettings:withRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
@@ -1829,30 +1829,30 @@ id __92__DNDSRemoteServiceProvider_registerForSettingsUpdatesWithRequestDetails_
   return v2;
 }
 
-- (void)setPreventAutoReply:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)setPreventAutoReply:(id)reply withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  replyCopy = reply;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v23 = 0;
-    v20 = [v19 remoteServiceProvider:self setPreventAutoReply:objc_msgSend(v9 withError:{"BOOLValue"), &v23}];
+    v20 = [delegate remoteServiceProvider:self setPreventAutoReply:objc_msgSend(replyCopy withError:{"BOOLValue"), &v23}];
     v21 = v23;
 
     v22 = [MEMORY[0x277CCABB0] numberWithBool:v20];
-    v11[2](v11, v22, v21);
+    handlerCopy[2](handlerCopy, v22, v21);
   }
 
   else
@@ -1862,33 +1862,33 @@ id __92__DNDSRemoteServiceProvider_registerForSettingsUpdatesWithRequestDetails_
       [DNDSRemoteServiceProvider setPreventAutoReply:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getPreventAutoReplyWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getPreventAutoReplyWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v20 = 0;
-    v17 = [v16 remoteServiceProvider:self getPreventAutoReplyReturningError:&v20];
+    v17 = [delegate remoteServiceProvider:self getPreventAutoReplyReturningError:&v20];
     v18 = v20;
 
     v19 = [MEMORY[0x277CCABB0] numberWithBool:v17];
-    v8[2](v8, v19, v18);
+    handlerCopy[2](handlerCopy, v19, v18);
   }
 
   else
@@ -1898,34 +1898,34 @@ id __92__DNDSRemoteServiceProvider_registerForSettingsUpdatesWithRequestDetails_
       [DNDSRemoteServiceProvider getPreventAutoReplyWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)setModesCanImpactAvailability:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)setModesCanImpactAvailability:(id)availability withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  availabilityCopy = availability;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v23 = 0;
-    v20 = [v19 remoteServiceProvider:self setModesCanImpactAvailability:objc_msgSend(v9 withError:{"BOOLValue"), &v23}];
+    v20 = [delegate remoteServiceProvider:self setModesCanImpactAvailability:objc_msgSend(availabilityCopy withError:{"BOOLValue"), &v23}];
     v21 = v23;
 
     v22 = [MEMORY[0x277CCABB0] numberWithBool:v20];
-    v11[2](v11, v22, v21);
+    handlerCopy[2](handlerCopy, v22, v21);
   }
 
   else
@@ -1935,33 +1935,33 @@ id __92__DNDSRemoteServiceProvider_registerForSettingsUpdatesWithRequestDetails_
       [DNDSRemoteServiceProvider setPreventAutoReply:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getModesCanImpactAvailabilityWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getModesCanImpactAvailabilityWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v20 = 0;
-    v17 = [v16 remoteServiceProvider:self getModesCanImpactAvailabilityReturningError:&v20];
+    v17 = [delegate remoteServiceProvider:self getModesCanImpactAvailabilityReturningError:&v20];
     v18 = v20;
 
     v19 = [MEMORY[0x277CCABB0] numberWithBool:v17];
-    v8[2](v8, v19, v18);
+    handlerCopy[2](handlerCopy, v19, v18);
   }
 
   else
@@ -1971,28 +1971,28 @@ id __92__DNDSRemoteServiceProvider_registerForSettingsUpdatesWithRequestDetails_
       [DNDSRemoteServiceProvider getModesCanImpactAvailabilityWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)registerForGlobalConfigurationUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)registerForGlobalConfigurationUpdatesWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsUpdatesEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsUpdatesEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:v13 handler:&__block_literal_global_44];
-    (*(v8 + 2))(v8, MEMORY[0x277CBEC38], 0);
+    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:currentContext handler:&__block_literal_global_44];
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC38], 0);
   }
 
   else
@@ -2002,7 +2002,7 @@ id __92__DNDSRemoteServiceProvider_registerForSettingsUpdatesWithRequestDetails_
       [DNDSRemoteServiceProvider registerForGlobalConfigurationUpdatesWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
@@ -2014,29 +2014,29 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
   return v2;
 }
 
-- (void)getCloudSyncStateWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getCloudSyncStateWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v20 = 0;
-    v17 = [v16 remoteServiceProvider:self getCloudSyncStateReturningError:&v20];
+    v17 = [delegate remoteServiceProvider:self getCloudSyncStateReturningError:&v20];
     v18 = v20;
 
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
-    v8[2](v8, v19, v18);
+    handlerCopy[2](handlerCopy, v19, v18);
   }
 
   else
@@ -2046,34 +2046,34 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getCloudSyncStateWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)setCloudSyncPreferenceEnabled:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)setCloudSyncPreferenceEnabled:(id)enabled withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  enabledCopy = enabled;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasSettingsModificationEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasSettingsModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v23 = 0;
-    v20 = [v19 remoteServiceProvider:self setCloudSyncPreferenceEnabled:objc_msgSend(v9 withError:{"BOOLValue"), &v23}];
+    v20 = [delegate remoteServiceProvider:self setCloudSyncPreferenceEnabled:objc_msgSend(enabledCopy withError:{"BOOLValue"), &v23}];
     v21 = v23;
 
     v22 = [MEMORY[0x277CCABB0] numberWithBool:v20];
-    v11[2](v11, v22, v21);
+    handlerCopy[2](handlerCopy, v22, v21);
   }
 
   else
@@ -2083,33 +2083,33 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider setCloudSyncPreferenceEnabled:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getPairSyncStateWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getPairSyncStateWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v20 = 0;
-    v17 = [v16 remoteServiceProvider:self getPairSyncStateReturningError:&v20];
+    v17 = [delegate remoteServiceProvider:self getPairSyncStateReturningError:&v20];
     v18 = v20;
 
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
-    v8[2](v8, v19, v18);
+    handlerCopy[2](handlerCopy, v19, v18);
   }
 
   else
@@ -2119,34 +2119,34 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getPairSyncStateWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)setPairSyncPreferenceEnabled:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)setPairSyncPreferenceEnabled:(id)enabled withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  enabledCopy = enabled;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasSettingsModificationEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasSettingsModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v23 = 0;
-    v20 = [v19 remoteServiceProvider:self setPairSyncPreferenceEnabled:objc_msgSend(v9 withError:{"BOOLValue"), &v23}];
+    v20 = [delegate remoteServiceProvider:self setPairSyncPreferenceEnabled:objc_msgSend(enabledCopy withError:{"BOOLValue"), &v23}];
     v21 = v23;
 
     v22 = [MEMORY[0x277CCABB0] numberWithBool:v20];
-    v11[2](v11, v22, v21);
+    handlerCopy[2](handlerCopy, v22, v21);
   }
 
   else
@@ -2156,32 +2156,32 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider setPairSyncPreferenceEnabled:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getAccountFeatureSupportWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getAccountFeatureSupportWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v19 = 0;
-    v17 = [v16 remoteServiceProvider:self getAccountFeatureSupportWithError:&v19];
+    v17 = [delegate remoteServiceProvider:self getAccountFeatureSupportWithError:&v19];
     v18 = v19;
 
-    v8[2](v8, v17, v18);
+    handlerCopy[2](handlerCopy, v17, v18);
   }
 
   else
@@ -2191,30 +2191,30 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getAccountFeatureSupportWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getStateDumpWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getStateDumpWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CCACA8];
   v9 = NSStringFromSelector(a2);
   v10 = [v8 stringWithFormat:@"com.apple.donotdisturbd.%@", v9];
   [v10 UTF8String];
   v11 = os_transaction_create();
 
-  v12 = [MEMORY[0x277CF3280] currentContext];
-  v13 = [v6 clientIdentifier];
-  v14 = [v12 dnds_hasSettingsRequestEntitlementForClientIdentifier:v13];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v14 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v14)
   {
-    v15 = [MEMORY[0x277CBEAA8] date];
-    v16 = DNDSCollectSysdiagnoseState(v15);
+    date = [MEMORY[0x277CBEAA8] date];
+    v16 = DNDSCollectSysdiagnoseState(date);
 
-    v7[2](v7, v16, 0);
+    handlerCopy[2](handlerCopy, v16, 0);
   }
 
   else
@@ -2224,31 +2224,31 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getStateDumpWithRequestDetails:completionHandler:];
     }
 
-    [v12 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)didChangeFocusStatusSharingSettingForApplicationIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasSettingsModificationEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasSettingsModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
-    [v19 remoteServiceProvider:self didChangeFocusStatusSharingSettingForApplicationIdentifier:v9];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
+    [delegate remoteServiceProvider:self didChangeFocusStatusSharingSettingForApplicationIdentifier:identifierCopy];
 
-    (*(v11 + 2))(v11, MEMORY[0x277CBEC38], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC38], 0);
   }
 
   else
@@ -2258,34 +2258,34 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider didChangeFocusStatusSharingSettingForApplicationIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)setModeConfiguration:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)setModeConfiguration:(id)configuration withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v23 = 0;
-    v20 = [v19 remoteServiceProvider:self setModeConfiguration:v9 withError:&v23];
+    v20 = [delegate remoteServiceProvider:self setModeConfiguration:configurationCopy withError:&v23];
     v21 = v23;
 
     v22 = [MEMORY[0x277CCABB0] numberWithBool:v20];
-    v11[2](v11, v22, v21);
+    handlerCopy[2](handlerCopy, v22, v21);
   }
 
   else
@@ -2295,35 +2295,35 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider setModeConfiguration:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)removeModeConfigurationForModeIdentifier:(id)a3 deletePlaceholder:(id)a4 withRequestDetails:(id)a5 completionHandler:(id)a6
+- (void)removeModeConfigurationForModeIdentifier:(id)identifier deletePlaceholder:(id)placeholder withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  placeholderCopy = placeholder;
+  detailsCopy = details;
+  handlerCopy = handler;
   v15 = MEMORY[0x277CCACA8];
   v16 = NSStringFromSelector(a2);
   v17 = [v15 stringWithFormat:@"com.apple.donotdisturbd.%@", v16];
   [v17 UTF8String];
   v18 = os_transaction_create();
 
-  v19 = [MEMORY[0x277CF3280] currentContext];
-  v20 = [v13 clientIdentifier];
-  v21 = [v19 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v20];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v21 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v21)
   {
-    v22 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v26 = 0;
-    v23 = [v22 remoteServiceProvider:self removeModeConfigurationWithModeIdentifier:v11 deletePlaceholder:objc_msgSend(v12 withError:{"BOOLValue"), &v26}];
+    v23 = [delegate remoteServiceProvider:self removeModeConfigurationWithModeIdentifier:identifierCopy deletePlaceholder:objc_msgSend(placeholderCopy withError:{"BOOLValue"), &v26}];
     v24 = v26;
 
     v25 = [MEMORY[0x277CCABB0] numberWithBool:v23];
-    v14[2](v14, v25, v24);
+    handlerCopy[2](handlerCopy, v25, v24);
   }
 
   else
@@ -2333,33 +2333,33 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider removeModeConfigurationForModeIdentifier:deletePlaceholder:withRequestDetails:completionHandler:];
     }
 
-    [v19 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getModeConfigurationsWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getModeConfigurationsWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasModeConfigurationRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasModeConfigurationRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v20 = 0;
-    v17 = [v16 remoteServiceProvider:self modeConfigurationsWithError:&v20];
+    v17 = [delegate remoteServiceProvider:self modeConfigurationsWithError:&v20];
     v18 = v20;
 
-    v19 = [v17 allValues];
-    v8[2](v8, v19, v18);
+    allValues = [v17 allValues];
+    handlerCopy[2](handlerCopy, allValues, v18);
   }
 
   else
@@ -2369,33 +2369,33 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getModeConfigurationsWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getModeConfigurationForModeIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getModeConfigurationForModeIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasModeConfigurationRequestEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasModeConfigurationRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v22 = 0;
-    v20 = [v19 remoteServiceProvider:self modeConfigurationForModeIdentifier:v9 withError:&v22];
+    v20 = [delegate remoteServiceProvider:self modeConfigurationForModeIdentifier:identifierCopy withError:&v22];
     v21 = v22;
 
-    v11[2](v11, v20, v21);
+    handlerCopy[2](handlerCopy, v20, v21);
   }
 
   else
@@ -2405,32 +2405,32 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getModeConfigurationForModeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getAllModesWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getAllModesWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v19 = 0;
-    v17 = [v16 remoteServiceProvider:self allModesReturningError:&v19];
+    v17 = [delegate remoteServiceProvider:self allModesReturningError:&v19];
     v18 = v19;
 
-    v8[2](v8, v17, v18);
+    handlerCopy[2](handlerCopy, v17, v18);
   }
 
   else
@@ -2440,32 +2440,32 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getAllModesWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getAvailableModesWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)getAvailableModesWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsRequestEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v19 = 0;
-    v17 = [v16 remoteServiceProvider:self availableModesReturningError:&v19];
+    v17 = [delegate remoteServiceProvider:self availableModesReturningError:&v19];
     v18 = v19;
 
-    v8[2](v8, v17, v18);
+    handlerCopy[2](handlerCopy, v17, v18);
   }
 
   else
@@ -2475,33 +2475,33 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getAvailableModesWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)syncModeConfigurationsWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)syncModeConfigurationsWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasSettingsModificationEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasSettingsModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v20 = 0;
-    v17 = [v16 remoteServiceProvider:self syncModeConfigurationsReturningError:&v20];
+    v17 = [delegate remoteServiceProvider:self syncModeConfigurationsReturningError:&v20];
     v18 = v20;
 
     v19 = [MEMORY[0x277CCABB0] numberWithBool:v17];
-    v8[2](v8, v19, v18);
+    handlerCopy[2](handlerCopy, v19, v18);
   }
 
   else
@@ -2511,30 +2511,30 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider syncModeConfigurationsWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getAllowedModesForContactHandle:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getAllowedModesForContactHandle:(id)handle withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  handleCopy = handle;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasModeConfigurationAvailabilityEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasModeConfigurationAvailabilityEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v24 = 0;
-    v20 = [v19 remoteServiceProvider:self allowedModesForContactHandle:v9 withError:&v24];
+    v20 = [delegate remoteServiceProvider:self allowedModesForContactHandle:handleCopy withError:&v24];
     v21 = v24;
 
     if (v21)
@@ -2549,7 +2549,7 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       v23 = 0;
     }
 
-    v11[2](v11, v22, v23);
+    handlerCopy[2](handlerCopy, v22, v23);
   }
 
   else
@@ -2559,30 +2559,30 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getAllowedModesForContactHandle:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getSilencedModesForContactHandle:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getSilencedModesForContactHandle:(id)handle withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  handleCopy = handle;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasModeConfigurationAvailabilityEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasModeConfigurationAvailabilityEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v24 = 0;
-    v20 = [v19 remoteServiceProvider:self silencedModesForContactHandle:v9 withError:&v24];
+    v20 = [delegate remoteServiceProvider:self silencedModesForContactHandle:handleCopy withError:&v24];
     v21 = v24;
 
     if (v21)
@@ -2597,7 +2597,7 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       v23 = 0;
     }
 
-    v11[2](v11, v22, v23);
+    handlerCopy[2](handlerCopy, v22, v23);
   }
 
   else
@@ -2607,41 +2607,41 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getAllowedModesForContactHandle:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getUserAvailabilityInActiveModeForContactHandle:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getUserAvailabilityInActiveModeForContactHandle:(id)handle withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  handleCopy = handle;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasModeConfigurationAvailabilityEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasModeConfigurationAvailabilityEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v23 = 0;
-    v20 = [v19 remoteServiceProvider:self userAvailabilityInActiveModeForContactHandle:v9 withError:&v23];
+    v20 = [delegate remoteServiceProvider:self userAvailabilityInActiveModeForContactHandle:handleCopy withError:&v23];
     v21 = v23;
 
     if (v21)
     {
-      v11[2](v11, MEMORY[0x277CBEC38], v21);
+      handlerCopy[2](handlerCopy, MEMORY[0x277CBEC38], v21);
     }
 
     else
     {
       v22 = [MEMORY[0x277CCABB0] numberWithBool:v20];
-      (v11)[2](v11, v22, 0);
+      (handlerCopy)[2](handlerCopy, v22, 0);
     }
   }
 
@@ -2652,32 +2652,32 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider getUserAvailabilityInActiveModeForContactHandle:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)publishStatusKitAvailabilityWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)publishStatusKitAvailabilityWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasModeConfigurationAvailabilityEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasModeConfigurationAvailabilityEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v19 = 0;
-    v17 = [v16 remoteServiceProvider:self publishStatusKitAvailabilityReturningError:&v19];
+    v17 = [delegate remoteServiceProvider:self publishStatusKitAvailabilityReturningError:&v19];
     v18 = v19;
 
-    v8[2](v8, v17, v18);
+    handlerCopy[2](handlerCopy, v17, v18);
   }
 
   else
@@ -2687,58 +2687,58 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider publishStatusKitAvailabilityWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)activateModeWithDetails:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)activateModeWithDetails:(id)details withRequestDetails:(id)requestDetails completionHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  detailsCopy = details;
+  requestDetailsCopy = requestDetails;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v9 modeIdentifier];
-  v18 = [v10 clientIdentifier];
-  v19 = [v16 dnds_hasModeAssertionEntitlementForClientIdentifier:v18];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  modeIdentifier = [detailsCopy modeIdentifier];
+  clientIdentifier = [requestDetailsCopy clientIdentifier];
+  v19 = [currentContext dnds_hasModeAssertionEntitlementForClientIdentifier:clientIdentifier];
   v20 = DNDSLogServiceProvider;
   if (v19)
   {
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v32 = v9;
+      v32 = detailsCopy;
       v33 = 2112;
-      v34 = v10;
+      v34 = requestDetailsCopy;
       _os_log_impl(&dword_24912E000, v20, OS_LOG_TYPE_DEFAULT, "Activating mode %@ with details %@", buf, 0x16u);
     }
 
     v28 = v15;
-    v21 = [(DNDSRemoteServiceProvider *)self delegate];
-    v22 = v21;
-    if (v17)
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
+    v22 = delegate;
+    if (modeIdentifier)
     {
       v30 = 0;
-      v23 = [v21 remoteServiceProvider:self takeModeAssertionWithDetails:v9 clientIdentifier:v18 error:&v30];
+      v23 = [delegate remoteServiceProvider:self takeModeAssertionWithDetails:detailsCopy clientIdentifier:clientIdentifier error:&v30];
       v24 = v30;
     }
 
     else
     {
-      v25 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       v29 = 0;
-      v23 = [v22 remoteServiceProvider:self invalidateAllModeAssertionsTakenBeforeDate:v25 forReason:2 clientIdentifier:v18 error:&v29];
+      v23 = [v22 remoteServiceProvider:self invalidateAllModeAssertionsTakenBeforeDate:date forReason:2 clientIdentifier:clientIdentifier error:&v29];
       v24 = v29;
     }
 
     v26 = [MEMORY[0x277CCABB0] numberWithInt:v23 != 0];
-    v11[2](v11, v26, v24);
+    handlerCopy[2](handlerCopy, v26, v24);
 
     v15 = v28;
   }
@@ -2748,40 +2748,40 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v32 = v10;
+      v32 = requestDetailsCopy;
       v33 = 2114;
-      v34 = v16;
+      v34 = currentContext;
       v35 = 2114;
-      v36 = v17;
+      v36 = modeIdentifier;
       _os_log_error_impl(&dword_24912E000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] XPC connection without any valid entitlements tried to activate a mode, will invalidate: connection=%{public}@, modeIdentifier=%{public}@", buf, 0x20u);
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activeModeAssertionWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)activeModeAssertionWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  if ([v13 dnds_hasModeAssertionEntitlementForClientIdentifier:v14])
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  if ([currentContext dnds_hasModeAssertionEntitlementForClientIdentifier:clientIdentifier])
   {
-    v15 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v18 = 0;
-    v16 = [v15 remoteServiceProvider:self activeAssertionWithClientIdentifer:v14 error:&v18];
+    v16 = [delegate remoteServiceProvider:self activeAssertionWithClientIdentifer:clientIdentifier error:&v18];
     v17 = v18;
 
-    v8[2](v8, v16, v17);
+    handlerCopy[2](handlerCopy, v16, v17);
   }
 
   else
@@ -2791,40 +2791,40 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider activeModeAssertionWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)invalidateModeAssertionWithUUID:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)invalidateModeAssertionWithUUID:(id)d withRequestDetails:(id)details completionHandler:(id)handler
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasModeAssertionEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasModeAssertionEntitlementForClientIdentifier:clientIdentifier];
   v19 = DNDSLogServiceProvider;
   if (v18)
   {
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v30 = v9;
+      v30 = dCopy;
       v31 = 2112;
-      v32 = v10;
+      v32 = detailsCopy;
       _os_log_impl(&dword_24912E000, v19, OS_LOG_TYPE_DEFAULT, "Invalidating mode with UUID %@ with details %@", buf, 0x16u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v28 = 0;
-    v21 = [WeakRetained remoteServiceProvider:self invalidateModeAssertionWithUUID:v9 reason:2 reasonOverride:0 clientIdentifier:v17 error:&v28];
+    v21 = [WeakRetained remoteServiceProvider:self invalidateModeAssertionWithUUID:dCopy reason:2 reasonOverride:0 clientIdentifier:clientIdentifier error:&v28];
     v22 = v28;
 
     if (!(v22 | v21))
@@ -2838,7 +2838,7 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
     }
 
     v26 = [MEMORY[0x277CCABB0] numberWithInt:v21 != 0];
-    v11[2](v11, v26, v22);
+    handlerCopy[2](handlerCopy, v26, v22);
   }
 
   else
@@ -2846,36 +2846,36 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v30 = v10;
+      v30 = detailsCopy;
       v31 = 2114;
-      v32 = v16;
+      v32 = currentContext;
       v33 = 2114;
-      v34 = v9;
+      v34 = dCopy;
       _os_log_error_impl(&dword_24912E000, v19, OS_LOG_TYPE_ERROR, "[%{public}@] XPC connection without any valid entitlements tried to invalidate a mode, will invalidate: connection=%{public}@, assertionUUID=%{public}@", buf, 0x20u);
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForModeSelectionUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)registerForModeSelectionUpdatesWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasModeConfigurationUpdatesEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasModeConfigurationUpdatesEntitlementForClientIdentifier:clientIdentifier];
 
-  v16 = [v7 clientIdentifier];
-  v17 = [v13 dnds_hasActiveModeUpdatesEntitlementForClientIdentifier:v16];
+  clientIdentifier2 = [detailsCopy clientIdentifier];
+  v17 = [currentContext dnds_hasActiveModeUpdatesEntitlementForClientIdentifier:clientIdentifier2];
 
   if ((v15 & 1) != 0 || v17)
   {
@@ -2885,14 +2885,14 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
     v22[3] = &unk_278F8BF30;
     v24 = v15;
     v25 = v17;
-    v18 = v7;
+    v18 = detailsCopy;
     v23 = v18;
-    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:v13 handler:v22];
+    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:currentContext handler:v22];
     if (v17)
     {
-      v19 = [(DNDSRemoteServiceProvider *)self delegate];
-      v20 = [v18 clientIdentifier];
-      v21 = [v19 remoteServiceProvider:self activeAssertionWithClientIdentifer:v20 error:0];
+      delegate = [(DNDSRemoteServiceProvider *)self delegate];
+      clientIdentifier3 = [v18 clientIdentifier];
+      v21 = [delegate remoteServiceProvider:self activeAssertionWithClientIdentifer:clientIdentifier3 error:0];
     }
 
     else
@@ -2900,7 +2900,7 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       v21 = 0;
     }
 
-    (*(v8 + 2))(v8, MEMORY[0x277CBEC38], v21, 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC38], v21, 0);
   }
 
   else
@@ -2910,7 +2910,7 @@ id __103__DNDSRemoteServiceProvider_registerForGlobalConfigurationUpdatesWithReq
       [DNDSRemoteServiceProvider registerForModeSelectionUpdatesWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
@@ -2938,29 +2938,29 @@ id __97__DNDSRemoteServiceProvider_registerForModeSelectionUpdatesWithRequestDet
   return v8;
 }
 
-- (void)getAppInfoForBundleIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getAppInfoForBundleIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasSettingsRequestEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v22 = 0;
-    v20 = [v19 remoteServiceProvider:self getAppInfoForBundleIdentifier:v9 withError:&v22];
+    v20 = [delegate remoteServiceProvider:self getAppInfoForBundleIdentifier:identifierCopy withError:&v22];
     v21 = v22;
 
-    v11[2](v11, v20, v21);
+    handlerCopy[2](handlerCopy, v20, v21);
   }
 
   else
@@ -2970,33 +2970,33 @@ id __97__DNDSRemoteServiceProvider_registerForModeSelectionUpdatesWithRequestDet
       [DNDSRemoteServiceProvider getAppInfoForBundleIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getAppInfoForBundleIdentifiers:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getAppInfoForBundleIdentifiers:(id)identifiers withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifiersCopy = identifiers;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasSettingsRequestEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasSettingsRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v22 = 0;
-    v20 = [v19 remoteServiceProvider:self getAppInfoForBundleIdentifiers:v9 withError:&v22];
+    v20 = [delegate remoteServiceProvider:self getAppInfoForBundleIdentifiers:identifiersCopy withError:&v22];
     v21 = v22;
 
-    v11[2](v11, v20, v21);
+    handlerCopy[2](handlerCopy, v20, v21);
   }
 
   else
@@ -3006,32 +3006,32 @@ id __97__DNDSRemoteServiceProvider_registerForModeSelectionUpdatesWithRequestDet
       [DNDSRemoteServiceProvider getAppInfoForBundleIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)queryMeDeviceStateWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)queryMeDeviceStateWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasMeDeviceStateEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasMeDeviceStateEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v19 = 0;
-    v17 = [v16 remoteServiceProvider:self currentMeDeviceStateWithError:&v19];
+    v17 = [delegate remoteServiceProvider:self currentMeDeviceStateWithError:&v19];
     v18 = v19;
 
-    v8[2](v8, v17, v18);
+    handlerCopy[2](handlerCopy, v17, v18);
   }
 
   else
@@ -3041,33 +3041,33 @@ id __97__DNDSRemoteServiceProvider_registerForModeSelectionUpdatesWithRequestDet
       [DNDSRemoteServiceProvider queryMeDeviceStateWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)registerForMeDeviceStateUpdatesWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)registerForMeDeviceStateUpdatesWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasMeDeviceStateEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasMeDeviceStateEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:v13 handler:&__block_literal_global_51];
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
+    [(DNDSRemoteServiceProvider *)self _registerOrMutateConnectionDetailsForClientConnection:currentContext handler:&__block_literal_global_51];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v19 = 0;
-    v17 = [v16 remoteServiceProvider:self currentMeDeviceStateWithError:&v19];
+    v17 = [delegate remoteServiceProvider:self currentMeDeviceStateWithError:&v19];
     v18 = v19;
 
-    v8[2](v8, MEMORY[0x277CBEC38], v17, v18);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEC38], v17, v18);
   }
 
   else
@@ -3077,7 +3077,7 @@ id __97__DNDSRemoteServiceProvider_registerForModeSelectionUpdatesWithRequestDet
       [DNDSRemoteServiceProvider registerForMeDeviceStateUpdatesWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
@@ -3089,84 +3089,84 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
   return v2;
 }
 
-- (void)setAppConfigurationPredicate:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 withRequestDetails:(id)a7 completionHandler:(id)a8
+- (void)setAppConfigurationPredicate:(id)predicate forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v20 = MEMORY[0x277CCACA8];
   v21 = NSStringFromSelector(a2);
   v22 = [v20 stringWithFormat:@"com.apple.donotdisturbd.%@", v21];
   [v22 UTF8String];
   v23 = os_transaction_create();
 
-  v24 = [MEMORY[0x277CF3280] currentContext];
-  v25 = [v18 clientIdentifier];
-  v26 = [v24 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v25];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v26 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v26)
   {
-    v27 = self;
-    v28 = [(DNDSRemoteServiceProvider *)self delegate];
+    selfCopy = self;
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v38 = v23;
     v39 = 0;
-    v29 = v17;
-    v30 = v16;
-    v31 = v15;
-    v32 = v14;
-    v33 = [v28 remoteServiceProvider:v27 setAppConfigurationPredicate:v14 forActionIdentifier:v31 forApplicationIdentifier:v30 modeIdentifier:v29 withError:&v39];
+    v29 = modeIdentifierCopy;
+    v30 = applicationIdentifierCopy;
+    v31 = identifierCopy;
+    v32 = predicateCopy;
+    v33 = [delegate remoteServiceProvider:selfCopy setAppConfigurationPredicate:predicateCopy forActionIdentifier:v31 forApplicationIdentifier:v30 modeIdentifier:v29 withError:&v39];
     v34 = v39;
 
     v35 = [MEMORY[0x277CCABB0] numberWithBool:v33];
-    v19[2](v19, v35, v34);
+    handlerCopy[2](handlerCopy, v35, v34);
 
     v36 = v32;
-    v15 = v31;
-    v16 = v30;
-    v17 = v29;
+    identifierCopy = v31;
+    applicationIdentifierCopy = v30;
+    modeIdentifierCopy = v29;
     v23 = v38;
   }
 
   else
   {
-    v36 = v14;
+    v36 = predicateCopy;
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_ERROR))
     {
       [DNDSRemoteServiceProvider setAppConfigurationPredicate:forActionIdentifier:forApplicationIdentifier:modeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v24 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getAppConfigurationPredicateForActionIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 withRequestDetails:(id)a6 completionHandler:(id)a7
+- (void)getAppConfigurationPredicateForActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v18 = MEMORY[0x277CCACA8];
   v19 = NSStringFromSelector(a2);
   v20 = [v18 stringWithFormat:@"com.apple.donotdisturbd.%@", v19];
   [v20 UTF8String];
   v21 = os_transaction_create();
 
-  v22 = [MEMORY[0x277CF3280] currentContext];
-  v23 = [v16 clientIdentifier];
-  v24 = [v22 dnds_hasModeConfigurationRequestEntitlementForClientIdentifier:v23];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v24 = [currentContext dnds_hasModeConfigurationRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v24)
   {
-    v25 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v28 = 0;
-    v26 = [v25 remoteServiceProvider:self getAppConfigurationPredicateForActionIdentifier:v13 forApplicationIdentifier:v14 modeIdentifier:v15 withError:&v28];
+    v26 = [delegate remoteServiceProvider:self getAppConfigurationPredicateForActionIdentifier:identifierCopy forApplicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy withError:&v28];
     v27 = v28;
 
-    v17[2](v17, v26, v27);
+    handlerCopy[2](handlerCopy, v26, v27);
   }
 
   else
@@ -3176,89 +3176,89 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
       [DNDSRemoteServiceProvider getAppConfigurationPredicateForActionIdentifier:forApplicationIdentifier:modeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v22 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)setAppConfigurationTargetContentIdentifierPrefix:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6 withRequestDetails:(id)a7 completionHandler:(id)a8
+- (void)setAppConfigurationTargetContentIdentifierPrefix:(id)prefix forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  prefixCopy = prefix;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v20 = MEMORY[0x277CCACA8];
   v21 = NSStringFromSelector(a2);
   v22 = [v20 stringWithFormat:@"com.apple.donotdisturbd.%@", v21];
   [v22 UTF8String];
   v23 = os_transaction_create();
 
-  v24 = [MEMORY[0x277CF3280] currentContext];
-  v25 = [v18 clientIdentifier];
-  v26 = [v24 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v25];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v26 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v26)
   {
-    v27 = self;
-    v28 = [(DNDSRemoteServiceProvider *)self delegate];
+    selfCopy = self;
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v38 = v23;
     v39 = 0;
-    v29 = v17;
-    v30 = v16;
-    v31 = v15;
-    v32 = v14;
-    v33 = [v28 remoteServiceProvider:v27 setAppConfigurationTargetContentIdentifierPrefix:v14 forActionIdentifier:v31 forApplicationIdentifier:v30 modeIdentifier:v29 withError:&v39];
+    v29 = modeIdentifierCopy;
+    v30 = applicationIdentifierCopy;
+    v31 = identifierCopy;
+    v32 = prefixCopy;
+    v33 = [delegate remoteServiceProvider:selfCopy setAppConfigurationTargetContentIdentifierPrefix:prefixCopy forActionIdentifier:v31 forApplicationIdentifier:v30 modeIdentifier:v29 withError:&v39];
     v34 = v39;
 
     v35 = [MEMORY[0x277CCABB0] numberWithBool:v33];
-    v19[2](v19, v35, v34);
+    handlerCopy[2](handlerCopy, v35, v34);
 
     v36 = v32;
-    v15 = v31;
-    v16 = v30;
-    v17 = v29;
+    identifierCopy = v31;
+    applicationIdentifierCopy = v30;
+    modeIdentifierCopy = v29;
     v23 = v38;
   }
 
   else
   {
-    v36 = v14;
+    v36 = prefixCopy;
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_ERROR))
     {
       [DNDSRemoteServiceProvider setAppConfigurationTargetContentIdentifierPrefix:forActionIdentifier:forApplicationIdentifier:modeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v24 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [(DNDSRemoteServiceProvider *)self delegate];
-  v18 = [v10 clientIdentifier];
-  v19 = [v16 dnds_hasModeConfigurationRequestEntitlementForClientIdentifier:v18];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  delegate = [(DNDSRemoteServiceProvider *)self delegate];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v19 = [currentContext dnds_hasModeConfigurationRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v19)
   {
-    if ([v9 isEqualToString:@"com.apple.focus.current-sentinel"])
+    if ([identifierCopy isEqualToString:@"com.apple.focus.current-sentinel"])
     {
       v27 = 0;
-      v20 = [v17 remoteServiceProvider:self currentStateWithError:&v27];
+      v20 = [delegate remoteServiceProvider:self currentStateWithError:&v27];
       v21 = v27;
-      v22 = [v20 activeModeIdentifier];
+      activeModeIdentifier = [v20 activeModeIdentifier];
 
-      v9 = v22;
+      identifierCopy = activeModeIdentifier;
     }
 
     else
@@ -3267,10 +3267,10 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
     }
 
     v23 = objc_alloc_init(MEMORY[0x277D058A8]);
-    if (v9)
+    if (identifierCopy)
     {
       v26 = v21;
-      v24 = [v17 remoteServiceProvider:self getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:v9 withError:&v26];
+      dictionary = [delegate remoteServiceProvider:self getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:identifierCopy withError:&v26];
       v25 = v26;
 
       v21 = v25;
@@ -3278,12 +3278,12 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
 
     else
     {
-      v24 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
     }
 
-    [v23 setAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:v24];
+    [v23 setAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:dictionary];
 
-    v11[2](v11, v23, v21);
+    handlerCopy[2](handlerCopy, v23, v21);
   }
 
   else
@@ -3293,36 +3293,36 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
       [DNDSRemoteServiceProvider getAppConfigurationTargetContentIdentifierPrefixesForModeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)setAppAction:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 withRequestDetails:(id)a6 completionHandler:(id)a7
+- (void)setAppAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  actionCopy = action;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v18 = MEMORY[0x277CCACA8];
   v19 = NSStringFromSelector(a2);
   v20 = [v18 stringWithFormat:@"com.apple.donotdisturbd.%@", v19];
   [v20 UTF8String];
   v21 = os_transaction_create();
 
-  v22 = [MEMORY[0x277CF3280] currentContext];
-  v23 = [v16 clientIdentifier];
-  v24 = [v22 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v23];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v24 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v24)
   {
-    v25 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v29 = 0;
-    v26 = [v25 remoteServiceProvider:self setAppAction:v13 forApplicationIdentifier:v14 modeIdentifier:v15 withError:&v29];
+    v26 = [delegate remoteServiceProvider:self setAppAction:actionCopy forApplicationIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy withError:&v29];
     v27 = v29;
 
     v28 = [MEMORY[0x277CCABB0] numberWithBool:v26];
-    v17[2](v17, v28, v27);
+    handlerCopy[2](handlerCopy, v28, v27);
   }
 
   else
@@ -3332,36 +3332,36 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
       [DNDSRemoteServiceProvider setAppAction:forApplicationIdentifier:modeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v22 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)clearAppActionWithIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5 withRequestDetails:(id)a6 completionHandler:(id)a7
+- (void)clearAppActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v18 = MEMORY[0x277CCACA8];
   v19 = NSStringFromSelector(a2);
   v20 = [v18 stringWithFormat:@"com.apple.donotdisturbd.%@", v19];
   [v20 UTF8String];
   v21 = os_transaction_create();
 
-  v22 = [MEMORY[0x277CF3280] currentContext];
-  v23 = [v16 clientIdentifier];
-  v24 = [v22 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v23];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v24 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v24)
   {
-    v25 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v29 = 0;
-    v26 = [v25 remoteServiceProvider:self clearAppActionWithIdentifier:v13 forApplicationIdentifier:v14 modeIdentifier:v15 withError:&v29];
+    v26 = [delegate remoteServiceProvider:self clearAppActionWithIdentifier:identifierCopy forApplicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy withError:&v29];
     v27 = v29;
 
     v28 = [MEMORY[0x277CCABB0] numberWithBool:v26];
-    v17[2](v17, v28, v27);
+    handlerCopy[2](handlerCopy, v28, v27);
   }
 
   else
@@ -3371,35 +3371,35 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
       [DNDSRemoteServiceProvider clearAppActionWithIdentifier:forApplicationIdentifier:modeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v22 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getAppActionsForModeIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getAppActionsForModeIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasModeConfigurationRequestEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasModeConfigurationRequestEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v23 = 0;
-    v20 = [v19 remoteServiceProvider:self getAppActionsForModeIdentifier:v9 withError:&v23];
+    v20 = [delegate remoteServiceProvider:self getAppActionsForModeIdentifier:identifierCopy withError:&v23];
     v21 = v23;
 
     v22 = objc_alloc_init(MEMORY[0x277D058A0]);
     [v22 setAppActionsForModeIdentifier:v20];
-    v11[2](v11, v22, v21);
+    handlerCopy[2](handlerCopy, v22, v21);
   }
 
   else
@@ -3409,35 +3409,35 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
       [DNDSRemoteServiceProvider getAppActionsForModeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)clearSystemActionWithIdentifier:(id)a3 forModeIdentifier:(id)a4 withRequestDetails:(id)a5 completionHandler:(id)a6
+- (void)clearSystemActionWithIdentifier:(id)identifier forModeIdentifier:(id)modeIdentifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v15 = MEMORY[0x277CCACA8];
   v16 = NSStringFromSelector(a2);
   v17 = [v15 stringWithFormat:@"com.apple.donotdisturbd.%@", v16];
   [v17 UTF8String];
   v18 = os_transaction_create();
 
-  v19 = [MEMORY[0x277CF3280] currentContext];
-  v20 = [v13 clientIdentifier];
-  v21 = [v19 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v20];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v21 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v21)
   {
-    v22 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v26 = 0;
-    v23 = [v22 remoteServiceProvider:self clearSystemActionWithIdentifier:v11 forModeIdentifier:v12 withError:&v26];
+    v23 = [delegate remoteServiceProvider:self clearSystemActionWithIdentifier:identifierCopy forModeIdentifier:modeIdentifierCopy withError:&v26];
     v24 = v26;
 
     v25 = [MEMORY[0x277CCABB0] numberWithBool:v23];
-    v14[2](v14, v25, v24);
+    handlerCopy[2](handlerCopy, v25, v24);
   }
 
   else
@@ -3447,34 +3447,34 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
       [DNDSRemoteServiceProvider clearSystemActionWithIdentifier:forModeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v19 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)getSystemActionsForModeIdentifier:(id)a3 withRequestDetails:(id)a4 completionHandler:(id)a5
+- (void)getSystemActionsForModeIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CCACA8];
   v13 = NSStringFromSelector(a2);
   v14 = [v12 stringWithFormat:@"com.apple.donotdisturbd.%@", v13];
   [v14 UTF8String];
   v15 = os_transaction_create();
 
-  v16 = [MEMORY[0x277CF3280] currentContext];
-  v17 = [v10 clientIdentifier];
-  v18 = [v16 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v17];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v18 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v18)
   {
-    v19 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v23 = 0;
-    v20 = [v19 remoteServiceProvider:self getSystemActionsForModeIdentifier:v9 withError:&v23];
+    v20 = [delegate remoteServiceProvider:self getSystemActionsForModeIdentifier:identifierCopy withError:&v23];
     v21 = v23;
 
-    v22 = [v20 allObjects];
-    v11[2](v11, v22, v21);
+    allObjects = [v20 allObjects];
+    handlerCopy[2](handlerCopy, allObjects, v21);
   }
 
   else
@@ -3484,35 +3484,35 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
       [DNDSRemoteServiceProvider getSystemActionsForModeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v16 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)setSystemAction:(id)a3 forModeIdentifier:(id)a4 withRequestDetails:(id)a5 completionHandler:(id)a6
+- (void)setSystemAction:(id)action forModeIdentifier:(id)identifier withRequestDetails:(id)details completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  actionCopy = action;
+  identifierCopy = identifier;
+  detailsCopy = details;
+  handlerCopy = handler;
   v15 = MEMORY[0x277CCACA8];
   v16 = NSStringFromSelector(a2);
   v17 = [v15 stringWithFormat:@"com.apple.donotdisturbd.%@", v16];
   [v17 UTF8String];
   v18 = os_transaction_create();
 
-  v19 = [MEMORY[0x277CF3280] currentContext];
-  v20 = [v13 clientIdentifier];
-  v21 = [v19 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v20];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v21 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v21)
   {
-    v22 = [(DNDSRemoteServiceProvider *)self delegate];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
     v26 = 0;
-    v23 = [v22 remoteServiceProvider:self setSystemAction:v11 forModeIdentifier:v12 withError:&v26];
+    v23 = [delegate remoteServiceProvider:self setSystemAction:actionCopy forModeIdentifier:identifierCopy withError:&v26];
     v24 = v26;
 
     v25 = [MEMORY[0x277CCABB0] numberWithBool:v23];
-    v14[2](v14, v25, v24);
+    handlerCopy[2](handlerCopy, v25, v24);
   }
 
   else
@@ -3522,31 +3522,31 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
       [DNDSRemoteServiceProvider setSystemAction:forModeIdentifier:withRequestDetails:completionHandler:];
     }
 
-    [v19 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)resetAppConfigurationStateWithRequestDetails:(id)a3 completionHandler:(id)a4
+- (void)resetAppConfigurationStateWithRequestDetails:(id)details completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  detailsCopy = details;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCACA8];
   v10 = NSStringFromSelector(a2);
   v11 = [v9 stringWithFormat:@"com.apple.donotdisturbd.%@", v10];
   [v11 UTF8String];
   v12 = os_transaction_create();
 
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [v7 clientIdentifier];
-  v15 = [v13 dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:v14];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [currentContext dnds_hasModeConfigurationModificationEntitlementForClientIdentifier:clientIdentifier];
 
   if (v15)
   {
-    v16 = [(DNDSRemoteServiceProvider *)self delegate];
-    v17 = [v16 remoteServiceProviderResetAppConfigurationState:self];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
+    v17 = [delegate remoteServiceProviderResetAppConfigurationState:self];
 
     v18 = [MEMORY[0x277CCABB0] numberWithBool:v17];
-    v8[2](v8, v18, 0);
+    handlerCopy[2](handlerCopy, v18, 0);
   }
 
   else
@@ -3556,129 +3556,129 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
       [DNDSRemoteServiceProvider resetAppConfigurationStateWithRequestDetails:completionHandler:];
     }
 
-    [v13 invalidate];
+    [currentContext invalidate];
   }
 }
 
-- (void)_handleClientConnectionInterrupted:(id)a3
+- (void)_handleClientConnectionInterrupted:(id)interrupted
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptedCopy = interrupted;
   v5 = DNDSLogServiceProvider;
   if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = interruptedCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Client XPC connection was interrupted: connection=%{public}@", &v7, 0xCu);
   }
 
-  [(DNDSRemoteServiceProvider *)self _unregisterConnectionDetailsForClientConnection:v4];
+  [(DNDSRemoteServiceProvider *)self _unregisterConnectionDetailsForClientConnection:interruptedCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleClientConnectionInvalidated:(id)a3
+- (void)_handleClientConnectionInvalidated:(id)invalidated
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = DNDSLogServiceProvider;
   if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = invalidatedCopy;
     _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "Client XPC connection was invalidated: connection=%{public}@", &v7, 0xCu);
   }
 
-  [(DNDSRemoteServiceProvider *)self _unregisterConnectionDetailsForClientConnection:v4];
+  [(DNDSRemoteServiceProvider *)self _unregisterConnectionDetailsForClientConnection:invalidatedCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerOrMutateConnectionDetailsForClientConnection:(id)a3 handler:(id)a4
+- (void)_registerOrMutateConnectionDetailsForClientConnection:(id)connection handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v8 = self->_clientConnectionDetailsByConnection;
   objc_sync_enter(v8);
-  v9 = [(NSMapTable *)self->_clientConnectionDetailsByConnection objectForKey:v6];
+  v9 = [(NSMapTable *)self->_clientConnectionDetailsByConnection objectForKey:connectionCopy];
   if (!v9)
   {
     v10 = DNDSLogServiceProvider;
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      v15 = v6;
+      v15 = connectionCopy;
       _os_log_impl(&dword_24912E000, v10, OS_LOG_TYPE_DEFAULT, "Registering new connection details for connection: connection=%{public}@", &v14, 0xCu);
     }
 
     v9 = objc_alloc_init(DNDSClientConnectionDetails);
   }
 
-  v11 = v7[2](v7, v9);
+  v11 = handlerCopy[2](handlerCopy, v9);
   if (([(DNDSClientConnectionDetails *)v9 isEqual:v11]& 1) == 0)
   {
     v12 = DNDSLogServiceProvider;
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543618;
-      v15 = v6;
+      v15 = connectionCopy;
       v16 = 2114;
       v17 = v11;
       _os_log_impl(&dword_24912E000, v12, OS_LOG_TYPE_DEFAULT, "Updating connection details for connection: connection=%{public}@, updatedConnectionDetails=%{public}@", &v14, 0x16u);
     }
 
-    [(NSMapTable *)self->_clientConnectionDetailsByConnection setObject:v11 forKey:v6];
+    [(NSMapTable *)self->_clientConnectionDetailsByConnection setObject:v11 forKey:connectionCopy];
   }
 
   objc_sync_exit(v8);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unregisterConnectionDetailsForClientConnection:(id)a3
+- (void)_unregisterConnectionDetailsForClientConnection:(id)connection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = self->_clientConnectionDetailsByConnection;
   objc_sync_enter(v5);
-  v6 = [(NSMapTable *)self->_clientConnectionDetailsByConnection objectForKey:v4];
-  [(NSMapTable *)self->_clientConnectionDetailsByConnection removeObjectForKey:v4];
-  [(DNDSRemoteServiceProvider *)self _removeConnection:v4];
+  v6 = [(NSMapTable *)self->_clientConnectionDetailsByConnection objectForKey:connectionCopy];
+  [(NSMapTable *)self->_clientConnectionDetailsByConnection removeObjectForKey:connectionCopy];
+  [(DNDSRemoteServiceProvider *)self _removeConnection:connectionCopy];
   v7 = DNDSLogServiceProvider;
   if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
-    v14 = v4;
+    v14 = connectionCopy;
     v15 = 2114;
     v16 = v6;
     _os_log_impl(&dword_24912E000, v7, OS_LOG_TYPE_DEFAULT, "Connection details unregistered: connection=%{public}@, clientDetails=%{public}@", &v13, 0x16u);
   }
 
-  v8 = [v6 interruptionInvalidationAssertionUUID];
-  if (v8)
+  interruptionInvalidationAssertionUUID = [v6 interruptionInvalidationAssertionUUID];
+  if (interruptionInvalidationAssertionUUID)
   {
     v9 = DNDSLogServiceProvider;
     if (os_log_type_enabled(DNDSLogServiceProvider, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = v4;
+      v14 = connectionCopy;
       v15 = 2114;
-      v16 = v8;
+      v16 = interruptionInvalidationAssertionUUID;
       _os_log_impl(&dword_24912E000, v9, OS_LOG_TYPE_DEFAULT, "Invalidating assertion due to client disconnect: connection=%{public}@, UUID=%{public}@", &v13, 0x16u);
     }
 
-    v10 = [(DNDSRemoteServiceProvider *)self delegate];
-    v11 = [v10 remoteServiceProvider:self invalidateModeAssertionWithUUID:v8 reason:6 reasonOverride:1 clientIdentifier:0 error:0];
+    delegate = [(DNDSRemoteServiceProvider *)self delegate];
+    v11 = [delegate remoteServiceProvider:self invalidateModeAssertionWithUUID:interruptionInvalidationAssertionUUID reason:6 reasonOverride:1 clientIdentifier:0 error:0];
   }
 
   objc_sync_exit(v5);
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_iterateClientConnectionsToSendWithHandler:(id)a3
+- (void)_iterateClientConnectionsToSendWithHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_clientConnectionDetailsByConnection;
   objc_sync_enter(v5);
   v13 = 0u;
@@ -3701,7 +3701,7 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [(NSMapTable *)self->_clientConnectionDetailsByConnection objectForKey:v10, v13];
-        v4[2](v4, v11, v10);
+        handlerCopy[2](handlerCopy, v11, v10);
       }
 
       v7 = [(NSMapTable *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -3714,19 +3714,19 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_clientDetailsForClientIdentifier:(id)a3 clientConnection:(id)a4
+- (id)_clientDetailsForClientIdentifier:(id)identifier clientConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider findClientDetailsForIdentifier:v6];
+  identifierCopy = identifier;
+  connectionCopy = connection;
+  v8 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider findClientDetailsForIdentifier:identifierCopy];
   if (!v8)
   {
-    v9 = [v7 remoteProcess];
-    v10 = [v9 auditToken];
-    v11 = v10;
-    if (v10)
+    remoteProcess = [connectionCopy remoteProcess];
+    auditToken = [remoteProcess auditToken];
+    v11 = auditToken;
+    if (auditToken)
     {
-      [v10 realToken];
+      [auditToken realToken];
     }
 
     else
@@ -3748,28 +3748,28 @@ id __97__DNDSRemoteServiceProvider_registerForMeDeviceStateUpdatesWithRequestDet
       v14 = 0;
     }
 
-    v8 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:v6 applicationBundleURL:v14, v16, v17];
+    v8 = [(DNDSClientDetailsProvider *)self->_clientDetailsProvider clientDetailsForIdentifier:identifierCopy applicationBundleURL:v14, v16, v17];
   }
 
   return v8;
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMutableSet *)self->_connections addObject:v4];
+  [(NSMutableSet *)self->_connections addObject:connectionCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  [(NSMutableSet *)self->_connections removeObject:v4];
+  [(NSMutableSet *)self->_connections removeObject:connectionCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }

@@ -1,44 +1,44 @@
 @interface DTNetQualSettingsCell
-- (DTNetQualSettingsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (DTNetQualSettingsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_fillNetworkQualityCell;
 - (void)_runNetworkQuality;
 - (void)cancelNetworkQualityRun;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)runNetworkQualityWithCompletionHandler:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)runNetworkQualityWithCompletionHandler:(id)handler;
 @end
 
 @implementation DTNetQualSettingsCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v10.receiver = self;
   v10.super_class = DTNetQualSettingsCell;
-  [(DTNetQualSettingsCell *)&v10 refreshCellContentsWithSpecifier:v4];
+  [(DTNetQualSettingsCell *)&v10 refreshCellContentsWithSpecifier:specifierCopy];
   specifier = self->specifier;
-  self->specifier = v4;
-  v6 = v4;
+  self->specifier = specifierCopy;
+  v6 = specifierCopy;
 
   v7 = [NSBundle bundleForClass:objc_opt_class()];
 
   v8 = [v7 localizedStringForKey:@"RESPONSIVENESS" value:&stru_3E0D8 table:@"DTNetQualSettings"];
-  v9 = [(DTNetQualSettingsCell *)self textLabel];
-  [v9 setText:v8];
+  textLabel = [(DTNetQualSettingsCell *)self textLabel];
+  [textLabel setText:v8];
 
   [(DTNetQualSettingsCell *)self _fillNetworkQualityCell];
 }
 
-- (DTNetQualSettingsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (DTNetQualSettingsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = DTNetQualSettingsCell;
-  v4 = [(DTNetQualSettingsCell *)&v10 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(DTNetQualSettingsCell *)&v10 initWithStyle:1 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"RESPONSIVENESS" value:&stru_3E0D8 table:@"DTNetQualSettings"];
-    v7 = [(DTNetQualSettingsCell *)v4 textLabel];
-    [v7 setText:v6];
+    textLabel = [(DTNetQualSettingsCell *)v4 textLabel];
+    [textLabel setText:v6];
 
     [(DTNetQualSettingsCell *)v4 _fillNetworkQualityCell];
     v8 = +[NSNotificationCenter defaultCenter];
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)runNetworkQualityWithCompletionHandler:(id)a3
+- (void)runNetworkQualityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(NetworkQualityConfiguration);
   if ([(DTNetQualSettingsCell *)self isL4SExplicitlyEnabledDisabled])
   {
@@ -78,8 +78,8 @@
   v10[2] = sub_1AFC0;
   v10[3] = &unk_3D718;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(NetworkQualityAssessment *)v8 runWithCompletionHandler:v10];
 }
 
@@ -117,8 +117,8 @@
     v13 = [UIAlertAction actionWithTitle:v8 style:0 handler:v15];
     [v11 addAction:v13];
     [v11 setPreferredAction:v13];
-    v14 = [(PSSpecifier *)self->specifier target];
-    [v14 presentViewController:v11 animated:1 completion:0];
+    target = [(PSSpecifier *)self->specifier target];
+    [target presentViewController:v11 animated:1 completion:0];
   }
 }
 
@@ -132,9 +132,9 @@
     goto LABEL_15;
   }
 
-  v3 = [(DTNetQualSettingsCell *)self isL4SExplicitlyEnabledDisabled];
+  isL4SExplicitlyEnabledDisabled = [(DTNetQualSettingsCell *)self isL4SExplicitlyEnabledDisabled];
   networkQualityResponsivenessDownlink = self->networkQualityResponsivenessDownlink;
-  if (!v3)
+  if (!isL4SExplicitlyEnabledDisabled)
   {
     if (networkQualityResponsivenessDownlink)
     {
@@ -183,10 +183,10 @@ LABEL_14:
   v11 = [UIButton buttonWithType:1];
   [v11 setTitle:v15 forState:0];
   [(DTNetQualSettingsCell *)self setAccessoryView:v11];
-  v12 = [(DTNetQualSettingsCell *)self textLabel];
-  v13 = [v12 font];
-  v14 = [v11 titleLabel];
-  [v14 setFont:v13];
+  textLabel = [(DTNetQualSettingsCell *)self textLabel];
+  font = [textLabel font];
+  titleLabel = [v11 titleLabel];
+  [titleLabel setFont:font];
 
   [v11 sizeToFit];
   [v11 addTarget:self action:"_runNetworkQuality" forControlEvents:64];

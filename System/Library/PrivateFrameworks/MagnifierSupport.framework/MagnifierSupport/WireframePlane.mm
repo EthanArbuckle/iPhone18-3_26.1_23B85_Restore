@@ -1,11 +1,11 @@
 @interface WireframePlane
 - (_TtC16MagnifierSupport14WireframePlane)init;
-- (_TtC16MagnifierSupport14WireframePlane)initWithCoder:(id)a3;
+- (_TtC16MagnifierSupport14WireframePlane)initWithCoder:(id)coder;
 @end
 
 @implementation WireframePlane
 
-- (_TtC16MagnifierSupport14WireframePlane)initWithCoder:(id)a3
+- (_TtC16MagnifierSupport14WireframePlane)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC16MagnifierSupport14WireframePlane_dimensions) = 0;
   result = sub_257ED0410();

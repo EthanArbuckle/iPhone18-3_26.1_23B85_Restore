@@ -1,27 +1,27 @@
 @interface VCCaptionsTranscription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)formattedText;
-- (VCCaptionsTranscription)initWithCoder:(id)a3;
-- (VCCaptionsTranscription)initWithSFTranscription:(id)a3 taskInfo:(id)a4 isLocal:(BOOL)a5 isFinal:(BOOL)a6;
-- (VCCaptionsTranscription)initWithSTTranscriberMultisegmentResult:(id)a3 taskInfo:(id)a4 isLocal:(BOOL)a5 isFinal:(BOOL)a6;
-- (VCCaptionsTranscription)initWithTextTranscription:(id)a3 taskInfo:(id)a4 isLocal:(BOOL)a5 isFinal:(BOOL)a6 isTranslated:(BOOL)a7;
-- (VCCaptionsTranscription)initWithUtteranceNumber:(unsigned int)a3 updateNumber:(unsigned int)a4 isLocal:(BOOL)a5 isFinal:(BOOL)a6 streamToken:(int64_t)a7 isTranslated:(BOOL)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VCCaptionsTranscription)initWithCoder:(id)coder;
+- (VCCaptionsTranscription)initWithSFTranscription:(id)transcription taskInfo:(id)info isLocal:(BOOL)local isFinal:(BOOL)final;
+- (VCCaptionsTranscription)initWithSTTranscriberMultisegmentResult:(id)result taskInfo:(id)info isLocal:(BOOL)local isFinal:(BOOL)final;
+- (VCCaptionsTranscription)initWithTextTranscription:(id)transcription taskInfo:(id)info isLocal:(BOOL)local isFinal:(BOOL)final isTranslated:(BOOL)translated;
+- (VCCaptionsTranscription)initWithUtteranceNumber:(unsigned int)number updateNumber:(unsigned int)updateNumber isLocal:(BOOL)local isFinal:(BOOL)final streamToken:(int64_t)token isTranslated:(BOOL)translated;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)addSegment:(id)a3;
+- (void)addSegment:(id)segment;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUpUtteranceStartTimestamp:(double)a3 andUtteranceDuration:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUpUtteranceStartTimestamp:(double)timestamp andUtteranceDuration:(double)duration;
 @end
 
 @implementation VCCaptionsTranscription
 
-- (void)setUpUtteranceStartTimestamp:(double)a3 andUtteranceDuration:(double)a4
+- (void)setUpUtteranceStartTimestamp:(double)timestamp andUtteranceDuration:(double)duration
 {
   v19 = *MEMORY[0x1E69E9840];
-  self->_utteranceStartTimestamp = a3;
-  self->_utteranceDuration = a4;
+  self->_utteranceStartTimestamp = timestamp;
+  self->_utteranceDuration = duration;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -45,7 +45,7 @@
   }
 }
 
-- (VCCaptionsTranscription)initWithUtteranceNumber:(unsigned int)a3 updateNumber:(unsigned int)a4 isLocal:(BOOL)a5 isFinal:(BOOL)a6 streamToken:(int64_t)a7 isTranslated:(BOOL)a8
+- (VCCaptionsTranscription)initWithUtteranceNumber:(unsigned int)number updateNumber:(unsigned int)updateNumber isLocal:(BOOL)local isFinal:(BOOL)final streamToken:(int64_t)token isTranslated:(BOOL)translated
 {
   v18 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -54,33 +54,33 @@
   v15 = v14;
   if (v14)
   {
-    v14->_utteranceNumber = a3;
-    v14->_updateNumber = a4;
-    v14->_isLocal = a5;
-    v14->_isFinal = a6;
+    v14->_utteranceNumber = number;
+    v14->_updateNumber = updateNumber;
+    v14->_isLocal = local;
+    v14->_isFinal = final;
     v14->_segments = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v15->_streamToken = a7;
+    v15->_streamToken = token;
     *&v15->_utteranceStartTimestamp = vdupq_n_s64(0x7FF8000000000000uLL);
-    v15->_isTranslated = a8;
+    v15->_isTranslated = translated;
   }
 
   return v15;
 }
 
-- (VCCaptionsTranscription)initWithSFTranscription:(id)a3 taskInfo:(id)a4 isLocal:(BOOL)a5 isFinal:(BOOL)a6
+- (VCCaptionsTranscription)initWithSFTranscription:(id)transcription taskInfo:(id)info isLocal:(BOOL)local isFinal:(BOOL)final
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = -[VCCaptionsTranscription initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:](self, "initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:", [a4 utteranceNumber], objc_msgSend(a4, "updateNumber"), a5, a6, objc_msgSend(a4, "token"), 0);
+  v8 = -[VCCaptionsTranscription initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:](self, "initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:", [info utteranceNumber], objc_msgSend(info, "updateNumber"), local, final, objc_msgSend(info, "token"), 0);
   if (v8)
   {
     v9 = v8;
-    v27 = a4;
+    infoCopy = info;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v10 = [a3 segments];
-    v11 = [v10 countByEnumeratingWithState:&v29 objects:v28 count:16];
+    segments = [transcription segments];
+    v11 = [segments countByEnumeratingWithState:&v29 objects:v28 count:16];
     if (v11)
     {
       v12 = v11;
@@ -92,16 +92,16 @@
         {
           if (*v30 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(segments);
           }
 
           v16 = *(*(&v29 + 1) + 8 * i);
           v17 = [VCCaptionsTranscriptionSegment alloc];
           [v16 confidence];
           v19 = (v18 * 100.0);
-          v20 = [v16 substring];
-          v21 = [v16 substringRange];
-          v23 = [(VCCaptionsTranscriptionSegment *)v17 initWithConfidence:v19 text:v20 range:v21, v22];
+          substring = [v16 substring];
+          substringRange = [v16 substringRange];
+          v23 = [(VCCaptionsTranscriptionSegment *)v17 initWithConfidence:v19 text:substring range:substringRange, v22];
           if (!v23)
           {
             if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -123,7 +123,7 @@
           v14 = v14 + v25;
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v29 objects:v28 count:16];
+        v12 = [segments countByEnumeratingWithState:&v29 objects:v28 count:16];
         if (v12)
         {
           continue;
@@ -138,7 +138,7 @@
       v14 = 0.0;
     }
 
-    [(VCCaptionsTranscription *)v9 setUpUtteranceStartTimestamp:VCCaptionTaskInfo_HostTime(v27) andUtteranceDuration:v14];
+    [(VCCaptionsTranscription *)v9 setUpUtteranceStartTimestamp:VCCaptionTaskInfo_HostTime(infoCopy) andUtteranceDuration:v14];
   }
 
   else
@@ -158,10 +158,10 @@
   return v9;
 }
 
-- (VCCaptionsTranscription)initWithSTTranscriberMultisegmentResult:(id)a3 taskInfo:(id)a4 isLocal:(BOOL)a5 isFinal:(BOOL)a6
+- (VCCaptionsTranscription)initWithSTTranscriberMultisegmentResult:(id)result taskInfo:(id)info isLocal:(BOOL)local isFinal:(BOOL)final
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = -[VCCaptionsTranscription initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:](self, "initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:", [a4 utteranceNumber], objc_msgSend(a4, "updateNumber"), a5, a6, objc_msgSend(a4, "token"), 0);
+  v8 = -[VCCaptionsTranscription initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:](self, "initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:", [info utteranceNumber], objc_msgSend(info, "updateNumber"), local, final, objc_msgSend(info, "token"), 0);
   if (!v8)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -177,15 +177,15 @@
   }
 
   v9 = v8;
-  v23 = a3;
-  v10 = [a3 segments];
-  if ([v10 count])
+  resultCopy = result;
+  segments = [result segments];
+  if ([segments count])
   {
     v11 = 0;
-    v24 = v10;
+    v24 = segments;
     while (1)
     {
-      v12 = [v10 objectAtIndexedSubscript:v11];
+      v12 = [segments objectAtIndexedSubscript:v11];
       if ([objc_msgSend(v12 "text")])
       {
         break;
@@ -193,7 +193,7 @@
 
 LABEL_8:
       ++v11;
-      v10 = v24;
+      segments = v24;
       if (v11 >= [v24 count])
       {
         goto LABEL_9;
@@ -237,10 +237,10 @@ LABEL_8:
   }
 
 LABEL_9:
-  v21 = VCCaptionTaskInfo_HostTime(a4);
-  if (v23)
+  v21 = VCCaptionTaskInfo_HostTime(info);
+  if (resultCopy)
   {
-    [v23 recognitionAudioRange];
+    [resultCopy recognitionAudioRange];
   }
 
   else
@@ -253,19 +253,19 @@ LABEL_9:
   return v9;
 }
 
-- (VCCaptionsTranscription)initWithTextTranscription:(id)a3 taskInfo:(id)a4 isLocal:(BOOL)a5 isFinal:(BOOL)a6 isTranslated:(BOOL)a7
+- (VCCaptionsTranscription)initWithTextTranscription:(id)transcription taskInfo:(id)info isLocal:(BOOL)local isFinal:(BOOL)final isTranslated:(BOOL)translated
 {
-  v9 = -[VCCaptionsTranscription initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:](self, "initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:", [a4 utteranceNumber], objc_msgSend(a4, "updateNumber"), a5, a6, objc_msgSend(a4, "token"), a7);
+  v9 = -[VCCaptionsTranscription initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:](self, "initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:", [info utteranceNumber], objc_msgSend(info, "updateNumber"), local, final, objc_msgSend(info, "token"), translated);
   if (v9)
   {
-    v10 = [a3 length];
+    v10 = [transcription length];
     v11 = [VCCaptionsTranscriptionSegment initWithConfidence:"initWithConfidence:text:range:" text:? range:?];
     if (v11)
     {
       v12 = v11;
       [(NSMutableArray *)v9->_segments addObject:v11];
 
-      [(VCCaptionsTranscription *)v9 setUpUtteranceStartTimestamp:VCCaptionTaskInfo_HostTime(a4) andUtteranceDuration:NAN];
+      [(VCCaptionsTranscription *)v9 setUpUtteranceStartTimestamp:VCCaptionTaskInfo_HostTime(info) andUtteranceDuration:NAN];
       return v9;
     }
 
@@ -310,14 +310,14 @@ LABEL_9:
   return result;
 }
 
-- (void)addSegment:(id)a3
+- (void)addSegment:(id)segment
 {
-  [(NSMutableArray *)self->_segments addObject:a3];
+  [(NSMutableArray *)self->_segments addObject:segment];
 
   self->_formattedText = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = [+[VCCaptionsTranscription allocWithZone:](VCCaptionsTranscription initWithUtteranceNumber:"initWithUtteranceNumber:updateNumber:isLocal:isFinal:streamToken:isTranslated:" updateNumber:self->_utteranceNumber isLocal:self->_updateNumber isFinal:self->_isLocal streamToken:self->_isFinal isTranslated:self->_streamToken, self->_isTranslated];
@@ -342,7 +342,7 @@ LABEL_9:
           objc_enumerationMutation(segments);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:zone];
         [(VCCaptionsTranscription *)v5 addSegment:v11];
 
         ++v10;
@@ -358,21 +358,21 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt32:self->_utteranceNumber forKey:@"utteranceNumber"];
-  [a3 encodeInt32:self->_updateNumber forKey:@"updateNumber"];
-  [a3 encodeBool:self->_isLocal forKey:@"isLocal"];
-  [a3 encodeBool:self->_isFinal forKey:@"isFinal"];
-  [a3 encodeObject:self->_segments forKey:@"segments"];
-  [a3 encodeDouble:@"utteranceStartTimestamp" forKey:self->_utteranceStartTimestamp];
-  [a3 encodeDouble:@"utteranceDuration" forKey:self->_utteranceDuration];
+  [coder encodeInt32:self->_utteranceNumber forKey:@"utteranceNumber"];
+  [coder encodeInt32:self->_updateNumber forKey:@"updateNumber"];
+  [coder encodeBool:self->_isLocal forKey:@"isLocal"];
+  [coder encodeBool:self->_isFinal forKey:@"isFinal"];
+  [coder encodeObject:self->_segments forKey:@"segments"];
+  [coder encodeDouble:@"utteranceStartTimestamp" forKey:self->_utteranceStartTimestamp];
+  [coder encodeDouble:@"utteranceDuration" forKey:self->_utteranceDuration];
   isTranslated = self->_isTranslated;
 
-  [a3 encodeBool:isTranslated forKey:@"isTranslated"];
+  [coder encodeBool:isTranslated forKey:@"isTranslated"];
 }
 
-- (VCCaptionsTranscription)initWithCoder:(id)a3
+- (VCCaptionsTranscription)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -380,32 +380,32 @@ LABEL_9:
   v4 = [(VCCaptionsTranscription *)&v8 init];
   if (v4)
   {
-    if ([a3 containsValueForKey:@"utteranceNumber"])
+    if ([coder containsValueForKey:@"utteranceNumber"])
     {
-      v4->_utteranceNumber = [a3 decodeInt32ForKey:@"utteranceNumber"];
-      if ([a3 containsValueForKey:@"updateNumber"])
+      v4->_utteranceNumber = [coder decodeInt32ForKey:@"utteranceNumber"];
+      if ([coder containsValueForKey:@"updateNumber"])
       {
-        v4->_updateNumber = [a3 decodeInt32ForKey:@"updateNumber"];
-        if ([a3 containsValueForKey:@"isLocal"])
+        v4->_updateNumber = [coder decodeInt32ForKey:@"updateNumber"];
+        if ([coder containsValueForKey:@"isLocal"])
         {
-          v4->_isLocal = [a3 decodeBoolForKey:@"isLocal"];
-          if ([a3 containsValueForKey:@"isFinal"])
+          v4->_isLocal = [coder decodeBoolForKey:@"isLocal"];
+          if ([coder containsValueForKey:@"isFinal"])
           {
-            v4->_isFinal = [a3 decodeBoolForKey:@"isFinal"];
-            if ([a3 containsValueForKey:@"segments"])
+            v4->_isFinal = [coder decodeBoolForKey:@"isFinal"];
+            if ([coder containsValueForKey:@"segments"])
             {
-              v4->_segments = [objc_msgSend(a3 decodeObjectForKey:{@"segments", "copy"}];
-              if ([a3 containsValueForKey:@"utteranceStartTimestamp"])
+              v4->_segments = [objc_msgSend(coder decodeObjectForKey:{@"segments", "copy"}];
+              if ([coder containsValueForKey:@"utteranceStartTimestamp"])
               {
-                [a3 decodeDoubleForKey:@"utteranceStartTimestamp"];
+                [coder decodeDoubleForKey:@"utteranceStartTimestamp"];
                 v4->_utteranceStartTimestamp = v5;
-                if ([a3 containsValueForKey:@"utteranceDuration"])
+                if ([coder containsValueForKey:@"utteranceDuration"])
                 {
-                  [a3 decodeDoubleForKey:@"utteranceDuration"];
+                  [coder decodeDoubleForKey:@"utteranceDuration"];
                   v4->_utteranceDuration = v6;
-                  if ([a3 containsValueForKey:@"isTranslated"])
+                  if ([coder containsValueForKey:@"isTranslated"])
                   {
-                    v4->_isTranslated = [a3 decodeBoolForKey:@"isTranslated"];
+                    v4->_isTranslated = [coder decodeBoolForKey:@"isTranslated"];
                     return v4;
                   }
 
@@ -508,9 +508,9 @@ LABEL_9:
   return v11 ^ *&self->_utteranceDuration ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v10) = 1;
   }
@@ -518,18 +518,18 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [a3 utteranceNumber], v5 == -[VCCaptionsTranscription utteranceNumber](self, "utteranceNumber")) && (v6 = objc_msgSend(a3, "updateNumber"), v6 == -[VCCaptionsTranscription updateNumber](self, "updateNumber")) && (v7 = objc_msgSend(a3, "isLocal"), v7 == -[VCCaptionsTranscription isLocal](self, "isLocal")) && (v8 = objc_msgSend(a3, "isFinal"), v8 == -[VCCaptionsTranscription isFinal](self, "isFinal")) && (v9 = objc_msgSend(a3, "isTranslated"), v9 == -[VCCaptionsTranscription isTranslated](self, "isTranslated")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [equal utteranceNumber], v5 == -[VCCaptionsTranscription utteranceNumber](self, "utteranceNumber")) && (v6 = objc_msgSend(equal, "updateNumber"), v6 == -[VCCaptionsTranscription updateNumber](self, "updateNumber")) && (v7 = objc_msgSend(equal, "isLocal"), v7 == -[VCCaptionsTranscription isLocal](self, "isLocal")) && (v8 = objc_msgSend(equal, "isFinal"), v8 == -[VCCaptionsTranscription isFinal](self, "isFinal")) && (v9 = objc_msgSend(equal, "isTranslated"), v9 == -[VCCaptionsTranscription isTranslated](self, "isTranslated")))
     {
-      v10 = [objc_msgSend(a3 "segments")];
+      v10 = [objc_msgSend(equal "segments")];
       if (v10)
       {
-        [a3 utteranceStartTimestamp];
+        [equal utteranceStartTimestamp];
         v12 = v11;
         [(VCCaptionsTranscription *)self utteranceStartTimestamp];
         v10 = VCMathUtils_DoubleEqualWithAccuracy(v12, v13, 0.0000625);
         if (v10)
         {
-          [a3 utteranceDuration];
+          [equal utteranceDuration];
           v15 = v14;
           [(VCCaptionsTranscription *)self utteranceDuration];
 

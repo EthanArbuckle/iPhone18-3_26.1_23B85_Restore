@@ -10,26 +10,26 @@
 
 - (uint64_t)icq_isICQLaunchURL
 {
-  v2 = [MEMORY[0x277CCACE0] componentsWithURL:a1 resolvingAgainstBaseURL:1];
-  v3 = [v2 scheme];
-  if (([v3 isEqualToString:@"icq"] & 1) == 0)
+  v2 = [MEMORY[0x277CCACE0] componentsWithURL:self resolvingAgainstBaseURL:1];
+  scheme = [v2 scheme];
+  if (([scheme isEqualToString:@"icq"] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v1 = [v2 host];
-  v4 = [v1 isEqualToString:@"launch"];
+  host = [v2 host];
+  v4 = [host isEqualToString:@"launch"];
 
   if ((v4 & 1) == 0)
   {
 LABEL_5:
-    v6 = [v2 host];
-    v7 = [v6 isEqualToString:@"icq.icloud.com"];
-    if ((v7 & 1) != 0 || ([v2 host], v1 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v1, "isEqualToString:", @"icq.apple.com")))
+    host2 = [v2 host];
+    v7 = [host2 isEqualToString:@"icq.icloud.com"];
+    if ((v7 & 1) != 0 || ([v2 host], host = objc_claimAutoreleasedReturnValue(), objc_msgSend(host, "isEqualToString:", @"icq.apple.com")))
     {
-      v8 = [v2 path];
-      v5 = [v8 isEqualToString:@"/launch"];
+      path = [v2 path];
+      v5 = [path isEqualToString:@"/launch"];
 
       if (v7)
       {
@@ -56,10 +56,10 @@ LABEL_12:
 {
   v4 = MEMORY[0x277CCACE0];
   v5 = a3;
-  v6 = [v4 componentsWithURL:a1 resolvingAgainstBaseURL:1];
+  v6 = [v4 componentsWithURL:self resolvingAgainstBaseURL:1];
   v7 = MEMORY[0x277CBEB18];
-  v8 = [v6 queryItems];
-  v9 = [v7 arrayWithArray:v8];
+  queryItems = [v6 queryItems];
+  v9 = [v7 arrayWithArray:queryItems];
 
   [v9 addObjectsFromArray:v5];
   [v6 setQueryItems:v9];
@@ -73,12 +73,12 @@ LABEL_12:
   v6 = MEMORY[0x277CCACE0];
   v7 = a4;
   v8 = a3;
-  v9 = [v6 componentsWithURL:a1 resolvingAgainstBaseURL:1];
+  v9 = [v6 componentsWithURL:self resolvingAgainstBaseURL:1];
   v10 = [MEMORY[0x277CCAD18] queryItemWithName:v8 value:v7];
 
   v11 = MEMORY[0x277CBEB18];
-  v12 = [v9 queryItems];
-  v13 = [v11 arrayWithArray:v12];
+  queryItems = [v9 queryItems];
+  v13 = [v11 arrayWithArray:queryItems];
 
   [v13 addObject:v10];
   [v9 setQueryItems:v13];
@@ -91,13 +91,13 @@ LABEL_12:
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CCACE0] componentsWithURL:a1 resolvingAgainstBaseURL:1];
+  v5 = [MEMORY[0x277CCACE0] componentsWithURL:self resolvingAgainstBaseURL:1];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 queryItems];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  queryItems = [v5 queryItems];
+  v7 = [queryItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -107,12 +107,12 @@ LABEL_12:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(queryItems);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v4];
+        name = [v10 name];
+        v12 = [name isEqualToString:v4];
 
         if (v12)
         {
@@ -121,7 +121,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [queryItems countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -144,11 +144,11 @@ LABEL_11:
   v4 = a3;
   if (v4)
   {
-    v5 = [MEMORY[0x277CCACE0] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+    v5 = [MEMORY[0x277CCACE0] componentsWithURL:self resolvingAgainstBaseURL:0];
     v6 = MEMORY[0x277CBEB18];
     v37 = v5;
-    v7 = [v5 queryItems];
-    v8 = [v6 arrayWithArray:v7];
+    queryItems = [v5 queryItems];
+    v8 = [v6 arrayWithArray:queryItems];
 
     v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v43 = 0u;
@@ -170,8 +170,8 @@ LABEL_11:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v43 + 1) + 8 * i) name];
-          [v9 addObject:v15];
+          name = [*(*(&v43 + 1) + 8 * i) name];
+          [v9 addObject:name];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v43 objects:v48 count:16];
@@ -189,8 +189,8 @@ LABEL_11:
     v41 = 0u;
     v42 = 0u;
     v35 = v16;
-    v17 = [v16 queryItems];
-    v18 = [v17 countByEnumeratingWithState:&v39 objects:v47 count:16];
+    queryItems2 = [v16 queryItems];
+    v18 = [queryItems2 countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (v18)
     {
       v19 = v18;
@@ -201,25 +201,25 @@ LABEL_11:
         {
           if (*v40 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(queryItems2);
           }
 
           v22 = *(*(&v39 + 1) + 8 * j);
-          v23 = [v22 name];
-          v24 = [v23 lowercaseString];
-          v25 = [v24 isEqualToString:@"context"];
+          name2 = [v22 name];
+          lowercaseString = [name2 lowercaseString];
+          v25 = [lowercaseString isEqualToString:@"context"];
 
           if (v25)
           {
             v26 = MEMORY[0x277CCAD18];
-            v27 = [v22 value];
-            v28 = [v26 queryItemWithName:@"clientContext" value:v27];
+            value = [v22 value];
+            v28 = [v26 queryItemWithName:@"clientContext" value:value];
 
             v22 = v28;
           }
 
-          v29 = [v22 name];
-          v30 = [v9 containsObject:v29];
+          name3 = [v22 name];
+          v30 = [v9 containsObject:name3];
 
           if ((v30 & 1) == 0)
           {
@@ -227,7 +227,7 @@ LABEL_11:
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v39 objects:v47 count:16];
+        v19 = [queryItems2 countByEnumeratingWithState:&v39 objects:v47 count:16];
       }
 
       while (v19);

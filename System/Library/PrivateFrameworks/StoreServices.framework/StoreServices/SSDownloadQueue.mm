@@ -1,30 +1,30 @@
 @interface SSDownloadQueue
-- (BOOL)addDownload:(id)a3;
-- (BOOL)cancelDownload:(id)a3;
+- (BOOL)addDownload:(id)download;
+- (BOOL)cancelDownload:(id)download;
 - (NSSet)downloadKinds;
 - (SSDownloadManager)downloadManager;
-- (SSDownloadQueue)initWithDownloadKinds:(id)a3;
-- (id)_initWithDownloadManagerOptions:(id)a3;
-- (id)downloadForItemIdentifier:(unint64_t)a3;
-- (void)_handleDownloadsDidChange:(id)a3;
-- (void)_handleDownloadsRemoved:(id)a3;
-- (void)_messageObserversWithFunction:(void *)a3 context:(void *)a4;
-- (void)_sendDownloadStatusChangedAtIndex:(int64_t)a3;
-- (void)_sendQueueChangedWithRemovals:(id)a3;
+- (SSDownloadQueue)initWithDownloadKinds:(id)kinds;
+- (id)_initWithDownloadManagerOptions:(id)options;
+- (id)downloadForItemIdentifier:(unint64_t)identifier;
+- (void)_handleDownloadsDidChange:(id)change;
+- (void)_handleDownloadsRemoved:(id)removed;
+- (void)_messageObserversWithFunction:(void *)function context:(void *)context;
+- (void)_sendDownloadStatusChangedAtIndex:(int64_t)index;
+- (void)_sendQueueChangedWithRemovals:(id)removals;
 - (void)_sendQueueNetworkUsageChanged;
 - (void)_sendQueuePreOrdersChanged;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4;
-- (void)downloadManager:(id)a3 downloadsDidChange:(id)a4;
-- (void)downloadManagerDownloadsDidChange:(id)a3;
-- (void)downloadManagerNetworkUsageDidChange:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change;
+- (void)downloadManager:(id)manager downloadsDidChange:(id)change;
+- (void)downloadManagerDownloadsDidChange:(id)change;
+- (void)downloadManagerNetworkUsageDidChange:(id)change;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SSDownloadQueue
 
-- (id)_initWithDownloadManagerOptions:(id)a3
+- (id)_initWithDownloadManagerOptions:(id)options
 {
   v10.receiver = self;
   v10.super_class = SSDownloadQueue;
@@ -33,7 +33,7 @@
   if (v4)
   {
     v4->_autoFinishDownloads = 1;
-    v6 = [[SSDownloadManager alloc] initWithManagerOptions:a3];
+    v6 = [[SSDownloadManager alloc] initWithManagerOptions:options];
     v5->_downloadManager = v6;
     [(SSDownloadManager *)v6 addObserver:v5];
     block[0] = MEMORY[0x1E69E9820];
@@ -49,12 +49,12 @@
   return v5;
 }
 
-- (SSDownloadQueue)initWithDownloadKinds:(id)a3
+- (SSDownloadQueue)initWithDownloadKinds:(id)kinds
 {
-  if ([a3 count])
+  if ([kinds count])
   {
     v5 = objc_alloc_init(SSDownloadManagerOptions);
-    -[SSDownloadManagerOptions setDownloadKinds:](v5, "setDownloadKinds:", [a3 allObjects]);
+    -[SSDownloadManagerOptions setDownloadKinds:](v5, "setDownloadKinds:", [kinds allObjects]);
     v6 = objc_opt_class();
     [(SSDownloadManagerOptions *)v5 setPersistenceIdentifier:NSStringFromClass(v6)];
     -[SSDownloadManagerOptions setPrefetchedDownloadExternalProperties:](v5, "setPrefetchedDownloadExternalProperties:", [MEMORY[0x1E695DEC8] arrayWithObjects:{@"0", @"1", @"4", @"9", @"A", 0}]);
@@ -89,7 +89,7 @@
   [(SSDownloadQueue *)&v5 dealloc];
 }
 
-- (BOOL)addDownload:(id)a3
+- (BOOL)addDownload:(id)download
 {
   v10 = 0;
   v11 = &v10;
@@ -97,7 +97,7 @@
   v13 = 0;
   v5 = dispatch_semaphore_create(0);
   downloadManager = self->_downloadManager;
-  v7 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
+  v7 = [MEMORY[0x1E695DEC8] arrayWithObject:download];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __31__SSDownloadQueue_addDownload___block_invoke;
@@ -112,7 +112,7 @@
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   observers = self->_observers;
   if (!observers)
@@ -121,10 +121,10 @@
     self->_observers = observers;
   }
 
-  CFSetAddValue(observers, a3);
+  CFSetAddValue(observers, observer);
 }
 
-- (BOOL)cancelDownload:(id)a3
+- (BOOL)cancelDownload:(id)download
 {
   v11 = 0;
   v12 = &v11;
@@ -134,7 +134,7 @@
   {
     v5 = dispatch_semaphore_create(0);
     downloadManager = self->_downloadManager;
-    v7 = [MEMORY[0x1E695DEC8] arrayWithObject:a3];
+    v7 = [MEMORY[0x1E695DEC8] arrayWithObject:download];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __34__SSDownloadQueue_cancelDownload___block_invoke;
@@ -154,9 +154,9 @@
 - (NSSet)downloadKinds
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(SSDownloadManagerOptions *)[(SSDownloadManager *)self->_downloadManager managerOptions] downloadKinds];
+  downloadKinds = [(SSDownloadManagerOptions *)[(SSDownloadManager *)self->_downloadManager managerOptions] downloadKinds];
 
-  return [v2 setWithArray:v3];
+  return [v2 setWithArray:downloadKinds];
 }
 
 - (SSDownloadManager)downloadManager
@@ -166,24 +166,24 @@
   return v2;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   observers = self->_observers;
   if (observers)
   {
-    CFSetRemoveValue(observers, a3);
+    CFSetRemoveValue(observers, observer);
   }
 }
 
-- (id)downloadForItemIdentifier:(unint64_t)a3
+- (id)downloadForItemIdentifier:(unint64_t)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [(SSDownloadManager *)self->_downloadManager downloads];
+  downloads = [(SSDownloadManager *)self->_downloadManager downloads];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  result = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  result = [(NSArray *)downloads countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (result)
   {
     v6 = result;
@@ -195,11 +195,11 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(downloads);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
-        if (SSGetItemIdentifierFromValue([v9 valueForProperty:@"7"]) == a3)
+        if (SSGetItemIdentifierFromValue([v9 valueForProperty:@"7"]) == identifier)
         {
           return v9;
         }
@@ -208,7 +208,7 @@
       }
 
       while (v6 != v8);
-      result = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      result = [(NSArray *)downloads countByEnumeratingWithState:&v10 objects:v14 count:16];
       v6 = result;
       if (result)
       {
@@ -222,25 +222,25 @@
   return result;
 }
 
-- (void)downloadManager:(id)a3 downloadsDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadsDidChange:(id)change
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __54__SSDownloadQueue_downloadManager_downloadsDidChange___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = change;
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = change;
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
@@ -296,7 +296,7 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
   }
 }
 
-- (void)downloadManagerDownloadsDidChange:(id)a3
+- (void)downloadManagerDownloadsDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -306,7 +306,7 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)downloadManagerNetworkUsageDidChange:(id)a3
+- (void)downloadManagerNetworkUsageDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -316,7 +316,7 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_messageObserversWithFunction:(void *)a3 context:(void *)a4
+- (void)_messageObserversWithFunction:(void *)function context:(void *)context
 {
   observers = self->_observers;
   if (observers)
@@ -325,25 +325,25 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
     if (Copy)
     {
       v9 = Copy;
-      v10 = self;
-      CFSetApplyFunction(v9, a3, a4);
+      selfCopy = self;
+      CFSetApplyFunction(v9, function, context);
 
       CFRelease(v9);
     }
   }
 }
 
-- (void)_sendDownloadStatusChangedAtIndex:(int64_t)a3
+- (void)_sendDownloadStatusChangedAtIndex:(int64_t)index
 {
   v3[0] = self;
-  v3[1] = a3;
+  v3[1] = index;
   [(SSDownloadQueue *)self _messageObserversWithFunction:__SendDownloadStatusChanged context:v3];
 }
 
-- (void)_sendQueueChangedWithRemovals:(id)a3
+- (void)_sendQueueChangedWithRemovals:(id)removals
 {
   v3[0] = self;
-  v3[1] = a3;
+  v3[1] = removals;
   [(SSDownloadQueue *)self _messageObserversWithFunction:__SendQueueChanged context:v3];
 }
 
@@ -361,16 +361,16 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
   [(SSDownloadQueue *)self _messageObserversWithFunction:__SendPreOrdersChanged context:v2];
 }
 
-- (void)_handleDownloadsDidChange:(id)a3
+- (void)_handleDownloadsDidChange:(id)change
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [(SSDownloadManager *)self->_downloadManager downloads];
+  downloads = [(SSDownloadManager *)self->_downloadManager downloads];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [(NSArray *)downloads countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -382,11 +382,11 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(downloads);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
-        if (!a3 || [a3 containsObject:*(*(&v12 + 1) + 8 * v10)])
+        if (!change || [change containsObject:*(*(&v12 + 1) + 8 * v10)])
         {
           if (SSDownloadPhaseIsFinishedPhase([v11 downloadPhaseIdentifier]))
           {
@@ -398,7 +398,7 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
       }
 
       while (v8 != v10);
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [(NSArray *)downloads countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -407,21 +407,21 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
   [(SSDownloadQueue *)self _handleDownloadsRemoved:v5];
 }
 
-- (void)_handleDownloadsRemoved:(id)a3
+- (void)_handleDownloadsRemoved:(id)removed
 {
   v24 = *MEMORY[0x1E69E9840];
   if (self->_autoFinishDownloads)
   {
-    v5 = [a3 allObjects];
-    if ([v5 count])
+    allObjects = [removed allObjects];
+    if ([allObjects count])
     {
-      [(SSDownloadManager *)self->_downloadManager _willFinishDownloads:v5];
+      [(SSDownloadManager *)self->_downloadManager _willFinishDownloads:allObjects];
     }
   }
 
   else
   {
-    v5 = 0;
+    allObjects = 0;
   }
 
   v6 = +[SSLogConfig sharedStoreServicesConfig];
@@ -430,15 +430,15 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
   if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -451,7 +451,7 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
     v20 = 138412546;
     v21 = objc_opt_class();
     v22 = 2048;
-    v23 = [a3 count];
+    v23 = [removed count];
     LODWORD(v19) = 22;
     v18 = &v20;
     v9 = _os_log_send_and_compose_impl();
@@ -464,12 +464,12 @@ void __59__SSDownloadQueue_downloadManager_downloadStatesDidChange___block_invok
     }
   }
 
-  [(SSDownloadQueue *)self _sendQueueChangedWithRemovals:a3, v18];
-  if ([a3 count])
+  [(SSDownloadQueue *)self _sendQueueChangedWithRemovals:removed, v18];
+  if ([removed count])
   {
     if (self->_autoFinishDownloads)
     {
-      [(SSDownloadManager *)self->_downloadManager _finishDownloads:v5];
+      [(SSDownloadManager *)self->_downloadManager _finishDownloads:allObjects];
     }
   }
 }

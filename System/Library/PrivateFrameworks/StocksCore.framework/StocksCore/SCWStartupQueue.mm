@@ -1,25 +1,25 @@
 @interface SCWStartupQueue
-- (void)enqueueStartupBlock:(id)a3;
-- (void)executeAfterStartup:(id)a3;
+- (void)enqueueStartupBlock:(id)block;
+- (void)executeAfterStartup:(id)startup;
 @end
 
 @implementation SCWStartupQueue
 
-- (void)enqueueStartupBlock:(id)a3
+- (void)enqueueStartupBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_startupTaskDepthLock);
   ++self->_startupTaskDepth;
   os_unfair_lock_unlock(&self->_startupTaskDepthLock);
-  v5 = [(SCWStartupQueue *)self startupTaskQueue];
+  startupTaskQueue = [(SCWStartupQueue *)self startupTaskQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__SCWStartupQueue_enqueueStartupBlock___block_invoke;
   v7[3] = &unk_1E85E3508;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enqueueBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [startupTaskQueue enqueueBlock:v7];
 }
 
 void __39__SCWStartupQueue_enqueueStartupBlock___block_invoke(uint64_t a1, void *a2)
@@ -47,18 +47,18 @@ uint64_t __39__SCWStartupQueue_enqueueStartupBlock___block_invoke_2(uint64_t a1)
   return v2();
 }
 
-- (void)executeAfterStartup:(id)a3
+- (void)executeAfterStartup:(id)startup
 {
-  v4 = a3;
-  v5 = [(SCWStartupQueue *)self startupTaskQueue];
-  [v5 setSuspended:0];
+  startupCopy = startup;
+  startupTaskQueue = [(SCWStartupQueue *)self startupTaskQueue];
+  [startupTaskQueue setSuspended:0];
 
   os_unfair_lock_lock(&self->_startupTaskDepthLock);
   startupTaskDepth = self->_startupTaskDepth;
   os_unfair_lock_unlock(&self->_startupTaskDepthLock);
   if (startupTaskDepth <= 0)
   {
-    v4[2](v4);
+    startupCopy[2](startupCopy);
   }
 
   else
@@ -67,7 +67,7 @@ uint64_t __39__SCWStartupQueue_enqueueStartupBlock___block_invoke_2(uint64_t a1)
     v7[1] = 3221225472;
     v7[2] = __39__SCWStartupQueue_executeAfterStartup___block_invoke;
     v7[3] = &unk_1E85E3530;
-    v8 = v4;
+    v8 = startupCopy;
     [(SCWStartupQueue *)self enqueueStartupBlock:v7];
   }
 }

@@ -1,13 +1,13 @@
 @interface BKTOCImageCache2
-- (BOOL)entryForRequest:(id)a3;
+- (BOOL)entryForRequest:(id)request;
 @end
 
 @implementation BKTOCImageCache2
 
-- (BOOL)entryForRequest:(id)a3
+- (BOOL)entryForRequest:(id)request
 {
-  v4 = [a3 cacheKey];
-  v5 = [(BKTOCImageCache2 *)self objectForKey:v4];
+  cacheKey = [request cacheKey];
+  v5 = [(BKTOCImageCache2 *)self objectForKey:cacheKey];
   LOBYTE(self) = v5 != 0;
 
   return self;

@@ -1,32 +1,32 @@
 @interface NEAppPush
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (BOOL)overlapsWithConfiguration:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (BOOL)overlapsWithConfiguration:(id)configuration;
 - (NEAppPush)init;
-- (NEAppPush)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NEAppPush)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEAppPush
 
-- (BOOL)overlapsWithConfiguration:(id)a3
+- (BOOL)overlapsWithConfiguration:(id)configuration
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [(NEAppPush *)self matchSSIDs];
-  v7 = [v5 setWithArray:v6];
+  matchSSIDs = [(NEAppPush *)self matchSSIDs];
+  v7 = [v5 setWithArray:matchSSIDs];
 
   v8 = MEMORY[0x1E695DFD8];
-  v9 = [v4 matchSSIDs];
-  v10 = [v8 setWithArray:v9];
+  matchSSIDs2 = [configurationCopy matchSSIDs];
+  v10 = [v8 setWithArray:matchSSIDs2];
 
   if (([v10 intersectsSet:v7] & 1) == 0)
   {
-    v11 = [(NEAppPush *)self matchPrivateLTENetworks];
-    v12 = [v4 matchPrivateLTENetworks];
-    v13 = v11;
-    v14 = v12;
+    matchPrivateLTENetworks = [(NEAppPush *)self matchPrivateLTENetworks];
+    matchPrivateLTENetworks2 = [configurationCopy matchPrivateLTENetworks];
+    v13 = matchPrivateLTENetworks;
+    v14 = matchPrivateLTENetworks2;
     v15 = v14;
     if (!self || (LOBYTE(self) = 0, !v13) || !v14)
     {
@@ -79,7 +79,7 @@ LABEL_45:
 
     v23 = *v62;
     v55 = v7;
-    v56 = v4;
+    v56 = configurationCopy;
     v53 = v13;
     v54 = v10;
     v51 = v21;
@@ -122,9 +122,9 @@ LABEL_21:
       }
 
       v33 = *(*(&v65 + 1) + 8 * v32);
-      v34 = [v33 mobileCountryCode];
-      v35 = [v27 mobileCountryCode];
-      if ([v34 isEqual:v35])
+      mobileCountryCode = [v33 mobileCountryCode];
+      mobileCountryCode2 = [v27 mobileCountryCode];
+      if ([mobileCountryCode isEqual:mobileCountryCode2])
       {
         break;
       }
@@ -142,7 +142,7 @@ LABEL_38:
 
         v24 = v49 + 1;
         v7 = v55;
-        v4 = v56;
+        configurationCopy = v56;
         v13 = v53;
         v10 = v54;
         v21 = v51;
@@ -167,31 +167,31 @@ LABEL_44:
       }
     }
 
-    v36 = [v33 mobileNetworkCode];
-    v37 = [v27 mobileNetworkCode];
-    if (![v36 isEqual:v37])
+    mobileNetworkCode = [v33 mobileNetworkCode];
+    mobileNetworkCode2 = [v27 mobileNetworkCode];
+    if (![mobileNetworkCode isEqual:mobileNetworkCode2])
     {
       v44 = 0;
       goto LABEL_35;
     }
 
-    v59 = [v33 trackingAreaCode];
-    if (v59 || ([v27 trackingAreaCode], (v58 = objc_claimAutoreleasedReturnValue()) != 0))
+    trackingAreaCode = [v33 trackingAreaCode];
+    if (trackingAreaCode || ([v27 trackingAreaCode], (v58 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v38 = [v33 trackingAreaCode];
+      trackingAreaCode2 = [v33 trackingAreaCode];
       [v27 trackingAreaCode];
       v39 = v30;
       v40 = v31;
       v42 = v41 = v27;
-      v60 = [v38 isEqual:v42];
+      v60 = [trackingAreaCode2 isEqual:v42];
 
       v27 = v41;
       v31 = v40;
       v30 = v39;
 
       v28 = v57;
-      v43 = v59;
-      if (v59)
+      v43 = trackingAreaCode;
+      if (trackingAreaCode)
       {
 LABEL_34:
 
@@ -203,7 +203,7 @@ LABEL_35:
 
           LOBYTE(self) = 1;
           v7 = v55;
-          v4 = v56;
+          configurationCopy = v56;
           v13 = v53;
           v10 = v54;
           v21 = v51;
@@ -233,33 +233,33 @@ LABEL_46:
   return self;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEAppPush *)self matchSSIDs];
-  if ([v5 count])
+  errorsCopy = errors;
+  matchSSIDs = [(NEAppPush *)self matchSSIDs];
+  if ([matchSSIDs count])
   {
     goto LABEL_4;
   }
 
-  v6 = [(NEAppPush *)self matchPrivateLTENetworks];
-  if ([v6 count])
+  matchPrivateLTENetworks = [(NEAppPush *)self matchPrivateLTENetworks];
+  if ([matchPrivateLTENetworks count])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v50 = [(NEAppPush *)self matchEthernet];
+  matchEthernet = [(NEAppPush *)self matchEthernet];
 
-  if (!v50)
+  if (!matchEthernet)
   {
     v51 = ne_log_obj();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v67 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BA83C000, v51, OS_LOG_TYPE_DEFAULT, "%@ no network matching configuration found", buf, 0xCu);
     }
 
@@ -267,13 +267,13 @@ LABEL_4:
   }
 
 LABEL_5:
-  v7 = [(NEAppPush *)self matchSSIDs];
-  v8 = [v7 count];
+  matchSSIDs2 = [(NEAppPush *)self matchSSIDs];
+  v8 = [matchSSIDs2 count];
 
   if (v8 < 0xB)
   {
-    v10 = [(NEAppPush *)self matchPrivateLTENetworks];
-    v11 = [v10 count];
+    matchPrivateLTENetworks2 = [(NEAppPush *)self matchPrivateLTENetworks];
+    v11 = [matchPrivateLTENetworks2 count];
 
     if (v11 < 0xB)
     {
@@ -281,8 +281,8 @@ LABEL_5:
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v15 = [(NEAppPush *)self matchSSIDs];
-      v16 = [v15 countByEnumeratingWithState:&v60 objects:v65 count:16];
+      matchSSIDs3 = [(NEAppPush *)self matchSSIDs];
+      v16 = [matchSSIDs3 countByEnumeratingWithState:&v60 objects:v65 count:16];
       if (v16)
       {
         v17 = v16;
@@ -293,19 +293,19 @@ LABEL_5:
           {
             if (*v61 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(matchSSIDs3);
             }
 
             v20 = *(*(&v60 + 1) + 8 * i);
             if (!isa_nsstring(v20) || ![v20 length])
             {
-              [NEConfiguration addError:v4 toList:?];
+              [NEConfiguration addError:errorsCopy toList:?];
 
               goto LABEL_10;
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v60 objects:v65 count:16];
+          v17 = [matchSSIDs3 countByEnumeratingWithState:&v60 objects:v65 count:16];
           if (v17)
           {
             continue;
@@ -336,58 +336,58 @@ LABEL_5:
             }
 
             v25 = *(*(&v56 + 1) + 8 * j);
-            v26 = [v25 mobileCountryCode];
-            v27 = v26;
-            if (!self || !isa_nsstring(v26) || [v27 length] != 3)
+            mobileCountryCode = [v25 mobileCountryCode];
+            v27 = mobileCountryCode;
+            if (!self || !isa_nsstring(mobileCountryCode) || [v27 length] != 3)
             {
               v52 = v27;
               v53 = @"Invalid MCC/MNC in Private LTE configuration";
               goto LABEL_61;
             }
 
-            v28 = [*(v23 + 2824) decimalDigitCharacterSet];
-            v29 = [v28 invertedSet];
+            decimalDigitCharacterSet = [*(v23 + 2824) decimalDigitCharacterSet];
+            invertedSet = [decimalDigitCharacterSet invertedSet];
 
-            v30 = [v27 rangeOfCharacterFromSet:v29];
+            v30 = [v27 rangeOfCharacterFromSet:invertedSet];
             if (v30 != 0x7FFFFFFFFFFFFFFFLL)
             {
               v53 = @"Invalid MCC/MNC in Private LTE configuration";
               goto LABEL_62;
             }
 
-            v31 = [v25 mobileNetworkCode];
-            if (!isa_nsstring(v31) || [v31 length] != 3 && objc_msgSend(v31, "length") != 2)
+            mobileNetworkCode = [v25 mobileNetworkCode];
+            if (!isa_nsstring(mobileNetworkCode) || [mobileNetworkCode length] != 3 && objc_msgSend(mobileNetworkCode, "length") != 2)
             {
               v53 = @"Invalid MCC/MNC in Private LTE configuration";
               goto LABEL_60;
             }
 
             v32 = v23;
-            v33 = [*(v23 + 2824) decimalDigitCharacterSet];
-            v34 = [v33 invertedSet];
+            decimalDigitCharacterSet2 = [*(v23 + 2824) decimalDigitCharacterSet];
+            invertedSet2 = [decimalDigitCharacterSet2 invertedSet];
 
-            v35 = [v31 rangeOfCharacterFromSet:v34];
+            v35 = [mobileNetworkCode rangeOfCharacterFromSet:invertedSet2];
             if (v35 != 0x7FFFFFFFFFFFFFFFLL)
             {
               v53 = @"Invalid MCC/MNC in Private LTE configuration";
               goto LABEL_63;
             }
 
-            v36 = [v25 trackingAreaCode];
+            trackingAreaCode = [v25 trackingAreaCode];
             v23 = v32;
-            if (v36)
+            if (trackingAreaCode)
             {
-              v27 = v36;
-              v31 = [v25 trackingAreaCode];
-              if (!isa_nsstring(v31))
+              v27 = trackingAreaCode;
+              mobileNetworkCode = [v25 trackingAreaCode];
+              if (!isa_nsstring(mobileNetworkCode))
               {
                 goto LABEL_59;
               }
 
-              v37 = [*(v32 + 2824) decimalDigitCharacterSet];
-              v38 = [v37 invertedSet];
+              decimalDigitCharacterSet3 = [*(v32 + 2824) decimalDigitCharacterSet];
+              invertedSet3 = [decimalDigitCharacterSet3 invertedSet];
 
-              if ([v31 rangeOfCharacterFromSet:v38] != 0x7FFFFFFFFFFFFFFFLL || !objc_msgSend(v31, "length"))
+              if ([mobileNetworkCode rangeOfCharacterFromSet:invertedSet3] != 0x7FFFFFFFFFFFFFFFLL || !objc_msgSend(mobileNetworkCode, "length"))
               {
 
 LABEL_59:
@@ -395,19 +395,19 @@ LABEL_59:
 LABEL_60:
                 v52 = v27;
 
-                v27 = v31;
+                v27 = mobileNetworkCode;
 LABEL_61:
 
                 v27 = v52;
 LABEL_62:
 
 LABEL_63:
-                [NEConfiguration addError:v53 toList:v4];
+                [NEConfiguration addError:v53 toList:errorsCopy];
 
                 goto LABEL_10;
               }
 
-              v39 = [v31 length];
+              v39 = [mobileNetworkCode length];
 
               if (v39 > 5)
               {
@@ -427,21 +427,21 @@ LABEL_63:
         }
       }
 
-      v40 = [(NEAppPush *)self providerBundleIdentifier];
-      v41 = [v40 length];
+      providerBundleIdentifier = [(NEAppPush *)self providerBundleIdentifier];
+      v41 = [providerBundleIdentifier length];
 
       if (v41)
       {
-        v42 = [(NEAppPush *)self providerConfiguration];
-        if (!v42)
+        providerConfiguration = [(NEAppPush *)self providerConfiguration];
+        if (!providerConfiguration)
         {
           goto LABEL_44;
         }
 
-        v43 = v42;
-        v44 = [(NEAppPush *)self providerConfiguration];
-        v45 = [v44 allKeys];
-        v46 = [v45 count];
+        v43 = providerConfiguration;
+        providerConfiguration2 = [(NEAppPush *)self providerConfiguration];
+        allKeys = [providerConfiguration2 allKeys];
+        v46 = [allKeys count];
 
         if (!v46)
         {
@@ -450,13 +450,13 @@ LABEL_44:
           if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v67 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_1BA83C000, v47, OS_LOG_TYPE_INFO, "%@ no provider configuration found", buf, 0xCu);
           }
         }
 
-        v48 = [(NEAppPush *)self pluginType];
-        v49 = [v48 length];
+        pluginType = [(NEAppPush *)self pluginType];
+        v49 = [pluginType length];
 
         if (v49)
         {
@@ -484,7 +484,7 @@ LABEL_44:
     v9 = @"A configuration can have maximum 10 SSIDs";
   }
 
-  [NEConfiguration addError:v9 toList:v4];
+  [NEConfiguration addError:v9 toList:errorsCopy];
 LABEL_10:
   v12 = 0;
 LABEL_11:
@@ -493,64 +493,64 @@ LABEL_11:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEAppPush allocWithZone:?]];
   [(NEAppPush *)v4 setEnabled:[(NEAppPush *)self isEnabled]];
-  v5 = [(NEAppPush *)self matchSSIDs];
-  [(NEAppPush *)v4 setMatchSSIDs:v5];
+  matchSSIDs = [(NEAppPush *)self matchSSIDs];
+  [(NEAppPush *)v4 setMatchSSIDs:matchSSIDs];
 
-  v6 = [(NEAppPush *)self providerConfiguration];
-  [(NEAppPush *)v4 setProviderConfiguration:v6];
+  providerConfiguration = [(NEAppPush *)self providerConfiguration];
+  [(NEAppPush *)v4 setProviderConfiguration:providerConfiguration];
 
-  v7 = [(NEAppPush *)self providerBundleIdentifier];
-  [(NEAppPush *)v4 setProviderBundleIdentifier:v7];
+  providerBundleIdentifier = [(NEAppPush *)self providerBundleIdentifier];
+  [(NEAppPush *)v4 setProviderBundleIdentifier:providerBundleIdentifier];
 
-  v8 = [(NEAppPush *)self pluginType];
-  [(NEAppPush *)v4 setPluginType:v8];
+  pluginType = [(NEAppPush *)self pluginType];
+  [(NEAppPush *)v4 setPluginType:pluginType];
 
-  v9 = [(NEAppPush *)self matchPrivateLTENetworks];
-  [(NEAppPush *)v4 setMatchPrivateLTENetworks:v9];
+  matchPrivateLTENetworks = [(NEAppPush *)self matchPrivateLTENetworks];
+  [(NEAppPush *)v4 setMatchPrivateLTENetworks:matchPrivateLTENetworks];
 
   [(NEAppPush *)v4 setMatchEthernet:[(NEAppPush *)self matchEthernet]];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeBool:-[NEAppPush isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
-  v4 = [(NEAppPush *)self matchSSIDs];
-  [v9 encodeObject:v4 forKey:@"MatchSSIDs"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEAppPush isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
+  matchSSIDs = [(NEAppPush *)self matchSSIDs];
+  [coderCopy encodeObject:matchSSIDs forKey:@"MatchSSIDs"];
 
-  v5 = [(NEAppPush *)self providerConfiguration];
-  [v9 encodeObject:v5 forKey:@"ProviderConfig"];
+  providerConfiguration = [(NEAppPush *)self providerConfiguration];
+  [coderCopy encodeObject:providerConfiguration forKey:@"ProviderConfig"];
 
-  v6 = [(NEAppPush *)self providerBundleIdentifier];
-  [v9 encodeObject:v6 forKey:@"ProviderBundleID"];
+  providerBundleIdentifier = [(NEAppPush *)self providerBundleIdentifier];
+  [coderCopy encodeObject:providerBundleIdentifier forKey:@"ProviderBundleID"];
 
-  v7 = [(NEAppPush *)self pluginType];
-  [v9 encodeObject:v7 forKey:@"PluginType"];
+  pluginType = [(NEAppPush *)self pluginType];
+  [coderCopy encodeObject:pluginType forKey:@"PluginType"];
 
-  v8 = [(NEAppPush *)self matchPrivateLTENetworks];
-  [v9 encodeObject:v8 forKey:@"MatchPLTEs"];
+  matchPrivateLTENetworks = [(NEAppPush *)self matchPrivateLTENetworks];
+  [coderCopy encodeObject:matchPrivateLTENetworks forKey:@"MatchPLTEs"];
 
-  [v9 encodeBool:-[NEAppPush matchEthernet](self forKey:{"matchEthernet"), @"MatchEthernet"}];
+  [coderCopy encodeBool:-[NEAppPush matchEthernet](self forKey:{"matchEthernet"), @"MatchEthernet"}];
 }
 
-- (NEAppPush)initWithCoder:(id)a3
+- (NEAppPush)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = NEAppPush;
   v5 = [(NEAppPush *)&v29 init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"Enabled"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"Enabled"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MatchSSIDs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MatchSSIDs"];
     matchSSIDs = v5->_matchSSIDs;
     v5->_matchSSIDs = v9;
 
@@ -560,26 +560,26 @@ LABEL_11:
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v11 setWithObjects:{v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"ProviderConfig"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"ProviderConfig"];
     providerConfiguration = v5->_providerConfiguration;
     v5->_providerConfiguration = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProviderBundleID"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProviderBundleID"];
     providerBundleIdentifier = v5->_providerBundleIdentifier;
     v5->_providerBundleIdentifier = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PluginType"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PluginType"];
     pluginType = v5->_pluginType;
     v5->_pluginType = v21;
 
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"MatchPLTEs"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"MatchPLTEs"];
     matchPrivateLTENetworks = v5->_matchPrivateLTENetworks;
     v5->_matchPrivateLTENetworks = v26;
 
-    v5->_matchEthernet = [v4 decodeBoolForKey:@"MatchEthernet"];
+    v5->_matchEthernet = [coderCopy decodeBoolForKey:@"MatchEthernet"];
   }
 
   return v5;

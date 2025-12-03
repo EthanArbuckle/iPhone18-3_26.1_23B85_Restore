@@ -1,13 +1,13 @@
 @interface FLFollowUpItem
 + (id)_expirationDateFormatter;
-+ (int64_t)_daysRemaining:(id)a3 ceiling:(BOOL)a4;
++ (int64_t)_daysRemaining:(id)remaining ceiling:(BOOL)ceiling;
 - (BOOL)_shouldAdjustInstanceToMidnight;
 - (BOOL)displayExpirationDate;
 - (BOOL)isExpired;
 - (BOOL)isHSA2LoginItem;
 - (BOOL)isHSA2PasswordResetItem;
 - (FLFollowUpItem)init;
-- (FLFollowUpItem)initWithCoder:(id)a3;
+- (FLFollowUpItem)initWithCoder:(id)coder;
 - (FLFollowUpItem)initWithoutDefaults;
 - (NSData)_userInfoData;
 - (id)_informativeNotificationTextOrDate;
@@ -16,10 +16,10 @@
 - (id)_styleFlagsString;
 - (id)description;
 - (id)formattedExpirationDate;
-- (void)encodeWithCoder:(id)a3;
-- (void)setShowInSettings:(BOOL)a3;
-- (void)setTargetBundleIdentifier:(id)a3;
-- (void)set_userInfoData:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setShowInSettings:(BOOL)settings;
+- (void)setTargetBundleIdentifier:(id)identifier;
+- (void)set_userInfoData:(id)data;
 @end
 
 @implementation FLFollowUpItem
@@ -33,20 +33,20 @@
 
 - (BOOL)isHSA2LoginItem
 {
-  v2 = [(FLFollowUpItem *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"FLHSA2LoginNotification"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(FLFollowUpItem *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"FLHSA2LoginNotification"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isHSA2PasswordResetItem
 {
-  v2 = [(FLFollowUpItem *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"FLHSA2PasswordResetNotification"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(FLFollowUpItem *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"FLHSA2PasswordResetNotification"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)_expirationDateFormatter
@@ -82,10 +82,10 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
   if (v2)
   {
     v2->_showInSettings = 1;
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     uniqueIdentifier = v3->_uniqueIdentifier;
-    v3->_uniqueIdentifier = v5;
+    v3->_uniqueIdentifier = uUIDString;
 
     groupIdentifier = v3->_groupIdentifier;
     v3->_groupIdentifier = @"com.apple.followup.group.device";
@@ -97,21 +97,21 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
   return v3;
 }
 
-- (void)setTargetBundleIdentifier:(id)a3
+- (void)setTargetBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  identifierCopy = identifier;
+  v5 = [identifierCopy copy];
   targetBundleIdentifier = self->_targetBundleIdentifier;
   self->_targetBundleIdentifier = v5;
 
-  v7 = [v4 isEqualToString:@"com.apple.Preferences"];
+  v7 = [identifierCopy isEqualToString:@"com.apple.Preferences"];
   self->_showInSettings = v7;
 }
 
-- (void)setShowInSettings:(BOOL)a3
+- (void)setShowInSettings:(BOOL)settings
 {
-  self->_showInSettings = a3;
-  if (a3)
+  self->_showInSettings = settings;
+  if (settings)
   {
     v4 = @"com.apple.Preferences";
     targetBundleIdentifier = self->_targetBundleIdentifier;
@@ -127,66 +127,66 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
   MEMORY[0x2821F96F8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueIdentifier = self->_uniqueIdentifier;
-  v5 = a3;
-  [v5 encodeObject:uniqueIdentifier forKey:@"_uniqueIdentifier"];
-  [v5 encodeObject:self->_notification forKey:@"_notification"];
-  [v5 encodeBool:self->_showInSettings forKey:@"_showInSettings"];
-  [v5 encodeObject:self->_title forKey:@"_title"];
-  [v5 encodeObject:self->_informativeText forKey:@"_informativeText"];
-  [v5 encodeInteger:self->_displayStyle forKey:@"_displayStyle"];
-  [v5 encodeBool:self->_shouldPersistWhenActivated forKey:@"_shouldPersistWhenActivated"];
-  [v5 encodeBool:self->_shouldPersistWhenDismissed forKey:@"_shouldPersistWhenDismissed"];
-  [v5 encodeObject:self->_actions forKey:@"_actions"];
-  [v5 encodeObject:self->_userInfo forKey:@"_userInfo"];
-  [v5 encodeInteger:self->_sqlID forKey:@"_sqlID"];
-  [v5 encodeObject:self->_clientIdentifier forKey:@"_clientIdentifier"];
-  [v5 encodeObject:self->_delegateMachServiceName forKey:@"_delegateMachServiceName"];
-  [v5 encodeObject:self->_extensionIdentifier forKey:@"_extensionIdentifier"];
-  [v5 encodeObject:self->_groupIdentifier forKey:@"_groupIdentifier"];
-  [v5 encodeObject:self->_collectionIdentifier forKey:@"_collectionIdentifier"];
-  [v5 encodeObject:self->_targetBundleIdentifier forKey:@"_targetBundleIdentifier"];
-  [v5 encodeObject:self->_representingBundlePath forKey:@"_representingBundlePath"];
-  [v5 encodeObject:self->_bundleIconName forKey:@"_bundleIconName"];
-  [v5 encodeObject:self->_informativeFooterText forKey:@"_informativeFooterText"];
-  [v5 encodeObject:self->_categoryIdentifier forKey:@"_categoryIdentifier"];
-  [v5 encodeObject:self->_expirationDate forKey:@"_expirationDate"];
-  [v5 encodeObject:self->_accountIdentifier forKey:@"_accountIdentifier"];
-  [v5 encodeObject:self->_typeIdentifier forKey:@"_typeIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"_uniqueIdentifier"];
+  [coderCopy encodeObject:self->_notification forKey:@"_notification"];
+  [coderCopy encodeBool:self->_showInSettings forKey:@"_showInSettings"];
+  [coderCopy encodeObject:self->_title forKey:@"_title"];
+  [coderCopy encodeObject:self->_informativeText forKey:@"_informativeText"];
+  [coderCopy encodeInteger:self->_displayStyle forKey:@"_displayStyle"];
+  [coderCopy encodeBool:self->_shouldPersistWhenActivated forKey:@"_shouldPersistWhenActivated"];
+  [coderCopy encodeBool:self->_shouldPersistWhenDismissed forKey:@"_shouldPersistWhenDismissed"];
+  [coderCopy encodeObject:self->_actions forKey:@"_actions"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"_userInfo"];
+  [coderCopy encodeInteger:self->_sqlID forKey:@"_sqlID"];
+  [coderCopy encodeObject:self->_clientIdentifier forKey:@"_clientIdentifier"];
+  [coderCopy encodeObject:self->_delegateMachServiceName forKey:@"_delegateMachServiceName"];
+  [coderCopy encodeObject:self->_extensionIdentifier forKey:@"_extensionIdentifier"];
+  [coderCopy encodeObject:self->_groupIdentifier forKey:@"_groupIdentifier"];
+  [coderCopy encodeObject:self->_collectionIdentifier forKey:@"_collectionIdentifier"];
+  [coderCopy encodeObject:self->_targetBundleIdentifier forKey:@"_targetBundleIdentifier"];
+  [coderCopy encodeObject:self->_representingBundlePath forKey:@"_representingBundlePath"];
+  [coderCopy encodeObject:self->_bundleIconName forKey:@"_bundleIconName"];
+  [coderCopy encodeObject:self->_informativeFooterText forKey:@"_informativeFooterText"];
+  [coderCopy encodeObject:self->_categoryIdentifier forKey:@"_categoryIdentifier"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"_expirationDate"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"_accountIdentifier"];
+  [coderCopy encodeObject:self->_typeIdentifier forKey:@"_typeIdentifier"];
 }
 
-- (FLFollowUpItem)initWithCoder:(id)a3
+- (FLFollowUpItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FLFollowUpItem *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uniqueIdentifier"];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_notification"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_notification"];
     notification = v5->_notification;
     v5->_notification = v8;
 
-    v5->_showInSettings = [v4 decodeBoolForKey:@"_showInSettings"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
+    v5->_showInSettings = [coderCopy decodeBoolForKey:@"_showInSettings"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_informativeText"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_informativeText"];
     informativeText = v5->_informativeText;
     v5->_informativeText = v12;
 
-    v5->_displayStyle = [v4 decodeIntegerForKey:@"_displayStyle"];
-    v5->_shouldPersistWhenActivated = [v4 decodeBoolForKey:@"_shouldPersistWhenActivated"];
-    v5->_shouldPersistWhenDismissed = [v4 decodeBoolForKey:@"_shouldPersistWhenDismissed"];
+    v5->_displayStyle = [coderCopy decodeIntegerForKey:@"_displayStyle"];
+    v5->_shouldPersistWhenActivated = [coderCopy decodeBoolForKey:@"_shouldPersistWhenActivated"];
+    v5->_shouldPersistWhenDismissed = [coderCopy decodeBoolForKey:@"_shouldPersistWhenDismissed"];
     v14 = MEMORY[0x277CBEB98];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"_actions"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"_actions"];
     actions = v5->_actions;
     v5->_actions = v17;
 
@@ -196,60 +196,60 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v19 setWithObjects:{v20, v21, v22, v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"_userInfo"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"_userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v25;
 
-    v5->_sqlID = [v4 decodeIntegerForKey:@"_sqlID"];
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientIdentifier"];
+    v5->_sqlID = [coderCopy decodeIntegerForKey:@"_sqlID"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientIdentifier"];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_delegateMachServiceName"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_delegateMachServiceName"];
     delegateMachServiceName = v5->_delegateMachServiceName;
     v5->_delegateMachServiceName = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_extensionIdentifier"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_extensionIdentifier"];
     extensionIdentifier = v5->_extensionIdentifier;
     v5->_extensionIdentifier = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_groupIdentifier"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_groupIdentifier"];
     groupIdentifier = v5->_groupIdentifier;
     v5->_groupIdentifier = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_collectionIdentifier"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_collectionIdentifier"];
     collectionIdentifier = v5->_collectionIdentifier;
     v5->_collectionIdentifier = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_targetBundleIdentifier"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_targetBundleIdentifier"];
     targetBundleIdentifier = v5->_targetBundleIdentifier;
     v5->_targetBundleIdentifier = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_representingBundlePath"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_representingBundlePath"];
     representingBundlePath = v5->_representingBundlePath;
     v5->_representingBundlePath = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIconName"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIconName"];
     bundleIconName = v5->_bundleIconName;
     v5->_bundleIconName = v41;
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_informativeFooterText"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_informativeFooterText"];
     informativeFooterText = v5->_informativeFooterText;
     v5->_informativeFooterText = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_categoryIdentifier"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_categoryIdentifier"];
     categoryIdentifier = v5->_categoryIdentifier;
     v5->_categoryIdentifier = v45;
 
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_expirationDate"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_accountIdentifier"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v49;
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_typeIdentifier"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_typeIdentifier"];
     typeIdentifier = v5->_typeIdentifier;
     v5->_typeIdentifier = v51;
   }
@@ -259,17 +259,17 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
 
 - (NSData)_userInfoData
 {
-  v3 = [(FLFollowUpItem *)self userInfo];
+  userInfo = [(FLFollowUpItem *)self userInfo];
 
-  if (v3)
+  if (userInfo)
   {
     v4 = MEMORY[0x277CCAC58];
-    v5 = [(FLFollowUpItem *)self userInfo];
+    userInfo2 = [(FLFollowUpItem *)self userInfo];
     v9 = 0;
-    v3 = [v4 dataWithPropertyList:v5 format:200 options:0 error:&v9];
+    userInfo = [v4 dataWithPropertyList:userInfo2 format:200 options:0 error:&v9];
     v6 = v9;
 
-    if (!v3)
+    if (!userInfo)
     {
       v7 = _FLLogSystem();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -279,21 +279,21 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
     }
   }
 
-  return v3;
+  return userInfo;
 }
 
-- (void)set_userInfoData:(id)a3
+- (void)set_userInfoData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v8 = 0;
-    v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:&v8];
+    v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:&v8];
     v5 = v8;
     [(FLFollowUpItem *)self setUserInfo:v4];
 
-    v6 = [(FLFollowUpItem *)self userInfo];
+    userInfo = [(FLFollowUpItem *)self userInfo];
 
-    if (!v6)
+    if (!userInfo)
     {
       v7 = _FLLogSystem();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -306,39 +306,39 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
 
 - (BOOL)_shouldAdjustInstanceToMidnight
 {
-  v2 = [(FLFollowUpItem *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"FLUserInfoPropertyAdjustExpirationToMidnight"];
+  userInfo = [(FLFollowUpItem *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"FLUserInfoPropertyAdjustExpirationToMidnight"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)_midnightAdjustedDate
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = self->_expirationDate;
-  v4 = [(FLFollowUpItem *)self expirationDate];
-  if (v4 && [(FLFollowUpItem *)self _shouldAdjustInstanceToMidnight])
+  expirationDate = [(FLFollowUpItem *)self expirationDate];
+  if (expirationDate && [(FLFollowUpItem *)self _shouldAdjustInstanceToMidnight])
   {
     v5 = +[FLEnvironment currentEnvironment];
-    v6 = [v5 normalizeExpirationToMidnight];
+    normalizeExpirationToMidnight = [v5 normalizeExpirationToMidnight];
 
-    if (v6)
+    if (normalizeExpirationToMidnight)
     {
-      v7 = [MEMORY[0x277CBEA80] currentCalendar];
-      v8 = [(FLFollowUpItem *)self expirationDate];
-      v9 = [v7 components:30 fromDate:v8];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      expirationDate2 = [(FLFollowUpItem *)self expirationDate];
+      v9 = [currentCalendar components:30 fromDate:expirationDate2];
 
-      v10 = [v7 dateWithEra:objc_msgSend(v9 year:"era") month:objc_msgSend(v9 day:"year") hour:objc_msgSend(v9 minute:"month") second:objc_msgSend(v9 nanosecond:{"day"), 23, 59, 0, 0}];
+      v10 = [currentCalendar dateWithEra:objc_msgSend(v9 year:"era") month:objc_msgSend(v9 day:"year") hour:objc_msgSend(v9 minute:"month") second:objc_msgSend(v9 nanosecond:{"day"), 23, 59, 0, 0}];
 
       if (!v10)
       {
@@ -349,7 +349,7 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
           *buf = 138412802;
           v16 = v9;
           v17 = 2112;
-          v18 = v7;
+          v18 = currentCalendar;
           v19 = 2112;
           v20 = expirationDate;
           _os_log_error_impl(&dword_22E696000, v11, OS_LOG_TYPE_ERROR, "Could not build midnight adjusted date with comoponents %@ from calendar %@, reverting to expiration date as is %@", buf, 0x20u);
@@ -373,11 +373,11 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
 
 - (BOOL)isExpired
 {
-  v2 = [(FLFollowUpItem *)self _midnightAdjustedDate];
-  if (v2)
+  _midnightAdjustedDate = [(FLFollowUpItem *)self _midnightAdjustedDate];
+  if (_midnightAdjustedDate)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    v4 = [v2 compare:v3] == -1;
+    date = [MEMORY[0x277CBEAA8] date];
+    v4 = [_midnightAdjustedDate compare:date] == -1;
   }
 
   else
@@ -390,42 +390,42 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
 
 - (BOOL)displayExpirationDate
 {
-  v3 = [(FLFollowUpItem *)self expirationDate];
+  expirationDate = [(FLFollowUpItem *)self expirationDate];
 
-  v6 = [(FLFollowUpItem *)self userInfo];
-  v4 = [v6 objectForKeyedSubscript:@"FLUserInfoPropertyDontDisplayDate"];
+  userInfo = [(FLFollowUpItem *)self userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"FLUserInfoPropertyDontDisplayDate"];
 
   objc_opt_class();
   v5 = objc_opt_isKindOfClass() ^ 1;
-  LOBYTE(v6) = v5 & (v3 != 0);
-  if ((v5 & 1) == 0 && v3)
+  LOBYTE(userInfo) = v5 & (expirationDate != 0);
+  if ((v5 & 1) == 0 && expirationDate)
   {
-    LODWORD(v6) = [v4 BOOLValue] ^ 1;
+    LODWORD(userInfo) = [v4 BOOLValue] ^ 1;
   }
 
-  return v6;
+  return userInfo;
 }
 
 - (id)formattedExpirationDate
 {
-  v3 = [(FLFollowUpItem *)self _midnightAdjustedDate];
-  if (!v3)
+  _midnightAdjustedDate = [(FLFollowUpItem *)self _midnightAdjustedDate];
+  if (!_midnightAdjustedDate)
   {
     v17 = 0;
     goto LABEL_21;
   }
 
-  v4 = [(FLFollowUpItem *)self userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"FLUserInfoPropertyAbsoluteFormat"];
+  userInfo = [(FLFollowUpItem *)self userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"FLUserInfoPropertyAbsoluteFormat"];
 
-  v6 = [(FLFollowUpItem *)self userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"FLUserInfoPropertyRelativeZeroDay"];
+  userInfo2 = [(FLFollowUpItem *)self userInfo];
+  v7 = [userInfo2 objectForKeyedSubscript:@"FLUserInfoPropertyRelativeZeroDay"];
 
-  v8 = [(FLFollowUpItem *)self userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"FLUserInfoPropertyRelativeSingleDay"];
+  userInfo3 = [(FLFollowUpItem *)self userInfo];
+  v9 = [userInfo3 objectForKeyedSubscript:@"FLUserInfoPropertyRelativeSingleDay"];
 
-  v10 = [(FLFollowUpItem *)self userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"FLUserInfoPropertyRelativePluralDaysFormat"];
+  userInfo4 = [(FLFollowUpItem *)self userInfo];
+  v11 = [userInfo4 objectForKeyedSubscript:@"FLUserInfoPropertyRelativePluralDaysFormat"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -433,21 +433,21 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(FLFollowUpItem *)self userInfo];
-      v13 = [v12 objectForKeyedSubscript:@"FLUserInfoPropertyRelativeIsCeiling"];
+      userInfo5 = [(FLFollowUpItem *)self userInfo];
+      v13 = [userInfo5 objectForKeyedSubscript:@"FLUserInfoPropertyRelativeIsCeiling"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
       }
 
       else
       {
-        v14 = 0;
+        bOOLValue = 0;
       }
 
-      v21 = [FLFollowUpItem _daysRemaining:v3 ceiling:v14];
+      v21 = [FLFollowUpItem _daysRemaining:_midnightAdjustedDate ceiling:bOOLValue];
       if (v21 == 1)
       {
         v16 = v9;
@@ -472,7 +472,7 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v18 = +[FLFollowUpItem _expirationDateFormatter];
-    v13 = [v18 stringFromDate:v3];
+    v13 = [v18 stringFromDate:_midnightAdjustedDate];
 
     v19 = MEMORY[0x277CCACA8];
     v20 = FLLoc(@"ITEM_EXPIRATION_FORMAT");
@@ -481,7 +481,7 @@ uint64_t __42__FLFollowUpItem__expirationDateFormatter__block_invoke()
   }
 
   v15 = +[FLFollowUpItem _expirationDateFormatter];
-  v13 = [v15 stringFromDate:v3];
+  v13 = [v15 stringFromDate:_midnightAdjustedDate];
 
   v16 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v5, v13];
 LABEL_17:
@@ -495,28 +495,28 @@ LABEL_21:
 
 - (id)_informativeNotificationTextOrDate
 {
-  v3 = [(FLFollowUpItem *)self notification];
-  v4 = [v3 informativeText];
+  notification = [(FLFollowUpItem *)self notification];
+  informativeText = [notification informativeText];
 
-  v5 = [(FLFollowUpItem *)self notification];
-  v6 = [v5 informativeText];
-  v7 = v6;
-  if (!v6)
+  notification2 = [(FLFollowUpItem *)self notification];
+  informativeText2 = [notification2 informativeText];
+  v7 = informativeText2;
+  if (!informativeText2)
   {
-    v6 = &stru_284330A78;
+    informativeText2 = &stru_284330A78;
   }
 
-  if ([(__CFString *)v6 isEqualToString:?])
+  if ([(__CFString *)informativeText2 isEqualToString:?])
   {
-    v8 = [(FLFollowUpItem *)self displayExpirationDate];
+    displayExpirationDate = [(FLFollowUpItem *)self displayExpirationDate];
 
-    if (!v8)
+    if (!displayExpirationDate)
     {
       goto LABEL_8;
     }
 
     [(FLFollowUpItem *)self formattedExpirationDate];
-    v4 = v5 = v4;
+    informativeText = notification2 = informativeText;
   }
 
   else
@@ -525,23 +525,23 @@ LABEL_21:
 
 LABEL_8:
 
-  return v4;
+  return informativeText;
 }
 
-+ (int64_t)_daysRemaining:(id)a3 ceiling:(BOOL)a4
++ (int64_t)_daysRemaining:(id)remaining ceiling:(BOOL)ceiling
 {
-  v4 = a4;
-  v5 = a3;
+  ceilingCopy = ceiling;
+  remainingCopy = remaining;
   v6 = +[FLEnvironment currentEnvironment];
   [v6 oneDayTimeInterval];
   v8 = v7;
 
-  [v5 timeIntervalSinceNow];
+  [remainingCopy timeIntervalSinceNow];
   v10 = v9;
 
   v11 = ceil(v10 / v8);
   v12 = floor(v10 / v8);
-  if (v4)
+  if (ceilingCopy)
   {
     return v11;
   }
@@ -569,9 +569,9 @@ LABEL_8:
   informativeFooterText = self->_informativeFooterText;
   categoryIdentifier = self->_categoryIdentifier;
   extensionIdentifier = self->_extensionIdentifier;
-  v11 = [(FLFollowUpItem *)self _styleFlagsString];
-  v12 = [(FLFollowUpItem *)self _priorityFlagString];
-  v13 = [v24 stringWithFormat:@"<%@: %p - UID:%@\nEID:%@\nTBI:%@\nClientID:%@\nGID:%@\nCollection:%@\nAccountID:%@\nTypeID:%@\ntitle:%@\nactions:%@\nnotification:%@\nrepresentingBundlePath:%@\nbundleIconName:%@\ninformativeFooterText:%@\nCategoryID:%@\nStyle:%@\nPriority:%@\nExpires:%@", v23, self, uniqueIdentifier, extensionIdentifier, targetBundleIdentifier, clientIdentifier, groupIdentifier, collectionIdentifier, accountIdentifier, typeIdentifier, title, actions, notification, representingBundlePath, bundleIconName, informativeFooterText, categoryIdentifier, v11, v12, self->_expirationDate];
+  _styleFlagsString = [(FLFollowUpItem *)self _styleFlagsString];
+  _priorityFlagString = [(FLFollowUpItem *)self _priorityFlagString];
+  v13 = [v24 stringWithFormat:@"<%@: %p - UID:%@\nEID:%@\nTBI:%@\nClientID:%@\nGID:%@\nCollection:%@\nAccountID:%@\nTypeID:%@\ntitle:%@\nactions:%@\nnotification:%@\nrepresentingBundlePath:%@\nbundleIconName:%@\ninformativeFooterText:%@\nCategoryID:%@\nStyle:%@\nPriority:%@\nExpires:%@", v23, self, uniqueIdentifier, extensionIdentifier, targetBundleIdentifier, clientIdentifier, groupIdentifier, collectionIdentifier, accountIdentifier, typeIdentifier, title, actions, notification, representingBundlePath, bundleIconName, informativeFooterText, categoryIdentifier, _styleFlagsString, _priorityFlagString, self->_expirationDate];
 
   return v13;
 }

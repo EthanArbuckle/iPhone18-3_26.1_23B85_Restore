@@ -1,20 +1,20 @@
 @interface NFTNEPHandler
-- (void)startTNEPDeviceWithServices:(id)a3 optionalRecords:(id)a4 callback:(id)a5;
-- (void)startTNEPReaderWithCallback:(id)a3;
-- (void)tnepReaderDeselectWithCallback:(id)a3;
-- (void)tnepReaderRestartPollingWithCallback:(id)a3;
-- (void)tnepReaderSelectService:(id)a3 callback:(id)a4;
-- (void)tnepReaderSend:(id)a3 callback:(id)a4;
-- (void)tnepTagDeviceSendNDEFMessage:(id)a3 callback:(id)a4;
+- (void)startTNEPDeviceWithServices:(id)services optionalRecords:(id)records callback:(id)callback;
+- (void)startTNEPReaderWithCallback:(id)callback;
+- (void)tnepReaderDeselectWithCallback:(id)callback;
+- (void)tnepReaderRestartPollingWithCallback:(id)callback;
+- (void)tnepReaderSelectService:(id)service callback:(id)callback;
+- (void)tnepReaderSend:(id)send callback:(id)callback;
+- (void)tnepTagDeviceSendNDEFMessage:(id)message callback:(id)callback;
 @end
 
 @implementation NFTNEPHandler
 
-- (void)startTNEPDeviceWithServices:(id)a3 optionalRecords:(id)a4 callback:(id)a5
+- (void)startTNEPDeviceWithServices:(id)services optionalRecords:(id)records callback:(id)callback
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  callbackCopy = callback;
+  recordsCopy = records;
+  servicesCopy = services;
   v12 = NFSharedSignpostLog();
   v13 = v12;
   if (self)
@@ -74,11 +74,11 @@
   }
 
   sub_100265DBC(self, 0);
-  v26 = [[NSMutableArray alloc] initWithArray:v11];
+  v26 = [[NSMutableArray alloc] initWithArray:servicesCopy];
 
   sub_100265DBC(self, v26);
   sub_100265DCC(self, 0);
-  v27 = [[NSArray alloc] initWithArray:v10];
+  v27 = [[NSArray alloc] initWithArray:recordsCopy];
 
   sub_100265DCC(self, v27);
   if (self)
@@ -90,18 +90,18 @@
   block[1] = 3221225472;
   block[2] = sub_100265DDC;
   block[3] = &unk_100318A90;
-  v31 = v9;
-  v28 = v9;
+  v31 = callbackCopy;
+  v28 = callbackCopy;
   dispatch_async(&self->super, block);
 }
 
-- (void)tnepTagDeviceSendNDEFMessage:(id)a3 callback:(id)a4
+- (void)tnepTagDeviceSendNDEFMessage:(id)message callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  callbackCopy = callback;
   if (self && self->_isServiceSelected)
   {
-    if (sub_10026637C(self, v7))
+    if (sub_10026637C(self, messageCopy))
     {
       v9 = 0;
     }
@@ -131,7 +131,7 @@
           v29 = 43;
         }
 
-        v26(3, "%c[%{public}s %{public}s]:%i Error sending message=%{public}@", v29, ClassName, Name, 178, v7);
+        v26(3, "%c[%{public}s %{public}s]:%i Error sending message=%{public}@", v29, ClassName, Name, 178, messageCopy);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -158,7 +158,7 @@
         v49 = 1024;
         v50 = 178;
         v51 = 2114;
-        v52 = v7;
+        v52 = messageCopy;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Error sending message=%{public}@", buf, 0x2Cu);
       }
     }
@@ -169,9 +169,9 @@
     v38[2] = sub_1002664B8;
     v38[3] = &unk_10031B170;
     v39 = v9;
-    v40 = v8;
+    v40 = callbackCopy;
     v20 = v9;
-    v34 = v8;
+    v34 = callbackCopy;
     dispatch_async(workQueue, v38);
   }
 
@@ -230,16 +230,16 @@
     block[1] = 3221225472;
     block[2] = sub_100266264;
     block[3] = &unk_100318A90;
-    v42 = v8;
-    v19 = v8;
+    v42 = callbackCopy;
+    v19 = callbackCopy;
     dispatch_async(&self->super, block);
     v20 = v42;
   }
 }
 
-- (void)startTNEPReaderWithCallback:(id)a3
+- (void)startTNEPReaderWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = NFSharedSignpostLog();
   v6 = v5;
   if (self)
@@ -267,31 +267,31 @@
   block[1] = 3221225472;
   block[2] = sub_100266620;
   block[3] = &unk_100318A90;
-  v12 = v4;
-  v10 = v4;
+  v12 = callbackCopy;
+  v10 = callbackCopy;
   dispatch_async(&self->super, block);
 }
 
-- (void)tnepReaderSelectService:(id)a3 callback:(id)a4
+- (void)tnepReaderSelectService:(id)service callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  LOBYTE(a4) = [v6 length];
-  v8 = v6;
-  v36 = a4;
+  serviceCopy = service;
+  callbackCopy = callback;
+  LOBYTE(callback) = [serviceCopy length];
+  v8 = serviceCopy;
+  callbackCopy2 = callback;
   if (self)
   {
-    v9 = self;
-    objc_sync_enter(v9);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v10 = v9->_tagDeviceServices;
+    v10 = selfCopy->_tagDeviceServices;
     v11 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v45 objects:buf count:16];
     if (v11)
     {
-      v35 = v7;
+      v35 = callbackCopy;
       v12 = *v46;
       while (2)
       {
@@ -323,10 +323,10 @@
       }
 
 LABEL_12:
-      v7 = v35;
+      callbackCopy = v35;
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -382,7 +382,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  if (v36 && v11)
+  if (callbackCopy2 && v11)
   {
     v27 = NFSharedSignpostLog();
     v28 = v27;
@@ -402,11 +402,11 @@ LABEL_12:
     v38[2] = sub_100266B8C;
     v38[3] = &unk_10031D400;
     v38[4] = self;
-    v41 = v7;
+    v41 = callbackCopy;
     v42 = a2;
     v39 = v8;
     v40 = v11;
-    v30 = v7;
+    v30 = callbackCopy;
     sub_100267134(self, v40, 1, v38);
 
     v31 = v39;
@@ -423,16 +423,16 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = sub_100266A74;
     block[3] = &unk_100318A90;
-    v44 = v7;
-    v32 = v7;
+    v44 = callbackCopy;
+    v32 = callbackCopy;
     dispatch_async(&self->super, block);
     v31 = v44;
   }
 }
 
-- (void)tnepReaderDeselectWithCallback:(id)a3
+- (void)tnepReaderDeselectWithCallback:(id)callback
 {
-  v5 = a3;
+  callbackCopy = callback;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -493,17 +493,17 @@ LABEL_12:
   v20[1] = 3221225472;
   v20[2] = sub_100267A5C;
   v20[3] = &unk_1003166B0;
-  v21 = v5;
+  v21 = callbackCopy;
   v22 = a2;
   v20[4] = self;
-  v18 = v5;
+  v18 = callbackCopy;
   sub_100267134(self, 0, 0, v20);
 }
 
-- (void)tnepReaderSend:(id)a3 callback:(id)a4
+- (void)tnepReaderSend:(id)send callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  sendCopy = send;
+  callbackCopy = callback;
   v9 = NFSharedSignpostLog();
   v10 = v9;
   if (self)
@@ -529,19 +529,19 @@ LABEL_12:
   v15[2] = sub_100267E4C;
   v15[3] = &unk_10031D428;
   v15[4] = self;
-  v16 = v7;
-  v17 = v8;
+  v16 = sendCopy;
+  v17 = callbackCopy;
   v18 = a2;
-  v13 = v8;
-  v14 = v7;
+  v13 = callbackCopy;
+  v14 = sendCopy;
   sub_10026809C(self, v14, readerSelectedService, v15);
 }
 
-- (void)tnepReaderRestartPollingWithCallback:(id)a3
+- (void)tnepReaderRestartPollingWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   sub_1002684E0(self, 0);
-  v4[2](v4, 0);
+  callbackCopy[2](callbackCopy, 0);
 }
 
 @end

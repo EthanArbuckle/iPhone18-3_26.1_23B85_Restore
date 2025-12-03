@@ -1,6 +1,6 @@
 @interface ANAnalyticsGroup
 - (ANAnalyticsGroup)init;
-- (void)addAnnouncement:(id)a3 metadata:(id)a4;
+- (void)addAnnouncement:(id)announcement metadata:(id)metadata;
 @end
 
 @implementation ANAnalyticsGroup
@@ -24,12 +24,12 @@
   return v2;
 }
 
-- (void)addAnnouncement:(id)a3 metadata:(id)a4
+- (void)addAnnouncement:(id)announcement metadata:(id)metadata
 {
   announcements = self->_announcements;
-  v7 = a4;
-  [(NSMutableArray *)announcements addObject:a3];
-  [(NSMutableArray *)self->_metadata addObject:v7];
+  metadataCopy = metadata;
+  [(NSMutableArray *)announcements addObject:announcement];
+  [(NSMutableArray *)self->_metadata addObject:metadataCopy];
 }
 
 @end

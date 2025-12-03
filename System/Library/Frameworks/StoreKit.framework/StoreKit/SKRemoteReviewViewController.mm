@@ -1,31 +1,31 @@
 @interface SKRemoteReviewViewController
 - (SKRemoteReviewViewControllerDelegate)delegate;
 - (SKStoreReviewViewController)reviewViewController;
-- (void)didFinishWithResult:(id)a3 error:(id)a4;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)didFinishWithResult:(id)result error:(id)error;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SKRemoteReviewViewController
 
-- (void)didFinishWithResult:(id)a3 error:(id)a4
+- (void)didFinishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SKRemoteReviewViewController *)self reviewViewController];
-  v8 = [v7 unsignedIntegerValue];
+  errorCopy = error;
+  resultCopy = result;
+  reviewViewController = [(SKRemoteReviewViewController *)self reviewViewController];
+  unsignedIntegerValue = [resultCopy unsignedIntegerValue];
 
-  [v9 _didFinishWithResult:v8 error:v6];
+  [reviewViewController _didFinishWithResult:unsignedIntegerValue error:errorCopy];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(SKRemoteReviewViewController *)self delegate];
+  errorCopy = error;
+  delegate = [(SKRemoteReviewViewController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(SKRemoteReviewViewController *)self delegate];
-    [v5 remoteReviewViewControllerTerminatedWithError:v6];
+    delegate2 = [(SKRemoteReviewViewController *)self delegate];
+    [delegate2 remoteReviewViewControllerTerminatedWithError:errorCopy];
   }
 }
 

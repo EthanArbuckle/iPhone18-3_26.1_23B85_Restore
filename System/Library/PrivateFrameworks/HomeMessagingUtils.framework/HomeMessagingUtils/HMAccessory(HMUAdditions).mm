@@ -10,38 +10,38 @@
 
 - (BOOL)hmu_isEndpoint
 {
-  v1 = [a1 siriEndpointProfile];
-  v2 = v1 != 0;
+  siriEndpointProfile = [self siriEndpointProfile];
+  v2 = siriEndpointProfile != 0;
 
   return v2;
 }
 
 - (uint64_t)hmu_isHomePod
 {
-  v1 = [a1 category];
-  v2 = [v1 categoryType];
+  category = [self category];
+  categoryType = [category categoryType];
 
-  v3 = [v2 isEqualToString:*MEMORY[0x277CCE8B0]];
+  v3 = [categoryType isEqualToString:*MEMORY[0x277CCE8B0]];
   return v3;
 }
 
 - (uint64_t)hmu_isAppleTV
 {
-  v1 = [a1 category];
-  v2 = [v1 categoryType];
+  category = [self category];
+  categoryType = [category categoryType];
 
-  v3 = [v2 isEqualToString:*MEMORY[0x277CCE870]];
+  v3 = [categoryType isEqualToString:*MEMORY[0x277CCE870]];
   return v3;
 }
 
 - (uint64_t)hmu_isPartOfHome:()HMUAdditions
 {
   v4 = a3;
-  v5 = [a1 home];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v4 uniqueIdentifier];
+  home = [self home];
+  uniqueIdentifier = [home uniqueIdentifier];
+  uniqueIdentifier2 = [v4 uniqueIdentifier];
 
-  v8 = [v6 isEqual:v7];
+  v8 = [uniqueIdentifier isEqual:uniqueIdentifier2];
   return v8;
 }
 
@@ -50,17 +50,17 @@
   v58 = *MEMORY[0x277D85DE8];
   v5 = a3;
   v42 = a4;
-  v6 = [v42 home];
-  v7 = v6;
-  if (v6)
+  home = [v42 home];
+  v7 = home;
+  if (home)
   {
-    v37 = v6;
+    v37 = home;
     v38 = v5;
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    obj = [v6 mediaSystems];
+    obj = [home mediaSystems];
     v41 = [obj countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v41)
     {
@@ -80,8 +80,8 @@
           v48 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v11 = [v9 components];
-          v12 = [v11 countByEnumeratingWithState:&v47 objects:v56 count:16];
+          components = [v9 components];
+          v12 = [components countByEnumeratingWithState:&v47 objects:v56 count:16];
           if (v12)
           {
             v13 = v12;
@@ -92,37 +92,37 @@
               {
                 if (*v48 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(components);
                 }
 
                 v16 = *(*(&v47 + 1) + 8 * j);
-                v17 = [v16 role];
-                if ([v17 type] == 1)
+                role = [v16 role];
+                if ([role type] == 1)
                 {
                 }
 
                 else
                 {
-                  v18 = [v16 role];
-                  v19 = [v18 type];
+                  role2 = [v16 role];
+                  type = [role2 type];
 
-                  if (v19 != 2)
+                  if (type != 2)
                   {
                     goto LABEL_19;
                   }
                 }
 
-                v20 = [v16 mediaProfile];
-                v21 = [v20 accessory];
+                mediaProfile = [v16 mediaProfile];
+                accessory = [mediaProfile accessory];
 
-                if (v21)
+                if (accessory)
                 {
-                  v22 = [v21 uniqueIdentifier];
-                  [v10 addObject:v22];
+                  uniqueIdentifier = [accessory uniqueIdentifier];
+                  [v10 addObject:uniqueIdentifier];
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v47 objects:v56 count:16];
+              v13 = [components countByEnumeratingWithState:&v47 objects:v56 count:16];
             }
 
             while (v13);
@@ -130,13 +130,13 @@
 
 LABEL_19:
 
-          v23 = [v42 uniqueIdentifier];
-          v24 = [v10 containsObject:v23];
+          uniqueIdentifier2 = [v42 uniqueIdentifier];
+          v24 = [v10 containsObject:uniqueIdentifier2];
 
           if (v24)
           {
-            v26 = [v42 uniqueIdentifier];
-            [v10 removeObject:v26];
+            uniqueIdentifier3 = [v42 uniqueIdentifier];
+            [v10 removeObject:uniqueIdentifier3];
 
             v25 = objc_opt_new();
             v43 = 0u;
@@ -159,8 +159,8 @@ LABEL_19:
                   }
 
                   v32 = *(*(&v43 + 1) + 8 * k);
-                  v33 = [v32 uniqueIdentifier];
-                  v34 = [v10 containsObject:v33];
+                  uniqueIdentifier4 = [v32 uniqueIdentifier];
+                  v34 = [v10 containsObject:uniqueIdentifier4];
 
                   if ((v34 & 1) == 0)
                   {

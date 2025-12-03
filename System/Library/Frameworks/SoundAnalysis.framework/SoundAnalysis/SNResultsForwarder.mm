@@ -1,35 +1,35 @@
 @interface SNResultsForwarder
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)request:(id)a3 didProduceResult:(id)a4;
-- (void)requestDidComplete:(id)a3;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)request:(id)request didProduceResult:(id)result;
+- (void)requestDidComplete:(id)complete;
 @end
 
 @implementation SNResultsForwarder
 
-- (void)request:(id)a3 didProduceResult:(id)a4
+- (void)request:(id)request didProduceResult:(id)result
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_1C9904110();
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v6 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_1C99041CC();
   swift_unknownObjectRelease();
 }
 
-- (void)requestDidComplete:(id)a3
+- (void)requestDidComplete:(id)complete
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C990427C(a3);
+  selfCopy = self;
+  sub_1C990427C(complete);
   swift_unknownObjectRelease();
 }
 

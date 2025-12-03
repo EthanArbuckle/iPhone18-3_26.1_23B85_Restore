@@ -1,8 +1,8 @@
 @interface TSWReviewMultiChoiceAnswerState
 - (NSIndexSet)selectedChoices;
-- (TSWReviewMultiChoiceAnswerState)initWithCoder:(id)a3;
+- (TSWReviewMultiChoiceAnswerState)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TSWReviewMultiChoiceAnswerState
@@ -15,25 +15,25 @@
   [(TSWReviewMultiChoiceAnswerState *)&v3 dealloc];
 }
 
-- (TSWReviewMultiChoiceAnswerState)initWithCoder:(id)a3
+- (TSWReviewMultiChoiceAnswerState)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TSWReviewMultiChoiceAnswerState;
   v4 = [(TSWReviewAnswerState *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->mSelectedChoices = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"TSWReviewAnswerStateSelectedChoices"];
+    v4->mSelectedChoices = [coder decodeObjectOfClass:objc_opt_class() forKey:@"TSWReviewAnswerStateSelectedChoices"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TSWReviewMultiChoiceAnswerState;
   [(TSWReviewAnswerState *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->mSelectedChoices forKey:@"TSWReviewAnswerStateSelectedChoices"];
+  [coder encodeObject:self->mSelectedChoices forKey:@"TSWReviewAnswerStateSelectedChoices"];
 }
 
 - (NSIndexSet)selectedChoices

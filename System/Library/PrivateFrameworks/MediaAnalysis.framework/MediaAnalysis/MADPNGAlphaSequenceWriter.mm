@@ -1,14 +1,14 @@
 @interface MADPNGAlphaSequenceWriter
-- (MADPNGAlphaSequenceWriter)initWithFrameCount:(unint64_t)a3;
+- (MADPNGAlphaSequenceWriter)initWithFrameCount:(unint64_t)count;
 - (id).cxx_construct;
-- (id)finishWithEndTime:(id *)a3;
-- (id)transcodeWithMaxDimension:(unint64_t)a3;
-- (int)addPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4;
+- (id)finishWithEndTime:(id *)time;
+- (id)transcodeWithMaxDimension:(unint64_t)dimension;
+- (int)addPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time;
 @end
 
 @implementation MADPNGAlphaSequenceWriter
 
-- (MADPNGAlphaSequenceWriter)initWithFrameCount:(unint64_t)a3
+- (MADPNGAlphaSequenceWriter)initWithFrameCount:(unint64_t)count
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -16,13 +16,13 @@
   v4 = [(MADPNGAlphaSequenceWriter *)&v13 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF88] data];
+    data = [MEMORY[0x1E695DF88] data];
     data = v4->_data;
-    v4->_data = v5;
+    v4->_data = data;
 
     v7 = v4->_data;
-    v8 = [*MEMORY[0x1E6982F28] identifier];
-    v12 = CGImageDestinationCreateWithData(v7, v8, a3, 0);
+    identifier = [*MEMORY[0x1E6982F28] identifier];
+    v12 = CGImageDestinationCreateWithData(v7, identifier, count, 0);
     CF<__CVBuffer *>::operator=(&v4->_destination.value_, &v12);
     CF<__CVBuffer *>::~CF(&v12);
 
@@ -50,15 +50,15 @@
       v4->_status = -18;
     }
 
-    v4->_remainingFrameCount = a3;
+    v4->_remainingFrameCount = count;
   }
 
   return v4;
 }
 
-- (int)addPixelBuffer:(__CVBuffer *)a3 withTime:(id *)a4
+- (int)addPixelBuffer:(__CVBuffer *)buffer withTime:(id *)time
 {
-  v4 = self;
+  selfCopy = self;
   v26 = *MEMORY[0x1E69E9840];
   LODWORD(self) = self->_status;
   if (self)
@@ -66,39 +66,39 @@
     return self;
   }
 
-  if (v4->_remainingFrameCount)
+  if (selfCopy->_remainingFrameCount)
   {
-    value = v4->_lastPixelBuffer.value_;
+    value = selfCopy->_lastPixelBuffer.value_;
     if (!value)
     {
 LABEL_9:
-      lhs.value = CFRetain(a3);
-      CF<__CVBuffer *>::operator=(&v4->_lastPixelBuffer.value_, &lhs);
+      lhs.value = CFRetain(buffer);
+      CF<__CVBuffer *>::operator=(&selfCopy->_lastPixelBuffer.value_, &lhs);
       CF<__CVBuffer *>::~CF(&lhs);
       LODWORD(self) = 0;
-      var3 = a4->var3;
-      *&v4->_lastPTS.value = *&a4->var0;
-      v4->_lastPTS.epoch = var3;
+      var3 = time->var3;
+      *&selfCopy->_lastPTS.value = *&time->var0;
+      selfCopy->_lastPTS.epoch = var3;
       return self;
     }
 
-    v8 = v4->_lastImage.value_;
+    v8 = selfCopy->_lastImage.value_;
     if (v8)
     {
       CFRelease(v8);
-      v4->_lastImage.value_ = 0;
+      selfCopy->_lastImage.value_ = 0;
     }
 
-    LODWORD(self) = VTCreateCGImageFromCVPixelBuffer(value, 0, &v4->_lastImage.value_);
-    v4->_status = self;
+    LODWORD(self) = VTCreateCGImageFromCVPixelBuffer(value, 0, &selfCopy->_lastImage.value_);
+    selfCopy->_status = self;
     if (!self)
     {
       v9 = MEMORY[0x1E695DF90];
       v23 = *MEMORY[0x1E696DEB0];
       v21 = *MEMORY[0x1E696D3D0];
       v10 = MEMORY[0x1E696AD98];
-      lhs = *a4;
-      rhs = v4->_lastPTS;
+      lhs = *time;
+      rhs = selfCopy->_lastPTS;
       CMTimeSubtract(&time, &lhs, &rhs);
       v11 = [v10 numberWithDouble:CMTimeGetSeconds(&time)];
       v22 = v11;
@@ -107,8 +107,8 @@ LABEL_9:
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
       v14 = [v9 dictionaryWithDictionary:v13];
 
-      CGImageDestinationAddImage(v4->_destination.value_, v4->_lastImage.value_, v14);
-      --v4->_remainingFrameCount;
+      CGImageDestinationAddImage(selfCopy->_destination.value_, selfCopy->_lastImage.value_, v14);
+      --selfCopy->_remainingFrameCount;
 
       goto LABEL_9;
     }
@@ -118,8 +118,8 @@ LABEL_9:
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a4->var0;
-      var1 = a4->var1;
+      var0 = time->var0;
+      var1 = time->var1;
       LODWORD(lhs.value) = 134218240;
       *(&lhs.value + 4) = var0;
       LOWORD(lhs.flags) = 1024;
@@ -127,19 +127,19 @@ LABEL_9:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "PNG sequence full; dropping pixel buffer (%lld/%d)", &lhs, 0x12u);
     }
 
-    self = v4->_lastImage.value_;
+    self = selfCopy->_lastImage.value_;
     if (self)
     {
       CFRelease(self);
       LODWORD(self) = 0;
-      v4->_lastImage.value_ = 0;
+      selfCopy->_lastImage.value_ = 0;
     }
   }
 
   return self;
 }
 
-- (id)finishWithEndTime:(id *)a3
+- (id)finishWithEndTime:(id *)time
 {
   v32 = *MEMORY[0x1E69E9840];
   if (self->_status)
@@ -158,7 +158,7 @@ LABEL_9:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "PNG sequence expected %d more frames; repeating last", &buf, 8u);
     }
 
-    buf = *a3;
+    buf = *time;
     time2 = self->_lastPTS;
     if (CMTimeCompare(&buf, &time2) < 0)
     {
@@ -198,7 +198,7 @@ LABEL_2:
       goto LABEL_3;
     }
 
-    buf = *a3;
+    buf = *time;
     time2 = self->_lastPTS;
     CMTimeSubtract(&time, &buf, &time2);
     Seconds = CMTimeGetSeconds(&time);
@@ -258,7 +258,7 @@ LABEL_3:
   return v3;
 }
 
-- (id)transcodeWithMaxDimension:(unint64_t)a3
+- (id)transcodeWithMaxDimension:(unint64_t)dimension
 {
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {

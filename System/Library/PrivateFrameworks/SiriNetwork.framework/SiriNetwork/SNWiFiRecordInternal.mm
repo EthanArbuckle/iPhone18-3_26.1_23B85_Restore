@@ -1,6 +1,6 @@
 @interface SNWiFiRecordInternal
 - (NSDate)timestamp;
-- (SNWiFiRecordInternal)initWithRssi:(int64_t)a3 snr:(int64_t)a4 cca:(int64_t)a5 channelInfo:(id)a6 phyMode:(id)a7 isCaptive:(BOOL)a8 timestamp:(id)a9;
+- (SNWiFiRecordInternal)initWithRssi:(int64_t)rssi snr:(int64_t)snr cca:(int64_t)cca channelInfo:(id)info phyMode:(id)mode isCaptive:(BOOL)captive timestamp:(id)timestamp;
 @end
 
 @implementation SNWiFiRecordInternal
@@ -19,9 +19,9 @@
   return v7.super.isa;
 }
 
-- (SNWiFiRecordInternal)initWithRssi:(int64_t)a3 snr:(int64_t)a4 cca:(int64_t)a5 channelInfo:(id)a6 phyMode:(id)a7 isCaptive:(BOOL)a8 timestamp:(id)a9
+- (SNWiFiRecordInternal)initWithRssi:(int64_t)rssi snr:(int64_t)snr cca:(int64_t)cca channelInfo:(id)info phyMode:(id)mode isCaptive:(BOOL)captive timestamp:(id)timestamp
 {
-  v24 = a8;
+  captiveCopy = captive;
   v12 = type metadata accessor for Date();
   v13 = *(*(v12 - 8) + 64);
   MEMORY[0x28223BE20](v12 - 8);
@@ -31,7 +31,7 @@
   v19 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v21 = v20;
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  return WiFiRecordRepresentation.init(rssi:snr:cca:channelInfo:phyMode:isCaptive:timestamp:)(a3, a4, a5, v16, v18, v19, v21, v24, v15);
+  return WiFiRecordRepresentation.init(rssi:snr:cca:channelInfo:phyMode:isCaptive:timestamp:)(rssi, snr, cca, v16, v18, v19, v21, captiveCopy, v15);
 }
 
 @end

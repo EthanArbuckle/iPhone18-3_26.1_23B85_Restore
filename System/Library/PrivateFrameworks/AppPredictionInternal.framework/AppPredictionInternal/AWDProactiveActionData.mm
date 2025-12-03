@@ -1,24 +1,24 @@
 @interface AWDProactiveActionData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCacheRank:(BOOL)a3;
-- (void)setHasEngagedAction:(BOOL)a3;
-- (void)setHasFutureMedia:(BOOL)a3;
-- (void)setHasShown:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCacheRank:(BOOL)rank;
+- (void)setHasEngagedAction:(BOOL)action;
+- (void)setHasFutureMedia:(BOOL)media;
+- (void)setHasShown:(BOOL)shown;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveActionData
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasCacheRank:(BOOL)a3
+- (void)setHasCacheRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 4;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEngagedAction:(BOOL)a3
+- (void)setHasEngagedAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 8;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasFutureMedia:(BOOL)a3
+- (void)setHasFutureMedia:(BOOL)media
 {
-  if (a3)
+  if (media)
   {
     v3 = 16;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasShown:(BOOL)a3
+- (void)setHasShown:(BOOL)shown
 {
-  if (a3)
+  if (shown)
   {
     v3 = 32;
   }
@@ -97,32 +97,32 @@
   v8.receiver = self;
   v8.super_class = AWDProactiveActionData;
   v4 = [(AWDProactiveActionData *)&v8 description];
-  v5 = [(AWDProactiveActionData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveActionData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   actionKey = self->_actionKey;
   if (actionKey)
   {
-    [v3 setObject:actionKey forKey:@"actionKey"];
+    [dictionary setObject:actionKey forKey:@"actionKey"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithInt:self->_cacheRank];
-    [v3 setObject:v14 forKey:@"cacheRank"];
+    [dictionary setObject:v14 forKey:@"cacheRank"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -143,7 +143,7 @@ LABEL_7:
   }
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_engagedAction];
-  [v3 setObject:v15 forKey:@"engagedAction"];
+  [dictionary setObject:v15 forKey:@"engagedAction"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -159,7 +159,7 @@ LABEL_8:
 
 LABEL_24:
   v16 = [MEMORY[0x277CCABB0] numberWithBool:self->_futureMedia];
-  [v3 setObject:v16 forKey:@"futureMedia"];
+  [dictionary setObject:v16 forKey:@"futureMedia"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -175,59 +175,59 @@ LABEL_9:
 
 LABEL_25:
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:self->_score];
-  [v3 setObject:v17 forKey:@"score"];
+  [dictionary setObject:v17 forKey:@"score"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_10:
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_shown];
-    [v3 setObject:v7 forKey:@"shown"];
+    [dictionary setObject:v7 forKey:@"shown"];
   }
 
 LABEL_11:
   subscores = self->_subscores;
   if (subscores)
   {
-    v9 = [(AWDProactiveAppPredictionSubscores *)subscores dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"subscores"];
+    dictionaryRepresentation = [(AWDProactiveAppPredictionSubscores *)subscores dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"subscores"];
   }
 
   heuristicName = self->_heuristicName;
   if (heuristicName)
   {
-    [v3 setObject:heuristicName forKey:@"heuristicName"];
+    [dictionary setObject:heuristicName forKey:@"heuristicName"];
   }
 
   engaged = self->_engaged;
   if (engaged)
   {
-    [v3 setObject:engaged forKey:@"engaged"];
+    [dictionary setObject:engaged forKey:@"engaged"];
   }
 
   sessionId = self->_sessionId;
   if (sessionId)
   {
-    [v3 setObject:sessionId forKey:@"sessionId"];
+    [dictionary setObject:sessionId forKey:@"sessionId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_actionKey)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -235,7 +235,7 @@ LABEL_11:
   {
     cacheRank = self->_cacheRank;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -256,7 +256,7 @@ LABEL_7:
 
   engagedAction = self->_engagedAction;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -272,7 +272,7 @@ LABEL_8:
 LABEL_24:
   futureMedia = self->_futureMedia;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -288,62 +288,62 @@ LABEL_9:
 LABEL_25:
   score = self->_score;
   PBDataWriterWriteDoubleField();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_10:
     shown = self->_shown;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_11:
   if (self->_subscores)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_heuristicName)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_engaged)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_sessionId)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_timestamp;
-    *(v4 + 76) |= 2u;
+    toCopy[2] = self->_timestamp;
+    *(toCopy + 76) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_actionKey)
   {
-    [v4 setActionKey:?];
-    v4 = v6;
+    [toCopy setActionKey:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 8) = self->_cacheRank;
-    *(v4 + 76) |= 4u;
+    *(toCopy + 8) = self->_cacheRank;
+    *(toCopy + 76) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -362,8 +362,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 72) = self->_engagedAction;
-  *(v4 + 76) |= 8u;
+  *(toCopy + 72) = self->_engagedAction;
+  *(toCopy + 76) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -377,8 +377,8 @@ LABEL_8:
   }
 
 LABEL_24:
-  *(v4 + 73) = self->_futureMedia;
-  *(v4 + 76) |= 0x10u;
+  *(toCopy + 73) = self->_futureMedia;
+  *(toCopy + 76) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -392,44 +392,44 @@ LABEL_9:
   }
 
 LABEL_25:
-  v4[1] = *&self->_score;
-  *(v4 + 76) |= 1u;
+  toCopy[1] = *&self->_score;
+  *(toCopy + 76) |= 1u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_10:
-    *(v4 + 74) = self->_shown;
-    *(v4 + 76) |= 0x20u;
+    *(toCopy + 74) = self->_shown;
+    *(toCopy + 76) |= 0x20u;
   }
 
 LABEL_11:
   if (self->_subscores)
   {
     [v6 setSubscores:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_heuristicName)
   {
     [v6 setHeuristicName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_engaged)
   {
     [v6 setEngaged:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sessionId)
   {
     [v6 setSessionId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -437,7 +437,7 @@ LABEL_11:
     *(v5 + 76) |= 2u;
   }
 
-  v7 = [(NSString *)self->_actionKey copyWithZone:a3];
+  v7 = [(NSString *)self->_actionKey copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
@@ -504,50 +504,50 @@ LABEL_8:
   }
 
 LABEL_9:
-  v10 = [(AWDProactiveAppPredictionSubscores *)self->_subscores copyWithZone:a3];
+  v10 = [(AWDProactiveAppPredictionSubscores *)self->_subscores copyWithZone:zone];
   v11 = *(v6 + 64);
   *(v6 + 64) = v10;
 
-  v12 = [(NSString *)self->_heuristicName copyWithZone:a3];
+  v12 = [(NSString *)self->_heuristicName copyWithZone:zone];
   v13 = *(v6 + 48);
   *(v6 + 48) = v12;
 
-  v14 = [(NSString *)self->_engaged copyWithZone:a3];
+  v14 = [(NSString *)self->_engaged copyWithZone:zone];
   v15 = *(v6 + 40);
   *(v6 + 40) = v14;
 
-  v16 = [(NSString *)self->_sessionId copyWithZone:a3];
+  v16 = [(NSString *)self->_sessionId copyWithZone:zone];
   v17 = *(v6 + 56);
   *(v6 + 56) = v16;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
   has = self->_has;
-  v6 = *(v4 + 76);
+  v6 = *(equalCopy + 76);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
     goto LABEL_47;
   }
 
   actionKey = self->_actionKey;
-  if (actionKey | *(v4 + 3))
+  if (actionKey | *(equalCopy + 3))
   {
     if (![(NSString *)actionKey isEqual:?])
     {
@@ -557,90 +557,90 @@ LABEL_9:
     has = self->_has;
   }
 
-  v8 = *(v4 + 76);
+  v8 = *(equalCopy + 76);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 76) & 4) == 0 || self->_cacheRank != *(v4 + 8))
+    if ((*(equalCopy + 76) & 4) == 0 || self->_cacheRank != *(equalCopy + 8))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 76) & 4) != 0)
+  else if ((*(equalCopy + 76) & 4) != 0)
   {
     goto LABEL_47;
   }
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 76) & 8) == 0)
+    if ((*(equalCopy + 76) & 8) == 0)
     {
       goto LABEL_47;
     }
 
-    v9 = *(v4 + 72);
+    v9 = *(equalCopy + 72);
     if (self->_engagedAction)
     {
-      if ((*(v4 + 72) & 1) == 0)
+      if ((*(equalCopy + 72) & 1) == 0)
       {
         goto LABEL_47;
       }
     }
 
-    else if (*(v4 + 72))
+    else if (*(equalCopy + 72))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 76) & 8) != 0)
+  else if ((*(equalCopy + 76) & 8) != 0)
   {
     goto LABEL_47;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 76) & 0x10) == 0)
+    if ((*(equalCopy + 76) & 0x10) == 0)
     {
       goto LABEL_47;
     }
 
-    v10 = *(v4 + 73);
+    v10 = *(equalCopy + 73);
     if (self->_futureMedia)
     {
-      if ((*(v4 + 73) & 1) == 0)
+      if ((*(equalCopy + 73) & 1) == 0)
       {
         goto LABEL_47;
       }
     }
 
-    else if (*(v4 + 73))
+    else if (*(equalCopy + 73))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 76) & 0x10) != 0)
+  else if ((*(equalCopy + 76) & 0x10) != 0)
   {
     goto LABEL_47;
   }
 
   if (has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_score != *(v4 + 1))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_score != *(equalCopy + 1))
     {
       goto LABEL_47;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_47;
   }
 
   if ((has & 0x20) == 0)
   {
-    if ((*(v4 + 76) & 0x20) == 0)
+    if ((*(equalCopy + 76) & 0x20) == 0)
     {
       goto LABEL_36;
     }
@@ -650,34 +650,34 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  if ((*(v4 + 76) & 0x20) == 0)
+  if ((*(equalCopy + 76) & 0x20) == 0)
   {
     goto LABEL_47;
   }
 
-  v17 = *(v4 + 74);
+  v17 = *(equalCopy + 74);
   if (self->_shown)
   {
-    if ((*(v4 + 74) & 1) == 0)
+    if ((*(equalCopy + 74) & 1) == 0)
     {
       goto LABEL_47;
     }
   }
 
-  else if (*(v4 + 74))
+  else if (*(equalCopy + 74))
   {
     goto LABEL_47;
   }
 
 LABEL_36:
   subscores = self->_subscores;
-  if (subscores | *(v4 + 8) && ![(AWDProactiveAppPredictionSubscores *)subscores isEqual:?])
+  if (subscores | *(equalCopy + 8) && ![(AWDProactiveAppPredictionSubscores *)subscores isEqual:?])
   {
     goto LABEL_47;
   }
 
   heuristicName = self->_heuristicName;
-  if (heuristicName | *(v4 + 6))
+  if (heuristicName | *(equalCopy + 6))
   {
     if (![(NSString *)heuristicName isEqual:?])
     {
@@ -686,7 +686,7 @@ LABEL_36:
   }
 
   engaged = self->_engaged;
-  if (engaged | *(v4 + 5))
+  if (engaged | *(equalCopy + 5))
   {
     if (![(NSString *)engaged isEqual:?])
     {
@@ -695,7 +695,7 @@ LABEL_36:
   }
 
   sessionId = self->_sessionId;
-  if (sessionId | *(v4 + 7))
+  if (sessionId | *(equalCopy + 7))
   {
     v15 = [(NSString *)sessionId isEqual:?];
   }
@@ -813,18 +813,18 @@ LABEL_16:
   return v15 ^ v17 ^ [(NSString *)self->_sessionId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 76) & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 76) & 2) != 0)
   {
-    self->_timestamp = v4[2];
+    self->_timestamp = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  v9 = v4;
-  if (v4[3])
+  v9 = fromCopy;
+  if (fromCopy[3])
   {
     [(AWDProactiveActionData *)self setActionKey:?];
     v5 = v9;

@@ -1,21 +1,21 @@
 @interface SFAuthenticateAccountInfo
-- (SFAuthenticateAccountInfo)initWithType:(unsigned int)a3 altDSID:(id)a4;
+- (SFAuthenticateAccountInfo)initWithType:(unsigned int)type altDSID:(id)d;
 - (id)description;
 @end
 
 @implementation SFAuthenticateAccountInfo
 
-- (SFAuthenticateAccountInfo)initWithType:(unsigned int)a3 altDSID:(id)a4
+- (SFAuthenticateAccountInfo)initWithType:(unsigned int)type altDSID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = SFAuthenticateAccountInfo;
   v8 = [(SFAuthenticateAccountInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_altDSID, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_altDSID, d);
   }
 
   return v9;

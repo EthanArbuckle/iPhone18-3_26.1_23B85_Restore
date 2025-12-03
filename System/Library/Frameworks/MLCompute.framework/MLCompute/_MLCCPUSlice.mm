@@ -1,76 +1,76 @@
 @interface _MLCCPUSlice
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
-+ (id)layerWithDevice:(id)a3 begin:(id)a4 end:(id)a5 stride:(id)a6;
-- (_MLCCPUSlice)initWithDevice:(id)a3 begin:(id)a4 end:(id)a5 stride:(id)a6;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor;
++ (id)layerWithDevice:(id)device begin:(id)begin end:(id)end stride:(id)stride;
+- (_MLCCPUSlice)initWithDevice:(id)device begin:(id)begin end:(id)end stride:(id)stride;
 @end
 
 @implementation _MLCCPUSlice
 
-+ (id)layerWithDevice:(id)a3 begin:(id)a4 end:(id)a5 stride:(id)a6
++ (id)layerWithDevice:(id)device begin:(id)begin end:(id)end stride:(id)stride
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithDevice:v13 begin:v12 end:v11 stride:v10];
+  strideCopy = stride;
+  endCopy = end;
+  beginCopy = begin;
+  deviceCopy = device;
+  v14 = [[self alloc] initWithDevice:deviceCopy begin:beginCopy end:endCopy stride:strideCopy];
 
   return v14;
 }
 
-- (_MLCCPUSlice)initWithDevice:(id)a3 begin:(id)a4 end:(id)a5 stride:(id)a6
+- (_MLCCPUSlice)initWithDevice:(id)device begin:(id)begin end:(id)end stride:(id)stride
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  deviceCopy = device;
+  beginCopy = begin;
+  endCopy = end;
+  strideCopy = stride;
   v12 = MEMORY[0x277CBEBF8];
   v13 = [MEMORY[0x277CBEBF8] mutableCopy];
   v14 = [v12 mutableCopy];
-  if ([v9 count])
+  if ([beginCopy count])
   {
     v15 = 0;
     do
     {
-      v16 = [v11 objectAtIndexedSubscript:v15];
-      v17 = [v16 integerValue];
+      v16 = [strideCopy objectAtIndexedSubscript:v15];
+      integerValue = [v16 integerValue];
       v18 = v14;
       v19 = v13;
-      v20 = v11;
-      if (v17 >= 0)
+      v20 = strideCopy;
+      if (integerValue >= 0)
       {
-        v21 = v17;
+        v21 = integerValue;
       }
 
       else
       {
-        v21 = -v17;
+        v21 = -integerValue;
       }
 
-      v22 = [v10 objectAtIndexedSubscript:v15];
-      v23 = [v22 unsignedIntegerValue];
-      v24 = [v9 objectAtIndexedSubscript:v15];
-      v25 = (v23 + ~[v24 unsignedIntegerValue]) / v21;
+      v22 = [endCopy objectAtIndexedSubscript:v15];
+      unsignedIntegerValue = [v22 unsignedIntegerValue];
+      v24 = [beginCopy objectAtIndexedSubscript:v15];
+      v25 = (unsignedIntegerValue + ~[v24 unsignedIntegerValue]) / v21;
 
       v26 = v25 + 1;
-      v11 = v20;
+      strideCopy = v20;
       v13 = v19;
       v14 = v18;
       v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v26];
       [v18 addObject:v27];
 
       v28 = MEMORY[0x277CCABB0];
-      v29 = [v9 objectAtIndexedSubscript:v15];
+      v29 = [beginCopy objectAtIndexedSubscript:v15];
       v30 = [v28 numberWithUnsignedInteger:{objc_msgSend(v29, "unsignedIntegerValue")}];
       [v13 addObject:v30];
 
       ++v15;
     }
 
-    while (v15 < [v9 count]);
+    while (v15 < [beginCopy count]);
   }
 
-  v42 = v10;
+  v42 = endCopy;
   v31 = [MEMORY[0x277CBEBF8] mutableCopy];
   memset(v46, 0, sizeof(v46));
   v32 = [MEMORY[0x277CBEA90] dataWithBytes:v46 length:176];
@@ -86,72 +86,72 @@
   {
     [v36 setBegin:v13];
     [v36 setCount:v14];
-    [v36 setStride:v11];
+    [v36 setStride:strideCopy];
     [v31 addObject:v36];
   }
 
   v37 = [v31 copy];
   v45.receiver = self;
   v45.super_class = _MLCCPUSlice;
-  v38 = [(_MLCCPULayer *)&v45 initWithDevice:v44 deviceOps:v37];
+  v38 = [(_MLCCPULayer *)&v45 initWithDevice:deviceCopy deviceOps:v37];
 
   v39 = *MEMORY[0x277D85DE8];
   return v38;
 }
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [a4 objectAtIndexedSubscript:0];
-  v11 = [v10 inDeltaData];
-  v12 = [v11 objectAtIndexedSubscript:0];
-  v59 = [v12 bytes];
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v10 = [ops objectAtIndexedSubscript:0];
+  inDeltaData = [v10 inDeltaData];
+  v12 = [inDeltaData objectAtIndexedSubscript:0];
+  bytes = [v12 bytes];
 
   v63 = v10;
-  v13 = [v10 outDeltaData];
-  v14 = [v13 objectAtIndexedSubscript:0];
-  v58 = [v14 bytes];
+  outDeltaData = [v10 outDeltaData];
+  v14 = [outDeltaData objectAtIndexedSubscript:0];
+  bytes2 = [v14 bytes];
 
   v62 = [MEMORY[0x277CBEBF8] mutableCopy];
-  v60 = v9;
-  v15 = [v9 descriptor];
-  v16 = [v15 dimensionCount];
+  v60 = tensorCopy;
+  descriptor = [tensorCopy descriptor];
+  dimensionCount = [descriptor dimensionCount];
 
-  v61 = v8;
-  if (v16)
+  v61 = tensorsCopy;
+  if (dimensionCount)
   {
     v17 = 0;
     v18 = 0;
     do
     {
       v19 = MEMORY[0x277CCABB0];
-      v20 = [v8 objectAtIndexedSubscript:0];
-      v21 = [v20 descriptor];
-      v22 = [v21 stride];
-      v23 = [v22 objectAtIndexedSubscript:v17];
-      v24 = [v23 unsignedIntegerValue];
-      v25 = [v63 stride];
-      v26 = [v25 objectAtIndexedSubscript:v17];
-      v27 = [v19 numberWithUnsignedInteger:{objc_msgSend(v26, "unsignedIntegerValue") * v24}];
+      v20 = [tensorsCopy objectAtIndexedSubscript:0];
+      descriptor2 = [v20 descriptor];
+      stride = [descriptor2 stride];
+      v23 = [stride objectAtIndexedSubscript:v17];
+      unsignedIntegerValue = [v23 unsignedIntegerValue];
+      stride2 = [v63 stride];
+      v26 = [stride2 objectAtIndexedSubscript:v17];
+      v27 = [v19 numberWithUnsignedInteger:{objc_msgSend(v26, "unsignedIntegerValue") * unsignedIntegerValue}];
       [v62 addObject:v27];
 
-      v8 = v61;
+      tensorsCopy = v61;
       v28 = [v61 objectAtIndexedSubscript:0];
-      v29 = [v28 descriptor];
-      v30 = [v29 stride];
-      v31 = [v30 objectAtIndexedSubscript:v17];
-      v32 = [v31 unsignedIntegerValue];
-      v33 = [v63 begin];
-      v34 = [v33 objectAtIndexedSubscript:v17];
-      v18 += [v34 unsignedIntegerValue] * v32;
+      descriptor3 = [v28 descriptor];
+      stride3 = [descriptor3 stride];
+      v31 = [stride3 objectAtIndexedSubscript:v17];
+      unsignedIntegerValue2 = [v31 unsignedIntegerValue];
+      begin = [v63 begin];
+      v34 = [begin objectAtIndexedSubscript:v17];
+      v18 += [v34 unsignedIntegerValue] * unsignedIntegerValue2;
 
       ++v17;
-      v35 = [v60 descriptor];
-      v36 = [v35 dimensionCount];
+      descriptor4 = [v60 descriptor];
+      dimensionCount2 = [descriptor4 dimensionCount];
     }
 
-    while (v17 < v36);
+    while (v17 < dimensionCount2);
   }
 
   else
@@ -163,24 +163,24 @@
   [v63 setBeginOffset:v18];
   [v63 setStride:v62];
   v38 = [v63 count];
-  v39 = [v8 objectAtIndexedSubscript:0];
-  v40 = [v39 descriptor];
-  v41 = [v40 dataType];
-  v42 = [v8 objectAtIndexedSubscript:0];
-  v43 = [v42 descriptor];
-  LOBYTE(v41) = CPU_BuildBNNSNDArrayDescriptorRowMajor(v59, v38, v62, 0, v41, [v43 dimensionCount], 0);
+  v39 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor5 = [v39 descriptor];
+  dataType = [descriptor5 dataType];
+  v42 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor6 = [v42 descriptor];
+  LOBYTE(dataType) = CPU_BuildBNNSNDArrayDescriptorRowMajor(bytes, v38, v62, 0, dataType, [descriptor6 dimensionCount], 0);
 
-  if (v41)
+  if (dataType)
   {
     v44 = v60;
-    v45 = [v60 descriptor];
-    v46 = [v45 shape];
-    v47 = [v60 descriptor];
-    v48 = [v47 stride];
-    v49 = [v60 descriptor];
-    v50 = [v49 dataType];
-    v51 = [v60 descriptor];
-    v52 = CPU_BuildBNNSNDArrayDescriptorRowMajor(v58, v46, v48, 0, v50, [v51 dimensionCount], 0);
+    descriptor7 = [v60 descriptor];
+    shape = [descriptor7 shape];
+    descriptor8 = [v60 descriptor];
+    stride4 = [descriptor8 stride];
+    descriptor9 = [v60 descriptor];
+    dataType2 = [descriptor9 dataType];
+    descriptor10 = [v60 descriptor];
+    v52 = CPU_BuildBNNSNDArrayDescriptorRowMajor(bytes2, shape, stride4, 0, dataType2, [descriptor10 dimensionCount], 0);
 
     if (v52)
     {

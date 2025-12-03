@@ -1,39 +1,39 @@
 @interface _CDStringTokenizer
-+ (BOOL)isEnglishStopWord:(id)a3;
-+ (id)extractNormalizedKeywords:(id)a3;
++ (BOOL)isEnglishStopWord:(id)word;
++ (id)extractNormalizedKeywords:(id)keywords;
 @end
 
 @implementation _CDStringTokenizer
 
-+ (BOOL)isEnglishStopWord:(id)a3
++ (BOOL)isEnglishStopWord:(id)word
 {
   v3 = isEnglishStopWord__onceToken;
-  v4 = a3;
+  wordCopy = word;
   if (v3 != -1)
   {
     +[_CDStringTokenizer isEnglishStopWord:];
   }
 
   v5 = isEnglishStopWord___stopWordSet;
-  v6 = [v4 lowercaseString];
+  lowercaseString = [wordCopy lowercaseString];
 
-  v7 = [v5 containsObject:v6];
+  v7 = [v5 containsObject:lowercaseString];
   return v7;
 }
 
-+ (id)extractNormalizedKeywords:(id)a3
++ (id)extractNormalizedKeywords:(id)keywords
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  keywordsCopy = keywords;
+  if (keywordsCopy)
   {
-    v5 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-    v6 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v7 = [v6 mutableCopy];
-    v19 = v5;
-    [v7 formUnionWithCharacterSet:v5];
-    v8 = [v4 lowercaseString];
-    v9 = [v8 componentsSeparatedByCharactersInSet:v7];
+    punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v7 = [whitespaceAndNewlineCharacterSet mutableCopy];
+    v19 = punctuationCharacterSet;
+    [v7 formUnionWithCharacterSet:punctuationCharacterSet];
+    lowercaseString = [keywordsCopy lowercaseString];
+    v9 = [lowercaseString componentsSeparatedByCharactersInSet:v7];
 
     v10 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v9, "count")}];
     v20 = 0u;
@@ -56,7 +56,7 @@
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
-          if ([v16 length] >= 2 && (objc_msgSend(a1, "isEnglishStopWord:", v16) & 1) == 0)
+          if ([v16 length] >= 2 && (objc_msgSend(self, "isEnglishStopWord:", v16) & 1) == 0)
           {
             [v10 addObject:v16];
           }

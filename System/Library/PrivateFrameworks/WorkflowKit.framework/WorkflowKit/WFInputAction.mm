@@ -1,10 +1,10 @@
 @interface WFInputAction
-+ (id)inputActionForWorkflow:(id)a3;
-+ (id)serializedParametersForWorkflow:(id)a3;
-+ (id)serializedParametersFromActionSerializedParameters:(id)a3 itemClass:(Class)a4;
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
-- (WFInputAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5;
-- (id)actionSerializedParametersForSelectionOfItemClass:(Class)a3;
++ (id)inputActionForWorkflow:(id)workflow;
++ (id)serializedParametersForWorkflow:(id)workflow;
++ (id)serializedParametersFromActionSerializedParameters:(id)parameters itemClass:(Class)class;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
+- (WFInputAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters;
+- (id)actionSerializedParametersForSelectionOfItemClass:(Class)class;
 - (id)minimumSupportedClientVersion;
 - (id)noInputBehavior;
 - (id)selectedAskForType;
@@ -18,16 +18,16 @@
 
 - (id)noInputBehavior
 {
-  v3 = [(WFInputAction *)self selectedBehavior];
-  if ([v3 isEqualToString:@"Continue"])
+  selectedBehavior = [(WFInputAction *)self selectedBehavior];
+  if ([selectedBehavior isEqualToString:@"Continue"])
   {
     goto LABEL_2;
   }
 
-  if ([v3 isEqualToString:@"Ask For"])
+  if ([selectedBehavior isEqualToString:@"Ask For"])
   {
-    v5 = [(WFInputAction *)self selectedAskForType];
-    v6 = WFInputActionContentItemClassCorrespondingToAskForParameterValue(v5);
+    selectedAskForType = [(WFInputAction *)self selectedAskForType];
+    v6 = WFInputActionContentItemClassCorrespondingToAskForParameterValue(selectedAskForType);
     if (v6)
     {
       v7 = v6;
@@ -44,19 +44,19 @@
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"Stop and Respond"])
+  if ([selectedBehavior isEqualToString:@"Stop and Respond"])
   {
-    v5 = [(WFAction *)self parameterStateForKey:@"WFStopAndRespondResponse"];
+    selectedAskForType = [(WFAction *)self parameterStateForKey:@"WFStopAndRespondResponse"];
     v10 = [WFWorkflowNoInputBehaviorShowError alloc];
-    v11 = [v5 variableString];
-    v12 = [v11 stringByRemovingVariables];
-    v4 = [(WFWorkflowNoInputBehaviorShowError *)v10 initWithErrorString:v12];
+    variableString = [selectedAskForType variableString];
+    stringByRemovingVariables = [variableString stringByRemovingVariables];
+    v4 = [(WFWorkflowNoInputBehaviorShowError *)v10 initWithErrorString:stringByRemovingVariables];
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  if (![v3 isEqualToString:@"Get Clipboard"])
+  if (![selectedBehavior isEqualToString:@"Get Clipboard"])
   {
 LABEL_2:
     v4 = 0;
@@ -69,13 +69,13 @@ LABEL_12:
   return v4;
 }
 
-- (id)actionSerializedParametersForSelectionOfItemClass:(Class)a3
+- (id)actionSerializedParametersForSelectionOfItemClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
-    v4 = WFInputActionParameterKeysForSelectingItemOfClass(a3);
+    v4 = WFInputActionParameterKeysForSelectingItemOfClass(class);
     v5 = objc_opt_new();
-    v6 = [(WFAction *)self serializedParameters];
+    serializedParameters = [(WFAction *)self serializedParameters];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __67__WFInputAction_actionSerializedParametersForSelectionOfItemClass___block_invoke;
@@ -84,15 +84,15 @@ LABEL_12:
     v15 = v5;
     v7 = v5;
     v8 = v4;
-    [v6 enumerateKeysAndObjectsUsingBlock:v13];
+    [serializedParameters enumerateKeysAndObjectsUsingBlock:v13];
 
     v9 = [v7 copy];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFInputAction.m" lineNumber:360 description:{@"Invalid parameter not satisfying: %@", @"contentItemClass"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInputAction.m" lineNumber:360 description:{@"Invalid parameter not satisfying: %@", @"contentItemClass"}];
 
     v9 = 0;
   }
@@ -145,8 +145,8 @@ void __67__WFInputAction_actionSerializedParametersForSelectionOfItemClass___blo
 
     if (v4)
     {
-      v8 = [v4 value];
-      v13[0] = NSClassFromString(v8);
+      value = [v4 value];
+      v13[0] = NSClassFromString(value);
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
 
       goto LABEL_12;
@@ -158,8 +158,8 @@ void __67__WFInputAction_actionSerializedParametersForSelectionOfItemClass___blo
     v7 = 0;
   }
 
-  v10 = [v7 parameterStates];
-  v9 = [v10 if_map:&__block_literal_global_7977];
+  parameterStates = [v7 parameterStates];
+  v9 = [parameterStates if_map:&__block_literal_global_7977];
 
   v5 = 0;
 LABEL_12:
@@ -201,8 +201,8 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
 
 - (id)selectedAskForType
 {
-  v3 = [(WFInputAction *)self selectedBehavior];
-  v4 = [v3 isEqualToString:@"Ask For"];
+  selectedBehavior = [(WFInputAction *)self selectedBehavior];
+  v4 = [selectedBehavior isEqualToString:@"Ask For"];
 
   if (v4)
   {
@@ -228,15 +228,15 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
 
     v8 = v6;
 
-    v7 = [v8 value];
+    value = [v8 value];
   }
 
   else
   {
-    v7 = 0;
+    value = 0;
   }
 
-  return v7;
+  return value;
 }
 
 - (id)selectedBehavior
@@ -263,9 +263,9 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
 
   v4 = v3;
 
-  v5 = [v4 value];
+  value = [v4 value];
 
-  return v5;
+  return value;
 }
 
 - (id)minimumSupportedClientVersion
@@ -292,55 +292,55 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
 
   v5 = v4;
 
-  v6 = [v5 value];
+  value = [v5 value];
 
-  LOBYTE(v5) = [v6 isEqualToString:@"Continue"];
+  LOBYTE(v5) = [value isEqualToString:@"Continue"];
   if (v5)
   {
     v10.receiver = self;
     v10.super_class = WFInputAction;
-    v7 = [(WFAction *)&v10 minimumSupportedClientVersion];
+    minimumSupportedClientVersion = [(WFAction *)&v10 minimumSupportedClientVersion];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = WFInputAction;
-    v8 = [(WFAction *)&v11 minimumSupportedClientVersion];
-    v7 = WFMaximumBundleVersion(v8, @"1113");
+    minimumSupportedClientVersion2 = [(WFAction *)&v11 minimumSupportedClientVersion];
+    minimumSupportedClientVersion = WFMaximumBundleVersion(minimumSupportedClientVersion2, @"1113");
   }
 
-  return v7;
+  return minimumSupportedClientVersion;
 }
 
 - (void)removedFromWorkflow
 {
-  v3 = [(WFAction *)self workflow];
-  [v3 setNoInputBehavior:0];
+  workflow = [(WFAction *)self workflow];
+  [workflow setNoInputBehavior:0];
 
-  v4 = [(WFAction *)self workflow];
-  [v4 save];
+  workflow2 = [(WFAction *)self workflow];
+  [workflow2 save];
 }
 
 - (void)updateWorkflowState
 {
-  v3 = [(WFInputAction *)self noInputBehavior];
-  v4 = [(WFAction *)self workflow];
-  [v4 setNoInputBehavior:v3];
+  noInputBehavior = [(WFInputAction *)self noInputBehavior];
+  workflow = [(WFAction *)self workflow];
+  [workflow setNoInputBehavior:noInputBehavior];
 
-  v5 = [(WFInputAction *)self selectedInputTypes];
-  v6 = [(WFAction *)self workflow];
-  [v6 setInputClasses:v5];
+  selectedInputTypes = [(WFInputAction *)self selectedInputTypes];
+  workflow2 = [(WFAction *)self workflow];
+  [workflow2 setInputClasses:selectedInputTypes];
 
-  v7 = [(WFAction *)self workflow];
-  [v7 save];
+  workflow3 = [(WFAction *)self workflow];
+  [workflow3 save];
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
   v7.receiver = self;
   v7.super_class = WFInputAction;
-  v5 = [(WFAction *)&v7 setParameterState:a3 forKey:a4];
+  v5 = [(WFAction *)&v7 setParameterState:state forKey:key];
   if (v5)
   {
     [(WFInputAction *)self updateWorkflowState];
@@ -349,19 +349,19 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (WFInputAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5
+- (WFInputAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  definitionCopy = definition;
+  parametersCopy = parameters;
+  if (!definitionCopy)
   {
     v11 = [WFActionDefinition alloc];
-    v9 = [(WFActionDefinition *)v11 initWithDictionary:MEMORY[0x1E695E0F8]];
+    definitionCopy = [(WFActionDefinition *)v11 initWithDictionary:MEMORY[0x1E695E0F8]];
   }
 
-  v12 = [(WFActionDefinition *)v9 objectForKey:@"WFContentSelectionParametersAreInjected"];
+  v12 = [(WFActionDefinition *)definitionCopy objectForKey:@"WFContentSelectionParametersAreInjected"];
   if (v12)
   {
     objc_opt_class();
@@ -383,11 +383,11 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
 
   v14 = v13;
 
-  v15 = [v14 BOOLValue];
-  if ((v15 & 1) == 0)
+  bOOLValue = [v14 BOOLValue];
+  if ((bOOLValue & 1) == 0)
   {
     v16 = WFContentSelectionActionParameterDefinitions();
-    v17 = [(WFActionDefinition *)v9 objectForKey:@"Parameters"];
+    v17 = [(WFActionDefinition *)definitionCopy objectForKey:@"Parameters"];
     if (v17)
     {
       objc_opt_class();
@@ -416,36 +416,36 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
     v28[0] = v20;
     v28[1] = MEMORY[0x1E695E118];
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
-    v22 = [(WFActionDefinition *)v9 definitionByAddingEntriesInDictionary:v21];
+    v22 = [(WFActionDefinition *)definitionCopy definitionByAddingEntriesInDictionary:v21];
 
-    v9 = v22;
+    definitionCopy = v22;
   }
 
   v26.receiver = self;
   v26.super_class = WFInputAction;
-  v23 = [(WFAction *)&v26 initWithIdentifier:v8 definition:v9 serializedParameters:v10];
+  v23 = [(WFAction *)&v26 initWithIdentifier:identifierCopy definition:definitionCopy serializedParameters:parametersCopy];
 
   v24 = *MEMORY[0x1E69E9840];
   return v23;
 }
 
-+ (id)serializedParametersForWorkflow:(id)a3
++ (id)serializedParametersForWorkflow:(id)workflow
 {
-  v5 = a3;
-  if (!v5)
+  workflowCopy = workflow;
+  if (!workflowCopy)
   {
-    v46 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v46 handleFailureInMethod:a2 object:a1 file:@"WFInputAction.m" lineNumber:402 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInputAction.m" lineNumber:402 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
   }
 
   v6 = objc_opt_new();
-  v7 = [v5 inputClasses];
-  v8 = [v7 count];
+  inputClasses = [workflowCopy inputClasses];
+  v8 = [inputClasses count];
 
   if (v8)
   {
-    v9 = [v5 inputClasses];
-    v10 = [v9 if_map:&__block_literal_global_261];
+    inputClasses2 = [workflowCopy inputClasses];
+    v10 = [inputClasses2 if_map:&__block_literal_global_261];
     [v6 setObject:v10 forKeyedSubscript:@"WFInputType"];
   }
 
@@ -454,17 +454,17 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
     [v6 setObject:MEMORY[0x1E695E0F0] forKeyedSubscript:@"WFInputType"];
   }
 
-  v11 = v5;
-  if (!v5)
+  v11 = workflowCopy;
+  if (!workflowCopy)
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nullable WFDescribeWorkflowInputSurfaces(WFWorkflow * _Nonnull __strong)"];
-    [v47 handleFailureInFunction:v48 file:@"WFInputAction.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
+    [currentHandler2 handleFailureInFunction:v48 file:@"WFInputAction.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
   }
 
   v12 = objc_opt_new();
-  v13 = [v11 workflowTypes];
-  v14 = [v13 containsObject:*MEMORY[0x1E69E1458]];
+  workflowTypes = [v11 workflowTypes];
+  v14 = [workflowTypes containsObject:*MEMORY[0x1E69E1458]];
 
   if (v14)
   {
@@ -472,8 +472,8 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
     [v12 addObject:v15];
   }
 
-  v16 = [v11 workflowTypes];
-  v17 = [v16 containsObject:*MEMORY[0x1E69E1440]];
+  workflowTypes2 = [v11 workflowTypes];
+  v17 = [workflowTypes2 containsObject:*MEMORY[0x1E69E1440]];
 
   if (v17)
   {
@@ -481,8 +481,8 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
     [v12 addObject:v18];
   }
 
-  v19 = [v11 workflowTypes];
-  v20 = [v19 containsObject:*MEMORY[0x1E69E1450]];
+  workflowTypes3 = [v11 workflowTypes];
+  v20 = [workflowTypes3 containsObject:*MEMORY[0x1E69E1450]];
 
   if (v20)
   {
@@ -490,8 +490,8 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
     [v12 addObject:v21];
   }
 
-  v22 = [v11 workflowTypes];
-  v23 = [v22 containsObject:*MEMORY[0x1E69E1448]];
+  workflowTypes4 = [v11 workflowTypes];
+  v23 = [workflowTypes4 containsObject:*MEMORY[0x1E69E1448]];
 
   if (v23)
   {
@@ -514,8 +514,8 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
     [v6 setObject:v25 forKeyedSubscript:@"WFInputSurface"];
   }
 
-  v26 = [v11 noInputBehavior];
-  if (!v26)
+  noInputBehavior = [v11 noInputBehavior];
+  if (!noInputBehavior)
   {
     goto LABEL_41;
   }
@@ -523,7 +523,7 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v27 = v26;
+    v27 = noInputBehavior;
   }
 
   else
@@ -533,7 +533,7 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
 
   v28 = v27;
 
-  v29 = v26;
+  v29 = noInputBehavior;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -564,10 +564,10 @@ id __35__WFInputAction_selectedInputTypes__block_invoke(uint64_t a1, void *a2)
   if (v28)
   {
     [v6 setObject:@"Stop and Respond" forKeyedSubscript:@"WFNoInputBehavior"];
-    v35 = [v28 errorString];
-    if (v35)
+    errorString = [v28 errorString];
+    if (errorString)
     {
-      [v6 setObject:v35 forKeyedSubscript:@"WFStopAndRespondResponse"];
+      [v6 setObject:errorString forKeyedSubscript:@"WFStopAndRespondResponse"];
     }
 
     v36 = [v6 copy];
@@ -597,11 +597,11 @@ LABEL_41:
   }
 
   [v6 setObject:@"Ask For" forKeyedSubscript:@"WFNoInputBehavior"];
-  v38 = [v31 contentItemClass];
-  if (v38)
+  contentItemClass = [v31 contentItemClass];
+  if (contentItemClass)
   {
-    v39 = v38;
-    if ([v38 isEqual:objc_opt_class()])
+    v39 = contentItemClass;
+    if ([contentItemClass isEqual:objc_opt_class()])
     {
       v40 = @"Files";
     }
@@ -647,10 +647,10 @@ LABEL_41:
     }
 
     [v6 setObject:v40 forKeyedSubscript:@"WFAskForType"];
-    v42 = [v31 serializedParameters];
-    if (v42)
+    serializedParameters = [v31 serializedParameters];
+    if (serializedParameters)
     {
-      v43 = [WFInputAction serializedParametersFromActionSerializedParameters:v42 itemClass:v39];
+      v43 = [WFInputAction serializedParametersFromActionSerializedParameters:serializedParameters itemClass:v39];
       v44 = [v6 if_dictionaryByAddingEntriesFromDictionary:v43];
 
       v6 = v44;
@@ -665,16 +665,16 @@ LABEL_62:
   return v36;
 }
 
-+ (id)serializedParametersFromActionSerializedParameters:(id)a3 itemClass:(Class)a4
++ (id)serializedParametersFromActionSerializedParameters:(id)parameters itemClass:(Class)class
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4)
+  parametersCopy = parameters;
+  v8 = parametersCopy;
+  if (class)
   {
-    if (v7)
+    if (parametersCopy)
     {
 LABEL_3:
-      v9 = WFInputActionParameterKeysForSelectingItemOfClass(a4);
+      v9 = WFInputActionParameterKeysForSelectingItemOfClass(class);
       v10 = objc_opt_new();
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
@@ -693,8 +693,8 @@ LABEL_3:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"WFInputAction.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"contentItemClass"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInputAction.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"contentItemClass"}];
 
     if (v8)
     {
@@ -718,28 +718,28 @@ void __78__WFInputAction_serializedParametersFromActionSerializedParameters_item
   }
 }
 
-+ (id)inputActionForWorkflow:(id)a3
++ (id)inputActionForWorkflow:(id)workflow
 {
-  v5 = a3;
-  if (!v5)
+  workflowCopy = workflow;
+  if (!workflowCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"WFInputAction.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInputAction.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"workflow"}];
   }
 
-  v6 = [a1 serializedParametersForWorkflow:v5];
+  v6 = [self serializedParametersForWorkflow:workflowCopy];
   v7 = +[WFActionRegistry sharedRegistry];
   v8 = [v7 createActionWithIdentifier:@"is.workflow.actions.input" serializedParameters:v6];
 
   if (v8)
   {
     v9 = MEMORY[0x1E695DFD8];
-    v10 = [v5 workflowTypes];
-    v11 = [v9 setWithArray:v10];
+    workflowTypes = [workflowCopy workflowTypes];
+    v11 = [v9 setWithArray:workflowTypes];
     [v8 setInputSurfaces:v11];
 
-    [v8 willBeAddedToWorkflow:v5];
-    [v8 wasAddedToWorkflow:v5];
+    [v8 willBeAddedToWorkflow:workflowCopy];
+    [v8 wasAddedToWorkflow:workflowCopy];
     v12 = v8;
   }
 

@@ -1,21 +1,21 @@
 @interface CLBScenePresentationViewControllerWindowPair
-- (CLBScenePresentationViewControllerWindowPair)initWithScenePresentationViewController:(id)a3 window:(id)a4;
+- (CLBScenePresentationViewControllerWindowPair)initWithScenePresentationViewController:(id)controller window:(id)window;
 @end
 
 @implementation CLBScenePresentationViewControllerWindowPair
 
-- (CLBScenePresentationViewControllerWindowPair)initWithScenePresentationViewController:(id)a3 window:(id)a4
+- (CLBScenePresentationViewControllerWindowPair)initWithScenePresentationViewController:(id)controller window:(id)window
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  windowCopy = window;
   v12.receiver = self;
   v12.super_class = CLBScenePresentationViewControllerWindowPair;
   v9 = [(CLBScenePresentationViewControllerWindowPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_scenePresentationViewController, a3);
-    objc_storeStrong(&v10->_window, a4);
+    objc_storeStrong(&v9->_scenePresentationViewController, controller);
+    objc_storeStrong(&v10->_window, window);
   }
 
   return v10;

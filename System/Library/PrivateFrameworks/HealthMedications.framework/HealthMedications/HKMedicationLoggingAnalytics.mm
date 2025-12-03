@@ -1,24 +1,24 @@
 @interface HKMedicationLoggingAnalytics
 + (BOOL)_isMetricEnabled;
 + (BOOL)shouldSubmit;
-+ (int64_t)_detailedScheduleLoggingContextForScheduleType:(int64_t)a3;
-+ (int64_t)_extractCommonScheduleTypeForMedicationSchedules:(id)a3;
-+ (int64_t)_unitTesting_detailedLoggingContextForLoggingContext:(int64_t)a3 schedules:(id)a4;
-+ (void)submitLogMetricWithHealthStore:(id)a3 actions:(int64_t)a4 provenance:(int64_t)a5 context:(int64_t)a6 medicationIdentifiers:(id)a7 loggingMultipleMeds:(BOOL)a8 hoursAgoLoggedForMax:(id)a9 hoursAgoLoggedForMin:(id)a10 hoursFromScheduledTimeLoggedMax:(id)a11 hoursFromScheduledTimeLoggedMin:(id)a12 hoursFromScheduledToTakenOrSkippedMax:(id)a13 hoursFromScheduledToTakenOrSkippedMin:(id)a14 isPartiallyLoggingScheduledMeds:(id)a15 dataSource:(id)a16;
++ (int64_t)_detailedScheduleLoggingContextForScheduleType:(int64_t)type;
++ (int64_t)_extractCommonScheduleTypeForMedicationSchedules:(id)schedules;
++ (int64_t)_unitTesting_detailedLoggingContextForLoggingContext:(int64_t)context schedules:(id)schedules;
++ (void)submitLogMetricWithHealthStore:(id)store actions:(int64_t)actions provenance:(int64_t)provenance context:(int64_t)context medicationIdentifiers:(id)identifiers loggingMultipleMeds:(BOOL)meds hoursAgoLoggedForMax:(id)max hoursAgoLoggedForMin:(id)self0 hoursFromScheduledTimeLoggedMax:(id)self1 hoursFromScheduledTimeLoggedMin:(id)self2 hoursFromScheduledToTakenOrSkippedMax:(id)self3 hoursFromScheduledToTakenOrSkippedMin:(id)self4 isPartiallyLoggingScheduledMeds:(id)self5 dataSource:(id)self6;
 @end
 
 @implementation HKMedicationLoggingAnalytics
 
 + (BOOL)shouldSubmit
 {
-  v3 = [a1 _isMetricEnabled];
-  if (v3)
+  _isMetricEnabled = [self _isMetricEnabled];
+  if (_isMetricEnabled)
   {
 
-    LOBYTE(v3) = [a1 _isAllowed];
+    LOBYTE(_isMetricEnabled) = [self _isAllowed];
   }
 
-  return v3;
+  return _isMetricEnabled;
 }
 
 + (BOOL)_isMetricEnabled
@@ -29,55 +29,55 @@
   return IsEventUsed;
 }
 
-+ (void)submitLogMetricWithHealthStore:(id)a3 actions:(int64_t)a4 provenance:(int64_t)a5 context:(int64_t)a6 medicationIdentifiers:(id)a7 loggingMultipleMeds:(BOOL)a8 hoursAgoLoggedForMax:(id)a9 hoursAgoLoggedForMin:(id)a10 hoursFromScheduledTimeLoggedMax:(id)a11 hoursFromScheduledTimeLoggedMin:(id)a12 hoursFromScheduledToTakenOrSkippedMax:(id)a13 hoursFromScheduledToTakenOrSkippedMin:(id)a14 isPartiallyLoggingScheduledMeds:(id)a15 dataSource:(id)a16
++ (void)submitLogMetricWithHealthStore:(id)store actions:(int64_t)actions provenance:(int64_t)provenance context:(int64_t)context medicationIdentifiers:(id)identifiers loggingMultipleMeds:(BOOL)meds hoursAgoLoggedForMax:(id)max hoursAgoLoggedForMin:(id)self0 hoursFromScheduledTimeLoggedMax:(id)self1 hoursFromScheduledTimeLoggedMin:(id)self2 hoursFromScheduledToTakenOrSkippedMax:(id)self3 hoursFromScheduledToTakenOrSkippedMin:(id)self4 isPartiallyLoggingScheduledMeds:(id)self5 dataSource:(id)self6
 {
   v72 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v18 = a7;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v23 = a13;
-  v24 = a14;
-  v25 = a15;
-  v26 = a16;
-  v47 = v20;
-  v48 = v19;
-  v45 = v22;
-  v46 = v21;
-  if ([a1 shouldSubmit])
+  storeCopy = store;
+  identifiersCopy = identifiers;
+  maxCopy = max;
+  minCopy = min;
+  loggedMaxCopy = loggedMax;
+  loggedMinCopy = loggedMin;
+  skippedMaxCopy = skippedMax;
+  skippedMinCopy = skippedMin;
+  scheduledMedsCopy = scheduledMeds;
+  sourceCopy = source;
+  v47 = minCopy;
+  v48 = maxCopy;
+  v45 = loggedMinCopy;
+  v46 = loggedMaxCopy;
+  if ([self shouldSubmit])
   {
     HKMedicationsSharedAnalyticsQueue();
-    v43 = v24;
-    v28 = v27 = v23;
+    v43 = skippedMinCopy;
+    v28 = v27 = skippedMaxCopy;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __357__HKMedicationLoggingAnalytics_submitLogMetricWithHealthStore_actions_provenance_context_medicationIdentifiers_loggingMultipleMeds_hoursAgoLoggedForMax_hoursAgoLoggedForMin_hoursFromScheduledTimeLoggedMax_hoursFromScheduledTimeLoggedMin_hoursFromScheduledToTakenOrSkippedMax_hoursFromScheduledToTakenOrSkippedMin_isPartiallyLoggingScheduledMeds_dataSource___block_invoke;
     block[3] = &unk_2796CAC28;
-    v51 = v49;
-    v52 = v18;
-    v61 = a1;
-    v62 = a6;
-    v63 = a4;
-    v64 = a5;
-    v65 = a8;
-    v53 = v19;
-    v54 = v20;
-    v55 = v21;
-    v56 = v22;
+    v51 = storeCopy;
+    v52 = identifiersCopy;
+    selfCopy = self;
+    contextCopy = context;
+    actionsCopy = actions;
+    provenanceCopy = provenance;
+    medsCopy = meds;
+    v53 = maxCopy;
+    v54 = minCopy;
+    v55 = loggedMaxCopy;
+    v56 = loggedMinCopy;
     v57 = v27;
     v58 = v43;
-    v59 = v25;
-    v60 = v26;
+    v59 = scheduledMedsCopy;
+    v60 = sourceCopy;
     dispatch_async(v28, block);
 
-    v23 = v27;
-    v24 = v43;
+    skippedMaxCopy = v27;
+    skippedMinCopy = v43;
 
     v29 = v51;
-    v30 = v49;
-    v31 = v18;
+    v30 = storeCopy;
+    v31 = identifiersCopy;
   }
 
   else
@@ -86,8 +86,8 @@
     v32 = HKLogMedication();
     v33 = os_log_type_enabled(v32, OS_LOG_TYPE_INFO);
 
-    v30 = v49;
-    v31 = v18;
+    v30 = storeCopy;
+    v31 = identifiersCopy;
     if (!v33)
     {
       goto LABEL_7;
@@ -99,18 +99,18 @@
       v34 = objc_opt_class();
       v35 = MEMORY[0x277CCABB0];
       v44 = v34;
-      v36 = [v35 numberWithBool:{objc_msgSend(a1, "_isMetricEnabled")}];
-      v37 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "_isAllowed")}];
+      v36 = [v35 numberWithBool:{objc_msgSend(self, "_isMetricEnabled")}];
+      v37 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "_isAllowed")}];
       *buf = 138543874;
       v67 = v34;
-      v30 = v49;
+      v30 = storeCopy;
       v68 = 2114;
       v69 = v36;
       v70 = 2114;
       v71 = v37;
       _os_log_impl(&dword_2517E7000, v29, OS_LOG_TYPE_INFO, "[%{public}@] Skipping submitting metric. isMetricEnabled: %{public}@, isHealthDataSubmissionAllowed: %{public}@", buf, 0x20u);
 
-      v31 = v18;
+      v31 = identifiersCopy;
     }
   }
 
@@ -189,40 +189,40 @@ void __357__HKMedicationLoggingAnalytics_submitLogMetricWithHealthStore_actions_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)_unitTesting_detailedLoggingContextForLoggingContext:(int64_t)a3 schedules:(id)a4
++ (int64_t)_unitTesting_detailedLoggingContextForLoggingContext:(int64_t)context schedules:(id)schedules
 {
-  if (a3 != 1)
+  if (context != 1)
   {
-    return a3;
+    return context;
   }
 
-  v6 = [a1 _extractCommonScheduleTypeForMedicationSchedules:a4];
+  v6 = [self _extractCommonScheduleTypeForMedicationSchedules:schedules];
 
-  return [a1 _detailedScheduleLoggingContextForScheduleType:v6];
+  return [self _detailedScheduleLoggingContextForScheduleType:v6];
 }
 
-+ (int64_t)_detailedScheduleLoggingContextForScheduleType:(int64_t)a3
++ (int64_t)_detailedScheduleLoggingContextForScheduleType:(int64_t)type
 {
-  if ((a3 - 1) > 7)
+  if ((type - 1) > 7)
   {
     return 1;
   }
 
   else
   {
-    return qword_25180A660[a3 - 1];
+    return qword_25180A660[type - 1];
   }
 }
 
-+ (int64_t)_extractCommonScheduleTypeForMedicationSchedules:(id)a3
++ (int64_t)_extractCommonScheduleTypeForMedicationSchedules:(id)schedules
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  schedulesCopy = schedules;
+  v4 = [schedulesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -234,13 +234,13 @@ void __357__HKMedicationLoggingAnalytics_submitLogMetricWithHealthStore_actions_
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(schedulesCopy);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) scheduleType];
+        scheduleType = [*(*(&v12 + 1) + 8 * i) scheduleType];
         if (v6)
         {
-          if (v6 != v9)
+          if (v6 != scheduleType)
           {
             goto LABEL_13;
           }
@@ -248,11 +248,11 @@ void __357__HKMedicationLoggingAnalytics_submitLogMetricWithHealthStore_actions_
 
         else
         {
-          v6 = v9;
+          v6 = scheduleType;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [schedulesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

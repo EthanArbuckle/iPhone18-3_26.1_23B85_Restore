@@ -1,7 +1,7 @@
 @interface MUEdgeLayout
-- (MUEdgeLayout)initWithItem:(id)a3 container:(id)a4;
-- (MUEdgeLayout)initWithItem:(id)a3 container:(id)a4 insets:(NSDirectionalEdgeInsets)a5;
-- (MUEdgeLayout)initWithItem:(id)a3 container:(id)a4 insets:(NSDirectionalEdgeInsets)a5 edges:(unint64_t)a6 priority:(float)a7;
+- (MUEdgeLayout)initWithItem:(id)item container:(id)container;
+- (MUEdgeLayout)initWithItem:(id)item container:(id)container insets:(NSDirectionalEdgeInsets)insets;
+- (MUEdgeLayout)initWithItem:(id)item container:(id)container insets:(NSDirectionalEdgeInsets)insets edges:(unint64_t)edges priority:(float)priority;
 - (NSDirectionalEdgeInsets)insets;
 @end
 
@@ -17,17 +17,17 @@
   return result;
 }
 
-- (MUEdgeLayout)initWithItem:(id)a3 container:(id)a4 insets:(NSDirectionalEdgeInsets)a5 edges:(unint64_t)a6 priority:(float)a7
+- (MUEdgeLayout)initWithItem:(id)item container:(id)container insets:(NSDirectionalEdgeInsets)insets edges:(unint64_t)edges priority:(float)priority
 {
-  trailing = a5.trailing;
-  bottom = a5.bottom;
-  leading = a5.leading;
-  top = a5.top;
-  v15 = a4;
-  v16 = a3;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
+  containerCopy = container;
+  itemCopy = item;
   v17 = [MUEdgeLayoutInternal alloc];
-  *&v18 = a7;
-  v19 = [(MUEdgeLayoutInternal *)v17 initWithItem:v16 container:v15 insets:a6 edges:top priority:leading, bottom, trailing, v18];
+  *&v18 = priority;
+  v19 = [(MUEdgeLayoutInternal *)v17 initWithItem:itemCopy container:containerCopy insets:edges edges:top priority:leading, bottom, trailing, v18];
 
   v23.receiver = self;
   v23.super_class = MUEdgeLayout;
@@ -41,33 +41,33 @@
   return v21;
 }
 
-- (MUEdgeLayout)initWithItem:(id)a3 container:(id)a4 insets:(NSDirectionalEdgeInsets)a5
+- (MUEdgeLayout)initWithItem:(id)item container:(id)container insets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a5.trailing;
-  bottom = a5.bottom;
-  leading = a5.leading;
-  top = a5.top;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[MUEdgeLayoutInternal alloc] initWithItem:v12 container:v11 insets:top, leading, bottom, trailing];
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
+  containerCopy = container;
+  itemCopy = item;
+  trailing = [[MUEdgeLayoutInternal alloc] initWithItem:itemCopy container:containerCopy insets:top, leading, bottom, trailing];
 
   v17.receiver = self;
   v17.super_class = MUEdgeLayout;
-  v14 = [(MUConstraintLayout *)&v17 initWithInternal:v13];
+  v14 = [(MUConstraintLayout *)&v17 initWithInternal:trailing];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_internal, v13);
+    objc_storeStrong(&v14->_internal, trailing);
   }
 
   return v15;
 }
 
-- (MUEdgeLayout)initWithItem:(id)a3 container:(id)a4
+- (MUEdgeLayout)initWithItem:(id)item container:(id)container
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MUEdgeLayoutInternal alloc] initWithItem:v7 container:v6];
+  containerCopy = container;
+  itemCopy = item;
+  v8 = [[MUEdgeLayoutInternal alloc] initWithItem:itemCopy container:containerCopy];
 
   v12.receiver = self;
   v12.super_class = MUEdgeLayout;

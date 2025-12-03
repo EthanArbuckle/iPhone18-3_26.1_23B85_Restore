@@ -1,7 +1,7 @@
 @interface WFResourceManager
 + (id)sharedManager;
 - (id)frameworkBundle;
-- (id)localizedStringForKey:(id)a3;
+- (id)localizedStringForKey:(id)key;
 @end
 
 @implementation WFResourceManager
@@ -35,12 +35,12 @@ uint64_t __34__WFResourceManager_sharedManager__block_invoke()
   return [v2 bundleForClass:v3];
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFResourceManager *)self frameworkBundle];
-  v6 = [(WFResourceManager *)self tableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_28823D638 table:v6];
+  keyCopy = key;
+  frameworkBundle = [(WFResourceManager *)self frameworkBundle];
+  tableName = [(WFResourceManager *)self tableName];
+  v7 = [frameworkBundle localizedStringForKey:keyCopy value:&stru_28823D638 table:tableName];
 
   return v7;
 }

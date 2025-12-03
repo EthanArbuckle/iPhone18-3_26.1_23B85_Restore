@@ -1,17 +1,17 @@
 @interface CalDAVCalendarServerInviteNotificationItem
-- (BOOL)isComponentSupportedForString:(id)a3;
+- (BOOL)isComponentSupportedForString:(id)string;
 - (id)copyParseRules;
-- (id)initForReplyWithUID:(id)a3 href:(id)a4 hostURL:(id)a5 summary:(id)a6;
+- (id)initForReplyWithUID:(id)d href:(id)href hostURL:(id)l summary:(id)summary;
 @end
 
 @implementation CalDAVCalendarServerInviteNotificationItem
 
-- (id)initForReplyWithUID:(id)a3 href:(id)a4 hostURL:(id)a5 summary:(id)a6
+- (id)initForReplyWithUID:(id)d href:(id)href hostURL:(id)l summary:(id)summary
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  hrefCopy = href;
+  lCopy = l;
+  summaryCopy = summary;
   v14 = *MEMORY[0x277CFDE90];
   v15 = [(CoreDAVItem *)self initWithNameSpace:*MEMORY[0x277CFDE90] andName:@"invite-notification"];
   if (v15)
@@ -20,26 +20,26 @@
     v17 = *MEMORY[0x277CFDEF8];
     v18 = *MEMORY[0x277CFDF38];
     v19 = [v16 initWithNameSpace:*MEMORY[0x277CFDEF8] andName:*MEMORY[0x277CFDF38]];
-    [v11 absoluteString];
-    v20 = v27 = v11;
+    [hrefCopy absoluteString];
+    v20 = v27 = hrefCopy;
     [v19 setPayloadAsString:v20];
 
     [(CalDAVCalendarServerInviteNotificationItem *)v15 setHref:v19];
     v21 = [objc_alloc(MEMORY[0x277CFDBF0]) initWithNameSpace:v14 andName:@"hosturl"];
     v22 = [objc_alloc(MEMORY[0x277CFDBD8]) initWithNameSpace:v17 andName:v18];
-    v23 = [v12 absoluteString];
-    [v22 setPayloadAsString:v23];
+    absoluteString = [lCopy absoluteString];
+    [v22 setPayloadAsString:absoluteString];
 
     [v21 setHref:v22];
     [(CalDAVCalendarServerInviteNotificationItem *)v15 setHostURL:v21];
     v24 = [objc_alloc(MEMORY[0x277CFDC10]) initWithNameSpace:v14 andName:@"uid"];
-    [v24 setPayloadAsString:v10];
+    [v24 setPayloadAsString:dCopy];
     [(CalDAVCalendarServerInviteNotificationItem *)v15 setUid:v24];
     v25 = [objc_alloc(MEMORY[0x277CFDC10]) initWithNameSpace:v14 andName:@"summary"];
-    [v25 setPayloadAsString:v13];
+    [v25 setPayloadAsString:summaryCopy];
     [(CalDAVCalendarServerInviteNotificationItem *)v15 setSummary:v25];
 
-    v11 = v27;
+    hrefCopy = v27;
   }
 
   return v15;
@@ -84,16 +84,16 @@
   return v22;
 }
 
-- (BOOL)isComponentSupportedForString:(id)a3
+- (BOOL)isComponentSupportedForString:(id)string
 {
-  v4 = a3;
-  v5 = [(CalDAVCalendarServerInviteNotificationItem *)self supportedCalendarComponentSet];
+  stringCopy = string;
+  supportedCalendarComponentSet = [(CalDAVCalendarServerInviteNotificationItem *)self supportedCalendarComponentSet];
 
-  if (v5)
+  if (supportedCalendarComponentSet)
   {
-    v6 = [(CalDAVCalendarServerInviteNotificationItem *)self supportedCalendarComponentSet];
-    v7 = [v6 compNames];
-    v8 = [v7 containsObject:v4];
+    supportedCalendarComponentSet2 = [(CalDAVCalendarServerInviteNotificationItem *)self supportedCalendarComponentSet];
+    compNames = [supportedCalendarComponentSet2 compNames];
+    v8 = [compNames containsObject:stringCopy];
   }
 
   else

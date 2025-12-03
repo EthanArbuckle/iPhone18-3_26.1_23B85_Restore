@@ -1,6 +1,6 @@
 @interface NSLayoutConstraint
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation NSLayoutConstraint
@@ -92,32 +92,32 @@
   return v7;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"dbgInspectedHasIdentifier"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"dbgInspectedHasIdentifier"])
   {
-    v10 = [v9 identifier];
-    v11 = [v10 length] != 0;
+    identifier = [objectCopy identifier];
+    v11 = [identifier length] != 0;
 
     v12 = v11;
 LABEL_5:
-    a6 = [NSNumber numberWithBool:v12];
+    error = [NSNumber numberWithBool:v12];
     goto LABEL_27;
   }
 
-  if ([v8 isEqualToString:@"dbgInspectedHasSecondItem"])
+  if ([nameCopy isEqualToString:@"dbgInspectedHasSecondItem"])
   {
-    v13 = [v9 secondItem];
-    v14 = v13 != 0;
+    secondItem = [objectCopy secondItem];
+    v14 = secondItem != 0;
 
     v12 = v14;
     goto LABEL_5;
   }
 
-  v15 = v9;
-  v16 = v8;
+  v15 = objectCopy;
+  v16 = nameCopy;
   if (![v16 length])
   {
     goto LABEL_17;
@@ -128,18 +128,18 @@ LABEL_5:
   {
     if ([v16 length] < 2)
     {
-      v21 = [v16 uppercaseString];
+      uppercaseString = [v16 uppercaseString];
     }
 
     else
     {
       v18 = [v16 substringToIndex:1];
-      v19 = [v18 uppercaseString];
+      uppercaseString2 = [v18 uppercaseString];
       v20 = [v16 substringFromIndex:1];
-      v21 = [v19 stringByAppendingString:v20];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v20];
     }
 
-    v22 = [@"is" stringByAppendingString:v21];
+    v22 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v22);
     if (objc_opt_respondsToSelector())
     {
@@ -157,7 +157,7 @@ LABEL_5:
     }
 
 LABEL_17:
-    if (a6)
+    if (error)
     {
       v23 = v16;
       if (v15)
@@ -191,10 +191,10 @@ LABEL_17:
       v28 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v27];
 
       v29 = v28;
-      *a6 = v28;
+      *error = v28;
 
       v17 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -212,12 +212,12 @@ LABEL_17:
   }
 
 LABEL_9:
-  a6 = [v15 valueForKey:v17];
+  error = [v15 valueForKey:v17];
 LABEL_26:
 
 LABEL_27:
 
-  return a6;
+  return error;
 }
 
 @end

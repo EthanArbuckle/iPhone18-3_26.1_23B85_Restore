@@ -3,56 +3,56 @@
 - (BOOL)canApplyToRenderableByAddingSubrenderables;
 - (BOOL)canCopyData;
 - (BOOL)drawsInOneStep;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOpaque;
 - (BOOL)p_shouldApplyTintedImage;
-- (BOOL)shouldBeReappliedToRenderable:(id)a3;
-- (CGRect)p_drawnRectForImageSize:(CGSize)a3 destRect:(CGRect)a4 inContext:(CGContext *)a5;
+- (BOOL)shouldBeReappliedToRenderable:(id)renderable;
+- (CGRect)p_drawnRectForImageSize:(CGSize)size destRect:(CGRect)rect inContext:(CGContext *)context;
 - (CGSize)fillSize;
 - (CGSize)p_fillSize;
 - (CGSize)p_imageDataNaturalSize;
-- (CGSize)p_sizeOfFillImageForDestRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (CGSize)renderedImageSizeForObjectSize:(CGSize)a3;
-- (CRLImageFill)initWithImageData:(id)a3 technique:(unint64_t)a4 tintColor:(id)a5 size:(CGSize)a6 referenceColor:(id)a7;
+- (CGSize)p_sizeOfFillImageForDestRect:(CGRect)rect inContext:(CGContext *)context;
+- (CGSize)renderedImageSizeForObjectSize:(CGSize)size;
+- (CRLImageFill)initWithImageData:(id)data technique:(unint64_t)technique tintColor:(id)color size:(CGSize)size referenceColor:(id)referenceColor;
 - (double)scale;
-- (id)copyWithNewImageData:(id)a3;
+- (id)copyWithNewImageData:(id)data;
 - (id)initForUnarchiving;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)p_cachedImageForSize:(CGSize)a3 inContext:(CGContext *)a4 orContentsScaleProvider:(id)a5;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)p_cachedImageForSize:(CGSize)size inContext:(CGContext *)context orContentsScaleProvider:(id)provider;
 - (id)p_calculateReferenceColor;
 - (id)p_halfSizeCachedImage;
 - (id)p_quarterSizeCachedImage;
 - (id)p_standardSizeCachedImage;
-- (id)p_tintedImageWithScale:(double)a3;
+- (id)p_tintedImageWithScale:(double)scale;
 - (id)p_validatedImageProvider;
 - (id)referenceColor;
-- (void)applyToRenderable:(id)a3 withScale:(double)a4;
+- (void)applyToRenderable:(id)renderable withScale:(double)scale;
 - (void)dealloc;
-- (void)drawFillInContext:(CGContext *)a3 rect:(CGRect)a4 clippingToPath:(CGPath *)a5;
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (void)drawFillInContext:(CGContext *)context rect:(CGRect)rect clippingToPath:(CGPath *)path;
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context;
 - (void)i_commonInit;
 - (void)i_commonSetup;
-- (void)i_setStoredReferenceColor:(id)a3;
+- (void)i_setStoredReferenceColor:(id)color;
 - (void)i_updateStoredReferenceColorIfNeeded;
 - (void)p_clearTintedImageCache;
-- (void)p_drawBitmapImage:(CGImage *)a3 withOrientation:(int64_t)a4 inContext:(CGContext *)a5 bounds:(CGRect)a6;
-- (void)p_drawPDFWithProvider:(id)a3 inContext:(CGContext *)a4 bounds:(CGRect)a5;
-- (void)p_paintPath:(CGPath *)a3 inContext:(CGContext *)a4 rectForFill:(CGRect)a5;
-- (void)p_setTechnique:(unint64_t)a3;
+- (void)p_drawBitmapImage:(CGImage *)image withOrientation:(int64_t)orientation inContext:(CGContext *)context bounds:(CGRect)bounds;
+- (void)p_drawPDFWithProvider:(id)provider inContext:(CGContext *)context bounds:(CGRect)bounds;
+- (void)p_paintPath:(CGPath *)path inContext:(CGContext *)context rectForFill:(CGRect)fill;
+- (void)p_setTechnique:(unint64_t)technique;
 - (void)p_updateCachedReferenceColorIfNeeded;
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6;
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f;
 @end
 
 @implementation CRLImageFill
 
-- (CRLImageFill)initWithImageData:(id)a3 technique:(unint64_t)a4 tintColor:(id)a5 size:(CGSize)a6 referenceColor:(id)a7
+- (CRLImageFill)initWithImageData:(id)data technique:(unint64_t)technique tintColor:(id)color size:(CGSize)size referenceColor:(id)referenceColor
 {
-  height = a6.height;
-  width = a6.width;
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  if (a4 >= 5)
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  colorCopy = color;
+  referenceColorCopy = referenceColor;
+  if (technique >= 5)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -78,9 +78,9 @@
 
     v18 = [NSString stringWithUTF8String:"[CRLImageFill initWithImageData:technique:tintColor:size:referenceColor:]"];
     v19 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLImageFill.m"];
-    [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:132 isFatal:0 description:"Invalid image fill technique: %zu Defaulting to natural size.", a4];
+    [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:132 isFatal:0 description:"Invalid image fill technique: %zu Defaulting to natural size.", technique];
 
-    a4 = 0;
+    technique = 0;
   }
 
   v29.receiver = self;
@@ -89,13 +89,13 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->mImageData, a3);
-    v21->mTechnique = a4;
-    v22 = [v15 copy];
+    objc_storeStrong(&v20->mImageData, data);
+    v21->mTechnique = technique;
+    v22 = [colorCopy copy];
     mTintColor = v21->mTintColor;
     v21->mTintColor = v22;
 
-    v24 = [v16 copy];
+    v24 = [referenceColorCopy copy];
     mReferenceColor = v21->mReferenceColor;
     v21->mReferenceColor = v24;
 
@@ -187,9 +187,9 @@
   [(CRLImageFillCachedImage *)mQuarterSizeTintedImage flush];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CRLMutableImageFill allocWithZone:a3];
+  v4 = [CRLMutableImageFill allocWithZone:zone];
   mImageData = self->mImageData;
   mTechnique = self->mTechnique;
   mTintColor = self->mTintColor;
@@ -199,10 +199,10 @@
   return [(CRLImageFill *)v4 initWithImageData:mImageData technique:mTechnique tintColor:mTintColor size:mReferenceColor referenceColor:?];
 }
 
-- (void)p_setTechnique:(unint64_t)a3
+- (void)p_setTechnique:(unint64_t)technique
 {
-  v3 = a3;
-  if (a3 >= 5)
+  techniqueCopy = technique;
+  if (technique >= 5)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -228,12 +228,12 @@
 
     v6 = [NSString stringWithUTF8String:"[CRLImageFill p_setTechnique:]"];
     v7 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLImageFill.m"];
-    [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:230 isFatal:0 description:"Invalid image fill technique: %zu Defaulting to natural size.", v3];
+    [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:230 isFatal:0 description:"Invalid image fill technique: %zu Defaulting to natural size.", techniqueCopy];
 
-    v3 = 0;
+    techniqueCopy = 0;
   }
 
-  self->mTechnique = v3;
+  self->mTechnique = techniqueCopy;
 }
 
 - (CGSize)p_fillSize
@@ -245,9 +245,9 @@
   return result;
 }
 
-- (id)copyWithNewImageData:(id)a3
+- (id)copyWithNewImageData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(CRLImageFill *)self technique]== 2)
   {
     [(CRLImageFill *)self fillSize];
@@ -258,7 +258,7 @@
   else
   {
     v9 = +[CRLImageProviderPool sharedPool];
-    v10 = [v9 providerForAsset:v4 shouldValidate:1];
+    v10 = [v9 providerForAsset:dataCopy shouldValidate:1];
 
     [v10 naturalSize];
     v6 = v11;
@@ -266,25 +266,25 @@
   }
 
   v13 = [CRLImageFill alloc];
-  v14 = [(CRLImageFill *)self technique];
-  v15 = [(CRLImageFill *)self tintColor];
-  v16 = [(CRLImageFill *)v13 initWithImageData:v4 technique:v14 tintColor:v15 size:v6, v8];
+  technique = [(CRLImageFill *)self technique];
+  tintColor = [(CRLImageFill *)self tintColor];
+  v16 = [(CRLImageFill *)v13 initWithImageData:dataCopy technique:technique tintColor:tintColor size:v6, v8];
 
   return v16;
 }
 
 - (BOOL)canCopyData
 {
-  v2 = [(CRLImageFill *)self imageData];
-  v3 = [v2 needsDownload];
+  imageData = [(CRLImageFill *)self imageData];
+  needsDownload = [imageData needsDownload];
 
-  return v3 ^ 1;
+  return needsDownload ^ 1;
 }
 
 - (CGSize)p_imageDataNaturalSize
 {
-  v2 = [(CRLImageFill *)self p_validatedImageProvider];
-  [v2 naturalSize];
+  p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
+  [p_validatedImageProvider naturalSize];
   v4 = v3;
   v6 = v5;
 
@@ -322,8 +322,8 @@
   height = self->mFillSize.height;
   if (width == CGSizeZero.width && height == CGSizeZero.height)
   {
-    v5 = [(CRLImageFill *)self p_validatedImageProvider];
-    [v5 dpiAdjustedNaturalSize];
+    p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
+    [p_validatedImageProvider dpiAdjustedNaturalSize];
     width = v6;
     height = v7;
   }
@@ -337,14 +337,14 @@
 
 - (BOOL)isOpaque
 {
-  v3 = [(CRLImageFill *)self p_validatedImageProvider];
+  p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
   v4 = objc_opt_class();
-  v5 = sub_100014370(v4, v3);
-  v6 = [(CRLImageFill *)self tintColor];
-  if (v6)
+  v5 = sub_100014370(v4, p_validatedImageProvider);
+  tintColor = [(CRLImageFill *)self tintColor];
+  if (tintColor)
   {
-    v7 = [(CRLImageFill *)self tintColor];
-    [v7 alphaComponent];
+    tintColor2 = [(CRLImageFill *)self tintColor];
+    [tintColor2 alphaComponent];
     v9 = v8 == 1.0;
   }
 
@@ -357,23 +357,23 @@
   return v10 & 1;
 }
 
-- (void)i_setStoredReferenceColor:(id)a3
+- (void)i_setStoredReferenceColor:(id)color
 {
-  v4 = [a3 copy];
+  v4 = [color copy];
   mReferenceColor = self->mReferenceColor;
   self->mReferenceColor = v4;
 }
 
 - (id)referenceColor
 {
-  v3 = [(CRLImageFill *)self storedReferenceColor];
-  if (!v3)
+  storedReferenceColor = [(CRLImageFill *)self storedReferenceColor];
+  if (!storedReferenceColor)
   {
     [(CRLImageFill *)self p_updateCachedReferenceColorIfNeeded];
-    v3 = self->mCachedReferenceColor;
+    storedReferenceColor = self->mCachedReferenceColor;
   }
 
-  return v3;
+  return storedReferenceColor;
 }
 
 - (id)p_calculateReferenceColor
@@ -384,20 +384,20 @@
     goto LABEL_50;
   }
 
-  v4 = [(CRLImageFill *)self p_validatedImageProvider];
-  if ([v4 isError])
+  p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
+  if ([p_validatedImageProvider isError])
   {
-    v5 = [(CRLImageFill *)self p_imageData];
-    v6 = [v5 fallbackColor];
+    p_imageData = [(CRLImageFill *)self p_imageData];
+    fallbackColor = [p_imageData fallbackColor];
 
-    v7 = [(CRLImageFill *)self p_imageData];
-    v8 = v7;
-    if (!v6)
+    p_imageData2 = [(CRLImageFill *)self p_imageData];
+    v8 = p_imageData2;
+    if (!fallbackColor)
     {
-      if (v7)
+      if (p_imageData2)
       {
-        v26 = [(CRLImageFill *)self p_imageData];
-        self->mShouldSkipFurtherAttemptsToCalculateReferenceColor = [v26 needsDownload] ^ 1;
+        p_imageData3 = [(CRLImageFill *)self p_imageData];
+        self->mShouldSkipFurtherAttemptsToCalculateReferenceColor = [p_imageData3 needsDownload] ^ 1;
       }
 
       else
@@ -409,18 +409,18 @@
       goto LABEL_49;
     }
 
-    v9 = [v7 fallbackColor];
+    fallbackColor2 = [p_imageData2 fallbackColor];
 
-    v10 = [(CRLImageFill *)self tintColor];
-    v11 = v10;
-    if (v10)
+    tintColor = [(CRLImageFill *)self tintColor];
+    v11 = tintColor;
+    if (tintColor)
     {
-      v12 = [v10 colorByCompositingSourceOverDestinationColor:v9];
+      v12 = [tintColor colorByCompositingSourceOverDestinationColor:fallbackColor2];
     }
 
     else
     {
-      v12 = v9;
+      v12 = fallbackColor2;
     }
 
     v2 = v12;
@@ -546,9 +546,9 @@
       sub_10130F3A8(v27);
     }
 
-    v9 = [NSString stringWithUTF8String:"[CRLImageFill p_calculateReferenceColor]"];
+    fallbackColor2 = [NSString stringWithUTF8String:"[CRLImageFill p_calculateReferenceColor]"];
     v28 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLImageFill.m"];
-    [CRLAssertionHandler handleFailureInFunction:v9 file:v28 lineNumber:344 isFatal:0 description:"invalid nil value for '%{public}s'", "smallContext"];
+    [CRLAssertionHandler handleFailureInFunction:fallbackColor2 file:v28 lineNumber:344 isFatal:0 description:"invalid nil value for '%{public}s'", "smallContext"];
   }
 
 LABEL_49:
@@ -561,9 +561,9 @@ LABEL_50:
 {
   if (!self->mReferenceColor)
   {
-    v3 = [(CRLImageFill *)self p_calculateReferenceColor];
+    p_calculateReferenceColor = [(CRLImageFill *)self p_calculateReferenceColor];
     mReferenceColor = self->mReferenceColor;
-    self->mReferenceColor = v3;
+    self->mReferenceColor = p_calculateReferenceColor;
   }
 }
 
@@ -575,19 +575,19 @@ LABEL_50:
     objc_sync_enter(obj);
     if (!self->mCachedReferenceColor)
     {
-      v3 = [(CRLImageFill *)obj p_calculateReferenceColor];
+      p_calculateReferenceColor = [(CRLImageFill *)obj p_calculateReferenceColor];
       mCachedReferenceColor = self->mCachedReferenceColor;
-      self->mCachedReferenceColor = v3;
+      self->mCachedReferenceColor = p_calculateReferenceColor;
     }
 
     objc_sync_exit(obj);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v19 = 1;
   }
@@ -595,17 +595,17 @@ LABEL_50:
   else
   {
     v5 = objc_opt_class();
-    v6 = sub_100014370(v5, v4);
+    v6 = sub_100014370(v5, equalCopy);
     if (v6)
     {
       v7 = v6;
-      v8 = [(CRLImageFill *)self imageData];
-      v9 = [v7 imageData];
-      if ((!(v8 | v9) || [v8 isEqual:v9]) && (v10 = -[CRLImageFill technique](self, "technique"), v10 == objc_msgSend(v7, "technique")))
+      imageData = [(CRLImageFill *)self imageData];
+      imageData2 = [v7 imageData];
+      if ((!(imageData | imageData2) || [imageData isEqual:imageData2]) && (v10 = -[CRLImageFill technique](self, "technique"), v10 == objc_msgSend(v7, "technique")))
       {
-        v11 = [(CRLImageFill *)self tintColor];
-        v12 = [v7 tintColor];
-        if (v11 | v12 && ![v11 isEqual:v12])
+        tintColor = [(CRLImageFill *)self tintColor];
+        tintColor2 = [v7 tintColor];
+        if (tintColor | tintColor2 && ![tintColor isEqual:tintColor2])
         {
           v19 = 0;
         }
@@ -644,7 +644,7 @@ LABEL_50:
 
   else
   {
-    v4 = [(CRLImageFill *)self p_validatedImageProvider];
+    p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -660,8 +660,8 @@ LABEL_50:
   }
 
   v5 = objc_opt_class();
-  v6 = [(CRLImageFill *)self p_validatedImageProvider];
-  v7 = sub_100014370(v5, v6);
+  p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
+  v7 = sub_100014370(v5, p_validatedImageProvider);
 
   if (v7)
   {
@@ -684,8 +684,8 @@ LABEL_50:
   }
 
   v5 = objc_opt_class();
-  v6 = [(CRLImageFill *)self p_validatedImageProvider];
-  v7 = sub_100014370(v5, v6);
+  p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
+  v7 = sub_100014370(v5, p_validatedImageProvider);
 
   if (v7)
   {
@@ -702,11 +702,11 @@ LABEL_50:
 
 - (BOOL)p_shouldApplyTintedImage
 {
-  v3 = [(CRLImageFill *)self p_standardSizeCachedImage];
-  if (v3)
+  p_standardSizeCachedImage = [(CRLImageFill *)self p_standardSizeCachedImage];
+  if (p_standardSizeCachedImage)
   {
-    v4 = [(CRLImageFill *)self tintColor];
-    v5 = v4 != 0;
+    tintColor = [(CRLImageFill *)self tintColor];
+    v5 = tintColor != 0;
   }
 
   else
@@ -717,9 +717,9 @@ LABEL_50:
   return v5;
 }
 
-- (BOOL)shouldBeReappliedToRenderable:(id)a3
+- (BOOL)shouldBeReappliedToRenderable:(id)renderable
 {
-  v4 = a3;
+  renderableCopy = renderable;
   if (self->mTechnique)
   {
     if ([(CRLImageFill *)self p_shouldApplyTintedImage])
@@ -730,13 +730,13 @@ LABEL_50:
     else
     {
       v6 = objc_opt_class();
-      v7 = [(CRLImageFill *)self p_validatedImageProvider];
-      v8 = sub_100014370(v6, v7);
+      p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
+      v8 = sub_100014370(v6, p_validatedImageProvider);
 
-      [v4 bounds];
-      v11 = [v8 CGImageForSize:0 inContext:v4 orContentsScaleProvider:{v9, v10}];
-      v12 = [v4 contents];
-      v5 = v12 != v11;
+      [renderableCopy bounds];
+      v11 = [v8 CGImageForSize:0 inContext:renderableCopy orContentsScaleProvider:{v9, v10}];
+      contents = [renderableCopy contents];
+      v5 = contents != v11;
     }
   }
 
@@ -748,15 +748,15 @@ LABEL_50:
   return v5;
 }
 
-- (id)p_cachedImageForSize:(CGSize)a3 inContext:(CGContext *)a4 orContentsScaleProvider:(id)a5
+- (id)p_cachedImageForSize:(CGSize)size inContext:(CGContext *)context orContentsScaleProvider:(id)provider
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  v10 = v9;
-  if (a4)
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
+  v10 = providerCopy;
+  if (context)
   {
-    if (v9)
+    if (providerCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -785,28 +785,28 @@ LABEL_50:
       [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:483 isFatal:0 description:"using context to determine requested image size. contentsScaleProvider should be nil"];
     }
 
-    if ((sub_10051058C(a4) & 1) != 0 || sub_100510804(a4))
+    if ((sub_10051058C(context) & 1) != 0 || sub_100510804(context))
     {
 LABEL_26:
-      v27 = [(CRLImageFill *)self p_standardSizeCachedImage];
+      p_standardSizeCachedImage = [(CRLImageFill *)self p_standardSizeCachedImage];
       goto LABEL_28;
     }
 
-    v14 = sub_100510A7C(a4);
+    v14 = sub_100510A7C(context);
     width = sub_10011F340(width, height, v14);
     height = v15;
-    CGContextGetCTM(&v30, a4);
+    CGContextGetCTM(&v30, context);
     v16 = sub_100139A00(&v30.a);
   }
 
   else
   {
-    if (!v9)
+    if (!providerCopy)
     {
       goto LABEL_18;
     }
 
-    [v9 contentsScale];
+    [providerCopy contentsScale];
   }
 
   width = sub_10011F340(width, height, v16);
@@ -825,7 +825,7 @@ LABEL_18:
 
   if (width <= sub_10011F340(v19, v21, 0.25) && height <= v25)
   {
-    v27 = [(CRLImageFill *)self p_quarterSizeCachedImage];
+    p_standardSizeCachedImage = [(CRLImageFill *)self p_quarterSizeCachedImage];
     goto LABEL_28;
   }
 
@@ -834,16 +834,16 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  v27 = [(CRLImageFill *)self p_halfSizeCachedImage];
+  p_standardSizeCachedImage = [(CRLImageFill *)self p_halfSizeCachedImage];
 LABEL_28:
-  v28 = v27;
+  v28 = p_standardSizeCachedImage;
 
   return v28;
 }
 
-- (void)applyToRenderable:(id)a3 withScale:(double)a4
+- (void)applyToRenderable:(id)renderable withScale:(double)scale
 {
-  v6 = a3;
+  renderableCopy = renderable;
   if (![(CRLImageFill *)self canApplyToRenderable]&& ![(CRLImageFill *)self canApplyToRenderableByAddingSubrenderables])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -874,31 +874,31 @@ LABEL_28:
   }
 
   v10 = objc_opt_class();
-  v11 = [(CRLImageFill *)self p_validatedImageProvider];
-  v12 = sub_100014370(v10, v11);
+  p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
+  v12 = sub_100014370(v10, p_validatedImageProvider);
 
-  LODWORD(v11) = [(CRLImageFill *)self p_shouldApplyTintedImage];
-  [v6 bounds];
-  if (v11)
+  LODWORD(p_validatedImageProvider) = [(CRLImageFill *)self p_shouldApplyTintedImage];
+  [renderableCopy bounds];
+  if (p_validatedImageProvider)
   {
-    v15 = [(CRLImageFill *)self p_cachedImageForSize:0 inContext:v6 orContentsScaleProvider:v13, v14];
-    v16 = [v15 image];
-    v17 = [v16 CGImage];
+    v15 = [(CRLImageFill *)self p_cachedImageForSize:0 inContext:renderableCopy orContentsScaleProvider:v13, v14];
+    image = [v15 image];
+    cGImage = [image CGImage];
   }
 
   else
   {
-    v17 = [v12 CGImageForSize:0 inContext:v6 orContentsScaleProvider:{v13, v14}];
+    cGImage = [v12 CGImageForSize:0 inContext:renderableCopy orContentsScaleProvider:{v13, v14}];
   }
 
-  v18 = v17;
-  v19 = [v6 subrenderables];
-  v20 = [v19 count];
+  v18 = cGImage;
+  subrenderables = [renderableCopy subrenderables];
+  v20 = [subrenderables count];
 
   if (v20)
   {
-    v21 = [v6 subrenderables];
-    v22 = [v21 indexOfObjectPassingTest:&stru_101841688];
+    subrenderables2 = [renderableCopy subrenderables];
+    v22 = [subrenderables2 indexOfObjectPassingTest:&stru_101841688];
   }
 
   else
@@ -917,24 +917,24 @@ LABEL_28:
       if (v22 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v31 = +[CRLCanvasRenderable renderable];
-        v32 = +[CRLCanvasRenderable renderable];
-        [v31 addSubrenderable:v32];
+        lastObject = +[CRLCanvasRenderable renderable];
+        [v31 addSubrenderable:lastObject];
       }
 
       else
       {
-        v53 = [v6 subrenderables];
-        v31 = [v53 objectAtIndex:v22];
+        subrenderables3 = [renderableCopy subrenderables];
+        v31 = [subrenderables3 objectAtIndex:v22];
 
-        v54 = [v31 subrenderables];
-        v32 = [v54 lastObject];
+        subrenderables4 = [v31 subrenderables];
+        lastObject = [subrenderables4 lastObject];
       }
 
       +[CATransaction begin];
       [CATransaction setDisableActions:1];
-      [v6 bounds];
+      [renderableCopy bounds];
       [v31 setPosition:{sub_100120414(v55, v56, v57, v58)}];
-      [v6 bounds];
+      [renderableCopy bounds];
       [v31 setBounds:?];
       [v31 setMasksToBounds:1];
       [v31 setEdgeAntialiasingMask:1];
@@ -946,23 +946,23 @@ LABEL_28:
       v69 = v68;
       v71 = v70;
       v73 = v72;
-      [v6 contentsScale];
-      v75 = sub_1001221E8(v67, v69, v71, v73, v74 * a4);
+      [renderableCopy contentsScale];
+      v75 = sub_1001221E8(v67, v69, v71, v73, v74 * scale);
       v77 = v76;
       v79 = v78;
       v81 = v80;
-      [v32 setContents:v18];
-      [v32 setPosition:{sub_100120414(v75, v77, v79, v81)}];
-      [v32 setBounds:sub_10011ECB4()];
-      [v6 contentsScale];
-      [v32 setContentsScale:?];
-      CGAffineTransformMakeScale(&v88, a4, a4);
+      [lastObject setContents:v18];
+      [lastObject setPosition:{sub_100120414(v75, v77, v79, v81)}];
+      [lastObject setBounds:sub_10011ECB4()];
+      [renderableCopy contentsScale];
+      [lastObject setContentsScale:?];
+      CGAffineTransformMakeScale(&v88, scale, scale);
       v87 = v88;
-      [v32 setAffineTransform:&v87];
-      v82 = [v6 delegate];
-      [v32 setDelegate:v82];
+      [lastObject setAffineTransform:&v87];
+      delegate = [renderableCopy delegate];
+      [lastObject setDelegate:delegate];
 
-      [v32 setEdgeAntialiasingMask:0];
+      [lastObject setEdgeAntialiasingMask:0];
       +[CATransaction commit];
 
       v18 = 0;
@@ -983,7 +983,7 @@ LABEL_28:
     [(CRLImageFill *)self fillSize];
     v34 = v33;
     v36 = v35;
-    [v6 bounds];
+    [renderableCopy bounds];
     v38 = v37;
     v40 = v39;
     v41 = sub_10011ECB4();
@@ -1049,59 +1049,59 @@ LABEL_41:
   height = 1.0;
   width = 1.0;
 LABEL_42:
-  v83 = [v6 contents];
+  contents = [renderableCopy contents];
 
-  if (v83 != v18)
+  if (contents != v18)
   {
-    [v6 setContents:v18];
+    [renderableCopy setContents:v18];
   }
 
-  v84 = [v6 contentsGravity];
+  contentsGravity = [renderableCopy contentsGravity];
 
-  if (v84 != v30)
+  if (contentsGravity != v30)
   {
-    [v6 setContentsGravity:v30];
+    [renderableCopy setContentsGravity:v30];
   }
 
-  [v6 contentsRect];
+  [renderableCopy contentsRect];
   v93.origin.x = x;
   v93.origin.y = y;
   v93.size.width = width;
   v93.size.height = height;
   if (!CGRectEqualToRect(v91, v93))
   {
-    [v6 setContentsRect:{x, y, width, height}];
+    [renderableCopy setContentsRect:{x, y, width, height}];
   }
 
-  if ([v6 backgroundColor])
+  if ([renderableCopy backgroundColor])
   {
-    [v6 setBackgroundColor:0];
+    [renderableCopy setBackgroundColor:0];
   }
 
   if (v31 && v22 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v31 setName:@"CRLImageFillSublayer"];
-    [v6 addSubrenderable:v31];
+    [renderableCopy addSubrenderable:v31];
   }
 
   else if (!v31 && v22 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v85 = [v6 subrenderables];
-    v86 = [v85 objectAtIndex:v22];
+    subrenderables5 = [renderableCopy subrenderables];
+    v86 = [subrenderables5 objectAtIndex:v22];
     [v86 removeFromSuperlayer];
   }
 }
 
-- (CGSize)renderedImageSizeForObjectSize:(CGSize)a3
+- (CGSize)renderedImageSizeForObjectSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CRLImageFill *)self technique];
+  height = size.height;
+  width = size.width;
+  technique = [(CRLImageFill *)self technique];
   v7 = 0.0;
-  if (v6 > 2)
+  if (technique > 2)
   {
     v8 = 0.0;
-    if ((v6 - 3) < 2)
+    if ((technique - 3) < 2)
     {
       [(CRLImageFill *)self fillSize:0.0];
       v8 = sub_100121EF4([(CRLImageFill *)self technique]== 3, v9, v10, width, height);
@@ -1110,12 +1110,12 @@ LABEL_42:
 
   else
   {
-    if (!v6)
+    if (!technique)
     {
       goto LABEL_5;
     }
 
-    if (v6 == 1)
+    if (technique == 1)
     {
       v7 = height;
       v8 = width;
@@ -1123,7 +1123,7 @@ LABEL_42:
     }
 
     v8 = 0.0;
-    if (v6 == 2)
+    if (technique == 2)
     {
 LABEL_5:
       [(CRLImageFill *)self fillSize];
@@ -1136,28 +1136,28 @@ LABEL_9:
   return result;
 }
 
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context
 {
-  if (a4)
+  if (context)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     Mutable = CGPathCreateMutable();
     v15.origin.x = x;
     v15.origin.y = y;
     v15.size.width = width;
     v15.size.height = height;
     CGPathAddRect(Mutable, 0, v15);
-    [(CRLImageFill *)self paintPath:Mutable inContext:a4];
+    [(CRLImageFill *)self paintPath:Mutable inContext:context];
 
     CGPathRelease(Mutable);
   }
 
   else
   {
-    [CRLAssertionHandler _atomicIncrementAssertCount:a3.origin.x];
+    [CRLAssertionHandler _atomicIncrementAssertCount:rect.origin.x];
     if (qword_101AD5A10 != -1)
     {
       sub_101321704();
@@ -1185,13 +1185,13 @@ LABEL_9:
   }
 }
 
-- (CGSize)p_sizeOfFillImageForDestRect:(CGRect)a3 inContext:(CGContext *)a4
+- (CGSize)p_sizeOfFillImageForDestRect:(CGRect)rect inContext:(CGContext *)context
 {
-  v6 = [(CRLImageFill *)self technique];
+  technique = [(CRLImageFill *)self technique];
   [(CRLImageFill *)self fillSize];
-  if (v6 != 2)
+  if (technique != 2)
   {
-    [CRLImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:a4 inContext:?];
+    [CRLImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:context inContext:?];
     v7 = v9;
     v8 = v10;
   }
@@ -1201,71 +1201,71 @@ LABEL_9:
   return result;
 }
 
-- (void)p_paintPath:(CGPath *)a3 inContext:(CGContext *)a4 rectForFill:(CGRect)a5
+- (void)p_paintPath:(CGPath *)path inContext:(CGContext *)context rectForFill:(CGRect)fill
 {
-  if (a3)
+  if (path)
   {
-    if (a4)
+    if (context)
     {
-      height = a5.size.height;
-      width = a5.size.width;
-      y = a5.origin.y;
-      x = a5.origin.x;
-      v12 = [(CRLImageFill *)self p_validatedImageProvider];
-      if (!v12)
+      height = fill.size.height;
+      width = fill.size.width;
+      y = fill.origin.y;
+      x = fill.origin.x;
+      p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
+      if (!p_validatedImageProvider)
       {
 LABEL_51:
 
         return;
       }
 
-      CGContextSaveGState(a4);
-      CGContextBeginPath(a4);
-      CGContextAddPath(a4, a3);
-      CGContextClip(a4);
+      CGContextSaveGState(context);
+      CGContextBeginPath(context);
+      CGContextAddPath(context, path);
+      CGContextClip(context);
       v46.origin.x = x;
       v46.origin.y = y;
       v46.size.width = width;
       v46.size.height = height;
       if (CGRectIsNull(v46))
       {
-        PathBoundingBox = CGPathGetPathBoundingBox(a3);
+        PathBoundingBox = CGPathGetPathBoundingBox(path);
         x = PathBoundingBox.origin.x;
         y = PathBoundingBox.origin.y;
         width = PathBoundingBox.size.width;
         height = PathBoundingBox.size.height;
       }
 
-      v13 = [(CRLImageFill *)self tintColor];
-      if (v13)
+      tintColor = [(CRLImageFill *)self tintColor];
+      if (tintColor)
       {
-        v14 = v13;
-        v15 = [v12 isError];
+        v14 = tintColor;
+        isError = [p_validatedImageProvider isError];
 
-        if ((v15 & 1) == 0)
+        if ((isError & 1) == 0)
         {
-          [(CRLImageFill *)self p_sizeOfFillImageForDestRect:a4 inContext:x, y, width, height];
-          v24 = [(CRLImageFill *)self p_cachedImageForSize:a4 inContext:0 orContentsScaleProvider:?];
-          v25 = [v24 image];
-          v26 = [v25 CGImage];
+          [(CRLImageFill *)self p_sizeOfFillImageForDestRect:context inContext:x, y, width, height];
+          v24 = [(CRLImageFill *)self p_cachedImageForSize:context inContext:0 orContentsScaleProvider:?];
+          image = [v24 image];
+          cGImage = [image CGImage];
 
-          [(CRLImageFill *)self p_drawBitmapImage:v26 withOrientation:0 inContext:a4 bounds:x, y, width, height];
+          [(CRLImageFill *)self p_drawBitmapImage:cGImage withOrientation:0 inContext:context bounds:x, y, width, height];
 LABEL_50:
-          CGContextRestoreGState(a4);
+          CGContextRestoreGState(context);
           goto LABEL_51;
         }
       }
 
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v12;
-        [(CRLImageFill *)self p_sizeOfFillImageForDestRect:a4 inContext:x, y, width, height];
-        v17 = [v16 CGImageForSize:a4 inContext:0 orContentsScaleProvider:?];
-        v18 = [v16 orientation];
+        v16 = p_validatedImageProvider;
+        [(CRLImageFill *)self p_sizeOfFillImageForDestRect:context inContext:x, y, width, height];
+        v17 = [v16 CGImageForSize:context inContext:0 orContentsScaleProvider:?];
+        orientation = [v16 orientation];
 
-        [(CRLImageFill *)self p_drawBitmapImage:v17 withOrientation:v18 inContext:a4 bounds:x, y, width, height];
+        [(CRLImageFill *)self p_drawBitmapImage:v17 withOrientation:orientation inContext:context bounds:x, y, width, height];
       }
 
       else
@@ -1273,43 +1273,43 @@ LABEL_50:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v27 = [(CRLImageFill *)self imageData];
-          v28 = [v27 needsDownload];
+          imageData = [(CRLImageFill *)self imageData];
+          needsDownload = [imageData needsDownload];
 
-          if (v28)
+          if (needsDownload)
           {
-            v29 = [(CRLImageFill *)self imageData];
-            sub_100510F80(a4, v29);
+            imageData2 = [(CRLImageFill *)self imageData];
+            sub_100510F80(context, imageData2);
 
-            v30 = [(CRLAsset *)self->mImageData fallbackColor];
-            v31 = v30;
-            if (v30)
+            fallbackColor = [(CRLAsset *)self->mImageData fallbackColor];
+            v31 = fallbackColor;
+            if (fallbackColor)
             {
-              [v30 paintPath:a3 inContext:a4];
-              v32 = [(CRLImageFill *)self tintColor];
-              v33 = v32;
-              if (v32)
+              [fallbackColor paintPath:path inContext:context];
+              tintColor2 = [(CRLImageFill *)self tintColor];
+              v33 = tintColor2;
+              if (tintColor2)
               {
-                [v32 paintPath:a3 inContext:a4];
+                [tintColor2 paintPath:path inContext:context];
               }
             }
 
             else
             {
-              CGContextSaveGState(a4);
+              CGContextSaveGState(context);
               v33 = [CRLImage imageNamed:@"sf_streaming_large_bg_pattern"];
               [v33 size];
               v38 = sub_10011ECB4();
               v40 = v39;
               v42 = v41;
               v44 = v43;
-              v45 = [v33 CGImageForContentsScale:sub_100510A7C(a4)];
+              v45 = [v33 CGImageForContentsScale:sub_100510A7C(context)];
               v48.origin.x = v38;
               v48.origin.y = v40;
               v48.size.width = v42;
               v48.size.height = v44;
-              CGContextDrawTiledImage(a4, v48, v45);
-              CGContextRestoreGState(a4);
+              CGContextDrawTiledImage(context, v48, v45);
+              CGContextRestoreGState(context);
             }
           }
 
@@ -1318,8 +1318,8 @@ LABEL_50:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(CRLImageFill *)self p_drawnRectForImageSize:a4 destRect:width inContext:height, x, y, width, height];
-              [v12 drawImageInContext:a4 rect:?];
+              [(CRLImageFill *)self p_drawnRectForImageSize:context destRect:width inContext:height, x, y, width, height];
+              [p_validatedImageProvider drawImageInContext:context rect:?];
               goto LABEL_49;
             }
 
@@ -1348,23 +1348,23 @@ LABEL_50:
 
             v31 = [NSString stringWithUTF8String:"[CRLImageFill p_paintPath:inContext:rectForFill:]"];
             v36 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLImageFill.m"];
-            v37 = [(CRLImageFill *)self imageData];
-            [CRLAssertionHandler handleFailureInFunction:v31 file:v36 lineNumber:734 isFatal:0 description:"can't draw CRLAsset with unknown image type: %@", v37];
+            imageData3 = [(CRLImageFill *)self imageData];
+            [CRLAssertionHandler handleFailureInFunction:v31 file:v36 lineNumber:734 isFatal:0 description:"can't draw CRLAsset with unknown image type: %@", imageData3];
           }
 
           goto LABEL_49;
         }
 
-        [(CRLImageFill *)self p_drawPDFWithProvider:v12 inContext:a4 bounds:x, y, width, height];
+        [(CRLImageFill *)self p_drawPDFWithProvider:p_validatedImageProvider inContext:context bounds:x, y, width, height];
       }
 
 LABEL_49:
-      CGContextRestoreGState(a4);
+      CGContextRestoreGState(context);
       goto LABEL_50;
     }
 
 LABEL_19:
-    [CRLAssertionHandler _atomicIncrementAssertCount:a5.origin.x];
+    [CRLAssertionHandler _atomicIncrementAssertCount:fill.origin.x];
     if (qword_101AD5A10 != -1)
     {
       sub_1013219D0();
@@ -1386,14 +1386,14 @@ LABEL_19:
       sub_10130F3A8(v22);
     }
 
-    v12 = [NSString stringWithUTF8String:"[CRLImageFill p_paintPath:inContext:rectForFill:]"];
+    p_validatedImageProvider = [NSString stringWithUTF8String:"[CRLImageFill p_paintPath:inContext:rectForFill:]"];
     v23 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLImageFill.m"];
-    [CRLAssertionHandler handleFailureInFunction:v12 file:v23 lineNumber:684 isFatal:0 description:"invalid nil value for '%{public}s'", "ctx"];
+    [CRLAssertionHandler handleFailureInFunction:p_validatedImageProvider file:v23 lineNumber:684 isFatal:0 description:"invalid nil value for '%{public}s'", "ctx"];
 
     goto LABEL_51;
   }
 
-  [CRLAssertionHandler _atomicIncrementAssertCount:a5.origin.x];
+  [CRLAssertionHandler _atomicIncrementAssertCount:fill.origin.x];
   if (qword_101AD5A10 != -1)
   {
     sub_1013218F8();
@@ -1419,19 +1419,19 @@ LABEL_19:
   v21 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLImageFill.m"];
   [CRLAssertionHandler handleFailureInFunction:v20 file:v21 lineNumber:683 isFatal:0 description:"invalid nil value for '%{public}s'", "path"];
 
-  if (!a4)
+  if (!context)
   {
     goto LABEL_19;
   }
 }
 
-- (void)drawFillInContext:(CGContext *)a3 rect:(CGRect)a4 clippingToPath:(CGPath *)a5
+- (void)drawFillInContext:(CGContext *)context rect:(CGRect)rect clippingToPath:(CGPath *)path
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (!a5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!path)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1466,7 +1466,7 @@ LABEL_19:
   v18.size.height = height;
   if (!CGRectIsNull(v18))
   {
-    PathBoundingBox = CGPathGetPathBoundingBox(a5);
+    PathBoundingBox = CGPathGetPathBoundingBox(path);
     if (!sub_10011EF14(x, y, width, height, PathBoundingBox.origin.x, PathBoundingBox.origin.y, PathBoundingBox.size.width, PathBoundingBox.size.height))
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1497,16 +1497,16 @@ LABEL_19:
     }
   }
 
-  [(CRLImageFill *)self p_paintPath:a5 inContext:a3 rectForFill:x, y, width, height];
+  [(CRLImageFill *)self p_paintPath:path inContext:context rectForFill:x, y, width, height];
 }
 
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (!a3)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!path)
   {
     [CRLAssertionHandler _atomicIncrementAssertCount:0];
     if (qword_101AD5A10 != -1)
@@ -1535,26 +1535,26 @@ LABEL_19:
     [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:757 isFatal:0 description:"invalid nil value for '%{public}s'", "path"];
   }
 
-  [(CRLImageFill *)self p_paintPath:a3 inContext:a5 rectForFill:a6, x, y, width, height];
+  [(CRLImageFill *)self p_paintPath:path inContext:context rectForFill:f, x, y, width, height];
 }
 
-- (id)p_tintedImageWithScale:(double)a3
+- (id)p_tintedImageWithScale:(double)scale
 {
-  v5 = [(CRLImageFill *)self p_validatedImageProvider];
-  v6 = [(CRLImageFill *)self tintColor];
-  v7 = v6;
-  if (!v6 || !v5)
+  p_validatedImageProvider = [(CRLImageFill *)self p_validatedImageProvider];
+  tintColor = [(CRLImageFill *)self tintColor];
+  v7 = tintColor;
+  if (!tintColor || !p_validatedImageProvider)
   {
 
 LABEL_9:
-    v28 = [(CRLImageFill *)self tintColor];
+    tintColor2 = [(CRLImageFill *)self tintColor];
 
-    if (v28)
+    if (tintColor2)
     {
-      if (v5)
+      if (p_validatedImageProvider)
       {
 LABEL_30:
-        if ([v5 isError])
+        if ([p_validatedImageProvider isError])
         {
           +[CRLAssertionHandler _atomicIncrementAssertCount];
           if (qword_101AD5A10 != -1)
@@ -1615,7 +1615,7 @@ LABEL_30:
       v31 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLImageFill.m"];
       [CRLAssertionHandler handleFailureInFunction:v30 file:v31 lineNumber:822 isFatal:0 description:"Image fill has a null tint color."];
 
-      if (v5)
+      if (p_validatedImageProvider)
       {
         goto LABEL_30;
       }
@@ -1650,14 +1650,14 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v8 = [v5 isError];
+  isError = [p_validatedImageProvider isError];
 
-  if (v8)
+  if (isError)
   {
     goto LABEL_9;
   }
 
-  [v5 naturalSize];
+  [p_validatedImageProvider naturalSize];
   v10 = v9;
   v12 = v11;
   if (CRLWPShapeLayout.columnsAreLeftToRight.getter())
@@ -1668,15 +1668,15 @@ LABEL_30:
     v12 = v15;
   }
 
-  v16 = sub_10011F340(v10, v12, a3);
+  v16 = sub_10011F340(v10, v12, scale);
   v18 = sub_100122154(v16, v17);
   v20 = sub_10011FBF0(v18, v19, 1.0);
   v22 = v21;
-  v23 = [(CRLImageFill *)self tintColor];
-  v24 = [v23 colorRGBSpace];
+  tintColor3 = [(CRLImageFill *)self tintColor];
+  colorRGBSpace = [tintColor3 colorRGBSpace];
 
-  v25 = [(CRLImageFill *)self tintColor];
-  ColorSpace = CGColorGetColorSpace([v25 CGColor]);
+  tintColor4 = [(CRLImageFill *)self tintColor];
+  ColorSpace = CGColorGetColorSpace([tintColor4 CGColor]);
 
   if (ColorSpace)
   {
@@ -1689,7 +1689,7 @@ LABEL_30:
   }
 
   v40 = objc_opt_class();
-  v41 = sub_100014370(v40, v5);
+  v41 = sub_100014370(v40, p_validatedImageProvider);
   v42 = v41;
   if (!v41)
   {
@@ -1700,7 +1700,7 @@ LABEL_30:
   if (v43)
   {
     v44 = (CGColorSpaceGetModel(v43) - 4) < 0xFFFFFFFD;
-    if (v24)
+    if (colorRGBSpace)
     {
       goto LABEL_52;
     }
@@ -1709,7 +1709,7 @@ LABEL_30:
   else
   {
     v44 = 1;
-    if (v24)
+    if (colorRGBSpace)
     {
       goto LABEL_52;
     }
@@ -1730,10 +1730,10 @@ LABEL_53:
   v51 = v50;
   v53 = v52;
   CGContextSaveGState(v46);
-  [v5 drawImageInContext:v46 rect:{v47, v49, v51, v53}];
+  [p_validatedImageProvider drawImageInContext:v46 rect:{v47, v49, v51, v53}];
   CGContextRestoreGState(v46);
-  v54 = [(CRLImageFill *)self tintColor];
-  CGContextSetFillColorWithColor(v46, [v54 CGColor]);
+  tintColor5 = [(CRLImageFill *)self tintColor];
+  CGContextSetFillColorWithColor(v46, [tintColor5 CGColor]);
 
   v57.origin.x = v47;
   v57.origin.y = v49;
@@ -1759,9 +1759,9 @@ LABEL_41:
 
 - (id)p_standardSizeCachedImage
 {
-  v3 = [(CRLImageFill *)self tintColor];
+  tintColor = [(CRLImageFill *)self tintColor];
 
-  if (v3)
+  if (tintColor)
   {
     v4 = self->mStandardSizeTintedImage;
   }
@@ -1776,9 +1776,9 @@ LABEL_41:
 
 - (id)p_halfSizeCachedImage
 {
-  v3 = [(CRLImageFill *)self tintColor];
+  tintColor = [(CRLImageFill *)self tintColor];
 
-  if (v3)
+  if (tintColor)
   {
     v4 = self->mHalfSizeTintedImage;
   }
@@ -1793,9 +1793,9 @@ LABEL_41:
 
 - (id)p_quarterSizeCachedImage
 {
-  v3 = [(CRLImageFill *)self tintColor];
+  tintColor = [(CRLImageFill *)self tintColor];
 
-  if (v3)
+  if (tintColor)
   {
     v4 = self->mQuarterSizeTintedImage;
   }
@@ -1834,16 +1834,16 @@ LABEL_41:
   return v7;
 }
 
-- (CGRect)p_drawnRectForImageSize:(CGSize)a3 destRect:(CGRect)a4 inContext:(CGContext *)a5
+- (CGRect)p_drawnRectForImageSize:(CGSize)size destRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.height;
-  v11 = a3.width;
-  v13 = [(CRLImageFill *)self technique];
-  if (v13 - 3 < 2)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = size.height;
+  v11 = size.width;
+  technique = [(CRLImageFill *)self technique];
+  if (technique - 3 < 2)
   {
     v14 = sub_100121F30([(CRLImageFill *)self technique]== 3, v11, v10, x, y, width, height);
 LABEL_3:
@@ -1854,9 +1854,9 @@ LABEL_3:
     goto LABEL_7;
   }
 
-  if (!v13)
+  if (!technique)
   {
-    CGContextGetUserSpaceToDeviceSpaceTransform(&v35, a5);
+    CGContextGetUserSpaceToDeviceSpaceTransform(&v35, context);
     v18 = sub_100139B5C(&v35.a);
     v19 = sub_100120414(x, y, width, height);
     v21 = sub_10011EC70(v19, v20, v11);
@@ -1866,7 +1866,7 @@ LABEL_3:
     height = v24;
     if (v18)
     {
-      v36 = CGContextConvertRectToDeviceSpace(a5, *&v21);
+      v36 = CGContextConvertRectToDeviceSpace(context, *&v21);
       v25 = v36.size.width;
       v26 = v36.size.height;
       v27 = sub_100122154(v36.origin.x, v36.origin.y);
@@ -1875,7 +1875,7 @@ LABEL_3:
       v37.size.height = v30;
       v37.origin.x = v27;
       v37.origin.y = v29;
-      *&v14 = CGContextConvertRectToUserSpace(a5, v37);
+      *&v14 = CGContextConvertRectToUserSpace(context, v37);
       goto LABEL_3;
     }
   }
@@ -1892,37 +1892,37 @@ LABEL_7:
   return result;
 }
 
-- (void)p_drawBitmapImage:(CGImage *)a3 withOrientation:(int64_t)a4 inContext:(CGContext *)a5 bounds:(CGRect)a6
+- (void)p_drawBitmapImage:(CGImage *)image withOrientation:(int64_t)orientation inContext:(CGContext *)context bounds:(CGRect)bounds
 {
-  if (a3)
+  if (image)
   {
-    height = a6.size.height;
-    width = a6.size.width;
-    y = a6.origin.y;
-    x = a6.origin.x;
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
     [(CRLImageFill *)self fillSize];
     v15 = v14;
     v17 = v16;
-    [CRLImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:a5 inContext:?];
+    [CRLImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:context inContext:?];
     v43 = v18;
     v44 = v19;
     v21 = v20;
     v23 = v22;
-    v24 = [(CRLImageFill *)self technique];
-    if (v24 > 4 || v24 == 2)
+    technique = [(CRLImageFill *)self technique];
+    if (technique > 4 || technique == 2)
     {
       if (width > v15 || height > v17)
       {
-        CGContextTranslateCTM(a5, v43, v44);
-        CGContextScaleCTM(a5, 1.0, -1.0);
+        CGContextTranslateCTM(context, v43, v44);
+        CGContextScaleCTM(context, 1.0, -1.0);
         v33 = sub_10011ECB4();
         v35 = v34;
         v37 = v36;
         v39 = v38;
         memset(&v47, 0, sizeof(v47));
-        sub_1004F3D84(a4, 1, &v47, v33, v34, v36, v38);
+        sub_1004F3D84(orientation, 1, &v47, v33, v34, v36, v38);
         transform = v47;
-        CGContextConcatCTM(a5, &transform);
+        CGContextConcatCTM(context, &transform);
         transform.a = 0.0;
         *&transform.b = &transform;
         *&transform.c = 0x2020000000;
@@ -1933,14 +1933,14 @@ LABEL_7:
         block[2] = sub_100170ADC;
         block[3] = &unk_10183B748;
         block[5] = &transform;
-        block[6] = a3;
+        block[6] = image;
         block[4] = self;
         dispatch_sync(mTempRenderLock, block);
         v50.origin.x = v33;
         v50.origin.y = v35;
         v50.size.width = v37;
         v50.size.height = v39;
-        CGContextDrawTiledImage(a5, v50, *(*&transform.b + 24));
+        CGContextDrawTiledImage(context, v50, *(*&transform.b + 24));
         CGImageRelease(*(*&transform.b + 24));
         _Block_object_dispose(&transform, 8);
         return;
@@ -1956,13 +1956,13 @@ LABEL_7:
       v52.size.width = v15;
       v52.size.height = v17;
       MaxY = CGRectGetMaxY(v52);
-      CGContextTranslateCTM(a5, 0.0, MinY + MaxY);
-      CGContextScaleCTM(a5, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
       memset(&v47, 0, sizeof(v47));
-      sub_1004F3D84(a4, 1, &v47, v43, v44, v15, v17);
+      sub_1004F3D84(orientation, 1, &v47, v43, v44, v15, v17);
       transform = v47;
-      CGContextConcatCTM(a5, &transform);
-      v27 = a5;
+      CGContextConcatCTM(context, &transform);
+      contextCopy2 = context;
       v28 = v43;
       v29 = v44;
       v30 = v15;
@@ -1981,37 +1981,37 @@ LABEL_7:
       v49.size.width = width;
       v49.size.height = height;
       v26 = CGRectGetMaxY(v49);
-      CGContextTranslateCTM(a5, 0.0, v25 + v26);
-      CGContextScaleCTM(a5, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, v25 + v26);
+      CGContextScaleCTM(context, 1.0, -1.0);
       memset(&v47, 0, sizeof(v47));
-      sub_1004F3D84(a4, 1, &v47, v43, v44, v21, v23);
+      sub_1004F3D84(orientation, 1, &v47, v43, v44, v21, v23);
       transform = v47;
-      CGContextConcatCTM(a5, &transform);
-      v27 = a5;
+      CGContextConcatCTM(context, &transform);
+      contextCopy2 = context;
       v28 = v43;
       v29 = v44;
       v30 = v21;
       v31 = v23;
     }
 
-    CGContextDrawImage(v27, *&v28, a3);
+    CGContextDrawImage(contextCopy2, *&v28, image);
   }
 }
 
-- (void)p_drawPDFWithProvider:(id)a3 inContext:(CGContext *)a4 bounds:(CGRect)a5
+- (void)p_drawPDFWithProvider:(id)provider inContext:(CGContext *)context bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = [a3 CGPDFDocument];
-  if (v11)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  cGPDFDocument = [provider CGPDFDocument];
+  if (cGPDFDocument)
   {
-    Page = CGPDFDocumentGetPage(v11, 1uLL);
+    Page = CGPDFDocumentGetPage(cGPDFDocument, 1uLL);
     if (Page)
     {
       v13 = Page;
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       memset(&v52, 0, sizeof(v52));
       v50 = 0.0;
       v51 = 0.0;
@@ -2022,7 +2022,7 @@ LABEL_7:
       [(CRLImageFill *)self fillSize];
       v42 = v18;
       v43 = v17;
-      [CRLImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:a4 inContext:?];
+      [CRLImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:context inContext:?];
       v20 = v19;
       v22 = v21;
       v44 = v23;
@@ -2037,14 +2037,14 @@ LABEL_7:
       v55.size.width = width;
       v55.size.height = height;
       MaxY = CGRectGetMaxY(v55);
-      CGContextTranslateCTM(a4, 0.0, MinY + MaxY);
-      CGContextScaleCTM(a4, 1.0, -1.0);
-      v28 = [(CRLImageFill *)self technique];
-      if (v28 > 4 || v28 == 2)
+      CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
+      technique = [(CRLImageFill *)self technique];
+      if (technique > 4 || technique == 2)
       {
         v53.width = 1.0;
         v53.height = 1.0;
-        v29 = CGContextConvertSizeToDeviceSpace(a4, v53);
+        v29 = CGContextConvertSizeToDeviceSpace(context, v53);
         v30 = sub_10011F340(v43, v42, fmax(fabs(v29.width), fabs(v29.height)));
         v31 = sub_10012211C(v30);
         v33 = sub_10050DF80(3, v31, v32);
@@ -2077,9 +2077,9 @@ LABEL_7:
             v57.size.width = width;
             v57.size.height = height;
             v41 = CGRectGetMaxY(v57);
-            CGContextTranslateCTM(a4, MinX, v41);
+            CGContextTranslateCTM(context, MinX, v41);
             v58.origin.x = sub_10011ECB4();
-            CGContextDrawTiledImage(a4, v58, Image);
+            CGContextDrawTiledImage(context, v58, Image);
             CGImageRelease(Image);
           }
         }
@@ -2095,12 +2095,12 @@ LABEL_7:
         *&transform.a = v47;
         *&transform.c = v48;
         *&transform.tx = v49;
-        CGContextConcatCTM(a4, &transform);
-        CGContextClipToRect(a4, v45);
-        CGContextDrawPDFPage(a4, v13);
+        CGContextConcatCTM(context, &transform);
+        CGContextClipToRect(context, v45);
+        CGContextDrawPDFPage(context, v13);
       }
 
-      CGContextRestoreGState(a4);
+      CGContextRestoreGState(context);
     }
   }
 }

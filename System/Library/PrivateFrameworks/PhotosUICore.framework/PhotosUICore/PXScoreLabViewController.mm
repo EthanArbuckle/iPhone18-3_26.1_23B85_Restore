@@ -1,23 +1,23 @@
 @interface PXScoreLabViewController
 - (PXScoreLabViewController)init;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (id)valueGetterForSceneIdentifier:(unint64_t)a3;
-- (id)valueGetterForScoreKeyPath:(id)a3;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (unint64_t)identifierForSceneName:(id)a3;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (id)valueGetterForSceneIdentifier:(unint64_t)identifier;
+- (id)valueGetterForScoreKeyPath:(id)path;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (unint64_t)identifierForSceneName:(id)name;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 - (void)redrawGraph;
-- (void)sceneNameChanged:(id)a3;
-- (void)scoreLabGraphView:(id)a3 reloadProgressed:(double)a4;
-- (void)scoreLabGraphViewDidFinishReloading:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)sceneNameChanged:(id)changed;
+- (void)scoreLabGraphView:(id)view reloadProgressed:(double)progressed;
+- (void)scoreLabGraphViewDidFinishReloading:(id)reloading;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PXScoreLabViewController
 
-- (void)scoreLabGraphViewDidFinishReloading:(id)a3
+- (void)scoreLabGraphViewDidFinishReloading:(id)reloading
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -27,14 +27,14 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)scoreLabGraphView:(id)a3 reloadProgressed:(double)a4
+- (void)scoreLabGraphView:(id)view reloadProgressed:(double)progressed
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__PXScoreLabViewController_scoreLabGraphView_reloadProgressed___block_invoke;
   v4[3] = &unk_1E77498A0;
   v4[4] = self;
-  *&v4[5] = a4;
+  *&v4[5] = progressed;
   dispatch_async(MEMORY[0x1E69E96A0], v4);
 }
 
@@ -45,26 +45,26 @@ uint64_t __63__PXScoreLabViewController_scoreLabGraphView_reloadProgressed___blo
   return [*(*(a1 + 32) + 1048) setProgress:v1];
 }
 
-- (void)sceneNameChanged:(id)a3
+- (void)sceneNameChanged:(id)changed
 {
-  v4 = a3;
-  if (self->_xScoreSceneNameField == v4 || self->_yScoreSceneNameField == v4)
+  changedCopy = changed;
+  if (self->_xScoreSceneNameField == changedCopy || self->_yScoreSceneNameField == changedCopy)
   {
-    v9 = v4;
-    v5 = [(UITextField *)v4 text];
-    v6 = [(PXScoreLabViewController *)self identifierForSceneName:v5];
+    v9 = changedCopy;
+    text = [(UITextField *)changedCopy text];
+    v6 = [(PXScoreLabViewController *)self identifierForSceneName:text];
     if (v6)
     {
-      v7 = [(PXScoreLabViewController *)self valueGetterForSceneIdentifier:v6];
+      redColor = [(PXScoreLabViewController *)self valueGetterForSceneIdentifier:v6];
       graphView = self->_graphView;
       if (self->_xScoreSceneNameField == v9)
       {
-        [(_PXScoreLabGraphView *)graphView setXScoreValueGetter:v7];
+        [(_PXScoreLabGraphView *)graphView setXScoreValueGetter:redColor];
       }
 
       else
       {
-        [(_PXScoreLabGraphView *)graphView setYScoreValueGetter:v7];
+        [(_PXScoreLabGraphView *)graphView setYScoreValueGetter:redColor];
       }
 
       [(PXScoreLabViewController *)self redrawGraph];
@@ -72,32 +72,32 @@ uint64_t __63__PXScoreLabViewController_scoreLabGraphView_reloadProgressed___blo
 
     else
     {
-      v7 = [MEMORY[0x1E69DC888] redColor];
-      [(UITextField *)v9 setTextColor:v7];
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      [(UITextField *)v9 setTextColor:redColor];
     }
 
-    v4 = v9;
+    changedCopy = v9;
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = a3;
-  v5 = [v3 blackColor];
-  [v4 setTextColor:v5];
+  editingCopy = editing;
+  blackColor = [v3 blackColor];
+  [editingCopy setTextColor:blackColor];
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = a3;
-  if (self->_xScorePickerView != v7)
+  viewCopy = view;
+  if (self->_xScorePickerView != viewCopy)
   {
-    if (self->_graphTypePickerView == v7)
+    if (self->_graphTypePickerView == viewCopy)
     {
-      v14 = v7;
-      [(_PXScoreLabGraphView *)self->_graphView setGraphType:a4];
-      if (a4 == 1)
+      v14 = viewCopy;
+      [(_PXScoreLabGraphView *)self->_graphView setGraphType:row];
+      if (row == 1)
       {
         v11 = 0.25;
       }
@@ -107,9 +107,9 @@ uint64_t __63__PXScoreLabViewController_scoreLabGraphView_reloadProgressed___blo
         v11 = 1.0;
       }
 
-      [(UIPickerView *)self->_xScorePickerView setUserInteractionEnabled:a4 != 1];
+      [(UIPickerView *)self->_xScorePickerView setUserInteractionEnabled:row != 1];
       [(UIPickerView *)self->_xScorePickerView setAlpha:v11];
-      if (a4)
+      if (row)
       {
         v12 = 1.0;
       }
@@ -119,28 +119,28 @@ uint64_t __63__PXScoreLabViewController_scoreLabGraphView_reloadProgressed___blo
         v12 = 0.25;
       }
 
-      [(UIPickerView *)self->_yScorePickerView setUserInteractionEnabled:a4 != 0];
+      [(UIPickerView *)self->_yScorePickerView setUserInteractionEnabled:row != 0];
       [(UIPickerView *)self->_yScorePickerView setAlpha:v12];
       [(PXScoreLabViewController *)self redrawGraph];
       goto LABEL_20;
     }
 
-    if (self->_yScorePickerView != v7)
+    if (self->_yScorePickerView != viewCopy)
     {
-      if (self->_assetFilterPickerView != v7)
+      if (self->_assetFilterPickerView != viewCopy)
       {
         goto LABEL_21;
       }
 
-      v14 = v7;
-      v8 = [(NSArray *)self->_assetFilterNames objectAtIndexedSubscript:a4];
+      v14 = viewCopy;
+      v8 = [(NSArray *)self->_assetFilterNames objectAtIndexedSubscript:row];
       v9 = [(NSDictionary *)self->_assetPredicateByFilterName objectForKeyedSubscript:v8];
       [(_PXScoreLabGraphView *)self->_graphView setAssetPredicate:v9];
       goto LABEL_18;
     }
 
-    v14 = v7;
-    v8 = [(NSArray *)self->_scoreNames objectAtIndexedSubscript:a4];
+    v14 = viewCopy;
+    v8 = [(NSArray *)self->_scoreNames objectAtIndexedSubscript:row];
     v9 = [(NSDictionary *)self->_keyPathByScoreName objectForKeyedSubscript:v8];
     if (v9)
     {
@@ -162,8 +162,8 @@ LABEL_28:
     goto LABEL_19;
   }
 
-  v14 = v7;
-  v8 = [(NSArray *)self->_scoreNames objectAtIndexedSubscript:a4];
+  v14 = viewCopy;
+  v8 = [(NSArray *)self->_scoreNames objectAtIndexedSubscript:row];
   v9 = [(NSDictionary *)self->_keyPathByScoreName objectForKeyedSubscript:v8];
   if (!v9)
   {
@@ -186,28 +186,28 @@ LABEL_18:
 LABEL_19:
 
 LABEL_20:
-  v7 = v14;
+  viewCopy = v14;
 LABEL_21:
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v7 = a3;
-  v8 = v7;
-  if (self->_xScorePickerView == v7 || self->_yScorePickerView == v7)
+  viewCopy = view;
+  v8 = viewCopy;
+  if (self->_xScorePickerView == viewCopy || self->_yScorePickerView == viewCopy)
   {
     v10 = 1056;
   }
 
   else
   {
-    if (self->_graphTypePickerView == v7)
+    if (self->_graphTypePickerView == viewCopy)
     {
       v11 = &unk_1F1910CD8;
       goto LABEL_8;
     }
 
-    if (self->_assetFilterPickerView != v7)
+    if (self->_assetFilterPickerView != viewCopy)
     {
       v9 = 0;
       goto LABEL_9;
@@ -218,17 +218,17 @@ LABEL_21:
 
   v11 = *(&self->super.super.super.isa + v10);
 LABEL_8:
-  v9 = [v11 objectAtIndexedSubscript:a4];
+  v9 = [v11 objectAtIndexedSubscript:row];
 LABEL_9:
 
   return v9;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_xScorePickerView == v5 || self->_yScorePickerView == v5)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (self->_xScorePickerView == viewCopy || self->_yScorePickerView == viewCopy)
   {
     v8 = &OBJC_IVAR___PXScoreLabViewController__scoreNames;
 LABEL_7:
@@ -236,13 +236,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (self->_graphTypePickerView == v5)
+  if (self->_graphTypePickerView == viewCopy)
   {
     v7 = 3;
     goto LABEL_8;
   }
 
-  if (self->_assetFilterPickerView == v5)
+  if (self->_assetFilterPickerView == viewCopy)
   {
     v8 = &OBJC_IVAR___PXScoreLabViewController__assetFilterNames;
     goto LABEL_7;
@@ -254,94 +254,94 @@ LABEL_8:
   return v7;
 }
 
-- (unint64_t)identifierForSceneName:(id)a3
+- (unint64_t)identifierForSceneName:(id)name
 {
-  v4 = [a3 lowercaseString];
-  if ([v4 hasPrefix:@"junk"])
+  lowercaseString = [name lowercaseString];
+  if ([lowercaseString hasPrefix:@"junk"])
   {
-    if ([v4 hasSuffix:@"screenshot"])
+    if ([lowercaseString hasSuffix:@"screenshot"])
     {
-      v5 = 2147483632;
+      unsignedIntValue = 2147483632;
     }
 
     else
     {
-      v5 = 2147483633;
-      if (([v4 hasSuffix:@"framing"] & 1) == 0)
+      unsignedIntValue = 2147483633;
+      if (([lowercaseString hasSuffix:@"framing"] & 1) == 0)
       {
-        if ([v4 hasSuffix:@"lighting"])
+        if ([lowercaseString hasSuffix:@"lighting"])
         {
-          v5 = 2147483634;
+          unsignedIntValue = 2147483634;
         }
 
-        else if ([v4 hasSuffix:@"blurry"])
+        else if ([lowercaseString hasSuffix:@"blurry"])
         {
-          v5 = 2147483635;
+          unsignedIntValue = 2147483635;
         }
 
-        else if ([v4 hasSuffix:@"drink"])
+        else if ([lowercaseString hasSuffix:@"drink"])
         {
-          v5 = 2147483636;
+          unsignedIntValue = 2147483636;
         }
 
-        else if ([v4 hasSuffix:@"other"])
+        else if ([lowercaseString hasSuffix:@"other"])
         {
-          v5 = 2147483637;
+          unsignedIntValue = 2147483637;
         }
 
-        else if ([v4 hasSuffix:@"medical reference"])
+        else if ([lowercaseString hasSuffix:@"medical reference"])
         {
-          v5 = 2147483638;
+          unsignedIntValue = 2147483638;
         }
 
-        else if ([v4 hasSuffix:@"negative-internal"])
+        else if ([lowercaseString hasSuffix:@"negative-internal"])
         {
-          v5 = 2147483639;
+          unsignedIntValue = 2147483639;
         }
 
-        else if ([v4 hasSuffix:@"document"])
+        else if ([lowercaseString hasSuffix:@"document"])
         {
-          v5 = 2147483640;
+          unsignedIntValue = 2147483640;
         }
 
-        else if ([v4 hasSuffix:@"repair reference"])
+        else if ([lowercaseString hasSuffix:@"repair reference"])
         {
-          v5 = 2147483641;
+          unsignedIntValue = 2147483641;
         }
 
-        else if ([v4 hasSuffix:@"shopping reference"])
+        else if ([lowercaseString hasSuffix:@"shopping reference"])
         {
-          v5 = 2147483642;
+          unsignedIntValue = 2147483642;
         }
 
-        else if ([v4 hasSuffix:@"utility reference"])
+        else if ([lowercaseString hasSuffix:@"utility reference"])
         {
-          v5 = 2147483643;
+          unsignedIntValue = 2147483643;
         }
 
-        else if ([v4 hasSuffix:@"negative"])
+        else if ([lowercaseString hasSuffix:@"negative"])
         {
-          v5 = 2147483644;
+          unsignedIntValue = 2147483644;
         }
 
-        else if ([v4 hasSuffix:@"memorable"])
+        else if ([lowercaseString hasSuffix:@"memorable"])
         {
-          v5 = 2147483645;
+          unsignedIntValue = 2147483645;
         }
 
-        else if ([v4 hasSuffix:@"quality"])
+        else if ([lowercaseString hasSuffix:@"quality"])
         {
-          v5 = 2147483646;
+          unsignedIntValue = 2147483646;
         }
 
-        else if ([v4 hasSuffix:@"legacy"])
+        else if ([lowercaseString hasSuffix:@"legacy"])
         {
-          v5 = 0x7FFFFFFFLL;
+          unsignedIntValue = 0x7FFFFFFFLL;
         }
 
         else
         {
-          v5 = 0;
+          unsignedIntValue = 0;
         }
       }
     }
@@ -349,20 +349,20 @@ LABEL_8:
 
   else
   {
-    v6 = [(NSDictionary *)self->_sceneIdentifierBySceneName objectForKeyedSubscript:v4];
-    v5 = [v6 unsignedIntValue];
+    v6 = [(NSDictionary *)self->_sceneIdentifierBySceneName objectForKeyedSubscript:lowercaseString];
+    unsignedIntValue = [v6 unsignedIntValue];
   }
 
-  return v5;
+  return unsignedIntValue;
 }
 
-- (id)valueGetterForSceneIdentifier:(unint64_t)a3
+- (id)valueGetterForSceneIdentifier:(unint64_t)identifier
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__PXScoreLabViewController_valueGetterForSceneIdentifier___block_invoke;
   aBlock[3] = &__block_descriptor_40_e27___NSNumber_16__0__PHAsset_8l;
-  aBlock[4] = a3;
+  aBlock[4] = identifier;
   v3 = _Block_copy(aBlock);
 
   return v3;
@@ -426,13 +426,13 @@ LABEL_12:
   return v11;
 }
 
-- (id)valueGetterForScoreKeyPath:(id)a3
+- (id)valueGetterForScoreKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@"."];
-  v6 = [v5 firstObject];
+  pathCopy = path;
+  v5 = [pathCopy componentsSeparatedByString:@"."];
+  firstObject = [v5 firstObject];
 
-  v7 = [(NSDictionary *)self->_timestampKeyPathByPrefix objectForKeyedSubscript:v6];
+  v7 = [(NSDictionary *)self->_timestampKeyPathByPrefix objectForKeyedSubscript:firstObject];
   v8 = v7;
   if (v7)
   {
@@ -442,8 +442,8 @@ LABEL_12:
     aBlock[3] = &unk_1E773B460;
     v9 = &v17;
     v17 = v7;
-    v18 = v4;
-    v10 = v4;
+    v18 = pathCopy;
+    v10 = pathCopy;
     v11 = _Block_copy(aBlock);
   }
 
@@ -454,8 +454,8 @@ LABEL_12:
     v14[2] = __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke_2;
     v14[3] = &unk_1E773B488;
     v9 = &v15;
-    v15 = v4;
-    v12 = v4;
+    v15 = pathCopy;
+    v12 = pathCopy;
     v11 = _Block_copy(v14);
   }
 
@@ -492,13 +492,13 @@ id __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke(uint
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PXScoreLabViewController;
-  [(PXScoreLabViewController *)&v5 viewDidAppear:a3];
-  v4 = [(PXScoreLabViewController *)self navigationController];
-  [v4 setToolbarHidden:1];
+  [(PXScoreLabViewController *)&v5 viewDidAppear:appear];
+  navigationController = [(PXScoreLabViewController *)self navigationController];
+  [navigationController setToolbarHidden:1];
 }
 
 - (void)viewDidLoad
@@ -506,9 +506,9 @@ id __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke(uint
   v49.receiver = self;
   v49.super_class = PXScoreLabViewController;
   [(PXScoreLabViewController *)&v49 viewDidLoad];
-  v3 = [(PXScoreLabViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] lightGrayColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PXScoreLabViewController *)self view];
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  [view setBackgroundColor:lightGrayColor];
 
   [(PXScoreLabViewController *)self additionalSafeAreaInsets];
   v6 = v5 + 60.0;
@@ -518,9 +518,9 @@ id __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke(uint
   [v47 setText:@"X Score:"];
   [v47 setTextAlignment:2];
   [v47 setAutoresizingMask:36];
-  [v3 addSubview:v47];
+  [view addSubview:v47];
   v8 = objc_alloc(MEMORY[0x1E69DCD78]);
-  [v3 bounds];
+  [view bounds];
   v10 = [v8 initWithFrame:{130.0, v6, v9 + -130.0, 70.0}];
   xScorePickerView = self->_xScorePickerView;
   self->_xScorePickerView = v10;
@@ -529,9 +529,9 @@ id __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke(uint
   [(UIPickerView *)self->_xScorePickerView setDelegate:self];
   [(UIPickerView *)self->_xScorePickerView setAutoresizingMask:34];
   [(UIPickerView *)self->_xScorePickerView selectRow:[(NSArray *)self->_scoreNames indexOfObject:@"Pleasant Lighting"] inComponent:0 animated:0];
-  [v3 addSubview:self->_xScorePickerView];
+  [view addSubview:self->_xScorePickerView];
   v12 = objc_alloc(MEMORY[0x1E69DD0B0]);
-  [v3 bounds];
+  [view bounds];
   v14 = [v12 initWithFrame:{v13 + -100.0, v6 + 2.0, 100.0, 68.0}];
   xScoreSceneNameField = self->_xScoreSceneNameField;
   self->_xScoreSceneNameField = v14;
@@ -540,16 +540,16 @@ id __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke(uint
   [(UITextField *)self->_xScoreSceneNameField setAutoresizingMask:33];
   [(UITextField *)self->_xScoreSceneNameField setFont:v7];
   [(UITextField *)self->_xScoreSceneNameField setText:@"Dog"];
-  [v3 addSubview:self->_xScoreSceneNameField];
+  [view addSubview:self->_xScoreSceneNameField];
   v16 = v6 + 50.0;
   v46 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{0.0, v16, 130.0, 70.0}];
   [v46 setFont:v7];
   [v46 setText:@"Graph Type:"];
   [v46 setTextAlignment:2];
   [v46 setAutoresizingMask:36];
-  [v3 addSubview:v46];
+  [view addSubview:v46];
   v17 = objc_alloc(MEMORY[0x1E69DCD78]);
-  [v3 bounds];
+  [view bounds];
   v19 = [v17 initWithFrame:{130.0, v16, v18 + -130.0, 70.0}];
   graphTypePickerView = self->_graphTypePickerView;
   self->_graphTypePickerView = v19;
@@ -557,16 +557,16 @@ id __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke(uint
   [(UIPickerView *)self->_graphTypePickerView setDataSource:self];
   [(UIPickerView *)self->_graphTypePickerView setDelegate:self];
   [(UIPickerView *)self->_graphTypePickerView setAutoresizingMask:34];
-  [v3 addSubview:self->_graphTypePickerView];
+  [view addSubview:self->_graphTypePickerView];
   v21 = v16 + 50.0;
   v22 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{0.0, v21, 130.0, 70.0}];
   [v22 setFont:v7];
   [v22 setText:@"Y Score:"];
   [v22 setTextAlignment:2];
   [v22 setAutoresizingMask:36];
-  [v3 addSubview:v22];
+  [view addSubview:v22];
   v23 = objc_alloc(MEMORY[0x1E69DCD78]);
-  [v3 bounds];
+  [view bounds];
   v25 = [v23 initWithFrame:{130.0, v21, v24 + -130.0, 70.0}];
   yScorePickerView = self->_yScorePickerView;
   self->_yScorePickerView = v25;
@@ -575,9 +575,9 @@ id __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke(uint
   [(UIPickerView *)self->_yScorePickerView setDelegate:self];
   [(UIPickerView *)self->_yScorePickerView setAutoresizingMask:34];
   [(UIPickerView *)self->_yScorePickerView selectRow:[(NSArray *)self->_scoreNames indexOfObject:@"Pleasant Perspective"] inComponent:0 animated:0];
-  [v3 addSubview:self->_yScorePickerView];
+  [view addSubview:self->_yScorePickerView];
   v27 = objc_alloc(MEMORY[0x1E69DD0B0]);
-  [v3 bounds];
+  [view bounds];
   v29 = [v27 initWithFrame:{v28 + -100.0, v21 + 2.0, 100.0, 68.0}];
   yScoreSceneNameField = self->_yScoreSceneNameField;
   self->_yScoreSceneNameField = v29;
@@ -586,15 +586,15 @@ id __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke(uint
   [(UITextField *)self->_yScoreSceneNameField setAutoresizingMask:33];
   [(UITextField *)self->_yScoreSceneNameField setFont:v7];
   [(UITextField *)self->_yScoreSceneNameField setText:@"Beach"];
-  [v3 addSubview:self->_yScoreSceneNameField];
+  [view addSubview:self->_yScoreSceneNameField];
   v31 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{0.0, v21 + 50.0, 130.0, 70.0}];
   [v31 setFont:v7];
   [v31 setText:@"Asset Filter:"];
   [v31 setTextAlignment:2];
   [v31 setAutoresizingMask:36];
-  [v3 addSubview:v31];
+  [view addSubview:v31];
   v32 = objc_alloc(MEMORY[0x1E69DCD78]);
-  [v3 bounds];
+  [view bounds];
   v34 = [v32 initWithFrame:{130.0, v21 + 50.0, v33 + -130.0, 70.0}];
   assetFilterPickerView = self->_assetFilterPickerView;
   self->_assetFilterPickerView = v34;
@@ -603,13 +603,13 @@ id __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke(uint
   [(UIPickerView *)self->_assetFilterPickerView setDelegate:self];
   [(UIPickerView *)self->_assetFilterPickerView setAutoresizingMask:34];
   [(UIPickerView *)self->_assetFilterPickerView selectRow:[(NSArray *)self->_assetFilterNames indexOfObject:@"All"] inComponent:0 animated:0];
-  [v3 addSubview:self->_assetFilterPickerView];
+  [view addSubview:self->_assetFilterPickerView];
   v36 = v21 + 50.0 + 50.0;
   self->_redrawIsDisabled = 1;
   v37 = [_PXScoreLabGraphView alloc];
-  [v3 bounds];
+  [view bounds];
   v39 = v38;
-  [v3 bounds];
+  [view bounds];
   v41 = [(_PXScoreLabGraphView *)v37 initWithFrame:0.0, v36, v39, v40 - v36];
   graphView = self->_graphView;
   self->_graphView = v41;
@@ -618,14 +618,14 @@ id __55__PXScoreLabViewController_valueGetterForScoreKeyPath___block_invoke(uint
   [(_PXScoreLabGraphView *)self->_graphView setAutoresizingMask:18];
   [(PXScoreLabViewController *)self pickerView:self->_xScorePickerView didSelectRow:[(NSArray *)self->_scoreNames indexOfObject:@"Pleasant Lighting"] inComponent:0];
   [(PXScoreLabViewController *)self pickerView:self->_yScorePickerView didSelectRow:[(NSArray *)self->_scoreNames indexOfObject:@"Pleasant Perspective"] inComponent:0];
-  [v3 addSubview:self->_graphView];
-  [v3 bounds];
+  [view addSubview:self->_graphView];
+  [view bounds];
   v44 = [[off_1E7721870 alloc] initWithFrame:1 style:{v43 + -10.0 + -36.0, v36 + 10.0, 36.0, 36.0}];
   progressView = self->_progressView;
   self->_progressView = v44;
 
   [(PXRoundProgressView *)self->_progressView setAutoresizingMask:45];
-  [v3 addSubview:self->_progressView];
+  [view addSubview:self->_progressView];
   self->_redrawIsDisabled = 0;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

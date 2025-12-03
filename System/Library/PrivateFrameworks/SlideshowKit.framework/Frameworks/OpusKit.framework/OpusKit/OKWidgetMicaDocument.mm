@@ -1,18 +1,18 @@
 @interface OKWidgetMicaDocument
 + (id)supportedSettings;
-- (OKWidgetMicaDocument)initWithURL:(id)a3;
+- (OKWidgetMicaDocument)initWithURL:(id)l;
 - (double)documentHeight;
 - (double)documentWidth;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)settingObjectForKey:(id)a3;
-- (void)applySettings:(id)a3 withResolution:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)settingObjectForKey:(id)key;
+- (void)applySettings:(id)settings withResolution:(id)resolution;
 - (void)dealloc;
 - (void)loadMicaDocument;
 @end
 
 @implementation OKWidgetMicaDocument
 
-- (OKWidgetMicaDocument)initWithURL:(id)a3
+- (OKWidgetMicaDocument)initWithURL:(id)l
 {
   v9.receiver = self;
   v9.super_class = OKWidgetMicaDocument;
@@ -20,7 +20,7 @@
   if (v4)
   {
     v8 = 0;
-    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3 options:1 error:&v8];
+    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l options:1 error:&v8];
     v4->_data = v5;
     if (v5)
     {
@@ -39,14 +39,14 @@
 
     else if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Widgets/OKWidgetMicaDocument.m" line:69 andFormat:@"Failed to load mica document %@: %@", a3, objc_msgSend(v8, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Widgets/OKWidgetMicaDocument.m" line:69 andFormat:@"Failed to load mica document %@: %@", l, objc_msgSend(v8, "localizedDescription")];
     }
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(OKWidgetMicaDocument);
   v5 = v4;
@@ -128,10 +128,10 @@
   [(OKWidgetMicaDocument *)&v7 dealloc];
 }
 
-- (void)applySettings:(id)a3 withResolution:(id)a4
+- (void)applySettings:(id)settings withResolution:(id)resolution
 {
   +[OKSettings beginApplyingSettings];
-  [OKSettings resetAndApplySettings:a3 toObject:self withResolution:a4];
+  [OKSettings resetAndApplySettings:settings toObject:self withResolution:resolution];
 
   +[OKSettings commitApplyingSettings];
 }
@@ -154,14 +154,14 @@
 
 + (id)supportedSettings
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  [v2 addEntriesFromDictionary:MEMORY[0x277CBEC10]];
-  return v2;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary addEntriesFromDictionary:MEMORY[0x277CBEC10]];
+  return dictionary;
 }
 
-- (id)settingObjectForKey:(id)a3
+- (id)settingObjectForKey:(id)key
 {
-  v4 = [(OKWidgetMicaDocument *)self publishedObjectWithName:a3];
+  v4 = [(OKWidgetMicaDocument *)self publishedObjectWithName:key];
   if (!v4)
   {
     return 0;

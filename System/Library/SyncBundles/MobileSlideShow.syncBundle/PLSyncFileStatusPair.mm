@@ -1,18 +1,18 @@
 @interface PLSyncFileStatusPair
-- (PLSyncFileStatusPair)initWithPath:(id)a3;
+- (PLSyncFileStatusPair)initWithPath:(id)path;
 @end
 
 @implementation PLSyncFileStatusPair
 
-- (PLSyncFileStatusPair)initWithPath:(id)a3
+- (PLSyncFileStatusPair)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = PLSyncFileStatusPair;
   v5 = [(PLSyncFileStatusPair *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
 

@@ -4,8 +4,8 @@
 - (_BatteryMonitorConcreteTokenDelegate)concreteTokenDelegate;
 - (float)currentBatteryLevel;
 - (int64_t)currentBatteryState;
-- (void)_batteryLevelDidChange:(id)a3;
-- (void)_batteryStateDidChange:(id)a3;
+- (void)_batteryLevelDidChange:(id)change;
+- (void)_batteryStateDidChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -25,7 +25,7 @@
   return WeakRetained;
 }
 
-- (void)_batteryLevelDidChange:(id)a3
+- (void)_batteryLevelDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -35,7 +35,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_batteryStateDidChange:(id)a3
+- (void)_batteryStateDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -57,9 +57,9 @@
 - (int64_t)currentBatteryState
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 batteryState];
+  batteryState = [v2 batteryState];
 
-  return v3;
+  return batteryState;
 }
 
 - (void)dealloc

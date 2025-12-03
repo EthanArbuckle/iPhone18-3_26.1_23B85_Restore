@@ -4,8 +4,8 @@
 - (void)allActiveCallsEnded;
 - (void)callConnected;
 - (void)clearOldCaptionsIfNeeded;
-- (void)mediaPlayingDidChange:(id)a3;
-- (void)screenLockStateChanged:(BOOL)a3;
+- (void)mediaPlayingDidChange:(id)change;
+- (void)screenLockStateChanged:(BOOL)changed;
 @end
 
 @implementation AXLTCaptionsProvider
@@ -24,16 +24,16 @@
 
 - (void)clearOldCaptionsIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_53DE8();
 }
 
-- (void)mediaPlayingDidChange:(id)a3
+- (void)mediaPlayingDidChange:(id)change
 {
   v5 = sub_2E50(&qword_FA558);
   __chkstk_darwin(v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (change)
   {
     sub_B8FC0();
     v8 = sub_B8FF0();
@@ -46,7 +46,7 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_55890(v7);
 
   sub_C5E8(v7, &qword_FA558);
@@ -54,25 +54,25 @@
 
 - (void)addPlaceholder
 {
-  v2 = self;
+  selfCopy = self;
   sub_58980();
 }
 
-- (void)screenLockStateChanged:(BOOL)a3
+- (void)screenLockStateChanged:(BOOL)changed
 {
-  v3 = self;
+  selfCopy = self;
   _s19LiveSpeechUIService20AXLTCaptionsProviderC22screenLockStateChangedyySbF_0();
 }
 
 - (void)callConnected
 {
-  v2 = self;
+  selfCopy = self;
   AXLTCaptionsProvider.callConnected()();
 }
 
 - (void)allActiveCallsEnded
 {
-  v2 = self;
+  selfCopy = self;
   AXLTCaptionsProvider.allActiveCallsEnded()();
 }
 

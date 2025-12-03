@@ -3,8 +3,8 @@
 - (id)subtitleLabelText;
 - (id)titleLabelText;
 - (void)observedPropertiesChanged;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation TLKEnlargedTitleView
@@ -30,10 +30,10 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_title setObserver:0];
@@ -44,7 +44,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = titleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -77,11 +77,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      titleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_title, a3);
+  objc_storeStrong(&self->_title, title);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_title setObserver:self];
@@ -126,25 +126,25 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  subtitleCopy = subtitle;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_subtitle setObserver:0];
@@ -155,7 +155,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = subtitleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -188,11 +188,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      subtitleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_subtitle, a3);
+  objc_storeStrong(&self->_subtitle, subtitle);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_subtitle setObserver:self];
@@ -237,48 +237,48 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
 - (void)observedPropertiesChanged
 {
-  v3 = [(TLKEnlargedTitleView *)self title];
-  v4 = [v3 text];
-  v5 = [(TLKEnlargedTitleView *)self titleLabel];
-  [v5 setText:v4];
+  title = [(TLKEnlargedTitleView *)self title];
+  text = [title text];
+  titleLabel = [(TLKEnlargedTitleView *)self titleLabel];
+  [titleLabel setText:text];
 
-  v8 = [(TLKEnlargedTitleView *)self subtitle];
-  v6 = [v8 text];
-  v7 = [(TLKEnlargedTitleView *)self subtitleLabel];
-  [v7 setText:v6];
+  subtitle = [(TLKEnlargedTitleView *)self subtitle];
+  text2 = [subtitle text];
+  subtitleLabel = [(TLKEnlargedTitleView *)self subtitleLabel];
+  [subtitleLabel setText:text2];
 }
 
 - (id)titleLabelText
 {
-  v2 = [(TLKEnlargedTitleView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(TLKEnlargedTitleView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
 - (id)subtitleLabelText
 {
-  v2 = [(TLKEnlargedTitleView *)self subtitleLabel];
-  v3 = [v2 text];
+  subtitleLabel = [(TLKEnlargedTitleView *)self subtitleLabel];
+  text = [subtitleLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

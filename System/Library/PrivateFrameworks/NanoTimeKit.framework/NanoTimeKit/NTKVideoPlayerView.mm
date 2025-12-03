@@ -1,23 +1,23 @@
 @interface NTKVideoPlayerView
 - (BOOL)_shouldPlayVideoOnTap;
-- (NTKVideoPlayerView)initWithFrame:(CGRect)a3;
+- (NTKVideoPlayerView)initWithFrame:(CGRect)frame;
 - (NTKVideoPlayerViewFaceDelegate)delegate;
 - (id)videoPlayerView;
-- (void)_advanceListingForEvent:(unint64_t)a3;
+- (void)_advanceListingForEvent:(unint64_t)event;
 - (void)_createCurtainView;
 - (void)_createPosterImageView;
 - (void)_fadeFromCurtainViewIfVisible;
 - (void)_fadeFromPosterImageAndCurtainViewIfVisible;
-- (void)_fadeFromPosterImageIfVisible:(id)a3;
-- (void)_fadeToCurtainView:(id)a3;
+- (void)_fadeFromPosterImageIfVisible:(id)visible;
+- (void)_fadeToCurtainView:(id)view;
 - (void)_fadeToPosterImage;
 - (void)_loadCurrentListing;
 - (void)_loadVideoPlayerView;
-- (void)_mediaServicesWereReset:(id)a3;
+- (void)_mediaServicesWereReset:(id)reset;
 - (void)_pause;
 - (void)_play;
 - (void)_playIfNotPaused;
-- (void)_playNextVideoForEvent:(unint64_t)a3 animated:(BOOL)a4;
+- (void)_playNextVideoForEvent:(unint64_t)event animated:(BOOL)animated;
 - (void)_prerollVideo;
 - (void)_queueSubsequentListingIfSupported;
 - (void)_removeCurrentVideo;
@@ -28,40 +28,40 @@
 - (void)_showPosterImageView;
 - (void)_unloadVideoPlayerView;
 - (void)_updatePauseState;
-- (void)applyDataMode:(int64_t)a3 comingFromDataMode:(int64_t)a4;
+- (void)applyDataMode:(int64_t)mode comingFromDataMode:(int64_t)dataMode;
 - (void)dealloc;
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 - (void)handleScreenOff;
 - (void)handleStyleDidChange;
 - (void)layoutSubviews;
-- (void)setDataSource:(id)a3;
-- (void)setPausedViewEnabled:(BOOL)a3;
-- (void)setPosterImage:(id)a3;
-- (void)setShouldApplyVideoInsetToPosterImage:(BOOL)a3;
-- (void)setVideoPlayerInset:(UIEdgeInsets)a3;
-- (void)setVideoPlayerTransform:(CGAffineTransform *)a3;
+- (void)setDataSource:(id)source;
+- (void)setPausedViewEnabled:(BOOL)enabled;
+- (void)setPosterImage:(id)image;
+- (void)setShouldApplyVideoInsetToPosterImage:(BOOL)image;
+- (void)setVideoPlayerInset:(UIEdgeInsets)inset;
+- (void)setVideoPlayerTransform:(CGAffineTransform *)transform;
 - (void)transitionToEditing;
-- (void)videoPlayerView:(id)a3 didFinishPrerolling:(BOOL)a4;
-- (void)videoPlayerViewDidBeginPlaying:(id)a3;
-- (void)videoPlayerViewDidBeginPlayingQueuedVideo:(id)a3;
-- (void)videoPlayerViewDidPauseAfterPlayingVideoToEnd:(id)a3;
+- (void)videoPlayerView:(id)view didFinishPrerolling:(BOOL)prerolling;
+- (void)videoPlayerViewDidBeginPlaying:(id)playing;
+- (void)videoPlayerViewDidBeginPlayingQueuedVideo:(id)video;
+- (void)videoPlayerViewDidPauseAfterPlayingVideoToEnd:(id)end;
 - (void)videoPlayerViewWasTapped;
 @end
 
 @implementation NTKVideoPlayerView
 
-- (NTKVideoPlayerView)initWithFrame:(CGRect)a3
+- (NTKVideoPlayerView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = NTKVideoPlayerView;
-  v3 = [(NTKVideoPlayerView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKVideoPlayerView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(NTKVideoPlayerView *)v3 _createPosterImageView];
     [(NTKVideoPlayerView *)v4 _createCurtainView];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v4 selector:sel__mediaServicesWereReset_ name:*MEMORY[0x277CB80A0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__mediaServicesWereReset_ name:*MEMORY[0x277CB80A0] object:0];
 
     if (CLKIsClockFaceApp())
     {
@@ -104,8 +104,8 @@
   videoPlayerView = self->_videoPlayerView;
   self->_videoPlayerView = 0;
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(NTKVideoPlayerView *)self _cancelScheduledPreroll];
   v8.receiver = self;
@@ -145,11 +145,11 @@
   [(UIImageView *)posterImageView ntk_setBoundsAndPositionFromFrame:v6, v8, v10, v12];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = NTKVideoPlayerView;
-  [(NTKVideoPlayerView *)&v4 didAddSubview:a3];
+  [(NTKVideoPlayerView *)&v4 didAddSubview:subview];
   if (self->_videoPlayerView)
   {
     [(NTKVideoPlayerView *)self sendSubviewToBack:?];
@@ -178,8 +178,8 @@
 
     [(NTKVideoPlayerView *)self _pause];
     [(NTKVideoPlayerView *)self _showCurtainView];
-    v4 = [(NTKVideoPlayerView *)self videoPlayerView];
-    [v4 expectPreroll];
+    videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+    [videoPlayerView expectPreroll];
 
     [(NTKVideoPlayerView *)self _schedulePreroll];
   }
@@ -234,21 +234,21 @@
   }
 }
 
-- (void)applyDataMode:(int64_t)a3 comingFromDataMode:(int64_t)a4
+- (void)applyDataMode:(int64_t)mode comingFromDataMode:(int64_t)dataMode
 {
-  if (self->_currentDataMode == a3)
+  if (self->_currentDataMode == mode)
   {
     return;
   }
 
-  self->_currentDataMode = a3;
+  self->_currentDataMode = mode;
   self->_isHandlingTapGesture = 0;
-  if (a3 > 2)
+  if (mode > 2)
   {
-    switch(a3)
+    switch(mode)
     {
       case 3:
-        if (a4 == 1)
+        if (dataMode == 1)
         {
 LABEL_26:
 
@@ -270,7 +270,7 @@ LABEL_26:
     goto LABEL_22;
   }
 
-  if (!a3)
+  if (!mode)
   {
 LABEL_22:
 
@@ -278,9 +278,9 @@ LABEL_22:
     return;
   }
 
-  if (a3 != 1)
+  if (mode != 1)
   {
-    if (a3 != 2)
+    if (mode != 2)
     {
       return;
     }
@@ -350,8 +350,8 @@ LABEL_22:
 {
   self->_prerollState = 0;
   self->_isHandlingTapGesture = 0;
-  v3 = [(NTKVideoPlayerView *)self videoPlayerView];
-  [v3 setDelegate:0];
+  videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+  [videoPlayerView setDelegate:0];
 
   [(NTKVideoPlayerView *)self _unloadVideoPlayerView];
   videoPlayerView = self->_videoPlayerView;
@@ -363,8 +363,8 @@ LABEL_22:
 - (void)_loadVideoPlayerView
 {
   [(NTKVideoPlayerView *)self _createVideoPlayerViewIfNeeded];
-  v3 = [(NTKVideoPlayerView *)self videoPlayerView];
-  [(NTKVideoPlayerView *)self addSubview:v3];
+  videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+  [(NTKVideoPlayerView *)self addSubview:videoPlayerView];
 
   self->_videoPlayerInViewHierarchy = 1;
 }
@@ -375,15 +375,15 @@ LABEL_22:
   self->_prerollState = 0;
   [(NTKVideoPlayerView *)self _updatePauseState];
   [(NTKVideoPlayerView *)self _rewindLoadedVideoToBeginning];
-  v3 = [(NTKVideoPlayerView *)self videoPlayerView];
-  [v3 removeFromSuperview];
+  videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+  [videoPlayerView removeFromSuperview];
 
   self->_videoPlayerInViewHierarchy = 0;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  objc_storeStrong(&self->_dataSource, a3);
+  objc_storeStrong(&self->_dataSource, source);
   [(NTKVideoPlayerView *)self _cancelScheduledPreroll];
   self->_prerollState = 0;
   [(NTKVideoPlayerView *)self _pause];
@@ -463,9 +463,9 @@ LABEL_11:
   v3 = _NTKLoggingObjectForDomain(32, "NTKLoggingDomainAnalogVideo");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NTKVideoPlayerView *)self dataSource];
-    v5 = [v4 currentListing];
-    v6 = [v5 description];
+    dataSource = [(NTKVideoPlayerView *)self dataSource];
+    currentListing = [dataSource currentListing];
+    v6 = [currentListing description];
     v8 = 138412290;
     v9 = v6;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Prerolling video: %@", &v8, 0xCu);
@@ -473,28 +473,28 @@ LABEL_11:
 
   self->_prerollState = 2;
   [(NTKVideoPlayerView *)self _loadCurrentListing];
-  v7 = [(NTKVideoPlayerView *)self videoPlayerView];
-  [v7 preroll];
+  videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+  [videoPlayerView preroll];
 }
 
-- (void)videoPlayerView:(id)a3 didFinishPrerolling:(BOOL)a4
+- (void)videoPlayerView:(id)view didFinishPrerolling:(BOOL)prerolling
 {
-  v4 = a4;
+  prerollingCopy = prerolling;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewCopy = view;
   prerollState = self->_prerollState;
   if (prerollState < 2 || prerollState == 3)
   {
     v9 = _NTKLoggingObjectForDomain(32, "NTKLoggingDomainAnalogVideo");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(NTKVideoPlayerView *)self dataSource];
-      v11 = [v10 currentListing];
-      v12 = [v11 description];
+      dataSource = [(NTKVideoPlayerView *)self dataSource];
+      currentListing = [dataSource currentListing];
+      v12 = [currentListing description];
       v20 = 138412546;
       v21 = v12;
       v22 = 1024;
-      v23 = v4;
+      v23 = prerollingCopy;
       _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "Finished prerolling video while _prerollState != inProgress: %@ successful: %d", &v20, 0x12u);
     }
 
@@ -508,13 +508,13 @@ LABEL_11:
 
   v9 = _NTKLoggingObjectForDomain(32, "NTKLoggingDomainAnalogVideo");
   v13 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (!v4)
+  if (!prerollingCopy)
   {
     if (v13)
     {
-      v17 = [(NTKVideoPlayerView *)self dataSource];
-      v18 = [v17 currentListing];
-      v19 = [v18 description];
+      dataSource2 = [(NTKVideoPlayerView *)self dataSource];
+      currentListing2 = [dataSource2 currentListing];
+      v19 = [currentListing2 description];
       v20 = 138412290;
       v21 = v19;
       _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "Unsuccessfully prerolled video: %@", &v20, 0xCu);
@@ -527,9 +527,9 @@ LABEL_8:
 
   if (v13)
   {
-    v14 = [(NTKVideoPlayerView *)self dataSource];
-    v15 = [v14 currentListing];
-    v16 = [v15 description];
+    dataSource3 = [(NTKVideoPlayerView *)self dataSource];
+    currentListing3 = [dataSource3 currentListing];
+    v16 = [currentListing3 description];
     v20 = 138412290;
     v21 = v16;
     _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "Successfully prerolled video: %@", &v20, 0xCu);
@@ -550,8 +550,8 @@ LABEL_14:
 
 - (void)_updatePauseState
 {
-  v3 = [(NTKVideoPlayerView *)self _shouldPause];
-  if (v3 && self->_paused != v3)
+  _shouldPause = [(NTKVideoPlayerView *)self _shouldPause];
+  if (_shouldPause && self->_paused != _shouldPause)
   {
 
     [(NTKVideoPlayerView *)self _pause];
@@ -560,31 +560,31 @@ LABEL_14:
 
 - (void)_play
 {
-  v3 = [(NTKVideoPlayerView *)self videoPlayerView];
-  [v3 play];
+  videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+  [videoPlayerView play];
 
   self->_paused = 0;
 }
 
 - (void)_pause
 {
-  v3 = [(NTKVideoPlayerView *)self videoPlayerView];
-  [v3 pause];
+  videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+  [videoPlayerView pause];
 
   self->_paused = 1;
 }
 
 - (void)_rewindLoadedVideoToBeginning
 {
-  v2 = [(NTKVideoPlayerView *)self videoPlayerView];
+  videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
   v3 = *MEMORY[0x277CC08F0];
   v4 = *(MEMORY[0x277CC08F0] + 16);
-  [v2 seekToTime:&v3];
+  [videoPlayerView seekToTime:&v3];
 }
 
-- (void)_playNextVideoForEvent:(unint64_t)a3 animated:(BOOL)a4
+- (void)_playNextVideoForEvent:(unint64_t)event animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (!self->_videoPlayerInViewHierarchy)
   {
     [(NTKVideoPlayerView *)self _loadVideoPlayerView];
@@ -596,11 +596,11 @@ LABEL_14:
   v10 = __54__NTKVideoPlayerView__playNextVideoForEvent_animated___block_invoke;
   v11 = &unk_278786638;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
-  v13 = v4;
+  v12[1] = event;
+  v13 = animatedCopy;
   v7 = _Block_copy(&v8);
   [(NTKVideoPlayerView *)self _pause:v8];
-  if (v4)
+  if (animatedCopy)
   {
     [(NTKVideoPlayerView *)self _fadeToCurtainView:v7];
   }
@@ -642,62 +642,62 @@ void __54__NTKVideoPlayerView__playNextVideoForEvent_animated___block_invoke(uin
 
 - (void)_loadCurrentListing
 {
-  v3 = [(NTKVideoPlayerView *)self dataSource];
-  v6 = [v3 currentListing];
+  dataSource = [(NTKVideoPlayerView *)self dataSource];
+  currentListing = [dataSource currentListing];
 
-  if (v6)
+  if (currentListing)
   {
-    v4 = [(NTKVideoPlayerView *)self videoPlayerView];
-    v5 = [v6 video];
-    [v4 loadVideo:v5];
+    videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+    video = [currentListing video];
+    [videoPlayerView loadVideo:video];
   }
 }
 
-- (void)_advanceListingForEvent:(unint64_t)a3
+- (void)_advanceListingForEvent:(unint64_t)event
 {
-  v5 = [(NTKVideoPlayerView *)self dataSource];
-  [v5 advanceToNextListing:a3];
+  dataSource = [(NTKVideoPlayerView *)self dataSource];
+  [dataSource advanceToNextListing:event];
 
-  v8 = [(NTKVideoPlayerView *)self delegate];
-  v6 = [(NTKVideoPlayerView *)self dataSource];
-  v7 = [v6 currentListing];
-  [v8 customizeFaceViewForListing:v7 changeEvent:a3 animated:a3 != 1];
+  delegate = [(NTKVideoPlayerView *)self delegate];
+  dataSource2 = [(NTKVideoPlayerView *)self dataSource];
+  currentListing = [dataSource2 currentListing];
+  [delegate customizeFaceViewForListing:currentListing changeEvent:event animated:event != 1];
 }
 
-- (void)videoPlayerViewDidBeginPlaying:(id)a3
+- (void)videoPlayerViewDidBeginPlaying:(id)playing
 {
   self->_isHandlingTapGesture = 0;
   [(NTKVideoPlayerView *)self _fadeFromPosterImageAndCurtainViewIfVisible];
-  v4 = [(NTKVideoPlayerView *)self delegate];
-  v5 = [(NTKVideoPlayerView *)self dataSource];
-  v6 = [v5 currentListing];
-  [v4 customizeFaceViewForListing:v6 changeEvent:3 animated:1];
+  delegate = [(NTKVideoPlayerView *)self delegate];
+  dataSource = [(NTKVideoPlayerView *)self dataSource];
+  currentListing = [dataSource currentListing];
+  [delegate customizeFaceViewForListing:currentListing changeEvent:3 animated:1];
 
   [(NTKVideoPlayerView *)self _queueSubsequentListingIfSupported];
-  v7 = [(NTKVideoPlayerView *)self delegate];
-  [v7 videoDidBeginPlayingQueuedVideo];
+  delegate2 = [(NTKVideoPlayerView *)self delegate];
+  [delegate2 videoDidBeginPlayingQueuedVideo];
 }
 
-- (void)videoPlayerViewDidPauseAfterPlayingVideoToEnd:(id)a3
+- (void)videoPlayerViewDidPauseAfterPlayingVideoToEnd:(id)end
 {
-  v4 = [(NTKVideoPlayerView *)self delegate];
-  [v4 videoDidFinishPlayingToEnd];
+  delegate = [(NTKVideoPlayerView *)self delegate];
+  [delegate videoDidFinishPlayingToEnd];
 
   if (!self->_paused)
   {
-    v5 = [(NTKVideoPlayerView *)self dataSource];
-    v6 = [v5 currentListing];
-    v7 = [v6 endBehavior];
+    dataSource = [(NTKVideoPlayerView *)self dataSource];
+    currentListing = [dataSource currentListing];
+    endBehavior = [currentListing endBehavior];
 
-    if (v7 > 1)
+    if (endBehavior > 1)
     {
-      if (v7 == 3)
+      if (endBehavior == 3)
       {
 
         [(NTKVideoPlayerView *)self _pause];
       }
 
-      else if (v7 == 2)
+      else if (endBehavior == 2)
       {
         [(NTKVideoPlayerView *)self _rewindLoadedVideoToBeginning];
 
@@ -705,9 +705,9 @@ void __54__NTKVideoPlayerView__playNextVideoForEvent_animated___block_invoke(uin
       }
     }
 
-    else if (v7)
+    else if (endBehavior)
     {
-      if (v7 == 1)
+      if (endBehavior == 1)
       {
         [(NTKVideoPlayerView *)self _pause];
 
@@ -723,37 +723,37 @@ void __54__NTKVideoPlayerView__playNextVideoForEvent_animated___block_invoke(uin
   }
 }
 
-- (void)videoPlayerViewDidBeginPlayingQueuedVideo:(id)a3
+- (void)videoPlayerViewDidBeginPlayingQueuedVideo:(id)video
 {
-  v4 = [(NTKVideoPlayerView *)self delegate];
-  [v4 videoDidFinishPlayingToEnd];
+  delegate = [(NTKVideoPlayerView *)self delegate];
+  [delegate videoDidFinishPlayingToEnd];
 
-  v5 = [(NTKVideoPlayerView *)self delegate];
-  v6 = [(NTKVideoPlayerView *)self dataSource];
-  v7 = [v6 currentListing];
-  [v5 customizeFaceViewForListing:v7 changeEvent:3 animated:1];
+  delegate2 = [(NTKVideoPlayerView *)self delegate];
+  dataSource = [(NTKVideoPlayerView *)self dataSource];
+  currentListing = [dataSource currentListing];
+  [delegate2 customizeFaceViewForListing:currentListing changeEvent:3 animated:1];
 
   [(NTKVideoPlayerView *)self _queueSubsequentListingIfSupported];
 }
 
 - (void)_queueSubsequentListingIfSupported
 {
-  v3 = [(NTKVideoPlayerView *)self dataSource];
-  v6 = [v3 listingToQueueOncePlaybackStarts];
+  dataSource = [(NTKVideoPlayerView *)self dataSource];
+  listingToQueueOncePlaybackStarts = [dataSource listingToQueueOncePlaybackStarts];
 
-  if (v6)
+  if (listingToQueueOncePlaybackStarts)
   {
-    v4 = [(NTKVideoPlayerView *)self videoPlayerView];
-    v5 = [v6 video];
-    [v4 queueVideo:v5];
+    videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+    video = [listingToQueueOncePlaybackStarts video];
+    [videoPlayerView queueVideo:video];
   }
 }
 
-- (void)setPosterImage:(id)a3
+- (void)setPosterImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   [(NTKVideoPlayerView *)self _createPosterImageView];
-  [(UIImageView *)self->_posterImageView setImage:v4];
+  [(UIImageView *)self->_posterImageView setImage:imageCopy];
 }
 
 - (void)_createPosterImageView
@@ -767,8 +767,8 @@ void __54__NTKVideoPlayerView__playNextVideoForEvent_animated___block_invoke(uin
     self->_posterContainerView = v4;
 
     v6 = self->_posterContainerView;
-    v7 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v6 setBackgroundColor:v7];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v6 setBackgroundColor:blackColor];
 
     [(UIView *)self->_posterContainerView setHidden:1];
     [(NTKVideoPlayerView *)self addSubview:self->_posterContainerView];
@@ -832,14 +832,14 @@ uint64_t __40__NTKVideoPlayerView__fadeToPosterImage__block_invoke_2(uint64_t re
   return result;
 }
 
-- (void)_fadeFromPosterImageIfVisible:(id)a3
+- (void)_fadeFromPosterImageIfVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   if ([(UIView *)self->_posterContainerView isHidden])
   {
-    if (v4)
+    if (visibleCopy)
     {
-      v4[2](v4);
+      visibleCopy[2](visibleCopy);
     }
   }
 
@@ -857,7 +857,7 @@ uint64_t __40__NTKVideoPlayerView__fadeToPosterImage__block_invoke_2(uint64_t re
     v7[2] = __52__NTKVideoPlayerView__fadeFromPosterImageIfVisible___block_invoke_2;
     v7[3] = &unk_27877E2E8;
     v7[4] = self;
-    v8 = v4;
+    v8 = visibleCopy;
     [v5 animateWithDuration:v9 animations:v7 completion:fadeAnimationDuration];
   }
 }
@@ -894,15 +894,15 @@ uint64_t __52__NTKVideoPlayerView__fadeFromPosterImageIfVisible___block_invoke_2
   if (!self->_curtainView)
   {
     v3 = objc_alloc(MEMORY[0x277D75D18]);
-    v4 = [(NTKVideoPlayerView *)self videoPlayerView];
-    [v4 bounds];
+    videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+    [videoPlayerView bounds];
     v5 = [v3 initWithFrame:?];
     curtainView = self->_curtainView;
     self->_curtainView = v5;
 
     v7 = self->_curtainView;
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v7 setBackgroundColor:v8];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v7 setBackgroundColor:blackColor];
 
     [(UIView *)self->_curtainView setHidden:1];
     v9 = self->_curtainView;
@@ -919,9 +919,9 @@ uint64_t __52__NTKVideoPlayerView__fadeFromPosterImageIfVisible___block_invoke_2
   [(UIView *)curtainView setHidden:0];
 }
 
-- (void)_fadeToCurtainView:(id)a3
+- (void)_fadeToCurtainView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self->_curtainView setAlpha:0.0];
   [(UIView *)self->_curtainView setHidden:0];
   v5 = MEMORY[0x277D75D18];
@@ -935,8 +935,8 @@ uint64_t __52__NTKVideoPlayerView__fadeFromPosterImageIfVisible___block_invoke_2
   v8[1] = 3221225472;
   v8[2] = __41__NTKVideoPlayerView__fadeToCurtainView___block_invoke_2;
   v8[3] = &unk_27877E2C0;
-  v9 = v4;
-  v7 = v4;
+  v9 = viewCopy;
+  v7 = viewCopy;
   [v5 animateWithDuration:v10 animations:v8 completion:fadeAnimationDuration];
 }
 
@@ -990,48 +990,48 @@ uint64_t __51__NTKVideoPlayerView__fadeFromCurtainViewIfVisible__block_invoke_2(
   [(NTKVideoPlayerView *)self _fadeFromPosterImageIfVisible:0];
 }
 
-- (void)setVideoPlayerTransform:(CGAffineTransform *)a3
+- (void)setVideoPlayerTransform:(CGAffineTransform *)transform
 {
   videoPlayerView = self->_videoPlayerView;
-  v4 = *&a3->c;
-  v5[0] = *&a3->a;
+  v4 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v4;
-  v5[2] = *&a3->tx;
+  v5[2] = *&transform->tx;
   [(CLKVideoPlayerView *)videoPlayerView setTransform:v5];
 }
 
-- (void)setVideoPlayerInset:(UIEdgeInsets)a3
+- (void)setVideoPlayerInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_videoPlayerEdgeInsets.top, v3), vceqq_f64(*&self->_videoPlayerEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_videoPlayerEdgeInsets = a3;
+    self->_videoPlayerEdgeInsets = inset;
     [(NTKVideoPlayerView *)self setNeedsLayout];
   }
 }
 
-- (void)setShouldApplyVideoInsetToPosterImage:(BOOL)a3
+- (void)setShouldApplyVideoInsetToPosterImage:(BOOL)image
 {
-  if (self->_shouldApplyVideoInsetToPosterImage != a3)
+  if (self->_shouldApplyVideoInsetToPosterImage != image)
   {
-    self->_shouldApplyVideoInsetToPosterImage = a3;
+    self->_shouldApplyVideoInsetToPosterImage = image;
     [(NTKVideoPlayerView *)self setNeedsLayout];
   }
 }
 
 - (void)_removeCurrentVideo
 {
-  v2 = [(CLKVideoPlayerView *)self->_videoPlayerView player];
-  [v2 removeAllItems];
+  player = [(CLKVideoPlayerView *)self->_videoPlayerView player];
+  [player removeAllItems];
 }
 
 - (BOOL)_shouldPlayVideoOnTap
 {
-  v3 = [(NTKVideoPlayerView *)self videoPlayerView];
-  if ([v3 playing])
+  videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+  if ([videoPlayerView playing])
   {
     LOBYTE(v4) = 0;
   }
@@ -1044,14 +1044,14 @@ uint64_t __51__NTKVideoPlayerView__fadeFromCurtainViewIfVisible__block_invoke_2(
   return v4;
 }
 
-- (void)setPausedViewEnabled:(BOOL)a3
+- (void)setPausedViewEnabled:(BOOL)enabled
 {
-  self->_pausedViewEnabled = a3;
-  v4 = [(NTKVideoPlayerView *)self videoPlayerView];
-  [v4 setPausedViewEnabled:self->_pausedViewEnabled];
+  self->_pausedViewEnabled = enabled;
+  videoPlayerView = [(NTKVideoPlayerView *)self videoPlayerView];
+  [videoPlayerView setPausedViewEnabled:self->_pausedViewEnabled];
 }
 
-- (void)_mediaServicesWereReset:(id)a3
+- (void)_mediaServicesWereReset:(id)reset
 {
   kdebug_trace();
   block[0] = MEMORY[0x277D85DD0];

@@ -1,29 +1,29 @@
 @interface NTKGalleonPrerenderedHeadingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKGalleonPrerenderedHeadingView)initWithCoder:(id)a3;
-- (NTKGalleonPrerenderedHeadingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKGalleonPrerenderedHeadingView)initWithCoder:(id)coder;
+- (NTKGalleonPrerenderedHeadingView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
-- (void)galleon_setHeading:(double)a3;
+- (void)galleon_setHeading:(double)heading;
 - (void)layoutSubviews;
-- (void)setTextColor:(id)a3;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation NTKGalleonPrerenderedHeadingView
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   headingLayer = self->_headingLayer;
-  v5 = a3;
-  v10 = objc_msgSend_CGColor(a3, v6, v7, v8);
+  colorCopy = color;
+  v10 = objc_msgSend_CGColor(color, v6, v7, v8);
 
   objc_msgSend_setContentsMultiplyColor_(headingLayer, v9, v10, v11);
 }
 
-- (NTKGalleonPrerenderedHeadingView)initWithCoder:(id)a3
+- (NTKGalleonPrerenderedHeadingView)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = NTKGalleonPrerenderedHeadingView;
-  v3 = [(NTKGalleonPrerenderedHeadingView *)&v9 initWithCoder:a3];
+  v3 = [(NTKGalleonPrerenderedHeadingView *)&v9 initWithCoder:coder];
   v7 = v3;
   if (v3)
   {
@@ -33,11 +33,11 @@
   return v7;
 }
 
-- (NTKGalleonPrerenderedHeadingView)initWithFrame:(CGRect)a3
+- (NTKGalleonPrerenderedHeadingView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = NTKGalleonPrerenderedHeadingView;
-  v3 = [(NTKGalleonPrerenderedHeadingView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKGalleonPrerenderedHeadingView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v3;
   if (v3)
   {
@@ -71,9 +71,9 @@
   objc_msgSend_setBounds_(headingLayer, v24, v25, v26, 0.0, 0.0, v20, v27);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  objc_msgSend_size(self->_headingImage, a2, v3, v4, a3.width, a3.height);
+  objc_msgSend_size(self->_headingImage, a2, v3, v4, fits.width, fits.height);
   result.height = v6;
   result.width = v5;
   return result;
@@ -112,9 +112,9 @@
   objc_msgSend_addSublayer_(v48, v46, self->_headingLayer, v47);
 }
 
-- (void)galleon_setHeading:(double)a3
+- (void)galleon_setHeading:(double)heading
 {
-  v6 = vcvtmd_u64_f64(a3);
+  v6 = vcvtmd_u64_f64(heading);
   if (objc_msgSend_heading(self, a2, v3, v4) != v6)
   {
     v38 = objc_msgSend_stringForHeading_(self->_headingGenerator, v7, v6, v8);

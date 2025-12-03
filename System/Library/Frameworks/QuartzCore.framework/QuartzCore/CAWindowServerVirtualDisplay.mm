@@ -1,13 +1,13 @@
 @interface CAWindowServerVirtualDisplay
-- (CAWindowServerVirtualDisplay)initWithOptions:(id)a3;
+- (CAWindowServerVirtualDisplay)initWithOptions:(id)options;
 @end
 
 @implementation CAWindowServerVirtualDisplay
 
-- (CAWindowServerVirtualDisplay)initWithOptions:(id)a3
+- (CAWindowServerVirtualDisplay)initWithOptions:(id)options
 {
   v57 = *MEMORY[0x1E69E9840];
-  if (![a3 objectForKeyedSubscript:@"kCAVirtualDisplayWidth"] || !objc_msgSend(a3, "objectForKeyedSubscript:", @"kCAVirtualDisplayHeight"))
+  if (![options objectForKeyedSubscript:@"kCAVirtualDisplayWidth"] || !objc_msgSend(options, "objectForKeyedSubscript:", @"kCAVirtualDisplayHeight"))
   {
     if (x_log_get_windowserver(void)::once != -1)
     {
@@ -24,11 +24,11 @@
     return 0;
   }
 
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"kCAVirtualDisplayWidth", "unsignedIntegerValue"}];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"kCAVirtualDisplayHeight", "unsignedIntegerValue"}];
-  if ([a3 objectForKeyedSubscript:@"kCAVirtualDisplayUpdateRate"])
+  v5 = [objc_msgSend(options objectForKeyedSubscript:{@"kCAVirtualDisplayWidth", "unsignedIntegerValue"}];
+  v6 = [objc_msgSend(options objectForKeyedSubscript:{@"kCAVirtualDisplayHeight", "unsignedIntegerValue"}];
+  if ([options objectForKeyedSubscript:@"kCAVirtualDisplayUpdateRate"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"kCAVirtualDisplayUpdateRate", "doubleValue"}];
+    [objc_msgSend(options objectForKeyedSubscript:{@"kCAVirtualDisplayUpdateRate", "doubleValue"}];
     if (v7 == 0.0)
     {
       v8 = 0.0166666667;
@@ -45,20 +45,20 @@
     v8 = 0.0166666667;
   }
 
-  v11 = [a3 objectForKeyedSubscript:@"kCAVirtualDisplayMinimumFrameDuration"];
+  v11 = [options objectForKeyedSubscript:@"kCAVirtualDisplayMinimumFrameDuration"];
   if (v11)
   {
-    v12 = [v11 unsignedIntValue];
+    unsignedIntValue = [v11 unsignedIntValue];
   }
 
   else
   {
-    v12 = 1;
+    unsignedIntValue = 1;
   }
 
-  if ([a3 objectForKeyedSubscript:@"kCAVirtualDisplayPixelFormat"])
+  if ([options objectForKeyedSubscript:@"kCAVirtualDisplayPixelFormat"])
   {
-    v13 = [objc_msgSend(a3 objectForKeyedSubscript:{@"kCAVirtualDisplayPixelFormat", "unsignedIntegerValue"}];
+    v13 = [objc_msgSend(options objectForKeyedSubscript:{@"kCAVirtualDisplayPixelFormat", "unsignedIntegerValue"}];
   }
 
   else
@@ -66,8 +66,8 @@
     v13 = 1111970369;
   }
 
-  v14 = [a3 objectForKeyedSubscript:@"kCAVirtualDisplayName"];
-  v15 = [objc_msgSend(a3 objectForKeyedSubscript:{@"kCAVirtualDisplayPixelFormatFollowsMode", "BOOLValue"}];
+  v14 = [options objectForKeyedSubscript:@"kCAVirtualDisplayName"];
+  v15 = [objc_msgSend(options objectForKeyedSubscript:{@"kCAVirtualDisplayPixelFormatFollowsMode", "BOOLValue"}];
   cf = v14;
   if (!v14)
   {
@@ -99,14 +99,14 @@
     *(v17 + 25712) = 0;
     *(v17 + 25720) = 0;
     *(v17 + 25728) = v8;
-    if (v12 <= 1)
+    if (unsignedIntValue <= 1)
     {
       v20 = 1;
     }
 
     else
     {
-      v20 = v12;
+      v20 = unsignedIntValue;
     }
 
     *(v17 + 25736) = v20;

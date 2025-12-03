@@ -1,25 +1,25 @@
 @interface BGSystemTaskRequest
 + (double)maximumRuntimeForImmediateRun;
 + (int64_t)maximumUploadSizeForImmediateRun;
-+ (int64_t)predictedUploadSizeForPrediction:(id)a3;
++ (int64_t)predictedUploadSizeForPrediction:(id)prediction;
 - (BOOL)cplRequestsImmediateRuntime;
-- (void)updateWithPrediction:(id)a3;
+- (void)updateWithPrediction:(id)prediction;
 @end
 
 @implementation BGSystemTaskRequest
 
-- (void)updateWithPrediction:(id)a3
+- (void)updateWithPrediction:(id)prediction
 {
-  v4 = a3;
-  [(BGSystemTaskRequest *)self setNetworkUploadSize:[BGSystemTaskRequest predictedUploadSizeForPrediction:v4]];
-  v5 = [v4 objectForKeyedSubscript:CPLSyncSessionPredictionTypeDownloadResourceSize];
+  predictionCopy = prediction;
+  [(BGSystemTaskRequest *)self setNetworkUploadSize:[BGSystemTaskRequest predictedUploadSizeForPrediction:predictionCopy]];
+  v5 = [predictionCopy objectForKeyedSubscript:CPLSyncSessionPredictionTypeDownloadResourceSize];
 
   -[BGSystemTaskRequest setNetworkDownloadSize:](self, "setNetworkDownloadSize:", [v5 longLongValue]);
 }
 
-+ (int64_t)predictedUploadSizeForPrediction:(id)a3
++ (int64_t)predictedUploadSizeForPrediction:(id)prediction
 {
-  v3 = [a3 objectForKeyedSubscript:CPLSyncSessionPredictionTypeUploadResourceSize];
+  v3 = [prediction objectForKeyedSubscript:CPLSyncSessionPredictionTypeUploadResourceSize];
   [v3 doubleValue];
   v5 = (v4 * 1.29999995);
 
@@ -33,15 +33,15 @@
 
   if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 longLongValue];
+    longLongValue = [v3 longLongValue];
   }
 
   else
   {
-    v4 = 209715200;
+    longLongValue = 209715200;
   }
 
-  return v4;
+  return longLongValue;
 }
 
 + (double)maximumRuntimeForImmediateRun

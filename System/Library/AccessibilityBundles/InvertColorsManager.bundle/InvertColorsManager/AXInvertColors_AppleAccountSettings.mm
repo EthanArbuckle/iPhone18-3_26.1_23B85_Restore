@@ -1,14 +1,14 @@
 @interface AXInvertColors_AppleAccountSettings
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_AppleAccountSettings
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AAUIDeviceInfoHeaderView" hasInstanceVariable:@"_deviceImageView" withType:"UIImageView"];
-  [v3 validateClass:@"AAUIDeviceInfoHeaderView" hasInstanceMethod:@"_setupSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AAUIDeviceInfoHeaderView" hasInstanceVariable:@"_deviceImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"AAUIDeviceInfoHeaderView" hasInstanceMethod:@"_setupSubviews" withFullSignature:{"v", 0}];
 }
 
 @end

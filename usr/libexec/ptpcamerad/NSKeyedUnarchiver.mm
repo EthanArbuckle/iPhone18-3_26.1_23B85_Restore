@@ -1,5 +1,5 @@
 @interface NSKeyedUnarchiver
-+ (id)icUnarchivedObjectFromData:(id)a3 withKey:(id)a4;
++ (id)icUnarchivedObjectFromData:(id)data withKey:(id)key;
 + (id)icWhitelistedClasses;
 @end
 
@@ -17,15 +17,15 @@
   return v3;
 }
 
-+ (id)icUnarchivedObjectFromData:(id)a3 withKey:(id)a4
++ (id)icUnarchivedObjectFromData:(id)data withKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dataCopy = data;
+  keyCopy = key;
+  if (dataCopy)
   {
-    v7 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v5 error:0];
-    v8 = [objc_opt_class() icWhitelistedClasses];
-    v9 = [v7 decodeObjectOfClasses:v8 forKey:v6];
+    v7 = [[NSKeyedUnarchiver alloc] initForReadingFromData:dataCopy error:0];
+    icWhitelistedClasses = [objc_opt_class() icWhitelistedClasses];
+    v9 = [v7 decodeObjectOfClasses:icWhitelistedClasses forKey:keyCopy];
   }
 
   else

@@ -1,26 +1,26 @@
 @interface EKReminderEditViewController
 - (BOOL)hasUnsavedChanges;
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
 - (BOOL)willPresentDialogOnSave;
 - (EKCalendar)calendarToMakeVisibleOnSave;
 - (EKEventOrIntegrationEditViewDelegate)internalEditViewDelegate;
-- (_TtC9MobileCal28EKReminderEditViewController)initWithCoder:(id)a3;
-- (_TtC9MobileCal28EKReminderEditViewController)initWithModel:(id)a3;
-- (_TtC9MobileCal28EKReminderEditViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC9MobileCal28EKReminderEditViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9MobileCal28EKReminderEditViewController)initWithRootViewController:(id)a3;
+- (_TtC9MobileCal28EKReminderEditViewController)initWithCoder:(id)coder;
+- (_TtC9MobileCal28EKReminderEditViewController)initWithModel:(id)model;
+- (_TtC9MobileCal28EKReminderEditViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC9MobileCal28EKReminderEditViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9MobileCal28EKReminderEditViewController)initWithRootViewController:(id)controller;
 - (void)cancelEditing;
-- (void)completeAndSaveWithContinueBlock:(id)a3;
+- (void)completeAndSaveWithContinueBlock:(id)block;
 - (void)configureAppearanceForSplitDayView;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
 - (void)refreshStartAndEndDates;
-- (void)setEvent:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setEvent:(id)event;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EKReminderEditViewController
 
-- (_TtC9MobileCal28EKReminderEditViewController)initWithCoder:(id)a3
+- (_TtC9MobileCal28EKReminderEditViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_currentModule;
   v5 = type metadata accessor for RemindersInCalendarUtilities.ReminderEditingModule();
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (_TtC9MobileCal28EKReminderEditViewController)initWithModel:(id)a3
+- (_TtC9MobileCal28EKReminderEditViewController)initWithModel:(id)model
 {
   v5 = OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_currentModule;
   v6 = type metadata accessor for RemindersInCalendarUtilities.ReminderEditingModule();
@@ -41,10 +41,10 @@
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_event) = 0;
   *(self + OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_ignoreUnsavedChanges) = 0;
-  *(self + OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_model) = a3;
+  *(self + OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_model) = model;
   v9.receiver = self;
   v9.super_class = type metadata accessor for EKReminderEditViewController();
-  v7 = a3;
+  modelCopy = model;
   return [(EKReminderEditViewController *)&v9 initWithNibName:0 bundle:0];
 }
 
@@ -55,38 +55,38 @@
   return Strong;
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
   v4 = *(self + OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_event);
-  *(self + OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_event) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_event) = event;
+  eventCopy = event;
+  selfCopy = self;
 
   sub_10016BF5C();
 }
 
 - (void)refreshStartAndEndDates
 {
-  v2 = self;
+  selfCopy = self;
   sub_10016CBCC();
 }
 
 - (void)configureAppearanceForSplitDayView
 {
-  v5 = self;
+  selfCopy = self;
   if ((CalSystemSolariumEnabled() & 1) == 0)
   {
     v2 = [objc_allocWithZone(UINavigationBarAppearance) init];
     [v2 configureWithOpaqueBackground];
-    v3 = [(EKReminderEditViewController *)v5 navigationBar];
+    navigationBar = [(EKReminderEditViewController *)selfCopy navigationBar];
     v4 = v2;
-    [v3 setScrollEdgeAppearance:v4];
+    [navigationBar setScrollEdgeAppearance:v4];
   }
 }
 
 - (BOOL)hasUnsavedChanges
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10016D024();
 
   return v3 & 1;
@@ -94,15 +94,15 @@
 
 - (BOOL)willPresentDialogOnSave
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10016D228();
 
   return v3 & 1;
 }
 
-- (void)completeAndSaveWithContinueBlock:(id)a3
+- (void)completeAndSaveWithContinueBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = v4;
@@ -117,7 +117,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_10016D440(v7, v6);
   sub_10015F010(v7);
 }
@@ -130,29 +130,29 @@
   v6 = type metadata accessor for TaskPriority();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   type metadata accessor for MainActor();
-  v7 = self;
+  selfCopy = self;
   v8 = static MainActor.shared.getter();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_100167F80(0, 0, v5, &unk_1001F8FE8, v9);
 }
 
 - (EKCalendar)calendarToMakeVisibleOnSave
 {
-  v2 = [*(self + OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_model) reminderCalendar];
+  reminderCalendar = [*(self + OBJC_IVAR____TtC9MobileCal28EKReminderEditViewController_model) reminderCalendar];
 
-  return v2;
+  return reminderCalendar;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10016E1FC(a3);
+  selfCopy = self;
+  sub_10016E1FC(appear);
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
   v4 = sub_10015E0CC(&qword_100251560);
   __chkstk_darwin(v4 - 8);
@@ -160,39 +160,39 @@
   v7 = type metadata accessor for TaskPriority();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   type metadata accessor for MainActor();
-  v8 = self;
+  selfCopy = self;
   v9 = static MainActor.shared.getter();
   v10 = swift_allocObject();
   v10[2] = v9;
   v10[3] = &protocol witness table for MainActor;
-  v10[4] = v8;
+  v10[4] = selfCopy;
   sub_100167F80(0, 0, v6, &unk_1001F8FD8, v10);
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   LOBYTE(self) = sub_10016E858();
 
   return self & 1;
 }
 
-- (_TtC9MobileCal28EKReminderEditViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC9MobileCal28EKReminderEditViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9MobileCal28EKReminderEditViewController)initWithRootViewController:(id)a3
+- (_TtC9MobileCal28EKReminderEditViewController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9MobileCal28EKReminderEditViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9MobileCal28EKReminderEditViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

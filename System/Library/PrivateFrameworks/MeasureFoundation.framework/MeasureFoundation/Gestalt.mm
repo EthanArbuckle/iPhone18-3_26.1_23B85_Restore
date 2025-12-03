@@ -2,7 +2,7 @@
 + (BOOL)hasAppleNeuralEngine;
 + (BOOL)internalInstall;
 + (BOOL)jasperAvailable;
-+ (id)stringAnswerToQuestion:(__CFString *)a3;
++ (id)stringAnswerToQuestion:(__CFString *)question;
 @end
 
 @implementation Gestalt
@@ -30,7 +30,7 @@ uint64_t __26__Gestalt_internalInstall__block_invoke()
   block[1] = 3221225472;
   block[2] = __26__Gestalt_jasperAvailable__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (jasperAvailable_onceToken != -1)
   {
     dispatch_once(&jasperAvailable_onceToken, block);
@@ -69,7 +69,7 @@ uint64_t __31__Gestalt_hasAppleNeuralEngine__block_invoke()
   return result;
 }
 
-+ (id)stringAnswerToQuestion:(__CFString *)a3
++ (id)stringAnswerToQuestion:(__CFString *)question
 {
   v3 = MGGetStringAnswer();
 

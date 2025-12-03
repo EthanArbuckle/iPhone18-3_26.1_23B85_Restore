@@ -1,45 +1,45 @@
 @interface IMSpamFilterHelper
-+ (BOOL)accountCountryIsCandidateForHawking:(id)a3;
-+ (BOOL)accountCountryIsCandidateForSMSFilter:(id)a3;
-+ (BOOL)accountCountryIsCandidateForiMessageJunk:(id)a3;
-+ (BOOL)accountRegionIsCandidateForHawking:(id)a3;
-+ (BOOL)anyParticipantIsCandidateForBlackhole:(id)a3;
-+ (BOOL)anyParticipantIsKnownContact:(id)a3;
++ (BOOL)accountCountryIsCandidateForHawking:(id)hawking;
++ (BOOL)accountCountryIsCandidateForSMSFilter:(id)filter;
++ (BOOL)accountCountryIsCandidateForiMessageJunk:(id)junk;
++ (BOOL)accountRegionIsCandidateForHawking:(id)hawking;
++ (BOOL)anyParticipantIsCandidateForBlackhole:(id)blackhole;
++ (BOOL)anyParticipantIsKnownContact:(id)contact;
 + (BOOL)hasThirdPartySMSExtensionEnabled;
-+ (BOOL)isBlackholeEnabledForEligibleAccounts:(BOOL)a3;
++ (BOOL)isBlackholeEnabledForEligibleAccounts:(BOOL)accounts;
 + (BOOL)isChineseSpamFilteringEnabled;
 + (BOOL)isFilterUnknownSendersEnabled;
 + (BOOL)isInternationalSpamFilteringEnabled;
-+ (BOOL)isKnownContact:(id)a3;
++ (BOOL)isKnownContact:(id)contact;
 + (BOOL)isiMessageJunkFilterEnabled;
 + (BOOL)receiverIsCandidateForAppleSMSFilter;
-+ (BOOL)receiverIsCandidateForAppleSMSFilterSubClassification:(id)a3;
-+ (BOOL)receiverIsCandidateForAppleSMSFilterSubClassificationWithSimSlot:(int64_t)a3;
++ (BOOL)receiverIsCandidateForAppleSMSFilterSubClassification:(id)classification;
++ (BOOL)receiverIsCandidateForAppleSMSFilterSubClassificationWithSimSlot:(int64_t)slot;
 + (BOOL)receiverIsCandidateForDefaultAppleSMSFilter;
-+ (BOOL)receiverIsCandidateForDefaultAppleSMSFilter:(id)a3;
-+ (BOOL)receiverIsCandidateForHawking:(id)a3;
-+ (BOOL)receiverIsCandidateForSMSFilter:(id)a3;
-+ (BOOL)receiverIsCandidateForiMessageJunk:(id)a3;
-+ (BOOL)receiverIsEnabledForSMSFilter:(id)a3;
-+ (BOOL)receivingID:(id)a3 isCountryCode:(id)a4;
-+ (BOOL)senderIsCandidateForBlackhole:(id)a3;
-+ (BOOL)senderIsCandidateForSMSDowngrade:(id)a3;
-+ (BOOL)senderIsChinaHandle:(id)a3;
-+ (BOOL)shouldBlackholeGroupMessageFromSender:(id)a3 toRecipient:(id)a4 ifRecipientIsCandidate:(BOOL)a5 withOtherParticipants:(id)a6 givenHistory:(BOOL)a7 forEligibleAccounts:(BOOL)a8;
-+ (BOOL)shouldBlackholeMessageFromSender:(id)a3 toRecipient:(id)a4 ifRecipientIsCandidate:(BOOL)a5 givenHistory:(BOOL)a6 forEligibleAccounts:(BOOL)a7;
-+ (BOOL)shouldDowngradeToRecipient:(id)a3 fromSender:(id)a4 ifCapableOfSMS:(BOOL)a5 withConversationDowngradeState:(BOOL)a6 andConversationHistoryState:(BOOL)a7;
-+ (BOOL)shouldShowSMSWarningForSender:(id)a3 forRecipient:(id)a4 withConversationHistory:(BOOL)a5;
++ (BOOL)receiverIsCandidateForDefaultAppleSMSFilter:(id)filter;
++ (BOOL)receiverIsCandidateForHawking:(id)hawking;
++ (BOOL)receiverIsCandidateForSMSFilter:(id)filter;
++ (BOOL)receiverIsCandidateForiMessageJunk:(id)junk;
++ (BOOL)receiverIsEnabledForSMSFilter:(id)filter;
++ (BOOL)receivingID:(id)d isCountryCode:(id)code;
++ (BOOL)senderIsCandidateForBlackhole:(id)blackhole;
++ (BOOL)senderIsCandidateForSMSDowngrade:(id)downgrade;
++ (BOOL)senderIsChinaHandle:(id)handle;
++ (BOOL)shouldBlackholeGroupMessageFromSender:(id)sender toRecipient:(id)recipient ifRecipientIsCandidate:(BOOL)candidate withOtherParticipants:(id)participants givenHistory:(BOOL)history forEligibleAccounts:(BOOL)accounts;
++ (BOOL)shouldBlackholeMessageFromSender:(id)sender toRecipient:(id)recipient ifRecipientIsCandidate:(BOOL)candidate givenHistory:(BOOL)history forEligibleAccounts:(BOOL)accounts;
++ (BOOL)shouldDowngradeToRecipient:(id)recipient fromSender:(id)sender ifCapableOfSMS:(BOOL)s withConversationDowngradeState:(BOOL)state andConversationHistoryState:(BOOL)historyState;
++ (BOOL)shouldShowSMSWarningForSender:(id)sender forRecipient:(id)recipient withConversationHistory:(BOOL)history;
 + (id)_additionalAccountRegionsEligibleForJunkFiltering;
 + (id)_additionalTelephonyCountryCodesEligibleForJunkFiltering;
-+ (id)_cnRecordForAliases:(id)a3;
++ (id)_cnRecordForAliases:(id)aliases;
 + (id)accountRegionsEligibleForJunkFiltering;
 + (id)defaultAccountRegionsEligibleForJunkFiltering;
 + (id)defaultTelephonyCountryCodesEligibleForJunkFiltering;
 + (id)internationalSpamFilterLearnMoreURL;
-+ (id)mapID:(id)a3 usingKey:(id)a4;
-+ (id)sanitizeParticipants:(id)a3 excludingHandles:(id)a4;
++ (id)mapID:(id)d usingKey:(id)key;
++ (id)sanitizeParticipants:(id)participants excludingHandles:(id)handles;
 + (id)telephonyCountryCodesEligibleForJunkFiltering;
-+ (void)participantsAreiMessagable:(id)a3 completionBlock:(id)a4;
++ (void)participantsAreiMessagable:(id)messagable completionBlock:(id)block;
 @end
 
 @implementation IMSpamFilterHelper
@@ -97,13 +97,13 @@ LABEL_10:
       }
     }
 
-    v7 = [objc_opt_class() defaultAccountRegionsEligibleForJunkFiltering];
+    defaultAccountRegionsEligibleForJunkFiltering = [objc_opt_class() defaultAccountRegionsEligibleForJunkFiltering];
 
-    v4 = v7;
+    v4 = defaultAccountRegionsEligibleForJunkFiltering;
   }
 
-  v8 = [a1 _additionalAccountRegionsEligibleForJunkFiltering];
-  v9 = [v4 arrayByAddingObjectsFromArray:v8];
+  _additionalAccountRegionsEligibleForJunkFiltering = [self _additionalAccountRegionsEligibleForJunkFiltering];
+  v9 = [v4 arrayByAddingObjectsFromArray:_additionalAccountRegionsEligibleForJunkFiltering];
 
   if (IMOSLoggingEnabled())
   {
@@ -189,13 +189,13 @@ LABEL_10:
       }
     }
 
-    v7 = [objc_opt_class() defaultTelephonyCountryCodesEligibleForJunkFiltering];
+    defaultTelephonyCountryCodesEligibleForJunkFiltering = [objc_opt_class() defaultTelephonyCountryCodesEligibleForJunkFiltering];
 
-    v4 = v7;
+    v4 = defaultTelephonyCountryCodesEligibleForJunkFiltering;
   }
 
-  v8 = [a1 _additionalTelephonyCountryCodesEligibleForJunkFiltering];
-  v9 = [v4 arrayByAddingObjectsFromArray:v8];
+  _additionalTelephonyCountryCodesEligibleForJunkFiltering = [self _additionalTelephonyCountryCodesEligibleForJunkFiltering];
+  v9 = [v4 arrayByAddingObjectsFromArray:_additionalTelephonyCountryCodesEligibleForJunkFiltering];
 
   if (IMOSLoggingEnabled())
   {
@@ -231,9 +231,9 @@ LABEL_10:
 + (BOOL)isFilterUnknownSendersEnabled
 {
   v2 = +[IMFeatureFlags sharedFeatureFlags];
-  v3 = [v2 isIntroductionsEnabled];
+  isIntroductionsEnabled = [v2 isIntroductionsEnabled];
 
-  if (v3)
+  if (isIntroductionsEnabled)
   {
 
     return +[IMNotificationSettings isFilterUnknownSendersEnabled];
@@ -263,12 +263,12 @@ LABEL_10:
       dispatch_once(&qword_1ED8C99D8, block);
     }
 
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
   v6 = IMGetCachedDomainValueForKey();
@@ -284,16 +284,16 @@ LABEL_10:
       dispatch_once(&qword_1EB30B3F8, &v8);
     }
 
-    v5 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (BOOL)receiverIsCandidateForiMessageJunk:(id)a3
++ (BOOL)receiverIsCandidateForiMessageJunk:(id)junk
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  junkCopy = junk;
   v4 = IMGetCachedDomainValueForKey();
   if (v4)
   {
@@ -317,8 +317,8 @@ LABEL_20:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [objc_opt_class() telephonyCountryCodesEligibleForJunkFiltering];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v22 count:16];
+    telephonyCountryCodesEligibleForJunkFiltering = [objc_opt_class() telephonyCountryCodesEligibleForJunkFiltering];
+    v7 = [telephonyCountryCodesEligibleForJunkFiltering countByEnumeratingWithState:&v14 objects:v22 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -328,11 +328,11 @@ LABEL_20:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(telephonyCountryCodesEligibleForJunkFiltering);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          if ([IMSpamFilterHelper receivingID:v3 isCountryCode:v10])
+          if ([IMSpamFilterHelper receivingID:junkCopy isCountryCode:v10])
           {
             if (IMOSLoggingEnabled())
             {
@@ -340,7 +340,7 @@ LABEL_20:
               if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412546;
-                v19 = v3;
+                v19 = junkCopy;
                 v20 = 2112;
                 v21 = v10;
                 _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_INFO, "Receiving id (%@) with country code (%@) is a candidate for imessage junk.", buf, 0x16u);
@@ -351,7 +351,7 @@ LABEL_20:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        v7 = [telephonyCountryCodesEligibleForJunkFiltering countByEnumeratingWithState:&v14 objects:v22 count:16];
         if (v7)
         {
           continue;
@@ -367,16 +367,16 @@ LABEL_20:
   return v11;
 }
 
-+ (BOOL)accountCountryIsCandidateForiMessageJunk:(id)a3
++ (BOOL)accountCountryIsCandidateForiMessageJunk:(id)junk
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  junkCopy = junk;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [objc_opt_class() accountRegionsEligibleForJunkFiltering];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  accountRegionsEligibleForJunkFiltering = [objc_opt_class() accountRegionsEligibleForJunkFiltering];
+  v5 = [accountRegionsEligibleForJunkFiltering countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -386,10 +386,10 @@ LABEL_20:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(accountRegionsEligibleForJunkFiltering);
         }
 
-        if ([v3 isEqualToString:*(*(&v10 + 1) + 8 * i)])
+        if ([junkCopy isEqualToString:*(*(&v10 + 1) + 8 * i)])
         {
           if (IMOSLoggingEnabled())
           {
@@ -397,7 +397,7 @@ LABEL_20:
             if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v15 = v3;
+              v15 = junkCopy;
               _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Country (%@) is a candidate for imessage junk.", buf, 0xCu);
             }
           }
@@ -407,7 +407,7 @@ LABEL_20:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v5 = [accountRegionsEligibleForJunkFiltering countByEnumeratingWithState:&v10 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -463,12 +463,12 @@ LABEL_15:
       dispatch_once(&qword_1EB309348, block);
     }
 
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
   v6 = IMGetCachedDomainValueForKey();
@@ -484,25 +484,25 @@ LABEL_15:
       dispatch_once(&qword_1EB30B050, &v8);
     }
 
-    v5 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (BOOL)shouldDowngradeToRecipient:(id)a3 fromSender:(id)a4 ifCapableOfSMS:(BOOL)a5 withConversationDowngradeState:(BOOL)a6 andConversationHistoryState:(BOOL)a7
++ (BOOL)shouldDowngradeToRecipient:(id)recipient fromSender:(id)sender ifCapableOfSMS:(BOOL)s withConversationDowngradeState:(BOOL)state andConversationHistoryState:(BOOL)historyState
 {
-  v7 = a7;
-  v8 = a6;
+  historyStateCopy = historyState;
+  stateCopy = state;
   v28 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  if (![a1 isInternationalSpamFilteringEnabled] || !objc_msgSend(a1, "receiverIsCandidateForHawking:", v12))
+  recipientCopy = recipient;
+  senderCopy = sender;
+  if (![self isInternationalSpamFilteringEnabled] || !objc_msgSend(self, "receiverIsCandidateForHawking:", recipientCopy))
   {
     goto LABEL_35;
   }
 
-  if (!a5)
+  if (!s)
   {
     if (IMOSLoggingEnabled())
     {
@@ -510,7 +510,7 @@ LABEL_15:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v20 = 138412290;
-        v21 = v13;
+        v21 = senderCopy;
         _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Sender (%@) incapable of sending SMS, ineligible for downgrade.", &v20, 0xCu);
       }
 
@@ -520,7 +520,7 @@ LABEL_15:
     goto LABEL_35;
   }
 
-  if (([a1 senderIsCandidateForSMSDowngrade:v13] & 1) == 0)
+  if (([self senderIsCandidateForSMSDowngrade:senderCopy] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -528,9 +528,9 @@ LABEL_15:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v20 = 138412546;
-        v21 = v13;
+        v21 = senderCopy;
         v22 = 2112;
-        v23 = v12;
+        v23 = recipientCopy;
         _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Conversation from (%@) to (%@) is not eligible for SMS downgrade.", &v20, 0x16u);
       }
 
@@ -540,9 +540,9 @@ LABEL_15:
     goto LABEL_35;
   }
 
-  if (v7)
+  if (historyStateCopy)
   {
-    if (!v8)
+    if (!stateCopy)
     {
       if (IMOSLoggingEnabled())
       {
@@ -550,9 +550,9 @@ LABEL_15:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           v20 = 138412546;
-          v21 = v13;
+          v21 = senderCopy;
           v22 = 2112;
-          v23 = v12;
+          v23 = recipientCopy;
           _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Conversation from (%@) to (%@) has history, not eligible for SMS downgrade.", &v20, 0x16u);
         }
 
@@ -564,7 +564,7 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    if ([a1 isChineseSpamFilteringEnabled] && objc_msgSend(a1, "senderIsChinaHandle:", v13))
+    if ([self isChineseSpamFilteringEnabled] && objc_msgSend(self, "senderIsChinaHandle:", senderCopy))
     {
       if (IMOSLoggingEnabled())
       {
@@ -572,9 +572,9 @@ LABEL_35:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           v20 = 138412546;
-          v21 = v13;
+          v21 = senderCopy;
           v22 = 2112;
-          v23 = v12;
+          v23 = recipientCopy;
           _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Conversation from (%@) to (%@) has history and was downgraded, but overriding for CN-CN filtering.", &v20, 0x16u);
         }
 
@@ -594,8 +594,8 @@ LABEL_34:
     {
       v16 = @"NO";
       v20 = 138413058;
-      v21 = v13;
-      if (v8)
+      v21 = senderCopy;
+      if (stateCopy)
       {
         v17 = @"YES";
       }
@@ -606,8 +606,8 @@ LABEL_34:
       }
 
       v22 = 2112;
-      v23 = v12;
-      if (v7)
+      v23 = recipientCopy;
+      if (historyStateCopy)
       {
         v16 = @"YES";
       }
@@ -626,17 +626,17 @@ LABEL_36:
   return v18;
 }
 
-+ (BOOL)shouldShowSMSWarningForSender:(id)a3 forRecipient:(id)a4 withConversationHistory:(BOOL)a5
++ (BOOL)shouldShowSMSWarningForSender:(id)sender forRecipient:(id)recipient withConversationHistory:(BOOL)history
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  senderCopy = sender;
+  recipientCopy = recipient;
+  if (history)
   {
     goto LABEL_2;
   }
 
-  if (([a1 isInternationalSpamFilteringEnabled] & 1) == 0)
+  if (([self isInternationalSpamFilteringEnabled] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -651,7 +651,7 @@ LABEL_36:
     goto LABEL_2;
   }
 
-  if (!v9 || ![a1 receiverIsCandidateForHawking:v9] || !objc_msgSend(v8, "length") || !IMStringIsEmail())
+  if (!recipientCopy || ![self receiverIsCandidateForHawking:recipientCopy] || !objc_msgSend(senderCopy, "length") || !IMStringIsEmail())
   {
 LABEL_2:
     v10 = 0;
@@ -664,9 +664,9 @@ LABEL_2:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 138412546;
-      v15 = v8;
+      v15 = senderCopy;
       v16 = 2112;
-      v17 = v9;
+      v17 = recipientCopy;
       _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_INFO, "Should show blackhole warning for conversation from (%@) to (%@).", &v14, 0x16u);
     }
   }
@@ -677,14 +677,14 @@ LABEL_3:
   return v10;
 }
 
-+ (BOOL)shouldBlackholeMessageFromSender:(id)a3 toRecipient:(id)a4 ifRecipientIsCandidate:(BOOL)a5 givenHistory:(BOOL)a6 forEligibleAccounts:(BOOL)a7
++ (BOOL)shouldBlackholeMessageFromSender:(id)sender toRecipient:(id)recipient ifRecipientIsCandidate:(BOOL)candidate givenHistory:(BOOL)history forEligibleAccounts:(BOOL)accounts
 {
-  v7 = a7;
-  v8 = a6;
+  accountsCopy = accounts;
+  historyCopy = history;
   v24 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  if (([a1 isBlackholeEnabledForEligibleAccounts:v7] & 1) == 0)
+  senderCopy = sender;
+  recipientCopy = recipient;
+  if (([self isBlackholeEnabledForEligibleAccounts:accountsCopy] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -701,7 +701,7 @@ LABEL_3:
     goto LABEL_26;
   }
 
-  if (!a5)
+  if (!candidate)
   {
     if (IMOSLoggingEnabled())
     {
@@ -709,7 +709,7 @@ LABEL_3:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v20 = 138412290;
-        v21 = v13;
+        v21 = recipientCopy;
         _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Receiver (%@) is not a candidate for blackhole.", &v20, 0xCu);
       }
 
@@ -719,7 +719,7 @@ LABEL_3:
     goto LABEL_26;
   }
 
-  if (v8)
+  if (historyCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -727,9 +727,9 @@ LABEL_3:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v20 = 138412546;
-        v21 = v12;
+        v21 = senderCopy;
         v22 = 2112;
-        v23 = v13;
+        v23 = recipientCopy;
         _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Sender (%@) has history with recipient (%@).", &v20, 0x16u);
       }
 
@@ -741,7 +741,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (([a1 senderIsCandidateForBlackhole:v12] & 1) == 0)
+  if (([self senderIsCandidateForBlackhole:senderCopy] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -749,9 +749,9 @@ LABEL_25:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v20 = 138412546;
-        v21 = v12;
+        v21 = senderCopy;
         v22 = 2112;
-        v23 = v13;
+        v23 = recipientCopy;
         _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Sender (%@) to (%@) is not a candidate for blackhole.", &v20, 0x16u);
       }
 
@@ -761,7 +761,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v15 = [a1 senderIsKnownContact:v12];
+  v15 = [self senderIsKnownContact:senderCopy];
   v16 = IMOSLoggingEnabled();
   if (v15)
   {
@@ -771,9 +771,9 @@ LABEL_25:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v20 = 138412546;
-        v21 = v12;
+        v21 = senderCopy;
         v22 = 2112;
-        v23 = v13;
+        v23 = recipientCopy;
         _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Known contact, will not black hole message from (%@) to (%@).", &v20, 0x16u);
       }
 
@@ -791,9 +791,9 @@ LABEL_26:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = 138412546;
-      v21 = v12;
+      v21 = senderCopy;
       v22 = 2112;
-      v23 = v13;
+      v23 = recipientCopy;
       _os_log_impl(&dword_1A85E5000, v19, OS_LOG_TYPE_INFO, "Should blackhole message from (%@) to (%@).", &v20, 0x16u);
     }
   }
@@ -804,15 +804,15 @@ LABEL_27:
   return v17;
 }
 
-+ (BOOL)shouldBlackholeGroupMessageFromSender:(id)a3 toRecipient:(id)a4 ifRecipientIsCandidate:(BOOL)a5 withOtherParticipants:(id)a6 givenHistory:(BOOL)a7 forEligibleAccounts:(BOOL)a8
++ (BOOL)shouldBlackholeGroupMessageFromSender:(id)sender toRecipient:(id)recipient ifRecipientIsCandidate:(BOOL)candidate withOtherParticipants:(id)participants givenHistory:(BOOL)history forEligibleAccounts:(BOOL)accounts
 {
-  v8 = a8;
-  v9 = a7;
+  accountsCopy = accounts;
+  historyCopy = history;
   v26 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  if (([a1 isBlackholeEnabledForEligibleAccounts:v8] & 1) == 0)
+  senderCopy = sender;
+  recipientCopy = recipient;
+  participantsCopy = participants;
+  if (([self isBlackholeEnabledForEligibleAccounts:accountsCopy] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -829,7 +829,7 @@ LABEL_27:
     goto LABEL_16;
   }
 
-  if (!a5)
+  if (!candidate)
   {
     if (IMOSLoggingEnabled())
     {
@@ -837,7 +837,7 @@ LABEL_27:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v22 = 138412290;
-        v23 = v15;
+        v23 = recipientCopy;
         _os_log_impl(&dword_1A85E5000, v17, OS_LOG_TYPE_INFO, "Receiver (%@) is not a candidate for blackhole.", &v22, 0xCu);
       }
 
@@ -849,7 +849,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v9)
+  if (historyCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -857,7 +857,7 @@ LABEL_16:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v22 = 138412290;
-        v23 = v14;
+        v23 = senderCopy;
         _os_log_impl(&dword_1A85E5000, v17, OS_LOG_TYPE_INFO, "Sender (%@) has history with someone in group conversation.", &v22, 0xCu);
       }
 
@@ -869,8 +869,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v20 = [v16 arrayByAddingObject:v14];
-  if ([a1 anyParticipantIsCandidateForBlackhole:v20] && (objc_msgSend(a1, "anyParticipantIsKnownContact:", v20) & 1) == 0)
+  v20 = [participantsCopy arrayByAddingObject:senderCopy];
+  if ([self anyParticipantIsCandidateForBlackhole:v20] && (objc_msgSend(self, "anyParticipantIsKnownContact:", v20) & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -878,9 +878,9 @@ LABEL_15:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v22 = 138412546;
-        v23 = v14;
+        v23 = senderCopy;
         v24 = 2112;
-        v25 = v15;
+        v25 = recipientCopy;
         _os_log_impl(&dword_1A85E5000, v21, OS_LOG_TYPE_INFO, "Should blackhole group message from (%@) to (%@).", &v22, 0x16u);
       }
     }
@@ -897,10 +897,10 @@ LABEL_17:
   return v18;
 }
 
-+ (BOOL)isBlackholeEnabledForEligibleAccounts:(BOOL)a3
++ (BOOL)isBlackholeEnabledForEligibleAccounts:(BOOL)accounts
 {
-  v3 = a3;
-  if (([a1 isInternationalSpamFilteringEnabled] & 1) == 0)
+  accountsCopy = accounts;
+  if (([self isInternationalSpamFilteringEnabled] & 1) == 0)
   {
     v6 = IMOSLoggingEnabled();
     if (!v6)
@@ -922,9 +922,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v5 = [a1 isFilterUnknownSendersEnabled];
+  isFilterUnknownSendersEnabled = [self isFilterUnknownSendersEnabled];
   v6 = IMOSLoggingEnabled();
-  if ((v5 & 1) == 0)
+  if ((isFilterUnknownSendersEnabled & 1) == 0)
   {
     if (!v6)
     {
@@ -943,7 +943,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v3)
+  if (!accountsCopy)
   {
     if (!v6)
     {
@@ -979,18 +979,18 @@ LABEL_19:
   return v6;
 }
 
-+ (BOOL)receiverIsCandidateForHawking:(id)a3
++ (BOOL)receiverIsCandidateForHawking:(id)hawking
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [IMSpamFilterHelper receivingID:v3 isCountryCode:@"cn"];
+  hawkingCopy = hawking;
+  v4 = [IMSpamFilterHelper receivingID:hawkingCopy isCountryCode:@"cn"];
   if (v4 && IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138412546;
-      v8 = v3;
+      v8 = hawkingCopy;
       v9 = 2112;
       v10 = @"cn";
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Receiving id (%@) with country code (%@) is a candidate for hawking.", &v7, 0x16u);
@@ -1000,37 +1000,37 @@ LABEL_19:
   return v4;
 }
 
-+ (BOOL)receiverIsEnabledForSMSFilter:(id)a3
++ (BOOL)receiverIsEnabledForSMSFilter:(id)filter
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"us"])
+  filterCopy = filter;
+  if ([filterCopy isEqualToString:@"us"])
   {
     v4 = +[IMFeatureFlags sharedFeatureFlags];
-    v5 = [v4 isCategorizationEnabled];
+    isCategorizationEnabled = [v4 isCategorizationEnabled];
   }
 
   else
   {
-    if (![v3 isEqualToString:@"gb"])
+    if (![filterCopy isEqualToString:@"gb"])
     {
       v6 = 1;
       goto LABEL_7;
     }
 
     v4 = +[IMFeatureFlags sharedFeatureFlags];
-    v5 = [v4 isSMSFilterEnabledForUK];
+    isCategorizationEnabled = [v4 isSMSFilterEnabledForUK];
   }
 
-  v6 = v5;
+  v6 = isCategorizationEnabled;
 
 LABEL_7:
   return v6;
 }
 
-+ (BOOL)receiverIsCandidateForSMSFilter:(id)a3
++ (BOOL)receiverIsCandidateForSMSFilter:(id)filter
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  filterCopy = filter;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1049,7 +1049,7 @@ LABEL_7:
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
-        if ([IMSpamFilterHelper receivingID:v3 isCountryCode:v7])
+        if ([IMSpamFilterHelper receivingID:filterCopy isCountryCode:v7])
         {
           if (IMOSLoggingEnabled())
           {
@@ -1057,7 +1057,7 @@ LABEL_7:
             if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v16 = v3;
+              v16 = filterCopy;
               v17 = 2112;
               v18 = v7;
               _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Receiving id (%@) with country code (%@) is a candidate for load but set to none filter.", buf, 0x16u);
@@ -1085,10 +1085,10 @@ LABEL_15:
   return v8;
 }
 
-+ (BOOL)receiverIsCandidateForDefaultAppleSMSFilter:(id)a3
++ (BOOL)receiverIsCandidateForDefaultAppleSMSFilter:(id)filter
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  filterCopy = filter;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1107,7 +1107,7 @@ LABEL_15:
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
-        if ([IMSpamFilterHelper receivingID:v3 isCountryCode:v7])
+        if ([IMSpamFilterHelper receivingID:filterCopy isCountryCode:v7])
         {
           if (IMOSLoggingEnabled())
           {
@@ -1115,7 +1115,7 @@ LABEL_15:
             if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v15 = v3;
+              v15 = filterCopy;
               v16 = 2112;
               v17 = v7;
               _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Receiving id (%@) with country code (%@) is a candidate for first party sms filtering.", buf, 0x16u);
@@ -1142,10 +1142,10 @@ LABEL_15:
   return v4;
 }
 
-+ (BOOL)receiverIsCandidateForAppleSMSFilterSubClassification:(id)a3
++ (BOOL)receiverIsCandidateForAppleSMSFilterSubClassification:(id)classification
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  classificationCopy = classification;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1164,7 +1164,7 @@ LABEL_15:
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
-        if ([IMSpamFilterHelper receivingID:v3 isCountryCode:v7])
+        if ([IMSpamFilterHelper receivingID:classificationCopy isCountryCode:v7])
         {
           if (IMOSLoggingEnabled())
           {
@@ -1172,7 +1172,7 @@ LABEL_15:
             if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v15 = v3;
+              v15 = classificationCopy;
               v16 = 2112;
               v17 = v7;
               _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Receiving id (%@) with country code (%@) is a candidate for SMS subclassification.", buf, 0x16u);
@@ -1199,19 +1199,19 @@ LABEL_15:
   return v4;
 }
 
-+ (BOOL)receivingID:(id)a3 isCountryCode:(id)a4
++ (BOOL)receivingID:(id)d isCountryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  dCopy = d;
+  codeCopy = code;
+  if ([dCopy length])
   {
-    v8 = MEMORY[0x1AC570A80](v6);
-    v9 = [a1 mapID:v8 usingKey:@"mapReceivingIDForSpamFilter"];
+    v8 = MEMORY[0x1AC570A80](dCopy);
+    v9 = [self mapID:v8 usingKey:@"mapReceivingIDForSpamFilter"];
 
     if (MEMORY[0x1AC570A50](v9))
     {
       v10 = IMCountryCodeForNumber();
-      v11 = [v10 isEqualToString:v7];
+      v11 = [v10 isEqualToString:codeCopy];
     }
 
     else
@@ -1306,7 +1306,7 @@ LABEL_15:
   return v2;
 }
 
-+ (BOOL)receiverIsCandidateForAppleSMSFilterSubClassificationWithSimSlot:(int64_t)a3
++ (BOOL)receiverIsCandidateForAppleSMSFilterSubClassificationWithSimSlot:(int64_t)slot
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = [IMCTSMSUtilities IMCountryCodeForSimSlot:?];
@@ -1318,7 +1318,7 @@ LABEL_15:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v8 = 134218242;
-        v9 = a3;
+        slotCopy = slot;
         v10 = 2112;
         v11 = v4;
         _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Receiving sim slot (%ld) with country code (%@) is a candidate for SMS subclassification.", &v8, 0x16u);
@@ -1336,11 +1336,11 @@ LABEL_15:
   return v6;
 }
 
-+ (BOOL)accountRegionIsCandidateForHawking:(id)a3
++ (BOOL)accountRegionIsCandidateForHawking:(id)hawking
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([(__CFString *)v3 isEqualToString:@"R:CN"])
+  hawkingCopy = hawking;
+  if ([(__CFString *)hawkingCopy isEqualToString:@"R:CN"])
   {
     if (IMOSLoggingEnabled())
     {
@@ -1348,7 +1348,7 @@ LABEL_15:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = v3;
+        v8 = hawkingCopy;
         _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "Region (%@) is a candidate for spam filtering.", &v7, 0xCu);
       }
 
@@ -1384,11 +1384,11 @@ LABEL_13:
   return v5;
 }
 
-+ (BOOL)accountCountryIsCandidateForHawking:(id)a3
++ (BOOL)accountCountryIsCandidateForHawking:(id)hawking
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isEqualToString:@"cn"])
+  hawkingCopy = hawking;
+  if ([hawkingCopy isEqualToString:@"cn"])
   {
     if (IMOSLoggingEnabled())
     {
@@ -1396,7 +1396,7 @@ LABEL_13:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         v7 = 138412290;
-        v8 = v3;
+        v8 = hawkingCopy;
         _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "Country (%@) is a candidate for hawking.", &v7, 0xCu);
       }
 
@@ -1431,10 +1431,10 @@ LABEL_13:
   return v5;
 }
 
-+ (BOOL)accountCountryIsCandidateForSMSFilter:(id)a3
++ (BOOL)accountCountryIsCandidateForSMSFilter:(id)filter
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  filterCopy = filter;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1454,7 +1454,7 @@ LABEL_13:
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        if ([v3 isEqualToString:v8])
+        if ([filterCopy isEqualToString:v8])
         {
           if (IMOSLoggingEnabled())
           {
@@ -1462,7 +1462,7 @@ LABEL_13:
             if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v20 = v3;
+              v20 = filterCopy;
               _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_INFO, "Country (%@) is a candidate for first party sms filtering.", buf, 0xCu);
             }
           }
@@ -1514,14 +1514,14 @@ LABEL_22:
   return v11;
 }
 
-+ (BOOL)senderIsCandidateForSMSDowngrade:(id)a3
++ (BOOL)senderIsCandidateForSMSDowngrade:(id)downgrade
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  downgradeCopy = downgrade;
+  if ([downgradeCopy length])
   {
-    v5 = MEMORY[0x1AC570A80](v4);
-    v6 = [a1 mapID:v5 usingKey:@"mapSendingIDForSpamFilter"];
+    v5 = MEMORY[0x1AC570A80](downgradeCopy);
+    v6 = [self mapID:v5 usingKey:@"mapSendingIDForSpamFilter"];
 
     if (IMStringIsEmail())
     {
@@ -1542,7 +1542,7 @@ LABEL_22:
       if (MEMORY[0x1AC570A50](v6))
       {
         v9 = IMCountryCodeForNumber();
-        if ([v9 isEqualToString:@"cn"] && !objc_msgSend(a1, "isChineseSpamFilteringEnabled"))
+        if ([v9 isEqualToString:@"cn"] && !objc_msgSend(self, "isChineseSpamFilteringEnabled"))
         {
           if (IMOSLoggingEnabled())
           {
@@ -1600,13 +1600,13 @@ LABEL_27:
   return v8;
 }
 
-+ (BOOL)senderIsChinaHandle:(id)a3
++ (BOOL)senderIsChinaHandle:(id)handle
 {
-  v4 = a3;
-  if ([v4 length])
+  handleCopy = handle;
+  if ([handleCopy length])
   {
-    v5 = MEMORY[0x1AC570A80](v4);
-    v6 = [a1 mapID:v5 usingKey:@"mapSendingIDForSpamFilter"];
+    v5 = MEMORY[0x1AC570A80](handleCopy);
+    v6 = [self mapID:v5 usingKey:@"mapSendingIDForSpamFilter"];
 
     if ((IMStringIsEmail() & 1) != 0 || !MEMORY[0x1AC570A50](v6))
     {
@@ -1628,14 +1628,14 @@ LABEL_27:
   return v8;
 }
 
-+ (BOOL)senderIsCandidateForBlackhole:(id)a3
++ (BOOL)senderIsCandidateForBlackhole:(id)blackhole
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  blackholeCopy = blackhole;
+  if ([blackholeCopy length])
   {
-    v5 = MEMORY[0x1AC570A80](v4);
-    v6 = [a1 mapID:v5 usingKey:@"mapSendingIDForSpamFilter"];
+    v5 = MEMORY[0x1AC570A80](blackholeCopy);
+    v6 = [self mapID:v5 usingKey:@"mapSendingIDForSpamFilter"];
 
     if (IMStringIsEmail())
     {
@@ -1733,17 +1733,17 @@ LABEL_33:
   return v8;
 }
 
-+ (BOOL)anyParticipantIsCandidateForBlackhole:(id)a3
++ (BOOL)anyParticipantIsCandidateForBlackhole:(id)blackhole
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  blackholeCopy = blackhole;
+  if ([blackholeCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v4;
+    v5 = blackholeCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v18 count:16];
     if (v6)
     {
@@ -1757,7 +1757,7 @@ LABEL_33:
             objc_enumerationMutation(v5);
           }
 
-          if ([a1 senderIsCandidateForBlackhole:{*(*(&v12 + 1) + 8 * i), v12}])
+          if ([self senderIsCandidateForBlackhole:{*(*(&v12 + 1) + 8 * i), v12}])
           {
 
             v10 = 1;
@@ -1793,17 +1793,17 @@ LABEL_16:
   return v10;
 }
 
-+ (BOOL)anyParticipantIsKnownContact:(id)a3
++ (BOOL)anyParticipantIsKnownContact:(id)contact
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  contactCopy = contact;
+  if ([contactCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v4;
+    v5 = contactCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v18 count:16];
     if (v6)
     {
@@ -1817,7 +1817,7 @@ LABEL_16:
             objc_enumerationMutation(v5);
           }
 
-          if ([a1 isKnownContact:{*(*(&v12 + 1) + 8 * i), v12}])
+          if ([self isKnownContact:{*(*(&v12 + 1) + 8 * i), v12}])
           {
 
             v10 = 1;
@@ -1853,34 +1853,34 @@ LABEL_16:
   return v10;
 }
 
-+ (void)participantsAreiMessagable:(id)a3 completionBlock:(id)a4
++ (void)participantsAreiMessagable:(id)messagable completionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = *MEMORY[0x1E69A4818];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1A86BB420;
   v8[3] = &unk_1E7829870;
-  v9 = v5;
-  v7 = v5;
-  [IMIDSIDQueryController refreshIDStatusForDestinations:a3 service:v6 listenerID:@"IMChatServiceForSendingIDSQueryControllerListenerID" queue:MEMORY[0x1E69E96A0] completionBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [IMIDSIDQueryController refreshIDStatusForDestinations:messagable service:v6 listenerID:@"IMChatServiceForSendingIDSQueryControllerListenerID" queue:MEMORY[0x1E69E96A0] completionBlock:v8];
 }
 
-+ (id)sanitizeParticipants:(id)a3 excludingHandles:(id)a4
++ (id)sanitizeParticipants:(id)participants excludingHandles:(id)handles
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  participantsCopy = participants;
+  handlesCopy = handles;
+  if ([handlesCopy count])
   {
-    v32 = v5;
-    v7 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v6, "count")}];
+    v32 = participantsCopy;
+    v7 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(handlesCopy, "count")}];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v31 = v6;
-    v8 = v6;
+    v31 = handlesCopy;
+    v8 = handlesCopy;
     v9 = [v8 countByEnumeratingWithState:&v47 objects:v53 count:16];
     if (v9)
     {
@@ -1896,7 +1896,7 @@ LABEL_16:
             objc_enumerationMutation(v8);
           }
 
-          v14 = [*(*(&v47 + 1) + 8 * i) _stripFZIDPrefix];
+          _stripFZIDPrefix = [*(*(&v47 + 1) + 8 * i) _stripFZIDPrefix];
           if (MEMORY[0x1AC570A50]())
           {
             v15 = IMCountryCodeForNumber();
@@ -1906,7 +1906,7 @@ LABEL_16:
             v17 = v12[3];
             v45 = v12[2];
             v46 = v17;
-            [v14 UTF8String];
+            [_stripFZIDPrefix UTF8String];
             PNDecomposeForCountry();
             if (v45 && DWORD2(v45))
             {
@@ -1920,7 +1920,7 @@ LABEL_16:
 
           else
           {
-            [v7 addObject:v14];
+            [v7 addObject:_stripFZIDPrefix];
           }
         }
 
@@ -1950,8 +1950,8 @@ LABEL_16:
             objc_enumerationMutation(obj);
           }
 
-          v23 = [*(*(&v39 + 1) + 8 * j) _stripFZIDPrefix];
-          v24 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ ENDSWITH SELF", v23];
+          _stripFZIDPrefix2 = [*(*(&v39 + 1) + 8 * j) _stripFZIDPrefix];
+          v24 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ ENDSWITH SELF", _stripFZIDPrefix2];
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
@@ -1988,7 +1988,7 @@ LABEL_16:
             }
           }
 
-          [v33 addObject:v23];
+          [v33 addObject:_stripFZIDPrefix2];
 LABEL_32:
         }
 
@@ -1998,25 +1998,25 @@ LABEL_32:
       while (v20);
     }
 
-    v6 = v31;
-    v5 = v32;
+    handlesCopy = v31;
+    participantsCopy = v32;
   }
 
   else
   {
-    v33 = [v5 __imArrayByApplyingBlock:&unk_1F1BA7708];
+    v33 = [participantsCopy __imArrayByApplyingBlock:&unk_1F1BA7708];
   }
 
   return v33;
 }
 
-+ (BOOL)isKnownContact:(id)a3
++ (BOOL)isKnownContact:(id)contact
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  contactCopy = contact;
+  if ([contactCopy length])
   {
-    v4 = MEMORY[0x1AC570A80](v3);
+    v4 = MEMORY[0x1AC570A80](contactCopy);
     v5 = objc_opt_class();
     v19[0] = v4;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -2082,9 +2082,9 @@ LABEL_32:
   return v11;
 }
 
-+ (id)_cnRecordForAliases:(id)a3
++ (id)_cnRecordForAliases:(id)aliases
 {
-  v3 = a3;
+  aliasesCopy = aliases;
   if (qword_1EB30B3F0 != -1)
   {
     sub_1A88C4440();
@@ -2092,7 +2092,7 @@ LABEL_32:
 
   if (off_1EB30B3E8)
   {
-    v4 = off_1EB30B3E8(v3);
+    v4 = off_1EB30B3E8(aliasesCopy);
   }
 
   else
@@ -2131,15 +2131,15 @@ LABEL_32:
       dispatch_once(&qword_1EB30B410, block);
     }
 
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = byte_1EB30B400;
+    bOOLValue = byte_1EB30B400;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 + (id)internationalSpamFilterLearnMoreURL
@@ -2172,14 +2172,14 @@ LABEL_32:
   return v5;
 }
 
-+ (id)mapID:(id)a3 usingKey:(id)a4
++ (id)mapID:(id)d usingKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  keyCopy = key;
   v7 = IMGetCachedDomainValueForKey();
   v8 = v7;
-  if (v7 && ([v7 objectForKey:v5], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v7 && ([v7 objectForKey:dCopy], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     if (IMOSLoggingEnabled())
     {
@@ -2187,7 +2187,7 @@ LABEL_32:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v12 = 138412546;
-        v13 = v5;
+        v13 = dCopy;
         v14 = 2112;
         v15 = v9;
         _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Mapping id (%@) to (%@).", &v12, 0x16u);
@@ -2197,7 +2197,7 @@ LABEL_32:
 
   else
   {
-    v9 = v5;
+    v9 = dCopy;
   }
 
   return v9;

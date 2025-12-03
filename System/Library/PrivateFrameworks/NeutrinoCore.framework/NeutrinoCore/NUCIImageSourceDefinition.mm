@@ -1,29 +1,29 @@
 @interface NUCIImageSourceDefinition
 - (NUCIImageSourceDefinition)init;
-- (NUCIImageSourceDefinition)initWithCIImage:(id)a3 orientation:(int64_t)a4;
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4;
+- (NUCIImageSourceDefinition)initWithCIImage:(id)image orientation:(int64_t)orientation;
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation NUCIImageSourceDefinition
 
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [NUCISourceNode alloc];
-  v7 = [(NUCIImageSourceDefinition *)self image];
-  v8 = [(NUCISourceNode *)v6 initWithImage:v7 identifier:v5 orientation:[(NUCIImageSourceDefinition *)self orientation]];
+  image = [(NUCIImageSourceDefinition *)self image];
+  v8 = [(NUCISourceNode *)v6 initWithImage:image identifier:identifierCopy orientation:[(NUCIImageSourceDefinition *)self orientation]];
 
-  v9 = [(NUSingleSourceDefinition *)self sourceDerivation];
-  [(NUSourceNode *)v8 setSourceDerivation:v9];
+  sourceDerivation = [(NUSingleSourceDefinition *)self sourceDerivation];
+  [(NUSourceNode *)v8 setSourceDerivation:sourceDerivation];
 
   return v8;
 }
 
-- (NUCIImageSourceDefinition)initWithCIImage:(id)a3 orientation:(int64_t)a4
+- (NUCIImageSourceDefinition)initWithCIImage:(id)image orientation:(int64_t)orientation
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  imageCopy = image;
+  if (!imageCopy)
   {
     v11 = NUAssertLogger_9314();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -44,8 +44,8 @@
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v25;
         v46 = 2114;
@@ -56,8 +56,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -66,7 +66,7 @@
     _NUAssertFailHandler("[NUCIImageSourceDefinition initWithCIImage:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUSource.m", 218, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "image != nil");
   }
 
-  if ((a4 - 1) >= 8)
+  if ((orientation - 1) >= 8)
   {
     v18 = NUAssertLogger_9314();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -87,8 +87,8 @@
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v35 = MEMORY[0x1E696AF00];
         v36 = v34;
-        v37 = [v35 callStackSymbols];
-        v38 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v35 callStackSymbols];
+        v38 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v34;
         v46 = 2114;
@@ -99,8 +99,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -109,14 +109,14 @@
     _NUAssertFailHandler("[NUCIImageSourceDefinition initWithCIImage:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUSource.m", 219, @"Invalid parameter not satisfying: %s", v39, v40, v41, v42, "NUOrientationIsValid(orientation)");
   }
 
-  v7 = v6;
+  v7 = imageCopy;
   v43.receiver = self;
   v43.super_class = NUCIImageSourceDefinition;
   v8 = [(NUSingleSourceDefinition *)&v43 init];
   image = v8->_image;
   v8->_image = v7;
 
-  v8->_orientation = a4;
+  v8->_orientation = orientation;
   return v8;
 }
 
@@ -166,8 +166,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -183,8 +183,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

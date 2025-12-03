@@ -1,21 +1,21 @@
 @interface AMSMetricsMemoryDataSource
-+ (id)batchesFromEvents:(id)a3;
-- (AMSMetricsMemoryDataSource)initWithEvents:(id)a3;
-- (BOOL)removeEvents:(id)a3 error:(id *)a4;
-- (void)enumerateSortedEventsForTopic:(id)a3 block:(id)a4;
++ (id)batchesFromEvents:(id)events;
+- (AMSMetricsMemoryDataSource)initWithEvents:(id)events;
+- (BOOL)removeEvents:(id)events error:(id *)error;
+- (void)enumerateSortedEventsForTopic:(id)topic block:(id)block;
 @end
 
 @implementation AMSMetricsMemoryDataSource
 
-- (AMSMetricsMemoryDataSource)initWithEvents:(id)a3
+- (AMSMetricsMemoryDataSource)initWithEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v10.receiver = self;
   v10.super_class = AMSMetricsMemoryDataSource;
   v5 = [(AMSMetricsMemoryDataSource *)&v10 init];
   if (v5)
   {
-    v6 = [AMSMetricsMemoryDataSource batchesFromEvents:v4];
+    v6 = [AMSMetricsMemoryDataSource batchesFromEvents:eventsCopy];
     v7 = [v6 mutableCopy];
     batches = v5->_batches;
     v5->_batches = v7;
@@ -24,20 +24,20 @@
   return v5;
 }
 
-+ (id)batchesFromEvents:(id)a3
++ (id)batchesFromEvents:(id)events
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  eventsCopy = events;
   v35 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v34 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v34)
   {
-    v4 = @"0";
+    stringValue = @"0";
     v33 = *v40;
     do
     {
@@ -51,11 +51,11 @@
 
         v36 = v5;
         v6 = *(*(&v39 + 1) + 8 * v5);
-        v7 = [v6 topic];
-        v8 = v7;
-        if (v7)
+        topic = [v6 topic];
+        v8 = topic;
+        if (topic)
         {
-          v9 = v7;
+          v9 = topic;
         }
 
         else
@@ -65,29 +65,29 @@
 
         v10 = v9;
 
-        v11 = [v6 isAnonymous];
+        isAnonymous = [v6 isAnonymous];
         v12 = @"1";
-        if (!v11)
+        if (!isAnonymous)
         {
           v12 = @"0";
         }
 
         v13 = v12;
-        v14 = [v6 account];
-        v15 = [v14 ams_DSID];
+        account = [v6 account];
+        ams_DSID = [account ams_DSID];
         v38 = v13;
-        if ([v15 integerValue] >= 1)
+        if ([ams_DSID integerValue] >= 1)
         {
-          v16 = [v6 account];
-          v17 = [v16 ams_DSID];
-          v4 = [v17 stringValue];
+          account2 = [v6 account];
+          ams_DSID2 = [account2 ams_DSID];
+          stringValue = [ams_DSID2 stringValue];
         }
 
-        v18 = [v6 canaryIdentifier];
-        v19 = v18;
-        if (v18)
+        canaryIdentifier = [v6 canaryIdentifier];
+        v19 = canaryIdentifier;
+        if (canaryIdentifier)
         {
-          v20 = v18;
+          v20 = canaryIdentifier;
         }
 
         else
@@ -97,23 +97,23 @@
 
         v37 = v20;
 
-        v21 = &stru_1F071BA78;
+        clientIdentifier2 = &stru_1F071BA78;
         if ([v6 isAnonymous])
         {
-          v22 = [v6 clientIdentifier];
-          if (v22)
+          clientIdentifier = [v6 clientIdentifier];
+          if (clientIdentifier)
           {
-            v21 = [v6 clientIdentifier];
+            clientIdentifier2 = [v6 clientIdentifier];
           }
 
           else
           {
-            v21 = &stru_1F071BA78;
+            clientIdentifier2 = &stru_1F071BA78;
           }
         }
 
-        v23 = [v6 underlyingDictionary];
-        v24 = [v23 objectForKeyedSubscript:@"userId"];
+        underlyingDictionary = [v6 underlyingDictionary];
+        v24 = [underlyingDictionary objectForKeyedSubscript:@"userId"];
         v25 = v24;
         if (v24)
         {
@@ -129,9 +129,9 @@
 
         v43[0] = v10;
         v43[1] = v38;
-        v43[2] = v4;
+        v43[2] = stringValue;
         v43[3] = v37;
-        v43[4] = v21;
+        v43[4] = clientIdentifier2;
         v43[5] = v27;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:6];
         v29 = [v28 componentsJoinedByString:@"."];
@@ -145,7 +145,7 @@
         [v30 addObject:v6];
 
         v5 = v36 + 1;
-        v4 = @"0";
+        stringValue = @"0";
       }
 
       while (v34 != v36 + 1);
@@ -158,20 +158,20 @@
   return v35;
 }
 
-- (void)enumerateSortedEventsForTopic:(id)a3 block:(id)a4
+- (void)enumerateSortedEventsForTopic:(id)topic block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSMetricsMemoryDataSource *)self batches];
+  topicCopy = topic;
+  blockCopy = block;
+  batches = [(AMSMetricsMemoryDataSource *)self batches];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__AMSMetricsMemoryDataSource_enumerateSortedEventsForTopic_block___block_invoke;
   v11[3] = &unk_1E73BA170;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = topicCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = topicCopy;
+  [batches enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __66__AMSMetricsMemoryDataSource_enumerateSortedEventsForTopic_block___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -219,18 +219,18 @@ void __66__AMSMetricsMemoryDataSource_enumerateSortedEventsForTopic_block___bloc
   }
 }
 
-- (BOOL)removeEvents:(id)a3 error:(id *)a4
+- (BOOL)removeEvents:(id)events error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(AMSMetricsMemoryDataSource *)self batches];
-  v25 = [v6 allKeys];
+  eventsCopy = events;
+  batches = [(AMSMetricsMemoryDataSource *)self batches];
+  allKeys = [batches allKeys];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = eventsCopy;
   v26 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v26)
   {
@@ -251,7 +251,7 @@ void __66__AMSMetricsMemoryDataSource_enumerateSortedEventsForTopic_block___bloc
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v9 = v25;
+        v9 = allKeys;
         v10 = [v9 countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v10)
         {
@@ -267,19 +267,19 @@ void __66__AMSMetricsMemoryDataSource_enumerateSortedEventsForTopic_block___bloc
               }
 
               v14 = *(*(&v28 + 1) + 8 * i);
-              v15 = [(AMSMetricsMemoryDataSource *)self batches];
-              v16 = [v15 objectForKeyedSubscript:v14];
+              batches2 = [(AMSMetricsMemoryDataSource *)self batches];
+              v16 = [batches2 objectForKeyedSubscript:v14];
               v17 = [v16 indexOfObject:v8];
 
               if (v17 != 0x7FFFFFFFFFFFFFFFLL)
               {
-                v18 = [(AMSMetricsMemoryDataSource *)self batches];
-                v19 = [v18 objectForKeyedSubscript:v14];
+                batches3 = [(AMSMetricsMemoryDataSource *)self batches];
+                v19 = [batches3 objectForKeyedSubscript:v14];
                 v20 = [v19 mutableCopy];
 
                 [v20 removeObjectAtIndex:v17];
-                v21 = [(AMSMetricsMemoryDataSource *)self batches];
-                [v21 setObject:v20 forKeyedSubscript:v14];
+                batches4 = [(AMSMetricsMemoryDataSource *)self batches];
+                [batches4 setObject:v20 forKeyedSubscript:v14];
 
                 goto LABEL_16;
               }

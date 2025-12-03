@@ -6,13 +6,13 @@
 
 - (NSString)outputAttachedMediaKey
 {
-  v2 = [(BWInferenceConfiguration *)self inferenceType];
-  if (v2 == 160)
+  inferenceType = [(BWInferenceConfiguration *)self inferenceType];
+  if (inferenceType == 160)
   {
     return @"DeepZoomOutput";
   }
 
-  if (v2 == 159)
+  if (inferenceType == 159)
   {
     return @"DeepTransferStereoPhotoOutput";
   }

@@ -1,41 +1,41 @@
 @interface CRLGroupRep
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4;
-- (BOOL)containsPoint:(CGPoint)a3 withSlop:(CGSize)a4;
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision;
+- (BOOL)containsPoint:(CGPoint)point withSlop:(CGSize)slop;
 - (BOOL)containsUnknownContent;
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4;
-- (BOOL)i_childRepsWantContextMenuWhenEditingDisabledAtPoint:(CGPoint)a3 onlyNonGrouped:(BOOL)a4;
-- (BOOL)intersectsUnscaledRect:(CGRect)a3;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point inputType:(int64_t)type;
+- (BOOL)i_childRepsWantContextMenuWhenEditingDisabledAtPoint:(CGPoint)point onlyNonGrouped:(BOOL)grouped;
+- (BOOL)intersectsUnscaledRect:(CGRect)rect;
 - (BOOL)isSelectedIgnoringLocking;
-- (BOOL)p_handleSubselectionTapAtPoint:(CGPoint)a3;
+- (BOOL)p_handleSubselectionTapAtPoint:(CGPoint)point;
 - (BOOL)shouldShowCollaboratorCursorHighlight;
 - (BOOL)shouldShowSelectionHighlight;
 - (BOOL)wantsToHandleTapsWhenLocked;
-- (BOOL)willHandleFreeTransformingLayoutForRep:(id)a3;
-- (BOOL)willHandleResizingLayoutForRep:(id)a3;
-- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)a3;
+- (BOOL)willHandleFreeTransformingLayoutForRep:(id)rep;
+- (BOOL)willHandleResizingLayoutForRep:(id)rep;
+- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)canvas;
 - (CGRect)clipRect;
 - (CGRect)frameInUnscaledCanvas;
 - (CGRect)frameInUnscaledCanvasForMarqueeSelecting;
 - (CGRect)i_baseFrameInUnscaledCanvasForPositioningLayer;
 - (CRLContainerInfo)containerInfo;
 - (NSArray)allRepsContainedInGroup;
-- (id)beginEditingChildrenIfAllowedAtUnscaledPoint:(CGPoint)a3 pickingDeepestChild:(BOOL)a4;
+- (id)beginEditingChildrenIfAllowedAtUnscaledPoint:(CGPoint)point pickingDeepestChild:(BOOL)child;
 - (id)createAdditionalBoardItemsForCopyImaging;
 - (id)dynamicResizeDidBegin;
-- (id)i_handleDeepSubselectionTapAtPoint:(CGPoint)a3;
+- (id)i_handleDeepSubselectionTapAtPoint:(CGPoint)point;
 - (id)overlayRenderables;
 - (id)p_groupItem;
 - (id)p_groupedChildReps;
 - (id)selectionHighlightColor;
 - (id)unscaledPathToIncludeForSystemPreviewOutline;
-- (void)dynamicFreeTransformDidBeginWithTracker:(id)a3;
-- (void)dynamicFreeTransformDidEndWithTracker:(id)a3;
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3;
-- (void)dynamicResizeDidEndWithTracker:(id)a3;
-- (void)dynamicallyFreeTransformingWithTracker:(id)a3;
-- (void)dynamicallyResizingWithTracker:(id)a3;
-- (void)processChangedProperty:(unint64_t)a3;
-- (void)recursivelyDrawInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
+- (void)dynamicFreeTransformDidBeginWithTracker:(id)tracker;
+- (void)dynamicFreeTransformDidEndWithTracker:(id)tracker;
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands;
+- (void)dynamicResizeDidEndWithTracker:(id)tracker;
+- (void)dynamicallyFreeTransformingWithTracker:(id)tracker;
+- (void)dynamicallyResizingWithTracker:(id)tracker;
+- (void)processChangedProperty:(unint64_t)property;
+- (void)recursivelyDrawInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
 - (void)setNeedsDisplay;
 - (void)updateChildrenFromLayout;
 - (void)updateFromLayout;
@@ -46,16 +46,16 @@
 - (id)p_groupItem
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = sub_100013F00(v3, v4);
+  info = [(CRLCanvasRep *)self info];
+  v5 = sub_100013F00(v3, info);
 
   return v5;
 }
 
 - (CRLContainerInfo)containerInfo
 {
-  v2 = [(CRLCanvasRep *)self info];
-  v9 = sub_1003035DC(v2, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLContainerInfo);
+  info = [(CRLCanvasRep *)self info];
+  v9 = sub_1003035DC(info, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLContainerInfo);
 
   return v9;
 }
@@ -70,8 +70,8 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [(CRLGroupRep *)self p_groupedChildReps];
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  p_groupedChildReps = [(CRLGroupRep *)self p_groupedChildReps];
+  v7 = [p_groupedChildReps countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v7)
   {
     v8 = v7;
@@ -82,7 +82,7 @@
       {
         if (*v36 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(p_groupedChildReps);
         }
 
         v11 = *(*(&v35 + 1) + 8 * i);
@@ -91,12 +91,12 @@
         v15 = v14;
         v17 = v16;
         v19 = v18;
-        v20 = [v11 layout];
-        v21 = [v20 geometry];
-        v22 = v21;
-        if (v21)
+        layout = [v11 layout];
+        geometry = [layout geometry];
+        v22 = geometry;
+        if (geometry)
         {
-          [v21 transform];
+          [geometry transform];
         }
 
         else
@@ -129,7 +129,7 @@
         height = v43.size.height;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v8 = [p_groupedChildReps countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v8);
@@ -159,16 +159,16 @@
   return result;
 }
 
-- (void)recursivelyDrawInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)recursivelyDrawInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
-  v6 = a4;
+  testCopy = test;
   memset(&v26, 0, sizeof(v26));
-  v7 = [(CRLCanvasRep *)self layout];
-  v8 = [v7 geometry];
-  v9 = v8;
-  if (v8)
+  layout = [(CRLCanvasRep *)self layout];
+  geometry = [layout geometry];
+  v9 = geometry;
+  if (geometry)
   {
-    [v8 transform];
+    [geometry transform];
   }
 
   else
@@ -179,25 +179,25 @@
   if (sub_10026171C(&v26))
   {
     v25 = v26;
-    CGContextConcatCTM(a3, &v25);
+    CGContextConcatCTM(context, &v25);
     [(CRLGroupRep *)self clipRect];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(CRLCanvasRep *)self masksToBounds];
+    masksToBounds = [(CRLCanvasRep *)self masksToBounds];
     if (sub_100122890())
     {
       goto LABEL_6;
     }
 
     v24 = sub_10011FBD0(v15, v17);
-    if (!v18 || v24)
+    if (!masksToBounds || v24)
     {
       if (v24)
       {
 LABEL_6:
-        if (v18)
+        if (masksToBounds)
         {
           goto LABEL_25;
         }
@@ -212,23 +212,23 @@ LABEL_6:
       v27.origin.y = v13;
       v27.size.width = v15;
       v27.size.height = v17;
-      CGContextClipToRect(a3, v27);
+      CGContextClipToRect(context, v27);
     }
 
-    CGContextSaveGState(a3);
-    if ((v18 & 1) == 0)
+    CGContextSaveGState(context);
+    if ((masksToBounds & 1) == 0)
     {
       v28.origin.x = v11;
       v28.origin.y = v13;
       v28.size.width = v15;
       v28.size.height = v17;
-      CGContextClipToRect(a3, v28);
+      CGContextClipToRect(context, v28);
     }
 
-    [(CRLGroupRep *)self drawInContext:a3];
-    CGContextRestoreGState(a3);
+    [(CRLGroupRep *)self drawInContext:context];
+    CGContextRestoreGState(context);
 LABEL_24:
-    [(CRLCanvasRep *)self recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:v6];
+    [(CRLCanvasRep *)self recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:testCopy];
     goto LABEL_25;
   }
 
@@ -264,9 +264,9 @@ LABEL_25:
 
 - (CGRect)frameInUnscaledCanvas
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 pureGeometryInRoot];
-  [v3 frame];
+  layout = [(CRLCanvasRep *)self layout];
+  pureGeometryInRoot = [layout pureGeometryInRoot];
+  [pureGeometryInRoot frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -293,8 +293,8 @@ LABEL_25:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(CRLCanvasRep *)self childReps];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v7 = [childReps countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -306,7 +306,7 @@ LABEL_25:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childReps);
         }
 
         [*(*(&v19 + 1) + 8 * v10) frameInUnscaledCanvasForMarqueeSelecting];
@@ -327,7 +327,7 @@ LABEL_25:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [childReps countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -346,9 +346,9 @@ LABEL_25:
 
 - (CGRect)i_baseFrameInUnscaledCanvasForPositioningLayer
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 geometryInRoot];
-  [v3 frame];
+  layout = [(CRLCanvasRep *)self layout];
+  geometryInRoot = [layout geometryInRoot];
+  [geometryInRoot frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -370,10 +370,10 @@ LABEL_25:
   v9.receiver = self;
   v9.super_class = CRLGroupRep;
   [(CRLCanvasRep *)&v9 updateFromLayout];
-  v3 = [(CRLCanvasRep *)self canvas];
-  v4 = [v3 isCanvasInteractive];
+  canvas = [(CRLCanvasRep *)self canvas];
+  isCanvasInteractive = [canvas isCanvasInteractive];
 
-  if (v4)
+  if (isCanvasInteractive)
   {
     [(CRLCanvasRep *)self boundsForStandardKnobs];
     if (!CGRectEqualToRect(v10, self->_lastBoundsForStandardKnobs))
@@ -395,8 +395,8 @@ LABEL_25:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CRLCanvasRep *)self childReps];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v5 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -407,15 +407,15 @@ LABEL_25:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childReps);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 allRepsContainedInGroup];
-          [v3 addObjectsFromArray:v10];
+          allRepsContainedInGroup = [v9 allRepsContainedInGroup];
+          [v3 addObjectsFromArray:allRepsContainedInGroup];
         }
 
         else
@@ -424,7 +424,7 @@ LABEL_25:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [childReps countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -437,26 +437,26 @@ LABEL_25:
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [(CRLCanvasRep *)self childReps];
-  v6 = [v5 count];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v6 = [childReps count];
 
   if (v6)
   {
-    v7 = [(CRLCanvasRep *)self childReps];
-    v8 = [v7 firstObject];
+    childReps2 = [(CRLCanvasRep *)self childReps];
+    firstObject = [childReps2 firstObject];
 
     v9 = objc_opt_class();
-    v35 = v8;
-    v10 = [v8 info];
-    v11 = sub_100014370(v9, v10);
+    v35 = firstObject;
+    info = [firstObject info];
+    v11 = sub_100014370(v9, info);
 
-    v12 = [(CRLCanvasRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
     v13 = [NSSet alloc];
     v34 = v11;
     v46 = v11;
     v14 = [NSArray arrayWithObjects:&v46 count:1];
     v15 = [v13 initWithArray:v14];
-    v16 = [v12 topLevelZOrderedSiblingsOfInfos:v15];
+    v16 = [interactiveCanvasController topLevelZOrderedSiblingsOfInfos:v15];
 
     v42 = 0u;
     v43 = 0u;
@@ -480,11 +480,11 @@ LABEL_25:
           v22 = *(*(&v40 + 1) + 8 * i);
           if ([v22 requiresAdditionalBoardItemsForCopyImaging])
           {
-            v23 = [(CRLCanvasRep *)self interactiveCanvasController];
-            v24 = [v23 repForInfo:v22];
+            interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+            v24 = [interactiveCanvasController2 repForInfo:v22];
 
-            v25 = [(CRLCanvasRep *)self childReps];
-            v26 = [v25 containsObject:v24];
+            childReps3 = [(CRLCanvasRep *)self childReps];
+            v26 = [childReps3 containsObject:v24];
 
             if (v26)
             {
@@ -519,8 +519,8 @@ LABEL_25:
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v36 + 1) + 8 * j) createAdditionalBoardItemsForCopyImaging];
-        [v3 addObjectsFromArray:v32];
+        createAdditionalBoardItemsForCopyImaging = [*(*(&v36 + 1) + 8 * j) createAdditionalBoardItemsForCopyImaging];
+        [v3 addObjectsFromArray:createAdditionalBoardItemsForCopyImaging];
       }
 
       v29 = [v27 countByEnumeratingWithState:&v36 objects:v44 count:16];
@@ -536,23 +536,23 @@ LABEL_25:
 {
   v4.receiver = self;
   v4.super_class = CRLGroupRep;
-  v2 = [(CRLCanvasRep *)&v4 overlayRenderables];
+  overlayRenderables = [(CRLCanvasRep *)&v4 overlayRenderables];
 
-  return v2;
+  return overlayRenderables;
 }
 
 - (BOOL)isSelectedIgnoringLocking
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  if ([v3 isSelectable])
+  layout = [(CRLCanvasRep *)self layout];
+  if ([layout isSelectable])
   {
-    v4 = [(CRLCanvasRep *)self canvas];
-    v5 = [v4 isCanvasInteractive];
+    canvas = [(CRLCanvasRep *)self canvas];
+    isCanvasInteractive = [canvas isCanvasInteractive];
   }
 
   else
   {
-    v5 = 0;
+    isCanvasInteractive = 0;
   }
 
   v6 = 0;
@@ -560,19 +560,19 @@ LABEL_25:
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (v5)
+  if (isCanvasInteractive)
   {
-    v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v8 = [v7 editorController];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    editorController = [interactiveCanvasController editorController];
 
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100168164;
     v10[3] = &unk_101841210;
-    v10[4] = v8;
+    v10[4] = editorController;
     v10[5] = self;
     v10[6] = &v11;
-    [v8 enumerateEditorsOnStackUsingBlock:v10];
+    [editorController enumerateEditorsOnStackUsingBlock:v10];
 
     v6 = *(v12 + 24);
   }
@@ -583,16 +583,16 @@ LABEL_25:
 
 - (BOOL)shouldShowSelectionHighlight
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [v3 editorController];
-  v5 = [v4 selectionPath];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
 
-  v6 = [v5 mostSpecificSelectionOfClass:objc_opt_class()];
-  v7 = [v3 topLevelContainerInfoForEditing];
-  v8 = [(CRLCanvasRep *)self info];
-  v15 = sub_1003035DC(v8, 1, v9, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLCanvasElementInfo);
+  v6 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
+  topLevelContainerInfoForEditing = [interactiveCanvasController topLevelContainerInfoForEditing];
+  info = [(CRLCanvasRep *)self info];
+  v15 = sub_1003035DC(info, 1, v9, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLCanvasElementInfo);
   v16 = v15;
-  if (v7 == v15)
+  if (topLevelContainerInfoForEditing == v15)
   {
   }
 
@@ -604,13 +604,13 @@ LABEL_25:
 LABEL_18:
       v27.receiver = self;
       v27.super_class = CRLGroupRep;
-      v25 = [(CRLCanvasRep *)&v27 shouldShowSelectionHighlight];
+      shouldShowSelectionHighlight = [(CRLCanvasRep *)&v27 shouldShowSelectionHighlight];
       goto LABEL_19;
     }
 
-    v17 = [v6 boardItems];
-    v18 = [(CRLGroupRep *)self p_groupItem];
-    v19 = [v17 containsObject:v18];
+    boardItems = [v6 boardItems];
+    p_groupItem = [(CRLGroupRep *)self p_groupItem];
+    v19 = [boardItems containsObject:p_groupItem];
 
     if (!v19)
     {
@@ -622,8 +622,8 @@ LABEL_18:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v20 = [(CRLCanvasRep *)self childReps];
-  v21 = [v20 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v21 = [childReps countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v21)
   {
     v22 = v21;
@@ -634,17 +634,17 @@ LABEL_18:
       {
         if (*v29 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(childReps);
         }
 
         if ([*(*(&v28 + 1) + 8 * i) isInDynamicOperation])
         {
-          v25 = 0;
+          shouldShowSelectionHighlight = 0;
           goto LABEL_16;
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v22 = [childReps countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v22)
       {
         continue;
@@ -654,28 +654,28 @@ LABEL_18:
     }
   }
 
-  v25 = 1;
+  shouldShowSelectionHighlight = 1;
 LABEL_16:
 
 LABEL_19:
-  return v25;
+  return shouldShowSelectionHighlight;
 }
 
 - (id)selectionHighlightColor
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [v3 editorController];
-  v5 = [v4 selectionPath];
-  v6 = [v5 mostSpecificSelectionOfClass:objc_opt_class()];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
+  v6 = [selectionPath mostSpecificSelectionOfClass:objc_opt_class()];
 
-  v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v8 = [v7 topLevelContainerInfoForEditing];
+  interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+  topLevelContainerInfoForEditing = [interactiveCanvasController2 topLevelContainerInfoForEditing];
   v9 = objc_opt_class();
-  v15 = sub_100303920(v8, v9, 1, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLContainerInfo);
+  v15 = sub_100303920(topLevelContainerInfoForEditing, v9, 1, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLContainerInfo);
 
-  v16 = [(CRLCanvasRep *)self info];
-  v17 = v16;
-  if (v15 == v16)
+  info = [(CRLCanvasRep *)self info];
+  v17 = info;
+  if (v15 == info)
   {
   }
 
@@ -687,13 +687,13 @@ LABEL_19:
 LABEL_10:
       v24.receiver = self;
       v24.super_class = CRLGroupRep;
-      v21 = [(CRLCanvasRep *)&v24 selectionHighlightColor];
+      selectionHighlightColor = [(CRLCanvasRep *)&v24 selectionHighlightColor];
       goto LABEL_11;
     }
 
-    v18 = [v6 boardItems];
-    v19 = [(CRLGroupRep *)self p_groupItem];
-    v20 = [v18 containsObject:v19];
+    boardItems = [v6 boardItems];
+    p_groupItem = [(CRLGroupRep *)self p_groupItem];
+    v20 = [boardItems containsObject:p_groupItem];
 
     if (!v20)
     {
@@ -706,40 +706,40 @@ LABEL_10:
     sub_101320AF4();
   }
 
-  v21 = qword_101A34690;
+  selectionHighlightColor = qword_101A34690;
 LABEL_11:
-  v22 = v21;
+  v22 = selectionHighlightColor;
 
   return v22;
 }
 
 - (BOOL)shouldShowCollaboratorCursorHighlight
 {
-  v3 = [(CRLGroupRep *)self p_groupItem];
-  if ([v3 isEffectivelyEmpty])
+  p_groupItem = [(CRLGroupRep *)self p_groupItem];
+  if ([p_groupItem isEffectivelyEmpty])
   {
-    v4 = 0;
+    shouldShowCollaboratorCursorHighlight = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CRLGroupRep;
-    v4 = [(CRLCanvasRep *)&v6 shouldShowCollaboratorCursorHighlight];
+    shouldShowCollaboratorCursorHighlight = [(CRLCanvasRep *)&v6 shouldShowCollaboratorCursorHighlight];
   }
 
-  return v4;
+  return shouldShowCollaboratorCursorHighlight;
 }
 
-- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertNaturalPointFromUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = v3;
-  if (v3)
+  y = canvas.y;
+  x = canvas.x;
+  layout = [(CRLCanvasRep *)self layout];
+  v4 = layout;
+  if (layout)
   {
-    [v3 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -757,17 +757,17 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLCanvasRep *)self layout];
-  v7 = [v6 geometry];
-  v8 = v7;
-  if (v7)
+  precisionCopy = precision;
+  y = point.y;
+  x = point.x;
+  layout = [(CRLCanvasRep *)self layout];
+  geometry = [layout geometry];
+  v8 = geometry;
+  if (geometry)
   {
-    [v7 transform];
+    [geometry transform];
     v9 = v36;
     v10 = v37;
     v11 = v38;
@@ -782,17 +782,17 @@ LABEL_11:
 
   pointa = vaddq_f64(v11, vmlaq_n_f64(vmulq_n_f64(v10, y), v9, x));
 
-  [v6 frameForCulling];
+  [layout frameForCulling];
   if (CGRectContainsPoint(v40, pointa))
   {
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v12 = [(CRLCanvasRep *)self childReps];
-    v13 = [v12 reverseObjectEnumerator];
+    childReps = [(CRLCanvasRep *)self childReps];
+    reverseObjectEnumerator = [childReps reverseObjectEnumerator];
 
-    v14 = [v13 countByEnumeratingWithState:&v32 objects:v39 count:16];
+    v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v39 count:16];
     if (v14)
     {
       v15 = v14;
@@ -804,16 +804,16 @@ LABEL_11:
         {
           if (*v33 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v18 = *(*(&v32 + 1) + 8 * i);
-          v19 = [v18 layout];
-          v20 = [v19 geometry];
-          v21 = v20;
-          if (v20)
+          layout2 = [v18 layout];
+          geometry2 = [layout2 geometry];
+          v21 = geometry2;
+          if (geometry2)
           {
-            [v20 inverseTransform];
+            [geometry2 inverseTransform];
             v22 = v36;
             v23 = v37;
             v24 = v38;
@@ -828,14 +828,14 @@ LABEL_11:
 
           v31 = vaddq_f64(v24, vmlaq_f64(vmulq_n_f64(v23, y), point, v22));
 
-          if ([v18 containsPoint:v4 withPrecision:*&v31])
+          if ([v18 containsPoint:precisionCopy withPrecision:*&v31])
           {
             v25 = 1;
             goto LABEL_19;
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v32 objects:v39 count:16];
+        v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v39 count:16];
         if (v15)
         {
           continue;
@@ -857,20 +857,20 @@ LABEL_19:
   return v25;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withSlop:(CGSize)a4
+- (BOOL)containsPoint:(CGPoint)point withSlop:(CGSize)slop
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  v21 = *&a3.x;
+  height = slop.height;
+  width = slop.width;
+  y = point.y;
+  v21 = *&point.x;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [(CRLCanvasRep *)self childReps];
-  v7 = [v6 reverseObjectEnumerator];
+  childReps = [(CRLCanvasRep *)self childReps];
+  reverseObjectEnumerator = [childReps reverseObjectEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = *v27;
@@ -881,16 +881,16 @@ LABEL_19:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 layout];
-        v13 = [v12 geometry];
-        v14 = v13;
-        if (v13)
+        layout = [v11 layout];
+        geometry = [layout geometry];
+        v14 = geometry;
+        if (geometry)
         {
-          [v13 inverseTransform];
+          [geometry inverseTransform];
           v15 = v23;
           v16 = v24;
           v17 = v25;
@@ -912,7 +912,7 @@ LABEL_19:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v8)
       {
         continue;
@@ -927,20 +927,20 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)intersectsUnscaledRect:(CGRect)a3
+- (BOOL)intersectsUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(CRLCanvasRep *)self childReps];
-  v8 = [v7 reverseObjectEnumerator];
+  childReps = [(CRLCanvasRep *)self childReps];
+  reverseObjectEnumerator = [childReps reverseObjectEnumerator];
 
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = *v14;
@@ -950,7 +950,7 @@ LABEL_14:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         if ([*(*(&v13 + 1) + 8 * i) intersectsUnscaledRect:{x, y, width, height}])
@@ -960,7 +960,7 @@ LABEL_14:
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
         continue;
@@ -975,22 +975,22 @@ LABEL_11:
   return v9;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v7.receiver = self;
   v7.super_class = CRLGroupRep;
   [(CRLCanvasRep *)&v7 processChangedProperty:?];
-  if (a3 == 12)
+  if (property == 12)
   {
-    v5 = [(CRLGroupRep *)self p_groupItem];
-    if (([v5 isFreehandDrawing] & 1) == 0)
+    p_groupItem = [(CRLGroupRep *)self p_groupItem];
+    if (([p_groupItem isFreehandDrawing] & 1) == 0)
     {
       [(CRLCanvasRep *)self recursivelyPerformSelector:"invalidateKnobs"];
     }
   }
 
-  v6 = [(CRLCanvasRep *)self canvas];
-  [v6 canvasInvalidatedForRep:self];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas canvasInvalidatedForRep:self];
 }
 
 - (void)setNeedsDisplay
@@ -998,14 +998,14 @@ LABEL_11:
   v15.receiver = self;
   v15.super_class = CRLGroupRep;
   [(CRLCanvasRep *)&v15 setNeedsDisplay];
-  v3 = [(CRLCanvasRep *)self childReps];
-  v4 = [NSSet setWithArray:v3];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v4 = [NSSet setWithArray:childReps];
 
   if ([(CRLCanvasRep *)self drawsDescendantsIntoLayer])
   {
-    v5 = [(CRLCanvasRep *)self childrenToExcludeWhenDrawingDescendantsIntoLayer];
+    childrenToExcludeWhenDrawingDescendantsIntoLayer = [(CRLCanvasRep *)self childrenToExcludeWhenDrawingDescendantsIntoLayer];
 
-    v4 = v5;
+    v4 = childrenToExcludeWhenDrawingDescendantsIntoLayer;
   }
 
   v13 = 0u;
@@ -1055,8 +1055,8 @@ LABEL_11:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(CRLCanvasRep *)self childReps];
-    v3 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    childReps = [(CRLCanvasRep *)self childReps];
+    v3 = [childReps countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v3)
     {
       v5 = *v11;
@@ -1066,20 +1066,20 @@ LABEL_11:
         {
           if (*v11 != v5)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(childReps);
           }
 
-          v7 = [*(*(&v10 + 1) + 8 * i) info];
-          v8 = [v7 isSupported];
+          info = [*(*(&v10 + 1) + 8 * i) info];
+          isSupported = [info isSupported];
 
-          if (!v8)
+          if (!isSupported)
           {
             LOBYTE(v3) = 1;
             goto LABEL_13;
           }
         }
 
-        v3 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v3 = [childReps countByEnumeratingWithState:&v10 objects:v15 count:16];
         if (v3)
         {
           continue;
@@ -1095,24 +1095,24 @@ LABEL_13:
   return v3;
 }
 
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands
 {
   v3.receiver = self;
   v3.super_class = CRLGroupRep;
-  [(CRLCanvasRep *)&v3 dynamicOperationDidBeginWithRealTimeCommands:a3];
+  [(CRLCanvasRep *)&v3 dynamicOperationDidBeginWithRealTimeCommands:commands];
 }
 
 - (id)dynamicResizeDidBegin
 {
   v15.receiver = self;
   v15.super_class = CRLGroupRep;
-  v3 = [(CRLCanvasRep *)&v15 dynamicResizeDidBegin];
+  dynamicResizeDidBegin = [(CRLCanvasRep *)&v15 dynamicResizeDidBegin];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CRLGroupRep *)self p_groupedChildReps];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  p_groupedChildReps = [(CRLGroupRep *)self p_groupedChildReps];
+  v5 = [p_groupedChildReps countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1123,33 +1123,33 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(p_groupedChildReps);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) dynamicResizeDidBegin];
+        dynamicResizeDidBegin2 = [*(*(&v11 + 1) + 8 * i) dynamicResizeDidBegin];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [p_groupedChildReps countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return dynamicResizeDidBegin;
 }
 
-- (void)dynamicallyResizingWithTracker:(id)a3
+- (void)dynamicallyResizingWithTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v14.receiver = self;
   v14.super_class = CRLGroupRep;
-  [(CRLCanvasRep *)&v14 dynamicallyResizingWithTracker:v4];
+  [(CRLCanvasRep *)&v14 dynamicallyResizingWithTracker:trackerCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(CRLGroupRep *)self p_groupedChildReps];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  p_groupedChildReps = [(CRLGroupRep *)self p_groupedChildReps];
+  v6 = [p_groupedChildReps countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1161,30 +1161,30 @@ LABEL_13:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(p_groupedChildReps);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) dynamicallyResizingWithTracker:v4];
+        [*(*(&v10 + 1) + 8 * v9) dynamicallyResizingWithTracker:trackerCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [p_groupedChildReps countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)dynamicResizeDidEndWithTracker:(id)a3
+- (void)dynamicResizeDidEndWithTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CRLGroupRep *)self p_groupedChildReps];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  p_groupedChildReps = [(CRLGroupRep *)self p_groupedChildReps];
+  v6 = [p_groupedChildReps countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1196,15 +1196,15 @@ LABEL_13:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(p_groupedChildReps);
         }
 
-        [v4 applyNewBoundsToRep:*(*(&v11 + 1) + 8 * v9)];
+        [trackerCopy applyNewBoundsToRep:*(*(&v11 + 1) + 8 * v9)];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [p_groupedChildReps countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1213,39 +1213,39 @@ LABEL_13:
   [(CRLCanvasRep *)self recursivelyPerformSelector:"invalidateKnobs"];
   v10.receiver = self;
   v10.super_class = CRLGroupRep;
-  [(CRLCanvasRep *)&v10 dynamicResizeDidEndWithTracker:v4];
+  [(CRLCanvasRep *)&v10 dynamicResizeDidEndWithTracker:trackerCopy];
 }
 
-- (BOOL)willHandleResizingLayoutForRep:(id)a3
+- (BOOL)willHandleResizingLayoutForRep:(id)rep
 {
-  v3 = a3;
-  v4 = [v3 layout];
-  if ([v4 isInGroup])
+  repCopy = rep;
+  layout = [repCopy layout];
+  if ([layout isInGroup])
   {
-    v5 = [v3 parentRep];
-    v6 = [v5 isBeingResized];
+    parentRep = [repCopy parentRep];
+    isBeingResized = [parentRep isBeingResized];
   }
 
   else
   {
-    v6 = 0;
+    isBeingResized = 0;
   }
 
-  return v6;
+  return isBeingResized;
 }
 
-- (void)dynamicFreeTransformDidBeginWithTracker:(id)a3
+- (void)dynamicFreeTransformDidBeginWithTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v14.receiver = self;
   v14.super_class = CRLGroupRep;
-  [(CRLCanvasRep *)&v14 dynamicFreeTransformDidBeginWithTracker:v4];
+  [(CRLCanvasRep *)&v14 dynamicFreeTransformDidBeginWithTracker:trackerCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(CRLGroupRep *)self p_groupedChildReps];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  p_groupedChildReps = [(CRLGroupRep *)self p_groupedChildReps];
+  v6 = [p_groupedChildReps countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1257,33 +1257,33 @@ LABEL_13:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(p_groupedChildReps);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) dynamicFreeTransformDidBeginWithTracker:v4];
+        [*(*(&v10 + 1) + 8 * v9) dynamicFreeTransformDidBeginWithTracker:trackerCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [p_groupedChildReps countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)dynamicallyFreeTransformingWithTracker:(id)a3
+- (void)dynamicallyFreeTransformingWithTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v14.receiver = self;
   v14.super_class = CRLGroupRep;
-  [(CRLCanvasRep *)&v14 dynamicallyFreeTransformingWithTracker:v4];
+  [(CRLCanvasRep *)&v14 dynamicallyFreeTransformingWithTracker:trackerCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(CRLGroupRep *)self p_groupedChildReps];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  p_groupedChildReps = [(CRLGroupRep *)self p_groupedChildReps];
+  v6 = [p_groupedChildReps countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1295,30 +1295,30 @@ LABEL_13:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(p_groupedChildReps);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) dynamicallyFreeTransformingWithTracker:v4];
+        [*(*(&v10 + 1) + 8 * v9) dynamicallyFreeTransformingWithTracker:trackerCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [p_groupedChildReps countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)dynamicFreeTransformDidEndWithTracker:(id)a3
+- (void)dynamicFreeTransformDidEndWithTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CRLGroupRep *)self p_groupedChildReps];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  p_groupedChildReps = [(CRLGroupRep *)self p_groupedChildReps];
+  v6 = [p_groupedChildReps countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1330,15 +1330,15 @@ LABEL_13:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(p_groupedChildReps);
         }
 
-        [v4 applyNewBoundsToRep:*(*(&v11 + 1) + 8 * v9)];
+        [trackerCopy applyNewBoundsToRep:*(*(&v11 + 1) + 8 * v9)];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [p_groupedChildReps countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1347,25 +1347,25 @@ LABEL_13:
   [(CRLCanvasRep *)self recursivelyPerformSelector:"invalidateKnobs"];
   v10.receiver = self;
   v10.super_class = CRLGroupRep;
-  [(CRLCanvasRep *)&v10 dynamicFreeTransformDidEndWithTracker:v4];
+  [(CRLCanvasRep *)&v10 dynamicFreeTransformDidEndWithTracker:trackerCopy];
 }
 
-- (BOOL)willHandleFreeTransformingLayoutForRep:(id)a3
+- (BOOL)willHandleFreeTransformingLayoutForRep:(id)rep
 {
-  v3 = a3;
-  v4 = [v3 layout];
-  if ([v4 isInGroup])
+  repCopy = rep;
+  layout = [repCopy layout];
+  if ([layout isInGroup])
   {
-    v5 = [v3 parentRep];
-    v6 = [v5 isBeingFreeTransformed];
+    parentRep = [repCopy parentRep];
+    isBeingFreeTransformed = [parentRep isBeingFreeTransformed];
   }
 
   else
   {
-    v6 = 0;
+    isBeingFreeTransformed = 0;
   }
 
-  return v6;
+  return isBeingFreeTransformed;
 }
 
 - (BOOL)wantsToHandleTapsWhenLocked
@@ -1374,8 +1374,8 @@ LABEL_13:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(CRLCanvasRep *)self childReps];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v3 = [childReps countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1385,7 +1385,7 @@ LABEL_13:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(childReps);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) wantsToHandleTapsWhenLocked])
@@ -1395,7 +1395,7 @@ LABEL_13:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [childReps countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1410,10 +1410,10 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point inputType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLGroupRep *)self convertNaturalPointFromUnscaledCanvas:?];
   [CRLCanvasRep hitReps:"hitReps:withSlop:" withSlop:?];
   v17 = 0u;
@@ -1435,7 +1435,7 @@ LABEL_11:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v13 wantsToHandleTapsOnBehalfOfRepForSelecting] && (objc_msgSend(v13, "handleSingleTapAtPoint:inputType:", a4, x, y) & 1) != 0)
+        if ([v13 wantsToHandleTapsOnBehalfOfRepForSelecting] && (objc_msgSend(v13, "handleSingleTapAtPoint:inputType:", type, x, y) & 1) != 0)
         {
 
           v14 = 1;
@@ -1455,72 +1455,72 @@ LABEL_11:
 
   v16.receiver = self;
   v16.super_class = CRLGroupRep;
-  v14 = [(CRLCanvasRep *)&v16 handleSingleTapAtPoint:a4 inputType:x, y];
+  v14 = [(CRLCanvasRep *)&v16 handleSingleTapAtPoint:type inputType:x, y];
 LABEL_12:
 
   return v14;
 }
 
-- (BOOL)p_handleSubselectionTapAtPoint:(CGPoint)a3
+- (BOOL)p_handleSubselectionTapAtPoint:(CGPoint)point
 {
-  v3 = [(CRLGroupRep *)self beginEditingChildrenIfAllowedAtUnscaledPoint:0 pickingDeepestChild:a3.x, a3.y];
+  v3 = [(CRLGroupRep *)self beginEditingChildrenIfAllowedAtUnscaledPoint:0 pickingDeepestChild:point.x, point.y];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)i_handleDeepSubselectionTapAtPoint:(CGPoint)a3
+- (id)i_handleDeepSubselectionTapAtPoint:(CGPoint)point
 {
-  v4 = [(CRLGroupRep *)self beginEditingChildrenIfAllowedAtUnscaledPoint:1 pickingDeepestChild:a3.x, a3.y];
-  if (!v4)
+  selfCopy = [(CRLGroupRep *)self beginEditingChildrenIfAllowedAtUnscaledPoint:1 pickingDeepestChild:point.x, point.y];
+  if (!selfCopy)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)beginEditingChildrenIfAllowedAtUnscaledPoint:(CGPoint)a3 pickingDeepestChild:(BOOL)a4
+- (id)beginEditingChildrenIfAllowedAtUnscaledPoint:(CGPoint)point pickingDeepestChild:(BOOL)child
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  childCopy = child;
+  y = point.y;
+  x = point.x;
   if ([(CRLGroupRep *)self p_allowedToEditChildren])
   {
-    v8 = [(CRLCanvasRep *)self canvas];
-    v9 = [(CRLCanvasRep *)self childRepsForHitTesting];
+    canvas = [(CRLCanvasRep *)self canvas];
+    childRepsForHitTesting = [(CRLCanvasRep *)self childRepsForHitTesting];
     [CRLInteractiveCanvasController smallRepOutsetForHitTestingWithPrecision:0];
-    v11 = [v8 hitRep:0 withPrecision:v9 inTopLevelReps:0 smallRepOutset:0 unscaledPointTransformForRep:x passingTest:{y, v10}];
+    v11 = [canvas hitRep:0 withPrecision:childRepsForHitTesting inTopLevelReps:0 smallRepOutset:0 unscaledPointTransformForRep:x passingTest:{y, v10}];
 
     if (v11)
     {
       v12 = v11;
-      v13 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v14 = [v13 canvasEditor];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      canvasEditor = [interactiveCanvasController canvasEditor];
 
-      v15 = [v14 editorController];
-      if (v4)
+      editorController = [canvasEditor editorController];
+      if (childCopy)
       {
-        v16 = [v12 i_repForSelectingIgnoringTopLevelEditing];
+        i_repForSelectingIgnoringTopLevelEditing = [v12 i_repForSelectingIgnoringTopLevelEditing];
       }
 
       else
       {
-        v17 = [(CRLCanvasRep *)self interactiveCanvasController];
-        v18 = [v17 selectionModelTranslator];
+        interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+        selectionModelTranslator = [interactiveCanvasController2 selectionModelTranslator];
 
-        v19 = [(CRLGroupRep *)self p_groupItem];
-        v20 = [v18 selectionPathForNothingSelectedInsideGroup:v19];
-        [v15 setSelectionPath:v20];
+        p_groupItem = [(CRLGroupRep *)self p_groupItem];
+        v20 = [selectionModelTranslator selectionPathForNothingSelectedInsideGroup:p_groupItem];
+        [editorController setSelectionPath:v20];
 
-        v16 = [v12 repForSelecting];
+        i_repForSelectingIgnoringTopLevelEditing = [v12 repForSelecting];
 
-        v12 = v18;
+        v12 = selectionModelTranslator;
       }
 
       v21 = objc_opt_class();
-      v22 = [v16 info];
-      v23 = sub_100014370(v21, v22);
+      info = [i_repForSelectingIgnoringTopLevelEditing info];
+      v23 = sub_100014370(v21, info);
 
       if (v23)
       {
@@ -1532,8 +1532,8 @@ LABEL_12:
         v24 = 0;
       }
 
-      v25 = [v14 selectionPathWithInfos:v24];
-      [v15 setSelectionPath:v25];
+      v25 = [canvasEditor selectionPathWithInfos:v24];
+      [editorController setSelectionPath:v25];
 
       if (v23)
       {
@@ -1542,16 +1542,16 @@ LABEL_12:
 
     else
     {
-      v16 = 0;
+      i_repForSelectingIgnoringTopLevelEditing = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    i_repForSelectingIgnoringTopLevelEditing = 0;
   }
 
-  return v16;
+  return i_repForSelectingIgnoringTopLevelEditing;
 }
 
 - (void)updateChildrenFromLayout
@@ -1563,22 +1563,22 @@ LABEL_12:
 
 - (id)p_groupedChildReps
 {
-  v2 = [(CRLCanvasRep *)self childReps];
-  v3 = [NSOrderedSet orderedSetWithArray:v2];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v3 = [NSOrderedSet orderedSetWithArray:childReps];
 
   return v3;
 }
 
-- (BOOL)i_childRepsWantContextMenuWhenEditingDisabledAtPoint:(CGPoint)a3 onlyNonGrouped:(BOOL)a4
+- (BOOL)i_childRepsWantContextMenuWhenEditingDisabledAtPoint:(CGPoint)point onlyNonGrouped:(BOOL)grouped
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(CRLCanvasRep *)self childReps];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v8 = [childReps countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1589,17 +1589,17 @@ LABEL_12:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(childReps);
         }
 
-        if (!a4 && ![*(*(&v14 + 1) + 8 * i) wantsContextMenuWhenEditingDisabledAtPoint:{x, y}])
+        if (!grouped && ![*(*(&v14 + 1) + 8 * i) wantsContextMenuWhenEditingDisabledAtPoint:{x, y}])
         {
           v12 = 0;
           goto LABEL_12;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [childReps countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v9)
       {
         continue;
@@ -1620,24 +1620,24 @@ LABEL_12:
   p_vtable = &OBJC_METACLASS___CRLRulerUnits.vtable;
   v4 = +[CRLBezierPath bezierPath];
   v5 = objc_opt_class();
-  v6 = [(CRLCanvasRep *)self layout];
-  v7 = sub_100013F00(v5, v6);
+  layout = [(CRLCanvasRep *)self layout];
+  v7 = sub_100013F00(v5, layout);
 
-  v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v9 = [v7 children];
-  if ([v9 count])
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  children = [v7 children];
+  if ([children count])
   {
-    v10 = [(CRLGroupRep *)self p_groupItem];
-    v11 = [v10 isEffectivelyEmpty];
+    p_groupItem = [(CRLGroupRep *)self p_groupItem];
+    isEffectivelyEmpty = [p_groupItem isEffectivelyEmpty];
 
-    if ((v11 & 1) == 0)
+    if ((isEffectivelyEmpty & 1) == 0)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v12 = [v7 children];
-      v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      children2 = [v7 children];
+      v13 = [children2 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v13)
       {
         v14 = v13;
@@ -1648,19 +1648,19 @@ LABEL_12:
           {
             if (*v25 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(children2);
             }
 
-            v17 = [v8 repForLayout:*(*(&v24 + 1) + 8 * i)];
+            v17 = [interactiveCanvasController repForLayout:*(*(&v24 + 1) + 8 * i)];
             v18 = v17;
             if (v17)
             {
-              v19 = [v17 unscaledPathToIncludeForSystemPreviewOutline];
-              [v4 appendBezierPath:v19];
+              unscaledPathToIncludeForSystemPreviewOutline = [v17 unscaledPathToIncludeForSystemPreviewOutline];
+              [v4 appendBezierPath:unscaledPathToIncludeForSystemPreviewOutline];
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v14 = [children2 countByEnumeratingWithState:&v24 objects:v28 count:16];
         }
 
         while (v14);

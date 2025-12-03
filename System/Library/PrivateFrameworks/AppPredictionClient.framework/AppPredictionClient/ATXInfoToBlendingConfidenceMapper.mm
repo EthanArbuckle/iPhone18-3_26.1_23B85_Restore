@@ -1,7 +1,7 @@
 @interface ATXInfoToBlendingConfidenceMapper
 - (ATXInfoToBlendingConfidenceMapper)init;
-- (int64_t)blendingConfidenceCategoryForInfoConfidenceLevel:(int64_t)a3;
-- (int64_t)minInfoConfidenceLevelForBlendingConfidenceCategory:(int64_t)a3;
+- (int64_t)blendingConfidenceCategoryForInfoConfidenceLevel:(int64_t)level;
+- (int64_t)minInfoConfidenceLevelForBlendingConfidenceCategory:(int64_t)category;
 @end
 
 @implementation ATXInfoToBlendingConfidenceMapper
@@ -21,17 +21,17 @@
   return v2;
 }
 
-- (int64_t)blendingConfidenceCategoryForInfoConfidenceLevel:(int64_t)a3
+- (int64_t)blendingConfidenceCategoryForInfoConfidenceLevel:(int64_t)level
 {
-  v3 = a3;
+  levelCopy = level;
   map = self->_map;
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  v6 = [v5 stringValue];
-  v7 = [(NSDictionary *)map objectForKeyedSubscript:v6];
+  stringValue = [v5 stringValue];
+  v7 = [(NSDictionary *)map objectForKeyedSubscript:stringValue];
 
   if (v7)
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
@@ -39,19 +39,19 @@
     v9 = __atxlog_handle_gi();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(ATXInfoToBlendingConfidenceMapper *)v3 blendingConfidenceCategoryForInfoConfidenceLevel:v9];
+      [(ATXInfoToBlendingConfidenceMapper *)levelCopy blendingConfidenceCategoryForInfoConfidenceLevel:v9];
     }
 
-    v8 = 0;
+    integerValue = 0;
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (int64_t)minInfoConfidenceLevelForBlendingConfidenceCategory:(int64_t)a3
+- (int64_t)minInfoConfidenceLevelForBlendingConfidenceCategory:(int64_t)category
 {
   v5 = 1;
-  while ([(ATXInfoToBlendingConfidenceMapper *)self blendingConfidenceCategoryForInfoConfidenceLevel:v5]!= a3)
+  while ([(ATXInfoToBlendingConfidenceMapper *)self blendingConfidenceCategoryForInfoConfidenceLevel:v5]!= category)
   {
     if (++v5 == 16)
     {

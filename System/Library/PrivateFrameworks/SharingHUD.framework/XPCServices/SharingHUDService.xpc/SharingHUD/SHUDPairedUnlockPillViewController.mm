@@ -6,10 +6,10 @@
 
 - (id)subtitle
 {
-  v2 = [(SHUDPairedUnlockPillViewController *)self needsUpdate];
+  needsUpdate = [(SHUDPairedUnlockPillViewController *)self needsUpdate];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (needsUpdate)
   {
     v5 = @"UNLOCKING";
   }

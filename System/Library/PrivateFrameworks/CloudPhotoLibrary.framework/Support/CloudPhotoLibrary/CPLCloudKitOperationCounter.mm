@@ -2,8 +2,8 @@
 - (CPLCloudKitOperationCounter)init;
 - (id)status;
 - (id)statusObject;
-- (void)beginTask:(id)a3;
-- (void)endTask:(id)a3 withOperationClasses:(id)a4 operationsAllowingCellular:(id)a5;
+- (void)beginTask:(id)task;
+- (void)endTask:(id)task withOperationClasses:(id)classes operationsAllowingCellular:(id)cellular;
 @end
 
 @implementation CPLCloudKitOperationCounter
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (void)beginTask:(id)a3
+- (void)beginTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   if (qword_1002C5618 != -1)
   {
     sub_1001AD3CC();
@@ -37,23 +37,23 @@
   v9[2] = sub_1000A77D0;
   v9[3] = &unk_1002720E0;
   v9[4] = self;
-  v10 = v4;
+  v10 = taskCopy;
   v6 = v9;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002B20;
   block[3] = &unk_100271E98;
   v12 = v6;
-  v7 = v4;
+  v7 = taskCopy;
   v8 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v5, v8);
 }
 
-- (void)endTask:(id)a3 withOperationClasses:(id)a4 operationsAllowingCellular:(id)a5
+- (void)endTask:(id)task withOperationClasses:(id)classes operationsAllowingCellular:(id)cellular
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  classesCopy = classes;
+  cellularCopy = cellular;
   if (qword_1002C5618 != -1)
   {
     sub_1001AD3CC();
@@ -65,18 +65,18 @@
   v17[2] = sub_1000A7A3C;
   v17[3] = &unk_100273198;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = taskCopy;
+  v19 = classesCopy;
+  v20 = cellularCopy;
   v12 = v17;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002B20;
   block[3] = &unk_100271E98;
   v22 = v12;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v13 = cellularCopy;
+  v14 = classesCopy;
+  v15 = taskCopy;
   v16 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v11, v16);
 }

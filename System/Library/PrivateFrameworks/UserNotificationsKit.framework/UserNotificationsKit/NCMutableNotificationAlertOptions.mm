@@ -1,26 +1,26 @@
 @interface NCMutableNotificationAlertOptions
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setActiveModeUUID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setActiveModeUUID:(id)d;
 @end
 
 @implementation NCMutableNotificationAlertOptions
 
-- (void)setActiveModeUUID:(id)a3
+- (void)setActiveModeUUID:(id)d
 {
-  self->super._activeModeUUID = [a3 copy];
+  self->super._activeModeUUID = [d copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NCNotificationAlertOptions alloc];
 
   return [(NCNotificationAlertOptions *)v4 initWithNotificationAlertOptions:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [NCMutableNotificationAlertOptions alloc];
 

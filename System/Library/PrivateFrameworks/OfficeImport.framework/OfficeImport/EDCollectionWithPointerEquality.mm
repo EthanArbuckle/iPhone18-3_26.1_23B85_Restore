@@ -1,14 +1,14 @@
 @interface EDCollectionWithPointerEquality
-- (BOOL)isEqualToCollection:(id)a3;
+- (BOOL)isEqualToCollection:(id)collection;
 @end
 
 @implementation EDCollectionWithPointerEquality
 
-- (BOOL)isEqualToCollection:(id)a3
+- (BOOL)isEqualToCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = [(EDCollection *)self count];
-  if (v5 == [v4 count])
+  if (v5 == [collectionCopy count])
   {
     if (v5)
     {
@@ -17,7 +17,7 @@
       do
       {
         v8 = [(EDCollection *)self objectAtIndex:v6];
-        v9 = [v4 objectAtIndex:v6];
+        v9 = [collectionCopy objectAtIndex:v6];
 
         v10 = v8 == v9;
         if (!v10)

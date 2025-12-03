@@ -1,6 +1,6 @@
 @interface CHDPieDataValueProperties
 - (CHDPieDataValueProperties)init;
-- (id)shallowCopyWithIndex:(unint64_t)a3;
+- (id)shallowCopyWithIndex:(unint64_t)index;
 @end
 
 @implementation CHDPieDataValueProperties
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (id)shallowCopyWithIndex:(unint64_t)a3
+- (id)shallowCopyWithIndex:(unint64_t)index
 {
   v7.receiver = self;
   v7.super_class = CHDPieDataValueProperties;
-  v4 = [(CHDDataValueProperties *)&v7 shallowCopyWithIndex:a3];
+  v4 = [(CHDDataValueProperties *)&v7 shallowCopyWithIndex:index];
   v5 = v4;
   if (self->mIsExplosionSet)
   {

@@ -1,10 +1,10 @@
 @interface CACAppElementsEvaluationManager
 + (id)sharedManager;
-- (BOOL)isRecognitionString:(id)a3 supportedForElement:(id)a4;
+- (BOOL)isRecognitionString:(id)string supportedForElement:(id)element;
 - (CACAppElementsEvaluationManager)init;
-- (Class)evaluatorClassForAppIdentifier:(id)a3;
-- (id)_trimmedArrayOfActionableAXElements:(id)a3;
-- (id)actionableAXElementsFromAXElements:(id)a3 forAppIdentifier:(id)a4;
+- (Class)evaluatorClassForAppIdentifier:(id)identifier;
+- (id)_trimmedArrayOfActionableAXElements:(id)elements;
+- (id)actionableAXElementsFromAXElements:(id)elements forAppIdentifier:(id)identifier;
 @end
 
 @implementation CACAppElementsEvaluationManager
@@ -53,9 +53,9 @@ uint64_t __48__CACAppElementsEvaluationManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (Class)evaluatorClassForAppIdentifier:(id)a3
+- (Class)evaluatorClassForAppIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   evaluatorOverrideClassName = self->_evaluatorOverrideClassName;
   if (evaluatorOverrideClassName)
   {
@@ -69,13 +69,13 @@ LABEL_8:
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v4 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+  v8 = [identifierCopy stringByReplacingOccurrencesOfString:@"." withString:@"_"];
   v9 = [v7 stringWithFormat:@"CACAppElementsEvaluator_%@", v8];
   v10 = NSClassFromString(v9);
 
   if (!v10)
   {
-    if ([(NSSet *)self->_appIdentifersForStandardFilter containsObject:v4])
+    if ([(NSSet *)self->_appIdentifersForStandardFilter containsObject:identifierCopy])
     {
       v11 = @"CACAppElementsEvaluatorStandardFilter";
     }
@@ -95,20 +95,20 @@ LABEL_9:
   return v10;
 }
 
-- (id)actionableAXElementsFromAXElements:(id)a3 forAppIdentifier:(id)a4
+- (id)actionableAXElementsFromAXElements:(id)elements forAppIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(CACAppElementsEvaluationManager *)self evaluatorClassForAppIdentifier:a4];
+  elementsCopy = elements;
+  [(CACAppElementsEvaluationManager *)self evaluatorClassForAppIdentifier:identifier];
   v7 = objc_opt_new();
-  v8 = [v7 actionableAXElementsFromAXElements:v6];
+  v8 = [v7 actionableAXElementsFromAXElements:elementsCopy];
   v9 = [(CACAppElementsEvaluationManager *)self _trimmedArrayOfActionableAXElements:v8];
 
   v10 = CACLogElementEvaluation();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138478339;
-    v13 = v6;
+    v13 = elementsCopy;
     v14 = 2112;
     v15 = v7;
     v16 = 2113;
@@ -119,11 +119,11 @@ LABEL_9:
   return v9;
 }
 
-- (id)_trimmedArrayOfActionableAXElements:(id)a3
+- (id)_trimmedArrayOfActionableAXElements:(id)elements
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v17];
+  elementsCopy = elements;
+  v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:elementsCopy];
   v4 = 0;
   v5 = *MEMORY[0x277CE6D78];
   v23[0] = *MEMORY[0x277CE6D68];
@@ -201,32 +201,32 @@ LABEL_5:
   return v3;
 }
 
-- (BOOL)isRecognitionString:(id)a3 supportedForElement:(id)a4
+- (BOOL)isRecognitionString:(id)string supportedForElement:(id)element
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 length])
+  stringCopy = string;
+  elementCopy = element;
+  if (![stringCopy length])
   {
     goto LABEL_10;
   }
 
-  if ([v6 hasAnyTraits:*MEMORY[0x277CE6D68]])
+  if ([elementCopy hasAnyTraits:*MEMORY[0x277CE6D68]])
   {
     v7 = +[CACPreferences sharedPreferences];
-    v8 = [v7 allowLetterKeysAsTapCommands];
+    allowLetterKeysAsTapCommands = [v7 allowLetterKeysAsTapCommands];
 
-    if ((v8 & 1) == 0)
+    if ((allowLetterKeysAsTapCommands & 1) == 0)
     {
-      v9 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v5];
+      v9 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:stringCopy];
       v10 = CTLineCreateWithAttributedString(v9);
 
       if (v10)
       {
         if (CTLineGetGlyphCount(v10) == 1)
         {
-          v11 = [v5 integerValue];
+          integerValue = [stringCopy integerValue];
           CFRelease(v10);
-          if (!v11)
+          if (!integerValue)
           {
             goto LABEL_10;
           }
@@ -241,9 +241,9 @@ LABEL_5:
   }
 
   v12 = *MEMORY[0x277CE6CF0];
-  if (([v6 hasAnyTraits:*MEMORY[0x277CE6CF0]] & 1) == 0)
+  if (([elementCopy hasAnyTraits:*MEMORY[0x277CE6CF0]] & 1) == 0)
   {
-    v13 = [v6 hasAnyTraits:v12] ^ 1;
+    v13 = [elementCopy hasAnyTraits:v12] ^ 1;
     goto LABEL_12;
   }
 

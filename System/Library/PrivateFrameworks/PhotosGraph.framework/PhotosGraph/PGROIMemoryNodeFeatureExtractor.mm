@@ -1,10 +1,10 @@
 @interface PGROIMemoryNodeFeatureExtractor
-- (PGROIMemoryNodeFeatureExtractor)initWithError:(id *)a3;
+- (PGROIMemoryNodeFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGROIMemoryNodeFeatureExtractor
 
-- (PGROIMemoryNodeFeatureExtractor)initWithError:(id *)a3
+- (PGROIMemoryNodeFeatureExtractor)initWithError:(id *)error
 {
   v17[5] = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D27588];
@@ -17,8 +17,8 @@
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:5];
   v7 = MEMORY[0x277D22C90];
   v8 = +[PGGraphROINode filter];
-  v9 = [v8 relation];
-  v16 = v9;
+  relation = [v8 relation];
+  v16 = relation;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
   v11 = [v7 chain:v10];
 

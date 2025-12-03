@@ -1,15 +1,15 @@
 @interface PDDPStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCode:(id)a3;
+- (int)StringAsCode:(id)code;
 - (int)code;
 - (unint64_t)hash;
-- (void)addServerAlerts:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addServerAlerts:(id)alerts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPStatus
@@ -27,190 +27,190 @@
   }
 }
 
-- (int)StringAsCode:(id)a3
+- (int)StringAsCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_CODE"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"UNKNOWN_CODE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"S_OK"])
+  else if ([codeCopy isEqualToString:@"S_OK"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"E_ERROR"])
+  else if ([codeCopy isEqualToString:@"E_ERROR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"S_MIXED_RESPONSE"])
+  else if ([codeCopy isEqualToString:@"S_MIXED_RESPONSE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"S_OK_HAS_MORE_DATA"])
+  else if ([codeCopy isEqualToString:@"S_OK_HAS_MORE_DATA"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"S_PROCESSING"])
+  else if ([codeCopy isEqualToString:@"S_PROCESSING"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"E_BOOTSTRAP_REQUIRED"])
+  else if ([codeCopy isEqualToString:@"E_BOOTSTRAP_REQUIRED"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"E_AUTHENTICATION_FAILED"])
+  else if ([codeCopy isEqualToString:@"E_AUTHENTICATION_FAILED"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"E_NOT_AUTHORIZED"])
+  else if ([codeCopy isEqualToString:@"E_NOT_AUTHORIZED"])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:@"E_MESCAL_SIGNATURE_REQUIRED"])
+  else if ([codeCopy isEqualToString:@"E_MESCAL_SIGNATURE_REQUIRED"])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"E_MESCAL_BAD_SIGNATURE"])
+  else if ([codeCopy isEqualToString:@"E_MESCAL_BAD_SIGNATURE"])
   {
     v4 = 104;
   }
 
-  else if ([v3 isEqualToString:@"E_MESCAL_PARSE_ERROR"])
+  else if ([codeCopy isEqualToString:@"E_MESCAL_PARSE_ERROR"])
   {
     v4 = 105;
   }
 
-  else if ([v3 isEqualToString:@"E_BAD_REQUEST"])
+  else if ([codeCopy isEqualToString:@"E_BAD_REQUEST"])
   {
     v4 = 106;
   }
 
-  else if ([v3 isEqualToString:@"E_BAD_PROTOCOL_VERSION"])
+  else if ([codeCopy isEqualToString:@"E_BAD_PROTOCOL_VERSION"])
   {
     v4 = 107;
   }
 
-  else if ([v3 isEqualToString:@"E_REQUEST_TOO_LARGE"])
+  else if ([codeCopy isEqualToString:@"E_REQUEST_TOO_LARGE"])
   {
     v4 = 108;
   }
 
-  else if ([v3 isEqualToString:@"E_REQUEST_TOO_MANY_ITEMS"])
+  else if ([codeCopy isEqualToString:@"E_REQUEST_TOO_MANY_ITEMS"])
   {
     v4 = 109;
   }
 
-  else if ([v3 isEqualToString:@"E_SERVER_BUSY"])
+  else if ([codeCopy isEqualToString:@"E_SERVER_BUSY"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"E_ACCESS_DENIED"])
+  else if ([codeCopy isEqualToString:@"E_ACCESS_DENIED"])
   {
     v4 = 111;
   }
 
-  else if ([v3 isEqualToString:@"E_CONFLICT"])
+  else if ([codeCopy isEqualToString:@"E_CONFLICT"])
   {
     v4 = 112;
   }
 
-  else if ([v3 isEqualToString:@"E_INVALID_STATE"])
+  else if ([codeCopy isEqualToString:@"E_INVALID_STATE"])
   {
     v4 = 113;
   }
 
-  else if ([v3 isEqualToString:@"E_LOCK_TAKEN"])
+  else if ([codeCopy isEqualToString:@"E_LOCK_TAKEN"])
   {
     v4 = 114;
   }
 
-  else if ([v3 isEqualToString:@"E_DOWNSTREAM_SERVICE_FAILED"])
+  else if ([codeCopy isEqualToString:@"E_DOWNSTREAM_SERVICE_FAILED"])
   {
     v4 = 115;
   }
 
-  else if ([v3 isEqualToString:@"E_DOWNSTREAM_SERVICE_THROTTLED"])
+  else if ([codeCopy isEqualToString:@"E_DOWNSTREAM_SERVICE_THROTTLED"])
   {
     v4 = 116;
   }
 
-  else if ([v3 isEqualToString:@"E_DRIVE_USER_QUOTA_EXCEEDED"])
+  else if ([codeCopy isEqualToString:@"E_DRIVE_USER_QUOTA_EXCEEDED"])
   {
     v4 = 117;
   }
 
-  else if ([v3 isEqualToString:@"E_DRIVE_GROUP_QUOTA_EXCEEDED"])
+  else if ([codeCopy isEqualToString:@"E_DRIVE_GROUP_QUOTA_EXCEEDED"])
   {
     v4 = 118;
   }
 
-  else if ([v3 isEqualToString:@"E_DRIVE_ORG_QUOTA_EXCEEDED"])
+  else if ([codeCopy isEqualToString:@"E_DRIVE_ORG_QUOTA_EXCEEDED"])
   {
     v4 = 119;
   }
 
-  else if ([v3 isEqualToString:@"E_RECORD_LIMIT_EXCEEDED"])
+  else if ([codeCopy isEqualToString:@"E_RECORD_LIMIT_EXCEEDED"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"E_DISALLOWED_COUNTRY_CODE"])
+  else if ([codeCopy isEqualToString:@"E_DISALLOWED_COUNTRY_CODE"])
   {
     v4 = 121;
   }
 
-  else if ([v3 isEqualToString:@"E_DEVICE_UNSUPPORTED"])
+  else if ([codeCopy isEqualToString:@"E_DEVICE_UNSUPPORTED"])
   {
     v4 = 300;
   }
 
-  else if ([v3 isEqualToString:@"E_INVALID_FIELD_VALUE"])
+  else if ([codeCopy isEqualToString:@"E_INVALID_FIELD_VALUE"])
   {
     v4 = 500;
   }
 
-  else if ([v3 isEqualToString:@"E_NOT_APPLICABLE_TYPE"])
+  else if ([codeCopy isEqualToString:@"E_NOT_APPLICABLE_TYPE"])
   {
     v4 = 800;
   }
 
-  else if ([v3 isEqualToString:@"E_ENTITY_NOT_FOUND"])
+  else if ([codeCopy isEqualToString:@"E_ENTITY_NOT_FOUND"])
   {
     v4 = 801;
   }
 
-  else if ([v3 isEqualToString:@"E_ENTITY_PRIVILEGE_CHANGE"])
+  else if ([codeCopy isEqualToString:@"E_ENTITY_PRIVILEGE_CHANGE"])
   {
     v4 = 802;
   }
 
-  else if ([v3 isEqualToString:@"E_MUST_ACCEPT_TERMS"])
+  else if ([codeCopy isEqualToString:@"E_MUST_ACCEPT_TERMS"])
   {
     v4 = 803;
   }
 
-  else if ([v3 isEqualToString:@"E_ENTITY_EXPIRED"])
+  else if ([codeCopy isEqualToString:@"E_ENTITY_EXPIRED"])
   {
     v4 = 804;
   }
 
-  else if ([v3 isEqualToString:@"E_NOT_ALLOWED_FEDERATED_ORGANIZATION"])
+  else if ([codeCopy isEqualToString:@"E_NOT_ALLOWED_FEDERATED_ORGANIZATION"])
   {
     v4 = 805;
   }
 
-  else if ([v3 isEqualToString:@"E_DISALLOWED_EMAIL_DOMAIN"])
+  else if ([codeCopy isEqualToString:@"E_DISALLOWED_EMAIL_DOMAIN"])
   {
     v4 = 806;
   }
@@ -223,22 +223,22 @@
   return v4;
 }
 
-- (void)addServerAlerts:(id)a3
+- (void)addServerAlerts:(id)alerts
 {
-  v4 = a3;
+  alertsCopy = alerts;
   serverAlerts = self->_serverAlerts;
-  v8 = v4;
+  v8 = alertsCopy;
   if (!serverAlerts)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_serverAlerts;
     self->_serverAlerts = v6;
 
-    v4 = v8;
+    alertsCopy = v8;
     serverAlerts = self->_serverAlerts;
   }
 
-  [(NSMutableArray *)serverAlerts addObject:v4];
+  [(NSMutableArray *)serverAlerts addObject:alertsCopy];
 }
 
 - (id)description
@@ -246,8 +246,8 @@
   v7.receiver = self;
   v7.super_class = PDDPStatus;
   v3 = [(PDDPStatus *)&v7 description];
-  v4 = [(PDDPStatus *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPStatus *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -493,8 +493,8 @@ LABEL_60:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -509,9 +509,9 @@ LABEL_60:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     code = self->_code;
@@ -566,19 +566,19 @@ LABEL_60:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_code;
-    *(v4 + 48) |= 1u;
+    toCopy[2] = self->_code;
+    *(toCopy + 48) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
+    [toCopy setKey:?];
   }
 
   if (self->_message)
@@ -594,10 +594,10 @@ LABEL_60:
   if ([(PDDPStatus *)self serverAlertsCount])
   {
     [v9 clearServerAlerts];
-    v5 = [(PDDPStatus *)self serverAlertsCount];
-    if (v5)
+    serverAlertsCount = [(PDDPStatus *)self serverAlertsCount];
+    if (serverAlertsCount)
     {
-      v6 = v5;
+      v6 = serverAlertsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPStatus *)self serverAlertsAtIndex:i];
@@ -607,9 +607,9 @@ LABEL_60:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -617,15 +617,15 @@ LABEL_60:
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(NSString *)self->_key copyWithZone:a3];
+  v7 = [(NSString *)self->_key copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(NSString *)self->_message copyWithZone:a3];
+  v9 = [(NSString *)self->_message copyWithZone:zone];
   v10 = v6[4];
   v6[4] = v9;
 
-  v11 = [(NSString *)self->_internalMessage copyWithZone:a3];
+  v11 = [(NSString *)self->_internalMessage copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
@@ -648,7 +648,7 @@ LABEL_60:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v18 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v6 addServerAlerts:v18];
       }
 
@@ -661,24 +661,24 @@ LABEL_60:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_code != *(v4 + 2))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_code != *(equalCopy + 2))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -686,13 +686,13 @@ LABEL_15:
   }
 
   key = self->_key;
-  if (key | *(v4 + 3) && ![(NSString *)key isEqual:?])
+  if (key | *(equalCopy + 3) && ![(NSString *)key isEqual:?])
   {
     goto LABEL_15;
   }
 
   message = self->_message;
-  if (message | *(v4 + 4))
+  if (message | *(equalCopy + 4))
   {
     if (![(NSString *)message isEqual:?])
     {
@@ -701,7 +701,7 @@ LABEL_15:
   }
 
   internalMessage = self->_internalMessage;
-  if (internalMessage | *(v4 + 2))
+  if (internalMessage | *(equalCopy + 2))
   {
     if (![(NSString *)internalMessage isEqual:?])
     {
@@ -710,7 +710,7 @@ LABEL_15:
   }
 
   serverAlerts = self->_serverAlerts;
-  if (serverAlerts | *(v4 + 5))
+  if (serverAlerts | *(equalCopy + 5))
   {
     v10 = [(NSMutableArray *)serverAlerts isEqual:?];
   }
@@ -743,17 +743,17 @@ LABEL_16:
   return v6 ^ [(NSMutableArray *)self->_serverAlerts hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[12])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[12])
   {
-    self->_code = v4[2];
+    self->_code = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDDPStatus *)self setKey:?];
   }

@@ -1,13 +1,13 @@
 @interface CarRouteGeniusAnnotationsManager
 - (BOOL)_shouldIgnoreRoute;
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3;
-- (CarRouteGeniusAnnotationsManager)initWithChromeViewController:(id)a3;
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration;
+- (CarRouteGeniusAnnotationsManager)initWithChromeViewController:(id)controller;
 - (id)mapView;
 - (void)_updateRouteAnnotation;
 - (void)clearAnnotations;
-- (void)recenterCameraOnRouteAnimated:(BOOL)a3 force:(BOOL)a4;
-- (void)setComposedRoute:(id)a3;
-- (void)updateTrafficForRoute:(id)a3;
+- (void)recenterCameraOnRouteAnimated:(BOOL)animated force:(BOOL)force;
+- (void)setComposedRoute:(id)route;
+- (void)updateTrafficForRoute:(id)route;
 @end
 
 @implementation CarRouteGeniusAnnotationsManager
@@ -15,15 +15,15 @@
 - (id)mapView
 {
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-  v3 = [WeakRetained mapView];
+  mapView = [WeakRetained mapView];
 
-  return v3;
+  return mapView;
 }
 
-- (void)updateTrafficForRoute:(id)a3
+- (void)updateTrafficForRoute:(id)route
 {
-  v4 = a3;
-  if ([(GEOComposedRoute *)self->_route _MapsCarPlay_isEqual:v4])
+  routeCopy = route;
+  if ([(GEOComposedRoute *)self->_route _MapsCarPlay_isEqual:routeCopy])
   {
     v5 = sub_10008B0B8();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -34,30 +34,30 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v6 = self;
+    selfCopy = self;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CarRouteGeniusAnnotationsManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(CarRouteGeniusAnnotationsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
-    v12 = [v4 uniqueRouteID];
-    v13 = [v12 UUIDString];
+    uniqueRouteID = [routeCopy uniqueRouteID];
+    uUIDString = [uniqueRouteID UUIDString];
     *buf = 138543618;
-    v15 = v11;
+    v15 = selfCopy;
     v16 = 2112;
-    v17 = v13;
+    v17 = uUIDString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] CarRouteGeniusAnnotationsManager: Will update traffic for route: %@", buf, 0x16u);
 
     goto LABEL_9;
@@ -66,11 +66,11 @@ LABEL_8:
 LABEL_10:
 }
 
-- (void)setComposedRoute:(id)a3
+- (void)setComposedRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   p_route = &self->_route;
-  v7 = [(GEOComposedRoute *)self->_route _MapsCarPlay_isEqual:v5];
+  v7 = [(GEOComposedRoute *)self->_route _MapsCarPlay_isEqual:routeCopy];
   v8 = sub_10008B0B8();
   v9 = v8;
   if (!v7)
@@ -79,106 +79,106 @@ LABEL_10:
     {
 LABEL_17:
 
-      objc_storeStrong(&self->_route, a3);
+      objc_storeStrong(&self->_route, route);
       [(CarRouteGeniusAnnotationsManager *)self _updateRouteAnnotation];
       [(CarRouteGeniusAnnotationsManager *)self updateTrafficForRoute:self->_route];
       goto LABEL_18;
     }
 
-    v23 = self;
+    selfCopy = self;
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
     if (objc_opt_respondsToSelector())
     {
-      v26 = [(CarRouteGeniusAnnotationsManager *)v23 performSelector:"accessibilityIdentifier"];
+      v26 = [(CarRouteGeniusAnnotationsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v27 = v26;
       if (v26 && ![v26 isEqualToString:v25])
       {
-        v28 = [NSString stringWithFormat:@"%@<%p, %@>", v25, v23, v27];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v25, selfCopy, v27];
 
         goto LABEL_16;
       }
     }
 
-    v28 = [NSString stringWithFormat:@"%@<%p>", v25, v23];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v25, selfCopy];
 LABEL_16:
 
-    v29 = v28;
-    v37 = [v5 name];
-    v41 = [v5 uniqueRouteID];
-    v36 = [v41 UUIDString];
-    v35 = [v5 pointCount];
+    v29 = selfCopy;
+    name = [routeCopy name];
+    uniqueRouteID = [routeCopy uniqueRouteID];
+    uUIDString = [uniqueRouteID UUIDString];
+    pointCount = [routeCopy pointCount];
     [(GEOComposedRoute *)*p_route name];
-    v30 = v39 = v5;
-    v31 = [(GEOComposedRoute *)*p_route uniqueRouteID];
-    v32 = [v31 UUIDString];
-    v33 = v28;
-    v34 = [(GEOComposedRoute *)*p_route pointCount];
+    v30 = v39 = routeCopy;
+    uniqueRouteID2 = [(GEOComposedRoute *)*p_route uniqueRouteID];
+    uUIDString2 = [uniqueRouteID2 UUIDString];
+    v33 = selfCopy;
+    pointCount2 = [(GEOComposedRoute *)*p_route pointCount];
 
     *buf = 138544898;
     v43 = v33;
     v44 = 2112;
-    v45 = v37;
+    v45 = name;
     v46 = 2112;
-    v47 = v36;
+    v47 = uUIDString;
     v48 = 2048;
-    v49 = v35;
+    v49 = pointCount;
     v50 = 2112;
     v51 = v30;
     v52 = 2112;
-    v53 = v32;
+    v53 = uUIDString2;
     v54 = 2048;
-    v55 = v34;
+    v55 = pointCount2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}@] CarRouteGeniusAnnotationsManager: setRoute: route (name: %@, id: %@, points: %lu), current: (name: %@, id: %@, points: %lu). Redrawing route.", buf, 0x48u);
 
-    v5 = v39;
+    routeCopy = v39;
     goto LABEL_17;
   }
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v10 = self;
+    selfCopy2 = self;
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(CarRouteGeniusAnnotationsManager *)v10 performSelector:"accessibilityIdentifier"];
+      v13 = [(CarRouteGeniusAnnotationsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v14 = v13;
       if (v13 && ![v13 isEqualToString:v12])
       {
-        v15 = [NSString stringWithFormat:@"%@<%p, %@>", v12, v10, v14];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v12, selfCopy2, v14];
 
         goto LABEL_8;
       }
     }
 
-    v15 = [NSString stringWithFormat:@"%@<%p>", v12, v10];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v12, selfCopy2];
 LABEL_8:
 
-    v16 = v15;
-    v38 = [v5 name];
-    v40 = [v5 uniqueRouteID];
-    v17 = [v40 UUIDString];
-    v18 = [v5 pointCount];
-    v19 = [(GEOComposedRoute *)*p_route name];
-    v20 = [(GEOComposedRoute *)*p_route uniqueRouteID];
-    v21 = [v20 UUIDString];
-    v22 = [(GEOComposedRoute *)*p_route pointCount];
+    v16 = selfCopy2;
+    name2 = [routeCopy name];
+    uniqueRouteID3 = [routeCopy uniqueRouteID];
+    uUIDString3 = [uniqueRouteID3 UUIDString];
+    pointCount3 = [routeCopy pointCount];
+    name3 = [(GEOComposedRoute *)*p_route name];
+    uniqueRouteID4 = [(GEOComposedRoute *)*p_route uniqueRouteID];
+    uUIDString4 = [uniqueRouteID4 UUIDString];
+    pointCount4 = [(GEOComposedRoute *)*p_route pointCount];
 
     *buf = 138544898;
-    v43 = v15;
+    v43 = selfCopy2;
     v44 = 2112;
-    v45 = v38;
+    v45 = name2;
     v46 = 2112;
-    v47 = v17;
+    v47 = uUIDString3;
     v48 = 2048;
-    v49 = v18;
+    v49 = pointCount3;
     v50 = 2112;
-    v51 = v19;
+    v51 = name3;
     v52 = 2112;
-    v53 = v21;
+    v53 = uUIDString4;
     v54 = 2048;
-    v55 = v22;
+    v55 = pointCount4;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}@] CarRouteGeniusAnnotationsManager: setRoute, new route (name: %@, id: %@, points: %lu) was considered equal to current route (name: %@, id: %@, points: %lu), we're not redrawing", buf, 0x48u);
   }
 
@@ -190,10 +190,10 @@ LABEL_18:
   v3 = sub_10008B0B8();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -201,22 +201,22 @@ LABEL_18:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarRouteGeniusAnnotationsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarRouteGeniusAnnotationsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] CarRouteGeniusAnnotationsManager: clearAnnotations", buf, 0xCu);
   }
 
@@ -229,15 +229,15 @@ LABEL_10:
 
 - (BOOL)_shouldIgnoreRoute
 {
-  v2 = [(GEOComposedRoute *)self->_route legs];
-  v3 = [v2 count] > 1;
+  legs = [(GEOComposedRoute *)self->_route legs];
+  v3 = [legs count] > 1;
 
   return v3;
 }
 
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = @"the route is nil";
   if (!self->_route)
   {
@@ -253,44 +253,44 @@ LABEL_20:
 
       route = self->_route;
       v27 = [NSArray arrayWithObjects:&route count:1];
-      [v4 setRoutes:v27];
+      [configurationCopy setRoutes:v27];
 
       goto LABEL_21;
     }
 
-    v15 = self;
+    selfCopy = self;
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
     if (objc_opt_respondsToSelector())
     {
-      v18 = [(CarRouteGeniusAnnotationsManager *)v15 performSelector:"accessibilityIdentifier"];
+      v18 = [(CarRouteGeniusAnnotationsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v19 = v18;
       if (v18 && ![v18 isEqualToString:v17])
       {
-        v20 = [NSString stringWithFormat:@"%@<%p, %@>", v17, v15, v19];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v17, selfCopy, v19];
 
         goto LABEL_19;
       }
     }
 
-    v20 = [NSString stringWithFormat:@"%@<%p>", v17, v15];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v17, selfCopy];
 LABEL_19:
 
     v21 = self->_route;
-    v22 = v20;
-    v23 = [(GEOComposedRoute *)v21 name];
-    v24 = [(GEOComposedRoute *)self->_route uniqueRouteID];
-    v25 = [v24 UUIDString];
-    v26 = [(GEOComposedRoute *)self->_route pointCount];
+    v22 = selfCopy;
+    name = [(GEOComposedRoute *)v21 name];
+    uniqueRouteID = [(GEOComposedRoute *)self->_route uniqueRouteID];
+    uUIDString = [uniqueRouteID UUIDString];
+    pointCount = [(GEOComposedRoute *)self->_route pointCount];
 
     *buf = 138544130;
-    v34 = v20;
+    v34 = selfCopy;
     v35 = 2112;
-    v36 = v23;
+    v36 = name;
     v37 = 2112;
-    v38 = v25;
+    v38 = uUIDString;
     v39 = 2048;
-    v40 = v26;
+    v40 = pointCount;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[%{public}@] CarRouteGeniusAnnotationsManager: Drawing route: (name: %@, id: %@, points: %lu)", buf, 0x2Au);
 
     goto LABEL_20;
@@ -306,35 +306,35 @@ LABEL_5:
   v7 = sub_10008B0B8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(CarRouteGeniusAnnotationsManager *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(CarRouteGeniusAnnotationsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy2, v12];
 
         goto LABEL_11;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy2];
 LABEL_11:
 
     *buf = 138543618;
-    v34 = v13;
+    v34 = selfCopy2;
     v35 = 2112;
     v36 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] CarRouteGeniusAnnotationsManager: Won't draw route because %@", buf, 0x16u);
   }
 
-  [v4 setRoutes:0];
+  [configurationCopy setRoutes:0];
 LABEL_21:
-  [v4 setSelectPolyline:1];
-  [v4 setRouteTrafficFeaturesActive:1];
+  [configurationCopy setSelectPolyline:1];
+  [configurationCopy setRouteTrafficFeaturesActive:1];
   v28 = self->_route;
   if (!v28 || ([(GEOComposedRoute *)v28 isFamiliarRoute]& 1) == 0)
   {
@@ -352,7 +352,7 @@ LABEL_27:
 
   v30 = 1;
 LABEL_28:
-  [v4 setStyle:v30];
+  [configurationCopy setStyle:v30];
 
   return 1;
 }
@@ -363,15 +363,15 @@ LABEL_28:
   [WeakRetained setNeedsUpdateComponent:@"routeAnnotations" animated:1];
 }
 
-- (void)recenterCameraOnRouteAnimated:(BOOL)a3 force:(BOOL)a4
+- (void)recenterCameraOnRouteAnimated:(BOOL)animated force:(BOOL)force
 {
-  v4 = a4;
-  v5 = a3;
+  forceCopy = force;
+  animatedCopy = animated;
   if (![(CarRouteGeniusAnnotationsManager *)self _shouldIgnoreRoute])
   {
-    v7 = [(CarRouteGeniusAnnotationsManager *)self mapView];
-    v8 = [v7 userLocation];
-    v9 = [v8 location];
+    mapView = [(CarRouteGeniusAnnotationsManager *)self mapView];
+    userLocation = [mapView userLocation];
+    location = [userLocation location];
 
     v10 = sub_10008B0B8();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -379,10 +379,10 @@ LABEL_28:
       goto LABEL_18;
     }
 
-    v11 = self;
-    if (!v11)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v16 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -390,21 +390,21 @@ LABEL_28:
     v13 = NSStringFromClass(v12);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [(CarRouteGeniusAnnotationsManager *)v11 performSelector:"accessibilityIdentifier"];
+      v14 = [(CarRouteGeniusAnnotationsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v15 = v14;
       if (v14 && ![v14 isEqualToString:v13])
       {
-        v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy, v15];
 
         goto LABEL_9;
       }
     }
 
-    v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy];
 LABEL_9:
 
 LABEL_11:
-    if (v5)
+    if (animatedCopy)
     {
       v17 = @"YES";
     }
@@ -415,7 +415,7 @@ LABEL_11:
     }
 
     v18 = v17;
-    if (v4)
+    if (forceCopy)
     {
       v19 = @"YES";
     }
@@ -426,9 +426,9 @@ LABEL_11:
     }
 
     *&v20 = COERCE_DOUBLE(v19);
-    route = v11->_route;
+    route = selfCopy->_route;
     *buf = 138544386;
-    v90 = v16;
+    v90 = selfCopy;
     v91 = 2112;
     v92 = v18;
     v93 = 2112;
@@ -436,49 +436,49 @@ LABEL_11:
     v95 = 2048;
     v96 = *&route;
     v97 = 2112;
-    v98 = *&v9;
+    v98 = *&location;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}@] recenterCameraOnRouteAnimated:animated %@, force: %@, route %p, userLocation: %@", buf, 0x34u);
 
 LABEL_18:
-    if (!self->_route || !v9)
+    if (!self->_route || !location)
     {
       goto LABEL_48;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
-    v23 = [WeakRetained mapCameraController];
-    v24 = [[MNLocation alloc] initWithCLLocation:v9];
-    [v23 mapRectForTripFromLocation:v24 alongRoute:self->_route];
+    mapCameraController = [WeakRetained mapCameraController];
+    v24 = [[MNLocation alloc] initWithCLLocation:location];
+    [mapCameraController mapRectForTripFromLocation:v24 alongRoute:self->_route];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
 
-    if (v4)
+    if (forceCopy)
     {
       v33 = sub_10008B0B8();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
-        v34 = self;
+        selfCopy2 = self;
         v35 = objc_opt_class();
         v36 = NSStringFromClass(v35);
         if (objc_opt_respondsToSelector())
         {
-          v37 = [(CarRouteGeniusAnnotationsManager *)v34 performSelector:"accessibilityIdentifier"];
+          v37 = [(CarRouteGeniusAnnotationsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
           v38 = v37;
           if (v37 && ![v37 isEqualToString:v36])
           {
-            v39 = [NSString stringWithFormat:@"%@<%p, %@>", v36, v34, v38];
+            selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v36, selfCopy2, v38];
 
             goto LABEL_27;
           }
         }
 
-        v39 = [NSString stringWithFormat:@"%@<%p>", v36, v34];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v36, selfCopy2];
 LABEL_27:
 
         *buf = 138543362;
-        v90 = v39;
+        v90 = selfCopy2;
         v40 = "[%{public}@] - updating framing (forced)";
 LABEL_44:
         v77 = v33;
@@ -490,18 +490,18 @@ LABEL_45:
 LABEL_46:
 
       v33 = objc_loadWeakRetained(&self->_chromeViewController);
-      v79 = [v33 mapCameraController];
-      [v79 frameMapRect:v5 animated:0 completion:{v26, v28, v30, v32}];
+      mapCameraController2 = [v33 mapCameraController];
+      [mapCameraController2 frameMapRect:animatedCopy animated:0 completion:{v26, v28, v30, v32}];
 
       goto LABEL_47;
     }
 
-    [v7 visibleMapRect];
+    [mapView visibleMapRect];
     v42 = v41;
     v44 = v43;
     v46 = v45;
     v48 = v47;
-    [v9 coordinate];
+    [location coordinate];
     v102 = MKMapPointForCoordinate(v101);
     v103.origin.x = v42;
     v103.origin.y = v44;
@@ -516,13 +516,13 @@ LABEL_46:
       v52 = v30;
       v53 = v30;
       v54 = v32;
-      [v7 _zoomLevelForMapRect:0 includeAccessoryPadding:{v49, v51, v53, v32}];
+      [mapView _zoomLevelForMapRect:0 includeAccessoryPadding:{v49, v51, v53, v32}];
       v56 = v55;
       GEOConfigGetDouble();
       v88 = v56;
       v86 = v57;
       v58 = fmin(v56, v57);
-      [v7 _zoomLevelForMapRect:0 includeAccessoryPadding:{v42, v44, v46, v48}];
+      [mapView _zoomLevelForMapRect:0 includeAccessoryPadding:{v42, v44, v46, v48}];
       v60 = v59;
       v61 = vabdd_f64(v59, v58);
       GEOConfigGetDouble();
@@ -539,27 +539,27 @@ LABEL_48:
           return;
         }
 
-        v65 = v7;
-        v66 = self;
+        v65 = mapView;
+        selfCopy3 = self;
         v67 = objc_opt_class();
         v68 = NSStringFromClass(v67);
         if (objc_opt_respondsToSelector())
         {
-          v69 = [(CarRouteGeniusAnnotationsManager *)v66 performSelector:"accessibilityIdentifier"];
+          v69 = [(CarRouteGeniusAnnotationsManager *)selfCopy3 performSelector:"accessibilityIdentifier"];
           v70 = v69;
           if (v69 && ![v69 isEqualToString:v68])
           {
-            v71 = [NSString stringWithFormat:@"%@<%p, %@>", v68, v66, v70];
+            selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v68, selfCopy3, v70];
 
             goto LABEL_36;
           }
         }
 
-        v71 = [NSString stringWithFormat:@"%@<%p>", v68, v66];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v68, selfCopy3];
 LABEL_36:
 
         *buf = 138544642;
-        v90 = v71;
+        v90 = selfCopy3;
         v91 = 2048;
         v92 = *&v60;
         v93 = 2048;
@@ -572,7 +572,7 @@ LABEL_36:
         v100 = v61;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "[%{public}@] - not updating framing (zoom current: %lf, target: %lf, desired: %lf, max: %lf, difference: %lf)", buf, 0x3Eu);
 
-        v7 = v65;
+        mapView = v65;
         goto LABEL_47;
       }
 
@@ -586,26 +586,26 @@ LABEL_36:
         goto LABEL_46;
       }
 
-      v81 = self;
+      selfCopy4 = self;
       v82 = objc_opt_class();
       v83 = NSStringFromClass(v82);
       if (objc_opt_respondsToSelector())
       {
-        v84 = [(CarRouteGeniusAnnotationsManager *)v81 performSelector:"accessibilityIdentifier"];
+        v84 = [(CarRouteGeniusAnnotationsManager *)selfCopy4 performSelector:"accessibilityIdentifier"];
         v85 = v84;
         if (v84 && ![v84 isEqualToString:v83])
         {
-          v39 = [NSString stringWithFormat:@"%@<%p, %@>", v83, v81, v85];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v83, selfCopy4, v85];
 
           goto LABEL_56;
         }
       }
 
-      v39 = [NSString stringWithFormat:@"%@<%p>", v83, v81];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v83, selfCopy4];
 LABEL_56:
 
       *buf = 138544642;
-      v90 = v39;
+      v90 = selfCopy2;
       v91 = 2048;
       v92 = *&v60;
       v93 = 2048;
@@ -628,41 +628,41 @@ LABEL_56:
       goto LABEL_46;
     }
 
-    v72 = self;
+    selfCopy5 = self;
     v73 = objc_opt_class();
     v74 = NSStringFromClass(v73);
     if (objc_opt_respondsToSelector())
     {
-      v75 = [(CarRouteGeniusAnnotationsManager *)v72 performSelector:"accessibilityIdentifier"];
+      v75 = [(CarRouteGeniusAnnotationsManager *)selfCopy5 performSelector:"accessibilityIdentifier"];
       v76 = v75;
       if (v75 && ![v75 isEqualToString:v74])
       {
-        v39 = [NSString stringWithFormat:@"%@<%p, %@>", v74, v72, v76];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v74, selfCopy5, v76];
 
         goto LABEL_43;
       }
     }
 
-    v39 = [NSString stringWithFormat:@"%@<%p>", v74, v72];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v74, selfCopy5];
 LABEL_43:
 
     *buf = 138543362;
-    v90 = v39;
+    v90 = selfCopy2;
     v40 = "[%{public}@] - updating framing (user location outside visible rect)";
     goto LABEL_44;
   }
 }
 
-- (CarRouteGeniusAnnotationsManager)initWithChromeViewController:(id)a3
+- (CarRouteGeniusAnnotationsManager)initWithChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CarRouteGeniusAnnotationsManager;
   v5 = [(CarRouteGeniusAnnotationsManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_chromeViewController, v4);
+    objc_storeWeak(&v5->_chromeViewController, controllerCopy);
   }
 
   return v6;

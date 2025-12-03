@@ -1,63 +1,63 @@
 @interface ATXModeEntityCorrelator
-- (ATXModeEntityCorrelator)initWithModeEventProvider:(id)a3 appLaunchEventProvider:(id)a4 macPortableAppEventProvider:(id)a5 macDesktopAppEventProvider:(id)a6;
-- (ATXModeEntityCorrelator)initWithModeEventProvider:(id)a3 entityEventProvider:(id)a4;
-- (BOOL)eventOccurredWhileInModeForAggregationEvent:(id)a3 modeTransitionEvent:(id)a4;
+- (ATXModeEntityCorrelator)initWithModeEventProvider:(id)provider appLaunchEventProvider:(id)eventProvider macPortableAppEventProvider:(id)appEventProvider macDesktopAppEventProvider:(id)desktopAppEventProvider;
+- (ATXModeEntityCorrelator)initWithModeEventProvider:(id)provider entityEventProvider:(id)eventProvider;
+- (BOOL)eventOccurredWhileInModeForAggregationEvent:(id)event modeTransitionEvent:(id)transitionEvent;
 - (id)entityFeaturesForModeEntityScoring;
 - (id)entityFeaturesForWidgetScoring;
-- (id)featuresForEntitiesFromCompleteCorrelatorState:(id)a3;
+- (id)featuresForEntitiesFromCompleteCorrelatorState:(id)state;
 - (id)mergedWithLocalPublisher;
 - (id)mergedWithRemotePublishers;
 - (id)zerosArray;
-- (int64_t)daysSinceDate:(id)a3 today:(id)a4;
-- (void)populateGlobalOccurencesForAllWidgetsWithWidgetModeEventProvider:(id)a3 correlatorState:(id)a4;
-- (void)trackNewModeTransitionEvent:(id)a3 correlatorState:(id)a4;
-- (void)updateCorrelatorState:(id)a3 forAggregationEvents:(id)a4;
-- (void)updateDateBasedHistogram:(id)a3 aggregationEvent:(id)a4 today:(id)a5;
-- (void)updateInternalStateForGlobalOccurrenceEvent:(id)a3 correlatorState:(id)a4;
-- (void)updateInternalStateForLocalOccurrenceEvent:(id)a3 correlatorState:(id)a4;
+- (int64_t)daysSinceDate:(id)date today:(id)today;
+- (void)populateGlobalOccurencesForAllWidgetsWithWidgetModeEventProvider:(id)provider correlatorState:(id)state;
+- (void)trackNewModeTransitionEvent:(id)event correlatorState:(id)state;
+- (void)updateCorrelatorState:(id)state forAggregationEvents:(id)events;
+- (void)updateDateBasedHistogram:(id)histogram aggregationEvent:(id)event today:(id)today;
+- (void)updateInternalStateForGlobalOccurrenceEvent:(id)event correlatorState:(id)state;
+- (void)updateInternalStateForLocalOccurrenceEvent:(id)event correlatorState:(id)state;
 @end
 
 @implementation ATXModeEntityCorrelator
 
-- (ATXModeEntityCorrelator)initWithModeEventProvider:(id)a3 entityEventProvider:(id)a4
+- (ATXModeEntityCorrelator)initWithModeEventProvider:(id)provider entityEventProvider:(id)eventProvider
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  eventProviderCopy = eventProvider;
   v14.receiver = self;
   v14.super_class = ATXModeEntityCorrelator;
   v9 = [(ATXModeEntityCorrelator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_modeEventProvider, a3);
-    objc_storeStrong(&v10->_entityEventProvider, a4);
-    v11 = [MEMORY[0x277CEB5C8] sharedInstance];
+    objc_storeStrong(&v9->_modeEventProvider, provider);
+    objc_storeStrong(&v10->_entityEventProvider, eventProvider);
+    mEMORY[0x277CEB5C8] = [MEMORY[0x277CEB5C8] sharedInstance];
     informationStore = v10->_informationStore;
-    v10->_informationStore = v11;
+    v10->_informationStore = mEMORY[0x277CEB5C8];
   }
 
   return v10;
 }
 
-- (ATXModeEntityCorrelator)initWithModeEventProvider:(id)a3 appLaunchEventProvider:(id)a4 macPortableAppEventProvider:(id)a5 macDesktopAppEventProvider:(id)a6
+- (ATXModeEntityCorrelator)initWithModeEventProvider:(id)provider appLaunchEventProvider:(id)eventProvider macPortableAppEventProvider:(id)appEventProvider macDesktopAppEventProvider:(id)desktopAppEventProvider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  eventProviderCopy = eventProvider;
+  appEventProviderCopy = appEventProvider;
+  desktopAppEventProviderCopy = desktopAppEventProvider;
   v20.receiver = self;
   v20.super_class = ATXModeEntityCorrelator;
   v15 = [(ATXModeEntityCorrelator *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_modeEventProvider, a3);
-    objc_storeStrong(&v16->_localAppLaunchEventProvider, a4);
-    objc_storeStrong(&v16->_macPortableAppLaunchEventProvider, a5);
-    objc_storeStrong(&v16->_macDesktopAppLaunchEventProvider, a6);
-    v17 = [MEMORY[0x277CEB5C8] sharedInstance];
+    objc_storeStrong(&v15->_modeEventProvider, provider);
+    objc_storeStrong(&v16->_localAppLaunchEventProvider, eventProvider);
+    objc_storeStrong(&v16->_macPortableAppLaunchEventProvider, appEventProvider);
+    objc_storeStrong(&v16->_macDesktopAppLaunchEventProvider, desktopAppEventProvider);
+    mEMORY[0x277CEB5C8] = [MEMORY[0x277CEB5C8] sharedInstance];
     informationStore = v16->_informationStore;
-    v16->_informationStore = v17;
+    v16->_informationStore = mEMORY[0x277CEB5C8];
   }
 
   return v16;
@@ -69,33 +69,33 @@
   {
     if (self->_localAppLaunchEventProvider && self->_macDesktopAppLaunchEventProvider && self->_macPortableAppLaunchEventProvider)
     {
-      v3 = [(ATXModeEntityCorrelator *)self mergedWithRemotePublishers];
+      mergedWithRemotePublishers = [(ATXModeEntityCorrelator *)self mergedWithRemotePublishers];
     }
 
     else
     {
-      v3 = [(ATXModeEntityCorrelator *)self mergedWithLocalPublisher];
+      mergedWithRemotePublishers = [(ATXModeEntityCorrelator *)self mergedWithLocalPublisher];
     }
 
-    v4 = v3;
+    v4 = mergedWithRemotePublishers;
     v5 = objc_opt_new();
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __61__ATXModeEntityCorrelator_entityFeaturesForModeEntityScoring__block_invoke_2;
     v13 = &unk_2785988C8;
-    v14 = self;
+    selfCopy = self;
     v15 = v5;
     v6 = v5;
     v7 = [v4 sinkWithCompletion:&__block_literal_global_230 receiveInput:&v10];
-    v8 = [(ATXModeEntityCorrelator *)self featuresForEntitiesFromCompleteCorrelatorState:v6, v10, v11, v12, v13, v14];
+    selfCopy = [(ATXModeEntityCorrelator *)self featuresForEntitiesFromCompleteCorrelatorState:v6, v10, v11, v12, v13, selfCopy];
   }
 
   else
   {
-    v8 = objc_opt_new();
+    selfCopy = objc_opt_new();
   }
 
-  return v8;
+  return selfCopy;
 }
 
 void __61__ATXModeEntityCorrelator_entityFeaturesForModeEntityScoring__block_invoke_2(uint64_t a1, void *a2)
@@ -353,16 +353,16 @@ void __61__ATXModeEntityCorrelator_entityFeaturesForModeEntityScoring__block_inv
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCorrelatorState:(id)a3 forAggregationEvents:(id)a4
+- (void)updateCorrelatorState:(id)state forAggregationEvents:(id)events
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stateCopy = state;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  eventsCopy = events;
+  v8 = [eventsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -374,27 +374,27 @@ void __61__ATXModeEntityCorrelator_entityFeaturesForModeEntityScoring__block_inv
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v12 = *(*(&v19 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
-        [v6 setSeenAtLeastOneEntityEvent:{1, v19}];
-        v14 = [v12 entity];
+        [stateCopy setSeenAtLeastOneEntityEvent:{1, v19}];
+        entity = [v12 entity];
 
-        if (v14)
+        if (entity)
         {
-          [(ATXModeEntityCorrelator *)self updateInternalStateForGlobalOccurrenceEvent:v12 correlatorState:v6];
-          v15 = [v6 mostRecentModeEvent];
+          [(ATXModeEntityCorrelator *)self updateInternalStateForGlobalOccurrenceEvent:v12 correlatorState:stateCopy];
+          mostRecentModeEvent = [stateCopy mostRecentModeEvent];
 
-          if (v15)
+          if (mostRecentModeEvent)
           {
-            v16 = [v6 mostRecentModeEvent];
-            v17 = [(ATXModeEntityCorrelator *)self eventOccurredWhileInModeForAggregationEvent:v12 modeTransitionEvent:v16];
+            mostRecentModeEvent2 = [stateCopy mostRecentModeEvent];
+            v17 = [(ATXModeEntityCorrelator *)self eventOccurredWhileInModeForAggregationEvent:v12 modeTransitionEvent:mostRecentModeEvent2];
 
             if (v17)
             {
-              [(ATXModeEntityCorrelator *)self updateInternalStateForLocalOccurrenceEvent:v12 correlatorState:v6];
+              [(ATXModeEntityCorrelator *)self updateInternalStateForLocalOccurrenceEvent:v12 correlatorState:stateCopy];
             }
           }
         }
@@ -404,7 +404,7 @@ void __61__ATXModeEntityCorrelator_entityFeaturesForModeEntityScoring__block_inv
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [eventsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
@@ -508,16 +508,16 @@ void __57__ATXModeEntityCorrelator_entityFeaturesForWidgetScoring__block_invoke_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)populateGlobalOccurencesForAllWidgetsWithWidgetModeEventProvider:(id)a3 correlatorState:(id)a4
+- (void)populateGlobalOccurencesForAllWidgetsWithWidgetModeEventProvider:(id)provider correlatorState:(id)state
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  stateCopy = state;
   v7 = [MEMORY[0x277CBEAA8] now];
   v8 = [v7 dateByAddingTimeInterval:-2419200.0];
 
-  v22 = v5;
-  v9 = [v5 widgetEngagementCountSinceStartDate:v8];
+  v22 = providerCopy;
+  v9 = [providerCopy widgetEngagementCountSinceStartDate:v8];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -538,22 +538,22 @@ void __57__ATXModeEntityCorrelator_entityFeaturesForWidgetScoring__block_invoke_
 
         v14 = *(*(&v23 + 1) + 8 * i);
         v15 = [v9 objectForKeyedSubscript:v14];
-        v16 = [v15 integerValue];
+        integerValue = [v15 integerValue];
 
-        if (v16 >= 1)
+        if (integerValue >= 1)
         {
           v17 = 0;
           do
           {
-            v18 = [v6 globalEntityOccurrences];
-            [v18 addObject:v14];
+            globalEntityOccurrences = [stateCopy globalEntityOccurrences];
+            [globalEntityOccurrences addObject:v14];
 
             ++v17;
             v19 = [v9 objectForKeyedSubscript:v14];
-            v20 = [v19 integerValue];
+            integerValue2 = [v19 integerValue];
           }
 
-          while (v17 < v20);
+          while (v17 < integerValue2);
         }
       }
 
@@ -566,15 +566,15 @@ void __57__ATXModeEntityCorrelator_entityFeaturesForWidgetScoring__block_invoke_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)eventOccurredWhileInModeForAggregationEvent:(id)a3 modeTransitionEvent:(id)a4
+- (BOOL)eventOccurredWhileInModeForAggregationEvent:(id)event modeTransitionEvent:(id)transitionEvent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 startDate];
-  [v7 timeIntervalSince1970];
+  eventCopy = event;
+  transitionEventCopy = transitionEvent;
+  startDate = [eventCopy startDate];
+  [startDate timeIntervalSince1970];
   v9 = v8;
-  v10 = [v6 startDate];
-  [v10 timeIntervalSince1970];
+  startDate2 = [transitionEventCopy startDate];
+  [startDate2 timeIntervalSince1970];
   if (v9 <= v11)
   {
     v17 = 0;
@@ -582,56 +582,56 @@ void __57__ATXModeEntityCorrelator_entityFeaturesForWidgetScoring__block_invoke_
 
   else
   {
-    v12 = [v5 startDate];
-    [v12 timeIntervalSince1970];
+    startDate3 = [eventCopy startDate];
+    [startDate3 timeIntervalSince1970];
     v14 = v13;
-    v15 = [v6 endDate];
-    [v15 timeIntervalSince1970];
+    endDate = [transitionEventCopy endDate];
+    [endDate timeIntervalSince1970];
     v17 = v14 < v16;
   }
 
   return v17;
 }
 
-- (void)trackNewModeTransitionEvent:(id)a3 correlatorState:(id)a4
+- (void)trackNewModeTransitionEvent:(id)event correlatorState:(id)state
 {
-  v7 = a4;
-  v5 = [a3 firstObject];
-  [v7 setMostRecentModeEvent:v5];
+  stateCopy = state;
+  firstObject = [event firstObject];
+  [stateCopy setMostRecentModeEvent:firstObject];
 
   v6 = objc_opt_new();
-  [v7 setEntitiesSeenForMostRecentModeEvent:v6];
+  [stateCopy setEntitiesSeenForMostRecentModeEvent:v6];
 
-  [v7 setModeOccurrences:{objc_msgSend(v7, "modeOccurrences") + 1}];
-  if (([v7 seenAtLeastOneEntityEvent] & 1) == 0)
+  [stateCopy setModeOccurrences:{objc_msgSend(stateCopy, "modeOccurrences") + 1}];
+  if (([stateCopy seenAtLeastOneEntityEvent] & 1) == 0)
   {
-    [v7 setModeOccurrences:1];
+    [stateCopy setModeOccurrences:1];
   }
 }
 
-- (id)featuresForEntitiesFromCompleteCorrelatorState:(id)a3
+- (id)featuresForEntitiesFromCompleteCorrelatorState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_opt_new();
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x2020000000;
   v29[3] = 0x3E45798EE2308C3ALL;
-  v6 = [v4 modeLocalEntityOccurrences];
+  modeLocalEntityOccurrences = [stateCopy modeLocalEntityOccurrences];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __74__ATXModeEntityCorrelator_featuresForEntitiesFromCompleteCorrelatorState___block_invoke;
   v26[3] = &unk_2785A1090;
   v28 = v29;
-  v7 = v4;
+  v7 = stateCopy;
   v27 = v7;
-  [v6 enumerateObjectsUsingBlock:v26];
+  [modeLocalEntityOccurrences enumerateObjectsUsingBlock:v26];
 
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
   v25[3] = 0x3E45798EE2308C3ALL;
-  v8 = [v7 globalEntityOccurrences];
+  globalEntityOccurrences = [v7 globalEntityOccurrences];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __74__ATXModeEntityCorrelator_featuresForEntitiesFromCompleteCorrelatorState___block_invoke_2;
@@ -639,21 +639,21 @@ void __57__ATXModeEntityCorrelator_entityFeaturesForWidgetScoring__block_invoke_
   v24 = v25;
   v9 = v7;
   v23 = v9;
-  [v8 enumerateObjectsUsingBlock:v22];
+  [globalEntityOccurrences enumerateObjectsUsingBlock:v22];
 
-  v10 = [v9 globalEntityOccurrences];
+  globalEntityOccurrences2 = [v9 globalEntityOccurrences];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __74__ATXModeEntityCorrelator_featuresForEntitiesFromCompleteCorrelatorState___block_invoke_3;
   v16[3] = &unk_2785A10B8;
   v11 = v9;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v20 = v29;
   v21 = v25;
   v12 = v5;
   v19 = v12;
-  [v10 enumerateObjectsUsingBlock:v16];
+  [globalEntityOccurrences2 enumerateObjectsUsingBlock:v16];
 
   v13 = v19;
   v14 = v12;
@@ -1063,17 +1063,17 @@ uint64_t __51__ATXModeEntityCorrelator_mergedWithLocalPublisher__block_invoke(ui
   return v19;
 }
 
-- (void)updateInternalStateForGlobalOccurrenceEvent:(id)a3 correlatorState:(id)a4
+- (void)updateInternalStateForGlobalOccurrenceEvent:(id)event correlatorState:(id)state
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v6 globalEntityOccurrences];
-  v8 = [v13 entity];
-  [v7 addObject:v8];
+  eventCopy = event;
+  stateCopy = state;
+  globalEntityOccurrences = [stateCopy globalEntityOccurrences];
+  entity = [eventCopy entity];
+  [globalEntityOccurrences addObject:entity];
 
-  v9 = [v6 totalGlobalLaunchesHistogramPerEntity];
-  v10 = [v6 today];
-  [(ATXModeEntityCorrelator *)self updateDateBasedHistogram:v9 aggregationEvent:v13 today:v10];
+  totalGlobalLaunchesHistogramPerEntity = [stateCopy totalGlobalLaunchesHistogramPerEntity];
+  today = [stateCopy today];
+  [(ATXModeEntityCorrelator *)self updateDateBasedHistogram:totalGlobalLaunchesHistogramPerEntity aggregationEvent:eventCopy today:today];
 
   localAppLaunchEventProvider = self->_localAppLaunchEventProvider;
   if (!localAppLaunchEventProvider)
@@ -1081,22 +1081,22 @@ uint64_t __51__ATXModeEntityCorrelator_mergedWithLocalPublisher__block_invoke(ui
     localAppLaunchEventProvider = self->_entityEventProvider;
   }
 
-  v12 = [v6 entityToEntityFeaturesDict];
+  entityToEntityFeaturesDict = [stateCopy entityToEntityFeaturesDict];
 
-  [(ATXModeEntityEventProviderProtocol *)localAppLaunchEventProvider updateEntitySpecificFeaturesDict:v12 aggregationEvent:v13 isLocalToMode:0];
+  [(ATXModeEntityEventProviderProtocol *)localAppLaunchEventProvider updateEntitySpecificFeaturesDict:entityToEntityFeaturesDict aggregationEvent:eventCopy isLocalToMode:0];
 }
 
-- (void)updateInternalStateForLocalOccurrenceEvent:(id)a3 correlatorState:(id)a4
+- (void)updateInternalStateForLocalOccurrenceEvent:(id)event correlatorState:(id)state
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [v6 modeLocalEntityOccurrences];
-  v8 = [v20 entity];
-  [v7 addObject:v8];
+  eventCopy = event;
+  stateCopy = state;
+  modeLocalEntityOccurrences = [stateCopy modeLocalEntityOccurrences];
+  entity = [eventCopy entity];
+  [modeLocalEntityOccurrences addObject:entity];
 
-  v9 = [v6 totalModeLaunchesHistogramPerEntity];
-  v10 = [v6 today];
-  [(ATXModeEntityCorrelator *)self updateDateBasedHistogram:v9 aggregationEvent:v20 today:v10];
+  totalModeLaunchesHistogramPerEntity = [stateCopy totalModeLaunchesHistogramPerEntity];
+  today = [stateCopy today];
+  [(ATXModeEntityCorrelator *)self updateDateBasedHistogram:totalModeLaunchesHistogramPerEntity aggregationEvent:eventCopy today:today];
 
   localAppLaunchEventProvider = self->_localAppLaunchEventProvider;
   if (!localAppLaunchEventProvider)
@@ -1104,52 +1104,52 @@ uint64_t __51__ATXModeEntityCorrelator_mergedWithLocalPublisher__block_invoke(ui
     localAppLaunchEventProvider = self->_entityEventProvider;
   }
 
-  v12 = [v6 entityToEntityFeaturesDict];
-  [(ATXModeEntityEventProviderProtocol *)localAppLaunchEventProvider updateEntitySpecificFeaturesDict:v12 aggregationEvent:v20 isLocalToMode:1];
+  entityToEntityFeaturesDict = [stateCopy entityToEntityFeaturesDict];
+  [(ATXModeEntityEventProviderProtocol *)localAppLaunchEventProvider updateEntitySpecificFeaturesDict:entityToEntityFeaturesDict aggregationEvent:eventCopy isLocalToMode:1];
 
-  v13 = [v6 entitiesSeenForMostRecentModeEvent];
-  v14 = [v20 entity];
-  v15 = [v13 containsObject:v14];
+  entitiesSeenForMostRecentModeEvent = [stateCopy entitiesSeenForMostRecentModeEvent];
+  entity2 = [eventCopy entity];
+  v15 = [entitiesSeenForMostRecentModeEvent containsObject:entity2];
 
   if ((v15 & 1) == 0)
   {
-    v16 = [v6 uniqueModeOccurrences];
-    v17 = [v20 entity];
-    [v16 addObject:v17];
+    uniqueModeOccurrences = [stateCopy uniqueModeOccurrences];
+    entity3 = [eventCopy entity];
+    [uniqueModeOccurrences addObject:entity3];
   }
 
-  v18 = [v6 entitiesSeenForMostRecentModeEvent];
-  v19 = [v20 entity];
-  [v18 addObject:v19];
+  entitiesSeenForMostRecentModeEvent2 = [stateCopy entitiesSeenForMostRecentModeEvent];
+  entity4 = [eventCopy entity];
+  [entitiesSeenForMostRecentModeEvent2 addObject:entity4];
 }
 
-- (void)updateDateBasedHistogram:(id)a3 aggregationEvent:(id)a4 today:(id)a5
+- (void)updateDateBasedHistogram:(id)histogram aggregationEvent:(id)event today:(id)today
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 entity];
-  v11 = [v22 objectForKeyedSubscript:v10];
+  histogramCopy = histogram;
+  eventCopy = event;
+  todayCopy = today;
+  entity = [eventCopy entity];
+  v11 = [histogramCopy objectForKeyedSubscript:entity];
 
   if (!v11)
   {
-    v12 = [(ATXModeEntityCorrelator *)self zerosArray];
-    v13 = [v8 entity];
-    [v22 setObject:v12 forKeyedSubscript:v13];
+    zerosArray = [(ATXModeEntityCorrelator *)self zerosArray];
+    entity2 = [eventCopy entity];
+    [histogramCopy setObject:zerosArray forKeyedSubscript:entity2];
   }
 
-  v14 = [v8 startDate];
-  v15 = [(ATXModeEntityCorrelator *)self daysSinceDate:v14 today:v9];
+  startDate = [eventCopy startDate];
+  v15 = [(ATXModeEntityCorrelator *)self daysSinceDate:startDate today:todayCopy];
 
   if (v15 <= 0x1B)
   {
-    v16 = [v8 entity];
-    v17 = [v22 objectForKeyedSubscript:v16];
+    entity3 = [eventCopy entity];
+    v17 = [histogramCopy objectForKeyedSubscript:entity3];
     v18 = [v17 objectAtIndexedSubscript:v15];
 
     v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v18, "integerValue") + 1}];
-    v20 = [v8 entity];
-    v21 = [v22 objectForKeyedSubscript:v20];
+    entity4 = [eventCopy entity];
+    v21 = [histogramCopy objectForKeyedSubscript:entity4];
     [v21 setObject:v19 atIndexedSubscript:v15];
   }
 }
@@ -1165,13 +1165,13 @@ uint64_t __51__ATXModeEntityCorrelator_mergedWithLocalPublisher__block_invoke(ui
   return v2;
 }
 
-- (int64_t)daysSinceDate:(id)a3 today:(id)a4
+- (int64_t)daysSinceDate:(id)date today:(id)today
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 currentCalendar];
-  v9 = [v8 components:16 fromDate:v7 toDate:v6 options:0];
+  todayCopy = today;
+  dateCopy = date;
+  currentCalendar = [v5 currentCalendar];
+  v9 = [currentCalendar components:16 fromDate:dateCopy toDate:todayCopy options:0];
 
   v10 = [v9 day];
   return v10;

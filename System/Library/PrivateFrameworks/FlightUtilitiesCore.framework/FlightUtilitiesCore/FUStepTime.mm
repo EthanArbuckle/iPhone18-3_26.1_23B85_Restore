@@ -1,26 +1,26 @@
 @interface FUStepTime
-- (BOOL)isEqual:(id)a3;
-- (FUStepTime)initWithCoder:(id)a3;
-- (FUStepTime)initWithType:(unint64_t)a3 date:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (FUStepTime)initWithCoder:(id)coder;
+- (FUStepTime)initWithType:(unint64_t)type date:(id)date;
 - (double)timeIntervalSinceNow;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FUStepTime
 
-- (FUStepTime)initWithType:(unint64_t)a3 date:(id)a4
+- (FUStepTime)initWithType:(unint64_t)type date:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = FUStepTime;
   v7 = [(FUStepTime *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(FUStepTime *)v7 setType:a3];
-    [(FUStepTime *)v8 setDate:v6];
+    [(FUStepTime *)v7 setType:type];
+    [(FUStepTime *)v8 setDate:dateCopy];
   }
 
   return v8;
@@ -28,14 +28,14 @@
 
 - (id)description
 {
-  v3 = [(FUStepTime *)self type];
+  type = [(FUStepTime *)self type];
   v4 = @"Unknown type";
-  if (v3 == 2)
+  if (type == 2)
   {
     v4 = @"Take off / Touch down";
   }
 
-  if (v3 == 1)
+  if (type == 1)
   {
     v5 = @"Gate";
   }
@@ -46,30 +46,30 @@
   }
 
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(FUStepTime *)self date];
-  v8 = [v6 stringWithFormat:@"%@ (%@)", v7, v5];
+  date = [(FUStepTime *)self date];
+  v8 = [v6 stringWithFormat:@"%@ (%@)", date, v5];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[FUStepTime type](self, "type"), v5 == [v4 type]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[FUStepTime type](self, "type"), v5 == [equalCopy type]))
   {
-    v6 = [(FUStepTime *)self date];
-    v7 = [v4 date];
-    if (v6 == v7)
+    date = [(FUStepTime *)self date];
+    date2 = [equalCopy date];
+    if (date == date2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(FUStepTime *)self date];
-      v9 = [v4 date];
-      v10 = [v8 isEqual:v9];
+      date3 = [(FUStepTime *)self date];
+      date4 = [equalCopy date];
+      v10 = [date3 isEqual:date4];
     }
   }
 
@@ -81,12 +81,12 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setType:{-[FUStepTime type](self, "type")}];
-  v5 = [(FUStepTime *)self date];
-  v6 = [v5 copy];
+  date = [(FUStepTime *)self date];
+  v6 = [date copy];
   [v4 setDate:v6];
 
   return v4;
@@ -95,16 +95,16 @@
 - (double)timeIntervalSinceNow
 {
   v3 = +[FUUtils testDate];
-  v4 = [(FUStepTime *)self date];
-  v5 = v4;
+  date = [(FUStepTime *)self date];
+  v5 = date;
   if (v3)
   {
-    [v4 timeIntervalSinceDate:v3];
+    [date timeIntervalSinceDate:v3];
   }
 
   else
   {
-    [v4 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
   }
 
   v7 = v6;
@@ -112,33 +112,33 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   if ([(FUStepTime *)self type])
   {
-    [v6 encodeInteger:-[FUStepTime type](self forKey:{"type"), @"type"}];
+    [coderCopy encodeInteger:-[FUStepTime type](self forKey:{"type"), @"type"}];
   }
 
-  v4 = [(FUStepTime *)self date];
+  date = [(FUStepTime *)self date];
 
-  if (v4)
+  if (date)
   {
-    v5 = [(FUStepTime *)self date];
-    [v6 encodeObject:v5 forKey:@"date"];
+    date2 = [(FUStepTime *)self date];
+    [coderCopy encodeObject:date2 forKey:@"date"];
   }
 }
 
-- (FUStepTime)initWithCoder:(id)a3
+- (FUStepTime)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FUStepTime;
   v5 = [(FUStepTime *)&v9 init];
   if (v5)
   {
-    -[FUStepTime setType:](v5, "setType:", [v4 decodeIntegerForKey:@"type"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    -[FUStepTime setType:](v5, "setType:", [coderCopy decodeIntegerForKey:@"type"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     [(FUStepTime *)v5 setDate:v6];
 
     v7 = v5;

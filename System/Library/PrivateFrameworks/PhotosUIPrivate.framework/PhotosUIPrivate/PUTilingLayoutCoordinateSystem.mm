@@ -1,5 +1,5 @@
 @interface PUTilingLayoutCoordinateSystem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)coordinateSystemOrigin;
 - (PUTilingCoordinateSystem)parentCoordinateSystem;
 @end
@@ -22,10 +22,10 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
@@ -35,10 +35,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PUTilingLayoutCoordinateSystem *)self parentCoordinateSystem];
-      v7 = [(PUTilingLayoutCoordinateSystem *)v5 parentCoordinateSystem];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      parentCoordinateSystem = [(PUTilingLayoutCoordinateSystem *)self parentCoordinateSystem];
+      parentCoordinateSystem2 = [(PUTilingLayoutCoordinateSystem *)v5 parentCoordinateSystem];
+      v8 = [parentCoordinateSystem isEqual:parentCoordinateSystem2];
 
       [(PUTilingLayoutCoordinateSystem *)self coordinateSystemOrigin];
       v10 = v9;

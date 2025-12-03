@@ -1,5 +1,5 @@
 @interface JavaUtilConcurrentCountDownLatch
-- (BOOL)awaitWithLong:(int64_t)a3 withJavaUtilConcurrentTimeUnitEnum:(id)a4;
+- (BOOL)awaitWithLong:(int64_t)long withJavaUtilConcurrentTimeUnitEnum:(id)enum;
 - (id)description;
 - (int64_t)getCount;
 - (void)await;
@@ -20,15 +20,15 @@
   [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync acquireSharedInterruptiblyWithInt:1];
 }
 
-- (BOOL)awaitWithLong:(int64_t)a3 withJavaUtilConcurrentTimeUnitEnum:(id)a4
+- (BOOL)awaitWithLong:(int64_t)long withJavaUtilConcurrentTimeUnitEnum:(id)enum
 {
   sync = self->sync_;
-  if (!sync || !a4)
+  if (!sync || !enum)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a4 toNanosWithLong:a3];
+  v5 = [enum toNanosWithLong:long];
 
   return [(JavaUtilConcurrentLocksAbstractQueuedSynchronizer *)sync tryAcquireSharedNanosWithInt:1 withLong:v5];
 }

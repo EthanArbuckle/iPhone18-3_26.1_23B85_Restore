@@ -1,15 +1,15 @@
 @interface BadgeView
 - (BOOL)hasContent;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
 @end
 
 @implementation BadgeView
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  v5 = self;
+  selfCopy = self;
   sub_31994();
   v7 = v6;
   v9 = v8;
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_31A18(a4);
+  selfCopy = self;
+  sub_31A18(in);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -45,7 +45,7 @@
 
 - (BOOL)hasContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_31AF0();
 
   return v3 & 1;
@@ -53,7 +53,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_31B1C();
 }
 

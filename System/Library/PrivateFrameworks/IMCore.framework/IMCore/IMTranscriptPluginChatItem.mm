@@ -6,30 +6,30 @@
 - (IMBalloonPluginDataSource)dataSource;
 - (NSString)description;
 - (NSString)pluginSessionGUID;
-- (id)_initWithItem:(id)a3 initialPayload:(id)a4 index:(int64_t)a5 messagePartRange:(_NSRange)a6 parentChatHasKnownParticipants:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item initialPayload:(id)payload index:(int64_t)index messagePartRange:(_NSRange)range parentChatHasKnownParticipants:(BOOL)participants;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageSummaryInfo;
-- (id)replyContextPreviewChatItemForReply:(id)a3 chatContext:(id)a4;
+- (id)replyContextPreviewChatItemForReply:(id)reply chatContext:(id)context;
 - (unint64_t)playbackType;
 - (unsigned)contentType;
 @end
 
 @implementation IMTranscriptPluginChatItem
 
-- (id)replyContextPreviewChatItemForReply:(id)a3 chatContext:(id)a4
+- (id)replyContextPreviewChatItemForReply:(id)reply chatContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  replyCopy = reply;
   v33 = [IMReplyContextTranscriptPluginChatItem alloc];
   v10 = objc_msgSend__item(self, v8, v9);
-  v13 = objc_msgSend_guid(v7, v11, v12);
-  v16 = objc_msgSend_isFromMe(v7, v14, v15);
+  v13 = objc_msgSend_guid(replyCopy, v11, v12);
+  v16 = objc_msgSend_isFromMe(replyCopy, v14, v15);
   v19 = objc_msgSend_initialPayload(self, v17, v18);
   v22 = objc_msgSend_index(self, v20, v21);
   v25 = objc_msgSend_messagePartRange(self, v23, v24);
   v27 = v26;
   HasKnownParticipants = objc_msgSend_parentChatHasKnownParticipants(self, v26, v28);
-  HasKnownParticipants_chatContext = objc_msgSend__initWithItem_parentItem_replyMessageGUID_replyIsFromMe_initialPayload_index_messagePartRange_parentChatHasKnownParticipants_chatContext_(v33, v29, v10, v7, v13, v16, v19, v22, v25, v27, HasKnownParticipants, v6);
+  HasKnownParticipants_chatContext = objc_msgSend__initWithItem_parentItem_replyMessageGUID_replyIsFromMe_initialPayload_index_messagePartRange_parentChatHasKnownParticipants_chatContext_(v33, v29, v10, replyCopy, v13, v16, v19, v22, v25, v27, HasKnownParticipants, contextCopy);
 
   return HasKnownParticipants_chatContext;
 }
@@ -46,7 +46,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -60,25 +60,25 @@
   return v22;
 }
 
-- (id)_initWithItem:(id)a3 initialPayload:(id)a4 index:(int64_t)a5 messagePartRange:(_NSRange)a6 parentChatHasKnownParticipants:(BOOL)a7
+- (id)_initWithItem:(id)item initialPayload:(id)payload index:(int64_t)index messagePartRange:(_NSRange)range parentChatHasKnownParticipants:(BOOL)participants
 {
-  length = a6.length;
-  location = a6.location;
-  v14 = a3;
-  v15 = a4;
-  v18 = objc_msgSend_pluginBundleID(v15, v16, v17);
+  length = range.length;
+  location = range.location;
+  itemCopy = item;
+  payloadCopy = payload;
+  v18 = objc_msgSend_pluginBundleID(payloadCopy, v16, v17);
   isEqualToString = objc_msgSend_isEqualToString_(v18, v19, *MEMORY[0x1E69A6A18]);
   if (isEqualToString)
   {
-    v8 = objc_msgSend_message(v14, v20, v21);
+    v8 = objc_msgSend_message(itemCopy, v20, v21);
     v7 = objc_msgSend_subject(v8, v23, v24);
     v27 = objc_msgSend_isBusiness(v7, v25, v26) ^ 1;
-    v29 = objc_msgSend__initWithItem_index_messagePartRange_syndicationBehavior_(self, v28, v14, a5, location, length, v27);
+    v29 = objc_msgSend__initWithItem_index_messagePartRange_syndicationBehavior_(self, v28, itemCopy, index, location, length, v27);
   }
 
   else
   {
-    v29 = objc_msgSend__initWithItem_index_messagePartRange_syndicationBehavior_(self, v20, v14, a5, location, length, 0);
+    v29 = objc_msgSend__initWithItem_index_messagePartRange_syndicationBehavior_(self, v20, itemCopy, index, location, length, 0);
   }
 
   v30 = v29;
@@ -88,15 +88,15 @@
 
   if (v30)
   {
-    v33 = objc_msgSend_guid(v14, v31, v32);
+    v33 = objc_msgSend_guid(itemCopy, v31, v32);
     v34 = sub_1A83AC604();
 
     objc_msgSend__setGUID_(v30, v35, v34);
-    objc_msgSend_setInitialPayload_(v30, v36, v15);
-    v39 = objc_msgSend_pluginBundleID(v15, v37, v38);
+    objc_msgSend_setInitialPayload_(v30, v36, payloadCopy);
+    v39 = objc_msgSend_pluginBundleID(payloadCopy, v37, v38);
     objc_msgSend_setBundleIdentifier_(v30, v40, v39);
 
-    v30[186] = a7;
+    v30[186] = participants;
     v43 = objc_msgSend__item(v30, v41, v42);
     isBreadcrumb = objc_msgSend_isBreadcrumb(v43, v44, v45);
 
@@ -165,16 +165,16 @@
 
 - (IMBalloonPluginDataSource)dataSource
 {
-  v3 = self;
+  selfCopy = self;
   v101 = *MEMORY[0x1E69E9840];
   v4 = objc_msgSend__item(self, a2, v2);
   v7 = objc_msgSend_sharedInstance(IMBalloonPluginManager, v5, v6);
-  v10 = objc_msgSend_initialPayload(v3, v8, v9);
+  v10 = objc_msgSend_initialPayload(selfCopy, v8, v9);
   v12 = objc_msgSend_dataSourceForPluginPayload_(v7, v11, v10);
 
-  if (objc_msgSend_hasSetIsLastChatItemOfPluginType(v3, v13, v14))
+  if (objc_msgSend_hasSetIsLastChatItemOfPluginType(selfCopy, v13, v14))
   {
-    isLastChatItemOfPluginType = objc_msgSend_isLastChatItemOfPluginType(v3, v15, v16);
+    isLastChatItemOfPluginType = objc_msgSend_isLastChatItemOfPluginType(selfCopy, v15, v16);
     objc_msgSend_setLast_(v12, v18, isLastChatItemOfPluginType);
   }
 
@@ -211,7 +211,7 @@
 LABEL_11:
     v93 = v19;
     v35 = [IMPluginPayload alloc];
-    v38 = objc_msgSend_chatContext(v3, v36, v37);
+    v38 = objc_msgSend_chatContext(selfCopy, v36, v37);
     v95 = v4;
     v92 = objc_msgSend_initWithMessageItem_chatContext_(v35, v39, v4, v38);
 
@@ -220,8 +220,8 @@ LABEL_11:
     v97 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v94 = v3;
-    v45 = objc_msgSend_visibleAssociatedMessageChatItems(v3, v43, v44);
+    v94 = selfCopy;
+    v45 = objc_msgSend_visibleAssociatedMessageChatItems(selfCopy, v43, v44);
     v47 = objc_msgSend_countByEnumeratingWithState_objects_count_(v45, v46, &v96, v100, 16);
     if (!v47)
     {
@@ -291,7 +291,7 @@ LABEL_28:
         v82 = objc_msgSend_isFromMe(v95, v80, v81);
         objc_msgSend_setInitialMessageIsFromMe_(v12, v83, v82);
 
-        v3 = v94;
+        selfCopy = v94;
         LOBYTE(v19) = v93;
         break;
       }
@@ -300,14 +300,14 @@ LABEL_28:
 
 LABEL_29:
   objc_msgSend_setUpdatingDataSourcePayload_(v4, v34, v19 & 1);
-  if (objc_msgSend_parentChatHasKnownParticipants(v3, v84, v85))
+  if (objc_msgSend_parentChatHasKnownParticipants(selfCopy, v84, v85))
   {
     objc_msgSend_setParentChatHasAllUnknownRecipients_(v12, v86, 0);
   }
 
   else
   {
-    v88 = objc_msgSend_isFromMe(v3, v86, v87) ^ 1;
+    v88 = objc_msgSend_isFromMe(selfCopy, v86, v87) ^ 1;
     objc_msgSend_setParentChatHasAllUnknownRecipients_(v12, v89, v88);
   }
 

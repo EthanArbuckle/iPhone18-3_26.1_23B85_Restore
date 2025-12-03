@@ -1,19 +1,19 @@
 @interface MFPLevelsEffect
-- (MFPLevelsEffect)initWithHighlight:(int)a3 midtone:(int)a4 shadow:(int)a5;
+- (MFPLevelsEffect)initWithHighlight:(int)highlight midtone:(int)midtone shadow:(int)shadow;
 @end
 
 @implementation MFPLevelsEffect
 
-- (MFPLevelsEffect)initWithHighlight:(int)a3 midtone:(int)a4 shadow:(int)a5
+- (MFPLevelsEffect)initWithHighlight:(int)highlight midtone:(int)midtone shadow:(int)shadow
 {
   v9.receiver = self;
   v9.super_class = MFPLevelsEffect;
   result = [(MFPLevelsEffect *)&v9 init];
   if (result)
   {
-    result->mHighlight = a3;
-    result->mMidtone = a4;
-    result->mShadow = a5;
+    result->mHighlight = highlight;
+    result->mMidtone = midtone;
+    result->mShadow = shadow;
   }
 
   return result;

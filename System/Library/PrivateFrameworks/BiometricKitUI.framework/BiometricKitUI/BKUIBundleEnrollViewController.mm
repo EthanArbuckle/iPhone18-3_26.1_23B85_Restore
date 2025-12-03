@@ -41,11 +41,11 @@
 - (void)bundleAlertView
 {
   v6 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = [objc_opt_class() description];
   v4 = 138412290;
   v5 = v2;
-  _os_log_error_impl(&dword_241B0A000, v1, OS_LOG_TYPE_ERROR, "BiometricKitUI: %@ does not override BKUIBundleEnrollViewController.bundleAlertView!", &v4, 0xCu);
+  _os_log_error_impl(&dword_241B0A000, selfCopy, OS_LOG_TYPE_ERROR, "BiometricKitUI: %@ does not override BKUIBundleEnrollViewController.bundleAlertView!", &v4, 0xCu);
 
   v3 = *MEMORY[0x277D85DE8];
 }

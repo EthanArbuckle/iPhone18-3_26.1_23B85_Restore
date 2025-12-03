@@ -1,23 +1,23 @@
 @interface UVFenceHandle
 + (id)createForAllScenes;
-+ (id)createForScene:(id)a3;
-- (UVFenceHandle)initWithBSXPCCoder:(id)a3;
-- (UVFenceHandle)initWithUnderlying:(id)a3;
++ (id)createForScene:(id)scene;
+- (UVFenceHandle)initWithBSXPCCoder:(id)coder;
+- (UVFenceHandle)initWithUnderlying:(id)underlying;
 - (id)copy;
 @end
 
 @implementation UVFenceHandle
 
-- (UVFenceHandle)initWithUnderlying:(id)a3
+- (UVFenceHandle)initWithUnderlying:(id)underlying
 {
-  v5 = a3;
+  underlyingCopy = underlying;
   v9.receiver = self;
   v9.super_class = UVFenceHandle;
   v6 = [(UVFenceHandle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlying, a3);
+    objc_storeStrong(&v6->_underlying, underlying);
   }
 
   return v7;
@@ -25,10 +25,10 @@
 
 + (id)createForAllScenes
 {
-  v2 = [MEMORY[0x277D75940] _synchronizedDrawingFence];
-  if (v2)
+  _synchronizedDrawingFence = [MEMORY[0x277D75940] _synchronizedDrawingFence];
+  if (_synchronizedDrawingFence)
   {
-    v3 = [[UVFenceHandle alloc] initWithUnderlying:v2];
+    v3 = [[UVFenceHandle alloc] initWithUnderlying:_synchronizedDrawingFence];
   }
 
   else
@@ -46,14 +46,14 @@
   return v3;
 }
 
-+ (id)createForScene:(id)a3
++ (id)createForScene:(id)scene
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 _synchronizedDrawingFence];
-  if (v4)
+  sceneCopy = scene;
+  _synchronizedDrawingFence = [sceneCopy _synchronizedDrawingFence];
+  if (_synchronizedDrawingFence)
   {
-    v5 = [[UVFenceHandle alloc] initWithUnderlying:v4];
+    v5 = [[UVFenceHandle alloc] initWithUnderlying:_synchronizedDrawingFence];
   }
 
   else
@@ -62,7 +62,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = sceneCopy;
       _os_log_impl(&dword_25F542000, v6, OS_LOG_TYPE_DEFAULT, "[UIScene _synchronizedDrawingFence] returned nil: scene = %@", &v9, 0xCu);
     }
 
@@ -83,15 +83,15 @@
   return v5;
 }
 
-- (UVFenceHandle)initWithBSXPCCoder:(id)a3
+- (UVFenceHandle)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UVFenceHandle;
   v5 = [(UVFenceHandle *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"underlying"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"underlying"];
     underlying = v5->_underlying;
     v5->_underlying = v6;
 

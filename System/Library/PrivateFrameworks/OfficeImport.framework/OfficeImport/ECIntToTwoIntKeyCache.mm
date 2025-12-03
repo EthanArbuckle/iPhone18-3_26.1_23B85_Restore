@@ -1,7 +1,7 @@
 @interface ECIntToTwoIntKeyCache
-- (BOOL)integerIsPresentForKey1:(unint64_t)a3 key2:(unint64_t)a4 outValue:(unint64_t *)a5;
+- (BOOL)integerIsPresentForKey1:(unint64_t)key1 key2:(unint64_t)key2 outValue:(unint64_t *)value;
 - (ECIntToTwoIntKeyCache)init;
-- (void)setObject:(unint64_t)a3 forKey1:(unint64_t)a4 key2:(unint64_t)a5;
+- (void)setObject:(unint64_t)object forKey1:(unint64_t)key1 key2:(unint64_t)key2;
 @end
 
 @implementation ECIntToTwoIntKeyCache
@@ -21,23 +21,23 @@
   return v2;
 }
 
-- (BOOL)integerIsPresentForKey1:(unint64_t)a3 key2:(unint64_t)a4 outValue:(unint64_t *)a5
+- (BOOL)integerIsPresentForKey1:(unint64_t)key1 key2:(unint64_t)key2 outValue:(unint64_t *)value
 {
-  v7 = [ECIntToTwoIntKeyCache keyForKey1:a3 key2:a4];
+  v7 = [ECIntToTwoIntKeyCache keyForKey1:key1 key2:key2];
   v8 = [(NSMutableDictionary *)self->mCache objectForKeyedSubscript:v7];
   v9 = v8;
   if (v8)
   {
-    *a5 = [v8 unsignedIntegerValue];
+    *value = [v8 unsignedIntegerValue];
   }
 
   return v9 != 0;
 }
 
-- (void)setObject:(unint64_t)a3 forKey1:(unint64_t)a4 key2:(unint64_t)a5
+- (void)setObject:(unint64_t)object forKey1:(unint64_t)key1 key2:(unint64_t)key2
 {
-  v8 = [ECIntToTwoIntKeyCache keyForKey1:a4 key2:a5];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [ECIntToTwoIntKeyCache keyForKey1:key1 key2:key2];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:object];
   [(NSMutableDictionary *)self->mCache setObject:v7 forKeyedSubscript:v8];
 }
 

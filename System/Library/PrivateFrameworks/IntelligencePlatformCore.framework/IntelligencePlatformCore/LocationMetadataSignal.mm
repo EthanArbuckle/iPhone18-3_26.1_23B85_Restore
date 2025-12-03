@@ -1,10 +1,10 @@
 @interface LocationMetadataSignal
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation LocationMetadataSignal
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_1C4F01138();
 

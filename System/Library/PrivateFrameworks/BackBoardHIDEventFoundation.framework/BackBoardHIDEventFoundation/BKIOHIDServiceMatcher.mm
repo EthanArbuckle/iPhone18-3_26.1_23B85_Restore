@@ -1,24 +1,24 @@
 @interface BKIOHIDServiceMatcher
-- (BKIOHIDServiceMatcher)initWithMatchingDictionary:(id)a3 dataProvider:(id)a4;
-- (BKIOHIDServiceMatcher)initWithMatchingDictionary:(id)a3 serviceClass:(Class)a4 dataProvider:(id)a5;
-- (BKIOHIDServiceMatcher)initWithSenderDescriptor:(id)a3 dataProvider:(id)a4;
-- (id)_lock_didAddIOHIDServiceRefs:(os_unfair_lock *)a1;
-- (id)_servicesForIOHIDServiceRefs:(id)a3;
-- (id)_startObserving:(void *)a3 queue:(int)a4 sync:;
+- (BKIOHIDServiceMatcher)initWithMatchingDictionary:(id)dictionary dataProvider:(id)provider;
+- (BKIOHIDServiceMatcher)initWithMatchingDictionary:(id)dictionary serviceClass:(Class)class dataProvider:(id)provider;
+- (BKIOHIDServiceMatcher)initWithSenderDescriptor:(id)descriptor dataProvider:(id)provider;
+- (id)_lock_didAddIOHIDServiceRefs:(os_unfair_lock *)refs;
+- (id)_servicesForIOHIDServiceRefs:(id)refs;
+- (id)_startObserving:(void *)observing queue:(int)queue sync:;
 - (id)existingServices;
 - (void)_expectDeallocation;
-- (void)_lock_asyncNotifyServicesAdded:(uint64_t)a1;
+- (void)_lock_asyncNotifyServicesAdded:(uint64_t)added;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation BKIOHIDServiceMatcher
 
-- (id)_servicesForIOHIDServiceRefs:(id)a3
+- (id)_servicesForIOHIDServiceRefs:(id)refs
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  refsCopy = refs;
+  array = [v4 array];
   serviceClass = self->_serviceClass;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -26,9 +26,9 @@
   v12[3] = &unk_2784F6898;
   v14 = serviceClass;
   v12[4] = self;
-  v8 = v6;
+  v8 = array;
   v13 = v8;
-  [v5 enumerateObjectsUsingBlock:v12];
+  [refsCopy enumerateObjectsUsingBlock:v12];
 
   v9 = v13;
   v10 = v8;
@@ -99,7 +99,7 @@ LABEL_10:
       v6 = objc_opt_class();
       matchingDictionary = self->_matchingDictionary;
       v10 = 134218754;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
       v13 = v6;
       v14 = 2114;
@@ -120,12 +120,12 @@ LABEL_10:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lock_didAddIOHIDServiceRefs:(os_unfair_lock *)a1
+- (id)_lock_didAddIOHIDServiceRefs:(os_unfair_lock *)refs
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  os_unfair_lock_assert_owner(a1 + 2);
-  v4 = [(os_unfair_lock *)a1 _servicesForIOHIDServiceRefs:v3];
+  os_unfair_lock_assert_owner(refs + 2);
+  v4 = [(os_unfair_lock *)refs _servicesForIOHIDServiceRefs:v3];
   v5 = BKLogHID();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -167,11 +167,11 @@ LABEL_10:
   return v6;
 }
 
-- (void)_lock_asyncNotifyServicesAdded:(uint64_t)a1
+- (void)_lock_asyncNotifyServicesAdded:(uint64_t)added
 {
   v34 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (*(a1 + 24) == 1)
+  if (*(added + 24) == 1)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"wrong code path, pal"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -184,7 +184,7 @@ LABEL_10:
       v24 = 2114;
       v25 = v14;
       v26 = 2048;
-      v27 = a1;
+      addedCopy2 = added;
       v28 = 2114;
       v29 = @"BKIOHIDServiceMatcher.m";
       v30 = 1024;
@@ -201,8 +201,8 @@ LABEL_10:
   }
 
   v4 = v3;
-  WeakRetained = objc_loadWeakRetained((a1 + 48));
-  v6 = objc_loadWeakRetained((a1 + 56));
+  WeakRetained = objc_loadWeakRetained((added + 48));
+  v6 = objc_loadWeakRetained((added + 56));
   if (!v6)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"shouldn't be possible to be invalid here"];
@@ -216,7 +216,7 @@ LABEL_10:
       v24 = 2114;
       v25 = v18;
       v26 = 2048;
-      v27 = a1;
+      addedCopy2 = added;
       v28 = 2114;
       v29 = @"BKIOHIDServiceMatcher.m";
       v30 = 1024;
@@ -237,7 +237,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __56__BKIOHIDServiceMatcher__lock_asyncNotifyServicesAdded___block_invoke;
   block[3] = &unk_2784F6B30;
-  block[4] = a1;
+  block[4] = added;
   v20 = WeakRetained;
   v8 = v4;
   v21 = v8;
@@ -258,16 +258,16 @@ uint64_t __56__BKIOHIDServiceMatcher__lock_asyncNotifyServicesAdded___block_invo
   return result;
 }
 
-- (id)_startObserving:(void *)a3 queue:(int)a4 sync:
+- (id)_startObserving:(void *)observing queue:(int)queue sync:
 {
   v44 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  observingCopy = observing;
+  if (self)
   {
-    os_unfair_lock_assert_not_owner((a1 + 8));
-    os_unfair_lock_lock((a1 + 8));
-    if (!v8 && (a4 & 1) == 0)
+    os_unfair_lock_assert_not_owner((self + 8));
+    os_unfair_lock_lock((self + 8));
+    if (!observingCopy && (queue & 1) == 0)
     {
       v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"missing queue for async case"];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -276,11 +276,11 @@ uint64_t __56__BKIOHIDServiceMatcher__lock_asyncNotifyServicesAdded___block_invo
         v22 = objc_opt_class();
         v23 = NSStringFromClass(v22);
         v32 = 138544642;
-        v33 = v21;
+        selfCopy3 = v21;
         v34 = 2114;
         v35 = v23;
         v36 = 2048;
-        v37 = a1;
+        selfCopy4 = self;
         v38 = 2114;
         v39 = @"BKIOHIDServiceMatcher.m";
         v40 = 1024;
@@ -296,7 +296,7 @@ uint64_t __56__BKIOHIDServiceMatcher__lock_asyncNotifyServicesAdded___block_invo
       JUMPOUT(0x223CD77B0);
     }
 
-    if (*(a1 + 25) == 1)
+    if (*(self + 25) == 1)
     {
       v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"already started matching -- only one observer per matcher, plz"];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -305,11 +305,11 @@ uint64_t __56__BKIOHIDServiceMatcher__lock_asyncNotifyServicesAdded___block_invo
         v26 = objc_opt_class();
         v27 = NSStringFromClass(v26);
         v32 = 138544642;
-        v33 = v25;
+        selfCopy3 = v25;
         v34 = 2114;
         v35 = v27;
         v36 = 2048;
-        v37 = a1;
+        selfCopy4 = self;
         v38 = 2114;
         v39 = @"BKIOHIDServiceMatcher.m";
         v40 = 1024;
@@ -325,29 +325,29 @@ uint64_t __56__BKIOHIDServiceMatcher__lock_asyncNotifyServicesAdded___block_invo
       JUMPOUT(0x223CD789CLL);
     }
 
-    *(a1 + 25) = 1;
-    *(a1 + 24) = a4;
-    objc_storeWeak((a1 + 48), v7);
-    objc_storeWeak((a1 + 56), v8);
+    *(self + 25) = 1;
+    *(self + 24) = queue;
+    objc_storeWeak((self + 48), v7);
+    objc_storeWeak((self + 56), observingCopy);
     v9 = BKLogHID();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
-      v12 = *(a1 + 32);
-      v11 = *(a1 + 40);
+      v12 = *(self + 32);
+      v11 = *(self + 40);
       v32 = 134218754;
-      v33 = a1;
+      selfCopy3 = self;
       v34 = 2114;
       v35 = v10;
       v36 = 2114;
-      v37 = v11;
+      selfCopy4 = v11;
       v38 = 2114;
       v39 = v12;
       v13 = v10;
       _os_log_impl(&dword_223CBE000, v9, OS_LOG_TYPE_DEFAULT, "%p %{public}@ started matching %{public}@ with dictionary %{public}@", &v32, 0x2Au);
     }
 
-    v14 = *(a1 + 64);
+    v14 = *(self + 64);
     if (!v14)
     {
       v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"must have a data provider"];
@@ -357,11 +357,11 @@ uint64_t __56__BKIOHIDServiceMatcher__lock_asyncNotifyServicesAdded___block_invo
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
         v32 = 138544642;
-        v33 = v29;
+        selfCopy3 = v29;
         v34 = 2114;
         v35 = v31;
         v36 = 2048;
-        v37 = a1;
+        selfCopy4 = self;
         v38 = 2114;
         v39 = @"BKIOHIDServiceMatcher.m";
         v40 = 1024;
@@ -377,35 +377,35 @@ uint64_t __56__BKIOHIDServiceMatcher__lock_asyncNotifyServicesAdded___block_invo
       JUMPOUT(0x223CD7988);
     }
 
-    [v14 registerIOHIDServicesCallback:_BKHIDServiceAdded matchingDictionary:*(a1 + 32) target:a1 refCon:*(a1 + 32)];
-    if (a4)
+    [v14 registerIOHIDServicesCallback:_BKHIDServiceAdded matchingDictionary:*(self + 32) target:self refCon:*(self + 32)];
+    if (queue)
     {
-      v15 = [a1 existingServices];
+      existingServices = [self existingServices];
     }
 
     else
     {
-      v16 = [*(a1 + 64) IOHIDServicesMatching:*(a1 + 32)];
+      v16 = [*(self + 64) IOHIDServicesMatching:*(self + 32)];
       if ([v16 count])
       {
-        v17 = [(BKIOHIDServiceMatcher *)a1 _lock_didAddIOHIDServiceRefs:v16];
-        [(BKIOHIDServiceMatcher *)a1 _lock_asyncNotifyServicesAdded:v17];
+        v17 = [(BKIOHIDServiceMatcher *)self _lock_didAddIOHIDServiceRefs:v16];
+        [(BKIOHIDServiceMatcher *)self _lock_asyncNotifyServicesAdded:v17];
       }
 
-      v15 = 0;
+      existingServices = 0;
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
   {
-    v15 = 0;
+    existingServices = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return existingServices;
 }
 
 - (id)existingServices
@@ -456,7 +456,7 @@ uint64_t __56__BKIOHIDServiceMatcher__lock_asyncNotifyServicesAdded___block_invo
         v12 = 2114;
         v13 = v9;
         v14 = 2048;
-        v15 = self;
+        selfCopy = self;
         v16 = 2114;
         v17 = @"BKIOHIDServiceMatcher.m";
         v18 = 1024;
@@ -476,45 +476,45 @@ uint64_t __56__BKIOHIDServiceMatcher__lock_asyncNotifyServicesAdded___block_invo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BKIOHIDServiceMatcher)initWithMatchingDictionary:(id)a3 serviceClass:(Class)a4 dataProvider:(id)a5
+- (BKIOHIDServiceMatcher)initWithMatchingDictionary:(id)dictionary serviceClass:(Class)class dataProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = BKIOHIDServiceMatcher;
   v10 = [(BKIOHIDServiceMatcher *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_serviceClass, a4);
-    v12 = [v8 copy];
+    objc_storeStrong(&v10->_serviceClass, class);
+    v12 = [dictionaryCopy copy];
     matchingDictionary = v11->_matchingDictionary;
     v11->_matchingDictionary = v12;
 
-    objc_storeStrong(&v11->_dataProvider, a5);
+    objc_storeStrong(&v11->_dataProvider, provider);
   }
 
   return v11;
 }
 
-- (BKIOHIDServiceMatcher)initWithMatchingDictionary:(id)a3 dataProvider:(id)a4
+- (BKIOHIDServiceMatcher)initWithMatchingDictionary:(id)dictionary dataProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKIOHIDServiceMatcher *)self initWithMatchingDictionary:v7 serviceClass:objc_opt_class() dataProvider:v6];
+  providerCopy = provider;
+  dictionaryCopy = dictionary;
+  v8 = [(BKIOHIDServiceMatcher *)self initWithMatchingDictionary:dictionaryCopy serviceClass:objc_opt_class() dataProvider:providerCopy];
 
   return v8;
 }
 
-- (BKIOHIDServiceMatcher)initWithSenderDescriptor:(id)a3 dataProvider:(id)a4
+- (BKIOHIDServiceMatcher)initWithSenderDescriptor:(id)descriptor dataProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = -[BKIOHIDServiceMatcher initWithUsagePage:usage:builtIn:dataProvider:](self, "initWithUsagePage:usage:builtIn:dataProvider:", [v7 primaryPage], objc_msgSend(v7, "primaryUsage"), 0, v8);
+  descriptorCopy = descriptor;
+  providerCopy = provider;
+  v9 = -[BKIOHIDServiceMatcher initWithUsagePage:usage:builtIn:dataProvider:](self, "initWithUsagePage:usage:builtIn:dataProvider:", [descriptorCopy primaryPage], objc_msgSend(descriptorCopy, "primaryUsage"), 0, providerCopy);
 
   if (v9)
   {
-    objc_storeStrong(&v9->_senderDescriptor, a3);
+    objc_storeStrong(&v9->_senderDescriptor, descriptor);
   }
 
   return v9;

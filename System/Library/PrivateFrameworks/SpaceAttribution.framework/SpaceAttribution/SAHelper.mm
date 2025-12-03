@@ -2,29 +2,29 @@
 + (BOOL)isSAFSupported;
 + (id)dynamicRegistrationLock;
 + (unint64_t)getOVPFileAndVolumeSize;
-+ (unsigned)runAppSizerWithBGTask:(id)a3;
-- (BOOL)isValidMountPoint:(id)a3;
-- (void)addAppSizerHandler:(id)a3 reply:(id)a4;
-- (void)addURLSizerHandler:(id)a3 withURLs:(id)a4 reply:(id)a5;
-- (void)adjustDenomAgeBy:(unint64_t)a3 reply:(id)a4;
-- (void)clearLastTelemetryData:(id)a3;
-- (void)computeSizeOfSystemVolume:(id)a3;
-- (void)computeSizeOfVolumeAtURL:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)disableAppSizerResultsFilteringWithReply:(id)a3;
-- (void)getAppPaths:(id)a3 options:(int)a4 reply:(id)a5;
-- (void)getLastTelemetryData:(id)a3;
-- (void)getPurgeableInfo:(id)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)importFromPlist:(id)a3 reply:(id)a4;
-- (void)registerPaths:(id)a3 reply:(id)a4;
-- (void)runAppSizerWithHandler:(id)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)runAppSizerWithScanOptions:(unint64_t)a3 reply:(id)a4;
-- (void)runURLSizerWithID:(id)a3 reply:(id)a4;
-- (void)setAppPathListPathOnDisk:(id)a3 reply:(id)a4;
-- (void)setAppPathListPathOnDisktoDefaultWithReply:(id)a3;
-- (void)setAppSizerResultsFilteringOptionsToDefaultWithReply:(id)a3;
-- (void)setForceSDAAbort:(id)a3;
-- (void)setForceTelemetry:(id)a3;
-- (void)unregisterPaths:(id)a3 reply:(id)a4;
++ (unsigned)runAppSizerWithBGTask:(id)task;
+- (BOOL)isValidMountPoint:(id)point;
+- (void)addAppSizerHandler:(id)handler reply:(id)reply;
+- (void)addURLSizerHandler:(id)handler withURLs:(id)ls reply:(id)reply;
+- (void)adjustDenomAgeBy:(unint64_t)by reply:(id)reply;
+- (void)clearLastTelemetryData:(id)data;
+- (void)computeSizeOfSystemVolume:(id)volume;
+- (void)computeSizeOfVolumeAtURL:(id)l options:(unint64_t)options completionHandler:(id)handler;
+- (void)disableAppSizerResultsFilteringWithReply:(id)reply;
+- (void)getAppPaths:(id)paths options:(int)options reply:(id)reply;
+- (void)getLastTelemetryData:(id)data;
+- (void)getPurgeableInfo:(id)info options:(unint64_t)options reply:(id)reply;
+- (void)importFromPlist:(id)plist reply:(id)reply;
+- (void)registerPaths:(id)paths reply:(id)reply;
+- (void)runAppSizerWithHandler:(id)handler options:(unint64_t)options reply:(id)reply;
+- (void)runAppSizerWithScanOptions:(unint64_t)options reply:(id)reply;
+- (void)runURLSizerWithID:(id)d reply:(id)reply;
+- (void)setAppPathListPathOnDisk:(id)disk reply:(id)reply;
+- (void)setAppPathListPathOnDisktoDefaultWithReply:(id)reply;
+- (void)setAppSizerResultsFilteringOptionsToDefaultWithReply:(id)reply;
+- (void)setForceSDAAbort:(id)abort;
+- (void)setForceTelemetry:(id)telemetry;
+- (void)unregisterPaths:(id)paths reply:(id)reply;
 @end
 
 @implementation SAHelper
@@ -41,9 +41,9 @@
   return v3;
 }
 
-- (void)runAppSizerWithScanOptions:(unint64_t)a3 reply:(id)a4
+- (void)runAppSizerWithScanOptions:(unint64_t)options reply:(id)reply
 {
-  (*(a4 + 2))(a4, 0);
+  (*(reply + 2))(reply, 0);
   v5 = SALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -52,7 +52,7 @@
 
   v13 = objc_opt_new();
   v22 = 0;
-  [v13 runAppSizerWithRunMode:2 BGTask:0 scanOptions:a3 error:&v22];
+  [v13 runAppSizerWithRunMode:2 BGTask:0 scanOptions:options error:&v22];
   v14 = SALog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -60,20 +60,20 @@
   }
 }
 
-- (void)addURLSizerHandler:(id)a3 withURLs:(id)a4 reply:(id)a5
+- (void)addURLSizerHandler:(id)handler withURLs:(id)ls reply:(id)reply
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  replyCopy = reply;
+  lsCopy = ls;
+  handlerCopy = handler;
   v10 = SALog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     sub_10003B474();
   }
 
-  v11 = [SAURLSizerConfiguration newWithReplyController:v9 urls:v8];
+  v11 = [SAURLSizerConfiguration newWithReplyController:handlerCopy urls:lsCopy];
   v12 = [SAURlSizersManager addURLSizerConfiguration:v11];
-  v7[2](v7, v12);
+  replyCopy[2](replyCopy, v12);
 
   v13 = SALog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -82,10 +82,10 @@
   }
 }
 
-- (void)runURLSizerWithID:(id)a3 reply:(id)a4
+- (void)runURLSizerWithID:(id)d reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v7 = SALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -93,12 +93,12 @@
   }
 
   v8 = [SADUrlSizer newWithOptions:1];
-  v9 = [SAURlSizersManager getURLSizerConfiguration:v6];
+  v9 = [SAURlSizersManager getURLSizerConfiguration:dCopy];
 
-  v10 = [v9 urls];
-  [v8 scanURLs:v10 withSizer:v9];
+  urls = [v9 urls];
+  [v8 scanURLs:urls withSizer:v9];
 
-  v5[2](v5, 0);
+  replyCopy[2](replyCopy, 0);
   v11 = SALog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -176,26 +176,26 @@
   return v6 & 1;
 }
 
-+ (unsigned)runAppSizerWithBGTask:(id)a3
++ (unsigned)runAppSizerWithBGTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   v4 = objc_opt_new();
   v7 = 0;
-  v5 = [v4 runAppSizerWithRunMode:1 BGTask:v3 scanOptions:51713 error:&v7];
+  v5 = [v4 runAppSizerWithRunMode:1 BGTask:taskCopy scanOptions:51713 error:&v7];
 
   return v5;
 }
 
-- (void)addAppSizerHandler:(id)a3 reply:(id)a4
+- (void)addAppSizerHandler:(id)handler reply:(id)reply
 {
-  v5 = a4;
-  v6 = [SACallbackManager addAppSizerHandler:a3];
-  v5[2](v5, v6);
+  replyCopy = reply;
+  v6 = [SACallbackManager addAppSizerHandler:handler];
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)setAppSizerResultsFilteringOptionsToDefaultWithReply:(id)a3
+- (void)setAppSizerResultsFilteringOptionsToDefaultWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = SALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -204,7 +204,7 @@
 
   +[SAVolumeScanner setAppSizerResultsFilteringToDefault];
   +[SATelemetryManager setAppsFilteringToDefault];
-  v3[2](v3, 0);
+  replyCopy[2](replyCopy, 0);
 
   v12 = SALog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -213,9 +213,9 @@
   }
 }
 
-- (void)disableAppSizerResultsFilteringWithReply:(id)a3
+- (void)disableAppSizerResultsFilteringWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = SALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -224,7 +224,7 @@
 
   +[SAVolumeScanner disableAppSizerResultsFiltering];
   +[SATelemetryManager disableAppsFiltering];
-  v3[2](v3, 0);
+  replyCopy[2](replyCopy, 0);
 
   v12 = SALog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -233,18 +233,18 @@
   }
 }
 
-- (BOOL)isValidMountPoint:(id)a3
+- (BOOL)isValidMountPoint:(id)point
 {
-  v3 = a3;
+  pointCopy = point;
   v4 = +[SASupport getRelevantVolumes];
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:pointCopy];
 
   return v5;
 }
 
-- (void)setForceTelemetry:(id)a3
+- (void)setForceTelemetry:(id)telemetry
 {
-  v3 = a3;
+  telemetryCopy = telemetry;
   v4 = SALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -252,7 +252,7 @@
   }
 
   +[SAVolumeScanner setForceTelemetry];
-  v3[2](v3, 0);
+  telemetryCopy[2](telemetryCopy, 0);
 
   v12 = SALog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -261,9 +261,9 @@
   }
 }
 
-- (void)setForceSDAAbort:(id)a3
+- (void)setForceSDAAbort:(id)abort
 {
-  v3 = a3;
+  abortCopy = abort;
   v4 = SALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -271,7 +271,7 @@
   }
 
   +[SAVolumeScanner setForceSDAAbort];
-  v3[2](v3, 0);
+  abortCopy[2](abortCopy, 0);
 
   v12 = SALog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -280,24 +280,24 @@
   }
 }
 
-- (void)adjustDenomAgeBy:(unint64_t)a3 reply:(id)a4
+- (void)adjustDenomAgeBy:(unint64_t)by reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = SALog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_10003B924(a3);
+    sub_10003B924(by);
   }
 
   v7 = objc_opt_new();
-  [v7 adjustDenomAgeBy:a3];
-  v5[2](v5, 0);
+  [v7 adjustDenomAgeBy:by];
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)registerPaths:(id)a3 reply:(id)a4
+- (void)registerPaths:(id)paths reply:(id)reply
 {
-  v70 = a3;
-  v69 = a4;
+  pathsCopy = paths;
+  replyCopy = reply;
   v74 = objc_opt_new();
   v71 = objc_opt_new();
   v5 = SALog();
@@ -306,7 +306,7 @@
     sub_10003B9C0(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  if (v70 && [v70 count])
+  if (pathsCopy && [pathsCopy count])
   {
     obj = +[SAHelper dynamicRegistrationLock];
     objc_sync_enter(obj);
@@ -324,7 +324,7 @@
       }
 
       v51 = v68;
-      v69[2](v69, v68);
+      replyCopy[2](replyCopy, v68);
       goto LABEL_63;
     }
 
@@ -345,7 +345,7 @@
     v87 = 0u;
     v85 = 0u;
     v84 = 0u;
-    v17 = v70;
+    v17 = pathsCopy;
     v18 = [v17 countByEnumeratingWithState:&v84 objects:v96 count:16];
     if (v18)
     {
@@ -360,8 +360,8 @@
           }
 
           v21 = [*(*(&v84 + 1) + 8 * i) url];
-          v22 = [v21 path];
-          v23 = [NSURL fileURLWithPath:v22 isDirectory:1];
+          path = [v21 path];
+          v23 = [NSURL fileURLWithPath:path isDirectory:1];
 
           [v16 addObject:v23];
         }
@@ -397,13 +397,13 @@
 
             v26 = *(*(&v80 + 1) + 8 * v25);
             v27 = objc_autoreleasePoolPush();
-            v28 = [v26 bundleID];
-            v29 = [[SAAppPath alloc] initWithBundleID:v28];
+            bundleID = [v26 bundleID];
+            v29 = [[SAAppPath alloc] initWithBundleID:bundleID];
             v30 = [v26 url];
-            v31 = [v30 path];
-            v32 = [NSURL fileURLWithPath:v31 isDirectory:1];
+            path2 = [v30 path];
+            v32 = [NSURL fileURLWithPath:path2 isDirectory:1];
 
-            v33 = [v76 appPathForBundleID:v28];
+            v33 = [v76 appPathForBundleID:bundleID];
             LODWORD(v30) = v33 == 0;
 
             if (v30)
@@ -412,7 +412,7 @@
               if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                *&buf[4] = v28;
+                *&buf[4] = bundleID;
                 _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "New app in appPathList %@", buf, 0xCu);
               }
             }
@@ -453,27 +453,27 @@
               [v76 isPathInfoClaimedByAnotherApp:v26 reply:v77];
               if ((*(*&buf[8] + 24) & 1) == 0)
               {
-                v36 = [v26 isDataURL];
-                v37 = [v26 exclusive];
-                if (v36)
+                isDataURL = [v26 isDataURL];
+                exclusive = [v26 exclusive];
+                if (isDataURL)
                 {
-                  if (v37)
+                  if (exclusive)
                   {
-                    v38 = [v32 path];
-                    [(SAAppPath *)v29 addUniquePath:v38];
+                    path3 = [v32 path];
+                    [(SAAppPath *)v29 addUniquePath:path3];
                   }
 
                   else
                   {
-                    v38 = [v32 path];
-                    [(SAAppPath *)v29 addSharedPath:v38];
+                    path3 = [v32 path];
+                    [(SAAppPath *)v29 addSharedPath:path3];
                   }
                 }
 
                 else
                 {
-                  v38 = [v32 path];
-                  [(SAAppPath *)v29 addBinaryPath:v38];
+                  path3 = [v32 path];
+                  [(SAAppPath *)v29 addBinaryPath:path3];
                 }
 
                 [v76 updateWithAppPath:v29];
@@ -547,7 +547,7 @@ LABEL_57:
         sub_10003BB70(v55, v56, v57, v58, v59, v60, v61, v62);
       }
 
-      v69[2](v69, v68);
+      replyCopy[2](replyCopy, v68);
     }
 
     else
@@ -559,7 +559,7 @@ LABEL_57:
       }
 
       v64 = [NSError errorWithDomain:NSCocoaErrorDomain code:513 userInfo:0];
-      v69[2](v69, v64);
+      replyCopy[2](replyCopy, v64);
     }
 
     v51 = v68;
@@ -577,27 +577,27 @@ LABEL_63:
   }
 
   v48 = [NSError errorWithDomain:NSCocoaErrorDomain code:1024 userInfo:0];
-  v69[2](v69, v48);
+  replyCopy[2](replyCopy, v48);
 LABEL_64:
 }
 
-- (void)runAppSizerWithHandler:(id)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)runAppSizerWithHandler:(id)handler options:(unint64_t)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a3;
+  replyCopy = reply;
+  handlerCopy = handler;
   v10 = objc_opt_new();
-  [(SAHelper *)self addAppSizerHandler:v9 reply:&stru_100064A80];
+  [(SAHelper *)self addAppSizerHandler:handlerCopy reply:&stru_100064A80];
 
   v12 = 0;
-  [v10 runAppSizerWithRunMode:2 BGTask:0 scanOptions:a4 error:&v12];
+  [v10 runAppSizerWithRunMode:2 BGTask:0 scanOptions:options error:&v12];
   v11 = v12;
-  v8[2](v8, v11);
+  replyCopy[2](replyCopy, v11);
 }
 
-- (void)unregisterPaths:(id)a3 reply:(id)a4
+- (void)unregisterPaths:(id)paths reply:(id)reply
 {
-  v36 = a3;
-  v37 = a4;
+  pathsCopy = paths;
+  replyCopy = reply;
   v5 = SALog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -616,7 +616,7 @@ LABEL_64:
     }
 
     v34 = [NSError errorWithDomain:NSCocoaErrorDomain code:260 userInfo:0];
-    v37[2](v37, v34);
+    replyCopy[2](replyCopy, v34);
     goto LABEL_28;
   }
 
@@ -625,7 +625,7 @@ LABEL_64:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v39 = v36;
+  v39 = pathsCopy;
   v14 = [v39 countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v14)
   {
@@ -640,27 +640,27 @@ LABEL_64:
         }
 
         v17 = *(*(&v40 + 1) + 8 * i);
-        v18 = [v17 bundleID];
-        v19 = [v13 appPathForBundleID:v18];
+        bundleID = [v17 bundleID];
+        v19 = [v13 appPathForBundleID:bundleID];
         if (v19)
         {
           v20 = [v17 url];
-          v21 = [v20 path];
-          v22 = [NSURL fileURLWithPath:v21 isDirectory:1];
+          path = [v20 path];
+          v22 = [NSURL fileURLWithPath:path isDirectory:1];
 
           if ([v17 isDataURL])
           {
-            v23 = [v22 path];
-            [v19 removeUniquePath:v23];
+            path2 = [v22 path];
+            [v19 removeUniquePath:path2];
 
-            v24 = [v22 path];
-            [v19 removeSharedPath:v24];
+            path3 = [v22 path];
+            [v19 removeSharedPath:path3];
           }
 
           else
           {
-            v24 = [v22 path];
-            [v19 removeBinaryPath:v24];
+            path3 = [v22 path];
+            [v19 removeBinaryPath:path3];
           }
         }
 
@@ -672,7 +672,7 @@ LABEL_64:
             *buf = 136315394;
             v45 = "[SAHelper unregisterPaths:reply:]";
             v46 = 2112;
-            v47 = v18;
+            v47 = bundleID;
             _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%s: Unknown bundleID %@", buf, 0x16u);
           }
         }
@@ -694,7 +694,7 @@ LABEL_64:
     }
 
     v34 = [NSError errorWithDomain:NSCocoaErrorDomain code:513 userInfo:0];
-    v37[2](v37, v34);
+    replyCopy[2](replyCopy, v34);
 LABEL_28:
 
     goto LABEL_29;
@@ -706,42 +706,42 @@ LABEL_28:
     sub_10003BDE0(v25, v26, v27, v28, v29, v30, v31, v32);
   }
 
-  v37[2](v37, 0);
+  replyCopy[2](replyCopy, 0);
 LABEL_29:
 
   objc_sync_exit(obj);
 }
 
-- (void)getAppPaths:(id)a3 options:(int)a4 reply:(id)a5
+- (void)getAppPaths:(id)paths options:(int)options reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  pathsCopy = paths;
+  replyCopy = reply;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = sub_100008660;
   v38 = sub_100008670;
   v39 = 0;
-  if (a4 == 1)
+  if (options == 1)
   {
     v15 = objc_opt_new();
     [v15 importDefaultList];
     v21 = objc_opt_new();
     [v21 updateWithAppPathList:v15];
-    v22 = [v21 generateDictionary];
+    generateDictionary = [v21 generateDictionary];
     v20 = 0;
   }
 
   else
   {
-    if (a4)
+    if (options)
     {
-      v22 = 0;
+      generateDictionary = 0;
       v20 = 0;
 LABEL_16:
       v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0, v24];
 
-      v22 = 0;
+      generateDictionary = 0;
       goto LABEL_17;
     }
 
@@ -785,8 +785,8 @@ LABEL_16:
             objc_enumerationMutation(v15);
           }
 
-          v19 = [*(*(&v24 + 1) + 8 * i) getDictionary];
-          [v14 addObject:v19];
+          getDictionary = [*(*(&v24 + 1) + 8 * i) getDictionary];
+          [v14 addObject:getDictionary];
         }
 
         v16 = [v15 countByEnumeratingWithState:&v24 objects:v40 count:16];
@@ -797,27 +797,27 @@ LABEL_16:
 
     v20 = v14;
     v21 = v32;
-    v22 = v20;
+    generateDictionary = v20;
   }
 
-  if (!v22 || ![v22 count])
+  if (!generateDictionary || ![generateDictionary count])
   {
     goto LABEL_16;
   }
 
   v23 = 0;
 LABEL_17:
-  v8[2](v8, v22, v23);
+  replyCopy[2](replyCopy, generateDictionary, v23);
   _Block_object_dispose(&v34, 8);
 }
 
-- (void)getPurgeableInfo:(id)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)getPurgeableInfo:(id)info options:(unint64_t)options reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 path];
-  v10 = [SAQuery getFSPurgeableInfo:v9 options:(2 * v6) & 4];
+  optionsCopy = options;
+  infoCopy = info;
+  replyCopy = reply;
+  path = [infoCopy path];
+  v10 = [SAQuery getFSPurgeableInfo:path options:(2 * optionsCopy) & 4];
 
   if (v10)
   {
@@ -835,7 +835,7 @@ LABEL_17:
     v11 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
   }
 
-  v8[2](v8, v10, v11);
+  replyCopy[2](replyCopy, v10, v11);
 }
 
 + (unint64_t)getOVPFileAndVolumeSize
@@ -954,18 +954,18 @@ LABEL_24:
     v6 = v12;
     if (v12)
     {
-      v13 = [v12 unsignedLongLongValue];
+      unsignedLongLongValue = [v12 unsignedLongLongValue];
       v14 = SALog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315394;
         v28 = "+[SAHelper getOVPFileAndVolumeSize]";
         v29 = 2048;
-        v30 = v13;
+        v30 = unsignedLongLongValue;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: OVP volume reserved size %llu", buf, 0x16u);
       }
 
-      v22[3] += v13;
+      v22[3] += unsignedLongLongValue;
     }
 
     else
@@ -987,9 +987,9 @@ LABEL_27:
   return v15;
 }
 
-- (void)computeSizeOfSystemVolume:(id)a3
+- (void)computeSizeOfSystemVolume:(id)volume
 {
-  v20 = a3;
+  volumeCopy = volume;
   v3 = SALog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
@@ -1029,7 +1029,7 @@ LABEL_5:
 
       v14 = *(*(&v22 + 1) + 8 * v13);
       v15 = v14;
-      v16 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100009538;
@@ -1038,7 +1038,7 @@ LABEL_5:
       v21[5] = &v34;
       v21[6] = &v32;
       v21[7] = &v26;
-      [SASupport getVolSizeFromAttrList:v16 completionHandler:v21];
+      [SASupport getVolSizeFromAttrList:uTF8String completionHandler:v21];
       if (v27[5])
       {
         break;
@@ -1068,22 +1068,22 @@ LABEL_5:
   v19 = objc_opt_new();
   [v19 setUsed:*(v35[0] + 24)];
   [v19 setCapacity:*(v33[0] + 24)];
-  v20[2](v20, v19, v27[5]);
+  volumeCopy[2](volumeCopy, v19, v27[5]);
 
   _Block_object_dispose(&v26, 8);
   _Block_object_dispose(&v32, 8);
   _Block_object_dispose(&v34, 8);
 }
 
-- (void)computeSizeOfVolumeAtURL:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)computeSizeOfVolumeAtURL:(id)l options:(unint64_t)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 fileSystemRepresentation];
-  if (*v10 == 47 && !v10[1])
+  optionsCopy = options;
+  lCopy = l;
+  handlerCopy = handler;
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  if (*fileSystemRepresentation == 47 && !fileSystemRepresentation[1])
   {
-    [(SAHelper *)self computeSizeOfSystemVolume:v9];
+    [(SAHelper *)self computeSizeOfSystemVolume:handlerCopy];
   }
 
   else
@@ -1091,22 +1091,22 @@ LABEL_5:
     v11 = SALog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      sub_10003C230(v8);
+      sub_10003C230(lCopy);
     }
 
     bzero(&v44, 0x878uLL);
-    v12 = v8;
-    if (statfs([v8 fileSystemRepresentation], &v44))
+    v12 = lCopy;
+    if (statfs([lCopy fileSystemRepresentation], &v44))
     {
       v13 = *__error();
       v14 = SALog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        sub_10003C2C4(v8, v13, v14);
+        sub_10003C2C4(lCopy, v13, v14);
       }
 
       v15 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v13 userInfo:0];
-      v9[2](v9, 0, v15);
+      handlerCopy[2](handlerCopy, 0, v15);
     }
 
     else
@@ -1135,7 +1135,7 @@ LABEL_5:
       [SASupport getVolSizeFromAttrList:v44.f_mntonname completionHandler:v21];
       if (v23[5])
       {
-        (v9[2])(v9, 0);
+        (handlerCopy[2])(handlerCopy, 0);
       }
 
       else
@@ -1148,7 +1148,7 @@ LABEL_5:
           *buf = 136315906;
           v37 = "[SAHelper computeSizeOfVolumeAtURL:options:completionHandler:]";
           v38 = 1024;
-          v39 = v6;
+          v39 = optionsCopy;
           v40 = 2048;
           v41 = v19;
           v42 = 2048;
@@ -1163,7 +1163,7 @@ LABEL_5:
         v18 = [NSString stringWithUTF8String:v44.f_mntonname];
         [v17 setMountedOn:v18];
 
-        (v9)[2](v9, v17, 0);
+        (handlerCopy)[2](handlerCopy, v17, 0);
       }
 
       _Block_object_dispose(&v22, 8);
@@ -1174,22 +1174,22 @@ LABEL_5:
   }
 }
 
-- (void)getLastTelemetryData:(id)a3
+- (void)getLastTelemetryData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = SALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     sub_10003C5C8(v4, v5, v6, v7, v8, v9, v10, v11);
   }
 
-  [SATelemetryManager getLastTelemetryData:v3];
+  [SATelemetryManager getLastTelemetryData:dataCopy];
 }
 
-- (void)importFromPlist:(id)a3 reply:(id)a4
+- (void)importFromPlist:(id)plist reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  plistCopy = plist;
+  replyCopy = reply;
   v7 = SALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1198,35 +1198,35 @@ LABEL_5:
 
   v8 = objc_opt_new();
   [v8 loadFromDisk];
-  v9 = [v8 importFromPlists:v5];
+  v9 = [v8 importFromPlists:plistCopy];
   [v8 saveToDisk];
-  v6[2](v6, v9);
+  replyCopy[2](replyCopy, v9);
 }
 
-- (void)clearLastTelemetryData:(id)a3
+- (void)clearLastTelemetryData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = SALog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     sub_10003C6BC(v4, v5, v6, v7, v8, v9, v10, v11);
   }
 
-  [SATelemetryManager clearLastTelemetryData:v3];
+  [SATelemetryManager clearLastTelemetryData:dataCopy];
 }
 
-- (void)setAppPathListPathOnDisk:(id)a3 reply:(id)a4
+- (void)setAppPathListPathOnDisk:(id)disk reply:(id)reply
 {
-  v5 = a4;
-  [SAAppPathList setPathToDisk:a3];
-  v5[2](v5, 0);
+  replyCopy = reply;
+  [SAAppPathList setPathToDisk:disk];
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)setAppPathListPathOnDisktoDefaultWithReply:(id)a3
+- (void)setAppPathListPathOnDisktoDefaultWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   [SAAppPathList setPathToDisk:@"/var/db/spaceattribution/AppPathList.db"];
-  v3[2](v3, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
 @end

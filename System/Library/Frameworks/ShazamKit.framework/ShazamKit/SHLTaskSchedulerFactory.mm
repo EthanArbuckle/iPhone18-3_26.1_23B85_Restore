@@ -1,22 +1,22 @@
 @interface SHLTaskSchedulerFactory
 - (SHLFetchTaskScheduler)fetchTaskScheduler;
 - (SHLModifyTaskScheduler)modifyTaskScheduler;
-- (SHLTaskSchedulerFactory)initWithConfiguration:(id)a3;
+- (SHLTaskSchedulerFactory)initWithConfiguration:(id)configuration;
 - (id)createTransaction;
 @end
 
 @implementation SHLTaskSchedulerFactory
 
-- (SHLTaskSchedulerFactory)initWithConfiguration:(id)a3
+- (SHLTaskSchedulerFactory)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = SHLTaskSchedulerFactory;
   v6 = [(SHLTaskSchedulerFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
@@ -24,52 +24,52 @@
 
 - (SHLModifyTaskScheduler)modifyTaskScheduler
 {
-  v3 = [(SHLTaskSchedulerFactory *)self configuration];
-  v4 = [(SHLCloudModifyTaskScheduler *)v3 sessionType];
+  configuration = [(SHLTaskSchedulerFactory *)self configuration];
+  sessionType = [(SHLCloudModifyTaskScheduler *)configuration sessionType];
 
-  if (!v4)
+  if (!sessionType)
   {
     v5 = [SHLCloudModifyTaskScheduler alloc];
-    v6 = [(SHLTaskSchedulerFactory *)self configuration];
-    v3 = [(SHLCloudModifyTaskScheduler *)v5 initWithConfiguration:v6];
+    configuration2 = [(SHLTaskSchedulerFactory *)self configuration];
+    configuration = [(SHLCloudModifyTaskScheduler *)v5 initWithConfiguration:configuration2];
   }
 
-  return v3;
+  return configuration;
 }
 
 - (SHLFetchTaskScheduler)fetchTaskScheduler
 {
-  v3 = [(SHLTaskSchedulerFactory *)self configuration];
-  v4 = [(SHLCloudFetchTaskScheduler *)v3 sessionType];
+  configuration = [(SHLTaskSchedulerFactory *)self configuration];
+  sessionType = [(SHLCloudFetchTaskScheduler *)configuration sessionType];
 
-  if (!v4)
+  if (!sessionType)
   {
     v5 = [SHLCloudFetchTaskScheduler alloc];
-    v6 = [(SHLTaskSchedulerFactory *)self configuration];
-    v3 = [(SHLCloudFetchTaskScheduler *)v5 initWithConfiguration:v6];
+    configuration2 = [(SHLTaskSchedulerFactory *)self configuration];
+    configuration = [(SHLCloudFetchTaskScheduler *)v5 initWithConfiguration:configuration2];
   }
 
-  return v3;
+  return configuration;
 }
 
 - (id)createTransaction
 {
-  v4 = [(SHLTaskSchedulerFactory *)self configuration];
-  v5 = [v4 sessionType];
+  configuration = [(SHLTaskSchedulerFactory *)self configuration];
+  sessionType = [configuration sessionType];
 
-  if (!v5)
+  if (!sessionType)
   {
     v6 = +[SHLCloudContext sharedContext];
-    v7 = [(SHLTaskSchedulerFactory *)self configuration];
-    v8 = [v6 containerWithScope:{objc_msgSend(v7, "sessionScope")}];
-    v9 = [v8 containerIdentifier];
+    configuration2 = [(SHLTaskSchedulerFactory *)self configuration];
+    v8 = [v6 containerWithScope:{objc_msgSend(configuration2, "sessionScope")}];
+    containerIdentifier = [v8 containerIdentifier];
 
     v10 = [SHLCloudLibraryCache alloc];
-    v11 = [(SHLTaskSchedulerFactory *)self configuration];
-    v12 = [v11 callingProcessIdentifier];
-    v13 = [(SHLTaskSchedulerFactory *)self configuration];
-    v14 = [v13 sessionIdentifier];
-    v2 = [(SHLCloudLibraryCache *)v10 initWithCallingProcessIdentifier:v12 containerIdentifier:v9 transactionIdentifier:v14];
+    configuration3 = [(SHLTaskSchedulerFactory *)self configuration];
+    callingProcessIdentifier = [configuration3 callingProcessIdentifier];
+    configuration4 = [(SHLTaskSchedulerFactory *)self configuration];
+    sessionIdentifier = [configuration4 sessionIdentifier];
+    v2 = [(SHLCloudLibraryCache *)v10 initWithCallingProcessIdentifier:callingProcessIdentifier containerIdentifier:containerIdentifier transactionIdentifier:sessionIdentifier];
   }
 
   return v2;

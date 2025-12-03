@@ -1,14 +1,14 @@
 @interface CKAssistantSMSRetrieve
 - (id)_validateRetrieve;
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CKAssistantSMSRetrieve
 
 - (id)_validateRetrieve
 {
-  v2 = [(CKAssistantSMSRetrieve *)self identifiers];
-  v3 = [v2 count];
+  identifiers = [(CKAssistantSMSRetrieve *)self identifiers];
+  v3 = [identifiers count];
 
   if (v3)
   {
@@ -23,9 +23,9 @@
   return v4;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -36,16 +36,16 @@
     }
   }
 
-  v6 = [(CKAssistantSMSRetrieve *)self _validateRetrieve];
-  if (!v6)
+  _validateRetrieve = [(CKAssistantSMSRetrieve *)self _validateRetrieve];
+  if (!_validateRetrieve)
   {
     v7 = +[NSMutableArray array];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(CKAssistantSMSRetrieve *)self identifiers];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    identifiers = [(CKAssistantSMSRetrieve *)self identifiers];
+    v9 = [identifiers countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
       v10 = *v16;
@@ -56,10 +56,10 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(identifiers);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * v11) identifier];
+          identifier = [*(*(&v15 + 1) + 8 * v11) identifier];
           v13 = CKAssistantGetDraftForIdentifier();
 
           if (v13)
@@ -71,18 +71,18 @@
         }
 
         while (v9 != v11);
-        v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v9 = [identifiers countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v9);
     }
 
-    v6 = objc_alloc_init(SADomainObjectRetrieveCompleted);
-    [v6 setObjects:v7];
+    _validateRetrieve = objc_alloc_init(SADomainObjectRetrieveCompleted);
+    [_validateRetrieve setObjects:v7];
   }
 
-  v14 = [v6 dictionary];
-  v4[2](v4, v14);
+  dictionary = [_validateRetrieve dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

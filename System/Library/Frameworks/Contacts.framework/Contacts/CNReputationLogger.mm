@@ -1,82 +1,82 @@
 @interface CNReputationLogger
 + (OS_os_log)performanceLog;
 + (OS_os_log)queryLog;
-+ (id)describeScore:(int64_t)a3;
-+ (id)obfuscate:(id)a3;
-+ (id)obfuscateHandle:(id)a3;
-- (void)beginQueryForHandle:(id)a3;
++ (id)describeScore:(int64_t)score;
++ (id)obfuscate:(id)obfuscate;
++ (id)obfuscateHandle:(id)handle;
+- (void)beginQueryForHandle:(id)handle;
 - (void)contactsConfirmedTrustOfEmailAddress;
 - (void)contactsConfirmedTrustOfPhoneNumber;
 - (void)contactsCouldNotConfirmTrustOfEmailAddress;
 - (void)contactsCouldNotConfirmTrustOfPhoneNumber;
 - (void)coreRecentsConfirmedTrust;
 - (void)coreRecentsCouldNotConfirmTrust;
-- (void)couldNotQueryContactsForEmailAddressWithError:(id)a3;
-- (void)couldNotQueryContactsForPhoneNumberWithError:(id)a3;
-- (void)couldNotQueryCoreRecentsWithError:(id)a3;
-- (void)queryForHandle:(id)a3 didFailWithError:(id)a4;
-- (void)queryForHandle:(id)a3 didFinishWithReputation:(id)a4;
+- (void)couldNotQueryContactsForEmailAddressWithError:(id)error;
+- (void)couldNotQueryContactsForPhoneNumberWithError:(id)error;
+- (void)couldNotQueryCoreRecentsWithError:(id)error;
+- (void)queryForHandle:(id)handle didFailWithError:(id)error;
+- (void)queryForHandle:(id)handle didFinishWithReputation:(id)reputation;
 - (void)reputationUnestablished;
-- (void)timeToResolve:(double)a3;
+- (void)timeToResolve:(double)resolve;
 @end
 
 @implementation CNReputationLogger
 
-- (void)beginQueryForHandle:(id)a3
+- (void)beginQueryForHandle:(id)handle
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() queryLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  handleCopy = handle;
+  queryLog = [objc_opt_class() queryLog];
+  if (os_log_type_enabled(queryLog, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [objc_opt_class() obfuscateHandle:v3];
+    v5 = [objc_opt_class() obfuscateHandle:handleCopy];
     v6 = 138543362;
     v7 = v5;
-    _os_log_impl(&dword_1954A0000, v4, OS_LOG_TYPE_DEFAULT, "Determining trust of handle %{public}@", &v6, 0xCu);
+    _os_log_impl(&dword_1954A0000, queryLog, OS_LOG_TYPE_DEFAULT, "Determining trust of handle %{public}@", &v6, 0xCu);
   }
 }
 
-- (void)queryForHandle:(id)a3 didFinishWithReputation:(id)a4
+- (void)queryForHandle:(id)handle didFinishWithReputation:(id)reputation
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() queryLog];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  handleCopy = handle;
+  reputationCopy = reputation;
+  queryLog = [objc_opt_class() queryLog];
+  if (os_log_type_enabled(queryLog, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [objc_opt_class() obfuscateHandle:v5];
-    v9 = [objc_opt_class() describeScore:{objc_msgSend(v6, "score")}];
+    v8 = [objc_opt_class() obfuscateHandle:handleCopy];
+    v9 = [objc_opt_class() describeScore:{objc_msgSend(reputationCopy, "score")}];
     v10 = 138543618;
     v11 = v8;
     v12 = 2114;
     v13 = v9;
-    _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_DEFAULT, "Handle '%{public}@' has reputation: %{public}@", &v10, 0x16u);
+    _os_log_impl(&dword_1954A0000, queryLog, OS_LOG_TYPE_DEFAULT, "Handle '%{public}@' has reputation: %{public}@", &v10, 0x16u);
   }
 }
 
-- (void)queryForHandle:(id)a3 didFailWithError:(id)a4
+- (void)queryForHandle:(id)handle didFailWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() queryLog];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  handleCopy = handle;
+  errorCopy = error;
+  queryLog = [objc_opt_class() queryLog];
+  if (os_log_type_enabled(queryLog, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
-    v9 = [v5 stringValue];
-    v10 = [v8 obfuscate:v9];
+    stringValue = [handleCopy stringValue];
+    v10 = [v8 obfuscate:stringValue];
     v11 = 138543618;
     v12 = v10;
     v13 = 2114;
-    v14 = v6;
-    _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_DEFAULT, "Failed to look up handle '%{public}@': %{public}@", &v11, 0x16u);
+    v14 = errorCopy;
+    _os_log_impl(&dword_1954A0000, queryLog, OS_LOG_TYPE_DEFAULT, "Failed to look up handle '%{public}@': %{public}@", &v11, 0x16u);
   }
 }
 
-- (void)timeToResolve:(double)a3
+- (void)timeToResolve:(double)resolve
 {
-  v3 = [objc_opt_class() performanceLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  performanceLog = [objc_opt_class() performanceLog];
+  if (os_log_type_enabled(performanceLog, OS_LOG_TYPE_DEBUG))
   {
     [CNReputationLogger timeToResolve:];
   }
@@ -96,11 +96,11 @@
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)couldNotQueryCoreRecentsWithError:(id)a3
+- (void)couldNotQueryCoreRecentsWithError:(id)error
 {
-  v3 = a3;
-  v4 = [objc_opt_class() queryLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  errorCopy = error;
+  queryLog = [objc_opt_class() queryLog];
+  if (os_log_type_enabled(queryLog, OS_LOG_TYPE_DEBUG))
   {
     [CNReputationLogger couldNotQueryCoreRecentsWithError:];
   }
@@ -120,11 +120,11 @@
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)couldNotQueryContactsForEmailAddressWithError:(id)a3
+- (void)couldNotQueryContactsForEmailAddressWithError:(id)error
 {
-  v3 = a3;
-  v4 = [objc_opt_class() queryLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  errorCopy = error;
+  queryLog = [objc_opt_class() queryLog];
+  if (os_log_type_enabled(queryLog, OS_LOG_TYPE_DEBUG))
   {
     [CNReputationLogger couldNotQueryContactsForEmailAddressWithError:];
   }
@@ -144,11 +144,11 @@
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)couldNotQueryContactsForPhoneNumberWithError:(id)a3
+- (void)couldNotQueryContactsForPhoneNumberWithError:(id)error
 {
-  v3 = a3;
-  v4 = [objc_opt_class() queryLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  errorCopy = error;
+  queryLog = [objc_opt_class() queryLog];
+  if (os_log_type_enabled(queryLog, OS_LOG_TYPE_DEBUG))
   {
     [CNReputationLogger couldNotQueryContactsForPhoneNumberWithError:];
   }
@@ -203,9 +203,9 @@ uint64_t __36__CNReputationLogger_performanceLog__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)describeScore:(int64_t)a3
++ (id)describeScore:(int64_t)score
 {
-  if (a3 >= 3)
+  if (score >= 3)
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -214,30 +214,30 @@ uint64_t __36__CNReputationLogger_performanceLog__block_invoke()
 
   else
   {
-    v3 = off_1E74165D8[a3];
+    v3 = off_1E74165D8[score];
   }
 
   return v3;
 }
 
-+ (id)obfuscateHandle:(id)a3
++ (id)obfuscateHandle:(id)handle
 {
-  v4 = [a3 stringValue];
-  v5 = [a1 obfuscate:v4];
+  stringValue = [handle stringValue];
+  v5 = [self obfuscate:stringValue];
 
   return v5;
 }
 
-+ (id)obfuscate:(id)a3
++ (id)obfuscate:(id)obfuscate
 {
   v3 = obfuscate__cn_once_token_16;
-  v4 = a3;
+  obfuscateCopy = obfuscate;
   if (v3 != -1)
   {
     +[CNReputationLogger obfuscate:];
   }
 
-  v5 = [v4 _cn_SHA256HashStringWithSalt:obfuscate__cn_once_object_16];
+  v5 = [obfuscateCopy _cn_SHA256HashStringWithSalt:obfuscate__cn_once_object_16];
 
   return v5;
 }

@@ -1,15 +1,15 @@
 @interface AXInvertColors_SiriViewService
-+ (void)performValidations:(id)a3;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_SiriViewService
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SVSUserUtteranceView"];
-  [v3 validateClass:@"SVSGuideViewCell" hasInstanceVariable:@"_tagPhraseLabel" withType:"SiriUIContentLabel"];
-  [v3 validateClass:@"SVSGuideDetailPhraseViewCell" hasInstanceVariable:@"_textContainerView" withType:"SiriUITextContainerView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SVSUserUtteranceView"];
+  [validationsCopy validateClass:@"SVSGuideViewCell" hasInstanceVariable:@"_tagPhraseLabel" withType:"SiriUIContentLabel"];
+  [validationsCopy validateClass:@"SVSGuideDetailPhraseViewCell" hasInstanceVariable:@"_textContainerView" withType:"SiriUITextContainerView"];
 }
 
 @end

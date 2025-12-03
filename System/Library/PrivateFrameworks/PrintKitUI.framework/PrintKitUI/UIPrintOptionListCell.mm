@@ -1,7 +1,7 @@
 @interface UIPrintOptionListCell
 - (UIPrintOptionListDelegate)itemListDelegate;
 - (void)prepareForReuse;
-- (void)previewDidChangeSize:(id)a3;
+- (void)previewDidChangeSize:(id)size;
 - (void)printOptionCellTapped;
 @end
 
@@ -10,34 +10,34 @@
 - (void)printOptionCellTapped
 {
   v3 = [UIPrintOptionListViewController alloc];
-  v4 = [(UIPrintOptionListCell *)self itemListDelegate];
-  v5 = [(UIPrintOptionListViewController *)v3 initWithListDelegate:v4];
+  itemListDelegate = [(UIPrintOptionListCell *)self itemListDelegate];
+  v5 = [(UIPrintOptionListViewController *)v3 initWithListDelegate:itemListDelegate];
   [(UIPrintOptionListCell *)self setPrintOptionListViewController:v5];
 
-  v6 = [(UIPrintOptionListCell *)self itemListDelegate];
-  v7 = [v6 title];
-  v8 = [(UIPrintOptionListCell *)self printOptionListViewController];
-  [v8 setTitle:v7];
+  itemListDelegate2 = [(UIPrintOptionListCell *)self itemListDelegate];
+  title = [itemListDelegate2 title];
+  printOptionListViewController = [(UIPrintOptionListCell *)self printOptionListViewController];
+  [printOptionListViewController setTitle:title];
 
-  v9 = [(UIPrintOptionListCell *)self itemListDelegate];
-  v24 = [v9 printPanelViewController];
+  itemListDelegate3 = [(UIPrintOptionListCell *)self itemListDelegate];
+  printPanelViewController = [itemListDelegate3 printPanelViewController];
 
-  [v24 contentInsetForPreviewWithHeight:0.0];
+  [printPanelViewController contentInsetForPreviewWithHeight:0.0];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(UIPrintOptionListCell *)self printOptionListViewController];
-  v19 = [v18 tableView];
-  [v19 setContentInset:{v11, v13, v15, v17}];
+  printOptionListViewController2 = [(UIPrintOptionListCell *)self printOptionListViewController];
+  tableView = [printOptionListViewController2 tableView];
+  [tableView setContentInset:{v11, v13, v15, v17}];
 
-  v20 = [(UIPrintOptionListCell *)self printOptionListViewController];
-  v21 = [v20 navigationItem];
-  [v24 addPrintShareButtonsToNavItem:v21];
+  printOptionListViewController3 = [(UIPrintOptionListCell *)self printOptionListViewController];
+  navigationItem = [printOptionListViewController3 navigationItem];
+  [printPanelViewController addPrintShareButtonsToNavItem:navigationItem];
 
-  v22 = [v24 printOptionsNavController];
-  v23 = [(UIPrintOptionListCell *)self printOptionListViewController];
-  [v22 pushViewController:v23 animated:1];
+  printOptionsNavController = [printPanelViewController printOptionsNavController];
+  printOptionListViewController4 = [(UIPrintOptionListCell *)self printOptionListViewController];
+  [printOptionsNavController pushViewController:printOptionListViewController4 animated:1];
 }
 
 - (void)prepareForReuse
@@ -49,23 +49,23 @@
   [(UIPrintOptionListCell *)self setPrintOptionListViewController:0];
 }
 
-- (void)previewDidChangeSize:(id)a3
+- (void)previewDidChangeSize:(id)size
 {
-  v4 = [a3 object];
-  [v4 floatValue];
+  object = [size object];
+  [object floatValue];
   v6 = v5;
 
-  v7 = [(UIPrintOptionListCell *)self itemListDelegate];
-  v18 = [v7 printPanelViewController];
+  itemListDelegate = [(UIPrintOptionListCell *)self itemListDelegate];
+  printPanelViewController = [itemListDelegate printPanelViewController];
 
-  [v18 contentInsetForPreviewWithHeight:v6];
+  [printPanelViewController contentInsetForPreviewWithHeight:v6];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(UIPrintOptionListCell *)self printOptionListViewController];
-  v17 = [v16 tableView];
-  [v17 setContentInset:{v9, v11, v13, v15}];
+  printOptionListViewController = [(UIPrintOptionListCell *)self printOptionListViewController];
+  tableView = [printOptionListViewController tableView];
+  [tableView setContentInset:{v9, v11, v13, v15}];
 }
 
 - (UIPrintOptionListDelegate)itemListDelegate

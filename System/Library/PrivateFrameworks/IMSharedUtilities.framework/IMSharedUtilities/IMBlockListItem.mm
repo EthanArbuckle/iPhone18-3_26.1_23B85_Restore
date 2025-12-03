@@ -1,7 +1,7 @@
 @interface IMBlockListItem
-- (BOOL)isEqualToBlockListItem:(id)a3;
-- (IMBlockListItem)initWithCNContact:(id)a3 address:(id)a4 cmfItemRef:(void *)a5;
-- (IMBlockListItem)initWithPerson:(id)a3 address:(id)a4 cmfItemRef:(void *)a5;
+- (BOOL)isEqualToBlockListItem:(id)item;
+- (IMBlockListItem)initWithCNContact:(id)contact address:(id)address cmfItemRef:(void *)ref;
+- (IMBlockListItem)initWithPerson:(id)person address:(id)address cmfItemRef:(void *)ref;
 - (id)formattedAddress;
 - (id)formattedHandle;
 - (id)fullName;
@@ -11,34 +11,34 @@
 
 @implementation IMBlockListItem
 
-- (IMBlockListItem)initWithPerson:(id)a3 address:(id)a4 cmfItemRef:(void *)a5
+- (IMBlockListItem)initWithPerson:(id)person address:(id)address cmfItemRef:(void *)ref
 {
-  v9 = a3;
-  v10 = a4;
+  personCopy = person;
+  addressCopy = address;
   v14.receiver = self;
   v14.super_class = IMBlockListItem;
   v11 = [(IMBlockListItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_person, a3);
-    objc_storeStrong(&v12->_address, a4);
-    v12->_cmfItem = CFRetain(a5);
+    objc_storeStrong(&v11->_person, person);
+    objc_storeStrong(&v12->_address, address);
+    v12->_cmfItem = CFRetain(ref);
     [(IMBlockListItem *)v12 lookupPerson];
   }
 
   return v12;
 }
 
-- (IMBlockListItem)initWithCNContact:(id)a3 address:(id)a4 cmfItemRef:(void *)a5
+- (IMBlockListItem)initWithCNContact:(id)contact address:(id)address cmfItemRef:(void *)ref
 {
-  v8 = a4;
-  if (a3)
+  addressCopy = address;
+  if (contact)
   {
-    a3 = [IMBlockListPerson personWithCNContact:a3];
+    contact = [IMBlockListPerson personWithCNContact:contact];
   }
 
-  v9 = [(IMBlockListItem *)self initWithPerson:a3 address:v8 cmfItemRef:a5];
+  v9 = [(IMBlockListItem *)self initWithPerson:contact address:addressCopy cmfItemRef:ref];
 
   return v9;
 }
@@ -61,56 +61,56 @@
   p_person = &self->_person;
   if (!self->_person && [(NSString *)self->_address length])
   {
-    v4 = [(NSString *)self->_address associatedPerson];
-    if (v4)
+    associatedPerson = [(NSString *)self->_address associatedPerson];
+    if (associatedPerson)
     {
-      objc_storeStrong(p_person, v4);
+      objc_storeStrong(p_person, associatedPerson);
     }
 
-    MEMORY[0x1EEE66BB8](v4);
+    MEMORY[0x1EEE66BB8](associatedPerson);
   }
 }
 
 - (id)fullName
 {
-  v3 = [(IMBlockListItem *)self person];
+  person = [(IMBlockListItem *)self person];
 
-  if (v3)
+  if (person)
   {
-    v4 = [(IMBlockListItem *)self person];
-    v5 = [v4 fullName];
+    person2 = [(IMBlockListItem *)self person];
+    fullName = [person2 fullName];
   }
 
   else
   {
-    v5 = 0;
+    fullName = 0;
   }
 
-  return v5;
+  return fullName;
 }
 
 - (id)formattedHandle
 {
-  v3 = [(IMBlockListItem *)self cachedFormattedHandle];
+  cachedFormattedHandle = [(IMBlockListItem *)self cachedFormattedHandle];
 
-  if (!v3)
+  if (!cachedFormattedHandle)
   {
-    v4 = [(IMBlockListItem *)self person];
-    if (v4 && (v5 = v4, [(IMBlockListItem *)self address], v6 = objc_claimAutoreleasedReturnValue(), v7 = MEMORY[0x1AC570A50](), v6, v5, v7))
+    person = [(IMBlockListItem *)self person];
+    if (person && (v5 = person, [(IMBlockListItem *)self address], v6 = objc_claimAutoreleasedReturnValue(), v7 = MEMORY[0x1AC570A50](), v6, v5, v7))
     {
-      v8 = [(IMBlockListItem *)self address];
-      v9 = [(IMBlockListItem *)self person];
-      v10 = [v8 cnLabelForPerson:v9];
+      address = [(IMBlockListItem *)self address];
+      person2 = [(IMBlockListItem *)self person];
+      formattedAddress2 = [address cnLabelForPerson:person2];
 
-      v11 = [(IMBlockListItem *)self formattedAddress];
-      if (v10 && [v10 length])
+      formattedAddress = [(IMBlockListItem *)self formattedAddress];
+      if (formattedAddress2 && [formattedAddress2 length])
       {
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@) %@", v10, v11];
+        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%@) %@", formattedAddress2, formattedAddress];
       }
 
       else
       {
-        v12 = v11;
+        v12 = formattedAddress;
       }
 
       v13 = v12;
@@ -119,8 +119,8 @@
 
     else
     {
-      v10 = [(IMBlockListItem *)self formattedAddress];
-      [(IMBlockListItem *)self setCachedFormattedHandle:v10];
+      formattedAddress2 = [(IMBlockListItem *)self formattedAddress];
+      [(IMBlockListItem *)self setCachedFormattedHandle:formattedAddress2];
     }
   }
 
@@ -131,29 +131,29 @@
 {
   if ([(NSString *)self->_address length]&& [(NSString *)self->_address _appearsToBePhoneNumber])
   {
-    v3 = [(NSString *)self->_address formattedPhoneNumber];
+    formattedPhoneNumber = [(NSString *)self->_address formattedPhoneNumber];
   }
 
   else
   {
-    v3 = self->_address;
+    formattedPhoneNumber = self->_address;
   }
 
-  return v3;
+  return formattedPhoneNumber;
 }
 
-- (BOOL)isEqualToBlockListItem:(id)a3
+- (BOOL)isEqualToBlockListItem:(id)item
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (self != itemCopy)
   {
     person = self->_person;
     v8 = person;
     if (!person)
     {
-      v3 = [(IMBlockListItem *)v5 person];
-      if (!v3)
+      person = [(IMBlockListItem *)itemCopy person];
+      if (!person)
       {
         v10 = 1;
         goto LABEL_9;
@@ -162,15 +162,15 @@
       v8 = self->_person;
     }
 
-    v9 = [(IMBlockListItem *)v6 person];
-    v10 = [(IMBlockListPerson *)v8 isEqualToPerson:v9];
+    person2 = [(IMBlockListItem *)v6 person];
+    v10 = [(IMBlockListPerson *)v8 isEqualToPerson:person2];
 
     if (person)
     {
 LABEL_10:
-      v12 = [(IMBlockListItem *)self address];
-      v13 = [(IMBlockListItem *)v6 address];
-      v14 = [v12 isEqualToBlockListAddress:v13];
+      address = [(IMBlockListItem *)self address];
+      address2 = [(IMBlockListItem *)v6 address];
+      v14 = [address isEqualToBlockListAddress:address2];
 
       v11 = v10 & v14;
       goto LABEL_11;

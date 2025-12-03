@@ -1,46 +1,46 @@
 @interface PKPaymentActivationResponse
-+ (id)responseWithData:(id)a3 forPass:(id)a4;
-- (PKPaymentActivationResponse)initWithData:(id)a3 forPass:(id)a4;
++ (id)responseWithData:(id)data forPass:(id)pass;
+- (PKPaymentActivationResponse)initWithData:(id)data forPass:(id)pass;
 @end
 
 @implementation PKPaymentActivationResponse
 
-+ (id)responseWithData:(id)a3 forPass:(id)a4
++ (id)responseWithData:(id)data forPass:(id)pass
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithData:v6 forPass:v5];
+  passCopy = pass;
+  dataCopy = data;
+  v7 = [objc_alloc(objc_opt_class()) initWithData:dataCopy forPass:passCopy];
 
   return v7;
 }
 
-- (PKPaymentActivationResponse)initWithData:(id)a3 forPass:(id)a4
+- (PKPaymentActivationResponse)initWithData:(id)data forPass:(id)pass
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  passCopy = pass;
   v36.receiver = self;
   v36.super_class = PKPaymentActivationResponse;
-  v7 = [(PKWebServiceResponse *)&v36 initWithData:a3];
+  v7 = [(PKWebServiceResponse *)&v36 initWithData:data];
   v8 = v7;
   if (!v7)
   {
     goto LABEL_35;
   }
 
-  v9 = [(PKWebServiceResponse *)v7 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v7 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 objectForKeyedSubscript:@"status"];
+    v10 = [jSONObject objectForKeyedSubscript:@"status"];
     v11 = v10;
     if (v10)
     {
       v8->_verificationStatus = [v10 integerValue];
-      v12 = [v9 PKStringForKey:@"stepIdentifier"];
+      v12 = [jSONObject PKStringForKey:@"stepIdentifier"];
       stepIdentifier = v8->_stepIdentifier;
       v8->_stepIdentifier = v12;
 
-      v14 = [v9 PKStringForKey:@"previousStepIdentifier"];
+      v14 = [jSONObject PKStringForKey:@"previousStepIdentifier"];
       previousStepIdentifier = v8->_previousStepIdentifier;
       v8->_previousStepIdentifier = v14;
 
@@ -51,7 +51,7 @@
         {
           if (verificationStatus == 3)
           {
-            v17 = [v9 objectForKey:@"passURL"];
+            v17 = [jSONObject objectForKey:@"passURL"];
             if (v17)
             {
               v18 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v17];
@@ -83,7 +83,7 @@
           goto LABEL_23;
         }
 
-        v17 = [v9 PKArrayContaining:objc_opt_class() forKey:@"methods"];
+        v17 = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"methods"];
         if (PKEnableGroupVerificationMethods())
         {
           v27 = [v17 pk_arrayBySafelyApplyingBlock:&__block_literal_global_954];
@@ -97,7 +97,7 @@
           v34[1] = 3221225472;
           v34[2] = __52__PKPaymentActivationResponse_initWithData_forPass___block_invoke_2;
           v34[3] = &unk_1E79CC0D8;
-          v35 = v6;
+          v35 = passCopy;
           v30 = [v17 pk_arrayBySafelyApplyingBlock:v34];
           v31 = v8->_methodGroups;
           v8->_methodGroups = v30;
@@ -130,7 +130,7 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      objc_storeStrong(&v8->_requiredVerificationFieldData, v9);
+      objc_storeStrong(&v8->_requiredVerificationFieldData, jSONObject);
       if ([(NSDictionary *)v8->_requiredVerificationFieldData count])
       {
 LABEL_34:

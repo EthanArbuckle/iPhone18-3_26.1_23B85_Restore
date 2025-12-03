@@ -1,39 +1,39 @@
 @interface WBSSavedAccountSharedSidecar
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSSavedAccountSharedSidecar)initWithPersonalSidecar:(id)a3;
-- (WBSSavedAccountSharedSidecar)initWithUser:(id)a3 protectionSpace:(id)a4 dictionaryRepresentation:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WBSSavedAccountSharedSidecar)initWithPersonalSidecar:(id)sidecar;
+- (WBSSavedAccountSharedSidecar)initWithUser:(id)user protectionSpace:(id)space dictionaryRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation WBSSavedAccountSharedSidecar
 
-- (WBSSavedAccountSharedSidecar)initWithUser:(id)a3 protectionSpace:(id)a4 dictionaryRepresentation:(id)a5
+- (WBSSavedAccountSharedSidecar)initWithUser:(id)user protectionSpace:(id)space dictionaryRepresentation:(id)representation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  userCopy = user;
+  spaceCopy = space;
+  representationCopy = representation;
   v42.receiver = self;
   v42.super_class = WBSSavedAccountSharedSidecar;
   v11 = [(WBSSavedAccountSharedSidecar *)&v42 init];
   if (v11)
   {
-    v41 = v8;
-    v12 = [v8 copy];
+    v41 = userCopy;
+    v12 = [userCopy copy];
     user = v11->_user;
     v11->_user = v12;
 
-    v40 = v9;
-    v14 = [v9 copy];
+    v40 = spaceCopy;
+    v14 = [spaceCopy copy];
     protectionSpace = v11->_protectionSpace;
     v11->_protectionSpace = v14;
 
-    v16 = [v10 copy];
+    v16 = [representationCopy copy];
     originalKeychainDictionary = v11->_originalKeychainDictionary;
     v11->_originalKeychainDictionary = v16;
 
-    v18 = [v10 objectForKeyedSubscript:@"totp"];
+    v18 = [representationCopy objectForKeyedSubscript:@"totp"];
     if (v18)
     {
       v19 = [[WBSTOTPGenerator alloc] initWithDictionaryRepresentation:v18];
@@ -41,7 +41,7 @@
       v11->_totpGenerator = v19;
     }
 
-    v21 = [v10 objectForKeyedSubscript:@"notes"];
+    v21 = [representationCopy objectForKeyedSubscript:@"notes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       }
     }
 
-    v23 = [v10 objectForKeyedSubscript:@"title"];
+    v23 = [representationCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
       }
     }
 
-    v25 = [v10 objectForKeyedSubscript:@"ocpid"];
+    v25 = [representationCopy objectForKeyedSubscript:@"ocpid"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       }
     }
 
-    v27 = [v10 objectForKeyedSubscript:@"pidrd"];
+    v27 = [representationCopy objectForKeyedSubscript:@"pidrd"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
       }
     }
 
-    v29 = [v10 objectForKeyedSubscript:@"s_as"];
+    v29 = [representationCopy objectForKeyedSubscript:@"s_as"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
     additionalSites = v11->_additionalSites;
     v11->_additionalSites = v30;
 
-    v32 = [v10 objectForKeyedSubscript:@"s_hi"];
+    v32 = [representationCopy objectForKeyedSubscript:@"s_hi"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && +[WBSFeatureAvailability isSavedAccountHistoryEnabled])
     {
@@ -115,7 +115,7 @@
     historyItems = v11->_historyItems;
     v11->_historyItems = v33;
 
-    v35 = [v10 objectForKeyedSubscript:@"s_fvrk"];
+    v35 = [representationCopy objectForKeyedSubscript:@"s_fvrk"];
     if (v35)
     {
       v36 = [[WBSFileVaultRecoveryKeyDeviceInfo alloc] initWithDictionaryRepresentation:v35];
@@ -125,8 +125,8 @@
 
     v38 = v11;
 
-    v9 = v40;
-    v8 = v41;
+    spaceCopy = v40;
+    userCopy = v41;
   }
 
   return v11;
@@ -140,27 +140,27 @@ WBSSavedAccountAdditionalSite *__86__WBSSavedAccountSharedSidecar_initWithUser_p
   return v3;
 }
 
-- (WBSSavedAccountSharedSidecar)initWithPersonalSidecar:(id)a3
+- (WBSSavedAccountSharedSidecar)initWithPersonalSidecar:(id)sidecar
 {
-  v4 = a3;
-  v5 = [v4 prefixedSharableData];
-  v6 = [v4 user];
-  v7 = [v4 protectionSpace];
-  v8 = [(WBSSavedAccountSharedSidecar *)self initWithUser:v6 protectionSpace:v7 dictionaryRepresentation:v5];
+  sidecarCopy = sidecar;
+  prefixedSharableData = [sidecarCopy prefixedSharableData];
+  user = [sidecarCopy user];
+  protectionSpace = [sidecarCopy protectionSpace];
+  v8 = [(WBSSavedAccountSharedSidecar *)self initWithUser:user protectionSpace:protectionSpace dictionaryRepresentation:prefixedSharableData];
 
   if (v8)
   {
-    v9 = [v4 totpGenerator];
+    totpGenerator = [sidecarCopy totpGenerator];
     totpGenerator = v8->_totpGenerator;
-    v8->_totpGenerator = v9;
+    v8->_totpGenerator = totpGenerator;
 
-    v11 = [v4 notesEntry];
-    v12 = [v11 copy];
+    notesEntry = [sidecarCopy notesEntry];
+    v12 = [notesEntry copy];
     notesEntry = v8->_notesEntry;
     v8->_notesEntry = v12;
 
-    v14 = [v4 customTitle];
-    v15 = [v14 copy];
+    customTitle = [sidecarCopy customTitle];
+    v15 = [customTitle copy];
     customTitle = v8->_customTitle;
     v8->_customTitle = v15;
 
@@ -176,8 +176,8 @@ WBSSavedAccountAdditionalSite *__86__WBSSavedAccountSharedSidecar_initWithUser_p
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = [(NSDictionary *)self->_originalKeychainDictionary mutableCopy];
-  v4 = [(WBSTOTPGenerator *)self->_totpGenerator dictionaryRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"totp"];
+  dictionaryRepresentation = [(WBSTOTPGenerator *)self->_totpGenerator dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"totp"];
 
   v5 = [(NSString *)self->_notesEntry dataUsingEncoding:4];
   [v3 setObject:v5 forKeyedSubscript:@"notes"];
@@ -197,8 +197,8 @@ WBSSavedAccountAdditionalSite *__86__WBSSavedAccountSharedSidecar_initWithUser_p
   v10 = [(NSArray *)self->_historyItems safari_mapObjectsUsingBlock:&__block_literal_global_19_2];
   [v3 setObject:v10 forKeyedSubscript:@"s_hi"];
 
-  v11 = [(WBSFileVaultRecoveryKeyDeviceInfo *)self->_fileVaultRecoveryKeyDeviceInfo dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"s_fvrk"];
+  dictionaryRepresentation2 = [(WBSFileVaultRecoveryKeyDeviceInfo *)self->_fileVaultRecoveryKeyDeviceInfo dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"s_fvrk"];
 
   return v3;
 }
@@ -221,10 +221,10 @@ void *__52__WBSSavedAccountSharedSidecar_prefixedSharableData__block_invoke(uint
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v23 = 1;
   }
@@ -234,46 +234,46 @@ void *__52__WBSSavedAccountSharedSidecar_prefixedSharableData__block_invoke(uint
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       user = self->_user;
-      v7 = [(WBSSavedAccountSharedSidecar *)v5 user];
-      if (WBSIsEqual(user, v7))
+      user = [(WBSSavedAccountSharedSidecar *)v5 user];
+      if (WBSIsEqual(user, user))
       {
         protectionSpace = self->_protectionSpace;
-        v9 = [(WBSSavedAccountSharedSidecar *)v5 protectionSpace];
-        if (WBSIsEqual(protectionSpace, v9))
+        protectionSpace = [(WBSSavedAccountSharedSidecar *)v5 protectionSpace];
+        if (WBSIsEqual(protectionSpace, protectionSpace))
         {
           totpGenerator = self->_totpGenerator;
-          v11 = [(WBSSavedAccountSharedSidecar *)v5 totpGenerator];
-          if (WBSIsEqual(totpGenerator, v11))
+          totpGenerator = [(WBSSavedAccountSharedSidecar *)v5 totpGenerator];
+          if (WBSIsEqual(totpGenerator, totpGenerator))
           {
             notesEntry = self->_notesEntry;
-            v13 = [(WBSSavedAccountSharedSidecar *)v5 notesEntry];
-            if (WBSIsEqual(notesEntry, v13))
+            notesEntry = [(WBSSavedAccountSharedSidecar *)v5 notesEntry];
+            if (WBSIsEqual(notesEntry, notesEntry))
             {
               customTitle = self->_customTitle;
-              v15 = [(WBSSavedAccountSharedSidecar *)v5 customTitle];
-              if (WBSIsEqual(customTitle, v15))
+              customTitle = [(WBSSavedAccountSharedSidecar *)v5 customTitle];
+              if (WBSIsEqual(customTitle, customTitle))
               {
                 originalContributorParticipantID = self->_originalContributorParticipantID;
-                v17 = [(WBSSavedAccountSharedSidecar *)v5 originalContributorParticipantID];
-                if (WBSIsEqual(originalContributorParticipantID, v17))
+                originalContributorParticipantID = [(WBSSavedAccountSharedSidecar *)v5 originalContributorParticipantID];
+                if (WBSIsEqual(originalContributorParticipantID, originalContributorParticipantID))
                 {
                   additionalSites = self->_additionalSites;
-                  v27 = [(WBSSavedAccountSharedSidecar *)v5 additionalSites];
-                  if (WBSIsEqual(additionalSites, v27))
+                  additionalSites = [(WBSSavedAccountSharedSidecar *)v5 additionalSites];
+                  if (WBSIsEqual(additionalSites, additionalSites))
                   {
                     historyItems = self->_historyItems;
-                    v26 = [(WBSSavedAccountSharedSidecar *)v5 historyItems];
-                    if (WBSIsEqual(historyItems, v26))
+                    historyItems = [(WBSSavedAccountSharedSidecar *)v5 historyItems];
+                    if (WBSIsEqual(historyItems, historyItems))
                     {
                       fileVaultRecoveryKeyDeviceInfo = self->_fileVaultRecoveryKeyDeviceInfo;
-                      v25 = [(WBSSavedAccountSharedSidecar *)v5 fileVaultRecoveryKeyDeviceInfo];
-                      if (WBSIsEqual(fileVaultRecoveryKeyDeviceInfo, v25))
+                      fileVaultRecoveryKeyDeviceInfo = [(WBSSavedAccountSharedSidecar *)v5 fileVaultRecoveryKeyDeviceInfo];
+                      if (WBSIsEqual(fileVaultRecoveryKeyDeviceInfo, fileVaultRecoveryKeyDeviceInfo))
                       {
                         participantIDForUserThatMovedSavedAccountToRecentlyDeleted = self->_participantIDForUserThatMovedSavedAccountToRecentlyDeleted;
-                        v22 = [(WBSSavedAccountSharedSidecar *)v5 participantIDForUserThatMovedSavedAccountToRecentlyDeleted];
-                        v23 = WBSIsEqual(participantIDForUserThatMovedSavedAccountToRecentlyDeleted, v22);
+                        participantIDForUserThatMovedSavedAccountToRecentlyDeleted = [(WBSSavedAccountSharedSidecar *)v5 participantIDForUserThatMovedSavedAccountToRecentlyDeleted];
+                        v23 = WBSIsEqual(participantIDForUserThatMovedSavedAccountToRecentlyDeleted, participantIDForUserThatMovedSavedAccountToRecentlyDeleted);
                       }
 
                       else
@@ -353,7 +353,7 @@ void *__52__WBSSavedAccountSharedSidecar_prefixedSharableData__block_invoke(uint
   return v9 ^ v11 ^ [(WBSFileVaultRecoveryKeyDeviceInfo *)self->_fileVaultRecoveryKeyDeviceInfo hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [WBSSavedAccountSharedSidecar alloc];
   user = self->_user;

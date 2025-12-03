@@ -1,11 +1,11 @@
 @interface SessionIntroSequencePresenter
 - (_TtC9SeymourUI29SessionIntroSequencePresenter)init;
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
 @end
 
 @implementation SessionIntroSequencePresenter
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC9SeymourUI29SessionIntroSequencePresenter_audioSessionCategory))
   {

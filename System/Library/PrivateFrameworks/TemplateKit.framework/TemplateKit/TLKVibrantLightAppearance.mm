@@ -1,12 +1,12 @@
 @interface TLKVibrantLightAppearance
-- (id)textColorForColor:(int64_t)a3;
+- (id)textColorForColor:(int64_t)color;
 @end
 
 @implementation TLKVibrantLightAppearance
 
-- (id)textColorForColor:(int64_t)a3
+- (id)textColorForColor:(int64_t)color
 {
-  switch(a3)
+  switch(color)
   {
     case 4:
       v3 = 28;

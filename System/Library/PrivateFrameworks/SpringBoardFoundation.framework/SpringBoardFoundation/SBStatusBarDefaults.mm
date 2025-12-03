@@ -27,8 +27,8 @@
 
   else
   {
-    v2 = [MEMORY[0x1E69DC938] currentDevice];
-    v12 = [v2 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v12 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   v13 = [v9 numberWithInt:v12];
@@ -67,19 +67,19 @@
 
   else
   {
-    v21 = [MEMORY[0x1E69DC938] currentDevice];
-    v22 = [v21 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    if (v22 != 1)
+    if (userInterfaceIdiom != 1)
     {
       return;
     }
   }
 
-  v23 = [(BSAbstractDefaultDomain *)self _store];
-  if (([v23 bs_defaultExists:@"SBShowBatteryPercentage"] & 1) == 0)
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  if (([_store bs_defaultExists:@"SBShowBatteryPercentage"] & 1) == 0)
   {
-    [v23 setBool:1 forKey:@"SBShowBatteryPercentage"];
+    [_store setBool:1 forKey:@"SBShowBatteryPercentage"];
   }
 }
 

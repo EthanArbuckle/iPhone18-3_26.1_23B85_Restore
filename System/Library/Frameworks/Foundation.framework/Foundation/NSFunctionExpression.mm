@@ -1,25 +1,25 @@
 @interface NSFunctionExpression
 - (BOOL)_allowsEvaluation;
 - (BOOL)_shouldUseParensWithDescription;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSelectorAllowed:(SEL)a3;
-- (NSFunctionExpression)initWithCoder:(id)a3;
-- (NSFunctionExpression)initWithExpressionType:(unint64_t)a3 operand:(id)a4 selector:(SEL)a5 argumentArray:(id)a6;
-- (NSFunctionExpression)initWithSelector:(SEL)a3 argumentArray:(id)a4;
-- (NSFunctionExpression)initWithTarget:(id)a3 selectorName:(id)a4 arguments:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSelectorAllowed:(SEL)allowed;
+- (NSFunctionExpression)initWithCoder:(id)coder;
+- (NSFunctionExpression)initWithExpressionType:(unint64_t)type operand:(id)operand selector:(SEL)selector argumentArray:(id)array;
+- (NSFunctionExpression)initWithSelector:(SEL)selector argumentArray:(id)array;
+- (NSFunctionExpression)initWithTarget:(id)target selectorName:(id)name arguments:(id)arguments;
 - (SEL)selector;
-- (id)_expressionWithSubstitutionVariables:(id)a3;
+- (id)_expressionWithSubstitutionVariables:(id)variables;
 - (id)binaryOperatorForSelector;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)expressionValueWithObject:(id)object context:(id)context;
 - (id)function;
 - (id)predicateFormat;
 - (uint64_t)_validateExpression;
 - (unint64_t)hash;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
 - (void)allowEvaluation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSFunctionExpression
@@ -85,22 +85,22 @@
           }
 
           result = [v3 keyPath];
-          v4 = result;
+          constantValue = result;
         }
 
         else
         {
-          v4 = [v3 constantValue];
-          result = [v4 isNSString];
+          constantValue = [v3 constantValue];
+          result = [constantValue isNSString];
           if ((result & 1) == 0)
           {
             return result;
           }
         }
 
-        if (v4)
+        if (constantValue)
         {
-          result = [_NSPredicateUtilities _predicateEnforceRestrictionsOnKeyPath:v4 withOperand:*(v1 + 24) forComponentName:@"NSFunctionExpression"];
+          result = [_NSPredicateUtilities _predicateEnforceRestrictionsOnKeyPath:constantValue withOperand:*(v1 + 24) forComponentName:@"NSFunctionExpression"];
           v5 = *(v1 + 8);
           v6 = v5 | 8;
           v7 = v5 & 0xFFFFFFF3;
@@ -166,16 +166,16 @@
 - (id)predicateFormat
 {
   v67 = *MEMORY[0x1E69E9840];
-  v3 = [(NSFunctionExpression *)self binaryOperatorForSelector];
-  v4 = [(NSFunctionExpression *)self selector];
-  if (v3)
+  binaryOperatorForSelector = [(NSFunctionExpression *)self binaryOperatorForSelector];
+  selector = [(NSFunctionExpression *)self selector];
+  if (binaryOperatorForSelector)
   {
     v5 = [-[NSFunctionExpression arguments](self "arguments")];
     v6 = [-[NSFunctionExpression arguments](self "arguments")];
-    v7 = [v5 _shouldUseParensWithDescription];
-    v8 = [v6 _shouldUseParensWithDescription];
-    v9 = v7 == 0;
-    if (v7)
+    _shouldUseParensWithDescription = [v5 _shouldUseParensWithDescription];
+    _shouldUseParensWithDescription2 = [v6 _shouldUseParensWithDescription];
+    v9 = _shouldUseParensWithDescription == 0;
+    if (_shouldUseParensWithDescription)
     {
       v10 = CFSTR("(");
     }
@@ -195,7 +195,7 @@
       v11 = @"");
     }
 
-    if (v8)
+    if (_shouldUseParensWithDescription2)
     {
       v12 = CFSTR("(");
     }
@@ -205,7 +205,7 @@
       v12 = &stru_1EEEFDF90;
     }
 
-    if (v8)
+    if (_shouldUseParensWithDescription2)
     {
       v13 = @"");
     }
@@ -215,7 +215,7 @@
       v13 = &stru_1EEEFDF90;
     }
 
-    v14 = [v3 characterAtIndex:0];
+    v14 = [binaryOperatorForSelector characterAtIndex:0];
     if (v14 == 91)
     {
       return [NSString stringWithFormat:@"%@%@%@[%@]", v10, v5, v11, v6, v49, v50, v51];
@@ -228,20 +228,20 @@
 
     else
     {
-      return [NSString stringWithFormat:@"%@%@%@ %@ %@%@%@", v10, v5, v11, v3, v12, v6, v13];
+      return [NSString stringWithFormat:@"%@%@%@ %@ %@%@%@", v10, v5, v11, binaryOperatorForSelector, v12, v6, v13];
     }
   }
 
   else
   {
-    v16 = v4;
-    if (v4 == sel_onesComplement_)
+    v16 = selector;
+    if (selector == sel_onesComplement_)
     {
       v27 = [-[NSFunctionExpression arguments](self "arguments")];
-      v28 = [v27 _shouldUseParensWithDescription];
+      _shouldUseParensWithDescription3 = [v27 _shouldUseParensWithDescription];
       v29 = &stru_1EEEFDF90;
       v30 = CFSTR("(");
-      if (v28)
+      if (_shouldUseParensWithDescription3)
       {
         v29 = @"");
       }
@@ -256,8 +256,8 @@
 
     else
     {
-      v17 = [(NSFunctionExpression *)self operand];
-      if (!v17 || (v18 = v17, (objc_opt_isKindOfClass() & 1) != 0) && _NSPredicateUtilities == [v18 constantValue])
+      operand = [(NSFunctionExpression *)self operand];
+      if (!operand || (v18 = operand, (objc_opt_isKindOfClass() & 1) != 0) && _NSPredicateUtilities == [v18 constantValue])
       {
         if (v16 == sel_castObject_toType_)
         {
@@ -266,8 +266,8 @@
           v59 = 0u;
           v60 = 0u;
           v61 = 0u;
-          v40 = [(NSFunctionExpression *)self arguments];
-          v41 = [v40 countByEnumeratingWithState:&v58 objects:v57 count:16];
+          arguments = [(NSFunctionExpression *)self arguments];
+          v41 = [arguments countByEnumeratingWithState:&v58 objects:v57 count:16];
           if (v41)
           {
             v42 = v41;
@@ -279,7 +279,7 @@
               {
                 if (*v59 != v44)
                 {
-                  objc_enumerationMutation(v40);
+                  objc_enumerationMutation(arguments);
                 }
 
                 v46 = *(*(&v58 + 1) + 8 * i);
@@ -292,7 +292,7 @@
               }
 
               v43 += v42;
-              v42 = [v40 countByEnumeratingWithState:&v58 objects:v57 count:16];
+              v42 = [arguments countByEnumeratingWithState:&v58 objects:v57 count:16];
             }
 
             while (v42);
@@ -319,8 +319,8 @@
           v66 = 0u;
           v63 = 0u;
           v64 = 0u;
-          v33 = [(NSFunctionExpression *)self arguments];
-          v34 = [v33 countByEnumeratingWithState:&v63 objects:v62 count:16];
+          arguments2 = [(NSFunctionExpression *)self arguments];
+          v34 = [arguments2 countByEnumeratingWithState:&v63 objects:v62 count:16];
           if (v34)
           {
             v35 = v34;
@@ -332,7 +332,7 @@
               {
                 if (*v64 != v37)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(arguments2);
                 }
 
                 v39 = *(*(&v63 + 1) + 8 * j);
@@ -345,7 +345,7 @@
               }
 
               v36 += v35;
-              v35 = [v33 countByEnumeratingWithState:&v63 objects:v62 count:16];
+              v35 = [arguments2 countByEnumeratingWithState:&v63 objects:v62 count:16];
             }
 
             while (v35);
@@ -367,8 +367,8 @@
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v20 = [(NSFunctionExpression *)self arguments];
-        v21 = [v20 countByEnumeratingWithState:&v53 objects:v52 count:16];
+        arguments3 = [(NSFunctionExpression *)self arguments];
+        v21 = [arguments3 countByEnumeratingWithState:&v53 objects:v52 count:16];
         if (v21)
         {
           v22 = v21;
@@ -379,7 +379,7 @@
             {
               if (*v54 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(arguments3);
               }
 
               v25 = *(*(&v53 + 1) + 8 * k);
@@ -387,7 +387,7 @@
               -[NSString appendString:](v19, "appendString:", [v25 predicateFormat]);
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v53 objects:v52 count:16];
+            v22 = [arguments3 countByEnumeratingWithState:&v53 objects:v52 count:16];
           }
 
           while (v22);
@@ -403,58 +403,58 @@
 
 - (id)binaryOperatorForSelector
 {
-  v2 = [(NSFunctionExpression *)self selector];
-  if (v2 == sel_add_to_)
+  selector = [(NSFunctionExpression *)self selector];
+  if (selector == sel_add_to_)
   {
     return @"+";
   }
 
-  if (v2 == sel_from_subtract_)
+  if (selector == sel_from_subtract_)
   {
     return @"-";
   }
 
-  if (v2 == sel_multiply_by_)
+  if (selector == sel_multiply_by_)
   {
     return @"*";
   }
 
-  if (v2 == sel_divide_by_)
+  if (selector == sel_divide_by_)
   {
     return @"/";
   }
 
-  if (v2 == sel_raise_toPower_)
+  if (selector == sel_raise_toPower_)
   {
     return @"e";
   }
 
-  if (v2 == sel_objectFrom_withIndex_)
+  if (selector == sel_objectFrom_withIndex_)
   {
     return @"[";
   }
 
-  if (v2 == sel_bitwiseAnd_with_)
+  if (selector == sel_bitwiseAnd_with_)
   {
     return @"&";
   }
 
-  if (v2 == sel_bitwiseOr_with_)
+  if (selector == sel_bitwiseOr_with_)
   {
     return @"|";
   }
 
-  if (v2 == sel_bitwiseXor_with_)
+  if (selector == sel_bitwiseXor_with_)
   {
     return @"^";
   }
 
-  if (v2 == sel_leftshift_by_)
+  if (selector == sel_leftshift_by_)
   {
     return @"<<";
   }
 
-  if (v2 == sel_rightshift_by_)
+  if (selector == sel_rightshift_by_)
   {
     return @">>";
   }
@@ -480,9 +480,9 @@
 
 - (id)function
 {
-  v2 = [(NSFunctionExpression *)self selector];
+  selector = [(NSFunctionExpression *)self selector];
 
-  return NSStringFromSelector(v2);
+  return NSStringFromSelector(selector);
 }
 
 - (unint64_t)hash
@@ -492,60 +492,60 @@
   return v4 ^ [-[NSFunctionExpression arguments](self "arguments")] ^ v3;
 }
 
-- (NSFunctionExpression)initWithSelector:(SEL)a3 argumentArray:(id)a4
+- (NSFunctionExpression)initWithSelector:(SEL)selector argumentArray:(id)array
 {
   v7 = [[NSConstantValueExpression alloc] initWithObject:_NSPredicateUtilities];
-  v8 = [(NSFunctionExpression *)self initWithExpressionType:4 operand:v7 selector:a3 argumentArray:a4];
+  v8 = [(NSFunctionExpression *)self initWithExpressionType:4 operand:v7 selector:selector argumentArray:array];
 
   return v8;
 }
 
-- (NSFunctionExpression)initWithExpressionType:(unint64_t)a3 operand:(id)a4 selector:(SEL)a5 argumentArray:(id)a6
+- (NSFunctionExpression)initWithExpressionType:(unint64_t)type operand:(id)operand selector:(SEL)selector argumentArray:(id)array
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = NSFunctionExpression;
-  v9 = [(NSExpression *)&v12 initWithExpressionType:a3];
-  v9->_operand = a4;
-  if (a5)
+  v9 = [(NSExpression *)&v12 initWithExpressionType:type];
+  v9->_operand = operand;
+  if (selector)
   {
-    v10 = a5;
+    selectorCopy = selector;
   }
 
   else
   {
-    v10 = 0;
+    selectorCopy = 0;
   }
 
-  v9->_selector = v10;
-  v9->_arguments = a6;
+  v9->_selector = selectorCopy;
+  v9->_arguments = array;
   [(NSFunctionExpression *)v9 _validateExpression];
   return v9;
 }
 
-- (NSFunctionExpression)initWithTarget:(id)a3 selectorName:(id)a4 arguments:(id)a5
+- (NSFunctionExpression)initWithTarget:(id)target selectorName:(id)name arguments:(id)arguments
 {
   v14 = *MEMORY[0x1E69E9840];
-  v9 = NSSelectorFromString(a4);
+  v9 = NSSelectorFromString(name);
   if (!v9)
   {
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Invalid selector name (%@)", a4), 0}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Invalid selector name (%@)", name), 0}]);
   }
 
   v10 = v9;
   v13.receiver = self;
   v13.super_class = NSFunctionExpression;
   v11 = [(NSExpression *)&v13 initWithExpressionType:4];
-  v11->_operand = a3;
+  v11->_operand = target;
   v11->_selector = v10;
-  v11->_arguments = a5;
+  v11->_arguments = arguments;
   [(NSFunctionExpression *)v11 _validateExpression];
   return v11;
 }
 
-- (BOOL)isSelectorAllowed:(SEL)a3
+- (BOOL)isSelectorAllowed:(SEL)allowed
 {
-  v3 = NSStringFromSelector(a3);
+  v3 = NSStringFromSelector(allowed);
   objc_opt_self();
   if ([*(_CFPredicatePolicyData() + 32) objectForKey:v3])
   {
@@ -556,26 +556,26 @@
   return [*_CFPredicatePolicyData() objectForKey:v3] != 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSFunctionExpression;
-  [(NSExpression *)&v5 encodeWithCoder:a3];
-  [a3 encodeObject:NSStringFromSelector(-[NSFunctionExpression selector](self forKey:{"selector")), @"NSSelectorName"}];
-  [a3 encodeObject:-[NSFunctionExpression operand](self forKey:{"operand"), @"NSOperand"}];
-  [a3 encodeObject:-[NSFunctionExpression arguments](self forKey:{"arguments"), @"NSArguments"}];
+  [(NSExpression *)&v5 encodeWithCoder:coder];
+  [coder encodeObject:NSStringFromSelector(-[NSFunctionExpression selector](self forKey:{"selector")), @"NSSelectorName"}];
+  [coder encodeObject:-[NSFunctionExpression operand](self forKey:{"operand"), @"NSOperand"}];
+  [coder encodeObject:-[NSFunctionExpression arguments](self forKey:{"arguments"), @"NSArguments"}];
 }
 
-- (NSFunctionExpression)initWithCoder:(id)a3
+- (NSFunctionExpression)initWithCoder:(id)coder
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     v22 = MEMORY[0x1E695DF30];
@@ -586,19 +586,19 @@
 
   v26.receiver = self;
   v26.super_class = NSFunctionExpression;
-  v5 = [(NSExpression *)&v26 initWithCoder:a3];
+  v5 = [(NSExpression *)&v26 initWithCoder:coder];
   if (!v5)
   {
     return v5;
   }
 
-  v6 = [a3 allowedClasses];
-  v25 = [v6 count];
+  allowedClasses = [coder allowedClasses];
+  v25 = [allowedClasses count];
   if (v25)
   {
-    v7 = [v6 mutableCopy];
+    v7 = [allowedClasses mutableCopy];
     [v7 unionSet:{+[_NSPredicateUtilities _expressionClassesForSecureCoding](_NSPredicateUtilities, "_expressionClassesForSecureCoding")}];
-    v8 = [v6 mutableCopy];
+    v8 = [allowedClasses mutableCopy];
     [v8 unionSet:{+[_NSPredicateUtilities _extendedExpressionClassesForSecureCoding](_NSPredicateUtilities, "_extendedExpressionClassesForSecureCoding")}];
   }
 
@@ -608,7 +608,7 @@
     v8 = +[_NSPredicateUtilities _extendedExpressionClassesForSecureCoding];
   }
 
-  v9 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSSelectorName"];
+  v9 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSSelectorName"];
   p_selector = &v5->_selector;
   v11 = NSSelectorFromString(v9);
   if (v11)
@@ -622,8 +622,8 @@
   }
 
   *p_selector = v12;
-  v5->_operand = [a3 decodeObjectOfClasses:v7 forKey:@"NSOperand"];
-  v5->_arguments = [a3 decodeObjectOfClasses:v8 forKey:@"NSArguments"];
+  v5->_operand = [coder decodeObjectOfClasses:v7 forKey:@"NSOperand"];
+  v5->_arguments = [coder decodeObjectOfClasses:v8 forKey:@"NSArguments"];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v13 = @"Malformed function expression (bad operator)";
@@ -744,17 +744,17 @@ LABEL_38:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = [(NSExpression *)self->_operand copy];
-  v5 = [(NSFunctionExpression *)self arguments];
+  arguments = [(NSFunctionExpression *)self arguments];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_arguments, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  v7 = [arguments countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v7)
   {
     v8 = v7;
@@ -766,7 +766,7 @@ LABEL_38:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arguments);
         }
 
         v11 = [*(*(&v15 + 1) + 8 * v10) copy];
@@ -776,7 +776,7 @@ LABEL_38:
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v8 = [arguments countByEnumeratingWithState:&v15 objects:v14 count:16];
     }
 
     while (v8);
@@ -787,26 +787,26 @@ LABEL_38:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSFunctionExpression *)self selector];
-  if (v5 != [a3 selector] || !objc_msgSend(-[NSFunctionExpression operand](self, "operand"), "isEqual:", objc_msgSend(a3, "operand")))
+  selector = [(NSFunctionExpression *)self selector];
+  if (selector != [equal selector] || !objc_msgSend(-[NSFunctionExpression operand](self, "operand"), "isEqual:", objc_msgSend(equal, "operand")))
   {
     return 0;
   }
 
-  v6 = [(NSFunctionExpression *)self arguments];
-  v7 = [a3 arguments];
+  arguments = [(NSFunctionExpression *)self arguments];
+  arguments2 = [equal arguments];
 
-  return [v6 isEqual:v7];
+  return [arguments isEqual:arguments2];
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
   v146 = *MEMORY[0x1E69E9840];
   if (![(NSFunctionExpression *)self _allowsEvaluation])
@@ -816,15 +816,15 @@ LABEL_38:
 
   *&v136[1] = 0;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(NSFunctionExpression *)self arguments];
-  v134 = [v8 count];
-  v9 = [(NSFunctionExpression *)self selector];
+  arguments = [(NSFunctionExpression *)self arguments];
+  v134 = [arguments count];
+  selector = [(NSFunctionExpression *)self selector];
   expressionFlags = self->super._expressionFlags;
   *v136 = (*&expressionFlags & 2) != 0;
-  v133 = v9;
-  if (v9)
+  v133 = selector;
+  if (selector)
   {
-    Name = sel_getName(v9);
+    Name = sel_getName(selector);
     objc_opt_self();
     if ((_CFPredicatePolicyData_getFlags() & 8) != 0)
     {
@@ -924,7 +924,7 @@ LABEL_38:
     v142 = 0u;
     v139 = 0u;
     v140 = 0u;
-    v22 = [v8 countByEnumeratingWithState:&v139 objects:v138 count:16];
+    v22 = [arguments countByEnumeratingWithState:&v139 objects:v138 count:16];
     if (v22)
     {
       v23 = *v140;
@@ -935,16 +935,16 @@ LABEL_38:
         {
           if (*v140 != v23)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(arguments);
           }
 
-          v26 = [*(*(&v139 + 1) + 8 * i) expressionValueWithObject:a3 context:a4];
+          v26 = [*(*(&v139 + 1) + 8 * i) expressionValueWithObject:object context:context];
           v27 = v26;
           *v24 = v26;
           v24 += 8;
         }
 
-        v22 = [v8 countByEnumeratingWithState:&v139 objects:v138 count:16];
+        v22 = [arguments countByEnumeratingWithState:&v139 objects:v138 count:16];
       }
 
       while (v22);
@@ -954,9 +954,9 @@ LABEL_38:
     {
       v28 = v129;
       v29 = *v129;
-      v30 = [(NSFunctionExpression *)self operand];
+      operand = [(NSFunctionExpression *)self operand];
       v31 = v132;
-      if ([_NSPredicateUtilities _predicateEnforceRestrictionsOnKeyPath:v29 withOperand:v30 forComponentName:@"NSFunctionExpression"])
+      if ([_NSPredicateUtilities _predicateEnforceRestrictionsOnKeyPath:v29 withOperand:operand forComponentName:@"NSFunctionExpression"])
       {
         +[_NSPredicateUtilities _predicateSecurityAction];
       }
@@ -1241,17 +1241,17 @@ LABEL_102:
       {
         if (v134 == 5)
         {
-          v66 = [v31 v133];
+          v133 = [v31 v133];
         }
 
         else
         {
-          v66 = [v31 v133];
+          v133 = [v31 v133];
         }
 
 LABEL_124:
-        *&v136[1] = v66;
-        if (!v66)
+        *&v136[1] = v133;
+        if (!v133)
         {
           goto LABEL_165;
         }
@@ -1261,19 +1261,19 @@ LABEL_124:
 
       if (v134 == 7)
       {
-        v66 = [v31 v133];
+        v133 = [v31 v133];
         goto LABEL_124;
       }
 
       if (v134 == 8)
       {
-        v66 = [v31 v133];
+        v133 = [v31 v133];
         goto LABEL_124;
       }
 
       if (v134 == 9)
       {
-        v66 = [v31 v133];
+        v133 = [v31 v133];
         goto LABEL_124;
       }
     }
@@ -1284,17 +1284,17 @@ LABEL_124:
       {
         if (v134 == 2)
         {
-          v66 = [v31 v133];
+          v133 = [v31 v133];
         }
 
         else if (v134 == 3)
         {
-          v66 = [v31 v133];
+          v133 = [v31 v133];
         }
 
         else
         {
-          v66 = [v31 v133];
+          v133 = [v31 v133];
         }
 
         goto LABEL_124;
@@ -1302,13 +1302,13 @@ LABEL_124:
 
       if (!v134)
       {
-        v66 = [v31 v133];
+        v133 = [v31 v133];
         goto LABEL_124;
       }
 
       if (v134 == 1)
       {
-        v66 = [v31 v133];
+        v133 = [v31 v133];
         goto LABEL_124;
       }
     }
@@ -1341,8 +1341,8 @@ LABEL_124:
         v120 = @"<unknown>";
       }
 
-      v121 = [NSString stringWithFormat:@"NSPredicateFunctionMissingSignature: can't find selector (%@) on %@", v120, v132];
-      objc_exception_throw([v119 exceptionWithName:*MEMORY[0x1E695D930] reason:v121 userInfo:0]);
+      v132 = [NSString stringWithFormat:@"NSPredicateFunctionMissingSignature: can't find selector (%@) on %@", v120, v132];
+      objc_exception_throw([v119 exceptionWithName:*MEMORY[0x1E695D930] reason:v132 userInfo:0]);
     }
 
     v71 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v70];
@@ -1354,8 +1354,8 @@ LABEL_124:
 
     [v71 setSelector:v133];
     [v72 setTarget:v31];
-    v73 = [v70 numberOfArguments];
-    if (v73 != v134)
+    numberOfArguments = [v70 numberOfArguments];
+    if (numberOfArguments != v134)
     {
       objc_opt_self();
       if ((_CFPredicatePolicyData_getFlags() & 8) != 0)
@@ -1497,7 +1497,7 @@ LABEL_165:
       }
 
       v134 = qword_1EA821EB8;
-      v91 = [NSNumber numberWithChar:v39 | v38, v122];
+      v122 = [NSNumber numberWithChar:v39 | v38, v122];
       if (!os_variant_has_internal_diagnostics())
       {
         goto LABEL_233;
@@ -1693,7 +1693,7 @@ LABEL_233:
             return *&v136[1];
           }
 
-          if (isSelectorAllowed(v95, v131, v91))
+          if (isSelectorAllowed(v95, v131, v122))
           {
             v105 = 0;
             goto LABEL_220;
@@ -1751,14 +1751,14 @@ LABEL_125:
   return 0;
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (flags)
   {
-    if ((a4 & 4) != 0)
+    if ((flags & 4) != 0)
     {
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
     }
 
     [-[NSFunctionExpression operand](self "operand")];
@@ -1766,8 +1766,8 @@ LABEL_125:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [(NSFunctionExpression *)self arguments];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    arguments = [(NSFunctionExpression *)self arguments];
+    v8 = [arguments countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1778,41 +1778,41 @@ LABEL_125:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(arguments);
           }
 
-          [*(*(&v13 + 1) + 8 * i) acceptVisitor:a3 flags:a4];
+          [*(*(&v13 + 1) + 8 * i) acceptVisitor:visitor flags:flags];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v9 = [arguments countByEnumeratingWithState:&v13 objects:v12 count:16];
       }
 
       while (v9);
     }
 
-    if ((a4 & 4) == 0)
+    if ((flags & 4) == 0)
     {
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
     }
   }
 }
 
-- (id)_expressionWithSubstitutionVariables:(id)a3
+- (id)_expressionWithSubstitutionVariables:(id)variables
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!variables)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot substitute a nil substitution dictionary." userInfo:0]);
   }
 
   v5 = [-[NSFunctionExpression operand](self "operand")];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(NSFunctionExpression *)self arguments];
+  arguments = [(NSFunctionExpression *)self arguments];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  v8 = [arguments countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1824,14 +1824,14 @@ LABEL_125:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(arguments);
         }
 
-        [v6 addObject:{objc_msgSend(*(*(&v15 + 1) + 8 * v11++), "_expressionWithSubstitutionVariables:", a3)}];
+        [v6 addObject:{objc_msgSend(*(*(&v15 + 1) + 8 * v11++), "_expressionWithSubstitutionVariables:", variables)}];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v9 = [arguments countByEnumeratingWithState:&v15 objects:v14 count:16];
     }
 
     while (v9);
